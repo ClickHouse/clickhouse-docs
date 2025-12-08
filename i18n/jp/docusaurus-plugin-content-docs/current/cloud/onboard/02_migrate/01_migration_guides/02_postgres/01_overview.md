@@ -7,11 +7,7 @@ sidebar_label: '概要'
 doc_type: 'guide'
 ---
 
-
-
-# ClickHouse と PostgreSQL の比較
-
-
+# ClickHouse と PostgreSQL の比較 {#comparing-clickhouse-and-postgresql}
 
 ## なぜ Postgres より ClickHouse を使うのか？ {#why-use-clickhouse-over-postgres}
 
@@ -24,8 +20,6 @@ OLAP（online analytical processing）データベースは、そうしたニー
 ClickHouse と PostgreSQL のより詳しい比較については[こちら](/migrations/postgresql/appendix#postgres-vs-clickhouse-equivalent-and-different-concepts)を参照してください。
 
 ClickHouse と Postgres の分析クエリにおける潜在的なパフォーマンス差を確認するには、[Rewriting PostgreSQL Queries in ClickHouse](/migrations/postgresql/rewriting-queries) を参照してください。
-
-
 
 ## 移行戦略 {#migration-strategies}
 

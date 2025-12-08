@@ -8,10 +8,10 @@ title: 'Клиентская библиотека C++'
 doc_type: 'reference'
 ---
 
-# Клиентская библиотека на C++
+# Клиентская библиотека на C++ {#c-client-library}
 
 См. файл README в репозитории [clickhouse-cpp](https://github.com/ClickHouse/clickhouse-cpp).
 
-# Асинхронный фреймворк userver
+# Асинхронный фреймворк userver {#userver-asynchronous-framework}
 
 [userver (beta)](https://github.com/userver-framework/userver) имеет встроенную поддержку ClickHouse.

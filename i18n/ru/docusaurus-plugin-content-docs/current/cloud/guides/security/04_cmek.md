@@ -11,10 +11,7 @@ import Image from '@theme/IdealImage';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 import cmek_performance from '@site/static/images/_snippets/cmek-performance.png';
 
-
-# Шифрование данных
-
-
+# Шифрование данных {#data-encryption}
 
 ## Шифрование на уровне хранилища {#storage-encryption}
 
@@ -22,8 +19,6 @@ ClickHouse Cloud по умолчанию использует шифровани
 - [Серверное шифрование S3 в AWS](https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingServerSideEncryption.html)
 - [Шифрование данных в состоянии покоя по умолчанию в GCP](https://cloud.google.com/docs/security/encryption/default-encryption)
 - [Шифрование данных в состоянии покоя в службе хранилища Azure](https://learn.microsoft.com/en-us/azure/storage/common/storage-service-encryption)
-
-
 
 ## Шифрование на уровне базы данных {#database-encryption}
 
@@ -111,15 +106,11 @@ TDE необходимо включить при создании сервиса
 
 #### Служба опроса ключей KMS {#kms-key-poller}
 
-
-
 При использовании CMEK валидность предоставленного ключа KMS проверяется каждые 10 минут. Если ключ KMS становится недоступным, служба ClickHouse будет остановлена. Чтобы возобновить работу службы, восстановите доступ к ключу KMS, следуя инструкциям в данном руководстве, а затем перезапустите службу.
 
 ### Резервное копирование и восстановление {#backup-and-restore}
 
 Резервные копии шифруются тем же ключом, что и связанная служба. При восстановлении зашифрованной резервной копии создаётся зашифрованный экземпляр, который использует тот же ключ KMS, что и исходный экземпляр. При необходимости вы можете выполнить ротацию ключа KMS после восстановления; дополнительные сведения см. в разделе [Ротация ключей](#key-rotation).
-
-
 
 ## Производительность {#performance}
 

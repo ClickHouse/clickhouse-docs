@@ -11,17 +11,14 @@ doc_type: 'reference'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
-# YTsaurus テーブルエンジン
+# YTsaurus テーブルエンジン {#ytsaurus-table-engine}
 
 <ExperimentalBadge/>
 <CloudNotSupportedBadge/>
 
 YTsaurus テーブルエンジンを使用すると、YTsaurus クラスターからデータを取り込むことができます。
 
-
-
-## テーブルの作成
+## テーブルの作成 {#creating-a-table}
 
 ```sql
     CREATE TABLE [IF NOT EXISTS] [db.]table_name
@@ -46,8 +43,7 @@ YTsaurus テーブルエンジンを使用すると、YTsaurus クラスター�
 * `cypress_path` — データソースへの Cypress パス。
 * `oauth_token` — OAuth トークン。
 
-
-## 使用例
+## 使用例 {#usage-example}
 
 YTsaurus テーブルを作成するクエリの例です。
 
@@ -75,7 +71,6 @@ SELECT * FROM yt_saurus;
  │ 10 │ 20 │
  └────┴────┘
 ```
-
 
 ## データ型 {#data-types}
 

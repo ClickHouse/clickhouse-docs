@@ -2,7 +2,7 @@
 sidebar_label: 'DynamoDB'
 sidebar_position: 10
 slug: /integrations/dynamodb
-description: 'ClickPipes позволяет подключать ClickHouse к DynamoDB.'
+description: 'ClickPipes позволяют подключить ClickHouse к DynamoDB.'
 keywords: ['DynamoDB']
 title: 'CDC из DynamoDB в ClickHouse'
 show_related_blogs: true
@@ -10,49 +10,41 @@ doc_type: 'guide'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import dynamodb_kinesis_stream from '@site/static/images/integrations/data-ingestion/dbms/dynamodb/dynamodb-kinesis-stream.png';
 import dynamodb_s3_export from '@site/static/images/integrations/data-ingestion/dbms/dynamodb/dynamodb-s3-export.png';
 import dynamodb_map_columns from '@site/static/images/integrations/data-ingestion/dbms/dynamodb/dynamodb-map-columns.png';
 import Image from '@theme/IdealImage';
 
 
-# CDC из DynamoDB в ClickHouse
+# CDC из DynamoDB в ClickHouse {#cdc-from-dynamodb-to-clickhouse}
 
-<ExperimentalBadge/>
+На этой странице описано, как настроить CDC из DynamoDB в ClickHouse с использованием ClickPipes. Эта интеграция состоит из двух компонентов:
 
-На этой странице описано, как настроить CDC из DynamoDB в ClickHouse с использованием ClickPipes. В эту интеграцию входят два компонента:
-1. Начальный снимок через S3 ClickPipes
-2. Обновления в режиме реального времени через Kinesis ClickPipes
+1. Начальный снимок данных через S3 ClickPipes
+2. Обновления в реальном времени через Kinesis ClickPipes
 
-Данные будут поступать в таблицу на движке `ReplacingMergeTree`. Этот движок таблицы обычно используется для сценариев CDC, чтобы обеспечить применение операций обновления. Подробнее об этом подходе можно прочитать в следующих статьях блога:
+Данные будут приниматься в таблицу `ReplacingMergeTree`. Этот движок таблицы обычно используется в сценариях CDC, чтобы можно было применять операции обновления. Подробнее об этом подходе можно узнать в следующих статьях блога:
 
-* [Change Data Capture (CDC) с PostgreSQL и ClickHouse — Часть 1](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-1?loc=docs-rockest-migrations)
-* [Change Data Capture (CDC) с PostgreSQL и ClickHouse — Часть 2](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-2?loc=docs-rockest-migrations)
+* [Change Data Capture (CDC) with PostgreSQL and ClickHouse - Part 1](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-1?loc=docs-rockest-migrations)
+* [Change Data Capture (CDC) with PostgreSQL and ClickHouse - Part 2](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-2?loc=docs-rockest-migrations)
 
+## 1. Настройте поток Kinesis {#1-set-up-kinesis-stream}
 
+Сначала необходимо включить поток Kinesis для таблицы DynamoDB, чтобы фиксировать изменения в режиме реального времени. Делайте это до создания снимка, чтобы не пропустить ни одних данных.
+Подробности см. в руководстве AWS [здесь](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/kds.html).
 
-## 1. Настройка потока Kinesis {#1-set-up-kinesis-stream}
+<Image img={dynamodb_kinesis_stream} size="lg" alt="Поток DynamoDB Kinesis" border/>
 
-Сначала включите поток Kinesis для таблицы DynamoDB, чтобы фиксировать изменения в режиме реального времени. Это нужно сделать до создания снимка, чтобы не пропустить какие-либо данные.
-Руководство AWS доступно по ссылке [здесь](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/kds.html).
+## 2. Создайте снимок {#2-create-the-snapshot}
 
-<Image img={dynamodb_kinesis_stream} size="lg" alt="Поток Kinesis для DynamoDB" border/>
-
-
-
-## 2. Создание снимка {#2-create-the-snapshot}
-
-Теперь создадим снимок таблицы DynamoDB. Это можно сделать с помощью экспорта AWS в S3. Руководство AWS доступно [здесь](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/S3DataExport.HowItWorks.html).
-**Вам нужен «Full export» в формате DynamoDB JSON.**
+Далее мы создадим снимок таблицы DynamoDB. Это можно сделать, выполнив экспорт AWS в S3. Руководство AWS находится [здесь](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/S3DataExport.HowItWorks.html).
+**Необходимо выполнить полную выгрузку («Full export») в формате DynamoDB JSON.**
 
 <Image img={dynamodb_s3_export} size="md" alt="Экспорт DynamoDB в S3" border/>
 
+## 3. Загрузите снимок в ClickHouse {#3-load-the-snapshot-into-clickhouse}
 
-
-## 3. Загрузка снимка в ClickHouse
-
-### Создайте необходимые таблицы
+### Создайте необходимые таблицы {#create-necessary-tables}
 
 Данные снимка из DynamoDB будут выглядеть примерно так:
 
@@ -70,15 +62,15 @@ import Image from '@theme/IdealImage';
 }
 ```
 
-Обратите внимание, что данные имеют вложенную структуру. Нам нужно будет привести их к плоскому виду перед загрузкой в ClickHouse. Это можно сделать с помощью функции `JSONExtract` в ClickHouse в материализованном представлении.
+Обратите внимание, что данные имеют вложенный формат. Нам нужно будет развернуть (flatten) эти данные перед загрузкой в ClickHouse. Это можно сделать с помощью функции `JSONExtract` в ClickHouse в materialized view.
 
 Нам нужно создать три таблицы:
 
-1. Таблица для хранения «сырых» данных из DynamoDB
-2. Таблица для хранения окончательно развёрнутых данных (таблица назначения)
-3. Материализованное представление для преобразования данных в плоский формат
+1. Таблица для хранения исходных данных из DynamoDB
+2. Таблица для хранения итоговых развернутых данных (таблица назначения)
+3. materialized view для разворачивания данных
 
-Для приведённых выше примерных данных из DynamoDB таблицы в ClickHouse будут выглядеть следующим образом:
+Для приведённого выше примера данных из DynamoDB таблицы в ClickHouse будут выглядеть следующим образом:
 
 ```sql
 /* Таблица снимков */
@@ -107,48 +99,47 @@ ENGINE ReplacingMergeTree("version")
 ORDER BY id;
 ```
 
-Есть несколько требований к целевой таблице:
+Для целевой таблицы есть несколько требований:
 
 * Эта таблица должна быть таблицей `ReplacingMergeTree`
 * В таблице должен быть столбец `version`
-  * На последующих шагах мы сопоставим поле `ApproximateCreationDateTime` из потока Kinesis со столбцом `version`.
-* Таблица должна использовать ключ партиционирования в качестве ключа сортировки (задаваемого в `ORDER BY`)
-  * Строки с одинаковым ключом сортировки будут очищаться от дубликатов на основе столбца `version`.
+  * На последующих шагах мы будем сопоставлять поле `ApproximateCreationDateTime` из потока Kinesis со столбцом `version`.
+* Таблица должна использовать ключ партиционирования в качестве ключа сортировки (задается через `ORDER BY`)
+  * Строки с одним и тем же ключом сортировки будут дедуплироваться на основе столбца `version`.
 
-### Создание snapshot ClickPipe
 
-Теперь вы можете создать ClickPipe для загрузки snapshot-данных из S3 в ClickHouse. Следуйте руководству по S3 ClickPipe [здесь](/integrations/clickpipes/object-storage), но используйте следующие настройки:
+### Создайте ClickPipe для снимка {#create-the-snapshot-clickpipe}
 
-* **Ingest path**: вам нужно определить путь к экспортированным JSON-файлам в S3. Путь будет выглядеть примерно так:
+Теперь вы можете создать ClickPipe для загрузки данных снимка из S3 в ClickHouse. Следуйте руководству по S3 ClickPipe [здесь](/integrations/clickpipes/object-storage), но используйте следующие настройки:
+
+* **Ingest path**: вам нужно будет найти путь к экспортированным json‑файлам в S3. Путь будет выглядеть примерно так:
 
 ```text
 https://{bucket}.s3.amazonaws.com/{prefix}/AWSDynamoDB/{export-id}/data/*
 ```
 
-* **Формат**: JSONEachRow
-* **Таблица**: ваша таблица снимка (например, `default.snapshot` в приведённом выше примере)
+* **Format**: JSONEachRow
+* **Table**: Ваша таблица snapshot (например, `default.snapshot` в примере выше)
 
-После её создания данные начнут поступать в таблицу снимка и целевую таблицу. Вам не нужно дожидаться окончания загрузки снимка, чтобы перейти к следующему шагу.
+После создания данные начнут поступать в таблицу snapshot и целевую таблицу. Вам не нужно дожидаться завершения загрузки snapshot, чтобы переходить к следующему шагу.
 
 
-## 4. Создайте Kinesis ClickPipe {#4-create-the-kinesis-clickpipe}
+## 4. Создание Kinesis ClickPipe {#4-create-the-kinesis-clickpipe}
 
-Теперь мы можем настроить Kinesis ClickPipe для захвата изменений в реальном времени из потока Kinesis. Следуйте руководству по Kinesis ClickPipe [здесь](/integrations/data-ingestion/clickpipes/kinesis.md), но используйте следующие настройки:
+Теперь мы можем настроить Kinesis ClickPipe для фиксации изменений в реальном времени из потока Kinesis. Следуйте руководству по Kinesis ClickPipe [здесь](/integrations/data-ingestion/clickpipes/kinesis.md), при этом используйте следующие настройки:
 
-- **Stream**: Поток Kinesis, использованный на шаге 1
-- **Table**: Ваша целевая таблица (например, `default.destination` в примере выше)
+- **Stream**: поток Kinesis, использованный на шаге 1
+- **Table**: ваша целевая таблица (например, `default.destination` в примере выше)
 - **Flatten object**: true
 - **Column mappings**:
   - `ApproximateCreationDateTime`: `version`
-  - Отобразите остальные поля в соответствующие целевые столбцы, как показано ниже
+  - Сопоставьте остальные поля с соответствующими целевыми столбцами, как показано ниже
 
 <Image img={dynamodb_map_columns} size="md" alt="Сопоставление столбцов DynamoDB" border/>
 
+## 5. Очистка (необязательно) {#5-cleanup-optional}
 
-
-## 5. Очистка (необязательно)
-
-После завершения снапшотного ClickPipe вы можете удалить таблицу снимка и материализованное представление.
+После завершения snapshot ClickPipe вы можете удалить snapshot-таблицу и materialized view.
 
 ```sql
 DROP TABLE IF EXISTS "default"."snapshot";

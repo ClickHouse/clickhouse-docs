@@ -7,9 +7,7 @@ title: 'ALTER TABLE ... DELETE 语句'
 doc_type: 'reference'
 ---
 
-
-
-# ALTER TABLE ... DELETE 语句
+# ALTER TABLE ... DELETE 语句 {#alter-table-delete-statement}
 
 ```sql
 ALTER TABLE [db.]table [ON CLUSTER cluster] DELETE WHERE filter_expr
@@ -32,7 +30,6 @@ ALTER TABLE [db.]table [ON CLUSTER cluster] DELETE WHERE filter_expr
 * [变更（Mutations）](/sql-reference/statements/alter/index.md#mutations)
 * [ALTER 查询的同步性](/sql-reference/statements/alter/index.md#synchronicity-of-alter-queries)
 * [mutations&#95;sync](/operations/settings/settings.md/#mutations_sync) 设置
-
 
 ## 相关内容 {#related-content}
 

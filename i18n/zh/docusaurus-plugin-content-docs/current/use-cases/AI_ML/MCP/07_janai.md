@@ -26,13 +26,11 @@ import ToolsCalled from '@site/static/images/use-cases/AI_ML/MCP/8_janai_tools_c
 import ToolsCalledExpanded from '@site/static/images/use-cases/AI_ML/MCP/9_janai_tools_called_expanded.png';  
 import Result from '@site/static/images/use-cases/AI_ML/MCP/10_janai_result.png';
 
-
-# 在 Jan.ai 中使用 ClickHouse MCP 服务器
+# 在 Jan.ai 中使用 ClickHouse MCP 服务器 {#using-clickhouse-mcp-server-with-janai}
 
 > 本指南介绍如何在 [Jan.ai](https://jan.ai/docs) 中使用 ClickHouse MCP 服务器。
 
 <VerticalStepper headerLevel="h2">
-
 
 ## 安装 Jan.ai {#install-janai}
 
@@ -40,8 +38,6 @@ Jan.ai 是一个开源的 ChatGPT 替代品，可以100% 离线运行。
 可以为 [Mac](https://jan.ai/docs/desktop/mac)、[Windows](https://jan.ai/docs/desktop/windows) 或 [Linux](https://jan.ai/docs/desktop/linux) 下载 Jan.ai。
 
 这是一个原生应用，下载完成后即可启动使用。
-
-
 
 ## 将 LLM 添加到 Jan.ai {#add-llm-to-janai}
 
@@ -51,8 +47,6 @@ Jan.ai 是一个开源的 ChatGPT 替代品，可以100% 离线运行。
 
 <Image img={OpenAIModels} alt="启用 OpenAI 模型" size="md"/>
 
-
-
 ## 启用 MCP 服务器 {#enable-mcp-servers}
 
 在撰写本文时，MCP 服务器仍然是 Jan.ai 中的一项实验性功能。
@@ -61,8 +55,6 @@ Jan.ai 是一个开源的 ChatGPT 替代品，可以100% 离线运行。
 <Image img={MCPServers} alt="Enable MCP servers" size="md"/>
 
 启用该开关后，我们会在左侧菜单中看到 `MCP Servers`。
-
-
 
 ## 配置 ClickHouse MCP Server {#configure-clickhouse-mcp-server}
 
@@ -83,8 +75,6 @@ Jan.ai 是一个开源的 ChatGPT 替代品，可以100% 离线运行。
 现在 ClickHouse MCP Server 的工具会出现在聊天对话框中：
 
 <Image img={MCPTool} alt="ClickHouse MCP Server 工具" size="md"/>
-
-
 
 ## 使用 Jan.ai 与 ClickHouse MCP 服务器对话 {#chat-to-clickhouse-mcp-server}
 

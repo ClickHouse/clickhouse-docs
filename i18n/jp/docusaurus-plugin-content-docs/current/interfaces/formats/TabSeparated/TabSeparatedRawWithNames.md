@@ -13,8 +13,6 @@ doc_type: 'reference'
 |------|------|-----------------------------------|
 | ✔    | ✔    | `TSVRawWithNames`, `RawWithNames` |
 
-
-
 ## 説明 {#description}
 
 このフォーマットは、行がエスケープ処理されずに書き込まれるという点で、[`TabSeparatedWithNames`](./TabSeparatedWithNames.md) フォーマットとは異なります。
@@ -23,11 +21,9 @@ doc_type: 'reference'
 このフォーマットで解析する際、各フィールド内でタブや改行文字は使用できません。
 :::
 
+## 使用例 {#example-usage}
 
-
-## 使用例
-
-### データの挿入
+### データの挿入 {#inserting-data}
 
 `football.tsv` という名前の次の `tsv` ファイルを使用します。
 
@@ -58,7 +54,7 @@ date    season  home_team       away_team       home_team_goals away_team_goals
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedRawWithNames;
 ```
 
-### データの読み込み
+### データの読み込み {#reading-data}
 
 `TabSeparatedRawWithNames` 形式でデータを読み込みます。
 
@@ -90,6 +86,5 @@ date    season  home_team       away_team       home_team_goals away_team_goals
 2022-05-07      2021    Stevenage Borough       Salford City    4       2
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
-
 
 ## 書式設定 {#format-settings}

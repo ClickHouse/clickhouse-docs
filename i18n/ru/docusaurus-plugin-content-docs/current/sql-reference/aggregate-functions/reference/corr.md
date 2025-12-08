@@ -6,9 +6,7 @@ title: 'corr'
 doc_type: 'reference'
 ---
 
-
-
-# corr
+# corr {#corr}
 
 Вычисляет [коэффициент корреляции Пирсона](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient):
 

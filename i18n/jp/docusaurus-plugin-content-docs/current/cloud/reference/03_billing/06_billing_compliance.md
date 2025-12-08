@@ -10,10 +10,7 @@ doc_type: 'guide'
 import billing_compliance from '@site/static/images/cloud/manage/billing_compliance.png';
 import Image from '@theme/IdealImage';
 
-
-# ClickHouse Cloud の課金コンプライアンス
-
-
+# ClickHouse Cloud の課金コンプライアンス {#clickhouse-cloud-billing-compliance}
 
 ## 請求に関するコンプライアンス {#billing-compliance}
 
@@ -64,8 +61,6 @@ Direct PAYG による請求と同様に、Marketplace PAYG を利用した Click
 
 コミットメント契約を通じて、組織向けのクレジットを購入することができます。
 
-
-
 1. 営業担当に連絡してクレジットを直接購入します。支払い方法には ACH や
    電信送金などが含まれます。支払い条件は、適用される注文書に定められます。
 2. 営業担当に連絡して、当社がサポートしているクラウドマーケットプレイス
@@ -112,8 +107,6 @@ ClickHouse Cloud UI の Billing セクションに移動し、「Add Credit Card
 [サポートへのお問い合わせ](/about-us/support) からサポートを受けてください。
 
 <Image img={billing_compliance} size="md" alt="クレジットカードの追加方法" />
-
-
 
 ## マーケットプレイス経由での支払い方法 {#marketplace-payg}
 

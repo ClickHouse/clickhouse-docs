@@ -7,11 +7,7 @@ title: 'gRPC インターフェイス'
 doc_type: 'reference'
 ---
 
-
-
-# gRPC インターフェース
-
-
+# gRPC インターフェース {#grpc-interface}
 
 ## はじめに {#grpc-interface-introduction}
 
@@ -28,9 +24,7 @@ ClickHouse は [gRPC](https://grpc.io/) インターフェースをサポート�
 
 このインターフェースの仕様は [clickhouse_grpc.proto](https://github.com/ClickHouse/ClickHouse/blob/master/src/Server/grpc_protos/clickhouse_grpc.proto) に記載されています。
 
-
-
-## gRPC 構成
+## gRPC 構成 {#grpc-interface-configuration}
 
 gRPC インターフェイスを使用するには、メインの[サーバー構成](../operations/configuration-files.md)で `grpc_port` を設定します。その他の構成オプションについては、以下の例を参照してください。
 
@@ -66,8 +60,7 @@ gRPC インターフェイスを使用するには、メインの[サーバー�
     </grpc>
 ```
 
-
-## 組み込みクライアント
+## 組み込みクライアント {#grpc-client}
 
 提供されている[仕様](https://github.com/ClickHouse/ClickHouse/blob/master/src/Server/grpc_protos/clickhouse_grpc.proto)に基づき、gRPC がサポートしている任意のプログラミング言語でクライアントを実装できます。
 あるいは、組み込みの Python クライアントを使用することもできます。これはリポジトリ内の [utils/grpc-client/clickhouse-grpc-client.py](https://github.com/ClickHouse/ClickHouse/blob/master/utils/grpc-client/clickhouse-grpc-client.py) に配置されています。組み込みクライアントを使用するには、Python モジュール [grpcio および grpcio-tools](https://grpc.io/docs/languages/python/quickstart) が必要です。

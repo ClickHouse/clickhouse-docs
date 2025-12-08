@@ -7,34 +7,25 @@ title: 'dictionary'
 doc_type: 'reference'
 ---
 
-
-
-# dictionary 表函数
+# dictionary 表函数 {#dictionary-table-function}
 
 将 [dictionary](../../sql-reference/dictionaries/index.md) 数据以 ClickHouse 表的形式呈现。其工作方式与 [Dictionary](../../engines/table-engines/special/dictionary.md) 引擎相同。
 
-
-
-## 语法
+## 语法 {#syntax}
 
 ```sql
 dictionary('dict')
 ```
 
-
 ## 参数 {#arguments}
 
 - `dict` — 字典名。[String](../../sql-reference/data-types/string.md)。
-
-
 
 ## 返回值 {#returned_value}
 
 一个 ClickHouse 表。
 
-
-
-## 示例
+## 示例 {#examples}
 
 输入表 `dictionary_source_table`：
 
@@ -66,7 +57,6 @@ SELECT * FROM dictionary('new_dictionary');
 │  1 │     1 │
 └────┴───────┘
 ```
-
 
 ## 相关内容 {#related}
 

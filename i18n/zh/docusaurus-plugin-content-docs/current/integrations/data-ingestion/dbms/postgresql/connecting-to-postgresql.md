@@ -10,27 +10,24 @@ doc_type: 'guide'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
-# 将 ClickHouse 连接到 PostgreSQL
+# 将 ClickHouse 连接到 PostgreSQL {#connecting-clickhouse-to-postgresql}
 
 本页介绍以下几种将 PostgreSQL 与 ClickHouse 集成的方式：
 
-- 使用 `PostgreSQL` 表引擎，从 PostgreSQL 表中读取数据
-- 使用试验性的 `MaterializedPostgreSQL` 数据库引擎，将 PostgreSQL 中的数据库与 ClickHouse 中的数据库进行同步
+* 使用 `PostgreSQL` 表引擎，从 PostgreSQL 表中读取数据
+* 使用试验性的 `MaterializedPostgreSQL` 数据库引擎，将 PostgreSQL 中的数据库与 ClickHouse 中的数据库进行同步
 
 :::tip
 我们推荐使用由 PeerDB 提供支持的 [ClickPipes](/integrations/clickpipes/postgres)，这是一项 ClickHouse Cloud 的托管集成服务。
 或者，你也可以使用 [PeerDB](https://github.com/PeerDB-io/peerdb)，它是一个专门为将 PostgreSQL 数据库复制到自托管 ClickHouse 和 ClickHouse Cloud 而设计的开源 CDC 工具。
 :::
 
-
-
-## 使用 PostgreSQL 表引擎
+## 使用 PostgreSQL 表引擎 {#using-the-postgresql-table-engine}
 
 `PostgreSQL` 表引擎允许 ClickHouse 对存储在远程 PostgreSQL 服务器上的数据执行 **SELECT** 和 **INSERT** 操作。
 本文将通过单个表来演示基本的集成方法。
 
-### 1. 设置 PostgreSQL
+### 1. 设置 PostgreSQL {#1-setting-up-postgresql}
 
 1. 在 `postgresql.conf` 中添加以下条目，以便让 PostgreSQL 监听网络接口：
 
@@ -93,7 +90,7 @@ psql -U clickhouse_user -W -d db_in_psg -h <你的_postgresql_主机地址>
 有关出站流量的详细信息，请查看 ClickHouse 的 [Cloud Endpoints API](/cloud/get-started/query-endpoints)。
 :::
 
-### 2. 在 ClickHouse 中定义一张表
+### 2. 在 ClickHouse 中定义一张表 {#2-define-a-table-in-clickhouse}
 
 1. 登录 `clickhouse-client`：
 
@@ -131,7 +128,7 @@ ENGINE = PostgreSQL('postgres-host.domain.com:5432', 'db_in_psg', 'table1', 'cli
 查看 [PostgreSQL 表引擎](/engines/table-engines/integrations/postgresql) 文档页面以获取完整的参数列表。
 :::
 
-### 3 测试集成
+### 3 测试集成 {#3-test-the-integration}
 
 1. 在 ClickHouse 中查看初始数据行：
 
@@ -165,7 +162,6 @@ VALUES
 ```sql
 SELECT * FROM db_in_ch.table1
 ```
-
 
 响应应如下：
 
@@ -209,8 +205,7 @@ id | column1
 
 请参阅 [PostgreSQL 表引擎的文档页面](/engines/table-engines/integrations/postgresql)，了解更多功能，例如指定 schema、仅返回部分列以及连接到多个副本。另请参阅博客文章：[ClickHouse and PostgreSQL - a match made in data heaven - part 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)。
 
-
-## 使用 MaterializedPostgreSQL 数据库引擎
+## 使用 MaterializedPostgreSQL 数据库引擎 {#using-the-materializedpostgresql-database-engine}
 
 <CloudNotSupportedBadge />
 
@@ -221,7 +216,7 @@ PostgreSQL 数据库引擎利用 PostgreSQL 的复制功能来创建该数据库
 
 ***在以下步骤中，将使用 PostgreSQL 命令行客户端 (`psql`) 和 ClickHouse 命令行客户端 (`clickhouse-client`)。PostgreSQL 服务器安装在 Linux 上。下面给出的配置是针对全新测试安装的 PostgreSQL 数据库的最小配置。***
 
-### 1. 在 PostgreSQL 中
+### 1. 在 PostgreSQL 中 {#1-in-postgresql}
 
 1. 在 `postgresql.conf` 中，设置基本的监听参数、WAL 复制级别以及复制槽：
 
@@ -276,7 +271,6 @@ VALUES
 
 7. 配置 PostgreSQL，允许使用新用户连接到新数据库以进行复制。下面是在 `pg_hba.conf` 文件中需要添加的最小必要条目：
 
-
 ```text
 # TYPE  DATABASE        USER            ADDRESS                 METHOD
 host    db1             clickhouse_user 192.168.1.0/24          password
@@ -296,7 +290,7 @@ host    db1             clickhouse_user 192.168.1.0/24          password
  psql -U clickhouse_user -W -d db1 -h <你的_postgresql_主机>
 ```
 
-### 2. 在 ClickHouse 中
+### 2. 在 ClickHouse 中 {#2-in-clickhouse}
 
 1. 登录到 ClickHouse CLI
 
@@ -350,7 +344,7 @@ Query id: df2381ac-4e30-4535-b22e-8be3894aaafc
 └────┴─────────┘
 ```
 
-### 3. 测试基本复制
+### 3. 测试基本复制 {#2-in-clickhouse}
 
 1. 在 PostgreSQL 中添加新行：
 
@@ -386,7 +380,7 @@ Query id: b0729816-3917-44d3-8d1a-fed912fb59ce
 └────┴─────────┘
 ```
 
-### 4. 总结
+### 4. 总结 {#3-test-basic-replication}
 
 本集成指南重点通过一个简单示例说明如何复制一个包含单个表的数据库，不过也有更高级的选项，例如复制整个数据库，或在现有复制基础上新增表和模式（schema）。虽然此复制方式不支持 DDL 命令，但可以将引擎配置为在发生结构性变更时检测更改并重新加载表。
 

@@ -7,7 +7,7 @@ title: 'first_value'
 doc_type: 'reference'
 ---
 
-# first&#95;value
+# first&#95;value {#first&#95;value}
 
 返回在其排序窗口内计算得到的第一个值。默认情况下会跳过 NULL 参数，不过可以使用 `RESPECT NULLS` 修饰符来改变此行为。
 

@@ -13,8 +13,7 @@ import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# Spark JDBC
+# Spark JDBC {#spark-jdbc}
 
 <ClickHouseSupportedBadge/>
 
@@ -23,8 +22,6 @@ JDBC является одним из самых распространённы�
 как использовать [официальный JDBC-коннектор ClickHouse](/integrations/language-clients/java/jdbc) в Spark.
 
 <TOCInline toc={toc}></TOCInline>
-
-
 
 ## Чтение данных {#read-data}
 
@@ -121,8 +118,7 @@ jar_files = [
 
 ```
 
-
-# Инициализация сессии Spark с JAR-файлами
+# Инициализация сессии Spark с JAR-файлами {#initialize-spark-session-with-jars}
 
 spark = SparkSession.builder \
  .appName("example") \
@@ -167,7 +163,6 @@ df.show()
 
 </TabItem>
 </Tabs>
-
 
 ## Запись данных {#write-data}
 
@@ -291,17 +286,14 @@ jar_files = [
 
 ```
 
-
-# Инициализация Spark-сессии с JAR-файлами
+# Инициализация Spark-сессии с JAR-файлами {#initialize-spark-session-with-jars}
 spark = SparkSession.builder \
     .appName("example") \
     .master("local") \
     .config("spark.jars", ",".join(jar_files)) \
     .getOrCreate()
 
-
-
-# Создание DataFrame
+# Создание DataFrame {#create-dataframe}
 data = [Row(id=11, name="John"), Row(id=12, name="Doe")]
 df = spark.createDataFrame(data)
 
@@ -310,9 +302,7 @@ user = "your_user"
 password = "your_password"  
 driver = "com.clickhouse.jdbc.ClickHouseDriver"
 
-
-
-# Запись DataFrame в ClickHouse
+# Запись DataFrame в ClickHouse {#write-dataframe-to-clickhouse}
 
 df.write \
  .format("jdbc") \
@@ -348,7 +338,6 @@ df.write \
 </TabItem>
 </Tabs>
 
-
 ## Параллелизм {#parallelism}
 
 При использовании Spark JDBC Spark читает данные, используя один раздел (partition). Чтобы добиться более высокой степени параллелизма, необходимо указать
@@ -356,8 +345,6 @@ df.write \
 параллельном чтении несколькими исполнителями (workers).
 Дополнительную информацию см. в официальной документации Apache Spark
 по [параметрам JDBC](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html#data-source-option).
-
-
 
 ## Ограничения JDBC {#jdbc-limitations}
 

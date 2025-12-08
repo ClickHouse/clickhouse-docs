@@ -6,10 +6,9 @@ title: 'system.histogram_metrics'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
-# histogram&#95;metrics
+# histogram&#95;metrics {#histogram_metrics}
 
 <SystemTableCloud />
 
@@ -40,7 +39,6 @@ SELECT
 FROM system.histogram_metrics
 FORMAT Prometheus
 ```
-
 
 ## メトリクスの説明 {#metric_descriptions}
 

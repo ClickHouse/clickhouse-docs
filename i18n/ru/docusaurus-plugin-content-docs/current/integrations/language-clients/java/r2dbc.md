@@ -12,8 +12,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-
-# Драйвер R2DBC
+# Драйвер R2DBC {#r2dbc-driver}
 
 ## Драйвер R2DBC {#r2dbc-driver}
 
@@ -23,7 +22,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 - [OpenJDK](https://openjdk.java.net) версии 8 и выше
 
-### Настройка
+### Настройка {#setup}
 
 ```xml
 <dependency>
@@ -42,8 +41,7 @@ import CodeBlock from '@theme/CodeBlock';
 </dependency>
 ```
 
-
-### Подключение к ClickHouse
+### Подключение к ClickHouse {#connect-to-clickhouse}
 
 ```java showLineNumbers
 ConnectionFactory connectionFactory = ConnectionFactories
@@ -53,8 +51,7 @@ ConnectionFactory connectionFactory = ConnectionFactories
         .flatMapMany(connection -> connection
 ```
 
-
-### Запрос
+### Запрос {#query}
 
 ```java showLineNumbers
 connection
@@ -71,8 +68,7 @@ connection
     .subscribe();
 ```
 
-
-### Вставка
+### Вставка {#insert}
 
 ```java showLineNumbers
 connection

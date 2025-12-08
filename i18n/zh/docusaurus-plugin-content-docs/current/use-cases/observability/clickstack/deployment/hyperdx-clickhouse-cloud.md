@@ -20,7 +20,7 @@ import hyperdx_create_new_source from '@site/static/images/use-cases/observabili
 import hyperdx_create_trace_datasource from '@site/static/images/use-cases/observability/hyperdx_create_trace_datasource.png';
 import read_only from '@site/static/images/clickstack/read-only-access.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
-import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
+import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
 <PrivatePreviewBadge />
 
@@ -37,7 +37,6 @@ import JSONSupport from '@site/docs/use-cases/observability/clickstack/deploymen
 除了减少基础设施管理开销之外，这种部署模式还能确保认证与 ClickHouse Cloud 的 SSO/SAML 集成。与自托管部署不同，您也无需再预置 MongoDB 实例来存储应用状态——例如仪表板、已保存搜索、用户设置和告警。
 
 在此模式下，数据摄取完全由用户负责。您可以使用自托管的 OpenTelemetry collector、通过客户端库直接摄取、ClickHouse 原生表引擎（例如 Kafka 或 S3）、ETL 流水线，或 ClickPipes（ClickHouse Cloud 的托管摄取服务）将数据摄取到 ClickHouse Cloud 中。这种方式是运行 ClickStack 最简单且性能最佳的方案。
-
 
 ### 适用场景 {#suitable-for}
 

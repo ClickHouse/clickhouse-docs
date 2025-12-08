@@ -6,7 +6,7 @@ title: 'covarPopMatrix'
 doc_type: 'reference'
 ---
 
-# covarPopMatrix
+# covarPopMatrix {#covarpopmatrix}
 
 N 個の変数に対する母共分散行列を返します。
 

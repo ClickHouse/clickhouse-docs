@@ -7,9 +7,7 @@ title: 'Оператор ALTER TABLE ... MODIFY QUERY'
 doc_type: 'reference'
 ---
 
-
-
-# Оператор ALTER TABLE ... MODIFY QUERY
+# Оператор ALTER TABLE ... MODIFY QUERY {#alter-table-modify-query-statement}
 
 Вы можете изменить запрос `SELECT`, который был указан при создании [материализованного представления](/sql-reference/statements/create/view#materialized-view), с помощью оператора `ALTER TABLE ... MODIFY QUERY` без прерывания процесса ингестии.
 
@@ -92,7 +90,6 @@ ALTER TABLE mv MODIFY QUERY
   GROUP BY ts, event_type, browser;
 ```
 
-
 INSERT INTO events
 SELECT Date &#39;2020-01-03&#39; + interval number * 900 second,
 [&#39;imp&#39;, &#39;click&#39;][number%2+1],
@@ -172,7 +169,6 @@ browser
 Возможности приложения сильно ограничены, так как вы можете изменять только раздел `SELECT`, не добавляя новые столбцы.
 ```
 
-
 ```sql
 CREATE TABLE src_table (`a` UInt32) ENGINE = MergeTree ORDER BY a;
 CREATE MATERIALIZED VIEW mv (`a` UInt32) ENGINE = MergeTree ORDER BY a AS SELECT a FROM src_table;
@@ -203,7 +199,6 @@ SELECT * FROM mv;
 │ 2 │
 └───┘
 ```
-
 
 ## Оператор ALTER TABLE ... MODIFY REFRESH {#alter-table--modify-refresh-statement}
 

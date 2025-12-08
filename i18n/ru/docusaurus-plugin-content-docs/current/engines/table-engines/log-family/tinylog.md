@@ -9,8 +9,7 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
-# Движок таблиц TinyLog
+# Движок таблиц TinyLog {#tinylog-table-engine}
 
 <CloudNotSupportedBadge/>
 
@@ -20,8 +19,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 Запросы выполняются в одном потоке. Другими словами, этот движок предназначен для относительно небольших таблиц (примерно до 1 000 000 строк). Имеет смысл использовать этот табличный движок, если у вас много маленьких таблиц, поскольку он проще, чем движок [Log](../../../engines/table-engines/log-family/log.md) (нужно открыть меньше файлов).
 
-
-
 ## Характеристики {#characteristics}
 
 - **Более простая структура**: В отличие от движка `Log`, `TinyLog` не использует mark-файлы. Это снижает сложность, но также ограничивает возможности оптимизации производительности для больших наборов данных.
@@ -30,9 +27,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 В отличие от движка `Log`, `TinyLog` не использует mark-файлы. Это снижает сложность, но также ограничивает возможности оптимизации производительности для более крупных наборов данных.
 
-
-
-## Создание таблицы
+## Создание таблицы {#table_engines-tinylog-creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -45,7 +40,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 Подробное описание запроса см. в разделе [CREATE TABLE](/sql-reference/statements/create/table).
 
-
 ## Запись данных {#table_engines-tinylog-writing-the-data}
 
 Движок `TinyLog` хранит все столбцы в одном файле. Для каждого запроса `INSERT` ClickHouse добавляет блок данных в конец файла таблицы, записывая столбцы один за другим.
@@ -56,9 +50,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 Движок `TinyLog` не поддерживает операции `ALTER UPDATE` и `ALTER DELETE`.
 
-
-
-## Пример использования
+## Пример использования {#table_engines-tinylog-example-of-use}
 
 Создание таблицы:
 

@@ -7,11 +7,7 @@ sidebar_label: 'groupArrayResample'
 doc_type: 'reference'
 ---
 
-
-
 # groupArrayResample {#grouparrayresample}
-
-
 
 ## Описание {#description}
 
@@ -22,9 +18,7 @@ doc_type: 'reference'
 (соответствующему минимальному ключу) из точек данных, попадающих в каждый интервал.
 Он формирует укрупнённое (downsampled) представление данных вместо сбора всех значений.
 
-
-
-## Пример использования
+## Пример использования {#example-usage}
 
 Рассмотрим пример. Мы создадим таблицу, содержащую столбцы `name`, `age` и
 `wage` сотрудников, и вставим в неё некоторые данные:
@@ -65,7 +59,6 @@ SELECT groupArrayResample(30, 75, 30)(name, age) FROM employee_data
 │ [['Alice','Mary','Evelyn'],['David','Brian']] │
 └───────────────────────────────────────────────┘
 ```
-
 
 ## См. также {#see-also}
 - [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)

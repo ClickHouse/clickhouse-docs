@@ -10,10 +10,9 @@ keywords: ['наблюдаемость', 'мониторинг', 'облако',
 import AdvancedDashboard from '@site/static/images/cloud/manage/monitoring/advanced_dashboard.png';
 import NativeAdvancedDashboard from '@site/static/images/cloud/manage/monitoring/native_advanced_dashboard.png';
 import Image from '@theme/IdealImage';
-import ObservabilityIntegrations from '@site/docs/_snippets/_observability_integration_options.md';
-import DirectIntegrations from '@site/docs/_snippets/_direct_observability_integration_options.md';
-import CommunityMonitoring from '@site/docs/_snippets/_community_monitoring.md';
-
+import ObservabilityIntegrations from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_observability_integration_options.md';
+import DirectIntegrations from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_direct_observability_integration_options.md';
+import CommunityMonitoring from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_community_monitoring.md';
 
 # Мониторинг ClickHouse Cloud {#cloud-monitoring}
 

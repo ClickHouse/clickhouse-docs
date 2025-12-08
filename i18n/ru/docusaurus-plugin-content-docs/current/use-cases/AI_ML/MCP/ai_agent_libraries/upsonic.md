@@ -10,7 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Как создать AI‑агента с Upsonic и сервером ClickHouse MCP
+# Как создать AI‑агента с Upsonic и сервером ClickHouse MCP {#how-to-build-an-ai-agent-with-upsonic-and-the-clickhouse-mcp-server}
 
 В этом руководстве вы узнаете, как создать AI‑агента [Upsonic](https://github.com/Upsonic/Upsonic/tree/master), который может взаимодействовать с 
 [SQL‑песочницей ClickHouse](https://sql.clickhouse.com/), используя [сервер ClickHouse MCP](https://github.com/ClickHouse/mcp-clickhouse).

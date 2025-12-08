@@ -11,11 +11,9 @@ keywords: ['динамический выбор столбцов', 'регуля
 
 Мы изучим, как использовать эту функцию, на примере [набора данных по нью-йоркскому такси](/docs/getting-started/example-datasets/nyc-taxi), который также доступен в [ClickHouse SQL playground](https://sql.clickhouse.com?query=LS0gRGF0YXNldCBjb250YWluaW5nIHRheGkgcmlkZSBkYXRhIGluIE5ZQyBmcm9tIDIwMDkuIE1vcmUgaW5mbyBoZXJlOiBodHRwczovL2NsaWNraG91c2UuY29tL2RvY3MvZW4vZ2V0dGluZy1zdGFydGVkL2V4YW1wbGUtZGF0YXNldHMvbnljLXRheGkKU0VMRUNUICogRlJPTSBueWNfdGF4aS50cmlwcyBMSU1JVCAxMDA).
 
-<iframe width="768" height="432" src="https://www.youtube.com/embed/moabRqqHNo4?si=jgmInV-u3UxtLvMS" title="Видеопроигрыватель YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="768" height="432" src="https://www.youtube.com/embed/moabRqqHNo4?si=jgmInV-u3UxtLvMS" title="Видеопроигрыватель YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen />
 
-
-
-## Выбор столбцов по шаблону
+## Выбор столбцов по шаблону {#selecting-columns}
 
 Начнём с распространённого сценария: выберем только те столбцы из набора данных NYC Taxi, в имени которых содержится `_amount`. Вместо того чтобы вручную вводить каждое имя столбца, мы можем использовать выражение `COLUMNS` с регулярным выражением:
 
@@ -64,8 +62,7 @@ LIMIT 3;
    └─────────────┴─────────┴────────────┴──────────────┴───────────┴──────────────┘
 ```
 
-
-## Выбор нескольких шаблонов
+## Выбор нескольких шаблонов {#selecting-multiple-patterns}
 
 Мы можем комбинировать несколько шаблонов столбцов в одном запросе:
 
@@ -89,8 +86,7 @@ LIMIT 5;
    └─────────────┴────────────┴──────────────┴──────────────┴─────────────┴─────────────────────┴──────────────┴─────────────────────┘
 ```
 
-
-## Применение функций ко всем столбцам
+## Применение функций ко всем столбцам {#applying-functions}
 
 Мы также можем использовать модификатор [`APPLY`](/sql-reference/statements/select), чтобы применять функции сразу ко всем столбцам.
 Например, если мы хотим найти максимальное значение для каждого из этих столбцов, можно выполнить следующий запрос:
@@ -145,7 +141,6 @@ SELECT COLUMNS('.*_amount|fee|tax') APPLY(avg) APPLY(x -> round(x, 2))
 FROM nyc_taxi.trips;
 ```
 
-
 > [Попробуйте выполнить этот запрос в SQL-песочнице](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkgYXZnIEFQUExZIHggLT4gcm91bmQoeCwgMikKRlJPTSBueWNfdGF4aS50cmlwcw\&run_query=true)
 
 ```text
@@ -154,8 +149,7 @@ FROM nyc_taxi.trips;
    └────────────────────────────┴────────────────────────┴───────────────────────────┴─────────────────────────────┴──────────────────────────┴─────────────────────────────┘
 ```
 
-
-## Замена столбцов
+## Замена столбцов {#replacing-columns}
 
 Пока всё хорошо. Но предположим, что нам нужно изменить одно из значений, оставив остальные без изменений. Например, возможно, мы хотим удвоить итоговую сумму и разделить налог MTA на 1.1. Мы можем сделать это с помощью модификатора [`REPLACE`](/sql-reference/statements/select), который заменит один столбец, не затрагивая остальные.
 
@@ -179,8 +173,7 @@ SELECT
    └────────────────────────────┴──────────────────────────┴───────────────────────────┴─────────────────────────────┴──────────────────────────┴──────────────────────────┘
 ```
 
-
-## Исключение столбцов
+## Исключение столбцов {#excluding-columns}
 
 Мы также можем исключить столбец, используя модификатор [`EXCEPT`](/sql-reference/statements/select). Например, чтобы удалить столбец `tolls_amount`, мы напишем следующий запрос:
 

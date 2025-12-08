@@ -7,9 +7,7 @@ title: 'RENAME 语句'
 doc_type: 'reference'
 ---
 
-
-
-# RENAME 语句
+# RENAME 语句 {#rename-statement}
 
 用于重命名数据库、表或字典。可以在单个查询中重命名多个实体。
 请注意，包含多个实体的 `RENAME` 查询属于非原子操作。若要以原子方式交换实体名称，请使用 [EXCHANGE](./exchange.md) 语句。
@@ -20,8 +18,7 @@ doc_type: 'reference'
 RENAME [DATABASE|TABLE|DICTIONARY] name TO new_name [,...] [ON CLUSTER cluster]
 ```
 
-
-## RENAME DATABASE
+## RENAME DATABASE {#rename-database}
 
 重命名数据库。
 
@@ -31,8 +28,7 @@ RENAME [DATABASE|TABLE|DICTIONARY] name TO new_name [,...] [ON CLUSTER cluster]
 RENAME DATABASE atomic_database1 TO atomic_database2 [,...] [ON CLUSTER cluster]
 ```
 
-
-## RENAME TABLE
+## RENAME TABLE {#rename-table}
 
 重命名一个或多个表。
 
@@ -57,8 +53,7 @@ RENAME TABLE table_A TO table_A_bak, table_B TO table_B_bak;
 RENAME table_A TO table_A_bak, table_B TO table_B_bak;
 ```
 
-
-## RENAME DICTIONARY
+## RENAME DICTIONARY {#rename-dictionary}
 
 重命名一个或多个字典。该查询可用于在数据库之间移动字典。
 

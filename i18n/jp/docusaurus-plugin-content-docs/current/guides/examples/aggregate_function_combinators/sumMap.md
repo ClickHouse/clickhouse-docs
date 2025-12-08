@@ -7,11 +7,7 @@ sidebar_label: 'sumMap'
 doc_type: 'reference'
 ---
 
-
-
 # sumMap {#summap}
-
-
 
 ## 説明 {#description}
 
@@ -19,9 +15,7 @@ doc_type: 'reference'
 集約コンビネータ関数を使用して、各キーごとに Map 内の値の合計を計算するために、[`sum`](/sql-reference/aggregate-functions/reference/sum)
 関数に適用できます。
 
-
-
-## 使用例
+## 使用例 {#example-usage}
 
 この例では、さまざまなタイムスロットごとにステータスコードとそのカウントを保持するテーブルを作成します。
 各行には、ステータスコードをキー、そのステータスコードに対応するカウントを値とする `Map` が含まれます。
@@ -67,7 +61,6 @@ GROUP BY timeslot;
 2. │ 2000-01-01 00:00:00 │ {'a':15,'b':25,'c':80,'d':55,'e':65} │
    └─────────────────────┴──────────────────────────────────────┘
 ```
-
 
 ## 関連項目 {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)

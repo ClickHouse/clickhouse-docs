@@ -21,9 +21,7 @@ doc_type: 'reference'
 
 Более технические подробности об устройстве проекций можно найти на этой [странице](/guides/best-practices/sparse-primary-indexes.md/#option-3-projections).
 
-
-
-## Пример фильтрации без использования первичного ключа
+## Пример фильтрации без использования первичного ключа {#example-filtering-without-using-primary-keys}
 
 Создание таблицы:
 
@@ -79,8 +77,7 @@ LIMIT 2
 SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 ```
 
-
-## Пример запроса предварительной агрегации
+## Пример запроса предварительной агрегации {#example-pre-aggregation-query}
 
 Создание таблицы с проекцией:
 
@@ -157,8 +154,7 @@ GROUP BY user_agent
 SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 ```
 
-
-## Обычная проекция с полем `_part_offset`
+## Обычная проекция с полем `_part_offset` {#normal-projection-with-part-offset-field}
 
 Создание таблицы с обычной проекцией, использующей поле `_part_offset`:
 
@@ -186,7 +182,7 @@ ORDER BY (event_id);
 INSERT INTO events SELECT * FROM generateRandom() LIMIT 100000;
 ```
 
-### Использование `_part_offset` в качестве вторичного индекса
+### Использование `_part_offset` в качестве вторичного индекса {#normal-projection-secondary-index}
 
 Поле `_part_offset` сохраняет свое значение при слияниях и мутациях, что делает его полезным для вторичного индексирования. Это можно использовать в запросах:
 
@@ -202,30 +198,21 @@ WHERE _part_starting_offset + _part_offset IN (
 SETTINGS enable_shared_storage_snapshot_in_query = 1
 ```
 
-
-# Управление проекциями
+# Управление проекциями {#manipulating-projections}
 
 Доступны следующие операции с [проекциями](/engines/table-engines/mergetree-family/mergetree.md/#projections):
-
-
 
 ## ДОБАВИТЬ ПРОЕКЦИЮ {#add-projection}
 
 `ALTER TABLE [db.]name [ON CLUSTER cluster] ADD PROJECTION [IF NOT EXISTS] name ( SELECT &lt;COLUMN LIST EXPR&gt; [GROUP BY] [ORDER BY] )` — добавляет в метаданные таблицы описание проекции.
 
-
-
 ## DROP PROJECTION {#drop-projection}
 
 `ALTER TABLE [db.]name [ON CLUSTER cluster] DROP PROJECTION [IF EXISTS] name` — удаляет из метаданных таблицы описание проекции и соответствующие файлы проекции на диске. Реализовано как [мутация](/sql-reference/statements/alter/index.md#mutations).
 
-
-
 ## MATERIALIZE PROJECTION {#materialize-projection}
 
 `ALTER TABLE [db.]table [ON CLUSTER cluster] MATERIALIZE PROJECTION [IF EXISTS] name [IN PARTITION partition_name]` - запрос перестраивает проекцию `name` в партиции `partition_name`. Реализован как [мутация](/sql-reference/statements/alter/index.md#mutations).
-
-
 
 ## CLEAR PROJECTION {#clear-projection}
 

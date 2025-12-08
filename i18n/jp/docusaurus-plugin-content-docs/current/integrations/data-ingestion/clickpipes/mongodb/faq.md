@@ -8,11 +8,9 @@ doc_type: 'reference'
 keywords: ['clickpipes', 'mongodb', 'cdc', 'インジェスト', 'リアルタイム同期']
 ---
 
+# MongoDB 向け ClickPipes よくある質問 (FAQ) {#clickpipes-for-mongodb-faq}
 
-
-# MongoDB 向け ClickPipes よくある質問 (FAQ)
-
-### JSON データ型の個々のフィールドをクエリできますか？
+### JSON データ型の個々のフィールドをクエリできますか？ {#can-i-query-for-individual-fields-in-the-json-datatype}
 
 `{"user_id": 123}` のようにフィールドに直接アクセスする場合は、**ドット記法**を使用できます。
 
@@ -34,7 +32,7 @@ SELECT sum(doc.shipping.cost::Float32) AS total_shipping_cost FROM t1;
 
 JSON の扱いについて詳しくは、[JSON の利用ガイド](./quickstart) を参照してください。
 
-### ClickHouse でネストされた MongoDB ドキュメントをフラット化するにはどうすればよいですか？
+### ClickHouse でネストされた MongoDB ドキュメントをフラット化するにはどうすればよいですか？ {#how-do-i-flatten-the-nested-mongodb-documents-in-clickhouse}
 
 MongoDB ドキュメントは、デフォルトでは ClickHouse では JSON 型としてレプリケートされ、ネストされた構造が保持されます。このデータをフラット化する方法はいくつかあります。データをカラムにフラット化したい場合は、通常のビュー、マテリアライズドビュー、またはクエリ時のアクセスを使用できます。
 
@@ -44,32 +42,31 @@ MongoDB ドキュメントは、デフォルトでは ClickHouse では JSON 型
 
 詳細なサンプルについては、[JSON の利用ガイド](./quickstart) を参照してください。
 
-### パブリック IP を持たない、またはプライベートネットワーク内にある MongoDB データベースに接続できますか？
+### パブリック IP を持たない、またはプライベートネットワーク内にある MongoDB データベースに接続できますか？ {#can-i-connect-mongodb-databases-that-dont-have-a-public-ip-or-are-in-private-networks}
 
 パブリック IP を持たない、またはプライベートネットワーク内にある MongoDB データベースへの接続には、AWS PrivateLink による接続をサポートしています。Azure Private Link と GCP Private Service Connect は現時点ではサポートしていません。
 
-### MongoDB データベースからデータベースやテーブルを削除した場合はどうなりますか？
+### MongoDB データベースからデータベースやテーブルを削除した場合はどうなりますか？ {#what-happens-if-i-delete-a-database-table-from-my-mongodb-database}
 
 MongoDB からデータベース／テーブルを削除しても、ClickPipes 自体は動作を継続しますが、削除されたデータベース／テーブルは変更のレプリケーションを停止します。ClickHouse 側の対応するテーブルは保持されます。
 
-### MongoDB CDC Connector はトランザクションをどのように処理しますか？
+### MongoDB CDC Connector はトランザクションをどのように処理しますか？ {#how-does-mongodb-cdc-connector-handle-transactions}
 
 トランザクション内の各ドキュメント変更は、個別に ClickHouse へ送信・処理されます。変更は oplog に現れる順序で適用され、コミットされた変更のみが ClickHouse へレプリケートされます。MongoDB のトランザクションがロールバックされた場合、その変更はチェンジストリームには現れません。
 
 より多くの例については、[JSON の利用ガイド](./quickstart) を参照してください。
 
-### `resume of change stream was not possible, as the resume point may no longer be in the oplog.` エラーはどのように対処すればよいですか？
+### `resume of change stream was not possible, as the resume point may no longer be in the oplog.` エラーはどのように対処すればよいですか？ {#resume-point-may-no-longer-be-in-the-oplog-error}
 
 このエラーは通常、oplog が切り詰められ、ClickPipe が期待するポイントからチェンジストリームを再開できない場合に発生します。この問題を解決するには、[ClickPipe を再同期](./resync.md) してください。この問題が再発しないようにするため、oplog の保持期間を延長することを推奨します。詳細な手順は、[MongoDB Atlas](./source/atlas#enable-oplog-retention)、[セルフマネージド MongoDB](./source/generic#enable-oplog-retention)、[Amazon DocumentDB](./source/documentdb#configure-change-stream-log-retention) を参照してください。
 
-### レプリケーションはどのように管理されていますか？
+### レプリケーションはどのように管理されていますか？ {#how-is-replication-managed}
 
 データベース内の変更を追跡するために、MongoDB のネイティブな Change Streams API を使用しています。Change Streams API は、MongoDB の oplog（operations log）を利用して、データベース変更の再開可能なストリームを提供します。ClickPipe は MongoDB の resume token を使用して oplog 内での位置を追跡し、すべての変更が ClickHouse にレプリケートされることを保証します。
 
-### どの read preference を使用すべきですか？
+### どの read preference を使用すべきですか？ {#which-read-preference-should-i-use}
 
 使用する read preference は、特定のユースケースによって異なります。プライマリノードへの負荷を最小化したい場合は、`secondaryPreferred` read preference の使用を推奨します。インジェスト遅延を最適化したい場合は、`primaryPreferred` read preference の使用を推奨します。詳細については、[MongoDB ドキュメント](https://www.mongodb.com/docs/manual/core/read-preference/#read-preference-modes-1) を参照してください。
-
 
 ### MongoDB ClickPipe はシャードクラスタをサポートしていますか？ {#does-the-mongodb-clickpipe-support-sharded-cluster}
 

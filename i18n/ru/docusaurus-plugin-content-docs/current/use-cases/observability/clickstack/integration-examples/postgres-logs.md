@@ -56,12 +56,12 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
   * **Linux (apt/yum)**: `/etc/postgresql/{version}/main/postgresql.conf`
   * **macOS (Homebrew)**: `/usr/local/var/postgres/postgresql.conf` или `/opt/homebrew/var/postgres/postgresql.conf`
-  * **Docker**: Конфигурация обычно настраивается через переменные окружения или смонтированный файл конфигурации
+  * **Docker**: Конфигурация обычно задаётся через переменные окружения или примонтированный конфигурационный файл
 
-  Добавьте или измените следующие параметры в `postgresql.conf`:
+  Добавьте или измените эти настройки в `postgresql.conf`:
 
   ```conf
-  # Требуется для логирования в CSV
+  # Требуется для логирования в формате CSV
   logging_collector = on
   log_destination = 'csvlog'
 
@@ -69,11 +69,11 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   log_connections = on
   log_disconnections = on
 
-  # Опционально: настройте в соответствии с потребностями мониторинга
+  # Опционально: настройте в соответствии с требованиями мониторинга
   #log_min_duration_statement = 1000  # Логировать запросы длительностью более 1 секунды
-  #log_statement = 'ddl'               # Логировать DDL-операторы (CREATE, ALTER, DROP)
+  #log_statement = 'ddl'               # Логировать DDL-команды (CREATE, ALTER, DROP)
   #log_checkpoints = on                # Логировать активность контрольных точек
-  #log_lock_waits = on                 # Логировать ожидания блокировок
+  #log_lock_waits = on                 # Логировать ожидание блокировок
   ```
 
   :::note
@@ -145,35 +145,35 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
           - clickhouse
   ```
 
-  Эта конфигурация:
+  Данная конфигурация:
 
-  * Считывает CSV‑логи PostgreSQL из стандартного расположения
-  * Обрабатывает многострочные записи логов (ошибки часто занимают несколько строк)
-  * Разбирает формат CSV со всеми стандартными полями журнала PostgreSQL
+  * Считывает журналы PostgreSQL в формате CSV из стандартного расположения
+  * Поддерживает многострочные записи логов (ошибки часто занимают несколько строк)
+  * Разбирает формат CSV со всеми стандартными полями журналов PostgreSQL
   * Извлекает временные метки, чтобы сохранить исходное время логов
-  * Добавляет атрибут `source: postgresql` для последующей фильтрации в HyperDX
-  * Направляет логи в экспортер ClickHouse через отдельный pipeline
+  * Добавляет атрибут `source: postgresql`, который можно использовать для фильтрации в HyperDX
+  * Направляет логи в экспортёр ClickHouse через выделенный конвейер обработки
 
   :::note
 
-  * Определяйте новые приёмники и конвейеры только в пользовательской конфигурации
-  * Процессоры (`memory_limiter`, `transform`, `batch`) и экспортёры (`clickhouse`) уже определены в базовой конфигурации ClickStack — достаточно просто ссылаться на них по имени
+  * В пользовательской конфигурации вы задаёте только новые receivers и pipelines
+  * Процессоры (`memory_limiter`, `transform`, `batch`) и экспортёры (`clickhouse`) уже определены в базовой конфигурации ClickStack — просто ссылайтесь на них по имени
   * Оператор `csv_parser` извлекает все стандартные поля CSV‑логов PostgreSQL и преобразует их в структурированные атрибуты
-  * Эта конфигурация использует `start_at: end`, чтобы избежать повторного приёма логов при перезапуске коллектора. Для тестирования измените на `start_at: beginning`, чтобы сразу увидеть ранее собранные логи.
-  * Измените путь в параметре `include` так, чтобы он соответствовал расположению каталога журналов PostgreSQL
+  * Эта конфигурация использует `start_at: end`, чтобы избежать повторного приёма логов при перезапусках коллектора. Для тестирования измените на `start_at: beginning`, чтобы сразу увидеть предыдущие логи.
+  * Настройте путь в `include` так, чтобы он соответствовал расположению каталога журналов PostgreSQL
     :::
 
   #### Настройте ClickStack для загрузки пользовательской конфигурации
 
   Чтобы включить пользовательскую конфигурацию коллектора в существующем развертывании ClickStack, необходимо:
 
-  1. Смонтируйте файл пользовательской конфигурации по пути `/etc/otelcol-contrib/custom.config.yaml`
-  2. Задайте переменную окружения `CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml`
-  3. Смонтируйте директорию с журналами PostgreSQL, чтобы коллектор мог их считывать
+  1. Смонтируйте файл пользовательской конфигурации в `/etc/otelcol-contrib/custom.config.yaml`
+  2. Установите переменную окружения `CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml`
+  3. Смонтируйте каталог логов PostgreSQL, чтобы коллектор мог их считывать
 
   ##### Вариант 1: Docker Compose
 
-  Обновите конфигурацию развёртывания ClickStack:
+  Обновите конфигурацию развертывания ClickStack:
 
   ```yaml
   services:
@@ -190,7 +190,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
   ##### Вариант 2: Docker Run (образ «всё в одном»)
 
-  Если вы используете универсальный образ с docker run:
+  Если вы используете универсальный образ с `docker run`:
 
   ```bash
   docker run --name clickstack \
@@ -198,36 +198,36 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
     -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
     -v "$(pwd)/postgres-logs-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
     -v /var/lib/postgresql:/var/lib/postgresql:ro \
-    docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+    clickhouse/clickstack-all-in-one:latest
   ```
 
   :::note
-  Убедитесь, что коллектор ClickStack имеет необходимые права для чтения файлов журналов PostgreSQL. В production-среде используйте монтирование только для чтения (`:ro`) и следуйте принципу минимальных привилегий.
+  Убедитесь, что коллектор ClickStack имеет необходимые права для чтения файлов журналов PostgreSQL. В production-среде используйте монтирование только для чтения (`:ro`) и следуйте принципу наименьших привилегий.
   :::
 
   #### Проверка логов в HyperDX
 
   После настройки войдите в HyperDX и убедитесь, что журналы поступают:
 
-  1. Перейдите на экран поиска
-  2. Установите параметр Source в значение Logs
-  3. Отфильтруйте по `source:postgresql`, чтобы увидеть логи, относящиеся к PostgreSQL
-  4. Вы увидите структурированные записи журнала с полями `user_name`, `database_name`, `error_severity`, `message`, `query` и т. д.
+  1. Перейдите в режим поиска
+  2. В поле Source выберите Logs
+  3. Отфильтруйте по `source:postgresql`, чтобы увидеть специфичные для PostgreSQL логи
+  4. Вы должны увидеть структурированные записи журнала с такими полями, как `user_name`, `database_name`, `error_severity`, `message`, `query` и т.д.
 
   <Image img={logs_search_view} alt="Страница поиска логов" />
 
   <Image img={log_view} alt="Просмотр логов" />
 </VerticalStepper>
 
-## Демонстрационный набор данных {#demo-dataset}
+## Демо-набор данных {#demo-dataset}
 
-Для пользователей, которые хотят протестировать интеграцию логов PostgreSQL перед настройкой производственных систем, мы предоставляем образец набора данных с заранее сгенерированными логами PostgreSQL с реалистичными шаблонами.
+Для пользователей, которые хотят протестировать интеграцию логов PostgreSQL до настройки производственных систем, мы предоставляем демонстрационный набор данных с заранее сгенерированными логами PostgreSQL с реалистичными паттернами.
 
 <VerticalStepper headerLevel="h4">
 
 #### Загрузка демонстрационного набора данных {#download-sample}
 
-Загрузите пример файла логов:
+Загрузите пример файла лога:
 
 ```bash
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/postgres/postgresql.log
@@ -243,7 +243,7 @@ receivers:
   filelog/postgres:
     include:
       - /tmp/postgres-demo/postgresql.log
-    start_at: beginning  # Читать с начала для демонстрационных данных
+    start_at: beginning  # Read from beginning for demo data
     multiline:
       line_start_pattern: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
     operators:
@@ -278,7 +278,7 @@ service:
 EOF
 ```
 
-#### Запуск ClickStack с демонстрационной конфигурацией {#run-demo}
+#### Запуск ClickStack с демо-конфигурацией {#run-demo}
 
 Запустите ClickStack с демонстрационными логами и конфигурацией:
 
@@ -288,24 +288,24 @@ docker run --name clickstack-demo \
   -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
   -v "$(pwd)/postgres-logs-demo.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
   -v "$(pwd)/postgresql.log:/tmp/postgres-demo/postgresql.log:ro" \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
 #### Проверка логов в HyperDX {#verify-demo-logs}
 
 После запуска ClickStack:
 
-1. Откройте [HyperDX](http://localhost:8080/) и войдите в свою учетную запись (при необходимости сначала создайте её)
-2. Перейдите в раздел Search и выберите источник `Logs`
-3. Установите диапазон времени: **2025-11-09 00:00:00 - 2025-11-12 00:00:00**
+1. Откройте [HyperDX](http://localhost:8080/) и войдите в свою учетную запись (при необходимости сначала создайте ее)
+2. Перейдите в представление Search и установите источник в значение `Logs`
+3. Установите диапазон времени на **2025-11-09 00:00:00 - 2025-11-12 00:00:00**
 
 :::note[Отображение часового пояса]
-HyperDX отображает временные метки в локальном часовом поясе вашего браузера. Демонстрационные данные охватывают период **2025-11-10 00:00:00 - 2025-11-11 00:00:00 (UTC)**. Широкий диапазон времени гарантирует, что вы увидите демонстрационные логи независимо от вашего местоположения. После того как вы увидите логи, вы можете сузить диапазон до 24 часов для более наглядных визуализаций.
+HyperDX отображает временные метки в локальном часовом поясе вашего браузера. Демо-данные охватывают период **2025-11-10 00:00:00 - 2025-11-11 00:00:00 (UTC)**. Широкий диапазон времени гарантирует, что вы увидите демо-логи независимо от вашего местоположения. После того как вы увидите логи, вы можете сузить диапазон до 24 часов для более наглядной визуализации.
 :::
 
-<Image img={logs_search_view} alt="Интерфейс поиска логов"/>
+<Image img={logs_search_view} alt="Представление поиска по логам"/>
 
-<Image img={log_view} alt="Просмотр отдельного лога"/>
+<Image img={log_view} alt="Просмотр лога"/>
 
 </VerticalStepper>
 

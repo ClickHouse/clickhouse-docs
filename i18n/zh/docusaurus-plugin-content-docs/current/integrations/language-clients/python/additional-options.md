@@ -12,7 +12,7 @@ doc_type: 'reference'
 
 ClickHouse Connect 为高级使用场景提供了多种额外选项。
 
-## 全局设置
+## 全局设置 {#global-settings}
 
 有少量设置可以在全局范围内控制 ClickHouse Connect 的行为。这些设置可以通过顶层的 `common` 包访问：
 
@@ -44,7 +44,6 @@ common.get_setting('invalid_setting_action')
 | max&#95;error&#95;size                          | 1024            |                                                 | 客户端错误消息中返回的最大字符数。将此设置为 0 可获取完整的 ClickHouse 错误消息。默认值为 1024 个字符。                                                                                                                       |
 | http&#95;buffer&#95;size                        | 10MB            |                                                 | 用于 HTTP 流式查询的“内存中”缓冲区大小（以字节为单位）。                                                                                                                                                     |
 | preserve&#95;pandas&#95;datetime&#95;resolution | False           | True, False                                     | 当为 True 且使用 pandas 2.x 时，会保留 datetime64/timedelta64 数据类型的分辨率（例如 &#39;s&#39;、&#39;ms&#39;、&#39;us&#39;、&#39;ns&#39;）。如果为 False（或在 pandas &lt;2.x 上），则为兼容性起见会强制转换为纳秒（&#39;ns&#39;）分辨率。 |
-
 
 ## 压缩 {#compression}
 

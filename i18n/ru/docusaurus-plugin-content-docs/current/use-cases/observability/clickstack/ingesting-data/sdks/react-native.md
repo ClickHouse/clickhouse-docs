@@ -19,7 +19,7 @@ React Native SDK для ClickStack позволяет инструментиро
 
 ## Приступаем к работе {#getting-started}
 
-### Установка через npm
+### Установка через npm {#install-via-npm}
 
 Используйте следующую команду, чтобы установить [пакет ClickStack React Native](https://www.npmjs.com/package/@hyperdx/otel-react-native).
 
@@ -27,8 +27,7 @@ React Native SDK для ClickStack позволяет инструментиро
 npm install @hyperdx/otel-react-native
 ```
 
-
-### Инициализируйте ClickStack
+### Инициализируйте ClickStack {#initialize-clickstack}
 
 Инициализируйте библиотеку как можно раньше в жизненном цикле приложения:
 
@@ -42,8 +41,7 @@ HyperDXRum.init({
 });
 ```
 
-
-### Добавление информации о пользователе или метаданных (необязательно)
+### Добавление информации о пользователе или метаданных (необязательно) {#attach-user-information-metadata}
 
 Добавление информации о пользователе позволит выполнять поиск и фильтрацию
 сеансов и событий в HyperDX. Эту функцию можно вызывать в любой момент в ходе
@@ -64,8 +62,7 @@ HyperDXRum.setGlobalAttributes({
 });
 ```
 
-
-### Инструментирование более старых версий
+### Инструментирование более старых версий {#instrument-lower-versions}
 
 Чтобы инструментировать приложения, работающие на React Native версии ниже 0.68,
 отредактируйте файл `metro.config.js`, чтобы Metro использовал пакеты,
@@ -111,8 +108,7 @@ module.exports = {
 };
 ```
 
-
-## Навигация между экранами
+## Навигация между экранами {#view-navigation}
 
 Поддерживаются версии 5 и 6 [react-navigation](https://github.com/react-navigation/react-navigation).
 

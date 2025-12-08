@@ -21,7 +21,6 @@ ClickStack 使用 OpenTelemetry 标准来采集遥测数据（日志 logs、指�
 * **Traces**
 * **Exceptions**
 
-
 ## 开始使用 {#getting-started}
 
 ### 安装 HyperDX OpenTelemetry Instrumentation 包 {#install-hyperdx-opentelemetry-instrumentation-package}
@@ -201,7 +200,7 @@ function myErrorHandler(error, req, res, next) {
 </TabItem>
 </Tabs>
 
-## 故障排除
+## 故障排除 {#troubleshooting}
 
 如果在使用 SDK 时遇到问题，可以通过将 `OTEL_LOG_LEVEL` 环境变量设置为 `debug` 来启用详细日志输出。
 
@@ -209,10 +208,9 @@ function myErrorHandler(error, req, res, next) {
 export OTEL_LOG_LEVEL=debug
 ```
 
-
 ## 高级埋点配置 {#advanced-instrumentation-configuration}
 
-### 捕获控制台日志
+### 捕获控制台日志 {#capture-console-logs}
 
 默认情况下，ClickStack SDK 会捕获控制台日志。可以通过将环境变量 `HDX_NODE_CONSOLE_CAPTURE` 设置为 0 来禁用此功能。
 
@@ -220,8 +218,7 @@ export OTEL_LOG_LEVEL=debug
 export HDX_NODE_CONSOLE_CAPTURE=0
 ```
 
-
-### 附加用户信息或元数据
+### 附加用户信息或元数据 {#attach-user-information-or-metadata}
 
 若要轻松为与给定属性或标识符（例如 user id 或 email）相关的所有事件添加标签，可以调用 `setTraceAttributes` 函数。该函数会在调用后，将声明的属性附加到与当前 trace 关联的每一条 log/span 上。建议在给定 request/trace 的生命周期中尽可能早地调用该函数（例如在 Express middleware 栈中尽量靠前的位置）。
 
@@ -250,7 +247,6 @@ app.use((req, res, next) => {
 ```shell
 export HDX_NODE_BETA_MODE=1
 ```
-
 
 ### Google Cloud Run {#google-cloud-run}
 
@@ -327,7 +323,7 @@ initSDK({
 
 _`OTEL_SERVICE_NAME` 环境变量用于在 HyperDX 应用中标识你的服务，可以是任意你指定的名称。_
 
-### 启用异常捕获
+### 启用异常捕获 {#enabling-exception-capturing}
 
 要启用未捕获异常的捕获功能，需要将环境变量 `HDX_NODE_EXPERIMENTAL_EXCEPTION_CAPTURE` 设置为 1。
 
@@ -336,7 +332,6 @@ HDX_NODE_EXPERIMENTAL_EXCEPTION_CAPTURE=1
 ```
 
 随后，如需自动捕获来自 Express、Koa 的异常或手动捕获异常，请按照上文 [设置错误收集](#setup-error-collection) 一节中的说明进行配置。
-
 
 ### 自动插桩的库 {#auto-instrumented-libraries-2}
 

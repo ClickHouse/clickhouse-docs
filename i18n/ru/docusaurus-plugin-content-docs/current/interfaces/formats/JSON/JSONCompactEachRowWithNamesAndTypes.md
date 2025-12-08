@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## Пример использования {#example-usage}
 
-### Вставка данных
+### Вставка данных {#inserting-data}
 
 Используйте JSON-файл со следующими данными под именем `football.json`:
 
@@ -51,8 +51,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactEachRowWithNamesAndTypes;
 ```
 
-
-### Чтение данных
+### Чтение данных {#reading-data}
 
 Считайте данные в формате `JSONCompactEachRowWithNamesAndTypes`:
 
@@ -85,7 +84,6 @@ FORMAT JSONCompactEachRowWithNamesAndTypes
 ["2022-05-07", 2021, "Stevenage Borough", "Salford City", 4, 2]
 ["2022-05-07", 2021, "Walsall", "Swindon Town", 0, 3]
 ```
-
 
 ## Настройки формата {#format-settings}
 

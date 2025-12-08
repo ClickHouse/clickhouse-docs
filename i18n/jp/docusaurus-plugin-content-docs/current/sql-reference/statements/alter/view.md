@@ -7,9 +7,7 @@ title: 'ALTER TABLE ... MODIFY QUERY ステートメント'
 doc_type: 'reference'
 ---
 
-
-
-# ALTER TABLE ... MODIFY QUERY ステートメント
+# ALTER TABLE ... MODIFY QUERY ステートメント {#alter-table-modify-query-statement}
 
 `ALTER TABLE ... MODIFY QUERY` ステートメントを使用すると、インジェスト処理を中断することなく、[マテリアライズドビュー](/sql-reference/statements/create/view#materialized-view) 作成時に指定した `SELECT` クエリを変更できます。
 
@@ -92,7 +90,6 @@ ALTER TABLE mv MODIFY QUERY
   GROUP BY ts, event_type, browser;
 ```
 
-
 INSERT INTO events
 SELECT Date &#39;2020-01-03&#39; + interval number * 900 second,
 [&#39;imp&#39;, &#39;click&#39;][number%2+1],
@@ -172,7 +169,6 @@ browser
 この方法は非常に制限的であり、新しいカラムを追加することなく`SELECT`セクションのみを変更することができます。
 ```
 
-
 ```sql
 CREATE TABLE src_table (`a` UInt32) ENGINE = MergeTree ORDER BY a;
 CREATE MATERIALIZED VIEW mv (`a` UInt32) ENGINE = MergeTree ORDER BY a AS SELECT a FROM src_table;
@@ -203,7 +199,6 @@ SELECT * FROM mv;
 │ 2 │
 └───┘
 ```
-
 
 ## ALTER TABLE ... MODIFY REFRESH ステートメント {#alter-table--modify-refresh-statement}
 

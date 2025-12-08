@@ -15,8 +15,7 @@ import rta_3 from '@site/static/images/cloud/onboard/discover/use_cases/3_rta.pn
 
 <iframe width="758" height="426" src="https://www.youtube.com/embed/SnFff0KYwuo?si=aNpGzSobzFhUlyX5" title="Видеопроигрыватель YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
-
-## Что такое аналитика в реальном времени?
+## Что такое аналитика в реальном времени? {#what-is-real-time-analytics}
 
 Аналитика в реальном времени — это обработка данных, результаты которой становятся доступными конечным пользователям и клиентам сразу после появления данных. Она
 отличается от традиционной или пакетной аналитики, где данные собираются
@@ -47,7 +46,6 @@ import rta_3 from '@site/static/images/cloud/onboard/discover/use_cases/3_rta.pn
 анализируя такие события. Традиционно это делалось с помощью пакетной аналитики,
 и в следующем разделе мы сравним пакетную и аналитическую обработку данных в реальном времени.
 
-
 ## Аналитика в реальном времени и пакетная аналитика {#real-time-analytics-vs-batch-analytics}
 
 Диаграмма ниже показывает, как обычно выглядит система пакетной аналитики 
@@ -70,8 +68,6 @@ import rta_3 from '@site/static/images/cloud/onboard/discover/use_cases/3_rta.pn
 
 Теперь мы можем получать аналитические выводы из событий почти сразу после их генерации. Но 
 почему это полезно?
-
-
 
 ## Преимущества аналитики в реальном времени {#benefits-of-real-time-analytics}
 
@@ -114,8 +110,6 @@ import rta_3 from '@site/static/images/cloud/onboard/discover/use_cases/3_rta.pn
 компаниям своевременно оказывать помощь, персонализировать взаимодействия и 
 создавать более вовлекающий пользовательский опыт, который стимулирует клиентов 
 возвращаться.
-
-
 
 ## Сценарии использования аналитики в реальном времени {#real-time-analytics-use-cases}
 

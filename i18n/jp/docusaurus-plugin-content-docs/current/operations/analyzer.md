@@ -7,20 +7,16 @@ title: 'アナライザー'
 doc_type: 'reference'
 ---
 
-
-
-# Analyzer
+# Analyzer {#analyzer}
 
 ClickHouse バージョン `24.3` では、新しいクエリアナライザーがデフォルトで有効になりました。
 その動作の詳細については[こちら](/guides/developer/understanding-query-execution-with-the-analyzer#analyzer)を参照してください。
 
-
-
-## 既知の非互換性
+## 既知の非互換性 {#known-incompatibilities}
 
 多数のバグ修正と新しい最適化を導入した一方で、ClickHouse の動作には後方互換性を破る変更もいくつか含まれています。新しいアナライザ用にクエリを書き換える方法を判断するために、以下の変更点を確認してください。
 
-### 無効なクエリはこれ以上最適化されない
+### 無効なクエリはこれ以上最適化されない {#invalid-queries-are-no-longer-optimized}
 
 以前のクエリプランニング基盤では、クエリの検証ステップより前に AST レベルの最適化が適用されていました。
 この最適化により、元のクエリを書き換えて有効かつ実行可能にできる場合がありました。
@@ -29,7 +25,7 @@ ClickHouse バージョン `24.3` では、新しいクエリアナライザー�
 これは、以前は実行可能だった無効なクエリが、現在はサポートされなくなったことを意味します。
 そのような場合、そのクエリは手動で修正する必要があります。
 
-#### 例 1
+#### 例 1 {#example-1}
 
 次のクエリは、集約後に利用可能なのが `toString(number)` だけであるにもかかわらず、SELECT 句でカラム `number` を使用しています。
 旧アナライザでは、`GROUP BY toString(number)` は `GROUP BY number` に最適化され、その結果クエリは有効になっていました。
@@ -40,7 +36,7 @@ FROM numbers(1)
 GROUP BY toString(number)
 ```
 
-#### 例 2
+#### 例 2 {#example-2}
 
 このクエリでも同じ問題が発生します。列 `number` は、別のキーと一緒に集約した後に使用されています。
 以前のクエリアナライザーは、`number > 5` というフィルタを `HAVING` 句から `WHERE` 句に移動することで、このクエリを修正しました。
@@ -65,7 +61,7 @@ WHERE number > 5
 GROUP BY n
 ```
 
-### 無効なクエリを指定した `CREATE VIEW`
+### 無効なクエリを指定した `CREATE VIEW` {#create-view-with-invalid-query}
 
 新しいアナライザは常に型チェックを行います。
 以前は、無効な `SELECT` クエリを含む `VIEW` を作成できていました。
@@ -73,7 +69,7 @@ GROUP BY n
 
 このような形で `VIEW` を作成することは、もはやできません。
 
-#### 例
+#### 例 {#example-view}
 
 ```sql
 CREATE TABLE source (data String)
@@ -85,9 +81,9 @@ AS SELECT JSONExtract(data, 'test', 'DateTime64(3)')
 FROM source;
 ```
 
-### `JOIN` 句の既知の非互換性
+### `JOIN` 句の既知の非互換性 {#known-incompatibilities-of-the-join-clause}
 
-#### プロジェクションの列を使用する `JOIN`
+#### プロジェクションの列を使用する `JOIN` {#join-using-column-from-projection}
 
 `SELECT` リスト内のエイリアスは、デフォルトでは `JOIN USING` のキーとして使用できません。
 
@@ -107,7 +103,7 @@ USING (b);
 設定が `false` の場合、結合条件はデフォルトで `t1.b = t2.b` となり、クエリは `2, 'one'` を返します。
 `b` が `t1` に存在しない場合、クエリはエラーとなって失敗します。
 
-#### `JOIN USING` と `ALIAS` / `MATERIALIZED` カラムにおける動作の変更
+#### `JOIN USING` と `ALIAS` / `MATERIALIZED` カラムにおける動作の変更 {#changes-in-behavior-with-join-using-and-aliasmaterialized-columns}
 
 新しいアナライザでは、`ALIAS` または `MATERIALIZED` カラムを含む `JOIN USING` クエリで `*` を使用すると、それらのカラムもデフォルトで結果セットに含まれます。
 
@@ -124,14 +120,13 @@ SELECT * FROM t1
 FULL JOIN t2 USING (payload);
 ```
 
-
 新しいアナライザーでは、このクエリの結果には、両方のテーブルからの `id` 列に加えて `payload` 列が含まれます。
 これに対して、以前のアナライザーでは、特定の設定（`asterisk_include_alias_columns` または `asterisk_include_materialized_columns`）が有効になっている場合にのみ、これらの `ALIAS` 列が結果に含まれ、
 かつ列の並び順が異なる場合がありました。
 
 特に古いクエリを新しいアナライザーに移行する際に、一貫性があり期待どおりの結果を得るためには、`*` を使うのではなく、`SELECT` 句で列を明示的に指定することを推奨します。
 
-#### `USING` 句内の列に対する型修飾子の扱い
+#### `USING` 句内の列に対する型修飾子の扱い {#handling-of-type-modifiers-for-columns-in-using-clause}
 
 新しいバージョンのアナライザーでは、`USING` 句で指定された列に対して共通スーパータイプを決定するための規則が標準化されており、
 特に `LowCardinality` や `Nullable` といった型修飾子を扱う際に、より予測しやすい結果が得られるようになっています。
@@ -150,7 +145,7 @@ USING (id);
 
 このクエリでは、`id` の共通スーパータイプは `String` として判定され、`t1` では `LowCardinality` 修飾子が除外されます。
 
-### Projection 列名の変更
+### Projection 列名の変更 {#projection-column-names-changes}
 
 Projection 列名を計算する際、エイリアスは展開されません。
 
@@ -176,7 +171,7 @@ FORMAT PrettyCompact
    └───┴────────────┘
 ```
 
-### 互換性のない関数引数の型
+### 互換性のない関数引数の型 {#incompatible-function-arguments-types}
 
 新しいアナライザーでは、型推論はクエリの初期解析中に行われます。
 この変更により、短絡評価の前に型チェックが行われるようになり、その結果、`if` 関数の引数は常に共通の上位型（スーパータイプ）を持つ必要があります。
@@ -187,18 +182,18 @@ FORMAT PrettyCompact
 SELECT toTypeName(if(0, [2, 3, 4], 'String'))
 ```
 
-### 異種クラスタ
+### 異種クラスタ {#heterogeneous-clusters}
 
 新しい analyzer は、クラスタ内のサーバー間の通信プロトコルを大きく変更します。\
 そのため、`enable_analyzer` の設定値が異なるサーバー間で分散クエリを実行することはできません。
 
-### ミューテーションは旧 analyzer によって解釈される
+### ミューテーションは旧 analyzer によって解釈される {#mutations-are-interpreted-by-previous-analyzer}
 
 ミューテーションは依然として古い analyzer を使用します。\
 これは、一部の新しい ClickHouse SQL 機能（たとえば `QUALIFY` 句）がミューテーションでは使用できないことを意味します。\
 対応状況は[こちら](https://github.com/ClickHouse/ClickHouse/issues/61563)で確認できます。
 
-### 未サポートの機能
+### 未サポートの機能 {#unsupported-features}
 
 新しい analyzer が現在サポートしていない機能の一覧は以下のとおりです。
 

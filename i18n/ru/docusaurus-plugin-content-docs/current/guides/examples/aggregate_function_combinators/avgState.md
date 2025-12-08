@@ -7,11 +7,7 @@ sidebar_label: 'avgState'
 doc_type: 'reference'
 ---
 
-
-
 # avgState {#avgState}
-
-
 
 ## Описание {#description}
 
@@ -20,9 +16,7 @@ doc_type: 'reference'
 для получения промежуточного состояния типа `AggregateFunction(avg, T)`, где
 `T` — указанный тип для среднего значения.
 
-
-
-## Пример использования
+## Пример использования {#example-usage}
 
 В этом примере мы рассмотрим, как можно использовать тип `AggregateFunction`
 вместе с функцией `avgState` для агрегирования данных о трафике сайта.
@@ -138,7 +132,6 @@ ORDER BY page_id;
 
 Теперь мы видим корректные средние значения:
 
-
 ```response
 ┌─page_id─┬─page_name─┬─average_response_time_ms─┐
 │       1 │ Главная   │                      135 │
@@ -147,7 +140,6 @@ ORDER BY page_id;
 │       4 │ Контакты  │                     62.5 │
 └─────────┴───────────┴──────────────────────────┘
 ```
-
 
 ## Смотрите также {#see-also}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)

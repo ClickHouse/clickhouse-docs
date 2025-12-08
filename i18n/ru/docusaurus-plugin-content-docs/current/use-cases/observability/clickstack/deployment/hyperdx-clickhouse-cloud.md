@@ -20,7 +20,7 @@ import hyperdx_create_new_source from '@site/static/images/use-cases/observabili
 import hyperdx_create_trace_datasource from '@site/static/images/use-cases/observability/hyperdx_create_trace_datasource.png';
 import read_only from '@site/static/images/clickstack/read-only-access.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
-import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
+import JSONSupport from '@site/i18n/ru/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
 <PrivatePreviewBadge />
 
@@ -37,7 +37,6 @@ import JSONSupport from '@site/docs/use-cases/observability/clickstack/deploymen
 Помимо снижения объёма управления инфраструктурой, такой вариант развертывания обеспечивает интеграцию аутентификации с SSO/SAML ClickHouse Cloud. В отличие от самостоятельно развернутых инсталляций, здесь также нет необходимости поднимать экземпляр MongoDB для хранения состояния приложения — такого как дашборды, сохранённые запросы, пользовательские настройки и оповещения.
 
 В этом режиме ингестия данных полностью остаётся на стороне пользователя. Вы можете выполнять приём данных в ClickHouse Cloud с помощью собственного развернутого коллектора OpenTelemetry, прямого приёма из клиентских библиотек, нативных табличных движков ClickHouse (таких как Kafka или S3), ETL-пайплайнов или ClickPipes — управляемого сервиса ингестии ClickHouse Cloud. Такой подход обеспечивает самый простой и высокопроизводительный способ эксплуатации ClickStack.
-
 
 ### Подходит для {#suitable-for}
 

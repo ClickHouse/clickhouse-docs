@@ -6,20 +6,15 @@ title: 'flameGraph'
 doc_type: 'reference'
 ---
 
-
-
-# flameGraph
+# flameGraph {#flamegraph}
 
 Агрегатная функция, которая строит [flamegraph](https://www.brendangregg.com/flamegraphs.html) на основе списка стек-трейсов. Возвращает массив строк, которые могут быть использованы утилитой [flamegraph.pl](https://github.com/brendangregg/FlameGraph) для построения SVG-графика flamegraph.
 
-
-
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 flameGraph(traces, [size], [ptr])
 ```
-
 
 ## Параметры {#parameters}
 
@@ -32,17 +27,13 @@ flameGraph(traces, [size], [ptr])
 Показываются только те выделения, которые не были освобождены. Несопоставленные операции освобождения игнорируются.
 :::
 
-
-
 ## Возвращаемое значение {#returned-value}
 
 - Массив строк, предназначенный для использования с [утилитой flamegraph.pl](https://github.com/brendangregg/FlameGraph). [Array](../../data-types/array.md)([String](../../data-types/string.md)).
 
+## Примеры {#examples}
 
-
-## Примеры
-
-### Построение флеймграфа на основе профилировщика запросов по CPU
+### Построение флеймграфа на основе профилировщика запросов по CPU {#building-a-flamegraph-based-on-a-cpu-query-profiler}
 
 ```sql
 SET query_profiler_cpu_time_period_ns=10000000;
@@ -53,7 +44,7 @@ SELECT SearchPhrase, COUNT(DISTINCT UserID) AS u FROM hits WHERE SearchPhrase <>
 clickhouse client --allow_introspection_functions=1 -q "select arrayJoin(flameGraph(arrayReverse(trace))) from system.trace_log where trace_type = 'CPU' and query_id = 'xxx'" | ~/dev/FlameGraph/flamegraph.pl  > flame_cpu.svg
 ```
 
-### Построение флеймграфа на основе профилировщика памяти запросов, показывающего все выделения
+### Построение флеймграфа на основе профилировщика памяти запросов, показывающего все выделения {#building-a-flamegraph-based-on-a-memory-query-profiler-showing-all-allocations}
 
 ```sql
 SET memory_profiler_sample_probability=1, max_untracked_memory=1;
@@ -64,7 +55,7 @@ SELECT SearchPhrase, COUNT(DISTINCT UserID) AS u FROM hits WHERE SearchPhrase <>
 clickhouse client --allow_introspection_functions=1 -q "select arrayJoin(flameGraph(trace, size)) from system.trace_log where trace_type = 'MemorySample' and query_id = 'xxx'" | ~/dev/FlameGraph/flamegraph.pl --countname=bytes --color=mem > flame_mem.svg
 ```
 
-### Построение флеймграфа на основе профилировщика памяти запросов, показывающего выделения памяти, которые не были освобождены в контексте запроса
+### Построение флеймграфа на основе профилировщика памяти запросов, показывающего выделения памяти, которые не были освобождены в контексте запроса {#building-a-flamegraph-based-on-a-memory-query-profiler-showing-allocations-which-were-not-deallocated-in-query-context}
 
 ```sql
 SET memory_profiler_sample_probability=1, max_untracked_memory=1, use_uncompressed_cache=1, merge_tree_max_rows_to_use_cache=100000000000, merge_tree_max_bytes_to_use_cache=1000000000000;
@@ -75,7 +66,7 @@ SELECT SearchPhrase, COUNT(DISTINCT UserID) AS u FROM hits WHERE SearchPhrase <>
 clickhouse client --allow_introspection_functions=1 -q "SELECT arrayJoin(flameGraph(trace, size, ptr)) FROM system.trace_log WHERE trace_type = 'MemorySample' AND query_id = 'xxx'" | ~/dev/FlameGraph/flamegraph.pl --countname=bytes --color=mem > flame_mem_untracked.svg
 ```
 
-### Построение флеймграфа на основе профилировщика запросов по памяти, показывающего активные выделения памяти в фиксированный момент времени
+### Построение флеймграфа на основе профилировщика запросов по памяти, показывающего активные выделения памяти в фиксированный момент времени {#build-a-flamegraph-based-on-memory-query-profiler-showing-active-allocations-at-the-fixed-point-of-time}
 
 ```sql
 SET memory_profiler_sample_probability=1, max_untracked_memory=1;

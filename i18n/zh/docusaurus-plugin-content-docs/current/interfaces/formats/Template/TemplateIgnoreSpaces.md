@@ -13,8 +13,6 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✗      |       |
 
-
-
 ## 描述 {#description}
 
 与 [`Template`] 类似，但会跳过输入流中分隔符与值之间的空白字符。  
@@ -27,9 +25,7 @@ doc_type: 'reference'
 此格式仅支持输入。
 :::
 
-
-
-## 示例用法
+## 示例用法 {#example-usage}
 
 以下请求可用于根据其 [JSON](/interfaces/formats/JSON) 格式的输出示例插入数据：
 
@@ -49,6 +45,5 @@ FORMAT TemplateIgnoreSpaces
 ```text title="/some/path/row.format"
 {${}"SearchPhrase"${}:${}${phrase:JSON}${},${}"c"${}:${}${cnt:JSON}${}}
 ```
-
 
 ## 格式设置 {#format-settings}

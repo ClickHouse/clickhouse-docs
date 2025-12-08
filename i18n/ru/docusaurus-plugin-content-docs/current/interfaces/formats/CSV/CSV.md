@@ -9,7 +9,7 @@ title: 'CSV'
 doc_type: 'reference'
 ---
 
-## Описание
+## Описание {#description}
 
 Формат значений, разделённых запятыми (Comma Separated Values, [RFC](https://tools.ietf.org/html/rfc4180)).
 При форматировании строки заключаются в двойные кавычки. Двойная кавычка внутри строки выводится как две двойные кавычки подряд.
@@ -45,7 +45,6 @@ $ clickhouse-client --format_csv_delimiter="|" --query="INSERT INTO test.csv FOR
 Сначала выполняется попытка сопоставить входное значение с именем ENUM.
 Если это не удаётся и входное значение является числом, выполняется попытка сопоставить это число с идентификатором ENUM.
 Если входные данные содержат только идентификаторы ENUM, рекомендуется включить настройку [input&#95;format&#95;csv&#95;enum&#95;as&#95;number](/operations/settings/settings-formats.md/#input_format_csv_enum_as_number) для оптимизации разбора `ENUM`.
-
 
 ## Пример использования {#example-usage}
 

@@ -10,10 +10,7 @@ doc_type: 'guide'
 import billing_compliance from '@site/static/images/cloud/manage/billing_compliance.png';
 import Image from '@theme/IdealImage';
 
-
-# ClickHouse Cloud 计费合规
-
-
+# ClickHouse Cloud 计费合规 {#clickhouse-cloud-billing-compliance}
 
 ## 计费合规性 {#billing-compliance}
 
@@ -61,8 +58,6 @@ ClickHouse 的月度计费周期从选择组织层级（Basic、Scale 或 Enterp
 
 您可以通过预承诺合约为您的组织购买额度，方式包括：
 
-
-
 1. 直接联系销售团队购买额度，支持 ACH 或电汇等支付方式。具体付款条款将载明在相应的订单表中。
 2. 联系销售团队，通过我们支持的云市场（AWS、GCP 或 Azure）中的订阅来购买额度。在您接受私有报价后以及此后根据该报价条款，我们会将费用报告给相应的云市场，但我们将根据您与该云市场之间协议中的条款向您开具发票。若要通过云市场付款，请按照这些[说明](#marketplace-payg)操作。
 
@@ -83,8 +78,6 @@ ClickHouse 的月度计费周期从选择组织层级（Basic、Scale 或 Enterp
 在 ClickHouse Cloud 界面中进入 Billing（计费）部分，点击下面所示的“Add Credit Card”按钮完成设置。如果您有任何问题，请[联系支持](/about-us/support)获取帮助。
 
 <Image img={billing_compliance} size="md" alt="如何添加信用卡" />
-
-
 
 ## 如何通过云市场支付 {#marketplace-payg}
 

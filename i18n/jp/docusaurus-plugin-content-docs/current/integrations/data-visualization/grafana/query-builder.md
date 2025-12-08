@@ -20,8 +20,7 @@ import trace_id_in_logs from '@site/static/images/integrations/data-visualizatio
 import demo_data_links from '@site/static/images/integrations/data-visualization/grafana/demo_data_links.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# クエリビルダー
+# クエリビルダー {#query-builder}
 
 <ClickHouseSupportedBadge/>
 
@@ -36,8 +35,6 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 - [Time Series](#time-series): 時系列クエリの構築に最適です。専用の時刻カラムを選択し、集約関数を追加できます。
 - [Traces](#traces): トレースの検索・閲覧に最適化されています。[デフォルトを設定](./config.md#traces)した Explore ビューで使用すると最も効果的です。
 - [SQL Editor](#sql-editor): クエリを完全に制御したい場合に使用できます。このモードでは、任意の SQL クエリを実行できます。
-
-
 
 ## クエリタイプ {#query-types}
 
@@ -110,8 +107,6 @@ OpenTelemetry を有効にすると、スキーマバージョンに応じてカ
 （データセットが許容する場合は）`LIMIT` 句を `0` に設定して削除してみてください。
 :::
 
-
-
 | Field | Description |
 |----|----|
 | Builder Mode  | Simple クエリでは Aggregate と Group By を除外し、Aggregate クエリではこれらのオプションを含めます。 |
@@ -164,8 +159,6 @@ Trace クエリタイプは [data links](#data-links) をサポートします�
 
 このクエリタイプでは、Trace Search モードではテーブルビューでデータがレンダリングされ、Trace ID モードではトレースパネルでレンダリングされます。
 
-
-
 ## SQL エディタ {#sql-editor}
 
 クエリビルダーでは扱いきれないような複雑なクエリには、SQL エディタを使用できます。
@@ -179,8 +172,6 @@ SQL エディタは、クエリエディタ上部の「SQL Editor」を選択し
 この切り替えはダッシュボードビューでも有効で、特に時系列データで効果があります。
 
 <Image size="md" img={demo_raw_sql_query} alt="生の SQL クエリの例" border />
-
-
 
 ## データリンク {#data-links}
 
@@ -220,16 +211,14 @@ Grafana の [data links](https://grafana.com/docs/grafana/latest/panels-visualiz
   <Image size="md" img={demo_data_links} alt="Example of data links linking" border />
 </div>
 
-
-
-## マクロ
+## マクロ {#macros}
 
 マクロは、クエリに動的な SQL を追加するための簡単な方法です。
 クエリが ClickHouse サーバーに送信される前に、プラグインがマクロを展開し、完全な式に置き換えます。
 
 SQL Editor と Query Builder の両方で発行したクエリで、マクロを使用できます。
 
-### マクロの使用方法
+### マクロの使用方法 {#using-macros}
 
 マクロは、クエリ内の任意の位置に、必要に応じて複数回含めることができます。
 
@@ -255,7 +244,7 @@ WHERE log_time >= toDateTime(1415792726) AND log_time <= toDateTime(1447328726)
 
 プラグインは、波括弧 `{}` を用いた記法にも対応しています。[パラメーター](/sql-reference/syntax.md#defining-and-using-query-parameters) 内でクエリが必要な場合は、この記法を使用します。
 
-### マクロ一覧
+### マクロ一覧 {#list-of-macros}
 
 これは、プラグインで利用可能なすべてのマクロの一覧です。
 

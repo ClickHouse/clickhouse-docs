@@ -12,15 +12,14 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import insert_process from '@site/static/images/bestpractices/insert_process.png';
 import async_inserts from '@site/static/images/bestpractices/async_inserts.png';
-import AsyncInserts from '@site/docs/best-practices/_snippets/_async_inserts.md';
-import BulkInserts from '@site/docs/best-practices/_snippets/_bulk_inserts.md';
+import AsyncInserts from '@site/i18n/ru/docusaurus-plugin-content-docs/current/best-practices/_snippets/_async_inserts.md';
+import BulkInserts from '@site/i18n/ru/docusaurus-plugin-content-docs/current/best-practices/_snippets/_bulk_inserts.md';
 
 Эффективный приём данных лежит в основе высокопроизводительных развертываний ClickHouse. Выбор правильной стратегии вставки может существенно повлиять на пропускную способность, стоимость и надежность. В этом разделе изложены передовые практики, компромиссы и варианты конфигурации, которые помогут вам принять правильное решение для вашей нагрузки.
 
 :::note
 В дальнейшем предполагается, что вы отправляете данные в ClickHouse через клиент. Если вы загружаете данные в ClickHouse, например, используя встроенные табличные функции, такие как [s3](/sql-reference/table-functions/s3) и [gcs](/sql-reference/table-functions/gcs), мы рекомендуем наше руководство [&quot;Optimizing for S3 Insert and Read Performance&quot;](/integrations/s3/performance).
 :::
-
 
 ## Синхронные вставки по умолчанию {#synchronous-inserts-by-default}
 
@@ -71,8 +70,6 @@ ClickHouse сохраняет вставленные данные на диск,
 
 * Вставлять данные напрямую в таблицу **MergeTree** или **ReplicatedMergeTree**. Это наиболее эффективный вариант, когда клиент может самостоятельно распределять нагрузку между шардами. При `internal_replication = true` ClickHouse прозрачно обрабатывает репликацию.
 * Вставлять данные в таблицу [Distributed](/engines/table-engines/special/distributed). Это позволяет клиентам отправлять данные на любой узел и поручить ClickHouse пересылку на нужный шард. Это проще, но немного менее эффективно из-за дополнительного шага пересылки. `internal_replication = true` по-прежнему рекомендуется.
-
-
 
 **В ClickHouse Cloud все узлы читают и записывают в один и тот же шард (single shard). Вставки автоматически балансируются между узлами. Пользователи могут просто отправлять вставки на публичную конечную точку (endpoint).**
 
@@ -127,17 +124,11 @@ ClickHouse поддерживает несколько кодеков сжати
 
 **Тем не менее предварительная сортировка — это опциональная оптимизация, а не требование.** ClickHouse очень эффективно сортирует данные с использованием параллельной обработки, и во многих случаях сортировка на стороне сервера быстрее или удобнее, чем предварительная сортировка на стороне клиента. 
 
-
-
 **Мы рекомендуем выполнять предварительную сортировку только в том случае, если данные уже почти отсортированы или если ресурсы на стороне клиента (CPU, память) достаточны и при этом простаивают.** В сценариях, чувствительных к задержкам, или при высокой нагрузке, например в системах наблюдаемости, когда данные поступают вразнобой или от множества агентов, часто лучше отказаться от предварительной сортировки и полагаться на встроенную производительность ClickHouse.
-
-
 
 ## Асинхронные вставки {#asynchronous-inserts}
 
 <AsyncInserts />
-
-
 
 ## Выберите интерфейс — HTTP или native {#choose-an-interface}
 

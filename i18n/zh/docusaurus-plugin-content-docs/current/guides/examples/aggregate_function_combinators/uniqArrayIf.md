@@ -7,11 +7,7 @@ sidebar_label: 'uniqArrayIf'
 doc_type: 'reference'
 ---
 
-
-
 # uniqArrayIf {#uniqarrayif}
-
-
 
 ## 描述 {#description}
 
@@ -24,11 +20,9 @@ doc_type: 'reference'
 
 当需要根据特定条件统计数组中的唯一元素且不想使用 `arrayJoin` 时，此函数非常有用。
 
+## 使用示例 {#example-usage}
 
-
-## 使用示例
-
-### 按用户分群类型和参与度等级统计浏览过的唯一产品数量
+### 按用户分群类型和参与度等级统计浏览过的唯一产品数量 {#count-unique-products}
 
 在本示例中，我们将使用一张包含用户购物会话数据的表，来统计属于特定用户分群、且其参与度以会话停留时间度量的用户所浏览的唯一产品数量。
 
@@ -79,7 +73,6 @@ new_customer⋯ed_products:    2
 returning_customer_products: 2
 total_unique_products:       7
 ```
-
 
 ## 另请参阅 {#see-also}
 - [`uniq`](/sql-reference/aggregate-functions/reference/uniq)

@@ -3,11 +3,11 @@ description: 'Документация по EXPLAIN'
 sidebar_label: 'EXPLAIN'
 sidebar_position: 39
 slug: /sql-reference/statements/explain
-title: 'Оператор EXPLAIN'
+title: 'Команда EXPLAIN'
 doc_type: 'reference'
 ---
 
-Показывает план выполнения запроса.
+Показывает план выполнения команды.
 
 <div class="vimeo-container">
   <iframe
@@ -45,7 +45,7 @@ Union
     Expression (Before ORDER BY and SELECT)
       Aggregating
         Expression (Before GROUP BY)
-          SettingQuotaAndLimits (Установка ограничений и квот после чтения из хранилища)
+          SettingQuotaAndLimits (Установка лимитов и квоты после чтения из хранилища)
             ReadFromStorage (SystemNumbers)
   Expression (Projection)
     MergingSorted (Слияние отсортированных потоков для ORDER BY)
@@ -54,22 +54,21 @@ Union
           Expression (Before ORDER BY and SELECT)
             Aggregating
               Expression (Before GROUP BY)
-                SettingQuotaAndLimits (Установка ограничений и квот после чтения из хранилища)
+                SettingQuotaAndLimits (Установка лимитов и квоты после чтения из хранилища)
                   ReadFromStorage (SystemNumbers)
 ```
 
+## Типы EXPLAIN {#explain-types}
 
-## Типы EXPLAIN
+- `AST` — абстрактное синтаксическое дерево.
+- `SYNTAX` — текст запроса после оптимизаций на уровне AST.
+- `QUERY TREE` — дерево запроса после оптимизаций на уровне Query Tree.
+- `PLAN` — план выполнения запроса.
+- `PIPELINE` — конвейер выполнения запроса.
 
-* `AST` — абстрактное синтаксическое дерево.
-* `SYNTAX` — текст запроса после оптимизаций на уровне AST.
-* `QUERY TREE` — дерево запроса после оптимизаций на уровне Query Tree.
-* `PLAN` — план выполнения запроса.
-* `PIPELINE` — конвейер выполнения запроса.
+### EXPLAIN AST {#explain-ast}
 
-### EXPLAIN AST
-
-Вывод AST запроса. Поддерживаются все типы запросов, не только `SELECT`.
+Выводит AST запроса. Поддерживаются все типы запросов, а не только `SELECT`.
 
 Примеры:
 
@@ -101,17 +100,17 @@ EXPLAIN AST ALTER TABLE t1 DELETE WHERE date = today();
         ExpressionList
 ```
 
-### СИНТАКСИС EXPLAIN
+### EXPLAIN SYNTAX {#explain-syntax}
 
 Показывает абстрактное синтаксическое дерево (AST) запроса после синтаксического анализа.
 
-Для этого запрос парсится, строятся AST запроса и дерево запроса, при необходимости запускается анализатор запроса и выполняются проходы оптимизации, после чего дерево запроса снова преобразуется в AST запроса.
+Для этого выполняется парсинг запроса, построение AST запроса и дерева запроса, при необходимости — запуск анализатора запроса и проходов оптимизации, а затем преобразование дерева запроса обратно в AST запроса.
 
 Настройки:
 
-* `oneline` – Печатать запрос в одну строку. По умолчанию: `0`.
+* `oneline` – Выводить запрос в одну строку. По умолчанию: `0`.
 * `run_query_tree_passes` – Выполнять проходы по дереву запроса перед выводом дерева запроса. По умолчанию: `0`.
-* `query_tree_passes` – Если задан `run_query_tree_passes`, указывает, сколько проходов выполнять. Без указания `query_tree_passes` выполняются все проходы.
+* `query_tree_passes` – Если задан `run_query_tree_passes`, определяет, сколько проходов выполнять. Без указания `query_tree_passes` выполняются все проходы.
 
 Примеры:
 
@@ -133,7 +132,7 @@ WHERE (a.number = b.number) AND (b.number = c.number)
 EXPLAIN SYNTAX run_query_tree_passes = 1 SELECT * FROM system.numbers AS a, system.numbers AS b, system.numbers AS c WHERE a.number = b.number AND b.number = c.number;
 ```
 
-Вывод:
+Результат:
 
 ```sql
 SELECT
@@ -145,15 +144,15 @@ ALL INNER JOIN system.numbers AS __table2 ON __table1.number = __table2.number
 ALL INNER JOIN system.numbers AS __table3 ON __table2.number = __table3.number
 ```
 
-### EXPLAIN QUERY TREE
+### EXPLAIN QUERY TREE {#explain-query-tree}
 
 Настройки:
 
-* `run_passes` — Выполняет все проходы дерева запроса перед выводом дерева запроса. Значение по умолчанию: `1`.
-* `dump_passes` — Выводит информацию об использованных проходах перед выводом дерева запроса. Значение по умолчанию: `0`.
-* `passes` — Определяет, сколько проходов выполнять. Если задано `-1`, выполняются все проходы. Значение по умолчанию: `-1`.
-* `dump_tree` — Отображает дерево запроса. Значение по умолчанию: `1`.
-* `dump_ast` — Отображает AST запроса, построенное на основе дерева запроса. Значение по умолчанию: `0`.
+* `run_passes` — Выполнять все проходы по дереву запроса перед выводом дерева запроса. По умолчанию: `1`.
+* `dump_passes` — Выводить информацию об использованных проходах перед выводом дерева запроса. По умолчанию: `0`.
+* `passes` — Определяет, сколько проходов выполнить. При значении `-1` выполняются все проходы. По умолчанию: `-1`.
+* `dump_tree` — Отображать дерево запроса. По умолчанию: `1`.
+* `dump_ast` — Отображать AST запроса, сгенерированное из дерева запроса. По умолчанию: `0`.
 
 Пример:
 
@@ -174,20 +173,21 @@ QUERY id: 0
     TABLE id: 3, table_name: default.test_table
 ```
 
-### EXPLAIN PLAN
+### EXPLAIN PLAN {#explain-plan}
 
-Вывести шаги плана выполнения запроса.
+Выводит шаги плана запроса.
 
 Настройки:
 
-
-* `header` — Выводит заголовок результата для шага. По умолчанию: 0.
-* `description` — Выводит описание шага. По умолчанию: 1.
-* `indexes` — Показывает используемые индексы, количество отфильтрованных частей и количество отфильтрованных гранул для каждого применённого индекса. По умолчанию: 0. Поддерживается для таблиц [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md). Начиная с ClickHouse версии 25.9 и выше, этот параметр выводит осмысленный результат только при использовании с `SETTINGS use_query_condition_cache = 0, use_skip_indexes_on_data_read = 0`.
-* `projections` — Показывает все проанализированные проекции и их влияние на фильтрацию на уровне частей на основе условий по первичному ключу проекции. Для каждой проекции этот раздел включает статистику, такую как количество частей, строк, меток и диапазонов, которые были обработаны с использованием первичного ключа проекции. Также показывает, сколько частей данных было пропущено благодаря такой фильтрации без чтения из самой проекции. Была ли проекция фактически использована для чтения или только проанализирована для фильтрации, можно определить по полю `description`. По умолчанию: 0. Поддерживается для таблиц [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md).
-* `actions` — Выводит подробную информацию о действиях шага. По умолчанию: 0.
-* `json` — Выводит шаги плана запроса одной строкой в формате [JSON](/interfaces/formats/JSON). По умолчанию: 0. Рекомендуется использовать формат [TabSeparatedRaw (TSVRaw)](/interfaces/formats/TabSeparatedRaw), чтобы избежать лишнего экранирования.
-* `input_headers` — Выводит входные заголовки для шага. По умолчанию: 0. В основном полезно только для разработчиков для отладки проблем, связанных с несоответствием входных и выходных заголовков.
+* `header` — Печатает заголовок вывода для шага. По умолчанию: 0.
+* `description` — Печатает описание шага. По умолчанию: 1.
+* `indexes` — Показывает используемые индексы, количество отфильтрованных частей и количество отфильтрованных гранул для каждого применённого индекса. По умолчанию: 0. Поддерживается для таблиц [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md). Начиная с ClickHouse &gt;= v25.9, эта команда даёт содержательный вывод только при использовании вместе с `SETTINGS use_query_condition_cache = 0, use_skip_indexes_on_data_read = 0`.
+* `projections` — Показывает все проанализированные проекции и их влияние на фильтрацию на уровне частей на основе условий по первичному ключу проекции. Для каждой проекции этот раздел включает статистику, такую как количество частей, строк, меток и диапазонов, которые были обработаны с использованием её первичного ключа. Также показывает, сколько частей данных было пропущено благодаря этой фильтрации, без чтения из самой проекции. То, была ли проекция фактически использована для чтения или только проанализирована для фильтрации, можно определить по полю `description`. По умолчанию: 0. Поддерживается для таблиц [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md).
+* `actions` — Печатает подробную информацию о действиях шага. По умолчанию: 0.
+* `json` — Печатает шаги плана запроса как строку в формате [JSON](/interfaces/formats/JSON). По умолчанию: 0. Рекомендуется использовать формат [TabSeparatedRaw (TSVRaw)](/interfaces/formats/TabSeparatedRaw), чтобы избежать лишнего экранирования.
+* `input_headers` - Печатает входные заголовки для шага. По умолчанию: 0. В основном полезно только разработчикам для отладки проблем, связанных с несоответствием входных и выходных заголовков.
+* `column_structure` - Дополнительно печатает структуру столбцов в заголовках, помимо их имени и типа. По умолчанию: 0. В основном полезно только разработчикам для отладки проблем, связанных с несоответствием входных и выходных заголовков.
+* `distributed` — Показывает планы запросов, выполняемые на удалённых узлах для distributed таблиц или параллельных реплик. По умолчанию: 0.
 
 Когда `json=1`, имена шагов будут содержать дополнительный суффикс с уникальным идентификатором шага.
 
@@ -203,15 +203,15 @@ Union
   Expression (Before ORDER BY and SELECT)
     Aggregating
       Expression (Before GROUP BY)
-        SettingQuotaAndLimits (Установка лимитов и квот после чтения из хранилища)
+        SettingQuotaAndLimits (Set limits and quota after reading from storage)
           ReadFromStorage (SystemNumbers)
 ```
 
 :::note
-Оценка стоимости шагов и запроса не поддерживается.
+Оценка стоимости шагов и запросов не поддерживается.
 :::
 
-Когда `json = 1`, план запроса представлен в формате JSON. Каждый узел — это словарь, который всегда содержит ключи `Node Type` и `Plans`. `Node Type` — это строка с именем шага. `Plans` — это массив с описаниями дочерних шагов. В зависимости от типа узла и настроек могут добавляться другие необязательные ключи.
+Когда `json = 1`, план запроса представляется в формате JSON. Каждый узел представляет собой словарь, который всегда содержит ключи `Node Type` и `Plans`. `Node Type` — строка с именем шага. `Plans` — массив с описаниями дочерних шагов. В зависимости от типа узла и настроек могут быть добавлены дополнительные необязательные ключи.
 
 Пример:
 
@@ -252,7 +252,7 @@ EXPLAIN json = 1, description = 0 SELECT 1 UNION ALL SELECT 2 FORMAT TSVRaw;
 ]
 ```
 
-Если `description` = 1, к шагу добавляется ключ `Description`:
+При значении `description` = 1 к шагу добавляется ключ `Description`:
 
 ```json
 {
@@ -261,13 +261,14 @@ EXPLAIN json = 1, description = 0 SELECT 1 UNION ALL SELECT 2 FORMAT TSVRaw;
 }
 ```
 
-При значении `header` = 1 к шагу добавляется ключ `Header` как массив столбцов.
+При значении `header` = 1 ключ `Header` добавляется к шагу в виде массива столбцов.
 
 Пример:
 
 ```sql
 EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ```
+
 
 ```json
 [
@@ -302,12 +303,11 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ]
 ```
 
-
-При `indexes` = 1 добавляется ключ `Indexes`. Он содержит массив используемых индексов. Каждый индекс описывается в формате JSON с ключом `Type` (строка `MinMax`, `Partition`, `PrimaryKey` или `Skip`) и необязательными ключами:
+При `indexes` = 1 добавляется ключ `Indexes`. Он содержит массив используемых индексов. Каждый индекс описывается как JSON с ключом `Type` (строка `MinMax`, `Partition`, `PrimaryKey` или `Skip`) и необязательными ключами:
 
 * `Name` — имя индекса (в настоящее время используется только для индексов `Skip`).
 * `Keys` — массив столбцов, используемых индексом.
-* `Condition` — условие, по которому применяется индекс.
+* `Condition` — условие, использованное при применении индекса.
 * `Description` — описание индекса (в настоящее время используется только для индексов `Skip`).
 * `Parts` — количество частей до/после применения индекса.
 * `Granules` — количество гранул до/после применения индекса.
@@ -316,51 +316,51 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 Пример:
 
 ```json
-"Тип узла": "ReadFromMergeTree",
-"Индексы": [
+"Node Type": "ReadFromMergeTree",
+"Indexes": [
   {
-    "Тип": "MinMax",
-    "Ключи": ["y"],
-    "Условие": "(y in [1, +inf))",
-    "Части": 4/5,
-    "Гранулы": 11/12
+    "Type": "MinMax",
+    "Keys": ["y"],
+    "Condition": "(y in [1, +inf))",
+    "Parts": 4/5,
+    "Granules": 11/12
   },
   {
-    "Тип": "Partition",
-    "Ключи": ["y", "bitAnd(z, 3)"],
-    "Условие": "and((bitAnd(z, 3) not in [1, 1]), and((y in [1, +inf)), (bitAnd(z, 3) not in [1, 1])))",
-    "Части": 3/4,
-    "Гранулы": 10/11
+    "Type": "Partition",
+    "Keys": ["y", "bitAnd(z, 3)"],
+    "Condition": "and((bitAnd(z, 3) not in [1, 1]), and((y in [1, +inf)), (bitAnd(z, 3) not in [1, 1])))",
+    "Parts": 3/4,
+    "Granules": 10/11
   },
   {
-    "Тип": "PrimaryKey",
-    "Ключи": ["x", "y"],
-    "Условие": "and((x in [11, +inf)), (y in [1, +inf)))",
-    "Части": 2/3,
-    "Гранулы": 6/10,
-    "Алгоритм поиска": "generic exclusion search"
+    "Type": "PrimaryKey",
+    "Keys": ["x", "y"],
+    "Condition": "and((x in [11, +inf)), (y in [1, +inf)))",
+    "Parts": 2/3,
+    "Granules": 6/10,
+    "Search Algorithm": "generic exclusion search"
   },
   {
-    "Тип": "Skip",
-    "Имя": "t_minmax",
-    "Описание": "minmax GRANULARITY 2",
-    "Части": 1/2,
-    "Гранулы": 2/6
+    "Type": "Skip",
+    "Name": "t_minmax",
+    "Description": "minmax GRANULARITY 2",
+    "Parts": 1/2,
+    "Granules": 2/6
   },
   {
-    "Тип": "Skip",
-    "Имя": "t_set",
-    "Описание": "set GRANULARITY 2",
+    "Type": "Skip",
+    "Name": "t_set",
+    "Description": "set GRANULARITY 2",
     "": 1/1,
-    "Гранулы": 1/2
+    "Granules": 1/2
   }
 ]
 ```
 
-При `projections` = 1 добавляется ключ `Projections`. Он содержит массив проанализированных проекций. Каждая проекция описывается в формате JSON со следующими ключами:
+При `projections` = 1 добавляется ключ `Projections`. Он содержит массив проанализированных проекций. Каждая проекция описывается в виде объекта JSON со следующими ключами:
 
 * `Name` — имя проекции.
-* `Condition` — используемое условие первичного ключа проекции.
+* `Condition` — используемое условие по первичному ключу проекции.
 * `Description` — описание того, как используется проекция (например, фильтрация на уровне частей).
 * `Selected Parts` — количество частей, выбранных проекцией.
 * `Selected Marks` — количество выбранных меток.
@@ -377,7 +377,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
     "Name": "region_proj",
     "Description": "Проекция проанализирована и используется для фильтрации на уровне частей",
     "Condition": "(region in ['us_west', 'us_west'])",
-    "Search Algorithm": "двоичный поиск",
+    "Search Algorithm": "binary search",
     "Selected Parts": 3,
     "Selected Marks": 3,
     "Selected Ranges": 3,
@@ -388,7 +388,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
     "Name": "user_id_proj",
     "Description": "Проекция проанализирована и используется для фильтрации на уровне частей",
     "Condition": "(user_id in [107, 107])",
-    "Search Algorithm": "двоичный поиск",
+    "Search Algorithm": "binary search",
     "Selected Parts": 1,
     "Selected Marks": 1,
     "Selected Ranges": 1,
@@ -405,7 +405,6 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ```sql
 EXPLAIN json = 1, actions = 1, description = 0 SELECT 1 FORMAT TSVRaw;
 ```
-
 
 ```json
 [
@@ -458,15 +457,60 @@ EXPLAIN json = 1, actions = 1, description = 0 SELECT 1 FORMAT TSVRaw;
 ]
 ```
 
-### EXPLAIN PIPELINE
+При `distributed` = 1 вывод включает не только локальный план запроса, но и планы запросов, которые будут выполняться на удалённых узлах. Это полезно для анализа и отладки распределённых запросов.
+
+Пример с distributed таблицей:
+
+```sql
+EXPLAIN distributed=1 SELECT * FROM remote('127.0.0.{1,2}', numbers(2)) WHERE number = 1;
+```
+
+```sql
+Union
+  Expression ((Project names + (Projection + (Change column names to column identifiers + (Project names + Projection)))))
+    Filter ((WHERE + Change column names to column identifiers))
+      ReadFromSystemNumbers
+  Expression ((Project names + (Projection + Change column names to column identifiers)))
+    ReadFromRemote (Чтение с удалённой реплики)
+      Expression ((Project names + Projection))
+        Filter ((WHERE + Change column names to column identifiers))
+          ReadFromSystemNumbers
+```
+
+Пример с параллельными репликами:
+
+```sql
+SET enable_parallel_replicas = 2, max_parallel_replicas = 2, cluster_for_parallel_replicas = 'default';
+
+EXPLAIN distributed=1 SELECT sum(number) FROM test_table GROUP BY number % 4;
+```
+
+```sql
+Expression ((Названия проектов + Projection))
+  MergingAggregated
+    Union
+      Aggregating
+        Expression ((Перед GROUP BY + Изменить имена столбцов на идентификаторы столбцов))
+          ReadFromMergeTree (default.test_table)
+      ReadFromRemoteParallelReplicas
+        BlocksMarshalling
+          Aggregating
+            Expression ((Перед GROUP BY + Изменить имена столбцов на идентификаторы столбцов))
+              ReadFromMergeTree (default.test_table)
+```
+
+В обоих примерах план запроса показывает полный процесс выполнения, включая локальные и удалённые этапы.
+
+
+### EXPLAIN PIPELINE {#explain-pipeline}
 
 Настройки:
 
-* `header` — Выводит заголовок для каждого выходного порта. По умолчанию — 0.
-* `graph` — Выводит граф, описанный на языке описания графов [DOT](https://en.wikipedia.org/wiki/DOT_\(graph_description_language\)). По умолчанию — 0.
-* `compact` — Выводит граф в компактном виде, если параметр `graph` включён. По умолчанию — 1.
+* `header` — Выводит заголовок для каждого выходного порта. По умолчанию: 0.
+* `graph` — Выводит граф, описанный на языке описания графов [DOT](https://en.wikipedia.org/wiki/DOT_\(graph_description_language\)). По умолчанию: 0.
+* `compact` — Выводит граф в компактном режиме, если параметр `graph` включён. По умолчанию: 1.
 
-Когда `compact=0` и `graph=1`, имена процессоров будут содержать дополнительный суффикс с уникальным идентификатором процессора.
+Если `compact=0` и `graph=1`, имена процессоров будут содержать дополнительный суффикс с уникальным идентификатором процессора.
 
 Пример:
 
@@ -490,9 +534,9 @@ ExpressionTransform
             NumbersRange × 2 0 → 1
 ```
 
-### EXPLAIN ESTIMATE
+### EXPLAIN ESTIMATE {#explain-estimate}
 
-Показывает примерное количество строк, меток и частей, которые будут прочитаны из таблиц во время обработки запроса. Работает с таблицами семейства [MergeTree](/engines/table-engines/mergetree-family/mergetree).
+Показывает приблизительное количество строк, меток и частей, которые нужно прочитать из таблиц при обработке запроса. Работает с таблицами семейства [MergeTree](/engines/table-engines/mergetree-family/mergetree).
 
 **Пример**
 
@@ -518,10 +562,10 @@ EXPLAIN ESTIMATE SELECT * FROM ttt;
 └──────────┴───────┴───────┴──────┴───────┘
 ```
 
-### EXPLAIN TABLE OVERRIDE
+### EXPLAIN TABLE OVERRIDE {#explain-table-override}
 
-Показывает результат переопределения схемы таблицы, к которой обращаются через табличную функцию.
-Также выполняет проверку корректности и выбрасывает исключение, если переопределение могло бы привести к какой-либо ошибке.
+Показывает результат применения переопределения таблицы к схеме таблицы, доступной через табличную функцию.
+Также выполняет проверку и генерирует исключение, если переопределение привело бы к какой-либо ошибке.
 
 **Пример**
 
@@ -548,5 +592,5 @@ PARTITION BY toYYYYMM(assumeNotNull(created))
 ```
 
 :::note
-Проверка неполная, поэтому успешный запрос не гарантирует, что переопределение не приведёт к проблемам.
+Проверка неполная, поэтому успешный запрос не гарантирует, что переопределение не вызовет проблем.
 :::

@@ -16,32 +16,32 @@ ClickHouse Cloud поддерживает создание резервных к
 В этом руководстве мы приведём примеры того, как создавать полные и инкрементальные резервные копии в объектное хранилище AWS, GCP и Azure, а также как восстанавливать данные из этих резервных копий.
 
 :::note
-Пользователям следует учитывать, что при любом сценарии, когда резервные копии экспортируются в другой регион у того же облачного провайдера, будет взиматься плата за [передачу данных](/cloud/manage/network-data-transfer). В настоящий момент мы не поддерживаем резервное копирование между разными облачными провайдерами.
+Пользователям следует учитывать, что при любом сценарии, когда резервные копии экспортируются в другой регион того же облачного провайдера, будет взиматься плата за [передачу данных](/cloud/manage/network-data-transfer). В настоящий момент мы не поддерживаем резервное копирование между разными облачными провайдерами.
 :::
 
 
-## Требования
+## Требования {#requirements}
 
 Для экспорта и восстановления резервных копий в собственный бакет в хранилище CSP вам потребуются следующие параметры.
 
-### AWS
+### AWS {#aws}
 
 1. Endpoint AWS S3 в формате:
 
 ```text
-s3://<имя_корзины>.s3.amazonaws.com/<каталог>
+  s3://<bucket_name>.s3.amazonaws.com/<directory>
 ```
 
 Например:
 
 ```text
-s3://testchbackups.s3.amazonaws.com/backups/
+  s3://testchbackups.s3.amazonaws.com/backups/
 ```
 
 Где:
 
 * `testchbackups` — имя S3‑бакета, в который будут экспортироваться бэкапы.
-* `backups` — необязательный подкаталог.
+  * `backups` — необязательный подкаталог.
 
 2. Ключ доступа AWS и секретный ключ. Также поддерживается аутентификация на основе роли AWS, которую можно использовать вместо ключа доступа и секретного ключа.
 
@@ -49,13 +49,14 @@ s3://testchbackups.s3.amazonaws.com/backups/
 Чтобы использовать аутентификацию на основе роли, следуйте инструкции по безопасной настройке S3 ([setup](https://clickhouse.com/docs/cloud/security/secure-s3)). Кроме того, вам потребуется добавить разрешения `s3:PutObject` и `s3:DeleteObject` к IAM‑политике, описанной [здесь.](https://clickhouse.com/docs/cloud/security/secure-s3#option-2-manually-create-iam-role)
 :::
 
-### Azure
+
+### Azure {#azure}
 
 1. Строка подключения к хранилищу Azure.
 2. Имя контейнера Azure в учетной записи хранилища.
 3. Объект (blob) Azure внутри контейнера.
 
-### Google Cloud Storage (GCS)
+### Google Cloud Storage (GCS) {#google-cloud-storage-gcs}
 
 1. Endpoint GCS в формате:
 
@@ -64,15 +65,13 @@ s3://testchbackups.s3.amazonaws.com/backups/
    ```
 2. HMAC‑ключ и HMAC‑секрет для доступа.
 
-
 <hr/>
-# Резервное копирование / Восстановление
 
+# Резервное копирование / Восстановление {#backup-restore}
 
+## Резервное копирование в бакет AWS S3 и восстановление из него {#backup--restore-to-aws-s3-bucket}
 
-## Резервное копирование в бакет AWS S3 и восстановление из него
-
-### Создание резервной копии БД
+### Создание резервной копии БД {#take-a-db-backup}
 
 **Полная резервная копия**
 
@@ -85,7 +84,7 @@ TO S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key
 
 :::note
 Вам необходимо использовать отдельный UUID для каждого нового бэкапа в этом подкаталоге, иначе вы получите ошибку `BACKUP_ALREADY_EXISTS`.
-Например, если вы делаете ежедневные бэкапы, нужно использовать новый UUID каждый день.\
+Например, если вы делаете ежедневные бэкапы, нужно использовать новый UUID каждый день.
 :::
 
 **Инкрементальный бэкап**
@@ -96,7 +95,8 @@ TO S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key
 SETTINGS base_backup = S3('https://testchbackups.s3.amazonaws.com/backups/<base-backup-uuid>', '<key id>', '<key secret>')
 ```
 
-### Восстановление из резервной копии
+
+### Восстановление из резервной копии {#restore-from-a-backup}
 
 ```sql
 RESTORE DATABASE test_backups 
@@ -104,12 +104,12 @@ AS test_backups_restored
 FROM S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key secret>')
 ```
 
-См. раздел [Настройка BACKUP/RESTORE для использования конечной точки S3](/operations/backup#configuring-backuprestore-to-use-an-s3-endpoint) для получения дополнительной информации.
+См. раздел [Настройка BACKUP/RESTORE для использования конечной точки S3](/operations/backup/s3_endpoint) для получения дополнительной информации.
 
 
-## Резервное копирование и восстановление в Azure Blob Storage
+## Резервное копирование и восстановление в Azure Blob Storage {#backup--restore-to-azure-blob-storage}
 
-### Создание резервной копии базы данных
+### Создание резервной копии базы данных {#take-a-db-backup-1}
 
 **Полная резервная копия**
 
@@ -128,7 +128,8 @@ TO AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container
 SETTINGS base_backup = AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container>', '<blob>/<uuid>')
 ```
 
-### Восстановление из резервной копии
+
+### Восстановление из резервной копии {#restore-from-a-backup-1}
 
 ```sql
 RESTORE DATABASE test_backups 
@@ -136,12 +137,12 @@ AS test_backups_restored_azure
 FROM AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container>', '<blob>/<uuid>')
 ```
 
-См. раздел [Настройка BACKUP/RESTORE для использования конечной точки S3](/operations/backup#configuring-backuprestore-to-use-an-azureblobstorage-endpoint) для получения дополнительной информации.
+См. раздел [Настройка BACKUP/RESTORE для использования конечной точки AzureBlobStorage](/operations/backup/azure#configuring-backuprestore-to-use-an-azureblobstorage-endpoint) для получения дополнительной информации.
 
 
-## Резервное копирование и восстановление в Google Cloud Storage (GCS)
+## Резервное копирование и восстановление в Google Cloud Storage (GCS) {#backup--restore-to-google-cloud-storage-gcs}
 
-### Создание резервной копии базы данных
+### Создание резервной копии базы данных {#take-a-db-backup-2}
 
 **Полная резервная копия**
 
@@ -160,7 +161,8 @@ TO S3('https://storage.googleapis.com/test_gcs_backups/<uuid>/my_incremental', '
 SETTINGS base_backup = S3('https://storage.googleapis.com/test_gcs_backups/<uuid>', 'key', 'secret')
 ```
 
-### Восстановление из резервной копии
+
+### Восстановление из резервной копии {#restore-from-a-backup-2}
 
 ```sql
 RESTORE DATABASE test_backups 

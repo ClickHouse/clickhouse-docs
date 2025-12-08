@@ -11,20 +11,15 @@ import planetscale_wal_level_logical from '@site/static/images/integrations/data
 import planetscale_max_slot_wal_keep_size from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/planetscale/planetscale_max_slot_wal_keep_size.png';
 import Image from '@theme/IdealImage';
 
-
-# PlanetScale for Postgres ソースセットアップガイド
+# PlanetScale for Postgres ソースセットアップガイド {#planetscale-for-postgres-source-setup-guide}
 
 :::info
 PlanetScale for Postgres は現在 [早期アクセス](https://planetscale.com/postgres) 段階です。
 :::
 
-
-
 ## サポートされている Postgres バージョン {#supported-postgres-versions}
 
 ClickPipes は Postgres バージョン 12 以降に対応しています。
-
-
 
 ## 論理レプリケーションを有効化する {#enable-logical-replication}
 
@@ -50,9 +45,7 @@ PlanetScale コンソールでこの設定を変更すると、再起動が発�
 
 <Image img={planetscale_max_slot_wal_keep_size} alt="PlanetScale コンソールで max_slot_wal_keep_size を調整する" size="md" border/>
 
-
-
-## 権限とパブリケーションを持つユーザーの作成
+## 権限とパブリケーションを持つユーザーの作成 {#creating-a-user-with-permissions-and-publication}
 
 CDC に必要な権限を付与した ClickPipes 用の新しいユーザーを作成し、
 あわせてレプリケーションに使用するパブリケーションも作成します。
@@ -78,13 +71,10 @@ CDC に必要な権限を付与した ClickPipes 用の新しいユーザーを�
 `clickpipes_user` と `clickpipes_password` を、必ずご希望のユーザー名とパスワードに置き換えてください。
 :::
 
-
 ## 注意事項 {#caveats}
 1. PlanetScale Postgres に接続するには、上で作成したユーザー名に現在のブランチ名を付加する必要があります。たとえば、作成したユーザーが `clickpipes_user` という名前だった場合、ClickPipe 作成時に指定する実際のユーザー名は `clickpipes_user`.`branch` とする必要があります。このとき `branch` は、現在の PlanetScale Postgres の[ブランチ](https://planetscale.com/docs/postgres/branching)の "id" を指します。これを手早く確認するには、先ほどユーザー作成に使用した `postgres` ユーザーのユーザー名を参照してください。ピリオド以降の部分がブランチ ID になります。
 2. PlanetScale Postgres に接続する CDC パイプには `PSBouncer` ポート（現在 `6432`）を使用しないでください。通常のポート `5432` を使用する必要があります。初回ロード専用のパイプであれば、どちらのポートも使用できます。
 3. 必ずプライマリインスタンスのみに接続していることを確認してください。[レプリカインスタンスへの接続](https://planetscale.com/docs/postgres/scaling/replicas#how-to-query-postgres-replicas)は現在サポートされていません。 
-
-
 
 ## 次のステップ {#whats-next}
 

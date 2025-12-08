@@ -7,17 +7,13 @@ title: "Replicated"
 doc_type: "reference"
 ---
 
-
-
-# Replicated
+# Replicated {#replicated}
 
 このエンジンは [Atomic](../../engines/database-engines/atomic.md) エンジンをベースとしています。ZooKeeper に書き込まれる DDL ログを介したメタデータのレプリケーションをサポートしており、特定のデータベースに対するすべてのレプリカで実行されます。
 
 1 つの ClickHouse サーバー上で、複数のレプリケートされたデータベースを同時に稼働させて更新することができます。ただし、同じレプリケートされたデータベースのレプリカを、1 つの ClickHouse サーバー上に複数置くことはできません。
 
-
-
-## データベースの作成
+## データベースの作成 {#creating-a-database}
 
 ```sql
 CREATE DATABASE testdb [UUID '...'] ENGINE = Replicated('zoo_path', 'shard_name', 'replica_name') [SETTINGS ...]
@@ -35,7 +31,6 @@ CREATE DATABASE testdb [UUID '...'] ENGINE = Replicated('zoo_path', 'shard_name'
 
 [ReplicatedMergeTree](/engines/table-engines/mergetree-family/replication) テーブルでは、引数が指定されていない場合、デフォルトの引数 `/clickhouse/tables/{uuid}/{shard}` および `{replica}` が使用されます。これらはサーバー設定 [default&#95;replica&#95;path](../../operations/server-configuration-parameters/settings.md#default_replica_path) および [default&#95;replica&#95;name](../../operations/server-configuration-parameters/settings.md#default_replica_name) で変更できます。マクロ `{uuid}` はテーブルの UUID に展開され、`{shard}` と `{replica}` はデータベースエンジンの引数ではなくサーバー設定の値に展開されます。ただし将来的には、Replicated データベースの `shard_name` および `replica_name` も使用できるようになる予定です。
 
-
 ## 詳細と推奨事項 {#specifics-and-recommendations}
 
 `Replicated` データベースでの DDL クエリは、[ON CLUSTER](../../sql-reference/distributed-ddl.md) クエリと同様の方法で動作しますが、いくつかの細かな違いがあります。
@@ -52,9 +47,7 @@ CREATE DATABASE testdb [UUID '...'] ENGINE = Replicated('zoo_path', 'shard_name'
 
 テーブルレプリケーションを維持せずにクラスターのみを構成する必要がある場合は、[Cluster Discovery](../../operations/cluster-discovery.md) 機能を参照してください。
 
-
-
-## 使用例
+## 使用例 {#usage-example}
 
 3 つのホストを持つクラスターの作成:
 
@@ -129,7 +122,6 @@ node4 :) CREATE DATABASE r UUID '<前のクエリのuuid>' ENGINE=Replicated('so
 
 クラスター構成は次のようになります。
 
-
 ```text
 ┌─cluster─┬─shard_num─┬─replica_num─┬─host_name─┬─host_address─┬─port─┬─is_local─┐
 │ r       │     1     │      1      │   node3   │  127.0.0.1   │ 9002 │     0    │
@@ -152,8 +144,7 @@ node2 :) SELECT materialize(hostName()) AS host, groupArray(n) FROM r.d GROUP BY
 └───────┴───────────────┘
 ```
 
-
-## 設定
+## 設定 {#settings}
 
 サポートされている設定は次のとおりです:
 

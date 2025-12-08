@@ -6,9 +6,7 @@ title: 'system.iceberg_history'
 doc_type: 'reference'
 ---
 
-
-
-# system.iceberg&#95;history
+# system.iceberg&#95;history {#systemiceberg&#95;history}
 
 此 system 表包含 ClickHouse 中 Iceberg 表的快照历史。如果 ClickHouse 中不存在任何 Iceberg 表，则该表为空。
 

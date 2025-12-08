@@ -28,7 +28,7 @@ doc_type: 'reference'
 
 ## 使用例 {#example-usage}
 
-### データの挿入
+### データの挿入 {#inserting-data}
 
 次のデータを含む `football.json` という名前の JSON ファイルを使用します。
 
@@ -49,8 +49,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONColumns;
 ```
 
-
-### データの読み込み
+### データの読み込み {#reading-data}
 
 `JSONColumns` 形式を使用してデータを読み込みます。
 
@@ -72,7 +71,6 @@ FORMAT JSONColumns
     "away_team_goals": [4, 1, 0, 2, 2, 3, 0, 0, 1, 2, 2, 1, 2, 2, 3, 2, 3]
 }
 ```
-
 
 ## フォーマット設定 {#format-settings}
 

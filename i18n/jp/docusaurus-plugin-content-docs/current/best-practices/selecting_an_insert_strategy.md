@@ -12,15 +12,14 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import insert_process from '@site/static/images/bestpractices/insert_process.png';
 import async_inserts from '@site/static/images/bestpractices/async_inserts.png';
-import AsyncInserts from '@site/docs/best-practices/_snippets/_async_inserts.md';
-import BulkInserts from '@site/docs/best-practices/_snippets/_bulk_inserts.md';
+import AsyncInserts from '@site/i18n/jp/docusaurus-plugin-content-docs/current/best-practices/_snippets/_async_inserts.md';
+import BulkInserts from '@site/i18n/jp/docusaurus-plugin-content-docs/current/best-practices/_snippets/_bulk_inserts.md';
 
 効率的なデータのインジェストは、高性能な ClickHouse デプロイメントの基盤となります。適切なデータ挿入戦略を選択することで、スループット、コスト、および信頼性は大きく左右されます。本セクションでは、ワークロードに最適な判断を行うためのベストプラクティス、トレードオフ、および設定オプションについて説明します。
 
 :::note
 以下の内容は、クライアント経由で ClickHouse にデータをプッシュしていることを前提としています。組み込みのテーブル関数 [s3](/sql-reference/table-functions/s3) や [gcs](/sql-reference/table-functions/gcs) などを使用して ClickHouse にデータをプルしている場合は、「[S3 への挿入および読み取りパフォーマンスの最適化](/integrations/s3/performance)」ガイドを参照することを推奨します。
 :::
-
 
 ## デフォルトでは同期インサート {#synchronous-inserts-by-default}
 
@@ -71,8 +70,6 @@ ClickHouse はインサートされたデータを、テーブルの主キー列
 
 * **MergeTree** または **ReplicatedMergeTree** テーブルに直接インサートする。これは、クライアントがシャード間でロードバランシングを行える場合に最も効率的なオプションです。`internal_replication = true` の場合、ClickHouse はレプリケーションを透過的に処理します。
 * [Distributed テーブル](/engines/table-engines/special/distributed)にインサートする。これにより、クライアントは任意のノードにデータを送信し、ClickHouse に正しいシャードへの転送を任せることができます。これはよりシンプルですが、追加の転送ステップがあるため、パフォーマンスはわずかに低下します。`internal_replication = true` はこの場合でも推奨されます。
-
-
 
 **ClickHouse Cloud では、すべてのノードが同一の単一シャードに対して読み書きを行います。INSERT はノード間で自動的に分散されます。ユーザーは公開されたエンドポイントに対して INSERT を送信するだけで構いません。**
 
@@ -127,17 +124,11 @@ ClickHouse はデータ送信時に複数の圧縮コーデックをサポート
 
 **とはいえ、事前ソートは必須ではなくオプションの最適化に過ぎません。** ClickHouse は並列処理を用いてデータを非常に効率的にソートでき、多くのケースではサーバー側でソートした方が、クライアント側で事前ソートするよりも高速、あるいは扱いやすい場合があります。 
 
-
-
 **事前ソートは、データがすでにほぼ順序どおりである場合、またはクライアント側リソース（CPU・メモリ）に十分な余裕があり未活用である場合にのみ行うことを推奨します。** オブザーバビリティのようにレイテンシに敏感、あるいは高スループットが求められるユースケースでは、データが順不同で到着したり多数のエージェントから送信されたりするため、多くの場合は事前ソートは行わず、ClickHouse の組み込みパフォーマンスに任せる方が適しています。
-
-
 
 ## 非同期 INSERT {#asynchronous-inserts}
 
 <AsyncInserts />
-
-
 
 ## インターフェースを選択する — HTTP かネイティブか {#choose-an-interface}
 

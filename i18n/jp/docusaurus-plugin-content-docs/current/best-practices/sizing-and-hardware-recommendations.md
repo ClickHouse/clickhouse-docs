@@ -8,9 +8,7 @@ doc_type: 'guide'
 keywords: ['サイジング', 'ハードウェア', 'キャパシティプランニング', 'ベストプラクティス', 'パフォーマンス']
 ---
 
-
-
-# サイジングとハードウェアの推奨事項
+# サイジングとハードウェアの推奨事項 {#sizing-and-hardware-recommendations}
 
 このガイドでは、オープンソースユーザー向けのハードウェア、コンピューティングリソース、メモリ、およびディスク構成に関する一般的な推奨事項について説明します。セットアップを簡素化したい場合は、[ClickHouse Cloud](https://clickhouse.com/cloud) の利用を推奨します。ClickHouse Cloud は、インフラ管理にかかるコストを最小限に抑えつつ、ワークロードに応じて自動的にスケールおよび調整を行います。
 
@@ -22,8 +20,6 @@ ClickHouse クラスターの構成は、アプリケーションのユースケ
 - データ保持ポリシー
 - ハードウェアコスト
 - 運用・保守コスト
-
-
 
 ## Disk {#disk}
 
@@ -38,8 +34,6 @@ ClickHouse で使用するディスクの種類は、データ量、レイテン
 コストを抑えるには、[汎用 SSD EBS ボリューム](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/general-purpose.html) を使用できます。
 
 また、SSD と HDD を組み合わせて [hot/warm/cold アーキテクチャ](/guides/developer/ttl#implementing-a-hotwarmcold-architecture) による階層型ストレージを実装することもできます。あるいは、コンピュートとストレージを分離するために、ストレージとして [AWS S3](https://aws.amazon.com/s3/) を利用することも可能です。コンピュートとストレージを分離したオープンソース版 ClickHouse の利用方法については、[こちら](/guides/separation-storage-compute)のガイドを参照してください。ClickHouse Cloud では、コンピュートとストレージの分離がデフォルトで利用可能です。
-
-
 
 ## CPU {#cpu}
 
@@ -75,8 +69,6 @@ ClickHouse に対して標準的な CPU 使用率の目標値は存在しませ�
 
 例えば、M 系 CPU を使用する場合、25 CPU コアあたり 100 GB のメモリをプロビジョニングすることを推奨します。アプリケーションに適切なメモリ量を決定するには、メモリ使用状況のプロファイリングが必要です。[メモリ問題のデバッグに関するこのガイド](/guides/developer/debugging-memory-issues) を参照するか、[組み込みのオブザーバビリティダッシュボード](/operations/monitoring) を使用して ClickHouse を監視してください。
 
-
-
 ## メモリ {#memory}
 
 CPU の選択と同様に、メモリとストレージの比率、およびメモリと CPU の比率は、ユースケースに依存します。
@@ -96,8 +88,6 @@ CPU の選択と同様に、メモリとストレージの比率、およびメ�
 
 顧客向けワークロードなど頻繁にアクセスされるユースケースでは、1:30〜1:50 のメモリとストレージの比率とし、より多くのメモリを使用することを推奨します。
 
-
-
 ## レプリカ {#replicas}
 
 1シャードあたり少なくとも3つのレプリカ（または [Amazon EBS](https://aws.amazon.com/ebs/) を使用する場合は2つのレプリカ）を確保することを推奨します。さらに、レプリカを追加して水平方向にスケールする前に、まずはすべてのレプリカを垂直方向にスケールアップしておくことを推奨します。
@@ -105,8 +95,6 @@ CPU の選択と同様に、メモリとストレージの比率、およびメ�
 ClickHouse は自動でシャーディングを行わず、データセットの再シャーディングには多くのコンピュートリソースが必要になります。そのため、将来的にデータを再シャードせずに済むよう、一般的には利用可能な範囲で最も大きなサーバーを使用することを推奨します。
 
 自動スケーリングに対応し、ユースケースに応じてレプリカ数を容易に制御できる [ClickHouse Cloud](https://clickhouse.com/cloud) の利用も検討してください。
-
-
 
 ## 大規模ワークロード向けの構成例 {#example-configurations-for-large-workloads}
 
@@ -178,8 +166,6 @@ ClickHouse の構成は、利用するアプリケーション固有の要件に
 
 ### ログ用途向け Fortune 500 通信事業者の例 {#fortune-500-telecom-operator-for-a-logging-use-case}
 
-
-
 <table>
     <tr>
         <td col="2"><strong><em>ストレージ</em></strong></td>
@@ -235,8 +221,6 @@ ClickHouse の構成は、利用するアプリケーション固有の要件に
         <td>1:60</td>
     </tr>
 </table>
-
-
 
 ## 参考資料 {#further-reading}
 

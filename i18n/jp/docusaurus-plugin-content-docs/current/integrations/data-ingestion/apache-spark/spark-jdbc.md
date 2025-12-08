@@ -13,8 +13,7 @@ import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# Spark JDBC
+# Spark JDBC {#spark-jdbc}
 
 <ClickHouseSupportedBadge/>
 
@@ -22,8 +21,6 @@ JDBC は Spark で最も一般的に使用されるデータソースの 1 つ�
 このセクションでは、Spark で [ClickHouse 公式 JDBC コネクタ](/integrations/language-clients/java/jdbc) を使用する方法について詳しく説明します。
 
 <TOCInline toc={toc}></TOCInline>
-
-
 
 ## データの読み取り {#read-data}
 
@@ -120,8 +117,7 @@ jar_files = [
 
 ```
 
-
-# JARファイルを使用したSparkセッションの初期化
+# JARファイルを使用したSparkセッションの初期化 {#initialize-spark-session-with-jars}
 
 spark = SparkSession.builder \
  .appName("example") \
@@ -166,7 +162,6 @@ df.show()
 
 </TabItem>
 </Tabs>
-
 
 ## データの書き込み {#write-data}
 
@@ -290,17 +285,14 @@ jar_files = [
 
 ```
 
-
-# JAR ファイルを指定して Spark セッションを初期化する
+# JAR ファイルを指定して Spark セッションを初期化する {#initialize-spark-session-with-jars}
 spark = SparkSession.builder \
     .appName("example") \
     .master("local") \
     .config("spark.jars", ",".join(jar_files)) \
     .getOrCreate()
 
-
-
-# DataFrame を作成
+# DataFrame を作成 {#create-dataframe}
 data = [Row(id=11, name="John"), Row(id=12, name="Doe")]
 df = spark.createDataFrame(data)
 
@@ -309,9 +301,7 @@ user = "your_user"
 password = "your_password"  
 driver = "com.clickhouse.jdbc.ClickHouseDriver"
 
-
-
-# DataFrameをClickHouseに書き込む
+# DataFrameをClickHouseに書き込む {#write-dataframe-to-clickhouse}
 
 df.write \
  .format("jdbc") \
@@ -347,7 +337,6 @@ df.write \
 </TabItem>
 </Tabs>
 
-
 ## 並列処理 {#parallelism}
 
 Spark JDBC を使用する場合、Spark はデータを単一のパーティションで読み込みます。より高い並行性を得るには、
@@ -355,8 +344,6 @@ Spark JDBC を使用する場合、Spark はデータを単一のパーティシ
 テーブルのパーティション方法を定義する必要があります。
 詳細については、[JDBC 設定](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html#data-source-option)に関する
 Apache Spark 公式ドキュメントを参照してください。
-
-
 
 ## JDBC の制限事項 {#jdbc-limitations}
 

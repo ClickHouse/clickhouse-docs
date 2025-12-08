@@ -7,9 +7,7 @@ keywords: ['REPLACE', 'modifier']
 doc_type: 'reference'
 ---
 
-
-
-# Модификатор REPLACE
+# Модификатор REPLACE {#replace}
 
 > Позволяет указать один или несколько [псевдонимов выражений](/sql-reference/syntax#expression-aliases).
 

@@ -7,18 +7,14 @@ title: 'バックアップと復元'
 doc_type: 'guide'
 ---
 
-
-
-# バックアップと復元
+# バックアップと復元 {#backup-and-restore}
 
 - [ローカルディスクへのバックアップ](#backup-to-a-local-disk)
 - [S3 エンドポイントを使用したバックアップ／復元の設定](#configuring-backuprestore-to-use-an-s3-endpoint)
 - [S3 ディスクを使用したバックアップ／復元](#backuprestore-using-an-s3-disk)
 - [代替案](#alternatives)
 
-
-
-## コマンドの概要
+## コマンドの概要 {#command-summary}
 
 ```bash
  BACKUP|RESTORE
@@ -41,7 +37,6 @@ doc_type: 'guide'
 バージョン 23.4 より前の ClickHouse では、`ALL` は `RESTORE` コマンドにのみ適用されていました。
 :::
 
-
 ## 背景 {#background}
 
 [レプリケーション](../engines/table-engines/mergetree-family/replication.md) はハードウェア障害からの保護を提供しますが、人為的なミスからは保護しません。たとえば、データの誤削除、誤ったテーブルや誤ったクラスタ上のテーブルの削除、不正なデータ処理やデータ破損を引き起こすソフトウェアバグなどです。多くの場合、このようなミスはすべてのレプリカに影響します。ClickHouse には、特定の種類のミスを防ぐための組み込みの安全機構があります。たとえばデフォルトでは、[50 GB を超えるデータを含む MergeTree 系エンジンのテーブルを、そのまま DROP することはできません](/operations/settings/settings#max_table_size_to_drop)。しかし、これらの安全機構はあらゆるケースを網羅しているわけではなく、回避されてしまう可能性もあります。
@@ -54,11 +49,9 @@ doc_type: 'guide'
 バックアップを取得しただけで一度も復元を試していない場合、いざというときに復元が正しく動作しない（少なくとも、ビジネスが許容できるよりも長い時間がかかる）可能性が高いことを忘れないでください。どのようなバックアップ手法を選択するにせよ、復元プロセスも必ず自動化し、予備の ClickHouse クラスタで定期的に復元演習を行ってください。
 :::
 
+## ローカルディスクへのバックアップ {#backup-to-a-local-disk}
 
-
-## ローカルディスクへのバックアップ
-
-### バックアップ先の設定
+### バックアップ先の設定 {#configure-a-backup-destination}
 
 以下の例では、バックアップ先は `Disk('backups', '1.zip')` のように指定されます。バックアップ先を準備するには、バックアップ先を指定したファイルを `/etc/clickhouse-server/config.d/backup_disk.xml` に追加します。例えば、このファイルでは `backups` という名前のディスクを定義し、そのディスクを **backups &gt; allowed&#95;disk** リストに追加します。
 
@@ -82,7 +75,7 @@ doc_type: 'guide'
 </clickhouse>
 ```
 
-### パラメーター
+### パラメーター {#parameters}
 
 バックアップはフルバックアップまたは増分バックアップとし、テーブル（マテリアライズドビュー、プロジェクション、ディクショナリを含む）やデータベースを対象にできます。バックアップは同期（デフォルト）または非同期で実行できます。圧縮することも可能で、パスワード保護を設定できます。
 
@@ -105,7 +98,7 @@ doc_type: 'guide'
   * `azure_attempt_to_create_container`: Azure Blob Storage を使用する場合、指定されたコンテナーが存在しないときに作成を試みるかどうか。デフォルト: true。
   * [コア設定](/operations/settings/settings) もここで使用できます
 
-### 使用例
+### 使用例 {#usage-examples}
 
 テーブルをバックアップしてからリストアする例:
 
@@ -139,13 +132,12 @@ RESTORE TABLE test.table AS test.table2 FROM Disk('backups', '1.zip')
 BACKUP TABLE test.table3 AS test.table4 TO Disk('backups', '2.zip')
 ```
 
-### 増分バックアップ
+### 増分バックアップ {#incremental-backups}
 
 `base_backup` を指定すると、増分バックアップを作成できます。
 :::note
 増分バックアップはベースバックアップに依存します。増分バックアップからリストアできるようにするには、ベースバックアップを利用可能な状態で保持しておく必要があります。
 :::
-
 
 新しいデータを増分的に保存します。設定 `base_backup` により、以前のバックアップ `Disk('backups', 'd.zip')` 以降に追加されたデータが `Disk('backups', 'incremental-a.zip')` に保存されます。
 
@@ -161,7 +153,7 @@ RESTORE TABLE test.table AS test.table2
   FROM Disk('backups', 'incremental-a.zip');
 ```
 
-### バックアップにパスワードを設定する
+### バックアップにパスワードを設定する {#assign-a-password-to-the-backup}
 
 ディスクに書き込まれるバックアップファイルには、パスワードを設定できます。
 
@@ -179,7 +171,7 @@ RESTORE TABLE test.table
   SETTINGS password='qwerty'
 ```
 
-### 圧縮設定
+### 圧縮設定 {#compression-settings}
 
 圧縮方式や圧縮レベルを指定したい場合は、次のように設定します。
 
@@ -189,7 +181,7 @@ BACKUP TABLE test.table
   SETTINGS compression_method='lzma', compression_level=3
 ```
 
-### 特定のパーティションを復元する
+### 特定のパーティションを復元する {#restore-specific-partitions}
 
 テーブルに関連付けられた特定のパーティションのみを復元する必要がある場合は、それらを指定できます。バックアップからパーティション 1 と 4 を復元するには：
 
@@ -198,7 +190,7 @@ RESTORE TABLE test.table PARTITIONS '2', '3'
   FROM Disk('backups', 'filename.zip')
 ```
 
-### tar アーカイブとしてのバックアップ
+### tar アーカイブとしてのバックアップ {#backups-as-tar-archives}
 
 バックアップは tar アーカイブとして保存することもできます。パスワードがサポートされていない点を除き、機能は zip の場合と同じです。
 
@@ -222,7 +214,7 @@ BACKUP TABLE test.table TO Disk('backups', '1.tar.gz')
 
 サポートされている圧縮ファイルの拡張子は、`tar.gz`、`.tgz`、`tar.bz2`、`tar.lzma`、`.tar.zst`、`.tzst`、`.tar.xz` です。
 
-### バックアップのステータスを確認する
+### バックアップのステータスを確認する {#check-the-status-of-backups}
 
 バックアップコマンドは `id` と `status` を返し、その `id` を使ってバックアップのステータスを取得できます。これは、時間のかかる ASYNC バックアップの進行状況を確認するのに非常に便利です。以下の例は、既存のバックアップファイルを上書きしようとしたときに発生した失敗を示しています。
 
@@ -263,7 +255,6 @@ end_time:          2022-08-30 09:21:46
 
 1行のセット。経過時間: 0.002秒
 ```
-
 
 `system.backups` テーブルに加えて、すべてのバックアップおよびリストア操作は、システムログテーブル [backup&#95;log](../operations/system-tables/backup_log.md) にも記録されます。
 
@@ -316,8 +307,7 @@ bytes_read:              0
 2 rows in set. Elapsed: 0.075 sec.
 ```
 
-
-## S3 エンドポイントを使用するように BACKUP/RESTORE を構成する
+## S3 エンドポイントを使用するように BACKUP/RESTORE を構成する {#configuring-backuprestore-to-use-an-s3-endpoint}
 
 バックアップを S3 バケットに書き込むには、次の 3 つの情報が必要です。
 
@@ -355,7 +345,7 @@ FROM generateRandom('key Int, value String, array Array(String)')
 LIMIT 1000
 ```
 
-### ベース（初期）バックアップを作成する
+### ベース（初期）バックアップを作成する {#create-a-base-initial-backup}
 
 増分バックアップを実行するには、開始点となる *ベース* バックアップが必要です。この例では、後でベースバックアップとして使用します。S3 の宛先の最初のパラメーターは S3 エンドポイントであり、その後に、このバックアップで使用するバケット内のディレクトリを指定します。この例では、ディレクトリ名は `my_backup` です。
 
@@ -369,7 +359,7 @@ BACKUP TABLE data TO S3('https://mars-doc-test.s3.amazonaws.com/backup-S3/my_bac
 └──────────────────────────────────────┴────────────────┘
 ```
 
-### データをさらに追加する
+### データをさらに追加する {#add-more-data}
 
 増分バックアップには、ベースバックアップとバックアップ対象テーブルの現在の内容との差分が格納されます。増分バックアップを作成する前に、テーブルにデータを追加します。
 
@@ -379,7 +369,7 @@ FROM generateRandom('key Int, value String, array Array(String)')
 LIMIT 100
 ```
 
-### 増分バックアップを作成する
+### 増分バックアップを作成する {#take-an-incremental-backup}
 
 このバックアップコマンドはベースバックアップと似ていますが、`SETTINGS base_backup` とベースバックアップの場所を指定する点が異なります。増分バックアップの保存先はベースバックアップと同じディレクトリではなく、同じエンドポイント上のバケット内にある別のターゲットディレクトリであることに注意してください。ベースバックアップは `my_backup` にあり、増分バックアップは `my_incremental` に書き込まれます。
 
@@ -393,7 +383,7 @@ BACKUP TABLE data TO S3('https://mars-doc-test.s3.amazonaws.com/backup-S3/my_inc
 └──────────────────────────────────────┴────────────────┘
 ```
 
-### 増分バックアップからのリストア
+### 増分バックアップからのリストア {#restore-from-the-incremental-backup}
 
 このコマンドは、増分バックアップを新しいテーブル `data3` にリストアします。増分バックアップをリストアする場合、ベースバックアップも合わせて含まれることに注意してください。リストア時には、増分バックアップのみを指定してください。
 
@@ -407,8 +397,7 @@ RESTORE TABLE data AS data3 FROM S3('https://mars-doc-test.s3.amazonaws.com/back
 └──────────────────────────────────────┴──────────┘
 ```
 
-### 件数を確認する
-
+### 件数を確認する {#verify-the-count}
 
 元のテーブル `data` には、1,000 行の挿入と 100 行の挿入の 2 回の INSERT が行われており、合計で 1,100 行になっています。復元されたテーブルに 1,100 行あることを確認します。
 
@@ -423,8 +412,7 @@ FROM data3
 └─────────┘
 ```
 
-
-### 内容を検証する
+### 内容を検証する {#verify-the-content}
 
 ここでは、元のテーブル `data` の内容を、復元したテーブル `data3` と比較します。
 
@@ -438,7 +426,7 @@ SELECT throwIf((
     ), 'BACKUP/RESTORE後にデータが一致しません')
 ```
 
-## S3 ディスクを使用した BACKUP/RESTORE
+## S3 ディスクを使用した BACKUP/RESTORE {#backuprestore-using-an-s3-disk}
 
 ClickHouse のストレージ設定で S3 ディスクを設定することで、`BACKUP`/`RESTORE` を S3 を対象として実行することもできます。`/etc/clickhouse-server/config.d` にファイルを追加して、次のようにディスクを設定します。
 
@@ -484,12 +472,9 @@ RESTORE TABLE data AS data_restored FROM Disk('s3_plain', 'cloud_backup');
 * テーブルが S3 ストレージをバックエンドとしている場合、パーツを宛先バケットにコピーする際には、宛先側のクレデンシャルを用いて、`CopyObject` 呼び出しによる S3 のサーバーサイドコピーを試行します。認証エラーが発生した場合は、パーツを一度ダウンロードしてからアップロードするバッファ経由のコピー方式にフォールバックしますが、これは非常に非効率です。この場合、宛先バケットのクレデンシャルに、ソースバケットに対する `read` 権限が付与されていることを確認してください。
   :::
 
-
 ## 名前付きコレクションの使用 {#using-named-collections}
 
 名前付きコレクションは `BACKUP/RESTORE` のパラメータとして使用できます。例については [こちら](./named-collections.md#named-collections-for-backups) を参照してください。
-
-
 
 ## 代替案 {#alternatives}
 
@@ -514,9 +499,7 @@ ClickHouse では、`ALTER TABLE ... FREEZE PARTITION ...` クエリを使用し
 
 このアプローチを自動化するためのサードパーティーツールが利用可能です: [clickhouse-backup](https://github.com/AlexAkulov/clickhouse-backup)。
 
-
-
-## バックアップとリストアの並行実行を禁止するための設定
+## バックアップとリストアの並行実行を禁止するための設定 {#settings-to-disallow-concurrent-backuprestore}
 
 バックアップとリストアの並行実行を禁止するには、それぞれ次の設定を使用します。
 
@@ -532,8 +515,7 @@ ClickHouse では、`ALTER TABLE ... FREEZE PARTITION ...` クエリを使用し
 両方のデフォルト値は true なので、デフォルトではバックアップ／リストアの並行実行が許可されています。
 これらの設定がクラスターで false に設定されている場合、そのクラスター上で同時に実行できるバックアップ／リストアは 1 つだけになります。
 
-
-## AzureBlobStorage エンドポイントを使用するように BACKUP/RESTORE を構成する
+## AzureBlobStorage エンドポイントを使用するように BACKUP/RESTORE を構成する {#configuring-backuprestore-to-use-an-azureblobstorage-endpoint}
 
 バックアップを書き込む AzureBlobStorage コンテナには、以下の情報が必要です。
 
@@ -555,7 +537,6 @@ BACKUP TABLE data TO AzureBlobStorage('DefaultEndpointsProtocol=http;AccountName
 RESTORE TABLE data AS data_restored FROM AzureBlobStorage('DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://azurite1:10000/devstoreaccount1/;',
     'testcontainer', 'data_backup');
 ```
-
 
 ## システムテーブルのバックアップ {#backup-up-system-tables}
 

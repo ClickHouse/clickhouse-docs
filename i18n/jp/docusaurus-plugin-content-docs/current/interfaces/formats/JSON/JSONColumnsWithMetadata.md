@@ -21,7 +21,7 @@ doc_type: 'reference'
 `JSONColumnsWithMetadata` フォーマットは、すべてのデータをメモリ内にバッファリングしてから単一のブロックとして出力するため、メモリ消費量が大きくなる可能性があります。
 :::
 
-## 使用例
+## 使用例 {#example-usage}
 
 例：
 
@@ -66,6 +66,5 @@ doc_type: 'reference'
 
 `JSONColumnsWithMetadata` 入力形式では、[`input_format_json_validate_types_from_metadata`](/operations/settings/settings-formats.md/#input_format_json_validate_types_from_metadata) の設定が `1` の場合、
 入力データ内のメタデータに含まれる型が、テーブル内の対応するカラムの型と比較されます。
-
 
 ## フォーマット設定 {#format-settings}

@@ -11,19 +11,15 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
-# azureBlobStorage 表函数
+# azureBlobStorage 表函数 {#azureblobstorage-table-function}
 
 提供类似表的接口，用于在 [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) 中查询/插入文件。此表函数类似于 [s3 函数](../../sql-reference/table-functions/s3.md)。
 
-
-
-## 语法
+## 语法 {#syntax}
 
 ```sql
 azureBlobStorage(- connection_string|storage_account_url, container_name, blobpath, [account_name, account_key, format, compression, structure, partition_strategy, partition_columns_in_data_file, extra_credentials(client_id=, tenant_id=)])
 ```
-
 
 ## 参数 {#arguments}
 
@@ -41,15 +37,11 @@ azureBlobStorage(- connection_string|storage_account_url, container_name, blobpa
 | `partition_columns_in_data_file`            | 可选参数。仅在使用 `HIVE` 分区策略时生效。用于告知 ClickHouse 数据文件中是否会写入分区列。默认值为 `false`。                                                                                                                                                                                                                                                                                                                                                                             |
 | `extra_credentials`                         | 使用 `client_id` 和 `tenant_id` 进行身份验证。如果提供了 `extra_credentials`，则其优先级高于 `account_name` 和 `account_key`。                                                                                                                                                                                                                                                                                                                                                             |
 
-
-
 ## 返回值 {#returned_value}
 
 具有指定结构的表，用于在指定文件中读写数据。
 
-
-
-## 示例
+## 示例 {#examples}
 
 与 [AzureBlobStorage](/engines/table-engines/integrations/azureBlobStorage) 表引擎类似，用户可以使用 Azurite 模拟器进行本地 Azure 存储的开发。更多详情参见[此处](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=docker-hub%2Cblob-storage)。下面我们假设可以通过主机名 `azurite1` 访问 Azurite。
 
@@ -88,7 +80,6 @@ SELECT count(*) FROM azureBlobStorage('DefaultEndpointsProtocol=https;AccountNam
 └─────────┘
 ```
 
-
 ## 虚拟列 {#virtual-columns}
 
 - `_path` — 文件路径。类型：`LowCardinality(String)`。
@@ -96,11 +87,9 @@ SELECT count(*) FROM azureBlobStorage('DefaultEndpointsProtocol=https;AccountNam
 - `_size` — 文件大小（字节）。类型：`Nullable(UInt64)`。如果文件大小未知，则值为 `NULL`。
 - `_time` — 文件最后一次修改时间。类型：`Nullable(DateTime)`。如果时间未知，则值为 `NULL`。
 
+## 分区写入 {#partitioned-write}
 
-
-## 分区写入
-
-### 分区策略
+### 分区策略 {#partition-strategy}
 
 仅支持 INSERT 语句。
 
@@ -123,8 +112,7 @@ select _path, * from azureBlobStorage(azure_conf2, storage_account_url = 'http:/
    └─────────────────────────────────────────────────────────────────────────────────┴────┴──────┴─────────┘
 ```
 
-
-## use&#95;hive&#95;partitioning 设置
+## use&#95;hive&#95;partitioning 设置 {#hive-style-partitioning}
 
 这是一个设置，用于让 ClickHouse 在读取时解析 Hive 风格分区文件。它对写入没有任何影响。若要在读写两侧保持对称，请使用 `partition_strategy` 参数。
 
@@ -138,8 +126,7 @@ select _path, * from azureBlobStorage(azure_conf2, storage_account_url = 'http:/
 SELECT * FROM azureBlobStorage(config, storage_account_url='...', container='...', blob_path='http://data/path/date=*/country=*/code=*/*.parquet') WHERE _date > '2020-01-01' AND _country = 'Netherlands' AND _code = 42;
 ```
 
-
-## 使用共享访问签名 (SAS)
+## 使用共享访问签名 (SAS) {#using-shared-access-signatures-sas-sas-tokens}
 
 共享访问签名 (Shared Access Signature，SAS) 是一个 URI，用于授予对 Azure Storage 容器或文件的受限访问权限。使用它可以在不共享存储账户密钥的情况下，为存储账户资源提供限定时间的访问权限。详细信息请参阅[此处](https://learn.microsoft.com/en-us/rest/api/storageservices/delegate-access-with-shared-access-signature)。
 
@@ -170,7 +157,6 @@ FROM azureBlobStorage('https://clickhousedocstest.blob.core.windows.net/?sp=r&st
 
 1 行结果，耗时 0.153 秒。
 ```
-
 
 ## 相关内容 {#related}
 - [AzureBlobStorage 表引擎](engines/table-engines/integrations/azureBlobStorage.md)

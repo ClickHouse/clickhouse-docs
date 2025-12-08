@@ -6,14 +6,11 @@ title: 'system.delta_lake_metadata_log'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
-# system.delta_lake_metadata_log
+# system.delta_lake_metadata_log {#systemdelta_lake_metadata_log}
 
 `system.delta_lake_metadata_log` テーブルは、ClickHouse によって読み取られた Delta Lake テーブルのメタデータへのアクセスおよび解析イベントを記録します。各メタデータファイルに関する詳細な情報を提供し、デバッグや監査、Delta テーブル構造の変化を理解する際に有用です。
-
-
 
 ## 目的 {#purpose}
 
@@ -22,8 +19,6 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 :::note
 このテーブルは主にデバッグ用途を想定しています。
 :::
-
-
 
 ## 列 {#columns}
 | Name           | Type      | Description                                                                                   |
@@ -37,9 +32,7 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 
-
-
-## ログの詳細度の制御
+## ログの詳細度の制御 {#controlling-log-verbosity}
 
 [`delta_lake_log_metadata`](../../operations/settings/settings.md#delta_lake_log_metadata) 設定を使用して、どのメタデータイベントをログに記録するかを制御できます。
 

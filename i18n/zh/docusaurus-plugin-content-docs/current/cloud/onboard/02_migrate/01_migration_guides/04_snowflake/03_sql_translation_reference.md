@@ -8,11 +8,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-
-
-# Snowflake SQL 转换指南
-
-
+# Snowflake SQL 转换指南 {#snowflake-sql-translation-guide}
 
 ## 数据类型 {#data-types}
 
@@ -36,11 +32,7 @@ ClickHouse 还支持具名的 [`Tuple`](/sql-reference/data-types/tuple) 以及�
 
 在 ClickHouse 中，编解码器和优化类型同样可以应用到子结构上。这带来的额外好处是，嵌套结构下的压缩效果依然非常出色，并且与扁平化数据相当。相比之下，由于无法对子结构应用特定类型，Snowflake 建议[通过扁平化数据以获得最佳压缩效果](https://docs.snowflake.com/en/user-guide/semistructured-considerations#storing-semi-structured-data-in-a-variant-column-vs-flattening-the-nested-structure)。Snowflake 还对这些数据类型[施加了大小限制](https://docs.snowflake.com/en/user-guide/semistructured-considerations#data-size-limitations)。
 
-
-
 ### 类型参考 {#type-reference}
-
-
 
 | Snowflake                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | ClickHouse                                                                                                                     | 注意                                                                                                                                                                                             |   |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | - |
@@ -57,8 +49,6 @@ ClickHouse 还支持具名的 [`Tuple`](/sql-reference/data-types/tuple) 以及�
 | [`ARRAY`](https://docs.snowflake.com/en/sql-reference/data-types-semistructured#array)                                                                                                                                                                                                                                                                                                                                                                                          | [`Array`](/sql-reference/data-types/array), [`Nested`](/sql-reference/data-types/nested-data-structures/nested)                | Snowflake 中的 `ARRAY` 对其元素使用 `VARIANT`——一种超类型。而在 ClickHouse 中，这些元素是强类型的。                                                                                                                        |   |
 | [`GEOGRAPHY`](https://docs.snowflake.com/en/sql-reference/data-types-geospatial#geography-data-type)                                                                                                                                                                                                                                                                                                                                                                            | [`Point`, `Ring`, `Polygon`, `MultiPolygon`](/sql-reference/data-types/geo)                                                    | Snowflake 强制使用坐标系（WGS 84），而 ClickHouse 则在查询时才应用坐标系。                                                                                                                                            |   |
 | [`GEOMETRY`](https://docs.snowflake.com/en/sql-reference/data-types-geospatial#geometry-data-type)                                                                                                                                                                                                                                                                                                                                                                              | [`Point`, `Ring`, `Polygon`, `MultiPolygon`](/sql-reference/data-types/geo)                                                    |                                                                                                                                                                                                |   |
-
-
 
 | ClickHouse Type   | Description                                                                                         |
 |-------------------|-----------------------------------------------------------------------------------------------------|

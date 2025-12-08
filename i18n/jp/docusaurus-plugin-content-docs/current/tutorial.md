@@ -9,11 +9,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-
-
-# 高度なチュートリアル
-
-
+# 高度なチュートリアル {#advanced-tutorial}
 
 ## Overview {#overview}
 
@@ -24,7 +20,6 @@ doc_type: 'guide'
 このチュートリアルを完了するには、稼働中のClickHouseサービスへのアクセスが必要です。手順については、[クイックスタート](/get-started/quick-start)ガイドを参照してください。
 
 <VerticalStepper>
-
 
 ## 新しいテーブルを作成する {#create-a-new-table}
 
@@ -88,8 +83,6 @@ New York City のタクシーデータセットには、数百万件のタクシ
     PARTITION BY toYYYYMM(pickup_date)
     ORDER BY pickup_datetime;
     ```
-
-
 
 ## データセットを追加する {#add-the-dataset}
 
@@ -158,8 +151,6 @@ New York City のタクシーデータセットには、数百万件のタクシ
     ```
 
     このクエリは 1,999,657 行を返すはずです。
-
-
 
 ## データの分析 {#analyze-the-data}
 
@@ -267,8 +258,6 @@ New York City のタクシーデータセットには、数百万件のタクシ
   <summary>期待される出力</summary>
   <p>
 
-
-
     ```response
     ┌──────────────avg_tip─┬───────────avg_fare─┬──────avg_passenger─┬──count─┬─trip_minutes─┐
     │   1.9600000381469727 │                  8 │                  1 │      1 │        27511 │
@@ -340,8 +329,6 @@ New York City のタクシーデータセットには、数百万件のタクシ
     </p>
   </details>
 
-
-
 7. LaGuardia または JFK 空港への乗車データを取得します:
     ```sql
     SELECT
@@ -382,9 +369,7 @@ New York City のタクシーデータセットには、数百万件のタクシ
     </p>
     </details>
 
-
-
-## 辞書を作成する
+## 辞書を作成する {#create-a-dictionary}
 
 辞書は、メモリ内に保存されるキーと値のペアのマッピングです。詳細については [Dictionaries](/sql-reference/dictionaries/index.md) を参照してください。
 
@@ -467,7 +452,6 @@ LAYOUT(HASHED_ARRAY())
    ORDER BY total DESC
    ```
 
-
 このクエリは、LaGuardia か JFK のいずれかの空港で終了するタクシー乗車の件数を区ごとに集計します。結果は次のようになり、乗車地点の地区が不明な乗車がかなり多いことに注目してください。
 
 ```response
@@ -483,7 +467,6 @@ LAYOUT(HASHED_ARRAY())
 
 7 rows in set. Elapsed: 0.019 sec. Processed 2.00 million rows, 4.00 MB (105.70 million rows/s., 211.40 MB/s.)
 ```
-
 
 ## 結合を実行する {#perform-a-join}
 
@@ -536,7 +519,6 @@ LAYOUT(HASHED_ARRAY())
         :::
 
 </VerticalStepper>
-
 
 ## 次のステップ {#next-steps}
 

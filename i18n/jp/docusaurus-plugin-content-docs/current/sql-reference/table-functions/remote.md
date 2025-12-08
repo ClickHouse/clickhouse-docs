@@ -7,17 +7,13 @@ title: 'remote, remoteSecure'
 doc_type: 'reference'
 ---
 
-
-
-# remote, remoteSecure テーブル関数
+# remote, remoteSecure テーブル関数 {#remote-remotesecure-table-function}
 
 テーブル関数 `remote` は、[Distributed](../../engines/table-engines/special/distributed.md) テーブルを作成することなく、オンデマンドでリモートサーバーにアクセスできるようにします。テーブル関数 `remoteSecure` は、セキュアな接続を使用する点を除き `remote` と同じです。
 
 どちらの関数も `SELECT` および `INSERT` クエリで使用できます。
 
-
-
-## 構文
+## 構文 {#syntax}
 
 ```sql
 remote(addresses_expr, [db, table, user [, password], sharding_key])
@@ -27,7 +23,6 @@ remoteSecure(addresses_expr, [db, table, user [, password], sharding_key])
 remoteSecure(addresses_expr, [db.table, user [, password], sharding_key])
 remoteSecure(named_collection[, option=value [,..]])
 ```
-
 
 ## パラメータ {#parameters}
 
@@ -42,15 +37,11 @@ remoteSecure(named_collection[, option=value [,..]])
 
 引数は [named collections](operations/named-collections.md)（名前付きコレクション）を使用して渡すこともできます。
 
-
-
 ## 戻り値 {#returned-value}
 
 リモートサーバー上にあるテーブルです。
 
-
-
-## 使用方法
+## 使用方法 {#usage}
 
 テーブル関数 `remote` および `remoteSecure` はリクエストごとに接続を再確立するため、代わりに `Distributed` テーブルを使用することを推奨します。また、ホスト名が設定されている場合には名前解決が行われ、複数のレプリカに対して処理を行う際のエラーはカウントされません。大量のクエリを処理する場合は、常に事前に `Distributed` テーブルを作成し、`remote` テーブル関数は使用しないでください。
 
@@ -62,7 +53,7 @@ remoteSecure(named_collection[, option=value [,..]])
 * 手動で行われる頻度の低い分散リクエスト
 * サーバー集合が毎回再定義される分散リクエスト
 
-### アドレス
+### アドレス {#addresses}
 
 ```text
 example01-01-1
@@ -81,10 +72,9 @@ localhost
 example01-01-1,example01-02-1
 ```
 
+## 例 {#examples}
 
-## 例
-
-### リモートサーバーからデータを取得する:
+### リモートサーバーからデータを取得する: {#selecting-data-from-a-remote-server}
 
 ```sql
 SELECT * FROM remote('127.0.0.1', db.remote_engine_table) LIMIT 3;
@@ -99,7 +89,7 @@ CREATE NAMED COLLECTION creds AS
 SELECT * FROM remote(creds, table='remote_engine_table') LIMIT 3;
 ```
 
-### リモートサーバー上のテーブルにデータを挿入する:
+### リモートサーバー上のテーブルにデータを挿入する: {#inserting-data-into-a-table-on-a-remote-server}
 
 ```sql
 CREATE TABLE remote_table (name String, value UInt32) ENGINE=Memory;
@@ -107,11 +97,11 @@ INSERT INTO FUNCTION remote('127.0.0.1', currentDatabase(), 'remote_table') VALU
 SELECT * FROM remote_table;
 ```
 
-### あるシステムから別のシステムへのテーブル移行：
+### あるシステムから別のシステムへのテーブル移行： {#migration-of-tables-from-one-system-to-another}
 
 この例では、サンプルデータセット内の1つのテーブルを使用します。データベースは `imdb`、テーブルは `actors` です。
 
-#### ソースとなる ClickHouse システム（現在データを保持しているシステム）
+#### ソースとなる ClickHouse システム（現在データを保持しているシステム） {#on-the-source-clickhouse-system-the-system-that-currently-hosts-the-data}
 
 * ソースデータベースおよびテーブル名（`imdb.actors`）を確認します。
 
@@ -142,7 +132,7 @@ CREATE TABLE imdb.actors (`id` UInt32,
                 ORDER BY (id, first_name, last_name, gender);
 ```
 
-#### 宛先側 ClickHouse システム上で
+#### 宛先側 ClickHouse システム上で {#on-the-destination-clickhouse-system}
 
 * 宛先データベースを作成します：
 
@@ -161,7 +151,7 @@ CREATE TABLE imdb.actors (`id` UInt32,
                   ORDER BY (id, first_name, last_name, gender);
   ```
 
-#### ソース側のデプロイメントに戻り
+#### ソース側のデプロイメントに戻り {#back-on-the-source-deployment}
 
 リモートシステム上で作成した新しいデータベースおよびテーブルに対して `INSERT` を実行します。ホスト、ポート、ユーザー名、パスワード、宛先データベース、および宛先テーブルが必要です。
 
@@ -170,7 +160,6 @@ INSERT INTO FUNCTION
 remoteSecure('remote.clickhouse.cloud:9440', 'imdb.actors', 'USER', 'PASSWORD')
 SELECT * from imdb.actors
 ```
-
 
 ## グロブ {#globs-in-addresses}
 

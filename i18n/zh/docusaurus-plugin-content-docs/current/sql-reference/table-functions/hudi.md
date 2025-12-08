@@ -7,20 +7,15 @@ title: 'hudi'
 doc_type: 'reference'
 ---
 
-
-
-# Hudi 表函数
+# Hudi 表函数 {#hudi-table-function}
 
 提供只读的类表接口，用于访问存储在 Amazon S3 中的 Apache [Hudi](https://hudi.apache.org/) 表。
 
-
-
-## 语法
+## 语法 {#syntax}
 
 ```sql
 hudi(url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])
 ```
-
 
 ## 参数 {#arguments}
 
@@ -32,13 +27,9 @@ hudi(url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,co
 | `structure`                                  | 表结构。格式为 `'column1_name column1_type, column2_name column2_type, ...'`。                                                                                                                                                                                                                                                                                                       |
 | `compression`                                | 可选参数。支持的取值：`none`、`gzip/gz`、`brotli/br`、`xz/LZMA`、`zstd/zst`。默认情况下，将根据文件扩展名自动检测压缩格式。                                                                                                                                                                                                                                                           |
 
-
-
 ## 返回值 {#returned_value}
 
 一个具有指定结构的表，用于从 S3 中指定的 Hudi 表读取数据。
-
-
 
 ## 虚拟列 {#virtual-columns}
 
@@ -47,8 +38,6 @@ hudi(url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,co
 - `_size` — 文件大小（字节数）。类型：`Nullable(UInt64)`。如果文件大小未知，则该值为 `NULL`。
 - `_time` — 文件的最后修改时间。类型：`Nullable(DateTime)`。如果时间未知，则该值为 `NULL`。
 - `_etag` — 文件的 etag 值。类型：`LowCardinality(String)`。如果 etag 未知，则该值为 `NULL`。
-
-
 
 ## 相关内容 {#related}
 

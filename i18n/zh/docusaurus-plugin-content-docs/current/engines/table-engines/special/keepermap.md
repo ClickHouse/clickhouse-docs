@@ -7,9 +7,7 @@ title: 'KeeperMap 表引擎'
 doc_type: 'reference'
 ---
 
-
-
-# KeeperMap 表引擎
+# KeeperMap 表引擎 {#keepermap-table-engine}
 
 此引擎允许你将 Keeper/ZooKeeper 集群用作一致性的键值存储，支持线性化写入和顺序一致的读取。
 
@@ -25,8 +23,7 @@ doc_type: 'reference'
 
 其中 `path` 可以是任意其他有效的 ZooKeeper 路径。
 
-
-## 创建数据表
+## 创建数据表 {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -79,10 +76,9 @@ PRIMARY KEY key
 因此，在创建表时可以使用 `ON CLUSTER` 子句，在多个 ClickHouse 实例之间共享这些数据。\
 当然，也可以在彼此无关联的 ClickHouse 实例上，手动使用相同路径运行 `CREATE TABLE`，以达到相同的数据共享效果。
 
+## 支持的操作 {#supported-operations}
 
-## 支持的操作
-
-### 插入
+### 插入 {#inserts}
 
 当向 `KeeperMap` 插入新行时，如果键不存在，则会为该键创建一个新条目。
 如果键已存在且 `keeper_map_strict_mode` 被设为 `true`，则会抛出异常；否则，该键对应的值将被覆盖。
@@ -93,7 +89,7 @@ PRIMARY KEY key
 INSERT INTO keeper_map_table VALUES ('some key', 1, 'value', 3.2);
 ```
 
-### 删除
+### 删除 {#deletes}
 
 可以使用 `DELETE` 查询或 `TRUNCATE` 删除行。
 如果键存在，并且将 `keeper_map_strict_mode` 设置为 `true`，则只有在能够以原子方式执行时，获取和删除数据才会成功。
@@ -110,7 +106,7 @@ ALTER TABLE keeper_map_table DELETE WHERE key LIKE 'some%' AND v1 > 1;
 TRUNCATE TABLE keeper_map_table;
 ```
 
-### 更新
+### 更新 {#updates}
 
 可以使用 `ALTER TABLE` 查询来更新值。主键不可更新。
 如果将 `keeper_map_strict_mode` 设置为 `true`，只有在以原子方式执行时，读取和更新数据才会成功。
@@ -118,7 +114,6 @@ TRUNCATE TABLE keeper_map_table;
 ```sql
 ALTER TABLE keeper_map_table UPDATE v1 = v1 * 10 + 2 WHERE key LIKE 'some%' AND v3 > 3.1;
 ```
-
 
 ## 相关内容 {#related-content}
 

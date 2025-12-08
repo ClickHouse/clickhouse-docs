@@ -30,8 +30,7 @@ column_name QBit(element_type, dimension)
 * `element_type` – 各ベクトル要素の型。利用可能な型は `BFloat16`、`Float32`、`Float64` です
 * `dimension` – 各ベクトル内の要素数。
 
-
-## QBit の作成
+## QBit の作成 {#creating-qbit}
 
 テーブルの列を定義する際に `QBit` 型を使用します：
 
@@ -48,8 +47,7 @@ SELECT vec FROM test ORDER BY id;
 └──────────────────────────┘
 ```
 
-
-## QBit サブカラム
+## QBit サブカラム {#qbit-subcolumns}
 
 `QBit` は、格納されたベクトルの個々のビットプレーンにアクセスできるサブカラムアクセスパターンを実装しています。各ビット位置には `.N` 構文を使用してアクセスでき、`N` はビット位置を表します。
 
@@ -72,7 +70,6 @@ SELECT bin(vec.1) FROM test;
 * `BFloat16`: サブカラム 16 個 (1〜16)
 * `Float32`: サブカラム 32 個 (1〜32)
 * `Float64`: サブカラム 64 個 (1〜64)
-
 
 ## ベクトル検索関数 {#vector-search-functions}
 

@@ -7,9 +7,7 @@ title: 'ユーザーおよびロールの設定'
 doc_type: 'reference'
 ---
 
-
-
-# ユーザーとロールの設定
+# ユーザーとロールの設定 {#users-and-roles-settings}
 
 `users.xml` 設定ファイルの `users` セクションには、ユーザーの設定が含まれます。
 
@@ -67,7 +65,7 @@ ClickHouse は、ユーザー管理のための [SQL 駆動のワークフロー
 </users>
 ```
 
-### user&#95;name/password
+### user&#95;name/password {#user-namepassword}
 
 パスワードは平文または SHA256（16進数形式）で指定できます。
 
@@ -78,7 +76,6 @@ ClickHouse は、ユーザー管理のための [SQL 駆動のワークフロー
 <a id="password_sha256_hex" />
 
 * パスワードを SHA256 のハッシュ値で設定する場合、`password_sha256_hex` 要素に記述します。
-
 
 たとえば、`<password_sha256_hex>65e84be33532fb784c48129675f9eff3a682b27168c0ea744b2cf58ee02337c5</password_sha256_hex>` のようになります。
 
@@ -104,7 +101,7 @@ PASSWORD=$(base64 < /dev/urandom | head -c8); echo "$PASSWORD"; echo -n "$PASSWO
 
   結果の1行目がパスワードです。2行目が対応するダブル SHA1 ハッシュです。
 
-### username/ssh-key
+### username/ssh-key {#user-sshkey}
 
 この設定により、SSH 鍵を用いた認証を行えます。
 
@@ -125,7 +122,7 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDNf0r6vRl24Ix3tv2IgPmNPO2ATa2krvt80DdcTatLj
 
 `ssh-ed25519` を、他のサポートされているアルゴリズムである `ssh-rsa` または `ecdsa-sha2-nistp256` に置き換えます。
 
-### access&#95;management
+### access&#95;management {#access&#95;management-user-setting}
 
 この設定は、ユーザーに対して SQL 駆動の[アクセス制御およびアカウント管理](/operations/access-rights#access-control-usage)を使用するかどうかを有効または無効にします。
 
@@ -136,7 +133,7 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDNf0r6vRl24Ix3tv2IgPmNPO2ATa2krvt80DdcTatLj
 
 デフォルト値: 0。
 
-### grants
+### grants {#grants-user-setting}
 
 この設定により、指定したユーザーに任意の権限を付与できます。
 リストの各要素は、被付与者 (`grantees`) を指定していない `GRANT` クエリである必要があります。
@@ -155,7 +152,7 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDNf0r6vRl24Ix3tv2IgPmNPO2ATa2krvt80DdcTatLj
 
 この設定は、`dictionaries`、`access_management`、`named_collection_control`、`show_named_collections_secrets` および `allow_databases` の各設定と同時に指定することはできません。
 
-### user&#95;name/networks
+### user&#95;name/networks {#user-namenetworks}
 
 ユーザーが ClickHouse サーバーに接続できるネットワークの一覧です。
 
@@ -174,7 +171,6 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDNf0r6vRl24Ix3tv2IgPmNPO2ATa2krvt80DdcTatLj
 * `<host_regexp>` — ホスト名に対する正規表現。
 
   例: `^example\d\d-\d\d-\d\.host\.ru$`
-
 
 アクセスを確認するために、まずピアアドレスに対して [DNS PTR クエリ](https://en.wikipedia.org/wiki/Reverse_DNS_lookup) が実行され、その結果に指定された regexp が適用されます。次に、PTR クエリの結果に対して別の DNS クエリが実行され、取得したすべてのアドレスがピアアドレスと照合されます。regexp の末尾には必ず $ を付けることを強く推奨します。
 
@@ -199,18 +195,18 @@ DNS クエリのすべての結果は、サーバーが再起動するまでキ�
 <ip>127.0.0.1</ip>
 ```
 
-### user&#95;name/profile
+### user&#95;name/profile {#user-nameprofile}
 
 ユーザーに設定プロファイルを割り当てることができます。設定プロファイルは `users.xml` ファイル内の別セクションで定義します。詳細については、[Profiles of Settings](../../operations/settings/settings-profiles.md) を参照してください。
 
-### user&#95;name/quota
+### user&#95;name/quota {#user-namequota}
 
 クオータを使用すると、一定期間にわたるリソース使用量を追跡したり、制限したりできます。クオータは、`users.xml` 設定ファイルの `quotas`
 セクションで設定します。
 
 ユーザーに一連のクオータを割り当てることができます。クオータ設定の詳細な説明については、[Quotas](/operations/quotas) を参照してください。
 
-### user&#95;name/databases
+### user&#95;name/databases {#user-namedatabases}
 
 このセクションでは、現在のユーザーによって実行される `SELECT` クエリに対して ClickHouse が返す行を制限することで、基本的な行レベルセキュリティを実装できます。
 
@@ -232,8 +228,7 @@ DNS クエリのすべての結果は、サーバーが再起動するまでキ�
 
 `filter` には、[UInt8](../../sql-reference/data-types/int-uint.md) 型の値を返す任意の式を指定できます。通常は比較演算子や論理演算子を含みます。`database_name.table1` の行のうち、`filter` の結果が 0 を返すものは、このユーザーには返されません。このフィルタリングは `PREWHERE` 演算と互換性がなく、`WHERE→PREWHERE` 最適化を無効にします。
 
-
-## ロール
+## ロール {#roles}
 
 `user.xml` 設定ファイルの `roles` セクションを使用して、あらかじめ定義されたロールを任意に作成できます。
 

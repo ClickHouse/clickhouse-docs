@@ -7,9 +7,7 @@ title: 'Time'
 doc_type: 'reference'
 ---
 
-
-
-# Time
+# Time {#time}
 
 数据类型 `Time` 表示一个由小时、分钟和秒组成的时间。
 它独立于任何日历日期，适用于不需要日、月、年部分的取值。
@@ -23,7 +21,6 @@ doc_type: 'reference'
 文本表示的范围：[-999:59:59, 999:59:59]。
 
 精度：1 秒。
-
 
 ## 实现细节 {#implementation-details}
 
@@ -50,9 +47,7 @@ doc_type: 'reference'
 同样，对 `Time` 列应用或更改时区的尝试也不被支持，并会导致错误。
 `Time` 值不会在不同的时区下被静默重新解释。
 
-
-
-## 示例
+## 示例 {#examples}
 
 **1.** 创建一个包含 `Time` 类型列的表，并向其中插入数据：
 
@@ -118,7 +113,6 @@ SELECT CAST('14:30:25' AS Time) AS column, toTypeName(column) AS type
 1. │ 14:30:25 │ Time │
    └───────────┴──────┘
 ```
-
 
 ## 另请参阅 {#see-also}
 

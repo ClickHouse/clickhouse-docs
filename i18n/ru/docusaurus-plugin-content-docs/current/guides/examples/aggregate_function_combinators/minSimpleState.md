@@ -7,11 +7,7 @@ sidebar_label: 'minSimpleState'
 doc_type: 'reference'
 ---
 
-
-
 # minSimpleState {#minsimplestate}
-
-
 
 ## Описание {#description}
 
@@ -19,9 +15,7 @@ doc_type: 'reference'
 для получения минимального значения по всем входным значениям. Он возвращает 
 результат типа [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction).
 
-
-
-## Пример использования
+## Пример использования {#example-usage}
 
 Рассмотрим практический пример с таблицей, в которой хранятся ежедневные
 измерения температуры. Для каждой точки измерения нам нужно хранить
@@ -155,7 +149,6 @@ ORDER BY location_id;
 
 Теперь мы видим ожидаемый результат:
 
-
 ```sql
 ┌─location_id─┬─location_name─┬─min_temp─┬─max_temp─┐
 │           1 │ Север         │        3 │        8 │
@@ -169,7 +162,6 @@ ORDER BY location_id;
 С `SimpleState` вам не нужно использовать комбинатор `Merge` для объединения
 частичных агрегатных состояний.
 :::
-
 
 ## См. также {#see-also}
 - [`min`](/sql-reference/aggregate-functions/reference/min)

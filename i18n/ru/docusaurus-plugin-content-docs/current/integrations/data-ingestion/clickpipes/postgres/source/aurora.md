@@ -16,18 +16,13 @@ import security_group_in_rds_postgres from '@site/static/images/integrations/dat
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
 
-
-# Руководство по настройке источника данных Aurora Postgres
-
-
+# Руководство по настройке источника данных Aurora Postgres {#aurora-postgres-source-setup-guide}
 
 ## Поддерживаемые версии Postgres {#supported-postgres-versions}
 
 ClickPipes поддерживает Aurora PostgreSQL-Compatible Edition версий 12 и выше.
 
-
-
-## Включение логической репликации
+## Включение логической репликации {#enable-logical-replication}
 
 Вы можете пропустить этот раздел, если в вашем экземпляре Aurora уже настроены следующие параметры:
 
@@ -70,7 +65,6 @@ postgres=> SHOW wal_sender_timeout ;
 
 <Image img={reboot_rds} alt="Перезагрузка Aurora PostgreSQL" size="lg" border />
 
-
 ## Настройка пользователя базы данных {#configure-database-user}
 
 Подключитесь к экземпляру Aurora PostgreSQL writer с учетной записью с правами администратора и выполните следующие команды:
@@ -100,8 +94,6 @@ postgres=> SHOW wal_sender_timeout ;
     ```sql
     CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
     ```
-
-
 
 ## Настройка сетевого доступа {#configure-network-access}
 
@@ -136,8 +128,6 @@ postgres=> SHOW wal_sender_timeout ;
 1. Для высокодоступных конфигураций настройте приложение на использование writer endpoint Aurora, который автоматически указывает на текущий primary-инстанс.
 
 2. При использовании межрегионной репликации рассмотрите возможность настройки отдельных ClickPipes для каждого региона, чтобы снизить задержки и повысить отказоустойчивость.
-
-
 
 ## Что дальше? {#whats-next}
 

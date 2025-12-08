@@ -13,12 +13,9 @@ keywords: ['fivetran', 'データ移動', 'ETL', 'ClickHouse 宛先', '自動化
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# Fivetran と ClickHouse Cloud
+# Fivetran と ClickHouse Cloud {#fivetran-and-clickhouse-cloud}
 
 <ClickHouseSupportedBadge/>
-
-
 
 ## 概要 {#overview}
 
@@ -42,16 +39,12 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
   </iframe>
 </div>
 
-
-
 ## ClickHouse Cloud 宛先 {#clickhouse-cloud-destination}
 
 Fivetran の公式ドキュメントを参照してください：
 
 - [ClickHouse 宛先の概要](https://fivetran.com/docs/destinations/clickhouse)
 - [ClickHouse 宛先のセットアップガイド](https://fivetran.com/docs/destinations/clickhouse/setup-guide)
-
-
 
 ## お問い合わせ {#contact-us}
 

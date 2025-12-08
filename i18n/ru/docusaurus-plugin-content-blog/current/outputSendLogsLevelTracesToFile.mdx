@@ -10,12 +10,11 @@ keywords: ['трассировки уровня логов', 'clickhouse-client'
 
 {/* обрезать */}
 
-
 ## Вопрос \{#question\}
 
-Как перенаправить вывод send_logs_level в файл с помощью ClickHouse Client при выполнении нескольких запросов и многострочного ввода?
+Как перенаправить вывод send&#95;logs&#95;level в файл с помощью ClickHouse Client при выполнении нескольких запросов и многострочного ввода?
 
-## Ответ
+## Ответ \{#answer\}
 
 * Создайте SQL-файл с инструкциями, например, `send_logs_level_example.sql`:
 
@@ -31,7 +30,6 @@ cat send_logs_level_example.sql | ./clickhouse client -n -m --host abc123.us-wes
 ```
 
 * Примеры результатов:
-
 
 ```
 [c-azure-gk-72-server-tojnalg-0] 2024.08.13 21:31:28.437263 [ 1247 ] {4b347939-db0f-48f8-9550-1ccc7d591c44} <Debug> executeQuery: (from 71.56.215.107:47946) SET send_logs_level = 'trace'; (stage: Complete)
@@ -61,4 +59,4 @@ cat send_logs_level_example.sql | ./clickhouse client -n -m --host abc123.us-wes
 ```
 
 Справочная ссылка:
-https://clickhouse.com/docs/operations/settings/settings#send_logs_level
+https://clickhouse.com/docs/operations/settings/settings#send&#95;logs&#95;level

@@ -6,20 +6,15 @@ title: 'flameGraph'
 doc_type: 'reference'
 ---
 
-
-
-# flameGraph
+# flameGraph {#flamegraph}
 
 一种聚合函数，使用堆栈跟踪列表构建[火焰图（flamegraph）](https://www.brendangregg.com/flamegraphs.html)。输出字符串数组，可供 [flamegraph.pl 工具](https://github.com/brendangregg/FlameGraph) 使用，以渲染火焰图的 SVG。
 
-
-
-## 语法
+## 语法 {#syntax}
 
 ```sql
 flameGraph(traces, [size], [ptr])
 ```
-
 
 ## 参数 {#parameters}
 
@@ -32,17 +27,13 @@ flameGraph(traces, [size], [ptr])
 仅显示尚未被释放的分配。未被映射的释放操作将被忽略。
 :::
 
-
-
 ## 返回值 {#returned-value}
 
 - 供 [flamegraph.pl 工具](https://github.com/brendangregg/FlameGraph) 使用的字符串数组。[Array](../../data-types/array.md)([String](../../data-types/string.md))。
 
+## 示例 {#examples}
 
-
-## 示例
-
-### 基于 CPU 查询剖析器构建火焰图
+### 基于 CPU 查询剖析器构建火焰图 {#building-a-flamegraph-based-on-a-cpu-query-profiler}
 
 ```sql
 SET query_profiler_cpu_time_period_ns=10000000;
@@ -53,7 +44,7 @@ SELECT SearchPhrase, COUNT(DISTINCT UserID) AS u FROM hits WHERE SearchPhrase <>
 clickhouse client --allow_introspection_functions=1 -q "select arrayJoin(flameGraph(arrayReverse(trace))) from system.trace_log where trace_type = 'CPU' and query_id = 'xxx'" | ~/dev/FlameGraph/flamegraph.pl  > flame_cpu.svg
 ```
 
-### 使用内存查询分析器构建火焰图，展示所有内存分配情况
+### 使用内存查询分析器构建火焰图，展示所有内存分配情况 {#building-a-flamegraph-based-on-a-memory-query-profiler-showing-all-allocations}
 
 ```sql
 SET memory_profiler_sample_probability=1, max_untracked_memory=1;
@@ -64,7 +55,7 @@ SELECT SearchPhrase, COUNT(DISTINCT UserID) AS u FROM hits WHERE SearchPhrase <>
 clickhouse client --allow_introspection_functions=1 -q "select arrayJoin(flameGraph(trace, size)) from system.trace_log where trace_type = 'MemorySample' and query_id = 'xxx'" | ~/dev/FlameGraph/flamegraph.pl --countname=bytes --color=mem > flame_mem.svg
 ```
 
-### 基于内存查询分析器构建火焰图，显示在查询上下文中未被释放的内存分配
+### 基于内存查询分析器构建火焰图，显示在查询上下文中未被释放的内存分配 {#building-a-flamegraph-based-on-a-memory-query-profiler-showing-allocations-which-were-not-deallocated-in-query-context}
 
 ```sql
 SET memory_profiler_sample_probability=1, max_untracked_memory=1, use_uncompressed_cache=1, merge_tree_max_rows_to_use_cache=100000000000, merge_tree_max_bytes_to_use_cache=1000000000000;
@@ -75,7 +66,7 @@ SELECT SearchPhrase, COUNT(DISTINCT UserID) AS u FROM hits WHERE SearchPhrase <>
 clickhouse client --allow_introspection_functions=1 -q "SELECT arrayJoin(flameGraph(trace, size, ptr)) FROM system.trace_log WHERE trace_type = 'MemorySample' AND query_id = 'xxx'" | ~/dev/FlameGraph/flamegraph.pl --countname=bytes --color=mem > flame_mem_untracked.svg
 ```
 
-### 基于内存查询分析器构建火焰图，展示某一固定时间点的活动内存分配
+### 基于内存查询分析器构建火焰图，展示某一固定时间点的活动内存分配 {#build-a-flamegraph-based-on-memory-query-profiler-showing-active-allocations-at-the-fixed-point-of-time}
 
 ```sql
 SET memory_profiler_sample_probability=1, max_untracked_memory=1;

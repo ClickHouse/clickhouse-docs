@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ClickHouse Connect には、コアドライバ上に実装された SQLAlchemy ダイアレクト（`clickhousedb`）が含まれています。これは SQLAlchemy Core API を対象としており、SQLAlchemy 1.4.40 以降および 2.0.x をサポートします。
 
-## SQLAlchemy で接続する
+## SQLAlchemy で接続する {#sqlalchemy-connect}
 
 `clickhousedb://` または `clickhousedb+connect://` のいずれかの URL を指定してエンジンを作成します。クエリパラメータは、ClickHouse の設定、クライアントオプション、および HTTP/TLS トランスポートオプションに対応します。
 
@@ -34,8 +34,7 @@ URL/クエリパラメータに関する注意:
 
 サポートされているオプションの全一覧については、以下のセクションにある [Connection arguments and Settings](driver-api.md#connection-arguments) を参照してください。これらは SQLAlchemy の DSN で指定することもできます。
 
-
-## コアクエリ
+## コアクエリ {#sqlalchemy-core-queries}
 
 このダイアレクトは、結合、フィルタリング、並べ替え、LIMIT/OFFSET、`DISTINCT` を伴う SQLAlchemy Core の `SELECT` クエリをサポートします。
 
@@ -46,11 +45,11 @@ metadata = MetaData(schema="mydb")
 users = Table("users", metadata, autoload_with=engine)
 orders = Table("orders", metadata, autoload_with=engine)
 
-# 基本的なSELECT
+# 基本的なSELECT {#basic-select}
 with engine.begin() as conn:
     rows = conn.execute(select(users.c.id, users.c.name).order_by(users.c.id).limit(10)).fetchall()
 
-# JOIN（INNER/LEFT OUTER/FULL OUTER/CROSS）
+# JOIN（INNER/LEFT OUTER/FULL OUTER/CROSS） {#joins-innerleft-outerfull-outercross}
 with engine.begin() as conn:
     stmt = (
         select(users.c.name, orders.c.product)
@@ -68,8 +67,7 @@ with engine.begin() as conn:
     conn.execute(delete(users).where(users.c.name.like("%temp%")))
 ```
 
-
-## DDL とリフレクション
+## DDL とリフレクション {#sqlalchemy-ddl-reflection}
 
 提供されている DDL ヘルパーと型／エンジンの構成要素を使用して、データベースおよびテーブルを作成できます。テーブルのリフレクション（カラム型やエンジンを含む）にも対応しています。
 
@@ -103,17 +101,16 @@ with engine.begin() as conn:
 
 反映された列には、サーバー上に存在する場合、`clickhousedb_default_type`、`clickhousedb_codec_expression`、`clickhousedb_ttl_expression` などのダイアレクト固有の属性が含まれます。
 
-
-## INSERT（Core と基本的な ORM）
+## INSERT（Core と基本的な ORM） {#sqlalchemy-inserts}
 
 INSERT は、SQLAlchemy Core 経由だけでなく、利便性のためにシンプルな ORM モデルを使っても実行できます。
 
 ```python
-# コア挿入
+# コア挿入 {#core-insert}
 with engine.begin() as conn:
     conn.execute(table.insert().values(id=1, user="joe"))
 
-# 基本的なORM挿入
+# 基本的なORM挿入 {#basic-orm-insert}
 from sqlalchemy.orm import declarative_base, Session
 
 Base = declarative_base(metadata=MetaData(schema="example_db"))
@@ -131,7 +128,6 @@ with Session(engine) as session:
     session.bulk_save_objects([User(id=2, name="Bob")])
     session.commit()
 ```
-
 
 ## 対象範囲と制限事項 {#scope-and-limitations}
 

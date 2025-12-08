@@ -29,7 +29,7 @@ JSON オブジェクト全体を String にシリアライズしたら、[JSON �
 
 ## 使用例 {#example-usage}
 
-### 基本的な例
+### 基本的な例 {#basic-example}
 
 ```sql title="Query"
 DROP TABLE IF EXISTS json_as_string;
@@ -46,8 +46,7 @@ SELECT * FROM json_as_string;
 └───────────────────────────────────┘
 ```
 
-
-### JSON オブジェクトの配列
+### JSON オブジェクトの配列 {#an-array-of-json-objects}
 
 ```sql title="Query"
 CREATE TABLE json_square_brackets (field String) ENGINE = Memory;
@@ -62,6 +61,5 @@ SELECT * FROM json_square_brackets;
 │ {"id": 2, "name": "name2"} │
 └────────────────────────────┘
 ```
-
 
 ## フォーマットの設定 {#format-settings}

@@ -25,7 +25,7 @@ ClickStack は OpenTelemetry (OTel) collector を使用して、Kubernetes ク�
 
 各ノードおよびクラスター全体の両方からログとメトリクスを収集するには、OpenTelemetry コレクターを 2 つデプロイする必要があります。1 つは各ノードからログとメトリクスを収集するデーモンセットとして、もう 1 つはクラスター全体からログとメトリクスを収集するデプロイメントとしてデプロイします。
 
-### API キー用 Secret の作成
+### API キー用 Secret の作成 {#create-api-key-secret}
 
 HyperDX で作成した [インジェスト API key](/use-cases/observability/clickstack/ingesting-data/opentelemetry#sending-otel-data) を使用して、新しい Kubernetes Secret を作成します。これは、この後インストールするコンポーネントが ClickStack の OTel collector に対して安全にデータをインジェストするために使用されます。
 
@@ -38,11 +38,10 @@ kubectl create secret generic hyperdx-secret \
 
 ```shell
 kubectl create configmap -n=otel-demo otel-config-vars --from-literal=YOUR_OTEL_COLLECTOR_ENDPOINT=<OTEL_COLLECTOR_ENDPOINT>
-# 例: kubectl create configmap -n=otel-demo otel-config-vars --from-literal=YOUR_OTEL_COLLECTOR_ENDPOINT=http://my-hyperdx-hdx-oss-v2-otel-collector:4318
+# 例: kubectl create configmap -n=otel-demo otel-config-vars --from-literal=YOUR_OTEL_COLLECTOR_ENDPOINT=http://my-hyperdx-hdx-oss-v2-otel-collector:4318 {#eg-kubectl-create-configmap-notel-demo-otel-config-vars-from-literalyour_otel_collector_endpointhttpmy-hyperdx-hdx-oss-v2-otel-collector4318}
 ```
 
-
-### デーモンセット構成の作成
+### デーモンセット構成の作成 {#creating-the-daemonset-configuration}
 
 デーモンセットは、クラスター内の各ノードからログとメトリクスを収集しますが、Kubernetes のイベントやクラスター全体のメトリクスは収集しません。
 
@@ -155,8 +154,7 @@ curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/
   ```
 </details>
 
-
-### デプロイメント構成の作成
+### デプロイメント構成の作成 {#creating-the-deployment-configuration}
 
 Kubernetes のイベントとクラスター全体のメトリクスを収集するために、別の OpenTelemetry コレクターをデプロイメントとしてデプロイする必要があります。
 
@@ -231,8 +229,7 @@ curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/
   ```
 </details>
 
-
-## OpenTelemetry collector のデプロイ
+## OpenTelemetry collector のデプロイ {#deploying-the-otel-collector}
 
 OpenTelemetry collector は、Kubernetes クラスターに\
 [OpenTelemetry Helm チャート](https://github.com/open-telemetry/opentelemetry-helm-charts/tree/main/charts/opentelemetry-collector) を使用してデプロイできます。
@@ -252,8 +249,7 @@ helm install my-opentelemetry-collector-daemonset open-telemetry/opentelemetry-c
 
 これで、Kubernetes クラスターからのメトリクス、ログ、および Kubernetes イベントが HyperDX 上に表示されるようになっているはずです。
 
-
-## リソースタグをポッドに転送する（推奨）
+## リソースタグをポッドに転送する（推奨） {#forwarding-resouce-tags-to-pods}
 
 アプリケーションレベルのログ、メトリクス、トレースを Kubernetes のメタデータ
 （例: ポッド名、ネームスペースなど）と相関付けるために、`OTEL_RESOURCE_ATTRIBUTES` 環境変数を使用して
@@ -263,7 +259,7 @@ Kubernetes のメタデータをアプリケーションに転送する必要が
 転送するデプロイメントの例です。
 
 ```yaml
-# my_app_deployment.yaml
+# my_app_deployment.yaml {#deploymentyaml}
 
 apiVersion: apps/v1
 kind: Deployment

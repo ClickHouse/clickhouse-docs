@@ -6,7 +6,7 @@ title: 'system.zookeeper_log'
 doc_type: 'reference'
 ---
 
-# system.zookeeper_log
+# system.zookeeper&#95;log {#systemzookeeper&#95;log}
 
 Эта таблица содержит информацию о параметрах запроса к серверу ZooKeeper и его ответе.
 
@@ -14,26 +14,26 @@ doc_type: 'reference'
 
 Столбцы с параметрами запроса:
 
-- `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Имя хоста сервера, на котором выполняется запрос.
-- `type` ([Enum](../../sql-reference/data-types/enum.md)) — Тип события в клиенте ZooKeeper. Может иметь одно из следующих значений:
-  - `Request` — Запрос был отправлен.
-  - `Response` — Ответ был получен.
-  - `Finalize` — Соединение потеряно, ответ не был получен.
-- `event_date` ([Date](../../sql-reference/data-types/date.md)) — Дата, когда произошло событие.
-- `event_time` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — Дата и время, когда произошло событие.
-- `address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — IP-адрес сервера ZooKeeper, который использовался для выполнения запроса.
-- `port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — Порт сервера ZooKeeper, который использовался для выполнения запроса.
-- `session_id` ([Int64](../../sql-reference/data-types/int-uint.md)) — Идентификатор сессии, который сервер ZooKeeper устанавливает для каждого соединения.
-- `xid` ([Int32](../../sql-reference/data-types/int-uint.md)) — Идентификатор запроса внутри сессии. Обычно это последовательный номер запроса. Он одинаков для строки с запросом и соответствующей строки `response`/`finalize`.
-- `has_watch` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Устанавливается ли [watch](https://zookeeper.apache.org/doc/r3.3.3/zookeeperProgrammers.html#ch_zkWatches) этим запросом.
-- `op_num` ([Enum](../../sql-reference/data-types/enum.md)) — Тип запроса или ответа.
-- `path` ([String](../../sql-reference/data-types/string.md)) — Путь к узлу ZooKeeper, указанному в запросе, или пустая строка, если запрос не требует указания пути.
-- `data` ([String](../../sql-reference/data-types/string.md)) — Данные, записанные в узел ZooKeeper (для запросов `SET` и `CREATE` — что запрос хотел записать, для ответа на запрос `GET` — что было прочитано) или пустая строка.
-- `is_ephemeral` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Создаётся ли узел ZooKeeper как [временный (ephemeral)](https://zookeeper.apache.org/doc/r3.3.3/zookeeperProgrammers.html#Ephemeral+Nodes).
-- `is_sequential` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Создаётся ли узел ZooKeeper как [последовательный (sequential)](https://zookeeper.apache.org/doc/r3.3.3/zookeeperProgrammers.html#Sequence+Nodes+--+Unique+Naming).
-- `version` ([Nullable(Int32)](../../sql-reference/data-types/nullable.md)) — Версия узла ZooKeeper, которую запрос ожидает при выполнении. Поддерживается для запросов `CHECK`, `SET`, `REMOVE` (имеет значение `-1`, если запрос не проверяет версию, или `NULL` для других запросов, которые не поддерживают проверку версии).
-- `requests_size` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Количество запросов, входящих в multi-запрос (это специальный запрос, который состоит из нескольких последовательных обычных запросов и выполняет их атомарно). Все запросы, включённые в multi-запрос, будут иметь одинаковый `xid`.
-- `request_idx` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Номер запроса, входящего в multi-запрос (для самого multi-запроса — `0`, затем по порядку начиная с `1`).
+* `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Имя хоста сервера, на котором выполняется запрос.
+* `type` ([Enum](../../sql-reference/data-types/enum.md)) — Тип события в клиенте ZooKeeper. Может иметь одно из следующих значений:
+  * `Request` — Запрос был отправлен.
+  * `Response` — Ответ был получен.
+  * `Finalize` — Соединение потеряно, ответ не был получен.
+* `event_date` ([Date](../../sql-reference/data-types/date.md)) — Дата, когда произошло событие.
+* `event_time` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — Дата и время, когда произошло событие.
+* `address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — IP-адрес сервера ZooKeeper, который использовался для выполнения запроса.
+* `port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — Порт сервера ZooKeeper, который использовался для выполнения запроса.
+* `session_id` ([Int64](../../sql-reference/data-types/int-uint.md)) — Идентификатор сессии, который сервер ZooKeeper устанавливает для каждого соединения.
+* `xid` ([Int32](../../sql-reference/data-types/int-uint.md)) — Идентификатор запроса внутри сессии. Обычно это последовательный номер запроса. Он одинаков для строки с запросом и соответствующей строки `response`/`finalize`.
+* `has_watch` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Устанавливается ли [watch](https://zookeeper.apache.org/doc/r3.3.3/zookeeperProgrammers.html#ch_zkWatches) этим запросом.
+* `op_num` ([Enum](../../sql-reference/data-types/enum.md)) — Тип запроса или ответа.
+* `path` ([String](../../sql-reference/data-types/string.md)) — Путь к узлу ZooKeeper, указанному в запросе, или пустая строка, если запрос не требует указания пути.
+* `data` ([String](../../sql-reference/data-types/string.md)) — Данные, записанные в узел ZooKeeper (для запросов `SET` и `CREATE` — что запрос хотел записать, для ответа на запрос `GET` — что было прочитано) или пустая строка.
+* `is_ephemeral` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Создаётся ли узел ZooKeeper как [временный (ephemeral)](https://zookeeper.apache.org/doc/r3.3.3/zookeeperProgrammers.html#Ephemeral+Nodes).
+* `is_sequential` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Создаётся ли узел ZooKeeper как [последовательный (sequential)](https://zookeeper.apache.org/doc/r3.3.3/zookeeperProgrammers.html#Sequence+Nodes+--+Unique+Naming).
+* `version` ([Nullable(Int32)](../../sql-reference/data-types/nullable.md)) — Версия узла ZooKeeper, которую запрос ожидает при выполнении. Поддерживается для запросов `CHECK`, `SET`, `REMOVE` (имеет значение `-1`, если запрос не проверяет версию, или `NULL` для других запросов, которые не поддерживают проверку версии).
+* `requests_size` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Количество запросов, входящих в multi-запрос (это специальный запрос, который состоит из нескольких последовательных обычных запросов и выполняет их атомарно). Все запросы, включённые в multi-запрос, будут иметь одинаковый `xid`.
+* `request_idx` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Номер запроса, входящего в multi-запрос (для самого multi-запроса — `0`, затем по порядку начиная с `1`).
 
 Столбцы с параметрами ответа на запрос:
 
@@ -65,7 +65,6 @@ SELECT * FROM system.zookeeper_log WHERE (session_id = '106662742089334927') AND
 ```
 
 Результат:
-
 
 ```text
 Строка 1:

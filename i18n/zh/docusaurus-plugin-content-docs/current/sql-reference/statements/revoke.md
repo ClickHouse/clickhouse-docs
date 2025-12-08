@@ -7,15 +7,11 @@ title: 'REVOKE 语句'
 doc_type: 'reference'
 ---
 
-
-
-# REVOKE 语句
+# REVOKE 语句 {#revoke-statement}
 
 从用户或角色撤销已授予的权限。
 
-
-
-## 语法
+## 语法 {#syntax}
 
 **撤销用户权限**
 
@@ -29,7 +25,6 @@ REVOKE [ON CLUSTER cluster_name] privilege[(column_name [,...])] [,...] ON {db.t
 REVOKE [ON CLUSTER cluster_name] [ADMIN OPTION FOR] role [,...] FROM {user | role | CURRENT_USER} [,...] | ALL | ALL EXCEPT {user_name | role_name | CURRENT_USER} [,...]
 ```
 
-
 ## 描述 {#description}
 
 要撤销某些权限时，可以使用作用范围比计划撤销的权限更宽泛的权限。例如，如果某个用户拥有 `SELECT (x,y)` 权限，管理员可以执行 `REVOKE SELECT(x,y) ...`，或者 `REVOKE SELECT * ...`，甚至执行 `REVOKE ALL PRIVILEGES ...` 查询来撤销该权限。
@@ -38,9 +33,7 @@ REVOKE [ON CLUSTER cluster_name] [ADMIN OPTION FOR] role [,...] FROM {user | rol
 
 可以仅撤销权限的一部分。例如，如果用户拥有 `SELECT *.*` 权限，你可以撤销其中从某些表或某个数据库读取数据的权限。
 
-
-
-## 示例
+## 示例 {#examples}
 
 为用户账户 `john` 授予在除 `accounts` 数据库之外的所有数据库上执行 `SELECT` 的权限：
 

@@ -13,15 +13,11 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-
-
 ## 描述 {#description}
 
 `LineAsStringWithNames` 格式与 [`LineAsString`](./LineAsString.md) 格式类似，但会额外输出包含列名的表头行。
 
-
-
-## 使用示例
+## 使用示例 {#example-usage}
 
 ```sql title="Query"
 CREATE TABLE example (
@@ -41,6 +37,5 @@ John    30
 Jane    25
 Peter    35
 ```
-
 
 ## 格式设置 {#format-settings}

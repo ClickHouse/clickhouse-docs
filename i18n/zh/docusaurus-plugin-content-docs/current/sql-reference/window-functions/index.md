@@ -7,14 +7,10 @@ title: '窗口函数'
 doc_type: 'reference'
 ---
 
-
-
-# 窗口函数 
+# 窗口函数  {#window-functions}
 
 窗口函数可以在与当前行相关的一组行上执行计算。
 其中有些计算类似于使用聚合函数所能完成的计算，但窗口函数不会将多行合并为单个结果——每一行仍然会单独返回。
-
-
 
 ## 标准窗口函数 {#standard-window-functions}
 
@@ -36,8 +32,6 @@ ClickHouse 支持用于定义窗口和窗口函数的标准语法。下表说明
 | `lag/lead(value, offset)`                                                          | ✅ <br/> 你还可以使用以下任一变通方式：<br/> 1) `any(value) over (.... rows between &lt;offset&gt; preceding and &lt;offset&gt; preceding)`，对于 `lead` 使用 `following` <br/> 2) 使用 `lagInFrame/leadInFrame`，其行为类似，但会遵循窗口帧定义。若要获得与 `lag/lead` 完全相同的行为，请使用 `rows between unbounded preceding and unbounded following`                                                                 |
 | `ntile(buckets)` | ✅ <br/> 以如下方式指定窗口：`partition by x order by y rows between unbounded preceding and unbounded following`。 |
 
-
-
 ## ClickHouse 特定窗口函数 {#clickhouse-specific-window-functions}
 
 ClickHouse 还提供以下特定窗口函数:
@@ -51,8 +45,7 @@ ClickHouse 还提供以下特定窗口函数:
 - 第 1 行为 `0`,
 - 第 $i$ 行为 ${\text{metric}_i - \text{metric}_{i-1} \over \text{timestamp}_i - \text{timestamp}_{i-1}}  * \text{interval}$。
 
-
-## 语法
+## 语法 {#syntax}
 
 ```text
 aggregate_function (column_name)
@@ -84,7 +77,7 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 └─────────────────┘  <--- UNBOUNDED FOLLOWING (分区结束)
 ```
 
-### 函数
+### 函数 {#functions}
 
 这些函数只能用作窗口函数。
 
@@ -97,12 +90,11 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 * [`lagInFrame(x)`](./lagInFrame.md) - 返回在其有序窗口中，相对于当前行之前指定物理偏移量那一行计算得到的值。
 * [`leadInFrame(x)`](./leadInFrame.md) - 返回在其有序窗口中，相对于当前行之后指定偏移量那一行计算得到的值。
 
-
-## 示例
+## 示例 {#examples}
 
 我们来看一些使用窗口函数的示例。
 
-### 为行编号
+### 为行编号 {#numbering-rows}
 
 ```sql
 CREATE TABLE salaries
@@ -160,7 +152,7 @@ FROM salaries;
 └─────────────────┴────────┴─────┴──────┴───────────┘
 ```
 
-### 聚合函数
+### 聚合函数 {#aggregation-functions}
 
 将每位球员的薪水与其所在球队的平均薪水进行比较。
 
@@ -196,7 +188,6 @@ SELECT
 FROM salaries;
 ```
 
-
 ```text
 ┌─球员────────────┬─薪水───┬─球队──────────────────────┬─队内最高┬───差额─┐
 │ Charles Juarez  │ 190000 │ New Coreystad Archdukes   │  190000 │      0 │
@@ -207,7 +198,7 @@ FROM salaries;
 └─────────────────┴────────┴───────────────────────────┴─────────┴────────┘
 ```
 
-### 基于列的分区
+### 基于列的分区 {#partitioning-by-column}
 
 ```sql
 CREATE TABLE wf_partition
@@ -240,7 +231,7 @@ ORDER BY
 └──────────┴───────┴───────┴──────────────┘
 ```
 
-### 帧边界
+### 帧边界 {#frame-bounding}
 
 ```sql
 CREATE TABLE wf_frame
@@ -279,7 +270,6 @@ ORDER BY
 │        1 │     5 │     5 │ [1,2,3,4,5]  │
 └──────────┴───────┴───────┴──────────────┘
 ```
-
 
 ```sql
 -- 简写形式 - 无边界表达式,无 ORDER BY,
@@ -354,7 +344,6 @@ ORDER BY
 │        1 │     5 │     5 │ [1,2,3,4,5]        │ [1,2,3,4,5]  │
 └──────────┴───────┴───────┴────────────────────┴──────────────┘
 ```
-
 
 ```sql
 -- 框架范围从分区起始位置到当前行，但排序为倒序
@@ -451,7 +440,6 @@ ORDER BY
     value ASC;
 ```
 
-
 ┌─part&#95;key─┬─value─┬─order─┬─frame&#95;values─┬─rn&#95;1─┬─rn&#95;2─┬─rn&#95;3─┬─rn&#95;4─┐
 │        1 │     1 │     1 │ [5,4,3,2,1]  │    5 │    5 │    5 │    2 │
 │        1 │     2 │     2 │ [5,4,3,2]    │    4 │    4 │    4 │    2 │
@@ -520,7 +508,6 @@ ORDER BY
     value ASC;
 ```
 
-
 ┌─frame&#95;values&#95;1─┬─second&#95;value─┐
 │ [1]            │         ᴺᵁᴸᴸ │
 │ [1,2]          │            2 │
@@ -532,12 +519,11 @@ ORDER BY
 ```
 ```
 
-
-## 实际案例
+## 实际案例 {#real-world-examples}
 
 以下示例演示如何解决一些常见的实际问题。
 
-### 各部门的最高/总薪资
+### 各部门的最高/总薪资 {#maximumtotal-salary-per-department}
 
 ```sql
 CREATE TABLE employees
@@ -593,7 +579,7 @@ FROM
 └────────────┴──────┴────────┴────────────────────┴──────────────────────┴──────────────────┘
 ```
 
-### 累积和
+### 累积和 {#cumulative-sum}
 
 ```sql
 CREATE TABLE warehouse
@@ -634,7 +620,7 @@ ORDER BY
 └───────┴─────────────────────┴───────┴───────────────┘
 ```
 
-### 移动 / 滑动平均（每 3 行）
+### 移动 / 滑动平均（每 3 行） {#moving--sliding-average-per-3-rows}
 
 ```sql
 CREATE TABLE sensors
@@ -645,7 +631,6 @@ CREATE TABLE sensors
 )
 ENGINE = Memory;
 ```
-
 
 insert into sensors values(&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:00&#39;, 87),
 (&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:01&#39;, 77),
@@ -685,7 +670,7 @@ ORDER BY
 └──────────┴─────────────────────┴───────┴───────────────────┘
 ````
 
-### 移动/滑动平均（每 10 秒）
+### 移动/滑动平均（每 10 秒） {#moving--sliding-average-per-10-seconds}
 
 ```sql
 SELECT
@@ -711,7 +696,7 @@ ORDER BY
 └──────────┴─────────────────────┴───────┴────────────────────────────┘
 ```
 
-### 移动 / 滑动平均值（每 10 天）
+### 移动 / 滑动平均值（每 10 天） {#moving--sliding-average-per-10-days}
 
 温度以秒级精度存储，但通过使用 `Range` 和 `ORDER BY toDate(ts)`，我们构建了一个大小为 10 的窗口帧，并且由于使用了 `toDate(ts)`，该单位为天。
 
@@ -724,7 +709,6 @@ CREATE TABLE sensors
 )
 ENGINE = Memory;
 ```
-
 
 insert into sensors values(&#39;ambient&#95;temp&#39;, &#39;2020-01-01 00:00:00&#39;, 16),
 (&#39;ambient&#95;temp&#39;, &#39;2020-01-01 12:00:00&#39;, 16),
@@ -769,7 +753,6 @@ ORDER BY
 └──────────────┴─────────────────────┴───────┴─────────────────────────┘
 ````
 
-
 ## 参考资料 {#references}
 
 ### GitHub 议题 {#github-issues}
@@ -803,8 +786,6 @@ https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html
 https://dev.mysql.com/doc/refman/8.0/en/window-functions-usage.html
 
 https://dev.mysql.com/doc/refman/8.0/en/window-functions-frames.html
-
-
 
 ## 相关内容 {#related-content}
 

@@ -8,12 +8,11 @@ keywords: ['SSL 設定', 'TLS 設定', 'OpenSSL 証明書', 'セキュアな接�
 doc_type: 'guide'
 ---
 
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_automated.md';
+import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 import configuringSsl01 from '@site/static/images/guides/sre/configuring-ssl_01.png';
 import Image from '@theme/IdealImage';
 
-
-# SSL-TLS の構成
+# SSL-TLS の構成 {#configuring-ssl-tls}
 
 <SelfManaged />
 
@@ -24,8 +23,6 @@ TLS の実装は複雑であり、完全に安全かつ堅牢なデプロイメ�
 
 概要をつかむために、この [証明書利用に関する基本的なチュートリアル](https://ubuntu.com/server/docs/security-certificates) を参照してください。
 :::
-
-
 
 ## 1. ClickHouse デプロイメントを作成する {#1-create-a-clickhouse-deployment}
 
@@ -40,8 +37,6 @@ TLS の実装は複雑であり、完全に安全かつ堅牢なデプロイメ�
 :::note
 ClickHouse のインストール方法の詳細については、[クイックスタート](/getting-started/install/install.mdx) を参照してください。
 :::
-
-
 
 ## 2. SSL 証明書の作成 {#2-create-ssl-certificates}
 :::note
@@ -92,8 +87,6 @@ ClickHouse のインストール方法の詳細については、[クイック�
     chnode1.crt: OK
     ```
 
-
-
 ## 3. 証明書と鍵を保存するディレクトリを作成および構成する {#3-create-and-configure-a-directory-to-store-certificates-and-keys}
 
 :::note
@@ -123,8 +116,6 @@ ClickHouse のインストール方法の詳細については、[クイック�
     -rw------- 1 clickhouse clickhouse 1708 Apr 12 20:22 chnode1.key
     -rw------- 1 clickhouse clickhouse 1131 Apr 12 20:23 marsnet_ca.crt
     ```
-
-
 
 ## 4. ClickHouse Keeper を使用して基本クラスタで環境を構成する {#4-configure-the-environment-with-basic-clusters-using-clickhouse-keeper}
 
@@ -228,8 +219,6 @@ ClickHouse Keeper 用の推奨ポートは `9281` です。ただし、このポ
     </remote_servers>
     ```
 
-
-
 4. テスト用に ReplicatedMergeTree テーブルを作成できるよう、マクロ値を定義します。`chnode1` 上では次のように設定します:
     ```xml
     <macros>
@@ -245,8 +234,6 @@ ClickHouse Keeper 用の推奨ポートは `9281` です。ただし、このポ
         <replica>replica_2</replica>
     </macros>
     ```
-
-
 
 ## 5. ClickHouse ノード上で SSL/TLS インターフェースを設定する {#5-configure-ssl-tls-interfaces-on-clickhouse-nodes}
 以下の設定は ClickHouse サーバーの `config.xml` で行います。
@@ -347,15 +334,11 @@ ClickHouse Keeper 用の推奨ポートは `9281` です。ただし、このポ
     </openSSL>
     ```
 
-
-
 6. MySQL および PostgreSQL のデフォルトのエミュレーションポートを無効化します:
     ```xml
     <!--mysql_port>9004</mysql_port-->
     <!--postgresql_port>9005</postgresql_port-->
     ```
-
-
 
 ## 6. テスト {#6-testing}
 1. すべてのノードを、1つずつ起動します:
@@ -397,8 +380,6 @@ ClickHouse Keeper 用の推奨ポートは `9281` です。ただし、このポ
 3. ClickHouse Keeper の状態を確認します  
 通常の [4 letter word (4lW)](/guides/sre/keeper/index.md#four-letter-word-commands) コマンドは、TLS を使用せずに `echo` を使った場合は動作しません。ここでは `openssl` を使ってそれらのコマンドを実行する方法を示します。
    - `openssl` でインタラクティブセッションを開始します
-
-
 
 ```bash
   openssl s_client -connect chnode1.marsnet.local:9281
@@ -509,7 +490,6 @@ MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
    (2,'2022-04-02','def');
    ```
 
-
 8. `chnode2` 上で行を表示し、レプリケーションを検証します:
     ```sql
     SELECT * FROM repl_table
@@ -521,8 +501,6 @@ MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
     │  2 │ 2022-04-02 │ def     │
     └────┴────────────┴─────────┘
     ```
-
-
 
 ## まとめ {#summary}
 

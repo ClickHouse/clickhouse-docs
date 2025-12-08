@@ -7,8 +7,6 @@ description: '描述 ClickHouse Cloud 中的 Shared Catalog 组件和 Shared 数
 doc_type: 'reference'
 ---
 
-
-
 # 共享目录和共享数据库引擎 {#shared-catalog-and-shared-database-engine}
 
 **仅在 ClickHouse Cloud（以及官方一方合作云服务）中提供**
@@ -24,8 +22,6 @@ Shared Catalog **不会复制表中的数据本身**，而是通过复制 DDL �
 - MySQL
 - DataLakeCatalog
 
-
-
 ## 架构与元数据存储 {#architecture-and-metadata-storage}
 
 Shared Catalog 中的所有元数据和 DDL 查询历史记录都集中存储在 ZooKeeper 中，本地磁盘上不会持久化任何数据。此架构可确保：
@@ -33,8 +29,6 @@ Shared Catalog 中的所有元数据和 DDL 查询历史记录都集中存储在
 - 所有副本之间状态一致
 - 计算节点保持无状态
 - 副本能够快速、可靠地启动和初始化
-
-
 
 ## 共享数据库引擎 {#shared-database-engine}
 
@@ -69,9 +63,7 @@ Shared Catalog 中的所有元数据和 DDL 查询历史记录都集中存储在
 - **集中、版本化的元数据状态**
   Shared Catalog 在 ZooKeeper 中存储单一事实来源（single source of truth）。当副本启动时，它会获取最新状态并应用差异以实现一致性。在查询执行期间，系统可以等待其他副本至少达到所需的元数据版本，以确保正确性。
 
-
-
-## 在 ClickHouse Cloud 中的使用
+## 在 ClickHouse Cloud 中的使用 {#usage-in-clickhouse-cloud}
 
 对于终端用户而言，使用 Shared Catalog 和 Shared 数据库引擎无需任何额外配置。数据库的创建方式与以往完全相同：
 
@@ -80,7 +72,6 @@ CREATE DATABASE my_database;
 ```
 
 ClickHouse Cloud 会自动为数据库分配 Shared 数据库引擎。在此类数据库中创建的、使用无状态引擎的任意表，都将自动具备 Shared Catalog 的复制与协调能力。
-
 
 ## 概要 {#summary}
 

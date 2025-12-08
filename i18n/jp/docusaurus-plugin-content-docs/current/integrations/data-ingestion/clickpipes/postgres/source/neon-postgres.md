@@ -14,15 +14,12 @@ import neon_ip_allow from '@site/static/images/integrations/data-ingestion/click
 import neon_conn_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/neon-postgres/neon-conn-details.png'
 import Image from '@theme/IdealImage';
 
-
-# Neon Postgres ソースセットアップガイド
+# Neon Postgres ソースセットアップガイド {#neon-postgres-source-setup-guide}
 
 本ガイドでは、ClickPipes でレプリケーション元として利用できる Neon Postgres のセットアップ方法について説明します。
 このセットアップのために、事前に [Neon コンソール](https://console.neon.tech/app/projects) にサインインしておいてください。
 
-
-
-## 権限を持つユーザーの作成
+## 権限を持つユーザーの作成 {#creating-a-user-with-permissions}
 
 CDC に適した必要な権限を付与した ClickPipes 用の新しいユーザーを作成し、
 レプリケーションに使用する publication も作成します。
@@ -47,8 +44,7 @@ CDC に適した必要な権限を付与した ClickPipes 用の新しいユー�
 
 **Run** をクリックして、パブリケーションとユーザーを作成します。
 
-
-## ロジカルレプリケーションを有効化する
+## ロジカルレプリケーションを有効化する {#enable-logical-replication}
 
 Neon では、UI からロジカルレプリケーションを有効化できます。これは、ClickPipes の CDC（変更データキャプチャ）でデータをレプリケートするために必要です。
 **Settings** タブに移動し、**Logical Replication** セクションを開きます。
@@ -67,14 +63,11 @@ SHOW max_wal_senders; -- 10 である必要があります
 SHOW max_replication_slots; -- 10 である必要があります
 ```
 
-
 ## IP ホワイトリスト登録（Neon Enterprise プラン向け） {#ip-whitelisting-for-neon-enterprise-plan}
 Neon Enterprise プランをご利用の場合、[ClickPipes の IP アドレス](../../index.md#list-of-static-ips) をホワイトリストに登録することで、ClickPipes から Neon Postgres インスタンスへのレプリケーションを許可できます。
 そのためには、**Settings** タブをクリックし、**IP Allow** セクションに移動します。
 
 <Image size="lg" img={neon_ip_allow} alt="IP 許可画面" border/>
-
-
 
 ## 接続情報をコピーする {#copy-connection-details}
 ユーザーと publication の準備が整い、レプリケーションが有効になったので、新しい ClickPipe を作成するために接続情報をコピーします。
@@ -82,8 +75,6 @@ Neon Enterprise プランをご利用の場合、[ClickPipes の IP アドレス
 表示を **Parameters Only** に切り替えます。次の手順でこれらのパラメータを使用します。
 
 <Image size="lg" img={neon_conn_details} alt="接続情報" border/>
-
-
 
 ## 次のステップ {#whats-next}
 

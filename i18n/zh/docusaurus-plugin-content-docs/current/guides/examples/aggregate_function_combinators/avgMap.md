@@ -7,20 +7,14 @@ sidebar_label: 'avgMap'
 doc_type: 'reference'
 ---
 
-
-
 # avgMap {#avgmap}
-
-
 
 ## 描述 {#description}
 
 [`Map`](/sql-reference/aggregate-functions/combinators#-map) 组合器可以应用于 [`avg`](/sql-reference/aggregate-functions/reference/avg)
 函数，使用 `avgMap` 聚合组合器，根据每个键计算 Map 中值的算术平均值。
 
-
-
-## 示例用法
+## 示例用法 {#example-usage}
 
 在这个示例中，我们将创建一张表，用于存储不同时间段的状态码及其计数，每一行都包含一个将状态码映射到其对应计数的 `Map`。我们将使用 `avgMap` 来计算每个时间段内各个状态码的平均计数。
 
@@ -64,7 +58,6 @@ GROUP BY timeslot;
 2. │ 2000-01-01 00:00:00 │ {'a':15,'b':25,'c':40,'d':55,'e':65} │
    └─────────────────────┴──────────────────────────────────────┘
 ```
-
 
 ## 另请参阅 {#see-also}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)

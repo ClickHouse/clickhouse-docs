@@ -13,8 +13,6 @@ doc_type: 'reference'
 |-------|--------|--------------------------------|
 |     ✔    |     ✔     | `TSVWithNames`, `RawWithNames` |
 
-
-
 ## Описание {#description}
 
 Отличается от формата [`TabSeparated`](./TabSeparated.md) тем, что имена столбцов записаны в первой строке.
@@ -27,11 +25,9 @@ doc_type: 'reference'
 В противном случае первая строка будет пропущена.
 :::
 
+## Пример использования {#example-usage}
 
-
-## Пример использования
-
-### Вставка данных
+### Вставка данных {#inserting-data}
 
 Используем следующий TSV-файл с именем `football.tsv`:
 
@@ -62,7 +58,7 @@ date    season  home_team       away_team       home_team_goals away_team_goals
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedWithNames;
 ```
 
-### Чтение данных
+### Чтение данных {#reading-data}
 
 Считайте данные в формате `TabSeparatedWithNames`:
 
@@ -94,6 +90,5 @@ date    season  home_team       away_team       home_team_goals away_team_goals
 2022-05-07      2021    Stevenage Borough       Salford City    4       2
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
-
 
 ## Настройки формата {#format-settings}

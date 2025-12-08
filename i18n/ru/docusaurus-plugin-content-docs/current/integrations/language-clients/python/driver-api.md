@@ -77,7 +77,7 @@ doc_type: 'reference'
 
 Другие настройки ClickHouse, которые можно отправлять с каждым запросом, см. в [документации ClickHouse](/operations/settings/settings.md).
 
-### Примеры создания клиента
+### Примеры создания клиента {#client-creation-examples}
 
 * Если не указывать параметры, клиент ClickHouse Connect подключится к стандартному HTTP-порту на `localhost` с пользователем по умолчанию и без пароля:
 
@@ -86,7 +86,7 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 print(client.server_version)
-# Результат: '22.10.1.98'
+# Результат: '22.10.1.98' {#output-2210198}
 ```
 
 * Подключение к защищённому (HTTPS) внешнему серверу ClickHouse
@@ -96,7 +96,7 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client(host='play.clickhouse.com', secure=True, port=443, user='play', password='clickhouse')
 print(client.command('SELECT timezone()'))
-# Результат: 'Etc/UTC'
+# Результат: 'Etc/UTC' {#output-etcutc}
 ```
 
 * Подключение с идентификатором сессии и другими пользовательскими параметрами подключения и настройками ClickHouse.
@@ -115,9 +115,8 @@ client = clickhouse_connect.get_client(
     settings={'distributed_ddl_task_timeout':300},
 )
 print(client.database)
-# Результат: 'github'
+# Результат: 'github' {#output-github}
 ```
-
 
 ## Жизненный цикл клиента и рекомендации по использованию {#client-lifecycle-and-best-practices}
 
@@ -130,36 +129,35 @@ print(client.database)
 - **Корректно освобождайте ресурсы**: Всегда закрывайте клиентов при завершении работы, чтобы освободить ресурсы пула подключений
 - **Используйте совместно, когда это возможно**: Один клиент может обрабатывать множество параллельных запросов через свой пул подключений (см. примечания по работе с потоками ниже)
 
-### Базовые шаблоны
+### Базовые шаблоны {#basic-patterns}
 
 **✅ Хорошо: переиспользовать один и тот же клиент**
 
 ```python
 import clickhouse_connect
 
-# Создается один раз при запуске
+# Создается один раз при запуске {#create-once-at-startup}
 client = clickhouse_connect.get_client(host='my-host', username='default', password='password')
 
-# Используется повторно для всех запросов
+# Используется повторно для всех запросов {#reuse-for-all-queries}
 for i in range(1000):
     result = client.query('SELECT count() FROM users')
 
-# Закрывается при завершении работы
+# Закрывается при завершении работы {#close-on-shutdown}
 client.close()
 ```
 
 **❌ Плохо: каждый раз заново создавать клиентов**
 
 ```python
-# ПЛОХО: Создает 1000 клиентов с дорогостоящими накладными расходами на инициализацию
+# ПЛОХО: Создает 1000 клиентов с дорогостоящими накладными расходами на инициализацию {#bad-creates-1000-clients-with-expensive-initialization-overhead}
 for i in range(1000):
     client = clickhouse_connect.get_client(host='my-host', username='default', password='password')
     result = client.query('SELECT count() FROM users')
     client.close()
 ```
 
-
-### Многопоточные приложения
+### Многопоточные приложения {#multi-threaded-applications}
 
 :::warning
 Экземпляры клиента **НЕ являются потокобезопасными** при использовании идентификаторов сеансов. По умолчанию у клиентов автоматически генерируется идентификатор сеанса, и параллельные запросы в одном и том же сеансе приведут к возникновению `ProgrammingError`.
@@ -171,7 +169,7 @@ for i in range(1000):
 import clickhouse_connect
 import threading
 
-# Вариант 1: Отключение сессий (рекомендуется для разделяемых клиентов)
+# Вариант 1: Отключение сессий (рекомендуется для разделяемых клиентов) {#option-1-disable-sessions-recommended-for-shared-clients}
 client = clickhouse_connect.get_client(
     host='my-host',
     username='default',
@@ -192,17 +190,17 @@ for t in threads:
     t.join()
 
 client.close()
-# Вывод:
-# Поток 0: 0
-# Поток 7: 7
-# Поток 1: 1
-# Поток 9: 9
-# Поток 4: 4
-# Поток 2: 2
-# Поток 8: 8
-# Поток 5: 5
-# Поток 6: 6
-# Поток 3: 3
+# Вывод: {#output}
+# Поток 0: 0 {#thread-0-0}
+# Поток 7: 7 {#thread-7-7}
+# Поток 1: 1 {#thread-1-1}
+# Поток 9: 9 {#thread-9-9}
+# Поток 4: 4 {#thread-4-4}
+# Поток 2: 2 {#thread-2-2}
+# Поток 8: 8 {#thread-8-8}
+# Поток 5: 5 {#thread-5-5}
+# Поток 6: 6 {#thread-6-6}
+# Поток 3: 3 {#thread-3-3}
 ```
 
 **Альтернативный подход к сессиям:** Если вам нужны сессии (например, для временных таблиц), создавайте отдельный клиент для каждого потока:
@@ -216,8 +214,7 @@ def worker(thread_id):
     client.close()
 ```
 
-
-### Корректная очистка
+### Корректная очистка {#proper-cleanup}
 
 Всегда закрывайте клиентов при завершении работы. Обратите внимание, что `client.close()` освобождает ресурсы клиента и закрывает HTTP‑соединения из пула только в том случае, если клиент владеет собственным пулом (например, когда он создан с пользовательскими параметрами TLS/прокси). Для стандартного общего пула используйте `client.close_connections()` для явной очистки сокетов; в противном случае соединения автоматически освобождаются по истечении времени простоя и при завершении процесса.
 
@@ -235,7 +232,6 @@ finally:
 with clickhouse_connect.get_client(host='my-host', username='default', password='password') as client:
     result = client.query('SELECT 1')
 ```
-
 
 ### Когда использовать несколько клиентов {#when-to-use-multiple-clients}
 
@@ -255,7 +251,7 @@ with clickhouse_connect.get_client(host='my-host', username='default', password=
 
 Методы `query*` и `command` клиента ClickHouse Connect принимают необязательный именованный аргумент `parameters`, используемый для привязки выражений Python к выражениям значений в ClickHouse. Доступны два вида такой привязки.
 
-#### Привязка на стороне сервера
+#### Привязка на стороне сервера {#server-side-binding}
 
 ClickHouse поддерживает [привязку на стороне сервера](/interfaces/cli.md#cli-queries-with-parameters) для большинства значений в запросе, при которой привязанное значение отправляется отдельно от запроса в виде HTTP‑параметра. ClickHouse Connect добавит соответствующие параметры запроса, если обнаружит выражение привязки вида `{<name>:<datatype>}`. Для привязки на стороне сервера аргумент `parameters` должен быть словарем Python.
 
@@ -283,8 +279,7 @@ WHERE date >= '2022-10-01 15:20:05'
 Привязка на стороне сервера поддерживается (сервером ClickHouse) только для запросов `SELECT`. Она не работает для `ALTER`, `DELETE`, `INSERT` или других типов запросов. В будущем это может измениться; см. [https://github.com/ClickHouse/ClickHouse/issues/42092](https://github.com/ClickHouse/ClickHouse/issues/42092).
 :::
 
-
-#### Привязка на стороне клиента
+#### Привязка на стороне клиента {#client-side-binding}
 
 ClickHouse Connect также поддерживает привязку параметров на стороне клиента, что даёт большую гибкость при генерации шаблонных SQL‑запросов. Для привязки на стороне клиента аргумент `parameters` должен быть словарём или последовательностью. Привязка на стороне клиента использует [форматирование строк в стиле «printf»](https://docs.python.org/3/library/stdtypes.html#old-string-formatting) в Python для подстановки параметров.
 
@@ -348,8 +343,7 @@ WHERE metric >= 35200.44
 
 :::
 
-
-### Аргумент settings
+### Аргумент settings {#settings-argument-1}
 
 Все ключевые методы ClickHouse Connect Client &quot;insert&quot; и &quot;select&quot; принимают необязательный именованный аргумент `settings` для передачи [пользовательских настроек](/operations/settings/settings.md) ClickHouse для соответствующего SQL‑выражения. Аргумент `settings` должен быть словарём. Каждый элемент должен представлять собой имя настройки ClickHouse и её соответствующее значение. Учтите, что значения будут преобразованы в строки при отправке на сервер в виде параметров запроса.
 
@@ -363,7 +357,6 @@ settings = {'merge_tree_min_rows_for_concurrent_read': 65535,
             'use_skip_indexes': False}
 client.query("SELECT event_type, sum(timeout) FROM event_errors WHERE event_time > '2022-08-01'", settings=settings)
 ```
-
 
 ## Метод клиента `command` {#client-command-method}
 
@@ -380,90 +373,86 @@ client.query("SELECT event_type, sum(timeout) FROM event_errors WHERE event_time
 
 ### Примеры команд {#command-examples}
 
-#### Операторы DDL
+#### Операторы DDL {#ddl-statements}
 
 ```python
 import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# Создание таблицы
+# Создание таблицы {#create-a-table}
 result = client.command("CREATE TABLE test_command (col_1 String, col_2 DateTime) ENGINE MergeTree ORDER BY tuple()")
 print(result)  # Возвращает QuerySummary с query_id
 
-# Отображение определения таблицы
+# Отображение определения таблицы {#show-table-definition}
 result = client.command("SHOW CREATE TABLE test_command")
 print(result)
-# Вывод:
-# CREATE TABLE default.test_command
+# Вывод: {#output}
+# CREATE TABLE default.test_command {#create-table-defaulttest_command}
 # (
-#     `col_1` String,
-#     `col_2` DateTime
+#     `col_1` String, {#col_1-string}
+#     `col_2` DateTime {#col_2-datetime}
 # )
-# ENGINE = MergeTree
-# ORDER BY tuple()
-# SETTINGS index_granularity = 8192
+# ENGINE = MergeTree {#engine-mergetree}
+# ORDER BY tuple() {#order-by-tuple}
+# SETTINGS index_granularity = 8192 {#settings-index_granularity-8192}
 
-# Удаление таблицы
+# Удаление таблицы {#drop-table}
 client.command("DROP TABLE test_command")
 ```
 
-
-#### Простые запросы, возвращающие одно значение
+#### Простые запросы, возвращающие одно значение {#simple-queries-returning-single-values}
 
 ```python
 import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# Результат с одним значением
+# Результат с одним значением {#single-value-result}
 count = client.command("SELECT count() FROM system.tables")
 print(count)
-# Вывод: 151
+# Вывод: 151 {#output-151}
 
-# Версия сервера
+# Версия сервера {#server-version}
 version = client.command("SELECT version()")
 print(version)
-# Вывод: "25.8.2.29"
+# Вывод: "25.8.2.29" {#output-258229}
 ```
 
-
-#### Команды с параметрами
+#### Команды с параметрами {#commands-with-parameters}
 
 ```python
 import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# Использование параметров на стороне клиента
+# Использование параметров на стороне клиента {#using-client-side-parameters}
 table_name = "system"
 result = client.command(
     "SELECT count() FROM system.tables WHERE database = %(db)s",
     parameters={"db": table_name}
 )
 
-# Использование параметров на стороне сервера
+# Использование параметров на стороне сервера {#using-server-side-parameters}
 result = client.command(
     "SELECT count() FROM system.tables WHERE database = {db:String}",
     parameters={"db": "system"}
 )
 ```
 
-
-#### Команды с настройками
+#### Команды с настройками {#commands-with-settings}
 
 ```python
 import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# Выполнить команду с конкретными настройками
+# Выполнить команду с конкретными настройками {#execute-command-with-specific-settings}
 result = client.command(
     "OPTIMIZE TABLE large_table FINAL",
     settings={"optimize_throw_if_noop": 1}
 )
 ```
-
 
 ## Метод клиента `query` {#client-query-method}
 
@@ -487,33 +476,32 @@ result = client.command(
 
 ### Примеры запросов {#query-examples}
 
-#### Простой запрос
+#### Простой запрос {#basic-query}
 
 ```python
 import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# Простой SELECT-запрос
+# Простой SELECT-запрос {#simple-select-query}
 result = client.query("SELECT name, database FROM system.tables LIMIT 3")
 
-# Получение результатов в виде строк
+# Получение результатов в виде строк {#access-results-as-rows}
 for row in result.result_rows:
     print(row)
-# Вывод:
-# ('CHARACTER_SETS', 'INFORMATION_SCHEMA')
-# ('COLLATIONS', 'INFORMATION_SCHEMA')
-# ('COLUMNS', 'INFORMATION_SCHEMA')
+# Вывод: {#output}
+# ('CHARACTER_SETS', 'INFORMATION_SCHEMA') {#character_sets-information_schema}
+# ('COLLATIONS', 'INFORMATION_SCHEMA') {#collations-information_schema}
+# ('COLUMNS', 'INFORMATION_SCHEMA') {#columns-information_schema}
 
-# Получение имен и типов столбцов
+# Получение имен и типов столбцов {#access-column-names-and-types}
 print(result.column_names)
-# Вывод: ("name", "database")
+# Вывод: ("name", "database") {#output-name-database}
 print([col_type.name for col_type in result.column_types])
-# Вывод: ['String', 'String']
+# Вывод: ['String', 'String'] {#output-string-string}
 ```
 
-
-#### Доступ к результатам запроса
+#### Доступ к результатам запроса {#accessing-query-results}
 
 ```python
 import clickhouse_connect
@@ -522,74 +510,71 @@ client = clickhouse_connect.get_client()
 
 result = client.query("SELECT number, toString(number) AS str FROM system.numbers LIMIT 3")
 
-# Построчный доступ (по умолчанию)
+# Построчный доступ (по умолчанию) {#row-oriented-access-default}
 print(result.result_rows)
-# Вывод: [[0, "0"], [1, "1"], [2, "2"]]
+# Вывод: [[0, "0"], [1, "1"], [2, "2"]] {#output-0-0-1-1-2-2}
 
-# Постолбцовый доступ
+# Постолбцовый доступ {#column-oriented-access}
 print(result.result_columns)
-# Вывод: [[0, 1, 2], ["0", "1", "2"]]
+# Вывод: [[0, 1, 2], ["0", "1", "2"]] {#output-0-1-2-0-1-2}
 
-# Именованные результаты (список словарей)
+# Именованные результаты (список словарей) {#named-results-list-of-dictionaries}
 for row_dict in result.named_results():
     print(row_dict)
-# Вывод: 
-# {"number": 0, "str": "0"}
-# {"number": 1, "str": "1"}
-# {"number": 2, "str": "2"}
+# Вывод:  {#output}
+# {"number": 0, "str": "0"} {#number-0-str-0}
+# {"number": 1, "str": "1"} {#number-1-str-1}
+# {"number": 2, "str": "2"} {#number-2-str-2}
 
-# Первая строка как словарь
+# Первая строка как словарь {#first-row-as-dictionary}
 print(result.first_item)
-# Вывод: {"number": 0, "str": "0"}
+# Вывод: {"number": 0, "str": "0"} {#output-number-0-str-0}
 
-# Первая строка как кортеж
+# Первая строка как кортеж {#first-row-as-tuple}
 print(result.first_row)
-# Вывод: (0, "0")
+# Вывод: (0, "0") {#output-0-0}
 ```
 
-
-#### Запрос с клиентскими параметрами
+#### Запрос с клиентскими параметрами {#query-with-client-side-parameters}
 
 ```python
 import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# Использование параметров-словаря (в стиле printf)
+# Использование параметров-словаря (в стиле printf) {#using-dictionary-parameters-printf-style}
 query = "SELECT * FROM system.tables WHERE database = %(db)s AND name LIKE %(pattern)s"
 parameters = {"db": "system", "pattern": "%query%"}
 result = client.query(query, parameters=parameters)
 
-# Использование параметров-кортежа
+# Использование параметров-кортежа {#using-tuple-parameters}
 query = "SELECT * FROM system.tables WHERE database = %s LIMIT %s"
 parameters = ("system", 5)
 result = client.query(query, parameters=parameters)
 ```
 
-
-#### Запрос с серверными параметрами
+#### Запрос с серверными параметрами {#query-with-server-side-parameters}
 
 ```python
 import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# Привязка на стороне сервера (более безопасна, обеспечивает лучшую производительность для SELECT-запросов)
+# Привязка на стороне сервера (более безопасна, обеспечивает лучшую производительность для SELECT-запросов) {#server-side-binding-more-secure-better-performance-for-select-queries}
 query = "SELECT * FROM system.tables WHERE database = {db:String} AND name = {tbl:String}"
 parameters = {"db": "system", "tbl": "query_log"}
 
 result = client.query(query, parameters=parameters)
 ```
 
-
-#### Запрос с параметрами
+#### Запрос с параметрами {#query-with-settings}
 
 ```python
 import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# Передать настройки ClickHouse вместе с запросом
+# Передать настройки ClickHouse вместе с запросом {#pass-clickhouse-settings-with-the-query}
 result = client.query(
     "SELECT sum(number) FROM numbers(1000000)",
     settings={
@@ -598,7 +583,6 @@ result = client.query(
     }
 )
 ```
-
 
 ### Объект `QueryResult` {#the-queryresult-object}
 
@@ -658,14 +642,14 @@ ClickHouse Connect предоставляет специализированны
 
 В примерах ниже предполагается, что уже существует таблица `users` со схемой `(id UInt32, name String, age UInt8)`.
 
-#### Базовая вставка в построчном формате
+#### Базовая вставка в построчном формате {#basic-row-oriented-insert}
 
 ```python
 import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# Данные, ориентированные по строкам: каждый внутренний список — это строка
+# Данные, ориентированные по строкам: каждый внутренний список — это строка {#row-oriented-data-each-inner-list-is-a-row}
 data = [
     [1, "Alice", 25],
     [2, "Bob", 30],
@@ -675,15 +659,14 @@ data = [
 client.insert("users", data, column_names=["id", "name", "age"])
 ```
 
-
-#### Вставка по столбцам
+#### Вставка по столбцам {#column-oriented-insert}
 
 ```python
 import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# Данные в колоночном формате: каждый внутренний список — это колонка
+# Данные в колоночном формате: каждый внутренний список — это колонка {#column-oriented-data-each-inner-list-is-a-column}
 data = [
     [1, 2, 3],  # колонка id
     ["Alice", "Bob", "Joe"],  # колонка name
@@ -693,15 +676,14 @@ data = [
 client.insert("users", data, column_names=["id", "name", "age"], column_oriented=True)
 ```
 
-
-#### Вставка с явным указанием типов столбцов
+#### Вставка с явным указанием типов столбцов {#insert-with-explicit-column-types}
 
 ```python
 import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# Полезно, если нужно избежать запроса DESCRIBE к серверу
+# Полезно, если нужно избежать запроса DESCRIBE к серверу {#useful-when-you-want-to-avoid-a-describe-query-to-the-server}
 data = [
     [1, "Alice", 25],
     [2, "Bob", 30],
@@ -716,8 +698,7 @@ client.insert(
 )
 ```
 
-
-#### Вставка в конкретную базу данных
+#### Вставка в конкретную базу данных {#insert-into-specific-database}
 
 ```python
 import clickhouse_connect
@@ -729,7 +710,7 @@ data = [
     [2, "Bob", 30],
 ]
 
-# Вставка данных в таблицу указанной базы данных
+# Вставка данных в таблицу указанной базы данных {#insert-into-a-table-in-a-specific-database}
 client.insert(
     "users",
     data,
@@ -737,7 +718,6 @@ client.insert(
     database="production",
 )
 ```
-
 
 ## Вставка из файлов {#file-inserts}
 

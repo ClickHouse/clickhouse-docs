@@ -14,8 +14,7 @@ import analyzer4 from '@site/static/images/guides/developer/analyzer4.png';
 import analyzer5 from '@site/static/images/guides/developer/analyzer5.png';
 import Image from '@theme/IdealImage';
 
-
-# analyzer を用いたクエリ実行の理解
+# analyzer を用いたクエリ実行の理解 {#understanding-query-execution-with-the-analyzer}
 
 ClickHouse はクエリを非常に高速に処理しますが、その実行の仕組みはそれほど単純ではありません。`SELECT` クエリがどのように実行されるのかを見ていきましょう。その説明のために、ClickHouse のテーブルにいくつかのデータを追加してみます。
 
@@ -41,8 +40,7 @@ ClickHouse にいくつかデータが入ったので、クエリを実行し、
 
 クエリ実行中にそれぞれのコンポーネントがどのように動作するかを見ていきましょう。いくつかのクエリを取り上げて、`EXPLAIN` ステートメントを使って詳しく見ていきます。
 
-
-## パーサー
+## パーサー {#parser}
 
 パーサーの目的は、クエリテキストを AST（抽象構文木）に変換することです。この処理は、`EXPLAIN AST` を使用して可視化できます。
 
@@ -73,8 +71,7 @@ EXPLAIN AST SELECT min(timestamp), max(timestamp) FROM session_events;
 
 各ノードは子ノードを持ち、ツリー全体でクエリ全体の構造を表します。これはクエリ処理を支援するための論理構造です。エンドユーザーの立場からは（クエリ実行に関心がない限り）それほど有用ではなく、このツールは主に開発者によって利用されます。
 
-
-## Analyzer
+## Analyzer {#analyzer}
 
 現在、ClickHouse には Analyzer のアーキテクチャが 2 つあります。古いアーキテクチャを使用するには、`enable_analyzer=0` を設定します。新しいアーキテクチャはデフォルトで有効です。新しい Analyzer が一般提供されると古いアーキテクチャは非推奨となるため、ここでは新しいアーキテクチャのみを説明します。
 
@@ -131,8 +128,7 @@ EXPLAIN QUERY TREE passes=20 SELECT min(timestamp) AS minimum_date, max(timestam
 
 2回の実行結果を比較すると、エイリアスとプロジェクションがどのように解決されるかを確認できます。
 
-
-## プランナー
+## プランナー {#planner}
 
 プランナーはクエリツリーを受け取り、そこからクエリプランを構築します。クエリツリーは特定のクエリで「何を行うか」を表し、クエリプランは「それをどのように実行するか」を表します。追加の最適化はクエリプランの一部として行われます。`EXPLAIN PLAN` または `EXPLAIN` を使用してクエリプランを確認できます（`EXPLAIN` は内部的に `EXPLAIN PLAN` を実行します）。
 
@@ -205,7 +201,6 @@ FROM session_events
 GROUP BY type
 ```
 
-
 ┌─explain────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ 式 ((Projection + Before ORDER BY))                                                                                                       │
 │ アクション: INPUT :: 0 -&gt; type String : 0                                                                                                │
@@ -248,8 +243,7 @@ GROUP BY type
 使用されているすべての入力、関数、エイリアス、およびデータ型を確認できるようになりました。プランナーが適用する最適化の一部は[こちら](https://github.com/ClickHouse/ClickHouse/blob/master/src/Processors/QueryPlan/Optimizations/Optimizations.h)で確認できます。
 ```
 
-
-## クエリパイプライン
+## クエリパイプライン {#query-pipeline}
 
 クエリパイプラインはクエリプランから生成されます。クエリパイプラインはクエリプランと非常によく似ていますが、木構造ではなくグラフ構造である点が異なります。ClickHouse がクエリをどのように実行し、どのリソースを使用するかを示します。クエリパイプラインを分析することで、入力／出力の観点からボトルネックがどこにあるかを把握するのに非常に有用です。先ほどのクエリを使って、クエリパイプラインの実行を見てみましょう。
 
@@ -363,7 +357,6 @@ GROUP BY type
 FORMAT TSV
 ```
 
-
 ```response
 digraph
 {
@@ -446,7 +439,6 @@ digraph
 <Image img={analyzer5} alt="並列グラフの出力" size="md" />
 
 その結果、実行エンジンはデータ量が十分でないと判断し、処理を並列化しませんでした。そこで行数を増やすと、グラフに示されているように、今度は実行エンジンが複数スレッドの使用を選択しました。
-
 
 ## Executor {#executor}
 

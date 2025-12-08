@@ -30,7 +30,6 @@ ALTER USER [IF EXISTS] name1 [RENAME TO new_name |, name2 [,...]]
 
 要使用 `ALTER USER` 语句，您必须具有 [ALTER USER](../../../sql-reference/statements/grant.md#access-management) 权限。
 
-
 ## GRANTEES 子句 {#grantees-clause}
 
 指定允许从该用户处接收[权限](../../../sql-reference/statements/grant.md#privileges)的用户或角色，前提是该用户自身也已通过带有 [GRANT OPTION](../../../sql-reference/statements/grant.md#granting-privilege-syntax) 的授权获得所有必需的访问权限。`GRANTEES` 子句的选项：
@@ -42,9 +41,7 @@ ALTER USER [IF EXISTS] name1 [RENAME TO new_name |, name2 [,...]]
 
 您可以使用 `EXCEPT` 表达式排除任意用户或角色。例如，`ALTER USER user1 GRANTEES ANY EXCEPT user2`。这意味着如果 `user1` 拥有一些通过 `GRANT OPTION` 授予的权限，则它可以将这些权限授予除 `user2` 之外的任意用户或角色。
 
-
-
-## 示例
+## 示例 {#examples}
 
 将已分配的角色设为默认角色：
 
@@ -103,7 +100,6 @@ ALTER USER user1 IDENTIFIED WITH plaintext_password by '1', bcrypt_password by '
 ```sql
 ALTER USER user1 RESET AUTHENTICATION METHODS TO NEW
 ```
-
 
 ## VALID UNTIL 子句 {#valid-until-clause}
 

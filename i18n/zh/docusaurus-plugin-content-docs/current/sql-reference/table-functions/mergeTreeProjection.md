@@ -8,20 +8,15 @@ title: 'mergeTreeProjection'
 doc_type: 'reference'
 ---
 
-
-
-# mergeTreeProjection 表函数
+# mergeTreeProjection 表函数 {#mergetreeprojection-table-function}
 
 表示 MergeTree 表中某个投影的内容。可用于内部检查和分析。
 
-
-
-## 语法
+## 语法 {#syntax}
 
 ```sql
 mergeTreeProjection(database, table, projection)
 ```
-
 
 ## 参数 {#arguments}
 
@@ -31,15 +26,11 @@ mergeTreeProjection(database, table, projection)
 | `table`      | 要读取其投影的表名称。         |
 | `projection` | 要读取的投影名称。             |
 
-
-
 ## 返回值 {#returned_value}
 
 一个表对象，其列由给定投影提供。
 
-
-
-## 使用示例
+## 使用示例 {#usage-example}
 
 ```sql
 CREATE TABLE test

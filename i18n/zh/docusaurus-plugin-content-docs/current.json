@@ -276,7 +276,7 @@
     "description": "侧边栏 sqlreference 中 “SELECT” 类别的标签"
   },
   "sidebar.sqlreference.category.CREATE": {
-    "message": "创建",
+    "message": "CREATE",
     "description": "侧边栏 sqlreference 中 “CREATE” 分类的标签"
   },
   "sidebar.sqlreference.category.ALTER": {

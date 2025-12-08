@@ -19,8 +19,6 @@ ClickHouse 中的压缩会受到三个主要因素的影响：
 
 所有这些都通过表结构（schema）进行配置。
 
-
-
 ## 选择合适的数据类型以优化压缩 {#choose-the-right-data-type-to-optimize-compression}
 
 让我们以 Stack Overflow 数据集为例,比较 `posts` 表以下模式的压缩统计信息:
@@ -68,7 +66,6 @@ GROUP BY name
 <details>
    
 <summary>关于紧凑部分与宽部分的说明</summary>
-
 
 如果您看到 `compressed_size` 或 `uncompressed_size` 的值为 `0`,这可能是因为数据分区的类型为 `compact` 而非 `wide`(请参阅 [`system.parts`](/operations/system-tables/parts) 中对 `part_type` 的说明)。
 数据分区格式由设置 [`min_bytes_for_wide_part`](/operations/settings/merge-tree-settings#min_bytes_for_wide_part) 和 [`min_rows_for_wide_part`](/operations/settings/merge-tree-settings#min_rows_for_wide_part) 控制,这意味着如果插入的数据所生成的分区未超过上述设置的值,该分区将采用 compact 格式而非 wide 格式,此时您将无法看到 `compressed_size` 或 `uncompressed_size` 的值。
@@ -141,7 +138,6 @@ GROUP BY name;
 
 要汇总表的总大小,我们可以简化上述查询:
 
-
 ```sql
 SELECT formatReadableSize(sum(data_compressed_bytes)) AS 压缩后大小,
     formatReadableSize(sum(data_uncompressed_bytes)) AS 未压缩大小,
@@ -182,7 +178,6 @@ WHERE `table` = 'posts_v3'
 GROUP BY name
 ```
 
-
 ┌─列名──────────────────┬─压缩&#95;大小───────┬─未压缩&#95;大小───────┬───压缩比─┐
 │ 正文                  │ 23.10 GiB       │ 63.63 GiB         │    2.75 │
 │ 标题                  │ 614.65 MiB      │ 1.28 GiB          │    2.14 │
@@ -211,8 +206,7 @@ GROUP BY name
 ```
 ```
 
-
-## 选择合适的列压缩编解码器（codec）
+## 选择合适的列压缩编解码器（codec） {#choosing-the-right-column-compression-codec}
 
 通过列压缩编解码器，我们可以更改用于对每一列进行编码和压缩的算法（及其设置）。
 
@@ -266,7 +260,6 @@ ENGINE = MergeTree
 ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
 ```
 
-
 这些列的压缩效果提升如下：
 
 ```sql
@@ -297,6 +290,6 @@ ORDER BY
 6 rows in set. Elapsed: 0.008 sec
 ```
 
-### ClickHouse Cloud 中的压缩
+### ClickHouse Cloud 中的压缩 {#compression-in-clickhouse-cloud}
 
 在 ClickHouse Cloud 中，我们默认使用 `ZSTD` 压缩算法（默认压缩级别为 1）。该算法的压缩速度会随压缩级别而变化（级别越高压缩越慢），但在解压缩阶段始终保持较快速度（波动约 20%），并且还可以并行化处理。我们的历史测试也表明，该算法通常已经足够高效，甚至可以优于与其他编解码器配合使用的 `LZ4`。它在大多数数据类型和信息分布上都表现良好，因此是一个合理的通用默认选择，这也使得即便不做进一步优化，我们的初始压缩效果就已经非常出色。

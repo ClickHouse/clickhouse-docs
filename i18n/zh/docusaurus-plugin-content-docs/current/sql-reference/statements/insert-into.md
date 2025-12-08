@@ -7,9 +7,7 @@ title: 'INSERT INTO 语句'
 doc_type: '参考'
 ---
 
-
-
-# INSERT INTO 语句
+# INSERT INTO 语句 {#insert-into-statement}
 
 将数据插入表中。
 
@@ -105,14 +103,11 @@ INSERT INTO table SETTINGS ... FORMAT format_name data_set
 
 :::
 
-
 ## 约束 {#constraints}
 
 如果表定义了[约束](../../sql-reference/statements/create/table.md#constraints)，则会针对插入数据的每一行检查相应的约束表达式。如果任一约束未被满足，服务器将抛出一个包含约束名称和表达式的异常，并停止执行该查询。
 
-
-
-## 插入 SELECT 查询结果
+## 插入 SELECT 查询结果 {#inserting-the-results-of-select}
 
 **语法**
 
@@ -138,8 +133,7 @@ INSERT INTO x WITH y AS (SELECT * FROM numbers(10)) SELECT * FROM y;
 WITH y AS (SELECT * FROM numbers(10)) INSERT INTO x SELECT * FROM y;
 ```
 
-
-## 从文件中插入数据
+## 从文件中插入数据 {#inserting-data-from-a-file}
 
 **语法**
 
@@ -155,7 +149,7 @@ INSERT INTO [TABLE] [db.]table [(c1, c2, c3)] FROM INFILE file_name [COMPRESSION
 
 **示例**
 
-### 使用 FROM INFILE 的单个文件
+### 使用 FROM INFILE 的单个文件 {#single-file-with-from-infile}
 
 使用[命令行客户端](../../interfaces/cli.md)执行以下查询：
 
@@ -175,7 +169,7 @@ clickhouse-client --query="SELECT * FROM table_from_file FORMAT PrettyCompact;"
 └────┴──────┘
 ```
 
-### 使用通配符的多文件 FROM INFILE
+### 使用通配符的多文件 FROM INFILE {#multiple-files-with-from-infile-using-globs}
 
 此示例与上一个非常相似，但这里是通过使用 `FROM INFILE 'input_*.csv'`，从多个文件中执行插入操作。
 
@@ -197,8 +191,7 @@ INSERT INTO infile_globs FROM INFILE 'input_?.csv' FORMAT CSV;
 
 :::
 
-
-## 使用表函数插入数据
+## 使用表函数插入数据 {#inserting-using-a-table-function}
 
 可以向由[表函数](../../sql-reference/table-functions/index.md)引用的表中插入数据。
 
@@ -227,8 +220,7 @@ SELECT * FROM simple_table;
 └─────┴───────────────────────┘
 ```
 
-
-## 在 ClickHouse Cloud 中插入数据
+## 在 ClickHouse Cloud 中插入数据 {#inserting-into-clickhouse-cloud}
 
 默认情况下，ClickHouse Cloud 上的服务会提供多个副本以实现高可用性。当连接到某个服务时，连接会建立到这些副本中的一个。
 
@@ -242,14 +234,11 @@ SELECT .... SETTINGS select_sequential_consistency = 1;
 
 请注意，使用 `select_sequential_consistency` 会增加 ClickHouse Keeper（ClickHouse Cloud 内部使用的组件）的负载，并且可能会视该服务的负载情况导致性能下降。除非确有必要，否则我们不建议启用此设置。推荐的做法是在同一会话中执行读写操作，或者使用基于原生协议（从而支持粘性连接）的客户端驱动程序。
 
-
 ## 在复制部署中执行插入 {#inserting-into-a-replicated-setup}
 
 在复制部署中，数据在完成复制后才会在其他副本上可见。`INSERT` 执行后，会立即开始复制过程（在其他副本上下载数据）。这与 ClickHouse Cloud 不同，后者会将数据直接写入共享存储，由副本订阅元数据变更。
 
 请注意，对于复制部署，`INSERT` 操作有时可能会花费相当长的时间（大约一秒量级），因为它需要向 ClickHouse Keeper 提交以完成分布式共识。将 S3 用作存储也会引入额外的延迟。
-
-
 
 ## 性能注意事项 {#performance-considerations}
 

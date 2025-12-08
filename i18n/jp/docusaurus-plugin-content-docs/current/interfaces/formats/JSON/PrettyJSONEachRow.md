@@ -13,20 +13,14 @@ doc_type: 'guide'
 |------|------|-----------------------------------|
 | ✗    | ✔    | `PrettyJSONLines`, `PrettyNDJSON` |
 
-
-
 ## 説明 {#description}
 
 [JSONEachRow](./JSONEachRow.md) と異なる点は、JSON が改行区切りおよび 4 つのスペースによるインデントを付けて整形されていることだけです。
-
-
 
 ## 使用例 {#example-usage}
 ### データの挿入 {#inserting-data}
 
 次のデータを含む JSON ファイル `football.json` を用意します。
-
-
 
 ```json
 {
@@ -173,7 +167,7 @@ doc_type: 'guide'
 INSERT INTO football FROM INFILE 'football.json' FORMAT PrettyJSONEachRow;
 ```
 
-### データの読み取り
+### データの読み取り {#reading-data}
 
 `PrettyJSONEachRow` フォーマットを使用してデータを読み込みます：
 
@@ -184,7 +178,6 @@ FORMAT PrettyJSONEachRow
 ```
 
 出力は JSON 形式です。
-
 
 ```json
 {
@@ -324,8 +317,6 @@ FORMAT PrettyJSONEachRow
     "away_team_goals": 3
 }
 ```
-
-
 
 
 

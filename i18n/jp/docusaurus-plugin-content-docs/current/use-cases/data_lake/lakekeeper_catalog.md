@@ -32,7 +32,6 @@ Lakekeeper は Apache Iceberg 向けのオープンソース REST カタログ�
 `SET allow_experimental_database_iceberg = 1;`
 :::
 
-
 ## ローカル開発環境のセットアップ {#local-development-setup}
 
 ローカルでの開発やテストには、Lakekeeper のコンテナ化環境を使用できます。この方法は、学習、プロトタイピング、および開発環境に最適です。
@@ -230,8 +229,7 @@ docker-compose logs -f
 Lakekeeper のセットアップでは、まずサンプルデータを Iceberg テーブルにロードしておく必要があります。ClickHouse を通じてクエリを実行する前に、環境でテーブルが作成され、データが投入されていることを必ず確認してください。テーブルが利用可能かどうかは、使用している特定の docker-compose セットアップやサンプルデータ読み込み用スクリプトに依存します。
 :::
 
-
-### ローカルの Lakekeeper カタログへの接続
+### ローカルの Lakekeeper カタログへの接続 {#connecting-to-local-lakekeeper-catalog}
 
 ClickHouse コンテナに接続します。
 
@@ -249,8 +247,7 @@ ENGINE = DataLakeCatalog('http://lakekeeper:8181/catalog', 'minio', 'ClickHouse_
 SETTINGS catalog_type = 'rest', storage_endpoint = 'http://minio:9002/warehouse-rest', warehouse = 'demo'
 ```
 
-
-## ClickHouse を使用して Lakekeeper カタログテーブルをクエリする
+## ClickHouse を使用して Lakekeeper カタログテーブルをクエリする {#querying-lakekeeper-catalog-tables-using-clickhouse}
 
 接続が確立したので、Lakekeeper カタログ経由でクエリを実行できます。例えば次のとおりです。
 
@@ -333,8 +330,7 @@ SHOW CREATE TABLE `default.taxis`;
 └───────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-## データレイクから ClickHouse へのデータ取り込み
+## データレイクから ClickHouse へのデータ取り込み {#loading-data-from-your-data-lake-into-clickhouse}
 
 Lakekeeper カタログのデータを ClickHouse に取り込む必要がある場合は、まずローカルの ClickHouse テーブルを作成します。
 

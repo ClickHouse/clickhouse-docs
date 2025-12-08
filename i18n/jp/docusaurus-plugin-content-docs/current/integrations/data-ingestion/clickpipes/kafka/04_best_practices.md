@@ -8,35 +8,25 @@ doc_type: 'guide'
 keywords: ['kafka ベストプラクティス', 'clickpipes', '圧縮', '認証', 'スケーリング']
 ---
 
-
-
 # ベストプラクティス {#best-practices}
-
-
 
 ## メッセージ圧縮 {#compression}
 
 Kafka のトピックには圧縮の利用を強く推奨します。圧縮を行うことで、パフォーマンスへの影響をほとんど伴わずに、データ転送コストを大幅に削減できます。
 Kafka におけるメッセージ圧縮の詳細については、この[ガイド](https://www.confluent.io/blog/apache-kafka-message-compression/)から読み始めることをおすすめします。
 
-
-
 ## 制限事項 {#limitations}
 
 - [`DEFAULT`](/sql-reference/statements/create/table#default) はサポートされていません。
 
-
-
 ## 配信セマンティクス {#delivery-semantics}
 Kafka 向け ClickPipes は、（最も一般的なアプローチの 1 つである）`at-least-once` 配信セマンティクスを提供します。配信セマンティクスについてのフィードバックは、ぜひ[お問い合わせフォーム](https://clickhouse.com/company/contact?loc=clickpipes)からお寄せください。厳密な `exactly-once` セマンティクスが必要な場合は、公式の [`clickhouse-kafka-connect`](https://clickhouse.com/blog/real-time-event-streaming-with-kafka-connect-confluent-cloud-clickhouse) シンクのご利用を推奨します。
 
-
-
-## 認証
+## 認証 {#authentication}
 
 Apache Kafka プロトコルのデータソースに対して、ClickPipes は TLS 暗号化付きの [SASL/PLAIN](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html) 認証に加え、`SASL/SCRAM-SHA-256` および `SASL/SCRAM-SHA-512` をサポートしています。ストリーミングソース（Redpanda、MSK など）ごとに互換性に応じて、これらの認証メカニズムのすべて、またはいくつかのみが利用可能です。認証に関する要件が異なる場合は、[フィードバックをお寄せください](https://clickhouse.com/company/contact?loc=clickpipes)。
 
-### IAM
+### IAM {#iam}
 
 :::info
 MSK ClickPipe 用の IAM 認証はベータ機能です。
@@ -87,7 +77,7 @@ IAM 認証を使用して MSK ブローカーに接続する場合、IAM ロー�
 }
 ```
 
-#### 信頼関係の設定
+#### 信頼関係の設定 {#configuring-a-trusted-relationship}
 
 IAM ロール ARN を使用して MSK に対して認証を行う場合、そのロールを引き受けられるようにするために、ClickHouse Cloud インスタンスとの間に信頼関係を追加する必要があります。
 
@@ -111,11 +101,10 @@ IAM ロール ARN を使用して MSK に対して認証を行う場合、その
 }
 ```
 
-### カスタム証明書
+### カスタム証明書 {#custom-certificates}
 
 ClickPipes for Kafka は、パブリックではないサーバー証明書を使用する Kafka ブローカー向けに、カスタム証明書のアップロードをサポートします。
 相互 TLS (mTLS) ベースの認証のために、クライアント証明書およびキーのアップロードもサポートされています。
-
 
 ## パフォーマンス {#performance}
 

@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## 使用例 {#example-usage}
 
-### データの挿入
+### データの挿入 {#inserting-data}
 
 次のデータを含む `football.json` という名前の JSON ファイルを使用します。
 
@@ -49,8 +49,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONLines;
 ```
 
-
-### データの読み取り
+### データの読み取り {#reading-data}
 
 `JSONLines` フォーマットを使用してデータを読み込みます。
 
@@ -83,6 +82,5 @@ FORMAT JSONLines
 ```
 
 列名が不明な列のインポートは、[input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 設定が 1 に設定されている場合、スキップされます。
-
 
 ## フォーマット設定 {#format-settings}

@@ -13,7 +13,7 @@ import Image from '@theme/IdealImage';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
 import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
 import hyperdx_2 from '@site/static/images/use-cases/observability/hyperdx-2.png';
-import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
+import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
 此选项适用于已经拥有运行中的 ClickHouse 实例，并且其中已写入可观测性或事件数据的用户。
 
@@ -22,7 +22,6 @@ HyperDX 可以独立于其余组件使用，并且兼容任意数据 schema—�
 要启用全部功能，必须提供一个 MongoDB 实例，用于存储应用状态，包括仪表盘、已保存的搜索、用户设置和告警。
 
 在此模式下，数据摄取完全由用户自行负责。你可以使用自己部署的 OpenTelemetry collector、从客户端库直接摄取、ClickHouse 原生表引擎（例如 Kafka 或 S3）、ETL 管道，或诸如 ClickPipes 等托管摄取服务，将数据摄取到 ClickHouse 中。这种方式提供了最大的灵活性，适合已经在运行 ClickHouse、并希望在其之上引入 HyperDX 以实现可视化、搜索和告警的团队。
-
 
 ### 适用对象 {#suitable-for}
 
@@ -71,7 +70,7 @@ docker run -e MONGO_URI=mongodb://YOUR_MONGODB_URI -p 8080:8080 docker.hyperdx.i
 
 用户可以修改 [Docker Compose 配置](/use-cases/observability/clickstack/deployment/docker-compose)，以实现与本指南相同的效果，并从清单中移除 OTel collector 和 ClickHouse 实例。
 
-## ClickStack OpenTelemetry collector
+## ClickStack OpenTelemetry collector {#otel-collector}
 
 即使您在该栈之外自行管理 OpenTelemetry collector，我们仍然建议使用 ClickStack 提供的 collector 发行版。这样可以确保使用默认的 schema，并采用推荐的摄取最佳实践。
 

@@ -6,7 +6,7 @@ title: 'system.parts_columns'
 doc_type: 'reference'
 ---
 
-# system.parts_columns
+# system.parts&#95;columns {#systemparts&#95;columns}
 
 Содержит информацию о партах и столбцах таблиц [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md).
 

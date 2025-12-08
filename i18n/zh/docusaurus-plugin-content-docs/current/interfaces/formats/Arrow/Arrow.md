@@ -64,7 +64,7 @@ ClickHouse 表列的数据类型不必与对应的 Arrow 数据字段完全一�
 
 ## 使用示例 {#example-usage}
 
-### 插入数据
+### 插入数据 {#inserting-data}
 
 可以使用以下命令，将文件中的 Arrow 数据插入到 ClickHouse 表中：
 
@@ -72,15 +72,13 @@ ClickHouse 表列的数据类型不必与对应的 Arrow 数据字段完全一�
 $ cat filename.arrow | clickhouse-client --query="INSERT INTO some_table FORMAT Arrow"
 ```
 
-
-### 选择数据
+### 选择数据 {#selecting-data}
 
 可以使用以下命令，从 ClickHouse 表中选择数据，并将其保存为 Arrow 格式的文件：
 
 ```bash
 $ clickhouse-client --query="SELECT * FROM {some_table} FORMAT Arrow" > {filename.arrow}
 ```
-
 
 ## 格式设置 {#format-settings}
 

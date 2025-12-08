@@ -7,8 +7,6 @@ keywords: ['生产就绪', '企业', 'saml', 'sso', 'terraform', '监控', '备�
 doc_type: 'guide'
 ---
 
-
-
 # ClickHouse Cloud 生产就绪指南 {#production-readiness}
 
 适用于已完成快速入门指南且已有活跃服务并在持续接收数据的组织
@@ -22,8 +20,6 @@ doc_type: 'guide'
 - 将监控系统接入你的告警基础设施（Prometheus、PagerDuty）
 - 验证备份流程并编写灾难恢复流程文档
 :::
-
-
 
 ## 简介 {#introduction}
 
@@ -41,8 +37,6 @@ ClickHouse Cloud 的托管平台负责基础设施运维、自动扩缩容以及
 
 本指南将逐一讲解上述各个方面，帮助你从一个可用的 ClickHouse Cloud 部署平滑过渡到企业级就绪的系统。
 
-
-
 ## 环境策略 {#environment-strategy}
 
 建立彼此独立的环境，以便在不影响生产工作负载的前提下安全测试变更。大多数生产事故都可以追溯到直接部署到生产系统、但未经过测试的查询或配置更改。
@@ -57,8 +51,6 @@ ClickHouse Cloud 的托管平台负责基础设施运维、自动扩缩容以及
 
 **规模规划**：预发布服务的规格应尽量贴近生产负载特征。在明显更小的基础设施上进行测试，可能无法暴露资源争用或扩展性问题。通过定期数据刷新或生成合成数据，使用贴近生产的代表性数据集。关于如何为预发布环境进行规模规划并适当扩展服务，请参考 [Sizing and hardware recommendations](/guides/sizing-and-hardware-recommendations) 和 [Scaling in ClickHouse Cloud](/manage/scaling) 文档。这些资源提供了关于内存、CPU 和存储规模规划的实用建议，以及纵向和横向扩展选项的详细信息，帮助你使预发布环境尽可能贴近生产工作负载。
 
-
-
 ## 私有网络 {#private-networking}
 
 ClickHouse Cloud 中的[私有网络](/cloud/security/connectivity/private-networking)功能允许将 ClickHouse 服务直接连接到您的云虚拟网络，确保数据不经过公共互联网传输。对于具有严格安全或合规性要求的组织，或在私有子网中运行应用程序的场景，这一点尤为重要。
@@ -70,8 +62,6 @@ ClickHouse Cloud 通过以下机制支持私有网络：
 - [Azure Private Link](/cloud/security/azure-privatelink)：在您的 Azure VNet 与 ClickHouse Cloud 之间提供私有连接，并支持跨区域连接。部署流程包括获取连接别名、创建私有端点以及更新允许列表，具体见文档说明。
 
 如果您需要更多技术细节或分步配置说明，可参阅各云服务商的链接文档，其中提供了完整的指南。
-
-
 
 ## 企业级认证与用户管理 {#enterprise-authentication}
 
@@ -103,13 +93,11 @@ ClickHouse Cloud 目前尚不支持通过身份提供方进行 SCIM 或自动化
 
 进一步了解 [Cloud Access Management](/cloud/security/cloud_access_management) 和 [SAML SSO 设置](/cloud/security/saml-setup)。
 
-
-
-## 基础设施即代码与自动化
+## 基础设施即代码与自动化 {#infrastructure-as-code}
 
 通过采用基础设施即代码实践和 API 自动化来管理 ClickHouse Cloud，可以为您的部署配置提供一致性、版本控制和可复现性。
 
-### Terraform Provider
+### Terraform Provider {#terraform-provider}
 
 在 ClickHouse Cloud 控制台中创建 API 密钥，并使用它们配置 ClickHouse 的 Terraform Provider：
 
@@ -135,7 +123,7 @@ Terraform 提供程序支持服务开通、IP 访问列表和用户管理。请�
 
 有关包含服务配置和网络访问控制的完整示例，请参阅 [Terraform 示例：如何使用 Cloud API](/knowledgebase/terraform_example)。
 
-### Cloud API 集成
+### Cloud API 集成 {#cloud-api-integration}
 
 已经拥有自动化框架的组织可以通过 Cloud API 将 ClickHouse Cloud 管理直接集成到现有框架中。该 API 提供对服务生命周期管理、用户管理、备份操作以及监控数据检索的编程访问能力。
 
@@ -148,12 +136,11 @@ Terraform 提供程序支持服务开通、IP 访问列表和用户管理。请�
 
 API 认证采用与 Terraform 相同的基于 Token 的方式。完整的 API 参考与集成示例请参阅 [ClickHouse Cloud API](/cloud/manage/api/api-overview) 文档。
 
-
-## 监控与运维集成
+## 监控与运维集成 {#monitoring-integration}
 
 将 ClickHouse Cloud 接入现有监控基础设施，可以确保可观测性并实现对问题的主动发现。
 
-### 内置监控
+### 内置监控 {#built-in-monitoring}
 
 ClickHouse Cloud 提供高级仪表板，包含实时指标，例如每秒查询数、内存使用率、CPU 使用率以及存储速率。可在 Cloud 控制台的 Monitoring → Advanced dashboard 中访问。可以创建自定义仪表板，以适配特定的工作负载模式或团队资源消耗情况。
 
@@ -161,7 +148,7 @@ ClickHouse Cloud 提供高级仪表板，包含实时指标，例如每秒查询
 缺乏与企业级事件管理系统的主动告警集成，以及对成本的自动化监控。内置仪表板提供可观测性，但自动化告警仍需要借助外部集成。
 :::
 
-### 生产环境告警配置
+### 生产环境告警配置 {#production-alerting}
 
 **内置能力**：ClickHouse Cloud 通过电子邮件、UI 和 Slack 提供账单事件、扩缩容事件以及服务健康状况的通知。可在控制台的通知设置中配置发送渠道和通知级别。
 
@@ -178,7 +165,6 @@ scrape_configs:
 ```
 
 如需了解包含 Prometheus 和 Grafana 详细配置以及高级告警在内的完整设置，请参阅 [ClickHouse Cloud 可观测性指南](/use-cases/observability/cloud-monitoring#prometheus)。
-
 
 ## 业务连续性与支持集成 {#business-continuity}
 
@@ -205,8 +191,6 @@ ClickHouse Cloud 提供带有可配置保留期的自动备份。根据合规性
 了解你当前支持等级的 SLA 预期和升级流程。创建内部运行手册，定义在何种情况下需要联系 ClickHouse 支持，并将这些流程与现有的事件管理流程集成。
 
 详细了解 [ClickHouse Cloud 备份与恢复](/cloud/manage/backups/overview) 和 [支持服务](/about-us/support)。
-
-
 
 ## 后续步骤 {#next-steps}
 

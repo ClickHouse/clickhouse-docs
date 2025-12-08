@@ -10,14 +10,13 @@ keywords: ['Кэш запросов']
 
 {/* усечение */}
 
-
 ## Как проверить, что в вашем запросе используется кэш запросов? \{#how-can-i-check-that-query-cache-is-being-used-in-my-query\}
 
 Рассмотрим этот пример с использованием [clickhouse client](https://clickhouse.com/docs/interfaces/cli) и сервиса ClickHouse Cloud.
 
 Создайте таблицу `query_cache_test`
 
-## Использование клиента ClickHouse
+## Использование клиента ClickHouse \{#using-clickhouse-client\}
 
 ```sql
 clickhouse-cloud :) CREATE TABLE query_cache_test (name String, age UInt8) ENGINE =MergeTree ORDER BY name
@@ -68,7 +67,6 @@ Ok.
 ```
 
 выполните запрос с использованием кэша запросов (добавив к запросу `SETTINGS use_query_cache=true`):
-
 
 ```sql
 clickhouse-cloud :) SELECT name FROM query_cache_test WHERE age > 1000 FORMAT Null SETTINGS use_query_cache=true;
@@ -153,8 +151,7 @@ Ok.
 
 При втором выполнении запрос использовал кэш запросов, так как в нём уже была сохранённая запись (`Entry found for query SELECT...`).
 
-
-## Использование только SQL
+## Использование только SQL \{#using-just-sql\}
 
 Если просто выполнять SQL-команды, не анализируя трассировочные логи `clickhouse client`, можно проверить, используется ли кэш запросов, обратившись к соответствующим таблицам в базе `system`:
 

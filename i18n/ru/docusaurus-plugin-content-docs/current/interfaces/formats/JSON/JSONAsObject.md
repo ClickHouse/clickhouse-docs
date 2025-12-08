@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 ## Пример использования {#example-usage}
 
-### Простой пример
+### Простой пример {#basic-example}
 
 ```sql title="Query"
 CREATE TABLE json_as_object (json JSON) ENGINE = Memory;
@@ -31,8 +31,7 @@ SELECT * FROM json_as_object FORMAT JSONEachRow;
 {"json":{"any json stucture":"1"}}
 ```
 
-
-### Массив объектов JSON
+### Массив объектов JSON {#an-array-of-json-objects}
 
 ```sql title="Query"
 CREATE TABLE json_square_brackets (field JSON) ENGINE = Memory;
@@ -45,8 +44,7 @@ SELECT * FROM json_square_brackets FORMAT JSONEachRow;
 {"field":{"id":"2","name":"name2"}}
 ```
 
-
-### Столбцы со значениями по умолчанию
+### Столбцы со значениями по умолчанию {#columns-with-default-values}
 
 ```sql title="Query"
 CREATE TABLE json_as_object (json JSON, time DateTime MATERIALIZED now()) ENGINE = Memory;
@@ -61,6 +59,5 @@ SELECT time, json FROM json_as_object FORMAT JSONEachRow
 {"time":"2024-09-16 12:18:13","json":{"any json stucture":"1"}}
 {"time":"2024-09-16 12:18:08","json":{"foo":{"bar":{"x":"y"},"baz":"1"}}}
 ```
-
 
 ## Параметры формата {#format-settings}

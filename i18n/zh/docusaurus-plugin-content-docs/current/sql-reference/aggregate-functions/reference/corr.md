@@ -6,9 +6,7 @@ title: 'corr'
 doc_type: 'reference'
 ---
 
-
-
-# corr
+# corr {#corr}
 
 计算[皮尔逊相关系数](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient)：
 

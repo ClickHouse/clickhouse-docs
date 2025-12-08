@@ -13,8 +13,7 @@ import mysql1 from '@site/static/images/interfaces/mysql1.png';
 import mysql2 from '@site/static/images/interfaces/mysql2.png';
 import mysql3 from '@site/static/images/interfaces/mysql3.png';
 
-
-# MySQL インターフェイス
+# MySQL インターフェイス {#mysql-interface}
 
 ClickHouse は MySQL ワイヤープロトコルをサポートしています。これにより、ネイティブな ClickHouse コネクタを持たない一部のクライアントでも MySQL プロトコルを代わりに利用でき、次の BI ツールで動作検証が行われています:
 
@@ -35,8 +34,6 @@ ClickHouse は MySQL ワイヤープロトコルをサポートしています�
 上記の BI ツールの SQL 方言をより適切にサポートするため、ClickHouse の MySQL インターフェイスは、設定 [prefer_column_name_to_alias = 1](/operations/settings/settings#prefer_column_name_to_alias) を有効にした状態で SELECT クエリを暗黙的に実行します。
 この設定は無効化できず、まれなエッジケースでは、ClickHouse の通常のクエリインターフェイスと MySQL クエリインターフェイスに送信されたクエリの間で挙動が異なる原因となる場合があります。
 ::::
-
-
 
 ## ClickHouse Cloud での MySQL インターフェイスの有効化 {#enabling-the-mysql-interface-on-clickhouse-cloud}
 
@@ -62,9 +59,7 @@ ClickHouse は MySQL ワイヤープロトコルをサポートしています�
 
 <Image img={mysql3} alt="認証情報画面 - 接続文字列" size="md"/>
 
-
-
-## ClickHouse Cloud で複数の MySQL ユーザーを作成する
+## ClickHouse Cloud で複数の MySQL ユーザーを作成する {#creating-multiple-mysql-users-in-clickhouse-cloud}
 
 デフォルトでは、組み込みの `mysql4<subdomain>` ユーザーが存在し、このユーザーは `default` ユーザーと同じパスワードを使用します。`<subdomain>` 部分は、ClickHouse Cloud ホスト名の先頭のセグメントです。この形式は、安全な接続を実装しているものの [TLS ハンドシェイクで SNI 情報を提供しない](https://www.cloudflare.com/learning/ssl/what-is-sni) ツールと連携するために必要であり、ユーザー名に追加のヒントがないと内部ルーティングができないためです（MySQL コンソールクライアントはそのようなツールの一例です）。
 
@@ -106,7 +101,7 @@ ClickHouse は MySQL ワイヤープロトコルをサポートしています�
 
 4. 作成したユーザーを使用して、MySQL インターフェイス経由で ClickHouse Cloud サービスに接続します。
 
-### ClickHouse Cloud での複数 MySQL ユーザーに関するトラブルシューティング
+### ClickHouse Cloud での複数 MySQL ユーザーに関するトラブルシューティング {#troubleshooting-multiple-mysql-users-in-clickhouse-cloud}
 
 新しい MySQL ユーザーを作成し、MySQL CLI クライアント経由で接続する際に次のエラーが表示される場合があります:
 
@@ -116,8 +111,7 @@ ERROR 2013 (HY000): MySQLサーバーへの接続が切断されました at 're
 
 この場合は、ユーザー名が `mysql4&lt;subdomain&gt;_&lt;username&gt;` という形式（[上記](#creating-multiple-mysql-users-in-clickhouse-cloud)で説明したとおり）になっていることを確認してください。
 
-
-## セルフマネージド ClickHouse での MySQL インターフェイスの有効化
+## セルフマネージド ClickHouse での MySQL インターフェイスの有効化 {#enabling-the-mysql-interface-on-self-managed-clickhouse}
 
 サーバーの構成ファイルに [mysql&#95;port](../operations/server-configuration-parameters/settings.md#mysql_port) 設定を追加します。たとえば、`config.d/` [ディレクトリ](../operations/configuration-files) 内の新しい XML ファイルでこのポートを定義できます。
 
@@ -133,8 +127,7 @@ ClickHouse サーバーを起動し、`Listening for MySQL compatibility protoco
 {} <Information> Application: MySQL互換プロトコルでリッスン中: 127.0.0.1:9004
 ```
 
-
-## MySQL を ClickHouse に接続する
+## MySQL を ClickHouse に接続する {#connect-mysql-to-clickhouse}
 
 次のコマンドは、MySQL クライアント `mysql` から ClickHouse へ接続する方法を示します。
 

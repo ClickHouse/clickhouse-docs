@@ -8,7 +8,7 @@ doc_type: 'reference'
 keywords: ['分布式', 'JOIN']
 ---
 
-# ClickHouse 是否支持分布式 JOIN？
+# ClickHouse 是否支持分布式 JOIN？ {#does-clickhouse-support-distributed-join}
 
 ClickHouse 在集群上支持分布式 JOIN。
 

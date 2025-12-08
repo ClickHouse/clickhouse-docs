@@ -7,9 +7,7 @@ title: 'RabbitMQ 表引擎'
 doc_type: 'guide'
 ---
 
-
-
-# RabbitMQ 表引擎
+# RabbitMQ 表引擎 {#rabbitmq-table-engine}
 
 该引擎用于将 ClickHouse 与 [RabbitMQ](https://www.rabbitmq.com) 集成。
 
@@ -18,9 +16,7 @@ doc_type: 'guide'
 - 发布或订阅数据流。
 - 在数据流可用时对其进行处理。
 
-
-
-## 创建表
+## 创建表 {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -63,7 +59,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 可选参数：
 
-
 - `rabbitmq_exchange_type` – RabbitMQ exchange 的类型：`direct`、`fanout`、`topic`、`headers`、`consistent_hash`。默认值：`fanout`。
 - `rabbitmq_routing_key_list` – 以逗号分隔的路由键（routing key）列表。
 - `rabbitmq_schema` – 当格式需要 schema 定义时必须使用的参数。例如， [Cap'n Proto](https://capnproto.org/) 需要提供 schema 文件的路径以及根 `schema.capnp:Message` 对象的名称。
@@ -97,8 +92,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 示例：
 
-
-
 ```sql
   CREATE TABLE queue (
     key UInt64,
@@ -130,8 +123,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
  </rabbitmq>
 ```
 
-
-## 描述
+## 描述 {#description}
 
 `SELECT` 对于读取消息并不是特别有用（除非用于调试），因为每条消息只能被读取一次。更实用的方式是使用[物化视图](../../../sql-reference/statements/create/view.md)创建实时处理流程。为此：
 
@@ -192,7 +184,6 @@ Exchange 类型说明：
   SELECT key, value FROM daily ORDER BY key;
 ```
 
-
 ## 虚拟列 {#virtual-columns}
 
 - `_exchange_name` - RabbitMQ 交换器（exchange）名称。数据类型：`String`。
@@ -209,13 +200,9 @@ Exchange 类型说明：
 
 注意：仅在解析期间发生异常时，`_raw_message` 和 `_error` 虚拟列才会被填充；当消息被成功解析时，它们始终为 `NULL`。
 
-
-
 ## 注意事项 {#caveats}
 
 即使你在表定义中指定了[默认列值表达式](/sql-reference/statements/create/table.md/#default_values)（例如 `DEFAULT`、`MATERIALIZED`、`ALIAS`），这些设置也会被忽略。列将根据各自的数据类型自动填充为默认值。
-
-
 
 ## 数据格式支持 {#data-formats-support}
 

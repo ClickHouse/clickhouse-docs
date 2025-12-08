@@ -21,8 +21,7 @@ import dbeaver_sql_editor from '@site/static/images/integrations/sql-clients/dbe
 import dbeaver_query_log_select from '@site/static/images/integrations/sql-clients/dbeaver-query-log-select.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# DBeaver を ClickHouse に接続する
+# DBeaver を ClickHouse に接続する {#connect-dbeaver-to-clickhouse}
 
 <ClickHouseSupportedBadge/>
 
@@ -31,8 +30,6 @@ DBeaver には複数のエディションがあります。このガイドでは
 :::note
 ClickHouse の `Nullable` 列に対するサポートが改善されているため、DBeaver バージョン 23.1.0 以降を使用してください。
 :::
-
-
 
 ## 1. ClickHouse の情報を確認する {#1-gather-your-clickhouse-details}
 
@@ -43,13 +40,9 @@ DBeaver は JDBC を HTTP(S) 経由で使用して ClickHouse に接続します
 - ユーザー名
 - パスワード
 
-
-
 ## 2. DBeaver をダウンロードする {#2-download-dbeaver}
 
 DBeaver は https://dbeaver.io/download/ からダウンロードできます。
-
-
 
 ## 3. データベースを追加する {#3-add-a-database}
 
@@ -79,8 +72,6 @@ DBeaver が ClickHouse ドライバーがインストールされていないこ
 
 <Image img={dbeaver_test_connection} size="md" border alt="接続をテストする" />
 
-
-
 ## 4. ClickHouse をクエリする {#4-query-clickhouse}
 
 クエリ エディタを開いてクエリを実行します。
@@ -92,8 +83,6 @@ DBeaver が ClickHouse ドライバーがインストールされていないこ
 - `system.query_log` に対するクエリの例：
 
 <Image img={dbeaver_query_log_select} size="md" border alt="サンプルクエリ" />
-
-
 
 ## 次のステップ {#next-steps}
 

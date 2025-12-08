@@ -21,8 +21,7 @@ import splunk_9 from '@site/static/images/integrations/splunk/splunk-9.png';
 import splunk_10 from '@site/static/images/integrations/splunk/splunk-10.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# 将 Splunk 连接到 ClickHouse
+# 将 Splunk 连接到 ClickHouse {#connecting-splunk-to-clickhouse}
 
 <ClickHouseSupportedBadge/>
 
@@ -36,8 +35,6 @@ Splunk 是一款广泛应用于安全和可观测性的产品，同时也是一�
 
 此集成的理想用例是：当使用 ClickHouse 来处理诸如 NetFlow、Avro 或 Protobuf 二进制数据、DNS、VPC 流日志，以及其他 OTel 日志等大规模数据源时，可将这些数据在 Splunk 中与团队共享，用于搜索和构建仪表盘。通过这种方式，数据不会被摄取到 Splunk 的索引层，而是类似于其他可视化集成（如 [Metabase](https://www.metabase.com/) 或 [Superset](https://superset.apache.org/)）一样，直接从 ClickHouse 中进行查询。
 
-
-
 ## 目标​ {#goal}
 
 在本指南中，我们将使用 ClickHouse JDBC 驱动程序将 ClickHouse 连接到 Splunk。我们会安装本地版本的 Splunk Enterprise，但不会对任何数据进行索引。相反，我们只通过 DB Connect 查询引擎使用搜索功能。
@@ -50,8 +47,6 @@ Splunk 是一款广泛应用于安全和可观测性的产品，同时也是一�
 本指南使用了 [New York City Taxi 数据集](/getting-started/example-datasets/nyc-taxi)。你还可以在[我们的文档](http://localhost:3000/docs/getting-started/example-datasets)中找到许多其他可用的数据集。
 :::
 
-
-
 ## 前提条件 {#prerequisites}
 
 在开始之前，您需要：
@@ -60,8 +55,6 @@ Splunk 是一款广泛应用于安全和可观测性的产品，同时也是一�
 - [Splunk DB Connect](https://splunkbase.splunk.com/app/2686)
 - 对运行 Splunk Enterprise 的操作系统实例具有管理员权限或 SSH 访问权限
 - ClickHouse 连接信息（如果您使用 ClickHouse Cloud，请参阅[此处](/integrations/metabase#1-gather-your-connection-details)）
-
-
 
 ## 在 Splunk Enterprise 上安装并配置 DB Connect {#install-and-configure-db-connect-on-splunk-enterprise}
 
@@ -81,9 +74,7 @@ Splunk 是一款广泛应用于安全和可观测性的产品，同时也是一�
 
 <Image img={splunk_2} size="md" border alt="Splunk DB Connect 设置页面显示 Java Home 配置" />
 
-
-
-## 为 ClickHouse 配置 JDBC
+## 为 ClickHouse 配置 JDBC {#configure-jdbc-for-clickhouse}
 
 将 [ClickHouse JDBC 驱动程序](https://github.com/ClickHouse/clickhouse-java) 下载到 DB Connect Drivers 文件夹，例如：
 
@@ -111,7 +102,6 @@ ui_default_catalog = $database$
 
 <Image img={splunk_3} size="lg" border alt="Splunk DB Connect drivers page showing ClickHouse driver successfully installed" />
 
-
 ## 将 Splunk 搜索连接到 ClickHouse {#connect-splunk-search-to-clickhouse}
 
 导航到 DB Connect App Configuration -> Databases -> Identities，在其中为你的 ClickHouse 创建一个 Identity。
@@ -132,8 +122,6 @@ ui_default_catalog = $database$
 如果出现错误，请确保已经将 Splunk 实例的 IP 地址添加到 ClickHouse Cloud 的 IP 访问列表中。更多信息参见[文档](/cloud/security/setting-ip-filters)。
 :::
 
-
-
 ## 运行 SQL 查询 {#run-a-sql-query}
 
 现在我们将运行一个 SQL 查询，以验证一切工作正常。
@@ -148,9 +136,7 @@ ui_default_catalog = $database$
 
 如果查询成功，你应该会看到结果。
 
-
-
-## 创建仪表板
+## 创建仪表板 {#create-a-dashboard}
 
 现在来创建一个仪表板，结合使用 SQL 和功能强大的 Splunk Processing Language（SPL）。
 
@@ -194,8 +180,7 @@ ORDER BY year, count(*) DESC; " connection="chc"
 
 <Image img={splunk_10} size="lg" border alt="最终的 Splunk 仪表板，包含纽约市出租车数据的多种可视化图表" />
 
-
-## 时间序列数据
+## 时间序列数据 {#time-series-data}
 
 Splunk 提供了数百个内置函数，供仪表板用于时间序列数据的可视化和展示。此示例将结合 SQL 与 SPL，创建一个可在 Splunk 中处理时间序列数据的查询。
 
@@ -208,7 +193,6 @@ FROM "demo"."conn" WHERE time >= now() - interval 1 HOURS" connection="chc"
 | eval duration=round(duration/60)
 | sort - duration:
 ```
-
 
 ## 了解更多 {#learn-more}
 

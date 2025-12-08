@@ -11,17 +11,14 @@ doc_type: 'reference'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
-# Движок таблицы YTsaurus
+# Движок таблицы YTsaurus {#ytsaurus-table-engine}
 
 <ExperimentalBadge/>
 <CloudNotSupportedBadge/>
 
 Движок таблицы YTsaurus позволяет импортировать данные из кластера YTsaurus.
 
-
-
-## Создание таблицы
+## Создание таблицы {#creating-a-table}
 
 ```sql
     CREATE TABLE [IF NOT EXISTS] [db.]table_name
@@ -47,8 +44,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 * `cypress_path` — Cypress-путь к источнику данных.
 * `oauth_token` — OAuth-токен.
 
-
-## Пример использования
+## Пример использования {#usage-example}
 
 Пример запроса для создания таблицы YTsaurus:
 
@@ -76,7 +72,6 @@ SELECT * FROM yt_saurus;
  │ 10 │ 20 │
  └────┴────┘
 ```
-
 
 ## Типы данных {#data-types}
 

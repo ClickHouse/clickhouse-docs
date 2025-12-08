@@ -17,8 +17,7 @@ import PlayersPerRank from '@site/static/images/chdb/guides/players_per_rank.png
   <iframe width="560" height="315" src="https://www.youtube.com/embed/2wjl3OijCto?si=EVf2JhjS5fe4j6Cy" title="YouTube 動画プレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 </div>
 
-
-## セットアップ
+## セットアップ {#setup}
 
 まずは仮想環境を作成します。
 
@@ -49,8 +48,7 @@ jupyter lab
 JupyterLab を使用している場合は、以降の手順を進める前にノートブックを作成する必要があります。
 :::
 
-
-## データセットのダウンロード
+## データセットのダウンロード {#downloading-a-dataset}
 
 [Jeff Sackmann の tennis&#95;atp](https://github.com/JeffSackmann/tennis_atp) データセットのひとつを使用します。このデータセットには、選手と時間の経過とともに変化するランキングに関するメタデータが含まれています。
 まずはランキングファイルをダウンロードしましょう。
@@ -69,8 +67,7 @@ for file in files:
   )
 ```
 
-
-## chDB と JupySQL の設定
+## chDB と JupySQL の設定 {#configuring-chdb-and-jupysql}
 
 次に、chDB 用の `dbapi` モジュールをインポートします。
 
@@ -98,8 +95,7 @@ conn = dbapi.connect(path="atp.chdb")
 %config SqlMagic.displaylimit = None
 ```
 
-
-## CSV ファイルのデータをクエリする
+## CSV ファイルのデータをクエリする {#querying-data-in-csv-files}
 
 `atp_rankings` というプレフィックスを持つファイルをいくつかダウンロードしました。
 スキーマを理解するために `DESCRIBE` 句を使って確認してみましょう。
@@ -166,8 +162,7 @@ SETTINGS schema_inference_make_columns_nullable=0
 +--------------+------+--------+--------+
 ```
 
-
-## CSV ファイルを chDB にインポートする
+## CSV ファイルを chDB にインポートする {#querying-data-in-csv-files}
 
 これらの CSV ファイルに含まれるデータをテーブルに保存していきます。
 デフォルトのデータベースはディスク上にデータを永続化しないため、まず新しいデータベースを作成する必要があります。
@@ -252,7 +247,6 @@ SETTINGS schema_inference_make_columns_nullable=0
 %sql SELECT * FROM atp.players LIMIT 10
 ```
 
-
 ```text
 +-----------+------------+-----------+------+------------+-----+--------+-------------+
 | player_id | name_first | name_last | hand |    dob     | ioc | height | wikidata_id |
@@ -270,8 +264,7 @@ SETTINGS schema_inference_make_columns_nullable=0
 +-----------+------------+-----------+------+------------+-----+--------+-------------+
 ```
 
-
-## chDB をクエリする
+## chDB をクエリする {#importing-csv-files-into-chdb}
 
 データのインジェストが完了したので、ここからはいよいよデータをクエリしていきます。
 
@@ -311,8 +304,7 @@ LIMIT 10
 
 このリストの一部のプレイヤーは、その得点では1位になっていないにもかかわらず、多くのポイントを獲得しているというのは、なかなか興味深いことです。
 
-
-## クエリの保存
+## クエリの保存 {#querying-chdb}
 
 `%%sql` マジックと同じ行で `--save` パラメータを使用して、クエリを保存できます。
 `--no-execute` パラメータは、クエリの実行をスキップすることを意味します。
@@ -357,8 +349,7 @@ ORDER BY maxPoints DESC
 +-------------+-----------+-----------+------+------------+
 ```
 
-
-## パラメーターを使用したクエリ
+## パラメーターを使用したクエリ {#saving-queries}
 
 クエリ内でパラメーターを使用することもできます。
 パラメーターは通常の変数と同じように扱えます。
@@ -402,8 +393,7 @@ LIMIT 10
 +------------+-----------+---------------+------------------+------+-------+
 ```
 
-
-## ヒストグラムのプロット
+## ヒストグラムのプロット {#querying-with-parameters}
 
 JupySQL には限定的ではありますが、グラフ描画機能もあります。
 箱ひげ図やヒストグラムを作成できます。

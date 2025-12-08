@@ -16,26 +16,25 @@ import byoc_subnet_1 from '@site/static/images/cloud/reference/byoc-subnet-1.png
 import byoc_subnet_2 from '@site/static/images/cloud/reference/byoc-subnet-2.png';
 import byoc_s3_endpoint from '@site/static/images/cloud/reference/byoc-s3-endpoint.png'
 
-
-## 接入流程
+## 接入流程 {#onboarding-process}
 
 客户可以通过联系[我们](https://clickhouse.com/cloud/bring-your-own-cloud)来发起接入流程。客户需要准备一个专用的 AWS 账号，并确认将要使用的 Region。目前，我们仅允许用户在 ClickHouse Cloud 支持的 Region 中启动 BYOC 服务。
 
-### 准备 AWS 账号
+### 准备 AWS 账号 {#prepare-an-aws-account}
 
 建议客户为托管 ClickHouse BYOC 部署准备一个专用的 AWS 账号，以确保更好的隔离性。不过，也可以使用共享账号和已有的 VPC。详细信息请参见下文的 *Setup BYOC Infrastructure*。
 
 准备好该账号以及初始组织管理员的邮箱地址后，您可以联系 ClickHouse 支持团队。
 
-### 初始化 BYOC 设置
+### 初始化 BYOC 设置 {#initialize-byoc-setup}
 
 初始 BYOC 设置可以通过 CloudFormation 模板或 Terraform 模块来完成。这两种方式都会创建相同的 IAM 角色，使来自 ClickHouse Cloud 的 BYOC 控制器能够管理您的基础设施。注意，运行 ClickHouse 所需的 S3、VPC 和计算资源不包含在此初始设置中。
 
-#### CloudFormation 模板
+#### CloudFormation 模板 {#cloudformation-template}
 
 [BYOC CloudFormation 模板](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/byoc.yaml)
 
-#### Terraform 模块
+#### Terraform 模块 {#terraform-module}
 
 [BYOC Terraform 模块](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/tf/byoc.tar.gz)
 
@@ -48,7 +47,7 @@ module "clickhouse_onboarding" {
 
 {/* TODO: 在自助式引导实现后，为其余的引导流程添加截图。 */ }
 
-### 设置 BYOC 基础设施
+### 设置 BYOC 基础设施 {#setup-byoc-infrastructure}
 
 在创建 CloudFormation 堆栈之后，系统会提示您在云控制台中设置基础设施，包括 S3、VPC 和 EKS 集群。某些配置必须在此阶段确定，因为之后无法更改。具体包括：
 
@@ -56,7 +55,7 @@ module "clickhouse_onboarding" {
 * **BYOC 的 VPC CIDR 范围**：默认情况下，我们为 BYOC VPC CIDR 范围使用 `10.0.0.0/16`。如果您计划与另一个账号使用 VPC 对等连接，请确保 CIDR 范围不重叠。为 BYOC 分配合适的 CIDR 范围，最小大小为 `/22`，以容纳必要的工作负载。
 * **BYOC VPC 的可用区**：如果您计划使用 VPC 对等连接，使源账号与 BYOC 账号之间的可用区保持一致，可以帮助降低跨可用区流量成本。在 AWS 中，可用区后缀（`a, b, c`）在不同账号中可能对应不同的物理可用区 ID。详情请参阅 [AWS 指南](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/use-consistent-availability-zones-in-vpcs-across-different-aws-accounts.html)。
 
-#### 客户托管 VPC
+#### 客户托管 VPC {#customer-managed-vpc}
 
 默认情况下，ClickHouse Cloud 会为您的 BYOC 部署预配一个专用 VPC，以实现更好的隔离。不过，您也可以使用账号中已有的 VPC。这需要特定配置，并且必须通过 ClickHouse Support 配合完成。
 
@@ -82,7 +81,6 @@ module "clickhouse_onboarding" {
    如果您的 VPC 尚未配置 S3 网关终端节点，您需要创建一个，以在 VPC 与 Amazon S3 之间启用安全、私有的通信。通过该终端节点，您的 ClickHouse 服务可以在不经过公共互联网的情况下访问 S3。请参考下方截图中的示例配置。
 
 <br />
-
 
 <Image img={byoc_s3_endpoint} size="lg" alt="BYOC S3 终端节点" background='black'/>
 
@@ -169,8 +167,6 @@ module "clickhouse_onboarding" {
 
 可选：在验证 peering 正常工作之后，您可以请求为 ClickHouse BYOC 删除公共负载均衡器。
 
-
-
 ## 升级流程 {#upgrade-process}
 
 我们会定期升级软件，包括 ClickHouse 数据库版本、ClickHouse Operator、EKS 以及其他组件。
@@ -180,8 +176,6 @@ module "clickhouse_onboarding" {
 :::note
 维护窗口不适用于安全补丁和漏洞修复。这类升级将作为周期外升级进行处理，并通过及时沟通协调合适的时间，从而将对运行的影响降至最低。
 :::
-
-
 
 ## CloudFormation IAM 角色 {#cloudformation-iam-roles}
 
@@ -216,8 +210,6 @@ Bootstrap IAM 角色具有以下权限：
 **K8s-control-plane** 和 **k8s-worker** 角色由 AWS EKS 服务来获取并使用（assume）。
 
 最后，**`data-plane-mgmt`** 允许一个 ClickHouse Cloud 控制平面组件对所需的自定义资源（例如 `ClickHouseCluster` 和 Istio Virtual Service/Gateway）进行协调（reconcile）。
-
-
 
 ## 网络边界 {#network-boundaries}
 

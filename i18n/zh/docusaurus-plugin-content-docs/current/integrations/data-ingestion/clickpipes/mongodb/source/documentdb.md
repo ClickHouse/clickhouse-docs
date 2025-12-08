@@ -13,22 +13,17 @@ import docdb_apply_parameter_group from '@site/static/images/integrations/data-i
 import docdb_parameter_group_status from '@site/static/images/integrations/data-ingestion/clickpipes/mongodb/docdb-parameter-group-status.png'
 import Image from '@theme/IdealImage';
 
-
-# Amazon DocumentDB 数据源配置指南
-
-
+# Amazon DocumentDB 数据源配置指南 {#amazon-documentdb-source-setup-guide}
 
 ## 支持的 DocumentDB 版本 {#supported-documentdb-versions}
 
 ClickPipes 支持 DocumentDB 5.0 版本。
 
-
-
-## 配置变更流日志保留期
+## 配置变更流日志保留期 {#configure-change-stream-log-retention}
 
 默认情况下，Amazon DocumentDB 的变更流日志保留期为 3 小时，而初始加载过程可能会根据 DocumentDB 中现有数据量的不同耗时更长。我们建议将变更流日志保留期设置为 72 小时或更长，以确保在初始快照完成之前日志不会被截断。
 
-### 通过 AWS 控制台更新变更流日志保留期
+### 通过 AWS 控制台更新变更流日志保留期 {#update-change-stream-log-retention-via-aws-console}
 
 1. 在左侧面板中点击 `Parameter groups`，找到您的 DocumentDB 集群所使用的参数组（如果您正在使用默认参数组，则需要先创建一个新的参数组才能进行修改）。
 
@@ -44,7 +39,7 @@ ClickPipes 支持 DocumentDB 5.0 版本。
 
 <Image img={docdb_parameter_group_status} alt="参数组状态" size="lg" border />
 
-### 通过 AWS CLI 更新变更流日志保留期
+### 通过 AWS CLI 更新变更流日志保留期 {#update-change-stream-log-retention-via-aws-cli}
 
 或者，您也可以通过 AWS CLI 进行配置。
 
@@ -60,8 +55,7 @@ aws docdb describe-db-cluster-parameters --db-cluster-parameter-group-name <PARA
 aws docdb modify-db-cluster-parameter-group --db-cluster-parameter-group-name <PARAMETER_GROUP_NAME> --parameters "ParameterName=change_stream_log_retention_duration,ParameterValue=259200,ApplyMethod=immediate"
 ```
 
-
-## 配置数据库用户
+## 配置数据库用户 {#configure-database-user}
 
 以管理员用户身份连接到 DocumentDB 集群，并执行以下命令，为 MongoDB CDC ClickPipes 创建一个数据库用户：
 
@@ -76,7 +70,6 @@ db.getSiblingDB("admin").createUser({
 :::note
 请确保将 `clickpipes_user` 和 `some_secure_password` 替换为你要使用的用户名和密码。
 :::
-
 
 ## 接下来 {#whats-next}
 

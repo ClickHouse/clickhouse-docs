@@ -15,10 +15,7 @@ import mongo_atlas_add_roles from '@site/static/images/integrations/data-ingesti
 import mongo_atlas_restrict_access from '@site/static/images/integrations/data-ingestion/clickpipes/mongodb/mongo-atlas-restrict-access.png'
 import Image from '@theme/IdealImage';
 
-
-# Руководство по настройке источника данных MongoDB Atlas
-
-
+# Руководство по настройке источника данных MongoDB Atlas {#mongodb-atlas-source-setup-guide}
 
 ## Настроить хранение oplog {#enable-oplog-retention}
 
@@ -34,8 +31,6 @@ import Image from '@theme/IdealImage';
 <Image img={mongo_atlas_retention_hours} alt="Установите количество часов хранения oplog" size="lg" border/>
 
 4. Нажмите `Review Changes` для проверки, затем `Apply Changes` для применения изменений.
-
-
 
 ## Настройка пользователя базы данных {#configure-database-user}
 
@@ -57,8 +52,6 @@ import Image from '@theme/IdealImage';
 Вы также можете дополнительно указать кластеры/экземпляры, к которым хотите предоставить доступ пользователю ClickPipes:
 
 <Image img={mongo_atlas_restrict_access} alt="Ограничение доступа к кластерам/экземплярам" size="lg" border/>
-
-
 
 ## Что дальше? {#whats-next}
 

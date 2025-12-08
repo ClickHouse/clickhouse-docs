@@ -11,17 +11,13 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      | `MD`  |
 
-
-
 ## 描述 {#description}
 
 你可以使用 [Markdown](https://en.wikipedia.org/wiki/Markdown) 格式导出结果，生成可以直接粘贴到 `.md` 文件中的输出：
 
 Markdown 表格会自动生成，并且可以在支持 Markdown 的平台（例如 GitHub）上使用。此格式仅用于输出。
 
-
-
-## 示例用法
+## 示例用法 {#example-usage}
 
 ```sql
 SELECT
@@ -40,6 +36,5 @@ FORMAT Markdown
 | 3 | 6 |
 | 4 | 8 |
 ```
-
 
 ## 格式设置 {#format-settings}

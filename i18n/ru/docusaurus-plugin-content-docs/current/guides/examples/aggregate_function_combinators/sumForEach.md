@@ -7,11 +7,7 @@ sidebar_label: 'sumForEach'
 doc_type: 'reference'
 ---
 
-
-
 # sumForEach {#sumforeach}
-
-
 
 ## Описание {#description}
 
@@ -20,9 +16,7 @@ doc_type: 'reference'
 функции, работающей со значениями строк, в агрегатную функцию, работающую со
 столбцами-массивами и применяющую агрегирование к каждому элементу массива по всем строкам.
 
-
-
-## Пример использования
+## Пример использования {#example-usage}
 
 В этом примере мы воспользуемся набором данных `hits`, доступным в нашем [SQL playground](https://sql.clickhouse.com/).
 
@@ -47,7 +41,6 @@ FROM metrica.hits
 GROUP BY hour_of_day
 ORDER BY hour_of_day;
 ```
-
 
 ## См. также {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)

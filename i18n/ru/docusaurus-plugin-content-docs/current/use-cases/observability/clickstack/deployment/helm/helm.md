@@ -12,7 +12,7 @@ keywords: ['Helm-чарт ClickStack', 'развертывание ClickHouse с
 import Image from '@theme/IdealImage';
 import hyperdx_24 from '@site/static/images/use-cases/observability/hyperdx-24.png';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
-import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
+import JSONSupport from '@site/i18n/ru/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
 :::warning Миграция чарта
 Если вы в данный момент используете чарт `hdx-oss-v2`, перейдите на чарт `clickstack`. Чарт `hdx-oss-v2` находится в режиме сопровождения и больше не будет получать новые функции. Весь новый функционал разрабатывается для чарта `clickstack`, который обеспечивает ту же функциональность с более понятными названиями и улучшённой структурой.
@@ -35,7 +35,6 @@ Helm-чарт для HyperDX можно найти [здесь](https://github.c
 * Лимиты ресурсов и масштабирование подов
 * Настройку TLS и Входного шлюза
 * Управление секретами и настройку аутентификации
-
 
 ### Подходит для {#suitable-for}
 
@@ -262,7 +261,6 @@ helm install my-clickstack clickstack/clickstack -f values.yaml
 Для продакшн-развертываний с конфигурацией на основе секретов, внешними экземплярами OTel collector или минимальными конфигурациями см. [руководство «Варианты развертывания»](/docs/use-cases/observability/clickstack/deployment/helm-deployment-options).
 :::
 
-
 ## Примечания для продакшена
 
 По умолчанию этот chart также устанавливает ClickHouse и OTel collector. Однако для продакшена рекомендуется управлять ClickHouse и OTel collector отдельно.
@@ -282,7 +280,6 @@ helm install my-clickstack clickstack/clickstack \
 * [Руководство по конфигурации](/docs/use-cases/observability/clickstack/deployment/helm-configuration) — Входной шлюз, TLS и управление секретами
 * [Облачные развертывания](/docs/use-cases/observability/clickstack/deployment/helm-cloud) — облачные настройки и чек-лист для продакшна
   :::
-
 
 ## Конфигурация задач {#task-configuration}
 
@@ -308,7 +305,6 @@ helm upgrade my-clickstack clickstack/clickstack -f values.yaml
 helm search repo clickstack
 ```
 
-
 ## Удаление ClickStack
 
 Чтобы удалить развертывание:
@@ -319,22 +315,19 @@ helm uninstall my-clickstack
 
 Это удалит все ресурсы, связанные с релизом, однако постоянные данные (если они есть) могут остаться.
 
-
 ## Устранение неполадок {#troubleshooting}
 
-### Проверка логов
+### Проверка логов {#customizing-values}
 
 ```shell
 kubectl logs -l app.kubernetes.io/name=clickstack
 ```
 
-
-### Устранение неполадок при неудачной установке
+### Устранение неполадок при неудачной установке {#using-secrets}
 
 ```shell
 helm install my-clickstack clickstack/clickstack --debug --dry-run
 ```
-
 
 ### Проверка развертывания
 
@@ -378,7 +371,6 @@ helm install my-clickstack clickstack/clickstack \
   --set "otel.env[0].name=OTEL_AGENT_FEATURE_GATE_ARG" \
   --set "otel.env[0].value=--feature-gates=clickhouse.json"
 ```
-
 
 ## См. также {#related-documentation}
 

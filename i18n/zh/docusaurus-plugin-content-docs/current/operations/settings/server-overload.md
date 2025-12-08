@@ -6,11 +6,7 @@ title: '服务器过载'
 doc_type: 'reference'
 ---
 
-
-
-# 服务器过载
-
-
+# 服务器过载 {#server-overload}
 
 ## 概览 {#overview}
 
@@ -23,8 +19,6 @@ ClickHouse 服务器会计算 CPU 等待时间（`OSCPUWaitMicroseconds` 指标�
 如果 `OSCPUVirtualTimeMicroseconds` 指标的当前值低于该阈值，
 则认为当前不存在 CPU 过载。
 
-
-
 ## 拒绝查询 {#rejecting-queries}
 
 拒绝查询的行为由查询级别设置 `min_os_cpu_wait_time_ratio_to_throw` 和
@@ -33,16 +27,12 @@ ClickHouse 服务器会计算 CPU 等待时间（`OSCPUWaitMicroseconds` 指标�
 该概率通过在最小和最大比例之间进行线性插值计算得到。例如，如果 `min_os_cpu_wait_time_ratio_to_throw = 2`、
 `max_os_cpu_wait_time_ratio_to_throw = 6`，并且 `cpu_overload = 4`，则查询将以 `0.5` 的概率被拒绝。
 
-
-
 ## 丢弃连接 {#dropping-connections}
 
 丢弃连接由服务器级别设置 `min_os_cpu_wait_time_ratio_to_drop_connection` 和
 `max_os_cpu_wait_time_ratio_to_drop_connection` 控制。这些设置可以在不重启服务器的情况下进行更改。这些设置背后的思路与拒绝查询类似。唯一的区别在于，在这种情况下，如果服务器过载，新的连接尝试会在服务器端被拒绝。
 
-
-
-## 资源过载警告
+## 资源过载警告 {#resource-overload-warnings}
 
 当服务器过载时，ClickHouse 还会将 CPU 和内存过载警告记录到 `system.warnings` 表中。您可以
 通过服务器配置来自定义这些阈值。

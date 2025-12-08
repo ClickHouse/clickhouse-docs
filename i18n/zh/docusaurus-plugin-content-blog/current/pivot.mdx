@@ -10,7 +10,6 @@ keywords: ['PIVOT', '聚合函数组合器']
 
 {/* 截断 */}
 
-
 ## 简介 \{#introduction\}
 
 ClickHouse 没有透视（pivot）运算符，但我们可以通过使用[聚合函数组合器](/sql-reference/aggregate-functions/combinators)，尤其是带有 [`-Map` 后缀](/sql-reference/aggregate-functions/combinators#-map)的组合器，实现类似的效果。
@@ -18,9 +17,9 @@ ClickHouse 没有透视（pivot）运算符，但我们可以通过使用[聚合
 本文将介绍如何实现这一点。
 下面还有一个视频，对相同内容进行了讲解：
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/nlRMOmwYtF4?si=0TZSNg-uo7zjiO52" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/nlRMOmwYtF4?si=0TZSNg-uo7zjiO52" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
-## 理解聚合函数组合器
+## 理解聚合函数组合器 \{#understanding-aggregate-function-combinators\}
 
 先从一个简单的示例开始。我们将使用 [clickhouse-local](/operations/utilities/clickhouse-local)，可以通过运行以下命令来启动：
 
@@ -99,8 +98,7 @@ FROM values;
 
 希望通过上面的内容，你已经大致了解这些函数组合子的工作方式。
 
-
-## 实战应用：英国房价数据集
+## 实战应用：英国房价数据集 \{#real-world-application-uk-housing-prices-dataset\}
 
 现在我们将在 [ClickHouse SQL Playground](https://clickhouse.com/blog/announcing-the-new-sql-playground) 中，将它们应用到一个更大的数据集上。
 
@@ -141,8 +139,7 @@ SELECT * FROM uk.uk_price_paid LIMIT 1 FORMAT Vertical;
 
 从上面可以看出，上表包含了与英国房产销售相关的各类字段。
 
-
-### 按十年分组并聚合
+### 按十年分组并聚合 \{#grouping-and-aggregating-by-decade\}
 
 让我们计算一下数据集中每个郡在各个十年期的价格中位数：
 
@@ -172,8 +169,7 @@ LIMIT 10;
     └────────────────────┴────────────────────────────────────────────────────┘
 ```
 
-
-### 过滤结果
+### 过滤结果 \{#filtering-results\}
 
 我们可以过滤结果，只包含自 2010 年起的数据：
 
@@ -204,8 +200,7 @@ LIMIT 10;
     └────────────────────┴─────────────────────────────┘
 ```
 
-
-## 组合多个聚合操作
+## 组合多个聚合操作 \{#combining-multiple-aggregations\}
 
 如果我们想要按十年为单位求出最高价格，可以使用之前看到的 `maxMap` 函数来实现：
 
@@ -237,8 +232,7 @@ LIMIT 10;
     └────────────────────┴───────────────────────────┴─────────────────────────────────┘
 ```
 
-
-## 将函数应用于映射值
+## 将函数应用于映射值 \{#applying-functions-to-map-values\}
 
 或者，我们可以使用 `avgMap` 来计算平均价格。
 这些值有很多小数位，我们可以使用 [`mapApply`](/sql-reference/functions/tuple-map-functions#mapapply) 函数，对映射中的每个值调用 [`floor`](/sql-reference/functions/rounding-functions#floor) 函数来进行处理：
@@ -271,8 +265,7 @@ LIMIT 10;
     └────────────────────┴───────────────────────────┴───────────────────────────┘
 ```
 
-
-## 灵活分组：郡、地区和邮政编码
+## 灵活分组：郡、地区和邮政编码 \{#flexible-grouping-counties-districts-and-postcodes\}
 
 让我们尝试按一些不同的字段进行分组。
 这次我们将按郡和地区分组，计算每十年的价格中位数：

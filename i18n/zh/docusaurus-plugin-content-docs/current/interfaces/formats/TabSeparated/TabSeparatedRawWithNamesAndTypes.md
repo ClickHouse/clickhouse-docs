@@ -13,8 +13,6 @@ doc_type: 'reference'
 |-------|--------|---------------------------------------------------|
 | ✔     | ✔      | `TSVRawWithNamesAndNames`, `RawWithNamesAndNames` |
 
-
-
 ## 描述 {#description}
 
 与 [`TabSeparatedWithNamesAndTypes`](./TabSeparatedWithNamesAndTypes.md) 格式不同，
@@ -24,11 +22,9 @@ doc_type: 'reference'
 使用此格式进行解析时，每个字段中不允许包含制表符或换行符。
 :::
 
+## 使用示例 {#example-usage}
 
-
-## 使用示例
-
-### 插入数据
+### 插入数据 {#inserting-data}
 
 使用以下名为 `football.tsv` 的 TSV 文件：
 
@@ -60,7 +56,7 @@ Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedRawWithNamesAndTypes;
 ```
 
-### 读取数据
+### 读取数据 {#reading-data}
 
 以 `TabSeparatedRawWithNamesAndTypes` 格式读取数据：
 
@@ -71,7 +67,6 @@ FORMAT TabSeparatedRawWithNamesAndTypes
 ```
 
 输出将采用制表符分隔的格式，并包含两行表头，分别用于列名和列类型：
-
 
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals
@@ -94,6 +89,5 @@ Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
 2022-05-07      2021    Stevenage Borough       Salford City    4       2
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
-
 
 ## 格式设置 {#format-settings}

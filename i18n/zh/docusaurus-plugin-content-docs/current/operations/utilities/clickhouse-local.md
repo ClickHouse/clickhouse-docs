@@ -7,11 +7,7 @@ title: 'clickhouse-local'
 doc_type: 'reference'
 ---
 
-
-
-# clickhouse-local
-
-
+# clickhouse-local {#clickhouse-local}
 
 ## 何时使用 clickhouse-local 而不是 ClickHouse {#when-to-use-clickhouse-local-vs-clickhouse}
 
@@ -21,9 +17,7 @@ doc_type: 'reference'
 
 请阅读下面的文档，这些文档展示了 `clickhouse-local` 的示例用例，例如[查询本地文件](#query_data_in_file)或[读取 S3 中的 Parquet 文件](#query-data-in-a-parquet-file-in-aws-s3)。
 
-
-
-## 下载 clickhouse-local
+## 下载 clickhouse-local {#download-clickhouse-local}
 
 `clickhouse-local` 是通过与 ClickHouse 服务器和 `clickhouse-client` 相同的 `clickhouse` 二进制程序来执行的。下载最新版本最简单的方法是运行以下命令：
 
@@ -35,8 +29,7 @@ curl https://clickhouse.com/ | sh
 您刚刚下载的二进制文件可以运行各种 ClickHouse 工具和实用工具。如果您想以数据库服务器的方式运行 ClickHouse，请查看 [快速入门](/get-started/quick-start)。
 :::
 
-
-## 使用 SQL 查询文件中的数据
+## 使用 SQL 查询文件中的数据 {#query_data_in_file}
 
 `clickhouse-local` 的一个常见用途是对文件运行即席查询：这样你无需先将数据插入到表中。`clickhouse-local` 可以将文件中的数据以流式方式导入到一个临时表中，并执行你的 SQL。
 
@@ -108,8 +101,7 @@ FROM file('reviews.tsv')"
 大富翁少年版桌游    5
 ```
 
-
-## 在 AWS S3 中查询 Parquet 文件中的数据
+## 在 AWS S3 中查询 Parquet 文件中的数据 {#query-data-in-a-parquet-file-in-aws-s3}
 
 如果你在 S3 中有一个文件，可以使用 `clickhouse-local` 和 `s3` 表函数来就地查询该文件（无需先将数据插入到 ClickHouse 表中）。我们在一个公共 bucket 中有一个名为 `house_0.parquet` 的文件，其中包含英国已售房产的房价数据。来看一下它有多少行：
 
@@ -184,8 +176,7 @@ NORTHWOOD    THREE RIVERS    184    731609    ███████████�
 当你准备好将文件写入 ClickHouse 时，启动一个 ClickHouse 服务器，并将 `file` 和 `s3` 表函数的结果插入到一个 `MergeTree` 表中。更多详情请参阅[快速开始](/get-started/quick-start)。
 :::
 
-
-## 格式转换
+## 格式转换 {#format-conversions}
 
 你可以使用 `clickhouse-local` 在不同格式之间进行数据转换。示例：
 
@@ -205,8 +196,7 @@ $ clickhouse-local --query "SELECT * FROM table" < data.json > data.csv
 $ clickhouse-local --copy < data.json > data.csv
 ```
 
-
-## 使用方法
+## 使用方法 {#usage}
 
 默认情况下，`clickhouse-local` 可以访问同一主机上运行的 ClickHouse 服务器的数据，并且不会依赖于该服务器的配置。它也支持通过 `--config-file` 参数加载服务器配置。对于临时数据，默认会创建一个唯一的临时数据目录。
 
@@ -251,8 +241,7 @@ $ ./clickhouse local --structure "table_structure" --input-format "format_of_inc
 
 此外，还为每个 ClickHouse 配置变量提供了对应的参数，这些参数通常比 `--config-file` 更常用。
 
-
-## 示例
+## 示例 {#examples}
 
 ```bash
 $ echo -e "1,2\n3,4" | clickhouse-local --structure "a Int64, b Int64" \
@@ -313,7 +302,6 @@ $ ps aux | tail -n +2 | awk '{ printf("%s\t%s\n", $1, $4) }' \
 ├──────────┼──────────┤
 ...
 ```
-
 
 ## 相关内容 {#related-content-1}
 

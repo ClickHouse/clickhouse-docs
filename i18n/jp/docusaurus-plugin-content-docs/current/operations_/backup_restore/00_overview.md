@@ -6,13 +6,12 @@ title: 'ClickHouse のバックアップとリストア'
 doc_type: 'reference'
 ---
 
-import GenericSettings from '@site/docs/operations_/backup_restore/_snippets/_generic_settings.md';
-import Syntax from '@site/docs/operations_/backup_restore/_snippets/_syntax.md';
-import AzureSettings from '@site/docs/operations_/backup_restore/_snippets/_azure_settings.md';
-import S3Settings from '@site/docs/operations_/backup_restore/_snippets/_s3_settings.md';
+import GenericSettings from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_generic_settings.md';
+import Syntax from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
+import AzureSettings from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_azure_settings.md';
+import S3Settings from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_s3_settings.md';
 
 > このセクションでは、ClickHouse におけるバックアップとリストアの概要を扱います。各バックアップ方式のより詳細な説明については、サイドバーにある各方式のページを参照してください。
-
 
 ## はじめに {#introduction}
 
@@ -59,8 +58,6 @@ ClickHouse のバックアップおよびリストアの万能な解決策は存
 - パスワード保護の有無
 - [system テーブル、log テーブル、アクセス管理テーブル](#system-backups) のバックアップかどうか
 
-
-
 ## バックアップの種類 {#backup-types}
 
 バックアップにはフルバックアップと増分バックアップの 2 種類があります。フルバックアップは
@@ -76,8 +73,6 @@ ClickHouse のバックアップおよびリストアの万能な解決策は存
 - 大規模なデータベース、または高頻度かつコスト効率良くバックアップを行う必要がある場合には **増分バックアップ**。
 - 例えば、週次のフルバックアップと日次の増分バックアップのように **両方** を併用。
 
-
-
 ## 同期バックアップと非同期バックアップ {#synchronous-vs-asynchronous}
 
 `BACKUP` および `RESTORE` コマンドには `ASYNC` を付与することもできます。この場合、
@@ -85,9 +80,7 @@ ClickHouse のバックアップおよびリストアの万能な解決策は存
 コマンドに `ASYNC` が付与されていない場合、バックアップ処理は同期的に行われ、
 バックアップが完了するまでコマンドはブロックされます。
 
-
-
-## 同時実行バックアップと非同時実行バックアップ
+## 同時実行バックアップと非同時実行バックアップ {#concurrent-vs-non-concurrent}
 
 デフォルトでは、ClickHouse はバックアップおよびリストアの同時実行を許可します。つまり、
 複数のバックアップまたはリストア処理を同時に開始できます。ただし、この動作を
@@ -108,8 +101,7 @@ ClickHouse のバックアップおよびリストアの万能な解決策は存
 
 両方のデフォルト値は true であり、デフォルトではバックアップおよびリストアの同時実行が許可されています。クラスタでこれらの設定が false に設定されている場合、そのクラスタでは同時に実行できるバックアップ／リストアは 1 つだけになります。
 
-
-## 圧縮バックアップと非圧縮バックアップ
+## 圧縮バックアップと非圧縮バックアップ {#compressed-vs-uncompressed}
 
 ClickHouse のバックアップは、`compression_method` と `compression_level` 設定による圧縮をサポートしています。
 
@@ -121,7 +113,6 @@ BACKUP TABLE test.table
   SETTINGS compression_method='lzma', compression_level=3
 ```
 
-
 ## 名前付きコレクションの使用 {#using-named-collections}
 
 名前付きコレクションを使用すると、バックアップ／リストア処理で再利用できるキーと値のペア（S3 の認証情報、エンドポイント、設定など）を保存できます。これにより、次のことが可能になります:
@@ -132,8 +123,6 @@ BACKUP TABLE test.table
 - クエリログ上で認証情報が露出することを防ぐ
 
 詳細については、["named collections"](/operations/named-collections) を参照してください。
-
-
 
 ## システムテーブル、ログテーブル、アクセス管理テーブルのバックアップ {#system-backups}
 
@@ -161,8 +150,6 @@ BACKUP TABLE test.table
 に対してのみ動作します。
 ClickHouse サーバーの設定ファイル（例: `users.xml`）で定義されたアクセス設定は、
 バックアップには含まれず、この方法でリストアすることはできません。
-
-
 
 ## 一般的な構文 {#syntax}
 
@@ -207,9 +194,7 @@ ClickHouse サーバーの設定ファイル（例: `users.xml`）で定義さ�
 
 <AzureSettings/>
 
-
-
-## 管理とトラブルシューティング
+## 管理とトラブルシューティング {#check-the-status-of-backups}
 
 バックアップコマンドは `id` と `status` を返し、この `id` を使って
 バックアップの状態を取得できます。これは、時間のかかる

@@ -7,8 +7,7 @@ description: 'Главная страница раздела «Лучшие пр
 doc_type: 'landing-page'
 ---
 
-import TableOfContents from '@site/docs/best-practices/_snippets/_table_of_contents.md';
-
+import TableOfContents from '@site/i18n/ru/docusaurus-plugin-content-docs/current/best-practices/_snippets/_table_of_contents.md';
 
 # Лучшие практики использования ClickHouse Cloud {#best-practices-in-clickhouse-cloud}
 

@@ -6,8 +6,6 @@ title: 'ParquetMetadata'
 doc_type: 'reference'
 ---
 
-
-
 ## Описание {#description}
 
 Специальный формат для чтения метаданных файлов Parquet (https://parquet.apache.org/docs/file-format/metadata/). Всегда выводит одну строку со следующей структурой/содержимым:
@@ -47,9 +45,7 @@ doc_type: 'reference'
       - `min` - минимальное значение в чанке столбца
       - `max` - максимальное значение в чанке столбца
 
-
-
-## Пример использования
+## Пример использования {#example-usage}
 
 Пример:
 

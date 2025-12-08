@@ -8,8 +8,8 @@ title: 'Tableau Online'
 doc_type: 'guide'
 ---
 
-import MySQLCloudSetup from '@site/docs/_snippets/_clickhouse_mysql_cloud_setup.mdx';
-import MySQLOnPremiseSetup from '@site/docs/_snippets/_clickhouse_mysql_on_premise_setup.mdx';
+import MySQLCloudSetup from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_clickhouse_mysql_cloud_setup.mdx';
+import MySQLOnPremiseSetup from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_clickhouse_mysql_on_premise_setup.mdx';
 import Image from '@theme/IdealImage';
 import tableau_online_01 from '@site/static/images/integrations/data-visualization/tableau_online_01.png';
 import tableau_online_02 from '@site/static/images/integrations/data-visualization/tableau_online_02.png';
@@ -21,22 +21,15 @@ import tableau_desktop_03 from '@site/static/images/integrations/data-visualizat
 import tableau_desktop_04 from '@site/static/images/integrations/data-visualization/tableau_desktop_04.png';
 import tableau_desktop_05 from '@site/static/images/integrations/data-visualization/tableau_desktop_05.png';
 
-
-# Tableau Online
+# Tableau Online {#tableau-online}
 
 Tableau Online は、公式の MySQL データソースを利用し、MySQL インターフェース経由で ClickHouse Cloud またはオンプレミス環境の ClickHouse に接続できます。
-
-
 
 ## ClickHouse Cloud のセットアップ {#clickhouse-cloud-setup}
 <MySQLCloudSetup />
 
-
-
 ## オンプレミスの ClickHouse サーバーのセットアップ {#on-premise-clickhouse-server-setup}
 <MySQLOnPremiseSetup />
-
-
 
 ## Tableau Online から ClickHouse（オンプレミス・SSL なし）への接続 {#connecting-tableau-online-to-clickhouse-on-premise-without-ssl}
 
@@ -63,8 +56,6 @@ Tableau Online がデータベースをスキャンし、利用可能なテー�
 その後は、右上の「Publish As」をクリックするだけで、作成したデータセットを Tableau Online で通常どおり利用できるようになります。
 
 注: Tableau Online と Tableau Desktop を併用し、それらの間で ClickHouse のデータセットを共有したい場合は、Tableau Desktop でもデフォルトの MySQL コネクタを使用してください。Data Source ドロップダウンから MySQL を選択した際に表示されるセットアップガイドに従って構成します（ガイドは [こちら](https://www.tableau.com/support/drivers) にあります）。M1 Mac を使用している場合は、ドライバーインストールの回避策について、この [トラブルシューティングスレッド](https://community.tableau.com/s/question/0D58b0000Ar6OhvCQE/unable-to-install-mysql-driver-for-m1-mac) を参照してください。
-
-
 
 ## Tableau Online を ClickHouse に接続する（SSL を用いたクラウドまたはオンプレミス環境） {#connecting-tableau-online-to-clickhouse-cloud-or-on-premise-setup-with-ssl}
 
@@ -107,8 +98,6 @@ ClickHouse Cloud インスタンス用の MySQL ユーザー認証情報と、�
 <br/>
 
 最後に「Publish」をクリックすると、認証情報が埋め込まれたデータソースが自動的に Tableau Online で開かれます。
-
-
 
 ## 既知の制限事項（ClickHouse 23.11） {#known-limitations-clickhouse-2311}
 

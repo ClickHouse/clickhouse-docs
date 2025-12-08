@@ -26,7 +26,7 @@ doc_type: 'reference'
 - 支持 totals（汇总）和 extremes（极值）
 - 保留值的原生类型（数字为数字，字符串为字符串）
 
-## 使用示例
+## 使用示例 {#example-usage}
 
 ```sql title="Query"
 SELECT *
@@ -45,6 +45,5 @@ FORMAT JSONCompactEachRowWithProgress
 {"progress":{"read_rows":"5","read_bytes":"184","total_rows_to_read":"5","elapsed_ns":"335771"}}
 {"rows_before_limit_at_least":5}
 ```
-
 
 ## 格式设置 {#format-settings}

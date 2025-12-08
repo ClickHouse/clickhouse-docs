@@ -20,7 +20,7 @@ import hyperdx_create_new_source from '@site/static/images/use-cases/observabili
 import hyperdx_create_trace_datasource from '@site/static/images/use-cases/observability/hyperdx_create_trace_datasource.png';
 import read_only from '@site/static/images/clickstack/read-only-access.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
-import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
+import JSONSupport from '@site/i18n/jp/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
 <PrivatePreviewBadge />
 
@@ -37,7 +37,6 @@ ClickHouse Cloud を初めて利用する場合は、
 インフラ管理の負荷を軽減できるだけでなく、このデプロイメントパターンでは認証が ClickHouse Cloud の SSO/SAML と統合されます。セルフホスト型デプロイメントと異なり、ダッシュボード、保存済み検索、ユーザー設定、アラートなどのアプリケーション状態を保存するための MongoDB インスタンスを用意する必要もありません。
 
 このモードでは、データのインジェストは完全にユーザーに委ねられます。独自にホストした OpenTelemetry コレクター、クライアントライブラリからの直接インジェスト、Kafka や S3 などの ClickHouse ネイティブなテーブルエンジン、ETL パイプライン、あるいは ClickHouse Cloud のマネージドインジェストサービスである ClickPipes を使用して、ClickHouse Cloud にデータを取り込むことができます。このアプローチは、ClickStack を運用するうえで最もシンプルかつ高パフォーマンスな方法を提供します。
-
 
 ### 適したユースケース {#suitable-for}
 

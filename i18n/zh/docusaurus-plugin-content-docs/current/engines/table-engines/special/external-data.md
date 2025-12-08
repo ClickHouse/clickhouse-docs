@@ -7,7 +7,7 @@ title: '用于查询处理的外部数据'
 doc_type: 'reference'
 ---
 
-# 用于查询处理的外部数据
+# 用于查询处理的外部数据 {#external-data-for-query-processing}
 
 ClickHouse 允许在发送 `SELECT` 查询时，将查询处理所需的数据一并发送到服务器。此数据会被放入一张临时表（参见“临时表”一节），并且可以在查询中使用（例如用于 `IN` 运算符）。
 

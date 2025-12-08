@@ -15,12 +15,11 @@ hide_title: true
 
 <br />
 
-
 # リバースプロキシを設定してカスタム DNS エイリアスを設定する \{#custom-dns-alias\}
 
 > このナレッジベース記事では、Nginx などのリバースプロキシを使用して、ClickHouse ネイティブクライアント向けに ClickHouse Cloud インスタンスのカスタム DNS エイリアスを設定する方法を順を追って説明します。
 
-## 自己署名証明書を作成する
+## 自己署名証明書を作成する \{#create-certificate\}
 
 :::note
 署名付き証明書を使用している場合、この手順は不要です。
@@ -51,8 +50,7 @@ hide_title: true
 </clickhouse>
 ```
 
-
-## Nginx 設定を更新する
+## Nginx 設定を更新する \{#update-nginx-config\}
 
 `nginx.conf` ファイルに以下の内容を追加します：
 
@@ -93,8 +91,7 @@ stream {
 ここで言う `isrgrootx1.pem` は ClickHouse Cloud のルート証明書で、
 [こちら](https://letsencrypt.org/certs/isrgrootx1.pem) からダウンロードできます。
 
-
-## hosts ファイルを更新する
+## hosts ファイルを更新する \{#update-hosts-file\}
 
 :::note
 独自のドメインコントローラーを使用している場合、次の手順は不要です
@@ -110,8 +107,7 @@ Nginx サーバー上の `/etc/hosts` ファイルに以下を追加します:
 
 ここでの `10.X.Y.Z` は、あなたの環境における特定の Nginx サーバーの IP アドレスを指します。
 
-
-## エイリアスを使用して Cloud に接続する
+## エイリアスを使用して Cloud に接続する \{#connect-to-cloud-using-alias\}
 
 これで、カスタムエイリアスを使って接続する準備が整いました。
 

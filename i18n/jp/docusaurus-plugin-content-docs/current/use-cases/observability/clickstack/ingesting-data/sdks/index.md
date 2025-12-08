@@ -44,7 +44,7 @@ ClickStack は強化されたテレメトリ機能を備えた独自の言語 SD
 | React Native | React Native モバイルアプリケーション | [Documentation](/use-cases/observability/clickstack/sdks/react-native) |
 | Ruby | Ruby on Rails アプリケーションおよび Web サービス | [Documentation](/use-cases/observability/clickstack/sdks/ruby-on-rails) |
 
-## API key による保護
+## API key による保護 {#securing-api-key}
 
 OTel collector 経由で ClickStack にデータを送信するには、SDK でインジェスト API key を指定する必要があります。これは SDK の `init` 関数で設定するか、`OTEL_EXPORTER_OTLP_HEADERS` 環境変数で指定します。
 
@@ -59,7 +59,6 @@ OTEL_EXPORTER_OTLP_HEADERS='authorization=<あなたのインジェストAPIキ�
 ```shell
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 ```
-
 
 ## Kubernetes integration {#kubernetes-integration}
 

@@ -7,22 +7,17 @@ title: 'odbc'
 doc_type: 'reference'
 ---
 
-
-
-# odbc テーブル関数
+# odbc テーブル関数 {#odbc-table-function}
 
 [ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity) 経由で接続されたテーブルを返します。
 
-
-
-## 構文
+## 構文 {#syntax}
 
 ```sql
 odbc(データソース, 外部データベース, 外部テーブル)
 odbc(データソース, 外部テーブル)
 odbc(名前付きコレクション)
 ```
-
 
 ## 引数 {#arguments}
 
@@ -38,9 +33,7 @@ ODBC 接続を安全に実装するために、ClickHouse は別プログラム�
 
 外部テーブルのうち値が `NULL` のフィールドは、基になるデータ型のデフォルト値に変換されます。たとえば、リモートの MySQL テーブルフィールドが `INT NULL` 型の場合、0（ClickHouse の `Int32` データ型におけるデフォルト値）に変換されます。
 
-
-
-## 使用例
+## 使用例 {#usage-example}
 
 **ODBC を介してローカルの MySQL インストールからデータを取得する**
 
@@ -116,7 +109,6 @@ SELECT * FROM odbc('DSN=mysqlconn', 'test', 'test')
 │      1 │            0 │     2 │              0 │
 └────────┴──────────────┴───────┴────────────────┘
 ```
-
 
 ## 関連項目 {#see-also}
 

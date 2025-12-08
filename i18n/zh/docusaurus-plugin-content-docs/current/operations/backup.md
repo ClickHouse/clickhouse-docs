@@ -7,18 +7,14 @@ title: '备份与恢复'
 doc_type: 'guide'
 ---
 
-
-
-# 备份与恢复
+# 备份与恢复 {#backup-and-restore}
 
 - [备份到本地磁盘](#backup-to-a-local-disk)
 - [配置使用 S3 端点进行备份/恢复](#configuring-backuprestore-to-use-an-s3-endpoint)
 - [使用 S3 磁盘进行备份/恢复](#backuprestore-using-an-s3-disk)
 - [其他方案](#alternatives)
 
-
-
-## 命令概览
+## 命令概览 {#command-summary}
 
 ```bash
  BACKUP|RESTORE
@@ -41,7 +37,6 @@ doc_type: 'guide'
 在 ClickHouse 23.4 版本之前，`ALL` 仅可用于 `RESTORE` 命令。
 :::
 
-
 ## 背景 {#background}
 
 虽然[复制](../engines/table-engines/mergetree-family/replication.md)可以防止硬件故障带来的影响，但它无法防止人为错误：例如误删数据、删除了错误的表或错误集群上的表，以及由于软件缺陷导致的数据处理错误或数据损坏。在许多情况下，这类错误会影响所有副本。ClickHouse 内置了一些保护机制来防止某些类型的错误——例如，默认情况下，[你不能直接删除使用类 MergeTree 引擎且包含超过 50 GB 数据的表](/operations/settings/settings#max_table_size_to_drop)。但是，这些保护机制并不能覆盖所有可能的情况，并且可能被绕过。
@@ -54,11 +49,9 @@ doc_type: 'guide'
 请记住，如果你只做了备份却从未尝试过恢复，那么在你真正需要恢复时，它很有可能无法按预期工作（或者至少，其耗时会超过业务可接受的范围）。因此，无论你选择哪种备份方案，都务必同时实现恢复过程的自动化，并在备用的 ClickHouse 集群上定期演练恢复。
 :::
 
+## 备份到本地磁盘 {#backup-to-a-local-disk}
 
-
-## 备份到本地磁盘
-
-### 配置备份目标
+### 配置备份目标 {#configure-a-backup-destination}
 
 在下面的示例中，备份目标被指定为 `Disk('backups', '1.zip')`。要准备该目标，请在 `/etc/clickhouse-server/config.d/backup_disk.xml` 中创建一个文件，用于指定备份目标。例如，下面这个文件定义了名为 `backups` 的磁盘，然后将该磁盘添加到 **backups &gt; allowed&#95;disk** 列表中：
 
@@ -82,7 +75,7 @@ doc_type: 'guide'
 </clickhouse>
 ```
 
-### 参数
+### 参数 {#parameters}
 
 备份可以是全量或增量的，并且可以包含表（包括物化视图、投影（projection）和字典）以及数据库。备份可以是同步的（默认）或异步的，可以进行压缩，也可以通过密码进行保护。
 
@@ -105,7 +98,7 @@ doc_type: 'guide'
   * `azure_attempt_to_create_container`：在使用 Azure Blob Storage 时，如果指定的容器不存在，是否尝试创建该容器。默认值：`true`。
   * 这里也可以使用[核心设置](/operations/settings/settings)
 
-### 使用示例
+### 使用示例 {#usage-examples}
 
 先备份，再恢复一个表：
 
@@ -139,13 +132,12 @@ RESTORE TABLE test.table AS test.table2 FROM Disk('backups', '1.zip')
 BACKUP TABLE test.table3 AS test.table4 TO Disk('backups', '2.zip')
 ```
 
-### 增量备份
+### 增量备份 {#incremental-backups}
 
 可以通过指定 `base_backup` 来创建增量备份。
 :::note
 增量备份依赖于基础备份。必须确保基础备份始终可用，才能从增量备份中完成恢复。
 :::
-
 
 以增量方式存储新数据。将 `base_backup` 进行相应设置后，自上一次备份到 `Disk('backups', 'd.zip')` 以来产生的数据会被存储到 `Disk('backups', 'incremental-a.zip')` 中：
 
@@ -161,7 +153,7 @@ RESTORE TABLE test.table AS test.table2
   FROM Disk('backups', 'incremental-a.zip');
 ```
 
-### 为备份设置密码
+### 为备份设置密码 {#assign-a-password-to-the-backup}
 
 可以为写入磁盘的备份文件设置密码：
 
@@ -179,7 +171,7 @@ RESTORE TABLE test.table
   SETTINGS password='qwerty'
 ```
 
-### 压缩设置
+### 压缩设置 {#compression-settings}
 
 如果需要指定压缩方式或压缩级别：
 
@@ -189,7 +181,7 @@ BACKUP TABLE test.table
   SETTINGS compression_method='lzma', compression_level=3
 ```
 
-### 恢复特定分区
+### 恢复特定分区 {#restore-specific-partitions}
 
 如果需要恢复与某个表关联的特定分区，可以单独指定这些分区。要从备份中恢复分区 1 和 4：
 
@@ -198,7 +190,7 @@ RESTORE TABLE test.table PARTITIONS '2', '3'
   FROM Disk('backups', 'filename.zip')
 ```
 
-### 以 tar 归档形式存储备份
+### 以 tar 归档形式存储备份 {#backups-as-tar-archives}
 
 备份也可以以 tar 归档形式存储。其功能与 zip 相同，但不支持密码。
 
@@ -222,7 +214,7 @@ BACKUP TABLE test.table TO Disk('backups', '1.tar.gz')
 
 支持的压缩文件后缀包括 `tar.gz`、`.tgz`、`tar.bz2`、`tar.lzma`、`.tar.zst`、`.tzst` 和 `.tar.xz`。
 
-### 检查备份状态
+### 检查备份状态 {#check-the-status-of-backups}
 
 备份命令会返回一个 `id` 和 `status`，该 `id` 可用于获取备份的状态。这对于检查长时间运行的 ASYNC（异步）备份进度非常有用。下面的示例展示了在尝试覆盖已有备份文件时发生的失败情况：
 
@@ -263,7 +255,6 @@ end_time:          2022-08-30 09:21:46
 
 返回 1 行。用时:0.002 秒。
 ```
-
 
 除了 `system.backups` 表之外，所有备份和恢复操作还会记录在系统日志表 [backup&#95;log](../operations/system-tables/backup_log.md) 中：
 
@@ -316,8 +307,7 @@ bytes_read:              0
 2 行结果集。用时:0.075 秒。
 ```
 
-
-## 配置 BACKUP/RESTORE 以使用 S3 Endpoint
+## 配置 BACKUP/RESTORE 以使用 S3 Endpoint {#configuring-backuprestore-to-use-an-s3-endpoint}
 
 要将备份写入 S3 bucket，您需要以下三项信息：
 
@@ -355,7 +345,7 @@ FROM generateRandom('key Int, value String, array Array(String)')
 LIMIT 1000
 ```
 
-### 创建基础（初始）备份
+### 创建基础（初始）备份 {#create-a-base-initial-backup}
 
 增量备份需要先有一个*基础*备份作为起点，本示例稍后将作为基础备份使用。S3 目标的第一个参数是 S3 endpoint，后面是本次备份在 bucket 中使用的目录。在本示例中，该目录名为 `my_backup`。
 
@@ -369,7 +359,7 @@ BACKUP TABLE data TO S3('https://mars-doc-test.s3.amazonaws.com/backup-S3/my_bac
 └──────────────────────────────────────┴────────────────┘
 ```
 
-### 添加更多数据
+### 添加更多数据 {#add-more-data}
 
 增量备份会保存基础备份与当前表内容之间的差异。在执行增量备份之前，先向表中添加更多数据：
 
@@ -379,7 +369,7 @@ FROM generateRandom('key Int, value String, array Array(String)')
 LIMIT 100
 ```
 
-### 执行增量备份
+### 执行增量备份 {#take-an-incremental-backup}
 
 此备份命令与基础备份类似，但额外指定了 `SETTINGS base_backup` 以及基础备份的位置。请注意，增量备份的目标路径与基础备份并非同一目录，而是在同一端点下、存储桶内的另一个目标目录。基础备份位于 `my_backup`，增量备份将写入 `my_incremental`：
 
@@ -393,7 +383,7 @@ BACKUP TABLE data TO S3('https://mars-doc-test.s3.amazonaws.com/backup-S3/my_inc
 └──────────────────────────────────────┴────────────────┘
 ```
 
-### 从增量备份恢复
+### 从增量备份恢复 {#restore-from-the-incremental-backup}
 
 此命令会将增量备份还原到一个名为 `data3` 的新表中。请注意，当恢复增量备份时，基础备份也会一并包含在内。恢复时只需指定增量备份即可：
 
@@ -407,8 +397,7 @@ RESTORE TABLE data AS data3 FROM S3('https://mars-doc-test.s3.amazonaws.com/back
 └──────────────────────────────────────┴──────────┘
 ```
 
-### 验证计数
-
+### 验证计数 {#verify-the-count}
 
 在原始表 `data` 中进行了两次插入操作，一次插入 1,000 行，一次插入 100 行，共计 1,100 行。请验证还原后的表是否有 1,100 行：
 
@@ -423,8 +412,7 @@ FROM data3
 └─────────┘
 ```
 
-
-### 验证内容
+### 验证内容 {#verify-the-content}
 
 这会将原始表 `data` 的内容与恢复后的表 `data3` 进行比较：
 
@@ -438,7 +426,7 @@ SELECT throwIf((
     ), 'BACKUP/RESTORE 后数据不匹配')
 ```
 
-## 使用 S3 磁盘执行 BACKUP/RESTORE
+## 使用 S3 磁盘执行 BACKUP/RESTORE {#backuprestore-using-an-s3-disk}
 
 也可以通过在 ClickHouse 存储配置中配置一个 S3 磁盘，将数据 `BACKUP`/`RESTORE` 到 S3。在 `/etc/clickhouse-server/config.d` 中添加一个文件，按如下方式配置该磁盘：
 
@@ -484,12 +472,9 @@ RESTORE TABLE data AS data_restored FROM Disk('s3_plain', 'cloud_backup');
 * 如果你的表使用 S3 存储作为后端，系统会尝试通过 `CopyObject` 调用在 S3 侧进行服务器端拷贝，使用相应凭证将数据分片复制到目标 bucket。若发生身份验证错误，则会退回为使用缓冲区拷贝的方法（先下载分片再上传），这种方式效率非常低。在这种情况下，你可能需要确保使用目标 bucket 的凭证对源 bucket 拥有 `read` 权限。
   :::
 
-
 ## 使用命名集合 {#using-named-collections}
 
 命名集合可以用于 `BACKUP`/`RESTORE` 参数。示例请参见 [此处](./named-collections.md#named-collections-for-backups)。
-
-
 
 ## 替代方案 {#alternatives}
 
@@ -514,9 +499,7 @@ ClickHouse 允许使用 `ALTER TABLE ... FREEZE PARTITION ...` 查询来创建�
 
 有一个第三方工具可以用来自动化此方案：[clickhouse-backup](https://github.com/AlexAkulov/clickhouse-backup)。
 
-
-
-## 禁止并发备份/恢复的设置
+## 禁止并发备份/恢复的设置 {#settings-to-disallow-concurrent-backuprestore}
 
 要禁止备份和恢复操作并发执行，可以分别使用以下设置。
 
@@ -532,8 +515,7 @@ ClickHouse 允许使用 `ALTER TABLE ... FREEZE PARTITION ...` 查询来创建�
 这两个设置的默认值都是 true，因此默认情况下允许并发执行备份和还原。
 当在集群上将这两个设置设为 false 时，集群中同一时间只能运行 1 个备份或还原任务。
 
-
-## 配置 BACKUP/RESTORE 以使用 AzureBlobStorage 端点
+## 配置 BACKUP/RESTORE 以使用 AzureBlobStorage 端点 {#configuring-backuprestore-to-use-an-azureblobstorage-endpoint}
 
 要将备份写入 AzureBlobStorage 容器，您需要以下信息：
 
@@ -555,7 +537,6 @@ BACKUP TABLE data TO AzureBlobStorage('DefaultEndpointsProtocol=http;AccountName
 RESTORE TABLE data AS data_restored FROM AzureBlobStorage('DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://azurite1:10000/devstoreaccount1/;',
     'testcontainer', 'data_backup');
 ```
-
 
 ## 备份系统表 {#backup-up-system-tables}
 

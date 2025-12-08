@@ -21,14 +21,11 @@ import bigquery_11 from '@site/static/images/migrations/bigquery-11.png';
 import bigquery_12 from '@site/static/images/migrations/bigquery-12.png';
 import Image from '@theme/IdealImage';
 
-
 ## なぜ BigQuery ではなく ClickHouse Cloud を使うのか？ {#why-use-clickhouse-cloud-over-bigquery}
 
 要約すると、現代的なデータ分析においては、ClickHouse の方が BigQuery よりも高速で低コストかつ高機能だからです。
 
 <Image img={bigquery_2} size="md" alt="ClickHouse と BigQuery の比較"/>
-
-
 
 ## BigQuery から ClickHouse Cloud へのデータ読み込み {#loading-data-from-bigquery-to-clickhouse-cloud}
 
@@ -67,15 +64,11 @@ BigQuery は、データを Google のオブジェクトストア（GCS）へエ
 
 以下の例を試す前に、エクスポートとインポートのパフォーマンスを最大化するため、[エクスポートに必要な権限](https://cloud.google.com/bigquery/docs/exporting-data#required_permissions)および[ロケーションに関する推奨事項](https://cloud.google.com/bigquery/docs/exporting-data#data-locations)を確認することを推奨します。
 
-
-
 ### スケジュールされたクエリによるリアルタイムレプリケーションまたは CDC {#real-time-replication-or-cdc-via-scheduled-queries}
 
 Change Data Capture（CDC）は、2 つのデータベース間でテーブルを同期状態に保つプロセスです。更新および削除をほぼリアルタイムで扱う必要がある場合、処理は格段に複雑になります。1 つのアプローチとして、BigQuery の[スケジュールされたクエリ機能](https://cloud.google.com/bigquery/docs/scheduling-queries)を利用し、定期的なエクスポートを実行するようスケジュールする方法があります。ClickHouse へのデータ挿入に一定の遅延を許容できる場合、このアプローチは実装と保守が容易です。具体的な例は[このブログ記事](https://clickhouse.com/blog/clickhouse-bigquery-migrating-data-for-realtime-queries#using-scheduled-queries)で紹介されています。
 
-
-
-## スキーマの設計
+## スキーマの設計 {#designing-schemas}
 
 Stack Overflow のデータセットには、関連する多数のテーブルが含まれています。まずは主要なテーブルの移行に集中することを推奨します。これは必ずしも最大のテーブルとは限らず、むしろ分析クエリの発行が最も多いと想定されるテーブルです。そうすることで、主要な ClickHouse の概念に慣れることができます。このテーブルは、追加のテーブルが増えるにつれて、ClickHouse の機能を最大限に活用し最適なパフォーマンスを得るために、再モデリングが必要になる場合があります。このモデリングプロセスについては、[データモデリングのドキュメント](/data-modeling/schema-design#next-data-modeling-techniques)で解説しています。
 
@@ -108,7 +101,7 @@ CREATE TABLE stackoverflow.posts (
 );
 ```
 
-### 型の最適化
+### 型の最適化 {#optimizing-types}
 
 [こちら](/data-modeling/schema-design)で説明しているプロセスに従うと、次のようなスキーマになります。
 
@@ -151,7 +144,6 @@ INSERT INTO stackoverflow.posts SELECT * FROM gcs( 'gs://clickhouse-public-datas
 
 新しいスキーマでは、NULL は一切保持しません。上記の INSERT 文により、これらはそれぞれの型のデフォルト値に暗黙的に変換されます。整数であれば 0、文字列であれば空文字列です。ClickHouse は数値型についても、自動的にターゲットの精度に変換します。
 
-
 ## ClickHouse のプライマリキーは何が違うのか {#how-are-clickhouse-primary-keys-different}
 
 [こちら](/migrations/bigquery)で説明したとおり、BigQuery と同様に、ClickHouse はテーブルのプライマリキー列の値に対して一意性を強制しません。
@@ -172,13 +164,11 @@ ClickHouse で選択したプライマリキーは、インデックスだけで
 
 並べ替えキーを選択する際の考慮事項と手順については、posts テーブルを例にとった[こちら](/data-modeling/schema-design#choosing-an-ordering-key)を参照してください。
 
-
-
-## データモデリング手法
+## データモデリング手法 {#data-modeling-techniques}
 
 BigQuery から移行するユーザーは、まず [ClickHouse におけるデータモデリングガイド](/data-modeling/schema-design) を参照することを推奨します。このガイドでは同じ Stack Overflow データセットを使用し、ClickHouse の機能を活用した複数のアプローチを解説しています。
 
-### パーティション
+### パーティション {#partitions}
 
 BigQuery ユーザーは、大規模なデータベースにおいて、テーブルを「パーティション」と呼ばれる小さく扱いやすい単位に分割することで、性能と管理性を向上させるテーブルパーティショニングの概念に馴染みがあるはずです。パーティショニングは、指定したカラム（例: 日付）に対する範囲、定義済みリスト、あるいはキーに対するハッシュによって実現できます。これにより、管理者は日付範囲や地理的位置といった特定の条件に基づいてデータを整理できます。
 
@@ -205,7 +195,7 @@ ORDER BY (PostTypeId, toDate(CreationDate), CreationDate)
 PARTITION BY toYear(CreationDate)
 ```
 
-#### 用途
+#### 用途 {#applications}
 
 ClickHouse におけるパーティショニングの用途は BigQuery と似ていますが、いくつか細かな違いがあります。具体的には次のとおりです。
 
@@ -246,7 +236,6 @@ ALTER TABLE posts
 0 行を取得しました。経過時間: 0.103 秒
 ```
 
-
 - **クエリ最適化** - パーティションはクエリパフォーマンスの改善に役立つ場合がありますが、その効果はアクセスパターンに大きく依存します。クエリが少数のパーティション（理想的には 1 つ）のみを対象とする場合、パフォーマンスが向上する可能性があります。これは通常、パーティショニングキーがプライマリキーに含まれておらず、かつそのキーでフィルタリングしている場合にのみ有用です。一方で、多数のパーティションをまたいで読み取る必要があるクエリは、パーティショニングを行わない場合よりもパフォーマンスが低下する可能性があります（パーティショニングの結果として `parts` が増える可能性があるため）。対象を 1 つのパーティションに限定できることによる利点も、パーティショニングキーがすでにプライマリキーの先頭付近にある場合にはほとんど、あるいはまったくと言ってよいほど小さくなります。パーティショニングは、各パーティション内の値が一意である場合に限り、[`GROUP BY` クエリを最適化](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key) するためにも利用できます。ただし、一般的には、まずプライマリキーが最適化されていることを確認し、そのうえで、アクセスパターンが 1 日の中の特定の予測可能なサブセットだけにアクセスするような例外的なケース（例: 1 日単位でパーティションを切り、ほとんどのクエリが直近 1 日のみを対象とする場合）に限って、クエリ最適化手法としてのパーティショニングを検討すべきです。
 
 #### 推奨事項 {#recommendations}
@@ -257,9 +246,7 @@ ALTER TABLE posts
 
 > 内部的には、ClickHouse は挿入されたデータに対して[parts を作成](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design)します。より多くのデータが挿入されると、parts の数は増加します。あまりに多くの parts が存在すると、読み取るファイル数が増えるためクエリパフォーマンスが低下してしまいますが、これを防ぐために、バックグラウンドの非同期処理で parts がマージされます。parts の数が[事前に設定された上限](/operations/settings/merge-tree-settings#parts_to_throw_insert)を超えると、ClickHouse は挿入時に例外をスローし、[「too many parts」エラー](/knowledgebase/exception-too-many-parts)として扱います。これは通常の運用では発生せず、ClickHouse の設定ミスや誤った使用方法（例: 非常に小さい挿入を多数行う）によってのみ発生します。parts は各パーティションごとに独立して作成されるため、パーティション数を増やすと parts の数も増加し、パーティション数に比例して大きくなります。そのため、高カーディナリティなパーティショニングキーはこのエラーの原因となりうるため、避けるべきです。
 
-
-
-## マテリアライズドビューとプロジェクション
+## マテリアライズドビューとプロジェクション {#materialized-views-vs-projections}
 
 ClickHouse のプロジェクションの概念により、ユーザーは 1 つのテーブルに対して複数の `ORDER BY` 句を指定できます。
 
@@ -359,7 +346,6 @@ FROM comments
 WHERE UserId = 8592047
 ```
 
-
 ┌─explain─────────────────────────────────────────────┐
 
 1. │ 式 ((Projection + Before ORDER BY))                  │
@@ -395,8 +381,7 @@ WHERE UserId = 8592047
 - ストレージ使用量の増加とデータを2回書き込むオーバーヘッドを許容できる場合。挿入速度への影響をテストし、[ストレージオーバーヘッドを評価](/data-compression/compression-in-clickhouse)してください。
 ```
 
-
-## ClickHouse 向けの BigQuery クエリの書き換え
+## ClickHouse 向けの BigQuery クエリの書き換え {#rewriting-bigquery-queries-in-clickhouse}
 
 以下は、BigQuery と ClickHouse のクエリを比較したサンプルクエリです。このリストは、ClickHouse の機能を活用してクエリを大幅に簡素化する方法を示すことを目的としています。ここでの例では、Stack Overflow の全データセット（2024 年 4 月まで）を使用します。
 
@@ -463,8 +448,7 @@ LIMIT 5
 ピークメモリ使用量: 567.41 MiB。
 ```
 
-
-## 集約関数
+## 集約関数 {#aggregate-functions}
 
 可能な場合は、ClickHouse の集約関数を活用してください。以下では、各年でもっとも閲覧された質問を求めるために、[`argMax` 集約関数](/sql-reference/aggregate-functions/reference/argmax) を使用する例を示します。
 
@@ -518,8 +502,7 @@ MaxViewCount:            66975
 ピークメモリ使用量: 377.26 MiB。
 ```
 
-
-## 条件式と配列
+## 条件式と配列 {#conditionals-and-arrays}
 
 条件式と配列関数を使うと、クエリを大幅に簡潔にできます。次のクエリは、2022 年から 2023 年にかけての出現回数が 10000 回を超えるタグのうち、増加率が最も大きいものを算出します。以下の ClickHouse クエリが、条件式・配列関数・`HAVING` 句および `SELECT` 句でエイリアスを再利用できる機能のおかげで簡潔になっている点に注目してください。
 

@@ -10,7 +10,6 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 # 用户定义函数（UDF） {#executable-user-defined-functions}
 
 <PrivatePreviewBadge/>
@@ -48,15 +47,11 @@ ClickHouse 可以调用任意外部可执行程序或脚本来处理数据。
 
 命令必须从 `STDIN` 读取参数，并将结果输出到 `STDOUT`。命令必须以迭代方式处理参数。也就是说，在处理完一块参数后，它必须等待下一块参数。
 
-
-
 ## 可执行用户定义函数 {#executable-user-defined-functions}
 
+## 示例 {#examples}
 
-
-## 示例
-
-### 使用内联脚本的 UDF
+### 使用内联脚本的 UDF {#udf-inline}
 
 使用 XML 或 YAML 配置手动创建 `test_function_sum`，并将 `execute_direct` 显式设置为 `0`。
 
@@ -120,7 +115,7 @@ SELECT test_function_sum(2, 2);
 └─────────────────────────┘
 ```
 
-### 来自 Python 脚本的 UDF
+### 来自 Python 脚本的 UDF {#udf-python}
 
 在本示例中，我们创建一个 UDF，它从 `STDIN` 读取一个值，并将其作为字符串返回。
 
@@ -189,10 +184,9 @@ SELECT test_function_python(toUInt64(2));
 └─────────────────────────┘
 ```
 
-### 从 `STDIN` 读取两个值，并以 JSON 对象形式返回它们的和
+### 从 `STDIN` 读取两个值，并以 JSON 对象形式返回它们的和 {#udf-stdin}
 
 使用命名参数和 [JSONEachRow](/interfaces/formats/JSONEachRow) 格式，通过 XML 或 YAML 配置创建 `test_function_sum_json`。
-
 
 <Tabs>
   <TabItem value="XML" label="XML" default>
@@ -270,7 +264,7 @@ SELECT test_function_sum_json(2, 2);
 └──────────────────────────────┘
 ```
 
-### 在 `command` 设置中使用参数
+### 在 `command` 设置中使用参数 {#udf-parameters-in-command}
 
 可执行类型的用户自定义函数可以在 `command` 设置中接受常量参数（这仅适用于 `executable` 类型的用户自定义函数）。
 还需要启用 `execute_direct` 选项，以避免出现 shell 参数展开带来的安全漏洞。
@@ -332,14 +326,13 @@ if __name__ == "__main__":
 SELECT test_function_parameter_python(1)(2);
 ```
 
-
 ```text title="Result"
 ┌─test_function_parameter_python(1)(2)─┐
 │ 参数 1 值 2                          │
 └──────────────────────────────────────┘
 ```
 
-### 基于 shell 脚本的 UDF
+### 基于 shell 脚本的 UDF {#udf-shell-script}
 
 在本示例中，我们创建一个 shell 脚本，将每个值乘以 2。
 
@@ -412,14 +405,11 @@ SELECT test_shell(number) FROM numbers(10);
     └────────────────────┘
 ```
 
-
 ## 错误处理 {#error-handling}
 
 如果数据无效，某些函数可能会抛出异常。
 在这种情况下，查询会被取消，并向客户端返回错误信息。
 对于分布式处理，当某个服务器上发生异常时，其他服务器也会尝试中止该查询。
-
-
 
 ## 参数表达式的求值 {#evaluation-of-argument-expressions}
 
@@ -427,8 +417,6 @@ SELECT test_shell(number) FROM numbers(10);
 常见的例子包括运算符 `&&`、`||` 和 `?:`。
 在 ClickHouse 中，函数（运算符）的参数始终会被求值。
 这是因为 ClickHouse 一次会对成块的列数据进行求值，而不是分别对每一行单独计算。
-
-
 
 ## 分布式查询处理中的函数执行 {#performing-functions-for-distributed-query-processing}
 
@@ -446,13 +434,9 @@ SELECT test_shell(number) FROM numbers(10);
 
 如果查询中的某个函数默认在请求方服务器上执行，但您需要在远程服务器上执行它，可以将其封装在 `any` 聚合函数中，或者将其加入到 `GROUP BY` 的键中。
 
-
-
 ## SQL 用户自定义函数 {#sql-user-defined-functions}
 
 可以使用 [CREATE FUNCTION](../statements/create/function.md) 语句，基于 lambda 表达式创建自定义函数。要删除这些函数，请使用 [DROP FUNCTION](../statements/drop.md#drop-function) 语句。
-
-
 
 ## 相关内容 {#related-content}
 - [ClickHouse Cloud 中的用户自定义函数](https://clickhouse.com/blog/user-defined-functions-clickhouse-udfs)

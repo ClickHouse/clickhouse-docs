@@ -8,8 +8,6 @@ doc_type: 'guide'
 
 ClickHouse は JSON データの構造を自動的に推論できます。これを利用すると、ディスク上のデータや S3 バケット上の JSON データを `clickhouse-local` などから直接クエリしたり、データを ClickHouse にロードする前にスキーマを自動生成したりできます。
 
-
-
 ## 型推論を使用するタイミング {#when-to-use-type-inference}
 
 * **一貫した構造** - 型を推論しようとしているデータに、関心のあるすべてのキーが含まれていること。型推論は、[最大行数](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference)または[バイト数](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference)までデータをサンプリングすることで行われます。サンプル以降のデータで追加の列があっても無視され、クエリすることはできません。
@@ -17,9 +15,7 @@ ClickHouse は JSON データの構造を自動的に推論できます。これ
 
 より動的な JSON で、新しいキーが追加され、同じパスに対して複数の型が存在し得る場合は、「[半構造化データおよび動的データの扱い](/integrations/data-formats/json/inference#working-with-semi-structured-data)」を参照してください。
 
-
-
-## 型の検出
+## 型の検出 {#detecting-types}
 
 以下では、JSON が一貫した構造を持ち、各パスごとに単一の型を持つことを前提とします。
 
@@ -101,14 +97,11 @@ SETTINGS describe_compact_output = 1
 
 ほとんどのカラムが自動的に `String` として検出されており、`update_date` カラムは正しく `Date` として検出されています。`versions` カラムはオブジェクトのリストを保存するために `Array(Tuple(created String, version String))` として作成されており、`authors_parsed` は入れ子の配列用に `Array(Array(String))` として定義されています。
 
-
 :::note 型検出の制御
 日付および日時の自動検出は、それぞれ設定 [`input_format_try_infer_dates`](/operations/settings/formats#input_format_try_infer_dates) と [`input_format_try_infer_datetimes`](/operations/settings/formats#input_format_try_infer_datetimes) で制御できます（どちらもデフォルトで有効）。オブジェクトをタプルとして推論するかどうかは、設定 [`input_format_json_try_infer_named_tuples_from_objects`](/operations/settings/formats#input_format_json_try_infer_named_tuples_from_objects) で制御されます。数値の自動検出など、JSON のスキーマ推論を制御するその他の設定は[こちら](/interfaces/schema-inference#text-formats)で確認できます。
 :::
 
-
-
-## JSON のクエリ
+## JSON のクエリ {#querying-json}
 
 以下では、JSON が一貫した構造を持ち、各パスごとに単一の型になっていることを前提とします。
 
@@ -154,8 +147,7 @@ LIMIT 1 BY year
 
 スキーマ推論を使用すると、スキーマを明示的に定義せずに JSON ファイルをクエリできるため、アドホックなデータ分析タスクを高速化できます。
 
-
-## テーブルの作成
+## テーブルの作成 {#creating-tables}
 
 テーブルのスキーマを作成するために、スキーマ推論を利用できます。次の `CREATE AS EMPTY` コマンドは、テーブルの DDL を推論してテーブルを作成します。これはデータを一切読み込みません。
 
@@ -196,7 +188,7 @@ ORDER BY update_date
 
 上記は、このデータに対して正しいスキーマです。スキーマ推論は、データのサンプリングと、データを行ごとに読み取る処理に基づいて実行されます。カラム値はフォーマットに従って抽出され、各値の型を決定するために再帰的なパーサーとヒューリスティクスが使用されます。スキーマ推論時にデータから読み取られる最大行数および最大バイト数は、設定 [`input_format_max_rows_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference)（デフォルトでは 25000）および [`input_format_max_bytes_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference)（デフォルトでは 32MB）によって制御されます。判定結果が正しくない場合、ユーザーは[こちら](/operations/settings/formats#schema_inference_make_columns_nullable)で説明されているようにヒントを指定できます。
 
-### スニペットからテーブルを作成する
+### スニペットからテーブルを作成する {#creating-tables-from-snippets}
 
 上記の例では、S3 上のファイルを使用してテーブルスキーマを作成しました。1 行だけのスニペットからスキーマを作成したい場合があります。これは、以下に示すように [format](/sql-reference/table-functions/format) 関数を使用することで実現できます。
 
@@ -229,8 +221,7 @@ ENGINE = MergeTree
 ORDER BY update_date
 ```
 
-
-## JSON データの読み込み
+## JSON データの読み込み {#loading-json-data}
 
 以下では、JSON が一貫した構造を持ち、各パスごとに単一の型を持つことを前提としています。
 
@@ -284,14 +275,11 @@ FORMAT PrettyJSONEachRow
 1行のセット。経過時間: 0.009秒。
 ```
 
-
 ## エラーの処理 {#handling-errors}
 
 ときどき、不正な形式のデータが含まれていることがあります。たとえば、特定のカラムの型が正しくない場合や、JSON オブジェクトの形式が不適切な場合などです。このような場合には、設定 [`input_format_allow_errors_num`](/operations/settings/formats#input_format_allow_errors_num) と [`input_format_allow_errors_ratio`](/operations/settings/formats#input_format_allow_errors_ratio) を使用して、データ挿入エラーを引き起こした行について、一定数または一定割合まで無視することを許可できます。さらに、推論を支援するための [hints](/operations/settings/formats#schema_inference_hints) を指定することもできます。
 
-
-
-## 半構造化データと動的データの扱い
+## 半構造化データと動的データの扱い {#working-with-semi-structured-data}
 
 前の例では、キー名と型がよく知られた静的な JSON を使用しました。実際にはそうでないことが多く、キーが追加されたり、その型が変化したりします。これは Observability データなどのユースケースでよく見られます。
 
@@ -384,7 +372,6 @@ DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/conf
 Elapsed: 0.755 sec.
 ```
 
-
 サーバー（バージョン 24.12.1）から例外を受信しました:
 コード: 636. DB::Exception: sql-clickhouse.clickhouse.com:9440 から受信。DB::Exception: JSON 形式のファイルからテーブル構造を抽出できません。エラー:
 コード: 53. DB::Exception: 行 1 のカラム &#39;a&#39; に対して自動的に定義された型 Tuple(b Int64) が、前の行で定義されている型 Int64 と異なります。このカラムの型は、schema&#95;inference&#95;hints 設定を使用して指定できます。
@@ -403,7 +390,6 @@ SETTINGS enable_json_type = 1, describe_compact_output = 1
 
 結果セットに 1 行が含まれます。経過時間: 0.010 秒。
 ````
-
 
 ## さらに詳しく知る {#further-reading}
 

@@ -8,35 +8,25 @@ doc_type: 'guide'
 keywords: ['лучшие практики kafka', 'clickpipes', 'сжатие', 'аутентификация', 'масштабирование']
 ---
 
-
-
 # Рекомендации по лучшим практикам {#best-practices}
-
-
 
 ## Сжатие сообщений {#compression}
 
 Мы настоятельно рекомендуем использовать сжатие для ваших тем Kafka. Сжатие позволяет существенно сократить затраты на передачу данных практически без влияния на производительность.
 Чтобы узнать больше о сжатии сообщений в Kafka, рекомендуем начать с этого [руководства](https://www.confluent.io/blog/apache-kafka-message-compression/).
 
-
-
 ## Ограничения {#limitations}
 
 - [`DEFAULT`](/sql-reference/statements/create/table#default) не поддерживается.
 
-
-
 ## Семантика доставки {#delivery-semantics}
 ClickPipes for Kafka обеспечивает семантику доставки `at-least-once` (одна из наиболее распространённых моделей). Нам будет полезно получить вашу обратную связь по семантике доставки через [форму обратной связи](https://clickhouse.com/company/contact?loc=clickpipes). Если вам нужна семантика `exactly-once`, мы рекомендуем использовать наш официальный sink-коннектор [`clickhouse-kafka-connect`](https://clickhouse.com/blog/real-time-event-streaming-with-kafka-connect-confluent-cloud-clickhouse).
 
-
-
-## Аутентификация
+## Аутентификация {#authentication}
 
 Для источников данных, использующих протокол Apache Kafka, ClickPipes поддерживает аутентификацию [SASL/PLAIN](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html) с шифрованием TLS, а также `SASL/SCRAM-SHA-256` и `SASL/SCRAM-SHA-512`. В зависимости от источника потоковых данных (Redpanda, MSK и т. д.) будут доступны все или часть этих механизмов аутентификации в соответствии с требованиями совместимости. Если ваши требования к аутентификации отличаются, пожалуйста, [сообщите нам об этом](https://clickhouse.com/company/contact?loc=clickpipes).
 
-### IAM
+### IAM {#iam}
 
 :::info
 Аутентификация IAM для MSK ClickPipe — функция на стадии бета-тестирования.
@@ -87,7 +77,7 @@ ClickPipes поддерживает следующие методы аутент
 }
 ```
 
-#### Настройка отношений доверия
+#### Настройка отношений доверия {#configuring-a-trusted-relationship}
 
 Если вы аутентифицируетесь в MSK с помощью ARN роли IAM, необходимо настроить отношения доверия между вашим экземпляром ClickHouse Cloud и этой ролью, чтобы роль могла быть использована.
 
@@ -111,11 +101,10 @@ ClickPipes поддерживает следующие методы аутент
 }
 ```
 
-### Пользовательские сертификаты
+### Пользовательские сертификаты {#custom-certificates}
 
 ClickPipes для Kafka поддерживает загрузку пользовательских сертификатов для брокеров Kafka, использующих непубличные серверные сертификаты.
 Также поддерживается загрузка клиентских сертификатов и ключей для аутентификации на основе взаимного TLS (mTLS).
-
 
 ## Производительность {#performance}
 

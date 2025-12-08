@@ -9,16 +9,13 @@ doc_type: 'reference'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
 # paimon テーブル関数 {#paimon-table-function}
 
 <ExperimentalBadge />
 
 Amazon S3、Azure、HDFS、またはローカルに保存された Apache [Paimon](https://paimon.apache.org/) テーブルに対して、読み取り専用のテーブルライクなインターフェースを提供します。
 
-
-
-## 構文
+## 構文 {#syntax}
 
 ```sql
 paimon(url [,access_key_id, secret_access_key] [,format] [,structure] [,compression])
@@ -32,7 +29,6 @@ paimonHDFS(path_to_table, [,format] [,compression_method])
 paimonLocal(path_to_table, [,format] [,compression_method])
 ```
 
-
 ## 引数 {#arguments}
 
 引数の説明は、それぞれのテーブル関数 `s3`、`azureBlobStorage`、`HDFS`、`file` における引数の説明と同一です。
@@ -42,9 +38,7 @@ paimonLocal(path_to_table, [,format] [,compression_method])
 
 指定された Paimon テーブルからデータを読み取るための、指定された構造を持つテーブルが返されます。
 
-
-
-## 名前付きコレクションの定義
+## 名前付きコレクションの定義 {#defining-a-named-collection}
 
 次の例は、URL と認証情報を保存するための名前付きコレクションの設定方法を示しています。
 
@@ -67,12 +61,9 @@ SELECT * FROM paimonS3(paimon_conf, filename = 'test_table')
 DESCRIBE paimonS3(paimon_conf, filename = 'test_table')
 ```
 
-
 ## エイリアス {#aliases}
 
 テーブル関数 `paimon` は、現在 `paimonS3` のエイリアスになっています。
-
-
 
 ## 仮想列 {#virtual-columns}
 
@@ -81,8 +72,6 @@ DESCRIBE paimonS3(paimon_conf, filename = 'test_table')
 - `_size` — ファイルサイズ（バイト単位）。型: `Nullable(UInt64)`。ファイルサイズが不明な場合、値は `NULL` となります。
 - `_time` — ファイルの最終更新時刻。型: `Nullable(DateTime)`。時刻が不明な場合、値は `NULL` となります。
 - `_etag` — ファイルの etag。型: `LowCardinality(String)`。etag が不明な場合、値は `NULL` となります。
-
-
 
 ## サポートされるデータ型 {#data-types-supported}
 
@@ -106,8 +95,6 @@ DESCRIBE paimonS3(paimon_conf, filename = 'test_table')
 |ARRAY     |Array      |
 |MAP     |Map    |
 
-
-
 ## サポートされるパーティション {#partition-supported}
 Paimon のパーティションキーでサポートされるデータ型：
 * `CHAR`
@@ -124,8 +111,6 @@ Paimon のパーティションキーでサポートされるデータ型：
 * `BIGINT`
 * `FLOAT`
 * `DOUBLE`
-
-
 
 ## 関連項目 {#see-also}
 

@@ -7,11 +7,7 @@ sidebar_label: 'avgResample'
 doc_type: 'reference'
 ---
 
-
-
 # countResample {#countResample}
-
-
 
 ## 説明 {#description}
 
@@ -20,11 +16,9 @@ doc_type: 'reference'
 集約関数に適用することで、指定したキー列の値を固定数（`N`）の
 区間に分けてカウントできます。
 
+## 使用例 {#example-usage}
 
-
-## 使用例
-
-### 基本的な例
+### 基本的な例 {#basic-example}
 
 例を見てみましょう。従業員の `name`、`age`、`wage` を格納するテーブルを作成し、そこにいくつかのデータを挿入してみます。
 
@@ -66,7 +60,6 @@ FROM avg_wage;
 │ [11.5,12.95]     │
 └──────────────────┘
 ```
-
 
 ## 関連項目 {#see-also}
 - [`count`](/sql-reference/aggregate-functions/reference/count)

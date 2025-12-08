@@ -8,10 +8,7 @@ doc_type: 'guide'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
-# トランザクション（ACID）対応
-
-
+# トランザクション（ACID）対応 {#transactional-acid-support}
 
 ## ケース 1: MergeTree* ファミリーの 1 つのテーブルの 1 つのパーティションへの INSERT {#case-1-insert-into-one-partition-of-one-table-of-the-mergetree-family}
 
@@ -22,34 +19,24 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 - 永続性 (Durable): 成功した INSERT は、クライアントに応答する前にファイルシステムに書き込まれます。これは単一レプリカまたは複数レプリカ（`insert_quorum` 設定で制御）に対して行われ、ClickHouse は OS に対してストレージメディア上のファイルシステムデータの同期を要求できます（`fsync_after_insert` 設定で制御）。
 - マテリアライズドビューが関与している場合、1 つのステートメントで複数のテーブルに対する INSERT が可能です（クライアントからの INSERT は、関連するマテリアライズドビューを持つテーブルに対して行われます）。
 
-
-
 ## ケース 2: MergeTree* ファミリーの 1 つのテーブルに対する、複数パーティションへの INSERT {#case-2-insert-into-multiple-partitions-of-one-table-of-the-mergetree-family}
 
 上記のケース 1 と同様ですが、次の点が異なります:
 - テーブルに多数のパーティションがあり、INSERT が多くのパーティションにまたがる場合、各パーティションへの挿入はそれぞれ独立したトランザクションとして扱われます
-
-
 
 ## ケース 3: MergeTree* ファミリーの 1 つの分散テーブルへの INSERT {#case-3-insert-into-one-distributed-table-of-the-mergetree-family}
 
 上のケース 1 と同様ですが、次の点が異なります：
 - Distributed テーブルへの INSERT は全体としてはトランザクションとして扱われませんが、各シャードへの挿入はトランザクションとして扱われます
 
-
-
 ## ケース 4: Buffer テーブルの使用 {#case-4-using-a-buffer-table}
 
 - Buffer テーブルへの INSERT 操作では、アトミック性 (Atomicity)、分離性 (Isolation)、一貫性 (Consistency)、永続性 (Durability) のいずれも保証されません
-
-
 
 ## ケース5: async_insert の使用 {#case-5-using-async_insert}
 
 上記のケース1と同様ですが、次の点が異なります：
 - `async_insert` が有効で、`wait_for_async_insert` が 1（デフォルト）に設定されている場合にはアトミック性が保証されますが、`wait_for_async_insert` が 0 に設定されている場合にはアトミック性は保証されません。
-
-
 
 ## Notes {#notes}
 - クライアントからあるデータフォーマットで挿入された行は、次の場合に 1 つのブロックにまとめられます:
@@ -63,9 +50,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 - ACID における「一貫性」は分散システムのセマンティクスを対象としていません。分散システムの一貫性については https://jepsen.io/consistency を参照してください。これは（`select_sequential_consistency` などの）別の設定によって制御されます
 - この説明では、複数テーブルやマテリアライズドビュー、複数の SELECT などに対してフル機能のトランザクションを提供する新しいトランザクション機能は扱っていません（次の「Transactions, Commit, and Rollback」のセクションを参照してください）
 
-
-
-## トランザクション、コミット、ロールバック
+## トランザクション、コミット、ロールバック {#transactions-commit-and-rollback}
 
 <ExperimentalBadge />
 
@@ -73,7 +58,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 このドキュメントの冒頭で説明した機能に加えて、ClickHouse にはトランザクション、コミット、ロールバック機能に対する実験的なサポートがあります。
 
-### 要件
+### 要件 {#requirements}
 
 * トランザクションを追跡するために ClickHouse Keeper または ZooKeeper をデプロイする
 * Atomic DB のみ（デフォルト）
@@ -85,17 +70,17 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
   </clickhouse>
   ```
 
-### 注意事項
+### 注意事項 {#notes-1}
 
 * これは実験的な機能であり、今後変更される可能性があります。
 * トランザクション中に例外が発生した場合、そのトランザクションをコミットすることはできません。これは、タイプミスによる `UNKNOWN_FUNCTION` 例外を含むすべての例外が対象です。
 * ネストされたトランザクションはサポートされません。現在のトランザクションを終了してから、新しいトランザクションを開始してください。
 
-### 設定
+### 設定 {#configuration}
 
 これらの例は、ClickHouse Keeper を有効にした単一ノードの ClickHouse サーバーを前提としています。
 
-#### トランザクションの実験的サポートを有効にする
+#### トランザクションの実験的サポートを有効にする {#enable-experimental-transaction-support}
 
 ```xml title=/etc/clickhouse-server/config.d/transactions.xml
 <clickhouse>
@@ -103,7 +88,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 </clickhouse>
 ```
 
-#### ClickHouse Keeper を有効にした単一の ClickHouse サーバーノード向け基本構成
+#### ClickHouse Keeper を有効にした単一の ClickHouse サーバーノード向け基本構成 {#basic-configuration-for-a-single-clickhouse-server-node-with-clickhouse-keeper-enabled}
 
 :::note
 ClickHouse サーバーおよび適切な ClickHouse Keeper ノードのクォーラムのデプロイ方法についての詳細は、[deployment](/deployment-guides/terminology.md) に関するドキュメントを参照してください。ここで示す構成は実験・検証目的のものです。
@@ -149,9 +134,9 @@ ClickHouse サーバーおよび適切な ClickHouse Keeper ノードのクォ�
 </clickhouse>
 ```
 
-### 例
+### 例 {#example}
 
-#### 実験的トランザクション機能が有効になっていることを確認する
+#### 実験的トランザクション機能が有効になっていることを確認する {#verify-that-experimental-transactions-are-enabled}
 
 `BEGIN TRANSACTION` または `START TRANSACTION` を発行し、続けて `ROLLBACK` を実行して、実験的トランザクション機能が有効であること、およびトランザクションの追跡に使用される ClickHouse Keeper が有効であることを確認します。
 
@@ -189,7 +174,7 @@ ROLLBACK
 OK
 ```
 
-#### テスト用のテーブルを作成する
+#### テスト用のテーブルを作成する {#create-a-table-for-testing}
 
 :::tip
 テーブルの作成はトランザクションとして実行されません。DDL クエリはトランザクションの外で実行してください。
@@ -204,12 +189,11 @@ ENGINE = MergeTree
 ORDER BY n
 ```
 
-
 ```response
 Ok.
 ```
 
-#### トランザクションを開始して 1 行を挿入する
+#### トランザクションを開始して 1 行を挿入する {#begin-a-transaction-and-insert-a-row}
 
 ```sql
 トランザクション開始
@@ -242,7 +226,7 @@ FROM mergetree_table
 トランザクション内でテーブルに対してクエリを実行すると、まだコミットされていないにもかかわらず行が挿入されていることを確認できます。
 :::
 
-#### トランザクションをロールバックし、再度テーブルをクエリする
+#### トランザクションをロールバックし、再度テーブルをクエリする {#rollback-the-transaction-and-query-the-table-again}
 
 トランザクションがロールバックされていることを確認します。
 
@@ -265,7 +249,7 @@ Ok.
 0 rows in set. Elapsed: 0.002 sec.
 ```
 
-#### トランザクションを完了してからテーブルを再度クエリする
+#### トランザクションを完了してからテーブルを再度クエリする {#complete-a-transaction-and-query-the-table-again}
 
 ```sql
 BEGIN TRANSACTION
@@ -302,7 +286,7 @@ FROM mergetree_table
 └────┘
 ```
 
-### トランザクションの調査
+### トランザクションの調査 {#transactions-introspection}
 
 `system.transactions` テーブルをクエリしてトランザクションを確認できます。ただし、そのテーブルはトランザクション中のセッションからはクエリできない点に注意してください。そのテーブルをクエリするには、別の `clickhouse client` セッションを開いてください。
 
@@ -321,7 +305,6 @@ elapsed:     210.017820947
 is_readonly: 1
 state:       RUNNING
 ```
-
 
 ## 詳細情報 {#more-details}
 

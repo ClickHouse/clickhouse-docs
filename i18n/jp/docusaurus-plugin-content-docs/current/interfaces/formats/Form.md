@@ -18,7 +18,7 @@ doc_type: 'reference'
 `Form` 形式は、`application/x-www-form-urlencoded` 形式の単一レコードを読み取るために使用できます。
 この形式では、データは `key1=value1&key2=value2` のようにフォーマットされます。
 
-## 使用例
+## 使用例 {#example-usage}
 
 URL エンコードされたデータを含む `data.tmp` というファイルが `user_files` パスに配置されているとします。
 
@@ -39,6 +39,5 @@ c.tti.m:  raf
 rt.start: navigation
 rt.bmr:   390,11,10
 ```
-
 
 ## 書式設定 {#format-settings}

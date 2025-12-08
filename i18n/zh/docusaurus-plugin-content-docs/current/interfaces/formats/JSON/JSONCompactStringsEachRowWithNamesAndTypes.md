@@ -16,7 +16,7 @@ doc_type: 'reference'
 
 ## 使用示例 {#example-usage}
 
-### 插入数据
+### 插入数据 {#inserting-data}
 
 使用一个包含如下数据的 JSON 文件，并命名为 `football.json`：
 
@@ -48,8 +48,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactStringsEachRowWithNamesAndTypes;
 ```
 
-
-### 读取数据
+### 读取数据 {#reading-data}
 
 使用 `JSONCompactStringsEachRowWithNamesAndTypes` 格式来读取数据：
 
@@ -82,7 +81,6 @@ FORMAT JSONCompactStringsEachRowWithNamesAndTypes
 ["2022-05-07", "2021", "Stevenage Borough", "Salford City", "4", "2"]
 ["2022-05-07", "2021", "Walsall", "Swindon Town", "0", "3"]
 ```
-
 
 ## 格式设置 {#format-settings}
 

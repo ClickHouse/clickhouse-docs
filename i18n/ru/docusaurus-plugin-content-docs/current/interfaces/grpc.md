@@ -7,11 +7,7 @@ title: 'Интерфейс gRPC'
 doc_type: 'reference'
 ---
 
-
-
-# Интерфейс gRPC
-
-
+# Интерфейс gRPC {#grpc-interface}
 
 ## Введение {#grpc-interface-introduction}
 
@@ -28,9 +24,7 @@ ClickHouse поддерживает интерфейс [gRPC](https://grpc.io/).
 
 Спецификация интерфейса приведена в файле [clickhouse_grpc.proto](https://github.com/ClickHouse/ClickHouse/blob/master/src/Server/grpc_protos/clickhouse_grpc.proto).
 
-
-
-## Настройка gRPC
+## Настройка gRPC {#grpc-interface-configuration}
 
 Чтобы использовать интерфейс gRPC, задайте `grpc_port` в основном [конфигурационном файле сервера](../operations/configuration-files.md). Дополнительные параметры конфигурации приведены в следующем примере:
 
@@ -66,8 +60,7 @@ ClickHouse поддерживает интерфейс [gRPC](https://grpc.io/).
     </grpc>
 ```
 
-
-## Встроенный клиент
+## Встроенный клиент {#grpc-client}
 
 Вы можете написать клиент на любом из языков программирования, поддерживаемых gRPC, используя предоставленную [спецификацию](https://github.com/ClickHouse/ClickHouse/blob/master/src/Server/grpc_protos/clickhouse_grpc.proto).
 Либо вы можете использовать встроенный клиент на Python. Он находится в репозитории по пути [utils/grpc-client/clickhouse-grpc-client.py](https://github.com/ClickHouse/ClickHouse/blob/master/utils/grpc-client/clickhouse-grpc-client.py). Для встроенного клиента требуются Python‑модули [grpcio и grpcio-tools](https://grpc.io/docs/languages/python/quickstart).

@@ -6,9 +6,7 @@ title: 'covarPop'
 doc_type: 'reference'
 ---
 
-
-
-# covarPop
+# covarPop {#covarpop}
 
 计算总体协方差:
 

@@ -10,7 +10,7 @@ keywords: ['clickstack', 'kubernetes', 'ログ', 'オブザーバビリティ', 
 ---
 
 import Image from '@theme/IdealImage';
-import DemoArchitecture from '@site/docs/use-cases/observability/clickstack/example-datasets/_snippets/_demo.md';
+import DemoArchitecture from '@site/i18n/jp/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/example-datasets/_snippets/_demo.md';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
 import hyperdx_kubernetes_data from '@site/static/images/use-cases/observability/hyperdx-kubernetes-data.png';
 import copy_api_key from '@site/static/images/use-cases/observability/copy_api_key.png';
@@ -22,7 +22,6 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 このガイドでは、Kubernetes システムからログとメトリクスを収集し、可視化と分析のために **ClickStack** に送信します。デモデータとしては、必要に応じて公式 OpenTelemetry デモの ClickStack フォークを使用します。
 
 <iframe width="768" height="432" src="https://www.youtube.com/embed/winI7256Ejk?si=TRThhzCJdq87xg_x" title="YouTube 動画プレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
-
 
 ## 前提条件 {#prerequisites}
 

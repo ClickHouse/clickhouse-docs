@@ -7,11 +7,7 @@ sidebar_label: '概览'
 doc_type: 'guide'
 ---
 
-
-
-# ClickHouse 与 PostgreSQL 对比
-
-
+# ClickHouse 与 PostgreSQL 对比 {#comparing-clickhouse-and-postgresql}
 
 ## 为什么选择 ClickHouse 而不是 Postgres？ {#why-use-clickhouse-over-postgres}
 
@@ -24,8 +20,6 @@ OLAP（联机分析处理）数据库则是为满足这些需求而设计——�
 有关 ClickHouse 和 PostgreSQL 更深入的对比，请参见[这里](/migrations/postgresql/appendix#postgres-vs-clickhouse-equivalent-and-different-concepts)。
 
 要了解 ClickHouse 和 Postgres 在分析查询方面的潜在性能差异，请参见 [Rewriting PostgreSQL Queries in ClickHouse](/migrations/postgresql/rewriting-queries)。
-
-
 
 ## 迁移策略 {#migration-strategies}
 

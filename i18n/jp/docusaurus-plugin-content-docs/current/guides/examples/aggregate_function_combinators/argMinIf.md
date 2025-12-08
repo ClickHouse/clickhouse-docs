@@ -7,11 +7,7 @@ sidebar_label: 'argMinIf'
 doc_type: 'reference'
 ---
 
-
-
 # argMinIf {#argminif}
-
-
 
 ## 説明 {#description}
 
@@ -21,9 +17,7 @@ doc_type: 'reference'
 `argMinIf` 関数は、データセット内で最小値に対応する値を特定する必要があるものの、
 特定の条件を満たす行に限定してそれを行いたい場合に有用です。
 
-
-
-## 使用例
+## 使用例 {#example-usage}
 
 この例では、商品価格とそのタイムスタンプを格納するテーブルを作成し、
 在庫がある場合に各商品の最安値を求めるために `argMinIf` を使用します。
@@ -62,7 +56,6 @@ GROUP BY product_id;
 2. │          2 │                      20.99 │
    └────────────┴────────────────────────────┘
 ```
-
 
 ## 関連項目 {#see-also}
 - [`argMin`](/sql-reference/aggregate-functions/reference/argmin)

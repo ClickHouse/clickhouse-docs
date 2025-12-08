@@ -50,8 +50,7 @@ ClickHouse は **データスキップインデックス** と呼ばれる強力
 
 Data Skipping Indices についてのより詳細なガイドは[こちら](/sql-reference/statements/alter/skipping-index)を参照してください。
 
-
-## 例
+## 例 {#example}
 
 次のように最適化されたテーブルを考えます。このテーブルには、Stack Overflow のデータが投稿 1 件につき 1 行で格納されています。
 
@@ -142,7 +141,6 @@ LIMIT 1
 
 簡単な分析から、`ViewCount` は予想どおり `CreationDate`（主キー）と相関していることが分かります — 投稿が存在している期間が長いほど、閲覧される機会も増えるためです。
 
-
 ```sql
 SELECT toDate(CreationDate) AS day, avg(ViewCount) AS view_count FROM stackoverflow.posts WHERE day > '2009-01-01'  GROUP BY day
 ```
@@ -217,7 +215,6 @@ FROM stackoverflow.posts
 WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
 ```
 
-
 ┌─explain────────────────────────────────────────────────────────────┐
 │ 式 ((Project names + Projection))                                 │
 │   集約処理                                                        │
@@ -258,7 +255,6 @@ WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
 
 <Image img={using_skipping_indices} size="lg" alt="スキッピングインデックスの使用"/>
 ```
-
 
 ## 関連ドキュメント {#related-docs}
 - [データスキッピングインデックスガイド](/optimize/skipping-indexes)

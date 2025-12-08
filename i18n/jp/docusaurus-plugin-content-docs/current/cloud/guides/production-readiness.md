@@ -7,8 +7,6 @@ keywords: ['本番運用準備', 'エンタープライズ', 'saml', 'sso', 'ter
 doc_type: 'guide'
 ---
 
-
-
 # ClickHouse Cloud 本番運用準備ガイド {#production-readiness}
 
 クイックスタートガイドを完了し、データが流れているアクティブなサービスをすでに運用している組織向けです。
@@ -22,8 +20,6 @@ doc_type: 'guide'
 - 監視をアラート基盤（Prometheus や PagerDuty）と連携させる
 - バックアップ手順を検証し、災害復旧プロセスを文書化する
 :::
-
-
 
 ## はじめに {#introduction}
 
@@ -41,8 +37,6 @@ ClickHouse Cloud のマネージドプラットフォームは、インフラ運
 
 本ガイドでは、これら各分野について順を追って解説し、稼働中の ClickHouse Cloud デプロイメントをエンタープライズ対応システムへ移行するのを支援します。
 
-
-
 ## 環境戦略 {#environment-strategy}
 
 本番ワークロードに影響を与える前に、安全に変更をテストできるよう、環境を分離して用意します。多くの本番インシデントは、テストされていないクエリや構成変更を本番システムに直接デプロイしたことに起因します。
@@ -57,8 +51,6 @@ ClickHouse Cloud のマネージドプラットフォームは、インフラ運
 
 **サイズ設定**: ステージングサービスは、本番の負荷特性に近づけるように規模を見積もります。著しく小さいインフラでテストしても、リソース競合やスケーリングの問題が顕在化しない可能性があります。定期的なデータリフレッシュや合成データ生成を通じて、本番を代表するデータセットを使用してください。ステージング環境のサイズ決定やサービスを適切にスケールさせる方法については、[サイズとハードウェアの推奨事項](/guides/sizing-and-hardware-recommendations) および [Scaling in ClickHouse Cloud](/manage/scaling) のドキュメントを参照してください。これらの資料では、メモリ、CPU、ストレージのサイズ決定に関する実践的なアドバイスや、垂直スケーリングおよび水平スケーリングの選択肢の詳細を提供しており、ステージング環境を本番ワークロードに適合させる際の助けになります。
 
-
-
 ## プライベートネットワーキング {#private-networking}
 
 ClickHouse Cloud の[プライベートネットワーキング](/cloud/security/connectivity/private-networking)を使用すると、ClickHouse サービスをクラウドの仮想ネットワークに直接接続でき、データがパブリックインターネットを経由しないようにできます。これは、厳格なセキュリティやコンプライアンス要件を持つ組織や、プライベートサブネットでアプリケーションを実行している組織にとって不可欠です。
@@ -70,8 +62,6 @@ ClickHouse Cloud は、次の方法でプライベートネットワーキング
 - [Azure Private Link](/cloud/security/azure-privatelink): Azure VNet と ClickHouse Cloud 間でプライベート接続を提供し、リージョンをまたぐ接続をサポートします。セットアッププロセスには、接続エイリアスの取得、プライベートエンドポイントの作成、および許可リストの更新が含まれます。詳細は、こちらのドキュメントを参照してください。
 
 より技術的な詳細やステップバイステップのセットアップ手順が必要な場合は、各プロバイダー向けにリンクされているドキュメントに包括的なガイドが記載されています。
-
-
 
 ## エンタープライズ認証とユーザー管理 {#enterprise-authentication}
 
@@ -103,13 +93,11 @@ ClickHouse Cloud は現在、SCIM や IdP を介した自動プロビジョニ�
 
 [Cloud Access Management](/cloud/security/cloud_access_management) および [SAML SSO のセットアップ](/cloud/security/saml-setup) について、詳しくはそれぞれのドキュメントを参照してください。
 
-
-
-## Infrastructure as Code と自動化
+## Infrastructure as Code と自動化 {#infrastructure-as-code}
 
 Infrastructure as Code（IaC）のプラクティスと API による自動化で ClickHouse Cloud を管理すると、デプロイメント構成に一貫性、バージョン管理、再現性を持たせることができます。
 
-### Terraform Provider
+### Terraform Provider {#terraform-provider}
 
 ClickHouse Cloud コンソールで作成した API キーを使用して、ClickHouse 用 Terraform プロバイダーを設定します。
 
@@ -135,7 +123,7 @@ Terraform プロバイダーは、サービスのプロビジョニング、IP �
 
 サービス構成やネットワークアクセス制御を含む包括的な例については、[Cloud API の利用方法に関する Terraform のサンプル](/knowledgebase/terraform_example) を参照してください。
 
-### Cloud API 連携
+### Cloud API 連携 {#cloud-api-integration}
 
 既存の自動化フレームワークを持つ組織は、Cloud API を通じて ClickHouse Cloud の管理を直接統合できます。API は、サービスのライフサイクル管理、ユーザー管理、バックアップ操作、および監視データの取得に対するプログラムによるアクセスを提供します。
 
@@ -148,12 +136,11 @@ Terraform プロバイダーは、サービスのプロビジョニング、IP �
 
 API 認証は Terraform と同じトークンベース方式を使用します。完全な API リファレンスおよび連携例については、[ClickHouse Cloud API](/cloud/manage/api/api-overview) ドキュメントを参照してください。
 
-
-## モニタリングと運用統合
+## モニタリングと運用統合 {#monitoring-integration}
 
 既存のモニタリング基盤に ClickHouse Cloud を接続することで、可視性を確保し、問題を事前に検知できます。
 
-### 組み込みモニタリング
+### 組み込みモニタリング {#built-in-monitoring}
 
 ClickHouse Cloud には、1 秒あたりのクエリ数、メモリ使用量、CPU 使用量、ストレージ使用率などのリアルタイムメトリクスを備えた高度なダッシュボードが用意されています。Cloud コンソールの Monitoring → Advanced dashboard からアクセスできます。特定のワークロードパターンやチームごとのリソース消費に合わせて、カスタムダッシュボードを作成できます。
 
@@ -161,7 +148,7 @@ ClickHouse Cloud には、1 秒あたりのクエリ数、メモリ使用量、C
 エンタープライズのインシデント管理システムとのプロアクティブなアラート連携や、自動的なコストモニタリングが不足していることがあります。組み込みダッシュボードは可視性を提供しますが、自動アラートには外部システムとの連携が必要です。
 :::
 
-### 本番環境でのアラート設定
+### 本番環境でのアラート設定 {#production-alerting}
 
 **組み込み機能**: ClickHouse Cloud は、課金イベント、スケーリングイベント、サービスの健全性に関する通知を、メール、UI、Slack 経由で提供します。コンソールの通知設定から、配信チャネルと通知の重要度を設定します。
 
@@ -178,7 +165,6 @@ scrape_configs:
 ```
 
 詳細な Prometheus/Grafana の構成や高度なアラート設定を含む包括的なセットアップについては、[ClickHouse Cloud Observability Guide](/use-cases/observability/cloud-monitoring#prometheus) を参照してください。
-
 
 ## 事業継続性とサポート連携 {#business-continuity}
 
@@ -205,8 +191,6 @@ ClickHouse Cloud は、保持期間を設定可能な自動バックアップを
 現在利用しているサポートティアの SLA 上の期待値とエスカレーション手順を把握してください。ClickHouse サポートへエスカレーションする条件を定義した社内ランブックを作成し、既存のインシデント管理プロセスとこれらの手順を統合します。
 
 [ClickHouse Cloud のバックアップと復旧](/cloud/manage/backups/overview)および[サポートサービス](/about-us/support)について、詳しくは各ドキュメントを参照してください。
-
-
 
 ## 次のステップ {#next-steps}
 

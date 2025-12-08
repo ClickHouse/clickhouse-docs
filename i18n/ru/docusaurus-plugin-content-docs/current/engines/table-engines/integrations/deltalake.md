@@ -7,15 +7,11 @@ title: 'Движок таблиц DeltaLake'
 doc_type: 'reference'
 ---
 
-
-
-# Табличный движок DeltaLake
+# Табличный движок DeltaLake {#deltalake-table-engine}
 
 Этот табличный движок обеспечивает доступ только для чтения к существующим таблицам [Delta Lake](https://github.com/delta-io/delta) в Amazon S3.
 
-
-
-## Создание таблицы
+## Создание таблицы {#create-table}
 
 Учтите, что таблица Delta Lake уже должна существовать в S3: эта команда не принимает параметры DDL для создания новой таблицы.
 
@@ -55,10 +51,9 @@ CREATE TABLE deltalake ENGINE=DeltaLake('http://mars-doc-test.s3.amazonaws.com/c
 CREATE TABLE deltalake ENGINE=DeltaLake(deltalake_conf, filename = 'test_table')
 ```
 
-### Кэш данных
+### Кэш данных {#data-cache}
 
 Движок таблиц `Iceberg` и табличная функция поддерживают кэширование данных так же, как хранилища `S3`, `AzureBlobStorage`, `HDFS`. См. [здесь](../../../engines/table-engines/integrations/s3.md#data-cache).
-
 
 ## См. также {#see-also}
 

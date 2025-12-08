@@ -13,8 +13,6 @@ _このガイドは ClickHouse Cloud およびセルフホスト型 ClickHouse v
 
 まずテーブルを [Google のオブジェクトストレージ (GCS)](https://cloud.google.com/storage) にエクスポートし、その後そのデータを [ClickHouse Cloud](https://clickhouse.com/cloud) にインポートします。これらの手順は、BigQuery から ClickHouse に移行したい各テーブルごとに繰り返す必要があります。
 
-
-
 ## ClickHouse へのデータエクスポートにはどのくらい時間がかかりますか？ {#how-long-will-exporting-data-to-clickhouse-take}
 
 BigQuery から ClickHouse へのデータエクスポートにかかる時間は、データセットのサイズによって異なります。参考として、このガイドを使用した場合、[4TB のパブリック Ethereum データセット](https://cloud.google.com/blog/products/data-analytics/ethereum-bigquery-public-dataset-smart-contract-analytics)を BigQuery から ClickHouse にエクスポートするのに、約 1 時間かかります。
@@ -29,8 +27,7 @@ BigQuery から ClickHouse へのデータエクスポートにかかる時間�
 
 <VerticalStepper headerLevel="h2">
 
-
-## テーブルデータを GCS にエクスポートする
+## テーブルデータを GCS にエクスポートする {#1-export-table-data-to-gcs}
 
 この手順では、[BigQuery SQL ワークスペース](https://cloud.google.com/bigquery/docs/bigquery-web-ui) を使用して SQL 文を実行します。ここでは、[`EXPORT DATA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/other-statements) ステートメントを使用して、`mytable` という BigQuery テーブルを GCS のバケットにエクスポートします。
 
@@ -66,8 +63,7 @@ END WHILE;
 * エクスポートは自動的に複数のファイルを生成し、それぞれを最大 1GB のテーブルデータに制限します。これは、インポートを並列化できるため ClickHouse にとって有利です。
 * 列指向フォーマットである Parquet は、標準で圧縮されており、BigQuery によるエクスポートおよび ClickHouse によるクエリが高速であるため、より優れたデータ交換形式です。
 
-
-## GCS から ClickHouse へのデータインポート
+## GCS から ClickHouse へのデータインポート {#2-importing-data-into-clickhouse-from-gcs}
 
 エクスポートが完了したら、このデータを ClickHouse のテーブルにインポートできます。以下のコマンドを実行するには、[ClickHouse SQL console](/integrations/sql-clients/sql-console) か [`clickhouse-client`](/interfaces/cli) を使用できます。
 
@@ -118,7 +114,6 @@ FROM s3Cluster(
 別の方法として、`SET input_format_null_as_default=1` を設定すると、対応するカラムにデフォルト値が指定されている場合、欠損値や NULL 値はそれぞれのカラムのデフォルト値で置き換えられます。
 :::
 
-
 ## データ エクスポートの成功を確認する {#3-testing-successful-data-export}
 
 データが正しく挿入されたかを確認するには、新しいテーブルに対して `SELECT` クエリを実行してみてください。
@@ -130,7 +125,6 @@ SELECT * FROM mytable LIMIT 10;
 追加の BigQuery テーブルをエクスポートするには、各テーブルごとに上記の手順を繰り返します。
 
 </VerticalStepper>
-
 
 ## 参考資料とサポート {#further-reading-and-support}
 

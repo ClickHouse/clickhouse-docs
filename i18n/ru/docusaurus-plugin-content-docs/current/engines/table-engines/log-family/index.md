@@ -9,8 +9,7 @@ doc_type: 'guide'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
-# Семейство движков таблиц Log
+# Семейство движков таблиц Log {#log-table-engine-family}
 
 <CloudNotSupportedBadge/>
 
@@ -29,8 +28,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 :::warning Этот движок не предназначен для логов.
 Несмотря на название, *движки таблиц Log не предназначены для хранения логов. Их следует использовать только для небольших объёмов данных, которые нужно быстро записывать.
 :::
-
-
 
 ## Общие свойства {#common-properties}
 
@@ -53,8 +50,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 - Не выполняют запись данных атомарно.
 
     Вы можете получить таблицу с повреждёнными данными, если что-то прервёт операцию записи, например, аварийное выключение сервера.
-
-
 
 ## Отличия {#differences}
 

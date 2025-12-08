@@ -9,16 +9,13 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+# Движок таблиц SQLite {#sqlite-table-engine}
 
-# Движок таблиц SQLite
-
-<CloudNotSupportedBadge/>
+<CloudNotSupportedBadge />
 
 Этот движок позволяет импортировать данные в SQLite и экспортировать их из неё, а также выполнять запросы к таблицам SQLite непосредственно из ClickHouse.
 
-
-
-## Создание таблицы
+## Создание таблицы {#creating-a-table}
 
 ```sql
     CREATE TABLE [IF NOT EXISTS] [db.]table_name
@@ -33,8 +30,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 * `db_path` — Путь к файлу базы данных SQLite.
 * `table` — Название таблицы в базе данных SQLite.
 
-
-## Пример использования
+## Пример использования {#usage-example}
 
 Пример запроса для создания таблицы SQLite:
 

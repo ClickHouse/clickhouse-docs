@@ -10,7 +10,6 @@ description: 'クォータとクエリの複雑性は、ユーザーが ClickHou
 
 {/* 切り捨て */}
 
-
 ## クォータとクエリの複雑度について \{#about-quotas-and-query-complexity\}
 
 [クォータ](https://clickhouse.com/docs/operations/quotas) と [クエリの複雑度](https://clickhouse.com/docs/operations/settings/query-complexity) は、ユーザーが ClickHouse 上で実行できる操作を制限するための強力な手段です。
@@ -19,7 +18,7 @@ description: 'クォータとクエリの複雑性は、ユーザーが ClickHou
 
 このナレッジベース記事では、これら 2 つの異なるアプローチをどのように適用するかの例を示します。
 
-## サンプルデータ
+## サンプルデータ \{#the-sample-data\}
 
 以降の例では、次のような単純なサンプルテーブルを使用します。
 
@@ -71,8 +70,7 @@ clickhouse-cloud :) SELECT * FROM default.test_table_00006488 LIMIT 5
 -- 5 rows in set. Elapsed: 0.003 sec.
 ```
 
-
-## クォータの使用
+## クォータの使用 \{#using-quotas\}
 
 この例では、ロールを作成し、そのロールに対して各 10 秒の間隔ごとに取得できる結果行を最大 10 行に制限するクォータを適用します。
 
@@ -137,7 +135,6 @@ clickhouse-cloud :) CREATE QUOTA quota_max_10_result_rows_per_10_seconds FOR INT
 ```
 
 次に、ユーザー `user_with_quota` としてログインします
-
 
 ```sql
 -- クォータがロールを通じて適用されているユーザーとしてログイン
@@ -238,8 +235,7 @@ clickhouse-cloud :) select now()
 
 ユーザーは、新しい 10 行分の結果セットを取得できる「許容量」が再び付与されるまで、さらに 5 秒待つ必要があることに注意してください。
 
-
-## クエリ複雑度の使用
+## クエリ複雑度の使用 \{#using-query-complexity\}
 
 この例では、各クエリで返される行数を1行のみに制限するQuery Complexity `SETTING`を適用するロールを作成します。
 

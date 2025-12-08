@@ -18,8 +18,7 @@ import pe_remove_private_endpoint from '@site/static/images/cloud/security/pe-re
 import aws_private_link_pe_filters from '@site/static/images/cloud/security/aws-privatelink-pe-filters.png';
 import aws_private_link_ped_nsname from '@site/static/images/cloud/security/aws-privatelink-pe-dns-name.png';
 
-
-# AWS PrivateLink
+# AWS PrivateLink {#aws-privatelink}
 
 <ScalePlanFeatureBadge feature="AWS PrivateLink"/>
 
@@ -69,14 +68,10 @@ ClickHouse Cloud 在以下区域支持 [跨区域 PrivateLink](https://aws.amazo
 
 您可以在[此处](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/)找到 Terraform 示例。
 
-
-
 ## 重要注意事项 {#considerations}
 ClickHouse 会尝试对您的服务进行分组，以便在同一 AWS 区域内复用同一个已发布的[服务端点](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html#endpoint-service-overview)。但是，并不能保证一定会完成这种分组，尤其是在您将服务分散在多个 ClickHouse 组织中的情况下。
 
 如果您已经在 ClickHouse 组织中为其他服务配置了 PrivateLink，那么通常可以跳过大部分步骤，直接进行最后一步：将 ClickHouse “Endpoint ID” 添加到 ClickHouse 服务允许列表中。
-
-
 
 ## 本流程的前提条件 {#prerequisites}
 
@@ -85,15 +80,13 @@ ClickHouse 会尝试对您的服务进行分组，以便在同一 AWS 区域内�
 1. AWS 账户。
 1. 具有在 ClickHouse 端创建和管理私有端点所需权限的 [ClickHouse API key](/cloud/manage/openapi)。
 
-
-
-## 步骤
+## 步骤 {#steps}
 
 按照以下步骤，通过 AWS PrivateLink 连接您的 ClickHouse Cloud 服务。
 
-### 获取端点的 “Service name”
+### 获取端点的 “Service name” {#obtain-endpoint-service-info}
 
-#### 选项 1：ClickHouse Cloud 控制台
+#### 选项 1：ClickHouse Cloud 控制台 {#option-1-clickhouse-cloud-console}
 
 在 ClickHouse Cloud 控制台中，打开您希望通过 PrivateLink 连接的服务，然后进入 **Settings** 菜单。
 
@@ -101,7 +94,7 @@ ClickHouse 会尝试对您的服务进行分组，以便在同一 AWS 区域内�
 
 记下 `Service name` 和 `DNS name`，然后[继续下一步](#create-aws-endpoint)。
 
-#### 选项 2：API
+#### 选项 2：API {#option-2-api}
 
 在运行任何命令之前，先设置以下环境变量：
 
@@ -141,7 +134,7 @@ jq .result
 
 记下 `endpointServiceId` 和 `privateDnsHostname`，然后[继续下一步](#create-aws-endpoint)。
 
-### 创建 AWS endpoint
+### 创建 AWS endpoint {#create-aws-endpoint}
 
 :::important
 本节介绍通过 AWS PrivateLink 配置 ClickHouse 的特定细节。这里提供的 AWS 相关步骤仅作为参考，用于指引您到相应位置进行配置，但这些步骤可能会随 AWS 云服务提供商的变更而在未通知的情况下发生变化。请根据您的具体使用场景规划 AWS 配置。
@@ -151,7 +144,7 @@ jq .result
 如果您在设置 PrivateLink 时曾启用 “private DNS names”，并且现在在通过 PrivateLink 配置新服务时遇到问题，请联系 ClickHouse 支持。对于任何其他与 AWS 配置任务相关的问题，请直接联系 AWS Support。
 :::
 
-#### 选项 1：AWS 控制台
+#### 选项 1：AWS 控制台 {#option-1-aws-console}
 
 打开 AWS 控制台并前往 **VPC** → **Endpoints** → **Create endpoints**。
 
@@ -177,8 +170,7 @@ jq .result
 
 <Image img={aws_private_link_vpc_endpoint_id} size="md" alt="VPC Endpoint ID" border />
 
-#### 选项 2：AWS CloudFormation
-
+#### 选项 2：AWS CloudFormation {#option-2-aws-cloudformation}
 
 接下来，需要使用在[获取 Endpoint &quot;Service name&quot;](#obtain-endpoint-service-info) 步骤中获得的 `Service name`<sup>console</sup> 或 `endpointServiceId`<sup>API</sup> 来创建 VPC Endpoint。
 请确保使用正确的子网 ID、安全组和 VPC ID。
@@ -204,7 +196,7 @@ Resources:
 
 创建 VPC Endpoint 后，记下 `Endpoint ID` 的值；你将在后续步骤中用到它。
 
-#### 选项 3：Terraform
+#### 选项 3：Terraform {#option-3-terraform}
 
 下面的 `service_name` 指的是你在[获取 Endpoint “Service name”](#obtain-endpoint-service-info) 步骤中获得的 `Service name`<sup>console</sup> 或 `endpointServiceId`<sup>API</sup>
 
@@ -224,7 +216,7 @@ resource "aws_vpc_endpoint" "this" {
 
 在创建 VPC Endpoint 之后，请记下 `Endpoint ID` 的值；后续步骤中会用到。
 
-#### 为 Endpoint 设置私有 DNS 名称
+#### 为 Endpoint 设置私有 DNS 名称 {#set-private-dns-name-for-endpoint}
 
 :::note
 配置 DNS 有多种方式。请根据你的具体使用场景来设置 DNS。
@@ -232,9 +224,9 @@ resource "aws_vpc_endpoint" "this" {
 
 你需要将在[获取 Endpoint &quot;Service name&quot;](#obtain-endpoint-service-info) 步骤中获得的 &quot;DNS name&quot; 指向 AWS Endpoint 的网络接口。这样可以确保 VPC/网络中的服务/组件能够正确解析它。
 
-### 将 &quot;Endpoint ID&quot; 添加到 ClickHouse 服务允许列表
+### 将 &quot;Endpoint ID&quot; 添加到 ClickHouse 服务允许列表 {#add-endpoint-id-to-services-allow-list}
 
-#### 选项 1：通过 ClickHouse Cloud 控制台
+#### 选项 1：通过 ClickHouse Cloud 控制台 {#option-1-clickhouse-cloud-console-2}
 
 要添加，请进入 ClickHouse Cloud 控制台，打开你希望通过 PrivateLink 连接的服务，然后进入 **Settings**。点击 **Set up private endpoint** 打开私有 endpoint 设置。输入在 [Create AWS Endpoint](#create-aws-endpoint) 步骤中获取的 `Endpoint ID`，然后点击 &quot;Create endpoint&quot;。
 
@@ -246,7 +238,7 @@ resource "aws_vpc_endpoint" "this" {
 
 要移除，请进入 ClickHouse Cloud 控制台，找到对应服务，然后进入该服务的 **Settings**，找到你想要移除的 endpoint，将其从 endpoint 列表中删除。
 
-#### 选项 2：通过 API
+#### 选项 2：通过 API {#option-2-api-2}
 
 你需要将 Endpoint ID 添加到每个应通过 PrivateLink 访问的实例的允许列表中。
 
@@ -282,7 +274,6 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" \
 -d @pl_config.json | jq
 ```
 
-
 要从允许列表中移除某个端点 ID：
 
 ```bash
@@ -302,19 +293,19 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" \
 -d @pl_config.json | jq
 ```
 
-### 使用 PrivateLink 访问实例
+### 使用 PrivateLink 访问实例 {#accessing-an-instance-using-privatelink}
 
 每个启用了 Private Link 的服务都有一个公共端点和一个私有端点。要通过 Private Link 进行连接，需要使用私有端点，该端点对应从 [Obtain Endpoint &quot;Service name&quot;](#obtain-endpoint-service-info) 获取的 `privateDnsHostname`<sup>API</sup> 或 `DNS Name`<sup>console</sup>。
 
-#### 获取私有 DNS 主机名
+#### 获取私有 DNS 主机名 {#getting-private-dns-hostname}
 
-##### 选项 1：ClickHouse Cloud 控制台
+##### 选项 1：ClickHouse Cloud 控制台 {#option-1-clickhouse-cloud-console-3}
 
 在 ClickHouse Cloud 控制台中，进入 **Settings**。点击 **Set up private endpoint** 按钮。在弹出的侧边面板中，复制 **DNS Name**。
 
 <Image img={aws_private_link_ped_nsname} size="md" alt="Private Endpoint DNS 名称" border />
 
-##### 选项 2：API
+##### 选项 2：API {#option-2-api-3}
 
 在运行任何命令之前，先设置以下环境变量：
 
@@ -344,29 +335,28 @@ jq .result
 
 在此示例中，使用 `privateDnsHostname` 主机名发起的连接将通过 PrivateLink 路由，而使用 `endpointServiceId` 主机名发起的连接将通过 Internet 路由。
 
+## 故障排查 {#troubleshooting}
 
-## 故障排查
-
-### 在同一区域中使用多个 PrivateLink
+### 在同一区域中使用多个 PrivateLink {#multiple-privatelinks-in-one-region}
 
 在大多数情况下，你只需要为每个 VPC 创建一个终端节点服务（endpoint service）。该终端节点可以将来自该 VPC 的请求路由到多个 ClickHouse Cloud 服务。\
 请参见[此处](#considerations)
 
-### 连接到私有终端节点超时
+### 连接到私有终端节点超时 {#connection-to-private-endpoint-timed-out}
 
 * 请将安全组（security group）关联到 VPC Endpoint。
 * 请检查关联到该 Endpoint 的安全组中的 `inbound` 规则，并放通 ClickHouse 使用的端口。
 * 请检查用于连通性测试的 VM 所关联安全组中的 `outbound` 规则，并放通到 ClickHouse 端口的连接。
 
-### 私有主机名：未找到主机地址
+### 私有主机名：未找到主机地址 {#private-hostname-not-found-address-of-host}
 
 * 请检查你的 DNS 配置
 
-### 连接被对端重置（Connection reset by peer）
+### 连接被对端重置（Connection reset by peer） {#connection-reset-by-peer}
 
 * 很可能是 Endpoint ID 尚未添加到服务允许列表（allow list），请访问此[步骤](#add-endpoint-id-to-services-allow-list)
 
-### 检查 endpoint 过滤条件
+### 检查 endpoint 过滤条件 {#checking-endpoint-filters}
 
 在运行任何命令之前，请先设置以下环境变量：
 
@@ -386,7 +376,7 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" \
 jq .result.privateEndpointIds
 ```
 
-### 连接到远程数据库
+### 连接到远程数据库 {#connecting-to-a-remote-database}
 
 假设你尝试在 ClickHouse Cloud 中使用 [MySQL](/sql-reference/table-functions/mysql) 或 [PostgreSQL](/sql-reference/table-functions/postgresql) 表函数，并连接到托管在 Amazon Web Services (AWS) VPC 中的数据库。AWS PrivateLink 无法用于在保证安全的前提下建立此连接。PrivateLink 是一种单向连接。它允许你的内部网络或 Amazon VPC 安全地连接到 ClickHouse Cloud，但不允许 ClickHouse Cloud 连接到你的内部网络。
 

@@ -24,7 +24,6 @@ import TabItem from '@theme/TabItem';
   </tbody>
 </table>
 
-
 ## OpenTelemetry Lambda レイヤーのインストール {#installing-the-otel-lambda-layers}
 
 OpenTelemetry プロジェクトは、次の目的で個別の Lambda レイヤーを提供しています：
@@ -129,7 +128,7 @@ OTEL_TRACES_SAMPLER=always_on
 
 </Tabs>
 
-### OpenTelemetry collector Lambda レイヤーのインストール
+### OpenTelemetry collector Lambda レイヤーのインストール {#installing-the-otel-collector-layer}
 
 collector Lambda レイヤーを使用すると、エクスポーターのレイテンシによる応答時間への影響を抑えつつ、Lambda 関数から ClickStack へログ、メトリクス、トレースを転送できます。
 
@@ -155,7 +154,7 @@ collector Lambda レイヤーを使用すると、エクスポーターのレイ
 3. 次の `collector.yaml` ファイルをプロジェクトに追加し、collector が ClickStack へ送信するように構成します:
 
 ```yaml
-# collector.yaml
+# collector.yaml {#collectoryaml}
 receivers:
   otlp:
     protocols:
@@ -197,7 +196,6 @@ service:
 OPENTELEMETRY_COLLECTOR_CONFIG_FILE=/var/task/collector.yaml
 ```
 
-
 ## インストールの確認 {#checking-the-installation}
 
 レイヤーをデプロイした後、Lambda 関数からのトレースが自動的に収集され、HyperDX 上で確認できるようになっているはずです。`decouple` と `batching` プロセッサによってテレメトリ収集に遅延が生じる場合があるため、トレースの表示が遅れることがあります。カスタムログやメトリクスを出力するには、利用しているプログラミング言語向けの OpenTelemetry SDKS を使用してコードをインストルメントする必要があります。
@@ -215,12 +213,12 @@ OpenTelemetry API パッケージのバージョンが、AWS Lambda に含まれ
 
 OpenTelemetry SDK からのデバッグログを有効にするには、環境変数 `OTEL_LOG_LEVEL` を `DEBUG` に設定します。これにより、自動インスツルメンテーションレイヤーがアプリケーションを正しく計測できているかを確認しやすくなります。
 
-### コレクターのデバッグログを有効化する
+### コレクターのデバッグログを有効化する {#enabling-collector-debug-logs}
 
 コレクターの問題をデバッグするには、コレクターの設定ファイルを変更し、`logging` エクスポーターを追加してテレメトリのログレベルを `debug` に設定します。これにより、コレクターの Lambda レイヤーからのより詳細なログ出力が有効になります。
 
 ```yaml
-# collector.yaml
+# collector.yaml {#collectoryaml}
 receivers:
   otlp:
     protocols:

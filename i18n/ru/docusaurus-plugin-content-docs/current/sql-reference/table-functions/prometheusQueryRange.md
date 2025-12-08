@@ -7,22 +7,17 @@ title: 'prometheusQueryRange'
 doc_type: 'reference'
 ---
 
-
-
-# Табличная функция prometheusQuery
+# Табличная функция prometheusQuery {#prometheusquery-table-function}
 
 Вычисляет запрос Prometheus, используя данные из таблицы TimeSeries в заданном интервале времени оценки.
 
-
-
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 prometheusQueryRange('db_name', 'time_series_table', 'promql_query', start_time, end_time, step)
 prometheusQueryRange(db_name.time_series_table, 'promql_query', start_time, end_time, step)
 prometheusQueryRange('time_series_table', 'promql_query', start_time, end_time, step)
 ```
-
 
 ## Аргументы {#arguments}
 
@@ -32,8 +27,6 @@ prometheusQueryRange('time_series_table', 'promql_query', start_time, end_time, 
 - `start_time` - время начала диапазона вычисления.
 - `end_time` - время окончания диапазона вычисления.
 - `step` - шаг, используемый для перебора времени вычисления от `start_time` до `end_time` (включительно).
-
-
 
 ## Возвращаемое значение {#returned_value}
 
@@ -46,9 +39,7 @@ prometheusQueryRange('time_series_table', 'promql_query', start_time, end_time, 
 | scalar      | scalar ValueType | prometheusQuery(mytable, '1h30m') |
 | string      | string String | prometheusQuery(mytable, '"abc"') |
 
-
-
-## Пример
+## Пример {#example}
 
 ```sql
 SELECT * FROM prometheusQueryRange(mytable, 'rate(http_requests{job="prometheus"}[10m])[1h:10m]', now() - INTERVAL 10 MINUTES, now(), INTERVAL 1 MINUTE)

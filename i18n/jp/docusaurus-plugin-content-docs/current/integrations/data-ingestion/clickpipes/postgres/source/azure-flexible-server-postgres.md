@@ -13,12 +13,9 @@ import restart from '@site/static/images/integrations/data-ingestion/clickpipes/
 import firewall from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres/firewall.png';
 import Image from '@theme/IdealImage';
 
-
-# Azure Flexible Server for Postgres のソース設定ガイド
+# Azure Flexible Server for Postgres のソース設定ガイド {#azure-flexible-server-for-postgres-source-setup-guide}
 
 ClickPipes は Postgres バージョン 12 以降をサポートしています。
-
-
 
 ## 論理レプリケーションを有効にする {#enable-logical-replication}
 
@@ -35,8 +32,6 @@ ClickPipes は Postgres バージョン 12 以降をサポートしています�
 3. この変更にはサーバーの再起動が必要です。再起動を求められたら実行します。
 
 <Image img={restart} alt="wal_level を変更した後にサーバーを再起動" size="lg" border/>
-
-
 
 ## ClickPipes ユーザーの作成と権限付与 {#creating-clickpipes-user-and-granting-permissions}
 
@@ -74,8 +69,6 @@ ClickPipes は Postgres バージョン 12 以降をサポートしています�
    ALTER ROLE clickpipes_user SET wal_sender_timeout to 0;
    ```
 
-
-
 ## Firewall に ClickPipes の IP アドレスを追加する {#add-clickpipes-ips-to-firewall}
 
 以下の手順に従って、[ClickPipes の IP アドレス](../../index.md#list-of-static-ips) をネットワークに追加してください。
@@ -84,8 +77,6 @@ ClickPipes は Postgres バージョン 12 以降をサポートしています�
    または SSH トンネリングを使用している場合は Jump Server/Bastion のファイアウォールに追加します。
 
 <Image img={firewall} alt="Azure Flexible Server for Postgres のファイアウォールに ClickPipes の IP アドレスを追加する" size="lg"/>
-
-
 
 ## 次のステップ {#whats-next}
 

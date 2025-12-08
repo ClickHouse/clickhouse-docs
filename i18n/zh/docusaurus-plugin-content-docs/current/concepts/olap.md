@@ -8,9 +8,7 @@ keywords: ['OLAP']
 doc_type: 'reference'
 ---
 
-
-
-# 什么是 OLAP？
+# 什么是 OLAP？ {#what-is-olap}
 
 [OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing) 是 Online Analytical Processing（联机分析处理）的缩写。这个术语范围很广，可以从两个角度来理解：技术角度和业务角度。在最高层面上，你可以简单地将这个短语反向理解：
 
@@ -20,8 +18,6 @@ doc_type: 'reference'
 
 **Online（联机）** — ……并以实时方式完成。
 
-
-
 ## 从业务视角看 OLAP {#olap-from-the-business-perspective}
 
 近些年，业务人员开始逐渐认识到数据的价值。那些在没有数据依据的情况下盲目决策的公司，往往难以跟上竞争对手的步伐。成功企业的数据驱动做法迫使它们收集所有哪怕只是可能对业务决策有一点帮助的数据，并要求它们具备能够及时分析这些数据的机制。OLAP 数据库管理系统（DBMS）正是为此而生。
@@ -29,8 +25,6 @@ doc_type: 'reference'
 从业务角度看，OLAP 允许企业持续进行运营活动的规划、分析和报告，从而最大化效率、降低成本，并最终赢得市场份额。其部署既可以在企业自建系统中完成，也可以外包给 SaaS 提供商，例如 web/移动分析服务、CRM 服务等。OLAP 是许多 BI（商业智能）应用背后的核心技术。
 
 ClickHouse 是一种 OLAP 数据库管理系统，经常被用作此类 SaaS 解决方案的后端来分析特定领域的数据。然而，一些企业仍然不愿将自己的数据分享给第三方服务商，因此自建数据仓库同样是一个可行的选项。
-
-
 
 ## 从技术视角看 OLAP {#olap-from-the-technical-perspective}
 

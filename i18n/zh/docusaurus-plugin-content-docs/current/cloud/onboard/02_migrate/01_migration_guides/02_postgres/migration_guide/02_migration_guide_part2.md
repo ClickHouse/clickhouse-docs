@@ -11,17 +11,13 @@ doc_type: 'guide'
 
 在大多数情况下，现有 PostgreSQL 环境中的 SQL 查询无需修改即可在 ClickHouse 上运行，并且通常会执行得更快。
 
-
-
 ## 使用 CDC 进行去重 {#deduplication-cdc}
 
 在使用基于 CDC（变更数据捕获）的实时复制时，需要注意更新和删除操作可能会导致重复行。为解决这一问题，可以使用基于视图和可刷新物化视图的去重方案。
 
 请参考此[指南](/integrations/clickpipes/postgres/deduplication#query-like-with-postgres)，了解在使用基于 CDC 的实时复制时，如何以尽可能小的改动将应用程序从 PostgreSQL 迁移到 ClickHouse。
 
-
-
-## 在 ClickHouse 中优化查询
+## 在 ClickHouse 中优化查询 {#optimize-queries-in-clickhouse}
 
 虽然可以在对查询做最少改写的情况下完成迁移，但建议充分利用 ClickHouse 的特性，以显著简化查询并进一步提升查询性能。
 
@@ -136,7 +132,6 @@ Time: 112508.083 ms (01:52.508)
 
 在条件允许的情况下，用户应尽可能利用 ClickHouse 的聚合函数。下面我们演示如何使用 [argMax](/sql-reference/aggregate-functions/reference/argmax) 函数来计算每一年浏览次数最多的问题。
 
-
 ```sql
 --ClickHouse
 SELECT  toYear(CreationDate) AS Year,
@@ -236,7 +231,6 @@ LIMIT 5
 │ docker        │       13885 │         16877 │  -17.72826924216389 │
 └─────────────┴────────────┴────────────┴─────────────────────┘
 ```
-
 
 5 行结果。耗时：0.247 秒。已处理 508 万行、155.73 MB（2058 万行/秒，630.61 MB/秒）。
 峰值内存使用：403.04 MiB。

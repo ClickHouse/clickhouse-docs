@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## 使用示例 {#example-usage}
 
-### 读取数据
+### 读取数据 {#reading-data}
 
 以 `JSONCompactStrings` 格式读取数据：
 
@@ -92,6 +92,5 @@ FORMAT JSONCompactStrings
     }
 }
 ```
-
 
 ## 格式设置 {#format-settings}

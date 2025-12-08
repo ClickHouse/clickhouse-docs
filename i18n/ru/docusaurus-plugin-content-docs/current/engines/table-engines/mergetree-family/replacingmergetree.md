@@ -8,9 +8,7 @@ title: 'Движок таблицы ReplacingMergeTree'
 doc_type: 'reference'
 ---
 
-
-
-# Движок таблиц ReplacingMergeTree
+# Движок таблиц ReplacingMergeTree {#replacingmergetree-table-engine}
 
 Этот движок отличается от [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) тем, что удаляет дублирующиеся записи с одинаковым значением [ключа сортировки](../../../engines/table-engines/mergetree-family/mergetree.md) (раздел `ORDER BY` в определении таблицы, а не `PRIMARY KEY`).
 
@@ -22,9 +20,7 @@ doc_type: 'reference'
 Подробное руководство по ReplacingMergeTree, включая лучшие практики и способы оптимизации производительности, доступно [здесь](/guides/replacing-merge-tree).
 :::
 
-
-
-## Создание таблицы
+## Создание таблицы {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -46,10 +42,9 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 Уникальность строк определяется разделом таблицы `ORDER BY`, а не `PRIMARY KEY`.
 :::
 
+## Параметры ReplacingMergeTree {#replacingmergetree-parameters}
 
-## Параметры ReplacingMergeTree
-
-### `ver`
+### `ver` {#ver}
 
 `ver` — столбец с номером версии. Тип `UInt*`, `Date`, `DateTime` или `DateTime64`. Необязательный параметр.
 
@@ -101,7 +96,7 @@ SELECT * FROM mySecondReplacingMT FINAL;
 └─────┴─────────┴─────────────────────┘
 ```
 
-### `is_deleted`
+### `is_deleted` {#is_deleted}
 
 `is_deleted` — имя столбца, используемого во время слияния для определения, представляет ли строка состояние или подлежит удалению; `1` — строка-удаление, `0` — строка-состояние.
 
@@ -141,7 +136,6 @@ INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 01:01:01', 0);
 INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 01:01:01', 1);
 ```
 
-
 select * from myThirdReplacingMT final;
 
 0 строк в наборе. Прошло: 0.003 сек.
@@ -159,7 +153,6 @@ select * from myThirdReplacingMT final;
 
 ```
 ```
-
 
 ## Части запроса {#query-clauses}
 
@@ -188,9 +181,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 </details>
 
-
-
-## Дедупликация при выполнении запроса &amp; FINAL
+## Дедупликация при выполнении запроса &amp; FINAL {#query-time-de-duplication--final}
 
 Во время слияния ReplacingMergeTree определяет дублирующиеся строки, используя значения столбцов `ORDER BY` (указанных при создании таблицы) в качестве уникального идентификатора и сохраняя только самую позднюю версию. Однако это обеспечивает лишь корректность «в конечном счёте» — нет гарантии, что строки будут дедуплицированы, и полагаться на это не следует. Поэтому запросы могут возвращать некорректные результаты, так как строки с обновлениями и удалениями учитываются в запросах.
 

@@ -64,7 +64,7 @@ ClickHouse テーブル列のデータ型は、対応する Arrow データフ�
 
 ## 使用例 {#example-usage}
 
-### データの挿入
+### データの挿入 {#inserting-data}
 
 次のコマンドを使用して、ファイルから ClickHouse テーブルに Arrow 形式のデータを挿入できます。
 
@@ -72,15 +72,13 @@ ClickHouse テーブル列のデータ型は、対応する Arrow データフ�
 $ cat filename.arrow | clickhouse-client --query="INSERT INTO some_table FORMAT Arrow"
 ```
 
-
-### データの選択
+### データの選択 {#selecting-data}
 
 次のコマンドを使用して、ClickHouse のテーブルからデータを抽出し、Arrow 形式のファイルに保存できます。
 
 ```bash
 $ clickhouse-client --query="SELECT * FROM {some_table} FORMAT Arrow" > {filename.arrow}
 ```
-
 
 ## フォーマット設定 {#format-settings}
 

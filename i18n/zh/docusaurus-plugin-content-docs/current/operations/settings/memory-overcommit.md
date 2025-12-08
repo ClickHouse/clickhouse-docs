@@ -5,9 +5,7 @@ title: '内存超量分配'
 doc_type: 'reference'
 ---
 
-
-
-# 内存超额分配（memory overcommit）
+# 内存超额分配（memory overcommit） {#memory-overcommit}
 
 内存超额分配是一种实验性机制，旨在为查询设置更灵活的内存限制。
 
@@ -21,9 +19,7 @@ doc_type: 'reference'
 要停止或终止的查询由全局或用户级 overcommit 跟踪器选择，具体取决于触发的是哪种内存限制。
 如果 overcommit 跟踪器无法选择要停止的查询，将抛出 MEMORY_LIMIT_EXCEEDED 异常。
 
-
-
-## 用户超量使用跟踪器
+## 用户超量使用跟踪器 {#user-overcommit-tracker}
 
 用户超量使用跟踪器会在用户的查询列表中找到超量使用比例最大的查询。
 查询的超量使用比例是通过已分配字节数除以 `memory_overcommit_ratio_denominator_for_user` 设置的值来计算的。
@@ -37,7 +33,6 @@ doc_type: 'reference'
 ```sql
 SELECT number FROM numbers(1000) GROUP BY number SETTINGS memory_overcommit_ratio_denominator_for_user=4000, memory_usage_overcommit_max_wait_microseconds=500
 ```
-
 
 ## 全局 overcommit 跟踪器 {#global-overcommit-tracker}
 

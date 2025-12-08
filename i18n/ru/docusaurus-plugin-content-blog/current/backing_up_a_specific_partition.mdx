@@ -10,12 +10,11 @@ keywords: ['Резервное копирование', 'Партиция']
 
 {/* усечение */}
 
-
 ## Вопрос \{#question\}
 
 Как создать резервную копию отдельной партиции в ClickHouse?
 
-## Ответ
+## Ответ \{#answer\}
 
 См. пример ниже: здесь используется диск S3 (Minio) с [конфигурацией](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/ch-and-minio-S3/README.md), приведённой на странице наших [примеров Docker Compose](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/README.md).
 
@@ -137,7 +136,6 @@ Ok.
 ```
 
 восстановите из резервной копии только раздел с идентификатором `1`:
-
 
 ```
 ch_minio_s3 :) RESTORE TABLE my_table PARTITION 1 FROM Disk('s3','backups/');

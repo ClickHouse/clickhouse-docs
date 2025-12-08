@@ -20,12 +20,9 @@ import dashboards_9 from '@site/static/images/cloud/dashboards/9_dashboards.png'
 import dashboards_10 from '@site/static/images/cloud/dashboards/10_dashboards.png';
 import dashboards_11 from '@site/static/images/cloud/dashboards/11_dashboards.png';
 
-
-# ダッシュボード
+# ダッシュボード {#dashboards}
 
 SQL Console のダッシュボード機能を使用すると、保存したクエリから得られた可視化をまとめて共有できます。まずはクエリを保存して可視化し、その可視化結果をダッシュボードに追加し、クエリパラメータを使ってダッシュボードをインタラクティブにしてみてください。
-
-
 
 ## コアコンセプト {#core-concepts}
 
@@ -39,13 +36,9 @@ SQL Console のダッシュボード機能を使用すると、保存したク�
 
 可視化の設定で「filter」タイプを選択すると、**Global** フィルタのサイドペインからクエリパラメータの入力欄を表示・非表示に切り替えられます。ダッシュボード上の別のオブジェクト（テーブルなど）にリンクすることで、クエリパラメータの入力欄を切り替えることもできます。詳しくは、以下のクイックスタートガイドの「[フィルタを構成する](/cloud/manage/dashboards#configure-a-filter)」セクションを参照してください。 
 
-
-
 ## クイックスタート {#quick-start}
 
 [query\_log](/operations/system-tables/query_log) システムテーブルを使用して、ClickHouse サービスを監視するためのダッシュボードを作成します。 
-
-
 
 ## クイックスタート {#quick-start-1}
 

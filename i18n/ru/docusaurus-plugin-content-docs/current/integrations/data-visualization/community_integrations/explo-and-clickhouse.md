@@ -12,7 +12,7 @@ integration:
 ---
 
 import Image from '@theme/IdealImage';
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import explo_01 from '@site/static/images/integrations/data-visualization/explo_01.png';
 import explo_02 from '@site/static/images/integrations/data-visualization/explo_02.png';
 import explo_03 from '@site/static/images/integrations/data-visualization/explo_03.png';
@@ -31,14 +31,11 @@ import explo_15 from '@site/static/images/integrations/data-visualization/explo_
 import explo_16 from '@site/static/images/integrations/data-visualization/explo_16.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
-# Подключение Explo к ClickHouse
+# Подключение Explo к ClickHouse {#connecting-explo-to-clickhouse}
 
 <CommunityMaintainedBadge/>
 
 Клиентская аналитика для любой платформы. Создана для красивой визуализации. Спроектирована с упором на простоту.
-
-
 
 ## Цель {#goal}
 
@@ -51,12 +48,8 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 Если у вас ещё нет набора данных для работы, вы можете добавить один из примерных наборов. В этом руководстве используется набор данных [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md), поэтому вы можете выбрать его. В той же категории документации есть и несколько других примеров.
 :::
 
-
-
 ## 1. Соберите сведения о подключении {#1-gather-your-connection-details}
 <ConnectionDetails />
-
-
 
 ## 2.  Подключение Explo к ClickHouse {#2--connect-explo-to-clickhouse}
 
@@ -91,8 +84,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 54.211.43.19, 52.55.98.121, 3.214.169.94 и 54.156.141.148
 `
 
-
-
 ## 3. Создайте дашборд {#3-create-a-dashboard}
 
 1. Перейдите на вкладку **Dashboard** в левой панели навигации.
@@ -107,8 +98,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <Image img={explo_09} size="md" alt="Explo Dashboard" border />
 
-
-
 ## 4. Выполните SQL-запрос {#4-run-a-sql-query}
 
 1. Найдите имя таблицы в правой боковой панели под заголовком схемы. Затем введите следующую команду в редактор датасета:
@@ -122,8 +111,6 @@ LIMIT 100
 2. Нажмите кнопку `Run` и перейдите на вкладку `Preview`, чтобы просмотреть данные.
 
 <Image img={explo_11} size="md" alt="Панель управления Explo" border />
-
-
 
 ## 5. Построение графика {#5-build-a-chart}
 
@@ -146,8 +133,6 @@ LIMIT 100
 5. Теперь у нас есть средняя стоимость домов с разбивкой по округам!
 
 <Image img={explo_15} size="md" alt="Explo Dashboard" />
-
-
 
 ## Узнать больше {#learn-more}
 

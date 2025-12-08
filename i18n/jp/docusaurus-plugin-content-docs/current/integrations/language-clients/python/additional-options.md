@@ -12,7 +12,7 @@ doc_type: 'reference'
 
 ClickHouse Connect は、高度なユースケースに対応するためのさまざまな追加オプションを提供しています。
 
-## グローバル設定
+## グローバル設定 {#global-settings}
 
 ClickHouse Connect の動作をグローバルに制御する設定はごく少数のみです。これらにはトップレベルの `common` パッケージからアクセスできます。
 
@@ -44,7 +44,6 @@ common.get_setting('invalid_setting_action')
 | max&#95;error&#95;size                          | 1024            |                                                 | クライアントエラーメッセージとして返される最大文字数です。この設定に 0 を指定すると、ClickHouse のエラーメッセージ全体を取得できます。デフォルトは 1024 文字です。                                                                                                       |
 | http&#95;buffer&#95;size                        | 10MB            |                                                 | HTTP ストリーミングクエリに使用されるインメモリバッファのサイズ（バイト単位）です。                                                                                                                                                      |
 | preserve&#95;pandas&#95;datetime&#95;resolution | False           | True, False                                     | True かつ pandas 2.x を使用している場合、datetime64/timedelta64 の dtype 解像度（例: &#39;s&#39;, &#39;ms&#39;, &#39;us&#39;, &#39;ns&#39;）を保持します。False（または pandas &lt;2.x の場合）は、互換性のためにナノ秒（&#39;ns&#39;）解像度に変換します。 |
-
 
 ## 圧縮 {#compression}
 

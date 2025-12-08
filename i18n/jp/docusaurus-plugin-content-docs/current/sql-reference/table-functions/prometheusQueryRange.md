@@ -7,22 +7,17 @@ title: 'prometheusQueryRange'
 doc_type: 'reference'
 ---
 
-
-
-# prometheusQuery テーブル関数
+# prometheusQuery テーブル関数 {#prometheusquery-table-function}
 
 複数の評価時刻にわたって、TimeSeries テーブルのデータを使用して Prometheus クエリを評価します。
 
-
-
-## 構文
+## 構文 {#syntax}
 
 ```sql
 prometheusQueryRange('db_name', 'time_series_table', 'promql_query', start_time, end_time, step)
 prometheusQueryRange(db_name.time_series_table, 'promql_query', start_time, end_time, step)
 prometheusQueryRange('time_series_table', 'promql_query', start_time, end_time, step)
 ```
-
 
 ## 引数 {#arguments}
 
@@ -32,8 +27,6 @@ prometheusQueryRange('time_series_table', 'promql_query', start_time, end_time, 
 - `start_time` - 評価範囲の開始時刻。
 - `end_time` - 評価範囲の終了時刻。
 - `step` - `start_time` から `end_time` まで（両端を含む）評価時刻を反復する際に使用されるステップ間隔。
-
-
 
 ## 戻り値 {#returned_value}
 
@@ -46,9 +39,7 @@ prometheusQueryRange('time_series_table', 'promql_query', start_time, end_time, 
 | scalar      | scalar ValueType | prometheusQuery(mytable, '1h30m') |
 | string      | string String | prometheusQuery(mytable, '"abc"') |
 
-
-
-## 使用例
+## 使用例 {#example}
 
 ```sql
 SELECT * FROM prometheusQueryRange(mytable, 'rate(http_requests{job="prometheus"}[10m])[1h:10m]', now() - INTERVAL 10 MINUTES, now(), INTERVAL 1 MINUTE)

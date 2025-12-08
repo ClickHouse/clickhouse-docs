@@ -27,7 +27,6 @@ import TabItem from '@theme/TabItem';
 * **Запросы XHR/Fetch/WebSocket**
 * **Исключения**
 
-
 ## Начало работы {#getting-started}
 
 <br/>
@@ -106,7 +105,7 @@ HyperDX.init({
 
 ## Дополнительная настройка {#additional-configuration}
 
-### Добавление информации о пользователе или метаданных
+### Добавление информации о пользователе или метаданных {#attach-user-information-or-metadata}
 
 Добавление информации о пользователе позволит выполнять поиск и фильтрацию сеансов и событий
 в интерфейсе HyperDX. Этот метод может быть вызван в любой момент в ходе клиентской сессии. Текущая
@@ -127,8 +126,7 @@ HyperDX.setGlobalAttributes({
 });
 ```
 
-
-### Автоматический захват ошибок в React error boundary
+### Автоматический захват ошибок в React error boundary {#auto-capture-react-error-boundary-errors}
 
 Если вы используете React, вы можете автоматически перехватывать ошибки, которые возникают внутри
 React error boundary, передав ваш компонент error boundary
@@ -143,8 +141,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 HyperDX.attachToReactErrorBoundary(ErrorBoundary);
 ```
 
-
-### Отправка пользовательских действий
+### Отправка пользовательских действий {#send-custom-actions}
 
 Чтобы явно отслеживать конкретное событие приложения (например, регистрацию,
 отправку формы и т. п.), вы можете вызвать функцию `addAction` с именем события
@@ -160,8 +157,7 @@ HyperDX.addAction('Form-Completed', {
 });
 ```
 
-
-### Динамическое включение захвата сетевого трафика
+### Динамическое включение захвата сетевого трафика {#enable-network-capture-dynamically}
 
 Чтобы динамически включать или отключать захват сетевого трафика, вызывайте функцию `enableAdvancedNetworkCapture` или `disableAdvancedNetworkCapture` по мере необходимости.
 
@@ -169,8 +165,7 @@ HyperDX.addAction('Form-Completed', {
 HyperDX.enableAdvancedNetworkCapture();
 ```
 
-
-### Включение измерения времени загрузки ресурсов для CORS-запросов
+### Включение измерения времени загрузки ресурсов для CORS-запросов {#enable-resource-timing-for-cors-requests}
 
 Если ваше frontend-приложение отправляет API-запросы на другой домен, вы можете
 при необходимости включить отправку заголовка [`Timing-Allow-Origin`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Timing-Allow-Origin) вместе с запросом. Это позволит ClickStack собирать детализированную

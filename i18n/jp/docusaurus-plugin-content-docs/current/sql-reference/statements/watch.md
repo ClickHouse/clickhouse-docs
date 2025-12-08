@@ -9,10 +9,9 @@ doc_type: 'reference'
 
 import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
+# WATCH ステートメント {#watch-statement}
 
-# WATCH ステートメント
-
-<DeprecatedBadge/>
+<DeprecatedBadge />
 
 この機能は非推奨であり、今後のバージョンで削除される予定です。
 

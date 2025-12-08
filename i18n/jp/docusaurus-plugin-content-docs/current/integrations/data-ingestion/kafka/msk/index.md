@@ -4,17 +4,17 @@ sidebar_position: 1
 slug: /integrations/kafka/cloud/amazon-msk/
 description: 'ClickHouse 公式 Kafka コネクタを使用した Amazon MSK との統合'
 keywords: ['統合', 'kafka', 'amazon msk', 'シンク', 'コネクタ']
-title: 'Amazon MSK と ClickHouse の統合'
+title: 'Amazon MSK と ClickHouse の統合 {#integrating-amazon-msk-with-clickhouse}'
 doc_type: 'guide'
 integration:
   - support_level: 'community'
   - category: 'data_ingestion'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 
-# Amazon MSK と ClickHouse の統合
+# Amazon MSK と ClickHouse の統合 {#integrating-amazon-msk-with-clickhouse}
 
 <div class='vimeo-container'>
   <iframe src="//www.youtube.com/embed/6lKI_WlQ3-s"
@@ -28,24 +28,22 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
   </iframe>
 </div>
 
-> 注記: 動画内で示されているポリシーは権限が広く、クイックスタート用途のみを想定しています。以下の最小権限の IAM ガイダンスを参照してください。
-
-
+> 注意: この動画で示しているポリシーは権限設定が緩く、クイックスタート用にのみ意図されています。IAM の最小権限ガイドラインについては、以下を参照してください。
 
 ## 前提条件 {#prerequisites}
+
 次のことを前提とします:
-* [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)、Amazon MSK、および MSK Connectors について理解していること。Amazon MSK の [はじめにガイド](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html) と [MSK Connect ガイド](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect.html) の参照を推奨します。
-* MSK ブローカーがパブリックにアクセス可能であること。Developer Guide の [Public Access](https://docs.aws.amazon.com/msk/latest/developerguide/public-access.html) セクションを参照してください。
 
+* [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md) について理解していること。
+* Amazon MSK および MSK Connectors について理解していること。Amazon MSK の [はじめにガイド](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html) と [MSK Connect ガイド](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect.html) の参照を推奨します。
 
+## ClickHouse 公式 Kafka コネクタと Amazon MSK の連携 {#the-official-kafka-connector-from-clickhouse-with-amazon-msk}
 
-## ClickHouse 公式 Kafka コネクタと Amazon MSK の連携
-
-### 接続情報を確認する
+### 接続情報を確認する {#gather-your-connection-details}
 
 <ConnectionDetails />
 
-### 手順
+### 手順 {#steps}
 
 1. [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md) に目を通しておく。
 2. [MSK インスタンスを作成する](https://docs.aws.amazon.com/msk/latest/developerguide/create-cluster.html)。
@@ -74,7 +72,7 @@ schemas.enable=false
 ```
 
 
-## 推奨 IAM 権限（最小権限）
+## 推奨 IAM 権限（最小権限） {#iam-least-privilege}
 
 環境に必要な最小限の権限だけを付与してください。まずは以下のベースラインから始め、利用するサービスがある場合にのみオプションの権限を追加します。
 
@@ -145,7 +143,7 @@ schemas.enable=false
 あわせて参照してください: [Kafka のベストプラクティス – IAM](../../clickpipes/kafka/04_best_practices.md#iam).
 
 
-## パフォーマンスチューニング
+## パフォーマンスチューニング {#performance-tuning}
 
 パフォーマンスを向上させる 1 つの方法は、**worker** の設定に次の項目を追加し、Kafka から取得するバッチサイズとレコード数を調整することです。
 

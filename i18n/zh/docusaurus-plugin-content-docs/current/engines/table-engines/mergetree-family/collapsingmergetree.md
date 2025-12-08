@@ -8,11 +8,7 @@ title: 'CollapsingMergeTree 表引擎'
 doc_type: 'guide'
 ---
 
-
-
-# CollapsingMergeTree 表引擎
-
-
+# CollapsingMergeTree 表引擎 {#collapsingmergetree-table-engine}
 
 ## 描述 {#description}
 
@@ -30,17 +26,13 @@ doc_type: 'guide'
 从而提高 `SELECT` 查询的效率。
 :::
 
-
-
 ## 参数 {#parameters}
 
 此表引擎的所有参数（`Sign` 参数除外）与 [`MergeTree`](/engines/table-engines/mergetree-family/mergetree) 中的含义相同。
 
 - `Sign` — 行类型标记列的名称，其中 `1` 表示“状态”行，`-1` 表示“撤销”行。类型：[Int8](/sql-reference/data-types/int-uint)。
 
-
-
-## 创建表
+## 创建表 {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -80,10 +72,9 @@ ENGINE = CollapsingMergeTree(Sign)
 * 有关查询参数的说明，请参阅[查询说明](../../../sql-reference/statements/create/table.md)。
 * 创建 `CollapsingMergeTree` 表时，需要与创建 `MergeTree` 表时相同的[查询子句](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-creating-a-table)。
 
+## 折叠 {#table_engine-collapsingmergetree-collapsing}
 
-## 折叠
-
-### 数据
+### 数据 {#data}
 
 考虑这样一种情况：你需要为某个给定对象保存持续变化的数据。
 看起来为每个对象只保留一行并在有变化时更新它似乎是合乎逻辑的，
@@ -141,13 +132,12 @@ ENGINE = CollapsingMergeTree(Sign)
 2. 列中不断增长的长数组会因为写入负载增加而降低引擎效率。数据越简单，效率越高。
 3. `SELECT` 的结果高度依赖于对象变更历史的一致性。在准备要插入的数据时要谨慎。对于不一致的数据，可能会得到不可预测的结果。例如，本应非负的指标（如会话深度）出现负值。
 
-### 算法
+### 算法 {#table_engine-collapsingmergetree-collapsing-algorithm}
 
 当 ClickHouse 合并数据[分片](/concepts/glossary#parts)时，
 每组具有相同排序键（`ORDER BY`）的连续行会被折叠为最多两行，
 一行 `Sign` = `1` 的 “state” 行和一行 `Sign` = `-1` 的 “cancel” 行。
 换言之，ClickHouse 会对这些记录进行折叠处理。
-
 
 对于每个生成的数据部分，ClickHouse 会保存：
 
@@ -184,11 +174,9 @@ ClickHouse 使用多个线程处理 `SELECT` 查询，因此无法预测结果�
 对于 CollapsingMergeTree，每个键只返回最新的状态行。
 :::
 
+## 示例 {#examples}
 
-
-## 示例
-
-### 使用示例
+### 使用示例 {#example-of-use}
 
 给出以下示例数据：
 
@@ -288,14 +276,13 @@ SELECT * FROM UAct FINAL
 这种数据选取方式效率较低，不建议在扫描数据量很大（数百万行）时使用。
 :::
 
-### 另一种方法示例
+### 另一种方法示例 {#example-of-another-approach}
 
 这种方法的思路是，合并操作只考虑键字段。
 因此，在 &quot;cancel&quot; 行中，我们可以指定负值，
 使其在不使用 `Sign` 列进行求和时抵消该行的先前版本。
 
 在本示例中，我们将使用下面的示例数据：
-
 
 ```text
 ┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┐

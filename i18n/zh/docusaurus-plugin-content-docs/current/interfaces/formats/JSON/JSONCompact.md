@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## 示例用法 {#example-usage}
 
-### 插入数据
+### 插入数据 {#inserting-data}
 
 使用包含以下数据的 JSON 文件，将其命名为 `football.json`：
 
@@ -81,8 +81,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompact;
 ```
 
-
-### 读取数据
+### 读取数据 {#reading-data}
 
 以 `JSONCompact` 格式读取数据：
 
@@ -155,6 +154,5 @@ FORMAT JSONCompact
     }
 }
 ```
-
 
 ## 格式设置 {#format-settings}

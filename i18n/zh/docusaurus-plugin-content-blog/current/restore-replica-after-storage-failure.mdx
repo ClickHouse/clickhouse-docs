@@ -25,7 +25,7 @@ description: '本文介绍在 ClickHouse 中使用 Atomic 数据库的复制表�
 :::
 
 <VerticalStepper headerLevel="h2">
-  ## 从健康副本复制访问配置
+  ## 从健康副本复制访问配置 \{#copy-access-config\}
 
   从健康副本中复制包含本地用户的 `access` 文件夹内容：
 
@@ -33,7 +33,7 @@ description: '本文介绍在 ClickHouse 中使用 Atomic 数据库的复制表�
   /var/lib/clickhouse/access
   ```
 
-  ## 从健康副本备份 metadata 目录
+  ## 从健康副本备份 metadata 目录 \{#back-up-the-metadata-folder-from-the-healthy-replica\}
 
   1. 进入 ClickHouse 数据目录：
 
@@ -52,7 +52,7 @@ description: '本文介绍在 ClickHouse 中使用 Atomic 数据库的复制表�
   此命令确保在备份中同时保留 **metadata 文件** 和符号链接结构。
   :::
 
-  ## 在故障副本上恢复 metadata
+  ## 在故障副本上恢复 metadata \{#restore-the-metadata-on-the-faulty-replica\}
 
   1. 将生成的 `backup.tar` 文件复制到故障副本上。
   2. 将其解压到 ClickHouse 数据目录中：
@@ -62,7 +62,7 @@ description: '本文介绍在 ClickHouse 中使用 Atomic 数据库的复制表�
   tar -xvPf backup.tar
   ```
 
-  ## 创建强制恢复标志文件
+  ## 创建强制恢复标志文件 \{#create-force-restore-flag\}
 
   为了触发从其他副本自动进行数据同步，创建以下标志文件：
 
@@ -70,7 +70,7 @@ description: '本文介绍在 ClickHouse 中使用 Atomic 数据库的复制表�
   sudo -u clickhouse touch /var/lib/clickhouse/flags/force_restore_data
   ```
 
-  ## 重启故障副本
+  ## 重启故障副本 \{#restart-faulty-replica\}
 
   1. 在故障节点上重启 ClickHouse 服务器。
   2. 检查服务器日志，你应该能看到从健康副本下载数据分片的过程：

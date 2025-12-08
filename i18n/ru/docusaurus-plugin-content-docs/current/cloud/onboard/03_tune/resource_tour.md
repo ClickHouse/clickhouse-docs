@@ -7,12 +7,11 @@ hide_title: true
 doc_type: 'guide'
 ---
 
-import TableOfContentsBestPractices from '@site/docs/best-practices/_snippets/_table_of_contents.md';
-import TableOfContentsOptimizationAndPerformance from '@site/docs/guides/best-practices/_snippets/_performance_optimizations_table_of_contents.md';
-import TableOfContentsSecurity from '@site/docs/cloud/_snippets/_security_table_of_contents.md';
+import TableOfContentsBestPractices from '@site/i18n/ru/docusaurus-plugin-content-docs/current/best-practices/_snippets/_table_of_contents.md';
+import TableOfContentsOptimizationAndPerformance from '@site/i18n/ru/docusaurus-plugin-content-docs/current/guides/best-practices/_snippets/_performance_optimizations_table_of_contents.md';
+import TableOfContentsSecurity from '@site/i18n/ru/docusaurus-plugin-content-docs/current/cloud/_snippets/_security_table_of_contents.md';
 
-
-# Обзор ресурсов
+# Обзор ресурсов {#resource-tour}
 
 В этой статье представлен обзор доступных в документации ресурсов,
 которые помогут вам максимально эффективно использовать развертывание ClickHouse Cloud.
@@ -28,13 +27,9 @@ import TableOfContentsSecurity from '@site/docs/cloud/_snippets/_security_table_
 
 <TableOfContentsBestPractices />
 
-
-
 ## Методы оптимизации запросов и тонкая настройка производительности {#query-optimization}
 
 <TableOfContentsOptimizationAndPerformance/>
-
-
 
 ## Мониторинг {#monitoring}
 
@@ -44,13 +39,9 @@ import TableOfContentsSecurity from '@site/docs/cloud/_snippets/_security_table_
 | [Интеграция с Prometheus](/integrations/prometheus)                        | Используйте Prometheus для мониторинга облачных служб                        |
 | [Возможности облачного мониторинга](/use-cases/observability/cloud-monitoring) | Получите обзор встроенных возможностей мониторинга и вариантов интеграции |
 
-
-
 ## Безопасность {#security}
 
 <TableOfContentsSecurity/>
-
-
 
 ## Оптимизация затрат и биллинга {#cost-optimization}
 

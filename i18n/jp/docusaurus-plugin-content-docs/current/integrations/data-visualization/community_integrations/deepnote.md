@@ -17,10 +17,9 @@ import deepnote_02 from '@site/static/images/integrations/data-visualization/dee
 import deepnote_03 from '@site/static/images/integrations/data-visualization/deepnote_03.png';
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-
-# ClickHouse を Deepnote に接続する
+# ClickHouse を Deepnote に接続する {#connect-clickhouse-to-deepnote}
 
 <CommunityMaintainedBadge/>
 
@@ -28,14 +27,10 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
 このガイドでは、Deepnote のアカウントと稼働中の ClickHouse インスタンスが既に用意されていることを前提とします。
 
-
-
 ## インタラクティブな例 {#interactive-example}
 Deepnote のデータノートブックから ClickHouse に対してクエリを実行するインタラクティブな例を試したい場合は、下のボタンをクリックして、[ClickHouse playground](../../../getting-started/playground.md) と接続されたテンプレートプロジェクトを起動してください。
 
 [<Image size="logo" img="https://deepnote.com/buttons/launch-in-deepnote.svg" alt="Deepnote で起動" />](https://deepnote.com/launch?template=ClickHouse%20and%20Deepnote)
-
-
 
 ## ClickHouse に接続する {#connect-to-clickhouse}
 
@@ -51,8 +46,6 @@ Deepnote のデータノートブックから ClickHouse に対してクエリ�
    **_NOTE:_** ClickHouse への接続が IP アクセスリストで保護されている場合、Deepnote の IP アドレスを許可する必要があります。詳細は [Deepnote のドキュメント](https://docs.deepnote.com/integrations/authorize-connections-from-deepnote-ip-addresses) を参照してください。
 
 3. 以上で、ClickHouse と Deepnote の連携が完了しました。
-
-
 
 ## ClickHouse 連携を使用する {#using-clickhouse-integration}
 

@@ -27,7 +27,7 @@ doc_type: 'reference'
 
 ## 使用例 {#example-usage}
 
-### データの挿入
+### データの挿入 {#inserting-data}
 
 ```sql title="Query"
 SELECT *
@@ -46,6 +46,5 @@ FORMAT JSONCompactStringsEachRowWithProgress
 {"progress":{"read_rows":"5","read_bytes":"184","total_rows_to_read":"5","elapsed_ns":"191151"}}
 {"rows_before_limit_at_least":5}
 ```
-
 
 ## フォーマット設定 {#format-settings}

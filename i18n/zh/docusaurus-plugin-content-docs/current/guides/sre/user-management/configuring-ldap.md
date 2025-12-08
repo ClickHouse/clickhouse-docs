@@ -8,16 +8,13 @@ keywords: ['LDAP 配置', 'LDAP 身份验证', '角色映射', '用户管理', '
 doc_type: 'guide'
 ---
 
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
+import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
-
-# 配置 ClickHouse 使用 LDAP 进行身份验证和角色映射
+# 配置 ClickHouse 使用 LDAP 进行身份验证和角色映射 {#configuring-clickhouse-to-use-ldap-for-authentication-and-role-mapping}
 
 <SelfManaged />
 
 可以将 ClickHouse 配置为使用 LDAP 来对 ClickHouse 数据库用户进行身份验证。本指南提供了一个简单示例，演示如何将 ClickHouse 与 LDAP 系统集成，并对一个公开可访问的目录进行身份验证。
-
-
 
 ## 1. 在 ClickHouse 中配置 LDAP 连接设置 {#1-configure-ldap-connection-settings-in-clickhouse}
 
@@ -116,8 +113,6 @@ import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 
 4. 重启 ClickHouse 服务器以应用这些设置。
 
-
-
 ## 2. 配置 ClickHouse 数据库角色和权限 {#2-configure-clickhouse-database-roles-and-permissions}
 
 :::note
@@ -133,8 +128,6 @@ import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
     ```sql
     GRANT ALL ON *.* TO scientists_role;
     ```
-
-
 
 ## 3. 测试 LDAP 配置 {#3-test-the-ldap-configuration}
 
@@ -174,8 +167,6 @@ import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 
     9 rows in set. Elapsed: 0.004 sec.
     ```
-
-
 
 ## 摘要 {#summary}
 本文演示了在 ClickHouse 中配置使用 LDAP 服务器进行身份验证以及执行角色映射的基本方法。还介绍了另一种方案：在 ClickHouse 中单独配置用户账号，但将这些用户的身份验证委托给 LDAP，而不配置自动角色映射。LDAP 模块同样可以用于连接 Active Directory。

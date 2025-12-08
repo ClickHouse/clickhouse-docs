@@ -17,8 +17,7 @@ import ch_permissions from '@site/static/images/integrations/data-ingestion/clic
 import Image from '@theme/IdealImage';
 import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ssh-tunnel.jpg'
 
-
-# MongoDB から ClickHouse へのデータ取り込み（CDC の使用）
+# MongoDB から ClickHouse へのデータ取り込み（CDC の使用） {#ingesting-data-from-mongodb-to-clickhouse-using-cdc}
 
 <BetaBadge/>
 
@@ -32,8 +31,6 @@ ClickHouse Cloud のコンソールおよびドキュメントでは、MongoDB �
 
 ClickPipes を使用すると、MongoDB データベースから ClickHouse Cloud にデータを取り込むことができます。ソースの MongoDB データベースは、オンプレミス環境にホストすることも、MongoDB Atlas のようなサービスを利用してクラウド上にホストすることもできます。
 
-
-
 ## 前提条件 {#prerequisites}
 
 作業を開始する前に、MongoDB データベースがレプリケーション用に正しく構成されていることを確認する必要があります。構成手順は MongoDB のデプロイ方法によって異なるため、以下の該当するガイドに従ってください。
@@ -45,8 +42,6 @@ ClickPipes を使用すると、MongoDB データベースから ClickHouse Clou
 3. [Amazon DocumentDB](./mongodb/source/documentdb)
 
 ソース MongoDB データベースのセットアップが完了したら、ClickPipe の作成に進みます。
-
-
 
 ## ClickPipe を作成する {#create-your-clickpipe}
 
@@ -115,13 +110,9 @@ ClickPipes が SSH トンネルを確立できるように、SSH バスティオ
 
    <Image img={ch_permissions} alt="権限を確認" size="lg" border/>
 
-
-
 ## 次のステップ {#whats-next}
 
 MongoDB から ClickHouse Cloud へデータをレプリケートする ClickPipe のセットアップが完了したら、最適なパフォーマンスを得るために、データのクエリ方法とモデリング方法に集中できます。
-
-
 
 ## 注意事項 {#caveats}
 

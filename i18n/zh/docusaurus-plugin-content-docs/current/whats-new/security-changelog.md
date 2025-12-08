@@ -8,11 +8,7 @@ doc_type: 'changelog'
 keywords: ['安全', 'CVE', '漏洞', '安全修复', '补丁']
 ---
 
-
-
-# 安全更新日志
-
-
+# 安全更新日志 {#security-changelog}
 
 ## 已在 ClickHouse v25.1.5.5 修复，2025-01-05 {#fixed-in-clickhouse-release-2025-01-05}
 
@@ -26,8 +22,6 @@ ClickHouse Cloud 不受此漏洞影响。
 
 致谢：[Arseniy Dugin](https://github.com/ZerLes)
 
-
-
 ## 已在 ClickHouse v24.5 修复，2024-08-01 {#fixed-in-clickhouse-release-2024-08-01}
 
 ### [CVE-2024-6873](https://github.com/ClickHouse/ClickHouse/security/advisories/GHSA-432f-r822-j66f) {#CVE-2024-6873}
@@ -40,8 +34,6 @@ ClickHouse Cloud 使用不同的版本号体系，本漏洞的修复已应用到
 
 致谢：malacupa（独立研究员）
 
-
-
 ## 已在 ClickHouse v24.1 中修复，2024-01-30 {#fixed-in-clickhouse-release-24-01-30}
 
 ### [CVE-2024-22412](https://github.com/ClickHouse/ClickHouse/security/advisories/GHSA-45h5-f7g3-gr8r) {#CVE-2024-22412}
@@ -53,8 +45,6 @@ ClickHouse Cloud 使用不同的版本号体系，本漏洞的修复已应用到
 ClickHouse Cloud 使用不同的版本编号体系，对此漏洞的修复已在 v24.0.2.54535 中应用。
 
 致谢：Runreveal 团队的 Evan Johnson 和 Alan Braithwaite —— 更多信息可在[他们的博客文章](https://blog.runreveal.com/cve-2024-22412-behind-the-bug-a-classic-caching-problem-in-the-clickhouse-query-cache/)中查看。
-
-
 
 ## 已在 ClickHouse v23.10.5.20（2023-11-26）中修复 {#fixed-in-clickhouse-release-23-10-5-20-2023-11-26}
 
@@ -88,8 +78,6 @@ ClickHouse Cloud 使用不同的版本号体系，该漏洞已在 v23.9.2.47551 
 
 致谢：malacupa（独立研究员）
 
-
-
 ## 已在 ClickHouse 22.9.1.2603 中修复，2022-09-22 {#fixed-in-clickhouse-release-22-9-1-2603-2022-9-22}
 
 ### CVE-2022-44011 {#CVE-2022-44011}
@@ -107,8 +95,6 @@ ClickHouse Cloud 使用不同的版本号体系，该漏洞已在 v23.9.2.47551 
 修复已发布到版本 22.9.1.2603、22.8.2.11、22.7.4.16、22.6.6.16、22.3.12.19
 
 致谢：Kiojj（独立研究人员）
-
-
 
 ## 已在 ClickHouse 21.10.2.15 修复，2021-10-18 {#fixed-in-clickhouse-release-21-10-2-215-2021-10-18}
 
@@ -154,8 +140,6 @@ ClickHouse Cloud 使用不同的版本号体系，该漏洞已在 v23.9.2.47551 
 
 致谢：JFrog Security Research Team
 
-
-
 ## 在 ClickHouse 21.4.3.21 中修复，2021-04-12 {#fixed-in-clickhouse-release-21-4-3-21-2021-04-12}
 
 ### CVE-2021-25263 {#cve-2021-25263}
@@ -165,8 +149,6 @@ ClickHouse Cloud 使用不同的版本号体系，该漏洞已在 v23.9.2.47551 
 修复已推送至 20.8.18.32-lts、21.1.9.41-stable、21.2.9.41-stable、21.3.6.55-lts、21.4.3.21-stable 及后续版本。
 
 致谢：[Vyacheslav Egoshin](https://twitter.com/vegoshin)
-
-
 
 ## 已在 ClickHouse 版本 19.14.3.3 中修复，2019-09-10 {#fixed-in-clickhouse-release-19-14-3-3-2019-09-10}
 
@@ -188,8 +170,6 @@ ClickHouse Cloud 使用不同的版本号体系，该漏洞已在 v23.9.2.47551 
 
 致谢：Yandex Information Security Team 的 Eldar Zaitov
 
-
-
 ## 已在 ClickHouse 版本 19.13.6.1 中修复，2019-09-20 {#fixed-in-clickhouse-release-19-13-6-1-2019-09-20}
 
 ### CVE-2019-18657 {#cve-2019-18657}
@@ -197,8 +177,6 @@ ClickHouse Cloud 使用不同的版本号体系，该漏洞已在 v23.9.2.47551 
 表函数 `url` 存在一个漏洞，该漏洞允许攻击者在请求中注入任意 HTTP 头部。
 
 致谢： [Nikita Tikhomirov](https://github.com/NSTikhomirov)
-
-
 
 ## 已在 ClickHouse 版本 18.12.13（2018-09-10）中修复 {#fixed-in-clickhouse-release-18-12-13-2018-09-10}
 
@@ -208,8 +186,6 @@ ClickHouse Cloud 使用不同的版本号体系，该漏洞已在 v23.9.2.47551 
 
 致谢：Yandex 信息安全团队的 Andrey Krasichkov
 
-
-
 ## 已在 ClickHouse 18.10.3 版本（2018-08-13）中修复 {#fixed-in-clickhouse-release-18-10-3-2018-08-13}
 
 ### CVE-2018-14671 {#cve-2018-14671}
@@ -217,8 +193,6 @@ ClickHouse Cloud 使用不同的版本号体系，该漏洞已在 v23.9.2.47551 
 unixODBC 允许从文件系统中加载任意共享库，从而导致远程代码执行（Remote Code Execution）漏洞。
 
 致谢：Yandex 信息安全团队的 Andrey Krasichkov 和 Evgeny Sidorov
-
-
 
 ## 已在 ClickHouse 版本 1.1.54388（2018-06-28）中修复 {#fixed-in-clickhouse-release-1-1-54388-2018-06-28}
 
@@ -228,8 +202,6 @@ unixODBC 允许从文件系统中加载任意共享库，从而导致远程代�
 
 致谢：Yandex 信息安全团队的 Andrey Krasichkov
 
-
-
 ## 已在 ClickHouse 版本 1.1.54390（2018-07-06）中修复 {#fixed-in-clickhouse-release-1-1-54390-2018-07-06}
 
 ### CVE-2018-14669 {#cve-2018-14669}
@@ -237,8 +209,6 @@ unixODBC 允许从文件系统中加载任意共享库，从而导致远程代�
 ClickHouse MySQL 客户端启用了 “LOAD DATA LOCAL INFILE” 功能，这使得恶意的 MySQL 数据库可以从已连接的 ClickHouse 服务器读取任意文件。
 
 致谢：Yandex 信息安全团队的 Andrey Krasichkov 和 Evgeny Sidorov
-
-
 
 ## 已在 ClickHouse 版本 1.1.54131（2017-01-10）中修复 {#fixed-in-clickhouse-release-1-1-54131-2017-01-10}
 

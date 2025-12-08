@@ -15,7 +15,6 @@ import ingestion_key from '@site/static/images/use-cases/observability/ingestion
 
 Пользователи отправляют данные в этот коллектор из [языковых SDK](/use-cases/observability/clickstack/sdks) или через агенты сбора данных, собирающие инфраструктурные метрики и логи (например, экземпляры OTel collector в [роли агента](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) или другие технологии, такие как [Fluentd](https://www.fluentd.org/) или [Vector](https://vector.dev/)).
 
-
 ## Установка коллектора OpenTelemetry ClickStack {#installing-otel-collector}
 
 Коллектор OpenTelemetry ClickStack включён в большинство вариантов развёртывания ClickStack, включая:
@@ -39,7 +38,7 @@ OTel collector из ClickStack также может быть развернут
 
 Для получения более подробной информации см. раздел «[Развертывание коллектора](/use-cases/observability/clickstack/ingesting-data/otel-collector)».
 
-## Отправка данных OpenTelemetry
+## Отправка данных OpenTelemetry {#sending-otel-data}
 
 Чтобы отправлять данные в ClickStack, направьте ваши инструментированные с помощью OpenTelemetry приложения на следующие конечные точки, предоставляемые коллектором OpenTelemetry:
 
@@ -65,7 +64,7 @@ OTEL_EXPORTER_OTLP_HEADERS='authorization=<ВАШ_КЛЮЧ_API_ПРИЁМА>'
 Агенты также должны включать этот заголовок авторизации во все взаимодействия по OTLP. Например, при развёртывании [contrib-дистрибутива OTel collector](https://github.com/open-telemetry/opentelemetry-collector-contrib) в роли агента можно использовать экспортёр OTLP. Пример конфигурации агента, который читает этот [структурированный файл логов](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-structured.log.gz), приведён ниже. Обратите внимание на необходимость указать ключ авторизации — см. `<YOUR_API_INGESTION_KEY>`.
 
 ```yaml
-# clickhouse-agent-config.yaml
+# clickhouse-agent-config.yaml {#clickhouse-agent-configyaml}
 receivers:
   filelog:
     include:

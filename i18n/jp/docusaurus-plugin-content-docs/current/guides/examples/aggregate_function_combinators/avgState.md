@@ -7,11 +7,7 @@ sidebar_label: 'avgState'
 doc_type: 'reference'
 ---
 
-
-
 # avgState {#avgState}
-
-
 
 ## 説明 {#description}
 
@@ -20,9 +16,7 @@ doc_type: 'reference'
 `AggregateFunction(avg, T)` 型の中間状態を生成できます。ここで `T` は、
 平均の計算対象の型として指定された型です。
 
-
-
-## 使用例
+## 使用例 {#example-usage}
 
 この例では、`AggregateFunction` 型と `avgState` 関数を組み合わせて、
 ウェブサイトのトラフィックデータを集計する方法を見ていきます。
@@ -136,7 +130,6 @@ ORDER BY page_id;
 
 これで正しい平均値が得られます。
 
-
 ```response
 ┌─page_id─┬─page_name─┬─average_response_time_ms─┐
 │       1 │ ホームページ │                      135 │
@@ -145,7 +138,6 @@ ORDER BY page_id;
 │       4 │ お問い合わせ │                     62.5 │
 └─────────┴───────────┴──────────────────────────┘
 ```
-
 
 ## 関連情報 {#see-also}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)

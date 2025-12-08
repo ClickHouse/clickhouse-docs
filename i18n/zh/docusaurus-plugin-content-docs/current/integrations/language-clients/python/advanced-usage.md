@@ -47,7 +47,7 @@ doc_type: 'reference'
 
 调用方有责任确保 `insert_block` 符合指定的格式并使用指定的压缩方式。ClickHouse Connect 在文件上传和 PyArrow 表中使用这些原始插入操作，将解析工作委托给 ClickHouse 服务器。
 
-## 将查询结果保存为文件
+## 将查询结果保存为文件 {#saving-query-results-as-files}
 
 可以使用 `raw_stream` 方法将数据以文件形式直接从 ClickHouse 流式写入本地文件系统。例如，若要将查询结果保存为 CSV 文件，可以使用以下代码片段：
 
@@ -77,7 +77,6 @@ if __name__ == '__main__':
 
 同样，你也可以将数据保存为 [TabSeparated](/interfaces/formats/TabSeparated) 以及其他格式。有关所有可用格式选项的概览，请参阅 [输入和输出数据的格式](/interfaces/formats)。
 
-
 ## 多线程、多进程和异步/事件驱动用例 {#multithreaded-multiprocess-and-asyncevent-driven-use-cases}
 
 ClickHouse Connect 在多线程、多进程以及事件循环驱动/异步应用中表现良好。所有查询和插入处理都在单个线程中执行，因此操作通常是线程安全的。（在底层对部分操作进行并行处理是未来可能的增强方向，以克服单线程带来的性能损失，但即便在那种情况下也会保持线程安全。）
@@ -86,7 +85,7 @@ ClickHouse Connect 在多线程、多进程以及事件循环驱动/异步应用
 
 此外，在一个应用中如果同时存在两个或更多并发进行的查询和/或插入操作，还需要注意另外两个方面。第一是与查询/插入相关联的 ClickHouse“会话”，第二是 ClickHouse Connect Client 实例所使用的 HTTP 连接池。
 
-## AsyncClient 封装器
+## AsyncClient 封装器 {#asyncclient-wrapper}
 
 ClickHouse Connect 为常规 `Client` 提供了一个异步封装，因此可以在 `asyncio` 环境中使用该客户端。
 
@@ -116,8 +115,7 @@ asyncio.run(main())
 
 另请参阅：[run&#95;async 示例](https://github.com/ClickHouse/clickhouse-connect/blob/main/examples/run_async.py)。
 
-
-## 管理 ClickHouse 会话 ID
+## 管理 ClickHouse 会话 ID {#managing-clickhouse-session-ids}
 
 每个 ClickHouse 查询都会在一个 ClickHouse “会话”的上下文中执行。会话目前用于两个目的：
 
@@ -142,8 +140,7 @@ client = clickhouse_connect.get_client(host='somehost.com', user='dbuser', passw
 
 在这种情况下，ClickHouse Connect 不会发送 `session_id`；服务器不会将各个请求视为同一会话的一部分。临时表和会话级别的设置不会在请求之间保留。
 
-
-## 自定义 HTTP 连接池
+## 自定义 HTTP 连接池 {#customizing-the-http-connection-pool}
 
 ClickHouse Connect 使用 `urllib3` 连接池来处理与服务器的底层 HTTP 连接。默认情况下，所有客户端实例共享同一个连接池，这对于大多数使用场景已经足够。这个默认连接池会针对应用程序使用的每个 ClickHouse 服务器最多维护 8 个 HTTP Keep-Alive 连接。
 

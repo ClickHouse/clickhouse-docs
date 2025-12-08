@@ -13,7 +13,7 @@ integration:
 ---
 
 import TOCInline from '@theme/TOCInline';
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import tableau_connecttoserver from '@site/static/images/integrations/data-visualization/tableau_connecttoserver.png';
 import tableau_connector_details from '@site/static/images/integrations/data-visualization/tableau_connector_details.png';
@@ -29,8 +29,7 @@ import tableau_workbook6 from '@site/static/images/integrations/data-visualizati
 import tableau_workbook7 from '@site/static/images/integrations/data-visualization/tableau_workbook7.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# Tableau を ClickHouse に接続する
+# Tableau を ClickHouse に接続する {#connecting-tableau-to-clickhouse}
 
 <ClickHouseSupportedBadge/>
 
@@ -42,8 +41,6 @@ ClickHouse は公式の Tableau コネクタを提供しており、
 以下のセットアップガイドに従ってください。
 
 <TOCInline toc={toc}/>
-
-
 
 ## 利用開始前のセットアップ {#setup-required-prior-usage}
 
@@ -63,8 +60,6 @@ ClickHouse は公式の Tableau コネクタを提供しており、
     - macOS: `~/Library/Tableau/Drivers`
     - Windows: `C:\Program Files\Tableau\Drivers`
 5. Tableau で ClickHouse のデータソースを設定し、データの可視化を開始します。
-
-
 
 ## Tableau で ClickHouse データソースを構成する {#configure-a-clickhouse-data-source-in-tableau}
 
@@ -127,8 +122,6 @@ ClickHouse Cloud を利用する場合は、安全な接続のために SSL の�
 
 これで Tableau で可視化を作成する準備が整いました。
 
-
-
 ## Tableau での可視化の作成 {#building-visualizations-in-tableau}
 
 Tableau で ClickHouse のデータソースを構成できたので、さっそくデータを可視化してみましょう。
@@ -187,8 +180,6 @@ TCPD データのシミュレートされた注文には大きな変動がない
 これで完了です。Tableau を ClickHouse に正常に接続できました。これにより、ClickHouse データを分析および可視化するための
 可能性が大きく広がりました。
 
-
-
 ## コネクタを手動でインストールする {#install-the-connector-manually}
 
 デフォルトでコネクタが含まれていない古いバージョンの Tableau Desktop を使用している場合は、次の手順で手動インストールできます。
@@ -199,18 +190,12 @@ TCPD データのシミュレートされた注文には大きな変動がない
    * Windows: `C:\Users\[Windows User]\Documents\My Tableau Repository\Connectors`
 3. Tableau Desktop を再起動します。インストールが正常に完了していれば、「New Data Source」セクションにコネクタが表示されます。
 
-
-
 ## 接続と分析に関するヒント {#connection-and-analysis-tips}
 
 Tableau と ClickHouse の統合を最適化するための、より詳しい説明やベストプラクティスについては、[接続のヒント](/integrations/tableau/connection-tips) および [分析のヒント](/integrations/tableau/analysis-tips) を参照してください。
 
-
-
 ## テスト {#tests}
 このコネクタは [TDVT フレームワーク](https://tableau.github.io/connector-plugin-sdk/docs/tdvt) でテストされており、現在テストカバレッジ 97% を維持しています。
-
-
 
 ## 概要 {#summary}
 Tableau を ClickHouse に接続するには、汎用の ODBC/JDBC 用 ClickHouse ドライバーを使用できます。ただし、このコネクターを使用すると、接続設定の手順を簡略化できます。コネクターに関して問題が発生した場合は、<a href="https://github.com/ClickHouse/clickhouse-tableau-connector-jdbc/issues" target="_blank"  >GitHub</a> でお気軽にお問い合わせください。

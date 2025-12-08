@@ -11,7 +11,7 @@ integration:
   - category: 'data_visualization'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import draxlr_01 from '@site/static/images/integrations/data-visualization/draxlr_01.png';
 import draxlr_02 from '@site/static/images/integrations/data-visualization/draxlr_02.png';
 import draxlr_03 from '@site/static/images/integrations/data-visualization/draxlr_03.png';
@@ -21,19 +21,14 @@ import draxlr_06 from '@site/static/images/integrations/data-visualization/draxl
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
-# 将 Draxlr 连接到 ClickHouse
+# 将 Draxlr 连接到 ClickHouse {#connecting-draxlr-to-clickhouse}
 
 <CommunityMaintainedBadge/>
 
 Draxlr 提供直观的界面用于连接到您的 ClickHouse 数据库，使您的团队能够在几分钟内探索、可视化并发布洞见。本文将引导您完成建立连接的各个步骤。
 
-
-
 ## 1. 获取您的 ClickHouse 凭证 {#1-get-your-clickhouse-credentials}
 <ConnectionDetails />
-
-
 
 ## 2.  将 Draxlr 连接到 ClickHouse {#2--connect-draxlr-to-clickhouse}
 
@@ -51,8 +46,6 @@ Draxlr 提供直观的界面用于连接到您的 ClickHouse 数据库，使您�
 
 6. 点击 **Next** 按钮，并等待连接建立。连接成功后你会看到数据表页面。
 
-
-
 ## 4. 探索你的数据 {#4-explore-your-data}
 
 1. 点击列表中的任意一个表。
@@ -67,8 +60,6 @@ Draxlr 提供直观的界面用于连接到您的 ClickHouse 数据库，使您�
 
   <Image size="md" img={draxlr_05} alt="用于 ClickHouse 数据的 Draxlr 图表可视化选项" border />
 
-
-
 ## 4. 使用 SQL 查询 {#4-using-sql-queries}
 
 1. 点击导航栏中的 Explore 按钮。
@@ -78,8 +69,6 @@ Draxlr 提供直观的界面用于连接到您的 ClickHouse 数据库，使您�
   <Image size="md" img={draxlr_03} alt="用于 ClickHouse 的 Draxlr SQL 查询界面" border />
 
 3. 点击 **Execute Query** 按钮即可查看结果。
-
-
 
 ## 4. 保存查询 {#4-saving-you-query}
 
@@ -93,8 +82,6 @@ Draxlr 提供直观的界面用于连接到您的 ClickHouse 数据库，使您�
 
 4. 单击 **Save** 按钮以保存该查询。
 
-
-
 ## 5. 构建仪表板 {#5-building-dashboards}
 
 1. 点击导航栏上的 **Dashboards** 按钮。
@@ -106,8 +93,6 @@ Draxlr 提供直观的界面用于连接到您的 ClickHouse 数据库，使您�
 3. 要添加新的组件，点击右上角的 **Add** 按钮。
 
 4. 从已保存查询列表中选择一个查询并选择可视化类型，然后点击 **Add Dashboard Item** 按钮。
-
-
 
 ## 了解更多 {#learn-more}
 若要进一步了解 Draxlr，您可以访问 [Draxlr 文档](https://draxlr.notion.site/draxlr/Draxlr-Docs-d228b23383f64d00a70836ff9643a928) 网站。

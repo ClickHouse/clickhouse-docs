@@ -6,20 +6,15 @@ title: 'Azure Blob Storage へのバックアップおよびそこからの復�
 doc_type: 'guide'
 ---
 
-import Syntax from '@site/docs/operations_/backup_restore/_snippets/_syntax.md';
-
+import Syntax from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
 
 # Azure Blob Storage への/からのバックアップ/リストア {#backup-to-azure-blob-storage}
-
-
 
 ## 構文 {#syntax}
 
 <Syntax/>
 
-
-
-## Azure Blob Storage エンドポイントを使用するように BACKUP / RESTORE を構成する
+## Azure Blob Storage エンドポイントを使用するように BACKUP / RESTORE を構成する {#configuring-backuprestore-to-use-an-azureblobstorage-endpoint}
 
 バックアップを Azure Blob Storage コンテナに書き込むには、次の情報が必要です。
 

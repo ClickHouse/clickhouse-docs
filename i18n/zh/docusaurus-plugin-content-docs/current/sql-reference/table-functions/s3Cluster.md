@@ -7,23 +7,18 @@ title: 's3Cluster'
 doc_type: 'reference'
 ---
 
-
-
-# s3Cluster 表函数
+# s3Cluster 表函数 {#s3cluster-table-function}
 
 这是对 [s3](sql-reference/table-functions/s3.md) 表函数的扩展。
 
 允许在指定集群中的多个节点上并行处理来自 [Amazon S3](https://aws.amazon.com/s3/) 和 [Google Cloud Storage](https://cloud.google.com/storage/) 的文件。在发起节点上，它会与集群中所有节点建立连接，展开 S3 文件路径中的星号通配符，并动态分发每个文件。在工作节点上，它会向发起节点请求下一个要处理的任务并进行处理。该过程会重复进行，直到所有任务完成。
 
-
-
-## 语法
+## 语法 {#syntax}
 
 ```sql
 s3Cluster(cluster_name, url[, NOSIGN | access_key_id, secret_access_key,[session_token]][, format][, structure][, compression_method][, headers][, extra_credentials])
 s3Cluster(cluster_name, named_collection[, option=value [,..]])
 ```
-
 
 ## 参数 {#arguments}
 
@@ -49,15 +44,11 @@ s3Cluster(cluster_name, named_collection[, option=value [,..]])
 | `no_sign_request`               | 默认禁用。                                                                                                                                                                                                                  |
 | `expiration_window_seconds`     | 默认值为 120。                                                                                                                                                                                                              |
 
-
-
 ## 返回值 {#returned_value}
 
 一个具有指定结构的表，用于对指定文件进行数据读写。
 
-
-
-## 示例
+## 示例 {#examples}
 
 使用 `cluster_simple` 集群中的所有节点，查询 `/root/data/clickhouse` 和 `/root/data/database/` 目录中所有文件的数据：
 
@@ -91,18 +82,13 @@ SELECT count(*) FROM s3Cluster(
 )
 ```
 
-
 ## 访问私有和公共存储桶 {#accessing-private-and-public-buckets}
 
 用户可以使用与 s3 函数文档中描述的相同方法，详见[此处](/sql-reference/table-functions/s3#accessing-public-buckets)。
 
-
-
 ## 性能优化 {#optimizing-performance}
 
 有关如何优化 `s3` 函数性能的更多信息，请参阅[详细指南](/integrations/s3/performance)。
-
-
 
 ## 相关 {#related}
 

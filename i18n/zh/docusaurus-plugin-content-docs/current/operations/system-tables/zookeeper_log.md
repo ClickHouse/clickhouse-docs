@@ -6,7 +6,7 @@ title: 'system.zookeeper_log'
 doc_type: 'reference'
 ---
 
-# system.zookeeper_log
+# system.zookeeper&#95;log {#systemzookeeper&#95;log}
 
 该表包含向 ZooKeeper 服务器发起请求时的参数以及服务器响应相关的信息。
 
@@ -14,26 +14,26 @@ doc_type: 'reference'
 
 包含请求参数的列：
 
-- `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 执行查询的服务器主机名。
-- `type` ([Enum](../../sql-reference/data-types/enum.md)) — ZooKeeper 客户端中的事件类型。可以具有以下值之一：
-  - `Request` — 请求已发送。
-  - `Response` — 已接收到响应。
-  - `Finalize` — 连接丢失，未接收到响应。
-- `event_date` ([Date](../../sql-reference/data-types/date.md)) — 事件发生的日期。
-- `event_time` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — 事件发生的日期和时间。
-- `address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — 用于发起请求的 ZooKeeper 服务器的 IP 地址。
-- `port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — 用于发起请求的 ZooKeeper 服务器端口。
-- `session_id` ([Int64](../../sql-reference/data-types/int-uint.md)) — ZooKeeper 服务器为每个连接设置的会话 ID。
-- `xid` ([Int32](../../sql-reference/data-types/int-uint.md)) — 会话内请求的 ID。通常是按顺序递增的请求编号。对于请求行以及与之配对的 `response`/`finalize` 行，该值相同。
-- `has_watch` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 请求是否设置了 [watch](https://zookeeper.apache.org/doc/r3.3.3/zookeeperProgrammers.html#ch_zkWatches)。
-- `op_num` ([Enum](../../sql-reference/data-types/enum.md)) — 请求或响应的类型。
-- `path` ([String](../../sql-reference/data-types/string.md)) — 请求中指定的 ZooKeeper 节点路径；如果请求不需要指定路径，则为空字符串。
-- `data` ([String](../../sql-reference/data-types/string.md)) — 写入 ZooKeeper 节点的数据（对于 `SET` 和 `CREATE` 请求 — 请求要写入的内容；对于 `GET` 请求的响应 — 实际读取到的内容），或为空字符串。
-- `is_ephemeral` ([UInt8](../../sql-reference/data-types/int-uint.md)) — ZooKeeper 节点是否被创建为 [ephemeral](https://zookeeper.apache.org/doc/r3.3.3/zookeeperProgrammers.html#Ephemeral+Nodes) 节点。
-- `is_sequential` ([UInt8](../../sql-reference/data-types/int-uint.md)) — ZooKeeper 节点是否被创建为 [sequential](https://zookeeper.apache.org/doc/r3.3.3/zookeeperProgrammers.html#Sequence+Nodes+--+Unique+Naming) 节点。
-- `version` ([Nullable(Int32)](../../sql-reference/data-types/nullable.md)) — 请求在执行时期望的 ZooKeeper 节点版本。适用于 `CHECK`、`SET`、`REMOVE` 请求（如果请求不检查版本，则该字段为特殊值 `-1`；对于不支持版本检查的其他请求则为 `NULL`）。
-- `requests_size` ([UInt32](../../sql-reference/data-types/int-uint.md)) — multi 请求中包含的请求数量（这是一种特殊请求，由若干个连续的普通请求组成，并以原子方式执行它们）。multi 请求中包含的所有请求都具有相同的 `xid`。
-- `request_idx` ([UInt32](../../sql-reference/data-types/int-uint.md)) — multi 请求中某个子请求的序号（对 multi 请求本身为 `0`，随后子请求从 `1` 开始依次递增）。
+* `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 执行查询的服务器主机名。
+* `type` ([Enum](../../sql-reference/data-types/enum.md)) — ZooKeeper 客户端中的事件类型。可以具有以下值之一：
+  * `Request` — 请求已发送。
+  * `Response` — 已接收到响应。
+  * `Finalize` — 连接丢失，未接收到响应。
+* `event_date` ([Date](../../sql-reference/data-types/date.md)) — 事件发生的日期。
+* `event_time` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — 事件发生的日期和时间。
+* `address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — 用于发起请求的 ZooKeeper 服务器的 IP 地址。
+* `port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — 用于发起请求的 ZooKeeper 服务器端口。
+* `session_id` ([Int64](../../sql-reference/data-types/int-uint.md)) — ZooKeeper 服务器为每个连接设置的会话 ID。
+* `xid` ([Int32](../../sql-reference/data-types/int-uint.md)) — 会话内请求的 ID。通常是按顺序递增的请求编号。对于请求行以及与之配对的 `response`/`finalize` 行，该值相同。
+* `has_watch` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 请求是否设置了 [watch](https://zookeeper.apache.org/doc/r3.3.3/zookeeperProgrammers.html#ch_zkWatches)。
+* `op_num` ([Enum](../../sql-reference/data-types/enum.md)) — 请求或响应的类型。
+* `path` ([String](../../sql-reference/data-types/string.md)) — 请求中指定的 ZooKeeper 节点路径；如果请求不需要指定路径，则为空字符串。
+* `data` ([String](../../sql-reference/data-types/string.md)) — 写入 ZooKeeper 节点的数据（对于 `SET` 和 `CREATE` 请求 — 请求要写入的内容；对于 `GET` 请求的响应 — 实际读取到的内容），或为空字符串。
+* `is_ephemeral` ([UInt8](../../sql-reference/data-types/int-uint.md)) — ZooKeeper 节点是否被创建为 [ephemeral](https://zookeeper.apache.org/doc/r3.3.3/zookeeperProgrammers.html#Ephemeral+Nodes) 节点。
+* `is_sequential` ([UInt8](../../sql-reference/data-types/int-uint.md)) — ZooKeeper 节点是否被创建为 [sequential](https://zookeeper.apache.org/doc/r3.3.3/zookeeperProgrammers.html#Sequence+Nodes+--+Unique+Naming) 节点。
+* `version` ([Nullable(Int32)](../../sql-reference/data-types/nullable.md)) — 请求在执行时期望的 ZooKeeper 节点版本。适用于 `CHECK`、`SET`、`REMOVE` 请求（如果请求不检查版本，则该字段为特殊值 `-1`；对于不支持版本检查的其他请求则为 `NULL`）。
+* `requests_size` ([UInt32](../../sql-reference/data-types/int-uint.md)) — multi 请求中包含的请求数量（这是一种特殊请求，由若干个连续的普通请求组成，并以原子方式执行它们）。multi 请求中包含的所有请求都具有相同的 `xid`。
+* `request_idx` ([UInt32](../../sql-reference/data-types/int-uint.md)) — multi 请求中某个子请求的序号（对 multi 请求本身为 `0`，随后子请求从 `1` 开始依次递增）。
 
 包含请求响应参数的列：
 
@@ -65,7 +65,6 @@ SELECT * FROM system.zookeeper_log WHERE (session_id = '106662742089334927') AND
 ```
 
 结果：
-
 
 ```text
 Row 1:

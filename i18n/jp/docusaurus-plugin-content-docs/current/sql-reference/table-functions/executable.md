@@ -8,9 +8,7 @@ title: 'executable'
 doc_type: 'reference'
 ---
 
-
-
-# UDF 向け executable テーブル関数
+# UDF 向け executable テーブル関数 {#executable-table-function-for-udfs}
 
 `executable` テーブル関数は、行を **stdout** に出力するスクリプト内で定義したユーザー定義関数 (UDF) の出力に基づいてテーブルを作成します。実行可能スクリプトは `users_scripts` ディレクトリに保存され、任意のソースからデータを読み取ることができます。ClickHouse サーバー上に、そのスクリプトを実行するために必要なパッケージがすべてインストールされていることを確認してください。たとえば、それが Python スクリプトの場合は、サーバーに必要な Python パッケージがインストールされていることを確認してください。
 
@@ -20,9 +18,7 @@ doc_type: 'reference'
 通常の UDF と `executable` テーブル関数および `Executable` テーブルエンジンとの大きな利点の違いは、通常の UDF では行数を変更できないという点です。たとえば、入力が 100 行であれば、結果も 100 行を返さなければなりません。`executable` テーブル関数または `Executable` テーブルエンジンを使用する場合、スクリプトは複雑な集約を含め、任意のデータ変換を行うことができます。
 :::
 
-
-
-## 構文
+## 構文 {#syntax}
 
 `executable` テーブル関数は 3 つのパラメーターを必須とし、オプションで入力クエリのリストを引数として受け取ります。
 
@@ -90,7 +86,6 @@ SELECT * FROM executable('generate_random.py', TabSeparated, 'id UInt32, random 
 └────┴────────────┘
 ```
 
-
 ## 設定 {#settings}
 
 - `send_chunk_header` - データのチャンクを処理に送信する前に、行数を送信するかどうかを制御します。デフォルト値は `false` です。
@@ -100,9 +95,7 @@ SELECT * FROM executable('generate_random.py', TabSeparated, 'id UInt32, random 
 - `command_read_timeout` - コマンドの stdout からデータを読み取るタイムアウト（ミリ秒）。デフォルト値は 10000 です。
 - `command_write_timeout` - コマンドの stdin にデータを書き込むタイムアウト（ミリ秒）。デフォルト値は 10000 です。
 
-
-
-## クエリ結果をスクリプトに渡す
+## クエリ結果をスクリプトに渡す {#passing-query-results-to-a-script}
 
 `Executable` テーブルエンジンの[クエリ結果をスクリプトに渡す方法](../../engines/table-engines/special/executable.md#passing-query-results-to-a-script)の例を必ず参照してください。ここでは、その例と同じスクリプトを `executable` テーブル関数を使って実行する方法を示します。
 

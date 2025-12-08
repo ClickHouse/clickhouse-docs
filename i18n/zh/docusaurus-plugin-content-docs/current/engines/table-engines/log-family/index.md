@@ -9,8 +9,7 @@ doc_type: 'guide'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
-# Log 表引擎系列
+# Log 表引擎系列 {#log-table-engine-family}
 
 <CloudNotSupportedBadge/>
 
@@ -29,8 +28,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 :::warning 此引擎并非用于日志数据。
 尽管名称如此，*Log 表引擎并非用于存储日志数据。它们应仅用于需要快速写入的小规模数据量。*
 :::
-
-
 
 ## 通用属性 {#common-properties}
 
@@ -53,8 +50,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 - 不以原子方式写入数据。
 
     如果写入操作被中断（例如服务器异常关闭），则可能会得到一个数据损坏的表。
-
-
 
 ## 差异 {#differences}
 

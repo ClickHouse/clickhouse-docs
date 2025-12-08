@@ -6,7 +6,7 @@ title: 'anyLast'
 doc_type: 'reference'
 ---
 
-# anyLast
+# anyLast {#anylast}
 
 Выбирает последнее встреченное значение столбца.
 

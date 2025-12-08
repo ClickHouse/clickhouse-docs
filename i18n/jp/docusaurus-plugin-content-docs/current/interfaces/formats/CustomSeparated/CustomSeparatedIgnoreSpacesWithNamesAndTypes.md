@@ -14,7 +14,7 @@ doc_type: 'reference'
 
 ## 使用例 {#example-usage}
 
-### データの挿入
+### データの挿入 {#inserting-data}
 
 次の内容の txt ファイル `football.txt` を使用します：
 
@@ -37,6 +37,5 @@ SET format_custom_escaping_rule = 'Quoted';
 ```sql
 INSERT INTO football FROM INFILE 'football.txt' FORMAT CustomSeparatedIgnoreSpacesWithNamesAndTypes;
 ```
-
 
 ## 書式設定 {#format-settings}

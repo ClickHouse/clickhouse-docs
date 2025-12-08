@@ -8,10 +8,9 @@ doc_type: 'guide'
 keywords: ['kafka', 'kafka connect', 'jdbc', 'integration', 'data pipeline']
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-
-# JDBC コネクタ
+# JDBC コネクタ {#jdbc-connector}
 
 :::note
 このコネクタは、データが単純で、`int` などのプリミティブ型で構成されている場合にのみ使用してください。ClickHouse 固有の型（例: map）はサポートされていません。
@@ -54,8 +53,6 @@ ClickHouse JDBC ドライバ `clickhouse-jdbc-<version>-shaded.jar` を[こち�
 
 以下のパラメータは、ClickHouse で JDBC コネクタを使用する際に関連するものです。パラメータの完全な一覧は[こちら](https://docs.confluent.io/kafka-connect-jdbc/current/sink-connector/index.html)で確認できます。
 
-
-
 * `_connection.url_` - これは `jdbc:clickhouse://&lt;clickhouse host>:&lt;clickhouse http port>/&lt;target database>` の形式にする必要があります
 * `connection.user` - 対象データベースへの書き込み権限を持つユーザー
 * `table.name.format`- データを挿入する ClickHouse テーブル。事前に作成されている必要があります。
@@ -83,8 +80,6 @@ GitHub サンプルデータ用の設定ファイル例は、Connect をスタ�
 #### 4. ClickHouse テーブルを作成する {#4-create-the-clickhouse-table}
 
 テーブルが作成されていることを確認し、以前の例で既に存在する場合は削除してください。縮小版 GitHub データセットと互換性のある例を以下に示します。現在サポートされていない Array 型や Map 型が存在しないことに注意してください。
-
-
 
 ```sql
 CREATE TABLE github
@@ -114,7 +109,7 @@ CREATE TABLE github
 ) ENGINE = MergeTree ORDER BY (event_type, repo_name, created_at)
 ```
 
-#### 5. Kafka Connect を起動する
+#### 5. Kafka Connect を起動する {#5-start-kafka-connect}
 
 Kafka Connect を [スタンドアロン](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#standalone-cluster) モードまたは [分散](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#distributed-cluster) モードのいずれかで起動します。
 
@@ -122,7 +117,7 @@ Kafka Connect を [スタンドアロン](https://docs.confluent.io/cloud/curren
 ./bin/connect-standalone connect.properties.ini github-jdbc-sink.properties.ini
 ```
 
-#### 6. Kafka にデータを追加する
+#### 6. Kafka にデータを追加する {#6-add-data-to-kafka}
 
 提供されている[スクリプトと設定](https://github.com/ClickHouse/kafka-samples/tree/main/producer)を使用して、メッセージを Kafka に送信します。`github.config` を編集し、Kafka の認証情報を設定する必要があります。スクリプトは現在、Confluent Cloud での使用向けに構成されています。
 
@@ -148,8 +143,7 @@ SELECT count() FROM default.github;
 | 10000 |
 ```
 
-### おすすめの参考資料
-
+### おすすめの参考資料 {#recommended-further-reading}
 
 * [Kafka Sink 構成パラメータ](https://docs.confluent.io/kafka-connect-jdbc/current/sink-connector/sink_config_options.html#sink-config-options)
 * [Kafka Connect Deep Dive – JDBC Source Connector](https://www.confluent.io/blog/kafka-connect-deep-dive-jdbc-source-connector)

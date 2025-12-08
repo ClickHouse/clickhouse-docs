@@ -6,7 +6,7 @@ title: 'uniqExact'
 doc_type: 'reference'
 ---
 
-# uniqExact
+# uniqExact {#uniqexact}
 
 引数の異なる値の数を正確に計算します。
 

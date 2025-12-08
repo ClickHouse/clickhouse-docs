@@ -8,34 +8,25 @@ title: 'dictionary'
 doc_type: 'reference'
 ---
 
-
-
-# Табличная функция dictionary
+# Табличная функция dictionary {#dictionary-table-function}
 
 Отображает данные словаря [dictionary](../../sql-reference/dictionaries/index.md) в виде таблицы ClickHouse. Работает так же, как движок [Dictionary](../../engines/table-engines/special/dictionary.md).
 
-
-
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 dictionary('dict')
 ```
 
-
 ## Аргументы {#arguments}
 
 - `dict` — Имя словаря. [String](../../sql-reference/data-types/string.md).
-
-
 
 ## Возвращаемое значение {#returned_value}
 
 Таблица ClickHouse.
 
-
-
-## Примеры
+## Примеры {#examples}
 
 Исходная таблица `dictionary_source_table`:
 
@@ -67,7 +58,6 @@ SELECT * FROM dictionary('new_dictionary');
 │  1 │     1 │
 └────┴───────┘
 ```
-
 
 ## См. также {#related}
 

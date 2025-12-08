@@ -13,13 +13,9 @@ integration:
   - category: 'data_ingestion'
 ---
 
-
-
-# Kafka を ClickHouse と統合する
+# Kafka を ClickHouse と統合する {#integrating-kafka-with-clickhouse}
 
 [Apache Kafka](https://kafka.apache.org/) は、ハイパフォーマンスなデータパイプライン、ストリーミング分析、データ統合、およびミッションクリティカルなアプリケーションのために数千社で利用されている、オープンソースの分散イベントストリーミングプラットフォームです。ClickHouse は、Kafka およびその他の Kafka API 互換ブローカー（例: Redpanda、Amazon MSK）からの**読み取り**およびそれらへの**書き込み**を行うための複数のオプションを提供します。
-
-
 
 ## 利用可能なオプション {#available-options}
 
@@ -90,8 +86,6 @@ ClickHouse をセルフホストしており、**導入ハードルが低い** �
 * 一般的なシリアル化フォーマット (JSON、Avro、Protobuf) をサポート
 
 #### はじめに {#kafka-table-engine-getting-started}
-
-
 
 Kafka テーブルエンジンの利用を開始するには、[リファレンスドキュメント](./kafka-table-engine.md) を参照してください。
 

@@ -18,7 +18,6 @@ import Image from '@theme/IdealImage';
 
 我们建议正在从 Postgres 迁移的用户阅读[在 ClickHouse 中进行数据建模的指南](/data-modeling/schema-design)。本指南使用相同的 Stack Overflow 数据集，并基于 ClickHouse 的功能探索多种建模方案。
 
-
 ## ClickHouse 中的主键（排序键） {#primary-ordering-keys-in-clickhouse}
 
 来自 OLTP 数据库的用户通常会在 ClickHouse 中寻找对应的概念。注意到 ClickHouse 支持 `PRIMARY KEY` 语法后，用户可能会倾向于直接沿用源 OLTP 数据库中的同一组键来定义表模式。这种做法并不合适。
@@ -47,9 +46,7 @@ import Image from '@theme/IdealImage';
 
 在使用 CDC 实时复制时，还需要考虑额外的约束条件。有关在 CDC 场景下如何自定义排序键的技术，请参考这篇[文档](/integrations/clickpipes/postgres/ordering_keys)。
 
-
-
-## 分区
+## 分区 {#partitions}
 
 Postgres 用户对表分区这一概念应该很熟悉：通过将表拆分为更小、更易管理的片段（称为分区），以提升大型数据库的性能和可管理性。分区可以通过在指定列（例如日期）上使用范围、指定列表，或基于键的哈希来实现。这使管理员可以基于特定条件（如日期范围或地理位置）来组织数据。分区有助于通过分区裁剪和更高效的索引来提升查询性能，从而实现更快速的数据访问。同时，它也有助于维护任务，例如备份和数据清理，因为可以针对单个分区而不是整个表执行操作。此外，通过将负载分布到多个分区，分区还能显著提高 PostgreSQL 数据库的可扩展性。
 
@@ -76,7 +73,7 @@ PARTITION BY toYear(CreationDate)
 
 有关分区的完整介绍，请参阅 [&quot;Table partitions&quot;](/partitions)。
 
-### 分区的应用场景
+### 分区的应用场景 {#applications-of-partitions}
 
 ClickHouse 中的分区与 Postgres 的应用场景类似，但也存在一些细微差别。更具体地说：
 
@@ -117,7 +114,6 @@ ALTER TABLE posts
 查询返回 0 行。用时:0.103 秒。
 ```
 
-
 - **查询优化** - 分区虽然可以帮助提升查询性能，但这在很大程度上取决于访问模式。如果查询只会命中少量分区（理想情况下是一个），性能有可能得到提升。只有在分区键不在主键中且你按该分区键进行过滤时，这才通常有用。然而，如果查询需要覆盖大量分区，其性能可能会比完全不使用分区时更差（因为分区可能会导致产生更多的 part）。如果分区键已经是主键中的前置列，则只针对单个分区的性能收益会大幅降低，甚至可以忽略不计。如果每个分区中的值是唯一的，分区还可以用于[优化 GROUP BY 查询](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key)。但总体而言，用户应首先确保主键已得到优化，只在极少数情况下将分区作为查询优化手段——仅当访问模式只会访问一天中某个可预测的特定时间子集时才考虑，例如按天分区且大部分查询都是针对最近一天的数据。
 
 ### 分区使用建议 {#recommendations-for-partitions}
@@ -130,9 +126,7 @@ ALTER TABLE posts
 
 > 由于 part 是在每个分区内独立创建的，增加分区数量会导致 part 数量相应增加，即 part 数量是分区数量的倍数。因此，高基数的分区键可能会导致上述错误，应当避免。
 
-
-
-## 物化视图与投影
+## 物化视图与投影 {#materialized-views-vs-projections}
 
 Postgres 允许在单个表上创建多个索引，从而可以针对多种访问模式进行优化。这种灵活性使管理员和开发人员能够根据特定查询和运维需求定制数据库性能。ClickHouse 的投影（projections）概念虽然与此并非完全等价，但允许用户为一张表指定多个 `ORDER BY` 子句。
 
@@ -231,7 +225,6 @@ FROM comments
 WHERE UserId = 8592047
 ```
 
-
 ┌─explain─────────────────────────────────────────────┐
 
 1. │ 表达式 ((Projection + ORDER BY 之前))                 │
@@ -272,7 +265,6 @@ WHERE UserId = 8592047
 有关更多详细信息,请参阅["投影"](/data-modeling/projections)
 :::
 ```
-
 
 ## 反规范化 {#denormalization}
 

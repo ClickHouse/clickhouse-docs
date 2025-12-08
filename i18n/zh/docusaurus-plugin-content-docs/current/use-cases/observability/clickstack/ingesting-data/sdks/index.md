@@ -44,7 +44,7 @@ keywords: ['ClickStack SDKs', 'ClickStack language SDKs', 'OpenTelemetry SDKs Cl
 | React Native | React Native 移动应用程序 | [Documentation](/use-cases/observability/clickstack/sdks/react-native) |
 | Ruby | Ruby on Rails 应用程序和 Web 服务 | [Documentation](/use-cases/observability/clickstack/sdks/ruby-on-rails) |
 
-## 使用 API key 进行安全防护
+## 使用 API key 进行安全防护 {#securing-api-key}
 
 为了通过 OTel collector 将数据发送到 ClickStack，SDK 需要指定一个摄取 API key。可以通过在 SDK 中使用 `init` 函数进行设置，或者通过设置 `OTEL_EXPORTER_OTLP_HEADERS` 环境变量来完成：
 
@@ -59,7 +59,6 @@ OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 ```shell
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 ```
-
 
 ## Kubernetes 集成 {#kubernetes-integration}
 

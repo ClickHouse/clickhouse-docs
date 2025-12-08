@@ -13,7 +13,7 @@ integration:
 keywords: ['Grafana', 'データ可視化', 'ダッシュボード', 'プラグイン', 'データソース']
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.md';
+import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';
 import search from '@site/static/images/integrations/data-visualization/grafana/search.png';
 import install from '@site/static/images/integrations/data-visualization/grafana/install.png';
 import add_new_ds from '@site/static/images/integrations/data-visualization/grafana/add_new_ds.png';
@@ -22,8 +22,7 @@ import valid_ds from '@site/static/images/integrations/data-visualization/grafan
 import Image from '@theme/IdealImage';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# Grafana 向け ClickHouse データソースプラグイン
+# Grafana 向け ClickHouse データソースプラグイン {#clickhouse-data-source-plugin-for-grafana}
 
 <ClickHouseSupportedBadge/>
 

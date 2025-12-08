@@ -10,17 +10,13 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-
-
-# ClickHouse MCP Server を使用して PydanticAI エージェントを構築する方法
+# ClickHouse MCP Server を使用して PydanticAI エージェントを構築する方法 {#how-to-build-a-pydanticai-agent-using-clickhouse-mcp-server}
 
 このガイドでは、[ClickHouse の MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を使って [ClickHouse の SQL playground](https://sql.clickhouse.com/) と対話できる [PydanticAI](https://ai.pydantic.dev/mcp/client/#__tabbed_1_1) エージェントを構築する方法を学びます。
 
 :::note 例のノートブック
 この例は、[examples リポジトリ](https://github.com/ClickHouse/examples/blob/main/ai/mcp/pydanticai/pydantic.ipynb) にあるノートブックとして提供されています。
 :::
-
-
 
 ## 前提条件 {#prerequisites}
 
@@ -32,8 +28,7 @@ doc_type: 'guide'
 
 <VerticalStepper headerLevel="h2">
 
-
-## ライブラリをインストールする
+## ライブラリをインストールする {#install-libraries}
 
 次のコマンドを実行して、必要なライブラリをインストールします。
 
@@ -43,8 +38,7 @@ pip install -q "pydantic-ai-slim[mcp]"
 pip install -q "pydantic-ai-slim[anthropic]" # 別のLLMプロバイダーを使用する場合は適切なパッケージに置き換えてください
 ```
 
-
-## 資格情報の設定
+## 資格情報の設定 {#setup-credentials}
 
 次に、Anthropic の API キーを指定する必要があります。
 
@@ -74,8 +68,7 @@ env = {
 }
 ```
 
-
-## MCP Server と PydanticAI エージェントの初期化
+## MCP Server と PydanticAI エージェントの初期化 {#initialize-mcp}
 
 次に、ClickHouse MCP Server を設定し、ClickHouse SQL playground を参照するようにします。
 
@@ -96,7 +89,6 @@ server = MCPServerStdio(
 )
 agent = Agent('anthropic:claude-sonnet-4-0', mcp_servers=[server])
 ```
-
 
 ## エージェントに質問する {#ask-agent}
 

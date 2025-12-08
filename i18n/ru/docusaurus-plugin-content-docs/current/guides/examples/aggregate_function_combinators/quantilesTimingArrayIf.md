@@ -7,11 +7,7 @@ sidebar_label: 'quantilesTimingArrayIf'
 doc_type: 'reference'
 ---
 
-
-
 # quantilesTimingArrayIf {#quantilestimingarrayif}
-
-
 
 ## Описание {#description}
 
@@ -20,9 +16,7 @@ doc_type: 'reference'
 для вычисления квантилей временных значений в массивах для строк, где условие истинно,
 используя агрегатную функцию-комбинатор `quantilesTimingArrayIf`.
 
-
-
-## Пример использования
+## Пример использования {#example-usage}
 
 В этом примере мы создадим таблицу, в которой будет храниться время отклика API для разных эндпоинтов
 и используем `quantilesTimingArrayIf` для вычисления квантилей времени отклика для успешных запросов.
@@ -64,7 +58,6 @@ GROUP BY endpoint;
 3. │ users    │ [nan, nan, nan, nan, nan, nan, nan]                                 │
    └──────────┴─────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## См. также {#see-also}
 - [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)

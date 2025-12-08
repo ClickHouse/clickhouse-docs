@@ -8,9 +8,7 @@ keywords: ['テーブルの作成', 'CREATE TABLE', 'テーブル作成', 'デ�
 doc_type: 'guide'
 ---
 
-
-
-# ClickHouse でテーブルを作成する
+# ClickHouse でテーブルを作成する {#creating-tables-in-clickhouse}
 
 多くのデータベースと同様に、ClickHouse はテーブルを論理的にグループ化し、**データベース** として管理します。ClickHouse で新しいデータベースを作成するには、`CREATE DATABASE` コマンドを使用します。
 
@@ -51,7 +49,6 @@ PRIMARY KEY (user_id, timestamp)
 
 選択できるエンジンは多数ありますが、単一ノードの ClickHouse サーバー上にシンプルなテーブルを作成する場合は、[MergeTree](/engines/table-engines/mergetree-family/mergetree.md) が最も一般的な選択肢となるでしょう。
 :::
-
 
 ## プライマリキーの概要 {#a-brief-intro-to-primary-keys}
 

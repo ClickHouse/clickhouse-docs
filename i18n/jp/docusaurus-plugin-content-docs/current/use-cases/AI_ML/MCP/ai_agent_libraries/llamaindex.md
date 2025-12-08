@@ -10,17 +10,13 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-
-
-# ClickHouse MCP Server を使用して LlamaIndex AI エージェントを構築する方法
+# ClickHouse MCP Server を使用して LlamaIndex AI エージェントを構築する方法 {#how-to-build-a-llamaindex-ai-agent-using-clickhouse-mcp-server}
 
 このガイドでは、[ClickHouse の SQL Playground](https://sql.clickhouse.com/) と対話できるようにするために、[ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を利用した [LlamaIndex](https://docs.llamaindex.ai) AI エージェントの構築方法を説明します。
 
 :::note サンプルノートブック
 このサンプルは、[examples リポジトリ](https://github.com/ClickHouse/examples/blob/main/ai/mcp/llamaindex/llamaindex.ipynb) 内のノートブックとして利用できます。
 :::
-
-
 
 ## 前提条件 {#prerequisites}
 
@@ -32,8 +28,7 @@ doc_type: 'guide'
 
 <VerticalStepper headerLevel="h2">
 
-
-## ライブラリのインストール
+## ライブラリのインストール {#install-libraries}
 
 次のコマンドを実行して、必要なライブラリをインストールします。
 
@@ -42,8 +37,7 @@ pip install -q --upgrade pip
 pip install -q llama-index clickhouse-connect llama-index-llms-anthropic llama-index-tools-mcp
 ```
 
-
-## 資格情報の設定
+## 資格情報の設定 {#setup-credentials}
 
 次に、Anthropic の API キーを設定する必要があります。
 
@@ -61,8 +55,7 @@ Anthropic の API キーを持っておらず、別の LLM プロバイダーを
 認証情報の設定方法については [LlamaIndex「LLMs」ドキュメント](https://docs.llamaindex.ai/en/stable/examples/) を参照してください。
 :::
 
-
-## MCP Server を初期化する
+## MCP Server を初期化する {#initialize-mcp-and-agent}
 
 次に、ClickHouse MCP Server を構成し、ClickHouse SQL playground を接続先として指定します。
 これらを Python の関数から LlamaIndex のツールへ変換する必要があります。
@@ -92,7 +85,6 @@ mcp_tool_spec = McpToolSpec(
 )
 ```
 
-
 tools = await mcp&#95;tool&#95;spec.to&#95;tool&#95;list&#95;async()
 
 ````
@@ -110,8 +102,7 @@ agent_worker = FunctionCallingAgentWorker.from_tools(
 agent = AgentRunner(agent_worker)
 ````
 
-
-## LLM を初期化する
+## LLM を初期化する {#initialize-llm}
 
 次のコードで Claude Sonnet 4.0 モデルを初期化します。
 
@@ -119,7 +110,6 @@ agent = AgentRunner(agent_worker)
 from llama_index.llms.anthropic import Anthropic
 llm = Anthropic(model="claude-sonnet-4-0")
 ```
-
 
 ## エージェントの実行 {#run-agent}
 

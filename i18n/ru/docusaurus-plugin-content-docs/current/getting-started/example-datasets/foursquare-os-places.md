@@ -14,7 +14,6 @@ import visualization_2 from '@site/static/images/getting-started/example-dataset
 import visualization_3 from '@site/static/images/getting-started/example-datasets/visualization_3.png';
 import visualization_4 from '@site/static/images/getting-started/example-datasets/visualization_4.png';
 
-
 ## Набор данных {#dataset}
 
 Этот набор данных от Foursquare доступен для [загрузки](https://docs.foursquare.com/data-products/docs/access-fsq-os-places)
@@ -24,7 +23,7 @@ import visualization_4 from '@site/static/images/getting-started/example-dataset
 таких как магазины, рестораны, парки, игровые площадки и памятники. Он также включает
 дополнительные метаданные об этих местах, такие как категории и данные из социальных сетей.
 
-## Исследование данных
+## Исследование данных {#data-exploration}
 
 Для исследования данных мы будем использовать [`clickhouse-local`](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) — небольшую утилиту командной строки,
 которая предоставляет полноценный движок ClickHouse. Также вы можете использовать
@@ -73,7 +72,6 @@ bbox:                (-122.39003793803701,37.62120111687914,-122.39003793803701,
 SELECT * FROM s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*')
    WHERE address IS NOT NULL AND postcode IS NOT NULL AND instagram IS NOT NULL LIMIT 1
 ```
-
 
 ```response
 Row 1:
@@ -147,8 +145,7 @@ DESCRIBE s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*
     └─────────────────────┴─────────────────────────────┘
 ```
 
-
-## Загрузка данных в ClickHouse
+## Загрузка данных в ClickHouse {#loading-the-data}
 
 Если вы хотите сохранять данные на диске, вы можете использовать `clickhouse-server`
 или ClickHouse Cloud.
@@ -259,7 +256,6 @@ INDEX idx_y mercator_y TYPE minmax
 INSERT INTO foursquare_mercator 
 SELECT * FROM s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*')
 ```
-
 
 ## Визуализация данных {#data-visualization}
 

@@ -7,17 +7,13 @@ keywords: ['chdb', 'c', 'cpp', 'embedded', 'clickhouse', 'sql', 'olap', 'api']
 doc_type: 'guide'
 ---
 
-
-
-# 适用于 C 和 C++ 的 chDB
+# 适用于 C 和 C++ 的 chDB {#chdb-for-c-and-c}
 
 chDB 提供原生的 C/C++ API，可将 ClickHouse 的功能直接嵌入到您的应用程序中。该 API 既支持简单查询，也支持高级特性，例如持久连接和查询结果的流式处理。
 
+## 安装 {#installation}
 
-
-## 安装
-
-### 步骤 1：安装 libchdb
+### 步骤 1：安装 libchdb {#install-libchdb}
 
 在你的系统上安装 chDB 库：
 
@@ -25,7 +21,7 @@ chDB 提供原生的 C/C++ API，可将 ClickHouse 的功能直接嵌入到您�
 curl -sL https://lib.chdb.io | bash
 ```
 
-### 步骤 2：添加头文件
+### 步骤 2：添加头文件 {#include-headers}
 
 将 chDB 头文件包含到你的项目中：
 
@@ -33,28 +29,25 @@ curl -sL https://lib.chdb.io | bash
 #include <chdb.h>
 ```
 
-### 步骤 3：链接库
+### 步骤 3：链接库 {#link-library}
 
 将你的应用程序与 chDB 一起编译并链接：
 
-
 ```bash
-# 使用 C 编译
+# 使用 C 编译 {#c-compilation}
 gcc -o myapp myapp.c -lchdb
 ```
 
-
-# 使用 C++ 编译
+# 使用 C++ 编译 {#c-compilation}
 
 g++ -o myapp myapp.cpp -lchdb
 
 ```
 ```
 
+## C 语言示例 {#c-examples}
 
-## C 语言示例
-
-### 基本连接和查询
+### 基本连接和查询 {#basic-connection-queries}
 
 ```c
 #include <stdio.h>
@@ -103,7 +96,7 @@ int main() {
 }
 ```
 
-### 流式查询
+### 流式查询 {#streaming-queries}
 
 ```c
 #include <stdio.h>
@@ -167,7 +160,7 @@ int main() {
 }
 ```
 
-### 处理不同的数据格式
+### 处理不同的数据格式 {#data-formats}
 
 ```c
 #include <stdio.h>
@@ -194,7 +187,6 @@ int main() {
     chdb_destroy_query_result(json_result);
 ```
 
-
 // 美化输出格式
 chdb&#95;result* pretty&#95;result = chdb&#95;query(*conn, query, &quot;Pretty&quot;);
 printf(&quot;Pretty Result:\n%.*s\n\n&quot;,
@@ -209,8 +201,7 @@ return 0;
 ```
 ```
 
-
-## C++ 示例
+## C++ 示例 {#cpp-example}
 
 ```cpp
 #include <iostream>
@@ -293,8 +284,7 @@ int main() {
 }
 ```
 
-
-## 错误处理最佳实践
+## 错误处理最佳实践 {#error-handling}
 
 ```c
 #include <stdio.h>
@@ -340,7 +330,6 @@ cleanup:
     return return_code;
 }
 ```
-
 
 ## GitHub 仓库 {#github-repository}
 

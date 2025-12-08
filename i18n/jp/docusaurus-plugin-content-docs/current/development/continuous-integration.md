@@ -7,9 +7,7 @@ title: '継続的インテグレーション (CI)'
 doc_type: 'reference'
 ---
 
-
-
-# 継続的インテグレーション (CI)
+# 継続的インテグレーション (CI) {#continuous-integration-ci}
 
 プルリクエストを作成すると、ClickHouse の [継続的インテグレーション (CI) システム](tests.md#test-automation) によって、あなたのコードに対していくつかの自動チェックが実行されます。
 これは、リポジトリのメンテナー (ClickHouse チームのメンバー) があなたのコードを確認し、プルリクエストに `can be tested` ラベルを追加した後に行われます。
@@ -28,14 +26,11 @@ git push
 
 どうすればよいか分からない場合は、メンテナーに相談してください。
 
-
 ## master とのマージ {#merge-with-master}
 
 PR が master にマージ可能であることを確認します。
 マージできない場合は、`Cannot fetch mergecommit` というメッセージとともに失敗します。
 このチェックを通すには、[GitHub のドキュメント](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/resolving-a-merge-conflict-on-github)に記載されている手順に従ってコンフリクトを解消するか、git を使用して `master` ブランチをプルリクエストのブランチにマージしてください。
-
-
 
 ## Docs check {#docs-check}
 
@@ -44,14 +39,10 @@ ClickHouse ドキュメントサイトのビルドを実行します。
 最も多い原因は、ドキュメント内のクロスリンクに誤りがあることです。
 チェックレポートを開き、`ERROR` および `WARNING` メッセージを探してください。
 
-
-
 ## 説明チェック {#description-check}
 
 プルリクエストの説明文が、テンプレート [PULL_REQUEST_TEMPLATE.md](https://github.com/ClickHouse/ClickHouse/blob/master/.github/PULL_REQUEST_TEMPLATE.md) に従っていることを確認します。
 今回の変更に対して変更履歴カテゴリ（例: Bug Fix）を指定し、[CHANGELOG.md](../whats-new/changelog/index.md) 用に、その変更内容を説明するユーザー向けメッセージを記述する必要があります。
-
-
 
 ## Docker image {#docker-image}
 
@@ -65,36 +56,32 @@ ClickHouse server および keeper 用の Docker イメージをビルドし、�
 
 テストの詳細については、[CI jobs scripts documentation](https://github.com/ClickHouse/ClickHouse/tree/master/ci/jobs/scripts/docker_server) を参照してください。
 
-
-
 ## マーカー確認 {#marker-check}
 
 このチェックは、CI システムがプルリクエストの処理を開始したことを意味します。
 ステータスが `pending` の場合は、すべてのチェックがまだ開始されていないことを意味します。
 すべてのチェックが開始されると、ステータスは `success` に変更されます。
 
-
-
-## スタイルチェック
+## スタイルチェック {#style-check}
 
 コードベースに対してさまざまなスタイルチェックを実行します。
 
 Style Check ジョブで実行される基本的なチェックは次のとおりです。
 
-##### cpp
+##### cpp {#cpp}
 
 [`ci/jobs/scripts/check_style/check_cpp.sh`](https://github.com/ClickHouse/ClickHouse/blob/master/ci/jobs/scripts/check_style/check_cpp.sh) スクリプト（ローカルでも実行可能）を使用して、単純な正規表現ベースのコードスタイルチェックを行います。\
 失敗した場合は、[コードスタイルガイド](style.md) に従ってスタイル上の問題を修正してください。
 
-##### codespell, aspell
+##### codespell, aspell {#codespell}
 
 文法ミスや綴りの誤りをチェックします。
 
-##### mypy
+##### mypy {#mypy}
 
 Python コードに対して静的型チェックを実行します。
 
-### スタイルチェックジョブをローカルで実行する
+### スタイルチェックジョブをローカルで実行する {#running-style-check-locally}
 
 *Style Check* ジョブ全体は、Docker コンテナ内でローカルに実行できます:
 
@@ -111,15 +98,14 @@ python -m ci.praktika run "Style check" --test cpp
 これらのコマンドは `clickhouse/style-test` の Docker イメージを取得して、コンテナ環境でジョブを実行します。
 Python 3 と Docker 以外に必要な依存関係はありません。
 
-
-## Fast test
+## Fast test {#fast-test}
 
 通常、これは PR に対して最初に実行されるチェックです。
 ClickHouse をビルドし、一部を除くほとんどの [stateless functional tests](tests.md#functional-tests) を実行します。
 これが失敗すると、問題が修正されるまで後続のチェックは実行されません。
 どのテストが失敗したかを確認するにはレポートを参照し、その後[こちら](/development/tests#running-a-test-locally)で説明されているとおりにローカルでその失敗を再現します。
 
-#### Fast test をローカルで実行する:
+#### Fast test をローカルで実行する: {#running-fast-test-locally}
 
 ```sh
 python -m ci.praktika run "Fast test" [--test テスト名]
@@ -128,12 +114,11 @@ python -m ci.praktika run "Fast test" [--test テスト名]
 これらのコマンドは `clickhouse/fast-test` の Docker イメージを取得し、コンテナ化された環境でジョブを実行します。
 Python 3 と Docker 以外の依存関係は必要ありません。
 
-
-## ビルドチェック
+## ビルドチェック {#build-check}
 
 以降の手順で利用するために、さまざまな構成で ClickHouse をビルドします。
 
-### ローカルでのビルドの実行
+### ローカルでのビルドの実行 {#running-builds-locally}
 
 ビルドは、次のコマンドを使用して CI 環境に近い形でローカル実行できます。
 
@@ -143,7 +128,7 @@ python -m ci.praktika run "<ビルドジョブ名>"
 
 Python 3 と Docker 以外に必要な依存関係はありません。
 
-#### 利用可能なビルドジョブ
+#### 利用可能なビルドジョブ {#available-build-jobs}
 
 ビルドジョブ名は CI レポートに表示されるものと完全に同一です。
 
@@ -181,14 +166,13 @@ Python 3 と Docker 以外に必要な依存関係はありません。
 
 **注意:** クロスコンパイルを使用する「Other Architectures」カテゴリ以外のビルドでは、指定した `BUILD_JOB_NAME` どおりのビルドを生成するために、ローカルマシンのアーキテクチャがビルドタイプと一致している必要があります。
 
-#### 例
+#### 例 {#example-run-local}
 
 ローカルでデバッグビルドを実行するには:
 
 ```bash
 python -m ci.praktika run "Build (amd_debug)"
 ```
-
 
 上記の方法がうまくいかない場合は、ビルドログに出力されている cmake オプションを使用し、[一般的なビルド手順](../development/build.md)に従ってください。
 ## Functional stateless tests {#functional-stateless-tests}
@@ -198,20 +182,14 @@ python -m ci.praktika run "Build (amd_debug)"
 再現には正しいビルド構成を使用する必要がある点に注意してください。あるテストは AddressSanitizer 下では失敗しても、Debug では成功する場合があります。
 [CI build checks page](/install/advanced) からバイナリをダウンロードするか、ローカルでビルドしてください。
 
-
-
 ## 結合テスト {#integration-tests}
 
 [結合テスト](tests.md#integration-tests)を実行します。
-
-
 
 ## バグ修正検証チェック {#bugfix-validate-check}
 
 新しいテスト（機能テストまたは統合テスト）が追加されているか、あるいは master ブランチからビルドしたバイナリで失敗するように既存のテストが変更されているかを確認します。
 このチェックは、プルリクエストに「pr-bugfix」ラベルが付与されたときにトリガーされます。
-
-
 
 ## ストレステスト {#stress-test}
 
@@ -220,21 +198,15 @@ python -m ci.praktika run "Build (amd_debug)"
     * まず他のすべてのテスト失敗を修正する
     * レポートを確認してサーバーログの場所を特定し、エラーの原因となり得る事項がないか確認する
 
-
-
 ## 互換性チェック {#compatibility-check}
 
 古い libc バージョンのディストリビューション上で `clickhouse` バイナリが動作するかどうかを確認します。
 失敗した場合は、メンテナーにサポートを依頼してください。
 
-
-
 ## AST fuzzer {#ast-fuzzer}
 
 プログラムエラーを検出するために、ランダムに生成したクエリを実行します。
 失敗した場合は、メンテナーに助けを求めてください。
-
-
 
 ## パフォーマンス テスト {#performance-tests}
 

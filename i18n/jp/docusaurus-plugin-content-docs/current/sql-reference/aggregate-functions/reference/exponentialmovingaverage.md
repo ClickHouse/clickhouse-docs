@@ -6,9 +6,7 @@ title: 'exponentialMovingAverage'
 doc_type: 'reference'
 ---
 
-
-
-## exponentialMovingAverage
+## exponentialMovingAverage {#exponentialmovingaverage}
 
 指定された期間における値の指数移動平均を計算します。
 
@@ -97,7 +95,6 @@ FROM
 ```
 
 結果:
-
 
 ```text
 ┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar────────────────────────────────────────┐

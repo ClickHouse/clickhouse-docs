@@ -15,8 +15,7 @@ import samlAzureApp from '@site/static/images/cloud/security/saml-azure-app.png'
 import samlAzureClaims from '@site/static/images/cloud/security/saml-azure-claims.png';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
-
-# SAML SSO のセットアップ
+# SAML SSO のセットアップ {#saml-sso-setup}
 
 <EnterprisePlanFeatureBadge feature="SAML SSO"/>
 
@@ -24,15 +23,11 @@ ClickHouse Cloud は、Security Assertion Markup Language (SAML) を利用した
 
 現在、サービスプロバイダー起点の SSO、個別の接続を用いた複数組織での利用、およびジャストインタイムプロビジョニングをサポートしています。現時点では、SCIM (System for Cross-domain Identity Management) や属性マッピングには対応していません。
 
-
-
 ## はじめる前に {#before-you-begin}
 
 IdP での管理者権限と、ClickHouse Cloud 組織での **Admin** ロールが必要です。IdP 内で接続を設定したら、以下の手順で求められている情報を添えて当社までご連絡いただくことで、設定を完了できます。
 
 ログインプロセスを簡素化するため、SAML 接続に加えて **組織への直接リンク** を設定することを推奨します。IdP ごとに扱い方が異なります。お使いの IdP での具体的な方法については、この先の説明を参照してください。
-
-
 
 ## IdP を構成する方法 {#how-to-configure-your-idp}
 
@@ -148,8 +143,6 @@ IdP での管理者権限と、ClickHouse Cloud 組織での **Admin** ロール
 
 </details>
 
-
-
 <details>
   <summary>
     {" "}
@@ -260,7 +253,6 @@ IdP での管理者権限と、ClickHouse Cloud 組織での **Admin** ロール
     | App attributes    | email         |
 12. **Finish** をクリックします。
 
-
 14. アプリを有効にするには、全員に対して **OFF** をクリックし、設定を全員に対して **ON** に変更します。画面左側のオプションを選択することで、アクセスをグループまたは組織単位に制限することもできます。
 
 </details>
@@ -345,7 +337,6 @@ Azure (Microsoft) SAML は、Azure Active Directory (AD) または Microsoft Ent
 
 </details>
 
-
 ## 仕組み {#how-it-works}
 
 ### SAML SSO を利用したユーザー管理 {#user-management-with-saml-sso}
@@ -360,8 +351,6 @@ ClickHouse Cloud では、サービスプロバイダー開始型 SSO のみを�
 
 ClickHouse Cloud は、組織ごとに個別の接続を提供することで、複数組織向け SSO をサポートします。各組織にログインするには、ダイレクトリンク (`https://console.clickhouse.cloud/?connection={organizationid}`) を使用してください。別の組織にログインする前に、現在ログインしている組織から必ずログアウトしてください。
 
-
-
 ## 追加情報 {#additional-information}
 
 認証に関しては、セキュリティを最優先としています。このため、SSO を実装するにあたり、いくつかの重要な設計上の判断を行っており、その点について事前にご理解いただく必要があります。
@@ -369,8 +358,6 @@ ClickHouse Cloud は、組織ごとに個別の接続を提供することで、
 - **サービスプロバイダー起点の認証フローのみを処理します。** ユーザーは `https://console.clickhouse.cloud` にアクセスし、メールアドレスを入力してから、アイデンティティプロバイダーにリダイレクトされる必要があります。ユーザーが URL を覚えておく必要がないように、ブックマーク用アプリケーションやショートカットを追加するための手順もあわせて提供しています。
 
 - **SSO アカウントと非 SSO アカウントは自動的にはリンクされません。** 同じメールアドレスを使用している場合でも、ClickHouse のユーザー一覧には、同一ユーザーに対して複数のアカウントが表示されることがあります。
-
-
 
 ## よくある問題のトラブルシューティング {#troubleshooting-common-issues}
 

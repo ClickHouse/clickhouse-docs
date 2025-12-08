@@ -8,7 +8,7 @@ doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
-import secure_s3 from '@site/static/images/cloud/security/secures3.jpg';
+import secure_s3 from '@site/static/images/cloud/security/secures3.png';
 import s3_info from '@site/static/images/cloud/security/secures3_arn.png';
 import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 
@@ -18,7 +18,7 @@ This article demonstrates how ClickHouse Cloud customers can leverage role-based
 
 Before diving into the setup for secure S3 access, it is important to understand how this works. Below is an overview of how ClickHouse services can access private S3 buckets by assuming into a role within customers' AWS account.
 
-<Image img={secure_s3} size="md" alt="Overview of Secure S3 Access with ClickHouse"/>
+<Image img={secure_s3} size="lg" alt="Overview of Secure S3 Access with ClickHouse"/>
 
 This approach allows customers to manage all access to their S3 buckets in a single place (the IAM policy of the assumed-role) without having to go through all of their bucket policies to add or remove access.
 

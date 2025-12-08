@@ -7,11 +7,7 @@ sidebar_label: 'anyIf'
 doc_type: 'reference'
 ---
 
-
-
 # anyIf {#avgif}
-
-
 
 ## 説明 {#description}
 
@@ -19,9 +15,7 @@ doc_type: 'reference'
 集約関数に適用して、指定した条件に一致する要素のうち、指定したカラム内で最初に出現したものを
 選択します。
 
-
-
-## 使用例
+## 使用例 {#example-usage}
 
 この例では、成功フラグを含む売上データを格納するテーブルを作成し、
 `anyIf` を使用して、金額 200 をしきい値としてそれより大きい場合と小さい場合の
@@ -59,7 +53,6 @@ FROM sales;
 │          1 │          4 │
 └────────────┴────────────┘
 ```
-
 
 ## 関連項目 {#see-also}
 - [`any`](/sql-reference/aggregate-functions/reference/any)

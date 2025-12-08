@@ -21,7 +21,7 @@ doc_type: 'reference'
 Формат `JSONColumnsWithMetadata` буферизует все данные в памяти и затем выводит их одним блоком, поэтому может приводить к высокому потреблению памяти.
 :::
 
-## Пример использования
+## Пример использования {#example-usage}
 
 Пример:
 
@@ -66,6 +66,5 @@ doc_type: 'reference'
 
 Для формата ввода `JSONColumnsWithMetadata`, если параметр [`input_format_json_validate_types_from_metadata`](/operations/settings/settings-formats.md/#input_format_json_validate_types_from_metadata) имеет значение `1`,
 типы, указанные в метаданных во входных данных, будут сравниваться с типами соответствующих столбцов таблицы.
-
 
 ## Параметры формата {#format-settings}

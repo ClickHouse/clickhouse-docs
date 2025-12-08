@@ -7,22 +7,17 @@ title: 'hudiCluster テーブル関数'
 doc_type: 'reference'
 ---
 
-
-
-# hudiCluster テーブル関数
+# hudiCluster テーブル関数 {#hudicluster-table-function}
 
 これは [hudi](sql-reference/table-functions/hudi.md) テーブル関数の拡張機能です。
 
 指定したクラスタ内の多数のノードを使って、Amazon S3 上の Apache [Hudi](https://hudi.apache.org/) テーブル内のファイルを並列処理できます。イニシエータでは、クラスタ内のすべてのノードへの接続を確立し、各ファイルを動的に割り当てます。ワーカーノードでは、次に処理すべきタスクをイニシエータに問い合わせて、そのタスクを処理します。すべてのタスクが完了するまで、これを繰り返します。
 
-
-
-## 構文
+## 構文 {#syntax}
 
 ```sql
 hudiCluster(cluster_name, URL[, aws_access_key_id, aws_secret_access_key][, format][, structure][, compression])
 ```
-
 
 ## 引数 {#arguments}
 
@@ -35,13 +30,9 @@ hudiCluster(cluster_name, URL[, aws_access_key_id, aws_secret_access_key][, form
 | `structure`                                  | テーブルの構造。`'column1_name column1_type, column2_name column2_type, ...'` という形式で指定します。                                                                                                                                                                                                                                                                                |
 | `compression`                                | 省略可能なパラメータ。サポートされる値は `none`, `gzip/gz`, `brotli/br`, `xz/LZMA`, `zstd/zst` です。既定では、圧縮形式はファイル拡張子から自動検出されます。                                                                                                                                                                                                                          |
 
-
-
 ## 返される値 {#returned_value}
 
 S3 上の指定した Hudi テーブルに対し、クラスタからデータを読み取るための、指定した構造を持つテーブル。
-
-
 
 ## 仮想カラム {#virtual-columns}
 
@@ -50,8 +41,6 @@ S3 上の指定した Hudi テーブルに対し、クラスタからデータ�
 - `_size` — ファイルサイズ（バイト単位）。型: `Nullable(UInt64)`。ファイルサイズが不明な場合、値は `NULL` です。
 - `_time` — ファイルの最終更新時刻。型: `Nullable(DateTime)`。時刻が不明な場合、値は `NULL` です。
 - `_etag` — ファイルの etag。型: `LowCardinality(String)`。etag が不明な場合、値は `NULL` です。
-
-
 
 ## 関連項目 {#related}
 

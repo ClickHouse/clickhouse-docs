@@ -7,8 +7,7 @@ description: 'ClickHouse Cloud 最佳实践章节的概览页'
 doc_type: 'landing-page'
 ---
 
-import TableOfContents from '@site/docs/best-practices/_snippets/_table_of_contents.md';
-
+import TableOfContents from '@site/i18n/zh/docusaurus-plugin-content-docs/current/best-practices/_snippets/_table_of_contents.md';
 
 # ClickHouse Cloud 中的最佳实践 {#best-practices-in-clickhouse-cloud}
 

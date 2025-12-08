@@ -9,23 +9,19 @@ doc_type: 'guide'
 
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
-# 将 dlt 连接到 ClickHouse
+# 将 dlt 连接到 ClickHouse {#connect-dlt-to-clickhouse}
 
 <PartnerBadge/>
 
 <a href="https://dlthub.com/docs/intro" target="_blank">dlt</a> 是一个开源库，你可以将其添加到 Python 脚本中，将来自各种（且往往杂乱的）数据源的数据加载到结构良好、实时更新的数据集中。
 
+## 安装适用于 ClickHouse 的 dlt {#install-dlt-with-clickhouse}
 
-
-## 安装适用于 ClickHouse 的 dlt
-
-### 安装包含 ClickHouse 依赖的 `dlt` 库：
+### 安装包含 ClickHouse 依赖的 `dlt` 库： {#to-install-the-dlt-library-with-clickhouse-dependencies}
 
 ```bash
 pip install "dlt[clickhouse]"
 ```
-
 
 ## 设置指南 {#setup-guide}
 
@@ -97,14 +93,12 @@ dataset_table_separator = "___"          # 数据集表名与数据集之间的�
 
 您可以传递类似于 `clickhouse-driver` 库所使用的数据库连接字符串。上述凭据将如下所示:
 
-
 ```bash
-# 将此配置保持在 toml 文件的顶部，在任何节（section）开始之前。
+# 将此配置保持在 toml 文件的顶部，在任何节（section）开始之前。 {#keep-it-at-the-top-of-your-toml-file-before-any-section-starts}
 destination.clickhouse.credentials="clickhouse://dlt:Dlt*12345789234567@localhost:9000/dlt?secure=1"
 ```
 
 </VerticalStepper>
-
 
 ## 写入方式 {#write-disposition}
 
@@ -118,21 +112,15 @@ dlt 库中的写入方式定义了数据应如何写入目标端。写入方式�
 
 **Append**：这是默认方式。它会将数据追加到目标端已有的数据之后，并忽略 `primary_key` 字段。
 
-
-
 ## 数据加载 {#data-loading}
 根据数据源的不同，会采用最高效的方法将数据加载到 ClickHouse 中：
 
 - 对于本地文件，使用 `clickhouse-connect` 库，通过 `INSERT` 命令将文件直接加载到 ClickHouse 表中。
 - 对于存储在 `S3`、`Google Cloud Storage` 或 `Azure Blob Storage` 等远程存储中的文件，使用 ClickHouse 表函数（如 s3、gcs 和 azureBlobStorage）读取文件并将数据插入到表中。
 
-
-
 ## 数据集 {#datasets}
 
 `ClickHouse` 不支持在单个数据库中使用多个数据集，而 `dlt` 由于多种原因依赖于数据集。为了使 `ClickHouse` 能够与 `dlt` 协同工作，`dlt` 在您的 `ClickHouse` 数据库中生成的表会在名称前添加数据集名称作为前缀，并与表名通过可配置的 `dataset_table_separator` 分隔。此外，还会创建一个不包含任何数据的特殊哨兵表，使 `dlt` 能够识别在某个 `ClickHouse` 目标中已经存在哪些虚拟数据集。
-
-
 
 ## 支持的文件格式 {#supported-file-formats}
 
@@ -147,16 +135,12 @@ dlt 库中的写入方式定义了数据应如何写入目标端。写入方式�
 5. `Clickhouse` 允许向已有数据的表中添加非空列。
 6. 在某些条件下，`Clickhouse` 在使用 float 或 double 数据类型时可能会产生舍入误差。如果你无法接受舍入误差，请务必使用 decimal 数据类型。例如，将值 12.7001 加载到一个 double 列，并且加载器文件格式设为 `jsonl` 时，将会可预期地产生舍入误差。
 
-
-
 ## 支持的列提示 {#supported-column-hints}
 ClickHouse 支持以下<a href="https://dlthub.com/docs/general-usage/schema#tables-and-columns">列提示</a>：
 
 - `primary_key` — 将该列标记为主键的一部分。多列都可以使用此提示来创建复合主键。
 
-
-
-## 表引擎
+## 表引擎 {#table-engine}
 
 默认情况下，ClickHouse 中创建的表使用 `ReplicatedMergeTree` 表引擎。使用 ClickHouse 适配器时，可以通过 `table_engine_type` 指定其他表引擎：
 
@@ -175,8 +159,7 @@ clickhouse_adapter(my_resource, table_engine_type="merge_tree")
 * `merge_tree` - 使用 `MergeTree` 引擎创建表
 * `replicated_merge_tree`（默认）- 使用 `ReplicatedMergeTree` 引擎创建表
 
-
-## 暂存（staging）支持
+## 暂存（staging）支持 {#staging-support}
 
 ClickHouse 支持将 Amazon S3、Google Cloud Storage 和 Azure Blob Storage 用作文件暂存目标位置。
 
@@ -199,7 +182,7 @@ pipeline = dlt.pipeline(
 )
 ```
 
-### 将 Google Cloud Storage 用作暂存区域
+### 将 Google Cloud Storage 用作暂存区域 {#using-google-cloud-storage-as-a-staging-area}
 
 在将数据加载到 ClickHouse 时，dlt 支持使用 Google Cloud Storage (GCS) 作为暂存区域。此功能由 ClickHouse 的 <a href="https://clickhouse.com/docs/sql-reference/table-functions/gcs">GCS table function</a> 自动处理，dlt 在内部会调用该函数。
 
@@ -240,10 +223,10 @@ dlt 会将这些凭据传递给 ClickHouse，由 ClickHouse 处理认证并访�
 * 使 filesystem 目标在 s3 兼容模式下与 gcs <a href="https://github.com/dlt-hub/dlt/issues/1272"> 正常工作</a>
 * Google Cloud Storage staging 区域<a href="https://github.com/dlt-hub/dlt/issues/1181"> 支持</a>
 
-### Dbt 支持
+### Dbt 支持 {#dbt-support}
 
 与 <a href="https://dlthub.com/docs/dlt-ecosystem/transformations/dbt/">dbt</a> 的集成通常通过 dbt-clickhouse 提供支持。
 
-### `dlt` 状态同步
+### `dlt` 状态同步 {#syncing-of-dlt-state}
 
 此目标完全支持 <a href="https://dlthub.com/docs/general-usage/state#syncing-state-with-destination">dlt</a> 状态同步。

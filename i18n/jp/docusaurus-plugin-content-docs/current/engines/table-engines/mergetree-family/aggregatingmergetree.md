@@ -7,9 +7,7 @@ title: 'AggregatingMergeTree テーブルエンジン'
 doc_type: 'reference'
 ---
 
-
-
-# AggregatingMergeTree テーブルエンジン
+# AggregatingMergeTree テーブルエンジン {#aggregatingmergetree-table-engine}
 
 このエンジンは [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) から継承しており、データパーツのマージロジックを変更します。ClickHouse は、同じ主キー（より正確には、同じ[ソートキー](../../../engines/table-engines/mergetree-family/mergetree.md)）を持つすべての行を 1 行（単一のデータパーツ内）にまとめ、その行に集約関数の状態を組み合わせて格納します。
 
@@ -27,9 +25,7 @@ doc_type: 'reference'
 
 行数を桁違いに削減できる場合には、`AggregatingMergeTree` を使用するのが適切です。
 
-
-
-## テーブルを作成する
+## テーブルを作成する {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -70,7 +66,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
   すべてのパラメータの意味は `MergeTree` と同じです。
 </details>
 
-
 ## SELECT と INSERT {#select-and-insert}
 
 データを挿入するには、集約関数の `-State` バージョンを用いた [INSERT SELECT](../../../sql-reference/statements/insert-into.md) クエリを使用します。
@@ -78,9 +73,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 `SELECT` クエリの結果において、`AggregateFunction` 型の値は、すべての ClickHouse 出力形式で実装依存のバイナリ表現になります。たとえば、`SELECT` クエリでデータを `TabSeparated` 形式にダンプした場合、このダンプは `INSERT` クエリを使用して再度ロードできます。
 
-
-
-## 集約マテリアライズドビューの例
+## 集約マテリアライズドビューの例 {#example-of-an-aggregated-materialized-view}
 
 次の例では、`test` という名前のデータベースが既に存在すると仮定します。まだない場合は、以下のコマンドで作成してください。
 
@@ -185,14 +178,11 @@ AS SELECT
 FROM test.visits;
 ```
 
-
 :::note
 `initializeAggregation` を使用する場合、グループ化を行わずに各行に対して集約状態が作成されます。
 各ソース行はマテリアライズドビュー内で 1 行を生成し、実際の集約は後で `AggregatingMergeTree` がパートをマージする際に行われます。
 これは `optimize_on_insert = 0` の場合にのみ当てはまります。
 :::
-
-
 
 ## 関連コンテンツ {#related-content}
 

@@ -6,10 +6,9 @@ title: 'system.metrics'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
-# system.metrics
+# system.metrics {#systemmetrics}
 
 <SystemTableCloud />
 
@@ -47,7 +46,6 @@ SELECT * FROM system.metrics LIMIT 10
 │ BackgroundMovePoolTask               │     0 │ BackgroundProcessingPool 中用于移动操作的活跃任务数量           │
 └──────────────────────────────────────┴───────┴────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## 指标说明 {#metric-descriptions}
 
@@ -186,8 +184,6 @@ CacheDictionary 线程池中的线程数量。
 ### CacheDictionaryThreadsActive {#cachedictionarythreadsactive}
 
 在 CacheDictionary 线程池中正在运行任务的线程数量。
-
-
 
 正在 CacheDictionary 线程池中运行任务的线程数量。
 
@@ -330,8 +326,6 @@ JIT 编译代码缓存中的条目总数。
 到 HTTP 服务器的连接数量。
 
 ### HashedDictionaryThreads {#hasheddictionarythreads}
-
-
 
 ### HashedDictionaryThreads {#hasheddictionarythreads}
 
@@ -489,8 +483,6 @@ MergeTreeDataSelectExecutor 线程池中正在运行任务的线程数量。
 
 MergeTree 分片清理线程池中的线程数量。
 
-
-
 ### MergeTreePartsCleanerThreadsActive {#mergetreepartscleanerthreadsactive}
 
 MergeTree 分片清理线程池中正在运行任务的线程数量。
@@ -647,8 +639,6 @@ ParallelFormattingOutputFormatThreads 线程池中正在运行任务的线程数
 
 正在发送到副本的数据分片数量。
 
-
-
 ### RestartReplicaThreads {#restartreplicathreads}
 
 RESTART REPLICA 线程池中的线程数。
@@ -792,8 +782,6 @@ system.replicas 线程池中的线程数。
 ### ConcurrencyControlAcquired {#concurrencycontrolacquired}
 
 已获取的 CPU 槽位总数。
-
-
 
 ### ConcurrencyControlSoftLimit {#concurrencycontrolsoftlimit}
 

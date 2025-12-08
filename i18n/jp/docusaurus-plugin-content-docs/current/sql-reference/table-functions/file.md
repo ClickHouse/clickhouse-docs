@@ -10,21 +10,17 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
-# file テーブル関数
+# file テーブル関数 {#file-table-function}
 
 `s3` テーブル関数と同様に、ファイルに対する `SELECT` や `INSERT` をテーブルと同じように扱えるインターフェイスを提供するテーブルエンジンです。ローカルファイルを扱う場合は `file()` を使用し、S3、GCS、MinIO などのオブジェクトストレージ内のバケットを扱う場合は [s3](/sql-reference/table-functions/url.md) のテーブル関数 `s3()` を使用します。
 
 `file` 関数は、`SELECT` および `INSERT` クエリで使用して、ファイルからの読み取りやファイルへの書き込みを行うことができます。
 
-
-
-## 構文
+## 構文 {#syntax}
 
 ```sql
 file([path_to_archive ::] path [,format] [,structure] [,compression])
 ```
-
 
 ## 引数 {#arguments}
 
@@ -36,17 +32,13 @@ file([path_to_archive ::] path [,format] [,structure] [,compression])
 | `structure`       | テーブルの構造。形式：`'column1_name column1_type, column2_name column2_type, ...'`。                                                                                                                                                                                                                       |
 | `compression`     | `SELECT` クエリで使用する場合は既存の圧縮形式、`INSERT` クエリで使用する場合は指定する圧縮形式。サポートされる圧縮形式は `gz`、`br`、`xz`、`zst`、`lz4`、`bz2` です。                                                                                                                                        |
 
-
-
 ## 戻り値 {#returned_value}
 
 ファイル内のデータを読み書きするためのテーブル。
 
+## ファイルへの書き込み例 {#examples-for-writing-to-a-file}
 
-
-## ファイルへの書き込み例
-
-### TSV ファイルへの書き込み
+### TSV ファイルへの書き込み {#write-to-a-tsv-file}
 
 ```sql
 INSERT INTO TABLE FUNCTION
@@ -56,15 +48,14 @@ VALUES (1, 2, 3), (3, 2, 1), (1, 3, 2)
 
 その結果、データはファイル `test.tsv` に書き込まれます。
 
-
 ```bash
-# cat /var/lib/clickhouse/user_files/test.tsv
+# cat /var/lib/clickhouse/user_files/test.tsv {#cat-varlibclickhouseuser_filestesttsv}
 1    2    3
 3    2    1
 1    3    2
 ```
 
-### 複数の TSV ファイルへのパーティション分割書き込み
+### 複数の TSV ファイルへのパーティション分割書き込み {#partitioned-write-to-multiple-tsv-files}
 
 `file()` 型のテーブル関数にデータを挿入する際に `PARTITION BY` 式を指定すると、パーティションごとに別々のファイルが作成されます。データを複数のファイルに分割することで、読み取り処理のパフォーマンスを向上できます。
 
@@ -77,29 +68,24 @@ VALUES (1, 2, 3), (3, 2, 1), (1, 3, 2)
 
 その結果、データは次の3つのファイルに書き込まれます：`test_1.tsv`、`test_2.tsv`、`test_3.tsv`。
 
-
 ```bash
-# cat /var/lib/clickhouse/user_files/test_1.tsv
+# cat /var/lib/clickhouse/user_files/test_1.tsv {#cat-varlibclickhouseuser_filestest_1tsv}
 3    2    1
 ```
 
-
-# cat /var/lib/clickhouse/user_files/test_2.tsv
+# cat /var/lib/clickhouse/user_files/test_2.tsv {#cat-varlibclickhouseuser_filestest_2tsv}
 1    3    2
 
-
-
-# cat /var/lib/clickhouse/user&#95;files/test&#95;3.tsv
+# cat /var/lib/clickhouse/user&#95;files/test&#95;3.tsv {#cat-varlibclickhouseuser_filestest_3tsv}
 
 1    2    3
 
 ```
 ```
 
+## ファイルから読み込む例 {#examples-for-reading-from-a-file}
 
-## ファイルから読み込む例
-
-### CSV ファイルからの SELECT
+### CSV ファイルからの SELECT {#select-from-a-csv-file}
 
 まず、サーバー設定で `user_files_path` を設定し、`test.csv` というファイルを用意します。
 
@@ -128,7 +114,7 @@ LIMIT 2;
 └─────────┴─────────┴─────────┘
 ```
 
-### ファイルからテーブルにデータを挿入する
+### ファイルからテーブルにデータを挿入する {#inserting-data-from-a-file-into-a-table}
 
 ```sql
 INSERT INTO FUNCTION
@@ -154,7 +140,6 @@ file('test.csv', 'CSV', 'column1 UInt32, column2 UInt32, column3 UInt32');
 SELECT * FROM file('user_files/archives/archive{1..2}.zip :: table.csv');
 ```
 
-
 ## パス内のグロブ {#globs-in-path}
 
 パスにはグロブを使用できます。ファイルは、接頭辞や接尾辞だけでなく、パターン全体に一致する必要があります。ただし 1 つだけ例外があり、パスが既存のディレクトリを指していて、かつグロブを使用していない場合は、そのディレクトリ内のすべてのファイルが選択されるように、パスの末尾に暗黙的に `*` が追加されます。
@@ -167,9 +152,7 @@ SELECT * FROM file('user_files/archives/archive{1..2}.zip :: table.csv');
 
 `{}` を用いる構文は、[remote](remote.md) および [hdfs](hdfs.md) テーブル関数と同様です。
 
-
-
-## 例
+## 例 {#examples}
 
 **例**
 
@@ -228,7 +211,6 @@ SELECT count(*) FROM file('big_dir/**', 'CSV', 'name String, value UInt32');
 SELECT count(*) FROM file('big_dir/**/file002', 'CSV', 'name String, value UInt32');
 ```
 
-
 ## 仮想カラム {#virtual-columns}
 
 - `_path` — ファイルへのパス。型: `LowCardinality(String)`。
@@ -236,9 +218,7 @@ SELECT count(*) FROM file('big_dir/**/file002', 'CSV', 'name String, value UInt3
 - `_size` — ファイルサイズ（バイト単位）。型: `Nullable(UInt64)`。ファイルサイズが不明な場合、値は `NULL` です。
 - `_time` — ファイルの最終更新時刻。型: `Nullable(DateTime)`。時刻が不明な場合、値は `NULL` です。
 
-
-
-## use&#95;hive&#95;partitioning 設定
+## use&#95;hive&#95;partitioning 設定 {#hive-style-partitioning}
 
 `use_hive_partitioning` 設定を 1 にすると、ClickHouse はパス（`/name=value/`）内の Hive スタイルのパーティショニングを検出し、クエリ内でパーティション列を仮想列として使用できるようにします。これらの仮想列は、パーティションを表すパス内の名前と同じ名前を持ちますが、先頭に `_` が付きます。
 
@@ -250,7 +230,6 @@ Hive スタイルのパーティショニングで作成された仮想列を使
 SELECT * FROM file('data/path/date=*/country=*/code=*/*.parquet') WHERE _date > '2020-01-01' AND _country = 'Netherlands' AND _code = 42;
 ```
 
-
 ## 設定 {#settings}
 
 | Setting                                                                                                            | Description                                                                                                                                                                 |
@@ -260,8 +239,6 @@ SELECT * FROM file('data/path/date=*/country=*/code=*/*.parquet') WHERE _date > 
 | [engine_file_allow_create_multiple_files](operations/settings/settings.md#engine_file_allow_create_multiple_files) | フォーマットにサフィックスがある場合、`INSERT` ごとに新しいファイルを作成できるようにします。デフォルトでは無効です。                                                                                       |
 | [engine_file_skip_empty_files](operations/settings/settings.md#engine_file_skip_empty_files)                       | 読み取り時に空のファイルをスキップできるようにします。デフォルトでは無効です。                                                                                                              |
 | [storage_file_read_method](/operations/settings/settings#engine_file_empty_if_not_exists)                          | ストレージファイルからデータを読み取る方法です。`read`、`pread`、`mmap` のいずれかです（`mmap` は clickhouse-local のみ）。デフォルト値: clickhouse-server では `pread`、clickhouse-local では `mmap`。 |
-
-
 
 ## 関連項目 {#related}
 

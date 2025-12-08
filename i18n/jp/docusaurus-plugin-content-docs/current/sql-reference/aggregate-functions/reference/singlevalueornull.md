@@ -6,7 +6,7 @@ title: 'singleValueOrNull'
 doc_type: 'reference'
 ---
 
-# singleValueOrNull
+# singleValueOrNull {#singlevalueornull}
 
 集約関数 `singleValueOrNull` は、`x = ALL (SELECT ...)` のようなサブクエリの演算子を実装するために使用されます。データ内にただ 1 つだけ、一意な非 NULL 値が存在するかどうかを判定します。
 一意な値が 1 つだけ存在する場合、その値を返します。値が 0 個、または相異なる値が 2 個以上存在する場合は、NULL を返します。

@@ -7,11 +7,7 @@ sidebar_label: 'countIf'
 doc_type: 'reference'
 ---
 
-
-
 # countIf {#countif}
-
-
 
 ## 描述 {#description}
 
@@ -19,9 +15,7 @@ doc_type: 'reference'
 函数，从而通过 `countIf` 聚合函数组合器统计条件为 `true`
 的行数。
 
-
-
-## 用法示例
+## 用法示例 {#example-usage}
 
 在这个示例中，我们将创建一个用于存储用户登录尝试记录的表，
 并使用 `countIf` 来统计成功登录的次数。
@@ -56,7 +50,6 @@ GROUP BY user_id;
 2. │       2 │                 2 │
    └─────────┴───────────────────┘
 ```
-
 
 ## 另请参阅 {#see-also}
 - [`count`](/sql-reference/aggregate-functions/reference/count)

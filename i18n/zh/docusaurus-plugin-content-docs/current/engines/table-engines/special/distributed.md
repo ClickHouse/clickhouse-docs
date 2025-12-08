@@ -7,9 +7,7 @@ title: 'Distributed 表引擎'
 doc_type: 'reference'
 ---
 
-
-
-# 分布式表引擎
+# 分布式表引擎 {#distributed-table-engine}
 
 :::warning 在 Cloud 中使用 Distributed 引擎
 要在 ClickHouse Cloud 中创建分布式表引擎，可以使用 [`remote` 和 `remoteSecure`](../../../sql-reference/table-functions/remote) 表函数。
@@ -19,9 +17,7 @@ doc_type: 'reference'
 使用 Distributed 引擎的表本身不存储任何数据，但允许在多个服务器上进行分布式查询处理。
 读操作会自动并行执行。在读取时，如果远程服务器上存在表索引，则会使用这些索引。
 
-
-
-## 创建表
+## 创建表 {#distributed-creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -33,7 +29,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 [SETTINGS name=value, ...]
 ```
 
-### 基于现有表
+### 基于现有表 {#distributed-from-a-table}
 
 当 `Distributed` 表指向当前服务器上的某个表时，你可以沿用该表的表结构：
 
@@ -41,7 +37,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster] AS [db2.]name2 ENGINE = Distributed(cluster, database, table[, sharding_key[, policy_name]]) [SETTINGS name=value, ...]
 ```
 
-### 分布式参数
+### 分布式参数 {#distributed-parameters}
 
 | Parameter                 | Description                                                                                                                                                                                                                                                  |
 | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -56,8 +52,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster] AS [db2.]name2
 * [distributed&#95;foreground&#95;insert](../../../operations/settings/settings.md#distributed_foreground_insert) 设置
 * [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-multiple-volumes) 使用示例
 
-### 分布式设置
-
+### 分布式设置 {#distributed-settings}
 
 | Setting                                    | Description                                                                                                                                                 | Default value |
 | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
@@ -101,8 +96,7 @@ SETTINGS
 
 在数据库名的位置上，你可以使用返回字符串的常量表达式。例如：`currentDatabase()`。
 
-
-## 集群
+## 集群 {#distributed-clusters}
 
 集群是在[服务器配置文件](../../../operations/configuration-files.md)中配置的：
 
@@ -166,7 +160,6 @@ SETTINGS
 
 参数 `host`、`port`，以及可选的 `user`、`password`、`secure`、`compression`、`bind_host` 需要为每台服务器单独指定：
 
-
 | Parameter     | Description                                                                                                                                                                                                                                                                                                                              | Default Value |
 |---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------|
 | `host`        | 远程服务器的地址。可以使用域名或 IPv4/IPv6 地址。如果指定域名，服务器在启动时会发起一次 DNS 请求，并在服务器运行期间缓存该结果。如果 DNS 请求失败，服务器将无法启动。如果更改了 DNS 记录，需要重启服务器。 | -            |
@@ -188,8 +181,6 @@ SETTINGS
 `Distributed` 引擎允许像操作本地服务器一样操作集群。但是，集群的配置不能动态指定，必须在服务器配置文件中进行配置。通常，集群中的所有服务器会使用相同的集群配置（但这不是强制要求）。来自配置文件的集群会在运行时被更新，无需重启服务器。
 
 如果每次都需要向一组未知的分片和副本发送查询，则不需要创建 `Distributed` 表——改用 `remote` 表函数。参见 [Table functions](../../../sql-reference/table-functions/index.md) 部分。
-
-
 
 ## 写入数据 {#distributed-writing-data}
 
@@ -213,16 +204,12 @@ SETTINGS
 
 在以下情况中，需要特别关注分片方案：
 
-
-
 - 在执行需要按特定键进行数据关联（`IN` 或 `JOIN`）的查询时，如果数据按该键进行了分片，就可以使用本地的 `IN` 或 `JOIN` 来代替 `GLOBAL IN` 或 `GLOBAL JOIN`，这样效率要高得多。
 - 在使用大量服务器（数百台或更多）并伴随大量小查询的场景下，例如针对单个客户（如网站、广告主或合作伙伴）数据的查询，为了避免这些小查询影响整个集群，将单个客户的数据放置在单个分片上是合理的选择。或者，可以设置两级分片：将整个集群划分为多个“层”，每一层可以由多个分片组成。单个客户的数据位于单个层中，但可以按需向该层添加分片，数据在该层内的分片之间随机分布。为每个层创建各自的 `Distributed` 表，同时为全局查询创建一个共享的分布式表。
 
 数据在后台写入。当向表中执行插入操作时，数据块只是被写入本地文件系统。数据会在后台尽快发送到远程服务器。发送数据的周期由 [distributed_background_insert_sleep_time_ms](../../../operations/settings/settings.md#distributed_background_insert_sleep_time_ms) 和 [distributed_background_insert_max_sleep_time_ms](../../../operations/settings/settings.md#distributed_background_insert_max_sleep_time_ms) 设置进行管理。`Distributed` 引擎会分别发送每个插入数据的文件，但可以通过 [distributed_background_insert_batch](../../../operations/settings/settings.md#distributed_background_insert_batch) 设置启用批量发送文件。该设置能够通过更好地利用本地服务器和网络资源来提升集群性能。应当通过检查表目录中待发送数据文件列表来确认数据是否已成功发送：`/var/lib/clickhouse/data/database/table/`。执行后台任务的线程数量可以通过 [background_distributed_schedule_pool_size](/operations/server-configuration-parameters/settings#background_distributed_schedule_pool_size) 设置来指定。
 
 如果服务器在对 `Distributed` 表执行 `INSERT` 之后宕机或发生了异常重启（例如由于硬件故障），插入的数据可能会丢失。如果在表目录中检测到损坏的数据部分，它会被移动到 `broken` 子目录中并不再使用。
-
-
 
 ## 读取数据 {#distributed-reading-data}
 
@@ -231,8 +218,6 @@ SETTINGS
 当启用 `max_parallel_replicas` 选项时，查询处理会在单个分片内的所有副本之间并行化。有关更多信息，请参阅 [max_parallel_replicas](../../../operations/settings/settings.md#max_parallel_replicas) 一节。
 
 要了解分布式 `in` 和 `global in` 查询的处理方式，请参阅[此处](/sql-reference/operators/in#distributed-subqueries)的文档。
-
-
 
 ## 虚拟列 {#virtual-columns}
 

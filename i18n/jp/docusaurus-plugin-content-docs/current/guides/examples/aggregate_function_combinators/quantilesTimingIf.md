@@ -7,20 +7,14 @@ sidebar_label: 'quantilesTimingIf'
 doc_type: 'reference'
 ---
 
-
-
 # quantilesTimingIf {#quantilestimingif}
-
-
 
 ## 説明 {#description}
 
 [`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネーターを [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
 関数に適用することで、`quantilesTimingIf` 集約コンビネーター関数を使い、条件が真である行のタイミング値の分位数を計算できます。
 
-
-
-## 使用例
+## 使用例 {#example-usage}
 
 この例では、さまざまなエンドポイントに対する API 応答時間を格納するテーブルを作成し、
 成功したリクエストの応答時間の分位数を計算するために `quantilesTimingIf` を使用します。
@@ -83,7 +77,6 @@ GROUP BY endpoint;
 3. │ ユーザー │ [nan, nan, nan, nan, nan, nan, nan]                                 │
    └────────────┴──────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## 関連項目 {#see-also}
 - [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)

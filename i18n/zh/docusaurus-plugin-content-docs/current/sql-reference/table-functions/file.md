@@ -10,21 +10,17 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
-# file 表函数
+# file 表函数 {#file-table-function}
 
 这是一种表引擎，提供类似表的接口，可对文件执行 SELECT 和 INSERT 操作，类似于 [s3](/sql-reference/table-functions/url.md) 表函数。处理本地文件时使用 `file()`，访问对象存储（例如 S3、GCS 或 MinIO）中的 bucket 时使用 `s3()`。
 
 `file` 函数可以在 `SELECT` 和 `INSERT` 查询中使用，用于从文件读取或向文件写入数据。
 
-
-
-## 语法
+## 语法 {#syntax}
 
 ```sql
 file([path_to_archive ::] 路径 [,格式] [,结构] [,压缩])
 ```
-
 
 ## 参数 {#arguments}
 
@@ -36,17 +32,13 @@ file([path_to_archive ::] 路径 [,格式] [,结构] [,压缩])
 | `structure`       | 表结构。格式：`'column1_name column1_type, column2_name column2_type, ...'`。                                                                                                                                                                                                                                 |
 | `compression`     | 在 `SELECT` 查询中使用时表示现有压缩类型，在 `INSERT` 查询中使用时表示期望的压缩类型。支持的压缩类型有 `gz`、`br`、`xz`、`zst`、`lz4` 和 `bz2`。                                                                                                                          |
 
-
-
 ## 返回值 {#returned_value}
 
 用于从文件读取或向文件写入数据的表。
 
+## 写入文件示例 {#examples-for-writing-to-a-file}
 
-
-## 写入文件示例
-
-### 写入 TSV 文件
+### 写入 TSV 文件 {#write-to-a-tsv-file}
 
 ```sql
 INSERT INTO TABLE FUNCTION
@@ -56,15 +48,14 @@ VALUES (1, 2, 3), (3, 2, 1), (1, 3, 2)
 
 因此，数据被写入 `test.tsv` 文件：
 
-
 ```bash
-# cat /var/lib/clickhouse/user_files/test.tsv
+# cat /var/lib/clickhouse/user_files/test.tsv {#cat-varlibclickhouseuser_filestesttsv}
 1    2    3
 3    2    1
 1    3    2
 ```
 
-### 分区写入多个 TSV 文件
+### 分区写入多个 TSV 文件 {#partitioned-write-to-multiple-tsv-files}
 
 如果在向类型为 `file()` 的表函数中插入数据时指定了 `PARTITION BY` 表达式，则会为每个分区创建一个单独的文件。将数据拆分到多个独立文件有助于提升读取操作的性能。
 
@@ -77,29 +68,24 @@ VALUES (1, 2, 3), (3, 2, 1), (1, 3, 2)
 
 因此，数据会写入三个文件：`test_1.tsv`、`test_2.tsv` 和 `test_3.tsv`。
 
-
 ```bash
-# cat /var/lib/clickhouse/user_files/test_1.tsv
+# cat /var/lib/clickhouse/user_files/test_1.tsv {#cat-varlibclickhouseuser_filestest_1tsv}
 3    2    1
 ```
 
-
-# cat /var/lib/clickhouse/user_files/test_2.tsv
+# cat /var/lib/clickhouse/user_files/test_2.tsv {#cat-varlibclickhouseuser_filestest_2tsv}
 1    3    2
 
-
-
-# cat /var/lib/clickhouse/user&#95;files/test&#95;3.tsv
+# cat /var/lib/clickhouse/user&#95;files/test&#95;3.tsv {#cat-varlibclickhouseuser_filestest_3tsv}
 
 1    2    3
 
 ```
 ```
 
+## 从文件读取的示例 {#examples-for-reading-from-a-file}
 
-## 从文件读取的示例
-
-### 对 CSV 文件执行 SELECT 查询
+### 对 CSV 文件执行 SELECT 查询 {#select-from-a-csv-file}
 
 首先，在服务器配置中设置 `user_files_path`，并准备一个名为 `test.csv` 的文件：
 
@@ -128,7 +114,7 @@ LIMIT 2;
 └─────────┴─────────┴─────────┘
 ```
 
-### 从文件插入数据到表中
+### 从文件插入数据到表中 {#inserting-data-from-a-file-into-a-table}
 
 ```sql
 INSERT INTO FUNCTION
@@ -154,7 +140,6 @@ file('test.csv', 'CSV', 'column1 UInt32, column2 UInt32, column3 UInt32');
 SELECT * FROM file('user_files/archives/archive{1..2}.zip :: table.csv');
 ```
 
-
 ## 路径中的通配符 {#globs-in-path}
 
 路径可以使用通配模式。文件必须匹配整个路径模式，而不仅仅是后缀或前缀。有一个例外：如果路径指向一个已存在的目录并且未使用通配符，则会在路径末尾隐式添加一个 `*`，从而选中该目录中的所有文件。
@@ -167,9 +152,7 @@ SELECT * FROM file('user_files/archives/archive{1..2}.zip :: table.csv');
 
 使用 `{}` 的写法类似于 [remote](remote.md) 和 [hdfs](hdfs.md) 表函数。
 
-
-
-## 示例
+## 示例 {#examples}
 
 **示例**
 
@@ -228,7 +211,6 @@ SELECT count(*) FROM file('big_dir/**', 'CSV', 'name String, value UInt32');
 SELECT count(*) FROM file('big_dir/**/file002', 'CSV', 'name String, value UInt32');
 ```
 
-
 ## 虚拟列 {#virtual-columns}
 
 - `_path` — 文件路径。类型：`LowCardinality(String)`。
@@ -236,9 +218,7 @@ SELECT count(*) FROM file('big_dir/**/file002', 'CSV', 'name String, value UInt3
 - `_size` — 文件大小（以字节为单位）。类型：`Nullable(UInt64)`。如果文件大小未知，则该值为 `NULL`。
 - `_time` — 文件的最后修改时间。类型：`Nullable(DateTime)`。如果时间未知，则该值为 `NULL`。
 
-
-
-## use&#95;hive&#95;partitioning 设置
+## use&#95;hive&#95;partitioning 设置 {#hive-style-partitioning}
 
 当 `use_hive_partitioning` 被设置为 1 时，ClickHouse 会在路径中检测 Hive 风格的分区（`/name=value/`），并允许在查询中将分区列作为虚拟列使用。这些虚拟列的名称与分区路径中的名称相同，但会以 `_` 开头。
 
@@ -250,7 +230,6 @@ SELECT count(*) FROM file('big_dir/**/file002', 'CSV', 'name String, value UInt3
 SELECT * FROM file('data/path/date=*/country=*/code=*/*.parquet') WHERE _date > '2020-01-01' AND _country = 'Netherlands' AND _code = 42;
 ```
 
-
 ## 设置 {#settings}
 
 | 设置项                                                                                                            | 说明                                                                                                                                                                        |
@@ -260,8 +239,6 @@ SELECT * FROM file('data/path/date=*/country=*/code=*/*.parquet') WHERE _date > 
 | [engine_file_allow_create_multiple_files](operations/settings/settings.md#engine_file_allow_create_multiple_files) | 如果格式带有后缀，允许每次插入时创建一个新文件。默认禁用。                                                                                                                    |
 | [engine_file_skip_empty_files](operations/settings/settings.md#engine_file_skip_empty_files)                       | 允许在读取时跳过空文件。默认禁用。                                                                                                                                            |
 | [storage_file_read_method](/operations/settings/settings#engine_file_empty_if_not_exists)                          | 从存储文件读取数据的方法，可选值：`read`、`pread`、`mmap`（仅适用于 clickhouse-local）。默认值：clickhouse-server 为 `pread`，clickhouse-local 为 `mmap`。                     |
-
-
 
 ## 相关内容 {#related}
 

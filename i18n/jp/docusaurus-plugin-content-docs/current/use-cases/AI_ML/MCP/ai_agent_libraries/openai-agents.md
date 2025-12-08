@@ -10,17 +10,13 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-
-
-# ClickHouse MCP Server を使用して OpenAI エージェントを構築する方法
+# ClickHouse MCP Server を使用して OpenAI エージェントを構築する方法 {#how-to-build-an-openai-agent-using-clickhouse-mcp-server}
 
 このガイドでは、[ClickHouse SQL playground](https://sql.clickhouse.com/) と対話できる [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を利用して [OpenAI](https://github.com/openai/openai-agents-python) エージェントを構築する手順を説明します。
 
 :::note サンプルノートブック
 この例は、[examples リポジトリ](https://github.com/ClickHouse/examples/blob/main/ai/mcp/openai-agents/openai-agents.ipynb) 内のノートブックとして提供されています。
 :::
-
-
 
 ## 前提条件 {#prerequisites}
 
@@ -32,8 +28,7 @@ doc_type: 'guide'
 
 <VerticalStepper headerLevel="h2">
 
-
-## ライブラリをインストールする
+## ライブラリをインストールする {#install-libraries}
 
 次のコマンドを実行して、必要なライブラリをインストールします。
 
@@ -42,8 +37,7 @@ pip install -q --upgrade pip
 pip install -q openai-agents
 ```
 
-
-## 認証情報のセットアップ
+## 認証情報のセットアップ {#setup-credentials}
 
 次に、OpenAI API キーを指定する必要があります。
 
@@ -56,8 +50,7 @@ os.environ["OPENAI_API_KEY"] = getpass.getpass("OpenAI APIキーを入力:")
 OpenAI APIキーを入力: ········
 ```
 
-
-## MCP Server と OpenAI エージェントの初期化
+## MCP Server と OpenAI エージェントの初期化 {#initialize-mcp-and-agent}
 
 ここでは、ClickHouse MCP Server を ClickHouse SQL playground を参照するように設定し、
 OpenAI エージェントを初期化して質問させます。
@@ -154,7 +147,6 @@ async with MCPServerStdio(
         async for chunk in result.stream_events():
             simple_render_chunk(chunk)
 ```
-
 
 ```response title="Response"
 Running: What's the biggest GitHub project so far in 2025?

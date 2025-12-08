@@ -7,13 +7,9 @@ title: 'ClickHouse Cloud と Amazon Redshift の比較'
 doc_type: 'guide'
 ---
 
-
-
-# Amazon Redshift から ClickHouse への移行
+# Amazon Redshift から ClickHouse への移行 {#amazon-redshift-to-clickhouse-migration}
 
 > このドキュメントでは、Amazon Redshift から ClickHouse へのデータ移行の概要を説明します。
-
-
 
 ## はじめに {#introduction}
 
@@ -29,8 +25,6 @@ Amazon エコシステムとの緊密な統合により既存の AWS ユーザ�
 より最適化されたソリューションを必要とするケースが少なくありません。その結果として、既存の
 Redshift ワークロードを置き換える、あるいは並行してデプロイする「スピードレイヤー」として、
 より優れたクエリ性能とデータ圧縮のメリットを得るために ClickHouse を選択するケースが増えています。
-
-
 
 ## ClickHouse と Redshift の比較 {#clickhouse-vs-redshift}
 

@@ -20,7 +20,6 @@ import image_9 from '@site/static/images/deployment-guides/parallel-replicas-9.p
 
 <BetaBadge />
 
-
 ## 简介 \{#introduction\}
 
 ClickHouse 处理查询的速度极快，但这些查询是如何在多台服务器之间被分发并并行执行的呢？
@@ -38,22 +37,25 @@ ClickHouse 处理查询的速度极快，但这些查询是如何在多台服务
 上图展示了客户端查询分布式表时发生的过程：
 
 <ol className="docs-ordered-list">
-    <li>
-        SELECT 查询被任意发送到某个节点上的分布式表
-        （通过轮询策略，或在经过负载均衡器路由到特定服务器之后）。
-        该节点随后将作为协调器。
-    </li>
-    <li>
-        节点会根据分布式表中指定的信息，定位需要执行查询的每个分片，
-        并将查询发送给各个分片。
-    </li>
-    <li>
-        每个分片在本地读取、过滤并聚合数据，然后将可合并的中间状态
-        返回给协调器。
-    </li>
-    <li>
-        协调器节点对数据进行合并，然后将响应返回给客户端。
-    </li>
+  <li>
+    SELECT 查询被任意发送到某个节点上的分布式表
+    （通过轮询策略，或在经过负载均衡器路由到特定服务器之后）。
+    该节点随后将作为协调器。
+  </li>
+
+  <li>
+    节点会根据分布式表中指定的信息，定位需要执行查询的每个分片，
+    并将查询发送给各个分片。
+  </li>
+
+  <li>
+    每个分片在本地读取、过滤并聚合数据，然后将可合并的中间状态
+    返回给协调器。
+  </li>
+
+  <li>
+    协调器节点对数据进行合并，然后将响应返回给客户端。
+  </li>
 </ol>
 
 当我们引入副本时，流程基本相同，唯一的区别是每个分片中只有一个副本会执行查询，
@@ -62,7 +64,7 @@ ClickHouse 处理查询的速度极快，但这些查询是如何在多台服务
 ## 非分片架构 \{#non-sharded-architecture\}
 
 ClickHouse Cloud 的架构与上文所介绍的架构有很大差异。
-（参见 ["ClickHouse Cloud Architecture"](https://clickhouse.com/docs/cloud/reference/architecture)
+（参见 [&quot;ClickHouse Cloud Architecture&quot;](https://clickhouse.com/docs/cloud/reference/architecture)
 了解更多详情。）由于计算与存储的分离，以及几乎无限的存储容量，对分片的需求就不那么重要了。
 
 下图展示了 ClickHouse Cloud 的架构：
@@ -86,39 +88,46 @@ Keeper 集群确保我们拥有元数据的唯一可信来源。各个副本可�
 使用并行副本时：
 
 <ol className="docs-ordered-list">
-    <li>
-        来自客户端的查询在经过负载均衡器后被发送到某个节点。该节点成为此查询的协调节点。
-    </li>
-    <li>
-        该节点分析每个 part 的索引，并选择需要处理的合适 part 和粒度。
-    </li>
-    <li>
-        协调节点将工作负载拆分成一组可以分配给不同副本的粒度。
-    </li>
-    <li>
-        每组粒度由相应的副本进行处理，完成后将可合并的中间状态发送给协调节点。
-    </li>
-    <li>
-        最后，协调节点合并来自各副本的所有结果，然后将响应返回给客户端。
-    </li>
+  <li>
+    来自客户端的查询在经过负载均衡器后被发送到某个节点。该节点成为此查询的协调节点。
+  </li>
+
+  <li>
+    该节点分析每个 part 的索引，并选择需要处理的合适 part 和粒度。
+  </li>
+
+  <li>
+    协调节点将工作负载拆分成一组可以分配给不同副本的粒度。
+  </li>
+
+  <li>
+    每组粒度由相应的副本进行处理，完成后将可合并的中间状态发送给协调节点。
+  </li>
+
+  <li>
+    最后，协调节点合并来自各副本的所有结果，然后将响应返回给客户端。
+  </li>
 </ol>
 
 上述步骤描述了并行副本在理论上的工作方式。
 然而在实践中，存在许多因素会阻碍这套逻辑完美运行：
 
 <ol className="docs-ordered-list">
-    <li>
-        某些副本可能不可用。
-    </li>
-    <li>
-        ClickHouse 中的复制是异步的，在某些时间点上，一些副本可能不具有相同的 part。
-    </li>
-    <li>
-        副本之间的尾延迟需要以某种方式进行处理。
-    </li>
-    <li>
-        文件系统缓存会根据各副本上的活动在副本之间有所差异，这意味着随机分配任务在缓存局部性方面可能导致性能不够理想。
-    </li>
+  <li>
+    某些副本可能不可用。
+  </li>
+
+  <li>
+    ClickHouse 中的复制是异步的，在某些时间点上，一些副本可能不具有相同的 part。
+  </li>
+
+  <li>
+    副本之间的尾延迟需要以某种方式进行处理。
+  </li>
+
+  <li>
+    文件系统缓存会根据各副本上的活动在副本之间有所差异，这意味着随机分配任务在缓存局部性方面可能导致性能不够理想。
+  </li>
 </ol>
 
 在接下来的小节中，我们将讨论如何克服这些因素。
@@ -130,18 +139,21 @@ Keeper 集群确保我们拥有元数据的唯一可信来源。各个副本可�
 <Image img={image_4} size="md" alt="Announcements" />
 
 <ol className="docs-ordered-list">
-    <li>
-        来自客户端的查询在经过负载均衡器后被发送到某个节点，该节点成为此查询的协调节点。
-    </li>
-    <li>
-        协调节点发送请求，从集群中所有副本获取公告。副本对于某个表当前分区（parts）集合的视图可能略有不同。因此，我们需要收集这些信息以避免做出错误的调度决策。
-    </li>
-    <li>
-        随后，协调节点使用这些公告来确定一组可分配给不同副本的粒度单元。例如，在这里我们可以看到，没有来自 part 3 的粒度被分配给副本 2，因为该副本在其公告中未声明该分区。还要注意，没有任务被分配给副本 3，因为该副本没有提供公告。
-    </li>
-    <li>
-        在每个副本都处理完其粒度子集上的查询，并将可合并状态发送回协调节点之后，协调节点会合并结果，并将响应返回给客户端。
-    </li>
+  <li>
+    来自客户端的查询在经过负载均衡器后被发送到某个节点，该节点成为此查询的协调节点。
+  </li>
+
+  <li>
+    协调节点发送请求，从集群中所有副本获取公告。副本对于某个表当前分区（parts）集合的视图可能略有不同。因此，我们需要收集这些信息以避免做出错误的调度决策。
+  </li>
+
+  <li>
+    随后，协调节点使用这些公告来确定一组可分配给不同副本的粒度单元。例如，在这里我们可以看到，没有来自 part 3 的粒度被分配给副本 2，因为该副本在其公告中未声明该分区。还要注意，没有任务被分配给副本 3，因为该副本没有提供公告。
+  </li>
+
+  <li>
+    在每个副本都处理完其粒度子集上的查询，并将可合并状态发送回协调节点之后，协调节点会合并结果，并将响应返回给客户端。
+  </li>
 </ol>
 
 ### 动态协调 \{#dynamic-coordination\}
@@ -155,37 +167,41 @@ Keeper 集群确保我们拥有元数据的唯一可信来源。各个副本可�
 <Image img={image_5} size="md" alt="动态协调 - 第 1 部分" />
 
 <ol className="docs-ordered-list">
-    <li>
-        各副本向协调节点表明它们可以处理任务，同时还可以指定各自能够处理的工作量。
-    </li>
-    <li>
-        协调节点将任务分配给这些副本。
-    </li>
+  <li>
+    各副本向协调节点表明它们可以处理任务，同时还可以指定各自能够处理的工作量。
+  </li>
+
+  <li>
+    协调节点将任务分配给这些副本。
+  </li>
 </ol>
 
 <Image img={image_6} size="md" alt="动态协调 - 第 2 部分" />
 
 <ol className="docs-ordered-list">
-    <li>
-        副本 1 和 2 能够非常快速地完成各自的任务，它们会向协调节点请求新的任务。
-    </li>
-    <li>
-        协调节点为副本 1 和 2 分配新的任务。
-    </li>
+  <li>
+    副本 1 和 2 能够非常快速地完成各自的任务，它们会向协调节点请求新的任务。
+  </li>
+
+  <li>
+    协调节点为副本 1 和 2 分配新的任务。
+  </li>
 </ol>
 
 <Image img={image_7} size="md" alt="动态协调 - 第 3 部分" />
 
 <ol className="docs-ordered-list">
-    <li>
-        所有副本现在都已完成各自任务的处理，它们会请求更多任务。
-    </li>
-    <li>
-        协调节点利用公告检查还有哪些任务尚未被处理，但已经没有剩余任务了。
-    </li>
-    <li>
-        协调节点会告知副本所有内容都已处理完成。随后它会合并所有可合并的状态，并返回查询结果。
-    </li>
+  <li>
+    所有副本现在都已完成各自任务的处理，它们会请求更多任务。
+  </li>
+
+  <li>
+    协调节点利用公告检查还有哪些任务尚未被处理，但已经没有剩余任务了。
+  </li>
+
+  <li>
+    协调节点会告知副本所有内容都已处理完成。随后它会合并所有可合并的状态，并返回查询结果。
+  </li>
 </ol>
 
 ### 管理缓存局部性 \{#managing-cache-locality\}
@@ -193,34 +209,38 @@ Keeper 集群确保我们拥有元数据的唯一可信来源。各个副本可�
 最后一个潜在的问题是如何处理缓存局部性。如果多次执行同一个查询，如何确保相同的任务被路由到同一副本？在前面的示例中，我们有如下任务分配：
 
 <table>
-    <thead>
-        <tr>
-            <th></th>
-            <th>副本 1</th>
-            <th>副本 2</th>
-            <th>副本 3</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Part 1</td>
-            <td>g1, g6, g7</td>
-            <td>g2, g4, g5</td>
-            <td>g3</td>
-        </tr>
-        <tr>
-            <td>Part 2</td>
-            <td>g1</td>
-            <td>g2, g4, g5</td>
-            <td>g3</td>
-        </tr>
-        <tr>
-            <td>Part 3</td>
-            <td>g1, g6</td>
-            <td>g2, g4, g5</td>
-            <td>g3</td>
-        </tr>
-    </tbody>
+  <thead>
+    <tr>
+      <th />
+
+      <th>副本 1</th>
+      <th>副本 2</th>
+      <th>副本 3</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>Part 1</td>
+      <td>g1, g6, g7</td>
+      <td>g2, g4, g5</td>
+      <td>g3</td>
+    </tr>
+
+    <tr>
+      <td>Part 2</td>
+      <td>g1</td>
+      <td>g2, g4, g5</td>
+      <td>g3</td>
+    </tr>
+
+    <tr>
+      <td>Part 3</td>
+      <td>g1, g6</td>
+      <td>g2, g4, g5</td>
+      <td>g3</td>
+    </tr>
+  </tbody>
 </table>
 
 为了确保相同的任务被分配到同一副本并能从缓存中获益，会进行两步操作：首先计算分片 + 一组 granule（即一个任务）的哈希值；然后对副本数量取模以进行任务分配。
@@ -252,13 +272,13 @@ Keeper 集群确保我们拥有元数据的唯一可信来源。各个副本可�
 
 | Setting                                            | Description                                                                                                                                                                                                                                                         |
 |----------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `enable_parallel_replicas`                         | `0`: 禁用<br/> `1`: 启用 <br/>`2`: 强制启用并行副本，如果无法使用并行副本则抛出异常。                                                                                                                                                          |
+| `enable_parallel_replicas`                         | `0`: 禁用<br /> `1`: 启用 <br />`2`: 强制启用并行副本，如果无法使用并行副本则抛出异常。                                                                                                                                                          |
 | `cluster_for_parallel_replicas`                    | 用于并行副本的集群名称；如果你使用的是 ClickHouse Cloud，请使用 `default`。                                                                                                                                                                 |
 | `max_parallel_replicas`                            | 在多个副本上执行查询时可使用的最大副本数；如果指定的值小于集群中的副本数，则会随机选择节点。此值也可以设置得高于实际副本数，以预留水平扩展空间。 |
-| `parallel_replicas_min_number_of_rows_per_replica` | 用于根据需要处理的行数来限制所使用的副本数量，实际使用的副本数定义为：<br/> `estimated rows to read` / `min_number_of_rows_per_replica`。                                                               |
-| `allow_experimental_analyzer`                      | `0`: 使用旧分析器<br/> `1`: 使用新分析器。 <br/><br/>并行副本的行为可能会因所使用的分析器不同而发生变化。                                                                                                                                    |
+| `parallel_replicas_min_number_of_rows_per_replica` | 用于根据需要处理的行数来限制所使用的副本数量，实际使用的副本数定义为：<br /> `estimated rows to read` / `min_number_of_rows_per_replica`。                                                               |
+| `allow_experimental_analyzer`                      | `0`: 使用旧分析器<br /> `1`: 使用新分析器。 <br /><br />并行副本的行为可能会因所使用的分析器不同而发生变化。                                                                                                                                    |
 
-## 排查并行副本相关问题
+## 排查并行副本相关问题 \{#investigating-issues-with-parallel-replicas\}
 
 你可以在 [`system.query_log`](/docs/operations/system-tables/query_log) 表中检查每个查询实际使用的设置。你也可以查看 [`system.events`](/docs/operations/system-tables/events) 表，了解服务器上发生的所有事件，并使用 [`clusterAllReplicas`](/docs/sql-reference/table-functions/cluster) 表函数查看所有副本上的表（如果你是云用户，请将集群名设为 `default`）。
 
@@ -269,7 +289,6 @@ SELECT
 FROM clusterAllReplicas('default', system.events)
 WHERE event ILIKE '%ParallelReplicas%'
 ```
-
 
 <details>
   <summary>响应</summary>
@@ -330,7 +349,6 @@ FROM clusterAllReplicas('default', system.text_log)
 WHERE query_id = 'ad40c712-d25d-45c4-b1a1-a28ba8d4019c'
 ORDER BY event_time_microseconds ASC
 ```
-
 
 <details>
   <summary>响应</summary>

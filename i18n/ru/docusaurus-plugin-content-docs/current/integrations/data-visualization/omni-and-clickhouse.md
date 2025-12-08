@@ -7,26 +7,21 @@ title: 'Omni'
 doc_type: 'guide'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import omni_01 from '@site/static/images/integrations/data-visualization/omni_01.png';
 import omni_02 from '@site/static/images/integrations/data-visualization/omni_02.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
-# Omni
+# Omni {#omni}
 
 <PartnerBadge/>
 
 Omni может подключаться к ClickHouse Cloud или к локальному развертыванию ClickHouse через официальный источник данных ClickHouse.
 
-
-
 ## 1. Соберите данные для подключения {#1-gather-your-connection-details}
 
 <ConnectionDetails />
-
-
 
 ## 2. Создайте источник данных ClickHouse {#2-create-a-clickhouse-data-source}
 

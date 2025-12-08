@@ -10,7 +10,7 @@ keywords: ['clickstack', 'kubernetes', 'logs', 'observability', 'container monit
 ---
 
 import Image from '@theme/IdealImage';
-import DemoArchitecture from '@site/docs/use-cases/observability/clickstack/example-datasets/_snippets/_demo.md';
+import DemoArchitecture from '@site/i18n/zh/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/example-datasets/_snippets/_demo.md';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
 import hyperdx_kubernetes_data from '@site/static/images/use-cases/observability/hyperdx-kubernetes-data.png';
 import copy_api_key from '@site/static/images/use-cases/observability/copy_api_key.png';
@@ -22,7 +22,6 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 本指南帮助你从 Kubernetes 系统中收集日志和指标，并将其发送到 **ClickStack** 进行可视化和分析。作为演示数据，我们可以选择使用 ClickStack 维护的官方 OpenTelemetry 演示应用的 fork。
 
 <iframe width="768" height="432" src="https://www.youtube.com/embed/winI7256Ejk?si=TRThhzCJdq87xg_x" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
-
 
 ## 前置条件 {#prerequisites}
 

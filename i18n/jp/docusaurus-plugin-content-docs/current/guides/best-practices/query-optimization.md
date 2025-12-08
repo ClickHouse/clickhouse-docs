@@ -10,12 +10,9 @@ keywords: ['クエリ最適化', 'パフォーマンス', 'ベストプラクテ
 import queryOptimizationDiagram1 from '@site/static/images/guides/best-practices/query_optimization_diagram_1.png';
 import Image from '@theme/IdealImage';
 
-
-# クエリ最適化のためのシンプルガイド
+# クエリ最適化のためのシンプルガイド {#a-simple-guide-for-query-optimization}
 
 このセクションでは、一般的なシナリオを通じて [analyzer](/operations/analyzer)、[query profiling](/operations/optimizing-performance/sampling-query-profiler)、[avoid nullable Columns](/optimize/avoid-nullable-columns) など、さまざまなパフォーマンス最適化手法の使い方を示し、ClickHouse のクエリ性能を向上させる方法を説明します。
-
-
 
 ## クエリのパフォーマンスを理解する {#understand-query-performance}
 
@@ -28,8 +25,6 @@ import Image from '@theme/IdealImage';
 ClickHouse には、クエリがどのように実行され、その実行にどの程度のリソースが消費されたかを理解するための豊富なツールセットがあります。 
 
 このセクションでは、それらのツールとその使い方を見ていきます。 
-
-
 
 ## 全般的な考慮事項 {#general-considerations}
 
@@ -59,9 +54,7 @@ ClickHouse には、クエリがどのように実行され、その実行にど
 
 このような高レベルの理解を踏まえて、ClickHouse が提供するツールと、それらを用いてクエリパフォーマンスに影響するメトリクスをどのように追跡できるかを見ていきましょう。 
 
-
-
-## データセット
+## データセット {#dataset}
 
 実際の例を用いて、クエリ性能へのアプローチを説明します。 
 
@@ -111,10 +104,9 @@ CREATE TABLE nyc_taxi.trips_small_inferred
 ORDER BY tuple()
 ```
 
+## 遅いクエリを見つける {#spot-the-slow-queries}
 
-## 遅いクエリを見つける
-
-### クエリログ
+### クエリログ {#query-logs}
 
 デフォルトでは、ClickHouse は実行された各クエリに関する情報を収集し、[クエリログ](/operations/system-tables/query_log) に書き込みます。このデータはテーブル `system.query_log` に保存されます。 
 
@@ -227,7 +219,6 @@ tables:            ['nyc_taxi.trips_small_inferred']
 
 また、どのクエリがシステムに負荷をかけているかを把握するために、最も多くのメモリや CPU を消費しているクエリを調べたくなる場合もあるでしょう。
 
-
 ```sql
 -- メモリ使用量上位のクエリ
 SELECT
@@ -324,7 +315,6 @@ SELECT count()
 FROM nyc_taxi.trips_small_inferred
 ```
 
-
 Query id: 733372c5-deaf-4719-94e3-261540933b23
 
 ┌───count()─┐
@@ -402,12 +392,9 @@ Query id: c7e11e7b-d970-4e35-936c-ecfc24e3b879
 12. │             MergeTreeSelect(pool: PrefetchedReadPool, algorithm: Thread) × 59 0 → 1 │
 ```
 
-
 ここでは、クエリの実行に使用されたスレッド数を確認できます。59 スレッドが使用されており、高い並列度で実行されていることを示しています。これにより、より小規模なマシンで実行した場合よりもクエリの実行が高速になります。同時に実行されるスレッド数が多いことが、クエリが大量のメモリを消費している理由になり得ます。
 
 理想的には、すべての遅いクエリについて同じ手順で調査を行い、不要に複雑なクエリプランを特定するとともに、各クエリで読み取られる行数や消費されるリソースを把握することが望ましいです。
-
-
 
 ## 手法 {#methodology}
 
@@ -429,9 +416,7 @@ Query id: c7e11e7b-d970-4e35-936c-ecfc24e3b879
 
 _最後に、外れ値には注意してください。ユーザーがアドホックで高コストなクエリを実行した場合や、別の理由でシステムに負荷がかかっていた場合など、クエリが遅く実行されることはよくあります。定期的に実行されている高コストなクエリを特定するには、フィールド normalized_query_hash でグルーピングすることができます。そうしたクエリこそ、優先的に調査すべき対象である可能性が高いです。_
 
-
-
-## 基本的な最適化
+## 基本的な最適化 {#basic-optimization}
 
 テスト用のフレームワークが用意できたので、ここから最適化を始めていきます。
 
@@ -439,7 +424,7 @@ _最後に、外れ値には注意してください。ユーザーがアドホ�
 
 データをどのように取り込んだかによっては、インジェストされたデータに基づいてテーブルスキーマを推論するために、ClickHouse の[機能](/interfaces/schema-inference)を利用しているかもしれません。これは使い始めるうえでは非常に便利ですが、クエリ性能を最適化したい場合は、ユースケースに最も適した形になるようテーブルスキーマを見直す必要があります。
 
-### Nullable
+### Nullable {#nullable}
 
 [ベストプラクティスのドキュメント](/best-practices/select-data-types#avoid-nullable-columns)に記載されているとおり、可能な限り Nullable 列は避けてください。データのインジェスト機構を柔軟にできるため多用したくなりますが、そのたびに余分な列を処理する必要があるため、パフォーマンスに悪影響を与えます。
 
@@ -485,7 +470,7 @@ dropoff_location_id_nulls: 0
 
 `null` 値を含む列は `mta_tax` と `payment_type` の 2 つだけです。その他のフィールドは `Nullable` 列にする必要はありません。
 
-### 低カーディナリティ
+### 低カーディナリティ {#low-cardinality}
 
 String 型に対して簡単に適用できる最適化として、LowCardinality データ型を有効活用する方法があります。低カーディナリティに関しては [ドキュメント](/sql-reference/data-types/lowcardinality) に記載されているとおり、ClickHouse は LowCardinality 型の列に辞書エンコーディングを適用し、クエリ性能を大きく向上させます。 
 
@@ -515,12 +500,11 @@ uniq(vendor_id):           3
 
 カーディナリティが低い場合、これら 4 つのカラム `ratecode_id`、`pickup_location_id`、`dropoff_location_id`、`vendor_id` は、LowCardinality データ型の有力な候補となります。
 
-### データ型の最適化
+### データ型の最適化 {#optimize-data-type}
 
 ClickHouse は多数のデータ型をサポートしています。パフォーマンスを最適化し、ディスク上のデータ保存容量を削減するために、ユースケースに適合する範囲で可能な限り小さいデータ型を選択してください。 
 
 数値については、データセット内の最小値と最大値を確認し、現在使用している型の精度（桁数やビット幅など）が、データセットの実際の値の範囲に見合っているかどうかを検証できます。
-
 
 ```sql
 -- payment_type フィールドの最小値/最大値を取得
@@ -538,7 +522,7 @@ Query id: 4306a8e1-2a9c-4b06-97b4-4d902d2233eb
 
 日付の精度は、データセットに合致し、実行する予定のクエリに最も適したものを選択してください。
 
-### 最適化を適用する
+### 最適化を適用する {#apply-the-optimizations}
 
 最適化済みのスキーマを使用する新しいテーブルを作成し、データを再取り込みします。
 
@@ -603,8 +587,7 @@ Query id: 72b5eb1c-ff33-4fdb-9d29-dd076ac6f532
 
 新しいテーブルは、以前のテーブルと比べてかなり小さくなっています。テーブル全体のディスク使用量は約 34% 削減されており、7.38 GiB から 4.89 GiB になっています。
 
-
-## 主キーの重要性
+## 主キーの重要性 {#the-importance-of-primary-keys}
 
 ClickHouse における主キーは、多くの従来型データベースシステムとは異なる動作をします。従来のシステムでは、主キーは一意性とデータ整合性を保証します。重複した主キー値を挿入しようとすると拒否され、通常、高速な検索のために B-tree またはハッシュベースのインデックスが作成されます。 
 
@@ -616,7 +599,7 @@ ClickHouse では、主キーの[目的](/guides/best-practices/sparse-primary-i
 
 ClickHouse がサポートしている他のオプション（Projection やマテリアライズドビューなど）を使うことで、同じデータに対して異なる主キーのセットを利用することもできます。このブログシリーズの第 2 部では、この点についてさらに詳しく説明します。 
 
-### 主キーを選択する
+### 主キーを選択する {#choose-primary-keys}
 
 正しい主キーのセットを選択することは複雑なテーマであり、最適な組み合わせを見つけるにはトレードオフや試行錯誤が必要になる場合があります。 
 
@@ -697,7 +680,6 @@ INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
     </tr>
   </tbody>
 </table>
-
 
 <table>
   <thead>
@@ -815,7 +797,6 @@ ORDER BY trip_count DESC
 ```
 
 主キーにより、テーブル内のグラニュールの一部だけが選択されました。これだけでも ClickHouse が処理するデータ量が大幅に減るため、クエリのパフォーマンスは大きく向上します。
-
 
 ## 次のステップ {#next-steps}
 

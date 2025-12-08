@@ -7,11 +7,7 @@ sidebar_label: 'avgResample'
 doc_type: 'reference'
 ---
 
-
-
 # countResample {#countResample}
-
-
 
 ## 描述 {#description}
 
@@ -19,11 +15,9 @@ doc_type: 'reference'
 组合器可以应用于 [`count`](/sql-reference/aggregate-functions/reference/count)
 聚合函数，用于在固定数量的区间（`N`）内统计指定键列的取值次数。
 
+## 示例用法 {#example-usage}
 
-
-## 示例用法
-
-### 基本示例
+### 基本示例 {#basic-example}
 
 来看一个示例。我们将创建一张包含员工 `name`、`age` 和 `wage` 的表，并向其中插入一些数据：
 
@@ -64,7 +58,6 @@ FROM avg_wage;
 │ [11.5,12.95]     │
 └──────────────────┘
 ```
-
 
 ## 另请参阅 {#see-also}
 - [`count`](/sql-reference/aggregate-functions/reference/count)

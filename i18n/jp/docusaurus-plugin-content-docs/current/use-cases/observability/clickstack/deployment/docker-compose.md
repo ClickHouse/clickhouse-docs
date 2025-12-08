@@ -12,7 +12,7 @@ keywords: ['ClickStack Docker Compose', 'Docker Compose ClickHouse', 'HyperDX Do
 import Image from '@theme/IdealImage';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
 import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
-import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
+import JSONSupport from '@site/i18n/jp/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
 すべての ClickStack コンポーネントは、個別の Docker イメージとして提供されています。
 
@@ -33,7 +33,6 @@ Docker Compose は、デフォルトの `otel-collector` セットアップに�
 
 これらのポートにより、多様なテレメトリソースとの連携が可能になり、OpenTelemetry collector はさまざまなインジェスト要件に対応できる本番運用向けの構成になります。
 
-
 ### 適しているケース {#suitable-for}
 
 * ローカルでのテスト
@@ -49,10 +48,10 @@ Docker Compose は、デフォルトの `otel-collector` セットアップに�
 
 ### リポジトリをクローンする {#clone-the-repo}
 
-Docker Compose を使用してデプロイするには、HyperDX リポジトリをクローンし、そのディレクトリに移動して `docker-compose up` を実行します:
+Docker Compose を使用してデプロイするには、ClickStack リポジトリをクローンし、そのディレクトリに移動して `docker-compose up` を実行します:
 
 ```shell
-git clone git@github.com:hyperdxio/hyperdx.git
+git clone https://github.com/ClickHouse/ClickStack.git
 docker compose up
 ```
 
@@ -62,7 +61,7 @@ docker compose up
 
 ユーザー名と、要件を満たすパスワードを入力してユーザーを作成します。 
 
-`Create` をクリックすると、Helm チャートでデプロイされた ClickHouse インスタンス用のデータソースが作成されます。
+`Create` をクリックすると、Docker Compose でデプロイされた ClickHouse インスタンス用のデータソースが作成されます。
 
 :::note 既定の接続の上書き
 統合された ClickHouse インスタンスへの既定の接続は上書きできます。詳細については、「[Using ClickHouse Cloud](#using-clickhouse-cloud)」を参照してください。
@@ -84,36 +83,32 @@ docker compose up
 
 </VerticalStepper>
 
-## compose 設定の変更
+## compose 設定の変更 {#modifying-settings}
 
 ユーザーは、使用するバージョンなどのスタック設定を、環境変数ファイルで変更できます。
 
 ```shell
-user@example-host hyperdx % cat .env
-# docker-compose.yml で使用
-# docker-compose.yml で使用
-HDX_IMAGE_REPO=docker.hyperdx.io
-IMAGE_NAME=ghcr.io/hyperdxio/hyperdx
-IMAGE_NAME_DOCKERHUB=hyperdx/hyperdx
-LOCAL_IMAGE_NAME=ghcr.io/hyperdxio/hyperdx-local
-LOCAL_IMAGE_NAME_DOCKERHUB=hyperdx/hyperdx-local
-ALL_IN_ONE_IMAGE_NAME=ghcr.io/hyperdxio/hyperdx-all-in-one
-ALL_IN_ONE_IMAGE_NAME_DOCKERHUB=hyperdx/hyperdx-all-in-one
-OTEL_COLLECTOR_IMAGE_NAME=ghcr.io/hyperdxio/hyperdx-otel-collector
-OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB=hyperdx/hyperdx-otel-collector
-CODE_VERSION=2.0.0-beta.16
-IMAGE_VERSION_SUB_TAG=.16
-IMAGE_VERSION=2-beta
-IMAGE_NIGHTLY_TAG=2-nightly
+user@example-host clickstack % cat .env
 
-# ドメイン URL の設定
-HYPERDX_API_PORT=8000 # 任意（他のサービスで使用されていないポートを指定すること）
+# Used by docker-compose.yml
+IMAGE_NAME_DOCKERHUB=clickhouse/clickstack-all-in-one
+LOCAL_IMAGE_NAME_DOCKERHUB=clickhouse/clickstack-local
+ALL_IN_ONE_IMAGE_NAME_DOCKERHUB=clickhouse/clickstack-all-in-one
+OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB=clickhouse/clickstack-otel-collector
+CODE_VERSION=2.8.0
+IMAGE_VERSION_SUB_TAG=.8.0
+IMAGE_VERSION=2
+IMAGE_NIGHTLY_TAG=2-nightly
+IMAGE_LATEST_TAG=latest
+
+# Set up domain URLs
+HYPERDX_API_PORT=8000 #optional (should not be taken by other services)
 HYPERDX_APP_PORT=8080
 HYPERDX_APP_URL=http://localhost
 HYPERDX_LOG_LEVEL=debug
 HYPERDX_OPAMP_PORT=4320
 
-# OTel/ClickHouse 設定
+# Otel/Clickhouse config
 HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 ```
 
@@ -122,17 +117,17 @@ HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 
 必要に応じて OTel collector の設定を変更できます。設定の変更方法の詳細は、["Modifying configuration"](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration) を参照してください。
 
-## ClickHouse Cloud を使用する
+## ClickHouse Cloud を使用する {#using-clickhouse-cloud}
 
 このディストリビューションは ClickHouse Cloud と併用できます。ユーザーは次の手順を実行してください:
 
-* `docker-compose.yaml` ファイルから ClickHouse のサービスを削除します。テスト用途であれば任意で、削除しない場合はデプロイされた ClickHouse インスタンスは単に無視されますが、ローカルリソースを無駄に消費します。サービスを削除する場合は、`depends_on` など当該サービスへの参照も削除してください。
+* `docker-compose.yml` ファイルから ClickHouse のサービスを削除します。テスト用途であれば任意で、削除しない場合はデプロイされた ClickHouse インスタンスは単に無視されますが、ローカルリソースを無駄に消費します。サービスを削除する場合は、`depends_on` など当該サービスへの参照も削除してください。
 
 * compose ファイル内で環境変数 `CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USER`、`CLICKHOUSE_PASSWORD` を設定し、OTel collector が ClickHouse Cloud インスタンスを使用するように変更します。具体的には、OTel collector サービスにこれらの環境変数を追加します:
 
   ```shell
   otel-collector:
-      image: ${OTEL_COLLECTOR_IMAGE_NAME}:${IMAGE_VERSION}
+      image: ${OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
       environment:
         CLICKHOUSE_ENDPOINT: '<CLICKHOUSE_ENDPOINT>' # ここに https エンドポイントを指定
         CLICKHOUSE_USER: '<CLICKHOUSE_USER>'
@@ -157,25 +152,25 @@ HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 
 <JSONSupport />
 
-これらを設定するには、`docker-compose.yaml` 内の該当するサービスを編集します:
+これらを設定するには、`docker-compose.yml` 内の該当するサービスを編集します:
 
 ```yaml
   app:
-    image: ${HDX_IMAGE_REPO}/${IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
+    image: ${IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
     ports:
       - ${HYPERDX_API_PORT}:${HYPERDX_API_PORT}
       - ${HYPERDX_APP_PORT}:${HYPERDX_APP_PORT}
     environment:
-      BETA_CH_OTEL_JSON_SCHEMA_ENABLED: true # JSONを有効化
+      BETA_CH_OTEL_JSON_SCHEMA_ENABLED: true # enable JSON
       FRONTEND_URL: ${HYPERDX_APP_URL}:${HYPERDX_APP_PORT}
       HYPERDX_API_KEY: ${HYPERDX_API_KEY}
       HYPERDX_API_PORT: ${HYPERDX_API_PORT}
-    # 簡潔さのため省略
+    # truncated for brevity
 
   otel-collector:
-    image: ${HDX_IMAGE_REPO}/${OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
+    image: ${OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
     environment:
-      OTEL_AGENT_FEATURE_GATE_ARG: '--feature-gates=clickhouse.json' # JSONを有効化
+      OTEL_AGENT_FEATURE_GATE_ARG: '--feature-gates=clickhouse.json' # enable JSON
       CLICKHOUSE_ENDPOINT: 'tcp://ch-server:9000?dial_timeout=10s' 
-      # 簡潔さのため省略
+      # truncated for brevity
 ```

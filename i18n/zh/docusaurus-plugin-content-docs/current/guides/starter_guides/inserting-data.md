@@ -11,7 +11,6 @@ doc_type: 'guide'
 import postgres_inserts from '@site/static/images/guides/postgres-inserts.png';
 import Image from '@theme/IdealImage';
 
-
 ## 将数据写入 ClickHouse 与 OLTP 数据库的对比 {#inserting-into-clickhouse-vs-oltp-databases}
 
 作为一款 OLAP（联机分析处理，Online Analytical Processing）数据库，ClickHouse 针对高性能和可扩展性进行了优化，最高可支持每秒插入数百万行数据。
@@ -24,8 +23,6 @@ PostgreSQL 使用 MVCC（多版本并发控制，Multi-Version Concurrency Contr
 
 为了在保持强一致性保证的同时获得高插入性能，用户在向 ClickHouse 插入数据时应遵循下文所述的一些简单规则。
 遵循这些规则将有助于避免用户在首次使用 ClickHouse 时，尝试照搬适用于 OLTP 数据库的插入策略而常见的问题。
-
-
 
 ## 插入操作最佳实践 {#best-practices-for-inserts}
 
@@ -83,8 +80,6 @@ PostgreSQL 使用 MVCC（多版本并发控制，Multi-Version Concurrency Contr
 :::note
 请注意，在数据被刷新到数据库存储之前，查询无法检索到这些数据；缓冲区刷新的时机是可配置的。
 
-
-
 有关配置异步插入的完整细节请参见[此处](/optimize/asynchronous-inserts#enabling-asynchronous-inserts)，更深入的讲解请参见[这里](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)。
 :::
 
@@ -120,9 +115,7 @@ ClickHouse 在插入（以及查询）时支持多种[输入格式](/interfaces/
 
 更多详情请参见 [HTTP 接口](/interfaces/http)。
 
-
-
-## 基本示例
+## 基本示例 {#basic-example}
 
 你可以在 ClickHouse 中使用熟悉的 `INSERT INTO TABLE` 命令。现在让我们向在入门指南[“在 ClickHouse 中创建表”](./creating-tables)中创建的表插入一些数据。
 
@@ -150,7 +143,6 @@ user_id message                                             timestamp           
 102         根据常用查询对数据进行排序  2024-11-13 00:00:00     2.718
 ```
 
-
 ## 从 Postgres 加载数据 {#loading-data-from-postgres}
 
 要从 Postgres 加载数据，用户可以使用：
@@ -164,8 +156,6 @@ user_id message                                             timestamp           
 :::note 需要帮助插入大型数据集？
 如果您在插入大型数据集时需要帮助，或在向 ClickHouse Cloud 导入数据时遇到任何错误，请通过 support@clickhouse.com 联系我们，我们会提供协助。
 :::
-
-
 
 ## 从命令行插入数据 {#inserting-data-from-command-line}
 

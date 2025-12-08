@@ -7,9 +7,7 @@ doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'cdc', 'データインジェスト', 'リアルタイム同期']
 ---
 
-
-
-# ClickHouse での JSON の取り扱い
+# ClickHouse での JSON の取り扱い {#working-with-json-in-clickhouse}
 
 このガイドでは、MongoDB から ClickPipes 経由で ClickHouse にレプリケートされた JSON データを扱う際の、一般的なパターンを説明します。
 
@@ -52,8 +50,7 @@ _peerdb_is_deleted: 0
 _peerdb_version:    0
 ```
 
-
-## テーブルスキーマ
+## テーブルスキーマ {#table-schema}
 
 レプリケートされたテーブルは、以下の標準スキーマを使用します。
 
@@ -73,7 +70,7 @@ _peerdb_version:    0
 * `_peerdb_version`: 行のバージョンを追跡し、行が更新または削除されるとインクリメントされる
 * `_peerdb_is_deleted`: 行が削除されているかどうかを示す
 
-### ReplacingMergeTree テーブルエンジン
+### ReplacingMergeTree テーブルエンジン {#replacingmergetree-table-engine}
 
 ClickPipes は、MongoDB コレクションを `ReplacingMergeTree` テーブルエンジンファミリーを使用して ClickHouse にマッピングします。このエンジンでは、特定のプライマリキー（`_id`）に対して、ドキュメントのより新しいバージョン（`_peerdb_version`）を持つ挿入として更新を表現し、更新・置換・削除をバージョン付き挿入として効率的に処理できます。
 
@@ -83,7 +80,7 @@ ClickPipes は、MongoDB コレクションを `ReplacingMergeTree` テーブル
 SELECT * FROM t1 FINAL;
 ```
 
-### 削除の扱い
+### 削除の扱い {#handling-deletes}
 
 MongoDB からの削除は、`_peerdb_is_deleted` カラムで削除済みとしてマークされた新しい行として伝播されます。クエリでは通常、これらをフィルターで除外します。
 
@@ -98,8 +95,7 @@ CREATE ROW POLICY policy_name ON t1
 FOR SELECT USING _peerdb_is_deleted = 0;
 ```
 
-
-## JSONデータのクエリ
+## JSONデータのクエリ {#querying-json-data}
 
 ドット構文を使用して、JSONフィールドを直接クエリできます。
 
@@ -128,7 +124,7 @@ SELECT doc.^shipping as shipping_info FROM t1;
 └────────────────────────────────────────────────────┘
 ```
 
-### Dynamic 型
+### Dynamic 型 {#dynamic-type}
 
 ClickHouse では、JSON の各フィールドは `Dynamic` 型になります。Dynamic 型を使うと、事前に型を知っておくことなく、任意の型の値を ClickHouse に保存できます。これは `toTypeName` 関数で確認できます。
 
@@ -196,7 +192,7 @@ SELECT length(doc.items) AS item_count FROM t1;
 └────────────┘
 ```
 
-### フィールドのキャスト
+### フィールドのキャスト {#field-casting}
 
 ClickHouse の[集約関数](https://clickhouse.com/docs/sql-reference/aggregate-functions/combinators)は、dynamic 型を直接扱うことはできません。たとえば、dynamic 型に対して `sum` 関数を直接使用しようとすると、次のエラーが発生します。
 
@@ -221,10 +217,9 @@ SELECT sum(doc.shipping.cost::Float32) AS shipping_cost FROM t1;
 `dynamicType` によって決定される基になるデータ型への dynamic 型からのキャストは非常に高パフォーマンスです。これは、ClickHouse が内部的に、値をすでにその基になる型で保存しているためです。
 :::
 
+## JSON のフラット化 {#flattening-json}
 
-## JSON のフラット化
-
-### 通常ビュー
+### 通常ビュー {#normal-view}
 
 JSON テーブルに対して通常ビューを作成し、フラット化／キャスト／変換ロジックをカプセル化することで、リレーショナルテーブルと同様の形式でデータをクエリできるようにできます。通常ビューは基盤となるデータではなくクエリ自体のみを保存するため、軽量です。例えば次のように作成できます:
 
@@ -271,7 +266,7 @@ ORDER BY customer_id DESC
 LIMIT 10;
 ```
 
-### リフレッシュ可能なマテリアライズドビュー
+### リフレッシュ可能なマテリアライズドビュー {#refreshable-materialized-view}
 
 [リフレッシュ可能なマテリアライズドビュー](https://clickhouse.com/docs/materialized-view/refreshable-materialized-view)を作成できます。これにより、行の重複排除を行うクエリの実行をスケジューリングし、その結果をフラット化された宛先テーブルに保存できます。各リフレッシュのたびに、宛先テーブルは最新のクエリ結果で置き換えられます。
 
@@ -321,10 +316,9 @@ ORDER BY customer_id DESC
 LIMIT 10;
 ```
 
-### 増分マテリアライズドビュー
+### 増分マテリアライズドビュー {#incremental-materialized-view}
 
 フラット化されたカラムにリアルタイムでアクセスしたい場合は、[増分マテリアライズドビュー](https://clickhouse.com/docs/materialized-view/incremental-materialized-view) を作成できます。テーブルに頻繁に更新が行われる場合は、更新のたびにマージが発生するため、マテリアライズドビューで `FINAL` 修飾子を使用することは推奨されません。代わりに、マテリアライズドビューの上に通常のビューを作成し、クエリ時にデータの重複排除を行うようにします。
-
 
 ```sql
 CREATE TABLE flattened_t1 (

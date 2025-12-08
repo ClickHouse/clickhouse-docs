@@ -7,35 +7,26 @@ title: 'sqlite'
 doc_type: 'reference'
 ---
 
-
-
-# sqlite テーブル関数
+# sqlite テーブル関数 {#sqlite-table-function}
 
 [SQLite](../../engines/database-engines/sqlite.md) データベースに保存されているデータに対してクエリを実行できます。
 
-
-
-## 構文
+## 構文 {#syntax}
 
 ```sql
 sqlite('db_path', 'table_name')
 ```
-
 
 ## 引数 {#arguments}
 
 - `db_path` — SQLite データベースファイルへのパス。[String](../../sql-reference/data-types/string.md)。
 - `table_name` — SQLite データベース内のテーブル名。[String](../../sql-reference/data-types/string.md)。
 
-
-
 ## 戻り値 {#returned_value}
 
 - 元の `SQLite` テーブルと同じ列を持つテーブルオブジェクト。
 
-
-
-## 例
+## 例 {#example}
 
 クエリ：
 
@@ -52,7 +43,6 @@ SELECT * FROM sqlite('sqlite.db', 'table1') ORDER BY col2;
 │ line3 │    3 │
 └───────┴──────┘
 ```
-
 
 ## 関連項目 {#related}
 

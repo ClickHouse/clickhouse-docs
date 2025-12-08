@@ -29,7 +29,6 @@ Databricks はレイクハウス向けに複数のデータ形式をサポート
 `SET allow_experimental_database_unity_catalog = 1;`
 :::
 
-
 ## Databricks での Unity の構成 {#configuring-unity-in-databricks}
 
 ClickHouse が Unity カタログと連携できるようにするには、Unity Catalog を外部リーダーとの連携を許可するように構成しておく必要があります。これは、[「Unity Catalog への外部データ アクセスを有効にする」](https://docs.databricks.com/aws/en/external-access/admin) ガイドに従うことで実現できます。
@@ -46,7 +45,7 @@ ClickHouse が Unity カタログと連携できるようにするには、Unity
 
 Unity Catalog の設定と認証が完了したら、ClickHouse と Unity Catalog の間に接続を確立します。
 
-### Delta の読み込み
+### Delta の読み込み {#read-delta}
 
 ```sql
 CREATE DATABASE unity
@@ -54,8 +53,7 @@ ENGINE = DataLakeCatalog('https://<workspace-id>.cloud.databricks.com/api/2.1/un
 SETTINGS warehouse = 'CATALOG_NAME', catalog_credential = '<PAT>', catalog_type = 'unity'
 ```
 
-
-### Iceberg を読み込む
+### Iceberg を読み込む {#read-iceberg}
 
 ```sql
 CREATE DATABASE unity
@@ -64,8 +62,7 @@ SETTINGS catalog_type = 'rest', catalog_credential = '<client-id>:<client-secret
 oauth_server_uri = 'https://<workspace-id>.cloud.databricks.com/oidc/v1/token', auth_scope = 'all-apis,sql'
 ```
 
-
-## ClickHouse を使用して Unity カタログのテーブルをクエリする
+## ClickHouse を使用して Unity カタログのテーブルをクエリする {#querying-unity-catalog-tables-using-clickhouse}
 
 接続が確立できたので、Unity カタログ経由でクエリを実行できるようになりました。例えば次のように実行します。
 
@@ -155,8 +152,7 @@ ENGINE = Iceberg('s3://<path>);
 
 ```
 
-
-## データレイクから ClickHouse へのデータの読み込み
+## データレイクから ClickHouse へのデータの読み込み {#loading-data-from-your-data-lake-into-clickhouse}
 
 Databricks から ClickHouse にデータを読み込む必要がある場合は、まずローカルの ClickHouse テーブルを作成します。
 

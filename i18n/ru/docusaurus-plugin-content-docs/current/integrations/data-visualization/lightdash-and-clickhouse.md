@@ -17,12 +17,11 @@ import lightdash_03 from '@site/static/images/integrations/data-visualization/li
 import lightdash_04 from '@site/static/images/integrations/data-visualization/lightdash_04.png';
 import lightdash_05 from '@site/static/images/integrations/data-visualization/lightdash_05.png';
 import lightdash_06 from '@site/static/images/integrations/data-visualization/lightdash_06.png';
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
-# Lightdash
+# Lightdash {#lightdash}
 
 <PartnerBadge/>
 
@@ -31,8 +30,6 @@ Lightdash — это **AI-first BI-платформа**, созданная дл
 Разработчики ценят Lightdash за его открытую архитектуру, версионируемые YAML-модели и интеграции, которые напрямую встраиваются в их рабочий процесс — от GitHub до IDE.
 
 Это партнёрство объединяет **скорость ClickHouse** и **удобство Lightdash для разработчиков**, упрощая как никогда ранее исследование, визуализацию и автоматизацию получения инсайтов с помощью ИИ.
-
-
 
 ## Создание интерактивной панели мониторинга с Lightdash и ClickHouse {#build-an-interactive-dashboard}
 
@@ -128,7 +125,6 @@ Lightdash — это **AI-first BI-платформа**, созданная дл
 
 Страница **Explore** состоит из пяти основных областей:
 
-
 1. **Размерности и метрики** — все поля, доступные в выбранной таблице
 2. **Фильтры** — ограничивают данные, возвращаемые вашим запросом
 3. **Диаграмма** — визуализирует результаты вашего запроса
@@ -195,7 +191,6 @@ Lightdash — это **AI-first BI-платформа**, созданная дл
 :::
 
 </VerticalStepper>
-
 
 ## Подробнее {#learn-more}
 

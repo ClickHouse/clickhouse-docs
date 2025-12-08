@@ -6,7 +6,7 @@ title: 'argAndMax'
 doc_type: 'reference'
 ---
 
-# argAndMax
+# argAndMax {#argandmax}
 
 Вычисляет значения `arg` и `val` для максимального значения `val`. Если существует несколько строк с одинаковым максимальным значением `val`, то какая из соответствующих пар `arg` и `val` будет возвращена — недетерминировано.
 Обе части — `arg` и `max` — ведут себя как [агрегатные функции](/sql-reference/aggregate-functions/index.md), обе [пропускают `Null`](/sql-reference/aggregate-functions/index.md#null-processing) при обработке и возвращают значения, отличные от `Null`, если такие значения доступны.
@@ -114,5 +114,5 @@ SELECT argAndMax(a, tuple(b)) FROM test;
 
 **См. также**
 
-- [argMax](/sql-reference/aggregate-functions/reference/argmax.md)
-- [Tuple](/sql-reference/data-types/tuple.md)
+* [argMax](/sql-reference/aggregate-functions/reference/argmax.md)
+* [Tuple](/sql-reference/data-types/tuple.md)

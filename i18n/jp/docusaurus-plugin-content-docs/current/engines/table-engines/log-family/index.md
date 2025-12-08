@@ -9,8 +9,7 @@ doc_type: 'guide'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
-# Log テーブルエンジンファミリー
+# Log テーブルエンジンファミリー {#log-table-engine-family}
 
 <CloudNotSupportedBadge/>
 
@@ -29,8 +28,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 :::warning This engine is not for log data.
 名前に *Log* と付いているものの、Log テーブルエンジンはログデータの保存を目的としたものではありません。高速な書き込みが必要な、少量のデータに対してのみ使用してください。
 :::
-
-
 
 ## 共通プロパティ {#common-properties}
 
@@ -53,8 +50,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 - データのアトミックな書き込みを行いません。
 
     たとえばサーバーの異常終了などにより書き込み処理が中断された場合、破損したデータを含むテーブルが生成される可能性があります。
-
-
 
 ## 違い {#differences}
 

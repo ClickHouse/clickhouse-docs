@@ -17,7 +17,6 @@ CREATE ROLE [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
     [SETTINGS variable [= value] [MIN [=] min_value] [MAX [=] max_value] [CONST|READONLY|WRITABLE|CHANGEABLE_IN_READONLY] | PROFILE 'profile_name'] [,...]
 ```
 
-
 ## 管理角色 {#managing-roles}
 
 一个用户可以被分配多个角色。用户可以通过 [SET ROLE](../../../sql-reference/statements/set-role.md) 语句，以任意组合应用其已分配的角色。最终的权限范围是所有已应用角色所拥有的全部权限的并集。如果某个用户在其用户账号上被直接授予了权限，这些权限也会与通过角色授予的权限合并。
@@ -28,9 +27,7 @@ CREATE ROLE [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
 
 要删除角色，请使用 [DROP ROLE](/sql-reference/statements/drop#drop-role) 语句。被删除的角色会自动从所有被分配了该角色的用户和角色中移除。
 
-
-
-## 示例
+## 示例 {#examples}
 
 ```sql
 CREATE ROLE accountant;

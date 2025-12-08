@@ -7,7 +7,7 @@ title: 'Nothing'
 doc_type: 'reference'
 ---
 
-# Nothing
+# Nothing {#nothing}
 
 此数据类型的唯一作用是表示不期望有值的情况。因此，无法创建一个类型为 `Nothing` 的值。
 

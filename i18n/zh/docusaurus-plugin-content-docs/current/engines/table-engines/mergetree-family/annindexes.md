@@ -9,8 +9,7 @@ doc_type: 'guide'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
-# 精确与近似向量搜索
+# 精确与近似向量搜索 {#exact-and-approximate-vector-search}
 
 在给定多维（向量）空间中的一个点时，寻找与其距离最近的 N 个点的问题，被称为[最近邻搜索](https://en.wikipedia.org/wiki/Nearest_neighbor_search)，简称向量搜索。
 解决向量搜索通常有两种通用方法：
@@ -35,14 +34,13 @@ LIMIT <N>
 可以使用任意可用的[距离函数](/sql-reference/functions/distance-functions)来实现。
 `&lt;N&gt;` 指定应返回多少个近邻。
 
-
-## 精确向量搜索
+## 精确向量搜索 {#exact-nearest-neighbor-search}
 
 可以直接使用上面的 SELECT 查询执行精确向量搜索。
 此类查询的运行时间通常与已存储向量的数量及其维度成正比，即数组元素的数量。
 此外，由于 ClickHouse 会对所有向量进行暴力扫描（brute-force scan），运行时间还取决于查询使用的线程数（参见设置 [max&#95;threads](../../../operations/settings/settings.md#max_threads)）。
 
-### 示例
+### 示例 {#exact-nearest-neighbor-search-example}
 
 ```sql
 CREATE TABLE tab(id Int32, vec Array(Float32)) ENGINE = MergeTree ORDER BY id;
@@ -66,10 +64,9 @@ LIMIT 3;
    └────┴─────────┘
 ```
 
+## 近似向量搜索 {#approximate-nearest-neighbor-search}
 
-## 近似向量搜索
-
-### 向量相似度索引
+### 向量相似度索引 {#vector-similarity-index}
 
 ClickHouse 提供了一种专用的“向量相似度”索引，用于执行近似向量搜索。
 
@@ -78,7 +75,7 @@ ClickHouse 提供了一种专用的“向量相似度”索引，用于执行近
 如果遇到问题，请在 [ClickHouse 仓库](https://github.com/clickhouse/clickhouse/issues) 中提交 issue。
 :::
 
-#### 创建向量相似度索引
+#### 创建向量相似度索引 {#creating-a-vector-similarity-index}
 
 可以在新表上按如下方式创建向量相似度索引：
 
@@ -146,7 +143,6 @@ ORDER BY [...]
 所有 HNSW 专用参数的默认值在大多数用例中都有良好表现。
 因此，我们不建议自定义这些 HNSW 专用参数。
 
-
 适用以下进一步限制：
 
 * 向量相似度索引只能建立在类型为 [Array(Float32)](../../../sql-reference/data-types/array.md)、[Array(Float64)](../../../sql-reference/data-types/array.md) 或 [Array(BFloat16)](../../../sql-reference/data-types/array.md) 的列上。诸如 `Array(Nullable(Float32))` 和 `Array(LowCardinality(Float32))` 这类可为空或低基数浮点数组不被允许。
@@ -196,7 +192,7 @@ ORDER BY [...]
 
 上述公式未将向量相似度索引在分配运行时数据结构（例如预分配缓冲区和缓存）时所需的额外内存考虑在内。
 
-#### 使用向量相似度索引
+#### 使用向量相似度索引 {#using-a-vector-similarity-index}
 
 :::note
 要使用向量相似度索引，[compatibility](../../../operations/settings/settings.md) 设置必须为 `''`（默认值）或不低于 `'25.1'` 的版本。
@@ -219,7 +215,6 @@ ClickHouse 的查询优化器会尝试匹配上述查询模板，并利用可用
 高级用户可以为设置 [hnsw&#95;candidate&#95;list&#95;size&#95;for&#95;search](../../../operations/settings/settings.md#hnsw_candidate_list_size_for_search) 提供自定义值（也称为 HNSW 超参数 &quot;ef&#95;search&quot;），以在搜索过程中调节候选列表的大小（例如 `SELECT [...] SETTINGS hnsw_candidate_list_size_for_search = <value>`）。
 该设置的默认值为 256，在大多数用例中表现良好。
 更高的取值意味着更高的准确性，但会以性能变慢为代价。
-
 
 如果查询可以使用向量相似性索引，ClickHouse 会检查在 SELECT 查询中提供的 LIMIT `<N>` 是否处于合理范围内。
 更具体地说，如果 `<N>` 大于设置项 [max&#95;limit&#95;for&#95;vector&#95;search&#95;queries](../../../operations/settings/settings.md#max_limit_for_vector_search_queries) 的值（默认值为 100），则会返回错误。
@@ -308,7 +303,6 @@ ClickHouse 将裁剪除 2025 分区外的所有分区。
 
 如果额外过滤条件无法通过索引（主键索引、跳跃索引）进行计算，ClickHouse 将在扫描结果上执行后置过滤。
 
-
 *可以使用主键索引评估的附加过滤条件*
 
 如果附加过滤条件可以使用[主键](mergetree.md#primary-key)进行评估（即它们构成主键的前缀），并且
@@ -370,7 +364,6 @@ ClickHouse 随后会从磁盘加载这些 granule，并对这些 granule 中的�
 在高层级上的工作方式是：ClickHouse 将最相似的向量及其距离作为一个虚拟列 `_distances` 暴露出来。
 要查看这一点，可运行带有 `EXPLAIN header = 1` 的向量搜索查询：
 
-
 ```sql
 EXPLAIN header = 1
 WITH [0., 2.] AS reference_vec
@@ -406,7 +399,7 @@ Query id: a2a9d0c8-a525-45c1-96ca-c5a11fa66f47
 在未启用重打分（`vector_search_with_rescoring = 0`）且启用了并行副本的情况下运行的查询，可能会回退为执行重打分。
 :::
 
-#### 性能调优
+#### 性能调优 {#performance-tuning}
 
 **压缩调优**
 
@@ -442,7 +435,6 @@ CREATE TABLE tab(id Int32, vec Array(Float32) CODEC(NONE), INDEX idx vec TYPE ve
 例如，可以将索引创建延后到所有数据都已摄取完成之后，或延后到系统负载较低的时间段（例如周末）。
 
 **调优索引用法**
-
 
 为了执行 `SELECT` 查询并使用向量相似度索引，需要先将这些索引加载到主内存中。
 为避免同一个向量相似度索引被反复加载到主内存，ClickHouse 提供了专用的内存缓存来存储此类索引。
@@ -515,7 +507,6 @@ result = chclient.query(
     parameters = params)
 ```
 
-
 嵌入向量（上面代码片段中的 `search_v`）的维度可能非常大。
 例如，OpenAI 提供的模型会生成维度为 1536 甚至 3072 的嵌入向量。
 在上面的代码中，ClickHouse Python 驱动会将嵌入向量替换为一个可读的字符串，然后将整个 SELECT 查询作为字符串发送。
@@ -540,7 +531,7 @@ result = chclient.query(
 在本示例中，参考向量以原始二进制形式发送到服务器，并在服务器端被重新解释为浮点数数组。
 这可以节省服务器端的 CPU 时间，并避免服务器日志和 `system.query_log` 的膨胀。
 
-#### 管理和监控
+#### 管理和监控 {#administration}
 
 向量相似性索引在磁盘上的大小可以通过 [system.data&#95;skipping&#95;indices](../../../operations/system-tables/data_skipping_indices) 获取：
 
@@ -558,7 +549,7 @@ WHERE type = 'vector_similarity';
 └──────────┴───────┴──────┴──────────────────────────┘
 ```
 
-#### 与常规跳过索引的区别
+#### 与常规跳过索引的区别 {#differences-to-regular-skipping-indexes}
 
 与所有常规[跳过索引](/optimize/skipping-indexes)类似，向量相似度索引也是在 granule 之上构建的，每个已建立索引的块由 `GRANULARITY = [N]` 个 granule 组成（对普通跳过索引而言，`[N]` 默认为 1）。
 例如，如果表的主索引粒度为 8192（设置 `index_granularity = 8192`）且 `GRANULARITY = 2`，则每个已建立索引的块将包含 16384 行。
@@ -573,7 +564,6 @@ WHERE type = 'vector_similarity';
 然而，由于 ClickHouse 从磁盘加载数据到内存时的粒度是 granule，子索引会将匹配行扩展到 granule 粒度。
 这与常规跳过索引不同，后者是以索引块粒度来跳过数据的。
 
-
 `GRANULARITY` 参数决定会创建多少个向量相似度子索引。
 更大的 `GRANULARITY` 值意味着子索引更少但更大，极端情况下，一个列（或列的数据分片）只会有单个子索引。
 在这种情况下，该子索引对该列的所有行具有“全局”视图，并且可以直接返回该列（分片）中所有包含相关行的 granule（最多只有 `LIMIT [N]` 个这样的 granule）。
@@ -584,7 +574,7 @@ WHERE type = 'vector_similarity';
 通常建议为向量相似度索引使用较大的 `GRANULARITY`，只有在出现例如向量相似度结构内存占用过高等问题时，才改用较小的 `GRANULARITY` 值。
 如果没有为向量相似度索引指定 `GRANULARITY`，则默认值为 1 亿。
 
-#### 示例
+#### 示例 {#approximate-nearest-neighbor-search-example}
 
 ```sql
 CREATE TABLE tab(id Int32, vec Array(Float32), INDEX idx vec TYPE vector_similarity('hnsw', 'L2Distance', 2)) ENGINE = MergeTree ORDER BY id;
@@ -615,7 +605,7 @@ LIMIT 3;
 * [dbpedia](../../../getting-started/example-datasets/dbpedia-dataset)
 * [hackernews](../../../getting-started/example-datasets/hackernews-vector-search-dataset)
 
-### 量化比特（QBit）
+### 量化比特（QBit） {#approximate-nearest-neighbor-search-qbit}
 
 <ExperimentalBadge />
 
@@ -629,7 +619,6 @@ ClickHouse 提供了 Quantized Bit（`QBit`）数据类型，通过以下方式�
 
 1. 存储原始的全精度数据。
 2. 允许在查询时指定量化精度。
-
 
 这是通过以按位分组（bit-grouped）格式存储数据实现的（即将所有向量的第 i 位比特存放在一起），从而只在请求的精度级别进行读取。这样，你可以在保留全部原始数据、按需访问的前提下，从量化带来的 I/O 和计算量减少中获得速度优势。当选择最大精度时，搜索结果即为精确匹配。
 
@@ -649,7 +638,7 @@ ClickHouse 提供了 Quantized Bit（`QBit`）数据类型，通过以下方式�
 * `element_type` – 每个向量元素的类型。支持的类型包括 `BFloat16`、`Float32` 和 `Float64`
 * `dimension` – 每个向量中的元素个数
 
-#### 创建 `QBit` 表并添加数据
+#### 创建 `QBit` 表并添加数据 {#qbit-create}
 
 ```sql
 CREATE TABLE fruit_animal (
@@ -667,7 +656,7 @@ INSERT INTO fruit_animal VALUES
     ('horse', [-0.61435682, 0.48542571, 1.21091247, -0.62530446, -1.33082533]);
 ```
 
-#### 使用 `QBit` 进行向量搜索
+#### 使用 `QBit` 进行向量搜索 {#qbit-search}
 
 我们使用 L2 距离查找与表示单词 “lemon” 的向量最接近的邻居向量。距离函数的第三个参数指定精度的位数——值越高，精度越高，但计算量也越大。
 
@@ -714,7 +703,6 @@ ORDER BY distance;
 6. │ dog    │   3.17766975527459 │
    └────────┴────────────────────┘
 ```
-
 
 请注意，使用 12 位量化时，我们在加快查询执行的同时，依然能够很好地逼近实际距离。相对排序基本保持一致，`apple` 仍然是距离最近的匹配项。
 

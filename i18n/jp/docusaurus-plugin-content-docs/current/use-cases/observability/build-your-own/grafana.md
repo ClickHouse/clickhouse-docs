@@ -19,8 +19,7 @@ import observability_23 from '@site/static/images/use-cases/observability/observ
 import observability_24 from '@site/static/images/use-cases/observability/observability-24.png';
 import Image from '@theme/IdealImage';
 
-
-# 観測性のための Grafana と ClickHouse の利用
+# 観測性のための Grafana と ClickHouse の利用 {#using-grafana-and-clickhouse-for-observability}
 
 Grafana は、ClickHouse における観測性データの推奨可視化ツールです。これは、Grafana 向け公式 ClickHouse プラグインを使用して実現します。インストール手順は[こちら](/integrations/grafana)を参照してください。
 
@@ -43,7 +42,7 @@ Traces 設定はやや複雑です（完全なリストは[こちら](/engines/t
 
 設定が完了したら、ユーザーは [Grafana Explore](https://grafana.com/docs/grafana/latest/explore/) に移動し、ログおよびトレースの検索を開始できます。
 
-## ログ
+## ログ {#logs}
 
 ログに関する Grafana の要件に準拠している場合は、クエリビルダーで `Query Type: Log` を選択し、`Run Query` をクリックします。するとクエリビルダーがログを一覧表示するためのクエリを生成し、たとえば次のようにログが表示されるようにします。
 
@@ -55,14 +54,13 @@ SELECT Timestamp as timestamp, Body as body, SeverityText as level, TraceId as t
 
 クエリビルダーは、ユーザーがSQLを記述せずにクエリを簡単に変更できる手段を提供します。キーワードを含むログの検索を含めたフィルタリングは、クエリビルダーから実行できます。より複雑なクエリを記述したいユーザーは、SQLエディタに切り替えることができます。適切なカラムが返され、かつ Query Type として `logs` が選択されていれば、結果はログとしてレンダリングされます。ログのレンダリングに必要なカラムは[こちら](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format)に記載されています。
 
-
 ### ログからトレースへ {#logs-to-traces}
 
 ログにトレース ID が含まれている場合、ユーザーは特定のログ行から対応するトレースへ遷移できると便利です。
 
 <Image img={observability_17} alt="Logs to traces" size="lg" border/>
 
-## トレース
+## トレース {#traces}
 
 上記のログと同様に、Grafana がトレースを描画するために必要とする列が揃っていれば（たとえば OTel スキーマを使用することで）、クエリビルダーは必要なクエリを自動的に組み立てることができます。`Query Type: Traces` を選択して `Run Query` をクリックすると、次のようなクエリが（設定している列に応じて）生成および実行されます（以下は OTel を使用していることを前提としています）。
 
@@ -85,8 +83,7 @@ WHERE ( Timestamp >= $__fromTime AND Timestamp <= $__toTime )
 
 より複雑なクエリを記述したいユーザーは、`SQL Editor` に切り替えることができます。
 
-
-### トレースの詳細を表示する
+### トレースの詳細を表示する {#view-trace-details}
 
 上記のとおり、トレース ID はクリック可能なリンクとして表示されます。トレース ID をクリックすると、ユーザーは `View Trace` リンクから関連するスパンを表示できます。これにより（OTel のカラムを前提として）、必要な構造でスパンを取得するための次のクエリが実行され、結果はウォーターフォール形式でレンダリングされます。
 
@@ -120,8 +117,7 @@ LIMIT 1000
 
 <Image img={observability_19} alt="トレースの詳細" size="lg" border />
 
-
-### トレースからログへの遷移
+### トレースからログへの遷移 {#traces-to-logs}
 
 ログにトレース ID が含まれている場合、ユーザーはトレースから関連するログへ遷移できます。ログを表示するには、トレース ID をクリックして `View Logs` を選択します。これにより、デフォルトの OTel 列を前提として次のクエリが実行されます。
 
@@ -135,7 +131,6 @@ ORDER BY timestamp ASC LIMIT 1000
 
 <Image img={observability_20} alt="トレースからログへの切り替え" size="lg" border />
 
-
 ## ダッシュボード {#dashboards}
 
 ユーザーは ClickHouse データソースを利用して、Grafana 上にダッシュボードを構築できます。詳細については、特に [マクロの概念](https://github.com/grafana/clickhouse-datasource?tab=readme-ov-file#macros) や [変数](https://grafana.com/docs/grafana/latest/dashboards/variables/) について、Grafana および ClickHouse の [データソースドキュメント](https://github.com/grafana/clickhouse-datasource) を参照することを推奨します。
@@ -146,7 +141,7 @@ ORDER BY timestamp ASC LIMIT 1000
 
 以下に、可視化を作成する際の簡単なヒントをいくつか示します。
 
-### 時系列
+### 時系列 {#time-series}
 
 統計情報と並んで、折れ線グラフはオブザーバビリティのユースケースにおいて最も一般的な可視化形式です。ClickHouse プラグインは、クエリが `time` という名前の `datetime` 型列と数値列を返した場合、自動的に折れ線グラフをレンダリングします。例えば次のとおりです。
 
@@ -165,8 +160,7 @@ LIMIT 100000
 
 <Image img={observability_22} alt="時系列" size="lg" border />
 
-
-### マルチラインチャート
+### マルチラインチャート {#multi-line-charts}
 
 次の条件を満たすクエリでは、自動的にマルチラインチャートがレンダリングされます。
 
@@ -191,8 +185,7 @@ LIMIT 100000
 
 <Image img={observability_23} alt="複数の折れ線チャート" size="lg" border />
 
-
-### 地理データの可視化
+### 地理データの可視化 {#visualizing-geo-data}
 
 前のセクションでは、IP 辞書を用いて地理座標を付与し、オブザーバビリティデータを拡充する方法について説明しました。`latitude` と `longitude` の列がある前提で、`geohashEncode` 関数を使うことで、オブザーバビリティデータを可視化に利用できます。これにより、Grafana の Geo Map チャートと互換性のあるジオハッシュが生成されます。以下に、クエリと可視化の例を示します。
 

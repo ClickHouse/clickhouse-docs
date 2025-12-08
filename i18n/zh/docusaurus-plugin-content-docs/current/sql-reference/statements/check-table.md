@@ -17,9 +17,7 @@ ClickHouse 中的 `CHECK TABLE` 查询用于对特定表或其分区执行校验
 该查询不会提升系统性能，如果未完全理解其影响，请不要执行该查询。
 :::
 
-
-
-## 语法
+## 语法 {#syntax}
 
 查询的基本语法如下：
 
@@ -55,8 +53,7 @@ CHECK TABLE table_name [PARTITION partition_expression | PART part_name] [FORMAT
 
 `*Log` 家族中的引擎在发生故障时不提供自动数据恢复。使用 `CHECK TABLE` 查询来及时跟踪数据丢失情况。
 
-
-## 示例
+## 示例 {#examples}
 
 默认情况下，`CHECK TABLE` 查询会显示表的整体检查状态：
 
@@ -115,7 +112,7 @@ CHECK TABLE t0 PART '201003_111_222_0'
 DB::Exception: 表 'default.t0' 中不存在要检查的数据分区 '201003_111_222_0'。(NO_SUCH_DATA_PART)
 ```
 
-### 遇到“Corrupted”结果
+### 遇到“Corrupted”结果 {#receiving-a-corrupted-result}
 
 :::warning
 免责声明：此处描述的操作流程（包括直接在数据目录中手动修改或删除文件）仅适用于实验或开发环境。**不要**在生产服务器上尝试此操作，否则可能导致数据丢失或其他意外后果。
@@ -152,7 +149,6 @@ FORMAT PrettyCompactMonoBlock
 SETTINGS check_query_single_value_result = 0
 ```
 
-
 ```text
 ┌─database─┬─table────┬─part_path───┬─is_passed─┬─message─┐
 │ default  │ t2       │ all_1_95_3  │         1 │         │
@@ -167,7 +163,6 @@ SETTINGS check_query_single_value_result = 0
 │ default  │ t1       │ all_7_38_2  │         1 │         │
 └──────────┴──────────┴─────────────┴───────────┴─────────┘
 ```
-
 
 ## 如果数据已损坏 {#if-the-data-is-corrupted}
 

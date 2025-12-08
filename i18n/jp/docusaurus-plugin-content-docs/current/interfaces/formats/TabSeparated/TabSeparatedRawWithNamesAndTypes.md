@@ -13,8 +13,6 @@ doc_type: 'reference'
 |------|------|---------------------------------------------------|
 | ✔    | ✔    | `TSVRawWithNamesAndNames`, `RawWithNamesAndNames` |
 
-
-
 ## 説明 {#description}
 
 この形式は、行がエスケープ処理なしで書き出されるという点で、[`TabSeparatedWithNamesAndTypes`](./TabSeparatedWithNamesAndTypes.md) 形式と異なります。
@@ -23,11 +21,9 @@ doc_type: 'reference'
 この形式でパースする場合、各フィールド内にタブや改行文字を含めることはできません。
 :::
 
+## 使用例 {#example-usage}
 
-
-## 使用例
-
-### データの挿入
+### データの挿入 {#inserting-data}
 
 以下の内容の `football.tsv` という名前の TSV ファイルを使用します：
 
@@ -59,7 +55,7 @@ Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedRawWithNamesAndTypes;
 ```
 
-### データの読み取り
+### データの読み取り {#reading-data}
 
 `TabSeparatedRawWithNamesAndTypes` 形式を使用してデータを読み込みます。
 
@@ -70,7 +66,6 @@ FORMAT TabSeparatedRawWithNamesAndTypes
 ```
 
 出力は、列名と型を示す 2 行のヘッダー行を持つタブ区切り形式になります。
-
 
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals
@@ -93,6 +88,5 @@ Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
 2022-05-07      2021    Stevenage Borough       Salford City    4       2
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
-
 
 ## 書式設定 {#format-settings}

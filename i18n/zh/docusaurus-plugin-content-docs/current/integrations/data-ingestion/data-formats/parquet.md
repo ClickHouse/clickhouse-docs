@@ -8,9 +8,7 @@ doc_type: 'guide'
 keywords: ['parquet', '列式格式', '数据格式', '压缩', 'Apache Parquet']
 ---
 
-
-
-# 在 ClickHouse 中使用 Parquet
+# 在 ClickHouse 中使用 Parquet {#working-with-parquet-in-clickhouse}
 
 Parquet 是一种高效的文件格式，用于以列式方式存储数据。
 ClickHouse 支持读取和写入 Parquet 文件。
@@ -22,9 +20,7 @@ ClickHouse 支持读取和写入 Parquet 文件。
 如果你是通过 `clickhouse client` 使用 ClickHouse Server 或 ClickHouse Cloud，它会从相对于服务器上 `/var/lib/clickhouse/user_files/` 目录的路径进行读取。
 :::
 
-
-
-## 从 Parquet 导入
+## 从 Parquet 导入 {#importing-from-parquet}
 
 在加载数据之前，我们可以使用 [file()](/sql-reference/functions/files.md/#file) 函数来查看[示例 Parquet 文件](assets/data.parquet)的结构：
 
@@ -63,8 +59,7 @@ LIMIT 3;
 在这种情况下，ClickHouse 会根据文件扩展名自动检测格式。
 :::
 
-
-## 导入到现有表
+## 导入到现有表 {#importing-to-an-existing-table}
 
 我们先创建一个用于导入 Parquet 数据的表：
 
@@ -102,8 +97,7 @@ LIMIT 5;
 
 请注意 ClickHouse 如何自动将 Parquet 字符串（`date` 列中的值）转换为 `Date` 类型。这是因为 ClickHouse 会根据目标表中的列类型自动进行类型转换。
 
-
-## 将本地文件插入到远程服务器
+## 将本地文件插入到远程服务器 {#inserting-a-local-file-to-remote-server}
 
 如果您想将本地 Parquet 文件插入到远程 ClickHouse 服务器，可以像下面这样通过管道将文件内容传递给 `clickhouse-client`：
 
@@ -111,8 +105,7 @@ LIMIT 5;
 clickhouse client -q "INSERT INTO sometable FORMAT Parquet" < data.parquet
 ```
 
-
-## 基于 Parquet 文件创建新表
+## 基于 Parquet 文件创建新表 {#creating-new-tables-from-parquet-files}
 
 由于 ClickHouse 能读取 Parquet 文件的 schema，我们可以动态创建表：
 
@@ -140,8 +133,7 @@ DESCRIBE TABLE imported_from_parquet;
 
 默认情况下，ClickHouse 对列名、类型和值要求非常严格。但在某些情况下，我们可以在导入时跳过不存在的列或不支持的值。可以通过 [Parquet 设置](/interfaces/formats/Parquet#format-settings) 来控制这一行为。
 
-
-## 导出为 Parquet 格式
+## 导出为 Parquet 格式 {#exporting-to-parquet-format}
 
 :::tip
 在 ClickHouse Cloud 中使用 `INTO OUTFILE` 时，需要在将要写入该文件的那台机器上，通过 `clickhouse client` 来运行这些命令。
@@ -158,8 +150,7 @@ FORMAT Parquet
 
 这将在当前工作目录中创建 `export.parquet` 文件。
 
-
-## ClickHouse 与 Parquet 数据类型
+## ClickHouse 与 Parquet 数据类型 {#clickhouse-and-parquet-data-types}
 
 ClickHouse 与 Parquet 的数据类型在大多数情况下是相同的，但仍然[存在一些差异](/interfaces/formats/Parquet#data-types-matching-parquet)。例如，ClickHouse 会将 `DateTime` 类型导出为 Parquet 的 `int64`。如果我们随后再将该数据导入回 ClickHouse，看到的将是一串数字（[time.parquet 文件](assets/time.parquet)）：
 
@@ -195,7 +186,6 @@ FROM file('time.parquet', Parquet);
 │ 4 │ 2023-01-13 15:10:07 │
 └───┴─────────────────────┘
 ```
-
 
 ## 延伸阅读 {#further-reading}
 

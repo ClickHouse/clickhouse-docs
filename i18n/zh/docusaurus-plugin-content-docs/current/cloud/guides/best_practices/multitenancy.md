@@ -25,7 +25,7 @@ keywords: ['multitenancy', 'isolation', 'best practices', 'architecture', 'multi
 
 当不同租户之间的数据量差异较大时，数据量较小的租户可能会受到不必要的查询性能影响。需要注意的是，将租户字段包含在主键中在很大程度上可以缓解这一问题。
 
-### 示例
+### 示例 {#shared-table-example}
 
 这是一个共享表的多租户模型实现示例。
 
@@ -91,7 +91,6 @@ GRANT user_role TO user_1
 GRANT user_role TO user_2
 ```
 
-
 现在，你可以以 `user_1` 身份连接并运行一个简单的 select 查询。只会返回来自第一个租户的行。
 
 ```sql
@@ -108,7 +107,6 @@ FROM events
    └───────────┴──────────────────────────────────────┴─────────────┴─────────────────────┴─────────┴─────────────────────────────────────────┘
 ```
 
-
 ## 独立表 {#separate-tables}
 
 在这种方案中，每个租户的数据都存储在同一数据库内的独立表中，因此不再需要使用特定字段来标识租户。通过使用 [GRANT 语句](/sql-reference/statements/grant) 来实施用户访问控制，确保每个用户只能访问包含其所属租户数据的表。
@@ -119,7 +117,7 @@ FROM events
 
 请注意，这种方案不适用于扩展到成千上万的租户。参见 [使用限制](/cloud/bestpractices/usage-limits)。
 
-### 示例
+### 示例 {#separate-tables-example}
 
 这是独立表多租户模型实现的示例。
 
@@ -201,7 +199,6 @@ FROM default.events_tenant_1
    └──────────────────────────────────────┴─────────────┴─────────────────────┴─────────┴─────────────────────────────────────────┘
 ```
 
-
 ## 独立数据库 {#separate-databases}
 
 每个租户的数据都存储在同一 ClickHouse 服务内的独立数据库中。
@@ -212,7 +209,7 @@ FROM default.events_tenant_1
 
 请注意，这种方式无法很好地扩展到成千上万的租户。参见[使用限制](/cloud/bestpractices/usage-limits)。
 
-### 示例
+### 示例 {#separate-databases-example}
 
 以下示例展示了基于独立数据库的多租户模型实现。
 
@@ -286,7 +283,6 @@ GRANT SELECT ON tenant_1.events TO user_1
 GRANT SELECT ON tenant_2.events TO user_2
 ```
 
-
 现在，你可以以 `user_1` 身份连接，并在相应数据库中的 events 表上执行一个简单的 SELECT 查询。只会返回来自第一个租户的行。
 
 ```sql
@@ -302,7 +298,6 @@ FROM tenant_1.events
 5. │ 975fb0c8-55bd-4df4-843b-34f5cfeed0a9 │ user_login  │ 2025-03-19 08:50:00 │    1004 │ {"device": "desktop", "location": "LA"} │
    └──────────────────────────────────────┴─────────────┴─────────────────────┴─────────┴─────────────────────────────────────────┘
 ```
-
 
 ## 计算-计算分离 {#compute-compute-separation}
 
@@ -322,7 +317,7 @@ FROM tenant_1.events
 
 这种方法更难管理，并且每个服务都会带来额外开销，因为每个服务都需要自己的基础设施来运行。服务可以通过 [ClickHouse Cloud API](/cloud/manage/api/api-overview) 进行管理，也可以通过 [官方 Terraform provider](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs) 实现编排。
 
-### 示例
+### 示例 {#separate-service-example}
 
 这是一个独立服务型多租户模型实现的示例。请注意，该示例展示的是在一个 ClickHouse 服务上创建表和用户，所有服务上都需要进行同样的配置。
 

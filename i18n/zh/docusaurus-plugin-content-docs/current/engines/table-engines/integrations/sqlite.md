@@ -9,16 +9,13 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+# SQLite 表引擎 {#sqlite-table-engine}
 
-# SQLite 表引擎
-
-<CloudNotSupportedBadge/>
+<CloudNotSupportedBadge />
 
 该引擎用于向 SQLite 导入数据或从 SQLite 导出数据，并支持在 ClickHouse 中直接查询 SQLite 表。
 
-
-
-## 创建数据表
+## 创建数据表 {#creating-a-table}
 
 ```sql
     CREATE TABLE [IF NOT EXISTS] [db.]table_name
@@ -33,8 +30,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 * `db_path` — SQLite 数据库文件的路径。
 * `table` — SQLite 数据库中表的名称。
 
-
-## 使用示例
+## 使用示例 {#usage-example}
 
 示例查询，用于创建 SQLite 表：
 

@@ -9,7 +9,7 @@ doc_type: 'guide'
 keywords: ['插入本地文件 ClickHouse', 'ClickHouse 本地文件导入', 'clickhouse-client 文件上传']
 ---
 
-# 插入本地文件
+# 插入本地文件 {#insert-local-files}
 
 你可以使用 `clickhouse-client` 将本地文件以流方式导入到你的 ClickHouse 服务中。这样你就可以在插入前利用众多强大且便捷的 ClickHouse 函数对数据进行预处理。下面来看一个示例……
 
@@ -78,7 +78,6 @@ LIMIT 7
 ```
 
 结果如下：
-
 
 ```response
 │  488 │ comment │ mynameishere │ 2007-02-22 14:48:18 │ "It's too bad. Javascript-in-the-browser and Ajax are both nasty hacks that force programmers to do all sorts of shameful things. And the result is--wanky html tricks. Java, for its faults, is fairly clean when run in the applet environment. It has every superiority over JITBAJAX, except for install issues and a chunky load process. Yahoo games seems like just about the only applet success story. Of course, back in the day, non-trivial Applets tended to be too large for the dial-up accounts people had. At least that is changed." │ [454927] │ ['It','s','too','bad','Javascript','in','the','browser','and','Ajax','are','both','nasty','hacks','that','force','programmers','to','do','all','sorts','of','shameful','things','And','the','result','is','wanky','html','tricks','Java','for','its','faults','is','fairly','clean','when','run','in','the','applet','environment','It','has','every','superiority','over','JITBAJAX','except','for','install','issues','and','a','chunky','load','process','Yahoo','games','seems','like','just','about','the','only','applet','success','story','Of','course','back','in','the','day','non','trivial','Applets','tended','to','be','too','large','for','the','dial','up','accounts','people','had','At','least','that','is','changed'] │

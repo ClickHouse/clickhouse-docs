@@ -9,8 +9,7 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
-# HDFS 表引擎
+# HDFS 表引擎 {#hdfs-table-engine}
 
 <CloudNotSupportedBadge/>
 
@@ -18,9 +17,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 此功能目前不由 ClickHouse 工程团队官方支持，且已知质量不佳。如遇任何问题，请自行修复并提交 Pull Request。
 
-
-
-## 用法
+## 用法 {#usage}
 
 ```sql
 ENGINE = HDFS(URI, format)
@@ -35,7 +32,7 @@ ENGINE = HDFS(URI, format)
   [Formats](/sql-reference/formats#formats-overview) 部分。
 * [PARTITION BY expr]
 
-### PARTITION BY
+### PARTITION BY {#partition-by}
 
 `PARTITION BY` — 可选。在大多数情况下不需要分区键，即使需要，一般也不需要比“按月”更细的分区键。分区并不会加速查询（与 ORDER BY 表达式不同）。切勿使用过于细粒度的分区。不要按客户标识符或名称对数据进行分区（相反，应将客户标识符或名称设为 ORDER BY 表达式中的第一列）。
 
@@ -68,8 +65,7 @@ SELECT * FROM hdfs_engine_table LIMIT 2
 └──────┴───────┘
 ```
 
-
-## 实现细节
+## 实现细节 {#implementation-details}
 
 * 读写操作可以并行进行。
 * 不支持：
@@ -132,12 +128,11 @@ CREATE TABLE table_with_asterisk (name String, value UInt32) ENGINE = HDFS('hdfs
 
 创建一个表，该表使用名为 `file000`、`file001`、…、`file999` 的文件：
 
-
 ```sql
 CREATE TABLE big_table (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9000/big_dir/file{0..9}{0..9}{0..9}', 'CSV')
 ```
 
-## 配置
+## 配置 {#configuration}
 
 与 GraphiteMergeTree 类似，HDFS 引擎支持通过 ClickHouse 配置文件进行扩展配置。可以使用两个配置项：全局级（`hdfs`）和用户级（`hdfs_*`）。系统会先应用全局配置，然后再应用用户级配置（如果存在）。
 
@@ -155,10 +150,9 @@ CREATE TABLE big_table (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9
 </hdfs_root>
 ```
 
-### 配置选项
+### 配置选项 {#configuration-options}
 
-#### libhdfs3 支持的选项
-
+#### libhdfs3 支持的选项 {#supported-by-libhdfs3}
 
 | **参数**                                         | **默认值**       |
 | -                                                  | -                    |
@@ -217,8 +211,6 @@ CREATE TABLE big_table (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9
 ### 限制 {#limitations}
 * `hadoop_security_kerberos_ticket_cache_path` 和 `libhdfs3_conf` 只能作为全局配置使用，不能针对单个用户设置
 
-
-
 ## Kerberos 支持 {#kerberos-support}
 
 如果 `hadoop_security_authentication` 参数的值为 `kerberos`，ClickHouse 将通过 Kerberos 进行认证。
@@ -226,11 +218,9 @@ CREATE TABLE big_table (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9
 请注意，由于 libhdfs3 的限制，仅支持传统的旧式方案，
 datanode 通信不会通过 SASL 进行安全保护（`HADOOP_SECURE_DN_USER` 是此类安全机制的可靠指示器）。可参考 `tests/integration/test_storage_kerberized_hdfs/hdfs_configs/bootstrap.sh`。
 
-
-
 如果指定了 `hadoop_kerberos_keytab`、`hadoop_kerberos_principal` 或 `hadoop_security_kerberos_ticket_cache_path`，则会使用 Kerberos 身份验证。在这种情况下，`hadoop_kerberos_keytab` 和 `hadoop_kerberos_principal` 是必需的。
 
-## HDFS Namenode HA 支持
+## HDFS Namenode HA 支持 {#namenode-ha}
 
 libhdfs3 支持 HDFS Namenode 高可用（HA）。
 
@@ -245,15 +235,12 @@ libhdfs3 支持 HDFS Namenode 高可用（HA）。
 
 * 然后使用 `hdfs-site.xml` 中 `dfs.nameservices` 配置项的值，作为 HDFS URI 中的 NameNode 地址。例如，将 `hdfs://appadmin@192.168.101.11:8020/abc/` 替换为 `hdfs://appadmin@my_nameservice/abc/`。
 
-
 ## 虚拟列 {#virtual-columns}
 
 - `_path` — 文件路径。类型：`LowCardinality(String)`。
 - `_file` — 文件名。类型：`LowCardinality(String)`。
 - `_size` — 文件大小（字节）。类型：`Nullable(UInt64)`。如果大小未知，则该值为 `NULL`。
 - `_time` — 文件的最后修改时间。类型：`Nullable(DateTime)`。如果时间未知，则该值为 `NULL`。
-
-
 
 ## 存储设置 {#storage-settings}
 

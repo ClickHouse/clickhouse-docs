@@ -13,8 +13,7 @@ doc_type: 'reference'
 SET ROLE {DEFAULT | NONE | role [,...] | ALL | ALL EXCEPT role [,...]}
 ```
 
-
-## SET DEFAULT ROLE
+## SET DEFAULT ROLE {#set-default-role}
 
 为用户设置默认角色。
 
@@ -24,8 +23,7 @@ SET ROLE {DEFAULT | NONE | role [,...] | ALL | ALL EXCEPT role [,...]}
 SET DEFAULT ROLE {NONE | role [,...] | ALL | ALL EXCEPT role [,...]} TO {user|CURRENT_USER} [,...]
 ```
 
-
-## 示例
+## 示例 {#examples}
 
 为用户分配多个默认角色：
 

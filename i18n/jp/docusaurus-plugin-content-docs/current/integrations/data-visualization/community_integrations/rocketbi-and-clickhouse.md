@@ -8,7 +8,7 @@ title: '目標: 初めてのダッシュボードを作成する'
 doc_type: 'guide'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import rocketbi_01 from '@site/static/images/integrations/data-visualization/rocketbi_01.gif';
 import rocketbi_02 from '@site/static/images/integrations/data-visualization/rocketbi_02.gif';
@@ -30,8 +30,7 @@ import rocketbi_17 from '@site/static/images/integrations/data-visualization/roc
 import rocketbi_18 from '@site/static/images/integrations/data-visualization/rocketbi_18.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
-# 目標: Rocket.BI で最初のダッシュボードを構築する
+# 目標: Rocket.BI で最初のダッシュボードを構築する {#goal-build-your-first-dashboard-with-rocketbi}
 
 <CommunityMaintainedBadge/>
 
@@ -43,9 +42,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 [こちらのリンクからダッシュボードを確認できます。](https://demo.rocket.bi/dashboard/sales-dashboard-7?token=7eecf750-cbde-4c53-8fa8-8b905fec667e)
 
-
-
-## インストール
+## インストール {#install}
 
 あらかじめ用意されている Docker イメージで RocketBI を起動します。
 
@@ -63,7 +60,6 @@ wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.cli
 ブラウザを開き、`localhost:5050` にアクセスし、以下のアカウントでログインします：`hello@gmail.com/123456`
 
 ソースコードからのビルドや高度な設定については、[Rocket.BI README](https://github.com/datainsider-co/rocket-bi/blob/main/README.md) を参照してください。
-
 
 ## ダッシュボードを作成しましょう {#lets-build-the-dashboard}
 

@@ -7,17 +7,13 @@ keywords: ['云服务层级', '服务方案', '云定价层级', '云服务级�
 doc_type: 'reference'
 ---
 
-
-
-# ClickHouse Cloud 服务层级
+# ClickHouse Cloud 服务层级 {#clickhouse-cloud-tiers}
 
 ClickHouse Cloud 提供多个不同的服务层级。
 服务层级可以分配给组织内的任意层级，因此，一个组织内的所有服务都属于同一服务层级。
 本页将讨论针对您的特定使用场景，哪些服务层级最为合适。
 
 **云服务层级概览：**
-
-
 
 <table>
   <thead>
@@ -224,8 +220,6 @@ ClickHouse Cloud 提供多个不同的服务层级。
 
 
 
-
-
 ## 基础版 {#basic}
 
 - 成本效益高的选项，支持单副本部署。
@@ -236,8 +230,6 @@ ClickHouse Cloud 提供多个不同的服务层级。
 可以将服务升级到 Scale 或 Enterprise 层级以实现扩缩容。
 :::
 
-
-
 ## Scale {#scale}
 
 专为需要更高 SLA 保证（2 个及以上副本部署）、可伸缩性和高级安全性的工作负载而设计。
@@ -247,8 +239,6 @@ ClickHouse Cloud 提供多个不同的服务层级。
   - [计算-计算分离（Compute-compute separation）](../reference/warehouses#what-is-compute-compute-separation)。
   - [灵活伸缩](/manage/scaling) 选项（纵向扩容/缩容、横向扩容/缩容）。
   - [可配置备份](/cloud/manage/backups/configurable-backups)。
-
-
 
 ## 企业版 {#enterprise}
 
@@ -267,8 +257,6 @@ ClickHouse Cloud 提供多个不同的服务层级。
 :::note 
 在所有三个层级中，单副本服务均被设计为固定规格（`8 GiB`、`12 GiB`）
 :::
-
-
 
 ## 升级到不同的层级 {#upgrading-to-a-different-tier}
 

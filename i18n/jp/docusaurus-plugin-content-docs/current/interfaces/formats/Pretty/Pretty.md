@@ -15,7 +15,6 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 | -- | -- | ----- |
 | ✗  | ✔  |       |
 
-
 ## 説明 {#description}
 
 `Pretty` フォーマットは、Unicode アートによるテーブルとしてデータを出力し、
@@ -26,9 +25,7 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 [NULL](/sql-reference/syntax.md) は `ᴺᵁᴸᴸ` として出力されます。
 
-
-
-## 使用例
+## 使用例 {#example-usage}
 
 例（[`PrettyCompact`](./PrettyCompact.md) 形式の場合）：
 
@@ -96,7 +93,6 @@ FORMAT PrettyCompact
 │ 2014-03-23 │ 1406958 │
 └────────────┴─────────┘
 ```
-
 
 ## 書式設定 {#format-settings}
 

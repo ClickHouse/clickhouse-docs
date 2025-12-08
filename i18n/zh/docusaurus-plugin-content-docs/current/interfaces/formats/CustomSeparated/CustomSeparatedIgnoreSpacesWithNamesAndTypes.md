@@ -14,7 +14,7 @@ doc_type: 'reference'
 
 ## 示例用法 {#example-usage}
 
-### 插入数据
+### 插入数据 {#inserting-data}
 
 使用以下名为 `football.txt` 的 txt 文件：
 
@@ -37,6 +37,5 @@ SET format_custom_escaping_rule = 'Quoted';
 ```sql
 INSERT INTO football FROM INFILE 'football.txt' FORMAT CustomSeparatedIgnoreSpacesWithNamesAndTypes;
 ```
-
 
 ## 格式设置 {#format-settings}

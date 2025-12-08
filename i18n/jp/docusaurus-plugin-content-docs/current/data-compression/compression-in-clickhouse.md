@@ -19,8 +19,6 @@ ClickHouse における圧縮は、主に次の 3 つの要因の影響を受け
 
 これらはすべてスキーマで設定されます。
 
-
-
 ## 圧縮を最適化するための適切なデータ型の選択 {#choose-the-right-data-type-to-optimize-compression}
 
 Stack Overflowデータセットを例として使用します。`posts`テーブルの以下のスキーマについて圧縮統計を比較してみましょう:
@@ -68,7 +66,6 @@ GROUP BY name
 <details>
    
 <summary>コンパクトパートとワイドパートに関する注記</summary>
-
 
 `compressed_size`または`uncompressed_size`の値が`0`と表示される場合、パートのタイプが`wide`ではなく`compact`であることが原因の可能性があります([`system.parts`](/operations/system-tables/parts)の`part_type`の説明を参照してください)。
 パート形式は[`min_bytes_for_wide_part`](/operations/settings/merge-tree-settings#min_bytes_for_wide_part)および[`min_rows_for_wide_part`](/operations/settings/merge-tree-settings#min_rows_for_wide_part)の設定によって制御されます。挿入されたデータが前述の設定値を超えないパートを生成する場合、パートはwideではなくcompactとなり、`compressed_size`または`uncompressed_size`の値は表示されません。
@@ -141,7 +138,6 @@ GROUP BY name;
 
 テーブルの合計サイズを要約するには、上記のクエリを次のように簡略化できます:
 
-
 ```sql
 SELECT formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
     formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
@@ -182,7 +178,6 @@ WHERE `table` = 'posts_v3'
 GROUP BY name
 ```
 
-
 ┌─name──────────────────┬─compressed&#95;size─┬─uncompressed&#95;size─┬───ratio─┐
 │ Body                  │ 23.10 GiB       │ 63.63 GiB         │    2.75 │
 │ Title                 │ 614.65 MiB      │ 1.28 GiB          │    2.14 │
@@ -211,8 +206,7 @@ GROUP BY name
 ```
 ```
 
-
-## 適切なカラム圧縮コーデックの選択
+## 適切なカラム圧縮コーデックの選択 {#choosing-the-right-column-compression-codec}
 
 カラム圧縮コーデックを用いることで、各カラムのエンコードおよび圧縮に使用されるアルゴリズム（およびその設定）を変更できます。
 
@@ -266,7 +260,6 @@ ENGINE = MergeTree
 ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
 ```
 
-
 これらのカラムにおける圧縮の改善結果を以下に示します。
 
 ```sql
@@ -297,6 +290,6 @@ ORDER BY
 6 rows in set. Elapsed: 0.008 sec
 ```
 
-### ClickHouse Cloud における圧縮
+### ClickHouse Cloud における圧縮 {#compression-in-clickhouse-cloud}
 
 ClickHouse Cloud では、デフォルトで `ZSTD` 圧縮アルゴリズム（圧縮レベルのデフォルト値は 1）を使用しています。このアルゴリズムの圧縮速度は、圧縮レベル（高いほど低速）に応じて変動しますが、伸長時には一貫して高速である（ばらつきは約 20% 程度）という利点があり、さらに並列処理も可能です。過去のテスト結果からも、このアルゴリズムは多くの場合十分に効果的であり、コーデックを組み合わせた `LZ4` よりも高い性能を発揮することさえあると示唆されています。ほとんどのデータ型や情報分布に対して有効であるため、汎用的なデフォルトとして妥当であり、特別な最適化を行わなくても、デフォルト設定での圧縮品質がすでに非常に高い理由となっています。

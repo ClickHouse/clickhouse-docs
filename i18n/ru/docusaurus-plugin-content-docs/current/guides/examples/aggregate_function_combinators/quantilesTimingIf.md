@@ -7,11 +7,7 @@ sidebar_label: 'quantilesTimingIf'
 doc_type: 'reference'
 ---
 
-
-
 # quantilesTimingIf {#quantilestimingif}
-
-
 
 ## Описание {#description}
 
@@ -19,9 +15,7 @@ doc_type: 'reference'
 для вычисления квантилей значений времени для строк, для которых условие истинно,
 с использованием агрегатной функции-комбинатора `quantilesTimingIf`.
 
-
-
-## Пример использования
+## Пример использования {#example-usage}
 
 В этом примере мы создадим таблицу, которая хранит время ответа API для различных эндпоинтов
 и используем `quantilesTimingIf` для вычисления квантилей времени ответа для успешных запросов.
@@ -84,7 +78,6 @@ GROUP BY endpoint;
 3. │ пользователи │ [nan, nan, nan, nan, nan, nan, nan]                                 │
    └─────────────────┴─────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## См. также {#see-also}
 - [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)

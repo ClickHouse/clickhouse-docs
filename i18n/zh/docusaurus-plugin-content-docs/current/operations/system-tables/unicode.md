@@ -6,7 +6,7 @@ title: 'system.unicode'
 doc_type: 'reference'
 ---
 
-# system.unicode
+# system.unicode {#systemunicode}
 
 `system.unicode` 表是一个虚拟表，用于提供关于 Unicode 字符及其属性的信息（[https://unicode-org.github.io/icu/userguide/strings/properties.html](https://unicode-org.github.io/icu/userguide/strings/properties.html)）。该表是动态生成的。
 
@@ -40,7 +40,6 @@ ICU 文档中 Unicode 码点的属性名称会被转换为 snake&#95;case。
 ```sql
 SELECT * FROM system.unicode WHERE code_point = 'a' LIMIT 1;
 ```
-
 
 ```text
 Row 1:
@@ -167,7 +166,6 @@ script_extensions:               ['Latin']
 identifier_type:                 ['Recommended']
 
 ```
-
 
 ```sql
 SELECT code_point, code_point_value, notation FROM system.unicode WHERE code_point = '😂';

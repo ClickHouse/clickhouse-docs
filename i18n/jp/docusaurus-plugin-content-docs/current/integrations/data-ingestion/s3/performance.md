@@ -1,9 +1,9 @@
 ---
 slug: /integrations/s3/performance
 sidebar_position: 2
-sidebar_label: 'パフォーマンスの最適化'
-title: 'S3 の挿入および読み取りパフォーマンスの最適化'
-description: 'S3 の読み取りと挿入のパフォーマンスを最適化する'
+sidebar_label: 'パフォーマンス最適化'
+title: 'S3 の書き込みおよび読み取りパフォーマンスの最適化'
+description: 'S3 の読み取りおよび書き込みパフォーマンスの最適化'
 doc_type: 'guide'
 keywords: ['s3', 'performance', 'optimization', 'object storage', 'data loading']
 ---
@@ -17,145 +17,147 @@ import InsertThreads from '@site/static/images/integrations/data-ingestion/s3/in
 import S3Cluster from '@site/static/images/integrations/data-ingestion/s3/s3Cluster.png';
 import HardwareSize from '@site/static/images/integrations/data-ingestion/s3/hardware_size.png';
 
-このセクションでは、[s3 テーブル関数](/sql-reference/table-functions/s3)を使用して S3 からデータを読み取りおよび挿入する際のパフォーマンス最適化に焦点を当てています。
+このセクションでは、[s3 テーブル関数](/sql-reference/table-functions/s3) を使用して S3 からデータを読み取りおよび挿入する際のパフォーマンス最適化に焦点を当てます。
 
 :::info
-**このガイドで説明されているレッスンは、[GCS](/sql-reference/table-functions/gcs) や [Azure Blob storage](/sql-reference/table-functions/azureBlobStorage) などの専用テーブル関数を持つ他のオブジェクトストレージ実装にも適用できます。**
+**本ガイドで説明する手法は、[GCS](/sql-reference/table-functions/gcs) や [Azure Blob storage](/sql-reference/table-functions/azureBlobStorage) など、独自の専用テーブル関数を持つ他のオブジェクトストレージ実装にも適用できます。**
 :::
 
-スレッドとブロックサイズを調整して挿入パフォーマンスを向上させる前に、S3 挿入のメカニクスを理解することをお勧めします。挿入メカニクスに精通している場合、またはクイックヒントだけが必要な場合は、[以下](/integrations/s3/performance#example-dataset)の例にスキップしてください。
+挿入パフォーマンスを向上させるためにスレッド数やブロックサイズをチューニングする前に、まずは S3 への INSERT の仕組みを理解することをお勧めします。すでに INSERT の仕組みに慣れている場合や、すぐに役立つヒントだけを知りたい場合は、以下の[サンプルデータセット](/integrations/s3/performance#example-dataset)に進んでください。
 
-## 挿入メカニクス（単一ノード） {#insert-mechanics-single-node}
+## 挿入メカニズム（単一ノード） {#insert-mechanics-single-node}
 
-ハードウェアサイズに加えて、ClickHouse のデータ挿入メカニクス（単一ノード用）のパフォーマンスとリソース使用量に影響を与える主な要因は 2 つあります: **挿入ブロックサイズ** と **挿入並列性** です。
+ハードウェアの規模に加えて、ClickHouse のデータ挿入メカニズム（単一ノード）のパフォーマンスとリソース使用量に影響を与える主な要因は 2 つあります。**挿入ブロックサイズ** と **挿入の並列度** です。
 
 ### 挿入ブロックサイズ {#insert-block-size}
 
-<Image img={InsertMechanics} size="lg" border alt="ClickHouse における挿入ブロックサイズのメカニクス" />
+<Image img={InsertMechanics} size="lg" border alt="ClickHouse における挿入ブロックサイズのメカニズム" />
 
-`INSERT INTO SELECT` を実行すると、ClickHouse はデータ部分を受け取り、①受け取ったデータから（[パーティショニングキー](/engines/table-engines/mergetree-family/custom-partitioning-key)ごとに）少なくとも 1 つのインメモリ挿入ブロックを形成します。ブロックのデータはソートされ、テーブルエンジン固有の最適化が適用されます。次にデータは圧縮され、②新しいデータパートの形式でデータベースストレージに書き込まれます。
+`INSERT INTO SELECT` を実行する際、ClickHouse はデータの一部を受け取り、受信したデータから ① メモリ上に（少なくとも 1 つ、[パーティショニングキー](/engines/table-engines/mergetree-family/custom-partitioning-key) ごとに）挿入ブロックを形成します。ブロック内のデータはソートされ、テーブルエンジン固有の最適化が適用されます。その後、データは圧縮され、② 新しい data part の形式でデータベースストレージに書き込まれます。
 
-挿入ブロックサイズは、ClickHouse サーバーの[ディスクファイル I/O 使用量](https://en.wikipedia.org/wiki/Category:Disk_file_systems)とメモリ使用量の両方に影響します。より大きな挿入ブロックはより多くのメモリを使用しますが、より大きく、より少ない初期パートを生成します。大量のデータをロードするために ClickHouse が作成する必要があるパートが少ないほど、ディスクファイル I/O と自動[バックグラウンドマージの必要性](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#more-parts--more-background-part-merges)が少なくなります。
+挿入ブロックサイズは、ClickHouse サーバーの [ディスクファイル I/O 使用量](https://en.wikipedia.org/wiki/Category:Disk_file_systems) とメモリ使用量の両方に影響します。より大きな挿入ブロックはより多くのメモリを使用しますが、より大きく数の少ない初期の data part を生成します。大量のデータをロードする際に ClickHouse が作成する必要がある part の数が少ないほど、必要なディスクファイル I/O と自動[バックグラウンドマージ](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#more-parts--more-background-part-merges)は少なくなります。
 
-統合テーブルエンジンまたはテーブル関数と組み合わせて `INSERT INTO SELECT` クエリを使用する場合、データは ClickHouse サーバーによってプルされます: 
+`INSERT INTO SELECT` クエリをインテグレーションテーブルエンジンまたはテーブル関数と組み合わせて使用する場合、データは ClickHouse サーバー側からプルされます。
 
-<Image img={Pull} size="lg" border alt="Pulling data from external sources in ClickHouse" />
+<Image img={Pull} size="lg" border alt="ClickHouse における外部ソースからのデータプル" />
 
-Until the data is completely loaded, the server executes a loop:
+データが完全にロードされるまで、サーバーはループを実行し続けます。
 
 ```bash
-① Pull and parse the next portion of data and form an in-memory data block (one per partitioning key) from it.
+① 次のデータの一部を取得して解析し、インメモリのデータブロック（パーティションキーごとに1つ）を作成する。
 
-② Write the block into a new part on storage.
+② そのブロックをストレージ上の新しいパートとして書き込む。
 
-Go to ① 
+①に戻る 
 ```
 
-In ①, the size depends on the insert block size, which can be controlled with two settings:
+①では、サイズは挿入ブロックサイズに依存し、これは次の 2 つの設定で制御できます。
 
-- [`min_insert_block_size_rows`](/operations/settings/settings#min_insert_block_size_rows) (default: `1048545` million rows)
-- [`min_insert_block_size_bytes`](/operations/settings/settings#min_insert_block_size_bytes) (default: `256 MiB`)
+* [`min_insert_block_size_rows`](/operations/settings/settings#min_insert_block_size_rows)（デフォルト: `1048545` 百万行）
+* [`min_insert_block_size_bytes`](/operations/settings/settings#min_insert_block_size_bytes)（デフォルト: `256 MiB`）
 
-When either the specified number of rows is collected in the insert block, or the configured amount of data is reached (whichever happens first), then this will trigger the block being written into a new part. The insert loop continues at step ①.
+挿入ブロック内に指定した行数が集まるか、設定したデータ量に到達すると（先に到達した方）、そのタイミングでブロックが新しいパートとして書き込まれます。挿入ループはステップ ① に戻ります。
 
-Note that the `min_insert_block_size_bytes` value denotes the uncompressed in-memory block size (and not the compressed on-disk part size). Also, note that the created blocks and parts rarely precisely contain the configured number of rows or bytes because ClickHouse streams and [processes](https://clickhouse.com/company/events/query-performance-introspection) data row-[block](/operations/settings/settings#max_block_size)-wise. Therefore, these settings specify minimum thresholds.
+`min_insert_block_size_bytes` の値は、圧縮前のメモリ上のブロックサイズ（オンディスクの圧縮後パートサイズではない）を表す点に注意してください。また、ClickHouse はデータを行単位ではなく[ブロック](/operations/settings/settings#max_block_size)単位でストリーミングおよび[処理](https://clickhouse.com/company/events/query-performance-introspection)するため、作成されるブロックおよびパートが設定された行数やバイト数を厳密に満たすことはほとんどありません。そのため、これらの設定は最小しきい値を指定するものです。
 
-#### Be aware of merges {#be-aware-of-merges}
+#### マージに注意する {#be-aware-of-merges}
 
-The smaller the configured insert block size is, the more initial parts get created for a large data load, and the more background part merges are executed concurrently with the data ingestion. This can cause resource contention (CPU and memory) and require additional time (for reaching a [healthy](/operations/settings/merge-tree-settings#parts_to_throw_insert) (3000) number of parts) after the ingestion is finished. 
+設定された挿入ブロックサイズが小さいほど、大量データロード時に作成される初期パートの数が増え、データのインジェストと同時にバックグラウンドのパートマージがより多く実行されます。これにより、リソース（CPU とメモリ）の競合が発生し、インジェスト完了後に[健全な](/operations/settings/merge-tree-settings#parts_to_throw_insert)（3000）パート数に到達するまでに追加の時間が必要になる可能性があります。
 
 :::important
-ClickHouse query performance will be negatively impacted if the part count exceeds the [recommended limits](/operations/settings/merge-tree-settings#parts_to_throw_insert).
+パート数が[推奨上限](/operations/settings/merge-tree-settings#parts_to_throw_insert)を超えると、ClickHouse のクエリパフォーマンスは悪化します。
 :::
 
-ClickHouse will continuously [merge parts](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance) into larger parts until they [reach](/operations/settings/merge-tree-settings#max_bytes_to_merge_at_max_space_in_pool) a compressed size of ~150 GiB. This diagram shows how a ClickHouse server merges parts:
+ClickHouse は、圧縮サイズが約 150 GiB に[到達](/operations/settings/merge-tree-settings#max_bytes_to_merge_at_max_space_in_pool)するまで、継続的に[パートをマージ](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance)して、より大きなパートにまとめます。次の図は、ClickHouse サーバーがどのようにパートをマージするかを示しています。
 
-<Image img={Merges} size="lg" border alt="Background merges in ClickHouse" />
+<Image img={Merges} size="lg" border alt="ClickHouse におけるバックグラウンドマージ" />
 
-A single ClickHouse server utilizes several [background merge threads](/operations/server-configuration-parameters/settings#background_pool_size) to execute concurrent [part merges](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#more-parts--more-background-part-merges:~:text=to%20execute%20concurrent-,part%20merges,-.%20Each%20thread%20executes). Each thread executes a loop:
-
-```bash
-① Decide which parts to merge next, and load these parts as blocks into memory.
-
-② Merge the loaded blocks in memory into a larger block.
-
-③ Write the merged block into a new part on disk.
-
-Go to ①
-```
-
-Note that [increasing](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#hardware-size) the number of CPU cores and the size of RAM increases the background merge throughput.
-
-Parts that were merged into larger parts are marked as [inactive](/operations/system-tables/parts) and finally deleted after a [configurable](/operations/settings/merge-tree-settings#old_parts_lifetime) number of minutes. Over time, this creates a tree of merged parts (hence the name [`MergeTree`](/engines/table-engines/mergetree-family) table).
-
-### Insert parallelism {#insert-parallelism}
-
-<Image img={ResourceUsage} size="lg" border alt="Resource usage for insert parallelism" />
-
-A ClickHouse server can process and insert data in parallel. The level of insert parallelism impacts the ingest throughput and memory usage of a ClickHouse server. Loading and processing data in parallel requires more main memory but increases the ingest throughput as data is processed faster.
-
-Table functions like s3 allow specifying sets of to-be-loaded-file names via glob patterns. When a glob pattern matches multiple existing files, ClickHouse can parallelize reads across and within these files and insert the data in parallel into a table by utilizing parallel running insert threads (per server): 
-
-<Image img={InsertThreads} size="lg" border alt="Parallel insert threads in ClickHouse" />
-
-Until all data from all files is processed, each insert thread executes a loop: 
+1 台の ClickHouse サーバーは、複数の[バックグラウンドマージスレッド](/operations/server-configuration-parameters/settings#background_pool_size)を使用して、同時に[パートマージ](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#more-parts--more-background-part-merges:~:text=to%20execute%20concurrent-,part%20merges,-.%20Each%20thread%20executes)を実行します。各スレッドはループを実行します。
 
 ```bash
-① Get the next portion of unprocessed file data (portion size is based on the configured block size) and create an in-memory data block from it.
+① 次にマージする部分を決定し、それらをブロックとしてメモリにロードします。
 
-② Write the block into a new part on storage.
-
-Go to ①. 
+② メモリにロードされたブロックをマージして、より大きなブロックにします。
 ```
 
-The number of such parallel insert threads can be configured with the [`max_insert_threads`](/operations/settings/settings#max_insert_threads) setting. The default value is `1` for open-source ClickHouse and 4 for [ClickHouse Cloud](https://clickhouse.com/cloud).
+③ マージされたブロックをディスク上の新しいパートに書き込む。
 
-With a large number of files, the parallel processing by multiple insert threads works well. It can fully saturate both the available CPU cores and the network bandwidth (for parallel file downloads). In scenarios where just a few large files will be loaded into a table, ClickHouse automatically establishes a high level of data processing parallelism and optimizes network bandwidth usage by spawning additional reader threads per insert thread for reading (downloading) more distinct ranges within large files in parallel. 
+① に戻る
 
-For the s3 function and table, parallel downloading of an individual file is determined by the values [max_download_threads](https://clickhouse.com/codebrowser/ClickHouse/src/Core/Settings.h.html#DB::SettingsTraits::Data::max_download_threads) and [max_download_buffer_size](https://clickhouse.com/codebrowser/ClickHouse/src/Core/Settings.h.html#DB::SettingsTraits::Data::max_download_buffer_size). Files will only be downloaded in parallel if their size is greater than `2 * max_download_buffer_size`. By default, the `max_download_buffer_size` default is set to 10MiB. In some cases, you can safely increase this buffer size to 50 MB (`max_download_buffer_size=52428800`), with the aim of ensuring each file was downloaded by a single thread. This can reduce the time each thread spends making S3 calls and thus also lower the S3 wait time. Furthermore, for files that are too small for parallel reading, to increase throughput, ClickHouse automatically prefetches data by pre-reading such files asynchronously.
+````
 
-## Measuring performance {#measuring-performance}
+CPU コア数と RAM 容量を[増やす](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#hardware-size)と、バックグラウンドマージのスループットが向上することに注意してください。
 
-Optimizing the performance of queries using the S3 table functions is required when both running queries against data in place i.e. ad-hoc querying where only ClickHouse compute is used and the data remains in S3 in its original format, and when inserting data from S3 into a ClickHouse MergeTree table engine. Unless specified the following recommendations apply to both scenarios.
+より大きなパーツにマージされたパーツは [inactive](/operations/system-tables/parts) としてマークされ、[設定可能](/operations/settings/merge-tree-settings#old_parts_lifetime)な分数が経過すると最終的に削除されます。時間の経過とともに、これによりマージされたパーツからなる木構造が形成されます（これが [`MergeTree`](/engines/table-engines/mergetree-family) テーブルという名前の由来です）。
 
-## Impact of hardware size {#impact-of-hardware-size}
+### 挿入の並列性 {#insert-parallelism}
 
-<Image img={HardwareSize} size="lg" border alt="Impact of hardware size on ClickHouse performance" />
+<Image img={ResourceUsage} size="lg" border alt="Insert parallelism におけるリソース使用量" />
 
-The number of available CPU cores and the size of RAM impacts the:
+ClickHouse サーバーは、データを並列に処理して挿入できます。挿入の並列度は、ClickHouse サーバーの取り込みスループットとメモリ使用量に影響します。データを並列に読み込み・処理するにはより多くのメインメモリが必要ですが、データ処理が高速になるため取り込みスループットが向上します。
 
-- supported [initial size of parts](#insert-block-size)
-- possible level of [insert parallelism](#insert-parallelism)
-- throughput of [background part merges](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#more-parts--more-background-part-merges)
+s3 のようなテーブル関数では、グロブパターンを使って読み込み対象ファイル名の集合を指定できます。グロブパターンが複数の既存ファイルにマッチする場合、ClickHouse はそれらのファイル間およびファイル内で読み取りを並列化し、サーバーごとに並列で実行される挿入スレッドを利用して、データをテーブルに並列挿入できます。 
 
-and, therefore, the overall ingest throughput.
+<Image img={InsertThreads} size="lg" border alt="ClickHouse における並列挿入スレッド" />
 
-## Region locality {#region-locality}
+すべてのファイルのすべてのデータが処理されるまで、各挿入スレッドは次のループを実行します: 
 
-Ensure your buckets are located in the same region as your ClickHouse instances. This simple optimization can dramatically improve throughput performance, especially if you deploy your ClickHouse instances on AWS infrastructure.
+```bash
+① 未処理のファイルデータの次の部分を取得し（部分サイズは設定されたブロックサイズに基づく）、そこからインメモリのデータブロックを作成する。
 
-## Formats {#formats}
+② そのブロックをストレージ上の新しいパーツに書き込む。
 
-ClickHouse can read files stored in S3 buckets in the [supported formats](/interfaces/formats#formats-overview) using the `s3` function and `S3` engine. If reading raw files, some of these formats have distinct advantages:
+① に戻る。 
+````
 
-* Formats with encoded column names such as Native, Parquet, CSVWithNames, and TabSeparatedWithNames will be less verbose to query since the user will not be required to specify the column name is the `s3` function. The column names allow this information to be inferred.
-* Formats will differ in performance with respect to read and write throughputs. Native and parquet represent the most optimal formats for read performance since they are already column orientated and more compact. The native format additionally benefits from alignment with how ClickHouse stores data in memory - thus reducing processing overhead as data is streamed into ClickHouse.
-* The block size will often impact the latency of reads on large files. This is very apparent if you only sample the data, e.g., returning the top N rows. In the case of formats such as CSV and TSV, files must be parsed to return a set of rows. Formats such as Native and Parquet will allow faster sampling as a result.
-* Each compression format brings pros and cons, often balancing the compression level for speed and biasing compression or decompression performance. If compressing raw files such as CSV or TSV, lz4 offers the fastest decompression performance, sacrificing the compression level. Gzip typically compresses better at the expense of slightly slower read speeds. Xz takes this further by usually offering the best compression with the slowest compression and decompression performance. If exporting, Gz and lz4 offer comparable compression speeds. Balance this against your connection speeds. Any gains from faster decompression or compression will be easily negated by a slower connection to your s3 buckets.
-* Formats such as native or parquet do not typically justify the overhead of compression. Any savings in data size are likely to be minimal since these formats are inherently compact. The time spent compressing and decompressing will rarely offset network transfer times - especially since s3 is globally available with higher network bandwidth.
+このような並列挿入スレッドの数は、[`max_insert_threads`](/operations/settings/settings#max_insert_threads) 設定で指定できます。デフォルト値は、オープンソース版 ClickHouse では `1`、[ClickHouse Cloud](https://clickhouse.com/cloud) では `4` です。
 
-## Example dataset {#example-dataset}
+大量のファイルがある場合、複数の挿入スレッドによる並列処理が有効に機能します。これにより、利用可能な CPU コアおよびネットワーク帯域幅（ファイルの並列ダウンロード）を十分に使い切ることができます。少数の大きなファイルだけをテーブルにロードするシナリオでは、ClickHouse は自動的に高いレベルのデータ処理並列性を実現し、各挿入スレッドごとに追加のリーダースレッドを生成して、大きなファイル内のより多くの別々の範囲を並列に読み取り（ダウンロード）することでネットワーク帯域幅の使用を最適化します。
 
-To illustrate further potential optimizations, purposes we will use [the posts from the Stack Overflow dataset](/data-modeling/schema-design#stack-overflow-dataset) - optimizing both the query and insert performance of this data. 
+`s3` 関数およびテーブルの場合、個々のファイルの並列ダウンロードは [max&#95;download&#95;threads](https://clickhouse.com/codebrowser/ClickHouse/src/Core/Settings.h.html#DB::SettingsTraits::Data::max_download_threads) と [max&#95;download&#95;buffer&#95;size](https://clickhouse.com/codebrowser/ClickHouse/src/Core/Settings.h.html#DB::SettingsTraits::Data::max_download_buffer_size) の値によって決まります。ファイルサイズが `2 * max_download_buffer_size` より大きい場合にのみ、ファイルは並列でダウンロードされます。デフォルトでは、`max_download_buffer_size` は 10MiB に設定されています。場合によっては、各ファイルが単一スレッドによってダウンロードされるようにすることを目的として、このバッファサイズを 50 MB（`max_download_buffer_size=52428800`）まで安全に増やすことができます。これにより、各スレッドが行う S3 呼び出しに要する時間を短縮でき、その結果として S3 の待ち時間も短縮されます。さらに、並列読み取りには小さすぎるファイルについてスループットを向上させるために、ClickHouse はそのようなファイルを非同期に先読みすることでデータを自動的にプリフェッチします。
 
-This dataset consists of 189 Parquet files, with one for every month between July 2008 and March 2024. 
+## パフォーマンスの測定 {#measuring-performance}
 
-Note that we use Parquet for performance, per our [recommendations above](#formats), executing all queries on a ClickHouse Cluster located in the same region as the bucket. This cluster has 3 nodes, each with 32GiB of RAM and 8 vCPUs.
+S3 テーブル関数を使用するクエリのパフォーマンス最適化は、次の 2 つのケースで必要になります。1 つ目は、S3 上のデータをその場に置いたままクエリする場合、すなわちデータは元の形式のまま S3 に残し、ClickHouse の計算リソースのみを使用するアドホッククエリの場合、2 つ目は、S3 から ClickHouse の MergeTree テーブルエンジンにデータを挿入する場合です。特に明記がない限り、以下の推奨事項は両方のシナリオに適用されます。
 
-With no tuning, we demonstrate the performance to insert this dataset into a MergeTree table engine as well as execute a query to compute the users asking the most questions. Both of these queries intentionally require a complete scan of the data.
+## ハードウェア規模の影響 {#impact-of-hardware-size}
+
+<Image img={HardwareSize} size="lg" border alt="ハードウェア規模が ClickHouse のパフォーマンスに与える影響" />
+
+利用可能な CPU コア数と RAM 容量は、次の点に影響します。
+
+- サポートされる[パーツの初期サイズ](#insert-block-size)
+- 可能な[挿入処理の並列度](#insert-parallelism)
+- [バックグラウンドでのパーツマージ](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#more-parts--more-background-part-merges)のスループット
+
+したがって、取り込み全体のスループットにも影響します。
+
+## リージョンのローカリティ {#region-locality}
+
+バケットが ClickHouse インスタンスと同じリージョンに存在することを確認してください。この簡単な最適化により、特に ClickHouse インスタンスを AWS のインフラストラクチャ上にデプロイしている場合、スループットが大幅に向上する可能性があります。
+
+## フォーマット {#formats}
+
+ClickHouse は、`s3` 関数および `S3` エンジンを使用して、S3 バケットに保存されたファイルを [サポートされているフォーマット](/interfaces/formats#formats-overview) で読み取ることができます。元のファイルを直接読み取る場合、これらのフォーマットにはいくつかの明確な利点があります。
+
+* Native、Parquet、CSVWithNames、TabSeparatedWithNames のようにカラム名がエンコードされているフォーマットでは、ユーザーが `s3` 関数にカラム名を指定する必要がないため、クエリが簡潔になります。カラム名からこの情報を推論できます。
+* フォーマットごとに、読み書きスループットの観点で性能が異なります。Native と Parquet はすでにカラム指向であり、よりコンパクトであるため、読み取り性能の点で最適なフォーマットです。Native フォーマットはさらに、ClickHouse がメモリ内にデータを格納する方法と整合しているため、データが ClickHouse にストリーミングされる際の処理オーバーヘッドを削減できます。
+* ブロックサイズは、大きなファイルの読み取りレイテンシにしばしば影響します。これは、たとえば先頭 N 行だけを返すなど、データをサンプリングする場合に顕著です。CSV や TSV のようなフォーマットでは、行の集合を返すためにファイルをパースする必要があります。Native や Parquet のようなフォーマットでは、この結果としてより高速なサンプリングが可能になります。
+* 各圧縮フォーマットには一長一短があり、多くの場合、圧縮率と速度、および圧縮・解凍それぞれの性能のバランスを取ります。CSV や TSV のような元のファイルを圧縮する場合、lz4 は圧縮率を犠牲にする代わりに、最速の解凍性能を提供します。Gzip は一般的に、読み取り速度がわずかに低下する代わりに、より高い圧縮率を実現します。Xz はこれをさらに推し進め、通常は最も高い圧縮率を提供しますが、圧縮および解凍の性能は最も低くなります。エクスポートする場合、Gz と lz4 は概ね同程度の圧縮速度を提供します。これを接続速度と比較して検討してください。解凍や圧縮が高速になることによる利点は、S3 バケットへの接続が遅いと簡単に相殺されてしまいます。
+* Native や Parquet のようなフォーマットでは、通常、圧縮のオーバーヘッドを正当化できません。これらのフォーマットは本質的にコンパクトであるため、データサイズ削減の効果は小さいことが多いです。圧縮および解凍に費やす時間は、ネットワーク転送時間を相殺することはほとんどありません。特に S3 はグローバルに利用可能であり、高いネットワーク帯域幅を持つため、なおさらです。
+
+## 例となるデータセット {#example-dataset}
+
+さらなる最適化の可能性を示すために、ここでは [Stack Overflow データセットの投稿](/data-modeling/schema-design#stack-overflow-dataset) を利用し、このデータに対するクエリおよび書き込みパフォーマンスの両方を最適化していきます。
+
+このデータセットは 189 個の Parquet ファイルで構成されており、2008 年 7 月から 2024 年 3 月までの各月につき 1 ファイルずつ存在します。
+
+[上記の推奨事項](#formats) に従い、パフォーマンス向上のために Parquet を使用し、すべてのクエリをバケットと同じリージョンに配置された ClickHouse クラスター上で実行しています。このクラスターは 3 ノードで構成され、各ノードは 32GiB の RAM と 8 vCPU を備えています。
+
+チューニングなしの状態で、このデータセットを MergeTree テーブルエンジンに挿入する際のパフォーマンスと、最も多く質問を投稿しているユーザーを算出するクエリを実行する際のパフォーマンスを示します。これら 2 つのクエリはいずれも、意図的にデータのフルスキャンを必要とします。
 
 ```sql
--- Top usernames
+-- トップユーザー名
 SELECT
     OwnerDisplayName,
     count() AS num_posts
@@ -173,34 +175,34 @@ LIMIT 5
 │ user3559349      │      3068 │
 └──────────────────┴───────────┘
 
-5 rows in set. Elapsed: 3.013 sec. Processed 59.82 million rows, 24.03 GB (19.86 million rows/s., 7.98 GB/s.)
-Peak memory usage: 603.64 MiB.
+5 行が返されました。経過時間: 3.013 秒。処理: 59.82 百万行、24.03 GB (19.86 百万行/秒、7.98 GB/秒)。
+ピーク時メモリ使用量: 603.64 MiB。
 
--- Load into posts table
+-- posts テーブルにロード
 INSERT INTO posts SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/by_month/*.parquet')
 
-0 rows in set. Elapsed: 191.692 sec. Processed 59.82 million rows, 24.03 GB (312.06 thousand rows/s., 125.37 MB/s.)
+0 行が返されました。経過時間: 191.692 秒。処理: 59.82 百万行、24.03 GB (312.06 千行/秒、125.37 MB/秒)。
 ```
 
-In our example we only return a few rows. If measuring the performance of `SELECT` queries, where large volumes of data are returned to the client, either utilize the [null format](/interfaces/formats/Null) for queries or direct results to the [`Null` engine](/engines/table-engines/special/null.md). This should avoid the client being overwhelmed with data and network saturation.
+この例では、数行のみを返しています。大量のデータをクライアントに返す `SELECT` クエリのパフォーマンスを測定する場合は、クエリで [null format](/interfaces/formats/Null) を利用するか、結果を [`Null` engine](/engines/table-engines/special/null.md) に送るようにしてください。これにより、クライアントが過剰なデータ量で圧迫されたり、ネットワークが飽和したりすることを防げます。
 
 :::info
-When reading from queries, the initial query can often appear slower than if the same query is repeated. This can be attributed to both S3's own caching but also the [ClickHouse Schema Inference Cache](/operations/system-tables/schema_inference_cache). This stores the inferred schema for files and means the inference step can be skipped on subsequent accesses, thus reducing query time.
+クエリを実行して読み取りを行う際、同じクエリを繰り返し実行した場合と比べて、最初のクエリが遅く見えることがよくあります。これは、S3 側のキャッシュと [ClickHouse Schema Inference Cache](/operations/system-tables/schema_inference_cache) の両方によるものです。後者はファイルに対して推論されたスキーマを保存するため、後続のアクセスではスキーマ推論ステップを省略でき、その結果クエリ時間を短縮できます。
 :::
 
-## Using threads for reads {#using-threads-for-reads}
+## 読み取りにスレッドを使用する {#using-threads-for-reads}
 
-Read performance on S3 will scale linearly with the number of cores, provided you are not limited by network bandwidth or local I/O. Increasing the number of threads also has memory overhead permutations that users should be aware of. The following can be modified to improve read throughput performance potentially:
+S3 上での読み取りパフォーマンスは、ネットワーク帯域幅やローカル I/O によって制限されない限り、コア数に比例してスケールします。スレッド数を増やすと追加のメモリオーバーヘッドも発生するため、ユーザーはこれを理解しておく必要があります。読み取りスループットを向上させるために、次の項目を調整できます。
 
-* Usually, the default value of `max_threads` is sufficient, i.e., the number of cores. If the amount of memory used for a query is high, and this needs to be reduced, or the `LIMIT` on results is low, this value can be set lower. Users with plenty of memory may wish to experiment with increasing this value for possible higher read throughput from S3. Typically this is only beneficial on machines with lower core counts, i.e., &lt; 10. The benefit from further parallelization typically diminishes as other resources act as a bottleneck, e.g., network and CPU contention.
-* Versions of ClickHouse before 22.3.1 only parallelized reads across multiple files when using the `s3` function or `S3` table engine. This required the user to ensure files were split into chunks on S3 and read using a glob pattern to achieve optimal read performance. Later versions now parallelize downloads within a file.
-* In low thread count scenarios, users may benefit from setting `remote_filesystem_read_method` to "read" to cause the synchronous reading of files from S3.
-* For the s3 function and table, parallel downloading of an individual file is determined by the values [`max_download_threads`](/operations/settings/settings#max_download_threads) and [`max_download_buffer_size`](/operations/settings/settings#max_download_buffer_size). While [`max_download_threads`](/operations/settings/settings#max_download_threads) controls the number of threads used, files will only be downloaded in parallel if their size is greater than 2 * `max_download_buffer_size`. By default, the `max_download_buffer_size` default is set to 10MiB. In some cases, you can safely increase this buffer size to 50 MB (`max_download_buffer_size=52428800`), with the aim of ensuring smaller files are only downloaded by a single thread. This can reduce the time each thread spends making S3 calls and thus also lower the S3 wait time. See [this blog post](https://clickhouse.com/blog/clickhouse-1-trillion-row-challenge) for an example of this.
+* 通常、`max_threads` のデフォルト値、すなわちコア数で十分です。クエリで使用されるメモリ量が多く、これを削減する必要がある場合、あるいは結果に対する `LIMIT` が小さい場合には、この値をより小さく設定できます。メモリに十分な余裕がある環境では、S3 からの読み取りスループット向上の可能性を確認するために、この値を増やしてみることもできます。一般的に、これはコア数が少ないマシン、すなわち 10 未満の場合にのみ有益です。さらなる並列化によるメリットは、ネットワークや CPU の競合など、他のリソースがボトルネックとして働くにつれて通常は減少します。
+* ClickHouse 22.3.1 より前のバージョンでは、`s3` 関数または `S3` テーブルエンジンを使用した場合にのみ、複数ファイルにまたがる読み取りが並列化されていました。このため、ユーザーは最適な読み取り性能を達成するために、S3 上のファイルをチャンクに分割し、glob パターンを使って読み取る必要がありました。後続のバージョンでは、ファイル内でのダウンロードも並列化されるようになっています。
+* スレッド数が少ないシナリオでは、`remote_filesystem_read_method` を &quot;read&quot; に設定して、S3 からのファイル読み取りを同期的に実行することでメリットを得られる場合があります。
+* `s3` 関数およびテーブルにおいて、個々のファイルの並列ダウンロードは、[`max_download_threads`](/operations/settings/settings#max_download_threads) と [`max_download_buffer_size`](/operations/settings/settings#max_download_buffer_size) の値によって決定されます。[`max_download_threads`](/operations/settings/settings#max_download_threads) は使用されるスレッド数を制御しますが、ファイルが並列にダウンロードされるのは、そのサイズが 2 * `max_download_buffer_size` より大きい場合のみです。デフォルトでは、`max_download_buffer_size` は 10MiB に設定されています。場合によっては、このバッファサイズを安全に 50 MB (`max_download_buffer_size=52428800`) まで増やし、小さなファイルが単一スレッドによってのみダウンロードされるようにすることができます。これにより、各スレッドが S3 呼び出しに費やす時間を減らし、S3 の待機時間も短縮できます。具体例については [このブログ記事](https://clickhouse.com/blog/clickhouse-1-trillion-row-challenge) を参照してください。
 
-Before making any changes to improve performance, ensure you measure appropriately. As S3 API calls are sensitive to latency and may impact client timings, use the query log for performance metrics, i.e., `system.query_log`.
+パフォーマンス改善のために変更を加える前に、適切に計測していることを確認してください。S3 API コールはレイテンシに敏感であり、クライアント側のタイミングに影響を与える可能性があるため、パフォーマンスメトリクスには `system.query_log` などのクエリログを使用してください。
 
-Consider our earlier query, doubling the `max_threads` to `16` (default `max_thread` is the number of cores on a node) improves our read query performance by 2x at the expense of higher memory. Further increasing `max_threads` has diminishing returns as shown.
+先ほどのクエリを例に取ると、`max_threads` を `16` に倍増させることで（デフォルトの `max_thread` はノード上のコア数）、メモリ消費が増える代わりに読み取りクエリ性能を 2 倍に向上させることができます。`max_threads` をそれ以上増やしても、以下に示すように効果は逓減します。
 
 ```sql
 SELECT
@@ -235,33 +237,33 @@ SETTINGS max_threads = 64
 Peak memory usage: 639.99 MiB.
 ```
 
-## Tuning threads and block size for inserts {#tuning-threads-and-block-size-for-inserts}
+## INSERT におけるスレッド数とブロックサイズのチューニング {#tuning-threads-and-block-size-for-inserts}
 
-To achieve maximum ingestion performance, you must choose (1) an insert block size and (2) an appropriate level of insert parallelism based on (3) the amount of available CPU cores and RAM available. In summary:
+インジェスト性能を最大化するには、(1) INSERT のブロックサイズ、(2) INSERT の並列度を、(3) 利用可能な CPU コア数と RAM 量に基づいて選択・設定する必要があります。まとめると次のとおりです。
 
-- The larger we [configure the insert block size](#insert-block-size), the fewer parts ClickHouse has to create, and the fewer [disk file I/O](https://en.wikipedia.org/wiki/Category:Disk_file_systems) and [background merges](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#more-parts--more-background-part-merges) are required.  
-- The higher we configure the [number of parallel insert threads](#insert-parallelism), the faster the data will be processed.
+* [INSERT のブロックサイズ](#insert-block-size) を大きく設定すればするほど、ClickHouse が作成しなければならないパーツの数が減り、必要となる [ディスクファイル I/O](https://en.wikipedia.org/wiki/Category:Disk_file_systems) と[バックグラウンドマージ](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#more-parts--more-background-part-merges) の回数も減少します。
+* [並列 INSERT スレッド数](#insert-parallelism) を多く設定すればするほど、データはより高速に処理されます。
 
-There is a conflicting tradeoff between these two performance factors (plus a tradeoff with the background part merging). The amount of available main memory of ClickHouse servers is limited. Larger blocks use more main memory, which limits the number of parallel insert threads we can utilize. Conversely, a higher number of parallel insert threads requires more main memory, as the number of insert threads determines the number of insert blocks created in memory concurrently. This limits the possible size of insert blocks. Additionally, there can be resource contention between insert threads and background merge threads. A high number of configured insert threads (1) creates more parts that need to be merged and (2) takes away CPU cores and memory space from background merge threads.
+これら 2 つの性能要因の間には、互いに相反するトレードオフ（さらにバックグラウンドでのパーツマージとのトレードオフ）があります。ClickHouse サーバーで利用可能なメインメモリ量には上限があります。ブロックを大きくするとメインメモリの使用量が増えるため、利用可能な並列 INSERT スレッド数が制限されます。逆に、並列 INSERT スレッド数を増やすと、メモリ内で同時に生成される INSERT ブロック数が増えるため、より多くのメインメモリを必要とします。その結果、設定できる INSERT ブロックサイズが制限されます。さらに、INSERT スレッドとバックグラウンドマージスレッドの間でリソース競合が発生する可能性があります。多くの INSERT スレッドを設定すると、(1) マージ対象となるパーツがより多く作成され、(2) バックグラウンドマージスレッドが利用できる CPU コアとメモリ領域が奪われます。
 
-For a detailed description of how the behavior of these parameters impacts performance and resources, we recommend [reading this blog post](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part2). As described in this blog post, tuning can involve a careful balance of the two parameters. This exhaustive testing is often impractical, so in summary, we recommend:
+これらのパラメータの動作がパフォーマンスとリソースにどのような影響を与えるかについての詳細な説明は、[このブログ記事](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part2) を参照してください。このブログ記事で説明されているように、チューニングには 2 つのパラメータ間の慎重なバランス調整が関わります。このような網羅的なテストを行うのは実務上困難な場合が多いため、要約として次の推奨事項があります。
 
 ```bash
-• max_insert_threads: choose ~ half of the available CPU cores for insert threads (to leave enough dedicated cores for background merges)
+• max_insert_threads: 挿入スレッド用に利用可能なCPUコアの約半分を選択します（バックグラウンドマージ用に十分な専用コアを確保するため）
 
-• peak_memory_usage_in_bytes: choose an intended peak memory usage; either all available RAM (if it is an isolated ingest) or half or less (to leave room for other concurrent tasks)
+• peak_memory_usage_in_bytes: 想定されるピークメモリ使用量を選択します。独立した取り込み処理の場合は利用可能なRAMをすべて使用するか、他の同時実行タスク用の余地を残すために半分以下にします
 
-Then:
+次に:
 min_insert_block_size_bytes = peak_memory_usage_in_bytes / (~3 * max_insert_threads)
 ```
 
-With this formula, you can set `min_insert_block_size_rows` to 0 (to disable the row based threshold) while setting `max_insert_threads` to the chosen value and `min_insert_block_size_bytes` to the calculated result from the above formula.
+この式を使うと、`min_insert_block_size_rows` を 0（行ベースのしきい値を無効にする）に設定しつつ、`max_insert_threads` を任意の値に設定し、`min_insert_block_size_bytes` を上記の式から計算された結果に設定できます。
 
-Using this formula with our earlier Stack Overflow example.
+先ほどの Stack Overflow の例にこの式を適用します。
 
-- `max_insert_threads=4` (8 cores per node)
-- `peak_memory_usage_in_bytes` - 32 GiB (100% of node resources) or `34359738368` bytes.
-- `min_insert_block_size_bytes` = `34359738368/(3*4) = 2863311530`
+* `max_insert_threads=4`（ノードあたり 8 コア）
+* `peak_memory_usage_in_bytes` は 32 GiB（ノードリソースの 100%）、すなわち `34359738368` バイト
+* `min_insert_block_size_bytes` = `34359738368/(3*4) = 2863311530`
 
 ```sql
 INSERT INTO posts SELECT *
@@ -270,15 +272,15 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 0 rows in set. Elapsed: 128.566 sec. Processed 59.82 million rows, 24.03 GB (465.28 thousand rows/s., 186.92 MB/s.)
 ```
 
-As shown, tuning of these setting has improved insert performance by over `33%`. We leave this to the reader to see if they can improve single node performance further.
+示したように、これらの設定を調整することで、挿入パフォーマンスは `33%` 以上向上しました。単一ノードでのパフォーマンスをさらに向上できるかどうかは、読者の検証に委ねます。
 
-## Scaling with resources and nodes {#scaling-with-resources-and-nodes}
+## リソースおよびノードによるスケーリング {#scaling-with-resources-and-nodes}
 
-Scaling with resources and nodes applies to both read and insert queries.
+リソースおよびノードによるスケーリングは、読み取りクエリと挿入クエリの両方に適用されます。
 
-### Vertical scaling {#vertical-scaling}
+### 垂直スケーリング {#vertical-scaling}
 
-All previous tuning and queries have only used a single node in our ClickHouse Cloud cluster. Users will also often have more than one node of ClickHouse available. We recommend users scale vertically initially, improving S3 throughput linearly with the number of cores. If we repeat our earlier insert and read queries on a larger ClickHouse Cloud node to twice the resources (64GiB, 16 vCPUs) with appropriate settings, both execute approximately twice as fast.
+これまでのすべてのチューニングとクエリは、ClickHouse Cloud クラスター内の単一ノードのみを使用していました。実際には、ユーザーは複数の ClickHouse ノードを利用できることがよくあります。まずは垂直スケーリングを行い、コア数に応じて S3 のスループットを線形に向上させることを推奨します。以前の挿入クエリと読み取りクエリを、リソースを 2 倍（64GiB、16 vCPU）にした、より大きな ClickHouse Cloud ノード上で適切な設定とともに再実行すると、どちらもおおよそ 2 倍の速度で実行されます。
 
 ```sql
 INSERT INTO posts SELECT *
@@ -300,22 +302,22 @@ SETTINGS max_threads = 92
 ```
 
 :::note
-Individual nodes can also be bottlenecked by network and S3 GET requests, preventing linear scaling of performance vertically.
+個々のノードはネットワークや S3 の GET リクエストによってボトルネックとなる場合もあり、その結果、垂直方向の性能を線形にはスケールできなくなります。
 :::
 
-### Horizontal scaling {#horizontal-scaling}
+### 水平スケーリング {#horizontal-scaling}
 
-Eventually, horizontal scaling is often necessary due to hardware availability and cost-efficiency. In ClickHouse Cloud, production clusters have at least 3 nodes. Users may also wish to therefore utilize all nodes for an insert.
+最終的には、ハードウェアの入手性やコスト効率の観点から、水平スケーリングが必要になることがよくあります。ClickHouse Cloud では、本番クラスターは少なくとも 3 ノードで構成されています。そのため、ユーザーは挿入処理にすべてのノードを利用したい場合もあるでしょう。
 
-Utilizing a cluster for S3 reads requires using the `s3Cluster` function as described in [Utilizing Clusters](/integrations/s3#utilizing-clusters). This allows reads to be distributed across nodes.  
+S3 からの読み取りにクラスターを利用するには、[Utilizing Clusters](/integrations/s3#utilizing-clusters) で説明されているように `s3Cluster` 関数を使用する必要があります。これにより、読み取りをノード間で分散できます。
 
-The server that initially receives the insert query first resolves the glob pattern and then dispatches the processing of each matching file dynamically to itself and the other servers.
+挿入クエリを最初に受信したサーバーは、まずグロブパターンを解決してから、一致した各ファイルの処理を自分自身および他のサーバーに動的にディスパッチします。
 
-<Image img={S3Cluster} size="lg" border alt="s3Cluster function in ClickHouse" />
+<Image img={S3Cluster} size="lg" border alt="ClickHouse における s3Cluster 関数" />
 
-We repeat our earlier read query distributing the workload across 3 nodes, adjusting the query to use `s3Cluster`. This is performed automatically in ClickHouse Cloud, by referring to the `default` cluster.
+以前の読み取りクエリを再度実行し、`s3Cluster` を使用するようにクエリを調整して、ワークロードを 3 ノードに分散します。ClickHouse Cloud では、`default` クラスターを参照することで、これは自動的に実行されます。
 
-As noted in [Utilizing Clusters](/integrations/s3#utilizing-clusters) this work is distributed a file level. To benefit from this feature users will require a sufficient number of files i.e. at least > the number of nodes.
+[Utilizing Clusters](/integrations/s3#utilizing-clusters) で述べたように、この処理はファイル単位で分散されます。この機能の恩恵を受けるには、ユーザーは十分な数のファイル、つまり少なくともノード数を上回るファイル数を用意する必要があります。
 
 ```sql
 SELECT
@@ -340,7 +342,7 @@ SETTINGS max_threads = 16
 Peak memory usage: 176.74 MiB.
 ```
 
-Likewise, our insert query can be distributed, using the improved settings identified earlier for a single node:
+同様に、単一ノード向けに前述で特定した改善済みの設定を使用して、挿入クエリも分散実行できます。
 
 ```sql
 INSERT INTO posts SELECT *
@@ -349,9 +351,9 @@ FROM s3Cluster('default', 'https://datasets-documentation.s3.eu-west-3.amazonaws
 0 rows in set. Elapsed: 171.202 sec. Processed 59.82 million rows, 24.03 GB (349.41 thousand rows/s., 140.37 MB/s.)
 ```
 
-Readers will notice the reading of files has improved query but not insert performance. By default, although reads are distributed using `s3Cluster`, inserts will occur against the initiator node. This means that while reads will occur on each node, the resulting rows will be routed to the initiator for distribution. In high throughput scenarios, this may prove a bottleneck. To address this, set the parameter `parallel_distributed_insert_select` for the `s3cluster` function.
+ファイルの読み込みではクエリ性能は向上しますが、挿入性能は改善されていないことに気付くでしょう。デフォルトでは、読み取りは `s3Cluster` を使って分散されますが、挿入はイニシエーターノードに対して行われます。これは、読み取り自体は各ノードで行われる一方で、得られた行は分散処理のためにイニシエーターノードへルーティングされることを意味します。高スループットなシナリオでは、これがボトルネックとなる可能性があります。これに対処するには、`s3cluster` 関数に対してパラメータ `parallel_distributed_insert_select` を設定します。
 
-Setting this to `parallel_distributed_insert_select=2`, ensures the `SELECT` and `INSERT` will be executed on each shard from/to the underlying table of the distributed engine on each node.
+これを `parallel_distributed_insert_select=2` に設定すると、各ノード上の分散エンジンの下位テーブルに対して、各シャードで `SELECT` および `INSERT` が実行されるようになります。
 
 ```sql
 INSERT INTO posts
@@ -363,15 +365,15 @@ SETTINGS parallel_distributed_insert_select = 2, min_insert_block_size_rows=0, m
 Peak memory usage: 11.75 GiB.
 ```
 
-As expected, this reduces insert performance by 3x.
+予想どおり、これにより挿入パフォーマンスは 3 分の 1 に低下します。
 
-## Further tuning {#further-tuning}
+## さらなるチューニング {#further-tuning}
 
-### Disable de-duplication {#disable-de-duplication}
+### 重複排除の無効化 {#disable-de-duplication}
 
-Insert operations can sometimes fail due to errors such as timeouts. When inserts fail, data may or may not have been successfully inserted. To allow inserts to be safely re-tried by the client, by default in distributed deployments such as ClickHouse Cloud, ClickHouse tries to determine whether the data has already been successfully inserted. If the inserted data is marked as a duplicate, ClickHouse does not insert it into the destination table. However, the user will still receive a successful operation status as if the data had been inserted normally.
+挿入操作は、タイムアウトなどのエラーにより失敗することがあります。挿入が失敗した場合、データが実際に挿入されたかどうかは分からないことがあります。クライアント側で安全に挿入を再試行できるようにするため、ClickHouse Cloud のような分散デプロイメントでは、デフォルトで ClickHouse がそのデータがすでに正常に挿入されているかどうかを確認しようとします。挿入されたデータが重複とマークされた場合、ClickHouse はそれを宛先テーブルに挿入しません。ただし、ユーザー側には、あたかもデータが通常どおり挿入されたかのように、操作成功ステータスが返されます。
 
-While this behavior, which incurs an insert overhead, makes sense when loading data from a client or in batches it can be unnecessary when performing an `INSERT INTO SELECT` from object storage. By disabling this functionality at insert time, we can improve performance as shown below:
+この挙動は、クライアントからのデータロードやバッチ処理では挿入時のオーバーヘッドがかかるものの妥当ですが、オブジェクトストレージ上のデータに対して `INSERT INTO SELECT` を実行する場合には不要な場合があります。挿入時にこの機能を無効にすることで、以下に示すようにパフォーマンスを向上できます。
 
 ```sql
 INSERT INTO posts
@@ -384,11 +386,11 @@ SETTINGS parallel_distributed_insert_select = 2, min_insert_block_size_rows = 0,
 Peak memory usage: 26.57 GiB.
 ```
 
-### Optimize on insert {#optimize-on-insert}
+### 挿入時の最適化 {#optimize-on-insert}
 
-In ClickHouse, the `optimize_on_insert` setting controls whether data parts are merged during the insert process. When enabled (`optimize_on_insert = 1` by default), small parts are merged into larger ones as they are inserted, improving query performance by reducing the number of parts that need to be read. However, this merging adds overhead to the insert process, potentially slowing down high-throughput insertions.
+ClickHouse では、`optimize_on_insert` 設定は挿入処理中にデータパーツをマージするかどうかを制御します。有効な場合（デフォルトで `optimize_on_insert = 1`）、小さなパーツは挿入時により大きなパーツにマージされ、読み取る必要があるパーツ数を減らすことでクエリ性能を向上させます。ただし、このマージ処理は挿入処理にオーバーヘッドを追加するため、高スループットの挿入を遅くする可能性があります。
 
-Disabling this setting (`optimize_on_insert = 0`) skips merging during inserts, allowing data to be written more quickly, especially when handling frequent small inserts. The merging process is deferred to the background, allowing for better insert performance but temporarily increasing the number of small parts, which may slow down queries until the background merge completes. This setting is ideal when insert performance is a priority, and the background merge process can handle optimization efficiently later. As shown below, disabling setting can improve insert throughput:
+この設定を無効化すると（`optimize_on_insert = 0`）、挿入時のマージがスキップされ、特に小さな挿入が頻繁に発生する場合にデータを書き込みやすくなります。マージ処理はバックグラウンドに延期されるため、挿入性能は向上しますが、その完了までの間は小さなパーツ数が一時的に増加し、バックグラウンドマージが完了するまでクエリが遅くなる可能性があります。この設定は、挿入性能を優先し、後でバックグラウンドマージ処理によって効率的に最適化できる場合に最適です。以下に示すように、この設定を無効化することで挿入スループットを向上できます。
 
 ```sql
 SELECT *
@@ -398,6 +400,6 @@ SETTINGS parallel_distributed_insert_select = 2, min_insert_block_size_rows = 0,
 0 rows in set. Elapsed: 49.688 sec. Processed 59.82 million rows, 24.03 GB (1.20 million rows/s., 483.66 MB/s.)
 ```
 
-## Misc notes {#misc-notes}
+## その他の注意事項 {#misc-notes}
 
-* For low memory scenarios, consider lowering `max_insert_delayed_streams_for_parallel_write` if inserting into S3.
+* メモリが限られた環境では、S3 へのデータ挿入時に `max_insert_delayed_streams_for_parallel_write` の値を下げることを検討してください。

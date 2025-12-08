@@ -6,7 +6,7 @@ title: 'uniq'
 doc_type: 'reference'
 ---
 
-# uniq
+# uniq {#uniq}
 
 计算参数中不同值的近似个数。
 

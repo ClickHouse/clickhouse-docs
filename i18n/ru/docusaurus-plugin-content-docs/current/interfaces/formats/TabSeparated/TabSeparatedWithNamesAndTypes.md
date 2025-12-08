@@ -10,8 +10,6 @@ doc_type: 'reference'
 |----------------|-----------------|-----------------------------------------------|
 |       ✔        |        ✔        | `TSVWithNamesAndTypes`, `RawWithNamesAndTypes` |
 
-
-
 ## Описание {#description}
 
 Отличается от формата [`TabSeparated`](./TabSeparated.md) тем, что имена столбцов записываются в первую строку, а типы столбцов — во вторую.
@@ -24,11 +22,9 @@ doc_type: 'reference'
 типы из входных данных будут сравниваться с типами соответствующих столбцов таблицы. В противном случае вторая строка будет пропущена.
 :::
 
+## Пример использования {#example-usage}
 
-
-## Пример использования
-
-### Вставка данных
+### Вставка данных {#inserting-data}
 
 Используем следующий TSV-файл с именем `football.tsv`:
 
@@ -60,7 +56,7 @@ Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedWithNamesAndTypes;
 ```
 
-### Чтение данных
+### Чтение данных {#reading-data}
 
 Прочитайте данные в формате `TabSeparatedWithNamesAndTypes`:
 
@@ -71,7 +67,6 @@ FORMAT TabSeparatedWithNamesAndTypes
 ```
 
 Вывод будет в формате с разделителями табуляции и двумя строками заголовков для имен столбцов и их типов:
-
 
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals
@@ -94,6 +89,5 @@ Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
 2022-05-07      2021    Stevenage Borough       Salford City    4       2
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
-
 
 ## Параметры формата {#format-settings}

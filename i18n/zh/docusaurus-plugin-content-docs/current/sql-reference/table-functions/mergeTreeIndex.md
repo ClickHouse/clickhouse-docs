@@ -8,20 +8,15 @@ title: 'mergeTreeIndex'
 doc_type: 'reference'
 ---
 
-
-
-# mergeTreeIndex 表函数
+# mergeTreeIndex 表函数 {#mergetreeindex-table-function}
 
 用于表示 MergeTree 表的索引文件和标记文件的内容，可用于内部检查。
 
-
-
-## 语法
+## 语法 {#syntax}
 
 ```sql
 mergeTreeIndex(database, table [, with_marks = true] [, with_minmax = true])
 ```
-
 
 ## 参数 {#arguments}
 
@@ -31,8 +26,6 @@ mergeTreeIndex(database, table [, with_marks = true] [, with_minmax = true])
 | `table`       | 要读取其索引和标记的表名称。                           |
 | `with_marks`  | 是否在结果中包含带标记的列。                           |
 | `with_minmax` | 是否在结果中包含最小-最大索引。                        |
-
-
 
 ## 返回值 {#returned_value}
 
@@ -44,9 +37,7 @@ mergeTreeIndex(database, table [, with_marks = true] [, with_minmax = true])
 
 当某列在数据分片中不存在，或其某个子流的标记未被写入（例如在 compact 分片中）时，marks 列可能包含 `(NULL, NULL)` 值。
 
-
-
-## 使用示例
+## 使用示例 {#usage-example}
 
 ```sql
 CREATE TABLE test_table

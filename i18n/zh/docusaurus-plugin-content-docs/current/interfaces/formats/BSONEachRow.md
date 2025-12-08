@@ -82,7 +82,7 @@ doc_type: 'reference'
 
 ## 使用示例 {#example-usage}
 
-### 插入数据
+### 插入数据 {#inserting-data}
 
 使用名为 `football.bson`、包含以下数据的 BSON 文件：
 
@@ -114,8 +114,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.bson' FORMAT BSONEachRow;
 ```
 
-
-### 读取数据
+### 读取数据 {#reading-data}
 
 以 `BSONEachRow` 格式读取数据：
 
@@ -128,7 +127,6 @@ FORMAT BSONEachRow
 :::tip
 BSON 是一种二进制格式，无法在终端以人类可读形式显示。使用 `INTO OUTFILE` 将数据输出为 BSON 文件。
 :::
-
 
 ## 格式设置 {#format-settings}
 

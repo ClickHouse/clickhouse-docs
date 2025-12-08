@@ -10,8 +10,7 @@ doc_type: 'guide'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
-# Kafka 表引擎
+# Kafka 表引擎 {#kafka-table-engine}
 
 :::tip
 如果您在使用 ClickHouse Cloud，我们推荐改用 [ClickPipes](/integrations/clickpipes)。ClickPipes 原生支持私有网络连接，可分别扩展摄取层和集群资源，并为将 Kafka 流式数据摄取到 ClickHouse 提供完善的监控能力。
@@ -21,7 +20,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 - 构建具备容错能力的存储。
 - 在数据流到达时进行处理。
 
-## 创建表
+## 创建表 {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -48,6 +47,7 @@ SETTINGS
     [kafka_poll_timeout_ms = 0,]
     [kafka_poll_max_batch_size = 0,]
     [kafka_flush_interval_ms = 0,]
+    [kafka_consumer_reschedule_ms = 0,]
     [kafka_thread_per_consumer = 0,]
     [kafka_handle_error_mode = 'default',]
     [kafka_commit_on_select = false,]
@@ -58,34 +58,34 @@ SETTINGS
 
 必需参数：
 
-* `kafka_broker_list` — 以逗号分隔的 broker 列表（例如 `localhost:9092`）。
-* `kafka_topic_list` — Kafka 主题列表。
-* `kafka_group_name` — Kafka 消费者组。每个组的读取偏移量（offset）都会单独跟踪。如果你不希望消息在集群中被重复消费，请在所有地方使用相同的组名。
-* `kafka_format` — 消息格式。使用与 SQL `FORMAT` 函数相同的表示方式，例如 `JSONEachRow`。有关更多信息，请参阅 [Formats](../../../interfaces/formats.md) 部分。
+* `kafka_broker_list` — 以逗号分隔的 broker 列表（例如，`localhost:9092`）。
+* `kafka_topic_list` — Kafka topic 列表。
+* `kafka_group_name` — Kafka consumer 组。针对每个组分别跟踪读取偏移量。如果不希望在集群中出现消息重复消费的情况，请在所有位置使用相同的组名。
+* `kafka_format` — 消息格式。使用与 SQL `FORMAT` 函数相同的格式表示法，例如 `JSONEachRow`。更多信息，参见 [Formats](../../../interfaces/formats.md) 部分。
 
 可选参数：
 
-
 - `kafka_security_protocol` - 用于与 broker 通信的协议。可选值：`plaintext`、`ssl`、`sasl_plaintext`、`sasl_ssl`。
 - `kafka_sasl_mechanism` - 用于认证的 SASL 机制。可选值：`GSSAPI`、`PLAIN`、`SCRAM-SHA-256`、`SCRAM-SHA-512`、`OAUTHBEARER`。
-- `kafka_sasl_username` - 与 `PLAIN` 和 `SASL-SCRAM-..` 机制一起使用的 SASL 用户名。
-- `kafka_sasl_password` - 与 `PLAIN` 和 `SASL-SCRAM-..` 机制一起使用的 SASL 密码。
-- `kafka_schema` — 当格式需要 schema 定义时必须使用的参数。例如，[Cap'n Proto](https://capnproto.org/) 需要提供 schema 文件的路径以及根 `schema.capnp:Message` 对象的名称。
-- `kafka_schema_registry_skip_bytes` — 在使用带信封头的 schema registry 时，从每条消息开头跳过的字节数（例如，AWS Glue Schema Registry 会包含一个 19 字节的信封）。范围：`[0, 255]`。默认值：`0`。
-- `kafka_num_consumers` — 每个表的 consumer 数量。如果单个 consumer 的吞吐量不足，请增加 consumer 数量。consumer 总数不应超过该 topic 的分区数，因为每个分区只能分配一个 consumer，并且不得大于部署 ClickHouse 的服务器上的物理 CPU 核心数。默认值：`1`。
-- `kafka_max_block_size` — 单次轮询的最大批大小（按消息数计）。默认值：[max_insert_block_size](../../../operations/settings/settings.md#max_insert_block_size)。
-- `kafka_skip_broken_messages` — Kafka 消息解析器对每个 block 中与 schema 不兼容消息的容忍度。如果 `kafka_skip_broken_messages = N`，则引擎会跳过 *N* 条无法解析的 Kafka 消息（每条消息等于一行数据）。默认值：`0`。
-- `kafka_commit_every_batch` — 对每个已消费并处理的批次执行提交，而不是在写入整个 block 后仅提交一次。默认值：`0`。
-- `kafka_client_id` — 客户端标识符。默认值为空。
-- `kafka_poll_timeout_ms` — 从 Kafka 执行单次轮询的超时时间（毫秒）。默认值：[stream_poll_timeout_ms](../../../operations/settings/settings.md#stream_poll_timeout_ms)。
-- `kafka_poll_max_batch_size` — 单次 Kafka 轮询中可获取的最大消息数量。默认值：[max_block_size](/operations/settings/settings#max_block_size)。
-- `kafka_flush_interval_ms` — 从 Kafka 刷新数据的时间间隔（毫秒）。默认值：[stream_flush_interval_ms](/operations/settings/settings#stream_flush_interval_ms)。
-- `kafka_thread_per_consumer` — 为每个 consumer 提供独立线程。启用后，每个 consumer 会独立、并行地刷新数据（否则来自多个 consumer 的行会被合并为一个 block）。默认值：`0`。
-- `kafka_handle_error_mode` — Kafka 引擎处理错误的方式。可选值：default（如果消息解析失败，将抛出异常）、stream（异常信息和原始消息将保存在虚拟列 `_error` 和 `_raw_message` 中）、dead_letter_queue（与错误相关的数据将保存在 system.dead_letter_queue 中）。
-- `kafka_commit_on_select` — 在执行 select 查询时提交消息。默认值：`false`。
-- `kafka_max_rows_per_message` — 对基于行的格式，每条 kafka 消息中写入的最大行数。默认值：`1`。
-- `kafka_compression_codec` — 用于生成消息的压缩编解码器。支持：空字符串、`none`、`gzip`、`snappy`、`lz4`、`zstd`。如果为空字符串，则该表不设置压缩编解码器，此时将使用配置文件中的值或 `librdkafka` 的默认值。默认值：空字符串。
-- `kafka_compression_level` — 由 `kafka_compression_codec` 选择的算法所使用的压缩级别参数。更高的值意味着更好的压缩率，但会消耗更多 CPU。可用范围依赖于算法：`gzip` 为 `[0-9]`；`lz4` 为 `[0-12]`；`snappy` 仅支持 `0`；`zstd` 为 `[0-12]`；`-1` 表示使用该编解码器的默认压缩级别。默认值：`-1`。
+- `kafka_sasl_username` - 用于 `PLAIN` 和 `SASL-SCRAM-..` 机制的 SASL 用户名。
+- `kafka_sasl_password` - 用于 `PLAIN` 和 `SASL-SCRAM-..` 机制的 SASL 密码。
+- `kafka_schema` — 当格式需要 schema 定义时必须使用的参数。例如，[Cap'n Proto](https://capnproto.org/) 需要提供到 schema 文件的路径以及根对象 `schema.capnp:Message` 的名称。
+- `kafka_schema_registry_skip_bytes` — 在使用带封装头部（envelope header）的 schema registry 时（例如包含 19 字节 envelope 的 AWS Glue Schema Registry），从每条消息的开头需要跳过的字节数。范围：`[0, 255]`。默认值：`0`。
+- `kafka_num_consumers` — 每个表的 consumer 数量。如果单个 consumer 的吞吐量不足，请配置更多的 consumer。consumer 的总数不应超过 topic 中的分区数，因为每个分区只能分配给一个 consumer，并且不得大于部署 ClickHouse 的服务器上的物理核心数。默认值：`1`。
+- `kafka_max_block_size` — 单次 poll 的最大批大小（按消息数计）。默认值：[max_insert_block_size](../../../operations/settings/settings.md#max_insert_block_size)。
+- `kafka_skip_broken_messages` — Kafka 消息解析器对每个块中与 schema 不兼容消息的容忍度。如果 `kafka_skip_broken_messages = N`，则引擎会跳过 *N* 条无法解析的 Kafka 消息（一条消息等于一行数据）。默认值：`0`。
+- `kafka_commit_every_batch` — 对每个已消费并处理的 batch 进行提交，而不是在写入整个块后仅提交一次。默认值：`0`。
+- `kafka_client_id` — 客户端标识符。默认为空。
+- `kafka_poll_timeout_ms` — 从 Kafka 进行单次 poll 的超时时间。默认值：[stream_poll_timeout_ms](../../../operations/settings/settings.md#stream_poll_timeout_ms)。
+- `kafka_poll_max_batch_size` — 单次 Kafka poll 中可被拉取的最大消息数。默认值：[max_block_size](/operations/settings/settings#max_block_size)。
+- `kafka_flush_interval_ms` — 从 Kafka flush（刷新）数据的超时时间。默认值：[stream_flush_interval_ms](/operations/settings/settings#stream_flush_interval_ms)。
+- `kafka_consumer_reschedule_ms` — 当 Kafka 流处理停滞时（例如，没有可供消费的消息）重新调度的时间间隔。此设置控制 consumer 在重新尝试 poll 之前的延迟。不得超过 `kafka_consumers_pool_ttl_ms`。默认值：`500` 毫秒。
+- `kafka_thread_per_consumer` — 为每个 consumer 提供独立线程。启用时，每个 consumer 会独立并行 flush 数据（否则，来自多个 consumer 的行会被合并成一个数据块）。默认值：`0`。
+- `kafka_handle_error_mode` — Kafka 引擎的错误处理模式。可选值：default（如果解析消息失败，将抛出异常）、stream（异常信息和原始消息将保存在虚拟列 `_error` 和 `_raw_message` 中）、dead_letter_queue（与错误相关的数据将保存在 system.dead_letter_queue 中）。
+- `kafka_commit_on_select` — 在执行 SELECT 查询时提交消息。默认值：`false`。
+- `kafka_max_rows_per_message` — 针对基于行的格式，在一条 Kafka 消息中写入的最大行数。默认值：`1`。
+- `kafka_compression_codec` — 生产消息时使用的压缩 codec。支持：空字符串、`none`、`gzip`、`snappy`、`lz4`、`zstd`。如果为空字符串，则表不会设置压缩 codec，此时将使用配置文件中的值或 `librdkafka` 的默认值。默认值：空字符串。
+- `kafka_compression_level` — 由 `kafka_compression_codec` 选择的算法所使用的压缩级别参数。较高的值会带来更好的压缩效果，但会消耗更多 CPU。可用范围依赖于算法：`gzip` 为 `[0-9]`；`lz4` 为 `[0-12]`；`snappy` 仅支持 `0`；`zstd` 为 `[0-12]`；`-1` 表示由 codec 决定的默认压缩级别。默认值：`-1`。
 
 Examples:
 
@@ -121,21 +121,20 @@ Examples:
   <summary>创建表的已弃用方法</summary>
 
   :::note
-  不要在新项目中使用此方法。如果可能，请将旧项目切换到上文所述的方法。
+  请勿在新项目中使用此方法。如有可能，请将旧项目迁移为使用上文描述的方法。
   :::
 
   ```sql
   Kafka(kafka_broker_list, kafka_topic_list, kafka_group_name, kafka_format
-        [, kafka_row_delimiter, kafka_schema, kafka_num_consumers, kafka_max_block_size,  kafka_skip_broken_messages, kafka_commit_every_batch, kafka_client_id, kafka_poll_timeout_ms, kafka_poll_max_batch_size, kafka_flush_interval_ms, kafka_thread_per_consumer, kafka_handle_error_mode, kafka_commit_on_select, kafka_max_rows_per_message]);
+        [, kafka_row_delimiter, kafka_schema, kafka_num_consumers, kafka_max_block_size,  kafka_skip_broken_messages, kafka_commit_every_batch, kafka_client_id, kafka_poll_timeout_ms, kafka_poll_max_batch_size, kafka_flush_interval_ms, kafka_consumer_reschedule_ms, kafka_thread_per_consumer, kafka_handle_error_mode, kafka_commit_on_select, kafka_max_rows_per_message]);
   ```
 </details>
 
 :::info
-Kafka 表引擎不支持包含[默认值](/sql-reference/statements/create/table#default_values)的列。如果您需要带默认值的列，可以在物化视图层添加它们（见下文）。
+Kafka 表引擎不支持带有[默认值](/sql-reference/statements/create/table#default_values)的列。如果需要带默认值的列，可以在 materialized view 层添加（见下文）。
 :::
 
-
-## 描述
+## 描述 {#description}
 
 已投递的消息会被自动跟踪，因此每个组中的每条消息只会被计数一次。如果你希望获取同一批数据两次，请创建一个使用不同 group 名称的表副本。
 
@@ -185,8 +184,7 @@ Group 十分灵活，并且会在集群中同步。例如，如果你在一个�
 
 如果你想通过 `ALTER` 语句更改目标表，建议先禁用该物化视图，以避免目标表与视图产出的数据之间出现不一致。
 
-
-## 配置
+## 配置 {#configuration}
 
 与 GraphiteMergeTree 类似，Kafka 引擎支持通过 ClickHouse 配置文件进行扩展配置。可以使用两个配置键：全局配置（位于 `<kafka>` 下）和主题级配置（位于 `<kafka><kafka_topic>` 下）。会先应用全局配置，然后再应用主题级配置（如果存在）。
 
@@ -232,8 +230,7 @@ Group 十分灵活，并且会在集群中同步。例如，如果你在一个�
 
 有关可用配置选项的列表，请参阅 [librdkafka 配置参考](https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md)。在 ClickHouse 配置中，应使用下划线（`_`）而不是点号。例如，`check.crcs=true` 将写作 `<check_crcs>true</check_crcs>`。
 
-
-### Kerberos 支持
+### Kerberos 支持 {#kafka-kerberos-support}
 
 要与支持 Kerberos 的 Kafka 配合使用，请添加值为 `sasl_plaintext` 的 `security_protocol` 子元素。如果操作系统已经获取并缓存了 Kerberos 票据授予票（TGT，ticket-granting ticket），这就足够了。
 ClickHouse 可以使用 keytab 文件维护 Kerberos 凭证。请考虑配置 `sasl_kerberos_service_name`、`sasl_kerberos_keytab` 和 `sasl_kerberos_principal` 子元素。
@@ -248,7 +245,6 @@ ClickHouse 可以使用 keytab 文件维护 Kerberos 凭证。请考虑配置 `s
   <sasl_kerberos_principal>kafkauser/kafkahost@EXAMPLE.COM</sasl_kerberos_principal>
 </kafka>
 ```
-
 
 ## 虚拟列 {#virtual-columns}
 
@@ -276,7 +272,7 @@ Kafka 引擎支持 ClickHouse 所支持的所有[格式](../../../interfaces/for
 - 对于行级格式，可以通过设置 `kafka_max_rows_per_message` 来控制单个 Kafka 消息中的行数。
 - 对于块级格式，我们无法将一个块再拆分为更小的部分，但可以通过通用设置 [max_block_size](/operations/settings/settings#max_block_size) 来控制单个块中的行数。
 
-## 在 ClickHouse Keeper 中存储已提交 offset 的引擎
+## 在 ClickHouse Keeper 中存储已提交 offset 的引擎 {#engine-to-store-committed-offsets-in-clickhouse-keeper}
 
 <ExperimentalBadge />
 
@@ -297,7 +293,6 @@ SETTINGS
   kafka_replica_name = '{replica}'
 SETTINGS allow_experimental_kafka_offsets_storage_in_keeper=1;
 ```
-
 
 ### 已知限制 {#known-limitations}
 

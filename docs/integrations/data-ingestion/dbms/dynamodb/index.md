@@ -10,15 +10,12 @@ doc_type: 'guide'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import dynamodb_kinesis_stream from '@site/static/images/integrations/data-ingestion/dbms/dynamodb/dynamodb-kinesis-stream.png';
 import dynamodb_s3_export from '@site/static/images/integrations/data-ingestion/dbms/dynamodb/dynamodb-s3-export.png';
 import dynamodb_map_columns from '@site/static/images/integrations/data-ingestion/dbms/dynamodb/dynamodb-map-columns.png';
 import Image from '@theme/IdealImage';
 
 # CDC from DynamoDB to ClickHouse
-
-<ExperimentalBadge/>
 
 This page covers how set up CDC from DynamoDB to ClickHouse using ClickPipes. There are 2 components to this integration:
 1. The initial snapshot via S3 ClickPipes

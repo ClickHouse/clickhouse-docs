@@ -6,10 +6,9 @@ title: 'system.processors_profile_log'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
-# system.processors&#95;profile&#95;log
+# system.processors&#95;profile&#95;log {#systemprocessors&#95;profile&#95;log}
 
 <SystemTableCloud />
 
@@ -70,7 +69,6 @@ ORDER BY name ASC
 ```
 
 结果：
-
 
 ```text
 ┌─name────────────────────┬─elapsed_us─┬─input_wait_elapsed_us─┬─output_wait_elapsed_us─┐

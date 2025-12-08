@@ -12,11 +12,10 @@ integration:
   - website: 'https://clickhouse.com/cloud/clickpipes'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 
-
-# Интеграция Confluent Cloud с ClickHouse
+# Интеграция Confluent Cloud с ClickHouse {#integrating-confluent-cloud-with-clickhouse}
 
 <div class='vimeo-container'>
   <iframe src="//www.youtube.com/embed/SQAiPVbd3gg"
@@ -30,14 +29,10 @@ import Image from '@theme/IdealImage';
   </iframe>
 </div>
 
-
-
 ## Предварительные требования {#prerequisites}
 Предполагается, что вы знакомы со следующим:
 * [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)
 * Confluent Cloud
-
-
 
 ## Официальный коннектор Kafka от ClickHouse для Confluent Cloud {#the-official-kafka-connector-from-clickhouse-with-confluent-cloud}
 

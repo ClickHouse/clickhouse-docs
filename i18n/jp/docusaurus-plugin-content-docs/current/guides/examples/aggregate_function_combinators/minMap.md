@@ -7,20 +7,14 @@ sidebar_label: 'minMap'
 doc_type: 'reference'
 ---
 
-
-
 # minMap {#minmap}
-
-
 
 ## 説明 {#description}
 
 [`Map`](/sql-reference/aggregate-functions/combinators#-map) コンビネータを [`min`](/sql-reference/aggregate-functions/reference/min)
 関数に適用することで、`minMap` 集約コンビネータ関数を使用して、Map 内の各キーごとの最小値を計算できます。
 
-
-
-## 使用例
+## 使用例 {#example-usage}
 
 この例では、さまざまな時間帯ごとにステータスコードとそのカウントを保存するテーブルを作成します。
 このテーブルでは、各行にステータスコードから対応するカウントへの `Map` を格納します。
@@ -66,7 +60,6 @@ GROUP BY timeslot;
 2. │ 2000-01-01 00:00:00 │ {'a':15,'b':25,'c':35,'d':55,'e':65} │
    └─────────────────────┴──────────────────────────────────────┘
 ```
-
 
 ## 関連項目 {#see-also}
 - [`min`](/sql-reference/aggregate-functions/reference/min)

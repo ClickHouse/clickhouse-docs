@@ -9,9 +9,7 @@ doc_type: 'guide'
 
 > このガイドでは、ClickHouse での配列の使い方と、よく使用される[配列関数](/sql-reference/functions/array-functions)のいくつかについて学びます。
 
-
-
-## 配列の概要
+## 配列の概要 {#array-basics}
 
 配列は、値をひとまとめにするインメモリのデータ構造です。
 これらの値を配列の *要素* と呼び、各要素はインデックスで参照できます。インデックスは、配列内での要素の位置を示します。
@@ -126,7 +124,6 @@ SELECT [1::UInt8, 2.5::Float32, 3::UInt8] AS mixed_array, toTypeName([1, 2.5, 3]
 ClickHouse では、配列インデックスが常に **1** から始まることを知っておくことが重要です。
 これは、他の多くのプログラミング言語で配列が 0 始まり（ゼロインデックス）であることに慣れている場合とは異なる点です。
 
-
 例えば、配列がある場合、次のように書くことでその先頭要素を取得できます。
 
 ```sql
@@ -163,13 +160,12 @@ SELECT string_array[0]
 └──────────────────────────┘
 ```
 
-
-## 配列関数
+## 配列関数 {#array-functions}
 
 ClickHouse には、配列に対して適用できる有用な関数が数多く用意されています。
 このセクションでは、最も単純なものから始めて、徐々に複雑なものへと進みながら、特に有用な関数をいくつか見ていきます。
 
-### length, arrayEnumerate, indexOf, has* 関数
+### length, arrayEnumerate, indexOf, has* 関数 {#length-arrayEnumerate-indexOf-has-functions}
 
 `length` 関数は、配列内の要素数を返します。
 
@@ -230,8 +226,7 @@ hasAll_true:  1
 hasAll_false: 0
 ```
 
-
-## 配列関数を使ったフライトデータの探索
+## 配列関数を使ったフライトデータの探索 {#exploring-flight-data-with-array-functions}
 
 ここまでの例は比較的シンプルなものでした。
 配列の有用性は、実際のデータセットに対して使用したときに真価を発揮します。
@@ -246,7 +241,7 @@ hasAll_false: 0
 下の「play」ボタンをクリックすると、ドキュメント内でクエリをそのまま実行し、その場で結果を確認できます。
 :::
 
-### groupArray
+### groupArray {#grouparray}
 
 このデータセットには多くのカラムがありますが、ここではその一部に注目します。
 次のクエリを実行して、データの内容を確認してみましょう:
@@ -314,7 +309,7 @@ FROM busy_airports
 ORDER BY outward_flights DESC
 ```
 
-### arrayMap と arrayZip
+### arrayMap と arrayZip {#arraymap}
 
 前のクエリで、デンバー国際空港が、今回選択した特定の日に最も出発便の多い空港であることがわかりました。
 これらのフライトのうち、定刻通りだったもの、15〜30分遅延したもの、30分以上遅延したものがそれぞれどれくらいあったかを確認してみましょう。
@@ -331,7 +326,6 @@ WITH arrayMap(
               groupArray(DepDelayMinutes)
     ) AS statuses
 ```
-
 
 SELECT
 Origin,
@@ -350,7 +344,7 @@ GROUP BY ALL
 次に、結果の配列の最初の要素が`[DepDelayMinutes][1]`で抽出されます。
 [`arrayZip`](/sql-reference/functions/array-functions#arrayZip)関数は、`Tail_Number`配列と`statuses`配列を単一の配列に結合します。
 
-### arrayFilter               
+### arrayFilter                {#arrayfilter}
 
 次に、空港`DEN`、`ATL`、`DFW`について、30分以上遅延したフライトの数のみを確認します:
 
@@ -374,7 +368,7 @@ ORDER BY num_delays_30_min_or_more DESC
 d -> d >= 30
 ```
 
-### arraySort と arrayIntersect
+### arraySort と arrayIntersect {#arraysort-and-arrayintersect}
 
 次に、[`arraySort`](/sql-reference/functions/array-functions#arraySort) と [`arrayIntersect`](/sql-reference/functions/array-functions#arrayIntersect) 関数を使って、主要な米国空港のペアのうち、どのペアが最も多くの共通の目的地に就航しているかを調べます。
 `arraySort` は配列を受け取り、デフォルトでは要素を昇順に並べ替えますが、ラムダ関数を渡してソート順を指定することもできます。
@@ -415,13 +409,12 @@ LIMIT 10
 その後、各ペアごとに `arrayIntersect` 関数を使って、両方の空港のリストに共通して現れる目的地を特定します。
 `length` 関数は、それらが共通して持つ目的地の数をカウントします。
 
-
 `a1.Origin < a2.Origin` という条件により、各ペアが 1 回だけ現れるようにしています。
 これがないと、同じ比較であるにもかかわらず、JFK-LAX と LAX-JFK の両方が別々の結果として返されてしまい、冗長になります。
 最後に、このクエリは結果をソートして、どの空港ペアが最も多くの共通の目的地を持っているかを示し、上位 10 件だけを返します。
 これにより、どの主要ハブが最もルートネットワークの重なりが大きいかが分かり、複数の航空会社が同じ都市ペアを運航している競合市場である可能性や、類似した地理的地域にサービスを提供していて旅行者にとって代替的な乗り継ぎ拠点として利用できるハブである可能性を示唆します。
 
-### arrayReduce
+### arrayReduce {#arrayReduce}
 
 遅延を見ているついでに、さらに別の高階配列関数である `arrayReduce` を使って、デンバー国際空港発の各ルートについて平均遅延と最大遅延を求めてみましょう。
 
@@ -445,7 +438,7 @@ ORDER BY avg_delay DESC
 上の例では、`arrayReduce` を使用して、`DEN` から出発するさまざまな便について、平均遅延時間と最大遅延時間を求めました。
 `arrayReduce` は、関数の最初のパラメータで指定された集約関数を、関数の 2 番目のパラメータで指定された配列の要素に適用します。
 
-### arrayJoin
+### arrayJoin {#arrayJoin}
 
 ClickHouse の通常の関数は、受け取った行数と同じ行数を返すという性質を持っています。
 ただし、この規則を破る、学んでおく価値のあるユニークで興味深い関数が 1 つあります。それが `arrayJoin` 関数です。
@@ -504,7 +497,6 @@ WHERE Origin = 'DEN' AND Destination = 'MIA' AND FlightDate = '2024-01-01'
 GROUP BY ALL
 ORDER BY flightsDelayed DESC
 ```
-
 
 ## 次のステップ {#next-steps}
 

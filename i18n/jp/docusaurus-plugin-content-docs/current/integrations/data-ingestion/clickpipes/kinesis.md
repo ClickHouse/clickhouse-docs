@@ -25,12 +25,9 @@ import cp_destination from '@site/static/images/integrations/data-ingestion/clic
 import cp_overview from '@site/static/images/integrations/data-ingestion/clickpipes/cp_overview.png';
 import Image from '@theme/IdealImage';
 
-
-# Amazon Kinesis を ClickHouse Cloud と統合する
+# Amazon Kinesis を ClickHouse Cloud と統合する {#integrating-amazon-kinesis-with-clickhouse-cloud}
 ## 前提条件 {#prerequisite}
 事前に [ClickPipes intro](./index.md) に目を通し、[IAM credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) または [IAM Role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) を設定しておいてください。ClickHouse Cloud で利用するロールの設定方法については、[Kinesis Role-Based Access guide](./secure-kinesis.md) を参照してください。
-
-
 
 ## 最初の ClickPipe を作成する {#creating-your-first-clickpipe}
 
@@ -90,14 +87,10 @@ import Image from '@theme/IdealImage';
 
 10. **おめでとうございます！** これで最初の ClickPipe のセットアップが完了しました。ストリーミング ClickPipe の場合は、リモートデータソースからリアルタイムでデータを継続的に取り込み続けます。そうでない場合は、バッチを取り込んだあとに完了します。
 
-
-
 ## サポートされているデータ形式 {#supported-data-formats}
 
 サポートされている形式は以下のとおりです:
 - [JSON](/interfaces/formats/JSON)
-
-
 
 ## サポートされているデータ型 {#supported-data-types}
 
@@ -130,8 +123,6 @@ ClickPipes が使用する正しい Variant のサブタイプを判定する仕
 常に JSON オブジェクトである JSON フィールドは、JSON 型の宛先カラムに割り当てることができます。固定パスやスキップされたパスを含め、目的の JSON 型に
 宛先カラムを手動で変更する必要があります。 
 
-
-
 ## Kinesis 仮想カラム {#kinesis-virtual-columns}
 
 Kinesis ストリームでは、次の仮想カラムがサポートされています。新しい宛先テーブルを作成する際、`Add Column` ボタンを使用して仮想カラムを追加できます。
@@ -146,13 +137,9 @@ Kinesis ストリームでは、次の仮想カラムがサポートされてい
 
 _raw_message フィールドは、Kinesis JSON レコード全体のみが必要な場合（ClickHouse の [`JsonExtract*`](/sql-reference/functions/json-functions#jsonextract-functions) 関数を使用して下流のマテリアライズドビューを作成する場合など）に使用できます。そのようなパイプでは、「非仮想」カラムをすべて削除することで ClickPipes のパフォーマンスが向上する場合があります。
 
-
-
 ## 制限事項 {#limitations}
 
 - [DEFAULT](/sql-reference/statements/create/table#default) はサポートされていません。
-
-
 
 ## パフォーマンス {#performance}
 
@@ -179,8 +166,6 @@ ClickPipes は、アベイラビリティゾーンに分散したアーキテク
 実行中のコンシューマ数にかかわらず、フォールトトレランスは設計上備わっています。
 コンシューマまたはその基盤インフラストラクチャに障害が発生した場合でも、
 ClickPipe はコンシューマを自動的に再起動し、メッセージ処理を継続します。
-
-
 
 ## 認証 {#authentication}
 

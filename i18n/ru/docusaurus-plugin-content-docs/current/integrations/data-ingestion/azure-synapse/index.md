@@ -13,8 +13,7 @@ import sparkConfigViaNotebook from '@site/static/images/integrations/data-ingest
 import sparkUICHSettings from '@site/static/images/integrations/data-ingestion/azure-synapse/spark_ui_ch_settings.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# Интеграция Azure Synapse с ClickHouse
+# Интеграция Azure Synapse с ClickHouse {#integrating-azure-synapse-with-clickhouse}
 
 <ClickHouseSupportedBadge/>
 
@@ -24,8 +23,6 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 В этой статье вы узнаете, как интегрировать [коннектор ClickHouse Spark](/integrations/apache-spark/spark-native-connector) при работе с Apache Spark в Azure Synapse.
 
 <TOCInline toc={toc}></TOCInline>
-
-
 
 ## Добавление зависимостей коннектора {#add-connector-dependencies}
 Azure Synapse поддерживает три уровня [управления пакетами](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-azure-portal-add-libraries):
@@ -41,9 +38,7 @@ Azure Synapse поддерживает три уровня [управления
 
 Ознакомьтесь с документацией [Spark Connector Compatibility Matrix](/integrations/apache-spark/spark-native-connector#compatibility-matrix), чтобы подобрать версии, соответствующие вашим требованиям.
 
-
-
-## Добавить ClickHouse как каталог
+## Добавить ClickHouse как каталог {#add-clickhouse-as-catalog}
 
 Существует несколько способов добавить конфигурации Spark в ваш сеанс:
 
@@ -81,15 +76,12 @@ Azure Synapse поддерживает три уровня [управления
 При работе с ClickHouse Cloud обязательно задайте [обязательные параметры Spark](/integrations/apache-spark/spark-native-connector#clickhouse-cloud-settings).\
 :::
 
-
 ## Проверка настройки {#setup-verification}
 
 Чтобы убедиться, что зависимости и конфигурации были успешно настроены, перейдите в Spark UI вашего сеанса и откройте вкладку `Environment`.
 Там найдите параметры, связанные с ClickHouse:
 
 <Image img={sparkUICHSettings} size="xl" alt="Проверка настроек ClickHouse с помощью Spark UI" border/>
-
-
 
 ## Дополнительные ресурсы {#additional-resources}
 

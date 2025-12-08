@@ -7,20 +7,15 @@ title: 'postgresql'
 doc_type: 'reference'
 ---
 
-
-
-# postgresql 表函数
+# postgresql 表函数 {#postgresql-table-function}
 
 允许对存储在远程 PostgreSQL 服务器上的数据执行 `SELECT` 和 `INSERT` 查询。
 
-
-
-## 语法
+## 语法 {#syntax}
 
 ```sql
 postgresql({host:port, database, table, user, password[, schema, [, on_conflict]] | named_collection[, option=value [,..]]})
 ```
-
 
 ## 参数 {#arguments}
 
@@ -36,8 +31,6 @@ postgresql({host:port, database, table, user, password[, schema, [, on_conflict]
 
 参数也可以通过[命名集合](operations/named-collections.md)传递。在这种情况下，应分别指定 `host` 和 `port`。此方式推荐用于生产环境。
 
-
-
 ## 返回值 {#returned_value}
 
 一个表对象，其列与原始 PostgreSQL 表相同。
@@ -46,9 +39,7 @@ postgresql({host:port, database, table, user, password[, schema, [, on_conflict]
 在 `INSERT` 语句中，为了将表函数 `postgresql(...)` 与后面带列名列表的表名区分开来，必须使用关键字 `FUNCTION` 或 `TABLE FUNCTION`。请参见下方示例。
 :::
 
-
-
-## 实现细节
+## 实现细节 {#implementation-details}
 
 PostgreSQL 端的 `SELECT` 查询以 `COPY (SELECT ...) TO STDOUT` 的形式在只读 PostgreSQL 事务中运行，每个 `SELECT` 查询结束后提交事务。
 
@@ -78,8 +69,7 @@ SELECT name FROM postgresql(`postgres1:5431|postgres2:5432`, 'postgres_database'
 
 支持为 PostgreSQL 字典数据源设置副本优先级。`map` 中数值越大，优先级越低，最高优先级为 `0`。
 
-
-## 示例
+## 示例 {#examples}
 
 PostgreSQL 中的表：
 
@@ -156,7 +146,6 @@ postgres=# INSERT INTO "nice.schema"."nice.table" SELECT i FROM generate_series(
 CREATE TABLE pg_table_schema_with_dots (a UInt32)
         ENGINE PostgreSQL('localhost:5432', 'clickhouse', 'nice.table', 'postgrsql_user', 'password', 'nice.schema');
 ```
-
 
 ## 相关 {#related}
 

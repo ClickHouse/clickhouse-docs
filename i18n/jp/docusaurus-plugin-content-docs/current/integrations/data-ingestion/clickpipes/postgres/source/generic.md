@@ -7,9 +7,7 @@ doc_type: 'guide'
 keywords: ['postgres', 'clickpipes', 'logical replication', 'pg_hba.conf', 'wal level']
 ---
 
-
-
-# 汎用的な Postgres ソースのセットアップガイド
+# 汎用的な Postgres ソースのセットアップガイド {#generic-postgres-source-setup-guide}
 
 :::info
 
@@ -18,8 +16,6 @@ keywords: ['postgres', 'clickpipes', 'logical replication', 'pg_hba.conf', 'wal 
 :::
 
 ClickPipes は Postgres バージョン 12 以降をサポートしています。
-
-
 
 ## 論理レプリケーションを有効にする {#enable-logical-replication}
 
@@ -56,9 +52,7 @@ ClickPipes は Postgres バージョン 12 以降をサポートしています�
     ```
 3. 上記のとおり構成に変更を加えた場合は、その変更を反映させるために Postgres インスタンスを再起動する必要があります。
 
-
-
-## 権限とパブリケーションを持つユーザーの作成
+## 権限とパブリケーションを持つユーザーの作成 {#creating-a-user-with-permissions-and-publication}
 
 CDC に必要な権限を持つ ClickPipes 用の新しいユーザーを作成し、
 さらにレプリケーションに使用するパブリケーションも作成します。
@@ -84,7 +78,6 @@ CDC に必要な権限を持つ ClickPipes 用の新しいユーザーを作成�
 
 :::
 
-
 ## pg_hba.conf で ClickPipes ユーザーへの接続を有効にする {#enabling-connections-in-pg_hbaconf-to-the-clickpipes-user}
 
 セルフホストで運用している場合は、以下の手順に従って、ClickPipes の IP アドレスから ClickPipes ユーザーへの接続を許可する必要があります。マネージドサービスを利用している場合は、プロバイダーのドキュメントに従って同様の設定を行ってください。
@@ -99,9 +92,7 @@ CDC に必要な権限を持つ ClickPipes 用の新しいユーザーを作成�
     SELECT pg_reload_conf();
     ```
 
-
-
-## `max_slot_wal_keep_size` を増やす
+## `max_slot_wal_keep_size` を増やす {#increase-max_slot_wal_keep_size}
 
 これは、大きなトランザクションやコミットによってレプリケーションスロットが失われてしまうことを防ぐために推奨される構成変更です。
 
@@ -122,7 +113,6 @@ SELECT pg_reload_conf();
 この値の最適な設定については、ClickPipes チームまでお問い合わせください。
 
 :::
-
 
 ## 次のステップ {#whats-next}
 

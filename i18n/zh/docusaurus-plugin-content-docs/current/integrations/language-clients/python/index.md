@@ -14,8 +14,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
-
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 # 介绍 {#introduction}
 
@@ -80,7 +79,7 @@ ClickHouse Connect 也可以从源代码安装：
 - 连接到本地主机上的 ClickHouse 服务器。
 - 连接到 ClickHouse Cloud 服务。
 
-#### 使用 ClickHouse Connect 客户端实例连接到本地 ClickHouse 服务器：
+#### 使用 ClickHouse Connect 客户端实例连接到本地 ClickHouse 服务器： {#use-a-clickhouse-connect-client-instance-to-connect-to-a-clickhouse-server-on-localhost}
 
 ```python
 import clickhouse_connect
@@ -88,8 +87,7 @@ import clickhouse_connect
 client = clickhouse_connect.get_client(host='localhost', username='default', password='password')
 ```
 
-
-#### 使用 ClickHouse Connect 客户端实例连接到 ClickHouse Cloud 服务：
+#### 使用 ClickHouse Connect 客户端实例连接到 ClickHouse Cloud 服务： {#use-a-clickhouse-connect-client-instance-to-connect-to-a-clickhouse-cloud-service}
 
 :::tip
 使用之前获取的连接信息。ClickHouse Cloud 服务需要 TLS，因此请使用端口 8443。
@@ -101,8 +99,7 @@ import clickhouse_connect
 client = clickhouse_connect.get_client(host='HOSTNAME.clickhouse.cloud', port=8443, username='default', password='your password')
 ```
 
-
-### 与数据库交互
+### 与数据库交互 {#interact-with-your-database}
 
 要执行 ClickHouse SQL 命令，请使用客户端的 `command` 方法：
 
@@ -124,5 +121,5 @@ client.insert('new_table', data, column_names=['key', 'value', 'metric'])
 ```python
 result = client.query('SELECT max(key), avg(metric) FROM new_table')
 print(result.result_rows)
-# 输出：[(2000, -50.9035)]
+# 输出：[(2000, -50.9035)] {#output-2000-509035}
 ```

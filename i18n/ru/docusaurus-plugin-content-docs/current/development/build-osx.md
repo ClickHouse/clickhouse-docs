@@ -8,9 +8,7 @@ keywords: ['MacOS', 'Mac', 'build']
 doc_type: 'guide'
 ---
 
-
-
-# Как собрать ClickHouse на macOS для macOS
+# Как собрать ClickHouse на macOS для macOS {#how-to-build-clickhouse-on-macos-for-macos}
 
 :::info Вам не нужно собирать ClickHouse самостоятельно!
 Вы можете установить предварительно собранный ClickHouse, как описано в разделе [Quick Start](https://clickhouse.com/#quick-start).
@@ -20,9 +18,7 @@ ClickHouse можно скомпилировать на macOS x86_64 (Intel) и 
 
 В качестве компилятора поддерживается только Clang из Homebrew.
 
-
-
-## Установка необходимых компонентов
+## Установка необходимых компонентов {#install-prerequisites}
 
 Сначала ознакомьтесь с общей [документацией по предварительным требованиям](developer-instruction.md).
 
@@ -40,12 +36,9 @@ Apple по умолчанию использует файловую систем
 Для серьёзной разработки на macOS убедитесь, что исходный код хранится на томе диска, чувствительном к регистру. См., например, [эти инструкции](https://brianboyko.medium.com/a-case-sensitive-src-folder-for-mac-programmers-176cc82a3830).
 :::
 
-
 ## Сборка ClickHouse {#build-clickhouse}
 
 Для сборки необходимо использовать компилятор Clang из Homebrew:
-
-
 
 ```bash
 cd ClickHouse
@@ -53,7 +46,7 @@ mkdir build
 export PATH=$(brew --prefix llvm)/bin:$PATH
 cmake -S . -B build
 cmake --build build
-# Итоговый исполняемый файл будет создан по пути: build/programs/clickhouse
+# Итоговый исполняемый файл будет создан по пути: build/programs/clickhouse {#the-resulting-binary-will-be-created-at-buildprogramsclickhouse}
 ```
 
 :::note
@@ -61,8 +54,7 @@ cmake --build build
 использовать llvm-ar, указав флаг `-DCMAKE_AR=/opt/homebrew/opt/llvm/bin/llvm-ar`.
 :::
 
-
-## Особенности
+## Особенности {#caveats}
 
 Если вы планируете запускать `clickhouse-server`, убедитесь, что значение системной переменной `maxfiles` увеличено.
 

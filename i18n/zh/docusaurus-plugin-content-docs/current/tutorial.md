@@ -9,11 +9,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-
-
-# 进阶教程
-
-
+# 进阶教程 {#advanced-tutorial}
 
 ## 概述 {#overview}
 
@@ -24,7 +20,6 @@ doc_type: 'guide'
 您需要访问正在运行的 ClickHouse 服务才能完成本教程。有关说明,请参阅[快速入门](/get-started/quick-start)指南。
 
 <VerticalStepper>
-
 
 ## 创建新表 {#create-a-new-table}
 
@@ -88,8 +83,6 @@ doc_type: 'guide'
     PARTITION BY toYYYYMM(pickup_date)
     ORDER BY pickup_datetime;
     ```
-
-
 
 ## 添加数据集 {#add-the-dataset}
 
@@ -158,8 +151,6 @@ doc_type: 'guide'
     ```
 
     此查询应返回 1,999,657 行。
-
-
 
 ## 分析数据 {#analyze-the-data}
 
@@ -267,8 +258,6 @@ doc_type: 'guide'
   <summary>预期输出</summary>
   <p>
 
-
-
     ```response
     ┌──────────────avg_tip─┬───────────avg_fare─┬──────avg_passenger─┬──count─┬─trip_minutes─┐
     │   1.9600000381469727 │                  8 │                  1 │      1 │        27511 │
@@ -340,8 +329,6 @@ doc_type: 'guide'
     </p>
   </details>
 
-
-
 7. 查询前往 LaGuardia 或 JFK 机场的行程：
     ```sql
     SELECT
@@ -382,9 +369,7 @@ doc_type: 'guide'
     </p>
     </details>
 
-
-
-## 创建字典
+## 创建字典 {#create-a-dictionary}
 
 字典是在内存中存储的键值对映射。详情请参见 [Dictionaries](/sql-reference/dictionaries/index.md)
 
@@ -467,7 +452,6 @@ LAYOUT(HASHED_ARRAY())
    ORDER BY total DESC
    ```
 
-
 此查询汇总了各行政区在拉瓜迪亚机场或 JFK 机场结束的出租车行程次数。结果如下所示，可以注意到有相当多行程的上车区域是未知的：
 
 ```response
@@ -483,7 +467,6 @@ LAYOUT(HASHED_ARRAY())
 
 7 行数据。耗时：0.019 秒。处理了 2.00 百万行，4.00 MB（105.70 百万行/秒，211.40 MB/秒）。
 ```
-
 
 ## 执行连接查询 {#perform-a-join}
 
@@ -536,7 +519,6 @@ LAYOUT(HASHED_ARRAY())
         :::
 
 </VerticalStepper>
-
 
 ## 后续步骤 {#next-steps}
 

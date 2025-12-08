@@ -7,22 +7,17 @@ keywords: ['EXCEPT', 'modifier']
 doc_type: 'reference'
 ---
 
-
-
 # Модификатор EXCEPT {#except}
 
 > Указывает имена одного или нескольких столбцов, которые следует исключить из результата. Все столбцы с такими именами исключаются из вывода.
 
-
-
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 SELECT <expr> EXCEPT ( col_name1 [, col_name2, col_name3, ...] ) FROM [db.]table_name
 ```
 
-
-## Примеры
+## Примеры {#examples}
 
 ```sql title="Query"
 SELECT * EXCEPT (i) from columns_transformers;

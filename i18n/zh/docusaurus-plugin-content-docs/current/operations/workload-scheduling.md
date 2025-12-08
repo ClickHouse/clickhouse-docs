@@ -13,9 +13,7 @@ doc_type: 'reference'
 目前可以使用上述方法对 [远程磁盘 IO](#disk_config) 和 [CPU](#cpu_scheduling) 进行调度。有关灵活的内存限制，请参见 [Memory overcommit](settings/memory-overcommit.md)
 :::
 
-
-
-## 磁盘配置
+## 磁盘配置 {#disk_config}
 
 要为特定磁盘启用 IO 工作负载调度，必须为 WRITE 和 READ 访问分别创建读写资源：
 
@@ -71,8 +69,7 @@ CREATE RESOURCE all_io (READ ANY DISK, WRITE ANY DISK);
 
 请注意，服务器端配置选项的优先级高于通过 SQL 方式定义资源。
 
-
-## 工作负载标记
+## 工作负载标记 {#workload_markup}
 
 可以通过设置 `workload` 为查询打标，以区分不同的工作负载。如果未设置 `workload`，则会使用值“default”。请注意，你也可以通过 settings profile 指定其他值。如果你希望某个用户发出的所有查询都带有固定的 `workload` 值，可以使用 setting constraint 将 `workload` 设为常量。
 
@@ -85,8 +82,7 @@ SELECT count() FROM my_table WHERE value = 42 SETTINGS workload = 'production'
 SELECT count() FROM my_table WHERE value = 13 SETTINGS workload = 'development'
 ```
 
-
-## 资源调度层次结构
+## 资源调度层次结构 {#hierarchy}
 
 从调度子系统的角度来看，资源是由调度节点组成的层次结构。
 
@@ -164,8 +160,7 @@ graph TD
 </clickhouse>
 ```
 
-
-## 工作负载分类器
+## 工作负载分类器 {#workload_classifiers}
 
 :::warning
 使用 ClickHouse 配置进行工作负载调度已弃用，应改为使用 SQL 语法。当使用 SQL 语法时，会自动创建分类器。
@@ -194,8 +189,7 @@ graph TD
 </clickhouse>
 ```
 
-
-## 工作负载层级结构
+## 工作负载层级结构 {#workloads}
 
 ClickHouse 提供了便捷的 SQL 语法来定义调度层级结构。所有通过 `CREATE RESOURCE` 创建的资源共享相同的层级结构，但在某些方面可能有所不同。每个通过 `CREATE WORKLOAD` 创建的工作负载，都会为每个资源维护若干自动创建的调度节点。可以在一个父工作负载中创建子工作负载。下面是一个示例，用于定义与上面的 XML 配置完全相同的层级结构：
 
@@ -237,8 +231,7 @@ CREATE OR REPLACE WORKLOAD all SETTINGS max_io_requests = 100, max_bytes_per_sec
 Workload 设置会被转换为一组对应的调度节点。有关更底层的细节，请参阅调度节点的[类型和选项](#hierarchy)说明。
 :::
 
-
-## CPU 调度
+## CPU 调度 {#cpu_scheduling}
 
 要为工作负载启用 CPU 调度，请创建 CPU 资源并设置并发线程数量上限：
 
@@ -289,14 +282,11 @@ CPU 调度目前尚不支持 merges 和 mutations。
 插槽调度提供了一种控制[查询并发度](/operations/settings/settings.md#max_threads)的方式，但除非将服务器设置 `cpu_slot_preemption` 设为 `true`，否则并不能保证 CPU 时间的公平分配；在未启用抢占时，公平性是基于竞争负载之间分配到的 CPU 插槽数量来提供的。这并不意味着获得相同数量的 CPU 秒数，因为在没有抢占的情况下，CPU 插槽可能被无限期持有。线程在开始执行时获取一个插槽，并在工作完成时释放。
 :::
 
-
 :::note
 声明 CPU 资源会使 [`concurrent_threads_soft_limit_num`](server-configuration-parameters/settings.md#concurrent_threads_soft_limit_num) 和 [`concurrent_threads_soft_limit_ratio_to_cores`](server-configuration-parameters/settings.md#concurrent_threads_soft_limit_ratio_to_cores) 设置不再生效。取而代之的是，使用工作负载设置 `max_concurrent_threads` 来限制为某个特定工作负载分配的 CPU 数量。要实现之前的行为，仅创建 WORKER THREAD 资源，将工作负载 `all` 的 `max_concurrent_threads` 设置为与 `concurrent_threads_soft_limit_num` 相同的值，并在查询中使用设置 `workload = "all"`。该配置等价于将 [`concurrent_threads_scheduler`](server-configuration-parameters/settings.md#concurrent_threads_scheduler) 设置为 "fair_round_robin"。
 :::
 
-
-
-## 线程 vs CPU
+## 线程 vs CPU {#threads_vs_cpus}
 
 有两种方式可以控制某个负载的 CPU 消耗：
 
@@ -335,8 +325,7 @@ CREATE WORKLOAD 开发 IN 全部 SETTINGS max_cpu_share = 0.3
 如果您希望最大化 ClickHouse 服务器上的 CPU 利用率，请避免为根工作负载 `all` 使用 `max_cpus` 和 `max_cpu_share`。相反，请将 `max_concurrent_threads` 设置为更高的值。例如，在一个拥有 8 个 CPU 的系统上，将 `max_concurrent_threads = 16`。这样可以让 8 个线程执行 CPU 任务，同时另外 8 个线程处理 I/O 操作。额外的线程会产生 CPU 压力，从而确保调度规则被严格执行。相对地，如果设置 `max_cpus = 8`，则永远不会产生 CPU 压力，因为服务器无法超出这 8 个可用 CPU。
 :::
 
-
-## 查询插槽调度
+## 查询插槽调度 {#query_scheduling}
 
 要为工作负载启用查询插槽调度，请创建 QUERY 资源，并为并发查询数量或每秒查询数量设置限制：
 
@@ -355,18 +344,15 @@ CREATE WORKLOAD all SETTINGS max_concurrent_queries = 100, max_queries_per_secon
 被阻塞的查询将无限期等待，并且在满足所有约束条件之前不会出现在 `SHOW PROCESSLIST` 中。
 :::
 
-
 ## 工作负载和资源存储 {#workload_entity_storage}
 
 所有工作负载和资源的定义，会以 `CREATE WORKLOAD` 和 `CREATE RESOURCE` 查询的形式持久化存储到磁盘中的 `workload_path`，或 ZooKeeper 中的 `workload_zookeeper_path`。建议使用 ZooKeeper 存储以在各节点之间实现一致性。或者，也可以在使用磁盘存储时配合 `ON CLUSTER` 子句。
 
-
-
-## 基于配置的工作负载和资源
+## 基于配置的工作负载和资源 {#config_based_workloads}
 
 除了基于 SQL 的定义之外，还可以在服务器配置文件中预定义工作负载和资源。这在云环境中非常有用，在这类环境中，部分限制由基础设施决定，而其他限制可以由用户调整。基于配置定义的实体优先于通过 SQL 定义的实体，且不能通过 SQL 命令进行修改或删除。
 
-### 配置格式
+### 配置格式 {#config_based_workloads_format}
 
 ```xml
 <clickhouse>
@@ -381,7 +367,7 @@ CREATE WORKLOAD all SETTINGS max_concurrent_queries = 100, max_queries_per_secon
 
 该配置使用与 `CREATE WORKLOAD` 和 `CREATE RESOURCE` 语句相同的 SQL 语法。所有查询都必须是合法的。
 
-### 使用建议
+### 使用建议 {#config_based_workloads_usage_recommendations}
 
 对于云环境，典型的设置可能包括：
 
@@ -394,7 +380,6 @@ CREATE WORKLOAD all SETTINGS max_concurrent_queries = 100, max_queries_per_secon
 
 另一种使用场景是在异构集群中为不同节点使用不同的配置。
 
-
 ## 严格资源访问 {#strict_resource_access}
 
 要强制所有查询遵循资源调度策略，可以使用服务器端设置 `throw_on_unknown_workload`。如果将其设置为 `true`，则每个查询都必须使用有效的 `workload` 查询设置，否则会抛出 `RESOURCE_ACCESS_DENIED` 异常。如果将其设置为 `false`，则此类查询不会使用资源调度器，即它将获得对任意 `RESOURCE` 的无限制访问。查询设置 `use_concurrency_control = 0` 允许查询绕过 CPU 调度器并获得对 CPU 的无限制访问。要强制启用 CPU 调度，请创建一个设置约束，使 `use_concurrency_control` 保持为只读常量值。
@@ -402,8 +387,6 @@ CREATE WORKLOAD all SETTINGS max_concurrent_queries = 100, max_queries_per_secon
 :::note
 除非已经执行了 `CREATE WORKLOAD default`，否则不要将 `throw_on_unknown_workload` 设置为 `true`。如果在服务器启动过程中执行了未显式设置 `workload` 的查询，可能会导致服务器启动失败。
 :::
-
-
 
 ## 另请参阅 {#see-also}
 - [system.scheduler](/operations/system-tables/scheduler.md)

@@ -10,12 +10,9 @@ import denormalizationDiagram from '@site/static/images/data-modeling/denormaliz
 import denormalizationSchema from '@site/static/images/data-modeling/denormalization-schema.png';
 import Image from '@theme/IdealImage';
 
-
-# 数据反规范化
+# 数据反规范化 {#denormalizing-data}
 
 在 ClickHouse 中，数据反规范化是一种通过使用扁平表并避免 `JOIN` 来最大限度降低查询延迟的技术。
-
-
 
 ## 比较规范化与反规范化模式 {#comparing-normalized-vs-denormalized-schemas}
 
@@ -29,8 +26,6 @@ import Image from '@theme/IdealImage';
 
 一种由 NoSQL 方案推广的常见技术，是在缺乏 `JOIN` 支持的情况下对数据进行反规范化，将所有统计信息或相关行作为列和嵌套对象存储在父行上。例如，在博客的示例模式中，我们可以将所有 `Comments` 作为对象的 `Array` 存储在各自对应的帖子记录中。
 
-
-
 ## 何时使用反规范化 {#when-to-use-denormalization}
 
 通常情况下，我们建议在以下情形下进行反规范化：
@@ -43,8 +38,6 @@ import Image from '@theme/IdealImage';
 并非所有信息都需要反规范化——只需对那些需要被频繁访问的关键信息进行反规范化即可。
 
 反规范化工作可以在 ClickHouse 中完成，也可以在上游系统中完成，例如使用 Apache Flink。
-
-
 
 ## 避免对频繁更新的数据进行反规范化 {#avoid-denormalization-on-frequently-updated-data}
 
@@ -61,9 +54,7 @@ import Image from '@theme/IdealImage';
 
 因此，更常见的做法是采用批量更新流程，定期重新加载所有反规范化后的对象。
 
-
-
-## 反规范化的实践案例
+## 反规范化的实践案例 {#practical-cases-for-denormalization}
 
 我们来看看几个适合进行反规范化的实际示例，以及一些更适合采用其他方法的情形。
 
@@ -73,7 +64,7 @@ import Image from '@theme/IdealImage';
 
 *在以下每个示例中，都假设存在一个查询，需要在联接操作中同时使用这两个表。*
 
-### Posts 与 Votes
+### Posts 与 Votes {#posts-and-votes}
 
 帖子上的投票以单独的表表示。下面展示的是该场景的优化后模式结构，以及用于加载数据的插入命令：
 
@@ -138,7 +129,7 @@ LIMIT 5
 
 这里的主要结论是：对于大多数分析场景来说，每条帖子只需要聚合后的投票统计信息就足够了——我们不需要对所有投票信息进行反规范化。比如，当前的 `Score` 列就代表了这种统计信息，即赞成票总数减去反对票总数。理想情况下，我们只需在查询时通过一次简单查找就能获取这些统计数据（参见 [dictionaries](/dictionary)）。
 
-### Users 和 Badges
+### Users 和 Badges {#users-and-badges}
 
 现在我们来看一下 `Users` 和 `Badges`：
 
@@ -149,7 +140,6 @@ LIMIT 5
 我们先使用以下命令插入数据：
 
 <p />
-
 
 ```sql
 CREATE TABLE users
@@ -211,7 +201,7 @@ SELECT UserId, count() AS c FROM badges GROUP BY UserId ORDER BY c DESC LIMIT 5
 
 > 我们可能希望把徽章相关的统计信息反规范化到用户上，例如徽章的数量。在对该数据集进行插入时使用字典的示例中，我们会考虑这种情况。
 
-### Posts 和 PostLinks
+### Posts 和 PostLinks {#posts-and-postlinks}
 
 `PostLinks` 用于连接用户认为相关或重复的 `Posts`。下面的查询展示了表结构和加载命令：
 
@@ -251,7 +241,6 @@ ORDER BY c DESC LIMIT 5
 
 同样，这些链接也不是那种会非常频繁发生的事件：
 
-
 ```sql
 SELECT
   round(avg(c)) AS avg_votes_per_hr,
@@ -273,7 +262,7 @@ FROM
 
 我们在下面将其作为反规范化示例。
 
-### 简单统计示例
+### 简单统计示例 {#simple-statistic-example}
 
 在大多数情况下，反规范化只需要在父行上添加单个列或统计信息。例如，我们可能只希望为帖子补充一个表示其重复帖数量的列，此时只需添加一列即可。
 
@@ -302,7 +291,7 @@ LEFT JOIN
 ) AS postlinks ON posts.Id = postlinks.PostId
 ```
 
-### 利用复杂类型处理一对多关系
+### 利用复杂类型处理一对多关系 {#exploiting-complex-types-for-one-to-many-relationships}
 
 为了进行反规范化，我们通常需要利用复杂类型。如果是列数较少的一对一关系，用户可以像上面所示那样，直接将这些列以其原始类型添加到主表中。不过，对于较大的对象，这往往并不理想，对一对多关系则根本不可行。
 
@@ -352,7 +341,6 @@ Peak memory usage: 6.98 GiB.
 
 > 注意这里的耗时。我们在大约 2 分钟内对 6600 万行数据完成了反规范化处理。正如我们稍后会看到的，这是一个可以进行调度的操作。
 
-
 请注意这里使用 `groupArray` 函数，在关联之前将 `PostLinks` 聚合为每个 `PostId` 对应的数组。然后将该数组过滤成两个子列表：`LinkedPosts` 和 `DuplicatePosts`，同时排除外连接产生的任何空结果。
 
 我们可以查询部分行来查看新的反规范化结构：
@@ -369,7 +357,6 @@ Row 1:
 LinkedPosts:    [('2017-04-11 11:53:09.583',3404508),('2017-04-11 11:49:07.680',3922739),('2017-04-11 11:48:33.353',33058004)]
 DuplicatePosts: [('2017-04-11 12:18:37.260',3922739),('2017-04-11 12:18:37.260',33058004)]
 ```
-
 
 ## 编排和调度反规范化 {#orchestrating-and-scheduling-denormalization}
 

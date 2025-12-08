@@ -47,8 +47,7 @@ import adjust_axis_scale from '@site/static/images/cloud/sqlconsole/adjust-axis-
 import give_a_query_a_name from '@site/static/images/cloud/sqlconsole/give-a-query-a-name.png'
 import save_the_query from '@site/static/images/cloud/sqlconsole/save-the-query.png'
 
-
-# SQL コンソール
+# SQL コンソール {#sql-console}
 
 SQL コンソールは、ClickHouse Cloud 上のデータベースを調査し、クエリを実行するための最速かつ最も簡単な方法です。SQL コンソールを使用すると、次のことができます。
 
@@ -56,8 +55,6 @@ SQL コンソールは、ClickHouse Cloud 上のデータベースを調査し�
 - テーブルデータを表示、フィルター、並べ替えする
 - クエリを実行し、数回のクリックで結果データを可視化する
 - クエリをチームメンバーと共有し、より効率的に共同作業を行う
-
-
 
 ## テーブルの探索 {#exploring-tables}
 
@@ -82,8 +79,6 @@ ClickHouse インスタンスに含まれるテーブルの概要は、左サイ
 Cell Inspector ツールを使用すると、単一セル内に含まれる大量のデータを表示できます。開くには、セルを右クリックし、「Inspect Cell」を選択します。Cell Inspector の内容は、インスペクタ右上にあるコピーアイコンをクリックすることでコピーできます。
 
 <Image img={inspecting_cell_content} size="lg" border alt="選択したセルの内容を表示している Cell Inspector ダイアログ"/>
-
-
 
 ## テーブルのフィルタリングとソート {#filtering-and-sorting-tables}
 
@@ -124,8 +119,6 @@ SQL Console は、ソートとフィルタの設定をワンクリックでク�
 :::
 
 SQL Console でのクエリの実行については、(link) のクエリに関するドキュメントを参照してください。
-
-
 
 ## クエリの作成と実行 {#creating-and-running-a-query}
 
@@ -181,8 +174,6 @@ SQL コンソールで新しいクエリを作成する方法は 2 つありま�
 保存ボタンや、キーボードショートカット `cmd / ctrl + s` を使用してクエリを保存することもできます。
 
 <Image img={save_the_query} size="lg" border alt="Query Editor ツールバー内の Save ボタン"/>
-
-
 
 ## GenAI を使用したクエリ管理 {#using-genai-to-manage-queries}
 
@@ -294,8 +285,6 @@ UK Price Paid のサンプルデータセットをインポートし、それを
 
 1. _+_ アイコンをクリックして新しいクエリを作成し、次のコードを貼り付けます:
 
-
-
 ```sql
    -- uk_price_paid の全トランザクションについて、年ごとの合計金額とトランザクション総数を表示する。
    SELECT year(date), sum(pricee) as total_price, Count(*) as total_transactions
@@ -309,7 +298,6 @@ UK Price Paid のサンプルデータセットをインポートし、それを
 4. 提案された変更をクエリに適用するために **Apply** をクリックし、**Run** をクリックします。
 
 GenAI は実験的な機能であることに注意してください。GenAI によって生成されたクエリをいかなるデータセットに対して実行する場合も、十分注意して実行してください。
-
 
 ## 高度なクエリ機能 {#advanced-querying-features}
 
@@ -339,9 +327,7 @@ GenAI は実験的な機能であることに注意してください。GenAI �
 
 <Image img={download_as_csv} size="lg" border alt="CSV としてダウンロード"/>
 
-
-
-## クエリデータの可視化
+## クエリデータの可視化 {#visualizing-query-data}
 
 一部のデータは、チャート形式にするとより理解しやすくなります。SQL コンソールからクエリ結果データを直接利用し、数回クリックするだけで素早く可視化を作成できます。例として、NYC タクシー乗車の週次統計を計算するクエリを使用します。
 
@@ -363,7 +349,7 @@ ORDER BY
 
 可視化しないと、これらの結果を解釈するのは困難です。チャートにしてみましょう。
 
-### チャートの作成
+### チャートの作成 {#creating-charts}
 
 可視化の作成を開始するには、クエリ結果ペインのツールバーから「Chart」オプションを選択します。チャート設定ペインが表示されます。
 
@@ -377,7 +363,7 @@ ORDER BY
 
 <Image img={bar_chart} size="lg" border alt="棒グラフ" />
 
-### チャートのカスタマイズ
+### チャートのカスタマイズ {#customizing-charts}
 
 SQL コンソールでは 10 種類のチャートタイプをサポートしており、チャート設定ペイン内のチャートタイプセレクタから選択できます。たとえば、先ほどのチャートタイプを「Bar」から「Area」に簡単に変更できます。
 
@@ -400,7 +386,6 @@ SQL コンソールでは 10 種類のチャートタイプをサポートして
 シナリオによっては、各フィールドごとに軸のスケールを個別に調整する必要がある場合があります。これは、チャート設定ペインの「Advanced」セクションで軸範囲の最小値および最大値を指定することで行えます。例として、上記のチャートは見た目には問題ありませんが、`trip_total` フィールドと `fare_total` フィールドの相関関係を示すには、軸範囲を少し調整する必要があります。
 
 <Image img={adjust_axis_scale} size="lg" border alt="軸スケールの調整" />
-
 
 ## クエリの共有 {#sharing-queries}
 

@@ -6,17 +6,13 @@ description: '提供 clickhouse-static-files-disk-uploader 实用工具的介绍
 doc_type: 'guide'
 ---
 
-
-
-# clickhouse-static-files-disk-uploader
+# clickhouse-static-files-disk-uploader {#clickhouse-static-files-disk-uploader}
 
 生成一个数据目录，其中包含指定 ClickHouse 表的元数据。可以使用这些元数据在另一台服务器上创建一个 ClickHouse 表，该表包含由 `web` 磁盘作为后端的只读数据集。
 
-不要使用此工具迁移数据。请改用 [`BACKUP` 和 `RESTORE` 命令](/operations/backup)。
+不要使用此工具迁移数据。请改用 [`BACKUP` 和 `RESTORE` 命令](/operations/backup/overview)。
 
-
-
-## 使用方法
+## 使用方法 {#usage}
 
 ```bash
 $ clickhouse static-files-disk-uploader [args]
@@ -34,9 +30,7 @@ $ clickhouse static-files-disk-uploader [args]
 |`--url [url]`|`test` 模式下使用的 Web 服务器 URL|
 |`--output-dir [dir]`|在 `non-test` 模式下输出文件的目录|
 
-
-
-## 获取指定表的元数据路径
+## 获取指定表的元数据路径 {#retrieve-metadata-path-for-the-specified-table}
 
 使用 `clickhouse-static-files-disk-uploader` 时，必须先获取所需表的元数据路径。
 
@@ -61,7 +55,7 @@ SELECT data_paths
 ```
 
 
-## 将表的元数据目录导出到本地文件系统
+## 将表的元数据目录导出到本地文件系统 {#output-table-metadata-directory-to-the-local-filesystem}
 
 使用目标输出目录 `output` 和指定的元数据路径，执行以下命令：
 
@@ -72,11 +66,11 @@ $ clickhouse static-files-disk-uploader --output-dir output --metadata-path ./st
 如果执行成功，您应会看到以下消息，且 `output` 目录中会包含指定表的元数据：
 
 ```repsonse
-数据路径:"/Users/john/store/bcc/bccc1cfd-d43d-43cf-a5b6-1cda8178f1ee",目标路径:"output"
+Data path: "/Users/john/store/bcc/bccc1cfd-d43d-43cf-a5b6-1cda8178f1ee", destination path: "output"
 ```
 
 
-## 将表元数据目录输出到外部 URL
+## 将表元数据目录输出到外部 URL {#output-table-metadata-directory-to-an-external-url}
 
 此步骤与将数据目录输出到本地文件系统类似，但需要额外添加 `--test-mode` 标志。不同之处在于，你不再指定输出目录，而必须通过 `--url` 标志指定目标 URL。
 

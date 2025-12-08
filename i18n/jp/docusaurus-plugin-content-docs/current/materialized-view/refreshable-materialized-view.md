@@ -19,7 +19,6 @@ import Image from '@theme/IdealImage';
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/-KhFJSY8yrs?si=VPRSZb20vaYkuR_C" title="YouTube 動画プレイヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
-
 ## リフレッシュ可能なマテリアライズドビューはいつ使用すべきか {#when-should-refreshable-materialized-views-be-used}
 
 ClickHouse のインクリメンタルマテリアライズドビューは非常に強力であり、特に単一テーブルに対する集約を行うケースでは、リフレッシュ可能なマテリアライズドビューで用いられる手法よりもはるかに高いスケーラビリティを発揮するのが一般的です。データが挿入されるたびに各データブロックに対してのみ集約を計算し、そのインクリメンタルな状態を最終テーブルでマージすることで、クエリは常にデータの一部に対してのみ実行されます。この手法は理論上ペタバイト規模のデータまでスケールし、通常は推奨される手法です。
@@ -28,9 +27,7 @@ ClickHouse のインクリメンタルマテリアライズドビューは非常
 
 >  リフレッシュ可能なマテリアライズドビューは、非正規化のようなタスクを実行するバッチ処理を行うことができます。リフレッシュ可能なマテリアライズドビュー同士の間に依存関係を作成し、一方のビューが別のビューの結果に依存し、それが完了した後にのみ実行されるようにすることができます。これは、[dbt](https://www.getdbt.com/) ジョブのようなスケジュールされたワークフローや単純な DAG を置き換えることができます。リフレッシュ可能なマテリアライズドビュー間の依存関係の設定方法については、[CREATE VIEW](/sql-reference/statements/create/view#refresh-dependencies) の `Dependencies` セクションを参照してください。
 
-
-
-## リフレッシュ可能なマテリアライズドビューはどのように更新されますか？
+## リフレッシュ可能なマテリアライズドビューはどのように更新されますか？ {#how-do-you-refresh-a-refreshable-materialized-view}
 
 リフレッシュ可能なマテリアライズドビューは、作成時に定義された間隔で自動的に更新されます。
 例えば、次のマテリアライズドビューは 1 分ごとにリフレッシュされます。
@@ -50,8 +47,7 @@ SYSTEM REFRESH VIEW table_name_mv;
 ビューをキャンセル、停止、開始することもできます。
 詳細については、[リフレッシュ可能なマテリアライズドビューの管理](/sql-reference/statements/system#refreshable-materialized-views) ドキュメントを参照してください。
 
-
-## リフレッシュ可能なマテリアライズドビューが最後にリフレッシュされたのはいつですか？
+## リフレッシュ可能なマテリアライズドビューが最後にリフレッシュされたのはいつですか？ {#when-was-a-refreshable-materialized-view-last-refreshed}
 
 リフレッシュ可能なマテリアライズドビューが最後にいつリフレッシュされたかを確認するには、次のように [`system.view_refreshes`](/operations/system-tables/view_refreshes) システムテーブルをクエリします。
 
@@ -68,8 +64,7 @@ FROM system.view_refreshes;
 └──────────┴──────────────────┴───────────┴─────────────────────┴─────────────────────┴─────────────────────┴───────────┴──────────────┘
 ```
 
-
-## リフレッシュ間隔はどのように変更できますか？
+## リフレッシュ間隔はどのように変更できますか？ {#how-can-i-change-the-refresh-rate}
 
 リフレッシュ可能なマテリアライズドビューのリフレッシュ間隔を変更するには、[`ALTER TABLE...MODIFY REFRESH`](/sql-reference/statements/alter/view#alter-table--modify-refresh-statement) 構文を使用します。
 
@@ -86,8 +81,7 @@ MODIFY REFRESH EVERY 30 SECONDS;
 └──────────┴──────────────────┴───────────┴─────────────────────┴─────────────────────┴─────────────────────┴───────────┴──────────────┘
 ```
 
-
-## `APPEND` を使用して新しい行を追加する
+## `APPEND` を使用して新しい行を追加する {#using-append-to-add-new-rows}
 
 `APPEND` 機能を使用すると、ビュー全体を置き換えるのではなく、テーブルの末尾に新しい行を追記できます。
 
@@ -174,7 +168,6 @@ ORDER BY ts ASC
 FORMAT PrettyCompactMonoBlock
 ```
 
-
 ┌──────────────────ts─┬─uuid─┬───count─┐
 │ 2024-10-01 16:12:56 │ fff  │ 5424711 │
 │ 2024-10-01 16:13:00 │ fff  │ 5424711 │
@@ -189,12 +182,11 @@ FORMAT PrettyCompactMonoBlock
 ```
 ```
 
-
-## 例
+## 例 {#examples}
 
 ここでは、いくつかのサンプルデータセットを使って、リフレッシュ可能なマテリアライズドビューの使用方法を見ていきます。
 
-### Stack Overflow
+### Stack Overflow {#stack-overflow}
 
 [非正規化データガイド](/data-modeling/denormalization)では、Stack Overflow のデータセットを使ってデータを非正規化するさまざまな手法を紹介しています。`votes`、`users`、`badges`、`posts`、`postlinks` の各テーブルにデータを格納します。
 
@@ -244,7 +236,7 @@ LEFT JOIN (
 ここでの構文はインクリメンタルなマテリアライズドビューと同一ですが、[`REFRESH`](/sql-reference/statements/create/view#refreshable-materialized-view) 句を含めている点が異なります。
 :::
 
-### IMDb
+### IMDb {#imdb}
 
 [dbt と ClickHouse の統合ガイド](/integrations/dbt) では、`actors`、`directors`、`genres`、`movie_directors`、`movies`、`roles` というテーブルを用いて IMDb データセットを用意しました。
 
@@ -273,7 +265,6 @@ GROUP BY id
 ORDER BY movies DESC
 LIMIT 5;
 ```
-
 
 ```text
 ┌─────id─┬─name─────────┬─num_movies─┬───────────avg_rank─┬─unique_genres─┬─uniq_directors─┬──────────updated_at─┐
@@ -350,7 +341,6 @@ FROM imdb.actor_summary
 ORDER BY num_movies DESC
 LIMIT 5
 ```
-
 
 ```text
 ┌─────id─┬─name─────────┬─num_movies─┬──avg_rank─┬─unique_genres─┬─uniq_directors─┬──────────updated_at─┐

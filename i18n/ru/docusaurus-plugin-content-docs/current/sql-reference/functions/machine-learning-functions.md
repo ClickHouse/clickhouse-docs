@@ -6,31 +6,21 @@ title: 'Функции машинного обучения'
 doc_type: 'reference'
 ---
 
-
-
-# Функции машинного обучения
-
-
+# Функции машинного обучения {#machine-learning-functions}
 
 ## evalMLMethod {#evalmlmethod}
 
 Для предсказаний с использованием обученных регрессионных моделей используется функция `evalMLMethod`. См. ссылку в разделе `linearRegression`.
 
-
-
 ## stochasticLinearRegression {#stochasticlinearregression}
 
 Агрегатная функция [stochasticLinearRegression](/sql-reference/aggregate-functions/reference/stochasticlinearregression) реализует метод стохастического градиентного спуска с использованием линейной модели и функции потерь MSE. Использует `evalMLMethod` для предсказаний на новых данных.
-
-
 
 ## stochasticLogisticRegression {#stochasticlogisticregression}
 
 Агрегатная функция [stochasticLogisticRegression](/sql-reference/aggregate-functions/reference/stochasticlogisticregression) реализует метод стохастического градиентного спуска для задачи бинарной классификации. Использует `evalMLMethod` для предсказания по новым данным.
 
-
-
-## naiveBayesClassifier
+## naiveBayesClassifier {#naivebayesclassifier}
 
 Классифицирует входной текст с использованием модели наивного Байеса с n-граммами и сглаживанием Лапласа. Перед использованием модель должна быть настроена в ClickHouse.
 
@@ -70,7 +60,7 @@ SELECT naiveBayesClassifier('language', 'Как дела?');
 
 ***
 
-### Подробности реализации
+### Подробности реализации {#implementation-details}
 
 **Алгоритм**
 Использует алгоритм классификации Naive Bayes с [сглаживанием Лапласа](https://en.wikipedia.org/wiki/Additive_smoothing) для обработки ранее не встречавшихся n-грамм на основе их вероятностей, как описано [здесь](https://web.stanford.edu/~jurafsky/slp3/4.pdf).
@@ -85,7 +75,7 @@ SELECT naiveBayesClassifier('language', 'Как дела?');
 
 ***
 
-### Конфигурация модели
+### Конфигурация модели {#model-configuration}
 
 Пример исходного кода для создания модели Naive Bayes для определения языка можно найти [здесь](https://github.com/nihalzp/ClickHouse-NaiveBayesClassifier-Models).
 
@@ -129,7 +119,6 @@ SELECT naiveBayesClassifier('language', 'Как дела?');
 | **priors** | Априорные вероятности классов (% документов, принадлежащих каждому классу)                                                  | 60% для класса 0, 40% для класса 1                       | Равномерное распределение |
 
 **Руководство по обучению модели**
-
 
 **Формат файла**
 В человекочитаемом формате, при `n=1` и режиме `token`, модель может выглядеть следующим образом:

@@ -8,9 +8,7 @@ title: 'ReplacingMergeTree テーブルエンジン'
 doc_type: 'reference'
 ---
 
-
-
-# ReplacingMergeTree テーブルエンジン
+# ReplacingMergeTree テーブルエンジン {#replacingmergetree-table-engine}
 
 このエンジンは、[MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) とは異なり、同じ[ソートキー](../../../engines/table-engines/mergetree-family/mergetree.md)値（テーブル定義の `ORDER BY` セクションで指定されるもので、`PRIMARY KEY` ではありません）を持つ重複エントリを削除します。
 
@@ -22,9 +20,7 @@ doc_type: 'reference'
 ベストプラクティスやパフォーマンス最適化の方法を含む ReplacingMergeTree の詳細なガイドは[こちら](/guides/replacing-merge-tree)にあります。
 :::
 
-
-
-## テーブルを作成する
+## テーブルを作成する {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -46,10 +42,9 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 行の一意性は `PRIMARY KEY` ではなく、テーブルの `ORDER BY` 句によって決定されます。
 :::
 
+## ReplacingMergeTree のパラメーター {#replacingmergetree-parameters}
 
-## ReplacingMergeTree のパラメーター
-
-### `ver`
+### `ver` {#ver}
 
 `ver` — バージョン番号を保持するカラム。型は `UInt*`、`Date`、`DateTime` または `DateTime64`。省略可能なパラメーターです。
 
@@ -101,7 +96,7 @@ SELECT * FROM mySecondReplacingMT FINAL;
 └─────┴─────────┴─────────────────────┘
 ```
 
-### `is_deleted`
+### `is_deleted` {#is_deleted}
 
 `is_deleted` — マージ処理の際に、この行のデータが「状態」を表すのか、あるいは削除対象なのかを判定するために使用されるカラム名です。`1` は「削除された」行、`0` は「状態」の行を表します。
 
@@ -141,7 +136,6 @@ INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 01:01:01', 0);
 INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 01:01:01', 1);
 ```
 
-
 select * from myThirdReplacingMT final;
 
 0 rows in set. Elapsed: 0.003 sec.
@@ -159,7 +153,6 @@ select * from myThirdReplacingMT final;
 
 ```
 ```
-
 
 ## クエリ句 {#query-clauses}
 
@@ -188,9 +181,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 </details>
 
-
-
-## クエリ時の重複排除と `FINAL`
+## クエリ時の重複排除と `FINAL` {#query-time-de-duplication--final}
 
 マージ処理の際に、ReplacingMergeTree は `ORDER BY` 列（テーブル作成時に使用した列）の値を一意の識別子として用いて重複行を識別し、最も新しいバージョンのみを保持します。ただし、これはあくまで最終的な整合性しか提供せず、行が必ず重複排除されることを保証するものではないため、これに依存すべきではありません。その結果、更新行や削除行がクエリで考慮されることにより、クエリが誤った結果を返す可能性があります。
 

@@ -7,11 +7,7 @@ title: 'gRPC 接口'
 doc_type: 'reference'
 ---
 
-
-
-# gRPC 接口
-
-
+# gRPC 接口 {#grpc-interface}
 
 ## 简介 {#grpc-interface-introduction}
 
@@ -28,9 +24,7 @@ ClickHouse 支持 [gRPC](https://grpc.io/) 接口。gRPC 是一个开源的远�
 
 接口规范定义在 [clickhouse_grpc.proto](https://github.com/ClickHouse/ClickHouse/blob/master/src/Server/grpc_protos/clickhouse_grpc.proto) 中。
 
-
-
-## gRPC 配置
+## gRPC 配置 {#grpc-interface-configuration}
 
 要使用 gRPC 接口，请在[主服务器配置文件](../operations/configuration-files.md)中设置 `grpc_port`。其他配置选项请参考下例：
 
@@ -66,8 +60,7 @@ ClickHouse 支持 [gRPC](https://grpc.io/) 接口。gRPC 是一个开源的远�
     </grpc>
 ```
 
-
-## 内置客户端
+## 内置客户端 {#grpc-client}
 
 你可以使用 gRPC 支持的任意编程语言，基于提供的[规范](https://github.com/ClickHouse/ClickHouse/blob/master/src/Server/grpc_protos/clickhouse_grpc.proto)编写客户端。
 也可以使用内置的 Python 客户端。它位于仓库中的 [utils/grpc-client/clickhouse-grpc-client.py](https://github.com/ClickHouse/ClickHouse/blob/master/utils/grpc-client/clickhouse-grpc-client.py)。内置客户端需要安装 [grpcio 和 grpcio-tools](https://grpc.io/docs/languages/python/quickstart) 这两个 Python 模块。

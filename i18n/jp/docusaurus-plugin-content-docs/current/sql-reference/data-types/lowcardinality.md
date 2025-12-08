@@ -7,15 +7,11 @@ title: 'LowCardinality(T)'
 doc_type: 'reference'
 ---
 
-
-
-# LowCardinality(T)
+# LowCardinality(T) {#lowcardinalityt}
 
 他のデータ型の内部表現を辞書エンコードされた形式に変更します。
 
-
-
-## 構文
+## 構文 {#syntax}
 
 ```sql
 LowCardinality(data_type)
@@ -25,7 +21,6 @@ LowCardinality(data_type)
 
 * `data_type` — [String](../../sql-reference/data-types/string.md)、[FixedString](../../sql-reference/data-types/fixedstring.md)、[Date](../../sql-reference/data-types/date.md)、[DateTime](../../sql-reference/data-types/datetime.md)、および [Decimal](../../sql-reference/data-types/decimal.md) 以外の数値型。`LowCardinality` は一部のデータ型では効率的ではありません。詳細は [allow&#95;suspicious&#95;low&#95;cardinality&#95;types](../../operations/settings/settings.md#allow_suspicious_low_cardinality_types) 設定の説明を参照してください。
 
-
 ## 説明 {#description}
 
 `LowCardinality` は、データの格納方式とデータ処理規則を変更するための上位構造です。ClickHouse は `LowCardinality` 列に対して [dictionary coding](https://en.wikipedia.org/wiki/Dictionary_coder) を適用します。辞書エンコードされたデータを扱うことで、多くのアプリケーションにおいて [SELECT](../../sql-reference/statements/select/index.md) クエリのパフォーマンスが大幅に向上します。
@@ -34,9 +29,7 @@ LowCardinality(data_type)
 
 文字列を扱う際は、[Enum](../../sql-reference/data-types/enum.md) の代わりに `LowCardinality` の使用を検討してください。`LowCardinality` は利用時の柔軟性が高く、多くの場合、同等またはそれ以上の効率を発揮します。
 
-
-
-## 例
+## 例 {#example}
 
 `LowCardinality` 列を持つテーブルを作成します。
 
@@ -49,7 +42,6 @@ CREATE TABLE lc_t
 ENGINE = MergeTree()
 ORDER BY id
 ```
-
 
 ## 関連設定と関数 {#related-settings-and-functions}
 
@@ -64,8 +56,6 @@ ORDER BY id
 関数:
 
 - [toLowCardinality](../../sql-reference/functions/type-conversion-functions.md#tolowcardinality)
-
-
 
 ## 関連コンテンツ {#related-content}
 

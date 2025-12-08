@@ -6,9 +6,7 @@ title: 'Оператор ARRAY JOIN'
 doc_type: 'reference'
 ---
 
-
-
-# Оператор ARRAY JOIN
+# Оператор ARRAY JOIN {#array-join-clause}
 
 Для таблиц, содержащих столбец-массив, часто требуется получить новую таблицу, в которой для каждого отдельного элемента массива исходного столбца создаётся отдельная строка, а значения остальных столбцов дублируются. Это базовый случай работы оператора `ARRAY JOIN`.
 
@@ -29,10 +27,9 @@ FROM <left_subquery>
 * `ARRAY JOIN` — по умолчанию пустые массивы не включаются в результат `JOIN`.
 * `LEFT ARRAY JOIN` — результат `JOIN` содержит строки с пустыми массивами. Значение для пустого массива устанавливается в значение по умолчанию для типа элемента массива (обычно 0, пустая строка или NULL).
 
+## Базовые примеры ARRAY JOIN {#basic-array-join-examples}
 
-## Базовые примеры ARRAY JOIN
-
-### ARRAY JOIN и LEFT ARRAY JOIN
+### ARRAY JOIN и LEFT ARRAY JOIN {#array-join-left-array-join-examples}
 
 Примеры ниже демонстрируют использование операторов `ARRAY JOIN` и `LEFT ARRAY JOIN`. Создадим таблицу со столбцом типа [Array](../../../sql-reference/data-types/array.md) и вставим в него значения:
 
@@ -92,7 +89,7 @@ LEFT ARRAY JOIN arr;
 └─────────────┴─────┘
 ```
 
-### ARRAY JOIN и функция arrayEnumerate
+### ARRAY JOIN и функция arrayEnumerate {#array-join-arrayEnumerate}
 
 Эта функция обычно используется совместно с `ARRAY JOIN`. Она позволяет посчитать что-либо один раз для каждого массива после применения `ARRAY JOIN`. Пример:
 
@@ -130,7 +127,7 @@ WHERE (CounterID = 160656) AND notEmpty(GoalsReached)
 └────────┴───────┘
 ```
 
-### ARRAY JOIN и arrayEnumerateUniq
+### ARRAY JOIN и arrayEnumerateUniq {#array_join_arrayEnumerateUniq}
 
 Эта функция полезна при использовании `ARRAY JOIN` и агрегации элементов массива.
 
@@ -151,7 +148,6 @@ ORDER BY Reaches DESC
 LIMIT 10
 ```
 
-
 ```text
 ┌──GoalID─┬─Reaches─┬─Visits─┐
 │   53225 │    3214 │   1097 │
@@ -167,8 +163,7 @@ LIMIT 10
 └─────────┴─────────┴────────┘
 ```
 
-
-## Использование псевдонимов
+## Использование псевдонимов {#using-aliases}
 
 Для массива можно задать псевдоним в предложении `ARRAY JOIN`. В этом случае к элементу массива можно обратиться по этому псевдониму, но сам массив по‑прежнему доступен по исходному имени. Пример:
 
@@ -254,7 +249,6 @@ FROM arrays_test ARRAY JOIN arr AS a, [['a','b'],['c']] AS b
 SETTINGS enable_unaligned_array_join = 1;
 ```
 
-
 ```response
 ┌─s───────┬─arr─────┬─a─┬─b─────────┐
 │ Привет   │ [1,2]   │ 1 │ ['a','b'] │
@@ -267,8 +261,7 @@ SETTINGS enable_unaligned_array_join = 1;
 └─────────┴─────────┴───┴───────────┘
 ```
 
-
-## ARRAY JOIN с вложенной структурой данных
+## ARRAY JOIN с вложенной структурой данных {#array-join-with-nested-data-structure}
 
 `ARRAY JOIN` также работает с [вложенными структурами данных](../../../sql-reference/data-types/nested-data-structures/index.md):
 
@@ -371,7 +364,6 @@ FROM nested_test
 ARRAY JOIN nest AS n, arrayEnumerate(`nest.x`) AS num;
 ```
 
-
 ```response
 ┌─s─────┬─n.x─┬─n.y─┬─nest.x──┬─nest.y─────┬─num─┐
 │ Hello │   1 │  10 │ [1,2]   │ [10,20]    │   1 │
@@ -382,7 +374,6 @@ ARRAY JOIN nest AS n, arrayEnumerate(`nest.x`) AS num;
 └───────┴─────┴─────┴─────────┴────────────┴─────┘
 ```
 
-
 ## Подробности реализации {#implementation-details}
 
 Порядок выполнения запроса оптимизируется при использовании `ARRAY JOIN`. Хотя `ARRAY JOIN` всегда должен указываться в запросе перед секцией [WHERE](../../../sql-reference/statements/select/where.md)/[PREWHERE](../../../sql-reference/statements/select/prewhere.md), технически они могут выполняться в любом порядке, если только результат `ARRAY JOIN` не используется для фильтрации. Порядок обработки контролируется оптимизатором запросов.
@@ -392,8 +383,6 @@ ARRAY JOIN nest AS n, arrayEnumerate(`nest.x`) AS num;
 [Short-circuit function evaluation](/operations/settings/settings#short_circuit_function_evaluation) — это механизм, оптимизирующий выполнение сложных выражений в ряде функций, таких как `if`, `multiIf`, `and` и `or`. Он предотвращает возможные исключения (например, деление на ноль) во время выполнения этих функций.
 
 `arrayJoin` всегда выполняется и не поддерживает вычисление функций с коротким замыканием. Это связано с тем, что это особая функция, которая обрабатывается отдельно от всех прочих функций при анализе и выполнении запроса и требует дополнительной логики, несовместимой с коротким замыканием при вычислении. Причина в том, что количество строк в результате зависит от результата `arrayJoin`, и реализация отложенного (lazy) выполнения `arrayJoin` была бы слишком сложной и ресурсоёмкой.
-
-
 
 ## Связанные материалы {#related-content}
 

@@ -33,7 +33,6 @@ REST Catalog は Iceberg カタログ向けの標準化された API 仕様で�
 `SET allow_experimental_database_iceberg = 1;`
 :::
 
-
 ## ローカル開発環境のセットアップ {#local-development-setup}
 
 ローカルでの開発およびテストには、コンテナ化した REST カタログのセットアップを使用できます。この方法は、学習やプロトタイピング、開発環境に最適です。
@@ -43,7 +42,7 @@ REST Catalog は Iceberg カタログ向けの標準化された API 仕様で�
 1. **Docker と Docker Compose**: Docker がインストールされており、起動していることを確認してください
 2. **サンプル環境**: さまざまな Docker Compose 構成を利用できます（以下の「Alternative Docker Images」を参照）
 
-### ローカル REST カタログのセットアップ
+### ローカル REST カタログのセットアップ {#setting-up-local-rest-catalog}
 
 **[Databricks docker-spark-iceberg](https://github.com/databricks/docker-spark-iceberg/blob/main/docker-compose.yml?ref=blog.min.io)** のような、コンテナ化されたさまざまな REST カタログ実装を利用できます。これは、Spark + Iceberg + REST カタログ環境一式を docker-compose で提供するため、Iceberg との統合をテストする用途に最適です。
 
@@ -90,8 +89,7 @@ docker-compose logs -f
 REST カタログをセットアップするには、まずサンプルデータを Iceberg テーブルにロードしておく必要があります。ClickHouse 経由でクエリを実行する前に、Spark 環境でテーブルが作成され、データが投入済みであることを必ず確認してください。テーブルが利用可能かどうかは、使用している特定の docker-compose セットアップおよびサンプルデータ読み込みスクリプトに依存します。
 :::
 
-
-### ローカルの REST カタログへの接続
+### ローカルの REST カタログへの接続 {#connecting-to-local-rest-catalog}
 
 ClickHouse コンテナに接続します。
 
@@ -112,8 +110,7 @@ SETTINGS
     warehouse = 'demo'
 ```
 
-
-## ClickHouse を使用した REST カタログテーブルのクエリ実行
+## ClickHouse を使用した REST カタログテーブルのクエリ実行 {#querying-rest-catalog-tables-using-clickhouse}
 
 接続が確立できたので、REST カタログ経由でクエリを実行できます。例えば、次のようになります。
 
@@ -196,8 +193,7 @@ SHOW CREATE TABLE `default.taxis`;
 └───────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-## データレイク内のデータを ClickHouse に読み込む
+## データレイク内のデータを ClickHouse に読み込む {#loading-data-from-your-data-lake-into-clickhouse}
 
 REST カタログから ClickHouse にデータを読み込む必要がある場合は、まずローカルテーブルを作成します。
 

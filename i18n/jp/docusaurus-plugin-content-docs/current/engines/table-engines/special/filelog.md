@@ -7,8 +7,6 @@ title: 'FileLog テーブルエンジン'
 doc_type: 'reference'
 ---
 
-
-
 # FileLog テーブルエンジン {#filelog-engine}
 
 このエンジンを使用すると、アプリケーションのログファイルをレコードのストリームとして処理できます。
@@ -18,9 +16,7 @@ doc_type: 'reference'
 - ログファイルを監視する。
 - 監視対象のログファイルに追記された新しいレコードを処理する。
 
-
-
-## テーブルを作成する
+## テーブルを作成する {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -55,8 +51,7 @@ Engine 引数:
 * `poll_directory_watch_events_backoff_factor` - バックオフの係数。デフォルトでは指数関数的に増加します。デフォルト: `2`。
 * `handle_error_mode` — FileLog エンジンでエラーをどのように処理するか。指定可能な値: `default`（メッセージのパースに失敗した場合に例外をスロー）、`stream`（例外メッセージと元のメッセージを仮想カラム `_error` と `_raw_message` に保存）。
 
-
-## 説明
+## 説明 {#description}
 
 取り込まれたレコードは自動的に追跡されるため、ログファイル内の各レコードは一度だけカウントされます。
 
@@ -99,7 +94,6 @@ Engine 引数:
 ```
 
 `ALTER` を使用してターゲットテーブルを変更する場合は、ターゲットテーブルとビューからのデータとの不整合を避けるため、マテリアルビューを無効化することを推奨します。
-
 
 ## 仮想カラム {#virtual-columns}
 

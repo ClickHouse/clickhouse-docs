@@ -7,15 +7,11 @@ title: 'Движок таблиц Hudi'
 doc_type: 'reference'
 ---
 
-
-
-# Табличный движок Hudi
+# Табличный движок Hudi {#hudi-table-engine}
 
 Этот движок предоставляет доступ только для чтения к существующим таблицам Apache [Hudi](https://hudi.apache.org/) в Amazon S3.
 
-
-
-## Создание таблицы
+## Создание таблицы {#create-table}
 
 Имейте в виду, что таблица Hudi должна уже существовать в S3: эта команда не принимает DDL‑параметры для создания новой таблицы.
 
@@ -54,7 +50,6 @@ CREATE TABLE hudi_table ENGINE=Hudi('http://mars-doc-test.s3.amazonaws.com/click
 ```sql
 CREATE TABLE hudi_table ENGINE=Hudi(hudi_conf, filename = 'test_table')
 ```
-
 
 ## См. также {#see-also}
 

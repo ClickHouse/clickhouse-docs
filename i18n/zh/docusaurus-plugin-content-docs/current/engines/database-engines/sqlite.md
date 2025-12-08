@@ -8,15 +8,11 @@ title: 'SQLite'
 doc_type: 'reference'
 ---
 
-
-
-# SQLite
+# SQLite {#sqlite}
 
 用于连接 [SQLite](https://www.sqlite.org/index.html) 数据库，并执行 `INSERT` 和 `SELECT` 查询，以在 ClickHouse 与 SQLite 之间交换数据。
 
-
-
-## 创建数据库
+## 创建数据库 {#creating-a-database}
 
 ```sql
     CREATE DATABASE sqlite_database
@@ -27,7 +23,6 @@ doc_type: 'reference'
 
 * `db_path` — SQLite 数据库文件路径。
 
-
 ## 支持的数据类型 {#data_types-support}
 
 |  SQLite   | ClickHouse                                              |
@@ -37,16 +32,12 @@ doc_type: 'reference'
 | TEXT          | [String](../../sql-reference/data-types/string.md)      |
 | BLOB          | [String](../../sql-reference/data-types/string.md)      |
 
-
-
 ## 细节与建议 {#specifics-and-recommendations}
 
 SQLite 将整个数据库（定义、表、索引以及数据本身）作为一个单一的跨平台文件存储在主机上。写入期间，SQLite 会锁定整个数据库文件，因此写操作是顺序执行的，而读操作可以并发处理。
 SQLite 不需要服务管理（例如启动脚本）或基于 `GRANT` 和密码的访问控制。访问控制是通过为数据库文件本身设置文件系统权限来实现的。
 
-
-
-## 使用示例
+## 使用示例 {#usage-example}
 
 ClickHouse 中连接到 SQLite 的数据库：
 

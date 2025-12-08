@@ -7,15 +7,11 @@ title: 'Табличный движок MySQL'
 doc_type: 'reference'
 ---
 
-
-
-# Движок таблицы MySQL
+# Движок таблицы MySQL {#mysql-table-engine}
 
 Движок MySQL позволяет выполнять запросы `SELECT` и `INSERT` к данным, которые хранятся на удалённом сервере MySQL.
 
-
-
-## Создание таблицы
+## Создание таблицы {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -66,8 +62,7 @@ SETTINGS
 CREATE TABLE test_replicas (id UInt32, name String, age UInt32, money UInt32) ENGINE = MySQL(`mysql{2|3|4}:3306`, 'clickhouse', 'test_replicas', 'root', 'clickhouse');
 ```
 
-
-## Пример использования
+## Пример использования {#usage-example}
 
 Создайте таблицу в MySQL:
 
@@ -131,7 +126,6 @@ SELECT * FROM mysql_table
 │           ᴺᵁᴸᴸ │      1 │
 └────────────────┴────────┘
 ```
-
 
 ## Настройки {#mysql-settings}
 
@@ -198,8 +192,6 @@ SELECT * FROM mysql_table
 - Положительное целое число.
 
 Значение по умолчанию: `300`.
-
-
 
 ## См. также {#see-also}
 

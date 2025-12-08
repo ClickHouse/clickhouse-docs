@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 ## 使用例 {#example-usage}
 
-### 基本的な例
+### 基本的な例 {#basic-example}
 
 ```sql title="Query"
 CREATE TABLE json_as_object (json JSON) ENGINE = Memory;
@@ -31,8 +31,7 @@ SELECT * FROM json_as_object FORMAT JSONEachRow;
 {"json":{"any json stucture":"1"}}
 ```
 
-
-### JSON オブジェクトの配列
+### JSON オブジェクトの配列 {#an-array-of-json-objects}
 
 ```sql title="Query"
 CREATE TABLE json_square_brackets (field JSON) ENGINE = Memory;
@@ -45,8 +44,7 @@ SELECT * FROM json_square_brackets FORMAT JSONEachRow;
 {"field":{"id":"2","name":"name2"}}
 ```
 
-
-### デフォルト値を持つ列
+### デフォルト値を持つ列 {#columns-with-default-values}
 
 ```sql title="Query"
 CREATE TABLE json_as_object (json JSON, time DateTime MATERIALIZED now()) ENGINE = Memory;
@@ -61,6 +59,5 @@ SELECT time, json FROM json_as_object FORMAT JSONEachRow
 {"time":"2024-09-16 12:18:13","json":{"any json stucture":"1"}}
 {"time":"2024-09-16 12:18:08","json":{"foo":{"bar":{"x":"y"},"baz":"1"}}}
 ```
-
 
 ## フォーマット設定 {#format-settings}

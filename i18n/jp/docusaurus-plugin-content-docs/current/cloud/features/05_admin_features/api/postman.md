@@ -29,19 +29,19 @@ import postman17 from '@site/static/images/cloud/manage/postman/postman17.png';
 このガイドでは、[Postman](https://www.postman.com/product/what-is-postman/) を使用して ClickHouse Cloud API をテストする方法を説明します。
 Postman アプリケーションは Web ブラウザ上で利用できるほか、デスクトップにダウンロードして利用することもできます。
 
-### アカウントを作成する
+### アカウントを作成する {#create-an-account}
 
 * 無料アカウントは [https://www.postman.com](https://www.postman.com) から作成できます。
 
 <Image img={postman1} size="md" alt="Postman サイト" border />
 
-### ワークスペースを作成する
+### ワークスペースを作成する {#create-a-workspace}
 
 * ワークスペースに名前を付け、可視性レベルを設定します。
 
 <Image img={postman2} size="md" alt="ワークスペースの作成" border />
 
-### コレクションを作成する
+### コレクションを作成する {#create-a-collection}
 
 * 左上メニューの「Explore」の下にある「Import」をクリックします:
 
@@ -59,7 +59,7 @@ Postman アプリケーションは Web ブラウザ上で利用できるほか�
 
 <Image img={postman6} size="md" alt="Collection > Import" border />
 
-### ClickHouse Cloud API spec を利用する
+### ClickHouse Cloud API spec を利用する {#interface-with-the-clickhouse-cloud-api-spec}
 
 * 「API spec for ClickHouse Cloud」が「Collections」（左ナビゲーション）内に表示されます。
 
@@ -69,7 +69,7 @@ Postman アプリケーションは Web ブラウザ上で利用できるほか�
 
 <Image img={postman8} size="md" alt="インポート完了" border />
 
-### 認証を設定する
+### 認証を設定する {#set-authorization}
 
 * ドロップダウンメニューを開き、「Basic Auth」を選択します:
 
@@ -79,17 +79,16 @@ Postman アプリケーションは Web ブラウザ上で利用できるほか�
 
 <Image img={postman10} size="md" alt="認証情報" border />
 
-### 変数を有効にする
+### 変数を有効にする {#enable-variables}
 
 * [Variables](https://learning.postman.com/docs/sending-requests/variables/) を使用すると、Postman で値を保存および再利用できるため、API テストが容易になります。
 
-#### Organization ID と Service ID を設定する
+#### Organization ID と Service ID を設定する {#set-the-organization-id-and-service-id}
 
 * コレクション内で、中央ペインの「Variable」タブをクリックします（Base URL は先ほどの API インポートによって設定されています）:
 * `baseURL` の下の「Add new value」と表示されている空欄をクリックし、自分の Organization ID と Service ID に置き換えて入力します:
 
 <Image img={postman11} size="md" alt="Organization ID と Service ID" border />
-
 
 ## ClickHouse Cloud API 機能のテスト {#test-the-clickhouse-cloud-api-functionalities}
 

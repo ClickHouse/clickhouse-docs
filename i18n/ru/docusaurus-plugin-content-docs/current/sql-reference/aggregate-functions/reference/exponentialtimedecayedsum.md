@@ -6,9 +6,7 @@ title: 'exponentialTimeDecayedSum'
 doc_type: 'reference'
 ---
 
-
-
-## exponentialTimeDecayedSum
+## exponentialTimeDecayedSum {#exponentialtimedecayedsum}
 
 Возвращает сумму значений экспоненциально сглаженного скользящего среднего временного ряда в момент времени с индексом `t`.
 
@@ -52,7 +50,6 @@ FROM
 ```
 
 Результат:
-
 
 ```response
 ┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar───────────────────────────────────────────────┐

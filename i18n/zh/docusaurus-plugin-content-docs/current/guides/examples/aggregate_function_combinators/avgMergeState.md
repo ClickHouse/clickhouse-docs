@@ -10,10 +10,7 @@ doc_type: 'reference'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 # avgMergeState {#avgMergeState}
-
-
 
 ## 描述 {#description}
 
@@ -22,9 +19,7 @@ import TabItem from '@theme/TabItem';
 函数，以合并类型为 `AverageFunction(avg, T)` 的部分聚合状态，
 并返回一个新的中间聚合状态。
 
-
-
-## 示例用法
+## 示例用法 {#example-usage}
 
 `MergeState` 组合子在多级聚合场景中特别有用，在这些场景中，你需要将预聚合状态进行合并，并继续以状态的形式保留它们（而不是将其最终计算完成），以便进行后续处理。为此，我们来看一个示例，将单个服务器性能指标转换为跨多个层级的分层聚合：服务器层级 → 区域层级 → 数据中心层级。
 
@@ -122,7 +117,6 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
 
 针对每个层级，我们将编写三个查询：
 
-
 <Tabs>
   <TabItem value="Service level" label="服务级别" default>
     ```sql
@@ -212,7 +206,6 @@ ORDER BY datacenter;
 │ dc2        │                145 │
 └────────────┴────────────────────┘
 ```
-
 
 ## 另请参阅 {#see-also}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)

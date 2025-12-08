@@ -7,17 +7,13 @@ keywords: ['chdb', 'go', 'golang', 'embedded', 'clickhouse', 'sql', 'olap']
 doc_type: 'guide'
 ---
 
-
-
-# Go 向けの chDB
+# Go 向けの chDB {#chdb-for-go}
 
 chDB-go は chDB 向けの Go バインディングを提供し、外部への依存関係なしに Go アプリケーション内から直接 ClickHouse クエリを実行できるようにします。
 
+## インストール {#installation}
 
-
-## インストール
-
-### ステップ 1: libchdb のインストール
+### ステップ 1: libchdb のインストール {#install-libchdb}
 
 まず、chDB ライブラリをインストールします。
 
@@ -25,7 +21,7 @@ chDB-go は chDB 向けの Go バインディングを提供し、外部への�
 curl -sL https://lib.chdb.io | bash
 ```
 
-### ステップ 2：chdb-go をインストールする
+### ステップ 2：chdb-go をインストールする {#install-chdb-go}
 
 Go パッケージをインストールします：
 
@@ -39,35 +35,29 @@ go install github.com/chdb-io/chdb-go@latest
 go get github.com/chdb-io/chdb-go
 ```
 
-
 ## 使用方法 {#usage}
 
 ### コマンドラインインターフェース {#cli}
 
 chDB-go には、簡単なクエリをすばやく実行するための CLI が含まれています。
 
-
-
 ```bash
-# シンプルなクエリ
+# シンプルなクエリ {#simple-query}
 ./chdb-go "SELECT 123"
 ```
 
-
-# インタラクティブモード
+# インタラクティブモード {#interactive-mode}
 ./chdb-go
 
-
-
-# 永続ストレージを使用したインタラクティブモード
+# 永続ストレージを使用したインタラクティブモード {#interactive-mode-with-persistent-storage}
 
 ./chdb-go --path /tmp/chdb
 
 ````
 
-### Goライブラリ - クイックスタート               
+### Goライブラリ - クイックスタート                {#quick-start}
 
-#### ステートレスクエリ                     
+#### ステートレスクエリ                      {#stateless-queries}
 
 シンプルな1回限りのクエリの場合:
 
@@ -89,7 +79,7 @@ func main() {
 }
 ````
 
-#### セッションを利用したステートフルなクエリ
+#### セッションを利用したステートフルなクエリ {#stateful-queries}
 
 状態を永続化する必要がある複雑なクエリ向け:
 
@@ -142,7 +132,7 @@ func main() {
 }
 ```
 
-#### SQL ドライバーインターフェース
+#### SQL ドライバーインターフェース {#sql-driver}
 
 chDB-go は、Go の `database/sql` インターフェースを実装しています：
 
@@ -181,7 +171,7 @@ func main() {
 }
 ```
 
-#### 大規模データセット向けストリーミングクエリ
+#### 大規模データセット向けストリーミングクエリ {#query-streaming}
 
 メモリに収まりきらない大規模なデータセットを処理するには、ストリーミングクエリを使用します。
 
@@ -242,14 +232,11 @@ func main() {
 }
 ```
 
-
 **クエリストリーミングの利点:**
 - **メモリ効率が高い** - すべてをメモリに読み込まずに大規模データセットを処理できる
 - **リアルタイム処理** - 最初のチャンクが到着し次第、すぐに処理を開始できる
 - **キャンセルのサポート** - `Cancel()` を使って長時間実行中のクエリをキャンセルできる
 - **エラー処理** - ストリーミング中に `Error()` でエラーを確認できる
-
-
 
 ## API ドキュメント {#api-documentation}
 
@@ -257,8 +244,6 @@ chDB-go は高レベル API と低レベル API の両方を提供します：
 
 - **[高レベル API ドキュメント](https://github.com/chdb-io/chdb-go/blob/main/chdb.md)** - ほとんどのユースケースでの利用を推奨
 - **[低レベル API ドキュメント](https://github.com/chdb-io/chdb-go/blob/main/lowApi.md)** - きめ細かな制御が必要な高度なユースケース向け
-
-
 
 ## システム要件 {#requirements}
 

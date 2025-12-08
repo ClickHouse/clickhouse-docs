@@ -7,9 +7,7 @@ title: 'DateTime'
 doc_type: 'reference'
 ---
 
-
-
-# DateTime
+# DateTime {#datetime}
 
 用于存储某一时刻，该时刻可以表示为日历日期和一天中的时间。
 
@@ -23,14 +21,11 @@ DateTime([timezone])
 
 时间精度：1 秒。
 
-
 ## 速度 {#speed}
 
 在 _大多数_ 情况下，`Date` 数据类型比 `DateTime` 更快。
 
 `Date` 类型只需要 2 字节存储，而 `DateTime` 需要 4 字节。不过，在压缩时，`Date` 和 `DateTime` 之间的大小差异会变得更为显著。这种差异被放大是因为 `DateTime` 中的分钟和秒不如日期部分易于压缩。对 `Date` 而不是 `DateTime` 进行过滤和聚合也会更快。
-
-
 
 ## 使用说明 {#usage-remarks}
 
@@ -48,9 +43,7 @@ ClickHouse 会根据 [date_time_output_format](../../operations/settings/setting
 
 向 ClickHouse 插入数据时，可以使用不同格式的日期和时间字符串，具体取决于 [date_time_input_format](../../operations/settings/settings-formats.md#date_time_input_format) 设置的值。
 
-
-
-## 示例
+## 示例 {#examples}
 
 **1.** 创建一个包含 `DateTime` 类型列的表，并向其中插入数据：
 
@@ -136,7 +129,6 @@ FROM dt
 
 由于时区转换只会更改元数据，因此该操作不会产生计算开销。
 
-
 ## 对时区支持的限制 {#limitations-on-time-zones-support}
 
 部分时区可能无法得到完全支持，主要存在以下几种情况：
@@ -151,9 +143,7 @@ FROM dt
 
 跨多天的时间偏移。一些太平洋岛屿将其时区偏移从 UTC+14 改为 UTC-12。这本身没有问题，但如果你在处理这些地区时区的历史时间点，且时间恰好处在转换日期附近，可能会出现一定的不准确。
 
-
-
-## 处理夏令时（DST）
+## 处理夏令时（DST） {#handling-daylight-saving-time-dst}
 
 ClickHouse 的带时区 `DateTime` 类型在夏令时（DST）切换期间可能会表现出意外行为，特别是在以下情况：
 
@@ -193,7 +183,6 @@ SELECT '2023-03-26 01:30:00'::DateTime('Europe/London') AS time, time + toInterv
 ```
 
 在这种情况下，ClickHouse 会将不存在的时间 `2023-03-26 01:30:00` 调整为 `2023-03-26 00:30:00`。
-
 
 ## 另请参阅 {#see-also}
 

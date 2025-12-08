@@ -16,18 +16,13 @@ import security_group_in_rds_postgres from '@site/static/images/integrations/dat
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
 
-
-# Руководство по настройке источника данных RDS Postgres
-
-
+# Руководство по настройке источника данных RDS Postgres {#rds-postgres-source-setup-guide}
 
 ## Поддерживаемые версии Postgres {#supported-postgres-versions}
 
 ClickPipes поддерживает Postgres версии 12 и выше.
 
-
-
-## Включите логическую репликацию
+## Включите логическую репликацию {#enable-logical-replication}
 
 Вы можете пропустить этот раздел, если в экземпляре базы данных RDS уже настроены следующие параметры:
 
@@ -70,7 +65,6 @@ postgres=> SHOW wal_sender_timeout ;
 
 <Image img={reboot_rds} alt="Перезапуск RDS Postgres" size="lg" border />
 
-
 ## Настройка пользователя базы данных {#configure-database-user}
 
 Подключитесь к вашему экземпляру RDS PostgreSQL под учетной записью администратора и выполните следующие команды:
@@ -101,8 +95,6 @@ postgres=> SHOW wal_sender_timeout ;
     CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
     ```
 
-
-
 ## Настройка сетевого доступа {#configure-network-access}
 
 ### Контроль доступа на основе IP-адресов {#ip-based-access-control}
@@ -124,8 +116,6 @@ RDS Proxy не поддерживает подключения для логич
 2. Использование RDS Event Notifications с EventBridge/SNS: автоматически инициируйте обновления с помощью уведомлений о событиях AWS RDS.
 3. Постоянный экземпляр EC2: разверните экземпляр EC2, который будет выступать в роли сервиса опроса или прокси на основе IP-адресов.
 4. Автоматизируйте управление IP-адресами с помощью таких инструментов, как Terraform или CloudFormation.
-
-
 
 ## Что дальше? {#whats-next}
 

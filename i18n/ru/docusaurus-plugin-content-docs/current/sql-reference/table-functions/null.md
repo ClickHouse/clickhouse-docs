@@ -7,34 +7,25 @@ title: 'null'
 doc_type: 'reference'
 ---
 
-
-
-# Функция таблицы null
+# Функция таблицы null {#null-table-function}
 
 Создает временную таблицу указанной структуры с движком таблицы [Null](../../engines/table-engines/special/null.md). В соответствии со свойствами движка `Null` данные таблицы игнорируются, а сама таблица немедленно удаляется после выполнения запроса. Функция используется для удобства при написании тестов и проведении демонстраций.
 
-
-
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 null('structure')
 ```
 
-
 ## Аргумент {#argument}
 
 - `structure` — список столбцов и их типов, строка типа [String](../../sql-reference/data-types/string.md).
-
-
 
 ## Возвращаемое значение {#returned_value}
 
 Временная таблица движка `Null` с указанной структурой.
 
-
-
-## Пример
+## Пример {#example}
 
 Запрос с использованием функции `null`:
 
@@ -49,7 +40,6 @@ CREATE TABLE t (x UInt64) ENGINE = Null;
 INSERT INTO t SELECT * FROM numbers_mt(1000000000);
 DROP TABLE IF EXISTS t;
 ```
-
 
 ## Связанные разделы {#related}
 

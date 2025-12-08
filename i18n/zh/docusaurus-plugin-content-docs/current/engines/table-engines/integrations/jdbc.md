@@ -9,8 +9,7 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
-# JDBC 表引擎
+# JDBC 表引擎 {#jdbc-table-engine}
 
 <CloudNotSupportedBadge/>
 
@@ -25,9 +24,7 @@ ClickHouse 推荐使用 ClickHouse 内置的表函数，作为临时（即席）
 
 该引擎支持 [Nullable](../../../sql-reference/data-types/nullable.md) 数据类型。
 
-
-
-## 创建数据表
+## 创建数据表 {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name
@@ -50,8 +47,7 @@ ENGINE = JDBC(数据源名称, 外部数据库, 外部表)
 
 * 这些参数也可以通过 [命名集合](operations/named-collections.md) 传递。
 
-
-## 使用示例
+## 使用示例 {#usage-example}
 
 使用 MySQL 的控制台客户端直接连接到服务器来创建一张表：
 
@@ -105,7 +101,6 @@ INSERT INTO jdbc_table(`int_id`, `float`)
 SELECT toInt32(number), toFloat32(number * 1.0)
 FROM system.numbers
 ```
-
 
 ## 另请参阅 {#see-also}
 

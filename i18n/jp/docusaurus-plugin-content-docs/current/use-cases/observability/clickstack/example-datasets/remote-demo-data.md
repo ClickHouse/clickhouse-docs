@@ -38,7 +38,7 @@ import step_23 from '@site/static/images/use-cases/observability/hyperdx-demo/st
 import step_24 from '@site/static/images/use-cases/observability/hyperdx-demo/step_24.png';
 import demo_sources from '@site/static/images/use-cases/observability/hyperdx-demo//demo_sources.png';
 import edit_connection from '@site/static/images/use-cases/observability/edit_connection.png';
-import DemoArchitecture from '@site/docs/use-cases/observability/clickstack/example-datasets/_snippets/_demo.md';
+import DemoArchitecture from '@site/i18n/jp/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/example-datasets/_snippets/_demo.md';
 
 **以下のガイドでは、[all-in-one イメージ用の手順](/use-cases/observability/clickstack/getting-started) または [Local Mode Only](/use-cases/observability/clickstack/deployment/local-mode-only) の手順に従って ClickStack をデプロイし、初回ユーザー作成を完了していることを前提としています。あるいは、ローカルでのセットアップをすべて省略し、このデータセットを使用している ClickStack ホスト済みデモ環境 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com) に接続することもできます。**
 
@@ -47,7 +47,6 @@ import DemoArchitecture from '@site/docs/use-cases/observability/clickstack/exam
 :::warning ClickHouse Cloud 上の HyperDX ではサポートされません
 HyperDX が ClickHouse Cloud 上でホストされている場合、リモートデータベースはサポートされません。そのため、このデータセットもサポート対象外です。
 :::
-
 
 これは、公式 OpenTelemetry (OTel) デモの ClickHouse バージョンから取得した、およそ 40 時間分のデータを含みます。データは毎晩リプレイされ、その際タイムスタンプが現在の時間帯に合わせて調整されるため、ユーザーは HyperDX の統合されたログ、トレース、メトリクスを使用してシステムの挙動を観察・分析できます。
 

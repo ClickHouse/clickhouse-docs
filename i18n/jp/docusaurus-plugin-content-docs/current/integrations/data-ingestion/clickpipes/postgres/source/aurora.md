@@ -16,18 +16,13 @@ import security_group_in_rds_postgres from '@site/static/images/integrations/dat
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
 
-
-# Aurora Postgres ソースのセットアップガイド
-
-
+# Aurora Postgres ソースのセットアップガイド {#aurora-postgres-source-setup-guide}
 
 ## サポートされている Postgres バージョン {#supported-postgres-versions}
 
 ClickPipes は Aurora PostgreSQL 互換エディションのバージョン 12 以降に対応しています。
 
-
-
-## 論理レプリケーションを有効にする
+## 論理レプリケーションを有効にする {#enable-logical-replication}
 
 Aurora インスタンスですでに次の設定が行われている場合は、このセクションはスキップしてかまいません。
 
@@ -70,7 +65,6 @@ postgres=> SHOW wal_sender_timeout ;
 
 <Image img={reboot_rds} alt="Aurora PostgreSQL の再起動" size="lg" border />
 
-
 ## データベースユーザーの設定 {#configure-database-user}
 
 Aurora PostgreSQL のライターインスタンスに管理者ユーザーとして接続し、次のコマンドを実行します。
@@ -100,8 +94,6 @@ Aurora PostgreSQL のライターインスタンスに管理者ユーザーと�
     ```sql
     CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
     ```
-
-
 
 ## ネットワークアクセスの設定 {#configure-network-access}
 
@@ -136,8 +128,6 @@ Aurora では、適切なインスタンスに自動的にルーティングさ�
 1. 高可用性構成の場合は、アプリケーションを Aurora の writer エンドポイントを使用するように構成してください。これは自動的に現在のプライマリインスタンスを指します。
 
 2. リージョン間レプリケーションを使用している場合は、レイテンシーを低減し、耐障害性を向上させるために、リージョンごとに個別の ClickPipes を設定することを検討してください。
-
-
 
 ## 次のステップ {#whats-next}
 

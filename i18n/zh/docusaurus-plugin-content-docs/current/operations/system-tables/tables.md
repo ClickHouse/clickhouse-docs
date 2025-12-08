@@ -6,7 +6,7 @@ title: 'system.tables'
 doc_type: '参考'
 ---
 
-# system.tables
+# system.tables {#systemtables}
 
 包含服务器已知的每个表的元数据。
 

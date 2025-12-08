@@ -8,9 +8,7 @@ description: '介绍 ClickHouse Cloud 中的访问控制和账户管理'
 doc_type: 'guide'
 ---
 
-
-
-# 在 ClickHouse 中创建用户和角色
+# 在 ClickHouse 中创建用户和角色 {#creating-users-and-roles-in-clickhouse}
 
 ClickHouse 支持基于 [RBAC](https://en.wikipedia.org/wiki/Role-based_access_control) 方法的访问控制管理。
 
@@ -40,8 +38,6 @@ ClickHouse 访问控制实体：
 :::
 
 要查看所有用户、角色、配置文件等以及它们被授予的所有权限，请使用 [`SHOW ACCESS`](/sql-reference/statements/show#show-access) 语句。
-
-
 
 ## 概览 {#access-control-usage}
 
@@ -113,8 +109,6 @@ ClickHouse 访问控制实体：
 
 #### 行级策略 {#row-policy-management}
 
-
-
 行策略是一种过滤器，用于定义某个用户或角色可以访问哪些行。行策略包含针对某个特定表的过滤条件，以及应使用此行策略的角色和/或用户列表。
 
 :::note
@@ -166,8 +160,6 @@ ClickHouse 访问控制实体：
 
     默认情况下，基于 SQL 的访问控制和账户管理对所有用户均处于禁用状态。你需要在 `users.xml` 配置文件中至少配置一个用户，并将 [`access_management`](/operations/settings/settings-users.md#access_management-user-setting)、`named_collection_control`、`show_named_collections` 和 `show_named_collections_secrets` 设置的值设为 1。
 
-
-
 ## 定义 SQL 用户和角色 {#defining-sql-users-and-roles}
 
 :::tip
@@ -209,9 +201,7 @@ ClickHouse 访问控制实体：
     GRANT ALL ON *.* TO clickhouse_admin WITH GRANT OPTION;
     ```
 
-
-
-## ALTER 权限
+## ALTER 权限 {#alter-permissions}
 
 本文旨在帮助您更好地理解如何定义权限，以及在特权用户执行 `ALTER` 语句时权限是如何生效的。
 
@@ -338,7 +328,6 @@ SHOW GRANTS FOR my_user
 ```sql
 SHOW GRANTS FOR my_user;
 ```
-
 
 ```response
 SHOW GRANTS FOR my_user
@@ -494,7 +483,6 @@ DESCRIBE TABLE my_db.my_table
 
 查询 ID: ab9cb2d0-5b1a-42e1-bc9c-c7ff351cb272
 ```
-
 
 ┌─名称────┬─类型───┬─默认&#95;类型─┬─默认&#95;表达式─┬─注释─┬─编解码&#95;表达式─┬─TTL&#95;表达式─┐
 │ id      │ UInt64 │              │                    │         │                  │                │

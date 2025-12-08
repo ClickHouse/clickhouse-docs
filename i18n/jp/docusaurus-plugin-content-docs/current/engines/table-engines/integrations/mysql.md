@@ -7,15 +7,11 @@ title: 'MySQL テーブルエンジン'
 doc_type: 'reference'
 ---
 
-
-
-# MySQL テーブルエンジン
+# MySQL テーブルエンジン {#mysql-table-engine}
 
 MySQL エンジンを使用すると、リモートの MySQL サーバー上に保存されているデータに対して `SELECT` および `INSERT` クエリを実行できます。
 
-
-
-## テーブルを作成する
+## テーブルを作成する {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -66,8 +62,7 @@ SETTINGS
 CREATE TABLE test_replicas (id UInt32, name String, age UInt32, money UInt32) ENGINE = MySQL(`mysql{2|3|4}:3306`, 'clickhouse', 'test_replicas', 'root', 'clickhouse');
 ```
 
-
-## 使用例
+## 使用例 {#usage-example}
 
 MySQL でテーブルを作成します:
 
@@ -131,7 +126,6 @@ SELECT * FROM mysql_table
 │           ᴺᵁᴸᴸ │      1 │
 └────────────────┴────────┘
 ```
-
 
 ## 設定 {#mysql-settings}
 
@@ -198,8 +192,6 @@ SELECT * FROM mysql_table
 - 正の整数。
 
 デフォルト値: `300`。
-
-
 
 ## 関連項目 {#see-also}
 

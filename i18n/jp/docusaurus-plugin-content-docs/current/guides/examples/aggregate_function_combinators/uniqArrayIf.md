@@ -7,11 +7,7 @@ sidebar_label: 'uniqArrayIf'
 doc_type: 'reference'
 ---
 
-
-
 # uniqArrayIf {#uniqarrayif}
-
-
 
 ## 説明 {#description}
 
@@ -25,11 +21,9 @@ doc_type: 'reference'
 
 これは、`arrayJoin` を使用せずに、特定の条件に基づいて配列内の一意な要素数をカウントしたい場合に有用です。
 
+## 使用例 {#example-usage}
 
-
-## 使用例
-
-### セグメント種別とエンゲージメントレベルごとのユニークな閲覧商品数を集計する
+### セグメント種別とエンゲージメントレベルごとのユニークな閲覧商品数を集計する {#count-unique-products}
 
 この例では、ユーザーのショッピングセッションデータを含むテーブルを使用して、
 特定のユーザーセグメントに属し、かつセッション内での滞在時間をエンゲージメント指標とする
@@ -82,7 +76,6 @@ new_customer⋯ed_products:    2
 returning_customer_products: 2
 total_unique_products:       7
 ```
-
 
 ## 関連項目 {#see-also}
 - [`uniq`](/sql-reference/aggregate-functions/reference/uniq)

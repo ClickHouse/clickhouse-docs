@@ -7,11 +7,7 @@ title: 'Тип данных SimpleAggregateFunction'
 doc_type: 'reference'
 ---
 
-
-
-# Тип SimpleAggregateFunction
-
-
+# Тип SimpleAggregateFunction {#simpleaggregatefunction-type}
 
 ## Описание {#description}
 
@@ -37,9 +33,7 @@ doc_type: 'reference'
 Значения агрегатных функций обычно получаются путём вызова агрегатной функции
 с комбинатором [`-SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate), добавленным к имени функции.
 
-
-
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 SimpleAggregateFunction(aggregate_function_name, types_of_arguments...)
@@ -49,7 +43,6 @@ SimpleAggregateFunction(aggregate_function_name, types_of_arguments...)
 
 * `aggregate_function_name` — имя агрегатной функции.
 * `Type` — типы аргументов агрегатной функции.
-
 
 ## Поддерживаемые функции {#supported-functions}
 
@@ -82,17 +75,13 @@ SimpleAggregateFunction(aggregate_function_name, types_of_arguments...)
 для одних и тех же агрегатных функций.
 :::
 
-
-
 ## Пример {#example}
-
-
 
 ```sql
 CREATE TABLE simple (id UInt64, val SimpleAggregateFunction(sum, Double)) ENGINE=AggregatingMergeTree ORDER BY id;
 ```
 
-## Связанные материалы
+## Связанные материалы {#related-content}
 
 * Блог: [Использование агрегатных комбинаторов в ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)    - Блог: [Использование агрегатных комбинаторов в ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
 * Тип данных [AggregateFunction](/sql-reference/data-types/aggregatefunction).

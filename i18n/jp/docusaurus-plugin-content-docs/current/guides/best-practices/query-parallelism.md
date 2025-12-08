@@ -16,16 +16,13 @@ import visual05 from '@site/static/images/guides/best-practices/query-parallelis
 
 import Image from '@theme/IdealImage';
 
-
-# ClickHouse がクエリを並列実行する仕組み
+# ClickHouse がクエリを並列実行する仕組み {#how-clickhouse-executes-a-query-in-parallel}
 
 ClickHouse は [高速に動作するよう設計されています](/concepts/why-clickhouse-is-so-fast)。利用可能なすべての CPU コアを使用し、データを複数の処理レーンに分散させることで、高い並列性でクエリを実行し、多くの場合ハードウェアを限界近くまで活用します。
  
 このガイドでは、ClickHouse におけるクエリ並列実行の仕組みと、大規模ワークロードのパフォーマンスを向上させるために、どのようにチューニングおよび監視できるかを説明します。
 
 ここでは、主要な概念を説明するために [uk_price_paid_simple](/parts) データセットに対する集計クエリを使用します。
-
-
 
 ## ステップごとに見る: ClickHouse が集計クエリをどのように並列化するか {#step-by-step-how-clickHouse-parallelizes-an-aggregation-query}
 
@@ -64,9 +61,7 @@ ClickHouse がテーブルの主キーに対するフィルタ付きの集計ク
 ClickHouse Cloud では、同様の並列性を [parallel replicas](https://clickhouse.com/docs/deployment-guides/parallel-replicas) によって実現します。これは shared-nothing クラスタにおけるシャードと同様に動作します。各 ClickHouse Cloud レプリカ（ステートレスなコンピュートノード）がデータの一部を並列に処理して最終結果に貢献し、あたかも独立したシャードのように動作します。
 :::
 
-
-
-## クエリの並列実行の監視
+## クエリの並列実行の監視 {#monitoring-query-parallelism}
 
 これらのツールを使用して、クエリが利用可能な CPU リソースを十分に活用しているかを確認し、そうでない場合の原因を診断します。
 
@@ -126,12 +121,11 @@ ClickHouse の [組み込み Web UI](/interfaces/http)（`/play` エンドポイ
 
 Note: 可視化は左から右へ読んでください。各行は、データをブロック単位でストリーミングし、フィルタリング、集約、最終処理ステージなどの変換を適用する並列処理レーンを表します。この例では、`max_threads = 4` の設定に対応する 4 本の並列レーンが確認できます。
 
-### 処理レーン間での負荷分散
+### 処理レーン間での負荷分散 {#load-balancing-across-processing-lanes}
 
 上記の物理プラン内の `Resize` オペレーターは、処理レーン間でデータブロックストリームを[再パーティションおよび再分配](/academic_overview#4-2-multi-core-parallelization)することで、各レーンの利用率を均等に保っている点に注意してください。この再バランシングは、データ範囲ごとにクエリ述語にマッチする行数が異なる場合に特に重要です。そうしないと、一部のレーンだけが過負荷になり、他のレーンがアイドル状態になる可能性があります。作業を再分配することで、速いレーンが遅いレーンを実質的に助ける形となり、クエリ全体の実行時間を最適化できます。
 
-
-## なぜ max&#95;threads が常にそのとおりには動作しないのか
+## なぜ max&#95;threads が常にそのとおりには動作しないのか {#why-max-threads-isnt-always-respected}
 
 前述のとおり、並列処理レーンの数 `n` は `max_threads` 設定によって制御されます。デフォルトでは、この設定値はサーバー上で ClickHouse が利用可能な CPU コア数と同じになります。
 
@@ -229,7 +223,6 @@ WHERE town = 'LONDON';
 
 * [Merge&#95;tree&#95;min&#95;read&#95;task&#95;size](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_read_task_size) + [merge&#95;tree&#95;min&#95;bytes&#95;per&#95;task&#95;for&#95;remote&#95;reading](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_bytes_per_task_for_remote_reading)
 
-
 :::warning これらの設定を変更しないでください
 本番環境でこれらの設定を変更することは推奨しません。ここでは、`max_threads` が必ずしも実際の並列度を決定しない理由を示すためだけに掲載しています。
 :::
@@ -260,14 +253,11 @@ MergeTreeSelect(pool: PrefetchedReadPool, algorithm: Thread) × 59
 
 これは、小さなデータセットに対するクエリでは、ClickHouse が意図的に並行度を制限することを示しています。設定の上書きはテスト目的のみにとどめ、本番環境では使用しないでください。実行の非効率化やリソース競合を招くおそれがあります。
 
-
 ## 重要なポイント {#key-takeaways}
 
 * ClickHouse は、`max_threads` に対応する処理レーンを使ってクエリを並列実行します。
 * 実際のレーン数は、処理対象として選択されたデータ量に依存します。
 * レーンの利用状況を分析するには、`EXPLAIN PIPELINE` とトレースログを使用します。
-
-
 
 ## さらなる情報の入手先  {#where-to-find-more-information}
 

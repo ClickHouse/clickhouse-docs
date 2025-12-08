@@ -6,9 +6,7 @@ title: 'covarPopStable'
 doc_type: 'reference'
 ---
 
-
-
-# covarPopStable
+# covarPopStable {#covarpopstable}
 
 母集団共分散の値を計算します：
 

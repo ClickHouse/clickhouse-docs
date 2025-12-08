@@ -17,14 +17,12 @@ doc_type: 'reference'
 此外，用户需要具备 [`displaySecretsInShowAndSelect`](grant.md/#displaysecretsinshowandselect) 权限。
 :::
 
-
-
-## SHOW CREATE TABLE | DICTIONARY | VIEW | DATABASE
+## SHOW CREATE TABLE | DICTIONARY | VIEW | DATABASE {#show-create-table--dictionary--view--database}
 
 这些语句会返回一个 `String` 类型的单列，
 其中包含用于创建指定对象的 `CREATE` 查询语句。
 
-### 语法
+### 语法 {#syntax}
 
 ```sql title="Syntax"
 SHOW [CREATE] TABLE | TEMPORARY TABLE | DICTIONARY | VIEW | DATABASE [db.]table|view [INTO OUTFILE filename] [FORMAT format]
@@ -36,12 +34,11 @@ SHOW [CREATE] TABLE | TEMPORARY TABLE | DICTIONARY | VIEW | DATABASE [db.]table|
 但不能真正用于创建表。
 :::
 
-
-## SHOW DATABASES
+## SHOW DATABASES {#show-databases}
 
 该语句会列出所有数据库。
 
-### 语法
+### 语法 {#syntax-1}
 
 ```sql title="Syntax"
 SHOW DATABASES [[NOT] LIKE | ILIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE filename] [FORMAT format]
@@ -53,7 +50,7 @@ SHOW DATABASES [[NOT] LIKE | ILIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE filena
 SELECT name FROM system.databases [WHERE name [NOT] LIKE | ILIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE filename] [FORMAT format]
 ```
 
-### 示例
+### 示例 {#examples}
 
 在此示例中，我们使用 `SHOW` 获取名称中包含字符序列 &#39;de&#39; 的数据库：
 
@@ -107,16 +104,15 @@ SHOW DATABASES LIMIT 2
 └────────────────────────────────┘
 ```
 
-### 另请参阅
+### 另请参阅 {#see-also}
 
 * [`CREATE DATABASE`](/sql-reference/statements/create/database)
 
-
-## SHOW TABLES
+## SHOW TABLES {#show-tables}
 
 `SHOW TABLES` 语句用于显示表列表。
 
-### 语法
+### 语法 {#syntax-2}
 
 ```sql title="Syntax"
 SHOW [FULL] [TEMPORARY] TABLES [{FROM | IN} <db>] [[NOT] LIKE | ILIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE <filename>] [FORMAT <format>]
@@ -130,7 +126,7 @@ SHOW [FULL] [TEMPORARY] TABLES [{FROM | IN} <db>] [[NOT] LIKE | ILIKE '<pattern>
 SELECT name FROM system.tables [WHERE name [NOT] LIKE | ILIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE <filename>] [FORMAT <format>]
 ```
 
-### 示例
+### 示例 {#examples-1}
 
 在以下示例中，我们使用 `SHOW TABLES` 语句查找所有表名中包含 &#39;user&#39; 的表：
 
@@ -185,17 +181,16 @@ SHOW TABLES FROM system LIMIT 2
 └────────────────────────────────┘
 ```
 
-### 另请参阅
+### 另请参阅 {#see-also-1}
 
 * [`Create Tables`](/sql-reference/statements/create/table)
 * [`SHOW CREATE TABLE`](#show-create-table--dictionary--view--database)
 
-
-## SHOW COLUMNS
+## SHOW COLUMNS {#show_columns}
 
 `SHOW COLUMNS` 语句用于显示列列表。
 
-### 语法
+### 语法 {#syntax-3}
 
 ```sql title="Syntax"
 SHOW [EXTENDED] [FULL] COLUMNS {FROM | IN} <table> [{FROM | IN} <db>] [{[NOT] {LIKE | ILIKE} '<pattern>' | WHERE <expr>}] [LIMIT <N>] [INTO
@@ -223,7 +218,7 @@ OUTFILE <filename>] [FORMAT <format>]
 | `comment`   | （仅在指定了 `FULL` 关键字时）该列的注释                                        | `String`           |
 | `privilege` | （仅在指定了 `FULL` 关键字时）您在该列上拥有的权限，目前不可用                             | `String`           |
 
-### Examples
+### Examples {#examples-2}
 
 在此示例中，我们将使用 `SHOW COLUMNS` 语句获取表 &#39;orders&#39; 中所有列的信息，
 从列名以 &#39;delivery&#95;&#39; 开头的列开始：
@@ -239,16 +234,15 @@ SHOW COLUMNS FROM 'orders' LIKE 'delivery_%'
 └─────────────────┴──────────┴──────┴─────────┴─────────┴───────┘
 ```
 
-### 另请参阅
+### 另请参阅 {#see-also-2}
 
 * [`system.columns`](../../operations/system-tables/columns.md)
 
-
-## SHOW DICTIONARIES
+## SHOW DICTIONARIES {#show-dictionaries}
 
 `SHOW DICTIONARIES` 语句用于显示 [字典（Dictionaries）](../../sql-reference/dictionaries/index.md) 的列表。
 
-### 语法
+### 语法 {#syntax-4}
 
 ```sql title="Syntax"
 SHOW DICTIONARIES [FROM <db>] [LIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE <filename>] [FORMAT <format>]
@@ -262,7 +256,7 @@ SHOW DICTIONARIES [FROM <db>] [LIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE <file
 SELECT name FROM system.dictionaries WHERE database = <db> [AND name LIKE <pattern>] [LIMIT <N>] [INTO OUTFILE <filename>] [FORMAT <format>]
 ```
 
-### 示例
+### 示例 {#examples-3}
 
 以下查询从 `system` 数据库的表列表中选取名称中包含 `reg` 的前两行记录。
 
@@ -277,14 +271,13 @@ SHOW DICTIONARIES FROM db LIKE '%reg%' LIMIT 2
 └──────────────┘
 ```
 
-
-## SHOW INDEX
+## SHOW INDEX {#show-index}
 
 显示表的主键索引和数据跳过索引（data skipping index）列表。
 
 该语句主要是为兼容MySQL而提供。系统表 [`system.tables`](../../operations/system-tables/tables.md)（用于主键）和 [`system.data_skipping_indices`](../../operations/system-tables/data_skipping_indices.md)（用于数据跳过索引）提供了等价的信息，但以更符合 ClickHouse 原生风格的方式呈现。
 
-### 语法
+### 语法 {#syntax-5}
 
 ```sql title="Syntax"
 SHOW [EXTENDED] {INDEX | INDEXES | INDICES | KEYS } {FROM | IN} <table> [{FROM | IN} <db>] [WHERE <expr>] [INTO OUTFILE <filename>] [FORMAT <format>]
@@ -314,14 +307,13 @@ SHOW [EXTENDED] {INDEX | INDEXES | INDICES | KEYS } {FROM | IN} <table> [{FROM |
 | `visible`       | 指示该索引是否对优化器可见，始终为 `YES`。                                         | `String`           |
 | `expression`    | 对于数据跳过索引，为索引表达式。对于主键索引：为 `''`（空字符串）。                             | `String`           |
 
-### Examples
+### Examples {#examples-4}
 
 在此示例中，我们使用 `SHOW INDEX` 语句获取表 `tbl` 中所有索引的信息。
 
 ```sql title="Query"
 SHOW INDEX FROM 'tbl'
 ```
-
 
 ```text title="Response"
 ┌─table─┬─non_unique─┬─key_name─┬─seq_in_index─┬─column_name─┬─collation─┬─cardinality─┬─sub_part─┬─packed─┬─null─┬─index_type───┬─comment─┬─index_comment─┬─visible─┬─expression─┐
@@ -334,17 +326,16 @@ SHOW INDEX FROM 'tbl'
 └───────┴────────────┴──────────┴──────────────┴─────────────┴───────────┴─────────────┴──────────┴────────┴──────┴──────────────┴─────────┴───────────────┴─────────┴────────────┘
 ```
 
-### 另请参阅
+### 另请参阅 {#see-also-3}
 
 * [`system.tables`](../../operations/system-tables/tables.md)
 * [`system.data_skipping_indices`](../../operations/system-tables/data_skipping_indices.md)
 
-
-## SHOW PROCESSLIST
+## SHOW PROCESSLIST {#show-processlist}
 
 返回 [`system.processes`](/operations/system-tables/processes) 表的内容。该表包含当前正在处理的查询列表，但不包括 `SHOW PROCESSLIST` 查询。
 
-### 语法
+### 语法 {#syntax-6}
 
 ```sql title="Syntax"
 SHOW PROCESSLIST [INTO OUTFILE filename] [FORMAT format]
@@ -361,12 +352,11 @@ $ watch -n1 "clickhouse-client --query='SHOW PROCESSLIST'"
 
 :::
 
-
-## SHOW GRANTS
+## SHOW GRANTS {#show-grants}
 
 `SHOW GRANTS` 语句用于显示某个用户所拥有的权限。
 
-### 语法
+### 语法 {#syntax-7}
 
 ```sql title="Syntax"
 SHOW GRANTS [FOR user1 [, user2 ...]] [WITH IMPLICIT] [FINAL]
@@ -378,73 +368,66 @@ SHOW GRANTS [FOR user1 [, user2 ...]] [WITH IMPLICIT] [FINAL]
 
 `FINAL` 修饰符会合并来自用户本身及其被授予角色（包括继承）的所有权限。
 
-
-## SHOW CREATE USER
+## SHOW CREATE USER {#show-create-user}
 
 `SHOW CREATE USER` 语句会显示[创建用户](../../sql-reference/statements/create/user.md)时使用的参数。
 
-### 语法
+### 语法 {#syntax-8}
 
 ```sql title="Syntax"
 SHOW CREATE USER [name1 [, name2 ...] | CURRENT_USER]
 ```
 
-
-## SHOW CREATE ROLE
+## SHOW CREATE ROLE {#show-create-role}
 
 `SHOW CREATE ROLE` 语句会显示在[创建角色](../../sql-reference/statements/create/role.md)时使用的参数。
 
-### 语法
+### 语法 {#syntax-9}
 
 ```sql title="Syntax"
 SHOW CREATE ROLE name1 [, name2 ...]
 ```
 
-
-## SHOW CREATE ROW POLICY
+## SHOW CREATE ROW POLICY {#show-create-row-policy}
 
 `SHOW CREATE ROW POLICY` 语句用于显示在[创建行策略](../../sql-reference/statements/create/row-policy.md)时使用的参数。
 
-### 语法
+### 语法 {#syntax-10}
 
 ```sql title="Syntax"
 SHOW CREATE [ROW] POLICY name ON [database1.]table1 [, [database2.]table2 ...]
 ```
 
-
-## SHOW CREATE QUOTA
+## SHOW CREATE QUOTA {#show-create-quota}
 
 `SHOW CREATE QUOTA` 语句显示[创建配额](../../sql-reference/statements/create/quota.md)时所使用的参数。
 
-### 语法
+### 语法 {#syntax-11}
 
 ```sql title="Syntax"
 SHOW CREATE QUOTA [name1 [, name2 ...] | CURRENT]
 ```
 
-
-## SHOW CREATE SETTINGS PROFILE
+## SHOW CREATE SETTINGS PROFILE {#show-create-settings-profile}
 
 `SHOW CREATE SETTINGS PROFILE` 语句会显示在[创建设置配置文件](../../sql-reference/statements/create/settings-profile.md)时使用的参数。
 
-### 语法
+### 语法 {#syntax-12}
 
 ```sql title="Syntax"
 SHOW CREATE [SETTINGS] PROFILE name1 [, name2 ...]
 ```
 
-
-## SHOW USERS
+## SHOW USERS {#show-users}
 
 `SHOW USERS` 语句返回[用户账户](../../guides/sre/user-management/index.md#user-account-management)名称的列表。
 要查看用户账户的参数，请参阅系统表 [`system.users`](/operations/system-tables/users)。
 
-### 语法
+### 语法 {#syntax-13}
 
 ```sql title="Syntax"
 显示用户
 ```
-
 
 ## SHOW ROLES {#show-roles}
 
@@ -454,47 +437,42 @@ SHOW CREATE [SETTINGS] PROFILE name1 [, name2 ...]
 
 ### 语法 {#syntax-14}
 
-
-
 ```sql title="Syntax"
 SHOW [CURRENT|ENABLED] ROLES
 ```
 
-## SHOW PROFILES
+## SHOW PROFILES {#show-profiles}
 
 `SHOW PROFILES` 语句返回[设置配置文件](../../guides/sre/user-management/index.md#settings-profiles-management)列表。
 要查看用户账户参数，请参阅系统表 [`settings_profiles`](/operations/system-tables/settings_profiles)。
 
-### 语法
+### 语法 {#syntax-15}
 
 ```sql title="Syntax"
 SHOW [SETTINGS] PROFILES
 ```
 
-
-## SHOW POLICIES
+## SHOW POLICIES {#show-policies}
 
 `SHOW POLICIES` 语句返回指定表的[行策略](../../guides/sre/user-management/index.md#row-policy-management)列表。
 要查看用户账户参数，请参阅系统表 [`system.row_policies`](/operations/system-tables/row_policies)。
 
-### 语法
+### 语法 {#syntax-16}
 
 ```sql title="Syntax"
 SHOW [ROW] POLICIES [ON [db.]table]
 ```
 
-
-## SHOW QUOTAS
+## SHOW QUOTAS {#show-quotas}
 
 `SHOW QUOTAS` 语句返回[配额](../../guides/sre/user-management/index.md#quotas-management)列表。
 要查看配额的相关参数，请参阅系统表 [`system.quotas`](/operations/system-tables/quotas)。
 
-### 语法
+### 语法 {#syntax-17}
 
 ```sql title="Syntax"
 显示配额
 ```
-
 
 ## SHOW QUOTA {#show-quota}
 
@@ -503,24 +481,21 @@ SHOW [ROW] POLICIES [ON [db.]table]
 
 ### 语法 {#syntax-18}
 
-
-
 ```sql title="Syntax"
 SHOW [CURRENT] QUOTA
 ```
 
-## SHOW ACCESS
+## SHOW ACCESS {#show-access}
 
 `SHOW ACCESS` 语句会显示所有[用户](../../guides/sre/user-management/index.md#user-account-management)、[角色](../../guides/sre/user-management/index.md#role-management)、[设置配置文件](../../guides/sre/user-management/index.md#settings-profiles-management)等，以及它们的所有[权限](../../sql-reference/statements/grant.md#privileges)。
 
-### 语法
+### 语法 {#syntax-19}
 
 ```sql title="Syntax"
 SHOW ACCESS
 ```
 
-
-## SHOW CLUSTER(S)
+## SHOW CLUSTER(S) {#show-clusters}
 
 `SHOW CLUSTER(S)` 语句返回一个集群列表。
 所有可用的集群都列在 [`system.clusters`](../../operations/system-tables/clusters.md) 表中。
@@ -529,14 +504,14 @@ SHOW ACCESS
 `SHOW CLUSTER name` 查询会显示 `system.clusters` 表中指定集群名称对应的 `cluster`、`shard_num`、`replica_num`、`host_name`、`host_address` 和 `port` 信息。
 :::
 
-### 语法
+### 语法 {#syntax-20}
 
 ```sql title="Syntax"
 SHOW CLUSTER '<集群名称>'
 SHOW CLUSTERS [[NOT] LIKE|ILIKE '<匹配模式>'] [LIMIT <N>]
 ```
 
-### 示例
+### 示例 {#examples-5}
 
 ```sql title="Query"
 SHOW CLUSTERS;
@@ -578,25 +553,24 @@ host_address:            127.0.0.1
 port:                    9000
 ```
 
-
-## SHOW SETTINGS
+## SHOW SETTINGS {#show-settings}
 
 `SHOW SETTINGS` 语句返回系统设置及其值的列表。
 它从 [`system.settings`](../../operations/system-tables/settings.md) 表中查询数据。
 
-### 语法
+### 语法 {#syntax-21}
 
 ```sql title="Syntax"
 SHOW [CHANGED] SETTINGS LIKE|ILIKE <名称>
 ```
 
-### 子句
+### 子句 {#clauses}
 
 `LIKE|ILIKE` 允许为设置名称指定匹配模式。该模式可以包含 `%` 或 `_` 等通配符。`LIKE` 子句区分大小写，`ILIKE` 子句则不区分大小写。
 
 当使用 `CHANGED` 子句时，查询只会返回已从默认值被修改的设置。
 
-### 示例
+### 示例 {#examples-6}
 
 使用 `LIKE` 子句的查询：
 
@@ -636,25 +610,23 @@ SHOW CHANGED SETTINGS ILIKE '%MEMORY%'
 └──────────────────┴────────┴─────────────┘
 ```
 
-
-## SHOW SETTING
+## SHOW SETTING {#show-setting}
 
 `SHOW SETTING` 语句返回指定设置名称对应的值。
 
-### 语法
+### 语法 {#syntax-22}
 
 ```sql title="Syntax"
 SHOW SETTING <名称>
 ```
 
-### 另请参阅
+### 另请参阅 {#see-also-4}
 
 * [`system.settings`](../../operations/system-tables/settings.md) 表
 
+## 显示文件系统缓存 {#show-filesystem-caches}
 
-## 显示文件系统缓存
-
-### 示例
+### 示例 {#examples-7}
 
 ```sql title="Query"
 显示文件系统缓存
@@ -666,32 +638,30 @@ SHOW SETTING <名称>
 └───────────┘
 ```
 
-### 另请参阅
+### 另请参阅 {#see-also-5}
 
 * [`system.settings`](../../operations/system-tables/settings.md) 表
 
-
-## SHOW ENGINES
+## SHOW ENGINES {#show-engines}
 
 `SHOW ENGINES` 语句会输出 [`system.table_engines`](../../operations/system-tables/table_engines.md) 表的内容，
 该表包含服务器所支持的表引擎的描述及其功能支持情况。
 
-### 语法
+### 语法 {#syntax-23}
 
 ```sql title="Syntax"
 SHOW ENGINES [INTO OUTFILE filename] [FORMAT format]
 ```
 
-### 另请参阅
+### 另请参阅 {#see-also-6}
 
 * [system.table&#95;engines](../../operations/system-tables/table_engines.md) 表
 
-
-## SHOW FUNCTIONS
+## SHOW FUNCTIONS {#show-functions}
 
 `SHOW FUNCTIONS` 语句会返回 [`system.functions`](../../operations/system-tables/functions.md) 表的内容。
 
-### 语法
+### 语法 {#syntax-24}
 
 ```sql title="Syntax"
 SHOW FUNCTIONS [LIKE | ILIKE '<pattern>']
@@ -699,12 +669,11 @@ SHOW FUNCTIONS [LIKE | ILIKE '<pattern>']
 
 如果指定了 `LIKE` 或 `ILIKE` 子句，查询会返回所有名称匹配给定 `<pattern>` 的系统函数列表。
 
-### 另请参阅
+### 另请参阅 {#see-also-7}
 
 * [`system.functions`](../../operations/system-tables/functions.md) 表
 
-
-## SHOW MERGES
+## SHOW MERGES {#show-merges}
 
 `SHOW MERGES` 语句返回合并任务的列表。
 所有合并任务都列在 [`system.merges`](../../operations/system-tables/merges.md) 表中：
@@ -720,13 +689,13 @@ SHOW FUNCTIONS [LIKE | ILIKE '<pattern>']
 | `size_compressed`   | 已合并数据各部分的压缩数据总大小。           |
 | `memory_usage`      | 合并过程的内存占用。                  |
 
-### 语法
+### 语法 {#syntax-25}
 
 ```sql title="Syntax"
 SHOW MERGES [[NOT] LIKE|ILIKE '<table_name_pattern>'] [LIMIT <N>]
 ```
 
-### 示例
+### 示例 {#examples-8}
 
 ```sql title="Query"
 SHOW MERGES;

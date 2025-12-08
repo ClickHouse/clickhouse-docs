@@ -8,7 +8,7 @@ title: 'Подключение Databrain к ClickHouse'
 doc_type: 'guide'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import databrain_01 from '@site/static/images/integrations/data-visualization/databrain_01.png';
 import databrain_02 from '@site/static/images/integrations/data-visualization/databrain_02.png';
 import databrain_03 from '@site/static/images/integrations/data-visualization/databrain_03.png';
@@ -18,8 +18,7 @@ import databrain_06 from '@site/static/images/integrations/data-visualization/da
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
-# Подключение Databrain к ClickHouse
+# Подключение Databrain к ClickHouse {#connecting-databrain-to-clickhouse}
 
 <CommunityMaintainedBadge/>
 
@@ -31,23 +30,19 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 В этом руководстве пошагово описано, как подключить Databrain к вашему инстансу ClickHouse.
 
-
-
 ## Предварительные требования {#pre-requisites}
 
 - База данных ClickHouse, развернутая как в вашей собственной инфраструктуре, так и в [ClickHouse Cloud](https://clickhouse.com/).
 - [Учетная запись Databrain](https://app.usedatabrain.com/users/sign-up).
 - Рабочее пространство Databrain для подключения вашего источника данных.
 
+## Шаги по подключению Databrain к ClickHouse {#steps-to-connect-databrain-to-clickhouse}
 
-
-## Шаги по подключению Databrain к ClickHouse
-
-### 1. Соберите данные для подключения
+### 1. Соберите данные для подключения {#1-gather-your-connection-details}
 
 <ConnectionDetails />
 
-### 2. Разрешите IP-адреса Databrain (если требуется)
+### 2. Разрешите IP-адреса Databrain (если требуется) {#2-allow-databrain-ip-addresses}
 
 Если в вашем экземпляре ClickHouse включена фильтрация по IP, вам нужно добавить IP-адреса Databrain в список разрешённых.
 
@@ -61,7 +56,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 Обратитесь к [документации по добавлению IP-адресов Databrain в список разрешённых](https://docs.usedatabrain.com/guides/datasources/allow-access-to-our-ip) для получения актуального списка IP-адресов, которые нужно разрешить.
 :::
 
-### 3. Добавьте ClickHouse как источник данных в Databrain
+### 3. Добавьте ClickHouse как источник данных в Databrain {#3-add-clickhouse-as-a-data-source}
 
 1. Войдите в свою учётную запись Databrain и перейдите в рабочее пространство, в котором вы хотите добавить источник данных.
 
@@ -88,7 +83,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 7. После успешного подключения нажмите **Save** или **Connect**, чтобы добавить источник данных.
 
-### 4. Настройте пользовательские права
+### 4. Настройте пользовательские права {#4-configure-user-permissions}
 
 Убедитесь, что у пользователя ClickHouse, с которым вы выполняете подключение, есть необходимые права доступа:
 
@@ -101,7 +96,6 @@ GRANT SELECT ON your_database.* TO your_databrain_user;
 ```
 
 Замените `your_databrain_user` и `your_database` на фактические имя пользователя и имя базы данных.
-
 
 ## Использование Databrain с ClickHouse {#using-databrain-with-clickhouse}
 
@@ -152,8 +146,6 @@ Databrain предлагает несколько расширенных воз�
 - **Встраиваемая аналитика**: встраивайте дашборды и метрики напрямую в ваши приложения
 - **Семантический уровень**: создавайте повторно используемые модели данных и бизнес-логику
 
-
-
 ## Устранение неполадок {#troubleshooting}
 
 ### Ошибка подключения {#connection-fails}
@@ -174,8 +166,6 @@ Databrain предлагает несколько расширенных воз�
 2. **Создавайте материализованные представления**: Для часто используемых агрегаций рассмотрите возможность создания материализованных представлений в ClickHouse
 3. **Используйте подходящие типы данных**: Убедитесь, что в схеме ClickHouse используются оптимальные типы данных
 4. **Оптимизируйте индексы**: Используйте первичные ключи и пропускающие индексы ClickHouse
-
-
 
 ## Подробнее {#learn-more}
 

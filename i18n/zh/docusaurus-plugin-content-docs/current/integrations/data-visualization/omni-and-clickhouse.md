@@ -7,26 +7,21 @@ title: 'Omni'
 doc_type: 'guide'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import omni_01 from '@site/static/images/integrations/data-visualization/omni_01.png';
 import omni_02 from '@site/static/images/integrations/data-visualization/omni_02.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
-# Omni
+# Omni {#omni}
 
 <PartnerBadge/>
 
 Omni 可以通过官方 ClickHouse 数据源连接到 ClickHouse Cloud 或本地自建部署的 ClickHouse。
 
-
-
 ## 1. 收集连接信息 {#1-gather-your-connection-details}
 
 <ConnectionDetails />
-
-
 
 ## 2. 创建 ClickHouse 数据源 {#2-create-a-clickhouse-data-source}
 

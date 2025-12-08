@@ -19,8 +19,7 @@ import dbt_06 from '@site/static/images/integrations/data-ingestion/etl-tools/db
 import dbt_07 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_07.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# ガイド
+# ガイド {#guides}
 
 <ClickHouseSupportedBadge/>
 
@@ -37,15 +36,13 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <TOCInline toc={toc}  maxHeadingLevel={2} />
 
-
-
-## セットアップ
+## セットアップ {#setup}
 
 環境を準備するには、[dbt と ClickHouse アダプターのセットアップ](/integrations/dbt) セクションの手順に従ってください。
 
 **重要: 以下は python 3.9 環境で検証されています。**
 
-### ClickHouse の準備
+### ClickHouse の準備 {#prepare-clickhouse}
 
 dbt はリレーショナル性の高いデータのモデリングに優れています。例として、次のようなリレーショナルスキーマを持つ小さな IMDB データセットを用意しています。このデータセットは [relational dataset repository](https://relational.fit.cvut.cz/dataset/IMDb) に由来します。これは dbt で一般的に使われるスキーマと比べると単純ですが、扱いやすいサンプルになっています。
 
@@ -142,7 +139,6 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/imdb/imdb_ijs
 
 これらの実行時間はネットワーク帯域によって多少異なりますが、いずれも数秒で完了するはずです。各俳優ごとのサマリーを算出し、出演本数の多い順に並べるとともに、データが正常に読み込まれていることを確認するために、次のクエリを実行してください。
 
-
 ```sql
 SELECT id,
        any(actor_name)          AS name,
@@ -186,7 +182,6 @@ LIMIT 5;
 ```
 
 後続のガイドでは、このクエリをモデル化し、ClickHouse 上で dbt のビューおよびテーブルとしてマテリアライズします。
-
 
 ## ClickHouse への接続 {#connecting-to-clickhouse}
 
@@ -279,8 +274,6 @@ LIMIT 5;
 
     レスポンスに `Connection test: [OK connection ok]` が含まれていることを確認してください。これは接続が成功していることを示しています。
 
-
-
 ## シンプルなビュー・マテリアライゼーションの作成 {#creating-a-simple-view-materialization}
 
 ビュー・マテリアライゼーションを使用する場合、モデルは ClickHouse の `CREATE VIEW AS` ステートメントを通じて、実行のたびにビューとして再構築されます。これは追加のデータストレージは必要ありませんが、テーブル・マテリアライゼーションに比べてクエリの実行は遅くなります。
@@ -355,8 +348,6 @@ LIMIT 5;
 
 4. `imdb` ディレクトリからコマンド `dbt run` を実行します。
 
-
-
 ```bash
     clickhouse-user@clickhouse:~/imdb$ dbt run
     15:05:35  Running with dbt=1.1.0
@@ -410,7 +401,6 @@ LIMIT 5;
    |356804|Bud Osborne |515       |2.0389507108727773|15    |149      |2022-04-26 15:26:56|
    +------+------------+----------+------------------+------+---------+-------------------+
    ```
-
 
 ## テーブルマテリアライゼーションの作成 {#creating-a-table-materialization}
 
@@ -483,14 +473,11 @@ LIMIT 5;
     +------+------------+----------+------------------+------+---------+-------------------+
     ```
 
-
-
 このモデルに対して、他のクエリも自由に実行してください。たとえば、5 本以上の映画に出演していて、その出演作の中で最も評価の高い作品を持つ俳優は誰かを問い合わせることができます。
 
 ```sql
 SELECT * FROM imdb_dbt.actor_summary WHERE num_movies > 5 ORDER BY avg_rank  DESC LIMIT 10;
 ```
-
 
 ## インクリメンタルマテリアライゼーションの作成 {#creating-an-incremental-materialization}
 
@@ -506,8 +493,6 @@ SELECT * FROM imdb_dbt.actor_summary WHERE num_movies > 5 ORDER BY avg_rank  DES
     2. **インクリメンタルフィルタ** - インクリメンタル実行時に、どの行が変更されたかを dbt にどのように判定させるかを指定する必要があります。これはデルタ式を指定することで実現します。通常、イベントデータではタイムスタンプを使用するため、`updated_at` タイムスタンプフィールドを利用します。このカラムは、行が挿入されるときにデフォルトで `now()` の値が設定されるため、新しい行を識別できます。加えて、新しい俳優が追加されるケースも識別する必要があります。既存のマテリアライズされたテーブルを表す `{{this}}` 変数を使用すると、式は `where id > (select max(id) from {{ this }}) or updated_at > (select max(updated_at) from {{this}})` となります。これを `{% if is_incremental() %}` 条件の中に埋め込み、テーブルが最初に作成されるときではなく、インクリメンタル実行時にのみ使用されるようにします。インクリメンタルモデルでの行のフィルタリングの詳細については、[dbt ドキュメントでのこの解説](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/configuring-incremental-models#filtering-rows-on-an-incremental-run)を参照してください。
 
     `actor_summary.sql` ファイルを次のように更新します：
-
-
 
 ```sql
     {{ config(order_by='(updated_at, id, name)', engine='MergeTree()', materialized='incremental', unique_key='id') }}
@@ -571,7 +556,6 @@ SELECT * FROM imdb_dbt.actor_summary WHERE num_movies > 5 ORDER BY avg_rank  DES
    ```sql
    SELECT * FROM imdb_dbt.actor_summary ORDER BY num_movies DESC LIMIT 5;
    ```
-
 
 ```response
     +------+------------+----------+------------------+------+---------+-------------------+
@@ -641,7 +625,6 @@ SELECT * FROM imdb_dbt.actor_summary WHERE num_movies > 5 ORDER BY avg_rank  DES
 
 6. `dbt run` を実行し、モデルが更新され、上記の結果と一致していることを確認します:
 
-
 ```response
     clickhouse-user@clickhouse:~/imdb$  dbt run
     16:12:16  Running with dbt=1.1.0
@@ -672,7 +655,7 @@ SELECT * FROM imdb_dbt.actor_summary ORDER BY num_movies DESC LIMIT 2;
 +------+-------------------+----------+------------------+------+---------+-------------------+
 ```
 
-### 内部動作
+### 内部動作 {#internals}
 
 上記の増分更新を実現するために実行されたステートメントは、ClickHouse のクエリログを参照することで確認できます。
 
@@ -694,7 +677,7 @@ AND event_time > subtractMinutes(now(), 15) ORDER BY event_time LIMIT 100;
 
 この戦略は、非常に大きなモデルでは問題が発生する可能性があります。詳細については [Limitations](/integrations/dbt#limitations) を参照してください。
 
-### Append Strategy（挿入のみモード）
+### Append Strategy（挿入のみモード） {#append-strategy-inserts-only-mode}
 
 インクリメンタルモデルにおける大規模データセットの制約を回避するために、アダプターは dbt の設定パラメータ `incremental_strategy` を使用します。これは `append` に設定できます。これを設定すると、更新された行はターゲットテーブル（`imdb_dbt.actor_summary`）に直接挿入され、一時テーブルは作成されません。
 注意: Append only モードでは、データが不変であるか、重複を許容できる必要があります。更新された行をサポートするインクリメンタルテーブルモデルが必要な場合、このモードは使用しないでください。
@@ -714,7 +697,6 @@ AND event_time > subtractMinutes(now(), 15) ORDER BY event_time LIMIT 100;
    ```
 
 3. Danny を 920 本のランダムな映画に出演させます。
-
 
 ```sql
    INSERT INTO imdb.roles
@@ -796,8 +778,7 @@ WHERE id > (SELECT max(id) FROM imdb_dbt.actor_summary) OR updated_at > (SELECT 
 
 この実行では、新しい行だけが直接 `imdb_dbt.actor_summary` テーブルに追加され、テーブルの作成は行われません。
 
-### 削除および挿入モード（実験的）
-
+### 削除および挿入モード（実験的） {#deleteinsert-mode-experimental}
 
 歴史的には、ClickHouse は非同期の [Mutations](/sql-reference/statements/alter/index.md) としてのみ、更新および削除を限定的にサポートしていました。これらは非常に I/O 負荷が高く、一般的には避けるべきです。
 
@@ -821,7 +802,7 @@ This process is shown below:
 
 <Image img={dbt_06} size="lg" alt="軽量な delete インクリメンタル" />
 
-### insert&#95;overwrite mode (experimental)
+### insert&#95;overwrite mode (experimental) {#insert_overwrite-mode-experimental}
 
 Performs the following steps:
 
@@ -839,8 +820,7 @@ This approach has the following advantages:
 
 <Image img={dbt_07} size="lg" alt="insert overwrite インクリメンタル" />
 
-
-## スナップショットの作成
+## スナップショットの作成 {#creating-a-snapshot}
 
 dbt のスナップショット機能を使用すると、更新可能なモデルに対する変更を時間の経過とともに記録できます。これにより、アナリストはモデルに対して任意時点のクエリを実行し、モデルの過去の状態を「遡って」確認できるようになります。これは、行が有効であった期間を記録する from 日付列および to 日付列を持つ [タイプ 2 のゆっくり変化する次元 (Slowly Changing Dimensions)](https://en.wikipedia.org/wiki/Slowly_changing_dimension#Type_2:_add_new_row) を使用して実現されます。この機能は ClickHouse アダプターでサポートされており、以下に示します。
 
@@ -916,7 +896,6 @@ where id > (select max(id) from {{ this }}) or updated_at > (select max(updated_
 
 3. `dbt snapshot` コマンドを実行します。
 
-
 ```response
     clickhouse-user@clickhouse:~/imdb$ dbt snapshot
     13:26:23  Running with dbt=1.1.0
@@ -982,7 +961,6 @@ snapshots データベース内に target&#95;schema パラメータで指定さ
    13:46:18  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
    ```
 
-
 clickhouse-user@clickhouse:~/imdb$ dbt snapshot
 13:46:26  dbt=1.1.0 で実行中
 13:46:26  1 個の model、0 個の tests、1 個の snapshot、0 個の analyses、181 個の macros、0 個の operations、0 個の seed files、3 個の sources、0 個の exposures、0 個の metrics を検出しました
@@ -1019,7 +997,6 @@ clickhouse-user@clickhouse:~/imdb$ dbt snapshot
 ```
 
 dbt スナップショットの詳細については、[こちら](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots)を参照してください。
-
 
 ## シードの使用 {#using-seeds}
 
@@ -1074,8 +1051,6 @@ dbt には、CSV ファイルからデータをロードする機能がありま
     |War    |WAR |
     +-------+----+=
     ```
-
-
 
 ## さらに詳しい情報 {#further-information}
 

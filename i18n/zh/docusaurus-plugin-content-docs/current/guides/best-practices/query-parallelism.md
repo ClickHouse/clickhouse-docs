@@ -16,16 +16,13 @@ import visual05 from '@site/static/images/guides/best-practices/query-parallelis
 
 import Image from '@theme/IdealImage';
 
-
-# ClickHouse 如何并行执行查询
+# ClickHouse 如何并行执行查询 {#how-clickhouse-executes-a-query-in-parallel}
 
 ClickHouse [为速度而生](/concepts/why-clickhouse-is-so-fast)。它以高度并行的方式执行查询，利用所有可用的 CPU 核心，将数据分布到各个处理通道，并且经常将硬件推至其性能极限。
  
 本指南将介绍 ClickHouse 中查询并行机制的工作原理，以及如何对其进行调优或监控，以提升大规模工作负载下的性能。
 
 我们使用 [uk_price_paid_simple](/parts) 数据集上的一个聚合查询来说明关键概念。
-
-
 
 ## 分步解析：ClickHouse 如何并行化聚合查询 {#step-by-step-how-clickHouse-parallelizes-an-aggregation-query}
 
@@ -64,9 +61,7 @@ ClickHouse [为速度而生](/concepts/why-clickhouse-is-so-fast)。它以高度
 在 ClickHouse Cloud 中，同样的并行能力是通过[并行副本](https://clickhouse.com/docs/deployment-guides/parallel-replicas)实现的，其工作方式类似于共享无关集群中的分片。每个 ClickHouse Cloud 副本（无状态计算节点）都会并行处理一部分数据，并像独立分片一样对最终结果作出贡献。
 :::
 
-
-
-## 监控查询并行度
+## 监控查询并行度 {#monitoring-query-parallelism}
 
 使用这些工具来验证你的查询是否充分利用了可用的 CPU 资源，并在没有充分利用时进行诊断。
 
@@ -126,12 +121,11 @@ ClickHouse 的[内嵌 Web UI](/interfaces/http)（在 `/play` 端点可用）可
 
 注意：请从左到右阅读该可视化。每一行代表一条并行处理通道，它以数据块为单位进行流式处理，并应用过滤、聚合以及最终处理阶段等转换。在本例中，你可以看到与 `max_threads = 4` 设置对应的四条并行通道。
 
-### 在处理通道之间进行负载均衡
+### 在处理通道之间进行负载均衡 {#load-balancing-across-processing-lanes}
 
 请注意，物理计划中的 `Resize` 算子会[重新分区并重新分发](/academic_overview#4-2-multi-core-parallelization)数据块流到各个处理通道，以保持它们的利用率均衡。当不同数据范围中满足查询谓词的行数相差较大时，这种再平衡尤为重要，否则某些通道可能会过载，而其他通道则处于空闲状态。通过重新分配工作量，较快的通道可以有效帮助较慢的通道，从而优化整体查询执行时间。
 
-
-## 为什么 max&#95;threads 并不总是被严格遵守
+## 为什么 max&#95;threads 并不总是被严格遵守 {#why-max-threads-isnt-always-respected}
 
 如上所述，`n` 条并行处理通道的数量由 `max_threads` 参数控制，其默认值等于 ClickHouse 在该服务器上可用的 CPU 内核数量：
 
@@ -229,7 +223,6 @@ WHERE town = 'LONDON';
 
 * [Merge&#95;tree&#95;min&#95;read&#95;task&#95;size](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_read_task_size) + [merge&#95;tree&#95;min&#95;bytes&#95;per&#95;task&#95;for&#95;remote&#95;reading](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_bytes_per_task_for_remote_reading)
 
-
 :::warning 不要修改这些设置
 我们不建议在生产环境中修改这些设置。这里只是为了说明为什么 `max_threads` 并不总是决定实际的并行度。
 :::
@@ -260,14 +253,11 @@ MergeTreeSelect(pool: PrefetchedReadPool, algorithm: Thread) × 59
 
 这表明，对于小数据集上的查询，ClickHouse 会有意限制并发度。仅在测试环境中临时覆盖这些设置——不要在生产环境中这样做——因为这可能导致执行效率低下或资源争用。
 
-
 ## 关键要点 {#key-takeaways}
 
 * ClickHouse 使用与 `max_threads` 绑定的处理通道来并行执行查询。
 * 实际的通道数量取决于被选中用于处理的数据量大小。
 * 使用 `EXPLAIN PIPELINE` 和跟踪日志来分析通道的使用情况。
-
-
 
 ## 在哪里可以了解更多信息  {#where-to-find-more-information}
 

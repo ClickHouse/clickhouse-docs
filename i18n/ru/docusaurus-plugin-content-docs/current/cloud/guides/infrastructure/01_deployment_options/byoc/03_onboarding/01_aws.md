@@ -16,26 +16,25 @@ import byoc_subnet_1 from '@site/static/images/cloud/reference/byoc-subnet-1.png
 import byoc_subnet_2 from '@site/static/images/cloud/reference/byoc-subnet-2.png';
 import byoc_s3_endpoint from '@site/static/images/cloud/reference/byoc-s3-endpoint.png'
 
-
-## Процесс подключения
+## Процесс подключения {#onboarding-process}
 
 Клиенты могут инициировать процесс подключения, связавшись с [нами](https://clickhouse.com/cloud/bring-your-own-cloud). Клиентам необходимо иметь отдельную учетную запись AWS и знать регион, который они будут использовать. В настоящее время пользователи могут запускать сервисы BYOC только в тех регионах, которые поддерживаются в ClickHouse Cloud.
 
-### Подготовка учетной записи AWS
+### Подготовка учетной записи AWS {#prepare-an-aws-account}
 
 Рекомендуется подготовить отдельную учетную запись AWS для размещения развертывания ClickHouse BYOC, чтобы обеспечить лучшую изоляцию. Однако возможно также использование общей учетной записи и существующего VPC. Подробности см. в разделе *Setup BYOC Infrastructure* ниже.
 
 Имея эту учетную запись и первичный адрес электронной почты администратора организации, вы можете связаться со службой поддержки ClickHouse.
 
-### Инициализация настройки BYOC
+### Инициализация настройки BYOC {#initialize-byoc-setup}
 
 Начальную настройку BYOC можно выполнить с помощью шаблона CloudFormation или модуля Terraform. Оба подхода создают одну и ту же роль IAM, которая позволяет контроллерам BYOC в ClickHouse Cloud управлять вашей инфраструктурой. Обратите внимание, что ресурсы S3, VPC и вычислительные ресурсы, необходимые для запуска ClickHouse, не включены в эту начальную настройку.
 
-#### Шаблон CloudFormation
+#### Шаблон CloudFormation {#cloudformation-template}
 
 [Шаблон BYOC CloudFormation](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/byoc.yaml)
 
-#### Модуль Terraform
+#### Модуль Terraform {#terraform-module}
 
 [Модуль BYOC Terraform](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/tf/byoc.tar.gz)
 
@@ -48,7 +47,7 @@ module "clickhouse_onboarding" {
 
 {/* TODO: Добавить скриншот для оставшейся части онбординга, как только будет реализован онбординг в режиме самообслуживания. */ }
 
-### Настройка инфраструктуры BYOC
+### Настройка инфраструктуры BYOC {#setup-byoc-infrastructure}
 
 После создания стека CloudFormation вам будет предложено настроить инфраструктуру, включая S3, VPC и кластер EKS, из облачной консоли. На этом этапе необходимо определить некоторые параметры, так как позже их изменить нельзя. В частности:
 
@@ -56,7 +55,7 @@ module "clickhouse_onboarding" {
 * **Диапазон CIDR для VPC BYOC**: по умолчанию мы используем `10.0.0.0/16` для диапазона CIDR VPC BYOC. Если вы планируете использовать пиринг VPC с другой учетной записью, убедитесь, что диапазоны CIDR не пересекаются. Выделите подходящий диапазон CIDR для BYOC, с минимальным размером `/22`, чтобы разместить необходимые нагрузки.
 * **Зоны доступности для VPC BYOC**: если вы планируете использовать пиринг VPC, согласование зон доступности между исходной учетной записью и учетной записью BYOC может помочь снизить стоимость межзонального трафика. В AWS суффиксы зон доступности (`a, b, c`) могут соответствовать разным физическим ID зон в разных учетных записях. Подробности см. в [руководстве AWS](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/use-consistent-availability-zones-in-vpcs-across-different-aws-accounts.html).
 
-#### VPC, управляемая клиентом
+#### VPC, управляемая клиентом {#customer-managed-vpc}
 
 По умолчанию ClickHouse Cloud создает выделенную VPC для лучшей изоляции в вашем развертывании BYOC. Однако вы также можете использовать существующую VPC в своей учетной записи. Это требует особой настройки и должно быть согласовано через службу поддержки ClickHouse.
 
@@ -82,7 +81,6 @@ module "clickhouse_onboarding" {
    Если в вашей VPC еще не настроен S3 Gateway Endpoint, необходимо создать его, чтобы обеспечить защищенное, приватное взаимодействие между вашей VPC и Amazon S3. Этот endpoint позволяет сервисам ClickHouse получать доступ к S3 без выхода в публичный интернет. Пожалуйста, обратитесь к скриншоту ниже для примера конфигурации.
 
 <br />
-
 
 <Image img={byoc_s3_endpoint} size="lg" alt="BYOC S3 Endpint" background='black'/>
 
@@ -169,8 +167,6 @@ module "clickhouse_onboarding" {
 
 Необязательно: после проверки работоспособности peering вы можете запросить отключение публичного балансировщика нагрузки для ClickHouse BYOC.
 
-
-
 ## Процесс обновления {#upgrade-process}
 
 Мы регулярно обновляем программное обеспечение, включая обновления версии базы данных ClickHouse, ClickHouse Operator, EKS и других компонентов.
@@ -180,8 +176,6 @@ module "clickhouse_onboarding" {
 :::note
 Окна обслуживания не распространяются на устранение уязвимостей и исправления, связанные с безопасностью. Они выполняются как внеплановые обновления; мы заблаговременно согласуем подходящее время, чтобы минимизировать влияние на эксплуатацию.
 :::
-
-
 
 ## Роли IAM для CloudFormation {#cloudformation-iam-roles}
 
@@ -216,8 +210,6 @@ module "clickhouse_onboarding" {
 Роли **K8s-control-plane** и **k8s-worker** предназначены для использования сервисами AWS EKS.
 
 Наконец, **`data-plane-mgmt`** позволяет компоненту Control Plane ClickHouse Cloud синхронизировать необходимые пользовательские ресурсы (Custom Resources), такие как `ClickHouseCluster` и Istio Virtual Service/Gateway.
-
-
 
 ## Границы сети {#network-boundaries}
 

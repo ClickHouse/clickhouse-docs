@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## ClickHouse Connect を使ったデータの挿入: 高度な利用方法 {#inserting-data-with-clickhouse-connect--advanced-usage}
 
-### InsertContexts
+### InsertContexts {#insertcontexts}
 
 ClickHouse Connect は、すべての挿入処理を `InsertContext` 内で実行します。`InsertContext` には、クライアントの `insert` メソッドに引数として渡されたすべての値が含まれます。さらに、`InsertContext` が最初に構築される際、ClickHouse Connect は、効率的な Native 形式での挿入に必要な挿入列のデータ型を取得します。複数回の挿入で同じ `InsertContext` を再利用することで、この「事前クエリ」を避けることができ、挿入処理をより高速かつ効率的に実行できます。
 
@@ -30,7 +30,6 @@ assert qr[0][0] == 4
 ```
 
 `InsertContext` には挿入処理中に更新される可変な状態が含まれるため、スレッドセーフではありません。
-
 
 ### 書き込みフォーマット {#write-formats}
 
@@ -80,7 +79,7 @@ ClickHouse Connect には、一般的なデータ形式向けの専用挿入メ�
 NumPy 配列は有効なシーケンスのシーケンスであり、メインの `insert` メソッドにおける `data` 引数として使用できるため、専用メソッドは不要です。
 :::
 
-#### Pandas DataFrame への挿入
+#### Pandas DataFrame への挿入 {#pandas-dataframe-insert}
 
 ```python
 import clickhouse_connect
@@ -97,8 +96,7 @@ df = pd.DataFrame({
 client.insert_df("users", df)
 ```
 
-
-#### PyArrow テーブルへの挿入
+#### PyArrow テーブルへの挿入 {#pyarrow-table-insert}
 
 ```python
 import clickhouse_connect
@@ -115,8 +113,7 @@ arrow_table = pa.table({
 client.insert_arrow("users", arrow_table)
 ```
 
-
-#### Arrow バックエンドを利用した DataFrame 挿入（pandas 2.x）
+#### Arrow バックエンドを利用した DataFrame 挿入（pandas 2.x） {#arrow-backed-dataframe-insert-pandas-2}
 
 ```python
 import clickhouse_connect
@@ -124,7 +121,7 @@ import pandas as pd
 
 client = clickhouse_connect.get_client()
 
-# パフォーマンス向上のためArrowベースのデータ型に変換
+# パフォーマンス向上のためArrowベースのデータ型に変換 {#convert-to-arrow-backed-dtypes-for-better-performance}
 df = pd.DataFrame({
     "id": [1, 2, 3],
     "name": ["Alice", "Bob", "Joe"],
@@ -134,12 +131,11 @@ df = pd.DataFrame({
 client.insert_df_arrow("users", df)
 ```
 
-
 ### タイムゾーン {#time-zones}
 
 Python の `datetime.datetime` オブジェクトを ClickHouse の `DateTime` または `DateTime64` カラムに挿入する際、ClickHouse Connect はタイムゾーン情報を自動的に処理します。ClickHouse はすべての DateTime 値を内部的にはタイムゾーン情報を持たない Unix タイムスタンプ（エポックからの秒または小数秒）として保存するため、タイムゾーン変換は挿入時にクライアント側で自動的に行われます。
 
-#### タイムゾーン対応の datetime オブジェクト
+#### タイムゾーン対応の datetime オブジェクト {#timezone-aware-datetime-objects}
 
 タイムゾーン情報を持つ Python の `datetime.datetime` オブジェクトを挿入すると、ClickHouse Connect は自動的に `.timestamp()` を呼び出して Unix タイムスタンプに変換し、タイムゾーンオフセットを正しく考慮します。つまり、任意のタイムゾーンの datetime オブジェクトを挿入しても、それらは UTC に対応するタイムスタンプとして正しく保存されます。
 
@@ -151,7 +147,7 @@ import pytz
 client = clickhouse_connect.get_client()
 client.command("CREATE TABLE events (event_time DateTime) ENGINE Memory")
 
-# タイムゾーンを認識するdatetimeオブジェクトを挿入
+# タイムゾーンを認識するdatetimeオブジェクトを挿入 {#insert-timezone-aware-datetime-objects}
 denver_tz = pytz.timezone('America/Denver')
 tokyo_tz = pytz.timezone('Asia/Tokyo')
 
@@ -164,10 +160,10 @@ data = [
 client.insert('events', data, column_names=['event_time'])
 results = client.query("SELECT * from events")
 print(*results.result_rows, sep="\n")
-# 出力:
-# (datetime.datetime(2023, 6, 15, 10, 30),)
-# (datetime.datetime(2023, 6, 15, 16, 30),)
-# (datetime.datetime(2023, 6, 15, 1, 30),)
+# 出力: {#output}
+# (datetime.datetime(2023, 6, 15, 10, 30),) {#datetimedatetime2023-6-15-10-30}
+# (datetime.datetime(2023, 6, 15, 16, 30),) {#datetimedatetime2023-6-15-16-30}
+# (datetime.datetime(2023, 6, 15, 1, 30),) {#datetimedatetime2023-6-15-1-30}
 ```
 
 この例では、3 つの datetime オブジェクトはそれぞれ異なるタイムゾーンを持つため、異なる時点を表します。各オブジェクトは対応する Unix タイムスタンプに正しく変換され、ClickHouse に保存されます。
@@ -176,8 +172,7 @@ print(*results.result_rows, sep="\n")
 pytz を使用する場合、タイムゾーン情報のない（naive な）datetime にタイムゾーン情報を付与するには、`localize()` メソッドを使用する必要があります。`tzinfo=` を直接 datetime コンストラクタに渡すと、過去のオフセットが誤った値になります。UTC の場合は、`tzinfo=pytz.UTC` は正しく動作します。詳細は [pytz docs](https://pythonhosted.org/pytz/#localized-times-and-date-arithmetic) を参照してください。
 :::
 
-
-#### タイムゾーン情報を持たない datetime オブジェクト
+#### タイムゾーン情報を持たない datetime オブジェクト {#timezone-naive-datetime-objects}
 
 タイムゾーン情報を持たない Python の `datetime.datetime` オブジェクト（`tzinfo` が設定されていないもの）を挿入すると、`.timestamp()` メソッドはそれをシステムのローカルタイムゾーンとして解釈します。曖昧さを避けるため、次のいずれかを推奨します。
 
@@ -192,18 +187,17 @@ import pytz
 
 client = clickhouse_connect.get_client()
 
-# 推奨: 常にタイムゾーン対応のdatetimeを使用してください
+# 推奨: 常にタイムゾーン対応のdatetimeを使用してください {#recommended-always-use-timezone-aware-datetimes}
 utc_time = datetime(2023, 6, 15, 10, 30, 0, tzinfo=pytz.UTC)
 client.insert('events', [[utc_time]], column_names=['event_time'])
 
-# 代替方法: エポックタイムスタンプへ手動で変換する
+# 代替方法: エポックタイムスタンプへ手動で変換する {#alternative-convert-to-epoch-timestamp-manually}
 naive_time = datetime(2023, 6, 15, 10, 30, 0)
 epoch_timestamp = int(naive_time.replace(tzinfo=pytz.UTC).timestamp())
 client.insert('events', [[epoch_timestamp]], column_names=['event_time'])
 ```
 
-
-#### タイムゾーンメタデータを持つ DateTime カラム
+#### タイムゾーンメタデータを持つ DateTime カラム {#datetime-columns-with-timezone-metadata}
 
 ClickHouse のカラムはタイムゾーンメタデータ付きで定義できます（例: `DateTime('America/Denver')` や `DateTime64(3, 'Asia/Tokyo')`）。このメタデータはデータの保存方法には影響せず（データは引き続き UTC タイムスタンプとして保存されます）、ClickHouse からデータをクエリする際に使用されるタイムゾーンを制御します。
 
@@ -216,24 +210,23 @@ import pytz
 
 client = clickhouse_connect.get_client()
 
-# ロサンゼルスタイムゾーンのメタデータを持つテーブルを作成
+# ロサンゼルスタイムゾーンのメタデータを持つテーブルを作成 {#create-table-with-los-angeles-timezone-metadata}
 client.command("CREATE TABLE events (event_time DateTime('America/Los_Angeles')) ENGINE Memory")
 
-# ニューヨーク時刻を挿入（EDT 午前10:30、UTC では 14:30）
+# ニューヨーク時刻を挿入（EDT 午前10:30、UTC では 14:30） {#insert-a-new-york-time-1030-am-edt-which-is-1430-utc}
 ny_tz = pytz.timezone("America/New_York")
 data = ny_tz.localize(datetime(2023, 6, 15, 10, 30, 0))
 client.insert("events", [[data]], column_names=["event_time"])
 
-# クエリで取得する際、時刻は自動的にロサンゼルスタイムゾーンに変換される
-# ニューヨーク午前10:30（UTC-4）= UTC 14:30 = ロサンゼルス午前7:30（UTC-7）
+# クエリで取得する際、時刻は自動的にロサンゼルスタイムゾーンに変換される {#when-queried-back-the-time-is-automatically-converted-to-los-angeles-timezone}
+# ニューヨーク午前10:30（UTC-4）= UTC 14:30 = ロサンゼルス午前7:30（UTC-7） {#1030-am-new-york-utc-4-1430-utc-730-am-los-angeles-utc-7}
 results = client.query("select * from events")
 print(*results.result_rows, sep="\n")
-# 出力:
-# (datetime.datetime(2023, 6, 15, 7, 30, tzinfo=<DstTzInfo 'America/Los_Angeles' PDT-1 day, 17:00:00 DST>),)
+# 出力: {#output}
+# (datetime.datetime(2023, 6, 15, 7, 30, tzinfo=<DstTzInfo 'America/Los_Angeles' PDT-1 day, 17:00:00 DST>),) {#datetimedatetime2023-6-15-7-30-tzinfodsttzinfo-americalos_angeles-pdt-1-day-170000-dst}
 ```
 
-
-## ファイルからの挿入
+## ファイルからの挿入 {#file-inserts}
 
 `clickhouse_connect.driver.tools` パッケージには、既存の ClickHouse テーブルへファイルシステムから直接データを挿入できる `insert_file` メソッドが含まれています。パース処理は ClickHouse サーバー側で行われます。`insert_file` は次のパラメータを受け取ります:
 

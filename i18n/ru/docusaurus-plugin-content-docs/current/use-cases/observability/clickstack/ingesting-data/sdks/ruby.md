@@ -25,7 +25,7 @@ _Чтобы отправлять логи в ClickStack, используйте 
 
 ## Начало работы {#getting-started}
 
-### Установите пакеты OpenTelemetry
+### Установите пакеты OpenTelemetry {#install-otel-packages}
 
 Выполните следующую команду, чтобы установить пакет OpenTelemetry.
 
@@ -33,8 +33,7 @@ _Чтобы отправлять логи в ClickStack, используйте 
 bundle add opentelemetry-sdk opentelemetry-instrumentation-all opentelemetry-exporter-otlp
 ```
 
-
-### Настройка OpenTelemetry и форматтера логов
+### Настройка OpenTelemetry и форматтера логов {#configure-otel-logger-formatter}
 
 Далее необходимо инициализировать трассировочную инструментацию OpenTelemetry
 и настроить форматтер сообщений логов для логгера Rails, чтобы логи могли
@@ -45,7 +44,7 @@ bundle add opentelemetry-sdk opentelemetry-instrumentation-all opentelemetry-exp
 следующее:
 
 ```ruby
-# config/initializers/hyperdx.rb
+# config/initializers/hyperdx.rb {#configinitializershyperdxrb}
 
 require 'opentelemetry-exporter-otlp'
 require 'opentelemetry/instrumentation/all'
@@ -75,8 +74,7 @@ Rails.application.configure do
 end
 ```
 
-
-### Настройка переменных окружения
+### Настройка переменных окружения {#configure-environment-variables}
 
 Далее вам нужно будет настроить в вашей оболочке следующие переменные окружения для отправки телеметрии в ClickStack:
 

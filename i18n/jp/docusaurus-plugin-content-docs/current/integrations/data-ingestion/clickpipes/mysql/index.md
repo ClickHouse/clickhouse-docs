@@ -17,8 +17,7 @@ import select_destination_db from '@site/static/images/integrations/data-ingesti
 import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
 import Image from '@theme/IdealImage';
 
-
-# MySQL から ClickHouse へのデータ取り込み（CDC の使用）
+# MySQL から ClickHouse へのデータ取り込み（CDC の使用） {#ingesting-data-from-mysql-to-clickhouse-using-cdc}
 
 <BetaBadge/>
 
@@ -27,8 +26,6 @@ ClickPipes を使用した MySQL から ClickHouse Cloud へのデータ取り�
 :::
 
 ClickPipes を使用して、ソースの MySQL データベースから ClickHouse Cloud にデータを取り込むことができます。ソースの MySQL データベースは、オンプレミス環境だけでなく、Amazon RDS や Google Cloud SQL などのクラウドサービス上にホストされていても構いません。
-
-
 
 ## 前提条件 {#prerequisites}
 
@@ -47,8 +44,6 @@ ClickPipes を使用して、ソースの MySQL データベースから ClickHo
 6. [汎用 MariaDB](./mysql/source/generic_maria)
 
 ソース MySQL データベースのセットアップが完了したら、ClickPipe の作成に進むことができます。
-
-
 
 ## ClickPipe を作成する {#create-your-clickpipe}
 
@@ -121,8 +116,6 @@ ClickPipes が SSH トンネルを確立できるように、SSH バスティオ
    <Image img={ch_permissions} alt="権限を確認" size="lg" border/>
 
 最後に、一般的な問題とその解決方法については、「[ClickPipes for MySQL FAQ](/integrations/clickpipes/mysql/faq)」ページを参照してください。
-
-
 
 ## 次のステップ {#whats-next}
 

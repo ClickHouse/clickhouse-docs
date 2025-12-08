@@ -41,7 +41,7 @@ JavaScript との互換性のため、Int64 および UInt64 整数はデフォ�
 
 ClickHouse は [NULL](/sql-reference/syntax.md) をサポートしており、JSON 出力では `null` として表示されます。出力で `+nan`、`-nan`、`+inf`、`-inf` の値を有効にするには、[`output_format_json_quote_denormals`](/operations/settings/settings-formats.md/#output_format_json_quote_denormals) を `1` に設定します。
 
-## 使用例
+## 使用例 {#example-usage}
 
 例：
 
@@ -98,7 +98,6 @@ SELECT SearchPhrase, count() AS c FROM test.hits GROUP BY SearchPhrase WITH TOTA
         }
 }
 ```
-
 
 ## フォーマット設定 {#format-settings}
 

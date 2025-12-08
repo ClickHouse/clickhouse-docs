@@ -6,21 +6,20 @@ title: 'system.zookeeper_connection'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
-# system.zookeeper&#95;connection
+# system.zookeeper&#95;connection {#systemzookeeper&#95;connection}
 
 <SystemTableCloud />
 
-在未配置 ZooKeeper 时，该表不存在。`system.zookeeper&#95;connection` 表显示当前到 ZooKeeper 的连接（包括辅助 ZooKeeper）。每一行表示一个连接的信息。
+如果未配置 ZooKeeper，则该表不存在。`system.zookeeper&#95;connection` 表显示当前到 ZooKeeper 的连接（包括辅助 ZooKeeper）。每一行包含一个连接的信息。
 
 列：
 
 * `name` ([String](../../sql-reference/data-types/string.md)) — ZooKeeper 集群的名称。
-* `host` ([String](../../sql-reference/data-types/string.md)) — ClickHouse 连接到的 ZooKeeper 节点的主机名/IP。
-* `port` ([UIn16](../../sql-reference/data-types/int-uint.md)) — ClickHouse 连接到的 ZooKeeper 节点的端口。
-* `index` ([Nullable(UInt8)](../../sql-reference/data-types/int-uint.md)) — ClickHouse 连接到的 ZooKeeper 节点在配置中的索引。如果未连接，此列为 NULL。
+* `host` ([String](../../sql-reference/data-types/string.md)) — ClickHouse 已连接的 ZooKeeper 节点的主机名/IP。
+* `port` ([UIn16](../../sql-reference/data-types/int-uint.md)) — ClickHouse 已连接的 ZooKeeper 节点的端口。
+* `index` ([Nullable(UInt8)](../../sql-reference/data-types/int-uint.md)) — ClickHouse 已连接的 ZooKeeper 节点的索引。该索引来源于 ZooKeeper 的配置。如果未连接，此列为 NULL。
 * `connected_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 建立连接的时间。
 * `session_uptime_elapsed_seconds` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 自连接建立以来经过的秒数。
 * `is_expired` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 当前连接是否已过期。
@@ -29,6 +28,8 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 * `xid` ([Int64](../../sql-reference/data-types/int-uint.md)) — 当前会话的 XID。
 * `enabled_feature_flags` ([Array(Enum16)](../../sql-reference/data-types/array.md)) — 已启用的功能标志。仅适用于 ClickHouse Keeper。可能的取值为 `FILTERED_LIST`、`MULTI_READ`、`CHECK_NOT_EXISTS`、`CREATE_IF_NOT_EXISTS`、`REMOVE_RECURSIVE`。
 * `availability_zone` ([String](../../sql-reference/data-types/string.md)) — 可用区。
+* `session_timeout_ms` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 会话超时时间（毫秒）。
+* `last_zxid_seen` ([Int64](../../sql-reference/data-types/int-uint.md)) — 当前会话最后看到的 zxid。
 
 示例：
 

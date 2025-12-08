@@ -13,7 +13,7 @@ keywords: ['example dataset', 'uk property', 'sample data', 'real estate', 'gett
 - 項目の説明: https://www.gov.uk/guidance/about-the-price-paid-data
 - HM Land Registry のデータを含みます © Crown copyright and database right 2021。このデータは Open Government Licence v3.0 に基づきライセンスされています。
 
-## テーブルの作成
+## テーブルの作成 {#create-table}
 
 ```sql
 CREATE DATABASE uk;
@@ -39,8 +39,7 @@ ENGINE = MergeTree
 ORDER BY (postcode1, postcode2, addr1, addr2);
 ```
 
-
-## データの前処理と挿入
+## データの前処理と挿入 {#preprocess-import-data}
 
 `url` 関数を使用してデータを ClickHouse にストリーミングします。その前に、受信データの一部を前処理する必要があります。内容は次のとおりです：
 
@@ -94,8 +93,7 @@ FROM url(
 
 データの挿入が完了するまで待ちます。ネットワーク速度にもよりますが、1～2分ほどかかります。
 
-
-## データを検証する
+## データを検証する {#validate-data}
 
 何行挿入されたかを確認して、正しく動作したことを検証します。
 
@@ -114,12 +112,11 @@ WHERE name = 'uk_price_paid'
 
 テーブルのサイズがわずか 221.43 MiB しかないことに注目してください！
 
-
 ## いくつかクエリを実行する {#run-queries}
 
 データを分析するために、いくつかクエリを実行します。
 
-### クエリ 1: 年ごとの平均価格
+### クエリ 1: 年ごとの平均価格 {#average-price}
 
 ```sql runnable
 SELECT
@@ -132,8 +129,7 @@ GROUP BY year
 ORDER BY year
 ```
 
-
-### クエリ 2. ロンドンの1年あたりの平均価格
+### クエリ 2. ロンドンの1年あたりの平均価格 {#average-price-london}
 
 ```sql runnable
 SELECT
@@ -149,8 +145,7 @@ ORDER BY year
 
 2020年に住宅価格に異変が起きました！もっとも、それはおそらく驚くことではないでしょうが……
 
-
-### クエリ3. 最も高価なエリア
+### クエリ3. 最も高価なエリア {#most-expensive-neighborhoods}
 
 ```sql runnable
 SELECT
@@ -168,7 +163,6 @@ HAVING c >= 100
 ORDER BY price DESC
 LIMIT 100
 ```
-
 
 ## プロジェクションによるクエリの高速化 {#speeding-up-queries-with-projections}
 

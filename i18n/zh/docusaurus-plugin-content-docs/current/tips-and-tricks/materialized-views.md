@@ -21,15 +21,11 @@ title: '物化视图实践经验'
 description: '物化视图的真实案例、常见问题与解决方案'
 ---
 
-
-
 # 物化视图：如何让它成为一把双刃剑 {#materialized-views-the-double-edged-sword}
 
 *本指南是从社区线下交流活动中总结出的经验的一部分。想获取更多真实场景的解决方案和洞察，可以[按具体问题浏览](./community-wisdom.md)。*
 *过多的数据分片正在拖慢你的数据库吗？请查看 [Too Many Parts](./too-many-parts.md) 社区洞察指南。*
 *进一步了解[物化视图](/materialized-views)。*
-
-
 
 ## 10 倍存储反模式 {#storage-antipattern}
 
@@ -37,9 +33,7 @@ description: '物化视图的真实案例、常见问题与解决方案'
 
 **规则：** 如果你的 `GROUP BY` 产生的行数多于它减少的行数，那你构建的是一个代价高昂的索引，而不是物化视图。
 
-
-
-## 生产环境物化视图健康状况验证
+## 生产环境物化视图健康状况验证 {#mv-health-validation}
 
 此查询可帮助你在创建物化视图之前预测，它是会压缩数据还是导致数据膨胀。请在实际的表和列上运行此查询，以避免出现类似 “190GB 爆炸” 的情况。
 
@@ -62,7 +56,6 @@ WHERE your_filter_conditions;
 -- 如果 aggregation_ratio < 10%，将获得良好的压缩效果
 ```
 
-
 ## 当物化视图开始带来问题时 {#mv-problems}
 
 **需要监控的预警信号：**
@@ -72,8 +65,6 @@ WHERE your_filter_conditions;
 - 出现此前从未发生过的写入超时
 
 你可以使用 `system.query_log` 比较添加物化视图前后的写入性能，以跟踪查询耗时趋势。
-
-
 
 ## 视频来源 {#video-sources}
 - [ClickHouse at CommonRoom - Kirill Sapchuk](https://www.youtube.com/watch?v=liTgGiTuhJE) - “过度迷恋物化视图”和“20GB→190GB 激增”案例研究的出处

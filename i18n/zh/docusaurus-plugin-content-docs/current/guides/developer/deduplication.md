@@ -11,8 +11,7 @@ doc_type: 'guide'
 import deduplication from '@site/static/images/guides/developer/de_duplication.png';
 import Image from '@theme/IdealImage';
 
-
-# 去重策略
+# 去重策略 {#deduplication-strategies}
 
 **去重**是指***删除数据集中重复行***的过程。在 OLTP 数据库中，这很容易实现，因为每一行都有唯一的主键——但代价是写入速度较慢。每次插入前都需要先查找该主键，如果已存在则需要进行替换。
 
@@ -30,8 +29,6 @@ ClickHouse 在数据写入方面针对速度进行了优化。存储文件是不
 
 </div>
 
-
-
 ## 去重选项 {#options-for-deduplication}
 
 在 ClickHouse 中，通过以下表引擎实现去重：
@@ -42,9 +39,7 @@ ClickHouse 在数据写入方面针对速度进行了优化。存储文件是不
 
 下面我们将演示这两种技术的使用方法。欲了解更多详情，请查看我们免费的按需培训模块 [Deleting and Updating Data 培训模块](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs)。
 
-
-
-## 使用 ReplacingMergeTree 实现 Upsert
+## 使用 ReplacingMergeTree 实现 Upsert {#using-replacingmergetree-for-upserts}
 
 来看一个简单示例：一张表中包含 Hacker News 的评论，并有一个 `views` 列表示某条评论被查看的次数。假设在文章发布时我们插入一条新记录，并且之后如果浏览量增加，每天为该评论插入一条包含最新总浏览次数的新记录来完成 upsert 操作：
 
@@ -116,7 +111,7 @@ FINAL
 用于查找某一列的最新值。
 :::
 
-### 避免使用 FINAL
+### 避免使用 FINAL {#avoiding-final}
 
 我们再次更新这两条唯一记录的 `views` 列：
 
@@ -132,7 +127,6 @@ INSERT INTO hackernews_rmt VALUES
 SELECT *
 FROM hackernews_rmt
 ```
-
 
 ```response
 ┌─id─┬─author──┬─comment─────────┬─views─┐
@@ -172,8 +166,7 @@ GROUP BY (id, author, comment)
 
 我们的[删除和更新数据培训模块](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse\&utm_medium=docs)在此示例基础上进行了扩展，其中包括如何将 `version` 列与 `ReplacingMergeTree` 一起使用。
 
-
-## 使用 CollapsingMergeTree 处理频繁的列更新
+## 使用 CollapsingMergeTree 处理频繁的列更新 {#using-collapsingmergetree-for-updating-columns-frequently}
 
 更新一列意味着删除一条现有行并用新值替换它。正如前文所示，这类变更在 ClickHouse 中是*最终才生效的*——会在合并过程中完成。如果你需要更新大量行，与其使用 `ALTER TABLE..UPDATE`，往往更高效的做法是直接将新数据与现有数据一并插入。我们可以添加一列，用于标记数据是过期的还是最新的，而且其实已经有一个表引擎很好地实现了这种行为，特别是它还能自动为你删除过期数据。下面来看它是如何工作的。
 
@@ -258,8 +251,7 @@ INSERT INTO hackernews_views(id, author, sign) VALUES
 
 :::
 
-
-## 来自多个线程的实时更新
+## 来自多个线程的实时更新 {#real-time-updates-from-multiple-threads}
 
 在 `CollapsingMergeTree` 表中，行通过一个符号列（sign 列）彼此抵消，一行的状态由最后插入的那一行决定。但是，如果你从不同的线程插入行，而且这些行可能乱序插入，就会出现问题。在这种情况下，使用“最后”一行的方法是行不通的。
 
@@ -348,7 +340,6 @@ FROM hackernews_views_vcmt
 ```
 
 当你希望在从多个客户端和/或线程插入数据时实现去重时，`VersionedCollapsingMergeTree` 表非常实用。
-
 
 ## 为什么我的行没有被去重？ {#why-arent-my-rows-being-deduplicated}
 

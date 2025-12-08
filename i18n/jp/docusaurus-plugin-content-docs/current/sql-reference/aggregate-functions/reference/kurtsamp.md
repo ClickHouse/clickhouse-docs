@@ -6,7 +6,7 @@ title: 'kurtSamp'
 doc_type: 'reference'
 ---
 
-# kurtSamp
+# kurtSamp {#kurtsamp}
 
 シーケンスの[標本尖度](https://en.wikipedia.org/wiki/Kurtosis)を計算します。
 

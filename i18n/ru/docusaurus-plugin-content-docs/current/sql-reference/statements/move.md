@@ -7,7 +7,7 @@ title: 'Оператор MOVE для объектов доступа'
 doc_type: 'reference'
 ---
 
-# Оператор MOVE access entity
+# Оператор MOVE access entity {#move-access-entity-statement}
 
 Этот оператор позволяет переместить объект доступа из одного хранилища объектов доступа в другое.
 

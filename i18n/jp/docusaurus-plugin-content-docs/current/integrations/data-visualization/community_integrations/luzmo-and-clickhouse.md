@@ -11,19 +11,16 @@ integration:
   - category: 'data_visualization'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import luzmo_01 from '@site/static/images/integrations/data-visualization/luzmo_01.png';
 import luzmo_02 from '@site/static/images/integrations/data-visualization/luzmo_02.png';
 import luzmo_03 from '@site/static/images/integrations/data-visualization/luzmo_03.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
-# Luzmo と ClickHouse の連携
+# Luzmo と ClickHouse の連携 {#integrating-luzmo-with-clickhouse}
 
 <CommunityMaintainedBadge/>
-
-
 
 ## 1. ClickHouse 接続をセットアップする {#1-setup-a-clickhouse-connection}
 
@@ -42,8 +39,6 @@ ClickHouse への接続を行うには、**Connections ページ**に移動し�
 
 API 経由で[ClickHouse への接続を作成する](https://developer.luzmo.com/api/createAccount?exampleSection=AccountCreateClickhouseRequestBody)方法については、開発者ドキュメントのサンプルを参照してください。
 
-
-
 ## 2. データセットを追加する {#2-add-datasets}
 
 ClickHouse への接続が完了したら、[こちら](https://academy.luzmo.com/article/ldx3iltg)で説明されている手順に従ってデータセットを追加できます。ClickHouse 上で利用可能な 1 つまたは複数のデータセットを選択し、それらを Luzmo 内で[リンク](https://academy.luzmo.com/article/gkrx48x5)して、ダッシュボード上で一緒に利用できるようにします。[分析向けのデータ準備](https://academy.luzmo.com/article/u492qov0)に関するこの記事も必ず参照してください。
@@ -53,8 +48,6 @@ API を使用してデータセットを追加する方法については、[開
 これで、データセットを使用して魅力的な埋め込みダッシュボードを構築したり、クライアントからの質問に回答できる AI データアナリスト（[Luzmo IQ](https://luzmo.com/iq)）の基盤として活用したりできます。
 
 <Image img={luzmo_03} size="md" alt="ClickHouse のデータから複数の可視化を表示している Luzmo のダッシュボード例" border />
-
-
 
 ## 使用上の注意事項 {#usage-notes}
 

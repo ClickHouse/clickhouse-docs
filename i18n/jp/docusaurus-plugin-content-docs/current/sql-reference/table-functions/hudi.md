@@ -7,20 +7,15 @@ title: 'hudi'
 doc_type: 'reference'
 ---
 
-
-
-# hudi テーブル関数
+# hudi テーブル関数 {#hudi-table-function}
 
 Amazon S3 上の Apache [Hudi](https://hudi.apache.org/) テーブルに対して、読み取り専用のテーブルライクなインターフェースを提供します。
 
-
-
-## 構文
+## 構文 {#syntax}
 
 ```sql
 hudi(url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])
 ```
-
 
 ## 引数 {#arguments}
 
@@ -32,13 +27,9 @@ hudi(url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,co
 | `structure`                                  | テーブルの構造。形式は `'column1_name column1_type, column2_name column2_type, ...'`。                                                                                                                                                                                                                                                                                         |
 | `compression`                                | 省略可能なパラメータ。指定可能な値は `none`, `gzip/gz`, `brotli/br`, `xz/LZMA`, `zstd/zst` です。既定では、圧縮形式はファイル拡張子によって自動検出されます。                                                                                                                                                                                                                   |
 
-
-
 ## 返される値 {#returned_value}
 
 S3 上の指定した Hudi テーブルのデータを読み取るための、指定した構造を持つテーブル。
-
-
 
 ## 仮想カラム {#virtual-columns}
 
@@ -47,8 +38,6 @@ S3 上の指定した Hudi テーブルのデータを読み取るための、�
 - `_size` — ファイルサイズ（バイト単位）。型: `Nullable(UInt64)`。ファイルサイズが不明な場合、値は `NULL` です。
 - `_time` — ファイルの最終更新日時。型: `Nullable(DateTime)`。時刻が不明な場合、値は `NULL` です。
 - `_etag` — ファイルの ETag。型: `LowCardinality(String)`。ETag が不明な場合、値は `NULL` です。
-
-
 
 ## 関連項目 {#related}
 

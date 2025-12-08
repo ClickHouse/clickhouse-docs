@@ -9,9 +9,7 @@ doc_type: 'reference'
 
 `CHECK GRANT` 查询用于检查当前用户或角色是否已被授予特定权限。
 
-
-
-## 语法
+## 语法 {#syntax}
 
 查询的基本语法如下：
 
@@ -21,8 +19,7 @@ CHECK GRANT privilege[(column_name [,...])] [,...] ON {db.table[*]|db[*].*|*.*|t
 
 * `privilege` — 权限的类型。
 
-
-## 示例
+## 示例 {#examples}
 
 如果用户曾被授予该权限，`check_grant` 的返回值为 `1`。否则，`check_grant` 的返回值为 `0`。
 
@@ -49,7 +46,6 @@ CHECK GRANT SELECT(col2) ON table_2;
 │      0 │
 └────────┘
 ```
-
 
 ## 通配符 {#wildcard}
 在授予权限时，可以使用星号（`*`）来代替表名或数据库名。有关通配符规则，请参阅 [WILDCARD GRANTS](../../sql-reference/statements/grant.md#wildcard-grants)。

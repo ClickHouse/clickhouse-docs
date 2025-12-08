@@ -9,16 +9,13 @@ doc_type: 'reference'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
 # Табличная функция paimon {#paimon-table-function}
 
 <ExperimentalBadge />
 
 Предоставляет интерфейс только для чтения к таблицам Apache [Paimon](https://paimon.apache.org/), хранящимся в Amazon S3, Azure, HDFS или локально, аналогичный работе с обычной таблицей.
 
-
-
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 paimon(url [,access_key_id, secret_access_key] [,format] [,structure] [,compression])
@@ -32,7 +29,6 @@ paimonHDFS(path_to_table, [,format] [,compression_method])
 paimonLocal(path_to_table, [,format] [,compression_method])
 ```
 
-
 ## Аргументы {#arguments}
 
 Описание аргументов совпадает с описанием аргументов в табличных функциях `s3`, `azureBlobStorage`, `HDFS` и `file` соответственно.
@@ -42,9 +38,7 @@ paimonLocal(path_to_table, [,format] [,compression_method])
 
 Таблица с заданной структурой для чтения данных из указанной таблицы Paimon.
 
-
-
-## Определение именованной коллекции
+## Определение именованной коллекции {#defining-a-named-collection}
 
 Ниже приведён пример настройки именованной коллекции для хранения URL-адреса и учётных данных:
 
@@ -67,12 +61,9 @@ SELECT * FROM paimonS3(paimon_conf, filename = 'test_table')
 DESCRIBE paimonS3(paimon_conf, filename = 'test_table')
 ```
 
-
 ## Псевдонимы {#aliases}
 
 Табличная функция `paimon` теперь является псевдонимом для `paimonS3`.
-
-
 
 ## Виртуальные столбцы {#virtual-columns}
 
@@ -81,8 +72,6 @@ DESCRIBE paimonS3(paimon_conf, filename = 'test_table')
 - `_size` — размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер файла неизвестен, значение равно `NULL`.
 - `_time` — время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение равно `NULL`.
 - `_etag` — ETag файла. Тип: `LowCardinality(String)`. Если ETag неизвестен, значение равно `NULL`.
-
-
 
 ## Поддерживаемые типы данных {#data-types-supported}
 
@@ -106,8 +95,6 @@ DESCRIBE paimonS3(paimon_conf, filename = 'test_table')
 |ARRAY     |Array      |
 |MAP     |Map    |
 
-
-
 ## Поддерживаемые партиции {#partition-supported}
 Типы данных, поддерживаемые в ключах партиций Paimon:
 * `CHAR`
@@ -124,8 +111,6 @@ DESCRIBE paimonS3(paimon_conf, filename = 'test_table')
 * `BIGINT`
 * `FLOAT`
 * `DOUBLE`
-
-
 
 ## См. также {#see-also}
 

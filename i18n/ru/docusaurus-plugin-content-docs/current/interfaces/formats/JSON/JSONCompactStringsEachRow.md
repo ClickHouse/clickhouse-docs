@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## Пример использования {#example-usage}
 
-### Вставка данных
+### Вставка данных {#inserting-data}
 
 Используйте JSON‑файл со следующими данными под названием `football.json`:
 
@@ -49,8 +49,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactStringsEachRow;
 ```
 
-
-### Чтение данных
+### Чтение данных {#reading-data}
 
 Считывайте данные в формате `JSONCompactStringsEachRow`:
 
@@ -81,6 +80,5 @@ FORMAT JSONCompactStringsEachRow
 ["2022-05-07", "2021", "Stevenage Borough", "Salford City", "4", "2"]
 ["2022-05-07", "2021", "Walsall", "Swindon Town", "0", "3"]
 ```
-
 
 ## Настройки формата {#format-settings}

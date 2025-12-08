@@ -7,9 +7,7 @@ title: '查询权限'
 doc_type: 'reference'
 ---
 
-
-
-# 查询权限
+# 查询权限 {#permissions-for-queries}
 
 ClickHouse 中的查询可以分为几种类型：
 
@@ -20,8 +18,6 @@ ClickHouse 中的查询可以分为几种类型：
 5.  `KILL QUERY`。
 
 以下设置用于按查询类型控制用户权限：
-
-
 
 ## readonly {#readonly}
 限制对读取数据、写入数据以及修改设置类查询的权限。
@@ -53,8 +49,6 @@ ClickHouse 中的查询可以分为几种类型：
 
 设置 `readonly = 1` 会禁止用户更改设置。也可以只禁止用户更改特定设置；同样，也可以在 `readonly = 1` 的限制下，仅允许更改特定设置。详情参见[设置约束](../../operations/settings/constraints-on-settings.md)。
 :::
-
-
 
 ## allow_ddl {#allow_ddl}
 

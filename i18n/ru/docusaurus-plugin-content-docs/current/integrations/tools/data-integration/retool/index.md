@@ -10,7 +10,7 @@ integration:
   - category: 'data_integration'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import retool_01 from '@site/static/images/integrations/tools/data-integration/retool/retool_01.png';
 import retool_02 from '@site/static/images/integrations/tools/data-integration/retool/retool_02.png';
@@ -19,17 +19,12 @@ import retool_04 from '@site/static/images/integrations/tools/data-integration/r
 import retool_05 from '@site/static/images/integrations/tools/data-integration/retool/retool_05.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
-# Подключение Retool к ClickHouse
+# Подключение Retool к ClickHouse {#connecting-retool-to-clickhouse}
 
 <PartnerBadge/>
 
-
-
 ## 1. Соберите сведения о подключении {#1-gather-your-connection-details}
 <ConnectionDetails />
-
-
 
 ## 2. Создайте ресурс ClickHouse {#2-create-a-clickhouse-resource}
 

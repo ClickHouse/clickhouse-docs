@@ -30,7 +30,6 @@ ALTER USER [IF EXISTS] name1 [RENAME TO new_name |, name2 [,...]]
 
 `ALTER USER` を使用するには、[ALTER USER](../../../sql-reference/statements/grant.md#access-management) 権限が必要です。
 
-
 ## GRANTEES 句 {#grantees-clause}
 
 このユーザー自身が `GRANT OPTION` 付きで必要なすべてのアクセス権を付与されていることを条件として、このユーザーから [権限](../../../sql-reference/statements/grant.md#privileges) を受け取ることが許可されているユーザーまたはロールを指定します。`GRANTEES` 句のオプションは次のとおりです:
@@ -44,9 +43,7 @@ ALTER USER [IF EXISTS] name1 [RENAME TO new_name |, name2 [,...]]
 
 詳しくは [GRANT の構文](../../../sql-reference/statements/grant.md#granting-privilege-syntax) を参照してください。
 
-
-
-## 例
+## 例 {#examples}
 
 割り当てられたロールをデフォルトに設定する：
 
@@ -105,7 +102,6 @@ ALTER USER user1 IDENTIFIED WITH plaintext_password by '1', bcrypt_password by '
 ```sql
 ALTER USER user1 RESET AUTHENTICATION METHODS TO NEW
 ```
-
 
 ## VALID UNTIL 句 {#valid-until-clause}
 

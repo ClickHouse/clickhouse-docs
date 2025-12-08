@@ -1,6 +1,4 @@
-# Установка ClickHouse на Windows с помощью WSL
-
-
+# Установка ClickHouse на Windows с помощью WSL {#install-clickhouse-on-windows-with-wsl}
 
 ## Требования {#requirements}
 
@@ -10,8 +8,7 @@
 
 <VerticalStepper>
 
-
-## Установка WSL
+## Установка WSL {#install-wsl}
 
 Откройте Windows PowerShell от имени администратора и выполните следующую команду:
 
@@ -25,8 +22,7 @@ wsl --install
 Добро пожаловать в Ubuntu 24.04.1 LTS (GNU/Linux 5.15.133.1-microsoft-WSL2 x86_64)
 ```
 
-
-## Установите ClickHouse с помощью скрипта curl
+## Установите ClickHouse с помощью скрипта curl {#install-clickhouse-via-script-using-curl}
 
 Выполните следующую команду, чтобы установить ClickHouse с помощью скрипта curl:
 
@@ -41,8 +37,7 @@ curl https://clickhouse.com/ | sh
   ./clickhouse
 ```
 
-
-## Запуск clickhouse-local
+## Запуск clickhouse-local {#start-clickhouse-local}
 
 `clickhouse-local` позволяет обрабатывать локальные и удалённые файлы с
 использованием мощного SQL-синтаксиса ClickHouse и без необходимости настройки. Данные таблиц
@@ -55,8 +50,7 @@ curl https://clickhouse.com/ | sh
 ./clickhouse
 ```
 
-
-## Запуск clickhouse-server
+## Запуск clickhouse-server {#start-clickhouse-server}
 
 Если вы хотите обеспечить сохранность данных, вам нужно запустить `clickhouse-server`. Вы можете
 запустить сервер ClickHouse с помощью следующей команды:
@@ -64,7 +58,6 @@ curl https://clickhouse.com/ | sh
 ```bash
 ./clickhouse server
 ```
-
 
 ## Start clickhouse-client {#start-clickhouse-client}
 

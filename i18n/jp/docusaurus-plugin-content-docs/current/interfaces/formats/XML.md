@@ -13,8 +13,6 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-
-
 ## 説明 {#description}
 
 `XML` 形式は出力専用であり、入力のパースには使用できません。
@@ -26,9 +24,7 @@ JSON と同様に、不正な UTF-8 シーケンスは置換文字 `�` に置�
 
 配列は `<array><elem>Hello</elem><elem>World</elem>...</array>` のように、タプルは `<tuple><elem>Hello</elem><elem>World</elem>...</tuple>` のように出力されます。
 
-
-
-## 使用例
+## 使用例 {#example-usage}
 
 例：
 
@@ -94,9 +90,6 @@ JSON と同様に、不正な UTF-8 シーケンスは置換文字 `�` に置�
 </result>
 ```
 
-
 ## フォーマット設定 {#format-settings}
-
-
 
 ## XML {#xml}

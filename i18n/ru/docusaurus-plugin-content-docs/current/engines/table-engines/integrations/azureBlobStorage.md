@@ -7,15 +7,11 @@ title: 'Табличный движок AzureBlobStorage'
 doc_type: 'reference'
 ---
 
-
-
-# Табличный движок AzureBlobStorage
+# Табличный движок AzureBlobStorage {#azureblobstorage-table-engine}
 
 Этот движок предоставляет интеграцию с экосистемой [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs).
 
-
-
-## Создание таблицы
+## Создание таблицы {#create-table}
 
 ```sql
 CREATE TABLE azure_blob_storage_table (name String, value UInt32)
@@ -24,7 +20,7 @@ CREATE TABLE azure_blob_storage_table (name String, value UInt32)
     [SETTINGS ...]
 ```
 
-### Параметры движка
+### Параметры движка {#engine-parameters}
 
 * `endpoint` — URL конечной точки AzureBlobStorage с контейнером и префиксом. Дополнительно может содержать `account_name`, если это требуется используемому методу аутентификации (`http://azurite1:{port}/[account_name]{container_name}/{data_prefix}`), либо эти параметры могут быть переданы отдельно с помощью `storage_account_url`, `account_name` и `container`. Для указания префикса должен использоваться `endpoint`.
 * `endpoint_contains_account_name` — флаг, указывающий, содержит ли `endpoint` `account_name`, так как это требуется только для некоторых методов аутентификации. (По умолчанию: `true`)
@@ -60,7 +56,6 @@ SELECT * FROM test_table;
 └──────┴───────┘
 ```
 
-
 ## Виртуальные столбцы {#virtual-columns}
 
 - `_path` — Путь к файлу. Тип: `LowCardinality(String)`.
@@ -68,9 +63,7 @@ SELECT * FROM test_table;
 - `_size` — Размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер неизвестен, значение равно `NULL`.
 - `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение равно `NULL`.
 
-
-
-## Аутентификация
+## Аутентификация {#authentication}
 
 В настоящее время есть три способа аутентификации:
 
@@ -78,7 +71,7 @@ SELECT * FROM test_table;
 * `SAS Token` — может использоваться при указании `endpoint`, `connection_string` или `storage_account_url`. Определяется по наличию символа &#39;?&#39; в URL. См. раздел [azureBlobStorage](/sql-reference/table-functions/azureBlobStorage#using-shared-access-signatures-sas-sas-tokens) с примерами.
 * `Workload Identity` — может использоваться при указании `endpoint` или `storage_account_url`. Если параметр `use_workload_identity` установлен в конфигурации, для аутентификации используется механизм [workload identity](https://github.com/Azure/azure-sdk-for-cpp/tree/main/sdk/identity/azure-identity#authenticate-azure-hosted-applications).
 
-### Кэш данных
+### Кэш данных {#data-cache}
 
 Движок таблиц `Azure` поддерживает кэширование данных на локальном диске.
 Параметры конфигурации и использование кэша файловой системы описаны в этом [разделе](/operations/storing-data.md/#using-local-cache).
@@ -107,13 +100,13 @@ SETTINGS filesystem_cache_name = 'cache_for_azure', enable_filesystem_cache = 1;
 
 2. повторно используйте конфигурацию кеша (и, соответственно, хранилище кеша) из секции `storage_configuration` ClickHouse, [описанной здесь](/operations/storing-data.md/#using-local-cache)
 
-### PARTITION BY
+### PARTITION BY {#partition-by}
 
 `PARTITION BY` — необязательный параметр. В большинстве случаев ключ партиционирования не нужен, а когда он все же требуется, обычно нет необходимости делать его более детализированным, чем по месяцам. Партиционирование не ускоряет выполнение запросов (в отличие от выражения ORDER BY). Не следует использовать слишком детализированное партиционирование. Не партиционируйте данные по идентификаторам или именам клиентов (вместо этого сделайте идентификатор или имя клиента первым столбцом в выражении ORDER BY).
 
 Для партиционирования по месяцам используйте выражение `toYYYYMM(date_column)`, где `date_column` — это столбец с датой типа [Date](/sql-reference/data-types/date.md). Имена партиций в этом случае имеют формат `"YYYYMM"`.
 
-#### Стратегия партиционирования
+#### Стратегия партиционирования {#partition-strategy}
 
 `WILDCARD` (по умолчанию): заменяет подстановочный шаблон `{_partition_id}` в пути к файлу фактическим ключом партиции. Чтение не поддерживается.
 
@@ -131,7 +124,6 @@ arthur :) insert into azure_table values (2020, 'Russia', 1), (2021, 'Brazil', 2
 arthur :) select _path, * from azure_table;
 ```
 
-
 ┌─&#95;path──────────────────────────────────────────────────────────────────────┬─year─┬─country─┬─counter─┐
 
 1. │ cont/hive&#95;partitioned/year=2020/country=Russia/7351305360873664512.parquet │ 2020 │ Russia  │       1 │
@@ -140,7 +132,6 @@ arthur :) select _path, * from azure_table;
 
 ```
 ```
-
 
 ## См. также {#see-also}
 

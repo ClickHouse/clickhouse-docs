@@ -16,7 +16,6 @@ import finish_import from '@site/static/images/clickstack/postgres/import-dashbo
 import example_dashboard from '@site/static/images/clickstack/postgres/postgres-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # ClickStack を使用した PostgreSQL メトリクスの監視 {#postgres-metrics-clickstack}
 
 :::note[TL;DR]
@@ -128,33 +127,33 @@ docker run -d \
 
 </VerticalStepper>
 
-## デモデータセット {#demo-dataset}
+## デモ用データセット {#demo-dataset}
 
-本番システムを構成する前に PostgreSQL メトリクス連携をテストしたいユーザー向けに、現実的な PostgreSQL メトリクスパターンを含むあらかじめ生成されたデータセットを提供します。
+本番環境を設定する前に PostgreSQL メトリクス連携をテストしたいユーザー向けに、実運用に近い PostgreSQL メトリクスパターンを含む、あらかじめ生成されたデータセットを提供します。
 
 :::note[データベースレベルのメトリクスのみ]
-このデモデータセットには、サンプルデータを軽量に保つためにデータベースレベルのメトリクスのみが含まれます。実際の PostgreSQL データベースを監視する場合、テーブルおよびインデックスのメトリクスは自動的に収集されます。
+このデモ用データセットには、サンプルデータを軽量に保つため、データベースレベルのメトリクスのみが含まれます。実際の PostgreSQL データベースを監視する際には、テーブルおよび索引のメトリクスは自動的に収集されます。
 :::
 
 <VerticalStepper headerLevel="h4">
 
 #### サンプルメトリクスデータセットをダウンロードする {#download-sample}
 
-あらかじめ生成されたメトリクスファイルをダウンロードします（現実的なパターンを持つ 24 時間分の PostgreSQL メトリクス）:
+あらかじめ生成されたメトリクスファイル（実運用に近いパターンを持つ 24 時間分の PostgreSQL メトリクス）をダウンロードします:
 
 ```bash
-# ゲージメトリクスをダウンロード（接続数、データベースサイズ）
+# ゲージメトリクス（接続数、データベースサイズ）をダウンロード
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/postgres/postgres-metrics-gauge.csv
 
-# サムメトリクスをダウンロード（コミット、ロールバック、各種操作）
+# 積算メトリクス（コミット、ロールバック、各種操作）をダウンロード
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/postgres/postgres-metrics-sum.csv
 ```
 
-このデータセットには、次のような現実的なパターンが含まれます:
-- **朝の接続スパイク (08:00)** - ログインが集中
-- **キャッシュ性能の問題 (11:00)** - `Blocks_read` のスパイク
+このデータセットには、以下のような実運用に近いパターンが含まれます:
+- **午前の接続スパイク (08:00)** - ログインの集中
+- **キャッシュ性能の問題 (11:00)** - Blocks_read のスパイク
 - **アプリケーションのバグ (14:00-14:30)** - ロールバック率が 15% までスパイク
-- **デッドロック発生 (14:15, 16:30)** - まれなデッドロック
+- **デッドロック発生 (14:15, 16:30)** - 稀なデッドロック
 
 #### ClickStack を起動する {#start-clickstack}
 
@@ -163,33 +162,33 @@ ClickStack インスタンスを起動します:
 ```bash
 docker run -d --name clickstack-postgres-demo \
   -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
-ClickStack が完全に起動するまで、約 30 秒待ちます。
+ClickStack が完全に起動するまで、約 30 秒待機してください。
 
 #### メトリクスを ClickStack に読み込む {#load-metrics}
 
-メトリクスを直接 ClickHouse に読み込みます:
+メトリクスを ClickHouse に直接読み込みます:
 
 ```bash
-# ゲージメトリクスを読み込む
+# ゲージメトリクスをロード
 cat postgres-metrics-gauge.csv | docker exec -i clickstack-postgres-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_gauge FORMAT CSVWithNames"
 
-# サムメトリクスを読み込む
+# 積算メトリクスをロード
 cat postgres-metrics-sum.csv | docker exec -i clickstack-postgres-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_sum FORMAT CSVWithNames"
 ```
 
-#### HyperDX でメトリクスを検証する {#verify-metrics-demo}
+#### HyperDX でメトリクスを確認する {#verify-metrics-demo}
 
-読み込み後、メトリクスを確認する最も簡単な方法は、あらかじめ用意されたダッシュボードを使用することです。
+読み込みが完了したら、メトリクスを確認する最も手軽な方法は、あらかじめ用意されたダッシュボードを利用することです。
 
-[Dashboards and visualization](#dashboards) セクションに進み、ダッシュボードをインポートして、多数の PostgreSQL メトリクスを一度に表示します。
+[Dashboards and visualization](#dashboards) セクションに進み、ダッシュボードをインポートして、多数の PostgreSQL メトリクスをまとめて表示します。
 
 :::note[タイムゾーンの表示]
-HyperDX はタイムスタンプをブラウザのローカルタイムゾーンで表示します。デモデータは **2025-11-10 00:00:00 - 2025-11-11 00:00:00 (UTC)** の期間をカバーしています。場所にかかわらずデモメトリクスを確実に表示するために、タイムレンジを **2025-11-09 00:00:00 - 2025-11-12 00:00:00** に設定してください。メトリクスが表示されたら、より見やすくするために期間を 24 時間に絞り込むことができます。
+HyperDX はタイムスタンプをブラウザのローカルタイムゾーンで表示します。デモデータは **2025-11-10 00:00:00 - 2025-11-11 00:00:00 (UTC)** の期間をカバーしています。場所に依存せずデモメトリクスを必ず表示できるよう、タイムレンジを **2025-11-09 00:00:00 - 2025-11-12 00:00:00** に設定してください。メトリクスが確認できたら、可視化を見やすくするためにレンジを 24 時間に絞り込むことができます。
 :::
 
 </VerticalStepper>
@@ -227,7 +226,7 @@ ClickStack で PostgreSQL の監視を開始するにあたって、PostgreSQL �
 
 ## トラブルシューティング {#troubleshooting}
 
-### カスタム設定が読み込まれない
+### カスタム設定が読み込まれない {#troubleshooting-not-loading}
 
 環境変数が設定されていることを確認してください：
 
@@ -241,8 +240,7 @@ docker exec <コンテナ名> printenv CUSTOM_OTELCOL_CONFIG_FILE
 docker exec <コンテナ名> cat /etc/otelcol-contrib/custom.config.yaml
 ```
 
-
-### HyperDX にメトリクスが表示されない場合
+### HyperDX にメトリクスが表示されない場合 {#no-metrics}
 
 PostgreSQL にアクセスできることを確認してください。
 
@@ -256,8 +254,7 @@ OTel collector のログを確認します：
 docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i postgres
 ```
 
-
-### 認証エラー
+### 認証エラー {#auth-errors}
 
 パスワードが正しく設定されていることを確認してください：
 
@@ -270,7 +267,6 @@ docker exec <clickstack-container> printenv POSTGRES_PASSWORD
 ```bash
 psql -h postgres-host -U otel_monitor -d postgres -c "SELECT version();"
 ```
-
 
 ## 次のステップ {#next-steps}
 

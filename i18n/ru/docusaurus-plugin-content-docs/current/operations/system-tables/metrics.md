@@ -6,10 +6,9 @@ title: 'system.metrics'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
-# system.metrics
+# system.metrics {#systemmetrics}
 
 <SystemTableCloud />
 
@@ -47,7 +46,6 @@ SELECT * FROM system.metrics LIMIT 10
 │ BackgroundMovePoolTask               │     0 │ Количество активных задач в BackgroundProcessingPool для перемещения данных           │
 └──────────────────────────────────────┴───────┴────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## Описания метрик {#metric-descriptions}
 
@@ -186,8 +184,6 @@ SELECT * FROM system.metrics LIMIT 10
 ### CacheDictionaryThreadsActive {#cachedictionarythreadsactive}
 
 Количество потоков в пуле потоков CacheDictionary, выполняющих задачу.
-
-
 
 Количество потоков в пуле потоков CacheDictionary, выполняющих задачу.
 
@@ -330,8 +326,6 @@ SELECT * FROM system.metrics LIMIT 10
 Количество соединений с HTTP-сервером
 
 ### HashedDictionaryThreads {#hasheddictionarythreads}
-
-
 
 Количество потоков в пуле потоков HashedDictionary.
 
@@ -486,8 +480,6 @@ SELECT * FROM system.metrics LIMIT 10
 ### MergeTreePartsCleanerThreads {#mergetreepartscleanerthreads}
 
 Количество потоков в пуле потоков очистки кусков MergeTree.
-
-
 
 ### MergeTreePartsCleanerThreadsActive {#mergetreepartscleanerthreadsactive}
 
@@ -645,8 +637,6 @@ SELECT * FROM system.metrics LIMIT 10
 
 Количество частей данных, отправляемых на реплики
 
-
-
 ### RestartReplicaThreads {#restartreplicathreads}
 
 Количество потоков в пуле потоков RESTART REPLICA.
@@ -790,8 +780,6 @@ SELECT * FROM system.metrics LIMIT 10
 ### ConcurrencyControlAcquired {#concurrencycontrolacquired}
 
 Общее количество занятых CPU-слотов.
-
-
 
 ### ConcurrencyControlSoftLimit {#concurrencycontrolsoftlimit}
 

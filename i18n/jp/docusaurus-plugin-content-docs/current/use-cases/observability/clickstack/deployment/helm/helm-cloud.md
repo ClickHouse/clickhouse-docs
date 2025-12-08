@@ -15,7 +15,7 @@ keywords: ['ClickStack GKE', 'ClickStack EKS', 'ClickStack AKS', 'Kubernetes clo
 
 GKE へデプロイする場合は、クラウド特有のネットワークの挙動により、いくつかの設定値を上書き（オーバーライド）する必要が生じることがあります。
 
-### LoadBalancer の DNS 解決に関する問題
+### LoadBalancer の DNS 解決に関する問題 {#loadbalancer-dns-resolution-issue}
 
 GKE の LoadBalancer サービスが原因で、ポッド間通信における内部 DNS 解決がクラスターネットワーク内にとどまらず、外部 IP に名前解決されてしまう問題が発生することがあります。これは特に、OTel collector から OpAMP サーバーへの接続に影響します。
 
@@ -34,18 +34,17 @@ helm install my-clickstack clickstack/clickstack \
   --set otel.opampServerUrl="http://my-clickstack-clickstack-app.default.svc.cluster.local:4320"
 ```
 
-
-### GKE に関するその他の考慮事項
+### GKE に関するその他の考慮事項 {#other-gke-considerations}
 
 ```yaml
-# values-gke.yaml
+# values-gke.yaml {#values-gkeyaml}
 hyperdx:
   frontendUrl: "http://34.123.61.99"  # LoadBalancerの外部IPを使用
 
 otel:
   opampServerUrl: "http://my-clickstack-clickstack-app.default.svc.cluster.local:4320"
 
-# 必要に応じてGKEポッドネットワーク用に調整
+# 必要に応じてGKEポッドネットワーク用に調整 {#adjust-for-gke-pod-networking-if-needed}
 clickhouse:
   config:
     clusterCidrs:
@@ -53,24 +52,23 @@ clickhouse:
       - "10.0.0.0/8"   # その他の設定用のフォールバック
 ```
 
-
-## Amazon EKS
+## Amazon EKS {#amazon-eks}
 
 EKS にデプロイする場合は、次の一般的な構成を検討してください。
 
 ```yaml
-# values-eks.yaml
+# values-eks.yaml {#values-eksyaml}
 hyperdx:
   frontendUrl: "http://your-alb-domain.com"
 
-# EKSでは通常、以下のポッドCIDRを使用します
+# EKSでは通常、以下のポッドCIDRを使用します {#eks-typically-uses-these-pod-cidrs}
 clickhouse:
   config:
     clusterCidrs:
       - "192.168.0.0/16"
       - "10.0.0.0/8"
 
-# 本番環境ではイングレスを有効化します
+# 本番環境ではイングレスを有効化します {#enable-ingress-for-production}
 hyperdx:
   ingress:
     enabled: true
@@ -79,24 +77,22 @@ hyperdx:
       enabled: true
 ```
 
-
-## Azure AKS
+## Azure AKS {#azure-aks}
 
 AKS にデプロイする場合:
 
 ```yaml
-# values-aks.yaml
+# values-aks.yaml {#values-aksyaml}
 hyperdx:
   frontendUrl: "http://your-azure-lb.com"
 
-# AKS ポッドネットワーキング
+# AKS ポッドネットワーキング {#aks-pod-networking}
 clickhouse:
   config:
     clusterCidrs:
       - "10.244.0.0/16"  # 一般的な AKS ポッド CIDR
       - "10.0.0.0/8"
 ```
-
 
 ## 本番環境向けクラウド デプロイメント チェックリスト {#production-cloud-deployment-checklist}
 
@@ -114,7 +110,7 @@ clickhouse:
 
 ## 本番環境におけるベストプラクティス {#production-best-practices}
 
-### リソース管理
+### リソース管理 {#resource-management}
 
 ```yaml
 hyperdx:
@@ -127,8 +123,7 @@ hyperdx:
       memory: 4Gi
 ```
 
-
-### 高可用性
+### 高可用性 {#high-availability}
 
 ```yaml
 hyperdx:
@@ -148,8 +143,7 @@ hyperdx:
             topologyKey: kubernetes.io/hostname
 ```
 
-
-### 永続ストレージ
+### 永続ストレージ {#persistent-storage}
 
 データを保持できるよう、PersistentVolume（永続ボリューム）が適切に構成されていることを確認します。
 
@@ -166,7 +160,6 @@ clickhouse:
 * **GKE**: `pd-ssd` または `pd-balanced`
 * **EKS**: `gp3` または `io2`
 * **AKS**: `managed-premium` または `managed-csi`
-
 
 ### ブラウザ互換性に関する注意事項 {#browser-compatibility-notes}
 

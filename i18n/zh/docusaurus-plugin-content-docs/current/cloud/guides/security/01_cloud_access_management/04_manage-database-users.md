@@ -12,10 +12,9 @@ import user_grant_permissions_options from '@site/static/images/cloud/security/c
 
 本指南介绍了两种管理数据库用户的方式：在 SQL 控制台中管理，以及直接在数据库中管理。
 
-### SQL 控制台免密认证
+### SQL 控制台免密认证 {#sql-console-passwordless-authentication}
 
 SQL 控制台用户会为每个会话单独创建，并使用会自动轮换的 X.509 证书进行身份验证。会话终止时，该用户会被删除。在为审计生成访问列表时，请在控制台中进入相应服务的 Settings 选项卡，在记录数据库中现有数据库用户的同时，也一并记录 SQL 控制台访问情况。如果配置了自定义角色，用户的访问权限会列在以该用户用户名结尾的角色中。
-
 
 ## SQL 控制台用户和角色 {#sql-console-users-and-roles}
 
@@ -52,11 +51,9 @@ GRANT database_developer TO `sql-console-role:my.user@domain.com`;
 
 </VerticalStepper>
 
+## 数据库身份验证 {#database-authentication}
 
-
-## 数据库身份验证
-
-### 数据库用户 ID 和密码
+### 数据库用户 ID 和密码 {#database-user-id--password}
 
 在[创建用户账户](/sql-reference/statements/create/user.md)时使用 SHA256&#95;hash 方法来保护密码。ClickHouse 数据库密码长度至少为 12 个字符，并且必须满足复杂性要求：包含大写字符、小写字符、数字和/或特殊字符。
 
@@ -68,7 +65,7 @@ GRANT database_developer TO `sql-console-role:my.user@domain.com`;
 CREATE USER userName IDENTIFIED WITH sha256_hash BY 'hash';
 ```
 
-### 使用安全外壳（SSH）身份验证的数据库用户
+### 使用安全外壳（SSH）身份验证的数据库用户 {#database-ssh}
 
 为 ClickHouse Cloud 数据库用户配置 SSH 身份验证。
 
@@ -79,8 +76,7 @@ CREATE USER userName IDENTIFIED WITH sha256_hash BY 'hash';
 
 如需包含示例的详细操作说明，请参阅我们知识库中的[如何使用 SSH 密钥连接到 ClickHouse Cloud](/knowledgebase/how-to-connect-to-ch-cloud-using-ssh-keys)。
 
-
-## 数据库权限
+## 数据库权限 {#database-permissions}
 
 在服务和数据库中使用 SQL [GRANT](/sql-reference/statements/grant) 语句配置以下内容。
 
@@ -97,7 +93,7 @@ CREATE USER userName IDENTIFIED WITH sha256_hash BY 'hash';
 
 <Image img={user_grant_permissions_options} alt="An illustration showing the different ways a user could be granted permissions" size="md" background="black" />
 
-### 初始设置
+### 初始设置 {#initial-settings}
 
 数据库中有一个名为 `default` 的账户，在创建服务时会自动添加，并被授予 `default_role`。创建服务的用户在服务创建时会看到自动生成并随机分配给 `default` 账户的密码。该密码在初始设置之后将不会再次显示，但之后可以由控制台中具有 Service Admin 权限的任意用户进行修改。该账户或在控制台中具有 Service Admin 权限的账户可以在任何时间创建其他数据库用户和角色。
 
@@ -114,7 +110,7 @@ GRANT default_role to userID;
 
 用户可以使用 SHA256 哈希生成器，或使用 Python 中的 `hashlib` 等代码函数，将一个长度不少于 12 个字符且复杂度足够的密码转换为 SHA256 字符串，并将该字符串作为密码提供给系统管理员。这样可以确保管理员不会看到或接触明文密码。
 
-### 使用 SQL 控制台用户生成数据库访问清单
+### 使用 SQL 控制台用户生成数据库访问清单 {#database-access-listings-with-sql-console-users}
 
 以下流程可用于在你的组织中生成涵盖 SQL 控制台及各数据库的完整访问清单。
 
@@ -159,7 +155,6 @@ GRANT default_role to userID;
 
   e. 点击显示具有该服务数据库访问权限用户数量的链接 `There are # users with access to this service.`，以查看用户列表。
 </VerticalStepper>
-
 
 ## Warehouse users {#warehouse-users}
 

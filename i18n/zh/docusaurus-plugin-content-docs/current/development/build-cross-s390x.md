@@ -1,76 +1,66 @@
 ---
 description: '在 s390x 架构上从源代码构建 ClickHouse 的指南'
-sidebar_label: '在 Linux 上为 s390x（zLinux）构建'
+sidebar_label: '在 Linux 上针对 s390x（zLinux）构建'
 sidebar_position: 30
 slug: /development/build-cross-s390x
-title: '在 Linux 上为 s390x（zLinux）构建'
+title: '在 Linux 上针对 s390x（zLinux）构建'
 doc_type: 'guide'
 ---
 
+# 在 Linux 上为 s390x（zLinux）进行构建 {#build-on-linux-for-s390x-zlinux}
 
+ClickHouse 对 s390x 提供实验性支持。
 
-# 在 Linux 上构建 s390x（zLinux）版本
+## 为 s390x 构建 ClickHouse {#building-clickhouse-for-s390x}
 
-ClickHouse 目前对 s390x 提供实验性支持。
+与其他平台一样，s390x 会将 OpenSSL 构建为静态库。如果你希望使用动态链接的 OpenSSL 进行构建，则需要向 CMake 传递 `-DENABLE_OPENSSL_DYNAMIC=1`。
 
+这些说明假定宿主机为 Linux x86&#95;64/ARM，并且已经按照[构建说明](../development/build.md)安装了本机构建所需的全部工具。同时假定宿主机运行的是 Ubuntu 22.04，不过以下说明同样适用于 Ubuntu 20.04。
 
-
-## 为 s390x 构建 ClickHouse
-
-s390x 有两个与 OpenSSL 相关的构建选项：
-
-* 默认情况下，在 s390x 上 OpenSSL 会被构建为共享库。这与其他所有平台不同，其他平台上 OpenSSL 会被构建为静态库。
-* 如果仍然希望将 OpenSSL 构建为静态库，请在 CMake 中传入 `-DENABLE_OPENSSL_DYNAMIC=0`。
-
-以下说明假定宿主机为 x86&#95;64 架构，并且已经按照[构建说明](../development/build.md)安装了本机构建所需的全部工具。同时还假定宿主机运行的是 Ubuntu 22.04，但下面的说明在 Ubuntu 20.04 上同样应当可行。
-
-除了安装用于本机构建的工具外，还需要额外安装以下软件包：
+除了安装用于本机构建的工具外，还需要安装以下额外软件包：
 
 ```bash
-apt-get install binutils-s390x-linux-gnu libc6-dev-s390x-cross gcc-s390x-linux-gnu binfmt-support qemu-user-static
-```
-
-如果您希望交叉编译 Rust 代码，请安装针对 s390x 的 Rust 交叉编译目标：
-
-```bash
+apt-get mold
 rustup target add s390x-unknown-linux-gnu
 ```
 
-s390x 构建使用 mold 链接器，请从 [https://github.com/rui314/mold/releases/download/v2.0.0/mold-2.0.0-x86&#95;64-linux.tar.gz](https://github.com/rui314/mold/releases/download/v2.0.0/mold-2.0.0-x86_64-linux.tar.gz)
-下载并将其放入你的 `$PATH` 中。
-
-要构建 s390x：
+构建 s390x 版本：
 
 ```bash
 cmake -DCMAKE_TOOLCHAIN_FILE=cmake/linux/toolchain-s390x.cmake ..
 ninja
 ```
 
+## 运行 {#running}
 
-## 运行
-
-构建完成后，例如可以这样运行该二进制文件：
+要进行仿真，你需要适用于 s390x 的 QEMU user static 静态二进制文件。在 Ubuntu 上可以通过以下命令安装：
 
 ```bash
-qemu-s390x-static -L /usr/s390x-linux-gnu ./clickhouse
+apt-get install binfmt-support binutils-s390x-linux-gnu qemu-user-static
 ```
 
+构建完成后，例如可以通过以下命令运行该二进制文件：
 
-## 调试
+```bash
+qemu-s390x-static -L /usr/s390x-linux-gnu ./programs/clickhouse local --query "Select 2"
+2
+```
+
+## 调试 {#debugging}
 
 安装 LLDB：
 
 ```bash
-apt-get install lldb-15
+apt-get install lldb-21
 ```
 
-要调试 s390x 可执行文件，请在调试模式下通过 QEMU 运行 ClickHouse：
+要调试 s390x 可执行文件，请使用 QEMU 以调试模式运行 ClickHouse：
 
 ```bash
 qemu-s390x-static -g 31338 -L /usr/s390x-linux-gnu ./clickhouse
 ```
 
-在另一个 shell 中运行 LLDB 并附加到进程，将 `<ClickHouse Parent Directory>` 和 `<build directory>` 替换为与你环境相对应的值。
+在另一个 shell 中运行 LLDB 并进行附加操作，将 `<Clickhouse Parent Directory>` 和 `<build directory>` 替换为与您环境相对应的值。
 
 ```bash
 lldb-15
@@ -101,17 +91,16 @@ Process 1 stopped
    453      /// PHDR cache is required for query profiler to work reliably
 ```
 
+## Visual Studio Code 集成 {#visual-studio-code-integration}
 
-## Visual Studio Code 集成
+- 进行可视化调试需要安装 [CodeLLDB](https://github.com/vadimcn/vscode-lldb) 扩展。
+- 如果使用 [CMake Variants](https://github.com/microsoft/vscode-cmake-tools/blob/main/docs/variants.md)，可以安装 [Command Variable](https://github.com/rioj7/command-variable) 扩展来辅助配置动态启动。
+- 请确保将后端设置为你的 LLVM 安装路径，例如：`"lldb.library": "/usr/lib/x86_64-linux-gnu/liblldb-21.so"`
+- 在启动之前，请确保以调试模式运行 ClickHouse 可执行文件。（也可以创建一个 `preLaunchTask` 来自动完成此操作）
 
-* 需要安装 [CodeLLDB](https://github.com/vadimcn/vscode-lldb) 扩展以进行可视化调试。
-* 如果使用 [CMake Variants](https://github.com/microsoft/vscode-cmake-tools/blob/main/docs/variants.md)，可以通过 [Command Variable](https://github.com/rioj7/command-variable) 扩展实现动态启动配置。
-* 请确保将后端指向你的 LLVM 安装，例如 `"lldb.library": "/usr/lib/x86_64-linux-gnu/liblldb-15.so"`。
-* 请确保在启动前以调试模式运行 ClickHouse 可执行文件。（也可以创建一个 `preLaunchTask` 来自动化完成此操作）
+### 示例配置 {#example-configurations}
 
-### 示例配置
-
-#### cmake-variants.yaml
+#### cmake-variants.yaml {#cmake-variantsyaml}
 
 ```yaml
 buildType:
@@ -119,7 +108,7 @@ buildType:
   choices:
     debug:
       short: Debug
-      long: 生成调试信息
+      long: 输出调试信息
       buildType: Debug
     release:
       short: Release
@@ -127,7 +116,7 @@ buildType:
       buildType: Release
     relwithdebinfo:
       short: RelWithDebInfo
-      long: 带调试信息的发布版本
+      long: 发布版本（含调试信息）
       buildType: RelWithDebInfo
     tsan:
       short: MinSizeRel
@@ -148,7 +137,7 @@ toolchain:
         CMAKE_TOOLCHAIN_FILE: cmake/linux/toolchain-s390x.cmake
 ```
 
-#### launch.json
+#### launch.json {#launchjson}
 
 ```json
 {
@@ -166,18 +155,18 @@ toolchain:
 }
 ```
 
-#### settings.json
+#### settings.json {#settingsjson}
 
-这也会将不同的构建产物放在 `build` 目录下的不同子目录中。
+这也会将不同的构建产物放在 `build` 文件夹下的不同子文件夹中。
 
 ```json
 {
     "cmake.buildDirectory": "${workspaceFolder}/build/${buildKitVendor}-${buildKitVersion}-${variant:toolchain}-${variant:buildType}",
-    "lldb.library": "/usr/lib/x86_64-linux-gnu/liblldb-15.so"
+    "lldb.library": "/usr/lib/x86_64-linux-gnu/liblldb-21.so"
 }
 ```
 
-#### run-debug.sh
+#### run-debug.sh {#run-debugsh}
 
 ```sh
 #! /bin/sh
@@ -186,9 +175,9 @@ cd $1
 qemu-s390x-static -g 2159 -L /usr/s390x-linux-gnu $2 $3 $4
 ```
 
-#### tasks.json
+#### tasks.json {#tasksjson}
 
-定义了一个任务，用于在与二进制文件同级的 `tmp` 文件夹中，以 `server` 模式运行已编译的可执行文件，并使用 `programs/server/config.xml` 下的配置。
+定义了一个任务，用于在与二进制文件同级的 `tmp` 目录下，以 `server` 模式运行已编译的可执行文件，并从 `programs/server/config.xml` 加载配置。
 
 ```json
 {

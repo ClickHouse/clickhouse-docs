@@ -6,9 +6,7 @@ title: 'exponentialMovingAverage'
 doc_type: 'reference'
 ---
 
-
-
-## exponentialMovingAverage
+## exponentialMovingAverage {#exponentialmovingaverage}
 
 Вычисляет экспоненциальное скользящее среднее значений за заданный интервал времени.
 
@@ -97,7 +95,6 @@ FROM
 ```
 
 Результат:
-
 
 ```text
 ┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar────────────────────────────────────────┐

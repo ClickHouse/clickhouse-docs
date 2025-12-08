@@ -8,8 +8,6 @@ title: 'values'
 doc_type: 'reference'
 ---
 
-
-
 # Values テーブル関数 {#values-table-function}
 
 `Values` テーブル関数を使用すると、一時的なストレージを作成し、その列を値で埋めることができます。簡単なテストやサンプルデータの生成に便利です。
@@ -18,9 +16,7 @@ doc_type: 'reference'
 Values は大文字小文字を区別しない関数です。つまり、`VALUES` と `values` のどちらも有効です。
 :::
 
-
-
-## 構文
+## 構文 {#syntax}
 
 `VALUES` テーブル関数の基本構文は次のとおりです。
 
@@ -39,7 +35,6 @@ VALUES(
 )
 ```
 
-
 ## 引数 {#arguments}
 
 - `column1_name Type1, ...`（省略可）。列名と型を指定する[String](/sql-reference/data-types/string) 型。  
@@ -52,15 +47,11 @@ VALUES(
 各値は新しい行として扱われます。詳細は[例](#examples)セクションを参照してください。
 :::
 
-
-
 ## 戻り値 {#returned-value}
 
 - 指定された値を含む一時テーブルを返します。
 
-
-
-## 使用例
+## 使用例 {#examples}
 
 ```sql title="Query"
 SELECT *
@@ -195,7 +186,6 @@ FROM VALUES(
 10. │ Isabella │
     └──────────┘
 ```
-
 
 ## 関連項目 {#see-also}
 

@@ -16,8 +16,7 @@ import observability_8 from '@site/static/images/use-cases/observability/observa
 import observability_9 from '@site/static/images/use-cases/observability/observability-9.png';
 import Image from '@theme/IdealImage';
 
-
-# 集成 OpenTelemetry 进行数据采集
+# 集成 OpenTelemetry 进行数据采集 {#integrating-opentelemetry-for-data-collection}
 
 任何可观测性解决方案都需要一种方式来采集并导出日志和追踪（traces）。为此，ClickHouse 推荐使用 [OpenTelemetry（OTel）项目](https://opentelemetry.io/)。
 
@@ -85,7 +84,7 @@ Collector 提供了两个用于收集日志的主要 receiver：
 [`otelbin.io`](https://www.otelbin.io/) 非常适合用于验证和可视化配置。
 :::
 
-## 结构化日志 vs 非结构化日志
+## 结构化日志 vs 非结构化日志 {#structured-vs-unstructured}
 
 日志可以是结构化的，也可以是非结构化的。
 
@@ -112,8 +111,7 @@ Collector 提供了两个用于收集日志的主要 receiver：
 
 我们建议用户尽可能采用结构化日志，并使用 JSON 格式记录日志（例如 ndjson）。这将简化后续对日志所需的处理，无论是在发送到 ClickHouse 之前使用 [Collector 处理器](https://opentelemetry.io/docs/collector/configuration/#processors)，还是在写入时通过物化视图进行处理。结构化日志最终将节省后续处理所需的资源，从而降低 ClickHouse 部署中的 CPU 需求。
 
-
-### 示例
+### 示例 {#example}
 
 作为示例，我们提供了一个结构化（JSON）和一个非结构化的日志数据集，每个大约包含 1,000 万行，可通过以下链接获取：
 
@@ -166,7 +164,6 @@ service:
 
 如果使用结构化日志，输出的消息将具有如下形式：
 
-
 ```response
 LogRecord #98
 ObservedTimestamp: 2024-06-19 13:21:16.414259 +0000 UTC
@@ -206,7 +203,6 @@ Operators 是日志处理的最基本单元。每个 operator 只负责一项职
 
 对于需要采集本地或 Kubernetes 日志文件的用户，我们建议熟悉 [filelog receiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/filelogreceiver/README.md#configuration) 提供的配置选项，以及[偏移量（offset）](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/filelogreceiver#offset-tracking)管理和[多行日志解析的处理方式](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/filelogreceiver#example---multiline-logs-parsing)。
 
-
 ## 收集 Kubernetes 日志 {#collecting-kubernetes-logs}
 
 对于收集 Kubernetes 日志，我们建议参考 [OpenTelemetry 的 Kubernetes 指南](https://opentelemetry.io/docs/kubernetes/)。建议使用 [Kubernetes Attributes Processor](https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-attributes-processor) 来为日志和指标补充 pod（容器组）元数据。这样可以生成动态元数据（例如标签），并将其存储在 `ResourceAttributes` 列中。ClickHouse 当前为该列使用 `Map(String, String)` 类型。关于如何处理和优化此类型，请参阅 [使用 Map](/use-cases/observability/schema-design#using-maps) 和 [从 Map 中提取](/use-cases/observability/schema-design#extracting-from-maps)。
@@ -217,7 +213,7 @@ Operators 是日志处理的最基本单元。每个 operator 只负责一项职
 
 为了将事件发送到 ClickHouse，用户需要部署一个 OTel collector，通过相应的 receiver 使用 OTLP 协议接收 trace 事件。OpenTelemetry 示例应用提供了[为每种受支持语言进行插桩](https://opentelemetry.io/docs/demo/)并将事件发送到 collector 的示例。下面展示了一个合适的 collector 配置示例，它会将事件输出到 stdout：
 
-### 示例
+### 示例 {#example-1}
 
 由于必须通过 OTLP 接收 trace 数据，我们使用 [`telemetrygen`](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/cmd/telemetrygen) 工具来生成 trace。请按照[此处](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/cmd/telemetrygen)的说明进行安装。
 
@@ -279,7 +275,6 @@ Attributes:
 
 trace 消息的完整 schema 可以在[这里](https://opentelemetry.io/docs/concepts/signals/traces/)找到。我们强烈建议用户充分熟悉这一 schema。
 
-
 ## 处理：过滤、转换和丰富 {#processing---filtering-transforming-and-enriching}
 
 如前面设置日志事件时间戳的示例所示，用户通常需要对事件消息进行过滤、转换和丰富。这可以通过 OpenTelemetry 中的多种功能来实现：
@@ -298,7 +293,7 @@ trace 消息的完整 schema 可以在[这里](https://opentelemetry.io/docs/con
 
 如果使用 OTel collector 进行处理，我们建议在网关实例上执行转换，并尽量减少在 agent 实例上完成的工作。这样可以确保在服务器边缘运行的 agents 所需资源尽可能少。通常，我们看到用户在 agents 中只执行过滤（以尽量减少不必要的网络使用）、时间戳设置（通过 operators）以及需要上下文的富化。例如，如果网关实例位于不同的 Kubernetes 集群中，则需要在 agent 中完成 k8s 富化。
 
-### 示例
+### 示例 {#example-2}
 
 如下配置展示了如何采集非结构化日志文件。请注意其中使用了操作符（`regex_parser`）从日志行中提取结构并过滤事件，同时还使用了处理器对事件进行批处理并限制内存使用。
 
@@ -340,8 +335,7 @@ service:
 ./otelcol-contrib --config config-unstructured-logs-with-processor.yaml
 ```
 
-
-## 导出到 ClickHouse
+## 导出到 ClickHouse {#exporting-to-clickhouse}
 
 Exporter 会将数据发送到一个或多个后端或目标。Exporter 可以是拉取式或推送式。要将事件发送到 ClickHouse，用户需要使用推送式的 [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md)。
 
@@ -403,7 +397,6 @@ service:
 
 请注意以下关键设置：
 
-
 * **pipelines** - 上述配置重点展示了对 [pipelines](https://opentelemetry.io/docs/collector/configuration/#pipelines) 的使用，它由一组 receivers、processors 和 exporters 组成，并分别为 logs 和 traces 定义了一个 pipeline。
 * **endpoint** - 与 ClickHouse 的通信通过 `endpoint` 参数进行配置。连接字符串 `tcp://localhost:9000?dial_timeout=10s&compress=lz4&async_insert=1` 指定通过 TCP 进行通信。如果用户出于流量切换等原因更偏好使用 HTTP，请按照[此处](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options)的说明修改该连接字符串。完整的连接细节（包括在连接字符串中指定用户名和密码的功能）在[这里](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options)有详细描述。
 
@@ -430,7 +423,6 @@ $GOBIN/telemetrygen traces --otlp-insecure --traces 300
 ```
 
 运行后，使用一个简单查询确认已存在日志事件：
-
 
 ```sql
 SELECT *
@@ -492,8 +484,7 @@ Links.TraceState:   []
 Links.Attributes:   []
 ```
 
-
-## 开箱即用的 schema
+## 开箱即用的 schema {#out-of-the-box-schema}
 
 默认情况下，ClickHouse exporter 会为 logs 和 traces 分别创建目标表。可以通过设置 `create_schema` 来禁用此行为。此外，可以通过上述设置，将 logs 和 traces 表的名称从默认的 `otel_logs` 和 `otel_traces` 修改为其他名称。
 
@@ -540,7 +531,6 @@ SETTINGS ttl_only_drop_parts = 1
 此处的列与 OTel 官方日志规范中定义的列相对应，详见[此处](https://opentelemetry.io/docs/specs/otel/logs/data-model/)。
 
 关于此 schema，有几点重要说明：
-
 
 - 默认情况下，表通过 `PARTITION BY toDate(Timestamp)` 按日期进行分区。这样可以高效地删除过期数据。
 - TTL 通过 `TTL toDateTime(Timestamp) + toIntervalDay(3)` 设置，并与在 collector 配置中设置的值相对应。[`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts) 表示仅在某个数据分片内所有行都已过期时才会删除整个分片。相比在分片内部逐行删除（会触发代价高昂的删除操作），这种方式更加高效。我们建议始终启用该设置。更多细节请参见 [Data management with TTL](/observability/managing-data#data-management-with-ttl-time-to-live)。
@@ -593,7 +583,6 @@ SETTINGS ttl_only_drop_parts = 1
 同样，这里会与 OTel 官方 trace 规范中对应的列保持一致，相关文档见[此处](https://opentelemetry.io/docs/specs/otel/trace/api/)。该 schema 复用了上文日志 schema 的许多设置，并额外增加了用于 span 的 Link 专用列。
 
 我们建议用户禁用自动创建 schema 的功能，改为手动创建表。这样可以修改主键和辅助键，并可根据需要增加额外列以优化查询性能。更多详情参见 [Schema design](/use-cases/observability/schema-design)。
-
 
 ## 优化写入 {#optimizing-inserts}
 
@@ -652,7 +641,7 @@ SETTINGS ttl_only_drop_parts = 1
 - **在边缘进行处理** - 在此架构下，任何转换或事件处理都必须在边缘或在 ClickHouse 中完成。除了具有限制性之外，这通常意味着要么在 ClickHouse 中实现复杂的物化视图，要么将大量计算下推到边缘——此处关键服务可能会受到影响且资源紧张。
 - **小批量与延迟** - 代理 collector 可能各自只收集到很少的事件。这通常意味着需要将其配置为按固定时间间隔进行 flush，以满足交付 SLA。这可能会导致 collector 向 ClickHouse 发送小批量数据。尽管这是一个缺点，但可以通过异步写入（Asynchronous inserts）加以缓解——参见 [Optimizing inserts](#optimizing-inserts)。
 
-### 通过网关进行扩展
+### 通过网关进行扩展 {#scaling-with-gateways}
 
 可以将 OTel collector 以 Gateway 实例的形式部署，以解决上述限制。这些实例提供独立的服务，通常按数据中心或区域划分。它们通过单个 OTLP 端点从应用程序（或处于 agent 角色的其他 collector）接收事件。通常会部署一组网关实例，并使用开箱即用的负载均衡器在它们之间分发负载。
 
@@ -692,7 +681,6 @@ service:
       processors: [batch]
       exporters: [otlp]
 ```
-
 
 [clickhouse-gateway-config.yaml](https://www.otelbin.io/#config=receivers%3A*N__otlp%3A*N____protocols%3A*N____grpc%3A*N____endpoint%3A_0.0.0.0%3A4317*N*Nprocessors%3A*N__batch%3A*N____timeout%3A_5s*N____send*_batch*_size%3A_10000*N*Nexporters%3A*N__clickhouse%3A*N____endpoint%3A_tcp%3A%2F%2Flocalhost%3A9000*Qdial*_timeout*E10s*Acompress*Elz4*N____ttl%3A_96h*N____traces*_table*_name%3A_otel*_traces*N____logs*_table*_name%3A_otel*_logs*N____create*_schema%3A_true*N____timeout%3A_10s*N____database%3A_default*N____sending*_queue%3A*N____queue*_size%3A_10000*N____retry*_on*_failure%3A*N____enabled%3A_true*N____initial*_interval%3A_5s*N____max*_interval%3A_30s*N____max*_elapsed*_time%3A_300s*N*Nservice%3A*N__pipelines%3A*N____logs%3A*N______receivers%3A_%5Botlp%5D*N______processors%3A_%5Bbatch%5D*N______exporters%3A_%5Bclickhouse%5D%7E\&distro=otelcol-contrib%7E\&distroVersion=v0.103.1%7E)
 
@@ -740,7 +728,6 @@ service:
 该架构的主要缺点是管理一组 collector 所带来的成本和运维开销。
 
 关于如何管理更大规模的网关型架构及其相关经验总结，我们推荐阅读这篇[博客文章](https://clickhouse.com/blog/building-a-logging-platform-with-clickhouse-and-saving-millions-over-datadog)。
-
 
 ### 添加 Kafka {#adding-kafka}
 

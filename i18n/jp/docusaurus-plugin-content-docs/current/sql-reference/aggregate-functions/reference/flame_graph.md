@@ -6,20 +6,15 @@ title: 'flameGraph'
 doc_type: 'reference'
 ---
 
-
-
-# flameGraph
+# flameGraph {#flamegraph}
 
 スタックトレースのリストを使用して[フレームグラフ](https://www.brendangregg.com/flamegraphs.html)を構築する集約関数です。[flamegraph.pl ユーティリティ](https://github.com/brendangregg/FlameGraph)でフレームグラフの SVG をレンダリングする際に利用できる文字列配列を出力します。
 
-
-
-## 構文
+## 構文 {#syntax}
 
 ```sql
 flameGraph(traces, [size], [ptr])
 ```
-
 
 ## パラメータ {#parameters}
 
@@ -32,17 +27,13 @@ flameGraph(traces, [size], [ptr])
 解放されていないアロケーションのみが表示されます。対応付けられないデアロケーションは無視されます。
 :::
 
-
-
 ## 戻り値 {#returned-value}
 
 - [flamegraph.pl ユーティリティ](https://github.com/brendangregg/FlameGraph) で使用する文字列の配列。[Array](../../data-types/array.md)([String](../../data-types/string.md))。
 
+## 例 {#examples}
 
-
-## 例
-
-### CPU クエリプロファイラに基づくフレームグラフの作成
+### CPU クエリプロファイラに基づくフレームグラフの作成 {#building-a-flamegraph-based-on-a-cpu-query-profiler}
 
 ```sql
 SET query_profiler_cpu_time_period_ns=10000000;
@@ -53,7 +44,7 @@ SELECT SearchPhrase, COUNT(DISTINCT UserID) AS u FROM hits WHERE SearchPhrase <>
 clickhouse client --allow_introspection_functions=1 -q "select arrayJoin(flameGraph(arrayReverse(trace))) from system.trace_log where trace_type = 'CPU' and query_id = 'xxx'" | ~/dev/FlameGraph/flamegraph.pl  > flame_cpu.svg
 ```
 
-### メモリクエリプロファイラに基づいて、すべてのアロケーションを可視化するフレームグラフの作成
+### メモリクエリプロファイラに基づいて、すべてのアロケーションを可視化するフレームグラフの作成 {#building-a-flamegraph-based-on-a-memory-query-profiler-showing-all-allocations}
 
 ```sql
 SET memory_profiler_sample_probability=1, max_untracked_memory=1;
@@ -64,7 +55,7 @@ SELECT SearchPhrase, COUNT(DISTINCT UserID) AS u FROM hits WHERE SearchPhrase <>
 clickhouse client --allow_introspection_functions=1 -q "select arrayJoin(flameGraph(trace, size)) from system.trace_log where trace_type = 'MemorySample' and query_id = 'xxx'" | ~/dev/FlameGraph/flamegraph.pl --countname=bytes --color=mem > flame_mem.svg
 ```
 
-### メモリクエリプロファイラに基づいて、クエリコンテキスト内で解放されなかったメモリアロケーションを示すフレームグラフを作成する
+### メモリクエリプロファイラに基づいて、クエリコンテキスト内で解放されなかったメモリアロケーションを示すフレームグラフを作成する {#building-a-flamegraph-based-on-a-memory-query-profiler-showing-allocations-which-were-not-deallocated-in-query-context}
 
 ```sql
 SET memory_profiler_sample_probability=1, max_untracked_memory=1, use_uncompressed_cache=1, merge_tree_max_rows_to_use_cache=100000000000, merge_tree_max_bytes_to_use_cache=1000000000000;
@@ -75,7 +66,7 @@ SELECT SearchPhrase, COUNT(DISTINCT UserID) AS u FROM hits WHERE SearchPhrase <>
 clickhouse client --allow_introspection_functions=1 -q "SELECT arrayJoin(flameGraph(trace, size, ptr)) FROM system.trace_log WHERE trace_type = 'MemorySample' AND query_id = 'xxx'" | ~/dev/FlameGraph/flamegraph.pl --countname=bytes --color=mem > flame_mem_untracked.svg
 ```
 
-### メモリクエリプロファイラに基づいてフレームグラフを作成し、ある時点における有効なメモリ割り当てを表示する
+### メモリクエリプロファイラに基づいてフレームグラフを作成し、ある時点における有効なメモリ割り当てを表示する {#build-a-flamegraph-based-on-memory-query-profiler-showing-active-allocations-at-the-fixed-point-of-time}
 
 ```sql
 SET memory_profiler_sample_probability=1, max_untracked_memory=1;

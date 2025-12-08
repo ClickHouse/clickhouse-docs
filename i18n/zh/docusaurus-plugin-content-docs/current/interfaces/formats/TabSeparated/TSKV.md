@@ -13,9 +13,7 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-
-
-## 描述
+## 描述 {#description}
 
 类似于 [`TabSeparated`](./TabSeparated.md) 格式，但以 `name=value` 格式输出值。
 名称的转义方式与 [`TabSeparated`](./TabSeparated.md) 格式相同，且 `=` 符号也会被转义。
@@ -57,10 +55,9 @@ x=1    y=\N
 
 [NULL](/sql-reference/syntax.md) 会被格式化为 `\N`。
 
+## 示例用法 {#example-usage}
 
-## 示例用法
-
-### 插入数据
+### 插入数据 {#inserting-data}
 
 使用以下名为 `football.tskv` 的 tskv 文件：
 
@@ -90,7 +87,7 @@ date=2022-05-07 season=2021     home_team=沃尔索尔       away_team=斯温登
 INSERT INTO football FROM INFILE 'football.tskv' FORMAT TSKV;
 ```
 
-### 读取数据
+### 读取数据 {#reading-data}
 
 以 `TSKV` 格式读取数据：
 
@@ -101,7 +98,6 @@ FORMAT TSKV
 ```
 
 输出将采用制表符分隔格式，并包含两行表头：第一行为列名，第二行为列类型：
-
 
 ```tsv
 date=2022-04-30 season=2021     home_team=萨顿联队 away_team=布拉德福德城 home_team_goals=1       away_team_goals=4
@@ -122,6 +118,5 @@ date=2022-05-07 season=2021     home_team=奥尔德姆竞技       away_team=克
 date=2022-05-07 season=2021     home_team=斯蒂夫尼奇自治市     away_team=索尔福德城  home_team_goals=4       away_team_goals=2
 date=2022-05-07 season=2021     home_team=沃尔索尔       away_team=斯温登镇  home_team_goals=0       away_team_goals=3
 ```
-
 
 ## 格式设置 {#format-settings}

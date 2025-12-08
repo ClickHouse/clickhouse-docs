@@ -6,11 +6,7 @@ title: 'quantiles 函数'
 doc_type: 'reference'
 ---
 
-
-
-# 分位数函数
-
-
+# 分位数函数 {#quantiles-functions}
 
 ## quantiles {#quantiles}
 
@@ -18,9 +14,7 @@ doc_type: 'reference'
 
 所有分位数函数也都有对应的 `quantiles` 系列函数：`quantiles`、`quantilesDeterministic`、`quantilesTiming`、`quantilesTimingWeighted`、`quantilesExact`、`quantilesExactWeighted`、`quantileExactWeightedInterpolated`、`quantileInterpolatedWeighted`、`quantilesTDigest`、`quantilesBFloat16`、`quantilesDD`。这些函数在一次遍历中计算出所列各个分位水平的所有分位数，并返回包含结果值的数组。
 
-
-
-## quantilesExactExclusive
+## quantilesExactExclusive {#quantilesexactexclusive}
 
 精确计算数值数据序列的[分位数](https://en.wikipedia.org/wiki/Quantile)。
 
@@ -72,8 +66,7 @@ SELECT quantilesExactExclusive(0.25, 0.5, 0.75, 0.9, 0.95, 0.99, 0.999)(x) FROM 
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-
-## quantilesExactInclusive
+## quantilesExactInclusive {#quantilesexactinclusive}
 
 精确计算数值数据序列的[分位数](https://en.wikipedia.org/wiki/Quantile)。
 
@@ -125,8 +118,7 @@ SELECT quantilesExactInclusive(0.25, 0.5, 0.75, 0.9, 0.95, 0.99, 0.999)(x) FROM 
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-
-## quantilesGK
+## quantilesGK {#quantilesgk}
 
 `quantilesGK` 的工作方式与 `quantileGK` 类似，但它允许我们同时计算多个不同分位点的数值，并返回一个数组。
 

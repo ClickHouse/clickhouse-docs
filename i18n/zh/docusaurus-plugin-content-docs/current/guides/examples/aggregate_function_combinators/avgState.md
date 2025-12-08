@@ -7,11 +7,7 @@ sidebar_label: 'avgState'
 doc_type: 'reference'
 ---
 
-
-
 # avgState {#avgState}
-
-
 
 ## 描述 {#description}
 
@@ -20,9 +16,7 @@ doc_type: 'reference'
 函数，用于生成 `AggregateFunction(avg, T)` 类型的中间状态，其中
 `T` 是指定的平均值类型。
 
-
-
-## 示例用法
+## 示例用法 {#example-usage}
 
 在这个示例中，我们将演示如何将 `AggregateFunction` 类型与 `avgState` 函数结合使用来聚合网站流量数据。
 
@@ -133,7 +127,6 @@ ORDER BY page_id;
 
 现在我们得到了正确的平均值：
 
-
 ```response
 ┌─page_id─┬─page_name─┬─average_response_time_ms─┐
 │       1 │ 首页      │                      135 │
@@ -142,7 +135,6 @@ ORDER BY page_id;
 │       4 │ 联系      │                     62.5 │
 └─────────┴───────────┴──────────────────────────┘
 ```
-
 
 ## 另请参阅 {#see-also}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)

@@ -11,10 +11,7 @@ doc_type: 'guide'
 import bigquery_1 from '@site/static/images/migrations/bigquery-1.png';
 import Image from '@theme/IdealImage';
 
-
-# ClickHouse Cloud 与 BigQuery 对比 
-
-
+# ClickHouse Cloud 与 BigQuery 对比  {#comparing-clickhouse-cloud-and-bigquery}
 
 ## 资源组织 {#resource-organization}
 
@@ -56,8 +53,6 @@ ClickHouse 会在服务器级、用户级和查询级跟踪内存分配的字节
 
 ClickHouse Cloud 在两个层面控制用户访问：通过[云控制台](/cloud/guides/sql-console/manage-sql-console-role-assignments)以及通过[数据库](/cloud/security/manage-database-users)。控制台访问通过 [clickhouse.cloud](https://console.clickhouse.cloud) 用户界面进行管理。数据库访问通过数据库用户账户和角色进行管理。此外，可以在数据库中为控制台用户授予角色，使其能够通过我们的 [SQL 控制台](/integrations/sql-clients/sql-console) 与数据库交互。
 
-
-
 ## 数据类型 {#data-types}
 
 ClickHouse 在数值类型方面提供了更细粒度的精度控制。比如，BigQuery 提供的数值类型包括 [`INT64`、`NUMERIC`、`BIGNUMERIC` 和 `FLOAT64`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types)。相比之下，ClickHouse 为小数、浮点数和整数提供了多种精度等级的类型。借助这些数据类型，ClickHouse 用户可以优化存储与内存开销，从而实现更快的查询和更低的资源消耗。下面我们为每种 BigQuery 类型给出对应的 ClickHouse 等价类型：
@@ -83,8 +78,6 @@ ClickHouse 在数值类型方面提供了更细粒度的精度控制。比如，
 
 在有多种 ClickHouse 类型可选时，应根据数据的实际取值范围选择满足需求的最小类型。同时，考虑使用[合适的编解码器](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema)，以进一步提高压缩效果。
 
-
-
 ## 查询加速技术 {#query-acceleration-techniques}
 
 ### 主键、外键和主索引 {#primary-and-foreign-keys-and-primary-index}
@@ -92,8 +85,6 @@ ClickHouse 在数值类型方面提供了更细粒度的精度控制。比如，
 在 BigQuery 中，表可以具有[主键和外键约束](https://cloud.google.com/bigquery/docs/information-schema-table-constraints)。通常，主键和外键在关系型数据库中用于确保数据完整性。主键值通常对每一行都是唯一的，且不为 `NULL`。一行中的每个外键值必须存在于主键表的主键列中，或为 `NULL`。在 BigQuery 中，这些约束不会被强制执行，但查询优化器可以利用这些信息更好地优化查询。
 
 在 ClickHouse 中，表也可以具有主键。与 BigQuery 一样，ClickHouse 不会对表的主键列值强制唯一性。与 BigQuery 不同的是，表数据在磁盘上按照主键列[排序](/guides/best-practices/sparse-primary-indexes#optimal-compression-ratio-of-data-files)进行存储。查询优化器会利用这一排序来避免重新排序、最小化连接所需的内存使用，并支持对 `LIMIT` 子句进行短路执行。与 BigQuery 不同，ClickHouse 会基于主键列值自动创建[（稀疏）主索引](/guides/best-practices/sparse-primary-indexes#an-index-design-for-massive-data-scales)。该索引用于加速所有包含针对主键列过滤条件的查询。ClickHouse 目前不支持外键约束。
-
-
 
 ## 二级索引（仅在 ClickHouse 中可用） {#secondary-indexes-only-available-in-clickhouse}
 
@@ -108,25 +99,17 @@ ClickHouse 在数值类型方面提供了更细粒度的精度控制。比如，
   - 为每个数据部分维护某列的最小值和最大值。
   - 有助于跳过读取不在指定范围内的数据部分。
 
-
-
 ## 搜索索引 {#search-indexes}
 
 类似于 BigQuery 中的[搜索索引](https://cloud.google.com/bigquery/docs/search-index)，可以在字符串类型列上为 ClickHouse 表创建[全文索引](/engines/table-engines/mergetree-family/invertedindexes)。
-
-
 
 ## 向量索引 {#vector-indexes}
 
 BigQuery 最近以 Pre-GA 功能的形式推出了[向量索引](https://cloud.google.com/bigquery/docs/vector-index)。同样，ClickHouse 也对[用于加速向量搜索的索引](/engines/table-engines/mergetree-family/annindexes)提供了实验性支持，以满足向量搜索用例的需求。
 
-
-
 ## 分区 {#partitioning}
 
 与 BigQuery 类似，ClickHouse 使用表分区来提升大表的性能和可管理性，它通过将表划分为更小、更易管理的部分（称为分区）来实现这一点。我们在[此处](/engines/table-engines/mergetree-family/custom-partitioning-key)对 ClickHouse 分区进行了详细说明。
-
-
 
 ## 分簇 {#clustering}
 
@@ -134,13 +117,9 @@ BigQuery 最近以 Pre-GA 功能的形式推出了[向量索引](https://cloud.g
 
 在 ClickHouse 中，数据会根据表的主键列在磁盘上自动[进行分簇](/guides/best-practices/sparse-primary-indexes#optimal-compression-ratio-of-data-files)，并在逻辑上组织为若干块。利用主索引数据结构的查询可以快速定位或裁剪这些数据块。
 
-
-
 ## 物化视图 {#materialized-views}
 
 BigQuery 和 ClickHouse 都支持物化视图——基于对基础表执行转换查询的预计算结果，用于提升性能和效率。
-
-
 
 ## 查询物化视图 {#querying-materialized-views}
 
@@ -154,13 +133,9 @@ BigQuery 会定期通过针对基础表运行视图的转换查询来完全刷�
 
 在 ClickHouse 中，物化视图是增量更新的。这种增量更新机制提供了高可扩展性和低计算成本：增量更新的物化视图专门为基础表包含数十亿或数万亿行数据的场景而设计。ClickHouse 无需为了刷新物化视图而反复查询不断增长的基础表，而是仅基于新插入到基础表中的行的值计算一个局部结果。这个局部结果会在后台与之前计算的局部结果进行增量合并。与反复基于整个基础表刷新物化视图相比，这种方式能显著降低计算成本。
 
-
-
 ## 事务 {#transactions}
 
 与 ClickHouse 相比，BigQuery 支持在单个查询中使用多语句事务，或在使用会话时跨多个查询使用多语句事务。多语句事务允许你对一个或多个表执行插入或删除行等变更操作，并以原子方式提交或回滚这些更改。[ClickHouse 的 2024 年路线图](https://github.com/ClickHouse/ClickHouse/issues/58392)中包含对多语句事务的支持。
-
-
 
 ## 聚合函数 {#aggregate-functions}
 
@@ -169,8 +144,6 @@ BigQuery 会定期通过针对基础表运行视图的转换查询来完全刷�
 - BigQuery 提供了 [18 个聚合函数](https://cloud.google.com/bigquery/docs/reference/standard-sql/aggregate_functions)，以及 [4 个近似聚合函数](https://cloud.google.com/bigquery/docs/reference/standard-sql/approximate_aggregate_functions)。
 - ClickHouse 拥有超过 [150 个内置聚合函数](/sql-reference/aggregate-functions/reference)，并提供强大的 [聚合组合器（aggregation combinators）](/sql-reference/aggregate-functions/combinators)，用于[扩展](https://www.youtube.com/watch?v=7ApwD0cfAFI)这些内置聚合函数的行为。比如，你可以通过在函数名后添加 [-Array 后缀](/sql-reference/aggregate-functions/combinators#-array)，将这 150 多个内置聚合函数应用到数组而不是表的行上。使用 [-Map 后缀](/sql-reference/aggregate-functions/combinators#-map) 可以将任意聚合函数应用于 Map。使用 [-ForEach 后缀](/sql-reference/aggregate-functions/combinators#-foreach)，可以将任意聚合函数应用于嵌套数组。
 
-
-
 ## 数据源和文件格式 {#data-sources-and-file-formats}
 
 与 BigQuery 相比，ClickHouse 在文件格式和数据源方面的支持要丰富得多：
@@ -178,15 +151,11 @@ BigQuery 会定期通过针对基础表运行视图的转换查询来完全刷�
 - ClickHouse 原生支持以 90 多种文件格式从几乎任意数据源加载数据
 - BigQuery 仅支持 5 种文件格式和 19 种数据源
 
-
-
 ## SQL 语言特性 {#sql-language-features}
 
 ClickHouse 提供了标准 SQL，并在此基础上进行了大量扩展和改进，使其更适合分析型任务。例如，ClickHouse SQL [支持 lambda 函数](/sql-reference/functions/overview#arrow-operator-and-lambda)和高阶函数，因此在进行各种转换时，你无需先对数组执行 unnest/explode 展开操作。这相较于 BigQuery 等其他系统是一个显著优势。
 
-
-
-## 数组
+## 数组 {#arrays}
 
 与 BigQuery 仅有 8 个数组函数相比，ClickHouse 提供了 80 多个[内置数组函数](/sql-reference/functions/array-functions)，可以优雅而简洁地对各种问题进行建模和求解。
 
@@ -272,7 +241,6 @@ ORDER BY offset;
 *ClickHouse*
 
 [ARRAY JOIN](/sql-reference/statements/select/array-join) 子句
-
 
 ```sql
 WITH ['foo', 'bar', 'baz', 'qux', 'corge', 'garply', 'waldo', 'fred'] AS values
@@ -381,7 +349,6 @@ FROM Sequences;
 
 *ClickHouse*
 
-
 [arrayFilter](/sql-reference/functions/array-functions#arrayFilter) 函数
 
 ```sql
@@ -487,7 +454,6 @@ FROM Sequences AS s;
 *ClickHouse*
 
 [arraySum](/sql-reference/functions/array-functions#arraySum)、[arrayAvg](/sql-reference/functions/array-functions#arrayAvg) 等函数，或者 90 多种任一已有聚合函数的名称，作为 [arrayReduce](/sql-reference/functions/array-functions#arrayReduce) 函数的参数
-
 
 ```sql
 WITH Sequences AS

@@ -8,16 +8,13 @@ keywords: ['LDAP 設定', 'LDAP 認証', 'ロールマッピング', 'ユーザ�
 doc_type: 'guide'
 ---
 
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
+import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
-
-# LDAP を使用した認証とロールマッピングのための ClickHouse の構成
+# LDAP を使用した認証とロールマッピングのための ClickHouse の構成 {#configuring-clickhouse-to-use-ldap-for-authentication-and-role-mapping}
 
 <SelfManaged />
 
 ClickHouse は、LDAP を使用して ClickHouse データベースユーザーを認証するように構成できます。このガイドでは、一般公開されているディレクトリに対して認証を行う LDAP システムと ClickHouse を統合する、簡単な例を紹介します。
-
-
 
 ## 1. ClickHouse での LDAP 接続設定の構成 {#1-configure-ldap-connection-settings-in-clickhouse}
 
@@ -116,8 +113,6 @@ ClickHouse は、LDAP を使用して ClickHouse データベースユーザー�
 
 4. 設定を反映するために ClickHouse サーバーを再起動します。
 
-
-
 ## 2. ClickHouse データベースのロールと権限を構成する {#2-configure-clickhouse-database-roles-and-permissions}
 
 :::note
@@ -133,8 +128,6 @@ ClickHouse は、LDAP を使用して ClickHouse データベースユーザー�
     ```sql
     GRANT ALL ON *.* TO scientists_role;
     ```
-
-
 
 ## 3. LDAP 設定をテストする {#3-test-the-ldap-configuration}
 
@@ -174,8 +167,6 @@ ClickHouse は、LDAP を使用して ClickHouse データベースユーザー�
 
     9 rows in set. Elapsed: 0.004 sec.
     ```
-
-
 
 ## まとめ {#summary}
 この記事では、ClickHouse が LDAP サーバーで認証を行い、ロールにマッピングするための基本的な設定方法を説明しました。ClickHouse 上で個々のユーザーを定義したうえで、それらのユーザーの認証のみを LDAP に任せ、自動的なロールマッピングは設定しない構成も可能です。LDAP モジュールは、Active Directory への接続にも使用できます。

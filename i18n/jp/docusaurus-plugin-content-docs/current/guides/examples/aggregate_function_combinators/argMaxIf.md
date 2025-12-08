@@ -7,11 +7,7 @@ sidebar_label: 'argMaxIf'
 doc_type: 'reference'
 ---
 
-
-
 # argMaxIf {#argmaxif}
-
-
 
 ## 説明 {#description}
 
@@ -22,9 +18,7 @@ doc_type: 'reference'
 `argMaxIf` 関数は、データセット内で最大値に対応する値を見つける必要があるが、
 特定の条件を満たす行のみを対象にしたい場合に便利です。
 
-
-
-## 使用例
+## 使用例 {#example-usage}
 
 この例では、製品売上のサンプルデータセットを使用して `argMaxIf` の動作を示します。少なくとも 10 回販売された製品のみを対象に、その中で最も価格の高い製品名を求めます。
 
@@ -55,7 +49,6 @@ FROM product_sales;
 1. │ Laptop                   │
    └──────────────────────────┘
 ```
-
 
 ## 関連項目 {#see-also}
 - [`argMax`](/sql-reference/aggregate-functions/reference/argmax)

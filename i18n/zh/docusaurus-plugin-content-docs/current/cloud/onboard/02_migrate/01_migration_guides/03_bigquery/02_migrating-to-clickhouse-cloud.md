@@ -21,14 +21,11 @@ import bigquery_11 from '@site/static/images/migrations/bigquery-11.png';
 import bigquery_12 from '@site/static/images/migrations/bigquery-12.png';
 import Image from '@theme/IdealImage';
 
-
 ## 为什么选择 ClickHouse Cloud 而不是 BigQuery？ {#why-use-clickhouse-cloud-over-bigquery}
 
 简而言之：在现代数据分析场景中，ClickHouse 比 BigQuery 更快、更便宜，也更强大：
 
 <Image img={bigquery_2} size="md" alt="ClickHouse vs BigQuery"/>
-
-
 
 ## 从 BigQuery 向 ClickHouse Cloud 加载数据 {#loading-data-from-bigquery-to-clickhouse-cloud}
 
@@ -67,15 +64,11 @@ BigQuery 支持将数据导出到 Google 的对象存储服务（GCS）。针对
 
 在尝试以下示例之前，我们建议用户先查看[导出所需权限](https://cloud.google.com/bigquery/docs/exporting-data#required_permissions)和[数据位置方面的建议](https://cloud.google.com/bigquery/docs/exporting-data#data-locations)，以最大化导出与导入性能。
 
-
-
 ### 通过计划查询实现实时复制或 CDC {#real-time-replication-or-cdc-via-scheduled-queries}
 
 CDC（变更数据捕获）是指在两个数据库之间保持表数据同步的过程。如果需要在近实时场景下处理更新和删除操作，这会变得更加复杂。一种方法是简单地利用 BigQuery 的[计划查询功能](https://cloud.google.com/bigquery/docs/scheduling-queries)定期导出数据。只要能够接受数据在插入 ClickHouse 时存在一定延迟，这种方法就非常容易实现和维护。示例见[这篇博客文章](https://clickhouse.com/blog/clickhouse-bigquery-migrating-data-for-realtime-queries#using-scheduled-queries)。
 
-
-
-## 模式设计
+## 模式设计 {#designing-schemas}
 
 Stack Overflow 数据集包含许多相关的表。我们建议优先迁移主表。这不一定是最大的那张表，而是您预计会收到最多分析查询的那张表。这样可以帮助您熟悉 ClickHouse 的核心概念。随着后续添加更多表，为了充分利用 ClickHouse 的特性并获得最佳性能，可能需要对该表进行重新建模。我们在[数据建模文档](/data-modeling/schema-design#next-data-modeling-techniques)中对这一建模过程进行了探讨。
 
@@ -108,7 +101,7 @@ CREATE TABLE stackoverflow.posts (
 );
 ```
 
-### 优化数据类型
+### 优化数据类型 {#optimizing-types}
 
 按照[此处所述的流程](/data-modeling/schema-design)进行后，将得到如下模式：
 
@@ -151,7 +144,6 @@ INSERT INTO stackoverflow.posts SELECT * FROM gcs( 'gs://clickhouse-public-datas
 
 在我们的新 schema 中不会保留任何 null 值。上面的 insert 语句会将这些值隐式转换为其各自类型的默认值——整数为 0，字符串为空值。ClickHouse 还会自动将所有数值转换为其目标精度。
 
-
 ## ClickHouse 主键有何不同？ {#how-are-clickhouse-primary-keys-different}
 
 如[此处](/migrations/bigquery)所述，与 BigQuery 一样，ClickHouse 不会对表主键列的取值强制唯一性。
@@ -172,13 +164,11 @@ INSERT INTO stackoverflow.posts SELECT * FROM gcs( 'gs://clickhouse-public-datas
 
 有关选择排序键时的考量因素和具体步骤，并以 posts 表为例进行说明，请参见[此处](/data-modeling/schema-design#choosing-an-ordering-key)。
 
-
-
-## 数据建模技术
+## 数据建模技术 {#data-modeling-techniques}
 
 我们建议从 BigQuery 迁移的用户阅读[在 ClickHouse 中进行数据建模的指南](/data-modeling/schema-design)。该指南使用相同的 Stack Overflow 数据集，并结合 ClickHouse 的特性来探索多种建模方法。
 
-### 分区
+### 分区 {#partitions}
 
 BigQuery 用户应该已经熟悉表分区的概念：通过将表拆分为更小、更易管理的部分（称为分区），来提升大型数据库的性能和可管理性。分区可以通过在指定列（例如日期）上使用范围分区、定义列表分区，或者基于键的哈希分区来实现。这使得管理员可以根据特定条件（例如日期范围或地理位置）来组织数据。
 
@@ -205,7 +195,7 @@ ORDER BY (PostTypeId, toDate(CreationDate), CreationDate)
 PARTITION BY toYear(CreationDate)
 ```
 
-#### 应用场景
+#### 应用场景 {#applications}
 
 ClickHouse 中的分区与 BigQuery 有类似的应用场景，但存在一些细微差异。更具体地说：
 
@@ -246,7 +236,6 @@ Ok.
 0 rows in set. Elapsed: 0.103 sec.
 ```
 
-
 - **查询优化** - 虽然分区可以帮助提高查询性能，但这在很大程度上取决于访问模式。如果查询只会命中少量分区（理想情况下是一个），则性能可能会得到提升。这通常只在分区键不在主键中且你按该键进行过滤时才有用。然而，需要扫描许多分区的查询，其性能可能会比不使用分区时更差（因为分区可能会导致存在更多的 part）。如果分区键已经是主键中靠前的字段，那么针对单个分区的好处会明显减弱，甚至几乎不存在。如果每个分区中的值是唯一的，分区也可以用于[优化 `GROUP BY` 查询](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key)。但是，总体来说，用户应首先确保主键已得到优化，仅在少数特殊场景下才将分区视作查询优化手段，例如访问模式稳定且只访问一天内某个可预测的时间子区间时（例如按天分区，而大多数查询只访问最近一天的数据）。
 
 #### 建议 {#recommendations}
@@ -257,9 +246,7 @@ Ok.
 
 > 在内部，ClickHouse 会为插入的数据[创建 part](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design)。随着更多数据被插入，part 的数量会增加。为了避免 part 数量过多（这会降低查询性能，因为需要读取的文件更多），这些 part 会在后台异步合并。如果 part 的数量超过了[预先配置的上限](/operations/settings/merge-tree-settings#parts_to_throw_insert)，ClickHouse 会在插入时抛出一个["too many parts" 错误](/knowledgebase/exception-too-many-parts)。在正常运行下这不应发生，只会在 ClickHouse 配置错误或使用不当（例如大量小批量插入）时出现。由于 part 是在每个分区内独立创建的，增加分区数量会导致 part 数量增加，即 part 数量是分区数量的倍数。因此，高基数分区键可能会导致该错误，应当避免。
 
-
-
-## 物化视图与投影
+## 物化视图与投影 {#materialized-views-vs-projections}
 
 ClickHouse 的投影（projection）概念允许用户为同一张表指定多个 `ORDER BY` 子句。
 
@@ -360,7 +347,6 @@ FROM comments
 WHERE UserId = 8592047
 ```
 
-
 ┌─explain─────────────────────────────────────────────┐
 
 1. │ 表达式 ((投影 + ORDER BY 之前))                      │
@@ -396,8 +382,7 @@ WHERE UserId = 8592047
 - 用户能够接受相关的存储占用空间增加以及两次写入数据的开销。测试对插入速度的影响并[评估存储开销](/data-compression/compression-in-clickhouse)。
 ```
 
-
-## 在 ClickHouse 中重写 BigQuery 查询
+## 在 ClickHouse 中重写 BigQuery 查询 {#rewriting-bigquery-queries-in-clickhouse}
 
 下文给出了 BigQuery 与 ClickHouse 的对比查询示例。该列表旨在演示如何利用 ClickHouse 的特性来大幅简化查询。这里的示例使用完整的 Stack Overflow 数据集（截至 2024 年 4 月）。
 
@@ -464,8 +449,7 @@ LIMIT 5
 内存使用峰值:567.41 MiB。
 ```
 
-
-## 聚合函数
+## 聚合函数 {#aggregate-functions}
 
 在条件允许的情况下，用户应尽可能利用 ClickHouse 的聚合函数。下面我们展示如何使用 [`argMax` 函数](/sql-reference/aggregate-functions/reference/argmax) 来计算每一年浏览次数最多的问题。
 
@@ -519,8 +503,7 @@ MaxViewCount:            66975
 峰值内存使用量:377.26 MiB。
 ```
 
-
-## 条件和数组
+## 条件和数组 {#conditionals-and-arrays}
 
 条件和数组函数可以显著简化查询。下面的查询会计算在 2022 年到 2023 年间，出现次数超过 10000 次的标签中，百分比增幅最大的那些标签。请注意，得益于条件函数、数组函数以及在 `HAVING` 和 `SELECT` 子句中重复使用别名的能力，下面的 ClickHouse 查询非常简洁。
 

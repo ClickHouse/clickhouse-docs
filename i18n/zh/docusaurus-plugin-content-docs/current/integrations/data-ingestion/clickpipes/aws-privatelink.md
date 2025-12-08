@@ -18,15 +18,12 @@ import cp_rpe_settings0 from '@site/static/images/integrations/data-ingestion/cl
 import cp_rpe_settings1 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_rpe_settings1.png';
 import Image from '@theme/IdealImage';
 
-
-# 面向 ClickPipes 的 AWS PrivateLink
+# 面向 ClickPipes 的 AWS PrivateLink {#aws-privatelink-for-clickpipes}
 
 您可以使用 [AWS PrivateLink](https://aws.amazon.com/privatelink/) 在 VPC、AWS 服务、本地系统与 ClickHouse Cloud 之间建立安全连接，而无需将流量暴露在公共互联网中。
 
 本文档介绍了 ClickPipes 的反向私有终端节点功能，
 该功能允许您配置 AWS PrivateLink VPC 终端节点。
-
-
 
 ## 支持的 ClickPipes 数据源 {#supported-sources}
 
@@ -35,8 +32,6 @@ ClickPipes 反向私有端点功能目前仅适用于以下类型的数据源：
 - Postgres
 - MySQL
 - MongoDB
-
-
 
 ## 支持的 AWS PrivateLink 端点类型 {#aws-privatelink-endpoint-types}
 
@@ -136,7 +131,6 @@ aws vpc-lattice create-resource-configuration \
 
 要共享你的资源，需要创建一个 Resource-Share。这是通过 Resource Access Manager（RAM）来实现的。
 
-
 您可以通过 [AWS 控制台](https://docs.aws.amazon.com/ram/latest/userguide/working-with-sharing-create.html) 将 Resource-Configuration 添加到 Resource-Share，或者使用 ClickPipes 账户 ID `072088201116`（arn:aws:iam::072088201116:root）运行以下命令来完成：
 
 ```bash
@@ -198,7 +192,6 @@ VPC 终端节点服务可以[配置为使用 Private DNS](https://docs.aws.amazo
 可以为 ClickPipes 配置[跨区域访问](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html#endpoint-service-cross-region)。请将[您的 ClickPipe 区域](#aws-privatelink-regions)添加到 VPC 终端节点服务的允许区域列表中。
 :::
 
-
 ## 使用反向私有终端节点创建 ClickPipe {#creating-clickpipe}
 
 <VerticalStepper headerLevel="list">
@@ -259,8 +252,6 @@ VPC 终端节点服务可以[配置为使用 Private DNS](https://docs.aws.amazo
 
 </VerticalStepper>
 
-
-
 ## 管理现有的反向私有端点 {#managing-existing-endpoints}
 
 可以在 ClickHouse Cloud 的服务设置中管理现有的反向私有端点：
@@ -281,16 +272,12 @@ VPC 终端节点服务可以[配置为使用 Private DNS](https://docs.aws.amazo
 
 </VerticalStepper>
 
-
-
 ## 支援的 AWS 區域 {#aws-privatelink-regions}
 
 針對 ClickPipes，AWS PrivateLink 僅在特定 AWS 區域提供支援。
 請參閱 [ClickPipes 區域列表](/integrations/clickpipes#list-of-static-ips) 以查看可用區域。
 
 此限制不適用於已啟用跨區域連線的 PrivateLink VPC 端點服務。
-
-
 
 ## 限制 {#limitations}
 

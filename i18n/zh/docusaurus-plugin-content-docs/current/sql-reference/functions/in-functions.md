@@ -6,11 +6,7 @@ title: '用于实现 IN 运算符的函数'
 doc_type: 'reference'
 ---
 
-
-
-# 用于实现 IN 运算符的函数
-
-
+# 用于实现 IN 运算符的函数 {#functions-for-implementing-the-in-operator}
 
 ## in, notIn, globalIn, globalNotIn {#in-notin-globalin-globalnotin}
 

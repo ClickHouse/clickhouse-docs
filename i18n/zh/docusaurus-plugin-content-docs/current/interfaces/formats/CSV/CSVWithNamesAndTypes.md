@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## 示例用法 {#example-usage}
 
-### 插入数据
+### 插入数据 {#inserting-data}
 
 :::tip
 从 [版本](https://github.com/ClickHouse/ClickHouse/releases) 23.1 开始，ClickHouse 在使用 `CSV` 格式时会自动检测 CSV 文件中的标题行，因此不再需要使用 `CSVWithNames` 或 `CSVWithNamesAndTypes`。
@@ -71,8 +71,7 @@ ORDER BY (date, home_team);
 INSERT INTO football FROM INFILE 'football_types.csv' FORMAT CSVWithNamesAndTypes;
 ```
 
-
-### 读取数据
+### 读取数据 {#reading-data}
 
 使用 `CSVWithNamesAndTypes` 格式来读取数据：
 
@@ -105,7 +104,6 @@ FORMAT CSVWithNamesAndTypes
 "2022-05-07",2021,"Stevenage Borough","Salford City",4,2
 "2022-05-07",2021,"Walsall","Swindon Town",0,3
 ```
-
 
 ## 格式设置 {#format-settings}
 

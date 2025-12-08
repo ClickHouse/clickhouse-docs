@@ -12,30 +12,23 @@ keywords: ['DataGrip', 'データベース IDE', 'JetBrains', 'SQL クライア�
 ---
 
 import Image from '@theme/IdealImage';
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import datagrip_1 from '@site/static/images/integrations/sql-clients/datagrip-1.png';
 import datagrip_5 from '@site/static/images/integrations/sql-clients/datagrip-5.png';
 import datagrip_6 from '@site/static/images/integrations/sql-clients/datagrip-6.png';
 import datagrip_7 from '@site/static/images/integrations/sql-clients/datagrip-7.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
-# DataGrip から ClickHouse へ接続する
+# DataGrip から ClickHouse へ接続する {#connecting-datagrip-to-clickhouse}
 
 <CommunityMaintainedBadge/>
-
-
 
 ## DataGrip の起動またはダウンロード {#start-or-download-datagrip}
 
 DataGrip は https://www.jetbrains.com/datagrip/ からダウンロードできます。
 
-
-
 ## 1. 接続情報を確認する {#1-gather-your-connection-details}
 <ConnectionDetails />
-
-
 
 ## 2. ClickHouse ドライバを読み込む {#2-load-the-clickhouse-driver}
 
@@ -58,8 +51,6 @@ DataGrip は https://www.jetbrains.com/datagrip/ からダウンロードでき�
 
 <Image img={datagrip_1} size="lg" border alt="ClickHouse ドライバのインストールを表示している DataGrip の Drivers タブ" />
 
-
-
 ## 3. ClickHouse に接続する {#3-connect-to-clickhouse}
 
 - データベース接続情報を入力し、**Test Connection** をクリックします。  
@@ -78,8 +69,6 @@ JDBC URL の設定の詳細については、[ClickHouse JDBC driver](https://gi
 :::
 
 <Image img={datagrip_7} border alt="ClickHouse の設定が入力された DataGrip の接続詳細フォーム" />
-
-
 
 ## さらに詳しく {#learn-more}
 

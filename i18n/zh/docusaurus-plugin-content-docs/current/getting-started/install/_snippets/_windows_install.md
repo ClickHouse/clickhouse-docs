@@ -1,6 +1,4 @@
-# 在 Windows 上通过 WSL 安装 ClickHouse
-
-
+# 在 Windows 上通过 WSL 安装 ClickHouse {#install-clickhouse-on-windows-with-wsl}
 
 ## 要求 {#requirements}
 
@@ -10,8 +8,7 @@
 
 <VerticalStepper>
 
-
-## 安装 WSL
+## 安装 WSL {#install-wsl}
 
 以管理员身份打开 Windows PowerShell，并运行以下命令：
 
@@ -25,8 +22,7 @@ wsl --install
 欢迎使用 Ubuntu 24.04.1 LTS (GNU/Linux 5.15.133.1-microsoft-WSL2 x86_64)
 ```
 
-
-## 使用 curl 脚本安装 ClickHouse
+## 使用 curl 脚本安装 ClickHouse {#install-clickhouse-via-script-using-curl}
 
 运行以下命令，通过 curl 脚本安装 ClickHouse：
 
@@ -41,8 +37,7 @@ curl https://clickhouse.com/ | sh
   ./clickhouse
 ```
 
-
-## 启动 clickhouse-local
+## 启动 clickhouse-local {#start-clickhouse-local}
 
 `clickhouse-local` 可用于在无需任何配置的情况下，借助 ClickHouse 强大的 SQL 语法处理本地和远程文件。表数据会存储在临时位置，这意味着在重启 `clickhouse-local` 后，此前创建的表将不再可用。
 
@@ -52,15 +47,13 @@ curl https://clickhouse.com/ | sh
 ./clickhouse
 ```
 
-
-## 启动 clickhouse-server
+## 启动 clickhouse-server {#start-clickhouse-server}
 
 若要持久化数据，应运行 `clickhouse-server`。可以使用以下命令启动 ClickHouse 服务器：
 
 ```bash
 ./clickhouse server
 ```
-
 
 ## Start clickhouse-client {#start-clickhouse-client}
 

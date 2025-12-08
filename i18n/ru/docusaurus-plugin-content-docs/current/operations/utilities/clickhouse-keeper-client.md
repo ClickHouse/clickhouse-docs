@@ -6,13 +6,9 @@ title: 'Утилита clickhouse-keeper-client'
 doc_type: 'reference'
 ---
 
-
-
-# Утилита clickhouse-keeper-client
+# Утилита clickhouse-keeper-client {#clickhouse-keeper-client-utility}
 
 Клиентское приложение для взаимодействия с clickhouse-keeper по его родному протоколу.
-
-
 
 ## Ключи {#clickhouse-keeper-client}
 
@@ -28,9 +24,7 @@ doc_type: 'reference'
 -   `--no-confirmation` — Если указан, не будет требоваться подтверждение для ряда команд. Значение по умолчанию: `false` для интерактивного режима и `true` для запроса.
 -   `--help` — Показать справочное сообщение.
 
-
-
-## Пример
+## Пример {#clickhouse-keeper-client-example}
 
 ```bash
 ./clickhouse-keeper-client -h localhost -p 9181 --connection-timeout 30 --session-timeout 30 --operation-timeout 30
@@ -51,7 +45,6 @@ keeper foo bar
 / :) get 'keeper/api_version'
 2
 ```
-
 
 ## Команды {#clickhouse-keeper-client-commands}
 

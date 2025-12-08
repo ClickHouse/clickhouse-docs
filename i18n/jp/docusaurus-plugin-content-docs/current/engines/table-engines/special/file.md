@@ -7,9 +7,7 @@ title: 'File テーブルエンジン'
 doc_type: 'reference'
 ---
 
-
-
-# File テーブルエンジン
+# File テーブルエンジン {#file-table-engine}
 
 File テーブルエンジンは、サポートされている[ファイルフォーマット](/interfaces/formats#formats-overview)（`TabSeparated`、`Native` など）のいずれかでデータをファイルに保存します。
 
@@ -23,9 +21,7 @@ File テーブルエンジンは、サポートされている[ファイルフ�
 このエンジンは現在 ClickHouse Cloud では利用できません。[代わりに S3 テーブル関数を使用してください](/sql-reference/table-functions/s3.md)。
 :::
 
-
-
-## ClickHouse サーバーでの利用方法
+## ClickHouse サーバーでの利用方法 {#usage-in-clickhouse-server}
 
 ```sql
 File(Format)
@@ -43,8 +39,7 @@ ClickHouse では、`File` に対してファイルシステムのパスを指�
 この機能を使用する際は注意してください。ClickHouse は、この種のファイルに対する外部からの変更を追跡しません。ClickHouse 経由での書き込みと ClickHouse 外部からの書き込みが同時に行われた場合の結果は未定義です。
 :::
 
-
-## 例
+## 例 {#example}
 
 **1.** `file_engine_table` テーブルを作成します。
 
@@ -75,8 +70,7 @@ SELECT * FROM file_engine_table
 └──────┴───────┘
 ```
 
-
-## ClickHouse-local での使用方法
+## ClickHouse-local での使用方法 {#usage-in-clickhouse-local}
 
 [clickhouse-local](../../../operations/utilities/clickhouse-local.md) では、File エンジンは `Format` に加えてファイルパスも指定できます。デフォルトの入出力ストリームは、`0` や `stdin`、`1` や `stdout` のような数値または人間が読める名前で指定できます。追加のエンジンパラメータまたはファイル拡張子（`gz`、`br`、`xz`）に基づいて、圧縮ファイルの読み書きを行えます。
 
@@ -85,7 +79,6 @@ SELECT * FROM file_engine_table
 ```bash
 $ echo -e "1,2\n3,4" | clickhouse-local -q "CREATE TABLE table (a Int64, b Int64) ENGINE = File(CSV, stdin); SELECT a, b FROM table; DROP TABLE table"
 ```
-
 
 ## 実装の詳細 {#details-of-implementation}
 
@@ -98,15 +91,11 @@ $ echo -e "1,2\n3,4" | clickhouse-local -q "CREATE TABLE table (a Int64, b Int64
   - インデックス
   - レプリケーション
 
-
-
 ## PARTITION BY {#partition-by}
 
 `PARTITION BY` — オプションです。パーティションキーによってデータを分割することで、別々のファイルとして保存できます。ほとんどの場合、パーティションキーは不要であり、必要な場合でも通常は「月」より細かい粒度のパーティションキーは必要ありません。パーティション分割は（`ORDER BY` 式とは対照的に）クエリの高速化にはつながりません。パーティションの粒度を細かくしすぎてはいけません。クライアント識別子や名前でデータをパーティション分割しないでください（その代わりに、`ORDER BY` 式の最初の列としてクライアント識別子または名前を指定します）。
 
 月単位でパーティション分割するには、`toYYYYMM(date_column)` 式を使用します。ここで `date_column` は [Date](/sql-reference/data-types/date.md) 型の日付を持つ列です。このときのパーティション名は `"YYYYMM"` 形式になります。
-
-
 
 ## 仮想カラム {#virtual-columns}
 
@@ -114,8 +103,6 @@ $ echo -e "1,2\n3,4" | clickhouse-local -q "CREATE TABLE table (a Int64, b Int64
 - `_file` — ファイル名。型: `LowCardinality(String)`。
 - `_size` — ファイルサイズ（バイト単位）。型: `Nullable(UInt64)`。サイズが不明な場合、値は `NULL` です。
 - `_time` — ファイルの最終更新時刻。型: `Nullable(DateTime)`。時刻が不明な場合、値は `NULL` です。
-
-
 
 ## 設定 {#settings}
 

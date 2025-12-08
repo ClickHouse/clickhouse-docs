@@ -12,11 +12,10 @@ integration:
   - website: 'https://github.com/ClickHouse/clickhouse-js'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
-# ClickHouse JS
+# ClickHouse JS {#clickhouse-js}
 
 ClickHouse へ接続するための公式の JS クライアントです。
 このクライアントは TypeScript で実装されており、クライアントの公開 API 向けの型定義を提供します。
@@ -52,7 +51,7 @@ TypeScript を使用する場合は、[バージョン 4.5 以上](https://www.t
 
 クライアントの Web 版は、最新の Chrome および Firefox ブラウザで公式にテストされており、React/Vue/Angular アプリケーションや Cloudflare Workers などで依存ライブラリとして利用できます。
 
-## インストール
+## インストール {#installation}
 
 最新の安定版 Node.js クライアントをインストールするには、次のコマンドを実行します。
 
@@ -65,7 +64,6 @@ Web 版のインストール：
 ```sh
 npm i @clickhouse/client-web
 ```
-
 
 ## ClickHouse との互換性 {#compatibility-with-clickhouse}
 
@@ -87,7 +85,7 @@ npm i @clickhouse/client-web
 
 特に明記がない限り、ほとんどのサンプルは Node.js 版およびブラウザ版のクライアントの両方で利用できます。
 
-#### クライアントインスタンスの作成
+#### クライアントインスタンスの作成 {#creating-a-client-instance}
 
 `createClient` ファクトリー関数を使用して、必要に応じてクライアントインスタンスをいくつでも作成できます。
 
@@ -110,7 +108,6 @@ const client = createClient({
 ```
 
 クライアントインスタンスは、生成時に[あらかじめ構成](./js.md#configuration)できます。
-
 
 #### 設定 {#configuration}
 
@@ -143,7 +140,7 @@ const client = createClient({
 | **http_agent**?: http.Agent \| https.Agent <br/><ExperimentalBadge/>       | クライアント用のカスタム HTTP エージェント。                  | -             | [HTTP agent docs](./js.md#custom-httphttps-agent-experimental-nodejs-only)                           |
 | **set_basic_auth_header**?: boolean <br/><ExperimentalBadge/>              | Basic 認証の資格情報を使用して `Authorization` ヘッダーを設定します。 | `true`        | [HTTP agent docs におけるこの設定の利用方法](./js.md#custom-httphttps-agent-experimental-nodejs-only) |
 
-### URL 設定
+### URL 設定 {#url-configuration}
 
 :::important
 URL 設定は*常に*ハードコードされた値を上書きし、この場合は警告がログに記録されます。
@@ -190,14 +187,13 @@ createClient({
 })
 ```
 
-
 ### 接続 {#connecting}
 
 #### 接続情報を確認する {#gather-your-connection-details}
 
 <ConnectionDetails />
 
-#### 接続の概要
+#### 接続の概要 {#connection-overview}
 
 クライアントは HTTP(s) プロトコル経由で接続を行います。RowBinary のサポートは開発中です。[関連する issue](https://github.com/ClickHouse/clickhouse-js/issues/216) を参照してください。
 
@@ -217,7 +213,6 @@ const client = createClient({
 
 クライアントリポジトリには、[ClickHouse Cloud にテーブルを作成する](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/create_table_cloud.ts)、[非同期インサートを使用する](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/async_insert.ts) など、環境変数を使用するサンプルが複数含まれており、そのほかにも多数の例があります。
 
-
 #### 接続プール（Node.js のみ） {#connection-pool-nodejs-only}
 
 各リクエストごとに接続を確立するオーバーヘッドを回避するため、クライアントは ClickHouse への接続を再利用するための接続プールを作成し、Keep-Alive メカニズムを利用します。デフォルトでは Keep-Alive は有効になっており、接続プールのサイズは `10` に設定されていますが、`max_open_connections` [設定オプション](./js.md#configuration)で変更できます。
@@ -234,7 +229,7 @@ const client = createClient({
 `query_id` パラメータを上書きする場合は、呼び出しごとに一意になるようにする必要があります。ランダムな UUID を使用するのが推奨されます。
 :::
 
-### すべてのクライアントメソッドに共通の基本パラメータ
+### すべてのクライアントメソッドに共通の基本パラメータ {#base-parameters-for-all-client-methods}
 
 すべてのクライアントメソッド（[query](./js.md#query-method)/[command](./js.md#command-method)/[insert](./js.md#insert-method)/[exec](./js.md#exec-method)）で共通して使用できるパラメータがいくつかあります。
 
@@ -257,8 +252,7 @@ interface BaseQueryParams {
 }
 ```
 
-
-### クエリメソッド
+### クエリメソッド {#query-method}
 
 これは、`SELECT` のようなレスポンスを返すほとんどのステートメントや、`CREATE TABLE` のような DDL を送信する際に使用し、`await` して結果を受け取る必要があります。返された結果セットは、アプリケーション側で利用されることを前提としています。
 
@@ -285,8 +279,7 @@ interface ClickHouseClient {
 `query` 内で FORMAT 句は指定せず、代わりに `format` パラメータを使用してください。
 :::
 
-
-#### 結果セットおよび行の抽象化
+#### 結果セットおよび行の抽象化 {#result-set-and-row-abstractions}
 
 `ResultSet` は、アプリケーション内でのデータ処理を容易にするための、いくつかの便利なメソッドを提供します。
 
@@ -370,7 +363,6 @@ await new Promise((resolve, reject) => {
 **例:** (`Node.js` のみ) 従来の `on('data')` アプローチを使用して、クエリ結果を `CSV` 形式でストリーミングします。これは `for await const` 構文と置き換えて使用できます。
 [ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_text_line_by_line.ts)
 
-
 ```ts
 const resultSet = await client.query({
   query: 'SELECT number FROM system.numbers_mt LIMIT 5',
@@ -429,8 +421,7 @@ while (true) {
 }
 ```
 
-
-### Insert メソッド
+### Insert メソッド {#insert-method}
 
 これはデータを挿入するための基本的なメソッドです。
 
@@ -451,8 +442,7 @@ interface ClickHouseClient {
 
 insert 文がサーバーに送信された場合、`executed` フラグは `true` になります。
 
-
-#### Node.js における insert メソッドとストリーミング
+#### Node.js における insert メソッドとストリーミング {#insert-method-and-streaming-in-nodejs}
 
 `insert` メソッドに指定された [データ形式](./js.md#supported-data-formats) に応じて、`Stream.Readable` と通常の `Array<T>` のいずれにも対応します。あわせて、[ファイルストリーミング](./js.md#streaming-files-nodejs-only) に関するセクションも参照してください。
 
@@ -554,7 +544,6 @@ await client.insert({
 
 詳細については[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_exclude_columns.ts)を参照してください。
 
-
 **例**: クライアントインスタンスで指定されたものとは異なるデータベースに `INSERT` する。[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_into_different_db.ts)。
 
 ```ts
@@ -565,8 +554,7 @@ await client.insert({
 })
 ```
 
-
-#### Web バージョンの制限事項
+#### Web バージョンの制限事項 {#web-version-limitations}
 
 現在、`@clickhouse/client-web` での insert 処理は `Array<T>` と `JSON*` フォーマットでのみ動作します。
 ブラウザの互換性が十分でないため、Web バージョンではまだストリームの挿入はサポートされていません。
@@ -593,8 +581,7 @@ interface InsertParams<T> extends BaseQueryParams {
 
 これは今後変更される可能性があります。あわせてこちらも参照してください: [すべてのクライアントメソッドに共通の基本パラメーター](./js.md#base-parameters-for-all-client-methods)。
 
-
-### Command メソッド
+### Command メソッド {#command-method}
 
 出力を伴わないステートメント、`FORMAT` 句が適用できないステートメント、あるいはレスポンスにまったく関心がない場合に使用できます。このようなステートメントの例としては、`CREATE TABLE` や `ALTER TABLE` があります。
 
@@ -664,8 +651,7 @@ await client.command({
 `abort_signal` によってリクエストがキャンセルされても、そのステートメントがサーバー側で実行されなかったことが保証されるわけではありません。
 :::
 
-
-### Exec メソッド
+### Exec メソッド {#exec-method}
 
 `query`/`insert` に収まらないカスタムクエリがあり、
 その結果を取得したい場合は、`command` の代わりに `exec` を使用できます。
@@ -705,8 +691,7 @@ export interface QueryResult {
 }
 ```
 
-
-### Ping
+### Ping {#ping}
 
 接続状態を確認するために用意されている `ping` メソッドは、サーバーに到達可能な場合は `true` を返します。
 
@@ -763,15 +748,13 @@ const result = await client.ping({ select: true, /* query_id、abort_signal、ht
 
 `ping` メソッドでは、標準的な `query` メソッドのパラメータのほとんどを指定できます。詳細は `PingParamsWithSelectQuery` の型定義を参照してください。
 
-
-### Close（Node.js のみ）
+### Close（Node.js のみ） {#close-nodejs-only}
 
 開いているすべての接続を閉じ、リソースを解放します。Web 版では何も行われません。
 
 ```ts
 await client.close()
 ```
-
 
 ## ファイルのストリーミング（Node.js のみ） {#streaming-files-nodejs-only}
 
@@ -884,7 +867,7 @@ ClickHouse の入力および出力フォーマットの完全な一覧は
 - [Dynamic/Variant/JSON を扱う例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/dynamic_variant_json.ts)
 - [Time/Time64 を扱う例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/time_time64.ts)
 
-### Date/Date32 型の注意事項
+### Date/Date32 型の注意事項 {#datedate32-types-caveats}
 
 クライアントは値を挿入する際に追加の型変換を行わないため、`Date`/`Date32` 型のカラムには値を文字列としてのみ挿入できます。
 
@@ -901,8 +884,7 @@ await client.insert({
 
 ただし、`DateTime` や `DateTime64` の列を使用している場合は、文字列と JS Date オブジェクトの両方を利用できます。JS Date オブジェクトは、`date_time_input_format` を `best_effort` に設定した状態で、そのまま `insert` に渡すことができます。詳細については、この[サンプル](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_js_dates.ts)を参照してください。
 
-
-### Decimal* 型の注意事項
+### Decimal* 型の注意事項 {#decimal-types-caveats}
 
 `JSON*` 系のフォーマットを使用して Decimal 型の値を挿入できます。次のようにテーブルが定義されているとします：
 
@@ -952,8 +934,7 @@ await client.query({
 
 詳しくは[この例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_decimals.ts)を参照してください。
 
-
-### 整数型: Int64, Int128, Int256, UInt64, UInt128, UInt256
+### 整数型: Int64, Int128, Int256, UInt64, UInt128, UInt256 {#integral-types-int64-int128-int256-uint64-uint128-uint256}
 
 サーバーはこれらの値を数値として受け取ることができますが、これらの型の最大値は `Number.MAX_SAFE_INTEGER` よりも大きいため、整数オーバーフローを避ける目的で、`JSON*` ファミリーの出力フォーマットでは文字列として返されます。
 
@@ -982,8 +963,7 @@ const resultSet = await client.query({
 expect(await resultSet.json()).toEqual([ { number: 0 } ])
 ```
 
-
-## ClickHouse 設定
+## ClickHouse 設定 {#clickhouse-settings}
 
 クライアントは [settings](/operations/settings/settings/) メカニズムを通じて ClickHouse の動作を調整できます。
 設定はクライアントインスタンスのレベルで指定でき、その場合は ClickHouse に送信されるすべてのリクエストに適用されます。
@@ -1009,10 +989,9 @@ client.query({
 クエリを実行するユーザーが、設定を変更するのに十分な権限を持っていることを確認してください。
 :::
 
-
 ## 高度なトピック {#advanced-topics}
 
-### パラメータ付きクエリ
+### パラメータ付きクエリ {#queries-with-parameters}
 
 パラメータ付きのクエリを作成し、クライアントアプリケーションからそれらに値を渡すことができます。これにより、クライアント側で特定の動的な値を埋め込んだクエリ文字列を組み立てる必要がなくなります。
 
@@ -1044,8 +1023,7 @@ await client.query({
 
 詳細については、[https://clickhouse.com/docs/interfaces/cli#cli-queries-with-parameters-syntax](https://clickhouse.com/docs/interfaces/cli#cli-queries-with-parameters-syntax) を参照してください。
 
-
-### 圧縮
+### 圧縮 {#compression}
 
 注意: リクエスト圧縮は現在 Web 版では利用できません。レスポンス圧縮は通常どおり動作します。Node.js 版は両方をサポートしています。
 
@@ -1065,8 +1043,7 @@ createClient({
 * `response: true` は、ClickHouse サーバーに圧縮されたレスポンスボディで応答するよう指示します。デフォルト値: `response: false`
 * `request: true` は、クライアントから送信されるリクエストボディの圧縮を有効にします。デフォルト値: `request: false`
 
-
-### ロギング（Node.js のみ）
+### ロギング（Node.js のみ） {#logging-nodejs-only}
 
 :::important
 ロギングは実験的な機能であり、将来変更される可能性があります。
@@ -1123,8 +1100,7 @@ const client = createClient({
 
 デフォルトの Logger 実装は[こちら](https://github.com/ClickHouse/clickhouse-js/blob/main/packages/client-common/src/logger.ts)で確認できます。
 
-
-### TLS 証明書（Node.js のみ）
+### TLS 証明書（Node.js のみ） {#tls-certificates-nodejs-only}
 
 Node.js クライアントは、オプションで基本（認証局のみ）および相互（認証局とクライアント証明書の両方）の TLS をサポートします。
 
@@ -1157,7 +1133,6 @@ const client = createClient({
 
 リポジトリ内の [basic](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/basic_tls.ts) および [mutual](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/mutual_tls.ts) TLS の完全なサンプルコードを参照してください。
 
-
 ### Keep-alive configuration (Node.js only) {#keep-alive-configuration-nodejs-only}
 
 このクライアントは、基盤となる HTTP エージェントで Keep-Alive をデフォルトで有効化しており、これにより確立済みのソケットが後続のリクエストで再利用され、`Connection: keep-alive` ヘッダーが送信されます。アイドル状態のソケットは、デフォルトでは 2500 ミリ秒間接続プール内に保持されます（このオプションの調整に関する[注意事項](./js.md#adjusting-idle_socket_ttl)を参照してください）。
@@ -1166,7 +1141,7 @@ const client = createClient({
 
 `keep_alive.idle_socket_ttl` を変更する場合は、サーバー／ロードバランサー側の Keep-Alive 設定と常に同期させたうえで、その値は**必ずそれより低く**設定し、サーバー側が先にオープンな接続をクローズしてしまうことが決してないようにしてください。
 
-#### `idle_socket_ttl` の調整
+#### `idle_socket_ttl` の調整 {#adjusting-idle_socket_ttl}
 
 クライアントは `keep_alive.idle_socket_ttl` を 2500 ミリ秒に設定します。これは最も安全なデフォルトと考えられるためです。一方、サーバー側では、`config.xml` を変更しない場合、`keep_alive_timeout` が [ClickHouse 23.11 より前のバージョンでは最短 3 秒に設定されている場合があります](https://github.com/ClickHouse/ClickHouse/commit/1685cdcb89fe110b45497c7ff27ce73cc03e82d1)。
 
@@ -1188,7 +1163,6 @@ curl -v --data-binary "SELECT 1" <clickhouse_url>
 ```
 
 この場合、`keep_alive_timeout` は 10 秒なので、アイドル中のソケットをデフォルトより少し長く開いたままにしておくために、`keep_alive.idle_socket_ttl` を 9000 や 9500 ミリ秒まで増やしてみることができます。「Socket hang-up」エラーが発生しないか注意して監視し、このエラーが、クライアントより先にサーバー側が接続を切断していることを示すので、エラーが出なくなるまで値を下げて調整してください。
-
 
 #### トラブルシューティング {#troubleshooting}
 
@@ -1235,7 +1209,7 @@ curl -v --data-binary "SELECT 1" <clickhouse_url>
   })
   ```
 
-### 読み取り専用ユーザー
+### 読み取り専用ユーザー {#read-only-users}
 
 [readonly=1 ユーザー](/operations/settings/permissions-for-queries#readonly) でクライアントを使用する場合、レスポンス圧縮は有効化できません。`enable_http_compression` 設定が必要となるためです。次の構成はエラーが発生します。
 
@@ -1249,8 +1223,7 @@ const client = createClient({
 
 `readonly=1` ユーザーの制限事項についてさらに詳しく説明している [例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/read_only_user.ts) を参照してください。
 
-
-### パス名付きプロキシ
+### パス名付きプロキシ {#proxy-with-a-pathname}
 
 ClickHouse インスタンスがプロキシの背後にあり、たとえば [http://proxy:8123/clickhouse&#95;server](http://proxy:8123/clickhouse_server) のように URL にパス名が含まれている場合は、`pathname` 設定オプションとして `clickhouse_server` を指定してください（先頭のスラッシュの有無は問いません）。そうせずに `url` に直接含めた場合は、それが `database` オプションとして解釈されます。`/my_proxy/db` のように複数セグメントを含めることもできます。
 
@@ -1261,8 +1234,7 @@ const client = createClient({
 })
 ```
 
-
-### 認証付きリバースプロキシ
+### 認証付きリバースプロキシ {#reverse-proxy-with-authentication}
 
 ClickHouse デプロイメントの前段に認証付きのリバースプロキシがある場合は、`http_headers` 設定を使用して、そのプロキシ側で必要なヘッダーを付与できます。
 
@@ -1273,7 +1245,6 @@ const client = createClient({
   },
 })
 ```
-
 
 ### カスタム HTTP/HTTPS エージェント（実験的、Node.js のみ） {#custom-httphttps-agent-experimental-nodejs-only}
 
@@ -1289,7 +1260,7 @@ const client = createClient({
 - `keep_alive.enabled` は、`Connection` ヘッダーのデフォルト値のみを制御します（`true` -> `Connection: keep-alive`、`false` -> `Connection: close`）。
 - アイドル状態の keep-alive ソケット管理は（エージェントではなく個々のソケット自体に結び付いているため）引き続き機能しますが、`keep_alive.idle_socket_ttl` の値を `0` に設定することで、これを完全に無効にできるようになりました。
 
-#### カスタムエージェントの使用例
+#### カスタムエージェントの使用例 {#custom-agent-usage-examples}
 
 証明書なしでカスタム HTTP(s) エージェントを使用する場合：
 
@@ -1355,7 +1326,6 @@ const client = createClient({
 ```
 
 証明書とカスタムの *HTTPS* Agent を併用する場合、TLS ヘッダーと競合するため、`set_basic_auth_header` 設定（1.2.0 で導入）でデフォルトの Authorization ヘッダーを無効化する必要がある可能性があります。TLS 関連のヘッダーはすべて手動で指定する必要があります。
-
 
 ## 既知の制限事項 (Node.js/web) {#known-limitations-nodejsweb}
 

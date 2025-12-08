@@ -17,20 +17,15 @@ import backup_usage from '@site/static/images/cloud/manage/backup-usage.png';
 import backup_restore from '@site/static/images/cloud/manage/backup-restore.png';
 import backup_service_provisioning from '@site/static/images/cloud/manage/backup-service-provisioning.png';
 
-
-# バックアップの確認と復元
+# バックアップの確認と復元 {#review-and-restore-backups}
 
 このガイドでは、ClickHouse Cloud におけるバックアップの仕組み、サービスのバックアップ設定に利用できるオプション、およびバックアップからの復元方法について説明します。
-
-
 
 ## バックアップステータス一覧 {#backup-status-list}
 
 サービスは、デフォルトの毎日スケジュールまたは選択した[カスタムスケジュール](/cloud/manage/backups/configurable-backups)に従ってバックアップされます。利用可能なすべてのバックアップは、サービスの **Backups** タブから確認できます。ここでは、バックアップのステータス、所要時間、およびバックアップサイズを確認できます。また、**Actions** 列から特定のバックアップを復元することも可能です。
 
 <Image img={backup_status_list} size="md" alt="ClickHouse Cloud におけるバックアップステータスの一覧" border/>
-
-
 
 ## バックアップコストについて {#understanding-backup-cost}
 
@@ -50,8 +45,6 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 サービス内のデータサイズは時間の経過とともに増加するため、バックアップの推定コストも変化する点に注意してください。
 :::
 
-
-
 ## バックアップの復元 {#restore-a-backup}
 
 バックアップは、バックアップを取得した既存のサービスではなく、新しい ClickHouse Cloud サービスに復元されます。
@@ -64,9 +57,7 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 
 <Image img={backup_service_provisioning} size="md" alt="サービスプロビジョニング中" border/>
 
-
-
-## 復元したサービスの操作
+## 復元したサービスの操作 {#working-with-your-restored-service}
 
 バックアップを復元すると、2 つの類似したサービスが存在することになります。復元が必要だった **元のサービス** と、そのバックアップから復元された新しい **復元済みサービス** です。
 
@@ -75,7 +66,7 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 * 新しい復元済みサービスを使用し、元のサービスを削除する。
 * 新しい復元済みサービスから元のサービスへデータを移行し、新しい復元済みサービスを削除する。
 
-### **新しい復元済みサービス**を使用する
+### **新しい復元済みサービス**を使用する {#use-the-new-restored-service}
 
 新しいサービスを使用するには、次の手順を実行します。
 
@@ -83,7 +74,7 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 2. 新しいサービスに、必要なデータが含まれていることを確認します。
 3. 元のサービスを削除します。
 
-### **新しく復元したサービス**から **元のサービス** へデータを移行する
+### **新しく復元したサービス**から **元のサービス** へデータを移行する {#migrate-data-from-the-newly-restored-service-back-to-the-original-service}
 
 何らかの理由で新しく復元したサービスを利用できない場合、たとえば既存のサービスに接続しているユーザーやアプリケーションがまだ存在する場合は、新しく復元したデータを元のサービスへ移行することを検討することもできます。移行は次の手順で実施できます。
 
@@ -147,8 +138,7 @@ FROM remoteSecure('source-hostname', db, table, 'exporter', 'password-here')
 
 元のサービスへのデータ挿入が正常に完了したら、そのサービス上でデータを必ず検証してください。データの検証が完了したら、新しいサービスは削除してください。
 
-
-## テーブルの削除取り消し（UNDROP）
+## テーブルの削除取り消し（UNDROP） {#undeleting-or-undropping-tables}
 
 `UNDROP` コマンドは、[Shared Catalog](https://clickhouse.com/docs/cloud/reference/shared-catalog) を通じて ClickHouse Cloud でサポートされています。
 
@@ -169,12 +159,9 @@ SYNC SETTINGS max_table_size_to_drop=2000000000000 -- 制限を2TBに増やし�
 レガシープラン: レガシープランをご利用のお客様の場合、24時間保持されるデフォルトの日次バックアップはストレージコストに含まれます。
 :::
 
-
 ## 設定可能なバックアップ {#configurable-backups}
 
 デフォルトとは異なるバックアップスケジュールを設定する場合は、[設定可能なバックアップ](/cloud/manage/backups/configurable-backups)を参照してください。
-
-
 
 ## 自分のクラウドアカウントへのバックアップのエクスポート {#export-backups-to-your-own-cloud-account}
 

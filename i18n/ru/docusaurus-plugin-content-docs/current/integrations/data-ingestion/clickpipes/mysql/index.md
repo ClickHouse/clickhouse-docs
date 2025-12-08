@@ -17,8 +17,7 @@ import select_destination_db from '@site/static/images/integrations/data-ingesti
 import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
 import Image from '@theme/IdealImage';
 
-
-# Приём данных из MySQL в ClickHouse (с использованием CDC)
+# Приём данных из MySQL в ClickHouse (с использованием CDC) {#ingesting-data-from-mysql-to-clickhouse-using-cdc}
 
 <BetaBadge/>
 
@@ -27,8 +26,6 @@ import Image from '@theme/IdealImage';
 :::
 
 Вы можете использовать ClickPipes для приёма данных из исходной базы данных MySQL в ClickHouse Cloud. Исходная база данных MySQL может размещаться в локальной инфраструктуре (on-premises) или в облаке с использованием таких сервисов, как Amazon RDS, Google Cloud SQL и другие.
-
-
 
 ## Предварительные требования {#prerequisites}
 
@@ -47,8 +44,6 @@ import Image from '@theme/IdealImage';
 6. [Generic MariaDB](./mysql/source/generic_maria)
 
 После того как исходная база данных MySQL будет настроена, можно переходить к созданию ClickPipe.
-
-
 
 ## Создайте свой ClickPipe {#create-your-clickpipe}
 
@@ -121,8 +116,6 @@ import Image from '@theme/IdealImage';
    <Image img={ch_permissions} alt="Просмотр прав доступа" size="lg" border/>
 
 Наконец, для получения дополнительной информации о распространённых проблемах и способах их решения обратитесь к разделу ["ClickPipes for MySQL FAQ"](/integrations/clickpipes/mysql/faq).
-
-
 
 ## Что дальше? {#whats-next}
 

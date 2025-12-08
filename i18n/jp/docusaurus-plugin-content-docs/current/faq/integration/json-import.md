@@ -8,15 +8,11 @@ keywords: ['JSON インポート', 'JSONEachRow フォーマット', 'データ�
 doc_type: 'guide'
 ---
 
-
-
 # ClickHouse に JSON をインポートする方法 {#how-to-import-json-into-clickhouse}
 
 ClickHouse は、[入出力用のさまざまなデータ形式](/interfaces/formats)をサポートしています。その中には複数の JSON 系フォーマットがありますが、データのインジェストで最も一般的に使用されるのは [JSONEachRow](/interfaces/formats/JSONEachRow) です。これは、1 行に 1 つの JSON オブジェクトがあり、各オブジェクトが改行で区切られている形式を前提としています。
 
-
-
-## 例
+## 例 {#examples}
 
 [HTTP インターフェース](../../interfaces/http.md)を使用する場合：
 
@@ -31,7 +27,6 @@ $ echo '{"foo":"bar"}'  | clickhouse-client --query="INSERT INTO test FORMAT JSO
 ```
 
 データを手動で挿入するのではなく、[インテグレーションツール](../../integrations/index.mdx)の利用を検討してください。
-
 
 ## 便利な設定 {#useful-settings}
 

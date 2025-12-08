@@ -14,7 +14,7 @@ integration:
 ---
 
 import Image from '@theme/IdealImage';
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import metabase_01 from '@site/static/images/integrations/data-visualization/metabase_01.png';
 import metabase_02 from '@site/static/images/integrations/data-visualization/metabase_02.png';
 import metabase_03 from '@site/static/images/integrations/data-visualization/metabase_03.png';
@@ -24,14 +24,11 @@ import metabase_07 from '@site/static/images/integrations/data-visualization/met
 import metabase_08 from '@site/static/images/integrations/data-visualization/metabase_08.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
-# Подключение Metabase к ClickHouse
+# Подключение Metabase к ClickHouse {#connecting-metabase-to-clickhouse}
 
 <PartnerBadge/>
 
 Metabase — это простой в использовании UI-инструмент с открытым исходным кодом для формирования запросов к вашим данным. Metabase — это Java-приложение, которое можно запустить, просто <a href="https://www.metabase.com/start/oss/jar" target="_blank">скачав JAR‑файл</a> и выполнив его командой `java -jar metabase.jar`. Metabase подключается к ClickHouse с помощью JDBC‑драйвера, который вы скачиваете и помещаете в папку `plugins`:
-
-
 
 ## Цель {#goal}
 
@@ -44,12 +41,8 @@ Metabase — это простой в использовании UI-инстру
 Если у вас нет набора данных для работы, вы можете добавить один из примеров. В этом руководстве используется набор данных [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md), поэтому вы можете выбрать его. В той же категории документации есть и несколько других вариантов.
 :::
 
-
-
 ## 1. Соберите параметры подключения {#1-gather-your-connection-details}
 <ConnectionDetails />
-
-
 
 ## 2.  Загрузка плагина ClickHouse для Metabase {#2--download-the-clickhouse-plugin-for-metabase}
 
@@ -62,8 +55,6 @@ Metabase — это простой в использовании UI-инстру
 4. Запустите (или перезапустите) Metabase, чтобы драйвер корректно загрузился.
 
 5. Откройте Metabase по адресу <a href="http://localhost:3000/" target="_blank">http://hostname:3000</a>. При первом запуске вы увидите приветственный экран и вам нужно будет ответить на ряд вопросов. Если будет предложено выбрать базу данных, выберите "**I'll add my data later**":
-
-
 
 ## 3.  Подключение Metabase к ClickHouse {#3--connect-metabase-to-clickhouse}
 
@@ -83,8 +74,6 @@ Metabase — это простой в использовании UI-инстру
 
 6. Нажмите кнопку **Save**, и Metabase просканирует вашу базу данных и обнаружит таблицы.
 
-
-
 ## 4. Выполните SQL-запрос {#4-run-a-sql-query}
 
 1. Выйдите из **Admin settings**, нажав кнопку **Exit admin** в правом верхнем углу.
@@ -96,8 +85,6 @@ Metabase — это простой в использовании UI-инстру
 3. Например, ниже показан SQL-запрос к таблице `uk_price_paid`, который возвращает среднюю уплаченную цену по годам с 1995 по 2022 год:
 
     <Image size="md" img={metabase_04} alt="Редактор SQL Metabase, показывающий запрос к данным UK price paid" border />
-
-
 
 ## 5. Задайте вопрос {#5-ask-a-question}
 
@@ -112,8 +99,6 @@ Metabase — это простой в использовании UI-инстру
 3. Ниже результатов нажмите кнопку **Visualization**, чтобы изменить тип визуализации на столбчатую диаграмму (или любой другой доступный вариант):
 
     <Image size="md" img={metabase_08} alt="Круговая диаграмма Metabase со средними ценами по городам в Большом Манчестере" border />
-
-
 
 ## Подробнее {#learn-more}
 

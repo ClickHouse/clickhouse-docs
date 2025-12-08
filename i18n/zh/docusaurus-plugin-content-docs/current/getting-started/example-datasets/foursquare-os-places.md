@@ -13,7 +13,6 @@ import visualization_2 from '@site/static/images/getting-started/example-dataset
 import visualization_3 from '@site/static/images/getting-started/example-datasets/visualization_3.png';
 import visualization_4 from '@site/static/images/getting-started/example-datasets/visualization_4.png';
 
-
 ## 数据集 {#dataset}
 
 此数据集由 Foursquare 提供，可在[此处下载](https://docs.foursquare.com/data-products/docs/access-fsq-os-places)，
@@ -24,7 +23,7 @@ import visualization_4 from '@site/static/images/getting-started/example-dataset
 关于这些地点的附加元数据，例如类别和社交媒体
 信息。
 
-## 数据探索
+## 数据探索 {#data-exploration}
 
 为了探索这些数据，我们将使用 [`clickhouse-local`](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)，这是一个小型命令行工具，
 虽然体积小巧，但提供了完整的 ClickHouse 引擎。当然，也可以使用
@@ -73,7 +72,6 @@ bbox:                (-122.39003793803701,37.62120111687914,-122.39003793803701,
 SELECT * FROM s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*')
    WHERE address IS NOT NULL AND postcode IS NOT NULL AND instagram IS NOT NULL LIMIT 1
 ```
-
 
 ```response
 Row 1:
@@ -147,8 +145,7 @@ DESCRIBE s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*
     └─────────────────────┴─────────────────────────────┘
 ```
 
-
-## 将数据加载到 ClickHouse 中
+## 将数据加载到 ClickHouse 中 {#loading-the-data}
 
 如果希望将数据持久化到磁盘上，可以使用 `clickhouse-server` 或 ClickHouse Cloud。
 
@@ -252,7 +249,6 @@ INDEX idx_y mercator_y TYPE minmax
 INSERT INTO foursquare_mercator 
 SELECT * FROM s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*')
 ```
-
 
 ## 可视化数据 {#data-visualization}
 

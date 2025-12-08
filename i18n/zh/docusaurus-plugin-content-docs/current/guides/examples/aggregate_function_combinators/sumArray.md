@@ -7,11 +7,7 @@ sidebar_label: 'sumArray'
 doc_type: 'reference'
 ---
 
-
-
 # sumArray {#sumarray}
-
-
 
 ## 描述 {#description}
 
@@ -21,9 +17,7 @@ doc_type: 'reference'
 
 当需要计算数据集中多个数组中所有元素的总和时，`sumArray` 函数非常有用。
 
-
-
-## 示例用法
+## 示例用法 {#example-usage}
 
 在这个示例中，我们将使用一个包含不同产品类别每日销售额的示例数据集，来演示 `sumArray` 的工作原理。我们将计算每天所有类别的总销售额。
 
@@ -51,7 +45,6 @@ GROUP BY date, category_sales;
 `sumArray` 函数会将每个 `category_sales` 数组中的所有元素相加。
 例如，在 `2024-01-01` 这一天，它将 `100 + 200 + 150` 相加得到 `450`。这与使用 `arraySum`
 得到的结果相同。
-
 
 ## 另请参阅 {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)

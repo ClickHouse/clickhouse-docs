@@ -6,11 +6,11 @@ title: 'topK'
 doc_type: 'reference'
 ---
 
-# topK
+# topK {#topk}
 
-指定したカラム内で、おおよそ最も頻出する値の配列を返します。結果の配列は、値そのものではなく、値のおおよその出現頻度の高い順（降順）にソートされます。
+指定されたカラム内で最も頻繁に出現する値を、近似的な上位から配列として返します。結果の配列は、値そのものではなく、値の推定出現頻度の降順でソートされます。
 
-TopK を解析するために [Filtered Space-Saving](https://doi.org/10.1016/j.ins.2010.08.024) アルゴリズムを実装しており、これは [Parallel Space Saving](https://doi.org/10.1016/j.ins.2015.09.003) の reduce-and-combine アルゴリズムに基づいています。
+[Parallel Space Saving](https://doi.org/10.1016/j.ins.2015.09.003) における reduce-and-combine アルゴリズムに基づき、TopK を求めるための [Filtered Space-Saving](https://doi.org/10.1016/j.ins.2010.08.024) アルゴリズムを実装しています。
 
 ```sql
 topK(N)(column)
@@ -18,23 +18,23 @@ topK(N, load_factor)(column)
 topK(N, load_factor, 'counts')(column)
 ```
 
-この関数は、結果が常に正確であることは保証されません。特定の状況ではエラーが発生し、最頻値ではない値を最頻値として返すことがあります。
+この関数の結果は保証されません。特定の状況ではエラーが発生する可能性があり、実際の最頻値ではない頻出値を返す場合があります。
 
-`N < 10` の値を使用することを推奨します。`N` の値が大きいとパフォーマンスが低下します。`N` の最大値は `65536` です。
+`N = 65536` が最大値です。
 
 **パラメータ**
 
-* `N` — 返す要素数。省略可能。デフォルト値: 10。
-* `load_factor` — 値のために予約するセルの数を定義します。もし `uniq(column) > N * load_factor` の場合、`topK` 関数の結果は近似値になります。省略可能。デフォルト値: 3。
-* `counts` — 結果に近似的な件数と誤差の値を含めるかどうかを定義します。
+* `N` — 返す要素数。省略可能。既定値: 10。
+* `load_factor` — 値のために確保されるセル数をどの程度にするかを定義します。もし uniq(column) &gt; N * load&#95;factor の場合、topK 関数の結果は近似値になります。省略可能。既定値: 3。
+* `counts` — 結果に近似的な出現回数と誤差を含めるかどうかを定義します。
 
 **引数**
 
-* `column` — 出現頻度を計算する対象の値を含む列。
+* `column` — 出現頻度を計算する対象の値。
 
 **例**
 
-[OnTime](../../../getting-started/example-datasets/ontime.md) データセットを使用し、`AirlineID` 列で最も頻繁に出現する値を 3 つ選択します。
+[OnTime](../../../getting-started/example-datasets/ontime.md) データセットを使用し、`AirlineID` カラムで最も頻繁に出現する値を 3 つ取得します。
 
 ```sql
 SELECT topK(3)(AirlineID) AS res

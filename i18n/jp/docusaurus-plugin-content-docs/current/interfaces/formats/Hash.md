@@ -20,7 +20,7 @@ doc_type: 'reference'
 
 ## 使用例 {#example-usage}
 
-### データの読み取り
+### データの読み取り {#reading-data}
 
 次のデータを含む `football` テーブルを考えます。
 
@@ -61,6 +61,5 @@ df2ec2f0669b000edff6adee264e7d68
 
 1 rows in set. Elapsed: 0.154 sec.
 ```
-
 
 ## 書式設定 {#format-settings}

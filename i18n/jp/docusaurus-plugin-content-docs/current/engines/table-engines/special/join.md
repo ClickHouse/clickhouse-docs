@@ -7,9 +7,7 @@ title: 'Join テーブルエンジン'
 doc_type: 'reference'
 ---
 
-
-
-# Join テーブルエンジン
+# Join テーブルエンジン {#join-table-engine}
 
 [JOIN](/sql-reference/statements/select/join) 演算で使用するための、オプションの事前構築済みデータ構造です。
 
@@ -17,9 +15,7 @@ doc_type: 'reference'
 ClickHouse Cloud で、サービスがバージョン 25.4 より前に作成されている場合は、`SET compatibility=25.4` を実行して、compatibility を少なくとも 25.4 に設定する必要があります。
 :::
 
-
-
-## テーブルの作成
+## テーブルの作成 {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -30,7 +26,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ```
 
 [CREATE TABLE](/sql-reference/statements/create/table) クエリの詳細については、説明を参照してください。
-
 
 ## エンジンパラメータ {#engine-parameters}
 
@@ -47,8 +42,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 `k1[, k2, ...]` – `JOIN` 演算が実行される際の、`USING` 句内のキー列。
 
 `join_strictness` および `join_type` パラメータは、`Join(ANY, LEFT, col1)` のように引用符なしで指定します。これらは、そのテーブルが使用される `JOIN` 演算と一致していなければなりません。パラメータが一致しない場合でも、ClickHouse は例外をスローせず、誤ったデータを返す可能性があります。
-
-
 
 ## 詳細と推奨事項 {#specifics-and-recommendations}
 
@@ -113,9 +106,7 @@ I/O オーバーヘッドを削減します。性能を重視し、永続化を�
 
 `Join` エンジンでは、`CREATE TABLE` 文内で [join_use_nulls](/operations/settings/settings.md/#join_use_nulls) 設定を指定できます。[SELECT](/sql-reference/statements/select/index.md) クエリでも同じ `join_use_nulls` の値を使用する必要があります。
 
-
-
-## 使用例
+## 使用例 {#example}
 
 左側テーブルの作成：
 

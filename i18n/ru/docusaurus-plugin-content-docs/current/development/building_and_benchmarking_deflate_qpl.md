@@ -7,20 +7,14 @@ title: 'Сборка ClickHouse с DEFLATE_QPL'
 doc_type: 'guide'
 ---
 
-
-
-# Сборка ClickHouse с DEFLATE_QPL
+# Сборка ClickHouse с DEFLATE_QPL {#build-clickhouse-with-deflate_qpl}
 
 - Убедитесь, что ваша хост-система удовлетворяет требуемым для QPL [предварительным требованиям](https://intel.github.io/qpl/documentation/get_started_docs/installation.html#prerequisites)
 - deflate_qpl включён по умолчанию при сборке с помощью CMake. Если вы случайно изменили это, пожалуйста, проверьте флаг сборки: ENABLE_QPL=1
 
 - Для общих требований обратитесь к общим [инструкциям по сборке](/development/build.md) ClickHouse
 
-
-
-# Запуск бенчмарка с DEFLATE_QPL
-
-
+# Запуск бенчмарка с DEFLATE_QPL {#run-benchmark-with-deflate_qpl}
 
 ## Список файлов {#files-list}
 
@@ -33,9 +27,7 @@ doc_type: 'guide'
 
 `database_files` означает, что там будут храниться файлы базы данных в соответствии с кодеками lz4/deflate/zstd.
 
-
-
-## Автоматический запуск бенчмарка для схемы «звезда»:
+## Автоматический запуск бенчмарка для схемы «звезда»: {#run-benchmark-automatically-for-star-schema}
 
 ```bash
 $ cd ./benchmark_sample/client_scripts
@@ -46,14 +38,11 @@ $ sh run_ssb.sh
 
 Если возникнет ошибка, запустите бенчмарк вручную, как описано в разделах ниже.
 
-
 ## Определение {#definition}
 
 [CLICKHOUSE_EXE] — это путь к исполняемому файлу ClickHouse.
 
-
-
-## Среда
+## Среда {#environment}
 
 * CPU: Sapphire Rapids
 * Требования к ОС см. раздел [System Requirements for QPL](https://intel.github.io/qpl/documentation/get_started_docs/installation.html#system-requirements)
@@ -80,8 +69,7 @@ $ accel-config list | grep -P 'iax|state'
 
 Если вывода нет, это означает, что IAA еще не готов к работе. Пожалуйста, проверьте настройку IAA.
 
-
-## Генерация необработанных данных
+## Генерация необработанных данных {#generate-raw-data}
 
 ```bash
 $ cd ./benchmark_sample
@@ -93,8 +81,7 @@ $ mkdir rawdata_dir && cd rawdata_dir
 
 Файлы с расширением `*.tbl` должны быть сгенерированы в каталоге `./benchmark_sample/rawdata_dir/ssb-dbgen`:
 
-
-## Настройка базы данных
+## Настройка базы данных {#database-setup}
 
 Настройте базу данных с использованием кодека LZ4
 
@@ -163,8 +150,7 @@ SELECT count() FROM lineorder_flat
 
 Это означает, что устройства IAA не готовы; вам нужно заново проверить их настройку.
 
-
-## Тестирование производительности с одним экземпляром
+## Тестирование производительности с одним экземпляром {#benchmark-with-single-instance}
 
 * Перед началом бенчмарка отключите режим C6 и переведите регулятор частоты CPU в режим `performance`
 
@@ -217,8 +203,7 @@ zstd.log
 
 Нас интересует показатель QPS. Найдите по ключевому слову `QPS_Final` и соберите статистику.
 
-
-## Тестирование производительности с несколькими инстансами
+## Тестирование производительности с несколькими инстансами {#benchmark-with-multi-instances}
 
 * Чтобы снизить влияние ограничений по памяти при использовании слишком большого числа потоков, мы рекомендуем запускать тестирование производительности с несколькими инстансами.
 * Конфигурация с несколькими инстансами означает использование нескольких (2 или 4) серверов, каждый из которых подключён к своему клиенту.
@@ -311,7 +296,6 @@ $ numactl -m 1 -N 1 python3 client_stressing_test.py queries_ssb.sql 2  > lz4_2i
 
 ZSTD:
 
-
 ```bash
 $ cd ./database_dir/zstd
 $ numactl -C 0-29,120-149 [CLICKHOUSE_EXE] server -C config_zstd.xml >&/dev/null&
@@ -349,8 +333,7 @@ zstd_2insts.log
 Конфигурация бенчмарка для 4 инстансов аналогична конфигурации для 2 инстансов выше.
 Мы рекомендуем использовать данные бенчмарка для 2 инстансов в качестве итогового отчёта для рассмотрения.
 
-
-## Советы
+## Советы {#tips}
 
 Каждый раз перед запуском нового сервера ClickHouse убедитесь, что не осталось запущенных фоновых процессов ClickHouse; при необходимости найдите и завершите старые процессы:
 

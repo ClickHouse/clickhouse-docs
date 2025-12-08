@@ -7,8 +7,6 @@ description: 'ClickHouse Cloud における Shared Catalog コンポーネント
 doc_type: 'reference'
 ---
 
-
-
 # 共有カタログと共有データベースエンジン {#shared-catalog-and-shared-database-engine}
 
 **ClickHouse Cloud（およびファーストパーティパートナークラウドサービス）でのみ利用可能です**
@@ -24,8 +22,6 @@ Shared Catalog は**テーブル本体を複製するわけではなく**、DDL 
 - MySQL
 - DataLakeCatalog
 
-
-
 ## アーキテクチャとメタデータストレージ {#architecture-and-metadata-storage}
 
 Shared Catalog 内のすべてのメタデータおよび DDL クエリ履歴は、ZooKeeper に集中管理されます。ローカルディスク上には一切永続化されません。このアーキテクチャにより、次の点が保証されます。
@@ -33,8 +29,6 @@ Shared Catalog 内のすべてのメタデータおよび DDL クエリ履歴は
 - すべてのレプリカ間で一貫した状態
 - コンピュートノードをステートレスに保てること
 - 高速かつ信頼性の高いレプリカのブートストラップ
-
-
 
 ## 共有データベースエンジン {#shared-database-engine}
 
@@ -69,9 +63,7 @@ Shared Catalog 内のすべてのメタデータおよび DDL クエリ履歴は
 - **集中管理されたバージョン付きメタデータ状態**  
   Shared Catalog は ZooKeeper に唯一の信頼できる情報源を保持します。レプリカが起動すると、最新状態を取得し、その差分を適用して整合性を確保します。クエリ実行中は、正しさを保証するために、システムが他のレプリカが少なくとも必要なメタデータバージョンに到達するまで待機することができます。
 
-
-
-## ClickHouse Cloud での利用方法
+## ClickHouse Cloud での利用方法 {#usage-in-clickhouse-cloud}
 
 エンドユーザー側では、Shared Catalog と Shared データベースエンジンを利用するために特別な設定は必要ありません。データベースの作成方法はこれまでと同じです。
 
@@ -80,7 +72,6 @@ CREATE DATABASE my_database;
 ```
 
 ClickHouse Cloud では、データベースに Shared データベースエンジンが自動的に割り当てられます。そのようなデータベース内で stateless エンジンを使用して作成されたテーブルはすべて、自動的に Shared Catalog のレプリケーションおよびコーディネーション機能を利用できます。
-
 
 ## まとめ {#summary}
 

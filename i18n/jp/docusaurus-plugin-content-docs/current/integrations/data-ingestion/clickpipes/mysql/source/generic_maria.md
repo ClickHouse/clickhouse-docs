@@ -7,9 +7,7 @@ doc_type: 'guide'
 keywords: ['汎用 mariadb', 'clickpipes', 'バイナリログ', 'SSL/TLS', 'セルフホスト型']
 ---
 
-
-
-# 汎用 MariaDB ソース設定ガイド
+# 汎用 MariaDB ソース設定ガイド {#generic-mariadb-source-setup-guide}
 
 :::info
 
@@ -17,9 +15,7 @@ keywords: ['汎用 mariadb', 'clickpipes', 'バイナリログ', 'SSL/TLS', 'セ
 
 :::
 
-
-
-## バイナリログの保持を有効にする
+## バイナリログの保持を有効にする {#enable-binlog-retention}
 
 バイナリログには、MariaDB サーバーインスタンスで行われたデータ変更に関する情報が含まれており、レプリケーションに必要です。
 
@@ -67,7 +63,6 @@ expire_logs_days = 1
 
 :::
 
-
 ## データベースユーザーを構成する {#configure-database-user}
 
 root ユーザーとして MariaDB インスタンスに接続し、以下のコマンドを実行します。
@@ -97,8 +92,6 @@ root ユーザーとして MariaDB インスタンスに接続し、以下のコ
 
 :::
 
-
-
 ## SSL/TLS の設定（推奨） {#ssl-tls-configuration}
 
 SSL 証明書により、MariaDB データベースへの安全な接続が確立されます。設定内容は証明書の種類によって異なります。
@@ -112,8 +105,6 @@ SSL 証明書により、MariaDB データベースへの安全な接続が確�
 **MariaDB 11.4 以降の自己ホスト型 MariaDB** - サーバーで `ssl_ca` が設定されている場合は、上記と同様の手順に従ってください。設定されていない場合は、適切な証明書を用意するよう IT チームに相談してください。最後の手段として、ClickPipes UI の「Skip Certificate Verification」トグルを使用できますが、セキュリティ上の理由から推奨されません。
 
 SSL/TLS オプションの詳細については、[FAQ](https://clickhouse.com/docs/integrations/clickpipes/mysql/faq#tls-certificate-validation-error) を参照してください。
-
-
 
 ## 次のステップ {#whats-next}
 

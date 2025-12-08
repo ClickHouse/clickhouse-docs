@@ -25,7 +25,7 @@ _要将日志发送到 ClickStack，请通过 [OpenTelemetry Collector](/use-cas
 
 ## 快速开始 {#getting-started}
 
-### 安装 OpenTelemetry 软件包
+### 安装 OpenTelemetry 软件包 {#install-otel-packages}
 
 使用以下命令安装 OpenTelemetry 软件包。
 
@@ -33,8 +33,7 @@ _要将日志发送到 ClickStack，请通过 [OpenTelemetry Collector](/use-cas
 bundle add opentelemetry-sdk opentelemetry-instrumentation-all opentelemetry-exporter-otlp
 ```
 
-
-### 配置 OpenTelemetry 和日志格式化器
+### 配置 OpenTelemetry 和日志格式化器 {#configure-otel-logger-formatter}
 
 接下来，需要初始化 OpenTelemetry 的 tracing instrumentation，
 并为 Rails logger 配置日志消息格式化器，以便日志可以自动与 trace 关联。
@@ -43,7 +42,7 @@ bundle add opentelemetry-sdk opentelemetry-instrumentation-all opentelemetry-exp
 在 `config/initializers` 目录中创建一个名为 `hyperdx.rb` 的文件，并添加以下内容：
 
 ```ruby
-# config/initializers/hyperdx.rb
+# config/initializers/hyperdx.rb {#configinitializershyperdxrb}
 
 require 'opentelemetry-exporter-otlp'
 require 'opentelemetry/instrumentation/all'
@@ -73,8 +72,7 @@ Rails.application.configure do
 end
 ```
 
-
-### 配置环境变量
+### 配置环境变量 {#configure-environment-variables}
 
 接下来需要在 shell 中配置以下环境变量，用于将遥测数据发送到 ClickStack：
 

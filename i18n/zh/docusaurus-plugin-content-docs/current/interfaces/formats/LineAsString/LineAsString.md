@@ -13,17 +13,13 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-
-
 ## 描述 {#description}
 
 `LineAsString` 格式将输入数据的每一行都视为一个单独的字符串值。
 此格式只能用于解析仅包含一个 [String](/sql-reference/data-types/string.md) 类型字段的表。
 其余列必须设置为 [`DEFAULT`](/sql-reference/statements/create/table.md/#default)、[`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view) 或省略。
 
-
-
-## 使用示例
+## 使用示例 {#example-usage}
 
 ```sql title="Query"
 DROP TABLE IF EXISTS line_as_string;
@@ -37,6 +33,5 @@ SELECT * FROM line_as_string;
 │ "我喜欢苹果", "我喜欢香蕉", "我喜欢橙子"; │
 └───────────────────────────────────────────────────┘
 ```
-
 
 ## 格式设置 {#format-settings}

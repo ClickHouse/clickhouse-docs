@@ -10,8 +10,7 @@ keywords: ['TTL']
 
 {/* 截断 */}
 
-
-## TTL 规则与控制
+## TTL 规则与控制 \{#ttl-rules-and-control\}
 
 TTL 规则&#x662F;***最终***&#x624D;会生效的。这是什么意思？`MergeTree` 表设置 [`merge_with_ttl_timeout`](https://clickhouse.com/docs/engines/table-engines/mergetree-family/mergetree#merge_with_ttl_timeout) 用于设置在包含 delete TTL 的合并操作再次执行前的最小延迟时间（以秒为单位）。默认值为 14400 秒（4 小时）。但这只是最小延迟，在实际触发 delete TTL 合并之前，可能需要更长时间。
 
@@ -43,8 +42,7 @@ WHERE name like '%ttl%'
 SHOW CREATE TABLE <TableName>
 ```
 
-
-## 强制应用 TTL 规则
+## 强制应用 TTL 规则 \{#force-a-ttl-rule-to-be-applied\}
 
 这并不是最优雅的解决方案，但你可以显式执行 `MATERIALIZE TTL`，它会强制将表的所有 TTL 规则物化生效：
 
@@ -53,8 +51,7 @@ ALTER TABLE my_table
     MATERIALIZE TTL
 ```
 
-
-## 影响 TTL 的后台线程
+## 影响 TTL 的后台线程 \{#background-threads-affecting-ttl\}
 
 TTL 规则可能没有生效，是因为后台线程池中没有足够的工作线程。例如，如果写入数据非常频繁，整个后台线程池可能都会被常规合并操作占满。不过，可以通过调整参数来增大后台线程池的大小。
 

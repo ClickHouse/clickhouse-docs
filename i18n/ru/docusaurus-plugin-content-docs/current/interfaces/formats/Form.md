@@ -18,7 +18,7 @@ doc_type: 'reference'
 Формат `Form` можно использовать для чтения одной записи в формате application/x-www-form-urlencoded, 
 в котором данные представлены в виде `key1=value1&key2=value2`.
 
-## Пример использования
+## Пример использования {#example-usage}
 
 Предположим, что файл `data.tmp` находится в каталоге `user_files` и содержит некоторые данные в URL-кодировке:
 
@@ -39,6 +39,5 @@ c.tti.m:  raf
 rt.start: navigation
 rt.bmr:   390,11,10
 ```
-
 
 ## Параметры форматирования {#format-settings}

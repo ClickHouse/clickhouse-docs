@@ -7,9 +7,7 @@ title: 'String'
 doc_type: 'reference'
 ---
 
-
-
-# String
+# String {#string}
 
 任意の長さの文字列型です。長さに制限はありません。値には、ヌルバイトを含む任意のバイト列を格納できます。
 String 型は、他の DBMS の VARCHAR、BLOB、CLOB などの型を置き換えるものです。
@@ -19,8 +17,6 @@ String 型は、他の DBMS の VARCHAR、BLOB、CLOB などの型を置き換�
 エイリアス:
 
 - `String` — `LONGTEXT`, `MEDIUMTEXT`, `TINYTEXT`, `TEXT`, `LONGBLOB`, `MEDIUMBLOB`, `TINYBLOB`, `BLOB`, `VARCHAR`, `CHAR`, `CHAR LARGE OBJECT`, `CHAR VARYING`, `CHARACTER LARGE OBJECT`, `CHARACTER VARYING`, `NCHAR LARGE OBJECT`, `NCHAR VARYING`, `NATIONAL CHARACTER LARGE OBJECT`, `NATIONAL CHARACTER VARYING`, `NATIONAL CHAR VARYING`, `NATIONAL CHARACTER`, `NATIONAL CHAR`, `BINARY LARGE OBJECT`, `BINARY VARYING`,
-
-
 
 ## エンコーディング {#encodings}
 

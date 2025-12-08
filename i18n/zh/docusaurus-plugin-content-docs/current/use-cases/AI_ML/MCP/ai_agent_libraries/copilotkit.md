@@ -10,9 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-
-
-# 如何使用 CopilotKit 和 ClickHouse MCP Server 构建 AI 智能体
+# 如何使用 CopilotKit 和 ClickHouse MCP Server 构建 AI 智能体 {#how-to-build-an-ai-agent-with-copilotkit-and-the-clickhouse-mcp-server}
 
 这是一个示例，演示如何使用存储在 ClickHouse 中的数据构建智能体应用。它使用 [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 
 从 ClickHouse 查询数据，并基于这些数据生成图表。
@@ -24,14 +22,10 @@ doc_type: 'guide'
 此示例的代码可以在 [examples 仓库](https://github.com/ClickHouse/examples/edit/main/ai/mcp/copilotkit) 中找到。
 :::
 
-
-
 ## 前提条件 {#prerequisites}
 
 - `Node.js >= 20.14.0`
 - `uv >= 0.1.0`
-
-
 
 ## 安装依赖 {#install-dependencies}
 
@@ -40,9 +34,7 @@ doc_type: 'guide'
 
 可以跳过本节，直接运行脚本 `./install.sh` 来安装依赖。若要手动安装依赖，请按照下文说明进行操作。
 
-
-
-## 手动安装依赖
+## 手动安装依赖 {#install-dependencies-manually}
 
 1. 安装依赖：
 
@@ -65,20 +57,15 @@ uv sync
 uv add fastmcp
 ```
 
-
 ## 配置应用程序 {#configure-the-application}
 
 将 `env.example` 文件复制到 `.env`，并在其中填入您的 `ANTHROPIC_API_KEY`。
-
-
 
 ## 使用你自己的 LLM {#use-your-own-llm}
 
 如果你希望使用 Anthropic 以外的其他 LLM 提供商，可以修改
 Copilotkit 运行时以使用不同的 LLM 适配器。
 受支持的提供商列表见[这里](https://docs.copilotkit.ai/guides/bring-your-own-llm)。
-
-
 
 ## 使用您自己的 ClickHouse 集群 {#use-your-own-clickhouse-cluster}
 
@@ -90,8 +77,6 @@ Copilotkit 运行时以使用不同的 LLM 适配器。
 - `CLICKHOUSE_USER`
 - `CLICKHOUSE_PASSWORD`
 - `CLICKHOUSE_SECURE`
-
-
 
 # 运行应用 {#run-the-application}
 

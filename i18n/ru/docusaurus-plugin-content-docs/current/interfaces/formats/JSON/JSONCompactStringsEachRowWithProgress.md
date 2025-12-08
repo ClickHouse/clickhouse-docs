@@ -27,7 +27,7 @@ doc_type: 'reference'
 
 ## Пример использования {#example-usage}
 
-### Добавление данных
+### Добавление данных {#inserting-data}
 
 ```sql title="Query"
 SELECT *
@@ -46,6 +46,5 @@ FORMAT JSONCompactStringsEachRowWithProgress
 {"progress":{"read_rows":"5","read_bytes":"184","total_rows_to_read":"5","elapsed_ns":"191151"}}
 {"rows_before_limit_at_least":5}
 ```
-
 
 ## Параметры формата {#format-settings}

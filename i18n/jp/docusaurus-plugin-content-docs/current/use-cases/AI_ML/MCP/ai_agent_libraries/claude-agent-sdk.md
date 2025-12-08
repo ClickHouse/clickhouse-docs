@@ -10,17 +10,13 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-
-
-# Claude Agent SDK と ClickHouse MCP Server を使って AI エージェントを構築する方法
+# Claude Agent SDK と ClickHouse MCP Server を使って AI エージェントを構築する方法 {#how-to-build-an-ai-agent-with-claude-agent-sdk-and-the-clickhouse-mcp-server}
 
 このガイドでは、[Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/overview) を使って、[ClickHouse の SQL playground](https://sql.clickhouse.com/) と [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を経由して対話できる AI エージェントを構築する方法を説明します。
 
 :::note サンプルノートブック
 この例は、[examples リポジトリ](https://github.com/ClickHouse/examples/blob/main/ai/mcp/claude-agent/claude-agent.ipynb) 内のノートブックとして参照できます。
 :::
-
-
 
 ## 前提条件 {#prerequisites}
 
@@ -32,8 +28,7 @@ doc_type: 'guide'
 
 <VerticalStepper headerLevel="h2">
 
-
-## ライブラリをインストールする
+## ライブラリをインストールする {#install-libraries}
 
 以下のコマンドを実行して、Claude Agent SDK をインストールします。
 
@@ -43,8 +38,7 @@ pip install -q claude-agent-sdk
 pip install -q ipywidgets
 ```
 
-
-## 資格情報の設定
+## 資格情報の設定 {#setup-credentials}
 
 次に、Anthropic の API キーを指定する必要があります。
 
@@ -68,7 +62,6 @@ env = {
     "CLICKHOUSE_SECURE": "true"
 }
 ```
-
 
 ## MCP ServerとClaude Agent SDKエージェントの初期化 {#initialize-mcp-and-agent}
 

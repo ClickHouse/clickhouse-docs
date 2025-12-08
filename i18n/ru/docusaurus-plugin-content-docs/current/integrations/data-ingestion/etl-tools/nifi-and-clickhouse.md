@@ -11,7 +11,7 @@ integration:
   - category: 'data_ingestion'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import nifi01 from '@site/static/images/integrations/data-ingestion/etl-tools/nifi_01.png';
 import nifi02 from '@site/static/images/integrations/data-ingestion/etl-tools/nifi_02.png';
@@ -30,8 +30,7 @@ import nifi14 from '@site/static/images/integrations/data-ingestion/etl-tools/ni
 import nifi15 from '@site/static/images/integrations/data-ingestion/etl-tools/nifi_15.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
-# Подключение Apache NiFi к ClickHouse
+# Подключение Apache NiFi к ClickHouse {#connect-apache-nifi-to-clickhouse}
 
 <CommunityMaintainedBadge />
 
@@ -42,26 +41,19 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <VerticalStepper headerLevel="h2">
 
-
 ## Соберите сведения о подключении {#1-gather-your-connection-details}
 
 <ConnectionDetails />
 
-
-
 ## Загрузите и запустите Apache NiFi {#2-download-and-run-apache-nifi}
 
 Для нового развертывания скачайте двоичный файл с https://nifi.apache.org/download.html и запустите NiFi командой `./bin/nifi.sh start`
-
-
 
 ## Загрузите драйвер ClickHouse JDBC {#3-download-the-clickhouse-jdbc-driver}
 
 1. Перейдите на <a href="https://github.com/ClickHouse/clickhouse-java/releases" target="_blank">страницу релизов драйвера ClickHouse JDBC</a> на GitHub и найдите последнюю версию JDBC-драйвера
 2. В выбранной версии релиза нажмите «Show all xx assets» и найдите JAR-файл, содержащий ключевое слово `shaded` или `all`, например `clickhouse-jdbc-0.5.0-all.jar`
 3. Поместите JAR-файл в каталог, доступный Apache NiFi, и запомните абсолютный путь к нему
-
-
 
 ## Добавьте службу контроллера `DBCPConnectionPool` и настройте её свойства {#4-add-dbcpconnectionpool-controller-service-and-configure-its-properties}
 
@@ -107,8 +99,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
     <Image img={nifi08} size="lg" border alt="Список Controller Services с включённым сервисом ClickHouse JDBC" />
 
-
-
 ## Чтение из таблицы с помощью процессора `ExecuteSQL` {#5-read-from-a-table-using-the-executesql-processor}
 
 1. Добавьте процессор `ExecuteSQL` вместе с соответствующими входящими и последующими процессорами
@@ -133,8 +123,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 5. Переключите представление в режим "formatted", чтобы просмотреть результат выходного `FlowFile`
 
     <Image img={nifi12} size="lg" border alt="Просмотрщик содержимого FlowFile, показывающий результаты запроса в отформатированном виде" />
-
-
 
 ## Запись в таблицу с использованием процессоров `MergeRecord` и `PutDatabaseRecord` {#6-write-to-a-table-using-mergerecord-and-putdatabaserecord-processor}
 

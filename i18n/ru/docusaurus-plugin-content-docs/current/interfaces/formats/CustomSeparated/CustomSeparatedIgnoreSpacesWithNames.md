@@ -14,7 +14,7 @@ doc_type: 'reference'
 
 ## Пример использования {#example-usage}
 
-### Вставка данных
+### Вставка данных {#inserting-data}
 
 Используйте следующий текстовый файл `football.txt`:
 
@@ -37,6 +37,5 @@ SET format_custom_escaping_rule = 'Quoted';
 ```sql
 INSERT INTO football FROM INFILE 'football.txt' FORMAT CustomSeparatedIgnoreSpacesWithNames;
 ```
-
 
 ## Параметры форматирования {#format-settings}

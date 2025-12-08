@@ -64,7 +64,7 @@ doc_type: 'reference'
 
 ## Пример использования {#example-usage}
 
-### Вставка данных
+### Вставка данных {#inserting-data}
 
 Вы можете вставить данные Arrow из файла в таблицу ClickHouse с помощью следующей команды:
 
@@ -72,15 +72,13 @@ doc_type: 'reference'
 $ cat filename.arrow | clickhouse-client --query="INSERT INTO some_table FORMAT Arrow"
 ```
 
-
-### Выбор данных
+### Выбор данных {#selecting-data}
 
 Вы можете выбрать данные из таблицы ClickHouse и сохранить их в файл формата Arrow с помощью следующей команды:
 
 ```bash
 $ clickhouse-client --query="SELECT * FROM {some_table} FORMAT Arrow" > {filename.arrow}
 ```
-
 
 ## Настройки формата {#format-settings}
 

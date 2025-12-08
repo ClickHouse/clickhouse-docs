@@ -15,7 +15,6 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 | -- | -- | -- |
 | ✗  | ✔  |    |
 
-
 ## 描述 {#description}
 
 `Pretty` 格式以 Unicode 绘制的字符表格形式输出数据，
@@ -26,9 +25,7 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 [NULL](/sql-reference/syntax.md) 会被输出为 `ᴺᵁᴸᴸ`。
 
-
-
-## 使用示例
+## 使用示例 {#example-usage}
 
 示例（以 [`PrettyCompact`](./PrettyCompact.md) 格式为例）：
 
@@ -96,7 +93,6 @@ FORMAT PrettyCompact
 │ 2014-03-23 │ 1406958 │
 └────────────┴─────────┘
 ```
-
 
 ## 格式设置 {#format-settings}
 

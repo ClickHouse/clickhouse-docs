@@ -10,7 +10,6 @@ keywords: ['AWS PrivateLink', 'MSK', 'ClickPipes']
 
 {/* 省略 */}
 
-
 ## 概要 \{#overview\}
 
 このガイドでは、[ClickPipes reverse private endpoint](/integrations/clickpipes/aws-privatelink#msk-multi-vpc) と併せて使用する **MSK マルチ VPC 環境** のセットアップ方法を説明します。
@@ -19,40 +18,45 @@ keywords: ['AWS PrivateLink', 'MSK', 'ClickPipes']
 
 MSK クラスターの VPC は、ClickPipes が提供されているリージョンのいずれかに存在している必要があります。サポート対象リージョンの一覧については、[ClickPipes リージョン](/integrations/clickpipes/aws-privatelink#aws-privatelink-regions) を参照してください。
 
-## マルチ VPC 接続を有効にする \{#enabling-multi-vpc-connectivity\}
+## マルチ VPC 接続の有効化 \{#enabling-multi-vpc-connectivity\}
 
 1. MSK クラスターに移動します。
-    - Amazon MSK コンソールの左側ナビゲーションペインから「Clusters」を選択します。
-    - マルチ VPC 接続を設定したい対象の MSK クラスターを選択します。
+   * Amazon MSK コンソールの左側のナビゲーションペインから「Clusters」を選択します。
+   * マルチ VPC 接続を構成したい対象の MSK クラスターを選択します。
 2. MSK マルチ VPC 接続を有効にします
-    - **Connectivity** タブで **Multi-VPC connectivity** セクションを探します。
-    - **Edit** をクリックします。
-    - **Turn-on MSK multi-VPC connectivity** オプションを有効にします。
-    - 画面の指示に従って設定を完了します。
+   * **Connectivity** タブで、**Multi-VPC connectivity** セクションを探します。
+   * **Edit** をクリックします。
+   * **Turn-on MSK multi-VPC connectivity** オプションを有効にします。
+   * 画面の指示に従って設定を完了します。
 3. ClickPipes アカウントプリンシパルをクラスターのポリシーに追加します
-    - **Configuration** タブに移動します。
-    - **Cluster policy** セクションで **Edit** をクリックします。
-    - **IAM policy** に `arn:aws:iam::072088201116:root` を含めます。例:
-        ```json
-        {
-            "Version": "2012-10-17",
-            "Statement": [
-                {
-                    "Effect": "Allow",
-                    "Principal": {
-                        "AWS": [
-                            "arn:aws:iam::072088201116:root"
-                        ]
-                    },
-                    "Action": [
-                        "kafka-cluster:Connect",
-                        "kafka-cluster:DescribeCluster",
-                        "kafka-cluster:ListClusters"
-                    ]
-                }
-            ]
-        }
-        ```
+   * **Configuration** タブに移動します。
+   * **Cluster policy** セクションで **Edit** をクリックします。
+   * **IAM policy** に `arn:aws:iam::072088201116:root` を含めます。例:
+     ```json
+     {
+         "Version": "2012-10-17",
+         "Statement": [
+             {
+                 "Effect": "Allow",
+                 "Principal": {
+                     "AWS": [
+                         "arn:aws:iam::072088201116:root"
+                     ]
+                 },
+                 "Action": [
+                     "kafka-cluster:Connect",
+                     "kafka-cluster:DescribeCluster",
+                     "kafka-cluster:ListClusters"
+                 ]
+             }
+         ]
+     }
+     ```
+
+:::tip
+クラスター IAM ポリシーにより、ClickPipes があなたの MSK クラスターへの接続を開始できるようになります。
+MSK クラスターに IAM 認証を設定する場合は、[IAM 認証に関するドキュメント](/integrations/clickpipes/kafka/best-practices#iam)を参照してください。
+:::
 
 ## リバースプライベートエンドポイントの作成 \{#creating-reverse-private-endpoint\}
 

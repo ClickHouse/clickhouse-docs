@@ -7,9 +7,7 @@ doc_type: 'guide'
 keywords: ['汎用 mysql', 'clickpipes', 'バイナリログ', 'ssl/tls', 'mysql 8.x']
 ---
 
-
-
-# 汎用 MySQL ソース設定ガイド
+# 汎用 MySQL ソース設定ガイド {#generic-mysql-source-setup-guide}
 
 :::info
 
@@ -17,13 +15,11 @@ keywords: ['汎用 mysql', 'clickpipes', 'バイナリログ', 'ssl/tls', 'mysql
 
 :::
 
-
-
-## バイナリログの保持を有効にする
+## バイナリログの保持を有効にする {#enable-binlog-retention}
 
 バイナリログには、MySQL サーバーインスタンスに対して行われたデータ変更に関する情報が含まれており、レプリケーションに必要です。
 
-### MySQL 8.x 以降
+### MySQL 8.x 以降 {#binlog-v8-x}
 
 MySQL インスタンスでバイナリログを有効にするには、次の設定が行われていることを確認します。
 
@@ -59,7 +55,7 @@ SET PERSIST binlog_expire_logs_seconds = 86400;
 
 設定を変更したら、続いて[データベースユーザーの設定](#configure-database-user)に進んでください。
 
-### MySQL 5.7
+### MySQL 5.7 {#binlog-v5-x}
 
 MySQL 5.7 インスタンスでバイナリログを有効にするには、次の設定が行われていることを確認してください。
 
@@ -100,7 +96,6 @@ expire_logs_days = 1
 
 :::
 
-
 ## データベースユーザーの設定 {#configure-database-user}
 
 root ユーザーとして MySQL インスタンスに接続し、次のコマンドを実行します。
@@ -130,8 +125,6 @@ root ユーザーとして MySQL インスタンスに接続し、次のコマ�
 
 :::
 
-
-
 ## SSL/TLS の構成（推奨） {#ssl-tls-configuration}
 
 SSL 証明書は、MySQL データベースへの安全な接続を確立するために使用されます。設定内容は証明書の種類によって異なります。
@@ -145,8 +138,6 @@ SSL 証明書は、MySQL データベースへの安全な接続を確立する�
 **サーバーへのアクセス権がないセルフホスト型 MySQL** - IT チームに証明書の提供を依頼します。最後の手段として、ClickPipes UI の「Skip Certificate Verification」トグルを使用できます（セキュリティ上は推奨されません）。
 
 SSL/TLS オプションの詳細については、[FAQ](https://clickhouse.com/docs/integrations/clickpipes/mysql/faq#tls-certificate-validation-error) を参照してください。
-
-
 
 ## 次のステップ {#whats-next}
 

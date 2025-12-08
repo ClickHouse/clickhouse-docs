@@ -6,23 +6,17 @@ title: 'QUALIFY 句'
 doc_type: 'reference'
 ---
 
-
-
-# QUALIFY 句
+# QUALIFY 句 {#qualify-clause}
 
 ウィンドウ関数の結果をフィルタリングするために使用します。[WHERE](../../../sql-reference/statements/select/where.md) 句と似ていますが、`WHERE` はウィンドウ関数の評価より前に実行されるのに対し、`QUALIFY` はその後に実行される点が異なります。
 
 `QUALIFY` 句では、`SELECT` 句内で定義したエイリアスを使用して、そのウィンドウ関数の結果を参照できます。あるいは、クエリ結果としては返さない追加のウィンドウ関数の結果に対してフィルタリングを行うこともできます。
 
-
-
 ## 制限事項 {#limitations}
 
 評価するウィンドウ関数が存在しない場合は、`QUALIFY` は使用できません。代わりに `WHERE` を使用してください。
 
-
-
-## 例
+## 例 {#examples}
 
 例：
 

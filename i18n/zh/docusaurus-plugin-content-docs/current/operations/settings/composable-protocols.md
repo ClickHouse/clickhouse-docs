@@ -7,13 +7,13 @@ title: '组合式协议'
 doc_type: 'reference'
 ---
 
-# 组合式协议
+# 组合式协议 {#composable-protocols}
 
 ## 概览 {#overview}
 
 组合式协议允许更灵活地配置对 ClickHouse 服务器的 TCP 访问。此类配置可以与传统配置并存，也可以替代传统配置。
 
-## 配置可组合协议
+## 配置可组合协议 {#composable-protocols-section-is-denoted-as-protocols-in-configuration-xml}
 
 可组合协议可以通过 XML 配置文件进行配置。协议部分在 XML 配置文件中由 `protocols` 标签标识：
 
@@ -23,8 +23,7 @@ doc_type: 'reference'
 </protocols>
 ```
 
-
-### 配置协议层
+### 配置协议层 {#basic-modules-define-protocol-layers}
 
 可以使用基本模块（basic modules）来定义协议层。例如，要定义一个
 HTTP 层，可以在 `protocols` 配置节中添加一个新的基本模块（basic module）：
@@ -58,8 +57,7 @@ HTTP 层，可以在 `protocols` 配置节中添加一个新的基本模块（ba
 `gRPC` 协议处理器尚未在 `Composable protocols` 中实现。
 :::
 
-
-### 配置端点
+### 配置端点 {#endpoint-ie-listening-port-is-denoted-by-port-and-optional-host-tags}
 
 端点（监听端口）由 `<port>` 标签和可选的 `<host>` 标签表示。
 例如，要在先前添加的 HTTP 层上配置一个端点，
@@ -82,8 +80,7 @@ HTTP 层，可以在 `protocols` 配置节中添加一个新的基本模块（ba
 
 如果省略 `<host>` 标签，则会使用根级配置中的 `<listen_host>`。
 
-
-### 配置层级序列
+### 配置层级序列 {#layers-sequence-is-defined-by-impl-tag-referencing-another-module}
 
 层级序列是通过使用 `<impl>` 标签并引用另一个模块来定义的。例如，要在我们的 plain&#95;http 模块之上配置一个 TLS 层，可以进一步按如下方式修改配置：
 
@@ -106,8 +103,7 @@ HTTP 层，可以在 `protocols` 配置节中添加一个新的基本模块（ba
 </protocols>
 ```
 
-
-### 将端点关联到层
+### 将端点关联到层 {#endpoint-can-be-attached-to-any-layer}
 
 端点可以关联到任意层。例如，我们可以为 HTTP（端口 8123）和 HTTPS（端口 8443）定义端点：
 
@@ -130,8 +126,7 @@ HTTP 层，可以在 `protocols` 配置节中添加一个新的基本模块（ba
 </protocols>
 ```
 
-
-### 定义附加端点
+### 定义附加端点 {#additional-endpoints-can-be-defined-by-referencing-any-module-and-omitting-type-tag}
 
 可以通过引用任意模块并省略 `<type>` 标签来定义附加端点。比如，我们可以为 `plain_http` 模块定义 `another_http` 端点，如下所示：
 
@@ -160,8 +155,7 @@ HTTP 层，可以在 `protocols` 配置节中添加一个新的基本模块（ba
 </protocols>
 ```
 
-
-### 指定额外层参数
+### 指定额外层参数 {#some-modules-can-contain-specific-for-its-layer-parameters}
 
 某些模块可以包含额外的层参数。例如，TLS 层
 允许按如下方式指定私钥（`privateKeyFile`）和证书文件（`certificateFile`）：

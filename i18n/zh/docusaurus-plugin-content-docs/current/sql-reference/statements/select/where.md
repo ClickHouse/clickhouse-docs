@@ -7,9 +7,7 @@ doc_type: 'reference'
 keywords: ['WHERE']
 ---
 
-
-
-# WHERE 子句
+# WHERE 子句 {#where-clause}
 
 `WHERE` 子句允许过滤由 `SELECT` 的 [`FROM`](../../../sql-reference/statements/select/from.md) 子句返回的数据。
 
@@ -26,8 +24,6 @@ PREWHERE 是一种用于更高效执行过滤的优化手段。
 即使没有显式指定 `PREWHERE` 子句，它默认也是启用的。
 :::
 
-
-
 ## 测试 `NULL` {#testing-for-null}
 
 如需判断某个值是否为 [`NULL`](/sql-reference/syntax#null)，请使用：
@@ -35,8 +31,6 @@ PREWHERE 是一种用于更高效执行过滤的优化手段。
 - [`IS NOT NULL`](/sql-reference/operators#is_not_null) 或 [`isNotNull`](../../../sql-reference/functions/functions-for-nulls.md#isNotNull)
 
 否则，包含 `NULL` 的表达式将永远不会为真。
-
-
 
 ## 使用逻辑运算符过滤数据 {#filtering-data-with-logical-operators}
 
@@ -47,14 +41,10 @@ PREWHERE 是一种用于更高效执行过滤的优化手段。
 - [`or()`](/sql-reference/functions/logical-functions#or) 或 `OR`
 - [`xor()`](/sql-reference/functions/logical-functions#xor)
 
-
-
 ## 将 UInt8 列用作条件 {#using-uint8-columns-as-a-condition}
 
 在 ClickHouse 中，`UInt8` 列可以直接作为布尔条件使用，其中 `0` 表示 `false`，任意非零值（通常为 `1`）表示 `true`。
 此用法的示例见[下文](#example-uint8-column-as-condition)。
-
-
 
 ## 使用比较运算符 {#using-comparison-operators}
 
@@ -76,8 +66,6 @@ PREWHERE 是一种用于更高效执行过滤的优化手段。
 | `a BETWEEN b AND c` | `a >= b AND a <= c` | 区间检查（包含端点） | `price BETWEEN 100 AND 500` |
 | `a NOT BETWEEN b AND c` | `a < b OR a > c` | 区间外检查 | `price NOT BETWEEN 100 AND 500` |
 
-
-
 ## 模式匹配和条件表达式 {#pattern-matching-and-conditional-expressions}
 
 除了比较运算符之外，还可以在 `WHERE` 子句中使用模式匹配和条件表达式。
@@ -92,9 +80,7 @@ PREWHERE 是一种用于更高效执行过滤的优化手段。
 
 请参见[“模式匹配和条件表达式”](#examples-pattern-matching-and-conditional-expressions)了解使用示例。
 
-
-
-## 包含字面量、列或子查询的表达式
+## 包含字面量、列或子查询的表达式 {#expressions-with-literals-columns-subqueries}
 
 `WHERE` 子句后面的表达式也可以包含[字面量](/sql-reference/syntax#literals)、列或子查询。子查询是嵌套的 `SELECT` 语句，用于返回在条件中使用的值。
 
@@ -119,16 +105,15 @@ WHERE category = 'Electronics'
   AND id IN (SELECT product_id FROM bestsellers)
 ```
 
-
 -- 使用逻辑运算符组合三个条件
 WHERE (price &gt; 100 OR category IN (SELECT category FROM featured))
 AND in&#95;stock = true
 AND name LIKE &#39;%Special%&#39;
 
 ````
-## 示例            
+## 示例             {#examples}
 
-### 测试 `NULL` 值                             
+### 测试 `NULL` 值                              {#examples-testing-for-null}
 
 包含 `NULL` 值的查询：
 
@@ -149,7 +134,7 @@ SELECT * FROM t_null WHERE y != 0;
 └───┴───┘
 ```
 
-### 使用逻辑运算符筛选数据
+### 使用逻辑运算符筛选数据 {#example-filtering-with-logical-operators}
 
 给定下表及其数据：
 
@@ -240,7 +225,6 @@ WHERE (category = 'Electronics' OR category = 'Furniture')
   AND price < 400;
 ```
 
-
 ```response
    ┌─id─┬─name────┬─price─┬─category────┬─in_stock─┐
 1. │  2 │ 鼠标   │  25.5 │ 电子产品 │ true     │
@@ -267,7 +251,7 @@ WHERE and(or(category = 'Electronics', price > 100), in_stock);
 
 SQL 关键字语法（`AND`、`OR`、`NOT`、`XOR`）通常更易读，但在处理复杂表达式或构建动态查询时，函数形式的语法会很有用。
 
-### 将 UInt8 列用作条件
+### 将 UInt8 列用作条件 {#example-uint8-column-as-condition}
 
 沿用[前面示例](#example-filtering-with-logical-operators)中的表，你可以直接使用列名作为条件：
 
@@ -285,7 +269,7 @@ WHERE in_stock
    └────┴─────────┴────────┴─────────────┴──────────┘
 ```
 
-### 使用比较运算符
+### 使用比较运算符 {#example-using-comparison-operators}
 
 下面的示例使用前文[示例](#example-filtering-with-logical-operators)中的表和数据。为简洁起见，省略结果。
 
@@ -360,12 +344,11 @@ SELECT * FROM products
 WHERE category = 'Electronics' AND in_stock = true;
 ```
 
-### 模式匹配和条件表达式
+### 模式匹配和条件表达式 {#examples-pattern-matching-and-conditional-expressions}
 
 下面的示例使用上文[示例](#example-filtering-with-logical-operators)中的表和数据。为简洁起见，不展示结果。
 
-#### LIKE 示例
-
+#### LIKE 示例 {#like-examples}
 
 ```sql
 -- 查找名称中包含 'o' 的产品
@@ -381,7 +364,7 @@ SELECT * FROM products WHERE name LIKE '____';
 -- 结果：Desk, Lamp
 ```
 
-#### ILIKE 示例
+#### ILIKE 示例 {#ilike-examples}
 
 ```sql
 -- 不区分大小写地搜索 'LAPTOP'
@@ -393,7 +376,7 @@ SELECT * FROM products WHERE name ILIKE 'l%';
 -- 结果：Laptop, Lamp
 ```
 
-#### IF 示例
+#### IF 示例 {#if-examples}
 
 ```sql
 -- 按类别设置不同的价格阈值
@@ -409,7 +392,7 @@ WHERE if(in_stock, price > 100, true);
 -- (价格超过 $100 的库存商品或所有缺货商品)
 ```
 
-#### multiIf 示例
+#### multiIf 示例 {#multiif-examples}
 
 ```sql
 -- 基于多类别的条件
@@ -432,7 +415,7 @@ WHERE multiIf(
 -- 结果：Laptop、Chair、Monitor、Lamp
 ```
 
-#### CASE 示例
+#### CASE 示例 {#case-examples}
 
 **简单 CASE：**
 

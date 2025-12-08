@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## Пример использования {#example-usage}
 
-### Вставка данных
+### Вставка данных {#inserting-data}
 
 Используем JSON-файл со следующими данными, сохранённый под именем `football.json`:
 
@@ -49,8 +49,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONLines;
 ```
 
-
-### Чтение данных
+### Чтение данных {#reading-data}
 
 Прочитайте данные в формате `JSONLines`:
 
@@ -83,6 +82,5 @@ FORMAT JSONLines
 ```
 
 Столбцы данных с неизвестными именами будут пропущены при импорте, если настройка [input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлена в 1.
-
 
 ## Параметры форматирования {#format-settings}

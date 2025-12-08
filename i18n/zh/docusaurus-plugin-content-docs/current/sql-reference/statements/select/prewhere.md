@@ -6,15 +6,11 @@ title: 'PREWHERE 子句'
 doc_type: 'reference'
 ---
 
-
-
-# PREWHERE 子句
+# PREWHERE 子句 {#prewhere-clause}
 
 PREWHERE 是一种用于更高效执行过滤的优化机制。即使未显式指定 `PREWHERE` 子句，该优化也会默认启用。其工作方式是自动将部分 [WHERE](../../../sql-reference/statements/select/where.md) 条件移动到 PREWHERE 阶段。`PREWHERE` 子句的作用只是用于在你认为自己比默认策略更了解如何进行优化时，手动控制这一优化行为。
 
 启用 PREWHERE 优化后，首先只读取执行 PREWHERE 表达式所需的列。之后，再读取执行查询其余部分所需的其他列，但仅限于那些在至少某些行上 PREWHERE 表达式为 `true` 的数据块。如果存在大量数据块在所有行上 PREWHERE 表达式均为 `false`，并且 PREWHERE 所需的列比查询其他部分所需的列更少，那么在执行查询时通常可以显著减少从磁盘读取的数据量。
-
-
 
 ## 手动控制 PREWHERE {#controlling-prewhere-manually}
 
@@ -30,15 +26,11 @@ PREWHERE 是一种用于更高效执行过滤的优化机制。即使未显式�
 `PREWHERE` 部分在 `FINAL` 之前执行，因此，当在不属于表 `ORDER BY` 部分的字段上使用 `PREWHERE` 时，`FROM ... FINAL` 查询的结果可能会产生偏差。
 :::
 
-
-
 ## 限制 {#limitations}
 
 `PREWHERE` 仅支持由 [*MergeTree](../../../engines/table-engines/mergetree-family/index.md) 系列表引擎创建的表。
 
-
-
-## 示例
+## 示例 {#example}
 
 ```sql
 CREATE TABLE mydata

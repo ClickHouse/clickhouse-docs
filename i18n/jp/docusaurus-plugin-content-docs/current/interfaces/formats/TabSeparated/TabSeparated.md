@@ -13,9 +13,7 @@ doc_type: 'reference'
 |-------|--------|--------|
 | ✔     | ✔      | `TSV`  |
 
-
-
-## 説明
+## 説明 {#description}
 
 TabSeparated フォーマットでは、データは行単位で書き込まれます。各行には、タブで区切られた値が含まれます。各値の後にはタブが続きますが、行の最後の値の後にはタブではなく改行コードが続きます。改行コードはいずれも Unix スタイルであることを前提とします。最後の行の末尾にも改行コードが付いていなければなりません。値はテキスト形式で、引用符で囲まず、特殊文字はエスケープして書き込まれます。
 
@@ -42,8 +40,7 @@ SELECT EventDate, count() AS c FROM test.hits GROUP BY EventDate WITH TOTALS ORD
 2014-03-23      1406958
 ```
 
-
-## データの書式設定
+## データの書式設定 {#tabseparated-data-formatting}
 
 整数は 10 進数形式で記述されます。数値は先頭に追加の「+」記号を含むことができます（パース時には無視され、書式化時には出力されません）。非負の数値には負号を含めることはできません。読み取り時には、空文字列をゼロとしてパースすること、または（符号付き型の場合）マイナス記号だけから成る文字列をゼロとしてパースすることが許可されています。対応するデータ型に収まらない数値は、エラーを出さずに別の数値としてパースされる場合があります。
 
@@ -108,10 +105,9 @@ SELECT * FROM nestedt FORMAT TSV
 1  [1]    ['a']
 ```
 
+## 使用例 {#example-usage}
 
-## 使用例
-
-### データの挿入
+### データの挿入 {#inserting-data}
 
 次の `football.tsv` という名前の TSV ファイルを使用します:
 
@@ -141,7 +137,7 @@ SELECT * FROM nestedt FORMAT TSV
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparated;
 ```
 
-### データの読み込み
+### データの読み込み {#reading-data}
 
 `TabSeparated` 形式でデータを読み込みます。
 
@@ -172,7 +168,6 @@ FORMAT TabSeparated
 2022-05-07      2021    Stevenage Borough       Salford City    4       2
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
-
 
 ## フォーマット設定 {#format-settings}
 

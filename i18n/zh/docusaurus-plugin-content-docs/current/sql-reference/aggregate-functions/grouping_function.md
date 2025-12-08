@@ -5,11 +5,7 @@ title: 'GROUPING'
 doc_type: 'reference'
 ---
 
-
-
-# 分组
-
-
+# 分组 {#grouping}
 
 ## GROUPING {#grouping}
 
@@ -19,15 +15,13 @@ GROUPING 函数接收多个列作为参数，并返回一个位掩码（bitmask�
 - `1` 表示由 `ROLLUP` 或 `CUBE` 修饰的 `GROUP BY` 返回的该行是小计
 - `0` 表示由 `ROLLUP` 或 `CUBE` 返回的该行不是小计
 
-
-
-## GROUPING SETS
+## GROUPING SETS {#grouping-sets}
 
 默认情况下，CUBE 修饰符会对传入 CUBE 的所有列的所有可能组合计算小计。GROUPING SETS 允许你指定要计算的具体组合。
 
 对层次化数据进行分析是使用 ROLLUP、CUBE 和 GROUPING SETS 修饰符的典型用例。这里的示例是一张表，包含了在两个数据中心中安装的 Linux 发行版及其版本的信息。按发行版、版本和数据中心位置来查看这些数据可能是有价值的。
 
-### 加载示例数据
+### 加载示例数据 {#load-sample-data}
 
 ```sql
 CREATE TABLE servers ( datacenter VARCHAR(255),
@@ -76,7 +70,7 @@ FROM
 10 行数据。耗时: 0.409 秒。
 ```
 
-### 简单查询
+### 简单查询 {#simple-queries}
 
 按分布情况统计每个数据中心中的服务器数量：
 
@@ -142,7 +136,6 @@ GROUP BY
 查询返回 2 行。用时：0.352 秒。 
 ```
 
-
 ```sql
 SELECT
     SUM(quantity) qty
@@ -158,7 +151,7 @@ FROM
 返回 1 行。耗时:0.244 秒。 
 ```
 
-### 对比多个 GROUP BY 语句与 GROUPING SETS
+### 对比多个 GROUP BY 语句与 GROUPING SETS {#comparing-multiple-group-by-statements-with-grouping-sets}
 
 在不使用 CUBE、ROLLUP 或 GROUPING SETS 的情况下对数据进行拆分：
 
@@ -261,10 +254,9 @@ GROUP BY
 9 行在集合中。耗时：0.427 秒。
 ```
 
-### 将 CUBE 与 GROUPING SETS 进行比较
+### 将 CUBE 与 GROUPING SETS 进行比较 {#comparing-cube-with-grouping-sets}
 
 下一条查询中的 CUBE，`CUBE(datacenter,distro,version)` 会生成一个可能不太合理的层次结构。跨这两个发行版比较版本并没有意义（因为 Arch 和 RHEL 的发布周期和版本命名规范并不相同）。后面的 GROUPING SETS 示例更为合适，因为它在同一个分组集合中同时包含了 `distro` 和 `version`。
-
 
 ```sql
 SELECT
@@ -330,7 +322,6 @@ ORDER BY
 :::note
 当版本没有与发行版关联时，上面示例中的 version 可能就不太合适；如果我们跟踪的是内核版本，则可能更合理，因为内核版本可以与任一发行版关联。在这种情况下，使用 GROUPING SETS（如下一个示例所示）可能是更好的选择。
 :::
-
 
 ```sql
 SELECT

@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ClickHouse Connect 包含一个基于核心驱动程序构建的 SQLAlchemy 方言（`clickhousedb`）。它面向 SQLAlchemy Core API，并支持 SQLAlchemy 1.4.40+ 和 2.0.x。
 
-## 使用 SQLAlchemy 连接
+## 使用 SQLAlchemy 连接 {#sqlalchemy-connect}
 
 使用 `clickhousedb://` 或 `clickhousedb+connect://` URL 创建 Engine。URL 查询参数会映射为 ClickHouse 设置、客户端选项以及 HTTP/TLS 传输选项。
 
@@ -34,8 +34,7 @@ with engine.begin() as conn:
 
 在下文的 [Connection arguments and Settings](driver-api.md#connection-arguments) 一节可以查看支持参数的完整列表。这些参数也可以通过 SQLAlchemy DSN 进行配置。
 
-
-## 核心查询
+## 核心查询 {#sqlalchemy-core-queries}
 
 该方言支持 SQLAlchemy Core 的 `SELECT` 查询，包括联接、过滤、排序、限制/偏移以及 `DISTINCT`。
 
@@ -46,11 +45,11 @@ metadata = MetaData(schema="mydb")
 users = Table("users", metadata, autoload_with=engine)
 orders = Table("orders", metadata, autoload_with=engine)
 
-# 基本 SELECT 查询
+# 基本 SELECT 查询 {#basic-select}
 with engine.begin() as conn:
     rows = conn.execute(select(users.c.id, users.c.name).order_by(users.c.id).limit(10)).fetchall()
 
-# JOIN 连接（INNER/LEFT OUTER/FULL OUTER/CROSS）
+# JOIN 连接（INNER/LEFT OUTER/FULL OUTER/CROSS） {#joins-innerleft-outerfull-outercross}
 with engine.begin() as conn:
     stmt = (
         select(users.c.name, orders.c.product)
@@ -68,8 +67,7 @@ with engine.begin() as conn:
     conn.execute(delete(users).where(users.c.name.like("%temp%")))
 ```
 
-
-## DDL 和反射
+## DDL 和反射 {#sqlalchemy-ddl-reflection}
 
 你可以使用提供的 DDL 辅助工具以及类型/引擎构造器来创建数据库和表。支持对表进行反射（包括列类型和引擎）。
 
@@ -103,17 +101,16 @@ with engine.begin() as conn:
 
 如果服务器上存在这些属性，则反射出的列会包含方言特定的属性，例如 `clickhousedb_default_type`、`clickhousedb_codec_expression` 和 `clickhousedb_ttl_expression`。
 
-
-## 插入（Core 和基础 ORM）
+## 插入（Core 和基础 ORM） {#sqlalchemy-inserts}
 
 插入既可以通过 SQLAlchemy Core 实现，也可以为方便起见使用简单的 ORM 模型来完成。
 
 ```python
-# 核心插入操作
+# 核心插入操作 {#core-insert}
 with engine.begin() as conn:
     conn.execute(table.insert().values(id=1, user="joe"))
 
-# 基础 ORM 插入操作
+# 基础 ORM 插入操作 {#basic-orm-insert}
 from sqlalchemy.orm import declarative_base, Session
 
 Base = declarative_base(metadata=MetaData(schema="example_db"))
@@ -131,7 +128,6 @@ with Session(engine) as session:
     session.bulk_save_objects([User(id=2, name="Bob")])
     session.commit()
 ```
-
 
 ## 范围和限制 {#scope-and-limitations}
 

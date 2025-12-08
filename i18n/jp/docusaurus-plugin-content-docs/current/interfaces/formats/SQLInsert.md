@@ -13,15 +13,11 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-
-
 ## 説明 {#description}
 
 データを `INSERT INTO table (columns...) VALUES (...), (...) ...;` 文の連続として出力します。
 
-
-
-## 使用例
+## 使用例 {#example-usage}
 
 例：
 
@@ -38,7 +34,6 @@ INSERT INTO table (x, y, z) VALUES (8, 9, 'こんにちは'), (9, 10, 'こんに
 ```
 
 このフォーマットで出力されたデータを読み取るには、[MySQLDump](../formats/MySQLDump.md) 入力フォーマットを使用できます。
-
 
 ## フォーマット設定 {#format-settings}
 

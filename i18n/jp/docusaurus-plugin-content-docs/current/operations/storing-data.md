@@ -24,9 +24,7 @@ ClickHouse には外部テーブルエンジンのサポートもありますが
 3. Hadoop Distributed File System（サポート対象外）上のデータを扱うには、[HDFS](/engines/table-engines/integrations/hdfs.md) テーブルエンジンを使用します。
 :::
 
-
-
-## 外部ストレージを構成する
+## 外部ストレージを構成する {#configuring-external-storage}
 
 [`MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) および [`Log`](/engines/table-engines/log-family/log.md)
 ファミリーのテーブルエンジンは、`S3`、`AzureBlobStorage`、`HDFS`（サポート対象外）に対して、それぞれディスクタイプ `s3`、
@@ -119,7 +117,6 @@ ClickHouse バージョン 24.1 以降では、新しい構成オプションを
 
 バージョン 24.1 以降では、次のような形にもなります：
 
-
 ```xml
 <clickhouse>
     <storage_configuration>
@@ -173,8 +170,7 @@ ENGINE = MergeTree() ORDER BY a
 SETTINGS disk = 's3';
 ```
 
-
-## 動的設定
+## 動的設定 {#dynamic-configuration}
 
 ディスクを構成ファイルで事前定義しなくても、`CREATE` / `ATTACH` クエリの設定でストレージ設定を指定することもできます。
 
@@ -287,7 +283,6 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 
 ここで `web` はサーバー設定ファイルで定義された値です。
 
-
 ```xml
 <storage_configuration>
     <disks>
@@ -299,9 +294,9 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 </storage_configuration>
 ```
 
-### S3 ストレージの使用
+### S3 ストレージの使用 {#s3-storage}
 
-#### 必須パラメータ
+#### 必須パラメータ {#required-parameters-s3}
 
 | Parameter           | Description                                                                                                                                              |
 | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -309,8 +304,7 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 | `access_key_id`     | 認証に使用される S3 アクセスキー ID。                                                                                                                                   |
 | `secret_access_key` | 認証に使用される S3 シークレットアクセスキー。                                                                                                                                |
 
-#### オプションパラメータ
-
+#### オプションパラメータ {#optional-parameters-s3}
 
 | Parameter                                       | Description                                                                                                                                                                                                                                   | Default Value                            |
 |-------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------|
@@ -346,8 +340,6 @@ Google Cloud Storage (GCS) も `s3` タイプとしてサポートされてい�
 :::
 
 ### プレーンストレージの使用 {#plain-storage}
-
-
 
 `22.10` で新しいディスクタイプ `s3_plain` が導入されました。これは一度だけ書き込めるストレージを提供します。
 このディスクタイプの設定パラメータは、`s3` ディスクタイプの場合と同じです。
@@ -389,7 +381,7 @@ Google Cloud Storage (GCS) も `s3` タイプとしてサポートされてい�
 </s3_plain>
 ```
 
-### S3 Plain Rewritable Storage の使用
+### S3 Plain Rewritable Storage の使用 {#s3-plain-rewritable-storage}
 
 新しいディスクタイプ `s3_plain_rewritable` は `24.4` で導入されました。
 `s3_plain` ディスクタイプと同様に、メタデータファイル用の追加ストレージは必要ありません。
@@ -429,13 +421,12 @@ Google Cloud Storage (GCS) も `s3` タイプとしてサポートされてい�
 `24.5` 以降、`plain_rewritable` メタデータタイプを使用して、任意のオブジェクトストレージディスク
 （`s3`、`azure`、`local`）を設定できるようになりました。
 
-### Azure Blob Storage の使用
+### Azure Blob Storage の使用 {#azure-blob-storage}
 
 `MergeTree` ファミリのテーブルエンジンは、`azure_blob_storage` タイプのディスクを使用して
 データを [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/) に保存できます。
 
 設定例:
-
 
 ```xml
 <storage_configuration>
@@ -456,7 +447,7 @@ Google Cloud Storage (GCS) も `s3` タイプとしてサポートされてい�
 </storage_configuration>
 ```
 
-#### 接続パラメータ
+#### 接続パラメータ {#azure-blob-storage-connection-parameters}
 
 | Parameter                        | Description                                                                                                           | Default Value       |
 | -------------------------------- | --------------------------------------------------------------------------------------------------------------------- | ------------------- |
@@ -472,7 +463,7 @@ Google Cloud Storage (GCS) も `s3` タイプとしてサポートされてい�
 | `account_name`      | 共有キー認証（`account_key` と併用）に利用します。  |
 | `account_key`       | 共有キー認証（`account_name` と併用）に利用します。 |
 
-#### 制限パラメータ
+#### 制限パラメータ {#azure-blob-storage-limit-parameters}
 
 | Parameter                            | Description                               |
 | ------------------------------------ | ----------------------------------------- |
@@ -483,7 +474,7 @@ Google Cloud Storage (GCS) も `s3` タイプとしてサポートされてい�
 | `thread_pool_size`                   | `IDiskRemote` のインスタンス化に使用されるスレッド数の上限。     |
 | `s3_max_inflight_parts_for_one_file` | 1 つのオブジェクトに対する同時 put リクエスト数の上限。           |
 
-#### その他のパラメータ
+#### その他のパラメータ {#azure-blob-storage-other-parameters}
 
 | Parameter                        | Description                                                      | Default Value                            |
 | -------------------------------- | ---------------------------------------------------------------- | ---------------------------------------- |
@@ -499,8 +490,7 @@ Google Cloud Storage (GCS) も `s3` タイプとしてサポートされてい�
 Zero-copy レプリケーションは ClickHouse バージョン 22.8 以降ではデフォルトで無効です。この機能の本番環境での利用は推奨されません。
 :::
 
-
-## HDFS ストレージの使用（サポート対象外）
+## HDFS ストレージの使用（サポート対象外） {#using-hdfs-storage-unsupported}
 
 このサンプル構成では：
 
@@ -541,7 +531,7 @@ Zero-copy レプリケーションは ClickHouse バージョン 22.8 以降で�
 
 HDFS は一部のコーナーケースでは動作しない場合があることに注意してください。
 
-### データ暗号化の使用
+### データ暗号化の使用 {#encrypted-virtual-file-system}
 
 [S3](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-s3) や [HDFS](#using-hdfs-storage-unsupported)（非サポート）の外部ディスク、あるいはローカルディスクに保存されるデータを暗号化できます。暗号化モードを有効にするには、設定ファイル内で `encrypted` 型のディスクを定義し、データを保存するディスクを選択する必要があります。`encrypted` ディスクは、書き込まれるすべてのファイルをリアルタイムに暗号化し、`encrypted` ディスクからファイルを読み取るときには自動的に復号します。そのため、通常のディスクと同様に `encrypted` ディスクを扱うことができます。
 
@@ -566,7 +556,7 @@ HDFS は一部のコーナーケースでは動作しない場合があること
 
 同じファイルを `disk2` に書き込む場合は、実際には暗号化モードで物理ディスク上のパス `/path1/path2/store/all_1_1_0/data.bin` に書き込まれます。
 
-### 必須パラメータ
+### 必須パラメータ {#required-parameters-encrypted-disk}
 
 | Parameter | Type   | Description                                                             |
 | --------- | ------ | ----------------------------------------------------------------------- |
@@ -574,7 +564,7 @@ HDFS は一部のコーナーケースでは動作しない場合があること
 | `disk`    | String | 基盤となるストレージとして使用するディスクの種類。                                               |
 | `key`     | Uint64 | 暗号化および復号に使用するキー。`key_hex` を使用して 16 進数で指定できます。複数のキーは `id` 属性を使用して指定できます。 |
 
-### オプションパラメータ
+### オプションパラメータ {#optional-parameters-encrypted-disk}
 
 | Parameter        | Type   | Default        | Description                                                                                                         |
 | ---------------- | ------ | -------------- | ------------------------------------------------------------------------------------------------------------------- |
@@ -583,7 +573,6 @@ HDFS は一部のコーナーケースでは動作しない場合があること
 | `algorithm`      | Enum   | `AES_128_CTR`  | 暗号化アルゴリズム。オプション: <br />- `AES_128_CTR` (16 バイトキー) <br />- `AES_192_CTR` (24 バイトキー) <br />- `AES_256_CTR` (32 バイトキー) |
 
 ディスク設定の例:
-
 
 ```xml
 <clickhouse>
@@ -606,7 +595,7 @@ HDFS は一部のコーナーケースでは動作しない場合があること
 </clickhouse>
 ```
 
-### ローカルキャッシュの使用
+### ローカルキャッシュの使用 {#using-local-cache}
 
 バージョン 22.3 以降では、ストレージ設定でディスクに対してローカルキャッシュを設定できます。
 バージョン 22.3 ～ 22.7 では、キャッシュは `s3` ディスクタイプでのみサポートされます。バージョン &gt;= 22.8 では、キャッシュは任意のディスクタイプ (S3、Azure、Local、Encrypted など) でサポートされます。
@@ -673,7 +662,6 @@ HDFS は一部のコーナーケースでは動作しない場合があること
 
 これらの設定は、ディスク構成セクション内で定義する必要があります。
 
-
 | Parameter                             | Type    | Default    | Description                                                                                                                                                                                  |
 |---------------------------------------|---------|------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `path`                                | String  | -          | **必須**。キャッシュを保存するディレクトリへのパス。                                                                                                                                      |
@@ -690,9 +678,7 @@ HDFS は一部のコーナーケースでは動作しない場合があること
 
 > **Note**: サイズ指定値は `ki`、`Mi`、`Gi` などの単位をサポートします（例: `10Gi`）。
 
-
-
-## ファイルキャッシュのクエリ／プロファイル設定
+## ファイルキャッシュのクエリ／プロファイル設定 {#file-cache-query-profile-settings}
 
 | Setting                                                                 | Type    | Default                 | Description                                                                                                      |
 | ----------------------------------------------------------------------- | ------- | ----------------------- | ---------------------------------------------------------------------------------------------------------------- |
@@ -709,20 +695,20 @@ HDFS は一部のコーナーケースでは動作しない場合があること
 以前のバージョンでは一部がサポートされていない場合があります。
 :::
 
-#### キャッシュのシステムテーブル
+#### キャッシュのシステムテーブル {#cache-system-tables-file-cache}
 
 | Table Name                    | Description                | Requirements                               |
 | ----------------------------- | -------------------------- | ------------------------------------------ |
 | `system.filesystem_cache`     | ファイルシステムキャッシュの現在の状態を表示します。 | なし                                         |
 | `system.filesystem_cache_log` | クエリごとの詳細なキャッシュ利用統計を提供します。  | `enable_filesystem_cache_log = true` が必要です |
 
-#### キャッシュコマンド
+#### キャッシュコマンド {#cache-commands-file-cache}
 
-##### `SYSTEM DROP FILESYSTEM CACHE (<cache_name>) (ON CLUSTER)` -- `ON CLUSTER`
+##### `SYSTEM DROP FILESYSTEM CACHE (<cache_name>) (ON CLUSTER)` -- `ON CLUSTER` {#system-drop-filesystem-cache-on-cluster}
 
 このコマンドは `<cache_name>` が指定されていない場合にのみサポートされています。
 
-##### `SHOW FILESYSTEM CACHES`
+##### `SHOW FILESYSTEM CACHES` {#show-filesystem-caches}
 
 サーバー上で構成されているファイルシステムキャッシュの一覧を表示します。
 （バージョン `22.8` 以下では、このコマンド名は `SHOW CACHES` です）
@@ -737,7 +723,7 @@ SHOW FILESYSTEM CACHES
 └───────────┘
 ```
 
-##### `DESCRIBE FILESYSTEM CACHE '<cache_name>'`
+##### `DESCRIBE FILESYSTEM CACHE '<cache_name>'` {#describe-filesystem-cache}
 
 特定のキャッシュについて、キャッシュ設定といくつかの基本的な統計情報を表示します。
 キャッシュ名は `SHOW FILESYSTEM CACHES` コマンドから取得できます（バージョン `22.8` 以下では、コマンド名は `DESCRIBE CACHE` です）。
@@ -752,7 +738,6 @@ DESCRIBE FILESYSTEM CACHE 's3_cache'
 └─────────────┴──────────────┴───────────────────────┴────────────────────┴───────────────────────────┴──────────────────────┴──────────────┴──────────────────┴────────────┴─────────────────────────────┴────────────────────────────────────┘
 ```
 
-
 | キャッシュ現在メトリクス              | キャッシュ非同期メトリクス          | キャッシュプロファイルイベント                                                                           |
 | ------------------------- | ---------------------- | ----------------------------------------------------------------------------------------- |
 | `FilesystemCacheSize`     | `FilesystemCacheBytes` | `CachedReadBufferReadFromSourceBytes`, `CachedReadBufferReadFromCacheBytes`               |
@@ -760,7 +745,7 @@ DESCRIBE FILESYSTEM CACHE 's3_cache'
 |                           |                        | `CachedReadBufferCacheWriteBytes`, `CachedReadBufferCacheWriteMicroseconds`               |
 |                           |                        | `CachedWriteBufferCacheWriteBytes`, `CachedWriteBufferCacheWriteMicroseconds`             |
 
-### 静的 Web ストレージの使用（読み取り専用）
+### 静的 Web ストレージの使用（読み取り専用） {#web-storage}
 
 これは読み取り専用ディスクです。データは読み出されるだけで、一切変更されません。新しいテーブルは
 `ATTACH TABLE` クエリ（以下の例を参照）を介してこのディスクにロードされます。ローカルディスクは
@@ -827,7 +812,6 @@ Web データセットを日常的に使用しない想定であれば、スト�
 
 この `ATTACH TABLE` クエリでは、指定された `UUID` がデータのディレクトリ名と一致し、エンドポイントには GitHub の Raw コンテンツの URL を指定します。
 
-
 ```sql
 -- highlight-next-line
 ATTACH TABLE uk_price_paid UUID 'cf712b4f-2ca8-435c-ac23-c4393efe52f7'
@@ -882,7 +866,6 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 ```
 
 次のクエリを実行します。
-
 
 ```sql
 ATTACH TABLE test_hits UUID '1ae36516-d62d-4218-9ae3-6516d62da218'
@@ -1029,15 +1012,14 @@ SAMPLE BY intHash32(UserID)
 SETTINGS storage_policy='web';
 ```
 
-#### 必須パラメータ
+#### 必須パラメータ {#static-web-storage-required-parameters}
 
 | パラメータ      | 説明                                                                         |
 | ---------- | -------------------------------------------------------------------------- |
 | `type`     | `web`。それ以外の値の場合、ディスクは作成されません。                                              |
 | `endpoint` | `path` 形式のエンドポイント URL。エンドポイント URL には、アップロードされたデータを保存するためのルートパスを含める必要があります。 |
 
-#### オプションパラメータ
-
+#### オプションパラメータ {#optional-parameters-web}
 
 | Parameter                           | Description                                                                  | Default Value   |
 |-------------------------------------|------------------------------------------------------------------------------|-----------------|

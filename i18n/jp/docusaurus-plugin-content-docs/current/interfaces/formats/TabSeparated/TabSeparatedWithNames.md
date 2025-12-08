@@ -13,8 +13,6 @@ doc_type: 'reference'
 |-------|--------|--------------------------------|
 |     ✔    |     ✔     | `TSVWithNames`, `RawWithNames` |
 
-
-
 ## 説明 {#description}
 
 最初の行に列名が記載されている点が、[`TabSeparated`](./TabSeparated.md) 形式と異なります。
@@ -27,11 +25,9 @@ doc_type: 'reference'
 それ以外の場合、最初の行はスキップされます。
 :::
 
+## 使用例 {#example-usage}
 
-
-## 使用例
-
-### データの挿入
+### データの挿入 {#inserting-data}
 
 次の TSV ファイル（ファイル名: `football.tsv`）を使用します：
 
@@ -62,7 +58,7 @@ date    season  home_team       away_team       home_team_goals away_team_goals
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedWithNames;
 ```
 
-### データの読み取り
+### データの読み取り {#reading-data}
 
 `TabSeparatedWithNames` 形式を使用してデータを読み込みます：
 
@@ -94,6 +90,5 @@ date    season  home_team       away_team       home_team_goals away_team_goals
 2022-05-07      2021    Stevenage Borough       Salford City    4       2
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
-
 
 ## 書式設定 {#format-settings}

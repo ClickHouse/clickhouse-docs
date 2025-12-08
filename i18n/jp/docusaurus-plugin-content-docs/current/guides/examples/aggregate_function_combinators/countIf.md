@@ -7,11 +7,7 @@ sidebar_label: 'countIf'
 doc_type: 'reference'
 ---
 
-
-
 # countIf {#countif}
-
-
 
 ## 説明 {#description}
 
@@ -19,9 +15,7 @@ doc_type: 'reference'
 関数に適用すると、条件が真となる行の数を数えるための
 `countIf` 集約コンビネータ関数として利用できます。
 
-
-
-## 使用例
+## 使用例 {#example-usage}
 
 この例では、ユーザーのログイン試行を格納するテーブルを作成し、
 `countIf` を使って成功したログイン回数をカウントします。
@@ -56,7 +50,6 @@ GROUP BY user_id;
 2. │       2 │                 2 │
    └─────────┴───────────────────┘
 ```
-
 
 ## 関連項目 {#see-also}
 - [`count`](/sql-reference/aggregate-functions/reference/count)

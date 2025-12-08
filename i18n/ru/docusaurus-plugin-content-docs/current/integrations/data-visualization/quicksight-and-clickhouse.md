@@ -10,7 +10,7 @@ integration:
   - category: 'data_visualization'
 ---
 
-import MySQLOnPremiseSetup from '@site/docs/_snippets/_clickhouse_mysql_on_premise_setup.mdx';
+import MySQLOnPremiseSetup from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_clickhouse_mysql_on_premise_setup.mdx';
 import Image from '@theme/IdealImage';
 import quicksight_01 from '@site/static/images/integrations/data-visualization/quicksight_01.png';
 import quicksight_02 from '@site/static/images/integrations/data-visualization/quicksight_02.png';
@@ -21,16 +21,13 @@ import quicksight_06 from '@site/static/images/integrations/data-visualization/q
 import quicksight_07 from '@site/static/images/integrations/data-visualization/quicksight_07.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# QuickSight
+# QuickSight {#quicksight}
 
 <ClickHouseSupportedBadge/>
 
 QuickSight может подключаться к локальному развертыванию ClickHouse (23.11+) через интерфейс MySQL, используя официальный источник данных MySQL и режим Direct Query.
 
-
-
-## Настройка локально развернутого сервера ClickHouse
+## Настройка локально развернутого сервера ClickHouse {#on-premise-clickhouse-server-setup}
 
 Обратитесь к [официальной документации](/interfaces/mysql) по настройке сервера ClickHouse с включённым интерфейсом MySQL.
 
@@ -122,7 +119,6 @@ mysql> show databases;
 Read 4 rows, 603.00 B in 0.00156 sec., 2564 rows/sec., 377.48 KiB/sec.
 ```
 
-
 ## Подключение QuickSight к ClickHouse {#connecting-quicksight-to-clickhouse}
 
 Для начала перейдите на [https://quicksight.aws.amazon.com](https://quicksight.aws.amazon.com), откройте раздел Datasets и нажмите "New dataset":
@@ -162,8 +158,6 @@ Read 4 rows, 603.00 B in 0.00156 sec., 2564 rows/sec., 377.48 KiB/sec.
 <br/>
 
 Теперь вы можете опубликовать набор данных и создать новую визуализацию!
-
-
 
 ## Известные ограничения {#known-limitations}
 

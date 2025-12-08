@@ -23,7 +23,6 @@ Advanced Dashboard は、ClickHouse システムとその周辺環境につい�
 
 Advanced Dashboard は ClickHouse OSS（Open Source Software）と Cloud の両方で利用できます。本記事では、Cloud で Advanced Dashboard を使用する方法を説明します。
 
-
 ## 高度なダッシュボードへのアクセス {#accessing-the-advanced-dashboard}
 
 高度なダッシュボードには、次の手順でアクセスできます。
@@ -32,8 +31,6 @@ Advanced Dashboard は ClickHouse OSS（Open Source Software）と Cloud の両�
   * `Monitoring` → `Advanced dashboard`
 
 <Image img={AdvancedDashboard} size="lg" alt="Advanced dashboard"/>
-
-
 
 ## ネイティブの高度なダッシュボードへのアクセス {#accessing-the-native-advanced-dashboard}
 
@@ -50,8 +47,6 @@ Advanced Dashboard は ClickHouse OSS（Open Source Software）と Cloud の両�
 各ビジュアライゼーションには、その表示内容を構成するための SQL クエリが対応付けられています。ペンのアイコンをクリックすると、このクエリを編集できます。
 
 <Image img={EditVisualization} size="lg" alt="高度なダッシュボード"/>
-
-
 
 ## すぐに使える可視化 {#out-of-box-visualizations}
 
@@ -88,8 +83,6 @@ Advanced Dashboard のデフォルトチャートは、ClickHouse システム�
 | OS CPU Usage (Userspace)  | ユーザー空間コード実行時の CPU 使用率を示します                         |
 | OS CPU Usage (Kernel)     | カーネルコード実行時の CPU 使用率を示します                             |
 
-
-
 ## ClickHouse Cloud 固有 {#clickhouse-cloud-specific}
 
 ClickHouse Cloud はオブジェクトストレージ（S3 タイプ）を使ってデータを保存します。このインターフェイスを監視することで、問題の検知に役立ちます。
@@ -108,13 +101,11 @@ ClickHouse Cloud はオブジェクトストレージ（S3 タイプ）を使っ
 | Network receive bytes/sec      | 受信ネットワークトラフィックの現在の速度              |
 | Concurrent network connections | 現在の同時ネットワーク接続数                          |
 
-
-
-## 高度なダッシュボードを使用した問題の特定
+## 高度なダッシュボードを使用した問題の特定 {#identifying-issues-with-the-advanced-dashboard}
 
 ClickHouse サービスのヘルスをリアルタイムで可視化することで、ビジネスに影響が出る前に問題を緩和したり、発生した問題の解決に大きく役立ちます。以下では、高度なダッシュボードを使って検知できる代表的な問題をいくつか紹介します。
 
-### バッチ化されていない挿入
+### バッチ化されていない挿入 {#unbatched-inserts}
 
 [ベストプラクティスのドキュメント](/best-practices/selecting-an-insert-strategy#batch-inserts-if-synchronous)で説明している通り、同期的に処理できる場合は、常にデータを一括で ClickHouse に挿入することが推奨されます。
 
@@ -130,7 +121,7 @@ ClickHouse サービスのヘルスをリアルタイムで可視化すること
 その後、16 時以降に **Max Parts for Partition** に大きなスパイクがある一方で、
 **Inserted Rows/sec の速度** は非常に遅くなっていることが分かります。ごく少量のデータしか生成していないにもかかわらず、多数のパーツが作成されており、パーツのサイズが最適化されていないことを示しています。
 
-### リソース負荷の高いクエリ
+### リソース負荷の高いクエリ {#resource-intensive-query}
 
 CPU やメモリなど、多量のリソースを消費する SQL クエリを実行することは一般的です。しかし、これらのクエリを監視し、デプロイメント全体のパフォーマンスへの影響を理解することが重要です。
 
@@ -140,7 +131,7 @@ CPU やメモリなど、多量のリソースを消費する SQL クエリを�
 
 <Image img={ResourceIntensiveQuery} size="lg" alt="リソース負荷の高いクエリ" />
 
-### 不適切なプライマリキー設計
+### 不適切なプライマリキー設計 {#bad-primary-key-design}
 
 高度なダッシュボードを使うことで、不適切なプライマリキー設計も検知できます。
 [&quot;A practical introduction to primary indexes in ClickHouse&quot;](/guides/best-practices/sparse-primary-indexes#a-table-with-a-primary-key) で説明しているように、利用ケースに最も適したプライマリキーを選択することで、ClickHouse がクエリ実行時に読み取る必要のある行数を減らし、大幅なパフォーマンス向上が期待できます。
@@ -193,7 +184,6 @@ LIMIT 20
 read_rows:         150957260
 tables:            ['default.amazon_reviews_no_pk']
 ```
-
 
 2 行目:
 ──────

@@ -15,14 +15,12 @@ import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.png';
 
-
-# Использование MCP-сервера ClickHouse с LibreChat
+# Использование MCP-сервера ClickHouse с LibreChat {#using-clickhouse-mcp-server-with-librechat}
 
 > В данном руководстве описывается настройка LibreChat с MCP-сервером ClickHouse с использованием Docker
 > и подключение к примерам наборов данных ClickHouse.
 
 <VerticalStepper headerLevel="h2">
-
 
 ## Установите Docker {#install-docker}
 
@@ -34,9 +32,7 @@ import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.pn
 <br/>
 Для получения дополнительной информации см. [документацию по Docker](https://docs.docker.com/get-docker/).
 
-
-
-## Клонируйте репозиторий LibreChat
+## Клонируйте репозиторий LibreChat {#clone-librechat-repo}
 
 Откройте консоль (Command Prompt, терминал или PowerShell) и клонируйте
 репозиторий LibreChat с помощью следующей команды:
@@ -46,8 +42,7 @@ git clone https://github.com/danny-avila/LibreChat.git
 cd LibreChat
 ```
 
-
-## Создайте и отредактируйте файл .env
+## Создайте и отредактируйте файл .env {#create-and-edit-env-file}
 
 Скопируйте пример конфигурационного файла из `.env.example` в `.env`:
 
@@ -59,15 +54,14 @@ cp .env.example .env
 многих популярных провайдеров LLM, включая OpenAI, Anthropic, AWS Bedrock и др.,
 например:
 
-
 ```text title=".venv"
 #============#
-# Anthropic  #
+# Anthropic  # {#anthropic}
 #============#
 #highlight-next-line
 ANTHROPIC_API_KEY=user_provided
-# ANTHROPIC_MODELS=claude-opus-4-20250514,claude-sonnet-4-20250514,claude-3-7-sonnet-20250219,claude-3-5-sonnet-20241022,claude-3-5-haiku-20241022,claude-3-opus-20240229,claude-3-sonnet-20240229,claude-3-haiku-20240307
-# ANTHROPIC_REVERSE_PROXY=
+# ANTHROPIC_MODELS=claude-opus-4-20250514,claude-sonnet-4-20250514,claude-3-7-sonnet-20250219,claude-3-5-sonnet-20241022,claude-3-5-haiku-20241022,claude-3-opus-20240229,claude-3-sonnet-20240229,claude-3-haiku-20240307 {#anthropic_modelsclaude-opus-4-20250514claude-sonnet-4-20250514claude-3-7-sonnet-20250219claude-3-5-sonnet-20241022claude-3-5-haiku-20241022claude-3-opus-20240229claude-3-sonnet-20240229claude-3-haiku-20240307}
+# ANTHROPIC_REVERSE_PROXY= {#anthropic_reverse_proxy}
 ```
 
 Замените `user_provided` на ваш API-ключ для используемого провайдера LLM.
@@ -78,8 +72,7 @@ ANTHROPIC_API_KEY=user_provided
 не изменяйте файл .env и переходите к следующим шагам.
 :::
 
-
-## Создайте файл librechat.yaml
+## Создайте файл librechat.yaml {#create-librechat-yaml-file}
 
 Выполните следующую команду, чтобы создать новый файл `librechat.yaml`:
 
@@ -89,8 +82,7 @@ cp librechat.example.yaml librechat.yaml
 
 Это создаёт основной [конфигурационный файл](https://www.librechat.ai/docs/configuration/librechat_yaml) для LibreChat.
 
-
-## Добавление сервера ClickHouse MCP в Docker Compose
+## Добавление сервера ClickHouse MCP в Docker Compose {#add-clickhouse-mcp-server-to-docker-compose}
 
 Теперь мы добавим сервер ClickHouse MCP в файл Docker Compose LibreChat,
 чтобы LLM мог взаимодействовать с
@@ -142,8 +134,7 @@ services:
   />
 </Link>
 
-
-## Настройка сервера MCP в librechat.yaml
+## Настройка сервера MCP в librechat.yaml {#configure-mcp-server-in-librechat-yaml}
 
 Откройте `librechat.yaml` и разместите следующую конфигурацию в конце файла:
 
@@ -168,10 +159,9 @@ socialLogins: ['github', 'google', 'discord', 'openid', 'facebook', 'apple', 'sa
 socialLogins: []
 ```
 
+## Добавление локальной LLM‑модели с помощью Ollama (необязательно) {#add-local-llm-using-ollama}
 
-## Добавление локальной LLM‑модели с помощью Ollama (необязательно)
-
-### Установка Ollama
+### Установка Ollama {#install-ollama}
 
 Перейдите на [сайт Ollama](https://ollama.com/download) и установите Ollama для своей системы.
 
@@ -185,7 +175,7 @@ ollama run qwen3:32b
 
 Список моделей смотрите в [библиотеке Ollama](https://ollama.com/library)
 
-### Настройка Ollama в librechat.yaml
+### Настройка Ollama в librechat.yaml {#configure-ollama-in-librechat-yaml}
 
 После загрузки модели настройте её в `librechat.yaml`:
 
@@ -208,8 +198,7 @@ custom:
     modelDisplayLabel: "Ollama"
 ```
 
-
-## Запустите все сервисы
+## Запустите все сервисы {#start-all-services}
 
 Из корневого каталога проекта LibreChat выполните следующую команду, чтобы запустить сервисы:
 
@@ -218,7 +207,6 @@ docker compose up
 ```
 
 Дождитесь, пока все сервисы будут полностью запущены.
-
 
 ## Откройте LibreChat в браузере {#open-librechat-in-browser}
 

@@ -17,7 +17,6 @@ import log_view from '@site/static/images/clickstack/redis/redis-log-view.png';
 import log from '@site/static/images/clickstack/redis/redis-log.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # Мониторинг логов Redis с помощью ClickStack {#redis-clickstack}
 
 :::note[Кратко]
@@ -52,13 +51,13 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   redis-cli CONFIG GET logfile
   ```
 
-  Стандартные расположения журналов Redis:
+  Типичные расположения логов Redis:
 
   * **Linux (apt/yum)**: `/var/log/redis/redis-server.log`
   * **macOS (Homebrew)**: `/usr/local/var/log/redis.log`
-  * **Docker**: Обычно пишет логи в stdout, но может быть настроен на запись логов в `/data/redis.log`
+  * **Docker**: Обычно пишет логи в stdout, но может быть настроен на запись в `/data/redis.log`
 
-  Если Redis выполняет логирование в stdout, настройте его на запись в файл, обновив `redis.conf`:
+  Если Redis записывает логи в stdout, настройте запись в файл, обновив `redis.conf`:
 
   ```bash
   # Записывать логи в файл вместо stdout
@@ -80,7 +79,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
   #### Создайте пользовательскую конфигурацию OTel collector
 
-  ClickStack позволяет расширить базовую конфигурацию OpenTelemetry Collector путём монтирования пользовательского конфигурационного файла и установки переменной окружения. Пользовательская конфигурация объединяется с базовой конфигурацией, которой управляет HyperDX через OpAMP.
+  ClickStack позволяет расширить базовую конфигурацию OpenTelemetry Collector путём монтирования пользовательского конфигурационного файла и установки переменной окружения. Пользовательская конфигурация объединяется с базовой конфигурацией, управляемой HyperDX через OpAMP.
 
   Создайте файл `redis-monitoring.yaml` со следующей конфигурацией:
 
@@ -120,32 +119,32 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
           - clickhouse
   ```
 
-  Эта конфигурация:
+  Данная конфигурация:
 
   * Считывает логи Redis из стандартного расположения
-  * Разбирает формат логов Redis с помощью регулярных выражений для извлечения структурированных полей (`pid`, `role`, `timestamp`, `log_level`, `message`)
-  * Добавляет атрибут `source: redis`, который можно использовать для фильтрации в HyperDX
-  * Передаёт логи в экспортёр ClickHouse через отдельный конвейер
+  * Анализирует формат журналов Redis с использованием регулярных выражений (regex) для извлечения структурированных полей (`pid`, `role`, `timestamp`, `log_level`, `message`)
+  * Добавляет атрибут `source: redis` для последующей фильтрации в HyperDX
+  * Направляет логи в экспортёр ClickHouse по выделенному конвейеру
 
   :::note
 
-  * В пользовательской конфигурации вы определяете только новые приёмники и конвейеры
-  * Процессоры (`memory_limiter`, `transform`, `batch`) и экспортёры (`clickhouse`) уже определены в базовой конфигурации ClickStack — достаточно просто ссылаться на них по имени
-  * Оператор `time_parser` извлекает временные метки из журналов Redis, чтобы сохранить исходное время записей журнала
-  * Эта конфигурация использует `start_at: beginning`, чтобы при запуске коллектора прочитать все уже имеющиеся логи, поэтому вы сможете увидеть их сразу. В продакшн-среде, где важно избежать повторного приёма логов при перезапуске коллектора, измените значение на `start_at: end`.
+  * В пользовательской конфигурации вы задаёте только новые receivers и pipelines
+  * Процессоры (`memory_limiter`, `transform`, `batch`) и экспортёры (`clickhouse`) уже определены в базовой конфигурации ClickStack — их достаточно указать по имени
+  * Оператор `time_parser` извлекает временные метки из логов Redis, чтобы сохранить их исходное время
+  * Эта конфигурация использует `start_at: beginning` для чтения всех существующих логов при запуске коллектора, что позволяет сразу увидеть логи. Для продакшн-развёртываний, где вы хотите избежать повторного приёма логов при перезапуске коллектора, измените значение на `start_at: end`.
     :::
 
   #### Настройте ClickStack для загрузки пользовательской конфигурации
 
   Чтобы включить пользовательскую конфигурацию коллектора в существующем развертывании ClickStack, необходимо:
 
-  1. Смонтируйте файл пользовательской конфигурации в `/etc/otelcol-contrib/custom.config.yaml`
-  2. Установите для переменной окружения `CUSTOM_OTELCOL_CONFIG_FILE` значение `/etc/otelcol-contrib/custom.config.yaml`
-  3. Смонтируйте каталог логов Redis, чтобы коллектор мог их читать
+  1. Смонтируйте файл пользовательской конфигурации по пути `/etc/otelcol-contrib/custom.config.yaml`
+  2. Задайте значение переменной окружения `CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml`
+  3. Смонтируйте каталог логов Redis, чтобы коллектор смог их считывать
 
   ##### Вариант 1: Docker Compose
 
-  Обновите конфигурацию развёртывания ClickStack:
+  Обновите конфигурацию развертывания ClickStack:
 
   ```yaml
   services:
@@ -170,11 +169,11 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
     -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
     -v "$(pwd)/redis-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
     -v /var/log/redis:/var/log/redis:ro \
-    docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+    clickhouse/clickstack-all-in-one:latest
   ```
 
   :::note
-  Убедитесь, что у коллектора ClickStack есть необходимые права для чтения файлов журналов Redis. В продакшене используйте монтирование только для чтения (`:ro`) и следуйте принципу минимальных привилегий.
+  Убедитесь, что коллектор ClickStack имеет необходимые права для чтения файлов журналов Redis. В производственной среде используйте монтирование только для чтения (`:ro`) и следуйте принципу минимальных привилегий.
   :::
 
   #### Проверка логов в HyperDX
@@ -183,18 +182,18 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
   <Image img={log_view} alt="Просмотр логов" />
 
-  <Image img={log} alt="Лог" />
+  <Image img={log} alt="Журнал" />
 </VerticalStepper>
 
 ## Демонстрационный набор данных {#demo-dataset}
 
-Для пользователей, которые хотят протестировать интеграцию с Redis перед настройкой продуктивных систем, мы предоставляем пример набора данных из предварительно сгенерированных логов Redis с реалистичными шаблонами.
+Для пользователей, которые хотят протестировать интеграцию Redis до настройки своих продуктивных систем, мы предоставляем демонстрационный набор данных с предварительно сгенерированными журналами Redis, имитирующими реалистичные сценарии.
 
 <VerticalStepper headerLevel="h4">
 
 #### Загрузка демонстрационного набора данных {#download-sample}
 
-Скачайте пример файла лога:
+Загрузите пример файла журнала:
 
 ```bash
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/redis/redis-server.log
@@ -252,26 +251,26 @@ docker run --name clickstack-demo \
   -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
   -v "$(pwd)/redis-demo.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
   -v "$(pwd)/redis-server.log:/tmp/redis-demo/redis-server.log:ro" \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
 :::note
-**Эта команда напрямую монтирует файл лога в контейнер. Это делается для целей тестирования со статическими демонстрационными данными.**
+**При этом файл журнала монтируется непосредственно в контейнер. Это делается для целей тестирования со статическими демонстрационными данными.**
 :::
 
 ## Проверка логов в HyperDX {#verify-demo-logs}
 
 После запуска ClickStack:
 
-1. Откройте [HyperDX](http://localhost:8080/) и войдите в свою учётную запись (при необходимости сначала создайте учётную запись)
+1. Откройте [HyperDX](http://localhost:8080/) и войдите в свою учетную запись (при необходимости сначала создайте её)
 2. Перейдите в представление Search и установите источник `Logs`
-3. Установите диапазон времени **2025-10-26 10:00:00 - 2025-10-29 10:00:00**
+3. Установите диапазон времени на **2025-10-26 10:00:00 - 2025-10-29 10:00:00**
 
 :::note[Отображение часового пояса]
-HyperDX отображает временные метки в локальном часовом поясе вашего браузера. Демонстрационные данные охватывают период **2025-10-27 10:00:00 - 2025-10-28 10:00:00 (UTC)**. Расширенный диапазон времени гарантирует, что вы увидите демонстрационные логи независимо от вашего местоположения. После того как вы увидите логи, вы можете сузить диапазон до 24 часов для более наглядных визуализаций.
+HyperDX отображает временные метки в локальном часовом поясе вашего браузера. Демонстрационные данные охватывают период **2025-10-27 10:00:00 - 2025-10-28 10:00:00 (UTC)**. Широкий диапазон времени гарантирует, что вы увидите демонстрационные логи независимо от вашего местоположения. После того как вы увидите логи, вы можете сузить диапазон до 24 часов для более наглядной визуализации.
 :::
 
-<Image img={log_view} alt="Представление логов"/>
+<Image img={log_view} alt="Просмотр логов"/>
 
 <Image img={log} alt="Лог"/>
 
@@ -338,7 +337,6 @@ docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 1
 # Должна отобразиться конфигурация вашего приёмника filelog/Redis
 ```
 
-
 ### В HyperDX не отображаются логи
 
 **Убедитесь, что Redis записывает логи в файл:**
@@ -373,18 +371,17 @@ docker exec <container> cat /etc/otel/supervisor-data/agent.log
 **Если используете docker-compose, проверьте общие тома:**
 
 ```bash
-# Проверьте, что оба контейнера используют один и тот же том
+# Проверьте, что оба контейнера используют один и тот же том {#expected-output-etcotelcol-contribcustomconfigyaml}
 docker volume inspect <volume-name>
-# Убедитесь, что том подключен к обоим контейнерам
+# Убедитесь, что том подключен к обоим контейнерам {#expected-output-should-show-file-size-and-permissions}
 ```
-
 
 ### Логи разбираются некорректно
 
 **Убедитесь, что формат логов Redis соответствует ожидаемому формату:**
 
 ```bash
-# Логи Redis должны выглядеть так:
+# Логи Redis должны выглядеть так: {#should-show-your-filelogredis-receiver-configuration}
 # 12345:M 28 Oct 2024 14:23:45.123 * Server started
 tail -5 /var/log/redis/redis-server.log
 ```
@@ -393,7 +390,6 @@ tail -5 /var/log/redis/redis-server.log
 
 * `pid:role timestamp level message`
 * Пример: `12345:M 28 Oct 2024 14:23:45.123 * Server started`
-
 
 ## Дальнейшие шаги {#next-steps}
 

@@ -19,8 +19,7 @@ import dbt_06 from '@site/static/images/integrations/data-ingestion/etl-tools/db
 import dbt_07 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_07.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# 指南
+# 指南 {#guides}
 
 <ClickHouseSupportedBadge/>
 
@@ -37,15 +36,13 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <TOCInline toc={toc}  maxHeadingLevel={2} />
 
-
-
-## 设置
+## 设置 {#setup}
 
 请按照[设置 dbt 和 ClickHouse 适配器](/integrations/dbt)部分中的说明来准备环境。
 
 **重要：以下内容已在 Python 3.9 环境下测试通过。**
 
-### 准备 ClickHouse
+### 准备 ClickHouse {#prepare-clickhouse}
 
 dbt 在对高度关系型的数据进行建模时表现出色。作为示例，我们提供了一个包含如下关系型模式的小型 IMDb 数据集。该数据集来源于[关系型数据集仓库](https://relational.fit.cvut.cz/dataset/IMDb)。与 dbt 常见的模式相比，这个示例非常简单，但可以作为一个便于上手的示例样本：
 
@@ -142,7 +139,6 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/imdb/imdb_ijs
 
 执行这些操作所需的时间可能会因您的网络带宽而有所不同，但每个操作通常只需几秒钟即可完成。执行以下查询，以统计每位演员的汇总信息（按出演电影次数从多到少排序），并确认数据已成功加载：
 
-
 ```sql
 SELECT id,
        any(actor_name)          AS name,
@@ -186,7 +182,6 @@ LIMIT 5;
 ```
 
 在后续指南中，我们会将此查询转换为一个模型——在 ClickHouse 中将其物化为一个 dbt 视图和表。
-
 
 ## 连接到 ClickHouse {#connecting-to-clickhouse}
 
@@ -279,8 +274,6 @@ LIMIT 5;
 
     确认输出中包含 `Connection test: [OK connection ok]`，表示连接成功。
 
-
-
 ## 创建一个简单的视图实体化 {#creating-a-simple-view-materialization}
 
 使用视图实体化时，每次运行都会在 ClickHouse 中通过 `CREATE VIEW AS` 语句将模型重新构建为一个视图。这不需要额外的数据存储空间，但查询速度会比表实体化更慢。
@@ -355,8 +348,6 @@ LIMIT 5;
 
 4. 在 `imdb` 目录下执行命令 `dbt run`。
 
-
-
 ```bash
     clickhouse-user@clickhouse:~/imdb$ dbt run
     15:05:35  Running with dbt=1.1.0
@@ -410,7 +401,6 @@ LIMIT 5;
    |356804|Bud Osborne |515       |2.0389507108727773|15    |149      |2022-04-26 15:26:56|
    +------+------------+----------+------------------+------+---------+-------------------+
    ```
-
 
 ## 创建表物化 {#creating-a-table-materialization}
 
@@ -483,14 +473,11 @@ LIMIT 5;
     +------+------------+----------+------------------+------+---------+-------------------+
     ```
 
-
-
 可以继续针对该模型执行其他查询。例如：哪些演员在其参演次数超过 5 次的电影中拥有评分最高的作品？
 
 ```sql
 SELECT * FROM imdb_dbt.actor_summary WHERE num_movies > 5 ORDER BY avg_rank  DESC LIMIT 10;
 ```
-
 
 ## 创建增量物化 {#creating-an-incremental-materialization}
 
@@ -506,8 +493,6 @@ SELECT * FROM imdb_dbt.actor_summary WHERE num_movies > 5 ORDER BY avg_rank  DES
     2. **增量过滤条件（Incremental filter）** —— 我们还需要告诉 dbt，在增量运行时应如何识别哪些行发生了变化。这是通过提供一个增量（delta）表达式来实现的。典型做法是对事件数据使用时间戳；因此我们使用 `updated_at` 时间戳字段。该列在插入行时默认值为 `now()`，从而可以识别出新增记录。此外，我们还需要识别新增演员这一种情况。通过使用 `{{this}}` 变量来表示现有的物化表，可以构造出表达式 `where id > (select max(id) from {{ this }}) or updated_at > (select max(updated_at) from {{this}})`。我们将其嵌入 `{% if is_incremental() %}` 条件中，以确保它只在增量运行时使用，而不会在首次创建表时生效。有关为增量模型过滤行的更多详情，请参阅 [dbt 文档中的这段讨论](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/configuring-incremental-models#filtering-rows-on-an-incremental-run)。
 
     将文件 `actor_summary.sql` 更新如下：
-
-
 
 ```sql
     {{ config(order_by='(updated_at, id, name)', engine='MergeTree()', materialized='incremental', unique_key='id') }}
@@ -571,7 +556,6 @@ SELECT * FROM imdb_dbt.actor_summary WHERE num_movies > 5 ORDER BY avg_rank  DES
    ```sql
    SELECT * FROM imdb_dbt.actor_summary ORDER BY num_movies DESC LIMIT 5;
    ```
-
 
 ```response
     +------+------------+----------+------------------+------+---------+-------------------+
@@ -641,7 +625,6 @@ SELECT * FROM imdb_dbt.actor_summary WHERE num_movies > 5 ORDER BY avg_rank  DES
 
 6. 执行一次 `dbt run`，并确认我们的模型已经更新且与上述结果一致：
 
-
 ```response
     clickhouse-user@clickhouse:~/imdb$  dbt run
     16:12:16  使用 dbt=1.1.0 运行
@@ -672,7 +655,7 @@ SELECT * FROM imdb_dbt.actor_summary ORDER BY num_movies DESC LIMIT 2;
 +------+-------------------+----------+------------------+------+---------+-------------------+
 ```
 
-### 内部实现
+### 内部实现 {#internals}
 
 我们可以通过查询 ClickHouse 的查询日志，找出为完成上述增量更新而执行的语句。
 
@@ -694,7 +677,7 @@ AND event_time > subtractMinutes(now(), 15) ORDER BY event_time LIMIT 100;
 
 这种策略在非常大的模型上可能会遇到挑战。更多细节请参见 [Limitations](/integrations/dbt#limitations)。
 
-### 追加策略（仅插入模式）
+### 追加策略（仅插入模式） {#append-strategy-inserts-only-mode}
 
 为克服在大数据集上使用增量模型的限制，适配器使用 dbt 配置参数 `incremental_strategy`。该参数可以设置为 `append`。设置后，更新的行会被直接插入到目标表（即 `imdb_dbt.actor_summary`）中，而不会创建临时表。
 注意：仅追加模式要求你的数据是不可变的，或者可以接受重复数据。如果你需要一个支持已修改行的增量表模型，请不要使用此模式！
@@ -714,7 +697,6 @@ AND event_time > subtractMinutes(now(), 15) ORDER BY event_time LIMIT 100;
    ```
 
 3. 让 Danny 参演随机选取的 920 部电影。
-
 
 ```sql
    INSERT INTO imdb.roles
@@ -796,8 +778,7 @@ WHERE id > (SELECT max(id) FROM imdb_dbt.actor_summary) OR updated_at > (SELECT 
 
 在本次运行中，只有新增的行会直接添加到 `imdb_dbt.actor_summary` 表中，不会涉及创建新表。
 
-### 删除并插入模式（实验性）
-
+### 删除并插入模式（实验性） {#deleteinsert-mode-experimental}
 
 一直以来，ClickHouse 仅通过异步的 [变更（Mutations）](/sql-reference/statements/alter/index.md) 对更新和删除提供有限支持。这些操作对 IO 消耗极大，通常应尽量避免。
 
@@ -821,7 +802,7 @@ ClickHouse 22.8 引入了[轻量级删除](/sql-reference/statements/delete.md)�
 
 <Image img={dbt_06} size="lg" alt="轻量级 delete 增量" />
 
-### insert&#95;overwrite 模式（实验性）
+### insert&#95;overwrite 模式（实验性） {#insert_overwrite-mode-experimental}
 
 执行以下步骤：
 
@@ -839,8 +820,7 @@ ClickHouse 22.8 引入了[轻量级删除](/sql-reference/statements/delete.md)�
 
 <Image img={dbt_07} size="lg" alt="insert overwrite 增量" />
 
-
-## 创建快照
+## 创建快照 {#creating-a-snapshot}
 
 dbt 快照允许随着时间推移记录可变模型的变更。这使得可以在模型上执行时间点查询，从而让分析人员“回溯”查看模型先前的状态。其通过使用[类型 2 缓慢变化维度](https://en.wikipedia.org/wiki/Slowly_changing_dimension#Type_2:_add_new_row)实现，其中 from 和 to 日期列用于记录某一行数据在什么时间段内有效。ClickHouse 适配器支持此功能，下面将进行演示。
 
@@ -916,7 +896,6 @@ where id > (select max(id) from {{ this }}) or updated_at > (select max(updated_
 
 3. 运行命令 `dbt snapshot`。
 
-
 ```response
     clickhouse-user@clickhouse:~/imdb$ dbt snapshot
     13:26:23  Running with dbt=1.1.0
@@ -982,7 +961,6 @@ where id > (select max(id) from {{ this }}) or updated_at > (select max(updated_
    13:46:18  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
    ```
 
-
 clickhouse-user@clickhouse:~/imdb$ dbt snapshot
 13:46:26  使用 dbt=1.1.0 运行
 13:46:26  找到 1 个 model、0 个 tests、1 个 snapshot、0 个 analyses、181 个 macros、0 个 operations、0 个 seed files、3 个 sources、0 个 exposures、0 个 metrics
@@ -1019,7 +997,6 @@ clickhouse-user@clickhouse:~/imdb$ dbt snapshot
 ```
 
 有关 dbt 快照的更多详情，请参阅[此处](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots)。
-
 
 ## 使用种子 {#using-seeds}
 
@@ -1074,8 +1051,6 @@ dbt 提供了从 CSV 文件加载数据的功能。该功能不适合用来加�
     |War    |WAR |
     +-------+----+=
     ```
-
-
 
 ## 更多信息 {#further-information}
 

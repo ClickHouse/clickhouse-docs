@@ -7,17 +7,13 @@ keywords: ['chdb', 'embedded', 'clickhouse-lite', 'in-process', 'in process']
 doc_type: 'guide'
 ---
 
-
-
-# chDB 入门
+# chDB 入门 {#getting-started-with-chdb}
 
 在本指南中，我们将快速上手 chDB 的 Python 版本。
 我们会先查询存储在 S3 上的 JSON 文件，然后基于该 JSON 文件在 chDB 中创建一张表，并对其中的数据执行一些查询。
 我们还将了解如何让查询结果以不同格式返回数据，包括 Apache Arrow 和 Pandas，最后我们会学习如何查询 Pandas DataFrame。 
 
-
-
-## 环境准备
+## 环境准备 {#setup}
 
 先创建一个虚拟环境：
 
@@ -51,8 +47,7 @@ ipython
 pip install pandas pyarrow
 ```
 
-
-## 在 S3 中查询 JSON 文件
+## 在 S3 中查询 JSON 文件 {#querying-a-json-file-in-s3}
 
 现在来看看如何查询存储在 S3 存储桶中的 JSON 文件。
 [YouTube dislikes 数据集](/getting-started/example-datasets/youtube-dislikes) 包含了截至 2021 年的超过 40 亿行 YouTube 视频点踩记录。
@@ -149,8 +144,7 @@ chdb.query(
 在程序中对已定义的变量这样做是可以的，但绝不要对用户提供的输入这么做，否则你的查询将暴露在 SQL 注入攻击之下。
 :::
 
-
-## 配置输出格式
+## 配置输出格式 {#configuring-the-output-format}
 
 默认输出格式为 `CSV`，但我们可以通过 `output_format` 参数进行修改。
 chDB 支持 ClickHouse 的数据格式，以及[其自定义的一些格式](/chdb/reference/data-formats.md)，其中包括 `DataFrame`，可返回一个 Pandas DataFrame：
@@ -202,8 +196,7 @@ is_live_content: [[false,true]]
 count(): [[315746,20686]]
 ```
 
-
-## 从 JSON 文件创建表
+## 从 JSON 文件创建表 {#creating-a-table-from-json-file}
 
 接下来，我们来看一下如何在 chDB 中创建一个表。
 我们需要使用另一个 API 来完成这个操作，所以先把它导入进来：
@@ -309,8 +302,7 @@ sess.query(f"""
 )
 ```
 
-
-## 查询表
+## 查询表 {#querying-a-table}
 
 最后，我们来查询一下这张表：
 
@@ -348,8 +340,7 @@ df
 df["likeDislikeRatio"] = df["likeCount"] / df["dislikeCount"]
 ```
 
-
-## 查询 Pandas DataFrame
+## 查询 Pandas DataFrame {#querying-a-pandas-dataframe}
 
 然后我们可以使用 chDB 查询该 DataFrame：
 
@@ -378,7 +369,6 @@ chdb.query(
 ```
 
 你也可以在[《Pandas 查询开发者指南》](guides/querying-pandas.md)中了解更多关于查询 Pandas DataFrame 的内容。
-
 
 ## 后续步骤 {#next-steps}
 

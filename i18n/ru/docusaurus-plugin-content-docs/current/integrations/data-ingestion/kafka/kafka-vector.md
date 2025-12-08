@@ -8,10 +8,9 @@ doc_type: 'guide'
 keywords: ['kafka', 'vector', 'сбор логов', 'наблюдаемость', 'интеграция']
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-
-## Использование Vector с Kafka и ClickHouse
+## Использование Vector с Kafka и ClickHouse {#using-vector-with-kafka-and-clickhouse}
 
 Vector — это независимый от поставщиков конвейер обработки данных, который может читать из Kafka и отправлять события в ClickHouse.
 
@@ -23,15 +22,15 @@ Vector также поддерживает [transformation](https://vector.dev/d
 
 Обратите внимание, что текущая реализация приёмника ClickHouse использует HTTP-интерфейс. Приёмник ClickHouse в данный момент не поддерживает использование JSON-схемы. Данные должны публиковаться в Kafka либо в виде обычного JSON-формата, либо в виде строк (Strings).
 
-### Лицензия
+### Лицензия {#license}
 
 Vector распространяется по [лицензии MPL-2.0](https://github.com/vectordotdev/vector/blob/master/LICENSE)
 
-### Сбор параметров подключения
+### Сбор параметров подключения {#gather-your-connection-details}
 
 <ConnectionDetails />
 
-### Шаги
+### Шаги {#steps}
 
 1. Создайте топик Kafka `github` и вставьте в него [набор данных GitHub](https://datasets-documentation.s3.eu-west-3.amazonaws.com/kafka/github_all_columns.ndjson).
 
@@ -45,7 +44,6 @@ cat /opt/data/github/github_all_columns.ndjson | kcat -b <host>:<port> -X securi
 
 ```sql
 ```
-
 
 CREATE TABLE github
 (
@@ -110,7 +108,6 @@ batch.timeout_secs = 1
 ````
 
 Несколько важных замечаний о данной конфигурации и поведении Vector:
-
 
 * Этот пример был протестирован с Confluent Cloud. Поэтому параметры безопасности `sasl.*` и `ssl.enabled` могут быть неприменимы в сценариях с самостоятельным управлением кластером.
 * Префикс протокола не требуется для параметра конфигурации `bootstrap_servers`, например: `pkc-2396y.us-east-1.aws.confluent.cloud:9092`.

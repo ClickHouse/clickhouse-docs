@@ -13,7 +13,7 @@ import Image from '@theme/IdealImage';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
 import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
 import hyperdx_2 from '@site/static/images/use-cases/observability/hyperdx-2.png';
-import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
+import JSONSupport from '@site/i18n/jp/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
 このオプションは、すでに稼働中の ClickHouse インスタンスにオブザーバビリティデータまたはイベントデータが格納されているユーザー向けに設計されています。
 
@@ -22,7 +22,6 @@ HyperDX はスタックの他のコンポーネントとは独立して使用で
 すべての機能を有効にするには、ダッシュボード、保存済み検索、ユーザー設定、アラートなどのアプリケーション状態を保存するための MongoDB インスタンスを用意する必要があります。
 
 このモードでは、データのインジェストは完全にユーザー側の管理となります。独自にホストした OpenTelemetry collector、クライアントライブラリからの直接インジェスト、ClickHouse ネイティブのテーブルエンジン（Kafka や S3 など）、ETL パイプライン、あるいは ClickPipes のようなマネージドインジェストサービスを使用して、データを ClickHouse に取り込むことができます。このアプローチは最大限の柔軟性を提供し、すでに ClickHouse を運用していて、その上に HyperDX をレイヤーとして重ねて可視化、検索、アラートを実現したいチームに適しています。
-
 
 ### 適用対象 {#suitable-for}
 
@@ -71,7 +70,7 @@ ClickHouse Cloud などの外部 ClickHouse クラスターに接続します。
 
 [Docker Compose 構成](/use-cases/observability/clickstack/deployment/docker-compose) を変更することで、本ガイドと同等の効果を得つつ、マニフェストから OTel collector と ClickHouse インスタンスを削除できます。
 
-## ClickStack OpenTelemetry collector
+## ClickStack OpenTelemetry collector {#otel-collector}
 
 スタック内の他のコンポーネントとは独立して独自の OpenTelemetry collector を運用している場合でも、ClickStack 提供の collector ディストリビューションを使用することを推奨します。これにより、デフォルトのスキーマが使用され、インジェストに関するベストプラクティスが適用されます。
 

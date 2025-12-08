@@ -8,9 +8,7 @@ description: 'Узнайте, как визуализировать данные
 doc_type: 'guide'
 ---
 
-
-
-# Визуализация данных в ClickHouse
+# Визуализация данных в ClickHouse {#visualizing-data-in-clickhouse}
 
 <div class='vimeo-container'>
 <iframe
@@ -48,8 +46,6 @@ doc_type: 'guide'
 - [Rocket BI](./community_integrations/rocketbi-and-clickhouse.md)
 - [Tableau](./tableau/tableau-and-clickhouse.md)
 - [Zing Data](./community_integrations/zingdata-and-clickhouse.md)
-
-
 
 ## Совместимость ClickHouse Cloud с инструментами визуализации данных {#clickhouse-cloud-compatibility-with-data-visualization-tools}
 

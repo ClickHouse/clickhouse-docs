@@ -7,22 +7,17 @@ title: 'mongodb'
 doc_type: 'reference'
 ---
 
-
-
-# mongodb テーブル関数
+# mongodb テーブル関数 {#mongodb-table-function}
 
 リモートの MongoDB サーバーに保存されているデータに対して `SELECT` クエリを実行できるようにします。
 
-
-
-## 構文
+## 構文 {#syntax}
 
 ```sql
 mongodb(host:port, database, collection, user, password, structure[, options[, oid_columns]])
 ```
 
-
-## 引数
+## 引数 {#arguments}
 
 | 引数            | 説明                                              |
 | ------------- | ----------------------------------------------- |
@@ -57,14 +52,11 @@ mongodb(uri, collection, structure[, oid_columns])
 | `structure`   | この関数から返される ClickHouse テーブルのスキーマ。                   |
 | `oid_columns` | WHERE 句で `oid` として扱う列をカンマ区切りで指定したリスト。デフォルトは `_id`。 |
 
-
 ## 返される値 {#returned_value}
 
 元の MongoDB テーブルと同じ列を持つテーブルオブジェクトです。
 
-
-
-## 例
+## 例 {#examples}
 
 MongoDB データベース `test` に `my_collection` という名前のコレクションが定義されており、そこにいくつかのドキュメントを挿入するとします。
 
@@ -105,7 +97,6 @@ SELECT * FROM mongodb(
     'log_type String, host String, command String'
 )
 ```
-
 
 ## 関連項目 {#related}
 

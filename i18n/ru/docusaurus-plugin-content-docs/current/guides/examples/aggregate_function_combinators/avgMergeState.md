@@ -10,10 +10,7 @@ doc_type: 'reference'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 # avgMergeState {#avgMergeState}
-
-
 
 ## Описание {#description}
 
@@ -22,9 +19,7 @@ import TabItem from '@theme/TabItem';
 для объединения частичных агрегатных состояний типа `AverageFunction(avg, T)` и
 формирования нового промежуточного агрегатного состояния.
 
-
-
-## Пример использования
+## Пример использования {#example-usage}
 
 Комбинатор `MergeState` особенно полезен в сценариях многоуровневой агрегации,
 когда требуется объединять предварительно агрегированные состояния и сохранять их
@@ -128,7 +123,6 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
 
 Мы напишем по три запроса для каждого уровня:
 
-
 <Tabs>
   <TabItem value="Service level" label="Уровень сервиса" default>
     ```sql
@@ -218,7 +212,6 @@ ORDER BY datacenter;
 │ dc2        │                145 │
 └────────────┴────────────────────┘
 ```
-
 
 ## Смотрите также {#see-also}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)

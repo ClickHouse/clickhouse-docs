@@ -11,19 +11,15 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
-# Табличная функция hdfs
+# Табличная функция hdfs {#hdfs-table-function}
 
 Создает таблицу из файлов в HDFS. Эта табличная функция аналогична табличным функциям [url](../../sql-reference/table-functions/url.md) и [file](../../sql-reference/table-functions/file.md).
 
-
-
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 hdfs(URI, format, structure)
 ```
-
 
 ## Аргументы {#arguments}
 
@@ -33,9 +29,7 @@ hdfs(URI, format, structure)
 | `format`  | [Формат](/sql-reference/formats) файла.                                                                                                                                                                                    |
 | `structure`| Структура таблицы. В формате `'column1_name column1_type, column2_name column2_type, ...'`.                                                                                                                              |
 
-
-
-## Возвращаемое значение
+## Возвращаемое значение {#returned_value}
 
 Таблица заданной структуры для чтения или записи данных в указанный файл.
 
@@ -56,8 +50,7 @@ LIMIT 2
 └─────────┴─────────┴─────────┘
 ```
 
-
-## Глоб-шаблоны в пути
+## Глоб-шаблоны в пути {#globs_in_path}
 
 В путях можно использовать глоб-шаблоны. Файлы должны соответствовать всему шаблону пути, а не только суффиксу или префиксу.
 
@@ -111,7 +104,6 @@ SELECT count(*)
 FROM hdfs('hdfs://hdfs1:9000/big_dir/file{0..9}{0..9}{0..9}', 'CSV', 'name String, value UInt32')
 ```
 
-
 ## Виртуальные столбцы {#virtual-columns}
 
 - `_path` — Путь к файлу. Тип: `LowCardinality(String)`.
@@ -119,9 +111,7 @@ FROM hdfs('hdfs://hdfs1:9000/big_dir/file{0..9}{0..9}{0..9}', 'CSV', 'name Strin
 - `_size` — Размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер неизвестен, значение — `NULL`.
 - `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
 
-
-
-## параметр use&#95;hive&#95;partitioning
+## параметр use&#95;hive&#95;partitioning {#hive-style-partitioning}
 
 Когда параметр `use_hive_partitioning` установлен в значение 1, ClickHouse будет обнаруживать секционирование в стиле Hive в пути (`/name=value/`) и позволит использовать столбцы секций как виртуальные столбцы в запросе. Эти виртуальные столбцы будут иметь те же имена, что и в секционированном пути, но с префиксом `_`.
 
@@ -133,14 +123,11 @@ FROM hdfs('hdfs://hdfs1:9000/big_dir/file{0..9}{0..9}{0..9}', 'CSV', 'name Strin
 SELECT * FROM HDFS('hdfs://hdfs1:9000/data/path/date=*/country=*/code=*/*.parquet') WHERE _date > '2020-01-01' AND _country = 'Netherlands' AND _code = 42;
 ```
 
-
 ## Настройки хранилища {#storage-settings}
 
 - [hdfs_truncate_on_insert](operations/settings/settings.md#hdfs_truncate_on_insert) — позволяет усекать файл перед вставкой данных в него. По умолчанию отключено.
 - [hdfs_create_new_file_on_insert](operations/settings/settings.md#hdfs_create_new_file_on_insert) — позволяет создавать новый файл при каждой вставке, если формат имеет суффикс. По умолчанию отключено.
 - [hdfs_skip_empty_files](operations/settings/settings.md#hdfs_skip_empty_files) — позволяет пропускать пустые файлы при чтении. По умолчанию отключено.
-
-
 
 ## См. также {#related}
 

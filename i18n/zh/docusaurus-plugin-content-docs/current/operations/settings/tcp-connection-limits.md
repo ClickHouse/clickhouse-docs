@@ -6,11 +6,7 @@ title: 'TCP 连接数限制'
 doc_type: 'reference'
 ---
 
-
-
-# TCP 连接数限制
-
-
+# TCP 连接数限制 {#tcp-connection-limits}
 
 ## 概览 {#overview}
 
@@ -27,8 +23,6 @@ doc_type: 'reference'
 在触发限制并断开连接时，客户端会收到
 `TCP_CONNECTION_LIMIT_REACHED` 异常，且**导致此次断开的那个查询不会被执行**。
 
-
-
 ## 查询限制 {#query-limits}
 
 假设 `tcp_close_connection_after_queries_num` 设置为 N，则该连接允许进行
@@ -41,8 +35,6 @@ N 次成功查询。在第 N + 1 次查询时，客户端会断开连接。
 该时间由会话设置 `poll_interval` 指定）时，至此为止统计的查询次数会重置为 0。
 这意味着，如果连接在中途出现空闲，同一个连接中的总查询次数可以超过
 `tcp_close_connection_after_queries_num`。
-
-
 
 ## 持续时间限制 {#duration-limits}
 

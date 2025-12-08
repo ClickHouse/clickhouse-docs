@@ -11,14 +11,11 @@ import firewall_rules_crunchy_bridge from '@site/static/images/integrations/data
 import add_firewall_rules_crunchy_bridge from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/crunchy-postgres/add_firewall_rules_crunchy_bridge.png'
 import Image from '@theme/IdealImage';
 
-
-# Руководство по настройке источника данных Crunchy Bridge Postgres
+# Руководство по настройке источника данных Crunchy Bridge Postgres {#crunchy-bridge-postgres-source-setup-guide}
 
 ClickPipes поддерживает Postgres версии 12 и более поздних.
 
-
-
-## Включение логической репликации
+## Включение логической репликации {#enable-logical-replication}
 
 Crunchy Bridge по умолчанию включает логическую репликацию ([подробнее](https://docs.crunchybridge.com/how-to/logical-replication)). Убедитесь, что приведённые ниже параметры настроены верно. При необходимости измените их.
 
@@ -27,7 +24,6 @@ SHOW wal_level; -- должно быть logical
 SHOW max_wal_senders; -- должно быть 10
 SHOW max_replication_slots; -- должно быть 10
 ```
-
 
 ## Создание пользователя ClickPipes и выдача прав доступа {#creating-clickpipes-user-and-granting-permissions}
 
@@ -59,8 +55,6 @@ SHOW max_replication_slots; -- должно быть 10
     CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
     ```
 
-
-
 ## Разрешение IP-адресов ClickPipes {#safe-list-clickpipes-ips}
 
 Добавьте [IP-адреса ClickPipes](../../index.md#list-of-static-ips) в список разрешённых, создав соответствующие правила брандмауэра (Firewall Rules) в Crunchy Bridge.
@@ -68,8 +62,6 @@ SHOW max_replication_slots; -- должно быть 10
 <Image size="lg" img={firewall_rules_crunchy_bridge} alt="Где найти правила брандмауэра (Firewall Rules) в Crunchy Bridge?" border/>
 
 <Image size="lg" img={add_firewall_rules_crunchy_bridge} alt="Добавление правил брандмауэра (Firewall Rules) для ClickPipes" border/>
-
-
 
 ## Что дальше? {#whats-next}
 

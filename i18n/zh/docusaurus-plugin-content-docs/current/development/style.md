@@ -7,11 +7,7 @@ title: 'C++ 风格指南'
 doc_type: 'guide'
 ---
 
-
-
-# C++ 编码风格指南
-
-
+# C++ 编码风格指南 {#c-style-guide}
 
 ## 通用建议 {#general-recommendations}
 
@@ -20,9 +16,7 @@ doc_type: 'guide'
 代码风格的目的是保持一致性。一致性可以让代码更易阅读，也更便于在代码中搜索。
 许多规则并没有严格的逻辑依据；更多是由既有实践所约定的。
 
-
-
-## 格式
+## 格式 {#formatting}
 
 **1.** 大部分格式由 `clang-format` 自动完成。
 
@@ -134,7 +128,6 @@ for (auto & stream : streams)
 
 **19.** 源文件采用 UTF-8 编码。
 
-
 **20.** 字符串字面量中可以使用非 ASCII 字符。
 
 ```cpp
@@ -213,8 +206,7 @@ std::cerr << static_cast<int>(c) << std::endl;
 for (Names::const_iterator it = column_names.begin(); it != column_names.end(); ++it)
 ```
 
-
-## 注释
+## 注释 {#comments}
 
 **1.** 一定要为所有非一目了然的代码部分添加注释。
 
@@ -311,8 +303,7 @@ void executeQuery(
 /// for
 ```
 
-
-## 命名
+## 命名 {#names}
 
 **1.** 变量名和类成员名应使用小写字母并以下划线分隔。
 
@@ -430,8 +421,7 @@ enum class CompressionMethod
 
 **17.** 包含 C++ 源代码的文件必须使用 `.cpp` 扩展名。头文件必须使用 `.h` 扩展名。
 
-
-## 如何编写代码
+## 如何编写代码 {#how-to-write-code}
 
 **1.** 内存管理。
 
@@ -568,7 +558,6 @@ ready_any.set();
 
 将 `const` 视为默认选项，仅在确有必要时才使用非 `const`。
 
-
 在按值传递变量时，通常使用 `const` 没有意义。
 
 **11.** unsigned。
@@ -699,8 +688,7 @@ auto s = std::string{"Hello"};
 
 **26.** 对于虚函数，在基类中使用 `virtual` 关键字，而在派生类中不要再写 `virtual`，改为写 `override`。
 
-
-## 未使用的 C++ 特性
+## 未使用的 C++ 特性 {#unused-features-of-c}
 
 **1.** 不使用虚继承。
 
@@ -747,7 +735,6 @@ auto func(const E<G> & e) // auto 返回类型 (C++14)
 }
 ```
 
-
 ## 平台 {#platform}
 
 **1.** 我们为特定平台编写代码。
@@ -771,8 +758,6 @@ CPU 指令集为我们服务器中支持的最小公共子集，目前为 SSE 4.
 **7.** 对除那些难以进行静态链接的库以外的所有库使用静态链接（参见 `ldd` 命令的输出）。
 
 **8.** 使用发布（release）配置进行代码开发和调试。
-
-
 
 ## 工具 {#tools}
 
@@ -802,8 +787,6 @@ CPU 指令集为我们服务器中支持的最小公共子集，目前为 SSE 4.
 
 **10.** 未使用的代码会从仓库中删除。
 
-
-
 ## 库 {#libraries}
 
 **1.** 使用 C++20 标准库（允许使用 experimental 扩展特性），以及 `boost` 和 `Poco` 框架。
@@ -811,8 +794,6 @@ CPU 指令集为我们服务器中支持的最小公共子集，目前为 SSE 4.
 **2.** 不允许使用来自操作系统软件包的库，也不允许使用预装的库。所有库都应以源代码形式放在 `contrib` 目录中，并与 ClickHouse 一同构建。详情参见[添加新的第三方库指南](/development/contrib#adding-and-maintaining-third-party-libraries)。
 
 **3.** 始终优先使用已经在使用的库。
-
-
 
 ## 通用建议 {#general-recommendations-1}
 
@@ -828,9 +809,7 @@ CPU 指令集为我们服务器中支持的最小公共子集，目前为 SSE 4.
 
 **6.** 鼓励简化代码。在可能的情况下尽量减少代码量。
 
-
-
-## 其他补充建议
+## 其他补充建议 {#additional-recommendations}
 
 **1.** 对来自 `stddef.h` 的类型显式添加 `std::`
 

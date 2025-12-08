@@ -7,11 +7,7 @@ title: 'サードパーティ製ビジュアルインターフェイス'
 doc_type: 'reference'
 ---
 
-
-
-# サードパーティ開発のビジュアルインターフェース
-
-
+# サードパーティ開発のビジュアルインターフェース {#visual-interfaces-from-third-party-developers}
 
 ## オープンソース {#open-source}
 
@@ -117,8 +113,6 @@ Features:
 
 ### LightHouse {#lighthouse}
 
-
-
 [LightHouse](https://github.com/VKCOM/lighthouse) は、ClickHouse 向けの軽量な Web インターフェイスです。
 
 特徴:
@@ -200,8 +194,6 @@ ClickHouse data source プラグインにより、ClickHouse をバックエン�
 [xeus-clickhouse](https://github.com/wangfenjin/xeus-clickhouse) は ClickHouse 用の Jupyter カーネルであり、Jupyter 上で SQL を使用して ClickHouse のデータをクエリできます。
 
 ### MindsDB Studio {#mindsdb}
-
-
 
 [MindsDB](https://mindsdb.com/) は、ClickHouse を含むデータベース向けのオープンソースの AI レイヤーであり、最先端の機械学習モデルを容易に開発・学習・デプロイできるようにします。MindsDB Studio（GUI）を使用すると、データベースから新しいモデルを学習させ、モデルによる予測結果を解釈し、潜在的なデータバイアスを特定し、Explainable AI 機能を用いてモデル精度を評価および可視化することで、機械学習モデルをより迅速に適応・チューニングできます。
 
@@ -303,8 +295,6 @@ ClickHouse data source プラグインにより、ClickHouse をバックエン�
 
 ### CKibana {#ckibana}
 
-
-
 [CKibana](https://github.com/TongchengOpenSource/ckibana) は、ネイティブな Kibana UI を使用して ClickHouse のデータを手軽に検索・探索・可視化できる軽量なサービスです。
 
 機能:
@@ -328,8 +318,6 @@ ClickHouse data source プラグインにより、ClickHouse をバックエン�
 - ClickHouse 側では追加のエージェントやコンポーネントは不要です。
 
 [Telescope ソースコード](https://github.com/iamtelescope/telescope) · [ライブデモ](https://demo.iamtelescope.net)
-
-
 
 ## 商用 {#commercial}
 
@@ -410,8 +398,6 @@ SeekTable は、個人／個人用途での利用については[無料](https:/
 ### TABLUM.IO {#tablum_io}
 
 [TABLUM.IO](https://tablum.io/) は、ETL と可視化のためのオンラインクエリおよび分析ツールです。ClickHouse へ接続し、柔軟な SQL コンソール経由でデータをクエリできるほか、静的ファイルやサードパーティサービスからデータをロードすることもできます。TABLUM.IO は、クエリ結果データをチャートやテーブルとして可視化できます。
-
-
 
 機能:
 - ETL: 一般的なデータベース、ローカルおよびリモートファイル、API 呼び出しからのデータのロード。

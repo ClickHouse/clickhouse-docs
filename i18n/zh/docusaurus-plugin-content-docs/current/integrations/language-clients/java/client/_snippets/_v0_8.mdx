@@ -5,45 +5,41 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 用于通过其协议与数据库服务器通信的 Java 客户端库。当前实现仅支持 [HTTP 接口](/interfaces/http)。
 该库提供了自身的 API 用于向服务器发送请求，还提供了一些工具，用于处理不同的二进制数据格式（RowBinary* 和 Native*）。
 
-
 ## 安装与配置 \{#setup\}
 
-- Maven Central（项目页面）：https://mvnrepository.com/artifact/com.clickhouse/client-v2
-- Nightly 构建（仓库链接）：https://central.sonatype.com/repository/maven-snapshots/
-- 旧版 Nightly 构建 Artifactory（仓库链接）：https://s01.oss.sonatype.org/content/repositories/snapshots/
+* Maven Central（项目页面）：https://mvnrepository.com/artifact/com.clickhouse/client-v2
+* Nightly 构建（仓库链接）：https://central.sonatype.com/repository/maven-snapshots/
+* 旧版 Nightly 构建 Artifactory（仓库链接）：https://s01.oss.sonatype.org/content/repositories/snapshots/
 
-<br/>
+<br />
 
 <Tabs groupId="client-setup">
-<TabItem value="maven" label="Maven" >
+  <TabItem value="maven" label="Maven">
+    ```xml
+    <dependency>
+        <groupId>com.clickhouse</groupId>
+        <artifactId>client-v2</artifactId>
+        <version>0.9.1</version>
+    </dependency>
+    ```
+  </TabItem>
 
-```xml 
-<dependency>
-    <groupId>com.clickhouse</groupId>
-    <artifactId>client-v2</artifactId>
-    <version>0.9.1</version>
-</dependency>
-```
+  <TabItem value="gradle-kt" label="Gradle（Kotlin）">
+    ```kotlin
+    // https://mvnrepository.com/artifact/com.clickhouse/client-v2
+    implementation("com.clickhouse:client-v2:0.9.1")
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="gradle-kt" label="Gradle（Kotlin）">
-
-```kotlin
-// https://mvnrepository.com/artifact/com.clickhouse/client-v2
-implementation("com.clickhouse:client-v2:0.9.1")
-```
-</TabItem>
-<TabItem value="gradle" label="Gradle">
-
-```groovy
-// https://mvnrepository.com/artifact/com.clickhouse/client-v2
-implementation 'com.clickhouse:client-v2:0.9.1'
-```
-
-</TabItem>
+  <TabItem value="gradle" label="Gradle">
+    ```groovy
+    // https://mvnrepository.com/artifact/com.clickhouse/client-v2
+    implementation 'com.clickhouse:client-v2:0.9.1'
+    ```
+  </TabItem>
 </Tabs>
 
-## 初始化
+## 初始化 \{#initialization\}
 
 `com.clickhouse.client.api.Client.Builder#build()` 会初始化 Client 对象。每个 Client 实例都有自己的上下文，彼此之间不共享任何对象。
 Builder 提供了若干配置方法，便于进行便捷配置。
@@ -60,8 +56,7 @@ Builder 提供了若干配置方法，便于进行便捷配置。
 
 `Client` 实现了 `AutoCloseable` 接口，在不再需要时应关闭。
 
-
-### 身份验证
+### 身份验证 \{#authentication\}
 
 在初始化阶段为每个客户端配置身份验证。当前支持三种身份验证方式：通过密码、访问令牌或 SSL 客户端证书。
 
@@ -106,7 +101,6 @@ Client client = new Client.Builder()
 
 :::
 
-
 ## 配置 \{#configuration\}
 
 所有设置都通过实例方法（也称为配置方法）进行定义，从而使每个值的作用域和上下文更加清晰明了。
@@ -133,54 +127,54 @@ Client client = new Client.Builder()
   | `setConnectionTTL(long timeout, ChronoUnit unit)`                         | - `timeout` - 超时时长，配合时间单位使用。<br /> - `unit` - `timeout` 的时间单位                                                                                  | 设置连接的 TTL，超过该值后连接将被视为不再活动 <br /> <br /> 默认值: `-1` <br /> 枚举: `ClientConfigProperties.CONNECTION_TTL` <br /> 键: `connection_ttl`                                                                                                                                                                               |
   | `setKeepAliveTimeout(long timeout, ChronoUnit unit)`                      | * `timeout` - 以某个时间单位表示的超时时长。<br /> - `unit` - `timeout` 的时间单位                                                                                 | 设置 HTTP 连接的 Keep-Alive 超时时间。可通过将该超时时间设置为零 `0` 来禁用 Keep-Alive。<br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.HTTP_KEEP_ALIVE_TIMEOUT` <br /> 键：`http_keep_alive_timeout`                                                                                                                                |
   | `setConnectionReuseStrategy(ConnectionReuseStrategy strategy)`            | - `strategy` - 枚举常量 `com.clickhouse.client.api.ConnectionReuseStrategy`                                                                        | 选择连接池应使用的策略：如果希望连接在返回到池中后立即被复用，则使用 `LIFO`；如果希望按照连接变为可用的顺序来使用（返回的连接不会被立即再次使用），则使用 `FIFO`。 <br /> <br /> 默认值：`FIFO` <br /> 枚举：`ClientConfigProperties.CONNECTION_REUSE_STRATEGY` <br /> 键：`connection_reuse_strategy`                                                                                           |
-  | `setSocketTimeout(long timeout, ChronoUnit unit`)`                        | * `timeout` - 以某个时间单位表示的超时时间。<br /> - `unit` - `timeout` 的时间单位。                                                                                | 设置用于读写操作的 socket 超时时间 <br /> <br /> 默认值: `0` <br /> 枚举值: `ClientConfigProperties.SOCKET_OPERATION_TIMEOUT` <br /> 键: `socket_timeout`                                                                                                                                                                         |
-  | `setSocketRcvbuf(long size)`                                              | - `size` - 大小（字节）                                                                                                                              | 设置 TCP socket 接收缓冲区。该缓冲区不在 JVM 内存中分配。 <br /> <br /> 默认值：`8196` <br /> 枚举：`ClientConfigProperties.SOCKET_RCVBUF_OPT` <br /> 键：`socket_rcvbuf`                                                                                                                                                                  |
-  | `setSocketSndbuf(long size)`                                              | * `size` - 大小（以字节为单位）                                                                                                                          | 设置 TCP socket 接收缓冲区。该缓冲区不占用 JVM 内存。<br /> <br /> 默认值：`8196` <br /> 枚举：`ClientConfigProperties.SOCKET_SNDBUF_OPT` <br /> 键：`socket_sndbuf`                                                                                                                                                                     |
-  | `setSocketKeepAlive(boolean value)`                                       | - `value` - 标志位，表示是否启用该选项。                                                                                                                     | 为客户端创建的每个 TCP 套接字设置 `SO_KEEPALIVE` 选项。TCP Keepalive 启用一种机制，用于检查连接的存活状态，并有助于检测被突然终止的连接。<br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.SOCKET_KEEPALIVE_OPT` <br /> 键：`socket_keepalive`                                                                                                                 |
-  | `setSocketTcpNodelay(boolean value)`                                      | * `value` - 指示是否启用该选项的标志。                                                                                                                      | 为客户端创建的每个 TCP 套接字设置 `SO_NODELAY` 选项。该 TCP 选项会使套接字尽可能快地发送数据。<br /> <br /> 默认值: - <br /> 枚举: `ClientConfigProperties.SOCKET_TCP_NO_DELAY_OPT` <br /> 键: `socket_tcp_nodelay`                                                                                                                                    |
-  | `setSocketLinger(int secondsToWait)`                                      | - `secondsToWait` - 要等待的秒数。                                                                                                                    | 为客户端创建的每个 TCP 套接字设置 Linger（延迟关闭）时间。 <br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.SOCKET_LINGER_OPT` <br /> 键：`socket_linger`                                                                                                                                                                         |
-  | `compressServerResponse(boolean enabled)`                                 | * `enabled` - 用于指示是否应启用该选项的标志                                                                                                                  | 设置服务器是否压缩其响应内容。 <br /> <br /> 默认值：`true` <br /> 枚举：`ClientConfigProperties.COMPRESS_SERVER_RESPONSE` <br /> 键：`compress`                                                                                                                                                                                      |
-  | `compressClientRequest(boolean enabled)`                                  | - `enabled` - 标志，用于指示是否启用该选项                                                                                                                   | 设置客户端是否应对其请求进行压缩。<br /> <br /> 默认值：`false` <br /> 枚举：`ClientConfigProperties.COMPRESS_CLIENT_REQUEST` <br /> 键：`decompress`                                                                                                                                                                                   |
-  | `useHttpCompression(boolean enabled)`                                     | * `enabled` - 表示是否启用该选项的标志                                                                                                                     | 设置在启用相应选项时客户端/服务器通信是否使用 HTTP 压缩                                                                                                                                                                                                                                                                               |
-  | `appCompressedData(boolean enabled)`                                      | - `enabled` - 指示是否启用该选项的标志位                                                                                                                    | 通知客户端，压缩将由应用程序负责处理。<br /> <br /> 默认值：`false` <br /> 枚举值：`ClientConfigProperties.APP_COMPRESSED_DATA` <br /> 键：`app_compressed_data`                                                                                                                                                                           |
-  | `setLZ4UncompressedBufferSize(int size)`                                  | * `size` - 大小（字节）                                                                                                                              | 设置用于接收数据流未压缩部分的缓冲区大小。若缓冲区大小设置过小，将会创建一个新的缓冲区，并在日志中记录相应的警告。<br /> <br /> 默认值：`65536` <br /> 枚举常量：`ClientConfigProperties.COMPRESSION_LZ4_UNCOMPRESSED_BUF_SIZE` <br /> 配置键：`compression.lz4.uncompressed_buffer_size`                                                                                           |
-  | `disableNativeCompression`                                                | - `disable` - 用于指示是否应禁用该选项的标志                                                                                                                  | 禁用原生压缩。如果设置为 true，则会禁用原生压缩。 <br /> <br /> 默认值：`false` <br /> 枚举：`ClientConfigProperties.DISABLE_NATIVE_COMPRESSION` <br /> 键：`disable_native_compression`                                                                                                                                                     |
-  | `setDefaultDatabase(String database)`                                     | * `database` - 数据库的名称                                                                                                                          | 设置默认数据库。<br /> <br /> 默认值：`default` <br /> 枚举值：`ClientConfigProperties.DATABASE` <br /> 键：`database`                                                                                                                                                                                                          |
-  | `addProxy(ProxyType type, String host, int port)`                         | - `type` - 代理类型。<br /> - `host` - 代理主机名或 IP 地址。<br /> - `port` - 代理端口。                                                                         | 设置用于与服务器通信时使用的代理。如果代理要求身份验证，则必须配置代理。 <br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.PROXY_TYPE` <br /> 键：`proxy_type` <br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.PROXY_HOST` <br /> 键：`proxy_host`  <br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.PROXY_PORT` <br /> 键：`proxy_port` |
-  | `setProxyCredentials(String user, String pass)`                           | * `user` - 代理用户名<br /> - `pass` - 密码                                                                                                           | 设置用于代理认证的用户凭据。<br /> <br /> 默认值：-<br /> 枚举：`ClientConfigProperties.PROXY_USER` <br /> 键：`proxy_user` <br /> <br /> 默认值：-<br /> 枚举：`ClientConfigProperties.PROXY_PASSWORD` <br /> 键：`proxy_password`                                                                                                           |
-  | `setExecutionTimeout(long timeout, ChronoUnit timeUnit)`                  | - `timeout` - 按某个时间单位表示的超时时长。<br /> - `timeUnit` - `timeout` 的时间单位                                                                             | 用于设置查询的最⼤执行超时时间 <br /> <br /> 默认值：`0` <br /> 枚举：`ClientConfigProperties.MAX_EXECUTION_TIME` <br /> 键：`max_execution_time`                                                                                                                                                                                     |
-  | `setHttpCookiesEnabled(boolean enabled)`                                  | `enabled` - 指示是否启用该选项的标志                                                                                                                       | 设置是否在后续请求中保存并回传 HTTP cookie。                                                                                                                                                                                                                                                                                  |
-  | `setSSLTrustStore(String path)`                                           | `path` - 本地（客户端）系统中的文件路径                                                                                                                       | 设置客户端是否应使用 SSL 信任库来验证服务器主机。<br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.SSL_TRUST_STORE` <br /> 键：`trust_store`                                                                                                                                                                                      |
-  | `setSSLTrustStorePassword(String password)`                               | `password` - 秘密值                                                                                                                               | 设置用于解锁由 `setSSLTrustStore(String path)` 指定的 SSL 信任库的密码 <br /> <br /> 默认: - <br /> 枚举: `ClientConfigProperties.SSL_KEY_STORE_PASSWORD` <br /> 键: `key_store_password`                                                                                                                                          |
-  | `setSSLTrustStoreType(String type)`                                       | `type` - 信任库类型名称                                                                                                                               | 设置由 `setSSLTrustStore(String path)` 指定的信任库类型。<br /> <br /> 默认值：- <br /> 枚举值：`ClientConfigProperties.SSL_KEYSTORE_TYPE` <br /> 键：`key_store_type`                                                                                                                                                              |
-  | `setRootCertificate(String path)`                                         | `path` - 本地（客户端）系统上的文件路径                                                                                                                       | 设置客户端是否应使用指定的根（CA）证书对服务器主机进行验证。<br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.CA_CERTIFICATE` <br /> 键名：`sslrootcert`                                                                                                                                                                                  |
-  | `setClientCertificate(String path)`                                       | `path` - 本地（客户端）系统中的文件路径                                                                                                                       | 设置在发起 SSL 连接以及进行 SSL 认证时使用的客户端证书路径。<br /> <br /> 默认值：- <br /> 枚举值：`ClientConfigProperties.SSL_CERTIFICATE` <br /> 键名：`sslcert`                                                                                                                                                                                |
-  | `setClientKey(String path)`                                               | `path` - 本地（客户端）系统中的文件路径                                                                                                                       | 设置用于与服务器进行 SSL 加密通信的客户端私钥。<br /> <br /> 默认值：-<br /> 枚举：`ClientConfigProperties.SSL_KEY` <br /> 键：`ssl_key`                                                                                                                                                                                                    |
-  | `useServerTimeZone(boolean useServerTimeZone)`                            | `useServerTimeZone` - 表示是否启用该选项的标志                                                                                                             | 指定在解码 DateTime 和 Date 列值时，客户端是否应使用服务器时区。启用后，应通过 `setServerTimeZone(String timeZone)` 设置服务器时区。<br /> <br /> 默认值：`true` <br /> 枚举：`ClientConfigProperties.USE_SERVER_TIMEZONE` <br /> 键：`use_server_time_zone`                                                                                                  |
-  | `useTimeZone(String timeZone)`                                            | `timeZone` - Java 中有效时区 ID 的字符串（参见 `java.time.ZoneId`）                                                                                         | 设置在解码 DateTime 和 Date 列值时，是否应使用指定的时区。会覆盖服务器的时区设置。<br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.USE_TIMEZONE` <br /> 键：`use_time_zone`                                                                                                                                                                 |
-  | `setServerTimeZone(String timeZone)`                                      | `timeZone` - Java 中有效时区 ID 的字符串值（参见 `java.time.ZoneId`）                                                                                        | 设置服务器端时区。默认使用 UTC 时区。<br /> <br /> 默认值：`UTC` <br /> 枚举：`ClientConfigProperties.SERVER_TIMEZONE` <br /> 键：`server_time_zone`                                                                                                                                                                                   |
-  | `useAsyncRequests(boolean async)`                                         | `async` - 指示是否应启用该选项的标志。                                                                                                                       | 设置是否在单独线程中执行客户端请求。默认禁用，因为应用程序更清楚如何组织多线程任务，而且在单独线程中运行任务并不会提升性能。 <br /> <br /> 默认值：`false` <br /> 枚举：`ClientConfigProperties.ASYNC_OPERATIONS` <br /> 键：`async`                                                                                                                                                 |
-  | `setSharedOperationExecutor(ExecutorService executorService)`             | `executorService` - 执行器服务的实例。                                                                                                                  | 设置用于操作任务的 executor 服务。<br /> <br /> 默认值：`none` <br /> 枚举：`none` <br /> 键：`none`                                                                                                                                                                                                                               |
-  | `setClientNetworkBufferSize(int size)`                                    | * `size` - 以字节为单位的大小                                                                                                                           | 设置应用程序内存空间中缓冲区的大小，用于在套接字与应用程序之间来回复制数据。更大的缓冲区可以减少对 TCP 栈的系统调用次数，但会增加每个连接占用的内存。由于连接的生命周期通常较短，该缓冲区也会被垃圾回收（GC）。还需注意，分配大块连续内存可能会带来问题。 <br /> <br /> 默认值: `300000` <br /> 枚举: `ClientConfigProperties.CLIENT_NETWORK_BUFFER_SIZE` <br /> 键: `client_network_buffer_size`                                            |
-  | `retryOnFailures(ClientFaultCause ...causes)`                             | - `causes` - `com.clickhouse.client.api.ClientFaultCause` 枚举中的常量                                                                               | 设置可恢复/可重试的错误类型。 <br /> <br /> 默认值：`NoHttpResponse,ConnectTimeout,ConnectionRequestTimeout` <br /> 枚举值：`ClientConfigProperties.CLIENT_RETRY_ON_FAILURE` <br /> 键：`client_retry_on_failures`                                                                                                                    |
-  | `setMaxRetries(int maxRetries)`                                           | * `maxRetries` - 重试次数                                                                                                                          | 为针对 `retryOnFailures(ClientFaultCause ...causes)` 定义的失败类型设置最大重试次数 <br /> <br /> 默认值：`3` <br /> 枚举值：`ClientConfigProperties.RETRY_ON_FAILURE` <br /> 键名：`retry`                                                                                                                                                |
-  | `allowBinaryReaderToReuseBuffers(boolean reuse)`                          | - `reuse` - 指示是否应启用该选项的标志位                                                                                                                     | 大多數資料集都包含以小位元組序列編碼的數值資料。預設情況下，reader 會分配所需的緩衝區，將資料讀入其中，然後轉換為目標的 Number 類別。由於會分配並釋放大量小物件，這可能會造成顯著的 GC 壓力。啟用此選項後，reader 會使用預先分配的緩衝區來進行數值轉換。這是安全的，因為每個 reader 都有自己的一組緩衝區，且各個 reader 只會被單一執行緒使用。                                                                                                                  |
-  | `httpHeader(String key, String value)`                                    | * `key` - HTTP 头部键名。<br /> - `value` - 该头部的字符串值。                                                                                               | 为单个 HTTP 头部设置值。之前的值将被覆盖。<br /> <br /> 默认值：`none` <br /> 枚举：`none` <br /> 键：`none`                                                                                                                                                                                                                             |
-  | `httpHeader(String key, Collection values)`                               | - `key` - HTTP 头部键名。<br /> - `values` - 字符串值列表。                                                                                                | 为单个 HTTP 头部设置值。之前的值会被覆盖。<br /> <br /> 默认值：`none` <br /> 枚举：`none` <br /> 键：`none`                                                                                                                                                                                                                             |
-  | `httpHeaders(Map headers)`                                                | * `header` - 包含 HTTP 头及其对应值的映射表。                                                                                                               | 同时设置多个 HTTP 头部的值。<br /> <br /> 默认值: `none` <br /> 枚举: `none` <br /> 键: `none`                                                                                                                                                                                                                                 |
-  | `serverSetting(String name, String value)`                                | - `name` - 查询级别设置的名称。<br /> - `value` - 此设置的字符串值。                                                                                              | 设置随每个查询一起传递给服务器的设置。单个操作的设置可以覆盖它。[设置列表](/operations/settings/query-level) <br /> <br /> 默认值：`none` <br /> 枚举值：`none` <br /> 键：`none`                                                                                                                                                                           |
-  | `serverSetting(String name,  Collection values)`                          | * `name` - 查询级别设置的名称。<br /> - `values` - 该设置的字符串值。                                                                                             | 配置随每个查询一同传递给服务器的设置。单个操作的设置可以覆盖它。参见 [设置列表](/operations/settings/query-level)。此方法适用于为可接受多个值的设置赋值，例如 [roles](/interfaces/http#setting-role-with-query-parameters) <br /> <br /> 默认值: `none` <br /> 枚举: `none` <br /> 键: `none`                                                                                   |
-  | `columnToMethodMatchingStrategy(ColumnToMethodMatchingStrategy strategy)` | - `strategy` - 用于列与字段匹配的策略实现                                                                                                                   | 设置在注册 DTO 时用于匹配 DTO 类字段和数据库列的自定义策略。 <br /> <br /> 默认值: `none` <br /> 枚举: `none` <br /> 键: `none`                                                                                                                                                                                                              |
-  | `useHTTPBasicAuth(boolean useBasicAuth)`                                  | * `useBasicAuth` - 用于指示是否应启用该选项的标志                                                                                                             | 设置是否使用基本 HTTP 身份验证进行用户密码认证。默认启用。使用此类型的身份验证可以解决密码中包含特殊字符而无法通过 HTTP 头部传输所导致的问题。 <br /> <br /> 默认值：`true` <br /> 枚举：`ClientConfigProperties.HTTP_USE_BASIC_AUTH` <br /> 键：`http_use_basic_auth`                                                                                                                  |
-  | `setClientName(String clientName)`                                        | - `clientName` - 表示应用程序名称的字符串                                                                                                                  | 设置关于调用方应用程序的附加信息。该字符串将作为客户端名称传递给服务器。对于 HTTP 协议，将作为 `User-Agent` 头部字段传递。 <br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.CLIENT_NAME` <br /> 键：`client_name`                                                                                                                                             |
-  | `useBearerTokenAuth(String bearerToken)`                                  | * `bearerToken` - 编码后的 Bearer 令牌                                                                                                               | 指定是否使用 Bearer 认证以及要使用的 token。token 将按原样发送，因此在传递给此方法之前应先进行编码处理。<br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.BEARERTOKEN_AUTH` <br /> 键：`bearer_token`                                                                                                                                                 |
-  | `registerClientMetrics(Object registry, String name)`                     | - `registry` - Micrometer registry 实例<br /> - `name` - 指标组名称                                                                                   | 在 Micrometer（[https://micrometer.io/](https://micrometer.io/)）的注册表实例中注册传感器。                                                                                                                                                                                                                                   |
-  | `setServerVersion(String version)`                                        | * `version` - 服务器版本的字符串形式                                                                                                                      | 设置服务器版本以避免版本检测。<br /> <br /> 默认值：-<br /> 枚举值：`ClientConfigProperties.SERVER_VERSION` <br /> 键名：`server_version`                                                                                                                                                                                               |
-  | `typeHintMapping(Map typeHintMapping)`                                    | - `typeHintMapping` - 类型提示映射                                                                                                                   | 为 ClickHouse 类型设置类型提示映射。例如，可以让多维数组以 Java 容器类型呈现，而不是作为独立的 Array 对象。 <br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.TYPE_HINT_MAPPING` <br /> 键：`type_hint_mapping`                                                                                                                                      |
-  | `sslSocketSNI(String sni)`                                                | * `sni` - 服务器名称的字符串形式                                                                                                                          | 在 SSL/TLS 连接中设置用于 SNI（Server Name Indication，服务器名称指示）的服务器名称。<br /> <br /> 默认值：- <br /> 枚举值：`ClientConfigProperties.SSL_SOCKET_SNI` <br /> 键名：`ssl_socket_sni`                                                                                                                                                 |
+  | `setSocketTimeout(long timeout, ChronoUnit unit`)`                       | *`timeout`- 以某个时间单位表示的超时时间。<br /> -`unit`-`timeout`的时间单位。                                                                                | 设置用于读写操作的 socket 超时时间 <br /> <br /> 默认值:`0`<br /> 枚举值:`ClientConfigProperties.SOCKET&#95;OPERATION&#95;TIMEOUT`<br /> 键:`socket&#95;timeout`                                                                                                                                                                        |
+      |`setSocketRcvbuf(long size)`                                             | -`size` - 大小（字节）                                                                                                                              | 设置 TCP socket 接收缓冲区。该缓冲区不在 JVM 内存中分配。 <br /> <br /> 默认值：`8196` <br /> 枚举：`ClientConfigProperties.SOCKET&#95;RCVBUF&#95;OPT` <br /> 键：`socket&#95;rcvbuf`                                                                                                                                                                 |
+      |`setSocketSndbuf(long size)`                                             | *`size` - 大小（以字节为单位）                                                                                                                          | 设置 TCP socket 接收缓冲区。该缓冲区不占用 JVM 内存。<br /> <br /> 默认值：`8196` <br /> 枚举：`ClientConfigProperties.SOCKET&#95;SNDBUF&#95;OPT` <br /> 键：`socket&#95;sndbuf`                                                                                                                                                                    |
+      |`setSocketKeepAlive(boolean value)`                                      | -`value`- 标志位，表示是否启用该选项。                                                                                                                     | 为客户端创建的每个 TCP 套接字设置`SO&#95;KEEPALIVE` 选项。TCP Keepalive 启用一种机制，用于检查连接的存活状态，并有助于检测被突然终止的连接。<br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.SOCKET&#95;KEEPALIVE&#95;OPT` <br /> 键：`socket&#95;keepalive`                                                                                                                |
+      |`setSocketTcpNodelay(boolean value)`                                     | *`value`- 指示是否启用该选项的标志。                                                                                                                      | 为客户端创建的每个 TCP 套接字设置`SO&#95;NODELAY`选项。该 TCP 选项会使套接字尽可能快地发送数据。<br /> <br /> 默认值: - <br /> 枚举:`ClientConfigProperties.SOCKET&#95;TCP&#95;NO&#95;DELAY&#95;OPT`<br /> 键:`socket&#95;tcp&#95;nodelay`                                                                                                                                   |
+      |`setSocketLinger(int secondsToWait)`                                     | -`secondsToWait` - 要等待的秒数。                                                                                                                    | 为客户端创建的每个 TCP 套接字设置 Linger（延迟关闭）时间。 <br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.SOCKET&#95;LINGER&#95;OPT` <br /> 键：`socket&#95;linger`                                                                                                                                                                        |
+      |`compressServerResponse(boolean enabled)`                                | *`enabled` - 用于指示是否应启用该选项的标志                                                                                                                  | 设置服务器是否压缩其响应内容。 <br /> <br /> 默认值：`true` <br /> 枚举：`ClientConfigProperties.COMPRESS&#95;SERVER&#95;RESPONSE` <br /> 键：`compress`                                                                                                                                                                                     |
+      |`compressClientRequest(boolean enabled)`                                 | -`enabled` - 标志，用于指示是否启用该选项                                                                                                                   | 设置客户端是否应对其请求进行压缩。<br /> <br /> 默认值：`false` <br /> 枚举：`ClientConfigProperties.COMPRESS&#95;CLIENT&#95;REQUEST` <br /> 键：`decompress`                                                                                                                                                                                  |
+      |`useHttpCompression(boolean enabled)`                                    | *`enabled`- 表示是否启用该选项的标志                                                                                                                     | 设置在启用相应选项时客户端/服务器通信是否使用 HTTP 压缩                                                                                                                                                                                                                                                                               |
+      |`appCompressedData(boolean enabled)`                                     | -`enabled` - 指示是否启用该选项的标志位                                                                                                                    | 通知客户端，压缩将由应用程序负责处理。<br /> <br /> 默认值：`false` <br /> 枚举值：`ClientConfigProperties.APP&#95;COMPRESSED&#95;DATA` <br /> 键：`app&#95;compressed&#95;data`                                                                                                                                                                          |
+      |`setLZ4UncompressedBufferSize(int size)`                                 | *`size` - 大小（字节）                                                                                                                              | 设置用于接收数据流未压缩部分的缓冲区大小。若缓冲区大小设置过小，将会创建一个新的缓冲区，并在日志中记录相应的警告。<br /> <br /> 默认值：`65536` <br /> 枚举常量：`ClientConfigProperties.COMPRESSION&#95;LZ4&#95;UNCOMPRESSED&#95;BUF&#95;SIZE` <br /> 配置键：`compression.lz4.uncompressed&#95;buffer&#95;size`                                                                                          |
+      |`disableNativeCompression`                                               | -`disable` - 用于指示是否应禁用该选项的标志                                                                                                                  | 禁用原生压缩。如果设置为 true，则会禁用原生压缩。 <br /> <br /> 默认值：`false` <br /> 枚举：`ClientConfigProperties.DISABLE&#95;NATIVE&#95;COMPRESSION` <br /> 键：`disable&#95;native&#95;compression`                                                                                                                                                    |
+      |`setDefaultDatabase(String database)`                                    | *`database` - 数据库的名称                                                                                                                          | 设置默认数据库。<br /> <br /> 默认值：`default` <br /> 枚举值：`ClientConfigProperties.DATABASE` <br /> 键：`database`                                                                                                                                                                                                         |
+      |`addProxy(ProxyType type, String host, int port)`                        | -`type`- 代理类型。<br /> -`host`- 代理主机名或 IP 地址。<br /> -`port` - 代理端口。                                                                         | 设置用于与服务器通信时使用的代理。如果代理要求身份验证，则必须配置代理。 <br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.PROXY&#95;TYPE` <br /> 键：`proxy&#95;type` <br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.PROXY&#95;HOST` <br /> 键：`proxy&#95;host`  <br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.PROXY&#95;PORT` <br /> 键：`proxy&#95;port`|
+      |`setProxyCredentials(String user, String pass)`                          | *`user`- 代理用户名<br /> -`pass` - 密码                                                                                                           | 设置用于代理认证的用户凭据。<br /> <br /> 默认值：-<br /> 枚举：`ClientConfigProperties.PROXY&#95;USER` <br /> 键：`proxy&#95;user` <br /> <br /> 默认值：-<br /> 枚举：`ClientConfigProperties.PROXY&#95;PASSWORD` <br /> 键：`proxy&#95;password`                                                                                                          |
+      |`setExecutionTimeout(long timeout, ChronoUnit timeUnit)`                 | -`timeout`- 按某个时间单位表示的超时时长。<br /> -`timeUnit`-`timeout` 的时间单位                                                                             | 用于设置查询的最⼤执行超时时间 <br /> <br /> 默认值：`0` <br /> 枚举：`ClientConfigProperties.MAX&#95;EXECUTION&#95;TIME` <br /> 键：`max&#95;execution&#95;time`                                                                                                                                                                                    |
+      |`setHttpCookiesEnabled(boolean enabled)`                                 |`enabled`- 指示是否启用该选项的标志                                                                                                                       | 设置是否在后续请求中保存并回传 HTTP cookie。                                                                                                                                                                                                                                                                                  |
+      |`setSSLTrustStore(String path)`                                          |`path` - 本地（客户端）系统中的文件路径                                                                                                                       | 设置客户端是否应使用 SSL 信任库来验证服务器主机。<br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.SSL&#95;TRUST&#95;STORE` <br /> 键：`trust&#95;store`                                                                                                                                                                                     |
+      |`setSSLTrustStorePassword(String password)`                              |`password`- 秘密值                                                                                                                               | 设置用于解锁由`setSSLTrustStore(String path)`指定的 SSL 信任库的密码 <br /> <br /> 默认: - <br /> 枚举:`ClientConfigProperties.SSL&#95;KEY&#95;STORE&#95;PASSWORD`<br /> 键:`key&#95;store&#95;password`                                                                                                                                         |
+      |`setSSLTrustStoreType(String type)`                                      |`type`- 信任库类型名称                                                                                                                               | 设置由`setSSLTrustStore(String path)` 指定的信任库类型。<br /> <br /> 默认值：- <br /> 枚举值：`ClientConfigProperties.SSL&#95;KEYSTORE&#95;TYPE` <br /> 键：`key&#95;store&#95;type`                                                                                                                                                             |
+      |`setRootCertificate(String path)`                                        |`path` - 本地（客户端）系统上的文件路径                                                                                                                       | 设置客户端是否应使用指定的根（CA）证书对服务器主机进行验证。<br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.CA&#95;CERTIFICATE` <br /> 键名：`sslrootcert`                                                                                                                                                                                 |
+      |`setClientCertificate(String path)`                                      |`path` - 本地（客户端）系统中的文件路径                                                                                                                       | 设置在发起 SSL 连接以及进行 SSL 认证时使用的客户端证书路径。<br /> <br /> 默认值：- <br /> 枚举值：`ClientConfigProperties.SSL&#95;CERTIFICATE` <br /> 键名：`sslcert`                                                                                                                                                                               |
+      |`setClientKey(String path)`                                              |`path` - 本地（客户端）系统中的文件路径                                                                                                                       | 设置用于与服务器进行 SSL 加密通信的客户端私钥。<br /> <br /> 默认值：-<br /> 枚举：`ClientConfigProperties.SSL&#95;KEY` <br /> 键：`ssl&#95;key`                                                                                                                                                                                                   |
+      |`useServerTimeZone(boolean useServerTimeZone)`                           |`useServerTimeZone`- 表示是否启用该选项的标志                                                                                                             | 指定在解码 DateTime 和 Date 列值时，客户端是否应使用服务器时区。启用后，应通过`setServerTimeZone(String timeZone)` 设置服务器时区。<br /> <br /> 默认值：`true` <br /> 枚举：`ClientConfigProperties.USE&#95;SERVER&#95;TIMEZONE` <br /> 键：`use&#95;server&#95;time&#95;zone`                                                                                                 |
+      |`useTimeZone(String timeZone)`                                           |`timeZone`- Java 中有效时区 ID 的字符串（参见`java.time.ZoneId`）                                                                                         | 设置在解码 DateTime 和 Date 列值时，是否应使用指定的时区。会覆盖服务器的时区设置。<br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.USE&#95;TIMEZONE` <br /> 键：`use&#95;time&#95;zone`                                                                                                                                                                |
+      |`setServerTimeZone(String timeZone)`                                     |`timeZone`- Java 中有效时区 ID 的字符串值（参见`java.time.ZoneId`）                                                                                        | 设置服务器端时区。默认使用 UTC 时区。<br /> <br /> 默认值：`UTC` <br /> 枚举：`ClientConfigProperties.SERVER&#95;TIMEZONE` <br /> 键：`server&#95;time&#95;zone`                                                                                                                                                                                  |
+      |`useAsyncRequests(boolean async)`                                        |`async` - 指示是否应启用该选项的标志。                                                                                                                       | 设置是否在单独线程中执行客户端请求。默认禁用，因为应用程序更清楚如何组织多线程任务，而且在单独线程中运行任务并不会提升性能。 <br /> <br /> 默认值：`false` <br /> 枚举：`ClientConfigProperties.ASYNC&#95;OPERATIONS` <br /> 键：`async`                                                                                                                                                |
+      |`setSharedOperationExecutor(ExecutorService executorService)`            |`executorService` - 执行器服务的实例。                                                                                                                  | 设置用于操作任务的 executor 服务。<br /> <br /> 默认值：`none` <br /> 枚举：`none` <br /> 键：`none`                                                                                                                                                                                                                              |
+      |`setClientNetworkBufferSize(int size)`                                   | *`size`- 以字节为单位的大小                                                                                                                           | 设置应用程序内存空间中缓冲区的大小，用于在套接字与应用程序之间来回复制数据。更大的缓冲区可以减少对 TCP 栈的系统调用次数，但会增加每个连接占用的内存。由于连接的生命周期通常较短，该缓冲区也会被垃圾回收（GC）。还需注意，分配大块连续内存可能会带来问题。 <br /> <br /> 默认值:`300000`<br /> 枚举:`ClientConfigProperties.CLIENT&#95;NETWORK&#95;BUFFER&#95;SIZE`<br /> 键:`client&#95;network&#95;buffer&#95;size`                                           |
+      |`retryOnFailures(ClientFaultCause ...causes)`                            | -`causes`-`com.clickhouse.client.api.ClientFaultCause` 枚举中的常量                                                                               | 设置可恢复/可重试的错误类型。 <br /> <br /> 默认值：`NoHttpResponse,ConnectTimeout,ConnectionRequestTimeout` <br /> 枚举值：`ClientConfigProperties.CLIENT&#95;RETRY&#95;ON&#95;FAILURE` <br /> 键：`client&#95;retry&#95;on&#95;failures`                                                                                                                   |
+      |`setMaxRetries(int maxRetries)`                                          | *`maxRetries`- 重试次数                                                                                                                          | 为针对`retryOnFailures(ClientFaultCause ...causes)` 定义的失败类型设置最大重试次数 <br /> <br /> 默认值：`3` <br /> 枚举值：`ClientConfigProperties.RETRY&#95;ON&#95;FAILURE` <br /> 键名：`retry`                                                                                                                                               |
+      |`allowBinaryReaderToReuseBuffers(boolean reuse)`                         | -`reuse`- 指示是否应启用该选项的标志位                                                                                                                     | 大多數資料集都包含以小位元組序列編碼的數值資料。預設情況下，reader 會分配所需的緩衝區，將資料讀入其中，然後轉換為目標的 Number 類別。由於會分配並釋放大量小物件，這可能會造成顯著的 GC 壓力。啟用此選項後，reader 會使用預先分配的緩衝區來進行數值轉換。這是安全的，因為每個 reader 都有自己的一組緩衝區，且各個 reader 只會被單一執行緒使用。                                                                                                                  |
+      |`httpHeader(String key, String value)`                                   | *`key`- HTTP 头部键名。<br /> -`value` - 该头部的字符串值。                                                                                               | 为单个 HTTP 头部设置值。之前的值将被覆盖。<br /> <br /> 默认值：`none` <br /> 枚举：`none` <br /> 键：`none`                                                                                                                                                                                                                            |
+      |`httpHeader(String key, Collection values)`                              | -`key`- HTTP 头部键名。<br /> -`values` - 字符串值列表。                                                                                                | 为单个 HTTP 头部设置值。之前的值会被覆盖。<br /> <br /> 默认值：`none` <br /> 枚举：`none` <br /> 键：`none`                                                                                                                                                                                                                            |
+      |`httpHeaders(Map headers)`                                               | *`header`- 包含 HTTP 头及其对应值的映射表。                                                                                                               | 同时设置多个 HTTP 头部的值。<br /> <br /> 默认值:`none`<br /> 枚举:`none`<br /> 键:`none`                                                                                                                                                                                                                                |
+      |`serverSetting(String name, String value)`                               | -`name`- 查询级别设置的名称。<br /> -`value` - 此设置的字符串值。                                                                                              | 设置随每个查询一起传递给服务器的设置。单个操作的设置可以覆盖它。[设置列表](/operations/settings/query-level) <br /> <br /> 默认值：`none` <br /> 枚举值：`none` <br /> 键：`none`                                                                                                                                                                          |
+      |`serverSetting(String name,  Collection values)`                         | *`name`- 查询级别设置的名称。<br /> -`values`- 该设置的字符串值。                                                                                             | 配置随每个查询一同传递给服务器的设置。单个操作的设置可以覆盖它。参见 [设置列表](/operations/settings/query-level)。此方法适用于为可接受多个值的设置赋值，例如 [roles](/interfaces/http#setting-role-with-query-parameters) <br /> <br /> 默认值:`none`<br /> 枚举:`none`<br /> 键:`none`                                                                                  |
+      |`columnToMethodMatchingStrategy(ColumnToMethodMatchingStrategy strategy)`| -`strategy`- 用于列与字段匹配的策略实现                                                                                                                   | 设置在注册 DTO 时用于匹配 DTO 类字段和数据库列的自定义策略。 <br /> <br /> 默认值:`none`<br /> 枚举:`none`<br /> 键:`none`                                                                                                                                                                                                             |
+      |`useHTTPBasicAuth(boolean useBasicAuth)`                                 | *`useBasicAuth` - 用于指示是否应启用该选项的标志                                                                                                             | 设置是否使用基本 HTTP 身份验证进行用户密码认证。默认启用。使用此类型的身份验证可以解决密码中包含特殊字符而无法通过 HTTP 头部传输所导致的问题。 <br /> <br /> 默认值：`true` <br /> 枚举：`ClientConfigProperties.HTTP&#95;USE&#95;BASIC&#95;AUTH` <br /> 键：`http&#95;use&#95;basic&#95;auth`                                                                                                                 |
+      |`setClientName(String clientName)`                                       | -`clientName`- 表示应用程序名称的字符串                                                                                                                  | 设置关于调用方应用程序的附加信息。该字符串将作为客户端名称传递给服务器。对于 HTTP 协议，将作为`User-Agent` 头部字段传递。 <br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.CLIENT&#95;NAME` <br /> 键：`client&#95;name`                                                                                                                                            |
+      |`useBearerTokenAuth(String bearerToken)`                                 | *`bearerToken` - 编码后的 Bearer 令牌                                                                                                               | 指定是否使用 Bearer 认证以及要使用的 token。token 将按原样发送，因此在传递给此方法之前应先进行编码处理。<br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.BEARERTOKEN&#95;AUTH` <br /> 键：`bearer&#95;token`                                                                                                                                                |
+      |`registerClientMetrics(Object registry, String name)`                    | -`registry`- Micrometer registry 实例<br /> -`name`- 指标组名称                                                                                   | 在 Micrometer（[https://micrometer.io/](https://micrometer.io/)）的注册表实例中注册传感器。                                                                                                                                                                                                                                   |
+      |`setServerVersion(String version)`                                       | *`version` - 服务器版本的字符串形式                                                                                                                      | 设置服务器版本以避免版本检测。<br /> <br /> 默认值：-<br /> 枚举值：`ClientConfigProperties.SERVER&#95;VERSION` <br /> 键名：`server&#95;version`                                                                                                                                                                                              |
+      |`typeHintMapping(Map typeHintMapping)`                                   | -`typeHintMapping` - 类型提示映射                                                                                                                   | 为 ClickHouse 类型设置类型提示映射。例如，可以让多维数组以 Java 容器类型呈现，而不是作为独立的 Array 对象。 <br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.TYPE&#95;HINT&#95;MAPPING` <br /> 键：`type&#95;hint&#95;mapping`                                                                                                                                     |
+      |`sslSocketSNI(String sni)`                                               | *`sni` - 服务器名称的字符串形式                                                                                                                          | 在 SSL/TLS 连接中设置用于 SNI（Server Name Indication，服务器名称指示）的服务器名称。<br /> <br /> 默认值：- <br /> 枚举值：`ClientConfigProperties.SSL&#95;SOCKET&#95;SNI` <br /> 键名：`ssl&#95;socket&#95;sni`                                                                                                                                                 |
 </WideTableWrapper>
 
-### 服务器设置
+### 服务器设置 \{#server-settings\}
 
 服务器端设置既可以在创建客户端时于客户端级别统一设置一次（参见 `Builder` 的 `serverSetting` 方法），也可以在操作级别进行设置（参见操作设置类中的 `serverSetting` 方法）。
 
@@ -207,8 +201,7 @@ Client client = new Client.Builder()
 
 当通过 `setOption` 方法（无论是 `Client.Builder` 还是操作设置类）设置选项时，服务器端设置名称应添加前缀 `clickhouse_setting_`。在这种情况下，可以方便地使用 `com.clickhouse.client.api.ClientConfigProperties#serverSetting()`。
 
-
-### 自定义 HTTP 头部
+### 自定义 HTTP 头部 \{#custom-http-header\}
 
 可以在客户端级别为所有操作统一设置自定义 HTTP 头部，也可以在操作级别为单个操作单独设置自定义 HTTP 头部。
 
@@ -221,7 +214,6 @@ QuerySettings settings = new QuerySettings()
 ```
 
 当通过 `setOption` 方法（无论是 `Client.Builder` 还是操作设置类）设置选项时，自定义请求头名称应添加 `http_header_` 前缀。在这种情况下，可以方便地使用方法 `com.clickhouse.client.api.ClientConfigProperties#httpHeader()`。
-
 
 ## 常用术语定义 \{#common-definitions\}
 
@@ -321,7 +313,7 @@ QuerySettings settings = new QuerySettings()
 
 ## Insert API \{#insert-api\}
 
-### insert(String tableName, InputStream data, ClickHouseFormat format)
+### insert(String tableName, InputStream data, ClickHouseFormat format) \{#insertstring-tablename-inputstream-data-clickhouseformat-format\}
 
 以指定格式编码的字节 `InputStream` 形式接收数据。`data` 预期应使用 `format` 进行编码。
 
@@ -362,8 +354,7 @@ try (InputStream dataStream = getDataStream()) {
 
 ```
 
-
-### insert(String tableName, List&lt;?&gt; data, InsertSettings settings)
+### insert(String tableName, List&lt;?&gt; data, InsertSettings settings) \{#insertstring-tablename-listlt-data-insertsettings-settings\}
 
 向数据库发送写入请求。对象列表会被转换为一种高效的格式，然后发送到服务器。列表元素的类应事先通过 `register(Class, TableSchema)` 方法进行注册。
 
@@ -399,8 +390,7 @@ try (InsertResponse response = client.insert(TABLE_NAME, events).get()) {
 }
 ```
 
-
-### insert(String tableName, DataStreamWriter writer, ClickHouseFormat format, InsertSettings settings)
+### insert(String tableName, DataStreamWriter writer, ClickHouseFormat format, InsertSettings settings) \{#insertstring-tablename-datastreamwriter-writer-clickhouseformat-format-insertsettings-settings\}
 
 **Beta**
 
@@ -478,7 +468,6 @@ try (InsertResponse response = client.insert(tableName, out -> {
 
 写入已压缩数据：
 
-
 ```java showLineNumbers
 String tableName = "very_long_table_name_with_uuid_" + UUID.randomUUID().toString().replace('-', '_');
 String tableCreate = "CREATE TABLE \"" + tableName + "\" " +
@@ -526,7 +515,6 @@ try (InsertResponse response = client.insert(tableName, out -> {
 
 ```
 
-
 ### InsertSettings \{#insertsettings\}
 
 插入操作的配置选项。
@@ -558,7 +546,7 @@ try (InsertResponse response = client.insert(tableName, out -> {
 
 ## 查询 API \{#query-api\}
 
-### query(String sqlQuery)
+### query(String sqlQuery) \{#querystring-sqlquery\}
 
 按原样发送 `sqlQuery`。响应格式由查询设置决定。`QueryResponse` 将持有对响应流的引用，该响应流应由支持相应格式的读取器来消费。
 
@@ -607,8 +595,7 @@ try (QueryResponse response = client.query(sql).get(3, TimeUnit.SECONDS);) {
 // 将业务逻辑置于读取块之外以尽快释放 HTTP 连接。  
 ```
 
-
-### query(String sqlQuery, Map&lt;String, Object&gt; queryParams, QuerySettings settings)
+### query(String sqlQuery, Map&lt;String, Object&gt; queryParams, QuerySettings settings) \{#querystring-sqlquery-mapltstring-object-queryparams-querysettings-settings\}
 
 按原样发送 `sqlQuery`，并同时发送查询参数，使服务器能够编译该 SQL 表达式。
 
@@ -656,8 +643,7 @@ try (QueryResponse response =
 
 ```
 
-
-### queryAll(String sqlQuery)
+### queryAll(String sqlQuery) \{#queryallstring-sqlquery\}
 
 以 `RowBinaryWithNamesAndTypes` 格式查询数据。返回结果为一个集合。读取性能与使用 reader 相同，但需要更多内存来存储整个数据集。
 
@@ -695,7 +681,6 @@ try {
 }
 ```
 
-
 ### QuerySettings \{#querysettings\}
 
 查询操作的配置选项。
@@ -709,7 +694,7 @@ try {
 | `setMaxExecutionTime(Integer maxExecutionTime)` | 设置操作在服务器上的最长执行时间，不会影响读取超时时间。                                                                    |
 | `waitEndOfQuery(Boolean waitEndOfQuery)`     | 请求服务器在发送响应前等待查询结束。                                                                                       |
 | `setUseServerTimeZone(Boolean useServerTimeZone)` | 使用服务器时区（参见客户端配置）解析操作结果中的日期/时间类型。默认值为 `false`。                                           |
-| `setUseTimeZone(String timeZone)`            | 请求服务器在时间转换时使用 `timeZone`。参见 [session_timezone](/operations/settings/settings#session_timezone)。          |
+| `setUseTimeZone(String timeZone)`            | 请求服务器在时间转换时使用 `timeZone`。参见 [session&#95;timezone](/operations/settings/settings#session_timezone)。          |
 | `serverSetting(String name, String value)`   | 为某个操作设置单个服务器设置。                                                                                            |
 | `serverSetting(String name, Collection values)` | 为某个操作设置带有多个值的服务器设置。集合中的条目应为 `String` 值。                                                       |
 | `setDBRoles(Collection dbRoles)`             | 设置在执行操作前要应用的 DB 角色。集合中的条目应为 `String` 值。                                                           |
@@ -733,12 +718,12 @@ try {
 
 ### 示例 \{#examples\}
 
-- 示例代码见 [repo](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2)
-- 请参考 Spring Service 的 [实现](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service)
+* 示例代码见 [repo](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2)
+* 请参考 Spring Service 的 [实现](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service)
 
 ## 通用 API \{#common-api\}
 
-### getTableSchema(String table)
+### getTableSchema(String table) \{#gettableschemastring-table\}
 
 获取指定 `table` 的表结构。
 
@@ -759,8 +744,7 @@ TableSchema getTableSchema(String table, String database)
 
 返回一个 `TableSchema` 对象，包含该表的列列表。
 
-
-### getTableSchemaFromQuery(String sql)
+### getTableSchemaFromQuery(String sql) \{#gettableschemafromquerystring-sql\}
 
 从 SQL 语句中获取表结构。
 
@@ -778,10 +762,9 @@ TableSchema getTableSchemaFromQuery(String sql)
 
 返回一个 `TableSchema` 对象，其中的列与该 `sql` 语句中的列相对应。
 
-
 ### TableSchema \{#tableschema\}
 
-### register(Class&lt;?&gt; clazz, TableSchema schema)
+### register(Class&lt;?&gt; clazz, TableSchema schema) \{#registerclasslt-clazz-tableschema-schema\}
 
 为指定的 Java `Class` 和 `schema` 编译序列化/反序列化层，以用于写入和读取数据。该方法会基于 getter/setter 与对应列的配对创建 serializer 和 deserializer。
 列的匹配是通过从方法名中提取列名来完成的。例如，`getFirstName` 会对应列 `first_name` 或 `firstname`。
@@ -804,11 +787,10 @@ void register(Class<?> clazz, TableSchema schema)
 client.register(ArticleViewEvent.class, client.getTableSchema(TABLE_NAME));
 ```
 
-
 ## 使用示例 \{#usage-examples\}
 
 完整的示例代码存储在仓库的 `examples` [文件夹](https://github.com/ClickHouse/clickhouse-java/tree/main/examples)中：
 
-- [client-v2](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2) - 主要示例集。
-- [demo-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service) - 演示如何在 Spring Boot 应用中使用客户端的示例。
-- [demo-kotlin-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-kotlin-service) - 演示如何在 Ktor（Kotlin）应用中使用客户端的示例。
+* [client-v2](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2) - 主要示例集。
+* [demo-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service) - 演示如何在 Spring Boot 应用中使用客户端的示例。
+* [demo-kotlin-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-kotlin-service) - 演示如何在 Ktor（Kotlin）应用中使用客户端的示例。

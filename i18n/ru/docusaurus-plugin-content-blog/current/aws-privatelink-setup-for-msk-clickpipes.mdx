@@ -10,7 +10,6 @@ keywords: ['AWS PrivateLink', 'MSK', 'ClickPipes']
 
 {/* обрезка */}
 
-
 ## Обзор \{#overview\}
 
 Это руководство поможет вам настроить **MSK multi-VPC** для использования с [ClickPipes reverse private endpoint](/integrations/clickpipes/aws-privatelink#msk-multi-vpc).
@@ -19,40 +18,45 @@ keywords: ['AWS PrivateLink', 'MSK', 'ClickPipes']
 
 VPC вашего кластера MSK должна быть расположена в одном из регионов ClickPipes. Список поддерживаемых регионов см. в разделе [регионы ClickPipes](/integrations/clickpipes/aws-privatelink#aws-privatelink-regions).
 
-## Включение multi-VPC-подключения \{#enabling-multi-vpc-connectivity\}
+## Включение подключения нескольких VPC \{#enabling-multi-vpc-connectivity\}
 
 1. Перейдите к кластеру MSK.
-    - Выберите **Clusters** в левой панели навигации консоли Amazon MSK.
-    - Выберите конкретный кластер MSK, который требуется настроить для multi-VPC-подключения.
-2. Включите multi-VPC-подключение MSK
-    - На вкладке **Connectivity** найдите раздел **Multi-VPC connectivity**.
-    - Нажмите **Edit**.
-    - Включите параметр **Turn-on MSK multi-VPC connectivity**.
-    - Следуйте инструкциям.
-3. Добавьте учетную запись ClickPipes в политику кластера
-    - Перейдите на вкладку **Configuration**.
-    - Нажмите **Edit** в разделе **Cluster policy**.
-    - Добавьте `arn:aws:iam::072088201116:root` в **IAM policy**. Пример:
-        ```json
-        {
-            "Version": "2012-10-17",
-            "Statement": [
-                {
-                    "Effect": "Allow",
-                    "Principal": {
-                        "AWS": [
-                            "arn:aws:iam::072088201116:root"
-                        ]
-                    },
-                    "Action": [
-                        "kafka-cluster:Connect",
-                        "kafka-cluster:DescribeCluster",
-                        "kafka-cluster:ListClusters"
-                    ]
-                }
-            ]
-        }
-        ```
+   * В консоли Amazon MSK в левой панели навигации выберите &quot;Clusters&quot;.
+   * Выберите конкретный кластер MSK, который вы хотите настроить для подключения нескольких VPC.
+2. Включите подключение нескольких VPC для MSK
+   * На вкладке **Connectivity** найдите раздел **Multi-VPC connectivity**.
+   * Нажмите **Edit**.
+   * Включите опцию **Turn-on MSK multi-VPC connectivity**.
+   * Следуйте инструкциям.
+3. Добавьте principal учётной записи ClickPipes в политику кластера
+   * Перейдите на вкладку **Configuration**.
+   * Нажмите **Edit** в разделе **Cluster policy**.
+   * Добавьте `arn:aws:iam::072088201116:root` в **IAM policy**. Пример:
+     ```json
+     {
+         "Version": "2012-10-17",
+         "Statement": [
+             {
+                 "Effect": "Allow",
+                 "Principal": {
+                     "AWS": [
+                         "arn:aws:iam::072088201116:root"
+                     ]
+                 },
+                 "Action": [
+                     "kafka-cluster:Connect",
+                     "kafka-cluster:DescribeCluster",
+                     "kafka-cluster:ListClusters"
+                 ]
+             }
+         ]
+     }
+     ```
+
+:::tip
+Политика IAM кластера позволяет ClickPipes инициировать подключение от ClickPipes к вашему кластеру MSK.
+Если вы хотите настроить аутентификацию IAM для своего кластера MSK, обратитесь к [документации по аутентификации IAM](/integrations/clickpipes/kafka/best-practices#iam).
+:::
 
 ## Создание обратной приватной конечной точки \{#creating-reverse-private-endpoint\}
 

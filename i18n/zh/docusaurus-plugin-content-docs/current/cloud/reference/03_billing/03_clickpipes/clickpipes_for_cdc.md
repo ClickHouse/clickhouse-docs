@@ -63,15 +63,15 @@ Postgres CDC 连接器分为两个主要阶段运行：
 
 #### 月度费用明细 {#cost-breakdown}
 
-**摄取数据（CDC）**
+**摄取数据（CDC）**：
 
-2 个管道 × 500 GB = 1,000 GB 每月
+$$ 2 \text{ 个管道} \times 500 \text{ GB} = 1,000 \text{ GB 每月} $$
 
-1,000 GB × $0.20/GB = $200
+$$ 1,000 \text{ GB} \times \$0.20/\text{GB} = \$200 $$
 
 **计算资源**：
 
-1 个计算单元 × $0.20/小时 × 730 小时（约一个月） = $146
+$$1 \text{ 个计算单元} \times \$0.20/\text{小时} \times 730 \text{ 小时（约一个月）} = \$146$$
 
 :::note
 计算资源在两个管道之间共享
@@ -79,7 +79,7 @@ Postgres CDC 连接器分为两个主要阶段运行：
 
 **月度总费用**：
 
-$200 (摄取) + $146 (计算资源) = $346
+$$\$200 \text{ (摄取)} + \$146 \text{ (计算资源)} = \$346$$
 
 
 ## Postgres CDC ClickPipes 常见问题解答 {#faq-postgres-cdc-clickpipe}

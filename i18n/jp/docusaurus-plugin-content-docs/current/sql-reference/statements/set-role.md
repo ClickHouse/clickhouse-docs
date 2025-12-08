@@ -13,8 +13,7 @@ doc_type: 'reference'
 SET ROLE {DEFAULT | NONE | role [,...] | ALL | ALL EXCEPT role [,...]}
 ```
 
-
-## SET DEFAULT ROLE
+## SET DEFAULT ROLE {#set-default-role}
 
 ユーザーに対してデフォルトロールを設定します。
 
@@ -24,8 +23,7 @@ SET ROLE {DEFAULT | NONE | role [,...] | ALL | ALL EXCEPT role [,...]}
 SET DEFAULT ROLE {NONE | role [,...] | ALL | ALL EXCEPT role [,...]} TO {user|CURRENT_USER} [,...]
 ```
 
-
-## 例
+## 例 {#examples}
 
 ユーザーに複数のデフォルトロールを設定する：
 

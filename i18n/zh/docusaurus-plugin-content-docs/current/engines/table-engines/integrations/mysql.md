@@ -7,15 +7,11 @@ title: 'MySQL 表引擎'
 doc_type: 'reference'
 ---
 
-
-
-# MySQL 表引擎
+# MySQL 表引擎 {#mysql-table-engine}
 
 MySQL 引擎允许对存储在远程 MySQL 服务器上的数据执行 `SELECT` 和 `INSERT` 查询。
 
-
-
-## 创建表
+## 创建表 {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -66,8 +62,7 @@ SETTINGS
 CREATE TABLE test_replicas (id UInt32, name String, age UInt32, money UInt32) ENGINE = MySQL(`mysql{2|3|4}:3306`, 'clickhouse', 'test_replicas', 'root', 'clickhouse');
 ```
 
-
-## 使用示例
+## 使用示例 {#usage-example}
 
 在 MySQL 中创建表：
 
@@ -131,7 +126,6 @@ SELECT * FROM mysql_table
 │           ᴺᵁᴸᴸ │      1 │
 └────────────────┴────────┘
 ```
-
 
 ## 设置 {#mysql-settings}
 
@@ -198,8 +192,6 @@ SELECT * FROM mysql_table
 - 正整数。
 
 默认值：`300`。
-
-
 
 ## 另请参阅 {#see-also}
 

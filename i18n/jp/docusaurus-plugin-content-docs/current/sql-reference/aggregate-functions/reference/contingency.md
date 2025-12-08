@@ -6,7 +6,7 @@ title: 'contingency'
 doc_type: 'reference'
 ---
 
-# contingency
+# contingency {#contingency}
 
 `contingency` 関数は、テーブル内の 2 つの列間の関連性を測定する値である [コンティンジェンシー係数 (contingency coefficient)](https://en.wikipedia.org/wiki/Contingency_table#Cram%C3%A9r's_V_and_the_contingency_coefficient_C) を計算します。計算方法は [`cramersV` 関数](./cramersv.md) と類似していますが、平方根の中の分母が異なります。
 

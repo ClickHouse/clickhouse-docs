@@ -7,11 +7,7 @@ sidebar_label: 'groupArrayResample'
 doc_type: 'リファレンス'
 ---
 
-
-
 # groupArrayResample {#grouparrayresample}
-
-
 
 ## 説明 {#description}
 
@@ -21,9 +17,7 @@ doc_type: 'リファレンス'
 各区間に含まれるデータポイントから、キーが最小のものに対応する代表値を 1 つ選び、それらで結果の配列を構成できます。
 これにより、すべての値を収集するのではなく、データをダウンサンプリングしたビューが得られます。
 
-
-
-## 使用例
+## 使用例 {#example-usage}
 
 例を見てみましょう。従業員の `name`、`age`、`wage` を格納するテーブルを作成し、そこにいくつかのデータを挿入してみます。
 
@@ -62,7 +56,6 @@ SELECT groupArrayResample(30, 75, 30)(name, age) FROM employee_data
 │ [['Alice','Mary','Evelyn'],['David','Brian']] │
 └───────────────────────────────────────────────┘
 ```
-
 
 ## 関連項目 {#see-also}
 - [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)

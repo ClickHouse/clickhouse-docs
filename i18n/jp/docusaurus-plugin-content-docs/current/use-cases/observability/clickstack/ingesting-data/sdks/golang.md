@@ -25,7 +25,7 @@ ClickStack は、テレメトリデータ（ログおよびトレース）を収
 
 ## はじめに {#getting-started}
 
-### OpenTelemetry インストルメンテーションパッケージをインストールする
+### OpenTelemetry インストルメンテーションパッケージをインストールする {#install-opentelemetry}
 
 OpenTelemetry と HyperDX の Go パッケージをインストールするには、以下のコマンドを使用してください。[現在のインストルメンテーションパッケージ](https://github.com/open-telemetry/opentelemetry-go-contrib/tree/v1.4.0/instrumentation#instrumentation-packages)を確認し、必要なパッケージをインストールして、トレース情報が正しく紐付けられるようにすることを推奨します。
 
@@ -36,8 +36,7 @@ go get -u github.com/hyperdxio/opentelemetry-go
 go get -u github.com/hyperdxio/opentelemetry-logs-go
 ```
 
-
-### ネイティブ HTTP サーバーの例 (net/http)
+### ネイティブ HTTP サーバーの例 (net/http) {#native-http-server-example}
 
 ここでは、`net/http/otelhttp` を使用します。
 
@@ -145,8 +144,7 @@ func ExampleHandler(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-
-### Gin アプリケーションの例
+### Gin アプリケーションの例 {#gin-application-example}
 
 この例では、`gin-gonic/gin` を使用します。
 
@@ -230,8 +228,7 @@ func main() {
 }
 ```
 
-
-### 環境変数を設定する
+### 環境変数を設定する {#configure-environment-variables}
 
 続いて、ClickStack にテレメトリを送信するために、シェルに次の環境変数を設定する必要があります。
 

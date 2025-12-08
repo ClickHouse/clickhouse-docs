@@ -7,21 +7,15 @@ sidebar_label: 'sumSimpleState'
 doc_type: 'reference'
 ---
 
-
-
 # sumSimpleState {#sumsimplestate}
-
-
 
 ## 説明 {#description}
 
 [`sum`](/sql-reference/aggregate-functions/reference/sum) 関数に [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) コンビネータを適用すると、すべての入力値の合計を返します。戻り値の型は [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction) です。
 
+## 使用例 {#example-usage}
 
-
-## 使用例
-
-### 賛成票と反対票のトラッキング
+### 賛成票と反対票のトラッキング {#tracking-post-votes}
 
 投稿に対する投票を追跡するテーブルを使った、実践的な例を見ていきます。
 各投稿ごとに、賛成票、反対票、および全体スコアの累積合計を保持したいとします。
@@ -103,7 +97,6 @@ ORDER BY post_id ASC;
 │       3 │             0 │               1 │          -1 │
 └─────────┴───────────────┴─────────────────┴─────────────┘
 ```
-
 
 ## 関連項目 {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)

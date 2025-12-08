@@ -12,17 +12,16 @@ import TabItem from '@theme/TabItem';
 > 本教程将演示如何使用 [**materialized views**](/materialized-views) 从高吞吐量事件表维护预聚合的汇总数据。
 > 您将创建三个对象：一个原始表、一个汇总表，以及一个会自动将数据写入该汇总表的物化视图。
 
-
 ## 何时使用此模式 \{#when-to-use\}
 
 在以下情况下使用此模式：
 
-- 你有一个**仅追加写入的事件流**（点击、页面浏览、IoT、日志）。
-- 大多数查询是在时间范围上的**聚合**（按分钟/小时/天）。
-- 你希望获得**稳定的一致的亚秒级读取性能**，且无需重新扫描所有原始行。
+* 你有一个**仅追加写入的事件流**（点击、页面浏览、IoT、日志）。
+* 大多数查询是在时间范围上的**聚合**（按分钟/小时/天）。
+* 你希望获得**稳定的一致的亚秒级读取性能**，且无需重新扫描所有原始行。
 
 <VerticalStepper headerLevel="h2">
-  ## 创建原始事件表
+  ## 创建原始事件表 \{#create-raw-events-table\}
 
   ```sql
   CREATE TABLE events_raw
@@ -46,7 +45,7 @@ import TabItem from '@theme/TabItem';
   * `LowCardinality(String)` 能为类别型维度节省内存。
   * `TTL` 会在 90 天后清理原始数据（可根据保留需求进行调整）。
 
-  ## 设计汇总（聚合）表
+  ## 设计汇总（聚合）表 \{#design-rollup\}
 
   我们将预聚合到**小时**粒度。
   请根据最常用的分析时间窗口选择合适的粒度。
@@ -69,7 +68,7 @@ import TabItem from '@theme/TabItem';
 
   我们存储**聚合状态**(例如 `AggregateFunction(sum, ...)`)来紧凑地表示部分聚合,这些状态可以在后续合并或完成最终计算。
 
-  ## 创建物化视图以填充汇总表
+  ## 创建物化视图以填充汇总表 \{#create-materialized-view-to-populate-rollup\}
 
   此物化视图在向 `events_raw` 插入数据时自动触发，并将**聚合状态**写入汇总表。
 
@@ -89,7 +88,7 @@ import TabItem from '@theme/TabItem';
   GROUP BY bucket_start, country, event_type;
   ```
 
-  ## 插入示例数据
+  ## 插入示例数据 \{#insert-some-sample-data\}
 
   插入一些示例数据：
 
@@ -101,7 +100,7 @@ import TabItem from '@theme/TabItem';
       (now() - INTERVAL 1 SECOND, 101, 'US', 'view', 1);
   ```
 
-  ## 查询汇总表
+  ## 查询汇总表 \{#querying-the-rollup\}
 
   您可以在读取时**合并**状态,或者**完成**它们:
 
@@ -149,7 +148,7 @@ import TabItem from '@theme/TabItem';
   状态提供了更大的灵活性，而最终确定的数值则使读取操作更加简洁。
   :::
 
-  ## 在主键字段上过滤以获得最佳性能
+  ## 在主键字段上过滤以获得最佳性能 \{#filtering-performance\}
 
   您可以使用 `EXPLAIN` 命令查看索引如何用于裁剪数据:
 
@@ -194,7 +193,7 @@ import TabItem from '@theme/TabItem';
   每个索引都使用了主键中指定的字段:`(bucket_start, country, event_type)`。
   为获得最佳过滤性能,请确保您的查询使用主键字段来裁剪数据。
 
-  ## 常见配置变体
+  ## 常见配置变体 \{#common-variations\}
 
   * **不同粒度**：添加一个按日汇总：
 
@@ -236,12 +235,12 @@ import TabItem from '@theme/TabItem';
   * **成本控制**：将长保留策略应用于原始表，并保留生命周期较长的汇总表。
   * **Backfilling（回填）**：在加载历史数据时，将数据插入到 `events_raw` 中，让物化视图自动完成汇总构建。对于已有行，如果适用，可以在创建物化视图时使用 `POPULATE`，或使用 `INSERT SELECT`。
 
-  ## 清理与保留策略
+  ## 清理与保留策略 \{#clean-up-and-retention\}
 
   * 延长原始数据的 TTL（例如 30/90 天），但将汇总数据的保留时间设得更长（例如 1 年）。
   * 如果启用了分层存储，你也可以使用 **TTL 将** 旧的数据分片迁移到更便宜的存储中。
 
-  ## 故障排除
+  ## 故障排除 \{#troubleshooting\}
 
   * 物化视图没有更新？检查插入是否写入到 **events&#95;raw**（而不是汇总表），并确认物化视图的目标表是否正确（`TO events_rollup_1h`）。
   * 查询变慢？请确认这些查询确实命中了 rollup（直接查询 rollup 表），并确保时间过滤条件与 rollup 表的汇总粒度对齐。

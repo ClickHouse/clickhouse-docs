@@ -7,9 +7,7 @@ doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'cdc', '数据摄取', '实时同步']
 ---
 
-
-
-# 通用 MongoDB 数据源配置指南
+# 通用 MongoDB 数据源配置指南 {#generic-mongodb-source-setup-guide}
 
 :::info
 
@@ -17,9 +15,7 @@ keywords: ['clickpipes', 'mongodb', 'cdc', '数据摄取', '实时同步']
 
 :::
 
-
-
-## 启用 oplog 保留
+## 启用 oplog 保留 {#enable-oplog-retention}
 
 复制至少需要 24 小时的 oplog 保留时间。我们建议将 oplog 保留时间设置为 72 小时或更长，以确保在初始快照完成之前 oplog 不会被截断。
 
@@ -40,8 +36,7 @@ db.adminCommand({
 
 有关 `replSetResizeOplog` 命令及 oplog 保留的更多详情，请参阅 [MongoDB 文档](https://www.mongodb.com/docs/manual/reference/command/replSetResizeOplog/)。
 
-
-## 配置数据库用户
+## 配置数据库用户 {#configure-database-user}
 
 以管理员用户身份连接到您的 MongoDB 实例，并执行以下命令，为 MongoDB CDC ClickPipes 创建一个用户：
 
@@ -58,7 +53,6 @@ db.getSiblingDB("admin").createUser({
 请务必将 `clickpipes_user` 和 `some_secure_password` 替换为您计划使用的用户名和密码。
 
 :::
-
 
 ## 接下来 {#whats-next}
 

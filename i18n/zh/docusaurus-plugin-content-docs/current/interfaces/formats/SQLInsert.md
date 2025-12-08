@@ -13,15 +13,11 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-
-
 ## 描述 {#description}
 
 以一系列 `INSERT INTO table (columns...) VALUES (...), (...) ...;` 语句的形式输出数据。
 
-
-
-## 使用示例
+## 使用示例 {#example-usage}
 
 示例：
 
@@ -38,7 +34,6 @@ INSERT INTO table (x, y, z) VALUES (8, 9, '你好'), (9, 10, '你好');
 ```
 
 可以使用 [MySQLDump](../formats/MySQLDump.md) 输入格式来读取此格式输出的数据。
-
 
 ## 格式设置 {#format-settings}
 

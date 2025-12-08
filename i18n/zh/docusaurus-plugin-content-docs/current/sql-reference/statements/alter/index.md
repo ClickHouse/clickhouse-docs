@@ -7,9 +7,7 @@ title: 'ALTER'
 doc_type: 'reference'
 ---
 
-
-
-# ALTER
+# ALTER {#alter}
 
 大多数 `ALTER TABLE` 查询用于修改表设置或数据：
 
@@ -51,8 +49,6 @@ doc_type: 'reference'
 | [ALTER TABLE ... MODIFY COMMENT](/sql-reference/statements/alter/comment.md)  | 无论之前是否设置过注释，都可以向表添加、修改或删除注释。 |
 | [ALTER NAMED COLLECTION](/sql-reference/statements/alter/named-collection.md) | 修改[命名集合](/operations/named-collections.md)。                   |
 
-
-
 ## 变更 {#mutations}
 
 用于操作表数据的 `ALTER` 查询是通过一种称为“变更（mutations）”的机制实现的，最典型的是 [ALTER TABLE ... DELETE](/sql-reference/statements/alter/delete.md) 和 [ALTER TABLE ... UPDATE](/sql-reference/statements/alter/update.md)。它们是类似于 [MergeTree](/engines/table-engines/mergetree-family/index.md) 表中合并操作的异步后台进程，用来生成新的“已变更”数据分片版本。
@@ -65,8 +61,6 @@ doc_type: 'reference'
 变更查询会在变更条目被添加之后立即返回（对于复制表，条目会添加到 ZooKeeper；对于非复制表，则添加到文件系统）。变更本身会根据系统 profile 设置异步执行。要跟踪变更的执行进度，可以使用 [`system.mutations`](/operations/system-tables/mutations) 表。已成功提交的变更即使在 ClickHouse 服务器重启后也会继续执行。一旦提交变更，就无法回滚；但如果变更由于某种原因卡住，可以使用 [`KILL MUTATION`](/sql-reference/statements/kill.md/#kill-mutation) 查询将其取消。
 
 已完成变更的条目不会立即被删除（保留条目的数量由存储引擎参数 `finished_mutations_to_keep` 决定）。更旧的变更条目会被删除。
-
-
 
 ## ALTER 查询的同步性 {#synchronicity-of-alter-queries}
 
@@ -81,8 +75,6 @@ doc_type: 'reference'
 :::note
 对于所有 `ALTER` 查询，如果 `alter_sync = 2`，并且某些副本处于非活动状态的时间超过 `replication_wait_for_inactive_replica_timeout` 设置中指定的时长，则会抛出 `UNFINISHED` 异常。
 :::
-
-
 
 ## 相关内容 {#related-content}
 

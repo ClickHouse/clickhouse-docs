@@ -11,8 +11,7 @@ import supabase_commands from '@site/static/images/integrations/data-ingestion/c
 import supabase_connection_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/supabase/supabase-connection-details.jpg'
 import Image from '@theme/IdealImage';
 
-
-# Руководство по настройке источника Supabase
+# Руководство по настройке источника Supabase {#supabase-source-setup-guide}
 
 Это руководство по настройке Supabase Postgres для использования в ClickPipes.
 
@@ -22,9 +21,7 @@ ClickPipes нативно поддерживает Supabase через IPv6 дл
 
 :::
 
-
-
-## Создание пользователя с правами доступа и слотом репликации
+## Создание пользователя с правами доступа и слотом репликации {#creating-a-user-with-permissions-and-replication-slot}
 
 Давайте создадим нового пользователя для ClickPipes с необходимыми правами, подходящими для CDC,
 а также создадим публикацию, которую мы будем использовать для репликации.
@@ -57,7 +54,6 @@ ClickPipes нативно поддерживает Supabase через IPv6 дл
 
 :::
 
-
 ## Увеличение `max_slot_wal_keep_size` {#increase-max_slot_wal_keep_size}
 
 :::warning
@@ -69,8 +65,6 @@ ClickPipes нативно поддерживает Supabase через IPv6 дл
 За более точной рекомендацией этого значения вы можете обратиться к команде ClickPipes.
 
 :::
-
-
 
 ## Параметры подключения для использования с Supabase {#connection-details-to-use-for-supabase}
 
@@ -86,16 +80,13 @@ ClickPipes нативно поддерживает Supabase через IPv6 дл
 
 :::
 
-
-
-## Примечание по RLS
+## Примечание по RLS {#note-on-rls}
 
 К пользователю ClickPipes Postgres не должны применяться политики RLS, так как это может привести к потере данных. Вы можете отключить политики RLS для этого пользователя, выполнив следующую команду:
 
 ```sql
 ALTER USER clickpipes_user BYPASSRLS;
 ```
-
 
 ## Что дальше? {#whats-next}
 

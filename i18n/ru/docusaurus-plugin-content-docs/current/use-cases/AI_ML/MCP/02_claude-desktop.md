@@ -18,8 +18,7 @@ import FindMCPServers from '@site/static/images/use-cases/AI_ML/MCP/find-mcp-ser
 import MCPPermission from '@site/static/images/use-cases/AI_ML/MCP/mcp-permission.png';
 import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-conversation.png';
 
-
-# Использование MCP-сервера ClickHouse с Claude Desktop
+# Использование MCP-сервера ClickHouse с Claude Desktop {#using-clickhouse-mcp-server-with-claude-desktop}
 
 > В этом руководстве описывается, как настроить Claude Desktop с MCP-сервером ClickHouse с помощью uv
 > и подключить его к примерам наборов данных ClickHouse.
@@ -37,21 +36,16 @@ import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-c
 
 <VerticalStepper headerLevel="h2">
 
-
 ## Установка uv {#install-uv}
 
 Вам необходимо установить [uv](https://docs.astral.sh/uv/), чтобы выполнять инструкции из этого руководства.
 Если вы не хотите использовать uv, вам потребуется обновить конфигурацию сервера MCP, чтобы использовать другой менеджер пакетов.
 
-
-
 ## Загрузите Claude Desktop {#download-claude-desktop}
 
 Вам также потребуется установить приложение Claude Desktop, которое можно загрузить с [веб‑сайта Claude Desktop](https://claude.ai/desktop).
 
-
-
-## Настройка сервера ClickHouse MCP
+## Настройка сервера ClickHouse MCP {#configure-clickhouse-mcp-server}
 
 После установки Claude Desktop можно переходить к настройке [сервера ClickHouse MCP](https://github.com/ClickHouse/mcp-clickhouse).
 Сделать это можно через [файл конфигурации Claude Desktop](https://claude.ai/docs/configuration).
@@ -112,7 +106,6 @@ MCP mcp-clickhouse: spawn uv ENOENT
 
 Если это произойдёт, вам нужно будет обновить `command`, указав полный путь к `uv`. Например, если вы установили его через Cargo, путь будет таким: `/Users/&lt;username&gt;/.cargo/bin/uv`
 :::
-
 
 ## Использование MCP-сервера ClickHouse {#using-clickhouse-mcp-server}
 

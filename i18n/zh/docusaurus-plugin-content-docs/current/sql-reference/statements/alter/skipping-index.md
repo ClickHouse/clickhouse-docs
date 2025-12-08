@@ -8,31 +8,21 @@ toc_hidden_folder: true
 doc_type: 'reference'
 ---
 
-
-
-# 对数据跳过索引的操作
+# 对数据跳过索引的操作 {#manipulating-data-skipping-indices}
 
 可以执行以下操作：
-
-
 
 ## ADD INDEX {#add-index}
 
 `ALTER TABLE [db.]table_name [ON CLUSTER cluster] ADD INDEX [IF NOT EXISTS] name expression TYPE type [GRANULARITY value] [FIRST|AFTER name]` - 向表的元数据中添加索引描述。
 
-
-
 ## DROP INDEX {#drop-index}
 
 `ALTER TABLE [db.]table_name [ON CLUSTER cluster] DROP INDEX [IF EXISTS] name` - 从表的元数据中移除索引定义，并从磁盘上删除索引文件。该操作作为一次[mutation](/sql-reference/statements/alter/index.md#mutations)来实现。
 
-
-
 ## MATERIALIZE INDEX {#materialize-index}
 
 `ALTER TABLE [db.]table_name [ON CLUSTER cluster] MATERIALIZE INDEX [IF EXISTS] name [IN PARTITION partition_name]` - 为指定的 `partition_name` 重建名为 `name` 的二级索引。该操作作为一次[变更](/sql-reference/statements/alter/index.md#mutations)实现。如果省略 `IN PARTITION` 子句，则会为整张表的数据重建索引。
-
-
 
 ## CLEAR INDEX {#clear-index}
 

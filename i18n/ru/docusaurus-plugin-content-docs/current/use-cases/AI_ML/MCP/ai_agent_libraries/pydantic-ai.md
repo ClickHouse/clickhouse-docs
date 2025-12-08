@@ -10,9 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-
-
-# Как создать агента PydanticAI с использованием сервера ClickHouse MCP
+# Как создать агента PydanticAI с использованием сервера ClickHouse MCP {#how-to-build-a-pydanticai-agent-using-clickhouse-mcp-server}
 
 В этом руководстве вы узнаете, как создать агента [PydanticAI](https://ai.pydantic.dev/mcp/client/#__tabbed_1_1),
 который может взаимодействовать с [SQL‑песочницей ClickHouse](https://sql.clickhouse.com/), используя [сервер ClickHouse MCP](https://github.com/ClickHouse/mcp-clickhouse).
@@ -20,8 +18,6 @@ doc_type: 'guide'
 :::note Пример ноутбука
 Этот пример доступен в виде ноутбука в [репозитории примеров](https://github.com/ClickHouse/examples/blob/main/ai/mcp/pydanticai/pydantic.ipynb).
 :::
-
-
 
 ## Предварительные требования {#prerequisites}
 
@@ -33,8 +29,7 @@ doc_type: 'guide'
 
 <VerticalStepper headerLevel="h2">
 
-
-## Установка библиотек
+## Установка библиотек {#install-libraries}
 
 Установите необходимые библиотеки, выполнив следующие команды:
 
@@ -44,8 +39,7 @@ pip install -q "pydantic-ai-slim[mcp]"
 pip install -q "pydantic-ai-slim[anthropic]" # замените на соответствующий пакет при использовании другого провайдера LLM
 ```
 
-
-## Настройка учетных данных
+## Настройка учетных данных {#setup-credentials}
 
 Далее необходимо указать ключ API Anthropic:
 
@@ -75,8 +69,7 @@ env = {
 }
 ```
 
-
-## Инициализация MCP Server и агента PydanticAI
+## Инициализация MCP Server и агента PydanticAI {#initialize-mcp}
 
 Теперь настройте ClickHouse MCP Server так, чтобы он использовал песочницу ClickHouse SQL:
 
@@ -97,7 +90,6 @@ server = MCPServerStdio(
 )
 agent = Agent('anthropic:claude-sonnet-4-0', mcp_servers=[server])
 ```
-
 
 ## Задайте вопрос агенту {#ask-agent}
 

@@ -8,7 +8,7 @@ title: 'Rust-клиент ClickHouse'
 doc_type: 'reference'
 ---
 
-# Rust-клиент ClickHouse
+# Rust-клиент ClickHouse {#clickhouse-rust-client}
 
 Официальный Rust-клиент для подключения к ClickHouse, изначально разработанный [Paul Loyd](https://github.com/loyd). Исходный код клиента доступен в [репозитории на GitHub](https://github.com/ClickHouse/clickhouse-rs).
 
@@ -23,7 +23,7 @@ doc_type: 'reference'
 * Предоставляет API для выборки и вставки данных, выполнения DDL-операций и пакетной отправки на стороне клиента.
 * Предоставляет удобные моки для модульного тестирования.
 
-## Установка
+## Установка {#installation}
 
 Чтобы использовать этот крейт, добавьте следующее в `Cargo.toml`:
 
@@ -36,7 +36,6 @@ clickhouse = { version = "0.12.2", features = ["test-util"] }
 ```
 
 См. также [страницу crates.io](https://crates.io/crates/clickhouse).
-
 
 ## Возможности Cargo {#cargo-features}
 
@@ -73,7 +72,7 @@ clickhouse = { version = "0.12.2", features = ["test-util"] }
 Crate [ch2rs](https://github.com/ClickHouse/ch2rs) полезен для генерации типа строки на основе схемы ClickHouse.
 :::
 
-### Создание экземпляра клиента
+### Создание экземпляра клиента {#creating-a-client-instance}
 
 :::tip
 Повторно используйте уже созданные экземпляры клиента или клонируйте их, чтобы использовать общий пул соединений hyper.
@@ -90,8 +89,7 @@ let client = Client::default()
     .with_database("test");
 ```
 
-
-### Подключение по HTTPS или к ClickHouse Cloud
+### Подключение по HTTPS или к ClickHouse Cloud {#https-or-clickhouse-cloud-connection}
 
 HTTPS работает как с функциями (features) Cargo `rustls-tls`, так и с `native-tls`.
 
@@ -116,8 +114,7 @@ let client = Client::default()
 
 * [Пример HTTPS с ClickHouse Cloud](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/clickhouse_cloud.rs) в репозитории клиента. Его также можно использовать для HTTPS-подключений к on-premise‑инстансам.
 
-
-### Выбор строк
+### Выбор строк {#selecting-rows}
 
 ```rust
 use serde::Deserialize;
@@ -152,8 +149,7 @@ NB: так как весь ответ передаётся в потоке, ку
 Используйте `wait_end_of_query` с осторожностью при выборке строк, так как это может привести к более высокому потреблению памяти на стороне сервера и, вероятно, снизит общую производительность.
 :::
 
-
-### Добавление строк
+### Добавление строк {#inserting-rows}
 
 ```rust
 use serde::Serialize;
@@ -175,8 +171,7 @@ insert.end().await?;
 * Строки отправляются постепенно в виде потока, чтобы распределить нагрузку на сеть.
 * ClickHouse вставляет пакеты строк атомарно, только если все строки попадают в один и тот же раздел и их количество меньше [`max_insert_block_size`](https://clickhouse.tech/docs/operations/settings/settings/#settings-max_insert_block_size).
 
-
-### Асинхронная вставка (пакетирование на стороне сервера)
+### Асинхронная вставка (пакетирование на стороне сервера) {#async-insert-server-side-batching}
 
 Вы можете использовать [асинхронные вставки ClickHouse](/optimize/asynchronous-inserts), чтобы избежать пакетирования входящих данных на стороне клиента. Это можно сделать, просто указав параметр `async_insert` в методе `insert` (или даже в экземпляре `Client`, чтобы он влиял на все вызовы `insert`).
 
@@ -191,8 +186,7 @@ let client = Client::default()
 
 * [Пример асинхронной вставки](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/async_insert.rs) в репозитории клиента.
 
-
-### Возможность inserter (клиентская пакетная запись)
+### Возможность inserter (клиентская пакетная запись) {#inserter-feature-client-side-batching}
 
 Требуется фича Cargo `inserter`.
 
@@ -233,8 +227,7 @@ inserter.end().await?;
 
 :::
 
-
-### Выполнение операторов DDL
+### Выполнение операторов DDL {#executing-ddls}
 
 В случае одноузлового развертывания достаточно выполнить операторы DDL следующим образом:
 
@@ -252,8 +245,7 @@ client
     .await?;
 ```
 
-
-### Настройки ClickHouse
+### Настройки ClickHouse {#clickhouse-settings}
 
 Вы можете применять различные [настройки ClickHouse](/operations/settings/settings), используя метод `with_option`. Например:
 
@@ -269,8 +261,7 @@ let numbers = client
 
 Помимо `query`, аналогичным образом работают методы `insert` и `inserter`; кроме того, тот же метод можно вызвать у экземпляра `Client`, чтобы задать глобальные настройки для всех запросов.
 
-
-### Идентификатор запроса
+### Идентификатор запроса {#query-id}
 
 С помощью `.with_option` вы можете задать опцию `query_id`, чтобы идентифицировать запросы в журнале запросов ClickHouse.
 
@@ -290,8 +281,7 @@ let numbers = client
 
 См. также: [пример query&#95;id](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/query_id.rs) в репозитории клиента.
 
-
-### Идентификатор сессии
+### Идентификатор сессии {#session-id}
 
 Аналогично `query_id`, вы можете задать `session_id`, чтобы выполнять запросы в одной и той же сессии. `session_id` можно задать либо глобально на уровне клиента, либо для каждого отдельного вызова `query`, `insert` или `inserter`.
 
@@ -307,8 +297,7 @@ let client = Client::default()
 
 См. также: пример [session&#95;id](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/session_id.rs) в репозитории клиента.
 
-
-### Пользовательские HTTP‑заголовки
+### Пользовательские HTTP‑заголовки {#custom-http-headers}
 
 Если вы используете аутентификацию через прокси или вам нужно передавать пользовательские заголовки, вы можете сделать это следующим образом:
 
@@ -320,8 +309,7 @@ let client = Client::default()
 
 См. также: [пример использования пользовательских HTTP-заголовков](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/custom_http_headers.rs) в репозитории клиента.
 
-
-### Пользовательский HTTP‑клиент
+### Пользовательский HTTP‑клиент {#custom-http-client}
 
 Это может быть полезно для тонкой настройки параметров лежащего в основе пула HTTP‑соединений.
 
@@ -349,8 +337,7 @@ let client = Client::with_http_client(hyper_client).with_url("http://localhost:8
 
 См. также: [пример с пользовательским HTTP‑клиентом](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/custom_http_client.rs) в репозитории клиента.
 
-
-## Типы данных
+## Типы данных {#data-types}
 
 :::info
 См. также дополнительные примеры:
@@ -456,7 +443,6 @@ struct MyRow {
 }
 ```
 
-
 * `DateTime` сопоставляется с `u32` или newtype-обёрткой вокруг него и представляет количество секунд, прошедших с эпохи UNIX. Также поддерживается [`time::OffsetDateTime`](https://docs.rs/time/latest/time/struct.OffsetDateTime.html) при использовании `serde::time::datetime`, для чего требуется фича `time`.
 
 ```rust
@@ -535,7 +521,6 @@ struct MyRow {
 
 * Типы данных `Variant`, `Dynamic` и новый тип данных `JSON` пока не поддерживаются.
 
-
 ## Мокирование {#mocking}
 
 Крейт предоставляет утилиты для мокирования сервера CH и тестирования DDL, а также запросов `SELECT`, `INSERT` и `WATCH`. Функциональность может быть включена с помощью feature `test-util`. Используйте её **только** как dev-зависимость.
@@ -544,7 +529,7 @@ struct MyRow {
 
 ## Устранение неполадок {#troubleshooting}
 
-### CANNOT&#95;READ&#95;ALL&#95;DATA
+### CANNOT&#95;READ&#95;ALL&#95;DATA {#cannot_read_all_data}
 
 Наиболее распространённой причиной ошибки `CANNOT_READ_ALL_DATA` является то, что описание строки на стороне приложения не соответствует описанию строки в ClickHouse.
 
@@ -579,7 +564,6 @@ struct EventLog {
     id: u32
 }
 ```
-
 
 ## Известные ограничения {#known-limitations}
 

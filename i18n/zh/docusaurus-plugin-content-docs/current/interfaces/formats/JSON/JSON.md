@@ -41,7 +41,7 @@ doc_type: 'reference'
 
 ClickHouse 支持 [NULL](/sql-reference/syntax.md)，在 JSON 输出中显示为 `null`。要在输出中启用 `+nan`、`-nan`、`+inf`、`-inf` 值，请将 [`output_format_json_quote_denormals`](/operations/settings/settings-formats.md/#output_format_json_quote_denormals) 设置为 `1`。
 
-## 示例用法
+## 示例用法 {#example-usage}
 
 示例：
 
@@ -98,7 +98,6 @@ SELECT SearchPhrase, count() AS c FROM test.hits GROUP BY SearchPhrase WITH TOTA
         }
 }
 ```
-
 
 ## 格式设置 {#format-settings}
 

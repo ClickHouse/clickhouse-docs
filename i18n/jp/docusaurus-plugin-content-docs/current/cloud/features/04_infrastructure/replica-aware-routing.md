@@ -8,8 +8,7 @@ doc_type: 'guide'
 
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
-
-# レプリカ認識ルーティング
+# レプリカ認識ルーティング {#replica-aware-routing}
 
 <PrivatePreviewBadge/>
 
@@ -27,8 +26,6 @@ Envoy がこのパターンに一致するホスト名を受信すると、そ�
 
 元のホスト名を使用した場合は、デフォルトのルーティングアルゴリズムである `LEAST_CONNECTION` ロードバランシングが引き続き使用されることに注意してください。
 
-
-
 ## Replica-aware routing の制限事項 {#limitations-of-replica-aware-routing}
 
 ### Replica-aware routing はアイソレーションを保証しない {#replica-aware-routing-does-not-guarantee-isolation}
@@ -38,8 +35,6 @@ Envoy がこのパターンに一致するホスト名を受信すると、そ�
 ### Replica-aware routing は Private Link と組み合わせてもそのままでは動作しない {#replica-aware-routing-does-not-work-out-of-the-box-with-private-link}
 
 お客様は、新しいホスト名パターンに対して名前解決が機能するように、DNS エントリを手動で追加する必要があります。誤って構成・使用すると、サーバー負荷に不均衡を生じさせる可能性があります。
-
-
 
 ## レプリカ対応ルーティングの設定 {#configuring-replica-aware-routing}
 

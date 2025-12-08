@@ -10,7 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Как создать AI-агента с CrewAI и сервером MCP для ClickHouse
+# Как создать AI-агента с CrewAI и сервером MCP для ClickHouse {#how-to-build-an-ai-agent-with-crewai-and-the-clickhouse-mcp-server}
 
 В этом руководстве вы узнаете, как создать AI-агента [mcp-agent](https://github.com/lastmile-ai/mcp-agent), который может взаимодействовать с 
 [SQL-песочницей ClickHouse](https://sql.clickhouse.com/), используя [сервер MCP для ClickHouse](https://github.com/ClickHouse/mcp-clickhouse).

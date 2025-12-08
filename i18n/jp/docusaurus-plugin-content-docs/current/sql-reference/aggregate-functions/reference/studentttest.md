@@ -7,7 +7,7 @@ title: 'studentTTest'
 doc_type: 'reference'
 ---
 
-# studentTTest
+# studentTTest {#studentttest}
 
 2つの母集団から得られた標本にスチューデントの t 検定を適用します。
 

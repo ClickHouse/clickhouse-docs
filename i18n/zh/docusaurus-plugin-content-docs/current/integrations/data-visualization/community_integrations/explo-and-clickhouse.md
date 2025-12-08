@@ -12,7 +12,7 @@ integration:
 ---
 
 import Image from '@theme/IdealImage';
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import explo_01 from '@site/static/images/integrations/data-visualization/explo_01.png';
 import explo_02 from '@site/static/images/integrations/data-visualization/explo_02.png';
 import explo_03 from '@site/static/images/integrations/data-visualization/explo_03.png';
@@ -31,14 +31,11 @@ import explo_15 from '@site/static/images/integrations/data-visualization/explo_
 import explo_16 from '@site/static/images/integrations/data-visualization/explo_16.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
-# 将 Explo 连接到 ClickHouse
+# 将 Explo 连接到 ClickHouse {#connecting-explo-to-clickhouse}
 
 <CommunityMaintainedBadge/>
 
 适用于任何平台的面向客户分析功能。为精美可视化而设计，为极致简洁而打造。
-
-
 
 ## 目标 {#goal}
 
@@ -51,12 +48,8 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 如果您目前还没有可用的数据集，可以添加一个示例数据集。本指南使用的是 [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md) 数据集，您可以选择使用该数据集。在同一文档类别下还有其他几个可供参考的数据集。
 :::
 
-
-
 ## 1. 收集连接参数 {#1-gather-your-connection-details}
 <ConnectionDetails />
-
-
 
 ## 2.  将 Explo 连接到 ClickHouse {#2--connect-explo-to-clickhouse}
 
@@ -91,8 +84,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 54.211.43.19, 52.55.98.121, 3.214.169.94, 54.156.141.148
 `
 
-
-
 ## 3. 创建 Dashboard {#3-create-a-dashboard}
 
 1. 在左侧导航栏中切换到 **Dashboard** 选项卡。
@@ -107,8 +98,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <Image img={explo_09} size="md" alt="Explo Dashboard" border />
 
-
-
 ## 4. 运行 SQL 查询 {#4-run-a-sql-query}
 
 1. 在右侧边栏中，在你的 schema 标题下找到表名。然后在数据集编辑器中输入以下命令：
@@ -122,8 +111,6 @@ LIMIT 100
 2. 点击“Run”，然后切换到“Preview”选项卡查看数据。
 
 <Image img={explo_11} size="md" alt="Explo 仪表盘" border />
-
-
 
 ## 5. 构建图表 {#5-build-a-chart}
 
@@ -146,8 +133,6 @@ LIMIT 100
 5. 现在我们得到了按县（county）划分的平均房价！
 
 <Image img={explo_15} size="md" alt="Explo Dashboard" />
-
-
 
 ## 了解更多 {#learn-more}
 

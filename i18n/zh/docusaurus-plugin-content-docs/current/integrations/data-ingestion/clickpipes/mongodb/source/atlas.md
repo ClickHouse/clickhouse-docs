@@ -15,10 +15,7 @@ import mongo_atlas_add_roles from '@site/static/images/integrations/data-ingesti
 import mongo_atlas_restrict_access from '@site/static/images/integrations/data-ingestion/clickpipes/mongodb/mongo-atlas-restrict-access.png'
 import Image from '@theme/IdealImage';
 
-
-# MongoDB Atlas 数据源设置指南
-
-
+# MongoDB Atlas 数据源设置指南 {#mongodb-atlas-source-setup-guide}
 
 ## 配置 oplog 保留时间 {#enable-oplog-retention}
 
@@ -34,8 +31,6 @@ import Image from '@theme/IdealImage';
 <Image img={mongo_atlas_retention_hours} alt="设置 oplog 保留时长（小时）" size="lg" border/>
 
 4. 单击 `Review Changes` 进行检查，然后单击 `Apply Changes` 来部署这些更改。
-
-
 
 ## 配置数据库用户 {#configure-database-user}
 
@@ -57,8 +52,6 @@ ClickPipes 需要一个具备以下角色的用户：
 你还可以进一步指定要授予 ClickPipes 用户访问权限的集群/实例：
 
 <Image img={mongo_atlas_restrict_access} alt="限制集群/实例访问" size="lg" border/>
-
-
 
 ## 接下来？ {#whats-next}
 

@@ -17,9 +17,7 @@ ClickHouse における `CHECK TABLE` クエリは、特定のテーブルまた
 このクエリはシステムのパフォーマンスを向上させるものではなく、何をしているか確信が持てない場合には実行すべきではありません。
 :::
 
-
-
-## 構文
+## 構文 {#syntax}
 
 クエリの基本的な構文は次のとおりです。
 
@@ -55,8 +53,7 @@ CHECK TABLE table_name [PARTITION partition_expression | PART part_name] [FORMAT
 
 `*Log` ファミリーのエンジンは、障害発生時の自動データ復旧を提供しません。`CHECK TABLE` クエリを使用して、データ損失をタイムリーに検知してください。
 
-
-## 例
+## 例 {#examples}
 
 デフォルトでは、`CHECK TABLE` クエリはテーブル全体の総合的なチェック結果を表示します。
 
@@ -115,7 +112,7 @@ CHECK TABLE t0 PART '201003_111_222_0'
 DB::Exception: テーブル 'default.t0' に確認対象のデータパート '201003_111_222_0' が存在しません。(NO_SUCH_DATA_PART)
 ```
 
-### 「Corrupted（破損）」という結果を受け取った場合
+### 「Corrupted（破損）」という結果を受け取った場合 {#receiving-a-corrupted-result}
 
 :::warning
 免責事項: ここで説明する手順（データディレクトリ内のファイルを手動で操作・削除することを含みます）は、実験環境または開発環境でのみ使用してください。本番サーバーでは絶対に実行しないでください。データ損失やその他の予期しない結果を招くおそれがあります。
@@ -152,7 +149,6 @@ FORMAT PrettyCompactMonoBlock
 SETTINGS check_query_single_value_result = 0
 ```
 
-
 ```text
 ┌─database─┬─table────┬─part_path───┬─is_passed─┬─message─┐
 │ default  │ t2       │ all_1_95_3  │         1 │         │
@@ -167,7 +163,6 @@ SETTINGS check_query_single_value_result = 0
 │ default  │ t1       │ all_7_38_2  │         1 │         │
 └──────────┴──────────┴─────────────┴───────────┴─────────┘
 ```
-
 
 ## データが破損している場合 {#if-the-data-is-corrupted}
 

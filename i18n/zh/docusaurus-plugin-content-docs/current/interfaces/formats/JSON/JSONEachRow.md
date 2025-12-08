@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 ## 示例用法 {#example-usage}
 
-### 插入数据
+### 插入数据 {#inserting-data}
 
 使用名为 `football.json` 的 JSON 文件，其内容如下：
 
@@ -47,8 +47,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONEachRow;
 ```
 
-
-### 读取数据
+### 读取数据 {#reading-data}
 
 使用 `JSONEachRow` 格式来读取数据：
 
@@ -81,6 +80,5 @@ FORMAT JSONEachRow
 ```
 
 若将设置 [input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设为 1，则会跳过导入名称未知的数据列。
-
 
 ## 格式设置 {#format-settings}

@@ -29,7 +29,7 @@ doc_type: 'reference'
 
 ## Пример использования {#example-usage}
 
-### Простой пример
+### Простой пример {#basic-example}
 
 ```sql title="Query"
 DROP TABLE IF EXISTS json_as_string;
@@ -46,8 +46,7 @@ SELECT * FROM json_as_string;
 └───────────────────────────────────┘
 ```
 
-
-### Массив объектов JSON
+### Массив объектов JSON {#an-array-of-json-objects}
 
 ```sql title="Query"
 CREATE TABLE json_square_brackets (field String) ENGINE = Memory;
@@ -62,6 +61,5 @@ SELECT * FROM json_square_brackets;
 │ {"id": 2, "name": "name2"} │
 └────────────────────────────┘
 ```
-
 
 ## Параметры форматирования {#format-settings}

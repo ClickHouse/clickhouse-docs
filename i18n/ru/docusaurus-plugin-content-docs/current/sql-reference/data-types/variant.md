@@ -7,11 +7,9 @@ title: 'Variant(T1, T2, ...)'
 doc_type: 'reference'
 ---
 
+# Variant(T1, T2, ...) {#variantt1-t2}
 
-
-# Variant(T1, T2, ...)
-
-Этот тип представляет собой объединение других типов данных. Тип `Variant(T1, T2, ..., TN)` означает, что каждая строка этого типа 
+Этот тип представляет собой объединение других типов данных. Тип `Variant(T1, T2, ..., TN)` означает, что каждая строка этого типа
 имеет значение либо типа `T1`, либо `T2`, ... либо `TN`, либо не имеет значения (`NULL`).
 
 Порядок вложенных типов не имеет значения: Variant(T1, T2) = Variant(T2, T1).
@@ -22,9 +20,7 @@ doc_type: 'reference'
 поскольку работа со значениями таких типов может приводить к неоднозначности. По умолчанию создание такого типа `Variant` приведёт к исключению, но это поведение можно изменить с помощью настройки `allow_suspicious_variant_types`.
 :::
 
-
-
-## Создание типа Variant
+## Создание типа Variant {#creating-variant}
 
 Использование типа `Variant` в определении столбца таблицы:
 
@@ -114,8 +110,7 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 └───────────────────────────────┘
 ```
 
-
-## Чтение вложенных типов Variant как подколонок
+## Чтение вложенных типов Variant как подколонок {#reading-variant-nested-types-as-subcolumns}
 
 Тип Variant поддерживает чтение отдельного вложенного типа из столбца Variant, используя имя типа как подколонку.
 Таким образом, если у вас есть столбец `variant Variant(T1, T2, T3)`, вы можете прочитать подколонку типа `T2`, используя синтаксис `variant.T2`,
@@ -188,19 +183,17 @@ SELECT variantType(v) FROM test;
 SELECT toTypeName(variantType(v)) FROM test LIMIT 1;
 ```
 
-
 ```text
 ┌─toTypeName(variantType(v))──────────────────────────────────────────┐
 │ Enum8('None' = -1, 'Array(UInt64)' = 0, 'String' = 1, 'UInt64' = 2) │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-
-## Преобразование между столбцом Variant и другими столбцами
+## Преобразование между столбцом Variant и другими столбцами {#conversion-between-a-variant-column-and-other-columns}
 
 Существует четыре возможных преобразования, которые можно выполнить для столбца типа `Variant`.
 
-### Преобразование столбца String в столбец Variant
+### Преобразование столбца String в столбец Variant {#converting-a-string-column-to-a-variant-column}
 
 Преобразование из `String` в `Variant` выполняется путём парсинга значения типа `Variant` из строкового значения:
 
@@ -247,7 +240,7 @@ SELECT '[1, 2, 3]'::Variant(String, Array(UInt64)) as variant, variantType(varia
 └───────────┴──────────────┘
 ```
 
-### Преобразование обычного столбца в столбец Variant
+### Преобразование обычного столбца в столбец Variant {#converting-an-ordinary-column-to-a-variant-column}
 
 Можно преобразовать обычный столбец типа `T` в столбец `Variant`, содержащий этот тип:
 
@@ -273,7 +266,7 @@ SELECT '[1, 2, 3]'::Variant(String)::Variant(String, Array(UInt64), UInt64) as v
 └───────────┴──────────────┘
 ```
 
-### Преобразование столбца Variant в обычный столбец
+### Преобразование столбца Variant в обычный столбец {#converting-a-variant-column-to-an-ordinary-column}
 
 Можно преобразовать столбец `Variant` в обычный столбец. В этом случае все вложенные значения будут преобразованы в целевой тип:
 
@@ -291,8 +284,7 @@ SELECT v::Nullable(Float64) FROM test;
 └──────────────────────────────┘
 ```
 
-### Преобразование одного значения Variant в другое
-
+### Преобразование одного значения Variant в другое {#converting-a-variant-to-another-variant}
 
 Можно преобразовать столбец `Variant` в другой столбец `Variant`, но только если целевой столбец `Variant` содержит все вложенные типы исходного `Variant`:
 
@@ -310,8 +302,7 @@ SELECT v::Variant(UInt64, String, Array(UInt64)) FROM test;
 └───────────────────────────────────────────────────┘
 ```
 
-
-## Чтение типа Variant из данных
+## Чтение типа Variant из данных {#reading-variant-type-from-the-data}
 
 Все текстовые форматы (TSV, CSV, CustomSeparated, Values, JSONEachRow и т. д.) поддерживают чтение значений типа `Variant`. Во время разбора данных ClickHouse пытается поместить значение в наиболее подходящий вариант.
 
@@ -344,8 +335,7 @@ $$)
 └─────────────────────┴───────────────┴──────┴───────┴─────────────────────┴─────────┘
 ```
 
-
-## Сравнение значений типа Variant
+## Сравнение значений типа Variant {#comparing-values-of-variant-data}
 
 Значения типа `Variant` можно сравнивать только со значениями того же типа `Variant`.
 
@@ -424,7 +414,6 @@ SELECT * FROM test WHERE v2.`Array(UInt32)` == [1,2,3] -- или с исполь
 SELECT v2, v2.`Array(UInt32)`, variantType(v2) FROM test WHERE v2.`Array(UInt32)` == [];
 ```
 
-
 ```text
 ┌─v2───┬─v2.Array(UInt32)─┬─variantType(v2)─┐
 │ 42   │ []               │ UInt64          │
@@ -467,8 +456,7 @@ SELECT v, variantType(v) FROM test ORDER by v;
 
 **Примечание.** По умолчанию тип `Variant` нельзя использовать в ключах `GROUP BY`/`ORDER BY`. Если вы хотите его применять, учтите его особое правило сравнения и включите настройки `allow_suspicious_types_in_group_by`/`allow_suspicious_types_in_order_by`.
 
-
-## Функции JSONExtract с Variant
+## Функции JSONExtract с Variant {#jsonextract-functions-with-variant}
 
 Все функции `JSONExtract*` поддерживают тип данных `Variant`:
 

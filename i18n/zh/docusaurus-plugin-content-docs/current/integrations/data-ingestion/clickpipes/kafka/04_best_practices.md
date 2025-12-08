@@ -8,35 +8,25 @@ doc_type: 'guide'
 keywords: ['kafka 最佳实践', 'clickpipes', '压缩', '身份验证', '扩展性']
 ---
 
-
-
 # 最佳实践 {#best-practices}
-
-
 
 ## 消息压缩 {#compression}
 
 我们强烈建议为 Kafka 主题启用压缩。压缩几乎不会带来性能开销，却可以在数据传输成本上带来显著节省。
 要进一步了解 Kafka 中的消息压缩，我们建议从这篇[指南](https://www.confluent.io/blog/apache-kafka-message-compression/)开始阅读。
 
-
-
 ## 限制 {#limitations}
 
 - 不支持使用 [`DEFAULT`](/sql-reference/statements/create/table#default)。
 
-
-
 ## 投递语义 {#delivery-semantics}
 用于 Kafka 的 ClickPipes 提供 `at-least-once` 投递语义（这是最常用的方法之一）。欢迎您通过[联系表单](https://clickhouse.com/company/contact?loc=clickpipes)就投递语义向我们反馈意见。如果您需要 `exactly-once` 语义，建议使用我们的官方 [`clickhouse-kafka-connect`](https://clickhouse.com/blog/real-time-event-streaming-with-kafka-connect-confluent-cloud-clickhouse) sink 连接器。
 
-
-
-## 身份验证
+## 身份验证 {#authentication}
 
 对于 Apache Kafka 协议数据源，ClickPipes 支持使用 TLS 加密的 [SASL/PLAIN](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html) 身份验证，以及 `SASL/SCRAM-SHA-256` 和 `SASL/SCRAM-SHA-512`。具体会根据流式数据源（Redpanda、MSK 等）的不同，在兼容性范围内启用全部或部分这些身份验证机制。如有不同的身份验证需求，请[向我们反馈](https://clickhouse.com/company/contact?loc=clickpipes)。
 
-### IAM
+### IAM {#iam}
 
 :::info
 用于 MSK ClickPipe 的 IAM 身份验证目前为测试版功能。
@@ -87,7 +77,7 @@ ClickPipes 支持以下 AWS MSK 身份验证方式：
 }
 ```
 
-#### 配置信任关系
+#### 配置信任关系 {#configuring-a-trusted-relationship}
 
 如果您使用 IAM 角色 ARN 对 MSK 进行身份验证，则需要为您的 ClickHouse Cloud 实例配置一条信任关系，以便该角色可以被该实例扮演（assume）。
 
@@ -111,11 +101,10 @@ ClickPipes 支持以下 AWS MSK 身份验证方式：
 }
 ```
 
-### 自定义证书
+### 自定义证书 {#custom-certificates}
 
 用于 Kafka 的 ClickPipes 支持为使用非公开服务器证书的 Kafka broker 上传自定义证书。
 同样也支持上传客户端证书和密钥，以用于基于双向 TLS（mTLS）的身份验证。
-
 
 ## 性能 {#performance}
 

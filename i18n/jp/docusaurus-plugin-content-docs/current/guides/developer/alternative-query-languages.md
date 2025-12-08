@@ -19,8 +19,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 どのクエリ言語を使用するかは、`dialect` の設定によって制御されます。
 
-
-## 標準SQL
+## 標準SQL {#standard-sql}
 
 標準SQLは ClickHouse のデフォルトのクエリ言語です。
 
@@ -28,8 +27,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 SET dialect = 'clickhouse'
 ```
 
-
-## パイプライン型リレーショナルクエリ言語 (PRQL)
+## パイプライン型リレーショナルクエリ言語 (PRQL) {#pipelined-relational-query-language-prql}
 
 <ExperimentalBadge />
 
@@ -52,8 +50,7 @@ aggregate {
 
 内部的には、ClickHouse は PRQL クエリを実行する際、PRQL を SQL にトランスパイルして処理します。
 
-
-## Kusto クエリ言語 (KQL)
+## Kusto クエリ言語 (KQL) {#kusto-query-language-kql}
 
 <ExperimentalBadge />
 

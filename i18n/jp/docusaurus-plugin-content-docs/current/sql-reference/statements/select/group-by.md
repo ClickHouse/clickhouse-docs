@@ -6,9 +6,7 @@ title: 'GROUP BY 句'
 doc_type: 'reference'
 ---
 
-
-
-# GROUP BY 句
+# GROUP BY 句 {#group-by-clause}
 
 `GROUP BY` 句は `SELECT` クエリを集約モードに切り替え、その動作は次のようになります。
 
@@ -22,9 +20,7 @@ doc_type: 'reference'
 テーブルに対して集約を実行する別の方法もあります。クエリ内でテーブルのカラムが集約関数の内部にしか現れない場合、`GROUP BY` 句は省略でき、その場合は空のキー集合（キーをまったく指定しない）での集約が行われるとみなされます。このようなクエリは常にちょうど 1 行だけを返します。
 :::
 
-
-
-## NULL の処理
+## NULL の処理 {#null-processing}
 
 グループ化では、ClickHouse は [NULL](/sql-reference/syntax#null) を値として解釈し、`NULL==NULL` とみなします。これは、ほとんどの他のコンテキストにおける `NULL` の処理とは異なります。
 
@@ -56,8 +52,7 @@ doc_type: 'reference'
 
 `GROUP BY` に複数のキーを渡すと、結果は選択された値のあらゆる組み合わせを返し、あたかも `NULL` が特定の値であるかのように扱われます。
 
-
-## ROLLUP 修飾子
+## ROLLUP 修飾子 {#rollup-modifier}
 
 `ROLLUP` 修飾子は、`GROUP BY` 句のリスト内での順序に基づいて、キー式ごとの小計を計算するために使用されます。小計の行は結果テーブルの末尾に追加されます。
 
@@ -130,8 +125,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH ROLLUP;
 
 * SQL 標準との互換性を確保するための [group&#95;by&#95;use&#95;nulls](/operations/settings/settings.md#group_by_use_nulls) 設定。
 
-
-## CUBE 修飾子
+## CUBE 修飾子 {#cube-modifier}
 
 `CUBE` 修飾子は、`GROUP BY` 句内のキー式のあらゆる組み合わせに対する小計を計算するために使用されます。小計行は結果テーブルの末尾に追加されます。
 
@@ -174,7 +168,6 @@ SELECT year, month, day, count(*) FROM t GROUP BY CUBE(year, month, day);
 * および合計。
 
 `GROUP BY` から除外された列はゼロで埋められます。
-
 
 ```text
 ┌─year─┬─month─┬─day─┬─count()─┐
@@ -229,7 +222,6 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH CUBE;
 
 * SQL 標準との互換性を確保するための設定については、[group&#95;by&#95;use&#95;nulls](/operations/settings/settings.md#group_by_use_nulls) を参照してください。
 
-
 ## WITH TOTALS 句修飾子 {#with-totals-modifier}
 
 `WITH TOTALS` 句修飾子が指定されている場合、追加の行が計算されます。この行では、キー列にはデフォルト値（ゼロまたは空文字列）が入り、集約関数の列にはすべての行に対して計算された値（`totals` 値）が入ります。
@@ -266,9 +258,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH CUBE;
 
 `WITH TOTALS` はサブクエリ内で使用でき、[JOIN](/sql-reference/statements/select/join.md) 句内のサブクエリでも使用できます（この場合、対応する合計値は結合されます）。
 
-
-
-## GROUP BY ALL
+## GROUP BY ALL {#group-by-all}
 
 `GROUP BY ALL` は、集約関数ではないすべての SELECT 句の式を列挙することと同等です。
 
@@ -316,8 +306,7 @@ FROM t
 GROUP BY substring(a, 4, 2), substring(a, 1, 2)
 ```
 
-
-## 使用例
+## 使用例 {#examples}
 
 例：
 
@@ -344,8 +333,7 @@ GROUP BY domain
 
 出現した異なるキー値ごとに、`GROUP BY` は集約関数の結果セットを計算します。
 
-
-## GROUPING SETS 修飾子
+## GROUPING SETS 修飾子 {#grouping-sets-modifier}
 
 これは最も汎用的な修飾子です。
 この修飾子を使用すると、複数の集約キーの集合（グルーピングセット）を手動で指定できます。
@@ -381,7 +369,6 @@ GROUPING SETS
 **関連項目**
 
 * SQL 標準との互換性に関する [group&#95;by&#95;use&#95;nulls](/operations/settings/settings.md#group_by_use_nulls) 設定。
-
 
 ## 実装の詳細 {#implementation-details}
 

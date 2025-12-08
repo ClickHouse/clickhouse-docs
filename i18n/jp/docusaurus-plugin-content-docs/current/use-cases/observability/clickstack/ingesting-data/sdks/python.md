@@ -20,10 +20,9 @@ ClickStack は、テレメトリーデータ（ログとトレース）を収集
 * **メトリクス**
 * **トレース**
 
-
 ## はじめに {#getting-started}
 
-### ClickStack OpenTelemetry インストルメンテーションパッケージのインストール
+### ClickStack OpenTelemetry インストルメンテーションパッケージのインストール {#install-clickstack-otel-instrumentation-package}
 
 次のコマンドで、[ClickStack OpenTelemetry パッケージ](https://pypi.org/project/hyperdx-opentelemetry/) をインストールします。
 
@@ -37,8 +36,7 @@ Python アプリケーションで使用しているパッケージ向けの Ope
 opentelemetry-bootstrap -a install
 ```
 
-
-### 環境変数を設定する
+### 環境変数を設定する {#configure-environment-variables}
 
 その後、ClickStack にテレメトリを送信するために、シェル環境で以下の環境変数を設定する必要があります。
 
@@ -50,15 +48,13 @@ OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 
 *`OTEL_SERVICE_NAME` 環境変数は、HyperDX アプリ内でサービスを識別するために使用されます。任意の名前を指定できます。*
 
-
-### OpenTelemetry Python エージェントでアプリケーションを実行する
+### OpenTelemetry Python エージェントでアプリケーションを実行する {#run-the-application-with-otel-python-agent}
 
 OpenTelemetry Python エージェント（`opentelemetry-instrument`）を使用してアプリケーションを実行できます。
 
 ```shell
 opentelemetry-instrument python app.py
 ```
-
 
 #### `Gunicorn`、`uWSGI` または `uvicorn` を使用している場合 {#using-uvicorn-gunicorn-uwsgi}
 
@@ -99,7 +95,7 @@ OpenTelemetry は、`--reload` フラグを付けて実行された `uvicorn` �
 
 ## 高度な設定 {#advanced-configuration}
 
-#### ネットワークキャプチャ
+#### ネットワークキャプチャ {#network-capture}
 
 ネットワークキャプチャ機能を有効にすることで、開発者は HTTP リクエストヘッダーおよびリクエストボディのペイロードを効果的にデバッグできるようになります。これは、`HYPERDX_ENABLE_ADVANCED_NETWORK_CAPTURE` フラグを 1 に設定するだけで有効化できます。
 
@@ -107,10 +103,9 @@ OpenTelemetry は、`--reload` フラグを付けて実行された `uvicorn` �
 export HYPERDX_ENABLE_ADVANCED_NETWORK_CAPTURE=1
 ```
 
-
 ## トラブルシューティング {#troubleshooting}
 
-### ログレベルが原因でログが表示されない場合
+### ログレベルが原因でログが表示されない場合 {#logs-not-appearing-due-to-log-level}
 
 デフォルトでは、OpenTelemetry の logging handler は `logging.NOTSET` レベルを使用しており、
 これは結果的に WARNING レベルとして扱われます。logger を作成するときに、
@@ -123,8 +118,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 ```
 
-
-### コンソールへのエクスポート
+### コンソールへのエクスポート {#exporting-to-the-console}
 
 OpenTelemetry Python SDK は、通常、エラーが発生するとコンソールにエラーを表示します。しかし、エラーは発生していないにもかかわらず、期待どおりにデータが HyperDX に表示されない場合は、デバッグモードを有効にすることができます。デバッグモードを有効にすると、すべてのテレメトリーデータがコンソールに出力されるため、アプリケーションが期待どおりのデータで正しく計装されているかを確認できます。
 

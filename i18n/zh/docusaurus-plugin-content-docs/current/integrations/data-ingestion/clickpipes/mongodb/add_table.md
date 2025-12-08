@@ -11,12 +11,9 @@ keywords: ['clickpipes', 'mongodb', 'cdc', '数据摄取', '实时同步']
 import Image from '@theme/IdealImage';
 import add_table from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/add_table.png'
 
-
-# 向 ClickPipe 添加指定表
+# 向 ClickPipe 添加指定表 {#adding-specific-tables-to-a-clickpipe}
 
 在某些场景下，将特定表添加到 ClickPipe 中会很有用。随着事务型或分析型工作负载的增长，这一需求会变得越来越普遍。
-
-
 
 ## 将特定表添加到 ClickPipe 的步骤 {#add-tables-steps}
 

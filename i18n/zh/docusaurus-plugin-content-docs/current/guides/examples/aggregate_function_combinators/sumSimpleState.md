@@ -7,11 +7,7 @@ sidebar_label: 'sumSimpleState'
 doc_type: 'reference'
 ---
 
-
-
 # sumSimpleState {#sumsimplestate}
-
-
 
 ## 描述 {#description}
 
@@ -19,11 +15,9 @@ doc_type: 'reference'
 函数，以返回所有输入值的总和。它返回结果的类型为
 [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction)。
 
+## 示例用法 {#example-usage}
 
-
-## 示例用法
-
-### 跟踪点赞和点踩
+### 跟踪点赞和点踩 {#tracking-post-votes}
 
 来看一个实际示例，使用一张表来跟踪帖子上的投票。
 对于每条帖子，我们希望维护点赞、点踩以及总体得分的累计总数。
@@ -105,7 +99,6 @@ ORDER BY post_id ASC;
 │       3 │             0 │               1 │          -1 │
 └─────────┴───────────────┴─────────────────┴─────────────┘
 ```
-
 
 ## 另请参阅 {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)

@@ -17,10 +17,9 @@ import deepnote_02 from '@site/static/images/integrations/data-visualization/dee
 import deepnote_03 from '@site/static/images/integrations/data-visualization/deepnote_03.png';
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-
-# 将 ClickHouse 连接到 Deepnote
+# 将 ClickHouse 连接到 Deepnote {#connect-clickhouse-to-deepnote}
 
 <CommunityMaintainedBadge/>
 
@@ -28,14 +27,10 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
 本指南假定您已经拥有 Deepnote 账户，并且已有一个正在运行的 ClickHouse 实例。
 
-
-
 ## 交互式示例 {#interactive-example}
 如果您希望在 Deepnote 数据笔记本中探索从 ClickHouse 查询数据的交互式示例，请点击下方按钮，启动一个已连接到 [ClickHouse Playground](../../../getting-started/playground.md) 的模板项目。
 
 [<Image size="logo" img="https://deepnote.com/buttons/launch-in-deepnote.svg" alt="在 Deepnote 中启动" />](https://deepnote.com/launch?template=ClickHouse%20and%20Deepnote)
-
-
 
 ## 连接到 ClickHouse {#connect-to-clickhouse}
 
@@ -51,8 +46,6 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
    **_注意：_** 如果您通过 IP 访问列表限制对 ClickHouse 的访问，则可能需要将 Deepnote 的 IP 地址加入允许列表。详细信息请参阅 [Deepnote 的文档](https://docs.deepnote.com/integrations/authorize-connections-from-deepnote-ip-addresses)。
 
 3. 恭喜！您已在 Deepnote 中成功集成 ClickHouse。
-
-
 
 ## 使用 ClickHouse 集成 {#using-clickhouse-integration}
 

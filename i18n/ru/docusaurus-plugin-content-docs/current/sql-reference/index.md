@@ -14,8 +14,7 @@ import { VideoContainer } from '/src/components/video_container'
 
 import LinksDeployment from './sql-reference-links.json'
 
-
-# Справочник по SQL в ClickHouse
+# Справочник по SQL в ClickHouse {#clickhouse-sql-reference}
 
 ClickHouse поддерживает декларативный язык запросов на основе SQL, который во многих случаях идентичен стандарту ANSI SQL.
 

@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## Пример использования {#example-usage}
 
-### Чтение данных
+### Чтение данных {#reading-data}
 
 Считайте данные в формате `JSONCompactStrings`:
 
@@ -92,6 +92,5 @@ FORMAT JSONCompactStrings
     }
 }
 ```
-
 
 ## Настройки форматирования {#format-settings}

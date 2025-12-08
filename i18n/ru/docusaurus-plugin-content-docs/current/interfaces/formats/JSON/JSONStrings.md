@@ -200,8 +200,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONStrings;
 ```
 
-
-### Чтение данных
+### Чтение данных {#reading-data}
 
 Считайте данные в формате `JSONStrings`:
 
@@ -212,7 +211,6 @@ FORMAT JSONStrings
 ```
 
 Результат будет в формате JSON:
-
 
 ```json
 {

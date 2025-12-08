@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## 使用例 {#example-usage}
 
-### データの挿入
+### データの挿入 {#inserting-data}
 
 :::tip
 [バージョン](https://github.com/ClickHouse/ClickHouse/releases) 23.1 以降では、ClickHouse は `CSV` フォーマットを使用する際に CSV ファイル内のヘッダーを自動検出するため、`CSVWithNames` や `CSVWithNamesAndTypes` を使用する必要はありません。
@@ -71,8 +71,7 @@ ORDER BY (date, home_team);
 INSERT INTO football FROM INFILE 'football_types.csv' FORMAT CSVWithNamesAndTypes;
 ```
 
-
-### データの読み込み
+### データの読み込み {#reading-data}
 
 `CSVWithNamesAndTypes` 形式を使用してデータを読み込みます。
 
@@ -105,7 +104,6 @@ FORMAT CSVWithNamesAndTypes
 "2022-05-07",2021,"Stevenage Borough","Salford City",4,2
 "2022-05-07",2021,"Walsall","Swindon Town",0,3
 ```
-
 
 ## フォーマット設定 {#format-settings}
 

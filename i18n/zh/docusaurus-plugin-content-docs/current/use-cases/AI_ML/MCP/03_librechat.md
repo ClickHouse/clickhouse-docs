@@ -15,14 +15,12 @@ import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.png';
 
-
-# 在 LibreChat 中使用 ClickHouse MCP 服务器
+# 在 LibreChat 中使用 ClickHouse MCP 服务器 {#using-clickhouse-mcp-server-with-librechat}
 
 > 本指南介绍如何使用 Docker 设置 LibreChat 与 ClickHouse MCP 服务器，
 > 并将其连接到 ClickHouse 示例数据集。
 
 <VerticalStepper headerLevel="h2">
-
 
 ## 安装 Docker {#install-docker}
 
@@ -34,9 +32,7 @@ import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.pn
 <br/>
 更多信息请参见 [Docker 文档](https://docs.docker.com/get-docker/)。
 
-
-
-## 克隆 LibreChat 仓库
+## 克隆 LibreChat 仓库 {#clone-librechat-repo}
 
 打开终端（命令提示符、终端或 PowerShell），然后使用以下命令克隆 LibreChat 仓库：
 
@@ -45,8 +41,7 @@ git clone https://github.com/danny-avila/LibreChat.git
 cd LibreChat
 ```
 
-
-## 创建和编辑 .env 文件
+## 创建和编辑 .env 文件 {#create-and-edit-env-file}
 
 将示例配置文件 `.env.example` 复制并重命名为 `.env`：
 
@@ -56,15 +51,14 @@ cp .env.example .env
 
 使用你常用的文本编辑器打开 `.env` 文件。你会看到许多主流 LLM 提供商的配置段落，包括 OpenAI、Anthropic、AWS Bedrock 等，例如：
 
-
 ```text title=".venv"
 #============#
-# Anthropic  #
+# Anthropic  # {#anthropic}
 #============#
 #highlight-next-line
 ANTHROPIC_API_KEY=user_provided
-# ANTHROPIC_MODELS=claude-opus-4-20250514,claude-sonnet-4-20250514,claude-3-7-sonnet-20250219,claude-3-5-sonnet-20241022,claude-3-5-haiku-20241022,claude-3-opus-20240229,claude-3-sonnet-20240229,claude-3-haiku-20240307
-# ANTHROPIC_REVERSE_PROXY=
+# ANTHROPIC_MODELS=claude-opus-4-20250514,claude-sonnet-4-20250514,claude-3-7-sonnet-20250219,claude-3-5-sonnet-20241022,claude-3-5-haiku-20241022,claude-3-opus-20240229,claude-3-sonnet-20240229,claude-3-haiku-20240307 {#anthropic_modelsclaude-opus-4-20250514claude-sonnet-4-20250514claude-3-7-sonnet-20250219claude-3-5-sonnet-20241022claude-3-5-haiku-20241022claude-3-opus-20240229claude-3-sonnet-20240229claude-3-haiku-20240307}
+# ANTHROPIC_REVERSE_PROXY= {#anthropic_reverse_proxy}
 ```
 
 将 `user_provided` 替换为你想要使用的 LLM 提供商的 API key。
@@ -73,8 +67,7 @@ ANTHROPIC_API_KEY=user_provided
 如果你没有 API key，可以使用像 Ollama 这样的本地 LLM。你将在后面的步骤 [&quot;Install Ollama&quot;](#add-local-llm-using-ollama) 中看到具体操作方法。暂时先不要修改 .env 文件，继续执行后续步骤。
 :::
 
-
-## 创建 librechat.yaml 文件
+## 创建 librechat.yaml 文件 {#create-librechat-yaml-file}
 
 运行以下命令新建一个 `librechat.yaml` 文件：
 
@@ -84,8 +77,7 @@ cp librechat.example.yaml librechat.yaml
 
 这会创建用于 LibreChat 的[主配置文件](https://www.librechat.ai/docs/configuration/librechat_yaml)。
 
-
-## 将 ClickHouse MCP 服务器添加到 Docker Compose
+## 将 ClickHouse MCP 服务器添加到 Docker Compose {#add-clickhouse-mcp-server-to-docker-compose}
 
 接下来，我们将把 ClickHouse MCP 服务器添加到 LibreChat 的 Docker Compose 文件中，
 以便 LLM 能够与
@@ -137,8 +129,7 @@ services:
   />
 </Link>
 
-
-## 在 librechat.yaml 中配置 MCP 服务器
+## 在 librechat.yaml 中配置 MCP 服务器 {#configure-mcp-server-in-librechat-yaml}
 
 打开 `librechat.yaml`，将以下配置添加到文件末尾：
 
@@ -163,10 +154,9 @@ socialLogins: ['github', 'google', 'discord', 'openid', 'facebook', 'apple', 'sa
 socialLogins: []
 ```
 
+## 使用 Ollama 添加本地 LLM（可选） {#add-local-llm-using-ollama}
 
-## 使用 Ollama 添加本地 LLM（可选）
-
-### 安装 Ollama
+### 安装 Ollama {#install-ollama}
 
 前往 [Ollama 官网](https://ollama.com/download)，根据所使用的系统安装 Ollama。
 
@@ -180,7 +170,7 @@ ollama run qwen3:32b
 
 要查看可用模型列表，请参见 [Ollama library](https://ollama.com/library)。
 
-### 在 librechat.yaml 中配置 Ollama
+### 在 librechat.yaml 中配置 Ollama {#configure-ollama-in-librechat-yaml}
 
 模型下载完成后，在 `librechat.yaml` 中进行配置：
 
@@ -203,8 +193,7 @@ custom:
     modelDisplayLabel: "Ollama"
 ```
 
-
-## 启动所有服务
+## 启动所有服务 {#start-all-services}
 
 在 LibreChat 项目的根目录下，运行以下命令来启动这些服务：
 
@@ -213,7 +202,6 @@ docker compose up
 ```
 
 等待所有服务全部启动完成。
-
 
 ## 在浏览器中打开 LibreChat {#open-librechat-in-browser}
 

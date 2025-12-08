@@ -12,8 +12,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-
-# R2DBC ドライバ
+# R2DBC ドライバ {#r2dbc-driver}
 
 ## R2DBC ドライバー {#r2dbc-driver}
 
@@ -23,7 +22,7 @@ ClickHouse 向け非同期 Java クライアントの [R2DBC](https://r2dbc.io/)
 
 - [OpenJDK](https://openjdk.java.net) バージョン 8 以上
 
-### セットアップ
+### セットアップ {#setup}
 
 ```xml
 <dependency>
@@ -42,8 +41,7 @@ ClickHouse 向け非同期 Java クライアントの [R2DBC](https://r2dbc.io/)
 </dependency>
 ```
 
-
-### ClickHouse に接続する
+### ClickHouse に接続する {#connect-to-clickhouse}
 
 ```java showLineNumbers
 ConnectionFactory connectionFactory = ConnectionFactories
@@ -53,8 +51,7 @@ ConnectionFactory connectionFactory = ConnectionFactories
         .flatMapMany(connection -> connection
 ```
 
-
-### クエリ
+### クエリ {#query}
 
 ```java showLineNumbers
 connection
@@ -71,8 +68,7 @@ connection
     .subscribe();
 ```
 
-
-### 挿入
+### 挿入 {#insert}
 
 ```java showLineNumbers
 connection

@@ -14,8 +14,6 @@ doc_type: 'reference'
 - это проще отлаживать;
 - jdbc-bridge можно реализовать таким же образом.
 
-
-
 ## Использование {#usage}
 
 `clickhouse-server` использует этот инструмент внутри табличной функции `odbc` и StorageODBC.
@@ -28,9 +26,7 @@ doc_type: 'reference'
 - `max_block_size` -- необязательный параметр, задает максимальный размер одного блока.
 Запрос передается в теле POST-запроса. Ответ возвращается в формате RowBinary.
 
-
-
-## Пример:
+## Пример: {#example}
 
 ```bash
 $ clickhouse-odbc-bridge --http-port 9018 --daemon

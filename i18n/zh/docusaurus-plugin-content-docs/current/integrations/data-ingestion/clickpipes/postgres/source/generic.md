@@ -7,9 +7,7 @@ doc_type: 'guide'
 keywords: ['postgres', 'clickpipes', 'logical replication', 'pg_hba.conf', 'wal level']
 ---
 
-
-
-# 通用 Postgres 源设置指南
+# 通用 Postgres 源设置指南 {#generic-postgres-source-setup-guide}
 
 :::info
 
@@ -18,8 +16,6 @@ keywords: ['postgres', 'clickpipes', 'logical replication', 'pg_hba.conf', 'wal 
 :::
 
 ClickPipes 支持 Postgres 12 及更高版本。
-
-
 
 ## 启用逻辑复制 {#enable-logical-replication}
 
@@ -56,9 +52,7 @@ ClickPipes 支持 Postgres 12 及更高版本。
     ```
 3. 如果你对上述配置做了任何更改，必须重启 Postgres 实例，更改才会生效。
 
-
-
-## 创建具备权限的用户和发布
+## 创建具备权限的用户和发布 {#creating-a-user-with-permissions-and-publication}
 
 让我们为 ClickPipes 创建一个具备 CDC 所需权限的新用户，
 并创建一个我们将用于复制的发布。
@@ -84,7 +78,6 @@ ClickPipes 支持 Postgres 12 及更高版本。
 
 :::
 
-
 ## 在 pg_hba.conf 中为 ClickPipes 用户启用连接 {#enabling-connections-in-pg_hbaconf-to-the-clickpipes-user}
 
 如果您是自托管环境，则需要按照以下步骤，允许来自 ClickPipes 的 IP 地址对 ClickPipes 用户的连接。如果您使用的是托管服务，可以参考服务提供商的文档完成相同的配置。
@@ -99,9 +92,7 @@ ClickPipes 支持 Postgres 12 及更高版本。
     SELECT pg_reload_conf();
     ```
 
-
-
-## 增大 `max_slot_wal_keep_size`
+## 增大 `max_slot_wal_keep_size` {#increase-max_slot_wal_keep_size}
 
 这是一个推荐的配置调整，用于确保大型事务或提交不会导致复制槽被丢弃。
 
@@ -122,7 +113,6 @@ SELECT pg_reload_conf();
 如需获取该数值的更佳配置建议，请联系 ClickPipes 团队。
 
 :::
-
 
 ## 接下来是什么？ {#whats-next}
 

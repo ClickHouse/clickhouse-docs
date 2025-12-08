@@ -6,20 +6,15 @@ title: 'S3 エンドポイントへのバックアップおよびそこからの
 doc_type: 'guide'
 ---
 
-import Syntax from '@site/docs/operations_/backup_restore/_snippets/_syntax.md';
-
+import Syntax from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
 
 # S3 エンドポイントを利用したバックアップ / リストア {#backup-to-a-local-disk}
 
 この記事では、S3 エンドポイント経由で S3 バケットにバックアップを保存したり、S3 バケット上のバックアップからリストアしたりする方法について説明します。
 
-
-
 ## 構文 {#syntax}
 
 <Syntax/>
-
-
 
 ## 使用例 {#usage-examples}
 
@@ -132,7 +127,6 @@ SETTINGS base_backup = S3(
 このコマンドは、増分バックアップを新しいテーブル`test_table_restored`に復元します。  
 増分バックアップを復元する際、ベースバックアップも含まれることに注意してください。
 復元時には**増分バックアップ**のみを指定します:
-
 
 ```sql
 RESTORE TABLE data AS test_db.test_table_restored FROM S3(

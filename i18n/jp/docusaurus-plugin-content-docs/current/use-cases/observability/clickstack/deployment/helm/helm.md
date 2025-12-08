@@ -12,7 +12,7 @@ keywords: ['ClickStack Helm チャート', 'Helm による ClickHouse デプロ�
 import Image from '@theme/IdealImage';
 import hyperdx_24 from '@site/static/images/use-cases/observability/hyperdx-24.png';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
-import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
+import JSONSupport from '@site/i18n/jp/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
 :::warning Chart Migration
 現在 `hdx-oss-v2` チャートを使用している場合は、`clickstack` チャートへ移行してください。`hdx-oss-v2` チャートはメンテナンスモードとなっており、新機能は今後追加されません。新規開発はすべて `clickstack` チャートに集約されており、同等の機能を提供しつつ、名称と構成が改善されています。
@@ -35,7 +35,6 @@ HyperDX 用の Helm チャートは [こちら](https://github.com/hyperdxio/hel
 * リソース制限およびポッド単位のスケーリング
 * TLS およびイングレスの設定
 * シークレット管理および認証設定
-
 
 ### 適した用途 {#suitable-for}
 
@@ -262,7 +261,6 @@ helm install my-clickstack clickstack/clickstack -f values.yaml
 シークレットベースの設定、外部 OTel collector、または最小構成で本番環境にデプロイする場合は、[Deployment Options](/docs/use-cases/observability/clickstack/deployment/helm-deployment-options) ガイドを参照してください。
 :::
 
-
 ## 本番環境向けの注意事項
 
 デフォルトでは、このチャートは ClickHouse と OTel collector もインストールするようになっています。ただし、本番環境では ClickHouse と OTel collector は別々に管理することが推奨されます。
@@ -282,7 +280,6 @@ helm install my-clickstack clickstack/clickstack \
 * [Configuration Guide](/docs/use-cases/observability/clickstack/deployment/helm-configuration) - イングレス、TLS、およびシークレット管理
 * [Cloud Deployments](/docs/use-cases/observability/clickstack/deployment/helm-cloud) - クラウド固有の設定と本番環境チェックリスト
   :::
-
 
 ## タスク設定 {#task-configuration}
 
@@ -308,7 +305,6 @@ helm upgrade my-clickstack clickstack/clickstack -f values.yaml
 helm search repo clickstack
 ```
 
-
 ## ClickStack のアンインストール
 
 デプロイメントを削除するには：
@@ -319,22 +315,19 @@ helm uninstall my-clickstack
 
 これにより、そのリリースに関連するすべてのリソースは削除されますが、永続データ（存在する場合）は残る可能性があります。
 
-
 ## トラブルシューティング {#troubleshooting}
 
-### ログの確認
+### ログの確認 {#customizing-values}
 
 ```shell
 kubectl logs -l app.kubernetes.io/name=clickstack
 ```
 
-
-### インストール失敗時のデバッグ
+### インストール失敗時のデバッグ {#using-secrets}
 
 ```shell
 helm install my-clickstack clickstack/clickstack --debug --dry-run
 ```
-
 
 ### デプロイメントの検証
 
@@ -378,7 +371,6 @@ helm install my-clickstack clickstack/clickstack \
   --set "otel.env[0].name=OTEL_AGENT_FEATURE_GATE_ARG" \
   --set "otel.env[0].value=--feature-gates=clickhouse.json"
 ```
-
 
 ## 関連ドキュメント {#related-documentation}
 

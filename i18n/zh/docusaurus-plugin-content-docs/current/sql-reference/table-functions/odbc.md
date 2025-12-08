@@ -7,22 +7,17 @@ title: 'odbc'
 doc_type: 'reference'
 ---
 
-
-
-# odbc 表函数
+# odbc 表函数 {#odbc-table-function}
 
 返回一个通过 [ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity) 连接的表。
 
-
-
-## 语法
+## 语法 {#syntax}
 
 ```sql
 odbc(数据源, external_database, external_table)
 odbc(数据源, external_table)
 odbc(named_collection)
 ```
-
 
 ## 参数 {#arguments}
 
@@ -38,9 +33,7 @@ odbc(named_collection)
 
 外部表中值为 `NULL` 的字段会被转换为其基础数据类型的默认值。比如，如果远程 MySQL 表的某个字段类型为 `INT NULL`，它会被转换为 0（ClickHouse `Int32` 数据类型的默认值）。
 
-
-
-## 使用示例
+## 使用示例 {#usage-example}
 
 **通过 ODBC 从本地 MySQL 安装获取数据**
 
@@ -116,7 +109,6 @@ SELECT * FROM odbc('DSN=mysqlconn', 'test', 'test')
 │      1 │            0 │     2 │              0 │
 └────────┴──────────────┴───────┴────────────────┘
 ```
-
 
 ## 另请参阅 {#see-also}
 

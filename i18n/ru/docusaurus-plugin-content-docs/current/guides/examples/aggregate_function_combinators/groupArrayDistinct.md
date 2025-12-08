@@ -7,11 +7,7 @@ sidebar_label: 'groupArrayDistinct'
 doc_type: 'reference'
 ---
 
-
-
 # groupArrayDistinct {#sumdistinct}
-
-
 
 ## Описание {#description}
 
@@ -19,9 +15,7 @@ doc_type: 'reference'
 можно применить к агрегатной функции [`groupArray`](/sql-reference/aggregate-functions/reference/sum), чтобы создать массив
 различных значений аргументов.
 
-
-
-## Пример использования
+## Пример использования {#example-usage}
 
 В этом примере мы воспользуемся набором данных `hits`, доступным в нашей [SQL‑песочнице](https://sql.clickhouse.com/).
 
@@ -37,7 +31,6 @@ GROUP BY URLDomain
 ORDER BY URLDomain ASC
 LIMIT 20;
 ```
-
 
 ## См. также {#see-also}
 - [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)

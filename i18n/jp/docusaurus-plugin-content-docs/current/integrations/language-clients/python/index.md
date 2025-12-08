@@ -14,8 +14,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
-
+import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 # Introduction {#introduction}
 
@@ -80,7 +79,7 @@ ClickHouse への接続方法として、次の 2 つの例を示します。
 - localhost 上で動作している ClickHouse サーバーに接続する場合
 - ClickHouse Cloud サービスに接続する場合
 
-#### ClickHouse Connect クライアント インスタンスを使用して localhost 上の ClickHouse サーバーに接続する:
+#### ClickHouse Connect クライアント インスタンスを使用して localhost 上の ClickHouse サーバーに接続する: {#use-a-clickhouse-connect-client-instance-to-connect-to-a-clickhouse-server-on-localhost}
 
 ```python
 import clickhouse_connect
@@ -88,8 +87,7 @@ import clickhouse_connect
 client = clickhouse_connect.get_client(host='localhost', username='default', password='password')
 ```
 
-
-#### ClickHouse Connect クライアントインスタンスを使用して ClickHouse Cloud サービスに接続します:
+#### ClickHouse Connect クライアントインスタンスを使用して ClickHouse Cloud サービスに接続します: {#use-a-clickhouse-connect-client-instance-to-connect-to-a-clickhouse-cloud-service}
 
 :::tip
 先ほど収集した接続情報を使用してください。ClickHouse Cloud サービスでは TLS が必須となるため、ポート 8443 を使用してください。
@@ -101,8 +99,7 @@ import clickhouse_connect
 client = clickhouse_connect.get_client(host='HOSTNAME.clickhouse.cloud', port=8443, username='default', password='your password')
 ```
 
-
-### データベースを操作する
+### データベースを操作する {#interact-with-your-database}
 
 ClickHouse の SQL コマンドを実行するには、クライアントの `command` メソッドを使用します。
 
@@ -124,5 +121,5 @@ ClickHouse SQL を使用してデータを取得するには、クライアン�
 ```python
 result = client.query('SELECT max(key), avg(metric) FROM new_table')
 print(result.result_rows)
-# 出力: [(2000, -50.9035)]
+# 出力: [(2000, -50.9035)] {#output-2000-509035}
 ```

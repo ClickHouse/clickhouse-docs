@@ -15,7 +15,6 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 | ---- | ----- | --------- |
 | ✗    | ✔     |           |
 
-
 ## Описание {#description}
 
 Формат `Pretty` выводит данные в виде таблиц с использованием символов Unicode, 
@@ -26,9 +25,7 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 [NULL](/sql-reference/syntax.md) выводится как `ᴺᵁᴸᴸ`.
 
-
-
-## Пример использования
+## Пример использования {#example-usage}
 
 Пример (для формата [`PrettyCompact`](./PrettyCompact.md)):
 
@@ -96,7 +93,6 @@ FORMAT PrettyCompact
 │ 2014-03-23 │ 1406958 │
 └────────────┴─────────┘
 ```
-
 
 ## Параметры форматирования {#format-settings}
 

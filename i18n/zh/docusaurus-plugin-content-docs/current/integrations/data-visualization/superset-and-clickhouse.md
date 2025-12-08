@@ -13,7 +13,7 @@ integration:
   - website: 'https://github.com/ClickHouse/clickhouse-connect'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import superset_01 from '@site/static/images/integrations/data-visualization/superset_01.png';
 import superset_02 from '@site/static/images/integrations/data-visualization/superset_02.png';
@@ -28,14 +28,11 @@ import superset_11 from '@site/static/images/integrations/data-visualization/sup
 import superset_12 from '@site/static/images/integrations/data-visualization/superset_12.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# 将 Superset 连接到 ClickHouse
+# 将 Superset 连接到 ClickHouse {#connect-superset-to-clickhouse}
 
 <ClickHouseSupportedBadge/>
 
 <a href="https://superset.apache.org/" target="_blank">Apache Superset</a> 是一个用 Python 编写的开源数据探索和可视化平台。Superset 使用由 ClickHouse 提供的 Python 驱动程序连接到 ClickHouse。让我们看看它是如何工作的……
-
-
 
 ## 目标 {#goal}
 
@@ -48,12 +45,8 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 如果你还没有可用的数据集，可以添加一个示例数据集。本指南使用 [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md) 数据集，你可以选用它。在同一文档分类下还有多个其他示例数据集可供查看。
 :::
 
-
-
 ## 1. 收集连接详细信息 {#1-gather-your-connection-details}
 <ConnectionDetails />
-
-
 
 ## 2. 安装驱动程序 {#2-install-the-driver}
 
@@ -64,8 +57,6 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
     ```
 
 2. 启动（或重新启动）Superset。
-
-
 
 ## 3. 将 Superset 连接到 ClickHouse {#3-connect-superset-to-clickhouse}
 
@@ -89,8 +80,6 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 4. 依次点击 **CONNECT** 和 **FINISH** 按钮完成向导设置，此时你应该可以在数据库列表中看到你的数据库。
 
-
-
 ## 4. 添加数据集 {#4-add-a-dataset}
 
 1. 要在 Superset 中与 ClickHouse 数据交互，您需要先定义一个**数据集（_dataset_）**。在 Superset 顶部菜单中选择 **Data**，然后在下拉菜单中选择 **Datasets**。
@@ -101,8 +90,6 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 <br/>
 
 3. 点击对话窗口底部的 **ADD** 按钮，您的表就会出现在数据集列表中。现在您已经可以构建仪表板（dashboard）并分析 ClickHouse 数据了！
-
-
 
 ## 5.  在 Superset 中创建图表和仪表板 {#5--creating-charts-and-a-dashboard-in-superset}
 

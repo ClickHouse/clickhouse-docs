@@ -16,10 +16,9 @@ import TabItem from '@theme/TabItem';
 
 デフォルトでは、テーブルは現在のサーバー上にのみ作成されます。分散 DDL クエリは `ON CLUSTER` 句として実装されており、[別途説明されています](../../../sql-reference/distributed-ddl.md)。
 
+## 構文形式 {#syntax-forms}
 
-## 構文形式
-
-### 明示的なスキーマ指定
+### 明示的なスキーマ指定 {#with-explicit-schema}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -42,7 +41,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 列およびテーブルにコメントを追加できます。
 
-### 他のテーブルと同様のスキーマを使用する場合
+### 他のテーブルと同様のスキーマを使用する場合 {#with-a-schema-similar-to-other-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name AS [db2.]name2 [ENGINE = engine]
@@ -50,7 +49,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name AS [db2.]name2 [ENGINE = engine]
 
 別のテーブルと同じ構造のテーブルを作成します。テーブルに別のエンジンを指定できます。エンジンを指定しない場合は、`db2.name2` テーブルと同じエンジンが使用されます。
 
-### 別のテーブルからスキーマとデータをクローンする場合
+### 別のテーブルからスキーマとデータをクローンする場合 {#with-a-schema-and-data-cloned-from-another-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name を CLONE AS [db2.]name2 [ENGINE = engine]
@@ -63,7 +62,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name AS [db2.]name2 [ENGINE = engine];
 ALTER TABLE [db.]table_name ATTACH PARTITION ALL FROM [db2].name2;
 ```
 
-### テーブル関数から
+### テーブル関数から {#from-a-table-function}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name AS table_function()
@@ -71,7 +70,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name AS table_function()
 
 指定した[テーブル関数](/sql-reference/table-functions)と同じ結果になるテーブルを作成します。作成されたテーブルは、指定した対応するテーブル関数と同様に動作します。
 
-### SELECT クエリから
+### SELECT クエリから {#from-select-query}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name[(name1 [type1], name2 [type2], ...)] ENGINE = engine AS SELECT ...
@@ -100,7 +99,6 @@ SELECT x, toTypeName(x) FROM t1;
 └───┴───────────────┘
 ```
 
-
 ## NULL または NOT NULL 修飾子 {#null-or-not-null-modifiers}
 
 列定義におけるデータ型の後ろに付ける `NULL` および `NOT NULL` 修飾子は、その列を [Nullable](/sql-reference/data-types/nullable) 型にできるかどうかを指定します。
@@ -109,9 +107,7 @@ SELECT x, toTypeName(x) FROM t1;
 
 [data_type_default_nullable](../../../operations/settings/settings.md#data_type_default_nullable) 設定も参照してください。
 
-
-
-## デフォルト値
+## デフォルト値 {#default_values}
 
 カラム定義では、`DEFAULT expr`、`MATERIALIZED expr`、`ALIAS expr` の形式でデフォルト値の式を指定できます。例: `URLDomain String DEFAULT domain(URL)`。
 
@@ -123,7 +119,7 @@ SELECT x, toTypeName(x) FROM t1;
 
 デフォルト値の式 `expr` では、任意のテーブルカラムおよび定数を参照できます。ClickHouse は、テーブル構造の変更によって式の計算にループが導入されないことを検証します。INSERT 時には、式が解決可能であること、つまり式の計算に必要となるすべてのカラムが指定されていることを確認します。
 
-### DEFAULT
+### DEFAULT {#default}
 
 `DEFAULT expr`
 
@@ -149,7 +145,7 @@ SELECT * FROM test;
 └────┴─────────────────────┴─────────────────┘
 ```
 
-### MATERIALIZED
+### MATERIALIZED {#materialized}
 
 `MATERIALIZED expr`
 
@@ -187,7 +183,7 @@ SELECT * FROM test SETTINGS asterisk_include_materialized_columns=1;
 └────┴─────────────────────┴─────────────────┘
 ```
 
-### EPHEMERAL
+### EPHEMERAL {#ephemeral}
 
 `EPHEMERAL [expr]`
 
@@ -216,7 +212,6 @@ SELECT
 FROM test
 FORMAT Vertical;
 ```
-
 
 Row 1:
 ──────
@@ -263,8 +258,7 @@ SELECT * FROM test SETTINGS asterisk_include_alias_columns=1;
 └────┴────────────┴──────────┘
 ````
 
-
-## プライマリキー
+## プライマリキー {#primary-key}
 
 テーブル作成時に[プライマリキー](../../../engines/table-engines/mergetree-family/mergetree.md#primary-keys-and-indexes-in-queries)を定義できます。プライマリキーは次の 2 通りの方法で指定できます。
 
@@ -294,12 +288,11 @@ PRIMARY KEY(expr1[, expr2,...]);
 1 つのクエリで両方の方法を併用することはできません。
 :::
 
-
-## 制約
+## 制約 {#constraints}
 
 カラムの説明に加えて、制約を定義することもできます。
 
-### CONSTRAINT
+### CONSTRAINT {#constraint}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -315,7 +308,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 大量の制約を追加すると、大規模な `INSERT` クエリのパフォーマンスに悪影響を与える可能性があります。
 
-### ASSUME
+### ASSUME {#assume}
 
 `ASSUME` 句は、常に真であると仮定されるテーブル上の `CONSTRAINT` を定義するために使用されます。この制約は、その後オプティマイザによって SQL クエリのパフォーマンスを向上させるために利用できます。
 
@@ -339,14 +332,11 @@ ORDER BY (name_len, name);
 
 `ASSUME CONSTRAINT` は **制約を強制しません**。単にオプティマイザに対して、その制約が成り立つことを知らせるだけです。もし制約が実際には成り立たない場合、クエリ結果が不正確になる可能性があります。したがって、制約が正しいと確信できる場合にのみ `ASSUME CONSTRAINT` を使用すべきです。
 
-
 ## TTL Expression {#ttl-expression}
 
 値の保持期間を定義します。MergeTree ファミリーのテーブルに対してのみ指定できます。詳細については、[列およびテーブルの TTL](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) を参照してください。
 
-
-
-## 列圧縮コーデック
+## 列圧縮コーデック {#column_compression_codec}
 
 デフォルトでは、セルフマネージド版の ClickHouse では `lz4` 圧縮が、ClickHouse Cloud では `zstd` 圧縮が適用されます。
 
@@ -391,27 +381,27 @@ Codec はパイプラインで組み合わせることができます。たと�
 
 ClickHouse は、汎用 codec と用途特化 codec の両方をサポートします。
 
-### 汎用 Codec
+### 汎用 Codec {#general-purpose-codecs}
 
-#### NONE
+#### NONE {#none}
 
 `NONE` — 圧縮しません。
 
-#### LZ4
+#### LZ4 {#lz4}
 
 `LZ4` — デフォルトで使用されるロスレス[データ圧縮アルゴリズム](https://github.com/lz4/lz4)です。LZ4 の高速圧縮を適用します。
 
-#### LZ4HC
+#### LZ4HC {#lz4hc}
 
 `LZ4HC[(level)]` — 圧縮レベルを指定できる LZ4 HC (High Compression) アルゴリズムです。デフォルトレベル: 9。`level <= 0` を指定するとデフォルトレベルが適用されます。指定可能なレベル: [1, 12]。推奨レベル範囲: [4, 9]。
 
-#### ZSTD
+#### ZSTD {#zstd}
 
 `ZSTD[(level)]` — 可変 `level` を持つ [ZSTD 圧縮アルゴリズム](https://en.wikipedia.org/wiki/Zstandard) です。指定可能なレベル: [1, 22]。デフォルトレベル: 1。
 
 高い圧縮レベルは、一度圧縮しておき、そのデータを繰り返し伸長するといった非対称なシナリオで有用です。レベルを上げると圧縮率は向上しますが、CPU 使用率も増加します。
 
-#### ZSTD&#95;QAT
+#### ZSTD&#95;QAT {#zstd_qat}
 
 <CloudNotSupportedBadge />
 
@@ -421,12 +411,11 @@ ClickHouse は、汎用 codec と用途特化 codec の両方をサポートし�
 * 圧縮時、ZSTD&#95;QAT は Intel® QAT オフロードデバイス（[QuickAssist Technology](https://www.intel.com/content/www/us/en/developer/topic-technology/open/quick-assist-technology/overview.html)）の利用を試みます。そのようなデバイスが見つからない場合は、ソフトウェアによる ZSTD 圧縮にフォールバックします。
 * 伸長は常にソフトウェアで実行されます。
 
-#### DEFLATE&#95;QPL
+#### DEFLATE&#95;QPL {#deflate_qpl}
 
 <CloudNotSupportedBadge />
 
 `DEFLATE_QPL` — Intel® Query Processing Library によって実装された [Deflate 圧縮アルゴリズム](https://github.com/intel/qpl) です。いくつかの制限があります。
-
 
 - DEFLATE_QPL はデフォルトでは無効になっており、設定 [enable_deflate_qpl_codec](../../../operations/settings/settings.md#enable_deflate_qpl_codec) を有効化した後にのみ使用できます。
 - DEFLATE_QPL には、SSE 4.2 命令でコンパイルされた ClickHouse ビルドが必要です（デフォルトでそのようにビルドされています）。詳細は [Build Clickhouse with DEFLATE_QPL](/development/building_and_benchmarking_deflate_qpl) を参照してください。
@@ -455,11 +444,9 @@ ClickHouse は、汎用 codec と用途特化 codec の両方をサポートし�
 
 #### FPC {#fpc}
 
-
-
 `FPC(level, float_size)` - 2種類の予測器のうち優れている方を用いて系列中の次の浮動小数点値を繰り返し予測し、その予測値と実際の値を XOR し、その結果を先頭ゼロ圧縮するコーデックです。Gorilla と同様に、ゆっくり変化する浮動小数点値の系列を保存する場合に効率的です。64ビット値（double）の場合、FPC は Gorilla より高速であり、32ビット値の場合は状況によって異なります。`level` に指定可能な値は 1-28 で、デフォルト値は 12 です。`float_size` に指定可能な値は 4, 8 で、型が Float の場合のデフォルト値は `sizeof(type)` です。それ以外のすべてのケースでは 4 になります。アルゴリズムの詳細な説明については [High Throughput Compression of Double-Precision Floating-Point Data](https://userweb.cs.txstate.edu/~burtscher/papers/dcc07a.pdf) を参照してください。
 
-#### T64
+#### T64 {#t64}
 
 `T64` — 整数データ型（`Enum`、`Date`、`DateTime` を含む）の値において未使用の上位ビットを切り詰める圧縮手法です。アルゴリズムの各ステップで、コーデックは 64 個の値のブロックを取り出し、それらを 64x64 ビット行列に配置して転置し、未使用ビットを切り詰め、残りをシーケンスとして返します。未使用ビットとは、この圧縮の対象となるデータ部分全体において、最大値と最小値の間で変化しないビットを指します。
 
@@ -474,17 +461,17 @@ CREATE TABLE codec_example
 ENGINE = MergeTree()
 ```
 
-### 暗号化コーデック
+### 暗号化コーデック {#encryption-codecs}
 
 これらのコーデックは実際にはデータを圧縮せず、代わりにディスク上のデータを暗号化します。これらは [encryption](/operations/server-configuration-parameters/settings#encryption) 設定で暗号化キーが指定されている場合にのみ利用可能です。暗号化されたデータは通常、有意義な形で圧縮することができないため、暗号化はコーデックパイプラインの末尾でのみ意味を持つことに注意してください。
 
 暗号化コーデック：
 
-#### AES&#95;128&#95;GCM&#95;SIV
+#### AES&#95;128&#95;GCM&#95;SIV {#aes_128_gcm_siv}
 
 `CODEC('AES-128-GCM-SIV')` — [RFC 8452](https://tools.ietf.org/html/rfc8452) で定義されている GCM-SIV モードの AES-128 でデータを暗号化します。
 
-#### AES-256-GCM-SIV
+#### AES-256-GCM-SIV {#aes-256-gcm-siv}
 
 `CODEC('AES-256-GCM-SIV')` — GCM-SIV モードの AES-256 でデータを暗号化します。
 
@@ -522,8 +509,7 @@ CREATE TABLE mytable
 ENGINE = MergeTree ORDER BY x;
 ```
 
-
-## 一時テーブル
+## 一時テーブル {#temporary-tables}
 
 :::note
 一時テーブルはレプリケートされない点に注意してください。そのため、一時テーブルに挿入されたデータが他のレプリカで利用可能であることは保証されません。一時テーブルが有用となる主なユースケースは、単一セッション中に小規模な外部データセットに対してクエリや結合を行う場合です。
@@ -553,8 +539,7 @@ CREATE [OR REPLACE] TEMPORARY TABLE [IF NOT EXISTS] table_name
 
 一時テーブルの代わりに、[ENGINE = Memory](../../../engines/table-engines/special/memory.md) を使用したテーブルを利用することもできます。
 
-
-## REPLACE TABLE
+## REPLACE TABLE {#replace-table}
 
 `REPLACE` ステートメントを使用すると、テーブルを[アトミックに](/concepts/glossary#atomicity)更新できます。
 
@@ -591,7 +576,7 @@ SELECT * FROM myOldTable
 WHERE CounterID <12345;
 ```
 
-### 構文
+### 構文 {#syntax}
 
 ```sql
 {CREATE [OR REPLACE] | REPLACE} TABLE [db.]table_name
@@ -601,7 +586,7 @@ WHERE CounterID <12345;
 `CREATE` 文のすべての構文形式は、このステートメントでも使用できます。存在しないテーブルに対して `REPLACE` を実行するとエラーになります。
 :::
 
-### 例:
+### 例: {#examples}
 
 <Tabs>
   <TabItem value="clickhouse_replace_example" label="ローカル" default>
@@ -720,8 +705,7 @@ WHERE CounterID <12345;
   </TabItem>
 </Tabs>
 
-
-## COMMENT 句
+## COMMENT 句 {#comment-clause}
 
 テーブル作成時にコメントを追加できます。
 
@@ -752,7 +736,6 @@ SELECT name, comment FROM system.tables WHERE name = 't1';
 │ t1   │ 一時テーブル │
 └──────┴─────────────────────┘
 ```
-
 
 ## 関連コンテンツ {#related-content}
 

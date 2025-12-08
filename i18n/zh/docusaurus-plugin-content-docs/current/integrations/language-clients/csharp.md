@@ -12,7 +12,7 @@ integration:
   - website: 'https://github.com/ClickHouse/clickhouse-cs'
 ---
 
-# ClickHouse C# 客户端
+# ClickHouse C# 客户端 {#clickhouse-c-client}
 
 用于连接 ClickHouse 的官方 C# 客户端。
 客户端源代码托管在 [GitHub 仓库](https://github.com/ClickHouse/clickhouse-cs) 中。
@@ -39,7 +39,7 @@ integration:
 
 ---
 
-## 安装
+## 安装 {#installation}
 
 从 NuGet 安装该软件包：
 
@@ -55,8 +55,7 @@ Install-Package ClickHouse.Driver
 
 ***
 
-
-## 快速入门
+## 快速入门 {#quick-start}
 
 ```csharp
 using ClickHouse.Driver.ADO;
@@ -82,7 +81,6 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse"))
 ```
 
 ***
-
 
 ## 使用方法 {#usage}
 
@@ -133,7 +131,7 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse"))
 
 ---
 
-### 创建表
+### 创建表 {#creating-a-table}
 
 使用标准 SQL 语法创建表：
 
@@ -154,8 +152,7 @@ using (var connection = new ClickHouseConnection(connectionString))
 
 ***
 
-
-### 插入数据
+### 插入数据 {#inserting-data}
 
 使用参数化查询插入数据：
 
@@ -178,8 +175,7 @@ using (var connection = new ClickHouseConnection(connectionString))
 
 ***
 
-
-### 批量插入
+### 批量插入 {#bulk-insert}
 
 使用 `ClickHouseBulkCopy` 时需要：
 
@@ -221,8 +217,7 @@ Console.WriteLine($"Rows written: {bulkCopy.RowsWritten}");
 
 ***
 
-
-### 执行 SELECT 查询
+### 执行 SELECT 查询 {#performing-select-queries}
 
 执行 SELECT 查询并处理其结果：
 
@@ -249,8 +244,7 @@ using (var connection = new ClickHouseConnection(connectionString))
 
 ***
 
-
-### 原始数据流
+### 原始数据流 {#raw-streaming}
 
 ```csharp
 using var command = connection.CreateCommand();
@@ -263,8 +257,7 @@ var json = reader.ReadToEnd();
 
 ***
 
-
-### 嵌套列支持
+### 嵌套列支持 {#nested-columns}
 
 ClickHouse 嵌套类型（`Nested(...)`）可以按照数组语义进行读写。
 
@@ -289,8 +282,7 @@ await bulkCopy.WriteToServerAsync(new[] { row1, row2 });
 
 ***
 
-
-### AggregateFunction 列
+### AggregateFunction 列 {#aggregatefunction-columns}
 
 类型为 `AggregateFunction(...)` 的列不能直接进行查询或插入操作。
 
@@ -308,8 +300,7 @@ SELECT uniqMerge(c) FROM t;
 
 ***
 
-
-### SQL 参数
+### SQL 参数 {#sql-parameters}
 
 要在查询中传递参数，必须使用 ClickHouse 的参数格式，形式如下：
 
@@ -338,7 +329,6 @@ INSERT INTO table VALUES ({val1:Int32}, {val2:Array(UInt8)})
   :::
 
 ***
-
 
 ## 支持的数据类型 {#supported-data-types}
 
@@ -433,7 +423,7 @@ ClickHouse .NET 客户端与 `Microsoft.Extensions.Logging` 抽象层集成，�
 
 ### 快速开始 {#logging-quick-start}
 
-#### 使用 ClickHouseConnection
+#### 使用 ClickHouseConnection {#logging-clickhouseconnection}
 
 ```csharp
 using ClickHouse.Driver.ADO;
@@ -455,8 +445,7 @@ await using var connection = new ClickHouseConnection(settings);
 await connection.OpenAsync();
 ```
 
-
-#### 使用 appsettings.json
+#### 使用 appsettings.json {#logging-appsettings-config}
 
 可以使用标准的 .NET 配置来配置日志级别：
 
@@ -486,8 +475,7 @@ await using var connection = new ClickHouseConnection(settings);
 await connection.OpenAsync();
 ```
 
-
-#### 使用内存配置
+#### 使用内存配置 {#logging-inmemory-config}
 
 你也可以在代码中按类别配置日志的详细程度：
 
@@ -523,7 +511,6 @@ await using var connection = new ClickHouseConnection(settings);
 await connection.OpenAsync();
 ```
 
-
 ### 分类与发射源 {#logging-categories}
 
 驱动程序使用专用日志分类，便于按组件精细调整日志级别：
@@ -535,7 +522,7 @@ await connection.OpenAsync();
 | `ClickHouse.Driver.Transport` | `ClickHouseConnection` | 底层 HTTP 流式请求、压缩标志、响应状态码以及传输失败情况。 |
 | `ClickHouse.Driver.BulkCopy` | `ClickHouseBulkCopy` | 元数据加载、批量操作、行计数以及上传完成情况。 |
 
-#### 示例：排查连接问题
+#### 示例：排查连接问题 {#logging-config-example}
 
 ```json
 {
@@ -558,8 +545,7 @@ await connection.OpenAsync();
 * 连接打开/关闭事件
 * 会话 ID 跟踪
 
-
-### 调试模式：网络跟踪与诊断
+### 调试模式：网络跟踪与诊断 {#logging-debugmode}
 
 为帮助诊断网络问题，驱动程序库提供了一个辅助工具，可启用对 .NET 网络内部机制的底层跟踪。要启用它，必须传入一个 LoggerFactory，并将日志级别设置为 Trace，同时将 EnableDebugMode 设置为 true（或者通过 `ClickHouse.Driver.Diagnostic.TraceHelper` 类手动启用）。警告：这会生成极其冗长的日志，并影响性能。不建议在生产环境中启用调试模式。
 
@@ -580,8 +566,7 @@ var settings = new ClickHouseClientSettings()
 
 ***
 
-
-### ORM &amp; Dapper 支持
+### ORM &amp; Dapper 支持 {#orm-support}
 
 `ClickHouse.Driver` 支持 Dapper（有一定限制）。
 

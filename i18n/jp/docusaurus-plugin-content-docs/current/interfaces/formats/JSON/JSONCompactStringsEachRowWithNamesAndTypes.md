@@ -16,7 +16,7 @@ doc_type: 'reference'
 
 ## 使用例 {#example-usage}
 
-### データの挿入
+### データの挿入 {#inserting-data}
 
 次のデータを含む JSON ファイルを `football.json` という名前で用意します：
 
@@ -48,8 +48,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactStringsEachRowWithNamesAndTypes;
 ```
 
-
-### データの読み込み
+### データの読み込み {#reading-data}
 
 `JSONCompactStringsEachRowWithNamesAndTypes` 形式を使用してデータを読み込みます。
 
@@ -82,7 +81,6 @@ FORMAT JSONCompactStringsEachRowWithNamesAndTypes
 ["2022-05-07", "2021", "Stevenage Borough", "Salford City", "4", "2"]
 ["2022-05-07", "2021", "Walsall", "Swindon Town", "0", "3"]
 ```
-
 
 ## フォーマット設定 {#format-settings}
 

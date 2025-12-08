@@ -9,7 +9,7 @@ title: 'CSV'
 doc_type: 'reference'
 ---
 
-## 描述
+## 描述 {#description}
 
 逗号分隔值格式（[RFC](https://tools.ietf.org/html/rfc4180)）。
 在格式化时，每行都用双引号括起来。字符串内部的双引号会输出为连续的两个双引号。
@@ -45,7 +45,6 @@ $ clickhouse-client --format_csv_delimiter="|" --query="INSERT INTO test.csv FOR
 首先，我们会尝试将输入值与 ENUM 名称匹配。
 如果失败并且输入值是数字，则会尝试将该数字与 ENUM ID 匹配。
 如果输入数据只包含 ENUM ID，建议启用设置 [input&#95;format&#95;csv&#95;enum&#95;as&#95;number](/operations/settings/settings-formats.md/#input_format_csv_enum_as_number) 以优化 `ENUM` 解析。
-
 
 ## 示例用法 {#example-usage}
 

@@ -10,8 +10,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-
-# Обзор Java-клиентов
+# Обзор Java-клиентов {#java-clients-overview}
 
 - [Клиент 0.8+](./client/client.mdx)
 - [JDBC 0.8+](./jdbc/jdbc.mdx)
@@ -122,7 +121,7 @@ JDBC-драйвер наследует те же возможности, что 
 - Мы рекомендуем регулярно обновлять клиент, чтобы не пропускать исправления уязвимостей и новые улучшения.
 - Если у вас возникла проблема с миграцией на API v2 — [создайте issue](https://github.com/ClickHouse/clickhouse-java/issues/new?assignees=&labels=v2-feedback&projects=&template=v2-feedback.md&title=), и мы вам ответим!
 
-### Логирование
+### Логирование {#logging}
 
 Наш Java‑клиент использует [SLF4J](https://www.slf4j.org/) для логирования. Вы можете использовать любой совместимый с SLF4J фреймворк для логирования, например `Logback` или `Log4j`.
 Если вы используете Maven, добавьте следующую зависимость в файл `pom.xml`:
@@ -152,8 +151,7 @@ JDBC-драйвер наследует те же возможности, что 
 </dependencies>
 ```
 
-
-#### Настройка логирования
+#### Настройка логирования {#configuring-logging}
 
 Настройка будет зависеть от того, какой фреймворк для логирования вы используете. Например, если вы используете `Logback`, вы можете настроить логирование в файле `logback.xml`:
 

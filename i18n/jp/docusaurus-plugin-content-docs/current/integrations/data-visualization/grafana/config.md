@@ -9,7 +9,7 @@ keywords: ['Grafana プラグイン設定', 'データソース設定', '接続�
 ---
 
 import Image from '@theme/IdealImage';
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.md';
+import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';
 import config_common from '@site/static/images/integrations/data-visualization/grafana/config_common.png';
 import config_http from '@site/static/images/integrations/data-visualization/grafana/config_http.png';
 import config_additional from '@site/static/images/integrations/data-visualization/grafana/config_additional.png';
@@ -19,8 +19,7 @@ import alias_table_config_example from '@site/static/images/integrations/data-vi
 import alias_table_select_example from '@site/static/images/integrations/data-visualization/grafana/alias_table_select_example.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# Grafana での ClickHouse データソースの設定
+# Grafana での ClickHouse データソースの設定 {#configuring-clickhouse-data-source-in-grafana}
 
 <ClickHouseSupportedBadge/>
 
@@ -30,7 +29,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 すべてのオプションを手早く把握したい場合は、設定オプションの完全な一覧を[こちら](#all-yaml-options)で確認できます。
 
-## 共通設定
+## 共通設定 {#common-settings}
 
 設定画面の例:
 
@@ -62,14 +61,13 @@ secureJsonData:
 
 UI から構成を保存すると、`version` プロパティが追加されることに注意してください。これは、その構成を保存したプラグインのバージョンを示します。
 
-
 ### HTTP プロトコル {#http-protocol}
 
 HTTP プロトコル経由で接続する場合、追加の設定項目が表示されます。
 
 <Image size="md" img={config_http} alt="追加の HTTP 設定オプション" border />
 
-#### HTTP パス
+#### HTTP パス {#http-path}
 
 HTTP サーバーが別の URL パスで公開されている場合は、ここに追加できます。
 
@@ -79,8 +77,7 @@ jsonData:
   path: additional/path/example
 ```
 
-
-#### カスタム HTTP ヘッダー
+#### カスタム HTTP ヘッダー {#custom-http-headers}
 
 サーバーに送信されるリクエストにカスタムヘッダーを追加できます。
 
@@ -106,8 +103,7 @@ secureJsonData:
   secureHttpHeaders.X-Example-Secure-Header: セキュアヘッダー値
 ```
 
-
-## 追加設定
+## 追加設定 {#additional-settings}
 
 これらの追加設定は必須ではありません。
 
@@ -125,7 +121,6 @@ jsonData:
   validateSql: false # trueに設定すると、SQLエディタでSQLを検証します。
 ```
 
-
 ### OpenTelemetry {#opentelemetry}
 
 OpenTelemetry (OTel) は、このプラグインに深く統合されています。
@@ -134,7 +129,7 @@ OpenTelemetry データは、[exporter plugin](https://github.com/open-telemetry
 
 また、強力なオブザーバビリティワークフローを実現する機能である [data links](./query-builder.md#data-links) を有効にするには、これらのデフォルトを構成することも必要です。
 
-### Logs
+### Logs {#logs}
 
 [ログ用クエリビルダー](./query-builder.md#logs)でのログクエリ作成を高速化するために、ログクエリ用のデフォルトのデータベース / テーブルおよびカラムを設定できます。これにより、実行可能なログクエリがあらかじめクエリビルダーに読み込まれ、Explore ページでの探索がオブザーバビリティの観点でより高速になります。
 
@@ -164,8 +159,7 @@ jsonData:
     messageColumn: <string> # ログのメッセージ/内容
 ```
 
-
-### トレース
+### トレース {#traces}
 
 [トレース用のクエリビルダー](./query-builder.md#traces)でのクエリ作成を高速化するために、トレースクエリ用のデフォルトのデータベース／テーブルおよびカラムを設定できます。これにより、クエリビルダーに実行可能なトレース検索クエリがあらかじめ読み込まれ、Explore ページ上でのオブザーバビリティ向けのブラウジングが高速化されます。
 
@@ -201,7 +195,6 @@ jsonData:
     serviceTagsColumn:   <string>    # サービスタグカラム。マップ型であることが想定されます。
 ```
 
-
 ### カラムエイリアス {#column-aliases}
 
 カラムエイリアスは、データを別名や別の型として扱ってクエリするための便利な方法です。
@@ -214,7 +207,7 @@ jsonData:
 - JSON を文字列として保存している
 - 選択するカラムに対して変換用の関数を適用することが多い
 
-#### テーブルで定義された ALIAS 列
+#### テーブルで定義された ALIAS 列 {#table-defined-alias-columns}
 
 ClickHouse には列エイリアス機能が組み込まれており、Grafana と追加の設定なしに連携して動作します。
 エイリアス列はテーブル定義内で直接定義できます。
@@ -232,8 +225,7 @@ CREATE TABLE alias_example (
 
 詳細については、[ALIAS](/sql-reference/statements/create/table#alias) カラム型のドキュメントを参照してください。
 
-
-#### カラムエイリアステーブル
+#### カラムエイリアステーブル {#column-alias-tables}
 
 デフォルトでは、Grafana は `DESC table` のレスポンスに基づいてカラム候補を提示します。
 場合によっては、Grafana から見えるカラムをまるごと別のものに置き換えたいことがあります。
@@ -277,8 +269,7 @@ INSERT INTO example_table_aliases (`alias`, `select`, `type`) VALUES
 
 これら 2 種類のエイリアスは、複雑な型変換や JSON フィールドの抽出を行うために利用できます。
 
-
-## すべての YAML オプション
+## すべての YAML オプション {#all-yaml-options}
 
 以下は、プラグインで利用可能なすべての YAML 設定オプションです。
 一部のフィールドには値の例があり、他のフィールドはフィールドの型のみを示しています。

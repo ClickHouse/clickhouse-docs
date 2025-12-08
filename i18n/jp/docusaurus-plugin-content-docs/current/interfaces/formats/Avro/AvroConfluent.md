@@ -15,7 +15,6 @@ import DataTypesMatching from './_snippets/data-types-matching.md'
 | -- | -- | ----- |
 | ✔  | ✗  |       |
 
-
 ## 説明 {#description}
 
 [Apache Avro](https://avro.apache.org/) は、効率的なデータ処理のためにバイナリエンコードを使用する行指向のシリアル化フォーマットです。`AvroConfluent` フォーマットは、[Confluent Schema Registry](https://docs.confluent.io/current/schema-registry/index.html)（またはその API 互換サービス）を用いてシリアル化された、単一オブジェクト形式の Avro でエンコードされた Kafka メッセージのデコードをサポートします。
@@ -40,7 +39,7 @@ import DataTypesMatching from './_snippets/data-types-matching.md'
 
 ## 例 {#examples}
 
-### スキーマレジストリの使用
+### スキーマレジストリの使用 {#using-a-schema-registry}
 
 [Kafka table engine](/engines/table-engines/integrations/kafka.md) を使用して Avro でエンコードされた Kafka トピックを読み取るには、`format_avro_schema_registry_url` 設定を使用してスキーマレジストリの URL を指定します。
 
@@ -61,8 +60,7 @@ format_avro_schema_registry_url = 'http://schema-registry-url';
 SELECT * FROM topic1_stream;
 ```
 
-
-#### Basic 認証の使用
+#### Basic 認証の使用 {#using-basic-authentication}
 
 スキーマレジストリが Basic 認証を必要とする場合（例：Confluent Cloud を使用している場合）、`format_avro_schema_registry_url` 設定に URL エンコード済みの認証情報を指定できます。
 
@@ -81,8 +79,7 @@ kafka_format = 'AvroConfluent',
 format_avro_schema_registry_url = 'https://<username>:<password>@schema-registry-url';
 ```
 
-
-## トラブルシューティング
+## トラブルシューティング {#troubleshooting}
 
 インジェスト処理の進行状況を監視し、Kafka コンシューマーで発生するエラーをデバッグするには、[`system.kafka_consumers` システムテーブル](../../../operations/system-tables/kafka_consumers.md)に対してクエリを実行できます。デプロイメントに複数のレプリカがある場合（例：ClickHouse Cloud）、[`clusterAllReplicas`](../../../sql-reference/table-functions/cluster.md) テーブル関数を使用する必要があります。
 

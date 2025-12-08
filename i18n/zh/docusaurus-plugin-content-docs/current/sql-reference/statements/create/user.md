@@ -26,8 +26,7 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
 
 `ON CLUSTER` 子句可用于在整个集群中创建用户，参见 [Distributed DDL](../../../sql-reference/distributed-ddl.md)。
 
-
-## 身份验证
+## 身份验证 {#identification}
 
 可以通过多种方式对用户进行身份验证：
 
@@ -72,7 +71,6 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
 * 至少包含 1 个小写字母
 * 至少包含 1 个特殊字符
   :::
-
 
 ## 示例 {#examples}
 
@@ -162,13 +160,9 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
    CREATE USER user1 IDENTIFIED WITH plaintext_password by '1', bcrypt_password by '2', plaintext_password by '3''
    ```
 
-
-
 Notes:
 1. 较旧版本的 ClickHouse 可能不支持多种认证方法的语法。因此，如果 ClickHouse 服务器中已经存在此类用户并被降级到不支持该语法的版本，这些用户将变得不可用，且部分与用户相关的操作将无法正常工作。为了平滑降级，必须在降级之前将所有用户配置为仅包含单一认证方法。或者，如果服务器在未按正确流程操作的情况下已经被降级，则应删除这些有问题的用户。
 2. 出于安全原因，`no_password` 不能与其他认证方法共存。因此，只有在 `no_password` 是查询中唯一的认证方法时，才能指定 `no_password`。 
-
-
 
 ## 用户主机 {#user-host}
 
@@ -191,8 +185,6 @@ Notes:
 ClickHouse 会将 `user_name@'address'` 视为一个完整的用户名。因此，从技术上讲，可以创建多个具有相同 `user_name`、但在 `@` 后部分不同的用户。不过，不建议这样做。
 :::
 
-
-
 ## VALID UNTIL 子句 {#valid-until-clause}
 
 用于为某个认证方法指定过期日期，以及可选的过期时间。它接受一个字符串作为参数。建议使用 `YYYY-MM-DD [hh:mm:ss] [timezone]` 格式表示日期时间。默认情况下，该参数为 `'infinity'`。
@@ -206,8 +198,6 @@ ClickHouse 会将 `user_name@'address'` 视为一个完整的用户名。因此�
 - ```CREATE USER name1 VALID UNTIL '2025-01-01 12:00:00 `Asia/Tokyo`'```
 - `CREATE USER name1 IDENTIFIED WITH plaintext_password BY 'no_expiration', bcrypt_password BY 'expiration_set' VALID UNTIL '2025-01-01''`
 
-
-
 ## GRANTEES 子句 {#grantees-clause}
 
 指定允许从该用户处接收[权限](../../../sql-reference/statements/grant.md#privileges)的用户或角色，前提是该用户本身也已经通过 [GRANT OPTION](../../../sql-reference/statements/grant.md#granting-privilege-syntax) 获得了所有所需的访问权限。`GRANTEES` 子句的选项：
@@ -219,9 +209,7 @@ ClickHouse 会将 `user_name@'address'` 视为一个完整的用户名。因此�
 
 你可以使用 `EXCEPT` 表达式排除任意用户或角色。例如，`CREATE USER user1 GRANTEES ANY EXCEPT user2`。这意味着如果 `user1` 拥有通过 `GRANT OPTION` 授予的某些权限，它就可以将这些权限授予除 `user2` 之外的任何人。
 
-
-
-## 示例
+## 示例 {#examples-1}
 
 创建一个名为 `mira`、受密码 `qwerty` 保护的用户账号：
 

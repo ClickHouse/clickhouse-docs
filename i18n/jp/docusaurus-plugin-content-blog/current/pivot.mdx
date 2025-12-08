@@ -10,7 +10,6 @@ keywords: ['PIVOT', 'Aggregate Function Combinators']
 
 {/* 省略 */}
 
-
 ## はじめに \{#introduction\}
 
 ClickHouse にはピボット演算子はありませんが、[集約関数コンビネータ](/sql-reference/aggregate-functions/combinators)、特に [`-Map` 接尾辞](/sql-reference/aggregate-functions/combinators#-map) を持つものを使うことで、同様の処理を行えます。
@@ -18,9 +17,9 @@ ClickHouse にはピボット演算子はありませんが、[集約関数コ�
 この記事では、その方法について説明します。
 同じ内容を扱った動画もあり、以下から視聴できます:
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/nlRMOmwYtF4?si=0TZSNg-uo7zjiO52" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/nlRMOmwYtF4?si=0TZSNg-uo7zjiO52" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
-## 集約関数コンビネータを理解する
+## 集約関数コンビネータを理解する \{#understanding-aggregate-function-combinators\}
 
 簡単な例から始めましょう。ここでは [clickhouse-local](/operations/utilities/clickhouse-local) を使用します。次のコマンドを実行して起動します。
 
@@ -99,8 +98,7 @@ FROM values;
 
 ここまでで、これらの関数コンビネータがどのように機能するのか、イメージをつかんでいただけたのではないでしょうか。
 
-
-## 実際のユースケース: 英国住宅価格データセット
+## 実際のユースケース: 英国住宅価格データセット \{#real-world-application-uk-housing-prices-dataset\}
 
 次に、[ClickHouse SQL Playground](https://clickhouse.com/blog/announcing-the-new-sql-playground) 上の、より大規模なデータセットに対してこれらを使ってみます。
 
@@ -141,8 +139,7 @@ SELECT * FROM uk.uk_price_paid LIMIT 1 FORMAT Vertical;
 
 上で見たように、このテーブルにはイギリスの不動産売買に関連するさまざまなフィールドが含まれています。
 
-
-### 10年ごとのグルーピングと集約
+### 10年ごとのグルーピングと集約 \{#grouping-and-aggregating-by-decade\}
 
 このデータセットで、各10年ごとに郡ごとにグループ化した中央値価格を算出してみましょう。
 
@@ -172,8 +169,7 @@ LIMIT 10;
     └────────────────────┴────────────────────────────────────────────────────┘
 ```
 
-
-### 結果のフィルタリング
+### 結果のフィルタリング \{#filtering-results\}
 
 結果を2010年以降のデータのみに絞り込むことができます。
 
@@ -204,8 +200,7 @@ LIMIT 10;
     └────────────────────┴─────────────────────────────┘
 ```
 
-
-## 複数の集約を組み合わせる
+## 複数の集約を組み合わせる \{#combining-multiple-aggregations\}
 
 また、10 年ごとの最大価格を求めたい場合は、先ほど見た `maxMap` 関数を使って求めることができます。
 
@@ -237,8 +232,7 @@ LIMIT 10;
     └────────────────────┴───────────────────────────┴─────────────────────────────────┘
 ```
 
-
-## マップ値への関数適用
+## マップ値への関数適用 \{#applying-functions-to-map-values\}
 
 別の方法として、`avgMap` を使用して平均価格を計算できます。
 これらの値には小数点以下の桁数が多いため、[`mapApply`](/sql-reference/functions/tuple-map-functions#mapapply) 関数を使ってマップ内の各値に [`floor`](/sql-reference/functions/rounding-functions#floor) 関数を適用し、小数部を切り捨てて値を整形できます。
@@ -271,8 +265,7 @@ LIMIT 10;
     └────────────────────┴───────────────────────────┴───────────────────────────┘
 ```
 
-
-## 柔軟なグループ化：郡、地区、郵便番号
+## 柔軟なグループ化：郡、地区、郵便番号 \{#flexible-grouping-counties-districts-and-postcodes\}
 
 いくつか別のフィールドでグループ化してみましょう。
 今回は、郡と地区ごとに、10 年ごとの価格の中央値を計算します。

@@ -7,9 +7,7 @@ title: 'PostgreSQL'
 doc_type: 'guide'
 ---
 
-
-
-# PostgreSQL
+# PostgreSQL {#postgresql}
 
 リモート [PostgreSQL](https://www.postgresql.org) サーバー上のデータベースに接続できます。ClickHouse と PostgreSQL 間でデータをやり取りするために、読み取りおよび書き込み操作（`SELECT` および `INSERT` クエリ）をサポートします。
 
@@ -17,9 +15,7 @@ doc_type: 'guide'
 
 テーブル構造の変更（`ALTER TABLE ... ADD|DROP COLUMN`）をサポートします。`use_table_cache` パラメータ（後述の Engine パラメータを参照）が `1` に設定されている場合、テーブル構造はキャッシュされ、変更されているかどうかのチェックは行われませんが、`DETACH` および `ATTACH` クエリで更新できます。
 
-
-
-## データベースの作成
+## データベースの作成 {#creating-a-database}
 
 ```sql
 CREATE DATABASE test_database
@@ -34,7 +30,6 @@ ENGINE = PostgreSQL('host:port', 'database', 'user', 'password'[, `schema`, `use
 * `password` — ユーザーのパスワード。
 * `schema` — PostgreSQL スキーマ。
 * `use_table_cache` — データベースのテーブル構造をキャッシュするかどうかを指定します。オプション。既定値: `0`。
-
 
 ## データ型のサポート {#data_types-support}
 
@@ -54,9 +49,7 @@ ENGINE = PostgreSQL('host:port', 'database', 'user', 'password'[, `schema`, `use
 | INTEGER          | Nullable([Int32](../../sql-reference/data-types/int-uint.md))|
 | ARRAY            | [Array](../../sql-reference/data-types/array.md)             |
 
-
-
-## 利用例
+## 利用例 {#examples-of-use}
 
 ClickHouse 上のデータベースが PostgreSQL サーバーとデータを交換する例:
 
@@ -147,7 +140,6 @@ DESCRIBE TABLE test_database.test_table;
 │ data   │ Nullable(String)  │
 └────────┴───────────────────┘
 ```
-
 
 ## 関連コンテンツ {#related-content}
 

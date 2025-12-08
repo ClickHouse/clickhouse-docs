@@ -5,11 +5,7 @@ title: 'GROUPING'
 doc_type: 'リファレンス'
 ---
 
-
-
-# グループ化
-
-
+# グループ化 {#grouping}
 
 ## GROUPING {#grouping}
 
@@ -19,15 +15,13 @@ GROUPING 関数は複数のカラムを引数として取り、ビットマス�
 - `1` は、`GROUP BY` に対する `ROLLUP` または `CUBE` 修飾子によって返された行が小計であることを示します
 - `0` は、`GROUP BY` に対する `ROLLUP` または `CUBE` 修飾子によって返された行が小計ではないことを示します
 
-
-
-## GROUPING SETS
+## GROUPING SETS {#grouping-sets}
 
 デフォルトでは、`CUBE` 修飾子は、`CUBE` に渡された列のあらゆる組み合わせに対して小計を計算します。`GROUPING SETS` を使用すると、計算する組み合わせを明示的に指定できます。
 
 階層データの分析は、`ROLLUP`、`CUBE`、`GROUPING SETS` 修飾子の代表的なユースケースの 1 つです。ここでのサンプルは、2 つのデータセンターにインストールされている Linux ディストリビューションとそのバージョンに関するデータを含むテーブルです。ディストリビューション別、バージョン別、ロケーション別にデータを確認することが有用な場合があります。
 
-### サンプルデータの読み込み
+### サンプルデータの読み込み {#load-sample-data}
 
 ```sql
 CREATE TABLE servers ( datacenter VARCHAR(255),
@@ -76,7 +70,7 @@ FROM
 10行のセット。経過時間: 0.409秒。
 ```
 
-### 簡単なクエリ
+### 簡単なクエリ {#simple-queries}
 
 分布別に各データセンター内のサーバー数を取得します。
 
@@ -142,7 +136,6 @@ GROUP BY
 2行が設定されています。経過時間: 0.352秒。 
 ```
 
-
 ```sql
 SELECT
     SUM(quantity) qty
@@ -158,7 +151,7 @@ FROM
 1 行。経過時間: 0.244 秒 
 ```
 
-### 複数の GROUP BY と GROUPING SETS の比較
+### 複数の GROUP BY と GROUPING SETS の比較 {#comparing-multiple-group-by-statements-with-grouping-sets}
 
 CUBE、ROLLUP、GROUPING SETS を使わずにデータを集計する場合:
 
@@ -261,10 +254,9 @@ GROUP BY
 9 rows in set. Elapsed: 0.427 sec.
 ```
 
-### GROUPING SETS との比較
+### GROUPING SETS との比較 {#comparing-cube-with-grouping-sets}
 
 次のクエリにおける CUBE `CUBE(datacenter,distro,version)` は、意味のある階層にはなりません。Arch と RHEL ではリリースサイクルやバージョン命名規則が異なるため、2 つのディストリビューションをまたいでバージョンを見ることには意味がありません。この後に続く GROUPING SETS の例のほうが適切であり、`distro` と `version` を同じセット内でグループ化しています。
-
 
 ```sql
 SELECT
@@ -330,7 +322,6 @@ ORDER BY
 :::note
 上記の例におけるバージョンは、ディストリビューションと結び付いていない場合には、あまり意味をなさないかもしれません。カーネルバージョンを追跡しているのであれば、カーネルバージョンはどちらのディストリビューションにも結び付けられるため、意味を持つと言えるでしょう。次の例で示すように `GROUPING SETS` を使用する方が、より適切な選択肢となる場合があります。
 :::
-
 
 ```sql
 SELECT

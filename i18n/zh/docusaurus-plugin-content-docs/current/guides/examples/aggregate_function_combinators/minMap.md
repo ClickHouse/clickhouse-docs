@@ -7,20 +7,14 @@ sidebar_label: 'minMap'
 doc_type: 'reference'
 ---
 
-
-
 # minMap {#minmap}
-
-
 
 ## 描述 {#description}
 
 可以将 [`Map`](/sql-reference/aggregate-functions/combinators#-map) 组合器应用于 [`min`](/sql-reference/aggregate-functions/reference/min)
 函数，从而使用 `minMap` 聚合函数组合器按键计算 Map 中的最小值。
 
-
-
-## 使用示例
+## 使用示例 {#example-usage}
 
 在本示例中，我们将创建一张表，用于存储不同时段的状态码及其计数，
 其中每一行都包含一个将状态码映射到其对应计数的 Map。我们将使用
@@ -66,7 +60,6 @@ GROUP BY timeslot;
 2. │ 2000-01-01 00:00:00 │ {'a':15,'b':25,'c':35,'d':55,'e':65} │
    └─────────────────────┴──────────────────────────────────────┘
 ```
-
 
 ## 另请参阅 {#see-also}
 - [`min`](/sql-reference/aggregate-functions/reference/min)

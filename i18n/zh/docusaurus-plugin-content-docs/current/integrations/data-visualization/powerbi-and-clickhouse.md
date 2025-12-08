@@ -10,7 +10,7 @@ integration:
   - category: 'data_visualization'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import powerbi_odbc_install from '@site/static/images/integrations/data-visualization/powerbi_odbc_install.png';
 import powerbi_odbc_search from '@site/static/images/integrations/data-visualization/powerbi_odbc_search.png';
@@ -29,8 +29,7 @@ import powerbi_dsn_credentials from '@site/static/images/integrations/data-visua
 import powerbi_16 from '@site/static/images/integrations/data-visualization/powerbi_16.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# Power BI
+# Power BI {#power-bi}
 
 <ClickHouseSupportedBadge/>
 
@@ -50,8 +49,6 @@ Power BI 要求先在 Desktop 版本中创建仪表板，然后将其发布到 P
 * [从 ClickHouse 查询数据并在 Power BI Desktop 中进行可视化](#query-and-visualise-data)
 * [为 Power BI Service 设置本地数据网关](#power-bi-service)
 
-
-
 ## 先决条件 {#prerequisites}
 
 ### 安装 Power BI {#power-bi-installation}
@@ -68,8 +65,6 @@ Power BI 要求先在 Desktop 版本中创建仪表板，然后将其发布到 P
 * Username - 用户名（用户凭证）
 * Password - 该用户的密码
 * Database - 要连接的实例上的数据库名称
-
-
 
 ## Power BI 桌面版 {#power-bi-desktop}
 
@@ -158,15 +153,11 @@ Power BI 要求先在 Desktop 版本中创建仪表板，然后将其发布到 P
 导入完成后，你的 ClickHouse 数据将在 Power BI 中像平常一样可供访问和使用。
 <br/>
 
-
-
 ## Power BI 服务 {#power-bi-service}
 
 若要使用 Microsoft Power BI 服务，您需要创建一个[本地数据网关](https://learn.microsoft.com/en-us/power-bi/connect-data/service-gateway-onprem)。
 
 关于如何配置自定义连接器的更多信息，请参阅 Microsoft 关于[在本地数据网关中使用自定义数据连接器](https://learn.microsoft.com/en-us/power-bi/connect-data/service-gateway-custom-connectors)的文档。
-
-
 
 ## ODBC 驱动程序（仅导入） {#odbc-driver-import-only}
 
@@ -235,8 +226,6 @@ Power BI 要求先在 Desktop 版本中创建仪表板，然后将其发布到 P
 <br/>
 
 导入完成后，你的 ClickHouse 数据就可以像往常一样在 Power BI 中进行访问了。
-
-
 
 ## 已知限制 {#known-limitations}
 

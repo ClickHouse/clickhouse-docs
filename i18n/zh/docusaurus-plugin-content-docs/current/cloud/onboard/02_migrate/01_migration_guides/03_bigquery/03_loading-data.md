@@ -13,8 +13,6 @@ _本指南适用于 ClickHouse Cloud 以及自托管的 ClickHouse v23.5 及以�
 
 我们首先将表导出到 [Google 的对象存储 (GCS)](https://cloud.google.com/storage)，然后将这些数据导入 [ClickHouse Cloud](https://clickhouse.com/cloud)。对于每一张要从 BigQuery 导出到 ClickHouse 的表，都需要重复执行这些步骤。
 
-
-
 ## 将数据导出到 ClickHouse 需要多长时间? {#how-long-will-exporting-data-to-clickhouse-take}
 
 从 BigQuery 导出数据到 ClickHouse 所需的时间取决于数据集的大小。作为参考,使用本指南将 [4TB 公共以太坊数据集](https://cloud.google.com/blog/products/data-analytics/ethereum-bigquery-public-dataset-smart-contract-analytics) 从 BigQuery 导出到 ClickHouse 大约需要一小时。
@@ -29,8 +27,7 @@ _本指南适用于 ClickHouse Cloud 以及自托管的 ClickHouse v23.5 及以�
 
 <VerticalStepper headerLevel="h2">
 
-
-## 将表数据导出到 GCS
+## 将表数据导出到 GCS {#1-export-table-data-to-gcs}
 
 在此步骤中，我们使用 [BigQuery SQL workspace](https://cloud.google.com/bigquery/docs/bigquery-web-ui) 来执行 SQL 命令。下面的示例中，我们使用 [`EXPORT DATA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/other-statements) 语句，将名为 `mytable` 的 BigQuery 表导出到一个 GCS 存储桶中。
 
@@ -66,8 +63,7 @@ END WHILE;
 * 导出会自动生成多个文件，将每个文件限制在最多 1GB 的表数据。这对 ClickHouse 有利，因为这样可以并行导入。
 * Parquet 作为列式格式，是更好的交换格式，因为它天然具备压缩特性，并且对 BigQuery 导出和 ClickHouse 查询都更快。
 
-
-## 将数据从 GCS 导入 ClickHouse
+## 将数据从 GCS 导入 ClickHouse {#2-importing-data-into-clickhouse-from-gcs}
 
 导出完成后，我们即可将这些数据导入到 ClickHouse 表中。可以使用 [ClickHouse SQL console](/integrations/sql-clients/sql-console) 或 [`clickhouse-client`](/interfaces/cli) 来执行以下命令。
 
@@ -118,7 +114,6 @@ FROM s3Cluster(
 或者，您可以设置 `SET input_format_null_as_default=1`，此时任何缺失或 NULL 值都会被其对应列的默认值替换（前提是这些列已指定默认值）。
 :::
 
-
 ## 测试数据导出是否成功 {#3-testing-successful-data-export}
 
 要测试数据是否已正确插入,只需对新表执行 `SELECT` 查询:
@@ -130,7 +125,6 @@ SELECT * FROM mytable LIMIT 10;
 如需导出更多 BigQuery 表,只需对每个额外的表重复上述步骤即可。
 
 </VerticalStepper>
-
 
 ## 延伸阅读与支持 {#further-reading-and-support}
 

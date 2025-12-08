@@ -11,7 +11,6 @@ import Image from '@theme/IdealImage';
 import ip_filtering_after_provisioning from '@site/static/images/cloud/security/ip-filtering-after-provisioning.png';
 import ip_filter_add_single_ip from '@site/static/images/cloud/security/ip-filter-add-single-ip.png';
 
-
 ## IP フィルターの設定 {#setting-ip-filters}
 
 IP アクセスリストは、どの送信元アドレスからの接続を許可するかを指定することで、ClickHouse の各種サービスまたは API キーへのトラフィックを制限します。これらのリストは、サービスごとおよび API キーごとに設定できます。リストは、サービスや API キーの作成時だけでなく、作成後にも設定・変更できます。
@@ -20,15 +19,11 @@ IP アクセスリストは、どの送信元アドレスからの接続を許�
 ClickHouse Cloud サービスに対して IP アクセスリストを作成しなかった場合、そのサービスには一切のトラフィックが許可されません。ClickHouse サービスの IP アクセスリストを `Allow from anywhere` に設定していると、パブリック IP を探索するインターネットクローラーやスキャナーによって、アイドル状態からアクティブ状態へサービスが定期的に移行させられる可能性があり、その結果として、少額ではあるものの想定外のコストが発生することがあります。
 :::
 
-
-
 ## 準備 {#prepare}
 
 開始する前に、アクセスリストに追加すべき IP アドレスまたは IP アドレス範囲を整理しておいてください。リモートワーカー、オンコール時の待機場所、VPN なども考慮に入れてください。IP アクセスリストのユーザーインターフェイスは、単一のアドレスおよび CIDR 表記のいずれも受け付けます。
 
 Classless Inter-domain Routing (CIDR) 表記を使用すると、従来の Class A、B、C (8、16、24) のサブネットマスクサイズよりも小さい IP アドレス範囲を指定できます。[ARIN](https://account.arin.net/public/cidrCalculator) をはじめとする複数の組織が CIDR 計算機を提供しており、必要に応じて利用できます。CIDR 表記の詳細については、[Classless Inter-domain Routing (CIDR)](https://www.rfc-editor.org/rfc/rfc4632.html) RFC を参照してください。
-
-
 
 ## IP アクセスリストを作成または変更する {#create-or-modify-an-ip-access-list}
 
@@ -90,9 +85,7 @@ IP アクセスリストは、[PrivateLink](/cloud/security/connectivity/private
 
 行った変更を適用するには、**Save** をクリックする必要があります。
 
-
-
-## 検証
+## 検証 {#verification}
 
 フィルターを作成したら、その範囲内からサービスへ接続できることを確認し、許可された範囲外からの接続が拒否されることも確認してください。 簡単な `curl` コマンドを使用して検証できます：
 
@@ -117,7 +110,6 @@ curl https://<HOSTNAME>.clickhouse.cloud:8443
 ```response
 Ok.
 ```
-
 
 ## 制限事項 {#limitations}
 

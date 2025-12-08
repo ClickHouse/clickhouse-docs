@@ -8,13 +8,12 @@ title: 'Подключение ClickHouse к Hashboard'
 doc_type: 'guide'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.md';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';
 import hashboard_01 from '@site/static/images/integrations/data-visualization/hashboard_01.png';
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
-# Подключение ClickHouse к Hashboard
+# Подключение ClickHouse к Hashboard {#connecting-clickhouse-to-hashboard}
 
 <CommunityMaintainedBadge/>
 
@@ -26,14 +25,10 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 В этом руководстве описаны шаги по подключению Hashboard к вашему экземпляру ClickHouse. Эта информация также доступна в документации Hashboard по интеграции с [ClickHouse](https://docs.hashboard.com/docs/database-connections/clickhouse).
 
-
-
 ## Предварительные требования {#pre-requisites}
 
 - База данных ClickHouse, развернутая в вашей собственной инфраструктуре или в [ClickHouse Cloud](https://clickhouse.com/).
 - [Учетная запись Hashboard](https://hashboard.com/getAccess) и проект.
-
-
 
 ## Шаги по подключению Hashboard к ClickHouse {#steps-to-connect-hashboard-to-clickhouse}
 
@@ -52,8 +47,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 7. Нажмите `Add`.
 
 Теперь ваша база данных ClickHouse будет подключена к Hashboard, и вы можете приступить к созданию [Data Models](https://docs.hashboard.com/docs/data-modeling/add-data-model), [Explorations](https://docs.hashboard.com/docs/visualizing-data/explorations), [Metrics](https://docs.hashboard.com/docs/metrics) и [Dashboards](https://docs.hashboard.com/docs/dashboards). Подробную информацию об этих возможностях см. в соответствующей документации Hashboard.
-
-
 
 ## Узнать больше {#learn-more}
 

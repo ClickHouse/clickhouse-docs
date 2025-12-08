@@ -26,18 +26,13 @@ import cp_custom_role from '@site/static/images/integrations/data-ingestion/clic
 import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
 import Image from '@theme/IdealImage';
 
-
-# 与 ClickHouse Cloud 集成
-
-
+# 与 ClickHouse Cloud 集成 {#integrating-with-clickhouse-cloud}
 
 ## 介绍 {#introduction}
 
 [ClickPipes](/integrations/clickpipes) 是一款托管集成平台，使得从各类数据源摄取数据就像点击几下按钮一样简单。ClickPipes 专为最苛刻的工作负载而设计，其健壮且可扩展的架构确保了稳定一致的性能和可靠性。ClickPipes 既可用于长期的流式数据摄取需求，也可用于一次性的数据加载任务。
 
 <Image img={clickpipes_stack} alt="ClickPipes stack" size="lg" border/>
-
-
 
 ## 支持的数据源 {#supported-data-sources}
 
@@ -59,8 +54,6 @@ import Image from '@theme/IdealImage';
 | [MongoDB](/integrations/clickpipes/mongodb)        | <Mongodbsvg class="image" alt="MongoDB 徽标" style={{width: '3rem', height: '3rem'}}/>           |DBMS| 私有预览版 | 配置 ClickPipes，并开始将来自 MongoDB 的数据摄取到 ClickHouse Cloud。                              |
 
 后续还会为 ClickPipes 添加更多连接器，您可以通过[联系我们](https://clickhouse.com/company/contact?loc=clickpipes)了解更多信息。
-
-
 
 ## 静态 IP 列表 {#list-of-static-ips}
 
@@ -86,8 +79,6 @@ import Image from '@theme/IdealImage';
 | **ap-southeast-2** (自 2025 年 6 月 25 日起) | `3.106.48.103`, `52.62.168.142`, `13.55.113.162`, `3.24.61.148`, `54.206.77.184`, `54.79.253.17`                                                     |
 | **us-west-2** (自 2025 年 6 月 24 日起)      | `52.42.100.5`, `44.242.47.162`, `52.40.44.52`, `44.227.206.163`, `44.246.241.23`, `35.83.230.19`                                                     |
 
-
-
 ## 调整 ClickHouse 设置 {#adjusting-clickhouse-settings}
 ClickHouse Cloud 为大多数使用场景提供了合理的默认配置。不过，如果需要为 ClickPipes 的目标表调整某些 ClickHouse 设置，为 ClickPipes 创建一个专用角色是最灵活的解决方案。
 步骤：
@@ -95,8 +86,6 @@ ClickHouse Cloud 为大多数使用场景提供了合理的默认配置。不过
 2. 在创建 ClickPipes 时，在 `Details and Settings` 步骤中将该自定义角色分配给 ClickPipes 用户。
 
 <Image img={cp_custom_role} alt="分配自定义角色" size="lg" border/>
-
-
 
 ## 调整 ClickPipes 高级设置 {#clickpipes-advanced-settings}
 ClickPipes 提供了合理的默认值，可以满足大多数用例的需求。如果您的用例需要进一步微调，可以调整以下设置：
@@ -124,8 +113,6 @@ ClickPipes 提供了合理的默认值，可以满足大多数用例的需求。
 |------------------------------------|---------------|---------------------------------------------------------------------------------------|
 | `Streaming max insert wait time`   | 5s            | 配置在向 ClickHouse 集群插入数据前的最大等待时间。 |
 
-
-
 ## 错误报告 {#error-reporting}
 ClickPipes 会根据在摄取过程中遇到的错误类型，将错误存储在两个不同的表中。
 ### 记录错误 {#record-errors}
@@ -134,8 +121,6 @@ ClickPipes 会为目标表创建一个带有后缀 `<destination_table_name>_cli
 与 ClickPipe 运行相关的错误将存储在 `system.clickpipes_log` 表中。该表会存储与你的 ClickPipe 运行相关的所有其他错误（网络、连接等）。此表的 [TTL](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) 为 7 天。
 
 如果 ClickPipes 在 15 分钟后仍无法连接到数据源，或在 1 小时后仍无法连接到目标，则 ClickPipes 实例会停止运行，并在系统错误表中存储一条相应的消息（前提是 ClickHouse 实例可用）。
-
-
 
 ## 常见问题解答 {#faq}
 - **什么是 ClickPipes？**

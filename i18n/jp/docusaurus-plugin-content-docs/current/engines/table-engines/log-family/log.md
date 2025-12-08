@@ -9,8 +9,7 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
-# Log テーブルエンジン
+# Log テーブルエンジン {#log-table-engine}
 
 <CloudNotSupportedBadge/>
 
@@ -20,9 +19,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 同時データアクセスを可能にするために、読み取り操作は同時に実行できますが、書き込み操作は読み取りおよび他の書き込みをブロックします。
 `Log` エンジンはインデックスをサポートしません。また、テーブルへの書き込みが失敗した場合、そのテーブルは破損し、それ以降の読み取りはエラーを返します。`Log` エンジンは、一時データ、書き込み一度きりのテーブル、およびテストやデモ目的に適しています。
 
-
-
-## テーブルを作成する
+## テーブルを作成する {#table_engines-log-creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -34,7 +31,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ```
 
 [CREATE TABLE](/sql-reference/statements/create/table) クエリの詳細な説明を参照してください。
-
 
 ## データの書き込み {#table_engines-log-writing-the-data}
 
@@ -51,15 +47,11 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 2. 各列について、圧縮されたデータが対応する `<column>.bin` ファイルに追記されます。
 3. 新しく挿入されたデータのオフセットと行数を記録するために、対応するエントリが `__marks.mrk` ファイルに追加されます。
 
-
-
 ## データの読み取り {#table_engines-log-reading-the-data}
 
 マークファイルにより、ClickHouse はデータの読み取りを並列化できます。つまり、`SELECT` クエリが行を返す順序は保証されません。行を並べ替えるには、`ORDER BY` 句を使用します。
 
-
-
-## 使用例
+## 使用例 {#table_engines-log-example-of-use}
 
 テーブルの作成：
 

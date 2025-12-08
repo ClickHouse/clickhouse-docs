@@ -9,8 +9,7 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
-# ODBC 表引擎
+# ODBC 表引擎 {#odbc-table-engine}
 
 <CloudNotSupportedBadge/>
 
@@ -20,9 +19,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 该引擎支持 [Nullable](../../../sql-reference/data-types/nullable.md) 数据类型。
 
-
-
-## 创建表
+## 创建表 {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -50,8 +47,7 @@ ENGINE = ODBC(数据源, external_database, external_table)
 
 这些参数也可以通过[命名集合](operations/named-collections.md)传递。
 
-
-## 使用示例
+## 使用示例 {#usage-example}
 
 **通过 ODBC 从本地 MySQL 实例中检索数据**
 
@@ -139,7 +135,6 @@ SELECT * FROM odbc_t
 │      1 │           ᴺᵁᴸᴸ │
 └────────┴────────────────┘
 ```
-
 
 ## 另请参阅 {#see-also}
 

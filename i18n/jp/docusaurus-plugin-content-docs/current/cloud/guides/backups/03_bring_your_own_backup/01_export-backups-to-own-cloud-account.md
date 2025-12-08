@@ -20,28 +20,28 @@ ClickHouse Cloud では、お客様のクラウドサービスプロバイダ (C
 :::
 
 
-## 前提条件
+## 前提条件 {#requirements}
 
 ご利用の CSP ストレージバケットにバックアップをエクスポート／リストアするには、次の情報が必要です。
 
-### AWS
+### AWS {#aws}
 
 1. AWS S3 エンドポイント（形式）:
 
 ```text
-s3://<bucket_name>.s3.amazonaws.com/<directory>
+  s3://<bucket_name>.s3.amazonaws.com/<directory>
 ```
 
 例：
 
 ```text
-s3://testchbackups.s3.amazonaws.com/backups/
+  s3://testchbackups.s3.amazonaws.com/backups/
 ```
 
 Where:
 
 * `testchbackups` は、バックアップを書き出す先の S3 バケット名です。
-* `backups` は任意のサブディレクトリです。
+  * `backups` は任意のサブディレクトリです。
 
 2. AWS アクセスキーおよびシークレット。AWS のロールベース認証にも対応しており、AWS アクセスキーおよびシークレットの代わりに使用できます。
 
@@ -49,30 +49,29 @@ Where:
 ロールベース認証を使用するには、Secure S3 の[セットアップ](https://clickhouse.com/docs/cloud/security/secure-s3)に従ってください。さらに、[こちら](https://clickhouse.com/docs/cloud/security/secure-s3#option-2-manually-create-iam-role)で説明されている IAM ポリシーに `s3:PutObject` および `s3:DeleteObject` の権限を追加する必要があります。
 :::
 
-### Azure
+
+### Azure {#azure}
 
 1. Azure Storage の接続文字列。
 2. ストレージアカウント内の Azure コンテナー名。
 3. コンテナー内の Azure Blob 名。
 
-### Google Cloud Storage (GCS)
+### Google Cloud Storage (GCS) {#google-cloud-storage-gcs}
 
 1. GCS エンドポイント（形式）：
 
-   ```text
-   https://storage.googleapis.com/<bucket_name>/
-   ```
+    ```text
+    https://storage.googleapis.com/<bucket_name>/
+    ```
 2. アクセス用 HMAC キーおよび HMAC シークレット。
 
-
 <hr/>
-# バックアップ / 復元
 
+# バックアップ / 復元 {#backup-restore}
 
+## AWS S3 バケットへのバックアップ / 復元 {#backup--restore-to-aws-s3-bucket}
 
-## AWS S3 バケットへのバックアップ / 復元
-
-### データベースのバックアップを作成する
+### データベースのバックアップを作成する {#take-a-db-backup}
 
 **フルバックアップ**
 
@@ -85,7 +84,7 @@ TO S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key
 
 :::note
 このサブディレクトリ内の新しいバックアップごとに異なる UUID を使用する必要があります。そうしないと、`BACKUP_ALREADY_EXISTS` エラーが発生します。
-例えば、日次バックアップを実行している場合は、毎日新しい UUID を使用する必要があります。\
+例えば、日次バックアップを実行している場合は、毎日新しい UUID を使用する必要があります。
 :::
 
 **増分バックアップ**
@@ -96,7 +95,8 @@ TO S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key
 SETTINGS base_backup = S3('https://testchbackups.s3.amazonaws.com/backups/<base-backup-uuid>', '<key id>', '<key secret>')
 ```
 
-### バックアップから復元する
+
+### バックアップから復元する {#restore-from-a-backup}
 
 ```sql
 RESTORE DATABASE test_backups 
@@ -104,12 +104,12 @@ AS test_backups_restored
 FROM S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key secret>')
 ```
 
-詳細については、[S3 エンドポイントを使用するように BACKUP/RESTORE を設定する](/operations/backup#configuring-backuprestore-to-use-an-s3-endpoint) を参照してください。
+詳細については、[S3 エンドポイントを使用するように BACKUP/RESTORE を設定する](/operations/backup/s3_endpoint) を参照してください。
 
 
-## Azure Blob Storage へのバックアップ / リストア
+## Azure Blob Storage へのバックアップ / リストア {#backup--restore-to-azure-blob-storage}
 
-### DB のバックアップを取得する
+### DB のバックアップを取得する {#take-a-db-backup-1}
 
 **フルバックアップ**
 
@@ -128,7 +128,8 @@ TO AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container
 SETTINGS base_backup = AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container>', '<blob>/<uuid>')
 ```
 
-### バックアップから復元する
+
+### バックアップから復元する {#restore-from-a-backup-1}
 
 ```sql
 RESTORE DATABASE test_backups 
@@ -136,12 +137,12 @@ AS test_backups_restored_azure
 FROM AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container>', '<blob>/<uuid>')
 ```
 
-詳細については、[S3 エンドポイントを使用するように BACKUP/RESTORE を構成する](/operations/backup#configuring-backuprestore-to-use-an-azureblobstorage-endpoint) を参照してください。
+詳細については、[AzureBlobStorage エンドポイントを使用するように BACKUP/RESTORE を構成する](/operations/backup/azure#configuring-backuprestore-to-use-an-azureblobstorage-endpoint) を参照してください。
 
 
-## Google Cloud Storage (GCS) へのバックアップ / 復元
+## Google Cloud Storage (GCS) へのバックアップ / 復元 {#backup--restore-to-google-cloud-storage-gcs}
 
-### DB バックアップの取得
+### DB バックアップの取得 {#take-a-db-backup-2}
 
 **フルバックアップ**
 
@@ -160,7 +161,8 @@ TO S3('https://storage.googleapis.com/test_gcs_backups/<uuid>/my_incremental', '
 SETTINGS base_backup = S3('https://storage.googleapis.com/test_gcs_backups/<uuid>', 'key', 'secret')
 ```
 
-### バックアップから復元する
+
+### バックアップから復元する {#restore-from-a-backup-2}
 
 ```sql
 RESTORE DATABASE test_backups 

@@ -7,12 +7,11 @@ title: 'OSS 使用建议'
 doc_type: 'guide'
 ---
 
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_automated.md';
+import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 
 <SelfManaged />
 
-
-## CPU 频率调节策略
+## CPU 频率调节策略 {#cpu-scaling-governor}
 
 应始终使用 `performance` 频率调节策略。`on-demand` 频率调节策略在持续高负载场景下的效果要差得多。
 
@@ -20,13 +19,12 @@ import SelfManaged from '@site/docs/_snippets/_self_managed_only_automated.md';
 $ echo 'performance' | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
 ```
 
-
 ## CPU 限制 {#cpu-limitations}
 
 处理器可能会过热。使用 `dmesg` 查看 CPU 的频率是否因过热而被限制。
 该限制也可能由数据中心层面的外部策略设置。可以在负载下使用 `turbostat` 对其进行监控。
 
-## RAM
+## RAM {#ram}
 
 对于较小的数据量（压缩后最多约 200 GB），最好使用与数据量大致相当的内存。
 对于较大的数据量并且需要处理交互式（在线）查询时，应使用合理数量的 RAM（128 GB 或更多），以便热点数据子集能够装入页缓存中。
@@ -40,7 +38,6 @@ $ echo 0 | sudo tee /proc/sys/vm/overcommit_memory
 
 使用 `perf top` 观察内核在内存管理上的耗时。
 永久性 huge pages 也无需分配。
-
 
 ### 使用少于 16GB 内存时 {#using-less-than-16gb-of-ram}
 
@@ -70,7 +67,7 @@ $ echo 0 | sudo tee /proc/sys/vm/overcommit_memory
 优先选择数量较多且带本地硬盘的服务器，而不是数量较少但连接外置磁盘柜的服务器。
 但对于仅偶尔被查询的归档数据，使用磁盘柜也是可行的。
 
-## RAID
+## RAID {#raid}
 
 在使用 HDD 时，可以将其组合为 RAID-10、RAID-5、RAID-6 或 RAID-50。
 在 Linux 上，推荐使用软件 RAID（通过 `mdadm` 实现）。
@@ -100,7 +97,6 @@ $ echo 4096 | sudo tee /sys/block/md2/md/stripe_cache_size
 
 确保在操作系统中为 NVMe 和 SSD 磁盘启用了 [`fstrim`](https://en.wikipedia.org/wiki/Trim_\(computing\))（通常通过 cron 作业或 systemd 服务实现）。
 
-
 ## 文件系统 {#file-system}
 
 Ext4 是最可靠的选择。将挂载选项设置为 `noatime`。XFS 的表现也很好。
@@ -124,7 +120,7 @@ Ext4 是最可靠的选择。将挂载选项设置为 `noatime`。XFS 的表现�
 
 如果可能，请至少使用 10 Gb 的网络。1 Gb 也能用，但在为包含数十 TB 数据的副本进行补丁更新，或处理具有大量中间数据的分布式查询时，效果会差得多。
 
-## Huge Pages
+## Huge Pages {#huge-pages}
 
 如果你使用的是较旧的 Linux 内核，应禁用 Transparent Huge Pages（透明大页）。它会干扰内存分配器，从而导致明显的性能下降。
 在较新的 Linux 内核中，Transparent Huge Pages 可以正常使用。
@@ -141,8 +137,7 @@ $ GRUB_CMDLINE_LINUX_DEFAULT="transparent_hugepage=madvise ..."
 
 之后运行 `sudo update-grub` 命令，然后重启系统以使其生效。
 
-
-## 虚拟机管理程序配置
+## 虚拟机管理程序配置 {#hypervisor-configuration}
 
 如果您使用 OpenStack，请设置
 
@@ -163,8 +158,7 @@ cpu_mode=host-passthrough
 这对于 ClickHouse 能够通过 `cpuid` 指令获取正确信息非常重要。
 否则，如果在较旧的 CPU 型号上运行虚拟机管理程序，可能会触发 `Illegal instruction` 崩溃。
 
-
-## ClickHouse Keeper 和 ZooKeeper
+## ClickHouse Keeper 和 ZooKeeper {#zookeeper}
 
 推荐在 ClickHouse 集群中使用 ClickHouse Keeper 替代 ZooKeeper。请参阅 [ClickHouse Keeper](../guides/sre/keeper/index.md) 文档。
 
@@ -192,52 +186,52 @@ cpu_mode=host-passthrough
 zoo.cfg:
 
 ```bash
-# http://hadoop.apache.org/zookeeper/docs/current/zookeeperAdmin.html
+# http://hadoop.apache.org/zookeeper/docs/current/zookeeperAdmin.html {#httphadoopapacheorgzookeeperdocscurrentzookeeperadminhtml}
 
-# 每个 tick 的毫秒数
+# 每个 tick 的毫秒数 {#the-number-of-milliseconds-of-each-tick}
 tickTime=2000
-# 初始同步阶段可以占用的 tick 数量
-# 此值没有明确的依据
+# 初始同步阶段可以占用的 tick 数量 {#the-number-of-ticks-that-the-initial}
+# 此值没有明确的依据 {#synchronization-phase-can-take}
 initLimit=300
-# 发送请求和接收确认之间可以经过的 tick 数量
+# 发送请求和接收确认之间可以经过的 tick 数量 {#this-value-is-not-quite-motivated}
 syncLimit=10
 
 maxClientCnxns=2000
 
-# 这是客户端可以请求且服务器将接受的最大值。
-# 服务器上设置较高的 maxSessionTimeout 是可以的,以便允许客户端在需要时使用较高的会话超时。
-# 但默认情况下我们请求 30 秒的会话超时(您可以在 ClickHouse 配置中使用 session_timeout_ms 更改它)。
+# 这是客户端可以请求且服务器将接受的最大值。 {#the-number-of-ticks-that-can-pass-between}
+# 服务器上设置较高的 maxSessionTimeout 是可以的,以便允许客户端在需要时使用较高的会话超时。 {#sending-a-request-and-getting-an-acknowledgement}
+# 但默认情况下我们请求 30 秒的会话超时(您可以在 ClickHouse 配置中使用 session_timeout_ms 更改它)。 {#it-is-the-maximum-value-that-client-may-request-and-the-server-will-accept}
 maxSessionTimeout=60000000
-# 存储快照的目录。
+# 存储快照的目录。 {#it-is-ok-to-have-high-maxsessiontimeout-on-server-to-allow-clients-to-work-with-high-session-timeout-if-they-want}
 dataDir=/opt/zookeeper/{{ '{{' }} cluster['name'] {{ '}}' }}/data
-# 将 dataLogDir 放置在单独的物理磁盘上以获得更好的性能
+# 将 dataLogDir 放置在单独的物理磁盘上以获得更好的性能 {#but-we-request-session-timeout-of-30-seconds-by-default-you-can-change-it-with-session_timeout_ms-in-clickhouse-config}
 dataLogDir=/opt/zookeeper/{{ '{{' }} cluster['name'] {{ '}}' }}/logs
 
 autopurge.snapRetainCount=10
 autopurge.purgeInterval=1
 
 
-# 为避免磁盘寻址,ZooKeeper 在事务日志文件中以 preAllocSize 千字节的块分配空间。
-# 默认块大小为 64M。更改块大小的一个原因是在更频繁地创建快照时减小块大小。
-# (另请参阅 snapCount)。
+# 为避免磁盘寻址,ZooKeeper 在事务日志文件中以 preAllocSize 千字节的块分配空间。 {#the-directory-where-the-snapshot-is-stored}
+# 默认块大小为 64M。更改块大小的一个原因是在更频繁地创建快照时减小块大小。 {#place-the-datalogdir-to-a-separate-physical-disc-for-better-performance}
+# (另请参阅 snapCount)。 {#to-avoid-seeks-zookeeper-allocates-space-in-the-transaction-log-file-in}
 preAllocSize=131072
 
-# 客户端提交请求的速度可能快于 ZooKeeper 处理它们的速度,
-# 特别是在有大量客户端的情况下。为防止 ZooKeeper 因排队请求而耗尽内存,
-# ZooKeeper 将限制客户端,使系统中未完成的请求不超过 globalOutstandingLimit。
-# 默认限制为 1000。
-# globalOutstandingLimit=1000
+# 客户端提交请求的速度可能快于 ZooKeeper 处理它们的速度, {#blocks-of-preallocsize-kilobytes-the-default-block-size-is-64m-one-reason}
+# 特别是在有大量客户端的情况下。为防止 ZooKeeper 因排队请求而耗尽内存, {#for-changing-the-size-of-the-blocks-is-to-reduce-the-block-size-if-snapshots}
+# ZooKeeper 将限制客户端,使系统中未完成的请求不超过 globalOutstandingLimit。 {#are-taken-more-often-also-see-snapcount}
+# 默认限制为 1000。 {#clients-can-submit-requests-faster-than-zookeeper-can-process-them}
+# globalOutstandingLimit=1000 {#especially-if-there-are-a-lot-of-clients-to-prevent-zookeeper-from-running}
 
-# ZooKeeper 将事务记录到事务日志中。在将 snapCount 个事务写入日志文件后,
-# 将启动快照并启动新的事务日志文件。默认 snapCount 为 100000。
+# ZooKeeper 将事务记录到事务日志中。在将 snapCount 个事务写入日志文件后, {#out-of-memory-due-to-queued-requests-zookeeper-will-throttle-clients-so-that}
+# 将启动快照并启动新的事务日志文件。默认 snapCount 为 100000。 {#there-is-no-more-than-globaloutstandinglimit-outstanding-requests-in-the}
 snapCount=3000000
 
-# 如果定义了此选项,请求将被记录到名为 traceFile.year.month.day 的跟踪文件中。
+# 如果定义了此选项,请求将被记录到名为 traceFile.year.month.day 的跟踪文件中。 {#system-the-default-limit-is-1000}
 #traceFile=
 
-# Leader 接受客户端连接。默认值为 "yes"。Leader 机器协调更新。
-# 为了以略微牺牲读取吞吐量为代价获得更高的更新吞吐量,
-# 可以将 leader 配置为不接受客户端并专注于协调。
+# Leader 接受客户端连接。默认值为 "yes"。Leader 机器协调更新。 {#globaloutstandinglimit1000}
+# 为了以略微牺牲读取吞吐量为代价获得更高的更新吞吐量, {#zookeeper-logs-transactions-to-a-transaction-log-after-snapcount-transactions}
+# 可以将 leader 配置为不接受客户端并专注于协调。 {#are-written-to-a-log-file-a-snapshot-is-started-and-a-new-transaction-log-file}
 leaderServes=yes
 
 standaloneEnabled=false
@@ -245,7 +239,6 @@ dynamicConfigFile=/etc/zookeeper-{{ '{{' }} cluster['name'] {{ '}}' }}/conf/zoo.
 ```
 
 Java 版本：
-
 
 ```text
 openjdk 11.0.5-shenandoah 2019-10-15
@@ -255,14 +248,13 @@ OpenJDK 64-Bit Server VM (build 11.0.5-shenandoah+10-adhoc.heretic.src, mixed mo
 
 JVM 参数：
 
-
 ```bash
 NAME=zookeeper-{{ '{{' }} cluster['name'] {{ '}}' }}
 ZOOCFGDIR=/etc/$NAME/conf
 
-# TODO 此处代码较为冗余
-# 如何确定所需的 jar 文件?
-# log4j 似乎要求 log4j.properties 文件必须位于 classpath 中
+# TODO 此处代码较为冗余 {#is-started-the-default-snapcount-is-100000}
+# 如何确定所需的 jar 文件? {#if-this-option-is-defined-requests-will-be-will-logged-to-a-trace-file-named}
+# log4j 似乎要求 log4j.properties 文件必须位于 classpath 中 {#tracefileyearmonthday}
 CLASSPATH="$ZOOCFGDIR:/usr/build/classes:/usr/build/lib/*.jar:/usr/share/zookeeper-3.6.2/lib/audience-annotations-0.5.0.jar:/usr/share/zookeeper-3.6.2/lib/commons-cli-1.2.jar:/usr/share/zookeeper-3.6.2/lib/commons-lang-2.6.jar:/usr/share/zookeeper-3.6.2/lib/jackson-annotations-2.10.3.jar:/usr/share/zookeeper-3.6.2/lib/jackson-core-2.10.3.jar:/usr/share/zookeeper-3.6.2/lib/jackson-databind-2.10.3.jar:/usr/share/zookeeper-3.6.2/lib/javax.servlet-api-3.1.0.jar:/usr/share/zookeeper-3.6.2/lib/jetty-http-9.4.24.v20191120.jar:/usr/share/zookeeper-3.6.2/lib/jetty-io-9.4.24.v20191120.jar:/usr/share/zookeeper-3.6.2/lib/jetty-security-9.4.24.v20191120.jar:/usr/share/zookeeper-3.6.2/lib/jetty-server-9.4.24.v20191120.jar:/usr/share/zookeeper-3.6.2/lib/jetty-servlet-9.4.24.v20191120.jar:/usr/share/zookeeper-3.6.2/lib/jetty-util-9.4.24.v20191120.jar:/usr/share/zookeeper-3.6.2/lib/jline-2.14.6.jar:/usr/share/zookeeper-3.6.2/lib/json-simple-1.1.1.jar:/usr/share/zookeeper-3.6.2/lib/log4j-1.2.17.jar:/usr/share/zookeeper-3.6.2/lib/metrics-core-3.2.5.jar:/usr/share/zookeeper-3.6.2/lib/netty-buffer-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-codec-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-common-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-handler-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-resolver-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-transport-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-transport-native-epoll-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-transport-native-unix-common-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/simpleclient-0.6.0.jar:/usr/share/zookeeper-3.6.2/lib/simpleclient_common-0.6.0.jar:/usr/share/zookeeper-3.6.2/lib/simpleclient_hotspot-0.6.0.jar:/usr/share/zookeeper-3.6.2/lib/simpleclient_servlet-0.6.0.jar:/usr/share/zookeeper-3.6.2/lib/slf4j-api-1.7.25.jar:/usr/share/zookeeper-3.6.2/lib/slf4j-log4j12-1.7.25.jar:/usr/share/zookeeper-3.6.2/lib/snappy-java-1.1.7.jar:/usr/share/zookeeper-3.6.2/lib/zookeeper-3.6.2.jar:/usr/share/zookeeper-3.6.2/lib/zookeeper-jute-3.6.2.jar:/usr/share/zookeeper-3.6.2/lib/zookeeper-prometheus-metrics-3.6.2.jar:/usr/share/zookeeper-3.6.2/etc"
 
 ZOOCFG="$ZOOCFGDIR/zoo.cfg"
@@ -315,7 +307,6 @@ script
         -Dzookeeper.root.logger=${ZOO_LOG4J_PROP} $ZOOMAIN $ZOOCFG
 end script
 ```
-
 
 ## Antivirus software {#antivirus-software}
 

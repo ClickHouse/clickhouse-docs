@@ -11,7 +11,7 @@ integration:
   - category: 'data_ingestion'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import nifi01 from '@site/static/images/integrations/data-ingestion/etl-tools/nifi_01.png';
 import nifi02 from '@site/static/images/integrations/data-ingestion/etl-tools/nifi_02.png';
@@ -30,8 +30,7 @@ import nifi14 from '@site/static/images/integrations/data-ingestion/etl-tools/ni
 import nifi15 from '@site/static/images/integrations/data-ingestion/etl-tools/nifi_15.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
-# Apache NiFiをClickHouseに接続する
+# Apache NiFiをClickHouseに接続する {#connect-apache-nifi-to-clickhouse}
 
 <CommunityMaintainedBadge />
 
@@ -42,26 +41,19 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <VerticalStepper headerLevel="h2">
 
-
 ## 接続情報を収集する {#1-gather-your-connection-details}
 
 <ConnectionDetails />
 
-
-
 ## Apache NiFi のダウンロードと実行 {#2-download-and-run-apache-nifi}
 
 新規セットアップを行う場合は、https://nifi.apache.org/download.html からバイナリをダウンロードし、`./bin/nifi.sh start` を実行して起動します。
-
-
 
 ## ClickHouse JDBC ドライバーをダウンロードする {#3-download-the-clickhouse-jdbc-driver}
 
 1. GitHub の <a href="https://github.com/ClickHouse/clickhouse-java/releases" target="_blank">ClickHouse JDBC ドライバーのリリースページ</a> にアクセスし、最新の JDBC リリースバージョンを確認します
 2. 対象のリリースバージョンで「Show all xx assets」をクリックし、「shaded」または「all」というキーワードを含む JAR ファイルを探します（例: `clickhouse-jdbc-0.5.0-all.jar`）
 3. JAR ファイルを Apache NiFi からアクセス可能なフォルダに配置し、その絶対パスを控えておきます
-
-
 
 ## `DBCPConnectionPool` コントローラサービスを追加し、プロパティを設定する {#4-add-dbcpconnectionpool-controller-service-and-configure-its-properties}
 
@@ -107,8 +99,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
     <Image img={nifi08} size="lg" border alt="有効化された ClickHouse JDBC サービスが表示されている Controller Services 一覧" />
 
-
-
 ## `ExecuteSQL` プロセッサを使用してテーブルから読み取る {#5-read-from-a-table-using-the-executesql-processor}
 
 1. 適切なアップストリームおよびダウンストリームのプロセッサと共に、`ExecuteSQL` プロセッサを追加します
@@ -133,8 +123,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 5. 表示を「formatted」に切り替えて、出力された `FlowFile` の結果を表示します
 
     <Image img={nifi12} size="lg" border alt="整形ビューでクエリ結果を表示している FlowFile コンテンツビューア" />
-
-
 
 ## `MergeRecord`と`PutDatabaseRecord`プロセッサを使用してテーブルに書き込む {#6-write-to-a-table-using-mergerecord-and-putdatabaserecord-processor}
 

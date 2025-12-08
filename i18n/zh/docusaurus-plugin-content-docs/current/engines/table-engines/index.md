@@ -8,9 +8,7 @@ title: '表引擎'
 doc_type: 'reference'
 ---
 
-
-
-# 表引擎
+# 表引擎 {#table-engines}
 
 表引擎（表的类型）决定：
 
@@ -20,8 +18,6 @@ doc_type: 'reference'
 - 是否以及如何使用索引（如果存在）。
 - 是否可以进行多线程的请求执行。
 - 数据复制的相关参数。
-
-
 
 ## 引擎家族 {#engine-families}
 
@@ -80,8 +76,6 @@ doc_type: 'reference'
 
 该家族中的引擎：
 
-
-
 | 特殊表引擎                                               |
 |---------------------------------------------------------------|
 | [Distributed](/engines/table-engines/special/distributed)     |
@@ -100,8 +94,6 @@ doc_type: 'reference'
 | [GenerateRandom](/engines/table-engines/special/generate)     |
 | [KeeperMap](/engines/table-engines/special/keeper-map)        |
 | [FileLog](/engines/table-engines/special/filelog)             |
-
-
 
 ## 虚拟列 {#table_engines-virtual_columns}
 

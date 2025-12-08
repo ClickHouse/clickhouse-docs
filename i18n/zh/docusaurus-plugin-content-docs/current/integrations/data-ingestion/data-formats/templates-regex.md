@@ -8,15 +8,11 @@ doc_type: 'guide'
 keywords: ['数据格式', '模板', '正则表达式', '自定义格式', '解析']
 ---
 
-
-
-# 在 ClickHouse 中使用 Templates 和 Regex 导入与导出自定义文本数据
+# 在 ClickHouse 中使用 Templates 和 Regex 导入与导出自定义文本数据 {#importing-and-exporting-custom-text-data-using-templates-and-regex-in-clickhouse}
 
 我们经常需要处理自定义文本格式的数据，这些数据可能是非标准格式、无效的 JSON，或损坏的 CSV。在这些情况下，使用 CSV 或 JSON 等标准解析器并不总是可行。好在 ClickHouse 提供了功能强大的 Template 和 Regex 格式，可以很好地应对这些场景。
 
-
-
-## 基于模板导入
+## 基于模板导入 {#importing-based-on-a-template}
 
 假设我们要从以下[日志文件](assets/error.log)中导入数据：
 
@@ -88,7 +84,7 @@ GROUP BY request
 └──────────────────────────────────────────────────┴─────────┘
 ```
 
-### 跳过空白字符
+### 跳过空白字符 {#skipping-whitespaces}
 
 建议使用 [TemplateIgnoreSpaces](/interfaces/formats/TemplateIgnoreSpaces)，它可以忽略模板中分隔符之间的空白字符：
 
@@ -97,8 +93,7 @@ Template:               -->  "p1: ${p1:CSV}, p2: ${p2:CSV}"
 TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
 ```
 
-
-## 使用模板导出数据
+## 使用模板导出数据 {#exporting-data-using-templates}
 
 我们也可以使用模板将数据导出为任何文本格式。在这种情况下，我们需要创建两个文件：
 
@@ -142,7 +137,7 @@ FORMAT Template SETTINGS format_template_resultset = 'output.results',
 --- 已读取 1000 行，用时 0.001380604 秒 ---
 ```
 
-### 导出为 HTML 文件
+### 导出为 HTML 文件 {#exporting-to-html-files}
 
 基于模板的结果也可以使用 [`INTO OUTFILE`](/sql-reference/statements/select/into-outfile.md) 子句导出到文件。我们来基于给定的 [结果集](assets/html.results) 和 [行](assets/html.row) 格式生成 HTML 文件：
 
@@ -157,7 +152,7 @@ SETTINGS format_template_resultset = 'html.results',
          format_template_row = 'html.row'
 ```
 
-### 导出为 XML
+### 导出为 XML {#exporting-to-xml}
 
 模板格式可用于生成几乎所有可以想象的文本格式文件，包括 XML。只需准备相应的模板并执行导出即可。
 
@@ -202,8 +197,7 @@ FORMAT XML
 
 ```
 
-
-## 基于正则表达式导入数据
+## 基于正则表达式导入数据 {#importing-data-based-on-regular-expressions}
 
 [Regexp](/interfaces/formats/Regexp) 格式适用于需要以更复杂方式解析输入数据的场景。我们再次解析 [error.log](assets/error.log) 示例文件，不过这次要提取文件名和协议，并将它们保存到单独的列中。首先，为此准备一张新表：
 
@@ -250,7 +244,6 @@ SELECT * FROM error_log LIMIT 5
 ```sql
 SET format_regexp_skip_unmatched = 1;
 ```
-
 
 ## 其他格式 {#other-formats}
 

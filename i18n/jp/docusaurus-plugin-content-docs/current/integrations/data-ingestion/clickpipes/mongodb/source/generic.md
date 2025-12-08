@@ -7,9 +7,7 @@ doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'cdc', 'データインジェスト', 'リアルタイム同期']
 ---
 
-
-
-# 汎用的な MongoDB ソースセットアップガイド
+# 汎用的な MongoDB ソースセットアップガイド {#generic-mongodb-source-setup-guide}
 
 :::info
 
@@ -17,9 +15,7 @@ MongoDB Atlas を使用している場合は、[こちら](./atlas)の専用ガ�
 
 :::
 
-
-
-## oplog の保持を有効にする
+## oplog の保持を有効にする {#enable-oplog-retention}
 
 レプリケーションのためには、oplog を最低 24 時間保持する必要があります。初回スナップショットが完了する前に oplog が切り捨てられないようにするため、oplog の保持期間は 72 時間以上に設定することを推奨します。
 
@@ -40,8 +36,7 @@ db.adminCommand({
 
 `replSetResizeOplog` コマンドおよび oplog の保持に関する詳細は、[MongoDB ドキュメント](https://www.mongodb.com/docs/manual/reference/command/replSetResizeOplog/)を参照してください。
 
-
-## データベースユーザーを設定する
+## データベースユーザーを設定する {#configure-database-user}
 
 管理者ユーザーとして MongoDB インスタンスに接続し、MongoDB CDC ClickPipes 用のユーザーを作成するために次のコマンドを実行します：
 
@@ -58,7 +53,6 @@ db.getSiblingDB("admin").createUser({
 必ず `clickpipes_user` と `some_secure_password` を、ご希望のユーザー名とパスワードに置き換えてください。
 
 :::
-
 
 ## 次のステップ {#whats-next}
 

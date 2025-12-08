@@ -11,10 +11,10 @@ integration:
   - category: 'data_ingestion'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 
-# Интеграция Amazon MSK с ClickHouse
+# Интеграция Amazon MSK с ClickHouse {#integrating-amazon-msk-with-clickhouse}
 
 <div class='vimeo-container'>
   <iframe src="//www.youtube.com/embed/6lKI_WlQ3-s"
@@ -28,24 +28,22 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
   </iframe>
 </div>
 
-> Примечание: Политика, показанная в видео, является избыточно разрешительной и предназначена только для быстрого начала работы. См. ниже рекомендации по настройке IAM по принципу наименьших привилегий.
-
-
+> Примечание: политика доступа, показанная в видео, является слишком разрешительной и предназначена только для быстрого начала работы. См. ниже рекомендации по настройке IAM по принципу наименьших привилегий.
 
 ## Предварительные требования {#prerequisites}
+
 Мы предполагаем:
-* вы знакомы с [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md), Amazon MSK и MSK Connectors. Рекомендуем руководство Amazon MSK [Getting Started guide](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html) и [MSK Connect guide](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect.html).
-* брокер MSK доступен из публичной сети. См. раздел [Public Access](https://docs.aws.amazon.com/msk/latest/developerguide/public-access.html) в Developer Guide.
 
+* вы знакомы с [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md),
+* вы знакомы с Amazon MSK и коннекторами MSK. Рекомендуем руководства Amazon MSK: [Getting Started guide](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html) и [MSK Connect guide](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect.html).
 
+## Официальный коннектор Kafka от ClickHouse для Amazon MSK {#the-official-kafka-connector-from-clickhouse-with-amazon-msk}
 
-## Официальный коннектор Kafka от ClickHouse для Amazon MSK
-
-### Соберите сведения для подключения
+### Соберите сведения для подключения {#gather-your-connection-details}
 
 <ConnectionDetails />
 
-### Шаги
+### Шаги {#steps}
 
 1. Ознакомьтесь с [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md).
 2. [Создайте экземпляр MSK](https://docs.aws.amazon.com/msk/latest/developerguide/create-cluster.html).
@@ -74,7 +72,7 @@ schemas.enable=false
 ```
 
 
-## Рекомендуемые разрешения IAM (минимально необходимые привилегии)
+## Рекомендуемые разрешения IAM (минимально необходимые привилегии) {#iam-least-privilege}
 
 Используйте наименьший набор разрешений, необходимых для вашей конфигурации. Начните с базового набора ниже и добавляйте дополнительные службы только в том случае, если вы их используете.
 
@@ -145,7 +143,7 @@ schemas.enable=false
 См. также: [Рекомендации по работе с Kafka – IAM](../../clickpipes/kafka/04_best_practices.md#iam).
 
 
-## Настройка производительности
+## Настройка производительности {#performance-tuning}
 
 Один из способов повысить производительность — изменить размер пакета и количество записей, извлекаемых из Kafka, добавив следующее в конфигурацию **worker**:
 

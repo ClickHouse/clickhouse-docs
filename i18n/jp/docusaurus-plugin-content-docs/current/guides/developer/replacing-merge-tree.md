@@ -12,8 +12,7 @@ import Image from '@theme/IdealImage';
 トランザクションデータベースは更新および削除を伴うトランザクションワークロードに最適化されていますが、OLAP データベースはそのような操作に対する保証は相対的に弱くなります。その代わりに、分析クエリを大幅に高速化するために、バッチで挿入される不変データ向けに最適化されています。ClickHouse はミューテーションによる更新操作と、行を削除する軽量な手段の両方を提供しますが、前述のとおりカラム指向の構造であるため、これらの操作は慎重にスケジュールする必要があります。これらの操作は非同期で処理され、単一スレッドで実行され、（更新の場合）ディスク上のデータを書き換える必要があります。そのため、多数の細かな変更には使用すべきではありません。
 上記のような使用パターンを避けつつ更新および削除対象の行ストリームを処理するために、ClickHouse のテーブルエンジンである ReplacingMergeTree を使用できます。
 
-
-## 挿入行の自動アップサート
+## 挿入行の自動アップサート {#automatic-upserts-of-inserted-rows}
 
 [ReplacingMergeTree テーブルエンジン](/engines/table-engines/mergetree-family/replacingmergetree) を使用すると、ユーザーが同一行を複数回挿入し、そのうち 1 つを最新バージョンとして指定できるため、非効率な `ALTER` や `DELETE` 文を使用せずに行を更新できます。バックグラウンドプロセスによって、同じ行の古いバージョンが非同期に削除され、不変な挿入のみを用いて更新操作を効率的に模倣します。
 これは、テーブルエンジンが重複行を識別できることに依存しています。これは `ORDER BY` 句を使用して一意性を判定することで実現されます。すなわち、`ORDER BY` で指定された列について 2 行が同じ値を持つ場合、それらは重複と見なされます。テーブル定義時に指定される `version` 列により、2 行が重複と識別された際に、行の最新バージョンを保持できます。すなわち、バージョン値が最大の行が保持されます。
@@ -52,8 +51,7 @@ SYSTEM SYNC REPLICA テーブル
 
 > ヒント: 変更が発生しなくなった特定のパーティションに対して `OPTIMIZE FINAL CLEANUP` を実行することもできます。
 
-
-## プライマリキー／重複排除キーの選択
+## プライマリキー／重複排除キーの選択 {#choosing-a-primarydeduplication-key}
 
 前述のとおり、ReplacingMergeTree の場合には、追加で満たすべき重要な制約があります。それは、`ORDER BY` の列の値が、変更をまたいでも行を一意に識別できなければならない、というものです。Postgres のようなトランザクションデータベースから移行する場合、元の Postgres のプライマリキーを ClickHouse の `ORDER BY` 句に含める必要があります。
 
@@ -98,8 +96,7 @@ ORDER BY (PostTypeId, toDate(CreationDate), CreationDate, Id)
 
 `ORDER BY` キーとして `(PostTypeId, toDate(CreationDate), CreationDate, Id)` を使用します。各投稿に対して一意な `Id` 列によって、行の重複排除を行えるようにしています。要件に応じて、スキーマには `Version` 列と `Deleted` 列が追加されます。
 
-
-## ReplacingMergeTree でのクエリ実行
+## ReplacingMergeTree でのクエリ実行 {#querying-replacingmergetree}
 
 マージ時に、ReplacingMergeTree は `ORDER BY` 列の値を一意な識別子として使用して重複行を特定し、最新バージョンが削除を示している場合にはすべての重複を削除し、そうでなければ最も高いバージョンのみを保持します。ただし、これはあくまで最終的にのみ正しい状態に近づける仕組みであり、行が必ず重複排除されることは保証されないため、これに依存すべきではありません。更新行や削除行もクエリの対象となるため、クエリが誤った結果を返す可能性があります。
 
@@ -210,7 +207,6 @@ FROM posts_updateable
 
 ここで得られる結果は、実行されたマージ処理によって変動します。重複した行があるため、ここで表示されている合計値が異なっていることがわかります。テーブルに `FINAL` を適用すると、正しい結果が得られます。
 
-
 ```sql
 SELECT count()
 FROM posts_updateable
@@ -224,7 +220,6 @@ FINAL
 ピークメモリ使用量: 8.14 MiB。
 ```
 
-
 ## FINAL のパフォーマンス {#final-performance}
 
 `FINAL` 演算子は、クエリに対してわずかなパフォーマンス上のオーバーヘッドを伴います。
@@ -234,9 +229,7 @@ FINAL
 
 `WHERE` 条件でキー列を使用していない場合、`FINAL` 使用時には現時点で ClickHouse は `PREWHERE` 最適化を利用しません。この最適化は、フィルタ対象外の列に対して読み取る行数を削減することを目的としています。この `PREWHERE` をエミュレートし、その結果としてパフォーマンスの向上につながる可能性がある例は[こちら](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-1#final-performance)にあります。
 
-
-
-## ReplacingMergeTree でパーティションを活用する
+## ReplacingMergeTree でパーティションを活用する {#exploiting-partitions-with-replacingmergetree}
 
 ClickHouse におけるデータのマージ処理はパーティション単位で行われます。ReplacingMergeTree を使用する場合、**行に対してこのパーティションキーが変更されない** ことを保証できるのであれば、ベストプラクティスに従ってテーブルをパーティション分割することを推奨します。これにより、同じ行に対する更新が同じ ClickHouse パーティションに送信されるようになります。ここで説明するベストプラクティスに従う限り、Postgres と同じパーティションキーを再利用することもできます。
 
@@ -323,7 +316,6 @@ ORDER BY year ASC
 ```
 
 示したように、このケースではパーティショニングにより、重複排除処理をパーティション単位で並列に実行できるようになった結果、クエリ性能が大幅に向上しました。
-
 
 ## マージ動作に関する考慮事項 {#merge-behavior-considerations}
 

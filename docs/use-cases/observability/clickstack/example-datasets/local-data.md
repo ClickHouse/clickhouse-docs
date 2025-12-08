@@ -117,7 +117,7 @@ docker run -d --name clickstack \
   -v "$(pwd)/custom-local-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
   -v /var/log:/host/var/log:ro \
   -v /private/var/log:/host/private/var/log:ro \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
 :::note Root user
@@ -140,7 +140,7 @@ docker run -d \
   -v "$(pwd)/custom-local-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
   -v /var/log:/host/var/log:ro \
   -v /private/var/log:/host/private/var/log:ro \
-  docker.hyperdx.io/hyperdx/hyperdx-otel-collector
+  clickhouse/clickstack-otel-collector:latest
 ```
 
 The collector will immediately begin collecting local system logs and metrics.

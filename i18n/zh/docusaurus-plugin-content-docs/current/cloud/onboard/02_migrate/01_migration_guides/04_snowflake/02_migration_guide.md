@@ -11,8 +11,7 @@ doc_type: 'guide'
 import migrate_snowflake_clickhouse from '@site/static/images/migrations/migrate_snowflake_clickhouse.png';
 import Image from '@theme/IdealImage';
 
-
-# 从 Snowflake 迁移到 ClickHouse
+# 从 Snowflake 迁移到 ClickHouse {#migrate-from-snowflake-to-clickhouse}
 
 > 本指南介绍如何将数据从 Snowflake 迁移到 ClickHouse。
 
@@ -20,8 +19,7 @@ import Image from '@theme/IdealImage';
 
 <VerticalStepper headerLevel="h2">
 
-
-## 从 Snowflake 导出数据
+## 从 Snowflake 导出数据 {#1-exporting-data-from-snowflake}
 
 <Image img={migrate_snowflake_clickhouse} size="md" alt="Migrating from Snowflake to ClickHouse" />
 
@@ -58,8 +56,7 @@ COPY INTO @external_stage/mydataset from mydataset max_file_size=157286400 heade
 
 对于大约 5TB 的数据集（单个文件最大 150MB），在同一 AWS `us-east-1` 区域使用 2X-Large Snowflake 仓库时，将数据复制到 S3 存储桶大约需要 30 分钟。
 
-
-## 导入 ClickHouse
+## 导入 ClickHouse {#2-importing-to-clickhouse}
 
 将数据暂存到中间对象存储后，就可以使用 ClickHouse 的函数（例如 [s3 表函数](/sql-reference/table-functions/s3)）将数据插入到表中，如下所示。
 
@@ -104,7 +101,6 @@ input_format_parquet_case_insensitive_column_matching = 1 -- 源数据与目标�
 
 诸如 `some_file` 之类的嵌套结构在通过 Snowflake 复制导出时会被转换为 JSON 字符串。导入这些数据时，我们需要在向 ClickHouse 插入时使用如上所示的 [JSONExtract 函数](/sql-reference/functions/json-functions#JSONExtract)，将这些结构转换为 Tuple。
 :::
-
 
 ## 测试数据导出是否成功 {#3-testing-successful-data-export}
 

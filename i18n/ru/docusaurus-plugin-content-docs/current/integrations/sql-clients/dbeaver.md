@@ -21,8 +21,7 @@ import dbeaver_sql_editor from '@site/static/images/integrations/sql-clients/dbe
 import dbeaver_query_log_select from '@site/static/images/integrations/sql-clients/dbeaver-query-log-select.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# Подключение DBeaver к ClickHouse
+# Подключение DBeaver к ClickHouse {#connect-dbeaver-to-clickhouse}
 
 <ClickHouseSupportedBadge/>
 
@@ -31,8 +30,6 @@ DBeaver доступен в нескольких редакциях. В этом
 :::note
 Пожалуйста, используйте DBeaver версии 23.1.0 или новее для улучшенной поддержки столбцов `Nullable` в ClickHouse.
 :::
-
-
 
 ## 1. Соберите информацию о вашем ClickHouse {#1-gather-your-clickhouse-details}
 
@@ -43,13 +40,9 @@ DBeaver использует JDBC поверх HTTP(S) для подключен
 - имя пользователя
 - пароль
 
-
-
 ## 2. Скачайте DBeaver {#2-download-dbeaver}
 
 DBeaver можно скачать по адресу https://dbeaver.io/download/
-
-
 
 ## 3. Добавление базы данных {#3-add-a-database}
 
@@ -79,8 +72,6 @@ DBeaver можно скачать по адресу https://dbeaver.io/download/
 
 <Image img={dbeaver_test_connection} size="md" border alt="Протестировать подключение" />
 
-
-
 ## 4. Запрос к ClickHouse {#4-query-clickhouse}
 
 Откройте редактор SQL-запросов и выполните запрос.
@@ -92,8 +83,6 @@ DBeaver можно скачать по адресу https://dbeaver.io/download/
 - Пример запроса к `system.query_log`:
 
 <Image img={dbeaver_query_log_select} size="md" border alt="Пример запроса" />
-
-
 
 ## Дальнейшие шаги {#next-steps}
 

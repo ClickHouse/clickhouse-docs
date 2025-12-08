@@ -24,7 +24,6 @@ import TabItem from '@theme/TabItem';
   </tbody>
 </table>
 
-
 ## 安装 OpenTelemetry Lambda 层 {#installing-the-otel-lambda-layers}
 
 OpenTelemetry 项目提供了独立的 Lambda 层，用于：
@@ -129,7 +128,7 @@ OTEL_TRACES_SAMPLER=always_on
 
 </Tabs>
 
-### 安装 OpenTelemetry collector Lambda layer
+### 安装 OpenTelemetry collector Lambda layer {#installing-the-otel-collector-layer}
 
 collector Lambda layer 允许你将日志、指标和追踪从 Lambda 函数转发到 ClickStack，同时不会因为导出器延迟而影响响应时间。
 
@@ -155,7 +154,7 @@ collector Lambda layer 允许你将日志、指标和追踪从 Lambda 函数转�
 3. 将以下 `collector.yaml` 文件添加到你的项目中，用于配置 collector 将数据发送到 ClickStack：
 
 ```yaml
-# collector.yaml
+# collector.yaml {#collectoryaml}
 receivers:
   otlp:
     protocols:
@@ -197,7 +196,6 @@ service:
 OPENTELEMETRY_COLLECTOR_CONFIG_FILE=/var/task/collector.yaml
 ```
 
-
 ## 检查安装情况 {#checking-the-installation}
 
 在部署这些层之后，你现在应该可以在 HyperDX 中看到从 Lambda 函数自动收集到的 trace。`decouple` 和 `batching`
@@ -213,12 +211,12 @@ processor 可能会在遥测数据收集过程中引入一定延迟，因此 tra
 
 将 `OTEL_LOG_LEVEL` 环境变量设置为 `DEBUG`，以启用 OpenTelemetry SDK 的调试日志。这有助于确保自动埋点层已正确对应用程序进行埋点。
 
-### 启用 collector 调试日志
+### 启用 collector 调试日志 {#enabling-collector-debug-logs}
 
 若要排查 collector 问题，可以通过修改 collector 配置文件，添加 `logging` exporter，并将遥测日志级别设置为 `debug`，以启用来自 collector Lambda 层的更详细日志记录。
 
 ```yaml
-# collector.yaml
+# collector.yaml {#collectoryaml}
 receivers:
   otlp:
     protocols:

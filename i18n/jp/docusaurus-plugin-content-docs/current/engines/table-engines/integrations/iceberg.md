@@ -7,8 +7,6 @@ title: 'Iceberg テーブルエンジン'
 doc_type: 'reference'
 ---
 
-
-
 # Iceberg テーブルエンジン {#iceberg-table-engine}
 
 :::warning 
@@ -21,9 +19,7 @@ Iceberg Table Engine も利用可能ですが、いくつかの制限があり�
 
 このエンジンは、Amazon S3、Azure、HDFS 上およびローカルに保存された既存の Apache [Iceberg](https://iceberg.apache.org/) テーブルとの読み取り専用統合を提供します。
 
-
-
-## テーブルを作成
+## テーブルを作成 {#create-table}
 
 Iceberg テーブルはあらかじめストレージ上に存在している必要がある点に注意してください。このコマンドには、新しいテーブルを作成するための DDL パラメータを指定できません。
 
@@ -41,15 +37,14 @@ CREATE TABLE iceberg_table_local
     ENGINE = IcebergLocal(path_to_table, [,format] [,compression_method])
 ```
 
-
-## エンジン引数
+## エンジン引数 {#engine-arguments}
 
 引数の説明は、それぞれ `S3`、`AzureBlobStorage`、`HDFS` および `File` エンジンにおける引数の説明と同様です。
 `format` は Iceberg テーブル内のデータファイルの形式を表します。
 
 エンジンパラメータは [Named Collections](../../../operations/named-collections.md) を使用して指定できます。
 
-### 例
+### 例 {#example}
 
 ```sql
 CREATE TABLE iceberg_table ENGINE=IcebergS3('http://test.s3.amazonaws.com/clickhouse-bucket/test_table', 'test', 'test')
@@ -74,12 +69,9 @@ CREATE TABLE iceberg_table ENGINE=IcebergS3(iceberg_conf, filename = 'test_table
 
 ```
 
-
 ## エイリアス {#aliases}
 
 テーブルエンジン `Iceberg` は、現在は `IcebergS3` のエイリアスになっています。
-
-
 
 ## スキーマの進化 {#schema-evolution}
 現時点では、CH を用いることで、時間の経過とともにスキーマが変更された Iceberg テーブルを読み取ることができます。現在サポートしているのは、カラムの追加・削除が行われたり、その順序が変更されたテーブルの読み取りです。また、値が必須だったカラムを、NULL を許容するカラムに変更することもできます。加えて、単純型に対しては、以下の許可されている型変換をサポートしています:
@@ -91,21 +83,15 @@ CREATE TABLE iceberg_table ENGINE=IcebergS3(iceberg_conf, filename = 'test_table
 
 作成後にスキーマが変更されたテーブルを動的スキーマ推論で読み取るには、テーブル作成時に `allow_dynamic_metadata_for_data_lakes = true` を設定してください。
 
-
-
 ## パーティションプルーニング {#partition-pruning}
 
 ClickHouse は Iceberg テーブルに対する SELECT クエリの実行時にパーティションプルーニングをサポートしており、関係のないデータファイルをスキップすることでクエリパフォーマンスを最適化できます。パーティションプルーニングを有効にするには、`use_iceberg_partition_pruning = 1` を設定します。Iceberg におけるパーティションプルーニングの詳細については https://iceberg.apache.org/spec/#partitioning を参照してください。
-
-
 
 ## タイムトラベル {#time-travel}
 
 ClickHouse は Iceberg テーブルに対するタイムトラベルをサポートしており、特定のタイムスタンプまたはスナップショット ID を指定して過去のデータをクエリできます。
 
-
-
-## 削除行を含むテーブルの処理
+## 削除行を含むテーブルの処理 {#deleted-rows}
 
 現在サポートされているのは、[position deletes](https://iceberg.apache.org/spec/#position-delete-files) を使用する Iceberg テーブルのみです。
 
@@ -114,7 +100,7 @@ ClickHouse は Iceberg テーブルに対するタイムトラベルをサポー
 * [Equality deletes](https://iceberg.apache.org/spec/#equality-delete-files)
 * [Deletion vectors](https://iceberg.apache.org/spec/#deletion-vectors)（v3 で導入）
 
-### 基本的な使用方法
+### 基本的な使用方法 {#basic-usage}
 
 ```sql
 SELECT * FROM example_table ORDER BY 1 
@@ -128,7 +114,7 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 
 注意: 同じクエリ内で `iceberg_timestamp_ms` パラメータと `iceberg_snapshot_id` パラメータを同時に指定することはできません。
 
-### 重要な考慮事項
+### 重要な考慮事項 {#important-considerations}
 
 * **スナップショット** は通常、次のタイミングで作成されます：
   * 新しいデータがテーブルに書き込まれたとき
@@ -136,11 +122,11 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 
 * **スキーマ変更によってスナップショットが作成されることは通常ない** — このため、スキーマ進化を行ったテーブルでタイムトラベルを使用する場合に特有の挙動が発生します。
 
-### シナリオ例
+### シナリオ例 {#example-scenarios}
 
 すべてのシナリオは Spark を用いて記述されています。これは、CH がまだ Iceberg テーブルへの書き込みをサポートしていないためです。
 
-#### シナリオ 1: 新しいスナップショットを伴わないスキーマ変更
+#### シナリオ 1: 新しいスナップショットを伴わないスキーマ変更 {#scenario-1}
 
 次の一連の操作を考えてみます:
 
@@ -200,7 +186,7 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 * ts1 と ts2 の時点: 元の 2 列のみが表示される
 * ts3 の時点: 3 列すべてが表示され、1 行目の price 列は NULL になる
 
-#### シナリオ 2: 履歴スキーマと現在のスキーマの差異
+#### シナリオ 2: 履歴スキーマと現在のスキーマの差異 {#scenario-2}
 
 現在時点を指定したタイムトラベルクエリでは、現在のテーブルとは異なるスキーマが表示される場合があります:
 
@@ -242,8 +228,7 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 
 これは、`ALTER TABLE` が新しいスナップショットを作成せず、現在のテーブルについては Spark がスナップショットではなく最新のメタデータファイルから `schema_id` の値を取得するために発生します。
 
-
-#### シナリオ 3: 過去と現在のスキーマの差異
+#### シナリオ 3: 過去と現在のスキーマの差異 {#scenario-3}
 
 2つ目の制約は、タイムトラベルを行っても、テーブルに最初のデータが書き込まれる前の状態は取得できないという点です。
 
@@ -264,12 +249,11 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 
 ClickHouse における挙動は Spark と同じです。概念的には Spark の SELECT クエリを ClickHouse の SELECT クエリに置き換えて考えれば、同じように動作します。
 
-
-## メタデータファイルの解決
+## メタデータファイルの解決 {#metadata-file-resolution}
 
 ClickHouse で `Iceberg` テーブルエンジンを使用する場合、システムは Iceberg テーブル構造を記述する適切な metadata.json ファイルを特定する必要があります。以下は、この解決プロセスの概要です。
 
-### 候補の検索
+### 候補の検索 {#candidate-search}
 
 1. **パスの直接指定**:
 
@@ -286,7 +270,7 @@ ClickHouse で `Iceberg` テーブルエンジンを使用する場合、シス�
 
 * 上記いずれの設定も指定されていない場合、`metadata` ディレクトリ内のすべての `.metadata.json` ファイルが候補になります
 
-### 最新のファイルの選択
+### 最新のファイルの選択 {#most-recent-file}
 
 上記のルールで候補ファイルを特定した後、システムはその中で最も新しいものを決定します:
 
@@ -307,18 +291,13 @@ CREATE TABLE example_table ENGINE = Iceberg(
 
 **注**: 通常は Iceberg Catalog がメタデータの解決を担当しますが、ClickHouse の `Iceberg` テーブルエンジンは S3 に保存されたファイルを Iceberg テーブルとして直接解釈します。そのため、これらの解決ルールを理解しておくことが重要です。
 
-
 ## データキャッシュ {#data-cache}
 
 `Iceberg` テーブルエンジンおよびテーブル関数は、`S3`、`AzureBlobStorage`、`HDFS` ストレージと同様にデータキャッシュをサポートします。詳細は[こちら](../../../engines/table-engines/integrations/s3.md#data-cache)を参照してください。
 
-
-
 ## メタデータキャッシュ {#metadata-cache}
 
 `Iceberg` テーブルエンジンおよびテーブル関数は、マニフェストファイル、マニフェストリスト、メタデータ JSON の情報を格納するメタデータキャッシュをサポートしています。キャッシュはメモリ内に保存されます。この機能は `use_iceberg_metadata_files_cache` 設定によって制御され、デフォルトで有効になっています。
-
-
 
 ## 関連項目 {#see-also}
 

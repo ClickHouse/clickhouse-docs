@@ -7,9 +7,7 @@ title: 'String'
 doc_type: 'reference'
 ---
 
-
-
-# String
+# String {#string}
 
 Строки произвольной длины. Длина не ограничена. Значение может содержать произвольный набор байт, включая байты нулевого значения.
 Тип String заменяет типы VARCHAR, BLOB, CLOB и другие типы из других СУБД.
@@ -19,8 +17,6 @@ doc_type: 'reference'
 Синонимы:
 
 - `String` — `LONGTEXT`, `MEDIUMTEXT`, `TINYTEXT`, `TEXT`, `LONGBLOB`, `MEDIUMBLOB`, `TINYBLOB`, `BLOB`, `VARCHAR`, `CHAR`, `CHAR LARGE OBJECT`, `CHAR VARYING`, `CHARACTER LARGE OBJECT`, `CHARACTER VARYING`, `NCHAR LARGE OBJECT`, `NCHAR VARYING`, `NATIONAL CHARACTER LARGE OBJECT`, `NATIONAL CHARACTER VARYING`, `NATIONAL CHAR VARYING`, `NATIONAL CHARACTER`, `NATIONAL CHAR`, `BINARY LARGE OBJECT`, `BINARY VARYING`,
-
-
 
 ## Кодировки {#encodings}
 

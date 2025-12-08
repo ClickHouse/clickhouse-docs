@@ -7,11 +7,7 @@ sidebar_label: 'countResample'
 doc_type: 'reference'
 ---
 
-
-
 # countResample {#countResample}
-
-
 
 ## 描述 {#description}
 
@@ -19,11 +15,9 @@ doc_type: 'reference'
 组合器应用到 [`count`](/sql-reference/aggregate-functions/reference/count)
 聚合函数上，以在固定数量（`N`）的区间内统计指定键列的值的数量。
 
+## 示例用法 {#example-usage}
 
-
-## 示例用法
-
-### 基本示例
+### 基本示例 {#basic-example}
 
 我们来看一个示例。我们将创建一个包含员工 `name`、`age` 和
 `wage` 字段的表，并向其中插入一些数据：
@@ -58,7 +52,6 @@ SELECT countResample(30, 75, 30)(name, age) AS amount FROM employee_data
 │ [3,2]  │
 └────────┘
 ```
-
 
 ## 另请参阅 {#see-also}
 - [`count`](/sql-reference/aggregate-functions/reference/count)

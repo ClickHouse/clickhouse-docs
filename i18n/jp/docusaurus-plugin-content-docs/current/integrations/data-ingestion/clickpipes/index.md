@@ -26,18 +26,13 @@ import cp_custom_role from '@site/static/images/integrations/data-ingestion/clic
 import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
 import Image from '@theme/IdealImage';
 
-
-# ClickHouse Cloud との連携
-
-
+# ClickHouse Cloud との連携 {#integrating-with-clickhouse-cloud}
 
 ## はじめに {#introduction}
 
 [ClickPipes](/integrations/clickpipes) は、さまざまなデータソースからのデータを、数回のクリック操作だけで取り込むことができるマネージド型の統合プラットフォームです。最も要求の厳しいワークロード向けに設計されており、ClickPipes の堅牢でスケーラブルなアーキテクチャは、一貫したパフォーマンスと高い信頼性を実現します。ClickPipes は、長期的なストリーミング用途や一度きりのデータ読み込みジョブのいずれにも利用できます。
 
 <Image img={clickpipes_stack} alt="ClickPipes スタック" size="lg" border/>
-
-
 
 ## サポートされているデータソース {#supported-data-sources}
 
@@ -59,8 +54,6 @@ import Image from '@theme/IdealImage';
 | [MongoDB](/integrations/clickpipes/mongodb)        | <Mongodbsvg class="image" alt="MongoDB ロゴ" style={{width: '3rem', height: '3rem'}}/>           |DBMS| プライベートプレビュー | ClickPipes を設定し、MongoDB から ClickHouse Cloud へのデータ取り込みを開始します。                   |
 
 ClickPipes には今後さらに多くのコネクタが追加される予定です。詳細については[こちらからお問い合わせ](https://clickhouse.com/company/contact?loc=clickpipes)ください。
-
-
 
 ## 静的 IP の一覧 {#list-of-static-ips}
 
@@ -86,8 +79,6 @@ ClickPipes には今後さらに多くのコネクタが追加される予定で
 | **ap-southeast-2** (from 25 Jun 2025) | `3.106.48.103`, `52.62.168.142`, `13.55.113.162`, `3.24.61.148`, `54.206.77.184`, `54.79.253.17`                                                     |
 | **us-west-2** (from 24 Jun 2025)      | `52.42.100.5`, `44.242.47.162`, `52.40.44.52`, `44.227.206.163`, `44.246.241.23`, `35.83.230.19`                                                     |
 
-
-
 ## ClickHouse の設定を調整する {#adjusting-clickhouse-settings}
 ClickHouse Cloud は、ほとんどのユースケースに対して妥当なデフォルト設定を提供します。しかし、ClickPipes の宛先テーブル向けに一部の ClickHouse 設定を調整する必要がある場合は、ClickPipes 専用のロールを作成する方法が最も柔軟です。
 手順：
@@ -95,8 +86,6 @@ ClickHouse Cloud は、ほとんどのユースケースに対して妥当なデ
 2. ClickPipes を作成する際の `Details and Settings` ステップで、そのカスタムロールを ClickPipes ユーザーに追加します。
 
 <Image img={cp_custom_role} alt="カスタムロールを割り当てる" size="lg" border/>
-
-
 
 ## ClickPipes の詳細設定を調整する {#clickpipes-advanced-settings}
 ClickPipes には、ほとんどのユースケースの要件を満たす妥当なデフォルト設定が用意されています。ユースケースによっては、さらに細かい調整が必要な場合、次の設定を変更できます。
@@ -124,8 +113,6 @@ ClickPipes には、ほとんどのユースケースの要件を満たす妥当
 |------------------------------------|---------------|---------------------------------------------------------------------------------------|
 | `Streaming max insert wait time`   | 5s            | データを ClickHouse クラスターに挿入するまでの最大待機時間を設定します。 |
 
-
-
 ## エラー報告 {#error-reporting}
 ClickPipes は、インジェスト処理中に発生したエラーの種類に応じて、エラーを 2 つの別々のテーブルに保存します。
 ### レコードエラー {#record-errors}
@@ -134,8 +121,6 @@ ClickPipes は、宛先テーブルと同じ場所に、`<destination_table_name
 ClickPipe の動作に関連するエラーは、`system.clickpipes_log` テーブルに保存されます。このテーブルには、ClickPipe の動作に関連するその他すべてのエラー（ネットワーク、接続性など）が保存されます。このテーブルには 7 日間の [TTL](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) が設定されています。
 
 ClickPipes がデータソースに 15 分間接続できない場合、または宛先に 1 時間接続できない場合、ClickPipes インスタンスは停止し、（ClickHouse インスタンスが利用可能である限り）適切なメッセージをシステムエラー用テーブルに保存します。
-
-
 
 ## FAQ {#faq}
 - **ClickPipes とは何ですか？**

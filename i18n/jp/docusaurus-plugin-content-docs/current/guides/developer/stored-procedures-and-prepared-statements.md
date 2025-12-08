@@ -11,8 +11,7 @@ doc_type: 'guide'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
-# ClickHouse におけるストアドプロシージャとクエリパラメータ
+# ClickHouse におけるストアドプロシージャとクエリパラメータ {#stored-procedures-and-query-parameters-in-clickhouse}
 
 従来のリレーショナルデータベースを使ってきた方は、ClickHouse にもストアドプロシージャやプリペアドステートメントがあるのか気になっているかもしれません。
 このガイドでは、これらの概念に対する ClickHouse の考え方を説明し、推奨される代替手段を紹介します。
@@ -35,7 +34,7 @@ ClickHouse は次の用途向けに最適化されています:
 
 ユーザー定義関数を使うと、制御フローを用いずに再利用可能なロジックをカプセル化できます。ClickHouse は 2 種類のユーザー定義関数をサポートしています。
 
-#### ラムダベースの UDF
+#### ラムダベースの UDF {#lambda-based-udfs}
 
 SQL 式とラムダ構文を使って関数を作成します。
 
@@ -110,8 +109,7 @@ SELECT format_phone('5551234567');
 
 完全な構文については [`CREATE FUNCTION`](/sql-reference/statements/create/function) を参照してください。
 
-
-#### 実行可能 UDF
+#### 実行可能 UDF {#executable-udfs}
 
 より複雑なロジックには、外部プログラムを呼び出す実行可能 UDF を使用します。
 
@@ -143,8 +141,7 @@ FROM customer_reviews;
 
 詳細については、[実行可能 UDF](/sql-reference/functions/udf) を参照してください。
 
-
-### パラメーター化ビュー
+### パラメーター化ビュー {#parameterized-views}
 
 パラメーター化ビューは、データセットを返す関数のように振る舞います。
 動的フィルタリングを行う再利用可能なクエリに最適です。
@@ -201,8 +198,7 @@ FROM sales_by_date(start_date='2024-01-01', end_date='2024-01-31')
 WHERE product_id = 12345;
 ```
 
-
-#### 一般的なユースケース
+#### 一般的なユースケース {#common-use-cases}
 
 * 動的な日付範囲によるフィルタリング
 * ユーザーごとのデータスライス
@@ -247,8 +243,7 @@ SELECT * FROM top_products_by_category(
 
 詳しくは、[Parameterized Views](/sql-reference/statements/create/view#parameterized-view) セクションを参照してください。
 
-
-### マテリアライズドビュー
+### マテリアライズドビュー {#materialized-views}
 
 マテリアライズドビューは、従来はストアドプロシージャで行っていたようなコストの高い集計処理を、事前に計算・集約しておくのに最適です。従来型のデータベースに慣れている場合、マテリアライズドビューは、ソーステーブルにデータが挿入されるタイミングで自動的にデータを変換・集計する **INSERT トリガー** と考えることができます。
 
@@ -301,8 +296,7 @@ WHERE date BETWEEN '2024-01-01' AND '2024-01-31'
 GROUP BY user_id;
 ```
 
-
-#### リフレッシュ可能なマテリアライズドビュー
+#### リフレッシュ可能なマテリアライズドビュー {#refreshable-materialized-views}
 
 スケジュールされたバッチ処理（夜間に実行されるストアドプロシージャなど）の場合：
 
@@ -327,7 +321,6 @@ WHERE month = toStartOfMonth(today());
 ```
 
 高度なパターンについては、[カスケード型マテリアライズドビュー](/guides/developer/cascading-materialized-views)を参照してください。
-
 
 ### 外部オーケストレーション {#external-orchestration}
 
@@ -604,7 +597,7 @@ ClickHouse には、RDBMS の意味での従来型の「プリペアドステー
 
 クエリパラメータを指定する方法は 2 通りあります。
 
-#### 方法 1：`SET` を使用する
+#### 方法 1：`SET` を使用する {#method-1-using-set}
 
 <details>
   <summary>テーブルとデータの例</summary>
@@ -656,8 +649,7 @@ WHERE user_id = {user_id: UInt64}
 GROUP BY event_name;
 ```
 
-
-#### 方法 2：CLI パラメーターを使用する
+#### 方法 2：CLI パラメーターを使用する {#method-2-using-cli-parameters}
 
 ```bash
 clickhouse-client \
@@ -668,7 +660,6 @@ clickhouse-client \
              WHERE user_id = {user_id: UInt64}
              AND event_date BETWEEN {start_date: Date} AND {end_date: Date}"
 ```
-
 
 ### パラメータ構文 {#parameter-syntax}
 
@@ -799,7 +790,7 @@ SELECT count() FROM {table: Identifier};
 
 [言語クライアント](/integrations/language-clients)でのクエリパラメータの使用方法については、利用したい特定の言語クライアントのドキュメントを参照してください。
 
-### クエリパラメータの制約事項
+### クエリパラメータの制約事項 {#parameter-syntax}
 
 クエリパラメータは**汎用的なテキスト置換ではありません**。次のような特有の制約があります。
 
@@ -839,8 +830,7 @@ ALTER TABLE {table: Identifier} ADD COLUMN new_col String;  -- サポート対�
 {statements: String};  -- サポート対象外
 ```
 
-
-### セキュリティのベストプラクティス
+### セキュリティのベストプラクティス {#data-type-examples}
 
 **ユーザーからの入力には必ずクエリパラメータを使用すること：**
 
@@ -876,8 +866,7 @@ def get_user_orders(user_id: int, start_date: str):
     )
 ```
 
-
-### MySQL プロトコルのプリペアドステートメント
+### MySQL プロトコルのプリペアドステートメント {#mysql-protocol-prepared-statements}
 
 ClickHouse の [MySQL インターフェイス](/interfaces/mysql) は、プリペアドステートメント（`COM_STMT_PREPARE`、`COM_STMT_EXECUTE`、`COM_STMT_CLOSE`）に対して最小限のサポートのみを提供します。これは主に、クエリをプリペアドステートメントでラップする Tableau Online のようなツールとの接続性を確保するためのものです。
 
@@ -907,7 +896,6 @@ SELECT * FROM users WHERE id = {user_id: UInt64};
 :::
 
 詳細については、[MySQL インターフェイスのドキュメント](/interfaces/mysql) と [MySQL サポートに関するブログ記事](https://clickhouse.com/blog/mysql-support-in-clickhouse-the-journey) を参照してください。
-
 
 ## 概要 {#summary}
 

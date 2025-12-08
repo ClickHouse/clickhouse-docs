@@ -17,12 +17,11 @@ import lightdash_03 from '@site/static/images/integrations/data-visualization/li
 import lightdash_04 from '@site/static/images/integrations/data-visualization/lightdash_04.png';
 import lightdash_05 from '@site/static/images/integrations/data-visualization/lightdash_05.png';
 import lightdash_06 from '@site/static/images/integrations/data-visualization/lightdash_06.png';
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
-# Lightdash
+# Lightdash {#lightdash}
 
 <PartnerBadge/>
 
@@ -31,8 +30,6 @@ Lightdash 是一个为现代数据团队构建的 **AI 优先 BI 平台**，将 
 开发者喜欢 Lightdash 的开放架构、支持版本控制的 YAML 模型，以及能够无缝融入其工作流的集成功能——从 GitHub 到 IDE。
 
 这一合作将 **ClickHouse 的极速性能** 与 **Lightdash 的开发者体验**相结合，使得借助 AI 进行数据探索、可视化和洞察自动化变得前所未有地轻松。
-
-
 
 ## 使用 Lightdash 和 ClickHouse 构建交互式仪表板 {#build-an-interactive-dashboard}
 
@@ -128,7 +125,6 @@ Lightdash 是一个为现代数据团队构建的 **AI 优先 BI 平台**，将 
 
 **探索**页面由五个主要区域组成:
 
-
 1. **维度和指标** — 所选表中的所有可用字段
 2. **过滤器** — 限制查询返回的数据范围
 3. **图表** — 将查询结果可视化
@@ -195,7 +191,6 @@ Lightdash 中的 **AI 代理**让数据探索真正实现自助服务。
 :::
 
 </VerticalStepper>
-
 
 ## 了解更多 {#learn-more}
 

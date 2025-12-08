@@ -7,8 +7,6 @@ title: 'FileLog 表引擎'
 doc_type: 'reference'
 ---
 
-
-
 # FileLog 表引擎 {#filelog-engine}
 
 该引擎允许将应用程序日志文件作为一条记录流进行处理。
@@ -18,9 +16,7 @@ doc_type: 'reference'
 - 订阅日志文件。
 - 在新记录追加到已订阅的日志文件时对其进行处理。
 
-
-
-## 创建表
+## 创建表 {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -55,8 +51,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 * `poll_directory_watch_events_backoff_factor` - 回退速度，默认为指数回退。默认值：`2`。
 * `handle_error_mode` — FileLog 引擎的错误处理方式。可选值：`default`（如果解析消息失败则抛出异常）、`stream`（异常信息和原始消息将保存在虚拟列 `_error` 和 `_raw_message` 中）。
 
-
-## 描述
+## 描述 {#description}
 
 已送达的记录会被自动跟踪，因此日志文件中的每条记录只会被计数一次。
 
@@ -99,7 +94,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ```
 
 如果你想使用 `ALTER` 更改目标表，建议先禁用该物化视图，以避免目标表与视图数据之间出现不一致。
-
 
 ## 虚拟列 {#virtual-columns}
 

@@ -6,10 +6,9 @@ title: 'system.dimensional_metrics'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
-# dimensional&#95;metrics
+# dimensional&#95;metrics {#dimensional_metrics}
 
 <SystemTableCloud />
 
@@ -37,7 +36,6 @@ SELECT
 FROM system.dimensional_metrics
 FORMAT Prometheus
 ```
-
 
 ## Описание метрик {#metric_descriptions}
 

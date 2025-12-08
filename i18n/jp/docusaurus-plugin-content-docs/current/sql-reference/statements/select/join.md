@@ -7,9 +7,7 @@ keywords: ['INNER JOIN', 'LEFT JOIN', 'LEFT OUTER JOIN', 'RIGHT JOIN', 'RIGHT OU
 doc_type: 'reference'
 ---
 
-
-
-# JOIN 句
+# JOIN 句 {#join-clause}
 
 `JOIN` 句は、各テーブルに共通する値を用いて 1 つ以上のテーブルの列を結合し、新しいテーブルを生成します。これは SQL をサポートするデータベースで一般的な操作であり、[関係代数](https://en.wikipedia.org/wiki/Relational_algebra#Joins_and_join-like_operators)における join に相当します。単一のテーブル内での結合という特殊なケースは、しばしば「自己結合 (self-join)」と呼ばれます。
 
@@ -23,7 +21,6 @@ FROM <left_table>
 ```
 
 `ON` 句の式および `USING` 句の列は「結合キー」と呼ばれます。特に断りがない限り、`JOIN` は一致する「結合キー」を持つ行から [デカルト積](https://en.wikipedia.org/wiki/Cartesian_product) を生成し、その結果、元のテーブルよりもはるかに多くの行を含むことがあります。
-
 
 ## サポートされている JOIN の種類 {#supported-types-of-join}
 
@@ -55,8 +52,6 @@ ClickHouse では、追加で次の JOIN タイプも利用できます:
 [join_algorithm](../../../operations/settings/settings.md#join_algorithm) が `partial_merge` に設定されている場合、`RIGHT JOIN` および `FULL JOIN` は `ALL` ストリクト性の場合にのみサポートされます（`SEMI`、`ANTI`、`ANY`、`ASOF` はサポートされません）。
 :::
 
-
-
 ## 設定 {#settings}
 
 デフォルトの結合種別は、[`join_default_strictness`](../../../operations/settings/settings.md#join_default_strictness) 設定で上書きできます。
@@ -74,9 +69,7 @@ ClickHouse では、追加で次の JOIN タイプも利用できます:
 
 ClickHouse が `CROSS JOIN` を `INNER JOIN` に書き換えられなかった場合の動作を指定するには、`cross_to_inner_join_rewrite` 設定を使用します。デフォルト値は `1` であり、この場合は結合を継続しますが、処理は遅くなります。エラーをスローしたい場合は `cross_to_inner_join_rewrite` を `0` に設定し、カンマ結合/クロス結合を実行せず、すべてのカンマ/クロス結合の書き換えを強制したい場合は `2` に設定します。値が `2` のときに書き換えが失敗すると、"Please, try to simplify `WHERE` section" というエラーメッセージが返されます。
 
-
-
-## ON 句の条件
+## ON 句の条件 {#on-section-conditions}
 
 `ON` 句には、`AND` や `OR` 演算子を使って組み合わせた複数の条件を含めることができます。結合キーを指定する条件は、次を満たす必要があります。
 
@@ -167,7 +160,6 @@ SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key;
 
 :::note
 
-
 デフォルトでは、同じテーブルの列を使用している限り、非等価条件もサポートされます。
 たとえば、`t1.a = t2.key AND t1.b > 0 AND t2.b > t2.c` のような条件は有効です。これは、`t1.b > 0` が `t1` の列のみを使用し、`t2.b > t2.c` が `t2` の列のみを使用しているためです。
 ただし、`t1.a = t2.key AND t1.b > t2.key` のような条件に対する実験的サポートを有効化して試すこともできます。詳細については、以下のセクションを参照してください。
@@ -188,8 +180,7 @@ SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key AND t2.
 └───┴────┴─────┘
 ```
 
-
-## 異なるテーブルの列に対する不等号条件を用いた JOIN
+## 異なるテーブルの列に対する不等号条件を用いた JOIN {#join-with-inequality-conditions-for-columns-from-different-tables}
 
 ClickHouse は現在、等価条件に加えて、不等号条件を指定した `ALL/ANY/SEMI/ANTI INNER/LEFT/RIGHT/FULL JOIN` をサポートしています。不等号条件は、`hash` および `grace_hash` の JOIN アルゴリズムでのみ利用できます。不等号条件は `join_use_nulls` ではサポートされません。
 
@@ -239,8 +230,7 @@ key2    a2    1    1    1            0    0    \N
 key4    f    2    3    4            0    0    \N
 ```
 
-
-## JOINキーにおけるNULL値
+## JOINキーにおけるNULL値 {#null-values-in-join-keys}
 
 `NULL` は、自分自身を含めてどの値とも等しくありません。これは、あるテーブルの `JOIN` キーに `NULL` 値がある場合、他のテーブルの `NULL` 値とは一致しないことを意味します。
 
@@ -294,8 +284,7 @@ SELECT A.name, B.score FROM A LEFT JOIN B ON isNotDistinctFrom(A.id, B.id)
 └─────────┴───────┘
 ```
 
-
-## ASOF JOIN の使用方法
+## ASOF JOIN の使用方法 {#asof-join-usage}
 
 `ASOF JOIN` は、完全一致するレコードが存在しないデータ同士を結合する必要がある場合に有用です。
 
@@ -349,8 +338,7 @@ USING (equi_column1, ... equi_columnN, asof_column)
 [Join](../../../engines/table-engines/special/join.md) テーブルエンジンでは**サポートされていません**。
 :::
 
-
-## PASTE JOIN の使用方法
+## PASTE JOIN の使用方法 {#paste-join-usage}
 
 `PASTE JOIN` の結果は、左側のサブクエリのすべてのカラムに続いて、右側のサブクエリのすべてのカラムを含むテーブルになります。
 行は、元のテーブルにおける位置に基づいて対応付けられます（行の順序が定義されている必要があります）。
@@ -408,7 +396,6 @@ SETTINGS max_block_size = 2;
 └───┴──────┘
 ```
 
-
 ## 分散 JOIN {#distributed-join}
 
 分散テーブルが関わる JOIN を実行する方法は 2 つあります。
@@ -418,9 +405,7 @@ SETTINGS max_block_size = 2;
 
 `GLOBAL` を使用する際は注意してください。詳細については、[分散サブクエリ](/sql-reference/operators/in#distributed-subqueries) セクションを参照してください。
 
-
-
-## 暗黙の型変換
+## 暗黙の型変換 {#implicit-type-conversion}
 
 `INNER JOIN`、`LEFT JOIN`、`RIGHT JOIN`、`FULL JOIN` の各クエリでは、「結合キー」に対する暗黙の型変換がサポートされています。ただし、左側と右側のテーブルの結合キーを単一の型に変換できない場合は、クエリを実行できません（たとえば、`UInt64` と `Int64`、あるいは `String` と `Int32` の両方の値をすべて保持できるデータ型が存在しない場合など）。
 
@@ -461,7 +446,6 @@ SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 │  1 │   -1 │ Int32         │ Nullable(Int64) │
 └────┴──────┴───────────────┴─────────────────┘
 ```
-
 
 ## 使用上の推奨事項 {#usage-recommendations}
 
@@ -510,9 +494,7 @@ SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 
 これらのいずれかの制限に達した場合、ClickHouse は [join_overflow_mode](/operations/settings/settings#join_overflow_mode) 設定の指示どおりに動作します。
 
-
-
-## 例
+## 例 {#examples}
 
 例：
 
@@ -554,7 +536,6 @@ LIMIT 10
 │    722884 │  77492 │  11056 │
 └───────────┴────────┴────────┘
 ```
-
 
 ## 関連コンテンツ {#related-content}
 

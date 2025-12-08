@@ -13,7 +13,7 @@ integration:
 ---
 
 import TOCInline from '@theme/TOCInline';
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import tableau_connecttoserver from '@site/static/images/integrations/data-visualization/tableau_connecttoserver.png';
 import tableau_connector_details from '@site/static/images/integrations/data-visualization/tableau_connector_details.png';
@@ -29,8 +29,7 @@ import tableau_workbook6 from '@site/static/images/integrations/data-visualizati
 import tableau_workbook7 from '@site/static/images/integrations/data-visualization/tableau_workbook7.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# Подключение Tableau к ClickHouse
+# Подключение Tableau к ClickHouse {#connecting-tableau-to-clickhouse}
 
 <ClickHouseSupportedBadge/>
 
@@ -42,8 +41,6 @@ ClickHouse предоставляет официальный коннектор 
 выполните шаги, описанные в следующем руководстве по настройке.
 
 <TOCInline toc={toc}/>
-
-
 
 ## Предварительная настройка перед использованием {#setup-required-prior-usage}
 
@@ -63,8 +60,6 @@ ClickHouse предоставляет официальный коннектор 
     - macOS: `~/Library/Tableau/Drivers`
     - Windows: `C:\Program Files\Tableau\Drivers`
 5. Настройте источник данных ClickHouse в Tableau и приступайте к созданию визуализаций данных!
-
-
 
 ## Настройка источника данных ClickHouse в Tableau {#configure-a-clickhouse-data-source-in-tableau}
 
@@ -127,8 +122,6 @@ ClickHouse предоставляет официальный коннектор 
 
 Теперь вы готовы создавать визуализации в Tableau!
 
-
-
 ## Создание визуализаций в Tableau {#building-visualizations-in-tableau}
 
 Теперь, когда у нас настроен источник данных ClickHouse в Tableau, давайте визуализируем данные…
@@ -187,8 +180,6 @@ ClickHouse предоставляет официальный коннектор 
 Отличная работа! Вы успешно подключили Tableau к ClickHouse и открыли для себя целый мир возможностей
 для анализа и визуализации ваших данных в ClickHouse.
 
-
-
 ## Установка коннектора вручную {#install-the-connector-manually}
 
 Если вы используете устаревшую версию Tableau Desktop, которая не включает коннектор по умолчанию, вы можете установить его вручную, выполнив следующие шаги:
@@ -199,18 +190,12 @@ ClickHouse предоставляет официальный коннектор 
    * Windows: `C:\Users\[Windows User]\Documents\My Tableau Repository\Connectors`
 3. Перезапустите Tableau Desktop. Если установка прошла успешно, коннектор появится в разделе `New Data Source`.
 
-
-
 ## Советы по подключению и анализу {#connection-and-analysis-tips}
 
 Для получения дополнительных рекомендаций по оптимизации интеграции Tableau с ClickHouse см. разделы [Советы по подключению](/integrations/tableau/connection-tips) и [Советы по анализу](/integrations/tableau/analysis-tips).
 
-
-
 ## Тесты {#tests}
 Коннектор тестируется с использованием [фреймворка TDVT](https://tableau.github.io/connector-plugin-sdk/docs/tdvt) и в настоящее время имеет уровень покрытия тестами 97%.
-
-
 
 ## Краткое описание {#summary}
 Вы можете подключить Tableau к ClickHouse, используя универсальный драйвер ODBC/JDBC для ClickHouse. Однако этот

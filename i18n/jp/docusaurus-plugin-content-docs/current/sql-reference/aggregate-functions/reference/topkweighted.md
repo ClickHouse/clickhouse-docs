@@ -6,7 +6,7 @@ title: 'topKWeighted'
 doc_type: 'reference'
 ---
 
-# topKWeighted
+# topKWeighted {#topkweighted}
 
 指定した列内で、概ね最も頻出する値を要素とする配列を返します。返される配列は、値そのものではなく、値のおおよその出現頻度が高い順にソートされます。加えて、値の重みも考慮されます。
 

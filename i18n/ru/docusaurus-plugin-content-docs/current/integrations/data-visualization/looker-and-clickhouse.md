@@ -11,26 +11,21 @@ integration:
 ---
 
 import Image from '@theme/IdealImage';
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import looker_01 from '@site/static/images/integrations/data-visualization/looker_01.png';
 import looker_02 from '@site/static/images/integrations/data-visualization/looker_02.png';
 import looker_03 from '@site/static/images/integrations/data-visualization/looker_03.png';
 import looker_04 from '@site/static/images/integrations/data-visualization/looker_04.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
-# Looker
+# Looker {#looker}
 
 <PartnerBadge/>
 
 Looker может подключаться к ClickHouse Cloud или локальному развертыванию ClickHouse с помощью официального источника данных ClickHouse.
 
-
-
 ## 1. Получите параметры подключения {#1-gather-your-connection-details}
 <ConnectionDetails />
-
-
 
 ## 2. Создайте источник данных ClickHouse {#2-create-a-clickhouse-data-source}
 
@@ -55,8 +50,6 @@ Looker может подключаться к ClickHouse Cloud или локал
 <br/>
 
 Теперь вы сможете подключить источник данных ClickHouse к проекту Looker.
-
-
 
 ## 3. Известные ограничения {#3-known-limitations}
 

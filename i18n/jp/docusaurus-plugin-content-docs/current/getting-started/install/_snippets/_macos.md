@@ -3,14 +3,11 @@ import dev_error from "@site/static/images/knowledgebase/fix-the-developer-verif
 import privacy_default from "@site/static/images/knowledgebase/fix-the-developer-verification-error-in-macos/privacy-and-security-default-view.png";
 import privacy_allow from "@site/static/images/knowledgebase/fix-the-developer-verification-error-in-macos/privacy-and-security-screen-allow-anyway.png";
 
-
-
-# HomebrewによるClickHouseのインストール
+# HomebrewによるClickHouseのインストール {#install-clickhouse-using-homebrew}
 
 <VerticalStepper>
 
-
-## コミュニティ版 Homebrew フォーミュラを使用してインストールする
+## コミュニティ版 Homebrew フォーミュラを使用してインストールする {#install-using-community-homebrew-formula}
 
 macOS で [Homebrew](https://brew.sh/) を使用して ClickHouse をインストールするには、
 ClickHouse コミュニティの [Homebrew フォーミュラ](https://formulae.brew.sh/cask/clickhouse) を使用できます。
@@ -19,8 +16,7 @@ ClickHouse コミュニティの [Homebrew フォーミュラ](https://formulae.
 brew install --cask clickhouse
 ```
 
-
-## macOS での開発元検証エラーの解消
+## macOS での開発元検証エラーの解消 {#fix-developer-verification-error-macos}
 
 `brew` を使用して ClickHouse をインストールした場合、macOS からエラーが表示されることがあります。
 デフォルトでは、macOS は確認できない開発元によって作成されたアプリケーションやツールを実行しません。
@@ -31,7 +27,7 @@ brew install --cask clickhouse
 
 この検証エラーを回避するには、システム設定ウィンドウで該当する設定を変更するか、ターミナルを使用するか、または ClickHouse を再インストールするなどして、いずれかの方法で macOS の隔離領域からアプリを削除する必要があります。
 
-### システム設定での手順
+### システム設定での手順 {#system-settings-process}
 
 `clickhouse` 実行ファイルを隔離領域から削除する最も簡単な方法は次のとおりです。
 
@@ -51,7 +47,7 @@ brew install --cask clickhouse
 
 これでターミナルで `clickhouse` コマンドを実行できるようになるはずです。
 
-### ターミナルでの手順
+### ターミナルでの手順 {#terminal-process}
 
 `Allow Anyway` ボタンを押してもこの問題が解消しない場合は、コマンドラインを使って同じ処理を行うことができます。
 あるいは、単にコマンドラインを使う方が好みの場合もあるでしょう。
@@ -88,7 +84,6 @@ clickhouse local [args]
 clickhouse client [args]
 clickhouse benchmark [args]
 ```
-
 
 ## ClickHouseを再インストールして問題を修正する {#fix-issue}
 

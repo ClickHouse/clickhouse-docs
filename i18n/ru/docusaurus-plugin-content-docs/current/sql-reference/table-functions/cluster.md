@@ -8,9 +8,7 @@ title: 'clusterAllReplicas'
 doc_type: 'reference'
 ---
 
-
-
-# Табличная функция clusterAllReplicas
+# Табличная функция clusterAllReplicas {#clusterallreplicas-table-function}
 
 Позволяет обращаться ко всем шардам кластера (настроенным в разделе `remote_servers`) без создания таблицы [Distributed](../../engines/table-engines/special/distributed.md). Запрашивается только одна реплика каждого шарда.
 
@@ -20,11 +18,7 @@ doc_type: 'reference'
 Все доступные кластеры перечислены в таблице [system.clusters](../../operations/system-tables/clusters.md).
 :::
 
-
-
 ## Синтаксис {#syntax}
-
-
 
 ```sql
 cluster(['cluster_name', db.table, sharding_key])
@@ -33,7 +27,7 @@ clusterAllReplicas(['cluster_name', db.table, sharding_key])
 clusterAllReplicas(['cluster_name', db, table, sharding_key])
 ```
 
-## Аргументы
+## Аргументы {#arguments}
 
 | Аргументы                    | Тип                                                                                                                                                               |
 | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -41,14 +35,11 @@ clusterAllReplicas(['cluster_name', db, table, sharding_key])
 | `db.table` или `db`, `table` | Имя базы данных и таблицы.                                                                                                                                        |
 | `sharding_key`               | Ключ шардинга. Необязательный параметр. Должен быть указан, если кластер содержит более одного шарда.                                                             |
 
-
 ## Возвращаемое значение {#returned_value}
 
 Набор данных, полученный из кластеров.
 
-
-
-## Использование макросов
+## Использование макросов {#using_macros}
 
 `cluster_name` может содержать макросы — подстановки в фигурных скобках. Значение подстановки берётся из раздела [macros](../../operations/server-configuration-parameters/settings.md#macros) файла конфигурации сервера.
 
@@ -57,7 +48,6 @@ clusterAllReplicas(['cluster_name', db, table, sharding_key])
 ```sql
 SELECT * FROM cluster('{cluster}', default.example_table);
 ```
-
 
 ## Использование и рекомендации {#usage_recommendations}
 
@@ -70,8 +60,6 @@ SELECT * FROM cluster('{cluster}', default.example_table);
 - Редкие распределённые запросы, выполняемые вручную.
 
 Параметры подключения, такие как `host`, `port`, `user`, `password`, `compression`, `secure`, берутся из секции конфигурации `<remote_servers>`. Подробности см. в описании [движка Distributed](../../engines/table-engines/special/distributed.md).
-
-
 
 ## См. также {#related}
 

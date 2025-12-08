@@ -17,14 +17,11 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 | -- | -- | ----- |
 | ✔  | ✔  |       |
 
-
 ## 説明 {#description}
 
 `ProtobufList` フォーマットは [`Protobuf`](./Protobuf.md) フォーマットと似ていますが、行は固定名「Envelope」を持つメッセージ内に含まれるサブメッセージの列として表現されます。
 
-
-
-## 使用例
+## 使用例 {#example-usage}
 
 例えば、次のようにします。
 
@@ -50,6 +47,5 @@ message Envelope {
   MessageType row = 1;
 };
 ```
-
 
 ## フォーマット設定 {#format-settings}

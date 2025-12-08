@@ -26,7 +26,7 @@ doc_type: 'reference'
 - totals と extremes をサポートします
 - 値はネイティブな型を保持します（数値は数値、文字列は文字列として扱われます）
 
-## 使用例
+## 使用例 {#example-usage}
 
 ```sql title="Query"
 SELECT *
@@ -45,6 +45,5 @@ FORMAT JSONCompactEachRowWithProgress
 {"progress":{"read_rows":"5","read_bytes":"184","total_rows_to_read":"5","elapsed_ns":"335771"}}
 {"rows_before_limit_at_least":5}
 ```
-
 
 ## フォーマット設定 {#format-settings}

@@ -13,8 +13,6 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-
-
 ## 説明 {#description}
 
 `Null` フォーマットでは、何も出力されません。  
@@ -25,11 +23,9 @@ doc_type: 'reference'
 `Null` フォーマットは、パフォーマンス測定や性能テストに役立ちます。
 :::
 
+## 使用例 {#example-usage}
 
-
-## 使用例
-
-### データの読み取り
+### データの読み取り {#reading-data}
 
 次のデータを含むテーブル `football` を例にします。
 
@@ -68,6 +64,5 @@ FORMAT Null
 ```response
 0行のセット。経過時間: 0.154秒
 ```
-
 
 ## フォーマット設定 {#format-settings}

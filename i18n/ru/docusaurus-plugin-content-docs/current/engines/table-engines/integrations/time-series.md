@@ -10,8 +10,7 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
-# Табличный движок TimeSeries
+# Табличный движок TimeSeries {#timeseries-table-engine}
 
 <ExperimentalBadge />
 
@@ -31,8 +30,7 @@ metric_name2[...] = ...
 Выполните команду `set allow_experimental_time_series_table = 1`.
 :::
 
-
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 CREATE TABLE name [(columns)] ENGINE=TimeSeries
@@ -42,8 +40,7 @@ CREATE TABLE name [(columns)] ENGINE=TimeSeries
 [METRICS db.metrics_table_name | METRICS ENGINE metrics_table_engine(arguments)]
 ```
 
-
-## Использование
+## Использование {#usage}
 
 Проще всего начать, оставив все настройки по умолчанию (можно создать таблицу `TimeSeries` без явного указания списка столбцов):
 
@@ -55,7 +52,6 @@ CREATE TABLE my_table ENGINE=TimeSeries
 
 * [prometheus remote-write](../../../interfaces/prometheus.md#remote-write)
 * [prometheus remote-read](../../../interfaces/prometheus.md#remote-read)
-
 
 ## Целевые таблицы {#target-tables}
 
@@ -103,8 +99,6 @@ CREATE TABLE my_table ENGINE=TimeSeries
 
 Таблица _metrics_ должна иметь столбцы:
 
-
-
 | Имя | Обязательный? | Тип по умолчанию | Возможные типы | Описание |
 |---|---|---|---|---|
 | `metric_family_name` | [x] | `String` | `String` или `LowCardinality(String)` | Имя семейства метрик |
@@ -115,9 +109,7 @@ CREATE TABLE my_table ENGINE=TimeSeries
 Любая строка, вставленная в таблицу `TimeSeries`, фактически будет сохранена в этих трёх целевых таблицах.
 Таблица `TimeSeries` содержит все столбцы из таблиц [data](#data-table), [tags](#tags-table), [metrics](#metrics-table).
 
-
-
-## Создание
+## Создание {#creation}
 
 Существует несколько способов создать таблицу с движком `TimeSeries`.
 Самый простой запрос
@@ -201,8 +193,7 @@ ENGINE = ReplacingMergeTree
 ORDER BY metric_family_name
 ```
 
-
-## Настройка типов столбцов
+## Настройка типов столбцов {#adjusting-column-types}
 
 Вы можете изменить тип почти любого столбца во внутренних целевых таблицах, явно указав его
 при определении основной таблицы. Например,
@@ -227,8 +218,7 @@ ENGINE = MergeTree
 ORDER BY (id, timestamp)
 ```
 
-
-## Столбец `id`
+## Столбец `id` {#id-column}
 
 Столбец `id` содержит идентификаторы; каждый идентификатор вычисляется для комбинации имени метрики и тегов.
 Выражение DEFAULT для столбца `id` — это выражение, которое будет использоваться для вычисления таких идентификаторов.
@@ -242,8 +232,7 @@ CREATE TABLE my_table
 ENGINE=TimeSeries
 ```
 
-
-## Столбцы `tags` и `all_tags`
+## Столбцы `tags` и `all_tags` {#tags-and-all-tags}
 
 Есть два столбца, содержащих отображения тегов, — `tags` и `all_tags`. В этом примере они по сути эквивалентны, однако могут отличаться,
 если используется настройка `tags_to_columns`. Эта настройка позволяет указать, что конкретный тег должен храниться в отдельном столбце вместо хранения
@@ -277,8 +266,7 @@ ENGINE=TimeSeries
 SETTINGS tags_to_columns = {'instance': 'instance', 'job': 'job'}
 ```
 
-
-## Движки внутренних целевых таблиц
+## Движки внутренних целевых таблиц {#inner-table-engines}
 
 По умолчанию внутренние целевые таблицы используют следующие движки таблиц:
 
@@ -297,8 +285,7 @@ TAGS ENGINE=ReplicatedAggregatingMergeTree
 METRICS ENGINE=ReplicatedReplacingMergeTree
 ```
 
-
-## Внешние таблицы назначения
+## Внешние таблицы назначения {#external-target-tables}
 
 Можно настроить таблицу `TimeSeries` на использование созданной вручную таблицы:
 
@@ -319,7 +306,6 @@ CREATE TABLE metrics_for_my_table ...
 CREATE TABLE my_table ENGINE=TimeSeries DATA data_for_my_table TAGS tags_for_my_table METRICS metrics_for_my_table;
 ```
 
-
 ## Настройки {#settings}
 
 Ниже приведён список настроек, которые можно задать при определении таблицы `TimeSeries`:
@@ -331,8 +317,6 @@ CREATE TABLE my_table ENGINE=TimeSeries DATA data_for_my_table TAGS tags_for_my_
 | `store_min_time_and_max_time` | Bool | true | Если установлено значение `true`, таблица будет сохранять `min_time` и `max_time` для каждого временного ряда |
 | `aggregate_min_time_and_max_time` | Bool | true | При создании внутренней целевой таблицы `tags` этот флаг включает использование `SimpleAggregateFunction(min, Nullable(DateTime64(3)))` вместо просто `Nullable(DateTime64(3))` как типа столбца `min_time`, и аналогично для столбца `max_time` |
 | `filter_by_min_time_and_max_time` | Bool | true | Если установлено значение `true`, таблица будет использовать столбцы `min_time` и `max_time` для фильтрации временных рядов |
-
-
 
 # Функции {#functions}
 

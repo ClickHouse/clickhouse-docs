@@ -8,7 +8,7 @@ doc_type: 'reference'
 keywords: ['distributed', 'join']
 ---
 
-# ClickHouse は分散 JOIN をサポートしていますか？
+# ClickHouse は分散 JOIN をサポートしていますか？ {#does-clickhouse-support-distributed-join}
 
 ClickHouse はクラスタ上での分散 JOIN をサポートしています。
 

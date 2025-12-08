@@ -6,14 +6,10 @@ title: 'DataLakeCatalog'
 doc_type: 'reference'
 ---
 
-
-
-# DataLakeCatalog
+# DataLakeCatalog {#datalakecatalog}
 
 `DataLakeCatalog` 数据库引擎使您能够将 ClickHouse 连接到外部数据目录，并在无需复制数据的情况下查询开放表格式数据。
 这使 ClickHouse 成为一个功能强大的查询引擎，能够与您现有的数据湖基础设施无缝协同工作。
-
-
 
 ## 支持的目录 {#supported-catalogs}
 
@@ -24,9 +20,7 @@ doc_type: 'reference'
 - **Hive Metastore** - 传统 Hadoop 生态系统中的目录
 - **REST Catalogs** - 任意支持 Iceberg REST 规范的目录
 
-
-
-## 创建数据库
+## 创建数据库 {#creating-a-database}
 
 要使用 `DataLakeCatalog` 引擎，需要启用下列相关设置：
 
@@ -63,8 +57,7 @@ catalog_type,
 | `aws_secret_access_key` | 用于访问 S3/Glue 的 AWS secret access key（如果不使用 vended credentials）       |
 | `region`                | 服务所在的 AWS 区域（例如 `us-east-1`）                                         |
 
-
-## 示例
+## 示例 {#examples}
 
 请参阅以下部分，了解如何使用 `DataLakeCatalog` 引擎的示例：
 

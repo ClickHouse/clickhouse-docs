@@ -13,7 +13,7 @@ ClickStack 的 OpenTelemetry (OTel) collector 使用 [ClickHouse exporter](https
 
 在 `default` 数据库中，会为每种数据类型创建以下表。用户可以通过修改运行 OTel collector 的镜像中的环境变量 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` 来更改此目标数据库。
 
-## 日志
+## 日志 {#logs}
 
 ```sql
 CREATE TABLE otel_logs
@@ -49,8 +49,7 @@ PRIMARY KEY (ServiceName, TimestampTime)
 ORDER BY (ServiceName, TimestampTime, Timestamp)
 ```
 
-
-## 追踪
+## 追踪 {#traces}
 
 ```sql
 CREATE TABLE otel_traces
@@ -89,10 +88,9 @@ PARTITION BY toDate(Timestamp)
 ORDER BY (ServiceName, SpanName, toDateTime(Timestamp))
 ```
 
-
 ## 指标 {#metrics}
 
-### Gauge 指标
+### Gauge 指标 {#gauge}
 
 ```sql
 CREATE TABLE otel_metrics_gauge
@@ -130,8 +128,7 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-
-### 求和（Sum）指标
+### 求和（Sum）指标 {#sum}
 
 ```sql
 CREATE TABLE otel_metrics_sum
@@ -171,8 +168,7 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-
-### 直方图指标
+### 直方图指标 {#histogram}
 
 ```sql
 CREATE TABLE otel_metrics_histogram
@@ -216,8 +212,7 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-
-### 指数直方图
+### 指数直方图 {#exponential-histograms}
 
 :::note
 HyperDX 目前尚不支持获取或展示指数直方图类型的指标。用户可以在指标数据源中对其进行配置，未来将提供相关支持。
@@ -270,8 +265,7 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-
-### 汇总表
+### 汇总表 {#summary-table}
 
 ```sql
 CREATE TABLE otel_metrics_summary
@@ -307,8 +301,7 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-
-## 会话
+## 会话 {#sessions}
 
 ```sql
 CREATE TABLE hyperdx_sessions

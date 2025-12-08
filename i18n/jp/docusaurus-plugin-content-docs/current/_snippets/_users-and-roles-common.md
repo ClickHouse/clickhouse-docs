@@ -1,4 +1,4 @@
-## 管理者権限をテストする
+## 管理者権限をテストする {#test-admin-privileges}
 
 ユーザー `default` からログアウトし、ユーザー `clickhouse_admin` として再ログインします。
 
@@ -31,7 +31,6 @@ DROP TABLE db1.table1;
 ```sql
 DROP DATABASE db1;
 ```
-
 
 ## 管理者以外のユーザー {#non-admin-users}
 
@@ -172,13 +171,11 @@ CREATE USER row_user IDENTIFIED BY 'password';
     ON db1.table1 FOR SELECT USING 1 TO clickhouse_admin, column1_users;
     ```
 
-
     :::note
     テーブルにポリシーをアタッチすると、システムはそのポリシーを適用し、定義されたユーザーとロールのみがテーブルに対する操作を実行できます。その他のすべてのユーザーは、すべての操作が拒否されます。制限的な行ポリシーを他のユーザーに適用しないようにするには、他のユーザーとロールが通常のアクセスまたはその他のタイプのアクセスを持てるように、別のポリシーを定義する必要があります。
     :::
 
 </VerticalStepper>
-
 
 ## 検証 {#verification}
 
@@ -293,8 +290,6 @@ CREATE USER row_user IDENTIFIED BY 'password';
 
 </VerticalStepper>
 
-
-
 ## ユーザーとロールの変更 {#modifying-users-and-roles}
 
 ユーザーには、必要な権限の組み合わせを実現するために複数のロールを割り当てることができます。複数のロールを使用する場合、システムはそれらのロールを組み合わせて権限を決定し、その結果、ロールの権限は累積されます。
@@ -365,13 +360,11 @@ CREATE USER row_user IDENTIFIED BY 'password';
    ```
 </VerticalStepper>
 
-
-
-## トラブルシューティング
+## トラブルシューティング {#troubleshooting}
 
 権限が重なり合ったり組み合わさったりして、予期しない結果を生む場合があります。そのようなときは、管理者アカウントを使用して次のコマンドを実行し、問題の原因を切り分けることができます。
 
-### ユーザーに付与されている権限およびロールの一覧表示
+### ユーザーに付与されている権限およびロールの一覧表示 {#listing-the-grants-and-roles-for-a-user}
 
 ```sql
 SHOW GRANTS FOR row_and_column_user
@@ -385,7 +378,7 @@ Query id: 6a73a3fe-2659-4aca-95c5-d012c138097b
 └──────────────────────────────────────────────────────────┘
 ```
 
-### ClickHouse のロール一覧を表示する
+### ClickHouse のロール一覧を表示する {#list-roles-in-clickhouse}
 
 ```sql
 SHOW ROLES
@@ -400,7 +393,7 @@ Query id: 1e21440a-18d9-4e75-8f0e-66ec9b36470a
 └─────────────────┘
 ```
 
-### ポリシーを表示
+### ポリシーを表示 {#display-the-policies}
 
 ```sql
 SHOW ROW POLICIES
@@ -415,7 +408,7 @@ Query id: f2c636e9-f955-4d79-8e80-af40ea227ebc
 └────────────────────────────────────────┘
 ```
 
-### ポリシーの定義と現在の権限を確認する
+### ポリシーの定義と現在の権限を確認する {#view-how-a-policy-was-defined-and-current-privileges}
 
 ```sql
 SHOW CREATE ROW POLICY A_row_filter ON db1.table1
@@ -429,8 +422,7 @@ Query id: 0d3b5846-95c7-4e62-9cdd-91d82b14b80b
 └─────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-## ロール、ポリシー、ユーザーを管理するためのコマンド例
+## ロール、ポリシー、ユーザーを管理するためのコマンド例 {#example-commands-to-manage-roles-policies-and-users}
 
 次のコマンドは以下の目的で使用できます:
 
@@ -444,36 +436,35 @@ Query id: 0d3b5846-95c7-4e62-9cdd-91d82b14b80b
 これらのコマンドは管理者ユーザーまたは `default` ユーザーとして実行してください
 :::
 
-### ロールから権限を削除する
+### ロールから権限を削除する {#remove-privilege-from-a-role}
 
 ```sql
 REVOKE SELECT(column1, id) ON db1.table1 FROM A_rows_users;
 ```
 
-### ポリシーを削除する
+### ポリシーを削除する {#delete-a-policy}
 
 ```sql
 DROP ROW POLICY A_row_filter ON db1.table1;
 ```
 
-### ユーザーをロールから外す
+### ユーザーをロールから外す {#unassign-a-user-from-a-role}
 
 ```sql
 REVOKE A_rows_users FROM row_user;
 ```
 
-### ロールを削除する
+### ロールを削除する {#delete-a-role}
 
 ```sql
 DROP ROLE A_rows_users;
 ```
 
-### ユーザーを削除する
+### ユーザーを削除する {#delete-a-user}
 
 ```sql
 DROP USER row_user;
 ```
-
 
 ## まとめ {#summary}
 

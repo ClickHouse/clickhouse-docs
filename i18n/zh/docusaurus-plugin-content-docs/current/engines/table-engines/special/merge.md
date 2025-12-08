@@ -7,22 +7,17 @@ title: 'Merge 表引擎'
 doc_type: 'reference'
 ---
 
-
-
-# Merge 表引擎
+# Merge 表引擎 {#merge-table-engine}
 
 `Merge` 引擎（不要与 `MergeTree` 混淆）自身不存储数据，而是允许同时从任意数量的其他表中读取数据。
 
 读取会自动并行执行。不支持向该表写入数据。读取时，如果被实际读取的表存在索引，则会使用这些索引。
 
-
-
-## 创建表
+## 创建表 {#creating-a-table}
 
 ```sql
 CREATE TABLE ... 引擎=Merge(db_name, tables_regexp)
 ```
-
 
 ## 引擎参数 {#engine-parameters}
 
@@ -40,8 +35,6 @@ CREATE TABLE ... 引擎=Merge(db_name, tables_regexp)
 正则表达式引擎 — [re2](https://github.com/google/re2)（支持 PCRE 的子集），区分大小写。
 关于在正则表达式中转义字符的说明，请参见 “match” 部分。
 
-
-
 ## 使用方法 {#usage}
 
 在选择要读取的表时，即使 `Merge` 表名本身匹配正则表达式，也不会被选中。这是为了避免形成循环。
@@ -49,9 +42,7 @@ CREATE TABLE ... 引擎=Merge(db_name, tables_regexp)
 
 `Merge` 引擎的典型用法是将大量 `TinyLog` 表当作一张表来处理。
 
-
-
-## 示例
+## 示例 {#examples}
 
 **示例 1**
 
@@ -103,7 +94,6 @@ SELECT * FROM WatchLog;
 │ 2018-01-02 │      2 │ hit       │   3 │
 └────────────┴────────┴───────────┴─────┘
 ```
-
 
 ## 虚拟列 {#virtual-columns}
 

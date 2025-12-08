@@ -8,8 +8,6 @@ title: 'values'
 doc_type: 'reference'
 ---
 
-
-
 # Values 表函数 {#values-table-function}
 
 `Values` 表函数允许你创建一个临时存储，用于为列填充值。它对于快速测试或生成示例数据非常有用。
@@ -18,9 +16,7 @@ doc_type: 'reference'
 Values 是不区分大小写的函数。也就是说，`VALUES` 或 `values` 都是有效的写法。
 :::
 
-
-
-## 语法
+## 语法 {#syntax}
 
 `VALUES` 表函数的基本语法如下：
 
@@ -39,7 +35,6 @@ VALUES(
 )
 ```
 
-
 ## 参数 {#arguments}
 
 - `column1_name Type1, ...`（可选）。[String](/sql-reference/data-types/string) 
@@ -51,15 +46,11 @@ VALUES(
 以逗号分隔的元组也可以用单个值代替。在这种情况下，每个值都被视为一行新数据。详情参见[示例](#examples)部分。
 :::
 
-
-
 ## 返回值 {#returned-value}
 
 - 返回一个包含传入值的临时表。
 
-
-
-## 示例
+## 示例 {#examples}
 
 ```sql title="Query"
 SELECT *
@@ -194,7 +185,6 @@ FROM VALUES(
 10. │ Isabella │
     └──────────┘
 ```
-
 
 ## 另请参阅 {#see-also}
 

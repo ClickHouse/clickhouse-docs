@@ -43,8 +43,7 @@ import update_query_name from '@site/static/images/cloud/sqlconsole/update-query
 import update_subtitle_etc from '@site/static/images/cloud/sqlconsole/update-subtitle-etc.png';
 import adjust_axis_scale from '@site/static/images/cloud/sqlconsole/adjust-axis-scale.png';
 
-
-# SQL コンソール
+# SQL コンソール {#sql-console}
 
 SQL コンソールは、ClickHouse Cloud 上のデータベースを探索し、クエリを実行するための最速かつ最も簡単な方法です。SQL コンソールを使用すると、次のことができます。
 
@@ -75,8 +74,6 @@ ClickHouse インスタンスに含まれるテーブルの概要は、左側の
 Cell Inspector（セルインスペクター）ツールを使用すると、単一のセルに含まれる大量のデータを表示できます。開くには、セルを右クリックし、「Inspect Cell」を選択します。セルインスペクターの内容は、インスペクターウィンドウ右上隅のコピーアイコンをクリックすることでコピーできます。
 
 <Image img={inspecting_cell_content} size="md" alt="セル内容の検査" />
-
-
 
 ## テーブルのフィルタリングとソート {#filtering-and-sorting-tables}
 
@@ -121,8 +118,6 @@ SQL コンソールは、設定したソート条件とフィルタ条件をワ�
 :::
 
 SQL コンソールでのクエリの実行方法については、(link) クエリドキュメントを参照してください。
-
-
 
 ## クエリの作成と実行 {#creating-and-running-a-query}
 
@@ -220,13 +215,9 @@ SQL コンソールでは、クエリをチームメンバーと簡単に共有�
 
 ### クエリへのリンク（パーマリンク） {#linking-to-a-query-permalinks}
 
-
-
 保存されたクエリにはパーマリンクも付与されるため、共有クエリへのリンクを送受信して、直接開くことができます。
 
 クエリに含まれるパラメータの値は、自動的に保存されたクエリの URL にクエリパラメータとして追加されます。たとえば、クエリに `{start_date: Date}` と `{end_date: Date}` パラメータが含まれている場合、パーマリンクは次のようになります: `https://console.clickhouse.cloud/services/:serviceId/console/query/:queryId?param_start_date=2015-01-01&param_end_date=2016-01-01`。
-
-
 
 ## 高度なクエリ機能 {#advanced-querying-features}
 
@@ -256,9 +247,7 @@ SQL コンソールでは、クエリをチームメンバーと簡単に共有�
 
 <Image img={download_as_csv} size="md" alt="CSV としてダウンロード" />
 
-
-
-## クエリデータの可視化
+## クエリデータの可視化 {#visualizing-query-data}
 
 一部のデータは、チャート形式にするとより理解しやすくなります。SQL コンソールからクエリ結果データを直接利用して、数回のクリックで素早く可視化を作成できます。例として、NYC タクシー乗車データの週次統計を計算するクエリを使用します。
 
@@ -280,7 +269,7 @@ ORDER BY
 
 可視化がないと、これらの結果を解釈するのは困難です。チャートにしてみましょう。
 
-### チャートの作成
+### チャートの作成 {#creating-charts}
 
 可視化の作成を始めるには、クエリ結果ペインのツールバーから「Chart」オプションを選択します。チャート設定ペインが表示されます。
 
@@ -294,7 +283,7 @@ ORDER BY
 
 <Image img={bar_chart} size="md" alt="棒グラフ" />
 
-### チャートのカスタマイズ
+### チャートのカスタマイズ {#customizing-charts}
 
 SQL コンソールは 10 種類のチャートタイプをサポートしており、チャート設定ペインのチャートタイプセレクターから選択できます。たとえば、先ほどのチャートタイプを Bar から Area に簡単に変更できます。
 

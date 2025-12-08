@@ -14,7 +14,7 @@ integration:
 ---
 
 import Image from '@theme/IdealImage';
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import metabase_01 from '@site/static/images/integrations/data-visualization/metabase_01.png';
 import metabase_02 from '@site/static/images/integrations/data-visualization/metabase_02.png';
 import metabase_03 from '@site/static/images/integrations/data-visualization/metabase_03.png';
@@ -24,14 +24,11 @@ import metabase_07 from '@site/static/images/integrations/data-visualization/met
 import metabase_08 from '@site/static/images/integrations/data-visualization/metabase_08.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
-# 将 Metabase 连接到 ClickHouse
+# 将 Metabase 连接到 ClickHouse {#connecting-metabase-to-clickhouse}
 
 <PartnerBadge/>
 
 Metabase 是一个易于使用的开源 UI 工具，可用于对你的数据进行查询和分析。Metabase 是一个 Java 应用程序，只需<a href="https://www.metabase.com/start/oss/jar" target="_blank">下载 JAR 文件</a>并使用 `java -jar metabase.jar` 运行即可。Metabase 通过 JDBC 驱动程序连接到 ClickHouse，你需要下载该驱动并将其放入 `plugins` 目录中：
-
-
 
 ## 目标 {#goal}
 
@@ -44,12 +41,8 @@ Metabase 是一个易于使用的开源 UI 工具，可用于对你的数据进�
 如果您目前没有可用的数据集，可以添加一个示例数据集。本指南使用 [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md) 数据集，您可以选择使用该数据集。同一文档类别下还有其他几个示例可供参考。
 :::
 
-
-
 ## 1. 收集连接详细信息 {#1-gather-your-connection-details}
 <ConnectionDetails />
-
-
 
 ## 2.  下载用于 Metabase 的 ClickHouse 插件 {#2--download-the-clickhouse-plugin-for-metabase}
 
@@ -62,8 +55,6 @@ Metabase 是一个易于使用的开源 UI 工具，可用于对你的数据进�
 4. 启动（或重新启动）Metabase，以便正确加载该驱动。
 
 5. 通过 <a href="http://localhost:3000/" target="_blank">http://hostname:3000</a> 访问 Metabase。首次启动时，你会看到一个欢迎界面，并需要依次回答一系列问题。如果在此过程中提示你选择数据库，请选择 "**I'll add my data later**"：
-
-
 
 ## 3.  将 Metabase 连接到 ClickHouse {#3--connect-metabase-to-clickhouse}
 
@@ -83,8 +74,6 @@ Metabase 是一个易于使用的开源 UI 工具，可用于对你的数据进�
 
 6. 点击 **Save** 按钮，Metabase 将扫描你的数据库以检测其中的表。
 
-
-
 ## 4. 运行 SQL 查询 {#4-run-a-sql-query}
 
 1. 点击右上角的 **Exit admin** 按钮退出 **Admin settings**。
@@ -96,8 +85,6 @@ Metabase 是一个易于使用的开源 UI 工具，可用于对你的数据进�
 3. 例如，下面是在名为 `uk_price_paid` 的表上运行的 SQL 查询，它返回 1995 到 2022 年间按年份统计的平均支付金额：
 
     <Image size="md" img={metabase_04} alt="Metabase SQL 编辑器，展示了针对英国支付价格数据的查询" border />
-
-
 
 ## 5. 创建问题 {#5-ask-a-question}
 
@@ -112,8 +99,6 @@ Metabase 是一个易于使用的开源 UI 工具，可用于对你的数据进�
 3. 在结果下方，点击 **Visualization** 按钮，将可视化类型更改为柱状图（或其他任意可用选项）：
 
     <Image size="md" img={metabase_08} alt="Metabase 饼图可视化展示大曼彻斯特郡各城镇的平均价格" border />
-
-
 
 ## 了解更多 {#learn-more}
 

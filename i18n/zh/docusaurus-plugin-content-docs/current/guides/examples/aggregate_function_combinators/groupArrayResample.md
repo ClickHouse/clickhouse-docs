@@ -7,11 +7,7 @@ sidebar_label: 'groupArrayResample'
 doc_type: 'reference'
 ---
 
-
-
 # groupArrayResample {#grouparrayresample}
-
-
 
 ## 描述 {#description}
 
@@ -22,9 +18,7 @@ doc_type: 'reference'
 （对应最小键）来构造结果数组。
 它生成的是数据的降采样视图，而非收集所有取值。
 
-
-
-## 示例用法
+## 示例用法 {#example-usage}
 
 我们来看一个示例。我们将创建一个包含员工 `name`、`age` 和 `wage` 的表，并向其中插入一些数据：
 
@@ -59,7 +53,6 @@ SELECT groupArrayResample(30, 75, 30)(name, age) FROM employee_data
 │ [['Alice','Mary','Evelyn'],['David','Brian']] │
 └───────────────────────────────────────────────┘
 ```
-
 
 ## 另请参阅 {#see-also}
 - [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)

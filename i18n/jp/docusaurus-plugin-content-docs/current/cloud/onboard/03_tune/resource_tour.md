@@ -7,12 +7,11 @@ hide_title: true
 doc_type: 'guide'
 ---
 
-import TableOfContentsBestPractices from '@site/docs/best-practices/_snippets/_table_of_contents.md';
-import TableOfContentsOptimizationAndPerformance from '@site/docs/guides/best-practices/_snippets/_performance_optimizations_table_of_contents.md';
-import TableOfContentsSecurity from '@site/docs/cloud/_snippets/_security_table_of_contents.md';
+import TableOfContentsBestPractices from '@site/i18n/jp/docusaurus-plugin-content-docs/current/best-practices/_snippets/_table_of_contents.md';
+import TableOfContentsOptimizationAndPerformance from '@site/i18n/jp/docusaurus-plugin-content-docs/current/guides/best-practices/_snippets/_performance_optimizations_table_of_contents.md';
+import TableOfContentsSecurity from '@site/i18n/jp/docusaurus-plugin-content-docs/current/cloud/_snippets/_security_table_of_contents.md';
 
-
-# リソースの概要
+# リソースの概要 {#resource-tour}
 
 この記事では、ClickHouse Cloud デプロイメントを最大限に活用するために、
 ドキュメント内で利用できる各種リソースの概要を紹介します。
@@ -29,13 +28,9 @@ import TableOfContentsSecurity from '@site/docs/cloud/_snippets/_security_table_
 
 <TableOfContentsBestPractices />
 
-
-
 ## クエリ最適化手法とパフォーマンスチューニング {#query-optimization}
 
 <TableOfContentsOptimizationAndPerformance/>
-
-
 
 ## 監視 {#monitoring}
 
@@ -45,13 +40,9 @@ import TableOfContentsSecurity from '@site/docs/cloud/_snippets/_security_table_
 | [Prometheus 連携](/integrations/prometheus)                         | Prometheus を使用してクラウドサービスを監視します                                   |
 | [クラウド監視機能](/use-cases/observability/cloud-monitoring) | 組み込みの監視機能と連携オプションの概要を確認します                               |
 
-
-
 ## セキュリティ {#security}
 
 <TableOfContentsSecurity/>
-
-
 
 ## コスト最適化と課金 {#cost-optimization}
 

@@ -7,17 +7,13 @@ keywords: ['chdb', 'c', 'cpp', 'embedded', 'clickhouse', 'sql', 'olap', 'api']
 doc_type: 'guide'
 ---
 
-
-
-# chDB для C и C++
+# chDB для C и C++ {#chdb-for-c-and-c}
 
 chDB предоставляет родной C/C++ API для встраивания функциональности ClickHouse непосредственно в ваши приложения. API поддерживает как простые запросы, так и расширенные возможности, такие как постоянные соединения и потоковая передача результатов запросов.
 
+## Установка {#installation}
 
-
-## Установка
-
-### Шаг 1: Установите libchdb
+### Шаг 1: Установите libchdb {#install-libchdb}
 
 Установите библиотеку chDB в систему:
 
@@ -25,7 +21,7 @@ chDB предоставляет родной C/C++ API для встраиван
 curl -sL https://lib.chdb.io | bash
 ```
 
-### Шаг 2: Подключите заголовочный файл
+### Шаг 2: Подключите заголовочный файл {#include-headers}
 
 Подключите заголовочный файл chDB в своём проекте:
 
@@ -33,28 +29,25 @@ curl -sL https://lib.chdb.io | bash
 #include <chdb.h>
 ```
 
-### Шаг 3: Подключение библиотеки
+### Шаг 3: Подключение библиотеки {#link-library}
 
 Скомпилируйте и скомпонуйте ваше приложение с chDB:
 
-
 ```bash
-# Компиляция на C
+# Компиляция на C {#c-compilation}
 gcc -o myapp myapp.c -lchdb
 ```
 
-
-# Компиляция на C++
+# Компиляция на C++ {#c-compilation}
 
 g++ -o myapp myapp.cpp -lchdb
 
 ```
 ```
 
+## Примеры на C {#c-examples}
 
-## Примеры на C
-
-### Базовое подключение и выполнение запросов
+### Базовое подключение и выполнение запросов {#basic-connection-queries}
 
 ```c
 #include <stdio.h>
@@ -103,7 +96,7 @@ int main() {
 }
 ```
 
-### Стриминговые запросы
+### Стриминговые запросы {#streaming-queries}
 
 ```c
 #include <stdio.h>
@@ -167,7 +160,7 @@ int main() {
 }
 ```
 
-### Работа с разными форматами данных
+### Работа с разными форматами данных {#data-formats}
 
 ```c
 #include <stdio.h>
@@ -194,7 +187,6 @@ int main() {
     chdb_destroy_query_result(json_result);
 ```
 
-
 // Форматированный вывод
 chdb&#95;result* pretty&#95;result = chdb&#95;query(*conn, query, &quot;Pretty&quot;);
 printf(&quot;Pretty Result:\n%.*s\n\n&quot;,
@@ -209,8 +201,7 @@ return 0;
 ```
 ```
 
-
-## Пример на C++
+## Пример на C++ {#cpp-example}
 
 ```cpp
 #include <iostream>
@@ -293,8 +284,7 @@ int main() {
 }
 ```
 
-
-## Лучшие практики обработки ошибок
+## Лучшие практики обработки ошибок {#error-handling}
 
 ```c
 #include <stdio.h>
@@ -340,7 +330,6 @@ cleanup:
     return return_code;
 }
 ```
-
 
 ## Репозиторий GitHub {#github-repository}
 

@@ -6,9 +6,7 @@ title: 'covarPop'
 doc_type: 'reference'
 ---
 
-
-
-# covarPop
+# covarPop {#covarpop}
 
 母集団共分散を計算します：
 

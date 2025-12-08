@@ -10,8 +10,7 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
-# TimeSeries テーブルエンジン
+# TimeSeries テーブルエンジン {#timeseries-table-engine}
 
 <ExperimentalBadge />
 
@@ -30,8 +29,7 @@ TimeSeries テーブルエンジンを使用するには、[allow&#95;experiment
 `set allow_experimental_time_series_table = 1` コマンドを実行します。
 :::
 
-
-## 構文
+## 構文 {#syntax}
 
 ```sql
 CREATE TABLE name [(columns)] ENGINE=TimeSeries
@@ -41,8 +39,7 @@ CREATE TABLE name [(columns)] ENGINE=TimeSeries
 [METRICS db.metrics_table_name | METRICS ENGINE metrics_table_engine(arguments)]
 ```
 
-
-## 使用方法
+## 使用方法 {#usage}
 
 すべてをデフォルト設定のままにして開始するのが簡単です（列の一覧を指定しなくても `TimeSeries` テーブルを作成できます）:
 
@@ -54,7 +51,6 @@ CREATE TABLE my_table ENGINE=TimeSeries
 
 * [prometheus remote-write](../../../interfaces/prometheus.md#remote-write)
 * [prometheus remote-read](../../../interfaces/prometheus.md#remote-read)
-
 
 ## ターゲットテーブル {#target-tables}
 
@@ -102,8 +98,6 @@ _metrics_ テーブルには、収集されているメトリクスに関する�
 
 _metrics_ テーブルは次のカラムを持たなければなりません:
 
-
-
 | Name | Mandatory? | Default type | Possible types | Description |
 |---|---|---|---|---|
 | `metric_family_name` | [x] | `String` | `String` or `LowCardinality(String)` | メトリックファミリー名 |
@@ -114,9 +108,7 @@ _metrics_ テーブルは次のカラムを持たなければなりません:
 `TimeSeries` テーブルに挿入された行はすべて、実際にはこれら 3 つのターゲットテーブルに保存されます。
 `TimeSeries` テーブルには、[data](#data-table)、[tags](#tags-table)、[metrics](#metrics-table) 各テーブルのすべてのカラムが含まれます。
 
-
-
-## 作成
+## 作成 {#creation}
 
 `TimeSeries` テーブルエンジンでテーブルを作成する方法はいくつかあります。
 最も簡単なステートメントは
@@ -200,8 +192,7 @@ ENGINE = ReplacingMergeTree
 ORDER BY metric_family_name
 ```
 
-
-## 列型の調整
+## 列型の調整 {#adjusting-column-types}
 
 メインテーブルを定義する際に型を明示的に指定することで、内部ターゲットテーブルのほとんどすべての列型を調整できます。例えば、
 
@@ -225,8 +216,7 @@ ENGINE = MergeTree
 ORDER BY (id, timestamp)
 ```
 
-
-## `id` 列
+## `id` 列 {#id-column}
 
 `id` 列には識別子が格納されており、各識別子はメトリクス名とタグの組み合わせに対して計算されます。
 `id` 列の DEFAULT 式は、これらの識別子を計算するために使用される式です。
@@ -240,8 +230,7 @@ CREATE TABLE my_table
 ENGINE=TimeSeries
 ```
 
-
-## `tags` 列と `all_tags` 列
+## `tags` 列と `all_tags` 列 {#tags-and-all-tags}
 
 タグのマップを含む列が 2 つあります。`tags` と `all_tags` です。この例では同じものですが、`tags_to_columns` 設定を使用した場合には異なる場合があります。この設定を使用すると、特定のタグを `tags` 列内のマップとしてではなく、別の列に保存するよう指定できます。
 
@@ -271,8 +260,7 @@ ENGINE=TimeSeries
 SETTINGS tags_to_columns = {'instance': 'instance', 'job': 'job'}
 ```
 
-
-## 内部ターゲットテーブルのテーブルエンジン
+## 内部ターゲットテーブルのテーブルエンジン {#inner-table-engines}
 
 デフォルトでは、内部ターゲットテーブルは次のテーブルエンジンを使用します。
 
@@ -289,8 +277,7 @@ TAGS ENGINE=ReplicatedAggregatingMergeTree
 METRICS ENGINE=ReplicatedReplacingMergeTree
 ```
 
-
-## 外部ターゲットテーブル
+## 外部ターゲットテーブル {#external-target-tables}
 
 `TimeSeries` テーブルが手動で作成したテーブルを使用するように設定できます。
 
@@ -311,7 +298,6 @@ CREATE TABLE metrics_for_my_table ...
 CREATE TABLE my_table ENGINE=TimeSeries DATA data_for_my_table TAGS tags_for_my_table METRICS metrics_for_my_table;
 ```
 
-
 ## 設定 {#settings}
 
 `TimeSeries` テーブルを定義する際に指定できる設定の一覧は次のとおりです。
@@ -323,8 +309,6 @@ CREATE TABLE my_table ENGINE=TimeSeries DATA data_for_my_table TAGS tags_for_my_
 | `store_min_time_and_max_time` | Bool | true | true に設定すると、テーブルは各時系列について `min_time` と `max_time` を保存します |
 | `aggregate_min_time_and_max_time` | Bool | true | 内部ターゲットの `tags` テーブルを作成する際に、このフラグを有効にすると、`min_time` カラムの型として単なる `Nullable(DateTime64(3))` ではなく `SimpleAggregateFunction(min, Nullable(DateTime64(3)))` を使用し、`max_time` カラムについても同様にします |
 | `filter_by_min_time_and_max_time` | Bool | true | true に設定すると、テーブルは時系列をフィルタリングする際に `min_time` および `max_time` カラムを使用します |
-
-
 
 # 関数 {#functions}
 

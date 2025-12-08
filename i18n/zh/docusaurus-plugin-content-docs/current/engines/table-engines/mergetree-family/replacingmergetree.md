@@ -7,9 +7,7 @@ title: 'ReplacingMergeTree 表引擎'
 doc_type: 'reference'
 ---
 
-
-
-# ReplacingMergeTree 表引擎
+# ReplacingMergeTree 表引擎 {#replacingmergetree-table-engine}
 
 该引擎与 [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) 的不同之处在于，它会删除具有相同[排序键](../../../engines/table-engines/mergetree-family/mergetree.md)值的重复记录（指表的 `ORDER BY` 子句，而非 `PRIMARY KEY`）。
 
@@ -21,9 +19,7 @@ doc_type: 'reference'
 关于 ReplacingMergeTree 的详细指南（包括最佳实践以及性能优化方法）可在[此处](/guides/replacing-merge-tree)查阅。
 :::
 
-
-
-## 创建数据表
+## 创建数据表 {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -45,10 +41,9 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 行的唯一性是由表的 `ORDER BY` 子句决定的，而不是由 `PRIMARY KEY` 决定。
 :::
 
+## ReplacingMergeTree 参数 {#replacingmergetree-parameters}
 
-## ReplacingMergeTree 参数
-
-### `ver`
+### `ver` {#ver}
 
 `ver` — 带有版本号的列。类型为 `UInt*`、`Date`、`DateTime` 或 `DateTime64`。可选参数。
 
@@ -100,7 +95,7 @@ SELECT * FROM mySecondReplacingMT FINAL;
 └─────┴─────────┴─────────────────────┘
 ```
 
-### `is_deleted`
+### `is_deleted` {#is_deleted}
 
 `is_deleted` — 在合并过程中用于确定该行数据表示的是当前状态还是应被删除的列名；`1` 表示“删除”行，`0` 表示“状态”行。
 
@@ -139,7 +134,6 @@ INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 01:01:01', 0);
 INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 01:01:01', 1);
 ```
 
-
 select * from myThirdReplacingMT final;
 
 0 行记录。耗时：0.003 秒。
@@ -157,7 +151,6 @@ select * from myThirdReplacingMT final;
 
 ```
 ```
-
 
 ## 查询子句 {#query-clauses}
 
@@ -185,9 +178,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 - `ver` - 版本列。可选参数。相关说明参见上文。
 </details>
 
-
-
-## 查询时去重 &amp; FINAL
+## 查询时去重 &amp; FINAL {#query-time-de-duplication--final}
 
 在合并阶段，ReplacingMergeTree 使用 `ORDER BY` 列（用于创建表）中的值作为唯一标识来识别重复行，并仅保留版本最高的那一行。不过，这种方式只能在最终状态上接近正确——它并不保证所有重复行都会被去重，因此不应将其作为严格依赖。由于更新和删除记录在查询时仍可能被计算在内，查询结果因此可能不正确。
 

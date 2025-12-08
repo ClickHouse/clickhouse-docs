@@ -12,30 +12,23 @@ keywords: ['DataGrip', 'IDE для баз данных', 'JetBrains', 'SQL-кл�
 ---
 
 import Image from '@theme/IdealImage';
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import datagrip_1 from '@site/static/images/integrations/sql-clients/datagrip-1.png';
 import datagrip_5 from '@site/static/images/integrations/sql-clients/datagrip-5.png';
 import datagrip_6 from '@site/static/images/integrations/sql-clients/datagrip-6.png';
 import datagrip_7 from '@site/static/images/integrations/sql-clients/datagrip-7.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
-# Подключение DataGrip к ClickHouse
+# Подключение DataGrip к ClickHouse {#connecting-datagrip-to-clickhouse}
 
 <CommunityMaintainedBadge/>
-
-
 
 ## Запустите или загрузите DataGrip {#start-or-download-datagrip}
 
 DataGrip доступен на сайте https://www.jetbrains.com/datagrip/
 
-
-
 ## 1. Соберите сведения о подключении {#1-gather-your-connection-details}
 <ConnectionDetails />
-
-
 
 ## 2. Загрузите драйвер ClickHouse {#2-load-the-clickhouse-driver}
 
@@ -58,8 +51,6 @@ DataGrip доступен на сайте https://www.jetbrains.com/datagrip/
 
 <Image img={datagrip_1} size="lg" border alt="Вкладка Drivers в DataGrip с установкой драйвера ClickHouse" />
 
-
-
 ## 3. Подключение к ClickHouse {#3-connect-to-clickhouse}
 
 - Укажите параметры подключения к базе данных и нажмите **Test Connection**.  
@@ -78,8 +69,6 @@ ClickHouse Cloud требует шифрования SSL для всех под�
 :::
 
 <Image img={datagrip_7} border alt="Форма параметров подключения в DataGrip с настройками ClickHouse" />
-
-
 
 ## Подробнее {#learn-more}
 

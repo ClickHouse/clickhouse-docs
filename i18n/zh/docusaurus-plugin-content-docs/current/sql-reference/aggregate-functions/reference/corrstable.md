@@ -6,9 +6,7 @@ title: 'corrStable'
 doc_type: 'reference'
 ---
 
-
-
-# corrStable
+# corrStable {#corrstable}
 
 计算[皮尔逊相关系数](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient)：
 

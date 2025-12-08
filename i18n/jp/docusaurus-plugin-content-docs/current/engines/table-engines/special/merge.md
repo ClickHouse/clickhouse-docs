@@ -7,22 +7,17 @@ title: 'Merge テーブルエンジン'
 doc_type: 'reference'
 ---
 
-
-
-# Merge テーブルエンジン
+# Merge テーブルエンジン {#merge-table-engine}
 
 `Merge` エンジン（`MergeTree` と混同しないでください）は、自身ではデータを保存せず、任意の数の他のテーブルから同時に読み取ることができます。
 
 読み取りは自動的に並列化されます。テーブルへの書き込みはサポートされていません。読み取り時には、存在する場合は、実際に読み出されるテーブルのインデックスが使用されます。
 
-
-
-## テーブルを作成する
+## テーブルを作成する {#creating-a-table}
 
 ```sql
 CREATE TABLE ... Engine=Merge(db_name, tables_regexp)
 ```
-
 
 ## エンジンパラメータ {#engine-parameters}
 
@@ -40,8 +35,6 @@ CREATE TABLE ... Engine=Merge(db_name, tables_regexp)
 正規表現 — [re2](https://github.com/google/re2)（PCRE のサブセットをサポート）、大文字小文字を区別します。
 正規表現内での記号のエスケープについては「match」セクションの注意事項を参照してください。
 
-
-
 ## 使用方法 {#usage}
 
 テーブルを読み取り対象として選択する際は、たとえ正規表現にマッチしても `Merge` テーブル自体は選択されません。これはループを避けるためです。
@@ -49,9 +42,7 @@ CREATE TABLE ... Engine=Merge(db_name, tables_regexp)
 
 `Merge` エンジンの典型的な使用方法は、多数の `TinyLog` テーブルを 1 つのテーブルであるかのように扱うことです。
 
-
-
-## 例
+## 例 {#examples}
 
 **例 1**
 
@@ -103,7 +94,6 @@ SELECT * FROM WatchLog;
 │ 2018-01-02 │      2 │ hit       │   3 │
 └────────────┴────────┴───────────┴─────┘
 ```
-
 
 ## 仮想カラム {#virtual-columns}
 

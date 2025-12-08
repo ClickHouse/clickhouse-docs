@@ -8,7 +8,7 @@ doc_type: 'guide'
 keywords: ['デプロイメント', 'アーキテクチャ', 'レプリケーション', 'シャーディング', 'クラスタ構成']
 ---
 
-import ReplicationShardingTerminology from '@site/docs/_snippets/_replication-sharding-terminology.md';
+import ReplicationShardingTerminology from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_replication-sharding-terminology.md';
 
 このセクションのデプロイメント例は、ClickHouse の Support and Services チームが
 ClickHouse ユーザーに提供しているアドバイスに基づいています。これらは実際に動作する例であり、

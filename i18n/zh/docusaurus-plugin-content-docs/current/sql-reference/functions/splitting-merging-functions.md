@@ -8,8 +8,7 @@ doc_type: 'reference'
 
 import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
-
-# 字符串分割函数
+# 字符串分割函数 {#functions-for-splitting-strings}
 
 :::note
 以下文档由 `system.functions` 系统表自动生成。
@@ -61,7 +60,6 @@ SELECT alphaTokens('abca1abc');
 └─────────────────────────┘
 ```
 
-
 ## arrayStringConcat {#arrayStringConcat}
 
 引入版本:v1.1
@@ -96,7 +94,6 @@ SELECT arrayStringConcat(['12/05/2021', '12:50:00'], ' ') AS DateString;
 │ 12/05/2021 12:50:00 │
 └─────────────────────┘
 ```
-
 
 ## extractAllGroupsVertical {#extractAllGroupsVertical}
 
@@ -138,7 +135,6 @@ SELECT extractAllGroupsVertical(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 [['Server','nginx'],['Date','Tue, 22 Jan 2019 00:26:14 GMT'],['Content-Type','text/html; charset=UTF-8'],['Connection','keep-alive']]
 ```
 
-
 ## ngrams {#ngrams}
 
 引入版本:v21.11
@@ -171,7 +167,6 @@ SELECT ngrams('ClickHouse', 3);
 ```response title=响应
 ['Cli','lic','ick','ckH','kHo','Hou','ous','use']
 ```
-
 
 ## splitByChar {#splitByChar}
 
@@ -220,7 +215,6 @@ SELECT splitByChar(',', '1,2,3,abcde');
 └──────────────────────────┘
 ```
 
-
 ## splitByNonAlpha {#splitByNonAlpha}
 
 引入版本：v21.9
@@ -257,7 +251,6 @@ SELECT splitByNonAlpha('user@domain.com');
 ```response title=Response
 ['user','domain','com']
 ```
-
 
 ## splitByRegexp {#splitByRegexp}
 
@@ -319,7 +312,6 @@ SELECT splitByRegexp('', 'abcde');
 └────────────────────────────┘
 ```
 
-
 ## splitByString {#splitByString}
 
 引入版本:v1.1
@@ -379,7 +371,6 @@ SELECT splitByString('', 'abcde');
 └────────────────────────────┘
 ```
 
-
 ## splitByWhitespace {#splitByWhitespace}
 
 引入版本:v21.9
@@ -416,7 +407,6 @@ SELECT splitByWhitespace('  1!  a,  b.  ');
 ```response title=Response
 ['1!','a,','b.']
 ```
-
 
 ## tokens {#tokens}
 

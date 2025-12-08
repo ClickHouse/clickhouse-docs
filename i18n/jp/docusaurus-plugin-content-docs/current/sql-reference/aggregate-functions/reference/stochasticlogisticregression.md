@@ -6,13 +6,11 @@ title: 'stochasticLogisticRegression'
 doc_type: 'reference'
 ---
 
-
-
-# stochasticLogisticRegression
+# stochasticLogisticRegression {#stochasticlogisticregression}
 
 この関数は確率的ロジスティック回帰を実装します。二値分類問題に使用でき、stochasticLinearRegression と同じカスタムパラメータをサポートし、動作も同様です。
 
-### Parameters
+### Parameters {#parameters}
 
 パラメータは stochasticLinearRegression とまったく同じです:
 `learning rate`、`l2 regularization coefficient`、`mini-batch size`、`method for updating weights`。

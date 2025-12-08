@@ -5,13 +5,9 @@ title: 'loop'
 doc_type: 'reference'
 ---
 
+# `loop` 表函数 {#loop-table-function}
 
-
-# `loop` 表函数
-
-
-
-## 语法
+## 语法 {#syntax}
 
 ```sql
 SELECT ... FROM loop(database, table);
@@ -19,7 +15,6 @@ SELECT ... FROM loop(database.table);
 SELECT ... FROM loop(table);
 SELECT ... FROM loop(other_table_function(...));
 ```
-
 
 ## 参数 {#arguments}
 
@@ -29,15 +24,11 @@ SELECT ... FROM loop(other_table_function(...));
 | `table`                     | 表名称。                                                                                                             |
 | `other_table_function(...)` | 其他表函数。例如：`SELECT * FROM loop(numbers(10));` 中的 `other_table_function(...)` 即为 `numbers(10)`。          |
 
-
-
 ## 返回值 {#returned_values}
 
 在无限循环中返回查询结果。
 
-
-
-## 示例
+## 示例 {#examples}
 
 从 ClickHouse 中查询数据：
 

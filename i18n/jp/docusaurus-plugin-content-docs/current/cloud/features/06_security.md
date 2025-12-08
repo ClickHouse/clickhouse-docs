@@ -7,15 +7,11 @@ doc_type: 'reference'
 keywords: ['セキュリティ', 'クラウドセキュリティ', 'アクセス制御', 'コンプライアンス', 'データ保護']
 ---
 
-
-
-# ClickHouse Cloud のセキュリティ
+# ClickHouse Cloud のセキュリティ {#clickhouse-cloud-security}
 
 本ドキュメントでは、ClickHouse Cloud の組織およびサービスを保護するために利用可能なセキュリティオプションとベストプラクティスについて詳述します。
 ClickHouse は、安全な分析用データベースソリューションを提供することに注力しており、データおよびサービスの完全性を保護することを最優先事項としています。
 ここでは、ユーザーが ClickHouse 環境を保護するのに役立つよう設計された、さまざまな方法について説明します。
-
-
 
 ## クラウドコンソールの認証 {#cloud-console-auth}
 
@@ -49,8 +45,6 @@ ClickHouse Cloud は、Google または Microsoft のソーシャル認証によ
 
 [API 認証](/cloud/manage/openapi)の詳細はこちらをご覧ください。
 
-
-
 ## データベース認証 {#database-auth}
 
 ### データベースパスワード認証 {#db-password-auth}
@@ -64,8 +58,6 @@ ClickHouse データベースユーザーのパスワードは、NIST 800-63B �
 ClickHouse データベースユーザーは、SSH 認証を使用するように設定できます。
 
 [SSH 認証](/cloud/security/manage-database-users#database-ssh)の詳細をご覧ください。
-
-
 
 ## アクセス制御 {#access-control}
 
@@ -81,8 +73,6 @@ ClickHouse のデータベースは、ユーザーへの権限付与に基づく
 
 [データベースユーザーの権限付与](/cloud/security/manage-database-users#database-permissions) の詳細をご覧ください。
 
-
-
 ## ネットワークセキュリティ {#network-security}
 
 ### IP フィルター {#ip-filters}
@@ -96,8 +86,6 @@ ClickHouse サービスへの受信接続を制限するために IP フィル�
 プライベート接続を使用して、AWS、GCP、Azure から ClickHouse クラスターに接続します。
 
 詳しくは、[プライベート接続](/cloud/security/connectivity/private-networking)を参照してください。
-
-
 
 ## 暗号化 {#encryption}
 
@@ -119,8 +107,6 @@ ClickHouse Cloud Enterprise のお客様は、データベースレベルの暗�
 
 詳しくは、[お客様管理の暗号鍵](/cloud/security/cmek#customer-managed-encryption-keys-cmek)をご覧ください。
 
-
-
 ## 監査とログ記録 {#auditing-logging}
 
 ### コンソール監査ログ {#console-audit-log}
@@ -140,8 +126,6 @@ ClickHouse Cloud Enterprise のお客様は、データベースレベルの暗�
 ClickHouse BYOC インスタンスを管理するセキュリティチーム向けのサンプル検出クエリです。
 
 [BYOC セキュリティプレイブック](/cloud/security/audit-logging/byoc-security-playbook)の詳細をご覧ください。
-
-
 
 ## コンプライアンス {#compliance}
 

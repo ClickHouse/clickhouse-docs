@@ -10,27 +10,24 @@ doc_type: 'guide'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
-# Подключение ClickHouse к PostgreSQL
+# Подключение ClickHouse к PostgreSQL {#connecting-clickhouse-to-postgresql}
 
 На этой странице рассматриваются следующие варианты интеграции PostgreSQL с ClickHouse:
 
-- использование движка таблиц `PostgreSQL` для чтения данных из таблицы PostgreSQL
-- использование экспериментального движка баз данных `MaterializedPostgreSQL` для синхронизации базы данных в PostgreSQL с базой данных в ClickHouse
+* использование движка таблиц `PostgreSQL` для чтения данных из таблицы PostgreSQL
+* использование экспериментального движка баз данных `MaterializedPostgreSQL` для синхронизации базы данных в PostgreSQL с базой данных в ClickHouse
 
 :::tip
 Мы рекомендуем использовать [ClickPipes](/integrations/clickpipes/postgres) — управляемый сервис интеграции для ClickHouse Cloud на базе PeerDB.
 В качестве альтернативы [PeerDB](https://github.com/PeerDB-io/peerdb) доступен как open-source CDC‑инструмент, специально разработанный для репликации базы данных PostgreSQL как в самостоятельно развернутый ClickHouse, так и в ClickHouse Cloud.
 :::
 
-
-
-## Использование табличного движка PostgreSQL
+## Использование табличного движка PostgreSQL {#using-the-postgresql-table-engine}
 
 Табличный движок `PostgreSQL` позволяет выполнять операции **SELECT** и **INSERT** над данными, хранящимися на удалённом сервере PostgreSQL, из ClickHouse.
 В этой статье иллюстрируются базовые способы интеграции на примере одной таблицы.
 
-### 1. Настройка PostgreSQL
+### 1. Настройка PostgreSQL {#1-setting-up-postgresql}
 
 1. В `postgresql.conf` добавьте следующую запись, чтобы разрешить PostgreSQL прослушивать сетевые интерфейсы:
 
@@ -93,7 +90,7 @@ psql -U clickhouse_user -W -d db_in_psg -h <ваш_хост_postgresql>
 Обратитесь к ClickHouse [Cloud Endpoints API](/cloud/get-started/query-endpoints), чтобы получить сведения об исходящем трафике.
 :::
 
-### 2. Определите таблицу в ClickHouse
+### 2. Определите таблицу в ClickHouse {#2-define-a-table-in-clickhouse}
 
 1. Подключитесь к `clickhouse-client`:
 
@@ -131,7 +128,7 @@ ENGINE = PostgreSQL('postgres-host.domain.com:5432', 'db_in_psg', 'table1', 'cli
 См. страницу документации [PostgreSQL table engine](/engines/table-engines/integrations/postgresql) для полного списка параметров.
 :::
 
-### 3 Тестирование интеграции
+### 3 Тестирование интеграции {#3-test-the-integration}
 
 1. В ClickHouse просмотрите несколько первых строк:
 
@@ -165,7 +162,6 @@ VALUES
 ```sql
 SELECT * FROM db_in_ch.table1
 ```
-
 
 Ответ должен выглядеть следующим образом:
 
@@ -208,8 +204,7 @@ id | column1
 В этом примере была продемонстрирована базовая интеграция между PostgreSQL и ClickHouse с использованием движка таблицы `PostrgeSQL`.
 Ознакомьтесь с [документацией по движку таблицы PostgreSQL](/engines/table-engines/integrations/postgresql), чтобы узнать о дополнительных возможностях, таких как указание схем, возврат только подмножества столбцов и подключение к нескольким репликам. Также рекомендуем ознакомиться с записью в блоге [ClickHouse and PostgreSQL - a match made in data heaven - part 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres).
 
-
-## Использование движка базы данных MaterializedPostgreSQL
+## Использование движка базы данных MaterializedPostgreSQL {#using-the-materializedpostgresql-database-engine}
 
 <CloudNotSupportedBadge />
 
@@ -220,7 +215,7 @@ id | column1
 
 ***В описанных ниже процедурах используются PostgreSQL CLI (psql) и ClickHouse CLI (clickhouse-client). Сервер PostgreSQL установлен на Linux. Далее приведены минимальные настройки для новой тестовой установки базы данных PostgreSQL.***
 
-### 1. В PostgreSQL
+### 1. В PostgreSQL {#1-in-postgresql}
 
 1. В `postgresql.conf` установите минимальные параметры прослушивания, уровень WAL для репликации и слоты репликации:
 
@@ -275,7 +270,6 @@ VALUES
 
 7. Настройте PostgreSQL так, чтобы он разрешал подключения к новой базе данных новому пользователю для репликации. Ниже приведена минимально необходимая запись, которую нужно добавить в файл `pg_hba.conf`:
 
-
 ```text
 # TYPE  DATABASE        USER            ADDRESS                 METHOD
 host    db1             clickhouse_user 192.168.1.0/24          password
@@ -295,7 +289,7 @@ host    db1             clickhouse_user 192.168.1.0/24          password
  psql -U clickhouse_user -W -d db1 -h <ваш_хост_postgresql>
 ```
 
-### 2. В ClickHouse
+### 2. В ClickHouse {#2-in-clickhouse}
 
 1. подключитесь к CLI ClickHouse
 
@@ -349,7 +343,7 @@ Query id: df2381ac-4e30-4535-b22e-8be3894aaafc
 └────┴─────────┘
 ```
 
-### 3. Проверьте базовую репликацию
+### 3. Проверьте базовую репликацию {#2-in-clickhouse}
 
 1. В PostgreSQL добавьте новые строки:
 
@@ -385,7 +379,7 @@ Query id: b0729816-3917-44d3-8d1a-fed912fb59ce
 └────┴─────────┘
 ```
 
-### 4. Итоги
+### 4. Итоги {#3-test-basic-replication}
 
 В данном руководстве по интеграции был рассмотрен простой пример репликации базы данных с одной таблицей, однако существуют и более продвинутые варианты, включая репликацию всей базы данных или добавление новых таблиц и схем к уже настроенным репликациям. Хотя DDL-команды не поддерживаются в этой схеме репликации, движок можно настроить на обнаружение изменений и перезагрузку таблиц при внесении структурных изменений.
 

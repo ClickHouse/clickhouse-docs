@@ -7,9 +7,7 @@ title: 'クエリ条件キャッシュ'
 doc_type: 'guide'
 ---
 
-
-
-# クエリ条件キャッシュ
+# クエリ条件キャッシュ {#query-condition-cache}
 
 :::note
 クエリ条件キャッシュは、[enable_analyzer](https://clickhouse.com/docs/operations/settings/settings#enable_analyzer) が true に設定されている場合にのみ動作します。これはデフォルト値です。
@@ -33,8 +31,6 @@ ClickHouse には、そのようなクエリパターンを最適化するため
 - 2 つ目に、データの大部分が不変（クエリ間で変化しない）である必要があります。これは一般に ClickHouse では当てはまります。なぜなら、パーツは不変であり、INSERT によってのみ作成されるからです。
 - 3 つ目に、フィルタが選択的である、つまりフィルタ条件を満たす行が相対的に少ない必要があります。フィルタ条件に一致する行が少なければ少ないほど、ビット 0（該当行なし）で記録されるグラニュールが増え、その結果として後続のフィルタ評価から「プルーニング（prune）」できるデータ量が増加します。
 
-
-
 ## メモリ使用量 {#memory-consumption}
 
 クエリ条件キャッシュは、フィルタ条件とグラニュールごとに 1 ビットのみを保存するため、使用するメモリ量はごくわずかです。
@@ -43,9 +39,7 @@ ClickHouse には、そのようなクエリパターンを最適化するため
 各エントリは 1 つのマーク（デフォルトでは 8192 行）を表すため、キャッシュは 1 つのカラムについて最大 6,871,947,673,600（6.8 兆）行をカバーできます。
 実際には、フィルタは複数のカラムに対して評価されるため、この数値はフィルタ対象のカラム数で割る必要があります。
 
-
-
-## 設定項目と使用方法
+## 設定項目と使用方法 {#configuration-settings-and-usage}
 
 [use&#95;query&#95;condition&#95;cache](settings/settings#use_query_condition_cache) 設定は、特定のクエリ、または現在のセッション内のすべてのクエリでクエリ条件キャッシュを利用するかどうかを制御します。
 
@@ -61,7 +55,6 @@ SETTINGS use_query_condition_cache = true;
 クエリ条件キャッシュは、述語を満たさないテーブルの範囲を保存します。
 以降に同じクエリを、パラメータ `use_query_condition_cache = true` を指定して実行した場合、クエリ条件キャッシュを利用してスキャン対象のデータ量を減らします。
 
-
 ## 管理 {#administration}
 
 クエリ条件キャッシュは、ClickHouse を再起動しても保持されません。
@@ -75,8 +68,6 @@ SETTINGS use_query_condition_cache = true;
 
 データベースの起動以降のクエリ条件キャッシュのヒット数とミス数は、システムテーブル [system.events](system-tables/events.md) において、イベント "QueryConditionCacheHits" および "QueryConditionCacheMisses" として表示されます。
 いずれのカウンタも、設定 `use_query_condition_cache = true` を有効にして実行された `SELECT` クエリに対してのみ更新され、その他のクエリは "QueryCacheMisses" に影響しません。
-
-
 
 ## 関連コンテンツ {#related-content}
 

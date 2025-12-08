@@ -21,13 +21,9 @@ title: '经验总结 - Too Many Parts 问题'
 description: 'Too Many Parts 问题的解决方案与预防'
 ---
 
-
-
 # 部分过多问题 {#the-too-many-parts-problem}
 *本指南属于一系列基于社区线下交流与经验分享整理而成的内容。若想获取更多真实场景下的解决方案和见解，可以[按具体问题浏览](./community-wisdom.md)。*
 *需要更多性能优化方面的建议？请查看[性能优化](./performance-optimization.md)社区洞见指南。*
-
-
 
 ## 理解问题 {#understanding-the-problem}
 
@@ -38,9 +34,7 @@ ClickHouse 会抛出 “Too many parts” 错误，以避免出现严重的性�
 - [Parts](/parts)
 - [Parts System Table](/operations/system-tables/parts)
 
-
-
-## 及早识别问题
+## 及早识别问题 {#recognize-parts-problem}
 
 此查询通过分析所有活动表的分片数量和大小来监控表碎片情况。它会识别出分片数量过多或过小、可能需要合并优化的表。请定期使用此查询，在碎片问题影响查询性能之前将其发现。
 
@@ -75,7 +69,6 @@ GROUP BY database, table
 ORDER BY total_parts DESC
 LIMIT 20;
 ```
-
 
 ## 视频资源 {#video-sources}
 

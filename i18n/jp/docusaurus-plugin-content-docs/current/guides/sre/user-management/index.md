@@ -8,9 +8,7 @@ description: 'ClickHouse Cloud におけるアクセス制御とアカウント�
 doc_type: 'guide'
 ---
 
-
-
-# ClickHouse でのユーザーとロールの作成
+# ClickHouse でのユーザーとロールの作成 {#creating-users-and-roles-in-clickhouse}
 
 ClickHouse は、[RBAC](https://en.wikipedia.org/wiki/Role-based_access_control) に基づくアクセス制御をサポートしています。
 
@@ -40,8 +38,6 @@ ClickHouse Cloud コンソールユーザーの管理方法を探している場
 :::
 
 すべてのユーザー、ロール、プロファイルなどと、それらに対するすべての権限付与を確認するには、[`SHOW ACCESS`](/sql-reference/statements/show#show-access) ステートメントを使用します。
-
-
 
 ## 概要 {#access-control-usage}
 
@@ -113,8 +109,6 @@ ClickHouse の利用を開始したばかりの場合は、次のシナリオを
 
 #### 行ポリシー {#row-policy-management}
 
-
-
 Row policy は、どの行がユーザーまたはロールから利用可能かを定義するフィルターです。Row policy には、特定の 1 つのテーブルに対するフィルターと、この row policy を適用すべきロールやユーザーの一覧が含まれます。
 
 :::note
@@ -166,8 +160,6 @@ Quota には、特定の期間に対する一連の制限と、この quota を�
 
     既定では、SQL ベースのアクセス制御とアカウント管理はすべてのユーザーで無効になっています。`users.xml` 設定ファイルで少なくとも 1 つのユーザーを設定し、[`access_management`](/operations/settings/settings-users.md#access_management-user-setting)、`named_collection_control`、`show_named_collections`、`show_named_collections_secrets` 設定の値を 1 に設定する必要があります。
 
-
-
 ## SQL ユーザーとロールの定義 {#defining-sql-users-and-roles}
 
 :::tip
@@ -209,9 +201,7 @@ ClickHouse Cloud を使用している場合は、[Cloud access management](/clo
     GRANT ALL ON *.* TO clickhouse_admin WITH GRANT OPTION;
     ```
 
-
-
-## ALTER 権限
+## ALTER 権限 {#alter-permissions}
 
 この記事は、権限の定義方法と、特権ユーザーが `ALTER` ステートメントを使用する際に権限がどのように機能するかについて、よりよく理解できるようにすることを目的としています。
 
@@ -338,7 +328,6 @@ GRANT ALTER COLUMN ON my_db.my_table TO my_user;
 ```sql
 SHOW GRANTS FOR my_user;
 ```
-
 
 ```response
 SHOW GRANTS FOR my_user
@@ -494,7 +483,6 @@ DESCRIBE TABLE my_db.my_table
 
 Query id: ab9cb2d0-5b1a-42e1-bc9c-c7ff351cb272
 ```
-
 
 ┌─name────┬─type───┬─default&#95;type─┬─default&#95;expression─┬─comment─┬─codec&#95;expression─┬─ttl&#95;expression─┐
 │ id      │ UInt64 │              │                    │         │                  │                │

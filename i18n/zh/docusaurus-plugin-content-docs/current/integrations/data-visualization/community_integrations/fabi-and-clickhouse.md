@@ -13,10 +13,9 @@ import fabi_03 from '@site/static/images/integrations/data-visualization/fabi_03
 import fabi_04 from '@site/static/images/integrations/data-visualization/fabi_04.png';
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-
-# 将 ClickHouse 连接到 Fabi.ai
+# 将 ClickHouse 连接到 Fabi.ai {#connecting-clickhouse-to-fabiai}
 
 <CommunityMaintainedBadge/>
 
@@ -24,13 +23,9 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
 <Image size="md" img={fabi_01} alt="Fabi.ai 数据探索与工作流平台" border />
 
-
-
 ## 收集连接信息 {#gather-your-connection-details}
 
 <ConnectionDetails />
-
-
 
 ## 创建你的 Fabi.ai 账户并连接 ClickHouse {#connect-to-clickhouse}
 
@@ -46,15 +41,11 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
 3. 恭喜！你已经将 ClickHouse 成功集成到 Fabi.ai 中。
 
-
-
 ## 查询 ClickHouse。 {#querying-clickhouse}
 
 将 Fabi.ai 连接到 ClickHouse 之后，打开任意一个 [Smartbook](https://docs.fabi.ai/analysis_and_reporting/smartbooks) 并创建一个 SQL 单元格。如果你的 Fabi.ai 实例只连接了一个数据源，SQL 单元格会自动将 ClickHouse 设为默认数据源；否则，你可以在数据源下拉菜单中选择要查询的数据源。
 
    <Image size="lg" img={fabi_04} alt="Querying ClickHouse" border />
-
-
 
 ## 更多资源 {#additional-resources}
 

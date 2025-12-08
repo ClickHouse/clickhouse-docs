@@ -6,9 +6,7 @@ title: 'system.workloads'
 doc_type: 'reference'
 ---
 
-
-
-# system.workloads
+# system.workloads {#systemworkloads}
 
 Содержит информацию о [рабочих нагрузках](/operations/workload-scheduling.md#workload_entity_storage), размещённых на локальном сервере. Таблица содержит по одной строке для каждой рабочей нагрузки.
 

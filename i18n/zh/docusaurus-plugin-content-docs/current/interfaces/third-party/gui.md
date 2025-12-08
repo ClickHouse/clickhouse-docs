@@ -7,11 +7,7 @@ title: '第三方开发者提供的图形界面'
 doc_type: 'reference'
 ---
 
-
-
-# 第三方开发者的可视化界面
-
-
+# 第三方开发者的可视化界面 {#visual-interfaces-from-third-party-developers}
 
 ## 开源 {#open-source}
 
@@ -117,8 +113,6 @@ doc_type: 'reference'
 
 ### LightHouse {#lighthouse}
 
-
-
 [LightHouse](https://github.com/VKCOM/lighthouse) 是一个适用于 ClickHouse 的轻量级 Web 界面。
 
 功能：
@@ -200,8 +194,6 @@ ClickHouse 数据源插件为 ClickHouse 作为后端数据库提供支持。
 [xeus-clickhouse](https://github.com/wangfenjin/xeus-clickhouse) 是一个适用于 ClickHouse 的 Jupyter 内核，支持在 Jupyter 中使用 SQL 查询 ClickHouse 数据。
 
 ### MindsDB Studio {#mindsdb}
-
-
 
 [MindsDB](https://mindsdb.com/) 是一个面向包括 ClickHouse 在内的数据库的开源 AI 层，可以让你轻松开发、训练和部署最先进的机器学习模型。MindsDB Studio（GUI）可以从数据库中训练新模型、解释模型生成的预测结果、识别潜在的数据偏差，并使用可解释 AI 功能评估和可视化模型精度，从而更快速地调整和优化你的机器学习模型。
 
@@ -303,8 +295,6 @@ ClickHouse 数据源插件为 ClickHouse 作为后端数据库提供支持。
 
 ### CKibana {#ckibana}
 
-
-
 [CKibana](https://github.com/TongchengOpenSource/ckibana) 是一款轻量级服务，可让你使用原生 Kibana UI 轻松搜索、探索和可视化 ClickHouse 数据。
 
 功能特性：
@@ -328,8 +318,6 @@ ClickHouse 数据源插件为 ClickHouse 作为后端数据库提供支持。
 - 在 ClickHouse 端无需额外的 Agent 或组件。
 
 [Telescope 源码](https://github.com/iamtelescope/telescope) · [在线演示](https://demo.iamtelescope.net)
-
-
 
 ## 商业版 {#commercial}
 
@@ -409,8 +397,6 @@ SeekTable 对于个人/个体使用是[免费的](https://www.seektable.com/help
 ### TABLUM.IO {#tablum_io}
 
 [TABLUM.IO](https://tablum.io/) 是一款用于 ETL 和可视化的在线查询与分析工具。它支持连接 ClickHouse，可通过通用的 SQL 控制台查询数据，也可以从静态文件和第三方服务加载数据。TABLUM.IO 可以将查询结果可视化为图表和表格。
-
-
 
 功能：
 - ETL：从常见数据库、本地和远程文件以及 API 调用中加载数据。

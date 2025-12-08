@@ -7,11 +7,7 @@ sidebar_label: 'countResample'
 doc_type: 'reference'
 ---
 
-
-
 # countResample {#countResample}
-
-
 
 ## Описание {#description}
 
@@ -20,11 +16,9 @@ doc_type: 'reference'
 чтобы подсчитать значения заданного ключевого столбца по фиксированному числу
 интервалов (`N`).
 
+## Пример использования {#example-usage}
 
-
-## Пример использования
-
-### Базовый пример
+### Базовый пример {#basic-example}
 
 Рассмотрим пример. Мы создадим таблицу, которая будет содержать `name`, `age` и
 `wage` сотрудников, и вставим в неё несколько записей:
@@ -62,7 +56,6 @@ SELECT countResample(30, 75, 30)(name, age) AS amount FROM employee_data
 │ [3,2]  │
 └────────┘
 ```
-
 
 ## См. также {#see-also}
 - [`count`](/sql-reference/aggregate-functions/reference/count)

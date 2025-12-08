@@ -21,13 +21,9 @@ title: 'レッスン - パーツ数が多すぎる問題'
 description: 'Too Many Parts の解決策と防止策'
 ---
 
-
-
 # パーツが多すぎる問題 {#the-too-many-parts-problem}
 *このガイドは、コミュニティミートアップから得られた知見をまとめたコレクションの一部です。より実践的なソリューションやインサイトについては、[問題別に閲覧](./community-wisdom.md)できます。*
 *さらにパフォーマンス最適化のヒントが必要な場合は、[パフォーマンス最適化](./performance-optimization.md) に関するコミュニティインサイトガイドを参照してください。*
-
-
 
 ## 問題の理解 {#understanding-the-problem}
 
@@ -38,9 +34,7 @@ ClickHouse は深刻なパフォーマンス低下を防ぐため、「Too many 
 - [Parts](/parts)
 - [Parts システムテーブル](/operations/system-tables/parts)
 
-
-
-## 問題を早期に把握する
+## 問題を早期に把握する {#recognize-parts-problem}
 
 このクエリは、すべてのアクティブなテーブルに対してパーツ数とサイズを分析することで、テーブルのフラグメンテーションを監視します。マージの最適化が必要となる可能性がある、サイズが大きすぎる／小さすぎるパーツを持つテーブルを特定します。クエリパフォーマンスに影響が出る前にフラグメンテーションの問題を検出できるよう、これを定期的に実行してください。
 
@@ -75,7 +69,6 @@ GROUP BY database, table
 ORDER BY total_parts DESC
 LIMIT 20;
 ```
-
 
 ## 動画リソース {#video-sources}
 

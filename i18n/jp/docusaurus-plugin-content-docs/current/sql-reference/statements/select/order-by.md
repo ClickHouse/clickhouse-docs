@@ -6,9 +6,7 @@ title: 'ORDER BY 句'
 doc_type: 'reference'
 ---
 
-
-
-# ORDER BY 句
+# ORDER BY 句 {#order-by-clause}
 
 `ORDER BY` 句には次のいずれかを指定できます。
 
@@ -27,16 +25,14 @@ doc_type: 'reference'
 ソート対象の式の値が同一の行は、任意（非決定的）な順序で返されます。
 `SELECT` 文で `ORDER BY` 句を省略した場合も、行の並び順は任意（非決定的）です。
 
-
-
-## 特殊値のソート順
+## 特殊値のソート順 {#sorting-of-special-values}
 
 `NaN` および `NULL` のソート順には、2 つの方法があります。
 
 * デフォルトの場合、または `NULLS LAST` 修飾子を使用する場合: まず通常の値、その後に `NaN`、最後に `NULL`。
 * `NULLS FIRST` 修飾子を使用する場合: まず `NULL`、次に `NaN`、最後に他の値。
 
-### 例
+### 例 {#example}
 
 次のテーブルに対して
 
@@ -74,7 +70,6 @@ doc_type: 'reference'
 
 浮動小数点数をソートする場合、NaN は他の値とは別扱いになります。ソート順に関係なく、NaN は常に末尾に並びます。言い換えると、昇順ソートでは NaN は他のすべての数値よりも大きいかのように扱われ、降順ソートでは残りの値よりも小さいかのように扱われます。
 
-
 ## 照合順序サポート {#collation-support}
 
 [String](../../../sql-reference/data-types/string.md) 値でソートする場合、照合順序（比較方法）を指定できます。例: `ORDER BY SearchPhrase COLLATE 'tr'` — 文字列が UTF-8 でエンコードされていることを前提として、トルコ語アルファベットを用い、大文字小文字を区別せずにキーワードを昇順でソートします。`COLLATE` は、ORDER BY 句内の各式ごとに個別に指定してもしなくてもかまいません。`ASC` または `DESC` を指定する場合は、その後ろに `COLLATE` を指定します。`COLLATE` を使用する場合、ソートは常に大文字小文字を区別しません。
@@ -83,9 +78,7 @@ doc_type: 'reference'
 
 `COLLATE` によるソートは通常のバイト列によるソートより効率が低いため、少数行の最終的なソートにのみ `COLLATE` を使用することを推奨します。
 
-
-
-## 照合順序の例
+## 照合順序の例 {#collation-examples}
 
 [String](../../../sql-reference/data-types/string.md) 値のみの例:
 
@@ -229,7 +222,6 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 
 [Tuple](../../../sql-reference/data-types/tuple.md) を使った例:
 
-
 ```response
 ┌─x─┬─s───────┐
 │ 1 │ (1,'Z') │
@@ -262,7 +254,6 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 └───┴─────────┘
 ```
 
-
 ## 実装の詳細 {#implementation-details}
 
 `ORDER BY` に加えて十分に小さい [LIMIT](../../../sql-reference/statements/select/limit.md) を指定すると、使用される RAM を抑えられます。そうでない場合、消費されるメモリ量はソート対象データ量に比例します。分散クエリ処理では、[GROUP BY](/sql-reference/statements/select/group-by) を省略すると、ソートはリモートサーバー側で部分的に実行され、その結果がリクエスト元サーバーでマージされます。これは、分散ソートの場合、ソート対象データ量が単一サーバーのメモリ量を上回る可能性があることを意味します。
@@ -272,8 +263,6 @@ RAM が不足している場合は、外部メモリ（ディスク）を使用�
 クエリの実行では、`max_bytes_before_external_sort` より多くのメモリが使用される場合があります。このため、この設定値は `max_memory_usage` より十分小さくする必要があります。例えば、サーバーに 128 GB の RAM があり、単一のクエリを実行する必要がある場合は、`max_memory_usage` を 100 GB に、`max_bytes_before_external_sort` を 80 GB に設定します。
 
 外部ソートは、RAM 内でのソートと比較して効率が大きく低下します。
-
-
 
 ## データ読み取りの最適化 {#optimization-of-data-reading}
 
@@ -295,9 +284,7 @@ RAM が不足している場合は、外部メモリ（ディスク）を使用�
 
 `MaterializedView` エンジンのテーブルでは、`SELECT ... FROM merge_tree_table ORDER BY pk` のようなビューに対して最適化が機能します。ただし、ビュー定義のクエリに `ORDER BY` 句がない場合の `SELECT ... FROM view ORDER BY pk` のようなクエリではサポートされません。
 
-
-
-## ORDER BY Expr WITH FILL 修飾子
+## ORDER BY Expr WITH FILL 修飾子 {#order-by-expr-with-fill-modifier}
 
 この修飾子は、[LIMIT ... WITH TIES 修飾子](/sql-reference/statements/select/limit#limit--with-ties-modifier)と組み合わせて使用することもできます。
 
@@ -385,7 +372,6 @@ ORDER BY
 
 結果:
 
-
 ```text
 ┌───d1───────┬───d2───────┬─source───┐
 │ 1970-01-11 │ 1970-01-02 │ original │
@@ -447,7 +433,6 @@ ORDER BY
     d1 WITH FILL STEP INTERVAL 1 DAY,
     d2 WITH FILL;
 ```
-
 
 結果:
 
@@ -615,7 +600,6 @@ SELECT n, source, inter FROM (
 
 結果：
 
-
 ```text
 ┌───n─┬─source───┬─inter─┐
 │   0 │          │     0 │
@@ -634,8 +618,7 @@ SELECT n, source, inter FROM (
 └─────┴──────────┴───────┘
 ```
 
-
-## ソートプレフィックス単位での補間
+## ソートプレフィックス単位での補間 {#filling-grouped-by-sorting-prefix}
 
 特定のカラムで同じ値を持つ行ごとに、独立して補間を行うと便利な場合があります。代表的な例は、時系列データの欠損値を補間するケースです。
 次のような時系列テーブルがあるとします。
@@ -686,7 +669,6 @@ INTERPOLATE ( value AS 9999 )
 
 ここでは、`value` 列に `9999` を補間して、埋められた行がより目立つようにしています。
 この挙動は、`use_with_fill_by_sorting_prefix` の設定によって制御されます（デフォルトで有効です）。
-
 
 ## 関連コンテンツ {#related-content}
 

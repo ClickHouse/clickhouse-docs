@@ -6,9 +6,7 @@ title: 'system.time_zones'
 doc_type: 'reference'
 ---
 
-
-
-# system.time&#95;zones
+# system.time&#95;zones {#systemtime&#95;zones}
 
 ClickHouse サーバーがサポートしているタイムゾーンの一覧を保持します。このタイムゾーン一覧は、ClickHouse のバージョンによって異なる場合があります。
 

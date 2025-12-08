@@ -18,18 +18,15 @@ import chartbrew_07 from '@site/static/images/integrations/data-visualization/ch
 import chartbrew_08 from '@site/static/images/integrations/data-visualization/chartbrew_08.png';
 import chartbrew_09 from '@site/static/images/integrations/data-visualization/chartbrew_09.png';
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import Image from '@theme/IdealImage';
 
-
-# 将 Chartbrew 连接到 ClickHouse
+# 将 Chartbrew 连接到 ClickHouse {#connecting-chartbrew-to-clickhouse}
 
 <CommunityMaintainedBadge/>
 
 [Chartbrew](https://chartbrew.com) 是一个数据可视化平台，允许用户创建仪表盘并实时监控数据。它支持包括 ClickHouse 在内的多种数据源，并提供无代码界面用于构建图表和报表。
-
-
 
 ## 目标 {#goal}
 
@@ -41,13 +38,9 @@ import Image from '@theme/IdealImage';
 如果您还没有可用的数据集，可以添加一个示例数据集。本指南使用 [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md) 数据集。
 :::
 
-
-
 ## 1. 收集连接信息 {#1-gather-your-connection-details}
 
 <ConnectionDetails />
-
-
 
 ## 2. 将 Chartbrew 连接到 ClickHouse {#2-connect-chartbrew-to-clickhouse}
 
@@ -72,9 +65,7 @@ import Image from '@theme/IdealImage';
 
    <Image img={chartbrew_04} size="lg" alt="Chartbrew 中的 ClickHouse JSON schema" />
 
-
-
-## 3. 创建数据集并运行 SQL 查询
+## 3. 创建数据集并运行 SQL 查询 {#3-create-a-dataset-and-run-a-sql-query}
 
 1. 点击 **Create dataset** 按钮，或导航到 **Datasets** 选项卡来创建一个数据集。
 2. 选择你之前创建的 ClickHouse 连接。
@@ -100,7 +91,6 @@ ORDER BY year;
 
 成功获取数据后，点击 **Configure dataset** 来设置可视化参数。
 
-
 ## 4. 创建可视化 {#4-create-a-visualization}
    
   1. 为可视化定义一个度量（数值）和一个维度（类别值）。
@@ -114,8 +104,6 @@ ORDER BY year;
 
   <Image img={chartbrew_01} size="lg" alt="包含 ClickHouse 数据的 Chartbrew 仪表盘" />
 
-
-
 ## 5. 自动化数据更新 {#5-automate-data-updates}
    
   为了让仪表板始终保持最新状态，你可以设置自动数据更新：
@@ -125,8 +113,6 @@ ORDER BY year;
   3. 保存设置以启用自动刷新。
 
   <Image img={chartbrew_09} size="lg" alt="Chartbrew 数据集刷新设置" />
-
-
 
 ## 了解更多 {#learn-more}
 

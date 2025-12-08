@@ -14,15 +14,12 @@ import neon_ip_allow from '@site/static/images/integrations/data-ingestion/click
 import neon_conn_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/neon-postgres/neon-conn-details.png'
 import Image from '@theme/IdealImage';
 
-
-# Neon Postgres 源端设置指南
+# Neon Postgres 源端设置指南 {#neon-postgres-source-setup-guide}
 
 本文档介绍如何配置 Neon Postgres，使其可在 ClickPipes 中用作数据复制源。
 在进行本次设置前，请确保已登录到 [Neon 控制台](https://console.neon.tech/app/projects)。
 
-
-
-## 创建具有权限的用户
+## 创建具有权限的用户 {#creating-a-user-with-permissions}
 
 为 ClickPipes 创建一个具备 CDC 所需权限的新用户，
 并创建一个我们将用于复制的发布（publication）。
@@ -47,8 +44,7 @@ import Image from '@theme/IdealImage';
 
 点击 **Run**，即可创建一个发布和一个用户。
 
-
-## 启用逻辑复制
+## 启用逻辑复制 {#enable-logical-replication}
 
 在 Neon 中，可以通过 UI 启用逻辑复制。这是 ClickPipes 的 CDC 复制数据所必需的。
 前往 **Settings** 选项卡，然后进入 **Logical Replication** 部分。
@@ -67,14 +63,11 @@ SHOW max_wal_senders; -- 应为 10
 SHOW max_replication_slots; -- 应为 10
 ```
 
-
 ## IP 白名单（适用于 Neon 企业计划） {#ip-whitelisting-for-neon-enterprise-plan}
 如果您使用的是 Neon 企业计划，可以将 [ClickPipes IP](../../index.md#list-of-static-ips) 加入白名单，从而允许 ClickPipes 将数据复制到您的 Neon Postgres 实例。
 为此，您可以点击 **Settings** 选项卡并进入 **IP Allow** 部分。
 
 <Image size="lg" img={neon_ip_allow} alt="Allow IPs screen" border/>
-
-
 
 ## 复制连接信息 {#copy-connection-details}
 现在我们已经创建了用户、准备好了 publication 并启用了复制，可以复制连接信息来创建一个新的 ClickPipe。
@@ -82,8 +75,6 @@ SHOW max_replication_slots; -- 应为 10
 将视图切换为 **Parameters Only**。我们在下一步会用到这些参数。
 
 <Image size="lg" img={neon_conn_details} alt="连接信息" border/>
-
-
 
 ## 后续步骤 {#whats-next}
 
