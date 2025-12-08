@@ -9,12 +9,9 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # Форматы входных и выходных данных {#formats-for-input-and-output-data}
 
 ClickHouse поддерживает большинство известных текстовых и бинарных форматов данных. Это обеспечивает простую интеграцию практически в любой существующий конвейер данных и позволяет в полной мере использовать преимущества ClickHouse.
-
-
 
 ## Форматы ввода {#input-formats}
 
@@ -33,21 +30,15 @@ ClickHouse поддерживает большинство известных т
 Для детального разбора результатов и рекомендаций по лучшим практикам ознакомьтесь с полной [аналитикой бенчмарка](https://www.clickhouse.com/blog/clickhouse-input-format-matchup-which-is-fastest-most-efficient).
 Все результаты тестов доступны в онлайн-дашборде [FastFormats](https://fastformats.clickhouse.com/).
 
-
-
 ## Форматы вывода {#output-formats}
 
 Поддерживаемые форматы вывода используются для:
 - Представления результатов запроса `SELECT`
 - Выполнения операций `INSERT` в таблицы с файловой поддержкой
 
-
-
 ## Обзор форматов {#formats-overview}
 
 Поддерживаемые форматы:
-
-
 
 | Формат                                                                                                     | Ввод | Вывод |
 | ---------------------------------------------------------------------------------------------------------- | ---- | ----- |
@@ -138,11 +129,7 @@ ClickHouse поддерживает большинство известных т
 | [Markdown](./formats/Markdown.md)                                                                          | ✗    | ✔     |
 | [Форма](./formats/Form.md)                                                                                 | ✔    | ✗     |
 
-
-
 Вы можете управлять некоторыми параметрами обработки форматов с помощью настроек ClickHouse. Подробнее см. раздел [Настройки](/operations/settings/settings-formats.md).
-
-
 
 ## Схема формата {#formatschema}
 
@@ -160,8 +147,6 @@ ClickHouse поддерживает большинство известных т
 Если вы вводите или выводите данные через [HTTP-интерфейс](/interfaces/http.md), имя файла, указанное в схеме формата,
 должно находиться в каталоге, указанном в [format_schema_path](/operations/server-configuration-parameters/settings.md/#format_schema_path)
 в конфигурации сервера.
-
-
 
 ## Пропуск ошибок {#skippingerrors}
 

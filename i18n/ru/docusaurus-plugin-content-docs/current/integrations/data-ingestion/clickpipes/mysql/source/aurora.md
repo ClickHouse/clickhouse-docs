@@ -19,12 +19,9 @@ import edit_button from '@site/static/images/integrations/data-ingestion/clickpi
 import enable_gtid from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/enable_gtid.png';
 import Image from '@theme/IdealImage';
 
-
 # Руководство по настройке источника Aurora MySQL {#aurora-mysql-source-setup-guide}
 
 В этом пошаговом руководстве показано, как настроить Amazon Aurora MySQL для репликации данных в ClickHouse Cloud с помощью [MySQL ClickPipe](../index.md). Ответы на распространённые вопросы о MySQL CDC см. на странице [MySQL FAQs](/integrations/data-ingestion/clickpipes/mysql/faq.md).
-
-
 
 ## Включение хранения двоичных журналов {#enable-binlog-retention-aurora}
 
@@ -53,7 +50,6 @@ mysql=> call mysql.rds_set_configuration('binlog retention hours', 72);
 ```
 
 Если эта настройка не задана или установлен слишком короткий интервал, это может привести к разрывам в двоичных логах и не позволит ClickPipes корректно возобновлять репликацию.
-
 
 ## Настройка параметров binlog {#binlog-settings}
 
@@ -88,8 +84,6 @@ mysql=> call mysql.rds_set_configuration('binlog retention hours', 72);
 <br/>
 Затем нажмите **Save Changes** в правом верхнем углу. Возможно, потребуется перезагрузить экземпляр, чтобы изменения вступили в силу — об этом можно судить по индикатору `Pending reboot`, который появится рядом со ссылкой на группу параметров на вкладке **Configuration** экземпляра Aurora.
 
-
-
 ## Включение режима GTID (рекомендуется) {#gtid-mode}
 
 :::tip
@@ -110,8 +104,6 @@ MySQL ClickPipe также поддерживает репликацию без 
 8. Перезагрузите экземпляр, чтобы изменения вступили в силу.
 
 <Image img={enable_gtid} alt="Режим GTID включен" size="lg" border/>
-
-
 
 ## Настройка пользователя базы данных {#configure-database-user}
 
@@ -136,8 +128,6 @@ MySQL ClickPipe также поддерживает репликацию без 
     GRANT REPLICATION SLAVE ON *.* TO 'clickpipes_user'@'%';
     ```
 
-
-
 ## Настройка сетевого доступа {#configure-network-access}
 
 ### Управление доступом по IP-адресам {#ip-based-access-control}
@@ -151,8 +141,6 @@ MySQL ClickPipe также поддерживает репликацию без 
 ### Частный доступ через AWS PrivateLink {#private-access-via-aws-privatelink}
 
 Чтобы подключиться к вашему экземпляру Aurora MySQL по частной сети, вы можете использовать AWS PrivateLink. Следуйте [руководству по настройке AWS PrivateLink для ClickPipes](/knowledgebase/aws-privatelink-setup-for-clickpipes), чтобы настроить подключение.
-
-
 
 ## Что дальше? {#whats-next}
 

@@ -6,8 +6,6 @@ title: 'Оператор ORDER BY'
 doc_type: 'reference'
 ---
 
-
-
 # Оператор ORDER BY {#order-by-clause}
 
 Оператор `ORDER BY` содержит:
@@ -26,8 +24,6 @@ doc_type: 'reference'
 
 Строки с одинаковыми значениями сортировочных выражений возвращаются в произвольном и недетерминированном порядке.
 Если оператор `ORDER BY` опущен в операторе `SELECT`, порядок строк также является произвольным и недетерминированным.
-
-
 
 ## Сортировка специальных значений {#sorting-of-special-values}
 
@@ -74,7 +70,6 @@ doc_type: 'reference'
 
 При сортировке чисел с плавающей запятой значения NaN отделяются от остальных. Независимо от порядка сортировки значения NaN всегда оказываются в конце. Другими словами, при сортировке по возрастанию они ведут себя так, как будто больше всех остальных чисел, а при сортировке по убыванию — так, как будто меньше всех остальных.
 
-
 ## Поддержка collation {#collation-support}
 
 Для сортировки по значениям типа [String](../../../sql-reference/data-types/string.md) вы можете указать collation (правила сравнения). Пример: `ORDER BY SearchPhrase COLLATE 'tr'` — сортировка по ключевому слову по возрастанию с использованием турецкого алфавита, без учета регистра, при условии, что строки закодированы в UTF-8. `COLLATE` может быть указан или не указан для каждого выражения в ORDER BY независимо. Если указано `ASC` или `DESC`, то `COLLATE` указывается после него. При использовании `COLLATE` сортировка всегда выполняется без учета регистра.
@@ -82,8 +77,6 @@ doc_type: 'reference'
 Collation поддерживается для типов [LowCardinality](../../../sql-reference/data-types/lowcardinality.md), [Nullable](../../../sql-reference/data-types/nullable.md), [Array](../../../sql-reference/data-types/array.md) и [Tuple](../../../sql-reference/data-types/tuple.md).
 
 Мы рекомендуем использовать `COLLATE` только для окончательной сортировки небольшого количества строк, так как сортировка с `COLLATE` менее эффективна, чем обычная сортировка по байтам.
-
-
 
 ## Примеры сравнения строк {#collation-examples}
 
@@ -229,7 +222,6 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 
 Пример с типом [Tuple](../../../sql-reference/data-types/tuple.md):
 
-
 ```response
 ┌─x─┬─s───────┐
 │ 1 │ (1,'Z') │
@@ -262,7 +254,6 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 └───┴─────────┘
 ```
 
-
 ## Детали реализации {#implementation-details}
 
 ОЗУ расходуется меньше, если помимо `ORDER BY` указано достаточно маленькое значение [LIMIT](../../../sql-reference/statements/select/limit.md). В противном случае объём используемой памяти пропорционален объёму данных для сортировки. При распределённой обработке запросов, если [GROUP BY](/sql-reference/statements/select/group-by) опущен, сортировка частично выполняется на удалённых серверах, а результаты объединяются на сервере, инициировавшем запрос. Это означает, что при распределённой сортировке объём данных для сортировки может превышать объём памяти одного сервера.
@@ -272,8 +263,6 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 Выполнение запроса может потреблять больше памяти, чем `max_bytes_before_external_sort`. По этой причине это значение должно быть существенно меньше, чем `max_memory_usage`. Например, если на вашем сервере 128 ГБ ОЗУ и вам нужно выполнить один запрос, установите `max_memory_usage` в 100 ГБ, а `max_bytes_before_external_sort` — в 80 ГБ.
 
 Внешняя сортировка работает значительно менее эффективно, чем сортировка в ОЗУ.
-
-
 
 ## Оптимизация чтения данных {#optimization-of-data-reading}
 
@@ -294,8 +283,6 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 - [Buffer](../../../engines/table-engines/special/buffer.md)
 
 В таблицах с движком `MaterializedView` оптимизация работает с представлениями вида `SELECT ... FROM merge_tree_table ORDER BY pk`. Однако она не поддерживается в запросах вида `SELECT ... FROM view ORDER BY pk`, если запрос представления не содержит оператора `ORDER BY`.
-
-
 
 ## Модификатор ORDER BY Expr WITH FILL {#order-by-expr-with-fill-modifier}
 
@@ -385,7 +372,6 @@ ORDER BY
 
 Результат:
 
-
 ```text
 ┌───d1───────┬───d2───────┬─source───┐
 │ 1970-01-11 │ 1970-01-02 │ оригинал │
@@ -447,7 +433,6 @@ ORDER BY
     d1 WITH FILL STEP INTERVAL 1 DAY,
     d2 WITH FILL;
 ```
-
 
 Результат:
 
@@ -615,7 +600,6 @@ SELECT n, source, inter FROM (
 
 Результат:
 
-
 ```text
 ┌───n─┬─source───┬─inter─┐
 │   0 │          │     0 │
@@ -633,7 +617,6 @@ SELECT n, source, inter FROM (
 │   7 │ оригинал │     7 │
 └─────┴──────────┴───────┘
 ```
-
 
 ## Заполнение, сгруппированное по сортировочному префиксу {#filling-grouped-by-sorting-prefix}
 
@@ -686,7 +669,6 @@ INTERPOLATE ( value AS 9999 )
 
 Здесь столбец `value` был заполнен значением `9999`, чтобы заполненные строки были более заметны.
 Это поведение управляется параметром `use_with_fill_by_sorting_prefix` (включен по умолчанию).
-
 
 ## Связанные материалы {#related-content}
 

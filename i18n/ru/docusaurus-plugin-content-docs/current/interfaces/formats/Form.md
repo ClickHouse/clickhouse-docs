@@ -40,5 +40,4 @@ rt.start: navigation
 rt.bmr:   390,11,10
 ```
 
-
 ## Параметры форматирования {#format-settings}

@@ -19,7 +19,6 @@ import observability_23 from '@site/static/images/use-cases/observability/observ
 import observability_24 from '@site/static/images/use-cases/observability/observability-24.png';
 import Image from '@theme/IdealImage';
 
-
 # 使用 Grafana 和 ClickHouse 构建可观测性 {#using-grafana-and-clickhouse-for-observability}
 
 Grafana 是 ClickHouse 可观测性数据的首选可视化工具。这是通过 Grafana 官方的 ClickHouse 插件实现的。用户可以按照[此处](/integrations/grafana)的安装说明进行操作。
@@ -55,7 +54,6 @@ SELECT Timestamp as timestamp, Body as body, SeverityText as level, TraceId as t
 
 查询构建器提供了一种简便方式来修改查询，从而避免用户手写 SQL。包括关键词搜索在内的筛选操作都可以在查询构建器中完成。希望编写更复杂查询的用户可以切换到 SQL 编辑器。只要返回了合适的列，并且在 Query Type 中选择了 `logs`，结果就会以日志的形式呈现。用于日志渲染的必需列列在[此处](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format)。
 
-
 ### 从日志跳转到 Trace {#logs-to-traces}
 
 如果日志中包含 trace ID，用户可以从特定的日志行导航到对应的 trace 进行查看。
@@ -84,7 +82,6 @@ WHERE ( Timestamp >= $__fromTime AND Timestamp <= $__toTime )
 <Image img={observability_18} alt="Traces" size="lg" border />
 
 如需编写更复杂的查询，用户可以切换到 `SQL 编辑器`。
-
 
 ### 查看 Trace 详情 {#view-trace-details}
 
@@ -120,7 +117,6 @@ LIMIT 1000
 
 <Image img={observability_19} alt="Trace 详情" size="lg" border />
 
-
 ### Trace 到日志 {#traces-to-logs}
 
 如果日志中包含 trace ID，用户可以从某个 trace 跳转到其关联的日志。要查看日志，单击某个 trace ID 并选择 `View Logs`。在使用默认 OTel 列的情况下，将会执行如下查询。
@@ -134,7 +130,6 @@ ORDER BY timestamp ASC LIMIT 1000
 ```
 
 <Image img={observability_20} alt="从链路追踪到日志" size="lg" border />
-
 
 ## 仪表盘 {#dashboards}
 
@@ -165,7 +160,6 @@ LIMIT 100000
 
 <Image img={observability_22} alt="时间序列" size="lg" border />
 
-
 ### 多折线图 {#multi-line-charts}
 
 当查询满足以下条件时，会自动渲染为多折线图：
@@ -190,7 +184,6 @@ LIMIT 100000
 ```
 
 <Image img={observability_23} alt="多折线图" size="lg" border />
-
 
 ### 可视化地理数据 {#visualizing-geo-data}
 

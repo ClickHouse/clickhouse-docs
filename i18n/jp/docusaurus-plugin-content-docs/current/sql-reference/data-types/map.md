@@ -7,8 +7,6 @@ title: 'Map(K, V)'
 doc_type: 'reference'
 ---
 
-
-
 # Map(K, V) {#mapk-v}
 
 データ型 `Map(K, V)` はキーと値のペアを格納します。
@@ -67,7 +65,6 @@ SELECT m['key1'] FROM tab;
 └─────────────────────────┘
 ```
 
-
 ## Tuple から Map への変換 {#converting-tuple-to-map}
 
 `Tuple()` 型の値は、[CAST](/sql-reference/functions/type-conversion-functions#cast) 関数を使用して `Map()` 型にキャストできます。
@@ -87,7 +84,6 @@ SELECT CAST(([1, 2, 3], ['Ready', 'Steady', 'Go']), 'Map(UInt8, String)') AS map
 │ {1:'Ready',2:'Steady',3:'Go'} │
 └───────────────────────────────┘
 ```
-
 
 ## Map のサブカラムの読み取り {#reading-subcolumns-of-map}
 
@@ -122,7 +118,6 @@ SELECT m.values FROM tab; -- mapValues(m)と同じ
 * [map()](/sql-reference/functions/tuple-map-functions#map) 関数
 * [CAST()](/sql-reference/functions/type-conversion-functions#cast) 関数
 * [Map データ型用 -Map コンビネータ](../aggregate-functions/combinators.md#-map)
-
 
 ## 関連コンテンツ {#related-content}
 

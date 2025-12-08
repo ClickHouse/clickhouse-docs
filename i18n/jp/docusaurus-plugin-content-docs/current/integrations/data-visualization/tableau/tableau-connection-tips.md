@@ -11,12 +11,9 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # 接続に関するヒント {#connection-tips}
 
 <ClickHouseSupportedBadge/>
-
-
 
 ## 初期 SQL タブ {#initial-sql-tab}
 
@@ -25,7 +22,6 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 ```text
 SET my_setting=value;
 ```
-
 
 ## 詳細タブ {#advanced-tab}
 
@@ -37,8 +33,6 @@ SET my_setting=value;
     UInt256=java.lang.Double,Int256=java.lang.Double
     ```
   マッピングについての詳細は、該当するセクションを参照してください。
-
-
 
 * **JDBC Driver URL Parameters**。このフィールドには、`jdbcCompliance` などの残りの[ドライバーパラメータ](https://github.com/ClickHouse/clickhouse-jdbc#configuration)を指定できます。パラメータ値は URL エンコード形式で渡す必要がある点に注意してください。また、このフィールドと Advanced タブ内の前のフィールドの両方で `custom_http_params` や `typeMappings` を指定した場合は、Advanced タブ側の前の 2 つのフィールドで指定した値が優先されます。
 * **Set Session ID** チェックボックス。Initial SQL タブでセッションレベルの設定を行うために必要であり、`"tableau-jdbc-connector-*{timestamp}*-*{number}*"` という形式で、タイムスタンプと疑似乱数を含む `session_id` を生成します。

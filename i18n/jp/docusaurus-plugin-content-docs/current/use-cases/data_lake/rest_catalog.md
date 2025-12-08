@@ -33,7 +33,6 @@ REST Catalog は Iceberg カタログ向けの標準化された API 仕様で�
 `SET allow_experimental_database_iceberg = 1;`
 :::
 
-
 ## ローカル開発環境のセットアップ {#local-development-setup}
 
 ローカルでの開発およびテストには、コンテナ化した REST カタログのセットアップを使用できます。この方法は、学習やプロトタイピング、開発環境に最適です。
@@ -90,7 +89,6 @@ docker-compose logs -f
 REST カタログをセットアップするには、まずサンプルデータを Iceberg テーブルにロードしておく必要があります。ClickHouse 経由でクエリを実行する前に、Spark 環境でテーブルが作成され、データが投入済みであることを必ず確認してください。テーブルが利用可能かどうかは、使用している特定の docker-compose セットアップおよびサンプルデータ読み込みスクリプトに依存します。
 :::
 
-
 ### ローカルの REST カタログへの接続 {#connecting-to-local-rest-catalog}
 
 ClickHouse コンテナに接続します。
@@ -111,7 +109,6 @@ SETTINGS
     storage_endpoint = 'http://minio:9000/lakehouse', 
     warehouse = 'demo'
 ```
-
 
 ## ClickHouse を使用した REST カタログテーブルのクエリ実行 {#querying-rest-catalog-tables-using-clickhouse}
 
@@ -195,7 +192,6 @@ SHOW CREATE TABLE `default.taxis`;
 │ ENGINE = Iceberg('http://minio:9000/lakehouse/warehouse/default/taxis/', 'admin', '[HIDDEN]') │
 └───────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## データレイク内のデータを ClickHouse に読み込む {#loading-data-from-your-data-lake-into-clickhouse}
 

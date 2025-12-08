@@ -45,13 +45,11 @@ ALTER TABLE tab MODIFY SETTING max_suspicious_broken_parts = 100;
 ALTER TABLE tab RESET SETTING max_suspicious_broken_parts;
 ```
 
-
 ## MergeTree の設定 {#mergetree-settings}
 
 {/* 以下の設定は、次のスクリプトによって自動生成されたものです
   https://github.com/ClickHouse/clickhouse-docs/blob/main/scripts/settings/autogenerate-settings.sh
   */ }
-
 
 ## adaptive_write_buffer_initial_size {#adaptive_write_buffer_initial_size} 
 
@@ -130,7 +128,6 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 クエリに `ORDER BY time DESC` を指定すると、`ReadInOrder` が適用されます。
 
 **デフォルト値:** false
-
 
 ## allow_floating_point_partition_key {#allow_floating_point_partition_key} 
 
@@ -525,7 +522,7 @@ Dynamic データ型のシリアル化バージョン。互換性のために必
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "min_age_to_force_merge 用の最大バイト数を制限する新しい設定を追加。"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新しい設定"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "新しい設定"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "min_age_to_force_merge 用の最大バイト数を制限する新しい設定を追加。"}]}]}/>
 
 `min_age_to_force_merge_seconds` と
 `min_age_to_force_merge_on_partition_only` の両設定が、
@@ -638,7 +635,6 @@ ALTER TABLE tab MODIFY SETTING exclude_materialize_skip_indexes_on_merge = 'idx_
 -- デフォルト設定、マージ時の更新から除外される索引はありません
 ALTER TABLE tab MODIFY SETTING exclude_materialize_skip_indexes_on_merge = '';
 ```
-
 
 ## execute_merges_on_single_replica_time_threshold {#execute_merges_on_single_replica_time_threshold} 
 
@@ -907,7 +903,6 @@ MergeTree テーブルに関連して同時に実行されるクエリの最大�
 <max_concurrent_queries>50</max_concurrent_queries>
 ```
 
-
 ## max&#95;delay&#95;to&#95;insert {#max_delay_to_insert}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
@@ -945,7 +940,6 @@ delay_milliseconds = max(min_delay_to_insert_ms, (max_delay_to_insert * 1000)
 = 300、parts&#95;to&#95;delay&#95;insert = 150、max&#95;delay&#95;to&#95;insert = 1、
 min&#95;delay&#95;to&#95;insert&#95;ms = 10 の場合、`INSERT` は `max( 10, 1 * 1000 *
 (224 - 150 + 1) / (300 - 150) ) = 500` ミリ秒だけ遅延します。
-
 
 ## max_delay_to_mutate_ms {#max_delay_to_mutate_ms} 
 
@@ -1023,13 +1017,13 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10 の場合、`INSERT` は `max( 10, 1
 
 ## max_part_loading_threads {#max_part_loading_threads} 
 
-<SettingsInfoBlock type="MaxThreads" default_value="'auto(17)'" />
+<SettingsInfoBlock type="MaxThreads" default_value="'auto(1)'" />
 
 廃止された設定で、現在は効果がありません。
 
 ## max_part_removal_threads {#max_part_removal_threads} 
 
-<SettingsInfoBlock type="MaxThreads" default_value="'auto(17)'" />
+<SettingsInfoBlock type="MaxThreads" default_value="'auto(1)'" />
 
 廃止された設定であり、現在は何の効果もありません。
 
@@ -1290,6 +1284,17 @@ Wide データパートへのマージ後には、このパート内の動的パ
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 パーティション内のパーツ数に応じて、このロジックがいつ適用されるかを制御します。係数が大きいほど、反応の開始はより遅くなります。
+
+## merge_selector_enable_heuristic_to_lower_max_parts_to_merge_at_once {#merge_selector_enable_heuristic_to_lower_max_parts_to_merge_at_once} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+シンプルなマージセレクタに対して、マージ選択時の上限値を引き下げるヒューリスティックを有効にします。
+これにより同時に実行されるマージの数が増え、TOO_MANY_PARTS エラーの軽減に役立つ可能性がありますが、その一方で書き込み増幅も増加します。
 
 ## merge_selector_enable_heuristic_to_remove_small_parts_at_right {#merge_selector_enable_heuristic_to_remove_small_parts_at_right} 
 
@@ -1552,7 +1557,6 @@ ClickHouse Cloud でのみ利用可能。データパートに対して、packed
 ```xml
 <min_marks_to_honor_max_concurrent_queries>10</min_marks_to_honor_max_concurrent_queries>
 ```
-
 
 ## min_merge_bytes_to_use_direct_io {#min_merge_bytes_to_use_direct_io} 
 
@@ -2125,7 +2129,6 @@ WHERE table LIKE 'my_sparse_table';
 │ s      │ Sparse             │
 └────────┴────────────────────┘
 ```
-
 
 ## reduce_blocking_parts_sleep_ms {#reduce_blocking_parts_sleep_ms} 
 

@@ -13,7 +13,6 @@ import Image from '@theme/IdealImage';
 import GCS_examine_bucket_1 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-1.png';
 import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-2.png';
 
-
 # Google Cloud Storage を ClickHouse と統合する {#integrate-google-cloud-storage-with-clickhouse}
 
 :::note
@@ -21,8 +20,6 @@ import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestio
 :::
 
 ClickHouse は、ストレージとコンピュートを分離したいユーザーにとって、GCS が魅力的なストレージソリューションであると認識しています。この要件を満たすために、MergeTree エンジンのストレージとして GCS を使用することをサポートしています。これにより、ユーザーは GCS のスケーラビリティとコスト面での利点に加え、MergeTree エンジンのデータ挿入およびクエリのパフォーマンスを活用できるようになります。
-
-
 
 ## GCS バックエンドの MergeTree {#gcs-backed-mergetree}
 
@@ -140,7 +137,6 @@ GCS バケットをディスクとして利用するには、まず `conf.d` 配
 
 このディスク定義に関連するすべての設定項目の一覧は[こちら](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-s3)にあります。
 
-
 ### テーブルの作成 {#creating-a-table}
 
 書き込み権限のあるバケットを使用するようにディスクを設定してあると仮定すると、以下の例のようなテーブルを作成できるはずです。簡潔にするため、NYC タクシー データセットのカラムの一部のみを使用し、データを GCS をバックエンドとするテーブルに直接ストリーミングします。
@@ -188,7 +184,6 @@ GCS ディスクを用いたレプリケーションは、`ReplicatedMergeTree` 
 [Cloud Storage XML API](https://cloud.google.com/storage/docs/xml-api/overview) は、Amazon Simple Storage Service (Amazon S3) などのサービスで動作する一部のツールおよびライブラリと相互運用性があります。
 
 スレッドのチューニングに関する詳細は、[パフォーマンスの最適化](../s3/index.md#s3-optimizing-performance) を参照してください。
-
 
 ## Google Cloud Storage (GCS) を使用する {#gcs-multi-region}
 
@@ -256,8 +251,6 @@ ClickHouse Keeper ノードでデプロイメント手順を実行する際は�
 - ファイルを編集し、ホスト名を設定して、ClickHouse サーバーノードおよび Keeper ノードから名前解決できることを確認します
 - ファイルを各 Keeper サーバー上の `/etc/clickhouse-keeper/keeper_config.xml` に配置します
 - 各マシンで、そのマシンの `raft_configuration` 内でのエントリ番号に基づいて `server_id` を編集します
-
-
 
 ```xml title=/etc/clickhouse-keeper/keeper_config.xml
 <clickhouse>
@@ -351,7 +344,6 @@ ClickHouse Keeper ノードでデプロイメント手順を実行する際は�
 このファイルでは、クラスタ内の各 ClickHouse サーバーのホスト名とポートを設定します。デフォルトの設定ファイルにはサンプルのクラスタ定義が含まれています。完全に構成されたクラスタのみを使用するために、この設定がデフォルト設定とマージされた際に `remote_servers` セクションへ追加されるのではなく、その内容を置き換えるよう、`remote_servers` エントリにはタグ `replace="true"` が追加されています。
 
 * ファイルを編集してホスト名を設定し、それらが ClickHouse サーバーノードから名前解決できることを確認してください
-
 
 ```xml title=/etc/clickhouse-server/config.d/remote-servers.xml
 <clickhouse>
@@ -451,7 +443,6 @@ sudo systemctl status clickhouse-keeper
 #### ClickHouse Keeper のステータスを確認する {#check-clickhouse-keeper-status}
 
 `netcat` を使って ClickHouse Keeper にコマンドを送信します。たとえば、`mntr` は ClickHouse Keeper クラスターの状態を返します。各 Keeper ノードでこのコマンドを実行すると、1 つがリーダーで、残りの 2 つがフォロワーであることがわかります。
-
 
 ```bash
 echo mntr | nc localhost 9181
@@ -560,7 +551,6 @@ is_remote:        1
 is_broken:        0
 cache_path:
 ```
-
 
 3 行が結果セットに含まれています。経過時間: 0.002 秒。
 

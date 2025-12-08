@@ -17,12 +17,9 @@ import tablum_ch_2 from '@site/static/images/integrations/sql-clients/tablum-ch-
 import tablum_ch_3 from '@site/static/images/integrations/sql-clients/tablum-ch-3.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
 # TABLUM.IO を ClickHouse に接続する {#connecting-tablumio-to-clickhouse}
 
 <CommunityMaintainedBadge/>
-
-
 
 ## TABLUM.IO のスタートページを開く {#open-the-tablumio-startup-page}
 
@@ -30,15 +27,11 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
   Linux サーバー上で Docker を使って、TABLUM.IO の自己ホスト版をインストールできます。
 :::
 
-
-
 ## 1. サービスにサインアップまたはログインする {#1-sign-up-or-sign-in-to-the-service}
 
   まず、メールアドレスで TABLUM.IO にサインアップするか、Google または Facebook アカウントを使ったクイックログインを行ってください。
 
 <Image img={tablum_ch_0} size="md" border alt="TABLUM.IO ログインページ" />
-
-
 
 ## 2. Add a ClickHouse connector {#2-add-a-clickhouse-connector}
 
@@ -54,15 +47,11 @@ ClickHouse の接続情報を用意し、**Connector** タブに移動して、�
 
 <Image img={tablum_ch_1} size="lg" border alt="TABLUM.IO で ClickHouse コネクタを追加する" />
 
-
-
 ## 3. コネクタを選択する {#3-select-the-connector}
 
 **Dataset** タブに移動します。ドロップダウンメニューから、直前に作成した ClickHouse コネクタを選択します。右側のパネルには、利用可能なテーブルとスキーマの一覧が表示されます。
 
 <Image img={tablum_ch_2} size="lg" border alt="TABLUM.IO で ClickHouse コネクタを選択する" />
-
-
 
 ## 4. SQL クエリを入力して実行する {#4-input-a-sql-query-and-run-it}
 
@@ -80,8 +69,6 @@ TABLUM.IO を使用すると、次のことができます。
 * データソースに関係なく、読み込まれた任意のデータに対してクエリを実行する
 * 結果を新しい ClickHouse データベースとして共有する
 :::
-
-
 
 ## 詳細情報 {#learn-more}
 

@@ -28,14 +28,11 @@ import superset_11 from '@site/static/images/integrations/data-visualization/sup
 import superset_12 from '@site/static/images/integrations/data-visualization/superset_12.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # Superset を ClickHouse に接続する {#connect-superset-to-clickhouse}
 
 <ClickHouseSupportedBadge/>
 
 <a href="https://superset.apache.org/" target="_blank">Apache Superset</a> は、Python で構築されたオープンソースのデータ探索および可視化プラットフォームです。Superset は、ClickHouse が提供する Python ドライバーを使用して ClickHouse に接続します。ここでは、その仕組みを見ていきましょう。
-
-
 
 ## 目標 {#goal}
 
@@ -48,12 +45,8 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 まだ扱うデータセットを持っていない場合は、サンプルデータセットのいずれかを追加できます。このガイドでは [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md) データセットを使用しているので、それを選択するとよいでしょう。同じドキュメントカテゴリには、他にもいくつかのデータセットが用意されています。
 :::
 
-
-
 ## 1. 接続情報を準備する {#1-gather-your-connection-details}
 <ConnectionDetails />
-
-
 
 ## 2. ドライバーをインストールする {#2-install-the-driver}
 
@@ -64,8 +57,6 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
     ```
 
 2. Superset を起動（または再起動）します。
-
-
 
 ## 3. Superset を ClickHouse に接続する {#3-connect-superset-to-clickhouse}
 
@@ -89,8 +80,6 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 4. **CONNECT** ボタンをクリックし、続けて **FINISH** ボタンをクリックしてセットアップウィザードを完了します。完了後、データベース一覧に対象のデータベースが表示されます。
 
-
-
 ## 4. データセットを追加する {#4-add-a-dataset}
 
 1. Superset で ClickHouse のデータを操作するには、**_dataset_** を定義する必要があります。Superset の上部メニューから **Data** を選択し、ドロップダウンメニューで **Datasets** を選択します。
@@ -101,8 +90,6 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 <br/>
 
 3. ダイアログウィンドウの下部にある **ADD** ボタンをクリックすると、テーブルがデータセット一覧に表示されます。これでダッシュボードを作成し、ClickHouse のデータを分析する準備が整いました。
-
-
 
 ## 5.  Superset でチャートとダッシュボードを作成する {#5--creating-charts-and-a-dashboard-in-superset}
 

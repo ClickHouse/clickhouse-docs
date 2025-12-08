@@ -7,13 +7,9 @@ title: 'format'
 doc_type: 'reference'
 ---
 
-
-
 # format 表函数 {#format-table-function}
 
 根据指定的输入格式从参数中解析数据。如果未指定 structure 参数，则从数据中提取结构。
-
-
 
 ## 语法 {#syntax}
 
@@ -21,20 +17,15 @@ doc_type: 'reference'
 format(format_name, [structure], data)
 ```
 
-
 ## 参数 {#arguments}
 
 - `format_name` — 数据的[格式](/sql-reference/formats)。
 - `structure` - 表结构。可选。格式为 `'column1_name column1_type, column2_name column2_type, ...'`。
 - `data` — 字符串字面量或返回一个按指定格式组织的数据字符串的常量表达式。
 
-
-
 ## 返回值 {#returned_value}
 
 一个数据表，包含根据指定格式和指定或提取的结构从 `data` 参数中解析得到的数据。
-
-
 
 ## 示例 {#examples}
 
@@ -108,7 +99,6 @@ $$)
 │ 世界  │ 124 │
 └───────┴─────┘
 ```
-
 
 ## 相关内容 {#related}
 

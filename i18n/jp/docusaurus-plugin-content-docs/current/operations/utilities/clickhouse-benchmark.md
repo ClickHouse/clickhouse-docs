@@ -7,8 +7,6 @@ title: 'clickhouse-benchmark'
 doc_type: 'reference'
 ---
 
-
-
 # clickhouse-benchmark {#clickhouse-benchmark}
 
 ClickHouse サーバーに接続し、指定したクエリを繰り返し送信します。
@@ -44,7 +42,6 @@ SELECT 1;
 clickhouse-benchmark [keys] < queries_file;
 ```
 
-
 ## コマンドラインオプション {#clickhouse-benchmark-command-line-options}
 
 - `--query=QUERY` — 実行するクエリ。このパラメータが渡されない場合、`clickhouse-benchmark` は標準入力からクエリを読み込みます。
@@ -78,14 +75,10 @@ clickhouse-benchmark [keys] < queries_file;
 
 クエリに対していくつかの[設定](/operations/settings/overview)を適用したい場合は、`--<session setting name>= SETTING_VALUE` というオプションとして渡します。たとえば、`--max_memory_usage=1048576` のようになります。
 
-
-
 ## 環境変数オプション {#clickhouse-benchmark-environment-variable-options}
 
 ユーザー名、パスワード、およびホストは、環境変数 `CLICKHOUSE_USER`、`CLICKHOUSE_PASSWORD`、`CLICKHOUSE_HOST` を使って設定できます。  
 コマンドライン引数 `--user`、`--password`、`--host` が、環境変数よりも優先されます。
-
-
 
 ## 出力 {#clickhouse-benchmark-output}
 
@@ -130,14 +123,11 @@ localhost:9000, queries 10, QPS: 6.772, RPS: 67904487.440, MiB/s: 518.070, resul
 
 * クエリ実行時間のパーセンタイル値。
 
-
 ## 比較モード {#clickhouse-benchmark-comparison-mode}
 
 `clickhouse-benchmark` は、稼働中の 2 つの ClickHouse サーバーのパフォーマンスを比較できます。
 
 比較モードを使用するには、両方のサーバーのエンドポイントを、2 組の `--host` と `--port` キーを使って指定します。キーは引数リスト内での位置によって対応付けられ、最初の `--host` は最初の `--port` に対応し、以降も同様です。`clickhouse-benchmark` は両方のサーバーへの接続を確立した後、クエリを送信します。各クエリはランダムに選択されたどちらかのサーバーに送られます。結果はテーブル形式で表示されます。
-
-
 
 ## 例 {#clickhouse-benchmark-example}
 

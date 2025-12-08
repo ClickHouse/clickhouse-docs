@@ -22,7 +22,6 @@ import valid_ds from '@site/static/images/integrations/data-visualization/grafan
 import Image from '@theme/IdealImage';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # 用于 Grafana 的 ClickHouse 数据源插件 {#clickhouse-data-source-plugin-for-grafana}
 
 <ClickHouseSupportedBadge/>

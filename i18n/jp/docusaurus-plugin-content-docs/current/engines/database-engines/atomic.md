@@ -7,8 +7,6 @@ title: 'Atomic'
 doc_type: 'reference'
 ---
 
-
-
 # Atomic  {#atomic}
 
 `Atomic` エンジンは、ノンブロッキングな [`DROP TABLE`](#drop-detach-table) および [`RENAME TABLE`](#rename-table) クエリに加え、アトミックな [`EXCHANGE TABLES`](#exchange-tables) クエリをサポートします。`Atomic` データベースエンジンは、オープンソース版の ClickHouse でデフォルトとして使用されています。 
@@ -17,14 +15,11 @@ doc_type: 'reference'
 ClickHouse Cloud では、デフォルトで [`Shared` データベースエンジン](/cloud/reference/shared-catalog#shared-database-engine) が使用されており、上記の操作もサポートしています。
 :::
 
-
-
 ## データベースの作成 {#creating-a-database}
 
 ```sql
 CREATE DATABASE test [ENGINE = Atomic] [SETTINGS disk=...];
 ```
-
 
 ## 詳細と推奨事項 {#specifics-and-recommendations}
 
@@ -87,7 +82,6 @@ CREATE TABLE db (n UInt64) ENGINE = Atomic SETTINGS disk=disk(type='local', path
 ```
 
 未指定の場合は、`database_disk.disk` で定義されたディスクがデフォルトで使用されます。
-
 
 ## 関連項目 {#see-also}
 

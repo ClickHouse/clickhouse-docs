@@ -23,7 +23,6 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
 
 **但是，此版本的 HyperDX 未启用用户认证功能**
 
-
 ### 适用场景 {#suitable-for}
 
 * 演示
@@ -37,31 +36,31 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
 <VerticalStepper headerLevel="h3">
   ### 使用 Docker 部署
 
-  本地模式会在 8080 端口上运行 HyperDX UI。
+  本地模式会在端口 8080 上部署 HyperDX UI。
 
   ```shell
-  docker run -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx-local
+  docker run -p 8080:8080 clickhouse/clickstack-local:latest
   ```
 
   ### 访问 HyperDX UI
 
-  访问 [http://localhost:8080](http://localhost:8080) 以打开 HyperDX UI。
+  访问 [http://localhost:8080](http://localhost:8080) 即可打开 HyperDX UI。
 
-  **在此部署模式下未启用身份验证，因此不会提示你创建用户。**
+  **系统不会提示您创建用户，因为在此部署模式下未启用身份验证。**
 
-  连接到你自己的外部 ClickHouse 集群，例如 ClickHouse Cloud。
+  将其连接到您自己的外部 ClickHouse 集群，例如 ClickHouse Cloud。
 
   <Image img={hyperdx_2} alt="创建登录" size="md" />
 
-  创建一个数据源，保留所有默认值，并将 `Table` 字段设置为 `otel_logs`。其他设置会自动检测完成，然后你就可以点击 `Save New Source`。
+  创建一个 Source，保留所有默认值，并将 `Table` 字段设置为 `otel_logs`。其他设置应会自动检测完成，此时您可以点击 `Save New Source`。
 
-  <Image img={hyperdx_logs} alt="创建日志数据源" size="md" />
+  <Image img={hyperdx_logs} alt="创建日志 Source" size="md" />
 </VerticalStepper>
 
 <JSONSupport />
 
-对于仅用于本地模式的镜像，用户只需要设置 `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` 参数，例如：
+对于仅本地模式镜像，用户只需要设置参数 `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true`，例如：
 
 ```shell
-docker run -e BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx-local
+docker run -e BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true -p 8080:8080 clickhouse/clickstack-local:latest
 ```

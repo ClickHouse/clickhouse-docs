@@ -6,8 +6,6 @@ doc_type: 'guide'
 keywords: ['故障排查', '调试', '问题解决', '错误', '诊断']
 ---
 
-
-
 ## 安装 {#installation}
 
 ### 无法使用 apt-key 从 keyserver.ubuntu.com 导入 GPG 密钥 {#cannot-import-gpg-keys-from-keyserverubuntucom-with-apt-key}
@@ -77,7 +75,6 @@ sudo rm -f /etc/yum.repos.d/clickhouse.repo
 ```
 
 然后请按照[安装指南](/install/redhat)进行操作
-
 
 ## 连接到服务器 {#connecting-to-the-server}
 
@@ -181,7 +178,6 @@ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-serv
 
    * 可能使用了错误的用户名或密码。
 
-
 ## 查询处理 {#query-processing}
 
 如果 ClickHouse 无法处理查询，它会将错误描述返回给客户端。在 `clickhouse-client` 中，错误描述会显示在控制台中。如果使用 HTTP 接口，ClickHouse 会在响应正文中返回错误描述。例如：
@@ -194,7 +190,6 @@ Code: 47, e.displayText() = DB::Exception: Unknown identifier: a. Note that ther
 如果您在启动 `clickhouse-client` 时使用 `stack-trace` 参数，ClickHouse 会随错误描述一起返回服务器的堆栈跟踪信息。
 
 您可能会看到关于连接中断的消息。在这种情况下，您可以重新执行该查询。如果每次执行查询时连接都会中断，请检查服务器日志中是否存在错误。
-
 
 ## 查询处理效率 {#efficiency-of-query-processing}
 

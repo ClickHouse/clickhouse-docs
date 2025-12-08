@@ -1822,6 +1822,16 @@ Cloud 模式
 
 在 CREATE TABLE 中忽略排序规则的兼容性选项
 
+## compatibility_s3_presigned_url_query_in_path {#compatibility_s3_presigned_url_query_in_path} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+兼容性：启用时，会将预签名 URL 的查询参数（例如 X-Amz-*）折叠并入 S3 键中（与旧版行为一致），
+因此 `?` 会在路径中充当通配符。禁用时（默认），预签名 URL 的查询参数会保留在 URL 查询部分，
+以避免将 `?` 解释为通配符。
+
 ## compile_aggregate_expressions {#compile_aggregate_expressions} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -9406,6 +9416,14 @@ EXPLAIN PLAN 中步骤描述的最大长度。
 - 0 - 禁用
 - 1 - 启用
 
+## query_plan_read_in_order_through_join {#query_plan_read_in_order_through_join} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+在 JOIN 操作中从左表按顺序持续读取，以便供后续步骤使用。
+
 ## query_plan_remove_redundant_distinct {#query_plan_remove_redundant_distinct} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -10067,6 +10085,15 @@ S3 分块上传的最大分块编号。
 
 在向 S3 执行分段上传时，每个上传分段的最小大小。
 
+## s3_path_filter_limit {#s3_path_filter_limit} 
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1000"},{"label": "New setting"}]}]}/>
+
+从查询过滤条件中提取 `_path` 值用于文件遍历（替代 glob 列举）的最大数量。
+0 表示禁用。
+
 ## s3_request_timeout_ms {#s3_request_timeout_ms} 
 
 <SettingsInfoBlock type="UInt64" default_value="30000" />
@@ -10629,7 +10656,8 @@ SELECT ((4 + 2) + 1, ((4 + 2) + 1) + 2)
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "21.12"},{"label": "0"},{"label": "默认情况下不允许对 Kafka/RabbitMQ/FileLog 执行直接 SELECT"}]}]}/>
 
-允许对 Kafka、RabbitMQ、FileLog、Redis Streams 和 NATS 引擎执行直接 SELECT 查询。如果存在附加的 materialized view，即使启用了此设置，也不允许执行 SELECT 查询。
+允许对 Kafka、RabbitMQ、FileLog、Redis Streams、S3Queue、AzureQueue 和 NATS 引擎执行直接 SELECT 查询。如果存在附加的 materialized view，即使启用了此设置，也不允许执行 SELECT 查询。
+如果没有附加的 materialized view，启用此设置后可以读取数据。请注意，已读取的数据通常会从队列中删除。为避免删除已读取的数据，应正确配置相关引擎的设置。
 
 ## stream_like_engine_insert_queue {#stream_like_engine_insert_queue} 
 

@@ -11,18 +11,13 @@ doc_type: 'reference'
 import PlayUI from '@site/static/images/play.png';
 import Image from '@theme/IdealImage';
 
-
 # HTTP インターフェース {#http-interface}
-
-
 
 ## 前提条件 {#prerequisites}
 
 この記事の例を実行するには、次のものが必要です：
 - 稼働中の ClickHouse サーバーインスタンス
 - `curl` がインストールされていること。Ubuntu または Debian では `sudo apt install curl` を実行するか、インストール手順については[こちらのドキュメント](https://curl.se/download.html)を参照してください。
-
-
 
 ## 概要 {#overview}
 
@@ -43,7 +38,6 @@ Ok.
 &quot;Ok.&quot; は、[`http_server_default_response`](../operations/server-configuration-parameters/settings.md#http_server_default_response) で定義されている既定値であり、必要に応じて変更できます。
 
 あわせて [HTTP 応答コードに関する注意事項](#http_response_codes_caveats) も参照してください。
-
 
 ## Web ユーザーインターフェイス {#web-ui}
 
@@ -70,7 +64,6 @@ Ok.
 $ curl 'http://localhost:8123/replicas_status'
 Ok.
 ```
-
 
 ## HTTP/HTTPS でのクエリ実行 {#querying}
 
@@ -165,7 +158,6 @@ ECT 1
 wget -nv -O- 'http://localhost:8123/?query=SELECT 1, 2, 3 FORMAT JSON'
 ```
 
-
 ```response title="Response"
 {
     "meta":
@@ -222,7 +214,6 @@ $ curl -X POST -F 'query=select {p1:UInt8} + {p2:UInt8}' -F "param_p1=3" -F "par
 
 7
 ```
-
 
 ## HTTP/HTTPS 経由での INSERT クエリ {#insert-queries}
 
@@ -290,7 +281,6 @@ $ echo 'DROP TABLE t' | curl 'http://localhost:8123/' --data-binary @-
 
 データテーブルを返さない成功したリクエストでは、空のレスポンスボディが返されます。
 
-
 ## 圧縮 {#compression}
 
 大量のデータを送信する際のネットワークトラフィックを削減したり、その場で圧縮済みのダンプを作成したりするために、圧縮を使用できます。
@@ -321,8 +311,6 @@ ClickHouse にレスポンスを圧縮させるには、リクエストに `Acce
 :::info
 一部の HTTP クライアントは、デフォルトで（`gzip` および `deflate` を用いて）サーバーからのデータを自動的に解凍する場合があり、その場合は圧縮設定を正しく使用していても、解凍済みのデータを受け取ることがあります。
 :::
-
-
 
 ## 例 {#examples-compression}
 
@@ -355,7 +343,6 @@ curl -sS "http://localhost:8123/?enable_http_compression=1" \
 2
 ```
 
-
 ## デフォルトデータベース {#default-database}
 
 デフォルトデータベースを指定するには、`database` URL パラメータまたは `X-ClickHouse-Database` ヘッダーを使用できます。
@@ -375,7 +362,6 @@ echo 'SELECT number FROM numbers LIMIT 10' | curl 'http://localhost:8123/?databa
 ```
 
 既定では、サーバー設定で登録されているデータベースが既定のデータベースとして使用されます。インストール直後の状態では、これは `default` という名前のデータベースです。あるいは、テーブル名の前にドットを付けてデータベース名を明示的に指定することもできます。
-
 
 ## 認証 {#authentication}
 
@@ -437,7 +423,6 @@ $ echo 'SELECT number FROM system.numbers LIMIT 10' | curl 'http://localhost:812
 * [設定](/operations/settings/settings)
 * [SET](/sql-reference/statements/set)
 
-
 ## HTTP プロトコルでの ClickHouse セッションの使用 {#using-clickhouse-sessions-in-the-http-protocol}
 
 ClickHouse セッションは HTTP プロトコルでも使用できます。そのためには、リクエストに `session_id` の `GET` パラメータを追加する必要があります。セッション ID には任意の文字列を指定できます。
@@ -479,7 +464,6 @@ X-ClickHouse-Progress: {"read_rows":"1000000","read_bytes":"8000000","total_rows
 
 HTTP インターフェイスでは、クエリ用に外部データ（外部一時テーブル）を渡すことができます。詳細は [「External data for query processing」](/engines/table-engines/special/external-data) を参照してください。
 
-
 ## レスポンスのバッファリング {#response-buffering}
 
 レスポンスのバッファリングはサーバー側で有効化できます。このために、次の URL パラメータが用意されています。
@@ -505,7 +489,6 @@ curl -sS 'http://localhost:8123/?max_result_bytes=4000000&buffer_size=3000000&wa
 :::tip
 バッファリングを使用して、レスポンスコードおよび HTTP ヘッダーがクライアントに送信された後にクエリの処理エラーが発生する状況を回避してください。このような場合、エラーメッセージはレスポンスボディの末尾に書き込まれ、クライアント側ではパース処理の段階になって初めてエラーを検知できます。
 :::
-
 
 ## クエリパラメーターを使用してロールを設定する {#setting-role-with-query-parameters}
 
@@ -539,7 +522,6 @@ curl -sS "http://localhost:8123?role=my_role&role=my_other_role" --data-binary "
 ```
 
 この場合、`?role=my_role&role=my_other_role` は、ステートメントを実行する前に `SET ROLE my_role, my_other_role` を実行した場合と同様に動作します。
-
 
 ## HTTP レスポンスコードに関する注意点 {#http_response_codes_caveats}
 
@@ -626,7 +608,6 @@ $ curl -v -Ss "http://localhost:8123/?max_block_size=1&query=select+sleepEachRow
 0,0
 ```
 
-
 **例外**
 rumfyutuqkncbgau
 Code: 395. DB::Exception: `throwIf` 関数に渡された値がゼロ以外です: `FUNCTION throwIf(equals(__table1.number, 2_UInt8) :: 1) -> throwIf(equals(__table1.number, 2_UInt8)) UInt8 : 0` を実行中に発生しました。 (FUNCTION&#95;THROW&#95;IF&#95;VALUE&#95;IS&#95;NON&#95;ZERO) (version 25.11.1.1)
@@ -635,7 +616,6 @@ Code: 395. DB::Exception: `throwIf` 関数に渡された値がゼロ以外で�
 
 ```
 ```
-
 
 ## パラメーター付きクエリ {#cli-queries-with-parameters}
 
@@ -676,7 +656,6 @@ curl -sS "http://localhost:8123?param_arg1=abc%5C%09123" -d "SELECT splitByChar(
 ['abc','123']
 ```
 
-
 ## あらかじめ定義された HTTP インターフェイス {#predefined_http_interface}
 
 ClickHouse は、HTTP インターフェイス経由で特定のクエリをサポートしています。たとえば、次のようにテーブルにデータを書き込むことができます。
@@ -708,7 +687,6 @@ ClickHouse は、[Prometheus exporter](https://github.com/ClickHouse/clickhouse_
 
 これで、Prometheus 形式のデータを取得するための URL を直接リクエストできます。
 
-
 ```bash
 $ curl -v 'http://localhost:8123/predefined_query'
 *   Trying ::1...
@@ -735,24 +713,17 @@ $ curl -v 'http://localhost:8123/predefined_query'
 "Query" 1
 ```
 
-
 # HELP "Merge" "実行中のバックグラウンドマージ数" {#help-merge-number-of-executing-background-merges}
 # TYPE "Merge" counter {#type-merge-counter}
 "Merge" 0
-
-
 
 # HELP "PartMutation" "ミューテーション数 (ALTER DELETE/UPDATE)" {#help-partmutation-number-of-mutations-alter-deleteupdate}
 # TYPE "PartMutation" counter {#type-partmutation-counter}
 "PartMutation" 0
 
-
-
 # HELP "ReplicatedFetch" "レプリカから取得中のデータパーツ数" {#help-replicatedfetch-number-of-data-parts-being-fetched-from-replica}
 # TYPE "ReplicatedFetch" counter {#type-replicatedfetch-counter}
 "ReplicatedFetch" 0
-
-
 
 # HELP &quot;ReplicatedSend&quot; &quot;レプリカへ送信中のデータパーツ数&quot; {#help-replicatedsend-number-of-data-parts-being-sent-to-replicas}
 
@@ -825,7 +796,6 @@ $ curl -v 'http://localhost:8123/predefined_query'
 
 例:
 ```
-
 
 ```yaml
 <http_handlers>
@@ -918,7 +888,6 @@ max_final_threads   2
 
 `content_type` の代わりに `http_response_headers` を使用して Content-Type を設定できます。
 
-
 ```yaml
 <http_handlers>
         <rule>
@@ -1005,7 +974,6 @@ $ curl -v  -H 'XXX:xxx' 'http://localhost:8123/get_config_static_handler'
 ```
 
 クライアントに送信したファイル内の内容を確認するには、次のようにします。
-
 
 ```yaml
 <http_handlers>
@@ -1103,7 +1071,6 @@ $ curl -vv -H 'XXX:xxx' 'http://localhost:8123/get_relative_path_static_handler'
 </clickhouse>
 ```
 
-
 ## HTTP レスポンスヘッダー {#http-response-headers}
 
 ClickHouse では、設定可能なあらゆる種類のハンドラーに適用できるカスタム HTTP レスポンスヘッダーを設定できます。これらのヘッダーは、ヘッダー名とその値を表すキーと値のペアを指定する `http_response_headers` 設定を使用して設定します。この機能は、カスタムセキュリティヘッダーや CORS ポリシー、その他 ClickHouse の HTTP インターフェイス全体で必要となる HTTP ヘッダー要件を実装するのに特に有用です。
@@ -1139,7 +1106,6 @@ ClickHouse では、設定可能なあらゆる種類のハンドラーに適用
     </http_handlers>
 </clickhouse>
 ```
-
 
 ## HTTP ストリーミング中の例外発生時における有効な JSON/XML レスポンス {#valid-output-on-exception-http-streaming}
 

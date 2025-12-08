@@ -6,8 +6,6 @@ title: 'FROM 子句'
 doc_type: 'reference'
 ---
 
-
-
 # FROM 子句 {#from-clause}
 
 `FROM` 子句指定要从哪些来源读取数据：
@@ -28,7 +26,6 @@ doc_type: 'reference'
 FROM table
 SELECT *
 ```
-
 
 ## FINAL 修饰符 {#final-modifier}
 
@@ -77,7 +74,6 @@ SELECT x, y FROM mytable WHERE x > 1 SETTINGS final = 1;
 SET final = 1;
 SELECT x, y FROM mytable WHERE x > 1;
 ```
-
 
 ## 实现细节 {#implementation-details}
 

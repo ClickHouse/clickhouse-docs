@@ -16,7 +16,6 @@ import CodeBlock from '@theme/CodeBlock';
 
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-
 # Введение {#introduction}
 
 ClickHouse Connect — это основной драйвер базы данных, обеспечивающий взаимодействие с широким спектром приложений на Python.
@@ -88,7 +87,6 @@ import clickhouse_connect
 client = clickhouse_connect.get_client(host='localhost', username='default', password='password')
 ```
 
-
 #### Используйте экземпляр клиента ClickHouse Connect для подключения к сервису ClickHouse Cloud: {#use-a-clickhouse-connect-client-instance-to-connect-to-a-clickhouse-cloud-service}
 
 :::tip
@@ -100,7 +98,6 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client(host='HOSTNAME.clickhouse.cloud', port=8443, username='default', password='ваш_пароль')
 ```
-
 
 ### Взаимодействие с базой данных {#interact-with-your-database}
 

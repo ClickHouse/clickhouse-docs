@@ -14,7 +14,6 @@ import analyzer4 from '@site/static/images/guides/developer/analyzer4.png';
 import analyzer5 from '@site/static/images/guides/developer/analyzer5.png';
 import Image from '@theme/IdealImage';
 
-
 # Понимание выполнения запросов с помощью анализатора {#understanding-query-execution-with-the-analyzer}
 
 ClickHouse обрабатывает запросы чрезвычайно быстро, но процесс их выполнения довольно сложен. Попробуем разобраться, как выполняется запрос `SELECT`. Чтобы проиллюстрировать это, добавим немного данных в таблицу ClickHouse:
@@ -40,7 +39,6 @@ INSERT INTO session_events SELECT * FROM generateRandom('clientId UUID,
 <Image img={analyzer1} alt="Этапы выполнения запроса EXPLAIN" size="md" />
 
 Давайте посмотрим на каждый объект в действии во время выполнения запроса. Мы возьмём несколько запросов и затем рассмотрим их с помощью оператора `EXPLAIN`.
-
 
 ## Парсер {#parser}
 
@@ -72,7 +70,6 @@ EXPLAIN AST SELECT min(timestamp), max(timestamp) FROM session_events;
 <Image img={analyzer2} alt="AST output" size="md" />
 
 Каждый узел имеет соответствующие дочерние элементы, а дерево целиком представляет структуру вашего запроса. Это логическая структура, помогающая при обработке запроса. С точки зрения конечного пользователя (если только его не интересует выполнение запроса) она не особенно полезна; этот инструмент в основном используется разработчиками.
-
 
 ## Анализатор {#analyzer}
 
@@ -130,7 +127,6 @@ EXPLAIN QUERY TREE passes=20 SELECT min(timestamp) AS minimum_date, max(timestam
 ```
 
 Между двумя выполнениями вы можете увидеть, как разрешаются псевдонимы и проекции.
-
 
 ## Планировщик {#planner}
 
@@ -205,7 +201,6 @@ FROM session_events
 GROUP BY type
 ```
 
-
 ┌─explain────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ Выражение ((Projection + Before ORDER BY))                                                                                                │
 │ Действия: INPUT :: 0 -&gt; type String : 0                                                                                                   │
@@ -247,7 +242,6 @@ GROUP BY type
 
 Теперь вы можете видеть все входные данные, функции, псевдонимы и типы данных, которые используются. Некоторые оптимизации, которые будет применять планировщик, можно посмотреть [здесь](https://github.com/ClickHouse/ClickHouse/blob/master/src/Processors/QueryPlan/Optimizations/Optimizations.h).
 ```
-
 
 ## Конвейер запроса {#query-pipeline}
 
@@ -363,7 +357,6 @@ GROUP BY type
 FORMAT TSV
 ```
 
-
 ```response
 digraph
 {
@@ -446,7 +439,6 @@ digraph
 <Image img={analyzer5} alt="Параллельный вывод на графике" size="md" />
 
 Таким образом, исполнитель запроса решил не параллелизировать операции, поскольку объем данных был недостаточно большим. После того как было добавлено больше строк, исполнитель запроса решил использовать несколько потоков, как видно на графике.
-
 
 ## Исполнитель {#executor}
 

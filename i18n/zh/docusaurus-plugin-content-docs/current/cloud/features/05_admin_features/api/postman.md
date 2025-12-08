@@ -90,7 +90,6 @@ Postman 应用程序可以在网页浏览器中使用，也可以下载到桌面
 
 <Image img={postman11} size="md" alt="Organization ID 和 Service ID" border />
 
-
 ## 测试 ClickHouse Cloud API 功能 {#test-the-clickhouse-cloud-api-functionalities}
 
 ### 测试 "GET list of available organizations" {#test-get-list-of-available-organizations}

@@ -7,18 +7,12 @@ sidebar_label: 'sumForEach'
 doc_type: 'reference'
 ---
 
-
-
 # sumForEach {#sumforeach}
-
-
 
 ## 描述 {#description}
 
 [`ForEach`](/sql-reference/aggregate-functions/combinators#-foreach) 组合器
 可以应用到 [`sum`](/sql-reference/aggregate-functions/reference/sum) 聚合函数上，将其从在行值上进行计算的聚合函数转换为在数组列上进行计算的聚合函数，对数组中每个元素在跨行的数据上分别进行聚合。
-
-
 
 ## 示例用法 {#example-usage}
 
@@ -44,7 +38,6 @@ FROM metrica.hits
 GROUP BY hour_of_day
 ORDER BY hour_of_day;
 ```
-
 
 ## 另请参阅 {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)

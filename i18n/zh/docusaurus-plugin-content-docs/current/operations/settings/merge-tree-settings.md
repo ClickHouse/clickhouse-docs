@@ -45,13 +45,11 @@ ALTER TABLE tab MODIFY SETTING max_suspicious_broken_parts = 100;
 ALTER TABLE tab RESET SETTING max_suspicious_broken_parts;
 ```
 
-
 ## MergeTree 设置 {#mergetree-settings}
 
 {/* 以下设置由以下脚本自动生成：
   https://github.com/ClickHouse/clickhouse-docs/blob/main/scripts/settings/autogenerate-settings.sh
   */ }
-
 
 ## adaptive_write_buffer_initial_size {#adaptive_write_buffer_initial_size} 
 
@@ -129,7 +127,6 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 在查询中使用 `ORDER BY time DESC` 时，会启用 `ReadInOrder`。
 
 **默认值：** false
-
 
 ## allow_floating_point_partition_key {#allow_floating_point_partition_key} 
 
@@ -513,7 +510,7 @@ Dynamic 数据类型的序列化版本，为兼容性所必需。
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "添加了新的设置，用于限制 min_age_to_force_merge 的最大字节数。"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新设置"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "新设置"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "添加了新的设置，用于限制 min_age_to_force_merge 的最大字节数。"}]}]}/>
 
 用于控制 `min_age_to_force_merge_seconds` 和
 `min_age_to_force_merge_on_partition_only` 是否遵循
@@ -624,7 +621,6 @@ ALTER TABLE tab MODIFY SETTING exclude_materialize_skip_indexes_on_merge = 'idx_
 -- 默认设置,合并期间不排除任何索引更新
 ALTER TABLE tab MODIFY SETTING exclude_materialize_skip_indexes_on_merge = '';
 ```
-
 
 ## execute_merges_on_single_replica_time_threshold {#execute_merges_on_single_replica_time_threshold} 
 
@@ -888,7 +884,6 @@ slower than inserts" exception."
 <max_concurrent_queries>50</max_concurrent_queries>
 ```
 
-
 ## max&#95;delay&#95;to&#95;insert {#max_delay_to_insert}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
@@ -925,7 +920,6 @@ delay_milliseconds = max(min_delay_to_insert_ms, (max_delay_to_insert * 1000)
 = 300，parts&#95;to&#95;delay&#95;insert = 150，max&#95;delay&#95;to&#95;insert = 1，
 min&#95;delay&#95;to&#95;insert&#95;ms = 10，则 `INSERT` 会被延迟 `max( 10, 1 * 1000 *
 (224 - 150 + 1) / (300 - 150) ) = 500` 毫秒。
-
 
 ## max_delay_to_mutate_ms {#max_delay_to_mutate_ms} 
 
@@ -1001,13 +995,13 @@ background_schedule_pool 中触发选择任务，这在大规模集群中会导�
 
 ## max_part_loading_threads {#max_part_loading_threads} 
 
-<SettingsInfoBlock type="MaxThreads" default_value="'auto(17)'" />
+<SettingsInfoBlock type="MaxThreads" default_value="'auto(1)'" />
 
 已废弃的设置，无任何效果。
 
 ## max_part_removal_threads {#max_part_removal_threads} 
 
-<SettingsInfoBlock type="MaxThreads" default_value="'auto(17)'" />
+<SettingsInfoBlock type="MaxThreads" default_value="'auto(1)'" />
 
 已弃用的设置，目前不起任何作用。
 
@@ -1267,6 +1261,17 @@ MergeTree 表中 PROJECTION 的最大数量。
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 控制该逻辑相对于分区中分区片段数量的触发时机。因子越大，响应就越滞后。
+
+## merge_selector_enable_heuristic_to_lower_max_parts_to_merge_at_once {#merge_selector_enable_heuristic_to_lower_max_parts_to_merge_at_once} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+为 simple merge selector 启用启发式算法，以降低合并选择时的最大限制。
+这将增加并发合并的数量，有助于缓解 TOO_MANY_PARTS 错误，但同时也会提高写放大效应。
 
 ## merge_selector_enable_heuristic_to_remove_small_parts_at_right {#merge_selector_enable_heuristic_to_remove_small_parts_at_right} 
 
@@ -1530,7 +1535,6 @@ ClickHouse 会选择那个能在更大可用磁盘空闲空间范围内允许执
 ```xml
 <min_marks_to_honor_max_concurrent_queries>10</min_marks_to_honor_max_concurrent_queries>
 ```
-
 
 ## min_merge_bytes_to_use_direct_io {#min_merge_bytes_to_use_direct_io} 
 
@@ -2062,7 +2066,6 @@ WHERE table LIKE 'my_sparse_table';
 │ s      │ Sparse             │
 └────────┴────────────────────┘
 ```
-
 
 ## reduce_blocking_parts_sleep_ms {#reduce_blocking_parts_sleep_ms} 
 

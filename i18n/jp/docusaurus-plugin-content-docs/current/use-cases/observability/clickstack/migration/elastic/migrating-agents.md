@@ -361,7 +361,7 @@ sources:
 
 </VerticalStepper>
 
-### OpenTelemetry collector として Elastic Agent を実行する
+### OpenTelemetry collector として Elastic Agent を実行する {#sending-data-via-vector}
 
 Elastic Agent には EDOT Collector が組み込まれており、一度アプリケーションやインフラストラクチャを計装することで、複数のベンダーやバックエンドにデータを送信できます。
 

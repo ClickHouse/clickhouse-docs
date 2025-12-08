@@ -15,7 +15,6 @@ import Jdbc01 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-01
 import Jdbc02 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-02.png';
 import Jdbc03 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-03.png';
 
-
 # Подключение ClickHouse к внешним источникам данных с помощью JDBC {#connecting-clickhouse-to-external-data-sources-with-jdbc}
 
 :::note
@@ -41,8 +40,6 @@ import Jdbc03 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-03
 4. установлена и запущена актуальная версия **MySQL** (например, <a href="https://www.mysql.com" target="_blank">MySQL</a> версии >= 8)
 5. установлена и запущена актуальная версия **ClickHouse** ([см. установку](/getting-started/install/install.mdx))
 :::
-
-
 
 ## Установка ClickHouse JDBC Bridge локально {#install-the-clickhouse-jdbc-bridge-locally}
 
@@ -106,7 +103,6 @@ java -jar clickhouse-jdbc-bridge-2.0.7-shaded.jar
 Мы запустили ClickHouse JDBC Bridge в режиме переднего плана. Чтобы остановить Bridge, вы можете вернуть показанное выше окно оболочки Unix на передний план и нажать `CTRL+C`.
 :::
 
-
 ## Использование JDBC-подключения из ClickHouse {#use-the-jdbc-connection-from-within-clickhouse}
 
 Теперь ClickHouse может получать доступ к данным MySQL с помощью [табличной функции jdbc](/sql-reference/table-functions/jdbc.md) или [движка таблицы JDBC](/engines/table-engines/integrations/jdbc.md).
@@ -140,7 +136,6 @@ SELECT * FROM mytable;
 
 Схема таблицы движка ClickHouse JDBC и схема подключённой таблицы MySQL должны быть согласованы: например, имена и порядок столбцов должны совпадать, а типы данных столбцов — быть совместимыми.
 :::
-
 
 ## Внешняя установка ClickHouse JDBC Bridge {#install-the-clickhouse-jdbc-bridge-externally}
 

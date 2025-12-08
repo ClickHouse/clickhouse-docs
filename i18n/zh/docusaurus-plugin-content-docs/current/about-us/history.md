@@ -8,8 +8,6 @@ title: 'ClickHouse 历史'
 doc_type: 'reference'
 ---
 
-
-
 # ClickHouse 历史 {#clickhouse-history}
 
 ClickHouse 最初是为支撑 [Yandex.Metrica](https://metrica.yandex.com/)、[全球第二大 Web 分析平台](http://w3techs.com/technologies/overview/traffic_analysis/all) 而开发的，并且至今仍是其核心组件。数据库中包含超过 13 万亿条记录，每天新增超过 200 亿个事件，ClickHouse 允许直接基于未聚合数据即时生成自定义报表。本文将简要介绍 ClickHouse 在早期开发阶段的目标。
@@ -17,8 +15,6 @@ ClickHouse 最初是为支撑 [Yandex.Metrica](https://metrica.yandex.com/)、[�
 Yandex.Metrica 会基于点击和会话按需生成自定义报表，用户可以定义任意细分条件。要做到这一点，通常需要构建复杂的聚合（例如计算唯一用户数），而用于生成报表的新数据会实时写入。
 
 截至 2014 年 4 月，Yandex.Metrica 每天跟踪大约 120 亿个事件（页面浏览和点击）。为了构建自定义报表，所有这些事件都需要被存储。单个查询可能需要在几百毫秒内扫描数百万行，或者在几秒内扫描数亿行数据。
-
-
 
 ## 在 Yandex.Metrica 和其他 Yandex 服务中的使用 {#usage-in-yandex-metrica-and-other-yandex-services}
 
@@ -34,8 +30,6 @@ ClickHouse 还在以下流程中发挥关键作用：
 - 分析来自 API 和用户界面的日志。
 
 目前，在其他 Yandex 服务和部门中也部署了数十个 ClickHouse 集群：搜索垂直业务、电子商务、广告、商业分析、移动开发、个人服务等。
-
-
 
 ## 聚合和非聚合数据 {#aggregated-and-non-aggregated-data}
 

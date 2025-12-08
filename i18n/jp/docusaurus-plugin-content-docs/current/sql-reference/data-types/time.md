@@ -7,8 +7,6 @@ title: 'Time'
 doc_type: 'reference'
 ---
 
-
-
 # Time {#time}
 
 データ型 `Time` は、時・分・秒の要素から成る時刻を表します。
@@ -23,7 +21,6 @@ doc_type: 'reference'
 テキスト表現可能な範囲: [-999:59:59, 999:59:59]。
 
 精度: 1秒。
-
 
 ## 実装の詳細 {#implementation-details}
 
@@ -49,8 +46,6 @@ doc_type: 'reference'
 型パラメータとして、または値の作成時に `Time` に対してタイムゾーンを指定するとエラーが発生します。  
 同様に、`Time` 列に対してタイムゾーンを適用したり変更しようとする操作はサポートされず、エラーとなります。  
 `Time` 値が異なるタイムゾーンの下で暗黙的に再解釈されることはありません。
-
-
 
 ## 例 {#examples}
 
@@ -118,7 +113,6 @@ SELECT CAST('14:30:25' AS Time) AS column, toTypeName(column) AS type
 1. │ 14:30:25 │ Time │
    └───────────┴──────┘
 ```
-
 
 ## 関連項目 {#see-also}
 

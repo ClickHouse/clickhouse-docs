@@ -25,14 +25,11 @@ import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/curr
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
 # Подключение Astrato к ClickHouse {#connecting-astrato-to-clickhouse}
 
 <CommunityMaintainedBadge/>
 
 Astrato использует технологию Pushdown SQL для прямого выполнения запросов к ClickHouse Cloud или локальным развертываниям ClickHouse. Это означает, что вы можете получать доступ ко всем необходимым данным, опираясь на ведущую в отрасли производительность ClickHouse.
-
-
 
 ## Необходимые данные для подключения {#connection-data-required}
 
@@ -43,8 +40,6 @@ Astrato использует технологию Pushdown SQL для прямо
 - Учетные данные для базы данных: имя пользователя, пароль
 
 <ConnectionDetails />
-
-
 
 ## Создание подключения данных к ClickHouse {#creating-the-data-connection-to-clickhouse}
 
@@ -75,8 +70,6 @@ Astrato использует технологию Pushdown SQL для прямо
 Если создаётся дубликат, к имени источника данных добавляется метка времени (timestamp).
 :::
 
-
-
 ## Создание семантической модели / представления данных {#creating-a-semantic-model--data-view}
 
 В редакторе представления данных (Data View) вы увидите все свои таблицы и схемы (Schemas) в ClickHouse. Выберите нужные, чтобы начать.
@@ -92,8 +85,6 @@ Astrato использует технологию Pushdown SQL для прямо
 **Astrato интеллектуально предлагает соединения (joins)**, используя ваши метаданные, включая ключи в ClickHouse. Наши предложенные соединения (joins) упрощают начальный этап работы с хорошо управляемыми данными ClickHouse, без необходимости изобретать все заново. Мы также показываем **качество соединений (join quality)**, чтобы у вас была возможность детально просмотреть все рекомендации Astrato.
 
 <Image size="lg" img={astrato_4c_clickhouse_completed_data_view} alt="Подключение Astrato к ClickHouse User Access" border />
-
-
 
 ## Создание дашборда {#creating-a-dashboard}
 

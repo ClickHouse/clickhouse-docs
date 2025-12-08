@@ -13,13 +13,9 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-
-
 ## 描述 {#description}
 
 与 [`JSONEachRow`](./JSONEachRow.md) 的唯一区别在于，数据字段会以字符串形式输出，而不是输出为带类型的 JSON 值。
-
-
 
 ## 示例用法 {#example-usage}
 
@@ -65,7 +61,6 @@ FORMAT JSONStringsEachRow
 
 输出将为 JSON 格式：
 
-
 ```json
 {"date":"2022-04-30","season":"2021","home_team":"Sutton United","away_team":"Bradford City","home_team_goals":"1","away_team_goals":"4"}
 {"date":"2022-04-30","season":"2021","home_team":"Swindon Town","away_team":"Barrow","home_team_goals":"2","away_team_goals":"1"}
@@ -85,6 +80,5 @@ FORMAT JSONStringsEachRow
 {"date":"2022-05-07","season":"2021","home_team":"Stevenage Borough","away_team":"Salford City","home_team_goals":"4","away_team_goals":"2"}
 {"date":"2022-05-07","season":"2021","home_team":"Walsall","away_team":"Swindon Town","home_team_goals":"0","away_team_goals":"3"}   
 ```
-
 
 ## 格式设置 {#format-settings}

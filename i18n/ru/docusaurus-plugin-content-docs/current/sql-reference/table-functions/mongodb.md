@@ -7,20 +7,15 @@ title: 'mongodb'
 doc_type: 'reference'
 ---
 
-
-
 # Табличная функция MongoDB {#mongodb-table-function}
 
 Позволяет выполнять `SELECT`-запросы к данным, хранящимся на удалённом сервере MongoDB.
-
-
 
 ## Синтаксис {#syntax}
 
 ```sql
 mongodb(хост:порт, база_данных, коллекция, пользователь, пароль, структура[, опции[, oid_столбцы]])
 ```
-
 
 ## Аргументы {#arguments}
 
@@ -57,12 +52,9 @@ mongodb(uri, collection, structure[, oid_columns])
 | `structure`   | Схема таблицы ClickHouse, возвращаемой этой функцией.                                                                         |
 | `oid_columns` | Список столбцов, разделённых запятыми, которые в предложении WHERE должны интерпретироваться как `oid`. По умолчанию — `_id`. |
 
-
 ## Возвращаемое значение {#returned_value}
 
 Объект таблицы с теми же столбцами, что и исходная таблица MongoDB.
-
-
 
 ## Примеры {#examples}
 
@@ -105,7 +97,6 @@ SELECT * FROM mongodb(
     'log_type String, host String, command String'
 )
 ```
-
 
 ## См. также {#related}
 

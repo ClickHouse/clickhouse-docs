@@ -27,8 +27,6 @@ ClickHouse Keeper 的配置位于 `/etc/clickhouse-keeper/keeper_config.xml`。
 XML 配置文件应使用 `<clickhouse>...</clickhouse>` 作为顶层标签。
 在 YAML 配置文件中，`clickhouse:` 是可选的，如果缺失，解析器会自动插入该项。
 
-
-
 ## 合并配置 {#merging}
 
 两个配置文件（通常是主配置文件和来自 `config.d/` 的另一个配置文件）按如下规则进行合并：
@@ -119,7 +117,6 @@ XML 配置文件应使用 `<clickhouse>...</clickhouse>` 作为顶层标签。
 </clickhouse>
 ```
 
-
 ```shell
 # clickhouse-keeper-client {#clickhouse-keeper-client}
 / :) touch /zk_configs
@@ -166,7 +163,6 @@ XML 配置文件应使用 `<clickhouse>...</clickhouse>` 作为顶层标签。
 </clickhouse>
 ```
 
-
 ## 使用文件内容进行替换 {#substitution-with-file-content}
 
 也可以使用文件内容来替换配置中的部分内容。这可以通过两种方式完成：
@@ -190,7 +186,6 @@ XML 配置文件应使用 `<clickhouse>...</clickhouse>` 作为顶层标签。
 ```
 
 如果你希望将替换内容与现有配置合并而不是追加，可以使用属性 `merge="true"`。例如：`<include from_zk="/some_path" merge="true">`。在这种情况下，现有配置会与替换内容合并，且现有配置中的设置会被替换内容中的值覆盖。
-
 
 ## 加密和隐藏配置 {#encryption}
 
@@ -312,7 +307,6 @@ XML 配置文件应使用 `<clickhouse>...</clickhouse>` 作为顶层标签。
 </clickhouse>
 ```
 
-
 ## 用户设置 {#user-settings}
 
 `config.xml` 文件可以指定一个单独的配置文件，用于定义用户设置、配置概要（profile）和配额（quota）。该配置文件的相对路径通过 `users_config` 元素进行设置，默认值为 `users.xml`。如果省略 `users_config`，则用户设置、配置概要和配额会直接在 `config.xml` 中指定。
@@ -322,8 +316,6 @@ XML 配置文件应使用 `<clickhouse>...</clickhouse>` 作为顶层标签。
 默认使用目录 `users.d`，因为 `users_config` 默认是 `users.xml`。
 
 请注意，配置文件会首先根据设置进行[合并](#merging)，然后才会处理 include。
-
-
 
 ## XML 示例 {#example}
 
@@ -347,7 +339,6 @@ $ cat /etc/clickhouse-server/users.d/alice.xml
     </users>
 </clickhouse>
 ```
-
 
 ## YAML 示例 {#example-1}
 
@@ -462,7 +453,6 @@ map_key:
 ```xml
 <map_key attr1="value1">value2</map>
 ```
-
 
 ## 实现细节 {#implementation-details}
 

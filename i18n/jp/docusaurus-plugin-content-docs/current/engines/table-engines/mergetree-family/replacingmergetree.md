@@ -8,8 +8,6 @@ title: 'ReplacingMergeTree テーブルエンジン'
 doc_type: 'reference'
 ---
 
-
-
 # ReplacingMergeTree テーブルエンジン {#replacingmergetree-table-engine}
 
 このエンジンは、[MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) とは異なり、同じ[ソートキー](../../../engines/table-engines/mergetree-family/mergetree.md)値（テーブル定義の `ORDER BY` セクションで指定されるもので、`PRIMARY KEY` ではありません）を持つ重複エントリを削除します。
@@ -21,8 +19,6 @@ doc_type: 'reference'
 :::note
 ベストプラクティスやパフォーマンス最適化の方法を含む ReplacingMergeTree の詳細なガイドは[こちら](/guides/replacing-merge-tree)にあります。
 :::
-
-
 
 ## テーブルを作成する {#creating-a-table}
 
@@ -45,7 +41,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 :::note
 行の一意性は `PRIMARY KEY` ではなく、テーブルの `ORDER BY` 句によって決定されます。
 :::
-
 
 ## ReplacingMergeTree のパラメーター {#replacingmergetree-parameters}
 
@@ -141,7 +136,6 @@ INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 01:01:01', 0);
 INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 01:01:01', 1);
 ```
 
-
 select * from myThirdReplacingMT final;
 
 0 rows in set. Elapsed: 0.003 sec.
@@ -159,7 +153,6 @@ select * from myThirdReplacingMT final;
 
 ```
 ```
-
 
 ## クエリ句 {#query-clauses}
 
@@ -187,8 +180,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 - `ver` - バージョンを表すカラム。省略可能なパラメータです。詳細については上記の説明を参照してください。
 
 </details>
-
-
 
 ## クエリ時の重複排除と `FINAL` {#query-time-de-duplication--final}
 

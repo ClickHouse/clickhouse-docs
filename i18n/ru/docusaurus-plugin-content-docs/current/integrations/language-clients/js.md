@@ -15,7 +15,6 @@ integration:
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
 # ClickHouse JS {#clickhouse-js}
 
 Официальный JS‑клиент для подключения к ClickHouse.
@@ -66,7 +65,6 @@ npm i @clickhouse/client
 npm i @clickhouse/client-web
 ```
 
-
 ## Совместимость с ClickHouse {#compatibility-with-clickhouse}
 
 | Версия клиента | ClickHouse |
@@ -110,7 +108,6 @@ const client = createClient({
 ```
 
 Экземпляр клиента можно [заранее настроить](./js.md#configuration) при создании.
-
 
 #### Конфигурация {#configuration}
 
@@ -190,7 +187,6 @@ createClient({
 })
 ```
 
-
 ### Подключение {#connecting}
 
 #### Соберите сведения о подключении {#gather-your-connection-details}
@@ -217,7 +213,6 @@ const client = createClient({
 ```
 
 Репозиторий клиента содержит множество примеров, которые используют переменные окружения, например [создание таблицы в ClickHouse Cloud](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/create_table_cloud.ts), [использование асинхронных вставок](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/async_insert.ts) и многие другие.
-
 
 #### Пул соединений (только Node.js) {#connection-pool-nodejs-only}
 
@@ -259,7 +254,6 @@ interface BaseQueryParams {
 }
 ```
 
-
 ### Метод query {#query-method}
 
 Используется для большинства запросов, которые могут вернуть ответ, таких как `SELECT`, а также для отправки DDL, таких как `CREATE TABLE`, и должен вызываться с `await`. Ожидается, что возвращённый результирующий набор данных будет использоваться в приложении.
@@ -286,7 +280,6 @@ interface ClickHouseClient {
 :::tip
 Не указывайте клаузу FORMAT в `query`, вместо этого используйте параметр `format`.
 :::
-
 
 #### Абстракции набора результатов и строк {#result-set-and-row-abstractions}
 
@@ -372,7 +365,6 @@ await new Promise((resolve, reject) => {
 **Пример:** (только Node.js) Потоковая выборка результата запроса в формате `CSV` с использованием классического подхода `on('data')`. Это эквивалентно использованию синтаксиса `for await const`.
 [Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_text_line_by_line.ts)
 
-
 ```ts
 const resultSet = await client.query({
   query: 'SELECT number FROM system.numbers_mt LIMIT 5',
@@ -431,7 +423,6 @@ while (true) {
 }
 ```
 
-
 ### Метод INSERT {#insert-method}
 
 Это основной метод вставки данных.
@@ -452,7 +443,6 @@ interface ClickHouseClient {
 Если в метод `insert` был передан пустой массив, оператор INSERT не будет отправлен на сервер; вместо этого метод немедленно вернёт результат `{ query_id: '...', executed: false }`. Если в этом случае `query_id` не был передан в параметрах метода, в результате он будет пустой строкой, поскольку возврат случайного UUID, сгенерированного на стороне клиента, может ввести в заблуждение, так как запроса с таким `query_id` не будет в таблице `system.query_log`.
 
 Если оператор INSERT был отправлен на сервер, флаг `executed` будет иметь значение `true`.
-
 
 #### Метод insert и потоковая передача данных в Node.js {#insert-method-and-streaming-in-nodejs}
 
@@ -556,7 +546,6 @@ await client.insert({
 
 См. [исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_exclude_columns.ts) для получения дополнительных сведений.
 
-
 **Пример**: Вставка в другую базу данных, а не ту, что указана в экземпляре клиента. [Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_into_different_db.ts).
 
 ```ts
@@ -566,7 +555,6 @@ await client.insert({
   format: 'JSONEachRow',
 })
 ```
-
 
 #### Ограничения веб-версии {#web-version-limitations}
 
@@ -594,7 +582,6 @@ interface InsertParams<T> extends BaseQueryParams {
 ```
 
 В будущем это может измениться. См. также: [Базовые параметры для всех клиентских методов](./js.md#base-parameters-for-all-client-methods).
-
 
 ### Метод command {#command-method}
 
@@ -666,7 +653,6 @@ await client.command({
 Отмена запроса с помощью `abort_signal` не гарантирует, что соответствующий оператор не был выполнен сервером.
 :::
 
-
 ### Метод exec {#exec-method}
 
 Если у вас есть произвольный запрос, который не вписывается в `query`/`insert`,
@@ -706,7 +692,6 @@ export interface QueryResult {
   query_id: string
 }
 ```
-
 
 ### Ping {#ping}
 
@@ -765,7 +750,6 @@ const result = await client.ping({ select: true, /* query_id, abort_signal, http
 
 Метод ping может принимать большинство стандартных параметров метода `query` — см. определение типа `PingParamsWithSelectQuery`.
 
-
 ### Close (только Node.js) {#close-nodejs-only}
 
 Закрывает все открытые соединения и освобождает ресурсы. Ничего не делает в веб-версии.
@@ -773,7 +757,6 @@ const result = await client.ping({ select: true, /* query_id, abort_signal, http
 ```ts
 await client.close()
 ```
-
 
 ## Потоковая передача файлов (только Node.js) {#streaming-files-nodejs-only}
 
@@ -902,7 +885,6 @@ await client.insert({
 
 Однако, если вы используете столбцы с типом `DateTime` или `DateTime64`, вы можете использовать как строки, так и объекты JS Date. Объекты JS Date можно передавать в `insert` как есть, при значении параметра `date_time_input_format`, установленном в `best_effort`. Подробнее см. в этом [примере](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_js_dates.ts).
 
-
 ### Особенности типов Decimal* {#decimal-types-caveats}
 
 Можно вставлять значения Decimal с помощью форматов семейства `JSON*`. Предположим, у нас есть таблица, определённая как:
@@ -953,7 +935,6 @@ await client.query({
 
 См. [этот пример](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_decimals.ts) для получения дополнительных сведений.
 
-
 ### Целочисленные типы: Int64, Int128, Int256, UInt64, UInt128, UInt256 {#integral-types-int64-int128-int256-uint64-uint128-uint256}
 
 Хотя сервер может принимать это значение как число, в выходных форматах семейства `JSON*` оно возвращается как строка, чтобы избежать
@@ -982,7 +963,6 @@ const resultSet = await client.query({
 expect(await resultSet.json()).toEqual([ { number: 0 } ])
 ```
 
-
 ## Настройки ClickHouse {#clickhouse-settings}
 
 Клиент может настраивать поведение ClickHouse с помощью механизма [настроек](/operations/settings/settings/).
@@ -1009,7 +989,6 @@ client.query({
 :::important
 Убедитесь, что пользователь, от имени которого выполняются запросы, имеет достаточные права для изменения настроек.
 :::
-
 
 ## Продвинутые темы {#advanced-topics}
 
@@ -1045,7 +1024,6 @@ await client.query({
 
 Дополнительные сведения см. на странице [https://clickhouse.com/docs/interfaces/cli#cli-queries-with-parameters-syntax](https://clickhouse.com/docs/interfaces/cli#cli-queries-with-parameters-syntax).
 
-
 ### Сжатие {#compression}
 
 Примечание: сжатие запросов в настоящее время недоступно в веб-версии. Сжатие ответов работает как обычно. Версия для Node.js поддерживает оба варианта.
@@ -1065,7 +1043,6 @@ createClient({
 
 * `response: true` указывает серверу ClickHouse отправлять сжатое тело ответа. Значение по умолчанию: `response: false`
 * `request: true` включает сжатие тела запроса, отправляемого клиентом. Значение по умолчанию: `request: false`
-
 
 ### Логирование (только Node.js) {#logging-nodejs-only}
 
@@ -1124,7 +1101,6 @@ const client = createClient({
 
 Реализацию Logger по умолчанию можно найти [здесь](https://github.com/ClickHouse/clickhouse-js/blob/main/packages/client-common/src/logger.ts).
 
-
 ### Сертификаты TLS (только для Node.js) {#tls-certificates-nodejs-only}
 
 Клиент Node.js опционально поддерживает как односторонний (только центр сертификации, Certificate Authority),
@@ -1160,7 +1136,6 @@ const client = createClient({
 
 Полные примеры конфигурации TLS для режимов [basic](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/basic_tls.ts) и [mutual](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/mutual_tls.ts) см. в репозитории.
 
-
 ### Конфигурация Keep-Alive (только для Node.js) {#keep-alive-configuration-nodejs-only}
 
 Клиент по умолчанию включает Keep-Alive во внутреннем HTTP-агенте. Это означает, что установленные сокеты будут повторно использоваться для последующих запросов, а заголовок `Connection: keep-alive` будет отправляться автоматически. Сокеты, простаивающие без активности, по умолчанию остаются в пуле соединений 2500 миллисекунд (см. [заметки по настройке этого параметра](./js.md#adjusting-idle_socket_ttl)).
@@ -1191,7 +1166,6 @@ curl -v --data-binary "SELECT 1" <clickhouse_url>
 ```
 
 В данном случае `keep_alive_timeout` равен 10 секундам, и вы можете попробовать увеличить `keep_alive.idle_socket_ttl` до 9000 или даже 9500 миллисекунд, чтобы неактивные сокеты оставались открытыми немного дольше, чем по умолчанию. Следите за возможными ошибками «Socket hang-up», которые будут указывать на то, что сервер закрывает соединения раньше клиента, и снижайте значение до тех пор, пока ошибки не исчезнут.
-
 
 #### Поиск и устранение неисправностей {#troubleshooting}
 
@@ -1253,7 +1227,6 @@ const client = createClient({
 
 См. [пример](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/read_only_user.ts), где подробнее показаны ограничения пользователя с readonly=1.
 
-
 ### Прокси с путем (pathname) {#proxy-with-a-pathname}
 
 Если ваш экземпляр ClickHouse находится за прокси и в его URL-адресе есть путь (pathname), как, например, [http://proxy:8123/clickhouse&#95;server](http://proxy:8123/clickhouse_server), укажите `clickhouse_server` в качестве параметра конфигурации `pathname` (с начальным слешем или без него); иначе, если этот путь указан напрямую в `url`, он будет интерпретирован как параметр `database`. Поддерживается несколько сегментов, например `/my_proxy/db`.
@@ -1264,7 +1237,6 @@ const client = createClient({
   pathname: '/clickhouse_server',
 })
 ```
-
 
 ### Реверс‑прокси с аутентификацией {#reverse-proxy-with-authentication}
 
@@ -1277,7 +1249,6 @@ const client = createClient({
   },
 })
 ```
-
 
 ### Пользовательский HTTP/HTTPS-агент (экспериментальная функция, только Node.js) {#custom-httphttps-agent-experimental-nodejs-only}
 
@@ -1359,7 +1330,6 @@ const client = createClient({
 ```
 
 При использовании сертификатов *и* пользовательского *HTTPS*-агента, скорее всего, потребуется отключить заголовок авторизации по умолчанию с помощью настройки `set_basic_auth_header` (добавлена в 1.2.0), так как он конфликтует с заголовками TLS. Все заголовки TLS должны задаваться вручную.
-
 
 ## Известные ограничения (Node.js/web) {#known-limitations-nodejsweb}
 

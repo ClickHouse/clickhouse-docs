@@ -1824,6 +1824,16 @@ UInt64, чтобы минимизировать публичную часть
 
 Совместимость: игнорировать COLLATION в CREATE TABLE
 
+## compatibility_s3_presigned_url_query_in_path {#compatibility_s3_presigned_url_query_in_path} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+Совместимость: при включении переносит параметры запроса предварительно подписанного URL (например, X-Amz-*) в ключ S3 (устаревшее поведение),
+так что «?» действует как подстановочный знак в пути. При отключении (по умолчанию) параметры запроса предварительно подписанного URL остаются в query-части URL,
+чтобы избежать интерпретации «?» как подстановочного знака.
+
 ## compile_aggregate_expressions {#compile_aggregate_expressions} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -9445,6 +9455,14 @@ a   Tuple(
 - 0 - Отключить
 - 1 - Включить
 
+## query_plan_read_in_order_through_join {#query_plan_read_in_order_through_join} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+Сохраняет порядок чтения строк из левой таблицы в операциях JOIN, что может быть использовано последующими шагами.
+
 ## query_plan_remove_redundant_distinct {#query_plan_remove_redundant_distinct} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -10105,6 +10123,15 @@ FORMAT Null;
 
 Минимальный размер части при многочастичной загрузке в S3.
 
+## s3_path_filter_limit {#s3_path_filter_limit} 
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1000"},{"label": "Новая настройка"}]}]}/>
+
+Максимальное количество значений `_path`, которое может быть извлечено из фильтров запроса и использовано для итерации по файлам
+вместо перечисления файлов по glob-шаблону. Значение 0 означает, что настройка отключена.
+
 ## s3_request_timeout_ms {#s3_request_timeout_ms} 
 
 <SettingsInfoBlock type="UInt64" default_value="30000" />
@@ -10669,7 +10696,8 @@ SELECT ((4 + 2) + 1, ((4 + 2) + 1) + 2)
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "21.12"},{"label": "0"},{"label": "По умолчанию не разрешать прямой SELECT для Kafka/RabbitMQ/FileLog"}]}]}/>
 
-Разрешает выполнение прямого запроса SELECT для движков Kafka, RabbitMQ, FileLog, Redis Streams и NATS. При наличии подключённых materialized views выполнение запроса SELECT запрещено, даже если этот параметр включён.
+Разрешает выполнение прямого запроса SELECT для движков Kafka, RabbitMQ, FileLog, Redis Streams, S3Queue, AzureQueue и NATS. При наличии подключённых materialized views выполнение запроса SELECT запрещено, даже если этот параметр включён.
+Если нет подключённых materialized views, включение этого параметра позволяет читать данные. Имейте в виду, что обычно прочитанные данные удаляются из очереди. Чтобы избежать удаления прочитанных данных, соответствующие настройки движка должны быть настроены должным образом.
 
 ## stream_like_engine_insert_queue {#stream_like_engine_insert_queue} 
 

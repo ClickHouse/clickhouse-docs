@@ -200,7 +200,6 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONStrings;
 ```
 
-
 ### 读取数据 {#reading-data}
 
 使用 `JSONStrings` 格式来读取数据：
@@ -212,7 +211,6 @@ FORMAT JSONStrings
 ```
 
 输出为 JSON 格式：
-
 
 ```json
 {

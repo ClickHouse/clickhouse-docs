@@ -19,7 +19,6 @@ import ingestion_key from '@site/static/images/use-cases/observability/ingestion
 
 На этой странице представлена подробная информация по настройке официального коллектора OpenTelemetry (OTel) для ClickStack.
 
-
 ## Роли коллектора {#collector-roles}
 
 Коллекторы OpenTelemetry могут быть развернуты в двух основных ролях:
@@ -38,32 +37,32 @@ import ingestion_key from '@site/static/images/use-cases/observability/ingestion
 
 ### Автономный режим {#standalone}
 
-Чтобы развернуть дистрибутив ClickStack коннектора OTel в автономном режиме, выполните следующую команду Docker:
+Чтобы развернуть дистрибутив коннектора OTel ClickStack в автономном режиме, выполните следующую docker-команду:
 
 ```shell
-docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector
+docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
 ```
 
-Обратите внимание, что можно переопределить целевой экземпляр ClickHouse с помощью переменных окружения `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME` и `CLICKHOUSE_PASSWORD`. Значение `CLICKHOUSE_ENDPOINT` должно быть полным HTTP-эндпоинтом ClickHouse, включая протокол и порт — например, `http://localhost:8123`.
+Обратите внимание, что мы можем переопределить целевой экземпляр ClickHouse с помощью переменных среды `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME` и `CLICKHOUSE_PASSWORD`. Значение `CLICKHOUSE_ENDPOINT` должно быть полным HTTP‑эндпоинтом ClickHouse, включая протокол и порт — например, `http://localhost:8123`.
 
-**Эти переменные окружения можно использовать с любыми docker-дистрибутивами, которые включают коннектор.**
+**Эти переменные среды можно использовать с любыми docker-дистрибутивами, которые включают коннектор.**
 
-Переменная `OPAMP_SERVER_URL` должна указывать на ваше развертывание HyperDX — например, `http://localhost:4320`. HyperDX по умолчанию предоставляет сервер OpAMP (Open Agent Management Protocol) по пути `/v1/opamp` на порту `4320`. Убедитесь, что этот порт проброшен из контейнера, в котором запущен HyperDX (например, с помощью `-p 4320:4320`).
+`OPAMP_SERVER_URL` должен указывать на ваше развертывание HyperDX — например, `http://localhost:4320`. HyperDX по умолчанию поднимает сервер OpAMP (Open Agent Management Protocol) по пути `/v1/opamp` на порту `4320`. Убедитесь, что этот порт проброшен из контейнера, в котором запущен HyperDX (например, с помощью `-p 4320:4320`).
 
-:::note Публикация и подключение к порту OpAMP
-Чтобы коллектор смог подключиться к порту OpAMP, он должен быть опубликован контейнером HyperDX, например, с помощью `-p 4320:4320`. Для локального тестирования пользователи macOS могут затем задать `OPAMP_SERVER_URL=http://host.docker.internal:4320`. Пользователи Linux могут запустить контейнер коллектора с параметром `--network=host`.
+:::note Exposing and connecting to the OpAMP port
+Чтобы коллектор смог подключиться к порту OpAMP, он должен быть проброшен из контейнера HyperDX, например `-p 4320:4320`. Для локального тестирования пользователи macOS могут задать `OPAMP_SERVER_URL=http://host.docker.internal:4320`. Пользователи Linux могут запускать контейнер коллектора с параметром `--network=host`.
 :::
 
-В продуктивной среде пользователям следует использовать учётную запись с [подходящими учетными данными](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user).
+В production-среде пользователям следует использовать пользователя с [соответствующими учётными данными](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user).
 
 
 ### Изменение конфигурации {#modifying-otel-collector-configuration}
 
 #### Использование Docker {#using-docker}
 
-Все образы Docker с включённым OpenTelemetry Collector можно настроить на использование экземпляра ClickHouse через переменные окружения `OPAMP_SERVER_URL`, `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME` и `CLICKHOUSE_PASSWORD`:
+Все образы Docker, включающие OpenTelemetry collector, можно настроить для работы с экземпляром ClickHouse через переменные окружения `OPAMP_SERVER_URL`, `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME` и `CLICKHOUSE_PASSWORD`:
 
-Например, образ all-in-one:
+Например, универсальный (all-in-one) образ:
 
 ```shell
 export OPAMP_SERVER_URL=<OPAMP_SERVER_URL>
@@ -73,8 +72,12 @@ export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 ```
 
 ```shell
-docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
+docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-all-in-one:latest
 ```
+
+:::note Изменение имени образа
+Образы ClickStack теперь публикуются под именем `clickhouse/clickstack-*` (ранее `docker.hyperdx.io/hyperdx/*`).
+:::
 
 
 #### Docker Compose {#docker-compose-otel}
@@ -101,16 +104,15 @@ docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLIC
       - internal
 ```
 
-
 ### Расширенная конфигурация {#advanced-configuration}
 
 Дистрибутив OTel collector в составе ClickStack поддерживает расширение базовой конфигурации за счёт монтирования пользовательского конфигурационного файла и задания переменной окружения. Пользовательская конфигурация объединяется с базовой конфигурацией, управляемой HyperDX через OpAMP.
 
 #### Расширение конфигурации коллектора {#extending-collector-config}
 
-Чтобы добавить пользовательские receivers, processors или pipelines:
+Чтобы добавить пользовательские приёмники (receivers), процессоры (processors) или конвейеры (pipelines):
 
-1. Создайте пользовательский файл конфигурации с дополнительными параметрами
+1. Создайте пользовательский файл конфигурации с вашей дополнительной конфигурацией
 2. Смонтируйте файл по пути `/etc/otelcol-contrib/custom.config.yaml`
 3. Установите переменную окружения `CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml`
 
@@ -126,7 +128,7 @@ receivers:
       - /var/log/messages
     start_at: beginning
 
-  # Сбор метрик хост-системы
+  # Сбор метрик системы хоста
   hostmetrics:
     collection_interval: 30s
     scrapers:
@@ -167,17 +169,17 @@ service:
         - clickhouse
 ```
 
-**Разверните, используя образ «всё в одном»:**
+**Развертывание с использованием образа all-in-one:**
 
 ```bash
 docker run -d --name clickstack \
   -p 8080:8080 -p 4317:4317 -p 4318:4318 \
   -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
   -v "$(pwd)/custom-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
-**Развертывание с отдельным коллектором:**
+**Развертывание с автономным коллектором:**
 
 ```bash
 docker run -d \
@@ -188,14 +190,14 @@ docker run -d \
   -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
   -v "$(pwd)/custom-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
   -p 4317:4317 -p 4318:4318 \
-  docker.hyperdx.io/hyperdx/hyperdx-otel-collector
+  clickhouse/clickstack-otel-collector:latest
 ```
 
 :::note
-В пользовательской конфигурации вы определяете только новые `receivers`, `processors` и `pipelines`. Базовые `processors` (`memory_limiter`, `batch`) и `exporters` (`clickhouse`) уже определены — ссылайтесь на них по имени. Пользовательская конфигурация объединяется с базовой конфигурацией и не может переопределять существующие компоненты.
+В пользовательской конфигурации вы определяете только новые `receivers`, `processors` и `pipelines`. Базовые `processors` (`memory_limiter`, `batch`) и `exporters` (`clickhouse`) уже определены — ссылайтесь на них по имени. Пользовательская конфигурация объединяется с базовой и не может переопределять уже существующие компоненты.
 :::
 
-Для более сложных конфигураций обратитесь к [стандартной конфигурации коллектора ClickStack](https://github.com/hyperdxio/hyperdx/blob/main/docker/otel-collector/config.yaml) и к [документации по экспортёру ClickHouse](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options).
+Для более сложных конфигураций обратитесь к [конфигурации коллектора ClickStack по умолчанию](https://github.com/hyperdxio/hyperdx/blob/main/docker/otel-collector/config.yaml) и к [документации по экспортеру ClickHouse](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options).
 
 
 #### Структура конфигурации {#configuration-structure}
@@ -227,7 +229,6 @@ GRANT SELECT, INSERT, CREATE DATABASE, CREATE TABLE, CREATE VIEW ON otel.* TO hy
 ```
 
 Предполагается, что коллектор настроен на использование базы данных `otel`. Этим можно управлять через переменную окружения `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE`. Передайте её в образ контейнера с коллектором [аналогично другим переменным окружения](#modifying-otel-collector-configuration).
-
 
 ## Обработка — фильтрация, трансформация и обогащение {#processing-filtering-transforming-enriching}
 
@@ -308,7 +309,6 @@ service:
 Обратите внимание на необходимость добавлять [заголовок авторизации с вашим ключом API для приёма данных API key](#securing-the-collector) во все OTLP-запросы.
 
 Для более сложной конфигурации мы рекомендуем обратиться к [документации по OpenTelemetry collector](https://opentelemetry.io/docs/collector/).
-
 
 ## Оптимизация вставок {#optimizing-inserts}
 
@@ -412,16 +412,16 @@ OTel collector в составе ClickStack действует как экзем
 
 ### Включение поддержки JSON {#enabling-json-support}
 
-Чтобы включить эту поддержку для коллектора, задайте переменную окружения `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'` в любом развертывании, содержащем коллектор. Это гарантирует, что схемы будут созданы в ClickHouse с использованием типа JSON.
+Чтобы включить эту поддержку для коллектора, установите переменную окружения `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'` в любом развертывании, где используется коллектор. Это гарантирует создание схем в ClickHouse с использованием типа JSON.
 
 :::note Поддержка HyperDX
-Чтобы иметь возможность выполнять запросы к типу JSON, поддержку также необходимо включить на уровне приложения HyperDX с помощью переменной окружения `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true`.
+Чтобы выполнять запросы к типу JSON, поддержку также необходимо включить на уровне приложения HyperDX с помощью переменной окружения `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true`.
 :::
 
 Например:
 
 ```shell
-docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector
+docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
 ```
 
 

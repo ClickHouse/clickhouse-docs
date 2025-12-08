@@ -10,7 +10,6 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # Табличный движок TimeSeries {#timeseries-table-engine}
 
 <ExperimentalBadge />
@@ -31,7 +30,6 @@ metric_name2[...] = ...
 Выполните команду `set allow_experimental_time_series_table = 1`.
 :::
 
-
 ## Синтаксис {#syntax}
 
 ```sql
@@ -41,7 +39,6 @@ CREATE TABLE name [(columns)] ENGINE=TimeSeries
 [TAGS db.tags_table_name | TAGS ENGINE tags_table_engine(arguments)]
 [METRICS db.metrics_table_name | METRICS ENGINE metrics_table_engine(arguments)]
 ```
-
 
 ## Использование {#usage}
 
@@ -55,7 +52,6 @@ CREATE TABLE my_table ENGINE=TimeSeries
 
 * [prometheus remote-write](../../../interfaces/prometheus.md#remote-write)
 * [prometheus remote-read](../../../interfaces/prometheus.md#remote-read)
-
 
 ## Целевые таблицы {#target-tables}
 
@@ -103,8 +99,6 @@ CREATE TABLE my_table ENGINE=TimeSeries
 
 Таблица _metrics_ должна иметь столбцы:
 
-
-
 | Имя | Обязательный? | Тип по умолчанию | Возможные типы | Описание |
 |---|---|---|---|---|
 | `metric_family_name` | [x] | `String` | `String` или `LowCardinality(String)` | Имя семейства метрик |
@@ -114,8 +108,6 @@ CREATE TABLE my_table ENGINE=TimeSeries
 
 Любая строка, вставленная в таблицу `TimeSeries`, фактически будет сохранена в этих трёх целевых таблицах.
 Таблица `TimeSeries` содержит все столбцы из таблиц [data](#data-table), [tags](#tags-table), [metrics](#metrics-table).
-
-
 
 ## Создание {#creation}
 
@@ -201,7 +193,6 @@ ENGINE = ReplacingMergeTree
 ORDER BY metric_family_name
 ```
 
-
 ## Настройка типов столбцов {#adjusting-column-types}
 
 Вы можете изменить тип почти любого столбца во внутренних целевых таблицах, явно указав его
@@ -227,7 +218,6 @@ ENGINE = MergeTree
 ORDER BY (id, timestamp)
 ```
 
-
 ## Столбец `id` {#id-column}
 
 Столбец `id` содержит идентификаторы; каждый идентификатор вычисляется для комбинации имени метрики и тегов.
@@ -241,7 +231,6 @@ CREATE TABLE my_table
 )
 ENGINE=TimeSeries
 ```
-
 
 ## Столбцы `tags` и `all_tags` {#tags-and-all-tags}
 
@@ -277,7 +266,6 @@ ENGINE=TimeSeries
 SETTINGS tags_to_columns = {'instance': 'instance', 'job': 'job'}
 ```
 
-
 ## Движки внутренних целевых таблиц {#inner-table-engines}
 
 По умолчанию внутренние целевые таблицы используют следующие движки таблиц:
@@ -296,7 +284,6 @@ DATA ENGINE=ReplicatedMergeTree
 TAGS ENGINE=ReplicatedAggregatingMergeTree
 METRICS ENGINE=ReplicatedReplacingMergeTree
 ```
-
 
 ## Внешние таблицы назначения {#external-target-tables}
 
@@ -319,7 +306,6 @@ CREATE TABLE metrics_for_my_table ...
 CREATE TABLE my_table ENGINE=TimeSeries DATA data_for_my_table TAGS tags_for_my_table METRICS metrics_for_my_table;
 ```
 
-
 ## Настройки {#settings}
 
 Ниже приведён список настроек, которые можно задать при определении таблицы `TimeSeries`:
@@ -331,8 +317,6 @@ CREATE TABLE my_table ENGINE=TimeSeries DATA data_for_my_table TAGS tags_for_my_
 | `store_min_time_and_max_time` | Bool | true | Если установлено значение `true`, таблица будет сохранять `min_time` и `max_time` для каждого временного ряда |
 | `aggregate_min_time_and_max_time` | Bool | true | При создании внутренней целевой таблицы `tags` этот флаг включает использование `SimpleAggregateFunction(min, Nullable(DateTime64(3)))` вместо просто `Nullable(DateTime64(3))` как типа столбца `min_time`, и аналогично для столбца `max_time` |
 | `filter_by_min_time_and_max_time` | Bool | true | Если установлено значение `true`, таблица будет использовать столбцы `min_time` и `max_time` для фильтрации временных рядов |
-
-
 
 # Функции {#functions}
 

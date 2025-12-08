@@ -50,7 +50,6 @@ The sections below give a brief overview of the steps that were involved in brin
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/noaa/noaa_enriched.parquet
 ```
 
-
 ### 元データ {#original-data}
 
 以下では、ClickHouse にロードするための準備として、元データをダウンロードおよび変換する手順を説明します。
@@ -62,7 +61,6 @@ wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/noaa/noaa_enriche
 ```bash
 for i in {1900..2023}; do wget https://noaa-ghcn-pds.s3.amazonaws.com/csv.gz/${i}.csv.gz; done
 ```
-
 
 #### データのサンプリング {#sampling-the-data}
 
@@ -85,7 +83,6 @@ $ clickhouse-local --query "SELECT * FROM '2021.csv.gz' LIMIT 10" --format Prett
 [フォーマットのドキュメント](https://github.com/awslabs/open-data-docs/tree/main/docs/noaa/noaa-ghcn)の要約:
 
 フォーマット仕様および各列の内容を順番にまとめると次のとおりです。
-
 
 - 11 文字の観測所識別コード。これ自体にいくつか有用な情報がエンコードされています。
 - YEAR/MONTH/DAY = YYYYMMDD 形式の 8 文字の日付（例: 19860529 = 1986 年 5 月 29 日）。
@@ -120,7 +117,6 @@ FROM file('*.csv.gz', CSV, 'station_id String, date String, measurement String, 
 ```
 
 26億行以上あるため、すべてのファイルをパースするこのクエリは高速ではありません。8コアのマシンでは、完了までに約160秒かかります。
-
 
 ### データのピボット {#pivot-data}
 
@@ -160,7 +156,6 @@ done
 
 このクエリにより、サイズが 50GB の単一ファイル `noaa.csv` が生成されます。
 
-
 ### データの拡充 {#enriching-the-data}
 
 現在のデータには、国コードのプレフィックスを含むステーション ID 以外に位置情報に関する情報がありません。本来であれば、各ステーションには緯度と経度が紐づいていることが望ましいです。これを実現するために、NOAA は各ステーションの詳細を別ファイルとして提供しており、それが [ghcnd-stations.txt](https://github.com/awslabs/open-data-docs/tree/main/docs/noaa/noaa-ghcn#format-of-ghcnd-stationstxt-file) です。このファイルには[複数の列](https://github.com/awslabs/open-data-docs/tree/main/docs/noaa/noaa-ghcn#format-of-ghcnd-stationstxt-file)があり、そのうち今後の分析で有用なのは 5 つの列、すなわち id、latitude、longitude、elevation、name です。
@@ -193,7 +188,6 @@ FROM file('noaa.csv', CSV,
 
 このクエリは実行に数分かかり、サイズ 6.4 GB の `noaa_enriched.parquet` ファイルを生成します。
 
-
 ## テーブルの作成 {#create-table}
 
 ClickHouse クライアントから、ClickHouse 上に MergeTree テーブルを作成します。
@@ -220,7 +214,6 @@ CREATE TABLE noaa
 
 ```
 
-
 ## ClickHouse へのデータ挿入 {#inserting-into-clickhouse}
 
 ### ローカルファイルからの挿入 {#inserting-from-local-file}
@@ -235,7 +228,6 @@ INSERT INTO noaa FROM INFILE '<path>/noaa_enriched.parquet'
 
 この読み込みを高速化する方法については[こちら](https://clickhouse.com/blog/real-world-data-noaa-climate-data#load-the-data)を参照してください。
 
-
 ### S3 からの挿入 {#inserting-from-s3}
 
 ```sql
@@ -245,7 +237,6 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/noaa/noaa_enr
 ```
 
 データロードを高速化する方法については、[大規模データロードのチューニング](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part2)に関するブログ記事を参照してください。
-
 
 ## サンプルクエリ {#sample-queries}
 
@@ -276,7 +267,6 @@ LIMIT 5
 ```
 
 2023 年時点での [Furnace Creek](https://www.google.com/maps/place/36%C2%B027'00.0%22N+116%C2%B052'00.1%22W/@36.1329666,-116.1104099,8.95z/data=!4m5!3m4!1s0x0:0xf2ed901b860f4446!8m2!3d36.45!4d-116.8667) における[記録上の最高気温](https://en.wikipedia.org/wiki/List_of_weather_records#Highest_temperatures_ever_recorded)と比べても、安心できるほどよく一致しています。
-
 
 ### 最高のスキーリゾート {#best-ski-resorts}
 
@@ -346,7 +336,6 @@ LIMIT 5
 5行のデータセット。経過時間: 0.750秒。処理行数: 6億8910万行、3.20 GB (9億1820万行/秒、4.26 GB/秒)
 ピークメモリ使用量: 67.66 MiB。
 ```
-
 
 ## 謝辞 {#credits}
 

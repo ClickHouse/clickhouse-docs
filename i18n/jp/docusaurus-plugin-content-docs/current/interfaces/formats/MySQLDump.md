@@ -13,8 +13,6 @@ doc_type: 'reference'
 |-------|---------|-------|
 | ✔     | ✗       |       |
 
-
-
 ## 説明 {#description}
 
 ClickHouse は MySQL の [ダンプ](https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html) の読み取りをサポートしています。
@@ -25,8 +23,6 @@ ClickHouse は MySQL の [ダンプ](https://dev.mysql.com/doc/refman/8.0/en/mys
 :::note
 この形式はスキーマ推論をサポートします。ダンプに指定されたテーブルに対する `CREATE` クエリが含まれている場合は、そのクエリからテーブル構造を推論し、含まれていない場合は `INSERT` クエリのデータからスキーマを推論します。
 :::
-
-
 
 ## 使用例 {#example-usage}
 
@@ -83,7 +79,6 @@ SETTINGS input_format_mysql_dump_table_name = 'test2'
 │ 3 │
 └───┘
 ```
-
 
 ## フォーマット設定 {#format-settings}
 

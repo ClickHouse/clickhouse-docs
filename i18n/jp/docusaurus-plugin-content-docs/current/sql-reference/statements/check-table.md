@@ -17,8 +17,6 @@ ClickHouse における `CHECK TABLE` クエリは、特定のテーブルまた
 このクエリはシステムのパフォーマンスを向上させるものではなく、何をしているか確信が持てない場合には実行すべきではありません。
 :::
 
-
-
 ## 構文 {#syntax}
 
 クエリの基本的な構文は次のとおりです。
@@ -54,7 +52,6 @@ CHECK TABLE table_name [PARTITION partition_expression | PART part_name] [FORMAT
 これら以外のテーブルエンジンのテーブルに対して実行した場合は、`NOT_IMPLEMENTED` 例外が発生します。
 
 `*Log` ファミリーのエンジンは、障害発生時の自動データ復旧を提供しません。`CHECK TABLE` クエリを使用して、データ損失をタイムリーに検知してください。
-
 
 ## 例 {#examples}
 
@@ -152,7 +149,6 @@ FORMAT PrettyCompactMonoBlock
 SETTINGS check_query_single_value_result = 0
 ```
 
-
 ```text
 ┌─database─┬─table────┬─part_path───┬─is_passed─┬─message─┐
 │ default  │ t2       │ all_1_95_3  │         1 │         │
@@ -167,7 +163,6 @@ SETTINGS check_query_single_value_result = 0
 │ default  │ t1       │ all_7_38_2  │         1 │         │
 └──────────┴──────────┴─────────────┴───────────┴─────────┘
 ```
-
 
 ## データが破損している場合 {#if-the-data-is-corrupted}
 

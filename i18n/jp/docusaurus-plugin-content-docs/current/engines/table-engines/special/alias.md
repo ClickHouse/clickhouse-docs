@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
 # Alias テーブルエンジン {#alias-table-engine}
 
 <ExperimentalBadge/>
@@ -40,7 +39,6 @@ ENGINE = Alias(target_db, target_table)
 :::note
 `Alias` テーブルでは、明示的な列定義を行うことはできません。列はターゲットテーブルから自動的に継承されます。これにより、エイリアスは常にターゲットテーブルのスキーマと一致します。
 :::
-
 
 ## エンジンパラメータ {#engine-parameters}
 
@@ -109,7 +107,6 @@ SELECT * FROM data_alias;
 └────┴──────┴───────┘
 ```
 
-
 ### データベース間エイリアス {#cross-database-alias}
 
 別のデータベース内のテーブルを参照するエイリアスを作成します。
@@ -137,7 +134,6 @@ CREATE TABLE db2.events_alias2 ENGINE = Alias('db1.events');
 INSERT INTO db2.events_alias VALUES (now(), 'click', 100);
 SELECT * FROM db2.events_alias2;
 ```
-
 
 ### エイリアス経由での書き込み操作 {#write-operations}
 
@@ -169,7 +165,6 @@ SELECT count() FROM metrics;  -- 7を返す
 SELECT count() FROM metrics_alias;  -- 7を返す
 ```
 
-
 ### スキーマの変更 {#schema-modification}
 
 ALTER 操作は対象テーブルのスキーマを変更します。
@@ -197,7 +192,6 @@ DESCRIBE users;
 │ email │ String │ DEFAULT      │ ''                 │
 └───────┴────────┴──────────────┴────────────────────┘
 ```
-
 
 ### データの変更 {#data-mutations}
 
@@ -236,7 +230,6 @@ SELECT * FROM products ORDER BY id;
 └────┴──────────┴───────┴────────┘
 ```
 
-
 ### パーティション操作 {#partition-operations}
 
 パーティション化されたテーブルでは、パーティション操作はそのまま伝播されます。
@@ -267,7 +260,6 @@ ALTER TABLE logs_alias ATTACH PARTITION '202402';
 
 SELECT count() FROM logs_alias;  -- 3を返す
 ```
-
 
 ### テーブル最適化 {#table-optimization}
 
@@ -302,7 +294,6 @@ WHERE database = currentDatabase()
   AND table = 'events' 
   AND active;  -- 1 を返す
 ```
-
 
 ### エイリアスの管理 {#alias-management}
 

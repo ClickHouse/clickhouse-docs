@@ -7,8 +7,6 @@ title: 'VersionedCollapsingMergeTree テーブルエンジン'
 doc_type: 'reference'
 ---
 
-
-
 # VersionedCollapsingMergeTree テーブルエンジン {#versionedcollapsingmergetree-table-engine}
 
 このエンジンは次のことができます：
@@ -19,8 +17,6 @@ doc_type: 'reference'
 詳細は [Collapsing](#table_engines_versionedcollapsingmergetree) のセクションを参照してください。
 
 このエンジンは [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) を継承し、データパーツのマージアルゴリズムに行の折りたたみロジックを追加します。`VersionedCollapsingMergeTree` は [CollapsingMergeTree](../../../engines/table-engines/mergetree-family/collapsingmergetree.md) と同じ目的で使用されますが、異なる折りたたみアルゴリズムを採用しており、複数スレッドで任意の順序でデータを挿入できます。特に、`Version` 列は、行が誤った順序で挿入された場合でも、適切に行を折りたたむのに役立ちます。これに対して、`CollapsingMergeTree` は厳密に連続した順序での挿入のみをサポートします。
-
-
 
 ## テーブルの作成 {#creating-a-table}
 
@@ -81,7 +77,6 @@ VersionedCollapsingMergeTree(サイン, バージョン)
     列のデータ型は `UInt*` である必要があります。
 </details>
 
-
 ## 折りたたみ（Collapsing） {#table_engines_versionedcollapsingmergetree}
 
 ### データ {#data}
@@ -136,7 +131,6 @@ ClickHouse がデータパートをマージする際、同じ主キーとバー
 
 ClickHouse がデータを挿入する際には、行は主キーでソートされます。`Version` 列が主キーに含まれていない場合、ClickHouse はそれを暗黙的に主キーの最後のフィールドとして追加し、その並び替えに使用します。
 
-
 ## データの選択 {#selecting-data}
 
 ClickHouse は、同じプライマリキーを持つすべての行が、同じ結果のデータパート内、あるいは同じ物理サーバー上に存在することを保証しません。これは、データを書き込むときと、その後にデータパートをマージするときの両方について当てはまります。さらに、ClickHouse は `SELECT` クエリを複数スレッドで処理するため、結果の行の順序を予測できません。つまり、`VersionedCollapsingMergeTree` テーブルから完全に「折りたたまれた」データを取得する必要がある場合は、集約処理が必要になります。
@@ -146,8 +140,6 @@ ClickHouse は、同じプライマリキーを持つすべての行が、同じ
 `count`、`sum`、`avg` といった集約は、この方法で計算できます。`uniq` 集約は、オブジェクトに少なくとも 1 つの未折りたたみ状態がある場合に計算できます。`min` および `max` 集約は、`VersionedCollapsingMergeTree` が折りたたまれた状態の値の履歴を保存しないため、計算できません。
 
 集約なしで「折りたたみ」を行ったデータを抽出する必要がある場合（たとえば、最新の値が特定の条件に一致する行が存在するかを確認する場合）は、`FROM` 句に対して `FINAL` 修飾子を使用できます。このアプローチは非効率的であり、大きなテーブルには使用すべきではありません。
-
-
 
 ## 使用例 {#example-of-use}
 

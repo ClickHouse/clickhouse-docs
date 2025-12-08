@@ -16,16 +16,11 @@ import security_group_in_rds_postgres from '@site/static/images/integrations/dat
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
 
-
 # RDS Postgres ソース設定ガイド {#rds-postgres-source-setup-guide}
-
-
 
 ## サポートされている Postgres のバージョン {#supported-postgres-versions}
 
 ClickPipes は Postgres バージョン 12 以降をサポートしています。
-
-
 
 ## 論理レプリケーションを有効にする {#enable-logical-replication}
 
@@ -70,7 +65,6 @@ postgres=> SHOW wal_sender_timeout ;
 
 <Image img={reboot_rds} alt="RDS Postgres の再起動" size="lg" border />
 
-
 ## データベースユーザーの設定 {#configure-database-user}
 
 管理者権限を持つユーザーで RDS Postgres インスタンスに接続し、次のコマンドを実行します。
@@ -101,8 +95,6 @@ postgres=> SHOW wal_sender_timeout ;
     CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
     ```
 
-
-
 ## ネットワークアクセスを設定する {#configure-network-access}
 
 ### IP ベースのアクセス制御 {#ip-based-access-control}
@@ -124,8 +116,6 @@ RDS Proxy はロジカルレプリケーション接続をサポートしてい�
 2. EventBridge/SNS と連携した RDS Event Notifications を使用する。AWS RDS のイベント通知を使って更新を自動的にトリガーする。
 3. 固定の EC2 インスタンス: ポーリングサービスまたは IP ベースのプロキシとして動作する EC2 インスタンスをデプロイする。
 4. Terraform や CloudFormation などのツールを使用して、IP アドレス管理を自動化する。
-
-
 
 ## 次のステップ {#whats-next}
 

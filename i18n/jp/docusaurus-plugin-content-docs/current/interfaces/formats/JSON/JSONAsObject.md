@@ -31,7 +31,6 @@ SELECT * FROM json_as_object FORMAT JSONEachRow;
 {"json":{"any json stucture":"1"}}
 ```
 
-
 ### JSON オブジェクトの配列 {#an-array-of-json-objects}
 
 ```sql title="Query"
@@ -44,7 +43,6 @@ SELECT * FROM json_square_brackets FORMAT JSONEachRow;
 {"field":{"id":"1","name":"name1"}}
 {"field":{"id":"2","name":"name2"}}
 ```
-
 
 ### デフォルト値を持つ列 {#columns-with-default-values}
 
@@ -61,6 +59,5 @@ SELECT time, json FROM json_as_object FORMAT JSONEachRow
 {"time":"2024-09-16 12:18:13","json":{"any json stucture":"1"}}
 {"time":"2024-09-16 12:18:08","json":{"foo":{"bar":{"x":"y"},"baz":"1"}}}
 ```
-
 
 ## フォーマット設定 {#format-settings}

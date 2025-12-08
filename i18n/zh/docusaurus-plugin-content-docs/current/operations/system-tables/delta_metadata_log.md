@@ -8,12 +8,9 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
 # system.delta_lake_metadata_log {#systemdelta_lake_metadata_log}
 
 `system.delta_lake_metadata_log` 表会记录 ClickHouse 在读取 Delta Lake 表时的元数据访问和解析事件。它为每个元数据文件提供详细信息，对于调试、审计以及了解 Delta 表结构的演变非常有用。
-
-
 
 ## 目的 {#purpose}
 
@@ -22,8 +19,6 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 :::note
 此表主要用于调试。
 :::
-
-
 
 ## 列 {#columns}
 | 名称           | 类型      | 描述                                                                                   |
@@ -36,8 +31,6 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 | `content`      | [String](../../sql-reference/data-types/string.md)    | JSON 格式的内容（来自 .json 的原始元数据）。       |
 
 <SystemTableCloud/>
-
-
 
 ## 控制日志详细程度 {#controlling-log-verbosity}
 

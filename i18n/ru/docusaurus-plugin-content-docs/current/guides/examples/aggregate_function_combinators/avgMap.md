@@ -7,18 +7,12 @@ sidebar_label: 'avgMap'
 doc_type: 'reference'
 ---
 
-
-
 # avgMap {#avgmap}
-
-
 
 ## Описание {#description}
 
 Комбинатор [`Map`](/sql-reference/aggregate-functions/combinators#-map) может быть применён к функции [`avg`](/sql-reference/aggregate-functions/reference/avg)
 для вычисления среднего арифметического значений в `Map` по каждому ключу с использованием агрегатной функции-комбинатора `avgMap`.
-
-
 
 ## Пример использования {#example-usage}
 
@@ -66,7 +60,6 @@ GROUP BY timeslot;
 2. │ 2000-01-01 00:00:00 │ {'a':15,'b':25,'c':40,'d':55,'e':65} │
    └─────────────────────┴──────────────────────────────────────┘
 ```
-
 
 ## См. также {#see-also}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)

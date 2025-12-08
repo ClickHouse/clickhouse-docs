@@ -1822,6 +1822,16 @@ true の場合、カラム定義内の AUTO_INCREMENT キーワードを無視�
 
 互換性設定: CREATE TABLE で照合順序を無視する
 
+## compatibility_s3_presigned_url_query_in_path {#compatibility_s3_presigned_url_query_in_path} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+互換性のための設定です。有効にすると、署名付き URL のクエリパラメータ（例: X-Amz-*）を S3 キーに折り込み（従来の動作）、
+パス中では「?」がワイルドカードとして動作します。無効（デフォルト）の場合、署名付き URL のクエリパラメータは URL のクエリ部に保持され、
+「?」がワイルドカードとして解釈されないようにします。
+
 ## compile_aggregate_expressions {#compile_aggregate_expressions} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -9413,6 +9423,14 @@ EXPLAIN PLAN におけるステップの説明文の最大長さ。
 - 0 - 無効
 - 1 - 有効
 
+## query_plan_read_in_order_through_join {#query_plan_read_in_order_through_join} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+JOIN 操作において左側テーブルからの順序どおりの読み取りを維持し、その結果を後続のステップで利用できるようにします。
+
 ## query_plan_remove_redundant_distinct {#query_plan_remove_redundant_distinct} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -10072,6 +10090,15 @@ S3 へのマルチパートアップロードでアップロードする各パ�
 
 S3 へのマルチパートアップロードでアップロードするパートの最小サイズ。
 
+## s3_path_filter_limit {#s3_path_filter_limit} 
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1000"},{"label": "新しい設定"}]}]}/>
+
+ファイルを走査する際に glob リストの代わりに利用するため、クエリフィルタから抽出できる `_path` 値の最大数です。
+0 を指定すると無効になります。
+
 ## s3_request_timeout_ms {#s3_request_timeout_ms} 
 
 <SettingsInfoBlock type="UInt64" default_value="30000" />
@@ -10634,7 +10661,8 @@ FINAL 最適化中にパーツ範囲を交差するものと交差しないも�
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "21.12"},{"label": "0"},{"label": "デフォルトでは Kafka/RabbitMQ/FileLog への直接 SELECT を許可しない"}]}]}/>
 
-Kafka、RabbitMQ、FileLog、Redis Streams、NATS エンジンに対して、直接の SELECT クエリの実行を許可します。materialized view がアタッチされている場合は、この設定が有効でも SELECT クエリは許可されません。
+Kafka、RabbitMQ、FileLog、Redis Streams、S3Queue、AzureQueue、NATS エンジンに対して、直接の SELECT クエリの実行を許可します。materialized view がアタッチされている場合は、この設定が有効でも SELECT クエリは許可されません。
+materialized view がアタッチされていない場合、この設定を有効にするとデータを読み取れるようになります。通常は、読み取ったデータはキューから削除される点に注意してください。読み取ったデータを削除しないようにするには、関連するエンジンの設定を適切に構成する必要があります。
 
 ## stream_like_engine_insert_queue {#stream_like_engine_insert_queue} 
 

@@ -30,7 +30,6 @@ import rocketbi_17 from '@site/static/images/integrations/data-visualization/roc
 import rocketbi_18 from '@site/static/images/integrations/data-visualization/rocketbi_18.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
 # Цель: создать свой первый дашборд в Rocket.BI {#goal-build-your-first-dashboard-with-rocketbi}
 
 <CommunityMaintainedBadge/>
@@ -42,8 +41,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 <br/>
 
 Вы можете открыть [этот дашборд по ссылке.](https://demo.rocket.bi/dashboard/sales-dashboard-7?token=7eecf750-cbde-4c53-8fa8-8b905fec667e)
-
-
 
 ## Установка {#install}
 
@@ -63,7 +60,6 @@ wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.cli
 Откройте браузер, перейдите по адресу `localhost:5050`, войдите с этой учетной записью: `hello@gmail.com/123456`.
 
 Чтобы собрать из исходников или выполнить расширенную настройку, ознакомьтесь с файлом [Rocket.BI Readme](https://github.com/datainsider-co/rocket-bi/blob/main/README.md).
-
 
 ## Давайте соберём дашборд {#lets-build-the-dashboard}
 

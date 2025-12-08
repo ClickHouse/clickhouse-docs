@@ -7,16 +7,12 @@ title: '备份与恢复'
 doc_type: 'guide'
 ---
 
-
-
 # 备份与恢复 {#backup-and-restore}
 
 - [备份到本地磁盘](#backup-to-a-local-disk)
 - [配置使用 S3 端点进行备份/恢复](#configuring-backuprestore-to-use-an-s3-endpoint)
 - [使用 S3 磁盘进行备份/恢复](#backuprestore-using-an-s3-disk)
 - [其他方案](#alternatives)
-
-
 
 ## 命令概览 {#command-summary}
 
@@ -41,7 +37,6 @@ doc_type: 'guide'
 在 ClickHouse 23.4 版本之前，`ALL` 仅可用于 `RESTORE` 命令。
 :::
 
-
 ## 背景 {#background}
 
 虽然[复制](../engines/table-engines/mergetree-family/replication.md)可以防止硬件故障带来的影响，但它无法防止人为错误：例如误删数据、删除了错误的表或错误集群上的表，以及由于软件缺陷导致的数据处理错误或数据损坏。在许多情况下，这类错误会影响所有副本。ClickHouse 内置了一些保护机制来防止某些类型的错误——例如，默认情况下，[你不能直接删除使用类 MergeTree 引擎且包含超过 50 GB 数据的表](/operations/settings/settings#max_table_size_to_drop)。但是，这些保护机制并不能覆盖所有可能的情况，并且可能被绕过。
@@ -53,8 +48,6 @@ doc_type: 'guide'
 :::note
 请记住，如果你只做了备份却从未尝试过恢复，那么在你真正需要恢复时，它很有可能无法按预期工作（或者至少，其耗时会超过业务可接受的范围）。因此，无论你选择哪种备份方案，都务必同时实现恢复过程的自动化，并在备用的 ClickHouse 集群上定期演练恢复。
 :::
-
-
 
 ## 备份到本地磁盘 {#backup-to-a-local-disk}
 
@@ -145,7 +138,6 @@ BACKUP TABLE test.table3 AS test.table4 TO Disk('backups', '2.zip')
 :::note
 增量备份依赖于基础备份。必须确保基础备份始终可用，才能从增量备份中完成恢复。
 :::
-
 
 以增量方式存储新数据。将 `base_backup` 进行相应设置后，自上一次备份到 `Disk('backups', 'd.zip')` 以来产生的数据会被存储到 `Disk('backups', 'incremental-a.zip')` 中：
 
@@ -264,7 +256,6 @@ end_time:          2022-08-30 09:21:46
 返回 1 行。用时:0.002 秒。
 ```
 
-
 除了 `system.backups` 表之外，所有备份和恢复操作还会记录在系统日志表 [backup&#95;log](../operations/system-tables/backup_log.md) 中：
 
 ```sql
@@ -315,7 +306,6 @@ bytes_read:              0
 
 2 行结果集。用时:0.075 秒。
 ```
-
 
 ## 配置 BACKUP/RESTORE 以使用 S3 Endpoint {#configuring-backuprestore-to-use-an-s3-endpoint}
 
@@ -409,7 +399,6 @@ RESTORE TABLE data AS data3 FROM S3('https://mars-doc-test.s3.amazonaws.com/back
 
 ### 验证计数 {#verify-the-count}
 
-
 在原始表 `data` 中进行了两次插入操作，一次插入 1,000 行，一次插入 100 行，共计 1,100 行。请验证还原后的表是否有 1,100 行：
 
 ```sql
@@ -422,7 +411,6 @@ FROM data3
 │    1100 │
 └─────────┘
 ```
-
 
 ### 验证内容 {#verify-the-content}
 
@@ -484,12 +472,9 @@ RESTORE TABLE data AS data_restored FROM Disk('s3_plain', 'cloud_backup');
 * 如果你的表使用 S3 存储作为后端，系统会尝试通过 `CopyObject` 调用在 S3 侧进行服务器端拷贝，使用相应凭证将数据分片复制到目标 bucket。若发生身份验证错误，则会退回为使用缓冲区拷贝的方法（先下载分片再上传），这种方式效率非常低。在这种情况下，你可能需要确保使用目标 bucket 的凭证对源 bucket 拥有 `read` 权限。
   :::
 
-
 ## 使用命名集合 {#using-named-collections}
 
 命名集合可以用于 `BACKUP`/`RESTORE` 参数。示例请参见 [此处](./named-collections.md#named-collections-for-backups)。
-
-
 
 ## 替代方案 {#alternatives}
 
@@ -514,8 +499,6 @@ ClickHouse 允许使用 `ALTER TABLE ... FREEZE PARTITION ...` 查询来创建�
 
 有一个第三方工具可以用来自动化此方案：[clickhouse-backup](https://github.com/AlexAkulov/clickhouse-backup)。
 
-
-
 ## 禁止并发备份/恢复的设置 {#settings-to-disallow-concurrent-backuprestore}
 
 要禁止备份和恢复操作并发执行，可以分别使用以下设置。
@@ -531,7 +514,6 @@ ClickHouse 允许使用 `ALTER TABLE ... FREEZE PARTITION ...` 查询来创建�
 
 这两个设置的默认值都是 true，因此默认情况下允许并发执行备份和还原。
 当在集群上将这两个设置设为 false 时，集群中同一时间只能运行 1 个备份或还原任务。
-
 
 ## 配置 BACKUP/RESTORE 以使用 AzureBlobStorage 端点 {#configuring-backuprestore-to-use-an-azureblobstorage-endpoint}
 
@@ -555,7 +537,6 @@ BACKUP TABLE data TO AzureBlobStorage('DefaultEndpointsProtocol=http;AccountName
 RESTORE TABLE data AS data_restored FROM AzureBlobStorage('DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://azurite1:10000/devstoreaccount1/;',
     'testcontainer', 'data_backup');
 ```
-
 
 ## 备份系统表 {#backup-up-system-tables}
 

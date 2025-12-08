@@ -7,11 +7,7 @@ title: '查询复杂度限制'
 doc_type: 'reference'
 ---
 
-
-
 # 对查询复杂度的限制 {#restrictions-on-query-complexity}
-
-
 
 ## 概览 {#overview}
 
@@ -26,22 +22,16 @@ doc_type: 'reference'
 全部处理完成后才检查这些限制，而不是对每一行进行检查。这可能
 导致在处理某个片段的过程中就已经违反了限制条件。
 
-
-
 ## `overflow_mode` 设置 {#overflow_mode_setting}
 
 大多数限制项也有一个 `overflow_mode` 设置，用于定义在超过限制时的处理方式，其取值可以是以下两种之一：
 - `throw`：抛出异常（默认）。
 - `break`：停止执行查询并返回部分结果，就像源数据已经耗尽一样。
 
-
-
 ## `group_by_overflow_mode` 设置 {#group_by_overflow_mode_settings}
 
 `group_by_overflow_mode` 设置的一个取值为 `any`：
 - `any`: 对已进入集合的键继续进行聚合，但不再向集合中添加新的键。
-
-
 
 ## 设置列表 {#relevant-settings}
 
@@ -51,8 +41,6 @@ doc_type: 'reference'
 对“某项上限值”的限制可以设置为 `0`，
 表示“不受限制”。
 :::
-
-
 
 | 设置                                                                                                                     | 简要说明                                                                                |
 | ---------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
@@ -110,8 +98,6 @@ doc_type: 'reference'
 | [`max_temporary_data_on_disk_size_for_query`](/operations/settings/settings#max_temporary_data_on_disk_size_for_query) | 所有并发运行查询在磁盘上的临时文件可消耗的最大数据量（以字节为单位）。                                                 |
 | [`max_sessions_for_user`](/operations/settings/settings#max_sessions_for_user)                                         | 每个已认证用户连接到 ClickHouse 服务器时允许的最大并发会话数。                                               |
 | [`max_partitions_to_read`](/operations/settings/settings#max_partitions_to_read)                                       | 限制在单个查询中可访问的最大分区数量。                                                                 |
-
-
 
 
 

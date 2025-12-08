@@ -12,7 +12,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 
-
 # Spark 连接器 {#spark-connector}
 
 此连接器利用 ClickHouse 特有的优化（例如高级分区和谓词下推），以提升查询性能和数据处理效率。
@@ -162,7 +161,6 @@ clickhouse-jdbc:all 中。
 [兼容性矩阵](#compatibility-matrix) 中的要求。
 :::
 
-
 ## 注册 catalog（必需） {#register-the-catalog-required}
 
 要访问 ClickHouse 表，需要使用以下配置创建一个新的 Spark catalog：
@@ -212,7 +210,6 @@ spark.sql.catalog.clickhouse2.option.ssl     true
 
 :::
 
-
 ## ClickHouse Cloud 配置 {#clickhouse-cloud-settings}
 
 连接到 [ClickHouse Cloud](https://clickhouse.com) 时，请务必启用 SSL，并设置相应的 SSL 模式。例如：
@@ -221,7 +218,6 @@ spark.sql.catalog.clickhouse2.option.ssl     true
 spark.sql.catalog.clickhouse.option.ssl        true
 spark.sql.catalog.clickhouse.option.ssl_mode   NONE
 ```
-
 
 ## 读取数据 {#read-data}
 
@@ -456,7 +452,7 @@ df.show()
   </TabItem>
 </Tabs>
 
-## DDL 操作
+## DDL 操作 {#ddl-operations}
 
 可以使用 Spark SQL 对 ClickHouse 实例执行 DDL 操作，所有更改都会立即持久化到 ClickHouse 中。
 Spark SQL 允许你以与在 ClickHouse 中相同的方式编写查询，
@@ -487,7 +483,6 @@ TBLPROPERTIES (
 ```
 
 上述示例展示了 Spark SQL 查询，您可以在应用程序中通过任意 API（Java、Scala、PySpark 或 shell）运行这些查询。
-
 
 ## 配置 {#configurations}
 

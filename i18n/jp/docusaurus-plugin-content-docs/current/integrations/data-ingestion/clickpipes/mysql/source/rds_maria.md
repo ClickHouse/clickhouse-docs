@@ -17,7 +17,6 @@ import security_group_in_rds_mysql from '@site/static/images/integrations/data-i
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
 
-
 # RDS MariaDB ソースセットアップガイド {#rds-mariadb-source-setup-guide}
 
 このガイドでは、RDS MariaDB インスタンスを MySQL ClickPipe を介してデータをレプリケートできるように設定する手順を、ステップバイステップで説明します。
@@ -25,8 +24,6 @@ import Image from '@theme/IdealImage';
 :::info
 あわせて、MySQL の FAQ についても[こちら](/integrations/data-ingestion/clickpipes/mysql/faq.md)から参照されることをおすすめします。FAQ ページは随時更新されています。
 :::
-
-
 
 ## バイナリログの保持を有効にする {#enable-binlog-retention-rds}
 
@@ -49,7 +46,6 @@ DB インスタンス上でバイナリログを保持する時間数を指定�
 ```text
 mysql=> call mysql.rds_set_configuration('binlog retention hours', 24);
 ```
-
 
 ## パラメータグループでの binlog 設定 {#binlog-parameter-group-rds}
 
@@ -82,12 +78,8 @@ mysql=> call mysql.rds_set_configuration('binlog retention hours', 24);
 MariaDB クラスターを使用している場合、上記のパラメータは DB インスタンスグループではなく、[DB Cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html) パラメータグループに設定されています。
 :::
 
-
-
 ## GTID モードの有効化 {#gtid-mode-rds}
 Global Transaction Identifiers (GTID) は、MySQL/MariaDB においてコミットされた各トランザクションに割り当てられる一意の ID です。これによりバイナリログ (binlog) レプリケーションが簡素化され、トラブルシューティングもより容易になります。MariaDB では GTID モードがデフォルトで有効になっているため、利用にあたってユーザー側での操作は不要です。
-
-
 
 ## データベースユーザーを設定する {#configure-database-user-rds}
 
@@ -111,8 +103,6 @@ Global Transaction Identifiers (GTID) は、MySQL/MariaDB においてコミッ�
     GRANT REPLICATION CLIENT ON *.* TO 'clickpipes_user'@'%';
     GRANT REPLICATION SLAVE ON *.* TO 'clickpipes_user'@'%';
     ```
-
-
 
 ## ネットワークアクセスを設定する {#configure-network-access}
 

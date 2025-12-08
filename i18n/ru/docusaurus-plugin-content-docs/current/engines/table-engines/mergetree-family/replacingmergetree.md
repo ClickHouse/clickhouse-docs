@@ -8,8 +8,6 @@ title: 'Движок таблицы ReplacingMergeTree'
 doc_type: 'reference'
 ---
 
-
-
 # Движок таблиц ReplacingMergeTree {#replacingmergetree-table-engine}
 
 Этот движок отличается от [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) тем, что удаляет дублирующиеся записи с одинаковым значением [ключа сортировки](../../../engines/table-engines/mergetree-family/mergetree.md) (раздел `ORDER BY` в определении таблицы, а не `PRIMARY KEY`).
@@ -21,8 +19,6 @@ doc_type: 'reference'
 :::note
 Подробное руководство по ReplacingMergeTree, включая лучшие практики и способы оптимизации производительности, доступно [здесь](/guides/replacing-merge-tree).
 :::
-
-
 
 ## Создание таблицы {#creating-a-table}
 
@@ -45,7 +41,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 :::note
 Уникальность строк определяется разделом таблицы `ORDER BY`, а не `PRIMARY KEY`.
 :::
-
 
 ## Параметры ReplacingMergeTree {#replacingmergetree-parameters}
 
@@ -141,7 +136,6 @@ INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 01:01:01', 0);
 INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 01:01:01', 1);
 ```
 
-
 select * from myThirdReplacingMT final;
 
 0 строк в наборе. Прошло: 0.003 сек.
@@ -159,7 +153,6 @@ select * from myThirdReplacingMT final;
 
 ```
 ```
-
 
 ## Части запроса {#query-clauses}
 
@@ -187,8 +180,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 - `ver` — столбец с версией. Необязательный параметр. Описание см. в тексте выше.
 
 </details>
-
-
 
 ## Дедупликация при выполнении запроса &amp; FINAL {#query-time-de-duplication--final}
 

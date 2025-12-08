@@ -48,36 +48,36 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 - ログファイル用の十分なディスク容量
 
 <VerticalStepper headerLevel="h4">
-  #### PostgreSQLログの設定
+  #### PostgreSQLのログ設定を構成する
 
   PostgreSQLは複数のログ形式をサポートしています。OpenTelemetryで構造化解析を行う場合は、一貫性があり解析可能な出力を提供するCSV形式を推奨します。
 
   `postgresql.conf` ファイルは通常、以下の場所に配置されています:
 
-  * **Linux（apt/yum）**: `/etc/postgresql/{version}/main/postgresql.conf`
+  * **Linux (apt/yum)**: `/etc/postgresql/{version}/main/postgresql.conf`
   * **macOS（Homebrew）**: `/usr/local/var/postgres/postgresql.conf` または `/opt/homebrew/var/postgres/postgresql.conf`
-  * **Docker**: 通常、設定は環境変数またはマウントした設定ファイルで行います
+  * **Docker**: 設定は通常、環境変数またはマウントした設定ファイルで指定します
 
-  `postgresql.conf` に以下の設定を追加または変更します：
+  `postgresql.conf`でこれらの設定を追加または変更してください：
 
   ```conf
-  # CSV ログ出力に必須
+  # CSV ログ記録に必須
   logging_collector = on
   log_destination = 'csvlog'
 
-  # 推奨: 接続ログの記録
+  # 推奨: 接続ログ記録
   log_connections = on
   log_disconnections = on
 
-  # オプション: 監視要件に応じて調整
-  #log_min_duration_statement = 1000  # 1秒以上かかるクエリを記録
-  #log_statement = 'ddl'               # DDL文 (CREATE, ALTER, DROP) を記録
-  #log_checkpoints = on                # チェックポイント動作を記録
-  #log_lock_waits = on                 # ロック競合を記録
+  # オプション: 監視ニーズに応じて調整
+  #log_min_duration_statement = 1000  # 1秒以上かかるクエリをログ記録
+  #log_statement = 'ddl'               # DDL文(CREATE、ALTER、DROP)をログ記録
+  #log_checkpoints = on                # チェックポイントアクティビティをログ記録
+  #log_lock_waits = on                 # ロック競合をログ記録
   ```
 
   :::note
-  本ガイドでは、信頼性の高い構造化解析を実現するため、PostgreSQLの`csvlog`形式を使用しています。`stderr`または`jsonlog`形式を使用する場合は、OpenTelemetryコレクターの設定を適宜調整してください。
+  本ガイドでは、信頼性の高い構造化解析を実現するため、PostgreSQLの`csvlog`形式を使用しています。`stderr`または`jsonlog`形式を使用している場合は、OpenTelemetryコレクターの設定を適宜調整してください。
   :::
 
   これらの変更を行った後、PostgreSQLを再起動します：
@@ -90,7 +90,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   docker restart
   ```
 
-  ログが書き込まれていることを確認してください:
+  ログが書き込まれていることを確認する:
 
   ```bash
   # Linuxでのデフォルトログ保存場所
@@ -102,7 +102,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
   #### カスタムOTel collector設定を作成する
 
-  ClickStackでは、カスタム設定ファイルをマウントし環境変数を設定することで、ベースのOpenTelemetry Collector設定を拡張できます。カスタム設定は、HyperDXがOpAMP経由で管理するベース設定にマージされます。
+  ClickStackでは、カスタム設定ファイルをマウントして環境変数を設定することで、ベースのOpenTelemetry Collector設定を拡張できます。カスタム設定は、HyperDXがOpAMP経由で管理するベース設定にマージされます。
 
   以下の設定で `postgres-logs-monitoring.yaml` という名前のファイルを作成します：
 
@@ -110,7 +110,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   receivers:
     filelog/postgres:
       include:
-        - /var/lib/postgresql/*/main/log/postgresql-*.csv # お使いのPostgreSQLインストール環境に合わせて調整してください
+        - /var/lib/postgresql/*/main/log/postgresql-*.csv # PostgreSQLのインストール環境に合わせて調整してください
       start_at: end
       multiline:
         line_start_pattern: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
@@ -145,31 +145,31 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
           - clickhouse
   ```
 
-  この設定では：
+  この設定では:
 
-  * 標準の場所から PostgreSQL の CSV ログを読み取ります
-  * 複数行のログエントリを扱える（エラーは複数行にわたることが多い）
+  * 標準的な場所から PostgreSQL の CSV ログを読み取ります
+  * 複数行にまたがるログエントリを適切に処理します（エラーは複数行にわたることがよくあります）
   * 標準的な PostgreSQL のすべてのログフィールドを含む CSV 形式を解析します
   * 元のログ時刻を保持するためにタイムスタンプを抽出します
   * HyperDX でのフィルタリングに使用する `source: postgresql` 属性を追加します
-  * 専用パイプラインを介してログを ClickHouse エクスポーターに転送します
+  * 専用パイプラインを介してログを ClickHouse エクスポーターに転送する
 
   :::note
 
-  * カスタム設定では、新しい receiver と pipeline だけを定義します
-  * プロセッサ（`memory_limiter`、`transform`、`batch`）とエクスポータ（`clickhouse`）は、ベースの ClickStack 設定ですでに定義されているので、名前を指定するだけで参照できます
-  * `csv_parser` オペレーターは、標準的な PostgreSQL の CSV ログフィールドをすべて抽出し、構造化された属性に変換します
-  * この構成では、コレクターの再起動時にログが再度取り込まれるのを避けるために `start_at: end` を使用します。テストする場合は、`start_at: beginning` に変更すると、過去のログをすぐに確認できます。
-  * `include` のパスを、PostgreSQL のログディレクトリに一致するように調整します
+  * カスタム設定では、新しい receiver と pipeline のみを定義します
+  * `memory_limiter`、`transform`、`batch` の各 processor と `clickhouse` exporter は、ClickStack のベース設定内で既に定義されているため、名前で参照するだけで利用できます
+  * `csv_parser` オペレーターは、標準的な PostgreSQL の CSV ログフィールドをすべて構造化属性として抽出します
+  * この設定では、コレクター再起動時にログを再度取り込むのを防ぐために `start_at: end` を使用します。テストする際は、履歴ログをすぐに確認できるように `start_at: beginning` に変更してください。
+  * `include` パスを、PostgreSQL のログディレクトリの場所に合わせて調整してください
     :::
 
   #### ClickStackにカスタム設定を読み込むよう構成する
 
   既存のClickStackデプロイメントでカスタムコレクター設定を有効にするには、次の手順を実行してください:
 
-  1. カスタム構成ファイルを `/etc/otelcol-contrib/custom.config.yaml` にマウントします
+  1. カスタム設定ファイルを `/etc/otelcol-contrib/custom.config.yaml` にマウントします
   2. 環境変数 `CUSTOM_OTELCOL_CONFIG_FILE` に `/etc/otelcol-contrib/custom.config.yaml` を設定します
-  3. コレクターがログを読み込めるように、PostgreSQL のログディレクトリをマウントします
+  3. PostgreSQL のログディレクトリをマウントして、コレクターがログを読み取れるようにします
 
   ##### オプション1: Docker Compose
 
@@ -198,7 +198,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
     -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
     -v "$(pwd)/postgres-logs-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
     -v /var/lib/postgresql:/var/lib/postgresql:ro \
-    docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+    clickhouse/clickstack-all-in-one:latest
   ```
 
   :::note
@@ -209,33 +209,33 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
   設定完了後、HyperDXにログインし、ログが正常に送信されていることを確認してください：
 
-  1. 検索ビューに移動する
-  2. ソースを「Logs」に設定する
-  3. PostgreSQL 固有のログを表示するには、`source:postgresql` でフィルタリングします
-  4. `user_name`、`database_name`、`error_severity`、`message`、`query` などのフィールドを含む構造化されたログエントリを確認できるはずです。
+  1. 検索ビューに移動します
+  2. ソースを Logs に設定します
+  3. `source:postgresql` でフィルタして、PostgreSQL 固有のログだけを表示します
+  4. `user_name`、`database_name`、`error_severity`、`message`、`query` などのフィールドを含む構造化されたログエントリが表示されるはずです。
 
-  <Image img={logs_search_view} alt="ログ検索画面" />
+  <Image img={logs_search_view} alt="ログ検索ビュー" />
 
   <Image img={log_view} alt="ログビュー" />
 </VerticalStepper>
 
 ## デモ用データセット {#demo-dataset}
 
-本番環境を設定する前に PostgreSQL ログのインテグレーションを試したいユーザー向けに、実際に近いパターンを含むあらかじめ生成された PostgreSQL ログのサンプルデータセットを提供しています。
+本番環境を設定する前に PostgreSQL ログ連携を試したいユーザー向けに、実運用に近いパターンを含む事前生成済み PostgreSQL ログのサンプルデータセットを提供しています。
 
 <VerticalStepper headerLevel="h4">
 
-#### サンプルデータセットのダウンロード {#download-sample}
+#### サンプルデータセットをダウンロードする {#download-sample}
 
-サンプルのログファイルをダウンロードします：
+サンプルのログファイルをダウンロードします:
 
 ```bash
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/postgres/postgresql.log
 ```
 
-#### テスト用コレクター設定の作成 {#test-config}
+#### テスト用 collector 設定を作成する {#test-config}
 
-次の設定内容で `postgres-logs-demo.yaml` という名前のファイルを作成します：
+次の設定内容で `postgres-logs-demo.yaml` という名前のファイルを作成します:
 
 ```yaml
 cat > postgres-logs-demo.yaml << 'EOF'
@@ -243,7 +243,7 @@ receivers:
   filelog/postgres:
     include:
       - /tmp/postgres-demo/postgresql.log
-    start_at: beginning  # デモデータ用に最初から読み取る
+    start_at: beginning  # デモデータのため先頭から読み込む
     multiline:
       line_start_pattern: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
     operators:
@@ -278,9 +278,9 @@ service:
 EOF
 ```
 
-#### デモ用設定で ClickStack を実行する {#run-demo}
+#### デモ設定で ClickStack を実行する {#run-demo}
 
-デモ用ログと設定を使って ClickStack を実行します：
+デモ用ログと設定を使って ClickStack を実行します:
 
 ```bash
 docker run --name clickstack-demo \
@@ -288,19 +288,19 @@ docker run --name clickstack-demo \
   -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
   -v "$(pwd)/postgres-logs-demo.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
   -v "$(pwd)/postgresql.log:/tmp/postgres-demo/postgresql.log:ro" \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
 #### HyperDX でログを確認する {#verify-demo-logs}
 
-ClickStack が起動したら、次の手順を実行します：
+ClickStack が起動したら、次の操作を行います:
 
-1. [HyperDX](http://localhost:8080/) を開き、アカウントにログインします（まだアカウントがない場合は作成してください）
-2. Search ビューに移動し、ソースを `Logs` に設定します
+1. [HyperDX](http://localhost:8080/) を開き、アカウントにログインします（まだアカウントがない場合は、先にアカウントを作成する必要があります）
+2. Search ビューに移動し、source を `Logs` に設定します
 3. 時間範囲を **2025-11-09 00:00:00 - 2025-11-12 00:00:00** に設定します
 
 :::note[タイムゾーン表示]
-HyperDX はタイムスタンプをブラウザのローカルタイムゾーンで表示します。デモデータは **2025-11-10 00:00:00 - 2025-11-11 00:00:00 (UTC)** の期間をカバーしています。広めの時間範囲を指定することで、どのタイムゾーンからアクセスしてもデモログを表示できるようにしています。ログが表示されたら、より見やすい可視化のために時間範囲を 24 時間程度に絞り込んでください。
+HyperDX はタイムスタンプをブラウザーのローカルタイムゾーンで表示します。デモデータは **2025-11-10 00:00:00 - 2025-11-11 00:00:00 (UTC)** の範囲をカバーしています。広めの時間範囲を指定することで、どの地域からアクセスしていてもデモログを確認できます。ログが表示されたら、可視化を見やすくするために時間範囲を 24 時間に絞り込むことを推奨します。
 :::
 
 <Image img={logs_search_view} alt="ログ検索ビュー"/>

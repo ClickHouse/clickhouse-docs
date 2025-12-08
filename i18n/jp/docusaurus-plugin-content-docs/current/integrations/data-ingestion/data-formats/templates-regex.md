@@ -8,13 +8,9 @@ doc_type: 'guide'
 keywords: ['データ形式', 'テンプレート', '正規表現', 'カスタム形式', '解析']
 ---
 
-
-
 # ClickHouse で Templates と Regex を使用してカスタムテキストデータをインポートおよびエクスポートする {#importing-and-exporting-custom-text-data-using-templates-and-regex-in-clickhouse}
 
 独自テキスト形式のデータ、たとえば非標準的なフォーマット、不正な JSON、壊れた CSV などを扱わなければならないことはよくあります。CSV や JSON といった標準パーサーでは、こうしたすべてのケースを扱えるとは限りません。しかし ClickHouse には強力な Template フォーマットと Regex フォーマットが用意されており、これらのケースにも対応できます。
-
-
 
 ## テンプレートに基づくインポート {#importing-based-on-a-template}
 
@@ -96,7 +92,6 @@ GROUP BY request
 Template:               -->  "p1: ${p1:CSV}, p2: ${p2:CSV}"
 TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
 ```
-
 
 ## テンプレートを使用したデータのエクスポート {#exporting-data-using-templates}
 
@@ -202,7 +197,6 @@ FORMAT XML
 
 ```
 
-
 ## 正規表現に基づくデータのインポート {#importing-data-based-on-regular-expressions}
 
 [Regexp](/interfaces/formats/Regexp) フォーマットは、入力データをより複雑な方法で解析する必要がある、高度なユースケースに対応します。ここでは [error.log](assets/error.log) のサンプルファイルを解析し、今回はファイル名とプロトコルも抽出して、それぞれ別のカラムに保存します。まず、そのための新しいテーブルを準備します。
@@ -250,7 +244,6 @@ SELECT * FROM error_log LIMIT 5
 ```sql
 SET format_regexp_skip_unmatched = 1;
 ```
-
 
 ## その他のフォーマット {#other-formats}
 

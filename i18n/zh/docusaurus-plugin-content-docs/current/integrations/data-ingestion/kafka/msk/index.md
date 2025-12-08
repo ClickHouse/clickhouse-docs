@@ -30,14 +30,12 @@ import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/curr
 
 > 注意：视频中展示的策略较为宽松，仅用于快速上手。请参阅下文基于最小权限原则的 IAM 指南。
 
-
-
 ## 前提条件 {#prerequisites}
+
 我们假定：
-* 你已经熟悉 [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)、Amazon MSK 和 MSK Connectors。我们推荐阅读 Amazon MSK 的[入门指南](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html)和 [MSK Connect 指南](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect.html)。
-* MSK broker 已配置为可通过公网访问。请参阅《开发者指南》中 [Public Access](https://docs.aws.amazon.com/msk/latest/developerguide/public-access.html) 章节。
 
-
+* 你已经熟悉 [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)。
+* 你已经熟悉 Amazon MSK 和 MSK Connectors。我们推荐阅读 Amazon MSK 的[入门指南](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html)和 [MSK Connect 指南](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect.html)。
 
 ## ClickHouse 官方 Kafka 连接器（适用于 Amazon MSK） {#the-official-kafka-connector-from-clickhouse-with-amazon-msk}
 

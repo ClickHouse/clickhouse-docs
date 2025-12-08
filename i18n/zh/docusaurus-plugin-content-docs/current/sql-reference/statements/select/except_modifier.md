@@ -7,20 +7,15 @@ keywords: ['EXCEPT', 'modifier']
 doc_type: 'reference'
 ---
 
-
-
 # EXCEPT 修饰符 {#except}
 
 > 指定要从结果中排除的一个或多个列名。所有匹配的列名都会在输出中被省略。
-
-
 
 ## 语法 {#syntax}
 
 ```sql
 SELECT <expr> EXCEPT ( col_name1 [, col_name2, col_name3, ...] ) FROM [db.]table_name
 ```
-
 
 ## 示例 {#examples}
 

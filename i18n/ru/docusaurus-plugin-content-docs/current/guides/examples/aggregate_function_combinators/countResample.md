@@ -7,11 +7,7 @@ sidebar_label: 'countResample'
 doc_type: 'reference'
 ---
 
-
-
 # countResample {#countResample}
-
-
 
 ## Описание {#description}
 
@@ -19,8 +15,6 @@ doc_type: 'reference'
 можно применить к агрегатной функции [`count`](/sql-reference/aggregate-functions/reference/count),
 чтобы подсчитать значения заданного ключевого столбца по фиксированному числу
 интервалов (`N`).
-
-
 
 ## Пример использования {#example-usage}
 
@@ -62,7 +56,6 @@ SELECT countResample(30, 75, 30)(name, age) AS amount FROM employee_data
 │ [3,2]  │
 └────────┘
 ```
-
 
 ## См. также {#see-also}
 - [`count`](/sql-reference/aggregate-functions/reference/count)

@@ -81,7 +81,6 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompact;
 ```
 
-
 ### 读取数据 {#reading-data}
 
 以 `JSONCompact` 格式读取数据：
@@ -155,6 +154,5 @@ FORMAT JSONCompact
     }
 }
 ```
-
 
 ## 格式设置 {#format-settings}

@@ -19,7 +19,6 @@ import alias_table_config_example from '@site/static/images/integrations/data-vi
 import alias_table_select_example from '@site/static/images/integrations/data-visualization/grafana/alias_table_select_example.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # Grafana での ClickHouse データソースの設定 {#configuring-clickhouse-data-source-in-grafana}
 
 <ClickHouseSupportedBadge/>
@@ -62,7 +61,6 @@ secureJsonData:
 
 UI から構成を保存すると、`version` プロパティが追加されることに注意してください。これは、その構成を保存したプラグインのバージョンを示します。
 
-
 ### HTTP プロトコル {#http-protocol}
 
 HTTP プロトコル経由で接続する場合、追加の設定項目が表示されます。
@@ -78,7 +76,6 @@ jsonData:
   # 先頭のスラッシュを除く
   path: additional/path/example
 ```
-
 
 #### カスタム HTTP ヘッダー {#custom-http-headers}
 
@@ -106,7 +103,6 @@ secureJsonData:
   secureHttpHeaders.X-Example-Secure-Header: セキュアヘッダー値
 ```
 
-
 ## 追加設定 {#additional-settings}
 
 これらの追加設定は必須ではありません。
@@ -124,7 +120,6 @@ jsonData:
   queryTimeout: 60   # クエリ実行時のタイムアウト(秒)。デフォルト値は60。ユーザー権限が必要です。権限エラーが発生する場合は "0" に設定して無効化してください。
   validateSql: false # trueに設定すると、SQLエディタでSQLを検証します。
 ```
-
 
 ### OpenTelemetry {#opentelemetry}
 
@@ -164,7 +159,6 @@ jsonData:
     messageColumn: <string> # ログのメッセージ/内容
 ```
 
-
 ### トレース {#traces}
 
 [トレース用のクエリビルダー](./query-builder.md#traces)でのクエリ作成を高速化するために、トレースクエリ用のデフォルトのデータベース／テーブルおよびカラムを設定できます。これにより、クエリビルダーに実行可能なトレース検索クエリがあらかじめ読み込まれ、Explore ページ上でのオブザーバビリティ向けのブラウジングが高速化されます。
@@ -201,7 +195,6 @@ jsonData:
     serviceTagsColumn:   <string>    # サービスタグカラム。マップ型であることが想定されます。
 ```
 
-
 ### カラムエイリアス {#column-aliases}
 
 カラムエイリアスは、データを別名や別の型として扱ってクエリするための便利な方法です。
@@ -231,7 +224,6 @@ CREATE TABLE alias_example (
 テーブルで定義されたエイリアス列は `SELECT *` では返されませんが、サーバー設定で変更可能です。
 
 詳細については、[ALIAS](/sql-reference/statements/create/table#alias) カラム型のドキュメントを参照してください。
-
 
 #### カラムエイリアステーブル {#column-alias-tables}
 
@@ -276,7 +268,6 @@ INSERT INTO example_table_aliases (`alias`, `select`, `type`) VALUES
 <Image size="md" img={alias_table_select_example} alt="エイリアステーブルの SELECT 例" border />
 
 これら 2 種類のエイリアスは、複雑な型変換や JSON フィールドの抽出を行うために利用できます。
-
 
 ## すべての YAML オプション {#all-yaml-options}
 

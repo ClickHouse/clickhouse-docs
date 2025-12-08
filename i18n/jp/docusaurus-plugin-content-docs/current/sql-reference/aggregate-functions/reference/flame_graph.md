@@ -6,20 +6,15 @@ title: 'flameGraph'
 doc_type: 'reference'
 ---
 
-
-
 # flameGraph {#flamegraph}
 
 スタックトレースのリストを使用して[フレームグラフ](https://www.brendangregg.com/flamegraphs.html)を構築する集約関数です。[flamegraph.pl ユーティリティ](https://github.com/brendangregg/FlameGraph)でフレームグラフの SVG をレンダリングする際に利用できる文字列配列を出力します。
-
-
 
 ## 構文 {#syntax}
 
 ```sql
 flameGraph(traces, [size], [ptr])
 ```
-
 
 ## パラメータ {#parameters}
 
@@ -32,13 +27,9 @@ flameGraph(traces, [size], [ptr])
 解放されていないアロケーションのみが表示されます。対応付けられないデアロケーションは無視されます。
 :::
 
-
-
 ## 戻り値 {#returned-value}
 
 - [flamegraph.pl ユーティリティ](https://github.com/brendangregg/FlameGraph) で使用する文字列の配列。[Array](../../data-types/array.md)([String](../../data-types/string.md))。
-
-
 
 ## 例 {#examples}
 

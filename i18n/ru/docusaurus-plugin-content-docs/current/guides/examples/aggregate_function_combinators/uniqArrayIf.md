@@ -7,11 +7,7 @@ sidebar_label: 'uniqArrayIf'
 doc_type: 'reference'
 ---
 
-
-
 # uniqArrayIf {#uniqarrayif}
-
-
 
 ## Описание {#description}
 
@@ -25,8 +21,6 @@ doc_type: 'reference'
 
 Это полезно, когда нужно посчитать уникальные элементы в массиве на основе 
 определённых условий, не используя `arrayJoin`.
-
-
 
 ## Пример использования {#example-usage}
 
@@ -81,7 +75,6 @@ new_customer⋯ed_products:    2
 returning_customer_products: 2
 total_unique_products:       7
 ```
-
 
 ## См. также {#see-also}
 - [`uniq`](/sql-reference/aggregate-functions/reference/uniq)

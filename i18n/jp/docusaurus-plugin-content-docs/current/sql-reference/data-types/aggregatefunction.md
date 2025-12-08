@@ -47,7 +47,6 @@ CREATE TABLE t
 ) ENGINE = ...
 ```
 
-
 ## 使用方法 {#usage}
 
 ### データ挿入 {#data-insertion}
@@ -82,7 +81,6 @@ quantilesState(0.5, 0.9)(SendTiming)
 * `value` - フォーマットは集約関数の引数の単一の値、もしくは複数引数の場合はそれらのタプルを受け取り、それをデシリアライズして対応する状態を構成します。
 * `array` - フォーマットは上記の `value` オプションで説明したような値の Array を受け取り、その配列内のすべての要素を集約して状態を構成します。
 
-
 ### データの選択 {#data-selection}
 
 `AggregatingMergeTree` テーブルからデータを選択する場合は、データを挿入したときと同じ集約関数を `GROUP BY` 句とともに使用しますが、[`-Merge`](/sql-reference/aggregate-functions/combinators#-merge) コンビネータを付けて使用します。
@@ -96,7 +94,6 @@ SELECT uniq(UserID) FROM table
 
 SELECT uniqMerge(state) FROM (SELECT uniqState(UserID) AS state FROM table GROUP BY RegionID)
 ```
-
 
 ## 使用例 {#usage-example}
 
