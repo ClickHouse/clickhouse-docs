@@ -133,7 +133,7 @@ Ensure the [Time To Live (TTL)](/use-cases/observability/clickstack/ttl) has bee
 
 Follow the official [MongoDB security checklist](https://www.mongodb.com/docs/manual/administration/security-checklist/).
 
-## ClickHouse cloud {#clickhouse-cloud-production}
+## ClickHouse Cloud {#clickhouse-cloud-production}
 
 The following represents a simple deployment of ClickStack using ClickHouse Cloud which meets best practices.
 
@@ -190,7 +190,7 @@ Create a user, providing a username and password which meets the requirements.
 
 On clicking `Create` you'll be prompted for connection details.
 
-### Connect to ClickHouse cloud {#connect-to-clickhouse-cloud}
+### Connect to ClickHouse Cloud {#connect-to-clickhouse-cloud}
 
 Using the credentials created earlier, complete the connection details and click `Create`.
 

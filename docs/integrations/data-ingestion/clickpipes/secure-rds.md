@@ -22,7 +22,7 @@ For MySQL and MariaDB, this limitation does not apply, and you can run both `Ini
 
 ### Obtaining the ClickHouse service iam role arn {#obtaining-the-clickhouse-service-iam-role-arn}
 
-1 - Login to your ClickHouse cloud account.
+1 - Login to your ClickHouse Cloud account.
 
 2 - Select the ClickHouse service you want to create the integration
 

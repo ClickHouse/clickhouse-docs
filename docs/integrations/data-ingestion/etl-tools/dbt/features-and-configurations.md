@@ -72,7 +72,7 @@ is not recommended.
 
 In many environments, using the SET statement to persist a ClickHouse setting across all DBT queries is not reliable
 and can cause unexpected failures. This is particularly true when using HTTP connections through a load balancer that
-distributes queries across multiple nodes (such as ClickHouse cloud), although in some circumstances this can also
+distributes queries across multiple nodes (such as ClickHouse Cloud), although in some circumstances this can also
 happen with native ClickHouse connections. Accordingly, we recommend configuring any required ClickHouse settings in the
 "custom_settings" property of the DBT profile as a best practice, instead of relying on a pre-hook "SET" statement as
 has been occasionally suggested.

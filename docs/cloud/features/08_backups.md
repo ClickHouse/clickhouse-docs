@@ -17,7 +17,7 @@ This minimizes downtime and prevents business critical data from being permanent
 
 ## Backups {#backups}
 
-### How backups work in ClickHouse cloud {#how-backups-work-in-clickhouse-cloud}
+### How backups work in ClickHouse Cloud {#how-backups-work-in-clickhouse-cloud}
 
 ClickHouse Cloud backups are a combination of "full" and "incremental" backups that constitute a backup chain. The chain starts with a full backup, and incremental backups are then taken over the next several scheduled time periods to create a sequence of backups. Once a backup chain reaches a certain length, a new chain is started. This entire chain of backups can then be utilized to restore data to a new service if needed. Once all backups included in a specific chain are past the retention time frame set for the service (more on retention below), the chain is discarded.
 

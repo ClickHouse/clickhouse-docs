@@ -63,7 +63,7 @@ Shared database engine builds on and improves the behavior of the Replicated dat
 - **Centralized, versioned metadata state**
   Shared Catalog stores a single source of truth in ZooKeeper. When a replica starts, it fetches the latest state and applies the diff to reach consistency. During query execution, the system can wait for other replicas to reach at least the required version of metadata to ensure correctness.
 
-## Usage in ClickHouse cloud {#usage-in-clickhouse-cloud}
+## Usage in ClickHouse Cloud {#usage-in-clickhouse-cloud}
 
 For end users, using Shared Catalog and the Shared database engine requires no additional configuration. Database creation is the same as always:
 

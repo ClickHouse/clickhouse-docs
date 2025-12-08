@@ -11,7 +11,7 @@ doc_type: 'guide'
 import bigquery_1 from '@site/static/images/migrations/bigquery-1.png';
 import Image from '@theme/IdealImage';
 
-# Comparing ClickHouse cloud and bigquery
+# Comparing ClickHouse Cloud and bigquery
 
 ## Resource organization {#resource-organization}
 
@@ -21,9 +21,9 @@ The way resources are organized in ClickHouse Cloud is similar to [BigQuery's re
 
 ### Organizations {#organizations}
 
-Similar to BigQuery, organizations are the root nodes in the ClickHouse cloud resource hierarchy. The first user you set up in your ClickHouse Cloud account is automatically assigned to an organization owned by the user. The user may invite additional users to the organization.
+Similar to BigQuery, organizations are the root nodes in the ClickHouse Cloud resource hierarchy. The first user you set up in your ClickHouse Cloud account is automatically assigned to an organization owned by the user. The user may invite additional users to the organization.
 
-### Bigquery projects vs ClickHouse cloud services {#bigquery-projects-vs-clickhouse-cloud-services}
+### Bigquery projects vs ClickHouse Cloud services {#bigquery-projects-vs-clickhouse-cloud-services}
 
 Within organizations, you can create services loosely equivalent to BigQuery projects because stored data in ClickHouse Cloud is associated with a service. There are [several service types available](/cloud/manage/cloud-tiers) in ClickHouse Cloud. Each ClickHouse Cloud service is deployed in a specific region and includes:
 
@@ -31,7 +31,7 @@ Within organizations, you can create services loosely equivalent to BigQuery pro
 2. An object storage folder where the service stores all the data.
 3. An endpoint (or multiple endpoints created via ClickHouse Cloud UI console)  - a service URL that you use to connect to the service (for example, `https://dv2fzne24g.us-east-1.aws.clickhouse.cloud:8443`)
 
-### Bigquery datasets vs ClickHouse cloud databases {#bigquery-datasets-vs-clickhouse-cloud-databases}
+### Bigquery datasets vs ClickHouse Cloud databases {#bigquery-datasets-vs-clickhouse-cloud-databases}
 
 ClickHouse logically groups tables into databases. Like BigQuery datasets, ClickHouse databases are logical containers that organize and control access to table data.
 

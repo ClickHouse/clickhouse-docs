@@ -115,7 +115,7 @@ HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 
 The OTel collector configuration can be modified if required - see ["Modifying configuration"](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration).
 
-## Using ClickHouse cloud {#using-clickhouse-cloud}
+## Using ClickHouse Cloud {#using-clickhouse-cloud}
 
 This distribution can be used with ClickHouse Cloud. Users should:
 

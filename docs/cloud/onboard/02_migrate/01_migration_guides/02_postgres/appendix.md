@@ -59,7 +59,7 @@ To overcome some of the limitations of eventual consistency, users can ensure cl
 
 This can be achieved through several approaches depending on your architecture and whether you are using ClickHouse OSS or ClickHouse Cloud.
 
-## ClickHouse cloud {#clickhouse-cloud}
+## ClickHouse Cloud {#clickhouse-cloud}
 
 ClickHouse Cloud uses a single copy of data backed in S3 with multiple compute replicas. The data is available to each replica node which has a local SSD cache. To ensure consistent results, users therefore need to only ensure consistent routing to the same node.
 

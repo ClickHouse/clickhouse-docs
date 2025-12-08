@@ -22,13 +22,13 @@ import img5 from '@site/static/images/use-cases/AI_ML/MCP/5connected_mcp_claude.
 import img6 from '@site/static/images/use-cases/AI_ML/MCP/6slash_mcp_claude.png';
 import img7 from '@site/static/images/use-cases/AI_ML/MCP/7usage_mcp.png';
 
-# Enabling the ClickHouse cloud remote mcp server
+# Enabling the ClickHouse Cloud remote mcp server
 
 > This guide explains how to enable and use the ClickHouse Cloud Remote MCP Server. We will use Claude Code as an MCP Client for this example, but any LLM client that supports MCP can be used.
 
 <VerticalStepper headerLevel="h2">
 
-## Enable the remote mcp server for your ClickHouse cloud service {#enable-remote-mcp-server}
+## Enable the remote mcp server for your ClickHouse Cloud service {#enable-remote-mcp-server}
 
 1. Connect to your ClickHouse Cloud Service, click on the `Connect` button, and enable the Remote MCP Server for your Service
 
@@ -68,7 +68,7 @@ claude mcp add --transport http clickhouse_cloud https://mcp.clickhouse.cloud/mc
 [user@host ~/Documents/repos/mcp_test] $ claude
 ```
 
-## Authenticate to ClickHouse cloud via OAuth {#authenticate-via-oauth}
+## Authenticate to ClickHouse Cloud via OAuth {#authenticate-via-oauth}
 
 1. Claude Code will open a browser window on the first session. Otherwise, you can also trigger a connection by running the `/mcp` command in Claude Code and selecting the `clickhouse_cloud` MCP server
 
@@ -78,7 +78,7 @@ claude mcp add --transport http clickhouse_cloud https://mcp.clickhouse.cloud/mc
 
 <Image img={img4} alt="OAuth Connect flow success" size="sm"/>
 
-## Use the ClickHouse cloud remote mcp server from claude code {#use-rempte-mcp-from-claude-code}
+## Use the ClickHouse Cloud remote mcp server from claude code {#use-rempte-mcp-from-claude-code}
 
 1. Verify in Claude Code that the remote MCP server is connected
 

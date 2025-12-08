@@ -11,7 +11,7 @@ doc_type: 'reference'
 ClickHouse provides a range of deployment options to cater to diverse customer requirements, offering varying degrees of control, compliance, and operational overhead.
 This document outlines the distinct deployment types available, enabling users to select the optimal solution that aligns with their specific architectural preferences, regulatory obligations, and resource management strategies.
 
-## ClickHouse cloud {#clickhouse-cloud}
+## ClickHouse Cloud {#clickhouse-cloud}
 
 ClickHouse Cloud is a fully managed, cloud-native service that delivers the power and speed of ClickHouse without the operational complexities of self-management.
 This option is ideal for users who prioritize rapid deployment, scalability, and minimal administrative overhead.
@@ -20,13 +20,13 @@ It offers consumption-based pricing, and automatic scaling, ensuring reliable an
 
 Learn more about [ClickHouse Cloud](/getting-started/quick-start/cloud).
 
-## Bring your own cloud {#byoc}
+## Bring Your Own Cloud (BYOC) {#byoc}
 
 ClickHouse Bring Your Own Cloud (BYOC) allows organizations to deploy and manage ClickHouse within their own cloud environment while leveraging a managed service layer. This option bridges the gap between the fully managed experience of ClickHouse Cloud and the complete control of self-managed deployments. With ClickHouse BYOC, users retain control over their data, infrastructure, and security policies, meeting specific compliance and regulatory requirements, while offloading operational tasks like patching, monitoring, and scaling to the ClickHouse. This model offers the flexibility of a private cloud deployment with the benefits of a managed service, making it suitable for large-scale deployments at enterprises with stringent security, governance, and data residency needs.
 
 Learn more about [Bring Your Own Cloud](/cloud/reference/byoc/overview).
 
-## ClickHouse private {#clickhouse-private}
+## ClickHouse Private {#clickhouse-private}
 
 ClickHouse Private is a self-deployed version of ClickHouse, leveraging the same proprietary technology that powers ClickHouse Cloud. This option delivers the highest degree of control, making it ideal for organizations with stringent compliance, networking, and security requirements, as well as for teams that possess the operational expertise to manage their own infrastructure. It benefits from regular updates and upgrades that are thoroughly tested in the ClickHouse Cloud environment, a feature-rich roadmap, and is backed by our expert support team.
 

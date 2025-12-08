@@ -14,7 +14,7 @@ import ObservabilityIntegrations from '@site/docs/_snippets/_observability_integ
 import DirectIntegrations from '@site/docs/_snippets/_direct_observability_integration_options.md';
 import CommunityMonitoring from '@site/docs/_snippets/_community_monitoring.md';
 
-# ClickHouse cloud monitoring {#cloud-monitoring}
+# ClickHouse Cloud monitoring {#cloud-monitoring}
 
 This guide provides enterprise teams evaluating ClickHouse Cloud with comprehensive information on monitoring and observability capabilities for production deployments. Enterprise customers frequently ask about out-of-the-box monitoring features, integration with existing observability stacks including tools like Datadog and AWS CloudWatch, and how ClickHouse’s monitoring compares to self-hosted deployments.
 

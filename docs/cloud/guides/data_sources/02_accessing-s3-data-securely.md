@@ -26,7 +26,7 @@ This approach allows customers to manage all access to their S3 buckets in a sin
 
 ### Obtaining the ClickHouse service iam role arn {#obtaining-the-clickhouse-service-iam-role-arn}
 
-1 - Login to your ClickHouse cloud account.
+1 - Login to your ClickHouse Cloud account.
 
 2 - Select the ClickHouse service you want to create the integration
 

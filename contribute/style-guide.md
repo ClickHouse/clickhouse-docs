@@ -20,9 +20,9 @@ doc_type: 'reference' (or 'guide' or 'changelog')
 ---
 ```
 
-### Associated Markdown rule or ci check
+### Associated markdown rule or CI check
 
-#### Front-matter validation
+#### front-matter validation
 
 There is a custom Docusaurus plugin which runs on build that makes the following
 checks on front-matter:
@@ -46,7 +46,7 @@ For example:
 ## My header {#my-header}
 ```
 
-### Associated Markdown rule or ci check
+### Associated markdown rule or CI check
 - [`custom-anchor-headings`](/scripts/.markdownlint-cli2.yaml)
 
 ## Images
@@ -214,7 +214,7 @@ Processed 335.87 thousand rows,
 13.54 MB (12.91 million rows/s., 520.38 MB/s.)
 ```
 
-### Associated Markdown rule or ci check
+### Associated markdown rule or CI check
 
 - [`MD040` enforces that codeblocks have a language specified](/scripts/.markdownlint-cli2.yaml)
 

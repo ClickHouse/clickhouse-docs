@@ -89,7 +89,7 @@ let client = Client::default()
     .with_database("test");
 ```
 
-### HTTPS or ClickHouse cloud connection {#https-or-clickhouse-cloud-connection}
+### HTTPS or ClickHouse Cloud connection {#https-or-clickhouse-cloud-connection}
 
 HTTPS works with either `rustls-tls` or `native-tls` cargo features.
 

@@ -252,7 +252,7 @@ Some docs contain information for both Cloud and Self-managed ClickHouse, and so
 
 Note: in the examples below you may notice that the H1 and H2 headers are outside of the tabs, the right-side "What's on this page" nav is built from the H1,2,3 headers in the main body of the markdown file, headings within the tabs are not currently included.
 
-### Differences between cloud and Self-managed {#differences-between-cloud-and-self-managed}
+### Differences between Cloud and self-managed {#differences-between-cloud-and-self-managed}
 
 Backup and restore are very different across Cloud and Self-managed as the target for the backup does not need to be specified, etc.  The backup docs are an example where there is no content reused, so everything goes into one tab or the other. This is how the tabs are constructed:
 

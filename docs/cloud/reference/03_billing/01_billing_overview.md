@@ -227,7 +227,7 @@ WHERE name = <your table name>
 The ClickHouse query log captures [key metrics](/operations/system-tables/query_log) that can be used to estimate the cost of running a workload in ClickHouse Cloud. 
 For details on migrating from self-managed to ClickHouse Cloud please refer to the [migration documentation](/cloud/migration/clickhouse-to-cloud), and contact [ClickHouse Cloud support](https://console.clickhouse.cloud/support) if you have further questions.
 
-### What billing options are available for ClickHouse cloud? {#what-billing-options-are-available-for-clickhouse-cloud}
+### What billing options are available for ClickHouse Cloud? {#what-billing-options-are-available-for-clickhouse-cloud}
 
 ClickHouse Cloud supports the following billing options:
 
@@ -253,13 +253,13 @@ Yes. Usage is consumed with the following payment methods in this order:
 - Marketplace subscription (PAYG)
 - Credit card
 
-### What controls does ClickHouse cloud offer to manage costs for scale and enterprise services? {#what-controls-does-clickhouse-cloud-offer-to-manage-costs-for-scale-and-enterprise-services}
+### What controls does ClickHouse Cloud offer to manage costs for scale and enterprise services? {#what-controls-does-clickhouse-cloud-offer-to-manage-costs-for-scale-and-enterprise-services}
 
 - Trial and Annual Commit customers are notified automatically by email when their consumption hits certain thresholds: `50%`, `75%`, and `90%`. This allows users to proactively manage their usage.
 - ClickHouse Cloud allows users to set a maximum auto-scaling limit on their compute via [Advanced scaling control](/manage/scaling), a significant cost factor for analytical workloads.
 - The [Advanced scaling control](/manage/scaling) lets you set memory limits with an option to control the behavior of pausing/idling during inactivity.
 
-### What controls does ClickHouse cloud offer to manage costs for basic services? {#what-controls-does-clickhouse-cloud-offer-to-manage-costs-for-basic-services}
+### What controls does ClickHouse Cloud offer to manage costs for basic services? {#what-controls-does-clickhouse-cloud-offer-to-manage-costs-for-basic-services}
 
 - The [Advanced scaling control](/manage/scaling) lets you control the behavior of pausing/idling during inactivity. Adjusting memory allocation is not supported for Basic services.
 - Note that the default setting pauses the service after a period of inactivity.
@@ -277,7 +277,7 @@ we continue to draw down from the trial credits during the initial 30-day trial 
 
 The ClickHouse Cloud console provides a Usage display that details usage per service. This breakdown, organized by usage dimensions, helps you understand the cost associated with each metered unit.
 
-### How do i access my invoices for my subscription to the ClickHouse cloud service? {#how-do-i-access-my-invoice-for-my-subscription-to-the-clickhouse-cloud-service}
+### How do i access my invoices for my subscription to the ClickHouse Cloud service? {#how-do-i-access-my-invoice-for-my-subscription-to-the-clickhouse-cloud-service}
 
 For direct subscriptions using a credit card:
 
@@ -305,7 +305,7 @@ can only be leveraged for the terms of the contract.
 This means they can be applied on the acceptance date, or a future date, and not for any prior periods. 
 Any overages not covered by prepaid credits must be covered by a credit card payment or marketplace monthly billing.
 
-### Is there a difference in ClickHouse cloud pricing, whether paying through the cloud provider marketplace or directly to ClickHouse? {#is-there-a-difference-in-clickhouse-cloud-pricing-whether-paying-through-the-cloud-provider-marketplace-or-directly-to-clickhouse}
+### Is there a difference in ClickHouse Cloud pricing, whether paying through the cloud provider marketplace or directly to ClickHouse? {#is-there-a-difference-in-clickhouse-cloud-pricing-whether-paying-through-the-cloud-provider-marketplace-or-directly-to-clickhouse}
 
 There is no difference in pricing between marketplace billing and signing up directly with ClickHouse. 
 In either case, your usage of ClickHouse Cloud is tracked in terms of ClickHouse Cloud Credits (CHCs), 

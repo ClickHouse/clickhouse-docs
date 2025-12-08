@@ -29,7 +29,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 Looker Studio can connect to ClickHouse via the MySQL interface using the official Google MySQL data source.
 
-## ClickHouse cloud setup {#clickhouse-cloud-setup}
+## ClickHouse Cloud setup {#clickhouse-cloud-setup}
 <MySQLCloudSetup />
 
 ## On-premise ClickHouse server setup {#on-premise-clickhouse-server-setup}
@@ -70,7 +70,7 @@ Finally, you should be able to see the introspected table structure and adjust t
 
 Now you can proceed with exploring your data or creating a new report!
 
-## Using Looker studio with ClickHouse cloud {#using-looker-studio-with-clickhouse-cloud}
+## Using Looker studio with ClickHouse Cloud {#using-looker-studio-with-clickhouse-cloud}
 
 When using ClickHouse Cloud, you need to enable MySQL interface first. You can do that in connection dialog, "MySQL" tab.
 

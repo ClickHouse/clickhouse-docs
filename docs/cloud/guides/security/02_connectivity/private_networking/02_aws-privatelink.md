@@ -85,7 +85,7 @@ Follow these steps to connect your ClickHouse Cloud services via AWS PrivateLink
 
 ### Obtain endpoint "service name"  {#obtain-endpoint-service-info}
 
-#### Option 1: ClickHouse cloud console {#option-1-clickhouse-cloud-console}
+#### Option 1: ClickHouse Cloud console {#option-1-clickhouse-cloud-console}
 
 In the ClickHouse Cloud console, open the service you want to connect via PrivateLink, then navigate to the **Settings** menu.
 
@@ -225,7 +225,7 @@ You need to point "DNS name", taken from [Obtain Endpoint "Service name" ](#obta
 
 ### Add "endpoint id" to ClickHouse service allow list {#add-endpoint-id-to-services-allow-list}
 
-#### Option 1: ClickHouse cloud console {#option-1-clickhouse-cloud-console-2}
+#### Option 1: ClickHouse Cloud console {#option-1-clickhouse-cloud-console-2}
 
 To add, please navigate to the ClickHouse Cloud console, open the service that you would like to connect via PrivateLink then navigate to **Settings**. Click **Set up private endpoint** to open private endpoints settings. Enter the `Endpoint ID` obtained from the [Create AWS Endpoint](#create-aws-endpoint) step. Click "Create endpoint".
 
@@ -298,7 +298,7 @@ Each service with Private Link enabled has a public and private endpoint. In ord
 
 #### Getting private DNS hostname {#getting-private-dns-hostname}
 
-##### Option 1: ClickHouse cloud console {#option-1-clickhouse-cloud-console-3}
+##### Option 1: ClickHouse Cloud console {#option-1-clickhouse-cloud-console-3}
 
 In the ClickHouse Cloud console, navigate to **Settings**. Click on the **Set up private endpoint** button. In the opened flyout, copy the **DNS Name**.
 

@@ -60,7 +60,7 @@ Please note that the Airbyte source and destination for ClickHouse are currently
 
 In this section, we will display how to add a ClickHouse instance as a destination.
 
-1. Start your ClickHouse server (Airbyte is compatible with ClickHouse version `21.8.10.19` or above) or login to your ClickHouse cloud account:
+1. Start your ClickHouse server (Airbyte is compatible with ClickHouse version `21.8.10.19` or above) or login to your ClickHouse Cloud account:
 
     ```bash
     clickhouse-server start

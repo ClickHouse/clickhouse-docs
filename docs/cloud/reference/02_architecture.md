@@ -10,7 +10,7 @@ doc_type: 'reference'
 import Image from '@theme/IdealImage';
 import Architecture from '@site/static/images/cloud/reference/architecture.png';
 
-# ClickHouse cloud architecture
+# ClickHouse Cloud architecture
 
 <Image img={Architecture} size='lg' alt='Cloud architecture'/>
 

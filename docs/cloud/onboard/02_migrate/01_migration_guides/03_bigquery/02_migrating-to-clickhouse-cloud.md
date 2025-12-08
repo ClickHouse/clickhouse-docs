@@ -21,13 +21,13 @@ import bigquery_11 from '@site/static/images/migrations/bigquery-11.png';
 import bigquery_12 from '@site/static/images/migrations/bigquery-12.png';
 import Image from '@theme/IdealImage';
 
-## Why use ClickHouse cloud over bigquery? {#why-use-clickhouse-cloud-over-bigquery}
+## Why use ClickHouse Cloud over bigquery? {#why-use-clickhouse-cloud-over-bigquery}
 
 TLDR: Because ClickHouse is faster, cheaper, and more powerful than BigQuery for modern data analytics:
 
 <Image img={bigquery_2} size="md" alt="ClickHouse vs BigQuery"/>
 
-## Loading data from bigquery to ClickHouse cloud {#loading-data-from-bigquery-to-clickhouse-cloud}
+## Loading data from bigquery to ClickHouse Cloud {#loading-data-from-bigquery-to-clickhouse-cloud}
 
 ### Dataset {#dataset}
 

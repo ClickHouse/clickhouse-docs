@@ -193,7 +193,7 @@ For detailed API key setup instructions including multiple configuration methods
 
 </VerticalStepper>
 
-## Using ClickHouse cloud {#using-clickhouse-cloud}
+## Using ClickHouse Cloud {#using-clickhouse-cloud}
 
 If using ClickHouse Cloud users disable the ClickHouse instance deployed by the Helm chart and specify the Cloud credentials:
 ```shell

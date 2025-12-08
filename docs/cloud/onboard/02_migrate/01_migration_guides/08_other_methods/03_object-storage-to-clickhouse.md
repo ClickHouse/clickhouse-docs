@@ -9,7 +9,7 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import object_storage_01 from '@site/static/images/integrations/migration/object-storage-01.png';
 
-# Move data from cloud object storage to ClickHouse cloud
+# Move data from cloud object storage to ClickHouse Cloud
 
 <Image img={object_storage_01} size='md' alt='Migrating Self-managed ClickHouse'/>
 

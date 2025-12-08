@@ -21,7 +21,7 @@ import img_history from '@site/static/images/use-cases/AI_ML/AIChat/5_history.pn
 import img_result_actions from '@site/static/images/use-cases/AI_ML/AIChat/6_result_actions.png';
 import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_editor.png';
 
-# Using ai chat in ClickHouse cloud
+# Using ai chat in ClickHouse Cloud
 
 > This guide explains how to enable and use the AI Chat feature in the ClickHouse Cloud Console.
 

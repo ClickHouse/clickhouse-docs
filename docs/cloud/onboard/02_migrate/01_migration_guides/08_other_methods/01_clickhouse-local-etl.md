@@ -87,14 +87,14 @@ In order for the `remoteSecure` function to connect to your ClickHouse Cloud ser
 
   <AddARemoteSystem />
 
-## Example 1: migrating from MySQL to ClickHouse cloud with an integration engine {#example-1-migrating-from-mysql-to-clickhouse-cloud-with-an-integration-engine}
+## Example 1: migrating from MySQL to ClickHouse Cloud with an integration engine {#example-1-migrating-from-mysql-to-clickhouse-cloud-with-an-integration-engine}
 
 We will use the [integration table engine](/engines/table-engines/integrations/mysql/) (created on-the-fly by the [mysql table function](/sql-reference/table-functions/mysql/)) for reading data from the source MySQL database and we will use the [remoteSecure table function](/sql-reference/table-functions/remote/)
-for writing the data into a destination table on your ClickHouse cloud service.
+for writing the data into a destination table on your ClickHouse Cloud service.
 
 <Image img={ch_local_03} size='lg' alt='Migrating Self-managed ClickHouse'  />
 
-### On the destination ClickHouse cloud service: {#on-the-destination-clickhouse-cloud-service}
+### On the destination ClickHouse Cloud service: {#on-the-destination-clickhouse-cloud-service}
 
 #### Create the destination database: {#create-the-destination-database}
 
@@ -128,14 +128,14 @@ No data is stored locally on the `clickhouse-local` host machine. Instead, the d
   and then immediately written to the destination table on the ClickHouse Cloud service.
 :::
 
-## Example 2: migrating from MySQL to ClickHouse cloud with the jdbc bridge {#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge}
+## Example 2: migrating from MySQL to ClickHouse Cloud with the jdbc bridge {#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge}
 
 We will use the [JDBC integration table engine](/engines/table-engines/integrations/jdbc.md) (created on-the-fly by the [jdbc table function](/sql-reference/table-functions/jdbc.md)) together with the [ClickHouse JDBC Bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge) and the MySQL JDBC driver for reading data from the source MySQL database and we will use the [remoteSecure table function](/sql-reference/table-functions/remote.md)
-for writing the data into a destination table on your ClickHouse cloud service.
+for writing the data into a destination table on your ClickHouse Cloud service.
 
 <Image img={ch_local_04} size='lg' alt='Migrating Self-managed ClickHouse'  />
 
-### On the destination ClickHouse cloud service: {#on-the-destination-clickhouse-cloud-service-1}
+### On the destination ClickHouse Cloud service: {#on-the-destination-clickhouse-cloud-service-1}
 
 #### Create the destination database: {#create-the-destination-database-1}
   ```sql

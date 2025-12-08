@@ -59,7 +59,7 @@ The Postman Application is available for use within a web browser or can be down
 
 <Image img={postman6} size="md" alt="Collection > Import" border/>
 
-### Interface with the ClickHouse cloud API spec {#interface-with-the-clickhouse-cloud-api-spec}
+### Interface with the ClickHouse Cloud API spec {#interface-with-the-clickhouse-cloud-api-spec}
 * The "API spec for ClickHouse Cloud" will now appear within "Collections" (Left Navigation).
 
 <Image img={postman7} size="md" alt="Import your API" border/>
@@ -88,7 +88,7 @@ The Postman Application is available for use within a web browser or can be down
 
 <Image img={postman11} size="md" alt="Organization ID and Service ID" border/>
 
-## Test the ClickHouse cloud API functionalities {#test-the-clickhouse-cloud-api-functionalities}
+## Test the ClickHouse Cloud API functionalities {#test-the-clickhouse-cloud-api-functionalities}
 
 ### Test "get list of available organizations" {#test-get-list-of-available-organizations}
 

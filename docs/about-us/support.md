@@ -8,7 +8,7 @@ doc_type: 'reference'
 keywords: ['support', 'help', 'customer service', 'technical support', 'service level agreement']
 ---
 
-# ClickHouse cloud support services
+# ClickHouse Cloud support services
 
 ClickHouse provides support services for our ClickHouse Cloud users and customers. Our objective is a support services team that represents the ClickHouse product – unparalleled performance, ease of use, and exceptionally fast, high-quality results. For details, [visit our ClickHouse Support Program](https://clickhouse.com/support/program/) page.
 

@@ -98,7 +98,7 @@ Customizing the OpenTelemetry ports can simply be changed by modifying the port 
 docker run -p 8080:8080 -p 4317:4317 -p 4999:4318 clickhouse/clickstack-all-in-one:latest
 ```
 
-## Using ClickHouse cloud {#using-clickhouse-cloud}
+## Using ClickHouse Cloud {#using-clickhouse-cloud}
 
 This distribution can be used with ClickHouse Cloud. While the local ClickHouse instance will still be deployed (and ignored), the OTel collector can be configured to use a ClickHouse Cloud instance by setting the environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USER` and `CLICKHOUSE_PASSWORD`. 
 

@@ -129,7 +129,7 @@ Let's imagine we are interested in checking how price has changed with time for 
 ClickHouse's [`remoteSecure`](/docs/sql-reference/table-functions/remote) function allows you to easily retrieve the data from ClickHouse Cloud.
 You can instruct chDB to return this data in process as a Pandas data frame - which is a convenient and familiar way of working with data.
 
-### Querying ClickHouse cloud data {#querying-clickhouse-cloud-data}
+### Querying ClickHouse Cloud data {#querying-clickhouse-cloud-data}
 
 Create a new cell with the following query to fetch the UK price paid data from your ClickHouse Cloud service and turn it into a `pandas.DataFrame`:
 

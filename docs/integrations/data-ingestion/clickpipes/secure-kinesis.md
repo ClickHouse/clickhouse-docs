@@ -33,7 +33,7 @@ Using this approach, customers can manage all access to their Kinesis data strea
 
 ### Obtaining the ClickHouse service iam role arn {#obtaining-the-clickhouse-service-iam-role-arn}
 
-- 1. Login to your ClickHouse cloud account.
+- 1. Login to your ClickHouse Cloud account.
 - 2. Select the ClickHouse service you want to create the integration
 - 3. Select the **Settings** tab
 - 4. Scroll down to the **Network security information** section at the bottom of the page

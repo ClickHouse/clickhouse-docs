@@ -93,13 +93,13 @@ Alternatively, you can connect to a demo cluster where you can explore a larger 
 
 </VerticalStepper>
 
-## Deploy with ClickHouse cloud {#deploy-with-clickhouse-cloud}
+## Deploy with ClickHouse Cloud {#deploy-with-clickhouse-cloud}
 
 Users can deploy ClickStack against ClickHouse Cloud, benefiting from a fully managed, secure backend while retaining complete control over ingestion, schema, and observability workflows.
 
 <VerticalStepper headerLevel="h3">
 
-### Create a ClickHouse cloud service {#create-a-service}
+### Create a ClickHouse Cloud service {#create-a-service}
 
 Follow the [getting started guide for ClickHouse Cloud](/getting-started/quick-start/cloud#1-create-a-clickhouse-service) to create a service.
 
@@ -141,7 +141,7 @@ Create a user, providing a username and password which meets the complexity requ
 
 <Image img={hyperdx_login} alt="HyperDX Login" size="lg"/>
 
-### Create a ClickHouse cloud connection {#create-a-cloud-connection}
+### Create a ClickHouse Cloud connection {#create-a-cloud-connection}
 
 Navigate to `Team Settings` and click `Edit` for the `Local Connection`:
 

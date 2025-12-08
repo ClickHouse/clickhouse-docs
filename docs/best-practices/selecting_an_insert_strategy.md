@@ -91,7 +91,7 @@ Compressing insert data reduces the size of the payload sent over the network, m
 
 For inserts, compression is especially effective when used with the Native format, which already matches ClickHouse's internal columnar storage model. In this setup, the server can efficiently decompress and directly store the data with minimal transformation.
 
-#### Use lz4 for speed, zstd for compression ratio {#use-lz4-for-speed-zstd-for-compression-ratio}
+#### Use LZ4 for speed, ZSTD for compression ratio {#use-lz4-for-speed-zstd-for-compression-ratio}
 
 ClickHouse supports several compression codecs during data transmission. Two common options are:
 

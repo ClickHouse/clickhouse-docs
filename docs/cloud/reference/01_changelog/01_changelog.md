@@ -264,7 +264,7 @@ Postgres CDC connector for ClickPipes allows users to seamlessly replicate their
 - To get started, refer to the [documentation](https://clickhouse.com/docs/integrations/clickpipes/postgres) for ClickPipes Postgres CDC connector.
 - For more information on customer use cases and features, please refer to the [landing page](https://clickhouse.com/cloud/clickpipes/postgres-cdc-connector) and the [launch blog](https://clickhouse.com/blog/postgres-cdc-connector-clickpipes-public-beta).
 
-### PCI compliance for ClickHouse cloud on AWS {#pci-compliance-for-clickhouse-cloud-on-aws}
+### PCI compliance for ClickHouse Cloud on AWS {#pci-compliance-for-clickhouse-cloud-on-aws}
 
 ClickHouse Cloud now supports **PCI-compliant services** for **Enterprise tier**
 customers in **us-east-1** and **us-west-2** regions. Users who wish to launch
@@ -283,7 +283,7 @@ Encryption Keys (CMEK)** is now available for ClickHouse Cloud on **Google Cloud
 New region support is added for ClickHouse Cloud, which is now available in the
 **AWS Middle East (UAE) me-central-1** region.
 
-### ClickHouse cloud guardrails {#clickhouse-cloud-guardrails}
+### ClickHouse Cloud guardrails {#clickhouse-cloud-guardrails}
 
 To promote best practices and ensure stable use of ClickHouse Cloud, we are
 introducing guardrails for the number of tables, databases, partitions and parts
@@ -296,7 +296,7 @@ in use.
 
 ## January 27, 2025 {#january-27-2025}
 
-### Changes to ClickHouse cloud tiers {#changes-to-clickhouse-cloud-tiers}
+### Changes to ClickHouse Cloud tiers {#changes-to-clickhouse-cloud-tiers}
 
 We are dedicated to adapting our products to meet the ever-changing requirements of our customers. Since its introduction in GA over the past two years, ClickHouse Cloud has evolved substantially, and we've gained invaluable insights into how our customers leverage our cloud offerings.
 
@@ -452,7 +452,7 @@ From now on, any new services created on AWS will allow a maximum available repl
 
 ## November 22, 2024 {#november-22-2024}
 
-### Built-in advanced observability dashboard for ClickHouse cloud {#built-in-advanced-observability-dashboard-for-clickhouse-cloud}
+### Built-in advanced observability dashboard for ClickHouse Cloud {#built-in-advanced-observability-dashboard-for-clickhouse-cloud}
 
 Previously, the advanced observability dashboard that allows you to monitor ClickHouse server metrics and hardware resource utilization was only available in open-source ClickHouse. We are happy to announce that this feature is now available in the ClickHouse Cloud console.
 
@@ -472,7 +472,7 @@ You can now assign users in your organization to a new **Billing** role that all
 
 ## November 8, 2024 {#november-8-2024}
 
-### Customer notifications in ClickHouse cloud {#customer-notifications-in-clickhouse-cloud}
+### Customer notifications in ClickHouse Cloud {#customer-notifications-in-clickhouse-cloud}
 
 ClickHouse Cloud now provides in-console and email notifications for several billing and scaling events. Customers can configure these notifications via the cloud console notification center to only appear on the UI, receive emails, or both. You can configure the category and severity of the notifications you receive at the service level.
 
@@ -486,7 +486,7 @@ Please see the [ClickHouse docs](/cloud/notifications) to learn more about how t
 
 ## October 4, 2024 {#october-4-2024}
 
-### ClickHouse cloud now offers hipaa-ready services in Beta for GCP {#clickhouse-cloud-now-offers-hipaa-ready-services-in-beta-for-gcp}
+### ClickHouse Cloud now offers hipaa-ready services in Beta for GCP {#clickhouse-cloud-now-offers-hipaa-ready-services-in-beta-for-gcp}
 
 Customers looking for increased security for protected health information (PHI) can now onboard to ClickHouse Cloud in [Google Cloud Platform (GCP)](https://cloud.google.com/). ClickHouse has implemented administrative, physical and technical safeguards prescribed by the [HIPAA Security Rule](https://www.hhs.gov/hipaa/for-professionals/security/index.html) and now has configurable security settings that can be implemented, depending on your specific use case and workload. For more information on available security settings, please review our [Security features page](/cloud/security).
 
@@ -580,7 +580,7 @@ Stay tuned for more improvements to the analyzer as we have many more optimizati
 
 ## June 28, 2024 {#june-28-2024}
 
-### ClickHouse cloud for Microsoft Azure is now generally available {#clickhouse-cloud-for-microsoft-azure-is-now-generally-available}
+### ClickHouse Cloud for Microsoft Azure is now generally available {#clickhouse-cloud-for-microsoft-azure-is-now-generally-available}
 
 We first announced Microsoft Azure support in Beta [this past May](https://clickhouse.com/blog/clickhouse-cloud-is-now-on-azure-in-public-beta). In this latest cloud release, we're happy to announce that our Azure support is transitioning from Beta to Generally Available. ClickHouse Cloud is now available on all the three major cloud platforms: AWS, Google Cloud Platform, and now Microsoft Azure.
 
@@ -643,7 +643,7 @@ We're happy to announce that you can now easily share queries via the ClickHouse
 
 <Image img={share_queries} size="lg" alt="ClickHouse Cloud query editor showing the share functionality with permission options" border />
 
-### ClickHouse cloud for Microsoft Azure is now in Beta {#clickhouse-cloud-for-microsoft-azure-is-now-in-beta}
+### ClickHouse Cloud for Microsoft Azure is now in Beta {#clickhouse-cloud-for-microsoft-azure-is-now-in-beta}
 
 We've finally launched the ability to create ClickHouse Cloud services on Microsoft Azure. We already have many customers using ClickHouse Cloud on Azure in production as part of our Private Preview program. Now, anyone can create their own service on Azure. All of your favorite ClickHouse features that are supported on AWS and GCP will also work on Azure.
 
@@ -693,7 +693,7 @@ Our most recent ClickPipes update features the ability to directly upload data d
 
 <Image img={s3_gcs} size="lg" alt="ClickPipes interface showing configuration options for loading data from S3 and GCS buckets" border />
 
-### Use Fivetran to load data from 500+ sources into ClickHouse cloud {#use-fivetran-to-load-data-from-500-sources-into-clickhouse-cloud}
+### Use Fivetran to load data from 500+ sources into ClickHouse Cloud {#use-fivetran-to-load-data-from-500-sources-into-clickhouse-cloud}
 
 ClickHouse can quickly query all of your large datasets, but of course, your data must first be inserted into ClickHouse. Thanks to Fivetran's comprehensive range of connectors, users can now quickly load data from over 500 sources. Whether you need to load data from Zendesk, Slack, or any of your favorite applications, the new ClickHouse destination for Fivetran now lets you use ClickHouse as the target database for your application data.
 
@@ -710,7 +710,7 @@ This is an open-source integration built over many months of hard work by our In
 
 ## April 18, 2024 {#april-18-2024}
 
-### AWS Tokyo region is now available for ClickHouse cloud {#aws-tokyo-region-is-now-available-for-clickhouse-cloud}
+### AWS Tokyo region is now available for ClickHouse Cloud {#aws-tokyo-region-is-now-available-for-clickhouse-cloud}
 
 This release introduces the new AWS Tokyo region (`ap-northeast-1`) for ClickHouse Cloud. Because we want ClickHouse to be the fastest database, we are continuously adding more regions for every cloud to reduce latency as much as possible. You can create your new service in Tokyo in the updated cloud console.
 
@@ -732,7 +732,7 @@ Other changes:
 
 ## April 4, 2024 {#april-4-2024}
 
-### Introducing the new ClickHouse cloud console {#introducing-the-new-clickhouse-cloud-console}
+### Introducing the new ClickHouse Cloud console {#introducing-the-new-clickhouse-cloud-console}
 
 This release introduces a private preview for the new cloud console.
 
@@ -786,7 +786,7 @@ This release makes available in early access the new Cloud console experience, C
 ### ClickHouse version upgrade {#clickhouse-version-upgrade}
 - Optimizations for FINAL, vectorization improvements, faster aggregations - see [23.12 release blog](https://clickhouse.com/blog/clickhouse-release-23-12#optimizations-for-final) for details.
 - New functions for processing punycode, string similarity, detecting outliers, as well as memory optimizations for merges and Keeper - see [24.1 release blog](https://clickhouse.com/blog/clickhouse-release-24-01) and [presentation](https://presentations.clickhouse.com/release_24.1/) for details.
-- This ClickHouse cloud version is based on 24.1, you can see dozens of new features, performance improvements, and bug fixes. See core database [changelogs](/whats-new/changelog/2023#2312) for details.
+- This ClickHouse Cloud version is based on 24.1, you can see dozens of new features, performance improvements, and bug fixes. See core database [changelogs](/whats-new/changelog/2023#2312) for details.
 
 ### Integrations changes {#integrations-changes-2}
 - Grafana: Fixed dashboard migration for v4, ad-hoc filtering logic
@@ -819,7 +819,7 @@ This release upgrades the core database version, adds ability to set up private 
 ### ClickHouse version upgrade {#clickhouse-version-upgrade-1}
 - S3Queue table engine for continuous, scheduled data loading from S3 is production-ready - [see 23.11 release blog](https://clickhouse.com/blog/clickhouse-release-23-11) for details.
 - Significant performance improvements for FINAL and vectorization improvements for SIMD instructions resulting in faster queries - [see 23.12 release blog](https://clickhouse.com/blog/clickhouse-release-23-12#optimizations-for-final) for details.
-- This ClickHouse cloud version is based on 23.12, you can see dozens of new features, performance improvements, and bug fixes. See [core database changelogs](/whats-new/changelog/2023#2312) for details.
+- This ClickHouse Cloud version is based on 23.12, you can see dozens of new features, performance improvements, and bug fixes. See [core database changelogs](/whats-new/changelog/2023#2312) for details.
 
 ### Console changes {#console-changes-4}
 - Added ability to set up AWS Private Link and GCP Private Service Connect through Terraform provider
@@ -1141,7 +1141,7 @@ and adds more visibility into the status of MFA users in the Cloud console.
 ClickHouse Cloud on GCP is now GA, see the entry for June twenty above. 
 :::
 
-### ClickHouse cloud on GCP is now available in public Beta {#clickhouse-cloud-on-gcp-is-now-available-in-public-beta-now-ga-see-june-20th-entry-above}
+### ClickHouse Cloud on GCP is now available in public Beta {#clickhouse-cloud-on-gcp-is-now-available-in-public-beta-now-ga-see-june-20th-entry-above}
 
 :::note
 ClickHouse Cloud on GCP is now GA, see the [June 20th](#june-20-2023) entry above.

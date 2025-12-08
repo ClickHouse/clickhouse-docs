@@ -111,7 +111,7 @@ This is done by creating a permissions policy for the role with a JSON similar t
 ```
 </VerticalStepper>
 
-#### 2. steps to follow in ClickHouse cloud {#cloud-steps}
+#### 2. steps to follow in ClickHouse Cloud {#cloud-steps}
 
 Follow the steps below in the ClickHouse Cloud console to configure the external bucket:
 
@@ -139,7 +139,7 @@ External Backups will now happen in your bucket on the default schedule.
 Alternatively, you can configure the backup schedule from the “Settings” page.
 If configured differently, the custom schedule is used to write backups to your
 bucket and the default schedule (backups every 24 hours) is used for backups in
-the ClickHouse cloud owned bucket.
+the ClickHouse Cloud owned bucket.
 
 ##### View backups stored in your bucket {#view-backups-stored-in-your-bucket}
 
@@ -230,7 +230,7 @@ Generate an HMAC Key and Secret, which is required for password-based authentica
 
 </VerticalStepper>
 
-#### Steps to follow in ClickHouse cloud {#gcp-cloud-steps}
+#### Steps to follow in ClickHouse Cloud {#gcp-cloud-steps}
 
 Follow the steps below in the ClickHouse Cloud console to configure the external bucket:
 
@@ -258,7 +258,7 @@ External Backups will now happen in your bucket on the default schedule.
 Alternatively, you can configure the backup schedule from the `Settings` page. 
 If configured differently, the custom schedule is used to write backups to your 
 bucket and the default schedule (backups every 24 hours) is used for backups in 
-ClickHouse cloud owned bucket.
+ClickHouse Cloud owned bucket.
 
 ##### View backups stored in your bucket {#gcp-view-backups-stored-in-your-bucket}
 
@@ -330,7 +330,7 @@ portal where you want to store your backups.
 
 </VerticalStepper>
 
-#### Steps to follow in ClickHouse cloud {#azure-cloud-steps}
+#### Steps to follow in ClickHouse Cloud {#azure-cloud-steps}
 
 Follow the steps below in the ClickHouse Cloud console to configure the external bucket:
 
@@ -358,7 +358,7 @@ Click on `Save External Bucket` to save the settings
 External Backups will now happen in your bucket on the default schedule. Alternatively,
 you can configure the backup schedule from the “Settings” page. If configured differently,
 the custom schedule is used to write backups to your bucket and the default schedule
-(backups every 24 hours) is used for backups in ClickHouse cloud owned bucket.
+(backups every 24 hours) is used for backups in ClickHouse Cloud owned bucket.
 
 ##### View backups stored in your bucket {#azure-view-backups-stored-in-your-bucket}
 

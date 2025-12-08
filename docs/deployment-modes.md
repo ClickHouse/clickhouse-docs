@@ -40,7 +40,7 @@ When it comes to deployment flexibility, ClickHouse Server can be installed on y
 
 This deployment mode is the go-to choice for production environments where reliability, performance, and full feature access are crucial.
 
-## ClickHouse cloud {#clickhouse-cloud}
+## ClickHouse Cloud {#clickhouse-cloud}
 
 [ClickHouse Cloud](/cloud/overview) is a fully managed version of ClickHouse that removes the operational overhead of running your own deployment. While it maintains all the core capabilities of ClickHouse Server, it enhances the experience with additional features designed to streamline development and operations.
 

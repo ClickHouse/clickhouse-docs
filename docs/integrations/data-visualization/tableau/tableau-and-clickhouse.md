@@ -100,7 +100,7 @@ To solve that, consider upgrading your Tableau Desktop application, or [install 
     | Password | *\*****                                                |
 
 :::note
-When working with ClickHouse cloud, it's required to enable the SSL checkbox for secured connections.
+When working with ClickHouse Cloud, it's required to enable the SSL checkbox for secured connections.
 :::
 <br/>
 

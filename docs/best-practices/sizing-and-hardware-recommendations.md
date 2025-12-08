@@ -37,7 +37,7 @@ You can also implement a tiered storage using SSDs and HDDs in a [hot/warm/cold 
 
 ## CPU {#cpu}
 
-### Which CPU should i use? {#which-cpu-should-i-use}
+### Which CPU should I use? {#which-cpu-should-i-use}
 
 The type of CPU you should use depends on your usage pattern. In general, however, applications with many frequent concurrent queries, that process more data, or that use compute-intensive UDFs will require more CPU cores.
 
@@ -102,7 +102,7 @@ ClickHouse configurations are highly dependent on your specific application's re
 
 To provide guidance (not recommendations), the following are example configurations of ClickHouse users in production:
 
-### Fortune 500 b2b saas {#fortune-500-b2b-saas}
+### Fortune 500 B2B SaaS {#fortune-500-b2b-saas}
 
 <table>
     <tr>

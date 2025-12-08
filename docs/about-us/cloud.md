@@ -8,12 +8,12 @@ keywords: ['ClickHouse Cloud', 'cloud database', 'managed ClickHouse', 'serverle
 doc_type: 'reference'
 ---
 
-# ClickHouse cloud
+# ClickHouse Cloud
 
 ClickHouse Cloud is the cloud offering created by the original creators of the popular open-source OLAP database ClickHouse. 
 You can experience ClickHouse Cloud by [starting a free trial](https://console.clickhouse.cloud/signUp).
 
-## ClickHouse cloud benefits {#clickhouse-cloud-benefits}
+## ClickHouse Cloud benefits {#clickhouse-cloud-benefits}
 
 Some of the benefits of using ClickHouse Cloud are described below:
 
@@ -25,7 +25,7 @@ Some of the benefits of using ClickHouse Cloud are described below:
 - **Broad ecosystem**: Bring your favorite data connectors, visualization tools, SQL and language clients with you.
 
 <!--
-## OSS vs ClickHouse cloud comparison {#oss-vs-clickhouse-cloud}
+## OSS vs ClickHouse Cloud comparison {#oss-vs-clickhouse-cloud}
 
 | Feature                        | Benefits                                                                                                                                                                                                                                                                                                   | OSS ClickHouse  | ClickHouse Cloud  |
 |--------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|-------------------|
@@ -45,7 +45,7 @@ Some of the benefits of using ClickHouse Cloud are described below:
 | **Managed services**           | With a cloud-managed service, teams can focus on business outcomes and accelerate time-to-market without having to worry about the operational overhead of sizing, setup, and maintenance of ClickHouse.                                                                                                   | ❌               | ✅                 |
 -->
 
-## What version of ClickHouse does ClickHouse cloud use? {#what-version-of-clickhouse-does-clickhouse-cloud-use}
+## What version of ClickHouse does ClickHouse Cloud use? {#what-version-of-clickhouse-does-clickhouse-cloud-use}
 
 Clickhouse Cloud continuously upgrades your service to a newer version. After publishing a core database version in the open source, we do additional validation in our cloud staging environment, which typically takes 6-8 weeks before rolling out to production. The rollout is phased out by cloud service provider, service type, and region.
 

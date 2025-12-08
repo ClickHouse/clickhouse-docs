@@ -87,7 +87,7 @@ object ClickHouseGlueExample {
       .config("spark.sql.catalog.clickhouse.user", "default")
       .config("spark.sql.catalog.clickhouse.password", "<your-password>")
       .config("spark.sql.catalog.clickhouse.database", "default")
-      // for ClickHouse cloud
+      // for ClickHouse Cloud
       .config("spark.sql.catalog.clickhouse.option.ssl", "true")
       .config("spark.sql.catalog.clickhouse.option.ssl_mode", "NONE")
       .getOrCreate
@@ -163,7 +163,7 @@ spark.conf.set("spark.sql.catalog.clickhouse.password", "<your-password>")
 spark.conf.set("spark.sql.catalog.clickhouse.database", "default")
 spark.conf.set("spark.clickhouse.write.format", "json")
 spark.conf.set("spark.clickhouse.read.format", "arrow")
-# for ClickHouse cloud
+# for ClickHouse Cloud
 spark.conf.set("spark.sql.catalog.clickhouse.option.ssl", "true")
 spark.conf.set("spark.sql.catalog.clickhouse.option.ssl_mode", "NONE")
 

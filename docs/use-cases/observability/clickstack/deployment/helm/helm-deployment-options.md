@@ -147,7 +147,7 @@ helm install my-clickstack clickstack/clickstack -f values-external-clickhouse-s
 ```
 </VerticalStepper>
 
-### Using ClickHouse cloud {#using-clickhouse-cloud}
+### Using ClickHouse Cloud {#using-clickhouse-cloud}
 
 For ClickHouse Cloud specifically:
 ```yaml

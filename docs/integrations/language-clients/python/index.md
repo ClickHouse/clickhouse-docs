@@ -85,7 +85,7 @@ import clickhouse_connect
 client = clickhouse_connect.get_client(host='localhost', username='default', password='password')
 ```
 
-#### Use a ClickHouse connect client instance to connect to a ClickHouse cloud service: {#use-a-clickhouse-connect-client-instance-to-connect-to-a-clickhouse-cloud-service}
+#### Use a ClickHouse connect client instance to connect to a ClickHouse Cloud service: {#use-a-clickhouse-connect-client-instance-to-connect-to-a-clickhouse-cloud-service}
 
 :::tip
 Use the connection details gathered earlier. ClickHouse Cloud services require TLS, so use port 8443.

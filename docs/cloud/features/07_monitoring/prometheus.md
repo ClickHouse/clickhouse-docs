@@ -21,7 +21,7 @@ The feature supports integrating [Prometheus](https://prometheus.io/) to monitor
 
 To get started, [generate an API key](/cloud/manage/openapi).
 
-## Prometheus endpoint API to retrieve ClickHouse cloud metrics {#prometheus-endpoint-api-to-retrieve-clickhouse-cloud-metrics}
+## Prometheus endpoint API to retrieve ClickHouse Cloud metrics {#prometheus-endpoint-api-to-retrieve-clickhouse-cloud-metrics}
 
 ### API reference {#api-reference}
 

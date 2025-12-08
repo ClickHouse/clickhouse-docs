@@ -58,7 +58,7 @@ With the infrastructure provided by cloud providers, EMQX Cloud serves dozens of
 * You have prepared a Clickhouse Cloud instance to persist device data.
 * We are using [MQTT X](https://mqttx.app/)  as an MQTT client testing tool to connect the deployment of EMQX Cloud to publish MQTT data. Or other methods connecting to the MQTT broker will do the job as well.
 
-## Get your ClickHouse cloud service {#get-your-clickhouse-cloudservice}
+## Get your ClickHouse Cloud service {#get-your-clickhouse-cloudservice}
 
 During this setup, we deployed the ClickHouse instance on AWS in N. Virginia (us-east -1), while an EMQX Cloud instance was also deployed in the same region.
 
@@ -145,7 +145,7 @@ Go back to the Overview page and scroll down to the bottom of the page where you
 
 Once it has been created, you will find the public IP address in the widget. Please note that if you select "Connect from a specific location" during ClickHouse Cloud setup, you will need to add this IP address to the whitelist.
 
-## Integration emqx cloud with ClickHouse cloud {#integration-emqx-cloud-with-clickhouse-cloud}
+## Integration emqx cloud with ClickHouse Cloud {#integration-emqx-cloud-with-clickhouse-cloud}
 
 The [EMQX Cloud Data Integrations](https://docs.emqx.com/en/cloud/latest/rule_engine/introduction.html#general-flow) is used to configure the rules for handling and responding to EMQX message flows and device events. The Data Integrations not only provides a clear and flexible "configurable" architecture solution, but also simplifies the development process, improves user usability, and reduces the coupling degree between the business system and EMQX Cloud. It also provides a superior infrastructure for customization of EMQX Cloud's proprietary capabilities.
 

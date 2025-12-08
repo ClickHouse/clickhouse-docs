@@ -33,7 +33,7 @@ One AWS account can only subscribe to one “ClickHouse Cloud - Pay As You Go”
 
 <VerticalStepper headerLevel="h3">
 
-### Search for ClickHouse cloud - pay as you Go {#search-payg}
+### Search for ClickHouse Cloud - pay as you Go {#search-payg}
 
 Go to the [AWS Marketplace](https://aws.amazon.com/marketplace) and search for “ClickHouse Cloud - Pay As You Go”.
 

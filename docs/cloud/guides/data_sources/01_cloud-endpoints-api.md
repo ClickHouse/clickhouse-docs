@@ -40,7 +40,7 @@ For example, to allow access from a ClickHouse Cloud service hosted on AWS in th
 ...
 ```
 
-For example, an AWS RDS instance running in `us-east-2` that needs to connect to a ClickHouse cloud service should have the following Inbound security group rules:
+For example, an AWS RDS instance running in `us-east-2` that needs to connect to a ClickHouse Cloud service should have the following Inbound security group rules:
 
 <Image img={aws_rds_mysql} size="lg" alt="AWS Security group rules" border />
 
