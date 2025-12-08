@@ -33,7 +33,7 @@ Time Required: 5-10 minutes
 
 This section covers configuring your existing JVM application to send metrics to ClickStack using the OpenTelemetry Java agent.
 
-If you would like to test the integration before configuring your production setup, you can test with our demo dataset in the [demo dataset section](/use-cases/observability/clickstack/integrations/jvm#demo-dataset).
+If you would like to test the integration before configuring your production setup, you can test with our demo dataset in the [demo dataset section](#demo-dataset).
 
 ##### Prerequisites {#prerequisites}
 - ClickStack instance running
