@@ -9,7 +9,12 @@ doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import api_key from '@site/static/images/clickstack/api-key.png';
+import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
+import finish_import from '@site/static/images/clickstack/jvm/jvm-metrics-import.png';
+import example_dashboard from '@site/static/images/clickstack/jvm/jvm-metrics-dashboard.png';
+import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
 # Monitoring JVM Metrics with ClickStack {#jvm-clickstack}
 
@@ -28,7 +33,7 @@ Time Required: 5-10 minutes
 
 This section covers configuring your existing JVM application to send metrics to ClickStack using the OpenTelemetry Java agent.
 
-If you would like to test the integration before configuring your production setup, you can test with our demo dataset in the [following section](/use-cases/observability/clickstack/integrations/jvm#demo-dataset).
+If you would like to test the integration before configuring your production setup, you can test with our demo dataset in the [demo dataset section](/use-cases/observability/clickstack/integrations/jvm#demo-dataset).
 
 ##### Prerequisites {#prerequisites}
 - ClickStack instance running
@@ -128,14 +133,18 @@ Once your application is running with the agent, verify metrics are flowing to C
 
 ## Demo dataset {#demo-dataset}
 
-For users who want to test the JVM metrics integration before instrumenting their applications, we provide a sample dataset with pre-generated metrics showing realistic JVM behavior.
+For users who want to test the JVM metrics integration before instrumenting their applications, we provide a sample dataset with pre-generated metrics showing realistic JVM behavior from a medium-sized microservice with steady moderate traffic.
 
 <VerticalStepper headerLevel="h4">
 
 #### Download the sample dataset {#download-sample}
 
 ```bash
-curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/jvm-metrics.jsonl
+# Download gauge metrics (memory, threads, CPU, classes)
+curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/jvm/jvm-metrics-gauge.jsonl
+
+# Download sum metrics (GC events)
+curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/jvm/jvm-metrics-sum.jsonl
 ```
 
 The dataset includes 24 hours of JVM metrics showing:
@@ -152,7 +161,7 @@ If you don't already have ClickStack running:
 ```bash
 docker run -d --name clickstack \
   -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
 Wait a few moments for ClickStack to fully start up.
@@ -160,12 +169,18 @@ Wait a few moments for ClickStack to fully start up.
 #### Import the demo dataset {#import-demo-data}
 
 ```bash
+# Import gauge metrics (memory, threads, CPU, classes)
 docker exec -i clickstack clickhouse-client --query="
-  INSERT INTO otel.otel_metrics_sum FORMAT JSONEachRow
-" < jvm-metrics.jsonl
+  INSERT INTO default.otel_metrics_gauge FORMAT JSONEachRow
+" < jvm-metrics-gauge.jsonl
+
+# Import sum metrics (GC events)
+docker exec -i clickstack clickhouse-client --query="
+  INSERT INTO default.otel_metrics_sum FORMAT JSONEachRow
+" < jvm-metrics-sum.jsonl
 ```
 
-This imports the metrics directly into ClickStack's metrics table.
+This imports the metrics directly into ClickStack's metrics tables.
 
 #### Verify the demo data {#verify-demo-metrics}
 
@@ -173,13 +188,13 @@ Once imported:
 
 1. Open HyperDX at http://localhost:8080 and log in (create an account if needed)
 2. Navigate to the Search view and set source to **Metrics**
-3. Set the time range to **2025-10-20 00:00:00 - 2025-10-21 00:00:00**
+3. Set the time range to **2025-12-06 14:00:00 - 2025-12-09 14:00:00**
 4. Search for `jvm.memory.used` or `jvm.gc.duration`
 
 You should see metrics for the demo service.
 
 :::note[Timezone Display]
-HyperDX displays timestamps in your browser's local timezone. The demo data spans 2025-10-20 00:00:00 - 2025-10-21 00:00:00 UTC (24 hours).
+HyperDX displays timestamps in your browser's local timezone. The demo data spans **2025-12-07 14:00:00 - 2025-12-08 14:00:00 (UTC)**. Set your time range to **2025-12-06 14:00:00 - 2025-12-09 14:00:00** to ensure you see the demo metrics regardless of your location. Once you see the metrics, you can narrow the range to a 24-hour period for clearer visualizations.
 :::
 
 </VerticalStepper>
@@ -190,29 +205,28 @@ To help you monitor JVM applications with ClickStack, we provide a pre-built das
 
 <VerticalStepper headerLevel="h4">
 
-#### Download the dashboard configuration {#download}
+#### <TrackedLink href={useBaseUrl('/examples/jvm-metrics-dashboard.json')} download="jvm-metrics-dashboard.json" eventName="docs.kafka_metrics_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
 
-Download the [jvm-metrics-dashboard.json](https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/jvm-metrics-dashboard.json) file.
+#### Import the pre-built dashboard {#import-dashboard}
 
-#### Import the dashboard {#import-dashboard}
+1. Open HyperDX and navigate to the Dashboards section
+2. Click **Import Dashboard** in the upper right corner under the ellipses
 
-1. Open HyperDX and navigate to Dashboards
-2. Click "Import Dashboard" in the upper right corner
-3. Upload the `jvm-metrics-dashboard.json` file and click finish import
+<Image img={import_dashboard} alt="Import dashboard button"/>
+
+3. Upload the `jvm-metrics-dashboard.json` file and click **Finish Import**
+
+<Image img={finish_import} alt="Finish import"/>
 
 #### View the dashboard {#created-dashboard}
 
-:::note
-For the demo dataset, set the time range to **2025-10-20 00:00:00 - 2025-10-21 00:00:00 (UTC)**. Adjust based on your local timezone.
-:::
+The dashboard will be created with all visualizations pre-configured:
 
-The dashboard includes:
-- **Heap Memory Usage**: Visualize heap usage across different memory pools (Eden, Survivor, Old Gen)
-- **Garbage Collection**: Track GC pause duration over time
-- **Thread Count**: Monitor threads by state (runnable, blocked, waiting, timed_waiting)
-- **Non-Heap Memory**: Metaspace usage
-- **CPU Utilization**: JVM CPU usage percentage
-- **Class Loading**: Number of loaded classes over time
+<Image img={example_dashboard} alt="Kafka Metrics dashboard"/>
+
+:::note
+For the demo dataset, set the time range to **2025-12-07 14:00:00 - 2025-12-08 14:00:00 (UTC)**. Adjust based on your local timezone.
+:::
 
 </VerticalStepper>
 
@@ -256,13 +270,6 @@ Look for any error messages related to OpenTelemetry or OTLP export failures in 
 
 **Verify network connectivity:**
 If ClickStack is on a remote host, ensure port 4318 is accessible from your application server.
-
-### High CPU or memory overhead {#high-overhead}
-
-**Adjust metric export interval (default is 60 seconds):**
-```bash
--Dotel.metric.export.interval=120000  # Export every 120 seconds instead
-```
 
 **Verify agent version:**
 Ensure you're using the latest stable agent version (currently 2.22.0), as newer versions often include performance improvements.
