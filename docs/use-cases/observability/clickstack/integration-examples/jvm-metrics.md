@@ -246,19 +246,22 @@ java -version
 
 **Look for agent startup log message:**
 When your application starts, you should see:
-```
+
+```text
 [otel.javaagent] OpenTelemetry Javaagent v2.22.0 started
 ```
 
 ### No metrics appearing in HyperDX {#no-metrics}
 
 **Verify ClickStack is running and accessible:**
+
 ```bash
 docker ps | grep clickstack
 curl -v http://localhost:4318/v1/metrics
 ```
 
 **Check that metrics exporter is configured:**
+
 ```bash
 # If using environment variables, verify:
 echo $OTEL_METRICS_EXPORTER
