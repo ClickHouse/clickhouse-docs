@@ -33,6 +33,7 @@ ClickHouse Cloud のデプロイメントでは、デフォルトで有効にな
 
 <SystemLogParameters />
 
+
 ## auth_use_forwarded_address {#auth_use_forwarded_address}
 
 プロキシ経由で接続しているクライアントに対して、認証に発信元アドレスを使用します。
@@ -41,11 +42,11 @@ ClickHouse Cloud のデプロイメントでは、デフォルトで有効にな
 この設定は、転送されたアドレスが容易になりすまし可能であるため、細心の注意を払って使用する必要があります。このような認証を受け付けるサーバーには、信頼できるプロキシ経由のみでアクセスし、直接アクセスしないようにしてください。
 :::
 
-## backups {#backups}
+## バックアップ {#backups}
 
-[`BACKUP` および `RESTORE`](../backup.md) ステートメントの実行時に使用されるバックアップ関連の設定です。
+[`BACKUP` および `RESTORE`](/operations/backup/overview) 文を実行する際に使用される、バックアップに関する設定です。
 
-以下の設定はサブタグを使用して構成できます。
+以下の設定はサブタグで構成できます。
 
 {/* SQL
   WITH settings AS (
@@ -70,32 +71,34 @@ ClickHouse Cloud のデプロイメントでは、デフォルトで有効にな
   SELECT concat('`', t.1, '`') AS Setting, t.2 AS Type, t.3 AS Description, concat('`', t.4, '`') AS Default FROM settings FORMAT Markdown
   */ }
 
-| 設定                                                  | 型      | 説明                                                                                                     | デフォルト                 |
-| :-------------------------------------------------- | :----- | :----------------------------------------------------------------------------------------------------- | :-------------------- |
-| `allow_concurrent_backups`                          | Bool   | 同一ホスト上で複数のバックアップ処理を同時に実行できるかどうかを制御します。                                                                 | `true`                |
-| `allow_concurrent_restores`                         | Bool   | 同一ホスト上で複数のリストア処理を同時に実行できるかどうかを制御します。                                                                   | `true`                |
-| `allowed_disk`                                      | String | `File()` を使用する際のバックアップ先ディスク。この設定を行わないと `File()` は使用できません。                                              | ``                    |
-| `allowed_path`                                      | 文字列    | `File()` を使用する場合のバックアップ先となるパス。`File` を使用するには、この設定を必ず指定する必要があります。                                       | ``                    |
-| `attempts_to_collect_metadata_before_sleep`         | UInt   | 収集したメタデータを比較して不整合が検出された場合に、スリープに入る前にメタデータ収集を再試行する回数。                                                   | `2`                   |
-| `collect_metadata_timeout`                          | UInt64 | バックアップ時にメタデータを収集するためのタイムアウト（ミリ秒）。                                                                      | `600000`              |
-| `compare_collected_metadata`                        | Bool型  | true の場合、バックアップ中に変更されていないことを確認するために、収集したメタデータを既存のメタデータと比較します。                                          | `true`                |
-| `create_table_timeout`                              | UInt64 | リストア時のテーブル作成タイムアウト（ミリ秒単位）。                                                                             | `300000`              |
-| `max_attempts_after_bad_version`                    | UInt64 | 協調バックアップ／リストア中に不正バージョンエラーが発生した場合に再試行を行う最大回数。                                                           | `3`                   |
-| `max_sleep_before_next_attempt_to_collect_metadata` | UInt64 | 次回のメタデータ収集を試行するまでの最大スリープ時間（ミリ秒）。                                                                       | `100`                 |
-| `min_sleep_before_next_attempt_to_collect_metadata` | UInt64 | 次のメタデータ収集試行までの最小スリープ時間（ミリ秒）。                                                                           | `5000`                |
-| `remove_backup_files_after_failure`                 | Bool   | `BACKUP` コマンドが失敗した場合、ClickHouse は失敗が発生する前にバックアップにコピーされたファイルを削除しようとします。削除できなかった場合は、コピー済みのファイルはそのまま残ります。 | `true`                |
-| `sync_period_ms`                                    | UInt64 | 協調バックアップ／リストア用の同期周期（ミリ秒単位）。                                                                            | `5000`                |
-| `test_inject_sleep`                                 | Bool   | テスト用のスリープ                                                                                              | `false`               |
-| `test_randomize_order`                              | Bool   | true の場合、テスト目的で一部の操作の実行順序をランダムに入れ替えます。                                                                 | `false`               |
-| `zookeeper_path`                                    | 文字列    | `ON CLUSTER` 句を使用する場合に、バックアップおよびリストアのメタデータが保存される ZooKeeper 上のパス。                                       | `/clickhouse/backups` |
 
-この設定はデフォルトで次のように設定されています。
+| 設定                                                  | 型      | 説明                                                                                             | デフォルト                 |
+| :-------------------------------------------------- | :----- | :--------------------------------------------------------------------------------------------- | :-------------------- |
+| `allow_concurrent_backups`                          | Bool   | 同一ホスト上で複数のバックアップ処理を同時に実行できるかどうかを制御します。                                                         | `true`                |
+| `allow_concurrent_restores`                         | Bool   | 同一ホスト上で複数のリストア処理を同時に実行できるかどうかを制御します。                                                           | `true`                |
+| `allowed_disk`                                      | String | `File()` を使用する際のバックアップ先ディスク。この設定を指定しないと `File` は使用できません。                                       | ``                    |
+| `allowed_path`                                      | 文字列    | `File()` を使用する際のバックアップ先パス。この設定を指定しないと `File` は使用できません。                                         | ``                    |
+| `attempts_to_collect_metadata_before_sleep`         | UInt   | 収集済みメタデータを比較した結果に不整合があった場合、スリープに入る前にメタデータ収集を試行する回数。                                            | `2`                   |
+| `collect_metadata_timeout`                          | UInt64 | バックアップ中のメタデータ収集に対するタイムアウト（ミリ秒）。                                                                | `600000`              |
+| `compare_collected_metadata`                        | Bool型  | true の場合、バックアップ中に変更されていないことを保証するため、収集したメタデータと既存のメタデータを比較します。                                   | `true`                |
+| `create_table_timeout`                              | UInt64 | リストア中のテーブル作成に対するタイムアウト（ミリ秒）。                                                                   | `300000`              |
+| `max_attempts_after_bad_version`                    | UInt64 | 協調バックアップ／リストア中に bad version エラーが発生した際に、リトライを行う最大試行回数。                                          | `3`                   |
+| `max_sleep_before_next_attempt_to_collect_metadata` | UInt64 | 次回のメタデータ収集を試行する前にスリープする最大時間（ミリ秒）。                                                              | `100`                 |
+| `min_sleep_before_next_attempt_to_collect_metadata` | UInt64 | 次回のメタデータ収集を試行する前にスリープする最小時間（ミリ秒）。                                                              | `5000`                |
+| `remove_backup_files_after_failure`                 | Bool   | `BACKUP` コマンドが失敗した場合、ClickHouse は失敗前にバックアップへコピー済みのファイルを削除しようとします。それ以外の場合は、コピー済みファイルはそのまま残されます。 | `true`                |
+| `sync_period_ms`                                    | UInt64 | 協調バックアップ／リストアにおける同期間隔（ミリ秒）。                                                                    | `5000`                |
+| `test_inject_sleep`                                 | Bool   | テスト用のスリープを挿入します。                                                                               | `false`               |
+| `test_randomize_order`                              | Bool   | true の場合、テスト目的で特定の処理の順序をランダム化します。                                                              | `false`               |
+| `zookeeper_path`                                    | 文字列    | `ON CLUSTER` 句を使用する場合に、バックアップおよびリストア用メタデータを格納する ZooKeeper 上のパス。                                | `/clickhouse/backups` |
+
+この設定はデフォルトで次のように構成されています:
 
 ```xml
 <backups>
     ....
 </backups>
 ```
+
 
 ## bcrypt&#95;workfactor {#bcrypt_workfactor}
 
@@ -111,6 +114,7 @@ ClickHouse Cloud のデプロイメントでは、デフォルトで有効にな
 高いワークファクター設定時の bcrypt の計算コストの高さを考慮し、
 別の認証方式の採用を検討してください。
 :::
+
 
 ## table_engines_require_grant {#table_engines_require_grant}
 
@@ -131,6 +135,7 @@ ClickHouse は、組み込みディクショナリを x 秒ごとに再読み込
 ```xml
 <builtin_dictionaries_reload_interval>3600</builtin_dictionaries_reload_interval>
 ```
+
 
 ## 圧縮 {#compression}
 
@@ -186,6 +191,7 @@ ClickHouse を使い始めたばかりの場合は、この設定は変更しな
     </case>
 </compression>
 ```
+
 
 ## encryption {#encryption}
 
@@ -243,9 +249,9 @@ ClickHouse を使い始めたばかりの場合は、この設定は変更しな
 </encryption_codecs>
 ```
 
-ここで `current_key_id` は、暗号化に使用されている現在のキーを示します。
+ここで `current_key_id` は、暗号化に使用する現在のキーを示します。
 
-また、ユーザーはノンスを追加することもでき、その長さは 12 バイトである必要があります（デフォルトでは、暗号化および復号処理にはゼロバイトのみで構成されたノンスが使用されます）:
+また、ユーザーは長さが 12 バイトであるノンスを追加することもできます（デフォルトでは、暗号化および復号処理にはゼロバイトのみで構成されたノンスが使用されます）:
 
 ```xml
 <encryption_codecs>
@@ -255,7 +261,7 @@ ClickHouse を使い始めたばかりの場合は、この設定は変更しな
 </encryption_codecs>
 ```
 
-または 16 進数表記で設定できます:
+または 16 進数で指定できます:
 
 ```xml
 <encryption_codecs>
@@ -268,6 +274,7 @@ ClickHouse を使い始めたばかりの場合は、この設定は変更しな
 :::note
 上記の内容はすべて `aes_256_gcm_siv` にも適用できます（ただし、キーは 32 バイトである必要があります）。
 :::
+
 
 ## error&#95;log {#error_log}
 
@@ -304,6 +311,7 @@ ClickHouse を使い始めたばかりの場合は、この設定は変更しな
 
 <SystemLogParameters />
 
+
 ## custom&#95;settings&#95;prefixes {#custom_settings_prefixes}
 
 [カスタム設定](/operations/settings/query-level#custom_settings) に使用するプレフィックスのリスト。プレフィックスはカンマ区切りで指定する必要があります。
@@ -317,6 +325,7 @@ ClickHouse を使い始めたばかりの場合は、この設定は変更しな
 **関連情報**
 
 * [カスタム設定](/operations/settings/query-level#custom_settings)
+
 
 ## core&#95;dump {#core_dump}
 
@@ -334,6 +343,7 @@ ClickHouse を使い始めたばかりの場合は、この設定は変更しな
 </core_dump>
 ```
 
+
 ## default&#95;profile {#default_profile}
 
 デフォルトの設定プロファイルです。設定プロファイルは、`user_config` 設定で指定されたファイル内に定義されます。
@@ -343,6 +353,7 @@ ClickHouse を使い始めたばかりの場合は、この設定は変更しな
 ```xml
 <default_profile>default</default_profile>
 ```
+
 
 ## dictionaries&#95;config {#dictionaries_config}
 
@@ -363,6 +374,7 @@ ClickHouse を使い始めたばかりの場合は、この設定は変更しな
 <dictionaries_config>*_dictionary.xml</dictionaries_config>
 ```
 
+
 ## user&#95;defined&#95;executable&#95;functions&#95;config {#user_defined_executable_functions_config}
 
 実行可能なユーザー定義関数用の設定ファイルのパスです。
@@ -374,13 +386,14 @@ Path:
 
 See also:
 
-* &quot;[Executable User Defined Functions](/sql-reference/functions/udf#executable-user-defined-functions).&quot;
+* &quot;[Executable User Defined Functions](/sql-reference/functions/udf#executable-user-defined-functions).&quot;.
 
 **Example**
 
 ```xml
 <user_defined_executable_functions_config>*_function.xml</user_defined_executable_functions_config>
 ```
+
 
 ## format&#95;schema&#95;path {#format_schema_path}
 
@@ -389,9 +402,10 @@ See also:
 **例**
 
 ```xml
-<!-- 各種入力形式のスキーマファイルを格納するディレクトリ。 -->
+<!-- Directory containing schema files for various input formats. -->
 <format_schema_path>format_schemas/</format_schema_path>
 ```
+
 
 ## graphite {#graphite}
 
@@ -427,6 +441,7 @@ See also:
 </graphite>
 ```
 
+
 ## graphite&#95;rollup {#graphite_rollup}
 
 Graphite データを間引くための設定です。
@@ -455,15 +470,17 @@ Graphite データを間引くための設定です。
 </graphite_rollup_example>
 ```
 
+
 ## google&#95;protos&#95;path {#google_protos_path}
 
-Protobuf 型の proto ファイルを格納したディレクトリを指定します。
+Protobuf 型の proto ファイルを含むディレクトリを指定します。
 
 例:
 
 ```xml
 <google_protos_path>/usr/share/clickhouse/protos/</google_protos_path>
 ```
+
 
 ## http&#95;handlers {#http_handlers}
 
@@ -530,6 +547,7 @@ Protobuf 型の proto ファイルを格納したディレクトリを指定し�
 </http_handlers>
 ```
 
+
 ## http&#95;server&#95;default&#95;response {#http_server_default_response}
 
 ClickHouse の HTTP(S) サーバーにアクセスしたときに、デフォルトで表示されるページです。
@@ -544,6 +562,7 @@ ClickHouse の HTTP(S) サーバーにアクセスしたときに、デフォル
   <![CDATA[<html ng-app="SMI2"><head><base href="http://ui.tabix.io/"></head><body><div ui-view="" class="content-ui"></div><script src="http://loader.tabix.io/master.js"></script></body></html>]]>
 </http_server_default_response>
 ```
+
 
 ## http&#95;options&#95;response {#http_options_response}
 
@@ -575,6 +594,7 @@ ClickHouse の HTTP(S) サーバーにアクセスしたときに、デフォル
 </http_options_response>
 ```
 
+
 ## hsts&#95;max&#95;age {#hsts_max_age}
 
 HSTS の有効期限（秒単位）。
@@ -588,6 +608,7 @@ HSTS の有効期限（秒単位）。
 ```xml
 <hsts_max_age>600000</hsts_max_age>
 ```
+
 
 ## mlock&#95;executable {#mlock_executable}
 
@@ -604,6 +625,7 @@ HSTS の有効期限（秒単位）。
 <mlock_executable>false</mlock_executable>
 ```
 
+
 ## include&#95;from {#include_from}
 
 置換設定を含むファイルへのパスです。XML と YAML の両方の形式がサポートされています。
@@ -615,6 +637,7 @@ HSTS の有効期限（秒単位）。
 ```xml
 <include_from>/etc/metrica.xml</include_from>
 ```
+
 
 ## interserver&#95;listen&#95;host {#interserver_listen_host}
 
@@ -636,6 +659,7 @@ Keeper が使用されている場合は、異なる Keeper インスタンス�
 
 デフォルト値:
 
+
 ## interserver&#95;http&#95;port {#interserver_http_port}
 
 ClickHouse サーバー間のデータ交換に使用するポート。
@@ -645,6 +669,7 @@ ClickHouse サーバー間のデータ交換に使用するポート。
 ```xml
 <interserver_http_port>9009</interserver_http_port>
 ```
+
 
 ## interserver&#95;http&#95;host {#interserver_http_host}
 
@@ -660,6 +685,7 @@ ClickHouse サーバー間のデータ交換に使用するポート。
 <interserver_http_host>example.clickhouse.com</interserver_http_host>
 ```
 
+
 ## interserver&#95;https&#95;port {#interserver_https_port}
 
 `HTTPS` 経由で ClickHouse サーバー間のデータを交換するためのポート。
@@ -670,6 +696,7 @@ ClickHouse サーバー間のデータ交換に使用するポート。
 <interserver_https_port>9010</interserver_https_port>
 ```
 
+
 ## interserver&#95;https&#95;host {#interserver_https_host}
 
 [`interserver_http_host`](#interserver_http_host) と同様ですが、このホスト名は他のサーバーが `HTTPS` 経由でこのサーバーにアクセスする際に使用されます。
@@ -679,6 +706,7 @@ ClickHouse サーバー間のデータ交換に使用するポート。
 ```xml
 <interserver_https_host>example.clickhouse.com</interserver_https_host>
 ```
+
 
 ## interserver&#95;http&#95;credentials {#interserver_http_credentials}
 
@@ -732,7 +760,8 @@ ClickHouse は、すべてのレプリカを同時に停止して設定を更新
 </interserver_http_credentials>
 ```
 
-新しい認証情報がすべてのレプリカに適用されたら、古い認証情報は削除できます。
+新しい認証情報がすべてのレプリカに適用されたら、古い認証情報は削除して構いません。
+
 
 ## ldap_servers {#ldap_servers}
 
@@ -800,6 +829,7 @@ ClickHouse は、すべてのレプリカを同時に停止して設定を更新
 </my_ad_server>
 ```
 
+
 ## listen&#95;host {#listen_host}
 
 リクエスト元ホストを制限します。サーバーがすべてのホストからのリクエストを受け付けるようにするには、`::` を指定します。
@@ -811,6 +841,7 @@ ClickHouse は、すべてのレプリカを同時に停止して設定を更新
 <listen_host>127.0.0.1</listen_host>
 ```
 
+
 ## listen&#95;try {#listen_try}
 
 `listen` しようとした際に IPv6 または IPv4 ネットワークが利用できなくても、サーバーは終了しません。
@@ -820,6 +851,7 @@ ClickHouse は、すべてのレプリカを同時に停止して設定を更新
 ```xml
 <listen_try>0</listen_try>
 ```
+
 
 ## listen&#95;reuse&#95;port {#listen_reuse_port}
 
@@ -834,6 +866,7 @@ ClickHouse は、すべてのレプリカを同時に停止して設定を更新
 型:
 
 デフォルト:
+
 
 ## listen&#95;backlog {#listen_backlog}
 
@@ -854,6 +887,7 @@ listen ソケットのバックログ（保留中の接続のキューサイズ�
 ```xml
 <listen_backlog>4096</listen_backlog>
 ```
+
 
 ## logger {#logger}
 
@@ -938,7 +972,7 @@ listen ソケットのバックログ（保留中の接続のキューサイズ�
 </logger>
 ```
 
-ログメッセージのみをコンソールに出力するには：
+コンソールにのみログメッセージを出力するには：
 
 ```xml
 <logger>
@@ -968,7 +1002,7 @@ listen ソケットのバックログ（保留中の接続のキューサイズ�
 
 **syslog**
 
-ログメッセージを syslog にも書き込むには、次のようにします。
+ログメッセージを syslog にも書き込むには、次の設定を行います。
 
 ```xml
 <logger>
@@ -987,7 +1021,7 @@ listen ソケットのバックログ（保留中の接続のキューサイズ�
 | Key        | Description                                                                                                                                                                                                    |
 | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `address`  | `host\[:port\]` 形式で指定する syslog のアドレス。省略した場合はローカルデーモンが使用されます。                                                                                                                                                   |
-| `hostname` | ログが送信されるホスト名（任意）。                                                                                                                                                                                              |
+| `hostname` | ログの送信元となるホスト名（任意）。                                                                                                                                                                                             |
 | `facility` | syslog の[facility キーワード](https://en.wikipedia.org/wiki/Syslog#Facility)。必ず大文字で `"LOG_"` 接頭辞を付けて指定します（例: `LOG_USER`, `LOG_DAEMON`, `LOG_LOCAL3` など）。デフォルト: `address` が指定されている場合は `LOG_USER`、それ以外は `LOG_DAEMON`。 |
 | `format`   | ログメッセージの形式。指定可能な値: `bsd` および `syslog`。                                                                                                                                                                         |
 
@@ -1008,19 +1042,19 @@ listen ソケットのバックログ（保留中の接続のキューサイズ�
   "level": "Trace",
   "query_id": "",
   "logger_name": "BaseDaemon",
-  "message": "シグナル2を受信",
+  "message": "Received signal 2",
   "source_file": "../base/daemon/BaseDaemon.cpp; virtual void SignalListener::run()",
   "source_line": "192"
 }
 ```
 
-JSON ログ出力を有効にするには、以下のスニペットを使用します。
+JSON ログ出力を有効にするには、次のスニペットを使用します。
 
 ```xml
 <logger>
     <formatting>
         <type>json</type>
-        <!-- チャネル単位（log、errorlog、console、syslog）で設定するか、全チャネルに対してグローバルに設定可能（グローバル設定の場合は省略）。 -->
+        <!-- Can be configured on a per-channel basis (log, errorlog, console, syslog), or globally for all channels (then just omit it). -->
         <!-- <channel></channel> -->
         <names>
             <date_time>date_time</date_time>
@@ -1045,6 +1079,7 @@ JSON ログ出力を有効にするには、以下のスニペットを使用し
 
 ログプロパティは、そのプロパティをコメントアウトすることで省略できます。たとえば、ログに `query_id` を出力したくない場合は、`<query_id>` タグをコメントアウトします。
 
+
 ## send&#95;crash&#95;reports {#send_crash_reports}
 
 ClickHouse コア開発チームへクラッシュレポートを送信するための設定です。
@@ -1067,6 +1102,7 @@ Keys:
 </send_crash_reports>
 ```
 
+
 ## ssh&#95;server {#ssh_server}
 
 ホスト鍵の公開鍵部分は、最初に接続した際に SSH クライアント側の known&#95;hosts ファイルに書き込まれます。
@@ -1084,6 +1120,7 @@ Host Key Configurations のコメントアウトを解除し、それぞれに�
 </ssh_server>
 ```
 
+
 ## tcp&#95;ssh&#95;port {#tcp_ssh_port}
 
 ユーザーが組み込みクライアントを使用して PTY 経由で接続し、対話的にクエリを実行できるようにする SSH サーバーのポートです。
@@ -1094,6 +1131,7 @@ Host Key Configurations のコメントアウトを解除し、それぞれに�
 <tcp_ssh_port>9022</tcp_ssh_port>
 ```
 
+
 ## storage&#95;configuration {#storage_configuration}
 
 ストレージの複数ディスク構成を行うための設定です。
@@ -1103,13 +1141,14 @@ Host Key Configurations のコメントアウトを解除し、それぞれに�
 ```xml
 <storage_configuration>
     <disks>
-        <!-- 設定 -->
+        <!-- configuration -->
     </disks>
     <policies>
-        <!-- 設定 -->
+        <!-- configuration -->
     </policies>
 </storage_configuration>
 ```
+
 
 ### ディスクの構成 {#configuration-of-disks}
 
@@ -1146,9 +1185,10 @@ Host Key Configurations のコメントアウトを解除し、それぞれに�
 ディスクの順序は関係ありません。
 :::
 
+
 ### ポリシーの設定 {#configuration-of-policies}
 
-上記のサブタグでは、`policies` に対して次の設定を行います:
+上記のサブタグでは、`policies` に対して次の設定を定義します:
 
 | Setting                      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 |------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -1164,6 +1204,7 @@ Host Key Configurations のコメントアウトを解除し、それぞれに�
 | `volume_priority`            | ボリュームを埋めていく際の優先度（順序）を定義します。値が小さいほど優先度が高くなります。パラメーター値は自然数でなければならず、1 から N（N は指定されたパラメーター値の最大値）までの範囲を欠番なく網羅する必要があります。                                                                                                                                                                                                                                                                |
 
 `volume_priority` について:
+
 - すべてのボリュームにこのパラメーターが設定されている場合、指定された順序で優先されます。
 - _一部の_ ボリュームのみに設定されている場合、設定されていないボリュームは最も低い優先度になります。設定されているボリュームはパラメーター値に基づいて優先され、残りについては設定ファイル内での記述順によって互いの優先度が決まります。
 - _どの_ ボリュームにもこのパラメーターが設定されていない場合、その順序は設定ファイル内での記述順によって決まります。
@@ -1183,6 +1224,7 @@ Host Key Configurations のコメントアウトを解除し、それぞれに�
 <macros incl="macros" optional="true" />
 ```
 
+
 ## replica&#95;group&#95;name {#replica_group_name}
 
 Replicated データベースのレプリカグループ名。
@@ -1195,8 +1237,9 @@ DDL クエリは同一グループ内のレプリカに対してのみ待機し�
 **例**
 
 ```xml
-<replica_group_name>バックアップ</replica_group_name>
+<replica_group_name>backups</replica_group_name>
 ```
+
 
 ## remap&#95;executable {#remap_executable}
 
@@ -1212,6 +1255,7 @@ DDL クエリは同一グループ内のレプリカに対してのみ待機し�
 <remap_executable>false</remap_executable>
 ```
 
+
 ## max&#95;open&#95;files {#max_open_files}
 
 同時に開くことができるファイルの最大数です。
@@ -1226,6 +1270,7 @@ DDL クエリは同一グループ内のレプリカに対してのみ待機し�
 <max_open_files>262144</max_open_files>
 ```
 
+
 ## max&#95;session&#95;timeout {#max_session_timeout}
 
 セッションの最大タイムアウト時間（秒）。
@@ -1235,6 +1280,7 @@ DDL クエリは同一グループ内のレプリカに対してのみ待機し�
 ```xml
 <max_session_timeout>3600</max_session_timeout>
 ```
+
 
 ## merge&#95;tree {#merge_tree}
 
@@ -1249,6 +1295,7 @@ DDL クエリは同一グループ内のレプリカに対してのみ待機し�
     <max_suspicious_broken_parts>5</max_suspicious_broken_parts>
 </merge_tree>
 ```
+
 
 ## metric&#95;log {#metric_log}
 
@@ -1275,7 +1322,7 @@ DDL クエリは同一グループ内のレプリカに対してのみ待機し�
 
 **無効化**
 
-`metric_log` 設定を無効にするには、以下の内容でファイル `/etc/clickhouse-server/config.d/disable_metric_log.xml` を作成する必要があります。
+`metric_log` 設定を無効にするには、次の内容で `/etc/clickhouse-server/config.d/disable_metric_log.xml` ファイルを作成します。
 
 ```xml
 <clickhouse>
@@ -1284,6 +1331,7 @@ DDL クエリは同一グループ内のレプリカに対してのみ待機し�
 ```
 
 <SystemLogParameters />
+
 
 ## replicated&#95;merge&#95;tree {#replicated_merge_tree}
 
@@ -1298,6 +1346,7 @@ DDL クエリは同一グループ内のレプリカに対してのみ待機し�
     <max_suspicious_broken_parts>5</max_suspicious_broken_parts>
 </replicated_merge_tree>
 ```
+
 
 ## opentelemetry&#95;span&#95;log {#opentelemetry_span_log}
 
@@ -1323,6 +1372,7 @@ DDL クエリは同一グループ内のレプリカに対してのみ待機し�
     <flush_on_crash>false</flush_on_crash>
 </opentelemetry_span_log>
 ```
+
 
 ## openSSL {#openSSL}
 
@@ -1376,14 +1426,15 @@ SSL のサポートは `libpoco` ライブラリによって提供されます�
         <cacheSessions>true</cacheSessions>
         <disableProtocols>sslv2,sslv3</disableProtocols>
         <preferServerCiphers>true</preferServerCiphers>
-        <!-- 自己署名証明書を使用する場合: <verificationMode>none</verificationMode> -->
+        <!-- Use for self-signed: <verificationMode>none</verificationMode> -->
         <invalidCertificateHandler>
-            <!-- 自己署名証明書を使用する場合: <name>AcceptCertificateHandler</name> -->
+            <!-- Use for self-signed: <name>AcceptCertificateHandler</name> -->
             <name>RejectCertificateHandler</name>
         </invalidCertificateHandler>
     </client>
 </openSSL>
 ```
+
 
 ## part&#95;log {#part_log}
 
@@ -1408,6 +1459,7 @@ SSL のサポートは `libpoco` ライブラリによって提供されます�
 </part_log>
 ```
 
+
 ## path {#path}
 
 データが格納されているディレクトリへのパス。
@@ -1421,6 +1473,7 @@ SSL のサポートは `libpoco` ライブラリによって提供されます�
 ```xml
 <path>/var/lib/clickhouse/</path>
 ```
+
 
 ## processors&#95;profile&#95;log {#processors_profile_log}
 
@@ -1442,6 +1495,7 @@ SSL のサポートは `libpoco` ライブラリによって提供されます�
     <flush_on_crash>false</flush_on_crash>
 </processors_profile_log>
 ```
+
 
 ## prometheus {#prometheus}
 
@@ -1482,6 +1536,7 @@ SSL のサポートは `libpoco` ライブラリによって提供されます�
 curl 127.0.0.1:9363/metrics
 ```
 
+
 ## query&#95;log {#query_log}
 
 [log&#95;queries=1](../../operations/settings/settings.md) 設定が有効な場合に受信したクエリをログに記録するための設定です。
@@ -1506,6 +1561,7 @@ curl 127.0.0.1:9363/metrics
     <flush_on_crash>false</flush_on_crash>
 </query_log>
 ```
+
 
 ## query&#95;metric&#95;log {#query_metric_log}
 
@@ -1542,6 +1598,7 @@ curl 127.0.0.1:9363/metrics
 
 <SystemLogParameters />
 
+
 ## query&#95;cache {#query_cache}
 
 [クエリキャッシュ](../query-cache.md)の設定です。
@@ -1572,6 +1629,7 @@ curl 127.0.0.1:9363/metrics
 </query_cache>
 ```
 
+
 ## query&#95;thread&#95;log {#query_thread_log}
 
 [log&#95;query&#95;threads=1](/operations/settings/settings#log_query_threads) が設定されたクエリのスレッドをログに記録するための設定です。
@@ -1597,6 +1655,7 @@ curl 127.0.0.1:9363/metrics
 </query_thread_log>
 ```
 
+
 ## query&#95;views&#95;log {#query_views_log}
 
 [log&#95;query&#95;views=1](/operations/settings/settings#log_query_views) 設定を指定して受信したクエリに応じて、ビュー（live、materialized など）をログに記録するための設定です。
@@ -1621,6 +1680,7 @@ curl 127.0.0.1:9363/metrics
     <flush_on_crash>false</flush_on_crash>
 </query_views_log>
 ```
+
 
 ## text&#95;log {#text_log}
 
@@ -1653,6 +1713,7 @@ curl 127.0.0.1:9363/metrics
 </clickhouse>
 ```
 
+
 ## trace&#95;log {#trace_log}
 
 [trace&#95;log](/operations/system-tables/trace_log) システムテーブルの動作設定。
@@ -1674,6 +1735,7 @@ curl 127.0.0.1:9363/metrics
     <symbolize>false</symbolize>
 </trace_log>
 ```
+
 
 ## asynchronous&#95;insert&#95;log {#asynchronous_insert_log}
 
@@ -1699,27 +1761,28 @@ curl 127.0.0.1:9363/metrics
 </clickhouse>
 ```
 
+
 ## crash&#95;log {#crash_log}
 
 [crash&#95;log](../../operations/system-tables/crash_log.md) システムテーブルの動作に関する設定です。
 
 以下の設定はサブタグで構成できます。
 
-| Setting                            | Description                                                                                                               | Default             | Note                                                                                    |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------- | --------------------------------------------------------------------------------------- |
-| `database`                         | データベース名。                                                                                                                  |                     |                                                                                         |
-| `table`                            | システムテーブル名。                                                                                                                |                     |                                                                                         |
-| `engine`                           | システムテーブル用の [MergeTree エンジン定義](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-creating-a-table)。 |                     | `partition_by` または `order_by` が定義されている場合には使用できません。指定されていない場合、デフォルトで `MergeTree` が選択されます |
-| `partition_by`                     | システムテーブル用の [カスタムパーティショニングキー](/engines/table-engines/mergetree-family/custom-partitioning-key.md)。                         |                     | システムテーブルに対して `engine` が指定されている場合、`partition_by` パラメータは直接 `engine` の内部で指定する必要があります       |
-| `ttl`                              | テーブルの [TTL](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) を指定します。                         |                     | システムテーブルに対して `engine` が指定されている場合、`ttl` パラメータは直接 `engine` の内部で指定する必要があります                |
-| `order_by`                         | システムテーブル用の [カスタムソートキー](/engines/table-engines/mergetree-family/mergetree#order_by)。`engine` が定義されている場合は使用できません。           |                     | システムテーブルに対して `engine` が指定されている場合、`order_by` パラメータは直接 `engine` の内部で指定する必要があります           |
-| `storage_policy`                   | テーブルに使用するストレージポリシー名 (オプション)。                                                                                              |                     | システムテーブルに対して `engine` が指定されている場合、`storage_policy` パラメータは直接 `engine` の内部で指定する必要があります     |
-| `settings`                         | MergeTree の動作を制御する [追加パラメータ](/engines/table-engines/mergetree-family/mergetree/#settings) (オプション)。                        |                     | システムテーブルに対して `engine` が指定されている場合、`settings` パラメータは直接 `engine` の内部で指定する必要があります           |
-| `flush_interval_milliseconds`      | メモリ上のバッファからテーブルへデータをフラッシュする間隔。                                                                                            | `7500`              |                                                                                         |
-| `max_size_rows`                    | ログの行数の最大値。フラッシュされていないログの量が `max_size_rows` に達すると、ログはディスクにダンプされます。                                                         | `1024`              |                                                                                         |
-| `reserved_size_rows`               | ログ用に事前確保されるメモリサイズ (行数)。                                                                                                   | `1024`              |                                                                                         |
-| `buffer_size_rows_flush_threshold` | 行数に対するしきい値。このしきい値に達すると、バックグラウンドでディスクへのログフラッシュが開始されます。                                                                     | `max_size_rows / 2` |                                                                                         |
-| `flush_on_crash`                   | クラッシュ時にログをディスクへダンプするかどうかを設定します。                                                                                           | `false`             |                                                                                         |
+| Setting                            | Description                                                                                                               | Default             | Note                                                                                        |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------- | ------------------------------------------------------------------------------------------- |
+| `database`                         | データベース名。                                                                                                                  |                     |                                                                                             |
+| `table`                            | システムテーブル名。                                                                                                                |                     |                                                                                             |
+| `engine`                           | システムテーブル用の [MergeTree エンジン定義](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-creating-a-table)。 |                     | `partition_by` または `order_by` が定義されている場合には使用できません。指定されていない場合、デフォルトで `MergeTree` が選択されます     |
+| `partition_by`                     | システムテーブル用の [カスタムパーティショニングキー](/engines/table-engines/mergetree-family/custom-partitioning-key.md)。                         |                     | システムテーブルに対して `engine` が指定されている場合、`partition_by` パラメータは直接 &#39;engine&#39; の内部で指定する必要があります   |
+| `ttl`                              | テーブルの [TTL](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) を指定します。                         |                     | システムテーブルに対して `engine` が指定されている場合、`ttl` パラメータは直接 &#39;engine&#39; の内部で指定する必要があります            |
+| `order_by`                         | システムテーブル用の [カスタムソートキー](/engines/table-engines/mergetree-family/mergetree#order_by)。`engine` が定義されている場合は使用できません。           |                     | システムテーブルに対して `engine` が指定されている場合、`order_by` パラメータは直接 &#39;engine&#39; の内部で指定する必要があります       |
+| `storage_policy`                   | テーブルに使用するストレージポリシー名 (オプション)。                                                                                              |                     | システムテーブルに対して `engine` が指定されている場合、`storage_policy` パラメータは直接 &#39;engine&#39; の内部で指定する必要があります |
+| `settings`                         | MergeTree の動作を制御する [追加パラメータ](/engines/table-engines/mergetree-family/mergetree/#settings) (オプション)。                        |                     | システムテーブルに対して `engine` が指定されている場合、`settings` パラメータは直接 &#39;engine&#39; の内部で指定する必要があります       |
+| `flush_interval_milliseconds`      | メモリ上のバッファからテーブルへデータをフラッシュする間隔。                                                                                            | `7500`              |                                                                                             |
+| `max_size_rows`                    | ログの行数の最大値。フラッシュされていないログの量が `max_size_rows` に達すると、ログはディスクにダンプされます。                                                         | `1024`              |                                                                                             |
+| `reserved_size_rows`               | ログ用に事前確保されるメモリサイズ (行数)。                                                                                                   | `1024`              |                                                                                             |
+| `buffer_size_rows_flush_threshold` | 行数に対するしきい値。このしきい値に達すると、バックグラウンドでディスクへのログフラッシュが開始されます。                                                                     | `max_size_rows / 2` |                                                                                             |
+| `flush_on_crash`                   | クラッシュ時にログをディスクへダンプするかどうかを設定します。                                                                                           | `false`             |                                                                                             |
 
 デフォルトのサーバー設定ファイル `config.xml` には、次の `settings` セクションが含まれます。
 
@@ -1735,6 +1798,7 @@ curl 127.0.0.1:9363/metrics
     <flush_on_crash>false</flush_on_crash>
 </crash_log>
 ```
+
 
 ## custom&#95;cached&#95;disks&#95;base&#95;directory {#custom_cached_disks_base_directory}
 
@@ -1754,6 +1818,7 @@ curl 127.0.0.1:9363/metrics
 ```xml
 <custom_cached_disks_base_directory>/var/lib/clickhouse/caches/</custom_cached_disks_base_directory>
 ```
+
 
 ## backup&#95;log {#backup_log}
 
@@ -1779,6 +1844,7 @@ curl 127.0.0.1:9363/metrics
 </clickhouse>
 ```
 
+
 ## blob&#95;storage&#95;log {#blob_storage_log}
 
 [`blob_storage_log`](../system-tables/blob_storage_log.md) システムテーブルに関する設定です。
@@ -1797,17 +1863,17 @@ curl 127.0.0.1:9363/metrics
 </blob_storage_log>
 ```
 
+
 ## query&#95;masking&#95;rules {#query_masking_rules}
 
-正規表現に基づくルールです。クエリおよびすべてのログメッセージに対して、サーバーログ
-[`system.query_log`](/operations/system-tables/query_log)、[`system.text_log`](/operations/system-tables/text_log)、[`system.processes`](/operations/system-tables/processes) テーブルに保存される前と、クライアントに送信されるログの両方に適用されます。これにより、名前、メールアドレス、個人識別子、クレジットカード番号などの機密データが、SQL クエリからログへ漏洩するのを防ぐことができます。
+正規表現に基づくルールです。クエリおよびすべてのログメッセージに対して、サーバーログ（[`system.query_log`](/operations/system-tables/query_log)、[`system.text_log`](/operations/system-tables/text_log)、[`system.processes`](/operations/system-tables/processes) テーブル）に保存される前と、クライアントに送信されるログの両方に適用されます。これにより、名前、メールアドレス、個人識別子、クレジットカード番号などの機密データが、SQL クエリからログに記録されてしまうのを防ぐことができます。
 
 **例**
 
 ```xml
 <query_masking_rules>
     <rule>
-        <name>SSNを非表示</name>
+        <name>hide SSN</name>
         <regexp>(^|\D)\d{3}-\d{2}-\d{4}($|\D)</regexp>
         <replace>000-00-0000</replace>
     </rule>
@@ -1828,6 +1894,7 @@ curl 127.0.0.1:9363/metrics
 
 分散クエリの場合は、各サーバーを個別に設定する必要があります。そうしないと、他ノードに渡されるサブクエリはマスクされないまま保存されます。
 
+
 ## remote&#95;servers {#remote_servers}
 
 [Distributed](../../engines/table-engines/special/distributed.md) テーブルエンジンおよび `cluster` テーブル関数で使用されるクラスタの設定です。
@@ -1845,6 +1912,7 @@ curl 127.0.0.1:9363/metrics
 * [skip&#95;unavailable&#95;shards](../../operations/settings/settings.md#skip_unavailable_shards)
 * [クラスタディスカバリ](../../operations/cluster-discovery.md)
 * [Replicatedデータベースエンジン](../../engines/database-engines/replicated.md)
+
 
 ## remote&#95;url&#95;allow&#95;hosts {#remote_url_allow_hosts}
 
@@ -1866,6 +1934,7 @@ URL 関連のストレージエンジンおよびテーブル関数で使用を�
 </remote_url_allow_hosts>
 ```
 
+
 ## timezone {#timezone}
 
 サーバーのタイムゾーンです。
@@ -1884,6 +1953,7 @@ UTC タイムゾーンまたは地理的位置を表す IANA 識別子として�
 
 * [session&#95;timezone](../settings/settings.md#session_timezone)
 
+
 ## tcp&#95;port {#tcp_port}
 
 TCP プロトコルでクライアントと通信するためのポート。
@@ -1894,6 +1964,7 @@ TCP プロトコルでクライアントと通信するためのポート。
 <tcp_port>9000</tcp_port>
 ```
 
+
 ## tcp&#95;port&#95;secure {#tcp_port_secure}
 
 クライアントとの安全な通信に使用する TCP ポートです。[OpenSSL](#openssl) の設定と併用します。
@@ -1903,6 +1974,7 @@ TCP プロトコルでクライアントと通信するためのポート。
 ```xml
 <tcp_port_secure>9440</tcp_port_secure>
 ```
+
 
 ## mysql&#95;port {#mysql_port}
 
@@ -1920,6 +1992,7 @@ MySQL プロトコル経由でクライアントと通信するためのポー�
 <mysql_port>9004</mysql_port>
 ```
 
+
 ## postgresql&#95;port {#postgresql_port}
 
 PostgreSQL プロトコル経由でクライアントと通信するためのポートです。
@@ -1936,9 +2009,10 @@ PostgreSQL プロトコル経由でクライアントと通信するためのポ
 <postgresql_port>9005</postgresql_port>
 ```
 
+
 ## mysql_require_secure_transport {#mysql_require_secure_transport}
 
-true に設定した場合、[mysql_port](#mysql_port) 経由のクライアントとの通信にはセキュアな接続が必須になります。`--ssl-mode=none` オプションでの接続は拒否されます。[OpenSSL](#openssl) の設定と併用してください。
+true に設定した場合、[mysql_port](#mysql_port) 経由のクライアントとの通信はセキュアであることが必須になります。`--ssl-mode=none` オプションでの接続は拒否されます。[OpenSSL](#openssl) の設定と併用してください。
 
 ## postgresql_require_secure_transport {#postgresql_require_secure_transport}
 
@@ -1960,6 +2034,7 @@ true に設定すると、[postgresql_port](#postgresql_port) を介したクラ
 <tmp_path>/var/lib/clickhouse/tmp/</tmp_path>
 ```
 
+
 ## url&#95;scheme&#95;mappers {#url_scheme_mappers}
 
 短縮またはシンボリックな URL プレフィックスを完全な URL にマッピングするための設定です。
@@ -1980,6 +2055,7 @@ true に設定すると、[postgresql_port](#postgresql_port) を介したクラ
 </url_scheme_mappers>
 ```
 
+
 ## user&#95;files&#95;path {#user_files_path}
 
 ユーザーファイルを格納するディレクトリです。テーブル関数 [file()](../../sql-reference/table-functions/file.md)、[fileCluster()](../../sql-reference/table-functions/fileCluster.md) で使用されます。
@@ -1989,6 +2065,7 @@ true に設定すると、[postgresql_port](#postgresql_port) を介したクラ
 ```xml
 <user_files_path>/var/lib/clickhouse/user_files/</user_files_path>
 ```
+
 
 ## user&#95;scripts&#95;path {#user_scripts_path}
 
@@ -2004,6 +2081,7 @@ true に設定すると、[postgresql_port](#postgresql_port) を介したクラ
 
 デフォルト:
 
+
 ## user&#95;defined&#95;path {#user_defined_path}
 
 ユーザー定義ファイルを格納するディレクトリです。SQL のユーザー定義関数で使用されます。詳細は [SQL User Defined Functions](/sql-reference/functions/udf) を参照してください。
@@ -2013,6 +2091,7 @@ true に設定すると、[postgresql_port](#postgresql_port) を介したクラ
 ```xml
 <user_defined_path>/var/lib/clickhouse/user_defined/</user_defined_path>
 ```
+
 
 ## users&#95;config {#users_config}
 
@@ -2029,19 +2108,20 @@ true に設定すると、[postgresql_port](#postgresql_port) を介したクラ
 <users_config>users.xml</users_config>
 ```
 
+
 ## access&#95;control&#95;improvements {#access_control_improvements}
 
 アクセス制御システムにおける任意の改善用設定です。
 
-| Setting                                         | Description                                                                                                                                                                                                                                                                                                                                                           | Default |
-| ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| `users_without_row_policies_can_read_rows`      | パーミッシブな行ポリシーを持たないユーザーが、`SELECT` クエリを使用して行を読み取れるかどうかを設定します。たとえば、ユーザー A と B がいて、行ポリシーが A に対してのみ定義されている場合、この設定が true であれば、ユーザー B はすべての行を閲覧できます。この設定が false の場合、ユーザー B はどの行も閲覧できません。                                                                                                                                                                                      | `true`  |
-| `on_cluster_queries_require_cluster_grant`      | `ON CLUSTER` クエリに `CLUSTER` 権限が必要かどうかを設定します。                                                                                                                                                                                                                                                                                                                          | `true`  |
-| `select_from_system_db_requires_grant`          | `SELECT * FROM system.<table>` を実行する際に権限が必要かどうか（権限が不要な場合は任意のユーザーが実行可能かどうか）を設定します。true に設定した場合、このクエリには非 system テーブルと同様に `GRANT SELECT ON system.<table>` が必要です。例外として、いくつかの system テーブル（`tables`、`columns`、`databases`、および `one`、`contributors` のような一部の定数テーブル）は依然として全員がアクセス可能です。また、`SHOW` 権限（例: `SHOW USERS`）が付与されている場合、対応する system テーブル（つまり `system.users`）にはアクセスできます。 | `true`  |
-| `select_from_information_schema_requires_grant` | `SELECT * FROM information_schema.<table>` を実行する際に権限が必要かどうか（権限が不要な場合は任意のユーザーが実行可能かどうか）を設定します。true に設定した場合、このクエリには、通常のテーブルと同様に `GRANT SELECT ON information_schema.<table>` が必要です。                                                                                                                                                                                     | `true`  |
-| `settings_constraints_replace_previous`         | ある設定に対して設定プロファイル内で定義された制約が、その設定に対する以前の制約（他のプロファイルで定義されたもの）による動作を、新しい制約で設定されていないフィールドも含めて打ち消すかどうかを設定します。また、`changeable_in_readonly` 制約タイプを有効にします。                                                                                                                                                                                                                      | `true`  |
-| `table_engines_require_grant`                   | 特定のテーブルエンジンを使用してテーブルを作成する際に、権限が必要かどうかを設定します。                                                                                                                                                                                                                                                                                                                          | `false` |
-| `role_cache_expiration_time_seconds`            | ロールが最後にアクセスされてから、ロールキャッシュに保持される時間（秒）を設定します。                                                                                                                                                                                                                                                                                                                           | `600`   |
+| Setting                                         | Description                                                                                                                                                                                                                                                                                                                                                             | Default |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| `users_without_row_policies_can_read_rows`      | パーミッシブな行ポリシーを持たないユーザーが `SELECT` クエリを使用して行を読み取れるかどうかを設定します。たとえば、ユーザー A と B がいて、行ポリシーが A に対してのみ定義されている場合、この設定が true であればユーザー B はすべての行を閲覧できます。この設定が false の場合、ユーザー B はどの行も閲覧できません。                                                                                                                                                                                         | `true`  |
+| `on_cluster_queries_require_cluster_grant`      | `ON CLUSTER` クエリに `CLUSTER` 権限が必要かどうかを設定します。                                                                                                                                                                                                                                                                                                                            | `true`  |
+| `select_from_system_db_requires_grant`          | `SELECT * FROM system.<table>` を実行する際に権限が必要かどうか（権限が不要な場合は任意のユーザーが実行可能かどうか）を設定します。true に設定した場合、このクエリには system 以外のテーブルと同様に `GRANT SELECT ON system.<table>` が必要です。例外として、いくつかの system テーブル（`tables`、`columns`、`databases`、および `one`、`contributors` のような一部の定数テーブル）は依然として全員がアクセス可能です。また、`SHOW` 権限（例: `SHOW USERS`）が付与されている場合、対応する system テーブル（つまり `system.users`）にはアクセスできます。 | `true`  |
+| `select_from_information_schema_requires_grant` | `SELECT * FROM information_schema.<table>` を実行する際に権限が必要かどうか（権限が不要な場合は任意のユーザーが実行可能かどうか）を設定します。true に設定した場合、このクエリには通常のテーブルと同様に `GRANT SELECT ON information_schema.<table>` が必要です。                                                                                                                                                                                        | `true`  |
+| `settings_constraints_replace_previous`         | ある設定に対して設定プロファイル内で定義された制約が、その設定に対する以前の制約（他のプロファイルで定義されたもの）による動作を、新しい制約で設定されていないフィールドも含めて打ち消すかどうかを設定します。また、`changeable_in_readonly` 制約タイプを有効にします。                                                                                                                                                                                                                        | `true`  |
+| `table_engines_require_grant`                   | 特定のテーブルエンジンを使用してテーブルを作成する際に権限が必要かどうかを設定します。                                                                                                                                                                                                                                                                                                                             | `false` |
+| `role_cache_expiration_time_seconds`            | ロールが最後にアクセスされてからロールキャッシュに保持される時間（秒）を設定します。                                                                                                                                                                                                                                                                                                                              | `600`   |
 
 例:
 
@@ -2056,6 +2136,7 @@ true に設定すると、[postgresql_port](#postgresql_port) を介したクラ
     <role_cache_expiration_time_seconds>600</role_cache_expiration_time_seconds>
 </access_control_improvements>
 ```
+
 
 ## s3queue&#95;log {#s3queue_log}
 
@@ -2074,6 +2155,7 @@ true に設定すると、[postgresql_port](#postgresql_port) を介したクラ
 </s3queue_log>
 ```
 
+
 ## dead&#95;letter&#95;queue {#dead_letter_queue}
 
 &#39;dead&#95;letter&#95;queue&#39; システムテーブルの設定です。
@@ -2090,6 +2172,7 @@ true に設定すると、[postgresql_port](#postgresql_port) を介したクラ
     <flush_interval_milliseconds>7500</flush_interval_milliseconds>
 </dead_letter_queue>
 ```
+
 
 ## zookeeper {#zookeeper}
 
@@ -2133,9 +2216,9 @@ ClickHouse が [ZooKeeper](http://zookeeper.apache.org/) クラスターと連�
     </node>
     <session_timeout_ms>30000</session_timeout_ms>
     <operation_timeout_ms>10000</operation_timeout_ms>
-    <!-- オプション。Chroot サフィックス。存在する必要があります。 -->
+    <!-- Optional. Chroot suffix. Should exist. -->
     <root>/path/to/zookeeper/node</root>
-    <!-- オプション。ZooKeeper ダイジェスト ACL 文字列。 -->
+    <!-- Optional. Zookeeper digest ACL string. -->
     <identity>user:password</identity>
     <!--<zookeeper_load_balancing>random / in_order / nearest_hostname / hostname_levenshtein_distance / first_or_random / round_robin</zookeeper_load_balancing>-->
     <zookeeper_load_balancing>random</zookeeper_load_balancing>
@@ -2147,6 +2230,7 @@ ClickHouse が [ZooKeeper](http://zookeeper.apache.org/) クラスターと連�
 * [レプリケーション](../../engines/table-engines/mergetree-family/replication.md)
 * [ZooKeeper プログラマー向けガイド](http://zookeeper.apache.org/doc/current/zookeeperProgrammers.html)
 * [ClickHouse と ZooKeeper 間の通信をセキュアにする（オプション）](/operations/ssl-zookeeper)
+
 
 ## use_minimalistic_part_header_in_zookeeper {#use_minimalistic_part_header_in_zookeeper}
 
@@ -2193,29 +2277,30 @@ ClickHouse はサーバー上のすべてのテーブルに対してこの設定
 
 ```xml
 <distributed_ddl>
-    <!-- ZooKeeper内のDDLクエリキューへのパス -->
+    <!-- Path in ZooKeeper to queue with DDL queries -->
     <path>/clickhouse/task_queue/ddl</path>
 
-    <!-- DDLクエリの実行時にこのプロファイルの設定が使用されます -->
+    <!-- Settings from this profile will be used to execute DDL queries -->
     <profile>default</profile>
 
-    <!-- ON CLUSTERクエリの同時実行数を制御します -->
+    <!-- Controls how much ON CLUSTER queries can be run simultaneously. -->
     <pool_size>1</pool_size>
 
     <!--
-         クリーンアップ設定（実行中のタスクは削除されません）
+         Cleanup settings (active tasks will not be removed)
     -->
 
-    <!-- タスクのTTLを制御します（デフォルト: 1週間） -->
+    <!-- Controls task TTL (default 1 week) -->
     <task_max_lifetime>604800</task_max_lifetime>
 
-    <!-- クリーンアップの実行間隔を制御します（秒単位） -->
+    <!-- Controls how often cleanup should be performed (in seconds) -->
     <cleanup_delay_period>60</cleanup_delay_period>
 
-    <!-- キューに保持可能なタスク数を制御します -->
+    <!-- Controls how many tasks could be in the queue -->
     <max_tasks_in_queue>1000</max_tasks_in_queue>
 </distributed_ddl>
 ```
+
 
 ## access_control_path {#access_control_path}
 
@@ -2233,6 +2318,7 @@ ClickHouse サーバーが SQL コマンドで作成したユーザーおよび�
 <allow_plaintext_password>1</allow_plaintext_password>
 ```
 
+
 ## allow&#95;no&#95;password {#allow_no_password}
 
 安全ではないパスワード種別 `no&#95;password` を許可するかどうかを設定します。
@@ -2240,6 +2326,7 @@ ClickHouse サーバーが SQL コマンドで作成したユーザーおよび�
 ```xml
 <allow_no_password>1</allow_no_password>
 ```
+
 
 ## allow&#95;implicit&#95;no&#95;password {#allow_implicit_no_password}
 
@@ -2249,6 +2336,7 @@ ClickHouse サーバーが SQL コマンドで作成したユーザーおよび�
 <allow_implicit_no_password>1</allow_implicit_no_password>
 ```
 
+
 ## default&#95;session&#95;timeout {#default_session_timeout}
 
 セッションのデフォルトのタイムアウト時間（秒）。
@@ -2256,6 +2344,7 @@ ClickHouse サーバーが SQL コマンドで作成したユーザーおよび�
 ```xml
 <default_session_timeout>60</default_session_timeout>
 ```
+
 
 ## default&#95;password&#95;type {#default_password_type}
 
@@ -2271,6 +2360,7 @@ ClickHouse サーバーが SQL コマンドで作成したユーザーおよび�
 ```xml
 <default_password_type>sha256_password</default_password_type>
 ```
+
 
 ## user&#95;directories {#user_directories}
 
@@ -2297,7 +2387,7 @@ ClickHouse サーバーが SQL コマンドで作成したユーザーおよび�
 </user_directories>
 ```
 
-ユーザー、ロール、行ポリシー、クォータ、プロファイルは ZooKeeperに保存することもできます。
+ユーザー、ロール、行ポリシー、クォータ、プロファイルは ZooKeeper に保存することもできます。
 
 ```xml
 <user_directories>
@@ -2331,11 +2421,12 @@ ClickHouse サーバーが SQL コマンドで作成したユーザーおよび�
 </ldap>
 ```
 
+
 ## top&#95;level&#95;domains&#95;list {#top_level_domains_list}
 
 追加で登録するカスタムトップレベルドメインのリストを定義します。各エントリは `<name>/path/to/file</name>` という形式です。
 
-例えば：
+例えば:
 
 ```xml
 <top_level_domains_lists>
@@ -2345,8 +2436,9 @@ ClickHouse サーバーが SQL コマンドで作成したユーザーおよび�
 
 See also:
 
-* 関数 [`cutToFirstSignificantSubdomainCustom`](../../sql-reference/functions/url-functions.md/#cutToFirstSignificantSubdomainCustom) およびそのバリエーション。\
+* 関数 [`cutToFirstSignificantSubdomainCustom`](../../sql-reference/functions/url-functions.md/#cutToFirstSignificantSubdomainCustom) およびそのバリエーション。
   カスタムの TLD リスト名を受け取り、最初の有意なサブドメインまでのトップレベルサブドメインを含むドメイン部分を返します。
+
 
 ## proxy {#proxy}
 
@@ -2388,7 +2480,7 @@ ClickHouse は異なるプロキシをラウンドロビン方式で使用し、
 </proxy>
 ```
 
-以下のタブで親フィールドを選択して、その子要素を確認してください:
+下のタブから親フィールドを選択すると、その子要素が表示されます:
 
 <Tabs>
   <TabItem value="proxy" label="<proxy>" default>
@@ -2474,11 +2566,12 @@ ClickHouse はそれを使用し、次のテンプレートでプロキシ URI �
 
 プロキシ設定は次の順序で決定されます。
 
-| 順序 | 設定                     |
-|------|--------------------------|
-| 1.   | リモートプロキシリゾルバ |
-| 2.   | プロキシリスト           |
-| 3.   | 環境変数                 |
+| 順序 | 設定            |
+| -- | ------------- |
+| 1. | リモートプロキシリゾルバー |
+| 2. | プロキシリスト       |
+| 3. | 環境変数          |
+
 
 ClickHouse は、リクエストプロトコルに対して最も優先度の高いリゾルバタイプを確認します。それが定義されていない場合は、
 環境リゾルバに到達するまで、次に優先度の高いリゾルバタイプを順に確認します。
@@ -2512,6 +2605,7 @@ GitLab についても同様で、先頭にドットが付いていても同じ�
 </proxy>
 ```
 
+
 ## workload&#95;path {#workload_path}
 
 すべての `CREATE WORKLOAD` クエリおよび `CREATE RESOURCE` クエリの保存先として使用されるディレクトリです。デフォルトでは、サーバーの作業ディレクトリ配下の `/workload/` フォルダが使用されます。
@@ -2527,6 +2621,7 @@ GitLab についても同様で、先頭にドットが付いていても同じ�
 * [ワークロード階層](/operations/workload-scheduling.md#workloads)
 * [workload&#95;zookeeper&#95;path](#workload_zookeeper_path)
 
+
 ## workload&#95;zookeeper&#95;path {#workload_zookeeper_path}
 
 ZooKeeper ノードへのパスです。すべての `CREATE WORKLOAD` および `CREATE RESOURCE` クエリの保存先として使用されます。一貫性を保つため、すべての SQL 定義はこの単一の znode に値として保存されます。デフォルトでは ZooKeeper は使用されず、定義は [ディスク](#workload_path) 上に保存されます。
@@ -2541,6 +2636,7 @@ ZooKeeper ノードへのパスです。すべての `CREATE WORKLOAD` および
 
 * [ワークロード階層](/operations/workload-scheduling.md#workloads)
 * [workload&#95;path](#workload_path)
+
 
 ## zookeeper&#95;log {#zookeeper_log}
 

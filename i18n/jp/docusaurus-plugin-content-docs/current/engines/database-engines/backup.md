@@ -1,5 +1,5 @@
 ---
-description: 'バックアップからテーブルやデータベースを読み取り専用モードで即座にアタッチできる。'
+description: 'バックアップからテーブルまたはデータベースを読み取り専用モードで即座にアタッチできる。'
 sidebar_label: 'バックアップ'
 sidebar_position: 60
 slug: /engines/database-engines/backup
@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # バックアップ {#backup}
 
-データベースのバックアップ機能を使用すると、[バックアップ](../../operations/backup) からテーブルやデータベースを読み取り専用モードで即座にアタッチできます。
+データベースのバックアップ機能を使用すると、[バックアップ](/operations/backup/overview) からテーブルやデータベースを読み取り専用モードで即座にアタッチできます。
 
 データベースのバックアップは、増分バックアップと非増分バックアップの両方に対応しています。
 
@@ -20,7 +20,7 @@ CREATE DATABASE backup_database
 ENGINE = Backup('database_name_inside_backup', 'backup_destination')
 ```
 
-バックアップ先には、`Disk`、`S3`、`File` などの有効なバックアップ[先](../../operations/backup#configure-a-backup-destination)を指定できます。
+バックアップ先には、`Disk`、`S3`、`File` などの有効なバックアップ[先](/operations/backup/disk#configure-backup-destinations-for-disk)を指定できます。
 
 バックアップ先が `Disk` の場合、バックアップからデータベースを作成するクエリは次のようになります。
 
@@ -53,7 +53,7 @@ ENGINE = Backup('database_name_inside_backup', Disk('disk_name', 'backup_name'))
 </backups>
 ```
 
-使用例を示します。テスト用のデータベースとテーブルを作成し、いくつかデータを挿入してからバックアップを作成します。
+使用例として、テスト用のデータベースとテーブルを作成し、いくつかデータを挿入してからバックアップを作成します。
 
 ```sql
 CREATE DATABASE test_database;
@@ -70,13 +70,13 @@ INSERT INTO test_database.test_table_3 VALUES (0, 'test_database.test_table_3');
 BACKUP DATABASE test_database TO Disk('backups', 'test_database_backup');
 ```
 
-これで `test_database_backup` バックアップが用意できたので、データベース `Backup` を作成しましょう。
+これで `test_database_backup` のバックアップが取得できたので、このバックアップを使って `test_database_backup` データベースを作成しましょう。
 
 ```sql
 CREATE DATABASE test_database_backup ENGINE = Backup('test_database', Disk('backups', 'test_database_backup'));
 ```
 
-これで、データベース内の任意のテーブルに対してクエリを実行できます。
+これで、バックアップしたデータベース内の任意のテーブルにクエリを実行できます。
 
 ```sql
 SELECT id, value FROM test_database_backup.test_table_1;
@@ -98,7 +98,7 @@ SELECT id, value FROM test_database_backup.test_table_3;
 └────┴────────────────────────────┘
 ```
 
-このバックアップしたデータベースは、通常のデータベースと同様に扱うこともできます。たとえば、その中のテーブルに対してクエリを実行できます。
+このバックアップとして作成したデータベースも、通常のデータベースと同様に操作できます。たとえば、その中のテーブルに対してクエリを実行できます。
 
 ```sql
 SELECT database, name FROM system.tables WHERE database = 'test_database_backup':

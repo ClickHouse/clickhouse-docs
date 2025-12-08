@@ -167,4 +167,4 @@ SELECT * FROM system.backups ORDER BY start_time
 
 **См. также**
 
-* [Резервное копирование и восстановление](../../operations/backup.md)
+* [Резервное копирование и восстановление](/operations/backup/overview)

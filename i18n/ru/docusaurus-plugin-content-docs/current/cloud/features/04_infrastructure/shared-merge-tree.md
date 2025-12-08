@@ -11,9 +11,10 @@ import shared_merge_tree from '@site/static/images/cloud/reference/shared-merge-
 import shared_merge_tree_2 from '@site/static/images/cloud/reference/shared-merge-tree-2.png';
 import Image from '@theme/IdealImage';
 
+
 # Движок таблиц SharedMergeTree {#sharedmergetree-table-engine}
 
-Семейство движков таблиц SharedMergeTree — это облачный (cloud‑native) аналог движков ReplicatedMergeTree, оптимизированный для работы поверх общего хранилища (например, Amazon S3, Google Cloud Storage, MinIO, Azure Blob Storage). Для каждого конкретного типа движка MergeTree существует соответствующий SharedMergeTree, то есть ReplacingSharedMergeTree заменяет ReplacingReplicatedMergeTree.
+Семейство движков таблиц SharedMergeTree — это облачный (cloud‑native) аналог движков ReplicatedMergeTree, оптимизированный для работы поверх общего хранилища (например, Amazon S3, Google Cloud Storage, MinIO, Azure Blob Storage). Для каждого конкретного типа движка MergeTree существует соответствующий SharedMergeTree, то есть SharedReplacingMergeTree заменяет ReplicatedReplacingMergeTree.
 
 Семейство движков таблиц SharedMergeTree лежит в основе ClickHouse Cloud. Конечному пользователю не нужно ничего менять, чтобы начать использовать семейство движков SharedMergeTree вместо движков на основе ReplicatedMergeTree. Оно предоставляет следующие дополнительные преимущества:
 
@@ -49,7 +50,7 @@ import Image from '@theme/IdealImage';
 
 `SharedMergeTree` включён по умолчанию.
 
-Для сервисов, которые поддерживают движок таблиц SharedMergeTree, ничего не нужно включать вручную. Вы можете создавать таблицы так же, как делали это раньше, и будет автоматически использован основанный на SharedMergeTree движок таблиц, соответствующий движку, указанному в вашем запросе CREATE TABLE.
+Для сервисов, которые поддерживают движок таблиц SharedMergeTree, ничего не нужно включать вручную. Вы можете создавать таблицы так же, как делали это раньше, и автоматически будет использован табличный движок на основе SharedMergeTree, соответствующий движку, указанному в вашем запросе CREATE TABLE.
 
 ```sql
 CREATE TABLE my_table(
@@ -72,7 +73,7 @@ CREATE TABLE my_table(
 ORDER BY key
 ```
 
-Если вы используете таблицы ReplacingMergeTree, CollapsingMergeTree, AggregatingMergeTree, SummingMergeTree, VersionedCollapsingMergeTree или GraphiteMergeTree, они будут автоматически преобразованы в соответствующий табличный движок на основе SharedMergeTree.
+Если вы используете таблицы ReplacingMergeTree, CollapsingMergeTree, AggregatingMergeTree, SummingMergeTree, VersionedCollapsingMergeTree или GraphiteMergeTree, они будут автоматически преобразованы в соответствующие движки таблиц на базе SharedMergeTree.
 
 ```sql
 CREATE TABLE myFirstReplacingMT
@@ -97,6 +98,7 @@ CREATE TABLE default.myFirstReplacingMT
 ENGINE = SharedReplacingMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
 ORDER BY key
 ```
+
 
 ## Настройки {#settings}
 

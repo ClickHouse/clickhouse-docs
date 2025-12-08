@@ -461,7 +461,7 @@ GRANT INSERT(x,y) ON db.table TO john
 
 ### BACKUP {#backup}
 
-允许在查询中执行 [`BACKUP`] 语句。有关备份的更多信息，请参阅[《备份与恢复》](../../operations/backup.md)。
+允许在查询中执行 [`BACKUP`] 语句。有关备份的更多信息，请参阅[《备份与恢复》](/operations/backup/overview)。
 
 ### CREATE {#create}
 
