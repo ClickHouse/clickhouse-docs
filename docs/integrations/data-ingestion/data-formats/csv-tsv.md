@@ -107,7 +107,7 @@ The [file](assets/data_small.csv) has 1k rows, but ClickHouse loaded only 990 si
 When using the `file()` function, with ClickHouse Cloud you will need to run the commands in `clickhouse client` on the machine where the file resides. Another option is to use [`clickhouse-local`](/operations/utilities/clickhouse-local.md) to explore files locally.
 :::
 
-### Treating NULL values in CSV files {#treating-null-values-in-csv-files}
+### Treating null values in CSV files {#treating-null-values-in-csv-files}
 
 Null values can be encoded differently depending on the application that generated the file. By default, ClickHouse uses `\N` as a Null value in CSV. But we can change that using the [format_csv_null_representation](/operations/settings/settings-formats.md/#format_tsv_null_representation) option.
 

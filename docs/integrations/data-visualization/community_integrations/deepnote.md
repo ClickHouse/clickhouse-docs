@@ -19,7 +19,7 @@ import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 
-# Connect ClickHouse to Deepnote
+# Connect ClickHouse to deepnote
 
 <CommunityMaintainedBadge/>
 

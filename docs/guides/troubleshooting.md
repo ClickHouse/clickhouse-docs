@@ -8,11 +8,11 @@ keywords: ['troubleshooting', 'debugging', 'problem solving', 'errors', 'diagnos
 
 ## Installation {#installation}
 
-### Cannot import GPG keys from keyserver.ubuntu.com with apt-key {#cannot-import-gpg-keys-from-keyserverubuntucom-with-apt-key}
+### Cannot import gpg keys from keyserver.ubuntu.com with apt-key {#cannot-import-gpg-keys-from-keyserverubuntucom-with-apt-key}
 
 The `apt-key` feature with the [Advanced package tool (APT) has been deprecated](https://manpages.debian.org/bookworm/apt/apt-key.8.en.html). Users should use the `gpg` command instead. Please refer the [install guide](../getting-started/install/install.mdx) article.
 
-### Cannot import GPG keys from keyserver.ubuntu.com with gpg {#cannot-import-gpg-keys-from-keyserverubuntucom-with-gpg}
+### Cannot import gpg keys from keyserver.ubuntu.com with gpg {#cannot-import-gpg-keys-from-keyserverubuntucom-with-gpg}
 
 1. See if your `gpg` is installed:
 
@@ -63,7 +63,7 @@ sudo apt-get clean
 sudo apt-get autoclean
 ```
 
-### Can't get packages with Yum because of wrong signature {#cant-get-packages-with-yum-because-of-wrong-signature}
+### Can't get packages with yum because of wrong signature {#cant-get-packages-with-yum-because-of-wrong-signature}
 
 Possible issue: the cache is wrong, maybe it's broken after updated GPG key in 2022-09.
 

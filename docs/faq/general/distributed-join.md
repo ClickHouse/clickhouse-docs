@@ -8,7 +8,7 @@ doc_type: 'reference'
 keywords: ['distributed', 'join']
 ---
 
-# Does ClickHouse support distributed JOIN?
+# Does ClickHouse support distributed join?
 
 ClickHouse supports distributed JOIN on a cluster.
 

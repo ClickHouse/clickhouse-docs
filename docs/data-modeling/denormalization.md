@@ -10,11 +10,11 @@ import denormalizationDiagram from '@site/static/images/data-modeling/denormaliz
 import denormalizationSchema from '@site/static/images/data-modeling/denormalization-schema.png';
 import Image from '@theme/IdealImage';
 
-# Denormalizing Data
+# Denormalizing data
 
 Data denormalization is a technique in ClickHouse to use flattened tables to help minimize query latency by avoiding joins.
 
-## Comparing Normalized vs. Denormalized Schemas {#comparing-normalized-vs-denormalized-schemas}
+## Comparing normalized vs. denormalized schemas {#comparing-normalized-vs-denormalized-schemas}
 
 Denormalizing data involves intentionally reversing the normalization process to optimize database performance for specific query patterns. In normalized databases, data is split into multiple related tables to minimize redundancy and ensure data integrity. Denormalization reintroduces redundancy by combining tables, duplicating data, and incorporating calculated fields into either a single table or fewer tables - effectively moving any joins from query to insert time.
 
@@ -64,7 +64,7 @@ We also only consider denormalizing other tables onto `Posts`, as we consider th
 
 *For each of the following examples, assume a query exists which requires both tables to be used in a join.*
 
-### Posts and Votes {#posts-and-votes}
+### Posts and votes {#posts-and-votes}
 
 Votes for posts are represented as separate tables. The optimized schema for this is shown below as well as the insert command to load the data:
 
@@ -129,7 +129,7 @@ LIMIT 5
 
 The main observation here is that aggregated vote statistics for each post would be sufficient for most analysis - we do not need to denormalize all of the vote information. For example, the current `Score` column represents such a statistic i.e. total up votes minus down votes. Ideally, we would just be able to retrieve these statistics at query time with a simple lookup (see [dictionaries](/dictionary)).
 
-### Users and Badges {#users-and-badges}
+### Users and badges {#users-and-badges}
 
 Now let's consider our `Users` and `Badges`:
 
@@ -199,7 +199,7 @@ It's probably not realistic to denormalize 19k objects onto a single row. This r
 
 > We may wish to denormalize statistics from badges on to users e.g. the number of badges. We consider such an example when using dictionaries for this dataset at insert time.
 
-### Posts and PostLinks {#posts-and-postlinks}
+### Posts and postlinks {#posts-and-postlinks}
 
 `PostLinks` connect `Posts` which users consider to be related or duplicated. The following query shows the schema and load command:
 

@@ -128,7 +128,7 @@ sklearn_df.sort_values(by=["x"], ascending=False).head(n=10)
 2383  2024-09-23  1777554
 ```
 
-## Merging Pandas DataFrames {#merging-pandas-dataframes}
+## Merging Pandas dataframes {#merging-pandas-dataframes}
 
 We now have two DataFrames, which we can merge together based on date (which is the `x` column) like this:
 
@@ -166,7 +166,7 @@ df.head(n=5)
 4  2018-03-02         5      23842  0.000210
 ```
 
-## Querying Pandas DataFrames {#querying-pandas-dataframes}
+## Querying Pandas dataframes {#querying-pandas-dataframes}
 
 Next, let's say we want to find the dates with the best and worst ratios. 
 We can go back to chDB and compute those values:

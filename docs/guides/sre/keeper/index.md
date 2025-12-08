@@ -9,7 +9,7 @@ title: 'ClickHouse Keeper'
 doc_type: 'guide'
 ---
 
-# ClickHouse Keeper (clickhouse-keeper)
+# ClickHouse keeper (clickhouse-keeper)
 
 import SelfManaged from '@site/docs/_snippets/_self_managed_only_automated.md';
 
@@ -462,7 +462,7 @@ Some of the feature flags are enabled by default from version 25.7.
 The recommended way of upgrading Keeper to 25.7+ is to first upgrade to version 24.9+.
 :::
 
-### Migration from ZooKeeper {#migration-from-zookeeper}
+### Migration from zookeeper {#migration-from-zookeeper}
 
 Seamless migration from ZooKeeper to ClickHouse Keeper is not possible. You have to stop your ZooKeeper cluster, convert data, and start ClickHouse Keeper. `clickhouse-keeper-converter` tool allows converting ZooKeeper logs and snapshots to ClickHouse Keeper snapshot. It works only with ZooKeeper > 3.4. Steps for migration:
 
@@ -514,7 +514,7 @@ After making sure that the above things are true, you need to do following:
 6. While in the recovery mode, the leader node will return error message for `mntr` command until it achieves quorum with the new nodes and refuse any requests from the client and the followers.
 7. After quorum is achieved, the leader node will return to the normal mode of operation, accepting all the requests using Raft-verify with `mntr` which should return `leader` for the `zk_server_state`.
 
-## Using disks with Keeper {#using-disks-with-keeper}
+## Using disks with keeper {#using-disks-with-keeper}
 
 Keeper supports a subset of [external disks](/operations/storing-data.md) for storing snapshots, log files, and the state file.
 
@@ -676,11 +676,11 @@ curl 127.0.0.1:9363/metrics
 
 Please also see the ClickHouse Cloud [Prometheus integration](/integrations/prometheus).
 
-## ClickHouse Keeper user guide {#clickhouse-keeper-user-guide}
+## ClickHouse keeper user guide {#clickhouse-keeper-user-guide}
 
 This guide provides simple and minimal settings to configure ClickHouse Keeper with an example on how to test distributed operations. This example is performed using 3 nodes on Linux.
 
-### 1. Configure nodes with Keeper settings {#1-configure-nodes-with-keeper-settings}
+### 1. configure nodes with keeper settings {#1-configure-nodes-with-keeper-settings}
 
 1. Install 3 ClickHouse instances on 3 hosts (`chnode1`, `chnode2`, `chnode3`). (View the [Quick Start](/getting-started/install/install.mdx) for details on installing ClickHouse.)
 
@@ -784,7 +784,7 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
     └────────────┴───────┴───────┴───────┴─────────────────────┴─────────────────────┴─────────┴──────────┴──────────┴────────────────┴────────────┴─────────────┴───────┴─────────────┘
     ```
 
-### 2.  Configure a cluster in ClickHouse {#2--configure-a-cluster-in-clickhouse}
+### 2.  configure a cluster in ClickHouse {#2--configure-a-cluster-in-clickhouse}
 
 1. Let's configure a simple cluster with 2 shards and only one replica on 2 of the nodes. The third node will be used to achieve a quorum for the requirement in ClickHouse Keeper. Update the configuration on `chnode1` and `chnode2`. The following cluster defines 1 shard on each node for a total of 2 shards with no replication. In this example, some of the data will be on node and some will be on the other node:
     ```xml
@@ -831,7 +831,7 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
     └───────────────┘
     ```
 
-### 3. Create and test distributed table {#3-create-and-test-distributed-table}
+### 3. create and test distributed table {#3-create-and-test-distributed-table}
 
 1.  Create a new database on the new cluster using ClickHouse client on `chnode1`. The `ON CLUSTER` clause automatically creates the database on both nodes.
     ```sql
@@ -934,7 +934,7 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
 
 This guide demonstrated how to set up a cluster using ClickHouse Keeper. With ClickHouse Keeper, you can configure clusters and define distributed tables that can be replicated across shards.
 
-## Configuring ClickHouse Keeper with unique paths {#configuring-clickhouse-keeper-with-unique-paths}
+## Configuring ClickHouse keeper with unique paths {#configuring-clickhouse-keeper-with-unique-paths}
 
 <SelfManaged />
 
@@ -1235,7 +1235,7 @@ Query id: b047d459-a1d2-4016-bcf9-3e97e30e49c2
 1 row in set. Elapsed: 0.004 sec.
 ```
 
-## ClickHouse Keeper dynamic reconfiguration {#reconfiguration}
+## ClickHouse keeper dynamic reconfiguration {#reconfiguration}
 
 <SelfManaged />
 

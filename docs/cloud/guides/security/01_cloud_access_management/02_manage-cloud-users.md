@@ -45,7 +45,7 @@ If your organization is configured for [SAML SSO](/cloud/security/saml-setup) fo
 2. When the user logs in to ClickHouse Cloud they will automatically be assigned the `Member` role which may only log in and has no other access
 3. Follow the instructions in the `Manage user role assignments` below to grant permissions
 
-### Enforcing SAML-only authentication {#enforce-saml}
+### Enforcing saml-only authentication {#enforce-saml}
 
 Once you have at least one SAML user in the organization assigned to the Organization Admin role, remove users with other authentication methods from the organization to enforce SAML only authentication for the organization.
 

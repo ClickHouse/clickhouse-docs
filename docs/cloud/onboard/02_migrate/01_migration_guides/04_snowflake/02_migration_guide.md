@@ -11,7 +11,7 @@ doc_type: 'guide'
 import migrate_snowflake_clickhouse from '@site/static/images/migrations/migrate_snowflake_clickhouse.png';
 import Image from '@theme/IdealImage';
 
-# Migrate from Snowflake to ClickHouse
+# Migrate from snowflake to ClickHouse
 
 > This guide shows you how to migrate data from Snowflake to ClickHouse.
 
@@ -22,7 +22,7 @@ of ClickHouse.
 
 <VerticalStepper headerLevel="h2">
 
-## Export data from Snowflake {#1-exporting-data-from-snowflake}
+## Export data from snowflake {#1-exporting-data-from-snowflake}
 
 <Image img={migrate_snowflake_clickhouse} size="md" alt="Migrating from Snowflake to ClickHouse"/>
 

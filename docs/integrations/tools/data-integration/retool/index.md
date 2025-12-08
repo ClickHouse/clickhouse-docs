@@ -23,10 +23,10 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <PartnerBadge/>
 
-## 1. Gather your connection details {#1-gather-your-connection-details}
+## 1. gather your connection details {#1-gather-your-connection-details}
 <ConnectionDetails />
 
-## 2. Create a ClickHouse resource {#2-create-a-clickhouse-resource}
+## 2. create a ClickHouse resource {#2-create-a-clickhouse-resource}
 
 Login to your Retool account and navigate to the _Resources_ tab. Choose "Create New" -> "Resource":
 

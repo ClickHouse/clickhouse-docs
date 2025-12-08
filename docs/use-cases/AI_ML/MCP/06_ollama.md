@@ -14,13 +14,13 @@ import {CardHorizontal} from '@clickhouse/click-ui/bundled'
 import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 
-# Using ClickHouse MCP server with Ollama
+# Using ClickHouse mcp server with ollama
 
 > This guide explains how to use the ClickHouse MCP Server with Ollama.
 
 <VerticalStepper headerLevel="h2">
 
-## Install Ollama {#install-ollama}
+## Install ollama {#install-ollama}
 
 Ollama is a library for running Large Language Models (LLMs) on your own machine.
 It has a [wide range of models available](https://ollama.com/library) and is easy to use.
@@ -91,7 +91,7 @@ ollama show qwen3
 
 We can see from this output that the default qwen3 model has just over 8 billion parameters.
 
-## Install MCPHost {#install-mcphost}
+## Install mcphost {#install-mcphost}
 
 At the time of writing (July 2025) there is no native functionality for using Ollama with MCP Servers.
 However, we can use [MCPHost](https://github.com/mark3labs/mcphost) to run Ollama models with MCP Servers.
@@ -105,7 +105,7 @@ go install github.com/mark3labs/mcphost@latest
 
 The binary will be installed under `~/go/bin` so we need to make sure that directory is on our path.
 
-## Configuring ClickHouse MCP Server {#configure-clickhouse-mcp-server}
+## Configuring ClickHouse mcp server {#configure-clickhouse-mcp-server}
 
 We can configure MCP Servers with MCPHost in YAML or JSON files. 
 MCPHost will look for config files in your home directory the following order:
@@ -153,7 +153,7 @@ export CLICKHOUSE_PASSWORD=""
 In theory, you should be able to provide these variables under the `environment` key in the MCP configuration file, but we've found that this doesn't work.
 :::
 
-## Running MCPHost {#running-mcphost}
+## Running mcphost {#running-mcphost}
 
 Once you've configured the ClickHouse MCP server, you can run MCPHost by running the following command:
 

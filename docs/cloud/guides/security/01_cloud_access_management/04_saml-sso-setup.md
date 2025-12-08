@@ -120,7 +120,7 @@ We recommend setting up a **direct link to your organization** in addition to yo
    
 </details>
 
-### Configure Okta SAML {#configure-okta-saml}
+### Configure okta SAML {#configure-okta-saml}
 
 You will configure two App Integrations in Okta for each ClickHouse organization: one SAML app and one bookmark to house your direct link.
 
@@ -307,7 +307,7 @@ Azure (Microsoft) SAML may also be referred to as Azure Active Directory (AD) or
 
 </details>
 
-### Configure Duo SAML {#configure-duo-saml}
+### Configure duo SAML {#configure-duo-saml}
 
 <details>
    <summary> Create a Generic SAML Service Provider for Duo </summary>
@@ -356,7 +356,7 @@ Security is our top priority when it comes to authentication. For this reason, w
 
 - **We do not automatically link SSO and non-SSO accounts.** You may see multiple accounts for your users in your ClickHouse user list even if they are using the same email address.
 
-## Troubleshooting Common Issues {#troubleshooting-common-issues}
+## Troubleshooting common issues {#troubleshooting-common-issues}
 
 | Error | Cause | Solution | 
 |:------|:------|:---------|

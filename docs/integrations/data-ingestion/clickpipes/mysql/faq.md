@@ -10,10 +10,10 @@ keywords: ['MySQL ClickPipes FAQ', 'ClickPipes MySQL troubleshooting', 'MySQL Cl
 
 # ClickPipes for MySQL FAQ
 
-### Does the MySQL ClickPipe support MariaDB?  {#does-the-clickpipe-support-mariadb}
+### Does the MySQL ClickPipe support mariadb?  {#does-the-clickpipe-support-mariadb}
 Yes, the MySQL ClickPipe supports MariaDB 10.0 and above. The configuration for it is very similar to MySQL, using GTID replication by default.
 
-### Does the MySQL ClickPipe support PlanetScale, Vitess, or TiDB? {#does-the-clickpipe-support-planetscale-vitess}
+### Does the MySQL ClickPipe support planetscale, vitess, or tidb? {#does-the-clickpipe-support-planetscale-vitess}
 No, these do not support MySQL's binlog API.
 
 ### How is replication managed? {#how-is-replication-managed}
@@ -23,7 +23,7 @@ It's also possible for an inactive database to rotate the log file without allow
 
 At the start of an initial load we record the binlog offset to start at. This offset must still be valid when the initial load finishes in order for CDC to progress. If you are ingesting a large amount of data be sure to configure an appropriate binlog retention period. While setting up tables you can speed up initial load by configuring *Use a custom partitioning key for initial load* for large tables under advanced settings so that we can load a single table in parallel.
 
-### Why am I getting a TLS certificate validation error when connecting to MySQL? {#tls-certificate-validation-error}
+### Why am i getting a TLS certificate validation error when connecting to MySQL? {#tls-certificate-validation-error}
 
 When connecting to MySQL, you may encounter certificate errors like `x509: certificate is not valid for any names` or `x509: certificate signed by unknown authority`. These occur because ClickPipes enables TLS encryption by default.
 
@@ -45,6 +45,6 @@ Please refer to the [ClickPipes for MySQL: Schema Changes Propagation Support](.
 
 Due to how MySQL [handles cascading deletes](https://dev.mysql.com/doc/refman/8.0/en/innodb-and-mysql-replication.html), they are not written to the binlog. Therefore it's not possible for ClickPipes (or any CDC tool) to replicate them. This can lead to inconsistent data. It's advised to use triggers instead for supporting cascading deletes.
 
-### Why can I not replicate my table which has a dot in it? {#replicate-table-dot}
+### Why can i not replicate my table which has a dot in it? {#replicate-table-dot}
 PeerDB has a limitation currently where dots in source table identifiers - aka either schema name or table name - is not supported for replication as PeerDB cannot discern, in that case, what is the schema and what is the table as it splits on dot.
 Effort is being made to support input of schema and table separately to get around this limitation.

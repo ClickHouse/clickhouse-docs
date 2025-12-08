@@ -17,7 +17,7 @@ import finish_import from '@site/static/images/clickstack/kafka/import-kafka-das
 import example_dashboard from '@site/static/images/clickstack/kafka/kafka-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Monitoring Kafka Metrics with ClickStack {#kafka-metrics-clickstack}
+# Monitoring Kafka metrics with ClickStack {#kafka-metrics-clickstack}
 
 :::note[TL;DR]
 This guide shows you how to monitor Apache Kafka performance metrics with ClickStack by using the OpenTelemetry JMX Metric Gatherer. You'll learn how to:
@@ -61,7 +61,7 @@ The JMX Metric Gatherer sends data to ClickStack's OTLP endpoint, which requires
 export CLICKSTACK_API_KEY=your-api-key-here
 ```
 
-#### Download the OpenTelemetry JMX Metric Gatherer {#download-jmx}
+#### Download the opentelemetry jmx metric gatherer {#download-jmx}
 
 Download the JMX Metric Gatherer JAR:
 ```bash
@@ -69,7 +69,7 @@ curl -L -o opentelemetry-jmx-metrics.jar \
   https://github.com/open-telemetry/opentelemetry-java-contrib/releases/download/v1.32.0/opentelemetry-jmx-metrics.jar
 ```
 
-#### Verify Kafka JMX is enabled {#verify-jmx}
+#### Verify Kafka jmx is enabled {#verify-jmx}
 
 Ensure JMX is enabled on your Kafka brokers. For Docker deployments:
 ```yaml
@@ -95,7 +95,7 @@ Verify JMX is accessible:
 netstat -an | grep 9999
 ```
 
-#### Deploy JMX Metric Gatherer with Docker Compose {#deploy-jmx}
+#### Deploy jmx metric gatherer with Docker compose {#deploy-jmx}
 
 This example shows a complete setup with Kafka, the JMX Metric Gatherer, and ClickStack. Adjust service names and endpoints to match your existing deployment:
 ```yaml
@@ -172,7 +172,7 @@ networks:
 - `service.name=kafka,kafka.broker.id=broker-0` - Resource attributes for filtering
 - `10000` - Collection interval in milliseconds (10 seconds)
 
-#### Verify metrics in HyperDX {#verify-metrics}
+#### Verify metrics in hyperdx {#verify-metrics}
 
 Log into HyperDX and confirm metrics are flowing:
 
@@ -250,7 +250,7 @@ cat kafka-metrics-sum.csv | docker exec -i clickstack-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_sum FORMAT CSVWithNames"
 ```
 
-#### Verify metrics in HyperDX {#verify-demo-metrics}
+#### Verify metrics in hyperdx {#verify-demo-metrics}
 
 Once loaded, the quickest way to see your metrics is through the pre-built dashboard.
 
@@ -268,7 +268,7 @@ To help you get started monitoring Kafka with ClickStack, we provide essential v
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/kafka-metrics-dashboard.json')} download="kafka-metrics-dashboard.json" eventName="docs.kafka_metrics_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
+#### <Trackedlink href={useBaseUrl('/examples/kafka-metrics-dashboard.json')} download="kafka-metrics-dashboard.json" eventName="docs.kafka_metrics_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
 
 #### Import the pre-built dashboard {#import-dashboard}
 
@@ -295,7 +295,7 @@ For the demo dataset, set the time range to **2025-11-05 16:00:00 - 2025-11-06 1
 
 ## Troubleshooting {#troubleshooting}
 
-#### No metrics appearing in HyperDX {#no-metrics}
+#### No metrics appearing in hyperdx {#no-metrics}
 
 **Verify API key is set and passed to the container:**
 

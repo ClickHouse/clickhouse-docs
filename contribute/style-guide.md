@@ -20,9 +20,9 @@ doc_type: 'reference' (or 'guide' or 'changelog')
 ---
 ```
 
-### Associated markdown rule or CI check
+### Associated Markdown rule or ci check
 
-#### front-matter validation 
+#### Front-matter validation
 
 There is a custom Docusaurus plugin which runs on build that makes the following
 checks on front-matter:
@@ -46,7 +46,7 @@ For example:
 ## My header {#my-header}
 ```
 
-### Associated markdown rule or CI check
+### Associated Markdown rule or ci check
 - [`custom-anchor-headings`](/scripts/.markdownlint-cli2.yaml)
 
 ## Images
@@ -214,7 +214,7 @@ Processed 335.87 thousand rows,
 13.54 MB (12.91 million rows/s., 520.38 MB/s.)
 ```
 
-### Associated markdown rule or CI check
+### Associated Markdown rule or ci check
 
 - [`MD040` enforces that codeblocks have a language specified](/scripts/.markdownlint-cli2.yaml)
 
@@ -249,7 +249,7 @@ imported by that page. Find the snippet location from the import statement at th
 Docusaurus also has a built-in broken anchor checker. Unfortunately it sometimes
 can give false positives.
 
-### linking to spans
+### Linking to spans
 
 Sometimes you want to link to something other than a header. It is logical to 
 use a span for this purpose. For instance if you want to link to an image.
@@ -335,7 +335,7 @@ which may need versioned documentation, we use the following custom
 
 The `ClientVersionDropdown` component supports two APIs:
 
-#### API 1: Inline Content (Recommended)
+#### API 1: inline content (recommended)
 
 This approach keeps all content in the main file, which allows Docusaurus to properly generate the table of contents (TOC) for all versions.
 
@@ -375,7 +375,7 @@ Your v0.7.x content here...
 - The TOC will show only headers from the currently selected version
 - The component will display the first version as 'selected' by default
 
-#### API 2: External Snippets (Legacy)
+#### API 2: external snippets (legacy)
 
 This approach uses separate snippet files for each version. Note that this method has limitations with TOC generation.
 
@@ -458,7 +458,7 @@ in your component configuration. For example:
 - URL: `docs/api?v=v08`
 - Matches: `version: 'v0.8+'` in your dropdown configuration
 
-#### Conventions That Work
+#### Conventions that work
 
 - **Simple Version Strings**: Parameters like `?v=v08`, `?v=v07` work by 
 - matching against stripped versions of your configured version names.
@@ -471,7 +471,7 @@ in your component configuration. For example:
 - **Preserving Other Parameters**: Other URL parameters are preserved when 
 switching versions.
 
-#### What Won't Work
+#### What won't work
 
 - **Partial Matches**: `?v=8` won't match `v0.8` with the default implementation.
 
@@ -481,7 +481,7 @@ require more sophisticated matching logic. (Reach out to the docs team if requir
 - **Non-Standard Formats**: Version formats not accounted for in the matching 
 logic might fail.
 
-#### Best Practices
+#### Best practices
 
 1. Keep version strings in consistent formats for predictable results.
 

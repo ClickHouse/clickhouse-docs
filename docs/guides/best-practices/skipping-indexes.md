@@ -118,7 +118,7 @@ example, the debug log shows that the skip index dropped all but two granules:
 ## Skip index types {#skip-index-types}
 
 <!-- vale off -->
-### minmax {#minmax}
+### Minmax {#minmax}
 <!-- vale on -->
 
 This lightweight index type requires no parameters.  It stores the minimum and maximum values of the index expression
@@ -128,7 +128,7 @@ of the tuple).  This type is ideal for columns that tend to be loosely sorted by
 This type of index only works correctly with a scalar or tuple expression -- the index will never be applied to expressions that return an array or map data type.
 
 <!-- vale off -->
-### set {#set}
+### Set {#set}
 <!-- vale on -->
 
 This lightweight index type accepts a single parameter of the max_size of the value set per block (0 permits

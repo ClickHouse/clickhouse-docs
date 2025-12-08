@@ -20,7 +20,7 @@ For MySQL and MariaDB, this limitation does not apply, and you can run both `Ini
 
 ## Setup {#setup}
 
-### Obtaining the ClickHouse service IAM role Arn {#obtaining-the-clickhouse-service-iam-role-arn}
+### Obtaining the ClickHouse service iam role arn {#obtaining-the-clickhouse-service-iam-role-arn}
 
 1 - Login to your ClickHouse cloud account.
 
@@ -38,7 +38,7 @@ Let's call this value `{ClickHouse_IAM_ARN}`. This is the IAM role that will be 
 
 ### Configuring the RDS/Aurora instance {#configuring-the-rds-aurora-instance}
 
-#### Enabling IAM DB Authentication {#enabling-iam-db-authentication}
+#### Enabling iam DB authentication {#enabling-iam-db-authentication}
 1. Login to your AWS Account and navigate to the RDS instance you want to configure.
 2. Click on the **Modify** button.
 3. Scroll down to the **Database authentication** section.
@@ -46,13 +46,13 @@ Let's call this value `{ClickHouse_IAM_ARN}`. This is the IAM role that will be 
 5. Click on the **Continue** button.
 6. Review the changes and click on the **Apply immediately** option.
 
-#### Obtaining the RDS/Aurora Resource ID {#obtaining-the-rds-resource-id}
+#### Obtaining the RDS/Aurora resource id {#obtaining-the-rds-resource-id}
 
 1. Login to your AWS Account and navigate to the RDS instance/Aurora Cluster you want to configure.
 2. Click on the **Configuration** tab.
 3. Note the **Resource ID** value. It should look like `db-xxxxxxxxxxxxxx` for RDS or `cluster-xxxxxxxxxxxxxx` for Aurora cluster. Let's call this value `{RDS_RESOURCE_ID}`. This is the resource ID that will be used in the IAM policy to allow access to the RDS instance.
 
-#### Setting up the Database User {#setting-up-the-database-user}
+#### Setting up the database user {#setting-up-the-database-user}
 
 ##### PostgreSQL {#setting-up-the-database-user-postgres}
 
@@ -63,7 +63,7 @@ Let's call this value `{ClickHouse_IAM_ARN}`. This is the IAM role that will be 
     ```
 2. Follow the rest of the steps in the [PostgreSQL source setup guide](postgres/source/rds) to configure your RDS instance for ClickPipes.
 
-##### MySQL / MariaDB {#setting-up-the-database-user-mysql}
+##### MySQL / mariadb {#setting-up-the-database-user-mysql}
 
 1. Connect to your RDS/Aurora instance and create a new database user with the following command:
     ```sql
@@ -71,9 +71,9 @@ Let's call this value `{ClickHouse_IAM_ARN}`. This is the IAM role that will be 
     ```
 2. Follow the rest of the steps in the [MySQL source setup guide](mysql/source/rds) to configure your RDS/Aurora instance for ClickPipes.
 
-### Setting up the IAM role {#setting-up-iam-role}
+### Setting up the iam role {#setting-up-iam-role}
 
-#### Manually create IAM role. {#manually-create-iam-role}
+#### Manually create iam role. {#manually-create-iam-role}
 
 1 - Login to your AWS Account in the web browser with an IAM user that has permission to create & manage IAM role.
 

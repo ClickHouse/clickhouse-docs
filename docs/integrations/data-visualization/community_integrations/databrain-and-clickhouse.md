@@ -18,7 +18,7 @@ import databrain_06 from '@site/static/images/integrations/data-visualization/da
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Connecting Databrain to ClickHouse
+# Connecting databrain to ClickHouse
 
 <CommunityMaintainedBadge/>
 
@@ -36,13 +36,13 @@ This guide will walk you through the steps to connect Databrain with your ClickH
 - A [Databrain account](https://app.usedatabrain.com/users/sign-up).
 - A Databrain workspace to connect your data source.
 
-## Steps to connect Databrain to ClickHouse {#steps-to-connect-databrain-to-clickhouse}
+## Steps to connect databrain to ClickHouse {#steps-to-connect-databrain-to-clickhouse}
 
-### 1. Gather your connection details {#1-gather-your-connection-details}
+### 1. gather your connection details {#1-gather-your-connection-details}
 
 <ConnectionDetails />
 
-### 2. Allow Databrain IP addresses (if required) {#2-allow-databrain-ip-addresses}
+### 2. allow databrain ip addresses (if required) {#2-allow-databrain-ip-addresses}
 
 If your ClickHouse instance has IP filtering enabled, you'll need to whitelist Databrain's IP addresses. 
 
@@ -55,7 +55,7 @@ For ClickHouse Cloud users:
 Refer to [Databrain's IP whitelisting documentation](https://docs.usedatabrain.com/guides/datasources/allow-access-to-our-ip) for the current list of IP addresses to whitelist.
 :::
 
-### 3. Add ClickHouse as a data source in Databrain {#3-add-clickhouse-as-a-data-source}
+### 3. add ClickHouse as a data source in databrain {#3-add-clickhouse-as-a-data-source}
 
 1. Log in to your Databrain account and navigate to the workspace where you want to add the data source.
 
@@ -82,7 +82,7 @@ Refer to [Databrain's IP whitelisting documentation](https://docs.usedatabrain.c
 
 7. Once the connection is successful, click **Save** or **Connect** to add the data source.
 
-### 4. Configure user permissions {#4-configure-user-permissions}
+### 4. configure user permissions {#4-configure-user-permissions}
 
 Ensure the ClickHouse user you're connecting with has the necessary permissions:
 
@@ -96,7 +96,7 @@ GRANT SELECT ON your_database.* TO your_databrain_user;
 
 Replace `your_databrain_user` and `your_database` with your actual username and database name.
 
-## Using Databrain with ClickHouse {#using-databrain-with-clickhouse}
+## Using databrain with ClickHouse {#using-databrain-with-clickhouse}
 
 ### Explore your data {#explore-your-data}
 

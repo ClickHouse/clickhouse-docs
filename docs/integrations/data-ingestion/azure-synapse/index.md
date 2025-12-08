@@ -13,7 +13,7 @@ import sparkConfigViaNotebook from '@site/static/images/integrations/data-ingest
 import sparkUICHSettings from '@site/static/images/integrations/data-ingestion/azure-synapse/spark_ui_ch_settings.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Integrating Azure Synapse with ClickHouse
+# Integrating Azure synapse with ClickHouse
 
 <ClickHouseSupportedBadge/>
 

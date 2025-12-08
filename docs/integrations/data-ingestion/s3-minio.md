@@ -11,7 +11,7 @@ integration:
 keywords: ['s3', 'minio', 'object storage', 'data loading', 'compatible storage']
 ---
 
-# Using MinIO
+# Using minio
 
 import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 

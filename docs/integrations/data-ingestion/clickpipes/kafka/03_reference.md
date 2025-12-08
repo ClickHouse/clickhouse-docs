@@ -61,7 +61,7 @@ The following standard ClickHouse data types are currently supported in ClickPip
 
 ### Avro {#avro}
 
-#### Supported Avro Data Types {#supported-avro-data-types}
+#### Supported Avro data types {#supported-avro-data-types}
 ClickPipes supports all Avro Primitive and Complex types, and all Avro Logical types except `time-millis`, `time-micros`, `local-timestamp-millis`, `local_timestamp-micros`, and `duration`.  Avro `record` types are converted to Tuple, `array` types to Array, and `map` to Map (string keys only).  In general the conversions listed [here](/interfaces/formats/Avro#data-type-mapping) are available.  We recommend using exact type matching for Avro numeric types, as ClickPipes does not check for overflow or precision loss on type conversion.
 Alternatively, all Avro types can be inserted into a `String` column, and will be represented as a valid JSON string in that case.
 

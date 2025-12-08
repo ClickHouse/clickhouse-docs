@@ -166,7 +166,7 @@ SELECT string_array[0]
 ClickHouse offers a host of useful functions which operate on arrays.
 In this section, we'll look at some of the most useful ones, starting from the simplest and working up in complexity.
 
-### length, arrayEnumerate, indexOf, has* functions {#length-arrayEnumerate-indexOf-has-functions}
+### Length, arrayenumerate, indexof, has* functions {#length-arrayEnumerate-indexOf-has-functions}
 
 The `length` function is used to return the number of elements in the array:
 
@@ -242,7 +242,7 @@ otherwise complex queries.
 Click the "play" button below to run the queries directly in the docs and see the result live.
 :::
 
-### groupArray {#grouparray}
+### Grouparray {#grouparray}
 
 There are many columns in this dataset, but we will focus on a subset of the columns.
 Run the query below to see what our data looks like:
@@ -310,7 +310,7 @@ FROM busy_airports
 ORDER BY outward_flights DESC
 ```
 
-### arrayMap and arrayZip {#arraymap}
+### Arraymap and arrayzip {#arraymap}
 
 We saw in the previous query that Denver International Airport was the airport with the most outward flights for our particular chosen day.
 Let's take a look at how many of those flights were on-time, delayed by 15-30 minutes or delayed by more than 30 minutes.
@@ -343,7 +343,7 @@ In the above query, the `arrayMap` function takes a single-element array `[DepDe
 Then the first element of the resulting array is extracted with `[DepDelayMinutes][1]`.
 The [`arrayZip`](/sql-reference/functions/array-functions#arrayZip) function combines the `Tail_Number` array and the `statuses` array into a single array.
 
-### arrayFilter {#arrayfilter}
+### Arrayfilter {#arrayfilter}
 
 Next we'll look only at the number of flights that were delayed by 30 minutes or more, for airports `DEN`, `ATL` and `DFW`:
 
@@ -367,7 +367,7 @@ This lambda function itself takes the delay in minutes (d) and returns `1` if th
 d -> d >= 30
 ```
 
-### arraySort and arrayIntersect {#arraysort-and-arrayintersect}
+### Arraysort and arrayintersect {#arraysort-and-arrayintersect}
 
 Next, we'll figure out which pairs of major US airports serve the most common destinations with the help of the [`arraySort`](/sql-reference/functions/array-functions#arraySort) and [`arrayIntersect`](/sql-reference/functions/array-functions#arrayIntersect) functions.
 `arraySort` takes an array and sorts the elements in ascending order by default, although you can also pass a lambda function to it to define the sorting order.
@@ -413,7 +413,7 @@ Without this, you'd get both JFK-LAX and LAX-JFK as separate results, which woul
 Finally, the query sorts the results to show which airport pairs have the highest number of shared destinations and returns just the top 10.
 This reveals which major hubs have the most overlapping route networks, which could indicate competitive markets where multiple airlines are serving the same city pairs, or hubs that serve similar geographic regions and could potentially be used as alternative connection points for travelers.
 
-### arrayReduce {#arrayReduce}
+### Arrayreduce {#arrayReduce}
 
 While we're looking at delays, let's use yet another higher-order array function, `arrayReduce`, to find the average and maximum delay
 for each route from Denver International Airport:
@@ -438,7 +438,7 @@ ORDER BY avg_delay DESC
 In the example above, we used `arrayReduce` to find the average and maximum delays for various outward flights from `DEN`.
 `arrayReduce` applies an aggregate function, specified in the first parameter to the function, to the elements of the provided array, specified in the second parameter of the function.
 
-### arrayJoin {#arrayJoin}
+### Arrayjoin {#arrayJoin}
 
 Regular functions in ClickHouse have the property that they return the same number of rows than they receive.
 There is however, one interesting and unique function that breaks this rule, which is worth learning about - the `arrayJoin` function.

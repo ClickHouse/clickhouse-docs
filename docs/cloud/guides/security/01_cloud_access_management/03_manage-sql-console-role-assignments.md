@@ -40,7 +40,7 @@ Under the "Security" section, find the "SQL console access" area:
 
 <Image img={step_3} size="md"/>
 
-### Update the settings for Service Admin {#update-settings-for-service-admin}
+### Update the settings for service admin {#update-settings-for-service-admin}
 
 Select the drop-down menu for Service Admin to change the access control settings for Service Admin roles:
 
@@ -54,7 +54,7 @@ You can choose from the following roles:
 | `Read only`   |
 | `Full access` |
 
-### Update the settings for Service Read Only {#update-settings-for-service-read-only}
+### Update the settings for service read only {#update-settings-for-service-read-only}
 
 Select the drop-down menu for Service Read Only to change the access control settings for Service Read Only roles:
 

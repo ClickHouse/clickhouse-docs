@@ -27,7 +27,7 @@ Exporting data from BigQuery to ClickHouse is dependent on the size of your data
 
 <VerticalStepper headerLevel="h2">
 
-## Export table data to GCS {#1-export-table-data-to-gcs}
+## Export table data to gcs {#1-export-table-data-to-gcs}
 
 In this step, we utilize the [BigQuery SQL workspace](https://cloud.google.com/bigquery/docs/bigquery-web-ui) to execute our SQL commands. Below, we export a BigQuery table named `mytable` to a GCS bucket using the [`EXPORT DATA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/other-statements) statement.
 
@@ -63,7 +63,7 @@ This approach has a number of advantages:
 - Exports produce multiple files automatically, limiting each to a maximum of 1GB of table data. This is beneficial to ClickHouse since it allows imports to be parallelized.
 - Parquet, as a column-oriented format, represents a better interchange format since it is inherently compressed and faster for BigQuery to export and ClickHouse to query
 
-## Importing data into ClickHouse from GCS {#2-importing-data-into-clickhouse-from-gcs}
+## Importing data into ClickHouse from gcs {#2-importing-data-into-clickhouse-from-gcs}
 
 Once the export is complete, we can import this data into a ClickHouse table. You can use the [ClickHouse SQL console](/integrations/sql-clients/sql-console) or [`clickhouse-client`](/interfaces/cli) to execute the commands below.
 

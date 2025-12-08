@@ -31,7 +31,7 @@ import hyperdx_18 from '@site/static/images/use-cases/observability/hyperdx-18.p
 import hyperdx_19 from '@site/static/images/use-cases/observability/hyperdx-19.png';
 import copy_api_key from '@site/static/images/use-cases/observability/copy_api_key.png';
 
-# ClickStack - Sample logs, traces and metrics {#clickstack-sample-dataset}
+# ClickStack - sample logs, traces and metrics {#clickstack-sample-dataset}
 
 The following example assumes you have started ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickstack/getting-started) and connected to the [local ClickHouse instance](/use-cases/observability/clickstack/getting-started#complete-connection-credentials) or a [ClickHouse Cloud instance](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection). 
 
@@ -41,7 +41,7 @@ This sample dataset can also be used with HyperDX in ClickHouse Cloud, with only
 
 <VerticalStepper>
 
-## Navigate to the HyperDX UI {#navigate-to-the-hyperdx-ui}
+## Navigate to the hyperdx UI {#navigate-to-the-hyperdx-ui}
 
 Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI if deploying locally. If using HyperDX in ClickHouse Cloud, select your service and `HyperDX` from the left menu.
 

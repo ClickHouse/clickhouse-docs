@@ -33,7 +33,7 @@ One AWS account can only subscribe to one “ClickHouse Cloud - Pay As You Go”
 
 <VerticalStepper headerLevel="h3">
 
-### Search for Clickhouse Cloud - Pay As You Go {#search-payg}
+### Search for ClickHouse cloud - pay as you Go {#search-payg}
 
 Go to the [AWS Marketplace](https://aws.amazon.com/marketplace) and search for “ClickHouse Cloud - Pay As You Go”.
 
@@ -87,7 +87,7 @@ You will also need to provide some basic information about your business. See th
 
 If you are an existing ClickHouse Cloud user, simply log in using your credentials.
 
-### Add the Marketplace Subscription to an Organization {#add-marketplace-subscription}
+### Add the marketplace subscription to an organization {#add-marketplace-subscription}
 
 After successfully logging in, you can decide whether to create a new organization to bill to this marketplace subscription or choose an existing organization to bill to this subscription. 
 

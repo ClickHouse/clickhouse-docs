@@ -11,11 +11,11 @@ keywords: ['ClickStack GKE', 'ClickStack EKS', 'ClickStack AKS', 'Kubernetes clo
 
 This guide covers cloud-specific configurations for deploying ClickStack on managed Kubernetes services. For basic installation, see the [main Helm deployment guide](/docs/use-cases/observability/clickstack/deployment/helm).
 
-## Google Kubernetes Engine (GKE) {#google-kubernetes-engine-gke}
+## Google Kubernetes engine (gke) {#google-kubernetes-engine-gke}
 
 When deploying to GKE, you may need to override certain values due to cloud-specific networking behavior.
 
-### LoadBalancer DNS resolution issue {#loadbalancer-dns-resolution-issue}
+### Loadbalancer DNS resolution issue {#loadbalancer-dns-resolution-issue}
 
 GKE's LoadBalancer service can cause internal DNS resolution issues where pod-to-pod communication resolves to external IPs instead of staying within the cluster network. This specifically affects the OTEL collector's connection to the OpAMP server.
 
@@ -32,7 +32,7 @@ helm install my-clickstack clickstack/clickstack \
   --set otel.opampServerUrl="http://my-clickstack-clickstack-app.default.svc.cluster.local:4320"
 ```
 
-### Other GKE considerations {#other-gke-considerations}
+### Other gke considerations {#other-gke-considerations}
 
 ```yaml
 # values-gke.yaml
@@ -50,7 +50,7 @@ clickhouse:
       - "10.0.0.0/8"   # Fallback for other configurations
 ```
 
-## Amazon EKS {#amazon-eks}
+## Amazon eks {#amazon-eks}
 
 For EKS deployments, consider these common configurations:
 ```yaml
@@ -74,7 +74,7 @@ hyperdx:
       enabled: true
 ```
 
-## Azure AKS {#azure-aks}
+## Azure aks {#azure-aks}
 
 For AKS deployments:
 ```yaml
@@ -90,7 +90,7 @@ clickhouse:
       - "10.0.0.0/8"
 ```
 
-## Production Cloud deployment checklist {#production-cloud-deployment-checklist}
+## Production cloud deployment checklist {#production-cloud-deployment-checklist}
 
 Before deploying ClickStack to production on any cloud provider:
 

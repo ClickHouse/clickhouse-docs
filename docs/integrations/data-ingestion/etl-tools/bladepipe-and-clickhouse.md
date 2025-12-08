@@ -20,7 +20,7 @@ import bp_ck_8 from '@site/static/images/integrations/data-ingestion/etl-tools/b
 import bp_ck_9 from '@site/static/images/integrations/data-ingestion/etl-tools/bp_ck_9.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Connect BladePipe to ClickHouse
+# Connect bladepipe to ClickHouse
 
 <PartnerBadge/>
 
@@ -42,7 +42,7 @@ Currently BladePipe supports for data integration to ClickHouse from the followi
 More sources are to be supported.
 
 <VerticalStepper headerLevel="h2">
-## Download and run BladePipe {#1-run-bladepipe}
+## Download and run bladepipe {#1-run-bladepipe}
 1. Log in to <a href="https://www.bladepipe.com/" target="_blank">BladePipe Cloud</a>.
 
 2. Follow the instructions in <a href="https://doc.bladepipe.com/productOP/byoc/installation/install_worker_docker" target="_blank">Install Worker (Docker)</a> or <a href="https://doc.bladepipe.com/productOP/byoc/installation/install_worker_binary" target="_blank">Install Worker (Binary)</a> to download and install a BladePipe Worker.

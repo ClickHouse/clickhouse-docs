@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 import BetaBadge from '@theme/badges/BetaBadge';
 
-# Postgres with TimescaleDB source setup guide
+# Postgres with timescaledb source setup guide
 
 <BetaBadge/>
 

@@ -10,7 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# How to build an AI agent with CopilotKit and the ClickHouse MCP Server
+# How to build an ai agent with copilotkit and the ClickHouse mcp server
 
 This is an example of how to build an agentic application using data stored in 
 ClickHouse. It uses the [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 
@@ -63,7 +63,7 @@ uv add fastmcp
 
 Copy the `env.example` file to `.env` and edit it to provide your `ANTHROPIC_API_KEY`.
 
-## Use your own LLM {#use-your-own-llm}
+## Use your own llm {#use-your-own-llm}
 
 If you'd rather use another LLM provider than Anthropic, you can modify the 
 Copilotkit runtime to use a different LLM adapter.

@@ -25,7 +25,7 @@ This page describes the process for enabling deployment of PCI compliant service
 
 <VerticalStepper headerLevel="h3">
 
-### Sign up for Enterprise services {#sign-up-for-enterprise}
+### Sign up for enterprise services {#sign-up-for-enterprise}
 
 1. Select your organization name in the lower left corner of the console.
 2. Click **Billing**.

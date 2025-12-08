@@ -16,7 +16,7 @@ import finish_import from '@site/static/images/clickstack/import-redis-metrics-d
 import example_dashboard from '@site/static/images/clickstack/redis-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Monitoring Redis Metrics with ClickStack {#redis-metrics-clickstack}
+# Monitoring Redis metrics with ClickStack {#redis-metrics-clickstack}
 
 :::note[TL;DR]
 This guide shows you how to monitor Redis performance metrics with ClickStack by configuring the OpenTelemetry collector's Redis receiver. You'll learn how to:
@@ -67,7 +67,7 @@ redis-cli -a <your-password> ping
 - **Docker**: Use container name or service name (e.g., `redis:6379`)
 - **Remote**: `<redis-host>:6379`
 
-#### Create custom OTel collector configuration {#custom-otel}
+#### Create custom otel collector configuration {#custom-otel}
 
 ClickStack allows you to extend the base OpenTelemetry collector configuration by mounting a custom configuration file and setting an environment variable. The custom configuration is merged with the base configuration managed by HyperDX via OpAMP.
 
@@ -153,7 +153,7 @@ To enable custom collector configuration in your existing ClickStack deployment,
 2. Set the environment variable `CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml`
 3. Ensure network connectivity between ClickStack and Redis
 
-##### Option 1: Docker Compose {#docker-compose}
+##### Option 1: Docker compose {#docker-compose}
 
 Update your ClickStack deployment configuration:
 ```yaml
@@ -208,7 +208,7 @@ docker run --name clickstack \
   clickhouse/clickstack-all-in-one:latest
 ```
 
-#### Verify metrics in HyperDX {#verifying-metrics}
+#### Verify metrics in hyperdx {#verifying-metrics}
 
 Once configured, log into HyperDX and verify metrics are flowing:
 
@@ -267,7 +267,7 @@ cat redis-metrics-sum.csv | docker exec -i clickstack-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_sum FORMAT CSVWithNames"
 ```
 
-#### Verify metrics in HyperDX {#verify-metrics}
+#### Verify metrics in hyperdx {#verify-metrics}
 
 Once loaded, the quickest way to see your metrics is through the pre-built dashboard.
 
@@ -290,7 +290,7 @@ To help you get started monitoring Redis with ClickStack, we provide essential v
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/redis-metrics-dashboard.json')} download="redis-metrics-dashboard.json" eventName="docs.redis_metrics_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
+#### <Trackedlink href={useBaseUrl('/examples/redis-metrics-dashboard.json')} download="redis-metrics-dashboard.json" eventName="docs.redis_metrics_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
 
 #### Import the pre-built dashboard {#import-dashboard}
 
@@ -334,7 +334,7 @@ View the custom config content to verify it's readable:
 docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml
 ```
 
-### No metrics appearing in HyperDX {#no-metrics}
+### No metrics appearing in hyperdx {#no-metrics}
 
 Verify Redis is accessible from the collector:
 ```bash

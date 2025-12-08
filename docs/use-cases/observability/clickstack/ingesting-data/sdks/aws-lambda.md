@@ -24,7 +24,7 @@ import TabItem from '@theme/TabItem';
   </tbody>
 </table>
 
-## Installing the OpenTelemetry Lambda layers {#installing-the-otel-lambda-layers}
+## Installing the opentelemetry lambda layers {#installing-the-otel-lambda-layers}
 
 The OpenTelemetry project provides separate lambda layers to:
 
@@ -128,7 +128,7 @@ OTEL_TRACES_SAMPLER=always_on
 
 </Tabs>
 
-### Installing the OpenTelemetry collector Lambda layer {#installing-the-otel-collector-layer}
+### Installing the opentelemetry collector lambda layer {#installing-the-otel-collector-layer}
 
 The collector Lambda layer allows you to forward logs, metrics, and traces from your Lambda function to ClickStack without impacting response times due 
 to exporter latency.

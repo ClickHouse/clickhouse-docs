@@ -54,7 +54,7 @@ git clone https://github.com/ClickHouse/ClickStack.git
 docker compose up
 ```
 
-### Navigate to the HyperDX UI {#navigate-to-hyperdx-ui}
+### Navigate to the hyperdx UI {#navigate-to-hyperdx-ui}
 
 Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
 
@@ -111,11 +111,11 @@ HYPERDX_OPAMP_PORT=4320
 HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 ```
 
-### Configuring the OpenTelemetry collector {#configuring-collector}
+### Configuring the opentelemetry collector {#configuring-collector}
 
 The OTel collector configuration can be modified if required - see ["Modifying configuration"](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration).
 
-## Using ClickHouse Cloud {#using-clickhouse-cloud}
+## Using ClickHouse cloud {#using-clickhouse-cloud}
 
 This distribution can be used with ClickHouse Cloud. Users should:
 

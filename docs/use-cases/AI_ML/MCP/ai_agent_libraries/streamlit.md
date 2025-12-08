@@ -10,7 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# How to build a ClickHouse-backed AI Agent with Streamlit
+# How to build a clickhouse-backed ai agent with streamlit
 
 In this guide you'll learn how to build a web-based AI agent using [Streamlit](https://streamlit.io/) that can interact with [ClickHouse's SQL playground](https://sql.clickhouse.com/) using [ClickHouse's MCP Server](https://github.com/ClickHouse/mcp-clickhouse) and [Agno](https://github.com/agno-agi/agno).
 
@@ -173,7 +173,7 @@ async def _agent_stream_to_queue(message, queue):
         queue.put(chunk)
 ```
 
-## Create the Streamlit interface {#create-interface}
+## Create the streamlit interface {#create-interface}
 
 Add the Streamlit UI components and chat functionality:
 

@@ -19,7 +19,7 @@ ClickStack allows you to do a full-text search on your events (logs and traces).
 This same search syntax is used for filtering events with Dashboards and Charts
 as well.
 
-## Search Features {#search-features}
+## Search features {#search-features}
 
 ### Natural language search syntax {#natural-language-syntax}
 

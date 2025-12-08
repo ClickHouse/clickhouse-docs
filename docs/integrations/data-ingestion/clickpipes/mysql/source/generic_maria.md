@@ -7,7 +7,7 @@ doc_type: 'guide'
 keywords: ['generic mariadb', 'clickpipes', 'binary logging', 'ssl tls', 'self hosted']
 ---
 
-# Generic MariaDB source setup guide
+# Generic mariadb source setup guide
 
 :::info
 

@@ -183,7 +183,7 @@ Roles are used to define groups of users for certain privileges instead of manag
 
 <VerticalStepper headerLevel="h5">
 
-##### Log into the clickhouse client using the `clickhouse_admin` user {#login-admin-user}
+##### Log into the ClickHouse client using the `clickhouse_admin` user {#login-admin-user}
 
    ```bash
    clickhouse-client --user clickhouse_admin --password password

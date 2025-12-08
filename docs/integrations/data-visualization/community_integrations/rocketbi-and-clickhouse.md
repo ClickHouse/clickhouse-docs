@@ -98,7 +98,7 @@ Rename filters & Save Control to Dashboard
 
 <Image size="md" img={rocketbi_07} alt="Date range control with renamed filters ready to save to dashboard" border />
 
-### Now, let build the Charts {#now-let-build-the-charts}
+### Now, let build the charts {#now-let-build-the-charts}
 
 #### Pie chart: sales metrics by regions {#pie-chart-sales-metrics-by-regions}
 Choose Adding new chart, then Select Pie Chart

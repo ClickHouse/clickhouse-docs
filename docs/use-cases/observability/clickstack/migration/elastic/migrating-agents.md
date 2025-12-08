@@ -17,7 +17,7 @@ import add_logstash_output from '@site/static/images/use-cases/observability/add
 import agent_output_settings from '@site/static/images/use-cases/observability/agent-output-settings.png';
 import migrating_agents from '@site/static/images/use-cases/observability/clickstack-migrating-agents.png';
 
-## Migrating agents from Elastic {#migrating-agents-from-elastic}
+## Migrating agents from elastic {#migrating-agents-from-elastic}
 
 The Elastic Stack provides a number of Observability data collection agents. Specifically:
 
@@ -35,7 +35,7 @@ Where possible we recommend migrating to the [OpenTelemetry (OTel) Collector](ht
 The OpenTelemetry Collector provides a sustainable and vendor-neutral solution for observability data ingestion. We recognize that some organizations operate fleets of thousands—or even tens of thousands—of Elastic agents. For these users, maintaining compatibility with existing agent infrastructure may be critical. This documentation is designed to support this, while also helping teams gradually transition to OpenTelemetry-based collection.
 :::
 
-## ClickHouse OpenTelemetry endpoint {#clickhouse-otel-endpoint}
+## ClickHouse opentelemetry endpoint {#clickhouse-otel-endpoint}
 
 All data is ingested into ClickStack via an **OpenTelemetry (OTel) collector** instance, which acts as the primary entry point for logs, metrics, traces, and session data. We recommend using the official [ClickStack distribution](/use-cases/observability/clickstack/ingesting-data/opentelemetry#installing-otel-collector) of the collector for this instance, if not [already bundled in your ClickStack deployment model](/use-cases/observability/clickstack/deployment).
 
@@ -289,7 +289,7 @@ sinks:
         content-type: application/json
 ```
 
-### Configure Filebeat {#configure-filebeat}
+### Configure filebeat {#configure-filebeat}
 
 Existing Filebeat installations simply need to be modified to send their events to Vector. This requires the configuration of a Logstash output - again, TLS can be optionally configured:
 
@@ -312,7 +312,7 @@ output.logstash:
 
 </VerticalStepper>
 
-## Migrating from Elastic Agent {#migrating-from-elastic-agent}
+## Migrating from elastic agent {#migrating-from-elastic-agent}
 
 The Elastic Agent consolidates the different Elastic Beats into a single package. This agent integrates with [Elastic Fleet](https://www.elastic.co/docs/reference/fleet/fleet-server), allowing it to be centrally orchestrated and configured.
 
@@ -323,15 +323,15 @@ Users with Elastic Agents deployed have several migration paths:
 
 We demonstrate both of these options below.
 
-### Sending data via Vector {#sending-data-via-vector}
+### Sending data via vector {#sending-data-via-vector}
 
 <VerticalStepper headerLevel="h4">
 
-#### Install and configure Vector {#install-configure-vector}
+#### Install and configure vector {#install-configure-vector}
 
 Install and configure Vector using the [same steps](#install-vector) as those documented for migrating from Filebeat.
 
-#### Configure Elastic Agent {#configure-elastic-agent}
+#### Configure elastic agent {#configure-elastic-agent}
 
 Elastic Agent needs to be configured to send data via the Logstash protocol Lumberjack. This is a [supported deployment pattern](https://www.elastic.co/docs/manage-data/ingest/ingest-reference-architectures/ls-networkbridge) and can either be configured centrally or [via the agent configuration file `elastic-agent.yaml`](https://www.elastic.co/docs/reference/fleet/logstash-output) if deploying without Fleet.
 
@@ -363,7 +363,7 @@ sources:
 
 </VerticalStepper>
 
-### Run Elastic Agent as OpenTelemetry collector {#run-agent-as-otel}
+### Run elastic agent as opentelemetry collector {#run-agent-as-otel}
 
 The Elastic Agent includes an embedded EDOT Collector that allows you to instrument your applications and infrastructure once and send data to multiple vendors and backends.
 
@@ -404,6 +404,6 @@ exporters:
       key_file: /path/to/client.key
 ```
 
-## Migrating from the Elastic OpenTelemetry collector {#migrating-from-elastic-otel-collector}
+## Migrating from the elastic opentelemetry collector {#migrating-from-elastic-otel-collector}
 
 Users already running the [Elastic OpenTelemetry Collector (EDOT)](https://www.elastic.co/docs/reference/opentelemetry) can simply reconfigure their agents to send to ClickStack OpenTelemetry collector via OTLP. The steps involved are identical to those outlined above for running the [Elastic Agent as an OpenTelemetry collector](#run-agent-as-otel). This approach can be used for all data types.

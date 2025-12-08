@@ -45,7 +45,7 @@ More specifically, the following means ClickHouse is ideally suited for the stor
 - **Secondary indices** -  ClickHouse supports secondary indexes, such as bloom filters, to accelerate specific query profiles. These can be optionally enabled at a column level, giving the user granular control and allowing them to assess the cost-performance benefit.
 - **Open-source & Open standards** - As an open-source database, ClickHouse embraces open standards such as OpenTelemetry. The ability to contribute and actively participate in projects is appealing while avoiding the challenges of vendor lock-in.
 
-## When should you use ClickHouse for Observability {#when-should-you-use-clickhouse-for-observability}
+## When should you use ClickHouse for observability {#when-should-you-use-clickhouse-for-observability}
 
 Using ClickHouse for observability data requires users to embrace SQL-based observability. We recommend [this blog post](https://clickhouse.com/blog/the-state-of-sql-based-observability) for a history of SQL-based observability, but in summary:
 

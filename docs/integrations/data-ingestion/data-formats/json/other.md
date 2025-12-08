@@ -14,7 +14,7 @@ doc_type: 'reference'
 Different techniques may be applied to different objects in the same schema. For example, some objects can be best solved with a `String` type and others with a `Map` type. Note that once a `String` type is used, no further schema decisions need to be made. Conversely, it is possible to nest sub-objects within a `Map` key - including a `String` representing JSON - as we show below:
 :::
 
-## Using the String type {#using-string}
+## Using the string type {#using-string}
 
 If the objects are highly dynamic, with no predictable structure and contain arbitrary nested objects, users should use the `String` type. Values can be extracted at query time using JSON functions as we show below.
 

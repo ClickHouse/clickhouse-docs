@@ -64,7 +64,7 @@ FROM system.view_refreshes;
 └──────────┴──────────────────┴───────────┴─────────────────────┴─────────────────────┴─────────────────────┴───────────┴──────────────┘
 ```
 
-## How can I change the refresh rate? {#how-can-i-change-the-refresh-rate}
+## How can i change the refresh rate? {#how-can-i-change-the-refresh-rate}
 
 To change the refresh rate of a refreshable materialized view, use the [`ALTER TABLE...MODIFY REFRESH`](/sql-reference/statements/alter/view#alter-table--modify-refresh-statement) syntax.
 
@@ -183,7 +183,7 @@ FORMAT PrettyCompactMonoBlock
 
 Lets now have a look at how to use refreshable materialized views with some example datasets.
 
-### Stack Overflow {#stack-overflow}
+### Stack overflow {#stack-overflow}
 
 The [denormalizing data guide](/data-modeling/denormalization) shows various techniques for denormalizing data using a Stack Overflow dataset. We populate data into the following tables: `votes`, `users`, `badges`, `posts`, and `postlinks`.
 
@@ -233,7 +233,7 @@ The view will execute immediately and every hour thereafter as configured to ens
 The syntax here is identical to an incremental materialized view, except we include a [`REFRESH`](/sql-reference/statements/create/view#refreshable-materialized-view) clause:
 :::
 
-### IMDb {#imdb}
+### Imdb {#imdb}
 
 In the [dbt and ClickHouse integration guide](/integrations/dbt) we populated an IMDb dataset with the following tables: `actors`, `directors`, `genres`, `movie_directors`, `movies`, and `roles`.
 

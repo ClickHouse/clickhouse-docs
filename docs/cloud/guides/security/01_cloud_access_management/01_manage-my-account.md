@@ -37,7 +37,7 @@ If your company uses Google Workspace or Microsoft 365, you can leverage your cu
 
 Users using SAML SSO are automatically added by their identity provider upon sign in. ClickHouse Cloud users with the Organization Admin role may [manage roles](/cloud/security/manage-cloud-users) assigned to SAML users and enforce SAML as the only authentication method.
 
-## Manage multi-factor authentication (MFA) {#mfa}
+## Manage multi-factor authentication (mfa) {#mfa}
 
 Users with email + password or social authentication can further secure their account using multi-factor authentication (MFA). To set up MFA:
 
@@ -82,7 +82,7 @@ If you forgot your password, follow these steps for self-service recovery:
 7. Click Back to sign in
 8. Sign in normally with your new password
 
-### MFA self-service recovery {#mfa-self-serivce-recovery}
+### Mfa self-service recovery {#mfa-self-serivce-recovery}
 
 If you lost your MFA device or deleted your token, follow these steps to recover and create a new token:
 1. Go to https://console.clickhouse.cloud
@@ -103,7 +103,7 @@ If you lost your MFA device or deleted your token, follow these steps to recover
 16. Click the box next to `I have safely recorded this code` and click Continue
 17. Follow the process above to set up a new MFA factor
        
-### Lost MFA and recovery code {#lost-mfa-and-recovery-code}
+### Lost mfa and recovery code {#lost-mfa-and-recovery-code}
 
 If you lost your MFA device AND recovery code or you lost your MFA device and never obtained a recovery code, follow these steps to request a reset:
 

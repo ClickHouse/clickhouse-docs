@@ -193,7 +193,7 @@ For detailed API key setup instructions including multiple configuration methods
 
 </VerticalStepper>
 
-## Using ClickHouse Cloud {#using-clickhouse-cloud}
+## Using ClickHouse cloud {#using-clickhouse-cloud}
 
 If using ClickHouse Cloud users disable the ClickHouse instance deployed by the Helm chart and specify the Cloud credentials:
 ```shell
@@ -347,7 +347,7 @@ helm install my-clickstack clickstack/clickstack \
   --set "otel.env[0].value=--feature-gates=clickhouse.json"
 ```
 
-## Related Documentation {#related-documentation}
+## Related documentation {#related-documentation}
 
 ### Deployment guides {#deployment-guides}
 - [Deployment options](/docs/use-cases/observability/clickstack/deployment/helm-deployment-options) - External ClickHouse, OTEL collector, and minimal deployments

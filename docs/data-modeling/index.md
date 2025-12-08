@@ -6,7 +6,7 @@ keywords: ['data modelling', 'schema design', 'dictionary', 'materialized view',
 doc_type: 'landing-page'
 ---
 
-# Data Modeling 
+# Data modeling
 
 This section is about data modeling in ClickHouse and contains the following topics:
 

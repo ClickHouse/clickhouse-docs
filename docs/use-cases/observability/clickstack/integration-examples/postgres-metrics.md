@@ -16,7 +16,7 @@ import finish_import from '@site/static/images/clickstack/postgres/import-dashbo
 import example_dashboard from '@site/static/images/clickstack/postgres/postgres-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Monitoring PostgreSQL Metrics with ClickStack {#postgres-metrics-clickstack}
+# Monitoring PostgreSQL metrics with ClickStack {#postgres-metrics-clickstack}
 
 :::note[TL;DR]
 This guide shows you how to monitor PostgreSQL performance metrics with ClickStack by configuring the OpenTelemetry collector's PostgreSQL receiver. You'll learn how to:
@@ -52,7 +52,7 @@ The PostgreSQL receiver requires a user with read access to statistics views. Gr
 GRANT pg_monitor TO your_monitoring_user;
 ```
 
-#### Create custom OTel collector configuration {#create-custom-config}
+#### Create custom otel collector configuration {#create-custom-config}
 
 ClickStack allows you to extend the base OpenTelemetry collector configuration by mounting a custom configuration file and setting an environment variable.
 
@@ -180,7 +180,7 @@ cat postgres-metrics-sum.csv | docker exec -i clickstack-postgres-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_sum FORMAT CSVWithNames"
 ```
 
-#### Verify metrics in HyperDX {#verify-metrics-demo}
+#### Verify metrics in hyperdx {#verify-metrics-demo}
 
 Once loaded, the quickest way to see your metrics is through the pre-built dashboard.
 
@@ -198,7 +198,7 @@ To help you get started monitoring PostgreSQL with ClickStack, we provide essent
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/postgres-metrics-dashboard.json')} download="postgres-metrics-dashboard.json" eventName="docs.postgres_metrics_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
+#### <Trackedlink href={useBaseUrl('/examples/postgres-metrics-dashboard.json')} download="postgres-metrics-dashboard.json" eventName="docs.postgres_metrics_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
 
 #### Import the pre-built dashboard {#import-dashboard}
 
@@ -239,7 +239,7 @@ Check the custom config file is mounted:
 docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml
 ```
 
-### No metrics appearing in HyperDX {#no-metrics}
+### No metrics appearing in hyperdx {#no-metrics}
 
 Verify PostgreSQL is accessible:
 

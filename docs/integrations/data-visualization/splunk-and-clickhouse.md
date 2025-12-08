@@ -56,7 +56,7 @@ Before you get started you will need:
 - Admin or SSH access to your Splunk Enterprise OS Instance
 - ClickHouse connection details (see [here](/integrations/metabase#1-gather-your-connection-details) if you're using ClickHouse Cloud)
 
-## Install and configure DB Connect on Splunk Enterprise {#install-and-configure-db-connect-on-splunk-enterprise}
+## Install and configure DB connect on Splunk enterprise {#install-and-configure-db-connect-on-splunk-enterprise}
 
 You must first install the Java Runtime Environment on your Splunk Enterprise instance. If you're using Docker, you can use the command `microdnf install java-11-openjdk`.
 
@@ -74,7 +74,7 @@ Once you've verified that the DB Connect App is installed, add the java_home pat
 
 <Image img={splunk_2} size="md" border alt="Splunk DB Connect settings page showing Java Home configuration" />
 
-## Configure JDBC for ClickHouse {#configure-jdbc-for-clickhouse}
+## Configure jdbc for ClickHouse {#configure-jdbc-for-clickhouse}
 
 Download the [ClickHouse JDBC driver](https://github.com/ClickHouse/clickhouse-java) to the DB Connect Drivers folder such as:
 

@@ -219,7 +219,7 @@ FINAL
 Peak memory usage: 8.14 MiB.
 ```
 
-## FINAL performance {#final-performance}
+## Final performance {#final-performance}
 
 The `FINAL` operator does have a small performance overhead on queries.
 This will be most noticeable when queries are not filtering on primary key columns,

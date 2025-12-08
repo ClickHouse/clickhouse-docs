@@ -22,7 +22,7 @@ import zing_08 from '@site/static/images/integrations/data-visualization/zing_08
 import zing_09 from '@site/static/images/integrations/data-visualization/zing_09.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Connect Zing Data to ClickHouse
+# Connect zing data to ClickHouse
 
 <CommunityMaintainedBadge/>
 
@@ -59,7 +59,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 6. Once the Clickhouse datasource is added, it will be available to everyone in your Zing organization, under the **Data Sources** / **Sources** tab.
 
-## Creating charts and dashboards in Zing Data {#creating-charts-and-dashboards-in-zing-data}
+## Creating charts and dashboards in zing data {#creating-charts-and-dashboards-in-zing-data}
 
 1. After your Clickhouse datasource is added, click on **Zing App** on the web, or click on the datasource on mobile to start creating charts.
 

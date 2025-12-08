@@ -24,7 +24,7 @@ If using the [All in One](/use-cases/observability/clickstack/deployment/all-in-
 docker run  -e HYPERDX_LOG_LEVEL='debug' -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-all-in-one:latest
 ```
 
-### Docker Compose {#docker-compose}
+### Docker compose {#docker-compose}
 
 If using the [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose) deployment guide, the [`.env`](https://github.com/hyperdxio/hyperdx/blob/main/.env) file can be used to modify settings.
 
@@ -93,7 +93,7 @@ ingress:
       value: abc
 ```
 
-## HyperDX {#hyperdx}
+## Hyperdx {#hyperdx}
 
 ### Data source settings {#datasource-settings}
 
@@ -346,7 +346,7 @@ These settings can't be modified when HyperDX is managed in ClickHouse Cloud.
   - **Guidance:**
   - Set to `true` to enable JSON support in ClickStack.
 
-## OpenTelemetry collector {#otel-collector}
+## Opentelemetry collector {#otel-collector}
 
 See ["ClickStack OpenTelemetry Collector"](/use-cases/observability/clickstack/ingesting-data/otel-collector) for more details.
 

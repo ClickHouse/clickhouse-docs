@@ -7,7 +7,7 @@ sidebar_label: 'countIf'
 doc_type: 'reference'
 ---
 
-# countIf {#countif}
+# Countif {#countif}
 
 ## Description {#description}
 

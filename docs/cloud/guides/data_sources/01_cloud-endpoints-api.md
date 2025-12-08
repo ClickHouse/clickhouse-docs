@@ -11,7 +11,7 @@ import Image from '@theme/IdealImage';
 import aws_rds_mysql from '@site/static/images/_snippets/aws-rds-mysql.png';
 import gcp_authorized_network from '@site/static/images/_snippets/gcp-authorized-network.png';
 
-## Static IPs API {#static-ips-api}
+## Static ips API {#static-ips-api}
 
 If you need to fetch the list of static IPs, you can use the following ClickHouse Cloud API endpoint: [`https://api.clickhouse.cloud/static-ips.json`](https://api.clickhouse.cloud/static-ips.json). This API provides the endpoints for ClickHouse Cloud services, such as ingress/egress IPs and S3 endpoints per region and cloud.
 

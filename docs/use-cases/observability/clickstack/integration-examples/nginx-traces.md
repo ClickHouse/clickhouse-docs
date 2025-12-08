@@ -17,7 +17,7 @@ import example_dashboard from '@site/static/images/clickstack/nginx-traces-dashb
 import view_traces from '@site/static/images/clickstack/nginx-traces-search-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Monitoring Nginx Traces with ClickStack {#nginx-traces-clickstack}
+# Monitoring nginx traces with ClickStack {#nginx-traces-clickstack}
 
 :::note[TL;DR]
 This guide shows you how to capture distributed traces from your existing Nginx installation and visualize them in ClickStack. You'll learn how to:
@@ -32,7 +32,7 @@ A demo dataset with sample traces is available if you want to test the integrati
 Time Required: 5-10 minutes
 ::::
 
-## Integration with existing Nginx {#existing-nginx}
+## Integration with existing nginx {#existing-nginx}
 
 This section covers adding distributed tracing to your existing Nginx installation by installing the OpenTelemetry module and configuring it to send traces to ClickStack.
 If you would like to test the integration before configuring your own existing setup, you can test with our preconfigured setup and sample data in the [following section](/use-cases/observability/clickstack/integrations/nginx-traces#demo-dataset).
@@ -45,7 +45,7 @@ If you would like to test the integration before configuring your own existing s
 
 <VerticalStepper headerLevel="h4">
 
-#### Install OpenTelemetry Nginx module {#install-module}
+#### Install opentelemetry nginx module {#install-module}
 
 The easiest way to add tracing to Nginx is using the official Nginx image with OpenTelemetry support built-in.
 
@@ -64,7 +64,7 @@ This image includes the `ngx_otel_module.so` pre-installed and ready to use.
 If you're running Nginx outside of Docker, refer to the [OpenTelemetry Nginx documentation](https://github.com/open-telemetry/opentelemetry-cpp-contrib/tree/main/instrumentation/nginx) for manual installation instructions.
 :::
 
-#### Configure Nginx to send traces to ClickStack {#configure-nginx}
+#### Configure nginx to send traces to ClickStack {#configure-nginx}
 
 Add OpenTelemetry configuration to your `nginx.conf` file. The configuration loads the module and directs traces to ClickStack's OTLP endpoint.
 
@@ -162,7 +162,7 @@ docker-compose restart nginx
 sudo systemctl reload nginx
 ```
 
-#### Verifying traces in HyperDX {#verifying-traces}
+#### Verifying traces in hyperdx {#verifying-traces}
 
 Once configured, log into HyperDX and verify traces are flowing, you should see something like this, if you don't see traces, try adjusting your time range:
 
@@ -236,7 +236,7 @@ This demo assumes ClickStack is running locally on `localhost:4318`. For remote 
 
 You should see a response like `{"partialSuccess":{}}` indicating the traces were successfully sent. All 1,000 traces will be ingested into ClickStack.
 
-#### Verify traces in HyperDX {#verify-demo-traces}
+#### Verify traces in hyperdx {#verify-demo-traces}
 
 1. Open [HyperDX](http://localhost:8080/) and log in to your account (you may need to create an account first)
 2. Navigate to the Search view and set the source to `Traces`
@@ -258,7 +258,7 @@ To help you get started monitoring traces with ClickStack, we provide essential 
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/nginx-traces-dashboard.json')} download="nginx-traces-dashboard.json" eventName="docs.nginx_traces_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
+#### <Trackedlink href={useBaseUrl('/examples/nginx-traces-dashboard.json')} download="nginx-traces-dashboard.json" eventName="docs.nginx_traces_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
 
 #### Import the pre-built dashboard {#import-dashboard}
 1. Open HyperDX and navigate to the Dashboards section.
@@ -282,7 +282,7 @@ For the demo dataset, set the time range to **2025-10-26 13:00:00 - 2025-10-27 1
 
 ## Troubleshooting {#troubleshooting}
 
-### No traces appearing in HyperDX {#no-traces}
+### No traces appearing in hyperdx {#no-traces}
 
 **Verify nginx module is loaded:**
 ```bash

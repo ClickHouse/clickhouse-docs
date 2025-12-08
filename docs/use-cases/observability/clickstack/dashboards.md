@@ -43,7 +43,7 @@ For the examples below, we use the remote dataset available at [sql.clickhouse.c
 
 <VerticalStepper headerLevel="h3">
 
-### Navigate to Chart Explorer {#navigate-chart-explorer}
+### Navigate to chart explorer {#navigate-chart-explorer}
 
 Select `Chart Explorer` from the left menu.
 
@@ -87,7 +87,7 @@ We create a dashboard with two visualizations below using the log and trace data
 
 <VerticalStepper headerLevel="h3">
 
-### Navigate to Dashboards {#navigate-dashboards}
+### Navigate to dashboards {#navigate-dashboards}
 
 Select `Dashboards` from the left menu.
 
@@ -152,18 +152,18 @@ The dashboard will be auto-saved. To set the dashboard name, select the title an
 
 </VerticalStepper>
 
-## Dashboards - Editing visualizations {#dashboards-editing-visualizations}
+## Dashboards - editing visualizations {#dashboards-editing-visualizations}
 
 To remove, edit, or duplicate a visualization, hover over it and use the corresponding action buttons.
 
 <Image img={dashboard_edit} alt="Dashboard edit" size="lg"/>
 
-## Dashboard - Listing and search {#dashboard-listing-search}
+## Dashboard - listing and search {#dashboard-listing-search}
 
 Dashboards are accessible from the left-hand menu, with built-in search to quickly locate specific dashboards.
 <Image img={dashboard_search} alt="Dashboard search" size="sm"/>
 
-## Dashboards - Tagging {#tagging}
+## Dashboards - tagging {#tagging}
 <Tagging />
 
 ## Presets {#presets}

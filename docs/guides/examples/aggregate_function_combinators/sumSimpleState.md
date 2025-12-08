@@ -7,7 +7,7 @@ sidebar_label: 'sumSimpleState'
 doc_type: 'reference'
 ---
 
-# sumSimpleState {#sumsimplestate}
+# Sumsimplestate {#sumsimplestate}
 
 ## Description {#description}
 

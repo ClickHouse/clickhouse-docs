@@ -47,7 +47,7 @@ Contact ClickHouse support to enable the Private Load balancer and ask for the U
 https://prometheus-internal.<subdomain>.<region>.aws.clickhouse-byoc.com/query
 ```
 
-#### Prometheus Integration {#prometheus-integration}
+#### Prometheus integration {#prometheus-integration}
 
 <DeprecatedBadge/>
 

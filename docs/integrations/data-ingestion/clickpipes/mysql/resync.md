@@ -10,7 +10,7 @@ keywords: ['clickpipes', 'mysql', 'cdc', 'data ingestion', 'real-time sync']
 import resync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resync_button.png'
 import Image from '@theme/IdealImage';
 
-### What does Resync do? {#what-mysql-resync-do}
+### What does resync do? {#what-mysql-resync-do}
 
 Resync involves the following operations in order:
 
@@ -32,7 +32,7 @@ Here are a few scenarios:
 You can resync multiple times, however please account for the load on the source database when you resync.
 :::
 
-### Resync ClickPipe Guide {#guide-mysql-resync}
+### Resync ClickPipe guide {#guide-mysql-resync}
 
 1. In the Data Sources tab, click on the MySQL ClickPipe you wish to resync.
 2. Head over to the **Settings** tab.

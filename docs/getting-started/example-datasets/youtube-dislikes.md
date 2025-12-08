@@ -416,7 +416,7 @@ ORDER BY
 │ 2008-09-01 │ WWE                        │     3717092 │   0.07872802579349912 │
 ```
 
-### How do like ratio changes as views go up? {#how-do-like-ratio-changes-as-views-go-up}
+### How do like ratio changes as views Go up? {#how-do-like-ratio-changes-as-views-go-up}
 
 ```sql
 SELECT

@@ -9,7 +9,7 @@ doc_type: 'guide'
 import nullTableMV from '@site/static/images/data-modeling/null_table_mv.png';
 import Image from '@theme/IdealImage';
 
-# Backfilling Data
+# Backfilling data
 
 Whether new to ClickHouse or responsible for an existing deployment, users will invariably need to backfill tables with historical data. In some cases, this is relatively simple but can become more complex when materialized views need to be populated. This guide documents some processes for this task that users can apply to their use case.
 
@@ -257,7 +257,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-
 ClickPipes uses this approach when loading data from object storage, automatically creating duplicates of the target table and its materialized views and avoiding the need for the user to perform the above steps. By also using multiple worker threads, each handling different subsets (via glob patterns) and with its own duplicate tables, data can be loaded quickly with exactly-once semantics. For those interested, further details can be found [in this blog](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part3).
 :::
 
-## Scenario 1: Backfilling data with existing data ingestion {#scenario-1-backfilling-data-with-existing-data-ingestion}
+## Scenario 1: backfilling data with existing data ingestion {#scenario-1-backfilling-data-with-existing-data-ingestion}
 
 In this scenario, we assume that the data to backfill is not in an isolated bucket and thus filtering is required. Data is already inserting and a timestamp or monotonically increasing column can be identified from which historical data needs to be backfilled.
 
@@ -319,7 +319,7 @@ If the historical data is an isolated bucket, the above time filter is not requi
 ClickHouse Cloud users should use ClickPipes for restoring historical backups if the data can be isolated in its own bucket (and a filter is not required). As well as parallelizing the load with multiple workers, thus reducing the load time, ClickPipes automates the above process - creating duplicate tables for both the main table and materialized views.
 :::
 
-## Scenario 2: Adding materialized views to existing tables {#scenario-2-adding-materialized-views-to-existing-tables}
+## Scenario 2: adding materialized views to existing tables {#scenario-2-adding-materialized-views-to-existing-tables}
 
 It is not uncommon for new materialized views to need to be added to a setup for which significant data has been populated and data is being inserted. A timestamp or monotonically increasing column, which can be used to identify a point in the stream, is useful here and avoids pauses in data ingestion. In the examples below, we assume both cases, preferring approaches that avoid pauses in ingestion.
 
@@ -327,7 +327,7 @@ It is not uncommon for new materialized views to need to be added to a setup for
 We do not recommend using the [`POPULATE`](/sql-reference/statements/create/view#materialized-view) command for backfilling materialized views for anything other than small datasets where ingest is paused. This operator can miss rows inserted into its source table, with the materialized view created after the populate hash is finished. Furthermore, this populate runs against all data and is vulnerable to interruptions or memory limits on large datasets.
 :::
 
-### Timestamp or Monotonically increasing column available {#timestamp-or-monotonically-increasing-column-available}
+### Timestamp or monotonically increasing column available {#timestamp-or-monotonically-increasing-column-available}
 
 In this case, we recommend the new materialized view include a filter that restricts rows to those greater than arbitrary data in the future. The materialized view can subsequently be backfilled from this date using historical data from the main table. The backfilling approach depends on the data size and the complexity of the associated query.
 
@@ -410,7 +410,7 @@ In this case, users have several options:
 
 We explore (2) further below.
 
-#### Using a Null table engine for filling materialized views {#using-a-null-table-engine-for-filling-materialized-views}
+#### Using a null table engine for filling materialized views {#using-a-null-table-engine-for-filling-materialized-views}
 
 The [Null table engine](/engines/table-engines/special/null) provides a storage engine which doesn't persist data (think of it as the `/dev/null` of the table engine world). While this seems contradictory, materialized views will still execute on data inserted into this table engine. This allows materialized views to be constructed without persisting the original data - avoiding I/O and the associated storage.
 

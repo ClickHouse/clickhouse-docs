@@ -37,7 +37,7 @@ This all-in-one image allows you to launch the full stack with a single command,
 
 <VerticalStepper headerLevel="h3">
 
-### Deploy stack with docker {#deploy-stack-with-docker}
+### Deploy stack with Docker {#deploy-stack-with-docker}
 
 The following will run an OpenTelemetry collector (on port 4317 and 4318) and the HyperDX UI (on port 8080).
 
@@ -67,7 +67,7 @@ docker run \
 ```
 :::
 
-### Navigate to the HyperDX UI {#navigate-to-hyperdx-ui}
+### Navigate to the hyperdx UI {#navigate-to-hyperdx-ui}
 
 Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
 
@@ -93,13 +93,13 @@ Alternatively, you can connect to a demo cluster where you can explore a larger 
 
 </VerticalStepper>
 
-## Deploy with ClickHouse Cloud {#deploy-with-clickhouse-cloud}
+## Deploy with ClickHouse cloud {#deploy-with-clickhouse-cloud}
 
 Users can deploy ClickStack against ClickHouse Cloud, benefiting from a fully managed, secure backend while retaining complete control over ingestion, schema, and observability workflows.
 
 <VerticalStepper headerLevel="h3">
 
-### Create a ClickHouse Cloud service {#create-a-service}
+### Create a ClickHouse cloud service {#create-a-service}
 
 Follow the [getting started guide for ClickHouse Cloud](/getting-started/quick-start/cloud#1-create-a-clickhouse-service) to create a service.
 
@@ -115,7 +115,7 @@ Copy the HTTP connection details, specifically the HTTPS endpoint (`endpoint`) a
 While we will use the `default` user to connect HyperDX, we recommend creating a dedicated user when [going to production](/use-cases/observability/clickstack/production#create-a-user).
 :::
 
-### Deploy with docker {#deploy-with-docker}
+### Deploy with Docker {#deploy-with-docker}
 
 Open a terminal and export the credentials copied above:
 
@@ -133,7 +133,7 @@ docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=defa
 
 This will expose an OpenTelemetry collector (on port 4317 and 4318), and the HyperDX UI (on port 8080).
 
-### Navigate to the HyperDX UI {#navigate-to-hyperdx-ui-cloud}
+### Navigate to the hyperdx UI {#navigate-to-hyperdx-ui-cloud}
 
 Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
 
@@ -141,7 +141,7 @@ Create a user, providing a username and password which meets the complexity requ
 
 <Image img={hyperdx_login} alt="HyperDX Login" size="lg"/>
 
-### Create a ClickHouse Cloud connection {#create-a-cloud-connection}
+### Create a ClickHouse cloud connection {#create-a-cloud-connection}
 
 Navigate to `Team Settings` and click `Edit` for the `Local Connection`:
 
@@ -176,7 +176,7 @@ You can use a hosted version of HyperDX in local mode available at [play.hyperdx
 
 <VerticalStepper headerLevel="h3">
 
-### Run with docker {#run-local-with-docker}
+### Run with Docker {#run-local-with-docker}
 
 The self-hosted local mode image comes with an OpenTelemetry collector and a ClickHouse server pre-configured as well. This makes it easy to consume telemetry data from your applications and visualize it in HyperDX with minimal external setup. To get started with the self-hosted version, simply run the Docker container with the appropriate ports forwarded:
 

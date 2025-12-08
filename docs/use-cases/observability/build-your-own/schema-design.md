@@ -600,7 +600,7 @@ We recommend that users familiarize themselves with the basics of dictionaries. 
 
 For simple enrichment examples see the guide on Dictionaries [here](/dictionary). Below, we focus on common observability enrichment tasks.
 
-### Using IP dictionaries {#using-ip-dictionaries}
+### Using ip dictionaries {#using-ip-dictionaries}
 
 Geo-enriching logs and traces with latitude and longitude values using IP addresses is a common Observability requirement. We can achieve this using `ip_trie` structured dictionary.
 
@@ -1021,7 +1021,7 @@ For more examples and details on dictionaries, we recommend the following articl
 
 ClickHouse supports a number of techniques for accelerating query performance. The following should be considered only after choosing an appropriate primary/ordering key to optimize for the most popular access patterns and to maximize compression. This will usually have the largest impact on performance for the least effort.
 
-### Using Materialized views (incremental) for aggregations {#using-materialized-views-incremental-for-aggregations}
+### Using materialized views (incremental) for aggregations {#using-materialized-views-incremental-for-aggregations}
 
 In earlier sections, we explored the use of Materialized views for data transformation and filtering. Materialized views can, however, also be used to precompute aggregations at insert time and store the result. This result can be updated with the results from subsequent inserts, thus effectively allowing an aggregation to be precomputed at insert time.
 
@@ -1226,7 +1226,7 @@ ORDER BY Hour DESC
 
 Note we use a `GROUP BY` here instead of using `FINAL`.
 
-### Using Materialized views (incremental)  for fast lookups {#using-materialized-views-incremental--for-fast-lookups}
+### Using materialized views (incremental)  for fast lookups {#using-materialized-views-incremental--for-fast-lookups}
 
 Users should consider their access patterns when choosing the ClickHouse ordering key with the columns that are frequently used in filter and aggregation clauses. This can be restrictive in Observability use cases, where users have more diverse access patterns that cannot be encapsulated in a single set of columns. This is best illustrated in an example built into the default OTel schemas. Consider the default schema for the traces:
 

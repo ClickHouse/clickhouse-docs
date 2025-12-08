@@ -27,7 +27,7 @@ import restore_backups_azure from '@site/static/images/cloud/manage/backups/rest
 
 ### Taking backups to AWS {#taking-backups-to-aws}
 
-#### 1. Steps to follow in AWS {#aws-steps}
+#### 1. steps to follow in AWS {#aws-steps}
 
 :::note
 These steps are similar to the secure s3 setup as described in ["Accessing S3 data securely"](/cloud/data-sources/secure-s3), however, there are additional actions required in the role permissions
@@ -41,7 +41,7 @@ Follow the steps below on your AWS account:
 
 Create an AWS S3 bucket in your account where you want to export backups.
 
-##### Create an IAM role {#create-iam-role}
+##### Create an iam role {#create-iam-role}
 
 AWS uses role based authentication, so create an IAM role that the ClickHouse Cloud service will be able to assume into, to write to this bucket.
 
@@ -111,7 +111,7 @@ This is done by creating a permissions policy for the role with a JSON similar t
 ```
 </VerticalStepper>
 
-#### 2. Steps to follow in ClickHouse Cloud {#cloud-steps}
+#### 2. steps to follow in ClickHouse cloud {#cloud-steps}
 
 Follow the steps below in the ClickHouse Cloud console to configure the external bucket:
 
@@ -123,7 +123,7 @@ On the Settings page, click on Set up external backup:
 
 <Image img={change_external_backup} alt="Change external backup" size="lg" />
 
-##### Configure AWS IAM Role ARN and S3 bucket details {#configure-aws-iam-role-arn-and-s3-bucket-details}
+##### Configure AWS iam role arn and S3 bucket details {#configure-aws-iam-role-arn-and-s3-bucket-details}
 
 On the next screen provide the AWS IAM Role ARN you just created and the S3 bucket URL in the following format:
 
@@ -160,7 +160,7 @@ Follow the steps below to restore backups from AWS:
 
 Create a new service to restore the backup to.
 
-##### Add service ARN {#add-service-arn}
+##### Add service arn {#add-service-arn}
 
 Add the newly created service’s ARN (from the service settings page in Clickhouse
 Cloud console) to the trust policy for the IAM role. This is the same as the
@@ -207,7 +207,7 @@ Follow the steps below to take backups to GCP:
 
 Create a storage bucket in your GCP account to export backups to.
 
-##### Generate an HMAC Key and Secret {#generate-an-hmac-key-and-secret}
+##### Generate an hmac key and secret {#generate-an-hmac-key-and-secret}
 
 Generate an HMAC Key and Secret, which is required for password-based authentication. Follow the steps below to generate the keys:
 
@@ -230,7 +230,7 @@ Generate an HMAC Key and Secret, which is required for password-based authentica
 
 </VerticalStepper>
 
-#### Steps to follow in ClickHouse Cloud {#gcp-cloud-steps}
+#### Steps to follow in ClickHouse cloud {#gcp-cloud-steps}
 
 Follow the steps below in the ClickHouse Cloud console to configure the external bucket:
 
@@ -242,7 +242,7 @@ On the `Settings` page, click on `Change external backup`
 
 <Image img={change_external_backup} alt="Change external backup" size="lg" />
 
-##### Configure GCP HMAC Key and Secret {#gcp-configure-gcp-hmac-key-and-secret}
+##### Configure GCP hmac key and secret {#gcp-configure-gcp-hmac-key-and-secret}
 
 In the popup dialogue, provide the GCP bucket path, HMAC key and Secret created in the previous section.
 
@@ -330,7 +330,7 @@ portal where you want to store your backups.
 
 </VerticalStepper>
 
-#### Steps to follow in ClickHouse Cloud {#azure-cloud-steps}
+#### Steps to follow in ClickHouse cloud {#azure-cloud-steps}
 
 Follow the steps below in the ClickHouse Cloud console to configure the external bucket:
 

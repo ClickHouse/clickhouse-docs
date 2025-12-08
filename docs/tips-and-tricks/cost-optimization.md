@@ -26,7 +26,7 @@ description: 'Cost optimization strategies from ClickHouse community meetups wit
 
 *Learn about how [ClickHouse Cloud can help manage operational costs](/cloud/overview)*.
 
-## Compression strategy: LZ4 vs ZSTD in production {#compression-strategy}
+## Compression strategy: lz4 vs zstd in production {#compression-strategy}
 
 When Microsoft Clarity needed to handle hundreds of terabytes of data, they discovered that compression choices have dramatic cost implications. At their scale, every bit of storage savings matters, and they faced a classic trade-off: performance versus storage costs. Microsoft Clarity handles massive volumes—two petabytes of uncompressed data per month across all accounts, processing around 60,000 queries per hour across eight nodes and serving billions of page views from millions of websites. At this scale, compression strategy becomes a critical cost factor.
 

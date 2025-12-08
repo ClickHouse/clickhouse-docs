@@ -31,7 +31,7 @@ import explo_15 from '@site/static/images/integrations/data-visualization/explo_
 import explo_16 from '@site/static/images/integrations/data-visualization/explo_16.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Connecting Explo to ClickHouse
+# Connecting explo to ClickHouse
 
 <CommunityMaintainedBadge/>
 
@@ -48,10 +48,10 @@ In this guide you will connect your data from ClickHouse to Explo and visualize 
 If you do not have a dataset to work with you can add one of the examples.  This guide uses the [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md) dataset, so you might choose that one.  There are several others to look at in the same documentation category.
 :::
 
-## 1. Gather your connection details {#1-gather-your-connection-details}
+## 1. gather your connection details {#1-gather-your-connection-details}
 <ConnectionDetails />
 
-## 2.  Connect Explo to ClickHouse {#2--connect-explo-to-clickhouse}
+## 2.  connect explo to ClickHouse {#2--connect-explo-to-clickhouse}
 
 1. Sign up for an Explo account.
 
@@ -84,7 +84,7 @@ If you do not have a dataset to work with you can add one of the examples.  This
 54.211.43.19, 52.55.98.121, 3.214.169.94, and 54.156.141.148
 `
 
-## 3. Create a Dashboard {#3-create-a-dashboard}
+## 3. create a dashboard {#3-create-a-dashboard}
 
 1. Navigate to **Dashboard** tab on the left side nav bar.
 
@@ -98,7 +98,7 @@ If you do not have a dataset to work with you can add one of the examples.  This
 
 <Image img={explo_09} size="md" alt="Explo Dashboard" border />
 
-## 4. Run a SQL query {#4-run-a-sql-query}
+## 4. run a SQL query {#4-run-a-sql-query}
 
 1. Get your table name from the right hand sidebar under your schema title. You should then put the following command into your dataset editor:
 `
@@ -112,7 +112,7 @@ LIMIT 100
 
 <Image img={explo_11} size="md" alt="Explo Dashboard" border />
 
-## 5. Build a Chart {#5-build-a-chart}
+## 5. build a chart {#5-build-a-chart}
 
 1. From the left hand side, drag the bar chart icon onto the screen.
 

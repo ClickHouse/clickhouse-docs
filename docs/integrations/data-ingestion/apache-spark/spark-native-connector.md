@@ -60,7 +60,7 @@ Alternatively, you can put the required JAR files in your `$SPARK_HOME/jars/` fo
 option using the `--jars` flag in the `spark-submit` command.
 Both approaches ensure the ClickHouse connector is available in your Spark environment.
 
-### Import as a Dependency {#import-as-a-dependency}
+### Import as a dependency {#import-as-a-dependency}
 
 <Tabs>
 <TabItem value="Maven" label="Maven" default>
@@ -223,7 +223,7 @@ That way, you would be able to access clickhouse1 table `<ck_db>.<ck_table>` fro
 
 :::
 
-## ClickHouse Cloud settings {#clickhouse-cloud-settings}
+## ClickHouse cloud settings {#clickhouse-cloud-settings}
 
 When connecting to [ClickHouse Cloud](https://clickhouse.com), make sure to enable SSL and set the appropriate SSL mode. For example:
 
@@ -539,7 +539,7 @@ The following are the adjustable configurations available in the connector:
 This section outlines the mapping of data types between Spark and ClickHouse. The tables below provide quick references
 for converting data types when reading from ClickHouse into Spark and when inserting data from Spark into ClickHouse.
 
-### Reading data from ClickHouse into Spark {#reading-data-from-clickhouse-into-spark}
+### Reading data from ClickHouse into spark {#reading-data-from-clickhouse-into-spark}
 
 | ClickHouse Data Type                                              | Spark Data Type                | Supported | Is Primitive | Notes                                              |
 |-------------------------------------------------------------------|--------------------------------|-----------|--------------|----------------------------------------------------|
@@ -578,7 +578,7 @@ for converting data types when reading from ClickHouse into Spark and when inser
 | `AggregateFunction`                                               |                                | ❌         |              |                                                    |
 | `SimpleAggregateFunction`                                         |                                | ❌         |              |                                                    |
 
-### Inserting data from Spark into ClickHouse {#inserting-data-from-spark-into-clickhouse}
+### Inserting data from spark into ClickHouse {#inserting-data-from-spark-into-clickhouse}
 
 | Spark Data Type                     | ClickHouse Data Type | Supported | Is Primitive | Notes                                  |
 |-------------------------------------|----------------------|-----------|--------------|----------------------------------------|

@@ -62,7 +62,7 @@ Customers can initiate onboarding by reaching out to [us](https://clickhouse.com
 
 This section is intended to provide an overview of the resources required to deploy ClickHouse Government. Specific deployment guides are provided as part of onboarding. Instance/server types and sizes depend on the use case.
 
-### ClickHouse Government on AWS {#clickhouse-government-aws}
+### ClickHouse government on AWS {#clickhouse-government-aws}
 
 Required resources:
 - [ECR](https://docs.aws.amazon.com/ecr/) to receive the images and Helm charts

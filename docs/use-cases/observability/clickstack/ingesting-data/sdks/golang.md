@@ -27,7 +27,7 @@ instrumentation isn't required to get value out of tracing.
 
 ## Getting started {#getting-started}
 
-### Install OpenTelemetry instrumentation packages {#install-opentelemetry}
+### Install opentelemetry instrumentation packages {#install-opentelemetry}
 
 To install the OpenTelemetry and HyperDX Go packages, use the command below. It is recommended to check out the [current instrumentation packages](https://github.com/open-telemetry/opentelemetry-go-contrib/tree/v1.4.0/instrumentation#instrumentation-packages) and install the necessary packages to ensure that the trace information is attached correctly.
 

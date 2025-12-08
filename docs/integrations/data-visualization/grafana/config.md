@@ -117,7 +117,7 @@ jsonData:
   validateSql: false # when set to true, will validate the SQL in the SQL editor.
 ```
 
-### OpenTelemetry {#opentelemetry}
+### Opentelemetry {#opentelemetry}
 
 OpenTelemetry (OTel) is deeply integrated within the plugin.
 OpenTelemetry data can be exported to ClickHouse with our [exporter plugin](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter).
@@ -198,7 +198,7 @@ Aliasing may be relevant to you if:
 - You store JSON as strings
 - You often apply functions to transform the columns you select
 
-#### Table-defined ALIAS columns {#table-defined-alias-columns}
+#### Table-defined alias columns {#table-defined-alias-columns}
 
 ClickHouse has column aliasing built-in and works with Grafana out of the box.
 Alias columns can be defined directly on the table.

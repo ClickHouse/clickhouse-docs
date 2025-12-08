@@ -12,7 +12,7 @@ integration:
   - website: 'https://github.com/ClickHouse/clickhouse-cs'
 ---
 
-# ClickHouse C# client
+# ClickHouse c# client
 
 The official C# client for connecting to ClickHouse.
 The client source code is available in the [GitHub repository](https://github.com/ClickHouse/clickhouse-cs).
@@ -25,7 +25,7 @@ Originally developed by [Oleg V. Kozlyuk](https://github.com/DarkWanderer).
 
 ---
 
-## Supported .NET versions {#supported-net-versions}
+## Supported .net versions {#supported-net-versions}
 
 `ClickHouse.Driver` supports the following .NET versions:
 
@@ -216,7 +216,7 @@ Console.WriteLine($"Rows written: {bulkCopy.RowsWritten}");
 
 ---
 
-### Performing SELECT queries {#performing-select-queries}
+### Performing select queries {#performing-select-queries}
 
 Execute SELECT queries and process results:
 
@@ -417,7 +417,7 @@ The ClickHouse .NET client integrates with the `Microsoft.Extensions.Logging` ab
 
 ### Quick start {#logging-quick-start}
 
-#### Using ClickHouseConnection {#logging-clickhouseconnection}
+#### Using clickhouseconnection {#logging-clickhouseconnection}
 
 ```csharp
 using ClickHouse.Driver.ADO;
@@ -516,7 +516,7 @@ The driver uses dedicated categories so that you can fine-tune log levels per co
 | `ClickHouse.Driver.Transport` | `ClickHouseConnection` | Low-level HTTP streaming requests, compression flags, response status codes, and transport failures. |
 | `ClickHouse.Driver.BulkCopy` | `ClickHouseBulkCopy` | Metadata loading, batch operations, row counts, and upload completions. |
 
-#### Example: Diagnosing connection issues {#logging-config-example}
+#### Example: diagnosing connection issues {#logging-config-example}
 
 ```json
 {
@@ -559,7 +559,7 @@ var settings = new ClickHouseClientSettings()
 
 ---
 
-### ORM & Dapper support {#orm-support}
+### Orm & dapper support {#orm-support}
 
 `ClickHouse.Driver` supports Dapper (with limitations).
 

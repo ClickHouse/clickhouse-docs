@@ -30,7 +30,7 @@ ClickHouse supports five skip index types:
 
 Each section provides examples with sample data and demonstrates how to verify index usage in query execution.
 
-## MinMax index {#minmax-index}
+## Minmax index {#minmax-index}
 
 The`minmax` index is best for range predicates on loosely sorted data or columns correlated with `ORDER BY`.
 
@@ -76,7 +76,7 @@ SELECT * FROM events WHERE user_id IN (101, 202);
 
 A creation/materialization workflow and the before/after effect are shown in the [basic operation guide](/optimize/skipping-indexes#basic-operation).
 
-## Generic Bloom filter (scalar) {#generic-bloom-filter-scalar}
+## Generic bloom filter (scalar) {#generic-bloom-filter-scalar}
 
 The `bloom_filter` index is good for "needle in a haystack" equality/IN membership. It accepts an optional parameter which is the false-positive rate (default 0.025). 
 
@@ -90,7 +90,7 @@ EXPLAIN indexes = 1
 SELECT * FROM events WHERE value IN (7, 42, 99);
 ```
 
-## N-gram Bloom filter (ngrambf\_v1) for substring search {#n-gram-bloom-filter-ngrambf-v1-for-substring-search}
+## N-gram bloom filter (ngrambf\_v1) for substring search {#n-gram-bloom-filter-ngrambf-v1-for-substring-search}
 
 The `ngrambf_v1` index splits strings into n-grams. It works well for `LIKE '%...%'` queries. It supports String/FixedString/Map (via mapKeys/mapValues), as well as tunable size, hash count, and seed. See the documentation for [N-gram bloom filter](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter) for further details.
 
@@ -126,7 +126,7 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) AS k; -- ~13
 
 See [parameter docs](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter) for complete tuning guidance.  
 
-## Token Bloom filter (tokenbf\_v1) for word-based search {#token-bloom-filter-tokenbf-v1-for-word-based-search}
+## Token bloom filter (tokenbf\_v1) for word-based search {#token-bloom-filter-tokenbf-v1-for-word-based-search}
 
 `tokenbf_v1` indexes tokens separated by non-alphanumeric characters. You should use it with [`hasToken`](/sql-reference/functions/string-search-functions#hasToken), `LIKE` word patterns or equals/IN. It supports `String`/`FixedString`/`Map` types.
 
@@ -145,7 +145,7 @@ SELECT count() FROM logs WHERE hasToken(lower(msg), 'exception');
 
 See observability examples and guidance on token vs ngram [here](/use-cases/observability/schema-design#bloom-filters-for-text-search).
 
-## Add indexes during CREATE TABLE (multiple examples) {#add-indexes-during-create-table-multiple-examples}
+## Add indexes during create table (multiple examples) {#add-indexes-during-create-table-multiple-examples}
 
 Skipping indexes also support composite expressions and `Map`/`Tuple`/`Nested` types. This is demonstrated in the example below:
 

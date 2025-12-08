@@ -7,7 +7,7 @@ keywords: ['production readiness', 'enterprise', 'saml', 'sso', 'terraform', 'mo
 doc_type: 'guide'
 ---
 
-# ClickHouse Cloud Production Readiness Guide {#production-readiness}
+# ClickHouse cloud production readiness guide {#production-readiness}
 
 For organizations who have completed the quick start guide and have an active service with data flowing
 
@@ -97,7 +97,7 @@ Learn more about [Cloud Access Management](/cloud/security/cloud_access_manageme
 
 Managing ClickHouse Cloud through infrastructure-as-code practices and API automation provides consistency, version control, and repeatability for your deployment configuration.
 
-### Terraform Provider {#terraform-provider}
+### Terraform provider {#terraform-provider}
 
 Configure the ClickHouse Terraform provider with API keys created in the ClickHouse Cloud console:
 

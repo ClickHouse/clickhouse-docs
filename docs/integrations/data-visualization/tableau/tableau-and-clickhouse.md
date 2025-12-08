@@ -122,7 +122,7 @@ could change, but for now you must use **default** as the database.)
 
 You are now ready to build some visualizations in Tableau!
 
-## Building Visualizations in Tableau {#building-visualizations-in-tableau}
+## Building visualizations in Tableau {#building-visualizations-in-tableau}
 
 Now that we have a ClickHouse data source configured in Tableau, let's visualize the data...
 

@@ -25,7 +25,7 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Connecting Astrato to ClickHouse
+# Connecting astrato to ClickHouse
 
 <CommunityMaintainedBadge/>
 

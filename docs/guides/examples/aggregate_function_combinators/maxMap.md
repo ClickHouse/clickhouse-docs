@@ -7,7 +7,7 @@ sidebar_label: 'maxMap'
 doc_type: 'reference'
 ---
 
-# maxMap {#maxmap}
+# Maxmap {#maxmap}
 
 ## Description {#description}
 

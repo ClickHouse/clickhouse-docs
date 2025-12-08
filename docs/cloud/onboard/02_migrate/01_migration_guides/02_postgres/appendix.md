@@ -9,7 +9,7 @@ doc_type: 'reference'
 import postgresReplicas from '@site/static/images/integrations/data-ingestion/dbms/postgres-replicas.png';
 import Image from '@theme/IdealImage';
 
-## Postgres vs ClickHouse: Equivalent and different concepts {#postgres-vs-clickhouse-equivalent-and-different-concepts}
+## Postgres vs ClickHouse: equivalent and different concepts {#postgres-vs-clickhouse-equivalent-and-different-concepts}
 
 Users coming from OLTP systems who are used to ACID transactions should be aware that ClickHouse makes deliberate compromises in not fully providing these in exchange for performance. ClickHouse semantics can deliver high durability guarantees and high write throughput if well understood. We highlight some key concepts below that users should be familiar with prior to working with ClickHouse from Postgres.
 
@@ -59,7 +59,7 @@ To overcome some of the limitations of eventual consistency, users can ensure cl
 
 This can be achieved through several approaches depending on your architecture and whether you are using ClickHouse OSS or ClickHouse Cloud.
 
-## ClickHouse Cloud {#clickhouse-cloud}
+## ClickHouse cloud {#clickhouse-cloud}
 
 ClickHouse Cloud uses a single copy of data backed in S3 with multiple compute replicas. The data is available to each replica node which has a local SSD cache. To ensure consistent results, users therefore need to only ensure consistent routing to the same node.
 
@@ -101,7 +101,7 @@ See [here](/cloud/reference/shared-merge-tree#consistency) for further details o
 > Use of sequential consistency will place a greater load on ClickHouse Keeper.  The result can
 mean slower inserts and reads. SharedMergeTree, used in ClickHouse Cloud as the main table engine, sequential consistency [incurs less overhead and will scale better](/cloud/reference/shared-merge-tree#consistency). OSS users should use this approach cautiously and measure Keeper load.
 
-## Transactional (ACID) support {#transactional-acid-support}
+## Transactional (acid) support {#transactional-acid-support}
 
 Users migrating from PostgreSQL may be used to its robust support for ACID (Atomicity, Consistency, Isolation, Durability) properties, making it a reliable choice for transactional databases. Atomicity in PostgreSQL ensures that each transaction is treated as a single unit, which either completely succeeds or is entirely rolled back, preventing partial updates. Consistency is maintained by enforcing constraints, triggers, and rules that guarantee that all database transactions lead to a valid state. Isolation levels, from Read Committed to Serializable, are supported in PostgreSQL, allowing fine-tuned control over the visibility of changes made by concurrent transactions. Lastly, Durability is achieved through write-ahead logging (WAL), ensuring that once a transaction is committed, it remains so even in the event of a system failure.
 

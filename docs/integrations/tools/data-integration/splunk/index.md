@@ -22,7 +22,7 @@ import splunk_011 from '@site/static/images/integrations/tools/data-integration/
 import splunk_012 from '@site/static/images/integrations/tools/data-integration/splunk/splunk_012.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Storing ClickHouse Cloud Audit logs into Splunk
+# Storing ClickHouse cloud audit logs into Splunk
 
 <PartnerBadge/>
 
@@ -34,7 +34,7 @@ This add-on contains only a modular input, no additional UI are provided with th
 
 # Installation
 
-## For Splunk Enterprise {#for-splunk-enterprise}
+## For Splunk enterprise {#for-splunk-enterprise}
 
 Download the ClickHouse Cloud Audit Add-on for Splunk from [Splunkbase](https://splunkbase.splunk.com/app/7709).
 
@@ -57,7 +57,7 @@ To configure the modular input, you'll first need information from your ClickHou
 - The organization ID
 - An admin [API Key](/cloud/manage/openapi)
 
-## Getting information from ClickHouse Cloud {#getting-information-from-clickhouse-cloud}
+## Getting information from ClickHouse cloud {#getting-information-from-clickhouse-cloud}
 
 Log in to the [ClickHouse Cloud console](https://console.clickhouse.cloud/).
 

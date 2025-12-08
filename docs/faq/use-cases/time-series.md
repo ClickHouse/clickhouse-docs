@@ -8,7 +8,7 @@ doc_type: 'guide'
 keywords: ['time series', 'temporal data', 'use case', 'time-based analytics', 'timeseries']
 ---
 
-# Can I use ClickHouse as a time-series database? {#can-i-use-clickhouse-as-a-time-series-database}
+# Can i use ClickHouse as a time-series database? {#can-i-use-clickhouse-as-a-time-series-database}
 
 _Note: Please see the blog [Working with Time series data in ClickHouse](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse) for additional examples of using ClickHouse for time series analysis._
 

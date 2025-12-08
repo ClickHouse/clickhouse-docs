@@ -11,7 +11,7 @@ import S3Settings from '@site/docs/operations_/backup_restore/_snippets/_s3_sett
 import ExampleSetup from '@site/docs/operations_/backup_restore/_snippets/_example_setup.md';
 import Syntax from '@site/docs/operations_/backup_restore/_snippets/_syntax.md';
 
-# BACKUP / RESTORE to disk {#backup-to-a-local-disk}
+# Backup / restore to disk {#backup-to-a-local-disk}
 
 ## Syntax {#syntax}
 

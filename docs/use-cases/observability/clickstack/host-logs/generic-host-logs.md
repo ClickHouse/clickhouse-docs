@@ -20,7 +20,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Monitoring Host Logs with ClickStack {#host-logs-clickstack}
+# Monitoring host logs with ClickStack {#host-logs-clickstack}
 
 :::note[TL;DR]
 This guide shows you how to monitor host system logs with ClickStack by configuring the OpenTelemetry collector to collect logs from systemd, kernel, SSH, cron, and other system services. You'll learn how to:
@@ -67,7 +67,7 @@ Common syslog locations:
 - **RHEL/CentOS/Fedora**: `/var/log/messages`
 - **macOS**: `/var/log/system.log`
 
-#### Create custom OTel collector configuration {#custom-otel}
+#### Create custom otel collector configuration {#custom-otel}
 
 ClickStack allows you to extend the base OpenTelemetry Collector configuration by mounting a custom configuration file and setting an environment variable.
 
@@ -220,7 +220,7 @@ To enable custom collector configuration in your existing ClickStack deployment,
 2. Set the environment variable `CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml`
 3. Mount your syslog directory so the collector can read them
 
-##### Option 1: Docker Compose {#docker-compose}
+##### Option 1: Docker compose {#docker-compose}
 
 Update your ClickStack deployment configuration:
 ```yaml
@@ -236,7 +236,7 @@ services:
       # ... other volumes ...
 ```
 
-##### Option 2: Docker Run (All-in-One Image) {#all-in-one}
+##### Option 2: Docker run (all-in-one image) {#all-in-one}
 
 If you're using the all-in-one image with docker run:
 ```bash
@@ -252,7 +252,7 @@ docker run --name clickstack \
 Ensure the ClickStack collector has appropriate permissions to read the syslog files. In production, use read-only mounts (`:ro`) and follow the principle of least privilege.
 :::
 
-#### Verifying Logs in HyperDX {#verifying-logs}
+#### Verifying logs in hyperdx {#verifying-logs}
 
 Once configured, log into HyperDX and verify logs are flowing:
 
@@ -348,7 +348,7 @@ docker run --name clickstack-demo \
 **This mounts the log file directly into the container. This is done for testing purposes with static demo data.**
 :::
 
-#### Verify logs in HyperDX {#verify-demo-logs}
+#### Verify logs in hyperdx {#verify-demo-logs}
 
 Once ClickStack is running:
 
@@ -371,7 +371,7 @@ To help you get started monitoring host logs with ClickStack, we provide essenti
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/host-logs-dashboard.json')} download="host-logs-dashboard.json" eventName="docs.host_logs_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
+#### <Trackedlink href={useBaseUrl('/examples/host-logs-dashboard.json')} download="host-logs-dashboard.json" eventName="docs.host_logs_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
 
 #### Import the pre-built dashboard {#import-dashboard}
 
@@ -418,7 +418,7 @@ Check the custom config file is mounted and readable:
 docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml | head -10
 ```
 
-### No logs appearing in HyperDX {#no-logs}
+### No logs appearing in hyperdx {#no-logs}
 
 **Verify syslog files exist and are being written:**
 ```bash

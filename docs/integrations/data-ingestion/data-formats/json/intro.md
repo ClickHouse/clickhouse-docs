@@ -9,7 +9,7 @@ score: 10
 doc_type: 'guide'
 ---
 
-# JSON Overview
+# JSON overview
 
 <iframe src="//www.youtube.com/embed/gCg5ISOujtc"
 frameborder="0"

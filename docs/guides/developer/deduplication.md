@@ -39,7 +39,7 @@ Deduplication is implemented in ClickHouse using the following table engines:
 
 We walk through both of these techniques below. For more details, check out our free on-demand [Deleting and Updating Data training module](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs).
 
-## Using ReplacingMergeTree for Upserts {#using-replacingmergetree-for-upserts}
+## Using ReplacingMergeTree for upserts {#using-replacingmergetree-for-upserts}
 
 Let's look at a simple example where a table contains Hacker News comments with a views column representing the number of times a comment was viewed. Suppose we insert a new row when an article is published and upsert a new row once a day with the total number of views if the value increases:
 
@@ -111,7 +111,7 @@ using `FINAL` is probably not the best option. Let's discuss a better option for
 finding the latest value of a column.
 :::
 
-### Avoiding FINAL {#avoiding-final}
+### Avoiding final {#avoiding-final}
 
 Let's update the `views` column again for both unique rows:
 

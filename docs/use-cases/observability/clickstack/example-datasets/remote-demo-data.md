@@ -62,7 +62,7 @@ The customer support team has reported that users are experiencing issues comple
 
 Using HyperDX, the SRE team will analyze logs, traces, and metrics to diagnose and resolve the issue—then review session data to confirm whether their conclusions align with actual user behavior.
 
-## Open Telemetry Demo {#otel-demo}
+## Open telemetry demo {#otel-demo}
 
 This demo uses a [ClickStack maintained fork](https://github.com/ClickHouse/opentelemetry-demo) of the official OpenTelemetry demo.
 

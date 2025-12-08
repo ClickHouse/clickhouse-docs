@@ -150,7 +150,7 @@ Management queries:
 - [SHOW QUOTA](/sql-reference/statements/show#show-quota)
 - [SHOW QUOTAS](/sql-reference/statements/show#show-quotas)
 
-### Enabling SQL-driven access control and account management {#enabling-access-control}
+### Enabling sql-driven access control and account management {#enabling-access-control}
 
 - Setup a directory for configuration storage.
 

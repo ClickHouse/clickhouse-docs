@@ -9,7 +9,7 @@ doc_type: 'landing-page'
 
 import TableOfContents from '@site/docs/best-practices/_snippets/_table_of_contents.md';
 
-# Best Practices in ClickHouse Cloud {#best-practices-in-clickhouse-cloud}
+# Best practices in ClickHouse cloud {#best-practices-in-clickhouse-cloud}
 
 This section provides best practices you will want to follow to get the most out of ClickHouse Cloud.
 

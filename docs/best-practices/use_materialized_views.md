@@ -59,7 +59,7 @@ In summary, use refreshable materialized views when:
 
 For examples of refreshable materialized views see [here](/materialized-view/refreshable-materialized-view).
 
-### APPEND vs REPLACE mode {#append-vs-replace-mode}
+### Append vs replace mode {#append-vs-replace-mode}
 
 Refreshable materialized views support two modes for writing data to the target table: `APPEND` and `REPLACE`. These modes define how the result of the view's query is written when the view is refreshed.
 

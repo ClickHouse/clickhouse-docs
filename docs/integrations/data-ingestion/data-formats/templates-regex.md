@@ -8,7 +8,7 @@ doc_type: 'guide'
 keywords: ['data formats', 'templates', 'regex', 'custom formats', 'parsing']
 ---
 
-# Importing and exporting custom text data using Templates and Regex in ClickHouse
+# Importing and exporting custom text data using templates and regex in ClickHouse
 
 We often have to deal with data in custom text formats. That could be a non-standard format, invalid JSON, or a broken CSV. Using standard parsers like CSV or JSON won't work in all such cases. But ClickHouse has us covered here with powerful Template and Regex formats.
 

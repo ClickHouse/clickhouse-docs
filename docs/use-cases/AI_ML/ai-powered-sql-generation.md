@@ -128,7 +128,7 @@ If we run that query, we'll see the following output:
 
 If we want to ask follow up questions, we need to ask our question from scratch.
 
-### Finding expensive properties in Greater London {#finding-expensive-properties-in-greater-london}
+### Finding expensive properties in greater London {#finding-expensive-properties-in-greater-london}
 
 Since the feature doesn't maintain conversation history, each query must be self-contained. When asking follow-up questions, you need to provide the full context rather than referring to previous queries.
 For example, after seeing the previous results, we might want to focus specifically on Greater London properties. Rather than asking "What about Greater London?", we need to include the complete context:

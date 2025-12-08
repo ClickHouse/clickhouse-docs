@@ -10,7 +10,7 @@ keywords: ['kafka', 'vector', 'log collection', 'observability', 'integration']
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 
-## Using Vector with Kafka and ClickHouse {#using-vector-with-kafka-and-clickhouse}
+## Using vector with Kafka and ClickHouse {#using-vector-with-kafka-and-clickhouse}
 
  Vector is a vendor-agnostic data pipeline with the ability to read from Kafka and send events to ClickHouse.
 

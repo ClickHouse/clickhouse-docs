@@ -26,7 +26,7 @@ Instead of manually sifting through trace data, event deltas surface the key pro
 
 <Image img={event_deltas} alt="Event Deltas" size="lg"/>
 
-## Using Event Deltas {#using-event-deltas}
+## Using event deltas {#using-event-deltas}
 
 Event Deltas are available directly through the **Search** panel in ClickStack when selecting a source of type `Trace`.
 
@@ -52,7 +52,7 @@ Consider the example above where the `SpanAttributes.app.payment.card_type` colu
 
 Conversely, values exclusively associated with inliers can also be interesting. In the example above, the error `Visa Cash Full` appears exclusively in the inliers and is completely absent from the outlier spans. Where this occurs, latency is always less than approximately 50 milliseconds, suggesting this error is associated with low latencies.
 
-## How Event Deltas work {#how-event-deltas-work}
+## How event deltas work {#how-event-deltas-work}
 
 Event Deltas work by issuing two queries: one for the selected outlier area and one for the inlier area. Each query is limited to the appropriate duration and time window. A sample of events from both result sets is then inspected, and columns for which a high concentration of values appears predominantly in the outliers are identified. Columns for which 100% of a value occurs only in the outlier subset are shown first, highlighting the attributes most responsible for the observed differences.
 

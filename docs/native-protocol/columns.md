@@ -37,7 +37,7 @@ Just an array of String, i.e. (len, value).
 
 An array of N-byte sequences.
 
-## IP {#ip}
+## Ip {#ip}
 
 IPv4 is alias of `UInt32` numeric type and represented as UInt32.
 
@@ -71,7 +71,7 @@ Rows count in `Data` is last value from `Offsets`.
 //      Nulls:  [ 1,  0,       0,  1,       0] (len: 5)
 ```
 
-## UUID {#uuid}
+## Uuid {#uuid}
 
 Alias of `FixedString(16)`, UUID value represented as binary.
 

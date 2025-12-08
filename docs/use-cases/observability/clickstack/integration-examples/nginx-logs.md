@@ -17,7 +17,7 @@ import log_view from '@site/static/images/clickstack/log-view.png';
 import search_view from '@site/static/images/clickstack/nginx-logs-search-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Monitoring Nginx Logs with ClickStack {#nginx-clickstack}
+# Monitoring nginx logs with ClickStack {#nginx-clickstack}
 
 :::note[TL;DR]
 This guide shows you how to monitor Nginx with ClickStack by configuring the OpenTelemetry collector to ingest Nginx access logs. You'll learn how to:
@@ -32,7 +32,7 @@ A demo dataset with sample logs is available if you want to test the integration
 Time Required: 5-10 minutes
 :::
 
-## Integration with existing Nginx {#existing-nginx}
+## Integration with existing nginx {#existing-nginx}
 
 This section covers configuring your existing Nginx installation to send logs to ClickStack by modifying the ClickStack OTel collector configuration.
 If you would like to test the integration before configuring your own existing setup, you can test with our preconfigured setup and sample data in the [following section](/use-cases/observability/clickstack/integrations/nginx#demo-dataset).
@@ -44,7 +44,7 @@ If you would like to test the integration before configuring your own existing s
 
 <VerticalStepper headerLevel="h4">
 
-#### Configure Nginx log format {#configure-nginx}
+#### Configure nginx log format {#configure-nginx}
 First, configure Nginx to output logs in JSON format for easier parsing. Add this log format definition to your nginx.conf:
 
 The `nginx.conf` file is typically located at:
@@ -77,7 +77,7 @@ http {
 
 After making this change, reload Nginx.
 
-#### Create custom OTel collector configuration {#custom-otel}
+#### Create custom otel collector configuration {#custom-otel}
 
 ClickStack allows you to extend the base OpenTelemetry Collector configuration by mounting a custom configuration file and setting an environment variable. The custom configuration is merged with the base configuration managed by HyperDX via OpAMP.
 
@@ -135,7 +135,7 @@ To enable custom collector configuration in your existing ClickStack deployment,
 2. Set the environment variable CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
 3. Mount your Nginx log directories so the collector can read them
 
-##### Option 1: Docker Compose {#docker-compose}
+##### Option 1: Docker compose {#docker-compose}
 
 Update your ClickStack deployment configuration:
 ```yaml
@@ -151,7 +151,7 @@ services:
       # ... other volumes ...
 ```
 
-##### Option 2: Docker Run (All-in-One Image) {#all-in-one}
+##### Option 2: Docker run (all-in-one image) {#all-in-one}
 
 If using the all-in-one image with docker run:
 ```bash
@@ -167,7 +167,7 @@ docker run --name clickstack \
 Ensure the ClickStack collector has appropriate permissions to read the nginx log files. In production, use read-only mounts (:ro) and follow the principle of least privilege.
 :::
 
-#### Verifying Logs in HyperDX {#verifying-logs}
+#### Verifying logs in hyperdx {#verifying-logs}
 Once configured, log into HyperDX and verify logs are flowing:
 
 1. Navigate to the search view
@@ -248,7 +248,7 @@ docker run --name clickstack-demo \
   clickhouse/clickstack-all-in-one:latest
 ```
 
-#### Verify logs in HyperDX {#verify-demo-logs}
+#### Verify logs in hyperdx {#verify-demo-logs}
 
 Once ClickStack is running:
 
@@ -274,7 +274,7 @@ To help you get started monitoring nginx with ClickStack, we provide essential v
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/nginx-logs-dashboard.json')} download="nginx-logs-dashboard.json" eventName="docs.nginx_logs_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
+#### <Trackedlink href={useBaseUrl('/examples/nginx-logs-dashboard.json')} download="nginx-logs-dashboard.json" eventName="docs.nginx_logs_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
 
 #### Import the pre-built dashboard {#import-dashboard}
 1. Open HyperDX and navigate to the Dashboards section.
@@ -318,7 +318,7 @@ docker exec <container-name> ls -lh /etc/otelcol-contrib/custom.config.yaml
 docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml
 ```
 
-### No logs appearing in HyperDX {#no-logs}
+### No logs appearing in hyperdx {#no-logs}
 
 - Ensure nginx is writing JSON logs 
 ```bash

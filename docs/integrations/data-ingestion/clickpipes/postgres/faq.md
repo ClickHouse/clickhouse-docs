@@ -19,7 +19,7 @@ If your ClickHouse Cloud service is idling, your Postgres CDC ClickPipe will con
 
 As an example, if your sync interval is set to 30 mins and your service idle time is set to 10 mins, Your service will wake-up every 30 mins and be active for 10 mins, then go back to idling.
 
-### How are TOAST columns handled in ClickPipes for Postgres? {#how-are-toast-columns-handled-in-clickpipes-for-postgres}
+### How are toast columns handled in ClickPipes for Postgres? {#how-are-toast-columns-handled-in-clickpipes-for-postgres}
 
 Please refer to the [Handling TOAST Columns](./toast) page for more information.
 
@@ -47,7 +47,7 @@ It's important to note that if neither a primary key nor a replica identity is d
 
 Yes, partitioned tables are supported out of the box, as long as they have a PRIMARY KEY or REPLICA IDENTITY defined. The PRIMARY KEY and REPLICA IDENTITY must be present on both the parent table and its partitions. You can read more about it [here](https://blog.peerdb.io/real-time-change-data-capture-for-postgres-partitioned-tables).
 
-### Can I connect Postgres databases that don't have a public IP or are in private networks? {#can-i-connect-postgres-databases-that-dont-have-a-public-ip-or-are-in-private-networks}
+### Can i connect Postgres databases that don't have a public ip or are in private networks? {#can-i-connect-postgres-databases-that-dont-have-a-public-ip-or-are-in-private-networks}
 
 Yes! ClickPipes for Postgres offers two ways to connect to databases in private networks:
 
@@ -64,7 +64,7 @@ Yes! ClickPipes for Postgres offers two ways to connect to databases in private 
    - For detailed setup instructions, see our [PrivateLink documentation](/knowledgebase/aws-privatelink-setup-for-clickpipes)
    - For regions where PrivateLink is not available, please use SSH tunneling
 
-### How do you handle UPDATEs and DELETEs? {#how-do-you-handle-updates-and-deletes}
+### How do you handle updates and deletes? {#how-do-you-handle-updates-and-deletes}
 
 ClickPipes for Postgres captures both INSERTs and UPDATEs from Postgres as new rows with different versions (using the `_peerdb_` version column) in ClickHouse. The ReplacingMergeTree table engine periodically performs deduplication in the background based on the ordering key (ORDER BY columns), retaining only the row with the latest `_peerdb_` version.
 
@@ -77,7 +77,7 @@ For more details, refer to:
 * [ReplacingMergeTree table engine best practices](https://docs.peerdb.io/bestpractices/clickhouse_datamodeling#replacingmergetree-table-engine)
 * [Postgres-to-ClickHouse CDC internals blog](https://clickhouse.com/blog/postgres-to-clickhouse-data-modeling-tips)
 
-### Can I update primary key columns in PostgreSQL? {#can-i-update-primary-key-columns-in-postgresql}
+### Can i update primary key columns in PostgreSQL? {#can-i-update-primary-key-columns-in-postgresql}
 
 :::warning
 Primary key updates in PostgreSQL cannot be properly replayed in ClickHouse by default.
@@ -143,11 +143,11 @@ For an excellent deep dive into this topic, check out our blog post: [Overcoming
 
 ClickPipes for Postgres aims to map Postgres data types as natively as possible on the ClickHouse side. This document provides a comprehensive list of each data type and its mapping: [Data Type Matrix](https://docs.peerdb.io/datatypes/datatype-matrix).
 
-### Can I define my own data type mapping while replicating data from Postgres to ClickHouse? {#can-i-define-my-own-data-type-mapping-while-replicating-data-from-postgres-to-clickhouse}
+### Can i define my own data type mapping while replicating data from Postgres to ClickHouse? {#can-i-define-my-own-data-type-mapping-while-replicating-data-from-postgres-to-clickhouse}
 
 Currently, we don't support defining custom data type mappings as part of the pipe. However, note that the default data type mapping used by ClickPipes is highly native. Most column types in Postgres are replicated as closely as possible to their native equivalents on ClickHouse. Integer array types in Postgres, for instance, are replicated as integer array types on ClickHouse.
 
-### How are JSON and JSONB columns replicated from Postgres? {#how-are-json-and-jsonb-columns-replicated-from-postgres}
+### How are JSON and jsonb columns replicated from Postgres? {#how-are-json-and-jsonb-columns-replicated-from-postgres}
 
 JSON and JSONB columns are replicated as String type in ClickHouse. Since ClickHouse supports a native [JSON type](/sql-reference/data-types/newjson), you can create a materialized view over the ClickPipes tables to perform the translation if needed. Alternatively, you can use [JSON functions](/sql-reference/functions/json-functions) directly on the String column(s). We are actively working on a feature that replicates JSON and JSONB columns directly to the JSON type in ClickHouse. This feature is expected to be available in a few months.
 
@@ -166,7 +166,7 @@ In summary, while sync and normalize processes are terminated during a pause, it
 
 A Postgres ClickPipe can also be created and managed via [OpenAPI](https://clickhouse.com/docs/cloud/manage/openapi) endpoints. This feature is in beta, and the API reference can be found [here](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/beta). We are actively working on Terraform support to create Postgres ClickPipes as well.
 
-### How do I speed up my initial load? {#how-do-i-speed-up-my-initial-load}
+### How do i speed up my initial load? {#how-do-i-speed-up-my-initial-load}
 
 You cannot speed up an already running initial load. However, you can optimize future initial loads by adjusting certain settings. By default, the settings are configured with 4 parallel threads and a snapshot number of rows per partition set to 100,000. These are advanced settings and are generally sufficient for most use cases.
 
@@ -178,7 +178,7 @@ For Postgres versions 13 or lower, CTID range scans are slower, and these settin
 
 These adjustments should significantly enhance the performance of the initial load, especially for older Postgres versions. If you are using Postgres 14 or later, these settings are less impactful due to improved support for CTID range scans.
 
-### How should I scope my publications when setting up replication? {#how-should-i-scope-my-publications-when-setting-up-replication}
+### How should i scope my publications when setting up replication? {#how-should-i-scope-my-publications-when-setting-up-replication}
 
 You can let ClickPipes manage your publications (requires additional permissions) or create them yourself. With ClickPipes-managed publications, we automatically handle table additions and removals as you edit the pipe. If self-managing, carefully scope your publications to only include tables you need to replicate - including unnecessary tables will slow down Postgres WAL decoding.
 
@@ -257,7 +257,7 @@ If your database generates 100 GB of WAL per day, set:
 max_slot_wal_keep_size = 200GB
 ```
 
-### I'm seeing a ReceiveMessage EOF error in the logs. What does it mean? {#im-seeing-a-receivemessage-eof-error-in-the-logs-what-does-it-mean}
+### I'm seeing a receivemessage eof error in the logs. what does it mean? {#im-seeing-a-receivemessage-eof-error-in-the-logs-what-does-it-mean}
 
 `ReceiveMessage` is a function in the Postgres logical decoding protocol that reads messages from the replication stream. An EOF (End of File) error indicates that the connection to the Postgres server was unexpectedly closed while trying to read from the replication stream.
 
@@ -268,7 +268,7 @@ It can happen for a few reasons:
 - **Network Issues:** Temporary network disruptions can cause the connection to drop.
 - **Postgres Server Restart:** If the Postgres server is restarted or crashes, the connection will be lost.
 
-### My replication slot is invalidated. What should I do? {#my-replication-slot-is-invalidated-what-should-i-do}
+### My replication slot is invalidated. what should i do? {#my-replication-slot-is-invalidated-what-should-i-do}
 
 The only way to recover ClickPipe is by triggering a resync, which you can do in the Settings page.
 
@@ -276,7 +276,7 @@ The most common cause of replication slot invalidation is a low `max_slot_wal_ke
 
 In rare cases, we have seen this issue occur even when `max_slot_wal_keep_size` is not configured. This could be due to an intricate and rare bug in PostgreSQL, although the cause remains unclear.
 
-### I am seeing out of memory (OOMs) on ClickHouse while my ClickPipe is ingesting data. Can you help? {#i-am-seeing-out-of-memory-ooms-on-clickhouse-while-my-clickpipe-is-ingesting-data-can-you-help}
+### I am seeing out of memory (ooms) on ClickHouse while my ClickPipe is ingesting data. can you help? {#i-am-seeing-out-of-memory-ooms-on-clickhouse-while-my-clickpipe-is-ingesting-data-can-you-help}
 
 One common reason for OOMs on ClickHouse is that your service is undersized. This means that your current service configuration doesn't have enough resources (e.g., memory or CPU) to handle the ingestion load effectively. We strongly recommend scaling up the service to meet the demands of your ClickPipe data ingestion.
 
@@ -286,7 +286,7 @@ Another reason we've observed is the presence of downstream Materialized Views w
 
 - Another optimization for JOINs is to explicitly filter the tables through `subqueries` or `CTEs` and then perform the `JOIN` across these subqueries. This provides the planner with hints on how to efficiently filter rows and perform the `JOIN`.
 
-### I am seeing an `invalid snapshot identifier` during the initial load. What should I do? {#i-am-seeing-an-invalid-snapshot-identifier-during-the-initial-load-what-should-i-do}
+### I am seeing an `invalid snapshot identifier` during the initial load. what should i do? {#i-am-seeing-an-invalid-snapshot-identifier-during-the-initial-load-what-should-i-do}
 
 The `invalid snapshot identifier` error occurs when there is a connection drop between ClickPipes and your Postgres database. This can happen due to gateway timeouts, database restarts, or other transient issues.
 
@@ -294,7 +294,7 @@ It is recommended that you do not carry out any disruptive operations like upgra
 
 To resolve this issue, you can trigger a resync from the ClickPipes UI. This will restart the initial load process from the beginning.
 
-### What happens if I drop a publication in Postgres? {#what-happens-if-i-drop-a-publication-in-postgres}
+### What happens if i drop a publication in Postgres? {#what-happens-if-i-drop-a-publication-in-postgres}
 
 Dropping a publication in Postgres will break your ClickPipe connection since the publication is required for the ClickPipe to pull changes from the source. When this happens, you'll typically receive an error alert indicating that the publication no longer exists.
 
@@ -315,7 +315,7 @@ FOR TABLE <...>, <...>
 WITH (publish_via_partition_root = true);
 ```
 
-### What if I am seeing `Unexpected Datatype` errors or `Cannot parse type XX ...` {#what-if-i-am-seeing-unexpected-datatype-errors}
+### What if i am seeing `Unexpected Datatype` errors or `Cannot parse type XX ...` {#what-if-i-am-seeing-unexpected-datatype-errors}
 
 This error typically occurs when the source Postgres database has a datatype which cannot be mapped during ingestion.
 For more specific issue, refer to the possibilities below.
@@ -324,7 +324,7 @@ For more specific issue, refer to the possibilities below.
 
 There was a bug introduced in Postgres patch versions 17.5/16.9/15.13/14.18/13.21 due to which certain workloads can cause an exponential increase in memory usage, leading to a memory allocation request >1GB which Postgres considers invalid. This bug [has been fixed](https://github.com/postgres/postgres/commit/d87d07b7ad3b782cb74566cd771ecdb2823adf6a) and will be in the next Postgres patch series (17.6...). Please check with your Postgres provider when this patch version will be available for upgrade. If an upgrade isn't immediately possible, a resync of the pipe will be needed as it hits the error.
 
-### I need to maintain a complete historical record in ClickHouse, even when the data is deleted from the source Postgres database. Can I completely ignore DELETE and TRUNCATE operations from Postgres in ClickPipes? {#ignore-delete-truncate}
+### I need to maintain a complete historical record in ClickHouse, even when the data is deleted from the source Postgres database. can i completely ignore delete and truncate operations from Postgres in ClickPipes? {#ignore-delete-truncate}
 
 Yes! Before creating your Postgres ClickPipe, create a publication without DELETE operations. For example:
 ```sql
@@ -334,17 +334,17 @@ Then when [setting up](https://clickhouse.com/docs/integrations/clickpipes/postg
 
 Note that TRUNCATE operations are ignored by ClickPipes and will not be replicated to ClickHouse.
 
-### Why can I not replicate my table which has a dot in it? {#replicate-table-dot}
+### Why can i not replicate my table which has a dot in it? {#replicate-table-dot}
 PeerDB has a limitation currently where dots in source table identifiers - aka either schema name or table name - is not supported for replication as PeerDB cannot discern, in that case, what is the schema and what is the table as it splits on dot.
 Effort is being made to support input of schema and table separately to get around this limitation.
 
-### Initial load completed but there is no/missing data on ClickHouse. What could be the issue? {#initial-load-issue}
+### Initial load completed but there is no/missing data on ClickHouse. what could be the issue? {#initial-load-issue}
 If your initial load has completed without error but your destination ClickHouse table is missing data, it might be that you have RLS (Row Level Security) policies enabled on your source Postgres tables.
 Also worth checking:
 - If the user has sufficient permissions to read the source tables.
 - If there are any row policies on ClickHouse side which might be filtering out rows.
 
-### Can I have the ClickPipe create a replication slot with failover enabled? {#failover-slot}
+### Can i have the ClickPipe create a replication slot with failover enabled? {#failover-slot}
 Yes, for a Postgres ClickPipe with replication mode as CDC or Snapshot + CDC, you can have ClickPipes create a replication slot with failover enabled, by toggling the below switch in the `Advanced Settings` section while creating the ClickPipe. Note that your Postgres version must be 17 or above to use this feature.
 
 <Image img={failover_slot} border size="md"/>

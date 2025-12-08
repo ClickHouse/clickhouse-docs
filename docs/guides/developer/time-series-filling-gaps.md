@@ -77,7 +77,7 @@ ORDER BY bucket ASC
 
 The result set only includes the buckets where an image was created, but for time-series analysis, we might want to return each 100ms bucket, even if it doesn't have any entries.
 
-## WITH FILL {#with-fill}
+## With fill {#with-fill}
 
 We can use the `WITH FILL` clause to fill in these gaps.
 We'll also specify the `STEP`, which is the size of the gaps to fill.
@@ -115,7 +115,7 @@ STEP toIntervalMillisecond(100);
 
 We can see that the gaps have been filled with 0 values in the `count` column.
 
-## WITH FILL...FROM {#with-fillfrom}
+## With FILL...FROM {#with-fillfrom}
 
 There is, however, still a gap at the beginning of the time range, which we can fix by specifying `FROM`:
 
@@ -158,7 +158,7 @@ STEP toIntervalMillisecond(100);
 
 We can see from the results that the buckets from `00:24:03.000` to `00:24:03.500` all now appear.
 
-## WITH FILL...TO {#with-fillto}
+## With FILL...TO {#with-fillto}
 
 We're still missing some buckets from the end of the time range though, which we can fill by providing a `TO` value.
 `TO` is not inclusive, so we'll add a small amount to the end time to make sure that it's included:
@@ -253,7 +253,7 @@ STEP toIntervalMillisecond(100);
 
 The values in the cumulative column aren't working how we'd like them to.
 
-## WITH FILL...INTERPOLATE {#with-fillinterpolate}
+## With FILL...INTERPOLATE {#with-fillinterpolate}
 
 Any rows that have `0` in the `count` column also have `0` in the cumulative column, whereas we'd rather it use the previous value in the `cumulative` column.
 We can do this by using the `INTERPOLATE` clause, as shown below:

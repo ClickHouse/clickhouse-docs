@@ -7,13 +7,13 @@ keywords: ['chdb', 'c', 'cpp', 'embedded', 'clickhouse', 'sql', 'olap', 'api']
 doc_type: 'guide'
 ---
 
-# chDB for C and C++
+# chDB for c and c++
 
 chDB provides a native C/C++ API for embedding ClickHouse functionality directly into your applications. The API supports both simple queries and advanced features like persistent connections and streaming query results.
 
 ## Installation {#installation}
 
-### Step 1: Install libchdb {#install-libchdb}
+### Step 1: install libchdb {#install-libchdb}
 
 Install the chDB library on your system:
 
@@ -21,7 +21,7 @@ Install the chDB library on your system:
 curl -sL https://lib.chdb.io | bash
 ```
 
-### Step 2: Include headers {#include-headers}
+### Step 2: include headers {#include-headers}
 
 Include the chDB header in your project:
 
@@ -29,7 +29,7 @@ Include the chDB header in your project:
 #include <chdb.h>
 ```
 
-### Step 3: Link library {#link-library}
+### Step 3: link library {#link-library}
 
 Compile and link your application with chDB:
 
@@ -41,7 +41,7 @@ gcc -o myapp myapp.c -lchdb
 g++ -o myapp myapp.cpp -lchdb
 ```
 
-## C Examples {#c-examples} 
+## C examples {#c-examples}
 
 ### Basic connection and queries {#basic-connection-queries}
 

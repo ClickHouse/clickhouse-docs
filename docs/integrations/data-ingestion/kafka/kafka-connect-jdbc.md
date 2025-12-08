@@ -10,7 +10,7 @@ keywords: ['kafka', 'kafka connect', 'jdbc', 'integration', 'data pipeline']
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 
-# JDBC connector
+# Jdbc connector
 
 :::note
 This connector should only be used if your data is simple and consists of primitive data types e.g., int. ClickHouse specific types such as maps are not supported.
@@ -29,7 +29,7 @@ The JDBC Connector is distributed under the [Confluent Community License](https:
 #### Gather your connection details {#gather-your-connection-details}
 <ConnectionDetails />
 
-#### 1. Install Kafka Connect and Connector {#1-install-kafka-connect-and-connector}
+#### 1. install Kafka connect and connector {#1-install-kafka-connect-and-connector}
 
 We assume you have downloaded the Confluent package and installed it locally. Follow the installation instructions for installing the connector as documented [here](https://docs.confluent.io/kafka-connect-jdbc/current/#install-the-jdbc-connector).
 
@@ -37,7 +37,7 @@ If you use the confluent-hub installation method, your local configuration files
 
 For sending data to ClickHouse from Kafka, we use the Sink component of the connector.
 
-#### 2. Download and install the JDBC Driver {#2-download-and-install-the-jdbc-driver}
+#### 2. download and install the jdbc driver {#2-download-and-install-the-jdbc-driver}
 
 Download and install the ClickHouse JDBC driver `clickhouse-jdbc-<version>-shaded.jar` from [here](https://github.com/ClickHouse/clickhouse-java/releases). Install this into Kafka Connect following the details [here](https://docs.confluent.io/kafka-connect-jdbc/current/#installing-jdbc-drivers). Other drivers may work but have not been tested.
 
@@ -47,7 +47,7 @@ Common Issue: the docs suggest copying the jar to `share/java/kafka-connect-jdbc
 
 :::
 
-#### 3. Prepare configuration {#3-prepare-configuration}
+#### 3. prepare configuration {#3-prepare-configuration}
 
 Follow [these instructions](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#set-up-a-local-connect-worker-with-cp-install) for setting up a Connect relevant to your installation type, noting the differences between a standalone and distributed cluster. If using Confluent Cloud the distributed setup is relevant.
 
@@ -77,7 +77,7 @@ If using our sample dataset for testing, ensure the following are set:
 
 Example configuration files for the Github sample data can be found [here](https://github.com/ClickHouse/kafka-samples/tree/main/github_events/jdbc_sink), assuming Connect is run in standalone mode and Kafka is hosted in Confluent Cloud.
 
-#### 4. Create the ClickHouse table {#4-create-the-clickhouse-table}
+#### 4. create the ClickHouse table {#4-create-the-clickhouse-table}
 
 Ensure the table has been created, dropping it if it already exists from previous examples. An example compatible with the reduced Github dataset is shown below. Not the absence of any Array or Map types that are not currently not supported:
 
@@ -109,7 +109,7 @@ CREATE TABLE github
 ) ENGINE = MergeTree ORDER BY (event_type, repo_name, created_at)
 ```
 
-#### 5. Start Kafka Connect {#5-start-kafka-connect}
+#### 5. start Kafka connect {#5-start-kafka-connect}
 
 Start Kafka Connect in either [standalone](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#standalone-cluster) or [distributed](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#distributed-cluster) mode.
 
@@ -117,7 +117,7 @@ Start Kafka Connect in either [standalone](https://docs.confluent.io/cloud/curre
 ./bin/connect-standalone connect.properties.ini github-jdbc-sink.properties.ini
 ```
 
-#### 6. Add data to Kafka {#6-add-data-to-kafka}
+#### 6. add data to Kafka {#6-add-data-to-kafka}
 
 Insert messages to Kafka using the [script and config](https://github.com/ClickHouse/kafka-samples/tree/main/producer) provided. You will need to modify github.config to include your Kafka credentials. The script is currently configured for use with Confluent Cloud.
 

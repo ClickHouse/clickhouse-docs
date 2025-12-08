@@ -11,17 +11,17 @@ import Image from '@theme/IdealImage';
 <details>
     <summary>Create GCS buckets and an HMAC key</summary>
 
-### ch_bucket_us_east1 {#ch_bucket_us_east1}
+### Ch_bucket_us_east1 {#ch_bucket_us_east1}
 
 <Image size="md" img={GCS_bucket_1} alt="Creating a GCS bucket in US East 1" border />
 
-### ch_bucket_us_east4 {#ch_bucket_us_east4}
+### Ch_bucket_us_east4 {#ch_bucket_us_east4}
 
 <Image size="md" img={GCS_bucket_2} alt="Creating a GCS bucket in US East 4" border />
 
 ### Generate an access key {#generate-an-access-key}
 
-### Create a service account HMAC key and secret {#create-a-service-account-hmac-key-and-secret}
+### Create a service account hmac key and secret {#create-a-service-account-hmac-key-and-secret}
 
 Open **Cloud Storage > Settings > Interoperability** and either choose an existing **Access key**, or **CREATE A KEY FOR A SERVICE ACCOUNT**.  This guide covers the path for creating a new key for a new service account.
 

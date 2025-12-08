@@ -18,7 +18,7 @@ import dataflow_extended_template_form from '@site/static/images/integrations/da
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Dataflow BigQuery to ClickHouse template
+# Dataflow bigquery to ClickHouse template
 
 The BigQuery to ClickHouse template is a batch pipeline that ingests data from a BigQuery table into a ClickHouse table.
 The template can read the entire table or filter specific records using a provided SQL query.
@@ -88,7 +88,7 @@ recommended mapping you should have in your target ClickHouse table (for a given
 | [**Numeric - Integer Types**](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types) | [**Integer Types**](../../../sql-reference/data-types/int-uint) | In BigQuery all Int types (`INT`, `SMALLINT`, `INTEGER`, `BIGINT`, `TINYINT`, `BYTEINT`) are aliases to `INT64`. We recommend you setting in ClickHouse the right Integer size, as the template will convert the column based on the defined column type (`Int8`, `Int16`, `Int32`, `Int64`). The template will also convert unassigned Int types if used in ClickHouse table (`UInt8`, `UInt16`, `UInt32`, `UInt64`). |
 | [**Numeric - Float Types**](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types)   | [**Float Types**](../../../sql-reference/data-types/float)      | Supported ClickHouse types: `Float32` and `Float64`                                                                                                                                                                                                                                                                                                                                                                    |
 
-## Running the Template {#running-the-template}
+## Running the template {#running-the-template}
 
 The BigQuery to ClickHouse template is available for execution via the Google Cloud CLI.
 
@@ -128,7 +128,7 @@ To add it, please scroll down to the `Password for ClickHouse Endpoint` option.
   </TabItem>
   <TabItem value="cli" label="Google Cloud CLI">
 
-### Install & Configure `gcloud` CLI {#install--configure-gcloud-cli}
+### Install & configure `gcloud` CLI {#install--configure-gcloud-cli}
 
 - If not already installed, install the [`gcloud` CLI](https://cloud.google.com/sdk/docs/install).
 - Follow the `Before you begin` section

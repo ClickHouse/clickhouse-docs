@@ -126,7 +126,7 @@ HyperDX.setGlobalAttributes({
 });
 ```
 
-### Auto capture React error boundary errors {#auto-capture-react-error-boundary-errors}
+### Auto capture react error boundary errors {#auto-capture-react-error-boundary-errors}
 
 If you're using React, you can automatically capture errors that occur within
 React error boundaries by passing your error boundary component 
@@ -165,7 +165,7 @@ To enable or disable network capture dynamically, simply invoke the `enableAdvan
 HyperDX.enableAdvancedNetworkCapture();
 ```
 
-### Enable resource timing for CORS requests {#enable-resource-timing-for-cors-requests}
+### Enable resource timing for cors requests {#enable-resource-timing-for-cors-requests}
 
 If your frontend application makes API requests to a different domain, you can
 optionally enable the `Timing-Allow-Origin`[header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Timing-Allow-Origin) to be sent with the request. This will allow ClickStack to capture fine-grained

@@ -20,7 +20,7 @@ import trace_id_in_logs from '@site/static/images/integrations/data-visualizatio
 import demo_data_links from '@site/static/images/integrations/data-visualization/grafana/demo_data_links.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Query Builder
+# Query builder
 
 <ClickHouseSupportedBadge/>
 

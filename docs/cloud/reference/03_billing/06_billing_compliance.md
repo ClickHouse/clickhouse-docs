@@ -10,7 +10,7 @@ doc_type: 'guide'
 import billing_compliance from '@site/static/images/cloud/manage/billing_compliance.png';
 import Image from '@theme/IdealImage';
 
-# ClickHouse Cloud billing compliance
+# ClickHouse cloud billing compliance
 
 ## Billing compliance {#billing-compliance}
 

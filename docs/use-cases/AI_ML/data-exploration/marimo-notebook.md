@@ -74,7 +74,7 @@ The environment variables above persist only as long as your terminal session.
 To set them permanently, add them to your shell configuration file.
 :::
 
-### Installing Marimo {#installing-marimo}
+### Installing marimo {#installing-marimo}
 
 Now activate your virtual environment.
 From within your virtual environment, install the following packages that we will be using in this guide:
@@ -129,7 +129,7 @@ Let's imagine we are interested in checking how price has changed with time for 
 ClickHouse's [`remoteSecure`](/docs/sql-reference/table-functions/remote) function allows you to easily retrieve the data from ClickHouse Cloud.
 You can instruct chDB to return this data in process as a Pandas data frame - which is a convenient and familiar way of working with data.
 
-### Querying ClickHouse Cloud data {#querying-clickhouse-cloud-data}
+### Querying ClickHouse cloud data {#querying-clickhouse-cloud-data}
 
 Create a new cell with the following query to fetch the UK price paid data from your ClickHouse Cloud service and turn it into a `pandas.DataFrame`:
 

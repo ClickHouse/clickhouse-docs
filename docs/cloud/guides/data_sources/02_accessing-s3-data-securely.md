@@ -24,7 +24,7 @@ This approach allows customers to manage all access to their S3 buckets in a sin
 
 ## Setup {#setup}
 
-### Obtaining the ClickHouse service IAM role ARN {#obtaining-the-clickhouse-service-iam-role-arn}
+### Obtaining the ClickHouse service iam role arn {#obtaining-the-clickhouse-service-iam-role-arn}
 
 1 - Login to your ClickHouse cloud account.
 
@@ -38,9 +38,9 @@ This approach allows customers to manage all access to their S3 buckets in a sin
 
 <Image img={s3_info} size="lg" alt="Obtaining ClickHouse service IAM Role ARN" border />
 
-### Setting up IAM assume role {#setting-up-iam-assume-role}
+### Setting up iam assume role {#setting-up-iam-assume-role}
 
-#### Option 1: Deploying with CloudFormation stack {#option-1-deploying-with-cloudformation-stack}
+#### Option 1: deploying with cloudformation stack {#option-1-deploying-with-cloudformation-stack}
 
 1 - Login to your AWS Account in the web browser with an IAM user that has permission to create & manage IAM role.
 
@@ -72,7 +72,7 @@ This approach allows customers to manage all access to their S3 buckets in a sin
 
 <Image img={s3_output} size="lg" alt="CloudFormation stack output showing IAM Role ARN" border />
 
-#### Option 2: Manually create IAM role {#option-2-manually-create-iam-role}
+#### Option 2: manually create iam role {#option-2-manually-create-iam-role}
 
 1 - Login to your AWS Account in the web browser with an IAM user that has permission to create & manage IAM role.
 
@@ -129,7 +129,7 @@ IAM policy (Please replace `{BUCKET_NAME}` with your bucket name):
 
 4 - Copy the new **IAM Role Arn** after creation. This is what needed to access your S3 bucket.
 
-## Access your S3 bucket with the ClickHouseAccess role {#access-your-s3-bucket-with-the-clickhouseaccess-role}
+## Access your S3 bucket with the clickhouseaccess role {#access-your-s3-bucket-with-the-clickhouseaccess-role}
 
 ClickHouse Cloud has a new feature that allows you to specify `extra_credentials` as part of the S3 table function. Below is an example of how to run a query using the newly created role copied from above.
 

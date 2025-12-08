@@ -42,7 +42,7 @@ Local mode deploys the HyperDX UI on port 8080.
 docker run -p 8080:8080 clickhouse/clickstack-local:latest
 ```
 
-### Navigate to the HyperDX UI {#navigate-to-hyperdx-ui}
+### Navigate to the hyperdx UI {#navigate-to-hyperdx-ui}
 
 Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
 

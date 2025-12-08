@@ -10,7 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# How to build a SlackBot agent using ClickHouse MCP Server
+# How to build a slackbot agent using ClickHouse mcp server
 
 In this guide, you'll learn how to build a [SlackBot](https://slack.com/intl/en-gb/help/articles/202026038-An-introduction-to-Slackbot) agent.
 This bot allows you to ask questions about your ClickHouse data directly from Slack, using natural language. It uses the
@@ -27,7 +27,7 @@ The code for this example can be found in the [examples repository](https://gith
 
 <VerticalStepper headerLevel="h2">
 
-## Create a Slack App {#create-a-slack-app}
+## Create a slack app {#create-a-slack-app}
 
 1. Go to [slack.com/apps](https://slack.com/apps) and click `Create New App`.
 2. Choose option `From scratch` and give your app a name.
@@ -39,7 +39,7 @@ Next, you'll need to add the app created in the previous step to your workspace.
 You can follow the instructions for ["Add apps to your Slack workspace"](https://slack.com/intl/en-gb/help/articles/202035138-Add-apps-to-your-Slack-workspace)
 in the Slack documentation.
 
-## Configure Slack app settings {#configure-slack-app-settings}
+## Configure slack app settings {#configure-slack-app-settings}
 
 - Go to `App Home`
   - Under `Show Tabs` → `Messages Tab`: Enable `Allow users to send Slash commands and messages from the messages tab`

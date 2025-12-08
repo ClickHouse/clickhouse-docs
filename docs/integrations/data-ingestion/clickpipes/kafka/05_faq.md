@@ -65,7 +65,7 @@ Horizontal scaling adds more replicas to increase throughput, while vertical sca
 This can be configured during ClickPipe creation, or at any other point under **Settings** -> **Advanced Settings** -> **Scaling**.
 </details>
 
-### Azure Event Hubs {#azure-eventhubs}
+### Azure event hubs {#azure-eventhubs}
 
 <details>
 

@@ -18,7 +18,7 @@ import vector01 from '@site/static/images/integrations/data-ingestion/etl-tools/
 import vector02 from '@site/static/images/integrations/data-ingestion/etl-tools/vector_02.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Integrating Vector with ClickHouse
+# Integrating vector with ClickHouse
 
 <PartnerBadge/>
 
@@ -59,7 +59,7 @@ ORDER BY tuple()
 **ORDER BY** is set to **tuple()** (an empty tuple) as there is no need for a primary key yet.
 :::
 
-## Configure Nginx {#2--configure-nginx}
+## Configure nginx {#2--configure-nginx}
 
 In this step, you will be shown how to get Nginx logging configured.
 
@@ -88,7 +88,7 @@ Logs in the **combined** format look as follows:
  192.168.208.1 - - [12/Oct/2021:03:31:49 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
  ```
 
-## Configure Vector {#3-configure-vector}
+## Configure vector {#3-configure-vector}
 
 Vector collects, transforms and routes logs, metrics, and traces (referred to as **sources**) to many different vendors (referred to as **sinks**), including out-of-the-box compatibility with ClickHouse.
 Sources and sinks are defined in a configuration file named **vector.toml**.
@@ -120,7 +120,7 @@ SELECT * FROM nginxdb.access_logs
 
 <Image img={vector01} size="lg" border alt="View ClickHouse logs in table format" />
 
-## Parse the Logs {#4-parse-the-logs}
+## Parse the logs {#4-parse-the-logs}
 
 Having the logs in ClickHouse is great, but storing each event as a single string does not allow for much data analysis.
 We'll next look at how to parse the log events using a [materialized view](/materialized-view/incremental-materialized-view).

@@ -51,7 +51,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 ```
 
-### Stateful usage (Sessions) {#stateful-usage-sessions}
+### Stateful usage (sessions) {#stateful-usage-sessions}
 
 For queries requiring persistent state like databases and tables:
 

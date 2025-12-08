@@ -19,7 +19,7 @@ into a comprehensive approach to understanding system behavior. However,
 implementing effective observability isn't straightforward - it requires
 understanding technical concepts and organizational challenges.
 
-## What is Observability? {#what-is-observability}
+## What is observability? {#what-is-observability}
 
 Observability is understanding a system's internal state by examining its outputs.
 In software systems, this means understanding what's happening inside your
@@ -101,7 +101,7 @@ helps maintain responsive services that keep customers engaged
 through comprehensive monitoring and quick issue resolution often gain an edge
 over competitors
 
-### Cost Savings from faster incident response {#cost-savings-from-faster-incident-response}
+### Cost savings from faster incident response {#cost-savings-from-faster-incident-response}
 
 One of the most immediate benefits of observability is reduced labor costs
 through faster detection and resolution of issues. This comes from:

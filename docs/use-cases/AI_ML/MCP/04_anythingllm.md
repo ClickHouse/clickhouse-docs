@@ -18,7 +18,7 @@ import Conversation from '@site/static/images/use-cases/AI_ML/MCP/allm_conversat
 import MCPServers from '@site/static/images/use-cases/AI_ML/MCP/allm_mcp-servers.png';
 import ToolIcon from '@site/static/images/use-cases/AI_ML/MCP/alm_tool-icon.png';
 
-# Using ClickHouse MCP server with AnythingLLM
+# Using ClickHouse mcp server with anythingllm
 
 > This guide explains how to set up [AnythingLLM](https://anythingllm.com/) with a ClickHouse MCP server using Docker
 > and connect it to the ClickHouse example datasets.
@@ -35,7 +35,7 @@ You will need Docker to run LibreChat and the MCP server. To get Docker:
 <br/>
 For more information, see the [Docker documentation](https://docs.docker.com/get-docker/).
 
-## Pull AnythingLLM Docker image {#pull-anythingllm-docker-image}
+## Pull anythingllm Docker image {#pull-anythingllm-docker-image}
 
 Run the following command to pull the AnythingLLM Docker image to your machine:
 
@@ -53,7 +53,7 @@ mkdir -p $STORAGE_LOCATION && \
 touch "$STORAGE_LOCATION/.env" 
 ```
 
-## Configure MCP Server config file {#configure-mcp-server-config-file}
+## Configure mcp server config file {#configure-mcp-server-config-file}
 
 Create the `plugins` directory:
 
@@ -90,7 +90,7 @@ If you want to explore your own data, you can do so by
 using the [host, username and password](https://clickhouse.com/docs/getting-started/quick-start/cloud#connect-with-your-app) 
 of your own ClickHouse Cloud service.
 
-## Start the AnythingLLM Docker container {#start-anythingllm-docker-container}
+## Start the anythingllm Docker container {#start-anythingllm-docker-container}
 
 Run the following command to start the AnythingLLM Docker container:
 
@@ -106,7 +106,7 @@ mintplexlabs/anythingllm
 Once that's started, navigate to `http://localhost:3001` in your browser.
 Select the model that you want to use and provide your API key.
 
-## Wait for MCP Servers to start up {#wait-for-mcp-servers-to-start-up}
+## Wait for mcp servers to start up {#wait-for-mcp-servers-to-start-up}
 
 Click on the tool icon in the bottom left-hand side of the UI:
 
@@ -117,7 +117,7 @@ Wait until you see `Mcp ClickHouse` set to `On`
 
 <Image img={MCPServers} alt="MCP servers ready" size="md"/>
 
-## Chat with ClickHouse MCP Server with AnythingLLM {#chat-with-clickhouse-mcp-server-with-anythingllm}
+## Chat with ClickHouse mcp server with anythingllm {#chat-with-clickhouse-mcp-server-with-anythingllm}
 
 We're now ready to start a chat. 
 To make MCP Servers available to a chat, you'll need to prefix the first message in the conversation with `@agent`.

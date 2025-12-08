@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 import TableOfContents from '@site/docs/guides/best-practices/_snippets/_performance_optimizations_table_of_contents.md';
 
-# Performance and Optimizations
+# Performance and optimizations
 
 This section contains tips and best practices for improving performance with ClickHouse. 
 We recommend users read [Core Concepts](/parts) as a precursor to this section, 

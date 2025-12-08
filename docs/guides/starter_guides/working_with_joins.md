@@ -21,7 +21,7 @@ import asof_example from '@site/static/images/starter_guides/joins/asof_example.
 ClickHouse fully supports standard SQL joins, enabling efficient data analysis.
 In this guide, you'll explore some of the available commonly used join types and how to use them with the help of Venn diagrams and example queries on a normalized [IMDB](https://en.wikipedia.org/wiki/IMDb) dataset originating from the [relational dataset repository](https://relational.fit.cvut.cz/dataset/IMDb).
 
-## Test Data and Resources {#test-data-and-resources}
+## Test data and resources {#test-data-and-resources}
 
 Instructions for creating and loading the tables can be found [here](/integrations/dbt/guides).
 The dataset is also available in the [playground](https://sql.clickhouse.com?query_id=AACTS8ZBT3G7SSGN8ZJBJY) for users who don't want to create and load
@@ -54,7 +54,7 @@ ClickHouse supports the following join types:
 
 You'll write example queries for each of the JOIN types above in the following sections.
 
-## INNER JOIN {#inner-join}
+## Inner join {#inner-join}
 
 The `INNER JOIN` returns, for each pair of rows matching on join keys, the column values of the row from the left table, combined with the column values of the row from the right table.
 If a row has more than one match, then all matches are returned (meaning that the [cartesian product](https://en.wikipedia.org/wiki/Cartesian_product) is produced for rows with matching join keys).
@@ -97,7 +97,7 @@ The `INNER` keyword can be omitted.
 
 The behavior of the `INNER JOIN` can be extended or changed, by using one of the following other join types.
 
-## (LEFT / RIGHT / FULL) OUTER JOIN {#left--right--full-outer-join}
+## (Left / right / full) outer join {#left--right--full-outer-join}
 
 The `LEFT OUTER JOIN` behaves like `INNER JOIN`; plus, for non-matching left table rows, ClickHouse returns [default values](/sql-reference/statements/create/table#default_values) for the right table’s columns.
 
@@ -143,7 +143,7 @@ LIMIT 10;
 The `OUTER` keyword can be omitted.
 :::
 
-## CROSS JOIN {#cross-join}
+## Cross join {#cross-join}
 
 The `CROSS JOIN` produces the full cartesian product of the two tables without considering join keys.
 Each row from the left table is combined with each row from the right table.
@@ -239,7 +239,7 @@ ALL
 
 And because, as mentioned above, the `OUTER` keyword can be omitted for a `RIGHT OUTER JOIN`, and the optional `ALL` keyword can be added, you can write `ALL RIGHT JOIN` and it will work all right.
 
-## (LEFT / RIGHT) SEMI JOIN {#left--right-semi-join}
+## (Left / right) semi join {#left--right-semi-join}
 
 A `LEFT SEMI JOIN` query returns column values for each row from the left table that has at least one join key match in the right table.
 Only the first found match is returned (the cartesian product is disabled).
@@ -277,7 +277,7 @@ LIMIT 10;
 └────────────┴────────────────────────┘
 ```
 
-## (LEFT / RIGHT) ANTI JOIN {#left--right-anti-join}
+## (Left / right) anti join {#left--right-anti-join}
 
 A `LEFT ANTI JOIN` returns column values for all non-matching rows from the left table.
 
@@ -312,7 +312,7 @@ LIMIT 10;
 └───────────────────────────────────────────┘
 ```
 
-## (LEFT / RIGHT / INNER) ANY JOIN {#left--right--inner-any-join}
+## (Left / right / inner) any join {#left--right--inner-any-join}
 
 A `LEFT ANY JOIN` is the combination of the `LEFT OUTER JOIN` + the `LEFT SEMI JOIN`, meaning that ClickHouse returns column values for each row from the left table, either combined with the column values of a matching row from the right table or combined with default column values for the right table, in case no match exists.
 If a row from the left table has more than one match in the right table, ClickHouse only returns the combined column values from the first found match (the cartesian product is disabled).
@@ -387,7 +387,7 @@ INNER ANY JOIN right_table AS r ON l.c = r.c;
 └─────┴─────┘
 ```
 
-## ASOF JOIN {#asof-join}
+## Asof join {#asof-join}
 
 The `ASOF JOIN`, provides non-exact matching capabilities.
 If a row from the left table doesn’t have an exact match in the right table, then the closest matching row from the right table is used as a match instead.

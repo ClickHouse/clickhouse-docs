@@ -7,7 +7,7 @@ sidebar_label: 'minMap'
 doc_type: 'reference'
 ---
 
-# minMap {#minmap}
+# Minmap {#minmap}
 
 ## Description {#description}
 

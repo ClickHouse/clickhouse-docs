@@ -71,7 +71,7 @@ ClickStack provides full-stack visibility, from front-end user sessions to backe
 
 Every layer of the stack is designed to make full use of ClickHouse's capabilities. Queries are optimized to leverage ClickHouse's analytical functions and columnar engine, ensuring fast search and aggregation over massive volumes of data.
 
-### OpenTelemetry-native {#open-telemetry-native}
+### Opentelemetry-native {#open-telemetry-native}
 
 ClickStack is natively integrated with OpenTelemetry, ingesting all data through an OpenTelemetry collector endpoint. For advanced users, it also supports direct ingestion into ClickHouse using native file formats, custom pipelines, or third-party tools like Vector.
 

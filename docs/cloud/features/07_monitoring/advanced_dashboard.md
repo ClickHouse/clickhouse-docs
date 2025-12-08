@@ -92,7 +92,7 @@ Monitoring the underlying system is just as important as watching ClickHouse its
 | OS CPU Usage (Userspace)  | CPU Usage running userspace code                                          |
 | OS CPU Usage (Kernel)     | CPU Usage running kernel code                                             |
 
-## ClickHouse Cloud specific {#clickhouse-cloud-specific}
+## ClickHouse cloud specific {#clickhouse-cloud-specific}
 
 ClickHouse Cloud stores data using object storage (S3 type). Monitoring this 
 interface can help detect issues.

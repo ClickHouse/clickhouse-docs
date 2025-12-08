@@ -117,7 +117,7 @@ Notice the size of the table is just 221.43 MiB!
 
 Let's run some queries to analyze the data:
 
-### Query 1. Average price per year {#average-price}
+### Query 1. average price per year {#average-price}
 
 ```sql runnable
 SELECT
@@ -146,7 +146,7 @@ ORDER BY year
 
 Something happened to home prices in 2020! But that is probably not a surprise...
 
-### Query 3. The most expensive neighborhoods {#most-expensive-neighborhoods}
+### Query 3. the most expensive neighborhoods {#most-expensive-neighborhoods}
 
 ```sql runnable
 SELECT

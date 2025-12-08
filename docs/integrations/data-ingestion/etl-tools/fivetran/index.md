@@ -13,7 +13,7 @@ keywords: ['fivetran', 'data movement', 'etl', 'clickhouse destination', 'automa
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Fivetran and ClickHouse Cloud
+# Fivetran and ClickHouse cloud
 
 <ClickHouseSupportedBadge/>
 
@@ -39,7 +39,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
   </iframe>
 </div>
 
-## ClickHouse Cloud destination {#clickhouse-cloud-destination}
+## ClickHouse cloud destination {#clickhouse-cloud-destination}
 
 See the official documentation on the Fivetran website:
 

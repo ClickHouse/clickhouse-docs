@@ -29,7 +29,7 @@ As this feature is experimental, you will need to enable it using:
 `SET allow_experimental_database_unity_catalog = 1;`
 :::
 
-## Configuring Unity in Databricks {#configuring-unity-in-databricks}
+## Configuring unity in databricks {#configuring-unity-in-databricks}
 
 To allow ClickHouse to interact with the Unity catalog, you need to make sure the Unity Catalog is configured to allow interaction with an external reader. This can be achieved by following the[ "Enable external data access to Unity Catalog"](https://docs.databricks.com/aws/en/external-access/admin) guide.
 
@@ -41,11 +41,11 @@ Once your catalog is configured, you must generate credentials for ClickHouse. T
 
 * For Delta clients, use a Personal Access Token ([PAT](https://docs.databricks.com/aws/en/dev-tools/auth/pat)).
 
-## Creating a connection between Unity Catalog and ClickHouse {#creating-a-connection-between-unity-catalog-and-clickhouse}
+## Creating a connection between unity catalog and ClickHouse {#creating-a-connection-between-unity-catalog-and-clickhouse}
 
 With your Unity Catalog configured and authentication in place, establish a connection between ClickHouse and Unity Catalog.
 
-### Read Delta {#read-delta}
+### Read delta {#read-delta}
 
 ```sql
 CREATE DATABASE unity
@@ -53,7 +53,7 @@ ENGINE = DataLakeCatalog('https://<workspace-id>.cloud.databricks.com/api/2.1/un
 SETTINGS warehouse = 'CATALOG_NAME', catalog_credential = '<PAT>', catalog_type = 'unity'
 ```
 
-### Read Iceberg {#read-iceberg}
+### Read iceberg {#read-iceberg}
 
 ```sql
 CREATE DATABASE unity
@@ -62,7 +62,7 @@ SETTINGS catalog_type = 'rest', catalog_credential = '<client-id>:<client-secret
 oauth_server_uri = 'https://<workspace-id>.cloud.databricks.com/oidc/v1/token', auth_scope = 'all-apis,sql'
 ```
 
-## Querying Unity catalog tables using ClickHouse {#querying-unity-catalog-tables-using-clickhouse}
+## Querying unity catalog tables using ClickHouse {#querying-unity-catalog-tables-using-clickhouse}
 
 Now that the connection is in place, you can start querying via the Unity catalog. For example:
 
@@ -152,7 +152,7 @@ ENGINE = Iceberg('s3://<path>);
 
 ```
 
-## Loading data from your Data Lake into ClickHouse {#loading-data-from-your-data-lake-into-clickhouse}
+## Loading data from your data lake into ClickHouse {#loading-data-from-your-data-lake-into-clickhouse}
 
 If you need to load data from Databricks into ClickHouse, start by creating a local ClickHouse table:
 

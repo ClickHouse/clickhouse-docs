@@ -7,7 +7,7 @@ sidebar_label: 'quantilesTimingIf'
 doc_type: 'reference'
 ---
 
-# quantilesTimingIf {#quantilestimingif}
+# Quantilestimingif {#quantilestimingif}
 
 ## Description {#description}
 

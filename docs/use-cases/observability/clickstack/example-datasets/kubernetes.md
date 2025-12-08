@@ -46,7 +46,7 @@ To simulate application traffic, you can optionally deploy the ClickStack fork o
 
 <VerticalStepper headerLevel="h3">
 
-### Install cert-manager (Optional) {#install-cert-manager}
+### Install cert-manager (optional) {#install-cert-manager}
 
 If your setup needs TLS certificates, install [cert-manager](https://cert-manager.io/) using Helm:
 
@@ -58,7 +58,7 @@ helm repo add jetstack https://charts.jetstack.io
 helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --set startupapicheck.timeout=5m --set installCRDs=true --set global.leaderElection.namespace=cert-manager
 ```
 
-### Deploy the OpenTelemetry Demo (Optional) {#deploy-otel-demo}
+### Deploy the opentelemetry demo (optional) {#deploy-otel-demo}
 
 This **step is optional and intended for users with no existing pods to monitor**. Although users with existing services deployed in their Kubernetes environment can skip, this demo does include instrumented microservices which generate trace and session replay data - allowing users to explore all features of ClickStack.
 
@@ -190,7 +190,7 @@ my-hyperdx-hdx-oss-v2-mongodb-984845f96-czb6m           1/1     Running   0     
 my-hyperdx-hdx-oss-v2-otel-collector-64cf698f5c-8s7qj   1/1     Running   0          14m
 ```
 
-### Access the HyperDX UI {#access-the-hyperdx-ui}
+### Access the hyperdx UI {#access-the-hyperdx-ui}
 
 :::note
 Even when using ClickHouse Cloud, the local HyperDX instance deployed in the Kubernetes cluster is still required. It provides an ingestion key managed by the OpAMP server bundled with HyperDX, with secures ingestion through the deployed OTel collector - a capability not currently available in the ClickHouse Cloud-hosted version.
@@ -221,7 +221,7 @@ Navigate to [`Team Settings`](http://localhost:8080/team) and copy the `Ingestio
 
 <Image img={copy_api_key} alt="Copy API key" size="lg"/>
 
-### Create API Key Kubernetes Secret {#create-api-key-kubernetes-secret}
+### Create API key Kubernetes secret {#create-api-key-kubernetes-secret}
 
 Create a new Kubernetes secret with the Ingestion API Key and a config map containing the location of the OTel collector deployed with the ClickStack helm chart. Later components will use this to allow ingest into the collector deployed with the ClickStack Helm chart:
 
@@ -245,7 +245,7 @@ Trace and log data from demo services should now begin to flow into HyperDX.
 
 <Image img={hyperdx_kubernetes_data} alt="HyperDX Kubernetes Data" size="lg"/>
 
-### Add the OpenTelemetry Helm repo {#add-otel-helm-repo}
+### Add the opentelemetry Helm repo {#add-otel-helm-repo}
 
 To collect Kubernetes metrics, we will deploy a standard OTel collector, configuring this to send data securely to our ClickStack collector using the above ingestion API key.
 
@@ -461,7 +461,7 @@ config:
 
 </details>
 
-### Explore Kubernetes data in HyperDX {#explore-kubernetes-data-hyperdx}
+### Explore Kubernetes data in hyperdx {#explore-kubernetes-data-hyperdx}
 
 Navigate to your HyperDX UI - either using your Kubernetes-deployed instance or via ClickHouse Cloud.
 

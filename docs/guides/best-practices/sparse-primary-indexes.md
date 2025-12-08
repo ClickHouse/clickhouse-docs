@@ -864,7 +864,7 @@ In the following we discuss this three options for creating and using multiple p
 
 <a name="multiple-primary-indexes-via-secondary-tables"></a>
 
-### Option 1: Secondary Tables {#option-1-secondary-tables}
+### Option 1: secondary tables {#option-1-secondary-tables}
 
 <a name="secondary-table"></a>
 We are creating a new additional table where we switch the order of the key columns (compared to our original table) in the primary key:
@@ -1024,7 +1024,7 @@ Server Log:
 
 We now have two tables. Optimized for speeding up queries filtering on `UserIDs`, and speeding up queries filtering on URLs, respectively:
 
-### Option 2: Materialized Views {#option-2-materialized-views}
+### Option 2: materialized views {#option-2-materialized-views}
 
 Create a [materialized view](/sql-reference/statements/create/view.md) on our existing table.
 ```sql
@@ -1110,7 +1110,7 @@ The corresponding trace log in the ClickHouse server log file confirms that Clic
 ...Executor): Reading approx. 335872 rows with 4 streams
 ```
 
-### Option 3: Projections {#option-3-projections}
+### Option 3: projections {#option-3-projections}
 
 Create a projection on our existing table:
 ```sql

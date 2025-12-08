@@ -7,7 +7,7 @@ sidebar_label: 'avgMerge'
 doc_type: 'reference'
 ---
 
-# avgMerge {#avgMerge}
+# Avgmerge {#avgMerge}
 
 ## Description {#description}
 

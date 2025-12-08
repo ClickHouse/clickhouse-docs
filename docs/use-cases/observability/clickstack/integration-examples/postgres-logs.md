@@ -18,7 +18,7 @@ import logs_dashboard from '@site/static/images/clickstack/postgres/postgres-log
 import finish_import from '@site/static/images/clickstack/postgres/import-logs-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Monitoring PostgreSQL Logs with ClickStack {#postgres-logs-clickstack}
+# Monitoring PostgreSQL logs with ClickStack {#postgres-logs-clickstack}
 
 :::note[TL;DR]
 This guide shows you how to monitor PostgreSQL with ClickStack by configuring the OpenTelemetry collector to ingest PostgreSQL server logs. You'll learn how to:
@@ -98,7 +98,7 @@ tail -f /var/lib/postgresql/{version}/main/log/postgresql-*.log
 tail -f /usr/local/var/postgres/log/postgresql-*.log
 ```
 
-#### Create custom OTel collector configuration {#custom-otel}
+#### Create custom otel collector configuration {#custom-otel}
 
 ClickStack allows you to extend the base OpenTelemetry Collector configuration by mounting a custom configuration file and setting an environment variable. The custom configuration is merged with the base configuration managed by HyperDX via OpAMP.
 
@@ -167,7 +167,7 @@ To enable custom collector configuration in your existing ClickStack deployment,
 2. Set the environment variable `CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml`
 3. Mount your PostgreSQL log directory so the collector can read them
 
-##### Option 1: Docker Compose {#docker-compose}
+##### Option 1: Docker compose {#docker-compose}
 
 Update your ClickStack deployment configuration:
 ```yaml
@@ -183,7 +183,7 @@ services:
       # ... other volumes ...
 ```
 
-##### Option 2: Docker Run (All-in-One Image) {#all-in-one}
+##### Option 2: Docker run (all-in-one image) {#all-in-one}
 
 If you're using the all-in-one image with docker run:
 ```bash
@@ -199,7 +199,7 @@ docker run --name clickstack \
 Ensure the ClickStack collector has appropriate permissions to read the PostgreSQL log files. In production, use read-only mounts (`:ro`) and follow the principle of least privilege.
 :::
 
-#### Verifying Logs in HyperDX {#verifying-logs}
+#### Verifying logs in hyperdx {#verifying-logs}
 
 Once configured, log into HyperDX and verify logs are flowing:
 
@@ -286,7 +286,7 @@ docker run --name clickstack-demo \
   clickhouse/clickstack-all-in-one:latest
 ```
 
-#### Verify logs in HyperDX {#verify-demo-logs}
+#### Verify logs in hyperdx {#verify-demo-logs}
 
 Once ClickStack is running:
 
@@ -310,7 +310,7 @@ To help you get started monitoring PostgreSQL with ClickStack, we provide essent
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/postgres-logs-dashboard.json')} download="postgresql-logs-dashboard.json" eventName="docs.postgres_logs_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
+#### <Trackedlink href={useBaseUrl('/examples/postgres-logs-dashboard.json')} download="postgresql-logs-dashboard.json" eventName="docs.postgres_logs_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
 
 #### Import the pre-built dashboard {#import-dashboard}
 
@@ -349,7 +349,7 @@ Check the custom config file is mounted and readable:
 docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml | head -10
 ```
 
-### No logs appearing in HyperDX {#no-logs}
+### No logs appearing in hyperdx {#no-logs}
 
 Check the effective config includes your filelog receiver:
 ```bash

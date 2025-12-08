@@ -137,7 +137,7 @@ The parameters and performance considerations for index creation and search are 
 
 Building and saving the index could take a few minutes depending on number of CPU cores available and the storage bandwidth.
 
-## Perform ANN search {#perform-ann-search}
+## Perform ann search {#perform-ann-search}
 
 _Approximate Nearest Neighbours_ or ANN refers to group of techniques (e.g., special data structures like graphs and random forests) which compute results much faster than exact vector search. The result accuracy is typically "good enough" for practical use. Many approximate techniques provide parameters to tune the trade-off between the result accuracy and the search time.
 

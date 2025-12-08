@@ -10,7 +10,7 @@ keywords: ['Google Dataflow ClickHouse', 'Dataflow ClickHouse integration', 'Apa
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Integrating Google Dataflow with ClickHouse
+# Integrating Google dataflow with ClickHouse
 
 <ClickHouseSupportedBadge/>
 

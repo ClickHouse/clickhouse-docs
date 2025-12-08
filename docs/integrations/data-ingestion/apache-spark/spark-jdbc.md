@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Spark JDBC
+# Spark jdbc
 
 <ClickHouseSupportedBadge/>
 
@@ -340,7 +340,7 @@ reading in parallel from multiple workers.
 Please visit Apache Spark's official documentation for more information
 on [JDBC configurations](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html#data-source-option).
 
-## JDBC limitations {#jdbc-limitations}
+## Jdbc limitations {#jdbc-limitations}
 
 * As of today, you can insert data using JDBC only into existing tables (currently there is no way to auto create the
   table on DF insertion, as Spark does with other connectors).

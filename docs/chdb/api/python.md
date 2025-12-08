@@ -7,9 +7,9 @@ keywords: ['chdb', 'embedded', 'clickhouse-lite', 'python', 'api', 'reference']
 doc_type: 'reference'
 ---
 
-# Python API Reference
+# Python API reference
 
-## Core Query Functions {#core-query-functions}
+## Core query functions {#core-query-functions}
 
 ### `chdb.query` {#chdb-query}
 
@@ -235,7 +235,7 @@ chdb.to_df(r)
 0   1  hello
 ```
 
-## Connection and Session Management {#connection-session-management}
+## Connection and session management {#connection-session-management}
 
 The following Session Functions are available:
 
@@ -331,7 +331,7 @@ Creating a new connection will close any existing connection.
 - [`Connection`](#chdb-state-sqlitelike-connection) - Database connection class
 - [`Cursor`](#chdb-state-sqlitelike-cursor) - Database cursor for DB-API 2.0 operations
 
-## Exception Handling {#chdb-exceptions}
+## Exception handling {#chdb-exceptions}
 
 ### **class** `chdb.ChdbError` {#chdb_chdbError}
 
@@ -698,7 +698,7 @@ id,name
 - [`send_query()`](#chdb-session-session-send_query) - For streaming query execution
 - [`sql`](#chdb-session-session-sql) - Alias for this method
 
-## State Management {#chdb-state-management}
+## State management {#chdb-state-management}
 
 ### `chdb.state.connect` {#chdb_state_connect}
 
@@ -1534,7 +1534,7 @@ text    object
 dtype: object
 ```
 
-## DataFrame Integration {#dataframe-integration}
+## DataFrame integration {#dataframe-integration}
 
 ### **class** `chdb.dataframe.Table` {#chdb-dataframe-table}
 
@@ -1544,7 +1544,7 @@ Bases:
 class chdb.dataframe.Table(*args: Any, **kwargs: Any)
 ```
 
-## Database API (DBAPI) 2.0 Interface {#database-api-interface}
+## Database API (DBAPI) 2.0 interface {#database-api-interface}
 
 chDB provides a Python DB-API 2.0 compatible interface for database connectivity, allowing you to use chDB with tools and frameworks that expect standard database interfaces.
 
@@ -1558,7 +1558,7 @@ The chDB DB-API 2.0 interface includes:
 
 ---
 
-### Core Functions {#core-functions}
+### Core functions {#core-functions}
 
 The Database API (DBAPI) 2.0 Interface implements the following core functions:
 
@@ -1635,7 +1635,7 @@ chdb.dbapi.Binary(x)
 
 ---
 
-### Connection Class {#connection-class}
+### Connection class {#connection-class}
 
 #### **class** `chdb.dbapi.connections.Connection(path=None)` {#chdb-dbapi-connections-connection}
 
@@ -1923,7 +1923,7 @@ transactions. Provided for DB-API 2.0 compliance.
 
 ---
 
-### Cursor Class {#cursor-class}
+### Cursor class {#cursor-class}
 
 #### **class** `chdb.dbapi.cursors.Cursor` {#chdb-dbapi-cursors-cursor}
 
@@ -2351,7 +2351,7 @@ chDB automatically handles output sizing internally.
 
 ---
 
-### Error Classes {#error-classes}
+### Error classes {#error-classes}
 
 Exception classes for chdb database operations.
 
@@ -2756,7 +2756,7 @@ This follows the Python DB API 2.0 specification for warning exceptions.
 
 ---
 
-### Module Constants {#module-constants}
+### Module constants {#module-constants}
 
 #### `chdb.dbapi.apilevel = '2.0'` {#apilevel}
 
@@ -2817,7 +2817,7 @@ errors defaults to ‘strict’.
 
 ---
 
-### Type Constants {#type-constants}
+### Type constants {#type-constants}
 
 #### `chdb.dbapi.STRING = frozenset({247, 253, 254})` {#string-type}
 
@@ -3099,7 +3099,7 @@ with dbapi.connect("test.chdb") as conn:
 - Parameter binding syntax follows format style: `%s`
 :::
 
-## User-Defined Functions (UDF) {#user-defined-functions}
+## User-defined functions (UDF) {#user-defined-functions}
 
 User-defined functions module for chDB.
 
@@ -3347,9 +3347,9 @@ chdb.utils.infer_data_types`(column_data: Dict[str, List[Any]], n_rows: int = 10
 |---------------|----------------------------------------------------------------------------|
 | `List[tuple]` | A list of tuples, each containing a column name and its inferred data type |
 
-## Abstract Base Classes {#abstract-base-classes}
+## Abstract base classes {#abstract-base-classes}
 
-### **class** `chdb.rwabc.PyReader`(data: Any)` {#pyreader}
+### **class** `chdb.rwabc.PyReader`(data: any)` {#pyreader}
 
 Bases: `ABC`
 
@@ -3422,7 +3422,7 @@ abstractmethod write(col_names: List[str], columns: List[List[Any]]) → None
 | `col_names` | `List[str]`       | List of column names that are being written                |
 | `columns`   | `List[List[Any]]` | List of columns data, each column is represented by a list |
 
-## Exception Handling {#exception-handling}
+## Exception handling {#exception-handling}
 
 ### **class** `chdb.ChdbError` {#chdberror}
 
@@ -3469,7 +3469,7 @@ You should catch this exception when handling potentially failing
 queries to provide appropriate error handling in your application.
 :::
 
-## Version Information {#version-information}
+## Version information {#version-information}
 
 ### `chdb.chdb_version = ('3', '6', '0')` {#chdb-version}
 

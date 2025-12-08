@@ -10,7 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# How to build an AI agent with Chainlit and the ClickHouse MCP Server
+# How to build an ai agent with chainlit and the ClickHouse mcp server
 
 This guide explores how to combine Chainlit's powerful chat interface framework 
 with the ClickHouse Model Context Protocol (MCP) Server to create interactive data
@@ -22,7 +22,7 @@ integration with ClickHouse's high-performance columnar database.
 - You'll need an Anthropic API key
 - You'll need to have [`uv`](https://docs.astral.sh/uv/getting-started/installation/) installed
 
-## Basic Chainlit app {#basic-chainlit-app}
+## Basic chainlit app {#basic-chainlit-app}
 
 You can see an example of a basic chat app by running the following:
 
@@ -32,7 +32,7 @@ uv run --with anthropic --with chainlit chainlit run chat_basic.py -w -h
 
 Then navigate to `http://localhost:8000`
 
-## Adding ClickHouse MCP Server {#adding-clickhouse-mcp-server}
+## Adding ClickHouse mcp server {#adding-clickhouse-mcp-server}
 
 Things get more interesting if we add the ClickHouse MCP Server.
 You'll need to update your `.chainlit/config.toml` file to allow the `uv` command

@@ -214,7 +214,7 @@ ORDER BY hour ASC WITH FILL STEP toIntervalHour(1);
 └─────────────────────┴───────────┘
 ```
 
-## Rolling time windows {#time-series-rolling-time-windows}
+## Rolling time Windows {#time-series-rolling-time-windows}
 
 Sometimes, we don't want to deal with the start of intervals (like the start of a day or an hour) but window intervals. 
 Let's say we want to understand the total hits for a window, not based on days but on a 24-hour period offset from 6 pm. 

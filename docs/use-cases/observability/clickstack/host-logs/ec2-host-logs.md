@@ -22,7 +22,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Monitoring EC2 Host Logs with ClickStack {#ec2-host-logs-clickstack}
+# Monitoring ec2 host logs with ClickStack {#ec2-host-logs-clickstack}
 
 :::note[TL;DR]
 Monitor EC2 system logs with ClickStack by installing OpenTelemetry Collector on your instances. The collector automatically enriches logs with EC2 metadata (instance ID, region, availability zone, instance type). You'll learn how to:
@@ -37,7 +37,7 @@ A demo dataset with sample logs and simulated EC2 metadata is available for test
 Time Required: 10-15 minutes
 :::
 
-## Integration with existing EC2 instance {#existing-ec2}
+## Integration with existing ec2 instance {#existing-ec2}
 
 This section covers installing OpenTelemetry Collector on your EC2 instances to collect system logs and send them to ClickStack with automatic EC2 metadata enrichment. This distributed architecture is production-ready and scales to multiple instances.
 
@@ -55,7 +55,7 @@ If you would like to test the EC2 host logs integration before configuring your 
 
 <VerticalStepper headerLevel="h4">
 
-#### Verify EC2 metadata is accessible {#verify-metadata}
+#### Verify ec2 metadata is accessible {#verify-metadata}
 
 From your EC2 instance, verify the metadata service is accessible:
 ```bash
@@ -93,7 +93,7 @@ tail -20 /var/log/syslog
 tail -20 /var/log/messages
 ```
 
-#### Install OpenTelemetry Collector {#install-collector}
+#### Install opentelemetry collector {#install-collector}
 
 Install the OpenTelemetry Collector Contrib distribution on your EC2 instance:
 ```bash
@@ -279,7 +279,7 @@ CLICKSTACK_API_KEY="your-api-key-here" /usr/local/bin/otelcol-contrib --config /
 Configure the collector to run as a systemd service so it starts automatically on boot and restarts on failure. See the [OpenTelemetry Collector documentation](https://opentelemetry.io/docs/collector/deployment/) for details.
 :::
 
-#### Verifying Logs in HyperDX {#verifying-logs}
+#### Verifying logs in hyperdx {#verifying-logs}
 
 Once the collector is running, log into HyperDX and verify logs are flowing with EC2 metadata:
 
@@ -405,7 +405,7 @@ docker run --name clickstack-demo \
   docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
 ```
 
-#### Verify logs in HyperDX {#verify-demo-logs}
+#### Verify logs in hyperdx {#verify-demo-logs}
 
 Once the collector is running:
 
@@ -436,7 +436,7 @@ To help you get started monitoring EC2 host logs with ClickStack, we provide ess
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/host-logs-dashboard.json')} download="host-logs-dashboard.json" eventName="docs.ec2_host_logs_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
+#### <Trackedlink href={useBaseUrl('/examples/host-logs-dashboard.json')} download="host-logs-dashboard.json" eventName="docs.ec2_host_logs_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
 
 #### Import the pre-built dashboard {#import-dashboard}
 
@@ -468,7 +468,7 @@ For the demo dataset, set the time range to **2025-11-11 00:00:00 - 2025-11-12 0
 
 ## Troubleshooting {#troubleshooting}
 
-### EC2 metadata not appearing in logs {#no-metadata}
+### Ec2 metadata not appearing in logs {#no-metadata}
 
 **Verify the EC2 metadata service is accessible:**
 ```bash
@@ -492,7 +492,7 @@ sudo journalctl -u otelcol-contrib -f | grep -i "ec2\|metadata\|resourcedetectio
 # If running in foreground, check stdout
 ```
 
-### No logs appearing in HyperDX {#no-logs}
+### No logs appearing in hyperdx {#no-logs}
 
 **Verify syslog files exist and are being written:**
 ```bash

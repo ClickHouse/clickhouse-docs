@@ -146,7 +146,7 @@ and move to the next one using your existing service.
 Once the deployment completes successfully, you can start using your new Azure
 Data Factory instance.
 
-## Creating a new REST-Based linked service {#-creating-new-rest-based-linked-service}
+## Creating a new rest-based linked service {#-creating-new-rest-based-linked-service}
 
 1. Log in to the Microsoft Azure Portal and open your Data Factory instance.
    <Image img={azureHomeWithDataFactory} size="lg" alt="Azure Portal Home Page with Data Factory" border/>
@@ -197,7 +197,7 @@ Data Factory instance.
 
 You should now see your newly registered REST-based linked service in the list.
 
-## Creating a new dataset for the ClickHouse HTTP Interface {#creating-a-new-dataset-for-the-clickhouse-http-interface}
+## Creating a new dataset for the ClickHouse HTTP interface {#creating-a-new-dataset-for-the-clickhouse-http-interface}
 
 Now that we have a linked service configured for the ClickHouse HTTP interface,
 we can create a dataset that Azure Data Factory will use to send data to
@@ -280,7 +280,7 @@ service), Then, in Azure Data Factory Studio, go to the Factory Resources pane.
 Create a new dataset that points to the uploaded data. Click Publish all to
 save your changes.
 
-## Creating a Copy Activity to transfer data to ClickHouse {#creating-the-copy-activity-to-transfer-data-to-clickhouse}
+## Creating a copy activity to transfer data to ClickHouse {#creating-the-copy-activity-to-transfer-data-to-clickhouse}
 
 Now that we've configured both the input and output datasets, we can set up a
 **Copy Data** activity to transfer data from our example dataset into the

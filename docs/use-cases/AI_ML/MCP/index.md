@@ -22,7 +22,7 @@ You can think of it as a universal API standard designed specifically for AI sys
 The key advantage of MCP is that AI libraries only need to implement support for the protocol once. 
 After that, all MCP-compatible services become immediately accessible, saving AI library maintainers a lot of time.
 
-## What is MCP's architecture?  {#mcp-architecture}
+## What is mcp's architecture?  {#mcp-architecture}
 
 MCP follows a client-server architecture:
 
@@ -34,7 +34,7 @@ A diagram showing the architecture is below:
 
 <Image img={overview} alt="MCP overview" size="lg"/>
 
-## Does ClickHouse have an MCP Server? {#clickhouse-mcp-server}
+## Does ClickHouse have an mcp server? {#clickhouse-mcp-server}
 
 It does!
 The [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) offers the following tools:
@@ -43,7 +43,7 @@ The [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) offers
 * `list_databases` - List all databases on your ClickHouse cluster.
 * `list_tables` - List all tables in a database.
 
-## Guides for using the ClickHouse MCP Server {#clickhouse-mcp-server-guides}
+## Guides for using the ClickHouse mcp server {#clickhouse-mcp-server-guides}
 
 Below are some guides showing how to use the ClickHouse MCP Server.
 

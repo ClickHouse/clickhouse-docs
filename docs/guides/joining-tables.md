@@ -124,7 +124,7 @@ WHERE (VoteTypeId = 2) AND (PostId IN (
 Peak memory usage: 250.66 MiB.
 ```
 
-## Choosing a JOIN algorithm {#choosing-a-join-algorithm}
+## Choosing a join algorithm {#choosing-a-join-algorithm}
 
 ClickHouse supports a number of [join algorithms](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1). These algorithms typically trade memory usage for performance. The following provides an overview of the ClickHouse join algorithms based on their relative memory consumption and execution time:
 
@@ -148,7 +148,7 @@ A full detailed description of each `JOIN` algorithm can be found [here](https:/
 
 Selecting the appropriate join algorithms depends on whether you are looking to optimize for memory or performance.
 
-## Optimizing JOIN performance {#optimizing-join-performance}
+## Optimizing join performance {#optimizing-join-performance}
 
 If your key optimization metric is performance and you are looking to execute the join as fast as possible, you can use the following decision tree for choosing the right join algorithm:
 

@@ -18,7 +18,7 @@ Despite its age and its unrealistic assumption that the data is uniformly and in
 - [TPC-H Analyzed: Hidden Messages and Lessons Learned from an Influential Benchmark](https://doi.org/10.1007/978-3-319-04936-6_5) (Boncz et. al.), 2013
 - [Quantifying TPC-H Choke Points and Their Optimizations](https://doi.org/10.14778/3389133.3389138) (Dresseler et. al.), 2020
 
-## Data Generation and Import {#data-generation-and-import}
+## Data generation and import {#data-generation-and-import}
 
 First, checkout the TPC-H repository and compile the data generator:
 

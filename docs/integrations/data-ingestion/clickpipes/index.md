@@ -26,7 +26,7 @@ import cp_custom_role from '@site/static/images/integrations/data-ingestion/clic
 import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
 import Image from '@theme/IdealImage';
 
-# Integrating with ClickHouse Cloud
+# Integrating with ClickHouse cloud
 
 ## Introduction {#introduction}
 
@@ -55,7 +55,7 @@ import Image from '@theme/IdealImage';
 
 More connectors will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
 
-## List of Static IPs {#list-of-static-ips}
+## List of static ips {#list-of-static-ips}
 
 The following are the static NAT IPs (separated by region) that ClickPipes uses to connect to your external services. Add your related instance region IPs to your IP allow list to allow traffic.
 
@@ -90,7 +90,7 @@ Steps:
 ## Adjusting ClickPipes advanced settings {#clickpipes-advanced-settings}
 ClickPipes provides sensible defaults that cover the requirements of most use cases. If your use case requires additional fine-tuning, you can adjust the following settings:
 
-### Object Storage ClickPipes {#clickpipes-advanced-settings-object-storage}
+### Object storage ClickPipes {#clickpipes-advanced-settings-object-storage}
 
 | Setting                            | Default value |  Description                     |                    
 |------------------------------------|---------------|---------------------------------------------------------------------------------------|
@@ -115,9 +115,9 @@ ClickPipes provides sensible defaults that cover the requirements of most use ca
 
 ## Error reporting {#error-reporting}
 ClickPipes will store errors in two separate tables depending on the type of error encountered during the ingestion process.
-### Record Errors {#record-errors}
+### Record errors {#record-errors}
 ClickPipes will create a table next to your destination table with the postfix `<destination_table_name>_clickpipes_error`. This table will contain any errors from malformed data or mismatched schema and will include the entirety of the invalid message. This table has a [TTL](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) of 7 days.
-### System Errors {#system-errors}
+### System errors {#system-errors}
 Errors related to the operation of the ClickPipe will be stored in the `system.clickpipes_log` table. This will store all other errors related to the operation of your ClickPipe (network, connectivity, etc.). This table has a [TTL](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) of 7 days.
 
 If ClickPipes cannot connect to a data source after 15 min or to a destination after 1 hr, the ClickPipes instance stops and stores an appropriate message in the system error table (provided the ClickHouse instance is available).

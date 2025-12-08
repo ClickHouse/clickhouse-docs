@@ -11,7 +11,7 @@ doc_type: 'guide'
 import bigquery_1 from '@site/static/images/migrations/bigquery-1.png';
 import Image from '@theme/IdealImage';
 
-# Comparing ClickHouse Cloud and BigQuery 
+# Comparing ClickHouse cloud and bigquery
 
 ## Resource organization {#resource-organization}
 
@@ -23,7 +23,7 @@ The way resources are organized in ClickHouse Cloud is similar to [BigQuery's re
 
 Similar to BigQuery, organizations are the root nodes in the ClickHouse cloud resource hierarchy. The first user you set up in your ClickHouse Cloud account is automatically assigned to an organization owned by the user. The user may invite additional users to the organization.
 
-### BigQuery Projects vs ClickHouse Cloud Services {#bigquery-projects-vs-clickhouse-cloud-services}
+### Bigquery projects vs ClickHouse cloud services {#bigquery-projects-vs-clickhouse-cloud-services}
 
 Within organizations, you can create services loosely equivalent to BigQuery projects because stored data in ClickHouse Cloud is associated with a service. There are [several service types available](/cloud/manage/cloud-tiers) in ClickHouse Cloud. Each ClickHouse Cloud service is deployed in a specific region and includes:
 
@@ -31,15 +31,15 @@ Within organizations, you can create services loosely equivalent to BigQuery pro
 2. An object storage folder where the service stores all the data.
 3. An endpoint (or multiple endpoints created via ClickHouse Cloud UI console)  - a service URL that you use to connect to the service (for example, `https://dv2fzne24g.us-east-1.aws.clickhouse.cloud:8443`)
 
-### BigQuery Datasets vs ClickHouse Cloud Databases {#bigquery-datasets-vs-clickhouse-cloud-databases}
+### Bigquery datasets vs ClickHouse cloud databases {#bigquery-datasets-vs-clickhouse-cloud-databases}
 
 ClickHouse logically groups tables into databases. Like BigQuery datasets, ClickHouse databases are logical containers that organize and control access to table data.
 
-### BigQuery Folders {#bigquery-folders}
+### Bigquery folders {#bigquery-folders}
 
 ClickHouse Cloud currently has no concept equivalent to BigQuery folders.
 
-### BigQuery Slot reservations and Quotas {#bigquery-slot-reservations-and-quotas}
+### Bigquery slot reservations and quotas {#bigquery-slot-reservations-and-quotas}
 
 Like BigQuery slot reservations, you can [configure vertical and horizontal autoscaling](/manage/scaling#configuring-vertical-auto-scaling) in ClickHouse Cloud. For vertical autoscaling, you can set the minimum and maximum size for the memory and CPU cores of the compute nodes for a service. The service will then scale as needed within those bounds. These settings are also available during the initial service creation flow. Each compute node in the service has the same size. You can change the number of compute nodes within a service with [horizontal scaling](/manage/scaling#manual-horizontal-scaling).
 
@@ -80,13 +80,13 @@ When presented with multiple options for ClickHouse types, consider the actual r
 
 ## Query acceleration techniques {#query-acceleration-techniques}
 
-### Primary and Foreign keys and Primary index {#primary-and-foreign-keys-and-primary-index}
+### Primary and foreign keys and primary index {#primary-and-foreign-keys-and-primary-index}
 
 In BigQuery, a table can have [primary key and foreign key constraints](https://cloud.google.com/bigquery/docs/information-schema-table-constraints). Typically, primary and foreign keys are used in relational databases to ensure data integrity. A primary key value is normally unique for each row and is not `NULL`. Each foreign key value in a row must be present in the primary key column of the primary key table or be `NULL`. In BigQuery, these constraints are not enforced, but the query optimizer may use this information to optimize queries better.
 
 In ClickHouse, a table can also have a primary key. Like BigQuery, ClickHouse doesn't enforce uniqueness for a table's primary key column values. Unlike BigQuery, a table's data is stored on disk [ordered](/guides/best-practices/sparse-primary-indexes#optimal-compression-ratio-of-data-files) by the primary key column(s). The query optimizer utilizes this sort order to prevent resorting, to minimize memory usage for joins, and to enable short-circuiting for limit clauses. Unlike BigQuery, ClickHouse automatically creates [a (sparse) primary index](/guides/best-practices/sparse-primary-indexes#an-index-design-for-massive-data-scales) based on the primary key column values. This index is used to speed up all queries that contain filters on the primary key columns. ClickHouse currently doesn't support foreign key constraints.
 
-## Secondary indexes (Only available in ClickHouse) {#secondary-indexes-only-available-in-clickhouse}
+## Secondary indexes (only available in ClickHouse) {#secondary-indexes-only-available-in-clickhouse}
 
 In addition to the primary index created from the values of a table's primary key columns, ClickHouse allows you to create secondary indexes on columns other than those in the primary key.  ClickHouse offers several types of secondary indexes, each suited to different types of queries:
 

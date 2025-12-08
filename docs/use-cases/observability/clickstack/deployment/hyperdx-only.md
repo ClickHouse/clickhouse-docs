@@ -41,7 +41,7 @@ Run the following command, modifying `YOUR_MONGODB_URI` as required.
 docker run -e MONGO_URI=mongodb://YOUR_MONGODB_URI -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx
 ```
 
-### Navigate to the HyperDX UI {#navigate-to-hyperdx-ui}
+### Navigate to the hyperdx UI {#navigate-to-hyperdx-ui}
 
 Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
 
@@ -65,11 +65,11 @@ Creating a source requires tables to exist in ClickHouse. If you don't have data
 
 </VerticalStepper>
 
-## Using Docker Compose {#using-docker-compose}
+## Using Docker compose {#using-docker-compose}
 
 Users can modify the [Docker Compose configuration](/use-cases/observability/clickstack/deployment/docker-compose) to achieve the same effect as this guide, removing the OTel collector and ClickHouse instance from the manifest.
 
-## ClickStack OpenTelemetry collector {#otel-collector}
+## ClickStack opentelemetry collector {#otel-collector}
 
 Even if you are managing your own OpenTelemetry collector, independent of the other components in the stack, we still recommend using the ClickStack distribution of the collector. This ensures the default schema is used and best practices for ingestion are applied.
 

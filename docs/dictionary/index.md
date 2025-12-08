@@ -20,7 +20,7 @@ Dictionaries are useful for:
 
 <Image img={dictionaryUseCases} size="lg" alt="Use cases for Dictionary in ClickHouse"/>
 
-## Speeding up joins using a Dictionary {#speeding-up-joins-using-a-dictionary}
+## Speeding up joins using a dictionary {#speeding-up-joins-using-a-dictionary}
 
 Dictionaries can be used to speed up a specific type of `JOIN`: the [`LEFT ANY` type](/sql-reference/statements/select/join#supported-types-of-join) where the join key needs to match the key attribute of the underlying key-value storage.
 
@@ -314,7 +314,7 @@ Peak memory usage: 666.82 MiB.
 
 ## Advanced dictionary topics {#advanced-dictionary-topics}
 
-### Choosing the Dictionary `LAYOUT` {#choosing-the-dictionary-layout}
+### Choosing the dictionary `LAYOUT` {#choosing-the-dictionary-layout}
 
 The `LAYOUT` clause controls the internal data structure for the dictionary. A number of options exist and are documented [here](/sql-reference/dictionaries#ways-to-store-dictionaries-in-memory). Some tips on choosing the correct layout can be found [here](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout).
 

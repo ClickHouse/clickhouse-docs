@@ -7,13 +7,13 @@ keywords: ['chdb', 'bun', 'javascript', 'typescript', 'embedded', 'clickhouse', 
 doc_type: 'guide'
 ---
 
-# chDB for Bun
+# chDB for bun
 
 chDB-bun provides experimental FFI (Foreign Function Interface) bindings for chDB, enabling you to run ClickHouse queries directly in your Bun applications with zero external dependencies.
 
 ## Installation {#installation}
 
-### Step 1: Install system dependencies {#install-system-dependencies}
+### Step 1: install system dependencies {#install-system-dependencies}
 
 First, install the required system dependencies:
 
@@ -27,7 +27,7 @@ curl -sL https://lib.chdb.io | bash
 
 You'll need either `gcc` or `clang` installed on your system:
 
-### Step 2: Install chDB-bun {#install-chdb-bun}
+### Step 2: install chdb-bun {#install-chdb-bun}
 
 ```bash
 # Install from the GitHub repository

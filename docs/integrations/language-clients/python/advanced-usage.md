@@ -8,7 +8,7 @@ title: 'Advanced Usage'
 doc_type: 'reference'
 ---
 
-# Advanced Usage {#advanced-usage}
+# Advanced usage {#advanced-usage}
 
 ## Raw API {#raw-api}
 
@@ -84,7 +84,7 @@ Because each query or insert executed maintains state in its own `QueryContext` 
 
 Additionally, in an application that has two or more queries and/or inserts "in flight" at the same time, there are two further considerations to keep in mind. The first is the ClickHouse "session" associated with the query/insert, and the second is the HTTP connection pool used by ClickHouse Connect Client instances.
 
-## AsyncClient wrapper {#asyncclient-wrapper}
+## Asyncclient wrapper {#asyncclient-wrapper}
 
 ClickHouse Connect provides an async wrapper over the regular `Client`, so that it is possible to use the client in an `asyncio` environment.
 
@@ -114,7 +114,7 @@ Note: Unlike the regular `Client`, the `AsyncClient` enforces `autogenerate_sess
 
 See also: [run_async example](https://github.com/ClickHouse/clickhouse-connect/blob/main/examples/run_async.py).
 
-## Managing ClickHouse session IDs {#managing-clickhouse-session-ids}
+## Managing ClickHouse session ids {#managing-clickhouse-session-ids}
 
 Each ClickHouse query occurs within the context of a ClickHouse "session". Sessions are currently used for two purposes:
 - To associate specific ClickHouse settings with multiple queries (see the [user settings](/operations/settings/settings.md)). The ClickHouse `SET` command is used to change the settings for the scope of a user session.

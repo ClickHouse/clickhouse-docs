@@ -21,7 +21,7 @@ import quicksight_06 from '@site/static/images/integrations/data-visualization/q
 import quicksight_07 from '@site/static/images/integrations/data-visualization/quicksight_07.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# QuickSight
+# Quicksight
 
 <ClickHouseSupportedBadge/>
 
@@ -119,7 +119,7 @@ mysql> show databases;
 Read 4 rows, 603.00 B in 0.00156 sec., 2564 rows/sec., 377.48 KiB/sec.
 ```
 
-## Connecting QuickSight to ClickHouse {#connecting-quicksight-to-clickhouse}
+## Connecting quicksight to ClickHouse {#connecting-quicksight-to-clickhouse}
 
 First of all, go to [https://quicksight.aws.amazon.com](https://quicksight.aws.amazon.com), navigate to Datasets and click "New dataset":
 

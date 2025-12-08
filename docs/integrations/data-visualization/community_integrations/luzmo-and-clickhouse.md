@@ -18,11 +18,11 @@ import luzmo_02 from '@site/static/images/integrations/data-visualization/luzmo_
 import luzmo_03 from '@site/static/images/integrations/data-visualization/luzmo_03.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Integrating Luzmo with ClickHouse
+# Integrating luzmo with ClickHouse
 
 <CommunityMaintainedBadge/>
 
-## 1. Setup a ClickHouse connection {#1-setup-a-clickhouse-connection}
+## 1. setup a ClickHouse connection {#1-setup-a-clickhouse-connection}
 
 To make a connection to ClickHouse, navigate to the **Connections page**, select **New Connection**, then select the ClickHouse from the New Connection modal.
 
@@ -39,7 +39,7 @@ You'll be asked to provide a **host**, **username** and **password**:
 
 Please refer to the examples in our developer documentation to find out how to [create a connection to ClickHouse](https://developer.luzmo.com/api/createAccount?exampleSection=AccountCreateClickhouseRequestBody) via our API.
 
-## 2. Add datasets {#2-add-datasets}
+## 2. add datasets {#2-add-datasets}
 
 Once you have connected your ClickHouse you can add datasets as explained [here](https://academy.luzmo.com/article/ldx3iltg). You can select one or multiple datasets as available in your ClickHouse and [link](https://academy.luzmo.com/article/gkrx48x5) them in Luzmo to ensure they can be used together in a dashboard. Also make sure to check out this article on [Preparing your data for analytics](https://academy.luzmo.com/article/u492qov0).
 

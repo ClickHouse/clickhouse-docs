@@ -7,7 +7,7 @@ sidebar_label: 'argMaxIf'
 doc_type: 'reference'
 ---
 
-# argMaxIf {#argmaxif}
+# Argmaxif {#argmaxif}
 
 ## Description {#description}
 

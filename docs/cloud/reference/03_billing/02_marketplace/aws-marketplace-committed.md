@@ -58,7 +58,7 @@ Without completing this step, we will not be able to link your AWS Marketplace c
 
 <Image img={mp_committed_spend_2} size="md" alt="AWS Marketplace private offer email"/>
 
-### Login to Cloud {#login-cloud}
+### Login to cloud {#login-cloud}
 
 Once you redirect to ClickHouse Cloud, you can either login with an existing account, or register with a new account.
 This step is necessary so that we can bind your ClickHouse Cloud organization to AWS Marketplace billing.

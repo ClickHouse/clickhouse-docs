@@ -8,7 +8,7 @@ doc_type: 'guide'
 
 import Syntax from '@site/docs/operations_/backup_restore/_snippets/_syntax.md';
 
-# BACKUP / RESTORE to or from an S3 endpoint {#backup-to-a-local-disk}
+# Backup / restore to or from an S3 endpoint {#backup-to-a-local-disk}
 
 This article covers backing up or restoring backups to/from an S3 bucket
 via an S3 endpoint.

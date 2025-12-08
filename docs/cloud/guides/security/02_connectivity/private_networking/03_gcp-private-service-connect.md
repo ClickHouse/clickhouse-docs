@@ -21,7 +21,7 @@ import gcp_pe_remove_private_endpoint from '@site/static/images/cloud/security/g
 import gcp_privatelink_pe_filters from '@site/static/images/cloud/security/gcp-privatelink-pe-filters.png';
 import gcp_privatelink_pe_dns from '@site/static/images/cloud/security/gcp-privatelink-pe-dns.png';
 
-# Private Service Connect {#private-service-connect}
+# Private service connect {#private-service-connect}
 
 <ScalePlanFeatureBadge feature="GCP PSC"/>
 
@@ -91,9 +91,9 @@ jq ".result[] | select (.region==\"${REGION:?}\" and .provider==\"${PROVIDER:?}\
 - You can [create a new key](/cloud/manage/openapi) or use an existing one.
 :::
 
-## Obtain GCP service attachment and DNS name for Private Service Connect {#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect}
+## Obtain GCP service attachment and DNS name for private service connect {#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect}
 
-### Option 1: ClickHouse Cloud console {#option-1-clickhouse-cloud-console}
+### Option 1: ClickHouse cloud console {#option-1-clickhouse-cloud-console}
 
 In the ClickHouse Cloud console, open the service that you would like to connect via Private Service Connect, then open the **Settings** menu. Click on the **Set up private endpoint** button. Make a note of the **Service name** ( `endpointServiceId`) and **DNS name** (`privateDnsHostname`). You'll use them in the next steps.
 
@@ -133,7 +133,7 @@ In this section, we're going to create a service endpoint.
 
 First up, we're going to create a Private Service Connection.
 
-#### Option 1: Using Google Cloud console {#option-1-using-google-cloud-console}
+#### Option 1: using Google cloud console {#option-1-using-google-cloud-console}
 
 In the Google Cloud console, navigate to **Network services -> Private Service Connect**.
 
@@ -157,7 +157,7 @@ The **Status** column will change from **Pending** to **Accepted** once the conn
 
 Copy ***PSC Connection ID***, we are going to use it as ***Endpoint ID*** in the next steps.
 
-#### Option 2: Using Terraform {#option-2-using-terraform}
+#### Option 2: using Terraform {#option-2-using-terraform}
 
 ```json
 provider "google" {
@@ -217,9 +217,9 @@ There are various ways to configure DNS. Please set up DNS according to your spe
 
 You need to point "DNS name", taken from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect) step, to GCP Private Service Connect endpoint IP address. This ensures that services/components within your VPC/Network can resolve it properly.
 
-## Add Endpoint ID to ClickHouse Cloud organization {#add-endpoint-id-to-clickhouse-cloud-organization}
+## Add endpoint id to ClickHouse cloud organization {#add-endpoint-id-to-clickhouse-cloud-organization}
 
-### Option 1: ClickHouse Cloud console {#option-1-clickhouse-cloud-console-1}
+### Option 1: ClickHouse cloud console {#option-1-clickhouse-cloud-console-1}
 
 To add an endpoint to your organization, proceed to the [Add "Endpoint ID" to ClickHouse service allow list](#add-endpoint-id-to-services-allow-list) step. Adding the `PSC Connection ID` using the ClickHouse Cloud console to services allow list automatically adds it to organization.
 
@@ -276,11 +276,11 @@ Add/remove Private Endpoint to an organization:
 curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: application/json" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}" -d @pl_config_org.json
 ```
 
-## Add "Endpoint ID" to ClickHouse service allow list {#add-endpoint-id-to-services-allow-list}
+## Add "endpoint id" to ClickHouse service allow list {#add-endpoint-id-to-services-allow-list}
 
 You need to add an Endpoint ID to the allow-list for each instance that should be available using Private Service Connect.
 
-### Option 1: ClickHouse Cloud console {#option-1-clickhouse-cloud-console-2}
+### Option 1: ClickHouse cloud console {#option-1-clickhouse-cloud-console-2}
 
 In the ClickHouse Cloud console, open the service that you would like to connect via Private Service Connect, then navigate to **Settings**. Enter the `Endpoint ID` retrieved from the [Adding a Private Service Connection](#adding-a-private-service-connection) step. Click **Create endpoint**.
 
@@ -330,13 +330,13 @@ EOF
 curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: application/json" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}" -d @pl_config.json | jq
 ```
 
-## Accessing instance using Private Service Connect {#accessing-instance-using-private-service-connect}
+## Accessing instance using private service connect {#accessing-instance-using-private-service-connect}
 
 Each service with Private Link enabled has a public and private endpoint. In order to connect using Private Link, you need to use a private endpoint which will be `privateDnsHostname` taken from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect).
 
 ### Getting private DNS hostname {#getting-private-dns-hostname}
 
-#### Option 1: ClickHouse Cloud console {#option-1-clickhouse-cloud-console-3}
+#### Option 1: ClickHouse cloud console {#option-1-clickhouse-cloud-console-3}
 
 In the ClickHouse Cloud console, navigate to **Settings**. Click on the **Set up private endpoint** button. In the opened flyout, copy the **DNS Name**.
 

@@ -7,7 +7,7 @@ sidebar_label: 'uniqArrayIf'
 doc_type: 'reference'
 ---
 
-# uniqArrayIf {#uniqarrayif}
+# Uniqarrayif {#uniqarrayif}
 
 ## Description {#description}
 

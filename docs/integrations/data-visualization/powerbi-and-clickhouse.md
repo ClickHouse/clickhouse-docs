@@ -29,7 +29,7 @@ import powerbi_dsn_credentials from '@site/static/images/integrations/data-visua
 import powerbi_16 from '@site/static/images/integrations/data-visualization/powerbi_16.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Power BI
+# Power bi
 
 <ClickHouseSupportedBadge/>
 
@@ -51,7 +51,7 @@ This tutorial will guide you through the process of:
 
 ## Prerequisites {#prerequisites}
 
-### Power BI Installation {#power-bi-installation}
+### Power bi installation {#power-bi-installation}
 
 This tutorial assumes you have Microsoft Power BI Desktop installed on your Windows machine. You can download and install Power BI Desktop [here](https://www.microsoft.com/en-us/download/details.aspx?id=58494)
 
@@ -66,7 +66,7 @@ You'll need the following details for connecting to your ClickHouse instance:
 * Password - Password of the user
 * Database - Name of the database on the instance you want to connect to
 
-## Power BI desktop {#power-bi-desktop}
+## Power bi desktop {#power-bi-desktop}
 
 To get started with querying data in Power BI Desktop, you'll need to complete the following steps:
 
@@ -75,7 +75,7 @@ To get started with querying data in Power BI Desktop, you'll need to complete t
 3. Connect to ClickHouse
 4. Query and Visualize you data
 
-### Install the ODBC Driver {#install-the-odbc-driver}
+### Install the odbc driver {#install-the-odbc-driver}
 
 Download the most recent [ClickHouse ODBC release](https://github.com/ClickHouse/clickhouse-odbc/releases).
 
@@ -88,7 +88,7 @@ Execute the supplied `.msi` installer and follow the wizard.
 `Debug symbols` are optional and not required
 :::
 
-#### Verify ODBC driver {#verify-odbc-driver}
+#### Verify odbc driver {#verify-odbc-driver}
 
 When the driver installation is completed, you can verify the installation was successful by:
 
@@ -102,7 +102,7 @@ Verify the ClickHouse Driver is listed.
 <Image size="md" img={powerbi_odbc_verify} alt="ODBC Data Source Administrator showing ClickHouse drivers in the Drivers tab" border />
 <br/>
 
-### Find the ClickHouse Connector {#find-the-clickhouse-connector}
+### Find the ClickHouse connector {#find-the-clickhouse-connector}
 
 :::note
 Available in version `2.137.751.0` of Power BI Desktop
@@ -142,7 +142,7 @@ If you have a use case that has a small amount of data, you can choose import mo
 <Image size="md" img={powerbi_connect_user} alt="ClickHouse connection credentials dialog for username and password" border />
 <br/>
 
-### Query and Visualise Data {#query-and-visualise-data}
+### Query and visualise data {#query-and-visualise-data}
 
 Finally, you should see the databases and tables in the Navigator view. Select the desired table and click "Load" to
 import the data from ClickHouse.
@@ -153,19 +153,19 @@ import the data from ClickHouse.
 Once the import is complete, your ClickHouse Data should be accessible in Power BI as usual.
 <br/>
 
-## Power BI service {#power-bi-service}
+## Power bi service {#power-bi-service}
 
 In order to use Microsoft Power BI Service, you need to create an [on-premise data gateway](https://learn.microsoft.com/en-us/power-bi/connect-data/service-gateway-onprem).
 
 For more details on how to setup custom connectors, please refer to Microsoft's documentation on how to [use custom data connectors with an on-premises data gateway](https://learn.microsoft.com/en-us/power-bi/connect-data/service-gateway-custom-connectors).
 
-## ODBC driver (import only) {#odbc-driver-import-only}
+## Odbc driver (import only) {#odbc-driver-import-only}
 
 We recommend using the ClickHouse Connector that uses DirectQuery.
 
 Install the [ODBC Driver](#install-the-odbc-driver) onto the on-premise data gateway instance and [verify](#verify-odbc-driver) as outlined above.
 
-### Create a new User DSN {#create-a-new-user-dsn}
+### Create a new user dsn {#create-a-new-user-dsn}
 
 When the driver installation is complete, an ODBC data source can be created. Search for ODBC in the Start menu and select "ODBC Data Sources (64-bit)".
 
@@ -194,7 +194,7 @@ If you are using a deployment that has SSL enabled (e.g. ClickHouse Cloud or a s
 - `Timeout` is an integer representing seconds. Default value: `30 seconds`.
 :::
 
-### Get data into Power BI {#get-data-into-power-bi}
+### Get data into power bi {#get-data-into-power-bi}
 
 In case you don't have Power BI installed
 yet, [download and install Power BI Desktop](https://www.microsoft.com/en-us/download/details.aspx?id=58494).
@@ -230,7 +230,7 @@ Once the import is complete, your ClickHouse Data should be accessible in Power 
 
 ## Known limitations {#known-limitations}
 
-### UInt64 {#uint64}
+### Uint64 {#uint64}
 
 Unsigned integer types such as UInt64 or bigger won't be loaded into the dataset automatically, as Int64 is the maximum whole number type support by Power BI.
 

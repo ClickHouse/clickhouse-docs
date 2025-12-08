@@ -7,7 +7,7 @@ doc_type: 'guide'
 keywords: ['example dataset', 'hacker news', 'sample data', 'text analysis', 'vector search']
 ---
 
-# Hacker News dataset
+# Hacker news dataset
 
 > In this tutorial, you'll insert 28 million rows of Hacker News data into a ClickHouse
 > table from both CSV and Parquet formats and run some simple queries to explore the data.
@@ -244,7 +244,7 @@ INSERT INTO hackernews FROM INFILE '/data/hacknernews.csv.gz' FORMAT CSVWithName
 Some sample queries are presented below to give you inspiration for writing your
 own queries.
 
-#### How pervasive a topic is "ClickHouse" in Hacker News? {#how-pervasive}
+#### How pervasive a topic is "ClickHouse" in hacker news? {#how-pervasive}
 
 The score field provides a metric of popularity for stories, while the `id` field and `||` 
 concatenation operator can be used to produce a link to the original post.

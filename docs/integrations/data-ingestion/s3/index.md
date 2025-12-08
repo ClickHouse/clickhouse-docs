@@ -160,7 +160,7 @@ Note the use of [partitioning](/engines/table-engines/mergetree-family/custom-pa
 
 Each entry in our taxi dataset contains a taxi trip. This anonymized data consists of 20M records compressed in the S3 bucket https://datasets-documentation.s3.eu-west-3.amazonaws.com/ under the folder **nyc-taxi**. The data is in the TSV format with approximately 1M rows per file.
 
-### Reading Data from S3 {#reading-data-from-s3}
+### Reading data from S3 {#reading-data-from-s3}
 
 We can query S3 data as a source without requiring persistence in ClickHouse.  In the following query, we sample 10 rows. Note the absence of credentials here as the bucket is publicly accessible:
 
@@ -213,7 +213,7 @@ The `clickhouse-local` program enables you to perform fast processing on local f
 clickhouse-local --query "SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_*.gz', 'TabSeparatedWithNames') LIMIT 10"
 ```
 
-### Inserting Data from S3 {#inserting-data-from-s3}
+### Inserting data from S3 {#inserting-data-from-s3}
 
 To exploit the full capabilities of ClickHouse, we next read and insert the data into our instance.
 We combine our `s3` function with a simple `INSERT` statement to achieve this. Note that we aren't required to list our columns because our target table provides the required structure. This requires the columns to appear in the order specified in the table DDL statement: columns are mapped according to their position in the `SELECT` clause. The insertion of all 10m rows can take a few minutes depending on the ClickHouse instance. Below we insert 1M rows to ensure a prompt response. Adjust the `LIMIT` clause or column selection to import subsets as required:
@@ -225,7 +225,7 @@ INSERT INTO trips
    LIMIT 1000000;
 ```
 
-### Remote Insert using ClickHouse Local {#remote-insert-using-clickhouse-local}
+### Remote insert using ClickHouse local {#remote-insert-using-clickhouse-local}
 
 If network security policies prevent your ClickHouse cluster from making outbound connections, you can potentially insert S3 data using `clickhouse-local`. In the example below, we read from an S3 bucket and insert into ClickHouse using the `remote` function:
 
@@ -536,7 +536,7 @@ The `s3` functions and associated table engine allow us to query data in S3 usin
 
 ClickHouse recognizes that S3 represents an attractive storage solution, especially where query performance on "colder" data is less critical, and users seek to separate storage and compute. To help achieve this, support is provided for using S3 as the storage for a MergeTree engine. This will enable users to exploit the scalability and cost benefits of S3, and the insert and query performance of the MergeTree engine.
 
-### Storage Tiers {#storage-tiers}
+### Storage tiers {#storage-tiers}
 
 ClickHouse storage volumes allow physical disks to be abstracted from the MergeTree table engine. Any single volume can be composed of an ordered set of disks. Whilst principally allowing multiple block devices to be potentially used for data storage, this abstraction also allows other storage types, including S3. ClickHouse data parts can be moved between volumes and fill rates according to storage policies, thus creating the concept of storage tiers.
 
@@ -816,7 +816,7 @@ You should see something like the following:
 
 <Image img={S3J} size="lg" border alt="S3 bucket view in AWS console showing ClickHouse data files stored in S3" />
 
-## Replicating a single shard across two AWS regions using S3 Object Storage {#s3-multi-region}
+## Replicating a single shard across two AWS regions using S3 object storage {#s3-multi-region}
 
 :::tip
 Object storage is used by default in ClickHouse Cloud, you do not need to follow this procedure if you are running in ClickHouse Cloud.
@@ -838,7 +838,7 @@ Deploy ClickHouse on two hosts, in the sample configurations these are named `ch
 
 Place `chnode1` in one AWS region, and `chnode2` in a second.
 
-#### Deploy ClickHouse Keeper {#deploy-clickhouse-keeper}
+#### Deploy ClickHouse keeper {#deploy-clickhouse-keeper}
 
 Deploy ClickHouse Keeper on three hosts, in the sample configurations these are named `keepernode1`, `keepernode2`, and `keepernode3`.  `keepernode1` can be deployed in the same region as `chnode1`, `keepernode2` with `chnode2`, and `keepernode3` in either region but a different availability zone from the ClickHouse node in that region.
 
@@ -891,7 +891,7 @@ The configuration files will then be placed in `/etc/clickhouse-server/config.d/
 Many of the steps in this guide will ask you to place a configuration file in `/etc/clickhouse-server/config.d/`.  This is the default location on Linux systems for configuration override files.  When you put these files into that directory ClickHouse will use the content to override the default configuration.  By placing these files in the override directory you will avoid losing your configuration during an upgrade.
 :::
 
-### Configure ClickHouse Keeper {#configure-clickhouse-keeper}
+### Configure ClickHouse keeper {#configure-clickhouse-keeper}
 
 When running ClickHouse Keeper standalone (separate from ClickHouse server) the configuration is a single XML file.  In this tutorial, the file is `/etc/clickhouse-keeper/keeper_config.xml`.  All three Keeper servers use the same configuration with one setting different; `<server_id>`.
 
@@ -1041,7 +1041,7 @@ All three servers must listen for network connections so that they can communica
 
 ### Start the servers {#start-the-servers}
 
-#### Run ClickHouse Keeper {#run-clickhouse-keeper}
+#### Run ClickHouse keeper {#run-clickhouse-keeper}
 
 On each Keeper server run the commands for your operating system, for example:
 
@@ -1051,7 +1051,7 @@ sudo systemctl start clickhouse-keeper
 sudo systemctl status clickhouse-keeper
 ```
 
-#### Check ClickHouse Keeper status {#check-clickhouse-keeper-status}
+#### Check ClickHouse keeper status {#check-clickhouse-keeper-status}
 
 Send commands to the ClickHouse Keeper with `netcat`.  For example, `mntr` returns the state of the ClickHouse Keeper cluster.  If you run the command on each of the Keeper nodes you will see that one is a leader, and the other two are followers:
 
@@ -1221,7 +1221,7 @@ These tests will verify that data is being replicated across the two servers, an
 
 <Image img={Bucket2} size="lg" border alt="Size of data in second S3 bucket showing storage usage metrics" />
 
-## S3Express {#s3express}
+## S3express {#s3express}
 
 [S3Express](https://aws.amazon.com/s3/storage-classes/express-one-zone/) is a new high-performance, single-Availability Zone storage class in Amazon S3.
 

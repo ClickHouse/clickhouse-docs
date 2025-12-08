@@ -41,10 +41,10 @@ In this guide you will ask some questions of your ClickHouse data with Metabase 
 If you do not have a dataset to work with you can add one of the examples.  This guide uses the [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md) dataset, so you might choose that one.  There are several others to look at in the same documentation category.
 :::
 
-## 1. Gather your connection details {#1-gather-your-connection-details}
+## 1. gather your connection details {#1-gather-your-connection-details}
 <ConnectionDetails />
 
-## 2.  Download the ClickHouse plugin for Metabase {#2--download-the-clickhouse-plugin-for-metabase}
+## 2.  download the ClickHouse plugin for Metabase {#2--download-the-clickhouse-plugin-for-metabase}
 
 1. If you do not have a `plugins` folder, create one as a subfolder of where you have `metabase.jar` saved.
 
@@ -56,7 +56,7 @@ If you do not have a dataset to work with you can add one of the examples.  This
 
 5. Access Metabase at <a href="http://localhost:3000/" target="_blank">http://hostname:3000</a>. On the initial startup, you will see a welcome screen and have to work your way through a list of questions. If prompted to select a database, select "**I'll add my data later**":
 
-## 3.  Connect Metabase to ClickHouse {#3--connect-metabase-to-clickhouse}
+## 3.  connect Metabase to ClickHouse {#3--connect-metabase-to-clickhouse}
 
 1. Click on the gear icon in the top-right corner and select **Admin Settings** to visit your <a href="http://localhost:3000/admin/settings/setup" target="_blank">Metabase admin page</a>.
 
@@ -74,7 +74,7 @@ If you do not have a dataset to work with you can add one of the examples.  This
 
 6. Click the **Save** button and Metabase will scan your database for tables.
 
-## 4. Run a SQL query {#4-run-a-sql-query}
+## 4. run a SQL query {#4-run-a-sql-query}
 
 1. Exit the **Admin settings** by clicking the **Exit admin** button in the top-right corner.
 
@@ -86,7 +86,7 @@ If you do not have a dataset to work with you can add one of the examples.  This
 
     <Image size="md" img={metabase_04} alt="Metabase SQL editor showing a query on UK price paid data" border />
 
-## 5. Ask a question {#5-ask-a-question}
+## 5. ask a question {#5-ask-a-question}
 
 1. Click on **+ New** and select **Question**. Notice you can build a question by starting with a database and table. For example, the following question is being asked of a table named `uk_price_paid` in the `default` database. Here is a simple question that calculates the average price by town, within the county of Greater Manchester:
 

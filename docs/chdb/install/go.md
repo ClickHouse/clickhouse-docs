@@ -13,7 +13,7 @@ chDB-go provides Go bindings for chDB, enabling you to run ClickHouse queries di
 
 ## Installation {#installation}
 
-### Step 1: Install libchdb {#install-libchdb}
+### Step 1: install libchdb {#install-libchdb}
 
 First, install the chDB library:
 
@@ -21,7 +21,7 @@ First, install the chDB library:
 curl -sL https://lib.chdb.io | bash
 ```
 
-### Step 2: Install chdb-go {#install-chdb-go}
+### Step 2: install chdb-go {#install-chdb-go}
 
 Install the Go package:
 
@@ -52,7 +52,7 @@ chDB-go includes a CLI for quick queries:
 ./chdb-go --path /tmp/chdb
 ```
 
-### Go Library - quick start {#quick-start}
+### Go library - quick start {#quick-start}
 
 #### Stateless queries {#stateless-queries}
 

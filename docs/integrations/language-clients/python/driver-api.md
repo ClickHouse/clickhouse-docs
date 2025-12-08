@@ -8,7 +8,7 @@ title: 'ClickHouse Connect Driver API'
 doc_type: 'reference'
 ---
 
-# ClickHouse Connect driver API {#clickhouse-connect-driver-api}
+# ClickHouse connect driver API {#clickhouse-connect-driver-api}
 
 :::note
 Passing keyword arguments is recommended for most api methods given the number of possible arguments, most of which are optional.
@@ -16,7 +16,7 @@ Passing keyword arguments is recommended for most api methods given the number o
 *Methods not documented here are not considered part of the API, and may be removed or changed.*
 :::
 
-## Client Initialization {#client-initialization}
+## Client initialization {#client-initialization}
 
 The `clickhouse_connect.driver.client` class provides the primary interface between a Python application and the ClickHouse database server. Use the `clickhouse_connect.get_client` function to obtain a Client instance, which accepts the following arguments:
 
@@ -118,7 +118,7 @@ print(client.database)
 # Output: 'github'
 ```
 
-## Client Lifecycle and Best Practices {#client-lifecycle-and-best-practices}
+## Client lifecycle and best practices {#client-lifecycle-and-best-practices}
 
 Creating a ClickHouse Connect client is an expensive operation that involves establishing a connection, retrieving server metadata, and initializing settings. Follow these best practices for optimal performance:
 
@@ -356,7 +356,7 @@ settings = {'merge_tree_min_rows_for_concurrent_read': 65535,
 client.query("SELECT event_type, sum(timeout) FROM event_errors WHERE event_time > '2022-08-01'", settings=settings)
 ```
 
-## Client `command` Method {#client-command-method}
+## Client `command` method {#client-command-method}
 
 Use the `Client.command` method to send SQL queries to the ClickHouse server that do not normally return data or that return a single primitive or array value rather than a full dataset. This method takes the following parameters:
 
@@ -452,7 +452,7 @@ result = client.command(
 )
 ```
 
-## Client `query` Method {#client-query-method}
+## Client `query` method {#client-query-method}
 
 The `Client.query` method is the primary way to retrieve a single "batch" dataset from the ClickHouse server. It utilizes the Native ClickHouse format over HTTP to transmit large datasets (up to approximately one million rows) efficiently. This method takes the following parameters:
 
@@ -603,7 +603,7 @@ The `*_stream` properties return a Python Context that can be used as an iterato
 
 The complete details of streaming query results (using StreamContext objects) are outlined in [Advanced Queries (Streaming Queries)](advanced-querying.md#streaming-queries).
 
-## Consuming query results with NumPy, Pandas or Arrow {#consuming-query-results-with-numpy-pandas-or-arrow}
+## Consuming query results with numpy, Pandas or Arrow {#consuming-query-results-with-numpy-pandas-or-arrow}
 
 ClickHouse Connect provides specialized query methods for NumPy, Pandas, and Arrow data formats. For detailed information on using these methods, including examples, streaming capabilities, and advanced type handling, see [Advanced Querying (NumPy, Pandas and Arrow Queries)](advanced-querying.md#numpy-pandas-and-arrow-queries).
 
@@ -611,7 +611,7 @@ ClickHouse Connect provides specialized query methods for NumPy, Pandas, and Arr
 
 For streaming large result sets, ClickHouse Connect provides multiple streaming methods. See [Advanced Queries (Streaming Queries)](advanced-querying.md#streaming-queries) for details and examples.
 
-## Client `insert` Method {#client-insert-method}
+## Client `insert` method {#client-insert-method}
 
 For the common use case of inserting multiple records into ClickHouse, there is the `Client.insert` method. It takes the following parameters:
 
@@ -717,7 +717,7 @@ client.insert(
 )
 ```
 
-## File Inserts {#file-inserts}
+## File inserts {#file-inserts}
 
 For inserting data directly from files into ClickHouse tables, see [Advanced Inserting (File Inserts)](advanced-inserting.md#file-inserts).
 
@@ -741,11 +741,11 @@ The functions and the DT64Param class in the `clickhouse_connect.driver.binding`
 
 For information on using ClickHouse Connect in multithreaded, multiprocess, and async/event-driven applications, see [Advanced Usage (Multithreaded, multiprocess, and async/event driven use cases)](advanced-usage.md#multithreaded-multiprocess-and-asyncevent-driven-use-cases).
 
-## AsyncClient wrapper {#asyncclient-wrapper}
+## Asyncclient wrapper {#asyncclient-wrapper}
 
 For information on using the AsyncClient wrapper for asyncio environments, see [Advanced Usage (AsyncClient wrapper)](advanced-usage.md#asyncclient-wrapper).
 
-## Managing ClickHouse Session IDs {#managing-clickhouse-session-ids}
+## Managing ClickHouse session ids {#managing-clickhouse-session-ids}
 
 For information on managing ClickHouse session IDs in multi-threaded or concurrent applications, see [Advanced Usage (Managing ClickHouse Session IDs)](advanced-usage.md#managing-clickhouse-session-ids).
 

@@ -30,7 +30,7 @@ ClickHouse utilizes pre-created roles to enable system functions. This section a
 
 If an incident may be the result of a compromised role, review activities in CloudTrail and CloudWatch related to the ClickHouse IAM roles and actions. Refer to the [CloudFormation](/cloud/reference/byoc/onboarding/aws#cloudformation-iam-roles) stack or Terraform module provided as part of setup for a list of IAM roles.
 
-## Unauthorized access to EKS cluster {#unauthorized-access-eks-cluster}
+## Unauthorized access to eks cluster {#unauthorized-access-eks-cluster}
 
 ClickHouse BYOC runs inside EKS. This section assumes the customer is using CloudTrail and CloudWatch in AWS and has access to the logs.
 

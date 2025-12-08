@@ -65,7 +65,7 @@ For better recommendation of this value you can contact the ClickPipes team.
 
 :::
 
-## Connection details to use for Supabase {#connection-details-to-use-for-supabase}
+## Connection details to use for supabase {#connection-details-to-use-for-supabase}
 
 Head over to your Supabase Project's `Project Settings` -> `Database` (under `Configuration`).
 
@@ -79,7 +79,7 @@ The connection pooler is not supported for CDC based replication, hence it needs
 
 :::
 
-## Note on RLS {#note-on-rls}
+## Note on rls {#note-on-rls}
 The ClickPipes Postgres user must not be restricted by RLS policies, as it can lead to missing data. You can disable RLS policies for the user by running the below command:
 ```sql
 ALTER USER clickpipes_user BYPASSRLS;

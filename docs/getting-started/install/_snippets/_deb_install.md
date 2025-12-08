@@ -86,7 +86,7 @@ If you set up a password for your server, then you will need to run:
 clickhouse-client --password
 ```
 
-## Install standalone ClickHouse Keeper {#install-standalone-clickhouse-keeper}
+## Install standalone ClickHouse keeper {#install-standalone-clickhouse-keeper}
 
 :::tip
 In production environments we strongly recommend running ClickHouse Keeper on dedicated nodes.
@@ -100,7 +100,7 @@ To install `clickhouse-keeper` on standalone ClickHouse Keeper servers, run:
 sudo apt-get install -y clickhouse-keeper
 ```
 
-## Enable and start ClickHouse Keeper {#enable-and-start-clickhouse-keeper}
+## Enable and start ClickHouse keeper {#enable-and-start-clickhouse-keeper}
 
 ```bash
 sudo systemctl enable clickhouse-keeper

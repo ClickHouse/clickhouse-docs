@@ -29,11 +29,11 @@ ClickHouse is optimized for:
 
 Stored procedures with procedural logic work against these optimizations. Instead, ClickHouse provides alternatives that align with its strengths.
 
-### User-Defined Functions (UDFs) {#user-defined-functions}
+### User-defined functions (udfs) {#user-defined-functions}
 
 User-Defined Functions let you encapsulate reusable logic without control flow. ClickHouse supports two types:
 
-#### Lambda-based UDFs {#lambda-based-udfs}
+#### Lambda-based udfs {#lambda-based-udfs}
 
 Create functions using SQL expressions and lambda syntax:
 
@@ -107,7 +107,7 @@ SELECT format_phone('5551234567');
 
 See [`CREATE FUNCTION`](/sql-reference/statements/create/function) for complete syntax.
 
-#### Executable UDFs {#executable-udfs}
+#### Executable udfs {#executable-udfs}
 
 For more complex logic, use executable UDFs that call external programs:
 

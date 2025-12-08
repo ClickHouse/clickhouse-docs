@@ -37,7 +37,7 @@ You can also implement a tiered storage using SSDs and HDDs in a [hot/warm/cold 
 
 ## CPU {#cpu}
 
-### Which CPU should I use? {#which-cpu-should-i-use}
+### Which CPU should i use? {#which-cpu-should-i-use}
 
 The type of CPU you should use depends on your usage pattern. In general, however, applications with many frequent concurrent queries, that process more data, or that use compute-intensive UDFs will require more CPU cores.
 
@@ -59,7 +59,7 @@ For data warehousing workloads and ad-hoc analytical queries, we recommend the [
 
 There is no standard CPU utilization target for ClickHouse. Utilize a tool such as [iostat](https://linux.die.net/man/1/iostat) to measure average CPU usage, and accordingly adjust the size of your servers to manage unexpected traffic spikes. However, for analytical or data warehousing use cases with ad-hoc queries, you should target 10-20% CPU utilization.
 
-### How many CPU cores should I use? {#how-many-cpu-cores-should-i-use}
+### How many CPU cores should i use? {#how-many-cpu-cores-should-i-use}
 
 The number of CPUs you should use depends on your workload. However, we generally recommend the following memory-to-CPU-core ratios based on your CPU type:
 
@@ -102,7 +102,7 @@ ClickHouse configurations are highly dependent on your specific application's re
 
 To provide guidance (not recommendations), the following are example configurations of ClickHouse users in production:
 
-### Fortune 500 B2B SaaS {#fortune-500-b2b-saas}
+### Fortune 500 b2b saas {#fortune-500-b2b-saas}
 
 <table>
     <tr>
@@ -164,7 +164,7 @@ To provide guidance (not recommendations), the following are example configurati
     </tr>
 </table>
 
-### Fortune 500 Telecom Operator for a logging use case {#fortune-500-telecom-operator-for-a-logging-use-case}
+### Fortune 500 telecom operator for a logging use case {#fortune-500-telecom-operator-for-a-logging-use-case}
 
 <table>
     <tr>

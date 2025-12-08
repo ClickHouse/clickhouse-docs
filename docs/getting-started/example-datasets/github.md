@@ -1830,7 +1830,7 @@ LIMIT 10
 10 rows in set. Elapsed: 3.134 sec. Processed 16.13 million rows, 1.83 GB (5.15 million rows/s., 582.99 MB/s.)
 ```
 
-### Who tends to write more tests / CPP code / comments? {#who-tends-to-write-more-tests--cpp-code--comments}
+### Who tends to write more tests / cpp code / comments? {#who-tends-to-write-more-tests--cpp-code--comments}
 
 There are a few ways we can address this question. Focusing on the code to test ratio, this query is relatively simple - count the number of contributions to folders containing `tests` and compute the ratio to total contributions.
 

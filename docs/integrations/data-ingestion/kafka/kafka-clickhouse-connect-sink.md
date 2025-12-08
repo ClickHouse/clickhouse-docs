@@ -10,7 +10,7 @@ keywords: ['ClickHouse Kafka Connect Sink', 'Kafka connector ClickHouse', 'offic
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 
-# ClickHouse Kafka Connect Sink
+# ClickHouse Kafka connect sink
 
 :::note
 If you need any help, please [file an issue in the repository](https://github.com/ClickHouse/clickhouse-kafka-connect/issues) or raise a question in [ClickHouse public Slack](https://clickhouse.com/slack).
@@ -214,7 +214,7 @@ The connector can consume data from multiple topics
 }
 ```
 
-#### Basic configuration with DLQ {#basic-configuration-with-dlq}
+#### Basic configuration with dlq {#basic-configuration-with-dlq}
 
 ```json
 {
@@ -310,7 +310,7 @@ For additional details check out the official [tutorial](https://docs.confluent.
 
 ClickHouse Kafka Connect reports runtime metrics via [Java Management Extensions (JMX)](https://www.oracle.com/technical-resources/articles/javase/jmx.html). JMX is enabled in Kafka Connector by default.
 
-#### ClickHouse-Specific Metrics {#clickhouse-specific-metrics}
+#### Clickhouse-specific metrics {#clickhouse-specific-metrics}
 
 The connector exposes custom metrics via the following MBean name:
 
@@ -324,7 +324,7 @@ com.clickhouse:type=ClickHouseKafkaConnector,name=SinkTask{id}
 | `recordProcessingTime` | long | Total time in nanoseconds spent grouping and converting records to a unified structure. |
 | `taskProcessingTime`   | long | Total time in nanoseconds spent processing and inserting data into ClickHouse.          |
 
-#### Kafka Producer/Consumer Metrics {#kafka-producer-consumer-metrics}
+#### Kafka Producer/Consumer metrics {#kafka-producer-consumer-metrics}
 
 The connector exposes standard Kafka producer and consumer metrics that provide insights into data flow, throughput, and performance.
 
@@ -356,7 +356,7 @@ These metrics help monitor:
 - **Compression**: Measure data compression efficiency
 - **Connection Health**: Monitor network connectivity and stability
 
-#### Kafka Connect Framework Metrics {#kafka-connect-framework-metrics}
+#### Kafka connect framework metrics {#kafka-connect-framework-metrics}
 
 The connector integrates with the Kafka Connect framework and exposes metrics for task lifecycle and error tracking.
 
@@ -386,7 +386,7 @@ Task status values include: `running`, `paused`, `failed`, `destroyed`, `unassig
 - `put-batch-max-time-ms`: Maximum time to process a batch
 - `source-record-poll-total`: Total records polled
 
-#### Monitoring Best Practices {#monitoring-best-practices}
+#### Monitoring best practices {#monitoring-best-practices}
 
 1. **Monitor Consumer Lag**: Track `records-lag` per partition to identify processing bottlenecks
 2. **Track Error Rates**: Watch `errors-total` and `records-skip-total` to detect data quality issues
@@ -436,7 +436,7 @@ Before tuning, it's important to understand how data flows through the connector
 
 Performance can be optimized at each of these stages.
 
-#### Kafka Connect batch size tuning {#connect-fetch-vs-connector-poll}
+#### Kafka connect batch size tuning {#connect-fetch-vs-connector-poll}
 
 The first level of optimization is controlling how much data the connector receives per batch from Kafka.
 
@@ -686,7 +686,7 @@ Monitor these key metrics:
 7. **Monitor continuously**: Track consumer lag, part count, and merge activity
 8. **Test thoroughly**: Always test configuration changes under realistic load before production deployment
 
-#### Example: High-throughput configuration {#example-high-throughput}
+#### Example: high-throughput configuration {#example-high-throughput}
 
 Here's a complete example optimized for high throughput:
 

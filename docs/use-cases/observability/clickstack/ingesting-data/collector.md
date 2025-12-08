@@ -57,7 +57,7 @@ Users should use a user with the [appropriate credentials](/use-cases/observabil
 
 ### Modifying configuration {#modifying-otel-collector-configuration}
 
-#### Using docker {#using-docker}
+#### Using Docker {#using-docker}
 
 All docker images, which include the OpenTelemetry collector, can be configured to use a clickhouse instance via the environment variables `OPAMP_SERVER_URL`,`CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME` and `CLICKHOUSE_PASSWORD`:
 
@@ -78,7 +78,7 @@ docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLIC
 ClickStack images are now published as `clickhouse/clickstack-*` (previously `docker.hyperdx.io/hyperdx/*`).
 :::
 
-#### Docker Compose {#docker-compose-otel}
+#### Docker compose {#docker-compose-otel}
 
 With Docker Compose, modify the collector configuration using the same environment variables as above:
 
@@ -429,7 +429,7 @@ To migrate from the Map-based schemas, follow these steps:
 
 <VerticalStepper headerLevel="h4">
 
-#### Stop the OTel collector {#stop-the-collector}
+#### Stop the otel collector {#stop-the-collector}
 
 #### Rename existing tables and update sources {#rename-existing-tables-sources}
 
@@ -446,7 +446,7 @@ RENAME TABLE otel_metrics TO otel_metrics_map;
 
 Deploy the collector with `OTEL_AGENT_FEATURE_GATE_ARG` set.
 
-#### Restart the HyperDX container with JSON schema support {#restart-the-hyperdx-container}
+#### Restart the hyperdx container with JSON schema support {#restart-the-hyperdx-container}
 
 ```shell
 export BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true

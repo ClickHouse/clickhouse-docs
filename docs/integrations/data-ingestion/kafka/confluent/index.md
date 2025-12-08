@@ -8,7 +8,7 @@ doc_type: 'guide'
 keywords: ['Confluent Cloud ClickHouse', 'Confluent ClickHouse integration', 'Kafka ClickHouse connector', 'Confluent Platform ClickHouse', 'ClickHouse Connect Sink']
 ---
 
-# Integrating Confluent Cloud with ClickHouse
+# Integrating confluent cloud with ClickHouse
 
 Confluent platform provides two options to integration with ClickHouse
 

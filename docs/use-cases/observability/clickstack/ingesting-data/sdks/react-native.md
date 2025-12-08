@@ -41,7 +41,7 @@ HyperDXRum.init({
 });
 ```
 
-### Attach user information or metadata (Optional) {#attach-user-information-metadata}
+### Attach user information or metadata (optional) {#attach-user-information-metadata}
 
 Attaching user information will allow you to search/filter sessions and events
 in HyperDX. This can be called at any point during the client session. The

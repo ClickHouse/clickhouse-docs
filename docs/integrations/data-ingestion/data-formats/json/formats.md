@@ -427,7 +427,7 @@ Code: 117. DB::Exception: Unknown field found while parsing JSONEachRow format: 
 
 ClickHouse will throw exceptions in cases of inconsistent JSON and table columns structure.
 
-## BSON {#bson}
+## Bson {#bson}
 
 ClickHouse allows exporting to and importing data from [BSON](https://bsonspec.org/) encoded files. This format is used by some DBMSs, e.g. [MongoDB](https://github.com/mongodb/mongo) database.
 

@@ -23,7 +23,7 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
 <Image size="md" img={fabi_01} alt="Fabi.ai data exploration and workflow platform" border />
 
-## Gather Your Connection Details {#gather-your-connection-details}
+## Gather your connection details {#gather-your-connection-details}
 
 <ConnectionDetails />
 
@@ -47,7 +47,7 @@ Once you’ve connected Fabi.ai to ClickHouse, go to any [Smartbook](https://doc
 
    <Image size="lg" img={fabi_04} alt="Querying ClickHouse" border />
 
-## Additional Resources {#additional-resources}
+## Additional resources {#additional-resources}
 
 [Fabi.ai](https://www.fabi.ai) documentation: https://docs.fabi.ai/introduction
 

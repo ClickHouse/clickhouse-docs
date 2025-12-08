@@ -25,7 +25,7 @@ import AddConnection from '@site/static/images/use-cases/AI_ML/MCP/7_add_connect
 import OpenAIModels from '@site/static/images/use-cases/AI_ML/MCP/8_openai_models_more.png';
 import Conversation from '@site/static/images/use-cases/AI_ML/MCP/9_conversation.png';
 
-# Using ClickHouse MCP server with Open WebUI
+# Using ClickHouse mcp server with open webui
 
 > This guide explains how to set up [Open WebUI](https://github.com/open-webui/open-webui) with a ClickHouse MCP server
 > and connect it to the ClickHouse example datasets.
@@ -37,7 +37,7 @@ import Conversation from '@site/static/images/use-cases/AI_ML/MCP/9_conversation
 You will need to install [uv](https://docs.astral.sh/uv/) to follow the instructions in this guide.
 If you don't want to use uv, you will need to update the MCP Server config to use an alternative package manager.
 
-## Launch Open WebUI {#launch-open-webui}
+## Launch open webui {#launch-open-webui}
 
 To launch Open WebUI, you can run the following command:
 
@@ -47,7 +47,7 @@ uv run --with open-webui open-webui serve
 
 Navigate to http://localhost:8080/ to see the UI.
 
-## Configure ClickHouse MCP Server {#configure-clickhouse-mcp-server}
+## Configure ClickHouse mcp server {#configure-clickhouse-mcp-server}
 
 To setup the ClickHouse MCP Server, we'll need to convert the MCP Server to Open API endpoints.
 Let's first set environmental variables that will let us connect to the ClickHouse SQL Playground:
@@ -88,7 +88,7 @@ If we click on the tool icon, we can then list the available tools:
 
 <Image img={ListOfTools} alt="Open WebUI tool listing" size="md"/>
 
-## Configure OpenAI {#configure-openai}
+## Configure openai {#configure-openai}
 
 By default, Open WebUI works with Ollama models, but we can add OpenAI compatible endpoints as well.
 These are configured via the settings menu, but this time we need to click on the `Connections` tab:
@@ -103,7 +103,7 @@ The OpenAI models will then be available on the top menu:
 
 <Image img={OpenAIModels} alt="Open WebUI - Models" size="md"/>
 
-## Chat to ClickHouse MCP Server with Open WebUI {#chat-to-clickhouse-mcp-server}
+## Chat to ClickHouse mcp server with open webui {#chat-to-clickhouse-mcp-server}
 
 We can then have a conversation and Open WebUI will call the MCP Server if necessary:
 

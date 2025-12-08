@@ -52,7 +52,7 @@ The user will be assigned the role associated with their email address whenever 
 
 ## Database authentication {#database-authentication}
 
-### Database user ID and password {#database-user-id--password}
+### Database user id and password {#database-user-id--password}
 
 Use the SHA256_hash method when [creating user accounts](/sql-reference/statements/create/user.md) to secure passwords. ClickHouse database passwords must contain a minimum of 12 characters and meet complexity requirements: upper case characters, lower case characters, numbers and/or special characters.
 
@@ -65,7 +65,7 @@ such as [this one](https://tools.keycdn.com/sha256-online-generator) before prov
 CREATE USER userName IDENTIFIED WITH sha256_hash BY 'hash';
 ```
 
-### Database user with secure shell (SSH) authentication {#database-ssh}
+### Database user with secure shell (ssh) authentication {#database-ssh}
 
 To set up SSH authentication for a ClickHouse Cloud database user.
 
@@ -139,7 +139,7 @@ FROM system.role_grants LEFT OUTER JOIN system.grants ON role_grants.granted_rol
 WHERE role_grants.user_name is null;
 ```
 
-#### Associate grant list to Console users with access to SQL console {#associate-grant-list-to-console-users-with-access-to-sql-console}
+#### Associate grant list to console users with access to SQL console {#associate-grant-list-to-console-users-with-access-to-sql-console}
 
 Associate this list with Console users that have access to SQL console.
    

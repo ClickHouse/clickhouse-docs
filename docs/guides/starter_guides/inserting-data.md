@@ -24,7 +24,7 @@ These transactions can potentially involve a small number of rows at a time, wit
 To achieve high insert performance while maintaining strong consistency guarantees, users should adhere to the simple rules described below when inserting data into ClickHouse.
 Following these rules will help to avoid issues users commonly encounter the first time they use ClickHouse, and try to replicate an insert strategy that works for OLTP databases.
 
-## Best practices for Inserts {#best-practices-for-inserts}
+## Best practices for inserts {#best-practices-for-inserts}
 
 ### Insert in large batch sizes {#insert-in-large-batch-sizes}
 
@@ -237,7 +237,7 @@ clickhouse-client --query "SELECT formatReadableQuantity(count(*)) FROM hackerne
 28.74 million
 ```
 
-### inserting data via command line with curl {#insert-using-curl}
+### Inserting data via command line with curl {#insert-using-curl}
 
 In the previous steps you first downloaded the csv file to your local machine using `wget`. It is also possible to directly insert the data from the remote URL using a single command.
 

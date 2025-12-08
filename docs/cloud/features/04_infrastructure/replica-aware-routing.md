@@ -26,7 +26,7 @@ When Envoy receives a hostname that matches such a pattern, it will compute the 
 
 Note the original hostname will still use `LEAST_CONNECTION` load balancing, which is the default routing algorithm.
 
-## Limitations of Replica-aware routing {#limitations-of-replica-aware-routing}
+## Limitations of replica-aware routing {#limitations-of-replica-aware-routing}
 
 ### Replica-aware routing does not guarantee isolation {#replica-aware-routing-does-not-guarantee-isolation}
 

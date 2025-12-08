@@ -11,7 +11,7 @@ import Image from '@theme/IdealImage';
 import ip_filtering_after_provisioning from '@site/static/images/cloud/security/ip-filtering-after-provisioning.png';
 import ip_filter_add_single_ip from '@site/static/images/cloud/security/ip-filter-add-single-ip.png';
 
-## Setting IP filters {#setting-ip-filters}
+## Setting ip filters {#setting-ip-filters}
 
 IP access lists filter traffic to ClickHouse services or API keys by specifying which source addresses are permitted to connect.  These lists are configurable for each service and each API key.  Lists can be configured during service or API key creation, or afterward.
 
@@ -25,7 +25,7 @@ Before you begin, collect the IP addresses or ranges that should be added to the
 
 Classless Inter-domain Routing (CIDR) notation, allows you to specify IP address ranges smaller than the traditional Class A, B, or C (8, 6, or 24) subnet mask sizes. [ARIN](https://account.arin.net/public/cidrCalculator) and several other organizations provide CIDR calculators if you need one, and if you would like more information on CIDR notation, please see the [Classless Inter-domain Routing (CIDR)](https://www.rfc-editor.org/rfc/rfc4632.html) RFC.
 
-## Create or modify an IP access list {#create-or-modify-an-ip-access-list}
+## Create or modify an ip access list {#create-or-modify-an-ip-access-list}
 
 :::note Applicable only to connections outside of PrivateLink
 IP access lists only apply to connections from the public internet, outside of [PrivateLink](/cloud/security/connectivity/private-networking).

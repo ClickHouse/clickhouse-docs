@@ -31,7 +31,7 @@ Our build process is a little different because part of our docs are in the [Cli
 The documentation is built with Docusaurus, which requires Node.js. We recommend version 18. Install [Node.js](https://nodejs.org/en/download/).
 
 
-### Installing npm and yarn {#installing-npm-and-yarn}
+### Installing NPM and yarn {#installing-npm-and-yarn}
 
 We use [yarn classic](https://classic.yarnpkg.com/lang/en/) to build the ClickHouse docs.
 
@@ -146,12 +146,12 @@ We have seen more and more 404s as the size of the docs grow.
 It seems that these are related to the use of `../` in the path to the markdown files.  Please write links to other doc
 pages as:
 
-#### link to another doc {#link-to-another-doc}
+#### Link to another doc {#link-to-another-doc}
 ```md title="foo"
 [async_insert](/operations/settings/settings.md)
 ```
 
-#### link to an anchor within another doc {#link-to-an-anchor-within-another-doc}
+#### Link to an anchor within another doc {#link-to-an-anchor-within-another-doc}
 
 ```md
 [async_insert](/operations/settings/settings.md/#async-insert)
@@ -252,7 +252,7 @@ Some docs contain information for both Cloud and Self-managed ClickHouse, and so
 
 Note: in the examples below you may notice that the H1 and H2 headers are outside of the tabs, the right-side "What's on this page" nav is built from the H1,2,3 headers in the main body of the markdown file, headings within the tabs are not currently included.
 
-### Differences between Cloud and Self-managed {#differences-between-cloud-and-self-managed}
+### Differences between cloud and Self-managed {#differences-between-cloud-and-self-managed}
 
 Backup and restore are very different across Cloud and Self-managed as the target for the backup does not need to be specified, etc.  The backup docs are an example where there is no content reused, so everything goes into one tab or the other. This is how the tabs are constructed:
 

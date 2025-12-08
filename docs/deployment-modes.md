@@ -28,7 +28,7 @@ Each deployment mode has its own strengths and ideal use cases, which we'll expl
 
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/EOXEW_-r10A?si=6IanDSJlRzN8f9Mo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-## ClickHouse Server {#clickhouse-server}
+## ClickHouse server {#clickhouse-server}
 
 ClickHouse Server represents the traditional client/server architecture and is ideal for production deployments. This deployment mode provides the full OLAP database capabilities with high throughput and low latency queries that ClickHouse is known for.
 
@@ -40,7 +40,7 @@ When it comes to deployment flexibility, ClickHouse Server can be installed on y
 
 This deployment mode is the go-to choice for production environments where reliability, performance, and full feature access are crucial.
 
-## ClickHouse Cloud {#clickhouse-cloud}
+## ClickHouse cloud {#clickhouse-cloud}
 
 [ClickHouse Cloud](/cloud/overview) is a fully managed version of ClickHouse that removes the operational overhead of running your own deployment. While it maintains all the core capabilities of ClickHouse Server, it enhances the experience with additional features designed to streamline development and operations.
 

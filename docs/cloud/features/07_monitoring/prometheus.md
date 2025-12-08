@@ -15,13 +15,13 @@ import prometheus_grafana_metrics_explorer from '@site/static/images/integration
 import prometheus_datadog from '@site/static/images/integrations/prometheus-datadog.png';
 import Image from '@theme/IdealImage';
 
-# Prometheus Integration
+# Prometheus integration
 
 The feature supports integrating [Prometheus](https://prometheus.io/) to monitor ClickHouse Cloud services. Access to Prometheus metrics is exposed via the [ClickHouse Cloud API](/cloud/manage/api/api-overview) endpoint that allows users to securely connect and export metrics into their Prometheus metrics collector. These metrics can be integrated with dashboards e.g., Grafana, Datadog for visualization.
 
 To get started, [generate an API key](/cloud/manage/openapi).
 
-## Prometheus endpoint API to retrieve ClickHouse Cloud metrics {#prometheus-endpoint-api-to-retrieve-clickhouse-cloud-metrics}
+## Prometheus endpoint API to retrieve ClickHouse cloud metrics {#prometheus-endpoint-api-to-retrieve-clickhouse-cloud-metrics}
 
 ### API reference {#api-reference}
 
@@ -194,7 +194,7 @@ Users have two primary ways to integrate with Grafana:
 
 We provide instructions on using these options below, focusing on the details specific to the ClickHouse Cloud Prometheus Endpoint.
 
-### Grafana Cloud with metrics endpoint {#grafana-cloud-with-metrics-endpoint}
+### Grafana cloud with metrics endpoint {#grafana-cloud-with-metrics-endpoint}
 
 - Login to your Grafana Cloud account
 - Add a new connection by selecting the **Metrics Endpoint**
@@ -213,7 +213,7 @@ Once configured, you should see the metrics in the drop-down that you can select
 
 <Image img={prometheus_grafana_chart} size="md" alt="Grafana Metrics Explorer Chart" border/>
 
-### Grafana Cloud with Alloy {#grafana-cloud-with-alloy}
+### Grafana cloud with alloy {#grafana-cloud-with-alloy}
 
 If you are using Grafana Cloud, Alloy can be installed by navigating to the Alloy menu in Grafana and following the onscreen instructions:
 
@@ -257,7 +257,7 @@ prometheus.remote_write "metrics_service" {
 
 Note the `honor_labels` configuration parameter needs to be set to `true` for the instance label to be properly populated.
 
-### Grafana self-managed with Alloy {#grafana-self-managed-with-alloy}
+### Grafana Self-managed with alloy {#grafana-self-managed-with-alloy}
 
 Self-managed users of Grafana can find the instructions for installing the Alloy agent [here](https://grafana.com/docs/alloy/latest/get-started/install/). We assume users have configured Alloy to send Prometheus metrics to their desired destination. The `prometheus.scrape` component below causes Alloy to scrape the ClickHouse Cloud Endpoint. We assume `prometheus.remote_write` receives the scraped metrics. Adjust the `forward_to key` to the target destination if this does not exist.
 

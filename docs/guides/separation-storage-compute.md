@@ -30,7 +30,7 @@ Please note that implementing and managing a separation of storage and compute a
 Do not configure any AWS/GCS life cycle policy. This is not supported and could lead to broken tables.
 :::
 
-## 1. Use S3 as a ClickHouse disk {#1-use-s3-as-a-clickhouse-disk}
+## 1. use S3 as a ClickHouse disk {#1-use-s3-as-a-clickhouse-disk}
 
 ### Creating a disk {#creating-a-disk}
 
@@ -93,7 +93,7 @@ You can now restart the ClickHouse server to have the changes take effect:
 service clickhouse-server restart
 ```
 
-## 2. Create a table backed by S3 {#2-create-a-table-backed-by-s3}
+## 2. create a table backed by S3 {#2-create-a-table-backed-by-s3}
 
 To test that we've configured the S3 disk properly, we can attempt to create and query a table.
 
@@ -161,7 +161,7 @@ If everything worked successfully, you are now using ClickHouse with separated s
 
 <Image img={s3_bucket_example} size="md" alt="S3 bucket example using separation of compute and storage" border/>
 
-## 3. Implementing replication for fault tolerance (optional) {#3-implementing-replication-for-fault-tolerance-optional}
+## 3. implementing replication for fault tolerance (optional) {#3-implementing-replication-for-fault-tolerance-optional}
 
 :::warning
 Do not configure any AWS/GCS life cycle policy. This is not supported and could lead to broken tables.

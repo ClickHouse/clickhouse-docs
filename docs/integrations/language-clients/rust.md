@@ -89,7 +89,7 @@ let client = Client::default()
     .with_database("test");
 ```
 
-### HTTPS or ClickHouse Cloud connection {#https-or-clickhouse-cloud-connection}
+### HTTPS or ClickHouse cloud connection {#https-or-clickhouse-cloud-connection}
 
 HTTPS works with either `rustls-tls` or `native-tls` cargo features.
 
@@ -223,7 +223,7 @@ inserter.end().await?;
 ```
 :::
 
-### Executing DDLs {#executing-ddls}
+### Executing ddls {#executing-ddls}
 
 With a single-node deployment, it is enough to execute DDLs like this:
 
@@ -257,7 +257,7 @@ let numbers = client
 
 Besides `query`, it works similarly with `insert` and `inserter` methods; additionally, the same method can be called on the `Client` instance to set global settings for all queries.
 
-### Query ID {#query-id}
+### Query id {#query-id}
 
 Using `.with_option`, you can set the `query_id` option to identify queries in the ClickHouse query log.
 
@@ -277,7 +277,7 @@ If you set `query_id` manually, make sure that it is unique. UUIDs are a good ch
 
 See also: [query_id example](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/query_id.rs) in the client repo.
 
-### Session ID {#session-id}
+### Session id {#session-id}
 
 Similarly to `query_id`, you can set the `session_id` to execute the statements in the same session. `session_id` can be set either globally on the client level, or per `query`, `insert`, or `inserter` call.
 
@@ -507,7 +507,7 @@ See [the example](https://github.com/ClickHouse/clickhouse-rs/tree/main/examples
 
 ## Troubleshooting {#troubleshooting}
 
-### CANNOT_READ_ALL_DATA {#cannot_read_all_data}
+### Cannot_read_all_data {#cannot_read_all_data}
 
 The most common cause for the `CANNOT_READ_ALL_DATA` error is that the row definition on the application side does match that in ClickHouse. 
 

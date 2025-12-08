@@ -27,10 +27,10 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 DataGrip is available at https://www.jetbrains.com/datagrip/
 
-## 1. Gather your connection details {#1-gather-your-connection-details}
+## 1. gather your connection details {#1-gather-your-connection-details}
 <ConnectionDetails />
 
-## 2. Load the ClickHouse driver {#2-load-the-clickhouse-driver}
+## 2. load the ClickHouse driver {#2-load-the-clickhouse-driver}
 
 1. Launch DataGrip, and on the **Data Sources** tab in the **Data Sources and Drivers** dialog, click the **+** icon
 
@@ -51,7 +51,7 @@ DataGrip is available at https://www.jetbrains.com/datagrip/
 
 <Image img={datagrip_1} size="lg" border alt="DataGrip Drivers tab showing ClickHouse driver installation" />
 
-## 3. Connect to ClickHouse {#3-connect-to-clickhouse}
+## 3. connect to ClickHouse {#3-connect-to-clickhouse}
 
 - Specify your database connection details, and click **Test Connection**. 
 In step one you gathered your connection details - fill in the host URL, port, username, password, and database name, then test the connection.

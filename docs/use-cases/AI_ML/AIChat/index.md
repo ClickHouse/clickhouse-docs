@@ -21,7 +21,7 @@ import img_history from '@site/static/images/use-cases/AI_ML/AIChat/5_history.pn
 import img_result_actions from '@site/static/images/use-cases/AI_ML/AIChat/6_result_actions.png';
 import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_editor.png';
 
-# Using AI Chat in ClickHouse Cloud
+# Using ai chat in ClickHouse cloud
 
 > This guide explains how to enable and use the AI Chat feature in the ClickHouse Cloud Console.
 
@@ -31,7 +31,7 @@ import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_ed
 
 1. You must have access to a ClickHouse Cloud organization with AI features enabled (contact your org admin or support if unavailable).
 
-## Open the AI Chat panel {#open-panel}
+## Open the ai chat panel {#open-panel}
 
 1. Navigate to a ClickHouse Cloud service.
 2. In the left sidebar, click the sparkle icon labeled “Ask AI”.
@@ -63,7 +63,7 @@ Use the mode selector at the bottom-left of the flyout to switch.
 2. Press <kbd>Enter</kbd> to send (use <kbd>Shift</kbd> + <kbd>Enter</kbd> for a newline).  
 3. While the model is processing you can click “Stop” to interrupt.
 
-## Understanding “Agent” thinking steps {#thinking-steps}
+## Understanding “agent” thinking steps {#thinking-steps}
 
 In Agent mode you may see expandable intermediate “thinking” or planning steps. These provide transparency into how the assistant forms its answer. Collapse or expand as needed.
 

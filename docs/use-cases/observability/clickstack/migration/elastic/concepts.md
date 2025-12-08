@@ -19,7 +19,7 @@ import elasticsearch_execution from '@site/static/images/use-cases/observability
 import elasticsearch_transforms from '@site/static/images/use-cases/observability/es-transforms.png';
 import clickhouse_mvs from '@site/static/images/use-cases/observability/ch-mvs.png';
 
-## Elastic Stack vs ClickStack {#elastic-vs-clickstack}
+## Elastic stack vs ClickStack {#elastic-vs-clickstack}
 
 Both Elastic Stack and ClickStack cover the core roles of an observability platform, but they approach these roles with different design philosophies. These roles include:
 

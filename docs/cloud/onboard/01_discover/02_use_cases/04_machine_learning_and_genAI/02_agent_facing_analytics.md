@@ -34,7 +34,7 @@ and communicate. It's as if they've suddenly become more fluent in "human"
 aka. able to grasp requests and respond with relevant contextual information
 drawn from the model's training.
 
-### AI agents superpowers: “Tools” {#tools}
+### Ai agents superpowers: “tools” {#tools}
 
 These agents really shine through their access to “tools”. Tools enhance AI agents
 by giving them abilities to perform tasks. Rather than just being conversational 
@@ -84,7 +84,7 @@ to thirty minutes, a task that would traditionally take a human several hours.
 
 <Image img={ml_ai_06} alt="Reasoning models" size="md"/>
 
-## Real-time analytics for AI agents {#real-time-analytics-for-ai-agents}
+## Real-time analytics for ai agents {#real-time-analytics-for-ai-agents}
 
 Let's take the case of an agentic AI assistant with access to a
 real-time analytics database containing the company's CRM data. When a user asks
@@ -136,7 +136,7 @@ responses while offloading the heavy computational work.
 It positions the real-time analytics database as a preferred "context
 provider" for AI agents when it comes to insights.
 
-## AI agents as an emerging user persona {#ai-agents-as-an-emerging-user-persona}
+## Ai agents as an emerging user persona {#ai-agents-as-an-emerging-user-persona}
 
 A useful way to think about AI agents leveraging real-time analytics databases 
 is to perceive them as a new category of users, or in product manager speak: 

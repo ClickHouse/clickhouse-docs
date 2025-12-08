@@ -54,7 +54,7 @@ const nextConfig = {
 module.exports = nextConfig;
 ```
 
-### Install ClickHouse OpenTelemetry SDK {#install-sdk}
+### Install ClickHouse opentelemetry SDK {#install-sdk}
 
 <Tabs groupId="npm">
 <TabItem value="npm" label="NPM" default>

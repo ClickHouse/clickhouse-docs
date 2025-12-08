@@ -8,7 +8,7 @@ doc_type: 'reference'
 keywords: ['ClickHouse Cloud', 'API overview', 'cloud API', 'REST API', 'programmatic access']
 ---
 
-# ClickHouse Cloud API
+# ClickHouse cloud API
 
 ## Overview {#overview}
 
@@ -19,7 +19,7 @@ organization, and more.
 
 [Learn how to create your first API key and start using the ClickHouse Cloud API.](/cloud/manage/openapi)
 
-## Swagger (OpenAPI) Endpoint and UI {#swagger-openapi-endpoint-and-ui}
+## Swagger (OpenAPI) endpoint and UI {#swagger-openapi-endpoint-and-ui}
 
 The ClickHouse Cloud API is built on the open-source [OpenAPI specification](https://www.openapis.org/)
 to allow for predictable client-side consumption. If you need to programmatically
@@ -58,7 +58,7 @@ If your organization has been migrated to one of the [new pricing plans](https:/
 You will now also be able to specify the `num_replicas` field as a property of the service resource.
 :::
 
-## Terraform and OpenAPI New Pricing: Replica Settings Explained {#terraform-and-openapi-new-pricing---replica-settings-explained}
+## Terraform and OpenAPI new pricing: replica settings explained {#terraform-and-openapi-new-pricing---replica-settings-explained}
 
 The number of replicas each service will be created with defaults to 3 for the Scale and Enterprise tiers, while it defaults to 1 for the Basic tier.
 For the Scale and the Enterprise tiers it is possible to adjust it by passing a `numReplicas` field in the service creation request. 

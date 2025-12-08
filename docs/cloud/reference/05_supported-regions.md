@@ -33,7 +33,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - eu-north-1 (Stockholm)
 - sa-east-1 (South America)
  
-## Google Cloud regions {#google-cloud-regions}
+## Google cloud regions {#google-cloud-regions}
 
 - asia-southeast1 (Singapore)
 - asia-northeast1 (Tokyo)

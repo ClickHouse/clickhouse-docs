@@ -30,11 +30,11 @@ With this account and the initial organization admin email, you can contact Clic
 
 The initial BYOC setup can be performed using either a CloudFormation template or a Terraform module. Both approaches create the same IAM role, enabling BYOC controllers from ClickHouse Cloud to manage your infrastructure. Note that S3, VPC, and compute resources required for running ClickHouse are not included in this initial setup.
 
-#### CloudFormation Template {#cloudformation-template}
+#### Cloudformation template {#cloudformation-template}
 
 [BYOC CloudFormation template](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/byoc.yaml)
 
-#### Terraform Module {#terraform-module}
+#### Terraform module {#terraform-module}
 
 [BYOC Terraform module](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/tf/byoc.tar.gz)
 
@@ -93,14 +93,14 @@ Create a support ticket with the following information:
 * The Private Subnet IDs you've allocated for ClickHouse
 * The availability zones these subnets are in
 
-### Optional: Setup VPC Peering {#optional-setup-vpc-peering}
+### Optional: setup VPC peering {#optional-setup-vpc-peering}
 
 To create or delete VPC peering for ClickHouse BYOC, follow the steps:
 
-#### Step 1: Enable private load balancer for ClickHouse BYOC {#step-1-enable-private-load-balancer-for-clickhouse-byoc}
+#### Step 1: enable private load balancer for ClickHouse BYOC {#step-1-enable-private-load-balancer-for-clickhouse-byoc}
 Contact ClickHouse Support to enable Private Load Balancer.
 
-#### Step 2 Create a peering connection {#step-2-create-a-peering-connection}
+#### Step 2 create a peering connection {#step-2-create-a-peering-connection}
 1. Navigate to the VPC Dashboard in ClickHouse BYOC account.
 2. Select Peering Connections.
 3. Click Create Peering Connection
@@ -114,7 +114,7 @@ Contact ClickHouse Support to enable Private Load Balancer.
 
 <br />
 
-#### Step 3 Accept the peering connection request {#step-3-accept-the-peering-connection-request}
+#### Step 3 accept the peering connection request {#step-3-accept-the-peering-connection-request}
 Go to the peering account, in the (VPC -> Peering connections -> Actions -> Accept request) page customer can approve this VPC peering request.
 
 <br />
@@ -123,7 +123,7 @@ Go to the peering account, in the (VPC -> Peering connections -> Actions -> Acce
 
 <br />
 
-#### Step 4 Add destination to ClickHouse VPC route tables {#step-4-add-destination-to-clickhouse-vpc-route-tables}
+#### Step 4 add destination to ClickHouse VPC route tables {#step-4-add-destination-to-clickhouse-vpc-route-tables}
 In ClickHouse BYOC account,
 1. Select Route Tables in the VPC Dashboard.
 2. Search for the ClickHouse VPC ID. Edit each route table attached to the private subnets.
@@ -138,7 +138,7 @@ In ClickHouse BYOC account,
 
 <br />
 
-#### Step 5 Add destination to the target VPC route tables {#step-5-add-destination-to-the-target-vpc-route-tables}
+#### Step 5 add destination to the target VPC route tables {#step-5-add-destination-to-the-target-vpc-route-tables}
 In the peering AWS account,
 1. Select Route Tables in the VPC Dashboard.
 2. Search for the target VPC ID.
@@ -153,7 +153,7 @@ In the peering AWS account,
 
 <br />
 
-#### Step 6: Edit security group to allow peered VPC access {#step-6-edit-security-group-to-allow-peered-vpc-access}
+#### Step 6: edit security group to allow peered VPC access {#step-6-edit-security-group-to-allow-peered-vpc-access}
 In the ClickHouse BYOC account, you need to update the Security Group settings to allow traffic from your peered VPC. Please contact ClickHouse Support to request the addition of inbound rules that include the CIDR ranges of your peered VPC.
 
 ---
@@ -175,9 +175,9 @@ While we aim for seamless upgrades (e.g., rolling upgrades and restarts), some, 
 Maintenance windows do not apply to security and vulnerability fixes. These are handled as off-cycle upgrades, with timely communication to coordinate a suitable time and minimize operational impact.
 :::
 
-## CloudFormation IAM roles {#cloudformation-iam-roles}
+## Cloudformation iam roles {#cloudformation-iam-roles}
 
-### Bootstrap IAM role {#bootstrap-iam-role}
+### Bootstrap iam role {#bootstrap-iam-role}
 
 The bootstrap IAM role has the following permissions:
 
@@ -187,7 +187,7 @@ The bootstrap IAM role has the following permissions:
 - **IAM operations (e.g., `iam:CreatePolicy`)**: Needed for controllers to create additional roles (see the next section for details).
 - **EKS operations**: Limited to resources with names starting with the `clickhouse-cloud` prefix.
 
-### Additional IAM roles created by the controller {#additional-iam-roles-created-by-the-controller}
+### Additional iam roles created by the controller {#additional-iam-roles-created-by-the-controller}
 
 In addition to the `ClickHouseManagementRole` created via CloudFormation, the controller will create several additional roles.
 

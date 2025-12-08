@@ -91,7 +91,7 @@ For production deployments, we recommend using [ClickHouse Cloud](https://clickh
 
 ### User permissions {#user-permissions}
 
-#### HyperDX user {#hyperdx-user}
+#### Hyperdx user {#hyperdx-user}
 
 The ClickHouse user for HyperDX only needs to be a `readonly` user with access to change the following settings:
 
@@ -125,7 +125,7 @@ ClickHouse OSS provides robust security features out of the box. However, these 
 
 See also [external authenticators](/operations/external-authenticators) and [query complexity settings](/operations/settings/query-complexity) for managing users and ensuring query/resource limits.
 
-### Configure Time To Live (TTL) {#configure-ttl}
+### Configure time to live (TTL) {#configure-ttl}
 
 Ensure the [Time To Live (TTL)](/use-cases/observability/clickstack/ttl) has been [appropriately configured](/use-cases/observability/clickstack/ttl#modifying-ttl) for your ClickStack deployment. This controls how long data is retained for - the default of 3 days often needs to be modified.
 
@@ -133,7 +133,7 @@ Ensure the [Time To Live (TTL)](/use-cases/observability/clickstack/ttl) has bee
 
 Follow the official [MongoDB security checklist](https://www.mongodb.com/docs/manual/administration/security-checklist/).
 
-## ClickHouse Cloud {#clickhouse-cloud-production}
+## ClickHouse cloud {#clickhouse-cloud-production}
 
 The following represents a simple deployment of ClickStack using ClickHouse Cloud which meets best practices.
 
@@ -151,7 +151,7 @@ To find the connection details for HyperDX, navigate to the ClickHouse Cloud con
 
 <Image img={connect_cloud} alt="Connect Cloud" size="md" background/>
 
-### Create a HyperDX user {#create-a-user}
+### Create a hyperdx user {#create-a-user}
 
 We recommend you create a dedicated user for HyperDX. Run the following SQL commands in the [Cloud SQL console](/cloud/get-started/sql-console), providing a secure password which meets complexity requirements:
 
@@ -180,7 +180,7 @@ Advanced users can deploy the [OTel collector](/use-cases/observability/clicksta
 
 Instructions for using ClickHouse Cloud with the Helm chart can be found [here](/use-cases/observability/clickstack/deployment/helm#using-clickhouse-cloud). Equivalent instructions for Docker Compose can be found [here](/use-cases/observability/clickstack/deployment/docker-compose).
 
-### Navigate to the HyperDX UI {#navigate-to-hyperdx-ui}
+### Navigate to the hyperdx UI {#navigate-to-hyperdx-ui}
 
 Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
 
@@ -190,7 +190,7 @@ Create a user, providing a username and password which meets the requirements.
 
 On clicking `Create` you'll be prompted for connection details.
 
-### Connect to ClickHouse Cloud {#connect-to-clickhouse-cloud}
+### Connect to ClickHouse cloud {#connect-to-clickhouse-cloud}
 
 Using the credentials created earlier, complete the connection details and click `Create`.
 

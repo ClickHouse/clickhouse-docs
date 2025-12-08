@@ -184,7 +184,7 @@ The query latency decreased significantly because the nearest neighbours were re
 Vector similarity search using a vector similarity index may return results that differ slightly from the brute-force search results.
 An HNSW index can potentially achieve a recall close to 1 (same accuracy as brute force search) with a careful selection of the HNSW parameters and evaluating the index quality.
 
-## Creating embeddings with UDFs {#creating-embeddings-with-udfs}
+## Creating embeddings with udfs {#creating-embeddings-with-udfs}
 
 One usually wants to create embeddings for new images or new image captions and search for similar image / image caption pairs in the data. We can use [UDF](/sql-reference/functions/udf) to create the `target` vector without leaving the client. It is important to use the same model to create the data and new embeddings for searches. The following scripts utilize the `ViT-B/32` model which also underlies the dataset.
 

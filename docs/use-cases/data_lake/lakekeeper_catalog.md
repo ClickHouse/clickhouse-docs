@@ -32,7 +32,7 @@ As this feature is experimental, you will need to enable it using:
 `SET allow_experimental_database_iceberg = 1;`
 :::
 
-## Local Development Setup {#local-development-setup}
+## Local development setup {#local-development-setup}
 
 For local development and testing, you can use a containerized Lakekeeper setup. This approach is ideal for learning, prototyping, and development environments.
 
@@ -41,7 +41,7 @@ For local development and testing, you can use a containerized Lakekeeper setup.
 1. **Docker and Docker Compose**: Ensure Docker is installed and running
 2. **Sample Setup**: You can use the Lakekeeper docker-compose setup
 
-### Setting up Local Lakekeeper Catalog {#setting-up-local-lakekeeper-catalog}
+### Setting up local lakekeeper catalog {#setting-up-local-lakekeeper-catalog}
 
 You can use the official [Lakekeeper docker-compose setup](https://github.com/lakekeeper/lakekeeper/tree/main/examples/minimal) which provides a complete environment with Lakekeeper, PostgreSQL metadata backend, and MinIO for object storage.
 
@@ -229,7 +229,7 @@ docker-compose logs -f
 The Lakekeeper setup requires that sample data be loaded into the Iceberg tables first. Make sure the environment has created and populated the tables before attempting to query them through ClickHouse. The availability of tables depends on the specific docker-compose setup and sample data loading scripts.
 :::
 
-### Connecting to Local Lakekeeper Catalog {#connecting-to-local-lakekeeper-catalog}
+### Connecting to local lakekeeper catalog {#connecting-to-local-lakekeeper-catalog}
 
 Connect to your ClickHouse container:
 
@@ -247,7 +247,7 @@ ENGINE = DataLakeCatalog('http://lakekeeper:8181/catalog', 'minio', 'ClickHouse_
 SETTINGS catalog_type = 'rest', storage_endpoint = 'http://minio:9002/warehouse-rest', warehouse = 'demo'
 ```
 
-## Querying Lakekeeper catalog tables using ClickHouse {#querying-lakekeeper-catalog-tables-using-clickhouse}
+## Querying lakekeeper catalog tables using ClickHouse {#querying-lakekeeper-catalog-tables-using-clickhouse}
 
 Now that the connection is in place, you can start querying via the Lakekeeper catalog. For example:
 
@@ -327,7 +327,7 @@ SHOW CREATE TABLE `default.taxis`;
 └───────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-## Loading data from your Data Lake into ClickHouse {#loading-data-from-your-data-lake-into-clickhouse}
+## Loading data from your data lake into ClickHouse {#loading-data-from-your-data-lake-into-clickhouse}
 
 If you need to load data from the Lakekeeper catalog into ClickHouse, start by creating a local ClickHouse table:
 

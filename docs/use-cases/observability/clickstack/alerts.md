@@ -34,7 +34,7 @@ Alerting works seamlessly across your ClickStack data, helping you track system 
 
 ClickStack supports two complementary ways to create alerts: **Search alerts** and **Dashboard chart alerts**. Once the alert is created, it is attached to either the search or the chart.
 
-### 1. Search alerts {#search-alerts}
+### 1. search alerts {#search-alerts}
 
 Search alerts allow you to trigger notifications based on the results of a saved search. They help you detect when specific events or patterns occur more (or less) frequently than expected.
 
@@ -71,7 +71,7 @@ Note that multiple alerts can be added to a search. If the above process is repe
 
 <Image img={multiple_search_alerts} alt="Multiple alerts" size="md"/>
 
-### 2. Dashboard chart alerts {#dashboard-alerts}
+### 2. dashboard chart alerts {#dashboard-alerts}
 
 Dashboard alerts extend alerting to charts.
 

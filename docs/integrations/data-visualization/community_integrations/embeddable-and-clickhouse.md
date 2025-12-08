@@ -10,7 +10,7 @@ doc_type: 'guide'
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Connecting Embeddable to ClickHouse
+# Connecting embeddable to ClickHouse
 
 <CommunityMaintainedBadge/>
 
@@ -20,10 +20,10 @@ The end result is the ability to deliver fast, interactive customer-facing analy
 
 Built-in row-level security means that every user only ever sees exactly the data they're allowed to see. And two levels of fully-configurable caching mean you can deliver fast, real time analytics at scale.
 
-## 1. Gather your connection details {#1-gather-your-connection-details}
+## 1. gather your connection details {#1-gather-your-connection-details}
 <ConnectionDetails />
 
-## 2. Create a ClickHouse connection type {#2-create-a-clickhouse-connection-type}
+## 2. create a ClickHouse connection type {#2-create-a-clickhouse-connection-type}
 
 You add a database connection using Embeddable API. This connection is used to connect to your ClickHouse service. You can add a connection using the following API call:
 

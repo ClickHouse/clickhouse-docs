@@ -10,7 +10,7 @@ doc_type: 'guide'
 
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Developing on ClickHouse with Moose OLAP
+# Developing on ClickHouse with moose OLAP
 
 <CommunityMaintainedBadge/>
 
@@ -18,7 +18,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 Moose OLAP offers developer-friendly abstractions and ORM-like functionality, built natively for ClickHouse.
 
-## Key features of Moose OLAP {#key-features}
+## Key features of moose OLAP {#key-features}
 
 - **Schemas as code**: Define your ClickHouse tables in TypeScript or Python with type safety and IDE autocompletion
 - **Type-safe queries**: Write SQL queries with type checking and autocompletion support
@@ -41,7 +41,7 @@ Or follow this guide to get up and running with Moose OLAP on an existing ClickH
 
 <VerticalStepper headerLevel="h3">
 
-### Install Moose {#step-1-install-moose}
+### Install moose {#step-1-install-moose}
 
 Install the Moose CLI globally to your system:
 
@@ -51,7 +51,7 @@ bash -i <(curl -fsSL https://fiveonefour.com/install.sh) moose
 
 ### Set up your project {#step-2-set-up-project}
 
-#### Option A: Use your own existing ClickHouse deployment {#option-a-use-own-clickhouse}
+#### Option a: use your own existing ClickHouse deployment {#option-a-use-own-clickhouse}
 
 **Important**: Your production ClickHouse will remain untouched. This will just initialize a new Moose OLAP project with data models derived from your ClickHouse tables.
 
@@ -69,7 +69,7 @@ Your ClickHouse connection string should be in this format:
 https://username:password@host:port/?database=database_name
 ```
 
-#### Option B: use ClickHouse playground {#option-b-use-clickhouse-playground}
+#### Option b: use ClickHouse playground {#option-b-use-clickhouse-playground}
 
 Don't have ClickHouse up and running yet? Use the ClickHouse Playground to try out Moose OLAP!
 
@@ -129,7 +129,7 @@ moose seed --connection-string <YOUR_CLICKHOUSE_CONNECTION_STRING> --limit 100
 moose seed --connection-string https://explorer:@play.clickhouse.com:443/?database=default --limit 100
 ```
 
-### Building with Moose OLAP {#step-7-building-with-moose-olap}
+### Building with moose OLAP {#step-7-building-with-moose-olap}
 
 Now that you have your Tables defined in code, you get the same benefits as ORM data models in web apps - type safety and autocomplete when building APIs and Materialized Views on top of your analytical data. As a next step, you could try:
 * Building a REST API with [Moose API](https://docs.fiveonefour.com/moose/apis)

@@ -10,7 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# How to build a LlamaIndex AI agent using ClickHouse MCP Server
+# How to build a llamaindex ai agent using ClickHouse mcp server
 
 In this guide, you'll learn how to build a [LlamaIndex](https://docs.llamaindex.ai) AI agent that
 can interact with [ClickHouse's SQL playground](https://sql.clickhouse.com/) using [ClickHouse's MCP Server](https://github.com/ClickHouse/mcp-clickhouse).
@@ -55,7 +55,7 @@ If you don't have an Anthropic API key, and want to use another LLM provider,
 you can find the instructions for setting up your credentials in the [LlamaIndex "LLMs" docs](https://docs.llamaindex.ai/en/stable/examples/)
 :::
 
-## Initialize MCP Server {#initialize-mcp-and-agent}
+## Initialize mcp server {#initialize-mcp-and-agent}
 
 Now configure the ClickHouse MCP Server to point at the ClickHouse SQL playground.
 You'll need to convert those from Python functions into Llama Index tools:
@@ -101,7 +101,7 @@ agent_worker = FunctionCallingAgentWorker.from_tools(
 agent = AgentRunner(agent_worker)
 ```
 
-## Initialize the LLM {#initialize-llm}
+## Initialize the llm {#initialize-llm}
 
 Initialize the Claude Sonnet 4.0 model with the following code:
 

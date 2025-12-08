@@ -34,7 +34,7 @@ As this feature is experimental, you will need to enable it using:
 `SET allow_experimental_database_iceberg = 1;`
 :::
 
-## Local Development Setup {#local-development-setup}
+## Local development setup {#local-development-setup}
 
 For local development and testing, you can use a containerized Nessie setup. This approach is ideal for learning, prototyping, and development environments.
 
@@ -43,7 +43,7 @@ For local development and testing, you can use a containerized Nessie setup. Thi
 1. **Docker and Docker Compose**: Ensure Docker is installed and running
 2. **Sample Setup**: You can use the official Nessie docker-compose setup
 
-### Setting up Local Nessie Catalog {#setting-up-local-nessie-catalog}
+### Setting up local nessie catalog {#setting-up-local-nessie-catalog}
 
 You can use the official [Nessie docker-compose setup](https://projectnessie.org/guides/setting-up/) which provides a complete environment with Nessie, in-memory version store, and MinIO for object storage.
 
@@ -147,7 +147,7 @@ docker-compose logs -f
 The Nessie setup uses an in-memory version store and requires that sample data be loaded into the Iceberg tables first. Make sure the environment has created and populated the tables before attempting to query them through ClickHouse.
 :::
 
-### Connecting to Local Nessie Catalog {#connecting-to-local-nessie-catalog}
+### Connecting to local nessie catalog {#connecting-to-local-nessie-catalog}
 
 Connect to your ClickHouse container:
 
@@ -165,7 +165,7 @@ ENGINE = DataLakeCatalog('http://nessie:19120/iceberg', 'admin', 'password')
 SETTINGS catalog_type = 'rest', storage_endpoint = 'http://minio:9002/my-bucket', warehouse = 'warehouse'
 ```
 
-## Querying Nessie catalog tables using ClickHouse {#querying-nessie-catalog-tables-using-clickhouse}
+## Querying nessie catalog tables using ClickHouse {#querying-nessie-catalog-tables-using-clickhouse}
 
 Now that the connection is in place, you can start querying via the Nessie catalog. For example:
 
@@ -245,7 +245,7 @@ SHOW CREATE TABLE `default.taxis`;
 └───────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-## Loading data from your Data Lake into ClickHouse {#loading-data-from-your-data-lake-into-clickhouse}
+## Loading data from your data lake into ClickHouse {#loading-data-from-your-data-lake-into-clickhouse}
 
 If you need to load data from the Nessie catalog into ClickHouse, start by creating a local ClickHouse table:
 

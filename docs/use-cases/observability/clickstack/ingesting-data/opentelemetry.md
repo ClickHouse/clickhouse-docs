@@ -15,7 +15,7 @@ All data is ingested into ClickStack via an **OpenTelemetry (OTel) collector** i
 
 Users send data to this collector from [language SDKs](/use-cases/observability/clickstack/sdks) or through data collection agents collecting infrastructure metrics and logs (such OTel collectors in an [agent](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) role or other technologies e.g. [Fluentd](https://www.fluentd.org/) or [Vector](https://vector.dev/)).
 
-## Installing ClickStack OpenTelemetry collector {#installing-otel-collector}
+## Installing ClickStack opentelemetry collector {#installing-otel-collector}
 
 The ClickStack OpenTelemetry collector is included in most ClickStack distributions, including:
 
@@ -38,7 +38,7 @@ This allows users to benefit from standardized ingestion, enforced schemas, and 
 
 For further details see ["Deploying the collector"](/use-cases/observability/clickstack/ingesting-data/otel-collector).
 
-## Sending OpenTelemetry data {#sending-otel-data}
+## Sending opentelemetry data {#sending-otel-data}
 
 To send data to ClickStack, point your OpenTelemetry instrumentation to the following endpoints made available by the OpenTelemetry collector:
 

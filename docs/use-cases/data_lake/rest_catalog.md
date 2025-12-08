@@ -32,7 +32,7 @@ As this feature is experimental, you will need to enable it using:
 `SET allow_experimental_database_iceberg = 1;`
 :::
 
-## Local Development Setup {#local-development-setup}
+## Local development setup {#local-development-setup}
 
 For local development and testing, you can use a containerized REST catalog setup. This approach is ideal for learning, prototyping, and development environments.
 
@@ -41,7 +41,7 @@ For local development and testing, you can use a containerized REST catalog setu
 1. **Docker and Docker Compose**: Ensure Docker is installed and running
 2. **Sample Setup**: You can use various docker-compose setups (see Alternative Docker Images below)
 
-### Setting up Local REST Catalog {#setting-up-local-rest-catalog}
+### Setting up local REST catalog {#setting-up-local-rest-catalog}
 
 You can use various containerized REST catalog implementations such as **[Databricks docker-spark-iceberg](https://github.com/databricks/docker-spark-iceberg/blob/main/docker-compose.yml?ref=blog.min.io)** which provides a complete Spark + Iceberg + REST catalog environment with docker-compose, making it ideal for testing Iceberg integrations.
 
@@ -88,7 +88,7 @@ docker-compose logs -f
 The REST catalog setup requires that sample data be loaded into the Iceberg tables first. Make sure the Spark environment has created and populated the tables before attempting to query them through ClickHouse. The availability of tables depends on the specific docker-compose setup and sample data loading scripts.
 :::
 
-### Connecting to Local REST Catalog {#connecting-to-local-rest-catalog}
+### Connecting to local REST catalog {#connecting-to-local-rest-catalog}
 
 Connect to your ClickHouse container:
 
@@ -189,7 +189,7 @@ SHOW CREATE TABLE `default.taxis`;
 └───────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-## Loading data from your Data Lake into ClickHouse {#loading-data-from-your-data-lake-into-clickhouse}
+## Loading data from your data lake into ClickHouse {#loading-data-from-your-data-lake-into-clickhouse}
 
 If you need to load data from the REST catalog into ClickHouse, start by creating a local ClickHouse table:
 

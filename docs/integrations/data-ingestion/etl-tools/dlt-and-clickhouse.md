@@ -17,7 +17,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 ## Install dlt with ClickHouse {#install-dlt-with-clickhouse}
 
-### To Install the `dlt` library with ClickHouse dependencies: {#to-install-the-dlt-library-with-clickhouse-dependencies}
+### To install the `dlt` library with ClickHouse dependencies: {#to-install-the-dlt-library-with-clickhouse-dependencies}
 ```bash
 pip install "dlt[clickhouse]"
 ```
@@ -26,7 +26,7 @@ pip install "dlt[clickhouse]"
 
 <VerticalStepper headerLevel="h3">
 
-### Initialize the dlt Project {#1-initialize-the-dlt-project}
+### Initialize the dlt project {#1-initialize-the-dlt-project}
 
 Start by initializing a new `dlt` project as follows:
 ```bash
@@ -44,7 +44,7 @@ pip install -r requirements.txt
 
 or with `pip install dlt[clickhouse]`, which installs the `dlt` library and the necessary dependencies for working with ClickHouse as a destination.
 
-### Setup ClickHouse Database {#2-setup-clickhouse-database}
+### Setup ClickHouse database {#2-setup-clickhouse-database}
 
 To load data into ClickHouse, you need to create a ClickHouse database. Here's a rough outline of what should you do:
 
@@ -179,7 +179,7 @@ pipeline = dlt.pipeline(
 )
 ```
 
-### Using Google Cloud Storage as a staging area {#using-google-cloud-storage-as-a-staging-area}
+### Using Google cloud storage as a staging area {#using-google-cloud-storage-as-a-staging-area}
 dlt supports using Google Cloud Storage (GCS) as a staging area when loading data into ClickHouse. This is handled automatically by ClickHouse's <a href="https://clickhouse.com/docs/sql-reference/table-functions/gcs">GCS table function</a> which dlt uses under the hood.
 
 The clickhouse GCS table function only supports authentication using Hash-based Message Authentication Code (HMAC) keys. To enable this, GCS provides an S3 compatibility mode that emulates the Amazon S3 API. ClickHouse takes advantage of this to allow accessing GCS buckets via its S3 integration.

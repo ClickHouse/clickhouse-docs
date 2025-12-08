@@ -24,7 +24,7 @@ This guide integrates:
 
 ## Getting started {#getting-started}
 
-### Install ClickStack OpenTelemetry instrumentation package {#install-clickstack-otel-instrumentation-package}
+### Install ClickStack opentelemetry instrumentation package {#install-clickstack-otel-instrumentation-package}
 
 Use the following command to install the [ClickStack OpenTelemetry package](https://pypi.org/project/hyperdx-opentelemetry/).
 
@@ -51,7 +51,7 @@ OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 
 _The `OTEL_SERVICE_NAME` environment variable is used to identify your service in the HyperDX app, it can be any name you want._
 
-### Run the application with OpenTelemetry Python agent {#run-the-application-with-otel-python-agent}
+### Run the application with opentelemetry Python agent {#run-the-application-with-otel-python-agent}
 
 Now you can run the application with the OpenTelemetry Python agent (`opentelemetry-instrument`).
 

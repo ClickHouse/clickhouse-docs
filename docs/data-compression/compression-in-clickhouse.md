@@ -291,6 +291,6 @@ ORDER BY
 6 rows in set. Elapsed: 0.008 sec
 ```
 
-### Compression in ClickHouse Cloud {#compression-in-clickhouse-cloud}
+### Compression in ClickHouse cloud {#compression-in-clickhouse-cloud}
 
 In ClickHouse Cloud, we utilize the `ZSTD` compression algorithm (with a default value of 1) by default. While compression speeds can vary for this algorithm, depending on the compression level (higher = slower), it has the advantage of being consistently fast on decompression (around 20% variance) and also benefiting from the ability to be parallelized. Our historical tests also suggest that this algorithm is often sufficiently effective and can even outperform `LZ4` combined with a codec. It is effective on most data types and information distributions, and is thus a sensible general-purpose default and why our initial earlier compression is already excellent even without optimization.

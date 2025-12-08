@@ -19,7 +19,7 @@ import edit_button from '@site/static/images/integrations/data-ingestion/clickpi
 import enable_gtid from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/enable_gtid.png';
 import Image from '@theme/IdealImage';
 
-# RDS MySQL source setup guide
+# Rds MySQL source setup guide
 
 This step-by-step guide shows you how to configure Amazon RDS MySQL to replicate data into ClickHouse Cloud using the [MySQL ClickPipe](../index.md). For common questions around MySQL CDC, see the [MySQL FAQs page](/integrations/data-ingestion/clickpipes/mysql/faq.md).
 
@@ -27,7 +27,7 @@ This step-by-step guide shows you how to configure Amazon RDS MySQL to replicate
 
 The binary log is a set of log files that contain information about data modifications made to an MySQL server instance, and binary log files are required for replication. To configure binary log retention in RDS MySQL, you must [enable binary logging](#enable-binlog-logging) and [increase the binlog retention interval](#binlog-retention-interval).
 
-### 1. Enable binary logging via automated backup {#enable-binlog-logging}
+### 1. enable binary logging via automated backup {#enable-binlog-logging}
 
 The automated backups feature determines whether binary logging is turned on or off for MySQL. Automated backups can be configured for your instance in the RDS Console by navigating to **Modify** > **Additional configuration** > **Backup** and selecting the **Enable automated backups** checkbox (if not selected already).
 
@@ -35,7 +35,7 @@ The automated backups feature determines whether binary logging is turned on or 
 
 We recommend setting the **Backup retention period** to a reasonably long value, depending on the replication use case.
 
-### 2. Increase the binlog retention interval {#binlog-retention-interval}
+### 2. increase the binlog retention interval {#binlog-retention-interval}
 
 :::warning
 If ClickPipes tries to resume replication and the required binlog files have been purged due to the configured binlog retention value, the ClickPipe will enter an errored state and a resync is required.
@@ -83,7 +83,7 @@ The following parameters need to be set as follows:
 <br/>
 Then, click on **Save Changes** in the top right corner. You may need to reboot your instance for the changes to take effect — a way of knowing this is if you see `Pending reboot` next to the parameter group link in the **Configuration** tab of the RDS instance.
 
-## Enable GTID Mode {#gtid-mode}
+## Enable gtid mode {#gtid-mode}
 
 :::tip
 The MySQL ClickPipe also supports replication without GTID mode. However, enabling GTID mode is recommended for better performance and easier troubleshooting.
@@ -134,7 +134,7 @@ Connect to your RDS MySQL instance as an admin user and execute the following co
 
 ## Configure network access {#configure-network-access}
 
-### IP-based access control {#ip-based-access-control}
+### Ip-based access control {#ip-based-access-control}
 
 To restrict traffic to your Aurora MySQL instance, add the [documented static NAT IPs](../../index.md#list-of-static-ips) to the **Inbound rules** of your RDS security group.
 
@@ -142,7 +142,7 @@ To restrict traffic to your Aurora MySQL instance, add the [documented static NA
 
 <Image img={edit_inbound_rules} alt="Edit inbound rules for the above security group" size="lg" border/>
 
-### Private access via AWS PrivateLink {#private-access-via-aws-privatelink}
+### Private access via AWS privatelink {#private-access-via-aws-privatelink}
 
 To connect to your RDS instance through a private network, you can use AWS PrivateLink. Follow the [AWS PrivateLink setup guide for ClickPipes](/knowledgebase/aws-privatelink-setup-for-clickpipes) to set up the connection.
 

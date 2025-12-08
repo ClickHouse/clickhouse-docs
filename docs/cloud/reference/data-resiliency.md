@@ -58,7 +58,7 @@ Customers can also configure longer retention.
 The backups currently available for the service are listed on the “backups” page on the ClickHouse Cloud console.
 This section also provides the success / failure status for each backup.
 
-## Restoring from a Backup {#restoring-from-a-backup}
+## Restoring from a backup {#restoring-from-a-backup}
 
 1. Default backups, in the ClickHouse Cloud bucket, can be restored to a new service in the same region.
 2. External backups (in customer object storage) can be restored to a new service in the same or different region.

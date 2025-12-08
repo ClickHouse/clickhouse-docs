@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ClickHouse Connect includes a SQLAlchemy dialect (`clickhousedb`) built on top of the core driver. It targets SQLAlchemy Core APIs and supports SQLAlchemy 1.4.40+ and 2.0.x.
 
-## Connect with SQLAlchemy {#sqlalchemy-connect}
+## Connect with sqlalchemy {#sqlalchemy-connect}
 
 Create an engine using either `clickhousedb://` or `clickhousedb+connect://` URLs. Query parameters map to ClickHouse settings, client options, and HTTP/TLS transport options.
 
@@ -100,7 +100,7 @@ with engine.begin() as conn:
 
 Reflected columns include dialect-specific attributes such as `clickhousedb_default_type`, `clickhousedb_codec_expression`, and `clickhousedb_ttl_expression` when present on the server.
 
-## Inserts (Core and basic ORM) {#sqlalchemy-inserts}
+## Inserts (core and basic orm) {#sqlalchemy-inserts}
 
 Inserts work via SQLAlchemy Core as well as with simple ORM models for convenience.
 

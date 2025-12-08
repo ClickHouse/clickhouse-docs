@@ -76,7 +76,7 @@ Make sure to replace `clickpipes_user` and `clickpipes_password` with your desir
 
 :::
 
-## Enabling connections in pg_hba.conf to the ClickPipes User {#enabling-connections-in-pg_hbaconf-to-the-clickpipes-user}
+## Enabling connections in pg_hba.conf to the ClickPipes user {#enabling-connections-in-pg_hbaconf-to-the-clickpipes-user}
 
 If you are self serving, you need to allow connections to the ClickPipes user from the ClickPipes IP addresses by following the below steps. If you are using a managed service, you can do the same by following the provider's documentation.
 

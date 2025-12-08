@@ -100,7 +100,7 @@ This combination delivers the performance characteristics of a specialized
 analytical database without sacrificing the core benefits of the lakehouse model,
 including component interchangeability, open formats, and unified data management.
 
-## Hybrid architecture: The best of both worlds {#hybrid-architecture-the-best-of-both-worlds}
+## Hybrid architecture: the best of both worlds {#hybrid-architecture-the-best-of-both-worlds}
 
 While ClickHouse excels at querying lakehouse components, its highly optimized 
 storage engine offers an additional advantage. For use cases demanding ultra-low

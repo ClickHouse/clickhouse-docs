@@ -13,7 +13,7 @@ import hashboard_01 from '@site/static/images/integrations/data-visualization/ha
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Connecting ClickHouse to Hashboard
+# Connecting ClickHouse to hashboard
 
 <CommunityMaintainedBadge/>
 
@@ -30,13 +30,13 @@ This guide will walk you through the steps to connect Hashboard with your ClickH
 - A ClickHouse database either hosted on your own infrastructure or on [ClickHouse Cloud](https://clickhouse.com/).
 - A [Hashboard account](https://hashboard.com/getAccess) and project.
 
-## Steps to connect Hashboard to ClickHouse {#steps-to-connect-hashboard-to-clickhouse}
+## Steps to connect hashboard to ClickHouse {#steps-to-connect-hashboard-to-clickhouse}
 
-### 1. Gather your connection details {#1-gather-your-connection-details}
+### 1. gather your connection details {#1-gather-your-connection-details}
 
 <ConnectionDetails />
 
-### 2. Add a new database connection in Hashboard {#2-add-a-new-database-connection-in-hashboard}
+### 2. add a new database connection in hashboard {#2-add-a-new-database-connection-in-hashboard}
 
 1. Navigate to your [Hashboard project](https://hashboard.com/app).
 2. Open the Settings page by clicking the gear icon in the side navigation bar.

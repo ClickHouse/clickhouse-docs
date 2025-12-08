@@ -26,7 +26,7 @@ import ToolsCalled from '@site/static/images/use-cases/AI_ML/MCP/8_janai_tools_c
 import ToolsCalledExpanded from '@site/static/images/use-cases/AI_ML/MCP/9_janai_tools_called_expanded.png';  
 import Result from '@site/static/images/use-cases/AI_ML/MCP/10_janai_result.png';  
 
-# Using ClickHouse MCP server with Jan.ai
+# Using ClickHouse mcp server with Jan.ai
 
 > This guide explains how to use the ClickHouse MCP Server with [Jan.ai](https://jan.ai/docs).
 
@@ -39,7 +39,7 @@ You can download Jan.ai for [Mac](https://jan.ai/docs/desktop/mac), [Windows](ht
 
 It's a native app, so once it's downloaded, you can launch it.
 
-## Add LLM to Jan.ai {#add-llm-to-janai}
+## Add llm to Jan.ai {#add-llm-to-janai}
 
 We can enabled models via the settings menu. 
 
@@ -47,7 +47,7 @@ To enable OpenAI, we need to provide an API key, as shown below:
 
 <Image img={OpenAIModels} alt="Enable OpenAI models" size="md"/>
 
-## Enable MCP Servers {#enable-mcp-servers}
+## Enable mcp servers {#enable-mcp-servers}
 
 At the time of writing, MCP Servers are an experimental feature in Jan.ai.
 We can enable them by toggling experimental features:
@@ -56,7 +56,7 @@ We can enable them by toggling experimental features:
 
 Once that toggle is pressed, we'll see `MCP Servers` on the left menu.
 
-## Configure ClickHouse MCP Server {#configure-clickhouse-mcp-server}
+## Configure ClickHouse mcp server {#configure-clickhouse-mcp-server}
 
 If we click on the `MCP Servers` menu, we'll see a list of MCP servers that we can connect to:
 
@@ -76,7 +76,7 @@ The ClickHouse MCP Server's tools will now be visible on the chat dialog:
 
 <Image img={MCPTool} alt="ClickHouse MCP Server tools" size="md"/>
 
-## Chat to ClickHouse MCP Server with Jan.ai {#chat-to-clickhouse-mcp-server}
+## Chat to ClickHouse mcp server with Jan.ai {#chat-to-clickhouse-mcp-server}
 
 It's time to have a conversation about some data stored in ClickHouse!
 Let's ask a question:

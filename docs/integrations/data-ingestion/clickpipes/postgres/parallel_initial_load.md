@@ -17,7 +17,7 @@ This document explains parallelized snapshot/initial load in the Postgres ClickP
 Initial load is the first phase of a CDC ClickPipe, where the ClickPipe syncs the historical data of the tables in the source database over to ClickHouse, before then starting CDC. A lot of the times, developers do this in a single-threaded manner - such as using pg_dump or pg_restore, or using a single thread to read from the source database and write to ClickHouse.
 However, the Postgres ClickPipe can parallelize this process, which can significantly speed up the initial load.
 
-### CTID column in Postgres {#ctid-pg-snapshot}
+### Ctid column in Postgres {#ctid-pg-snapshot}
 In Postgres, every row in a table has a unique identifier called the CTID. This is a system column that is not visible to users by default, but it can be used to uniquely identify rows in a table. The CTID is a combination of the block number and the offset within the block, which allows for efficient access to rows.
 
 ### Logical partitioning {#logical-partitioning-pg-snapshot}

@@ -356,7 +356,7 @@ fetch(
 </TabItem>
 </Tabs>
 
-### Request with query variables and version 2 on JSONCompactEachRow format {#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format}
+### Request with query variables and version 2 on jsoncompacteachrow format {#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format}
 
 **Query API Endpoint SQL:**
 

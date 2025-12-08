@@ -45,10 +45,10 @@ In this guide you will build a dashboard in Superset with data from a ClickHouse
 If you do not have a dataset to work with you can add one of the examples. This guide uses the [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md) dataset, so you might choose that one. There are several others to look at in the same documentation category.
 :::
 
-## 1. Gather your connection details {#1-gather-your-connection-details}
+## 1. gather your connection details {#1-gather-your-connection-details}
 <ConnectionDetails />
 
-## 2. Install the Driver {#2-install-the-driver}
+## 2. install the driver {#2-install-the-driver}
 
 1. Superset uses the `clickhouse-connect` driver to connect to ClickHouse. The details of `clickhouse-connect` are at <a href="https://pypi.org/project/clickhouse-connect/" target="_blank">https://pypi.org/project/clickhouse-connect/</a> and it can be installed with the following command:
 
@@ -58,7 +58,7 @@ If you do not have a dataset to work with you can add one of the examples. This 
 
 2. Start (or restart) Superset.
 
-## 3. Connect Superset to ClickHouse {#3-connect-superset-to-clickhouse}
+## 3. connect Superset to ClickHouse {#3-connect-superset-to-clickhouse}
 
 1. Within Superset, select **Data** from the top menu and then **Databases** from the drop-down menu. Add a new database by clicking the **+ Database** button:
 
@@ -80,7 +80,7 @@ If you do not have a dataset to work with you can add one of the examples. This 
 
 4. Click the **CONNECT** and then **FINISH** buttons to complete the setup wizard, and you should see your database in the list of databases.
 
-## 4. Add a Dataset {#4-add-a-dataset}
+## 4. add a dataset {#4-add-a-dataset}
 
 1. To interact with your ClickHouse data with Superset, you need to define a **_dataset_**. From the top menu in Superset, select **Data**, then **Datasets** from the drop-down menu.
 
@@ -91,7 +91,7 @@ If you do not have a dataset to work with you can add one of the examples. This 
 
 3. Click the **ADD** button at the bottom of the dialog window and your table appears in the list of datasets. You are ready to build a dashboard and analyze your ClickHouse data!
 
-## 5.  Creating charts and a dashboard in Superset {#5--creating-charts-and-a-dashboard-in-superset}
+## 5.  creating charts and a dashboard in Superset {#5--creating-charts-and-a-dashboard-in-superset}
 
 If you are familiar with Superset, then you will feel right at home with this next section. If you are new to Superset, well...it's like a lot of the other cool visualization tools out there in the world - it doesn't take long to get started, but the details and nuances get learned over time as you use the tool.
 

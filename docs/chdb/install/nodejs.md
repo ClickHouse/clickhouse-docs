@@ -45,7 +45,7 @@ const systemInfo = query("SELECT * FROM system.functions LIMIT 5", "Pretty");
 console.log("System functions:", systemInfo);
 ```
 
-### Session-Based queries {#session-based-queries}
+### Session-based queries {#session-based-queries}
 
 ```javascript
 const { Session } = require("chdb");

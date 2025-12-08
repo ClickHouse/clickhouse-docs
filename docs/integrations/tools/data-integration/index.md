@@ -6,7 +6,7 @@ description: 'Landing page for the data integrations section'
 doc_type: 'landing-page'
 ---
 
-# Data Integrations
+# Data integrations
 
 | Page      | Description                                                                                                                     |
 |-----------|---------------------------------------------------------------------------------------------------------------------------------|

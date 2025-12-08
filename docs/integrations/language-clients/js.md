@@ -15,7 +15,7 @@ integration:
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-# ClickHouse JS
+# ClickHouse js
 
 The official JS client for connecting to ClickHouse.
 The client is written in TypeScript and provides typings for the client public API.
@@ -221,7 +221,7 @@ There is no guarantee the same connection in a pool will be used for subsequent 
 
 See also: [Keep-Alive configuration](./js.md#keep-alive-configuration-nodejs-only).
 
-### Query ID {#query-id}
+### Query id {#query-id}
 
 Every method that sends a query or a statement (`command`, `exec`, `insert`, `select`) will provide `query_id` in the result. This unique identifier is assigned by the client per query, and might be useful to fetch the data from `system.query_log`,
 if it is enabled in the [server configuration](/operations/server-configuration-parameters/settings), or cancel long-running queries (see [the example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/cancel_query.ts)). If necessary, `query_id` can be overridden by the user in `command`/`query`/`exec`/`insert` methods params.
@@ -936,7 +936,7 @@ await client.query({
 
 See [this example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_decimals.ts) for more details.
 
-### Integral types: Int64, Int128, Int256, UInt64, UInt128, UInt256 {#integral-types-int64-int128-int256-uint64-uint128-uint256}
+### Integral types: int64, int128, int256, uint64, uint128, uint256 {#integral-types-int64-int128-int256-uint64-uint128-uint256}
 
 Though the server can accept it as a number, it is returned as a string in `JSON*` family output formats to avoid
 integer overflow as max values for these types are bigger than `Number.MAX_SAFE_INTEGER`.

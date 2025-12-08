@@ -59,7 +59,7 @@ Customers can initiate onboarding by reaching out to [us](https://clickhouse.com
 
 This section is intended to provide an overview of the resources required to deploy ClickHouse Private. Specific deployment guides are provided as part of onboarding. Instance/ server types and sizes depend on the use case.
 
-### ClickHouse Private on AWS {#clickhouse-private-aws}
+### ClickHouse private on AWS {#clickhouse-private-aws}
 
 Required resources:
 - [ECR](https://docs.aws.amazon.com/ecr/) to receive the images and Helm charts
@@ -70,7 +70,7 @@ Required resources:
 - If ingress is required, also configure an NLB
 - One AWS role per ClickHouse cluster for clickhouse-server/keeper operations
 
-### ClickHouse Private on IBM Cloud {#clickhouse-private-ibm-cloud}
+### ClickHouse private on IBM cloud {#clickhouse-private-ibm-cloud}
 
 Required resources:
 - [Container Registry](https://cloud.ibm.com/docs/Registry?topic=Registry-getting-started) to receive the images and Helm charts

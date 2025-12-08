@@ -32,7 +32,7 @@ python3 -m chdb "SELECT 1, 'abc'" Pretty
 python3 -m chdb "SELECT version()" JSON
 ```
 
-### Basic python usage {#basic-python-usage}
+### Basic Python usage {#basic-python-usage}
 
 ```python
 import chdb
@@ -279,7 +279,7 @@ result = sess.query("""
 
 See also: [test_stateful.py](https://github.com/chdb-io/chdb/blob/main/tests/test_stateful.py).
 
-### Python DB-API 2.0 interface {#python-db-api-20}
+### Python db-api 2.0 interface {#python-db-api-20}
 
 Standard database interface for compatibility with existing Python applications:
 
@@ -508,7 +508,7 @@ sess.close()
 
 ### Python table engine {#python-table-engine}
 
-#### Query Pandas DataFrames {#query-pandas-dataframes}
+#### Query Pandas dataframes {#query-pandas-dataframes}
 
 ```python
 import chdb
@@ -563,7 +563,7 @@ window_result = chdb.query("""
 print(window_result)
 ```
 
-#### Custom data sources with PyReader {#custom-data-sources-pyreader}
+#### Custom data sources with pyreader {#custom-data-sources-pyreader}
 
 Implement custom data readers for specialized data sources:
 
@@ -686,12 +686,12 @@ chDB consistently outperforms other embedded engines:
 ```python
 import chdb
 
-# 1. Use appropriate output formats
+# 1. use appropriate output formats
 df_result = chdb.query("SELECT * FROM large_table", "DataFrame")  # For analysis
 arrow_result = chdb.query("SELECT * FROM large_table", "Arrow")    # For interop
 native_result = chdb.query("SELECT * FROM large_table", "Native")   # For chDB-to-chDB
 
-# 2. Optimize queries with settings
+# 2. optimize queries with settings
 fast_result = chdb.query("""
     SELECT customer_id, sum(amount) 
     FROM sales 
@@ -702,7 +702,7 @@ fast_result = chdb.query("""
         use_uncompressed_cache = 1
 """, "DataFrame")
 
-# 3. Leverage streaming for large datasets
+# 3. leverage streaming for large datasets
 from chdb import session
 
 sess = session.Session()
@@ -739,7 +739,7 @@ with sess.send_query("SELECT customer_id, sum(amount) as total FROM large_sales 
 
 print(f"Final result: {processed_rows} customers processed, total amount: {total_amount}")
 
-# Stream to external systems (e.g., Delta Lake)
+# Stream to external systems (e.g., delta lake)
 stream = sess.send_query("SELECT * FROM large_sales LIMIT 1000000", "Arrow")
 batch_reader = stream.record_batch(rows_per_batch=50000)
 
@@ -747,7 +747,7 @@ batch_reader = stream.record_batch(rows_per_batch=50000)
 for batch in batch_reader:
     print(f"Processing batch with {batch.num_rows} rows...")
     # Transform or export each batch
-    # df_batch = batch.to_pandas()
+    # Df_batch = batch.to_pandas()
     # process_batch(df_batch)
 
 stream.close()

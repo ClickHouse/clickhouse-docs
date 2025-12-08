@@ -479,7 +479,7 @@ In the previous example, our model was materialized as a view. While this might 
     SELECT * FROM imdb_dbt.actor_summary WHERE num_movies > 5 ORDER BY avg_rank  DESC LIMIT 10;
     ```
 
-## Creating an Incremental Materialization {#creating-an-incremental-materialization}
+## Creating an incremental materialization {#creating-an-incremental-materialization}
 
 The previous example created a table to materialize the model. This table will be reconstructed for each dbt execution. This may be infeasible and extremely costly for larger result sets or complex transformations. To address this challenge and reduce the build time, dbt offers Incremental materializations. This allows dbt to insert or update records into a table since the last execution, making it appropriate for event-style data. Under the hood a temporary table is created with all the updated records and then all the untouched records as well as the updated records are inserted into a new target table. This results in similar [limitations](/integrations/dbt#limitations) for large result sets as for the table model.
 
@@ -677,7 +677,7 @@ This is visualized below:
 
 This strategy may encounter challenges on very large models. For further details see [Limitations](/integrations/dbt#limitations).
 
-### Append Strategy (inserts-only mode) {#append-strategy-inserts-only-mode}
+### Append strategy (inserts-only mode) {#append-strategy-inserts-only-mode}
 
 To overcome the limitations of large datasets in incremental models, the adapter uses the dbt configuration parameter `incremental_strategy`. This can be set to the value `append`. When set, updated rows are inserted directly into the target table (a.k.a `imdb_dbt.actor_summary`) and no temporary table is created.
 Note: Append only mode requires your data to be immutable or for duplicates to be acceptable. If you want an incremental table model that supports altered rows don't use this mode!
@@ -802,7 +802,7 @@ This process is shown below:
 
 <Image img={dbt_06} size="lg" alt="lightweight delete incremental" />
 
-### insert_overwrite mode (experimental) {#insert_overwrite-mode-experimental}
+### Insert_overwrite mode (experimental) {#insert_overwrite-mode-experimental}
 Performs the following steps:
 
 1. Create a staging (temporary) table with the same structure as the incremental model relation: `CREATE TABLE {staging} AS {target}`.
@@ -1048,6 +1048,6 @@ dbt provides the ability to load data from CSV files. This capability is not sui
     +-------+----+=
     ```
 
-## Further Information {#further-information}
+## Further information {#further-information}
 
 The previous guides only touch the surface of dbt functionality. Users are recommended to read the excellent [dbt documentation](https://docs.getdbt.com/docs/introduction).

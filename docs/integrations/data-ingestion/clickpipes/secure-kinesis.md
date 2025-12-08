@@ -31,7 +31,7 @@ Using this approach, customers can manage all access to their Kinesis data strea
 
 <VerticalStepper headerLevel="h3"/>
 
-### Obtaining the ClickHouse service IAM role Arn {#obtaining-the-clickhouse-service-iam-role-arn}
+### Obtaining the ClickHouse service iam role arn {#obtaining-the-clickhouse-service-iam-role-arn}
 
 - 1. Login to your ClickHouse cloud account.
 - 2. Select the ClickHouse service you want to create the integration
@@ -41,9 +41,9 @@ Using this approach, customers can manage all access to their Kinesis data strea
 
 <Image img={secures3_arn} alt="Secure S3 ARN" size="lg" border/>
 
-### Setting up IAM assume role {#setting-up-iam-assume-role}
+### Setting up iam assume role {#setting-up-iam-assume-role}
 
-#### Manually create IAM role. {#manually-create-iam-role}
+#### Manually create iam role. {#manually-create-iam-role}
 
 - 1. Login to your AWS Account in the web browser with an IAM user that has permission to create & manage IAM role.
 - 2. Browse to IAM Service Console

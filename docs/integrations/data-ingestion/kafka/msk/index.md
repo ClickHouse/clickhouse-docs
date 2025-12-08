@@ -13,7 +13,7 @@ integration:
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 
-# Integrating Amazon MSK with ClickHouse
+# Integrating Amazon msk with ClickHouse
 
 <div class='vimeo-container'>
   <iframe src="//www.youtube.com/embed/6lKI_WlQ3-s"
@@ -34,7 +34,7 @@ We assume:
 * you are familiar with [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md),
 * you are familiar with Amazon MSK and MSK Connectors. We recommend the Amazon MSK [Getting Started guide](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html) and [MSK Connect guide](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect.html).
 
-## The official Kafka connector from ClickHouse with Amazon MSK {#the-official-kafka-connector-from-clickhouse-with-amazon-msk}
+## The official Kafka connector from ClickHouse with Amazon msk {#the-official-kafka-connector-from-clickhouse-with-amazon-msk}
 
 ### Gather your connection details {#gather-your-connection-details}
 
@@ -66,7 +66,7 @@ username=default
 schemas.enable=false
 ```
 
-## Recommended IAM permissions (least privilege) {#iam-least-privilege}
+## Recommended iam permissions (least privilege) {#iam-least-privilege}
 
 Use the smallest set of permissions required for your setup. Start with the baseline below and add optional services only if you use them.
 
@@ -153,7 +153,7 @@ consumer.max.partition.fetch.bytes=1048576
 You can find more details (both implementation and other considerations) in the official [Kafka](https://kafka.apache.org/documentation/#consumerconfigs) and 
 [Amazon MSK](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect-workers.html#msk-connect-create-custom-worker-config) documentation.
 
-## Notes on networking for MSK Connect {#notes-on-networking-for-msk-connect}
+## Notes on networking for msk connect {#notes-on-networking-for-msk-connect}
 
 In order for MSK Connect to connect to ClickHouse, we recommend your MSK cluster to be in a private subnet with a Private NAT connected for internet access. Instructions on how to set this up are provided below. Note that public subnets are supported but not recommended due to the need to constantly assign an Elastic IP address to your ENI, [AWS provides more details here](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect-internet-access.html)
 

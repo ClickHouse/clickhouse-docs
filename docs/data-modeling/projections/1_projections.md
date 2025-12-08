@@ -29,7 +29,7 @@ queries by creating a reordering of data by attributes of interest. This can be:
 <br/>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/6CdnUdZSEG0?si=1zUyrP-tCvn9tXse" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-## How do Projections work? {#how-do-projections-work}
+## How do projections work? {#how-do-projections-work}
 
 Practically, a Projection can be thought of as an additional, hidden table to the
 original table. The projection can have a different row order, and therefore a 
@@ -71,7 +71,7 @@ There are now two ways to define a projection:
 The approaches above can also be mixed, storing some columns in the projection and
 others indirectly via `_part_offset`.
 
-## When to use Projections? {#when-to-use-projections}
+## When to use projections? {#when-to-use-projections}
 
 Projections are an appealing feature for new users as they are automatically 
 maintained as data is inserted. Furthermore, queries can just be sent to a 
@@ -194,7 +194,7 @@ WHERE query_id='<query_id>'
    └───────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────┘
 ```
 
-### Using projections to speed up UK price paid queries {#using-projections-to-speed-up-UK-price-paid}
+### Using projections to speed up uk price paid queries {#using-projections-to-speed-up-UK-price-paid}
 
 To demonstrate how projections can be used to speed up query performance, let's
 take a look at an example using a real life dataset. For this example we'll be 
@@ -409,7 +409,7 @@ CREATE TABLE uk.uk_price_paid_with_projections_v2 AS uk.uk_price_paid;
 INSERT INTO uk.uk_price_paid_with_projections_v2 SELECT * FROM uk.uk_price_paid;
 ```
 
-#### Build a Projection {#build-projection}
+#### Build a projection {#build-projection}
 
 Let's create an aggregate projection by the dimensions `toYear(date)`, `district`, and `town`:
 
@@ -441,7 +441,7 @@ SETTINGS mutations_sync = 1
 
 The following queries contrast performance with and without projections. To disable projection use we use the setting [`optimize_use_projections`](/operations/settings/settings#optimize_use_projections), which is enabled by default.
 
-#### Query 1. Average price per year {#average-price-projections}
+#### Query 1. average price per year {#average-price-projections}
 
 ```sql runnable
 SELECT
@@ -466,7 +466,7 @@ ORDER BY year ASC
 ```
 The results should be the same, but the performance better on the latter example!
 
-#### Query 2. Average price per year in London {#average-price-london-projections}
+#### Query 2. average price per year in London {#average-price-london-projections}
 
 ```sql runnable
 SELECT
@@ -491,7 +491,7 @@ GROUP BY year
 ORDER BY year ASC
 ```
 
-#### Query 3. The most expensive neighborhoods {#most-expensive-neighborhoods-projections}
+#### Query 3. the most expensive neighborhoods {#most-expensive-neighborhoods-projections}
 
 The condition (date >= '2020-01-01') needs to be modified so that it matches the projection dimension (`toYear(date) >= 2020)`:
 

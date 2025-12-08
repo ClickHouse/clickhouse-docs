@@ -12,7 +12,7 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 import Image from '@theme/IdealImage';
 import AddCustomConnectorPlugin from '@site/static/images/integrations/data-ingestion/kafka/confluent/AddCustomConnectorPlugin.png';
 
-# Integrating Confluent platform with ClickHouse
+# Integrating confluent platform with ClickHouse
 
 <div class='vimeo-container'>
   <iframe src="//www.youtube.com/embed/SQAiPVbd3gg"
@@ -31,13 +31,13 @@ We assume you are familiar with:
 * [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)
 * Confluent Platform and [Custom Connectors](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/overview.html).
 
-## The official Kafka connector from ClickHouse with Confluent Platform {#the-official-kafka-connector-from-clickhouse-with-confluent-platform}
+## The official Kafka connector from ClickHouse with confluent platform {#the-official-kafka-connector-from-clickhouse-with-confluent-platform}
 
-### Installing on Confluent platform {#installing-on-confluent-platform}
+### Installing on confluent platform {#installing-on-confluent-platform}
 This is meant to be a quick guide to get you started with the ClickHouse Sink Connector on Confluent Platform.
 For more details, please refer to the [official Confluent documentation](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-qs.html#uploading-and-launching-the-connector).
 
-#### Create a Topic {#create-a-topic}
+#### Create a topic {#create-a-topic}
 Creating a topic on Confluent Platform is fairly simple, and there are detailed instructions [here](https://docs.confluent.io/cloud/current/client-apps/topics/manage.html).
 
 #### Important notes {#important-notes}

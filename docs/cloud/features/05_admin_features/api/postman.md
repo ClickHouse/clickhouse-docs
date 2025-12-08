@@ -59,7 +59,7 @@ The Postman Application is available for use within a web browser or can be down
 
 <Image img={postman6} size="md" alt="Collection > Import" border/>
 
-### Interface with the ClickHouse Cloud API spec {#interface-with-the-clickhouse-cloud-api-spec}
+### Interface with the ClickHouse cloud API spec {#interface-with-the-clickhouse-cloud-api-spec}
 * The "API spec for ClickHouse Cloud" will now appear within "Collections" (Left Navigation).
 
 <Image img={postman7} size="md" alt="Import your API" border/>
@@ -81,16 +81,16 @@ The Postman Application is available for use within a web browser or can be down
 
 * [Variables](https://learning.postman.com/docs/sending-requests/variables/) enable the storage and reuse of values in Postman allowing for easier API testing.
 
-#### Set the organization ID and Service ID {#set-the-organization-id-and-service-id}
+#### Set the organization id and service id {#set-the-organization-id-and-service-id}
 
 * Within the "Collection", click the "Variable" tab in the middle pane (The Base URL will have been set by the earlier API import):
 * Below `baseURL` click the open field "Add new value", and Substitute your organization ID and service ID:
 
 <Image img={postman11} size="md" alt="Organization ID and Service ID" border/>
 
-## Test the ClickHouse Cloud API functionalities {#test-the-clickhouse-cloud-api-functionalities}
+## Test the ClickHouse cloud API functionalities {#test-the-clickhouse-cloud-api-functionalities}
 
-### Test "GET list of available organizations" {#test-get-list-of-available-organizations}
+### Test "get list of available organizations" {#test-get-list-of-available-organizations}
 
 * Under the "OpenAPI spec for ClickHouse Cloud", expand the folder > V1 > organizations
 * Click "GET list of available organizations" and press the blue "Send" button on the right:
@@ -101,7 +101,7 @@ The Postman Application is available for use within a web browser or can be down
 
 <Image img={postman13} size="md" alt="Status" border/>
 
-### Test "GET organizational details" {#test-get-organizational-details}
+### Test "get organizational details" {#test-get-organizational-details}
 
 * Under the `organizationid` folder, navigate to "GET organizational details":
 * In the middle frame menu under Params an `organizationid` is required.
@@ -118,7 +118,7 @@ The Postman Application is available for use within a web browser or can be down
 
 * The returned results should deliver your organization details with "status": 200. (If you receive a "status" 400 with no organization information your configuration is not correct).
 
-### Test "GET service details" {#test-get-service-details}
+### Test "get service details" {#test-get-service-details}
 
 * Click "GET service details"
 * Edit the Values for `organizationid` and `serviceid` with `{{orgid}}` and `{{serviceid}}` respectively.

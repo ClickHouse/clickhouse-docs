@@ -96,7 +96,7 @@ Connect to your Aurora PostgreSQL writer instance as an admin user and execute t
 
 ## Configure network access {#configure-network-access}
 
-### IP-based access control {#ip-based-access-control}
+### Ip-based access control {#ip-based-access-control}
 
 If you want to restrict traffic to your Aurora cluster, please add the [documented static NAT IPs](../../index.md#list-of-static-ips) to the `Inbound rules` of your Aurora security group.
 
@@ -104,7 +104,7 @@ If you want to restrict traffic to your Aurora cluster, please add the [document
 
 <Image img={edit_inbound_rules} alt="Edit inbound rules for the above security group" size="lg" border/>
 
-### Private access via AWS PrivateLink {#private-access-via-aws-privatelink}
+### Private access via AWS privatelink {#private-access-via-aws-privatelink}
 
 To connect to your Aurora cluster through a private network, you can use AWS PrivateLink. Follow our [AWS PrivateLink setup guide for ClickPipes](/knowledgebase/aws-privatelink-setup-for-clickpipes) to set up the connection.
 

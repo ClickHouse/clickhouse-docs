@@ -19,7 +19,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-## The dbt-clickhouse Adapter {#dbt-clickhouse-adapter}
+## The dbt-clickhouse adapter {#dbt-clickhouse-adapter}
 **dbt** (data build tool) enables analytics engineers to transform data in their warehouses by simply writing select statements. dbt handles materializing these select statements into objects in the database in the form of tables and views - performing the T of [Extract Load and Transform (ELT)](https://en.wikipedia.org/wiki/Extract,_load,_transform). Users can create a model defined by a SELECT statement.
 
 Within dbt, these models can be cross-referenced and layered to allow the construction of higher-level concepts. The boilerplate SQL required to connect models is automatically generated. Furthermore, dbt identifies dependencies between models and ensures they are created in the appropriate order using a directed acyclic graph (DAG).
@@ -132,7 +132,7 @@ Execute `dbt debug` with the CLI tool to confirm whether dbt is able to connect 
 
 Go to the [guides page](/integrations/dbt/guides) to learn more about how to use dbt with ClickHouse.
 
-### Testing and Deploying your models (CI/CD) {#testing-and-deploying-your-models-ci-cd}
+### Testing and deploying your models (CI/CD) {#testing-and-deploying-your-models-ci-cd}
 
 There are many ways to test and deploy your dbt project. dbt has some suggestions for [best practice workflows](https://docs.getdbt.com/best-practices/best-practice-workflows#pro-tips-for-workflows) and [CI jobs](https://docs.getdbt.com/docs/deploy/ci-jobs). We are going to discuss several strategies, but keep in mind that these strategies may need to be deeply adjusted to fit your specific use case.
 
@@ -144,7 +144,7 @@ Once the data is inserted, you can then run your [data tests](https://docs.getdb
 
 Your CD step can be as simple as running `dbt build` against your production ClickHouse cluster.
 
-#### More complete CI/CD stage: Use recent data, only test affected models {#more-complete-ci-stage}
+#### More complete CI/CD stage: use recent data, only test affected models {#more-complete-ci-stage}
 
 One common strategy is to use [Slim CI](https://docs.getdbt.com/best-practices/best-practice-workflows#run-only-modified-models-to-test-changes-slim-ci) jobs, where only the modified models (and their up- and downstream dependencies) are re-deployed. This approach uses artifacts from your production runs (i.e., the [dbt manifest](https://docs.getdbt.com/reference/artifacts/manifest-json)) to reduce the run time of your project and ensure there is no schema drift across environments.
 

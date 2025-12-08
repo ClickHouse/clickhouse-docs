@@ -47,7 +47,7 @@ import adjust_axis_scale from '@site/static/images/cloud/sqlconsole/adjust-axis-
 import give_a_query_a_name from '@site/static/images/cloud/sqlconsole/give-a-query-a-name.png'
 import save_the_query from '@site/static/images/cloud/sqlconsole/save-the-query.png'
 
-# SQL Console
+# SQL console
 
 SQL console is the fastest and easiest way to explore and query your databases in ClickHouse Cloud. You can use the SQL console to:
 
@@ -175,7 +175,7 @@ You can also use the save button or `cmd / ctrl + s` keyboard shortcut to save a
 
 <Image img={save_the_query} size="lg" border alt="Save button in the query editor toolbar"/>
 
-## Using GenAI to manage queries {#using-genai-to-manage-queries}
+## Using genai to manage queries {#using-genai-to-manage-queries}
 
 This feature allows users to write queries as natural language questions and have the query console create SQL queries based on the context of the available tables. GenAI can also help users debug their queries.
 

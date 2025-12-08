@@ -62,7 +62,7 @@ Press the `Connect` button from the navigation menu. A modal will open offering 
 
 <Image img={cloud_connect} alt="ClickHouse Cloud connect" size="lg"/>
 
-### Deploy Open Telemetry Collector (optional) {#deploy-otel-collector} 
+### Deploy open telemetry collector (optional) {#deploy-otel-collector}
 
 **If you have existing observability events you wish to visualize in your service, this step can be skipped.**
 
@@ -276,7 +276,7 @@ docker run --rm -it \
 In production, we recommend creating a dedicated user for ingestion, restricting access permissions to the database and tables needed. See ["Database and ingestion user"](/use-cases/observability/clickstack/production#database-ingestion-user) for further details.
 :::
 
-### Connect to HyperDX {#connect-to-hyperdx}
+### Connect to hyperdx {#connect-to-hyperdx}
 
 Select your service, then select `HyperDX` from the left menu.
 
@@ -311,7 +311,7 @@ To enable alerts, at least one user with **Service Admin** permissions (mapped t
 
 HyperDX is Open Telemetry native but not Open Telemetry exclusive - users can use their own table schemas if desired.
 
-#### Using Open Telemetry schemas  {#using-otel-schemas}
+#### Using open telemetry schemas  {#using-otel-schemas}
 
 If you're using the above OTel collector to create the database and tables within ClickHouse, retain all default values within the create source model, completing the `Table` field with the value `otel_logs` - to create a logs source. All other settings should be auto-detected, allowing you to click `Save New Source`.
 

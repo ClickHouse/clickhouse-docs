@@ -8,7 +8,7 @@ doc_type: 'reference'
 keywords: ['key-value', 'data model', 'use case', 'schema design', 'storage pattern']
 ---
 
-# Can I use ClickHouse as a key-value storage? {#can-i-use-clickhouse-as-a-key-value-storage}
+# Can i use ClickHouse as a key-value storage? {#can-i-use-clickhouse-as-a-key-value-storage}
 
 The short answer is **"no"**. The key-value workload is among top positions in the list of cases when <span class="text-danger">**NOT**</span> to use ClickHouse. It's an [OLAP](../../faq/general/olap.md) system after all, while there are many excellent key-value storage systems out there.
 

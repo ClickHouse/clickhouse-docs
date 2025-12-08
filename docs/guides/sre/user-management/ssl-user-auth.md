@@ -25,7 +25,7 @@ If you use AWS NLB with the MySQL interface, you have to ask AWS support to enab
 > I would like to be able to configure our NLB proxy protocol v2 as below `proxy_protocol_v2.client_to_server.header_placement,Value=on_first_ack`.
 :::
 
-## 1. Create SSL user certificates {#1-create-ssl-user-certificates}
+## 1. create SSL user certificates {#1-create-ssl-user-certificates}
 
 :::note
 This example uses self-signed certificates with a self-signed CA. For production environments, create a CSR and submit to your PKI team or certificate provider to obtain a proper certificate.
@@ -52,7 +52,7 @@ This example uses self-signed certificates with a self-signed CA. For production
     openssl x509 -req -in chnode1_cert_user.csr -out chnode1_cert_user.crt -CA marsnet_ca.crt -CAkey marsnet_ca.key -days 365
     ```
 
-## 2. Create a SQL user and grant permissions {#2-create-a-sql-user-and-grant-permissions}
+## 2. create a SQL user and grant permissions {#2-create-a-sql-user-and-grant-permissions}
 
 :::note
 For details on how to enable SQL users and set roles, refer to [Defining SQL Users and Roles](index.md) user guide.
@@ -90,7 +90,7 @@ For details on how to enable SQL users and set roles, refer to [Defining SQL Use
     ```
     :::
 
-## 3. Testing {#3-testing}
+## 3. testing {#3-testing}
 
 1. Copy the user certificate, user key and CA certificate to a remote node.
 
@@ -114,7 +114,7 @@ For details on how to enable SQL users and set roles, refer to [Defining SQL Use
     Note that the password passed to clickhouse-client is ignored when a certificate is specified in the config.
     :::
 
-## 4. Testing HTTP {#4-testing-http}
+## 4. testing HTTP {#4-testing-http}
 
 1. Copy the user certificate, user key and CA certificate to a remote node.
 

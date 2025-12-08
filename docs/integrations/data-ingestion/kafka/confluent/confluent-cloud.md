@@ -15,7 +15,7 @@ integration:
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 
-# Integrating Confluent Cloud with ClickHouse
+# Integrating confluent cloud with ClickHouse
 
 <div class='vimeo-container'>
   <iframe src="//www.youtube.com/embed/SQAiPVbd3gg"
@@ -34,9 +34,9 @@ We assume you are familiar with:
 * [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)
 * Confluent Cloud
 
-## The official Kafka connector from ClickHouse with Confluent Cloud {#the-official-kafka-connector-from-clickhouse-with-confluent-cloud}
+## The official Kafka connector from ClickHouse with confluent cloud {#the-official-kafka-connector-from-clickhouse-with-confluent-cloud}
 
-#### Create a Topic {#create-a-topic}
+#### Create a topic {#create-a-topic}
 Creating a topic on Confluent Cloud is fairly simple, and there are detailed instructions [here](https://docs.confluent.io/cloud/current/client-apps/topics/manage.html).
 
 #### Important notes {#important-notes}
@@ -47,10 +47,10 @@ Creating a topic on Confluent Cloud is fairly simple, and there are detailed ins
 #### Gather your connection details {#gather-your-connection-details}
 <ConnectionDetails />
 
-#### Install Connector {#install-connector}
+#### Install connector {#install-connector}
 Install the fully managed ClickHouse Sink Connector on Confluent Cloud following the [official documentation](https://docs.confluent.io/cloud/current/connectors/cc-clickhouse-sink-connector/cc-clickhouse-sink.html).
 
-#### Configure the Connector {#configure-the-connector}
+#### Configure the connector {#configure-the-connector}
 During the configuration of the ClickHouse Sink Connector, you will need to provide the following details:
 - hostname of your ClickHouse server
 - port of your ClickHouse server (default is 8443)

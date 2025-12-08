@@ -11,7 +11,7 @@ For pricing information, see the [ClickHouse Cloud Pricing](https://clickhouse.c
 ClickHouse Cloud bills based on the usage of compute, storage, [data transfer](/cloud/manage/network-data-transfer) (egress over the internet and cross-region), and [ClickPipes](/integrations/clickpipes). 
 To understand what can affect your bill, and ways that you can manage your spend, keep reading.
 
-## Amazon Web Services (AWS) example {#amazon-web-services-aws-example}
+## Amazon web services (AWS) example {#amazon-web-services-aws-example}
 
 :::note
 - Prices reflect AWS us-east-1 pricing.
@@ -125,7 +125,7 @@ Pricing breakdown for this example:
 </tbody>
 </table>
 
-### Enterprise: Starting prices vary {#enterprise-starting-prices-vary}
+### Enterprise: starting prices vary {#enterprise-starting-prices-vary}
 
 Best for: large scale, mission critical deployments that have stringent security and compliance needs
 
@@ -177,7 +177,7 @@ Best for: large scale, mission critical deployments that have stringent security
 
 ## Frequently asked questions {#faqs}
 
-### What is a ClickHouse Credit (CHC)? {#what-is-chc}
+### What is a ClickHouse credit (chc)? {#what-is-chc}
 
 A ClickHouse Credit is a unit of credit toward Customer's usage of ClickHouse Cloud equal to one (1) US dollar, to be applied based on ClickHouse's then-current published price list.
 
@@ -185,7 +185,7 @@ A ClickHouse Credit is a unit of credit toward Customer's usage of ClickHouse Cl
 If you are being billed through Stripe then you will see that 1 CHC is equal to \$0.01 USD on your Stripe invoice. This is to allow accurate billing on Stripe due to their limitation on not being able to bill fractional quantities of our standard SKU of 1 CHC = \$1 USD.
 :::
 
-### Where can I find legacy pricing? {#find-legacy-pricing}
+### Where can i find legacy pricing? {#find-legacy-pricing}
 
 Legacy pricing information can be found [here](https://clickhouse.com/pricing?legacy=true).
 
@@ -205,7 +205,7 @@ Storage and backups are counted towards storage costs and billed separately.
 All services will default to one backup, retained for a day. 
 Users who need additional backups can do so by configuring additional [backups](/cloud/manage/backups/overview) under the settings tab of the Cloud console.
 
-### How do I estimate compression? {#how-do-i-estimate-compression}
+### How do i estimate compression? {#how-do-i-estimate-compression}
 
 Compression can vary from dataset to dataset. 
 How much it varies is dependent on how compressible the data is in the first place (number of high vs. low cardinality fields), 
@@ -222,12 +222,12 @@ FROM system.tables
 WHERE name = <your table name>
 ```
 
-### What tools does ClickHouse offer to estimate the cost of running a service in the cloud if I have a self-managed deployment? {#what-tools-does-clickhouse-offer-to-estimate-the-cost-of-running-a-service-in-the-cloud-if-i-have-a-self-managed-deployment}
+### What tools does ClickHouse offer to estimate the cost of running a service in the cloud if i have a Self-managed deployment? {#what-tools-does-clickhouse-offer-to-estimate-the-cost-of-running-a-service-in-the-cloud-if-i-have-a-self-managed-deployment}
 
 The ClickHouse query log captures [key metrics](/operations/system-tables/query_log) that can be used to estimate the cost of running a workload in ClickHouse Cloud. 
 For details on migrating from self-managed to ClickHouse Cloud please refer to the [migration documentation](/cloud/migration/clickhouse-to-cloud), and contact [ClickHouse Cloud support](https://console.clickhouse.cloud/support) if you have further questions.
 
-### What billing options are available for ClickHouse Cloud? {#what-billing-options-are-available-for-clickhouse-cloud}
+### What billing options are available for ClickHouse cloud? {#what-billing-options-are-available-for-clickhouse-cloud}
 
 ClickHouse Cloud supports the following billing options:
 
@@ -239,45 +239,45 @@ ClickHouse Cloud supports the following billing options:
 ClickHouse Cloud credits for PAYG are invoiced in \$0.01 units, allowing us to charge customers for partial ClickHouse credits based on their usage. This differs from committed spend ClickHouse credits, which are purchased in advance in whole \$1 units.
 :::
 
-### Can I delete my credit card? {#can-i-delete-my-credit-card}
+### Can i delete my credit card? {#can-i-delete-my-credit-card}
 You can’t remove a credit card in the Billing UI, but you can update it anytime. This helps ensure your organization always has a valid payment method. If you need to remove your credit card, please contact [ClickHouse Cloud support](https://console.clickhouse.cloud/support) for help.
 
 ### How long is the billing cycle? {#how-long-is-the-billing-cycle}
 
 Billing follows a monthly billing cycle and the start date is tracked as the date when the ClickHouse Cloud organization was created.
 
-### If I have an active PAYG marketplace subscription and then sign a committed contract, will my committed credits be consumed first? {#committed-credits-consumed-first-with-active-payg-subscription}
+### If i have an active payg marketplace subscription and then sign a committed contract, will my committed credits be consumed first? {#committed-credits-consumed-first-with-active-payg-subscription}
 
 Yes. Usage is consumed with the following payment methods in this order:
 - Committed (prepaid) credits
 - Marketplace subscription (PAYG)
 - Credit card
 
-### What controls does ClickHouse Cloud offer to manage costs for Scale and Enterprise services? {#what-controls-does-clickhouse-cloud-offer-to-manage-costs-for-scale-and-enterprise-services}
+### What controls does ClickHouse cloud offer to manage costs for scale and enterprise services? {#what-controls-does-clickhouse-cloud-offer-to-manage-costs-for-scale-and-enterprise-services}
 
 - Trial and Annual Commit customers are notified automatically by email when their consumption hits certain thresholds: `50%`, `75%`, and `90%`. This allows users to proactively manage their usage.
 - ClickHouse Cloud allows users to set a maximum auto-scaling limit on their compute via [Advanced scaling control](/manage/scaling), a significant cost factor for analytical workloads.
 - The [Advanced scaling control](/manage/scaling) lets you set memory limits with an option to control the behavior of pausing/idling during inactivity.
 
-### What controls does ClickHouse Cloud offer to manage costs for Basic services? {#what-controls-does-clickhouse-cloud-offer-to-manage-costs-for-basic-services}
+### What controls does ClickHouse cloud offer to manage costs for basic services? {#what-controls-does-clickhouse-cloud-offer-to-manage-costs-for-basic-services}
 
 - The [Advanced scaling control](/manage/scaling) lets you control the behavior of pausing/idling during inactivity. Adjusting memory allocation is not supported for Basic services.
 - Note that the default setting pauses the service after a period of inactivity.
 
-### If I have multiple services, do I get an invoice per service or a consolidated invoice? {#if-i-have-multiple-services-do-i-get-an-invoice-per-service-or-a-consolidated-invoice}
+### If i have multiple services, do i get an invoice per service or a consolidated invoice? {#if-i-have-multiple-services-do-i-get-an-invoice-per-service-or-a-consolidated-invoice}
 
 A consolidated invoice is generated for all services in a given organization for a billing period.
 
-### If I add my credit card and upgrade before my trial period and credits expire, will I be charged? {#if-i-add-my-credit-card-and-upgrade-before-my-trial-period-and-credits-expire-will-i-be-charged}
+### If i add my credit card and upgrade before my trial period and credits expire, will i be charged? {#if-i-add-my-credit-card-and-upgrade-before-my-trial-period-and-credits-expire-will-i-be-charged}
 
 When a user converts from trial to paid before the 30-day trial period ends, but with credits remaining from the trial credit allowance,
 we continue to draw down from the trial credits during the initial 30-day trial period, and then charge the credit card.
 
-### How can I keep track of my spending? {#how-can-i-keep-track-of-my-spending}
+### How can i keep track of my spending? {#how-can-i-keep-track-of-my-spending}
 
 The ClickHouse Cloud console provides a Usage display that details usage per service. This breakdown, organized by usage dimensions, helps you understand the cost associated with each metered unit.
 
-### How do I access my invoices for my subscription to the ClickHouse Cloud service? {#how-do-i-access-my-invoice-for-my-subscription-to-the-clickhouse-cloud-service}
+### How do i access my invoices for my subscription to the ClickHouse cloud service? {#how-do-i-access-my-invoice-for-my-subscription-to-the-clickhouse-cloud-service}
 
 For direct subscriptions using a credit card:
 
@@ -287,7 +287,7 @@ For subscriptions through a cloud marketplace:
 
 All marketplace subscriptions are billed and invoiced by the marketplace. You can view your invoice through the respective cloud provider marketplace directly.
 
-### Why do the dates on the Usage statements not match my Marketplace Invoice? {#why-do-the-dates-on-the-usage-statements-not-match-my-marketplace-invoice}
+### Why do the dates on the usage statements not match my marketplace invoice? {#why-do-the-dates-on-the-usage-statements-not-match-my-marketplace-invoice}
 
 AWS Marketplace billing follows the calendar month cycle.
 For example, for usage between dates 01-Dec-2024 and 01-Jan-2025, 
@@ -305,7 +305,7 @@ can only be leveraged for the terms of the contract.
 This means they can be applied on the acceptance date, or a future date, and not for any prior periods. 
 Any overages not covered by prepaid credits must be covered by a credit card payment or marketplace monthly billing.
 
-### Is there a difference in ClickHouse Cloud pricing, whether paying through the cloud provider marketplace or directly to ClickHouse? {#is-there-a-difference-in-clickhouse-cloud-pricing-whether-paying-through-the-cloud-provider-marketplace-or-directly-to-clickhouse}
+### Is there a difference in ClickHouse cloud pricing, whether paying through the cloud provider marketplace or directly to ClickHouse? {#is-there-a-difference-in-clickhouse-cloud-pricing-whether-paying-through-the-cloud-provider-marketplace-or-directly-to-clickhouse}
 
 There is no difference in pricing between marketplace billing and signing up directly with ClickHouse. 
 In either case, your usage of ClickHouse Cloud is tracked in terms of ClickHouse Cloud Credits (CHCs), 

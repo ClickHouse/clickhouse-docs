@@ -15,14 +15,14 @@ import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.png';
 
-# Using ClickHouse MCP server with LibreChat
+# Using ClickHouse mcp server with librechat
 
 > This guide explains how to set up LibreChat with a ClickHouse MCP server using Docker
 > and connect it to the ClickHouse example datasets.
 
 <VerticalStepper headerLevel="h2">
 
-## Install docker {#install-docker}
+## Install Docker {#install-docker}
 
 You will need Docker to run LibreChat and the MCP server. To get Docker:
 1. Visit [docker.com](https://www.docker.com/products/docker-desktop)
@@ -32,7 +32,7 @@ You will need Docker to run LibreChat and the MCP server. To get Docker:
 <br/>
 For more information, see the [Docker documentation](https://docs.docker.com/get-docker/).
 
-## Clone the LibreChat repository {#clone-librechat-repo}
+## Clone the librechat repository {#clone-librechat-repo}
 
 Open a terminal (command prompt, terminal or PowerShell) and clone the 
 LibreChat repository using the following command:
@@ -82,7 +82,7 @@ cp librechat.example.yaml librechat.yaml
 
 This creates the main [configuration file](https://www.librechat.ai/docs/configuration/librechat_yaml) for LibreChat.
 
-## Add ClickHouse MCP server to Docker compose {#add-clickhouse-mcp-server-to-docker-compose}
+## Add ClickHouse mcp server to Docker compose {#add-clickhouse-mcp-server-to-docker-compose}
 
 Next we'll add the ClickHouse MCP server to the LibreChat Docker compose file 
 so that the LLM can interact with the 
@@ -134,7 +134,7 @@ isSelected={true}
 />
 </Link>
 
-## Configure MCP server in librechat.yaml {#configure-mcp-server-in-librechat-yaml}
+## Configure mcp server in librechat.yaml {#configure-mcp-server-in-librechat-yaml}
 
 Open `librechat.yaml` and place the following configuration at the end of the file:
 
@@ -159,9 +159,9 @@ For simplicity, we will remove the need to authenticate for now:
 socialLogins: []
 ```
 
-## Add a local LLM using Ollama (optional) {#add-local-llm-using-ollama}
+## Add a local llm using ollama (optional) {#add-local-llm-using-ollama}
 
-### Install Ollama {#install-ollama}
+### Install ollama {#install-ollama}
 
 Go to the [Ollama website](https://ollama.com/download) and install Ollama for your system.
 
@@ -175,7 +175,7 @@ This will pull the model to your local machine if it is not present.
 
 For a list of models see the [Ollama library](https://ollama.com/library)
 
-### Configure Ollama in librechat.yaml {#configure-ollama-in-librechat-yaml}
+### Configure ollama in librechat.yaml {#configure-ollama-in-librechat-yaml}
 
 Once the model has downloaded, configure it in `librechat.yaml`:
 
@@ -208,7 +208,7 @@ docker compose up
 
 Wait until all services are fully running.
 
-## Open LibreChat in your browser {#open-librechat-in-browser}
+## Open librechat in your browser {#open-librechat-in-browser}
 
 Once all services are up and running, open your browser and go to `http://localhost:3080/`
 

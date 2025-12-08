@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Bringing Azure Data into ClickHouse
+# Bringing Azure data into ClickHouse
 
 <ClickHouseSupportedBadge/>
 

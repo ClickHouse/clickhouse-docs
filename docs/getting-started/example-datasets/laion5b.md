@@ -143,7 +143,7 @@ corresponding to selected values.
 
 Building and saving the index could even take a few hours for the full l00 million dataset, depending on the number of CPU cores available and the storage bandwidth. 
 
-### Perform ANN search {#perform-ann-search}
+### Perform ann search {#perform-ann-search}
 
 Once the vector similarity index has been built, vector search queries will automatically use the index:
 

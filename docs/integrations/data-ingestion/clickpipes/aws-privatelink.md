@@ -18,7 +18,7 @@ import cp_rpe_settings0 from '@site/static/images/integrations/data-ingestion/cl
 import cp_rpe_settings1 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_rpe_settings1.png';
 import Image from '@theme/IdealImage';
 
-# AWS PrivateLink for ClickPipes
+# AWS privatelink for ClickPipes
 
 You can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to establish secure connectivity between VPCs,
 AWS services, your on-premises systems, and ClickHouse Cloud without exposing traffic to the public Internet.
@@ -35,7 +35,7 @@ data source types:
 - MySQL
 - MongoDB
 
-## Supported AWS PrivateLink endpoint types {#aws-privatelink-endpoint-types}
+## Supported AWS privatelink endpoint types {#aws-privatelink-endpoint-types}
 
 ClickPipes reverse private endpoint can be configured with one of the following AWS PrivateLink approaches:
 
@@ -93,7 +93,7 @@ aws vpc-lattice get-resource-gateway \
     --resource-gateway-identifier <RESOURCE_GATEWAY_ID>
 ```
 
-#### Create a VPC Resource-Configuration {#create-resource-configuration}
+#### Create a VPC resource-configuration {#create-resource-configuration}
 
 Resource-Configuration is associated with resource gateway to make your resource accessible.
 
@@ -129,7 +129,7 @@ For more information, see the [AWS documentation](https://docs.aws.amazon.com/vp
 
 The output will contain a Resource-Configuration ARN, which you will need for the next step. It will also contain a Resource-Configuration ID, which you will need to set up a ClickPipe connection with VPC resource.
 
-#### Create a Resource-Share {#create-resource-share}
+#### Create a resource-share {#create-resource-share}
 
 Sharing your resource requires a Resource-Share. This is facilitated through the Resource Access Manager (RAM).
 
@@ -153,7 +153,7 @@ For more details on PrivateLink with VPC resource, see [AWS documentation](https
 
 </VerticalStepper>
 
-### MSK multi-VPC connectivity {#msk-multi-vpc}
+### Msk multi-vpc connectivity {#msk-multi-vpc}
 
 The [Multi-VPC connectivity](https://docs.aws.amazon.com/msk/latest/developerguide/aws-access-mult-vpc.html) is a built-in feature of AWS MSK that allows you to connect multiple VPCs to a single MSK cluster.
 Private DNS support is out of the box and does not require any additional configuration.

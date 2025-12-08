@@ -17,7 +17,7 @@ import security_group_in_rds_mysql from '@site/static/images/integrations/data-i
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
 
-# RDS MariaDB source setup guide
+# Rds mariadb source setup guide
 
 This is a step-by-step guide on how to configure your RDS MariaDB instance for replicating its data via the MySQL ClickPipe.
 <br/>
@@ -28,7 +28,7 @@ We also recommend going through the MySQL FAQs [here](/integrations/data-ingesti
 ## Enable binary log retention {#enable-binlog-retention-rds}
 The binary log is a set of log files that contain information about data modifications made to a MySQL server instance. Binary log files are required for replication. Both of the steps below must be followed:
 
-### 1. Enable binary logging via automated backup{#enable-binlog-logging-rds}
+### 1. enable binary logging via automated backup{#enable-binlog-logging-rds}
 
 The automated backups feature determines whether binary logging is turned on or off for MySQL. It can be set in the AWS console:
 
@@ -36,7 +36,7 @@ The automated backups feature determines whether binary logging is turned on or 
 
 Setting backup retention to a reasonably long value depending on the replication use-case is advisable.
 
-### 2. Binlog retention hours{#binlog-retention-hours-rds}
+### 2. binlog retention hours{#binlog-retention-hours-rds}
 Amazon RDS for MariaDB has a different method of setting binlog retention duration, which is the amount of time a binlog file containing changes is kept. If some changes are not read before the binlog file is removed, replication will be unable to continue. The default value of binlog retention hours is NULL, which means binary logs aren't retained.
 
 To specify the number of hours to retain binary logs on a DB instance, use the mysql.rds_set_configuration function with a binlog retention period long enough for replication to occur. `24 hours` is the recommended minimum.
@@ -76,7 +76,7 @@ Next, click on `Save Changes` in the top-right. You may need to reboot your inst
 If you have a MariaDB cluster, the above parameters would be found in a [DB Cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html) parameter group and not the DB instance group.
 :::
 
-## Enabling GTID Mode {#gtid-mode-rds}
+## Enabling gtid mode {#gtid-mode-rds}
 Global Transaction Identifiers (GTIDs) are unique IDs assigned to each committed transaction in MySQL/MariaDB. They simplify binlog replication and make troubleshooting more straightforward. MariaDB enables GTID mode by default, so no user action is needed to use it.
 
 ## Configure a database user {#configure-database-user-rds}

@@ -8,9 +8,9 @@ title: 'Advanced Inserting'
 doc_type: 'reference'
 ---
 
-## Inserting data with ClickHouse Connect: Advanced usage {#inserting-data-with-clickhouse-connect--advanced-usage}
+## Inserting data with ClickHouse connect: advanced usage {#inserting-data-with-clickhouse-connect--advanced-usage}
 
-### InsertContexts {#insertcontexts}
+### Insertcontexts {#insertcontexts}
 
 ClickHouse Connect executes all inserts within an `InsertContext`. The `InsertContext` includes all the values sent as arguments to the client `insert` method. In addition, when an `InsertContext` is originally constructed, ClickHouse Connect retrieves the data types for the insert columns required for efficient Native format inserts. By reusing the `InsertContext` for multiple inserts, this "pre-query" is avoided and inserts are executed more quickly and efficiently.
 
@@ -95,7 +95,7 @@ df = pd.DataFrame({
 client.insert_df("users", df)
 ```
 
-#### PyArrow Table insert {#pyarrow-table-insert}
+#### Pyarrow table insert {#pyarrow-table-insert}
 
 ```python
 import clickhouse_connect
@@ -112,7 +112,7 @@ arrow_table = pa.table({
 client.insert_arrow("users", arrow_table)
 ```
 
-#### Arrow-backed DataFrame insert (pandas 2.x) {#arrow-backed-dataframe-insert-pandas-2}
+#### Arrow-backed DataFrame insert (Pandas 2.x) {#arrow-backed-dataframe-insert-pandas-2}
 
 ```python
 import clickhouse_connect
@@ -134,7 +134,7 @@ client.insert_df_arrow("users", df)
 
 When inserting Python `datetime.datetime` objects into ClickHouse `DateTime` or `DateTime64` columns, ClickHouse Connect automatically handles timezone information. Since ClickHouse stores all DateTime values internally as timezone-naive Unix timestamps (seconds or fractional seconds since the epoch), timezone conversion happens automatically on the client side during insertion.
 
-#### Timezone-aware datetime objects {#timezone-aware-datetime-objects}
+#### Timezone-aware DateTime objects {#timezone-aware-datetime-objects}
 
 If you insert a timezone-aware Python `datetime.datetime` object, ClickHouse Connect will automatically call `.timestamp()` to convert it to a Unix timestamp, which correctly accounts for the timezone offset. This means you can insert datetime objects from any timezone, and they will be correctly stored as their UTC equivalent timestamp.
 
@@ -171,7 +171,7 @@ In this example, all three datetime objects represent different points in time b
 When using pytz, you must use the `localize()` method to attach timezone information to a naive datetime. Passing `tzinfo=` directly to the datetime constructor will use incorrect historical offsets. For UTC, `tzinfo=pytz.UTC` works correctly. See [pytz docs](https://pythonhosted.org/pytz/#localized-times-and-date-arithmetic) for more info.
 :::
 
-#### Timezone-naive datetime objects {#timezone-naive-datetime-objects}
+#### Timezone-naive DateTime objects {#timezone-naive-datetime-objects}
 
 If you insert a timezone-naive Python `datetime.datetime` object (one without `tzinfo`), the `.timestamp()` method will interpret it as being in the system's local timezone. To avoid ambiguity, it's recommended to:
 

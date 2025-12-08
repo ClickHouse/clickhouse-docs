@@ -88,7 +88,7 @@ cat *.csv | md5sum
 # Checksum should be equal to: b26db404bf84d4063fac42e576464ce1
 ```
 
-#### Retrieve the Taiwan weather stations {#retrieve-the-taiwan-weather-stations}
+#### Retrieve the taiwan weather stations {#retrieve-the-taiwan-weather-stations}
 
 ```bash
 wget -O weather_sta_list.csv https://github.com/Raingel/weather_station_list/raw/main/data/weather_sta_list.csv
@@ -202,7 +202,7 @@ WHERE (`table` = 'tw_weather_data') AND active
 
 ## Sample queries {#sample-queries}
 
-### Q1: Retrieve the highest dew point temperature for each weather station in the specific year {#q1-retrieve-the-highest-dew-point-temperature-for-each-weather-station-in-the-specific-year}
+### Q1: retrieve the highest dew point temperature for each weather station in the specific year {#q1-retrieve-the-highest-dew-point-temperature-for-each-weather-station-in-the-specific-year}
 
 ```sql
 SELECT
@@ -248,7 +248,7 @@ GROUP BY StationId
 30 rows in set. Elapsed: 0.045 sec. Processed 6.41 million rows, 187.33 MB (143.92 million rows/s., 4.21 GB/s.)
 ```
 
-### Q2: Raw data fetching with the specific duration time range, fields and weather station {#q2-raw-data-fetching-with-the-specific-duration-time-range-fields-and-weather-station}
+### Q2: raw data fetching with the specific duration time range, fields and weather station {#q2-raw-data-fetching-with-the-specific-duration-time-range-fields-and-weather-station}
 
 ```sql
 SELECT

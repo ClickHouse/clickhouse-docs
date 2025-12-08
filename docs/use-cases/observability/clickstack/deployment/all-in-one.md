@@ -45,7 +45,7 @@ docker run -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-all-in-o
 ClickStack images are now published as `clickhouse/clickstack-*` (previously `docker.hyperdx.io/hyperdx/*`).
 :::
 
-### Navigate to the HyperDX UI {#navigate-to-hyperdx-ui}
+### Navigate to the hyperdx UI {#navigate-to-hyperdx-ui}
 
 Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
 
@@ -98,7 +98,7 @@ Customizing the OpenTelemetry ports can simply be changed by modifying the port 
 docker run -p 8080:8080 -p 4317:4317 -p 4999:4318 clickhouse/clickstack-all-in-one:latest
 ```
 
-## Using ClickHouse Cloud {#using-clickhouse-cloud}
+## Using ClickHouse cloud {#using-clickhouse-cloud}
 
 This distribution can be used with ClickHouse Cloud. While the local ClickHouse instance will still be deployed (and ignored), the OTel collector can be configured to use a ClickHouse Cloud instance by setting the environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USER` and `CLICKHOUSE_PASSWORD`. 
 
@@ -116,7 +116,7 @@ The `CLICKHOUSE_ENDPOINT` should be the ClickHouse Cloud HTTPS endpoint, includi
 
 On connecting to the HyperDX UI, navigate to [`Team Settings`](http://localhost:8080/team) and create a connection to your ClickHouse Cloud service - followed by the required sources. For an example flow, see [here](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
 
-## Configuring the OpenTelemetry collector {#configuring-collector}
+## Configuring the opentelemetry collector {#configuring-collector}
 
 The OTel collector configuration can be modified if required - see ["Modifying configuration"](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration).
 

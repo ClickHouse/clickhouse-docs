@@ -28,7 +28,7 @@ Data at rest is encrypted by default using cloud provider-managed AES 256 keys. 
 
 Enhanced encryption is currently available in AWS and GCP services. Azure is coming soon.
 
-### Transparent Data Encryption (TDE) {#transparent-data-encryption-tde}
+### Transparent data encryption (TDE) {#transparent-data-encryption-tde}
 
 TDE must be enabled on service creation. Existing services cannot be encrypted after creation. Once TDE is enabled, it cannot be disabled. All data in the service will remain encrypted. If you want to disable TDE after it has been enabled, you must create a new service and migrate your data there.
 
@@ -38,7 +38,7 @@ TDE must be enabled on service creation. Existing services cannot be encrypted a
 4. Click the drop-down for Enterprise features and toggle Enable Transparent Data Encryption (TDE)
 5. Click Create service
 
-### Customer Managed Encryption Keys (CMEK) {#customer-managed-encryption-keys-cmek}
+### Customer managed encryption keys (CMEK) {#customer-managed-encryption-keys-cmek}
 
 :::warning
 Deleting a KMS key used to encrypt a ClickHouse Cloud service will cause your ClickHouse service to be stopped and its data will be unretrievable, along with existing backups. To prevent accidental data loss when rotating keys you may wish to maintain old KMS keys for a period of time prior to deletion. 

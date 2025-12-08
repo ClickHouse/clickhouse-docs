@@ -25,7 +25,7 @@ It connects directly to ClickHouse so you can ask data questions in natural lang
 - A [Dot](https://www.getdot.ai/) account  
 - A [Hashboard](https://www.hashboard.com/) account and project.
 
-## Connecting Dot to ClickHouse {#connecting-dot-to-clickhouse}
+## Connecting dot to ClickHouse {#connecting-dot-to-clickhouse}
 
 <Image size="md" img={dot_01} alt="Configuring ClickHouse connection in Dot (light mode)" border />
 <br/>

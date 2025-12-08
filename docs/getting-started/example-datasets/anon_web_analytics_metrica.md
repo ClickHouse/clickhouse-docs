@@ -88,7 +88,7 @@ clickhouse-client --query "SELECT COUNT(*) FROM datasets.visits_v1"
 1680609
 ```
 
-## An example JOIN {#an-example-join}
+## An example join {#an-example-join}
 
 The hits and visits dataset is used in the ClickHouse test
 routines, this is one of the queries from the test suite. The rest

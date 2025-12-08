@@ -10,7 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# How to build a LangChain/LangGraph AI agent using ClickHouse MCP Server
+# How to build a LangChain/LangGraph ai agent using ClickHouse mcp server
 
 In this guide, you'll learn how to build a [LangChain/LangGraph](https://github.com/langchain-ai/langgraph) AI agent that
 can interact with [ClickHouse's SQL playground](https://sql.clickhouse.com/) using [ClickHouse's MCP Server](https://github.com/ClickHouse/mcp-clickhouse).
@@ -55,7 +55,7 @@ If you don't have an Anthropic API key, and want to use another LLM provider,
 you can find the instructions for setting up your credentials in the [Langchain Providers docs](https://python.langchain.com/docs/integrations/providers/)
 :::
 
-## Initialize MCP Server {#initialize-mcp-and-agent}
+## Initialize mcp server {#initialize-mcp-and-agent}
 
 Now configure the ClickHouse MCP Server to point at the ClickHouse SQL playground:
 

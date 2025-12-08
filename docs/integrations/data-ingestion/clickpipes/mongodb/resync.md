@@ -10,7 +10,7 @@ keywords: ['clickpipes', 'mongodb', 'cdc', 'data ingestion', 'real-time sync']
 import resync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resync_button.png'
 import Image from '@theme/IdealImage';
 
-### What does Resync do? {#what-mongodb-resync-do}
+### What does resync do? {#what-mongodb-resync-do}
 
 Resync involves the following operations in order:
 
@@ -28,7 +28,7 @@ Here are a few scenarios:
 1. You may need to perform major schema changes on the source tables which would break the existing ClickPipe and you would need to restart. You can just click Resync after performing the changes.
 2. Specifically for Clickhouse, maybe you needed to change the ORDER BY keys on the target tables. You can Resync to re-populate data into the new table with the right sorting key.
 
-### Resync ClickPipe Guide {#guide-mongodb-resync}
+### Resync ClickPipe guide {#guide-mongodb-resync}
 
 1. In the Data Sources tab, click on the MongoDB ClickPipe you wish to resync.
 2. Head over to the **Settings** tab.

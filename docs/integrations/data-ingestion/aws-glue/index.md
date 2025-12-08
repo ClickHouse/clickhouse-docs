@@ -15,7 +15,7 @@ import notebook_connections_config from '@site/static/images/integrations/data-i
 import dependent_jars_path_option from '@site/static/images/integrations/data-ingestion/aws-glue/dependent_jars_path_option.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Integrating Amazon Glue with ClickHouse and Spark
+# Integrating Amazon glue with ClickHouse and spark
 
 <ClickHouseSupportedBadge/>
 

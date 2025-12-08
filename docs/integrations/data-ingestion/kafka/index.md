@@ -53,7 +53,7 @@ This is the recommended option if you're a ClickHouse Cloud user. ClickPipes is 
 
 To get started using ClickPipes for Kafka, see the [reference documentation](/integrations/clickpipes/kafka/reference) or navigate to the `Data Sources` tab in the ClickHouse Cloud UI.
 
-### Kafka Connect Sink {#kafka-connect-sink}
+### Kafka connect sink {#kafka-connect-sink}
 
 Kafka Connect is an open-source framework that works as a centralized data hub for simple data integration between Kafka and other data systems. The [ClickHouse Kafka Connect Sink](https://github.com/ClickHouse/clickhouse-kafka-connect) connector provides a scalable and highly-configurable option to read data from Apache Kafka and other Kafka API-compatible brokers.
 

@@ -10,7 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# How to build an AI Agent with Agno and the ClickHouse MCP Server
+# How to build an ai agent with agno and the ClickHouse mcp server
 
 In this guide you'll learn how to build an [Agno](https://github.com/agno-agi/agno) AI agent that can interact with 
 [ClickHouse's SQL playground](https://sql.clickhouse.com/) using [ClickHouse's MCP Server](https://github.com/ClickHouse/mcp-clickhouse).
@@ -68,7 +68,7 @@ env = {
 }
 ```
 
-## Initialize MCP Server and Agno agent {#initialize-mcp-and-agent}
+## Initialize mcp server and agno agent {#initialize-mcp-and-agent}
 
 Now configure the ClickHouse MCP Server to point at the ClickHouse SQL playground 
 and also initialize our Agno agent and ask it a question:

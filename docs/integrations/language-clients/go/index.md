@@ -111,7 +111,7 @@ func connect() (driver.Conn, error) {
 }
 ```
 
-### Run go mod tidy {#run-go-mod-tidy}
+### Run Go mod tidy {#run-go-mod-tidy}
 
 ```bash
 go mod tidy
@@ -513,7 +513,7 @@ conn.Exec(context.Background(), "INSERT INTO example VALUES (1, 'test-1')")
 
 Note the ability to pass a Context to the query. This can be used to pass specific query level settings - see [Using Context](#using-context).
 
-### Batch Insert {#batch-insert}
+### Batch insert {#batch-insert}
 
 To insert a large number of rows, the client provides batch semantics. This requires the preparation of a batch to which rows can be appended. This is finally sent via the `Send()` method. Batches are held in memory until `Send` is executed.
 
@@ -655,7 +655,7 @@ Similar to insertion, the Scan method requires the target variables to be of an 
 
 Finally, note the ability to pass a `Context` to the `Query` and `QueryRow` methods. This can be used for query level settings - see [Using Context](#using-context) for further details.
 
-### Async Insert {#async-insert}
+### Async insert {#async-insert}
 
 Asynchronous inserts are supported through the Async method. This allows the user to specify whether the client should wait for the server to complete the insert or respond once the data has been received. This effectively controls the parameter [wait_for_async_insert](/operations/settings/settings#wait_for_async_insert).
 
@@ -694,7 +694,7 @@ for i := 0; i < 100; i++ {
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/async.go)
 
-### Columnar Insert {#columnar-insert}
+### Columnar insert {#columnar-insert}
 
 Inserts can be inserted in column format. This can provide performance benefits if the data is already orientated in this structure by avoiding the need to pivot to rows.
 
@@ -1238,7 +1238,7 @@ if err = conn.QueryRow(ctx, "SELECT * FROM example").Scan(&point, &ring, &polygo
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/geo.go)
 
-#### UUID {#uuid}
+#### Uuid {#uuid}
 
 The UUID type is supported by the [github.com/google/uuid](https://github.com/google/uuid) package. Users can also send and marshal a UUID as a string or any type which implements `sql.Scanner` or `Stringify`.
 
@@ -1390,7 +1390,7 @@ if err = conn.QueryRow(ctx, "SELECT * FROM example").Scan(&col1, &col2, &col3, &
 
 The client additionally supports the `sql.Null*` types e.g. `sql.NullInt64`. These are compatible with their equivalent ClickHouse types.
 
-#### Big Ints - Int128, Int256, UInt128, UInt256 {#big-ints---int128-int256-uint128-uint256}
+#### Big ints - int128, int256, uint128, uint256 {#big-ints---int128-int256-uint128-uint256}
 
 Number types larger than 64 bits are represented using the native go [big](https://pkg.go.dev/math/big) package.
 
@@ -2121,7 +2121,7 @@ _, err = conn.Exec("INSERT INTO example VALUES (1, 'test-1')")
 
 This method does not support receiving a context - by default, it executes with the background context. Users can use `ExecContext` if this is needed - see [Using Context](#using-context).
 
-### Batch Insert {#batch-insert-1}
+### Batch insert {#batch-insert-1}
 
 Batch semantics can be achieved by creating a `sql.Tx` via the `Being` method. From this, a batch can be obtained using the `Prepare` method with the `INSERT` statement. This returns a `sql.Stmt` to which rows can be appended using the `Exec` method. The batch will be accumulated in memory until `Commit` is executed on the original `sql.Tx`.
 
@@ -2201,7 +2201,7 @@ for rows.Next() {
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/query_rows.go)
 
-### Async Insert {#async-insert-1}
+### Async insert {#async-insert-1}
 
 Asynchronous inserts can be achieved by executing an insert via the `ExecContext` method. This should be passed a context with asynchronous mode enabled, as shown below. This allows the user to specify whether the client should wait for the server to complete the insert or respond once the data has been received. This effectively controls the parameter [wait_for_async_insert](/operations/settings/settings#wait_for_async_insert).
 
@@ -2232,7 +2232,7 @@ ctx := clickhouse.Context(context.Background(), clickhouse.WithStdAsync(false))
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/async.go)
 
-### Columnar Insert {#columnar-insert-1}
+### Columnar insert {#columnar-insert-1}
 
 Not supported using the standard interface.
 

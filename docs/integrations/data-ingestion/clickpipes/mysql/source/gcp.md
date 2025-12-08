@@ -22,7 +22,7 @@ This is a step-by-step guide on how to configure your Cloud SQL for MySQL instan
 ## Enable binary log retention {#enable-binlog-retention-gcp}
 The binary log is a set of log files that contain information about data modifications made to an MySQL server instance, and binary log files are required for replication.
 
-### Enable binary logging via PITR{#enable-binlog-logging-gcp}
+### Enable binary logging via pitr{#enable-binlog-logging-gcp}
 The PITR feature determines whether binary logging is turned on or off for MySQL in Google Cloud. It can be set in the Cloud console, by editing your Cloud SQL instance and scrolling down to the below section.
 
 <Image img={gcp_pitr} alt="Enabling PITR in Cloud SQL" size="lg" border/>
@@ -71,7 +71,7 @@ This can be done either by editing the instance or by heading over to the `Conne
 
 <Image img={gcp_mysql_ip} alt="IP allowlisting in GCP MySQL" size="lg" border/>
 
-## Download and use root CA certificate {#download-root-ca-certificate-gcp-mysql}
+## Download and use root ca certificate {#download-root-ca-certificate-gcp-mysql}
 To connect to your Cloud SQL instance, you need to download the root CA certificate.
 
 1. Go to your Cloud SQL instance in the Cloud console.

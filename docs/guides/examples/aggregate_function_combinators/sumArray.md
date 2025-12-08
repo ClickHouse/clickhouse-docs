@@ -7,7 +7,7 @@ sidebar_label: 'sumArray'
 doc_type: 'reference'
 ---
 
-# sumArray {#sumarray}
+# Sumarray {#sumarray}
 
 ## Description {#description}
 

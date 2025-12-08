@@ -19,7 +19,7 @@ After successfully deploying ClickStack, configure the API key to enable telemet
 2. **Log into the HyperDX dashboard** and navigate to Team settings to generate or retrieve your API key
 3. **Update your deployment** with the API key using one of the following methods:
 
-### Method 1: Update via Helm upgrade with values file {#api-key-values-file}
+### Method 1: update via Helm upgrade with values file {#api-key-values-file}
 
 Add the API key to your `values.yaml`:
 ```yaml
@@ -32,7 +32,7 @@ Then upgrade your deployment:
 helm upgrade my-clickstack clickstack/clickstack -f values.yaml
 ```
 
-### Method 2: Update via Helm upgrade with --set flag {#api-key-set-flag}
+### Method 2: update via Helm upgrade with --set flag {#api-key-set-flag}
 ```shell
 helm upgrade my-clickstack clickstack/clickstack --set hyperdx.apiKey="your-api-key-here"
 ```
@@ -181,7 +181,7 @@ spec:
 kubectl -n ingress-nginx get pods -l app.kubernetes.io/name=ingress-nginx -o jsonpath="{.items[0].spec.containers[0].image}"
 ```
 
-## OTEL collector ingress {#otel-collector-ingress}
+## Otel collector ingress {#otel-collector-ingress}
 
 If you need to expose your OTEL collector endpoints (for traces, metrics, logs) through ingress, use the `additionalIngresses` configuration. This is useful for sending telemetry data from outside the cluster or using a custom domain for the collector.
 

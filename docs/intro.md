@@ -71,7 +71,7 @@ Because the block-wise storage and transfer from disk to memory is aligned with 
 
 ClickHouse uses an asynchronous multi-master replication scheme to ensure that data is stored redundantly on multiple nodes. After being written to any available replica, all the remaining replicas retrieve their copy in the background. The system maintains identical data on different replicas. Recovery after most failures is performed automatically, or semi-automatically in complex cases.
 
-## Role-Based Access Control {#role-based-access-control}
+## Role-based access control {#role-based-access-control}
 
 ClickHouse implements user account management using SQL queries and allows for role-based access control configuration similar to what can be found in ANSI SQL standard and popular relational database management systems.
 

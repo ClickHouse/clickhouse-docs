@@ -8,7 +8,7 @@ doc_type: 'changelog'
 keywords: ['ClickHouse Cloud', 'cloud changelog', 'cloud updates', 'cloud features', 'cloud releases']
 ---
 
-# Cloud Changelog
+# Cloud changelog
 
 import CloudChangelog from '@site/docs/cloud/reference/01_changelog/01_changelog.md';
 

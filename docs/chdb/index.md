@@ -34,7 +34,7 @@ chDB has the following language bindings:
 * [Bun](install/bun.md)
 * [C and C++](install/c.md)
 
-## How do I get started? {#how-do-i-get-started}
+## How do i get started? {#how-do-i-get-started}
 
 * If you're using [Go](install/go.md), [Rust](install/rust.md), [NodeJS](install/nodejs.md), [Bun](install/bun.md) or [C and C++](install/c.md), take a look at the corresponding language pages.
 * If you're using Python, see the [getting started developer guide](getting-started.md) or the [chDB on-demand course](https://learn.clickhouse.com/user_catalog_class/show/1901178). There are also guides showing how to do common tasks like:

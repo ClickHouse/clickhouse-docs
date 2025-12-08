@@ -83,14 +83,14 @@ High memory usage, out-of-memory crashes, or need help sizing your ClickHouse de
 
 </details>
 
-## Connections and Authentication {#connections-and-authentication}
+## Connections and authentication {#connections-and-authentication}
 
 Can't connect to ClickHouse, authentication failures, SSL certificate errors, or client setup issues.
 
 <details>
 <summary><strong>Show connection solutions</strong></summary>
 
-### Basic Connection issues {#basic-connection-issues}
+### Basic connection issues {#basic-connection-issues}
 - [Fix HTTP interface issues](/docs/interfaces/http)
 - [Handle SSL certificate problems](/docs/knowledgebase/certificate_verify_failed_error)
 - [User authentication setup](/docs/operations/access-rights)

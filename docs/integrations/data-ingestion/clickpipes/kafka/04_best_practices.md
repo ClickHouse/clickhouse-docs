@@ -10,7 +10,7 @@ keywords: ['kafka best practices', 'clickpipes', 'compression', 'authentication'
 
 # Best practices {#best-practices}
 
-## Message Compression {#compression}
+## Message compression {#compression}
 
 We strongly recommend using compression for your Kafka topics. Compression can result in a significant saving in data transfer costs with virtually no performance hit.
 To learn more about message compression in Kafka, we recommend starting with this [guide](https://www.confluent.io/blog/apache-kafka-message-compression/).
@@ -25,7 +25,7 @@ ClickPipes for Kafka provides `at-least-once` delivery semantics (as one of the 
 ## Authentication {#authentication}
 For Apache Kafka protocol data sources, ClickPipes supports [SASL/PLAIN](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html) authentication with TLS encryption, as well as `SASL/SCRAM-SHA-256` and `SASL/SCRAM-SHA-512`. Depending on the streaming source (Redpanda, MSK, etc) will enable all or a subset of these auth mechanisms based on compatibility. If you auth needs differ please [give us feedback](https://clickhouse.com/company/contact?loc=clickpipes).
 
-### IAM {#iam}
+### Iam {#iam}
 
 :::info
 IAM Authentication for the MSK ClickPipe is a beta feature.
@@ -100,7 +100,7 @@ Role-based access only works for ClickHouse Cloud instances deployed to AWS.
 }
 ```
 
-### Custom Certificates {#custom-certificates}
+### Custom certificates {#custom-certificates}
 ClickPipes for Kafka supports the upload of custom certificates for Kafka brokers which use non-public server certificates.
 Upload of client certificates and keys is also supported for mutual TLS (mTLS) based authentication.
 

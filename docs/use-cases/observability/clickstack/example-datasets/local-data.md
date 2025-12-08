@@ -25,7 +25,7 @@ This sample dataset can also be used with HyperDX in ClickHouse Cloud, with only
 
 <VerticalStepper>
 
-## Create a custom OpenTelemetry configuration {#create-otel-configuration}
+## Create a custom opentelemetry configuration {#create-otel-configuration}
 
 Create a `custom-local-config.yaml` file with the following content:
 
@@ -145,7 +145,7 @@ docker run -d \
 
 The collector will immediately begin collecting local system logs and metrics.
 
-## Navigate to the HyperDX UI {#navigate-to-the-hyperdx-ui}
+## Navigate to the hyperdx UI {#navigate-to-the-hyperdx-ui}
 
 Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI if deploying locally. If using HyperDX in ClickHouse Cloud, select your service and `HyperDX` from the left menu.
 

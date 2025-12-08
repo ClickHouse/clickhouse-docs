@@ -8,9 +8,9 @@ title: 'Advanced Querying'
 doc_type: 'reference'
 ---
 
-# Querying data with ClickHouse Connect: Advanced usage {#querying-data-with-clickhouse-connect--advanced-usage}
+# Querying data with ClickHouse connect: advanced usage {#querying-data-with-clickhouse-connect--advanced-usage}
 
-## QueryContexts {#querycontexts}
+## Querycontexts {#querycontexts}
 
 ClickHouse Connect executes standard queries within a `QueryContext`. The `QueryContext` contains the key structures that are used to build queries against the ClickHouse database, and the configuration used to process the result into a `QueryResult` or other response data structure. That includes the query itself, parameters, settings, read formats, and other properties.
 
@@ -59,7 +59,7 @@ When using one of the Client `query_*_stream` methods, results are returned on a
 
 Because of limitations in the HTTP protocol, if blocks are processed at a rate significantly slower than the ClickHouse server is streaming data, the ClickHouse server will close the connection, resulting in an Exception being thrown in the processing thread. Some of this can be mitigated by increasing the buffer size of the HTTP streaming buffer (which defaults to 10 megabytes) using the common `http_buffer_size` setting. Large `http_buffer_size` values should be okay in this situation if there is sufficient memory available to the application. Data in the buffer is stored compressed if using `lz4` or `zstd` compression, so using those compression types will increase the overall buffer available.
 
-### StreamContexts {#streamcontexts}
+### Streamcontexts {#streamcontexts}
 
 Each of the `query_*_stream` methods (like `query_row_block_stream`) returns a ClickHouse `StreamContext` object, which is a combined Python context/generator. This is the basic usage:
 
@@ -134,7 +134,7 @@ with client.query_row_block_stream("SELECT number, number * 2 FROM system.number
         # Received block with 34591 rows
 ```
 
-#### Stream Pandas DataFrames {#stream-pandas-dataframes}
+#### Stream Pandas dataframes {#stream-pandas-dataframes}
 
 ```python
 import clickhouse_connect
@@ -177,11 +177,11 @@ with client.query_arrow_stream("SELECT * FROM large_table") as stream:
         # Received Arrow batch with 34591 rows
 ```
 
-## NumPy, Pandas, and Arrow queries {#numpy-pandas-and-arrow-queries}
+## Numpy, Pandas, and Arrow queries {#numpy-pandas-and-arrow-queries}
 
 ClickHouse Connect provides specialized query methods for working with NumPy, Pandas, and Arrow data structures. These methods allow you to retrieve query results directly in these popular data formats without manual conversion.
 
-### NumPy queries {#numpy-queries}
+### Numpy queries {#numpy-queries}
 
 The `query_np` method returns query results as a NumPy array instead of a ClickHouse Connect `QueryResult`.
 
@@ -230,7 +230,7 @@ print(df)
 # 4       4        8
 ```
 
-### PyArrow queries {#pyarrow-queries}
+### Pyarrow queries {#pyarrow-queries}
 
 The `query_arrow` method returns query results as a PyArrow Table. It utilizes the ClickHouse `Arrow` format directly, so it only accepts three arguments in common with the main `query` method: `query`, `parameters`, and `settings`. In addition, there is an additional argument, `use_strings`, which determines whether the Arrow Table will render ClickHouse String types as strings (if True) or bytes (if False).
 
@@ -256,7 +256,7 @@ print(arrow_table)
 # str: [["0","1","2"]]
 ```
 
-### Arrow-backed DataFrames {#arrow-backed-dataframes}
+### Arrow-backed dataframes {#arrow-backed-dataframes}
 
 ClickHouse Connect supports fast, memory‑efficient DataFrame creation from Arrow results via the `query_df_arrow` and `query_df_arrow_stream` methods. These are thin wrappers around the Arrow query methods and perform zero‑copy conversions to DataFrames where possible:
 
@@ -265,7 +265,7 @@ ClickHouse Connect supports fast, memory‑efficient DataFrame creation from Arr
   - For `dataframe_library='polars'`, returns a Polars DataFrame created from the Arrow table (`pl.from_arrow`), which is similarly efficient and can be zero‑copy depending on the data.
 - `query_df_arrow_stream`: Streams results as a sequence of DataFrames (pandas 2.x or Polars) converted from Arrow stream batches.
 
-#### Query to Arrow-backed DataFrame {#query-to-arrow-backed-dataframe}
+#### Query to arrow-backed DataFrame {#query-to-arrow-backed-dataframe}
 
 ```python
 import clickhouse_connect

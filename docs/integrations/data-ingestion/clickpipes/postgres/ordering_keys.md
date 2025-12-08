@@ -38,7 +38,7 @@ When including additional columns in the ordering key for ClickHouse (besides th
 
 For example, in a multi-tenant SaaS application, using (`tenant_id`, `id`) as the ordering key is a good choice. These columns uniquely identify each row, and `tenant_id` remains constant for an `id` even if other columns change. Since deduplication by id aligns with deduplication by (tenant_id, id), it helps avoid data [deduplication issues](https://docs.peerdb.io/mirror/ordering-key-different) that could arise if tenant_id were to change.
 
-### Set Replica Identity on Postgres tables to custom ordering key {#set-replica-identity-on-postgres-tables-to-custom-ordering-key}
+### Set replica identity on Postgres tables to custom ordering key {#set-replica-identity-on-postgres-tables-to-custom-ordering-key}
 
 For Postgres CDC to function as expected, it is important to modify the `REPLICA IDENTITY` on tables to include the ordering key columns. This is essential for handling DELETEs accurately.
 

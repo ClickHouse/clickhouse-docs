@@ -25,7 +25,7 @@ This guide integrates:
 
 ## Getting started {#getting-started}
 
-### Install HyperDX OpenTelemetry instrumentation package {#install-hyperdx-opentelemetry-instrumentation-package}
+### Install hyperdx opentelemetry instrumentation package {#install-hyperdx-opentelemetry-instrumentation-package}
 
 Use the following command to install the [ClickStack OpenTelemetry package](https://www.npmjs.com/package/@hyperdx/node-opentelemetry).
 
@@ -266,7 +266,7 @@ enable trace attributes.
 export HDX_NODE_BETA_MODE=1
 ```
 
-### Google Cloud Run {#google-cloud-run}
+### Google cloud run {#google-cloud-run}
 
 If you're running your application on Google Cloud Run, Cloud Trace
 automatically injects sampling headers into incoming requests, currently
@@ -307,7 +307,7 @@ The following libraries will be automatically instrumented (traced) by the SDK:
 
 ## Alternative installation {#alternative-installation}
 
-### Run the Application with ClickStack OpenTelemetry CLI {#run-the-application-with-cli}
+### Run the application with ClickStack opentelemetry CLI {#run-the-application-with-cli}
 
 Alternatively, you can auto-instrument your application without any code changes by using the `opentelemetry-instrument` CLI or using the
 Node.js `--require` flag. The CLI installation exposes a wider range of auto-instrumented libraries and frameworks.

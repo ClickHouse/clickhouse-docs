@@ -18,7 +18,7 @@ import pe_remove_private_endpoint from '@site/static/images/cloud/security/pe-re
 import aws_private_link_pe_filters from '@site/static/images/cloud/security/aws-privatelink-pe-filters.png';
 import aws_private_link_ped_nsname from '@site/static/images/cloud/security/aws-privatelink-pe-dns-name.png';
 
-# AWS PrivateLink
+# AWS privatelink
 
 <ScalePlanFeatureBadge feature="AWS PrivateLink"/>
 
@@ -83,9 +83,9 @@ Before you get started you will need:
 
 Follow these steps to connect your ClickHouse Cloud services via AWS PrivateLink.
 
-### Obtain endpoint "Service name"  {#obtain-endpoint-service-info}
+### Obtain endpoint "service name"  {#obtain-endpoint-service-info}
 
-#### Option 1: ClickHouse Cloud console {#option-1-clickhouse-cloud-console}
+#### Option 1: ClickHouse cloud console {#option-1-clickhouse-cloud-console}
 
 In the ClickHouse Cloud console, open the service you want to connect via PrivateLink, then navigate to the **Settings** menu.
 
@@ -169,7 +169,7 @@ After creating the VPC Endpoint, make a note of the `Endpoint ID` value; you'll 
 
 <Image img={aws_private_link_vpc_endpoint_id} size="md" alt="VPC Endpoint ID" border/>
 
-#### Option 2: AWS CloudFormation {#option-2-aws-cloudformation}
+#### Option 2: AWS cloudformation {#option-2-aws-cloudformation}
 
 Next, you need to create a VPC Endpoint using `Service name`<sup>console</sup> or `endpointServiceId`<sup>API</sup> you got from [Obtain Endpoint "Service name" ](#obtain-endpoint-service-info) step.
 Make sure to use correct subnet IDs, security groups, and VPC ID.
@@ -223,9 +223,9 @@ There are various ways to configure DNS. Please set up DNS according to your spe
 
 You need to point "DNS name", taken from [Obtain Endpoint "Service name" ](#obtain-endpoint-service-info) step, to AWS Endpoint network interfaces. This ensures that services/components within your VPC/Network can resolve it properly.
 
-### Add "Endpoint ID" to ClickHouse service allow list {#add-endpoint-id-to-services-allow-list}
+### Add "endpoint id" to ClickHouse service allow list {#add-endpoint-id-to-services-allow-list}
 
-#### Option 1: ClickHouse Cloud console {#option-1-clickhouse-cloud-console-2}
+#### Option 1: ClickHouse cloud console {#option-1-clickhouse-cloud-console-2}
 
 To add, please navigate to the ClickHouse Cloud console, open the service that you would like to connect via PrivateLink then navigate to **Settings**. Click **Set up private endpoint** to open private endpoints settings. Enter the `Endpoint ID` obtained from the [Create AWS Endpoint](#create-aws-endpoint) step. Click "Create endpoint".
 
@@ -292,13 +292,13 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" \
 -d @pl_config.json | jq
 ```
 
-### Accessing an instance using PrivateLink {#accessing-an-instance-using-privatelink}
+### Accessing an instance using privatelink {#accessing-an-instance-using-privatelink}
 
 Each service with Private Link enabled has a public and private endpoint. In order to connect using Private Link, you need to use a private endpoint which will be `privateDnsHostname`<sup>API</sup> or `DNS Name`<sup>console</sup> taken from [Obtain Endpoint "Service name"](#obtain-endpoint-service-info).
 
 #### Getting private DNS hostname {#getting-private-dns-hostname}
 
-##### Option 1: ClickHouse Cloud console {#option-1-clickhouse-cloud-console-3}
+##### Option 1: ClickHouse cloud console {#option-1-clickhouse-cloud-console-3}
 
 In the ClickHouse Cloud console, navigate to **Settings**. Click on the **Set up private endpoint** button. In the opened flyout, copy the **DNS Name**.
 
@@ -336,7 +336,7 @@ In this example connection via value of `privateDnsHostname` host name will be r
 
 ## Troubleshooting {#troubleshooting}
 
-### Multiple PrivateLinks in one region {#multiple-privatelinks-in-one-region}
+### Multiple privatelinks in one region {#multiple-privatelinks-in-one-region}
 
 In most cases, you only need to create a single endpoint service for each VPC. This endpoint can route requests from the VPC to multiple ClickHouse Cloud services.
 Please refer [here](#considerations)
@@ -347,7 +347,7 @@ Please refer [here](#considerations)
 - Please verify `inbound` rules on security group attached to Endpoint and allow ClickHouse ports.
 - Please verify `outbound` rules on security group attached to VM which is used to connectivity test and allow connections to ClickHouse ports.
 
-### Private Hostname: Not found address of host {#private-hostname-not-found-address-of-host}
+### Private hostname: not found address of host {#private-hostname-not-found-address-of-host}
 
 - Please check your DNS configuration
 

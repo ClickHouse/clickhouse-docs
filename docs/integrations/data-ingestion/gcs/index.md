@@ -13,7 +13,7 @@ import Image from '@theme/IdealImage';
 import GCS_examine_bucket_1 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-1.png';
 import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-2.png';
 
-# Integrate Google Cloud Storage with ClickHouse
+# Integrate Google cloud storage with ClickHouse
 
 :::note
 If you are using ClickHouse Cloud on [Google Cloud](https://cloud.google.com), this page does not apply as your services will already be using [Google Cloud Storage](https://cloud.google.com/storage). If you are looking to `SELECT` or `INSERT` data from GCS, please see the [`gcs` table function](/sql-reference/table-functions/gcs).
@@ -21,7 +21,7 @@ If you are using ClickHouse Cloud on [Google Cloud](https://cloud.google.com), t
 
 ClickHouse recognizes that GCS represents an attractive storage solution for users seeking to separate storage and compute. To help achieve this, support is provided for using GCS as the storage for a MergeTree engine. This will enable users to exploit the scalability and cost benefits of GCS, and the insert and query performance of the MergeTree engine.
 
-## GCS backed MergeTree {#gcs-backed-mergetree}
+## Gcs backed MergeTree {#gcs-backed-mergetree}
 
 ### Creating a disk {#creating-a-disk}
 
@@ -182,7 +182,7 @@ The [Cloud Storage XML API](https://cloud.google.com/storage/docs/xml-api/overvi
 
 For further information on tuning threads, see [Optimizing for Performance](../s3/index.md#s3-optimizing-performance).
 
-## Using Google Cloud Storage (GCS) {#gcs-multi-region}
+## Using Google cloud storage (gcs) {#gcs-multi-region}
 
 :::tip
 Object storage is used by default in ClickHouse Cloud, you do not need to follow this procedure if you are running in ClickHouse Cloud.
@@ -225,7 +225,7 @@ Do not start `clickhouse server` until after it is configured.  Just install it.
 
 Refer to the [installation instructions](/getting-started/install/install.mdx) when performing the deployment steps on the ClickHouse server nodes.
 
-#### Deploy ClickHouse Keeper {#deploy-clickhouse-keeper}
+#### Deploy ClickHouse keeper {#deploy-clickhouse-keeper}
 
 Deploy ClickHouse Keeper on three hosts, in the sample configurations these are named `keepernode1`, `keepernode2`, and `keepernode3`.  `keepernode1` can be deployed in the same region as `chnode1`, `keepernode2` with `chnode2`, and `keepernode3` in either region, but in a different availability zone from the ClickHouse node in that region.
 
@@ -241,7 +241,7 @@ If you need step-by-step instructions to create buckets and an HMAC key, then ex
 
 <BucketDetails />
 
-### Configure ClickHouse Keeper {#configure-clickhouse-keeper}
+### Configure ClickHouse keeper {#configure-clickhouse-keeper}
 
 All of the ClickHouse Keeper nodes have the same configuration file except for the `server_id` line (first highlighted line below).  Modify the file with the hostnames for your ClickHouse Keeper servers, and on each of the servers set the `server_id` to match the appropriate `server` entry in the `raft_configuration`.  Since this example has `server_id` set to `3`, we have highlighted the matching lines in the `raft_configuration`.
 
@@ -310,7 +310,7 @@ By default, ClickHouse listens on the loopback interface, in a replicated setup 
 </clickhouse>
 ```
 
-#### Remote ClickHouse Keeper servers {#remote-clickhouse-keeper-servers}
+#### Remote ClickHouse keeper servers {#remote-clickhouse-keeper-servers}
 
 Replication is coordinated by ClickHouse Keeper.  This configuration file identifies the ClickHouse Keeper nodes by hostname and port number.
 
@@ -378,7 +378,7 @@ This file configures settings related to the ClickHouse Keeper path.  Specifical
 </clickhouse>
 ```
 
-#### Storage in GCS {#storage-in-gcs}
+#### Storage in gcs {#storage-in-gcs}
 
 ClickHouse storage configuration includes `disks` and `policies`. The disk being configured below is named `gcs`, and is of `type` `s3`.  The type is s3 because ClickHouse accesses the GCS bucket as if it was an AWS S3 bucket.  Two copies of this configuration will be needed, one for each of the ClickHouse server nodes.
 
@@ -424,7 +424,7 @@ These substitutions are common across the two nodes:
 </clickhouse>
 ```
 
-### Start ClickHouse Keeper {#start-clickhouse-keeper}
+### Start ClickHouse keeper {#start-clickhouse-keeper}
 
 Use the commands for your operating system, for example:
 
@@ -434,7 +434,7 @@ sudo systemctl start clickhouse-keeper
 sudo systemctl status clickhouse-keeper
 ```
 
-#### Check ClickHouse Keeper status {#check-clickhouse-keeper-status}
+#### Check ClickHouse keeper status {#check-clickhouse-keeper-status}
 
 Send commands to the ClickHouse Keeper with `netcat`.  For example, `mntr` returns the state of the ClickHouse Keeper cluster.  If you run the command on each of the Keeper nodes you will see that one is a leader, and the other two are followers:
 
@@ -622,7 +622,7 @@ formatReadableSize(total_bytes): 36.42 MiB
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-#### Verify in Google Cloud console {#verify-in-google-cloud-console}
+#### Verify in Google cloud console {#verify-in-google-cloud-console}
 
 Looking at the buckets you will see that a folder was created in each bucket with the name that was used in the `storage.xml` configuration file.  Expand the folders and you will see many files, representing the data partitions.
 #### Bucket for replica one {#bucket-for-replica-one}

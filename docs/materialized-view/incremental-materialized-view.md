@@ -372,7 +372,7 @@ WHERE PostId IN (
 Materialized views can be chained (or cascaded), allowing complex workflows to be established.
 For more information see the guide ["Cascading materialized views"](https://clickhouse.com/docs/guides/developer/cascading-materialized-views).
 
-## Materialized views and JOINs {#materialized-views-and-joins}
+## Materialized views and joins {#materialized-views-and-joins}
 
 :::note Refreshable Materialized Views
 The following applies to Incremental Materialized Views only. Refreshable Materialized Views execute their query periodically over the full target dataset and fully support JOINs. Consider using them for complex JOINs if a reduction in result freshness can be tolerated.
@@ -556,7 +556,7 @@ WHERE DisplayName = 'brand_new_user'
 
 Note, however, that this result is incorrect.
 
-### Best practices for JOINs in materialized views {#join-best-practices}
+### Best practices for joins in materialized views {#join-best-practices}
 
 - **Use the left-most table as the trigger.** Only the table on the left side of the `SELECT` statement triggers the materialized view. Changes to right-side tables will not trigger updates.
 
@@ -1095,7 +1095,7 @@ Leave it disabled when:
 - You require predictable, ordered execution
 - You're debugging or auditing insert behavior and want deterministic replay
 
-## Materialized views and Common Table Expressions (CTE) {#materialized-views-common-table-expressions-ctes}
+## Materialized views and common table expressions (cte) {#materialized-views-common-table-expressions-ctes}
 
 **Non-recursive** Common Table Expressions (CTEs) are supported in Materialized Views.
 

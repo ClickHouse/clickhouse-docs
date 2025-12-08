@@ -11,7 +11,7 @@ import firewall_rules_crunchy_bridge from '@site/static/images/integrations/data
 import add_firewall_rules_crunchy_bridge from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/crunchy-postgres/add_firewall_rules_crunchy_bridge.png'
 import Image from '@theme/IdealImage';
 
-# Crunchy Bridge Postgres source setup guide
+# Crunchy bridge Postgres source setup guide
 
 ClickPipes supports Postgres version 12 and later.
 
@@ -55,7 +55,7 @@ Connect to your Crunchy Bridge Postgres through the `postgres` user and run the 
     CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
     ```
 
-## Safe list ClickPipes IPs {#safe-list-clickpipes-ips}
+## Safe list ClickPipes ips {#safe-list-clickpipes-ips}
 
 Safelist [ClickPipes IPs](../../index.md#list-of-static-ips) by adding the Firewall Rules in Crunchy Bridge.
 

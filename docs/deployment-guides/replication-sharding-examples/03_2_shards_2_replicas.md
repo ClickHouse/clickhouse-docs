@@ -425,7 +425,7 @@ In practice, this is discouraged.
 In this example, each `users.xml` file is identical for all nodes in the cluster.
 :::
 
-## Configure ClickHouse Keeper {#configure-clickhouse-keeper-nodes}
+## Configure ClickHouse keeper {#configure-clickhouse-keeper-nodes}
 
 Next you will configure ClickHouse Keeper, which is used for coordination.
 

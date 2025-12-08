@@ -47,7 +47,7 @@ Organizations can discover insights about their customers by aggregating and
 analyzing events like this. This has traditionally been done using batch analytics,
 and in the next section, we’ll compare batch and real-time analytics.
 
-## Real-Time analytics vs batch analytics {#real-time-analytics-vs-batch-analytics}
+## Real-time analytics vs batch analytics {#real-time-analytics-vs-batch-analytics}
 
 The diagram below shows what a typical batch analytics system would look like 
 from the perspective of an individual event:

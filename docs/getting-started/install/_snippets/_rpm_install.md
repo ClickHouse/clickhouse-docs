@@ -5,7 +5,7 @@
 
 <VerticalStepper>
 
-## Setup the RPM repository {#setup-the-rpm-repository}
+## Setup the rpm repository {#setup-the-rpm-repository}
 
 Add the official repository by running the following command:
 
@@ -63,7 +63,7 @@ If you set up a password for your server, then you will need to run:
 clickhouse-client --password
 ```
 
-## Install standalone ClickHouse Keeper {#install-standalone-clickhouse-keeper-1}
+## Install standalone ClickHouse keeper {#install-standalone-clickhouse-keeper-1}
 
 :::tip
 In production environments we strongly recommend running ClickHouse Keeper on dedicated nodes.
@@ -77,7 +77,7 @@ To install `clickhouse-keeper` on standalone ClickHouse Keeper servers, run:
 sudo yum install -y clickhouse-keeper
 ```
 
-## Enable and start ClickHouse Keeper {#enable-and-start-clickhouse-keeper-1}
+## Enable and start ClickHouse keeper {#enable-and-start-clickhouse-keeper-1}
 
 ```bash
 sudo systemctl enable clickhouse-keeper

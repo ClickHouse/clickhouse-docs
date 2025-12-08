@@ -7,7 +7,7 @@ sidebar_label: 'groupArrayResample'
 doc_type: 'reference'
 ---
 
-# groupArrayResample {#grouparrayresample}
+# Grouparrayresample {#grouparrayresample}
 
 ## Description {#description}
 

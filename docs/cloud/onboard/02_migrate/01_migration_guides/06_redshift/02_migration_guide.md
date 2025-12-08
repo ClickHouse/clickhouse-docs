@@ -9,6 +9,6 @@ doc_type: 'guide'
 
 import MigrationGuide from '@site/docs/integrations/data-ingestion/redshift/_snippets/_migration_guide.md'
 
-# Amazon Redshift to ClickHouse migration guide
+# Amazon redshift to ClickHouse migration guide
 
 <MigrationGuide/>

@@ -30,7 +30,7 @@ import nifi14 from '@site/static/images/integrations/data-ingestion/etl-tools/ni
 import nifi15 from '@site/static/images/integrations/data-ingestion/etl-tools/nifi_15.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Connect Apache NiFi to ClickHouse
+# Connect Apache nifi to ClickHouse
 
 <CommunityMaintainedBadge/>
 
@@ -42,17 +42,17 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <ConnectionDetails />
 
-## Download and run Apache NiFi {#2-download-and-run-apache-nifi}
+## Download and run Apache nifi {#2-download-and-run-apache-nifi}
 
 For a new setup, download the binary from https://nifi.apache.org/download.html and start by running `./bin/nifi.sh start`
 
-## Download the ClickHouse JDBC driver {#3-download-the-clickhouse-jdbc-driver}
+## Download the ClickHouse jdbc driver {#3-download-the-clickhouse-jdbc-driver}
 
 1. Visit the <a href="https://github.com/ClickHouse/clickhouse-java/releases" target="_blank">ClickHouse JDBC driver release page</a> on GitHub and look for  the latest JDBC release version
 2. In the release version, click on "Show all xx assets" and look for the JAR file containing the keyword "shaded" or "all", for example, `clickhouse-jdbc-0.5.0-all.jar`
 3. Place the JAR file in a folder accessible by Apache NiFi and take note of the absolute path
 
-## Add `DBCPConnectionPool` Controller Service and configure its properties {#4-add-dbcpconnectionpool-controller-service-and-configure-its-properties}
+## Add `DBCPConnectionPool` controller service and configure its properties {#4-add-dbcpconnectionpool-controller-service-and-configure-its-properties}
 
 1. To configure a Controller Service in Apache NiFi, visit the NiFi Flow Configuration page by clicking on the "gear" button
 

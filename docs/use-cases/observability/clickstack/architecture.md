@@ -29,7 +29,7 @@ At the heart of ClickStack is ClickHouse, a column-oriented database designed fo
 
 ClickHouse handles observability data as wide events, allowing for deep correlation across logs, metrics, and traces in a single unified structure.
 
-## OpenTelemetry collector: data ingestion {#open-telemetry-collector}
+## Opentelemetry collector: data ingestion {#open-telemetry-collector}
 
 ClickStack includes a pre-configured OpenTelemetry (OTel) collector to ingest telemetry in an open, standardized way. Users can send data using the OTLP protocol via:
 
@@ -38,7 +38,7 @@ ClickStack includes a pre-configured OpenTelemetry (OTel) collector to ingest te
 
 The collector exports telemetry to ClickHouse in efficient batches. It supports optimized table schemas per data source, ensuring scalable performance across all signal types.
 
-## HyperDX: the interface {#hyperdx}
+## Hyperdx: the interface {#hyperdx}
 
 HyperDX is the user interface for ClickStack. It offers:
 

@@ -31,7 +31,7 @@ Developers love Lightdash for its open architecture, version-controlled YAML mod
 
 This partnership brings together **ClickHouse’s speed** and **Lightdash’s developer experience**, making it easier than ever to explore, visualize, and automate insights with AI.
 
-## Build an interactive dashboard with Lightdash and ClickHouse {#build-an-interactive-dashboard}
+## Build an interactive dashboard with lightdash and ClickHouse {#build-an-interactive-dashboard}
 
 In this guide, you’ll see how **Lightdash** connects to **ClickHouse** to explore your dbt models and build interactive dashboards.  
 The example below shows a finished dashboard powered by data from ClickHouse.
@@ -68,7 +68,7 @@ For example:
 <Image size="md" img={lightdash_01} alt="Example profiles.yml configuration for a lightdash-clickhouse project" border />
 <br/>
 
-### Create a Lightdash project connected to ClickHouse {#creating-a-lightdash-project-connected-to-clickhouse}
+### Create a lightdash project connected to ClickHouse {#creating-a-lightdash-project-connected-to-clickhouse}
 
 Once your dbt profile is configured for ClickHouse, you’ll also need to connect your **dbt project** to Lightdash.
 
@@ -80,7 +80,7 @@ After connecting your dbt project, Lightdash will automatically detect your Clic
 
 ---
 
-### Explore your ClickHouse data in Lightdash {#exploring-your-clickhouse-data-in-lightdash}
+### Explore your ClickHouse data in lightdash {#exploring-your-clickhouse-data-in-lightdash}
 
 Once connected, Lightdash automatically syncs your dbt models and exposes:
 
@@ -92,7 +92,7 @@ You can now build dashboards, share insights, and even use **Ask AI** to generat
 
 ---
 
-### Define metrics and dimensions in Lightdash {#defining-metrics-and-dimensions-in-lightdash}
+### Define metrics and dimensions in lightdash {#defining-metrics-and-dimensions-in-lightdash}
 
 In Lightdash, all **metrics** and **dimensions** are defined directly in your dbt model `.yml` files. This makes your business logic version-controlled, consistent, and fully transparent.
 
@@ -150,7 +150,7 @@ Learn more about how to create and organize dashboards here:
 
 ---
 
-### Ask AI: self-serve analytics powered by dbt {#ask-ai}
+### Ask ai: self-serve analytics powered by dbt {#ask-ai}
 
 **AI Agents** in Lightdash make data exploration truly self-serve.  
 Instead of writing queries, users can simply ask questions in plain language — like *“What was our monthly revenue growth?”* — and the AI Agent automatically generates the right visualization, referencing your dbt-defined metrics and models to ensure accuracy and consistency.

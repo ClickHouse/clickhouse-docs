@@ -8,7 +8,7 @@ keywords: ['Yandex']
 doc_type: 'reference'
 ---
 
-# What does "Не тормозит" mean? {#what-does-ne-tormozit-mean}
+# What does "не тормозит" mean? {#what-does-ne-tormozit-mean}
 
 We often get this question when people see vintage (limited production) ClickHouse t-shirts. They have the words **"ClickHouse не тормозит"** written in big bold text on the front.
 

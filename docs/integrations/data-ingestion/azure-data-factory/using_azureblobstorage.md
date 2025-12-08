@@ -11,7 +11,7 @@ import Image from '@theme/IdealImage';
 import azureDataStoreSettings                   from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-settings.png';
 import azureDataStoreAccessKeys                 from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-access-keys.png';
 
-# Using ClickHouse's azureBlobStorage table function {#using-azureBlobStorage-function}
+# Using clickhouse's azureblobstorage table function {#using-azureBlobStorage-function}
 
 This is one of the most efficient and straightforward ways to copy data from
 Azure Blob Storage or Azure Data Lake Storage into ClickHouse. With this table
@@ -29,7 +29,7 @@ for using this function effectively. For more details and advanced options,
 refer to the official documentation:
 [`azureBlobStorage` Table Function documentation page](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
 
-## Acquiring Azure Blob Storage Access Keys {#acquiring-azure-blob-storage-access-keys}
+## Acquiring Azure blob storage access keys {#acquiring-azure-blob-storage-access-keys}
 
 To allow ClickHouse to access your Azure Blob Storage, you'll need a connection string with an access key.
 
@@ -45,7 +45,7 @@ To allow ClickHouse to access your Azure Blob Storage, you'll need a connection 
 
 4. Copy the connection string — you'll use this as a parameter in the azureBlobStorage table function.
 
-## Querying the data from Azure Blob Storage {#querying-the-data-from-azure-blob-storage}
+## Querying the data from Azure blob storage {#querying-the-data-from-azure-blob-storage}
 
 Open your preferred ClickHouse query console — this can be the ClickHouse Cloud
 web interface, the ClickHouse CLI client, or any other tool you use to run
@@ -78,7 +78,7 @@ SELECT * FROM azureBlobStorage(
 This allows you to efficiently pull external data into ClickHouse without
 needing intermediate ETL steps.
 
-## A simple example using the Environmental sensors dataset {#simple-example-using-the-environmental-sensors-dataset}
+## A simple example using the environmental sensors dataset {#simple-example-using-the-environmental-sensors-dataset}
 
 As an example we will download a single file from the Environmental Sensors
 Dataset.

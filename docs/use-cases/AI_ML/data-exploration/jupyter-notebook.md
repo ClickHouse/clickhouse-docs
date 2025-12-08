@@ -18,7 +18,7 @@ import image_7 from '@site/static/images/use-cases/AI_ML/jupyter/7.png';
 import image_8 from '@site/static/images/use-cases/AI_ML/jupyter/8.png';
 import image_9 from '@site/static/images/use-cases/AI_ML/jupyter/9.png';
 
-# Exploring data with Jupyter notebooks and chDB
+# Exploring data with jupyter notebooks and chDB
 
 In this guide, you will learn how you can explore a dataset on ClickHouse Cloud data in Jupyter notebook with the help of [chDB](/chdb) - a fast in-process SQL OLAP Engine powered by ClickHouse.
 

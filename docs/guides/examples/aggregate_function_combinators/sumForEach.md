@@ -7,7 +7,7 @@ sidebar_label: 'sumForEach'
 doc_type: 'reference'
 ---
 
-# sumForEach {#sumforeach}
+# Sumforeach {#sumforeach}
 
 ## Description {#description}
 

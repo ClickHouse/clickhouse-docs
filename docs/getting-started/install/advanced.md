@@ -28,7 +28,7 @@ You'll need to create data and metadata folders manually and `chown` them for th
 
 On Gentoo, you can just use `emerge clickhouse` to install ClickHouse from sources.
 
-## Install a CI-generated Binary {#install-a-ci-generated-binary}
+## Install a ci-generated binary {#install-a-ci-generated-binary}
 
 ClickHouse's continuous integration (CI) infrastructure produces specialized builds for each commit in the [ClickHouse
 repository](https://github.com/clickhouse/clickhouse/), e.g. [sanitized](https://github.com/google/sanitizers) builds, unoptimized (Debug)

@@ -41,10 +41,10 @@ Grafana requires a plugin to connect to ClickHouse, which is easily installed wi
   </iframe>
 </div>
 
-## 1. Gather your connection details {#1-gather-your-connection-details}
+## 1. gather your connection details {#1-gather-your-connection-details}
 <ConnectionDetails />
 
-## 2. Making a read-only user {#2-making-a-read-only-user}
+## 2. making a read-only user {#2-making-a-read-only-user}
 
 When connecting ClickHouse to a data visualization tool like Grafana, it is recommended to make a read-only user to protect your data from unwanted modifications.
 
@@ -55,7 +55,7 @@ To configure a read-only user, follow these steps:
 2. Ensure the `readonly` user has enough permission to modify the `max_execution_time` setting required by the underlying [clickhouse-go client](https://github.com/ClickHouse/clickhouse-go).
 3. If you're using a public ClickHouse instance, it is not recommended to set `readonly=2` in the `readonly` profile. Instead, leave `readonly=1` and set the constraint type of `max_execution_time` to [changeable_in_readonly](/operations/settings/constraints-on-settings) to allow modification of this setting.
 
-## 3.  Install the ClickHouse plugin for Grafana {#3--install-the-clickhouse-plugin-for-grafana}
+## 3.  install the ClickHouse plugin for Grafana {#3--install-the-clickhouse-plugin-for-grafana}
 
 Before Grafana can connect to ClickHouse, you need to install the appropriate Grafana plugin. Assuming you are logged in to Grafana, follow these steps:
 
@@ -69,7 +69,7 @@ Before Grafana can connect to ClickHouse, you need to install the appropriate Gr
 
     <Image size="md" img={install} alt="Install the ClickHouse plugin" border />
 
-## 4. Define a ClickHouse data source {#4-define-a-clickhouse-data-source}
+## 4. define a ClickHouse data source {#4-define-a-clickhouse-data-source}
 
 1. Once the installation is complete, click the **Add new data source** button. (You can also add a data source from the **Data sources** tab on the **Connections** page.)
 
@@ -93,7 +93,7 @@ For more settings, check the [plugin configuration](./config.md) documentation.
 
     <Image size="md" img={valid_ds} alt="Select Save & test" border />
 
-## 5. Next steps {#5-next-steps}
+## 5. next steps {#5-next-steps}
 
 Your data source is now ready to use! Learn more about how to build queries with the [query builder](./query-builder.md).
 

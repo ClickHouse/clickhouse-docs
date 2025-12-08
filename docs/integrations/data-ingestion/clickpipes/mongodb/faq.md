@@ -10,7 +10,7 @@ keywords: ['clickpipes', 'mongodb', 'cdc', 'data ingestion', 'real-time sync']
 
 # ClickPipes for MongoDB FAQ
 
-### Can I query for individual fields in the JSON datatype? {#can-i-query-for-individual-fields-in-the-json-datatype}
+### Can i query for individual fields in the JSON datatype? {#can-i-query-for-individual-fields-in-the-json-datatype}
 
 For direct field access, such as `{"user_id": 123}`, you can use **dot notation**:
 ```sql
@@ -26,7 +26,7 @@ SELECT sum(doc.shipping.cost::Float32) AS total_shipping_cost FROM t1;
 ```
 To learn more about working with JSON, see our [Working with JSON guide](./quickstart).
 
-### How do I flatten the nested MongoDB documents in ClickHouse? {#how-do-i-flatten-the-nested-mongodb-documents-in-clickhouse}
+### How do i flatten the nested MongoDB documents in ClickHouse? {#how-do-i-flatten-the-nested-mongodb-documents-in-clickhouse}
 
 MongoDB documents are replicated as JSON type in ClickHouse by default, preserving the nested structure. You have several options to flatten this data. If you want to flatten the data to columns, you can use normal views, materialized views, or query-time access.
 
@@ -36,21 +36,21 @@ MongoDB documents are replicated as JSON type in ClickHouse by default, preservi
 
 For detailed examples, see our [Working with JSON guide](./quickstart).
 
-### Can I connect MongoDB databases that don't have a public IP or are in private networks? {#can-i-connect-mongodb-databases-that-dont-have-a-public-ip-or-are-in-private-networks}
+### Can i connect MongoDB databases that don't have a public ip or are in private networks? {#can-i-connect-mongodb-databases-that-dont-have-a-public-ip-or-are-in-private-networks}
 
 We support AWS PrivateLink for connecting to MongoDB databases that don't have a public IP or are in private networks. Azure Private Link and GCP Private Service Connect are currently not supported.
 
-### What happens if I delete a database/table from my MongoDB database? {#what-happens-if-i-delete-a-database-table-from-my-mongodb-database}
+### What happens if i delete a database/table from my MongoDB database? {#what-happens-if-i-delete-a-database-table-from-my-mongodb-database}
 
 When you delete a database/table from MongoDB, ClickPipes will continue running but the dropped database/table will stop replicating changes. The corresponding tables in ClickHouse is preserved.
 
-### How does MongoDB CDC Connector handle transactions? {#how-does-mongodb-cdc-connector-handle-transactions}
+### How does MongoDB CDC connector handle transactions? {#how-does-mongodb-cdc-connector-handle-transactions}
 
 Each document change within a transaction is processed individually to ClickHouse. Changes are applied in the order they appear in the oplog; and only committed changes are replicated to ClickHouse. If a MongoDB transaction is rolled back, those changes won't appear in the change stream.
 
 For more examples, see our [Working with JSON guide](./quickstart).
 
-### How do I handle `resume of change stream was not possible, as the resume point may no longer be in the oplog.` error? {#resume-point-may-no-longer-be-in-the-oplog-error}
+### How do i handle `resume of change stream was not possible, as the resume point may no longer be in the oplog.` error? {#resume-point-may-no-longer-be-in-the-oplog-error}
 
 This error typically occurs when the oplog is truncated and ClickPipe is unable to resume the change stream at the expected point. To resolve this issue, [resync the ClickPipe](./resync.md). To avoid this issue from recurring, we recommend increasing the oplog retention period. See instructions for [MongoDB Atlas](./source/atlas#enable-oplog-retention), [self-managed MongoDB](./source/generic#enable-oplog-retention), or [Amazon DocumentDB](./source/documentdb#configure-change-stream-log-retention).
 
@@ -58,19 +58,19 @@ This error typically occurs when the oplog is truncated and ClickPipe is unable 
 
 We use MongoDB's native Change Streams API to track changes in the database. Change Streams API provides a resumable stream of database changes by leveraging MongoDB's oplog (operations log). ClickPipe uses MongoDB's resume tokens to track the position in the oplog and ensure every change is replicated to ClickHouse.
 
-### Which read preference should I use? {#which-read-preference-should-i-use}
+### Which read preference should i use? {#which-read-preference-should-i-use}
 
 Which read preference to use depends on your specific use case. If you want to minimize the load on your primary node, we recommend using `secondaryPreferred` read preference. If you want to optimize ingestion latency, we recommend using `primaryPreferred` read preference. For more details, see [MongoDB documentation](https://www.mongodb.com/docs/manual/core/read-preference/#read-preference-modes-1).
 
-### Does the MongoDB ClickPipe support Sharded Cluster? {#does-the-mongodb-clickpipe-support-sharded-cluster}
+### Does the MongoDB ClickPipe support sharded cluster? {#does-the-mongodb-clickpipe-support-sharded-cluster}
 
 Yes, the MongoDB ClickPipe supports both Replica Set and Sharded Cluster.
 
-### Does MongoDB ClickPipe support Amazon DocumentDB? {#documentdb-support}
+### Does MongoDB ClickPipe support Amazon documentdb? {#documentdb-support}
 
 Yes, MongoDB ClickPipe supports Amazon DocumentDB 5.0. See [Amazon DocumentDB source setup guide](./source/documentdb.md) for details.
 
-### Does MongoDB ClickPipe support PrivateLink? {#privatelink-support}
+### Does MongoDB ClickPipe support privatelink? {#privatelink-support}
 
 We support PrivateLink for MongoDB (and DocumentDB) cluster in AWS only. 
 

@@ -66,7 +66,7 @@ As a result, running a simple query like `SELECT count(*) FROM users;` may produ
 
 How can we ensure identical query results in both ClickHouse and PostgreSQL?
 
-###  Deduplicate using FINAL Keyword {#deduplicate-using-final-keyword}
+### Deduplicate using final keyword {#deduplicate-using-final-keyword}
 
 The recommended way to deduplicate data in ClickHouse queries is to use the [FINAL modifier.](/sql-reference/statements/select/from#final-modifier) This ensures only the deduplicated rows are returned.
 
@@ -122,7 +122,7 @@ ORDER BY viewcount DESC
 LIMIT 10
 ```
 
-#### FINAL setting {#final-setting}
+#### Final setting {#final-setting}
 
 Rather than adding the FINAL modifier to each table name in the query, you can use the [FINAL setting](/operations/settings/settings#final) to apply it automatically to all tables in the query.
 
@@ -137,7 +137,7 @@ SET final = 1;
 SELECT count(*) FROM posts; 
 ```
 
-#### ROW policy {#row-policy}
+#### Row policy {#row-policy}
 
 An easy way to hide the redundant `_peerdb_is_deleted = 0` filter is to use [ROW policy.](/docs/operations/access-rights#row-policy-management) Below is an example that creates a row policy to exclude the deleted rows from all queries on the table votes.
 

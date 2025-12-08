@@ -88,7 +88,7 @@ ClickHouse uses asynchronous multi-master replication. After being written to an
 
 For more information, see the section [Data replication](../engines/table-engines/mergetree-family/replication.md).
 
-## Role-Based Access Control {#role-based-access-control}
+## Role-based access control {#role-based-access-control}
 
 ClickHouse implements user account management using SQL queries and allows for [role-based access control configuration](/guides/sre/user-management/index.md) similar to what can be found in the ANSI SQL standard and popular relational database management systems.
 

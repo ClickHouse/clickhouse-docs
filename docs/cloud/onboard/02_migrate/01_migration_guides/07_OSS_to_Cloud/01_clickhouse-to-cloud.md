@@ -16,13 +16,13 @@ import self_managed_04 from '@site/static/images/integrations/migration/self-man
 import self_managed_05 from '@site/static/images/integrations/migration/self-managed-05.png';
 import self_managed_06 from '@site/static/images/integrations/migration/self-managed-06.png';
 
-# Migrating between self-managed ClickHouse and ClickHouse Cloud
+# Migrating between Self-managed ClickHouse and ClickHouse cloud
 
 <Image img={self_managed_01} size='lg' alt='Migrating Self-managed ClickHouse'/>
 
 This guide will show how to migrate from a self-managed ClickHouse server to ClickHouse Cloud, and also how to migrate between ClickHouse Cloud services. The [`remoteSecure`](/sql-reference/table-functions/remote) function is used in `SELECT` and `INSERT` queries to allow access to remote ClickHouse servers, which makes migrating tables as simple as writing an `INSERT INTO` query with an embedded `SELECT`.
 
-## Migrating from Self-managed ClickHouse to ClickHouse Cloud {#migrating-from-self-managed-clickhouse-to-clickhouse-cloud}
+## Migrating from Self-managed ClickHouse to ClickHouse cloud {#migrating-from-self-managed-clickhouse-to-clickhouse-cloud}
 
 <Image img={self_managed_02} size='lg' alt='Migrating Self-managed ClickHouse'  />
 
@@ -66,7 +66,7 @@ FROM system.tables
 WHERE database = 'db' AND table = 'table'
 ```
 
-### On the destination ClickHouse Cloud system: {#on-the-destination-clickhouse-cloud-system}
+### On the destination ClickHouse cloud system: {#on-the-destination-clickhouse-cloud-system}
 
 - Create the destination database:
 ```sql
@@ -112,7 +112,7 @@ remoteSecure('HOSTNAME.clickhouse.cloud:9440', 'db.table',
 'default', 'PASS') SELECT * FROM db.table
 ```
 
-## Migrating between ClickHouse Cloud services {#migrating-between-clickhouse-cloud-services}
+## Migrating between ClickHouse cloud services {#migrating-between-clickhouse-cloud-services}
 
 <Image img={self_managed_05} size='lg' alt='Migrating Self-managed ClickHouse'  />
 
@@ -192,7 +192,7 @@ Modify the allow list and allow access from **Anywhere** temporarily. See the [I
 
 - Verify the data in the destination service
 
-#### Re-establish the IP access list on the source {#re-establish-the-ip-access-list-on-the-source}
+#### Re-establish the ip access list on the source {#re-establish-the-ip-access-list-on-the-source}
 
   If you exported the access list earlier, then you can re-import it using **Share**, otherwise re-add your entries to the access list.
 

@@ -25,7 +25,7 @@ import mitzu_10 from '@site/static/images/integrations/data-visualization/mitzu_
 import mitzu_11 from '@site/static/images/integrations/data-visualization/mitzu_11.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Connecting Mitzu to ClickHouse
+# Connecting mitzu to ClickHouse
 
 <CommunityMaintainedBadge/>
 
@@ -47,29 +47,29 @@ This dataset is available in ClickHouse Cloud or [can be loaded with these instr
 
 This guide is just a brief overview of how to use Mitzu. You can find more detailed information in the [Mitzu documentation](https://docs.mitzu.io/).
 
-## 1. Gather your connection details {#1-gather-your-connection-details}
+## 1. gather your connection details {#1-gather-your-connection-details}
 
 <ConnectionDetails />
 
-## 2. Sign in or sign up to Mitzu {#2-sign-in-or-sign-up-to-mitzu}
+## 2. sign in or sign up to mitzu {#2-sign-in-or-sign-up-to-mitzu}
 
 As a first step, head to [https://app.mitzu.io](https://app.mitzu.io) to sign up.
 
 <Image size="lg" img={mitzu_01} alt="Mitzu sign-in page with email and password fields" border />
 
-## 3. Configure your workspace {#3-configure-your-workspace}
+## 3. configure your workspace {#3-configure-your-workspace}
 
 After creating an organization, follow the `Set up your workspace` onboarding guide in the left sidebar. Then, click on the `Connect Mitzu with your data warehouse` link.
 
 <Image size="lg" img={mitzu_02} alt="Mitzu workspace setup page showing onboarding steps" border />
 
-## 4. Connect Mitzu to ClickHouse {#4-connect-mitzu-to-clickhouse}
+## 4. connect mitzu to ClickHouse {#4-connect-mitzu-to-clickhouse}
 
 First, select ClickHouse as the connection type and set the connection details. Then, click the `Test connection & Save` button to save the settings.
 
 <Image size="lg" img={mitzu_03} alt="Mitzu connection setup page for ClickHouse with configuration form" border />
 
-## 5. Configure event tables {#5-configure-event-tables}
+## 5. configure event tables {#5-configure-event-tables}
 
 Once the connection is saved, select the `Event tables` tab and click the `Add table` button. In the modal, select your database and the tables you want to add to Mitzu.
 
@@ -90,7 +90,7 @@ Use the checkboxes to select at least one table and click on the `Configure tabl
 <br/>
 Once all tables are configured, click on the `Save & update event catalog` button, and  Mitzu will find all events and their properties from the above-defined table. This step may take up to a few minutes, depending on the size of your dataset.
 
-## 4. Run segmentation queries {#4-run-segmentation-queries}
+## 4. run segmentation queries {#4-run-segmentation-queries}
 
 User segmentation in Mitzu is as easy as in Amplitude, Mixpanel, or PostHog.
 
@@ -105,7 +105,7 @@ Filtering is done as you would expect: pick a property (ClickHouse column) and s
 You can choose any event or user property for breakdowns (see below for how to integrate user properties).
 :::
 
-## 5. Run funnel queries {#5-run-funnel-queries}
+## 5. run funnel queries {#5-run-funnel-queries}
 
 Select up to 9 steps for a funnel. Choose the time window within which your users can complete the funnel.
 Get immediate conversion rate insights without writing a single line of SQL code.
@@ -118,7 +118,7 @@ Get immediate conversion rate insights without writing a single line of SQL code
 Pick `Funnel trends` to visualize funnel trends over time.
 :::
 
-## 6. Run retention queries {#6-run-retention-queries}
+## 6. run retention queries {#6-run-retention-queries}
 
 Select up to 2 steps for a retention rate calculation. Choose the retention window for the recurring window for
 Get immediate conversion rate insights without writing a single line of SQL code.
@@ -131,7 +131,7 @@ Get immediate conversion rate insights without writing a single line of SQL code
 Pick `Weekly cohort retention` to visualize how your retention rates change over time.
 :::
 
-## 7. Run journey queries {#7-run-journey-queries}
+## 7. run journey queries {#7-run-journey-queries}
 Select up to 9 steps for a funnel. Choose the time window within which your users can finish the journey. The Mitzu journey chart gives you a visual map of every path users take through the selected events.
 
 <Image size="lg" img={mitzu_09} alt="Mitzu journey visualization showing user path flow between events" border />
@@ -143,7 +143,7 @@ You can select a property for the segment `Break down` to distinguish users with
 
 <br/>
 
-## 8. Run revenue queries {#8-run-revenue-queries}
+## 8. run revenue queries {#8-run-revenue-queries}
 If revenue settings are configured, Mitzu can calculate the total MRR and subscription count based on your payment events.
 
 <Image size="lg" img={mitzu_10} alt="Mitzu revenue analysis dashboard showing MRR metrics" border />

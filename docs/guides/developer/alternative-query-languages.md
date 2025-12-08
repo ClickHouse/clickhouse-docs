@@ -26,7 +26,7 @@ Standard SQL is the default query language of ClickHouse.
 SET dialect = 'clickhouse'
 ```
 
-## Pipelined relational query language (PRQL) {#pipelined-relational-query-language-prql}
+## Pipelined relational query language (prql) {#pipelined-relational-query-language-prql}
 
 <ExperimentalBadge/>
 
@@ -49,7 +49,7 @@ aggregate {
 
 Under the hood, ClickHouse uses transpilation from PRQL to SQL to run PRQL queries.
 
-## Kusto query language (KQL) {#kusto-query-language-kql}
+## Kusto query language (kql) {#kusto-query-language-kql}
 
 <ExperimentalBadge/>
 

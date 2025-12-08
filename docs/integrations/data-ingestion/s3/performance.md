@@ -25,7 +25,7 @@ This section focuses on optimizing performance when reading and inserting data f
 
 Before tuning threads and block sizes to improve insert performance, we recommend users understand the mechanics of S3 inserts. If you're familiar with the insert mechanics, or just want some quick tips, skip to our example [below](/integrations/s3/performance#example-dataset).
 
-## Insert Mechanics (single node) {#insert-mechanics-single-node}
+## Insert mechanics (single node) {#insert-mechanics-single-node}
 
 Two main factors, in addition to hardware size, influence the performance and resource usage of ClickHouse's data insert mechanics (for a single node): **insert block size** and **insert parallelism**.
 

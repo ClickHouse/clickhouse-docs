@@ -18,11 +18,11 @@ import Image from '@theme/IdealImage';
 
 We recommend users migrating from Postgres read [the guide for modeling data in ClickHouse](/data-modeling/schema-design). This guide uses the same Stack Overflow dataset and explores multiple approaches using ClickHouse features.
 
-## Primary (Ordering) Keys in ClickHouse {#primary-ordering-keys-in-clickhouse}
+## Primary (ordering) keys in ClickHouse {#primary-ordering-keys-in-clickhouse}
 
 Users coming from OLTP databases often look for the equivalent concept in ClickHouse. On noticing that ClickHouse supports a `PRIMARY KEY` syntax, users might be tempted to define their table schema using the same keys as their source OLTP database. This is not appropriate.
 
-### How are ClickHouse Primary keys different? {#how-are-clickhouse-primary-keys-different}
+### How are ClickHouse primary keys different? {#how-are-clickhouse-primary-keys-different}
 
 To understand why using your OLTP primary key in ClickHouse is not appropriate, users should understand the basics of ClickHouse indexing. We use Postgres as an example comparison, but these general concepts apply to other OLTP databases.
 

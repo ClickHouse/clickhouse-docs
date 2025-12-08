@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Deploying ClickHouse on Easypanel
+# Deploying ClickHouse on easypanel
 
 <CommunityMaintainedBadge/>
 

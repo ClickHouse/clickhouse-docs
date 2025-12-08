@@ -16,7 +16,7 @@ import security_group_in_rds_postgres from '@site/static/images/integrations/dat
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
 
-# RDS Postgres source setup guide
+# Rds Postgres source setup guide
 
 ## Supported Postgres versions {#supported-postgres-versions}
 
@@ -96,7 +96,7 @@ Connect to your RDS Postgres instance as an admin user and execute the following
 
 ## Configure network access {#configure-network-access}
 
-### IP-based access control {#ip-based-access-control}
+### Ip-based access control {#ip-based-access-control}
 
 If you want to restrict traffic to your RDS instance, please add the [documented static NAT IPs](../../index.md#list-of-static-ips) to the `Inbound rules` of your RDS security group.
 
@@ -104,11 +104,11 @@ If you want to restrict traffic to your RDS instance, please add the [documented
 
 <Image img={edit_inbound_rules} alt="Edit inbound rules for the above security group" size="lg" border/>
 
-### Private Access via AWS PrivateLink {#private-access-via-aws-privatelink}
+### Private access via AWS privatelink {#private-access-via-aws-privatelink}
 
 To connect to your RDS instance through a private network, you can use AWS PrivateLink. Follow our [AWS PrivateLink setup guide for ClickPipes](/knowledgebase/aws-privatelink-setup-for-clickpipes) to set up the connection.
 
-### Workarounds for RDS Proxy {#workarounds-for-rds-proxy}
+### Workarounds for rds proxy {#workarounds-for-rds-proxy}
 RDS Proxy does not support logical replication connections. If you have dynamic IP addresses in RDS and cannot use DNS name or a lambda, here are some alternatives:
 
 1. Using a cron job, resolve the RDS endpoint's IP periodically and update the NLB if it has changed.

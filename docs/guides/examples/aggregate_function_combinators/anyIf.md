@@ -7,7 +7,7 @@ sidebar_label: 'anyIf'
 doc_type: 'reference'
 ---
 
-# anyIf {#avgif}
+# Anyif {#avgif}
 
 ## Description {#description}
 

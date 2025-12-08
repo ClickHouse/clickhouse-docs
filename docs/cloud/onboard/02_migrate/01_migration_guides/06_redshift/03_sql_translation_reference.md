@@ -7,7 +7,7 @@ title: 'Amazon Redshift SQL translation guide'
 doc_type: 'reference'
 ---
 
-# Amazon Redshift SQL translation guide
+# Amazon redshift SQL translation guide
 
 ## Data types {#data-types}
 

@@ -16,7 +16,7 @@ import observability_8 from '@site/static/images/use-cases/observability/observa
 import observability_9 from '@site/static/images/use-cases/observability/observability-9.png';
 import Image from '@theme/IdealImage';
 
-# Integrating OpenTelemetry for data collection
+# Integrating opentelemetry for data collection
 
 Any Observability solution requires a means of collecting and exporting logs and traces. For this purpose, ClickHouse recommends [the OpenTelemetry (OTel) project](https://opentelemetry.io/).
 
@@ -44,7 +44,7 @@ This distribution contains many components and allows users to experiment with v
 
 Building a [custom collector](https://opentelemetry.io/docs/collector/custom-collector/) can be achieved using the [OpenTelemetry Collector Builder](https://github.com/open-telemetry/opentelemetry-collector/tree/main/cmd/builder).
 
-## Ingesting data with OTel {#ingesting-data-with-otel}
+## Ingesting data with otel {#ingesting-data-with-otel}
 
 ### Collector deployment roles {#collector-deployment-roles}
 

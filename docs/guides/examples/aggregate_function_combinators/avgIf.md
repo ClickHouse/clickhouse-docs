@@ -7,7 +7,7 @@ sidebar_label: 'avgIf'
 doc_type: 'reference'
 ---
 
-# avgIf {#avgif}
+# Avgif {#avgif}
 
 ## Description {#description}
 

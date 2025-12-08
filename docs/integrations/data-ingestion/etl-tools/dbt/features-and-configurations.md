@@ -11,7 +11,7 @@ doc_type: 'guide'
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Features and Configurations
+# Features and configurations
 
 <ClickHouseSupportedBadge/>
 
@@ -61,14 +61,14 @@ your_profile_name:
       sync_request_timeout: [5] # Timeout for server ping
       compress_block_size: [1048576] # Compression block size if compression is enabled
 ```
-### Schema vs Database {#schema-vs-database}
+### Schema vs database {#schema-vs-database}
 
 The dbt model relation identifier `database.schema.table` is not compatible with Clickhouse because Clickhouse does not
 support a `schema`.
 So we use a simplified approach `schema.table`, where `schema` is the Clickhouse database. Using the `default` database
 is not recommended.
 
-### SET Statement Warning {#set-statement-warning}
+### Set statement warning {#set-statement-warning}
 
 In many environments, using the SET statement to persist a ClickHouse setting across all DBT queries is not reliable
 and can cause unexpected failures. This is particularly true when using HTTP connections through a load balancer that
@@ -86,13 +86,13 @@ seeds:
   +quote_columns: false  #or `true` if you have CSV column headers with spaces
 ```
 
-### About the ClickHouse Cluster {#about-the-clickhouse-cluster}
+### About the ClickHouse cluster {#about-the-clickhouse-cluster}
 
 When using a ClickHouse cluster, you need to consider two things:
 - Setting the `cluster` setting.
 - Ensuring read-after-write consistency, especially if you are using more than one `threads`.
 
-#### Cluster Setting {#cluster-setting}
+#### Cluster setting {#cluster-setting}
 
 The `cluster` setting in profile enables dbt-clickhouse to run against a ClickHouse cluster. If `cluster` is set in the profile, **all models will be created with the `ON CLUSTER` clause** by default—except for those using a **Replicated** engine. This includes:
 
@@ -123,7 +123,7 @@ be created on the connected node only).
 If a model has been created without a `cluster` setting, dbt-clickhouse will detect the situation and run all DDL/DML
 without `on cluster` clause for this model.
 
-#### Read-after-write Consistency {#read-after-write-consistency}
+#### Read-after-write consistency {#read-after-write-consistency}
 
 dbt relies on a read-after-insert consistency model. This is not compatible with ClickHouse clusters that have more than one replica if you cannot guarantee that all operations will go to the same replica. You may not encounter problems in your day-to-day usage of dbt, but there are some strategies depending on your cluster to have this guarantee in place:
 - If you are using a ClickHouse Cloud cluster, you only need to set `select_sequential_consistency: 1` in your profile's `custom_settings` property. You can find more information about this setting [here](/operations/settings/settings#select_sequential_consistency).
@@ -214,7 +214,7 @@ setting (although the latter are generally
 available in the `system.settings` table.)  In general the defaults are recommended, and any use of these properties
 should be carefully researched and tested.
 
-### Column Configuration {#column-configuration}
+### Column configuration {#column-configuration}
 
 > **_NOTE:_** The column configuration options below require [model contracts](https://docs.getdbt.com/docs/collaborate/govern/model-contracts) to be enforced.
 
@@ -351,11 +351,11 @@ Configurations that are specific for this materialization type are listed below:
 | `incremental_strategy`   | The strategy to use for incremental materialization.  `delete+insert`, `append`, `insert_overwrite`, or `microbatch` are supported.  For additional details on strategies, see [here](/integrations/dbt/features-and-configurations#incremental-model-strategies) | Optional (default: 'default')                                                        |
 | `incremental_predicates` | Additional conditions to be applied to the incremental materialization (only applied to `delete+insert` strategy                                                                                                                                                                                    | Optional                      
 
-#### Incremental Model Strategies {#incremental-model-strategies}
+#### Incremental model strategies {#incremental-model-strategies}
 
 `dbt-clickhouse` supports three incremental model strategies.
 
-##### The Default (Legacy) Strategy {#default-legacy-strategy}
+##### The default (legacy) strategy {#default-legacy-strategy}
 
 Historically ClickHouse has had only limited support for updates and deletes, in the form of asynchronous "mutations."
 To emulate expected dbt behavior,
@@ -366,7 +366,7 @@ that preserves the original relation if something
 goes wrong before the operation completes; however, since it involves a full copy of the original table, it can be quite
 expensive and slow to execute.
 
-##### The Delete+Insert Strategy {#delete-insert-strategy}
+##### The Delete+Insert strategy {#delete-insert-strategy}
 
 ClickHouse added "lightweight deletes" as an experimental feature in version 22.8. Lightweight deletes are significantly
 faster than ALTER TABLE ... DELETE
@@ -390,7 +390,7 @@ caveats to using this strategy:
   incremental predicates should only include sub-queries on data that will not be modified during the incremental
   materialization.
 
-##### The Microbatch Strategy (Requires dbt-core >= 1.9) {#microbatch-strategy}
+##### The microbatch strategy (requires dbt-core >= 1.9) {#microbatch-strategy}
 
 The incremental strategy `microbatch` has been a dbt-core feature since version 1.9, designed to handle large
 time-series data transformations efficiently. In dbt-clickhouse, it builds on top of the existing `delete_insert`
@@ -404,7 +404,7 @@ Beyond handling large transformations, microbatch provides the ability to:
 
 For detailed microbatch usage, refer to the [official documentation](https://docs.getdbt.com/docs/build/incremental-microbatch).
 
-###### Available Microbatch Configurations {#available-microbatch-configurations}
+###### Available microbatch configurations {#available-microbatch-configurations}
 
 | Option             | Description                                                                                                                                                                                                                                                                                                                                | Default if any |
 |--------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------|
@@ -414,7 +414,7 @@ For detailed microbatch usage, refer to the [official documentation](https://doc
 | lookback           | Process X batches prior to the latest bookmark to capture late-arriving records.                                                                                                                                                                                                                                                           | 1              |
 | concurrent_batches | Overrides dbt's auto detect for running batches concurrently (at the same time). Read more about [configuring concurrent batches](https://docs.getdbt.com/docs/build/incremental-microbatch#configure-concurrent_batches). Setting to true runs batches concurrently (in parallel). false runs batches sequentially (one after the other). |                |
 
-##### The Append Strategy {#append-strategy}
+##### The append strategy {#append-strategy}
 
 This strategy replaces the `inserts_only` setting in previous versions of dbt-clickhouse. This approach simply appends
 new rows to the existing relation.
@@ -422,7 +422,7 @@ As a result duplicate rows are not eliminated, and there is no temporary or inte
 approach if duplicates are either permitted
 in the data or excluded by the incremental query WHERE clause/filter.
 
-##### The insert_overwrite Strategy (Experimental) {#insert-overwrite-strategy}
+##### The insert_overwrite strategy (experimental) {#insert-overwrite-strategy}
 
 > [IMPORTANT]  
 > Currently, the insert_overwrite strategy is not fully functional with distributed materializations.
@@ -445,7 +445,7 @@ This approach has the following advantages:
 The strategy requires `partition_by` to be set in the model configuration. Ignores all other strategies-specific
 parameters of the model config.
 
-### Materialization: materialized_view (Experimental) {#materialized-view}
+### Materialization: materialized_view (experimental) {#materialized-view}
 
 A `materialized_view` materialization should be a `SELECT` from an existing (source) table. The adapter will create a
 target table with the model name
@@ -498,7 +498,7 @@ If you prefer not to preload historical data during MV creation, you can disable
 )}}
 ```
 
-#### Refreshable Materialized Views {#refreshable-materialized-views}
+#### Refreshable materialized views {#refreshable-materialized-views}
 
 To use [Refreshable Materialized View](/materialized-view/refreshable-materialized-view),
 please adjust the following configs as needed in your MV model (all these configs are supposed to be set inside a
@@ -599,7 +599,7 @@ CREATE TABLE db.table on cluster cluster (
     ENGINE = Distributed ('cluster', 'db', 'table_local', cityHash64(id));
 ```
 
-### materialization: distributed_incremental (experimental) {#materialization-distributed-incremental}
+### Materialization: distributed_incremental (experimental) {#materialization-distributed-incremental}
 
 Incremental model based on the same idea as distributed table, the main difficulty is to process all incremental
 strategies correctly.
@@ -666,7 +666,7 @@ Config block in `snapshots/<model_name>.sql`:
 
 For more information on configuration, check out the [snapshot configs](https://docs.getdbt.com/docs/build/snapshots#snapshot-configs) reference page.
 
-### Contracts and Constraints {#contracts-and-constraints}
+### Contracts and constraints {#contracts-and-constraints}
 
 Only exact column type contracts are supported. For example, a contract with a UInt32 column type will fail if the model
 returns a UInt64 or other integer type.
@@ -674,9 +674,9 @@ ClickHouse also support _only_ `CHECK` constraints on the entire table/model. Pr
 column level CHECK constraints are not supported.
 (See ClickHouse documentation on primary/order by keys.)
 
-### Additional ClickHouse Macros {#additional-clickhouse-macros}
+### Additional ClickHouse macros {#additional-clickhouse-macros}
 
-#### Model Materialization Utility Macros {#model-materialization-utility-macros}
+#### Model materialization utility macros {#model-materialization-utility-macros}
 
 The following macros are included to facilitate creating ClickHouse specific tables and views:
 
@@ -693,7 +693,7 @@ The following macros are included to facilitate creating ClickHouse specific tab
 - `ttl_config` -- Uses the `ttl` model configuration property to assign a ClickHouse table TTL expression. No TTL is
   assigned by default.
 
-#### s3Source Helper Macro {#s3source-helper-macro}
+#### S3source helper macro {#s3source-helper-macro}
 
 The `s3source` macro simplifies the process of selecting ClickHouse data directly from S3 using the ClickHouse S3 table
 function. It works by
@@ -728,13 +728,13 @@ dbt-clickhouse supports most of the cross database macros now included in `dbt C
 * Similarly, the `replace` SQL function in ClickHouse requires constant strings for the `old_chars` and `new_chars`
   parameters, so those parameters will be interpreted as strings rather than column names when invoking this macro.
 
-## Catalog Support {#catalog-support}
+## Catalog support {#catalog-support}
 
-### dbt Catalog Integration Status {#dbt-catalog-integration-status}
+### Dbt catalog integration status {#dbt-catalog-integration-status}
 
 dbt Core v1.10 introduced catalog integration support, which allows adapters to materialize models into external catalogs that manage open table formats like Apache Iceberg. **This feature is not yet natively implemented in dbt-clickhouse.** You can track the progress of this feature implementation in [GitHub issue #489](https://github.com/ClickHouse/dbt-clickhouse/issues/489).
 
-### ClickHouse Catalog Support {#clickhouse-catalog-support}
+### ClickHouse catalog support {#clickhouse-catalog-support}
 
 ClickHouse recently added native support for Apache Iceberg tables and data catalogs. Most of the features are still `experimental`, but you can already use them if you use a recent ClickHouse version.
 
@@ -742,7 +742,7 @@ ClickHouse recently added native support for Apache Iceberg tables and data cata
 
 * Additionally, ClickHouse provides the [DataLakeCatalog database engine](/engines/database-engines/datalakecatalog), which enables **connection to external data catalogs** including AWS Glue Catalog, Databricks Unity Catalog, Hive Metastore, and REST Catalogs. This allows you to query open table format data (Iceberg, Delta Lake) directly from external catalogs without data duplication.
 
-### Workarounds for Working with Iceberg and Catalogs {#workarounds-iceberg-catalogs}
+### Workarounds for working with iceberg and catalogs {#workarounds-iceberg-catalogs}
 
 You can read data from Iceberg tables or catalogs from your dbt project if you have already defined them in your ClickHouse cluster with the tools defined above. You can leverage the `source` functionality in dbt to reference these tables in your dbt projects. For example, if you want to access your tables in a REST Catalog, you can:
 
@@ -785,7 +785,7 @@ INNER JOIN {{ source('external_catalog', 'customers') }} c
     ON o.customer_id = c.customer_id
 ```
 
-### Notes on the Workarounds {#benefits-workarounds}
+### Notes on the workarounds {#benefits-workarounds}
 
 The good things about these workarounds are:
 * You'll have immediate access to different external table types and external catalogs without waiting for native dbt catalog integration.

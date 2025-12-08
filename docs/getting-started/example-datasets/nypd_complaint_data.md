@@ -306,7 +306,7 @@ Result:
 └─────────────────────┘
 ```
 
-## Convert the date and time String to a DateTime64 type {#convert-the-date-and-time-string-to-a-datetime64-type}
+## Convert the date and time string to a datetime64 type {#convert-the-date-and-time-string-to-a-datetime64-type}
 
 Earlier in the guide we discovered that there are dates in the TSV file before January 1st 1970, which means that we need a 64 bit DateTime type for the dates.  The dates also need to be converted from `MM/DD/YYYY` to `YYYY/MM/DD` format.  Both of these can be done with [`parseDateTime64BestEffort()`](../../sql-reference/functions/type-conversion-functions.md#parsedatetime64besteffort).
 
@@ -582,7 +582,7 @@ Result:
 
 ## Run some queries {#run-queries}
 
-### Query 1. Compare the number of complaints by month {#query-1-compare-the-number-of-complaints-by-month}
+### Query 1. compare the number of complaints by month {#query-1-compare-the-number-of-complaints-by-month}
 
 Query:
 
@@ -618,7 +618,7 @@ Query id: 7fbd4244-b32a-4acf-b1f3-c3aa198e74d9
 12 rows in set. Elapsed: 0.006 sec. Processed 208.99 thousand rows, 417.99 KB (37.48 million rows/s., 74.96 MB/s.)
 ```
 
-### Query 2. Compare total number of complaints by borough {#query-2-compare-total-number-of-complaints-by-borough}
+### Query 2. compare total number of complaints by borough {#query-2-compare-total-number-of-complaints-by-borough}
 
 Query:
 

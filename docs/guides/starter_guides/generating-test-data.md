@@ -68,7 +68,7 @@ FROM numbers(500000);
 
 ---
 
-## Time-distributed events (Poisson) {#poisson-distribution}
+## Time-distributed events (poisson) {#poisson-distribution}
 
 **Use-case**: Simulate event arrivals that cluster around a specific period (e.g., peak hour).
 

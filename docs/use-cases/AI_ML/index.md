@@ -8,7 +8,7 @@ keywords: ['machine learning', 'genAI', 'AI']
 doc_type: 'landing-page'
 ---
 
-# Machine Learning and GenAI
+# Machine learning and genai
 
 ClickHouse is ideally suited as a real-time database to power Machine Learning workloads.
 With ClickHouse, it's easier than ever to unleash GenAI on your analytics data.

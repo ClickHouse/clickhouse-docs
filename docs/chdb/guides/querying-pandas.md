@@ -155,7 +155,7 @@ match_id                                                          3943077
 Name: 0, dtype: object
 ```
 
-## Querying Pandas DataFrames {#querying-pandas-dataframes}
+## Querying Pandas dataframes {#querying-pandas-dataframes}
 
 Next, let's see how to query these DataFrames using chDB. 
 We'll import the library:
@@ -279,7 +279,7 @@ LIMIT 10
 9  Carlos Eccehomo Cuesta Figueroa       50
 ```
 
-## Joining Pandas DataFrames {#joining-pandas-dataframes}
+## Joining Pandas dataframes {#joining-pandas-dataframes}
 
 We can also join DataFrames together in a query.
 For example, to get an overview of the match, we could write the following query:

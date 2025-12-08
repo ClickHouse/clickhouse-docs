@@ -161,7 +161,7 @@ INSERT INTO stackoverflow.badges SELECT * FROM s3('https://datasets-documentatio
 0 rows in set. Elapsed: 6.635 sec. Processed 51.29 million rows, 797.05 MB (7.73 million rows/s., 120.13 MB/s.)
 ```
 
-### PostLinks {#postlinks}
+### Postlinks {#postlinks}
 
 ```sql
 CREATE TABLE stackoverflow.postlinks
@@ -180,7 +180,7 @@ INSERT INTO stackoverflow.postlinks SELECT * FROM s3('https://datasets-documenta
 0 rows in set. Elapsed: 1.534 sec. Processed 6.55 million rows, 129.70 MB (4.27 million rows/s., 84.57 MB/s.)
 ```
 
-### PostHistory {#posthistory}
+### Posthistory {#posthistory}
 
 ```sql
 CREATE TABLE stackoverflow.posthistory
@@ -272,7 +272,7 @@ clickhouse local --query "SELECT * FROM file('posts.json', JSONEachRow, 'Id Int3
 
 A few simple questions to you get started.
 
-### Most popular tags on Stack Overflow {#most-popular-tags-on-stack-overflow}
+### Most popular tags on stack overflow {#most-popular-tags-on-stack-overflow}
 
 ```sql
 

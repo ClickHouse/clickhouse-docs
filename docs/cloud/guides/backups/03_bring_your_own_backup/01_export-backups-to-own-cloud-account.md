@@ -51,7 +51,7 @@ In order to use role based authentication, please follow the Secure s3 [setup](h
 2. Azure container name in the storage account.
 3. Azure Blob within the container.
 
-### Google Cloud Storage (GCS) {#google-cloud-storage-gcs}
+### Google cloud storage (gcs) {#google-cloud-storage-gcs}
 
 1. GCS endpoint, in the format:
 
@@ -61,9 +61,9 @@ In order to use role based authentication, please follow the Secure s3 [setup](h
 2. Access HMAC key and HMAC secret.
 
 <hr/>
-# Backup / Restore
+# Backup / restore
 
-## Backup / Restore to AWS S3 Bucket {#backup--restore-to-aws-s3-bucket}
+## Backup / restore to AWS S3 bucket {#backup--restore-to-aws-s3-bucket}
 
 ### Take a DB backup {#take-a-db-backup}
 
@@ -99,7 +99,7 @@ FROM S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<k
 
 See: [Configuring BACKUP/RESTORE to use an S3 Endpoint](/operations/backup/s3_endpoint) for more details.
 
-## Backup / Restore to Azure Blob Storage {#backup--restore-to-azure-blob-storage}
+## Backup / restore to Azure blob storage {#backup--restore-to-azure-blob-storage}
 
 ### Take a DB backup {#take-a-db-backup-1}
 
@@ -130,7 +130,7 @@ FROM AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<contain
 
 See: [Configuring BACKUP/RESTORE to use an AzureBlobStorage Endpoint](/operations/backup/azure#configuring-backuprestore-to-use-an-azureblobstorage-endpoint) for more details.
 
-## Backup / Restore to Google Cloud Storage (GCS) {#backup--restore-to-google-cloud-storage-gcs}
+## Backup / restore to Google cloud storage (gcs) {#backup--restore-to-google-cloud-storage-gcs}
 
 ### Take a DB backup {#take-a-db-backup-2}
 

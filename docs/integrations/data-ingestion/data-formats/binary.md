@@ -15,7 +15,7 @@ ClickHouse supports multiple binary formats, which result in better performance 
 
 We're going to use some_data [table](assets/some_data.sql) and [data](assets/some_data.tsv) for demonstration, feel free to reproduce that on your ClickHouse instance.
 
-## Exporting in a Native ClickHouse format {#exporting-in-a-native-clickhouse-format}
+## Exporting in a native ClickHouse format {#exporting-in-a-native-clickhouse-format}
 
 The most efficient data format to export and import data between ClickHouse nodes is [Native](/interfaces/formats/Native) format. Exporting is done using `INTO OUTFILE` clause:
 
@@ -26,7 +26,7 @@ INTO OUTFILE 'data.clickhouse' FORMAT Native
 
 This will create [data.clickhouse](assets/data.clickhouse) file in a native format.
 
-### Importing from a Native format {#importing-from-a-native-format}
+### Importing from a native format {#importing-from-a-native-format}
 
 To import data, we can use [file()](/sql-reference/table-functions/file.md) for smaller files or exploration purposes:
 
@@ -73,7 +73,7 @@ COMPRESSION 'lz4'
 FORMAT Native
 ```
 
-## Exporting to RowBinary {#exporting-to-rowbinary}
+## Exporting to rowbinary {#exporting-to-rowbinary}
 
 Another binary format supported is [RowBinary](/interfaces/formats/RowBinary), which allows importing and exporting data in binary-represented rows:
 
@@ -84,7 +84,7 @@ INTO OUTFILE 'data.binary' FORMAT RowBinary
 
 This will generate [data.binary](assets/data.binary) file in a binary rows format.
 
-### Exploring RowBinary files {#exploring-rowbinary-files}
+### Exploring rowbinary files {#exploring-rowbinary-files}
 Automatic schema inference is not supported for this format, so to explore before loading, we have to define schema explicitly:
 
 ```sql
@@ -104,7 +104,7 @@ LIMIT 5
 
 Consider using [RowBinaryWithNames](/interfaces/formats/RowBinaryWithNames), which also adds a header row with a columns list. [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes) will also add an additional header row with column types.
 
-### Importing from RowBinary files {#importing-from-rowbinary-files}
+### Importing from rowbinary files {#importing-from-rowbinary-files}
 To load data from a RowBinary file, we can use a `FROM INFILE` clause:
 
 ```sql
@@ -113,7 +113,7 @@ FROM INFILE 'data.binary'
 FORMAT RowBinary
 ```
 
-## Importing single binary value using RawBLOB {#importing-single-binary-value-using-rawblob}
+## Importing single binary value using rawblob {#importing-single-binary-value-using-rawblob}
 
 Suppose we want to read an entire binary file and save it into a field in a table.
 This is the case when the [RawBLOB format](/interfaces/formats/RawBLOB) can be used. This format can be directly used with a single-column table only:
@@ -139,7 +139,7 @@ SELECT length(data) FROM images
 └──────────────┘
 ```
 
-### Exporting RawBLOB data {#exporting-rawblob-data}
+### Exporting rawblob data {#exporting-rawblob-data}
 
 This format can also be used to export data using an `INTO OUTFILE` clause:
 
@@ -151,7 +151,7 @@ FORMAT RawBLOB
 
 Note that we had to use `LIMIT 1` because exporting more than a single value will create a corrupted file.
 
-## MessagePack {#messagepack}
+## Messagepack {#messagepack}
 
 ClickHouse supports importing and exporting to [MessagePack](https://msgpack.org/) using the [MsgPack](/interfaces/formats/MsgPack). To export to MessagePack format:
 
@@ -170,7 +170,7 @@ FROM INFILE 'data.msgpk'
 FORMAT MsgPack
 ```
 
-## Protocol Buffers {#protocol-buffers}
+## Protocol buffers {#protocol-buffers}
 
 <CloudNotSupportedBadge/>
 
@@ -197,7 +197,7 @@ SETTINGS format_schema = 'schema:MessageType'
 
 This saves data to the [proto.bin](assets/proto.bin) file. ClickHouse also supports importing Protobuf data as well as nested messages. Consider using [ProtobufSingle](/interfaces/formats/ProtobufSingle) to work with a single Protocol Buffer message (length delimiters will be omitted in this case).
 
-## Cap'n Proto {#capn-proto}
+## Cap'n proto {#capn-proto}
 
 <CloudNotSupportedBadge/>
 

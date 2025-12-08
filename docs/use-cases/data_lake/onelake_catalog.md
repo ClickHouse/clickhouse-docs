@@ -23,7 +23,7 @@ As this feature is beta, you will need to enable it using:
 `SET allow_database_iceberg = 1;`
 :::
 
-## Gathering Requirements OneLake {#gathering-requirements}
+## Gathering requirements onelake {#gathering-requirements}
 
 Before querying your table in Microsoft Fabric, you'll need to collect the following information:
 
@@ -34,7 +34,7 @@ Before querying your table in Microsoft Fabric, you'll need to collect the follo
 
 See [Microsoft OneLake's documentation](http://learn.microsoft.com/en-us/fabric/onelake/table-apis/table-apis-overview#prerequisites) for help finding these values.
 
-## Creating a connection between OneLake and ClickHouse {#creating-a-connection-between-unity-catalog-and-clickhouse}
+## Creating a connection between onelake and ClickHouse {#creating-a-connection-between-unity-catalog-and-clickhouse}
 
 With the required info above you can now create a connection between Microsoft OneLake and ClickHouse, but before that you need to enable catalogs:
 
@@ -42,7 +42,7 @@ With the required info above you can now create a connection between Microsoft O
 SET allow_database_iceberg=1
 ```
 
-### Connect to OneLake {#connect-onelake}
+### Connect to onelake {#connect-onelake}
 
 ```sql
 CREATE DATABASE onelake_catalog
@@ -57,7 +57,7 @@ onelake_client_id = '<client_id>',
 onelake_client_secret = '<client_secret>'
 ```
 
-## Querying OneLake using ClickHouse {#querying-onelake-using-clickhouse}
+## Querying onelake using ClickHouse {#querying-onelake-using-clickhouse}
 
 Now that the connection is in place, you can start querying OneLake:
 
@@ -151,7 +151,7 @@ Query id: 8bd5bd8e-83be-453e-9a88-32de12ba7f24
    └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-## Loading data from your Data Lake into ClickHouse {#loading-data-from-onelake-into-clickhouse}
+## Loading data from your data lake into ClickHouse {#loading-data-from-onelake-into-clickhouse}
 
 If you need to load data from OneLake into ClickHouse:
 

@@ -70,7 +70,7 @@ ORDER BY total_parts DESC
 LIMIT 20;
 ```
 
-## Video Sources {#video-sources}
+## Video sources {#video-sources}
 
 - [Fast, Concurrent, and Consistent Asynchronous INSERTS in ClickHouse](https://www.youtube.com/watch?v=AsMPEfN5QtM) - ClickHouse team member explains async inserts and the too many parts problem
 - [Production ClickHouse at Scale](https://www.youtube.com/watch?v=liTgGiTuhJE) - Real-world batching strategies from observability platforms

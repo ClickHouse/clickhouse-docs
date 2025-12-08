@@ -31,7 +31,7 @@ instrumentation isn't required to get value out of tracing.
 At present, the integration is compatible exclusively with **Java 8+**
 :::
 
-### Download OpenTelemetry Java agent {#download-opentelemtry-java-agent}
+### Download opentelemetry Java agent {#download-opentelemtry-java-agent}
 
 Download [`opentelemetry-javaagent.jar`](https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar)
 and place the JAR in your preferred directory. The JAR file contains the agent
@@ -59,7 +59,7 @@ _The `OTEL_SERVICE_NAME` environment variable is used to identify your service i
 
 The `OTEL_EXPORTER_OTLP_HEADERS` environment variable contains the API Key available via HyperDX app in `Team Settings → API Keys`.
 
-### Run the application with OpenTelemetry Java agent {#run-the-application-with-otel-java-agent}
+### Run the application with opentelemetry Java agent {#run-the-application-with-otel-java-agent}
 
 ```shell
 java -jar target/<APPLICATION_JAR_FILE>

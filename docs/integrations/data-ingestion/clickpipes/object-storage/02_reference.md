@@ -72,7 +72,7 @@ This is not a valid path. `{N..M}` are not supported in ClickPipes.
 https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/{documents-01,documents-02}.ndjson.gz
 :::
 
-## Continuous Ingest {#continuous-ingest}
+## Continuous ingest {#continuous-ingest}
 ClickPipes supports continuous ingestion from S3, GCS, Azure Blob Storage, and DigitalOcean Spaces. When enabled, ClickPipes continuously ingests data from the specified path, and polls for new files at a rate of once every 30 seconds. However, new files must be lexically greater than the last ingested file. This means that they must be named in a way that defines the ingestion order. For instance, files named `file1`, `file2`, `file3`, etc., will be ingested sequentially. If a new file is added with a name like `file0`, ClickPipes will not ingest it because it is not lexically greater than the last ingested file.
 
 ## Tracking ingested files {#tracking-ingested-files}
@@ -89,14 +89,14 @@ Public buckets need to allow both the `s3:GetObject` and the `s3:ListBucket` act
 Protected buckets can be accessed using either [IAM credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) or an [IAM Role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html).
 To use an IAM Role, you will need to create the IAM Role as specified [in this guide](/cloud/data-sources/secure-s3). Copy the new IAM Role Arn after creation and paste it into the ClickPipe configuration as the "IAM ARN role".
 
-### GCS {#gcs}
+### Gcs {#gcs}
 Like S3, you can access public buckets with no configuration, and with protected buckets you can use [HMAC Keys](https://cloud.google.com/storage/docs/authentication/managing-hmackeys) in place of the AWS IAM credentials. You can read this guide from Google Cloud on [how to setup such keys](https://cloud.google.com/storage/docs/authentication/hmackeys).
 
 Service Accounts for GCS aren't directly supported. HMAC (IAM) Credentials must be used when authenticating with non-public buckets.
 The Service Account permissions attached to the HMAC credentials should be `storage.objects.list` and `storage.objects.get`.
 
-### DigitalOcean Spaces {#dospaces}
+### DigitalOcean spaces {#dospaces}
 Currently only protected buckets are supported for DigitalOcean spaces. You require an "Access Key" and a "Secret Key" to access the bucket and its files. You can read [this guide](https://docs.digitalocean.com/products/spaces/how-to/manage-access/) on how to create access keys.
 
-### Azure Blob Storage {#azureblobstorage}
+### Azure blob storage {#azureblobstorage}
 Currently only protected buckets are supported for Azure Blob Storage. Authentication is done via a connection string, which supports access keys and shared keys. For more information, read [this guide](https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string).

@@ -44,7 +44,7 @@ You will need the following details to export/restore backups to your own CSP st
   </TabItem>
 </Tabs>
 
-## Backup / Restore specific DB {#backup_restore_db}
+## Backup / restore specific DB {#backup_restore_db}
 
 Here we show the backup and restore of a *single* database.
 See the [backup command summary](/operations/backup/overview#command-summary) for full backup and restore commands.
@@ -83,7 +83,7 @@ FROM S3(
   </TabItem>
 </Tabs>
 
-### Google Cloud Storage (GCS) {#google-cloud-storage}
+### Google cloud storage (gcs) {#google-cloud-storage}
 
 <Tabs>
   <TabItem value="Backup" label="BACKUP" default>
@@ -116,7 +116,7 @@ FROM S3(
   </TabItem>
 </Tabs>
 
-### Azure Blob Storage {#azure-blob-storage}
+### Azure blob storage {#azure-blob-storage}
 
 <Tabs>
   <TabItem value="Backup" label="BACKUP" default>
@@ -148,7 +148,7 @@ FROM AzureBlobStorage(
   </TabItem>
 </Tabs>
 
-## Backup / Restore entire service {#backup_restore_entire_service}
+## Backup / restore entire service {#backup_restore_entire_service}
 
 For backing up the entire service, use the commands below.
 This backup will contain all user data and system data for created entities, settings profiles, role policies, quotas, and functions.

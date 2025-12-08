@@ -13,9 +13,9 @@ import docdb_apply_parameter_group from '@site/static/images/integrations/data-i
 import docdb_parameter_group_status from '@site/static/images/integrations/data-ingestion/clickpipes/mongodb/docdb-parameter-group-status.png'
 import Image from '@theme/IdealImage';
 
-# Amazon DocumentDB source setup guide
+# Amazon documentdb source setup guide
 
-## Supported DocumentDB versions {#supported-documentdb-versions}
+## Supported documentdb versions {#supported-documentdb-versions}
 
 ClickPipes supports DocumentDB version 5.0.
 
@@ -23,7 +23,7 @@ ClickPipes supports DocumentDB version 5.0.
 
 By default, Amazon DocumentDB has a 3-hour change stream log retention period, while initial load may take much longer depending on existing data volume in your DocumentDB. We recommend setting the change stream log retention to 72 hours or longer to ensure that it is not truncated before the initial snapshot is completed.
 
-### Update change stream log retention via AWS Console {#update-change-stream-log-retention-via-aws-console}
+### Update change stream log retention via AWS console {#update-change-stream-log-retention-via-aws-console}
 
 1. Click `Parameter groups` in the left panel, find the parameter group used by your DocumentDB cluster (if you are using the default parameter group, you will need to create a new parameter group first in order to modify it).
 <Image img={docdb_select_parameter_group} alt="Select parameter group" size="lg" border/>

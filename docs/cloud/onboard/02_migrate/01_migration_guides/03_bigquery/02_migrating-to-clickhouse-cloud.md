@@ -21,13 +21,13 @@ import bigquery_11 from '@site/static/images/migrations/bigquery-11.png';
 import bigquery_12 from '@site/static/images/migrations/bigquery-12.png';
 import Image from '@theme/IdealImage';
 
-## Why use ClickHouse Cloud over BigQuery? {#why-use-clickhouse-cloud-over-bigquery}
+## Why use ClickHouse cloud over bigquery? {#why-use-clickhouse-cloud-over-bigquery}
 
 TLDR: Because ClickHouse is faster, cheaper, and more powerful than BigQuery for modern data analytics:
 
 <Image img={bigquery_2} size="md" alt="ClickHouse vs BigQuery"/>
 
-## Loading data from BigQuery to ClickHouse Cloud {#loading-data-from-bigquery-to-clickhouse-cloud}
+## Loading data from bigquery to ClickHouse cloud {#loading-data-from-bigquery-to-clickhouse-cloud}
 
 ### Dataset {#dataset}
 
@@ -44,7 +44,7 @@ Migrating data between BigQuery and ClickHouse Cloud falls into two primary work
 - **Initial bulk load with periodic updates** - An initial dataset must be migrated along with periodic updates at set intervals e.g. daily. Updates here are handled by resending rows that have changed - identified by either a column that can be used for comparisons (e.g., a date). Deletes are handled with a complete periodic reload of the dataset.
 - **Real time replication or CDC** - An initial dataset must be migrated. Changes to this dataset must be reflected in ClickHouse in near-real time with only a delay of several seconds acceptable. This is effectively a [Change Data Capture (CDC) process](https://en.wikipedia.org/wiki/Change_data_capture) where tables in BigQuery must be synchronized with ClickHouse i.e. inserts, updates and deletes in the BigQuery table must be applied to an equivalent table in ClickHouse.
 
-#### Bulk loading via Google Cloud Storage (GCS) {#bulk-loading-via-google-cloud-storage-gcs}
+#### Bulk loading via Google cloud storage (gcs) {#bulk-loading-via-google-cloud-storage-gcs}
 
 BigQuery supports exporting data to Google's object store (GCS). For our example data set:
 
@@ -144,7 +144,7 @@ INSERT INTO stackoverflow.posts SELECT * FROM gcs( 'gs://clickhouse-public-datas
 
 We don't retain any nulls in our new schema. The above insert converts these implicitly to default values for their respective types - 0 for integers and an empty value for strings. ClickHouse also automatically converts any numerics to their target precision.
 
-## How are ClickHouse Primary keys different? {#how-are-clickhouse-primary-keys-different}
+## How are ClickHouse primary keys different? {#how-are-clickhouse-primary-keys-different}
 
 As described [here](/migrations/bigquery), like in BigQuery, ClickHouse doesn't enforce uniqueness for a table's primary key column values.
 
@@ -394,7 +394,7 @@ We recommend using projections when:
 - A complete reordering of the data is required. While the expression in the projection can, in theory, use a `GROUP BY,` materialized views are more effective for maintaining aggregates. The query optimizer is also more likely to exploit projections that use a simple reordering, i.e., `SELECT * ORDER BY x`. Users can select a subset of columns in this expression to reduce storage footprint.
 - Users are comfortable with the associated increase in storage footprint and overhead of writing data twice. Test the impact on insertion speed and [evaluate the storage overhead](/data-compression/compression-in-clickhouse).
 
-## Rewriting BigQuery queries in ClickHouse {#rewriting-bigquery-queries-in-clickhouse}
+## Rewriting bigquery queries in ClickHouse {#rewriting-bigquery-queries-in-clickhouse}
 
 The following provides example queries comparing BigQuery to ClickHouse. This list aims to demonstrate how to exploit ClickHouse features to significantly simplify queries. The examples here use the full Stack Overflow dataset (up to April 2024).
 

@@ -7,7 +7,7 @@ sidebar_label: 'groupArrayDistinct'
 doc_type: 'reference'
 ---
 
-# groupArrayDistinct {#sumdistinct}
+# Grouparraydistinct {#sumdistinct}
 
 ## Description {#description}
 

@@ -11,7 +11,7 @@ keywords: ['Elasticsearch']
 doc_type: 'guide'
 ---
 
-## Migrating to ClickStack from Elastic {#migrating-to-clickstack-from-elastic}
+## Migrating to ClickStack from elastic {#migrating-to-clickstack-from-elastic}
 
 This guide is intended for users migrating from the Elastic Stack — specifically those using Kibana to monitor logs, traces, and metrics collected via Elastic Agent and stored in Elasticsearch. It outlines equivalent concepts and data types in ClickStack, explains how to translate Kibana Lucene-based queries to HyperDX's syntax, and provides guidance on migrating both data and agents for a smooth transition.
 

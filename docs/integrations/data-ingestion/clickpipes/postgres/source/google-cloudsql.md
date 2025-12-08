@@ -17,7 +17,7 @@ import firewall1 from '@site/static/images/integrations/data-ingestion/clickpipe
 import firewall2 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/firewall2.png';
 import Image from '@theme/IdealImage';
 
-# Google Cloud SQL Postgres source setup guide
+# Google cloud SQL Postgres source setup guide
 
 :::info
 
@@ -75,7 +75,7 @@ Connect to your Cloud SQL Postgres through the admin user and run the below comm
 
 [//]: # (TODO Add SSH Tunneling)
 
-## Add ClickPipes IPs to Firewall {#add-clickpipes-ips-to-firewall}
+## Add ClickPipes ips to firewall {#add-clickpipes-ips-to-firewall}
 
 Please follow the below steps to add ClickPipes IPs to your network.
 

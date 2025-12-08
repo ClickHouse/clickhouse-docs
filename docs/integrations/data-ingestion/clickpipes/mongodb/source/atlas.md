@@ -15,7 +15,7 @@ import mongo_atlas_add_roles from '@site/static/images/integrations/data-ingesti
 import mongo_atlas_restrict_access from '@site/static/images/integrations/data-ingestion/clickpipes/mongodb/mongo-atlas-restrict-access.png'
 import Image from '@theme/IdealImage';
 
-# MongoDB Atlas source setup guide
+# MongoDB atlas source setup guide
 
 ## Configure oplog retention {#enable-oplog-retention}
 

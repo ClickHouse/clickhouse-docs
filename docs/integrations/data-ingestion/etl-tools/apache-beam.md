@@ -12,7 +12,7 @@ keywords: ['apache beam', 'stream processing', 'batch processing', 'jdbc connect
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Integrating Apache Beam and ClickHouse
+# Integrating Apache beam and ClickHouse
 
 <ClickHouseSupportedBadge/>
 
@@ -24,7 +24,7 @@ This integration leverage ClickHouse's official [JDBC connector](https://github.
 The integration package required to integrate Apache Beam and ClickHouse is maintained and developed under [Apache Beam I/O Connectors](https://beam.apache.org/documentation/io/connectors/) - an integrations bundle of many popular data storage systems and databases.
 `org.apache.beam.sdk.io.clickhouse.ClickHouseIO` implementation located within the [Apache Beam repo](https://github.com/apache/beam/tree/0bf43078130d7a258a0f1638a921d6d5287ca01e/sdks/java/io/clickhouse/src/main/java/org/apache/beam/sdk/io/clickhouse).
 
-## Setup of the Apache Beam ClickHouse package {#setup-of-the-apache-beam-clickhouse-package}
+## Setup of the Apache beam ClickHouse package {#setup-of-the-apache-beam-clickhouse-package}
 
 ### Package installation {#package-installation}
 

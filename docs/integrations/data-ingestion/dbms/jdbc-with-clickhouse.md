@@ -15,7 +15,7 @@ import Jdbc01 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-01
 import Jdbc02 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-02.png';
 import Jdbc03 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-03.png';
 
-# Connecting ClickHouse to external data sources with JDBC
+# Connecting ClickHouse to external data sources with jdbc
 
 :::note
 Using JDBC requires the ClickHouse JDBC bridge, so you will need to use `clickhouse-local` on a local machine to stream the data from your database to ClickHouse Cloud. Visit the [**Using clickhouse-local**](/cloud/migration/clickhouse-local#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge) page in the **Migrate** section of the docs for details.
@@ -41,7 +41,7 @@ You have access to a machine that has:
 5. a current version of **ClickHouse** [installed](/getting-started/install/install.mdx) and running
 :::
 
-## Install the ClickHouse JDBC Bridge locally {#install-the-clickhouse-jdbc-bridge-locally}
+## Install the ClickHouse jdbc bridge locally {#install-the-clickhouse-jdbc-bridge-locally}
 
 The easiest way to use the ClickHouse JDBC Bridge is to install and run it on the same host where also ClickHouse is running:<Image img={Jdbc02} size="lg" alt="ClickHouse JDBC Bridge locally deployment diagram" background='white'/>
 
@@ -99,7 +99,7 @@ Now we are ready to start the ClickHouse JDBC Bridge:
 We started the ClickHouse JDBC Bridge in foreground mode. In order to stop the Bridge you can bring the Unix shell window from above in foreground and press `CTRL+C`.
 :::
 
-## Use the JDBC connection from within ClickHouse {#use-the-jdbc-connection-from-within-clickhouse}
+## Use the jdbc connection from within ClickHouse {#use-the-jdbc-connection-from-within-clickhouse}
 
 ClickHouse can now access MySQL data by either using the [jdbc table function](/sql-reference/table-functions/jdbc.md) or the [JDBC table engine](/engines/table-engines/integrations/jdbc.md).
 
@@ -130,7 +130,7 @@ As the first parameter for the jdbc table function we are using the name of the 
  The schema of the ClickHouse JDBC engine table and schema of the connected MySQL table must be aligned, e.g. the column names and order must be the same, and the column data types must be compatible
 :::
 
-## Install the ClickHouse JDBC Bridge externally {#install-the-clickhouse-jdbc-bridge-externally}
+## Install the ClickHouse jdbc bridge externally {#install-the-clickhouse-jdbc-bridge-externally}
 
 For a distributed ClickHouse cluster (a cluster with more than one ClickHouse host) it makes sense to install and run the ClickHouse JDBC Bridge externally on its own host:
 <Image img={Jdbc03} size="lg" alt="ClickHouse JDBC Bridge external deployment diagram" background='white'/>

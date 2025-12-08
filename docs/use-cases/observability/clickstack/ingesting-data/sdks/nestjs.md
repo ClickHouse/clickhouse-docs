@@ -68,7 +68,7 @@ export class CatsController {
 }
 ```
 
-### Replacing the Nest logger (also for bootstrapping) {#replacing-the-nest-logger}
+### Replacing the nest logger (also for bootstrapping) {#replacing-the-nest-logger}
 
 :::note Important
 By doing this, you give up the dependency injection, meaning that `forRoot` and `forRootAsync` are not needed and shouldn't be used. Remove them from your main module.

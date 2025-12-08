@@ -10,7 +10,7 @@ doc_type: 'reference'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# avgMergeState {#avgMergeState}
+# Avgmergestate {#avgMergeState}
 
 ## Description {#description}
 
