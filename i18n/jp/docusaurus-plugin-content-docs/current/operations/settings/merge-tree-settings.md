@@ -522,7 +522,7 @@ Dynamic データ型のシリアル化バージョン。互換性のために必
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "新しい設定"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "min_age_to_force_merge 用の最大バイト数を制限する新しい設定を追加。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "min_age_to_force_merge 用の最大バイト数を制限する新しい設定を追加。"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新しい設定"}]}]}/>
 
 `min_age_to_force_merge_seconds` と
 `min_age_to_force_merge_on_partition_only` の両設定が、
@@ -1302,6 +1302,16 @@ Wide データパートへのマージ後には、このパート内の動的パ
 
 マージ対象のパーツを選択する際に、範囲の右側にあるパーツについて、そのサイズが合計サイズ `sum_size` に対する指定比率 (0.01) 未満の場合に、そのパーツをマージ対象から外すヒューリスティックを有効にします。
 Simple および StochasticSimple マージセレクタで動作します。
+
+## merge_selector_heuristic_to_lower_max_parts_to_merge_at_once_exponent {#merge_selector_heuristic_to_lower_max_parts_to_merge_at_once_exponent} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="UInt64" default_value="5" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "5"},{"label": "New setting"}]}]}/>
+
+減少カーブを形成するために数式で使用される指数値を制御します。指数を小さくするとマージ幅が小さくなり、その結果、書き込み増幅が大きくなります。逆も同様です。
 
 ## merge_selector_window_size {#merge_selector_window_size} 
 

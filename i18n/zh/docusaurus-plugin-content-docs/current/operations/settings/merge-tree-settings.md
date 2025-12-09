@@ -510,7 +510,7 @@ Dynamic 数据类型的序列化版本，为兼容性所必需。
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "新设置"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "添加了新的设置，用于限制 min_age_to_force_merge 的最大字节数。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "添加了新的设置，用于限制 min_age_to_force_merge 的最大字节数。"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新设置"}]}]}/>
 
 用于控制 `min_age_to_force_merge_seconds` 和
 `min_age_to_force_merge_on_partition_only` 是否遵循
@@ -1279,6 +1279,16 @@ MergeTree 表中 PROJECTION 的最大数量。
 
 启用在选择要合并的分区片段时使用的启发式算法：如果范围右侧的分区片段大小小于 sum_size 的指定比例（0.01），则将其移除。
 适用于 Simple 和 StochasticSimple 合并选择器。
+
+## merge_selector_heuristic_to_lower_max_parts_to_merge_at_once_exponent {#merge_selector_heuristic_to_lower_max_parts_to_merge_at_once_exponent} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="UInt64" default_value="5" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "5"},{"label": "New setting"}]}]}/>
+
+控制在构建下降曲线公式中所使用的指数值。降低该指数会减小单次合并的宽度，从而增加写放大效应，反之亦然。
 
 ## merge_selector_window_size {#merge_selector_window_size} 
 

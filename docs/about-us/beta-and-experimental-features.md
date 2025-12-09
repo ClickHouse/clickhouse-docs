@@ -103,6 +103,7 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [force_read_through_cache_for_merges](/operations/settings/merge-tree-settings#force_read_through_cache_for_merges) | `0` |
 | [merge_selector_algorithm](/operations/settings/merge-tree-settings#merge_selector_algorithm) | `Simple` |
 | [merge_selector_enable_heuristic_to_lower_max_parts_to_merge_at_once](/operations/settings/merge-tree-settings#merge_selector_enable_heuristic_to_lower_max_parts_to_merge_at_once) | `0` |
+| [merge_selector_heuristic_to_lower_max_parts_to_merge_at_once_exponent](/operations/settings/merge-tree-settings#merge_selector_heuristic_to_lower_max_parts_to_merge_at_once_exponent) | `5` |
 | [notify_newest_block_number](/operations/settings/merge-tree-settings#notify_newest_block_number) | `0` |
 | [part_moves_between_shards_delay_seconds](/operations/settings/merge-tree-settings#part_moves_between_shards_delay_seconds) | `30` |
 | [part_moves_between_shards_enable](/operations/settings/merge-tree-settings#part_moves_between_shards_enable) | `0` |

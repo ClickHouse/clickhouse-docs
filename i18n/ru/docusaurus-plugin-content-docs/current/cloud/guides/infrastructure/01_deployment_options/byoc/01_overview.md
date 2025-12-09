@@ -7,6 +7,8 @@ description: 'Развертывание ClickHouse в вашей собстве
 doc_type: 'reference'
 ---
 
+import Image from '@theme/IdealImage';
+import byoc1 from '@site/static/images/cloud/reference/byoc-1.png';
 
 
 ## Обзор {#overview}
@@ -15,13 +17,15 @@ BYOC (Bring Your Own Cloud) позволяет развернуть ClickHouse C
 
 > **Если вы хотите получить доступ, пожалуйста, [свяжитесь с нами](https://clickhouse.com/cloud/bring-your-own-cloud).** Дополнительную информацию см. в наших [Условиях использования](https://clickhouse.com/legal/agreements/terms-of-service).
 
-В настоящее время BYOC поддерживается только для AWS. Вы можете присоединиться к списку ожидания для GCP и Azure [здесь](https://clickhouse.com/cloud/bring-your-own-cloud).
-
 :::note 
 BYOC разработан специально для крупномасштабных развертываний и требует от клиентов заключения долгосрочного контракта.
 :::
 
+Поддерживаемые облачные провайдеры:
 
+* AWS (GA)
+* GCP (Private Preview). Если вы заинтересованы, присоединитесь к списку ожидания [здесь](https://clickhouse.com/cloud/bring-your-own-cloud).
+* Azure (Roadmap). Если вы заинтересованы, присоединитесь к списку ожидания [здесь](https://clickhouse.com/cloud/bring-your-own-cloud).
 
 ## Глоссарий {#glossary}
 
@@ -29,7 +33,15 @@ BYOC разработан специально для крупномасштаб
 - **Customer BYOC VPC:** VPC, принадлежащая облачной учетной записи клиента, создаётся и управляется ClickHouse Cloud и выделена под развертывание ClickHouse Cloud BYOC.
 - **Customer VPC:** Другие VPC, принадлежащие облачной учетной записи клиента и используемые для приложений, которым необходимо подключаться к Customer BYOC VPC.
 
+## Архитектура {#architecture}
 
+Метрики и логи хранятся в BYOC VPC клиента. В данный момент логи размещены локально в EBS. В одном из будущих обновлений логи будут храниться в LogHouse — сервисе ClickHouse в BYOC VPC клиента. Метрики реализованы с помощью стека Prometheus и Thanos, размещённого локально в BYOC VPC клиента.
+
+<br />
+
+<Image img={byoc1} size="lg" alt="BYOC Architecture" background='black'/>
+
+<br />
 
 ## Возможности {#features}
 
@@ -41,7 +53,7 @@ BYOC разработан специально для крупномасштаб
   - Просмотр сервисов и их статуса.
 - **Резервное копирование и восстановление.**
 - **Ручное вертикальное и горизонтальное масштабирование.**
-- **Режим простоя (idling).**
+- **Автоматический режим простоя (auto idling).**
 - **Warehouses**: разделение вычислительных ресурсов (Compute-Compute Separation).
 - **Сеть с нулевым доверием через Tailscale.**
 - **Мониторинг**:
@@ -55,6 +67,6 @@ BYOC разработан специально для крупномасштаб
 ### Планируемые возможности (в настоящее время не поддерживаются) {#planned-features-currently-unsupported}
 
 - [AWS KMS](https://aws.amazon.com/kms/), также известный как CMEK (customer-managed encryption keys)
-- ClickPipes для приёма данных
+- ClickPipes
 - Автомасштабирование
 - Интерфейс MySQL
