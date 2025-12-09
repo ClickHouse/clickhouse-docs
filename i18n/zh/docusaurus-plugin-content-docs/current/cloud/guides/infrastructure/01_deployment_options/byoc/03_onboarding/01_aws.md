@@ -16,7 +16,6 @@ import byoc_subnet_1 from '@site/static/images/cloud/reference/byoc-subnet-1.png
 import byoc_subnet_2 from '@site/static/images/cloud/reference/byoc-subnet-2.png';
 import byoc_s3_endpoint from '@site/static/images/cloud/reference/byoc-s3-endpoint.png'
 
-
 ## 接入流程 {#onboarding-process}
 
 客户可以通过联系[我们](https://clickhouse.com/cloud/bring-your-own-cloud)来发起接入流程。客户需要准备一个专用的 AWS 账号，并确认将要使用的 Region。目前，我们仅允许用户在 ClickHouse Cloud 支持的 Region 中启动 BYOC 服务。
@@ -47,7 +46,6 @@ module "clickhouse_onboarding" {
 ```
 
 <!-- TODO: 在自助接入流程上线后，为其余接入步骤添加截图。 -->
-
 
 ### 设置 BYOC 基础设施 {#setup-byoc-infrastructure}
 
