@@ -52,10 +52,10 @@ Click the toggle next to `Enable SAML single sign-on`. Leave this screen open as
 
 Create an application within your identity provider and copy the values on the `Enable SAML single sign-on` screen to your identity provider configuration. For more information on this step, refer to your specific identity provider below.
 
-   - [Configure Okta SAML](#configure-okta-saml)
-   - [Configure Google SAML](#configure-google-saml)
-   - [Configure Azure (Microsoft) SAML](#configure-azure-microsoft-saml)
-   - [Configure Duo SAML](#configure-duo-saml)
+- [Configure Okta SAML](#configure-okta-saml)
+- [Configure Google SAML](#configure-google-saml)
+- [Configure Azure (Microsoft) SAML](#configure-azure-microsoft-saml)
+- [Configure Duo SAML](#configure-duo-saml)
 
 :::tip
 ClickHouse does not support identity provider initiated sign-in. To make it easy for your users to access ClickHouse Cloud, set up a bookmark for your users using this sign-in URL format: `https://console.clickhouse.cloud/?connection={orgId}` where the `{orgID}` is your organization ID on the Organization details page.
@@ -90,10 +90,10 @@ It may take several minutes for the DNS record to update and be verified. You ma
 Once the SAML setup is complete, you can set the default role all users will be assigned when they log in and also adjust session timeout settings.
 
 Available default roles include:
-   - Admin
-   - Service Admin
-   - Service Read Only
-   - Member
+- Admin
+- Service Admin
+- Service Read Only
+- Member
 
 For more information regarding permissions assigned to these roles, please review [Console roles and permissions](/cloud/security/console-roles).
 
