@@ -8,8 +8,11 @@ keywords: ['ClickHouse Cloud', 'SAML', 'SSO', 'single sign-on', 'IdP', 'Okta', '
 ---
 
 import Image from '@theme/IdealImage';
-import samlOrgId from '@site/static/images/cloud/security/saml-org-id.png';
-import samlOktaSetup from '@site/static/images/cloud/security/saml-okta-setup.png';
+import samlSelfServe1 from '@site/static/images/cloud/security/saml-self-serve-1.png';
+import samlSelfServe2 from '@site/static/images/cloud/security/saml-self-serve-2.png';
+import samlSelfServe3 from '@site/static/images/cloud/security/saml-self-serve-3.png';
+import samlSelfServe4 from '@site/static/images/cloud/security/saml-self-serve-4.png';
+import samlSelfServe5 from '@site/static/images/cloud/security/saml-self-serve-5.png';
 import samlGoogleApp from '@site/static/images/cloud/security/saml-google-app.png';
 import samlAzureApp from '@site/static/images/cloud/security/saml-azure-app.png';
 import samlAzureClaims from '@site/static/images/cloud/security/saml-azure-claims.png';
@@ -23,102 +26,106 @@ ClickHouse Cloud supports single-sign on (SSO) via security assertion markup lan
 
 We currently support service provider-initiated SSO SSO, multiple organizations using separate connections, and just-in-time provisioning. We do not yet support a system for cross-domain identity management (SCIM) or attribute mapping.
 
+Customers enabling SAML integrations can also designate the default role that will be assigned to new users and adjust session timeout settings.
+
 ## Before you begin {#before-you-begin}
 
-You will need Admin permissions in your IdP and the **Admin** role in your ClickHouse Cloud organization. After setting up your connection within your IdP, contact us with the information requested in the procedure below to complete the process.
-
-We recommend setting up a **direct link to your organization** in addition to your SAML connection to simplify the login process. Each IdP handles this differently. Read on for how to do this for your IdP.
+You will need Admin permissions in your IdP, the ability to add a TXT record to the DNS settings for your domain, the **Admin** role in your ClickHouse Cloud organization. We recommend setting up a **direct link to your organization** in addition to your SAML connection to simplify the login process. Each IdP handles this differently. Read on for how to do this for your IdP.
 
 ## How to configure your IdP {#how-to-configure-your-idp}
 
 ### Steps {#steps}
 
-<details>
-   <summary>  Get your organization ID  </summary>
-   
-   All setups require your organization ID. To obtain your organization ID:
-   
-   1. Sign in to your [ClickHouse Cloud](https://console.clickhouse.cloud) organization.
-   
-      <Image img={samlOrgId} size="md" alt="Organization ID" force/>
-      
-   3. In the lower left corner, click on your organization name under **Organization**.
-   
-   4. In the pop-up menu, select **Organization details**.
-   
-   5. Make note of your **Organization ID** to use below.
-      
-</details>
+<VerticalStepper headerLevel="h3">
 
-<details> 
-   <summary>  Configure your SAML integration  </summary>
-   
-   ClickHouse uses service provider-initiated SAML connections. This means you can log in via https://console.clickhouse.cloud or via a direct link. We do not currently support identity provider initiated connections. Basic SAML configurations include the following:
+### Access Organization settings {#access-organization-settings}
 
-- SSO URL or ACS URL:  `https://auth.clickhouse.cloud/login/callback?connection={organizationid}` 
+Click on your organization name in the lower left corner and select Organization details.
 
-- Audience URI or Entity ID: `urn:auth0:ch-production:{organizationid}` 
+### Enable SAML single sign-on {#enable-saml-sso}
 
-- Application username: `email`
+Click the toggle next to `Enable SAML single sign-on`. Leave this screen open as you will refer back to it several times during the setup process.
 
-- Attribute mapping: `email = user.email`
+   <Image img={samlSelfServe1} size="lg" alt="Start SAML setup" force/>
 
-- Direct link to access your organization: `https://console.clickhouse.cloud/?connection={organizationid}` 
+### Create an application in your identity provider {#create-idp-application}
 
-   For specific configuration steps, refer to your specific identity provider below.
-   
-</details>
+Create an application within your identity provider and copy the values on the `Enable SAML single sign-on` screen to your identity provider configuration. For more information on this step, refer to your specific identity provider below.
 
-<details>
-   <summary>  Obtain your connection information  </summary>
+   - [Configure Okta SAML](#configure-okta-saml)
+   - [Configure Google SAML](#configure-google-saml)
+   - [Configure Azure (Microsoft) SAML](#configure-azure-microsoft-saml)
+   - [Configure Duo SAML](#configure-duo-saml)
 
-   Obtain your Identity provider SSO URL and x.509 certificate. Refer to your specific identity provider below for instructions on how to retrieve this information.
+:::tip
+ClickHouse does not support identity provider initiated sign-in. To make it easy for your users to access ClickHouse Cloud, set up a bookmark for your users using this sign-in URL format: `https://console.clickhouse.cloud/?connection={orgId}` where the `{orgID}` is your organization ID on the Organization details page.
+:::
 
-</details>
+   <Image img={samlSelfServe2} size="lg" alt="Create identity provider application" force/>
 
-<details>
-   <summary>  Submit a support case </summary>
-   
-   1. Return to the ClickHouse Cloud console.
-      
-   2. Select **Help** on the left, then the Support submenu.
-   
-   3. Click **New case**.
-   
-   4. Enter the subject "SAML SSO Setup".
-   
-   5. In the description, paste any links gathered from the instructions above and attach the certificate to the ticket.
-   
-   6. Please also let us know which domains should be allowed for this connection (e.g. domain.com, domain.ai, etc.).
-   
-   7. Create a new case.
-   
-   8. We will complete the setup within ClickHouse Cloud and let you know when it's ready to test.
+### Add the metadata URL to your SAML configuration {#add-metadata-url}
 
-</details>
+Obtain the `Metadata URL` from your SAML provider. Return to ClickHouse Cloud, click `Next: Provide metadata URL` and paste the URL in the text box.
 
-<details>
-   <summary>  Complete the setup  </summary>
+   <Image img={samlSelfServe3} size="lg" alt="Add metadata URL" force/> 
 
-   1. Assign user access within your Identity Provider. 
+### Get domain verification code {#get-domain-verification-code}
 
-   2. Log in to ClickHouse via https://console.clickhouse.cloud OR the direct link you configured in 'Configure your SAML integration' above. Users are initially assigned the 'Member' role, which can log in to the organization and update personal settings.
+Click `Next: Verify your domains`. Enter your domain in the text box and click `Check domain`. The system will generate a random verification code for you to add to a TXT record with your DNS provider. 
 
-   3. Log out of the ClickHouse organization. 
+   <Image img={samlSelfServe4} size="lg" alt="Add domain to verify" force/> 
 
-   4. Log in with your original authentication method to assign the Admin role to your new SSO account.
-- For email + password accounts, please use `https://console.clickhouse.cloud/?with=email`.
-- For social logins, please click the appropriate button (**Continue with Google** or **Continue with Microsoft**)
+### Verify your domain {#verify-your-domain}
+
+Create a TXT record with your DNS provider. Copy the `TXT record name` to the TXT record Name field with your DNS provider. Copy the `Value` to the Content field with your DNS provider. Click `Verify and Finish` to complete the process.
+
+:::note
+It may take several minutes for the DNS record to update and be verified. You may leave the setup page and return later to complete the process without restarting.
+:::
+
+   <Image img={samlSelfServe5} size="lg" alt="Verify your domain" force/> 
+
+### Update default role and session timeout {#update-defaults}
+
+Once the SAML setup is complete, you can set the default role all users will be assigned when they log in and also adjust session timeout settings.
+
+Available default roles include:
+   - Admin
+   - Service Admin
+   - Service Read Only
+   - Member
+
+For more information regarding permissions assigned to these roles, please review [Console roles and permissions](/cloud/security/console-roles).
+
+### Configure your admin user {#configure-your-admin-user}
+
+:::note
+Users configured with a different authentication method will be retained until an admin in your organization removes them. 
+:::
+
+To assign your first admin user via SAML:
+1. Log out of [ClickHouse Cloud](https://console.clickhouse.cloud).
+2. In your identity provider, assign the admin user to the ClickHouse application(s).
+3. Ask the user to log in via https://console.clickhouse.cloud/?connection={orgId} (shortcut URL). This may be via a bookmark you created in the prior steps. The user will not appear in ClickHouse Cloud until their first login.
+4. If the default SAML role is anything other than Admin, the user may need to log out and log back in with their original authentication method to update the new SAML user's role. 
+   - For email + password accounts, please use `https://console.clickhouse.cloud/?with=email`.
+   - For social logins, please click the appropriate button (**Continue with Google** or **Continue with Microsoft**)
 
 :::note
 `email` in `?with=email` above is the literal parameter value, not a placeholder
 :::
 
-   5. Log out with your original authentication method and log back in via https://console.clickhouse.cloud OR the direct link you configured in 'Configure your SAML integration' above.
+5. Log out one more time and log back in via the shortcut URL to complete the last step below.
 
-   6. Remove any non-SAML users to enforce SAML for the organization. Going forward users are assigned via your Identity Provider.
-   
-</details>
+:::tip
+To reduce steps, you may set your SAML default role to `Admin` initially. When the admin is assigned in your identity provider and logs in for the first time, they can change the default role to a different value.
+:::
+
+### Remove other authentication methods {#remove-other-auth-methods}
+
+Remove any users that are using a non-SAML method to complete the integration and restrict access to only users originating from your identity provider connection.
+
+</VerticalStepper>
 
 ### Configure Okta SAML {#configure-okta-saml}
 
@@ -177,8 +184,8 @@ You will configure two App Integrations in Okta for each ClickHouse organization
    
       | Field                          | Value |
       |--------------------------------|-------|
-      | Single Sign On URL             | `https://auth.clickhouse.cloud/login/callback?connection={organizationid}` |
-      | Audience URI (SP Entity ID)    | `urn:auth0:ch-production:{organizationid}` |
+      | Single Sign On URL             | Copy the Single Sign-On URL from the console |
+      | Audience URI (SP Entity ID)    | Copy the Service Provider Entity ID from the console |
       | Default RelayState             | Leave blank       |
       | Name ID format                 | Unspecified       |
       | Application username           | Email             |
@@ -196,14 +203,9 @@ You will configure two App Integrations in Okta for each ClickHouse organization
    
    11. Go to the **Assignments** tab and add the group you created above.
    
-   12. On the **Sign On** tab for your new app, click the **View SAML setup instructions** button. 
+   12. On the **Sign On** tab for your new app, click the **Copy metadata URL** button. 
    
-         <Image img={samlOktaSetup} size="md" alt="Okta SAML Setup Instructions" force/>
-   
-   13. Gather these three items and go to Submit a Support Case above to complete the process.
-     - Identity Provider Single Sign-On URL
-     - Identity Provider Issuer
-     - X.509 Certificate
+   13. Return to [Add the metadata URL to your SAML configuration](#add-metadata-url) to continue the process.
    
 </details>
 
@@ -224,16 +226,14 @@ You will configure one SAML app in Google for each organization and must provide
    
    4. Enter a name for the app and click **Continue**.
    
-   5. Gather these two items and go to Submit a Support Case above to submit the information to us. NOTE: If you complete the setup before copying this data, click **DOWNLOAD METADATA** from the app's home screen to get the X.509 certificate.
-     - SSO URL
-     - X.509 Certificate
+   5. Copy the metadata URL and save it somewhere.
    
    7. Enter the ACS URL and Entity ID below.
    
       | Field     | Value |
       |-----------|-------|
-      | ACS URL   | `https://auth.clickhouse.cloud/login/callback?connection={organizationid}` |
-      | Entity ID | `urn:auth0:ch-production:{organizationid}` |
+      | ACS URL   | Copy the Single Sign-On URL from the console |
+      | Entity ID | Copy the Service Provider Entity ID from the console |
    
    8. Check the box for **Signed response**.
    
@@ -251,6 +251,8 @@ You will configure one SAML app in Google for each organization and must provide
    13. Click **Finish**.
    
    14. To enable the app click **OFF** for everyone and change the setting to **ON** for everyone. Access can also be limited to groups or organizational units by selecting options on the left side of the screen.
+
+   15. Return to [Add the metadata URL to your SAML configuration](#add-metadata-url) to continue the process.
        
 </details>
 
@@ -285,8 +287,8 @@ Azure (Microsoft) SAML may also be referred to as Azure Active Directory (AD) or
    
       | Field                     | Value |
       |---------------------------|-------|
-      | Identifier (Entity ID)    | `urn:auth0:ch-production:{organizationid}` |
-      | Reply URL (Assertion Consumer Service URL) | `https://auth.clickhouse.cloud/login/callback?connection={organizationid}` |
+      | Identifier (Entity ID)    | Copy the Service Provider Entity ID from the console |
+      | Reply URL (Assertion Consumer Service URL) | Copy the Single Sign-On URL from the console |
       | Sign on URL               | `https://console.clickhouse.cloud/?connection={organizationid}` |
       | Relay State               | Blank |
       | Logout URL                | Blank |
@@ -301,9 +303,7 @@ Azure (Microsoft) SAML may also be referred to as Azure Active Directory (AD) or
    
          <Image img={samlAzureClaims} size="md" alt="Attributes and Claims" force/>
    
-   12. Gather these two items and go to Submit a Support Case above to complete the process:
-     - Login URL
-     - Certificate (Base64)
+   12. Copy the metadata URL and return to [Add the metadata URL to your SAML configuration](#add-metadata-url) to continue the process.
 
 </details>
 
@@ -324,13 +324,11 @@ Azure (Microsoft) SAML may also be referred to as Azure Active Directory (AD) or
 
       |  Field    |  Value                                     |
       |:----------|:-------------------------------------------|
-      | Entity ID | `urn:auth0:ch-production:{organizationid}` |
-      | Assertion Consumer Service (ACS) URL | `https://auth.clickhouse.cloud/login/callback?connection={organizationid}` |
+      | Entity ID | Copy the Service Provider Entity ID from the console |
+      | Assertion Consumer Service (ACS) URL | Copy the Single Sign-On URL from the console |
       | Service Provider Login URL |  `https://console.clickhouse.cloud/?connection={organizationid}` |
 
-   4. Gather these two items and go to Submit a Support Case above to complete the process:
-      - Single Sign-On URL
-      - Certificate
+   4. Copy the metadata URL and return to [Add the metadata URL to your SAML configuration](#add-metadata-url) to continue the process.
    
 </details>
 
