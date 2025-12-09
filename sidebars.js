@@ -530,7 +530,45 @@ const sidebars = {
             }
           ]
         },
-        "integrations/data-ingestion/clickpipes/object-storage",
+        {
+          type: "category",
+          label: "ClickPipes for Object Storage",
+          className: "top-nav-item",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            {
+              type: "category",
+              label: "Amazon S3",
+              collapsed: true,
+              collapsible: true,
+              items: [
+                "integrations/data-ingestion/clickpipes/object-storage/amazon-s3/overview",
+                "integrations/data-ingestion/clickpipes/object-storage/amazon-s3/get-started",
+              ],
+            },
+            {
+              type: "category",
+              label: "Google Cloud Storage",
+              collapsed: true,
+              collapsible: true,
+              items: [
+                "integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/overview",
+                "integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/get-started",
+              ],
+            },
+            {
+              type: "category",
+              label: "Azure Blob Storage",
+              collapsed: true,
+              collapsible: true,
+              items: [
+                                "integrations/data-ingestion/clickpipes/object-storage/azure-blob-storage/overview",
+                "integrations/data-ingestion/clickpipes/object-storage/azure-blob-storage/get-started",
+              ],
+            },
+          ],
+        },
         "integrations/data-ingestion/clickpipes/kinesis",
         "integrations/data-ingestion/clickpipes/secure-kinesis",
         "integrations/data-ingestion/clickpipes/secure-rds",

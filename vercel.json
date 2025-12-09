@@ -2837,6 +2837,16 @@
       "permanent": true
     },
     {
+      "source": "/docs/integrations/clickpipes/object-storage",
+      "destination": "/docs/integrations/clickpipes/object-storage/amazon-s3/get-started",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/clickpipes/object-storage/reference",
+      "destination": "/docs/integrations/clickpipes/object-storage/amazon-s3/overview",
+      "permanent": true
+    },
+    {
       "source": "/docs/en/cloud/marketplace",
       "destination": "/docs/cloud/manage/marketplace/",
       "permanent": true
