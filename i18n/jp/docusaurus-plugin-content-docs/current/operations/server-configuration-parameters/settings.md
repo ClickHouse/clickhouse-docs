@@ -364,7 +364,7 @@ MergeTree エンジンを使用するテーブルで、バックグラウンド�
 
 ## backups {#backups}
 
-[`BACKUP` および `RESTORE`](../backup.md) 文を実行する際に使用される、バックアップに関する設定です。
+[`BACKUP` および `RESTORE`](/operations/backup/overview) 文を実行する際に使用される、バックアップに関する設定です。
 
 以下の設定はサブタグで構成できます。
 
@@ -373,23 +373,24 @@ MergeTree エンジンを使用するテーブルで、バックグラウンド�
   SELECT arrayJoin([
     ('allow_concurrent_backups', 'Bool','同一ホスト上で複数のバックアップ処理を同時に実行できるかどうかを制御します。', 'true'),
     ('allow_concurrent_restores', 'Bool', '同一ホスト上で複数のリストア処理を同時に実行できるかどうかを制御します。', 'true'),
-    ('allowed_disk', 'String', '`File()` を使用する場合のバックアップ先ディスク。この設定を有効にしないと `File` は使用できません。', ''),
-    ('allowed_path', 'String', '`File()` を使用する場合のバックアップ先パス。この設定を有効にしないと `File` は使用できません。', ''),
+    ('allowed_disk', 'String', '`File()` を使用する場合のバックアップ先ディスク。この設定を指定しないと `File` は使用できません。', ''),
+    ('allowed_path', 'String', '`File()` を使用する場合のバックアップ先パス。この設定を指定しないと `File` は使用できません。', ''),
     ('attempts_to_collect_metadata_before_sleep', 'UInt', '収集したメタデータを比較した結果に不整合があった場合、スリープに入る前にメタデータ収集を行う試行回数。', '2'),
     ('collect_metadata_timeout', 'UInt64', 'バックアップ中のメタデータ収集に対するタイムアウト（ミリ秒）。', '600000'),
     ('compare_collected_metadata', 'Bool', 'true の場合、収集したメタデータを既存のメタデータと比較し、バックアップ中に変更されていないことを確認します。', 'true'),
     ('create_table_timeout', 'UInt64', 'リストア中にテーブルを作成する際のタイムアウト（ミリ秒）。', '300000'),
-    ('max_attempts_after_bad_version', 'UInt64', '協調バックアップ／リストア中に不正なバージョンエラーが発生した後で、再試行を行う最大回数。', '3'),
+    ('max_attempts_after_bad_version', 'UInt64', '協調バックアップ／リストア中に不正なバージョンのエラーが発生した後で、再試行を行う最大回数。', '3'),
     ('max_sleep_before_next_attempt_to_collect_metadata', 'UInt64', 'メタデータ収集を次に試行するまでの最大スリープ時間（ミリ秒）。', '100'),
     ('min_sleep_before_next_attempt_to_collect_metadata', 'UInt64', 'メタデータ収集を次に試行するまでの最小スリープ時間（ミリ秒）。', '5000'),
-    ('remove_backup_files_after_failure', 'Bool', '`BACKUP` コマンドが失敗した場合、ClickHouse は失敗前にバックアップへコピー済みのファイルを削除しようとします。false の場合は、コピー済みファイルはそのまま残されます。', 'true'),
-    ('sync_period_ms', 'UInt64', '協調バックアップ／リストアにおける同期間隔（ミリ秒）。', '5000'),
-    ('test_inject_sleep', 'Bool', 'テスト用のスリープ挿入。', 'false'),
+    ('remove_backup_files_after_failure', 'Bool', '`BACKUP` コマンドが失敗した場合、ClickHouse は失敗前にバックアップにコピー済みのファイルを削除しようとします。そうでない場合は、コピー済みファイルはそのまま残されます。', 'true'),
+    ('sync_period_ms', 'UInt64', '協調バックアップ／リストアにおける同期周期（ミリ秒）。', '5000'),
+    ('test_inject_sleep', 'Bool', 'テスト関連のスリープ。', 'false'),
     ('test_randomize_order', 'Bool', 'true の場合、テスト目的で一部の処理の実行順序をランダム化します。', 'false'),
     ('zookeeper_path', 'String', '`ON CLUSTER` 句を使用する場合に、バックアップおよびリストア用メタデータが保存される ZooKeeper 上のパス。', '/clickhouse/backups')
   ]) AS t )
   SELECT concat('`', t.1, '`') AS Setting, t.2 AS Type, t.3 AS Description, concat('`', t.4, '`') AS Default FROM settings FORMAT Markdown
   */ }
+
 
 | Setting                                             | Type   | Description                                                                                      | Default               |
 | :-------------------------------------------------- | :----- | :----------------------------------------------------------------------------------------------- | :-------------------- |

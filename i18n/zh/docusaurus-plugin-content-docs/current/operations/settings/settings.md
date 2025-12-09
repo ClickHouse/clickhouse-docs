@@ -9306,6 +9306,14 @@ Possible values:
 
 控制可使用查询计划进行惰性物化优化时的最大上限值。若为零，则表示无限制。
 
+## query_plan_max_limit_for_top_k_optimization {#query_plan_max_limit_for_top_k_optimization} 
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1000"},{"label": "New setting."}]}]}/>
+
+控制在使用 minmax 跳过索引和动态阈值过滤来评估 TopK 优化查询计划时所允许的最大 `LIMIT` 值。如果为 0，则表示不限。
+
 ## query_plan_max_optimizations_to_apply {#query_plan_max_optimizations_to_apply} 
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
@@ -11206,6 +11214,21 @@ Cloud 默认值：`1`
 - 0 — 禁用。
 - 1 — 启用。
 
+## use_skip_indexes_for_top_k {#use_skip_indexes_for_top_k} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+启用在 TopK 过滤中使用数据跳过索引。
+
+启用后，如果在 `ORDER BY &lt;column&gt; LIMIT n` 查询中使用的列上存在 minmax 跳过索引，优化器会尝试使用该 minmax 索引来跳过与最终结果无关的 granule。这可以降低查询延迟。
+
+可能的取值：
+
+- 0 — 禁用。
+- 1 — 启用。
+
 ## use_skip_indexes_if_final {#use_skip_indexes_if_final} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -11295,6 +11318,21 @@ Cloud 默认值：`1`
 
 是否启用已反序列化文本索引倒排列表的缓存。
 在处理大量文本索引查询时，启用文本索引倒排列表缓存可以显著降低延迟并提高吞吐量。
+
+## use_top_k_dynamic_filtering {#use_top_k_dynamic_filtering} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+在执行 `ORDER BY <column> LIMIT n` 查询时启用动态过滤优化。
+
+启用后，查询执行器会尝试跳过那些不会出现在最终结果集中 `top N` 行中的数据粒度块和行。此优化具有动态特性，其延迟改善效果取决于数据分布以及查询中是否存在其他谓词。
+
+可能的取值：
+
+- 0 — 禁用。
+- 1 — 启用。
 
 ## use_uncompressed_cache {#use_uncompressed_cache} 
 

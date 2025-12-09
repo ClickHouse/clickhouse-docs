@@ -11,9 +11,10 @@ import shared_merge_tree from '@site/static/images/cloud/reference/shared-merge-
 import shared_merge_tree_2 from '@site/static/images/cloud/reference/shared-merge-tree-2.png';
 import Image from '@theme/IdealImage';
 
+
 # SharedMergeTree テーブルエンジン {#sharedmergetree-table-engine}
 
-SharedMergeTree テーブルエンジンファミリーは、共有ストレージ（例: Amazon S3、Google Cloud Storage、MinIO、Azure Blob Storage）上で動作するように最適化された、クラウドネイティブな ReplicatedMergeTree エンジンの代替です。あらゆる種類の MergeTree エンジンに対応する SharedMergeTree が用意されており、たとえば ReplacingSharedMergeTree は ReplacingReplicatedMergeTree の代わりとなります。
+SharedMergeTree テーブルエンジンファミリーは、共有ストレージ（例: Amazon S3、Google Cloud Storage、MinIO、Azure Blob Storage）上で動作するように最適化された、クラウドネイティブな ReplicatedMergeTree エンジンの代替です。あらゆる種類の MergeTree エンジンに対応する SharedMergeTree が用意されており、たとえば SharedReplacingMergeTree は ReplicatedReplacingMergeTree の代わりとなります。
 
 SharedMergeTree テーブルエンジンファミリーは ClickHouse Cloud の基盤となっています。エンドユーザー側では、ReplicatedMergeTree ベースのエンジンの代わりに SharedMergeTree エンジンファミリーを利用し始めるために、特別な変更は必要ありません。SharedMergeTree は次のような追加の利点を提供します:
 
@@ -72,7 +73,7 @@ CREATE TABLE my_table(
 ORDER BY key
 ```
 
-Replacing、Collapsing、Aggregating、Summing、VersionedCollapsing、Graphite の各 MergeTree テーブルを使用している場合、それらは自動的に対応する SharedMergeTree をベースとするテーブルエンジンに変換されます。
+Replacing、Collapsing、Aggregating、Summing、VersionedCollapsing、Graphite の各 MergeTree テーブルを使用している場合、それらは自動的に対応する SharedMergeTree ベースのテーブルエンジンに変換されます。
 
 ```sql
 CREATE TABLE myFirstReplacingMT
@@ -98,6 +99,7 @@ ENGINE = SharedReplacingMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica
 ORDER BY key
 ```
 
+
 ## 設定 {#settings}
 
 一部の設定の挙動が大きく変更されています。
@@ -108,7 +110,7 @@ ORDER BY key
 
 ## 一貫性 {#consistency}
 
-SharedMergeTree は、ReplicatedMergeTree よりも軽量な一貫性モデルを提供します。SharedMergeTree に対して挿入を行う場合、`insert_quorum` や `insert_quorum_parallel` のような設定を指定する必要はありません。挿入はクォーラム挿入となり、メタデータは ClickHouse-Keeper に保存され、そのメタデータは少なくともクォーラムを満たす数の ClickHouse-Keeper にレプリケートされます。クラスタ内の各レプリカは、ClickHouse-Keeper から新しい情報を非同期に取得します。
+SharedMergeTree は、ReplicatedMergeTree よりも軽量な一貫性モデルを提供します。SharedMergeTree に対して挿入を行う場合、`insert_quorum` や `insert_quorum_parallel` のような設定を指定する必要はありません。挿入はクォーラム挿入となり、メタデータは ClickHouse-Keeper に保存され、そのメタデータは少なくともクォーラムを満たす数の ClickHouse-Keeper ノードにレプリケートされます。クラスタ内の各レプリカは、ClickHouse-Keeper から新しい情報を非同期に取得します。
 
 ほとんどの場合、`select_sequential_consistency` や `SYSTEM SYNC REPLICA LIGHTWEIGHT` を使用する必要はありません。非同期レプリケーションでほとんどのシナリオをカバーでき、レイテンシも非常に低く抑えられます。古いデータを読み取ってしまうことをどうしても防ぐ必要があるまれなケースでは、優先度順に次の推奨事項に従ってください。
 
@@ -116,4 +118,4 @@ SharedMergeTree は、ReplicatedMergeTree よりも軽量な一貫性モデル�
 
 2. あるレプリカに書き込み、別のレプリカから読み取る場合は、`SYSTEM SYNC REPLICA LIGHTWEIGHT` を使用して、そのレプリカに ClickHouse-Keeper からメタデータを取得させることができます。
 
-3. クエリの一部として、設定として `select_sequential_consistency` を指定します。
+3. クエリの設定として `select_sequential_consistency` を指定します。

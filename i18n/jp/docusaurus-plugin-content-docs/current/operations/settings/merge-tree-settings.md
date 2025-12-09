@@ -1017,13 +1017,13 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10 の場合、`INSERT` は `max( 10, 1
 
 ## max_part_loading_threads {#max_part_loading_threads} 
 
-<SettingsInfoBlock type="MaxThreads" default_value="'auto(1)'" />
+<SettingsInfoBlock type="MaxThreads" default_value="'auto(17)'" />
 
 廃止された設定で、現在は効果がありません。
 
 ## max_part_removal_threads {#max_part_removal_threads} 
 
-<SettingsInfoBlock type="MaxThreads" default_value="'auto(1)'" />
+<SettingsInfoBlock type="MaxThreads" default_value="'auto(17)'" />
 
 廃止された設定であり、現在は何の効果もありません。
 

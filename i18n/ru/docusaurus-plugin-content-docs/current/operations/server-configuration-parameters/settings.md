@@ -366,7 +366,7 @@ import SettingsInfoBlock from '@theme/SettingsInfoBlock/SettingsInfoBlock';
 
 ## Резервные копии {#backups}
 
-Настройки резервного копирования, используемые при выполнении команд [`BACKUP` и `RESTORE`](../backup.md).
+Настройки резервного копирования, используемые при выполнении команд [`BACKUP` и `RESTORE`](/operations/backup/overview).
 
 Следующие параметры можно настроить с помощью вложенных тегов:
 
@@ -392,6 +392,7 @@ import SettingsInfoBlock from '@theme/SettingsInfoBlock/SettingsInfoBlock';
   ]) AS t )
   SELECT concat('`', t.1, '`') AS Setting, t.2 AS Type, t.3 AS Description, concat('`', t.4, '`') AS Default FROM settings FORMAT Markdown
   */ }
+
 
 | Setting                                             | Type   | Description                                                                                                                                                                       | Default               |
 | :-------------------------------------------------- | :----- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------- |

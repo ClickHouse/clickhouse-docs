@@ -31,7 +31,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 名前は似ていますが、[Merge](/engines/table-engines/special/merge) エンジンは `*MergeTree` エンジンとは異なります。
 :::
 
-## テーブルの作成 {#table&#95;engine-mergetree-creating-a-table}
+## テーブルの作成 {#table_engine-mergetree-creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -57,6 +57,7 @@ ORDER BY expr
 ```
 
 パラメータの詳細については、[CREATE TABLE](/sql-reference/statements/create/table.md) ステートメントを参照してください。
+
 
 ### クエリ構文 {#mergetree-query-clauses}
 
@@ -155,6 +156,7 @@ ENGINE MergeTree() PARTITION BY toYYYYMM(EventDate) ORDER BY (CounterID, EventDa
   `MergeTree` エンジンは、メインのエンジン構成方法について上記の例と同様に設定されます。
 </details>
 
+
 ## データストレージ {#mergetree-data-storage}
 
 テーブルは、主キーでソートされたデータパーツから構成されます。
@@ -176,12 +178,12 @@ ENGINE MergeTree() PARTITION BY toYYYYMM(EventDate) ORDER BY (CounterID, EventDa
 例として、主キー `(CounterID, Date)` を取り上げます。この場合、並び順とインデックスは次のように示されます。
 
 ```text
-全データ:       [---------------------------------------------]
+Whole data:     [---------------------------------------------]
 CounterID:      [aaaaaaaaaaaaaaaaaabbbbcdeeeeeeeeeeeeefgggggggghhhhhhhhhiiiiiiiiikllllllll]
 Date:           [1111111222222233331233211111222222333211111112122222223111112223311122333]
-マーク:          |      |      |      |      |      |      |      |      |      |      |
+Marks:           |      |      |      |      |      |      |      |      |      |      |
                 a,1    a,2    a,3    b,3    e,2    e,3    g,1    h,2    i,1    i,3    l,3
-マーク番号:      0      1      2      3      4      5      6      7      8      9      10
+Marks numbers:   0      1      2      3      4      5      6      7      8      9      10
 ```
 
 データクエリが次のように指定されている場合:
@@ -199,6 +201,7 @@ Date:           [111111122222223333123321111122222233321111111212222222311111222
 ClickHouse では、一意なプライマリキーは不要です。同じプライマリキーを持つ複数の行を挿入できます。
 
 `PRIMARY KEY` および `ORDER BY` 句では `Nullable` 型の式を使用できますが、これは強く非推奨です。この機能を許可するには、[allow&#95;nullable&#95;key](/operations/settings/merge-tree-settings/#allow_nullable_key) 設定を有効にします。`ORDER BY` 句での `NULL` 値には、[NULLS&#95;LAST](/sql-reference/statements/select/order-by.md/#sorting-of-special-values) の原則が適用されます。
+
 
 ### 主キーの選択 {#selecting-a-primary-key}
 
@@ -251,7 +254,7 @@ ORDER BY (CounterID, EventDate)
 SETTINGS index_granularity=8192
 ```
 
-この場合、クエリは次のようになります：
+この場合、クエリは次のようになります。
 
 ```sql
 SELECT count() FROM table
@@ -269,7 +272,7 @@ AND CounterID IN (101500, 731962, 160656)
 AND (CounterID = 101500 OR EventDate != toDate('2014-05-01'))
 ```
 
-ClickHouse は、プライマリキーインデックスを使用して不適切なデータを除外し、月単位のパーティショニングキーを使用して不適切な日付範囲にあるパーティションを除外します。
+ClickHouse は、プライマリキーインデックスを使用して不要なデータをスキップし、月単位のパーティショニングキーを使用して対象外の日付範囲にあるパーティションをスキップします。
 
 上記のクエリは、複雑な式に対してもインデックスが使用されることを示しています。テーブルからの読み取り処理は、インデックスを使用してもフルスキャンより遅くならないように設計されています。
 
@@ -281,7 +284,8 @@ SELECT count() FROM table WHERE CounterID = 34 OR URL LIKE '%upyachka%'
 
 クエリ実行時に ClickHouse がインデックスを利用できるかどうかを確認するには、設定 [force&#95;index&#95;by&#95;date](/operations/settings/settings.md/#force_index_by_date) と [force&#95;primary&#95;key](/operations/settings/settings#force_primary_key) を使用します。
 
-月単位のパーティションキーは、指定した範囲に含まれる日付を持つデータブロックだけを読み取れるようにします。この場合、データブロックには多数の日付（最大で 1 か月分）に対応するデータが含まれている可能性があります。ブロック内ではデータは主キーでソートされていますが、主キーの先頭の列として日付が含まれていない場合があります。そのため、主キーのプレフィックスを指定せずに日付条件のみを含むクエリを使用すると、単一の日付だけを対象とする場合よりも多くのデータを読み取ることになります。
+月単位のパーティションキーは、指定した範囲に含まれる日付を持つデータブロックだけを読み取れるようにします。この場合、データブロックには多数の日付（最大で 1 か月分）に対応するデータが含まれている可能性があります。ブロック内ではデータは主キーでソートされていますが、主キーの先頭のカラムとして日付が含まれていない場合があります。そのため、主キーのプレフィックスを指定せずに日付条件のみを含むクエリを使用すると、単一の日付だけを対象とする場合よりも多くのデータを読み取ることになります。
+
 
 ### 部分的に単調な主キーに対するインデックスの利用 {#use-of-index-for-partially-monotonic-primary-keys}
 
@@ -291,7 +295,7 @@ SELECT count() FROM table WHERE CounterID = 34 OR URL LIKE '%upyachka%'
 
 ClickHouse は、このロジックを月の日付の数列に対してだけでなく、部分的に単調な数列を表すあらゆる主キーに対しても適用します。
 
-### データスキップインデックス {#table&#95;engine-mergetree-data&#95;skipping-indexes}
+### データスキップインデックス {#table_engine-mergetree-data_skipping-indexes}
 
 インデックスの宣言は、`CREATE` クエリのカラム定義セクション内に記述します。
 
@@ -321,7 +325,7 @@ CREATE TABLE table_name
 ...
 ```
 
-サンプルで定義したインデックスは、以下のクエリでは ClickHouse がディスクから読み取るデータ量を減らすために利用できます。
+サンプルで定義したインデックスは、以下のクエリにおいて ClickHouse がディスクから読み取るデータ量を削減するために利用されます。
 
 ```sql
 SELECT count() FROM table WHERE u64 == 10;
@@ -329,27 +333,28 @@ SELECT count() FROM table WHERE u64 * i32 >= 1234
 SELECT count() FROM table WHERE u64 * length(s) == 1234
 ```
 
-データスキップインデックスは複合列にも作成できます：
+データスキッピングインデックスは複合カラムに対しても作成できます：
 
 ```sql
--- Map型のカラムに対して:
+-- on columns of type Map:
 INDEX map_key_index mapKeys(map_column) TYPE bloom_filter
 INDEX map_value_index mapValues(map_column) TYPE bloom_filter
 
--- Tuple型のカラムに対して:
+-- on columns of type Tuple:
 INDEX tuple_1_index tuple_column.1 TYPE bloom_filter
 INDEX tuple_2_index tuple_column.2 TYPE bloom_filter
 
--- Nested型のカラムに対して:
+-- on columns of type Nested:
 INDEX nested_1_index col.nested_col1 TYPE bloom_filter
 INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 ```
+
 
 ### スキップインデックスの種類 {#skip-index-types}
 
 `MergeTree` テーブルエンジンは、次の種類のスキップインデックスをサポートします。
 スキップインデックスをパフォーマンス最適化にどのように利用できるかについては、
-[&quot;ClickHouse のデータスキッピングインデックスを理解する&quot;](/optimize/skipping-indexes) を参照してください。
+["ClickHouse のデータスキッピングインデックスを理解する"](/optimize/skipping-indexes) を参照してください。
 
 * [`MinMax`](#minmax) インデックス
 * [`Set`](#set) インデックス
@@ -366,6 +371,7 @@ INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 minmax
 ```
 
+
 #### Set {#set}
 
 各インデックスグラニュールごとに、指定された式のユニークな値が最大 `max_rows` 個まで保存されます。
@@ -375,9 +381,10 @@ minmax
 set(max_rows)
 ```
 
+
 #### ブルームフィルタ {#bloom-filter}
 
-各インデックスグラニュールは、指定された列に対して [Bloom filter](https://en.wikipedia.org/wiki/Bloom_filter) を保持します。
+各インデックスグラニュールは、指定されたカラムに対して [Bloom filter](https://en.wikipedia.org/wiki/Bloom_filter) を保持します。
 
 ```text title="Syntax"
 bloom_filter([false_positive_rate])
@@ -403,6 +410,7 @@ bloom_filter([false_positive_rate])
 :::note Map データ型: キーまたは値に対するインデックス作成の指定
 `Map` データ型では、クライアントは [`mapKeys`](/sql-reference/functions/tuple-map-functions.md/#mapkeys) または [`mapValues`](/sql-reference/functions/tuple-map-functions.md/#mapvalues) 関数を使用して、キーに対してインデックスを作成するか、値に対してインデックスを作成するかを指定できます。
 :::
+
 
 #### N-gram ブルームフィルタ {#n-gram-bloom-filter}
 
@@ -450,18 +458,18 @@ AS
 * `total_number_of_all_grams`
 * `probability_of_false_positives`
 
-たとえば、ある granule に `4300` 個の ngram があり、偽陽性の確率を `0.0001` 未満にしたいとします。
+たとえば、あるグラニュールに `4300` 個の N-gram があり、偽陽性の確率を `0.0001` 未満にしたいとします。
 この場合、他のパラメータは次のクエリを実行することで推定できます。
 
 ```sql
---- フィルタ内のビット数を推定
+--- estimate number of bits in the filter
 SELECT bfEstimateBmSize(4300, 0.0001) / 8 AS size_of_bloom_filter_in_bytes;
 
 ┌─size_of_bloom_filter_in_bytes─┐
 │                         10304 │
 └───────────────────────────────┘
 
---- ハッシュ関数の数を推定
+--- estimate number of hash functions
 SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) as number_of_hash_functions
 
 ┌─number_of_hash_functions─┐
@@ -472,13 +480,15 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) as number_of_ha
 もちろん、これらの関数は他の条件のパラメータを見積もるためにも使用できます。
 上記の関数は、ブルームフィルター計算ツール[こちら](https://hur.st/bloomfilter)を参照しています。
 
+
 #### トークンブルームフィルター {#token-bloom-filter}
 
 トークンブルームフィルターは `ngrambf_v1` と同様ですが、n-gram ではなく、英数字以外の文字で区切られたトークン（文字列のまとまり）を保存します。
 
 ```text title="Syntax"
-tokenbf_v1(ブルームフィルタのサイズ（バイト）, ハッシュ関数の数, ランダムシード)
+tokenbf_v1(size_of_bloom_filter_in_bytes, number_of_hash_functions, random_seed)
 ```
+
 
 #### スパースグラム Bloom フィルター {#sparse-grams-bloom-filter}
 
@@ -487,6 +497,7 @@ tokenbf_v1(ブルームフィルタのサイズ（バイト）, ハッシュ関�
 ```text title="Syntax"
 sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloom_filter_in_bytes, number_of_hash_functions, random_seed)
 ```
+
 
 ### テキストインデックス {#text}
 
@@ -573,7 +584,8 @@ Bloom filter では偽陽性が発生し得るため、`ngrambf_v1`、`tokenbf_v
 SELECT <column list expr> [GROUP BY] <group keys expr> [ORDER BY] <expr>
 ```
 
-プロジェクションは [ALTER](/sql-reference/statements/alter/projection.md) 文で変更または削除できます。
+プロジェクションは [ALTER](/sql-reference/statements/alter/projection.md) 文を使って変更または削除できます。
+
 
 ### プロジェクションのストレージ {#projection-storage}
 
@@ -591,7 +603,7 @@ SELECT <column list expr> [GROUP BY] <group keys expr> [ORDER BY] <expr>
 
 テーブルからの読み取りは自動的に並列化されます。
 
-## 列およびテーブルの TTL {#table&#95;engine-mergetree-ttl}
+## 列およびテーブルの TTL {#table_engine-mergetree-ttl}
 
 値の有効期間（time-to-live）を決定します。
 
@@ -608,12 +620,13 @@ TTL time_column
 TTL time_column + interval
 ```
 
-`interval` を定義するには、[time interval](/sql-reference/operators#operators-for-working-with-dates-and-times) 演算子を使用します。たとえば、次のようにします。
+`interval` を定義するには、[time interval](/sql-reference/operators#operators-for-working-with-dates-and-times) 演算子を使用します。たとえば次のように指定します。
 
 ```sql
 TTL date_time + INTERVAL 1 MONTH
 TTL date_time + INTERVAL 15 HOUR
 ```
+
 
 ### カラム TTL {#mergetree-column-ttl}
 
@@ -638,6 +651,7 @@ PARTITION BY toYYYYMM(d)
 ORDER BY d;
 ```
 
+
 #### 既存のテーブルの列に TTL を追加する {#adding-ttl-to-a-column-of-an-existing-table}
 
 ```sql
@@ -646,6 +660,7 @@ ALTER TABLE tab
     c String TTL d + INTERVAL 1 DAY;
 ```
 
+
 #### 列のTTLを変更する {#altering-ttl-of-the-column}
 
 ```sql
@@ -653,6 +668,7 @@ ALTER TABLE tab
     MODIFY COLUMN
     c String TTL d + INTERVAL 1 MONTH;
 ```
+
 
 ### テーブルの TTL {#mergetree-table-ttl}
 
@@ -685,6 +701,7 @@ TTL time_column + INTERVAL 1 MONTH DELETE WHERE column = 'value'
 
 **例**
 
+
 #### `TTL` を指定したテーブルの作成: {#creating-a-table-with-ttl-1}
 
 ```sql
@@ -700,6 +717,7 @@ TTL d + INTERVAL 1 MONTH DELETE,
     d + INTERVAL 1 WEEK TO VOLUME 'aaa',
     d + INTERVAL 2 WEEK TO DISK 'bbb';
 ```
+
 
 #### テーブルの `TTL` を変更する: {#altering-ttl-of-the-table}
 
@@ -722,6 +740,7 @@ ORDER BY d
 TTL d + INTERVAL 1 MONTH DELETE WHERE toDayOfWeek(d) = 1;
 ```
 
+
 #### 期限切れの行が再圧縮されるテーブルの作成: {#creating-a-table-where-expired-rows-are-recompressed}
 
 ```sql
@@ -737,7 +756,7 @@ TTL d + INTERVAL 1 MONTH RECOMPRESS CODEC(ZSTD(17)), d + INTERVAL 1 YEAR RECOMPR
 SETTINGS min_rows_for_wide_part = 0, min_bytes_for_wide_part = 0;
 ```
 
-有効期限切れの行を集約するテーブルを作成します。結果の行では、`x` にはグループ化された行全体での最大値が、`y` には最小値が、`d` にはグループ化された行からのいずれか 1 つの値が含まれます。
+期限切れの行を集約するテーブルを作成します。結果行では、`x` にはグループ化された行における最大値、`y` には最小値、`d` にはグループ化された行からの任意の値が含まれます。
 
 ```sql
 CREATE TABLE table_for_aggregation
@@ -753,6 +772,7 @@ ORDER BY (k1, k2)
 TTL d + INTERVAL 1 MONTH GROUP BY k1, k2 SET x = max(x), y = min(y);
 ```
 
+
 ### 期限切れデータの削除 {#mergetree-removing-expired-data}
 
 `TTL` が期限切れになったデータは、ClickHouse がデータパーツをマージする際に削除されます。
@@ -763,7 +783,7 @@ ClickHouse がデータの期限切れを検出すると、スケジュール外
 
 **関連項目**
 
-* [ttl&#95;only&#95;drop&#95;parts](/operations/settings/merge-tree-settings#ttl_only_drop_parts) 設定
+- [ttl_only_drop_parts](/operations/settings/merge-tree-settings#ttl_only_drop_parts) 設定
 
 ## ディスクの種類 {#disk-types}
 
@@ -775,10 +795,10 @@ ClickHouse がデータの期限切れを検出すると、スケジュール外
 * [`hdfs` — HDFS 用](/engines/table-engines/integrations/hdfs)
 * [`web` — Web からの読み取り専用](/operations/storing-data#web-storage)
 * [`cache` — ローカルキャッシュ用](/operations/storing-data#using-local-cache)
-* [`s3_plain` — S3 へのバックアップ用](/operations/backup#backuprestore-using-an-s3-disk)
-* [`s3_plain_rewritable` — S3 上の変更不可な非レプリケートテーブル用](/operations/storing-data.md#s3-plain-rewritable-storage)
+* [`s3_plain` — S3 へのバックアップ用](/operations/backup/disk)
+* [`s3_plain_rewritable` — S3 上の変更不可能な非レプリケートテーブル用](/operations/storing-data.md#s3-plain-rewritable-storage)
 
-## データストレージで複数のブロックデバイスを利用する {#table&#95;engine-mergetree-multiple-volumes}
+## データストレージで複数のブロックデバイスを利用する {#table_engine-mergetree-multiple-volumes}
 
 ### はじめに {#introduction}
 
@@ -795,12 +815,12 @@ ClickHouse がデータの期限切れを検出すると、スケジュール外
 
 ここで説明した各エンティティの名称は、システムテーブル [system.storage&#95;policies](/operations/system-tables/storage_policies) および [system.disks](/operations/system-tables/disks) で確認できます。テーブルに対して設定済みのストレージポリシーのいずれかを適用するには、`MergeTree` エンジンファミリーのテーブルで `storage_policy` 設定を使用します。
 
-### 設定 {#table&#95;engine-mergetree-multiple-volumes&#95;configure}
+### 設定 {#table_engine-mergetree-multiple-volumes_configure}
 
 ディスク、ボリューム、およびストレージポリシーは、`config.d` ディレクトリ内のファイルにある `<storage_configuration>` タグ内で宣言する必要があります。
 
 :::tip
-ディスクはクエリの `SETTINGS` セクション内で宣言することもできます。これは、例えば URL で公開されているディスクを一時的にアタッチしてアドホックな分析を行う場合に便利です。
+ディスクはクエリの `SETTINGS` セクション内で宣言することもできます。これは、例えば URL 経由でアクセスできるディスクを一時的にアタッチしてアドホックな分析を行う場合に便利です。
 詳細については、[dynamic storage](/operations/storing-data#dynamic-configuration) を参照してください。
 :::
 
@@ -809,7 +829,7 @@ ClickHouse がデータの期限切れを検出すると、スケジュール外
 ```xml
 <storage_configuration>
     <disks>
-        <disk_name_1> <!-- ディスク名 -->
+        <disk_name_1> <!-- disk name -->
             <path>/mnt/fast_ssd/clickhouse/</path>
         </disk_name_1>
         <disk_name_2>
@@ -850,23 +870,24 @@ ClickHouse がデータの期限切れを検出すると、スケジュール外
                     <load_balancing>round_robin</load_balancing>
                 </volume_name_1>
                 <volume_name_2>
-                    <!-- 設定 -->
+                    <!-- configuration -->
                 </volume_name_2>
-                <!-- 追加のボリューム -->
+                <!-- more volumes -->
             </volumes>
             <move_factor>0.2</move_factor>
         </policy_name_1>
         <policy_name_2>
-            <!-- 設定 -->
+            <!-- configuration -->
         </policy_name_2>
 
-        <!-- 追加のポリシー -->
+        <!-- more policies -->
     </policies>
     ...
 </storage_configuration>
 ```
 
 タグ:
+
 
 * `policy_name_N` — ポリシー名。ポリシー名は一意である必要があります。
 * `volume_name_N` — ボリューム名。ボリューム名は一意である必要があります。
@@ -981,7 +1002,7 @@ SETTINGS storage_policy = 'moving_from_ssd_to_hdd'
 
 ユーザーは、[JBOD](https://en.wikipedia.org/wiki/Non-RAID_drive_architectures) ボリュームの複数ディスクに新しい大きなパーツをバランス良く割り当てるために、設定 [min&#95;bytes&#95;to&#95;rebalance&#95;partition&#95;over&#95;jbod](/operations/settings/merge-tree-settings.md/#min_bytes_to_rebalance_partition_over_jbod) を使用できます。
 
-## データの保存に外部ストレージを使用する {#table&#95;engine-mergetree-s3}
+## データの保存に外部ストレージを使用する {#table_engine-mergetree-s3}
 
 [MergeTree](/engines/table-engines/mergetree-family/mergetree.md) ファミリーのテーブルエンジンは、それぞれ `s3`、`azure_blob_storage`、`hdfs` タイプのディスクを使用して、データを `S3`、`AzureBlobStorage`、`HDFS` に保存できます。詳細は、[外部ストレージオプションの設定](/operations/storing-data.md/#configuring-external-storage)を参照してください。
 
@@ -1034,6 +1055,7 @@ SETTINGS storage_policy = 'moving_from_ssd_to_hdd'
 ClickHouse バージョン 22.3 から 22.7 までは異なるキャッシュ設定が使用されています。これらのバージョンのいずれかを使用している場合は、[ローカルキャッシュの使用](/operations/storing-data.md/#using-local-cache)を参照してください。
 :::
 
+
 ## 仮想カラム {#virtual-columns}
 
 * `_part` — パーツ名。
@@ -1075,34 +1097,35 @@ ALTER TABLE tab ADD STATISTICS b TYPE TDigest, Uniq;
 ALTER TABLE tab DROP STATISTICS a;
 ```
 
-これらの軽量な統計情報は、列内の値の分布に関する情報を集約します。統計情報は各パートに保存され、挿入が行われるたびに更新されます。
-`set allow_statistics_optimize = 1` を有効にした場合にのみ、PREWHERE 最適化に利用できます。
+これらの軽量な統計情報は、列内の値の分布に関する情報を集約します。統計情報は各パートごとに保存され、挿入のたびに更新されます。
+`set allow_statistics_optimize = 1` を有効にした場合にのみ、PREWHERE の最適化に利用できます。
+
 
 ### 利用可能な列統計の種類 {#available-types-of-column-statistics}
 
-* `MinMax`
+- `MinMax`
 
-  数値型列に対する範囲フィルターの選択性を推定できるようにする、列の最小値と最大値。
+    数値型列に対する範囲フィルターの選択性を推定できるようにする、列の最小値と最大値。
 
-  構文: `minmax`
+    構文: `minmax`
 
-* `TDigest`
+- `TDigest`
 
-  数値型列に対して近似パーセンタイル（例: 第90パーセンタイル）を計算できる [TDigest](https://github.com/tdunning/t-digest) スケッチ。
+    数値型列に対して近似パーセンタイル（例: 第90パーセンタイル）を計算できる [TDigest](https://github.com/tdunning/t-digest) スケッチ。
 
-  構文: `tdigest`
+    構文: `tdigest`
 
-* `Uniq`
+- `Uniq`
 
-  列に含まれる異なる値の個数を推定する [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog) スケッチ。
+    列に含まれる異なる値の個数を推定する [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog) スケッチ。
 
-  構文: `uniq`
+    構文: `uniq`
 
-* `CountMin`
+- `CountMin`
 
-  列内の各値の出現頻度を近似的にカウントする [CountMin](https://en.wikipedia.org/wiki/Count%E2%80%93min_sketch) スケッチ。
+    列内の各値の出現頻度を近似的にカウントする [CountMin](https://en.wikipedia.org/wiki/Count%E2%80%93min_sketch) スケッチ。
 
-  構文: `countmin`
+    構文: `countmin`
 
 ### サポートされているデータ型 {#supported-data-types}
 
@@ -1155,7 +1178,7 @@ ALTER TABLE tab MODIFY COLUMN document REMOVE SETTINGS;
 ALTER TABLE tab MODIFY COLUMN document MODIFY SETTING min_compress_block_size = 8192;
 ```
 
-* 1 つ以上の設定をリセットします。また、テーブルの CREATE クエリの列式から設定宣言も削除します。
+* 1 つ以上の設定をリセットし、同時にテーブルの CREATE クエリのカラム式から設定の宣言も削除します。
 
 ```sql
 ALTER TABLE tab MODIFY COLUMN document RESET SETTING min_compress_block_size;

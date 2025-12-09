@@ -1,5 +1,5 @@
 ---
-description: 'テキスト中の検索語句を素早く見つけます。'
+description: 'テキスト内の検索語句を素早く見つけます。'
 keywords: ['全文検索', 'テキストインデックス', 'インデックス', 'インデックス（複数形）']
 sidebar_label: 'テキストインデックスを使用した全文検索'
 slug: /engines/table-engines/mergetree-family/invertedindexes
@@ -8,6 +8,7 @@ doc_type: 'reference'
 ---
 
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+
 
 # テキストインデックスを使用した全文検索 {#full-text-search-using-text-indexes}
 
@@ -21,7 +22,7 @@ ClickHouse のテキストインデックス（["inverted indexes"](https://en.w
 
 ## テキストインデックスの作成 {#creating-a-text-index}
 
-テキストインデックスを作成するには、まず対応する実験的な設定を有効にしてください。
+テキストインデックスを作成するには、まず該当する実験的な設定を有効にしてください。
 
 ```sql
 SET allow_experimental_full_text_index = true;
@@ -35,15 +36,15 @@ CREATE TABLE tab
     `key` UInt64,
     `str` String,
     INDEX text_idx(str) TYPE text(
-                                -- 必須パラメータ:
+                                -- Mandatory parameters:
                                 tokenizer = splitByNonAlpha
                                             | splitByString[(S)]
                                             | ngrams[(N)]
                                             | sparseGrams[(min_length[, max_length[, min_cutoff_length]])]
                                             | array
-                                -- オプションパラメータ:
+                                -- Optional parameters:
                                 [, preprocessor = expression(str)]
-                                -- オプション高度なパラメータ:
+                                -- Optional advanced parameters:
                                 [, dictionary_block_size = D]
                                 [, dictionary_block_frontcoding_compression = B]
                                 [, max_cardinality_for_embedded_postings = M]
@@ -62,7 +63,7 @@ ORDER BY key
   それぞれの区切り文字列は、複数文字（例では `', '`）から構成されていてもかまいません。
   区切り文字リストを明示的に指定しない場合（たとえば `tokenizer = splitByString`）、既定の区切り文字リストは単一の空白 `[' ']` です。
 * `ngrams(N)` は、文字列を同じ長さの `N`-gram に分割します（関数 [ngrams](/sql-reference/functions/splitting-merging-functions.md/#ngrams) も参照してください）。
-  n-gram の長さは 2 から 8 の整数でオプション引数として指定できます。たとえば `tokenizer = ngrams(3)` のように指定します。
+  n-gram の長さは 1 から 8 の整数でオプション引数として指定できます。たとえば `tokenizer = ngrams(3)` のように指定します。
   n-gram の既定サイズは、明示的に指定されない場合（たとえば `tokenizer = ngrams`）は 3 です。
 * `sparseGrams(min_length, max_length, min_cutoff_length)` は、`min_length` 以上 `max_length` 以下（両端を含む）の長さの可変長 n-gram に文字列を分割します（関数 [sparseGrams](/sql-reference/functions/string-functions#sparseGrams) も参照してください）。
   明示的に指定されない場合、`min_length` と `max_length` の既定値はそれぞれ 3 と 100 です。
@@ -79,6 +80,7 @@ ORDER BY key
 これは一般には、区切り文字列を長いものから短いものの順に渡すことで実現できます。
 区切り文字列が [prefix code](https://en.wikipedia.org/wiki/Prefix_code) を形成している場合は、任意の順序で渡すことができます。
 :::
+
 
 :::warning
 現時点では、中国語などの非西洋言語のテキストに対してテキストインデックスを構築することは推奨されません。
@@ -104,7 +106,7 @@ SELECT tokens('abc def', 'ngrams', 3);
 
 プリプロセッサ引数の典型的な使用例には以下が含まれます
 
-1. 大文字小文字を区別しないマッチングを可能にするための小文字化または大文字化。例:[lower](/sql-reference/functions/string-functions.md/#lower)、[lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8)。以下の最初の例を参照してください。
+1. 大文字小文字を区別しないマッチングを可能にするための小文字化／大文字化処理。例: [lower](/sql-reference/functions/string-functions.md/#lower)、[lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8)。以下の最初の例を参照してください。
 2. UTF-8正規化。例:[normalizeUTF8NFC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFC)、[normalizeUTF8NFD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFD)、[normalizeUTF8NFKC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKC)、[normalizeUTF8NFKD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKD)、[toValidUTF8](/sql-reference/functions/string-functions.md/#toValidUTF8)。
 3. 不要な文字または部分文字列の削除または変換。例:[extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML)、[substring](/sql-reference/functions/string-functions.md/#substring)、[idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode)。
 
@@ -112,11 +114,11 @@ SELECT tokens('abc def', 'ngrams', 3);
 
 例:
 
-- `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(col))`
-- `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = substringIndex(col, '\n', 1))`
-- `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(extractTextFromHTML(col))`
+* `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(col))`
+* `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = substringIndex(col, '\n', 1))`
+* `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(extractTextFromHTML(col))`
 
-また、プリプロセッサ式は、テキストインデックスが定義されている列のみを参照する必要があります。
+また、プリプロセッサ式は、テキストインデックスが定義されているカラムのみを参照する必要があります。
 非決定的関数の使用は許可されていません。
 
 関数[hasToken](/sql-reference/functions/string-search-functions.md/#hasToken)、[hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens)、[hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens)は、プリプロセッサを使用して検索語をトークン化する前にまず変換します。
@@ -153,32 +155,31 @@ SELECT count() FROM tab WHERE hasToken(str, lower('Foo'));
 
 **その他の引数(オプション)**。ClickHouseのテキストインデックスは[セカンダリインデックス](/engines/table-engines/mergetree-family/mergetree.md/#skip-index-types)として実装されています。
 ただし、他のスキップインデックスとは異なり、テキストインデックスのデフォルトのインデックスGRANULARITYは64です。
-この値は経験的に選択されており、ほとんどの使用例において速度とインデックスサイズの適切なトレードオフを提供します。
+この値は経験的に選択されており、ほとんどのユースケースにおいて速度とインデックスサイズの適切なトレードオフを提供します。
 上級ユーザーは異なるインデックス粒度を指定できます(ただし、推奨しません)。
 
 <details markdown="1">
+  <summary>オプションの高度なパラメータ</summary>
 
-<summary>オプションの高度なパラメータ</summary>
+  以下の高度なパラメータのデフォルト値は、ほぼすべての状況で適切に機能します。
+  これらを変更することは推奨しません。
 
-以下の高度なパラメータのデフォルト値は、ほぼすべての状況で適切に機能します。
-これらの変更は推奨しません。
+  オプションパラメータ`dictionary_block_size`(デフォルト:128)は、辞書ブロックのサイズを行数で指定します。
 
-オプションパラメータ`dictionary_block_size`(デフォルト:128)は、辞書ブロックのサイズを行数で指定します。
+  オプションパラメータ`dictionary_block_frontcoding_compression`(デフォルト:1)は、辞書ブロックが圧縮としてフロントコーディングを使用するかどうかを指定します。
 
-オプションパラメータ`dictionary_block_frontcoding_compression`(デフォルト:1)は、辞書ブロックが圧縮としてフロントコーディングを使用するかどうかを指定します。
+  オプションパラメータ`max_cardinality_for_embedded_postings`(デフォルト:16)は、ポスティングリストを辞書ブロックに埋め込むべきカーディナリティの閾値を指定します。
 
-オプションパラメータ`max_cardinality_for_embedded_postings`(デフォルト:16)は、ポスティングリストを辞書ブロックに埋め込むべきカーディナリティの閾値を指定します。
-
-オプションパラメータ `bloom_filter_false_positive_rate`（デフォルト: 0.1）は、辞書ブルームフィルタの偽陽性率を指定します。
-
+  オプションパラメータ`bloom_filter_false_positive_rate`(デフォルト:0.1)は、Dictionary Bloom Filterの偽陽性率を指定します。
 </details>
 
-テキストインデックスは、テーブル作成後にカラムへ追加または削除することができます:
+テキストインデックスは、テーブル作成後にカラムに追加したり削除したりできます。
 
 ```sql
 ALTER TABLE tab DROP INDEX text_idx;
 ALTER TABLE tab ADD INDEX text_idx(s) TYPE text(tokenizer = splitByNonAlpha);
 ```
+
 
 ## テキストインデックスの使用 {#using-a-text-index}
 
@@ -195,6 +196,7 @@ FROM [...]
 WHERE string_search_function(column_with_text_index)
 ```
 
+
 #### `=` と `!=` {#functions-example-equals-notequals}
 
 `=` ([equals](/sql-reference/functions/comparison-functions.md/#equals)) と `!=` ([notEquals](/sql-reference/functions/comparison-functions.md/#notEquals)) は、指定された検索語全体と一致します。
@@ -202,14 +204,15 @@ WHERE string_search_function(column_with_text_index)
 例:
 
 ```sql
-SELECT * from tab WHERE str = 'こんにちは';
+SELECT * from tab WHERE str = 'Hello';
 ```
 
-テキストインデックスは `=` と `!=` をサポートしますが、等値・不等値検索が意味を持つのは `array` トークナイザを使用する場合のみです（このトークナイザではインデックスに行全体の値が保存されます）。
+テキストインデックスは `=` と `!=` をサポートしますが、等値・不等値検索が有効になるのは `array` トークナイザを使用する場合のみです（このトークナイザではインデックスに行全体の値が格納されます）。
+
 
 #### `IN` と `NOT IN` {#functions-example-in-notin}
 
-`IN`（[`in`](/sql-reference/functions/in-functions)）と `NOT IN`（[`notIn`](/sql-reference/functions/in-functions)）は `equals` および `notEquals` 関数と似ていますが、検索語句のすべてに一致するもの（`IN`）、あるいはどれにも一致しないもの（`NOT IN`）を判定します。
+`IN`（[`in`](/sql-reference/functions/in-functions)）と `NOT IN`（[`notIn`](/sql-reference/functions/in-functions)）は `equals` および `notEquals` 関数と似ていますが、検索語句のいずれかに一致するもの（`IN`）、あるいはどれにも一致しないもの（`NOT IN`）を判定します。
 
 例:
 
@@ -217,12 +220,13 @@ SELECT * from tab WHERE str = 'こんにちは';
 SELECT * from tab WHERE str IN ('Hello', 'World');
 ```
 
-`=` および `!=` に対する制限と同じ制限が適用されます。つまり、`IN` と `NOT IN` は `array` トークナイザーと組み合わせて使用する場合にのみ意味があります。
+`=` および `!=` と同様の制限が適用されます。つまり、`IN` と `NOT IN` は `array` トークナイザと組み合わせて使用する場合にのみ意味があります。
+
 
 #### `LIKE`、`NOT LIKE` および `match` {#functions-example-like-notlike-match}
 
 :::note
-これらの関数がフィルタリングのためにテキストインデックスを使用するのは、インデックストークナイザーが `splitByNonAlpha` または `ngrams` のいずれかである場合に限られます。
+これらの関数がフィルタリングのためにテキストインデックスを使用するのは、インデックスのトークナイザーが `splitByNonAlpha` または `ngrams` のいずれかである場合に限られます。
 :::
 
 テキストインデックスで `LIKE` ([like](/sql-reference/functions/string-search-functions.md/#like))、`NOT LIKE` ([notLike](/sql-reference/functions/string-search-functions.md/#notLike))、および [match](/sql-reference/functions/string-search-functions.md/#match) 関数を使用するには、ClickHouse が検索語句から完全なトークンを抽出できる必要があります。
@@ -239,14 +243,15 @@ SELECT count() FROM tab WHERE comment LIKE 'support%';
 LIKE クエリでテキストインデックスを活用するには、LIKE パターンを次のように書き換える必要があります。
 
 ```sql
-SELECT count() FROM tab WHERE comment LIKE ' support %'; -- または `% support %`
+SELECT count() FROM tab WHERE comment LIKE ' support %'; -- or `% support %`
 ```
 
-`support` の左右に空白を入れておくと、その語をトークンとして抽出できるようになります。
+`support` の前後に空白を入れることで、その語をトークンとして抽出できるようにします。
+
 
 #### `startsWith` と `endsWith` {#functions-example-startswith-endswith}
 
-`LIKE` と同様に、関数 [startsWith](/sql-reference/functions/string-functions.md/#startsWith) と [endsWith](/sql-reference/functions/string-functions.md/#endsWith) は、検索語から完全なトークンを抽出できる場合にのみテキストインデックスを使用できます。
+`LIKE` と同様に、関数 [startsWith](/sql-reference/functions/string-functions.md/#startsWith) と [endsWith](/sql-reference/functions/string-functions.md/#endsWith) は、検索語句から完全なトークンを抽出できる場合にのみテキストインデックスを使用できます。
 
 例:
 
@@ -263,11 +268,12 @@ SELECT count() FROM tab WHERE startsWith(comment, 'clickhouse support');
 startsWith(comment, 'clickhouse supports ')`
 ```
 
-同様に、`endsWith` も先頭にスペースを付けて使用します。
+同様に、`endsWith` も先頭に空白を 1 つ付けて使用します。
 
 ```sql
 SELECT count() FROM tab WHERE endsWith(comment, ' olap engine');
 ```
+
 
 #### `hasToken` と `hasTokenOrNull` {#functions-example-hastoken-hastokenornull}
 
@@ -281,26 +287,28 @@ SELECT count() FROM tab WHERE endsWith(comment, ' olap engine');
 SELECT count() FROM tab WHERE hasToken(comment, 'clickhouse');
 ```
 
-関数 `hasToken` と `hasTokenOrNull` は、`text` インデックスと組み合わせて使用する関数として最も高いパフォーマンスを発揮します。
+関数 `hasToken` と `hasTokenOrNull` は、`text` インデックスと併用する場合に最も高いパフォーマンスを発揮します。
+
 
 #### `hasAnyTokens` と `hasAllTokens` {#functions-example-hasanytokens-hasalltokens}
 
 関数 [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens) と [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens) は、指定されたトークンの一部またはすべてにマッチします。
 
-これら 2 つの関数は、検索トークンを、インデックス列で使用されるものと同じトークナイザでトークン化される文字列として、または検索前にトークナイズ処理を行わない、すでにトークン化済みのトークン配列として受け取ります。
+これら 2 つの関数は、検索トークンを、インデックス列で使用されるものと同じトークナイザでトークン化される文字列として、または検索前に追加のトークナイズ処理を行わない、すでにトークン化済みのトークン配列として受け取ります。
 詳細については、それぞれの関数のドキュメントを参照してください。
 
 例:
 
 ```sql
--- 検索トークンを文字列引数として渡す
+-- Search tokens passed as string argument
 SELECT count() FROM tab WHERE hasAnyTokens(comment, 'clickhouse olap');
 SELECT count() FROM tab WHERE hasAllTokens(comment, 'clickhouse olap');
 
--- 検索トークンをArray(String)として渡す
+-- Search tokens passed as Array(String)
 SELECT count() FROM tab WHERE hasAnyTokens(comment, ['clickhouse', 'olap']);
 SELECT count() FROM tab WHERE hasAllTokens(comment, ['clickhouse', 'olap']);
 ```
+
 
 #### `has` {#functions-example-has}
 
@@ -312,21 +320,23 @@ SELECT count() FROM tab WHERE hasAllTokens(comment, ['clickhouse', 'olap']);
 SELECT count() FROM tab WHERE has(array, 'clickhouse');
 ```
 
+
 #### `mapContains` {#functions-example-mapcontains}
 
-関数 [mapContains](/sql-reference/functions/tuple-map-functions#mapcontains)（`mapContainsKey` のエイリアス）は、マップのキーに含まれる単一のトークンにマッチさせます。
+関数 [mapContains](/sql-reference/functions/tuple-map-functions#mapcontains)（`mapContainsKey` のエイリアス）は、マップのキーに含まれる単一のトークンとの一致を判定します。
 
 例:
 
 ```sql
 SELECT count() FROM tab WHERE mapContainsKey(map, 'clickhouse');
--- または
+-- OR
 SELECT count() FROM tab WHERE mapContains(map, 'clickhouse');
 ```
 
+
 #### `operator[]` {#functions-example-access-operator}
 
-アクセス演算子 [operator[]](/sql-reference/operators#access-operators)は、テキストインデックスと併用してキーおよび値をフィルタリングするために使用できます。
+アクセス演算子 [operator[]](/sql-reference/operators#access-operators) は、テキストインデックスと併用してキーおよび値をフィルタするために使用できます。
 
 例:
 
@@ -335,6 +345,7 @@ SELECT count() FROM tab WHERE map['engine'] = 'clickhouse';
 ```
 
 `Array(T)` 型および `Map(K, V)` 型のカラムをテキストインデックスと併用する場合の例を以下に示します。
+
 
 ### テキストインデックスを使用した `Array` および `Map` カラムの例 {#text-index-array-and-map-examples}
 
@@ -356,10 +367,10 @@ ENGINE = MergeTree
 ORDER BY (post_id);
 ```
 
-テキストインデックスが存在しない場合、特定のキーワード（例：`clickhouse`）を含む投稿を見つけるには、すべてのエントリを全件スキャンする必要があります。
+テキストインデックスが存在しない場合、特定のキーワード（例：`clickhouse`）を含む投稿を見つけるには、すべてのエントリをフルスキャンする必要があります。
 
 ```sql
-SELECT count() FROM posts WHERE has(keywords, 'clickhouse'); -- 低速なフルテーブルスキャン - 全投稿の全キーワードを確認
+SELECT count() FROM posts WHERE has(keywords, 'clickhouse'); -- slow full-table scan - checks every keyword in every post
 ```
 
 プラットフォームが成長するにつれて、クエリはすべての行の `keywords` 配列を走査する必要があるため、次第に処理が遅くなっていきます。
@@ -367,8 +378,9 @@ SELECT count() FROM posts WHERE has(keywords, 'clickhouse'); -- 低速なフル�
 
 ```sql
 ALTER TABLE posts ADD INDEX keywords_idx(keywords) TYPE text(tokenizer = splitByNonAlpha);
-ALTER TABLE posts MATERIALIZE INDEX keywords_idx; -- 既存データに対してインデックスを再構築してください
+ALTER TABLE posts MATERIALIZE INDEX keywords_idx; -- Don't forget to rebuild the index for existing data
 ```
+
 
 #### Map 列のインデックス作成 {#text-index-example-map}
 
@@ -392,11 +404,11 @@ ORDER BY (timestamp);
 テキストインデックスがない場合、[Map](/sql-reference/data-types/map.md) 型データを検索するには、テーブルのフルスキャンが必要になります。
 
 ```sql
--- レート制限データを含むすべてのログを検索:
-SELECT count() FROM logs WHERE has(mapKeys(attributes), 'rate_limit'); -- 低速なフルテーブルスキャン
+-- Finds all logs with rate limiting data:
+SELECT count() FROM logs WHERE has(mapKeys(attributes), 'rate_limit'); -- slow full-table scan
 
--- 特定のIPからのすべてのログを検索:
-SELECT count() FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- 低速なフルテーブルスキャン
+-- Finds all logs from a specific IP:
+SELECT count() FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- slow full-table scan
 ```
 
 ログ量が増加すると、これらのクエリは遅くなります。
@@ -409,22 +421,23 @@ ALTER TABLE logs ADD INDEX attributes_keys_idx mapKeys(attributes) TYPE text(tok
 ALTER TABLE posts MATERIALIZE INDEX attributes_keys_idx;
 ```
 
-属性の実際の内容を検索する必要がある場合は、[mapValues](/sql-reference/functions/tuple-map-functions.md/#mapvalues) を使用してテキストインデックスを作成します。
+ログの属性の実際の内容を検索する必要がある場合は、[mapValues](/sql-reference/functions/tuple-map-functions.md/#mapvalues) を使用してテキストインデックスを作成します。
 
 ```sql
 ALTER TABLE logs ADD INDEX attributes_vals_idx mapValues(attributes) TYPE text(tokenizer = array);
 ALTER TABLE posts MATERIALIZE INDEX attributes_vals_idx;
 ```
 
-クエリの例：
+クエリの例:
 
 ```sql
--- レート制限されたリクエストをすべて検索:
+-- Find all rate-limited requests:
 SELECT * FROM logs WHERE mapContainsKey(attributes, 'rate_limit'); -- fast
 
--- 特定のIPアドレスからのログをすべて検索:
+-- Finds all logs from a specific IP:
 SELECT * FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- fast
 ```
+
 
 ## パフォーマンスチューニング {#performance-tuning}
 
@@ -436,7 +449,7 @@ SELECT * FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- fast
 例:
 
 ```sql
-SELECT column_a, column_b, ... -- 注: column_with_text_indexは含めない
+SELECT column_a, column_b, ... -- not: column_with_text_index
 FROM [...]
 WHERE string_search_function(column_with_text_index)
 ```
@@ -472,15 +485,15 @@ SETTINGS query_plan_direct_read_from_text_index = 0, -- disable direct read
 
 ```text
 [...]
-Filter ((WHERE + 列名を列識別子に変更))
-Filter column: hasToken(__table1.col, 'some_token'_String) (削除済み)
+Filter ((WHERE + Change column names to column identifiers))
+Filter column: hasToken(__table1.col, 'some_token'_String) (removed)
 Actions: INPUT : 0 -> col String : 0
          COLUMN Const(String) -> 'some_token'_String String : 1
          FUNCTION hasToken(col :: 0, 'some_token'_String :: 1) -> hasToken(__table1.col, 'some_token'_String) UInt8 : 2
 [...]
 ```
 
-一方、同じクエリを `query_plan_direct_read_from_text_index = 1` を指定して実行すると
+一方、同じクエリを `query_plan_direct_read_from_text_index = 1` で実行すると
 
 ```sql
 EXPLAIN PLAN actions = 1
@@ -504,18 +517,19 @@ Positions:
 ```
 
 2番目の EXPLAIN PLAN の出力には、仮想カラム `__text_index_<index_name>_<function_name>_<id>` が含まれます。
-このカラムが存在する場合は、直接読み出しが使用されています。
+このカラムが存在する場合は、ダイレクトリードが使用されます。
+
 
 ### キャッシュ {#caching}
 
 テキストインデックスの一部をメモリ上でバッファリングするために、複数のキャッシュが利用可能です（[Implementation Details](#implementation) セクションを参照）。
 現在、I/O を削減するために、テキストインデックスのデシリアライズ済みディクショナリブロック、ヘッダー、およびポスティングリスト用のキャッシュが用意されています。
-これらは設定 [use&#95;text&#95;index&#95;dictionary&#95;cache](/operations/settings/settings#use_text_index_dictionary_cache)、[use&#95;text&#95;index&#95;header&#95;cache](/operations/settings/settings#use_text_index_header_cache)、および [use&#95;text&#95;index&#95;postings&#95;cache](/operations/settings/settings#use_text_index_postings_cache) によって有効化できます。
+これらは設定 [use_text_index_dictionary_cache](/operations/settings/settings#use_text_index_dictionary_cache)、[use_text_index_header_cache](/operations/settings/settings#use_text_index_header_cache)、および [use_text_index_postings_cache](/operations/settings/settings#use_text_index_postings_cache) によって有効化できます。
 デフォルトでは、すべてのキャッシュは無効になっています。
 
 キャッシュを設定するには、以下のサーバー設定を参照してください。
 
-#### ディクショナリブロックキャッシュの設定 {#caching-dictionary}
+#### 辞書ブロックキャッシュ設定 {#caching-dictionary}
 
 | Setting                                                                                                                                                  | Description                                                                                                    |
 |----------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
@@ -626,15 +640,16 @@ INSERT INTO hackernews
 `ALTER TABLE` を使用して comment 列にテキストインデックスを追加し、次にそれをマテリアライズします:
 
 ```sql
--- インデックスを追加
+-- Add the index
 ALTER TABLE hackernews ADD INDEX comment_idx(comment) TYPE text(tokenizer = splitByNonAlpha);
 
--- 既存データのインデックスをマテリアライズ
+-- Materialize the index for existing data
 ALTER TABLE hackernews MATERIALIZE INDEX comment_idx SETTINGS mutations_sync = 2;
 ```
 
 では、`hasToken`、`hasAnyTokens`、`hasAllTokens` 関数を使ってクエリを実行してみます。
-次の例では、標準的なインデックススキャンとダイレクトリード最適化の間で、どれほど大きな性能差が生じるかを示します。
+次の例では、通常のインデックススキャンとダイレクトリードによる最適化の間で、どれほど大きな性能差が生じるかを示します。
+
 
 ### 1. `hasToken` を使用する {#using-hasToken}
 
@@ -655,7 +670,7 @@ SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_re
 │     516 │
 └─────────┘
 
-1行のセット。経過時間: 0.362秒。処理: 2490万行、9.51 GB
+1 row in set. Elapsed: 0.362 sec. Processed 24.90 million rows, 9.51 GB
 ```
 
 **ダイレクトリード有効（高速インデックス読み取り）**
@@ -671,17 +686,18 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 │     516 │
 └─────────┘
 
-1 row in set. 経過時間: 0.008秒 処理行数: 315万行、3.15 MB
+1 row in set. Elapsed: 0.008 sec. Processed 3.15 million rows, 3.15 MB
 ```
 
-直接読み取りクエリは 45 倍以上高速 (0.362s 対 0.008s) で、インデックスのみを読み取ることで処理するデータ量も大幅に削減されます (9.51 GB 対 3.15 MB)。
+直接読み取りクエリは 45 倍以上高速 (0.362s 対 0.008s) で、インデックスのみから読み取ることで処理するデータ量も大幅に削減されます (9.51 GB 対 3.15 MB)。
+
 
 ### 2. `hasAnyTokens` を使用する {#using-hasAnyTokens}
 
 `hasAnyTokens` は、テキストに指定したトークンのうち少なくとも 1 つが含まれているかどうかをチェックします。
-ここでは、&#39;love&#39; または &#39;ClickHouse&#39; のいずれかを含むコメントを検索します。
+ここでは、`love` または `ClickHouse` のいずれかを含むコメントを検索します。
 
-**直接読み取り無効（標準スキャン）**
+**ダイレクトリード無効（標準スキャン）**
 
 ```sql
 SELECT count()
@@ -696,7 +712,7 @@ SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_re
 1 row in set. Elapsed: 1.329 sec. Processed 28.74 million rows, 9.72 GB
 ```
 
-**ダイレクト読み取り有効（高速インデックス読み出し）**
+**ダイレクトリード有効（高速インデックス読み取り）**
 
 ```sql
 SELECT count()
@@ -707,18 +723,18 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 ┌─count()─┐
 │  408426 │
 └─────────┘
+
+1 row in set. Elapsed: 0.015 sec. Processed 27.99 million rows, 27.99 MB
 ```
 
-1 行がセットに含まれています。経過時間: 0.015 秒。27.99 百万行、27.99 MB を処理しました。
+この一般的な「OR」検索では、パフォーマンス向上はさらに顕著です。
+このクエリはフルカラムスキャンを回避することで、約 89 倍高速 (1.329 秒 対 0.015 秒) になります。
 
-````
-この一般的な「OR」検索では、高速化がさらに顕著です。
-フルカラムスキャンを回避することで、クエリは約89倍高速化されます（1.329秒 vs 0.015秒）。
 
-### 3. `hasAllTokens`の使用                       {#using-hasAllTokens}
+### 3. `hasAllTokens`の使用 {#using-hasAllTokens}
 
 `hasAllTokens`は、テキストに指定されたすべてのトークンが含まれているかを確認します。
-'love'と'ClickHouse'の両方を含むコメントを検索します。
+&#39;love&#39;と&#39;ClickHouse&#39;の両方を含むコメントを検索します。
 
 **ダイレクトリード無効（標準スキャン）**
 ダイレクトリードが無効な場合でも、標準スキップインデックスは依然として有効です。
@@ -735,10 +751,10 @@ SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_re
 └─────────┘
 
 1 row in set. Elapsed: 0.184 sec. Processed 147.46 thousand rows, 57.03 MB
-````
+```
 
 **ダイレクトリード有効（高速インデックス読み取り）**
-ダイレクトリードではインデックスデータに対してクエリを実行し、147.46 KB 分のみを読み取って結果を返します。
+ダイレクトリードではインデックスデータに対してクエリを実行し、147.46 KB だけを読み取って結果を返します。
 
 ```sql
 SELECT count()
@@ -750,17 +766,18 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 │      11 │
 └─────────┘
 
-1行が返されました。経過時間: 0.007秒。処理された行数: 147.46千行、147.46 KB
+1 row in set. Elapsed: 0.007 sec. Processed 147.46 thousand rows, 147.46 KB
 ```
 
-この AND 検索では、ダイレクトリード最適化は標準のスキップインデックススキャンと比べて 26 倍以上高速です (0.184s 対 0.007s)。
+この「AND」検索では、ダイレクトリード最適化は標準のスキップインデックススキャンと比較して 26 倍以上高速です（0.184 秒対 0.007 秒）。
+
 
 ### 4. 複合検索: OR, AND, NOT, ... {#compound-search}
 
 ダイレクトリード最適化は、複合ブール式にも適用されます。
 ここでは、大文字小文字を区別しない検索で「ClickHouse」または「clickhouse」を検索します。
 
-**ダイレクトリード無効時 (標準スキャン)**
+**ダイレクトリード無効（標準スキャン）**
 
 ```sql
 SELECT count()
@@ -772,10 +789,10 @@ SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_re
 │     769 │
 └─────────┘
 
-1行が返されました。経過時間: 0.450秒。処理された行数: 2587万行、9.58 GB
+1 row in set. Elapsed: 0.450 sec. Processed 25.87 million rows, 9.58 GB
 ```
 
-**ダイレクトリードが有効（高速インデックス読み取り）**
+**ダイレクトリード有効（高速インデックス読み取り）**
 
 ```sql
 SELECT count()
@@ -793,8 +810,9 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 インデックスの結果を組み合わせることで、直接読み取りクエリは 34 倍高速 (0.450 秒対 0.013 秒) になり、9.58 GB のカラムデータを読み込む必要がなくなります。
 この特定のケースでは、`hasAnyTokens(comment, ['ClickHouse', 'clickhouse'])` が推奨される、より効率的な構文です。
 
+
 ## 関連コンテンツ {#related-content}
 
 - ブログ: [ClickHouse における転置インデックスの紹介](https://clickhouse.com/blog/clickhouse-search-with-inverted-indices)
-- ブログ: [ClickHouse の全文検索の内部構造: 高速・ネイティブ・カラム型](https://clickhouse.com/blog/clickhouse-full-text-search)
+- ブログ: [ClickHouse の全文検索の内部構造: 高速・ネイティブ・列指向](https://clickhouse.com/blog/clickhouse-full-text-search)
 - 動画: [全文検索インデックス: 設計と実験](https://www.youtube.com/watch?v=O_MnyUkrIq8)

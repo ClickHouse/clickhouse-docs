@@ -33,42 +33,44 @@
 
 <SystemLogParameters />
 
+
 ## auth_use_forwarded_address {#auth_use_forwarded_address}
 
-对通过代理连接的客户端，在认证时使用其源地址。
+对通过代理连接的客户端，在认证时使用其原始地址。
 
 :::note
-此设置应格外谨慎使用，因为转发地址很容易被伪造——接受此类认证的服务器不应被直接访问，而应仅通过受信任的代理访问。
+此设置应格外谨慎使用，因为转发地址很容易被伪造——接受此类认证的服务器不应被直接访问，而应仅能通过受信任的代理访问。
 :::
 
 ## 备份 {#backups}
 
-用于在执行 [`BACKUP` 和 `RESTORE`](../backup.md) 语句时的备份相关设置。
+备份相关设置，在执行 [`BACKUP` 和 `RESTORE`](/operations/backup/overview) 语句时使用。
 
-以下设置可通过子标签进行配置：
+以下设置可以通过子标签进行配置：
 
 {/* SQL
   WITH settings AS (
   SELECT arrayJoin([
-    ('allow_concurrent_backups', 'Bool','确定是否允许在同一主机上并发运行多个备份操作。', 'true'),
-    ('allow_concurrent_restores', 'Bool', '确定是否允许在同一主机上并发运行多个恢复操作。', 'true'),
-    ('allowed_disk', 'String', '使用 `File()` 时用于备份的磁盘。必须先设置此参数才能使用 `File`。', ''),
-    ('allowed_path', 'String', '使用 `File()` 时用于备份的路径。必须先设置此参数才能使用 `File`。', ''),
-    ('attempts_to_collect_metadata_before_sleep', 'UInt', '在比较收集到的元数据后发现不一致的情况下，在进入休眠前尝试收集元数据的次数。', '2'),
-    ('collect_metadata_timeout', 'UInt64', '在备份期间收集元数据的超时时间（毫秒）。', '600000'),
-    ('compare_collected_metadata', 'Bool', '如果为 true，则会将收集到的元数据与现有元数据进行比较，以确保它们在备份过程中未被更改。', 'true'),
-    ('create_table_timeout', 'UInt64', '在恢复期间创建表的超时时间（毫秒）。', '300000'),
-    ('max_attempts_after_bad_version', 'UInt64', '在协调备份/恢复时遇到版本错误后重试的最大次数。', '3'),
+    ('allow_concurrent_backups', 'Bool','确定是否允许在同一主机上同时运行多个备份操作。', 'true'),
+    ('allow_concurrent_restores', 'Bool', '确定是否允许在同一主机上并行执行多个恢复操作。', 'true'),
+    ('allowed_disk', 'String', '使用 `File()` 时用于备份的磁盘。要使用 `File`，必须先配置此设置。', ''),
+    ('allowed_path', 'String', '使用 `File()` 时的备份路径。必须配置此项才能使用 `File`。', ''),
+    ('attempts_to_collect_metadata_before_sleep', 'UInt', '在比较已收集的元数据后如果发现不一致，在进入休眠前重试收集元数据的次数。', '2'),
+    ('collect_metadata_timeout', 'UInt64', '用于在备份期间收集元数据的超时时间（毫秒）。', '600000'),
+    ('compare_collected_metadata', 'Bool', '若设置为 `true`，则会将收集的元数据与现有元数据进行比较，以确保它们在备份过程中未发生更改。', 'true'),
+    ('create_table_timeout', 'UInt64', '在恢复过程中创建表的超时时间（毫秒）。', '300000'),
+    ('max_attempts_after_bad_version', 'UInt64', '在协调备份或恢复过程中遇到 bad version 错误时的最大重试次数。', '3'),
     ('max_sleep_before_next_attempt_to_collect_metadata', 'UInt64', '在下一次尝试收集元数据之前的最大休眠时间（毫秒）。', '100'),
-    ('min_sleep_before_next_attempt_to_collect_metadata', 'UInt64', '在下一次尝试收集元数据之前的最小休眠时间（毫秒）。', '5000'),
-    ('remove_backup_files_after_failure', 'Bool', '如果 `BACKUP` 命令失败，ClickHouse 将尝试删除在失败前已复制到备份中的文件；否则会保留这些已复制的文件。', 'true'),
-    ('sync_period_ms', 'UInt64', '协调备份/恢复的同步周期（毫秒）。', '5000'),
-    ('test_inject_sleep', 'Bool', '用于测试的休眠。', 'false'),
-    ('test_randomize_order', 'Bool', '如果为 true，为测试目的随机化某些操作的执行顺序。', 'false'),
-    ('zookeeper_path', 'String', '在使用 `ON CLUSTER` 子句时，存储备份和恢复元数据的 ZooKeeper 路径。', '/clickhouse/backups')
+    ('min_sleep_before_next_attempt_to_collect_metadata', 'UInt64', '在下一次尝试收集元数据前的最小休眠时间（以毫秒为单位）。', '5000'),
+    ('remove_backup_files_after_failure', 'Bool', '如果 `BACKUP` 命令失败，ClickHouse 将尝试删除在失败前已复制到备份中的文件，否则会保留这些已复制的文件原样不动。', 'true'),
+    ('sync_period_ms', 'UInt64', '用于协调备份和恢复的同步周期，单位为毫秒。', '5000'),
+    ('test_inject_sleep', 'Bool', '测试中的休眠', 'false'),
+    ('test_randomize_order', 'Bool', '如果为 true，则会将某些操作的执行顺序随机化，用于测试。', 'false'),
+    ('zookeeper_path', 'String', '在使用 `ON CLUSTER` 子句时，ZooKeeper 中存储备份和恢复元数据的路径。', '/clickhouse/backups')
   ]) AS t )
   SELECT concat('`', t.1, '`') AS Setting, t.2 AS Type, t.3 AS Description, concat('`', t.4, '`') AS Default FROM settings FORMAT Markdown
   */ }
+
 
 | 设置                                                  | 类型       | 描述                                                                 | 默认                    |
 | :-------------------------------------------------- | :------- | :----------------------------------------------------------------- | :-------------------- |
@@ -89,13 +91,14 @@
 | `test_randomize_order`                              | 布尔型      | 如果为 true，则会将某些操作的执行顺序随机化，用于测试。                                     | `false`               |
 | `zookeeper_path`                                    | 字符串      | 在使用 `ON CLUSTER` 子句时，ZooKeeper 中存储备份和恢复元数据的路径。                     | `/clickhouse/backups` |
 
-此设置的默认配置如下：
+该设置的默认配置如下：
 
 ```xml
 <backups>
     ....
 </backups>
 ```
+
 
 ## bcrypt&#95;workfactor {#bcrypt_workfactor}
 
@@ -107,10 +110,11 @@
 ```
 
 :::warning
-对于需要高频鉴权的应用程序，
-建议考虑使用其他鉴权方式，
-因为在较高成本因子（cost factor）下，bcrypt 的计算开销较大。
+对于需要进行高频认证的应用程序，
+建议考虑使用其他认证方式，
+因为在较高工作因子（work factor）下，bcrypt 的计算开销较大。
 :::
+
 
 ## table_engines_require_grant {#table_engines_require_grant}
 
@@ -131,6 +135,7 @@ ClickHouse 每隔 x 秒重新加载一次内置字典。这样就可以在不重
 ```xml
 <builtin_dictionaries_reload_interval>3600</builtin_dictionaries_reload_interval>
 ```
+
 
 ## 压缩 {#compression}
 
@@ -187,11 +192,12 @@ ClickHouse 每隔 x 秒重新加载一次内置字典。这样就可以在不重
 </compression>
 ```
 
+
 ## encryption {#encryption}
 
 配置用于获取密钥的命令，该密钥将用于[加密编解码器](/sql-reference/statements/create/table#encryption-codecs)。密钥（或多个密钥）应通过环境变量提供，或在配置文件中进行设置。
 
-密钥可以是十六进制字符串，或长度等于 16 字节的普通字符串。
+密钥可以是十六进制值，或长度为 16 字节的字符串。
 
 **示例**
 
@@ -245,7 +251,7 @@ ClickHouse 每隔 x 秒重新加载一次内置字典。这样就可以在不重
 
 此处的 `current_key_id` 表示当前用于加密的密钥。
 
-此外，用户可以添加长度必须为 12 字节的 nonce（默认情况下，加密和解密过程使用由全零字节组成的 nonce）：
+此外，用户可以添加一个长度必须为 12 字节的 nonce 值（默认情况下，加密和解密过程使用由全零字节组成的 nonce）：
 
 ```xml
 <encryption_codecs>
@@ -255,7 +261,7 @@ ClickHouse 每隔 x 秒重新加载一次内置字典。这样就可以在不重
 </encryption_codecs>
 ```
 
-或者可以设置为十六进制：
+也可以使用十六进制形式：
 
 ```xml
 <encryption_codecs>
@@ -268,6 +274,7 @@ ClickHouse 每隔 x 秒重新加载一次内置字典。这样就可以在不重
 :::note
 上述所有内容同样适用于 `aes_256_gcm_siv`（但密钥长度必须为 32 字节）。
 :::
+
 
 ## error&#95;log {#error_log}
 
@@ -304,6 +311,7 @@ ClickHouse 每隔 x 秒重新加载一次内置字典。这样就可以在不重
 
 <SystemLogParameters />
 
+
 ## custom&#95;settings&#95;prefixes {#custom_settings_prefixes}
 
 [自定义设置](/operations/settings/query-level#custom_settings) 的前缀列表。多个前缀之间必须以逗号分隔。
@@ -317,6 +325,7 @@ ClickHouse 每隔 x 秒重新加载一次内置字典。这样就可以在不重
 **另请参阅**
 
 * [自定义设置](/operations/settings/query-level#custom_settings)
+
 
 ## core&#95;dump {#core_dump}
 
@@ -334,6 +343,7 @@ ClickHouse 每隔 x 秒重新加载一次内置字典。这样就可以在不重
 </core_dump>
 ```
 
+
 ## default&#95;profile {#default_profile}
 
 默认设置概要。设置概要位于由 `user_config` 设置指定的文件中。
@@ -343,6 +353,7 @@ ClickHouse 每隔 x 秒重新加载一次内置字典。这样就可以在不重
 ```xml
 <default_profile>default</default_profile>
 ```
+
 
 ## dictionaries&#95;config {#dictionaries_config}
 
@@ -363,6 +374,7 @@ ClickHouse 每隔 x 秒重新加载一次内置字典。这样就可以在不重
 <dictionaries_config>*_dictionary.xml</dictionaries_config>
 ```
 
+
 ## user&#95;defined&#95;executable&#95;functions&#95;config {#user_defined_executable_functions_config}
 
 可执行用户自定义函数配置文件的路径。
@@ -382,6 +394,7 @@ ClickHouse 每隔 x 秒重新加载一次内置字典。这样就可以在不重
 <user_defined_executable_functions_config>*_function.xml</user_defined_executable_functions_config>
 ```
 
+
 ## format&#95;schema&#95;path {#format_schema_path}
 
 包含输入数据 schema 的目录路径，例如用于 [CapnProto](/interfaces/formats/CapnProto) 格式的 schema。
@@ -389,9 +402,10 @@ ClickHouse 每隔 x 秒重新加载一次内置字典。这样就可以在不重
 **示例**
 
 ```xml
-<!-- 包含各种输入格式架构文件的目录。 -->
+<!-- Directory containing schema files for various input formats. -->
 <format_schema_path>format_schemas/</format_schema_path>
 ```
+
 
 ## graphite {#graphite}
 
@@ -427,6 +441,7 @@ ClickHouse 每隔 x 秒重新加载一次内置字典。这样就可以在不重
 </graphite>
 ```
 
+
 ## graphite&#95;rollup {#graphite_rollup}
 
 用于对 Graphite 数据进行降采样的设置。
@@ -455,6 +470,7 @@ ClickHouse 每隔 x 秒重新加载一次内置字典。这样就可以在不重
 </graphite_rollup_example>
 ```
 
+
 ## google&#95;protos&#95;path {#google_protos_path}
 
 定义一个包含 Protobuf 类型所需 proto 文件的目录。
@@ -464,6 +480,7 @@ ClickHouse 每隔 x 秒重新加载一次内置字典。这样就可以在不重
 ```xml
 <google_protos_path>/usr/share/clickhouse/protos/</google_protos_path>
 ```
+
 
 ## http&#95;handlers {#http_handlers}
 
@@ -530,6 +547,7 @@ ClickHouse 每隔 x 秒重新加载一次内置字典。这样就可以在不重
 </http_handlers>
 ```
 
+
 ## http&#95;server&#95;default&#95;response {#http_server_default_response}
 
 在访问 ClickHouse HTTP(s) 服务器时默认显示的页面。
@@ -544,6 +562,7 @@ ClickHouse 每隔 x 秒重新加载一次内置字典。这样就可以在不重
   <![CDATA[<html ng-app="SMI2"><head><base href="http://ui.tabix.io/"></head><body><div ui-view="" class="content-ui"></div><script src="http://loader.tabix.io/master.js"></script></body></html>]]>
 </http_server_default_response>
 ```
+
 
 ## http&#95;options&#95;response {#http_options_response}
 
@@ -575,6 +594,7 @@ ClickHouse 每隔 x 秒重新加载一次内置字典。这样就可以在不重
 </http_options_response>
 ```
 
+
 ## hsts&#95;max&#95;age {#hsts_max_age}
 
 HSTS 的有效期（单位：秒）。
@@ -588,6 +608,7 @@ HSTS 的有效期（单位：秒）。
 ```xml
 <hsts_max_age>600000</hsts_max_age>
 ```
+
 
 ## mlock&#95;executable {#mlock_executable}
 
@@ -604,6 +625,7 @@ HSTS 的有效期（单位：秒）。
 <mlock_executable>false</mlock_executable>
 ```
 
+
 ## include&#95;from {#include_from}
 
 替换定义所在的文件路径。支持 XML 和 YAML 格式。
@@ -615,6 +637,7 @@ HSTS 的有效期（单位：秒）。
 ```xml
 <include_from>/etc/metrica.xml</include_from>
 ```
+
 
 ## interserver&#95;listen&#95;host {#interserver_listen_host}
 
@@ -636,6 +659,7 @@ HSTS 的有效期（单位：秒）。
 
 默认值：
 
+
 ## interserver&#95;http&#95;port {#interserver_http_port}
 
 用于 ClickHouse 服务器之间数据交换的端口。
@@ -645,6 +669,7 @@ HSTS 的有效期（单位：秒）。
 ```xml
 <interserver_http_port>9009</interserver_http_port>
 ```
+
 
 ## interserver&#95;http&#95;host {#interserver_http_host}
 
@@ -660,6 +685,7 @@ HSTS 的有效期（单位：秒）。
 <interserver_http_host>example.clickhouse.com</interserver_http_host>
 ```
 
+
 ## interserver&#95;https&#95;port {#interserver_https_port}
 
 用于通过 `HTTPS` 在 ClickHouse 服务器之间进行数据交换的端口。
@@ -670,6 +696,7 @@ HSTS 的有效期（单位：秒）。
 <interserver_https_port>9010</interserver_https_port>
 ```
 
+
 ## interserver&#95;https&#95;host {#interserver_https_host}
 
 与 [`interserver_http_host`](#interserver_http_host) 类似，不同之处在于，该主机名供其他服务器通过 `HTTPS` 访问本服务器时使用。
@@ -679,6 +706,7 @@ HSTS 的有效期（单位：秒）。
 ```xml
 <interserver_https_host>example.clickhouse.com</interserver_https_host>
 ```
+
 
 ## interserver&#95;http&#95;credentials {#interserver_http_credentials}
 
@@ -732,7 +760,8 @@ ClickHouse 支持在无需同时停止所有副本以更新其配置的情况下
 </interserver_http_credentials>
 ```
 
-当新凭证已应用于所有副本后，即可删除旧凭证。
+当新凭据已在所有副本上生效后，可以删除旧凭据。
+
 
 ## ldap_servers {#ldap_servers}
 
@@ -800,6 +829,7 @@ ClickHouse 支持在无需同时停止所有副本以更新其配置的情况下
 </my_ad_server>
 ```
 
+
 ## listen&#95;host {#listen_host}
 
 用于限制允许发起请求的主机范围。如果希望服务器响应所有主机，请指定 `::`。
@@ -811,6 +841,7 @@ ClickHouse 支持在无需同时停止所有副本以更新其配置的情况下
 <listen_host>127.0.0.1</listen_host>
 ```
 
+
 ## listen&#95;try {#listen_try}
 
 在尝试开始监听时，即使 IPv6 或 IPv4 网络不可用，服务器也不会退出。
@@ -820,6 +851,7 @@ ClickHouse 支持在无需同时停止所有副本以更新其配置的情况下
 ```xml
 <listen_try>0</listen_try>
 ```
+
 
 ## listen&#95;reuse&#95;port {#listen_reuse_port}
 
@@ -834,6 +866,7 @@ ClickHouse 支持在无需同时停止所有副本以更新其配置的情况下
 类型：
 
 默认值：
+
 
 ## listen&#95;backlog {#listen_backlog}
 
@@ -854,6 +887,7 @@ ClickHouse 支持在无需同时停止所有副本以更新其配置的情况下
 ```xml
 <listen_backlog>4096</listen_backlog>
 ```
+
 
 ## logger {#logger}
 
@@ -938,7 +972,7 @@ ClickHouse 支持在无需同时停止所有副本以更新其配置的情况下
 </logger>
 ```
 
-若只想在控制台输出日志消息：
+如果只想在控制台打印日志消息：
 
 ```xml
 <logger>
@@ -982,7 +1016,7 @@ ClickHouse 支持在无需同时停止所有副本以更新其配置的情况下
 </logger>
 ```
 
-`<syslog>` 的键：
+`&lt;syslog&gt;` 的键：
 
 | Key        | Description                                                                                                                                                                                  |
 | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -1008,19 +1042,19 @@ ClickHouse 支持在无需同时停止所有副本以更新其配置的情况下
   "level": "Trace",
   "query_id": "",
   "logger_name": "BaseDaemon",
-  "message": "已接收信号 2",
+  "message": "Received signal 2",
   "source_file": "../base/daemon/BaseDaemon.cpp; virtual void SignalListener::run()",
   "source_line": "192"
 }
 ```
 
-要启用对 JSON 日志的支持，请使用以下代码片段：
+要启用 JSON 日志记录支持，请使用以下代码片段：
 
 ```xml
 <logger>
     <formatting>
         <type>json</type>
-        <!-- 可按通道单独配置(log、errorlog、console、syslog),或对所有通道进行全局配置(全局配置时省略此项)。 -->
+        <!-- Can be configured on a per-channel basis (log, errorlog, console, syslog), or globally for all channels (then just omit it). -->
         <!-- <channel></channel> -->
         <names>
             <date_time>date_time</date_time>
@@ -1045,6 +1079,7 @@ ClickHouse 支持在无需同时停止所有副本以更新其配置的情况下
 
 可以通过注释掉属性来省略日志属性。例如，如果不希望日志打印 `query_id`，可以注释掉 `<query_id>` 标签。
 
+
 ## send&#95;crash&#95;reports {#send_crash_reports}
 
 用于向 ClickHouse 核心开发团队发送崩溃报告的设置。
@@ -1067,6 +1102,7 @@ ClickHouse 支持在无需同时停止所有副本以更新其配置的情况下
 </send_crash_reports>
 ```
 
+
 ## ssh&#95;server {#ssh_server}
 
 主机密钥的公钥部分会在首次连接时写入 SSH 客户端的 known&#95;hosts 文件中。
@@ -1084,6 +1120,7 @@ ClickHouse 支持在无需同时停止所有副本以更新其配置的情况下
 </ssh_server>
 ```
 
+
 ## tcp&#95;ssh&#95;port {#tcp_ssh_port}
 
 用于 SSH 服务器的端口，允许用户通过 PTY 使用内置客户端进行交互式连接并执行查询。
@@ -1094,6 +1131,7 @@ ClickHouse 支持在无需同时停止所有副本以更新其配置的情况下
 <tcp_ssh_port>9022</tcp_ssh_port>
 ```
 
+
 ## storage&#95;configuration {#storage_configuration}
 
 允许进行多磁盘存储配置。
@@ -1103,13 +1141,14 @@ ClickHouse 支持在无需同时停止所有副本以更新其配置的情况下
 ```xml
 <storage_configuration>
     <disks>
-        <!-- 配置 -->
+        <!-- configuration -->
     </disks>
     <policies>
-        <!-- 配置 -->
+        <!-- configuration -->
     </policies>
 </storage_configuration>
 ```
+
 
 ### 磁盘配置 {#configuration-of-disks}
 
@@ -1146,9 +1185,10 @@ ClickHouse 支持在无需同时停止所有副本以更新其配置的情况下
 磁盘的顺序没有影响。
 :::
 
+
 ### 策略配置 {#configuration-of-policies}
 
-以上子标签定义了 `policies` 的以下设置：
+上述子标签为 `policies` 定义了以下设置：
 
 | Setting                      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 |------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -1164,6 +1204,7 @@ ClickHouse 支持在无需同时停止所有副本以更新其配置的情况下
 | `volume_priority`            | 定义填充卷的优先级（顺序）。值越小，优先级越高。参数值必须是自然数，并且无间断地覆盖从 1 到 N 的范围（N 为指定的最大参数值）。                                                                                                                                                                                                                                                                                                                                 |
 
 对于 `volume_priority`：
+
 - 如果所有卷都设置了该参数，则按指定顺序确定优先级。
 - 如果只有_部分_卷设置了该参数，未设置该参数的卷优先级最低。已设置该参数的卷根据该参数值确定优先级，其余卷的优先级由它们在配置文件中的描述顺序相互之间决定。
 - 如果_没有任何_卷设置该参数，则按它们在配置文件中的描述顺序确定优先级。
@@ -1183,6 +1224,7 @@ ClickHouse 支持在无需同时停止所有副本以更新其配置的情况下
 <macros incl="macros" optional="true" />
 ```
 
+
 ## replica&#95;group&#95;name {#replica_group_name}
 
 用于 Replicated 数据库的副本组名称。
@@ -1195,8 +1237,9 @@ DDL 查询只会等待同一副本组中的副本完成。
 **示例**
 
 ```xml
-<replica_group_name>备份</replica_group_name>
+<replica_group_name>backups</replica_group_name>
 ```
+
 
 ## remap&#95;executable {#remap_executable}
 
@@ -1212,6 +1255,7 @@ DDL 查询只会等待同一副本组中的副本完成。
 <remap_executable>false</remap_executable>
 ```
 
+
 ## max&#95;open&#95;files {#max_open_files}
 
 最大可打开文件数。
@@ -1226,6 +1270,7 @@ DDL 查询只会等待同一副本组中的副本完成。
 <max_open_files>262144</max_open_files>
 ```
 
+
 ## max&#95;session&#95;timeout {#max_session_timeout}
 
 会话的最大超时时长（单位：秒）。
@@ -1235,6 +1280,7 @@ DDL 查询只会等待同一副本组中的副本完成。
 ```xml
 <max_session_timeout>3600</max_session_timeout>
 ```
+
 
 ## merge&#95;tree {#merge_tree}
 
@@ -1249,6 +1295,7 @@ DDL 查询只会等待同一副本组中的副本完成。
     <max_suspicious_broken_parts>5</max_suspicious_broken_parts>
 </merge_tree>
 ```
+
 
 ## metric&#95;log {#metric_log}
 
@@ -1285,6 +1332,7 @@ DDL 查询只会等待同一副本组中的副本完成。
 
 <SystemLogParameters />
 
+
 ## replicated&#95;merge&#95;tree {#replicated_merge_tree}
 
 针对 [ReplicatedMergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 中各表的微调配置。此设置具有更高优先级。
@@ -1298,6 +1346,7 @@ DDL 查询只会等待同一副本组中的副本完成。
     <max_suspicious_broken_parts>5</max_suspicious_broken_parts>
 </replicated_merge_tree>
 ```
+
 
 ## opentelemetry&#95;span&#95;log {#opentelemetry_span_log}
 
@@ -1323,6 +1372,7 @@ DDL 查询只会等待同一副本组中的副本完成。
     <flush_on_crash>false</flush_on_crash>
 </opentelemetry_span_log>
 ```
+
 
 ## openSSL {#openSSL}
 
@@ -1376,14 +1426,15 @@ SSL 支持由 `libpoco` 库提供。可用的配置选项详见 [SSLManager.h](h
         <cacheSessions>true</cacheSessions>
         <disableProtocols>sslv2,sslv3</disableProtocols>
         <preferServerCiphers>true</preferServerCiphers>
-        <!-- 用于自签名证书: <verificationMode>none</verificationMode> -->
+        <!-- Use for self-signed: <verificationMode>none</verificationMode> -->
         <invalidCertificateHandler>
-            <!-- 用于自签名证书: <name>AcceptCertificateHandler</name> -->
+            <!-- Use for self-signed: <name>AcceptCertificateHandler</name> -->
             <name>RejectCertificateHandler</name>
         </invalidCertificateHandler>
     </client>
 </openSSL>
 ```
+
 
 ## part&#95;log {#part_log}
 
@@ -1408,6 +1459,7 @@ SSL 支持由 `libpoco` 库提供。可用的配置选项详见 [SSLManager.h](h
 </part_log>
 ```
 
+
 ## path {#path}
 
 包含数据的目录路径。
@@ -1421,6 +1473,7 @@ SSL 支持由 `libpoco` 库提供。可用的配置选项详见 [SSLManager.h](h
 ```xml
 <path>/var/lib/clickhouse/</path>
 ```
+
 
 ## processors&#95;profile&#95;log {#processors_profile_log}
 
@@ -1442,6 +1495,7 @@ SSL 支持由 `libpoco` 库提供。可用的配置选项详见 [SSLManager.h](h
     <flush_on_crash>false</flush_on_crash>
 </processors_profile_log>
 ```
+
 
 ## prometheus {#prometheus}
 
@@ -1482,6 +1536,7 @@ SSL 支持由 `libpoco` 库提供。可用的配置选项详见 [SSLManager.h](h
 curl 127.0.0.1:9363/metrics
 ```
 
+
 ## query&#95;log {#query_log}
 
 用于在启用 [log&#95;queries=1](../../operations/settings/settings.md) 设置时记录接收到的查询。
@@ -1506,6 +1561,7 @@ curl 127.0.0.1:9363/metrics
     <flush_on_crash>false</flush_on_crash>
 </query_log>
 ```
+
 
 ## query&#95;metric&#95;log {#query_metric_log}
 
@@ -1542,6 +1598,7 @@ curl 127.0.0.1:9363/metrics
 
 <SystemLogParameters />
 
+
 ## query&#95;cache {#query_cache}
 
 [查询缓存](../query-cache.md) 配置。
@@ -1572,6 +1629,7 @@ curl 127.0.0.1:9363/metrics
 </query_cache>
 ```
 
+
 ## query&#95;thread&#95;log {#query_thread_log}
 
 用于在启用 [log&#95;query&#95;threads=1](/operations/settings/settings#log_query_threads) 设置时记录接收查询的线程。
@@ -1597,6 +1655,7 @@ curl 127.0.0.1:9363/metrics
 </query_thread_log>
 ```
 
+
 ## query&#95;views&#95;log {#query_views_log}
 
 用于记录视图（live、materialized 等）访问情况的日志设置，受接收到的查询以及 [log&#95;query&#95;views=1](/operations/settings/settings#log_query_views) 设置的影响。
@@ -1621,6 +1680,7 @@ curl 127.0.0.1:9363/metrics
     <flush_on_crash>false</flush_on_crash>
 </query_views_log>
 ```
+
 
 ## text&#95;log {#text_log}
 
@@ -1653,6 +1713,7 @@ curl 127.0.0.1:9363/metrics
 </clickhouse>
 ```
 
+
 ## trace&#95;log {#trace_log}
 
 用于 [trace&#95;log](/operations/system-tables/trace_log) 系统表的相关设置。
@@ -1674,6 +1735,7 @@ curl 127.0.0.1:9363/metrics
     <symbolize>false</symbolize>
 </trace_log>
 ```
+
 
 ## asynchronous&#95;insert&#95;log {#asynchronous_insert_log}
 
@@ -1698,6 +1760,7 @@ curl 127.0.0.1:9363/metrics
     </asynchronous_insert_log>
 </clickhouse>
 ```
+
 
 ## crash&#95;log {#crash_log}
 
@@ -1736,6 +1799,7 @@ curl 127.0.0.1:9363/metrics
 </crash_log>
 ```
 
+
 ## custom&#95;cached&#95;disks&#95;base&#95;directory {#custom_cached_disks_base_directory}
 
 此设置用于指定自定义（通过 SQL 创建的）缓存磁盘的缓存路径。
@@ -1754,6 +1818,7 @@ curl 127.0.0.1:9363/metrics
 ```xml
 <custom_cached_disks_base_directory>/var/lib/clickhouse/caches/</custom_cached_disks_base_directory>
 ```
+
 
 ## backup&#95;log {#backup_log}
 
@@ -1779,6 +1844,7 @@ curl 127.0.0.1:9363/metrics
 </clickhouse>
 ```
 
+
 ## blob&#95;storage&#95;log {#blob_storage_log}
 
 [`blob_storage_log`](../system-tables/blob_storage_log.md) 系统表的相关设置。
@@ -1797,6 +1863,7 @@ curl 127.0.0.1:9363/metrics
 </blob_storage_log>
 ```
 
+
 ## query&#95;masking&#95;rules {#query_masking_rules}
 
 基于正则表达式的规则，在将查询以及所有日志消息写入服务器日志（[`system.query_log`](/operations/system-tables/query_log)、[`system.text_log`](/operations/system-tables/text_log)、[`system.processes`](/operations/system-tables/processes) 表）以及发送给客户端之前应用。这样可以防止 SQL 查询中的敏感数据（例如姓名、电子邮件、个人身份标识信息或信用卡号）泄露到日志中。
@@ -1806,7 +1873,7 @@ curl 127.0.0.1:9363/metrics
 ```xml
 <query_masking_rules>
     <rule>
-        <name>隐藏 SSN</name>
+        <name>hide SSN</name>
         <regexp>(^|\D)\d{3}-\d{2}-\d{4}($|\D)</regexp>
         <replace>000-00-0000</replace>
     </rule>
@@ -1827,6 +1894,7 @@ curl 127.0.0.1:9363/metrics
 
 对于分布式查询，每台服务器都必须单独配置，否则传递到其他节点的子查询将会在未进行掩码的情况下被存储。
 
+
 ## remote&#95;servers {#remote_servers}
 
 用于 [Distributed](../../engines/table-engines/special/distributed.md) 表引擎和 `cluster` 表函数的集群配置。
@@ -1844,6 +1912,7 @@ curl 127.0.0.1:9363/metrics
 * [skip&#95;unavailable&#95;shards](../../operations/settings/settings.md#skip_unavailable_shards)
 * [集群发现](../../operations/cluster-discovery.md)
 * [复制数据库引擎](../../engines/database-engines/replicated.md)
+
 
 ## remote&#95;url&#95;allow&#95;hosts {#remote_url_allow_hosts}
 
@@ -1865,6 +1934,7 @@ curl 127.0.0.1:9363/metrics
 </remote_url_allow_hosts>
 ```
 
+
 ## timezone {#timezone}
 
 服务器的时区。
@@ -1883,6 +1953,7 @@ curl 127.0.0.1:9363/metrics
 
 * [session&#95;timezone](../settings/settings.md#session_timezone)
 
+
 ## tcp&#95;port {#tcp_port}
 
 用于与客户端进行 TCP 协议通信的端口。
@@ -1893,6 +1964,7 @@ curl 127.0.0.1:9363/metrics
 <tcp_port>9000</tcp_port>
 ```
 
+
 ## tcp&#95;port&#95;secure {#tcp_port_secure}
 
 用于与客户端进行安全通信的 TCP 端口。应配合 [OpenSSL](#openssl) 设置一起使用。
@@ -1902,6 +1974,7 @@ curl 127.0.0.1:9363/metrics
 ```xml
 <tcp_port_secure>9440</tcp_port_secure>
 ```
+
 
 ## mysql&#95;port {#mysql_port}
 
@@ -1919,6 +1992,7 @@ curl 127.0.0.1:9363/metrics
 <mysql_port>9004</mysql_port>
 ```
 
+
 ## postgresql&#95;port {#postgresql_port}
 
 用于通过 PostgreSQL 协议与客户端进行通信的端口。
@@ -1934,6 +2008,7 @@ curl 127.0.0.1:9363/metrics
 ```xml
 <postgresql_port>9005</postgresql_port>
 ```
+
 
 ## mysql_require_secure_transport {#mysql_require_secure_transport}
 
@@ -1959,6 +2034,7 @@ curl 127.0.0.1:9363/metrics
 <tmp_path>/var/lib/clickhouse/tmp/</tmp_path>
 ```
 
+
 ## url&#95;scheme&#95;mappers {#url_scheme_mappers}
 
 用于将简写或符号化的 URL 前缀映射为完整 URL 的配置。
@@ -1979,6 +2055,7 @@ curl 127.0.0.1:9363/metrics
 </url_scheme_mappers>
 ```
 
+
 ## user&#95;files&#95;path {#user_files_path}
 
 用户文件所在的目录。用于表函数 [file()](../../sql-reference/table-functions/file.md)、[fileCluster()](../../sql-reference/table-functions/fileCluster.md)。
@@ -1988,6 +2065,7 @@ curl 127.0.0.1:9363/metrics
 ```xml
 <user_files_path>/var/lib/clickhouse/user_files/</user_files_path>
 ```
+
 
 ## user&#95;scripts&#95;path {#user_scripts_path}
 
@@ -2003,6 +2081,7 @@ curl 127.0.0.1:9363/metrics
 
 默认值：
 
+
 ## user&#95;defined&#95;path {#user_defined_path}
 
 用于存放用户定义文件的目录。供 SQL 用户定义函数使用，详见 [SQL 用户定义函数](/sql-reference/functions/udf)。
@@ -2012,6 +2091,7 @@ curl 127.0.0.1:9363/metrics
 ```xml
 <user_defined_path>/var/lib/clickhouse/user_defined/</user_defined_path>
 ```
+
 
 ## users&#95;config {#users_config}
 
@@ -2028,6 +2108,7 @@ curl 127.0.0.1:9363/metrics
 <users_config>users.xml</users_config>
 ```
 
+
 ## access&#95;control&#95;improvements {#access_control_improvements}
 
 访问控制系统可选增强功能的相关设置。
@@ -2036,13 +2117,13 @@ curl 127.0.0.1:9363/metrics
 | ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
 | `users_without_row_policies_can_read_rows`      | 设置没有宽松行策略的用户是否仍然可以通过 `SELECT` 查询读取行。例如，如果有两个用户 A 和 B，并且只为 A 定义了行策略，那么当此设置为 true 时，用户 B 将看到所有行；当此设置为 false 时，用户 B 将看不到任何行。                                                                                                                                                                     | `true`  |
 | `on_cluster_queries_require_cluster_grant`      | 设置 `ON CLUSTER` 查询是否需要 `CLUSTER` 授权。                                                                                                                                                                                                                                                          | `true`  |
-| `select_from_system_db_requires_grant`          | 设置 `SELECT * FROM system.<table>` 是否需要任何权限，以及是否可由任意用户执行。如果设置为 true，则该查询需要 `GRANT SELECT ON system.<table>`，与非 system 表相同。例外情况：少数几个 system 表（`tables`、`columns`、`databases`，以及一些常量表，如 `one`、`contributors`）仍然对所有人可访问；并且如果授予了某个 `SHOW` 权限（例如 `SHOW USERS`），则相应的 system 表（即 `system.users`）将可访问。 | `true`  |
-| `select_from_information_schema_requires_grant` | 设置 `SELECT * FROM information_schema.<table>` 是否需要任何权限，以及是否可由任意用户执行。如果设置为 true，则此查询需要 `GRANT SELECT ON information_schema.<table>`，与普通表相同。                                                                                                                                                    | `true`  |
+| `select_from_system_db_requires_grant`          | 设置 `SELECT * FROM system.<table>` 是否需要任何授权，以及是否可由任意用户执行。如果设置为 true，则该查询需要 `GRANT SELECT ON system.<table>`，与非 system 表相同。例外情况：少数几个 system 表（`tables`、`columns`、`databases`，以及一些常量表，如 `one`、`contributors`）仍然对所有人可访问；并且如果授予了某个 `SHOW` 权限（例如 `SHOW USERS`），则相应的 system 表（即 `system.users`）将可访问。 | `true`  |
+| `select_from_information_schema_requires_grant` | 设置 `SELECT * FROM information_schema.<table>` 是否需要任何授权，以及是否可由任意用户执行。如果设置为 true，则此查询需要 `GRANT SELECT ON information_schema.<table>`，与普通表相同。                                                                                                                                                    | `true`  |
 | `settings_constraints_replace_previous`         | 设置配置文件中针对某个设置的约束，是否会覆盖该设置上先前的约束（在其他配置文件中定义），包括那些未被新约束显式设置的字段。它还会启用 `changeable_in_readonly` 约束类型。                                                                                                                                                                                             | `true`  |
 | `table_engines_require_grant`                   | 设置在使用特定表引擎创建表时是否需要授权。                                                                                                                                                                                                                                                                         | `false` |
 | `role_cache_expiration_time_seconds`            | 设置自上次访问以来角色在 Role Cache 中保留的时间（以秒为单位）。                                                                                                                                                                                                                                                        | `600`   |
 
-Example:
+示例：
 
 ```xml
 <access_control_improvements>
@@ -2055,6 +2136,7 @@ Example:
     <role_cache_expiration_time_seconds>600</role_cache_expiration_time_seconds>
 </access_control_improvements>
 ```
+
 
 ## s3queue&#95;log {#s3queue_log}
 
@@ -2073,13 +2155,14 @@ Example:
 </s3queue_log>
 ```
 
+
 ## dead&#95;letter&#95;queue {#dead_letter_queue}
 
 `dead_letter_queue` 系统表的设置。
 
 <SystemLogParameters />
 
-默认设置为：
+默认设置如下：
 
 ```xml
 <dead_letter_queue>
@@ -2089,6 +2172,7 @@ Example:
     <flush_interval_milliseconds>7500</flush_interval_milliseconds>
 </dead_letter_queue>
 ```
+
 
 ## zookeeper {#zookeeper}
 
@@ -2132,9 +2216,9 @@ Example:
     </node>
     <session_timeout_ms>30000</session_timeout_ms>
     <operation_timeout_ms>10000</operation_timeout_ms>
-    <!-- 可选。Chroot 后缀。该路径必须存在。 -->
+    <!-- Optional. Chroot suffix. Should exist. -->
     <root>/path/to/zookeeper/node</root>
-    <!-- 可选。Zookeeper 摘要 ACL 字符串。 -->
+    <!-- Optional. Zookeeper digest ACL string. -->
     <identity>user:password</identity>
     <!--<zookeeper_load_balancing>random / in_order / nearest_hostname / hostname_levenshtein_distance / first_or_random / round_robin</zookeeper_load_balancing>-->
     <zookeeper_load_balancing>random</zookeeper_load_balancing>
@@ -2146,6 +2230,7 @@ Example:
 * [复制](../../engines/table-engines/mergetree-family/replication.md)
 * [ZooKeeper 程序员指南](http://zookeeper.apache.org/doc/current/zookeeperProgrammers.html)
 * [ClickHouse 与 ZooKeeper 之间的可选安全通信](/operations/ssl-zookeeper)
+
 
 ## use_minimalistic_part_header_in_zookeeper {#use_minimalistic_part_header_in_zookeeper}
 
@@ -2192,29 +2277,30 @@ ClickHouse 会对服务器上的所有表使用该设置。可以随时更改这
 
 ```xml
 <distributed_ddl>
-    <!-- ZooKeeper 中 DDL 查询队列的路径 -->
+    <!-- Path in ZooKeeper to queue with DDL queries -->
     <path>/clickhouse/task_queue/ddl</path>
 
-    <!-- 执行 DDL 查询时将使用此配置文件中的设置 -->
+    <!-- Settings from this profile will be used to execute DDL queries -->
     <profile>default</profile>
 
-    <!-- 控制可同时运行的 ON CLUSTER 查询数量 -->
+    <!-- Controls how much ON CLUSTER queries can be run simultaneously. -->
     <pool_size>1</pool_size>
 
     <!--
-         清理设置（活动任务不会被移除）
+         Cleanup settings (active tasks will not be removed)
     -->
 
-    <!-- 控制任务 TTL（默认 1 周）-->
+    <!-- Controls task TTL (default 1 week) -->
     <task_max_lifetime>604800</task_max_lifetime>
 
-    <!-- 控制清理执行频率（以秒为单位）-->
+    <!-- Controls how often cleanup should be performed (in seconds) -->
     <cleanup_delay_period>60</cleanup_delay_period>
 
-    <!-- 控制队列中可容纳的任务数量 -->
+    <!-- Controls how many tasks could be in the queue -->
     <max_tasks_in_queue>1000</max_tasks_in_queue>
 </distributed_ddl>
 ```
+
 
 ## access_control_path {#access_control_path}
 
@@ -2232,6 +2318,7 @@ ClickHouse 服务器用于存储通过 SQL 命令创建的用户和角色配置�
 <allow_plaintext_password>1</allow_plaintext_password>
 ```
 
+
 ## allow&#95;no&#95;password {#allow_no_password}
 
 设置是否允许使用不安全的 `no&#95;password` 密码类型。
@@ -2239,6 +2326,7 @@ ClickHouse 服务器用于存储通过 SQL 命令创建的用户和角色配置�
 ```xml
 <allow_no_password>1</allow_no_password>
 ```
+
 
 ## allow&#95;implicit&#95;no&#95;password {#allow_implicit_no_password}
 
@@ -2248,6 +2336,7 @@ ClickHouse 服务器用于存储通过 SQL 命令创建的用户和角色配置�
 <allow_implicit_no_password>1</allow_implicit_no_password>
 ```
 
+
 ## default&#95;session&#95;timeout {#default_session_timeout}
 
 默认会话超时时间（秒）。
@@ -2255,6 +2344,7 @@ ClickHouse 服务器用于存储通过 SQL 命令创建的用户和角色配置�
 ```xml
 <default_session_timeout>60</default_session_timeout>
 ```
+
 
 ## default&#95;password&#95;type {#default_password_type}
 
@@ -2270,6 +2360,7 @@ ClickHouse 服务器用于存储通过 SQL 命令创建的用户和角色配置�
 ```xml
 <default_password_type>sha256_password</default_password_type>
 ```
+
 
 ## user&#95;directories {#user_directories}
 
@@ -2330,6 +2421,7 @@ ClickHouse 服务器用于存储通过 SQL 命令创建的用户和角色配置�
 </ldap>
 ```
 
+
 ## top&#95;level&#95;domains&#95;list {#top_level_domains_list}
 
 定义要添加的自定义顶级域名列表，其中每个条目的格式为 `<name>/path/to/file</name>`。
@@ -2346,6 +2438,7 @@ ClickHouse 服务器用于存储通过 SQL 命令创建的用户和角色配置�
 
 * 函数 [`cutToFirstSignificantSubdomainCustom`](../../sql-reference/functions/url-functions.md/#cutToFirstSignificantSubdomainCustom) 及其变体，
   它接受一个自定义 TLD 列表的名称，并返回域名中包含顶级子域在内、直到第一个重要子域名的那一部分。
+
 
 ## proxy {#proxy}
 
@@ -2471,11 +2564,12 @@ ClickHouse 将使用以下模板构造代理 URI：`\{proxy_scheme\}://\{proxy_h
 
 代理设置按以下顺序确定：
 
-| 顺序 | 设置                     |
-|------|--------------------------|
-| 1.   | 远程代理解析器           |
-| 2.   | 代理列表                 |
-| 3.   | 环境变量                 |
+| 顺序 | 设置      |
+| -- | ------- |
+| 1. | 远程代理解析器 |
+| 2. | 代理列表    |
+| 3. | 环境变量    |
+
 
 ClickHouse 会根据请求协议，先检查最高优先级的解析器类型。若未定义，
 则会检查优先级次高的解析器类型，直到检查到环境变量解析器为止。
@@ -2509,6 +2603,7 @@ GitLab 也是如此，即使它前面带有一个点号。`gitlab.com` 和 `abou
 </proxy>
 ```
 
+
 ## workload&#95;path {#workload_path}
 
 作为所有 `CREATE WORKLOAD` 和 `CREATE RESOURCE` 查询存储位置的目录。默认情况下，使用服务器工作目录下的 `/workload/` 文件夹。
@@ -2524,6 +2619,7 @@ GitLab 也是如此，即使它前面带有一个点号。`gitlab.com` 和 `abou
 * [工作负载层次结构](/operations/workload-scheduling.md#workloads)
 * [workload&#95;zookeeper&#95;path](#workload_zookeeper_path)
 
+
 ## workload&#95;zookeeper&#95;path {#workload_zookeeper_path}
 
 指向 ZooKeeper 节点的路径，用作所有 `CREATE WORKLOAD` 和 `CREATE RESOURCE` 查询的存储位置。为保持一致性，所有 SQL 定义都会作为同一个 znode 的值进行存储。默认情况下不使用 ZooKeeper，而是将定义存储在[磁盘](#workload_path)上。
@@ -2538,6 +2634,7 @@ GitLab 也是如此，即使它前面带有一个点号。`gitlab.com` 和 `abou
 
 * [工作负载层次结构](/operations/workload-scheduling.md#workloads)
 * [workload&#95;path](#workload_path)
+
 
 ## zookeeper&#95;log {#zookeeper_log}
 
