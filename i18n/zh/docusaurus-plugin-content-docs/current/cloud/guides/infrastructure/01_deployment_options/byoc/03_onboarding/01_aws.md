@@ -46,7 +46,7 @@ module "clickhouse_onboarding" {
 }
 ```
 
-{{/* TODO: 在自助接入流程上线后，为其余接入步骤添加截图。 */ } }
+<!-- TODO: 在自助接入流程上线后，为其余接入步骤添加截图。 -->
 
 
 ### 设置 BYOC 基础设施 {#setup-byoc-infrastructure}
