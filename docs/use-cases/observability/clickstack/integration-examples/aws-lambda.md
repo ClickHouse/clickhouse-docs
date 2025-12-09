@@ -70,7 +70,7 @@ _In these examples replace `{arch}`, `{region}`, and `{version}` with the approp
 3. Scroll to the **Layers** section and click **Add a layer**
 4. Select **Specify an ARN**
 5. Enter the Rotel layer ARN:
-   ```
+   ```text
    arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}-alpha:{version}
    ```
 6. Click **Add**
@@ -119,7 +119,7 @@ ROTEL_OTEL_RESOURCE_ATTRIBUTES="service.name=my-lambda-api,service.version=1.0.0
 For more complex configurations, create a `rotel.env` file in your Lambda function bundle:
 
 **rotel.env:**
-```shell
+```bash
 ROTEL_OTLP_EXPORTER_ENDPOINT=https://clickstack.example.com:4317
 ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=<YOUR_INGESTION_API_KEY>"
 ROTEL_OTEL_RESOURCE_ATTRIBUTES="service.name=my-lambda-api,deployment.environment=production"
@@ -135,13 +135,13 @@ ROTEL_ENV_FILE=/var/task/rotel.env
 For production deployments, store sensitive values like API keys in AWS Secrets Manager or Parameter Store:
 
 **AWS Secrets Manager Example:**
-```shell
+```bash
 ROTEL_OTLP_EXPORTER_ENDPOINT=https://clickstack.example.com:4317
 ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=${arn:aws:secretsmanager:us-east-1:123456789012:secret:clickstack-api-key-abc123}"
 ```
 
 **AWS Parameter Store Example:**
-```shell
+```bash
 ROTEL_OTLP_EXPORTER_ENDPOINT=https://clickstack.example.com:4317
 ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=${arn:aws:ssm:us-east-1:123456789012:parameter/clickstack-api-key}"
 ```
@@ -319,7 +319,7 @@ Checkout the example Python app demonstrating the Rotel Lambda Extension:
 
 - **[Python + ClickHouse](https://github.com/streamfold/python-aws-lambda-clickhouse-example)**: Python application with manual OpenTelemetry instrumentation, sending traces and logs directly to ClickHouse
 
-## Join the Rotel community
+## Join the Rotel community {#join-rotel-community}
 
 If you have questions about Rotel, please join the [Rotel Discord server](https://rotel.dev) and share your feedback or questions. Check out the [Rotel Lambda Extension](https://github.com/streamfold/rotel-lambda-extension) to contribute any improvements.
 
