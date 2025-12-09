@@ -945,7 +945,7 @@ GitLab についても同様で、先頭にドットを付けて指定した場�
 
 ## disk_connections_hard_limit {#disk_connections_hard_limit} 
 
-<SettingsInfoBlock type="UInt64" default_value="20000" />この制限に達すると、作成時に例外がスローされます。0 に設定するとハード制限を無効にできます。この制限はディスク接続数に適用されます。
+<SettingsInfoBlock type="UInt64" default_value="200000" />この制限に達すると、作成時に例外がスローされます。0 に設定するとハード制限を無効にできます。この制限はディスク接続数に適用されます。
 
 ## disk_connections_soft_limit {#disk_connections_soft_limit} 
 
@@ -1297,7 +1297,7 @@ HSTS の有効期限（秒単位）。
 
 ## http_connections_hard_limit {#http_connections_hard_limit} 
 
-<SettingsInfoBlock type="UInt64" default_value="5000" />この制限に達している状態で新規作成を試みると、例外がスローされます。ハード制限を無効にするには 0 に設定します。この制限は、いずれのディスクやストレージにも属さない HTTP 接続に適用されます。
+<SettingsInfoBlock type="UInt64" default_value="200000" />この制限に達している状態で新規作成を試みると、例外がスローされます。ハード制限を無効にするには 0 に設定します。この制限は、いずれのディスクやストレージにも属さない HTTP 接続に適用されます。
 
 ## http_connections_soft_limit {#http_connections_soft_limit} 
 
@@ -3765,7 +3765,7 @@ Host Key Configurations はデフォルトでは無効になっています。
 
 ## storage_connections_hard_limit {#storage_connections_hard_limit} 
 
-<SettingsInfoBlock type="UInt64" default_value="5000" />この制限に達した状態で新規作成を行おうとすると、例外がスローされます。ハードリミットを無効にするには 0 に設定します。この制限はストレージの接続に適用されます。
+<SettingsInfoBlock type="UInt64" default_value="200000" />この制限に達した状態で新規作成を行おうとすると、例外がスローされます。ハードリミットを無効にするには 0 に設定します。この制限はストレージの接続に適用されます。
 
 ## storage_connections_soft_limit {#storage_connections_soft_limit} 
 

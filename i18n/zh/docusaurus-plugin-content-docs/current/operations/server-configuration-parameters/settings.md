@@ -944,7 +944,7 @@ ZooKeeper 中表的路径。
 
 ## disk_connections_hard_limit {#disk_connections_hard_limit} 
 
-<SettingsInfoBlock type="UInt64" default_value="20000" />如果在创建时达到此限制，将会抛出异常。将其设为 0 可关闭硬性限制。该限制适用于磁盘连接数。
+<SettingsInfoBlock type="UInt64" default_value="200000" />如果在创建时达到此限制，将会抛出异常。将其设为 0 可关闭硬性限制。该限制适用于磁盘连接数。
 
 ## disk_connections_soft_limit {#disk_connections_soft_limit} 
 
@@ -1296,7 +1296,7 @@ HSTS 的有效期（以秒为单位）。
 
 ## http_connections_hard_limit {#http_connections_hard_limit} 
 
-<SettingsInfoBlock type="UInt64" default_value="5000" />当达到此限制时，尝试创建新的 http 连接会抛出异常。将其设置为 0 可关闭此硬限制。该限制适用于不属于任何磁盘或存储的 http 连接。
+<SettingsInfoBlock type="UInt64" default_value="200000" />当达到此限制时，尝试创建新的 http 连接会抛出异常。将其设置为 0 可关闭此硬限制。该限制适用于不属于任何磁盘或存储的 http 连接。
 
 ## http_connections_soft_limit {#http_connections_soft_limit} 
 
@@ -3762,7 +3762,7 @@ Keeper 中带有自增编号的路径，由 `generateSerialID` 函数生成。�
 
 ## storage_connections_hard_limit {#storage_connections_hard_limit} 
 
-<SettingsInfoBlock type="UInt64" default_value="5000" />在达到该限制后，后续的创建尝试会抛出异常。将其设为 0 可关闭硬性限制。此限制适用于存储的连接数。
+<SettingsInfoBlock type="UInt64" default_value="200000" />在达到该限制后，后续的创建尝试会抛出异常。将其设为 0 可关闭硬性限制。此限制适用于存储的连接数。
 
 ## storage_connections_soft_limit {#storage_connections_soft_limit} 
 

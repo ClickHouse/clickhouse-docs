@@ -88,6 +88,15 @@ SETTINGS
 
 テーブルに対して構成されている設定の一覧を取得するには、`system.s3_queue_settings` テーブルを使用します。`24.10` 以降で利用可能です。
 
+:::note 設定名 (24.7+)
+バージョン 24.7 以降、S3Queue の設定は `s3queue_` プレフィックスの有無にかかわらず指定できます。
+
+- **モダン構文** (24.7+): `processing_threads_num`、`tracked_file_ttl_sec` など
+- **レガシー構文** (全バージョン): `s3queue_processing_threads_num`、`s3queue_tracked_file_ttl_sec` など
+
+24.7 以降では両方の形式がサポートされています。このページの例では、プレフィックスなしのモダン構文を使用します。
+:::
+
 ### Mode {#mode}
 
 指定可能な値：
@@ -213,22 +222,22 @@ ZooKeeper 内のパスはテーブルエンジンの設定として指定する�
 
 既定値: `/`。
 
-### `s3queue_loading_retries` {#loading&#95;retries}
+### `loading_retries` {#loading_retries}
 
 指定された回数までファイルの読み込みを再試行します。デフォルトでは再試行は行われません。
 取りうる値:
 
-* 正の整数。
+- 正の整数。
 
 デフォルト値: `0`。
 
-### `s3queue_processing_threads_num` {#processing_threads_num}
+### `processing_threads_num` {#processing_threads_num}
 
 処理を実行するスレッド数。`Unordered` モードでのみ適用されます。
 
 デフォルト値: CPU の数または 16。
 
-### `s3queue_parallel_inserts` {#parallel_inserts}
+### `parallel_inserts` {#parallel_inserts}
 
 デフォルトでは、`processing_threads_num` は 1 つの `INSERT` しか生成されないため、複数スレッドで実行されるのはファイルのダウンロードとパース処理だけです。
 しかし、これは並列度を制限するため、スループットを向上させるには `parallel_inserts=true` を使用してください。これによりデータを並列に挿入できるようになります（ただし、その結果として MergeTree ファミリーのテーブルに対して生成されるデータパーツの数が増加する点に注意してください）。
@@ -239,23 +248,23 @@ ZooKeeper 内のパスはテーブルエンジンの設定として指定する�
 
 デフォルト値: `false`。
 
-### `s3queue_enable_logging_to_s3queue_log` {#enable_logging_to_s3queue_log}
+### `enable_logging_to_s3queue_log` {#enable_logging_to_s3queue_log}
 
 `system.s3queue_log` へのログ記録を有効にします。
 
 デフォルト値: `0`。
 
-### `s3queue_polling_min_timeout_ms` {#polling&#95;min&#95;timeout&#95;ms}
+### `polling_min_timeout_ms` {#polling_min_timeout_ms}
 
 ClickHouse が次のポーリングを実行する前に待機する最小時間をミリ秒単位で指定します。
 
 設定可能な値:
 
-* 正の整数。
+- 正の整数。
 
 デフォルト値: `1000`。
 
-### `s3queue_polling_max_timeout_ms` {#polling_max_timeout_ms}
+### `polling_max_timeout_ms` {#polling_max_timeout_ms}
 
 ClickHouse が次のポーリング試行を開始するまでに待機する最大時間を、ミリ秒単位で定義します。
 
@@ -265,28 +274,28 @@ ClickHouse が次のポーリング試行を開始するまでに待機する最
 
 デフォルト値: `10000`。
 
-### `s3queue_polling_backoff_ms` {#polling_backoff_ms}
+### `polling_backoff_ms` {#polling_backoff_ms}
 
 新しいファイルが見つからなかった場合に、前回のポーリング間隔に追加される待機時間を決定します。次回のポーリングは、前回の間隔にこのバックオフ値を加えた値と最大間隔のうち、短い方の時間が経過した後に行われます。
 
 指定可能な値:
 
-* 正の整数。
+- 正の整数。
 
 デフォルト値: `0`。
 
-### `s3queue_tracked_files_limit` {#tracked_files_limit}
+### `tracked_files_limit` {#tracked_files_limit}
 
 `unordered` モードが使用されている場合に、ZooKeeper ノードの数に上限を設けるための設定です。`ordered` モードでは何も行いません。
 上限に達した場合、最も古く処理されたファイルが ZooKeeper ノードから削除され、再度処理されます。
 
 設定可能な値:
 
-* 正の整数。
+- 正の整数。
 
 デフォルト値: `1000`。
 
-### `s3queue_tracked_file_ttl_sec` {#tracked&#95;file&#95;ttl&#95;sec}
+### `tracked_file_ttl_sec` {#tracked_file_ttl_sec}
 
 `unordered` モードにおいて、処理済みファイルを ZooKeeper のノードに保持しておく最大秒数（デフォルトでは無期限に保存）を指定します。`ordered` モードでは何もしません。
 指定された秒数が経過すると、そのファイルは再インポートされます。
@@ -297,21 +306,21 @@ ClickHouse が次のポーリング試行を開始するまでに待機する最
 
 デフォルト値: `0`。
 
-### `s3queue_cleanup_interval_min_ms` {#cleanup&#95;interval&#95;min&#95;ms}
+### `cleanup_interval_min_ms` {#cleanup_interval_min_ms}
 
 'Ordered' モード用。追跡対象ファイルの TTL および追跡対象ファイル集合の最大数を維持するバックグラウンドタスクについて、その再スケジュールの間隔の下限値を定義します。
 
 デフォルト値: `10000`。
 
-### `s3queue_cleanup_interval_max_ms` {#cleanup_interval_max_ms}
+### `cleanup_interval_max_ms` {#cleanup_interval_max_ms}
 
 「Ordered」モード用。追跡対象ファイルの TTL と、追跡対象ファイル集合の最大数を維持するバックグラウンドタスクの再スケジュール間隔に対する上限値を定義します。
 
 デフォルト値: `30000`。
 
-### `s3queue_buckets` {#buckets}
+### `buckets` {#buckets}
 
-「Ordered」モードで使用します。`24.6` から利用可能です。S3Queue テーブルのレプリカが複数あり、それぞれが keeper 内の同一のメタデータディレクトリを使用している場合、`s3queue_buckets` の値はレプリカ数以上に設定する必要があります。`s3queue_processing_threads` 設定も併用している場合は、`S3Queue` の処理における実際の並列度合いをこの設定が決定するため、`s3queue_buckets` 設定の値をさらに大きくすることが推奨されます。
+「Ordered」モードで使用します。`24.6` から利用可能です。S3Queue テーブルのレプリカが複数あり、それぞれが keeper 内の同一のメタデータディレクトリを使用している場合、`buckets` の値はレプリカ数以上に設定する必要があります。`processing_threads` 設定も併用している場合は、`S3Queue` の処理における実際の並列度合いをこの設定が決定するため、`buckets` 設定の値をさらに大きくすることが推奨されます。
 
 ### `use_persistent_processing_nodes` {#use_persistent_processing_nodes}
 
