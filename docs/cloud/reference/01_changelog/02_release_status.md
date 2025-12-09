@@ -44,8 +44,9 @@ The release dates given below are an estimate and may be subject to change.
     fast_date: '2025-12-11',
     regular_date: '2026-01-05',
     slow_date: 'TBD',
-    fast_progress: 'green',
+    fast_progress: 'yellow',
     regular_progress: 'green',
-    slow_progress: 'green'
+    slow_progress: 'green',
+    fast_delay_note: 'Delayed to resolve issues found in internal testing.',
   }
 ]} />
