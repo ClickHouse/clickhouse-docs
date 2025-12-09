@@ -42,11 +42,12 @@ ClickHouse Cloud 提供不同的发布通道，以满足用户在稳定性、新
    {
     changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',
     version: '25.10',
-    fast_date: '2025-12-09',
+    fast_date: '2025-12-11',
     regular_date: '2026-01-05',
     slow_date: 'TBD',
-    fast_progress: 'green',
+    fast_progress: 'orange',
     regular_progress: 'green',
-    slow_progress: 'green'
+    slow_progress: 'green',
+    fast_delay_note: '为解决在内部测试中发现的问题，已延期发布。',
   }
 ]} />

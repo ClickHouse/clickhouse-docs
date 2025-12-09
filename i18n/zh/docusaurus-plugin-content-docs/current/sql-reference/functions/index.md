@@ -2,7 +2,7 @@
 description: '索引文档'
 sidebar: 'sqlreference'
 slug: /sql-reference/functions
-title: '函数总览页'
+title: '函数概览'
 doc_type: 'landing-page'
 ---
 
