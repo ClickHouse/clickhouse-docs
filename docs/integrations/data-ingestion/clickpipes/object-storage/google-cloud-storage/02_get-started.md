@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Get started'
 description: 'Step-by-step guide to create your first Google Cloud Storage ClickPipe.'
-slug: /integrations/clickpipes/object-storage/s3/get-started
+slug: /integrations/clickpipes/object-storage/gcs/get-started
 title: 'Creating your first Google Cloud Storage ClickPipe'
 doc_type: 'guide'
 ---
