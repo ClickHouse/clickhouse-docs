@@ -8,6 +8,7 @@ doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
+import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png'
 
 # Creating your first Azure Blob Storage ClickPipe {#creating-your-first-azure-blob-storage-clickpipe}
 

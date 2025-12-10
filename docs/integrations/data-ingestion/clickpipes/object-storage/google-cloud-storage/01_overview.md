@@ -4,10 +4,12 @@ description: 'Seamlessly connect your object storage to ClickHouse Cloud.'
 slug: /integrations/clickpipes/object-storage/gcs/overview
 sidebar_position: 1
 title: 'Integrating Google Cloud Storage with ClickHouse Cloud'
+doc_type: 'guide'
 ---
 
 import cp_iam from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_iam.png';
 import cp_credentials from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/cp_credentials.png';
+import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
 import Image from '@theme/IdealImage';
 
 The GCS ClickPipe provides a fully-managed and resilient way to ingest data from Google Cloud Storage (GCS). It supports both **one-time** and **continuous ingestion** with exactly-once semantics.
@@ -18,7 +20,7 @@ GCS ClickPipes can be deployed and managed manually using the ClickPipes UI, as 
 
 - [JSON](/interfaces/formats/JSON)
 - [CSV](/interfaces/formats/CSV)
-- [TSV](/interfaces/formats/TSV)
+- [TSV](/interfaces/formats/TabSeparated)
 - [Parquet](/interfaces/formats/Parquet)
 - [Avro](/interfaces/formats/Avro)
 

@@ -41,7 +41,7 @@ import ABSDataSource from '@site/docs/_snippets/clickpipes/object-storage/azure-
 
 The UI will display a list of files in the specified bucket.
 Select your data format (we currently support a subset of ClickHouse formats) and if you want to enable continuous ingestion.
-([More details below](/integrations/clickpipes/object-storage/overview/#continuous-ingest)).
+([More details below](/integrations/clickpipes/object-storage/reference/#continuous-ingest)).
 
 <Image img={cp_step3_object_storage} alt="Set data format and topic" size="lg" border/>
 
@@ -63,7 +63,7 @@ In that case, the UI will allow you to map fields from the source to the ClickHo
 <Image img={cp_step4b} alt="Use an existing table" size="lg" border/>
 
 :::info
-You can also map [virtual columns](../../sql-reference/table-functions/s3#virtual-columns), like `_path` or `_size`, to fields.
+You can also map [virtual columns](/sql-reference/table-functions/s3#virtual-columns), like `_path` or `_size`, to fields.
 :::
 
 ## Configure permissions {#6-configure-permissions}

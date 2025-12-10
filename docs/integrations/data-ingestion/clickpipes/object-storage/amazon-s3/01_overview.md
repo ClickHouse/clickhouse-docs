@@ -4,6 +4,7 @@ description: 'Seamlessly connect your object storage to ClickHouse Cloud.'
 slug: /integrations/clickpipes/object-storage/s3/overview
 sidebar_position: 1
 title: 'Integrating Amazon S3 with ClickHouse Cloud'
+doc_type: 'guide'
 ---
 
 import S3svg from '@site/static/images/integrations/logos/amazon_s3_logo.svg';
@@ -34,7 +35,7 @@ Due to differences in URL formats and API implementations across object storage 
 
 - [JSON](/interfaces/formats/JSON)
 - [CSV](/interfaces/formats/CSV)
-- [TSV](/interfaces/formats/TSV)
+- [TSV](/interfaces/formats/TabSeparated)
 - [Parquet](/interfaces/formats/Parquet)
 - [Avro](/interfaces/formats/Avro)
 

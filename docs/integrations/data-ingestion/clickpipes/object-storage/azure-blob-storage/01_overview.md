@@ -4,6 +4,7 @@ description: 'Seamlessly connect your object storage to ClickHouse Cloud.'
 slug: /integrations/clickpipes/object-storage/abs/overview
 sidebar_position: 1
 title: 'Integrating Azure Blob Storage with ClickHouse Cloud'
+doc_type: 'guide'
 ---
 
 import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
@@ -17,7 +18,7 @@ ABS ClickPipes can be deployed and managed manually using the ClickPipes UI, as 
 
 - [JSON](/interfaces/formats/JSON)
 - [CSV](/interfaces/formats/CSV)
-- [TSV](/interfaces/formats/TSV)
+- [TSV](/interfaces/formats/TabSeparated)
 - [Parquet](/interfaces/formats/Parquet)
 - [Avro](/interfaces/formats/Avro)
 
