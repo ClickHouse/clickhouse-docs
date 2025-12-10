@@ -1,27 +1,27 @@
 ---
-'description': 'Manipulating Constraints 的文档'
-'sidebar_label': 'CONSTRAINT'
-'sidebar_position': 43
-'slug': '/sql-reference/statements/alter/constraint'
-'title': '操作约束'
+description: '约束操作文档'
+sidebar_label: 'CONSTRAINT 约束'
+sidebar_position: 43
+slug: /sql-reference/statements/alter/constraint
+title: '约束操作'
+doc_type: 'reference'
 ---
 
+# 操作约束条件 {#manipulating-constraints}
 
-# 操作约束
-
-约束可以使用以下语法添加或删除：
+可以使用以下语法添加或删除约束条件：
 
 ```sql
-ALTER TABLE [db].name [ON CLUSTER cluster] ADD CONSTRAINT [IF NOT EXISTS] constraint_name CHECK expression;
-ALTER TABLE [db].name [ON CLUSTER cluster] DROP CONSTRAINT [IF EXISTS] constraint_name;
+ALTER TABLE [db].name [ON CLUSTER cluster] 添加 约束 [IF NOT EXISTS] constraint_name CHECK expression;
+ALTER TABLE [db].name [ON CLUSTER cluster] 删除 约束 [IF EXISTS] constraint_name;
 ```
 
-有关更多信息，请参见 [constraints](../../../sql-reference/statements/create/table.md#constraints)。
+在[约束](../../../sql-reference/statements/create/table.md#constraints)部分查看更多内容。
 
-查询将关于约束的元数据添加或移除自表，因此它们会立即处理。
+查询会对表的约束元数据进行添加或删除操作，因此会立即生效。
 
 :::tip
-约束检查 **不会在** 已存在的数据上执行，如果它被添加了。
+如果是后来添加的约束，将**不会在已有数据上执行**检查。
 :::
 
-在复制表上的所有更改都会广播到 ZooKeeper，并将在其他副本上也应用。
+对复制表的所有更改都会广播到 ZooKeeper，并会同样应用到其他副本上。

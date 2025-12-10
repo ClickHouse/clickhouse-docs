@@ -1,13 +1,13 @@
 ---
-description: 'Функция табличного типа loop в ClickHouse используется для возврата результатов запроса в бесконечном цикле.'
+description: 'Табличная функция loop в ClickHouse используется для бесконечного вывода результатов запроса.'
 slug: /sql-reference/table-functions/loop
 title: 'loop'
+doc_type: 'reference'
 ---
 
+# Табличная функция loop {#loop-table-function}
 
-# Функция табличного типа loop
-
-**Синтаксис**
+## Синтаксис {#syntax}
 
 ```sql
 SELECT ... FROM loop(database, table);
@@ -16,21 +16,21 @@ SELECT ... FROM loop(table);
 SELECT ... FROM loop(other_table_function(...));
 ```
 
-**Параметры**
+## Аргументы {#arguments}
 
-- `database` — имя базы данных.
-- `table` — имя таблицы.
-- `other_table_function(...)` — другая табличная функция.
-  Пример: `SELECT * FROM loop(numbers(10));`
-  Здесь `other_table_function(...)` является `numbers(10)`.
+| Аргумент                    | Описание                                                                                                            |
+|-----------------------------|----------------------------------------------------------------------------------------------------------------------|
+| `database`                  | имя базы данных.                                                                                                     |
+| `table`                     | имя таблицы.                                                                                                         |
+| `other_table_function(...)` | другая табличная функция. Пример: `SELECT * FROM loop(numbers(10));` здесь `other_table_function(...)` — это `numbers(10)`. |
 
-**Возвращаемое значение**
+## Возвращаемые значения {#returned_values}
 
-Бесконечный цикл для возврата результатов запроса.
+Бесконечный цикл, возвращающий результаты запроса.
 
-**Примеры**
+## Примеры {#examples}
 
-Выбор данных из ClickHouse:
+Получение данных из ClickHouse:
 
 ```sql
 SELECT * FROM loop(test_database, test_table);
@@ -38,7 +38,7 @@ SELECT * FROM loop(test_database.test_table);
 SELECT * FROM loop(test_table);
 ```
 
-Или с использованием другой табличной функции:
+Или с помощью других табличных функций:
 
 ```sql
 SELECT * FROM loop(numbers(3)) LIMIT 7;
@@ -55,7 +55,8 @@ SELECT * FROM loop(numbers(3)) LIMIT 7;
    ┌─number─┐
 7. │      0 │
    └────────┘
-``` 
+```
+
 ```sql
 SELECT * FROM loop(mysql('localhost:3306', 'test', 'test', 'user', 'password'));
 ...

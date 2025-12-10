@@ -1,26 +1,28 @@
 ---
-'sidebar_label': 'Go'
-'sidebar_position': 1
-'keywords':
-- 'clickhouse'
-- 'go'
-- 'client'
-- 'golang'
-'slug': '/integrations/go'
-'description': 'ClickHouse 的 Go 客户端允许用户使用 Go 标准数据库/sql 接口或优化的本地接口连接到 ClickHouse.'
-'title': 'ClickHouse Go'
+sidebar_label: 'Go'
+sidebar_position: 1
+keywords: ['clickhouse', 'go', 'client', 'golang']
+slug: /integrations/go
+description: 'ClickHouse 的 Go 客户端允许用户通过 Go 标准库的 database/sql 接口或经过优化的原生接口连接到 ClickHouse。'
+title: 'ClickHouse Go'
+doc_type: 'reference'
+integration:
+  - support_level: 'core'
+  - category: 'language_client'
 ---
 
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';
 
+# ClickHouse Go {#clickhouse-go}
 
-# ClickHouse Go
-## 一个简单的示例 {#a-simple-example}
+## 一个简单示例 {#a-simple-example}
 
-让我们通过一个简单的示例开始。 这将连接到 ClickHouse 并从系统数据库中选择。 要开始，您需要您的连接详细信息。
+让我们从一个简单示例开始。这将连接到 ClickHouse，并从 `system` 数据库中执行查询。要开始操作，您需要准备好连接信息。
+
 ### 连接详细信息 {#connection-details}
 
 <ConnectionDetails />
+
 ### 初始化模块 {#initialize-a-module}
 
 ```bash
@@ -28,9 +30,10 @@ mkdir clickhouse-golang-example
 cd clickhouse-golang-example
 go mod init clickhouse-golang-example
 ```
-### 输入一些示例代码 {#copy-in-some-sample-code}
 
-将此代码复制到 `clickhouse-golang-example` 目录中，命名为 `main.go`。
+### 复制一些示例代码 {#copy-in-some-sample-code}
+
+将此代码复制到 `clickhouse-golang-example` 目录中，保存为 `main.go`。
 
 ```go title=main.go
 package main
@@ -107,13 +110,16 @@ func connect() (driver.Conn, error) {
         return conn, nil
 }
 ```
+
 ### 运行 go mod tidy {#run-go-mod-tidy}
 
 ```bash
 go mod tidy
 ```
-### 设置您的连接详细信息 {#set-your-connection-details}
-之前您查看了您的连接详细信息。 在 `main.go` 的 `connect()` 函数中设置它们：
+
+### 设置连接信息 {#set-your-connection-details}
+
+此前您已经获取了连接信息。现在在 `main.go` 的 `connect()` 函数中进行设置：
 
 ```go
 func connect() (driver.Conn, error) {
@@ -130,10 +136,13 @@ func connect() (driver.Conn, error) {
     #highlight-end
       },
 ```
+
 ### 运行示例 {#run-the-example}
+
 ```bash
 go run .
 ```
+
 ```response
 2023/03/06 14:18:33 name: COLUMNS, uuid: 00000000-0000-0000-0000-000000000000
 2023/03/06 14:18:33 name: SCHEMATA, uuid: 00000000-0000-0000-0000-000000000000
@@ -141,60 +150,66 @@ go run .
 2023/03/06 14:18:33 name: VIEWS, uuid: 00000000-0000-0000-0000-000000000000
 2023/03/06 14:18:33 name: hourly_data, uuid: a4e36bd4-1e82-45b3-be77-74a0fe65c52b
 ```
-### 了解更多 {#learn-more}
-本类别的其余文档涵盖了 ClickHouse Go 客户端的详细信息。
+
+### 进一步了解 {#learn-more}
+
+本类别其余文档将详细介绍 ClickHouse Go 客户端。
+
 ## ClickHouse Go 客户端 {#clickhouse-go-client}
 
-ClickHouse 支持两个官方的 Go 客户端。 这些客户端互为补充，并故意支持不同的用例。
+ClickHouse 提供两个官方的 Go 客户端。这两个客户端互为补充，并有意针对不同的使用场景。
 
-* [clickhouse-go](https://github.com/ClickHouse/clickhouse-go) - 高层语言客户端，支持 Go 标准数据库/sql 接口或原生接口。
-* [ch-go](https://github.com/ClickHouse/ch-go) - 低层客户端。 仅限原生接口。
+* [clickhouse-go](https://github.com/ClickHouse/clickhouse-go) - 高级客户端，支持 Go 标准的 `database/sql` 接口或原生接口。
+* [ch-go](https://github.com/ClickHouse/ch-go) - 底层客户端，仅支持原生接口。
 
-clickhouse-go 提供了一个高级接口，使用户能够使用行导向语义进行查询和插入数据，并且在数据类型方面更加宽松 - 只要不涉及可能的精度损失，就会自动转换值。 与此同时，ch-go 提供了一个优化的列导向接口，能够以较低的 CPU 和内存开销快速流式传输数据块，但以类型严格性和更复杂的使用为代价。
+clickhouse-go 提供了一个高级接口，允许用户使用面向行的语义和批处理来查询和插入数据，并在数据类型上具有一定宽容度——只要不会造成精度损失，值就会被转换。与此同时，ch-go 提供了经过优化的面向列接口，可以在类型更严格、使用更复杂的前提下，以较低的 CPU 和内存开销实现数据块的高速流式传输。
 
-从版本 2.3 开始，Clickhouse-go 利用 ch-go 来实现低级功能，如编码、解码和压缩。 请注意，clickhouse-go 也支持 Go 的 `database/sql` 接口标准。 两个客户端都使用原生格式进行编码，以提供最佳性能，并可以通过原生 ClickHouse 协议进行通信。 对于需要代理或负载均衡流量的情况，clickhouse-go 还支持 HTTP 作为其传输机制。
+从 2.3 版本开始，clickhouse-go 在编码、解码和压缩等底层功能上使用 ch-go。请注意，clickhouse-go 还支持 Go 标准的 `database/sql` 接口。两个客户端在编码时都使用原生格式，以提供最佳性能，并可以通过原生 ClickHouse 协议进行通信。对于需要对流量进行代理或负载均衡的场景，clickhouse-go 也支持使用 HTTP 作为传输机制。
 
-在选择客户端库时，用户应意识到各自的优缺点 - 请参见选择客户端库。
+在选择客户端库时，用户应了解各自的优缺点——参见 Choosing a Client Library。
 
 |               | 原生格式 | 原生协议 | HTTP 协议 | 行导向 API | 列导向 API | 类型灵活性 | 压缩 | 查询占位符 |
-|:-------------:|:--------:|:-------:|:---------:|:----------:|:----------:|:----------:|:----:|:----------:|
-| clickhouse-go |    ✅    |    ✅    |    ✅     |    ✅      |    ✅      |     ✅     |  ✅   |     ✅     |
-|     ch-go     |    ✅    |    ✅    |           |            |    ✅      |            |  ✅   |            |
+|:-------------:|:--------:|:--------:|:---------:|:----------:|:----------:|:----------:|:----:|:----------:|
+| clickhouse-go |    ✅     |    ✅     |     ✅     |     ✅      |     ✅      |     ✅      |  ✅  |     ✅      |
+|     ch-go     |    ✅     |    ✅     |           |            |     ✅      |            |  ✅  |            |
+
 ## 选择客户端 {#choosing-a-client}
 
-选择客户端库取决于您的使用模式和对最佳性能的需求。 对于需要每秒数百万次插入的插入密集型用例，我们建议使用低级客户端 [ch-go](https://github.com/ClickHouse/ch-go)。 该客户端避免了将数据从行导向格式转换为列格式的相关开销，因为 ClickHouse 的原生格式要求。 此外，它避免了任何反射或使用 `interface{}` (`any`) 类型来简化使用。
+选择客户端库取决于你的使用模式以及对性能的要求。对于写入量极大的场景（例如每秒需要进行数百万次插入），我们推荐使用低层级客户端 [ch-go](https://github.com/ClickHouse/ch-go)。该客户端避免了按 ClickHouse 原生格式要求，将数据从行式格式转换为列式格式所带来的额外开销。此外，它也避免了任何反射机制或使用 `interface{}`（`any`）类型，从而简化了使用。
 
-对于关注聚合或较低吞吐量插入工作负载的查询工作负载，[clickhouse-go](https://github.com/ClickHouse/clickhouse-go) 提供了熟悉的 `database/sql` 接口和更直接的行语义。 用户还可以选择使用 HTTP 作为传输协议，并利用帮助函数将行与结构体之间进行序列化和反序列化。
+对于以聚合查询为主，或插入吞吐量要求较低的工作负载，[clickhouse-go](https://github.com/ClickHouse/clickhouse-go) 提供了熟悉的 `database/sql` 接口以及更直观的行语义。用户也可以选择使用 HTTP 作为传输协议，并利用辅助函数在行与 struct 之间进行编组和解编组（marshal/unmarshal）。
+
 ## clickhouse-go 客户端 {#the-clickhouse-go-client}
 
-clickhouse-go 客户端提供了两个与 ClickHouse 通信的 API 接口：
+clickhouse-go 客户端提供了两种与 ClickHouse 通信的 API 接口：
 
-* ClickHouse 客户端特定的 API
-* `database/sql` 标准 - Golang 提供的 SQL 数据库的通用接口。
+* ClickHouse 客户端专用 API
+* `database/sql` 标准——由 Go 语言提供的、面向 SQL 数据库的通用接口。
 
-虽然 `database/sql` 提供了一个与数据库无关的接口，使开发人员能够抽象他们的数据存储，但它强制实施某些类型和查询语义，这会影响性能。 因此，在[性能重要时](https://github.com/clickHouse/clickHouse-go#benchmark)，应该使用客户端特定的 API。 但是，希望将 ClickHouse 集成到支持多个数据库的工具中的用户，可能更愿意使用标准接口。
+尽管 `database/sql` 提供了与具体数据库无关的接口，使开发者可以抽象其数据存储，但它强加了一些类型和查询语义上的约束，可能会影响性能。因此，在[对性能有较高要求](https://github.com/clickHouse/clickHouse-go#benchmark)的场景下，应优先使用客户端专用 API。不过，希望将 ClickHouse 集成到支持多种数据库的工具中的用户，则可能更倾向于使用该标准接口。
 
-两个接口都使用 [native format](/native-protocol/basics.md) 和原生协议进行通信。此外，标准接口支持通过 HTTP 进行通信。
+这两种接口都使用 [native format](/native-protocol/basics.md) 和原生协议进行通信。此外，标准接口还支持通过 HTTP 进行通信。
 
-|                    | 原生格式 | 原生协议 | HTTP 协议 | 批量写入支持 | 结构体序列化 | 压缩 | 查询占位符 |
-|:------------------:|:--------:|:-------:|:---------:|:------------:|:-------------:|:----:|:----------:|
-|   ClickHouse API   |    ✅    |    ✅    |           |      ✅      |       ✅      |  ✅   |     ✅     |
-| `database/sql` API |    ✅    |    ✅    |    ✅     |      ✅      |               |  ✅   |     ✅     |
+|                    | 原生格式（Native format） | 原生协议（Native protocol） | HTTP 协议（HTTP protocol） | 批量写入支持（Bulk write support） | 结构体编解码（Struct marshaling） | 压缩（Compression） | 查询占位符（Query Placeholders） |
+|:------------------:|:------------------------:|:---------------------------:|:---------------------------:|:----------------------------------:|:---------------------------------:|:-------------------:|:--------------------------------:|
+|   ClickHouse API   |            ✅             |              ✅              |                             |                 ✅                  |                 ✅                 |          ✅          |                ✅                 |
+| `database/sql` API |            ✅             |              ✅              |              ✅              |                 ✅                  |                                     |          ✅          |                ✅                 |
+
 ## 安装 {#installation}
 
-驱动程序的 v1 已被弃用，不会进行功能更新或支持新的 ClickHouse 类型。 用户应迁移到 v2，后者提供了更卓越的性能。
+驱动程序的 v1 版本已被弃用，将不再收到新功能更新或对新增 ClickHouse 类型的支持。用户应迁移到 v2，它提供更高的性能。
 
-要安装 2.x 版本的客户端，请将包添加到您的 go.mod 文件中：
+要安装 2.x 版本的客户端，请在 go.mod 文件中添加该包：
 
 `require github.com/ClickHouse/clickhouse-go/v2 main`
 
-或者，克隆仓库：
+或者克隆该仓库：
 
 ```bash
 git clone --branch v2 https://github.com/clickhouse/clickhouse-go.git $GOPATH/src/github
 ```
 
-要安装其他版本，请相应地修改路径或分支名称。
+要安装其他版本，请相应修改路径或分支名称。
 
 ```bash
 mkdir my-clickhouse-app && cd my-clickhouse-app
@@ -226,29 +241,34 @@ go mod tidy
 go run main.go
 
 ```
-### 版本控制与兼容性 {#versioning--compatibility}
 
-该客户端独立于 ClickHouse 发布。 2.x 是当前正在开发的主要版本。所有 2.x 版本应彼此兼容。
+### 版本管理与兼容性 {#versioning--compatibility}
+
+该客户端的发布独立于 ClickHouse。2.x 是当前开发中的主版本分支。所有 2.x 版本之间都应保持相互兼容。
+
 #### ClickHouse 兼容性 {#clickhouse-compatibility}
 
 客户端支持：
 
-- 所有当前支持的 ClickHouse 版本，记录在 [这里](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md)。 随着 ClickHouse 版本不再受支持，它们也不再主动针对客户端发布进行测试。
-- 所有 ClickHouse 版本在客户端发布后的 2 年内。 请注意，只有 LTS 版本会进行主动测试。
+- [此处](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md)记录的所有当前仍受支持的 ClickHouse 版本。一旦某些 ClickHouse 版本不再受支持，也将不再针对客户端新版本进行主动测试。
+- 自客户端发布日期起 2 年内的所有 ClickHouse 版本。注意：仅对 LTS 版本进行主动测试。
+
 #### Golang 兼容性 {#golang-compatibility}
 
 | 客户端版本 | Golang 版本 |
-|:----------:|:-----------:|
+|:--------------:|:---------------:|
 |  => 2.0 &lt;= 2.2 |    1.17, 1.18   |
 |     >= 2.3     |       1.18      |
+
 ## ClickHouse 客户端 API {#clickhouse-client-api}
 
-所有 ClickHouse 客户端 API 的代码示例可以在 [这里](https://github.com/ClickHouse/clickhouse-go/tree/main/examples) 找到。
+所有 ClickHouse 客户端 API 的代码示例都可以在[此处](https://github.com/ClickHouse/clickhouse-go/tree/main/examples)找到。
+
 ### 连接 {#connecting}
 
-以下示例返回服务器版本，演示如何连接到 ClickHouse - 假设 ClickHouse 没有安全保护，默认用户可以访问。
+下面的示例（返回服务器版本）演示了如何连接到 ClickHouse，假设 ClickHouse 未启用安全配置，并且可以使用默认用户进行访问。
 
-注意我们使用默认的原生端口进行连接。
+注意，这里使用的是默认的原生端口进行连接。
 
 ```go
 conn, err := clickhouse.Open(&clickhouse.Options{
@@ -268,26 +288,27 @@ fmt.Println(v)
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/connect.go)
 
-**对于后续的示例，除非明确显示，我们假设使用的 ClickHouse `conn` 变量已创建并可用。**
+**在后续所有示例中，除非特别说明，否则都假定 ClickHouse 的 `conn` 变量已创建并可用。**
+
 #### 连接设置 {#connection-settings}
 
-打开连接时，可以使用 Options 结构来控制客户端行为。 可用的设置如下：
+在建立连接时，可以使用一个 Options 结构体来控制客户端行为。可用的设置如下：
 
-* `Protocol` - 原生或 HTTP。 目前仅支持 HTTP [database/sql API](#databasesql-api)。
-* `TLS` - TLS 选项。 非零值启用 TLS。 请参见 [使用 TLS](#using-tls)。
-* `Addr` - 包含端口的地址切片。
-* `Auth` - 身份验证详细信息。 请参见 [身份验证](#authentication)。
-* `DialContext` - 自定义拨号函数，用于确定如何建立连接。
-* `Debug` - true/false 启用调试。
-* `Debugf` - 提供一个函数以消费调试输出。 需要将 `debug` 设置为 true。
-* `Settings` - ClickHouse 设置的映射。 这些将应用于所有 ClickHouse 查询。 [使用上下文](#using-context)允许每个查询设置设置。
-* `Compression` - 启用数据块的压缩。 请参见 [压缩](#compression)。
-* `DialTimeout` - 建立连接的最大时间。 默认为 `1s`。
-* `MaxOpenConns` - 在任何时间使用的最大连接数。 可能会有更多或更少的连接在空闲池中，但在任何时候只能使用此数字。 默认为 `MaxIdleConns+5`。
-* `MaxIdleConns` - 在池中保持的连接数量。 尽可能重用连接。 默认为 `5`。
-* `ConnMaxLifetime` - 可用连接的最大生命周期。 默认为 1小时。 此时销毁连接，根据需要将新连接添加到池中。
-* `ConnOpenStrategy` - 确定应该如何使用节点地址列表并用于打开连接。 请参见 [连接多个节点](#connecting-to-multiple-nodes)。
-* `BlockBufferSize` - 一次解码到缓冲区的最大块数。 更大的值会以牺牲内存为代价增加并行性。 块大小依赖于查询，因此尽管可以在连接上设置此值，但我们建议您根据返回的数据覆盖每个查询。 默认为 `2`。
+* `Protocol` - 协议，可以是 Native 或 HTTP。当前仅在 [database/sql API](#databasesql-api) 中支持 HTTP。
+* `TLS` - TLS 选项。非 nil 值会启用 TLS。参见 [Using TLS](#using-tls)。
+* `Addr` - 地址切片（slice），每个地址都包含端口。
+* `Auth` - 认证详细信息。参见 [Authentication](#authentication)。
+* `DialContext` - 自定义拨号函数，用于决定如何建立连接。
+* `Debug` - true/false，用于启用调试。
+* `Debugf` - 提供一个函数来处理调试输出。需要将 `debug` 设置为 true。
+* `Settings` - ClickHouse 设置的映射。这些设置会应用到所有 ClickHouse 查询上。[Using Context](#using-context) 允许按查询设置配置。
+* `Compression` - 启用数据块压缩。参见 [Compression](#compression)。
+* `DialTimeout` - 建立连接的最长时间。默认为 `1s`。
+* `MaxOpenConns` - 任意时刻可用的最大连接数。空闲连接池中可能有更多或更少的连接，但在任意时刻只能使用该数量的连接。默认值为 `MaxIdleConns+5`。
+* `MaxIdleConns` - 连接池中要保持的连接数量。如果可能，这些连接会被重用。默认值为 `5`。
+* `ConnMaxLifetime` - 连接可用的最长生命周期。默认为 1 小时。连接在该时间之后会被销毁，并根据需要将新连接加入连接池。
+* `ConnOpenStrategy` - 决定如何使用节点地址列表并据此打开连接。参见 [Connecting to Multiple Nodes](#connecting-to-multiple-nodes)。
+* `BlockBufferSize` - 一次解码到缓冲区中的最大数据块数量。更大的值会在消耗更多内存的代价下提升并行度。数据块大小依赖于查询，因此虽然可以在连接级别设置该值，但建议根据查询返回的数据在每个查询上单独覆盖它。默认值为 `2`。
 
 ```go
 conn, err := clickhouse.Open(&clickhouse.Options{
@@ -323,17 +344,20 @@ if err != nil {
     return err
 }
 ```
+
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/connect_settings.go)
-#### 连接池管理 {#connection-pooling}
 
-客户端维护一个连接池，在查询之间重用这些连接。 在任何时间最多使用 `MaxOpenConns`，最大池大小受 `MaxIdleConns` 控制。 客户端将在每次查询执行时从池中获取连接，并将其返回池中以便重复使用。 连接在批处理的整个生命周期内使用，并在 `Send()` 时释放。
+#### 连接池 {#connection-pooling}
 
-除非用户设置 `MaxOpenConns=1`，否则没有保证池中的相同连接会用于后续查询。 这很少需要，但可能在用户使用临时表的情况下需要。
+客户端维护一个连接池，并根据需要在查询之间复用这些连接。任意时刻最多会使用 `MaxOpenConns` 个连接，连接池的最大容量由 `MaxIdleConns` 控制。客户端在每次执行查询时都会从池中获取一个连接，在查询完成后将其归还到池中以便复用。单个连接会在整个批处理的生命周期内被占用，并在调用 `Send()` 后释放。
 
-另外，请注意 `ConnMaxLifetime` 默认值为 1小时。 如果节点离开集群，可能会导致负载不均衡。 这可能发生在节点变得不可用时，连接会平衡到其他节点。 这些连接将在默认情况下保留并不会在 1小时内刷新，即使有问题的节点返回集群。 在负载较重的情况下，考虑降低此值。
+无法保证池中的同一连接会被用于后续查询，除非用户设置 `MaxOpenConns=1`。这种需求较为少见，但在使用临时表的场景下可能是必需的。
+
+另外请注意，`ConnMaxLifetime` 的默认值为 1 小时。如果节点离开集群，这可能会导致发送到 ClickHouse 的负载出现不均衡。当某个节点不可用时，连接会被分配到其他节点。这些连接会持续存在，且在默认情况下 1 小时内不会被刷新，即使出现问题的节点已经重新加入集群也是如此。在高负载场景下，建议考虑适当降低该值。
+
 ### 使用 TLS {#using-tls}
 
-在较低级别，所有客户端连接方法（`DSN/OpenDB/Open`）将使用[ Go tls 包](https://pkg.go.dev/crypto/tls) 来建立安全连接。 如果 Options 结构包含非零值的 `tls.Config` 指针，客户端将知道使用 TLS。
+在底层，所有客户端连接方法（`DSN/OpenDB/Open`）都会使用 [Go 的 tls 包](https://pkg.go.dev/crypto/tls) 来建立安全连接。如果 Options 结构体中包含一个非 nil 的 `tls.Config` 指针，客户端就会知道需要使用 TLS。
 
 ```go
 env, err := GetNativeTestEnvironment()
@@ -376,7 +400,7 @@ fmt.Println(v.String())
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/ssl.go)
 
-此最小的 `TLS.Config` 通常足以连接到 ClickHouse 服务器上的安全原生端口（通常为 9440）。 如果 ClickHouse 服务器没有有效的证书（过期、主机名错误、未由公认的根证书颁发机构签名），则 `InsecureSkipVerify` 可以设置为 true，但强烈不推荐使用。
+这个最精简的 `TLS.Config` 通常足以连接到 ClickHouse 服务器上的安全原生端口（通常为 9440）。如果 ClickHouse 服务器没有有效证书（证书过期、主机名不匹配、未由公众认可的根证书颁发机构签署），可以将 `InsecureSkipVerify` 设为 true，但强烈不建议这样做。
 
 ```go
 conn, err := clickhouse.Open(&clickhouse.Options{
@@ -398,10 +422,11 @@ v, err := conn.ServerVersion()
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/ssl_no_verify.go)
 
-如果需要额外的 TLS 参数，应用代码应该在 `tls.Config` 结构中设置所需的字段。 这可以包括特定的密码套件、强制特定的 TLS 版本（如 1.2 或 1.3）、添加内部 CA 证书链、如果 ClickHouse 服务器需要，添加客户端证书（和私钥），以及其他更专业安全设置中附带的大多数选项。
-### 身份验证 {#authentication}
+如果需要额外的 TLS 参数，应用代码应在 `tls.Config` 结构体中设置相应字段。这可以包括指定密码套件、强制使用特定 TLS 版本（如 1.2 或 1.3）、添加内部 CA 证书链、在 ClickHouse 服务器要求时添加客户端证书（及其私钥），以及大多数用于更高级安全配置的其他选项。
 
-在连接详细信息中指定一个 Auth 结构，以指定用户名和密码。
+### 认证 {#authentication}
+
+在连接配置中通过指定 Auth 结构体来设置用户名和密码。
 
 ```go
 conn, err := clickhouse.Open(&clickhouse.Options{
@@ -420,7 +445,8 @@ v, err := conn.ServerVersion()
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/auth.go)
-### 连接多个节点 {#connecting-to-multiple-nodes}
+
+### 连接到多个节点 {#connecting-to-multiple-nodes}
 
 可以通过 `Addr` 结构指定多个地址。
 
@@ -447,10 +473,10 @@ fmt.Println(v.String())
 
 提供两种连接策略：
 
-* `ConnOpenInOrder` （默认） - 按顺序消耗地址。 后面的地址仅在无法使用列表中较早的地址连接时利用。 这实际上是一种故障转移策略。
-* `ConnOpenRoundRobin` - 使用轮询策略在地址之间进行负载均衡。
+* `ConnOpenInOrder`（默认） - 按顺序依次尝试这些地址。只有在无法使用列表中较前的地址建立连接时，才会使用后面的地址。这实际上是一种故障切换（failover）策略。
+* `ConnOpenRoundRobin` - 使用轮询策略在多个地址之间均衡负载。
 
-这可以通过选项 `ConnOpenStrategy` 控制。
+可以通过选项 `ConnOpenStrategy` 来控制这一行为。
 
 ```go
 conn, err := clickhouse.Open(&clickhouse.Options{
@@ -472,9 +498,10 @@ if err != nil {
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/1c0d81d0b1388dbb9e09209e535667df212f4ae4/examples/clickhouse_api/multi_host.go#L50-L67)
+
 ### 执行 {#execution}
 
-可以通过 `Exec` 方法执行任意语句。 这对于 DDL 和简单语句很有用。 不应用于更大的插入或查询迭代。
+可以通过 `Exec` 方法执行任意语句。这对于 DDL 和简单语句非常有用，但不应将其用于大批量插入或循环执行查询。
 
 ```go
 conn.Exec(context.Background(), `DROP TABLE IF EXISTS example`)
@@ -492,10 +519,13 @@ conn.Exec(context.Background(), "INSERT INTO example VALUES (1, 'test-1')")
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/exec.go)
 
-请注意能够将上下文传递给查询。 可用于传递特定的查询级别设置 - 请参见 [使用上下文](#using-context)。
+注意可以将 Context 传递给查询。这可以用于传入特定的查询级别设置——参见[使用 Context](#using-context)。
+
 ### 批量插入 {#batch-insert}
 
-要插入大量行，客户端提供了批处理语义。 这需要准备一个可以逐行附加的批处理。 最后通过 `Send()` 方法发送。 批处理将在执行发送前保留在内存中。
+为了插入大量行，客户端提供了批处理语义。需要先准备一个批处理对象，然后可以向其中追加多行数据。最后通过 `Send()` 方法发送该批处理。在执行 `Send` 之前，批处理会保存在内存中。
+
+建议对批处理调用 `Close` 以防止连接泄漏。可以在创建批处理后配合 `defer` 关键字来实现这一点。如果从未调用 `Send`，这将清理连接。请注意，如果没有追加任何行，此时查询日志中只会显示插入 0 行的记录。
 
 ```go
 conn, err := GetNativeConnection(nil, nil, nil)
@@ -523,11 +553,12 @@ if err != nil {
     return err
 }
 
-
 batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
 if err != nil {
     return err
 }
+defer batch.Close()
+
 for i := 0; i < 1000; i++ {
     err := batch.Append(
         uint8(42),
@@ -549,20 +580,23 @@ for i := 0; i < 1000; i++ {
         return err
     }
 }
+
 return batch.Send()
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/batch.go)
 
-ClickHouse 的推荐做法适用于 [这里](/guides/inserting-data#best-practices-for-inserts)。 批处理不应在 Go 协程之间共享 - 为每个协程构建一个单独的批处理。
+针对 ClickHouse 的推荐做法同样适用于[此处](/guides/inserting-data#best-practices-for-inserts)。批次（batch）不应在多个 goroutine 之间共享——每个 goroutine 都应构造各自独立的 batch。
 
-从上述示例中，注意在附加行时变量类型需要与列类型对齐。 尽管映射通常是显而易见的，但该接口旨在灵活，其类型将在不涉及精度损失的情况下被转换。 例如，以下示例演示了将字符串插入 datetime64。
+从上面的示例可以看出，在追加行数据时，变量类型需要与列类型保持一致。虽然类型映射通常是显而易见的，但该接口尽量保持灵活，只要不会产生精度损失，就会进行类型转换。例如，下面的示例演示了将字符串插入到 DateTime64 列中。
 
 ```go
 batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
 if err != nil {
     return err
 }
+defer batch.Close()
+
 for i := 0; i < 1000; i++ {
     err := batch.Append(
         "2006-01-02 15:04:05.999",
@@ -571,15 +605,17 @@ for i := 0; i < 1000; i++ {
         return err
     }
 }
+
 return batch.Send()
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/type_convert.go)
 
-有关每种列类型支持的完整 Go 类型摘要，请参见 [类型转换](#type-conversions)。
+若要查看每种列类型所支持的 Go 类型的完整说明，请参阅 [类型转换](#type-conversions)。
+
 ### 查询行 {#querying-rows}
 
-用户可以使用 `QueryRow` 方法查询单行，或通过 `Query` 获得用于迭代结果集的游标。 前者接受用于序列化数据的目标，后者要求对每一行调用 `Scan`。
+用户可以使用 `QueryRow` 方法查询单行，或通过 `Query` 获取用于遍历结果集的游标。前者接收一个用于存放结果数据的目标变量，而后者则需要对每一行调用 `Scan`。
 
 ```go
 row := conn.QueryRow(context.Background(), "SELECT * FROM example")
@@ -621,14 +657,15 @@ return rows.Err()
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/query_rows.go)
 
-请注意，在这两种情况下，我们都需要传递指向希望序列化相应列值的变量的指针。 这些指针必须按照 `SELECT` 语句中指定的顺序传递 - 默认情况下，在执行 `SELECT *` 时将使用列声明的顺序，如上所示。
+注意在这两种情况下，我们都需要传入变量的指针，以便将对应列的值反序列化到这些变量中。它们必须按照 `SELECT` 语句中指定的顺序传入——默认情况下，如果像上面示例那样使用 `SELECT *`，则会使用列声明的顺序。
 
-与插入类似，Scan 方法要求目标变量的类型是合适的。 这也旨在灵活，只要没有可能的精度损失，其类型将被转换，例如，上述示例展示了 UUID 列被读取到字符串变量中。 有关每种列类型支持的完整 Go 类型列表，请参见 [类型转换](#type-conversions)。
+与插入操作类似，`Scan` 方法要求目标变量使用合适的类型。该方法同样尽量保持灵活，只要不会产生精度损失，就会在可能的情况下进行类型转换，例如，上述示例展示了将一个 UUID 列读取到字符串变量中。有关每种列类型所支持的 Go 类型的完整列表，请参阅 [类型转换](#type-conversions)。
 
-最后，请注意能够将 `Context` 传递给 `Query` 和 `QueryRow` 方法。 这可以用于查询级别设置 - 详见 [使用上下文](#using-context)。
+最后，请注意可以向 `Query` 和 `QueryRow` 方法传入 `Context`。这可用于配置查询级别的设置——更多详情请参阅 [使用 Context](#using-context)。
+
 ### 异步插入 {#async-insert}
 
-通过 Async 方法支持异步插入。 这允许用户指定客户端是否应等待服务器完成插入或在数据接收后立即响应。 这有效地控制了参数 [wait_for_async_insert](/operations/settings/settings#wait_for_async_insert)。
+支持通过 Async 方法进行异步插入。它允许用户指定客户端是应等待服务器完成插入操作，还是在服务器接收数据后立即返回响应。这实际上控制了参数 [wait&#95;for&#95;async&#95;insert](/operations/settings/settings#wait_for_async_insert)。
 
 ```go
 conn, err := GetNativeConnection(nil, nil, nil)
@@ -657,22 +694,25 @@ if err := conn.Exec(ctx, ddl); err != nil {
 for i := 0; i < 100; i++ {
     if err := conn.AsyncInsert(ctx, fmt.Sprintf(`INSERT INTO example VALUES (
         %d, '%s', [1, 2, 3, 4, 5, 6, 7, 8, 9], now()
-    )`, i, "Golang SQL database driver"), false); err != nil {
+    )`, i, "Golang SQL 数据库驱动程序"), false); err != nil {
         return err
     }
 }
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/async.go)
+
 ### 列式插入 {#columnar-insert}
 
-可以以列格式插入。 如果数据已按这种结构排列，且不需要转换为行，则可能会提供性能优势。
+可以按列格式执行插入操作。如果数据本身已经按这种列式结构组织，则无需再转换为行格式，从而带来性能优势。
 
 ```go
 batch, err := conn.PrepareBatch(context.Background(), "INSERT INTO example")
 if err != nil {
     return err
 }
+defer batch.Close()
+
 var (
     col1 []uint64
     col2 []string
@@ -681,7 +721,7 @@ var (
 )
 for i := 0; i < 1_000; i++ {
     col1 = append(col1, uint64(i))
-    col2 = append(col2, "Golang SQL database driver")
+    col2 = append(col2, "Golang SQL 数据库驱动程序")
     col3 = append(col3, []uint8{1, 2, 3, 4, 5, 6, 7, 8, 9})
     col4 = append(col4, time.Now())
 }
@@ -697,16 +737,19 @@ if err := batch.Column(2).Append(col3); err != nil {
 if err := batch.Column(3).Append(col4); err != nil {
     return err
 }
+
 return batch.Send()
 ```
 
-[完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/columnar_insert.go)
+[完整示例代码](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/columnar_insert.go)
+
 ### 使用结构体 {#using-structs}
 
-对于用户而言，Golang 结构体提供了 ClickHouse 中一行数据的逻辑表示。 为了帮助实现这一点，原生接口提供了几种方便的函数。
-#### 使用序列化的选择 {#select-with-serialize}
+对用户而言，Golang 的结构体为 ClickHouse 中的一行数据提供了逻辑表示。为此，原生接口提供了多种便捷函数来实现这一点。
 
-Select 方法允许将一组响应行序列化到结构体切片中，只需一次调用。
+#### 使用 serialize 的 Select {#select-with-serialize}
+
+`Select` 方法允许在一次调用中将一组响应行序列化为结构体切片。
 
 ```go
 var result []struct {
@@ -724,10 +767,11 @@ for _, v := range result {
 }
 ```
 
-[完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/select_struct.go)
+[完整示例代码](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/select_struct.go)
+
 #### 扫描结构体 {#scan-struct}
 
-`ScanStruct` 允许将查询中单行序列化为结构体。
+`ScanStruct` 允许将查询结果中的单行 `Row` 映射到一个结构体中。
 
 ```go
 var result struct {
@@ -740,22 +784,25 @@ if err := conn.QueryRow(context.Background(), "SELECT Col1, COUNT() AS count FRO
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/scan_struct.go)
-#### 附加结构体 {#append-struct}
 
-`AppendStruct` 允许将结构体附加到现有的 [批处理](#batch-insert) 中，并被解释为完整的行。 这需要结构体的列名称和类型与表对齐。 虽然所有列必须有相应的结构体字段，但某些结构体字段可能没有对应的列表示。 这些字段将被简单忽略。
+#### 追加 struct {#append-struct}
+
+`AppendStruct` 允许将一个 struct 追加到已有的[批次](#batch-insert)中，并将其视为一整行。要求该 struct 的字段在名称和类型上都与表的列一一对应。虽然所有列都必须有对应的 struct 字段，但某些 struct 字段可能没有对应的列表达形式。这些字段将会被直接忽略。
 
 ```go
 batch, err := conn.PrepareBatch(context.Background(), "INSERT INTO example")
 if err != nil {
     return err
 }
+defer batch.Close()
+
 for i := 0; i < 1_000; i++ {
     err := batch.AppendStruct(&row{
         Col1:       uint64(i),
-        Col2:       "Golang SQL database driver",
+        Col2:       "Golang SQL 数据库驱动程序",
         Col3:       []uint8{1, 2, 3, 4, 5, 6, 7, 8, 9},
         Col4:       time.Now(),
-        ColIgnored: "this will be ignored",
+        ColIgnored: "此字段将被忽略",
     })
     if err != nil {
         return err
@@ -764,29 +811,33 @@ for i := 0; i < 1_000; i++ {
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/append_struct.go)
+
 ### 类型转换 {#type-conversions}
 
-该客户端旨在尽可能灵活，以接受用于插入和响应的变量类型。 在大多数情况下，针对 ClickHouse 列类型存在等效的 Golang 类型，例如，[UInt64](/sql-reference/data-types/int-uint/) 到 [uint64](https://pkg.go.dev/builtin#uint64)。 这些逻辑映射应始终受到支持。 用户可能希望利用可以插入到列中或用于接收响应的变量类型，如果转换变量或收到的数据先进行转换。 客户端旨在透明地支持这些转换，以便用户在插入前无需精确转换数据，并在查询时提供灵活的序列化。 这种透明转换不允许精度损失。 例如，uint32 不能用于接收来自 UInt64 列的数据。 反之，字符串可以插入到 datetime64 字段，只要满足格式要求。
+该客户端在接受用于插入和响应编组（marshaling）的变量类型方面，力求尽可能灵活。大多数情况下，ClickHouse 列类型都存在等价的 Golang 类型，例如，[UInt64](/sql-reference/data-types/int-uint/) 对应 [uint64](https://pkg.go.dev/builtin#uint64)。这些逻辑映射应始终得到支持。用户可能希望使用某些变量类型，只要先对变量或接收的数据进行转换，就可以用于插入列或接收响应。客户端旨在透明地支持这些转换，从而使用户无需在插入前为精确对齐而显式转换数据，并在查询时提供灵活的编组能力。此类透明转换不允许出现精度损失。例如，`uint32` 不能用于从 `UInt64` 列接收数据。反之，只要满足格式要求，字符串就可以插入到 `DateTime64` 列中。
 
-当前支持的原始类型的类型转换记录在 [这里](https://github.com/ClickHouse/clickhouse-go/blob/main/TYPES.md)。
+当前针对基础类型（primitive types）所支持的类型转换记录在[此处](https://github.com/ClickHouse/clickhouse-go/blob/main/TYPES.md)。
 
-这一工作正在进行中，并可以分为插入（`Append` / `AppendRow`）和读取时（通过 `Scan`）。 如果您需要对特定转换的支持，请提出问题。
+相关工作仍在进行中，并且可分为插入阶段（`Append`/`AppendRow`）和读取阶段（通过 `Scan`）。如果您需要对某种特定转换的支持，请提交 issue 进行反馈。
+
 ### 复杂类型 {#complex-types}
-#### 日期/日期时间类型 {#datedatetime-types}
 
-ClickHouse golang 客户端支持 `Date`、`Date32`、`DateTime` 和 `DateTime64` 日期/日期时间类型。 日期可以作为字符串插入，格式为 `2006-01-02` 或使用原生 Go `time.Time{}` 或 `sql.NullTime`。 日期时间也支持后者的类型，但要求传递格式为 `2006-01-02 15:04:05` 的字符串，后面可选加时区偏移，例如 `2006-01-02 15:04:05 +08:00`。 `time.Time{}` 和 `sql.NullTime` 在读取时也支持，并且任何实现了 `sql.Scanner` 接口的类型都可以。
+#### Date/DateTime types {#datedatetime-types}
 
-对时区信息的处理取决于 ClickHouse 类型以及值是被插入还是读取：
+ClickHouse Go 客户端支持 `Date`、`Date32`、`DateTime` 和 `DateTime64` 日期 / 日期时间类型。日期既可以作为字符串按 `2006-01-02` 的格式插入，也可以使用原生 Go 的 `time.Time{}` 或 `sql.NullTime`。DateTime 同样支持后两种类型，但如果使用字符串，则需要按 `2006-01-02 15:04:05` 的格式传入，并可带有可选的时区偏移，例如 `2006-01-02 15:04:05 +08:00`。在读取时，`time.Time{}` 和 `sql.NullTime` 都受支持，同时也支持任何 `sql.Scanner` 接口的实现。
+
+对时区信息的处理取决于 ClickHouse 类型以及该值是被插入还是被读取：
 
 * **DateTime/DateTime64**
-    * 在 **插入** 时，值以 UNIX 时间戳格式发送到 ClickHouse。 如果未提供时区，客户端将假设为客户端的本地时区。 `time.Time{}` 或 `sql.NullTime` 将相应转换为纪元时间。
-    * 在 **选择** 时，如果在返回 `time.Time` 值时设置了列的时区，则将使用该时区。 否则，将使用服务器的时区。
+  * 在 **插入** 时，值会以 UNIX 时间戳格式发送到 ClickHouse。如果未提供时区，客户端将假定使用客户端的本地时区。`time.Time{}` 或 `sql.NullTime` 会相应地被转换为 epoch。
+  * 在 **查询** 时，如果列设置了时区，则在返回 `time.Time` 值时会使用列的时区；如果没有设置，则使用服务器的时区。
 * **Date/Date32**
-    * 在 **插入** 时，考虑到任何日期的时区，在将日期转换为 UNIX 时间戳时，也就是说，会在存储为日期之前根据时区偏移。 由于 ClickHouse 中的 Date 类型没有区域信息，因此如果在字符串值中未指定，将使用本地时区。
-    * 在 **选择** 时，日期被扫描为 `time.Time{}` 或 `sql.NullTime{}` 实例，并将不返回时区信息。
+  * 在 **插入** 时，在将日期转换为 UNIX 时间戳时会考虑其时区，即在以日期类型存储前会按时区进行偏移，因为在 ClickHouse 中 Date 类型不包含时区信息。如果在字符串值中未指定时区，则会使用本地时区。
+  * 在 **查询** 时，扫描到 `time.Time{}` 或 `sql.NullTime{}` 实例的日期在返回时将不包含时区信息。
+
 #### 数组 {#array}
 
-数组应作为切片插入。 元素的类型规则与 [原始类型](#type-conversions) 相一致，即，如有可能，元素将被转换。
+数组应作为切片插入。元素的类型规则与[基础类型](#type-conversions)一致，即在可能的情况下会对元素进行类型转换。
 
 在 Scan 时应提供指向切片的指针。
 
@@ -795,6 +846,8 @@ batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
 if err != nil {
     return err
 }
+defer batch.Close()
+
 var i int64
 for i = 0; i < 10; i++ {
     err := batch.Append(
@@ -826,15 +879,18 @@ rows.Close()
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/array.go)
-#### 映射 {#map}
 
-映射应作为 Golang 映射插入，键和值应符合之前定义的类型规则 [earlier](#type-conversions)。
+#### Map {#map}
+
+`Map` 应作为 Go 语言的 `map` 插入，其键和值必须符合[前面](#type-conversions)定义的类型规则。
 
 ```go
 batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
 if err != nil {
     return err
 }
+defer batch.Close()
+
 var i int64
 for i = 0; i < 10; i++ {
     err := batch.Append(
@@ -867,20 +923,21 @@ for rows.Next() {
 rows.Close()
 ```
 
-[完整示例](https://githubHouse/clickhouse-go/blob/main/examples/clickhouse_api/map.go)
-#### 元组 {#tuples}
+[完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/map.go)
 
-元组表示任意长度的列组。 列可以显式命名，也可以仅指定类型，例如。
+#### Tuples {#tuples}
+
+Tuple 表示由任意数量的列组成的一组数据。列可以显式命名，也可以只指定类型，例如：
 
 ```sql
-//unnamed
+//未命名
 Col1 Tuple(String, Int64)
 
-//named
+//已命名
 Col2 Tuple(name String, id Int64, age uint8)
 ```
 
-在这些方法中，命名元组提供了更大的灵活性。虽然匿名元组必须使用切片插入和读取，但命名元组也与映射兼容。
+在这些方式中，命名元组提供了更高的灵活性。未命名元组必须通过切片来插入和读取，而命名元组还可以与映射类型兼容。
 
 ```go
 if err = conn.Exec(ctx, `
@@ -901,7 +958,9 @@ batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
 if err != nil {
     return err
 }
-// both named and unnamed can be added with slices. Note we can use strongly typed lists and maps if all elements are the same type
+defer batch.Close()
+
+// 命名元组和未命名元组都可以通过切片添加。注意:如果所有元素类型相同,可以使用强类型列表和映射
 if err = batch.Append([]interface{}{"Clicky McClickHouse", uint8(42)}, []interface{}{"Clicky McClickHouse Snr", uint8(78)}, []string{"Dale", "521211"}); err != nil {
     return err
 }
@@ -916,7 +975,7 @@ var (
     col2 []interface{}
     col3 map[string]string
 )
-// named tuples can be retrieved into a map or slices, unnamed just slices
+// 命名元组可以检索为映射或切片,未命名元组只能检索为切片
 if err = conn.QueryRow(ctx, "SELECT * FROM example").Scan(&col1, &col2, &col3); err != nil {
     return err
 }
@@ -925,14 +984,15 @@ fmt.Printf("row: col1=%v, col2=%v, col3=%v\n", col1, col2, col3)
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/tuple.go)
 
-注意：支持有类型的切片和映射，前提是命名元组中的所有子列都具有相同的类型。
-#### 嵌套 {#nested}
+注意：支持带类型的切片和映射，前提是命名元组中提供的子列类型都相同。
 
-嵌套字段相当于命名元组的数组。 使用取决于用户是否将 [flatten_nested](/operations/settings/settings#flatten_nested) 设置为 1 或 0。
+#### 嵌套（Nested） {#nested}
 
-将 flatten_nested 设置为 0 时，嵌套列作为一个元组的单个数组保持。这使用户能够使用切片映射进行插入和检索，并且可以实现任意层次的嵌套。 映射的键必须等于列的名称，如下面的示例所示。
+嵌套字段等价于一个具名 Tuple 的数组。其用法取决于用户是否将 [flatten&#95;nested](/operations/settings/settings#flatten_nested) 设置为 1 或 0。
 
-注意：由于映射表示元组，它们必须为类型 `map[string]interface{}`。 目前，值的类型不是严格的。
+当将 flatten&#95;nested 设置为 0 时，Nested 列会保持为单个元组数组。这样用户可以使用 map 的切片进行插入和读取，并支持任意级别的嵌套。map 的键必须与列名相同，如下例所示。
+
+注意：由于这些 map 表示的是一个 tuple，它们必须是 `map[string]interface{}` 类型。目前这些值没有强类型约束。
 
 ```go
 conn, err := GetNativeConnection(clickhouse.Settings{
@@ -966,6 +1026,8 @@ batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
 if err != nil {
     return err
 }
+defer batch.Close()
+
 var i int64
 for i = 0; i < 10; i++ {
     err := batch.Append(
@@ -1030,7 +1092,7 @@ rows.Close()
 
 [完整示例 - `flatten_tested=0`](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/nested.go#L28-L118)
 
-如果使用 `flatten_nested` 的默认值 1，则嵌套列将平铺为单独的数组。 这需要使用嵌套切片进行插入和检索。 尽管任意层次的嵌套可能有效，但这并未得到官方支持。
+如果 `flatten_nested` 使用默认值 1，嵌套列会被扁平化为多个独立数组。这要求在插入和查询时使用嵌套切片。尽管任意层级的嵌套在实践中可能可行，但这并未得到官方支持。
 
 ```go
 conn, err := GetNativeConnection(nil, nil, nil)
@@ -1058,11 +1120,12 @@ if err != nil {
     return err
 }
 
-
 batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
 if err != nil {
     return err
 }
+defer batch.Close()
+
 var i uint8
 for i = 0; i < 10; i++ {
     col1_1_data := []string{strconv.Itoa(int(i)), strconv.Itoa(int(i + 1)), strconv.Itoa(int(i + 2))}
@@ -1096,12 +1159,13 @@ if err := batch.Send(); err != nil {
 
 [完整示例 - `flatten_nested=1`](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/nested.go#L123-L180)
 
-注意：嵌套列必须具有相同的维度。 例如，在上述示例中，`Col_2_2` 和 `Col_2_1` 必须具有相同数量的元素。
+注意：嵌套列必须具有相同的维度。例如，在上述示例中，`Col_2_2` 和 `Col_2_1` 必须具有相同数量的元素。
 
-由于其更直观的接口和对嵌套的官方支持，我们推荐 `flatten_nested=0`。
-#### 地理类型 {#geo-types}
+由于接口更为简洁且对嵌套提供了官方支持，我们推荐使用 `flatten_nested=0`。
 
-客户端支持地理类型 Point、Ring、Polygon 和 Multi Polygon。 这些字段在 Golang 中使用包 [github.com/paulmach/orb](https://github.com/paulmach/orb)。
+#### Geo 类型 {#geo-types}
+
+该客户端支持 Geo 类型 Point、Ring、Polygon 和 MultiPolygon。这些字段在 Go 语言中使用包 [github.com/paulmach/orb](https://github.com/paulmach/orb) 来表示。
 
 ```go
 if err = conn.Exec(ctx, `
@@ -1120,6 +1184,7 @@ batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
 if err != nil {
     return err
 }
+defer batch.Close()
 
 if err = batch.Append(
     orb.Point{11, 22},
@@ -1180,9 +1245,10 @@ if err = conn.QueryRow(ctx, "SELECT * FROM example").Scan(&point, &ring, &polygo
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/geo.go)
+
 #### UUID {#uuid}
 
-UUID 类型由 [github.com/google/uuid](https://github.com/google/uuid) 包支持。 用户也可以将 UUID 作为字符串或任何实现了 `sql.Scanner` 或 `Stringify` 的类型发送和序列化。
+UUID 类型由 [github.com/google/uuid](https://github.com/google/uuid) 包提供支持。用户也可以将 UUID 作为字符串发送并进行编组（marshal），或使用任意实现了 `sql.Scanner` 或 `Stringify` 的类型。
 
 ```go
 if err = conn.Exec(ctx, `
@@ -1199,6 +1265,8 @@ batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
 if err != nil {
     return err
 }
+defer batch.Close()
+
 col1Data, _ := uuid.NewUUID()
 if err = batch.Append(
     col1Data,
@@ -1222,9 +1290,10 @@ if err = conn.QueryRow(ctx, "SELECT * FROM example").Scan(&col1, &col2); err != 
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/uuid.go)
-#### 十进制 {#decimal}
 
-十进制类型由 [github.com/shopspring/decimal](https://github.com/shopspring/decimal) 包支持。
+#### Decimal {#decimal}
+
+`Decimal` 类型由 [github.com/shopspring/decimal](https://github.com/shopspring/decimal) 包支持。
 
 ```go
 if err = conn.Exec(ctx, `
@@ -1243,6 +1312,8 @@ batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
 if err != nil {
     return err
 }
+defer batch.Close()
+
 if err = batch.Append(
     decimal.New(25, 4),
     decimal.New(30, 5),
@@ -1272,11 +1343,12 @@ fmt.Printf("col1=%v, col2=%v, col3=%v, col4=%v, col5=%v\n", col1, col2, col3, co
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/decimal.go)
-#### 可空 {#nullable}
 
-Go 值 Nil 表示 ClickHouse NULL。 如果字段声明为 Nullable，则可以使用。 在插入时，可以将 Nil 传递给列的正常和 Nullable 版本。 对于前者，将持久化类型的默认值，例如字符串的空字符串。 对于可空版本，将在 ClickHouse 中存储 NULL 值。
+#### Nullable {#nullable}
 
-在扫描时，用户必须传递支持 nil 的类型的指针，例如 *string，以表示可空字段的 nil 值。 在下面的示例中，col1 是一个 Nullable(String)，因此接收一个 **string。这允许表示 nil。
+Go 中的 Nil 值表示 ClickHouse 的 NULL。只有当字段被声明为 Nullable 时才能使用该值。在插入时，对于同一列的普通版本和 Nullable 版本都可以传入 Nil。对于前者（非 Nullable 列），将持久化该类型的默认值，例如 string 类型会存储为空字符串；对于后者（Nullable 版本），将在 ClickHouse 中存储 NULL 值。
+
+在 Scan 阶段，用户必须传入一个支持 nil 的类型指针（例如 *string），以便在 Nullable 字段上表示 nil 值。在下面的示例中，col1 是一个 Nullable(String)，因此会接收一个 **string，从而可以表示 nil。
 
 ```go
 if err = conn.Exec(ctx, `
@@ -1295,6 +1367,8 @@ batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
 if err != nil {
     return err
 }
+defer batch.Close()
+
 if err = batch.Append(
     nil,
     nil,
@@ -1322,10 +1396,11 @@ if err = conn.QueryRow(ctx, "SELECT * FROM example").Scan(&col1, &col2, &col3, &
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/nullable.go)
 
-客户端还支持 `sql.Null*` 类型，例如 `sql.NullInt64`。 这些类型与其等效的 ClickHouse 类型兼容。
-#### 大整数 - Int128, Int256, UInt128, UInt256 {#big-ints---int128-int256-uint128-uint256}
+客户端还支持 `sql.Null*` 类型，例如 `sql.NullInt64`。这些类型与其对应的 ClickHouse 类型兼容。
 
-大于 64 位的数字类型通过本地 Go [big](https://pkg.go.dev/math/big) 包表示。
+#### 大整数 - Int128、Int256、UInt128、UInt256 {#big-ints---int128-int256-uint128-uint256}
+
+大于 64 位的数值类型使用 Go 语言原生的 [big](https://pkg.go.dev/math/big) 包来表示。
 
 ```go
 if err = conn.Exec(ctx, `
@@ -1345,6 +1420,7 @@ batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
 if err != nil {
     return err
 }
+defer batch.Close()
 
 col1Data, _ := new(big.Int).SetString("170141183460469231731687303715884105727", 10)
 col2Data := big.NewInt(128)
@@ -1391,9 +1467,10 @@ fmt.Printf("col1=%v, col2=%v, col3=%v, col4=%v, col5=%v, col6=%v, col7=%v\n", co
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/big_int.go)
+
 ### 压缩 {#compression}
 
-对压缩方法的支持取决于所使用的底层协议。 对于原生协议，客户端支持 `LZ4` 和 `ZSTD` 压缩。 这仅在块级别进行。 压缩可以通过在连接中包含 `Compression` 配置来启用。
+对压缩算法的支持取决于所使用的底层协议。对于原生协议，客户端支持 `LZ4` 和 `ZSTD` 压缩。压缩仅在块级别执行。可以通过在连接中包含 `Compression` 配置来启用压缩。
 
 ```go
 conn, err := clickhouse.Open(&clickhouse.Options{
@@ -1424,6 +1501,8 @@ batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
 if err != nil {
     return err
 }
+defer batch.Close()
+
 for i := 0; i < 1000; i++ {
     if err := batch.Append([]string{strconv.Itoa(i), strconv.Itoa(i + 1), strconv.Itoa(i + 2), strconv.Itoa(i + 3)}); err != nil {
         return err
@@ -1436,85 +1515,88 @@ if err := batch.Send(); err != nil {
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/compression.go)
 
-使用 HTTP 的标准接口时，还有其他压缩技术可用。 有关更多详细信息，请参见 [database/sql API - 压缩](#compression)。
+如果通过 HTTP 使用标准接口，还可以使用其他压缩方式。更多信息请参见 [database/sql API - Compression](#compression)。
+
 ### 参数绑定 {#parameter-binding}
 
-客户端支持对 `Exec`、`Query` 和 `QueryRow` 方法进行参数绑定。 如下面的示例所示，支持使用命名、编号和位置参数。 我们在下面提供这些的示例。
+该客户端在 `Exec`、`Query` 和 `QueryRow` 方法中支持参数绑定。如下面的示例所示，支持使用命名参数、编号参数以及位置参数。以下是这些用法的示例。
 
 ```go
 var count uint64
-// positional bind
+// 位置绑定
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col1 >= ? AND Col3 < ?", 500, now.Add(time.Duration(750)*time.Second)).Scan(&count); err != nil {
     return err
 }
 // 250
-fmt.Printf("Positional bind count: %d\n", count)
-// numeric bind
+fmt.Printf("位置绑定计数: %d\n", count)
+// 数值绑定
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col1 <= $2 AND Col3 > $1", now.Add(time.Duration(150)*time.Second), 250).Scan(&count); err != nil {
     return err
 }
 // 100
-fmt.Printf("Numeric bind count: %d\n", count)
-// named bind
+fmt.Printf("数值绑定计数: %d\n", count)
+// 命名绑定
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col1 <= @col1 AND Col3 > @col3", clickhouse.Named("col1", 100), clickhouse.Named("col3", now.Add(time.Duration(50)*time.Second))).Scan(&count); err != nil {
     return err
 }
 // 50
-fmt.Printf("Named bind count: %d\n", count)
+fmt.Printf("命名绑定计数: %d\n", count)
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/bind.go)
+
 #### 特殊情况 {#special-cases}
 
-默认情况下，如果将切片作为参数传递给查询，则将展开为以逗号分隔的值列表。 如果用户需要注入带有括号 `[ ]` 的值集，则应使用 `ArraySet`。
+默认情况下，当切片作为查询参数传入时，会被展开为以逗号分隔的值列表。如果用户需要将一组值以方括号 `[ ]` 包裹的形式注入，则应使用 `ArraySet`。
 
-如果需要带有括号 `( )` 的组/元组，例如，用于 IN 操作符，用户可以使用 `GroupSet`。 这对于需要多个组的情况特别有用，如下面的示例所示。
+如果需要用圆括号 `( )` 包裹的分组/元组，例如用于 IN 运算符，用户可以使用 `GroupSet`。这对于需要多个分组的场景尤其有用，如下例所示。
 
-最后，DateTime64 字段需要精度，以确保参数得到适当呈现。 字段的精度级别客户端是不知道的，因此用户必须提供。 为了方便，我们提供了 `DateNamed` 参数。
+最后，`DateTime64` 字段需要指定精度，以确保参数被正确生成。然而客户端并不知道该字段的精度级别，因此必须由用户提供。为此，我们提供了 `DateNamed` 参数。
 
 ```go
 var count uint64
-// arrays will be unfolded
+// 数组将被展开
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col1 IN (?)", []int{100, 200, 300, 400, 500}).Scan(&count); err != nil {
     return err
 }
-fmt.Printf("Array unfolded count: %d\n", count)
-// arrays will be preserved with []
+fmt.Printf("数组展开后的计数: %d\n", count)
+// 数组将保留 [] 形式
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col4 = ?", clickhouse.ArraySet{300, 301}).Scan(&count); err != nil {
     return err
 }
-fmt.Printf("Array count: %d\n", count)
-// Group sets allow us to form ( ) lists
+fmt.Printf("数组计数: %d\n", count)
+// 分组集合允许我们构造 ( ) 列表
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col1 IN ?", clickhouse.GroupSet{[]interface{}{100, 200, 300, 400, 500}}).Scan(&count); err != nil {
     return err
 }
-fmt.Printf("Group count: %d\n", count)
-// More useful when we need nesting
+fmt.Printf("分组计数: %d\n", count)
+// 需要嵌套时更为实用
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE (Col1, Col5) IN (?)", []clickhouse.GroupSet{{[]interface{}{100, 101}}, {[]interface{}{200, 201}}}).Scan(&count); err != nil {
     return err
 }
-fmt.Printf("Group count: %d\n", count)
-// Use DateNamed when you need a precision in your time#
+fmt.Printf("分组计数: %d\n", count)
+// 需要时间精度时使用 DateNamed
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col3 >= @col3", clickhouse.DateNamed("col3", now.Add(time.Duration(500)*time.Millisecond), clickhouse.NanoSeconds)).Scan(&count); err != nil {
     return err
 }
-fmt.Printf("NamedDate count: %d\n", count)
+fmt.Printf("命名日期计数: %d\n", count)
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/bind_special.go)
-### 使用上下文 {#using-context}
 
-Go 上下文提供了一种跨 API 边界传递截止日期、取消信号和其他请求范围值的手段。 连接上的所有方法都接受上下文作为其第一个变量。 虽然之前的示例使用 context.Background()，但用户可以利用此功能传递设置和截止日期，并取消查询。
+### 使用 context {#using-context}
 
-传递使用 `withDeadline` 创建的上下文，可对查询施加执行时间限制。 请注意，这是一种绝对时间，过期将仅释放连接并向 ClickHouse 发送取消信号。 `WithCancel` 可以用来显式取消查询。
+Go 的 context 提供了一种在 API 边界之间传递截止时间、取消信号及其他请求作用域值的机制。连接上的所有方法都将 context 作为其第一个参数。虽然前面的示例使用的是 `context.Background()`，但用户可以利用这一能力来传递设置和截止时间，并取消查询。
 
-助手 `clickhouse.WithQueryID` 和 `clickhouse.WithQuotaKey` 允许指定查询 ID 和配额键。 查询 ID 对于跟踪日志中的查询和取消非常有用。 配额键可以用于基于唯一键值对 ClickHouse 使用设置限制 - 详见 [配额管理](/operations/access-rights#quotas-management) 以获取更多详细信息。
+传入一个通过 `withDeadline` 创建的 context，可以对查询施加执行时间限制。注意这是一个绝对时间，到期时只会释放连接并向 ClickHouse 发送取消信号。也可以使用 `WithCancel` 来显式取消查询。
 
-用户还可以使用上下文确保设置仅应用于特定查询，而不是整个连接，如 [连接设置](#connection-settings) 中所示。
+辅助方法 `clickhouse.WithQueryID` 和 `clickhouse.WithQuotaKey` 允许指定查询 ID 和配额键。查询 ID 对于在日志中跟踪查询以及用于取消查询非常有用。配额键可用于基于唯一键值对 ClickHouse 的使用施加限制——更多详情参见 [Quotas Management ](/operations/access-rights#quotas-management)。
 
-最后，用户可以通过 `clickhouse.WithBlockSize` 控制块缓冲区的大小。 这会覆盖连接级设置 `BlockBufferSize`，并控制在任何时候解码并保留在内存中的最大块数。 更大的值可能意味着更多的并行化，但会牺牲内存。
+用户还可以利用 context 确保某个设置仅应用于特定查询，而不是整个连接，如 [Connection Settings](#connection-settings) 中所示。
 
-上述示例如下所示。
+最后，用户可以通过 `clickhouse.WithBlockSize` 控制块缓冲区的大小。它会覆盖连接级别的 `BlockBufferSize` 设置，并控制在任意时刻解码并保留在内存中的最大块数。更大的值通常意味着更多的并行化，但会增加内存消耗。
+
+上述内容的示例如下所示。
 
 ```go
 dialCount := 0
@@ -1537,14 +1619,14 @@ if err != nil {
 if err := clickhouse_tests.CheckMinServerServerVersion(conn, 22, 6, 1); err != nil {
     return nil
 }
-// we can use context to pass settings to a specific API call
+// 可以使用 context 将设置传递给特定的 API 调用
 ctx := clickhouse.Context(context.Background(), clickhouse.WithSettings(clickhouse.Settings{
     "allow_experimental_object_type": "1",
 }))
 
 conn.Exec(ctx, "DROP TABLE IF EXISTS example")
 
-// to create a JSON column we need allow_experimental_object_type=1
+// 创建 JSON 列需要设置 allow_experimental_object_type=1
 if err = conn.Exec(ctx, `
     CREATE TABLE example (
             Col1 JSON
@@ -1554,24 +1636,24 @@ if err = conn.Exec(ctx, `
     return err
 }
 
-// queries can be cancelled using the context
+// 可以通过 context 取消查询
 ctx, cancel := context.WithCancel(context.Background())
 go func() {
     cancel()
 }()
 if err = conn.QueryRow(ctx, "SELECT sleep(3)").Scan(); err == nil {
-    return fmt.Errorf("expected cancel")
+    return fmt.Errorf("应已取消")
 }
 
-// set a deadline for a query - this will cancel the query after the absolute time is reached.
-// queries will continue to completion in ClickHouse
+// 为查询设置截止时间 - 达到指定时间后将取消查询。
+// 查询在 ClickHouse 中会继续执行直至完成
 ctx, cancel = context.WithDeadline(context.Background(), time.Now().Add(-time.Second))
 defer cancel()
 if err := conn.Ping(ctx); err == nil {
-    return fmt.Errorf("expected deadline exceeeded")
+    return fmt.Errorf("应已超过截止时间")
 }
 
-// set a query id to assist tracing queries in logs e.g. see system.query_log
+// 设置查询 ID 以便在日志中跟踪查询,例如查看 system.query_log
 var one uint8
 queryId, _ := uuid.NewUUID()
 ctx = clickhouse.Context(context.Background(), clickhouse.WithQueryID(queryId.String()))
@@ -1584,7 +1666,7 @@ defer func() {
     conn.Exec(context.Background(), "DROP QUOTA IF EXISTS foobar")
 }()
 ctx = clickhouse.Context(context.Background(), clickhouse.WithQuotaKey("abcde"))
-// set a quota key - first create the quota
+// 设置配额键 - 首先需要创建配额
 if err = conn.Exec(ctx, "CREATE QUOTA IF NOT EXISTS foobar KEYED BY client_key FOR INTERVAL 1 minute MAX queries = 5 TO default"); err != nil {
     return err
 }
@@ -1601,22 +1683,23 @@ for i := 1; i <= 6; i++ {
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/context.go)
-### Progress/Profile/Log Information {#progressprofilelog-information}
 
-进度、配置文件和日志信息可以在查询中请求。进度信息将报告在 ClickHouse 中已读取和处理的行数和字节数的统计信息。相反，配置文件信息提供了返回给客户端的数据摘要，包括字节（未压缩）、行和块的总计。最后，日志信息提供线程的统计信息，例如内存使用和数据速度。
+### 进度 / Profile / 日志信息 {#progressprofilelog-information}
 
-获取此信息需要用户使用 [Context](#using-context)，用户可以将回调函数传递给它。
+在查询中可以请求 Progress、Profile 和 Log 信息。Progress 信息会报告在 ClickHouse 中已读取和处理的行数和字节数等统计数据。相比之下，Profile 信息会提供返回给客户端的数据摘要，包括未压缩字节数、行数和数据块数量等总计信息。最后，Log 信息会提供线程相关统计信息，例如内存使用情况和数据处理速度。
+
+要获取这些信息，需要使用 [Context](#using-context)，并向其传递回调函数。
 
 ```go
 totalRows := uint64(0)
-// use context to pass a call back for progress and profile info
+// 使用 context 传递进度和配置信息的回调函数
 ctx := clickhouse.Context(context.Background(), clickhouse.WithProgress(func(p *clickhouse.Progress) {
-    fmt.Println("progress: ", p)
+    fmt.Println("进度: ", p)
     totalRows += p.Rows
 }), clickhouse.WithProfileInfo(func(p *clickhouse.ProfileInfo) {
-    fmt.Println("profile info: ", p)
+    fmt.Println("配置信息: ", p)
 }), clickhouse.WithLogs(func(log *clickhouse.Log) {
-    fmt.Println("log info: ", log)
+    fmt.Println("日志信息: ", log)
 }))
 
 rows, err := conn.Query(ctx, "SELECT number from numbers(1000000) LIMIT 1000000")
@@ -1626,14 +1709,15 @@ if err != nil {
 for rows.Next() {
 }
 
-fmt.Printf("Total Rows: %d\n", totalRows)
+fmt.Printf("总行数: %d\n", totalRows)
 rows.Close()
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/progress.go)
-### Dynamic Scanning {#dynamic-scanning}
 
-用户可能需要读取他们不知道架构或返回字段类型的表。这在进行临时数据分析或编写通用工具时很常见。为此，查询响应中提供了列类型信息。这可以与 Go 反射一起使用，以创建运行时实例的正确类型变量，这些变量可以传递给 Scan。
+### 动态扫描 {#dynamic-scanning}
+
+在某些情况下，用户需要读取一些表，但事先并不知道这些表的模式（schema）或返回字段的类型。这在执行临时数据分析或编写通用工具时非常常见。为此，可以在查询结果中获取列类型信息。可以将这些信息与 Go 的反射机制结合使用，在运行时创建类型正确的变量实例，并将其传递给 Scan。
 
 ```go
 const query = `
@@ -1667,12 +1751,13 @@ for rows.Next() {
 }
 ```
 
-[完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/dynamic_scan_types.go)
-### External tables {#external-tables}
+[完整示例代码](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/dynamic_scan_types.go)
 
-[外部表](/engines/table-engines/special/external-data/) 允许客户端通过 SELECT 查询将数据发送到 ClickHouse。此数据被放置在临时表中，并可以在查询本身中用于评估。
+### 外部表 {#external-tables}
 
-要通过查询将外部数据发送到客户端，用户必须通过 `ext.NewTable` 构建外部表，然后通过上下文传递。
+[External tables](/engines/table-engines/special/external-data/) 允许客户端在执行 SELECT 查询时向 ClickHouse 发送数据。该数据会被放入一个临时表中，并可在查询本身中用于计算。
+
+要随查询一同发送外部数据，用户必须先通过 `ext.NewTable` 构建一个外部表，然后再通过 context 传递。
 
 ```go
 table1, err := ext.NewTable("external_table_1",
@@ -1733,9 +1818,10 @@ fmt.Printf("external_table_1 UNION external_table_2: %d\n", count)
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/external_data.go)
-### Open Telemetry {#open-telemetry}
 
-ClickHouse 允许将 [跟踪上下文](/operations/opentelemetry/) 作为原生协议的一部分传递。客户端允许通过 `clickhouse.withSpan` 函数创建一个 Span，并通过 Context 传递以实现这一点。
+### OpenTelemetry {#open-telemetry}
+
+ClickHouse 允许在原生协议中传递[跟踪上下文](/operations/opentelemetry/)。客户端支持通过函数 `clickhouse.withSpan` 创建一个 Span，并通过 Context 传递，从而实现这一点。
 
 ```go
 var count uint64
@@ -1753,19 +1839,21 @@ fmt.Printf("count: %d\n", count)
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/open_telemetry.go)
 
-有关利用跟踪的完整详细信息，请参见 [OpenTelemetry 支持](/operations/opentelemetry/)。
+关于如何使用链路追踪的完整说明，请参见 [OpenTelemetry 支持](/operations/opentelemetry/)。
+
 ## Database/SQL API {#databasesql-api}
 
-`database/sql` 或 "标准" API 允许用户在应用代码应与基础数据库无关的场景中使用客户端，符合标准接口。这会带来一些成本——额外的抽象和间接层以及与 ClickHouse 不一定对齐的原语。然而，在需要连接到多个数据库的工具场景中，这些成本通常是可以接受的。
+`database/sql` 或“标准”API 允许用户在应用代码应与底层数据库解耦、只依赖统一标准接口的场景下使用该客户端。这样做的代价是增加了额外的抽象层和间接层，并引入了一些不一定与 ClickHouse 完全契合的基础原语。但在需要通过工具连接多个数据库的场景中，这些成本通常是可以接受的。
 
-此外，此客户端支持使用 HTTP 作为传输层——数据仍将以原生格式编码以实现最佳性能。
+此外，该客户端支持使用 HTTP 作为传输层——数据仍将以原生格式进行编码，以获得最佳性能。
 
-以下内容旨在与 ClickHouse API 的文档结构相对应。
+下面的内容旨在与 ClickHouse API 的文档结构保持一致。
 
-标准 API 的完整代码示例可以在 [这里](https://github.com/ClickHouse/clickhouse-go/tree/main/examples/std) 找到。
-### Connecting {#connecting-1}
+关于标准 API 的完整代码示例可以在[这里](https://github.com/ClickHouse/clickhouse-go/tree/main/examples/std)找到。
 
-连接可以通过格式为 `clickhouse://<host>:<port>?<query_option>=<value>` 的 DSN 字符串和 `Open` 方法，或通过 `clickhouse.OpenDB` 方法来实现。后者不是 `database/sql` 规范的一部分，但返回一个 `sql.DB` 实例。此方法提供配置文件等功能，而这些功能在 `database/sql` 规范中没有明确的公开方式。
+### 连接 {#connecting-1}
+
+可以通过格式为 `clickhouse://<host>:<port>?<query_option>=<value>` 的 DSN 字符串配合 `Open` 方法来建立连接，也可以使用 `clickhouse.OpenDB` 方法。后者不属于 `database/sql` 规范的一部分，但会返回一个 `sql.DB` 实例。该方法提供了诸如性能剖析（profiling）之类的功能，而这些功能在 `database/sql` 规范中没有直接的对外暴露方式。
 
 ```go
 func Connect() error {
@@ -1784,7 +1872,6 @@ func Connect() error {
         return conn.Ping()
 }
 
-
 func ConnectDSN() error {
         env, err := GetStdTestEnvironment()
         if err != nil {
@@ -1800,28 +1887,29 @@ func ConnectDSN() error {
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/connect.go)
 
-**在所有后续示例中，除非明确显示，我们假设已经创建并可用 ClickHouse 的 `conn` 变量。**
-#### Connection Settings {#connection-settings-1}
+**在后续所有示例中，除非特别说明，我们都假定已创建并可以使用名为 `conn` 的 ClickHouse 连接变量。**
+
+#### 连接设置 {#connection-settings-1}
 
 可以在 DSN 字符串中传递以下参数：
 
-* `hosts` - 用于负载均衡和故障转移的单地址主机的逗号分隔列表 - 请参见 [连接到多个节点](#connecting-to-multiple-nodes)。
-* `username/password` - 身份验证凭据 - 请参见 [身份验证](#authentication)
+* `hosts` - 逗号分隔的单个地址主机列表，用于负载均衡和故障转移 - 参见 [连接到多个节点](#connecting-to-multiple-nodes)。
+* `username/password` - 认证凭据 - 参见 [认证](#authentication)
 * `database` - 选择当前默认数据库
-* `dial_timeout` - 持续时间字符串是一个可能带符号的十进制数字序列，每个数字都有可选的小数部分和单位后缀，例如 `300ms`、`1s`。有效的时间单位为 `ms`、`s`、`m`。
-* `connection_open_strategy` - `random/in_order`（默认 `random`） - 请参见 [连接到多个节点](#connecting-to-multiple-nodes)
-    - `round_robin` - 从集合中选择一个轮询服务器
-    - `in_order` - 按指定顺序选择第一个可用服务器
+* `dial_timeout` - 时长字符串，是一个可能带符号的十进制数字序列，每个数字可以带小数部分和单位后缀，例如 `300ms`、`1s`。有效时间单位为 `ms`、`s`、`m`。
+* `connection_open_strategy` - `random/in_order`（默认 `random`）- 参见 [连接到多个节点](#connecting-to-multiple-nodes)
+  * `round_robin` - 从集合中轮询选择服务器
+  * `in_order` - 按指定顺序选择第一个可用服务器
 * `debug` - 启用调试输出（布尔值）
-* `compress` - 指定压缩算法 - `none`（默认）、`zstd`、`lz4`、`gzip`、`deflate`、`br`。如果设置为 `true`，则将使用 `lz4`。仅支持 `lz4` 和 `zstd` 用于原生通信。
-* `compress_level` - 压缩级别（默认值为 `0`）。请参阅压缩。这是算法特定的：
-    - `gzip` - `-2`（最佳速度）到 `9`（最佳压缩）
-    - `deflate` - `-2`（最佳速度）到 `9`（最佳压缩）
-    - `br` - `0`（最佳速度）到 `11`（最佳压缩）
-    - `zstd`、`lz4` - 被忽略
-* `secure` - 建立安全的 SSL 连接（默认值为 `false`）
-* `skip_verify` - 跳过证书验证（默认值为 `false`）
-* `block_buffer_size` - 允许用户控制块缓冲区大小。请参见 [`BlockBufferSize`](#connection-settings)。 （默认值为 `2`）
+* `compress` - 指定压缩算法 - `none`（默认）、`zstd`、`lz4`、`gzip`、`deflate`、`br`。如果设置为 `true`，将使用 `lz4`。原生协议通信仅支持 `lz4` 和 `zstd`。
+* `compress_level` - 压缩级别（默认 `0`）。参见 Compression。该设置依赖具体算法：
+  * `gzip` - `-2`（最高速度）到 `9`（最高压缩比）
+  * `deflate` - `-2`（最高速度）到 `9`（最高压缩比）
+  * `br` - `0`（最高速度）到 `11`（最高压缩比）
+  * `zstd`、`lz4` - 将被忽略
+* `secure` - 建立安全的 SSL 连接（默认 `false`）
+* `skip_verify` - 跳过证书校验（默认 `false`）
+* `block_buffer_size` - 允许用户控制块缓冲区大小。参见 [`BlockBufferSize`](#connection-settings)。（默认 `2`）
 
 ```go
 func ConnectSettings() error {
@@ -1836,13 +1924,16 @@ func ConnectSettings() error {
         return conn.Ping()
 }
 ```
+
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/connect_settings.go)
-#### Connection Pooling {#connection-pooling-1}
 
-用户可以影响提供的节点地址列表的使用，如 [连接到多个节点](#connecting-to-multiple-nodes) 中所述。连接管理和池化是出于设计委托给 `sql.DB` 的。
-#### Connecting over HTTP {#connecting-over-http}
+#### 连接池 {#connection-pooling-1}
 
-默认情况下，连接是通过原生协议建立的。对于需要 HTTP 的用户，可以通过修改 DSN 以包含 HTTP 协议或通过在连接选项中指定协议来启用。
+用户可以按照[连接到多个节点](#connecting-to-multiple-nodes)中的说明，控制所提供节点地址列表的使用方式。不过，按照设计，连接管理和连接池功能由 `sql.DB` 负责处理。
+
+#### 通过 HTTP 连接 {#connecting-over-http}
+
+默认情况下，连接是通过原生协议建立的。对于需要使用 HTTP 的用户，可以通过修改 DSN 以包含 HTTP 协议，或在连接选项中指定 Protocol 来启用 HTTP。
 
 ```go
 func ConnectHTTP() error {
@@ -1876,11 +1967,12 @@ func ConnectDSNHTTP() error {
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/connect_http.go)
-#### Connecting to Multiple Nodes {#connecting-to-multiple-nodes-1}
 
-如果使用 `OpenDB`，请使用与 ClickHouse API 相同的选项方法连接到多个主机——可选地指定 `ConnOpenStrategy`。
+#### 连接到多个节点 {#connecting-to-multiple-nodes-1}
 
-对于基于 DSN 的连接，该字符串接受多个主机和 `connection_open_strategy` 参数，可以将值设置为 `round_robin` 或 `in_order`。
+如果使用 `OpenDB`，请使用与 ClickHouse API 相同的选项配置方式连接到多个主机，并可选地指定 `ConnOpenStrategy`。
+
+对于基于 DSN 的连接，连接字符串可以包含多个主机，以及一个 `connection_open_strategy` 参数，其值可以设置为 `round_robin` 或 `in_order`。
 
 ```go
 func MultiStdHost() error {
@@ -1921,10 +2013,11 @@ func MultiStdHostDSN() error {
 }
 ```
 
-[完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/multi_host.go)
-### Using TLS {#using-tls-1}
+[完整示例代码](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/multi_host.go)
 
-如果使用 DSN 连接字符串，可以通过参数 "secure=true" 启用 SSL。`OpenDB` 方法采用与 [原生 API for TLS](#using-tls) 相同的方法，依赖于指定非空的 TLS 结构。虽然 DSN 连接字符串支持参数 skip_verify 来跳过 SSL 验证，但更复杂的 TLS 配置需要使用 `OpenDB` 方法，因为它允许传递配置。
+### 使用 TLS {#using-tls-1}
+
+如果使用 DSN 连接字符串，可以通过参数 `secure=true` 启用 SSL。`OpenDB` 方法采用与 [TLS 原生 API](#using-tls) 相同的方式，依赖于提供一个非 nil 的 TLS 结构体。虽然 DSN 连接字符串支持参数 `skip_verify` 以跳过 SSL 校验，但对于更高级的 TLS 配置，必须使用 `OpenDB` 方法——因为它允许传入相应的配置。
 
 ```go
 func ConnectSSL() error {
@@ -1947,7 +2040,6 @@ func ConnectSSL() error {
                 return err
         }
         t.RootCAs = caCertPool
-
 
         conn := clickhouse.OpenDB(&clickhouse.Options{
                 Addr: []string{fmt.Sprintf("%s:%d", env.Host, env.SslPort)},
@@ -1975,9 +2067,10 @@ func ConnectDSNSSL() error {
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/ssl.go)
-### Authentication {#authentication-1}
 
-如果使用 `OpenDB`，可以通过常规选项传递身份验证信息。对于基于 DSN 的连接，可以在连接字符串中传递用户名和密码——可以作为参数或作为编码在地址中的凭据。
+### 身份验证 {#authentication-1}
+
+如果使用 `OpenDB`，可以通过常规选项传入身份验证信息。对于基于 DSN 的连接，可以在连接字符串中提供用户名和密码——既可以作为参数附加在其后，也可以作为编码在地址中的凭证。
 
 ```go
 func ConnectAuth() error {
@@ -2014,9 +2107,10 @@ func ConnectDSNAuth() error {
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/auth.go)
-### Execution {#execution-1}
 
-一旦获得连接，用户可以通过 Exec 方法发出 `sql` 语句进行执行。
+### 执行 {#execution-1}
+
+获取连接后，用户可以使用 Exec 方法执行 `sql` 语句。
 
 ```go
 conn.Exec(`DROP TABLE IF EXISTS example`)
@@ -2034,10 +2128,11 @@ _, err = conn.Exec("INSERT INTO example VALUES (1, 'test-1')")
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/exec.go)
 
-该方法不支持接收上下文——默认情况下，它使用后台上下文执行。如果需要，可以使用 `ExecContext` - 请参见 [使用上下文](#using-context)。
-### Batch Insert {#batch-insert-1}
+此方法不支持接收 context 参数——默认情况下，它使用后台 context 执行。如果有此需求，用户可以使用 `ExecContext`——参见[使用 Context](#using-context)。
 
-通过 `Being` 方法创建 `sql.Tx` 可以实现批量语义。从中，可以使用带有 `INSERT` 语句的 `Prepare` 方法获取批处理。这将返回一个 `sql.Stmt`，可以使用 `Exec` 方法向其中附加行。在原始 `sql.Tx` 上执行 `Commit` 之前，批处理将积累在内存中。
+### 批量插入 {#batch-insert-1}
+
+可以通过使用 `Being` 方法创建一个 `sql.Tx` 来实现批量语义。随后，使用携带 `INSERT` 语句的 `Prepare` 方法获取一个批处理对象。该方法返回一个 `sql.Stmt`，可以通过 `Exec` 方法向其中追加多行数据。批处理会在内存中累积，直到对原始的 `sql.Tx` 调用 `Commit` 为止。
 
 ```go
 batch, err := scope.Prepare("INSERT INTO example")
@@ -2068,9 +2163,10 @@ return scope.Commit()
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/batch.go)
-### Querying Row/s {#querying-rows-1}
 
-可以使用 `QueryRow` 方法查询单行。这会返回一个 *sql.Row，可以在其上调用 Scan，并传入指向应调入列的变量的指针。`QueryRowContext` 变体允许传递除后台之外的上下文 - 请参见 [使用上下文](#using-context)。
+### 查询行 {#querying-rows-1}
+
+可以使用 `QueryRow` 方法来查询单行记录。它会返回一个 *sql.Row，你可以在其上调用 Scan，并传入变量的指针，用于接收并填充对应的列值。`QueryRowContext` 变体允许传入非 background 的 context —— 参见 [使用 Context](#using-context)。
 
 ```go
 row := conn.QueryRow("SELECT * FROM example")
@@ -2089,7 +2185,7 @@ if err := row.Scan(&col1, &col2, &col3, &col4, &col5, &col6, &col7, &col8); err 
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/query_row.go)
 
-迭代多行需要 `Query` 方法。这会返回一个 `*sql.Rows` 结构，您可以在其上调用 Next 来迭代行。`QueryContext` 等价物允许传递上下文。
+遍历多行结果时需要使用 `Query` 方法。它返回一个 `*sql.Rows` 结构体，可以在其上调用 Next 来迭代各行。与之对应的 `QueryContext` 方法允许传入一个 context。
 
 ```go
 rows, err := conn.Query("SELECT * FROM example")
@@ -2113,9 +2209,10 @@ for rows.Next() {
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/query_rows.go)
-### Async Insert {#async-insert-1}
 
-异步插入可以通过 `ExecContext` 方法执行插入来实现。这应该传递一个启用异步模式的上下文，如下所示。这允许用户指定客户端是否应等待服务器完成插入，或在接收到数据后响应。这有效地控制了参数 [wait_for_async_insert](/operations/settings/settings#wait_for_async_insert)。
+### 异步插入 {#async-insert-1}
+
+可以通过调用 `ExecContext` 方法执行插入操作来实现异步插入。应按如下所示传入启用异步模式的 context。这样，用户可以指定客户端是应当等待服务器完成插入操作，还是在数据接收后立即返回响应。这实际上由参数 [wait&#95;for&#95;async&#95;insert](/operations/settings/settings#wait_for_async_insert) 控制。
 
 ```go
 const ddl = `
@@ -2134,7 +2231,7 @@ ctx := clickhouse.Context(context.Background(), clickhouse.WithStdAsync(false))
     for i := 0; i < 100; i++ {
         _, err := conn.ExecContext(ctx, fmt.Sprintf(`INSERT INTO example VALUES (
             %d, '%s', [1, 2, 3, 4, 5, 6, 7, 8, 9], now()
-        )`, i, "Golang SQL database driver"))
+        )`, i, "Golang SQL 数据库驱动程序"))
         if err != nil {
             return err
         }
@@ -2142,22 +2239,27 @@ ctx := clickhouse.Context(context.Background(), clickhouse.WithStdAsync(false))
 }
 ```
 
-[完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/async.go)
-### Columnar Insert {#columnar-insert-1}
+[完整示例代码](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/async.go)
 
-使用标准接口不支持。
-### Using Structs {#using-structs-1}
+### 列式插入 {#columnar-insert-1}
 
-使用标准接口不支持。
-### Type Conversions {#type-conversions-1}
+不支持通过标准接口进行。
 
-标准 `database/sql` 接口应支持与 [ClickHouse API](#type-conversions) 相同的类型。存在一些例外，主要针对复杂类型，我们在下面记录了这些。与 ClickHouse API 类似，客户端的目标是在插入和响应的反序列化中尽可能灵活。有关更多详细信息，请参见 [类型转换](#type-conversions)。
-### Complex Types {#complex-types-1}
+### 使用结构体 {#using-structs-1}
 
-除非另有说明，复杂类型处理应与 [ClickHouse API](#complex-types) 相同。差异是由 `database/sql` 内部引起的。
-#### Maps {#maps}
+标准接口暂不支持此功能。
 
-与 ClickHouse API 不同，标准 API 要求在扫描类型时映射被严格类型化。例如，用户不能为 `Map(String,String)` 字段传递 `map[string]interface{}`，而必须使用 `map[string]string`。`interface{}` 变量将始终兼容，并可用于更复杂的结构。在读取时不支持结构。
+### 类型转换 {#type-conversions-1}
+
+标准的 `database/sql` 接口应支持与 [ClickHouse API](#type-conversions) 相同的类型。主要在复杂类型上存在少数例外，下面会进行说明。与 ClickHouse API 类似，客户端在插入数据和对响应进行编码时，目标是在可接受的类型上尽可能保持灵活性。有关更多详情，请参阅[类型转换](#type-conversions)。
+
+### 复杂类型 {#complex-types-1}
+
+除非另有说明，复杂类型的处理方式应与 [ClickHouse API](#complex-types) 相同。这些差异源自 `database/sql` 的内部实现。
+
+#### 映射（Maps） {#maps}
+
+与 ClickHouse API 不同，标准 API 要求映射在扫描阶段必须是强类型的。举例来说，用户不能为 `Map(String,String)` 字段传入 `map[string]interface{}`，而必须使用 `map[string]string`。`interface{}` 变量始终是兼容的，可用于更复杂的结构。在读取时不支持 struct（结构体）。
 
 ```go
 var (
@@ -2200,12 +2302,13 @@ fmt.Printf("col1=%v, col2=%v, col3=%v, col4=%v, col5=%v", col1, col2, col3, col4
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/map.go)
 
-插入行为与 ClickHouse API 相同。
-### Compression {#compression-1}
+插入行为与 ClickHouse API 保持一致。
 
-标准 API 支持与原生 [ClickHouse API](#compression) 相同的压缩算法，即在块级别的 `lz4` 和 `zstd` 压缩。此外，HTTP 连接还支持 gzip、deflate 和 br 压缩。如果启用这些中的任何一个，在插入和查询响应时会对块执行压缩。其他请求，例如 ping 或查询请求，将保持未压缩。这与 `lz4` 和 `zstd` 选项一致。
+### 压缩 {#compression-1}
 
-如果使用 `OpenDB` 方法建立连接，可以传递压缩配置。这包括指定压缩级别的能力（见下文）。如果通过带 DSN 的 `sql.Open` 进行连接，请利用参数 `compress`。这可以是特定的压缩算法，即 `gzip`、`deflate`、`br`、`zstd` 或 `lz4`，也可以是布尔标志。如果设置为 true，将使用 `lz4`。默认值为 `none`，即禁用压缩。
+标准 API 支持与原生 [ClickHouse API](#compression) 相同的压缩算法，即在块级别支持 `lz4` 和 `zstd` 压缩。除此之外，对于 HTTP 连接，还支持 gzip、deflate 和 br 压缩。如果启用了上述任意一种，插入时的块以及查询响应都会进行压缩。其他请求（例如 ping 或查询请求）将保持未压缩状态。这与 `lz4` 和 `zstd` 选项的行为一致。
+
+如果使用 `OpenDB` 方法建立连接，可以传入一个 Compression 配置项。其中包括指定压缩级别的能力（见下文）。如果通过携带 DSN 的 `sql.Open` 进行连接，请使用参数 `compress`。该参数可以是一个具体的压缩算法（即 `gzip`、`deflate`、`br`、`zstd` 或 `lz4`），也可以是一个布尔值。如果设置为 true，将使用 `lz4`。默认值为 `none`，即不启用压缩。
 
 ```go
 conn := clickhouse.OpenDB(&clickhouse.Options{
@@ -2222,8 +2325,8 @@ conn := clickhouse.OpenDB(&clickhouse.Options{
     Protocol: clickhouse.HTTP,
 })
 ```
-[完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/compression.go#L27-L76)
 
+[完整示例代码](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/compression.go#L27-L76)
 
 ```go
 conn, err := sql.Open("clickhouse", fmt.Sprintf("http://%s:%d?username=%s&password=%s&compress=gzip&compress_level=5", env.Host, env.HttpPort, env.Username, env.Password))
@@ -2231,53 +2334,55 @@ conn, err := sql.Open("clickhouse", fmt.Sprintf("http://%s:%d?username=%s&passwo
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/compression.go#L78-L115)
 
-应用的压缩级别可以通过 DSN 参数 compress_level 或 Compression 选项的 Level 字段控制。默认值为 0，但这与算法特定：
+所使用的压缩级别可以通过 DSN 参数 `compress_level` 或 Compression 选项中的 `Level` 字段进行控制。默认值为 0，但具体含义依压缩算法而定：
 
-* `gzip` - `-2`（最佳速度）到 `9`（最佳压缩）
-* `deflate` - `-2`（最佳速度）到 `9`（最佳压缩）
-* `br` - `0`（最佳速度）到 `11`（最佳压缩）
+* `gzip` - `-2`（最佳速度）到 `9`（最佳压缩率）
+* `deflate` - `-2`（最佳速度）到 `9`（最佳压缩率）
+* `br` - `0`（最佳速度）到 `11`（最佳压缩率）
 * `zstd`、`lz4` - 被忽略
-### Parameter Binding {#parameter-binding-1}
 
-标准 API 支持与 [ClickHouse API](#parameter-binding) 相同的参数绑定功能，允许参数传递给 `Exec`、`Query` 和 `QueryRow` 方法（及其同等的 [Context](#using-context) 变体）。支持位置参数、命名参数和编号参数。
+### 参数绑定 {#parameter-binding-1}
+
+标准 API 支持与 [ClickHouse API](#parameter-binding) 相同的参数绑定功能，允许将参数传递给 `Exec`、`Query` 和 `QueryRow` 方法（以及它们对应的 [Context](#using-context) 版本）。支持位置参数、命名参数和编号参数。
 
 ```go
 var count uint64
-// positional bind
+// 位置绑定
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col1 >= ? AND Col3 < ?", 500, now.Add(time.Duration(750)*time.Second)).Scan(&count); err != nil {
     return err
 }
 // 250
-fmt.Printf("Positional bind count: %d\n", count)
-// numeric bind
+fmt.Printf("位置绑定计数: %d\n", count)
+// 数值绑定
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col1 <= $2 AND Col3 > $1", now.Add(time.Duration(150)*time.Second), 250).Scan(&count); err != nil {
     return err
 }
 // 100
-fmt.Printf("Numeric bind count: %d\n", count)
-// named bind
+fmt.Printf("数值绑定计数: %d\n", count)
+// 命名绑定
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col1 <= @col1 AND Col3 > @col3", clickhouse.Named("col1", 100), clickhouse.Named("col3", now.Add(time.Duration(50)*time.Second))).Scan(&count); err != nil {
     return err
 }
 // 50
-fmt.Printf("Named bind count: %d\n", count)
+fmt.Printf("命名绑定计数: %d\n", count)
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/bind.go)
 
-注意 [特殊情况](#special-cases) 仍然适用。
-### Using Context {#using-context-1}
+请注意，[特殊情况](#special-cases)仍然适用。
 
-标准 API 支持通过上下文传递截止日期、取消信号和其他请求范围值的能力，与 [ClickHouse API](#using-context) 相同。与 ClickHouse API 不同，这通过使用方法的 `Context` 变体实现，即使用后台上下文的方法，例如 `Exec`，其具有一个变体 `ExecContext`，可以将上下文作为第一个参数传递。这允许在应用程序流的任何阶段传递上下文。例如，用户可以在通过 `ConnContext` 建立连接时传递上下文，或在通过 `QueryRowContext` 请求查询行时传递上下文。下面显示了所有可用方法的示例。
+### 使用 context {#using-context-1}
 
-有关使用上下文传递截止日期、取消信号、查询 ID、配额密钥和连接设置的更多详细信息，请参见 ClickHouse API 的 [使用上下文](#using-context)。
+标准 API 与 [ClickHouse API](#using-context) 一样，支持通过 context 传递截止时间、取消信号以及其他与请求范围关联的值。不同于 ClickHouse API，这里是通过使用带有 `Context` 后缀的方法变体来实现的。也就是说，像 `Exec` 这类默认使用后台 context 的方法，会提供一个变体 `ExecContext`，它将 context 作为第一个参数传入。这样就可以在应用流程的任意阶段传递 context。例如，用户可以在通过 `ConnContext` 建立连接时传入 context，或者在通过 `QueryRowContext` 请求查询行时传入 context。下文给出了所有可用方法的示例。
+
+关于使用 context 传递截止时间、取消信号、查询 id、配额键以及连接设置的更多细节，请参阅 [ClickHouse API](#using-context) 中的 Using Context 一节。
 
 ```go
 ctx := clickhouse.Context(context.Background(), clickhouse.WithSettings(clickhouse.Settings{
     "allow_experimental_object_type": "1",
 }))
 conn.ExecContext(ctx, "DROP TABLE IF EXISTS example")
-// to create a JSON column we need allow_experimental_object_type=1
+// 创建 JSON 列需要设置 allow_experimental_object_type=1
 if _, err = conn.ExecContext(ctx, `
     CREATE TABLE example (
             Col1 JSON
@@ -2287,7 +2392,7 @@ if _, err = conn.ExecContext(ctx, `
     return err
 }
 
-// queries can be cancelled using the context
+// 可以通过 context 取消查询
 ctx, cancel := context.WithCancel(context.Background())
 go func() {
     cancel()
@@ -2296,15 +2401,15 @@ if err = conn.QueryRowContext(ctx, "SELECT sleep(3)").Scan(); err == nil {
     return fmt.Errorf("expected cancel")
 }
 
-// set a deadline for a query - this will cancel the query after the absolute time is reached. Again terminates the connection only,
-// queries will continue to completion in ClickHouse
+// 为查询设置截止时间 - 达到绝对时间后将取消查询。同样仅终止连接,
+// 查询将在 ClickHouse 中继续执行直至完成
 ctx, cancel = context.WithDeadline(context.Background(), time.Now().Add(-time.Second))
 defer cancel()
 if err := conn.PingContext(ctx); err == nil {
     return fmt.Errorf("expected deadline exceeeded")
 }
 
-// set a query id to assist tracing queries in logs e.g. see system.query_log
+// 设置查询 ID 以便在日志中跟踪查询,例如查看 system.query_log
 var one uint8
 ctx = clickhouse.Context(context.Background(), clickhouse.WithQueryID(uuid.NewString()))
 if err = conn.QueryRowContext(ctx, "SELECT 1").Scan(&one); err != nil {
@@ -2316,14 +2421,14 @@ defer func() {
     conn.ExecContext(context.Background(), "DROP QUOTA IF EXISTS foobar")
 }()
 ctx = clickhouse.Context(context.Background(), clickhouse.WithQuotaKey("abcde"))
-// set a quota key - first create the quota
+// 设置配额键 - 首先创建配额
 if _, err = conn.ExecContext(ctx, "CREATE QUOTA IF NOT EXISTS foobar KEYED BY client_key FOR INTERVAL 1 minute MAX queries = 5 TO default"); err != nil {
     return err
 }
 
-// queries can be cancelled using the context
+// 可以通过 context 取消查询
 ctx, cancel = context.WithCancel(context.Background())
-// we will get some results before cancel
+// 取消前将获得部分结果
 ctx = clickhouse.Context(ctx, clickhouse.WithSettings(clickhouse.Settings{
     "max_block_size": "1",
 }))
@@ -2352,9 +2457,10 @@ for rows.Next() {
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/context.go)
-### Sessions {#sessions}
 
-虽然原生连接固有地具有会话，但通过 HTTP 连接需要用户创建会话 ID，以便作为设置在上下文中传递。这允许使用例如与会话绑定的临时表等功能。
+### 会话 {#sessions}
+
+原生连接本身就包含一个会话，而通过 HTTP 的连接则要求用户创建一个会话 ID，用于在设置中传递上下文。这样可以使用诸如临时表等依赖会话的特性。
 
 ```go
 conn := clickhouse.OpenDB(&clickhouse.Options{
@@ -2412,9 +2518,10 @@ for rows.Next() {
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/session.go)
-### Dynamic Scanning {#dynamic-scanning-1}
 
-与 [ClickHouse API](#dynamic-scanning) 类似，列类型信息可用于允许用户创建运行时实例的正确类型变量，这些变量可以传递给 Scan。这允许读取类型未知的列。
+### 动态扫描 {#dynamic-scanning-1}
+
+与 [ClickHouse API](#dynamic-scanning) 类似，这里也可以获取列的类型信息，便于用户在运行时创建类型正确的变量实例并将其传递给 Scan。这样即使事先不知道列的类型，也可以读取这些列。
 
 ```go
 const query = `
@@ -2450,11 +2557,12 @@ for rows.Next() {
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/dynamic_scan_types.go)
-### External Tables {#external-tables-1}
 
-[外部表](/engines/table-engines/special/external-data/) 允许客户端通过 `SELECT` 查询将数据发送到 ClickHouse。此数据被放置在临时表中，并可以在查询本身中用于评估。
+### 外部表 {#external-tables-1}
 
-要通过查询将外部数据发送到客户端，用户必须通过 `ext.NewTable` 构建外部表，然后通过上下文传递。
+[外部表](/engines/table-engines/special/external-data/) 允许客户端在执行 `SELECT` 查询时向 ClickHouse 发送数据。这些数据会被放入一个临时表中，并可在查询本身中用于计算。
+
+要在查询中从客户端发送外部数据，用户必须先通过 `ext.NewTable` 构建一个外部表，然后再通过 context 进行传递。
 
 ```go
 table1, err := ext.NewTable("external_table_1",
@@ -2499,7 +2607,6 @@ for rows.Next() {
 }
 rows.Close()
 
-
 var count uint64
 if err := conn.QueryRowContext(ctx, "SELECT COUNT(*) FROM external_table_1").Scan(&count); err != nil {
     return err
@@ -2516,9 +2623,10 @@ fmt.Printf("external_table_1 UNION external_table_2: %d\n", count)
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/external_data.go)
-### Open Telemetry {#open-telemetry-1}
 
-ClickHouse 允许将 [跟踪上下文](/operations/opentelemetry/) 作为原生协议的一部分传递。客户端允许通过 `clickhouse.withSpan` 函数创建一个 Span，并通过 Context 传递以实现这一点。当使用 HTTP 作为传输时不支持此功能。
+### OpenTelemetry {#open-telemetry-1}
+
+ClickHouse 允许在原生协议中传递 [trace context](/operations/opentelemetry/)。客户端可以通过函数 `clickhouse.withSpan` 创建一个 Span，并通过 Context 进行传递来实现这一点。当使用 HTTP 作为传输协议时，不支持该功能。
 
 ```go
 var count uint64
@@ -2535,10 +2643,11 @@ fmt.Printf("count: %d\n", count)
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/open_telemetry.go)
-## Performance Tips {#performance-tips}
 
-* 尽可能利用 ClickHouse API，特别是对于原始类型。这可以避免显著的反射和间接。
-* 如果读取大型数据集，请考虑修改 [`BlockBufferSize`](#connection-settings)。这将增加内存占用，但意味着在行迭代过程中可以并行解码更多块。默认值为 2 是保守性设置，最大限度地减少内存开销。较高的值将意味着在内存中有更多块。这需要测试，因为不同的查询可能产生不同的块大小。因此，可以在 [查询级别](#using-context) 上通过 Context 设置。
-* 插入数据时请对类型进行具体说明。虽然客户端旨在灵活，例如允许解析字符串为 UUID 或 IP，但这需要数据验证并在插入时产生开销。
-* 尽可能使用列式插入。这些也应强类型，以避免客户端将值转换的需要。
-* 按照 ClickHouse [建议](/sql-reference/statements/insert-into/#performance-considerations) 达到最佳插入性能。
+## 性能建议 {#performance-tips}
+
+* 在可能的情况下使用 ClickHouse API，尤其是针对基本类型（primitive types）。这可以避免大量的反射和间接调用。
+* 如果要读取大型数据集，考虑调整 [`BlockBufferSize`](#connection-settings)。这会增加内存占用，但在行迭代期间可以让更多数据块并行解码。默认值 2 较为保守，可将内存开销降至最低。更高的数值意味着会有更多数据块驻留在内存中。由于不同查询可能产生不同的数据块大小，因此需要进行测试。你也可以通过 Context 在[查询级别](#using-context)进行设置。
+* 在插入数据时尽可能明确指定类型。尽管客户端旨在保持灵活性，例如允许将字符串解析为 UUID 或 IP，但这需要进行数据校验，并在插入时带来额外开销。
+* 在可能的情况下使用按列（列式）的插入方式。同样地，这些列应为强类型，从而避免客户端对你的值进行类型转换。
+* 遵循 ClickHouse 关于插入性能优化的[建议](/sql-reference/statements/insert-into/#performance-considerations)，以获得最佳插入性能。

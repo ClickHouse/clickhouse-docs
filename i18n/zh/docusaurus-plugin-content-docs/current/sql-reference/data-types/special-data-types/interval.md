@@ -1,36 +1,36 @@
 ---
-'description': 'Interval 特殊数据类型的文档'
-'sidebar_label': '区间'
-'sidebar_position': 61
-'slug': '/sql-reference/data-types/special-data-types/interval'
-'title': '区间'
+description: 'Interval 特殊数据类型文档'
+sidebar_label: 'Interval'
+sidebar_position: 61
+slug: /sql-reference/data-types/special-data-types/interval
+title: 'Interval'
+doc_type: 'reference'
 ---
 
+# Interval {#interval}
 
-# 时间间隔
-
-表示时间和日期间隔的数据类型族。结果类型为 [INTERVAL](/sql-reference/operators#interval) 操作符的结果类型。
+表示时间和日期间隔的一类数据类型。[INTERVAL](/sql-reference/operators#interval) 运算符所产生的结果类型。
 
 结构：
 
-- 作为无符号整数值的时间间隔。
-- 间隔的类型。
+* 以无符号整数值表示的时间间隔。
+* 间隔的类型。
 
 支持的间隔类型：
 
-- `NANOSECOND`
-- `MICROSECOND`
-- `MILLISECOND`
-- `SECOND`
-- `MINUTE`
-- `HOUR`
-- `DAY`
-- `WEEK`
-- `MONTH`
-- `QUARTER`
-- `YEAR`
+* `NANOSECOND`
+* `MICROSECOND`
+* `MILLISECOND`
+* `SECOND`
+* `MINUTE`
+* `HOUR`
+* `DAY`
+* `WEEK`
+* `MONTH`
+* `QUARTER`
+* `YEAR`
 
-对于每种间隔类型，都有一个单独的数据类型。例如，`DAY` 间隔对应于 `IntervalDay` 数据类型：
+对于每种间隔类型，都有一个对应的数据类型。例如，`DAY` 间隔对应 `IntervalDay` 数据类型：
 
 ```sql
 SELECT toTypeName(INTERVAL 4 DAY)
@@ -42,12 +42,12 @@ SELECT toTypeName(INTERVAL 4 DAY)
 └──────────────────────────────┘
 ```
 
-## 使用备注 {#usage-remarks}
+## 使用注意事项 {#usage-remarks}
 
-您可以在与 [Date](../../../sql-reference/data-types/date.md) 和 [DateTime](../../../sql-reference/data-types/datetime.md) 类型值的算术运算中使用 `Interval` 类型的值。例如，您可以将当前时间加上 4 天：
+可以将 `Interval` 类型的值与 [Date](../../../sql-reference/data-types/date.md) 和 [DateTime](../../../sql-reference/data-types/datetime.md) 类型的值一起用于算术运算。例如，可以在当前时间的基础上加 4 天：
 
 ```sql
-SELECT now() as current_date_time, current_date_time + INTERVAL 4 DAY
+SELECT now() AS current_date_time, current_date_time + INTERVAL 4 DAY
 ```
 
 ```text
@@ -56,7 +56,7 @@ SELECT now() as current_date_time, current_date_time + INTERVAL 4 DAY
 └─────────────────────┴───────────────────────────────┘
 ```
 
-同时也可以同时使用多个间隔：
+也可以同时使用多个时间区间：
 
 ```sql
 SELECT now() AS current_date_time, current_date_time + (INTERVAL 4 DAY + INTERVAL 3 HOUR)
@@ -68,7 +68,7 @@ SELECT now() AS current_date_time, current_date_time + (INTERVAL 4 DAY + INTERVA
 └─────────────────────┴────────────────────────────────────────────────────────────────────┘
 ```
 
-并比较具有不同间隔的值：
+以及比较不同时间区间的数值：
 
 ```sql
 SELECT toIntervalMicrosecond(3600000000) = toIntervalHour(1);
@@ -80,7 +80,7 @@ SELECT toIntervalMicrosecond(3600000000) = toIntervalHour(1);
 └─────────────────────────────────────────────────────────────┘
 ```
 
-## 另请参见 {#see-also}
+## 另请参阅 {#see-also}
 
-- [INTERVAL](/sql-reference/operators#interval) 操作符
+- [INTERVAL](/sql-reference/operators#interval) 运算符
 - [toInterval](/sql-reference/functions/type-conversion-functions#tointervalyear) 类型转换函数

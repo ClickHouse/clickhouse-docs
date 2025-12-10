@@ -1,16 +1,14 @@
 ---
-description: 'Returns the population covariance matrix over N variables.'
+description: 'N 個の変数の母集団共分散行列を返します。'
 sidebar_position: 122
-slug: '/sql-reference/aggregate-functions/reference/covarpopmatrix'
+slug: /sql-reference/aggregate-functions/reference/covarpopmatrix
 title: 'covarPopMatrix'
+doc_type: 'reference'
 ---
 
+# covarPopMatrix {#covarpopmatrix}
 
-
-
-# covarPopMatrix
-
-N変数にわたる母集団共分散行列を返します。
+N 個の変数に対する母共分散行列を返します。
 
 **構文**
 
@@ -20,11 +18,11 @@ covarPopMatrix(x[, ...])
 
 **引数**
 
-- `x` — 任意の数のパラメータ。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
+* `x` — 可変長の引数。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
 
-**返される値**
+**戻り値**
 
-- 母集団共分散行列。[Array](../../data-types/array.md)([Array](../../data-types/array.md)([Float64](../../data-types/float.md)))。
+* 母集団共分散行列。[Array](../../data-types/array.md)([Array](../../data-types/array.md)([Float64](../../data-types/float.md)))。
 
 **例**
 
@@ -48,7 +46,7 @@ SELECT arrayMap(x -> round(x, 3), arrayJoin(covarPopMatrix(a, b, c, d))) AS cova
 FROM test;
 ```
 
-結果:
+結果：
 
 ```reference
    ┌─covarPopMatrix────────────┐

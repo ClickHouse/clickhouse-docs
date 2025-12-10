@@ -1,47 +1,45 @@
 ---
-'description': '系统表包含有关异步插入的信息。每个条目代表一个缓冲到异步插入查询中的插入查询.'
-'keywords':
-- 'system table'
-- 'asynchronous_insert_log'
-'slug': '/operations/system-tables/asynchronous_insert_log'
-'title': 'system.asynchronous_insert_log'
+description: '包含异步插入相关信息的系统表。每条记录代表一条被缓冲用于异步插入的 INSERT 查询。'
+keywords: ['系统表', 'asynchronous_insert_log']
+slug: /operations/system-tables/asynchronous_insert_log
+title: 'system.asynchronous_insert_log'
+doc_type: 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
+# system.asynchronous&#95;insert&#95;log {#systemasynchronous&#95;insert&#95;log}
 
-# system.asynchronous_insert_log
+<SystemTableCloud />
 
-<SystemTableCloud/>
+包含异步插入相关的信息。每条记录对应一条被缓冲到异步插入中的插入查询。
 
-包含关于异步插入的信息。每个条目代表一个缓冲到异步插入查询中的插入查询。
+要开始记录日志，请在 [asynchronous&#95;insert&#95;log](../../operations/server-configuration-parameters/settings.md#asynchronous_insert_log) 部分中配置参数。
 
-要开始日志记录，请在 [asynchronous_insert_log](../../operations/server-configuration-parameters/settings.md#asynchronous_insert_log) 部分配置参数。
+数据刷新周期通过服务器设置中 [asynchronous&#95;insert&#95;log](../../operations/server-configuration-parameters/settings.md#asynchronous_insert_log) 的 `flush_interval_milliseconds` 参数进行配置。要强制刷新，请使用 [SYSTEM FLUSH LOGS](/sql-reference/statements/system#flush-logs) 查询。
 
-数据刷新周期在 [asynchronous_insert_log](../../operations/server-configuration-parameters/settings.md#asynchronous_insert_log) 服务器设置部分的 `flush_interval_milliseconds` 参数中设置。要强制刷新，请使用 [SYSTEM FLUSH LOGS](/sql-reference/statements/system#flush-logs) 查询。
-
-ClickHouse 不会自动删除表中的数据。有关更多详细信息，请参阅 [Introduction](/operations/system-tables/overview#system-tables-introduction)。
+ClickHouse 不会自动从该表中删除数据。更多详情请参见 [Introduction](/operations/system-tables/overview#system-tables-introduction)。
 
 列：
 
-- `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 执行查询的服务器的主机名。
-- `event_date` ([Date](../../sql-reference/data-types/date.md)) — 异步插入发生的日期。
-- `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 异步插入完成执行的日期和时间。
-- `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — 异步插入完成执行的日期和时间（微秒精度）。
-- `query` ([String](../../sql-reference/data-types/string.md)) — 查询字符串。
-- `database` ([String](../../sql-reference/data-types/string.md)) — 表所在数据库的名称。
-- `table` ([String](../../sql-reference/data-types/string.md)) — 表名称。
-- `format` ([String](/sql-reference/data-types/string.md)) — 格式名称。
-- `query_id` ([String](../../sql-reference/data-types/string.md)) — 初始查询的 ID。
-- `bytes` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 插入字节数。
-- `exception` ([String](../../sql-reference/data-types/string.md)) — 异常消息。
-- `status` ([Enum8](../../sql-reference/data-types/enum.md)) — 视图的状态。值：
-    - `'Ok' = 1` — 插入成功。
-    - `'ParsingError' = 2` — 解析数据时的异常。
-    - `'FlushError' = 3` — 刷新数据时的异常。
-- `flush_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 刷新发生的日期和时间。
-- `flush_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — 刷新发生的日期和时间（微秒精度）。
-- `flush_query_id` ([String](../../sql-reference/data-types/string.md)) — 刷新查询的 ID。
+* `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 执行查询的服务器主机名。
+* `event_date` ([Date](../../sql-reference/data-types/date.md)) — 发生异步插入的日期。
+* `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 异步插入执行完成的日期和时间。
+* `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — 异步插入执行完成的日期和时间，精确到微秒。
+* `query` ([String](../../sql-reference/data-types/string.md)) — 查询字符串。
+* `database` ([String](../../sql-reference/data-types/string.md)) — 表所在数据库的名称。
+* `table` ([String](../../sql-reference/data-types/string.md)) — 表名。
+* `format` ([String](/sql-reference/data-types/string.md)) — 格式名称。
+* `query_id` ([String](../../sql-reference/data-types/string.md)) — 初始查询的 ID。
+* `bytes` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 插入的字节数。
+* `exception` ([String](../../sql-reference/data-types/string.md)) — 异常信息。
+* `status` ([Enum8](../../sql-reference/data-types/enum.md)) — 视图状态。取值：
+  * `'Ok' = 1` — 插入成功。
+  * `'ParsingError' = 2` — 解析数据时抛出的异常。
+  * `'FlushError' = 3` — 刷新数据时抛出的异常。
+* `flush_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 发生刷新操作的日期和时间。
+* `flush_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — 发生刷新操作的日期和时间，精确到微秒。
+* `flush_query_id` ([String](../../sql-reference/data-types/string.md)) — 刷新查询的 ID。
 
 **示例**
 
@@ -54,24 +52,24 @@ SELECT * FROM system.asynchronous_insert_log LIMIT 1 \G;
 结果：
 
 ```text
-hostname:                clickhouse.eu-central1.internal
-event_date:              2023-06-08
-event_time:              2023-06-08 10:08:53
-event_time_microseconds: 2023-06-08 10:08:53.199516
-query:                   INSERT INTO public.data_guess (user_id, datasource_id, timestamp, path, type, num, str) FORMAT CSV
-database:                public
-table:                   data_guess
-format:                  CSV
-query_id:                b46cd4c4-0269-4d0b-99f5-d27668c6102e
-bytes:                   133223
-exception:
-status:                  Ok
-flush_time:              2023-06-08 10:08:55
-flush_time_microseconds: 2023-06-08 10:08:55.139676
-flush_query_id:          cd2c1e43-83f5-49dc-92e4-2fbc7f8d3716
+主机名:                clickhouse.eu-central1.internal
+事件日期:              2023-06-08
+事件时间:              2023-06-08 10:08:53
+事件时间_微秒:         2023-06-08 10:08:53.199516
+查询:                  INSERT INTO public.data_guess (user_id, datasource_id, timestamp, path, type, num, str) FORMAT CSV
+数据库:                public
+表:                    data_guess
+格式:                  CSV
+查询_id:               b46cd4c4-0269-4d0b-99f5-d27668c6102e
+字节:                  133223
+异常:
+状态:                  Ok
+刷新时间:              2023-06-08 10:08:55
+刷新时间_微秒:         2023-06-08 10:08:55.139676
+刷新查询_id:           cd2c1e43-83f5-49dc-92e4-2fbc7f8d3716
 ```
 
 **另请参阅**
 
-- [system.query_log](../../operations/system-tables/query_log) — 描述 `query_log` 系统表的内容，该表包含有关查询执行的通用信息。
-- [system.asynchronous_inserts](/operations/system-tables/asynchronous_inserts) — 此表包含队列中待处理的异步插入的信息。
+* [system.query&#95;log](../../operations/system-tables/query_log) — `query_log` 系统表的说明，其中包含关于查询执行的常规信息。
+* [system.asynchronous&#95;inserts](/operations/system-tables/asynchronous_inserts) — 此表包含关于队列中待处理异步插入操作的信息。

@@ -1,32 +1,32 @@
 ---
-'description': '计算输入值的移动平均。'
-'sidebar_position': 144
-'slug': '/sql-reference/aggregate-functions/reference/grouparraymovingavg'
-'title': 'groupArrayMovingAvg'
+description: '计算输入值的移动平均。'
+sidebar_position: 144
+slug: /sql-reference/aggregate-functions/reference/grouparraymovingavg
+title: 'groupArrayMovingAvg'
+doc_type: 'reference'
 ---
 
+# groupArrayMovingAvg {#grouparraymovingavg}
 
-# groupArrayMovingAvg
-
-计算输入值的移动平均值。
+计算输入值的移动平均。
 
 ```sql
 groupArrayMovingAvg(numbers_for_summing)
 groupArrayMovingAvg(window_size)(numbers_for_summing)
 ```
 
-该函数可以将窗口大小作为参数。如果未指定，则函数将窗口大小设置为列中的行数。
+该函数可以将窗口大小作为参数传入。如果未指定窗口大小，函数会将其设为等于该列中的行数。
 
 **参数**
 
-- `numbers_for_summing` — [表达式](/sql-reference/syntax#expressions)，结果为数值数据类型值。
-- `window_size` — 计算窗口的大小。
+* `numbers_for_summing` — 结果为数值数据类型的[表达式](/sql-reference/syntax#expressions)。
+* `window_size` — 计算窗口的大小。
 
 **返回值**
 
-- 与输入数据相同大小和类型的数组。
+* 与输入数据大小和类型相同的数组。
 
-该函数使用 [朝零舍入](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)。它会截断对于结果数据类型无意义的小数位。
+该函数使用[向零舍入](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)，会截断对于结果数据类型而言无意义的小数位。
 
 **示例**
 
@@ -51,7 +51,7 @@ ENGINE = TinyLog
 └─────┴───────┴──────┘
 ```
 
-查询：
+查询语句：
 
 ```sql
 SELECT

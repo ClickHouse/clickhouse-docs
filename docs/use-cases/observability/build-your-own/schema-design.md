@@ -115,7 +115,7 @@ Body:           151.233.185.144 - - [22/Jan/2019:19:08:54 +0330] "GET /image/105
 LogAttributes: {'log.file.name':'access-unstructured.log'}
 ```
 
-A similar query for the unstructured logs requires the use of regular expressions via the [`extractAllGroupsVertical` function](/sql-reference/functions/string-search-functions#extractallgroupsvertical).
+A similar query for the unstructured logs requires the use of regular expressions via the `extractAllGroupsVertical` function.
 
 ```sql
 SELECT
@@ -596,7 +596,7 @@ Dictionaries can be used for enriching datasets at query time or insert time. Ea
 - **Insert time** - This is typically appropriate if the enrichment value does not change and exists in an external source which can be used to populate the dictionary. In this case, enriching the row at insert time avoids the query time lookup to the dictionary. This comes at the cost of insert performance as well as an additional storage overhead, as enriched values will be stored as columns.
 - **Query time** - If values in a dictionary change frequently, query time lookups are often more applicable. This avoids needing to update columns (and rewrite data) if mapped values change. This flexibility comes at the expense of a query time lookup cost. This query time cost is typically appreciable if a lookup is required for many rows, e.g. using a dictionary lookup in a filter clause. For result enrichment, i.e. in the `SELECT`, this overhead is typically not appreciable.
 
-We recommend that users familiarize themselves with the basics of dictionaries. Dictionaries provide an in-memory lookup table from which values can be retrieved using dedicated [specialist functions](/sql-reference/functions/ext-dict-functions#dictgetall).
+We recommend that users familiarize themselves with the basics of dictionaries. Dictionaries provide an in-memory lookup table from which values can be retrieved using dedicated [specialist functions](/sql-reference/functions/ext-dict-functions#dictGetAll).
 
 For simple enrichment examples see the guide on Dictionaries [here](/dictionary). Below, we focus on common observability enrichment tasks.
 

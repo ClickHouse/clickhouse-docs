@@ -1,10 +1,10 @@
 ---
-description: '地図上の店舗、レストラン、公園、遊び場、記念碑などの情報を含む1億件以上のレコードを持つデータセット。'
+description: '地図上のショップ、レストラン、公園、遊び場、記念碑などの場所に関する情報を含む、1億件超のレコードからなるデータセット。'
 sidebar_label: 'Foursquare places'
-slug: '/getting-started/example-datasets/foursquare-places'
+slug: /getting-started/example-datasets/foursquare-places
 title: 'Foursquare places'
-keywords:
-- 'visualizing'
+keywords: ['可視化']
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -13,24 +13,28 @@ import visualization_2 from '@site/static/images/getting-started/example-dataset
 import visualization_3 from '@site/static/images/getting-started/example-datasets/visualization_3.png';
 import visualization_4 from '@site/static/images/getting-started/example-datasets/visualization_4.png';
 
-## Dataset {#dataset}
+## データセット {#dataset}
 
-このデータセットは Foursquare によって提供されており、[ダウンロード](https://docs.foursquare.com/data-products/docs/access-fsq-os-places)が可能で、Apache 2.0 ライセンスの下で無料で使用できます。
+Foursquare によるこのデータセットは、[ダウンロード](https://docs.foursquare.com/data-products/docs/access-fsq-os-places)
+して利用でき、Apache License 2.0 の下で無償で使用できます。
 
-このデータセットには、店舗、レストラン、公園、遊び場、記念碑など、商業的な観光地（POI）の1億件以上のレコードが含まれています。また、カテゴリやソーシャルメディア情報など、これらの場所に関する追加のメタデータも含まれています。
+このデータセットには、店舗、レストラン、公園、遊び場、記念碑などの商用のポイント・オブ・インタレスト (POI) の
+1 億件以上のレコードが含まれています。さらに、それらの場所に関するカテゴリやソーシャルメディア情報といった
+追加のメタデータも含まれています。
 
-## Data exploration {#data-exploration}
+## データ探索 {#data-exploration}
 
-データを探索するために、[`clickhouse-local`](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)という小さなコマンドラインツールを使用します。このツールは、完全な ClickHouse エンジンを提供しますが、ClickHouse Cloud、`clickhouse-client`、または `chDB` を使用することもできます。
+データ探索には、[`clickhouse-local`](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) を使用します。これはフル機能の ClickHouse エンジンを提供する軽量なコマンドラインツールですが、代わりに
+ClickHouse Cloud や `clickhouse-client`、あるいは `chDB` を使用することもできます。
 
-データが保存されている S3 バケットからデータを選択するには、次のクエリを実行します：
+データが保存されている S3 バケットからデータを取得するには、次のクエリを実行します。
 
 ```sql title="Query"
 SELECT * FROM s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*') LIMIT 1
 ```
 
 ```response title="Response"
-Row 1:
+行 1:
 ──────
 fsq_place_id:        4e1ef76cae60cd553dec233f
 name:                @VirginAmerica In-flight Via @Gogo
@@ -54,13 +58,14 @@ facebook_id:         ᴺᵁᴸᴸ
 instagram:           ᴺᵁᴸᴸ
 twitter:             ᴺᵁᴸᴸ
 fsq_category_ids:    ['4bf58dd8d48988d1f7931735']
-fsq_category_labels: ['Travel and Transportation > Transport Hub > Airport > Plane']
+fsq_category_labels: ['旅行・交通 > 交通ハブ > 空港 > 航空機']
 placemaker_url:      https://foursquare.com/placemakers/review-place/4e1ef76cae60cd553dec233f
 geom:                �^��a�^@Bσ���
 bbox:                (-122.39003793803701,37.62120111687914,-122.39003793803701,37.62120111687914)
 ```
 
-多くのフィールドが `ᴺᵁᴸᴸ` になっているため、より使いやすいデータを取得するために、クエリに追加条件を追加できます：
+`ᴺᵁᴸᴸ` になっているフィールドがかなり多いことが分かるので、
+より扱いやすいデータを取得できるよう、クエリにいくつか条件を追加します。
 
 ```sql title="Query"
 SELECT * FROM s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*')
@@ -92,13 +97,13 @@ facebook_id:         522698844570949 -- 522.70 trillion
 instagram:           landalmooizutendaal
 twitter:             landalzdl
 fsq_category_ids:    ['56aa371be4b08b9a8d5734e1']
-fsq_category_labels: ['Travel and Transportation > Lodging > Vacation Rental']
+fsq_category_labels: ['旅行・交通 > 宿泊 > バケーションレンタル']
 placemaker_url:      https://foursquare.com/placemakers/review-place/59b2c754b54618784f259654
 geom:                ᴺᵁᴸᴸ
 bbox:                (NULL,NULL,NULL,NULL)
 ```
 
-データの自動推定スキーマを表示するには、次のクエリを使用して `DESCRIBE` を実行します：
+`DESCRIBE` を使用して、データから自動的に推論されたスキーマを確認するには、次のクエリを実行します。
 
 ```sql title="Query"
 DESCRIBE s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*')
@@ -139,11 +144,12 @@ DESCRIBE s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*
     └─────────────────────┴─────────────────────────────┘
 ```
 
-## Loading the data into ClickHouse {#loading-the-data}
+## データを ClickHouse に取り込む {#loading-the-data}
 
-ディスク上にデータを永続化したい場合は、`clickhouse-server` または ClickHouse Cloud を使用できます。
+データをディスクに永続化したい場合は、`clickhouse-server`
+または ClickHouse Cloud を使用できます。
 
-テーブルを作成するには、次のコマンドを実行してください：
+テーブルを作成するには、次のコマンドを実行します。
 
 ```sql title="Query"
 CREATE TABLE foursquare_mercator
@@ -188,68 +194,74 @@ CREATE TABLE foursquare_mercator
 ORDER BY mortonEncode(mercator_x, mercator_y)
 ```
 
-いくつかのカラムに対して [`LowCardinality`](/sql-reference/data-types/lowcardinality) データ型を使用していることに注意してください。このデータ型は、データ型の内部表現を辞書エンコードに変更します。辞書エンコードされたデータを操作することで、多くのアプリケーションにおいて `SELECT` クエリのパフォーマンスが大幅に向上します。
+いくつかのカラムでは [`LowCardinality`](/sql-reference/data-types/lowcardinality)
+データ型が使用されていることに注意してください。これは内部的なデータ表現を
+辞書エンコード形式に変更します。辞書エンコードされたデータ上で処理を行うことで、
+多くのアプリケーションにおいて `SELECT` クエリのパフォーマンスが大幅に向上します。
 
-さらに、2つの `UInt32` の `MATERIALIZED` カラム、`mercator_x` および `mercator_y` が作成され、緯度/経度座標を[Web Mercator プロジェクション](https://en.wikipedia.org/wiki/Web_Mercator_projection)にマッピングすることで、地図をタイルに簡単にセグメント化します：
+さらに、2 つの `UInt32` 型の `MATERIALIZED` カラム `mercator_x` と `mercator_y` が作成され、
+lat/lon 座標を [Web Mercator projection](https://en.wikipedia.org/wiki/Web_Mercator_projection)
+にマッピングすることで、地図をタイルに分割しやすくしています。
 
 ```sql
 mercator_x UInt32 MATERIALIZED 0xFFFFFFFF * ((longitude + 180) / 360),
 mercator_y UInt32 MATERIALIZED 0xFFFFFFFF * ((1 / 2) - ((log(tan(((latitude + 90) / 360) * pi())) / 2) / pi())),
 ```
 
-上記の各カラムで何が起こっているのかを分解してみましょう。
+上記で各カラムごとに何が行われているかを分解して説明します。
 
-**mercator_x**
+**mercator&#95;x**
 
-このカラムは、経度の値を Mercator プロジェクションの X 座標に変換します：
+このカラムは、経度をメルカトル図法における X 座標に変換します：
 
-- `longitude + 180` は経度の範囲を [-180, 180] から [0, 360] にシフトします
-- 360 で割ることにより、0 と 1 の間の値に正規化されます
-- `0xFFFFFFFF`（最大32ビット符号なし整数の16進数）を掛けることで、この正規化された値を32ビット整数の全範囲にスケールします
+* `longitude + 180` によって、経度の範囲を [-180, 180] から [0, 360] にシフトします
+* 360 で割ることで、この値を 0〜1 の範囲に正規化します
+* `0xFFFFFFFF`（32 ビット符号なし整数の最大値を表す 16 進数）を掛けることで、この正規化された値を 32 ビット整数の全範囲にスケーリングします
 
-**mercator_y**
+**mercator&#95;y**
 
-このカラムは、緯度の値を Mercator プロジェクションの Y 座標に変換します：
+このカラムは、緯度をメルカトル図法における Y 座標に変換します：
 
-- `latitude + 90` は緯度を [-90, 90] から [0, 180] にシフトします
-- 360 で割って pi() を掛けることで、三角関数のためにラジアンに変換します
-- `log(tan(...))` 部分が Mercator プロジェクションの公式のコアです
-- `0xFFFFFFFF` を掛けることで、32ビット整数の全範囲にスケールします
+* `latitude + 90` によって、緯度の範囲を [-90, 90] から [0, 180] にシフトします
+* 360 で割り、さらに pi() を掛けることで、三角関数向けにラジアンへ変換します
+* `log(tan(...))` の部分がメルカトル図法の中核となる数式です
+* `0xFFFFFFFF` を掛けることで、32 ビット整数の全範囲へスケーリングします
 
-`MATERIALIZED` を指定すると、ClickHouse はデータを `INSERT` する際にこれらのカラムの値を計算し、`INSERT` ステートメントではこれらのカラムを指定する必要がありません（これらは元のデータスキーマの一部ではありません）。
+`MATERIALIZED` を指定することで、元データのスキーマには含まれないこれらのカラムを `INSERT` 文で明示的に指定しなくても、ClickHouse がデータを `INSERT` する際にこれらのカラムの値を自動的に計算します。
 
-テーブルは `mortonEncode(mercator_x, mercator_y)` によってオーダーされており、これにより `mercator_x`, `mercator_y` の Z-オーダー空間充填曲線が生成され、地理空間クエリのパフォーマンスが大幅に向上します。この Z-オーダー曲線のオーダリングにより、データが物理的に空間的近接性に基づいて整理されます：
+テーブルは `mortonEncode(mercator_x, mercator_y)` によって並び替えられます。これは `mercator_x` と `mercator_y` から Z オーダーの空間充填曲線を生成し、ジオスペーシャルクエリの性能を大幅に向上させます。この Z オーダー曲線による並び替えにより、データは物理的に空間的な近接性に基づいて配置されます。
 
 ```sql
 ORDER BY mortonEncode(mercator_x, mercator_y)
 ```
 
-より高速な検索のために、2つの `minmax` インデックスも作成されます：
+さらに、検索を高速化するために、`minmax` インデックスが 2 つ作成されます。
 
 ```sql
 INDEX idx_x mercator_x TYPE minmax,
 INDEX idx_y mercator_y TYPE minmax
 ```
 
-ご覧の通り、ClickHouse はリアルタイムマッピングアプリケーションに必要なすべてを提供しています！
+ご覧のとおり、ClickHouse にはリアルタイムマッピングアプリケーションに必要な機能がすべて揃っています。
 
-データをロードするには、次のクエリを実行します：
+次のクエリを実行してデータを読み込んでください。
 
 ```sql
 INSERT INTO foursquare_mercator 
 SELECT * FROM s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*')
 ```
 
-## Visualizing the data {#data-visualization}
+## データの可視化 {#data-visualization}
 
-このデータセットで可能なことを確認するには、[adsb.exposed](https://adsb.exposed/?dataset=Places&zoom=5&lat=52.3488&lng=4.9219)をチェックしてください。adsb.exposed は、共同創設者で CTO の Alexey Milovidov が ADS-B（自動依存監視 - ブロードキャスト）フライトデータを視覚化するために最初に構築したもので、これのデータは1000倍の大きさです。会社のハッカソンで、Alexey はこのツールに Foursquare データを追加しました。
+このデータセットでどのようなことができるかを知るには、[adsb.exposed](https://adsb.exposed/?dataset=Places&zoom=5&lat=52.3488&lng=4.9219) を参照してください。
+adsb.exposed は、共同創業者兼 CTO の Alexey Milovidov によって、1000 倍の規模がある ADS-B (Automatic Dependent Surveillance-Broadcast) フライトデータを可視化するために最初に構築されました。社内ハッカソンの際に、Alexey がこのツールに Foursquare のデータを追加しました。
 
-いくつかのお気に入りの視覚化を以下に示しますので、お楽しみください。
+以下に、私たちのお気に入りの可視化の一部を掲載します。
 
-<Image img={visualization_1} size="md" alt="Density map of points of interest in Europe"/>
+<Image img={visualization_1} size="md" alt="ヨーロッパにおける関心地点の密度マップ"/>
 
-<Image img={visualization_2} size="md" alt="Sake bars in Japan"/>
+<Image img={visualization_2} size="md" alt="日本の日本酒バー"/>
 
-<Image img={visualization_3} size="md" alt="ATMs"/>
+<Image img={visualization_3} size="md" alt="ATM"/>
 
-<Image img={visualization_4} size="md" alt="Map of Europe with points of interest categorised by country"/>
+<Image img={visualization_4} size="md" alt="国別に分類されたヨーロッパの関心地点の地図"/>

@@ -43,8 +43,8 @@ performance, with the minimum number of bytes always used to store a string, and
 rather provides only constraints useful for downstream tooling. Other types, such
 as `Text` and `NChar`, are simply aliases for this type. ClickHouse conversely 
 stores all [string data as raw bytes](/sql-reference/data-types/string) with a `String`
-type (no length specification required), deferring encoding to the user, with 
-[query time functions](/sql-reference/functions/string-functions#lengthutf8) 
+type (no length specification required), deferring encoding to the user, with
+[query time functions](/sql-reference/functions/string-functions#lengthUTF8)
 available for different encodings. We refer the reader to ["Opaque data argument"](https://utf8everywhere.org/#cookie)
 for the motivation as to why. The ClickHouse `String` is thus more comparable 
 to the Snowflake Binary type in its implementation. Both [Snowflake](https://docs.snowflake.com/en/sql-reference/collation)

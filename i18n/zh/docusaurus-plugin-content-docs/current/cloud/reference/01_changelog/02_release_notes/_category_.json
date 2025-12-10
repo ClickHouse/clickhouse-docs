@@ -1,0 +1,9 @@
+{
+  "label": "发行说明",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "文档",
+    "id": "cloud/reference/changelog/release_notes/index"
+  }
+}

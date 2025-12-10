@@ -5,6 +5,7 @@ sidebar_position: 4
 title: 'Sizing and hardware recommendations'
 description: 'This guide discusses our general recommendations regarding hardware, compute, memory, and disk configurations for open-source users.'
 doc_type: 'guide'
+keywords: ['sizing', 'hardware', 'capacity planning', 'best practices', 'performance']
 ---
 
 # Sizing and hardware recommendations
@@ -60,17 +61,17 @@ There is no standard CPU utilization target for ClickHouse. Utilize a tool such 
 
 ### How many CPU cores should I use? {#how-many-cpu-cores-should-i-use}
 
-The number of CPUs you should use depends on your workload. However, we generally recommend the following memory to CPU core ratios based on your CPU type:
+The number of CPUs you should use depends on your workload. However, we generally recommend the following memory-to-CPU-core ratios based on your CPU type:
 
-- **[M-type](https://aws.amazon.com/ec2/instance-types/) (general purpose use cases):** 4:1 memory to CPU core ratio
-- **[R-type](https://aws.amazon.com/ec2/instance-types/#Memory_Optimized) (data warehousing use cases):** 8:1 memory to CPU core ratio
-- **[C-type](https://aws.amazon.com/ec2/instance-types/#Compute_Optimized) (compute-optimized use cases):** 2:1 memory to CPU core ratio
+- **[M-type](https://aws.amazon.com/ec2/instance-types/) (general purpose use cases):** 4 GB:1 memory-to-CPU-core ratio
+- **[R-type](https://aws.amazon.com/ec2/instance-types/#Memory_Optimized) (data warehousing use cases):** 8 GB:1 memory-to-CPU-core ratio
+- **[C-type](https://aws.amazon.com/ec2/instance-types/#Compute_Optimized) (compute-optimized use cases):** 2 GB:1 memory-to-CPU-core ratio
 
 As an example, when using M-type CPUs, we recommend provisioning 100GB of memory per 25 CPU cores. To determine the amount of memory appropriate for your application, profiling your memory usage is necessary. You can read [this guide on debugging memory issues](/guides/developer/debugging-memory-issues) or use the [built-in observability dashboard](/operations/monitoring) to monitor ClickHouse.
 
 ## Memory {#memory}
 
-Like your choice of CPU, your choice of memory to storage ratio and memory to CPU ratio is dependent on your use-case.
+Like your choice of CPU, your choice of memory-to-storage ratio and memory-to-CPU ratio is dependent on your use-case.
 
 The required volume of RAM generally depends on:
 - The complexity of queries.
@@ -79,13 +80,13 @@ The required volume of RAM generally depends on:
 In general, however, the more memory you have, the faster your queries will run. 
 If your use case is sensitive to price, lower amounts of memory will work as it is possible to enable settings ([`max_bytes_before_external_group_by`](/operations/settings/settings#max_bytes_before_external_group_by) and [`max_bytes_before_external_sort`](/operations/settings/settings#max_bytes_before_external_sort)) to allow spilling data to disk, but note that this may significantly affect query performance.
 
-### What should the memory to storage ratio be? {#what-should-the-memory-to-storage-ratio-be}
+### What should the memory-to-storage ratio be? {#what-should-the-memory-to-storage-ratio-be}
 
-For low data volumes, a 1:1 memory to storage ratio is acceptable but total memory should not be below 8GB.
+For low data volumes, a 1:1 memory-to-storage ratio is acceptable but total memory should not be below 8GB.
 
-For use cases with long retention periods for your data or with high data volumes, we recommend a 1:100 to 1:130 memory to storage ratio. For example, 100GB of RAM per replica if you are storing 10TB of data.
+For use cases with long retention periods for your data or with high data volumes, we recommend a 1:100 to 1:130 memory-to-storage ratio. For example, 100GB of RAM per replica if you are storing 10TB of data.
 
-For use cases with frequent access such as for customer-facing workloads, we recommend using more memory at a 1:30 to 1:50 memory to storage ratio.
+For use cases with frequent access such as for customer-facing workloads, we recommend using more memory at a 1:30 to 1:50 memory-to-storage ratio.
 
 ## Replicas {#replicas}
 
@@ -154,11 +155,11 @@ To provide guidance (not recommendations), the following are example configurati
         <td>256GB</td>
     </tr>
     <tr>
-        <td><strong>RAM to vCPU ratio</strong></td>
-        <td>4:1</td>
+        <td><strong>RAM-to-vCPU ratio</strong></td>
+        <td>4 GB:1</td>
     </tr>
     <tr>
-        <td><strong>RAM to disk ratio</strong></td>
+        <td><strong>RAM-to-disk ratio</strong></td>
         <td>1:50</td>
     </tr>
 </table>
@@ -212,18 +213,18 @@ To provide guidance (not recommendations), the following are example configurati
         <td>256GB</td>
     </tr>
     <tr>
-        <td><strong>RAM to vCPU ratio</strong></td>
-        <td>6:1</td>
+        <td><strong>RAM-to-vCPU ratio</strong></td>
+        <td>6 GB:1</td>
     </tr>
     <tr>
-        <td><strong>RAM to disk ratio</strong></td>
+        <td><strong>RAM-to-disk ratio</strong></td>
         <td>1:60</td>
     </tr>
 </table>
 
 ## Further reading {#further-reading}
 
-Below are published blog posts on architecture from companies using open-source ClickHouse:
+Below are published blog posts on architectures from companies using open-source ClickHouse:
 
 - [Cloudflare](https://blog.cloudflare.com/http-analytics-for-6m-requests-per-second-using-clickhouse/?utm_source=linkedin&utm_medium=social&utm_campaign=blog)
 - [eBay](https://innovation.ebayinc.com/tech/engineering/ou-online-analytical-processing/)

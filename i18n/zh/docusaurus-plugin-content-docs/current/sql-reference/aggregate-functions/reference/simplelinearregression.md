@@ -1,27 +1,27 @@
 ---
-'description': '执行简单（单维）线性回归。'
-'sidebar_position': 183
-'slug': '/sql-reference/aggregate-functions/reference/simplelinearregression'
-'title': 'simpleLinearRegression'
+description: '执行简单（单变量）线性回归。'
+sidebar_position: 183
+slug: /sql-reference/aggregate-functions/reference/simplelinearregression
+title: 'simpleLinearRegression'
+doc_type: 'reference'
 ---
 
+# simpleLinearRegression {#simplelinearregression}
 
-# simpleLinearRegression
-
-执行简单（单维）线性回归。
+执行简单（一维）线性回归。
 
 ```sql
-simpleLinearRegression(x, y)
+简单线性回归(x, y)
 ```
 
 参数：
 
-- `x` — 含有解释变量值的列。
-- `y` — 含有因变量值的列。
+* `x` — 自变量取值所在的列。
+* `y` — 因变量取值所在的列。
 
 返回值：
 
-结果线的常数 `(k, b)`，即 `y = k*x + b`。
+拟合直线 `y = k*x + b` 的常数 `(k, b)`。
 
 **示例**
 

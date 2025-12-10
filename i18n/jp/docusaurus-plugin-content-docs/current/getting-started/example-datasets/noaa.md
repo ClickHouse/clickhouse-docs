@@ -1,37 +1,36 @@
 ---
-description: '2.5 billion rows of climate data for the last 120 yrs'
-sidebar_label: 'NOAA Global Historical Climatology Network'
-sidebar_position: 1
-slug: '/getting-started/example-datasets/noaa'
+description: '過去120年間の25億行の気候データ'
+sidebar_label: 'NOAA Global Historical Climatology Network '
+slug: /getting-started/example-datasets/noaa
 title: 'NOAA Global Historical Climatology Network'
+doc_type: 'guide'
+keywords: ['サンプルデータセット', 'noaa', '気象データ', 'サンプルデータ', '気候']
 ---
 
+このデータセットには、過去120年間の気象観測データが含まれています。各行は、ある時点・ある観測所での1つの観測値を表します。
 
+より正確には、このデータの[出典](https://github.com/awslabs/open-data-docs/tree/main/docs/noaa/noaa-ghcn)によると次のとおりです。
 
-このデータセットには、過去120年間の気象測定値が含まれています。各行は、特定の時点と観測所の測定値を表しています。
+> GHCN-Daily は、世界の陸域での毎日の観測値を含むデータセットです。世界中の陸上観測所による観測値を含んでおり、その約3分の2は降水量のみの観測値です (Menne et al., 2012)。GHCN-Daily は、数多くの情報源からの気候記録を統合し、共通の品質保証チェック一式 (Durre et al., 2010) を適用したコンポジットなデータセットです。このアーカイブには、次の気象要素が含まれます。
 
-より正確には、このデータの[出所](https://github.com/awslabs/open-data-docs/tree/main/docs/noaa/noaa-ghcn)に基づいて次のようになります：
-
-> GHCN-Dailyは、世界の陸地での日次観測を含むデータセットです。これは、世界中の地上観測所からの測定値を含み、その約3分の2は降水測定のみです (Menne et al., 2012)。GHCN-Dailyは、数多くのソースからの気象記録の複合体で、統合されて共通の品質保証レビューにかけられています (Durre et al., 2010)。アーカイブには、以下の気象要素が含まれています：
-
-    - 日次最高気温
-    - 日次最低気温
+- 日最高気温
+    - 日最低気温
     - 観測時の気温
-    - 降水量（つまり、雨、融雪）
+    - 降水量（雨、融雪など）
     - 降雪量
-    - 雪の深さ
-    - 額外の要素（利用可能な場合）
+    - 積雪深
+    - 利用可能な場合のその他の要素
 
-以下のセクションでは、このデータセットをClickHouseに取り込むために関与したステップの概要を提供します。各ステップについてより詳細に読みたい場合は、私たちのブログ投稿「["ClickHouseにおける100年以上の気象記録の探求"](https://clickhouse.com/blog/real-world-data-noaa-climate-data)」をご覧ください。
+The sections below give a brief overview of the steps that were involved in bringing this dataset into ClickHouse. If you're interested in reading about each step in more detail, we recommend to take a look at our blog post titled ["Exploring massive, real-world data sets: 100+ Years of Weather Records in ClickHouse"](https://clickhouse.com/blog/real-world-data-noaa-climate-data).
 
 ## データのダウンロード {#downloading-the-data}
 
-- ClickHouse用にクリーンアップ、再構成、強化された[事前準備されたバージョン](#pre-prepared-data)があります。このデータは1900年から2022年までをカバーしています。
-- [オリジナルデータをダウンロード](#original-data)し、ClickHouseが要求する形式に変換します。独自のカラムを追加したいユーザーは、このアプローチを検討するかもしれません。
+- ClickHouse 向けに[事前に用意されたデータ](#pre-prepared-data)。クレンジングや再構造化、拡張が行われており、1900 年から 2022 年までをカバーしています。
+- [元データをダウンロード](#original-data)して、ClickHouse に必要な形式へ変換します。独自のカラムを追加したいユーザーは、このアプローチを検討するとよいでしょう。
 
-### 事前準備されたデータ {#pre-prepared-data}
+### 事前処理済みデータ {#pre-prepared-data}
 
-より具体的には、Noaaによる品質保証チェックで失敗しなかった行が削除されています。データは、行ごとの測定から、ステーションIDと日付ごとの行に再構成されています。つまり、次のようになります。
+より具体的には、NOAA による品質保証チェックで一度も失敗しなかった行は削除されています。また、データは 1 行につき 1 測定値という構造から、station id と日付ごとに 1 行という構造に再編成されています。つまり、
 
 ```csv
 "station_id","date","tempAvg","tempMax","tempMin","precipitation","snowfall","snowDepth","percentDailySun","averageWindSpeed","maxWindSpeed","weatherType"
@@ -41,23 +40,23 @@ title: 'NOAA Global Historical Climatology Network'
 "AEM00041194","2022-08-02",381,424,352,0,0,0,0,0,0,0
 ```
 
-これはクエリが簡単で、結果のテーブルがスパースでないことを保証します。最後に、データには緯度と経度が追加されています。
+これはクエリをより簡単にし、結果のテーブルが疎になりにくくなるようにします。さらに、データには緯度・経度情報も付加されています。
 
-このデータは、以下のS3ロケーションで入手可能です。データをローカルファイルシステムにダウンロードして（ClickHouseクライアントを使用して挿入することができます）、または直接ClickHouseに挿入します（[S3からの挿入を参照](#inserting-from-s3)）。
+このデータは次の S3 ロケーションで利用できます。データをローカルファイルシステムにダウンロードして（ClickHouse クライアントを使って挿入する）、または ClickHouse に直接挿入します（[S3 からの挿入](#inserting-from-s3) を参照）。
 
-ダウンロードするには：
+ダウンロードするには:
 
 ```bash
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/noaa/noaa_enriched.parquet
 ```
 
-### オリジナルデータ {#original-data}
+### 元データ {#original-data}
 
-以下は、ClickHouseにロードする準備のためにオリジナルデータをダウンロードして変換する手順を示しています。
+以下では、ClickHouse にロードするための準備として、元データをダウンロードおよび変換する手順を説明します。
 
 #### ダウンロード {#download}
 
-オリジナルデータをダウンロードするには：
+元データをダウンロードするには、次の手順を行います。
 
 ```bash
 for i in {1900..2023}; do wget https://noaa-ghcn-pds.s3.amazonaws.com/csv.gz/${i}.csv.gz; done
@@ -81,34 +80,34 @@ $ clickhouse-local --query "SELECT * FROM '2021.csv.gz' LIMIT 10" --format Prett
 └─────────────┴──────────┴──────┴─────┴──────┴──────┴────┴──────┘
 ```
 
-[フォーマットのドキュメント](https://github.com/awslabs/open-data-docs/tree/main/docs/noaa/noaa-ghcn)を要約すると：
+[フォーマットのドキュメント](https://github.com/awslabs/open-data-docs/tree/main/docs/noaa/noaa-ghcn)の要約:
 
-フォーマットドキュメントとカラムを順番に要約すると：
+フォーマット仕様および各列の内容を順番にまとめると次のとおりです。
 
- - 11文字のステーション識別コード。この中に一部有用な情報がエンコードされています。
- - YEAR/MONTH/DAY = YYYYMMDD形式の8文字の日付（例：19860529 = 1986年5月29日）
- - ELEMENT = 要素タイプの4文字インジケーター。事実上、測定タイプです。利用可能な多くの測定値がありますが、以下のものを選択します：
-    - PRCP - 降水量（1/10 mm）
-    - SNOW - 降雪量（mm）
-    - SNWD - 雪の深さ（mm）
-    - TMAX - 最高気温（1/10 ℃）
-    - TAVG - 平均気温（1/10 ℃）
-    - TMIN - 最低気温（1/10 ℃）
-    - PSUN - 日次可能日照率（パーセント）
-    - AWND - 日次平均風速（1/10秒メートル）
-    - WSFG - ピーク突風風速（1/10秒メートル）
-    - WT** = 天候タイプ **は天候タイプを示します。天候タイプの完全なリストはこちら。
-- DATA VALUE = ELEMENT用の5文字データ値すなわち測定値の値。
-- M-FLAG = 測定フラグ（1文字）。これは10の可能な値があります。これらの値の一部は、データの精度に疑問があることを示します。この値が「P」に設定されているデータを受け入れます。これは、PRCP、SNOW、SNWD測定にのみ関連します。
-- Q-FLAGは測定品質フラグで、14の可能な値があります。我々は、空の値データすなわち、品質保証チェックで失敗しなかったもののデータにだけ興味があります。
-- S-FLAGは観測のソースフラグです。我々の分析には役立たないため無視します。
-- OBS-TIME = 観測時間を表す4文字（時分）形式のデータ（例：0700 =午前7時）。通常、古いデータには存在しません。我々の目的には無視します。
+- 11 文字の観測所識別コード。これ自体にいくつか有用な情報がエンコードされています。
+- YEAR/MONTH/DAY = YYYYMMDD 形式の 8 文字の日付（例: 19860529 = 1986 年 5 月 29 日）。
+- ELEMENT = 要素タイプを示す 4 文字の指標。実質的には測定タイプを表します。利用可能な測定は多数ありますが、ここでは次を選択します:
+  - PRCP - 降水量（0.1 mm 単位）
+  - SNOW - 降雪量（mm）
+  - SNWD - 積雪深（mm）
+  - TMAX - 最高気温（0.1 ℃ 単位）
+  - TAVG - 平均気温（0.1 ℃ 単位）
+  - TMIN - 最低気温（0.1 ℃ 単位）
+  - PSUN - 1 日あたりの可能日照時間に対する日照の割合（パーセント）
+  - AWND - 1 日平均風速（0.1 m/s 単位）
+  - WSFG - 突風時の最大風速（0.1 m/s 単位）
+  - WT** = Weather Type。** が天気の種類を表します。天気の種類の完全な一覧はこちらを参照してください。
+  - DATA VALUE = ELEMENT に対する 5 文字のデータ値、すなわち測定値。
+  - M-FLAG = 1 文字の Measurement Flag。取り得る値は 10 種類あります。このうちいくつかはデータ精度に疑義があることを示します。ここでは、この値が "P"（missing presumed zero、欠測だが 0 と推定）に設定されているデータも受け入れます。これは PRCP、SNOW、SNWD の測定にのみ関連するためです。
+- Q-FLAG は測定の品質フラグで、取り得る値は 14 種類あります。ここでは値が空、すなわちどの品質保証チェックにも失敗していないデータのみに関心があります。
+- S-FLAG は観測のソースフラグです。今回の分析には有用ではないため無視します。
+- OBS-TIME = 観測時刻を表す 4 文字の時刻（時分）情報（例: 0700 = 午前 7:00）。古いデータには存在しないことが一般的です。本ガイドではこれも無視します。
 
-行ごとの測定では、ClickHouseでスパースなテーブル構造が生じることになります。時刻と観測所ごとの行に変換し、測定をカラムとして持つようにする必要があります。まず、データセットを問題のない行に制限します。つまり、`qFlag`が空の文字列である行に制限します。
+1 行あたり 1 件の測定値とする形式では、ClickHouse ではスパースなテーブル構造になってしまいます。時刻と観測所ごとに 1 行とし、測定値を列として持つ形式に変換する必要があります。まず、問題のない行、すなわち `qFlag` が空文字列に等しい行にデータセットを絞り込みます。
 
-#### データのクリーニング {#clean-the-data}
+#### データをクリーンアップする {#clean-the-data}
 
-[ClickHouse local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)を使用して、興味のある測定を表す行をフィルタリングし、品質要件を通過させることができます：
+[ClickHouse local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) を使用して、関心のある測定値を表し、かつ品質要件を満たす行だけが残るようにフィルタリングできます。
 
 ```bash
 clickhouse local --query "SELECT count() 
@@ -117,11 +116,11 @@ FROM file('*.csv.gz', CSV, 'station_id String, date String, measurement String, 
 2679264563
 ```
 
-26億以上の行があるため、すべてのファイルを解析する必要があるため、このクエリは遅いものです。我々の8コアのマシンでは、約160秒かかります。
+26億行以上あるため、すべてのファイルをパースするこのクエリは高速ではありません。8コアのマシンでは、完了までに約160秒かかります。
 
 ### データのピボット {#pivot-data}
 
-行ごとの測定構造をClickHouseに使用することはできますが、将来のクエリを不必要に複雑にします。理想的には、各測定タイプと関連する値をカラムにする、ステーションIDと日付ごとの行が必要です。つまり、
+1 行に 1 つの計測値を持つ構造も ClickHouse で利用できますが、将来のクエリを不必要に複雑にしてしまいます。理想的には、各 station id と日付ごとに 1 行とし、各計測タイプとその値がそれぞれ列になる形が望ましいです。つまり、次のようなイメージです。
 
 ```csv
 "station_id","date","tempAvg","tempMax","tempMin","precipitation","snowfall","snowDepth","percentDailySun","averageWindSpeed","maxWindSpeed","weatherType"
@@ -131,7 +130,7 @@ FROM file('*.csv.gz', CSV, 'station_id String, date String, measurement String, 
 "AEM00041194","2022-08-02",381,424,352,0,0,0,0,0,0,0
 ```
 
-ClickHouse localを使用して単純な`GROUP BY`によって、データをこの構造に再ピボットできます。メモリのオーバーヘッドを制限するために、1ファイルずつこれを行います。
+ClickHouse local とシンプルな `GROUP BY` を使うことで、データをこの構造にピボットし直せます。メモリのオーバーヘッドを抑えるため、これを 1 ファイルずつ実行します。
 
 ```bash
 for i in {1900..2022}
@@ -155,11 +154,11 @@ ORDER BY station_id, date FORMAT CSV" >> "noaa.csv";
 done
 ```
 
-このクエリは、単一の50GBファイル`noaa.csv`を生成します。
+このクエリにより、サイズが 50GB の単一ファイル `noaa.csv` が生成されます。
 
-### データの強化 {#enriching-the-data}
+### データの拡充 {#enriching-the-data}
 
-データには、観測所ID以外には位置を示すものがありません。このIDには、国コードのプレフィックスが含まれています。理想的には、各観測所には緯度と経度が関連付けられている必要があります。この目的のために、NOAAは各観測所の詳細を、別の[ghcnd-stations.txt](https://github.com/awslabs/open-data-docs/tree/main/docs/noaa/noaa-ghcn#format-of-ghcnd-stationstxt-file)として便利に提供しています。このファイルには、我々の将来の分析に役立つ5つのカラムがあります：id、緯度、経度、高度、名前。
+現在のデータには、国コードのプレフィックスを含むステーション ID 以外に位置情報に関する情報がありません。本来であれば、各ステーションには緯度と経度が紐づいていることが望ましいです。これを実現するために、NOAA は各ステーションの詳細を別ファイルとして提供しており、それが [ghcnd-stations.txt](https://github.com/awslabs/open-data-docs/tree/main/docs/noaa/noaa-ghcn#format-of-ghcnd-stationstxt-file) です。このファイルには[複数の列](https://github.com/awslabs/open-data-docs/tree/main/docs/noaa/noaa-ghcn#format-of-ghcnd-stationstxt-file)があり、そのうち今後の分析で有用なのは 5 つの列、すなわち id、latitude、longitude、elevation、name です。
 
 ```bash
 wget http://noaa-ghcn-pds.s3.amazonaws.com/ghcnd-stations.txt
@@ -186,58 +185,62 @@ FROM file('noaa.csv', CSV,
           'station_id String, date Date32, tempAvg Int32, tempMax Int32, tempMin Int32, precipitation Int32, snowfall Int32, snowDepth Int32, percentDailySun Int8, averageWindSpeed Int32, maxWindSpeed Int32, weatherType UInt8') as noaa LEFT OUTER
          JOIN stations ON noaa.station_id = stations.id INTO OUTFILE 'noaa_enriched.parquet' FORMAT Parquet SETTINGS format_regexp='^(.{11})\s+(\-?\d{1,2}\.\d{4})\s+(\-?\d{1,3}\.\d{1,4})\s+(\-?\d*\.\d*)\s+(.*)\s+(?:[\d]*)'" 
 ```
-このクエリは数分かかり、6.4GBのファイル`noaa_enriched.parquet`を生成します。
+
+このクエリは実行に数分かかり、サイズ 6.4 GB の `noaa_enriched.parquet` ファイルを生成します。
 
 ## テーブルの作成 {#create-table}
 
-ClickHouse内にMergeTreeテーブルを作成します（ClickHouseクライアントから）。
+ClickHouse クライアントから、ClickHouse 上に MergeTree テーブルを作成します。
 
 ```sql
 CREATE TABLE noaa
 (
    `station_id` LowCardinality(String),
    `date` Date32,
-   `tempAvg` Int32 COMMENT '平均気温（1/10℃）',
-   `tempMax` Int32 COMMENT '最高気温（1/10℃）',
-   `tempMin` Int32 COMMENT '最低気温（1/10℃）',
-   `precipitation` UInt32 COMMENT '降水量（1/10 mm）',
+   `tempAvg` Int32 COMMENT '平均気温（0.1℃単位）',
+   `tempMax` Int32 COMMENT '最高気温（0.1℃単位）',
+   `tempMin` Int32 COMMENT '最低気温（0.1℃単位）',
+   `precipitation` UInt32 COMMENT '降水量（0.1mm単位）',
    `snowfall` UInt32 COMMENT '降雪量（mm）',
-   `snowDepth` UInt32 COMMENT '雪の深さ（mm）',
-   `percentDailySun` UInt8 COMMENT '日次可能日照率（パーセント）',
-   `averageWindSpeed` UInt32 COMMENT '日次平均風速（1/10秒メートル）',
-   `maxWindSpeed` UInt32 COMMENT 'ピーク突風風速（1/10秒メートル）',
-   `weatherType` Enum8('通常' = 0, '霧' = 1, '濃霧' = 2, '雷' = 3, '小さな雹' = 4, '雹' = 5, '氷霧' = 6, '塵/灰' = 7, '煙/霞' = 8, '吹雪' = 9, '竜巻' = 10, '強風' = 11, '吹き上げる霧' = 12, '霧雨' = 13, '凍結霧雨' = 14, '雨' = 15, '凍結雨' = 16, '雪' = 17, '不明な降水' = 18, '地面霧' = 21, '凍結霧' = 22),
+   `snowDepth` UInt32 COMMENT '積雪深（mm）',
+   `percentDailySun` UInt8 COMMENT '日照率（可能日照時間に対する割合、%）',
+   `averageWindSpeed` UInt32 COMMENT '日平均風速（0.1m/s単位）',
+   `maxWindSpeed` UInt32 COMMENT '最大瞬間風速（0.1m/s単位）',
+   `weatherType` Enum8('通常' = 0, '霧' = 1, '濃霧' = 2, '雷' = 3, '小雹' = 4, '雹' = 5, '雨氷' = 6, '砂塵/火山灰' = 7, '煙霧/霞' = 8, '地吹雪/吹き溜まり' = 9, '竜巻' = 10, '強風' = 11, '飛沫' = 12, '靄' = 13, '霧雨' = 14, '凍結霧雨' = 15, '雨' = 16, '凍雨' = 17, '雪' = 18, '不明な降水' = 19, '地霧' = 21, '凍霧' = 22),
    `location` Point,
    `elevation` Float32,
    `name` LowCardinality(String)
 ) ENGINE = MergeTree() ORDER BY (station_id, date);
+
 ```
 
-## ClickHouseへの挿入 {#inserting-into-clickhouse}
+## ClickHouse へのデータ挿入 {#inserting-into-clickhouse}
 
 ### ローカルファイルからの挿入 {#inserting-from-local-file}
 
-データは、次のようにローカルファイルから挿入できます（ClickHouseクライアントから）：
+データは、ClickHouse クライアントから次のようにローカルファイルから挿入できます：
 
 ```sql
 INSERT INTO noaa FROM INFILE '<path>/noaa_enriched.parquet'
 ```
 
-`<path>`は、ディスク上のローカルファイルへの完全なパスを表します。
+ここで `<path>` は、ローカルディスク上のファイルへの完全なパスを表します。
 
-このロードを高速化する方法は、[こちら](https://clickhouse.com/blog/real-world-data-noaa-climate-data#load-the-data)を参照してください。
+この読み込みを高速化する方法については[こちら](https://clickhouse.com/blog/real-world-data-noaa-climate-data#load-the-data)を参照してください。
 
-### S3からの挿入 {#inserting-from-s3}
+### S3 からの挿入 {#inserting-from-s3}
 
 ```sql
 INSERT INTO noaa SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/noaa/noaa_enriched.parquet')
+
 ```
-これを高速化する方法については、[大規模データのロードの調整に関するブログ投稿](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part2)を参照してください。
+
+データロードを高速化する方法については、[大規模データロードのチューニング](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part2)に関するブログ記事を参照してください。
 
 ## サンプルクエリ {#sample-queries}
 
-### 過去最高気温 {#highest-temperature-ever}
+### 観測史上最高気温 {#highest-temperature-ever}
 
 ```sql
 SELECT
@@ -260,14 +263,14 @@ LIMIT 5
 │    56.7 │ (-115.4667,32.55) │ MEXICALI (SMN)                                 │ 1952-09-04 │
 └─────────┴───────────────────┴────────────────────────────────────────────────┴────────────┘
 
-5行が設定されました。経過: 0.514秒。処理された行: 10.6億、4.27 GB（20.6億行/s, 8.29 GB/s）。
+5行。経過時間: 0.514秒。処理: 10.6億行、4.27 GB (20.6億行/秒、8.29 GB/秒)
 ```
 
-2023年時点での[Furnace Creek](https://www.google.com/maps/place/36%C2%B027'00.0%22N+116%C2%B052'00.1%22W/@36.1329666,-116.1104099,8.95z/data=!4m5!3m4!1s0x0:0xf2ed901b860f4446!8m2!3d36.45!4d-116.8667)による[記録された記録](https://en.wikipedia.org/wiki/List_of_weather_records#Highest_temperatures_ever_recorded)と一貫性があります。
+2023 年時点での [Furnace Creek](https://www.google.com/maps/place/36%C2%B027'00.0%22N+116%C2%B052'00.1%22W/@36.1329666,-116.1104099,8.95z/data=!4m5!3m4!1s0x0:0xf2ed901b860f4446!8m2!3d36.45!4d-116.8667) における[記録上の最高気温](https://en.wikipedia.org/wiki/List_of_weather_records#Highest_temperatures_ever_recorded)と比べても、安心できるほどよく一致しています。
 
 ### 最高のスキーリゾート {#best-ski-resorts}
 
-スキーリゾートの[リスト](https://gist.githubusercontent.com/gingerwizard/dd022f754fd128fdaf270e58fa052e35/raw/622e03c37460f17ef72907afe554cb1c07f91f23/ski_resort_stats.csv)とそれぞれの場所を利用して、過去5年間に月ごとに最も雪が降ったトップ1000の気象観測所と結合します。この結合を[geoDistance](/sql-reference/functions/geo/coordinates/#geodistance)でソートし、距離が20km未満の結果に制限し、各リゾートごとにトップの結果を選択し、これを総降雪量でソートします。さらに、リゾートは、良好なスキー条件の広い指標として1800m以上のものに制限します。
+アメリカ合衆国の[スキーリゾート一覧](https://gist.githubusercontent.com/gingerwizard/dd022f754fd128fdaf270e58fa052e35/raw/622e03c37460f17ef72907afe554cb1c07f91f23/ski_resort_stats.csv)とそれぞれの所在地を用い、過去5年間のいずれかの月における降雪量が最大だった上位1000件の気象観測所と結合します。この結合結果を[geoDistance](/sql-reference/functions/geo/coordinates/#geodistance)でソートし、距離が20km未満のものに絞り込んだうえで、リゾートごとに最上位の結果を選択し、それらを合計降雪量で並べ替えます。なお、良好なスキーコンディションの大まかな指標として、標高1800m以上のリゾートのみに制限しています。
 
 ```sql
 SELECT
@@ -330,12 +333,12 @@ LIMIT 5
 │ Alpine Meadows, CA   │        4.926 │ (-120.22,39.17) │     201902 │
 └──────────────────────┴──────────────┴─────────────────┴────────────┘
 
-5行が設定されました。経過: 0.750秒。処理された行: 689.1百万、3.20 GB（918.20百万行/s, 4.26 GB/s）。
+5行のデータセット。経過時間: 0.750秒。処理行数: 6億8910万行、3.20 GB (9億1820万行/秒、4.26 GB/秒)
 ピークメモリ使用量: 67.66 MiB。
 ```
 
-## クレジット {#credits}
+## 謝辞 {#credits}
 
-このデータの準備、クリーンアップ、および配布におけるグローバル歴史気候ネットワークの努力に感謝します。あなた方の努力に感謝します。
+このデータの作成、整備および配布に尽力された Global Historical Climatology Network の皆様に感謝いたします。皆様のご尽力に深く感謝申し上げます。
 
-Menne, M.J., I. Durre, B. Korzeniewski, S. McNeal, K. Thomas, X. Yin, S. Anthony, R. Ray, R.S. Vose, B.E.Gleason, and T.G. Houston, 2012: Global Historical Climatology Network - Daily (GHCN-Daily), Version 3. [十進法の後に使用されたサブセットを示します，例如: Version 3.25] NOAA National Centers for Environmental Information. http://doi.org/10.7289/V5D21VHZ [2020年8月17日]
+Menne, M.J., I. Durre, B. Korzeniewski, S. McNeal, K. Thomas, X. Yin, S. Anthony, R. Ray, R.S. Vose, B.E.Gleason, and T.G. Houston, 2012: Global Historical Climatology Network - Daily (GHCN-Daily), Version 3. [使用したサブセットを小数点以下で示すこと（例: Version 3.25）]. NOAA National Centers for Environmental Information. http://doi.org/10.7289/V5D21VHZ [17/08/2020]

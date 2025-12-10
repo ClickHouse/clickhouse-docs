@@ -1,45 +1,46 @@
 ---
-description: 'Документация для Движков Таблиц'
+description: 'Справочная документация по движкам таблиц'
 slug: /engines/table-engines/
-toc_folder_title: 'Движки Таблиц'
+toc_folder_title: 'Движки таблиц'
 toc_priority: 26
 toc_title: 'Введение'
-title: 'Движки Таблиц'
+title: 'Движки таблиц'
+doc_type: 'reference'
 ---
 
-
-# Движки Таблиц
+# Движки таблиц {#table-engines}
 
 Движок таблицы (тип таблицы) определяет:
 
-- Как и где хранятся данные, куда их записывать и откуда их читать.
+- Как и где хранятся данные, куда они записываются и откуда читаются.
 - Какие запросы поддерживаются и как.
-- Конкурентный доступ к данным.
+- Возможность конкурентного доступа к данным.
 - Использование индексов, если они есть.
-- Возможность выполнения запросов в многопоточном режиме.
+- Возможно ли многопоточное выполнение запросов.
 - Параметры репликации данных.
 
-## Семейства Движков {#engine-families}
+## Семейства движков {#engine-families}
 
 ### MergeTree {#mergetree}
 
-Самые универсальные и функциональные движки таблиц для высоконагруженных задач. Свойство, присущее этим движкам, — быстрая вставка данных с последующей фоновою обработкой данных. Движки семейства `MergeTree` поддерживают репликацию данных (с [Replicated\*](/engines/table-engines/mergetree-family/replication) версиями движков), партиционирование, вторичные индексы пропуска данных и другие функции, которые не поддерживаются в других движках.
+Наиболее универсальные и функциональные движки таблиц для задач с высокой нагрузкой. Общим свойством этих движков является быстрая вставка данных с последующей фоновой обработкой. Движки семейства `MergeTree` поддерживают репликацию данных (через версии движков [Replicated\*](/engines/table-engines/mergetree-family/replication)), партиционирование, вторичные пропускающие индексы и другие возможности, которые недоступны в других движках.
 
 Движки в семействе:
 
-| Движки MergeTree                                                                                                                        |
-|-----------------------------------------------------------------------------------------------------------------------------------------|
-| [MergeTree](/engines/table-engines/mergetree-family/mergetree)                                                           |
+| Движки MergeTree                                                                                                                         |
+|-------------------------------------------------------------------------------------------------------------------------------------------|
+| [MergeTree](/engines/table-engines/mergetree-family/mergetree)                                                          |
 | [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)                               |
 | [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree)                                     |
 | [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree)                         |
 | [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)               |
 | [VersionedCollapsingMergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) |
 | [GraphiteMergeTree](/engines/table-engines/mergetree-family/graphitemergetree)                                  |
+| [CoalescingMergeTree](/engines/table-engines/mergetree-family/coalescingmergetree)                                     |
 
 ### Log {#log}
 
-Легковесные [движки](../../engines/table-engines/log-family/index.md) с минимальной функциональностью. Они наиболее эффективны, когда нужно быстро записать множество небольших таблиц (до примерно 1 миллиона строк) и затем читать их целиком.
+Облегчённые [движки](../../engines/table-engines/log-family/index.md) с минимальной функциональностью. Они наиболее эффективны, когда нужно быстро записать множество небольших таблиц (примерно до 1 миллиона строк) и затем читать их целиком.
 
 Движки в семействе:
 
@@ -49,13 +50,13 @@ title: 'Движки Таблиц'
 | [StripeLog](/engines/table-engines/log-family/stripelog) |
 | [Log](/engines/table-engines/log-family/log)                   |
 
-### Интеграционные Движки {#integration-engines}
+### Интеграционные движки {#integration-engines}
 
 Движки для взаимодействия с другими системами хранения и обработки данных.
 
 Движки в семействе:
 
-| Интеграционные Движки                                                             |
+| Интеграционные движки                                                             |
 |---------------------------------------------------------------------------------|
 | [ODBC](../../engines/table-engines/integrations/odbc.md)                        |
 | [JDBC](../../engines/table-engines/integrations/jdbc.md)                        |
@@ -71,11 +72,11 @@ title: 'Движки Таблиц'
 | [S3Queue](../../engines/table-engines/integrations/s3queue.md)                  |
 | [TimeSeries](../../engines/table-engines/integrations/time-series.md)           |
 
-### Специальные Движки {#special-engines}
+### Специальные движки {#special-engines}
 
 Движки в семействе:
 
-| Специальные Движки                                               |
+| Специальные движки                                            |
 |---------------------------------------------------------------|
 | [Distributed](/engines/table-engines/special/distributed)     |
 | [Dictionary](/engines/table-engines/special/dictionary)       |
@@ -89,17 +90,25 @@ title: 'Движки Таблиц'
 | [View](/engines/table-engines/special/view)                   |
 | [Memory](/engines/table-engines/special/memory)               |
 | [Buffer](/engines/table-engines/special/buffer)               |
-| [External Data](/engines/table-engines/special/external-data) |
+| [Внешние данные](/engines/table-engines/special/external-data) |
 | [GenerateRandom](/engines/table-engines/special/generate)     |
 | [KeeperMap](/engines/table-engines/special/keeper-map)        |
-| [FileLog](/engines/table-engines/special/filelog)                                                   |
+| [FileLog](/engines/table-engines/special/filelog)             |
 
-## Виртуальные Колонки {#table_engines-virtual_columns}
+## Виртуальные столбцы {#table_engines-virtual_columns}
 
-Виртуальная колонка — это неотъемлемый атрибут движка таблицы, который определяется в исходном коде движка.
+Виртуальный столбец — это неотъемлемый атрибут движка таблицы, определённый в исходном коде движка.
 
-Вы не должны указывать виртуальные колонки в запросе `CREATE TABLE`, и вы не сможете увидеть их в результатах запросов `SHOW CREATE TABLE` и `DESCRIBE TABLE`. Виртуальные колонки также являются только для чтения, поэтому вы не можете вставлять данные в виртуальные колонки.
+Не следует указывать виртуальные столбцы в запросе `CREATE TABLE`, и их нельзя увидеть в результатах запросов `SHOW CREATE TABLE` и `DESCRIBE TABLE`. Виртуальные столбцы также доступны только для чтения, поэтому в них нельзя вставлять данные.
 
-Чтобы выбрать данные из виртуальной колонки, вы должны указать ее имя в запросе `SELECT`. `SELECT *` не возвращает значения из виртуальных колонок.
+Чтобы выбрать данные из виртуального столбца, необходимо указать его имя в запросе `SELECT`. `SELECT *` не возвращает значения из виртуальных столбцов.
 
-Если вы создаете таблицу с колонкой, имеющей то же имя, что и одна из виртуальных колонок таблицы, виртуальная колонка становится недоступной. Мы не рекомендуем этого делать. Чтобы помочь избежать конфликтов, имена виртуальных колонок обычно начинаются с символа подчёркивания.
+Если вы создаёте таблицу со столбцом, имя которого совпадает с именем одного из виртуальных столбцов таблицы, этот виртуальный столбец становится недоступным. Мы не рекомендуем так делать. Чтобы избежать конфликтов, имена виртуальных столбцов обычно имеют префикс в виде подчёркивания.
+
+- `_table` — содержит имя таблицы, из которой были прочитаны данные. Тип: [String](../../sql-reference/data-types/string.md).
+
+    Независимо от используемого движка таблицы, каждая таблица включает универсальный виртуальный столбец с именем `_table`.
+
+    При выполнении запроса к таблице с движком Merge вы можете задать константные условия по `_table` в предложении `WHERE/PREWHERE` (например, `WHERE _table='xyz'`). В этом случае операция чтения выполняется только для тех таблиц, для которых условие по `_table` выполняется, так что столбец `_table` фактически выступает в роли индекса.
+
+    При использовании запросов вида `SELECT ... FROM (... UNION ALL ...)` можно определить, из какой фактической таблицы получены возвращаемые строки, указав столбец `_table`.

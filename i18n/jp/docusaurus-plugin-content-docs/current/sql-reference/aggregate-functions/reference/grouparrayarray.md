@@ -1,29 +1,25 @@
 ---
-description: 'Aggregates arrays into a larger array of those arrays.'
-keywords:
-- 'groupArrayArray'
-- 'array_concat_agg'
+description: '複数の配列を集約し、それらを要素とするより大きな配列を生成します。'
+keywords: ['groupArrayArray', 'array_concat_agg']
 sidebar_position: 111
-slug: '/sql-reference/aggregate-functions/reference/grouparrayarray'
+slug: /sql-reference/aggregate-functions/reference/grouparrayarray
 title: 'groupArrayArray'
+doc_type: 'reference'
 ---
 
+# groupArrayArray {#grouparrayarray}
 
-
-
-# groupArrayArray
-
-配列をその配列の大きな配列に集約します。
-[`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) 関数と [Array](/sql-reference/aggregate-functions/combinators#-array) コンビネータを組み合わせます。
+複数の配列を、それらの配列を要素とするより大きな配列に集約します。
+[`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) 関数と [Array](/sql-reference/aggregate-functions/combinators#-array) コンビネータを組み合わせたものです。
 
 エイリアス: `array_concat_agg`
 
 **例**
 
-ユーザーのブラウジングセッションをキャプチャするデータがあります。各セッションは、特定のユーザーが訪れたページのシーケンスを記録します。 
-`groupArrayArray` 関数を使用して、各ユーザーのページ訪問のパターンを分析できます。
+ユーザーのブラウジングセッションを記録したデータがあるとします。各セッションには、特定のユーザーが訪問したページの遷移順が記録されています。
+`groupArrayArray` 関数を使用して、ユーザーごとのページ訪問パターンを分析できます。
 
-```sql title="セットアップ"
+```sql title="Setup"
 CREATE TABLE website_visits (
     user_id UInt32,
     session_id UInt32,
@@ -38,7 +34,7 @@ INSERT INTO website_visits VALUES
 (102, 2, ['products', 'product_details', 'add_to_cart', 'checkout']);
 ```
 
-```sql title="クエリ"
+```sql title="Query"
 SELECT
     user_id,
     groupArrayArray(page_visits) AS user_session_page_sequences
@@ -46,7 +42,7 @@ FROM website_visits
 GROUP BY user_id;
 ```
 
-```sql title="応答"
+```sql title="Response"
    ┌─user_id─┬─user_session_page_sequences───────────────────────────────────────────────────────────────┐
 1. │     101 │ ['homepage','products','checkout','search','product_details','contact','blog','homepage'] │
 2. │     102 │ ['homepage','about_us','products','product_details','add_to_cart','checkout']             │

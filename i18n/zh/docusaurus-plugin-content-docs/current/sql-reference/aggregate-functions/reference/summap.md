@@ -1,40 +1,40 @@
 ---
-'description': '根据 `key` 数组中指定的键，对 `value` 数组进行求和。返回一个包含两个数组的元组：按顺序排序的键，以及对应键的求和值，确保没有溢出。'
-'sidebar_position': 198
-'slug': '/sql-reference/aggregate-functions/reference/summap'
-'title': 'sumMap'
+description: '根据 `key` 数组中指定的键，对一个或多个 `value` 数组进行求和。返回一个由数组组成的元组：首先是按排序后的顺序排列的键数组，然后是对对应键求和且无溢出的值数组。'
+sidebar_position: 198
+slug: /sql-reference/aggregate-functions/reference/summap
+title: 'sumMap'
+doc_type: 'reference'
 ---
 
+# sumMap {#summap}
 
-# sumMap
-
-根据 `key` 数组中指定的键对 `value` 数组进行求和。返回一个包含两个数组的元组：按顺序排列的键以及对应键的求和值（不溢出）。
+根据 `key` 数组中指定的键，对一个或多个 `value` 数组进行求和。返回一个由数组组成的元组：第一个数组是排好序的键，后续数组是对应键的求和值，且不会发生溢出。
 
 **语法**
 
-- `sumMap(key <Array>, value <Array>)` [Array type](../../data-types/array.md)。
-- `sumMap(Tuple(key <Array>, value <Array>))` [Tuple type](../../data-types/tuple.md)。
+* `sumMap(key <Array>, value1 <Array>[, value2 <Array>, ...])` [Array 类型](../../data-types/array.md)。
+* `sumMap(Tuple(key <Array>[, value1 <Array>, value2 <Array>, ...]))` [Tuple 类型](../../data-types/tuple.md)。
 
 别名：`sumMappedArrays`。
 
-**参数** 
+**参数**
 
-- `key`：键的 [Array](../../data-types/array.md)。
-- `value`：值的 [Array](../../data-types/array.md)。
+* `key`：键的 [Array](../../data-types/array.md)。
+* `value1`、`value2`、…：需要对每个键求和的值的 [Array](../../data-types/array.md)。
 
-传递键和值数组的元组是分别传递键数组和值数组的同义词。
+传入一个由键数组和值数组组成的 tuple，与分别传入一个键数组和若干值数组是等价的。
 
-:::note 
-`key` 和 `value` 中的元素数量必须在每一行中相同。
+:::note
+对于每一行参与汇总的数据，`key` 和所有 `value` 数组中的元素个数必须相同。
 :::
 
-**返回值** 
+**返回值**
 
-- 返回一个包含两个数组的元组：按顺序排列的键，以及对应键的求和值。
+* 返回一个由数组组成的元组：第一个数组包含排好序的键，后续数组包含对应键的求和值。
 
 **示例**
 
-首先，我们创建一个名为 `sum_map` 的表，并向其中插入一些数据。键和值的数组分别存储为一个名为 `statusMap` 的 [Nested](../../data-types/nested-data-structures/index.md) 类型列，以及作为一个名为 `statusMapTuple` 的 [tuple](../../data-types/tuple.md) 类型列，以说明上述两种不同语法的使用。
+首先，我们创建一张名为 `sum_map` 的表，并向其中插入一些数据。键和值的数组分别存储在名为 `statusMap` 的 [Nested](../../data-types/nested-data-structures/index.md) 类型列中，同时也以名为 `statusMapTuple` 的 [tuple](../../data-types/tuple.md) 类型列合并存储，用于演示上文所述此函数两种不同语法的用法。
 
 查询：
 
@@ -49,6 +49,7 @@ CREATE TABLE sum_map(
     statusMapTuple Tuple(Array(Int32), Array(Int32))
 ) ENGINE = Log;
 ```
+
 ```sql
 INSERT INTO sum_map VALUES
     ('2000-01-01', '2000-01-01 00:00:00', [1, 2, 3], [10, 10, 10], ([1, 2, 3], [10, 10, 10])),
@@ -57,7 +58,7 @@ INSERT INTO sum_map VALUES
     ('2000-01-01', '2000-01-01 00:01:00', [6, 7, 8], [10, 10, 10], ([6, 7, 8], [10, 10, 10]));
 ```
 
-接下来，我们使用 `sumMap` 函数查询表格，同时利用数组和元组类型的语法：
+接下来，我们使用 `sumMap` 函数查询该表，同时采用数组和元组类型这两种语法形式：
 
 查询：
 
@@ -79,7 +80,47 @@ GROUP BY timeslot
 └─────────────────────┴──────────────────────────────────────────────┴────────────────────────────────┘
 ```
 
-**另见**
+**包含多个值数组的示例**
 
-- [Map combinator for Map datatype](../combinators.md#-map)
-- [sumMapWithOverflow](../reference/summapwithoverflow.md)
+`sumMap` 也支持同时对多个值数组进行聚合。
+当存在共享相同键的相关指标时，这会非常有用。
+
+```sql title="Query"
+CREATE TABLE multi_metrics(
+    date Date,
+    browser_metrics Nested(
+        browser String,
+        impressions UInt32,
+        clicks UInt32
+    )
+)
+ENGINE = MergeTree()
+ORDER BY tuple();
+
+INSERT INTO multi_metrics VALUES
+    ('2000-01-01', ['Firefox', 'Chrome'], [100, 200], [10, 25]),
+    ('2000-01-01', ['Chrome', 'Safari'], [150, 50], [20, 5]),
+    ('2000-01-01', ['Firefox', 'Edge'], [80, 40], [8, 4]);
+
+SELECT 
+    sumMap(browser_metrics.browser, browser_metrics.impressions, browser_metrics.clicks) AS result
+FROM multi_metrics;
+```
+
+```text title="Response"
+┌─result────────────────────────────────────────────────────────────────────────┐
+│ (['Chrome', 'Edge', 'Firefox', 'Safari'], [350, 40, 180, 50], [45, 4, 18, 5]) │
+└───────────────────────────────────────────────────────────────────────────────┘
+```
+
+在此示例中：
+
+* 结果元组包含三个数组
+* 第一个数组：按排序后的键（浏览器名称）
+* 第二个数组：每个浏览器的总展示次数
+* 第三个数组：每个浏览器的总点击次数
+
+**另请参阅**
+
+* [用于 Map 数据类型的 Map 组合器](../combinators.md#-map)
+* [sumMapWithOverflow](../reference/summapwithoverflow.md)

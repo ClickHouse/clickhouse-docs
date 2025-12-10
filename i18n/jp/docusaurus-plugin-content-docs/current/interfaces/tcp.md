@@ -1,14 +1,12 @@
 ---
-description: 'Documentation for the native TCP interface in ClickHouse'
-sidebar_label: 'Native Interface (TCP)'
+description: 'ClickHouse のネイティブ TCP インターフェイスに関するドキュメント'
+sidebar_label: 'ネイティブインターフェイス (TCP)'
 sidebar_position: 18
-slug: '/interfaces/tcp'
-title: 'Native Interface (TCP)'
+slug: /interfaces/tcp
+title: 'ネイティブインターフェイス (TCP)'
+doc_type: 'reference'
 ---
 
+# ネイティブインターフェース (TCP) {#native-interface-tcp}
 
-
-
-# ネイティブインターフェース (TCP)
-
-ネイティブプロトコルは、[コマンドラインクライアント](../interfaces/cli.md)で使用され、分散クエリ処理中のサーバー間通信や他のC++プログラムでも利用されます。残念ながら、ネイティブClickHouseプロトコルにはまだ正式な仕様がありませんが、ClickHouseのソースコードからリバースエンジニアリング（[ここから](https://github.com/ClickHouse/ClickHouse/tree/master/src/Client)始めることができます）や、TCPトラフィックを傍受して分析することによって理解することができます。
+ネイティブプロトコルは、[コマンドラインクライアント](../interfaces/cli.md)、分散クエリ処理中のサーバー間通信、およびその他の C++ プログラムで使用されます。残念ながら、ClickHouse のネイティブプロトコルにはまだ正式な仕様がありませんが、ClickHouse のソースコード（[このあたり](https://github.com/ClickHouse/ClickHouse/tree/master/src/Client) から始まります）からリバースエンジニアリングすることや、TCP トラフィックを傍受して解析することで明らかにすることができます。

@@ -1,20 +1,18 @@
 ---
-description: 'Guide for integrating Rust libraries into ClickHouse'
-sidebar_label: 'Rust Libraries'
-slug: '/development/integrating_rust_libraries'
-title: 'Integrating Rust Libraries'
+description: 'Rust ライブラリを ClickHouse に統合するためのガイド'
+sidebar_label: 'Rust ライブラリ'
+slug: /development/integrating_rust_libraries
+title: 'Rust ライブラリの統合'
+doc_type: 'guide'
 ---
 
+# Rust ライブラリ {#rust-libraries}
 
+Rust ライブラリの統合については、BLAKE3 ハッシュ関数の統合を例に説明します。
 
+統合の最初のステップは、ライブラリを /rust フォルダに追加することです。これを行うには、空の Rust プロジェクトを作成し、必要なライブラリを Cargo.toml に記述する必要があります。また、Cargo.toml に `crate-type = ["staticlib"]` を追加して、新しいライブラリをスタティックライブラリとしてコンパイルするよう設定する必要があります。
 
-# Rustライブラリ
-
-Rustライブラリの統合は、BLAKE3ハッシュ関数の統合に基づいて説明されます。
-
-統合の最初のステップは、ライブラリを/rustフォルダーに追加することです。これを行うには、空のRustプロジェクトを作成し、Cargo.tomlに必要なライブラリを含める必要があります。また、`crate-type = ["staticlib"]`をCargo.tomlに追加することで、新しいライブラリのコンパイルを静的に設定する必要があります。
-
-次に、Corrosionライブラリを使用してCMakeにライブラリをリンクする必要があります。最初のステップは、/rustフォルダー内のCMakeLists.txtにライブラリフォルダーを追加することです。その後、ライブラリディレクトリにCMakeLists.txtファイルを追加する必要があります。そこでは、Corrosionインポート関数を呼び出す必要があります。以下の行はBLAKE3をインポートするために使用されました：
+次に、Corrosion ライブラリを使用して CMake にライブラリをリンクする必要があります。最初のステップは、/rust フォルダ内の CMakeLists.txt にライブラリのフォルダを追加することです。その後、ライブラリディレクトリに CMakeLists.txt ファイルを追加する必要があります。その中で、Corrosion の import 関数を呼び出す必要があります。BLAKE3 をインポートするために、次の行が使用されました:
 
 ```CMake
 corrosion_import_crate(MANIFEST_PATH Cargo.toml NO_STD)
@@ -23,9 +21,9 @@ target_include_directories(_ch_rust_blake3 INTERFACE include)
 add_library(ch_rust::blake3 ALIAS _ch_rust_blake3)
 ```
 
-このようにして、私たちはCorrosionを使用して正しいCMakeターゲットを作成し、そしてより便利な名前にリネームします。名前`_ch_rust_blake3`はCargo.tomlから来ており、ここでプロジェクト名として使用されています（`name = "_ch_rust_blake3"`）。
+したがって、まず Corrosion を使って正しい CMake ターゲットを作成し、その後、より扱いやすい名前に変更します。なお、`_ch_rust_blake3` という名前は Cargo.toml でプロジェクト名として使用されているものです（`name = "_ch_rust_blake3"`）。
 
-Rustのデータ型はC/C++のデータ型と互換性がないため、空のライブラリプロジェクトを使用して、C/C++から受け取ったデータの変換、ライブラリメソッドの呼び出し、出力データの逆変換のためのシムメソッドを作成します。たとえば、このメソッドはBLAKE3のために記述されました：
+Rust のデータ型は C/C++ のデータ型と互換性がないため、この空のライブラリプロジェクトを利用して、C/C++ から受け取ったデータの変換、ライブラリメソッドの呼び出し、および出力データの逆変換を行うためのシム用メソッドを作成します。例えば、BLAKE3 向けには次のようなメソッドが作成されました。
 
 ```rust
 #[no_mangle]
@@ -34,6 +32,7 @@ pub unsafe extern "C" fn blake3_apply_shim(
     _size: u32,
     out_char_data: *mut u8,
 ```
+
 ```rust
 #[no_mangle]
 pub unsafe extern "C" fn blake3_apply_shim(
@@ -55,13 +54,13 @@ pub unsafe extern "C" fn blake3_apply_shim(
 }
 ```
 
-このメソッドは、C互換文字列、そのサイズ、および出力文字列ポインタを入力として受け取ります。次に、C互換の入力を実際のライブラリメソッドで使用される型に変換し、それを呼び出します。その後、ライブラリメソッドの出力をC互換の型に戻す必要があります。この特定のケースでは、ライブラリがfill()メソッドによってポインタへの直接書き込みをサポートしているため、変換は不要でした。ここでの主なアドバイスは、メソッドを少なく作成することです。そうすれば、各メソッド呼び出し時の変換を減らし、オーバーヘッドが大きくならないようにします。
+このメソッドは、C 互換の文字列、そのサイズ、および出力文字列ポインタを引数として受け取ります。その後、C 互換の入力を実際のライブラリメソッドで使用される型に変換し、そのメソッドを呼び出します。その後で、ライブラリメソッドの出力を再び C 互換の型へ変換し直す必要があります。この特定のケースでは、ライブラリが `fill()` メソッドによるポインタへの直接書き込みをサポートしていたため、変換は不要でした。ここでの主なアドバイスは、メソッドの数をできるだけ減らし、各メソッド呼び出しで必要となる変換処理を減らすことで、オーバーヘッドの増加を防ぐことです。
 
-`#[no_mangle]`属性と`extern "C"`は、すべてのそのようなメソッドにとって必須であることに注意してください。これがないと、正しいC/C++互換のコンパイルが行えません。さらに、統合の次のステップに必要です。
+`#[no_mangle]` 属性と `extern "C"` は、このようなメソッドすべてに対して必須であることに注意してください。これらがないと、正しい C/C++ 互換のコンパイルを行うことはできません。さらに、これらは次の連携ステップにおいても必要となります。
 
-シムメソッド用のコードを書いた後、ライブラリのヘッダーファイルを準備する必要があります。これは手動で行うこともできますし、cbindgenライブラリを使用して自動生成することもできます。cbindgenを使用する場合は、build.rsビルドスクリプトを書き、cbindgenをビルド依存関係として含める必要があります。
+シムメソッドのコードを書いた後は、ライブラリ用のヘッダーファイルを用意する必要があります。これは手動で作成することもできますし、cbindgen ライブラリを使用して自動生成することもできます。cbindgen を使用する場合は、`build.rs` のビルドスクリプトを記述し、cbindgen をビルド依存関係として追加する必要があります。
 
-ヘッダーファイルを自動生成できるビルドスクリプトの例：
+ヘッダーファイルを自動生成できるビルドスクリプトの例:
 
 ```rust
     let crate_dir = env::var("CARGO_MANIFEST_DIR").unwrap();
@@ -79,9 +78,9 @@ pub unsafe extern "C" fn blake3_apply_shim(
     }
 ```
 
-また、すべてのC互換属性に対して`#[no_mangle]`および`extern "C"`属性を使用する必要があります。これがないと、ライブラリが正しくコンパイルされず、cbindgenはヘッダーの自動生成を実行できません。
+また、すべての C 互換の項目に対して属性 #[no&#95;mangle] と `extern "C"` を使用する必要があります。これらがないと、ライブラリが正しくコンパイルされず、cbindgen によるヘッダーの自動生成が実行されません。
 
-これらのステップをすべて完了した後、互換性やヘッダー生成に関する問題を見つけるために、小さなプロジェクトでライブラリをテストできます。ヘッダー生成中に問題が発生した場合は、cbindgen.tomlファイルで構成を試みることができます（テンプレートはこちらで見つけることができます：[https://github.com/eqrion/cbindgen/blob/master/template.toml](https://github.com/eqrion/cbindgen/blob/master/template.toml)）。
+これらすべての手順が完了したら、小さなプロジェクトでライブラリをテストして、互換性やヘッダー生成に関する問題をすべて洗い出してください。ヘッダー生成中に問題が発生した場合は、`cbindgen.toml` ファイルで設定を行ってみてください（テンプレートはここで参照できます: [https://github.com/eqrion/cbindgen/blob/master/template.toml](https://github.com/eqrion/cbindgen/blob/master/template.toml)）。
 
-BLAKE3の統合時に発生した問題に注意する価値があります：
-MemorySanitizerは、Rustの一部の変数が初期化されているかどうかを見ることができないため、誤検出を引き起こす可能性があります。これは、一部の変数に対してより明示的な定義を持つメソッドを書くことで解決されましたが、このメソッドの実装は遅く、MemorySanitizerビルドを修正するためだけに使用されます。
+BLAKE3 を統合した際に発生した問題についても触れておきます。
+MemorySanitizer は、Rust 内の一部の変数が初期化されているかどうかを判別できないため、誤検知を引き起こすことがあります。この問題は、いくつかの変数についてより明示的な定義を行うメソッドを記述することで解決しました。ただし、このメソッドの実装はより低速であり、MemorySanitizer ビルドを修正する目的でのみ使用されています。

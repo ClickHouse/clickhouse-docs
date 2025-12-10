@@ -1,20 +1,20 @@
 ---
-description: 'Это псевдоним для любой, но он был введён для совместимости с Оконными Функциями, где иногда необходимо обрабатывать `NULL` значения (по умолчанию все агрегатные функции ClickHouse игнорируют значения NULL).'
+description: 'Это псевдоним для any, но он был введён для совместимости с оконными функциями (Window Functions), где иногда необходимо обрабатывать значения `NULL` (по умолчанию все агрегатные функции ClickHouse игнорируют значения `NULL`).'
 sidebar_position: 137
 slug: /sql-reference/aggregate-functions/reference/first_value
 title: 'first_value'
+doc_type: 'reference'
 ---
 
+# first&#95;value {#first&#95;value}
 
-# first_value
+Это псевдоним для [`any`](../../../sql-reference/aggregate-functions/reference/any.md), но он был добавлен для совместимости с [оконными функциями](../../window-functions/index.md), где иногда требуется обрабатывать значения `NULL` (по умолчанию все агрегатные функции ClickHouse игнорируют значения `NULL`).
 
-Это псевдоним для [`any`](../../../sql-reference/aggregate-functions/reference/any.md), но он был введён для совместимости с [Оконными Функциями](../../window-functions/index.md), где иногда необходимо обрабатывать `NULL` значения (по умолчанию все агрегатные функции ClickHouse игнорируют значения NULL).
+Поддерживается указание модификатора для учёта значений `NULL` (`RESPECT NULLS`) как в [оконных функциях](../../window-functions/index.md), так и в обычных агрегациях.
 
-Он поддерживает объявление модификатора, который учитывает null (`RESPECT NULLS`), как в [Оконных Функциях](../../window-functions/index.md), так и в обычной агрегации.
+Как и в случае с `any`, без использования оконных функций результат будет случайным, если входной поток не упорядочен, а тип возвращаемого значения совпадает с типом входного (значение `NULL` возвращается только в том случае, если входной тип является `Nullable` или добавлен комбинатор `-OrNull`).
 
-Как и в случае с `any`, без Оконных Функций результат будет случайным, если исходный поток не упорядочен, а возвращаемый тип соответствует входному типу (Null будет возвращён только если входной тип является Nullable или добавлен комбинирующий -OrNull).
-
-## примеры {#examples}
+## Примеры {#examples}
 
 ```sql
 CREATE TABLE test_data
@@ -24,13 +24,15 @@ CREATE TABLE test_data
 )
 ENGINE = Memory;
 
-INSERT INTO test_data (a, b) Values (1,null), (2,3), (4, 5), (6,null);
+INSERT INTO test_data (a, b) VALUES (1,null), (2,3), (4, 5), (6,null);
 ```
 
-### пример1 {#example1}
+### Пример 1 {#example1}
+
 По умолчанию значение NULL игнорируется.
+
 ```sql
-select first_value(b) from test_data;
+SELECT first_value(b) FROM test_data;
 ```
 
 ```text
@@ -39,10 +41,12 @@ select first_value(b) from test_data;
 └────────┘
 ```
 
-### пример2 {#example2}
-Значение NULL игнорируется.
+### Пример 2 {#example2}
+
+Значение NULL пропускается.
+
 ```sql
-select first_value(b) ignore nulls from test_data
+SELECT first_value(b) ignore nulls FROM test_data
 ```
 
 ```text
@@ -51,10 +55,12 @@ select first_value(b) ignore nulls from test_data
 └──────────────────────┘
 ```
 
-### пример3 {#example3}
-Значение NULL учитывается.
+### Пример 3 {#example3}
+
+Значение NULL допускается.
+
 ```sql
-select first_value(b) respect nulls from test_data
+SELECT first_value(b) respect nulls FROM test_data
 ```
 
 ```text
@@ -63,8 +69,10 @@ select first_value(b) respect nulls from test_data
 └───────────────────────┘
 ```
 
-### пример4 {#example4}
-Стабилизированный результат с использованием подзапроса с `ORDER BY`.
+### Пример 4 {#example4}
+
+Стабильный результат, полученный с помощью подзапроса с `ORDER BY`.
+
 ```sql
 SELECT
     first_value_respect_nulls(b),

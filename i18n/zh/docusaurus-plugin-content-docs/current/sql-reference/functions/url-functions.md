@@ -1,352 +1,168 @@
 ---
-'description': '处理URL的函数的文档'
-'sidebar_label': 'URLs'
-'sidebar_position': 200
-'slug': '/sql-reference/functions/url-functions'
-'title': '处理URL的函数'
+description: 'URL 函数文档'
+sidebar_label: 'URL'
+slug: /sql-reference/functions/url-functions
+title: 'URL 相关函数'
+doc_type: 'reference'
 ---
 
+# 用于操作 URL 的函数 {#functions-for-working-with-urls}
 
-# 处理 URL 的函数
+## 概览 {#overview}
 
 :::note
-本节提到的函数经过优化，以实现最大的性能，并且在大多数情况下不遵循 RFC-3986 标准。实现 RFC-3986 的函数在其函数名称后附加 `RFC`，通常较慢。
+本节中提到的函数为获得最高性能进行了优化，大多数情况下并不遵循 RFC-3986 标准。
+实现 RFC-3986 的函数在函数名后附加 `RFC`，且通常会较慢。
 :::
 
-在处理不包含用户字符串或 `@` 符号的公开注册域名时，通常可以使用非 `RFC` 函数变体。下表详细说明了 URL 中哪些符号可以 (`✔`) 或不可以 (`✗`) 被各自的 `RFC` 和非 `RFC` 变体解析：
+在处理既不包含用户信息字符串也不包含 `@` 符号的公开注册域名时，一般可以使用非 `RFC` 变体函数。
+下表详细说明了 URL 中的各个符号在 `RFC` 与非 `RFC` 变体中可以（`✔`）或不可以（`✗`）被解析的情况：
 
-|符号   | 非 `RFC` | `RFC` |
-|-------|----------|-------|
-| ' '   | ✗        |✗      |
-|  \t   | ✗        |✗      |
-|  &lt; | ✗        |✗      |
-|  >    | ✗        |✗      |
-|  %    | ✗        |✔*     |
-|  \{   | ✗        |✗      |
-|  }    | ✗        |✗      |
-|  \|   | ✗        |✗      |
-|  \\\  | ✗        |✗      |
-|  ^    | ✗        |✗      |
-|  ~    | ✗        |✔*     |
-|  [    | ✗        |✗      |
-|  ]    | ✗        |✔      |
-|  ;    | ✗        |✔*     |
-|  =    | ✗        |✔*     |
-|  &    | ✗        |✔*     |
+| Symbol      | non-`RFC` | `RFC` |   |
+| ----------- | --------- | ----- | - |
+| &#39; &#39; | ✗         | ✗     |   |
+| \t          | ✗         | ✗     |   |
+| &lt;        | ✗         | ✗     |   |
+| &gt;        | ✗         | ✗     |   |
+| %           | ✗         | ✔*    |   |
+| &#123;      | ✗         | ✗     |   |
+| &#125;      | ✗         | ✗     |   |
+|             |           | ✗     | ✗ |
+| \           | ✗         | ✗     |   |
+| ^           | ✗         | ✗     |   |
+| ~           | ✗         | ✔*    |   |
+| [           | ✗         | ✗     |   |
+| ]           | ✗         | ✔     |   |
+| ;           | ✗         | ✔*    |   |
+| =           | ✗         | ✔*    |   |
+| &amp;       | ✗         | ✔*    |   |
 
-被标记为 `*` 的符号是 RFC 3986 中的子分隔符，并且在 `@` 符号后允许作为用户信息。
+标记为 `*` 的符号在 RFC 3986 中属于子分隔符（sub-delimiters），在 `@` 符号后的用户信息中是允许使用的。
 
-## 提取 URL 部分的函数 {#functions-that-extract-parts-of-a-url}
+URL 函数分为两类：
 
-如果 URL 中没有相关部分，将返回空字符串。
-
-### protocol {#protocol}
-
-从 URL 中提取协议。
-
-典型的返回值示例： http、https、ftp、mailto、tel、magnet。
-
-### domain {#domain}
-
-从 URL 中提取主机名。
-
-**语法**
-
-```sql
-domain(url)
-```
-
-**参数**
-
-- `url` — URL. [String](../../sql-reference/data-types/string.md)。
-
-URL 可以带协议或不带协议来指定。例如：
-
-```text
-svn+ssh://some.svn-hosting.com:80/repo/trunk
-some.svn-hosting.com:80/repo/trunk
-https://clickhouse.com/time/
-```
-
-对于这些示例，`domain` 函数返回以下结果：
-
-```text
-some.svn-hosting.com
-some.svn-hosting.com
-clickhouse.com
-```
-
-**返回值**
-
-- 如果输入字符串可以解析为 URL，则返回主机名，否则返回空字符串。 [String](../data-types/string.md)。
-
-**示例**
-
-```sql
-SELECT domain('svn+ssh://some.svn-hosting.com:80/repo/trunk');
-```
-
-```text
-┌─domain('svn+ssh://some.svn-hosting.com:80/repo/trunk')─┐
-│ some.svn-hosting.com                                   │
-└────────────────────────────────────────────────────────┘
-```
-
-### domainRFC {#domainrfc}
-
-从 URL 中提取主机名。类似于 [domain](#domain)，但符合 RFC 3986。
-
-**语法**
-
-```sql
-domainRFC(url)
-```
-
-**参数**
-
-- `url` — URL. [String](../data-types/string.md)。
-
-**返回值**
-
-- 如果输入字符串可以解析为 URL，则返回主机名，否则返回空字符串。 [String](../data-types/string.md)。
-
-**示例**
-
-```sql
-SELECT
-    domain('http://user:password@example.com:8080/path?query=value#fragment'),
-    domainRFC('http://user:password@example.com:8080/path?query=value#fragment');
-```
-
-```text
-┌─domain('http://user:password@example.com:8080/path?query=value#fragment')─┬─domainRFC('http://user:password@example.com:8080/path?query=value#fragment')─┐
-│                                                                           │ example.com                                                                  │
-└───────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────┘
-```
-
-### domainWithoutWWW {#domainwithoutwww}
-
-返回不带前缀 `www.` 的域名（如果存在）。
-
-**语法**
-
-```sql
-domainWithoutWWW(url)
-```
-
-**参数**
-
-- `url` — URL. [String](../data-types/string.md)。
-
-**返回值**
-
-- 如果输入字符串可以解析为 URL（不带前缀 `www.`），则返回域名，否则返回空字符串。 [String](../data-types/string.md)。
-
-**示例**
-
-```sql
-SELECT domainWithoutWWW('http://paul@www.example.com:80/');
-```
-
-```text
-┌─domainWithoutWWW('http://paul@www.example.com:80/')─┐
-│ example.com                                         │
-└─────────────────────────────────────────────────────┘
-```
-
-### domainWithoutWWWRFC {#domainwithoutwwwrfc}
-
-返回不带前缀 `www.` 的域名（如果存在）。类似于 [domainWithoutWWW](#domainwithoutwww) 但符合 RFC 3986。
-
-**语法**
-
-```sql
-domainWithoutWWWRFC(url)
-```
-
-**参数**
-
-- `url` — URL. [String](../data-types/string.md)。
-
-**返回值**
-
-- 如果输入字符串可以解析为 URL（不带前缀 `www.`），则返回域名，否则返回空字符串。 [String](../data-types/string.md)。
-
-**示例**
-
-查询：
-
-```sql
-SELECT
-    domainWithoutWWW('http://user:password@www.example.com:8080/path?query=value#fragment'),
-    domainWithoutWWWRFC('http://user:password@www.example.com:8080/path?query=value#fragment');
-```
-
-结果：
-
-```response
-┌─domainWithoutWWW('http://user:password@www.example.com:8080/path?query=value#fragment')─┬─domainWithoutWWWRFC('http://user:password@www.example.com:8080/path?query=value#fragment')─┐
-│                                                                                         │ example.com                                                                                │
-└─────────────────────────────────────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────┘
-```
-
-### topLevelDomain {#topleveldomain}
-
-从 URL 中提取顶级域名。
-
-```sql
-topLevelDomain(url)
-```
-
-**参数**
-
-- `url` — URL. [String](../../sql-reference/data-types/string.md)。
+* 从 URL 中提取部分内容的函数。如果 URL 中不存在相关部分，则返回空字符串。
+* 从 URL 中移除部分内容的函数。如果 URL 中没有类似内容，则 URL 保持不变。
 
 :::note
-URL 可以带协议或不带协议来指定。例如：
-
-```text
-svn+ssh://some.svn-hosting.com:80/repo/trunk
-some.svn-hosting.com:80/repo/trunk
-https://clickhouse.com/time/
-```
+下面的函数是根据 `system.functions` 系统表生成的。
 :::
 
-**返回值**
+{/* 
+  下方标签内部的内容会在文档框架构建期间替换为
+  由 system.functions 生成的文档。请不要修改或移除这些标签。
+  详见：https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
+  */ }
 
-- 如果输入字符串可以解析为 URL，则返回域名。否则返回空字符串。 [String](../../sql-reference/data-types/string.md)。
+{/*AUTOGENERATED_START*/ }
 
-**示例**
+## cutFragment {#cutFragment}
 
-查询：
+自 v1.1 版本引入
 
-```sql
-SELECT topLevelDomain('svn+ssh://www.some.svn-hosting.com:80/repo/trunk');
-```
-
-结果：
-
-```text
-┌─topLevelDomain('svn+ssh://www.some.svn-hosting.com:80/repo/trunk')─┐
-│ com                                                                │
-└────────────────────────────────────────────────────────────────────┘
-```
-
-### topLevelDomainRFC {#topleveldomainrfc}
-
-从 URL 中提取顶级域名。类似于 [topLevelDomain](#topleveldomain)，但符合 RFC 3986。
-
-```sql
-topLevelDomainRFC(url)
-```
-
-**参数**
-
-- `url` — URL. [String](../../sql-reference/data-types/string.md)。
-
-:::note
-URL 可以带协议或不带协议来指定。例如：
-
-```text
-svn+ssh://some.svn-hosting.com:80/repo/trunk
-some.svn-hosting.com:80/repo/trunk
-https://clickhouse.com/time/
-```
-:::
-
-**返回值**
-
-- 如果输入字符串可以解析为 URL，则返回域名。否则返回空字符串。 [String](../../sql-reference/data-types/string.md)。
-
-**示例**
-
-查询：
-
-```sql
-SELECT topLevelDomain('http://foo:foo%41bar@foo.com'), topLevelDomainRFC('http://foo:foo%41bar@foo.com');
-```
-
-结果：
-
-```text
-┌─topLevelDomain('http://foo:foo%41bar@foo.com')─┬─topLevelDomainRFC('http://foo:foo%41bar@foo.com')─┐
-│                                                │ com                                               │
-└────────────────────────────────────────────────┴───────────────────────────────────────────────────┘
-```
-
-### firstSignificantSubdomain {#firstsignificantsubdomain}
-
-返回“第一个显著子域名”。第一个显著子域名对于 `com`、`net`、`org` 或 `co` 是二级域名，否则是三级域名。例如，`firstSignificantSubdomain ('https://news.clickhouse.com/') = 'clickhouse'`，`firstSignificantSubdomain ('https://news.clickhouse.com.tr/') = 'clickhouse'`。显著的二级域名及其他实现细节的列表可能会在未来发生变化。
+从 URL 中移除片段标识符（包括 # 号）。
 
 **语法**
 
 ```sql
-firstSignificantSubdomain(url)
+cutFragment(url)
 ```
 
 **参数**
 
-- `url` — URL. [String](../../sql-reference/data-types/string.md)。
+* `url` — URL。[`String`](/sql-reference/data-types/string)
 
 **返回值**
 
-- 第一个显著子域名。 [String](../data-types/string.md)。
+返回移除片段标识符后的 URL。[`String`](/sql-reference/data-types/string)
 
 **示例**
 
-查询：
+**使用示例**
 
-```sql
-SELECT firstSignificantSubdomain('http://www.example.com/a/b/c?a=b')
+```sql title=Query
+SELECT cutFragment('http://example.com/path?query=value#fragment123');
 ```
 
-结果：
-
-```reference
-┌─firstSignificantSubdomain('http://www.example.com/a/b/c?a=b')─┐
-│ example                                                       │
-└───────────────────────────────────────────────────────────────┘
+```response title=Response
+┌─cutFragment('http://example.com/path?query=value#fragment123')─┐
+│ http://example.com/path?query=value                            │
+└────────────────────────────────────────────────────────────────┘
 ```
 
-### firstSignificantSubdomainRFC {#firstsignificantsubdomainrfc}
+## cutQueryString {#cutQueryString}
 
-返回“第一个显著子域名”。第一个显著子域名对于 `com`、`net`、`org` 或 `co` 是二级域名，否则是三级域名。例如，`firstSignificantSubdomain ('https://news.clickhouse.com/') = 'clickhouse'`，`firstSignificantSubdomain ('https://news.clickhouse.com.tr/') = 'clickhouse'`。显著的二级域名及其他实现细节的列表可能会在未来发生变化。类似于 [firstSignficantSubdomain](#firstsignificantsubdomain)，但符合 RFC 1034。
+引入版本：v1.1
+
+从 URL 中移除查询字符串（包括问号）。
 
 **语法**
 
 ```sql
-firstSignificantSubdomainRFC(url)
+cutQueryString(url)
 ```
 
 **参数**
 
-- `url` — URL. [String](../../sql-reference/data-types/string.md)。
+* `url` — URL。[`String`](/sql-reference/data-types/string)
 
 **返回值**
 
-- 第一个显著子域名。 [String](../data-types/string.md)。
+返回去除查询字符串后的 URL。[`String`](/sql-reference/data-types/string)
 
 **示例**
 
-查询：
+**用法示例**
+
+```sql title=Query
+SELECT cutQueryString('http://example.com/path?query=value&param=123#fragment');
+```
+
+```response title=Response
+┌─cutQueryString('http://example.com/path?query=value&param=123#fragment')─┐
+│ http://example.com/path#fragment                                         │
+└──────────────────────────────────────────────────────────────────────────┘
+```
+
+## cutQueryStringAndFragment {#cutQueryStringAndFragment}
+
+自 v1.1 引入
+
+从 URL 中移除查询字符串和片段标识符，连同问号（?）和井号（#）一并删除。
+
+**语法**
 
 ```sql
-SELECT
-    firstSignificantSubdomain('http://user:password@example.com:8080/path?query=value#fragment'),
-    firstSignificantSubdomainRFC('http://user:password@example.com:8080/path?query=value#fragment');
+cutQueryStringAndFragment(url)
 ```
 
-结果：
+**参数**
 
-```reference
-┌─firstSignificantSubdomain('http://user:password@example.com:8080/path?query=value#fragment')─┬─firstSignificantSubdomainRFC('http://user:password@example.com:8080/path?query=value#fragment')─┐
-│                                                                                              │ example                                                                                         │
-└──────────────────────────────────────────────────────────────────────────────────────────────┴─────────────────────────────────────────────────────────────────────────────────────────────────┘
+* `url` — URL。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+返回去掉查询字符串和片段标识符的 URL。[`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**使用示例**
+
+```sql title=Query
+SELECT cutQueryStringAndFragment('http://example.com/path?query=value&param=123#fragment');
 ```
 
-### cutToFirstSignificantSubdomain {#cuttofirstsignificantsubdomain}
+```response title=Response
+┌─cutQueryStringAndFragment('http://example.com/path?query=value&param=123#fragment')─┐
+│ http://example.com/path                                                             │
+└─────────────────────────────────────────────────────────────────────────────────────┘
+```
 
-返回域名的一部分，包括顶级子域名，直到“第一个显著子域名”为止。
+## cutToFirstSignificantSubdomain {#cutToFirstSignificantSubdomain}
+
+自 v1.1 版本引入
+
+返回域名中，自顶级子域名起直到[第一个重要子域名](/sql-reference/functions/url-functions#firstSignificantSubdomain)的这部分。
 
 **语法**
 
@@ -356,34 +172,219 @@ cutToFirstSignificantSubdomain(url)
 
 **参数**
 
-- `url` — URL. [String](../../sql-reference/data-types/string.md)。
+* `url` — 要处理的 URL 或域名字符串。[`String`](/sql-reference/data-types/string)
 
 **返回值**
 
-- 包含顶级子域名的域名部分，直到第一个显著子域名（如果可能），否则返回空字符串。 [String](../data-types/string.md)。
+返回域名中从最高层子域到第一个重要子域的那一部分（如果可能），否则返回空字符串。[`String`](/sql-reference/data-types/string)
 
 **示例**
 
-查询：
+**使用示例**
 
-```sql
+```sql title=Query
 SELECT
     cutToFirstSignificantSubdomain('https://news.clickhouse.com.tr/'),
     cutToFirstSignificantSubdomain('www.tr'),
     cutToFirstSignificantSubdomain('tr');
 ```
 
-结果：
-
-```response
+```response title=Response
 ┌─cutToFirstSignificantSubdomain('https://news.clickhouse.com.tr/')─┬─cutToFirstSignificantSubdomain('www.tr')─┬─cutToFirstSignificantSubdomain('tr')─┐
 │ clickhouse.com.tr                                                 │ tr                                       │                                      │
 └───────────────────────────────────────────────────────────────────┴──────────────────────────────────────────┴──────────────────────────────────────┘
 ```
 
-### cutToFirstSignificantSubdomainRFC {#cuttofirstsignificantsubdomainrfc}
+## cutToFirstSignificantSubdomainCustom {#cutToFirstSignificantSubdomainCustom}
 
-返回域名的一部分，包括顶级子域名，直到“第一个显著子域名”为止。类似于 [cutToFirstSignificantSubdomain](#cuttofirstsignificantsubdomain)，但符合 RFC 3986。
+引入于：v21.1
+
+返回域名中从顶级域及其子域开始直到第一个重要子域的部分。接受自定义的 [TLD 列表](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains) 名称。如果你需要一份最新的 TLD 列表或有自定义列表，此函数会很有用。
+
+**配置示例**
+
+```yaml
+<!-- <top_level_domains_path>/var/lib/clickhouse/top_level_domains/</top_level_domains_path> -->
+<top_level_domains_lists>
+    <!-- https://publicsuffix.org/list/public_suffix_list.dat -->
+    <public_suffix_list>public_suffix_list.dat</public_suffix_list>
+    <!-- 注意：路径位于 top_level_domains_path 下 -->
+</top_level_domains_lists>
+```
+
+**语法**
+
+```sql
+cutToFirstSignificantSubdomainCustom(url, tld_list_name)
+```
+
+**参数**
+
+* `url` — 要处理的 URL 或域名字符串。[`String`](/sql-reference/data-types/string)
+* `tld_list_name` — 在 ClickHouse 中配置的自定义 TLD 列表的名称。[`const String`](/sql-reference/data-types/string)
+
+**返回值**
+
+返回从顶级子域名开始直至第一个重要子域名的这部分域名字符串。[`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**在非标准域名上使用自定义 TLD 列表**
+
+```sql title=Query
+SELECT cutToFirstSignificantSubdomainCustom('bar.foo.there-is-no-such-domain', 'public_suffix_list')
+```
+
+```response title=Response
+foo.there-is-no-such-domain
+```
+
+## cutToFirstSignificantSubdomainCustomRFC {#cutToFirstSignificantSubdomainCustomRFC}
+
+引入版本：v22.10
+
+返回域名中包含顶级子域名直到第一个关键子域名的部分。
+接受自定义的 [TLD 列表](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains)名称作为参数。
+如果你需要更新的 TLD 列表或有自定义列表时，此函数会很有用。
+类似于 [cutToFirstSignificantSubdomainCustom](#cutToFirstSignificantSubdomainCustom)，但符合 RFC 3986。
+
+**配置示例**
+
+```xml
+<!-- <top_level_domains_path>/var/lib/clickhouse/top_level_domains/</top_level_domains_path> -->
+<top_level_domains_lists>
+    <!-- https://publicsuffix.org/list/public_suffix_list.dat -->
+    <public_suffix_list>public_suffix_list.dat</public_suffix_list>
+    <!-- 注意：路径位于 top_level_domains_path 下 -->
+</top_level_domains_lists>
+```
+
+**语法**
+
+```sql
+cutToFirstSignificantSubdomainCustomRFC(url, tld_list_name)
+```
+
+**参数**
+
+* `url` — 按照 RFC 3986 规范处理的 URL 或域名字符串。- `tld_list_name` — 在 ClickHouse 中配置的自定义 TLD 列表名称。
+
+**返回值**
+
+返回域名中从顶级子域开始，包含直到第一个重要子域在内的部分。[`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**使用示例**
+
+```sql title=Query
+SELECT cutToFirstSignificantSubdomainCustomRFC('www.foo', 'public_suffix_list');
+```
+
+```response title=Response
+┌─cutToFirstSignificantSubdomainCustomRFC('www.foo', 'public_suffix_list')─────┐
+│ www.foo                                                                      │
+└──────────────────────────────────────────────────────────────────────────────┘
+```
+
+## cutToFirstSignificantSubdomainCustomWithWWW {#cutToFirstSignificantSubdomainCustomWithWWW}
+
+引入版本：v21.1
+
+返回域名中包含顶级子域名、直至第一个重要子域名的部分，并且不会去掉 &#39;www&#39;。支持传入自定义 TLD 列表名称。如果你需要最新的 TLD 列表，或维护了自己的自定义列表，可以使用该参数。
+
+**配置示例**
+
+````yaml
+<!-- <top_level_domains_path>/var/lib/clickhouse/top_level_domains/</top_level_domains_path> -->
+<top_level_domains_lists>
+    <!-- https://publicsuffix.org/list/public_suffix_list.dat -->
+    <public_suffix_list>public_suffix_list.dat</public_suffix_list>
+    <!-- NOTE: path is under top_level_domains_path -->
+</top_level_domains_lists>
+    
+
+**语法**
+
+```sql
+cutToFirstSignificantSubdomainCustomWithWWW(url, tld_list_name)
+````
+
+**参数**
+
+* `url` — 要处理的 URL 或域名字符串。
+* `tld_list_name` — 在 ClickHouse 中配置的自定义 TLD 列表名称。
+
+**返回值**
+
+域名的一部分，包含顶层子域名，直到第一个有意义的子域名为止，并且不会去除 `www` 前缀。[`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**用法示例**
+
+```sql title=Query
+SELECT cutToFirstSignificantSubdomainCustomWithWWW('www.foo', 'public_suffix_list');
+```
+
+```response title=Response
+┌─cutToFirstSignificantSubdomainCustomWithWWW('www.foo', 'public_suffix_list')─┐
+│ www.foo                                                                      │
+└──────────────────────────────────────────────────────────────────────────────┘
+```
+
+## cutToFirstSignificantSubdomainCustomWithWWWRFC {#cutToFirstSignificantSubdomainCustomWithWWWRFC}
+
+引入版本：v22.10
+
+返回域名中从包含顶级子域名开始，到第一个关键子域名为止的那一部分，但不会去掉 `www`。
+支持自定义 TLD 列表名称。
+在需要最新 TLD 列表或使用自定义列表时，这会很有用。
+类似于 [cutToFirstSignificantSubdomainCustomWithWWW](#cutToFirstSignificantSubdomainCustomWithWWW)，但符合 [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986)。
+
+**配置示例**
+
+````xml
+<!-- <top_level_domains_path>/var/lib/clickhouse/top_level_domains/</top_level_domains_path> -->
+<top_level_domains_lists>
+    <!-- https://publicsuffix.org/list/public_suffix_list.dat -->
+    <public_suffix_list>public_suffix_list.dat</public_suffix_list>
+    <!-- 注意：路径位于 top_level_domains_path 下 -->
+</top_level_domains_lists>
+    
+
+**语法**
+
+```sql
+cutToFirstSignificantSubdomainCustomWithWWWRFC(url, tld_list_name)
+````
+
+**参数**
+
+* `url` — 按 RFC 3986 进行解析的 URL 或域名字符串。
+* `tld_list_name` — 在 ClickHouse 中配置的自定义 TLD 列表名称。
+
+**返回值**
+
+返回域名中包含顶层子域在内、直到第一个重要子域为止的部分，并且不会移除 `www`。[`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**使用自定义 TLD 列表并保留 www 的 RFC 3986 解析**
+
+```sql title=Query
+SELECT cutToFirstSignificantSubdomainCustomWithWWWRFC('https://www.subdomain.example.custom', 'public_suffix_list')
+```
+
+```response title=Response
+www.example.custom
+```
+
+## cutToFirstSignificantSubdomainRFC {#cutToFirstSignificantSubdomainRFC}
+
+引入版本：v22.10
+
+返回域名中从顶级子域起、包含至[“首个重要子域”](/sql-reference/functions/url-functions#firstSignificantSubdomain)的部分。类似于 [`cutToFirstSignificantSubdomain`](#cutToFirstSignificantSubdomain)，但符合 [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986)。
 
 **语法**
 
@@ -393,33 +394,35 @@ cutToFirstSignificantSubdomainRFC(url)
 
 **参数**
 
-- `url` — URL. [String](../../sql-reference/data-types/string.md)。
+* `url` — 按照 RFC 3986 规范处理的 URL 或域名字符串。[`String`](/sql-reference/data-types/string)
 
 **返回值**
 
-- 包含顶级子域名的域名部分，直到第一个显著子域名（如果可能），否则返回空字符串。 [String](../data-types/string.md)。
+返回包含顶级子域名直至第一个重要子域名的那一部分域名；如果无法提取，则返回空字符串。[`String`](/sql-reference/data-types/string)
 
 **示例**
 
-查询：
+**用法示例**
 
-```sql
+```sql title=Query
 SELECT
     cutToFirstSignificantSubdomain('http://user:password@example.com:8080'),
     cutToFirstSignificantSubdomainRFC('http://user:password@example.com:8080');
 ```
 
-结果：
-
-```response
+```response title=Response
 ┌─cutToFirstSignificantSubdomain('http://user:password@example.com:8080')─┬─cutToFirstSignificantSubdomainRFC('http://user:password@example.com:8080')─┐
 │                                                                         │ example.com                                                                │
 └─────────────────────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### cutToFirstSignificantSubdomainWithWWW {#cuttofirstsignificantsubdomainwithwww}
+## cutToFirstSignificantSubdomainWithWWW {#cutToFirstSignificantSubdomainWithWWW}
 
-返回域名的一部分，包括顶级子域名，直到“第一个显著子域名”为止，不去掉 `www`。
+引入版本：v20.12
+
+返回域名中从顶级子域开始直到“第一个重要子域”的那一部分，且不会去除 &#39;[www](http://www).&#39;。
+
+与 [`cutToFirstSignificantSubdomain`](#cutToFirstSignificantSubdomain) 类似，但如果存在，则保留 &#39;[www](http://www).&#39; 前缀。
 
 **语法**
 
@@ -429,573 +432,71 @@ cutToFirstSignificantSubdomainWithWWW(url)
 
 **参数**
 
-- `url` — URL. [String](../../sql-reference/data-types/string.md)。
+* `url` — 要处理的 URL 或域名字符串。[`String`](/sql-reference/data-types/string)
 
 **返回值**
 
-- 包含顶级子域名的域名部分，直到第一个显著子域名（带 `www`，如果可能），否则返回空字符串。 [String](../data-types/string.md)。
+返回域名中从顶级子域到第一个重要子域（包含 www）的部分（如果可能），否则返回空字符串。[`String`](/sql-reference/data-types/string)
 
 **示例**
 
-查询：
+**用法示例**
 
-```sql
+```sql title=Query
 SELECT
     cutToFirstSignificantSubdomainWithWWW('https://news.clickhouse.com.tr/'),
     cutToFirstSignificantSubdomainWithWWW('www.tr'),
     cutToFirstSignificantSubdomainWithWWW('tr');
 ```
 
-结果：
-
-```response
+```response title=Response
 ┌─cutToFirstSignificantSubdomainWithWWW('https://news.clickhouse.com.tr/')─┬─cutToFirstSignificantSubdomainWithWWW('www.tr')─┬─cutToFirstSignificantSubdomainWithWWW('tr')─┐
 │ clickhouse.com.tr                                                        │ www.tr                                          │                                             │
 └──────────────────────────────────────────────────────────────────────────┴─────────────────────────────────────────────────┴─────────────────────────────────────────────┘
 ```
 
-### cutToFirstSignificantSubdomainWithWWWRFC {#cuttofirstsignificantsubdomainwithwwwrfc}
+## cutToFirstSignificantSubdomainWithWWWRFC {#cutToFirstSignificantSubdomainWithWWWRFC}
 
-返回域名的一部分，包括顶级子域名，直到“第一个显著子域名”为止，不去掉 `www`。类似于 [cutToFirstSignificantSubdomainWithWWW](#cuttofirstsignificantsubdomaincustomwithwww)，但符合 RFC 3986。
+引入版本：v22.10
+
+返回域名中从顶级子域到“第一个重要子域”为止的部分，且不去除 &#39;www&#39;。类似于 [`cutToFirstSignificantSubdomainWithWWW`](#cutToFirstSignificantSubdomainWithWWW)，但符合 [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986) 规范。
 
 **语法**
 
 ```sql
-cutToFirstSignificantSubdomainWithWWW(url)
+cutToFirstSignificantSubdomainWithWWWRFC(url)
 ```
 
 **参数**
 
-- `url` — URL. [String](../../sql-reference/data-types/string.md)。
+* `url` — 按照 RFC 3986 规范处理的 URL 或域名字符串。
 
 **返回值**
 
-- 包含顶级子域名的域名部分，直到第一个显著子域名（带 "www"，如果可能），否则返回空字符串。 [String](../../sql-reference/data-types/string.md)。
+返回域名中包含自顶级域起直到第一个重要子域（如有则包含 &#39;www&#39;）的部分，否则返回空字符串 [`String`](/sql-reference/data-types/string)。
 
 **示例**
 
-查询：
+**用法示例**
 
-```sql
+```sql title=Query
 SELECT
     cutToFirstSignificantSubdomainWithWWW('http:%2F%2Fwwwww.nova@mail.ru/economicheskiy'),
     cutToFirstSignificantSubdomainWithWWWRFC('http:%2F%2Fwwwww.nova@mail.ru/economicheskiy');
 ```
 
-结果：
-
-```response
+```response title=Response
 ┌─cutToFirstSignificantSubdomainWithWWW('http:%2F%2Fwwwww.nova@mail.ru/economicheskiy')─┬─cutToFirstSignificantSubdomainWithWWWRFC('http:%2F%2Fwwwww.nova@mail.ru/economicheskiy')─┐
 │                                                                                       │ mail.ru                                                                                  │
 └───────────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### cutToFirstSignificantSubdomainCustom {#cuttofirstsignificantsubdomaincustom}
+## cutURLParameter {#cutURLParameter}
 
-返回域名的一部分，包括顶级子域名，直到第一个显著子域名。接受自定义 [TLD 列表](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains) 名称。如果您需要一个新的 TLD 列表或有自定义列表，此函数可能会很有用。
+引入版本：v1.1
 
-**配置示例**
-
-```xml
-<!-- <top_level_domains_path>/var/lib/clickhouse/top_level_domains/</top_level_domains_path> -->
-<top_level_domains_lists>
-    <!-- https://publicsuffix.org/list/public_suffix_list.dat -->
-    <public_suffix_list>public_suffix_list.dat</public_suffix_list>
-    <!-- NOTE: path is under top_level_domains_path -->
-</top_level_domains_lists>
-```
-
-**语法**
-
-```sql
-cutToFirstSignificantSubdomain(url, tld)
-```
-
-**参数**
-
-- `url` — URL. [String](../../sql-reference/data-types/string.md)。
-- `tld` — 自定义 TLD 列表名称。 [String](../../sql-reference/data-types/string.md)。
-
-**返回值**
-
-- 包含顶级子域名的域名部分，直到第一个显著子域名。 [String](../../sql-reference/data-types/string.md)。
-
-**示例**
-
-查询：
-
-```sql
-SELECT cutToFirstSignificantSubdomainCustom('bar.foo.there-is-no-such-domain', 'public_suffix_list');
-```
-
-结果：
-
-```text
-┌─cutToFirstSignificantSubdomainCustom('bar.foo.there-is-no-such-domain', 'public_suffix_list')─┐
-│ foo.there-is-no-such-domain                                                                   │
-└───────────────────────────────────────────────────────────────────────────────────────────────┘
-```
-
-**参见**
-
-- [firstSignificantSubdomain](#firstsignificantsubdomain)。
-
-### cutToFirstSignificantSubdomainCustomRFC {#cuttofirstsignificantsubdomaincustomrfc}
-
-返回域名的一部分，包括顶级子域名，直到第一个显著子域名。接受自定义 [TLD 列表](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains) 名称。如果您需要一个新的 TLD 列表或有自定义列表，此函数可能会很有用。类似于 [cutToFirstSignificantSubdomainCustom](#cuttofirstsignificantsubdomaincustom)，但符合 RFC 3986。
-
-**语法**
-
-```sql
-cutToFirstSignificantSubdomainRFC(url, tld)
-```
-
-**参数**
-
-- `url` — URL. [String](../../sql-reference/data-types/string.md)。
-- `tld` — 自定义 TLD 列表名称。 [String](../../sql-reference/data-types/string.md)。
-
-**返回值**
-
-- 包含顶级子域名的域名部分，直到第一个显著子域名。 [String](../../sql-reference/data-types/string.md)。
-
-**参见**
-
-- [firstSignificantSubdomain](#firstsignificantsubdomain)。
-
-### cutToFirstSignificantSubdomainCustomWithWWW {#cuttofirstsignificantsubdomaincustomwithwww}
-
-返回域名的一部分，包括顶级子域名，直到第一个显著子域名，不去掉 `www`。接受自定义 TLD 列表名称。如果您需要一个新的 TLD 列表或有自定义列表，此函数可能会很有用。
-
-**配置示例**
-
-```xml
-<!-- <top_level_domains_path>/var/lib/clickhouse/top_level_domains/</top_level_domains_path> -->
-<top_level_domains_lists>
-    <!-- https://publicsuffix.org/list/public_suffix_list.dat -->
-    <public_suffix_list>public_suffix_list.dat</public_suffix_list>
-    <!-- NOTE: path is under top_level_domains_path -->
-</top_level_domains_lists>
-```
-
-**语法**
-
-```sql
-cutToFirstSignificantSubdomainCustomWithWWW(url, tld)
-```
-
-**参数**
-
-- `url` — URL. [String](../../sql-reference/data-types/string.md)。
-- `tld` — 自定义 TLD 列表名称。 [String](../../sql-reference/data-types/string.md)。
-
-**返回值**
-
-- 包含顶级子域名的域名部分，直到第一个显著子域名且不去掉 `www`。 [String](../data-types/string.md)。
-
-**示例**
-
-查询：
-
-```sql
-SELECT cutToFirstSignificantSubdomainCustomWithWWW('www.foo', 'public_suffix_list');
-```
-
-结果：
-
-```text
-┌─cutToFirstSignificantSubdomainCustomWithWWW('www.foo', 'public_suffix_list')─┐
-│ www.foo                                                                      │
-└──────────────────────────────────────────────────────────────────────────────┘
-```
-
-**参见**
-
-- [firstSignificantSubdomain](#firstsignificantsubdomain)。
-- [top_level_domains_list](../../operations/server-configuration-parameters/settings.md/#top_level_domains_list)
-
-### cutToFirstSignificantSubdomainCustomWithWWWRFC {#cuttofirstsignificantsubdomaincustomwithwwwrfc}
-
-返回域名的一部分，包括顶级子域名，直到第一个显著子域名且不去掉 `www`。接受自定义 TLD 列表名称。如果您需要一个新的 TLD 列表或有自定义列表，此函数可能会很有用。类似于 [cutToFirstSignificantSubdomainCustomWithWWW](#cuttofirstsignificantsubdomaincustomwithwww)，但符合 RFC 3986。
-
-**语法**
-
-```sql
-cutToFirstSignificantSubdomainCustomWithWWWRFC(url, tld)
-```
-
-**参数**
-
-- `url` — URL. [String](../../sql-reference/data-types/string.md)。
-- `tld` — 自定义 TLD 列表名称。 [String](../../sql-reference/data-types/string.md)。
-
-**返回值**
-
-- 包含顶级子域名的域名部分，直到第一个显著子域名且不去掉 `www`。 [String](../../sql-reference/data-types/string.md)。
-
-**参见**
-
-- [firstSignificantSubdomain](#firstsignificantsubdomain)。
-- [top_level_domains_list](../../operations/server-configuration-parameters/settings.md/#top_level_domains_list)
-
-### firstSignificantSubdomainCustom {#firstsignificantsubdomaincustom}
-
-返回第一个显著子域名。接受自定义 TLD 列表名称。如果您需要新的 TLD 列表或有自定义，则该函数可能会很有用。
-
-配置示例：
-
-```xml
-<!-- <top_level_domains_path>/var/lib/clickhouse/top_level_domains/</top_level_domains_path> -->
-<top_level_domains_lists>
-    <!-- https://publicsuffix.org/list/public_suffix_list.dat -->
-    <public_suffix_list>public_suffix_list.dat</public_suffix_list>
-    <!-- NOTE: path is under top_level_domains_path -->
-</top_level_domains_lists>
-```
-
-**语法**
-
-```sql
-firstSignificantSubdomainCustom(url, tld)
-```
-
-**参数**
-
-- `url` — URL. [String](../../sql-reference/data-types/string.md)。
-- `tld` — 自定义 TLD 列表名称。 [String](../../sql-reference/data-types/string.md)。
-
-**返回值**
-
-- 第一个显著子域名。 [String](../../sql-reference/data-types/string.md)。
-
-**示例**
-
-查询：
-
-```sql
-SELECT firstSignificantSubdomainCustom('bar.foo.there-is-no-such-domain', 'public_suffix_list');
-```
-
-结果：
-
-```text
-┌─firstSignificantSubdomainCustom('bar.foo.there-is-no-such-domain', 'public_suffix_list')─┐
-│ foo                                                                                      │
-└──────────────────────────────────────────────────────────────────────────────────────────┘
-```
-
-**参见**
-
-- [firstSignificantSubdomain](#firstsignificantsubdomain)。
-- [top_level_domains_list](../../operations/server-configuration-parameters/settings.md/#top_level_domains_list)
-
-### firstSignificantSubdomainCustomRFC {#firstsignificantsubdomaincustomrfc}
-
-返回第一个显著子域名。接受自定义 TLD 列表名称。如果您需要新的 TLD 列表或有自定义，则该函数可能会很有用。类似于 [firstSignificantSubdomainCustom](#firstsignificantsubdomaincustom)，但符合 RFC 3986。
-
-**语法**
-
-```sql
-firstSignificantSubdomainCustomRFC(url, tld)
-```
-
-**参数**
-
-- `url` — URL. [String](../../sql-reference/data-types/string.md)。
-- `tld` — 自定义 TLD 列表名称。 [String](../../sql-reference/data-types/string.md)。
-
-**返回值**
-
-- 第一个显著子域名。 [String](../../sql-reference/data-types/string.md)。
-
-**参见**
-
-- [firstSignificantSubdomain](#firstsignificantsubdomain)。
-- [top_level_domains_list](../../operations/server-configuration-parameters/settings.md/#top_level_domains_list)
-
-### port {#port}
-
-如果 URL 不包含端口或无法解析，则返回端口或 `default_port`。
-
-**语法**
-
-```sql
-port(url [, default_port = 0])
-```
-
-**参数**
-
-- `url` — URL. [String](../data-types/string.md)。
-- `default_port` — 默认端口号，将返回。 [UInt16](../data-types/int-uint.md)。
-
-**返回值**
-
-- 端口或默认端口，如果 URL 中没有端口或在验证错误情况下。 [UInt16](../data-types/int-uint.md)。
-
-**示例**
-
-查询：
-
-```sql
-SELECT port('http://paul@www.example.com:80/');
-```
-
-结果：
-
-```response
-┌─port('http://paul@www.example.com:80/')─┐
-│                                      80 │
-└─────────────────────────────────────────┘
-```
-
-### portRFC {#portrfc}
-
-如果 URL 不包含端口或无法解析，则返回端口或 `default_port`。类似于 [port](#port)，但符合 RFC 3986。
-
-**语法**
-
-```sql
-portRFC(url [, default_port = 0])
-```
-
-**参数**
-
-- `url` — URL. [String](../../sql-reference/data-types/string.md)。
-- `default_port` — 默认端口号，将返回。 [UInt16](../data-types/int-uint.md)。
-
-**返回值**
-
-- 端口或默认端口，如果 URL 中没有端口或在验证错误情况下。 [UInt16](../data-types/int-uint.md)。
-
-**示例**
-
-查询：
-
-```sql
-SELECT
-    port('http://user:password@example.com:8080'),
-    portRFC('http://user:password@example.com:8080');
-```
-
-结果：
-
-```resposne
-┌─port('http://user:password@example.com:8080')─┬─portRFC('http://user:password@example.com:8080')─┐
-│                                             0 │                                             8080 │
-└───────────────────────────────────────────────┴──────────────────────────────────────────────────┘
-```
-
-### path {#path}
-
-返回不带查询字符串的路径。
-
-示例： `/top/news.html`。
-
-### pathFull {#pathfull}
-
-与上述相同，但包括查询字符串和片段。
-
-示例： `/top/news.html?page=2#comments`。
-
-### protocol {#protocol-1}
-
-从 URL 中提取协议。
-
-**语法**
-
-```sql
-protocol(url)
-```
-
-**参数**
-
-- `url` — 要提取协议的 URL。 [String](../data-types/string.md)。
-
-**返回值**
-
-- 协议，如果无法确定则返回空字符串。 [String](../data-types/string.md)。
-
-**示例**
-
-查询：
-
-```sql
-SELECT protocol('https://clickhouse.com/');
-```
-
-结果：
-
-```response
-┌─protocol('https://clickhouse.com/')─┐
-│ https                               │
-└─────────────────────────────────────┘
-```
-
-### queryString {#querystring}
-
-返回查询字符串，不包括初始问号，`#` 和 `#` 后面的内容。
-
-示例： `page=1&lr=213`。
-
-### fragment {#fragment}
-
-返回碎片标识符，不包括初始哈希符号。
-
-### queryStringAndFragment {#querystringandfragment}
-
-返回查询字符串和碎片标识符。
-
-示例： `page=1#29390`。
-
-### extractURLParameter(url, name) {#extracturlparameterurl-name}
-
-返回 URL 中 `name` 参数的值（如果存在），否则返回空字符串。如果有多个同名参数，将返回第一个出现的值。该函数假定 `url` 参数中的参数按照与 `name` 参数相同的方式编码。
-
-### extractURLParameters(url) {#extracturlparametersurl}
-
-返回与 URL 参数对应的 `name=value` 字符串数组。值未解码。
-
-### extractURLParameterNames(url) {#extracturlparameternamesurl}
-
-返回与 URL 参数名称对应的名称字符串数组。值未解码。
-
-### URLHierarchy(url) {#urlhierarchyurl}
-
-返回一个数组，其中包含 URL，在路径和查询字符串中以符号 / 和 ? 截断。连续的分隔符字符计为一个。切割在所有连续分隔符字符之后的位置完成。
-
-### URLPathHierarchy(url) {#urlpathhierarchyurl}
-
-与上述相同，但结果中不包含协议和主机。根元素 `/` 不包括。
-
-```text
-URLPathHierarchy('https://example.com/browse/CONV-6788') =
-[
-    '/browse/',
-    '/browse/CONV-6788'
-]
-```
-
-### encodeURLComponent(url) {#encodeurlcomponenturl}
-
-返回编码后的 URL。
-
-示例：
-
-```sql
-SELECT encodeURLComponent('http://127.0.0.1:8123/?query=SELECT 1;') AS EncodedURL;
-```
-
-```text
-┌─EncodedURL───────────────────────────────────────────────┐
-│ http%3A%2F%2F127.0.0.1%3A8123%2F%3Fquery%3DSELECT%201%3B │
-└──────────────────────────────────────────────────────────┘
-```
-
-### decodeURLComponent(url) {#decodeurlcomponenturl}
-
-返回解码后的 URL。
-
-示例：
-
-```sql
-SELECT decodeURLComponent('http://127.0.0.1:8123/?query=SELECT%201%3B') AS DecodedURL;
-```
-
-```text
-┌─DecodedURL─────────────────────────────┐
-│ http://127.0.0.1:8123/?query=SELECT 1; │
-└────────────────────────────────────────┘
-```
-
-### encodeURLFormComponent(url) {#encodeurlformcomponenturl}
-
-返回编码后的 URL。遵循 rfc-1866，空格（` `）编码为加号（`+`）。
-
-示例：
-
-```sql
-SELECT encodeURLFormComponent('http://127.0.0.1:8123/?query=SELECT 1 2+3') AS EncodedURL;
-```
-
-```text
-┌─EncodedURL────────────────────────────────────────────────┐
-│ http%3A%2F%2F127.0.0.1%3A8123%2F%3Fquery%3DSELECT+1+2%2B3 │
-└───────────────────────────────────────────────────────────┘
-```
-
-### decodeURLFormComponent(url) {#decodeurlformcomponenturl}
-
-返回解码后的 URL。遵循 rfc-1866，普通加号（`+`）解码为空格（` `）。
-
-示例：
-
-```sql
-SELECT decodeURLFormComponent('http://127.0.0.1:8123/?query=SELECT%201+2%2B3') AS DecodedURL;
-```
-
-```text
-┌─DecodedURL────────────────────────────────┐
-│ http://127.0.0.1:8123/?query=SELECT 1 2+3 │
-└───────────────────────────────────────────┘
-```
-
-### netloc {#netloc}
-
-从 URL 中提取网络位置 (`username:password@host:port`)。
-
-**语法**
-
-```sql
-netloc(url)
-```
-
-**参数**
-
-- `url` — URL. [String](../../sql-reference/data-types/string.md)。
-
-**返回值**
-
-- `username:password@host:port`。 [String](../data-types/string.md)。
-
-**示例**
-
-查询：
-
-```sql
-SELECT netloc('http://paul@www.example.com:80/');
-```
-
-结果：
-
-```text
-┌─netloc('http://paul@www.example.com:80/')─┐
-│ paul@www.example.com:80                   │
-└───────────────────────────────────────────┘
-```
-
-## 移除 URL 部分的函数 {#functions-that-remove-part-of-a-url}
-
-如果 URL 没有类似的部分，则 URL 保持不变。
-
-### cutWWW {#cutwww}
-
-从 URL 的域中移除前导 `www.`（如果存在）。
-
-### cutQueryString {#cutquerystring}
-
-移除查询字符串，包括问号。
-
-### cutFragment {#cutfragment}
-
-移除碎片标识符，包括数字符号。
-
-### cutQueryStringAndFragment {#cutquerystringandfragment}
-
-移除查询字符串和碎片标识符，包括问号和数字符号。
-
-### cutURLParameter(url, name) {#cuturlparameterurl-name}
-
-从 URL 中移除 `name` 参数（如果存在）。此函数不对参数名称中的字符进行编码或解码，例如 `Client ID` 和 `Client%20ID` 被视为不同的参数名称。
+从 URL 中移除名为 `name` 的参数（如果存在）。
+此函数不会对参数名中的字符进行编码或解码，例如，`Client ID` 和 `Client%20ID` 会被视为不同的参数名。
 
 **语法**
 
@@ -1005,36 +506,893 @@ cutURLParameter(url, name)
 
 **参数**
 
-- `url` — URL. [String](../../sql-reference/data-types/string.md)。
-- `name` — URL 参数的名称。 [String](../../sql-reference/data-types/string.md) 或 [Array](../../sql-reference/data-types/array.md) 的字符串。
+* `url` — URL。[`String`](/sql-reference/data-types/string)
+* `name` — URL 参数的名称。[`String`](/sql-reference/data-types/string) 或 [`Array(String)`](/sql-reference/data-types/array)
 
 **返回值**
 
-- 移除 `name` URL 参数后的 URL。 [String](../data-types/string.md)。
+删除了名为 `name` 的 URL 参数后的 URL。[`String`](/sql-reference/data-types/string)
 
 **示例**
 
-查询：
+**用法示例**
 
-```sql
+```sql title=Query
 SELECT
-    cutURLParameter('http://bigmir.net/?a=b&c=d&e=f#g', 'a') as url_without_a,
-    cutURLParameter('http://bigmir.net/?a=b&c=d&e=f#g', ['c', 'e']) as url_without_c_and_e;
+    cutURLParameter('http://bigmir.net/?a=b&c=d&e=f#g', 'a') AS url_without_a,
+    cutURLParameter('http://bigmir.net/?a=b&c=d&e=f#g', ['c', 'e']) AS url_without_c_and_e;
 ```
 
-结果：
-
-```text
+```response title=Response
 ┌─url_without_a────────────────┬─url_without_c_and_e──────┐
 │ http://bigmir.net/?c=d&e=f#g │ http://bigmir.net/?a=b#g │
 └──────────────────────────────┴──────────────────────────┘
 ```
 
-<!-- 
-The inner content of the tags below are replaced at doc framework build time with 
-docs generated from system.functions. Please do not modify or remove the tags.
-See: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
--->
+## cutWWW {#cutWWW}
 
-<!--AUTOGENERATED_START-->
-<!--AUTOGENERATED_END-->
+在 v1.1 中引入
+
+从 URL 的域名中移除开头的 `www.`（如果存在）。
+
+**语法**
+
+```sql
+cutWWW(url)
+```
+
+**参数**
+
+* `url` — URL。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+返回将域名开头的 `www.` 移除后的 URL。[`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**使用示例**
+
+```sql title=Query
+SELECT cutWWW('http://www.example.com/path?query=value#fragment');
+```
+
+```response title=Response
+┌─cutWWW('http://www.example.com/path?query=value#fragment')─┐
+│ http://example.com/path?query=value#fragment               │
+└────────────────────────────────────────────────────────────┘
+```
+
+## decodeURLComponent {#decodeURLComponent}
+
+自 v1.1 起引入
+
+接受一个经过 URL 编码的字符串作为输入，并将其解码为原始的可读形式。
+
+**语法**
+
+```sql
+decodeURLComponent(url)
+```
+
+**参数**
+
+* `url` — URL。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+返回解码后的 URL。[`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**使用示例**
+
+```sql title=Query
+SELECT decodeURLComponent('http://127.0.0.1:8123/?query=SELECT%201%3B') AS DecodedURL;
+```
+
+```response title=Response
+┌─DecodedURL─────────────────────────────┐
+│ http://127.0.0.1:8123/?query=SELECT 1; │
+└────────────────────────────────────────┘
+```
+
+## decodeURLFormComponent {#decodeURLFormComponent}
+
+自 v1.1 起引入
+
+使用表单编码规则（[RFC-1866](https://www.rfc-editor.org/rfc/rfc1866.html)）对 URL 编码的字符串进行解码，其中 `+` 号会被转换为空格，百分号编码的字符会被解码。
+
+**语法**
+
+```sql
+decodeURLFormComponent(url)
+```
+
+**参数**
+
+* `url` — URL。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+返回解码后的 URL。[`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**使用示例**
+
+```sql title=Query
+SELECT decodeURLFormComponent('http://127.0.0.1:8123/?query=SELECT%201+2%2B3') AS DecodedURL;
+```
+
+```response title=Response
+┌─DecodedURL────────────────────────────────┐
+│ http://127.0.0.1:8123/?query=SELECT 1 2+3 │
+└───────────────────────────────────────────┘
+```
+
+## domain {#domain}
+
+自 v1.1 起引入
+
+从 URL 中提取主机名。
+
+URL 可以带协议或不带协议。
+
+**语法**
+
+```sql
+domain(url)
+```
+
+**参数**
+
+* `url` — URL。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+如果输入字符串可以解析为 URL，则返回主机名，否则返回空字符串。[`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**用法示例**
+
+```sql title=Query
+SELECT domain('svn+ssh://some.svn-hosting.com:80/repo/trunk');
+```
+
+```response title=Response
+┌─domain('svn+ssh://some.svn-hosting.com:80/repo/trunk')─┐
+│ some.svn-hosting.com                                   │
+└────────────────────────────────────────────────────────┘
+```
+
+## domainRFC {#domainRFC}
+
+自 v22.10 版本引入
+
+从 URL 中提取主机名。
+类似于 [`domain`](#domain)，但符合 [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986) 规范。
+
+**语法**
+
+```sql
+domainRFC(url)
+```
+
+**参数**
+
+* `url` — URL。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+若输入字符串可以解析为 URL，则返回主机名；否则返回空字符串。[`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**用法示例**
+
+```sql title=Query
+SELECT
+    domain('http://user:password@example.com:8080/path?query=value#fragment'),
+    domainRFC('http://user:password@example.com:8080/path?query=value#fragment');
+```
+
+```response title=Response
+┌─domain('http://user:password@example.com:8080/path?query=value#fragment')─┬─domainRFC('http://user:password@example.com:8080/path?query=value#fragment')─┐
+│                                                                           │ example.com                                                                  │
+└───────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────┘
+```
+
+## domainWithoutWWW {#domainWithoutWWW}
+
+引入于：v1.1
+
+返回 URL 的域名，如果存在前缀 `www.`，则去除该前缀。
+
+**语法**
+
+```sql
+domainWithoutWWW(url)
+```
+
+**参数**
+
+* `url` — URL。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+如果输入字符串可以解析为 URL，则返回其域名（不带前缀 `www.`），否则返回空字符串。[`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**使用示例**
+
+```sql title=Query
+SELECT domainWithoutWWW('http://paul@www.example.com:80/');
+```
+
+```response title=Response
+┌─domainWithoutWWW('http://paul@www.example.com:80/')─┐
+│ example.com                                         │
+└─────────────────────────────────────────────────────┘
+```
+
+## domainWithoutWWWRFC {#domainWithoutWWWRFC}
+
+自 v1.1 引入
+
+返回去掉前缀 `www.` 的域名（若存在）。类似于 [`domainWithoutWWW`](#domainWithoutWWW)，但符合 [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986)。
+
+**语法**
+
+```sql
+domainWithoutWWWRFC(url)
+```
+
+**参数**
+
+* `url` — URL。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+如果输入字符串可以解析为 URL，则返回域名（不包含前缀 `www.`），否则返回空字符串。[`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**用法示例**
+
+```sql title=Query
+SELECT
+    domainWithoutWWW('http://user:password@www.example.com:8080/path?query=value#fragment'),
+    domainWithoutWWWRFC('http://user:password@www.example.com:8080/path?query=value#fragment');
+```
+
+```response title=Response
+┌─domainWithoutWWW('http://user:password@www.example.com:8080/path?query=value#fragment')─┬─domainWithoutWWWRFC('http://user:password@www.example.com:8080/path?query=value#fragment')─┐
+│                                                                                         │ example.com                                                                                │
+└─────────────────────────────────────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+## encodeURLComponent {#encodeURLComponent}
+
+引入版本：v22.3
+
+接收一个常规字符串并将其转换为 URL 编码（百分号编码）格式，其中特殊字符会被替换为对应的百分号编码。
+
+**语法**
+
+```sql
+encodeURLComponent(url)
+```
+
+**参数**
+
+* `url` — URL。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+返回编码后的 URL。[`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**用法示例**
+
+```sql title=Query
+SELECT encodeURLComponent('http://127.0.0.1:8123/?query=SELECT 1;') AS EncodedURL;
+```
+
+```response title=Response
+┌─EncodedURL───────────────────────────────────────────────┐
+│ http%3A%2F%2F127.0.0.1%3A8123%2F%3Fquery%3DSELECT%201%3B │
+└──────────────────────────────────────────────────────────┘
+```
+
+## encodeURLFormComponent {#encodeURLFormComponent}
+
+引入版本：v22.3
+
+使用表单编码规则（[RFC-1866](https://www.rfc-editor.org/rfc/rfc1866.html)）对字符串进行编码，其中空格会被转换为加号 (+)，特殊字符会被百分号编码。
+
+**语法**
+
+```sql
+encodeURLFormComponent(url)
+```
+
+**参数**
+
+* `url` — URL。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+返回编码后的 URL。[`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**使用示例**
+
+```sql title=Query
+SELECT encodeURLFormComponent('http://127.0.0.1:8123/?query=SELECT 1 2+3') AS EncodedURL;
+```
+
+```response title=Response
+┌─编码后的 URL──────────────────────────────────────────────┐
+│ http%3A%2F%2F127.0.0.1%3A8123%2F%3Fquery%3DSELECT+1+2%2B3 │
+└───────────────────────────────────────────────────────────┘
+```
+
+## extractURLParameter {#extractURLParameter}
+
+引入于：v1.1
+
+返回 URL 中名为 `name` 的参数的值（如果存在），否则返回空字符串。\
+如果存在多个同名参数，则返回首次出现的值。\
+该函数假定 `url` 参数中的参数编码方式与传入 `name` 参数时使用的编码方式相同。
+
+**语法**
+
+```sql
+extractURLParameter(url, name)
+```
+
+**参数**
+
+* `url` — URL。[`String`](/sql-reference/data-types/string)
+* `name` — 参数名称。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+返回 URL 中指定名称参数的值。[`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**用法示例**
+
+```sql title=Query
+SELECT extractURLParameter('http://example.com/?param1=value1&param2=value2', 'param1');
+```
+
+```response title=Response
+┌─extractURLPa⋯, 'param1')─┐
+│ value1                   │
+└──────────────────────────┘
+```
+
+## extractURLParameterNames {#extractURLParameterNames}
+
+自 v1.1 起引入
+
+返回一个字符串数组，其中的每个字符串是一个 URL 参数的名称。
+这些值不会被解码。
+
+**语法**
+
+```sql
+extractURLParameterNames(url)
+```
+
+**参数**
+
+* `url` — URL。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+返回一个字符串数组，包含 URL 参数的名称。[`Array(String)`](/sql-reference/data-types/array)
+
+**示例**
+
+**用法示例**
+
+```sql title=Query
+SELECT extractURLParameterNames('http://example.com/?param1=value1&param2=value2');
+```
+
+```response title=Response
+┌─extractURLPa⋯m2=value2')─┐
+│ ['param1','param2']      │
+└──────────────────────────┘
+```
+
+## extractURLParameters {#extractURLParameters}
+
+自 v1.1 起可用
+
+返回一个字符串数组，每个元素为对应 URL 参数的 `name=value` 形式。
+参数值不会被解码。
+
+**语法**
+
+```sql
+extractURLParameters(url)
+```
+
+**参数**
+
+* `url` — URL。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+返回一个数组，其中每个元素都是与 URL 参数对应的 `name=value` 字符串。[`Array(String)`](/sql-reference/data-types/array)
+
+**示例**
+
+**用法示例**
+
+```sql title=Query
+SELECT extractURLParameters('http://example.com/?param1=value1&param2=value2');
+```
+
+```response title=Response
+┌─extractURLParame⋯&param2=value2')─┐
+│ ['param1=value1','param2=value2'] │
+└───────────────────────────────────┘
+```
+
+## firstSignificantSubdomain {#firstSignificantSubdomain}
+
+引入版本：v
+
+返回“首个重要子域名”。
+
+如果二级域名是 &#39;com&#39;、&#39;net&#39;、&#39;org&#39; 或 &#39;co&#39;，则首个重要子域名是对应的三级域名。
+否则，首个重要子域名就是二级域名。
+
+例如，firstSignificantSubdomain(&#39;[https://news.clickhouse.com/](https://news.clickhouse.com/)&#39;) = &#39;clickhouse&#39;，firstSignificantSubdomain(&#39;[https://news.clickhouse.com.tr/](https://news.clickhouse.com.tr/)&#39;) = &#39;clickhouse&#39;。
+
+“不重要”的二级域名列表及其他实现细节在未来可能会发生变化。
+
+**语法**
+
+```sql
+```
+
+**参数**
+
+* 无。
+
+**返回值**
+
+**示例**
+
+**firstSignificantSubdomain**
+
+```sql title=Query
+SELECT firstSignificantSubdomain('https://news.clickhouse.com/')
+```
+
+```response title=Response
+```
+
+## firstSignificantSubdomainRFC {#firstSignificantSubdomainRFC}
+
+自 v 版本引入。
+
+根据 RFC 1034 返回“第一个重要子域名”。
+
+**语法**
+
+```sql
+```
+
+**参数**
+
+* 无
+
+**返回值**
+
+**示例**
+
+## fragment {#fragment}
+
+引入版本：v1.1
+
+返回不带开头 `#` 号的片段标识符。
+
+**语法**
+
+```sql
+片段(url)
+```
+
+**参数**
+
+* `url` — URL 地址。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+返回不包含开头井号符号（#）的片段标识符。[`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**使用示例**
+
+```sql title=Query
+SELECT fragment('https://clickhouse.com/docs/getting-started/quick-start/cloud#1-create-a-clickhouse-service');
+```
+
+```response title=Response
+┌─fragment('http⋯ouse-service')─┐
+│ 1-创建-ClickHouse-服务        │
+└───────────────────────────────┘
+```
+
+## netloc {#netloc}
+
+自 v20.5 引入
+
+从 URL 中提取网络定位部分（`username:password@host:port`）。
+
+**语法**
+
+```sql
+netloc(url)
+```
+
+**参数**
+
+* `url` — URL。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+从给定的 URL 中返回 `username:password@host:port`。[`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**使用示例**
+
+```sql title=Query
+SELECT netloc('http://paul@www.example.com:80/');
+```
+
+```response title=Response
+┌─netloc('http⋯e.com:80/')─┐
+│ paul@www.example.com:80  │
+└──────────────────────────┘
+```
+
+## path {#path}
+
+自 v1.1 版本引入
+
+返回 URL 中不包含查询字符串的路径。
+
+**语法**
+
+```sql
+路径(网址)
+```
+
+**参数**
+
+* `url` — URL。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+返回不包含查询字符串的 URL 路径部分。[`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**用法示例**
+
+```sql title=Query
+SELECT path('https://clickhouse.com/docs/sql-reference/functions/url-functions/?query=value');
+```
+
+```response title=Response
+┌─path('https://clickhouse.com/en/sql-reference/functions/url-functions/?query=value')─┐
+│ /docs/sql-reference/functions/url-functions/                                         │
+└──────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+## pathFull {#pathFull}
+
+自 v1.1 引入
+
+与 [`path`](#path) 相同，但还包括 URL 的查询字符串和片段。
+
+**语法**
+
+```sql
+pathFull(url)
+```
+
+**参数**
+
+* `url` — URL。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+返回 URL 的路径（包含查询字符串和片段）。[`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**使用示例**
+
+```sql title=Query
+SELECT pathFull('https://clickhouse.com/docs/sql-reference/functions/url-functions/?query=value#section');
+```
+
+```response title=Response
+┌─pathFull('https://clickhouse.com⋯unctions/?query=value#section')─┐
+│ /docs/sql-reference/functions/url-functions/?query=value#section │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+## port {#port}
+
+自 v20.5 起引入
+
+返回 URL 的端口号；如果 URL 不包含端口或无法解析，则返回 `default_port`。
+
+**语法**
+
+```sql
+port(url[, default_port])
+```
+
+**参数**
+
+* `url` — URL。[`String`](/sql-reference/data-types/string)
+* `default_port` — 可选。要返回的默认端口号。默认值为 `0`。[`UInt16`](/sql-reference/data-types/int-uint)
+
+**返回值**
+
+返回 URL 的端口；如果 URL 中没有端口或发生校验错误，则返回默认端口。[`UInt16`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**使用示例**
+
+```sql title=Query
+SELECT port('https://clickhouse.com:8443/docs'), port('https://clickhouse.com/docs', 443);
+```
+
+```response title=Response
+┌─port('https://clickhouse.com:8443/docs')─┬─port('https://clickhouse.com/docs', 443)─┐
+│                                     8443 │                                      443 │
+└──────────────────────────────────────────┴──────────────────────────────────────────┘
+```
+
+## portRFC {#portRFC}
+
+引入版本：v22.10
+
+返回 URL 中的端口号；如果 URL 不包含端口或无法解析，则返回 `default_port`。
+类似于 [`port`](#port)，但符合 [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986) 规范。
+
+**语法**
+
+```sql
+portRFC(url[, default_port])
+```
+
+**参数**
+
+* `url` — URL。[`String`](/sql-reference/data-types/string)
+* `default_port` — 可选。要返回的默认端口号，默认为 `0`。[`UInt16`](/sql-reference/data-types/int-uint)
+
+**返回值**
+
+返回端口号；如果 URL 中没有端口或发生验证错误，则返回默认端口。[`UInt16`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**用法示例**
+
+```sql title=Query
+SELECT port('http://user:password@example.com:8080/'), portRFC('http://user:password@example.com:8080/');
+```
+
+```response title=Response
+┌─port('http:/⋯com:8080/')─┬─portRFC('htt⋯com:8080/')─┐
+│                        0 │                     8080 │
+└──────────────────────────┴──────────────────────────┘
+```
+
+## protocol {#protocol}
+
+自 v1.1 版本引入
+
+从 URL 中提取协议。
+
+典型返回值示例：http、https、ftp、mailto、tel、magnet。
+
+**语法**
+
+```sql
+协议(url)
+```
+
+**参数**
+
+* `url` — URL。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+返回 URL 的协议；如果无法确定，则返回空字符串。[`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**用法示例**
+
+```sql title=Query
+SELECT protocol('https://clickhouse.com/');
+```
+
+```response title=Response
+┌─protocol('https://clickhouse.com/')─┐
+│ https                               │
+└─────────────────────────────────────┘
+```
+
+## queryString {#queryString}
+
+引入于：v1.1
+
+返回 URL 的查询字符串，不包括开头的问号，以及 `#` 字符及其后所有内容。
+
+**语法**
+
+```sql
+queryString(url)
+```
+
+**参数**
+
+* `url` — URL。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+返回去掉开头问号和片段标识符后的 URL 查询字符串。[`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**用法示例**
+
+```sql title=Query
+SELECT queryString('https://clickhouse.com/docs?query=value&param=123#section');
+```
+
+```response title=Response
+┌─queryString(⋯3#section')─┐
+│ query=value&param=123    │
+└──────────────────────────┘
+```
+
+## queryStringAndFragment {#queryStringAndFragment}
+
+自 v1.1 引入
+
+返回 URL 的查询字符串和片段标识符。
+
+**语法**
+
+```sql
+queryStringAndFragment(url)
+```
+
+**参数**
+
+* `url` — URL。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+返回 URL 的查询字符串和片段标识符。[`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**用法示例**
+
+```sql title=Query
+SELECT queryStringAndFragment('https://clickhouse.com/docs?query=value&param=123#section');
+```
+
+```response title=Response
+┌─queryStringAnd⋯=123#section')─┐
+│ query=value&param=123#section │
+└───────────────────────────────┘
+```
+
+## topLevelDomain {#topLevelDomain}
+
+自 v1.1 起引入
+
+从 URL 中提取顶级域名。
+
+:::note
+URL 可以带协议或不带协议。
+例如：
+
+```text
+svn+ssh://some.svn-hosting.com:80/repo/trunk
+some.svn-hosting.com:80/repo/trunk
+https://clickhouse.com/time/
+```
+
+:::
+
+**语法**
+
+```sql
+顶级域名(url)
+```
+
+**参数**
+
+* `url` — URL。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+如果输入字符串可以解析为 URL，则返回域名；否则返回空字符串。[`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**用法示例**
+
+```sql title=Query
+SELECT topLevelDomain('svn+ssh://www.some.svn-hosting.com:80/repo/trunk');
+```
+
+```response title=Response
+┌─topLevelDomain('svn+ssh://www.some.svn-hosting.com:80/repo/trunk')─┐
+│ com                                                                │
+└────────────────────────────────────────────────────────────────────┘
+```
+
+## topLevelDomainRFC {#topLevelDomainRFC}
+
+自 v22.10 版本引入
+
+从 URL 中提取顶级域名部分。
+类似于 [`topLevelDomain`](#topLevelDomain)，但符合 [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986)。
+
+**语法**
+
+```sql
+topLevelDomainRFC(url)
+```
+
+**参数**
+
+* `url` — URL。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+如果输入字符串可以解析为 URL，则返回该 URL 的域名，否则返回空字符串。[`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**使用示例**
+
+```sql title=Query
+SELECT topLevelDomain('http://foo:foo%41bar@foo.com'), topLevelDomainRFC('http://foo:foo%41bar@foo.com');
+```
+
+```response title=Response
+┌─topLevelDomain('http://foo:foo%41bar@foo.com')─┬─topLevelDomainRFC('http://foo:foo%41bar@foo.com')─┐
+│                                                │ com                                               │
+└────────────────────────────────────────────────┴───────────────────────────────────────────────────┘
+```
+
+{/*AUTOGENERATED_END*/ }

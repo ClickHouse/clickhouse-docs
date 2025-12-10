@@ -1,102 +1,99 @@
 ---
-'slug': '/about-us/distinctive-features'
-'sidebar_label': '为什么ClickHouse独特？'
-'sidebar_position': 50
-'description': '了解是什么让ClickHouse与其他 DATABASE 管理系统不同。'
-'title': 'ClickHouse的独特特征'
-'keywords':
-- 'compression'
-- 'secondary-indexes'
-- 'column-oriented'
+slug: /about-us/distinctive-features
+sidebar_label: '为什么 ClickHouse 与众不同？'
+sidebar_position: 50
+description: '了解 ClickHouse 相较于其他数据库管理系统的独特之处'
+title: 'ClickHouse 的独特特性'
+keywords: ['压缩', '二级索引','列式']
+doc_type: 'guide'
 ---
 
-
-# ClickHouse 的独特特性
+# ClickHouse 的独特特性 {#distinctive-features-of-clickhouse}
 
 ## 真正的列式数据库管理系统 {#true-column-oriented-database-management-system}
 
-在真正的列式 DBMS 中，值旁边不会存储额外的数据。这意味着必须支持固定长度的值，以避免将其长度“数字”存储在值旁边。例如，十亿个 UInt8 类型的值在未压缩的情况下应该消耗大约 1 GB 的空间，否则将严重影响 CPU 的使用。即使在未压缩的情况下，紧凑存储数据（不包含任何“垃圾”）至关重要，因为解压速度（CPU 使用）主要取决于未压缩数据的量。
+在真正的列式 DBMS 中，值本身不会附带存储任何额外数据。这意味着必须支持定长值，以避免在值旁边额外存储一个表示其长度的“数值”。例如，十亿个 `UInt8` 类型的值在未压缩时应大约只占用 1 GB，否则会对 CPU 的使用造成明显影响。即使在未压缩的情况下，也必须以紧凑的方式存储数据（没有任何“垃圾”），因为解压缩速度（CPU 占用）主要取决于未压缩数据的体积。
 
-这与能够单独存储不同列值的系统形成对比，但由于针对其他场景的优化，无法有效处理分析查询，例如 HBase、Bigtable、Cassandra 和 Hypertable。在这些系统中，你的吞吐量大约是每秒十万个行，而不是每秒数亿行。
+这与某些系统形成对比，这些系统虽然可以将不同列的值分开存储，但由于针对其他场景进行了优化，无法高效处理分析型查询，例如 HBase、Bigtable、Cassandra 和 Hypertable。在这些系统中，你大约只能获得每秒十万行量级的吞吐量，而不是每秒数亿行。
 
-最后，ClickHouse 是一个数据库管理系统，而不是单一数据库。它允许在运行时创建表和数据库，加载数据，并运行查询，而无需重新配置和重启服务器。
+最后，ClickHouse 是一个数据库管理系统，而不是单一的数据库。它允许在运行时创建表和数据库、加载数据以及执行查询，而无需重新配置和重启服务器。
 
 ## 数据压缩 {#data-compression}
 
-一些列式 DBMS 不使用数据压缩。然而，数据压缩在实现卓越性能方面起着关键作用。
+有些列式 DBMS 不使用数据压缩。然而，数据压缩在实现卓越性能方面起着关键作用。
 
-除了高效的通用压缩编码器，具有不同的磁盘空间和 CPU 消耗的权衡外，ClickHouse 还提供了针对特定类型数据的 [专用编码器](/sql-reference/statements/create/table.md#specialized-codecs)，使 ClickHouse 能够与更小众的数据库（例如时间序列数据库）竞争并超越它们。
+除了在磁盘空间与 CPU 消耗之间具有不同权衡的高效通用压缩编解码器之外，ClickHouse 还为特定类型的数据提供了[专用编解码器](/sql-reference/statements/create/table.md#specialized-codecs)，使 ClickHouse 不仅能够与更小众的数据库（例如时序数据库）竞争，还能在性能上超越它们。
 
 ## 数据的磁盘存储 {#disk-storage-of-data}
 
-通过主键物理排序存储数据使得可以根据特定值或值范围以低延迟提取数据，低于几十毫秒。一些列式 DBMS，如 SAP HANA 和 Google PowerDrill，只能在内存中工作。这种方法需要分配比实时分析所需的更大硬件预算。
+按主键对数据进行物理排序，可以在几十毫秒内以极低延迟按特定值或值范围提取数据。一些列式 DBMS，例如 SAP HANA 和 Google PowerDrill，只能依赖内存运行。这种方式需要投入远高于实时分析实际需求的硬件预算。
 
-ClickHouse 旨在在常规硬盘上工作，这意味着每 GB 数据存储的成本低，但如果有的话，SSD 和额外的 RAM 也会被充分利用。
+ClickHouse 被设计为能够在普通硬盘上工作，这意味着每 GB 数据存储成本较低，但如果有 SSD 和额外内存，也会被充分利用。
 
-## 多核心的并行处理 {#parallel-processing-on-multiple-cores}
+## 在多核上进行并行处理 {#parallel-processing-on-multiple-cores}
 
-大型查询自然会并行化，使用当前服务器上可用的所有必要资源。
+大型查询会自动并行执行，充分利用当前服务器上所有可用资源。
 
-## 多服务器的分布式处理 {#distributed-processing-on-multiple-servers}
+## 在多台服务器上的分布式处理 {#distributed-processing-on-multiple-servers}
 
-几乎没有上述提到的列式 DBMS 支持分布式查询处理。
+上文提到的列式 DBMS 几乎都不支持分布式查询处理。
 
-在 ClickHouse 中，数据可以位于不同的分片上。每个分片可以是用于容错的一组副本。所有分片都用于并行运行查询，对用户都是透明的。
+在 ClickHouse 中，数据可以分布在不同的分片上。每个分片可以由一组用于容错的副本组成。所有分片都会参与并行执行查询，对用户而言是透明的。
 
 ## SQL 支持 {#sql-support}
 
-ClickHouse 支持与 ANSI SQL 标准大致兼容的 [SQL 语言](/sql-reference/)。
+ClickHouse 支持一种基于 SQL 的 [声明式查询语言](/sql-reference/)，该语言在很大程度上兼容 ANSI SQL 标准。
 
-支持的查询包括 [GROUP BY](../sql-reference/statements/select/group-by.md)，[ORDER BY](../sql-reference/statements/select/order-by.md)，[FROM](../sql-reference/statements/select/from.md) 中的子查询，[JOIN](../sql-reference/statements/select/join.md) 子句，[IN](../sql-reference/operators/in.md) 运算符， [窗口函数](../sql-reference/window-functions/index.md) 以及标量子查询。
+支持的查询包括 [GROUP BY](../sql-reference/statements/select/group-by.md)、[ORDER BY](../sql-reference/statements/select/order-by.md)、[FROM](../sql-reference/statements/select/from.md) 中的子查询、[JOIN](../sql-reference/statements/select/join.md) 子句、[IN](../sql-reference/operators/in.md) 运算符、[窗口函数](../sql-reference/window-functions/index.md) 以及标量子查询。
 
-在撰写本文时，不支持相关（依赖）子查询，但未来可能会提供。
+在撰写本文时，尚不支持关联（依赖）子查询，但未来可能会提供支持。
 
 ## 向量计算引擎 {#vector-engine}
 
-数据不仅按列存储，还通过向量（列的部分）进行处理，这使得 CPU 效率高。
+数据不仅按列存储，还以向量（列的一部分）为单位进行处理，从而实现很高的 CPU 利用效率。
 
 ## 实时数据插入 {#real-time-data-updates}
 
-ClickHouse 支持具有主键的表。为了快速在主键的范围内执行查询，数据使用合并树按增量排序。因此，数据可以不断添加到表中。新数据被摄入时不会加锁。
+ClickHouse 支持带有主键的表。为了能够快速在主键范围内执行查询，数据会通过 MergeTree 以增量方式排序。得益于这种机制，数据可以持续不断地写入到表中。在摄取新数据时不会对表加锁。
 
-## 主索引 {#primary-index}
+## 主键索引 {#primary-index}
 
-数据物理按主键排序使得可以根据特定值或值范围以低延迟提取数据，低于几十毫秒。
+将数据按主键进行物理排序，可以以低至几十毫秒的延迟，根据特定值或取值范围提取数据。
 
-## 次级索引 {#secondary-indexes}
+## 二级索引 {#secondary-indexes}
 
-与其他数据库管理系统不同，ClickHouse 的次级索引并不指向特定行或行范围。相反，它们使数据库能够提前知道某些数据部分中的所有行不会匹配查询过滤条件，因此根本不读取它们，因此称为 [数据跳过索引](../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-data_skipping-indexes)。
+与其他数据库管理系统不同，ClickHouse 中的二级索引并不指向特定的行或行范围。相反，它们使数据库能够预先判断某些数据部分中的所有行都不满足查询过滤条件，从而完全不读取这些数据部分，因此它们被称为[数据跳过索引（data skipping indexes）](../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-data_skipping-indexes)。
 
-## 适合在线查询 {#suitable-for-online-queries}
+## 适用于在线查询 {#suitable-for-online-queries}
 
-大多数 OLAP 数据库管理系统并不致力于寻求具有亚秒延迟的在线查询。在替代系统中，十几秒甚至几分钟的报告生成时间常常被视为可接受的。有时甚至需要更多时间，这迫使系统以离线（提前准备或以“稍后再来”响应）来准备报告。
+大多数 OLAP 数据库管理系统并不以支持延迟低于一秒的在线查询为目标。在其他系统中，生成报表耗时几十秒甚至几分钟通常被认为是可以接受的。有时耗时甚至更长，从而迫使系统改为离线生成报表（预先生成，或者通过返回“稍后再来”来延后处理）。
 
-在 ClickHouse 中，“低延迟”意味着查询可以在没有延迟的情况下处理，而不需要提前准备答案，正是在用户界面页面加载的同一时刻。换句话说，在线的。
+在 ClickHouse 中，“低延迟”意味着查询可以在没有额外等待时间、也无需尝试提前准备结果的情况下完成处理，恰好在用户界面页面加载的那一刻返回结果——换句话说，就是 *在线*。
 
-## 支持近似计算 {#support-for-approximated-calculations}
+## 对近似计算的支持 {#support-for-approximated-calculations}
 
-ClickHouse 提供多种方式用以权衡准确性与性能：
+ClickHouse 提供多种在准确性和性能之间进行权衡的方式：
 
-1.  用于近似计算的聚合函数，计算独特值、均值和分位数的数量。
-2.  基于数据部分 ([SAMPLE](../sql-reference/statements/select/sample.md)) 运行查询并获得近似结果。在这种情况下，比例更少的数据从磁盘中检索。
-3.  对有限数量的随机键运行聚合，而不是对所有键进行聚合。在数据中键分布的特定条件下，这提供了一个相当准确的结果，同时使用更少的资源。
+1.  用于近似计算不同取值数量、中位数和分位数的聚合函数。
+2.  基于部分数据（[SAMPLE](../sql-reference/statements/select/sample.md)）运行查询并获取近似结果。在这种情况下，从磁盘读取的数据量会按比例减少。
+3.  仅对有限数量的随机键执行聚合，而不是对所有键执行聚合。在数据中键的分布满足特定条件的情况下，这种方式在使用更少资源的前提下，仍可提供足够精确的结果。
 
-## 自适应连接算法 {#adaptive-join-algorithm}
+## 自适应 JOIN 算法 {#adaptive-join-algorithm}
 
-ClickHouse 自适应地选择如何 [JOIN](../sql-reference/statements/select/join.md) 多个表，优先使用哈希连接算法，并在存在多个大型表时回退到合并连接算法。
+ClickHouse 会自适应地选择多表 [JOIN](../sql-reference/statements/select/join.md) 的方式：优先使用哈希 JOIN，当存在多个大表时则退回为合并 JOIN。
 
-## 数据复制和数据完整性支持 {#data-replication-and-data-integrity-support}
+## 数据复制与数据完整性支持 {#data-replication-and-data-integrity-support}
 
-ClickHouse 使用异步多主复制。在写入任何可用副本后，所有剩余副本在后台检索其副本。系统在不同副本之间维护相同的数据。大多数故障后的恢复是自动执行的，在复杂情况下为半自动执行。
+ClickHouse 使用异步多主复制。数据写入任一可用副本后，其余所有副本都会在后台拉取该数据的副本。系统会在不同副本上维护一致的数据。在大多数故障情况下可以自动恢复，在复杂场景下则可以通过半自动方式完成恢复。
 
-有关更多信息，请参见 [数据复制](../engines/table-engines/mergetree-family/replication.md) 一节。
+有关更多信息，请参阅[数据复制](../engines/table-engines/mergetree-family/replication.md)一节。
 
 ## 基于角色的访问控制 {#role-based-access-control}
 
-ClickHouse 使用 SQL 查询实现用户账户管理，并允许配置与 ANSI SQL 标准和流行关系数据库管理系统中相似的 [基于角色的访问控制](/guides/sre/user-management/index.md)。
+ClickHouse 通过 SQL 查询实现用户账号管理，并支持 [基于角色的访问控制配置](/guides/sre/user-management/index.md)，其工作方式类似于 ANSI SQL 标准以及常见关系型数据库管理系统中的实现。
 
-## 可视为缺点的特性 {#clickhouse-features-that-can-be-considered-disadvantages}
+## 可能被视为缺点的特性 {#clickhouse-features-that-can-be-considered-disadvantages}
 
-1.  无完全事务。
-2.  缺乏以高速度和低延迟修改或删除已插入数据的能力。可用批量删除和更新来清洁或修改数据，例如，遵守 [GDPR](https://gdpr-info.eu)。
-3.  稀疏索引使 ClickHouse 在按键检索单行的点查询中效率不高。
+1.  不支持完整的事务。
+2.  无法以高吞吐、低延迟的方式修改或删除已插入的数据。可以通过批量删除和更新来清理或修改数据，例如用于遵守 [GDPR](https://gdpr-info.eu) 要求。
+3.  稀疏索引使得 ClickHouse 在通过键检索单行记录的点查询场景下效率不够高。

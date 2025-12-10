@@ -1,35 +1,33 @@
 ---
 description: 'テーブルエンジンのドキュメント'
-slug: '/engines/table-engines/'
-toc_folder_title: 'Table Engines'
+slug: /engines/table-engines/
+toc_folder_title: 'テーブルエンジン'
 toc_priority: 26
-toc_title: 'Introduction'
+toc_title: '概要'
 title: 'テーブルエンジン'
+doc_type: 'reference'
 ---
 
+# テーブルエンジン {#table-engines}
 
+テーブルエンジン（テーブルの種類）は、次の点を決定します。
 
-
-# テーブルエンジン
-
-テーブルエンジン（テーブルの種類）は、以下を決定します。
-
-- データがどのように、どこに保存されるか、書き込む場所、読み取る場所。
-- サポートされるクエリとその方法。
-- 同時データアクセス。
-- 存在する場合のインデックスの使用。
-- マルチスレッドリクエスト実行が可能かどうか。
-- データレプリケーションパラメータ。
+- データの保存方法と保存場所、書き込み先および読み取り元。
+- どのクエリがどのようにサポートされるか。
+- データへの同時アクセス。
+- インデックスが存在する場合の利用方法。
+- リクエストをマルチスレッドで実行できるかどうか。
+- データレプリケーションの設定。
 
 ## エンジンファミリー {#engine-families}
 
 ### MergeTree {#mergetree}
 
-高負荷タスクに対する最も汎用的で機能的なテーブルエンジン。これらのエンジンに共通する特性は、迅速なデータ挿入と、その後のバックグラウンドでのデータ処理です。`MergeTree`ファミリーのエンジンは、データレプリケーション（[Replicated\*](/engines/table-engines/mergetree-family/replication)バージョンのエンジン）、パーティション、セカンダリデータスキッピングインデックス、その他の機能をサポートしていますが、他のエンジンではサポートされていません。
+高負荷ワークロード向けの、最も汎用的かつ高機能なテーブルエンジンです。これらのエンジンに共通する特性は、高速なデータ挿入と、その後のバックグラウンドでのデータ処理です。`MergeTree` ファミリーのエンジンは、データレプリケーション（エンジンの [Replicated\*](/engines/table-engines/mergetree-family/replication) バージョンによる）、パーティショニング、セカンダリのデータスキップインデックス、その他のエンジンではサポートされない機能をサポートします。
 
-ファミリー内のエンジン:
+このファミリーに含まれるエンジン:
 
-| MergeTreeエンジン                                                                                                                         |
+| MergeTree エンジン                                                                                                                        |
 |-------------------------------------------------------------------------------------------------------------------------------------------|
 | [MergeTree](/engines/table-engines/mergetree-family/mergetree)                                                          |
 | [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)                               |
@@ -38,14 +36,15 @@ title: 'テーブルエンジン'
 | [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)               |
 | [VersionedCollapsingMergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) |
 | [GraphiteMergeTree](/engines/table-engines/mergetree-family/graphitemergetree)                                  |
+| [CoalescingMergeTree](/engines/table-engines/mergetree-family/coalescingmergetree)                                     |
 
 ### Log {#log}
 
-最小限の機能を持つ軽量[エンジン](../../engines/table-engines/log-family/index.md)。多くの小さなテーブル（約100万行まで）を迅速に書き込み、後で全体として読み取る必要がある場合に最も効果的です。
+最小限の機能を持つ軽量な [エンジン](../../engines/table-engines/log-family/index.md) です。多数の小さなテーブル（最大で約 100 万行）をすばやく書き込み、その後にテーブル全体をまとめて読み出す必要がある場合に最も効果的です。
 
-ファミリー内のエンジン:
+このファミリーに含まれるエンジン:
 
-| Logエンジン                                                                |
+| Log エンジン                                                               |
 |----------------------------------------------------------------------------|
 | [TinyLog](/engines/table-engines/log-family/tinylog)       |
 | [StripeLog](/engines/table-engines/log-family/stripelog) |
@@ -53,11 +52,11 @@ title: 'テーブルエンジン'
 
 ### 統合エンジン {#integration-engines}
 
-他のデータストレージおよび処理システムと通信するためのエンジン。
+他のデータストレージおよび処理システムと連携するためのエンジンです。
 
-ファミリー内のエンジン:
+このファミリーに含まれるエンジン:
 
-| 統合エンジン                                                             |
+| 統合エンジン                                                                      |
 |---------------------------------------------------------------------------------|
 | [ODBC](../../engines/table-engines/integrations/odbc.md)                        |
 | [JDBC](../../engines/table-engines/integrations/jdbc.md)                        |
@@ -75,9 +74,9 @@ title: 'テーブルエンジン'
 
 ### 特殊エンジン {#special-engines}
 
-ファミリー内のエンジン:
+このファミリーに含まれるエンジン:
 
-| 特殊エンジン                                               |
+| 特殊エンジン                                                   |
 |---------------------------------------------------------------|
 | [Distributed](/engines/table-engines/special/distributed)     |
 | [Dictionary](/engines/table-engines/special/dictionary)       |
@@ -94,14 +93,22 @@ title: 'テーブルエンジン'
 | [External Data](/engines/table-engines/special/external-data) |
 | [GenerateRandom](/engines/table-engines/special/generate)     |
 | [KeeperMap](/engines/table-engines/special/keeper-map)        |
-| [FileLog](/engines/table-engines/special/filelog)                                                   |
+| [FileLog](/engines/table-engines/special/filelog)             |
 
-## バーチャルカラム {#table_engines-virtual_columns}
+## 仮想列 {#table_engines-virtual_columns}
 
-バーチャルカラムは、エンジンソースコードで定義されたテーブルエンジンの不可欠な属性です。
+仮想列は、テーブルエンジンのソースコード内で定義されている、そのテーブルエンジンに本質的な属性です。
 
-`CREATE TABLE`クエリではバーチャルカラムを指定してはいけません。`SHOW CREATE TABLE`や`DESCRIBE TABLE`クエリの結果にも表示されません。バーチャルカラムは読み取り専用であり、そこにデータを挿入することはできません。
+`CREATE TABLE` クエリで仮想列を指定してはならず、`SHOW CREATE TABLE` や `DESCRIBE TABLE` クエリの結果にも表示されません。仮想列は読み取り専用であり、仮想列にデータを挿入することはできません。
 
-バーチャルカラムからデータを選択するには、その名前を`SELECT`クエリで指定する必要があります。`SELECT *`ではバーチャルカラムの値は返されません。
+仮想列からデータを取得するには、その名前を `SELECT` クエリで指定する必要があります。`SELECT *` では仮想列の値は返されません。
 
-テーブルにテーブルのバーチャルカラムのいずれかと同じ名前のカラムがある場合、バーチャルカラムはアクセスできなくなります。これを行うことはお勧めしません。競合を避けるために、バーチャルカラム名には通常アンダースコアがプレフィックスとして付けられます。
+テーブルの仮想列の 1 つと同じ名前の列を定義してテーブルを作成した場合、その仮想列にはアクセスできなくなります。このような構成は推奨されません。競合を避けるため、仮想列の名前には通常アンダースコアが接頭辞として付けられます。
+
+- `_table` — データが読み取られたテーブル名を含みます。型: [String](../../sql-reference/data-types/string.md)。
+
+    使用されているテーブルエンジンに関係なく、各テーブルには `_table` という名前の汎用仮想列が含まれています。
+
+    マージテーブルエンジンを使用するテーブルに対してクエリを実行する場合、`WHERE` / `PREWHERE` 句で `_table` に対する定数条件を設定できます（例: `WHERE _table='xyz'`）。この場合、読み取り処理は `_table` に対する条件が満たされるテーブルに対してのみ実行されるため、`_table` 列はインデックスとして機能します。
+
+    `SELECT ... FROM (... UNION ALL ...)` のような形式のクエリを使用する場合、`_table` 列を指定することで、返された行がどの実テーブルに由来するかを判別できます。

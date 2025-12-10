@@ -1,28 +1,30 @@
 ---
-sidebar_label: '重複除去戦略'
-description: '重複と削除された行の処理。'
-slug: '/integrations/clickpipes/postgres/deduplication'
-title: '重複除去戦略 (CDCを使用)'
+sidebar_label: '重複排除戦略'
+description: '重複行や削除済み行を処理します。'
+slug: /integrations/clickpipes/postgres/deduplication
+title: '重複排除戦略（CDC の利用）'
+keywords: ['重複排除', 'postgres', 'clickpipes', 'replacingmergetree', 'final']
+doc_type: 'guide'
 ---
 
 import clickpipes_initial_load from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/postgres-cdc-initial-load.png';
 import Image from '@theme/IdealImage';
 
-Updates and deletes replicated from Postgres to ClickHouse result in duplicated rows in ClickHouse due to its data storage structure and the replication process. This page covers why this happens and the strategies to use in ClickHouse to handle duplicates.
+Postgres から ClickHouse へレプリケーションされた更新および削除は、ClickHouse のデータ格納構造とレプリケーション処理の仕組みにより、ClickHouse 側で行が重複する原因になります。このページでは、その理由と、ClickHouse で重複を処理するための戦略について説明します。
 
-## データはどのようにレプリケートされますか？ {#how-does-data-get-replicated}
+## データはどのように複製されるのか？ {#how-does-data-get-replicated}
 
-### PostgreSQLの論理デコーディング {#PostgreSQL-logical-decoding}
+### PostgreSQL のロジカルデコーディング {#PostgreSQL-logical-decoding}
 
-ClickPipesは、[Postgres Logical Decoding](https://www.pgedge.com/blog/logical-replication-evolution-in-chronological-order-clustering-solution-built-around-logical-replication)を使用して、Postgres内で発生する変更を消費します。Postgresの論理デコーディングプロセスにより、ClickPipesのようなクライアントは、INSERT、UPDATE、およびDELETEの一連の操作として、人間が読みやすい形式で変更を受け取ることができます。
+ClickPipes は、Postgres で発生した変更を取り込むために [Postgres Logical Decoding](https://www.pgedge.com/blog/logical-replication-evolution-in-chronological-order-clustering-solution-built-around-logical-replication) を使用します。Postgres の Logical Decoding プロセスにより、ClickPipes のようなクライアントは、変更を人間が読みやすい形式、すなわち一連の INSERT、UPDATE、DELETE として受け取ることができます。
 
 ### ReplacingMergeTree {#replacingmergetree}
 
-ClickPipesは、[ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)エンジンを使用してPostgresテーブルをClickHouseにマップします。ClickHouseは、追加専用のワークロードで最も良いパフォーマンスを発揮し、頻繁なUPDATEを推奨していません。ここで、ReplacingMergeTreeが特に強力になります。
+ClickPipes は、[ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) エンジンを使用して Postgres のテーブルを ClickHouse にマッピングします。ClickHouse は追記専用（append-only）のワークロードで最も高いパフォーマンスを発揮し、頻繁な UPDATE を推奨していません。この点で ReplacingMergeTree は特に強力です。
 
-ReplacingMergeTreeでは、更新は、新しいバージョン(`_peerdb_version`)を持つ行の挿入としてモデル化され、削除は新しいバージョンを持ち、`_peerdb_is_deleted`がtrueとしてマークされた挿入としてモデル化されます。ReplacingMergeTreeエンジンは、バックグラウンドでデデュプリケート/マージを行い、特定の主キー(id)の最新バージョンの行を保持し、バージョン付きのINSERTとしてUPDATEとDELETEを効率的に処理します。
+ReplacingMergeTree では、UPDATE は、その行の新しいバージョン（`_peerdb_version`）を持つ INSERT としてモデル化され、DELETE は、`_peerdb_is_deleted` が true に設定された、さらに新しいバージョンの INSERT としてモデル化されます。ReplacingMergeTree エンジンはバックグラウンドでデータの重複排除とマージを行い、指定されたプライマリキー（id）ごとに最新バージョンの行のみを保持します。これにより、UPDATE と DELETE をバージョン付き INSERT として効率的に処理できます。
 
-以下は、ClickPipesによってClickHouseでテーブルを作成するために実行されたCREATE TABLEステートメントの例です。
+以下は、ClickPipes が ClickHouse にテーブルを作成する際に実行する CREATE TABLE ステートメントの例です。
 
 ```sql
 CREATE TABLE users
@@ -48,52 +50,52 @@ PRIMARY KEY id
 ORDER BY id;
 ```
 
-### 例示的な例 {#illustrative-example}
+### 説明用の例 {#illustrative-example}
 
-以下のイラストは、PostgreSQLとClickHouse間のテーブル`users`の同期の基本的な例を示しています。
+以下の図は、PostgreSQL と ClickHouse 間で `users` テーブルを ClickPipes を使って同期する基本的な例を順を追って説明したものです。
 
-<Image img={clickpipes_initial_load} alt="ClickPipes initial load" size="lg"/>
+<Image img={clickpipes_initial_load} alt="ClickPipes initial load" size="lg" />
 
-**ステップ1**では、PostgreSQL内の2行の初期スナップショットとClickPipesがそれらの2行をClickHouseに初期ロードしている様子が示されています。観察できるように、両方の行はそのままClickHouseにコピーされます。
+**ステップ 1** では、PostgreSQL 上の 2 行の初期スナップショットと、それら 2 行を ClickHouse に初回ロードしている ClickPipes の様子を示しています。わかるように、両方の行はそのままの形で ClickHouse にコピーされています。
 
-**ステップ2**では、ユーザーテーブルに対する3つの操作が示されています：新しい行の挿入、既存の行の更新、別の行の削除。
+**ステップ 2** では、users テーブルに対する 3 つの操作を示しています: 新しい行の挿入、既存行の更新、別の行の削除です。
 
-**ステップ3**では、ClickPipesがINSERT、UPDATE、DELETE操作をClickHouseにバージョン付きの挿入としてレプリケートする様子が示されています。UPDATEはID2の行の新しいバージョンとして現れ、一方でDELETEはID1の新しいバージョンとして現れ、`_is_deleted`を使用してtrueとしてマークされます。このため、ClickHouseにはPostgreSQLに比べて3つの追加行があります。
+**ステップ 3** では、ClickPipes が INSERT、UPDATE、DELETE 操作を ClickHouse にバージョン付きの挿入としてどのように複製するかを示しています。UPDATE は ID 2 の行の新しいバージョンとして現れ、DELETE は `_is_deleted` を使って true とマークされた ID 1 の新しいバージョンとして現れます。このため、ClickHouse には PostgreSQL よりも 3 行多く存在することになります。
 
-その結果、`SELECT count(*) FROM users;`のようなシンプルなクエリを実行すると、ClickHouseとPostgreSQLで異なる結果が得られることがあります。[ClickHouseマージドキュメント](/merges#replacing-merges)によると、古くなった行のバージョンは最終的にマージプロセス中に破棄されます。しかし、このマージのタイミングは予測できず、ClickHouseのクエリはそれが行われるまで一貫性のない結果を返す可能性があります。
+その結果、`SELECT count(*) FROM users;` のような単純なクエリを実行すると、ClickHouse と PostgreSQL で異なる結果が返る場合があります。[ClickHouse のマージに関するドキュメント](/merges#replacing-merges) によると、古いバージョンの行はマージ処理の過程で最終的には破棄されます。ただし、このマージがいつ行われるかは予測できないため、それが行われるまでの間、ClickHouse のクエリ結果は一貫しない可能性があります。
 
-ClickHouseとPostgreSQLの両方で同じクエリ結果を保証するにはどうすればよいでしょうか？
+どのようにすれば、ClickHouse と PostgreSQL の両方で同一のクエリ結果を得られるようにできるでしょうか。
 
-### FINALキーワードを使用してデデュプリケートする {#deduplicate-using-final-keyword}
+### FINAL キーワードを使った重複排除 {#deduplicate-using-final-keyword}
 
-ClickHouseクエリでデデュプリケートデータを処理する推奨方法は、[FINAL修飾子](/sql-reference/statements/select/from#final-modifier)を使用することです。これにより、デデュプリケートされた行のみが返されます。
+ClickHouse のクエリでデータの重複排除を行う推奨方法は、[FINAL 修飾子](/sql-reference/statements/select/from#final-modifier) を使用することです。これにより、重複排除後の行のみが返されます。
 
-これを3つの異なるクエリに適用する方法を見てみましょう。
+これを 3 種類のクエリにどのように適用するかを見ていきます。
 
-_次のクエリのWHERE句に注意してください。これは削除された行を除外するために使用されます。_
+*以下のクエリにおける WHERE 句に注目してください。削除済みの行を除外するために使用されています。*
 
-- **単純なカウントクエリ**：投稿の数をカウントします。
+* **単純なカウントクエリ**: 投稿数をカウントする。
 
-これは、同期が正常かどうかを確認するために実行できる最も簡単なクエリです。両方のクエリは同じカウントを返すべきです。
+これは、同期が正しく行われたかを確認するために実行できる最も単純なクエリです。2 つのクエリは同じ件数を返すはずです。
 
 ```sql
 -- PostgreSQL
 SELECT count(*) FROM posts;
 
 -- ClickHouse 
-SELECT count(*) FROM posts FINAL where _peerdb_is_deleted=0;
+SELECT count(*) FROM posts FINAL WHERE _peerdb_is_deleted=0;
 ```
 
-- **JOINを使用した単純な集計**：最も多くのビューを獲得した上位10ユーザー。
+* **JOIN を用いた単純な集計**: 表示回数の合計が最も多いトップ 10 ユーザー。
 
-単一のテーブルに対する集計の例です。ここに重複があると、SUM関数の結果に大きな影響を与えるでしょう。
+単一テーブルに対する集計の例です。ここに重複行があると、`sum` 関数の結果に大きな影響を与えます。
 
 ```sql
 -- PostgreSQL 
 SELECT
     sum(p.viewcount) AS viewcount,
-    p.owneruserid as user_id,
-    u.displayname as display_name
+    p.owneruserid AS user_id,
+    u.displayname AS display_name
 FROM posts p
 LEFT JOIN users u ON u.id = p.owneruserid
 -- highlight-next-line
@@ -120,43 +122,43 @@ ORDER BY viewcount DESC
 LIMIT 10
 ```
 
-#### FINAL設定 {#final-setting}
+#### FINAL 設定 {#final-setting}
 
-クエリ内の各テーブル名にFINAL修飾子を追加する代わりに、[FINAL設定](/operations/settings/settings#final)を使用して、クエリ内のすべてのテーブルに自動的に適用することができます。
+クエリ内の各テーブル名に FINAL 修飾子を付ける代わりに、[FINAL 設定](/operations/settings/settings#final) を使用して、クエリ内のすべてのテーブルに自動的に適用できます。
 
-この設定は、クエリごとまたはセッション全体に適用できます。
+この設定は、クエリ単位、またはセッション全体に対して適用できます。
 
 ```sql
--- クエリごとのFINAL設定
-SELECT count(*) FROM posts SETTINGS final = 1;
+-- クエリ単位でのFINAL設定
+SELECT count(*) FROM posts SETTINGS FINAL = 1;
 
--- セッションに対してFINALを設定
+-- セッション全体にFINALを設定
 SET final = 1;
 SELECT count(*) FROM posts; 
 ```
 
-#### ROWポリシー {#row-policy}
+#### ROW ポリシー {#row-policy}
 
-冗長な`_peerdb_is_deleted = 0`フィルターを隠す簡単な方法は、[ROWポリシー](/operations/access-rights#row-policy-management)を使用することです。以下は、テーブルvotesのすべてのクエリから削除された行を除外するための行ポリシーを作成する例です。
+冗長な `_peerdb_is_deleted = 0` フィルターを明示的に記述しなくて済むようにする簡単な方法は、[ROW ポリシー](/docs/operations/access-rights#row-policy-management) を使用することです。以下は、votes テーブルに対するすべてのクエリから削除済み行を除外する ROW ポリシーを作成する例です。
 
 ```sql
--- すべてのユーザーに行ポリシーを適用
+-- 全ユーザーに行ポリシーを適用
 CREATE ROW POLICY cdc_policy ON votes FOR SELECT USING _peerdb_is_deleted = 0 TO ALL;
 ```
 
-> 行ポリシーは、ユーザーとロールのリストに適用されます。この例では、すべてのユーザーとロールに適用されています。これは特定のユーザーやロールのみに調整できます。
+> 行ポリシーは、ユーザーおよびロールの一覧に対して適用されます。この例では、すべてのユーザーおよびロールに適用されています。必要に応じて、特定のユーザーまたはロールのみに絞り込むこともできます。
 
-### PostgreSQLのようにクエリする {#query-like-with-postgres}
+### Postgres と同じようにクエリする {#query-like-with-postgres}
 
-PostgreSQLからClickHouseに分析データセットを移行するには、データ処理とクエリ実行の違いを考慮してアプリケーションクエリを変更する必要があります。
+分析用データセットを PostgreSQL から ClickHouse に移行する場合、多くの場合、データの扱いやクエリ実行方法の違いを考慮してアプリケーションのクエリを変更する必要があります。
 
-このセクションでは、オリジナルのクエリを変更せずにデータをデデュプリケートする技術を探ります。
+このセクションでは、元のクエリを変更せずにデータの重複排除を行うための手法を説明します。
 
 #### ビュー {#views}
 
-[ビュー](/sql-reference/statements/create/view#normal-view)は、クエリからFINALキーワードを隠すのに最適な方法です。なぜなら、ビューはデータを格納せず、各アクセス時に別のテーブルから単に読み込みを行うからです。
+[ビュー](/sql-reference/statements/create/view#normal-view) は、クエリから `FINAL` キーワードを隠すための優れた方法です。ビュー自体はデータを保持せず、アクセスのたびに別のテーブルを読み取るだけです。
 
-以下に、削除された行のフィルターとFINALキーワードを使用して、ClickHouseのデータベース内の各テーブルのビューを作成する例を示します。
+以下は、ClickHouse 上のデータベース内の各テーブルに対して、`FINAL` キーワードおよび削除済み行を除外するためのフィルタ条件を含んだビューを作成する例です。
 
 ```sql
 CREATE VIEW posts_view AS SELECT * FROM posts FINAL WHERE _peerdb_is_deleted=0;
@@ -165,7 +167,7 @@ CREATE VIEW votes_view AS SELECT * FROM votes FINAL WHERE _peerdb_is_deleted=0;
 CREATE VIEW comments_view AS SELECT * FROM comments FINAL WHERE _peerdb_is_deleted=0;
 ```
 
-その後、PostgreSQLで使用するのと同じクエリを使ってビューをクエリできます。
+次に、PostgreSQL で使用するのと同じクエリをビューに対して実行できます。
 
 ```sql
 -- 最も閲覧された投稿
@@ -179,24 +181,24 @@ ORDER BY viewcount DESC
 LIMIT 10
 ```
 
-#### 更新可能なマテリアライズドビュー {#refreshable-material-view}
+#### リフレッシュ可能なマテリアライズドビュー {#refreshable-material-view}
 
-別のアプローチとして、[更新可能なマテリアライズドビュー](/materialized-view/refreshable-materialized-view)を使用することができます。これにより、行のデデュプリケーションのためのクエリの実行をスケジュールし、その結果を宛先テーブルに保存できます。各スケジュールされた更新時に、宛先テーブルは最新のクエリ結果に置き換えられます。
+別のアプローチとして、[リフレッシュ可能なマテリアライズドビュー](/materialized-view/refreshable-materialized-view) を使用する方法があります。これにより、行の重複排除を行うクエリの実行をスケジュールし、その結果を宛先テーブルに保存できます。各スケジュールされたリフレッシュのたびに、宛先テーブルは最新のクエリ結果で置き換えられます。
 
-この方法の主な利点は、FINALキーワードを使用するクエリが更新時に1回だけ実行され、その後の宛先テーブルに対するクエリでFINALを使用する必要がなくなることです。
+この方法の主な利点は、`FINAL` キーワードを使用するクエリがリフレッシュ時に 1 回だけ実行され、その後は宛先テーブルに対するクエリで `FINAL` を使用する必要がなくなる点です。
 
-ただし、欠点は、宛先テーブルのデータは最も最近の更新時点のものに過ぎないということです。それでも、多くのユースケースでは、数分から数時間の更新間隔が十分であるかもしれません。
+一方で、この方法の欠点は、宛先テーブル内のデータが直近のリフレッシュ時点までしか最新ではないことです。とはいえ、多くのユースケースでは、数分から数時間程度のリフレッシュ間隔で十分である場合が少なくありません。
 
 ```sql
--- デデュプリケートされた投稿テーブルの作成 
+-- 重複排除されたpostsテーブルを作成 
 CREATE TABLE deduplicated_posts AS posts;
 
--- マテリアライズドビューを作成し、毎時実行されるようにスケジュール
+-- マテリアライズドビューを作成し、1時間ごとに実行するようスケジュール設定
 CREATE MATERIALIZED VIEW deduplicated_posts_mv REFRESH EVERY 1 HOUR TO deduplicated_posts AS 
 SELECT * FROM posts FINAL WHERE _peerdb_is_deleted=0 
 ```
 
-その後、`deduplicated_posts`テーブルを通常通りクエリできます。
+その後は、`deduplicated_posts` テーブルに対して通常どおりクエリを実行できます。
 
 ```sql
 SELECT

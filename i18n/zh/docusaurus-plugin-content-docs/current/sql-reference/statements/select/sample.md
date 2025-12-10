@@ -1,46 +1,46 @@
 ---
-'description': 'SAMPLE 子句的文档'
-'sidebar_label': 'SAMPLE'
-'slug': '/sql-reference/statements/select/sample'
-'title': 'SAMPLE 子句'
+description: 'SAMPLE 子句说明'
+sidebar_label: 'SAMPLE 子句'
+slug: /sql-reference/statements/select/sample
+title: 'SAMPLE 子句'
+doc_type: 'reference'
 ---
 
+# SAMPLE 子句 {#sample-clause}
 
-# SAMPLE 子句
+`SAMPLE` 子句用于对 `SELECT` 查询进行近似处理。
 
-`SAMPLE` 子句允许进行近似的 `SELECT` 查询处理。
+启用数据采样时，查询不会在全部数据上执行，而只会在一定比例的数据（样本）上执行。例如，如果需要计算所有访问的统计数据，只需在所有访问数据的 1/10 上执行查询，然后将结果乘以 10 即可。
 
-当启用数据采样时，查询并不是在所有数据上执行，而只是在一定比例的数据（样本）上执行。例如，如果您需要计算所有访问的统计信息，仅需在所有访问的十分之一上执行查询，然后将结果乘以 10。
+近似查询处理在以下情况下会很有用：
 
-近似查询处理在以下情况下可能会很有用：
+* 当有严格的延迟要求（例如低于 100ms），但又无法证明为满足这些要求而增加额外硬件资源的成本是合理的。
+* 当原始数据本身就不精确，因此使用近似不会明显降低结果质量。
+* 业务需求只要求近似结果（例如出于成本效益考虑，或者将精确结果作为付费高级用户的增值服务）。
 
-- 当您有严格的延迟要求（如低于 100ms），但无法证明为满足这些要求而增加额外硬件资源的成本是合理的。
-- 当您的原始数据不准确时，因此近似不会明显降低质量。
-- 业务需求针对近似结果（为了成本效益，或将精确结果市场化给高级用户）。
-
-:::note    
-您只能在 [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) 家族的表中使用采样，并且只有在创建表时指定了采样表达式的情况下（参见 [MergeTree 引擎](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-creating-a-table)）。
+:::note
+只能在 [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) 系列的表上使用采样，并且仅当在建表时指定了采样表达式时才能使用采样（参见 [MergeTree engine](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-creating-a-table)）。
 :::
 
-数据采样的特性如下所示：
+数据采样的特性如下：
 
-- 数据采样是一个确定性机制。相同的 `SELECT .. SAMPLE` 查询的结果始终相同。
-- 在不同的表上采样的一致性。有单一采样键的表，对于相同系数的样本总是选择相同的可能数据子集。例如，用户 ID 的样本从不同表中获取相同子集的所有可能用户 ID 的行。这意味着您可以在 [IN](../../../sql-reference/operators/in.md) 子句中使用样本进行子查询。此外，您可以使用 [JOIN](../../../sql-reference/statements/select/join.md) 子句连接样本。
-- 采样允许从磁盘中读取更少的数据。请注意，您必须正确指定采样键。有关更多信息，请参阅 [创建 MergeTree 表](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-creating-a-table)。
+* 数据采样是一种确定性机制。相同的 `SELECT .. SAMPLE` 查询其结果始终相同。
+* 采样在不同表之间具有一致性。对于具有单一采样键的表，使用相同系数的样本总会选取相同的数据子集。例如，以用户 ID 进行采样时，会从不同的表中选取包含同一子集用户 ID 的行。这意味着你可以在 [IN](../../../sql-reference/operators/in.md) 子句中的子查询里使用采样。同时，你也可以在使用 [JOIN](../../../sql-reference/statements/select/join.md) 子句进行连接时对采样结果进行关联。
+* 采样允许从磁盘中读取更少的数据。请注意，必须正确指定采样键。更多信息参见 [Creating a MergeTree Table](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-creating-a-table)。
 
-对于 `SAMPLE` 子句，支持以下语法：
+对于 `SAMPLE` 子句，支持如下语法：
 
-| SAMPLE 子句语法 | 描述                                                                                                                                                                                                                                   |
-|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `SAMPLE k`     | 这里的 `k` 是从 0 到 1 的数字。查询在 `k` 比例的数据上执行。例如，`SAMPLE 0.1` 在 10% 的数据上运行查询。 [了解更多](#sample-k)                                                                                       |
-| `SAMPLE n`     | 这里的 `n` 是一个够大的整数。查询在至少 `n` 行的样本上执行（但不会显著超过这个数字）。例如，`SAMPLE 10000000` 在至少 10,000,000 行的数据上运行查询。 [了解更多](#sample-n)                                   |
-| `SAMPLE k OFFSET m` | 这里的 `k` 和 `m` 是从 0 到 1 的数字。查询在 `k` 比例的数据样本上执行。用于样本的数据由 `m` 比例偏移。 [了解更多](#sample-k-offset-m)                                                        |
+| SAMPLE 子句语法 | 描述                                                                                                                                                                                                                                    |
+|-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `SAMPLE k`   | 其中 `k` 为 0 到 1 之间的数值。查询会在占比为 `k` 的数据子集上执行。例如，`SAMPLE 0.1` 会在 10% 的数据上执行查询。[详细说明](#sample-k)                                                                             |
+| `SAMPLE n`    | 其中 `n` 为足够大的整数。查询会在至少包含 `n` 行的样本上执行（但不会显著多于该数量）。例如，`SAMPLE 10000000` 会在至少 10,000,000 行数据的样本上执行查询。[详细说明](#sample-n) |
+| `SAMPLE k OFFSET m`  | 其中 `k` 和 `m` 为 0 到 1 之间的数值。查询会在占比为 `k` 的数据样本上执行。用于采样的数据相对于整个数据集偏移 `m` 的比例。[详细说明](#sample-k-offset-m)                                           |
 
 ## SAMPLE K {#sample-k}
 
-这里的 `k` 是从 0 到 1 的数字（支持小数和小数点表示法）。例如，`SAMPLE 1/2` 或 `SAMPLE 0.5`。
+这里的 `k` 是一个介于 0 和 1 之间的数（支持分数和小数表示）。例如，`SAMPLE 1/2` 或 `SAMPLE 0.5`。
 
-在 `SAMPLE k` 子句中，样本来自 `k` 比例的数据。下面是示例：
+在 `SAMPLE k` 子句中，样本是从占数据 `k` 比例的部分中抽取的。示例如下：
 
 ```sql
 SELECT
@@ -54,21 +54,21 @@ GROUP BY Title
 ORDER BY PageViews DESC LIMIT 1000
 ```
 
-在这个例子中，查询在 0.1 （10%）的数据样本上执行。聚合函数的值不会自动调整，因此为了获得近似结果，需将 `count()` 的值手动乘以 10。
+在本示例中，查询只在占全部数据 0.1（10%）的样本上执行。聚合函数的值不会自动校正，因此要获得近似结果，就将 `count()` 的值手动乘以 10。
 
 ## SAMPLE N {#sample-n}
 
 这里的 `n` 是一个足够大的整数。例如，`SAMPLE 10000000`。
 
-在这种情况下，查询在至少 `n` 行的样本上执行（但不会显著超过这个数字）。例如，`SAMPLE 10000000` 在至少 10,000,000 行的数据上运行查询。
+在这种情况下，查询会在至少 `n` 行的数据样本上执行（但不会显著多于这个数量）。例如，`SAMPLE 10000000` 会在至少 10,000,000 行数据上运行查询。
 
-由于读取数据的最小单元是一个颗粒（其大小由 `index_granularity` 设置确定），因此设置一个远大于颗粒大小的样本是有意义的。
+由于读取数据的最小单位是一个 granule（其大小由 `index_granularity` 设置决定），因此将样本规模设置得远大于 granule 的大小是合理的。
 
-使用 `SAMPLE n` 子句时，您不知道处理了哪个相对数据的百分比。因此，您不知道聚合函数应该乘以的系数。使用 `_sample_factor` 虚拟列获取近似结果。
+使用 `SAMPLE n` 子句时，并不知道处理了数据的相对百分比是多少。因此，也就不知道应该将聚合函数乘以什么系数。请使用 `_sample_factor` 虚拟列来获得近似结果。
 
-`_sample_factor` 列包含动态计算的相对系数。此列在您 [创建](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-creating-a-table) 表时自动生成，并指定了采样键。以下是使用 `_sample_factor` 列的示例。
+`_sample_factor` 列包含动态计算得到的相对系数。在使用指定的 sampling key [创建](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-creating-a-table) 表时，该列会自动创建。`_sample_factor` 列的使用示例如下所示。
 
-让我们考虑表 `visits`，它包含有关网站访问的统计信息。第一个示例展示了如何计算页面浏览量：
+考虑表 `visits`，其中包含网站访问的统计信息。第一个示例展示了如何计算页面浏览次数：
 
 ```sql
 SELECT sum(PageViews * _sample_factor)
@@ -76,7 +76,7 @@ FROM visits
 SAMPLE 10000000
 ```
 
-下一个示例展示了如何计算访问的总数：
+下一个示例展示如何计算总访问次数：
 
 ```sql
 SELECT sum(_sample_factor)
@@ -84,7 +84,7 @@ FROM visits
 SAMPLE 10000000
 ```
 
-下面的示例展示了如何计算平均会话持续时间。请注意，您在计算平均值时无需使用相对系数。
+下面的示例展示了如何计算平均会话时长。请注意，计算平均值时不需要使用相对系数。
 
 ```sql
 SELECT avg(Duration)
@@ -94,7 +94,7 @@ SAMPLE 10000000
 
 ## SAMPLE K OFFSET M {#sample-k-offset-m}
 
-这里的 `k` 和 `m` 是从 0 到 1 的数字。下面是示例。
+这里的 `k` 和 `m` 是取值范围在 0 到 1 之间的数字。下面给出一些示例。
 
 **示例 1**
 
@@ -102,7 +102,7 @@ SAMPLE 10000000
 SAMPLE 1/10
 ```
 
-在这个例子中，样本是所有数据的 1/10：
+在此示例中，采样比例为全部数据的 1/10：
 
 `[++------------]`
 
@@ -112,6 +112,6 @@ SAMPLE 1/10
 SAMPLE 1/10 OFFSET 1/2
 ```
 
-在这里，从数据的后半部分取样 10%。 
+此处从数据的后半部分中抽取了 10% 的数据样本。
 
 `[------++------]`

@@ -1,20 +1,20 @@
 ---
-'description': 'USE 语句的文档'
-'sidebar_label': 'USE'
-'sidebar_position': 53
-'slug': '/sql-reference/statements/use'
-'title': 'USE 语句'
+description: 'USE 语句文档'
+sidebar_label: 'USE'
+sidebar_position: 53
+slug: /sql-reference/statements/use
+title: 'USE 语句'
+doc_type: 'reference'
 ---
 
-
-# USE 语句
+# USE 语句 {#use-statement}
 
 ```sql
-USE db
+USE [DATABASE] db
 ```
 
-允许您为会话设置当前数据库。
+用于为会话设置当前数据库。
 
-当前数据库用于在查询中未通过点在表名前明确定义数据库时搜索表。
+如果在查询中未通过“数据库.表名”的形式显式指定数据库，则会使用当前数据库来查找表。
 
-当使用 HTTP 协议时，无法执行此查询，因为没有会话的概念。
+在使用 HTTP 协议时无法执行此查询，因为在该协议中不存在会话的概念。

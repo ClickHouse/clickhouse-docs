@@ -14,7 +14,7 @@ import Image from '@theme/IdealImage';
 
 ClickHouse protocol supports **data blocks** compression with checksums.
 Use `LZ4` if not sure what mode to pick.
-
+``
 :::tip
 Learn more about the [column compression codecs](/sql-reference/statements/create/table#column_compression_codec) available and specify them when creating your tables, or afterward.
 :::

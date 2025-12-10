@@ -1,25 +1,25 @@
 ---
-description: 'Documentation for Explain'
+description: 'EXPLAIN に関するドキュメント'
 sidebar_label: 'EXPLAIN'
 sidebar_position: 39
-slug: '/sql-reference/statements/explain'
-title: 'EXPLAIN Statement'
+slug: /sql-reference/statements/explain
+title: 'EXPLAIN 文'
+doc_type: 'reference'
 ---
 
+文の実行計画を表示します。
 
-
-ステートメントの実行プランを表示します。
-
-<div class='vimeo-container'>
-  <iframe src="//www.youtube.com/embed/hP6G2Nlz_cA"
+<div class="vimeo-container">
+  <iframe
+    src="//www.youtube.com/embed/hP6G2Nlz_cA"
     width="640"
     height="360"
     frameborder="0"
     allow="autoplay;
-    fullscreen;
-    picture-in-picture"
-    allowfullscreen>
-  </iframe>
+fullscreen;
+picture-in-picture"
+    allowfullscreen
+  />
 </div>
 
 構文:
@@ -33,7 +33,7 @@ EXPLAIN [AST | SYNTAX | QUERY TREE | PLAN | PIPELINE | ESTIMATE | TABLE OVERRIDE
     [FORMAT ...]
 ```
 
-例:
+例：
 
 ```sql
 EXPLAIN SELECT sum(number) FROM numbers(10) UNION ALL SELECT sum(number) FROM numbers(10) ORDER BY sum(number) ASC FORMAT TSV;
@@ -45,32 +45,32 @@ Union
     Expression (Before ORDER BY and SELECT)
       Aggregating
         Expression (Before GROUP BY)
-          SettingQuotaAndLimits (Set limits and quota after reading from storage)
+          SettingQuotaAndLimits (ストレージ読み取り後の制限とクォータ設定)
             ReadFromStorage (SystemNumbers)
   Expression (Projection)
-    MergingSorted (Merge sorted streams for ORDER BY)
-      MergeSorting (Merge sorted blocks for ORDER BY)
-        PartialSorting (Sort each block for ORDER BY)
+    MergingSorted (ORDER BY用ソート済みストリームのマージ)
+      MergeSorting (ORDER BY用ソート済みブロックのマージ)
+        PartialSorting (ORDER BY用各ブロックのソート)
           Expression (Before ORDER BY and SELECT)
             Aggregating
               Expression (Before GROUP BY)
-                SettingQuotaAndLimits (Set limits and quota after reading from storage)
+                SettingQuotaAndLimits (ストレージ読み取り後の制限とクォータ設定)
                   ReadFromStorage (SystemNumbers)
 ```
 
 ## EXPLAIN の種類 {#explain-types}
 
-- `AST` — 抽象構文木。
-- `SYNTAX` — ASTレベルの最適化後のクエリテキスト。
-- `QUERY TREE` — クエリツリーの最適化後のクエリツリー。
+- `AST` — 抽象構文木 (Abstract Syntax Tree)。
+- `SYNTAX` — AST レベルの最適化後のクエリテキスト。
+- `QUERY TREE` — Query Tree レベルでの最適化後のクエリツリー。
 - `PLAN` — クエリ実行プラン。
 - `PIPELINE` — クエリ実行パイプライン。
 
 ### EXPLAIN AST {#explain-ast}
 
-クエリのASTをダンプします。すべてのタイプのクエリに対応しており、`SELECT`だけではありません。
+クエリの AST をダンプします。`SELECT` だけでなく、あらゆる種類のクエリをサポートします。
 
-例:
+例：
 
 ```sql
 EXPLAIN AST SELECT 1;
@@ -102,39 +102,60 @@ EXPLAIN AST ALTER TABLE t1 DELETE WHERE date = today();
 
 ### EXPLAIN SYNTAX {#explain-syntax}
 
-構文最適化後のクエリを返します。
+構文解析後のクエリの抽象構文木 (AST) を表示します。
+
+これは、クエリを解析してクエリ AST とクエリツリーを構築し、必要に応じてクエリアナライザーと最適化パスを実行し、その後クエリツリーをクエリ AST に戻すことで行われます。
+
+設定:
+
+* `oneline` – クエリを1行で出力します。デフォルト: `0`。
+* `run_query_tree_passes` – クエリツリーをダンプする前にクエリツリーのパス処理を実行します。デフォルト: `0`。
+* `query_tree_passes` – `run_query_tree_passes` が有効な場合に、実行するパス処理の回数を指定します。`query_tree_passes` を指定しない場合は、すべてのパス処理を実行します。
 
 例:
 
 ```sql
-EXPLAIN SYNTAX SELECT * FROM system.numbers AS a, system.numbers AS b, system.numbers AS c;
+EXPLAIN SYNTAX SELECT * FROM system.numbers AS a, system.numbers AS b, system.numbers AS c WHERE a.number = b.number AND b.number = c.number;
 ```
+
+Output:
+
+```sql
+SELECT *
+FROM system.numbers AS a, system.numbers AS b, system.numbers AS c
+WHERE (a.number = b.number) AND (b.number = c.number)
+```
+
+`run_query_tree_passes` を有効にした場合：
+
+```sql
+EXPLAIN SYNTAX run_query_tree_passes = 1 SELECT * FROM system.numbers AS a, system.numbers AS b, system.numbers AS c WHERE a.number = b.number AND b.number = c.number;
+```
+
+出力:
 
 ```sql
 SELECT
-    `--a.number` AS `a.number`,
-    `--b.number` AS `b.number`,
-    number AS `c.number`
-FROM
-(
-    SELECT
-        number AS `--a.number`,
-        b.number AS `--b.number`
-    FROM system.numbers AS a
-    CROSS JOIN system.numbers AS b
-) AS `--.s`
-CROSS JOIN system.numbers AS c
+    __table1.number AS `a.number`,
+    __table2.number AS `b.number`,
+    __table3.number AS `c.number`
+FROM system.numbers AS __table1
+ALL INNER JOIN system.numbers AS __table2 ON __table1.number = __table2.number
+ALL INNER JOIN system.numbers AS __table3 ON __table2.number = __table3.number
 ```
 
 ### EXPLAIN QUERY TREE {#explain-query-tree}
 
-設定:
+Settings:
 
-- `run_passes` — クエリツリーをダンプする前にすべてのクエリツリーのパスを実行します。デフォルト: `1`。
-- `dump_passes` — クエリツリーをダンプする前に使用されたパスに関する情報をダンプします。デフォルト: `0`。
-- `passes` — 実行するパスの数を指定します。`-1`に設定すると、すべてのパスを実行します。デフォルト: `-1`。
+* `run_passes` — クエリツリーをダンプする前に、すべてのクエリツリーパスを実行します。デフォルト: `1`。
+* `dump_passes` — クエリツリーをダンプする前に、使用されたパスに関する情報をダンプします。デフォルト: `0`。
+* `passes` — 実行するパスの数を指定します。`-1` に設定すると、すべてのパスを実行します。デフォルト: `-1`。
+* `dump_tree` — クエリツリーを表示します。デフォルト: `1`。
+* `dump_ast` — クエリツリーから生成されたクエリ AST を表示します。デフォルト: `0`。
 
-例:
+Example:
+
 ```sql
 EXPLAIN QUERY TREE SELECT id, value FROM test_table;
 ```
@@ -154,17 +175,21 @@ QUERY id: 0
 
 ### EXPLAIN PLAN {#explain-plan}
 
-クエリプランのステップをダンプします。
+クエリプランのステップを出力します。
 
-設定:
+Settings:
 
-- `header` — ステップの出力ヘッダーを印刷します。デフォルト: 0。
-- `description` — ステップの説明を印刷します。デフォルト: 1。
-- `indexes` — 使用されたインデックス、フィルタリングされたパーツの数、および適用された各インデックスのフィルタリングされたグラニュールの数を表示します。デフォルト: 0。 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルでサポートされています。
-- `actions` — ステップアクションについての詳細情報を印刷します。デフォルト: 0。
-- `json` — クエリプランのステップを [JSON](../../interfaces/formats.md#json) 形式の行として印刷します。デフォルト: 0。不要なエスケープを避けるため、[TSVRaw](../../interfaces/formats.md#tabseparatedraw)形式を使用することをお勧めします。
+* `header` — ステップの出力ヘッダーを表示します。デフォルト: 0。
+* `description` — ステップの説明を表示します。デフォルト: 1。
+* `indexes` — 使用された索引、それぞれの索引に対してフィルタリングされたパーツ数およびフィルタリングされたグラニュール数を表示します。デフォルト: 0。[MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルでサポートされています。ClickHouse &gt;= v25.9 以降、このステートメントは `SETTINGS use_query_condition_cache = 0, use_skip_indexes_on_data_read = 0` と併用した場合にのみ有用な出力を表示します。
+* `projections` — 解析されたすべての PROJECTION と、その PROJECTION のプライマリキー条件に基づくパーツレベルのフィルタリングへの影響を表示します。各 PROJECTION について、このセクションには、PROJECTION のプライマリキーを使用して評価されたパーツ数、行数、マーク数、レンジ数などの統計情報が含まれます。また、PROJECTION 自体を読み取ることなく、このフィルタリングによってスキップされたデータパーツの数も表示します。PROJECTION が実際に読み取りに使用されたのか、それともフィルタリングのために解析されたのみなのかは、`description` フィールドによって判別できます。デフォルト: 0。[MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルでサポートされています。
+* `actions` — ステップのアクションに関する詳細情報を表示します。デフォルト: 0。
+* `json` — クエリプランのステップを [JSON](/interfaces/formats/JSON) 形式の 1 行として表示します。デフォルト: 0。[TabSeparatedRaw (TSVRaw)](/interfaces/formats/TabSeparatedRaw) 形式を使用して不要なエスケープを避けることを推奨します。
+* `input_headers` — ステップの入力ヘッダーを表示します。デフォルト: 0。主に入力と出力のヘッダー不一致に関連する問題をデバッグする開発者にとって有用です。
+* `column_structure` — 名前と型に加えて、ヘッダー内のカラム構造も表示します。デフォルト: 0。主に入力と出力のヘッダー不一致に関連する問題をデバッグする開発者にとって有用です。
+* `distributed` — 分散テーブルまたは並列レプリカに対してリモートノード上で実行されたクエリプランを表示します。デフォルト: 0。
 
-`json=1` の場合、ステップ名には一意のステップ識別子のサフィックスが含まれます。
+`json=1` の場合、ステップ名には一意なステップ識別子を含む追加のサフィックスが付きます。
 
 例:
 
@@ -182,11 +207,11 @@ Union
           ReadFromStorage (SystemNumbers)
 ```
 
-:::note    
-ステップとクエリコストの推定はサポートされていません。
+:::note
+ステップおよびクエリコストの見積もりには対応していません。
 :::
 
-`json = 1` の場合、クエリプランはJSON形式で表現されます。すべてのノードは、常に `Node Type` と `Plans` のキーを持つ辞書です。`Node Type` はステップ名の文字列です。`Plans` は子ステップの説明の配列です。他のオプションのキーはノードタイプと設定に応じて追加される場合があります。
+`json = 1` のとき、クエリプランは JSON 形式で表現されます。各ノードは、常に `Node Type` と `Plans` というキーを持つ Dictionary です。`Node Type` はステップ名を表す文字列です。`Plans` は子ステップの説明を含む配列です。その他の任意のキーが、ノードの種類や設定に応じて追加される場合があります。
 
 例:
 
@@ -227,7 +252,7 @@ EXPLAIN json = 1, description = 0 SELECT 1 UNION ALL SELECT 2 FORMAT TSVRaw;
 ]
 ```
 
-`description` = 1 の場合、`Description` キーがステップに追加されます:
+`description` = 1 を指定すると、`Description` キーがステップに追加されます。
 
 ```json
 {
@@ -236,13 +261,14 @@ EXPLAIN json = 1, description = 0 SELECT 1 UNION ALL SELECT 2 FORMAT TSVRaw;
 }
 ```
 
-`header` = 1 の場合、`Header` キーがステップに列の配列として追加されます。
+`header` = 1 の場合、`Header` キーがカラムの配列としてステップに追加されます。
 
-例:
+例：
 
 ```sql
 EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ```
+
 
 ```json
 [
@@ -277,14 +303,15 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ]
 ```
 
-`indexes` = 1 の場合、`Indexes` キーが追加されます。これは使用されたインデックスの配列を含みます。各インデックスは `Type` キー（文字列 `MinMax`, `Partition`, `PrimaryKey` または `Skip`）とオプションのキーで説明されます:
+`indexes` = 1 の場合、`Indexes` キーが追加されます。これは使用された索引の配列を含みます。各索引は JSON で表現され、`Type` キー（文字列 `MinMax`、`Partition`、`PrimaryKey` または `Skip`）と、以下の任意のキーを持つ場合があります:
 
-- `Name` — インデックス名（現在は `Skip` インデックスにのみ使用されます）。
-- `Keys` — インデックスで使用されるカラムの配列。
-- `Condition` — 使用された条件。
-- `Description` — インデックスの説明（現在は `Skip` インデックスにのみ使用されます）。
-- `Parts` — インデックス適用前後のパーツの数。
-- `Granules` — インデックス適用前後のグラニュールの数。
+* `Name` — 索引名（現在は `Skip` 索引でのみ使用されます）。
+* `Keys` — 索引で使用されるカラムの配列。
+* `Condition` — 適用された条件。
+* `Description` — 索引の説明（現在は `Skip` 索引でのみ使用されます）。
+* `Parts` — 索引適用の前後におけるパーツの数。
+* `Granules` — 索引適用の前後におけるグラニュールの数。
+* `Ranges` — 索引適用後のグラニュール範囲の数。
 
 例:
 
@@ -295,43 +322,85 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
     "Type": "MinMax",
     "Keys": ["y"],
     "Condition": "(y in [1, +inf))",
-    "Parts": 5/4,
-    "Granules": 12/11
+    "Parts": 4/5,
+    "Granules": 11/12
   },
   {
     "Type": "Partition",
     "Keys": ["y", "bitAnd(z, 3)"],
     "Condition": "and((bitAnd(z, 3) not in [1, 1]), and((y in [1, +inf)), (bitAnd(z, 3) not in [1, 1])))",
-    "Parts": 4/3,
-    "Granules": 11/10
+    "Parts": 3/4,
+    "Granules": 10/11
   },
   {
     "Type": "PrimaryKey",
     "Keys": ["x", "y"],
     "Condition": "and((x in [11, +inf)), (y in [1, +inf)))",
-    "Parts": 3/2,
-    "Granules": 10/6
+    "Parts": 2/3,
+    "Granules": 6/10,
+    "Search Algorithm": "generic exclusion search"
   },
   {
     "Type": "Skip",
     "Name": "t_minmax",
     "Description": "minmax GRANULARITY 2",
-    "Parts": 2/1,
-    "Granules": 6/2
+    "Parts": 1/2,
+    "Granules": 2/6
   },
   {
     "Type": "Skip",
     "Name": "t_set",
     "Description": "set GRANULARITY 2",
     "": 1/1,
-    "Granules": 2/1
+    "Granules": 1/2
   }
 ]
 ```
 
-`actions` = 1 の場合、追加されたキーはステップタイプに依存します。
+`projections` = 1 の場合、`Projections` キーが追加されます。これは解析された projection の配列を含みます。各 projection は、次のキーを持つ JSON で表現されます。
+
+* `Name` — projection 名。
+* `Condition` — 使用された projection の primary key 条件。
+* `Description` — projection の使用方法の説明（例: パーツレベルのフィルタリング）。
+* `Selected Parts` — projection によって選択されたパーツの数。
+* `Selected Marks` — 選択された mark の数。
+* `Selected Ranges` — 選択された range の数。
+* `Selected Rows` — 選択された行の数。
+* `Filtered Parts` — パーツレベルのフィルタリングによりスキップされたパーツの数。
 
 例:
+
+```json
+"Node Type": "ReadFromMergeTree",
+"Projections": [
+  {
+    "Name": "region_proj",
+    "Description": "プロジェクションが分析され、パーツレベルのフィルタリングに使用されています",
+    "Condition": "(region in ['us_west', 'us_west'])",
+    "Search Algorithm": "binary search",
+    "Selected Parts": 3,
+    "Selected Marks": 3,
+    "Selected Ranges": 3,
+    "Selected Rows": 3,
+    "Filtered Parts": 2
+  },
+  {
+    "Name": "user_id_proj",
+    "Description": "プロジェクションが分析され、パーツレベルのフィルタリングに使用されています",
+    "Condition": "(user_id in [107, 107])",
+    "Search Algorithm": "binary search",
+    "Selected Parts": 1,
+    "Selected Marks": 1,
+    "Selected Ranges": 1,
+    "Selected Rows": 1,
+    "Filtered Parts": 2
+  }
+]
+```
+
+`actions` = 1 の場合、どのキーが追加されるかはステップの種類によって異なります。
+
+例：
 
 ```sql
 EXPLAIN json = 1, actions = 1, description = 0 SELECT 1 FORMAT TSVRaw;
@@ -388,15 +457,60 @@ EXPLAIN json = 1, actions = 1, description = 0 SELECT 1 FORMAT TSVRaw;
 ]
 ```
 
+`distributed` = 1 の場合、出力にはローカルのクエリプランだけでなく、リモートノード上で実行されるクエリプランも含まれます。これは分散クエリの分析やデバッグに役立ちます。
+
+分散テーブルを用いた例：
+
+```sql
+EXPLAIN distributed=1 SELECT * FROM remote('127.0.0.{1,2}', numbers(2)) WHERE number = 1;
+```
+
+```sql
+Union
+  Expression ((Project names + (Projection + (Change column names to column identifiers + (Project names + Projection)))))
+    Filter ((WHERE + Change column names to column identifiers))
+      ReadFromSystemNumbers
+  Expression ((Project names + (Projection + Change column names to column identifiers)))
+    ReadFromRemote (Read from remote replica)
+      Expression ((Project names + Projection))
+        Filter ((WHERE + Change column names to column identifiers))
+          ReadFromSystemNumbers
+```
+
+並列レプリカの例:
+
+```sql
+SET enable_parallel_replicas = 2, max_parallel_replicas = 2, cluster_for_parallel_replicas = 'default';
+
+EXPLAIN distributed=1 SELECT sum(number) FROM test_table GROUP BY number % 4;
+```
+
+```sql
+Expression ((Project names + Projection))
+  MergingAggregated
+    Union
+      Aggregating
+        Expression ((Before GROUP BY + Change column names to column identifiers))
+          ReadFromMergeTree (default.test_table)
+      ReadFromRemoteParallelReplicas
+        BlocksMarshalling
+          Aggregating
+            Expression ((Before GROUP BY + Change column names to column identifiers))
+              ReadFromMergeTree (default.test_table)
+```
+
+どちらの例でも、クエリプランはローカルおよびリモートのステップを含む実行フロー全体を示します。
+
+
 ### EXPLAIN PIPELINE {#explain-pipeline}
 
 設定:
 
-- `header` — 各出力ポートのヘッダーを印刷します。デフォルト: 0。
-- `graph` — [DOT](https://en.wikipedia.org/wiki/DOT_(graph_description_language)) グラフ記述言語で記述されたグラフを印刷します。デフォルト: 0。
-- `compact` — `graph` 設定が有効になっている場合、グラフをコンパクトモードで印刷します。デフォルト: 1。
+* `header` — 各出力ポートごとにヘッダーを出力します。デフォルト: 0。
+* `graph` — [DOT](https://en.wikipedia.org/wiki/DOT_\(graph_description_language\)) グラフ記述言語で表現されたグラフを出力します。デフォルト: 0。
+* `compact` — `graph` 設定が有効な場合に、グラフをコンパクトモードで出力します。デフォルト: 1。
 
-`compact=0` と `graph=1` の場合、プロセッサの名前には一意のプロセッサ識別子のサフィックスが含まれます。
+`compact=0` かつ `graph=1` のとき、プロセッサー名には、一意のプロセッサー識別子を含む追加のサフィックスが付きます。
 
 例:
 
@@ -419,9 +533,10 @@ ExpressionTransform
             (ReadFromStorage)
             NumbersRange × 2 0 → 1
 ```
+
 ### EXPLAIN ESTIMATE {#explain-estimate}
 
-クエリを処理する際にテーブルから読み込まれる行数、マーク、パーツの推定数を表示します。 [MergeTree](/engines/table-engines/mergetree-family/mergetree) ファミリーのテーブルで動作します。
+クエリを実行する際に、テーブルから読み取られる推定行数、マーク数、およびパーツ数を表示します。[MergeTree](/engines/table-engines/mergetree-family/mergetree) ファミリーのテーブルで利用できます。
 
 **例**
 
@@ -433,13 +548,13 @@ INSERT INTO ttt SELECT number FROM numbers(128);
 OPTIMIZE TABLE ttt;
 ```
 
-クエリ:
+クエリ：
 
 ```sql
 EXPLAIN ESTIMATE SELECT * FROM ttt;
 ```
 
-結果:
+結果：
 
 ```text
 ┌─database─┬─table─┬─parts─┬─rows─┬─marks─┐
@@ -449,12 +564,12 @@ EXPLAIN ESTIMATE SELECT * FROM ttt;
 
 ### EXPLAIN TABLE OVERRIDE {#explain-table-override}
 
-テーブル関数を介してアクセスされるテーブルスキーマに対するテーブルオーバーライドの結果を表示します。
-また、バリデーションを行い、オーバーライドが何らかの失敗を引き起こす場合は例外をスローします。
+テーブル関数経由でアクセスされるテーブルスキーマに対して、テーブルオーバーライドを適用した結果を表示します。
+さらに検証も行い、オーバーライドによって何らかの不具合が発生する場合には例外をスローします。
 
 **例**
 
-リモート MySQL テーブルが以下のようになっていると仮定します。
+次のようなリモートの MySQL テーブルがあるとします：
 
 ```sql
 CREATE TABLE db.tbl (
@@ -468,7 +583,7 @@ EXPLAIN TABLE OVERRIDE mysql('127.0.0.1:3306', 'db', 'tbl', 'root', 'clickhouse'
 PARTITION BY toYYYYMM(assumeNotNull(created))
 ```
 
-結果:
+結果：
 
 ```text
 ┌─explain─────────────────────────────────────────────────┐
@@ -476,6 +591,6 @@ PARTITION BY toYYYYMM(assumeNotNull(created))
 └─────────────────────────────────────────────────────────┘
 ```
 
-:::note    
-バリデーションは完全ではないため、成功したクエリがオーバーライドが問題を引き起こすことがないことを保証するものではありません。
+:::note
+検証は完全ではないため、クエリが成功しても、そのオーバーライドによって問題が発生しないことは保証されません。
 :::

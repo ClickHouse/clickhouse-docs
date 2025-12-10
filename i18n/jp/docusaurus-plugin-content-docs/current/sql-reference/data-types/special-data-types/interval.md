@@ -1,38 +1,36 @@
 ---
-description: 'Documentation for the Interval special data type'
+description: 'Interval 特殊データ型に関するドキュメント'
 sidebar_label: 'Interval'
 sidebar_position: 61
-slug: '/sql-reference/data-types/special-data-types/interval'
+slug: /sql-reference/data-types/special-data-types/interval
 title: 'Interval'
+doc_type: 'reference'
 ---
 
+# Interval {#interval}
 
-
-
-# インターバル
-
-時間と日付のインターバルを表すデータ型のファミリーです。 [INTERVAL](/sql-reference/operators#interval) 演算子の結果の型。
+日時の間隔を表すデータ型のファミリーです。[INTERVAL](/sql-reference/operators#interval) 演算子の結果として得られる型です。
 
 構造:
 
-- 符号なし整数値としての時間インターバル。
-- インターバルのタイプ。
+* 符号なし整数値として表される時間間隔。
+* 間隔の型。
 
-サポートされているインターバルタイプ:
+サポートされている間隔の種類:
 
-- `NANOSECOND`
-- `MICROSECOND`
-- `MILLISECOND`
-- `SECOND`
-- `MINUTE`
-- `HOUR`
-- `DAY`
-- `WEEK`
-- `MONTH`
-- `QUARTER`
-- `YEAR`
+* `NANOSECOND`
+* `MICROSECOND`
+* `MILLISECOND`
+* `SECOND`
+* `MINUTE`
+* `HOUR`
+* `DAY`
+* `WEEK`
+* `MONTH`
+* `QUARTER`
+* `YEAR`
 
-各インターバルタイプには別々のデータ型があります。例えば、`DAY` インターバルは `IntervalDay` データ型に対応します:
+各間隔の種類ごとに、個別のデータ型が定義されています。たとえば、`DAY` 間隔は `IntervalDay` データ型に対応します。
 
 ```sql
 SELECT toTypeName(INTERVAL 4 DAY)
@@ -46,10 +44,10 @@ SELECT toTypeName(INTERVAL 4 DAY)
 
 ## 使用上の注意 {#usage-remarks}
 
-`Interval` 型の値を [Date](../../../sql-reference/data-types/date.md) や [DateTime](../../../sql-reference/data-types/datetime.md) 型の値との算術演算に使用できます。例えば、現在の時間に4日を加えることができます:
+`Interval` 型の値は、[Date](../../../sql-reference/data-types/date.md) 型および [DateTime](../../../sql-reference/data-types/datetime.md) 型の値との算術演算に使用できます。たとえば、現在時刻に 4 日を足すことができます。
 
 ```sql
-SELECT now() as current_date_time, current_date_time + INTERVAL 4 DAY
+SELECT now() AS current_date_time, current_date_time + INTERVAL 4 DAY
 ```
 
 ```text
@@ -58,7 +56,7 @@ SELECT now() as current_date_time, current_date_time + INTERVAL 4 DAY
 └─────────────────────┴───────────────────────────────┘
 ```
 
-また、複数のインターバルを同時に使用することも可能です:
+また、複数のインターバルを同時に指定することもできます。
 
 ```sql
 SELECT now() AS current_date_time, current_date_time + (INTERVAL 4 DAY + INTERVAL 3 HOUR)
@@ -70,7 +68,7 @@ SELECT now() AS current_date_time, current_date_time + (INTERVAL 4 DAY + INTERVA
 └─────────────────────┴────────────────────────────────────────────────────────────────────┘
 ```
 
-異なるインターバルで値を比較することもできます:
+また、異なる間隔の値を比較するには、次のようにします：
 
 ```sql
 SELECT toIntervalMicrosecond(3600000000) = toIntervalHour(1);
@@ -82,7 +80,7 @@ SELECT toIntervalMicrosecond(3600000000) = toIntervalHour(1);
 └─────────────────────────────────────────────────────────────┘
 ```
 
-## その他 {#see-also}
+## 関連項目 {#see-also}
 
 - [INTERVAL](/sql-reference/operators#interval) 演算子
 - [toInterval](/sql-reference/functions/type-conversion-functions#tointervalyear) 型変換関数

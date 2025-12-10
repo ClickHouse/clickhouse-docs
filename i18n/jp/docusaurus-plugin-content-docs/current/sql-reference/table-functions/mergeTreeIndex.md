@@ -1,42 +1,41 @@
 ---
-description: 'Represents the contents of index and marks files of MergeTree tables.
-  It can be used for introspection.'
+description: 'MergeTree テーブルの index ファイルおよび marks ファイルの内容を表します。
+  調査や確認のために使用できます。'
 sidebar_label: 'mergeTreeIndex'
 sidebar_position: 77
-slug: '/sql-reference/table-functions/mergeTreeIndex'
+slug: /sql-reference/table-functions/mergeTreeIndex
 title: 'mergeTreeIndex'
+doc_type: 'reference'
 ---
 
+# mergeTreeIndex テーブル関数 {#mergetreeindex-table-function}
 
-
-
-# mergeTreeIndex テーブル関数
-
-MergeTree テーブルのインデックスとマークファイルの内容を表します。これは内部確認に使用できます。
+MergeTree テーブルのインデックスおよびマークファイルの内容を表します。内部状態を調査する目的で使用できます。
 
 ## 構文 {#syntax}
 
 ```sql
-mergeTreeIndex(database, table, [with_marks = true])
+mergeTreeIndex(database, table [, with_marks = true] [, with_minmax = true])
 ```
 
 ## 引数 {#arguments}
 
-| 引数         | 説明                                           |
-|--------------|------------------------------------------------|
-| `database`   | インデックスとマークを読み込むデータベース名。   |
-| `table`      | インデックスとマークを読み込むテーブル名。      |
-| `with_marks` | 結果にマーク付きカラムを含めるかどうか。        |
+| 引数          | 説明                                                 |
+|---------------|------------------------------------------------------|
+| `database`    | インデックスとマークを読み取る対象のデータベース名。 |
+| `table`       | インデックスとマークを読み取る対象のテーブル名。     |
+| `with_marks`  | 結果にマークを含むカラムを含めるかどうか。           |
+| `with_minmax` | 結果に min-max インデックスを含めるかどうか。       |
 
-## 戻り値 {#returned_value}
+## 返される値 {#returned_value}
 
-ソーステーブルの主キーの値を持つカラム、すべてのデータパーツに対するマークの値を持つカラム（有効な場合）、および仮想カラムを持つテーブルオブジェクト：
+次の列を持つテーブルオブジェクトです。ソーステーブルのプライマリインデックスおよび min-max インデックス（有効な場合）の値を持つ列、ソーステーブルのデータパーツ内の存在しうるすべてのファイルに対するマーク（有効な場合）の値を持つ列、さらに仮想列から構成されます。
 
-- `part_name` - データパートの名前。
-- `mark_number` - データパート内の現在のマークの番号。
+- `part_name` - データパーツの名前。
+- `mark_number` - データパーツ内の現在のマーク番号。
 - `rows_in_granule` - 現在のグラニュール内の行数。
 
-マークのカラムは、データパートにカラムが存在しない場合や、そのサブストリームのいずれかのマークが書き込まれていない場合（例：コンパクトパーツ）に `(NULL, NULL)` 値を含むことがあります。
+Marks 列には、データパーツに対象の列が存在しない場合、またはそのサブストリームのいずれかについてマークが書き込まれていない場合（例：コンパクトパーツ）に、`(NULL, NULL)` の値が含まれることがあります。
 
 ## 使用例 {#usage-example}
 
@@ -90,4 +89,4 @@ DESCRIBE mergeTreeIndex(currentDatabase(), test_table, with_marks = true) SETTIN
 │ arr.size0.mark  │ Tuple(offset_in_compressed_file Nullable(UInt64), offset_in_decompressed_block Nullable(UInt64)) │
 │ arr.mark        │ Tuple(offset_in_compressed_file Nullable(UInt64), offset_in_decompressed_block Nullable(UInt64)) │
 └─────────────────┴──────────────────────────────────────────────────────────────────────────────────────────────────┘
-
+```

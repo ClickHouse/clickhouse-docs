@@ -4,15 +4,15 @@ sidebar_label: 'largestTriangleThreeBuckets'
 sidebar_position: 159
 slug: /sql-reference/aggregate-functions/reference/largestTriangleThreeBuckets
 title: 'largestTriangleThreeBuckets'
+doc_type: 'reference'
 ---
 
+# largestTriangleThreeBuckets {#largesttrianglethreebuckets}
 
-# largestTriangleThreeBuckets
-
-Применяет алгоритм [Largest-Triangle-Three-Buckets](https://skemman.is/bitstream/1946/15343/3/SS_MSthesis.pdf) к входным данным.  
-Алгоритм используется для уменьшения количества данных временных рядов для визуализации. Он разработан для работы с сериями, отсортированными по координате x.  
-Он работает, деля отсортированную серию на ведра, а затем находя самый большой треугольник в каждом ведре. Количество ведер равно количеству точек в результирующей серии.  
-Функция отсортирует данные по `x`, а затем применит алгоритм уменьшения данных к отсортированным данным.
+Применяет алгоритм [Largest-Triangle-Three-Buckets](https://skemman.is/bitstream/1946/15343/3/SS_MSthesis.pdf) к входным данным.
+Алгоритм используется для даунсэмплинга данных временного ряда при визуализации. Он предназначен для работы с рядами, отсортированными по координате x.
+Алгоритм работает, разбивая отсортированный ряд на корзины (buckets), а затем находя наибольший треугольник в каждой корзине. Количество корзин равно количеству точек в результирующем ряду.
+Функция сортирует данные по `x`, а затем применяет алгоритм даунсэмплинга к отсортированным данным.
 
 **Синтаксис**
 
@@ -24,18 +24,18 @@ largestTriangleThreeBuckets(n)(x, y)
 
 **Аргументы**
 
-- `x` — координата x. [Целое](../../../sql-reference/data-types/int-uint.md) , [Вещественное](../../../sql-reference/data-types/float.md) , [Десятичное](../../../sql-reference/data-types/decimal.md)  , [Дата](../../../sql-reference/data-types/date.md), [Date32](../../../sql-reference/data-types/date32.md), [ДатаВремя](../../../sql-reference/data-types/datetime.md), [ДатаВремя64](../../../sql-reference/data-types/datetime64.md).
-- `y` — координата y. [Целое](../../../sql-reference/data-types/int-uint.md) , [Вещественное](../../../sql-reference/data-types/float.md) , [Десятичное](../../../sql-reference/data-types/decimal.md)  , [Дата](../../../sql-reference/data-types/date.md), [Date32](../../../sql-reference/data-types/date32.md), [ДатаВремя](../../../sql-reference/data-types/datetime.md), [ДатаВремя64](../../../sql-reference/data-types/datetime64.md).
+* `x` — координата x. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md), [Decimal](../../../sql-reference/data-types/decimal.md), [Date](../../../sql-reference/data-types/date.md), [Date32](../../../sql-reference/data-types/date32.md), [DateTime](../../../sql-reference/data-types/datetime.md), [DateTime64](../../../sql-reference/data-types/datetime64.md).
+* `y` — координата y. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md), [Decimal](../../../sql-reference/data-types/decimal.md), [Date](../../../sql-reference/data-types/date.md), [Date32](../../../sql-reference/data-types/date32.md), [DateTime](../../../sql-reference/data-types/datetime.md), [DateTime64](../../../sql-reference/data-types/datetime64.md).
 
-NaNs игнорируются в предоставленной серии, что означает, что любые значения NaN будут исключены из анализа. Это обеспечивает работу функции только с допустимыми числовыми данными.
+Значения NaN во входной последовательности игнорируются, то есть любые значения NaN исключаются из анализа. Это гарантирует, что функция работает только с корректными числовыми данными.
 
 **Параметры**
 
-- `n` — количество точек в результующей серии. [UInt64](../../../sql-reference/data-types/int-uint.md).
+* `n` — количество точек в результирующей последовательности. [UInt64](../../../sql-reference/data-types/int-uint.md).
 
 **Возвращаемые значения**
 
-[Массив](../../../sql-reference/data-types/array.md) из [Кортежа](../../../sql-reference/data-types/tuple.md) с двумя элементами:
+[Array](../../../sql-reference/data-types/array.md) из [Tuple](../../../sql-reference/data-types/tuple.md) с двумя элементами:
 
 **Пример**
 

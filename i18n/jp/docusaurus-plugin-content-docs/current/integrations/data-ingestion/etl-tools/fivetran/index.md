@@ -1,26 +1,30 @@
 ---
 sidebar_label: 'Fivetran'
-slug: '/integrations/fivetran'
+slug: /integrations/fivetran
 sidebar_position: 2
-description: 'Users can transform and model their data in ClickHouse using dbt'
-title: 'Fivetran and ClickHouse Cloud'
+description: 'ユーザーは dbt を使用して ClickHouse のデータを変換およびモデリングできます'
+title: 'Fivetran と ClickHouse Cloud'
+doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
+keywords: ['fivetran', 'データ移動', 'ETL', 'ClickHouse 宛先', '自動化されたデータプラットフォーム']
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# Fivetran と ClickHouse Cloud
+# Fivetran と ClickHouse Cloud {#fivetran-and-clickhouse-cloud}
 
 <ClickHouseSupportedBadge/>
 
 ## 概要 {#overview}
 
-[Fivetran](https://www.fivetran.com) は、データをクラウドデータプラットフォームの間で自動的に移動するためのプラットフォームです。
+[Fivetran](https://www.fivetran.com) は、クラウドデータプラットフォームからのデータ抽出、プラットフォームへの取り込み、およびプラットフォーム間でのデータ移動を自動化するデータ移動プラットフォームです。
 
-[ClickHouse Cloud](https://clickhouse.com/cloud) は、[Fivetran のデスティネーション](https://fivetran.com/docs/destinations/clickhouse)としてサポートされており、ユーザーはさまざまなソースからのデータを ClickHouse にロードできます。
+[ClickHouse Cloud](https://clickhouse.com/cloud) は [Fivetran の宛先](https://fivetran.com/docs/destinations/clickhouse) としてサポートされており、ユーザーはさまざまなソースから ClickHouse へデータを読み込むことができます。
 
 :::note
-[ClickHouse Cloud デスティネーション](https://fivetran.com/docs/destinations/clickhouse) は現在プライベートプレビュー中です。問題が発生した場合は ClickHouse サポートにお問い合わせください。
+[ClickHouse Cloud 宛先](https://fivetran.com/docs/destinations/clickhouse) は現在プライベートプレビュー中です。問題が発生した場合は ClickHouse サポートまでお問い合わせください。
 :::
 
 <div class='vimeo-container'>
@@ -35,13 +39,13 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
   </iframe>
 </div>
 
-## ClickHouse Cloud デスティネーション {#clickhouse-cloud-destination}
+## ClickHouse Cloud 宛先 {#clickhouse-cloud-destination}
 
-Fivetran の公式ドキュメントを参照してください:
+Fivetran の公式ドキュメントを参照してください：
 
-- [ClickHouse デスティネーションの概要](https://fivetran.com/docs/destinations/clickhouse)
-- [ClickHouse デスティネーションのセットアップガイド](https://fivetran.com/docs/destinations/clickhouse/setup-guide)
+- [ClickHouse 宛先の概要](https://fivetran.com/docs/destinations/clickhouse)
+- [ClickHouse 宛先のセットアップガイド](https://fivetran.com/docs/destinations/clickhouse/setup-guide)
 
 ## お問い合わせ {#contact-us}
 
-質問がある場合や機能のリクエストがある場合は、[サポートチケット](/about-us/support)を開いてください。
+ご不明な点や機能に関するご要望がある場合は、[サポートチケット](/about-us/support)を作成してください。

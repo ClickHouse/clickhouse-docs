@@ -1,0 +1,335 @@
+---
+sidebar_position: 1
+slug: /getting-started/quick-start/cloud
+sidebar_label: 'Cloud'
+keywords: ['clickhouse', 'установка', 'начало работы', 'быстрый старт']
+title: 'Быстрый старт с ClickHouse Cloud'
+description: 'Руководство по быстрому началу работы с ClickHouse Cloud'
+doc_type: 'guide'
+---
+
+import Image from '@theme/IdealImage';
+import signup_page from '@site/static/images/_snippets/signup_page.png';
+import select_plan from '@site/static/images/_snippets/select_plan.png';
+import createservice1 from '@site/static/images/_snippets/createservice1.png';
+import scaling_limits from '@site/static/images/_snippets/scaling_limits.png';
+import createservice8 from '@site/static/images/_snippets/createservice8.png';
+import show_databases from '@site/static/images/_snippets/show_databases.png';
+import service_connect from '@site/static/images/_snippets/service_connect.png';
+import data_sources from '@site/static/images/_snippets/data_sources.png';
+import select_data_source from '@site/static/images/_snippets/select_data_source.png';
+import client_details from '@site/static/images/_snippets/client_details.png';
+import new_rows_from_csv from '@site/static/images/_snippets/new_rows_from_csv.png';
+import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_launch_sql_console.md';
+
+# Быстрый старт с ClickHouse Cloud \{#clickhouse-cloud-quick-start\}
+
+> Самый быстрый и простой способ начать работу с ClickHouse — создать новый
+> сервис в [ClickHouse Cloud](https://console.clickhouse.cloud). В этом руководстве по быстрому старту вы сможете настроить систему
+> в три простых шага.
+
+<VerticalStepper type="numbered">
+  ## Создайте сервис ClickHouse \{#1-create-a-clickhouse-service\}
+
+  Чтобы создать бесплатный сервис ClickHouse в [ClickHouse Cloud](https://console.clickhouse.cloud), необходимо зарегистрироваться, выполнив следующие действия:
+
+  * Создайте учётную запись на [странице регистрации](https://console.clickhouse.cloud/signUp)
+  * Вы можете зарегистрироваться, используя адрес электронной почты или войдя через Google SSO, Microsoft SSO, AWS Marketplace, Google Cloud или Microsoft Azure
+  * Если вы регистрируетесь с помощью адреса электронной почты и пароля, не забудьте в течение ближайших 24 часов подтвердить свой адрес по ссылке из письма.
+  * Войдите, используя имя пользователя и пароль, которые вы только что создали
+
+  <Image img={signup_page} size="md" alt="Выбор плана" border />
+
+  <br />
+
+  После входа в систему ClickHouse Cloud запускает мастер начальной настройки, который проведет вас через процесс создания нового сервиса ClickHouse. Выберите регион для развертывания сервиса и укажите имя нового сервиса:
+
+  <Image img={createservice1} size="md" alt="Новый сервис ClickHouse" border />
+
+  <br />
+
+  По умолчанию новые организации размещаются на тарифе Scale и создают 3 ^^реплики^^, каждая с 4 виртуальными процессорами и 16 ГиБ оперативной памяти. [Вертикальное автомасштабирование](/manage/scaling#vertical-auto-scaling) включено по умолчанию на тарифе Scale. Тарифы организации можно изменить после создания сервиса на странице &#39;Тарифы&#39; вашей организации.
+
+  При необходимости можно настроить ресурсы сервиса, указав минимальное и максимальное количество реплик для масштабирования. Когда всё готово, нажмите `Create service`.
+
+  <Image img={scaling_limits} size="md" alt="Пределы масштабирования" border />
+
+  <br />
+
+  Поздравляем! Ваш сервис ClickHouse Cloud запущен и работает, процесс подключения завершён. Продолжайте чтение, чтобы узнать, как начать приём данных и выполнять запросы к ним.
+
+  ## Подключение к ClickHouse \{#2-connect-to-clickhouse\}
+
+  Существует два способа подключения к ClickHouse:
+
+  * Подключитесь через нашу веб-консоль SQL
+  * Подключите приложение
+
+  <br />
+
+  ### Подключение через SQL-консоль \{#connect-using-sql-console\}
+
+  Для быстрого начала работы ClickHouse предоставляет веб-консоль SQL, на которую вы будете перенаправлены после завершения онбординга.
+
+  <Image img={createservice8} size="md" alt="SQL-консоль" border />
+
+  Создайте вкладку запроса и введите простой запрос для проверки работоспособности подключения:
+
+  ```sql
+  SHOW databases
+  ```
+
+  В списке должно отображаться 4 базы данных, а также все добавленные вами базы данных.
+
+  <Image img={show_databases} size="md" alt="SQL-консоль" border />
+
+  <br />
+
+  Вот и всё — вы готовы начать использовать свой новый сервис ClickHouse!
+
+  ### Подключение приложения \{#connect-with-your-app\}
+
+  Нажмите кнопку подключения в меню навигации. Откроется модальное окно с учетными данными для вашего сервиса и инструкциями по подключению с использованием вашего интерфейса или клиентских библиотек.
+
+  <Image img={service_connect} size="md" alt="Service Connect" border />
+
+  <br />
+
+  Если вы не видите клиент для вашего языка программирования, ознакомьтесь со списком [интеграций](/integrations).
+
+  ## Добавление данных \{#3-add-data\}
+
+  ClickHouse эффективнее всего работает с данными! Существует несколько способов добавления данных, большинство из которых доступны на странице Data Sources в навигационном меню.
+
+  <Image img={data_sources} size="md" alt="Источники данных" border />
+
+  <br />
+
+  Загрузить данные можно следующими способами:
+
+  * Настройте ClickPipe для приёма данных из таких источников, как S3, Postgres, Kafka и GCS
+  * Используйте консоль SQL
+  * Использование клиента ClickHouse
+  * Загрузите файл — поддерживаемые форматы: JSON, CSV и TSV
+  * Загрузка данных из файла по URL
+
+  ### ClickPipes \{#clickpipes\}
+
+  [ClickPipes](http://clickhouse.com/docs/integrations/clickpipes) — управляемая платформа интеграции, которая упрощает приём данных из различных источников до нескольких нажатий кнопок. Разработанная для самых требовательных рабочих нагрузок, надёжная и масштабируемая архитектура ClickPipes обеспечивает стабильную производительность и отказоустойчивость. ClickPipes можно использовать как для долгосрочной потоковой передачи данных, так и для однократной загрузки.
+
+  <Image img={select_data_source} size="md" alt="Выберите источник данных" border />
+
+  <br />
+
+  ### Добавление данных через SQL Console \{#add-data-using-the-sql-console\}
+
+  Как и большинство систем управления базами данных, ClickHouse логически группирует таблицы в **базы данных**. Для создания новой базы данных в ClickHouse используйте команду [`CREATE DATABASE`](../../sql-reference/statements/create/database.md):
+
+  ```sql
+  CREATE DATABASE IF NOT EXISTS helloworld
+  ```
+
+  Выполните следующую команду, чтобы создать таблицу `my_first_table` в базе данных `helloworld`:
+
+  ```sql
+  CREATE TABLE helloworld.my_first_table
+  (
+      user_id UInt32,
+      message String,
+      timestamp DateTime,
+      metric Float32
+  )
+  ENGINE = MergeTree()
+  PRIMARY KEY (user_id, timestamp)
+  ```
+
+  В приведённом выше примере `my_first_table` — это таблица [`MergeTree`](../../engines/table-engines/mergetree-family/mergetree.md) с четырьмя столбцами:
+
+  * `user_id`:  32-битное целое число без знака ([UInt32](../../sql-reference/data-types/int-uint.md))
+  * `message`: тип данных [String](../../sql-reference/data-types/string.md), который заменяет такие типы, как `VARCHAR`, `BLOB`, `CLOB` и другие в других системах управления базами данных
+  * `timestamp`: значение типа [DateTime](../../sql-reference/data-types/datetime.md), представляющее момент времени
+  * `metric`: 32-битное число с плавающей запятой ([Float32](../../sql-reference/data-types/float.md))
+
+  :::note Движки таблиц
+  Движки таблиц определяют:
+
+  * Как и где хранятся данные
+  * Поддерживаемые запросы
+  * Реплицируются ли данные
+
+  <br />
+
+  Существует множество движков таблиц на выбор, но для простой таблицы на одноузловом сервере ClickHouse оптимальным выбором будет [`MergeTree`](/engines/table-engines/mergetree-family/mergetree.md).
+  :::
+
+  #### Краткое введение в первичные ключи \{#a-brief-intro-to-primary-keys\}
+
+  Прежде чем двигаться дальше, важно понять, как работают первичные ключи в ClickHouse (их реализация
+  может оказаться неожиданной!):
+
+  * первичные ключи в ClickHouse ***не являются уникальными*** для каждой строки таблицы
+
+  ^^Первичный ключ^^ таблицы ClickHouse определяет порядок сортировки данных при записи на диск. Каждые 8192 строки или 10 МБ
+  данных (называемые **гранулярностью индекса**) создают запись в файле индекса ^^первичного ключа^^. Эта концепция гранулярности
+  создаёт **^^разреженный индекс^^**, который легко помещается в памяти, а гранулы представляют собой полосу данных минимального объёма
+  столбцов, обрабатываемых во время выполнения запросов `SELECT`.
+
+  ^^Первичный ключ^^ определяется с помощью параметра `PRIMARY KEY`. Если таблица создаётся без указания `PRIMARY KEY`,
+  ключом становится кортеж, заданный в секции `ORDER BY`. При одновременном указании `PRIMARY KEY` и `ORDER BY` ^^первичный ключ^^ должен быть подмножеством ключа сортировки.
+
+  ^^Первичный ключ^^ также является ^^ключом сортировки^^ и представляет собой кортеж `(user_id, timestamp)`. Таким образом, данные в каждом
+  файле столбца будут отсортированы сначала по `user_id`, затем по `timestamp`.
+
+  Для углубленного изучения основных концепций ClickHouse см. [&quot;Основные концепции&quot;](../../managing-data/core-concepts/index.md).
+
+  #### Вставка данных в таблицу \{#insert-data-into-your-table\}
+
+  Вы можете использовать знакомую команду [`INSERT INTO TABLE`](../../sql-reference/statements/insert-into.md) в ClickHouse, но важно понимать, что каждая вставка в таблицу [`MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) приводит к созданию **части** в хранилище.
+
+  :::tip Рекомендация ClickHouse
+  Вставляйте большое количество строк в одном пакете — десятки тысяч или даже миллионы строк за раз. Не волнуйтесь — ClickHouse легко справляется с такими объёмами, и это [сэкономит вам деньги](/best-practices/selecting-an-insert-strategy#batch-inserts-if-synchronous), поскольку к вашему сервису будет отправлено меньше запросов на запись.
+  :::
+
+  <br />
+
+  Даже для простого примера давайте вставим несколько строк за один раз:
+
+  ```sql
+  INSERT INTO helloworld.my_first_table (user_id, message, timestamp, metric) VALUES
+      (101, 'Привет, ClickHouse!',                                 now(),       -1.0    ),
+      (102, 'Вставляйте большое количество строк за один пакет',                     yesterday(), 1.41421 ),
+      (102, 'Сортируйте данные на основе наиболее часто используемых запросов', today(),     2.718   ),
+      (101, 'Гранулы — это минимальные порции данных при чтении',      now() + 5,   3.14159 )
+  ```
+
+  :::note
+  Обратите внимание, что столбец `timestamp` заполняется с помощью различных функций [**Date**](../../sql-reference/data-types/date.md) и [**DateTime**](../../sql-reference/data-types/datetime.md). ClickHouse предоставляет сотни полезных функций, которые можно [просмотреть в разделе **Функции**](/sql-reference/functions/).
+  :::
+
+  Проверим, что всё работает:
+
+  ```sql
+  SELECT * FROM helloworld.my_first_table
+  ```
+
+  ### Добавление данных с помощью клиента ClickHouse \{#add-data-using-the-clickhouse-client\}
+
+  Вы также можете подключиться к вашему сервису ClickHouse Cloud с помощью инструмента командной строки [**clickhouse client**](/interfaces/cli). Нажмите `Connect` в левом меню для доступа к этим данным. В диалоговом окне выберите `Native` из выпадающего списка:
+
+  <Image img={client_details} size="md" alt="параметры подключения клиента ClickHouse" border />
+
+  <br />
+
+  1. Установите [ClickHouse](/interfaces/cli).
+
+  2. Выполните команду, указав ваш hostname, имя пользователя и пароль:
+
+  ```bash
+  ./clickhouse client --host HOSTNAME.REGION.CSP.clickhouse.cloud \
+  --secure --port 9440 \
+  --user default \
+  --password <password>
+  ```
+
+  Если вы видите приглашение со смайликом, можно приступать к выполнению запросов!
+
+  ```response
+  :)
+  ```
+
+  3. Попробуйте выполнить следующий запрос:
+
+  <br />
+
+  ```sql
+  SELECT *
+  FROM helloworld.my_first_table
+  ORDER BY timestamp
+  ```
+
+  Обратите внимание, что ответ возвращается в виде таблицы:
+
+  ```response
+  ┌─user_id─┬─message────────────────────────────────────────────┬───────────timestamp─┬──metric─┐
+  │     102 │ Вставляйте много строк за один пакет               │ 2022-03-21 00:00:00 │ 1.41421 │
+  │     102 │ Сортируйте данные на основе часто используемых запросов │ 2022-03-22 00:00:00 │   2.718 │
+  │     101 │ Привет, ClickHouse!                                │ 2022-03-22 14:04:09 │      -1 │
+  │     101 │ Гранулы — это наименьшие порции считываемых данных │ 2022-03-22 14:04:14 │ 3.14159 │
+  └─────────┴────────────────────────────────────────────────────┴─────────────────────┴─────────┘
+
+  Получено 4 строки. Затрачено: 0,008 сек.
+  ```
+
+  4. Добавьте клаузу [`FORMAT`](../../sql-reference/statements/select/format.md), чтобы указать один из [множества поддерживаемых в ClickHouse форматов вывода](/interfaces/formats):
+
+  <br />
+
+  ```sql
+  SELECT *
+  FROM helloworld.my_first_table
+  ORDER BY timestamp
+  FORMAT TabSeparated
+  ```
+
+  В приведенном выше запросе результат возвращается в формате с разделителями-табуляциями:
+
+  ```response
+  Query id: 3604df1c-acfd-4117-9c56-f86c69721121
+
+  102 Вставляйте много строк за один пакет      2022-03-21 00:00:00     1.41421
+  102 Сортируйте данные на основе часто используемых запросов  2022-03-22 00:00:00     2.718
+  101 Привет, ClickHouse!  2022-03-22 14:04:09     -1
+  101 Гранулы — это наименьшие порции данных для чтения       2022-03-22 14:04:14     3.14159
+
+  4 строк в наборе. Прошло: 0.005 sec.
+  ```
+
+  5. Чтобы выйти из клиента `clickhouse`, введите команду **exit**:
+
+  <br />
+
+  ```bash
+  exit
+  ```
+
+  ### Загрузка файла \{#upload-a-file\}
+
+  Распространённая задача при начале работы с базой данных — загрузить имеющиеся данные из файлов. Мы предоставляем образцы данных онлайн, которые можно использовать для демонстрации работы с данными о кликах (clickstream) — они включают идентификатор пользователя, посещённый URL и временную метку события.
+
+  Предположим, у нас есть следующий текст в CSV-файле `data.csv`:
+
+  ```bash title="data.csv"
+  102,Это данные в файле,2022-02-22 10:43:28,123.45
+  101,Значения разделены запятыми,2022-02-23 00:00:00,456.78
+  103,Используйте FORMAT для указания формата,2022-02-21 10:43:30,678.90
+  ```
+
+  1. Следующая команда вставляет данные в таблицу `my_first_table`:
+
+  <br />
+
+  ```bash
+  ./clickhouse client --host HOSTNAME.REGION.CSP.clickhouse.cloud \
+  --secure --port 9440 \
+  --user default \
+  --password <password> \
+  --query='INSERT INTO helloworld.my_first_table FORMAT CSV' < data.csv
+  ```
+
+  2. Обратите внимание, что при выполнении запроса из SQL-консоли в таблице теперь отображаются новые строки:
+
+  <br />
+
+  <Image img={new_rows_from_csv} size="md" alt="Новые строки из CSV-файла" />
+
+  <br />
+</VerticalStepper>
+
+## Что дальше? \{#whats-next\}
+
+* В [руководстве](/tutorial.md) вы загрузите 2 миллиона строк в таблицу и выполните несколько аналитических запросов
+* У нас есть список [примеров наборов данных](/getting-started/index.md) с инструкциями по их загрузке
+* Посмотрите наше 25-минутное видео [Начало работы с ClickHouse](https://clickhouse.com/company/events/getting-started-with-clickhouse/)
+* Если ваши данные поступают из внешнего источника, ознакомьтесь с [коллекцией руководств по интеграции](/integrations/index.mdx) по подключению к очередям сообщений, базам данных, пайплайнам и многому другому
+* Если вы используете инструмент визуализации (UI/BI), ознакомьтесь с [руководствами по подключению пользовательского интерфейса к ClickHouse](/integrations/data-visualization)
+* Руководство по [первичным ключам](/guides/best-practices/sparse-primary-indexes.md) содержит всё, что вам нужно знать о первичных ключах и о том, как их определять

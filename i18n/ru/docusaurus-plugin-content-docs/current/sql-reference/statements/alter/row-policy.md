@@ -1,13 +1,13 @@
 ---
-description: 'Документация для ALTER ROW POLICY'
+description: 'Документация по ALTER ROW POLICY'
 sidebar_label: 'ROW POLICY'
 sidebar_position: 47
 slug: /sql-reference/statements/alter/row-policy
 title: 'ALTER ROW POLICY'
+doc_type: 'reference'
 ---
 
-
-# ALTER ROW POLICY
+# ALTER ROW POLICY {#alter-row-policy}
 
 Изменяет политику строк.
 

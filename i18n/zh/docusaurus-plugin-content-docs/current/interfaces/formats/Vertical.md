@@ -1,51 +1,52 @@
 ---
-'alias': []
-'description': 'Vertical 格式的文档'
-'input_format': false
-'keywords':
-- 'Vertical'
-'output_format': true
-'slug': '/interfaces/formats/Vertical'
-'title': 'Vertical'
+alias: []
+description: 'Vertical 格式文档'
+input_format: false
+keywords: ['Vertical']
+output_format: true
+slug: /interfaces/formats/Vertical
+title: 'Vertical'
+doc_type: 'reference'
 ---
 
-| 输入  | 输出  | 别名  |
-|-------|-------|-------|
-| ✗     | ✔     |       |
+| Input | Output | Alias |
+|-------|--------|-------|
+| ✗     | ✔      |       |
 
 ## 描述 {#description}
 
-在指定的列名下，将每个值打印在单独的一行。这种格式适用于只打印一行或少数几行，尤其当每行包含大量列时。
-[`NULL`](/sql-reference/syntax.md) 的输出为 `ᴺᵁᴸᴸ`。
+将每个值与其列名一起输出在单独的一行上。如果每行包含大量列，这种格式便于打印单行或少量行的数据。
 
-## 示例用法 {#example-usage}
+请注意，[`NULL`](/sql-reference/syntax.md) 会输出为 `ᴺᵁᴸᴸ`，以便更容易区分字符串值 `NULL` 和空值。JSON 列会以美化后的格式输出，并且 `NULL` 会输出为 `null`，因为它是一个有效的 JSON 值，并且与 `"null"` 容易区分。
 
-示例:
+## 使用示例 {#example-usage}
+
+示例：
 
 ```sql
 SELECT * FROM t_null FORMAT Vertical
 ```
 
 ```response
-Row 1:
+第 1 行:
 ──────
 x: 1
 y: ᴺᵁᴸᴸ
 ```
 
-在垂直格式中行不会被转义：
+在 Vertical 输出格式中，行不会被转义：
 
 ```sql
 SELECT 'string with \'quotes\' and \t with some special \n characters' AS test FORMAT Vertical
 ```
 
 ```response
-Row 1:
+第 1 行：
 ──────
 test: string with 'quotes' and      with some special
  characters
 ```
 
-这种格式仅适合输出查询结果，不适合解析（获取数据以插入表中）。
+此格式仅适合用于输出查询结果，不适合用于解析（检索要插入到表中的数据）。
 
 ## 格式设置 {#format-settings}

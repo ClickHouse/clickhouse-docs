@@ -1,12 +1,12 @@
 ---
-description: 'Вычисляет скользящую сумму входных значений.'
+description: 'Вычисляет движущуюся сумму входных значений.'
 sidebar_position: 144
 slug: /sql-reference/aggregate-functions/reference/grouparraymovingsum
 title: 'groupArrayMovingSum'
+doc_type: 'reference'
 ---
 
-
-# groupArrayMovingSum
+# groupArrayMovingSum {#grouparraymovingsum}
 
 Вычисляет скользящую сумму входных значений.
 
@@ -15,16 +15,16 @@ groupArrayMovingSum(numbers_for_summing)
 groupArrayMovingSum(window_size)(numbers_for_summing)
 ```
 
-Функция может принимать размер окна в качестве параметра. Если не указано, функция берёт размер окна, равный количеству строк в колонке.
+Функция может принимать размер окна в качестве параметра. Если он не указан, функция использует размер окна, равный числу строк в столбце.
 
 **Аргументы**
 
-- `numbers_for_summing` — [Выражение](/sql-reference/syntax#expressions), приводящее к значению числового типа данных.
-- `window_size` — Размер окна вычисления.
+* `numbers_for_summing` — [выражение](/sql-reference/syntax#expressions), результатом которого является значение числового типа данных.
+* `window_size` — размер окна вычислений.
 
 **Возвращаемые значения**
 
-- Массив того же размера и типа, что и входные данные.
+* Массив того же размера и типа, что и входные данные.
 
 **Пример**
 

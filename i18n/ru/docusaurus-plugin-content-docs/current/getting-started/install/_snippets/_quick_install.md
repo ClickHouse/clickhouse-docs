@@ -1,31 +1,29 @@
-# Установка ClickHouse через скрипт с использованием curl
+# Установка ClickHouse через скрипт с использованием curl {#install-clickhouse-via-script-using-curl}
 
-Если вам не нужно устанавливать ClickHouse для продакшена, самый быстрый способ 
-начать – запустить установочный скрипт с помощью curl. Скрипт определит подходящий
-бинари для вашей операционной системы.
+Если вам не нужно устанавливать ClickHouse для production-среды, самый быстрый способ настройки — запустить установочный скрипт с помощью curl. Скрипт автоматически определит подходящий бинарный файл для вашей ОС.
 
 <VerticalStepper>
 
-## Установка ClickHouse с использованием curl {#install-clickhouse-using-curl}
+## Установка ClickHouse с помощью curl {#install-clickhouse-using-curl}
 
-Запустите следующую команду, чтобы загрузить один бинарный файл для вашей операционной системы.
+Выполните следующую команду, чтобы скачать один бинарный файл для вашей операционной системы.
 
 ```bash
 curl https://clickhouse.com/ | sh
 ```
 
 :::note
-Для пользователей Mac: Если вы получаете ошибки, что разработчик бинарного файла не может быть проверен, пожалуйста, посмотрите [здесь](/knowledgebase/fix-developer-verification-error-in-macos).
+Для пользователей Mac: если вы получаете сообщение об ошибке о том, что разработчик бинарного файла не может быть проверен, подробнее см. [здесь](/knowledgebase/fix-developer-verification-error-in-macos).
 :::
 
-## Запуск clickhouse-local {#start-clickhouse-local}
+## Запустите clickhouse-local {#start-clickhouse-local}
 
-`clickhouse-local` позволяет вам обрабатывать локальные и удаленные файлы, используя 
-мощный синтаксис SQL ClickHouse и без необходимости конфигурации. Данные таблиц 
-хранятся во временном месте, что означает, что после перезапуска `clickhouse-local` 
-ранее созданные таблицы больше не доступны.
+`clickhouse-local` позволяет обрабатывать локальные и удалённые файлы, используя
+мощный SQL-синтаксис ClickHouse и без какой-либо предварительной настройки. Данные таблиц
+хранятся во временном хранилище, то есть после перезапуска `clickhouse-local`
+ранее созданные таблицы больше не будут доступны.
 
-Запустите следующую команду, чтобы начать [clickhouse-local](/operations/utilities/clickhouse-local):
+Выполните следующую команду, чтобы запустить [clickhouse-local](/operations/utilities/clickhouse-local):
 
 ```bash
 ./clickhouse
@@ -33,8 +31,8 @@ curl https://clickhouse.com/ | sh
 
 ## Запуск clickhouse-server {#start-clickhouse-server}
 
-Если вы хотите сохранять данные, вам нужно будет запустить `clickhouse-server`. 
-Вы можете запустить сервер ClickHouse с помощью следующей команды:
+Если вы хотите хранить данные, вам потребуется запустить `clickhouse-server`. Вы можете
+запустить сервер ClickHouse с помощью следующей команды:
 
 ```bash
 ./clickhouse server
@@ -42,34 +40,29 @@ curl https://clickhouse.com/ | sh
 
 ## Запуск clickhouse-client {#start-clickhouse-client}
 
-Когда сервер запущен, откройте новое окно терминала и выполните следующую команду, 
-чтобы запустить `clickhouse-client`:
+После запуска сервера откройте новое окно терминала и выполните следующую команду для запуска `clickhouse-client`:
 
 ```bash
 ./clickhouse client
 ```
 
-Вы увидите что-то вроде этого: 
+Вы увидите примерно следующее:
 
 ```response
 ./clickhouse client
-ClickHouse client version 24.5.1.117 (официальная сборка).
-Подключение к localhost:9000 как пользователь default.
-Подключено к серверу ClickHouse версии 24.5.1.
+ClickHouse client version 24.5.1.117 (official build).
+Connecting to localhost:9000 as user default.
+Connected to ClickHouse server version 24.5.1.
 
 local-host :)
 ```
 
-Данные таблиц хранятся в текущем каталоге и все еще доступны после перезапуска 
-сервера ClickHouse. Если необходимо, вы можете передать 
-`-C config.xml` в качестве дополнительного аргумента командной строки к `./clickhouse server` 
-и предоставить дополнительные настройки в файле конфигурации. Все доступные параметры конфигурации задокументированы [здесь](/operations/server-configuration-parameters/settings) и в 
-[шаблоне примерного файла конфигурации](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml).
+Данные таблиц хранятся в текущем каталоге и останутся доступными после перезапуска сервера ClickHouse. При необходимости можно передать `-C config.xml` в качестве дополнительного аргумента командной строки для `./clickhouse server` и указать дополнительные настройки в конфигурационном файле. Все доступные параметры конфигурации задокументированы [здесь](/operations/server-configuration-parameters/settings) и в [шаблоне конфигурационного файла](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml).
 
-Теперь вы готовы отправлять SQL команды в ClickHouse!
+Теперь можно отправлять SQL-команды в ClickHouse!
 
 :::tip
-[Быстрый старт](/quick-start.mdx) описывает шаги по созданию таблиц и вставке данных.
+[Краткое руководство](/get-started/quick-start) содержит пошаговые инструкции по созданию таблиц и вставке данных.
 :::
 
 </VerticalStepper>

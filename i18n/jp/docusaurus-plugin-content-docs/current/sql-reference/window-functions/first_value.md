@@ -1,17 +1,15 @@
 ---
-description: 'Documentation for the first_value window function'
+description: 'first_value ウィンドウ関数のリファレンス'
 sidebar_label: 'first_value'
 sidebar_position: 3
-slug: '/sql-reference/window-functions/first_value'
+slug: /sql-reference/window-functions/first_value
 title: 'first_value'
+doc_type: 'reference'
 ---
 
+# first&#95;value {#first&#95;value}
 
-
-
-# first_value
-
-順序付けられたフレーム内で評価された最初の値を返します。デフォルトでは、NULL 引数はスキップされますが、`RESPECT NULLS` 修飾子を使用してこの動作を上書きすることができます。
+順序付けされたフレーム内で評価される最初の値を返します。デフォルトでは NULL 引数はスキップされますが、この動作は `RESPECT NULLS` 修飾子を使用して上書きできます。
 
 **構文**
 
@@ -23,24 +21,24 @@ FROM table_name
 WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-エイリアス: `any`。
+別名: `any`.
 
 :::note
-オプションの修飾子 `RESPECT NULLS` を `first_value(column_name)` の後に使用すると、`NULL` 引数がスキップされないことが保証されます。
-詳細については、[NULL 処理](../aggregate-functions/index.md/#null-processing)を参照してください。
+`first_value(column_name)` の後にオプション修飾子 `RESPECT NULLS` を使用すると、`NULL` 引数がスキップされないことが保証されます。
+詳細は [NULL processing](../aggregate-functions/index.md/#null-processing) を参照してください。
 
-エイリアス: `firstValueRespectNulls`
+別名: `firstValueRespectNulls`
 :::
 
-ウィンドウ関数の構文の詳細については、[ウィンドウ関数 - 構文](./index.md/#syntax)を参照してください。
+ウィンドウ関数の構文の詳細は次を参照してください: [Window Functions - Syntax](./index.md/#syntax).
 
 **返される値**
 
-- 順序付けられたフレーム内で評価された最初の値。
+* 並べ替えられたフレーム内で評価される最初の値。
 
 **例**
 
-この例では、`first_value` 関数を使用して、プレミアリーグのサッカー選手の給与の架空のデータセットから最も高給のサッカー選手を見つけます。
+この例では、架空のプレミアリーグサッカー選手の給与データセットから最も高給のサッカー選手を求めるために、`first_value` 関数を使用しています。
 
 クエリ:
 
@@ -71,10 +69,10 @@ SELECT player, salary,
 FROM salaries;
 ```
 
-結果:
+結果：
 
 ```response
-   ┌─player──────────┬─salary─┬─highest_paid_player─┐
+   ┌─選手名──────────┬─給与───┬─最高給与選手───────┐
 1. │ Gary Chen       │ 196000 │ Gary Chen           │
 2. │ Robert George   │ 195000 │ Gary Chen           │
 3. │ Charles Juarez  │ 190000 │ Gary Chen           │

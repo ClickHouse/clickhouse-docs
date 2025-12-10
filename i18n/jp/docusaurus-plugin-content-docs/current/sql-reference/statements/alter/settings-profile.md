@@ -1,12 +1,11 @@
 ---
-description: 'Documentation for Settings Profile'
+description: '設定プロファイルに関するドキュメント'
 sidebar_label: 'SETTINGS PROFILE'
 sidebar_position: 48
-slug: '/sql-reference/statements/alter/settings-profile'
+slug: /sql-reference/statements/alter/settings-profile
 title: 'ALTER SETTINGS PROFILE'
+doc_type: 'reference'
 ---
-
-
 
 設定プロファイルを変更します。
 

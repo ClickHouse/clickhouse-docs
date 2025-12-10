@@ -1,13 +1,13 @@
 ---
-'description': '在 ClickHouse 中，loop 表函数用于在无限循环中返回查询结果。'
-'slug': '/sql-reference/table-functions/loop'
-'title': '循环'
+description: 'ClickHouse 中的 loop 表函数用于在无限循环中重复返回查询结果。'
+slug: /sql-reference/table-functions/loop
+title: 'loop'
+doc_type: 'reference'
 ---
 
+# `loop` 表函数 {#loop-table-function}
 
-# loop Table Function
-
-## Syntax {#syntax}
+## 语法 {#syntax}
 
 ```sql
 SELECT ... FROM loop(database, table);
@@ -16,21 +16,21 @@ SELECT ... FROM loop(table);
 SELECT ... FROM loop(other_table_function(...));
 ```
 
-## Arguments {#arguments}
+## 参数 {#arguments}
 
-| 参数                         | 描述                                                                                                                |
-|------------------------------|---------------------------------------------------------------------------------------------------------------------|
-| `database`                   | 数据库名称。                                                                                                       |
-| `table`                      | 表名称。                                                                                                          |
-| `other_table_function(...)`  | 其他表函数。示例：`SELECT * FROM loop(numbers(10));` 这里的 `other_table_function(...)` 是 `numbers(10)`。 |
+| 参数                        | 说明                                                                                                                 |
+|-----------------------------|----------------------------------------------------------------------------------------------------------------------|
+| `database`                  | 数据库名称。                                                                                                         |
+| `table`                     | 表名称。                                                                                                             |
+| `other_table_function(...)` | 其他表函数。例如：`SELECT * FROM loop(numbers(10));` 中的 `other_table_function(...)` 即为 `numbers(10)`。          |
 
-## Returned values {#returned_values}
+## 返回值 {#returned_values}
 
-无限循环以返回查询结果。
+在无限循环中返回查询结果。
 
-## Examples {#examples}
+## 示例 {#examples}
 
-从 ClickHouse 中选择数据：
+从 ClickHouse 中查询数据：
 
 ```sql
 SELECT * FROM loop(test_database, test_table);
@@ -38,7 +38,7 @@ SELECT * FROM loop(test_database.test_table);
 SELECT * FROM loop(test_table);
 ```
 
-或使用其他表函数：
+也可以使用其他表函数：
 
 ```sql
 SELECT * FROM loop(numbers(3)) LIMIT 7;
@@ -56,6 +56,7 @@ SELECT * FROM loop(numbers(3)) LIMIT 7;
 7. │      0 │
    └────────┘
 ```
+
 ```sql
 SELECT * FROM loop(mysql('localhost:3306', 'test', 'test', 'user', 'password'));
 ...

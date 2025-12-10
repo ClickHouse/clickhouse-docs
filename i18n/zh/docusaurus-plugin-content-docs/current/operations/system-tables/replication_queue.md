@@ -1,71 +1,69 @@
 ---
-'description': '系统表包含关于存储在 ClickHouse Keeper 或 ZooKeeper 中的副本队列任务的信息，适用于 `ReplicatedMergeTree`
-  系列的表。'
-'keywords':
-- 'system table'
-- 'replication_queue'
-'slug': '/operations/system-tables/replication_queue'
-'title': 'system.replication_queue'
+description: '包含存储在 ClickHouse Keeper 或 ZooKeeper 中、针对 `ReplicatedMergeTree`
+  系列表的复制队列中任务信息的系统表。'
+keywords: ['system table', 'replication_queue']
+slug: /operations/system-tables/replication_queue
+title: 'system.replication_queue'
+doc_type: 'reference'
 ---
 
+# system.replication&#95;queue {#systemreplication&#95;queue}
 
-# system.replication_queue
+包含关于存储在 ClickHouse Keeper 或 ZooKeeper 中、属于 `ReplicatedMergeTree` 系列表的复制队列任务的信息。
 
-包含来自 ClickHouse Keeper 或 ZooKeeper 的复制队列中的任务信息，适用于 `ReplicatedMergeTree` 家族的表。
+Columns:
 
-列：
+* `database` ([String](../../sql-reference/data-types/string.md)) — 数据库名称。
 
-- `database` （[String](../../sql-reference/data-types/string.md)） — 数据库的名称。
+* `table` ([String](../../sql-reference/data-types/string.md)) — 表名。
 
-- `table` （[String](../../sql-reference/data-types/string.md)） — 表的名称。
+* `replica_name` ([String](../../sql-reference/data-types/string.md)) — ClickHouse Keeper 中的副本名称。同一张表的不同副本具有不同的名称。
 
-- `replica_name` （[String](../../sql-reference/data-types/string.md)） — ClickHouse Keeper 中的副本名称。同一表的不同副本具有不同的名称。
+* `position` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 任务在队列中的位置。
 
-- `position` （[UInt32](../../sql-reference/data-types/int-uint.md)） — 队列中任务的位置。
+* `node_name` ([String](../../sql-reference/data-types/string.md)) — ClickHouse Keeper 中的节点名称。
 
-- `node_name` （[String](../../sql-reference/data-types/string.md)） — ClickHouse Keeper 中的节点名称。
+* `type` ([String](../../sql-reference/data-types/string.md)) — 队列中任务的类型，可能为以下之一：
 
-- `type` （[String](../../sql-reference/data-types/string.md)） — 队列中任务的类型，之一：
+  * `GET_PART` — 从另一个副本获取分片。
+  * `ATTACH_PART` — 附加分片，可能来自本副本（如果在 `detached` 目录中找到）。可以将其视为带有一些优化的 `GET_PART`，因为它们几乎相同。
+  * `MERGE_PARTS` — 合并分片。
+  * `DROP_RANGE` — 删除指定分区中指定编号范围内的分片。
+  * `CLEAR_COLUMN` — 注意：已弃用。从指定分区中删除特定列。
+  * `CLEAR_INDEX` — 注意：已弃用。从指定分区中删除特定索引。
+  * `REPLACE_RANGE` — 删除某一范围的分片并用新的分片替换。
+  * `MUTATE_PART` — 对分片应用一个或多个变更。
+  * `ALTER_METADATA` — 根据全局 /metadata 和 /columns 路径应用 ALTER 修改。
 
-    - `GET_PART` — 从另一个副本获取部分。
-    - `ATTACH_PART` — 附加部分，可能来自我们自己的副本（如果在 `detached` 文件夹中找到）。你可以将其视为带有一些优化的 `GET_PART`，因为它们几乎是相同的。
-    - `MERGE_PARTS` — 合并部分。
-    - `DROP_RANGE` — 删除指定范围内指定分区的部分。
-    - `CLEAR_COLUMN` — 注意：已弃用。从指定分区中删除特定列。
-    - `CLEAR_INDEX` — 注意：已弃用。从指定分区中删除特定索引。
-    - `REPLACE_RANGE` — 删除某个范围的部分并用新部分替换它们。
-    - `MUTATE_PART` — 对部分应用一个或多个变更。
-    - `ALTER_METADATA` — 根据全局的 /metadata 和 /columns 路径应用修改。
+* `create_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 任务被提交执行的日期和时间。
 
-- `create_time` （[DateTime](../../sql-reference/data-types/datetime.md)） — 提交任务执行的日期和时间。
+* `required_quorum` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 等待任务完成并确认完成的副本数量。此列仅对 `GET_PARTS` 任务有意义。
 
-- `required_quorum` （[UInt32](../../sql-reference/data-types/int-uint.md)） — 等待任务完成并确认的副本数量。此列仅对 `GET_PARTS` 任务相关。
+* `source_replica` ([String](../../sql-reference/data-types/string.md)) — 源副本的名称。
 
-- `source_replica` （[String](../../sql-reference/data-types/string.md)） — 源副本的名称。
+* `new_part_name` ([String](../../sql-reference/data-types/string.md)) — 新分片的名称。
 
-- `new_part_name` （[String](../../sql-reference/data-types/string.md)） — 新部分的名称。
+* `parts_to_merge` ([Array](../../sql-reference/data-types/array.md) ([String](../../sql-reference/data-types/string.md))) — 要合并或更新的分片名称。
 
-- `parts_to_merge` （[Array](../../sql-reference/data-types/array.md) ([String](../../sql-reference/data-types/string.md)） — 要合并或更新的部分名称。
+* `is_detach` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 标志，指示队列中是否存在 `DETACH_PARTS` 任务。
 
-- `is_detach` （[UInt8](../../sql-reference/data-types/int-uint.md)） — 标志指示 `DETACH_PARTS` 任务是否在队列中。
+* `is_currently_executing` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 标志，指示特定任务当前是否正在执行。
 
-- `is_currently_executing` （[UInt8](../../sql-reference/data-types/int-uint.md)） — 标志指示特定任务是否正在执行。
+* `num_tries` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 为完成任务而失败的尝试次数。
 
-- `num_tries` （[UInt32](../../sql-reference/data-types/int-uint.md)） — 完成任务的失败尝试次数。
+* `last_exception` ([String](../../sql-reference/data-types/string.md)) — 最近一次发生错误的文本消息（如果有）。
 
-- `last_exception` （[String](../../sql-reference/data-types/string.md)） — 关于最后发生的错误的文本消息（如果有）。
+* `last_attempt_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 上一次尝试执行该任务的日期和时间。
 
-- `last_attempt_time` （[DateTime](../../sql-reference/data-types/datetime.md)） — 最近一次尝试任务的日期和时间。
+* `num_postponed` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 该操作被推迟的次数。
 
-- `num_postponed` （[UInt32](../../sql-reference/data-types/int-uint.md)） — 动作被推迟的次数。
+* `postpone_reason` ([String](../../sql-reference/data-types/string.md)) — 任务被推迟的原因。
 
-- `postpone_reason` （[String](../../sql-reference/data-types/string.md)） — 任务被推迟的原因。
+* `last_postpone_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 任务最近一次被推迟的日期和时间。
 
-- `last_postpone_time` （[DateTime](../../sql-reference/data-types/datetime.md)） — 最近一次推迟任务的日期和时间。
+* `merge_type` ([String](../../sql-reference/data-types/string.md)) — 当前合并的类型。如果是变更操作则为空。
 
-- `merge_type` （[String](../../sql-reference/data-types/string.md)） — 当前合并的类型。如果是变更则为空。
-
-**示例**
+**Example**
 
 ```sql
 SELECT * FROM system.replication_queue LIMIT 1 FORMAT Vertical;
@@ -97,4 +95,4 @@ last_postpone_time:     1970-01-01 03:00:00
 
 **另请参阅**
 
-- [管理 ReplicatedMergeTree 表](/sql-reference/statements/system#managing-replicatedmergetree-tables)
+* [管理 ReplicatedMergeTree 表](/sql-reference/statements/system#managing-replicatedmergetree-tables)

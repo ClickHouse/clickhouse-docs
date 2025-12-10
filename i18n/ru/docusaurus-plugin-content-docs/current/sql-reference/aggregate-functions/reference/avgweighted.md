@@ -3,10 +3,10 @@ description: 'Вычисляет взвешенное среднее арифм�
 sidebar_position: 113
 slug: /sql-reference/aggregate-functions/reference/avgweighted
 title: 'avgWeighted'
+doc_type: 'reference'
 ---
 
-
-# avgWeighted
+# avgWeighted {#avgweighted}
 
 Вычисляет [взвешенное среднее арифметическое](https://en.wikipedia.org/wiki/Weighted_arithmetic_mean).
 
@@ -18,17 +18,17 @@ avgWeighted(x, weight)
 
 **Аргументы**
 
-- `x` — Значения.
-- `weight` — Веса значений.
+* `x` — значения.
+* `weight` — веса значений.
 
-`x` и `weight` должны быть обоими
-[целиком](../../../sql-reference/data-types/int-uint.md) или [с плавающей запятой](../../../sql-reference/data-types/float.md),
+`x` и `weight` должны быть либо
+[целыми числами](../../../sql-reference/data-types/int-uint.md), либо [числами с плавающей запятой](../../../sql-reference/data-types/float.md),
 но могут иметь разные типы.
 
 **Возвращаемое значение**
 
-- `NaN`, если все веса равны 0 или параметр весов пуст.
-- Взвешенное среднее в противном случае.
+* `NaN`, если все веса равны 0 или переданный параметр весов пуст.
+* Взвешенное среднее в остальных случаях.
 
 **Тип возвращаемого значения** всегда [Float64](../../../sql-reference/data-types/float.md).
 
@@ -38,7 +38,7 @@ avgWeighted(x, weight)
 
 ```sql
 SELECT avgWeighted(x, w)
-FROM values('x Int8, w Int8', (4, 1), (1, 0), (10, 2))
+FROM VALUES('x Int8, w Int8', (4, 1), (1, 0), (10, 2))
 ```
 
 Результат:
@@ -55,7 +55,7 @@ FROM values('x Int8, w Int8', (4, 1), (1, 0), (10, 2))
 
 ```sql
 SELECT avgWeighted(x, w)
-FROM values('x Int8, w Float64', (4, 1), (1, 0), (10, 2))
+FROM VALUES('x Int8, w Float64', (4, 1), (1, 0), (10, 2))
 ```
 
 Результат:
@@ -72,7 +72,7 @@ FROM values('x Int8, w Float64', (4, 1), (1, 0), (10, 2))
 
 ```sql
 SELECT avgWeighted(x, w)
-FROM values('x Int8, w Int8', (0, 0), (1, 0), (10, 0))
+FROM VALUES('x Int8, w Int8', (0, 0), (1, 0), (10, 0))
 ```
 
 Результат:
@@ -88,7 +88,7 @@ FROM values('x Int8, w Int8', (0, 0), (1, 0), (10, 0))
 Запрос:
 
 ```sql
-CREATE table test (t UInt8) ENGINE = Memory;
+CREATE TABLE test (t UInt8) ENGINE = Memory;
 SELECT avgWeighted(t) FROM test
 ```
 

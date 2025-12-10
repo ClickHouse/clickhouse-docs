@@ -1,14 +1,14 @@
 ---
-'description': '这个函数可以用于测试异常安全性。它将在创建时根据指定概率抛出异常。'
-'sidebar_position': 101
-'slug': '/sql-reference/aggregate-functions/reference/aggthrow'
-'title': 'aggThrow'
+description: '此函数可用于测试异常安全性。它会在创建时以指定的概率抛出异常。'
+sidebar_position: 101
+slug: /sql-reference/aggregate-functions/reference/aggthrow
+title: 'aggThrow'
+doc_type: 'reference'
 ---
 
+# aggThrow {#aggthrow}
 
-# aggThrow
-
-此函数可用于测试异常安全性。它将在创建时以指定的概率抛出异常。
+此函数可用于测试异常安全性。它会在创建时以指定概率抛出异常。
 
 **语法**
 
@@ -18,11 +18,11 @@ aggThrow(throw_prob)
 
 **参数**
 
-- `throw_prob` — 创建时抛出的概率。 [Float64](../../data-types/float.md)。
+* `throw_prob` — 在创建时抛出异常的概率。[Float64](../../data-types/float.md)。
 
 **返回值**
 
-- 一个异常： `Code: 503. DB::Exception: Aggregate function aggThrow has thrown exception successfully`。
+* 异常：`Code: 503. DB::Exception: Aggregate function aggThrow has thrown exception successfully`。
 
 **示例**
 
@@ -35,6 +35,6 @@ SELECT number % 2 AS even, aggThrow(number) FROM numbers(10) GROUP BY even;
 结果：
 
 ```response
-Received exception:
-Code: 503. DB::Exception: Aggregate function aggThrow has thrown exception successfully: While executing AggregatingTransform. (AGGREGATE_FUNCTION_THROW)
+接收到异常：
+代码：503. DB::Exception：聚合函数 aggThrow 已成功抛出异常：执行 AggregatingTransform 时发生。(AGGREGATE_FUNCTION_THROW)
 ```

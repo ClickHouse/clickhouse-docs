@@ -25,7 +25,7 @@ jobs:
           private-key: "${{ secrets.WORKFLOW_AUTH_PUBLIC_PRIVATE_KEY }}"
 
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           # Use the GitHub App token if available, otherwise fallback to GITHUB_TOKEN

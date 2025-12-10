@@ -1,36 +1,34 @@
 ---
 description: '入力値の移動合計を計算します。'
 sidebar_position: 144
-slug: '/sql-reference/aggregate-functions/reference/grouparraymovingsum'
+slug: /sql-reference/aggregate-functions/reference/grouparraymovingsum
 title: 'groupArrayMovingSum'
+doc_type: 'reference'
 ---
 
+# groupArrayMovingSum {#grouparraymovingsum}
 
-
-
-# groupArrayMovingSum
-
-入力値の移動合計を計算します。
+入力値の移動和を計算します。
 
 ```sql
 groupArrayMovingSum(numbers_for_summing)
 groupArrayMovingSum(window_size)(numbers_for_summing)
 ```
 
-この関数はウィンドウサイズをパラメータとして受け取ることができます。指定しない場合、関数はカラムの行数と等しいウィンドウサイズを取ります。
+この関数はウィンドウサイズをパラメータとして受け取れます。指定しない場合は、列内の行数と同じウィンドウサイズが使用されます。
 
 **引数**
 
-- `numbers_for_summing` — [式](/sql-reference/syntax#expressions) で、数値データ型の値を生成します。
-- `window_size` — 計算ウィンドウのサイズ。
+* `numbers_for_summing` — 数値データ型の値を返す[式](/sql-reference/syntax#expressions)。
+* `window_size` — 計算に用いるウィンドウのサイズ。
 
-**返される値**
+**戻り値**
 
-- 入力データと同じサイズおよびタイプの配列。
+* 入力データと同じサイズおよび型の配列。
 
 **例**
 
-サンプルテーブル:
+サンプルテーブル：
 
 ```sql
 CREATE TABLE t

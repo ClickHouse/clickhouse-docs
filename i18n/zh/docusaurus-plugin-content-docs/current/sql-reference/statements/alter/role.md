@@ -1,12 +1,13 @@
 ---
-'description': '角色的文档'
-'sidebar_label': 'ROLE'
-'sidebar_position': 46
-'slug': '/sql-reference/statements/alter/role'
-'title': 'ALTER ROLE'
+description: '角色文档'
+sidebar_label: 'ROLE'
+sidebar_position: 46
+slug: /sql-reference/statements/alter/role
+title: 'ALTER ROLE'
+doc_type: 'reference'
 ---
 
-更改角色。
+修改角色。
 
 语法：
 

@@ -1,18 +1,17 @@
 ---
-description: 'SummingMergeTree наследует от движка MergeTree. Его ключевая особенность 
-  заключается в возможности автоматически суммировать числовые данные во время слияния частей.'
+description: 'SummingMergeTree наследуется от движка MergeTree. Его ключевая особенность — возможность автоматически суммировать числовые данные при слиянии частей.'
 sidebar_label: 'SummingMergeTree'
 sidebar_position: 50
 slug: /engines/table-engines/mergetree-family/summingmergetree
-title: 'SummingMergeTree'
+title: 'Табличный движок SummingMergeTree'
+doc_type: 'reference'
 ---
 
+# Движок таблиц SummingMergeTree {#summingmergetree-table-engine}
 
-# SummingMergeTree
+Этот движок наследуется от [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree). Разница в том, что при слиянии частей данных для таблиц `SummingMergeTree` ClickHouse заменяет все строки с одинаковым первичным ключом (или, точнее, с одинаковым [ключом сортировки](../../../engines/table-engines/mergetree-family/mergetree.md)) одной строкой, которая содержит суммы значений для столбцов с числовым типом данных. Если ключ сортировки построен таким образом, что одному значению ключа соответствует большое количество строк, это существенно уменьшает объем хранимых данных и ускоряет выборку.
 
-Движок наследует от [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree). Разница заключается в том, что при слиянии частей данных для таблиц `SummingMergeTree` ClickHouse заменяет все строки с одинаковым первичным ключом (или, точнее, с одинаковым [ключом сортировки](../../../engines/table-engines/mergetree-family/mergetree.md)) на одну строку, которая содержит summed значения для колонок с числовыми типами данных. Если ключ сортировки составлен таким образом, что одно значение ключа соответствует большому количеству строк, это значительно уменьшает объем хранимых данных и ускоряет выборку данных.
-
-Рекомендуем использовать движок вместе с `MergeTree`. Храните полные данные в таблице `MergeTree`, а используйте `SummingMergeTree` для хранения агрегированных данных, например, при подготовке отчетов. Такой подход предотвратит потерю ценных данных из-за некорректно составленного первичного ключа.
+Мы рекомендуем использовать этот движок совместно с `MergeTree`. Храните полные данные в таблице `MergeTree`, а `SummingMergeTree` используйте для хранения агрегированных данных, например при подготовке отчетов. Такой подход поможет избежать потери ценных данных из-за некорректно составленного первичного ключа.
 
 ## Создание таблицы {#creating-a-table}
 
@@ -29,42 +28,40 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 [SETTINGS name=value, ...]
 ```
 
-Для описания параметров запроса смотрите [описание запроса](../../../sql-reference/statements/create/table.md).
+Описание параметров запроса см. в [описании запроса](../../../sql-reference/statements/create/table.md).
 
 ### Параметры SummingMergeTree {#parameters-of-summingmergetree}
 
-#### columns {#columns}
+#### Столбцы {#columns}
 
-`columns` - кортеж с названиями колонок, значения которых будут суммироваться. Необязательный параметр.
-    Колонки должны быть числового типа и не должны входить в ключ партиционирования или сортировки.
+`columns` — кортеж с именами столбцов, значения в которых будут суммироваться. Необязательный параметр.
+Столбцы должны иметь числовой тип и не должны входить в ключ партиционирования или сортировки.
 
-Если `columns` не указан, ClickHouse суммирует значения во всех колонках с числовым типом данных, которые не входят в ключ сортировки.
+Если `columns` не указан, ClickHouse суммирует значения во всех столбцах с числовым типом данных, которые не входят в ключ сортировки.
 
-### Классы запросов {#query-clauses}
+### Части запроса {#query-clauses}
 
-При создании таблицы `SummingMergeTree` требуются те же [классы](../../../engines/table-engines/mergetree-family/mergetree.md), что и при создании таблицы `MergeTree`.
+При создании таблицы `SummingMergeTree` требуются те же [части запроса](../../../engines/table-engines/mergetree-family/mergetree.md), что и при создании таблицы `MergeTree`.
 
 <details markdown="1">
+  <summary>Устаревший метод создания таблицы</summary>
 
-<summary>Устаревший метод создания таблицы</summary>
+  :::note
+  Не используйте этот метод в новых проектах и, по возможности, переведите старые проекты на метод, описанный выше.
+  :::
 
-:::note
-Не используйте этот метод в новых проектах и, если возможно, переключите старые проекты на метод, описанный выше.
-:::
+  ```sql
+  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+  (
+      name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
+      name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
+      ...
+  ) ENGINE [=] SummingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [columns])
+  ```
 
-```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-(
-    name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
-    name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
-    ...
-) ENGINE [=] SummingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [columns])
-```
+  Все параметры, кроме `columns`, имеют то же значение, что и в `MergeTree`.
 
-Все параметры, кроме `columns`, имеют то же значение, что и в `MergeTree`.
-
-- `columns` — кортеж с названиями колонок, значения которых будут суммироваться. Необязательный параметр. Для описания смотрите текст выше.
-
+  * `columns` — кортеж с именами столбцов, значения которых будут суммироваться. Необязательный параметр. Описание см. в тексте выше.
 </details>
 
 ## Пример использования {#usage-example}
@@ -81,13 +78,13 @@ ENGINE = SummingMergeTree()
 ORDER BY key
 ```
 
-Вставим в нее данные:
+Запишите в неё данные:
 
 ```sql
-INSERT INTO summtt Values(1,1),(1,2),(2,1)
+INSERT INTO summtt VALUES(1,1),(1,2),(2,1)
 ```
 
-ClickHouse может не полностью суммировать все строки ([см. ниже](#data-processing)), поэтому мы используем агрегатную функцию `sum` и класс `GROUP BY` в запросе.
+ClickHouse может суммировать строки не полностью ([см. ниже](#data-processing)), поэтому в запросе мы используем агрегатную функцию `sum` и предложение `GROUP BY`.
 
 ```sql
 SELECT key, sum(value) FROM summtt GROUP BY key
@@ -102,34 +99,34 @@ SELECT key, sum(value) FROM summtt GROUP BY key
 
 ## Обработка данных {#data-processing}
 
-Когда данные вставляются в таблицу, они сохраняются в исходном виде. ClickHouse периодически сливает вставленные части данных, и именно в это время строки с одинаковым первичным ключом суммируются и заменяются одной для каждой результирующей части данных.
+Когда данные вставляются в таблицу, они сохраняются как есть. ClickHouse периодически сливает вставленные части данных, и именно в этот момент строки с одинаковым первичным ключом суммируются и заменяются одной строкой для каждой получившейся части данных.
 
-ClickHouse может объединить части данных так, что различные результирующие части данных могут состоять из строк с одинаковым первичным ключом, т.е. суммирование будет неполным. Поэтому в запросе ( `SELECT`) следует использовать агрегатную функцию [sum()](/sql-reference/aggregate-functions/reference/sum) и класс `GROUP BY`, как описано в примере выше.
+ClickHouse может сливать части данных таким образом, что разные получившиеся части данных могут содержать строки с одинаковым первичным ключом, т. е. суммирование будет неполным. Поэтому при выполнении запроса (`SELECT`) следует использовать агрегатную функцию [sum()](/sql-reference/aggregate-functions/reference/sum) и предложение `GROUP BY`, как описано в примере выше.
 
-### Общие правила для суммирования {#common-rules-for-summation}
+### Общие правила суммирования {#common-rules-for-summation}
 
-Значения в колонках с числовыми типами данных суммируются. Набор колонок определяется параметром `columns`.
+Значения в столбцах с числовым типом данных суммируются. Набор столбцов определяется параметром `columns`.
 
-Если значения во всех колонках для суммирования были 0, строка удаляется.
+Если значения были равны 0 во всех столбцах для суммирования, строка удаляется.
 
-Если колонка не находится в первичном ключе и не суммируется, выбирается произвольное значение из существующих.
+Если столбец не входит в первичный ключ и не суммируется, из существующих значений выбирается произвольное.
 
-Значения не суммируются для колонок в первичном ключе.
+Значения не суммируются для столбцов, входящих в первичный ключ.
 
-### Суммирование в колонках AggregateFunction {#the-summation-in-the-aggregatefunction-columns}
+### Суммирование в столбцах AggregateFunction {#the-summation-in-the-aggregatefunction-columns}
 
-Для колонок типа [AggregateFunction](../../../sql-reference/data-types/aggregatefunction.md) ClickHouse ведет себя как движок [AggregatingMergeTree](../../../engines/table-engines/mergetree-family/aggregatingmergetree.md), агрегируя в соответствии с функцией.
+Для столбцов типа [AggregateFunction](../../../sql-reference/data-types/aggregatefunction.md) ClickHouse ведёт себя как движок [AggregatingMergeTree](../../../engines/table-engines/mergetree-family/aggregatingmergetree.md), агрегируя в соответствии с функцией.
 
 ### Вложенные структуры {#nested-structures}
 
-Таблица может содержать вложенные структуры данных, которые обрабатываются специальным образом.
+Таблица может содержать вложенные структуры данных, которые обрабатываются особым образом.
 
 Если имя вложенной таблицы оканчивается на `Map` и она содержит как минимум два столбца, удовлетворяющих следующим критериям:
 
-- первый столбец числовой `(*Int*, Date, DateTime)` или строковый `(String, FixedString)`, назовем его `key`,
-- остальные столбцы арифметические `(*Int*, Float32/64)`, назовем их `(values...)`,
+* первый столбец — числовой `(*Int*, Date, DateTime)` или строковый `(String, FixedString)`, назовём его `key`,
+* остальные столбцы — арифметические `(*Int*, Float32/64)`, назовём их `(values...)`,
 
-то эта вложенная таблица интерпретируется как отображение `key => (values...)`, и при слиянии ее строк элементы двух наборов данных сливаются по `key` с суммированием соответствующих `(values...)`.
+то такая вложенная таблица интерпретируется как отображение `key => (values...)`, и при слиянии её строк элементы двух наборов данных объединяются по `key` с суммированием соответствующих `(values...)`.
 
 Примеры:
 
@@ -152,7 +149,7 @@ INSERT INTO nested_sum VALUES ('2020-01-01', 12, ['Chrome', 'Firefox'], [20, 1],
 INSERT INTO nested_sum VALUES ('2020-01-01', 12, ['IE'], [22], [0]);
 INSERT INTO nested_sum VALUES ('2020-01-01', 10, ['Chrome'], [4], [3]);
 
-OPTIMIZE TABLE nested_sum FINAL; -- эмуляция слияния 
+OPTIMIZE TABLE nested_sum FINAL; -- эмулировать слияние 
 
 SELECT * FROM nested_sum;
 ┌───────date─┬─site─┬─hitsMap.browser───────────────────┬─hitsMap.imps─┬─hitsMap.clicks─┐
@@ -187,10 +184,10 @@ ARRAY JOIN
 └──────┴─────────┴─────────────┴────────┘
 ```
 
-При запросе данных используйте функцию [sumMap(key, value)](../../../sql-reference/aggregate-functions/reference/summap.md) для агрегации `Map`.
+При запросе данных используйте функцию [sumMap(key, value)](../../../sql-reference/aggregate-functions/reference/summap.md) для агрегации значений типа `Map`.
 
-Для вложенной структуры данных не нужно указывать ее колонки в кортеже колонок для суммирования.
+Для вложенных структур данных не нужно указывать их столбцы в кортеже столбцов для суммирования.
 
-## Связанный контент {#related-content}
+## Связанные материалы {#related-content}
 
-- Блог: [Использование агрегационных комбинаторов в ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
+- Блог: [Использование агрегатных комбинаторов в ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)

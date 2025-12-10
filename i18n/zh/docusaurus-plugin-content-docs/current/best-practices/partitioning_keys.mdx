@@ -1,69 +1,68 @@
 ---
-'slug': '/best-practices/choosing-a-partitioning-key'
-'sidebar_position': 10
-'sidebar_label': '选择分区键'
-'title': '选择分区键'
-'description': '页面描述如何选择分区键'
-'keywords':
-- 'partitioning key'
+slug: /best-practices/choosing-a-partitioning-key
+sidebar_position: 10
+sidebar_label: '选择分区键'
+title: '选择分区键'
+description: '介绍如何选择分区键的页面'
+keywords: ['partitioning key']
+doc_type: 'reference'
 ---
 
 import Image from '@theme/IdealImage';
 import partitions from '@site/static/images/bestpractices/partitions.png';
 import merges_with_partitions from '@site/static/images/bestpractices/merges_with_partitions.png';
 
-:::note 数据管理技术
-分区主要是一种数据管理技术，而不是查询优化工具，尽管它可以在特定工作负载中提升性能，但不应作为加速查询的第一机制；分区键必须谨慎选择，清楚其影响，仅在符合数据生命周期需求或良好理解的访问模式时应用。
+:::note 一种数据管理技术
+分区本质上是一种数据管理技术，而非查询优化工具。尽管它可以在特定工作负载下提升性能，但不应作为加速查询的首选机制；必须在充分理解其影响的前提下谨慎选择分区键，并且仅在其与数据生命周期需求或已充分分析的访问模式相契合时才使用。
 :::
 
-在 ClickHouse 中，分区将数据按照指定的键组织成逻辑段。这是在创建表时使用 `PARTITION BY` 子句定义的，通常用于按时间间隔、类别或其他业务相关维度对行进行分组。每个分区表达式的唯一值在磁盘上形成自己的物理分区，ClickHouse 为这些值中的每一个存储数据于单独的部分。分区改善了数据管理，简化了保留策略，并能帮助处理某些查询模式。
+在 ClickHouse 中，分区会根据指定的键将数据组织成逻辑片段。这通过在建表时使用 `PARTITION BY` 子句来定义，通常用于按时间区间、类别或其他与业务相关的维度对行进行分组。分区表达式的每个唯一值都会在磁盘上形成其独立的物理分区，ClickHouse 会针对每个值将数据存储在各自的 part 中。分区能够改进数据管理，简化数据保留策略，并且可以帮助优化某些查询模式。
 
-例如，考虑以下带有分区键 `toStartOfMonth(date)` 的英国价格支付数据集表。
+例如，考虑下面这个英国房产成交价格数据集的表，它使用 `toStartOfMonth(date)` 作为分区键。
 
 ```sql
 CREATE TABLE uk.uk_price_paid_simple_partitioned
 (
-    date Date,
- town LowCardinality(String),
- street LowCardinality(String),
- price UInt32
+  date Date,
+  town LowCardinality(String),
+  street LowCardinality(String),
+  price UInt32
 )
 ENGINE = MergeTree
 ORDER BY (town, street)
 PARTITION BY toStartOfMonth(date)
 ```
 
-每当一组行插入到表中时，ClickHouse 不会创建一个单一的数据部分来包含所有插入的行（如 [这里](/parts) 所述），而是为每个插入行中的唯一分区键值创建一个新数据部分：
+每当向表中插入一组行时，ClickHouse 不会像[这里](/operations/settings/settings#max_insert_block_size)描述的那样创建一个包含所有插入行的单一数据部分，而是会针对插入行中每个唯一的分区键值创建一个新的数据部分：
 
-<Image img={partitions} size="lg" alt="Partitions" />
+<Image img={partitions} size="lg" alt="分区" />
 
+ClickHouse 服务器首先根据分区键值 `toStartOfMonth(date)` 将上图示例中插入的 4 行数据拆分开来。然后，对于确定的每个分区，这些行会像[通常情况那样](/parts)一样，依次经过多个顺序步骤处理（① 排序，② 拆分为列，③ 压缩，④ 写入磁盘）。
 
-ClickHouse 服务器首先根据其分区键值 `toStartOfMonth(date)` 将上面示例插入中由 4 行组成的行分割开。然后，对于每个识别的分区，这些行像[往常一样](/parts) 处理，执行几个顺序步骤（① 排序，② 划分列，③ 压缩，④ 写入磁盘）。
+如需更详细的分区说明，建议参阅[本指南](/partitions)。
 
-要获取关于分区的更详细解释，我们推荐[本指南](/partitions)。
+启用分区后，ClickHouse 只会在分区内部对数据部分进行[合并](/merges)，而不会跨分区进行合并。我们在上面的示例表中对此进行了说明，见[这里](/parts)：
 
-启用分区后，ClickHouse 仅在分区内[合并](/merges) 数据部分，而不是跨分区。我们为上面的示例表进行概述：
+<Image img={merges_with_partitions} size="md" alt="分区" />
 
-<Image img={merges_with_partitions} size="md" alt="Partitions" />
+## 分区的应用 \{#applications-of-partitioning\}
 
-## 分区的应用 {#applications-of-partitioning}
-
-分区是管理 ClickHouse 中大数据集的强大工具，尤其在可观察性和分析用例中。它通过允许与时间或业务逻辑对齐的整个分区一次性删除、移动或归档，来实现有效的数据生命周期操作。这比逐行删除或复制操作要快得多且资源消耗更少。分区还与 ClickHouse 功能如 TTL 和分层存储无缝集成，使得在无需自定义协调的情况下实施保留策略或热/冷存储策略成为可能。例如，可以将最近的数据保留在快速的 SSD 储存上，而将较老的分区自动转移到更便宜的对象存储中。
+分区是在 ClickHouse 中管理大型数据集的强大工具，尤其适用于可观测性和分析类用例。通过允许在一次元数据操作中删除、移动或归档整个分区（通常按时间或业务逻辑对齐），分区可以实现高效的数据生命周期管理。与逐行删除或复制操作相比，这种方式显著更快且资源占用更低。分区还能与 ClickHouse 的 TTL 和分层存储等特性良好集成，使你无需自定义编排即可实现数据保留策略或冷热存储策略。例如，近期数据可以保存在由 SSD 支撑的高速存储上，而较旧的分区则会自动迁移到更廉价的对象存储中。
 
 虽然分区可以提升某些工作负载的查询性能，但也可能对响应时间产生负面影响。
 
-如果分区键不在主键中并您按其过滤，则用户可能会看到分区提升查询性能。有关示例，请参见[此处](/partitions#query-optimization)。
+如果分区键不在主键中，而查询按该键进行过滤，启用分区后用户可能会看到查询性能的提升。示例请参见[此处](/partitions#query-optimization)。
 
-相反，如果查询需要跨分区查询，性能可能会由于总部分数的增加而受到负面影响。因此，用户在考虑将分区作为查询优化技术之前，应该了解其访问模式。
+相反，如果查询需要跨多个分区访问数据，由于总的 part 数量增加，性能可能会受到负面影响。基于这一原因，用户在将分区视为一种查询优化技术之前，应先理解自身的访问模式。
 
-总之，用户应将分区主要视为一种数据管理技术。有关管理数据的示例，请查看来自可观察性用例指南的 ["管理数据"](/observability/managing-data) 和来自核心概念 - 表分区的 ["表分区的用途是什么？"](/partitions#data-management)。
+总之，用户应主要将分区视为一种数据管理技术。有关数据管理的示例，请参见可观测性用例指南中的[“管理数据”](/observability/managing-data)以及“核心概念 - 表分区”中的[“表分区用于做什么？”](/partitions#data-management)。
 
-## 选择低基数分区键 {#choose-a-low-cardinality-partitioning-key}
+## 选择低基数的分区键 \{#choose-a-low-cardinality-partitioning-key\}
 
-重要的是，过多的部分将对查询性能产生负面影响。如果部分数量超过指定的总限制（在[总数](/operations/settings/merge-tree-settings#max_parts_in_total)或[每个分区](/operations/settings/merge-tree-settings#parts_to_throw_insert)），ClickHouse 将因此对插入作出响应，提示[“部分太多”](/knowledgebase/exception-too-many-parts) 错误。
+需要特别注意的是，更多的 parts 会对查询性能产生负面影响。因此，如果 parts 的数量超过了配置好的限制（无论是[总量](/operations/settings/merge-tree-settings#max_parts_in_total)还是[按分区](/operations/settings/merge-tree-settings#parts_to_throw_insert)），ClickHouse 会在插入时返回一个 [“too many parts”](/knowledgebase/exception-too-many-parts) 错误。
 
-选择正确的 **基数** 对于分区键至关重要。高基数的分区键——即不同分区值的数量较大——可能会导致数据部分的激增。由于 ClickHouse 不会合并跨分区的部分，过多的分区将导致未合并的部分过多，最终触发“部分太多”错误。[合并是必要的](/merges) ，以减少存储碎片并优化查询速度，但对于高基数的分区，该合并潜力会丧失。
+为分区键选择合适的**基数（cardinality）**至关重要。高基数分区键——即具有大量不同分区值的键——会导致 parts 数量激增。由于 ClickHouse 不会跨分区合并 parts，分区过多会产生过多未合并的 parts，最终触发 “Too many parts” 错误。[Merge 操作是必不可少的](/merges)，它可以减少存储碎片并优化查询速度，但在高基数分区的场景下，这种 merge 潜力会丧失。
 
-相反，**低基数分区键**——具有 100 到 1,000 个不同值——通常是最优的。它能够有效地进行部分合并，保持元数据开销低，并避免在存储中创建过多对象。此外，ClickHouse 自动在分区列上建立 MinMax 索引，这可以显著加快对这些列进行过滤的查询。例如，当表按 `toStartOfMonth(date)` 进行分区时，按月过滤可使引擎完全跳过无关的分区及其部分。
+相反，一个**低基数的分区键**——不同取值少于 100 到 1,000 个——通常是更优的选择。它有利于高效地合并 parts，保持较低的元数据开销，并避免在存储中创建过多对象。此外，ClickHouse 会在分区列上自动构建 MinMax 索引，这可以显著加速在这些列上进行过滤的查询。例如，当表按 `toStartOfMonth(date)` 进行分区时，按月份过滤可以让引擎完全跳过无关的分区及其 parts。
 
-虽然分区可以在某些查询模式中提升性能，但它主要是一种数据管理特性。在许多情况下，由于数据碎片化增加和扫描更多部分，在所有分区间查询可能比使用非分区表更慢。明智地使用分区，并始终确保所选键是低基数并符合您的数据生命周期政策（例如，通过 TTL 进行保留）。如果您不确定分区是否必要，您可以先从不使用分区开始，根据观察到的访问模式再进行优化。
+虽然分区在某些查询模式下可以提升性能，但它本质上主要是一个数据管理特性。在很多情况下，由于数据碎片化加剧以及需要扫描的 parts 更多，跨所有分区进行查询甚至可能比使用未分区表更慢。请谨慎使用分区，并始终确保所选分区键是低基数的，同时与数据生命周期策略（例如基于 TTL 的保留策略）保持一致。如果不确定是否需要分区，可以先从不分区开始，再根据实际访问模式进行后续优化。

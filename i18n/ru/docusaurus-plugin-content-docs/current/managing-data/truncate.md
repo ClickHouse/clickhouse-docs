@@ -1,13 +1,15 @@
 ---
 slug: /managing-data/truncate
-sidebar_label: 'Обрезать таблицу'
-title: 'Обрезать таблицу'
+sidebar_label: 'Очищение таблицы'
+title: 'Очищение таблицы'
 hide_title: false
-description: 'Обрезка позволяет удалить данные в таблице или базе данных, сохраняя их существование.'
+description: 'Очищение (TRUNCATE) позволяет удалить данные из таблицы или базы данных, сохранив саму таблицу или базу данных.'
+doc_type: 'reference'
+keywords: ['truncate', 'удаление данных', 'удалить данные', 'очистка таблицы', 'обслуживание таблицы']
 ---
 
-Обрезка позволяет удалить данные в таблице или базе данных, сохраняя их существование. Это легковесная операция, которую нельзя отменить.
+Очищение (TRUNCATE) позволяет удалить данные из таблицы или базы данных, сохранив при этом саму таблицу или базу данных. Это облегчённая операция, которую нельзя отменить.
 
-import Truncate from '@site/docs/sql-reference/statements/truncate.md';
+import Truncate from '@site/i18n/ru/docusaurus-plugin-content-docs/current/sql-reference/statements/truncate.md';
 
-<Truncate/>
+<Truncate />

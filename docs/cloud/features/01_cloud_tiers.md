@@ -1,8 +1,9 @@
 ---
-sidebar_label: 'ClickHouse Cloud Tiers'
+sidebar_label: 'ClickHouse Cloud tiers'
 slug: /cloud/manage/cloud-tiers
 title: 'ClickHouse Cloud Tiers'
 description: 'Cloud tiers available in ClickHouse Cloud'
+keywords: ['cloud tiers', 'service plans', 'cloud pricing tiers', 'cloud service levels']
 doc_type: 'reference'
 ---
 
@@ -22,7 +23,7 @@ This page discusses which tiers are right for your specific use case.
     <th>[Enterprise](#enterprise)</th>
   </tr></thead>
 <tbody>
-  <tr>
+  <tr className="table-category-header">
     <td>**Service Features**</td>
     <td colspan="3"></td>
   </tr>
@@ -104,7 +105,7 @@ This page discusses which tiers are right for your specific use case.
     <td></td>
     <td>✓</td>
   </tr>
-  <tr>
+  <tr className="table-category-header">
     <td>**Security**</td>
     <td colspan="3"></td>
   </tr>
@@ -173,7 +174,7 @@ You can upgrade to the Scale or Enterprise tier to scale their services.
 Designed for workloads requiring enhanced SLAs (2+ replica deployments), scalability, and advanced security.
 
 - Offers support for features such as: 
-  - [Private networking support](/cloud/security/private-link-overview).
+  - [Private networking support](/cloud/security/connectivity/private-networking).
   - [Compute-compute separation](../reference/warehouses#what-is-compute-compute-separation).
   - [Flexible scaling](/manage/scaling) options (scale up/down, in/out).
   - [Configurable backups](/cloud/manage/backups/configurable-backups)

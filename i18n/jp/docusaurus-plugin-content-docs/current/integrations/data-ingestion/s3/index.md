@@ -1,9 +1,14 @@
 ---
-slug: '/integrations/s3'
+slug: /integrations/s3
 sidebar_position: 1
-sidebar_label: 'ClickHouse との S3 統合'
-title: 'ClickHouse との S3 統合'
-description: 'ClickHouse と S3 を統合する方法について説明したページ'
+sidebar_label: 'ClickHouse と S3 の統合'
+title: 'ClickHouse と S3 の統合'
+description: 'S3 と ClickHouse の統合方法を説明するページ'
+keywords: ['Amazon S3', 'オブジェクトストレージ', 'クラウドストレージ', 'データレイク', 'S3 連携']
+doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
 ---
 
 import BucketDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_S3_authentication_and_bucket.md';
@@ -12,88 +17,93 @@ import Bucket1 from '@site/static/images/integrations/data-ingestion/s3/bucket1.
 import Bucket2 from '@site/static/images/integrations/data-ingestion/s3/bucket2.png';
 import Image from '@theme/IdealImage';
 
-# S3とClickHouseの統合
+# ClickHouse と S3 の統合 {#integrating-s3-with-clickhouse}
 
-S3からClickHouseにデータを挿入することができ、またS3をエクスポート先として使用することで、「データレイク」アーキテクチャとの相互作用を実現します。さらに、S3は「コールド」ストレージ層を提供し、ストレージと計算を分離するのに役立ちます。以下のセクションでは、ニューヨーク市のタクシーデータセットを使用して、S3とClickHouse間のデータ移動プロセスを示し、主要な構成パラメータを特定し、パフォーマンスを最適化するためのヒントを提供します。
-## S3テーブル関数 {#s3-table-functions}
+S3 から ClickHouse にデータを挿入できるほか、S3 をエクスポート先としても利用できるため、「データレイク」アーキテクチャとの連携が可能になります。さらに、S3 は「コールド」ストレージ階層を提供し、ストレージとコンピュートの分離にも役立ちます。以下のセクションでは、New York City taxi データセットを用いて、S3 と ClickHouse 間でデータを移動する手順を示すとともに、主要な構成パラメータを明らかにし、パフォーマンスを最適化するためのヒントを紹介します。
 
-`s3`テーブル関数を使用すると、S3互換ストレージからファイルの読み書きができます。この構文の概要は以下の通りです：
+## S3 テーブル関数 {#s3-table-functions}
+
+`s3` テーブル関数を使用すると、S3 互換ストレージからおよび S3 互換ストレージへファイルの読み取りと書き込みができます。構文の概要は次のとおりです。
 
 ```sql
 s3(path, [aws_access_key_id, aws_secret_access_key,] [format, [structure, [compression]]])
 ```
 
-ここで、
+where:
 
-* path — ファイルへのパスを含むバケットURL。以下のワイルドカードを読み取り専用モードでサポートします：`*`、`?`、`{abc,def}` および `{N..M}`（ここで `N` と `M` は数値、`'abc'` と `'def'` は文字列）。詳細については、[パスにおけるワイルドカードの使用](/engines/table-engines/integrations/s3/#wildcards-in-path)のドキュメントを参照してください。
+* path — ファイルへのパスを含むバケットの URL。読み取り専用モードで次のワイルドカードをサポートします: `*`, `?`, `{abc,def}`, `{N..M}`。ここで、`N`, `M` は数値、`'abc'`, `'def'` は文字列です。詳細は、[パスでのワイルドカードの使用](/engines/table-engines/integrations/s3/#wildcards-in-path)に関するドキュメントを参照してください。
 * format — ファイルの[フォーマット](/interfaces/formats#formats-overview)。
-* structure — テーブルの構造。形式 `'column1_name column1_type, column2_name column2_type, ...'`。
-* compression — パラメータはオプションです。サポートされる値：`none`、`gzip/gz`、`brotli/br`、`xz/LZMA`、`zstd/zst`。デフォルトでは、ファイル拡張子によって圧縮を自動検出します。
+* structure — テーブルの構造。書式は `'column1_name column1_type, column2_name column2_type, ...'` です。
+* compression — 省略可能なパラメータ。サポートされている値: `none`, `gzip/gz`, `brotli/br`, `xz/LZMA`, `zstd/zst`。デフォルトでは、ファイル拡張子から圧縮形式を自動検出します。
 
-パス式でワイルドカードを使用することで、複数のファイルを参照し、並列処理の扉を開きます。
+パス式でワイルドカードを使用すると、複数のファイルを参照できるようになり、並列処理による読み取りが可能になります。
+
 ### 準備 {#preparation}
 
-ClickHouseでテーブルを作成する前に、S3バケット内のデータを詳しく見ることをお勧めします。これは、`DESCRIBE`ステートメントを使用してClickHouseから直接行うことができます：
+ClickHouse でテーブルを作成する前に、まず S3 バケット内のデータを詳しく確認しておくとよいでしょう。これは、ClickHouse から直接 `DESCRIBE` ステートメントを使用して実行できます。
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_*.gz', 'TabSeparatedWithNames');
 ```
 
-`DESCRIBE TABLE`ステートメントの出力は、ClickHouseがこのデータをどのように自動的に推論するかを示します。S3バケットで表示された内容に留意してください。また、gzip圧縮形式を自動的に認識し、解凍することも確認してください：
+`DESCRIBE TABLE` ステートメントの出力を見ると、S3 バケット内のデータを ClickHouse がどのように自動推論するかがわかります。また、gzip 圧縮形式も自動的に認識して解凍されることに注意してください。
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_*.gz', 'TabSeparatedWithNames') SETTINGS describe_compact_output=1
-
-┌─name──────────────────┬─type───────────────┐
-│ trip_id               │ Nullable(Int64)    │
-│ vendor_id             │ Nullable(Int64)    │
-│ pickup_date           │ Nullable(Date)     │
-│ pickup_datetime       │ Nullable(DateTime) │
-│ dropoff_date          │ Nullable(Date)     │
-│ dropoff_datetime      │ Nullable(DateTime) │
-│ store_and_fwd_flag    │ Nullable(Int64)    │
-│ rate_code_id          │ Nullable(Int64)    │
-│ pickup_longitude      │ Nullable(Float64)  │
-│ pickup_latitude       │ Nullable(Float64)  │
-│ dropoff_longitude     │ Nullable(Float64)  │
-│ dropoff_latitude      │ Nullable(Float64)  │
-│ passenger_count       │ Nullable(Int64)    │
-│ trip_distance         │ Nullable(String)   │
-│ fare_amount           │ Nullable(String)   │
-│ extra                 │ Nullable(String)   │
-│ mta_tax               │ Nullable(String)   │
-│ tip_amount            │ Nullable(String)   │
-│ tolls_amount          │ Nullable(Float64)  │
-│ ehail_fee             │ Nullable(Int64)    │
-│ improvement_surcharge │ Nullable(String)   │
-│ total_amount          │ Nullable(String)   │
-│ payment_type          │ Nullable(String)   │
-│ trip_type             │ Nullable(Int64)    │
-│ pickup                │ Nullable(String)   │
-│ dropoff               │ Nullable(String)   │
-│ cab_type              │ Nullable(String)   │
-│ pickup_nyct2010_gid   │ Nullable(Int64)    │
-│ pickup_ctlabel        │ Nullable(Float64)  │
-│ pickup_borocode       │ Nullable(Int64)    │
-│ pickup_ct2010         │ Nullable(String)   │
-│ pickup_boroct2010     │ Nullable(String)   │
-│ pickup_cdeligibil     │ Nullable(String)   │
-│ pickup_ntacode        │ Nullable(String)   │
-│ pickup_ntaname        │ Nullable(String)   │
-│ pickup_puma           │ Nullable(Int64)    │
-│ dropoff_nyct2010_gid  │ Nullable(Int64)    │
-│ dropoff_ctlabel       │ Nullable(Float64)  │
-│ dropoff_borocode      │ Nullable(Int64)    │
-│ dropoff_ct2010        │ Nullable(String)   │
-│ dropoff_boroct2010    │ Nullable(String)   │
-│ dropoff_cdeligibil    │ Nullable(String)   │
-│ dropoff_ntacode       │ Nullable(String)   │
-│ dropoff_ntaname       │ Nullable(String)   │
-│ dropoff_puma          │ Nullable(Int64)    │
-└───────────────────────┴────────────────────┘
 ```
 
-私たちのS3ベースのデータセットと対話するために、標準の`MergeTree`テーブルを目的地として準備します。以下のステートメントは、デフォルトデータベースに`trips`という名前のテーブルを作成します。特に推論されたデータ型の一部を変更することに注意してください。特に、余分なストレージデータを引き起こす可能性のある[`Nullable()`](/sql-reference/data-types/nullable)データ型修飾子を使用しないことを選択しました：
+┌─name──────────────────┬─type───────────────┐
+│ trip&#95;id               │ Nullable(Int64)    │
+│ vendor&#95;id             │ Nullable(Int64)    │
+│ pickup&#95;date           │ Nullable(Date)     │
+│ pickup&#95;datetime       │ Nullable(DateTime) │
+│ dropoff&#95;date          │ Nullable(Date)     │
+│ dropoff&#95;datetime      │ Nullable(DateTime) │
+│ store&#95;and&#95;fwd&#95;flag    │ Nullable(Int64)    │
+│ rate&#95;code&#95;id          │ Nullable(Int64)    │
+│ pickup&#95;longitude      │ Nullable(Float64)  │
+│ pickup&#95;latitude       │ Nullable(Float64)  │
+│ dropoff&#95;longitude     │ Nullable(Float64)  │
+│ dropoff&#95;latitude      │ Nullable(Float64)  │
+│ passenger&#95;count       │ Nullable(Int64)    │
+│ trip&#95;distance         │ Nullable(String)   │
+│ fare&#95;amount           │ Nullable(String)   │
+│ extra                 │ Nullable(String)   │
+│ mta&#95;tax               │ Nullable(String)   │
+│ tip&#95;amount            │ Nullable(String)   │
+│ tolls&#95;amount          │ Nullable(Float64)  │
+│ ehail&#95;fee             │ Nullable(Int64)    │
+│ improvement&#95;surcharge │ Nullable(String)   │
+│ total&#95;amount          │ Nullable(String)   │
+│ payment&#95;type          │ Nullable(String)   │
+│ trip&#95;type             │ Nullable(Int64)    │
+│ pickup                │ Nullable(String)   │
+│ dropoff               │ Nullable(String)   │
+│ cab&#95;type              │ Nullable(String)   │
+│ pickup&#95;nyct2010&#95;gid   │ Nullable(Int64)    │
+│ pickup&#95;ctlabel        │ Nullable(Float64)  │
+│ pickup&#95;borocode       │ Nullable(Int64)    │
+│ pickup&#95;ct2010         │ Nullable(String)   │
+│ pickup&#95;boroct2010     │ Nullable(String)   │
+│ pickup&#95;cdeligibil     │ Nullable(String)   │
+│ pickup&#95;ntacode        │ Nullable(String)   │
+│ pickup&#95;ntaname        │ Nullable(String)   │
+│ pickup&#95;puma           │ Nullable(Int64)    │
+│ dropoff&#95;nyct2010&#95;gid  │ Nullable(Int64)    │
+│ dropoff&#95;ctlabel       │ Nullable(Float64)  │
+│ dropoff&#95;borocode      │ Nullable(Int64)    │
+│ dropoff&#95;ct2010        │ Nullable(String)   │
+│ dropoff&#95;boroct2010    │ Nullable(String)   │
+│ dropoff&#95;cdeligibil    │ Nullable(String)   │
+│ dropoff&#95;ntacode       │ Nullable(String)   │
+│ dropoff&#95;ntaname       │ Nullable(String)   │
+│ dropoff&#95;puma          │ Nullable(Int64)    │
+└───────────────────────┴────────────────────┘
+
+```
+
+S3ベースのデータセットを操作するために、標準的な`MergeTree`テーブルを宛先として準備します。以下のステートメントは、デフォルトデータベースに`trips`という名前のテーブルを作成します。上記で推論されたデータ型の一部を変更しており、特に[`Nullable()`](/sql-reference/data-types/nullable)データ型修飾子は使用しないようにしています。これは、不要な追加ストレージと若干のパフォーマンスオーバーヘッドを引き起こす可能性があるためです。
+```
 
 ```sql
 CREATE TABLE trips
@@ -149,12 +159,13 @@ PARTITION BY toYYYYMM(pickup_date)
 ORDER BY pickup_datetime
 ```
 
-`pickup_date`フィールドの[パーティショニング](/engines/table-engines/mergetree-family/custom-partitioning-key)の使用に注意してください。通常、パーティションキーはデータ管理用ですが、後でこのキーを使用してS3への書き込みを並列化します。
+`pickup_date` フィールドに対する[パーティショニング](/engines/table-engines/mergetree-family/custom-partitioning-key)の利用に注目してください。通常、パーティションキーはデータ管理のために使用されますが、後ほどこのキーを使って S3 への書き込みを並列化します。
 
-タクシーデータセット内の各エントリはタクシートリップを含みます。この匿名化されたデータは、S3バケットに圧縮された2000万件のレコードで構成されています。バケットは https://datasets-documentation.s3.eu-west-3.amazonaws.com/ で、フォルダは **nyc-taxi** です。データはTSV形式で、各ファイルに約100万行含まれています。
-### S3からのデータ読み取り {#reading-data-from-s3}
+タクシーデータセットの各エントリは、1 件のタクシー乗車を表しています。この匿名化されたデータは、S3 バケット [https://datasets-documentation.s3.eu-west-3.amazonaws.com/](https://datasets-documentation.s3.eu-west-3.amazonaws.com/) の **nyc-taxi** フォルダ内に格納された、圧縮済みの 2,000 万件のレコードで構成されています。データは TSV 形式で、ファイルあたりおよそ 100 万行が含まれています。
 
-S3データをソースとしてクエリし、ClickHouseの永続性を必要とせずに使用できます。以下のクエリでは、10行をサンプリングします。バケットが公開アクセス可能であるため、ここでは認証情報が不要です：
+### S3 からデータを読み込む {#reading-data-from-s3}
+
+ClickHouse に永続化することなく、S3 上のデータをソースとしてクエリできます。次のクエリでは、10 行だけをサンプリングします。バケットが公開されているため、ここでは認証情報が不要である点に注意してください。
 
 ```sql
 SELECT *
@@ -162,9 +173,9 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trip
 LIMIT 10;
 ```
 
-`TabSeparatedWithNames`フォーマットは、最初の行にカラム名をエンコードしているため、カラムをリストする必要はないことに注意してください。他のフォーマット（例：`CSV`や`TSV`）は、このクエリに対して自動生成されたカラムを返します。例: `c1`、`c2`、`c3`など。
+`TabSeparatedWithNames` 形式では最初の行にカラム名が含まれているため、カラム名を明示的に指定する必要はないことに注意してください。`CSV` や `TSV` などの他の形式では、このクエリに対して `c1`、`c2`、`c3` のような自動生成されたカラムが返されます。
 
-クエリは、バケットパスやファイル名に関する情報を提供する[仮想カラム](../sql-reference/table-functions/s3#virtual-columns)をサポートしています。例えば：
+クエリではさらに、バケット内のパスおよびファイル名に関する情報をそれぞれ提供する `_path` や `_file` のような[仮想カラム](../sql-reference/table-functions/s3#virtual-columns)もサポートしています。例えば:
 
 ```sql
 SELECT  _path, _file, trip_id
@@ -182,7 +193,7 @@ LIMIT 5;
 └────────────────────────────────────────────┴────────────┴────────────┘
 ```
 
-このサンプルデータセット内の行数を確認します。ファイル展開のためワイルドカードを使用しているため、すべての20ファイルを考慮します。このクエリは、ClickHouseインスタンスのコア数によって約10秒かかります：
+このサンプルデータセットに含まれる行数を確認します。ファイル展開のためにワイルドカードを使用しているため、20 個すべてのファイルが対象になります。ClickHouse インスタンス上のコア数にもよりますが、このクエリの実行にはおよそ 10 秒かかります。
 
 ```sql
 SELECT count() AS count
@@ -195,17 +206,20 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trip
 └──────────┘
 ```
 
-これは、データのサンプリングや即席の探索的クエリを実行する際には便利ですが、S3からデータを直接読み取ることは定期的に行うべきではありません。真剣にデータを扱うときは、データをClickHouseの`MergeTree`テーブルにインポートします。
-### clickhouse-localの使用 {#using-clickhouse-local}
+S3 から直接データを読み取る方法は、データのサンプリングやアドホックな探索的クエリを実行するには有用ですが、日常的に行うべきものではありません。本格的に運用する段階になったら、ClickHouse の `MergeTree` テーブルにデータをインポートしてください。
 
-`clickhouse-local`プログラムを使用すると、ClickHouseサーバーをデプロイおよび構成せずにローカルファイルの高速処理を行うことができます。`s3`テーブル関数を使用するクエリは、このユーティリティを使って実行できます。例えば：
+### clickhouse-local の使用 {#using-clickhouse-local}
+
+`clickhouse-local` プログラムを使用すると、ClickHouse サーバーをデプロイしたり設定したりすることなく、ローカルファイルに対して高速な処理を実行できます。`s3` テーブル関数を用いたクエリは、すべてこのユーティリティで実行できます。例えば、次のように実行します。
 
 ```sql
 clickhouse-local --query "SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_*.gz', 'TabSeparatedWithNames') LIMIT 10"
 ```
-### S3からのデータ挿入 {#inserting-data-from-s3}
 
-ClickHouseの機能を最大限に活用するために、次にデータを読み取り、インスタンスに挿入します。これを達成するために、`s3`関数とシンプルな`INSERT`ステートメントを組み合わせます。ターゲットテーブルが必要な構造を提供するため、カラムをリストする必要はありません。カラムは`SELECT`句の位置に従ってマッピングされます。10M行の挿入には数分かかる場合がありますが、下の例では即時の応答を得るために100万行を挿入します。必要に応じて、`LIMIT`句やカラム選択を調整して部分インポートを行います：
+### S3 からのデータ挿入 {#inserting-data-from-s3}
+
+ClickHouse の機能を最大限に活用するために、次にデータを読み取り、インスタンスに挿入します。
+これを行うために、`s3` 関数とシンプルな `INSERT` 文を組み合わせます。ターゲットテーブル側で必要な構造が定義されているため、列を列挙する必要はない点に注意してください。この場合、テーブルの DDL 文で指定された順序で列が並んでいる必要があります。列は `SELECT` 句内での位置に基づいてマッピングされます。1,000 万行すべてを挿入する処理には、ClickHouse インスタンスによっては数分かかる場合があります。以下では、すばやく結果を得るために 100 万行のみを挿入しています。必要に応じて、`LIMIT` 句や列の選択を調整して、一部だけをインポートしてください。
 
 ```sql
 INSERT INTO trips
@@ -213,22 +227,24 @@ INSERT INTO trips
    FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_*.gz', 'TabSeparatedWithNames')
    LIMIT 1000000;
 ```
-### ClickHouse Localを使用したリモート挿入 {#remote-insert-using-clickhouse-local}
 
-ネットワークセキュリティポリシーにより、ClickHouseクラスターが外向き接続を行えない場合、`clickhouse-local`を使用してS3データを挿入することができます。以下の例では、S3バケットから読み取り、`remote`関数を使用してClickHouseに挿入します：
+### ClickHouse Local を使用したリモート挿入 {#remote-insert-using-clickhouse-local}
+
+ネットワークセキュリティポリシーによって ClickHouse クラスターからの外向き接続が禁止されている場合、`clickhouse-local` を使用して S3 データを挿入することもできます。以下の例では、S3 バケットから読み取り、`remote` 関数を使用して ClickHouse に挿入します。
 
 ```sql
 clickhouse-local --query "INSERT INTO TABLE FUNCTION remote('localhost:9000', 'default.trips', 'username', 'password') (*) SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_*.gz', 'TabSeparatedWithNames') LIMIT 10"
 ```
 
 :::note
-これを安全なSSL接続で実行するには、`remoteSecure`関数を利用してください。
+これを安全な SSL 接続で実行するには、`remoteSecure` 関数を使用します。
 :::
+
 ### データのエクスポート {#exporting-data}
 
-`s3`テーブル関数を使用してS3にファイルを書き込むことができます。これには適切な権限が必要です。リクエスト内で必要な認証情報を渡しますが、詳細については[認証情報の管理](#managing-credentials)ページを参照してください。
+`s3` テーブル関数を使用して S3 上のファイルに書き込むことができます。これには適切な権限が必要です。必要な認証情報はリクエスト内で渡しますが、その他のオプションについては [Managing Credentials](#managing-credentials) ページを参照してください。
 
-単純な例では、テーブル関数をソースではなく目的地として使用します。ここでは、`trips`テーブルからバケットに10000行をストリーミングし、`lz4`圧縮および出力タイプとして`CSV`を指定します：
+以下のシンプルな例では、テーブル関数をソースではなく出力先として使用しています。ここでは、`trips` テーブルから 10,000 行を、`lz4` 圧縮と出力形式としての `CSV` を指定して、S3 バケットにストリーミングしています。
 
 ```sql
 INSERT INTO FUNCTION
@@ -243,12 +259,13 @@ FROM trips
 LIMIT 10000;
 ```
 
-ここで、ファイルの形式は拡張子から推測されることに注意してください。また、`s3`関数内でカラムを指定する必要はありません。これも`SELECT`から推測されます。
-### 大きなファイルを分割する {#splitting-large-files}
+ここでは、ファイルの形式が拡張子から自動的に判別されることに注目してください。また、`s3` 関数では列を指定する必要もありません。これは `SELECT` から自動的に推論されます。
 
-データを単一のファイルとしてエクスポートすることはほとんどないでしょう。ClickHouseを含むほとんどのツールは、並列処理の可能性により、複数のファイルに対して読み書きすることでより高いスループットパフォーマンスを達成します。`INSERT`コマンドを複数回実行し、データのサブセットをターゲットにすることができます。ClickHouseは、`PARTITION`キーを使用してファイルを自動的に分割する手段を提供します。
+### 大きなファイルの分割 {#splitting-large-files}
 
-以下の例では、`rand()`関数の剰余を使用して10ファイルを作成します。結果のパーティションIDがファイル名に参照されていることに注意してください。これにより、数値の接尾辞を持つ10ファイル（例：`trips_0.csv.lz4`, `trips_1.csv.lz4`など）が生成されます：
+データを 1 つのファイルとしてエクスポートしたいケースはあまりないでしょう。ClickHouse を含むほとんどのツールは、並列処理が可能になるため、複数ファイルへの読み書きを行うことでスループットが向上します。`INSERT` コマンドを複数回実行し、データのサブセットを対象にすることもできます。ClickHouse には、`PARTITION` キーを使用してファイルを自動的に分割する方法が用意されています。
+
+次の例では、`rand()` 関数の剰余を用いて 10 個のファイルを作成します。生成されたパーティション ID がファイル名でどのように参照されているかに注目してください。これにより、`trips_0.csv.lz4`、`trips_1.csv.lz4` などのように、数値のサフィックスを持つ 10 個のファイルが生成されます。
 
 ```sql
 INSERT INTO FUNCTION
@@ -264,7 +281,7 @@ FROM trips
 LIMIT 100000;
 ```
 
-あるいは、データ内のフィールドを参照することもできます。このデータセットの場合、`payment_type`が自然なパーティショニングキーを提供し、その基数は5です。
+別の方法として、データ内のフィールドを参照することもできます。このデータセットでは、`payment_type` は 5 種類の値を持つ自然なパーティションキーになります。
 
 ```sql
 INSERT INTO FUNCTION
@@ -279,27 +296,28 @@ SELECT *
 FROM trips
 LIMIT 100000;
 ```
-### クラスターの利用 {#utilizing-clusters}
 
-上記の関数はすべて単一ノードでの実行に制限されています。読み取り速度はCPUコアとともに線形にスケールし、他のリソース（通常はネットワーク）が飽和するまで、ユーザーは垂直にスケールすることができます。しかし、このアプローチには限界があります。ユーザーは、`INSERT INTO SELECT`クエリを実行する際に分散テーブルに挿入することでリソース圧力を軽減できますが、依然として単一ノードがデータを読み込み、解析し、処理しています。この課題に対処し、読み取りを水平方向にスケールするために、[s3Cluster](/sql-reference/table-functions/s3Cluster.md)関数があります。
+### クラスターの活用 {#utilizing-clusters}
 
-クエリを受け取ったノード（イニシエーター）は、クラスタ内のすべてのノードへの接続を作成します。どのファイルを読み取る必要があるかを決定するためにグロブパターンが解決され、一連のファイルに展開されます。イニシエーターは、クラスタ内のノードにファイルを配布します。これらのノードは、読み取りを完了するたびに処理するファイルを要求します。このプロセスにより、読み取りを水平方向にスケールすることができます。
+上記の関数はすべて、単一ノード上での実行に限定されています。読み取り速度は、他のリソース（通常はネットワーク）が飽和するまで CPU コア数に比例して向上し、ユーザーは垂直スケールが可能です。しかし、このアプローチには制約があります。ユーザーは `INSERT INTO SELECT` クエリを実行する際に分散テーブルに挿入することで、ある程度リソースの負荷を軽減できますが、それでも単一ノードでデータの読み取り、パース、処理を行う点は変わりません。この課題に対処し、読み取りを水平方向にスケールさせるために用意されているのが、[s3Cluster](/sql-reference/table-functions/s3Cluster.md) 関数です。
 
-`s3Cluster`関数は、単一ノードバリアントと同じ形式を取り、ただしターゲットクラスタを指定する必要があります：
+クエリを受け取るノードはイニシエーターと呼ばれ、クラスター内のすべてのノードに接続を確立します。どのファイルを読み取る必要があるかを決定するグロブパターンは、読み取る対象となるファイルの集合へと解決されます。イニシエーターは、クラスター内のノード（ワーカーとして動作）にファイルを分配します。これらのワーカーは、読み取りを完了するごとに、処理するファイルを要求します。このプロセスにより、読み取りを水平方向にスケールさせることができます。
+
+`s3Cluster` 関数は、対象となるクラスターをワーカーノードとして指定する必要がある点を除き、単一ノード版と同じ形式を取ります。
 
 ```sql
 s3Cluster(cluster_name, source, [access_key_id, secret_access_key,] format, structure)
 ```
 
-* `cluster_name` — リモートおよびローカルサーバーへのアドレスと接続パラメータのセットを構築するために使用されるクラスタの名前。
-* `source` — ファイルまたはファイルのグループへのURL。以下のワイルドカードを読み取り専用モードでサポートします：`*`、`?`、`{'abc','def'}` および `{N..M}`（ここで N, M は数値、abc, def は文字列）。詳細は[パスにおけるワイルドカード](/engines/table-engines/integrations/s3.md/#wildcards-in-path)を参照してください。
-* `access_key_id` および `secret_access_key` — 指定されたエンドポイントで使用するための認証情報を指定するキー。オプションです。
-* `format` — ファイルの[フォーマット](/interfaces/formats#formats-overview)。
-* `structure` — テーブルの構造。形式 'column1_name column1_type, column2_name column2_type, ...'。
+* `cluster_name` — リモートおよびローカルサーバーへのアドレスと接続パラメータの集合を構成するために使用されるクラスタ名。
+* `source` — 単一または複数ファイルへの URL。読み取り専用モードで次のワイルドカードをサポートします: `*`, `?`, `{'abc','def'}` および `{N..M}`。ここで N, M は数値、abc, def は文字列です。詳細は [Wildcards In Path](/engines/table-engines/integrations/s3.md/#wildcards-in-path) を参照してください。
+* `access_key_id` と `secret_access_key` — 指定されたエンドポイントで使用する認証情報を表すキー。省略可能です。
+* `format` — ファイルの [format](/interfaces/formats#formats-overview)。
+* `structure` — テーブルの構造。フォーマットは &#39;column1&#95;name column1&#95;type, column2&#95;name column2&#95;type, ...&#39; です。
 
-`s3`関数と同様に、バケットが安全でない場合、または環境を通じてセキュリティを定義する場合（例：IAMロール）、認証情報はオプションです。しかし、22.3.1以降、`s3Cluster`関数では構造をリクエスト内で指定する必要があります。すなわち、スキーマは推測されません。
+任意の `s3` 関数と同様に、バケットが保護されていない場合や、IAM ロールなどの環境経由で認証・権限付与を行っている場合は、認証情報は省略可能です。ただし s3 関数とは異なり、22.3.1 時点ではリクエスト内で `structure` を指定する必要があり、スキーマは自動推論されません。
 
-この関数は、ほとんどの場合`INSERT INTO SELECT`の一部として使用されます。この場合、ユーザーは分散テーブルに挿入することがよくあります。以下に、`trips_all`が分散テーブルである簡単な例を示します。このテーブルは`events`クラスタを使用していますが、読み込みと書き込みに使用されるノードの一貫性は必須ではありません：
+この関数は、ほとんどのケースで `INSERT INTO SELECT` の一部として使用されます。この場合、多くは分散テーブルに対して INSERT を行います。以下では、trips&#95;all が分散テーブルである単純な例を示します。このテーブルは events クラスタを使用していますが、読み取りおよび書き込みに使用されるノードの一貫性は必須要件ではありません。
 
 ```sql
 INSERT INTO default.trips_all
@@ -311,10 +329,11 @@ INSERT INTO default.trips_all
     )
 ```
 
-挿入はイニシエーターノードに対して発生します。これは、各ノードで読み取る一方で、結果の行がイニシエーターにルーティングされて配布されることを意味します。高スループットのシナリオでは、これがボトルネックとなる可能性があります。これに対処するために、`s3cluster`関数のための[parallel_distributed_insert_select](/operations/settings/settings/#parallel_distributed_insert_select)パラメータを設定してください。
-## S3テーブルエンジン {#s3-table-engines}
+INSERT は `initiator` ノードに対して実行されます。つまり、読み取りは各ノードで行われますが、得られた行は分散処理のために `initiator` にルーティングされます。高スループットなシナリオでは、これがボトルネックとなる可能性があります。これに対処するには、`s3cluster` 関数に対してパラメータ [parallel&#95;distributed&#95;insert&#95;select](/operations/settings/settings/#parallel_distributed_insert_select) を設定します。
 
-`s3`関数はS3に保存されたデータに対して即席クエリを実行することを可能にしますが、構文が冗長です。`S3`テーブルエンジンを使用すると、バケットのURLや認証情報を何度も指定する必要がなくなります。これに対処するために、ClickHouseはS3テーブルエンジンを提供しています。
+## S3 テーブルエンジン {#s3-table-engines}
+
+`s3` 関数を使用すると、S3 に保存されたデータに対してアドホッククエリを実行できますが、構文が冗長になりがちです。この問題を解決するために用意されているのが、バケットの URL や認証情報を何度も指定する必要がなくなる `S3` テーブルエンジンです。
 
 ```sql
 CREATE TABLE s3_engine_table (name String, value UInt32)
@@ -322,13 +341,14 @@ CREATE TABLE s3_engine_table (name String, value UInt32)
     [SETTINGS ...]
 ```
 
-* `path` — ファイルへのパスを含むバケットURL。以下のワイルドカードを読み取り専用モードで支援：`*`、`?`、`{abc,def}` および `{N..M}`（ここで N, M は数値、'abc'、'def' は文字列）。詳細については[こちら](/engines/table-engines/integrations/s3#wildcards-in-path)を参照してください。
+* `path` — ファイルへのパスを含むバケットの URL。読み取り専用モードでは、次のワイルドカードをサポートします: `*`、`?`、`{abc,def}`、`{N..M}`。ここで N、M は数値、&#39;abc&#39;、&#39;def&#39; は文字列です。詳細は[こちら](/engines/table-engines/integrations/s3#wildcards-in-path)を参照してください。
 * `format` — ファイルの[フォーマット](/interfaces/formats#formats-overview)。
-* `aws_access_key_id`, `aws_secret_access_key` - AWSアカウントユーザーの長期的な認証情報。これを使用してリクエストを認証できます。このパラメータはオプションです。認証情報が指定されていない場合、構成ファイルでの値が使用されます。詳細は[認証情報の管理](#managing-credentials)を参照してください。
-* `compression` — 圧縮タイプ。サポートされる値：none、gzip/gz、brotli/br、xz/LZMA、zstd/zst。このパラメータはオプションです。デフォルトでは、ファイル拡張子によって圧縮を自動検出します。
+* `aws_access_key_id`, `aws_secret_access_key` - AWS アカウントユーザー用の長期認証情報。リクエストの認証に使用できます。このパラメータは省略可能です。認証情報が指定されていない場合は、設定ファイルの値が使用されます。詳細は[認証情報の管理](#managing-credentials)を参照してください。
+* `compression` — 圧縮形式。サポートされる値: none, gzip/gz, brotli/br, xz/LZMA, zstd/zst。パラメータは省略可能です。デフォルトでは、ファイル拡張子に基づいて圧縮方式を自動検出します。
+
 ### データの読み取り {#reading-data}
 
-以下の例では、`https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/`バケット内の最初の10個のTSVファイルを使用して、`trips_raw`という名のテーブルを作成します。これらはそれぞれ100万行を含みます：
+次の例では、`https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/` バケット内にある最初の 10 個の TSV ファイルを使用して、`trips_raw` という名前のテーブルを作成します。各ファイルには 100 万行が含まれます。
 
 ```sql
 CREATE TABLE trips_raw
@@ -381,7 +401,7 @@ CREATE TABLE trips_raw
 ) ENGINE = S3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_{0..9}.gz', 'TabSeparatedWithNames', 'gzip');
 ```
 
-最初の10ファイルに制限するために`{0..9}`パターンを使用していることに注意してください。一度作成されると、このテーブルは他のテーブルと同様にクエリできます：
+最初の10個のファイルに限定するために `{0..9}` パターンを使用している点に注意してください。作成されたら、このテーブルには他のテーブルと同様にクエリを実行できます。
 
 ```sql
 SELECT DISTINCT(pickup_ntaname)
@@ -401,11 +421,12 @@ LIMIT 10;
 │ DUMBO-Vinegar Hill-Downtown Brooklyn-Boerum Hill │
 └──────────────────────────────────────────────────┘
 ```
+
 ### データの挿入 {#inserting-data}
 
-`S3`テーブルエンジンは並列読み取りをサポートしています。テーブル定義にグロブパターンが含まれていない場合、書き込みのみがサポートされます。したがって、上記のテーブルは書き込みをブロックします。
+`S3` テーブルエンジンは並列読み出しをサポートします。書き込みは、テーブル定義にグロブパターンが含まれていない場合にのみサポートされます。そのため、上記のテーブルでは書き込みは行えません。
 
-書き込みを示すために、書き込み可能なS3バケットを指すテーブルを作成します：
+書き込みを示すために、書き込み可能な S3 バケットを参照するテーブルを作成します。
 
 ```sql
 CREATE TABLE trips_dest
@@ -446,26 +467,27 @@ SELECT * FROM trips_dest LIMIT 5;
 └────────────┴─────────────┴─────────────────────┴─────────────────────┴────────────┴──────────────┘
 ```
 
-行は新しいファイルにのみ挿入できることに注意してください。マージサイクルやファイル分割操作はありません。ファイルが書き込まれると、その後の挿入は失敗します。ユーザーには以下の2つのオプションがあります：
+行は新しいファイルにしか挿入できないことに注意してください。マージサイクルやファイル分割処理はありません。いったんファイルに書き込まれると、その後の挿入は失敗します。ユーザーには次の 2 つの選択肢があります。
 
-* 設定 `s3_create_new_file_on_insert=1`を指定してください。これにより、各挿入時に新しいファイルが作成されます。各挿入操作のたびに、数値の接尾辞が各ファイルの末尾に追加されます。上記の例では、次回の挿入により、`trips_1.bin`ファイルが作成されます。
-* 設定 `s3_truncate_on_insert=1`を指定してください。これにより、ファイルが切り詰められ、つまり完了後は新たに挿入された行のみが含まれることになります。
+* 設定 `s3_create_new_file_on_insert=1` を指定します。これにより、挿入ごとに新しいファイルが作成されます。各ファイルの末尾には数値のサフィックスが付加され、挿入操作ごとに単調増加します。上記の例では、後続の挿入を行うと trips&#95;1.bin ファイルが作成されます。
+* 設定 `s3_truncate_on_insert=1` を指定します。これによりファイルが切り詰められ、完了時には新たに挿入された行のみを含むようになります。
 
-これらの設定はデフォルトで0になります。したがって、ユーザーはそのいずれかを設定する必要があります。両方が設定されている場合は、`s3_truncate_on_insert`が優先されます。
+これら 2 つの設定のデフォルト値はいずれも 0 であるため、どちらか一方をユーザーが設定する必要があります。両方が設定されている場合は `s3_truncate_on_insert` が優先されます。
 
-`S3`テーブルエンジンに関するいくつかの注意点：
+`S3` テーブルエンジンについての注意点:
 
-- 従来の`MergeTree`ファミリテーブルとは異なり、`S3`テーブルを削除しても、基になるデータは削除されません。
-- このテーブルタイプの完全な設定は[こちら](/engines/table-engines/integrations/s3.md/#settings)で確認できます。
-- このエンジンを使用する際に注意すべき点は以下の通りです：
-    * ALTERクエリはサポートされていません
-    * SAMPLE操作はサポートされていません
-    * プライマリーまたはスキップのインデックスという概念はありません。
+* 従来の `MergeTree` ファミリのテーブルとは異なり、`S3` テーブルを DROP しても、基盤となるデータは削除されません。
+* このテーブルタイプの完全な設定一覧は、[こちら](/engines/table-engines/integrations/s3.md/#settings)にあります。
+* このエンジンを使用する際は、次の点に注意してください:
+  * ALTER クエリはサポートされません。
+  * SAMPLE 操作はサポートされません。
+  * 主キーやスキップインデックスといったインデックスの概念はありません。
+
 ## 認証情報の管理 {#managing-credentials}
 
-前の例では、`s3`関数または`S3`テーブル定義内に認証情報を渡しました。これは、稀に使用される場合には受け入れられるかもしれませんが、プロダクションではユーザーには明示的な認証メカニズムが求められる必要があります。これに対処するために、ClickHouseは複数のオプションを提供しています。
+前の例では、`s3` 関数または `S3` テーブル定義の中で認証情報を渡してきました。これは単発の利用であれば許容できる場合もありますが、本番環境では、ユーザーは認証情報を明示的に記述しなくてもよい認証メカニズムを必要とします。これに対応するため、ClickHouse にはいくつかの選択肢があります。
 
-* **config.xml**または**conf.d**の下にある同等の設定ファイルに接続の詳細を指定します。デビアンパッケージを使用したインストールを前提とした例ファイルの内容は以下の通りです。
+* 接続情報を **config.xml** または **conf.d** 配下の同等の設定ファイルに指定します。以下に、Debian パッケージを用いてインストールしたことを前提とした例ファイルの内容を示します。
 
     ```xml
     ubuntu@single-node-clickhouse:/etc/clickhouse-server/config.d$ cat s3.xml
@@ -482,9 +504,9 @@ SELECT * FROM trips_dest LIMIT 5;
     </clickhouse>
     ```
 
-    これらの認証情報は、上記のエンドポイントがリクエストされたURLの正確な接頭辞一致である場合、任意のリクエストに使用されます。また、この例では、アクセスキーおよびシークレットキーの代替として認証ヘッダーを宣言する能力に注意してください。サポートされている設定の完全なリストは[こちら](/engines/table-engines/integrations/s3.md/#settings)で確認できます。
+    これらの認証情報は、上記のエンドポイントが要求された URL の先頭部分と完全に一致するリクエストに対して使用されます。また、この例ではアクセスキーおよびシークレットキーの代わりに、認可ヘッダーを指定できることにも注目してください。サポートされている設定の完全な一覧は[こちら](/engines/table-engines/integrations/s3.md/#settings)にあります。
 
-* 上記の例は、設定パラメータ `use_environment_credentials`の使用可能性を強調しています。この設定パラメータは、`s3`レベルでグローバルに設定することもできます：
+* 上の例では、設定パラメータ `use_environment_credentials` を利用できることを示しています。この設定パラメータは、`s3` レベルでグローバルに設定することもできます。
 
     ```xml
     <clickhouse>
@@ -494,35 +516,38 @@ SELECT * FROM trips_dest LIMIT 5;
     </clickhouse>
     ```
 
-    この設定は、環境からS3の認証情報を取得しようとする試みをオンにし、IAMロールを介してアクセス可能にします。具体的には、以下の取得順に従って実施されます：
+    この設定を有効にすると、環境から S3 の認証情報を取得しようと試みるようになり、IAM ロールを通じてアクセスできるようになります。具体的には、次の順序で認証情報の取得が行われます。
 
-   * 環境変数 `AWS_ACCESS_KEY_ID`、`AWS_SECRET_ACCESS_KEY`および `AWS_SESSION_TOKEN` の検索
-   * **$HOME/.aws**におけるチェック
-   * AWSセキュリティトークンサービスを通じて取得された一時的な認証情報 - すなわち [`AssumeRole`](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) APIを介して。
-   * ECS環境変数 `AWS_CONTAINER_CREDENTIALS_RELATIVE_URI` または `AWS_CONTAINER_CREDENTIALS_FULL_URI` および `AWS_ECS_CONTAINER_AUTHORIZATION_TOKEN`での認証情報のチェック。
-   * これらの認証情報の取得は、[AWS EC2インスタンスメタデータ](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-metadata.html)を介して行われ、[AWS_EC2_METADATA_DISABLED](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html#envvars-list-AWS_EC2_METADATA_DISABLED)がtrueに設定されていない場合。
+  * 環境変数 `AWS_ACCESS_KEY_ID`、`AWS_SECRET_ACCESS_KEY` および `AWS_SESSION_TOKEN` の参照
+  * **$HOME/.aws** の確認
+  * AWS Security Token Service 経由で取得した一時的な認証情報（[`AssumeRole`](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) API 経由）
+  * ECS 環境変数 `AWS_CONTAINER_CREDENTIALS_RELATIVE_URI` または `AWS_CONTAINER_CREDENTIALS_FULL_URI` および `AWS_ECS_CONTAINER_AUTHORIZATION_TOKEN` に対する認証情報の確認
+  * [AWS_EC2_METADATA_DISABLED](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html#envvars-list-AWS_EC2_METADATA_DISABLED) が true に設定されていない場合に、[Amazon EC2 インスタンスメタデータ](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-metadata.html) 経由で認証情報を取得
+  * これらと同じ設定は、同じプレフィックスマッチング規則を用いて特定のエンドポイントに対しても設定できます。
 
-   同様の設定を特定のエンドポイントに対して、同じ接頭辞一致ルールを使用して設定することもできます。
-## パフォーマンスの最適化 {#s3-optimizing-performance}
+## パフォーマンス最適化 {#s3-optimizing-performance}
 
-S3関数を使用した読み取りおよび挿入の最適化方法については、[専用のパフォーマンスガイド](./performance.md)を参照してください。
-### S3ストレージの調整 {#s3-storage-tuning}
+S3 関数を使用した読み取りおよび挿入の最適化方法については、[専用のパフォーマンスガイド](./performance.md)を参照してください。
 
-内部的に、ClickHouseのマージツリーは、[`Wide`および`Compact`](/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage)の2つの主要ストレージフォーマットを使用します。現在の実装は、ClickHouseのデフォルトの動作（設定 `min_bytes_for_wide_part` と `min_rows_for_wide_part` を通じて制御される）を使用していますが、将来的なリリースでは、S3のために動作が異なることが予想されます。例えば、`min_bytes_for_wide_part`のデフォルト値が大きくなり、より`Compact`形式を推奨し、結果としてファイル数が少なくなることが期待されます。ユーザーは、専らS3ストレージを使用する場合にこれらの設定を調整することを望むかもしれません。
-## S3バックにあるMergeTree {#s3-backed-mergetree}
+### S3 ストレージのチューニング {#s3-storage-tuning}
 
-`s3`関数と関連するテーブルエンジンにより、ユーザーはClickHouseの慣れ親しんだ構文を用いてS3内のデータをクエリできます。しかし、データ管理機能やパフォーマンスに関しては、限界があります。プライマリーインデックスのサポートはなく、キャッシュサポートもありません。ファイルの挿入はユーザーによって管理する必要があります。
+内部的には、ClickHouse の MergeTree は 2 つの主要なストレージ形式（[`Wide` と `Compact`](/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage)）を使用します。現在の実装では、ClickHouse のデフォルトの動作（`min_bytes_for_wide_part` および `min_rows_for_wide_part` 設定によって制御）に準拠していますが、今後のリリースでは S3 向けに動作が変化すると予想されます。例えば、`min_bytes_for_wide_part` のデフォルト値を大きくすることで、より `Compact` な形式が推奨され、その結果としてファイル数が減少します。S3 ストレージのみを使用する場合は、これらの設定の調整を検討してください。
 
-ClickHouseは、S3が特に「コールド」データに対するクエリパフォーマンスがそれほど重要ではない状況で、ストレージソリューションとして魅力的であり、ユーザーがストレージと計算を分離することを望んでいることを認識しています。この実現を支援するために、MergeTreeエンジンのストレージとしてS3を使用するサポートが提供されます。これにより、ユーザーはS3のスケーラビリティとコストの利点を活用し、MergeTreeエンジンの挿入およびクエリパフォーマンスを享受できます。
-### ストレージ層 {#storage-tiers}
+## S3 バックエンドの MergeTree {#s3-backed-mergetree}
 
-ClickHouseストレージボリュームは、物理ディスクをMergeTreeテーブルエンジンから抽象化できます。単一のボリュームは、順序付きのディスクセットで構成されることがあります。データストレージのために複数のブロックデバイスを潜在的に使用できることを主に許可するこの抽象化は、S3などの他のストレージタイプも許可します。ClickHouseのデータパーツは、ストレージポリシーに応じてボリューム間で移動され、充填率が管理され、これによりストレージ層の概念が作成されます。
+`s3` 関数と関連するテーブルエンジンを使用すると、なじみのある ClickHouse の構文で S3 上のデータをクエリできます。ただし、データ管理機能およびパフォーマンスの観点からは制限があります。プライマリインデックスのサポートがなく、キャッシュ機構のサポートもありません。また、ファイルの挿入（書き込み）はユーザーが管理する必要があります。
 
-ストレージ層は、最近のデータをホットコールドアーキテクチャで解除し、通常は最も多くクエリされるデータが高性能ストレージ（例：NVMe SSD）にわずかな空間を必要とすることを可能にします。データが古くなるにつれて、クエリタイムのSLAが増加し、クエリの頻度も高くなります。このデータのファットテールは、HDDやS3などのオブジェクトストレージのような遅い、性能が低いストレージに保存できます。
-```
+ClickHouse は、特に「コールド」データに対するクエリ性能がそれほど重要ではなく、ストレージとコンピュートを分離したい場合に、S3 が魅力的なストレージソリューションであることを認識しています。これを実現するために、MergeTree エンジンのストレージとして S3 を使用するためのサポートが提供されています。これにより、ユーザーは S3 のスケーラビリティとコストメリット、および MergeTree エンジンの挿入とクエリのパフォーマンスを活用できるようになります。
+
+### ストレージ階層 {#storage-tiers}
+
+ClickHouse のストレージボリューム機能により、物理ディスクを MergeTree テーブルエンジンから抽象化できます。単一のボリュームは、順序付けられたディスクの集合で構成できます。これは主に複数のブロックデバイスをデータストレージに利用できるようにするためのものですが、この抽象化により S3 を含む他のストレージタイプも利用可能になります。ClickHouse のデータパーツは、ストレージポリシーに従ってボリューム間を移動したり、使用率に応じて移動したりできるため、ストレージ階層という概念が生まれます。
+
+ストレージ階層によりホット・コールド アーキテクチャが可能になります。もっとも新しいデータは、通常もっとも頻繁にクエリされるため、高性能ストレージ（例: NVMe SSD）の比較的小さな容量のみを必要とします。データが古くなるにつれて、SLA で許容されるクエリ時間は長くなり、クエリ頻度も下がります。この裾野の広いロングテールのデータは、HDD のような低速で性能の低いストレージや、S3 のようなオブジェクトストレージに保存できます。
+
 ### ディスクの作成 {#creating-a-disk}
 
-S3バケットをディスクとして利用するには、まずClickHouseの設定ファイルにそれを宣言する必要があります。config.xmlを拡張するか、preferably conf.dの下に新しいファイルを提供してください。以下にS3ディスク宣言の例を示します。
+S3 バケットをディスクとして利用するには、まず ClickHouse の設定ファイル内で宣言する必要があります。`config.xml` を拡張するか、望ましくは `conf.d` 配下に新しいファイルを用意します。S3 ディスクの定義例を次に示します。
 
 ```xml
 <clickhouse>
@@ -550,11 +575,11 @@ S3バケットをディスクとして利用するには、まずClickHouseの�
 
 ```
 
-このディスク宣言に関連する設定の完全なリストは[こちら](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-s3)で確認できます。資格情報は、[資格情報の管理](#managing-credentials)で説明されているのと同じアプローチを使用してここで管理できます。すなわち、上記の設定ブロックでuse_environment_credentialsをtrueに設定することでIAMロールを使用できます。
+このディスク宣言に関連する設定の完全な一覧は[こちら](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-s3)にあります。クレデンシャルは、[Managing credentials](#managing-credentials) で説明したのと同じ手法を用いてここで管理できます。たとえば、上記の設定ブロックで use&#95;environment&#95;credentials を true に設定することで、IAM ロールを使用できます。
 
 ### ストレージポリシーの作成 {#creating-a-storage-policy}
 
-設定が完了すると、この「ディスク」はポリシー内で宣言されたストレージボリュームで使用できます。以下の例では、s3が唯一のストレージであると仮定します。これは、TTLや充填率に基づいてデータを移動できるより複雑なホットコールドアーキテクチャを無視しています。
+一度設定すると、この「ディスク」はポリシー内で宣言されたストレージボリュームで使用できます。以下の例では、s3 が唯一のストレージであると仮定します。これは、TTL や使用率に基づいてデータを再配置できる、より複雑なホット・コールド構成は考慮していません。
 
 ```xml
 <clickhouse>
@@ -582,7 +607,7 @@ S3バケットをディスクとして利用するには、まずClickHouseの�
 
 ### テーブルの作成 {#creating-a-table}
 
-ディスクに書き込みアクセスのあるバケットを使用するように設定されている場合、以下の例のようなテーブルを作成できるはずです。簡潔さを持たせるために、NYCタクシーのカラムのサブセットを使用し、データを直接s3バックテーブルにストリーミングします。
+書き込み権限を持つバケットを使用するようにディスクを構成していると仮定すると、以下の例のようなテーブルを作成できるはずです。説明を簡潔にするため、NYC タクシー・データセットのカラムの一部のみを使用し、データを S3 をバックエンドとするテーブルへ直接ストリーミングします。
 
 ```sql
 CREATE TABLE trips_s3
@@ -611,15 +636,15 @@ SETTINGS storage_policy='s3_main'
 INSERT INTO trips_s3 SELECT trip_id, pickup_date, pickup_datetime, dropoff_datetime, pickup_longitude, pickup_latitude, dropoff_longitude, dropoff_latitude, passenger_count, trip_distance, tip_amount, total_amount, payment_type FROM s3('https://ch-nyc-taxi.s3.eu-west-3.amazonaws.com/tsv/trips_{0..9}.tsv.gz', 'TabSeparatedWithNames') LIMIT 1000000;
 ```
 
-ハードウェアによっては、この1m行の挿入に数分かかる場合があります。進捗はsystem.processesテーブルを介して確認できます。行数を最大10mまで調整し、いくつかのサンプルクエリを試してください。
+ハードウェアによっては、この後の 100 万行の挿入の実行に数分かかる場合があります。`system.processes` テーブルで進行状況を確認できます。行数は最大 1,000 万行まで調整し、いくつかのサンプルクエリを試してみてください。
 
 ```sql
-SELECT passenger_count, avg(tip_amount) as avg_tip, avg(total_amount) as avg_amount FROM trips_s3 GROUP BY passenger_count;
+SELECT passenger_count, avg(tip_amount) AS avg_tip, avg(total_amount) AS avg_amount FROM trips_s3 GROUP BY passenger_count;
 ```
 
 ### テーブルの変更 {#modifying-a-table}
 
-ユーザーは特定のテーブルのストレージポリシーを変更する必要がある場合があります。これは可能ですが、制限があります。新しいターゲットポリシーには、以前のポリシーのすべてのディスクとボリュームが含まれている必要があります。すなわち、ポリシーの変更を満たすためにデータは移行されないということです。これらの制約を検証する際には、ボリュームとディスクは名前で識別され、違反しようとするとエラーが発生します。ただし、前の例を使用していると仮定すると、以下の変更は有効です。
+特定のテーブルのストレージポリシーを変更する必要が生じることがあります。これは可能ですが、いくつか制限があります。新しいターゲットポリシーには、以前のポリシーに含まれていたすべてのディスクおよびボリュームが含まれていなければなりません。つまり、ポリシー変更に合わせてデータが移動されることはありません。これらの制約を検証する際には、ボリュームとディスクは名前によって識別され、これに反する変更を行おうとするとエラーになります。ただし、前述の例を使用している場合、次の変更は許可されます。
 
 ```xml
 <policies>
@@ -648,33 +673,38 @@ SELECT passenger_count, avg(tip_amount) as avg_tip, avg(total_amount) as avg_amo
 ALTER TABLE trips_s3 MODIFY SETTING storage_policy='s3_tiered'
 ```
 
-ここでは、新しいs3_tieredポリシーにメインボリュームを再利用し、新しいホットボリュームを導入します。これは、`<path>`パラメーターを介して設定された1つのディスクで構成されたデフォルトディスクを使用しています。ボリューム名とディスクは変更されません。新たにテーブルに挿入されるものは、デフォルトディスクに残り、そのサイズがmove_factor * disk_sizeに達した時点でデータはS3へ移動されます。
+ここでは、新しい `s3_tiered` ポリシーで既存のメインボリュームを再利用し、新しいホットボリュームを導入します。これはデフォルトディスクを使用しており、このデフォルトディスクはパラメータ `<path>` で設定された 1 つのディスクのみで構成されています。ボリューム名とディスクが変わらない点に注意してください。テーブルへの新規挿入データは、`move_factor * disk_size` に到達するまではデフォルトディスク上に保持され、その時点でデータは S3 に移動されます。
 
 ### レプリケーションの処理 {#handling-replication}
 
-S3ディスクとのレプリケーションは、`ReplicatedMergeTree`テーブルエンジンを使用することで実現できます。詳細については[二つのAWSリージョンにまたがる単一シャードをS3オブジェクトストレージで複製する](#s3-multi-region)ガイドを参照してください。
+S3 ディスクを用いたレプリケーションは、`ReplicatedMergeTree` テーブルエンジンを使用することで実現できます。詳細については、[S3 Object Storage を使用して 2 つの AWS リージョン間で単一シャードをレプリケートする](#s3-multi-region) ガイドを参照してください。
 
-### 読み書き {#read--writes}
+### 読み取りと書き込み {#read--writes}
 
-以下のノートは、ClickHouseとS3のインタラクションの実装に関するものです。一般的には情報提供を目的としていますが、[パフォーマンスの最適化](#s3-optimizing-performance)を行う際に読者に役立つかもしれません：
+以下の注意事項では、ClickHouse における S3 との連携実装について説明します。多くは参考情報レベルですが、[パフォーマンス最適化](#s3-optimizing-performance) を行う際の助けとなる場合があります。
 
-* デフォルトでは、クエリ処理パイプラインの任意のステージで使用される最大クエリ処理スレッド数は、コアの数と等しくなっています。一部のステージは他のステージよりも並行処理が可能であるため、この値は上限を提供します。複数のクエリステージは同時に実行される場合があります。データはディスクからストリームされるため、クエリに使用されるスレッド数はこの上限を超える可能性があります。[max_threads](/operations/settings/settings#max_threads)の設定を通じて変更してください。
-* S3からの読み取りはデフォルトで非同期です。この動作は、`remote_filesystem_read_method`を設定することで決まります。デフォルトではこの値は`threadpool`に設定されています。リクエストを処理する際、ClickHouseはグラニュールをストライプで読み取ります。これらのストライプは多くのカラムを含む可能性があります。スレッドはそれぞれのグラニュールのカラムを一つずつ読み取ります。この処理は同期的には行われず、データを待つ前にすべてのカラムのプレフェッチが行われます。これにより、各カラムに対する同期的待機よりも大幅なパフォーマンス向上が得られます。ほとんどの場合、この設定を変更する必要はありません - [最適化パフォーマンス](#s3-optimizing-performance)を参照してください。
-* 書き込みは並行して行われ、最大100の同時ファイル書き込みスレッドがあります。`max_insert_delayed_streams_for_parallel_write`はデフォルトで1000の値に設定されており、並行して書き込まれるS3ブロブの数を制御します。各ファイルの書き込みにはバッファが必要で（約1MB）、これによりINSERTのメモリ消費が効果的に制限されます。サーバーのメモリが少ないシナリオでは、この値を下げるのが適切かもしれません。
+* デフォルトでは、クエリ処理パイプラインの任意のステージで使用されるクエリ処理用スレッドの最大数は、コア数と同じになります。ステージによって並列化のしやすさが異なるため、この値が上限として機能します。ディスクからデータがストリーミングされるため、複数のクエリステージが同時に実行される場合があります。そのため、クエリで実際に使用されるスレッド数がこの値を超えることもあります。この動作は設定 [max_threads](/operations/settings/settings#max_threads) で変更できます。
+* S3 上での読み取りは、デフォルトでは非同期で行われます。この挙動は `remote_filesystem_read_method` 設定によって決まり、デフォルト値は `threadpool` です。リクエストを処理する際、ClickHouse はストライプ単位でグラニュールを読み取ります。各ストライプには多くのカラムが含まれる可能性があります。1 本のスレッドが、そのグラニュールに対応するカラムを一つずつ読み取ります。これを同期的に行う代わりに、データを待つ前にすべてのカラムに対して先読み（prefetch）を行います。この方式により、各カラムを同期的に待機する場合と比べて大きな性能向上が得られます。多くのケースでは、この設定を変更する必要はありません。詳細は [パフォーマンス最適化](#s3-optimizing-performance) を参照してください。
+* 書き込みは並列で実行され、最大 100 本のファイル書き込みスレッドが同時に動作します。`max_insert_delayed_streams_for_parallel_write` はデフォルト値 1000 で、並列に書き込まれる S3 の BLOB オブジェクトの数を制御します。書き込み中の各ファイルごとにバッファ（約 1MB）が必要になるため、これは実質的に INSERT のメモリ消費量の上限を制約します。サーバーのメモリが少ない環境では、この値を下げることが適切な場合があります。
 
-## ClickHouse用にS3オブジェクトストレージをディスクとして使用する {#configuring-s3-for-clickhouse-use}
+## S3 オブジェクトストレージを ClickHouse のディスクとして使用する {#configuring-s3-for-clickhouse-use}
 
-バケットとIAMロールを作成するためのステップバイステップの指示が必要な場合は、**S3バケットとIAMロールの作成**を展開し、手順に従ってください：
+バケットと IAM ロールを作成するためのステップバイステップの手順が必要な場合は、**Create S3 buckets and an IAM role** を展開して、手順に従ってください。
 
 <BucketDetails />
-### S3バケットをディスクとして使用するようにClickHouseを設定する {#configure-clickhouse-to-use-the-s3-bucket-as-a-disk}
-以下の例は、デフォルトのClickHouseディレクトリでサービスとしてインストールされたLinux Debパッケージに基づいています。
 
-1.  ClickHouseの`config.d`ディレクトリに新しいファイルを作成して、ストレージ設定を保存します。
+### ClickHouse を構成して S3 バケットをディスクとして使用する {#configure-clickhouse-to-use-the-s3-bucket-as-a-disk}
+
+次の例は、デフォルトの ClickHouse ディレクトリを使用してサービスとしてインストールされた Linux の DEB パッケージを前提としています。
+
+1. ストレージ構成を保存するために、ClickHouse の `config.d` ディレクトリに新しいファイルを作成します。
+
 ```bash
 vim /etc/clickhouse-server/config.d/storage_config.xml
 ```
-2. ストレージ設定のために、先ほどの手順からバケットパス、アクセスキー、およびシークレットキーに置き換えた以下を追加します。
+
+2. ストレージ設定として以下を追加し、先ほどの手順で取得したバケットパス、アクセスキー、シークレットキーに置き換えます
+
 ```xml
 <clickhouse>
   <storage_configuration>
@@ -707,29 +737,37 @@ vim /etc/clickhouse-server/config.d/storage_config.xml
 ```
 
 :::note
-`<disks>`タグ内の`s3_disk`および`s3_cache`タグは任意のラベルです。これらは他の名前に設定できますが、`<policies>`タブ内の`<disk>`タブで同じラベルを使用してディスクを参照しなければなりません。
-`<S3_main>`タグも任意で、ClickHouseでリソースを作成する際に参照されるストレージターゲットの識別子として使用されるポリシーの名前となります。
+`<disks>` タグ内の `s3_disk` および `s3_cache` は任意のラベルです。これらは別の名前に設定できますが、そのディスクを参照するために、同じラベルを `<policies>` タグ配下の `<disk>` タグでも使用する必要があります。
+`<S3_main>` タグも任意であり、ClickHouse 内でリソースを作成する際に、ストレージターゲットを識別するために使用されるポリシー名です。
 
-上記の設定は、ClickHouseバージョン22.8以上用です。古いバージョンを使用している場合は、[データを保存する](/operations/storing-data.md/#using-local-cache)ドキュメントを参照してください。
+上記の設定は ClickHouse バージョン 22.8 以降向けです。以前のバージョンを使用している場合は、[storing data](/operations/storing-data.md/#using-local-cache) ドキュメントを参照してください。
 
-S3を使用するための詳細については：
-統合ガイド: [S3バックのMergeTree](#s3-backed-mergetree)
+S3 の利用に関する詳細については、次を参照してください:
+Integrations Guide: [S3 Backed MergeTree](#s3-backed-mergetree)
 :::
 
-3. ファイルの所有者を`clickhouse`ユーザーおよびグループに更新します。
+3. ファイルの所有者を `clickhouse` ユーザーおよびグループに変更します
+
 ```bash
 chown clickhouse:clickhouse /etc/clickhouse-server/config.d/storage_config.xml
 ```
-4. 変更を有効にするためにClickHouseインスタンスを再起動します。
+
+4. 変更を有効にするために ClickHouse インスタンスを再起動します。
+
 ```bash
 service clickhouse-server restart
 ```
+
 ### テスト {#testing}
-1. ClickHouseクライアントにログインします。以下のようにします。
+
+1. 次のようなコマンドを使用して ClickHouse クライアントにログインします
+
 ```bash
 clickhouse-client --user default --password ClickHouse123!
 ```
-2. 新しいS3ストレージポリシーを指定してテーブルを作成します。
+
+2. 新しい S3 ストレージポリシーを指定したテーブルを作成する
+
 ```sql
 CREATE TABLE s3_table1
            (
@@ -741,10 +779,12 @@ CREATE TABLE s3_table1
            SETTINGS storage_policy = 's3_main';
 ```
 
-3. テーブルが正しいポリシーで作成されたことを示します。
+3. テーブルが適切なポリシーで作成されていることを確認します
+
 ```sql
 SHOW CREATE TABLE s3_table1;
 ```
+
 ```response
 ┌─statement────────────────────────────────────────────────────
 │ CREATE TABLE default.s3_table1
@@ -758,7 +798,8 @@ SETTINGS storage_policy = 's3_main', index_granularity = 8192
 └──────────────────────────────────────────────────────────────
 ```
 
-4. テスト行をテーブルに挿入します。
+4. テーブルにテスト用の行を挿入する
+
 ```sql
 INSERT INTO s3_table1
            (id, column1)
@@ -766,6 +807,7 @@ INSERT INTO s3_table1
            (1, 'abc'),
            (2, 'xyz');
 ```
+
 ```response
 INSERT INTO s3_table1 (id, column1) FORMAT Values
 
@@ -775,53 +817,68 @@ Ok.
 
 2 rows in set. Elapsed: 0.337 sec.
 ```
-5. 行を表示します。
+
+5. 行を確認する
+
 ```sql
 SELECT * FROM s3_table1;
 ```
+
 ```response
 ┌─id─┬─column1─┐
 │  1 │ abc     │
 │  2 │ xyz     │
 └────┴─────────┘
-
-2 rows in set. Elapsed: 0.284 sec.
 ```
-6. AWSコンソールで、バケットに移動し、新しいバケットとフォルダーを選択します。
-以下のようなものが表示されるはずです。
 
-<Image img={S3J} size="lg" border alt="S3 bucket view in AWS console showing ClickHouse data files stored in S3" />
-## S3オブジェクトストレージを使用して単一のシャードを二つのAWSリージョンで複製する {#s3-multi-region}
+2 行が結果に含まれます。経過時間: 0.284 秒。
+
+```
+6.  AWSコンソールで、バケットに移動し、新しく作成したバケットとフォルダを選択します。
+以下のような表示が確認できます。
+
+<Image img={S3J} size="lg" border alt="S3に保存されたClickHouseデータファイルを表示するAWSコンソールのS3バケットビュー" />
+```
+
+## S3 オブジェクトストレージを使用して単一シャードを 2 つの AWS リージョン間でレプリケートする {#s3-multi-region}
 
 :::tip
-ClickHouse Cloudではデフォルトでオブジェクトストレージが使用されます。ClickHouse Cloudで実行している場合、この手順を実行する必要はありません。
+ClickHouse Cloud ではデフォルトでオブジェクトストレージが使用されるため、ClickHouse Cloud 上で実行している場合はこの手順を実施する必要はありません。
 :::
-### 配備の計画 {#plan-the-deployment}
-このチュートリアルは、AWS EC2上の二つのClickHouse Serverノードと三つのClickHouse Keeperノードをスピーディに展開することに基づいています。ClickHouseサーバーのデータストアはS3です。それぞれのリージョンにClickHouse ServerとS3バケットが1つ用意されており、災害復旧をサポートします。
 
-ClickHouseテーブルは、二つのサーバー間で複製され、したがって二つのリージョン acrossで複製されます。
-### ソフトウェアのインストール {#install-software}
-#### ClickHouseサーバーノード {#clickhouse-server-nodes}
-ClickHouseサーバーノードに対するデプロイメント手順を実行する際は、[インストール手順](/getting-started/install/install.mdx)を参照してください。
-#### ClickHouseをデプロイする {#deploy-clickhouse}
+### デプロイを計画する {#plan-the-deployment}
 
-二つのホストにClickHouseをデプロイします。このサンプル設定ではこれらは`chnode1`と`chnode2`と呼ばれています。
+このチュートリアルは、AWS EC2 上に 2 つの ClickHouse サーバーノードと 3 つの ClickHouse Keeper ノードをデプロイすることを前提としています。ClickHouse サーバーのデータストアには S3 を使用します。ディザスタリカバリをサポートするために、2 つの AWS リージョンを使用し、それぞれのリージョンに 1 つずつ ClickHouse サーバーと S3 バケットを配置します。
 
-`chnode1`を一つのAWSリージョンに配置し、`chnode2`を第二のリージョンに配置します。
-#### ClickHouse Keeperをデプロイする {#deploy-clickhouse-keeper}
+ClickHouse テーブルは 2 台のサーバー間でレプリケートされるため、2 つのリージョン間でもレプリケートされます。
 
-三つのホストにClickHouse Keeperをデプロイします。このサンプル設定では、これらは`keepernode1`、`keepernode2`、および`keepernode3`と呼ばれています。 `keepernode1`は`chnode1`と同じリージョンにデプロイできます、`keepernode2`は`chnode2`と一緒に、そして`keepernode3`はどちらのリージョンにもデプロイできますが、そのリージョンのClickHouseノードとは異なる可用性ゾーンになります。
+### ソフトウェアをインストールする {#install-software}
 
-ClickHouse Keeperノードのデプロイメント手順を実行する際には[インストール手順](/getting-started/install/install.mdx)を参照してください。
-### S3バケットを作成する {#create-s3-buckets}
+#### ClickHouse サーバーノード {#clickhouse-server-nodes}
 
-二つのS3バケットを作成します。一つは`chnode1`が配置されているリージョンに、もう一つは`chnode2`が配置されているリージョンに作成します。
+ClickHouse サーバーノードでデプロイ手順を実行する際は、[インストール手順](/getting-started/install/install.mdx) を参照してください。
 
-バケットとIAMロールを作成するためのステップバイステップの指示が必要な場合は、**S3バケットとIAMロールの作成**を展開し、手順に従ってください：
+#### ClickHouse をデプロイする {#deploy-clickhouse}
+
+2 つのホストに ClickHouse をデプロイします。サンプル構成では、これらは `chnode1`、`chnode2` という名前になっています。
+
+`chnode1` を 1 つ目の AWS リージョンに、`chnode2` を 2 つ目のリージョンに配置します。
+
+#### ClickHouse Keeper をデプロイする {#deploy-clickhouse-keeper}
+
+3 つのホストに ClickHouse Keeper をデプロイします。サンプル構成では、これらは `keepernode1`、`keepernode2`、`keepernode3` という名前になっています。`keepernode1` は `chnode1` と同じリージョンに、`keepernode2` は `chnode2` と同じリージョンに、`keepernode3` はいずれかのリージョン内で、そのリージョンの ClickHouse ノードとは別のアベイラビリティーゾーンにデプロイします。
+
+ClickHouse Keeper ノードでデプロイ手順を実行する際は、[インストール手順](/getting-started/install/install.mdx) を参照してください。
+
+### S3 バケットを作成する {#create-s3-buckets}
+
+`chnode1` と `chnode2` を配置したそれぞれのリージョンに、S3 バケットを 1 つずつ、合計 2 つ作成します。
+
+バケットと IAM ロールの作成についてステップごとの手順が必要な場合は、**S3 バケットと IAM ロールの作成** を展開して、手順に従ってください。
 
 <BucketDetails />
 
-その後、設定ファイルは`/etc/clickhouse-server/config.d/`に配置されます。このバケットのためのサンプル設定ファイルは以下の通りで、もう一つは、三つのハイライトされた行が異なる類似のものです。
+その後、設定ファイルは `/etc/clickhouse-server/config.d/` に配置します。以下は 1 つのバケットに対するサンプル設定ファイルであり、もう一方も同様ですが、ハイライトされている 3 行のみが異なります。
 
 ```xml title="/etc/clickhouse-server/config.d/storage_config.xml"
 <clickhouse>
@@ -856,14 +913,16 @@ ClickHouse Keeperノードのデプロイメント手順を実行する際には
    </storage_configuration>
 </clickhouse>
 ```
+
 :::note
-このガイドの多くのステップでは、`/etc/clickhouse-server/config.d/`に設定ファイルを配置するように求められます。これはLinuxシステムで設定上書きファイルのデフォルトの場所です。これらのファイルをそのディレクトリに置くと、ClickHouseはコンテンツを使用してデフォルトの設定を上書きします。これらのファイルを上書きディレクトリに配置することで、アップグレード中に設定が失われるのを避けることができます。
+このガイドの多くの手順では、設定ファイルを `/etc/clickhouse-server/config.d/` に配置するよう指示されます。これは、Linux システムにおける設定上書き用ファイルのデフォルトの場所です。これらのファイルをそのディレクトリに配置すると、ClickHouse はその内容を使用してデフォルト設定を上書きします。これらのファイルをオーバーライド用ディレクトリに配置しておくことで、アップグレード時に設定が失われるのを防ぐことができます。
 :::
-### ClickHouse Keeperを設定する {#configure-clickhouse-keeper}
 
-ClickHouse Keeperをスタンドアロンで実行する（ClickHouseサーバーとは別に）場合の設定は、単一のXMLファイルです。このチュートリアルでは、ファイルは`/etc/clickhouse-keeper/keeper_config.xml`です。すべての三つのKeeperサーバーは、以下の例のように同じ設定を使用しますが、1つの設定が異なります；`<server_id>`です。
+### ClickHouse Keeper を設定する {#configure-clickhouse-keeper}
 
-`server_id`は、設定ファイルが使用されるホストに割り当てるIDを示します。以下の例では、`server_id`は`3`で、ファイル内の`<raft_configuration>`セクションも見てみると、サーバー3にホスト名`keepernode3`が指定されています。これがClickHouse Keeperプロセスがリーダーを選択する際にどのサーバーに接続するかを知る方法です。
+ClickHouse Keeper を単体で（ClickHouse サーバーとは別に）実行する場合、設定は 1 つの XML ファイルで構成されます。このチュートリアルでは、そのファイルは `/etc/clickhouse-keeper/keeper_config.xml` です。3 台すべての Keeper サーバーは同じ設定を使用しますが、1 か所だけ異なる設定があります。それが `<server_id>` です。
+
+`server_id` は、その設定ファイルを使用するホストに割り当てられる ID を示します。以下の例では、`server_id` は `3` であり、ファイル内のさらに下にある `<raft_configuration>` セクションを見ると、サーバー 3 のホスト名が `keepernode3` となっていることがわかります。ClickHouse Keeper プロセスは、この情報を基に、リーダーの選出やその他の処理全般を行う際に、どのサーバーへ接続すべきかを認識します。
 
 ```xml title="/etc/clickhouse-keeper/keeper_config.xml"
 <clickhouse>
@@ -911,15 +970,18 @@ ClickHouse Keeperをスタンドアロンで実行する（ClickHouseサーバ�
 </clickhouse>
 ```
 
-ClickHouse Keeperの設定ファイルをコピーします（`<server_id>`を設定するのを忘れずに）：
+ClickHouse Keeper の設定ファイルを所定の場所にコピーします（`<server_id>` を必ず設定してください）:
+
 ```bash
 sudo -u clickhouse \
   cp keeper.xml /etc/clickhouse-keeper/keeper.xml
 ```
-### ClickHouseサーバーを設定する {#configure-clickhouse-server}
+
+### ClickHouse サーバーの設定 {#configure-clickhouse-server}
+
 #### クラスターの定義 {#define-a-cluster}
 
-ClickHouseのクラスターは、設定ファイルの`<remote_servers>`セクションで定義されます。このサンプルでは、`cluster_1S_2R`という1つのクラスターが定義されており、これは一つのシャードと二つのレプリカで構成されています。レプリカは、ホスト`chnode1`と`chnode2`に位置しています。
+ClickHouse のクラスターは設定の `<remote_servers>` セクション内で定義します。この例では `cluster_1S_2R` という 1 つのクラスターが定義されており、単一のシャードと 2 つのレプリカで構成されています。レプリカはそれぞれ `chnode1` と `chnode2` のホスト上に配置されています。
 
 ```xml title="/etc/clickhouse-server/config.d/remote-servers.xml"
 <clickhouse>
@@ -940,7 +1002,7 @@ ClickHouseのクラスターは、設定ファイルの`<remote_servers>`セク�
 </clickhouse>
 ```
 
-クラスターを使用する際は、DDLクエリにクラスター、シャード、およびレプリカの設定を埋め込むためのマクロを定義すると便利です。このサンプルでは、`shard`および`replica`の詳細を提供せずにレプリケーテッドテーブルエンジンを使用することを指定できます。テーブルを作成すると、`shard`と`replica`のマクロが`system.tables`をクエリすることでどのように使用されるかを見ることができます。
+クラスタを扱う場合、クラスタ、シャード、レプリカの設定を DDL クエリに埋め込むマクロを定義しておくと便利です。このサンプルでは、`shard` と `replica` を個別に指定しなくても、レプリケーション対応テーブルエンジンを利用できるようにしています。テーブルを作成したら、`system.tables` をクエリすることで、`shard` と `replica` のマクロがどのように展開されているかを確認できます。
 
 ```xml title="/etc/clickhouse-server/config.d/macros.xml"
 <clickhouse>
@@ -954,14 +1016,16 @@ ClickHouseのクラスターは、設定ファイルの`<remote_servers>`セク�
     </macros>
 </clickhouse>
 ```
+
 :::note
-上記のマクロは`chnode1`用のものです。`chnode2`では`replica`を`replica_2`に設定してください。
+上記のマクロは `chnode1` 向けです。`chnode2` では `replica` を `replica_2` に設定してください。
 :::
-#### ゼロコピーのレプリケーションを無効にする {#disable-zero-copy-replication}
 
-ClickHouseバージョン22.7以下では、`allow_remote_fs_zero_copy_replication`設定は、デフォルトでS3およびHDFSディスクに対して`true`に設定されています。この設定は、この災害復旧シナリオでは`false`に設定する必要があります。バージョン22.8以降では、デフォルトで`false`に設定されています。
+#### ゼロコピー レプリケーションを無効化する {#disable-zero-copy-replication}
 
-この設定は以下の二つの理由から`false`にする必要があります。1) この機能は製品版ではない。2) 災害復旧シナリオでは、データとメタデータの両方を複数のリージョンに保存する必要があります。`allow_remote_fs_zero_copy_replication`を`false`に設定します。
+ClickHouse バージョン 22.7 以前では、`allow_remote_fs_zero_copy_replication` 設定は S3 および HDFS ディスクに対してデフォルトで `true` に設定されています。このディザスタリカバリのシナリオでは、この設定を `false` にする必要があり、バージョン 22.8 以降ではデフォルトで `false` に設定されています。
+
+この設定は次の 2 つの理由から `false` にする必要があります。1) この機能はまだ本番環境での利用に十分な成熟度に達していないこと、2) ディザスタリカバリシナリオでは、データとメタデータの両方を複数のリージョンに保存する必要があることです。`allow_remote_fs_zero_copy_replication` を `false` に設定してください。
 
 ```xml title="/etc/clickhouse-server/config.d/remote-servers.xml"
 <clickhouse>
@@ -971,7 +1035,7 @@ ClickHouseバージョン22.7以下では、`allow_remote_fs_zero_copy_replicati
 </clickhouse>
 ```
 
-ClickHouse Keeperは、ClickHouseノード間でのデータのレプリケーションを調整する責任があります。ClickHouseにClickHouse Keeperノードを伝えるために、各ClickHouseノードに設定ファイルを追加します。
+ClickHouse Keeper は、ClickHouse ノード間でのデータレプリケーションを調整する役割を担います。ClickHouse に ClickHouse Keeper ノードを認識させるには、各 ClickHouse ノードに設定ファイルを追加します。
 
 ```xml title="/etc/clickhouse-server/config.d/use_keeper.xml"
 <clickhouse>
@@ -991,34 +1055,39 @@ ClickHouse Keeperは、ClickHouseノード間でのデータのレプリケー�
     </zookeeper>
 </clickhouse>
 ```
-### ネットワーキングの設定 {#configure-networking}
 
-AWSでサーバーが互いに通信できるようにするためのセキュリティ設定を構成する際は、[ネットワークポート](../../../guides/sre/network-ports.md)リストを確認してください。
+### ネットワークの設定 {#configure-networking}
 
-すべての三つのサーバーは、ネットワーク接続をリッスンしてできるようにする必要があります。それにより、サーバー間とS3との通信が行われます。ClickHouseはデフォルトではループバックアドレス上でのみリッスンするため、これを変更する必要があります。これらの設定は`/etc/clickhouse-server/config.d/`に構成されます。以下は、ClickHouseとClickHouse KeeperがすべてのIP v4インターフェースでリッスンするように設定するサンプルです。詳細については、ドキュメントまたはデフォルト設定ファイル`/etc/clickhouse/config.xml`を参照してください。
+サーバー同士、また利用者がサーバーと通信できるようにするために、AWS のセキュリティ設定を行う際は、[ネットワークポート](../../../guides/sre/network-ports.md)の一覧を参照してください。
+
+3 台すべてのサーバーが、サーバー間および S3 との通信を行えるように、ネットワーク接続を待ち受けるよう構成する必要があります。デフォルトでは ClickHouse はループバックアドレスでのみ待ち受けるため、これを変更する必要があります。これは `/etc/clickhouse-server/config.d/` で設定します。以下は、ClickHouse および ClickHouse Keeper がすべての IPv4 インターフェイスで待ち受けるように構成するサンプルです。詳細については、ドキュメントまたはデフォルトの設定ファイル `/etc/clickhouse/config.xml` を参照してください。
 
 ```xml title="/etc/clickhouse-server/config.d/networking.xml"
 <clickhouse>
     <listen_host>0.0.0.0</listen_host>
 </clickhouse>
 ```
-### サーバーの起動 {#start-the-servers}
-#### ClickHouse Keeperを実行する {#run-clickhouse-keeper}
 
-各Keeperサーバーで、オペレーティングシステムに応じてコマンドを実行します。例：
+### サーバーを起動する {#start-the-servers}
+
+#### ClickHouse Keeper を起動する {#run-clickhouse-keeper}
+
+各 Keeper サーバーで、使用しているオペレーティングシステムに応じたコマンドを実行します。例えば:
 
 ```bash
 sudo systemctl enable clickhouse-keeper
 sudo systemctl start clickhouse-keeper
 sudo systemctl status clickhouse-keeper
 ```
-#### ClickHouse Keeperのステータスを確認する {#check-clickhouse-keeper-status}
 
-`netcat`を使ってClickHouse Keeperにコマンドを送ります。例えば、`mntr`はClickHouse Keeperクラスターの状態を返します。各Keeperノードでこのコマンドを実行すると、1つがリーダーであり、他の2つがフォロワーであることがわかります。
+#### ClickHouse Keeper の状態を確認する {#check-clickhouse-keeper-status}
+
+`netcat` を使って ClickHouse Keeper にコマンドを送信します。たとえば、`mntr` は ClickHouse Keeper クラスターの状態を返します。各 Keeper ノードでこのコマンドを実行すると、1 つがリーダーで、残り 2 つがフォロワーであることを確認できます。
 
 ```bash
 echo mntr | nc localhost 9181
 ```
+
 ```response
 zk_version      v22.7.2.15-stable-f843089624e8dd3ff7927b8a125cf3a7a769c069
 zk_avg_latency  0
@@ -1026,13 +1095,11 @@ zk_max_latency  11
 zk_min_latency  0
 zk_packets_received     1783
 zk_packets_sent 1783
-
-# highlight-start
+# highlight-start {#highlight-start}
 zk_num_alive_connections        2
 zk_outstanding_requests 0
 zk_server_state leader
-
-# highlight-end
+# highlight-end {#highlight-end}
 zk_znode_count  135
 zk_watch_count  8
 zk_ephemerals_count     3
@@ -1041,24 +1108,25 @@ zk_key_arena_size       28672
 zk_latest_snapshot_size 0
 zk_open_file_descriptor_count   182
 zk_max_file_descriptor_count    18446744073709551615
-
-# highlight-start
+# highlight-start {#highlight-start}
 zk_followers    2
 zk_synced_followers     2
-
-# highlight-end
+# highlight-end {#highlight-end}
 ```
-#### ClickHouseサーバーを実行する {#run-clickhouse-server}
 
-各ClickHouseサーバーで実行します。
+#### ClickHouse サーバーを起動する {#run-clickhouse-server}
+
+各 ClickHouse サーバーで次を実行します。
 
 ```bash
 sudo service clickhouse-server start
 ```
-#### ClickHouseサーバーを確認する {#verify-clickhouse-server}
 
-[クラスター設定](#define-a-cluster)を追加した際に、二つのClickHouseノードにまたがる単一シャードが複製されるようになりました。この確認ステップでは、ClickHouseが起動した時にクラスタが構築されたことを確認し、そのクラスターを使用して複製されたテーブルを作成します。
-- クラスタが存在することを確認します：
+#### ClickHouse サーバーを検証する {#verify-clickhouse-server}
+
+[クラスタ設定](#define-a-cluster)を追加したとき、2 つの ClickHouse ノード間でレプリケートされる 1 つのシャードが定義されました。この検証ステップでは、ClickHouse の起動時にクラスタが構築されていることを確認し、そのクラスタを使用してレプリケートされたテーブルを作成します。
+
+* クラスタが存在することを確認します:
   ```sql
   show clusters
   ```
@@ -1070,7 +1138,7 @@ sudo service clickhouse-server start
   1 row in set. Elapsed: 0.009 sec. `
   ```
 
-- `ReplicatedMergeTree`テーブルエンジンを使用してクラスター内にテーブルを作成します：
+* `ReplicatedMergeTree` テーブルエンジンを使用してクラスタ内にテーブルを作成します:
   ```sql
   create table trips on cluster 'cluster_1S_2R' (
    `trip_id` UInt32,
@@ -1097,55 +1165,61 @@ sudo service clickhouse-server start
   │ chnode2 │ 9000 │      0 │       │                   0 │                0 │
   └─────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
   ```
-- 先に定義されたマクロの使用を理解する
 
-  マクロ `shard` と `replica` は[前述の通り](#define-a-cluster)で定義されており、ハイライトされた行でクリックハウスノードごとに値が置き換えられるのがわかります。さらに、値 `uuid` が使用されます。`uuid` はシステムによって生成されるため、マクロには定義されません。
+* 先ほど定義したマクロの使われ方を確認する
+
+  マクロ `shard` と `replica` は[前に定義しました](#define-a-cluster)。下のハイライトされた行では、各 ClickHouse ノードでそれぞれの値がどのように置き換えられているかを確認できます。さらに `uuid` という値も使用されています。`uuid` はシステムによって生成されるため、マクロ内では定義されていません。
+
   ```sql
   SELECT create_table_query
   FROM system.tables
   WHERE name = 'trips'
   FORMAT Vertical
   ```
+
   ```response
   Query id: 4d326b66-0402-4c14-9c2f-212bedd282c0
 
-  Row 1:
+  1 行目:
   ──────
   create_table_query: CREATE TABLE default.trips (`trip_id` UInt32, `pickup_date` Date, `pickup_datetime` DateTime, `dropoff_datetime` DateTime, `pickup_longitude` Float64, `pickup_latitude` Float64, `dropoff_longitude` Float64, `dropoff_latitude` Float64, `passenger_count` UInt8, `trip_distance` Float64, `tip_amount` Float32, `total_amount` Float32, `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4))
   # highlight-next-line
   ENGINE = ReplicatedMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
   PARTITION BY toYYYYMM(pickup_date) ORDER BY pickup_datetime SETTINGS storage_policy = 's3_main'
 
-  1 row in set. Elapsed: 0.012 sec.
+  1 行がセットに含まれています。経過時間: 0.012 秒。
   ```
-  :::note
-  上記に示されるzookeeperのパス`'clickhouse/tables/{uuid}/{shard}`は、`default_replica_path`および`default_replica_name`を設定することでカスタマイズできます。詳細は[こちら](/operations/server-configuration-parameters/settings.md/#default_replica_path)をご覧ください。
-  :::
+:::note
+上記のzookeeperパス `'clickhouse/tables/{uuid}/{shard}` は、`default_replica_path` と `default_replica_name` を設定することでカスタマイズできます。ドキュメントは[こちら](/operations/server-configuration-parameters/settings.md/#default_replica_path)をご参照ください。
+:::
+
 ### テスト {#testing-1}
 
-これらのテストは、データが二つのサーバー間で複製されていること、そしてそれがローカルディスクではなくS3バケットに格納されていることを確認します。
+以下のテストでは、データが2つのサーバー間でレプリケーションされていること、およびローカルディスクではなくS3バケットに保存されていることを検証します。
 
-- ニューヨーク市タクシーデータセットからデータを追加します：
-  ```sql
-  INSERT INTO trips
-  SELECT trip_id,
-         pickup_date,
-         pickup_datetime,
-         dropoff_datetime,
-         pickup_longitude,
-         pickup_latitude,
-         dropoff_longitude,
-         dropoff_latitude,
-         passenger_count,
-         trip_distance,
-         tip_amount,
-         total_amount,
-         payment_type
-     FROM s3('https://ch-nyc-taxi.s3.eu-west-3.amazonaws.com/tsv/trips_{0..9}.tsv.gz', 'TabSeparatedWithNames') LIMIT 1000000;
-  ```
-- データがS3に保存されていることを確認します。
+- New York Cityタクシーデータセットからデータを追加します:
+```sql
+INSERT INTO trips
+SELECT trip_id,
+       pickup_date,
+       pickup_datetime,
+       dropoff_datetime,
+       pickup_longitude,
+       pickup_latitude,
+       dropoff_longitude,
+       dropoff_latitude,
+       passenger_count,
+       trip_distance,
+       tip_amount,
+       total_amount,
+       payment_type
+   FROM s3('https://ch-nyc-taxi.s3.eu-west-3.amazonaws.com/tsv/trips_{0..9}.tsv.gz', 'TabSeparatedWithNames') LIMIT 1000000;
+````
 
-  このクエリはディスク上のデータのサイズと、どのディスクが使用されるかを決定するポリシーを表示します。
+* データが S3 に保存されていることを確認します。
+
+  このクエリは、ディスク上のデータサイズと、どのディスクが使用されるかを決定するために使用されているストレージポリシーを表示します。
+
   ```sql
   SELECT
       engine,
@@ -1157,6 +1231,7 @@ sudo service clickhouse-server start
   WHERE name = 'trips'
   FORMAT Vertical
   ```
+
   ```response
   Query id: af7a3d1b-7730-49e0-9314-cc51c4cf053c
 
@@ -1171,37 +1246,40 @@ sudo service clickhouse-server start
   1 row in set. Elapsed: 0.009 sec.
   ```
 
-  ローカルディスク上のデータのサイズを確認します。上記から、保存されたミリオンズ行のディスク上のサイズは36.42 MiBです。これはS3に保存されているはずで、ローカルディスクには保存されていません。このクエリは、ローカルディスクでデータとメタデータが保存されている場所も教えてくれます。ローカルデータを確認します：
+  ローカルディスク上のデータサイズを確認します。上の結果から、保存されている数百万行のディスク上のサイズは 36.42 MiB です。これはローカルディスクではなく S3 上にあるはずです。上記のクエリからは、ローカルディスク上のデータとメタデータの保存場所も分かります。ローカル側のデータを確認します:
+
   ```response
   root@chnode1:~# du -sh /var/lib/clickhouse/disks/s3_disk/store/551
   536K  /var/lib/clickhouse/disks/s3_disk/store/551
   ```
 
-  各S3バケット内のS3データを確認します（合計は表示されませんが、両方のバケットには約36 MiBが保存されるはずです）。
+  各 S3 バケット内のデータを確認します（合計は表示されていませんが、両方のバケットにはインサート後に約 36 MiB が保存されています）:
 
-<Image img={Bucket1} size="lg" border alt="Size of data in first S3 bucket showing storage usage metrics" />
+<Image img={Bucket1} size="lg" border alt="最初の S3 バケット内のデータサイズ（ストレージ使用量メトリクスを表示）" />
 
-<Image img={Bucket2} size="lg" border alt="Size of data in second S3 bucket showing storage usage metrics" />
+<Image img={Bucket2} size="lg" border alt="2 番目の S3 バケット内のデータサイズ（ストレージ使用量メトリクスを表示）" />
+
 ## S3Express {#s3express}
 
-[S3Express](https://aws.amazon.com/s3/storage-classes/express-one-zone/)は、Amazon S3の新しい高性能シングルアベイラビリティゾーンストレージクラスです。
+[S3Express](https://aws.amazon.com/s3/storage-classes/express-one-zone/) は、Amazon S3 における新しい高性能な単一アベイラビリティーゾーン向けストレージクラスです。
 
-この[ブログ](https://aws.amazon.com/blogs/storage/clickhouse-cloud-amazon-s3-express-one-zone-making-a-blazing-fast-analytical-database-even-faster/)では、ClickHouseでのS3Expressテストについての私たちの経験を読めます。
+S3Express を ClickHouse でテストした際の経験については、この [ブログ記事](https://aws.amazon.com/blogs/storage/clickhouse-cloud-amazon-s3-express-one-zone-making-a-blazing-fast-analytical-database-even-faster/) を参照してください。
 
 :::note
-  S3Expressは、単一のAZ内にデータを保存します。つまり、AZの停止の場合、データが利用できなくなります。
+S3Express はデータを単一の AZ 内に保存します。これは、AZ 障害時にはデータにアクセスできなくなることを意味します。
 :::
-### S3ディスク {#s3-disk}
 
-S3Expressバケットでストレージをサポートするテーブルを作成するには、以下の手順が必要です。
+### S3 disk {#s3-storage}
 
-1. `Directory`タイプのバケットを作成します。
-2. S3ユーザーに必要なすべての権限を付与するために適切なバケットポリシーをインストールします（例えば、 `"Action": "s3express:*"` を指定して無制限のアクセスを許可する）。
-3. ストレージポリシーを設定する際には、`region` パラメータを指定してください。
+S3Express バケット上のストレージをバックエンドとするテーブルを作成するには、次の手順を実行します。
 
-ストレージ構成は通常のS3と同じで、例えば次のようになります。
+1. `Directory` タイプのバケットを作成する
+2. S3 ユーザーに必要なすべての権限を付与するため、適切なバケットポリシーを設定する（例: 無制限アクセスを許可するために `"Action": "s3express:*"` を設定）
+3. ストレージポリシーを設定する際に、`region` パラメータを指定する
 
-``` sql
+ストレージ構成は通常の S3 と同じであり、たとえば次のようになります。
+
+```sql
 <storage_configuration>
     <disks>
         <s3_express>
@@ -1224,9 +1302,9 @@ S3Expressバケットでストレージをサポートするテーブルを作�
 </storage_configuration>
 ```
 
-その後、新しいストレージにテーブルを作成します。
+次に、新しいストレージ上にテーブルを作成します。
 
-``` sql
+```sql
 CREATE TABLE t
 (
     a UInt64,
@@ -1236,17 +1314,18 @@ ENGINE = MergeTree
 ORDER BY a
 SETTINGS storage_policy = 's3_express';
 ```
-### S3ストレージ {#s3-storage}
 
-S3ストレージもサポートされていますが、`Object URL`パスのみ対応しています。例：
+### S3 ストレージ {#backups}
 
-``` sql
-select * from s3('https://test-bucket--eun1-az1--x-s3.s3express-eun1-az1.eu-north-1.amazonaws.com/file.csv', ...)
+S3 ストレージもサポートされていますが、`Object URL` 形式のパスに対してのみ利用できます。例：
+
+```sql
+SELECT * FROM s3('https://test-bucket--eun1-az1--x-s3.s3express-eun1-az1.eu-north-1.amazonaws.com/file.csv', ...)
 ```
 
-設定ではバケットのリージョンも指定する必要があります。
+また、設定でバケットのリージョンを指定する必要もあります：
 
-``` xml
+```xml
 <s3>
     <perf-bucket-url>
         <endpoint>https://test-bucket--eun1-az1--x-s3.s3express-eun1-az1.eu-north-1.amazonaws.com</endpoint>
@@ -1254,11 +1333,12 @@ select * from s3('https://test-bucket--eun1-az1--x-s3.s3express-eun1-az1.eu-nort
     </perf-bucket-url>
 </s3>
 ```
+
 ### バックアップ {#backups}
 
-上記で作成したディスクにバックアップを保存することが可能です。
+上で作成したディスクにバックアップを保存できます。
 
-``` sql
+```sql
 BACKUP TABLE t TO Disk('s3_express', 't.zip')
 
 ┌─id───────────────────────────────────┬─status─────────┐
@@ -1266,7 +1346,7 @@ BACKUP TABLE t TO Disk('s3_express', 't.zip')
 └──────────────────────────────────────┴────────────────┘
 ```
 
-``` sql
+```sql
 RESTORE TABLE t AS t_restored FROM Disk('s3_express', 't.zip')
 
 ┌─id───────────────────────────────────┬─status───┐

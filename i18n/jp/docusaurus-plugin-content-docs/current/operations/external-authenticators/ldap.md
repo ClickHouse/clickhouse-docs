@@ -1,23 +1,24 @@
 ---
-description: 'Guide to configuring LDAP authentication for ClickHouse'
-slug: '/operations/external-authenticators/ldap'
+description: 'ClickHouse の LDAP 認証を設定するためのガイド'
+slug: /operations/external-authenticators/ldap
 title: 'LDAP'
+doc_type: 'reference'
 ---
 
 import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 
-LDAPサーバーは、ClickHouseユーザーの認証に使用できます。これを行うための2つの異なるアプローチがあります。
+LDAP サーバーは ClickHouse ユーザーの認証に使用できます。これを行う方法は 2 つあります。
 
-- 既存のユーザー（`users.xml`で定義されているものまたはローカルアクセス制御パスに定義されているもの）のためにLDAPを外部認証機構として使用する。
-- LDAPを外部ユーザーディレクトリとして使用し、LDAPサーバーに存在する場合にはローカルに定義されていないユーザーの認証を許可する。
+* `users.xml` やローカルのアクセス制御パスで定義されている既存ユーザーに対する外部認証手段として LDAP を使用する。
+* LDAP を外部ユーザーディレクトリとして使用し、LDAP サーバー上に存在する場合にはローカルで未定義のユーザーの認証を許可する。
 
-これらのアプローチの両方には、ClickHouse構成においてLDAPサーバーを内部名で定義する必要がありますので、ほかの構成部分から参照できるようにします。
+これら 2 つのアプローチのいずれにおいても、ClickHouse の設定内で内部名を持つ LDAP サーバーを定義し、設定の他の箇所からそれを参照できるようにする必要があります。
 
-## LDAPサーバーの定義 {#ldap-server-definition}
+## LDAP サーバーの定義 {#ldap-server-definition}
 
-LDAPサーバーを定義するには、`config.xml`に`ldap_servers`セクションを追加します。
+LDAP サーバーを定義するには、`config.xml` に `ldap_servers` セクションを追加する必要があります。
 
 **例**
 
@@ -25,7 +26,7 @@ LDAPサーバーを定義するには、`config.xml`に`ldap_servers`セクシ�
 <clickhouse>
     <!- ... -->
     <ldap_servers>
-        <!- 一般的なLDAPサーバー。 -->
+        <!- 標準的なLDAPサーバー。 -->
         <my_ldap_server>
             <host>localhost</host>
             <port>636</port>
@@ -41,7 +42,7 @@ LDAPサーバーを定義するには、`config.xml`に`ldap_servers`セクシ�
             <tls_cipher_suite>ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:AES256-GCM-SHA384</tls_cipher_suite>
         </my_ldap_server>
 
-        <!- ユーザーDN検出が設定された一般的なActive Directoryで、さらに役割マッピングのため。 -->
+        <!- ロールマッピングのためのユーザーDN検出が設定された標準的なActive Directory。 -->
         <my_ad_server>
             <host>localhost</host>
             <port>389</port>
@@ -56,44 +57,44 @@ LDAPサーバーを定義するには、`config.xml`に`ldap_servers`セクシ�
 </clickhouse>
 ```
 
-注意：`ldap_servers`セクション内で複数のLDAPサーバーを異なる名前で定義できます。
+なお、`ldap_servers` セクション内には、異なる名前を付けることで複数の LDAP サーバーを定義できます。
 
 **パラメータ**
 
-- `host` — LDAPサーバーのホスト名またはIP。これは必須のパラメータであり、空にすることはできません。
-- `port` — LDAPサーバーのポート。`enable_tls`が`true`に設定されている場合はデフォルトで`636`、そうでない場合は`389`です。
-- `bind_dn` — バインド用にDNを構築するために使用されるテンプレート。
-    - 結果のDNは、各認証試行中にテンプレートのすべての`{user_name}`部分文字列を実際のユーザー名に置き換えることによって構築されます。
-- `user_dn_detection` — バウンドユーザーの実際のユーザーDNを検出するためのLDAP検索パラメータを持つセクション。
-    - これは主にサーバーがActive Directoryの場合の役割マッピングのための検索フィルターで使用されます。結果のユーザーDNは、任意の位置で許可される`{user_dn}`部分文字列を置き換える際に使用されます。デフォルトでは、ユーザーDNはバインドDNと等しく設定されますが、検索が実行されると、実際に検出されたユーザーDNの値に更新されます。
-        - `base_dn` — LDAP検索のためのベースDNを構築するために使用されるテンプレート。
-            - 結果のDNは、LDAP検索中にテンプレートのすべての`{user_name}`と`{bind_dn}`部分文字列を実際のユーザー名とバインドDNに置き換えることによって構築されます。
-        - `scope` — LDAP検索のスコープ。
-            - 許可された値は：`base`、`one_level`、`children`、`subtree`（デフォルト）。
-        - `search_filter` — LDAP検索のための検索フィルターを構築するために使用されるテンプレート。
-            - 結果のフィルターは、LDAP検索中にテンプレートのすべての`{user_name}`、`{bind_dn}`、および`{base_dn}`部分文字列を実際のユーザー名、バインドDN、およびベースDNに置き換えることにより構築されます。
-            - 特殊文字は、XML内で適切にエスケープされる必要があります。
-- `verification_cooldown` — 成功したバインド試行の後、LDAPサーバーに連絡せずにユーザーがすべての連続リクエストに対して成功裏に認証されていると見なされる時間（秒単位）の期間。
-    - キャッシュを無効にし、各認証リクエストのためにLDAPサーバーに連絡することを強制するには、`0`（デフォルト）を指定します。
-- `enable_tls` — LDAPサーバーへの安全な接続の使用をトリガーするフラグ。
-    - プレーンテキストの`ldap://`プロトコル（推奨しません）には`no`を指定します。
-    - SSL/TLSのLDAP `ldaps://`プロトコル（推奨、デフォルト）には`yes`を指定します。
-    - 従来のStartTLSプロトコル（プレーンテキストの`ldap://`プロトコル、TLSにアップグレード）には`starttls`を指定します。
-- `tls_minimum_protocol_version` — SSL/TLSの最小プロトコルバージョン。
-    - 許可された値は：`ssl2`、`ssl3`、`tls1.0`、`tls1.1`、`tls1.2`（デフォルト）。
-- `tls_require_cert` — SSL/TLSピア証明書の検証動作。
-    - 許可された値は：`never`、`allow`、`try`、`demand`（デフォルト）。
-- `tls_cert_file` — 証明書ファイルへのパス。
-- `tls_key_file` — 証明書キーファイルへのパス。
-- `tls_ca_cert_file` — CA証明書ファイルへのパス。
-- `tls_ca_cert_dir` — CA証明書を含むディレクトリへのパス。
-- `tls_cipher_suite` — 許可されている暗号スイート（OpenSSL表記で）。
+* `host` — LDAP サーバーのホスト名または IP。このパラメータは必須であり、空にはできません。
+* `port` — LDAP サーバーのポート。`enable_tls` が `true` に設定されている場合のデフォルトは `636`、それ以外の場合は `389` です。
+* `bind_dn` — バインドに使用する DN を構築するためのテンプレート。
+  * 認証が試行されるたびに、このテンプレート内のすべての `{user_name}` 文字列が実際のユーザー名で置き換えられ、最終的な DN が構築されます。
+* `user_dn_detection` — バインドされたユーザーの実際のユーザー DN を検出するための LDAP 検索パラメータのセクション。
+  * これは主にサーバーが Active Directory の場合に、追加のロールマッピングのための検索フィルタで使用されます。最終的なユーザー DN は、`{user_dn}` 文字列を許可されている場所で置き換える際に使用されます。デフォルトではユーザー DN は bind DN と同一に設定されますが、検索が実行されると、検出された実際のユーザー DN の値で更新されます。
+    * `base_dn` — LDAP 検索用の base DN を構築するために使用されるテンプレート。
+      * LDAP 検索中に、このテンプレート内のすべての `{user_name}` および `{bind_dn}` 文字列が実際のユーザー名および bind DN で置き換えられ、最終的な DN が構築されます。
+    * `scope` — LDAP 検索のスコープ。
+      * 受け付けられる値は `base`、`one_level`、`children`、`subtree`（デフォルト）です。
+    * `search_filter` — LDAP 検索用の検索フィルタを構築するために使用されるテンプレート。
+      * LDAP 検索中に、このテンプレート内のすべての `{user_name}`、`{bind_dn}`、`{base_dn}` 文字列が、実際のユーザー名、bind DN、base DN で置き換えられ、最終的なフィルタが構築されます。
+      * 特殊文字は XML で正しくエスケープする必要がある点に注意してください。
+* `verification_cooldown` — バインドが成功した後、この秒数の間は LDAP サーバーに問い合わせることなく、連続するすべてのリクエストについてユーザーが認証済みであるとみなされる期間。
+  * キャッシュを無効化し、認証リクエストごとに LDAP サーバーへの問い合わせを強制するには、`0`（デフォルト）を指定します。
+* `enable_tls` — LDAP サーバーへのセキュア接続を使用するかどうかを制御するフラグ。
+  * プレーンテキストの `ldap://` プロトコル（推奨されません）を使用するには `no` を指定します。
+  * SSL/TLS 上の LDAP `ldaps://` プロトコル（推奨、デフォルト）を使用するには `yes` を指定します。
+  * レガシーな StartTLS プロトコル（TLS へアップグレードされるプレーンテキストの `ldap://` プロトコル）を使用するには `starttls` を指定します。
+* `tls_minimum_protocol_version` — SSL/TLS の最小プロトコルバージョン。
+  * 受け付けられる値は `ssl2`、`ssl3`、`tls1.0`、`tls1.1`、`tls1.2`（デフォルト）です。
+* `tls_require_cert` — SSL/TLS ピア証明書の検証動作。
+  * 受け付けられる値は `never`、`allow`、`try`、`demand`（デフォルト）です。
+* `tls_cert_file` — 証明書ファイルへのパス。
+* `tls_key_file` — 証明書鍵ファイルへのパス。
+* `tls_ca_cert_file` — CA 証明書ファイルへのパス。
+* `tls_ca_cert_dir` — CA 証明書を含むディレクトリへのパス。
+* `tls_cipher_suite` — 許可される暗号スイート（OpenSSL の表記）。
 
-## LDAP外部認証機構 {#ldap-external-authenticator}
+## LDAP 外部認証 {#ldap-external-authenticator}
 
-リモートLDAPサーバーを、ローカルに定義されたユーザー（`users.xml`で定義されているものまたはローカルアクセス制御パスに定義されているもの）のパスワードを検証する方法として使用できます。これを実現するには、ユーザー定義の`password`や類似のセクションの代わりに、事前に定義されたLDAPサーバー名を指定します。
+リモートの LDAP サーバーを、ローカルで定義されたユーザー（`users.xml` またはローカルのアクセス制御パスで定義されたユーザー）のパスワード検証方法として使用できます。これを行うには、ユーザー定義内で `password` などのセクションの代わりに、事前に定義した LDAP サーバー名を指定します。
 
-各ログイン試行時に、ClickHouseはLDAPサーバーの[LDAPサーバーの定義](#ldap-server-definition)で定義された`bind_dn`パラメータによって指定されたDNに"バインド"しようとし、成功すればユーザーが認証されたと見なされます。これを「シンプルバインド」メソッドとも呼びます。
+ログインのたびに、ClickHouse は [LDAP サーバー定義](#ldap-server-definition) で `bind_dn` パラメータにより定義された DN に対して、提供された認証情報を用いて「バインド」を試み、成功した場合、そのユーザーは認証済みと見なされます。これは一般的に「シンプルバインド」方式と呼ばれます。
 
 **例**
 
@@ -112,31 +113,31 @@ LDAPサーバーを定義するには、`config.xml`に`ldap_servers`セクシ�
 </clickhouse>
 ```
 
-注意：ユーザー`my_user`が`my_ldap_server`を参照しています。このLDAPサーバーは、前述のようにメインの`config.xml`ファイルに構成されている必要があります。
+ユーザー `my_user` は `my_ldap_server` を参照している点に注意してください。この LDAP サーバーは、前述のとおりメインの `config.xml` ファイルで設定されている必要があります。
 
-SQL駆動の[アクセス制御およびアカウント管理](/operations/access-rights#access-control-usage)が有効になっている場合、LDAPサーバーによって認証されたユーザーも[CREATE USER](/sql-reference/statements/create/user)ステートメントを使用して作成できます。
+SQL 駆動の[アクセス制御とアカウント管理](/operations/access-rights#access-control-usage)が有効な場合、LDAP サーバーで認証されるユーザーも [CREATE USER](/sql-reference/statements/create/user) ステートメントを使用して作成できます。
 
-クエリ：
+クエリ:
 
 ```sql
 CREATE USER my_user IDENTIFIED WITH ldap SERVER 'my_ldap_server';
 ```
 
-## LDAP外部ユーザーディレクトリ {#ldap-external-user-directory}
+## LDAP 外部ユーザーディレクトリ {#ldap-external-user-directory}
 
-ローカルに定義されたユーザーに加えて、リモートLDAPサーバーをユーーディフィニションのソースとして利用できます。これを実現するには、`config.xml`ファイルの`users_directories`セクション内の`ldap`セクションに事前に定義されたLDAPサーバー名（[LDAPサーバーの定義](#ldap-server-definition)を参照）を指定します。
+ローカルで定義されたユーザーに加えて、リモートの LDAP サーバーをユーザー定義のソースとして使用できます。これを行うには、`config.xml` ファイルの `users_directories` セクション内の `ldap` セクションで、事前に定義した LDAP サーバー名（[LDAP Server Definition](#ldap-server-definition) を参照）を指定します。
 
-各ログイン試行時に、ClickHouseはローカルでユーザー定義を見つけて通常通り認証しようとします。ユーザーが定義されていない場合、ClickHouseは外部LDAPディレクトリに定義が存在すると仮定し、提供された資格情報を使用してLDAPサーバーの所定のDNに"バインド"しようとします。成功すれば、ユーザーは存在すると見なされ、認証されます。ユーザーは`roles`セクションに指定されたリストから役割が割り当てられます。さらに、LDAPの"検索"を実行し、結果を変換して役割名として扱い、`role_mapping`セクションも構成されている場合にはユーザーに割り当てることができます。これにはSQL駆動の[アクセス制御およびアカウント管理](/operations/access-rights#access-control-usage)が有効になっており、役割は[CREATE ROLE](/sql-reference/statements/create/role)ステートメントを使って作成されることが前提です。
+各ログイン時に、ClickHouse はまずローカルでユーザー定義を検索し、通常どおり認証を試みます。ユーザーが定義されていない場合、ClickHouse は外部 LDAP ディレクトリ内にその定義が存在するとみなし、指定された DN に対して、与えられた認証情報を用いて LDAP サーバーへの「バインド」を試行します。成功した場合、そのユーザーは存在し、認証済みであると見なされます。ユーザーには、`roles` セクションで指定されたリストからロールが割り当てられます。さらに、`role_mapping` セクションも構成されている場合、LDAP の「search」を実行し、その結果を変換してロール名として扱い、ユーザーに割り当てることができます。これらすべては、SQL 駆動の [Access Control and Account Management](/operations/access-rights#access-control-usage) が有効であり、ロールが [CREATE ROLE](/sql-reference/statements/create/role) ステートメントを使用して作成されていることを前提としています。
 
 **例**
 
-`config.xml`に入ります。
+`config.xml` に記述します。
 
 ```xml
 <clickhouse>
     <!- ... -->
     <user_directories>
-        <!- 一般的なLDAPサーバー。 -->
+        <!-- 標準的なLDAPサーバー -->
         <ldap>
             <server>my_ldap_server</server>
             <roles>
@@ -152,7 +153,7 @@ CREATE USER my_user IDENTIFIED WITH ldap SERVER 'my_ldap_server';
             </role_mapping>
         </ldap>
 
-        <!- ユーザーDNが検出されたときに依存する役割マッピングがある一般的なActive Directory。 -->
+        <!-- 検出されたユーザーDNに基づくロールマッピングを使用する標準的なActive Directory -->
         <ldap>
             <server>my_ad_server</server>
             <role_mapping>
@@ -167,22 +168,22 @@ CREATE USER my_user IDENTIFIED WITH ldap SERVER 'my_ldap_server';
 </clickhouse>
 ```
 
-`user_directories`セクション内の`ldap`セクションで参照されている`my_ldap_server`は、`config.xml`で構成された事前に定義されたLDAPサーバーである必要があることに注意してください（[LDAPサーバーの定義](#ldap-server-definition)を参照）。
+`user_directories` セクション内の `ldap` セクションで参照されている `my_ldap_server` は、事前に `config.xml` 内で定義・設定されている LDAP サーバーでなければなりません（[LDAP Server Definition](#ldap-server-definition) を参照）。
 
 **パラメータ**
 
-- `server` — 上記の`ldap_servers`構成セクションに定義されたLDAPサーバー名の1つ。このパラメータは必須であり、空にすることはできません。
-- `roles` — LDAPサーバーから取得される各ユーザーに割り当てられるローカルに定義された役割のリストを持つセクション。
-    - ここで役割が指定されていない場合、または役割マッピング中に割り当てられない場合、認証後にユーザーは何のアクションも実行できません。
-- `role_mapping` — LDAP検索パラメータとマッピングルールを持つセクション。
-    - ユーザーが認証されるとき、LDAPにバウンドしている間に、`search_filter`とログインユーザーの名前を使用してLDAP検索が実行されます。その検索中に見つかった各エントリに対して、指定された属性の値が抽出されます。指定された接頭辞を持つ各属性値に対して、接頭辞が元の文字列から削除され、残りの値がClickHouseで定義されたローカル役割の名前になります。ローカル役割は事前に[CREATE ROLE](/sql-reference/statements/create/role)ステートメントによって作成されることが期待されています。
-    - 同じ`ldap`セクション内で複数の`role_mapping`セクションが定義されることができます。すべてが適用されます。
-        - `base_dn` — LDAP検索のためのベースDNを構築するために使用されるテンプレート。
-            - 結果のDNは、各LDAP検索中にテンプレートのすべての`{user_name}`、`{bind_dn}`、および`{user_dn}`部分文字列を実際のユーザー名、バインドDN、およびユーザーDNに置き換えることによって構築されます。
-        - `scope` — LDAP検索のスコープ。
-            - 許可された値は：`base`、`one_level`、`children`、`subtree`（デフォルト）。
-        - `search_filter` — LDAP検索のための検索フィルターを構築するために使用されるテンプレート。
-            - 結果のフィルターは、各LDAP検索中にテンプレートのすべての`{user_name}`、`{bind_dn}`、`{user_dn}`、および`{base_dn}`部分文字列を実際のユーザー名、バインドDN、ユーザーDN、およびベースDNに置き換えることにより構築されます。
-            - 特殊文字は、XML内で適切にエスケープされる必要があります。
-        - `attribute` — LDAP検索によって返される値の属性名。デフォルトは`cn`です。
-        - `prefix` — LDAP検索によって返される元の文字列リストの各文字列の前にあると期待される接頭辞。接頭辞は元の文字列から削除され、結果の文字列はローカル役割名として扱われます。デフォルトでは空です。
+* `server` — 上記の `ldap_servers` 設定セクションで定義されている LDAP サーバー名の 1 つ。このパラメータは必須で、空にはできません。
+* `roles` — LDAP サーバーから取得した各ユーザーに割り当てられる、ローカルで定義されたロールの一覧を含むセクション。
+  * ここでロールが指定されていない場合、または（下記の）ロールマッピング時にロールが割り当てられない場合、ユーザーは認証後に一切の操作を行うことができません。
+* `role_mapping` — LDAP 検索パラメータとマッピングルールを定義するセクション。
+  * ユーザーが認証するとき、LDAP にバインドした状態のまま、`search_filter` とログインしたユーザー名を使って LDAP 検索が実行されます。その検索で見つかった各エントリについて、指定された属性の値が抽出されます。指定されたプレフィックスを持つ各属性値については、プレフィックスが削除され、その残りの値が ClickHouse 内で定義されたローカルロールの名前になります。このロールはあらかじめ [CREATE ROLE](/sql-reference/statements/create/role) ステートメントで作成されている必要があります。
+  * 同じ `ldap` セクション内には複数の `role_mapping` セクションを定義できます。それらはすべて適用されます。
+    * `base_dn` — LDAP 検索用のベース DN を構築するために使用されるテンプレート。
+      * 実際の DN は、各 LDAP 検索時にテンプレート内の `{user_name}`、`{bind_dn}`、`{user_dn}` の各部分文字列を、それぞれ実際のユーザー名、バインド DN、ユーザー DN に置き換えることで構築されます。
+    * `scope` — LDAP 検索のスコープ。
+      * 指定可能な値は `base`、`one_level`、`children`、`subtree`（デフォルト）です。
+    * `search_filter` — LDAP 検索用の検索フィルタを構築するために使用されるテンプレート。
+      * 実際のフィルタは、各 LDAP 検索時にテンプレート内の `{user_name}`、`{bind_dn}`、`{user_dn}`、`{base_dn}` の各部分文字列を、実際のユーザー名、バインド DN、ユーザー DN、およびベース DN に置き換えることで構築されます。
+      * 特殊文字は XML では正しくエスケープする必要があることに注意してください。
+    * `attribute` — LDAP 検索によって返される値を持つ属性名。デフォルトは `cn` です。
+    * `prefix` — LDAP 検索で返される元の文字列リストの各文字列の先頭に付いていることが期待されるプレフィックス。プレフィックスは元の文字列から削除され、その結果の文字列がローカルロール名として扱われます。デフォルトは空です。

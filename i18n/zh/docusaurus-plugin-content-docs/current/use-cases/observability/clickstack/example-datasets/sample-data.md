@@ -1,10 +1,12 @@
 ---
-'slug': '/use-cases/observability/clickstack/getting-started/sample-data'
-'title': '示例日志、跟踪和指标'
-'sidebar_position': 0
-'pagination_prev': null
-'pagination_next': null
-'description': '开始使用 ClickStack 和一个包含日志、会话、跟踪和指标的示例数据集'
+slug: /use-cases/observability/clickstack/getting-started/sample-data
+title: '示例日志、追踪和指标'
+sidebar_position: 0
+pagination_prev: null
+pagination_next: null
+description: '使用包含日志、会话、追踪和指标的示例数据集开始体验 ClickStack'
+doc_type: 'guide'
+keywords: ['clickstack', '示例数据', '示例数据集', '日志', '可观测性']
 ---
 
 import Image from '@theme/IdealImage';
@@ -30,141 +32,147 @@ import hyperdx_19 from '@site/static/images/use-cases/observability/hyperdx-19.p
 import copy_api_key from '@site/static/images/use-cases/observability/copy_api_key.png';
 
 
-# ClickStack - 示例日志、跟踪和指标 {#clickstack-sample-dataset}
+# ClickStack - 示例日志、链路追踪和指标 {#clickstack-sample-dataset}
 
-以下示例假设您已经使用 [全功能图像的说明](/use-cases/observability/clickstack/getting-started) 启动了 ClickStack，并连接到 [本地 ClickHouse 实例](/use-cases/observability/clickstack/getting-started#complete-connection-credentials) 或 [ClickHouse Cloud 实例](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection)。
+以下示例假定你已经按照[一体化镜像的使用说明](/use-cases/observability/clickstack/getting-started)启动了 ClickStack，并已连接到[本地 ClickHouse 实例](/use-cases/observability/clickstack/getting-started#complete-connection-credentials)或 [ClickHouse Cloud 实例](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection)。 
 
-<VerticalStepper>
-
-## 导航到 HyperDX UI {#navigate-to-the-hyperdx-ui}
-
-访问 [http://localhost:8080](http://localhost:8080) 以访问 HyperDX UI。
-
-<Image img={hyperdx} alt="HyperDX UI" size="lg"/>
-
-## 复制摄取 API 密钥 {#copy-ingestion-api-key}
-
-导航到 [`团队设置`](http://localhost:8080/team) 并从 `API 密钥` 部分复制 `摄取 API 密钥`。此 API 密钥确保通过 OpenTelemetry 收集器进行数据摄取的安全性。
-
-<Image img={copy_api_key} alt="Copy API key" size="lg"/>
-
-## 下载示例数据 {#download-sample-data}
-
-为了用示例数据填充 UI，请下载以下文件：
-
-[示例数据](https://storage.googleapis.com/hyperdx/sample.tar.gz)
-
-```bash
-
-# curl
-curl -O https://storage.googleapis.com/hyperdx/sample.tar.gz
-
-# or
-
-# wget https://storage.googleapis.com/hyperdx/sample.tar.gz
-```
-
-此文件包含来自我们公共 [OpenTelemetry 演示](http://example.com) 的示例日志、指标和跟踪——一个简单的微服务电子商务商店。将此文件复制到您选择的目录中。
-
-## 加载示例数据 {#load-sample-data}
-
-要加载这些数据，我们只需将其发送到已部署的 OpenTelemetry (OTel) 收集器的 HTTP 端点。
-
-首先，导出上面复制的 API 密钥。
-
-```bash
-
-# export API key
-export CLICKSTACK_API_KEY=<YOUR_INGESTION_API_KEY>
-```
-
-运行以下命令将数据发送到 OTel 收集器：
-
-```bash
-for filename in $(tar -tf sample.tar.gz); do
-  endpoint="http://localhost:4318/v1/${filename%.json}"
-  echo "loading ${filename%.json}"
-  tar -xOf sample.tar.gz "$filename" | while read -r line; do
-    echo "$line" | curl -s -o /dev/null -X POST "$endpoint" \
-    -H "Content-Type: application/json" \
-    -H "authorization: ${CLICKSTACK_API_KEY}" \
-    --data-binary @-
-  done
-done
-```
-
-这模拟了 OLTP 日志、跟踪和指标源将数据发送到 OTel 收集器。在生产环境中，这些源可能是语言客户端，甚至是其他 OTel 收集器。
-
-返回到 `搜索` 视图，您应该看到数据已经开始加载：
-
-<Image img={hyperdx_10} alt="HyperDX search" size="lg"/>
-
-数据加载将需要几分钟。在继续执行下一步之前，请确保加载已完成。
-
-## 探索会话 {#explore-sessions}
-
-假设我们收到报告，用户在支付商品时遇到问题。我们可以使用 HyperDX 的会话回放功能查看他们的体验。
-
-从左侧菜单中选择 [`客户端会话`](http://localhost:8080/sessions?from=1747312320000&to=1747312920000&sessionSource=l1324572572)。
-
-<Image img={hyperdx_11} alt="Sessions" size="lg"/>
-
-此视图允许我们查看电子商务商店的前端会话。在用户结账并尝试完成购买之前，会话保持匿名。
-
-请注意，某些包含电子邮件的会话有一个关联的错误，可能确认了交易失败的报告。
-
-选择一个有故障和相关电子邮件的跟踪。随后的视图允许我们回放用户的会话并查看他们的问题。按播放观看会话。
-
-<Image img={hyperdx_12} alt="Session replay" size="lg"/>
-
-回放显示用户浏览网站、将商品添加到购物车。可以自由跳到会话后期，他们尝试完成支付。
-
-:::tip
-任何错误都在时间轴上用红色标记。
+:::note ClickHouse Cloud 中的 HyperDX
+此示例数据集也可以配合 ClickHouse Cloud 中的 HyperDX 使用，只需对流程进行少量调整，具体如文中所述。如果在 ClickHouse Cloud 中使用 HyperDX，用户需要按照[该部署模型的入门指南](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud)在本地运行一个 OpenTelemetry 收集器。
 :::
 
-用户无法下订单，没有明显的错误。向下滚动到左侧面板的底部，查看用户浏览器中的网络和控制台事件。您会注意到在进行 `/api/checkout` 调用时出现了 500 错误。
+<VerticalStepper>
+  ## 导航到 HyperDX UI
 
-<Image img={hyperdx_13} alt="Error in session" size="lg"/>
+  本地部署时,访问 [http://localhost:8080](http://localhost:8080) 即可进入 HyperDX UI。若使用 ClickHouse Cloud 中的 HyperDX,请在左侧菜单中依次选择您的服务和 `HyperDX`。
 
-选择此 `500` 错误。`概览` 和 `列值` 都没有指示问题的来源，除了这个错误是意料之外的，导致了 `内部错误`。
+  <Image img={hyperdx} alt="HyperDX 用户界面" size="lg" />
 
-## 探索跟踪 {#explore-traces}
+  ## 复制摄取 API 密钥
 
-导航到 `跟踪` 标签以查看完整的分布式跟踪。
+  :::note ClickHouse Cloud 中的 HyperDX
+  如果在 ClickHouse Cloud 中使用 HyperDX,则不需要执行此步骤,因为目前不支持摄取密钥。
+  :::
 
-<Image img={hyperdx_14} alt="Session trace" size="lg"/>
+  导航至 [`Team Settings`](http://localhost:8080/team) 并从 `API Keys` 部分复制 `Ingestion API Key`。此 API key 可确保通过 OpenTelemetry collector 摄取的数据是安全的。
 
-向下滚动跟踪以查看错误的来源——`checkout` 服务跨度。选择 `Payment` 服务跨度。
+  <Image img={copy_api_key} alt="复制 API 密钥" size="lg" />
 
-<Image img={hyperdx_15} alt="Span" size="lg"/>
+  ## 下载示例数据
 
-选择 `列值` 标签并向下滚动。我们可以看到问题与缓存满有关。
+  为了在 UI 中填充示例数据,请下载以下文件:
 
-<Image img={hyperdx_16} alt="Column values" size="lg"/>
+  [示例数据](https://storage.googleapis.com/hyperdx/sample.tar.gz)
 
-向上滚动并返回到跟踪，我们可以看到日志与跨度有关联，这得益于之前的配置。这些提供了进一步的背景。
+  ```shell
+  # curl
+  curl -O https://storage.googleapis.com/hyperdx/sample.tar.gz
+  # 或者
+  # wget https://storage.googleapis.com/hyperdx/sample.tar.gz
+  ```
 
-<Image img={hyperdx_17} alt="Correlated log" size="lg"/>
+  此文件包含来自我们公开的 [OpenTelemetry demo](https://github.com/ClickHouse/opentelemetry-demo) 的示例日志、指标和追踪数据——这是一个基于微服务架构的简单电商应用。请将此文件复制到您选择的目录中。
 
-我们已确定在支付服务中缓存正在被填满，这阻止了支付的完成。
+  ## 加载示例数据
 
-## 探索日志 {#explore-logs}
+  要加载此数据,只需将其发送到已部署的 OpenTelemetry (OTel) 收集器的 HTTP 端点。
 
-有关更多详细信息，我们可以返回到 [`搜索` 视图](http://localhost:8080/search)：
+  首先,导出上文复制的 API 密钥。
 
-从源中选择 `日志` 并应用到 `payment` 服务的过滤器。
+  :::note ClickHouse Cloud 中的 HyperDX
+  如果在 ClickHouse Cloud 中使用 HyperDX,则不需要执行此步骤,因为目前不支持摄取密钥。
+  :::
 
-<Image img={hyperdx_18} alt="Logs" size="lg"/>
+  ```shell
+  # 导出 API 密钥
+  export CLICKSTACK_API_KEY=<YOUR_INGESTION_API_KEY>
+  ```
 
-我们可以看到尽管问题较新，但受影响的支付数量很高。此外，与 visa 支付相关的缓存似乎正在造成问题。
+  运行以下命令将数据发送到 OTel collector：
 
-## 图表指标 {#chart-metrics}
+  ```shell
+  for filename in $(tar -tf sample.tar.gz); do
+    endpoint="http://localhost:4318/v1/${filename%.json}"
+    echo "正在加载 ${filename%.json}"
+    tar -xOf sample.tar.gz "$filename" | while read -r line; do
+      printf '%s\n' "$line" | curl -s -o /dev/null -X POST "$endpoint" \
+      -H "Content-Type: application/json" \
+      -H "authorization: ${CLICKSTACK_API_KEY}" \
+      --data-binary @-
+    done
+  done
+  ```
 
-尽管代码中显然引入了错误，但我们可以使用指标确认缓存的大小。导航到 `图表浏览器` 视图。
+  这模拟了 OTLP 日志、追踪和指标数据源向 OTel collector 发送数据。在生产环境中,这些数据源可能是语言客户端,甚至是其他 OTel collector。
 
-选择 `指标` 作为数据源。完成图表构建器以绘制 `visa_validation_cache.size (Gauge)` 的 `最大值` 并按播放按钮。缓存显然在达到最大大小之前不断增加，之后生成了错误。
+  返回到 `Search` 视图,您应该会看到数据已开始加载(如果数据未显示,请将时间范围调整为 `Last 1 hour`):
 
-<Image img={hyperdx_19} alt="Metrics" size="lg"/>
+  <Image img={hyperdx_10} alt="HyperDX 搜索" size="lg" />
 
+  数据加载需要几分钟时间。请等待加载完成后再进行后续步骤。
+
+  ## 探索会话
+
+  假设我们收到用户在支付商品时遇到问题的报告。我们可以使用 HyperDX 的会话回放功能查看他们的使用体验。
+
+  从左侧菜单中选择 [`Client Sessions`](http://localhost:8080/sessions?from=1747312320000\&to=1747312920000\&sessionSource=l1324572572)。
+
+  <Image img={hyperdx_11} alt="会话" size="lg" />
+
+  此视图用于查看电子商务商店的前端会话。在用户结账并尝试完成购买之前，会话将保持匿名状态。
+
+  请注意,某些包含电子邮件的会话存在关联错误,可能证实了交易失败的报告。
+
+  选择一个包含失败信息和关联电子邮件的追踪记录。在后续视图中，我们可以重放用户的会话并查看其问题。点击播放按钮以观看会话。
+
+  <Image img={hyperdx_12} alt="会话回放" size="lg" />
+
+  回放显示用户浏览网站并将商品添加到购物车。您可以直接跳转到会话后续部分，查看用户尝试完成支付的操作。
+
+  :::tip
+  时间轴上会以红色标注所有错误。
+  :::
+
+  用户无法下单,且未显示明显错误。向下滚动至左侧面板底部,该面板包含来自用户浏览器的网络和控制台事件。您将看到在调用 `/api/checkout` 时返回了 500 错误。
+
+  <Image img={hyperdx_13} alt="会话出错" size="lg" />
+
+  选择此 `500` 错误。`Overview` 和 `Column Values` 均未指示问题来源,仅表明该错误为意外错误,导致了 `Internal Error`。
+
+  ## 探索追踪数据
+
+  导航至 `Trace` 选项卡查看完整的分布式追踪。
+
+  <Image img={hyperdx_14} alt="会话跟踪" size="lg" />
+
+  向下滚动追踪信息以查看错误来源 - `checkout` 服务 span。选择 `Payment` 服务 span。
+
+  <Image img={hyperdx_15} alt="Span（跨度）" size="lg" />
+
+  选择 `Column Values` 选项卡并向下滚动。可以看到该问题与缓存已满有关。
+
+  <Image img={hyperdx_16} alt="列的值" size="lg" />
+
+  向上滚动并返回到追踪视图,可以看到日志已与 span 关联,这得益于我们之前的配置。这些日志提供了更多上下文信息。
+
+  <Image img={hyperdx_17} alt="关联日志" size="lg" />
+
+  我们已确认支付服务中的缓存已满，导致支付无法完成。
+
+  ## 探索日志
+
+  如需了解更多详细信息,可以返回到 [`Search` 视图](http://localhost:8080/search):
+
+  从数据源中选择 `Logs`，并对 `payment` 服务应用筛选条件。
+
+  <Image img={hyperdx_18} alt="日志" size="lg" />
+
+  我们可以看到,虽然该问题是最近才出现的,但受影响的支付数量较多。此外,与 Visa 支付相关的缓存似乎正在导致问题。
+
+  ## 图表指标
+
+  虽然代码中明显引入了错误,但我们可以使用指标来确认缓存大小。导航到 `Chart Explorer` 视图。
+
+  选择 `Metrics` 作为数据源。在图表构建器中配置以绘制 `visa_validation_cache.size (Gauge)` 的 `Maximum` 值,然后点击播放按钮。可以清楚地看到缓存在达到最大容量之前持续增长,达到上限后开始产生错误。
+
+  <Image img={hyperdx_19} alt="指标" size="lg" />
 </VerticalStepper>

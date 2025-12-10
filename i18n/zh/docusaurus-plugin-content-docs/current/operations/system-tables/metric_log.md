@@ -1,26 +1,25 @@
 ---
-'description': '系统表，包含来自表 `system.metrics` 和 `system.events` 的指标值历史，定期刷新到磁盘。'
-'keywords':
-- 'system table'
-- 'metric_log'
-'slug': '/operations/system-tables/metric_log'
-'title': 'system.metric_log'
+description: '系统表，包含来自 `system.metrics` 和 `system.events` 表的指标值历史记录，并会定期写入磁盘。'
+keywords: ['system 表', 'metric_log']
+slug: /operations/system-tables/metric_log
+title: 'system.metric_log'
+doc_type: 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
+# system.metric&#95;log {#systemmetric&#95;log}
 
-# system.metric_log
+<SystemTableCloud />
 
-<SystemTableCloud/>
-
-包含来自 `system.metrics` 和 `system.events` 表的指标值历史，定期刷新到磁盘上。
+包含来自 `system.metrics` 和 `system.events` 表的指标值的历史记录，这些数据会定期刷写到磁盘。
 
 列：
-- `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 执行查询的服务器的主机名。
-- `event_date` ([Date](../../sql-reference/data-types/date.md)) — 事件日期。
-- `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 事件时间。
-- `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — 带有微秒分辨率的事件时间。
+
+* `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 执行查询的服务器主机名。
+* `event_date` ([Date](../../sql-reference/data-types/date.md)) — 事件日期。
+* `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 事件时间。
+* `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — 具有微秒精度的事件时间。
 
 **示例**
 
@@ -29,7 +28,7 @@ SELECT * FROM system.metric_log LIMIT 1 FORMAT Vertical;
 ```
 
 ```text
-Row 1:
+第 1 行:
 ──────
 hostname:                                                        clickhouse.eu-central1.internal
 event_date:                                                      2020-09-05
@@ -56,17 +55,18 @@ CurrentMetric_LocalThreadActive:                                 0
 CurrentMetric_DistributedFilesToInsert:                          0
 ```
 
-**架构**
-此表可以使用 XML 标签 `<schema_type>` 配置为不同的架构类型。默认架构类型为 `wide`，每个指标或配置事件作为单独的列存储。该架构在单列读取时具有最高的性能和效率。
+**模式**
 
-`transposed` 架构以类似 `system.asynchronous_metric_log` 的格式存储数据，其中指标和事件作为行存储。该架构在资源低的设置中非常有用，因为它在合并期间减少了资源消耗。
+可以使用 XML 标签 `<schema_type>` 将此表配置为不同的模式类型。默认模式类型为 `wide`，在该模式下，每个指标或 profile 事件都会作为单独的一列存储。此模式在仅读取单个列的场景下具有最高性能和效率。
 
-还有一个兼容架构 `transposed_with_wide_view`，它在具有转置架构的表中存储实际数据（`system.transposed_metric_log`），并在其上使用宽架构创建一个视图。该视图查询转置表，使其在从 `wide` 架构迁移到 `transposed` 架构时非常有用。
+`transposed` 模式以类似于 `system.asynchronous_metric_log` 的格式存储数据，其中指标和事件以行的形式存储。该模式适用于资源受限的环境，因为它在数据合并期间可以减少资源消耗。
 
-**另见**
+还提供一种兼容性模式 `transposed_with_wide_view`，它使用 transposed 模式（`system.transposed_metric_log`）的表来存储实际数据，并在其之上基于 wide 模式创建一个视图。该视图会查询 transposed 表，因此在从 `wide` 模式迁移到 `transposed` 模式时非常有用。
 
-- [metric_log 设置](../../operations/server-configuration-parameters/settings.md#metric_log) — 启用和禁用设置。
-- [system.asynchronous_metrics](../../operations/system-tables/asynchronous_metrics.md) — 包含定期计算的指标。
-- [system.events](/operations/system-tables/events) — 包含发生的一系列事件。
-- [system.metrics](../../operations/system-tables/metrics.md) — 包含即时计算的指标。
-- [监控](../../operations/monitoring.md) — ClickHouse 监控的基本概念。
+**另请参阅**
+
+* [metric&#95;log 设置](../../operations/server-configuration-parameters/settings.md#metric_log) — 启用和禁用该设置。
+* [system.asynchronous&#95;metrics](../../operations/system-tables/asynchronous_metrics.md) — 包含周期性计算的指标。
+* [system.events](/operations/system-tables/events) — 包含发生的一系列事件。
+* [system.metrics](../../operations/system-tables/metrics.md) — 包含即时计算的指标。
+* [Monitoring](../../operations/monitoring.md) — ClickHouse 监控的基本概念。

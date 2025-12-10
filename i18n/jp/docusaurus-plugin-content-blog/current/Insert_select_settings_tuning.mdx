@@ -1,0 +1,42 @@
+---
+title: INSERT...SELECT 実行時に発生する TOO_MANY_PARTS エラーの解決方法
+description: "ClickHouse での `INSERT...SELECT` 実行時に発生する TOO_MANY_PARTS エラーを、大きなブロックサイズの利用やパーティションのしきい値の引き上げといった上級者向け設定を調整することで解消する方法を説明します。"
+date: 2023-07-21
+tags: ['設定', 'エラーと例外']
+---
+
+{frontMatter.description}
+
+{/* トランケート */}
+
+## Question \{#question\}
+
+`INSERT...SELECT` ステートメントを実行すると、TOO&#95;MANY&#95;PARTS（too many parts）エラーが発生します。
+
+この問題を解決するにはどうすればよいですか？
+
+## 回答 \{#answer\}
+
+このエラーを回避するために調整可能な設定の一部を以下に示します。これは ClickHouse のエキスパートレベルのチューニングであり、ここで示す値は、適用先となる ClickHouse Cloud サービスまたはオンプレミスクラスターの仕様を十分に理解したうえでのみ設定すべきです。そのため、これらの値を「すべてに当てはまる一律の推奨値」として受け取らないでください。
+
+[max&#95;insert&#95;block&#95;size](https://clickhouse.com/docs/operations/settings/settings#settings-max_insert_block_size) = `100_000_000`（デフォルト `1_048_576`）
+
+約 100 万から 1 億に増やすことで、より大きなブロックを形成できるようになります。
+
+注意: この設定は、サーバー側でブロックを形成する場合にのみ適用されます。つまり、HTTP インターフェイス経由の INSERT には適用されますが、clickhouse-client には適用されません。
+
+[min&#95;insert&#95;block&#95;size&#95;rows](https://clickhouse.com/docs/operations/settings/settings#min-insert-block-size-rows) = `100_000_000`（デフォルト `1_048_576`）
+
+約 100 万から 1 億に増やすことで、より大きなブロックを形成できるようになります。
+
+[min&#95;insert&#95;block&#95;size&#95;bytes](https://clickhouse.com/docs/operations/settings/settings#min-insert-block-size-bytes) = `500_000_000`（デフォルト `268_435_456`）
+
+268.44 MB から 500 MB に増やすことで、より大きなブロックを形成できるようになります。
+
+[parts&#95;to&#95;delay&#95;insert](https://clickhouse.com/docs/operations/settings/merge-tree-settings#parts-to-delay-insert) = `500`（デフォルト `150`）
+
+単一パーティション内のアクティブなパーツ数がしきい値に達したときに、INSERT が意図的に遅延されないよう、この値を増やします。
+
+[parts&#95;to&#95;throw&#95;insert](https://clickhouse.com/docs/operations/settings/merge-tree-settings#parts-to-throw-insert) = `1500`（デフォルト `3000`）
+
+この値を増やすと、一般的にはテーブルに対するクエリ性能に影響しますが、データ移行の用途であれば問題ありません。

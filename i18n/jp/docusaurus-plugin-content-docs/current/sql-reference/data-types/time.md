@@ -1,115 +1,127 @@
 ---
-description: 'Documentation for the Time data type in ClickHouse, which stores the
-  time range with second precision'
-slug: '/sql-reference/data-types/time'
+description: '秒精度で時刻範囲を保存する ClickHouse の Time データ型に関するドキュメント'
+slug: /sql-reference/data-types/time
 sidebar_position: 15
 sidebar_label: 'Time'
 title: 'Time'
+doc_type: 'reference'
 ---
 
+# Time {#time}
 
-
-
-# 時間
-
-`Time` データ型は、カレンダーの日付に依存せずに時間値を保存するために使用されます。これは、日々のスケジュール、イベントの時間、または時間コンポーネント（時間、分、秒）のみが重要な状況を表現するのに最適です。
+データ型 `Time` は、時・分・秒の要素から成る時刻を表します。
+これはカレンダーの日付とは独立しており、日・月・年の要素を必要としない値に適しています。
 
 構文:
 
-``` sql
-Time()
+```sql
+時間
 ```
 
-サポートされる値の範囲: \[-999:59:59, 999:59:59\]。
+テキスト表現可能な範囲: [-999:59:59, 999:59:59]。
 
-解像度: 1秒。
+精度: 1秒。
 
-## スピード {#speed}
+## 実装の詳細 {#implementation-details}
 
-`Date` データ型は、_ほとんど_ の条件下で `Time` よりも速いです。しかし、`Time` データ型は `DateTime` データ型とほぼ同じ速度です。
+**表現とパフォーマンス**  
+データ型 `Time` は内部的に、秒数を符号付き 32 ビット整数として保持します。  
+`Time` 型と `DateTime` 型の値は同じバイトサイズであり、そのためパフォーマンスも同程度です。
 
-実装の詳細により、`Time` および `DateTime` 型は4バイトのストレージを必要とし、`Date` は2バイトを必要とします。ただし、データベースが圧縮されると、この違いは増幅されます。
+**正規化**  
+文字列を `Time` に解析する際、時刻成分は正規化されますが、妥当性検証は行われません。  
+たとえば、`25:70:70` は `26:11:10` として解釈されます。
 
-## 使用上の注意 {#usage-remarks}
+**負の値**  
+先頭のマイナス記号はサポートされ、そのまま保持されます。  
+負の値は通常、`Time` 値に対する算術演算から生じます。  
+`Time` 型では、負の入力はテキスト入力（例: `'-01:02:03'`）および数値入力（例: `-3723`）の両方で保持されます。
 
-時点は、タイムゾーンや夏時間に関係なく、[Unix タイムスタンプ](https://en.wikipedia.org/wiki/Unix_time)として保存されます。
+**サチュレーション（飽和）**  
+時刻の成分は [-999:59:59, 999:59:59] の範囲に制限されます。  
+時間が 999 を超える（または -999 未満の）値は、テキストでの表現および往復変換の際には `999:59:59`（または `-999:59:59`）として扱われます。
 
-**注意:** `Time` データ型はタイムゾーンを考慮しません。それは、日付や地域のオフセットのコンテキストなしに、単独で時刻値を表します。`Time` カラムにタイムゾーンを適用または変更しようとする試みは、影響を及ぼさず、サポートされていません。
+**タイムゾーン**  
+`Time` はタイムゾーンをサポートしません。すなわち、`Time` 値は地域的な文脈なしに解釈されます。  
+型パラメータとして、または値の作成時に `Time` に対してタイムゾーンを指定するとエラーが発生します。  
+同様に、`Time` 列に対してタイムゾーンを適用したり変更しようとする操作はサポートされず、エラーとなります。  
+`Time` 値が異なるタイムゾーンの下で暗黙的に再解釈されることはありません。
 
 ## 例 {#examples}
 
-**1.** `Time` 型のカラムを持つテーブルを作成し、データを挿入します:
+**1.** `Time` 型の列を持つテーブルを作成し、そのテーブルにデータを挿入する:
 
-``` sql
-CREATE TABLE dt
+```sql
+CREATE TABLE tab
 (
-    `time` Time,
-    `event_id` UInt8
+    `event_id` UInt8,
+    `time` Time
 )
 ENGINE = TinyLog;
 ```
 
-``` sql
--- 時間の解析
--- - 文字列から、
--- - 1970-01-01 からの秒数として解釈された整数から。
-INSERT INTO dt VALUES ('100:00:00', 1), (12453, 3);
+```sql
+-- 時刻を解析
+-- - 文字列から
+-- - 00:00:00 からの経過秒数と解釈される整数から
+INSERT INTO tab VALUES (1, '14:30:25'), (2, 52225);
 
-SELECT * FROM dt;
+SELECT * FROM tab ORDER BY event_id;
 ```
 
-``` text
-   ┌──────time─┬─event_id─┐
-1. │ 100:00:00 │        1 │
-2. │ 003:27:33 │        3 │
-   └───────────┴──────────┘
+```text
+   ┌─event_id─┬──────time─┐
+1. │        1 │ 14:30:25 │
+2. │        2 │ 14:30:25 │
+   └──────────┴───────────┘
 ```
 
-**2.** `Time` 値でフィルタリング
+**2.** `Time` 値によるフィルタリング
 
-``` sql
-SELECT * FROM dt WHERE time = toTime('100:00:00')
+```sql
+SELECT * FROM tab WHERE time = toTime('14:30:25')
 ```
 
-``` text
-   ┌──────time─┬─event_id─┐
-1. │ 100:00:00 │        1 │
-   └───────────┴──────────┘
+```text
+   ┌─event_id─┬──────time─┐
+1. │        1 │ 14:30:25 │
+2. │        2 │ 14:30:25 │
+   └──────────┴───────────┘
 ```
 
-`Time` カラムの値は、`WHERE` 節で文字列値を使用してフィルタリングできます。自動的に `Time` に変換されます:
+`Time` 列の値は、`WHERE` 述語で文字列値を使ってフィルタできます。文字列値は自動的に `Time` 型に変換されます。
 
-``` sql
-SELECT * FROM dt WHERE time = '100:00:00'
+```sql
+SELECT * FROM tab WHERE time = '14:30:25'
 ```
 
-``` text
-   ┌──────time─┬─event_id─┐
-1. │ 100:00:00 │        1 │
-   └───────────┴──────────┘
+```text
+   ┌─event_id─┬──────time─┐
+1. │        1 │ 14:30:25 │
+2. │        2 │ 14:30:25 │
+   └──────────┴───────────┘
 ```
 
-**3.** `Time` 型のカラムのタイムゾーンを取得する:
+**3.** 結果の型を確認する：
 
-``` sql
-SELECT toTime(now()) AS column, toTypeName(column) AS x
+```sql
+SELECT CAST('14:30:25' AS Time) AS column, toTypeName(column) AS type
 ```
 
-``` text
-   ┌────column─┬─x────┐
-1. │ 018:55:15 │ Time │
+```text
+   ┌────列────┬─型──┐
+1. │ 14:30:25 │ Time │
    └───────────┴──────┘
 ```
-
 
 ## 関連項目 {#see-also}
 
 - [型変換関数](../functions/type-conversion-functions.md)
-- [日付および時刻で操作するための関数](../functions/date-time-functions.md)
-- [配列を操作するための関数](../functions/array-functions.md)
-- [日付時刻入力フォーマット設定](../../operations/settings/settings-formats.md#date_time_input_format)
-- [日付時刻出力フォーマット設定](../../operations/settings/settings-formats.md#date_time_output_format)
-- [タイムゾーンサーバー構成パラメータ](../../operations/server-configuration-parameters/settings.md#timezone)
-- [セッションタイムゾーン設定](../../operations/settings/settings.md#session_timezone)
-- [DateTime データ型](datetime.md)
-- [Date データ型](date.md)
+- [日付と時刻を扱う関数](../functions/date-time-functions.md)
+- [配列を扱う関数](../functions/array-functions.md)
+- [`date_time_input_format` 設定](../../operations/settings/settings-formats.md#date_time_input_format)
+- [`date_time_output_format` 設定](../../operations/settings/settings-formats.md#date_time_output_format)
+- [`timezone` サーバー構成パラメータ](../../operations/server-configuration-parameters/settings.md#timezone)
+- [`session_timezone` 設定](../../operations/settings/settings.md#session_timezone)
+- [`DateTime` データ型](datetime.md)
+- [`Date` データ型](date.md)

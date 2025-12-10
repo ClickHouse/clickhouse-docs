@@ -1,23 +1,28 @@
 ---
-'description': '用于机器生成日志数据的新分析基准'
-'sidebar_label': '布朗大学基准测试'
-'slug': '/getting-started/example-datasets/brown-benchmark'
-'title': '布朗大学基准测试'
+description: '一种面向机器生成日志数据的新分析基准'
+sidebar_label: 'Brown University 基准测试'
+slug: /getting-started/example-datasets/brown-benchmark
+title: 'Brown University 基准测试'
+keywords: ['Brown University Benchmark', 'MgBench', '日志数据基准测试', '机器生成数据', '入门']
+doc_type: 'guide'
 ---
 
-`MgBench` 是一种新的分析基准，用于机器生成的日志数据， [Andrew Crotty](http://cs.brown.edu/people/acrotty/)。
+`MgBench` 是一个面向机器生成日志数据的新分析基准，由 [Andrew Crotty](http://cs.brown.edu/people/acrotty/) 提出。
 
 下载数据：
+
 ```bash
 wget https://datasets.clickhouse.com/mgbench{1..3}.csv.xz
 ```
 
 解压数据：
+
 ```bash
 xz -v -d mgbench{1..3}.csv.xz
 ```
 
-创建数据库和表：
+创建数据库和数据表：
+
 ```sql
 CREATE DATABASE mgbench;
 ```
@@ -54,7 +59,6 @@ ENGINE = MergeTree()
 ORDER BY (machine_group, machine_name, log_time);
 ```
 
-
 ```sql
 CREATE TABLE mgbench.logs2 (
   log_time    DateTime,
@@ -66,7 +70,6 @@ CREATE TABLE mgbench.logs2 (
 ENGINE = MergeTree()
 ORDER BY log_time;
 ```
-
 
 ```sql
 CREATE TABLE mgbench.logs3 (
@@ -91,14 +94,14 @@ clickhouse-client --query "INSERT INTO mgbench.logs2 FORMAT CSVWithNames" < mgbe
 clickhouse-client --query "INSERT INTO mgbench.logs3 FORMAT CSVWithNames" < mgbench3.csv
 ```
 
-## 运行基准查询： {#run-benchmark-queries}
+## 运行基准查询 {#run-benchmark-queries}
 
 ```sql
 USE mgbench;
 ```
 
 ```sql
--- Q1.1: What is the CPU/network utilization for each web server since midnight?
+-- Q1.1: 自午夜以来每台 Web 服务器的 CPU/网络利用率是多少?
 
 SELECT machine_name,
        MIN(cpu) AS cpu_min,
@@ -122,9 +125,8 @@ FROM (
 GROUP BY machine_name;
 ```
 
-
 ```sql
--- Q1.2: Which computer lab machines have been offline in the past day?
+-- Q1.2: 过去一天中哪些计算机实验室机器处于离线状态？
 
 SELECT machine_name,
        log_time
@@ -138,7 +140,7 @@ ORDER BY machine_name,
 ```
 
 ```sql
--- Q1.3: What are the hourly average metrics during the past 10 days for a specific workstation?
+-- Q1.3: 特定工作站在过去 10 天内的每小时平均指标是多少？
 
 SELECT dt,
        hr,
@@ -171,7 +173,7 @@ ORDER BY dt,
 ```
 
 ```sql
--- Q1.4: Over 1 month, how often was each server blocked on disk I/O?
+-- Q1.4: 在 1 个月内,每台服务器被磁盘 I/O 阻塞的次数是多少?
 
 SELECT machine_name,
        COUNT(*) AS spikes
@@ -186,7 +188,7 @@ LIMIT 10;
 ```
 
 ```sql
--- Q1.5: Which externally reachable VMs have run low on memory?
+-- Q1.5: 哪些外部可访问的虚拟机曾出现内存不足?
 
 SELECT machine_name,
        dt,
@@ -207,7 +209,7 @@ ORDER BY machine_name,
 ```
 
 ```sql
--- Q1.6: What is the total hourly network traffic across all file servers?
+-- Q1.6: 所有文件服务器的每小时网络流量总和是多少?
 
 SELECT dt,
        hr,
@@ -233,7 +235,7 @@ LIMIT 10;
 ```
 
 ```sql
--- Q2.1: Which requests have caused server errors within the past 2 weeks?
+-- Q2.1: 过去两周内哪些请求导致了服务器错误?
 
 SELECT *
 FROM logs2
@@ -243,7 +245,7 @@ ORDER BY log_time;
 ```
 
 ```sql
--- Q2.2: During a specific 2-week period, was the user password file leaked?
+-- Q2.2: 在特定的两周期间内，用户密码文件是否泄露？
 
 SELECT *
 FROM logs2
@@ -254,9 +256,8 @@ WHERE status_code >= 200
   AND log_time < TIMESTAMP '2012-05-20 00:00:00';
 ```
 
-
 ```sql
--- Q2.3: What was the average path depth for top-level requests in the past month?
+-- Q2.3: 过去一个月顶级请求的平均路径深度是多少？
 
 SELECT top_level,
        AVG(LENGTH(request) - LENGTH(REPLACE(request, '/', ''))) AS depth_avg
@@ -280,9 +281,8 @@ GROUP BY top_level
 ORDER BY top_level;
 ```
 
-
 ```sql
--- Q2.4: During the last 3 months, which clients have made an excessive number of requests?
+-- Q2.4: 在过去 3 个月内,哪些客户端发出了过多请求?
 
 SELECT client_ip,
        COUNT(*) AS num_requests
@@ -293,9 +293,8 @@ HAVING COUNT(*) >= 100000
 ORDER BY num_requests DESC;
 ```
 
-
 ```sql
--- Q2.5: What are the daily unique visitors?
+-- Q2.5: 每日独立访客数是多少?
 
 SELECT dt,
        COUNT(DISTINCT client_ip)
@@ -308,9 +307,8 @@ GROUP BY dt
 ORDER BY dt;
 ```
 
-
 ```sql
--- Q2.6: What are the average and maximum data transfer rates (Gbps)?
+-- Q2.6: 平均和最大数据传输速率是多少（Gbps）？
 
 SELECT AVG(transfer) / 125000000.0 AS transfer_avg,
        MAX(transfer) / 125000000.0 AS transfer_max
@@ -322,9 +320,8 @@ FROM (
 ) AS r;
 ```
 
-
 ```sql
--- Q3.1: Did the indoor temperature reach freezing over the weekend?
+-- Q3.1: 周末室内温度是否达到冰点？
 
 SELECT *
 FROM logs3
@@ -333,9 +330,8 @@ WHERE event_type = 'temperature'
   AND log_time >= '2019-11-29 17:00:00.000';
 ```
 
-
 ```sql
--- Q3.4: Over the past 6 months, how frequently were each door opened?
+-- Q3.4: 过去 6 个月内，每扇门被打开的频率是多少？
 
 SELECT device_name,
        device_floor,
@@ -348,13 +344,14 @@ GROUP BY device_name,
 ORDER BY ct DESC;
 ```
 
-下面的查询 3.5 使用了 UNION。 设置用于组合 SELECT 查询结果的模式。 当共享与 UNION 时未明确指定 UNION ALL 或 UNION DISTINCT 时，仅使用该设置。
+下面的查询 3.5 使用了 UNION。设置用于合并 SELECT 查询结果的模式。该设置仅在与 UNION 一起使用且未显式指定 UNION ALL 或 UNION DISTINCT 时生效。
+
 ```sql
 SET union_default_mode = 'DISTINCT'
 ```
 
 ```sql
--- Q3.5: Where in the building do large temperature variations occur in winter and summer?
+-- Q3.5: 建筑物内哪些位置在冬夏季节出现较大温度波动?
 
 WITH temperature AS (
   SELECT dt,
@@ -393,7 +390,7 @@ WITH temperature AS (
 SELECT DISTINCT device_name,
        device_type,
        device_floor,
-       'WINTER'
+       'WINTER' -- 冬季
 FROM temperature
 WHERE dt >= DATE '2018-12-01'
   AND dt < DATE '2019-03-01'
@@ -401,15 +398,14 @@ UNION
 SELECT DISTINCT device_name,
        device_type,
        device_floor,
-       'SUMMER'
+       'SUMMER' -- 夏季
 FROM temperature
 WHERE dt >= DATE '2019-06-01'
   AND dt < DATE '2019-09-01';
 ```
 
-
 ```sql
--- Q3.6: For each device category, what are the monthly power consumption metrics?
+-- Q3.6: 每个设备类别的月度用电量指标是什么？
 
 SELECT yr,
        mo,
@@ -453,4 +449,4 @@ ORDER BY yr,
          mo;
 ```
 
-数据也可用于 [Playground](https://sql.clickhouse.com) 中的交互式查询，[示例](https://sql.clickhouse.com?query_id=1MXMHASDLEQIP4P1D1STND)。
+此外，这些数据也可以在 [Playground](https://sql.clickhouse.com) 中通过交互式查询进行访问，参见 [示例](https://sql.clickhouse.com?query_id=1MXMHASDLEQIP4P1D1STND)。

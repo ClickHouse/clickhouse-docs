@@ -1,32 +1,34 @@
 ---
-description: 'Page detailing the ClickHouse query analyzer'
-keywords:
-- 'analyzer'
-sidebar_label: 'Analyzer'
-slug: '/operations/analyzer'
-title: 'Analyzer'
+description: 'ClickHouse クエリ アナライザーの詳細ページ'
+keywords: ['analyzer']
+sidebar_label: 'アナライザー'
+slug: /operations/analyzer
+title: 'アナライザー'
+doc_type: 'reference'
 ---
 
+# Analyzer {#analyzer}
 
+ClickHouse バージョン `24.3` では、新しいクエリアナライザーがデフォルトで有効になりました。
+その動作の詳細については[こちら](/guides/developer/understanding-query-execution-with-the-analyzer#analyzer)を参照してください。
 
+## 既知の非互換性 {#known-incompatibilities}
 
-# Analyzer
+多数のバグ修正と新しい最適化を導入した一方で、ClickHouse の動作には後方互換性を破る変更もいくつか含まれています。新しいアナライザ用にクエリを書き換える方法を判断するために、以下の変更点を確認してください。
 
-## Known incompatibilities {#known-incompatibilities}
+### 無効なクエリはこれ以上最適化されない {#invalid-queries-are-no-longer-optimized}
 
-ClickHouseバージョン`24.3`では、新しいクエリアナライザーがデフォルトで有効になりました。
-多くのバグを修正し新しい最適化を導入したにもかかわらず、ClickHouseの動作にいくつかの破壊的変更も導入されました。新しいアナライザーに対して、クエリをどのように書き直すかを判断するために、以下の変更点をお読みください。
+以前のクエリプランニング基盤では、クエリの検証ステップより前に AST レベルの最適化が適用されていました。
+この最適化により、元のクエリを書き換えて有効かつ実行可能にできる場合がありました。
 
-### Invalid queries are no longer optimized {#invalid-queries-are-no-longer-optimized}
+新しいアナライザでは、最適化ステップより前にクエリ検証が行われます。
+これは、以前は実行可能だった無効なクエリが、現在はサポートされなくなったことを意味します。
+そのような場合、そのクエリは手動で修正する必要があります。
 
-以前のクエリプランニングインフラストラクチャは、クエリ検証ステップの前にASTレベルの最適化を適用していました。
-最適化は初期クエリを書き換え、有効なものにし、実行可能なものにすることができました。
+#### 例 1 {#example-1}
 
-新しいアナライザーでは、クエリ検証が最適化ステップの前に行われます。
-これは、以前に実行可能だった無効なクエリが現在はサポートされていないことを意味します。
-そのような場合、クエリを手動で修正する必要があります。
-
-**例 1:**
+次のクエリは、集約後に利用可能なのが `toString(number)` だけであるにもかかわらず、SELECT 句でカラム `number` を使用しています。
+旧アナライザでは、`GROUP BY toString(number)` は `GROUP BY number` に最適化され、その結果クエリは有効になっていました。
 
 ```sql
 SELECT number
@@ -34,10 +36,10 @@ FROM numbers(1)
 GROUP BY toString(number)
 ```
 
-以下のクエリは、集約後に`toString(number)`しか利用できない場合に、プロジェクションリストで`number`カラムを使用しています。
-古いアナライザーでは、`GROUP BY toString(number)`は`GROUP BY number,`へ最適化され、クエリは有効になりました。
+#### 例 2 {#example-2}
 
-**例 2:**
+このクエリでも同じ問題が発生します。列 `number` は、別のキーと一緒に集約した後に使用されています。
+以前のクエリアナライザーは、`number > 5` というフィルタを `HAVING` 句から `WHERE` 句に移動することで、このクエリを修正しました。
 
 ```sql
 SELECT
@@ -48,10 +50,8 @@ GROUP BY n
 HAVING number > 5
 ```
 
-このクエリでも同様の問題が発生します:  `number`カラムが他のキーで集約後に使用されています。
-以前のクエリアナライザーは、`HAVING`句から`WHERE`句に`number > 5`フィルタを移動させてこのクエリを修正しました。
+このクエリを修正するには、標準的な SQL 構文に従うよう、集約されていない列に適用されるすべての条件を `WHERE` 句に移動する必要があります。
 
-クエリを修正するには、非集約カラムに適用されるすべての条件を`WHERE`セクションに移動して、標準のSQL構文に従う必要があります:
 ```sql
 SELECT
     number % 2 AS n,
@@ -61,49 +61,53 @@ WHERE number > 5
 GROUP BY n
 ```
 
-### CREATE VIEW with invalid query {#create-view-with-invalid-query}
+### 無効なクエリを指定した `CREATE VIEW` {#create-view-with-invalid-query}
 
-新しいアナライザーは常に型チェックを実行します。
-以前は、無効な`SELECT`クエリで`VIEW`を作成することが可能でした。このVIEWは最初の`SELECT`または`INSERT`（`MATERIALIZED VIEW`の場合）で失敗していました。
+新しいアナライザは常に型チェックを行います。
+以前は、無効な `SELECT` クエリを含む `VIEW` を作成できていました。
+その場合、最初の `SELECT` または（`MATERIALIZED VIEW` の場合は）`INSERT` で失敗していました。
 
-現在は、そのような`VIEW`を作成することはできません。
+このような形で `VIEW` を作成することは、もはやできません。
 
-**例:**
+#### 例 {#example-view}
 
 ```sql
-CREATE TABLE source (data String) ENGINE=MergeTree ORDER BY tuple();
+CREATE TABLE source (data String)
+ENGINE=MergeTree
+ORDER BY tuple();
 
 CREATE VIEW some_view
 AS SELECT JSONExtract(data, 'test', 'DateTime64(3)')
 FROM source;
 ```
 
-### Known incompatibilities of the `JOIN` clause {#known-incompatibilities-of-the-join-clause}
+### `JOIN` 句の既知の非互換性 {#known-incompatibilities-of-the-join-clause}
 
-#### Join using column from projection {#join-using-column-from-projection}
+#### プロジェクションの列を使用する `JOIN` {#join-using-column-from-projection}
 
-投影リストからのエイリアスは、デフォルトでは`JOIN USING`キーとして使用できません。
+`SELECT` リスト内のエイリアスは、デフォルトでは `JOIN USING` のキーとして使用できません。
 
-新しい設定`analyzer_compatibility_join_using_top_level_identifier`が有効になると、`JOIN USING`の動作が変更され、`SELECT`クエリの投影リストの式に基づいて識別子を解決することが優先されます。
+新しい設定 `analyzer_compatibility_join_using_top_level_identifier` を有効にすると、`JOIN USING` の動作が変更され、左側テーブルの列を直接使用するのではなく、`SELECT` クエリのプロジェクションリストに含まれる式を基に識別子を優先的に解決するようになります。
 
-**例:**
+例：
 
 ```sql
 SELECT a + 1 AS b, t2.s
-FROM Values('a UInt64, b UInt64', (1, 1)) AS t1
-JOIN Values('b UInt64, s String', (1, 'one'), (2, 'two')) t2
+FROM VALUES('a UInt64, b UInt64', (1, 1)) AS t1
+JOIN VALUES('b UInt64, s String', (1, 'one'), (2, 'two')) t2
 USING (b);
 ```
 
-`analyzer_compatibility_join_using_top_level_identifier`が`true`に設定されている場合、結合条件は`t1.a + 1 = t2.b`として解釈され、以前のバージョンの動作と一致します。この場合、結果は`2, 'two'`になります。
-設定が`false`の場合、結合条件は`t1.b = t2.b`にデフォルトされ、クエリは`2, 'one'`を返します。
-`t1`に`b`が存在しない場合、クエリはエラーで失敗します。
+`analyzer_compatibility_join_using_top_level_identifier` を `true` に設定すると、結合条件は `t1.a + 1 = t2.b` と解釈され、以前のバージョンと同じ動作になります。
+結果は `2, 'two'` になります。
+設定が `false` の場合、結合条件はデフォルトで `t1.b = t2.b` となり、クエリは `2, 'one'` を返します。
+`b` が `t1` に存在しない場合、クエリはエラーとなって失敗します。
 
-#### Changes in behavior with `JOIN USING` and `ALIAS`/`MATERIALIZED` columns {#changes-in-behavior-with-join-using-and-aliasmaterialized-columns}
+#### `JOIN USING` と `ALIAS` / `MATERIALIZED` カラムにおける動作の変更 {#changes-in-behavior-with-join-using-and-aliasmaterialized-columns}
 
-新しいアナライザーでは、`ALIAS`または`MATERIALIZED`カラムを含む`JOIN USING`クエリで`*`を使用すると、デフォルトでそれらのカラムが結果セットに含まれます。
+新しいアナライザでは、`ALIAS` または `MATERIALIZED` カラムを含む `JOIN USING` クエリで `*` を使用すると、それらのカラムもデフォルトで結果セットに含まれます。
 
-**例:**
+例えば次のようになります。
 
 ```sql
 CREATE TABLE t1 (id UInt64, payload ALIAS sipHash64(id)) ENGINE = MergeTree ORDER BY id;
@@ -116,31 +120,34 @@ SELECT * FROM t1
 FULL JOIN t2 USING (payload);
 ```
 
-新しいアナライザーでは、このクエリの結果には両方のテーブルからの`id`と`payload`カラムが含まれます。対照的に、以前のアナライザーは、特定の設定（`asterisk_include_alias_columns`または`asterisk_include_materialized_columns`）が有効である場合にのみ、これらの`ALIAS`カラムを含むことがあり、カラムは別の順序で表示される可能性があります。
+新しいアナライザーでは、このクエリの結果には、両方のテーブルからの `id` 列に加えて `payload` 列が含まれます。
+これに対して、以前のアナライザーでは、特定の設定（`asterisk_include_alias_columns` または `asterisk_include_materialized_columns`）が有効になっている場合にのみ、これらの `ALIAS` 列が結果に含まれ、
+かつ列の並び順が異なる場合がありました。
 
-特に古いクエリを新しいアナライザーに移行する際に、一貫性のある期待通りの結果を保証するためには、`*`を使用するのではなく、`SELECT`句でカラムを明示的に指定することが推奨されます。
+特に古いクエリを新しいアナライザーに移行する際に、一貫性があり期待どおりの結果を得るためには、`*` を使うのではなく、`SELECT` 句で列を明示的に指定することを推奨します。
 
-#### Handling of Type Modifiers for columns in `USING` Clause {#handling-of-type-modifiers-for-columns-in-using-clause}
+#### `USING` 句内の列に対する型修飾子の扱い {#handling-of-type-modifiers-for-columns-in-using-clause}
 
-新しいアナライザーのバージョンでは、`USING`句で指定されたカラムの共通スーパタイプを決定するルールが標準化され、特に`LowCardinality`や`Nullable`のような型修飾子を扱う際により予測可能な結果を生み出します。
+新しいバージョンのアナライザーでは、`USING` 句で指定された列に対して共通スーパータイプを決定するための規則が標準化されており、
+特に `LowCardinality` や `Nullable` といった型修飾子を扱う際に、より予測しやすい結果が得られるようになっています。
 
-- `LowCardinality(T)`と`T`: 型`LowCardinality(T)`のカラムが型`T`のカラムと結合されると、結果の共通スーパタイプは`T`となり、`LowCardinality`修飾子が無効化されます。
+* `LowCardinality(T)` と `T`: 型 `LowCardinality(T)` の列が型 `T` の列と結合される場合、結果の共通スーパータイプは `T` となり、`LowCardinality` 修飾子は実質的に破棄されます。
+* `Nullable(T)` と `T`: 型 `Nullable(T)` の列が型 `T` の列と結合される場合、結果の共通スーパータイプは `Nullable(T)` となり、NULL 許容であるという性質が保持されます。
 
-- `Nullable(T)`と`T`: 型`Nullable(T)`のカラムが型`T`のカラムと結合されると、結果の共通スーパタイプは`Nullable(T)`となり、nullableプロパティが保持されます。
-
-**例:**
+例：
 
 ```sql
-SELECT id, toTypeName(id) FROM Values('id LowCardinality(String)', ('a')) AS t1
-FULL OUTER JOIN Values('id String', ('b')) AS t2
+SELECT id, toTypeName(id)
+FROM VALUES('id LowCardinality(String)', ('a')) AS t1
+FULL OUTER JOIN VALUES('id String', ('b')) AS t2
 USING (id);
 ```
 
-このクエリでは、`id`の共通スーパタイプが`String`とされ、`t1`からの`LowCardinality`修飾子が無視されます。
+このクエリでは、`id` の共通スーパータイプは `String` として判定され、`t1` では `LowCardinality` 修飾子が除外されます。
 
-### Projection column names changes {#projection-column-names-changes}
+### Projection 列名の変更 {#projection-column-names-changes}
 
-投影名の計算中に、エイリアスは置き換えられません。
+Projection 列名を計算する際、エイリアスは展開されません。
 
 ```sql
 SELECT
@@ -164,33 +171,32 @@ FORMAT PrettyCompact
    └───┴────────────┘
 ```
 
-### Incompatible function arguments types {#incompatible-function-arguments-types}
+### 互換性のない関数引数の型 {#incompatible-function-arguments-types}
 
-新しいアナライザーでは、型推論は初期クエリ分析中に行われます。
-この変更により、型チェックはショートサーキット評価の前に行われるため、`if`関数の引数は常に共通スーパタイプを持っていなければなりません。
+新しいアナライザーでは、型推論はクエリの初期解析中に行われます。
+この変更により、短絡評価の前に型チェックが行われるようになり、その結果、`if` 関数の引数は常に共通の上位型（スーパータイプ）を持つ必要があります。
 
-**例:**
-
-以下のクエリは、`There is no supertype for types Array(UInt8), String because some of them are Array and some of them are not`というエラーで失敗します：
+例えば、次のクエリは `There is no supertype for types Array(UInt8), String because some of them are Array and some of them are not` というエラーで失敗します。
 
 ```sql
 SELECT toTypeName(if(0, [2, 3, 4], 'String'))
 ```
 
-### Heterogeneous clusters {#heterogeneous-clusters}
+### 異種クラスタ {#heterogeneous-clusters}
 
-新しいアナライザーは、クラスタ内のサーバ間の通信プロトコルを大幅に変更しました。そのため、異なる`enable_analyzer`設定値を持つサーバで分散クエリを実行することは不可能です。
+新しい analyzer は、クラスタ内のサーバー間の通信プロトコルを大きく変更します。\
+そのため、`enable_analyzer` の設定値が異なるサーバー間で分散クエリを実行することはできません。
 
-### Mutations are interpreted by previous analyzer {#mutations-are-interpreted-by-previous-analyzer}
+### ミューテーションは旧 analyzer によって解釈される {#mutations-are-interpreted-by-previous-analyzer}
 
-マテーションは依然として古いアナライザーを使用しています。
-つまり、新しいClickHouse SQL機能のいくつかはマテーションでは使用できません。例えば、`QUALIFY`句。
-ステータスは[こちら](https://github.com/ClickHouse/ClickHouse/issues/61563)で確認できます。
+ミューテーションは依然として古い analyzer を使用します。\
+これは、一部の新しい ClickHouse SQL 機能（たとえば `QUALIFY` 句）がミューテーションでは使用できないことを意味します。\
+対応状況は[こちら](https://github.com/ClickHouse/ClickHouse/issues/61563)で確認できます。
 
-### Unsupported features {#unsupported-features}
+### 未サポートの機能 {#unsupported-features}
 
-新しいアナライザーが現在サポートしていない機能のリスト:
+新しい analyzer が現在サポートしていない機能の一覧は以下のとおりです。
 
-- Annoy index.
-- Hypothesis index. 現在進行中 [こちら](https://github.com/ClickHouse/ClickHouse/pull/48381).
-- Window viewはサポートされていません。将来的にサポートする予定はありません。
+* Annoy インデックス。
+* Hypothesis インデックス。作業状況は[こちら](https://github.com/ClickHouse/ClickHouse/pull/48381)。
+* Window view はサポートされていません。今後もサポートする予定はありません。

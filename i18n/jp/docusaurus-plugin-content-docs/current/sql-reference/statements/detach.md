@@ -1,32 +1,32 @@
 ---
-description: 'Detach のドキュメント'
+description: 'DETACH に関するドキュメント'
 sidebar_label: 'DETACH'
 sidebar_position: 43
-slug: '/sql-reference/statements/detach'
+slug: /sql-reference/statements/detach
 title: 'DETACH ステートメント'
+doc_type: 'reference'
 ---
 
-
-
-サーバーがテーブル、マテリアライズドビュー、辞書、またはデータベースの存在を「忘れ」させます。
+サーバーにテーブル、マテリアライズドビュー、ディクショナリ、またはデータベースの存在を「忘れさせ」ます。
 
 **構文**
 
 ```sql
-DETACH TABLE|VIEW|DICTIONARY|DATABASE [IF EXISTS] [db.]name [ON CLUSTER cluster] [PERMANENTLY] [SYNC]
+テーブル|ビュー|ディクショナリ|データベースを切り離す（DETACH） [IF EXISTS] [db.]name [ON CLUSTER cluster] [PERMANENTLY] [SYNC]
 ```
 
-デタッチは、テーブル、マテリアライズドビュー、辞書、またはデータベースのデータやメタデータを削除しません。エンティティが `PERMANENTLY` デタッチされていなければ、次回サーバーが起動するとメタデータを読み込み、テーブル/ビュー/辞書/データベースを再認識します。エンティティが `PERMANENTLY` デタッチされている場合、自動的な再認識はありません。
+テーブル、マテリアライズドビュー、ディクショナリ、データベースをデタッチしても、そのデータやメタデータは削除されません。エンティティを `PERMANENTLY` を付けずにデタッチした場合、次回のサーバー起動時にサーバーはメタデータを読み込み、テーブル/ビュー/ディクショナリ/データベースを再び認識します。エンティティを `PERMANENTLY` を付けてデタッチした場合、自動的に再認識されることはありません。
 
-テーブル、辞書、データベースが永久にデタッチされたかどうかにかかわらず、いずれの場合も、[ATTACH](../../sql-reference/statements/attach.md) クエリを使用してそれらを再アタッチできます。システムログテーブルも再アタッチ可能です（例: `query_log`, `text_log` など）。他のシステムテーブルは再アタッチできません。次回サーバーが起動すると、それらのテーブルは再認識されます。
+テーブル、ディクショナリ、データベースが永続的にデタッチされているかどうかに関わらず、どちらの場合でも [ATTACH](../../sql-reference/statements/attach.md) クエリを使用して再アタッチできます。
+`query_log`、`text_log` などのシステムログテーブルも再アタッチできます。他のシステムテーブルは再アタッチできません。次回のサーバー起動時にサーバーがそれらのテーブルを再び認識します。
 
-`ATTACH MATERIALIZED VIEW` は短い構文（`SELECT`なし）では機能しませんが、`ATTACH TABLE` クエリを使用してアタッチできます。
+`ATTACH MATERIALIZED VIEW` は短い構文（`SELECT` なし）では動作しませんが、`ATTACH TABLE` クエリを使用してアタッチできます。
 
-すでにデタッチされたテーブル（暫定的なもの）を永久にデタッチすることはできないことに注意してください。しかし、再アタッチしてから再度永久にデタッチすることは可能です。
+すでに（一時的に）デタッチされているテーブルを永続的にデタッチすることはできません。ただし、いったんアタッチし直してから再度永続的にデタッチすることはできます。
 
-また、デタッチされたテーブルを [DROP](../../sql-reference/statements/drop.md#drop-table) したり、同じ名前で永久にデタッチされたテーブルを [CREATE TABLE](../../sql-reference/statements/create/table.md) したり、[RENAME TABLE](../../sql-reference/statements/rename.md) クエリで他のテーブルと置き換えたりすることはできません。
+また、デタッチされたテーブルを [DROP](../../sql-reference/statements/drop.md#drop-table) したり、永続的にデタッチされたものと同じ名前で [CREATE TABLE](../../sql-reference/statements/create/table.md) したり、[RENAME TABLE](../../sql-reference/statements/rename.md) クエリで別のテーブルに置き換えたりすることはできません。
 
-`SYNC` 修飾子は、遅延なくアクションを実行します。
+`SYNC` 修飾子は、遅延なしでアクションを実行します。
 
 **例**
 
@@ -39,7 +39,7 @@ CREATE TABLE test ENGINE = Log AS SELECT * FROM numbers(10);
 SELECT * FROM test;
 ```
 
-結果:
+結果：
 
 ```text
 ┌─number─┐
@@ -56,7 +56,7 @@ SELECT * FROM test;
 └────────┘
 ```
 
-テーブルのデタッチ:
+テーブルの切り離し:
 
 クエリ:
 
@@ -65,18 +65,18 @@ DETACH TABLE test;
 SELECT * FROM test;
 ```
 
-結果:
+結果：
 
 ```text
-Received exception from server (version 21.4.1):
-Code: 60. DB::Exception: Received from localhost:9000. DB::Exception: Table default.test does not exist.
+サーバー (バージョン 21.4.1) から例外を受信しました:
+コード: 60. DB::Exception: localhost:9000 から受信しました。DB::Exception: テーブル default.test は存在しません。
 ```
 
 :::note
-ClickHouse Cloud では、ユーザーは `PERMANENTLY` 句を使用する必要があります。例えば `DETACH TABLE <table> PERMANENTLY` とします。この句を使用しない場合、テーブルはクラスター再起動中（例えば、アップグレード中）に再アタッチされます。
+ClickHouse Cloud では、`PERMANENTLY` 句（例: `DETACH TABLE &lt;table&gt; PERMANENTLY`）を使用する必要があります。この句を指定しないと、テーブルはクラスターの再起動時（アップグレード時など）に自動的に再アタッチされます。
 :::
 
 **関連項目**
 
-- [Materialized View](/sql-reference/statements/create/view#materialized-view)
-- [Dictionaries](../../sql-reference/dictionaries/index.md)
+* [マテリアライズドビュー](/sql-reference/statements/create/view#materialized-view)
+* [Dictionaries](../../sql-reference/dictionaries/index.md)

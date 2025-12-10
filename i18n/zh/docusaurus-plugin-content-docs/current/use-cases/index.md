@@ -1,15 +1,18 @@
 ---
-'slug': '/use-cases'
-'title': '使用案例指南'
-'pagination_prev': null
-'pagination_next': null
-'description': '使用案例指南的登录页面'
+slug: /use-cases
+title: '用例指南'
+pagination_prev: null
+pagination_next: null
+description: '用例指南概览页'
+doc_type: 'landing-page'
+keywords: ['用例', '可观测性', '时序', '数据湖', '机器学习', 'AI']
 ---
 
-在这一部分文档中，您可以找到我们的使用案例指南。
+在本节中，您可以找到我们的用例指南。
 
-| 页面                                    | 描述                                                               |
-|-----------------------------------------|---------------------------------------------------------------------|
-| [Observability](observability/index.md) | 有关如何设置和使用 ClickHouse 进行观察的使用案例指南                 |
-| [Time-Series](time-series/index.md)     | 有关如何设置和使用 ClickHouse 进行时间序列分析的使用案例指南         |
-| [Data Lake](data_lake/index.md)         | 有关 ClickHouse 中数据湖的使用案例指南                             |
+| 页面                           | 描述                                                                   |
+|--------------------------------|------------------------------------------------------------------------|
+| [Observability](observability/index.md) | 关于如何部署和使用 ClickHouse 实现可观测性的用例指南                       |
+| [Time-Series](time-series/index.md) | 关于如何部署和使用 ClickHouse 处理时序数据的用例指南                       |
+| [Data Lake](data_lake/index.md) | 在 ClickHouse 中构建数据湖的用例指南                                    |
+| [Machine Learning and GenAI](/use-cases/AI/ask-ai) | 使用 ClickHouse 支持机器学习和 GenAI 应用的用例指南                        |

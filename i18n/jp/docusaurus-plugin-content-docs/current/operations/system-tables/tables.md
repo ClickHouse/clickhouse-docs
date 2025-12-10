@@ -1,96 +1,90 @@
 ---
-description: 'System table containing metadata of each table that the server knows
-  about.'
-keywords:
-- 'system table'
-- 'tables'
-slug: '/operations/system-tables/tables'
+description: 'サーバーが認識している各テーブルのメタデータを含む system テーブルです。'
+keywords: ['system テーブル', 'テーブル']
+slug: /operations/system-tables/tables
 title: 'system.tables'
+doc_type: 'reference'
 ---
 
-
-
-
-
-# system.tables
+# system.tables {#systemtables}
 
 サーバーが把握している各テーブルのメタデータを含みます。
 
-[Detached](../../sql-reference/statements/detach.md) テーブルは `system.tables` に表示されません。
+[Detached](../../sql-reference/statements/detach.md) テーブルは `system.tables` には表示されません。
 
-[Temporary tables](../../sql-reference/statements/create/table.md#temporary-tables) は、それらが作成されたセッションでのみ `system.tables` に表示されます。これらは空の `database` フィールドと `is_temporary` フラグがオンの状態で表示されます。
+[Temporary tables](../../sql-reference/statements/create/table.md#temporary-tables) は、それらが作成されたセッション内でのみ `system.tables` に表示されます。これらは、`database` フィールドが空で、`is_temporary` フラグが有効になっている状態で表示されます。
 
-カラム:
+列:
 
-- `database` ([String](../../sql-reference/data-types/string.md)) — テーブルが存在するデータベースの名前。
+* `database` ([String](../../sql-reference/data-types/string.md)) — テーブルが属するデータベース名。
 
-- `name` ([String](../../sql-reference/data-types/string.md)) — テーブル名。
+* `name` ([String](../../sql-reference/data-types/string.md)) — テーブルの名前。
 
-- `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — テーブルの uuid (Atomic database)。
+* `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — テーブル uuid（Atomic データベース）。
 
-- `engine` ([String](../../sql-reference/data-types/string.md)) — テーブルエンジン名（パラメータなし）。
+* `engine` ([String](../../sql-reference/data-types/string.md)) — テーブルエンジンの名前（パラメータを含まない）。
 
-- `is_temporary` ([UInt8](../../sql-reference/data-types/int-uint.md)) - テーブルが一時的であるかどうかを示すフラグ。
+* `is_temporary` ([UInt8](../../sql-reference/data-types/int-uint.md)) - テーブルが一時テーブルであるかどうかを示すフラグ。
 
-- `data_paths` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) - ファイルシステム内のテーブルデータへのパス。
+* `data_paths` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) - ファイルシステム上のテーブルデータへのパス。
 
-- `metadata_path` ([String](../../sql-reference/data-types/string.md)) - ファイルシステム内のテーブルメタデータへのパス。
+* `metadata_path` ([String](../../sql-reference/data-types/string.md)) - ファイルシステム内のテーブルのメタデータへのパス。
 
-- `metadata_modification_time` ([DateTime](../../sql-reference/data-types/datetime.md)) - テーブルメタデータの最新修正日時。
+* `metadata_modification_time` ([DateTime](../../sql-reference/data-types/datetime.md)) - テーブルのメタデータが最後に変更された時刻。
 
-- `metadata_version` ([Int32](../../sql-reference/data-types/int-uint.md)) - ReplicatedMergeTree テーブルのメタデータバージョン、ReplicatedMergeTree でないテーブルは 0。
+* `metadata_version` ([Int32](../../sql-reference/data-types/int-uint.md)) - ReplicatedMergeTree テーブルに対するメタデータバージョン。ReplicatedMergeTree 以外のテーブルでは 0。
 
-- `dependencies_database` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) - データベース依存関係。
+* `dependencies_database` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) - 依存しているデータベース。
 
-- `dependencies_table` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) - テーブル依存関係 ([materialized views](/sql-reference/statements/create/view#materialized-view) 現在のテーブル)。
+* `dependencies_table` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) - テーブルの依存関係（このテーブルをソースとする[マテリアライズドビュー](/sql-reference/statements/create/view#materialized-view)）。
 
-- `create_table_query` ([String](../../sql-reference/data-types/string.md)) - テーブル作成に使用されたクエリ。
+* `create_table_query` ([String](../../sql-reference/data-types/string.md)) - テーブルの作成に使用したクエリ。
 
-- `engine_full` ([String](../../sql-reference/data-types/string.md)) - テーブルエンジンのパラメータ。
+* `engine_full` ([String](../../sql-reference/data-types/string.md)) - テーブルエンジンのパラメータ。
 
-- `as_select` ([String](../../sql-reference/data-types/string.md)) - ビューの `SELECT` クエリ。
+* `as_select` ([String](../../sql-reference/data-types/string.md)) - ビューを定義するための `SELECT` クエリ。
 
-- `parameterized_view_parameters` ([Array](../../sql-reference/data-types/array.md) of [Tuple](../../sql-reference/data-types/tuple.md)) — パラメータ化されたビューのパラメータ。
+* `parameterized_view_parameters` ([Array](../../sql-reference/data-types/array.md) of [Tuple](../../sql-reference/data-types/tuple.md)) — パラメータ化されたビューのパラメータ。
 
-- `partition_key` ([String](../../sql-reference/data-types/string.md)) - テーブルに指定されたパーティションキー式。
+* `partition_key` ([String](../../sql-reference/data-types/string.md)) - テーブルで指定されたパーティションキーの式。
 
-- `sorting_key` ([String](../../sql-reference/data-types/string.md)) - テーブルに指定されたソートキー式。
+* `sorting_key` ([String](../../sql-reference/data-types/string.md)) - テーブルに指定されたソートキー式。
 
-- `primary_key` ([String](../../sql-reference/data-types/string.md)) - テーブルに指定された主キー式。
+* `primary_key` ([String](../../sql-reference/data-types/string.md)) - テーブルで指定された主キー式。
 
-- `sampling_key` ([String](../../sql-reference/data-types/string.md)) - テーブルに指定されたサンプリングキー式。
+* `sampling_key` ([String](../../sql-reference/data-types/string.md)) - テーブルで指定されたサンプリングキーの式。
 
-- `storage_policy` ([String](../../sql-reference/data-types/string.md)) - ストレージポリシー:
+* `storage_policy` ([String](../../sql-reference/data-types/string.md)) - ストレージポリシー:
 
-    - [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-multiple-volumes)
-    - [Distributed](/engines/table-engines/special/distributed)
+  * [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-multiple-volumes)
+  * [Distributed](/engines/table-engines/special/distributed)
 
-- `total_rows` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) - 総行数、テーブルの行数がすぐに正確に判定可能な場合はその数を返します。そうでない場合は `NULL` (含む基になる `Buffer` テーブル)。
+* `total_rows` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) - テーブル（基盤となる `Buffer` テーブルを含む）内の行数を正確かつ迅速に判定できる場合は、その総行数。できない場合は `NULL`。
 
-- `total_bytes` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) - 総バイト数、ストレージ上のテーブルの正確なバイト数をすぐに判定可能な場合はその数を返します。そうでない場合は `NULL` (基になるストレージは含まれません)。
+* `total_bytes` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) - テーブルのストレージ上に保存されているバイト数の正確な値をすばやく取得できる場合は、インデックスおよびプロジェクションを含む合計バイト数。それが不可能な場合は `NULL`（基盤となるストレージ自体のサイズは含まれない）。
 
-    - テーブルがディスク上にデータを保存する場合、ディスク上の使用スペース（圧縮された状態）を返します。
-    - テーブルがメモリにデータを保存する場合、メモリ内の使用バイトの近似値を返します。
+  * テーブルがディスク上にデータを保存している場合、ディスク上で使用されている領域（圧縮後）を返します。
+  * テーブルがメモリ上にデータを保存している場合、メモリで使用されているバイト数のおおよその値を返します。
 
-- `total_bytes_uncompressed` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) - 総未圧縮バイト数、ストレージ上のテーブルの部分チェックサムからバイト数をすぐに判定可能な場合はその数を返します。そうでない場合は `NULL` （基になるストレージ（あれば）を考慮しません）。
+* `total_bytes_uncompressed` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) - 圧縮されていないバイト数の合計（インデックスおよびプロジェクションを含む）。ストレージ上のテーブルについて、パートのチェックサムから正確なバイト数をすばやく算出できる場合はその値、それ以外の場合は `NULL`（下層のストレージが存在する場合でも、それは考慮しない）。
 
-- `lifetime_rows` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) - サーバー起動以降に INSERT された行の総数（`Buffer` テーブルのみ）。
+* `lifetime_rows` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) - サーバー起動後に INSERT された行の合計数（`Buffer` テーブルに対してのみ）。
 
-- `lifetime_bytes` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) - サーバー起動以降に INSERT されたバイトの総数（`Buffer` テーブルのみ）。
+* `lifetime_bytes` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) - サーバー起動後に INSERT されたバイト数の総計（`Buffer` テーブルに対してのみ）。
 
-- `comment` ([String](../../sql-reference/data-types/string.md)) - テーブルのコメント。
+* `comment` ([String](../../sql-reference/data-types/string.md)) - テーブルに関するコメント。
 
-- `has_own_data` ([UInt8](../../sql-reference/data-types/int-uint.md)) — テーブル自体がディスク上にデータを保存しているか、または他のソースにアクセスするだけかを示すフラグ。
+* `has_own_data` ([UInt8](../../sql-reference/data-types/int-uint.md)) — テーブル自体がディスク上にデータを保存しているかどうか、または他のデータソースにのみアクセスしているかどうかを示すフラグです。
 
-- `loading_dependencies_database` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) - データベースの読み込み依存関係（現在のオブジェクトより前に読み込むべきオブジェクトのリスト）。
+* `loading_dependencies_database` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) - データベースの読み込み依存関係（現在のオブジェクトより前に読み込まれている必要のあるオブジェクトの一覧）。
 
-- `loading_dependencies_table` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) - テーブルの読み込み依存関係（現在のオブジェクトより前に読み込むべきオブジェクトのリスト）。
+* `loading_dependencies_table` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) - テーブル読み込み時の依存関係（現在のオブジェクトより前に読み込む必要があるオブジェクトのリスト）。
 
-- `loading_dependent_database` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) - 依存する読み込みデータベース。
+* `loading_dependent_database` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) - 依存してロードされるデータベース。
 
-- `loading_dependent_table` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) - 依存する読み込みテーブル。
+* `loading_dependent_table` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) - 依存関係のあるロード先テーブル。
 
-`system.tables` テーブルは `SHOW TABLES` クエリの実装で使用されます。
+`system.tables` テーブルは、`SHOW TABLES` クエリを実装する際に使用されます。
 
 **例**
 

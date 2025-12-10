@@ -4,6 +4,7 @@ slug: /manage/updates
 title: 'Upgrades'
 description: 'With ClickHouse Cloud you never have to worry about patching and upgrades. We roll out upgrades that include fixes, new features and performance improvements on a periodic basis.'
 doc_type: 'guide'
+keywords: ['upgrades', 'version management', 'cloud features', 'maintenance', 'updates']
 ---
 
 import Image from '@theme/IdealImage';

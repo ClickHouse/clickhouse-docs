@@ -1,9 +1,10 @@
 ---
-description: 'Документация для профиля настроек'
-sidebar_label: 'SETTINGS PROFILE'
+description: 'Документация по профилю настроек'
+sidebar_label: 'ПРОФИЛЬ НАСТРОЕК'
 sidebar_position: 48
 slug: /sql-reference/statements/alter/settings-profile
 title: 'ALTER SETTINGS PROFILE'
+doc_type: 'reference'
 ---
 
 Изменяет профили настроек.

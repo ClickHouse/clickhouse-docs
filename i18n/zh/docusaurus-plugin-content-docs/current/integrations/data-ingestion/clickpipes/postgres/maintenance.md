@@ -1,16 +1,18 @@
 ---
-'sidebar_label': '维护时间窗口'
-'description': 'Postgres 的 ClickPipes 维护时间窗口。'
-'slug': '/integrations/clickpipes/postgres/maintenance'
-'title': 'Postgres 的 ClickPipes 维护时间窗口'
+sidebar_label: 'ClickPipes for Postgres 的维护时段'
+description: 'ClickPipes for Postgres 的维护时段。'
+slug: /integrations/clickpipes/postgres/maintenance
+title: 'ClickPipes for Postgres 的维护时段'
+doc_type: 'reference'
+keywords: ['clickpipes', 'postgresql', 'cdc', '数据摄取', '实时同步']
 ---
 
+# 针对 Postgres 的 ClickPipes 维护窗口 {#maintenance-windows-for-clickpipes-for-postgres}
 
-# Postgres ClickPipes 的维护窗口
+即将对 Postgres ClickPipes 执行维护操作，具体时间为：
 
-即将到来的 Postgres ClickPipes 维护窗口定于：
-- **日期：** 2025年4月17日
-- **时间：** UTC 时间 07:00 - 08:00
+* **日期：**2025 年 4 月 17 日
+* **时间：**07:00 AM - 08:00 AM UTC
 
-在此期间，您的 Postgres Pipes 将会经历短暂的停机。
-维护窗口结束后，ClickPipes 将会重新可用并恢复正常操作。
+在此期间，您的 Postgres ClickPipes 将会出现短暂的停机。
+维护窗口结束后，ClickPipes 将重新可用并恢复正常运行。

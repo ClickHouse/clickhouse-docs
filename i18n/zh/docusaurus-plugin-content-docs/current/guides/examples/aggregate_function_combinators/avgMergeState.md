@@ -1,37 +1,29 @@
 ---
-'slug': '/examples/aggregate-function-combinators/avgMergeState'
-'title': 'avgMergeState'
-'description': '使用 avgMergeState 组合器的示例'
-'keywords':
-- 'avg'
-- 'MergeState'
-- 'combinator'
-- 'examples'
-- 'avgMergeState'
-'sidebar_label': 'avgMergeState'
+slug: '/examples/aggregate-function-combinators/avgMergeState'
+title: 'avgMergeState'
+description: '使用 avgMergeState 聚合函数组合器的示例'
+keywords: ['avg', 'MergeState', 'combinator', 'examples', 'avgMergeState']
+sidebar_label: 'avgMergeState'
+doc_type: 'reference'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 # avgMergeState {#avgMergeState}
 
 ## 描述 {#description}
 
 [`MergeState`](/sql-reference/aggregate-functions/combinators#-state) 组合器
-可以应用于[`avg`](/sql-reference/aggregate-functions/reference/avg)
-函数，以合并类型为 `AverageFunction(avg, T)` 的部分聚合状态并
-返回一个新的中间聚合状态。
+可用于 [`avg`](/sql-reference/aggregate-functions/reference/avg)
+函数，以合并类型为 `AverageFunction(avg, T)` 的部分聚合状态，
+并返回一个新的中间聚合状态。
 
 ## 示例用法 {#example-usage}
 
-`MergeState` 组合器对于多层聚合场景尤其有用，在这些场景中，您想要
-结合预聚合的状态并将其保持为状态（而不是最终确定它们）以进行后续处理。
-为了说明这一点，我们将查看一个示例，其中我们将个别服务器性能指标
-转换为跨多个级别的分层聚合：服务器级别 → 区域级别 → 数据中心级别。
+`MergeState` 组合子在多级聚合场景中特别有用，在这些场景中，你需要将预聚合状态进行合并，并继续以状态的形式保留它们（而不是将其最终计算完成），以便进行后续处理。为此，我们来看一个示例，将单个服务器性能指标转换为跨多个层级的分层聚合：服务器层级 → 区域层级 → 数据中心层级。
 
-首先，我们创建一个表来存储原始数据：
+首先，我们创建一张表来存储原始数据：
 
 ```sql
 CREATE TABLE raw_server_metrics
@@ -46,8 +38,7 @@ ENGINE = MergeTree()
 ORDER BY (region, server_id, timestamp);
 ```
 
-我们将创建一个服务器级别的聚合目标表，并定义一个增量
-物化视图作为插入触发器：
+我们将创建一个服务器层面的聚合目标表，并为其定义一个 Incremental 物化视图，使其充当插入触发器：
 
 ```sql
 CREATE TABLE server_performance
@@ -71,7 +62,7 @@ FROM raw_server_metrics
 GROUP BY server_id, region, datacenter;
 ```
 
-我们将在区域和数据中心级别做同样的事情：
+我们也会对区域级和数据中心级执行相同的操作：
 
 ```sql
 CREATE TABLE region_performance
@@ -92,7 +83,7 @@ AS SELECT
 FROM server_performance
 GROUP BY region, datacenter;
 
--- datacenter level table and Materialized View
+-- 数据中心级别表和物化视图
 
 CREATE TABLE datacenter_performance
 (
@@ -111,7 +102,7 @@ FROM region_performance
 GROUP BY datacenter;
 ```
 
-然后，我们将向源表插入示例原始数据：
+接下来，我们将在源表中插入一些示例原始数据：
 
 ```sql
 INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, response_time_ms) VALUES
@@ -124,67 +115,72 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
     (now(), 302, 'eu-central', 'dc2', 155);
 ```
 
-我们将为每个级别编写三个查询：
+针对每个层级，我们将编写三个查询：
 
 <Tabs>
-  <TabItem value="服务级别" label="服务级别" default>
-```sql
-SELECT
-    server_id,
-    region,
-    avgMerge(avg_response_time) AS avg_response_ms
-FROM server_performance
-GROUP BY server_id, region
-ORDER BY region, server_id;
-```
-```response
-┌─server_id─┬─region─────┬─avg_response_ms─┐
-│       301 │ eu-central │             145 │
-│       302 │ eu-central │             155 │
-│       101 │ us-east    │             125 │
-│       102 │ us-east    │             115 │
-│       201 │ us-west    │              95 │
-│       202 │ us-west    │             105 │
-└───────────┴────────────┴─────────────────┘
-```
+  <TabItem value="Service level" label="服务级别" default>
+    ```sql
+    SELECT
+        server_id,
+        region,
+        avgMerge(avg_response_time) AS avg_response_ms
+    FROM server_performance
+    GROUP BY server_id, region
+    ORDER BY region, server_id;
+    ```
+
+    ```response
+    ┌─server_id─┬─region─────┬─avg_response_ms─┐
+    │       301 │ eu-central │             145 │
+    │       302 │ eu-central │             155 │
+    │       101 │ us-east    │             125 │
+    │       102 │ us-east    │             115 │
+    │       201 │ us-west    │              95 │
+    │       202 │ us-west    │             105 │
+    └───────────┴────────────┴─────────────────┘
+    ```
   </TabItem>
-  <TabItem value="区域级别" label="区域级别">
-```sql
-SELECT
-    region,
-    datacenter,
-    avgMerge(avg_response_time) AS avg_response_ms
-FROM region_performance
-GROUP BY region, datacenter
-ORDER BY datacenter, region;
-```
-```response
-┌─region─────┬─datacenter─┬────avg_response_ms─┐
-│ us-east    │ dc1        │ 121.66666666666667 │
-│ us-west    │ dc1        │                100 │
-│ eu-central │ dc2        │                150 │
-└────────────┴────────────┴────────────────────┘
-```
+
+  <TabItem value="Regional level" label="区域级别">
+    ```sql
+    SELECT
+        region,
+        datacenter,
+        avgMerge(avg_response_time) AS avg_response_ms
+    FROM region_performance
+    GROUP BY region, datacenter
+    ORDER BY datacenter, region;
+    ```
+
+    ```response
+    ┌─region─────┬─datacenter─┬────avg_response_ms─┐
+    │ us-east    │ dc1        │ 121.66666666666667 │
+    │ us-west    │ dc1        │                100 │
+    │ eu-central │ dc2        │                150 │
+    └────────────┴────────────┴────────────────────┘
+    ```
   </TabItem>
-  <TabItem value="数据中心级别" label="数据中心级别">
-```sql
-SELECT
-    datacenter,
-    avgMerge(avg_response_time) AS avg_response_ms
-FROM datacenter_performance
-GROUP BY datacenter
-ORDER BY datacenter;
-```
-```response
-┌─datacenter─┬─avg_response_ms─┐
-│ dc1        │             113 │
-│ dc2        │             150 │
-└────────────┴─────────────────┘
-```
+
+  <TabItem value="Datacenter level" label="数据中心级别">
+    ```sql
+    SELECT
+        datacenter,
+        avgMerge(avg_response_time) AS avg_response_ms
+    FROM datacenter_performance
+    GROUP BY datacenter
+    ORDER BY datacenter;
+    ```
+
+    ```response
+    ┌─datacenter─┬─avg_response_ms─┐
+    │ dc1        │             113 │
+    │ dc2        │             150 │
+    └────────────┴─────────────────┘
+    ```
   </TabItem>
 </Tabs>
 
-我们可以插入更多数据：
+我们可以再插入一些数据：
 
 ```sql
 INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, response_time_ms) VALUES
@@ -193,8 +189,7 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
     (now(), 301, 'eu-central', 'dc2', 135);
 ```
 
-让我们再次检查数据中心级别的性能。请注意整个
-聚合链是如何自动更新的：
+让我们再检查一下数据中心层面的性能。注意整个聚合链是如何自动更新的：
 
 ```sql
 SELECT
@@ -212,7 +207,7 @@ ORDER BY datacenter;
 └────────────┴────────────────────┘
 ```
 
-## 另请参见 {#see-also}
+## 另请参阅 {#see-also}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
 - [`AggregateFunction`](/sql-reference/data-types/aggregatefunction)
 - [`Merge`](/sql-reference/aggregate-functions/combinators#-merge)

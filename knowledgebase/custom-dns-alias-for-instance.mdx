@@ -12,13 +12,13 @@ hide_title: true
 
 <br/>
 <br/>
-# Custom DNS alias by setting up reverse proxy {#custom-dns-alias}
+# Custom DNS alias by setting up reverse proxy \{#custom-dns-alias\}
 
 > In this knowledgebase article, we will walk you through how you can set up a
 custom DNS alias for your ClickHouse Cloud instance through the use of a reverse
 proxy such as Nginx for ClickHouse native client.
 
-## Create a self-signed certificate {#create-certificate}
+## Create a self-signed certificate \{#create-certificate\}
 
 :::note
 This step is not needed if you are using signed certificates.
@@ -49,7 +49,7 @@ Add the certificate to `/etc/clickhouse-client/config.xml`:
 </clickhouse>
 ```
 
-## Update Nginx configuration {#update-nginx-config}
+## Update Nginx configuration \{#update-nginx-config\}
 
 Add the following in your `nginx.conf` file:
 
@@ -90,7 +90,7 @@ stream {
 Where `isrgrootx1.pem` is the root certificate for ClickHouse Cloud which you
 can download [here](https://letsencrypt.org/certs/isrgrootx1.pem).
 
-## Update hosts file {#update-hosts-file}
+## Update hosts file \{#update-hosts-file\}
 
 :::note
 The following step is not needed if you are using your own domain controllers
@@ -106,7 +106,7 @@ Add the following to your `/etc/hosts` file on the Nginx server:
 
 Where `10.X.Y.Z` is the IP address of your specific Nginx box.
 
-## Connect to Cloud using alias {#connect-to-cloud-using-alias}
+## Connect to Cloud using alias \{#connect-to-cloud-using-alias\}
 
 You are now ready to connect using your custom alias:
 

@@ -1,43 +1,45 @@
 ---
 alias: []
-description: 'Документация для формата JSON'
+description: 'Документация по формату JSON'
 input_format: true
 keywords: ['JSON']
 output_format: true
 slug: /interfaces/formats/JSON
 title: 'JSON'
+doc_type: 'reference'
 ---
 
-| Вход         | Выход      | Псевдоним |
-|--------------|------------|-----------|
-| ✔            | ✔          |           |
+| Входной формат | Выходной формат | Псевдоним |
+|----------------|-----------------|-----------|
+| ✔              | ✔               |           |
 
 ## Описание {#description}
 
-Формат `JSON` читает и выводит данные в формате JSON.
+Формат `JSON` считывает и выводит данные в формате JSON. 
 
-Формат `JSON` возвращает следующее:
+Формат `JSON` возвращает следующее: 
 
-| Параметр                    | Описание                                                                                                                                                                                                                              |
-|------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `meta`                       | Имена и типы колонок.                                                                                                                                                                                                                |
-| `data`                       | Таблицы данных                                                                                                                                                                                                                       |
-| `rows`                       | Общее количество выходных строк.                                                                                                                                                                                                     |
-| `rows_before_limit_at_least` | Минимальное количество строк, которые были бы без LIMIT. Выводится только если запрос содержит LIMIT. Если запрос содержит `GROUP BY`, rows_before_limit_at_least - это точное количество строк, которое было бы без `LIMIT`. |
-| `statistics`                 | Статистика, такая как `elapsed`, `rows_read`, `bytes_read`.                                                                                                                                                                         |
-| `totals`                     | Итоговые значения (при использовании WITH TOTALS).                                                                                                                                                                                   |
-| `extremes`                   | Экстремальные значения (при установленных экстремумах в 1).                                                                                                                                                                         |
+| Parameter                    | Description                                                                                                                                                                                                                                |
+|------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `meta`                       | Имена и типы столбцов.                                                                                                                                                                                                                     |
+| `data`                       | Таблицы с данными.                                                                                                                                                                                                                         |
+| `rows`                       | Общее количество выводимых строк.                                                                                                                                                                                                          |
+| `rows_before_limit_at_least` | Нижняя оценка количества строк, которое было бы без LIMIT. Выводится только в том случае, если запрос содержит LIMIT. Эта оценка рассчитывается по блокам данных, обработанным в конвейере запроса до преобразования LIMIT, но затем может быть отброшена этим преобразованием. Если блоки даже не дошли до преобразования LIMIT в конвейере запроса, они не участвуют в оценке. |
+| `statistics`                 | Статистика, такая как `elapsed`, `rows_read`, `bytes_read`.                                                                                                                                                                                |
+| `totals`                     | Итоговые значения (при использовании WITH TOTALS).                                                                                                                                                                                         |
+| `extremes`                   | Минимальные и максимальные значения (когда extremes установлено в 1).                                                                                                                                                                      |
 
-Тип `JSON` совместим с JavaScript. Для обеспечения этого некоторые символы дополнительно экранируются:
-- слэш `/` экранируется как `\/`
-- альтернативные символы переноса строки `U+2028` и `U+2029`, которые ломают некоторые браузеры, экранируются как `\uXXXX`.
-- Символы управления ASCII экранируются: символы возврата каретки, перевода страницы, перевода строки и горизонтальной табуляции заменяются на `\b`, `\f`, `\n`, `\r`, `\t`, а также оставшиеся байты в диапазоне 00-1F с использованием последовательностей `\uXXXX`.
-- Неверные последовательности UTF-8 заменяются на символ замены �, так что выходной текст будет состоять из действительных последовательностей UTF-8.
+Тип `JSON` совместим с JavaScript. Для обеспечения совместимости некоторые символы дополнительно экранируются: 
 
-Для совместимости с JavaScript целые числа Int64 и UInt64 по умолчанию заключены в двойные кавычки.
-Чтобы удалить кавычки, можно установить параметр конфигурации [`output_format_json_quote_64bit_integers`](/operations/settings/settings-formats.md/#output_format_json_quote_64bit_integers) в `0`.
+- косая черта `/` экранируется как `\/`;
+- альтернативные переносы строки `U+2028` и `U+2029`, которые вызывают проблемы в некоторых браузерах, экранируются как `\uXXXX`;
+- управляющие символы ASCII экранируются: backspace, form feed, line feed, carriage return и горизонтальная табуляция заменяются на `\b`, `\f`, `\n`, `\r`, `\t`, а оставшиеся байты в диапазоне 00-1F — с помощью последовательностей `\uXXXX`;
+- некорректные последовательности UTF-8 заменяются символом замены �, так что выходной текст состоит из корректных последовательностей UTF-8. 
 
-ClickHouse поддерживает [NULL](/sql-reference/syntax.md), который отображается как `null` в выводе JSON. Чтобы включить значения `+nan`, `-nan`, `+inf`, `-inf` в вывод, установите параметр [output_format_json_quote_denormals](/operations/settings/settings-formats.md/#output_format_json_quote_denormals) в `1`.
+Для совместимости с JavaScript целые числа Int64 и UInt64 по умолчанию заключаются в двойные кавычки. 
+Чтобы убрать кавычки, можно установить параметр конфигурации [`output_format_json_quote_64bit_integers`](/operations/settings/settings-formats.md/#output_format_json_quote_64bit_integers) в значение `0`.
+
+ClickHouse поддерживает [NULL](/sql-reference/syntax.md), который отображается как `null` в выводе JSON. Чтобы включить вывод значений `+nan`, `-nan`, `+inf`, `-inf`, установите параметр [output_format_json_quote_denormals](/operations/settings/settings-formats.md/#output_format_json_quote_denormals) в значение `1`.
 
 ## Пример использования {#example-usage}
 
@@ -69,17 +71,17 @@ SELECT SearchPhrase, count() AS c FROM test.hits GROUP BY SearchPhrase WITH TOTA
         [
                 {
                         "num": 42,
-                        "str": "hello",
+                        "str": "привет",
                         "arr": [0,1]
                 },
                 {
                         "num": 43,
-                        "str": "hello",
+                        "str": "привет",
                         "arr": [0,1,2]
                 },
                 {
                         "num": 44,
-                        "str": "hello",
+                        "str": "привет",
                         "arr": [0,1,2,3]
                 }
         ],
@@ -99,10 +101,10 @@ SELECT SearchPhrase, count() AS c FROM test.hits GROUP BY SearchPhrase WITH TOTA
 
 ## Настройки формата {#format-settings}
 
-Для формата ввода JSON, если настройка [`input_format_json_validate_types_from_metadata`](/operations/settings/settings-formats.md/#input_format_json_validate_types_from_metadata) установлена в `1`,
-типы из метаданных во входных данных будут сопоставлены с типами соответствующих колонок из таблицы.
+Для формата ввода JSON, если настройка [`input_format_json_validate_types_from_metadata`](/operations/settings/settings-formats.md/#input_format_json_validate_types_from_metadata) установлена в значение `1`,
+типы из метаданных во входных данных будут сравниваться с типами соответствующих столбцов таблицы.
 
 ## См. также {#see-also}
 
-- Формат [JSONEachRow](/interfaces/formats/JSONEachRow)
-- Настройка [output_format_json_array_of_rows](/operations/settings/settings-formats.md/#output_format_json_array_of_rows)
+- формат [JSONEachRow](/interfaces/formats/JSONEachRow)
+- настройка [output_format_json_array_of_rows](/operations/settings/settings-formats.md/#output_format_json_array_of_rows)

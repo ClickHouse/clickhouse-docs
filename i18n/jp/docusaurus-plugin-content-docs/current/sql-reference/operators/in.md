@@ -1,17 +1,15 @@
 ---
-description: 'IN operatorsを対象としたドキュメント、NOT IN、GLOBAL IN、およびGLOBAL NOT IN演算子は別途扱われています。'
-slug: '/sql-reference/operators/in'
-title: 'IN Operators'
+description: 'NOT IN、GLOBAL IN、GLOBAL NOT IN 演算子（これらについては別途説明します）を除く IN 演算子に関するドキュメント'
+slug: /sql-reference/operators/in
+title: 'IN 演算子'
+doc_type: 'reference'
 ---
 
+# IN 演算子 {#in-operators}
 
+`IN`、`NOT IN`、`GLOBAL IN`、`GLOBAL NOT IN` 演算子は、その機能がかなり豊富であるため、別途取り上げます。
 
-
-# IN 演算子
-
-`IN`、`NOT IN`、`GLOBAL IN`、および `GLOBAL NOT IN` 演算子は、それぞれ独自に詳しく説明されます。これらの機能は非常に豊富です。
-
-演算子の左側は、単一のカラムまたはタプルでなければなりません。
+演算子の左側は、単一のカラムまたはタプルです。
 
 例:
 
@@ -20,15 +18,17 @@ SELECT UserID IN (123, 456) FROM ...
 SELECT (CounterID, UserID) IN ((34, 123), (101500, 456)) FROM ...
 ```
 
-左側がインデックスにある単一のカラムで、右側が定数のセットである場合、システムはクエリの処理にインデックスを使用します。
+左辺が索引に含まれる単一のカラムで、右辺が定数の集合である場合、システムはクエリの処理に索引を使用します。
 
-明示的にあまりにも多くの値をリストしないでください（つまり、数百万）。データセットが大きい場合は、一時テーブルに入れてください（例えば、[外部データのクエリ処理](../../engines/table-engines/special/external-data.md)のセクションを参照）。その後、サブクエリを使用します。
+あまり多くの値を明示的に列挙しないでください（たとえば数百万件）。データセットが大きい場合は、一時テーブルに入れて（例として、セクション [External data for query processing](../../engines/table-engines/special/external-data.md) を参照）、そのうえでサブクエリを使用してください。
 
-演算子の右側は、定数式のセット、定数式を持つタプルのセット（上の例に示されているもの）、または括弧内のデータベーステーブルの名前または `SELECT` サブクエリでなければなりません。
+演算子の右辺には、定数式の集合、定数式を含むタプルの集合（上記の例で示したもの）、あるいはデータベーステーブル名、または括弧で囲んだ `SELECT` サブクエリを指定できます。
 
-ClickHouse は、`IN` サブクエリの左側と右側で型が異なることを許容します。この場合、右側の値は左側の型に変換されます。これは、[accurateCastOrNull](/sql-reference/functions/type-conversion-functions#accuratecastornullx-t) 関数が右側に適用されるかのように扱われます。
+ClickHouse では、`IN` サブクエリの左辺と右辺で型が異なることを許容します。
+この場合、システムは右辺の値を左辺の型に変換します。これは、右辺に対して [accurateCastOrNull](/sql-reference/functions/type-conversion-functions#accuratecastornullx-t) 関数が適用されたかのように動作します。
 
-これは、データ型が[Nullable](../../sql-reference/data-types/nullable.md)となり、変換が実行できない場合は[NULL](/operations/settings/formats#input_format_null_as_default)を返すことを意味します。
+つまり、データ型は [Nullable](../../sql-reference/data-types/nullable.md) となり、変換を
+実行できない場合には [NULL](/operations/settings/formats#input_format_null_as_default) が返されます。
 
 **例**
 
@@ -38,7 +38,7 @@ ClickHouse は、`IN` サブクエリの左側と右側で型が異なること�
 SELECT '1' IN (SELECT 1);
 ```
 
-結果:
+結果：
 
 ```text
 ┌─in('1', _subquery49)─┐
@@ -46,11 +46,11 @@ SELECT '1' IN (SELECT 1);
 └──────────────────────┘
 ```
 
-演算子の右側がテーブルの名前（例えば、`UserID IN users`）である場合、これはサブクエリ `UserID IN (SELECT * FROM users)` に相当します。これは、クエリとともに送信される外部データを操作する際に使用します。例えば、クエリは、'users' 一時テーブルにロードされたユーザーIDのセットと一緒に送信されるべきです。
+演算子の右辺がテーブル名である場合（例えば `UserID IN users`）、これはサブクエリ `UserID IN (SELECT * FROM users)` と等価です。クエリと一緒に送信される外部データを扱う場合に使用します。例えば、フィルタリング対象のユーザー ID の集合をロードした一時テーブル &#39;users&#39; とクエリを一緒に送信できます。
 
-演算子の右側がセットエンジンを持つテーブルの名前である場合（常にRAMにある準備済みのデータセット）、データセットは各クエリのためにもう一度作成されません。
+演算子の右辺が Set エンジン（常に RAM 上にある準備済みデータセット）を使用するテーブル名である場合、そのデータセットはクエリごとに再作成されません。
 
-サブクエリは、タプルをフィルタリングするために複数のカラムを指定できます。
+サブクエリでは、タプルをフィルタリングするために複数のカラムを指定できます。
 
 例:
 
@@ -58,9 +58,9 @@ SELECT '1' IN (SELECT 1);
 SELECT (CounterID, UserID) IN (SELECT CounterID, UserID FROM ...) FROM ...
 ```
 
-`IN` 演算子の左側と右側のカラムは同じ型である必要があります。
+`IN` 演算子の左側と右側のカラムは、同じ型である必要があります。
 
-`IN` 演算子とサブクエリは、集約関数やラムダ関数を含むクエリの任意の部分で発生する可能性があります。 
+`IN` 演算子とサブクエリは、集約関数やラムダ関数内も含めて、クエリのあらゆる箇所で使用できます。
 例:
 
 ```sql
@@ -89,14 +89,14 @@ ORDER BY EventDate ASC
 └────────────┴──────────┘
 ```
 
-3月17日以降の日ごとに、3月17日にサイトを訪れたユーザーによるページビューの割合をカウントします。
-`IN` 句のサブクエリは、常に一度だけ単一のサーバーで実行されます。依存サブクエリはありません。
+3月17日以降の各日について、3月17日にサイトを訪問したユーザーによるページビューが占める割合を集計します。
+`IN` 句内のサブクエリは、常に単一のサーバー上で一度だけ実行されます。依存サブクエリはありません。
 
-## NULL 処理 {#null-processing}
+## NULL の処理 {#null-processing}
 
-リクエスト処理中、`IN` 演算子は、[NULL](/operations/settings/formats#input_format_null_as_default)との操作の結果が常に `0` に等しいと仮定します。これは、`NULL` が演算子の右側または左側にあるかどうかに関係なく適用されます。`NULL` 値はどのデータセットにも含まれず、互いに対応せず、[transform_null_in = 0](../../operations/settings/settings.md#transform_null_in)である場合は比較できません。
+リクエスト処理中、`IN` 演算子は、[NULL](/operations/settings/formats#input_format_null_as_default) を含む演算の結果を、`NULL` が演算子の右側か左側かに関係なく常に `0` とみなします。[transform&#95;null&#95;in = 0](../../operations/settings/settings.md#transform_null_in) の場合、`NULL` 値はどのデータセットにも含まれず、互いに対応せず、比較もできません。
 
-`t_null` テーブルの例を見てみましょう:
+`t_null` テーブルを用いた例を次に示します。
 
 ```text
 ┌─x─┬────y─┐
@@ -105,7 +105,7 @@ ORDER BY EventDate ASC
 └───┴──────┘
 ```
 
-クエリ `SELECT x FROM t_null WHERE y IN (NULL, 3)` を実行すると、次の結果が得られます:
+クエリ `SELECT x FROM t_null WHERE y IN (NULL,3)` を実行すると、以下の結果が得られます。
 
 ```text
 ┌─x─┐
@@ -113,7 +113,7 @@ ORDER BY EventDate ASC
 └───┘
 ```
 
-ここで、`y = NULL` の行がクエリ結果から排除されているのが分かります。これは、ClickHouseが `NULL` が `(NULL, 3)` セットに含まれているかどうかを決定できず、操作の結果として `0` を返し、`SELECT` がこの行を最終出力から除外するためです。
+`y = NULL` の行がクエリ結果から除外されていることがわかります。これは、ClickHouse が `NULL` が `(NULL,3)` のセットに含まれるかどうかを判断できないため、演算結果として `0` を返し、その結果 `SELECT` によってこの行が最終出力から除外されるためです。
 
 ```sql
 SELECT y IN (NULL, 3)
@@ -129,142 +129,142 @@ FROM t_null
 
 ## 分散サブクエリ {#distributed-subqueries}
 
-サブクエリを持つ `IN` 演算子には、通常の `IN` / `JOIN` と `GLOBAL IN` / `GLOBAL JOIN` の2つのオプションがあります。これらは、分散クエリ処理に対してどのように実行されるかに違いがあります。
+サブクエリを伴う `IN` 演算子（`JOIN` 演算子と同様）には 2 通りの使い方があります: 通常の `IN` / `JOIN` と `GLOBAL IN` / `GLOBAL JOIN` です。これらは分散クエリ処理時の実行方法が異なります。
 
-:::note    
-以下に示すアルゴリズムは、[設定](../../operations/settings/settings.md) の `distributed_product_mode` 設定によって異なる動作をする場合があります。
+:::note
+以下で説明するアルゴリズムは、[settings](../../operations/settings/settings.md) の `distributed_product_mode` 設定によって動作が異なる場合があります。
 :::
 
-通常の `IN` を使用する場合、クエリはリモートサーバーに送信され、各サーバーが `IN` または `JOIN` 句のサブクエリを実行します。
+通常の `IN` を使用すると、クエリはリモートサーバーに送信され、それぞれのサーバーが `IN` 句または `JOIN` 句内のサブクエリを実行します。
 
-`GLOBAL IN` / `GLOBAL JOIN` を使用する場合は、最初にすべてのサブクエリが `GLOBAL IN` / `GLOBAL JOIN` 用に実行され、結果が一時テーブルに収集されます。その後、一時テーブルが各リモートサーバーに送信され、そのデータを使用してクエリが実行されます。
+`GLOBAL IN` / `GLOBAL JOIN` を使用すると、まず `GLOBAL IN` / `GLOBAL JOIN` 用のすべてのサブクエリが実行され、その結果が一時テーブルに収集されます。その後、その一時テーブルが各リモートサーバーに送信され、各サーバーでこの一時データを用いてクエリが実行されます。
 
-分散されていないクエリの場合は、通常の `IN` / `JOIN` を使用してください。
+分散クエリでない場合は、通常の `IN` / `JOIN` を使用してください。
 
-分散クエリ処理用に `IN` / `JOIN` 句にサブクエリを使用する際は注意が必要です。
+分散クエリ処理で `IN` / `JOIN` 句にサブクエリを使用する場合は注意してください。
 
-いくつかの例を見てみましょう。クラスタ内の各サーバーには通常の **local_table** があり、各サーバーにはクラスタ内のすべてのサーバーを参照する **Distributed** タイプの **distributed_table** テーブルもあります。
+いくつか例を見ていきます。クラスタ内の各サーバーに通常の **local&#95;table** テーブルがあると仮定します。さらに各サーバーには、クラスタ内のすべてのサーバーを参照する **Distributed** 型の **distributed&#95;table** テーブルもあります。
 
-**distributed_table** に対するクエリは、クエリがすべてのリモートサーバーに送信され、その上で **local_table** を使用して実行されます。
+**distributed&#95;table** へのクエリの場合、そのクエリはすべてのリモートサーバーに送信され、各サーバー上で **local&#95;table** を使って実行されます。
 
-例えば、クエリ
+例えば、次のクエリは
 
 ```sql
 SELECT uniq(UserID) FROM distributed_table
 ```
 
-は、すべてのリモートサーバーに
+として、すべてのリモートサーバーに送信されます
 
 ```sql
 SELECT uniq(UserID) FROM local_table
 ```
 
-として送信され、並行して実行され、途中結果が結合できる段階まで到達します。その後、途中結果が要求元のサーバーに返され、それがマージされ、最終結果がクライアントに送信されます。
+そして、それぞれのサーバー上で並列に実行され、中間結果を結合できる段階に到達するまで処理されます。次に、その中間結果がリクエスト元のサーバーに返され、そのサーバー上でマージされ、最終結果がクライアントに送信されます。
 
-次に、`IN` を持つクエリを考えてみましょう:
+では、`IN` を用いたクエリを見てみましょう。
 
 ```sql
 SELECT uniq(UserID) FROM distributed_table WHERE CounterID = 101500 AND UserID IN (SELECT UserID FROM local_table WHERE CounterID = 34)
 ```
 
-- 2つのサイトのオーディエンスの交差点を計算します。
+* 2つのサイトのオーディエンスの共通部分を計算。
 
-このクエリは、すべてのリモートサーバーに次のように送信されます。
+このクエリは、次のようにすべてのリモートサーバーに送信されます。
 
 ```sql
 SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID IN (SELECT UserID FROM local_table WHERE CounterID = 34)
 ```
 
-言い換えれば、`IN` 句内のデータセットは、各サーバーのローカルに保存されているデータの範囲で独立して収集されます。
+言い換えると、`IN` 句内のデータセットは、各サーバーにローカルに保存されているデータに対してのみ、各サーバー上で独立して収集されます。
 
-これは、データがクラスタサーバー全体に散在している場合も考慮し、単一の UserID のデータが完全に単一のサーバーに存在するようにデータを分散させている場合に正確かつ最適に機能します。そうでなければ、結果は不正確になります。このクエリのバリエーションを「ローカル IN」と呼びます。
+このケースを想定しており、単一の UserID のデータが必ず 1 台のサーバー上にすべて存在するように、クラスター内のサーバーへデータを分散させている場合には、これは正しくかつ最適に動作します。この場合、必要なデータはすべて各サーバー上でローカルに利用可能です。そうでない場合、結果は不正確になります。クエリのこのバリエーションを「local IN」と呼びます。
 
-データがクラスタサーバーにランダムに散在しているときのクエリの動作を修正するには、サブクエリ内で**distributed_table**を指定できます。クエリは次のようになります：
+データがクラスター内のサーバー間にランダムに分散されている場合にクエリの動作を正しくするには、サブクエリ内で **distributed&#95;table** を指定できます。クエリは次のようになります。
 
 ```sql
 SELECT uniq(UserID) FROM distributed_table WHERE CounterID = 101500 AND UserID IN (SELECT UserID FROM distributed_table WHERE CounterID = 34)
 ```
 
-このクエリはすべてのリモートサーバーに次のように送信されます。
+このクエリは、すべてのリモートサーバーに対して次のような形で送信されます
 
 ```sql
 SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID IN (SELECT UserID FROM distributed_table WHERE CounterID = 34)
 ```
 
-サブクエリは、各リモートサーバーで実行を開始します。サブクエリが分散テーブルを使用しているため、各リモートサーバーのサブクエリはすべてのリモートサーバーに再送信されます：
+サブクエリは各リモートサーバー上で実行を開始します。サブクエリは分散テーブルを使用しているため、各リモートサーバー上のサブクエリは、次のようにすべてのリモートサーバーに再送されます。
 
 ```sql
 SELECT UserID FROM local_table WHERE CounterID = 34
 ```
 
-例えば、サーバーが100台のクラスターがある場合、全体のクエリを実行するには10,000の基本リクエストが必要で、一般的に受け入れられないと見なされます。
+たとえば、100 台のサーバーからなるクラスタがある場合、クエリ全体の実行には 1 万件の個々のリクエストが必要になり、これは一般的に許容できないと見なされます。
 
-このような場合、`IN` の代わりに常に `GLOBAL IN` を使用してください。クエリの動作を見てみましょう：
+このような場合は常に、`IN` の代わりに `GLOBAL IN` を使用する必要があります。次のクエリでどのように動作するかを見てみましょう。
 
 ```sql
 SELECT uniq(UserID) FROM distributed_table WHERE CounterID = 101500 AND UserID GLOBAL IN (SELECT UserID FROM distributed_table WHERE CounterID = 34)
 ```
 
-要求元のサーバーはサブクエリを実行します：
+リクエスト元サーバーがサブクエリを実行します。
 
 ```sql
 SELECT UserID FROM distributed_table WHERE CounterID = 34
 ```
 
-結果はRAM内の一時テーブルに格納されます。その後、要求は次のように各リモートサーバーに送信されます：
+そして結果は RAM 上の一時テーブルに格納されます。その後、リクエストは次のように各リモートサーバーに送信されます。
 
 ```sql
 SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID GLOBAL IN _data1
 ```
 
-一時テーブル `_data1` は、クエリと共にすべてのリモートサーバーに送信されます（一時テーブルの名前は実装に依存します）。
+一時テーブル `_data1` は、クエリとともにすべてのリモートサーバーに送信されます（一時テーブルの名前は実装に依存します）。
 
-これは、通常の `IN` を使用するよりも最適です。ただし、以下の点に留意してください。
+これは通常の `IN` を使用するよりも効率的です。ただし、次の点に注意してください。
 
-1. 一時テーブルを作成する際、データはユニークにはなりません。ネットワーク経由で送信されるデータ量を減らすために、サブクエリで DISTINCT を指定してください（通常の `IN` に対しては必要ありません）。
-2. 一時テーブルはすべてのリモートサーバーに送信されます。送信はネットワークトポロジーを考慮しません。例えば、10のリモートサーバーが要求元サーバーに対して非常に遠いデータセンターにある場合、データはリモートデータセンターへのチャネルを経由して10回送信されます。`GLOBAL IN` を使用する際は、大きなデータセットを避けてください。
-3. リモートサーバーへのデータ送信時に、ネットワーク帯域幅に関する制限は設定できません。ネットワークが過負荷になる可能性があります。
-4. `GLOBAL IN` を定期的に使用する必要がないようにデータをサーバー間で分散してください。
-5. `GLOBAL IN` を頻繁に使用する必要がある場合は、ClickHouseクラスターの配置を計画し、単一グループのレプリカが、速いネットワークで結ばれている単一のデータセンターに収容されるようにします。これにより、クエリが単一のデータセンター内で完全に処理できるようになります。
+1. 一時テーブルを作成する場合、データは一意化されません。ネットワーク経由で送信されるデータ量を減らすには、副クエリで DISTINCT を指定します（通常の `IN` の場合はこれを行う必要はありません）。
+2. 一時テーブルはすべてのリモートサーバーに送信されます。送信時にネットワークトポロジーは考慮されません。たとえば、10 台のリモートサーバーが、リクエスト元サーバーから非常に離れたデータセンターに存在する場合、そのリモートデータセンターへのチャネル上でデータは 10 回送信されます。`GLOBAL IN` を使用する際は、大きなデータセットは避けるようにしてください。
+3. データをリモートサーバーへ送信する際、ネットワーク帯域幅に対する制限は設定できません。ネットワークを過負荷にしてしまう可能性があります。
+4. 日常的に `GLOBAL IN` を使用しなくて済むように、データをサーバー間に分散配置するようにしてください。
+5. `GLOBAL IN` を頻繁に使用する必要がある場合は、1 つのレプリカグループが、高速なネットワークで相互に接続された 1 つのデータセンター内に収まるように ClickHouse クラスターの配置を計画し、クエリが 1 つのデータセンター内だけで処理されるようにします。
 
-要求元のサーバーでのみ利用可能なローカルテーブルを `GLOBAL IN` 句に指定することも意味があります。これにより、リモートサーバーでこのデータを使用できます。
+また、ローカルテーブルがリクエスト元サーバーにのみ存在し、そのデータをリモートサーバーでも使用したい場合には、`GLOBAL IN` 句でローカルテーブルを指定するのも理にかなっています。
 
-### 分散サブクエリと max_rows_in_set {#distributed-subqueries-and-max_rows_in_set}
+### Distributed Subqueries と max&#95;rows&#95;in&#95;set {#distributed-subqueries-and-max&#95;rows&#95;in&#95;set}
 
-[`max_rows_in_set`](/operations/settings/settings#max_rows_in_set) と [`max_bytes_in_set`](/operations/settings/settings#max_bytes_in_set) を使用して、分散クエリ中に転送されるデータ量を制御できます。
+分散クエリで転送されるデータ量を制御するために、[`max_rows_in_set`](/operations/settings/settings#max_rows_in_set) と [`max_bytes_in_set`](/operations/settings/settings#max_bytes_in_set) を使用できます。
 
-これは、`GLOBAL IN` クエリが大きなデータを返す場合に特に重要です。次のSQLを考慮してください：
+これは、`GLOBAL IN` クエリが大量のデータを返す場合に特に重要です。次の SQL を考えてみてください。
 
 ```sql
-select * from table1 where col1 global in (select col1 from table2 where <some_predicate>)
+SELECT * FROM table1 WHERE col1 GLOBAL IN (SELECT col1 FROM table2 WHERE <some_predicate>)
 ```
- 
-`some_predicate` が十分に選択的でない場合、大量のデータを返し、性能問題を引き起こす可能性があります。このような場合、ネットワーク経由で転送されるデータを制限することが賢明です。また、[`set_overflow_mode`](/operations/settings/settings#set_overflow_mode) がデフォルトで `throw` に設定されているため、これらの閾値が満たされると例外が発生します。
 
-### 分散サブクエリと max_parallel_replicas {#distributed-subqueries-and-max_parallel_replicas}
+`some_predicate` が十分に選択的でない場合、大量のデータが返され、パフォーマンスの問題を引き起こします。このような場合、ネットワーク上のデータ転送量を制限するのが望ましいです。また、[`set_overflow_mode`](/operations/settings/settings#set_overflow_mode) は（デフォルトで）`throw` に設定されており、これらのしきい値に達したときに例外がスローされることに注意してください。
 
-[max_parallel_replicas](#distributed-subqueries-and-max_parallel_replicas) が 1 より大きい場合、分散クエリはさらに変形されます。
+### Distributed Subqueries と max&#95;parallel&#95;replicas {#distributed-subqueries-and-max&#95;parallel&#95;replicas}
 
-例えば、次のように書かれた場合：
+[max&#95;parallel&#95;replicas](#distributed-subqueries-and-max_parallel_replicas) が 1 より大きい場合、分散クエリにはさらに変換が行われます。
+
+たとえば、次のようになります。
 
 ```sql
 SELECT CounterID, count() FROM distributed_table_1 WHERE UserID IN (SELECT UserID FROM local_table_2 WHERE CounterID < 100)
 SETTINGS max_parallel_replicas=3
 ```
 
-各サーバーでは次のように変換されます：
+各サーバーごとに次のように変換されます：
 
 ```sql
 SELECT CounterID, count() FROM local_table_1 WHERE UserID IN (SELECT UserID FROM local_table_2 WHERE CounterID < 100)
 SETTINGS parallel_replicas_count=3, parallel_replicas_offset=M
 ```
 
-ここで、`M` は、ローカルクエリが実行されるレプリカに応じて `1` から `3` の間となります。
+ここで `M` は、ローカルクエリが実行されているレプリカに応じて `1` から `3` の値を取ります。
 
-これらの設定は、クエリ内のすべてのMergeTreeファミリーテーブルに影響を及ぼし、それぞれのテーブルに `SAMPLE 1/3 OFFSET (M-1)/3` を適用するのと同じ効果があります。
+これらの設定はクエリ内のすべての MergeTree ファミリーのテーブルに影響し、それぞれのテーブルに対して `SAMPLE 1/3 OFFSET (M-1)/3` を適用するのと同じ効果があります。
 
-したがって、[max_parallel_replicas](#distributed-subqueries-and-max_parallel_replicas) 設定を追加すると、両方のテーブルが同じレプリケーションスキームを持ち、UserIDまたはそのサブキーでサンプリングされている場合にのみ正しい結果が得られます。特に、`local_table_2` にサンプリングキーがない場合、不正確な結果が生成されます。このルールは `JOIN` にも当てはまります。
+したがって [max&#95;parallel&#95;replicas](#distributed-subqueries-and-max_parallel_replicas) 設定を追加しても、両方のテーブルが同一のレプリケーション方式を採用し、かつ UserID あるいはそのサブキーでサンプリングされている場合にのみ正しい結果が得られます。特に、`local_table_2` にサンプリングキーがない場合、正しくない結果が得られます。同じルールが `JOIN` にも適用されます。
 
-`local_table_2` が要件を満たしていない場合の回避策としては、`GLOBAL IN` または `GLOBAL JOIN` を使用することができます。
+`local_table_2` が要件を満たさない場合の一つの回避策としては、`GLOBAL IN` または `GLOBAL JOIN` を使用することが挙げられます。
 
-テーブルにサンプリングキーがない場合、[parallel_replicas_custom_key](/operations/settings/settings#parallel_replicas_custom_key) の柔軟なオプションを使用して、異なる最適な動作を生成することができます。
+テーブルにサンプリングキーがない場合は、[parallel&#95;replicas&#95;custom&#95;key](/operations/settings/settings#parallel_replicas_custom_key) に対して、より柔軟なオプションを使用できます。これにより、より柔軟かつ最適な動作を実現できます。

@@ -1,16 +1,13 @@
 ---
-description: 'MacOSにClickHouseをインストールする'
-keywords:
-- 'ClickHouse'
-- 'install'
-- 'Linux'
-- 'tar'
-sidebar_label: 'その他のLinux'
-slug: '/install/linux_other'
-title: 'tgzアーカイブを使用してClickHouseをインストールする'
+description: 'macOS に ClickHouse をインストールする'
+keywords: ['ClickHouse', 'インストール', 'Linux', 'tar']
+sidebar_label: 'その他の Linux'
+slug: /install/linux_other
+title: 'tgz アーカイブを使用して ClickHouse をインストールする'
 hide_title: true
+doc_type: 'guide'
 ---
 
 import Tar from './_snippets/_linux_tar_install.md'
 
-<Tar/>
+<Tar />

@@ -1,27 +1,27 @@
 [
-	{ 
-		"title": "SQL reference",
-		"description": "Learn the statements, functions, and data types that are available",
-		"url": "/docs/sql-reference"
-	},
-	{ 
-		"title": "Ingest data",
-		"description": "Explore the many ways to get data into ClickHouse",
-		"url": "/docs/integrations/data-ingestion/"
-	},
-	{ 
-		"title": "Visualize data",
-		"description": "Now that your data is in ClickHouse, it's time to analyze it",
-		"url": "/docs/integrations/data-visualization/"
-	},
-	{ 
-		"title": "Optimize data",
-		"description": "Ways to improve the performance of your ClickHouse service",
-		"url": "/docs/optimize/"
-	},
-	{ 
-		"title": "Migrate data",
-		"description": "Importing your data from an external source into ClickHouse",
-		"url": "/docs/integrations/migration/"
-	}
+  {
+    "title": "Справочник по SQL",
+    "description": "Ознакомьтесь с доступными операторами, функциями и типами данных",
+    "url": "/docs/sql-reference"
+  },
+  {
+    "title": "Приём данных",
+    "description": "Ознакомьтесь с различными способами загрузки данных в ClickHouse",
+    "url": "/docs/integrations/data-ingestion/"
+  },
+  {
+    "title": "Визуализация данных",
+    "description": "Теперь, когда ваши данные в ClickHouse, пора приступать к их анализу",
+    "url": "/docs/integrations/data-visualization/"
+  },
+  {
+    "title": "Оптимизация данных",
+    "description": "Способы улучшения производительности сервиса ClickHouse",
+    "url": "/docs/optimize/"
+  },
+  {
+    "title": "Мигрировать данные",
+    "description": "Импорт ваших данных из внешнего источника в ClickHouse",
+    "url": "/docs/integrations/migration/"
+  }
 ]

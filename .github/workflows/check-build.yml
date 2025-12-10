@@ -19,7 +19,7 @@ jobs:
         check_type: [spellcheck, kbcheck, md-lint, glossary-check]
     steps:
       # Add setup steps per check here
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Install Aspell
         if: matrix.check_type == 'spellcheck'
         run: sudo apt-get update && sudo apt-get install -y aspell aspell-en
@@ -31,7 +31,7 @@ jobs:
           uv python install 3.12 --verbose
       - name: Setup md-lint environment
         if: matrix.check_type == 'md-lint'
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version: 20
       - name: Install markdownlint-cli2

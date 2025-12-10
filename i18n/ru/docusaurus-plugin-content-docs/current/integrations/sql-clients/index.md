@@ -1,21 +1,21 @@
 ---
 slug: /integrations/sql-clients/
-description: 'Обзорная страница для SQL клиентов ClickHouse.'
-keywords: ['интеграции', 'DataGrip', 'DBeaver', 'DbVisualizer', 'Jupyter Notebooks', 'QStudio', 'TABLUM.IO', 'marimo']
-title: 'Интеграции SQL клиентов'
+description: 'Обзор SQL-клиентов ClickHouse.'
+keywords: ['integrations', 'DataGrip', 'DBeaver', 'DbVisualizer', 'Jupyter Notebooks', 'QStudio', 'TABLUM.IO', 'marimo']
+title: 'Интеграции с SQL-клиентами'
+doc_type: 'landing-page'
 ---
 
+# Интеграции SQL‑клиентов {#sql-client-integrations}
 
-# Интеграции SQL клиентов
+В этом разделе описано, как интегрировать ClickHouse с различными распространёнными инструментами управления, анализа и визуализации данных.
 
-В этом разделе описывается, как интегрировать ClickHouse с различными распространенными инструментами управления базами данных, анализа и визуализации.
-
-| Инструмент                                          | Описание                                                  |
-|-----------------------------------------------------|-----------------------------------------------------------|
-| [DataGrip](/integrations/datagrip)                  | Мощная IDE для работы с базами данных                     |
-| [DBeaver](/integrations/dbeaver)                    | Инструмент для администрирования и разработки баз данных   |
+| Инструмент                                          | Описание                                                    |
+|-----------------------------------------------------|-------------------------------------------------------------|
+| [DataGrip](/integrations/datagrip)                  | Мощная IDE для баз данных                                   |
+| [DBeaver](/integrations/dbeaver)                    | Инструмент для администрирования и разработки баз данных    |
 | [DbVisualizer](/integrations/dbvisualizer)          | Инструмент управления базами данных для разработчиков, DBA и аналитиков |
-| [Jupyter Notebooks](/integrations/jupysql)          | Интерактивные блокноты для кода, визуализаций и текста    |
-| [QStudio](/integrations/qstudio)                    | Бесплатный графический клиент SQL с открытым кодом        |
-| [TABLUM.IO](/integrations/tablumio)                 | Облачная платформа для визуализации данных                |
-| [marimo](/integrations/marimo)                      | Открытый реактивный блокнот для Python с встроенным SQL   |
+| [Jupyter Notebooks](/integrations/jupysql)          | Интерактивные ноутбуки для кода, визуализаций и текста      |
+| [QStudio](/integrations/qstudio)                    | Бесплатный графический SQL‑клиент с открытым исходным кодом |
+| [TABLUM.IO](/integrations/tablumio)                 | Облачная платформа визуализации данных                      |
+| [marimo](/integrations/marimo)                      | Реактивный ноутбук для Python с открытым исходным кодом и встроенной поддержкой SQL |

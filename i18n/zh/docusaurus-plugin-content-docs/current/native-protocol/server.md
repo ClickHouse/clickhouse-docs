@@ -1,136 +1,135 @@
 ---
-'slug': '/native-protocol/server'
-'sidebar_position': 3
-'title': '服务器数据包'
-'description': '本地协议服务器'
+slug: /native-protocol/server
+sidebar_position: 3
+title: '服务器端数据包'
+description: '原生协议服务器端'
+doc_type: 'reference'
+keywords: ['原生协议', 'TCP 协议', '客户端-服务器', '协议规范', '网络']
 ---
 
+# 服务器数据包 {#server-packets}
 
-# 服务器数据包
+| value | name                             | description                                                     |
+|-------|----------------------------------|-----------------------------------------------------------------|
+| 0     | [Hello](#hello)                  | 服务器握手响应                                                  |
+| 1     | Data                             | 与 [client data](./client.md#data) 相同                         |
+| 2     | [Exception](#exception)          | 查询处理异常                                                    |
+| 3     | [Progress](#progress)            | 查询进度                                                        |
+| 4     | [Pong](#pong)                    | Ping 响应                                                       |
+| 5     | [EndOfStream](#end-of-stream)    | 所有数据包均已传输                                              |
+| 6     | [ProfileInfo](#profile-info)     | 性能分析数据                                                    |
+| 7     | Totals                           | 汇总值                                                          |
+| 8     | Extremes                         | 极值（最小值、最大值）                                          |
+| 9     | TablesStatusResponse             | 对 TableStatus 请求的响应                                       |
+| 10    | [Log](#log)                      | 系统查询日志                                                    |
+| 11    | TableColumns                     | 列信息                                                          |
+| 12    | UUIDs                            | 唯一数据部分 ID 列表                                            |
+| 13    | ReadTaskRequest                  | 用于描述需要获取下一个任务的请求的字符串（UUID）               |
+| 14    | [ProfileEvents](#profile-events) | 来自服务器的性能统计事件数据包                                  |
 
-| 值     | 名称                              | 描述                                                         |
-|--------|----------------------------------|--------------------------------------------------------------|
-| 0      | [Hello](#hello)                  | 服务器握手响应                                               |
-| 1      | 数据                             | 与 [client data](./client.md#data) 相同                       |
-| 2      | [Exception](#exception)          | 查询处理异常                                                |
-| 3      | [Progress](#progress)            | 查询进度                                                    |
-| 4      | [Pong](#pong)                    | Ping 响应                                                   |
-| 5      | [EndOfStream](#end-of-stream)    | 所有数据包已传输                                           |
-| 6      | [ProfileInfo](#profile-info)     | 性能数据                                                    |
-| 7      | Totals                           | 总值                                                        |
-| 8      | Extremes                         | 极端值（最小值、最大值）                                    |
-| 9      | TablesStatusResponse             | 对 TableStatus 请求的响应                                   |
-| 10     | [Log](#log)                      | 查询系统日志                                                |
-| 11     | TableColumns                     | 列描述                                                     |
-| 12     | UUIDs                            | 唯一部分 ID 的列表                                          |
-| 13     | ReadTaskRequest                  | 字符串（UUID）描述需要下一个任务的请求                  |
-| 14     | [ProfileEvents](#profile-events) | 包含服务器的性能事件                                        |
-
-`数据`、`总值`和`极端值`可以被压缩。
+`Data`、`Totals` 和 `Extremes` 可以压缩。
 
 ## Hello {#hello}
 
-对 [client hello](./client.md#hello) 的响应。
+对[客户端 hello](./client.md#hello) 的响应。
 
-| 字段         | 类型     | 值              | 描述                     |
-|--------------|----------|------------------|--------------------------|
-| 名称         | 字符串   | `Clickhouse`     | 服务器名称               |
-| 主要版本     | UVarInt  | `21`             | 服务器主要版本          |
-| 次要版本     | UVarInt  | `12`             | 服务器次要版本          |
-| 修订版       | UVarInt  | `54452`          | 服务器修订版            |
-| 时区         | 字符串   | `Europe/Moscow`  | 服务器时区               |
-| 显示名称     | 字符串   | `Clickhouse`     | 服务器在 UI 中的名称     |
-| 补丁版本     | UVarInt  | `3`              | 服务器补丁版本          |
+| field         | type    | value           | description          |
+|---------------|---------|-----------------|----------------------|
+| name          | String  | `ClickHouse`    | 服务器名称           |
+| version_major | UVarInt | `21`            | 服务器主版本号       |
+| version_minor | UVarInt | `12`            | 服务器次版本号       |
+| revision      | UVarInt | `54452`         | 服务器修订号         |
+| tz            | String  | `Europe/Moscow` | 服务器时区           |
+| display_name  | String  | `ClickHouse`    | UI 中显示的服务器名称 |
+| version_patch | UVarInt | `3`             | 服务器补丁版本号     |
 
-
-## Exception {#exception}
+## 异常 {#exception}
 
 查询处理期间的服务器异常。
 
-| 字段       | 类型    | 值                                    | 描述                      |
-|------------|---------|----------------------------------------|---------------------------|
-| 代码       | Int32   | `60`                                   | 见 [ErrorCodes.cpp][codes]。 |
-| 名称       | 字符串  | `DB::Exception`                        | 服务器主版本              |
-| 消息       | 字符串  | `DB::Exception: 表 X 不存在`            | 服务器次要版本            |
-| 堆栈跟踪   | 字符串  | ~                                      | C++ 堆栈跟踪              |
-| 嵌套       | 布尔    | `true`                                 | 更多错误                  |
+| 字段        | 类型   | 值                                      | 描述                         |
+|-------------|--------|-----------------------------------------|------------------------------|
+| code        | Int32  | `60`                                   | 参见 [ErrorCodes.cpp][codes] |
+| name        | String | `DB::Exception`                        | 服务器主版本                 |
+| message     | String | `DB::Exception: Table X doesn't exist` | 服务器次版本                 |
+| stack_trace | String | ~                                      | C++ 堆栈跟踪                 |
+| nested      | Bool   | `true`                                 | 更多错误                     |
 
-在`嵌套`为`false`之前，可以是连续的异常列表。
+可以是一个连续的异常列表，直到 `nested` 为 `false` 为止。
 
 [codes]: https://clickhouse.com/codebrowser/ClickHouse/src/Common/ErrorCodes.cpp.html "错误代码列表"
 
-## Progress {#progress}
+## 进度 {#progress}
 
-查询执行进度由服务器定期报告。
+服务器会定期上报查询执行的进度。
 
 :::tip
-报告的进度为 **增量**。对于总数，在客户端累加。
+进度以**增量**形式上报。若需汇总总量，请在客户端累加。
 :::
 
-| 字段       | 类型     | 值       | 描述                 |
-|------------|----------|-----------|----------------------|
-| 行数       | UVarInt  | `65535`   | 行数                |
-| 字节数     | UVarInt  | `871799`  | 字节数               |
-| 总行数     | UVarInt  | `0`       | 总行数               |
-| 从客户端写入的行 | UVarInt  | `0`      | 从客户端写入的行    |
-| 从客户端写入的字节 | UVarInt  | `0`      | 从客户端写入的字节  |
+| field       | type    | value    | description         |
+|-------------|---------|----------|---------------------|
+| rows        | UVarInt | `65535`  | 行数                |
+| bytes       | UVarInt | `871799` | 字节数              |
+| total_rows  | UVarInt | `0`      | 总行数              |
+| wrote_rows  | UVarInt | `0`      | 来自客户端的行数    |
+| wrote_bytes | UVarInt | `0`      | 来自客户端的字节数  |
 
 ## Pong {#pong}
 
-对 [client ping](./client.md#ping) 的响应，没有数据包体。
+对 [客户端 ping](./client.md#ping) 的响应，无数据包正文。
 
-## 数据流结束 {#end-of-stream}
+## 流结束 {#end-of-stream}
 
-不会再发送 **数据** 数据包，查询结果已从服务器完全流式传输到客户端。
+不再发送任何 **Data** 数据包，查询结果已从服务器完整地流式传输到客户端。
 
-没有数据包体。
+无数据包主体。
 
-## Profile info {#profile-info}
+## 概要信息 {#profile-info}
 
-| 字段                          | 类型     |
-|-------------------------------|----------|
-| 行数                          | UVarInt  |
-| 块数                          | UVarInt  |
-| 字节数                        | UVarInt  |
-| 应用限制                      | 布尔     |
-| 限制前的行数                  | UVarInt  |
-| 限制前计算的行数              | 布尔     |
+| 字段                         | 类型    |
+|------------------------------|---------|
+| rows                         | UVarInt |
+| blocks                       | UVarInt |
+| bytes                        | UVarInt |
+| applied_limit                | Bool    |
+| rows_before_limit            | UVarInt |
+| calculated_rows_before_limit | Bool    |
 
-## Log {#log}
+## 日志 {#log}
 
-**数据块**，包含服务器日志。
+包含服务器日志的 **数据块**。
 
 :::tip
-编码为 **数据块** 的列，但从未被压缩。
+编码为按列存储的 **数据块**，但不会被压缩。
 :::
 
-| 列         | 类型     |
+| column     | type     |
 |------------|----------|
-| 时间       | DateTime |
-| 微秒时间   | UInt32   |
-| 主机名     | 字符串   |
-| 查询 ID    | 字符串   |
-| 线程 ID    | UInt64   |
-| 优先级     | Int8     |
-| 来源       | 字符串   |
-| 文本       | 字符串   |
+| time       | DateTime |
+| time_micro | UInt32   |
+| host_name  | String   |
+| query_id   | String   |
+| thread_id  | UInt64   |
+| priority   | Int8     |
+| source     | String   |
+| text       | String   |
 
 ## Profile events {#profile-events}
 
-**数据块**，包含性能事件。
+包含 **profile events** 的数据块。
 
 :::tip
-编码为 **数据块** 的列，但从未被压缩。
+编码为列式的 **data block**，但不会被压缩。
 
-`值` 类型为 `UInt64` 或 `Int64`，取决于服务器修订版。
+`value` 的类型是 `UInt64` 或 `Int64`，取决于服务器修订版本。
 :::
 
-
-| 列           | 类型            |
+| column       | type            |
 |--------------|-----------------|
-| 主机名       | 字符串          |
-| 当前时间     | DateTime        |
-| 线程 ID      | UInt64          |
-| 类型         | Int8            |
-| 名称         | 字符串          |
-| 值           | UInt64 或 Int64 |
+| host_name    | String          |
+| current_time | DateTime        |
+| thread_id    | UInt64          |
+| type         | Int8            |
+| name         | String          |
+| value        | UInt64 or Int64 |

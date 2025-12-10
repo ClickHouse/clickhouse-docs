@@ -1,36 +1,36 @@
 ---
-description: 'Системная таблица, содержащая информацию о следах (trace spans) для выполненных запросов.'
-keywords: ['системная таблица', 'opentelemetry_span_log']
+description: 'Системная таблица, содержащая информацию о спанах трассировки для выполненных запросов.'
+keywords: ['system table', 'opentelemetry_span_log']
 slug: /operations/system-tables/opentelemetry_span_log
 title: 'system.opentelemetry_span_log'
+doc_type: 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
+# system.opentelemetry&#95;span&#95;log {#systemopentelemetry&#95;span&#95;log}
 
-# system.opentelemetry_span_log
+<SystemTableCloud />
 
-<SystemTableCloud/>
+Содержит информацию о [спанах трассировки](https://opentracing.io/docs/overview/spans/) для выполненных запросов.
 
-Содержит информацию о [следах (trace spans)](https://opentracing.io/docs/overview/spans/) для выполненных запросов.
+Столбцы:
 
-Колонки:
-
-- `trace_id` ([UUID](../../sql-reference/data-types/uuid.md)) — Идентификатор следа для выполненного запроса.
-- `span_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Идентификатор `trace span`.
-- `parent_span_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Идентификатор родительского `trace span`.
-- `operation_name` ([String](../../sql-reference/data-types/string.md)) — Название операции.
-- `kind` ([Enum8](../../sql-reference/data-types/enum.md)) — [SpanKind](https://opentelemetry.io/docs/reference/specification/trace/api/#spankind) следа.
-    - `INTERNAL` — Указывает, что след представляет собой внутреннюю операцию в приложении.
-    - `SERVER` — Указывает, что след охватывает обработку на стороне сервера синхронного RPC или другого удаленного запроса.
-    - `CLIENT` — Указывает, что след описывает запрос к какому-либо удаленному сервису.
-    - `PRODUCER` — Указывает, что след описывает инициаторов асинхронного запроса. Этот родительский след часто заканчивается до того, как соответствующий дочерний CONSUMER след завершится, возможно, даже до начала дочернего следа.
-    - `CONSUMER` - Указывает, что след описывает ребенка асинхронного запроса PRODUCER.
-- `start_time_us` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Время начала `trace span` (в микросекундах).
-- `finish_time_us` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Время завершения `trace span` (в микросекундах).
-- `finish_date` ([Date](../../sql-reference/data-types/date.md)) — Дата завершения `trace span`.
-- `attribute.names` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — Имена [атрибутов](https://opentelemetry.io/docs/go/instrumentation/#attributes) в зависимости от `trace span`. Заполняются в соответствии с рекомендациями стандарта [OpenTelemetry](https://opentelemetry.io/).
-- `attribute.values` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — Значения атрибутов в зависимости от `trace span`. Заполняются в соответствии с рекомендациями стандарта `OpenTelemetry`.
+* `trace_id` ([UUID](../../sql-reference/data-types/uuid.md)) — идентификатор трассы для выполненного запроса.
+* `span_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — идентификатор `trace span`.
+* `parent_span_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — идентификатор родительского `trace span`.
+* `operation_name` ([String](../../sql-reference/data-types/string.md)) — имя операции.
+* `kind` ([Enum8](../../sql-reference/data-types/enum.md)) — [SpanKind](https://opentelemetry.io/docs/reference/specification/trace/api/#spankind) спана.
+  * `INTERNAL` — указывает, что спан представляет внутреннюю операцию в приложении.
+  * `SERVER` — указывает, что спан охватывает обработку на стороне сервера синхронного RPC или другого удалённого запроса.
+  * `CLIENT` — указывает, что спан описывает запрос к некоторому удалённому сервису.
+  * `PRODUCER` — указывает, что спан описывает инициаторов асинхронного запроса. Этот родительский спан часто заканчивается раньше соответствующего дочернего спана CONSUMER, возможно, даже до начала дочернего спана.
+  * `CONSUMER` — указывает, что спан описывает дочерний спан асинхронного запроса PRODUCER.
+* `start_time_us` ([UInt64](../../sql-reference/data-types/int-uint.md)) — время начала `trace span` (в микросекундах).
+* `finish_time_us` ([UInt64](../../sql-reference/data-types/int-uint.md)) — время окончания `trace span` (в микросекундах).
+* `finish_date` ([Date](../../sql-reference/data-types/date.md)) — дата окончания `trace span`.
+* `attribute.names` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — имена [атрибутов](https://opentelemetry.io/docs/go/instrumentation/#attributes) для данного `trace span`. Они заполняются в соответствии с рекомендациями стандарта [OpenTelemetry](https://opentelemetry.io/).
+* `attribute.values` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — значения атрибутов для данного `trace span`. Они заполняются в соответствии с рекомендациями стандарта OpenTelemetry.
 
 **Пример**
 
@@ -43,7 +43,7 @@ SELECT * FROM system.opentelemetry_span_log LIMIT 1 FORMAT Vertical;
 Результат:
 
 ```text
-Row 1:
+Строка 1:
 ──────
 trace_id:         cdab0847-0d62-61d5-4d38-dd65b19a1914
 span_id:          701487461015578150
@@ -59,4 +59,4 @@ attribute.values: []
 
 **См. также**
 
-- [OpenTelemetry](../../operations/opentelemetry.md)
+* [OpenTelemetry](../../operations/opentelemetry.md)

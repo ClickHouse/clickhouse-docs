@@ -1,16 +1,16 @@
 ---
-description: 'Вычисляет выборочную эксцизу последовательности.'
+description: 'Вычисляет выборочный эксцесс последовательности.'
 sidebar_position: 158
 slug: /sql-reference/aggregate-functions/reference/kurtsamp
 title: 'kurtSamp'
+doc_type: 'reference'
 ---
 
+# kurtSamp {#kurtsamp}
 
-# kurtSamp
+Вычисляет [выборочный эксцесс](https://ru.wikipedia.org/wiki/Эксцесс_распределения) последовательности.
 
-Вычисляет [выборочную эксцизу](https://en.wikipedia.org/wiki/Kurtosis) последовательности.
-
-Она представляет собой несмещённую оценку эксцизы случайной величины, если переданные значения формируют её выборку.
+Представляет собой несмещённую оценку эксцесса случайной величины, если переданные значения образуют её выборку. Подробнее: [https://en.wikipedia.org/wiki/Kurtosis](https://en.wikipedia.org/wiki/Kurtosis)
 
 ```sql
 kurtSamp(expr)
@@ -18,11 +18,11 @@ kurtSamp(expr)
 
 **Аргументы**
 
-`expr` — [Выражение](/sql-reference/syntax#expressions), возвращающее число.
+`expr` — [выражение](/sql-reference/syntax#expressions), возвращающее число.
 
 **Возвращаемое значение**
 
-Эксциза данной распределения. Тип — [Float64](../../../sql-reference/data-types/float.md). Если `n <= 1` (`n` — размер выборки), тогда функция возвращает `nan`.
+Эксцесс заданного распределения. Тип — [Float64](../../../sql-reference/data-types/float.md). Если `n <= 1` (`n` — размер выборки), то функция возвращает `nan`.
 
 **Пример**
 

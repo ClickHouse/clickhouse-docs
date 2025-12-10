@@ -1,26 +1,27 @@
 ---
-description: 'Документация по Управлению CONSTRAINT'
+description: 'Документация по работе с ограничениями'
 sidebar_label: 'CONSTRAINT'
 sidebar_position: 43
 slug: /sql-reference/statements/alter/constraint
-title: 'Управление CONSTRAINT'
+title: 'Работа с ограничениями'
+doc_type: 'reference'
 ---
 
-# Управление CONSTRAINT
+# Управление ограничениями {#manipulating-constraints}
 
-CONSTRAINT могут быть добавлены или удалены с использованием следующего синтаксиса:
+Ограничения можно добавлять или удалять, используя следующий синтаксис:
 
 ```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] ADD CONSTRAINT [IF NOT EXISTS] constraint_name CHECK expression;
 ALTER TABLE [db].name [ON CLUSTER cluster] DROP CONSTRAINT [IF EXISTS] constraint_name;
 ```
 
-Смотрите больше о [CONSTRAINT](../../../sql-reference/statements/create/table.md#constraints).
+Подробнее см. в разделе [ограничения](../../../sql-reference/statements/create/table.md#constraints).
 
-Запросы добавят или удалят метаданные о CONSTRAINT из таблицы, поэтому они обрабатываются немедленно.
+Запросы добавляют или удаляют метаданные об ограничениях в таблице, поэтому обрабатываются немедленно.
 
 :::tip
-Проверка CONSTRAINT **не будет выполнена** на существующих данных, если она была добавлена.
+Проверка ограничения **не будет выполнена** для существующих данных, если оно было добавлено.
 :::
 
-Все изменения в реплицируемых таблицах передаются в ZooKeeper и будут применены и к другим репликам.
+Все изменения в реплицируемых таблицах транслируются в ZooKeeper и будут применены на других репликах.

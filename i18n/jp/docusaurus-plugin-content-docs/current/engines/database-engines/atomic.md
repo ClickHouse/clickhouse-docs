@@ -1,79 +1,88 @@
 ---
-description: 'The `Atomic` engine supports non-blocking `DROP TABLE` and `RENAME
-  TABLE` queries, and atomic `EXCHANGE TABLES`queries. The `Atomic` database engine
-  is used by default.'
+description: '`Atomic` エンジンは、非ブロッキングな `DROP TABLE` および `RENAME TABLE` クエリと、アトミックな `EXCHANGE TABLES` クエリをサポートします。`Atomic` データベースエンジンはデフォルトで使用されます。'
 sidebar_label: 'Atomic'
 sidebar_position: 10
-slug: '/engines/database-engines/atomic'
+slug: /engines/database-engines/atomic
 title: 'Atomic'
+doc_type: 'reference'
 ---
 
+# Atomic  {#atomic}
 
-
-
-# Atomic 
-
-`Atomic` エンジンは、非ブロッキングの [`DROP TABLE`](#drop-detach-table) および [`RENAME TABLE`](#rename-table) クエリ、及び原子性のある [`EXCHANGE TABLES`](#exchange-tables) クエリをサポートしています。 `Atomic` データベースエンジンはデフォルトで使用されます。
+`Atomic` エンジンは、ノンブロッキングな [`DROP TABLE`](#drop-detach-table) および [`RENAME TABLE`](#rename-table) クエリに加え、アトミックな [`EXCHANGE TABLES`](#exchange-tables) クエリをサポートします。`Atomic` データベースエンジンは、オープンソース版の ClickHouse でデフォルトとして使用されています。 
 
 :::note
-ClickHouse Cloud では、デフォルトで `Replicated` データベースエンジンが使用されます。
+ClickHouse Cloud では、デフォルトで [`Shared` データベースエンジン](/cloud/reference/shared-catalog#shared-database-engine) が使用されており、上記の操作もサポートしています。
 :::
 
 ## データベースの作成 {#creating-a-database}
 
 ```sql
-CREATE DATABASE test [ENGINE = Atomic];
+CREATE DATABASE test [ENGINE = Atomic] [SETTINGS disk=...];
 ```
 
-## 特徴と推奨事項 {#specifics-and-recommendations}
+## 詳細と推奨事項 {#specifics-and-recommendations}
 
-### テーブルUUID {#table-uuid}
+### テーブル UUID {#table-uuid}
 
-`Atomic` データベース内の各テーブルは、永続的な [UUID](../../sql-reference/data-types/uuid.md) を持ち、以下のディレクトリにデータを保存します：
+`Atomic` データベース内の各テーブルには永続的な [UUID](../../sql-reference/data-types/uuid.md) が付与されており、そのデータは以下のディレクトリに保存されます。
 
 ```text
 /clickhouse_path/store/xxx/xxxyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy/
 ```
 
-ここで、`xxxyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy` はテーブルのUUIDです。
+ここで、`xxxyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy` はテーブルの UUID です。
 
-デフォルトでは、UUIDは自動的に生成されます。ただし、ユーザーはテーブルを作成する際にUUIDを明示的に指定することもできますが、これは推奨されません。
+デフォルトでは UUID は自動的に生成されます。ただし、テーブル作成時に UUID を明示的に指定することも可能ですが、これは推奨されません。
 
-例えば：
+例:
 
 ```sql
 CREATE TABLE name UUID '28f1c61c-2970-457a-bffe-454156ddcfef' (n UInt64) ENGINE = ...;
 ```
 
 :::note
-[show_table_uuid_in_table_create_query_if_not_nil](../../operations/settings/settings.md#show_table_uuid_in_table_create_query_if_not_nil) 設定を使用すると、`SHOW CREATE` クエリでUUIDを表示できます。
+[`SHOW CREATE` クエリで UUID を表示するには、[show&#95;table&#95;uuid&#95;in&#95;table&#95;create&#95;query&#95;if&#95;not&#95;nil](../../operations/settings/settings.md#show_table_uuid_in_table_create_query_if_not_nil) 設定を使用できます。
 :::
 
 ### RENAME TABLE {#rename-table}
 
-[`RENAME`](../../sql-reference/statements/rename.md) クエリは、UUIDを変更したりテーブルデータを移動したりしません。これらのクエリは即座に実行され、テーブルを使用している他のクエリが完了するのを待ちません。
+[`RENAME`](../../sql-reference/statements/rename.md) クエリは UUID を変更せず、テーブルデータも移動しません。これらのクエリは即座に実行され、そのテーブルを使用している他のクエリの完了を待ちません。
 
 ### DROP/DETACH TABLE {#drop-detach-table}
 
-`DROP TABLE` を使用する際に、データは削除されません。 `Atomic` エンジンは、メタデータを `/clickhouse_path/metadata_dropped/` に移動させることでテーブルを削除済みとしてマークし、バックグラウンドスレッドに通知します。最終的なテーブルデータの削除までの遅延は、[`database_atomic_delay_before_drop_table_sec`](../../operations/server-configuration-parameters/settings.md#database_atomic_delay_before_drop_table_sec) 設定で指定されます。 `SYNC` 修飾子を使用して同期モードを指定することができます。これを行うためには、[`database_atomic_wait_for_drop_and_detach_synchronously`](../../operations/settings/settings.md#database_atomic_wait_for_drop_and_detach_synchronously) 設定を使用してください。この場合、`DROP` はテーブルを使用している実行中の `SELECT`、`INSERT`、その他のクエリが完了するのを待ちます。テーブルは使用中でない時に削除されます。
+`DROP TABLE` を使用しても、データはすぐには削除されません。`Atomic` エンジンは、メタデータを `/clickhouse_path/metadata_dropped/` に移動してテーブルを削除済みとしてマークし、バックグラウンドスレッドに通知するだけです。テーブルデータが最終的に削除されるまでの遅延は、[`database_atomic_delay_before_drop_table_sec`](../../operations/server-configuration-parameters/settings.md#database_atomic_delay_before_drop_table_sec) 設定で指定します。
+`SYNC` 修飾子を使用して同期モードを指定できます。これを行うには、[`database_atomic_wait_for_drop_and_detach_synchronously`](../../operations/settings/settings.md#database_atomic_wait_for_drop_and_detach_synchronously) 設定を使用します。この場合、`DROP` はテーブルを使用している実行中の `SELECT`、`INSERT` などのクエリが終了するまで待機します。テーブルは使用されていない状態になったときに削除されます。
 
 ### EXCHANGE TABLES/DICTIONARIES {#exchange-tables}
 
-[`EXCHANGE`](../../sql-reference/statements/exchange.md) クエリは、テーブルまたはディクショナリを原子に入れ替えます。例えば、次の非原子的な操作の代わりに：
+[`EXCHANGE`](../../sql-reference/statements/exchange.md) クエリは、テーブルやディクショナリをアトミックに入れ替えます。たとえば、次のような非アトミックな操作の代わりに使用できます。
 
 ```sql title="Non-atomic"
 RENAME TABLE new_table TO tmp, old_table TO new_table, tmp TO old_table;
 ```
-原子性のあるものを使用できます：
+
+アトミックなものも利用できます：
 
 ```sql title="Atomic"
 EXCHANGE TABLES new_table AND old_table;
 ```
 
-### Atomic データベースにおける ReplicatedMergeTree {#replicatedmergetree-in-atomic-database}
+### atomic データベースにおける ReplicatedMergeTree {#replicatedmergetree-in-atomic-database}
 
-[`ReplicatedMergeTree`](/engines/table-engines/mergetree-family/replication) テーブルの場合、ZooKeeper内のパスとレプリカ名のためのエンジンパラメータを指定しないことが推奨されます。この場合、設定パラメータ [`default_replica_path`](../../operations/server-configuration-parameters/settings.md#default_replica_path) および [`default_replica_name`](../../operations/server-configuration-parameters/settings.md#default_replica_name) が使用されます。エンジンパラメータを明示的に指定したい場合は、`{uuid}` マクロを使用することが推奨されます。これにより、ZooKeeper内の各テーブルに対してユニークなパスが自動的に生成されます。
+[`ReplicatedMergeTree`](/engines/table-engines/mergetree-family/replication) テーブルでは、ZooKeeper 内のパスおよびレプリカ名を指定するエンジンパラメータは設定しないことを推奨します。この場合、設定パラメータ [`default_replica_path`](../../operations/server-configuration-parameters/settings.md#default_replica_path) と [`default_replica_name`](../../operations/server-configuration-parameters/settings.md#default_replica_name) が使用されます。エンジンパラメータを明示的に指定したい場合は、`{uuid}` マクロを使用することを推奨します。これにより、ZooKeeper 内でテーブルごとに一意なパスが自動的に生成されます。
 
-## 参照 {#see-also}
+### メタデータディスク {#metadata-disk}
+
+`SETTINGS` 内で `disk` が指定されている場合、そのディスクはテーブルのメタデータファイルの保存に使用されます。
+例えば次のとおりです。
+
+```sql
+CREATE TABLE db (n UInt64) ENGINE = Atomic SETTINGS disk=disk(type='local', path='/var/lib/clickhouse-disks/db_disk');
+```
+
+未指定の場合は、`database_disk.disk` で定義されたディスクがデフォルトで使用されます。
+
+## 関連項目 {#see-also}
 
 - [system.databases](../../operations/system-tables/databases.md) システムテーブル

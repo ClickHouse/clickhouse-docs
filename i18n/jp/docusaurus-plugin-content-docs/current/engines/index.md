@@ -1,12 +1,11 @@
 ---
-description: 'テーブル・オブ・コンテンツ ページ for Engines'
-slug: '/engines'
-title: 'Engines'
+description: 'エンジンの目次ページ'
+slug: /engines
+title: 'エンジン'
+doc_type: 'landing-page'
 ---
-
-
 
 | Page                                               | Description                                                                                                                                                                       |
 |----------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [データベースエンジン](../engines/database-engines/index.md) | ClickHouseのデータベースエンジンは、テーブルで作業し、データがどのように保存および管理されるかを決定することを可能にします。 ClickHouseで利用可能なさまざまなデータベースエンジンについて詳しく学びましょう。 |
-| [テーブルエンジン](../engines/table-engines/index.md)       | ClickHouseのテーブルエンジンは、データがどのように保存され、書き込まれ、読み取られるかを決定する基本的な概念です。 ClickHouseで利用可能なさまざまなテーブルエンジンについて詳しく学びましょう。  |
+| [Database Engines](../engines/database-engines/index.md) | ClickHouse のデータベースエンジンは、テーブルの扱い方やデータの保存・管理方法を決定する役割を持ちます。ClickHouse で利用可能なさまざまなデータベースエンジンについて詳しく学ぶことができます。 |
+| [Table Engines](../engines/table-engines/index.md)       | ClickHouse のテーブルエンジンは、データの保存、書き込み、読み取り方法を決定する基本概念です。ClickHouse で利用可能なさまざまなテーブルエンジンについて詳しく学ぶことができます。  |

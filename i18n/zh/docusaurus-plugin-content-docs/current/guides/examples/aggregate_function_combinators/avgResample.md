@@ -1,31 +1,25 @@
 ---
-'slug': '/examples/aggregate-function-combinators/avgResample'
-'title': 'avgResample'
-'description': '使用 avg 的 Resample 组合器示例'
-'keywords':
-- 'avg'
-- 'Resample'
-- 'combinator'
-- 'examples'
-- 'avgResample'
-'sidebar_label': 'avgResample'
+slug: '/examples/aggregate-function-combinators/avgResample'
+title: 'avgResample'
+description: '使用 Resample 组合器与 avg 的示例'
+keywords: ['avg', 'Resample', 'combinator', 'examples', 'avgResample']
+sidebar_label: 'avgResample'
+doc_type: 'reference'
 ---
-
 
 # countResample {#countResample}
 
 ## 描述 {#description}
 
 [`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
-组合器可以应用于[`count`](/sql-reference/aggregate-functions/reference/count)
-聚合函数，以计算指定键列在固定数量的区间（`N`）中的值。
+组合器可以应用于 [`count`](/sql-reference/aggregate-functions/reference/count)
+聚合函数，用于在固定数量的区间（`N`）内统计指定键列的取值次数。
 
 ## 示例用法 {#example-usage}
 
 ### 基本示例 {#basic-example}
 
-我们来看一个示例。我们将创建一个表，该表包含员工的`name`、`age` 和
-`wage`，并插入一些数据：
+来看一个示例。我们将创建一张包含员工 `name`、`age` 和 `wage` 的表，并向其中插入一些数据：
 
 ```sql
 CREATE TABLE employee_data 
@@ -46,10 +40,7 @@ INSERT INTO employee_data (name, age, wage) VALUES
     ('Brian', 60, 16.0);
 ```
 
-让我们获取年龄在区间 `[30,60)` 
-和 `[60,75)`（`[` 是排他性的，`)` 是包含性的）中的人的平均工资。由于我们使用整数 
-表示年龄，我们得到年龄在区间 `[30, 59]` 和 `[60,74]`。 
-为此，我们将`Resample` 组合器应用于 `avg` 聚合函数。
+我们来计算年龄落在区间 `[30,60)` 和 `[60,75)`（`[` 为不包含，`)` 为包含）人群的平均工资。由于我们使用整数来表示年龄，实际得到的年龄区间为 `[30, 59]` 和 `[60,74]`。为此，我们对 `avg` 聚合函数应用 `Resample` 组合器。
 
 ```sql
 WITH avg_wage AS

@@ -1,26 +1,20 @@
 ---
-'slug': '/data-modeling/overview'
-'title': '数据建模概述'
-'description': '数据建模概述'
-'keywords':
-- 'data modelling'
-- 'schema design'
-- 'dictionary'
-- 'materialized view'
-- 'data compression'
-- 'denormalizing data'
+slug: /data-modeling/overview
+title: '数据建模概览'
+description: '数据建模概览'
+keywords: ['数据建模', '模式设计', '字典', '物化视图', '数据压缩', '数据反规范化']
+doc_type: 'landing-page'
 ---
 
+# 数据建模 {#data-modeling}
 
-# 数据建模 
+本节介绍 ClickHouse 中的数据建模，包含以下主题：
 
-本节关于 ClickHouse 中的数据建模，包含以下主题：
-
-| 页面                                                            | 描述                                                                                                                                                                                   |
-|-----------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [模式设计](/data-modeling/schema-design)                         | 讨论 ClickHouse 的模式设计以实现最佳性能，考虑到查询、数据更新、延迟和数据量等因素。                                                                                                     |
-| [字典](/dictionary)                                             | 解释如何定义和使用字典以提高查询性能和丰富数据。                                                                                                                                        |
-| [物化视图](/materialized-views)                                 | 关于 ClickHouse 中物化视图和可刷新的物化视图的信息。                                                                                                                                   |
-| [投影](/data-modeling/projections)                              | 关于 ClickHouse 中投影的信息。                                                                                                                                                        |
-| [数据压缩](/data-compression/compression-in-clickhouse)        | 讨论 ClickHouse 中各种压缩模式，以及如何通过选择适合特定数据类型和工作负载的压缩方法来优化数据存储和查询性能。                                                                              |
-| [非规范化数据](/data-modeling/denormalization)                 | 讨论 ClickHouse 中使用的非规范化方法，该方法旨在通过将相关数据存储在单个表中来提高查询性能。                                                                                                |
+| 页面                                                            | 描述                                                                                                                                                                                           |
+|-----------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Schema Design](/data-modeling/schema-design)                   | 讨论为获得最佳性能而进行的 ClickHouse schema 设计，需要综合考虑查询模式、数据更新、延迟和数据量等因素。                                                                                       |
+| [Dictionary](/dictionary)                                       | 说明如何定义和使用字典（dictionary）来提升查询性能并丰富数据。                                                                                                                                 |
+| [Materialized Views](/materialized-views)                       | 介绍 ClickHouse 中的物化视图（Materialized Views）和可刷新物化视图（Refreshable Materialized Views）。                                                                                        |
+| [Projections](/data-modeling/projections)| 介绍 ClickHouse 中的投影（Projections）。|
+| [Data Compression](/data-compression/compression-in-clickhouse) | 讨论 ClickHouse 中的多种压缩模式，以及如何通过为特定数据类型和工作负载选择合适的压缩方法来优化数据存储和查询性能。                                                                            |
+| [Denormalizing Data](/data-modeling/denormalization)            | 讨论 ClickHouse 中采用的反规范化建模方法，其目标是通过将相关数据存储在同一张表中来提升查询性能。                                                                                              |

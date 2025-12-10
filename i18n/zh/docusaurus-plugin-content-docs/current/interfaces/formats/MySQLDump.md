@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'MySQLDump 格式的文档'
-'input_format': true
-'keywords':
-- 'MySQLDump'
-'output_format': false
-'slug': '/interfaces/formats/MySQLDump'
-'title': 'MySQLDump'
+alias: []
+description: 'MySQLDump 格式文档'
+input_format: true
+keywords: ['MySQLDump']
+output_format: false
+slug: /interfaces/formats/MySQLDump
+title: 'MySQLDump'
+doc_type: 'reference'
 ---
 
 | 输入 | 输出  | 别名 |
@@ -15,18 +15,18 @@
 
 ## 描述 {#description}
 
-ClickHouse 支持读取 MySQL [转储](https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html)。
+ClickHouse 支持读取 MySQL 的 [转储文件（dump）](https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html)。
 
-它从转储中与单个表相关的所有 `INSERT` 查询中读取数据。 
-如果有多个表，默认情况下，它从第一个表读取数据。
+它会从转储文件中属于某个单表的 `INSERT` 语句中读取所有数据。
+如果存在多个表，默认从第一个表中读取数据。
 
 :::note
-此格式支持模式推断：如果转储中包含指定表的 `CREATE` 查询，则结构将根据它推断，否则模式是从 `INSERT` 查询的数据中推断的。
+此格式支持表结构推断：如果转储文件中包含该指定表的 `CREATE` 语句，则从中推断表结构；否则从 `INSERT` 语句中的数据推断表结构。
 :::
 
 ## 示例用法 {#example-usage}
 
-给定以下 SQL 转储文件：
+假设有如下 SQL 转储文件：
 
 ```sql title="dump.sql"
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -53,7 +53,7 @@ CREATE TABLE `test2` (
 INSERT INTO `test2` VALUES (1),(2),(3);
 ```
 
-我们可以运行以下查询：
+我们可以执行以下查询：
 
 ```sql title="Query"
 DESCRIBE TABLE file(dump.sql, MySQLDump) 
@@ -82,6 +82,6 @@ SETTINGS input_format_mysql_dump_table_name = 'test2'
 
 ## 格式设置 {#format-settings}
 
-您可以使用 [`input_format_mysql_dump_table_name`](/operations/settings/settings-formats.md/#input_format_mysql_dump_table_name) 设置指定要读取数据的表名。
-如果设置 `input_format_mysql_dump_map_columns` 为 `1`，并且转储中包含指定表或列名的 `CREATE` 查询或 `INSERT` 查询，则输入数据的列将按名称映射到表的列。
-如果设置 [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 为 `1`，则未知名称的列将被跳过。
+可以使用 [`input_format_mysql_dump_table_name`](/operations/settings/settings-formats.md/#input_format_mysql_dump_table_name) 设置来指定要读取数据的表名。
+如果将 `input_format_mysql_dump_map_columns` 设置为 `1`，并且转储中包含该表的 `CREATE` 查询，或者在 `INSERT` 查询中包含指定的列名，则输入数据中的列会按名称映射到该表中的列。
+如果将 [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设置为 `1`，具有未知名称的列将会被忽略。

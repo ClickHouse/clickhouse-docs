@@ -2,7 +2,9 @@
 slug: /optimize/asynchronous-inserts
 sidebar_label: 'Асинхронные вставки'
 title: 'Асинхронные вставки (async_insert)'
-description: 'Используйте асинхронные вставки в качестве альтернативы пакетной загрузке данных.'
+description: 'Используйте асинхронные вставки как альтернативу пакетной вставке данных.'
+doc_type: 'guide'
+keywords: ['асинхронные вставки', 'async_insert', 'рекомендации по применению', 'пакетная вставка данных', 'оптимизация производительности']
 ---
 
 import Content from '@site/i18n/ru/docusaurus-plugin-content-docs/current/best-practices/_snippets/_async_inserts.md';

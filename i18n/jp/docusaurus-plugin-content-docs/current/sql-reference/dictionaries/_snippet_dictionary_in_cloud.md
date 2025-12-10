@@ -1,9 +1,4 @@
----
-{}
----
-
-
-
 :::tip
-ClickHouse Cloudで辞書を使用している場合は、DDLクエリオプションを使用して辞書を作成し、ユーザー `default` として辞書を作成してください。また、[Cloud Compatibility guide](/cloud/reference/cloud-compatibility.md) に記載されているサポートされている辞書ソースのリストを確認してください。
+ClickHouse Cloud でディクショナリを使用している場合は、ディクショナリの作成に DDL クエリオプションを使用し、ユーザー `default` でディクショナリを作成してください。
+また、[Cloud 互換性ガイド](/whats-new/cloud-compatibility) でサポートされているディクショナリソースの一覧を確認してください。
 :::

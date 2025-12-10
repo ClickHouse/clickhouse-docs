@@ -1,12 +1,13 @@
 ---
-description: 'Вычисляет общую длину объединения всех диапазонов (сегментов на числовой оси).'
+description: 'Вычисляет общую длину объединения всех диапазонов (отрезков числовой оси).'
 sidebar_label: 'intervalLengthSum'
 sidebar_position: 155
 slug: /sql-reference/aggregate-functions/reference/intervalLengthSum
 title: 'intervalLengthSum'
+doc_type: 'reference'
 ---
 
-Вычисляет общую длину объединения всех диапазонов (сегментов на числовой оси).
+Вычисляет общую длину объединения всех диапазонов (отрезков числовой оси).
 
 **Синтаксис**
 
@@ -16,16 +17,16 @@ intervalLengthSum(start, end)
 
 **Аргументы**
 
-- `start` — Начальное значение интервала. [Int32](/sql-reference/data-types/int-uint#integer-ranges), [Int64](/sql-reference/data-types/int-uint#integer-ranges), [UInt32](/sql-reference/data-types/int-uint#integer-ranges), [UInt64](/sql-reference/data-types/int-uint#integer-ranges), [Float32](/sql-reference/data-types/float), [Float64](/sql-reference/data-types/float), [DateTime](/sql-reference/data-types/datetime) или [Date](/sql-reference/data-types/date).
-- `end` — Конечное значение интервала. [Int32](/sql-reference/data-types/int-uint#integer-ranges), [Int64](/sql-reference/data-types/int-uint#integer-ranges), [UInt32](/sql-reference/data-types/int-uint#integer-ranges), [UInt64](/sql-reference/data-types/int-uint#integer-ranges), [Float32](/sql-reference/data-types/float), [Float64](/sql-reference/data-types/float), [DateTime](/sql-reference/data-types/datetime) или [Date](/sql-reference/data-types/date).
+* `start` — начальное значение интервала. [Int32](/sql-reference/data-types/int-uint#integer-ranges), [Int64](/sql-reference/data-types/int-uint#integer-ranges), [UInt32](/sql-reference/data-types/int-uint#integer-ranges), [UInt64](/sql-reference/data-types/int-uint#integer-ranges), [Float32](/sql-reference/data-types/float), [Float64](/sql-reference/data-types/float), [DateTime](/sql-reference/data-types/datetime) или [Date](/sql-reference/data-types/date).
+* `end` — конечное значение интервала. [Int32](/sql-reference/data-types/int-uint#integer-ranges), [Int64](/sql-reference/data-types/int-uint#integer-ranges), [UInt32](/sql-reference/data-types/int-uint#integer-ranges), [UInt64](/sql-reference/data-types/int-uint#integer-ranges), [Float32](/sql-reference/data-types/float), [Float64](/sql-reference/data-types/float), [DateTime](/sql-reference/data-types/datetime) или [Date](/sql-reference/data-types/date).
 
 :::note
-Аргументы должны быть одного и того же типа данных. В противном случае будет выброшено исключение.
+Аргументы должны иметь одинаковый тип данных. В противном случае будет сгенерировано исключение.
 :::
 
 **Возвращаемое значение**
 
-- Общая длина объединения всех диапазонов (сегментов на числовой оси). В зависимости от типа аргумента возвращаемое значение может быть типа [UInt64](/sql-reference/data-types/int-uint#integer-ranges) или [Float64](/sql-reference/data-types/float).
+* Общая длина объединения всех диапазонов (отрезков на числовой оси). В зависимости от типа аргументов возвращаемое значение может иметь тип [UInt64](/sql-reference/data-types/int-uint#integer-ranges) или [Float64](/sql-reference/data-types/float).
 
 **Примеры**
 
@@ -57,7 +58,7 @@ SELECT id, intervalLengthSum(start, end), toTypeName(intervalLengthSum(start, en
 └────┴───────────────────────────────┴───────────────────────────────────────────┘
 ```
 
-2. Входная таблица:
+2. Таблица входных данных:
 
 ```text
 ┌─id─┬───────────────start─┬─────────────────end─┐

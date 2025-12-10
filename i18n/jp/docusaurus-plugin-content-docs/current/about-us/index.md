@@ -1,21 +1,20 @@
 ---
-slug: '/about'
-title: 'ClickHouseについて'
-description: 'ClickHouseに関するランディングページ'
+slug: /about
+title: 'ClickHouse について'
+description: '「ClickHouse について」ランディングページ'
+doc_type: 'landing-page'
+keywords: ['ClickHouse について', '概要', '紹介']
 ---
 
+# About ClickHouse {#about-clickhouse}
 
+このドキュメントのこのセクションでは、ClickHouse に関する情報を紹介します。\
+このセクションに含まれるページの一覧は、以下の目次を参照してください。
 
-
-# About ClickHouse
-
-このセクションのドキュメントでは、ClickHouseに関する情報を見つけることができます。以下の目次を参照して、このセクションのページのリストをご覧ください。
-
-| ページ                                           | 説明                                                                                                                                                                                                       |
-|------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [What is ClickHouse](/about-clickhouse)        | ClickHouseのコア機能、アーキテクチャ、使用例を紹介し、新しいユーザーのための簡潔な概要を提供します。                                                                                                        |
-| [Adopters](/about-us/adopters)                          | ClickHouseを使用している企業とその成功事例を、公開ソースから集めたリストです。                                                                                                                     |
-| [Support](/about-us/support)                   | ClickHouse Cloud Support Servicesの紹介とその使命について。                                                                                                                                           |
-| [Beta Features and Experimental](/beta-and-experimental-features) | ClickHouseが「ベータ」と「実験的」ラベルを使用して、公式にサポートされた機能と、開発スピードの違いからコミュニティの貢献による初期段階のサポートされていない機能を区別する方法について学びます。 |
-| [Cloud Service](/about-us/cloud)               | 完全に管理されたサービスであるClickHouse Cloudを発見しましょう。これにより、ユーザーはオープンソースのClickHouseデータベースを立ち上げることができ、迅速な価値提供、シームレスなスケーリング、およびサーバーレス操作のような利点が得られます。       |
-| [ClickHouse History](/about-us/history)        | ClickHouseの歴史についてさらに学びます。                                                                                                                                                                       |
+| Page                                                                       | Description                                                                                                                                                                                                                  |
+|----------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Adopters](/about-us/adopters)                                             | 公開情報をもとに作成した、ClickHouse を利用している企業とその成功事例の一覧です。                                                                                                                                            |
+| [Support](/about-us/support)                                               | ClickHouse Cloud のサポートサービスとそのミッションの概要を紹介します。                                                                                                                                                      |
+| [Beta features and experimental features](/beta-and-experimental-features) | コミュニティからのコントリビューションの開発スピードの違いに対応するため、ClickHouse が「Beta」と「Experimental」というラベルを用いて、正式サポート機能と初期段階の非サポート機能をどのように区別しているかを説明します。 |
+| [Cloud service](/about-us/cloud)                                           | 完全マネージドサービスである ClickHouse Cloud について説明します。オープンソース版 ClickHouse データベースをすぐに立ち上げられ、高速な価値創出、シームレスなスケーリング、サーバーレス運用などの利点を提供します。                   |
+| [ClickHouse history](/about-us/history)                                    | ClickHouse の歴史についてさらに詳しく学ぶことができます。                                                                                                                                                                    |

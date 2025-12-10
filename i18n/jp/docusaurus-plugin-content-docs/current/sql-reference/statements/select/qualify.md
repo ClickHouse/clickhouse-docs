@@ -1,26 +1,24 @@
 ---
-description: 'QUALIFY 句のドキュメント'
+description: 'QUALIFY 句に関するドキュメント'
 sidebar_label: 'QUALIFY'
-slug: '/sql-reference/statements/select/qualify'
-title: 'QUALIFY Clause'
+slug: /sql-reference/statements/select/qualify
+title: 'QUALIFY 句'
+doc_type: 'reference'
 ---
 
+# QUALIFY 句 {#qualify-clause}
 
+ウィンドウ関数の結果をフィルタリングするために使用します。[WHERE](../../../sql-reference/statements/select/where.md) 句と似ていますが、`WHERE` はウィンドウ関数の評価より前に実行されるのに対し、`QUALIFY` はその後に実行される点が異なります。
 
+`QUALIFY` 句では、`SELECT` 句内で定義したエイリアスを使用して、そのウィンドウ関数の結果を参照できます。あるいは、クエリ結果としては返さない追加のウィンドウ関数の結果に対してフィルタリングを行うこともできます。
 
-# QUALIFY句
+## 制限事項 {#limitations}
 
-ウィンドウ関数の結果をフィルタリングすることを可能にします。これは[WHERE](../../../sql-reference/statements/select/where.md)句に似ていますが、違いは `WHERE` がウィンドウ関数の評価前に実行されるのに対し、`QUALIFY` は評価後に実行される点です。
-
-`QUALIFY`句では、`SELECT`句からのウィンドウ関数の結果をエイリアスを用いて参照することが可能です。あるいは、`QUALIFY`句は、クエリ結果に返されない追加のウィンドウ関数の結果をフィルタリングすることもできます。
-
-## 制限 {#limitations}
-
-ウィンドウ関数を評価するものがない場合、`QUALIFY`は使用できません。その場合は代わりに`WHERE`を使用してください。
+評価するウィンドウ関数が存在しない場合は、`QUALIFY` は使用できません。代わりに `WHERE` を使用してください。
 
 ## 例 {#examples}
 
-例:
+例：
 
 ```sql
 SELECT number, COUNT() OVER (PARTITION BY number % 3) AS partition_count

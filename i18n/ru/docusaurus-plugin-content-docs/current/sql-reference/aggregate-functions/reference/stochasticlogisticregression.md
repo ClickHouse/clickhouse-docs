@@ -1,61 +1,59 @@
 ---
-description: 'Эта функция реализует стохастическую логистическую регрессию. Она может
-  использоваться для задач бинарной классификации, поддерживает те же пользовательские параметры, что и stochasticLinearRegression
-  и работает аналогично.'
+description: 'Эта функция реализует стохастическую логистическую регрессию. Она может использоваться для задач бинарной классификации, поддерживает те же настраиваемые параметры, что и stochasticLinearRegression, и работает аналогичным образом.'
 sidebar_position: 193
 slug: /sql-reference/aggregate-functions/reference/stochasticlogisticregression
 title: 'stochasticLogisticRegression'
+doc_type: 'reference'
 ---
 
+# stochasticLogisticRegression {#stochasticlogisticregression}
 
-# stochasticLogisticRegression
-
-Эта функция реализует стохастическую логистическую регрессию. Она может использоваться для задач бинарной классификации, поддерживает те же пользовательские параметры, что и stochasticLinearRegression и работает аналогично.
+Эта функция реализует стохастическую логистическую регрессию. Ее можно использовать для решения задачи бинарной классификации; она поддерживает те же настраиваемые параметры, что и stochasticLinearRegression, и работает аналогичным образом.
 
 ### Параметры {#parameters}
 
-Параметры точно такие же, как в stochasticLinearRegression:
+Параметры полностью совпадают с параметрами в stochasticLinearRegression:
 `learning rate`, `l2 regularization coefficient`, `mini-batch size`, `method for updating weights`.
-Для получения дополнительной информации смотрите [параметры](../reference/stochasticlinearregression.md/#parameters).
+Для получения дополнительной информации см. раздел [параметры](../reference/stochasticlinearregression.md/#parameters).
 
 ```text
 stochasticLogisticRegression(1.0, 1.0, 10, 'SGD')
 ```
 
-**1.** Обучение
+**1.** Подгонка
 
-<!-- -->
+{/* */ }
 
-    См. раздел `Обучение` в описании [stochasticLinearRegression](/sql-reference/aggregate-functions/reference/stochasticlinearregression).
+См. раздел `Fitting` в описании функции [stochasticLinearRegression](/sql-reference/aggregate-functions/reference/stochasticlinearregression).
 
-    Предсказанные метки должны находиться в \[-1, 1\].
+Предсказанные метки должны находиться в диапазоне [-1, 1].
 
 **2.** Прогнозирование
 
-<!-- -->
+{/* */ }
 
-    Используя сохраненное состояние, мы можем предсказать вероятность того, что объект имеет метку `1`.
+Используя сохранённое состояние, мы можем предсказать вероятность того, что объект будет иметь метку `1`.
 
-    ```sql
-    WITH (SELECT state FROM your_model) AS model SELECT
-    evalMLMethod(model, param1, param2) FROM test_data
-    ```
+```sql
+WITH (SELECT state FROM your_model) AS model SELECT
+evalMLMethod(model, param1, param2) FROM test_data
+```
 
-    Запрос вернет колонку вероятностей. Обратите внимание, что первым аргументом функции `evalMLMethod` является объект `AggregateFunctionState`, следующими являются столбцы признаков.
+Запрос вернёт столбец вероятностей. Обратите внимание, что первый аргумент функции `evalMLMethod` — объект `AggregateFunctionState`, а затем идут столбцы признаков.
 
-    Мы также можем установить границу вероятности, которая присваивает элементам разные метки.
+Мы также можем задать порог вероятности, который распределяет элементы по разным меткам.
 
-    ```sql
-    SELECT ans < 1.1 AND ans > 0.5 FROM
-    (WITH (SELECT state FROM your_model) AS model SELECT
-    evalMLMethod(model, param1, param2) AS ans FROM test_data)
-    ```
+```sql
+SELECT ans < 1.1 AND ans > 0.5 FROM
+(WITH (SELECT state FROM your_model) AS model SELECT
+evalMLMethod(model, param1, param2) AS ans FROM test_data)
+```
 
-    Тогда результатом будут метки.
+В результате будут получены метки.
 
-    `test_data` - это таблица, аналогичная `train_data`, но может не содержать целевое значение.
+`test_data` — это таблица, аналогичная `train_data`, но в ней может не быть целевого значения.
 
-**Смотрите Также**
+**См. также**
 
-- [stochasticLinearRegression](/sql-reference/aggregate-functions/reference/stochasticlogisticregression)
-- [Разница между линейной и логистической регрессиями.](https://stackoverflow.com/questions/12146914/what-is-the-difference-between-linear-regression-and-logistic-regression)
+* [stochasticLinearRegression](/sql-reference/aggregate-functions/reference/stochasticlogisticregression)
+* [Разница между линейной и логистической регрессиями.](https://stackoverflow.com/questions/12146914/what-is-the-difference-between-linear-regression-and-logistic-regression)

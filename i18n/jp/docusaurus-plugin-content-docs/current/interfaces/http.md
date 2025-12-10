@@ -1,57 +1,62 @@
 ---
-description: 'ClickHouse の HTTP インターフェースに関するドキュメントで、任意のプラットフォームやプログラミング言語から ClickHouse
-  への REST API アクセスを提供します'
-sidebar_label: 'HTTP インターフェース'
+description: 'ClickHouse の HTTP インターフェイスに関するドキュメント。あらゆるプラットフォームおよびプログラミング言語から、REST
+  API を通じて ClickHouse にアクセスできます'
+sidebar_label: 'HTTP インターフェイス'
 sidebar_position: 15
-slug: '/interfaces/http'
-title: 'HTTP Interface'
+slug: /interfaces/http
+title: 'HTTP インターフェイス'
+doc_type: 'reference'
 ---
 
 import PlayUI from '@site/static/images/play.png';
 import Image from '@theme/IdealImage';
 
+# HTTP インターフェース {#http-interface}
 
-
-# HTTPインターフェース
 ## 前提条件 {#prerequisites}
 
-この記事の例では、次のものが必要です：
-- 稼働中のClickHouseサーバーインスタンス
-- `curl`がインストールされていること。UbuntuやDebianの場合、`sudo apt install curl`を実行するか、この[ドキュメント](https://curl.se/download.html)を参照してインストール手順を確認してください。
+この記事の例を実行するには、次のものが必要です：
+- 稼働中の ClickHouse サーバーインスタンス
+- `curl` がインストールされていること。Ubuntu または Debian では `sudo apt install curl` を実行するか、インストール手順については[こちらのドキュメント](https://curl.se/download.html)を参照してください。
+
 ## 概要 {#overview}
 
-HTTPインターフェースを使用すると、REST APIの形式で任意のプラットフォームから任意のプログラミング言語でClickHouseを利用できます。HTTPインターフェースはネイティブインターフェースよりも機能が制限されていますが、より良い言語サポートがあります。
+HTTP インターフェイスを使用すると、REST API の形であらゆるプラットフォームやプログラミング言語から ClickHouse を利用できます。HTTP インターフェイスはネイティブインターフェイスよりも機能面では制限がありますが、言語サポートは優れています。
 
-デフォルトでは、`clickhouse-server`は次のポートでリッスンしています：
-- HTTP用のポート8123
-- HTTPS用のポート8443が有効にできます
+デフォルトでは、`clickhouse-server` は次のポートで待ち受けます:
 
-パラメータなしで`GET /`リクエストを行うと、ステータスコード200が返され、文字列 "Ok." が付随します。
+* HTTP 用にポート 8123
+* HTTPS 用にポート 8443（有効化可能）
+
+パラメーターなしで `GET /` リクエストを送信すると、文字列 &quot;Ok.&quot; とともにステータスコード 200 が返されます。
 
 ```bash
 $ curl 'http://localhost:8123/'
 Ok.
 ```
 
-"Ok."は[`http_server_default_response`](../operations/server-configuration-parameters/settings.md#http_server_default_response)で定義されたデフォルト値であり、変更することができます。
+&quot;Ok.&quot; は、[`http_server_default_response`](../operations/server-configuration-parameters/settings.md#http_server_default_response) で定義されている既定値であり、必要に応じて変更できます。
 
-また、[HTTPレスポンスコードの注意事項](#http_response_codes_caveats)も参照してください。
-## Webユーザーインターフェース {#web-ui}
+あわせて [HTTP 応答コードに関する注意事項](#http_response_codes_caveats) も参照してください。
 
-ClickHouseにはウェブユーザーインターフェースが含まれており、次のアドレスからアクセスできます：
+## Web ユーザーインターフェイス {#web-ui}
+
+ClickHouse には Web ユーザーインターフェイスが用意されており、以下のアドレスからアクセスできます。
 
 ```text
 http://localhost:8123/play
 ```
 
-ウェブUIは、クエリの実行時の進捗表示、クエリのキャンセル、および結果のストリーミングをサポートしています。
-クエリパイプラインのグラフやチャートを表示する秘密の機能があります。
+Web UI は、クエリ実行中の進行状況の表示、クエリのキャンセル、結果のストリーミング表示をサポートしています。
+また、クエリパイプラインに対してチャートやグラフを表示する隠し機能も備えています。
 
-ウェブUIは、あなたのような専門家のために設計されています。
+クエリが正常に実行されると、ダウンロードボタンが表示され、CSV、TSV、JSON、JSONLines、Parquet、Markdown など、または ClickHouse がサポートする任意のカスタムフォーマットでクエリ結果をダウンロードできます。ダウンロード機能はクエリキャッシュを利用して、クエリを再実行することなく効率的に結果を取得します。UI 上では多数あるページのうち 1 ページ分しか表示されていない場合でも、ダウンロードされるのは結果セット全体です。
 
-<Image img={PlayUI} size="md" alt="ClickHouse Web UIのスクリーンショット" />
+Web UI は、あなたのようなプロフェッショナル向けに設計されています。
 
-ヘルスチェックスクリプトでは、`GET /ping`リクエストを使用します。このハンドラーは常に "Ok."（最後に改行あり）を返します。バージョン18.12.13以降で利用可能です。レプリカの遅延を確認するために、`/replicas_status`も参照してください。
+<Image img={PlayUI} size="md" alt="ClickHouse Web UI のスクリーンショット" />
+
+ヘルスチェック用スクリプトでは `GET /ping` リクエストを使用してください。このハンドラーは常に &quot;Ok.&quot;（末尾に改行付き）を返します。バージョン 18.12.13 以降で利用可能です。レプリカの遅延を確認するには `/replicas_status` も参照してください。
 
 ```bash
 $ curl 'http://localhost:8123/ping'
@@ -59,24 +64,26 @@ Ok.
 $ curl 'http://localhost:8123/replicas_status'
 Ok.
 ```
-## HTTP/HTTPS経由でのクエリ実行 {#querying}
 
-HTTP/HTTPS経由でクエリを実行するには、次の3つのオプションがあります：
-- リクエストをURLの 'query' パラメータとして送信
-- POSTメソッドを使用
-- クエリの最初の部分を 'query' パラメータに、残りをPOSTで送信
+## HTTP/HTTPS でのクエリ実行 {#querying}
+
+HTTP/HTTPS 経由でクエリを実行する方法は次の 3 つです。
+
+* リクエストを URL の `query` パラメータとして送信する
+* POST メソッドを使用する
+* クエリの先頭部分を `query` パラメータで送り、残りを POST で送信する
 
 :::note
-デフォルトで、URLのサイズは1 MiBに制限されています。これは`http_max_uri_size`設定で変更できます。
+URL のサイズはデフォルトで 1 MiB に制限されています。この値は `http_max_uri_size` 設定で変更できます。
 :::
 
-成功した場合、ステータスコード200とレスポンスボディに結果が返されます。
-エラーが発生した場合、ステータスコード500とレスポンスボディにエラーの説明テキストが返されます。
+成功した場合は、ステータスコード 200 と、レスポンスボディ内に結果が返されます。
+エラーが発生した場合は、ステータスコード 500 と、レスポンスボディ内にエラー内容のテキストが返されます。
 
-GETメソッドを使用したリクエストは「読み取り専用」です。これは、データを変更するクエリにはPOSTメソッドのみを使用できることを意味します。
-クエリ自体をPOSTボディに送信することも、URLパラメータで送信することもできます。以下にいくつかの例を示します。
+GET を使用するリクエストは「読み取り専用」です。つまり、データを変更するクエリには POST メソッドしか使用できません。
+クエリ自体は、POST ボディまたは URL パラメータのどちらかで送信できます。いくつか例を見てみましょう。
 
-以下の例では、`SELECT 1`クエリを送信するためにcurlが使用されています。スペースはURLエンコードされた形式であることに注意してください：`%20`。
+次の例では、curl を使用してクエリ `SELECT 1` を送信します。スペースを表す URL エンコード `%20` の使用に注意してください。
 
 ```bash title="command"
 curl 'http://localhost:8123/?query=SELECT%201'
@@ -86,8 +93,8 @@ curl 'http://localhost:8123/?query=SELECT%201'
 1
 ```
 
-この例では、wgetが`-nv`（非冗長）および`-O-`パラメータを使用して結果をターミナルに出力しています。
-この場合、スペースをURLエンコードする必要はありません：
+この例では、`-nv`（非詳細）および `-O-` オプションを指定した wget を使用して、結果をターミナルに出力しています。
+この場合、スペース文字に対して URL エンコードを使用する必要はありません。
 
 ```bash title="command"
 wget -nv -O- 'http://localhost:8123/?query=SELECT 1'
@@ -97,7 +104,7 @@ wget -nv -O- 'http://localhost:8123/?query=SELECT 1'
 1
 ```
 
-この例では、生のHTTPリクエストをnetcatにパイプしています：
+この例では、生の HTTP リクエストを netcat にパイプで渡します。
 
 ```bash title="command"
 echo -ne 'GET /?query=SELECT%201 HTTP/1.0\r\n\r\n' | nc localhost 8123
@@ -105,18 +112,22 @@ echo -ne 'GET /?query=SELECT%201 HTTP/1.0\r\n\r\n' | nc localhost 8123
 
 ```response title="response"
 HTTP/1.0 200 OK
-Date: Wed, 27 Nov 2019 10:30:18 GMT
+X-ClickHouse-Summary: {"read_rows":"1","read_bytes":"1","written_rows":"0","written_bytes":"0","total_rows_to_read":"1","result_rows":"0","result_bytes":"0","elapsed_ns":"4505959","memory_usage":"1111711"}
+Date: Tue, 11 Nov 2025 18:16:01 GMT
 Connection: Close
 Content-Type: text/tab-separated-values; charset=UTF-8
-X-ClickHouse-Server-Display-Name: clickhouse.ru-central1.internal
-X-ClickHouse-Query-Id: 5abe861c-239c-467f-b955-8a201abb8b7f
-X-ClickHouse-Summary: {"read_rows":"0","read_bytes":"0","written_rows":"0","written_bytes":"0","total_rows_to_read":"0","elapsed_ns":"662334"}
+Access-Control-Expose-Headers: X-ClickHouse-Query-Id,X-ClickHouse-Summary,X-ClickHouse-Server-Display-Name,X-ClickHouse-Format,X-ClickHouse-Timezone,X-ClickHouse-Exception-Code,X-ClickHouse-Exception-Tag
+X-ClickHouse-Server-Display-Name: MacBook-Pro.local
+X-ClickHouse-Query-Id: ec0d8ec6-efc4-4e1d-a14f-b748e01f5294
+X-ClickHouse-Format: TabSeparated
+X-ClickHouse-Timezone: Europe/London
+X-ClickHouse-Exception-Tag: dngjzjnxkvlwkeua
 
 1
 ```
 
-ご覧の通り、`curl`コマンドは、スペースをURLでエスケープする必要があるため、やや不便です。
-`wget`はすべてを自動的にエスケープしますが、HTTP 1.1においてkeep-aliveやTransfer-Encoding: chunkedを使用する場合にうまく機能しないため、使用は推奨しません。
+ご覧のとおり、`curl` コマンドはスペース文字を URL エスケープしなければならないという点で、やや不便です。
+`wget` は自動的にすべてをエスケープしてくれますが、keep-alive と Transfer-Encoding: chunked を使用した場合に HTTP/1.1 上でうまく動作しないため、使用は推奨しません。
 
 ```bash
 $ echo 'SELECT 1' | curl 'http://localhost:8123/' --data-binary @-
@@ -129,19 +140,19 @@ $ echo '1' | curl 'http://localhost:8123/?query=SELECT' --data-binary @-
 1
 ```
 
-クエリの一部がパラメータで送信され、一部がPOSTで送信される場合、これら二つのデータ部分の間に改行が挿入されます。
-例えば、これは機能しません：
+クエリの一部がパラメータで送信され、別の一部が POST で送信される場合、これら 2 つのデータ部分の間に改行が挿入されます。
+例えば、次のようなものは動作しません。
 
 ```bash
 $ echo 'ECT 1' | curl 'http://localhost:8123/?query=SEL' --data-binary @-
-Code: 59, e.displayText() = DB::Exception: Syntax error: failed at position 0: SEL
+Code: 59, e.displayText() = DB::Exception: 構文エラー: 位置0で失敗: SEL
 ECT 1
-, expected One of: SHOW TABLES, SHOW DATABASES, SELECT, INSERT, CREATE, ATTACH, RENAME, DROP, DETACH, USE, SET, OPTIMIZE., e.what() = DB::Exception
+, 期待される値: SHOW TABLES, SHOW DATABASES, SELECT, INSERT, CREATE, ATTACH, RENAME, DROP, DETACH, USE, SET, OPTIMIZE., e.what() = DB::Exception
 ```
 
-デフォルトでは、データは[`TabSeparated`](formats.md#tabseparated)形式で返されます。
+デフォルトでは、データは [`TabSeparated`](/interfaces/formats/TabSeparated) 形式で返されます。
 
-`FORMAT`句をクエリに使用して、他のフォーマットを要求できます。例えば：
+`FORMAT` 句は、クエリ内で別の形式での出力を指定するために使用します。例えば、次のように指定します。
 
 ```bash title="command"
 wget -nv -O- 'http://localhost:8123/?query=SELECT 1, 2, 3 FORMAT JSON'
@@ -185,7 +196,7 @@ wget -nv -O- 'http://localhost:8123/?query=SELECT 1, 2, 3 FORMAT JSON'
 }
 ```
 
-`default_format` URLパラメータまたは`X-ClickHouse-Format`ヘッダーを使用して、`TabSeparated`以外のデフォルトフォーマットを指定できます。
+`TabSeparated` 以外のデフォルトのフォーマットを指定するには、`default_format` URL パラメータまたは `X-ClickHouse-Format` ヘッダーを使用できます。
 
 ```bash
 $ echo 'SELECT 1 FORMAT Pretty' | curl 'http://localhost:8123/?' --data-binary @-
@@ -195,42 +206,52 @@ $ echo 'SELECT 1 FORMAT Pretty' | curl 'http://localhost:8123/?' --data-binary @
 │ 1 │
 └───┘
 ```
-## HTTP/HTTPS経由での挿入クエリ {#insert-queries}
 
-データを転送するのに`POST`メソッドが必要です。この場合、クエリの最初の部分をURLパラメータに記述し、データを送信するのにPOSTを使用します。挿入するデータは、例えばMySQLのタブ区切りダンプであることがあります。このようにして、`INSERT`クエリはMySQLの`LOAD DATA LOCAL INFILE`を置き換えます。
+パラメータ化されたクエリには POST メソッドを使用できます。パラメータは、パラメータ名と型を波括弧で指定します。例えば `{name:Type}` のように記述します。パラメータ値は `param_name` として渡します。
+
+```bash
+$ curl -X POST -F 'query=select {p1:UInt8} + {p2:UInt8}' -F "param_p1=3" -F "param_p2=4" 'http://localhost:8123/'
+
+7
+```
+
+## HTTP/HTTPS 経由での INSERT クエリ {#insert-queries}
+
+`INSERT` クエリでは、データ送信に `POST` メソッドが必要です。この場合、クエリの先頭部分を URL パラメータに記述し、挿入するデータ本体を POST メソッドで送信できます。挿入するデータとしては、例えば MySQL からのタブ区切りダンプなどが利用できます。この方法では、`INSERT` クエリによって MySQL の `LOAD DATA LOCAL INFILE` と同等の処理を行えます。
+
 ### 例 {#examples}
 
-テーブルを作成するには：
+テーブルを作成するには:
 
 ```bash
 $ echo 'CREATE TABLE t (a UInt8) ENGINE = Memory' | curl 'http://localhost:8123/' --data-binary @-
 ```
 
-データ挿入のために馴染みのある`INSERT`クエリを使用するには：
+使い慣れた `INSERT` クエリでデータを挿入するには、次のようにします。
 
 ```bash
 $ echo 'INSERT INTO t VALUES (1),(2),(3)' | curl 'http://localhost:8123/' --data-binary @-
 ```
 
-クエリとは別にデータを送信するには：
+クエリとは別にデータを送信するには、次のようにします。
 
 ```bash
 $ echo '(4),(5),(6)' | curl 'http://localhost:8123/?query=INSERT%20INTO%20t%20VALUES' --data-binary @-
 ```
 
-任意のデータフォーマットを指定できます。例えば、`INSERT INTO t VALUES`を書くときと同じフォーマットである'Values'フォーマットを指定できます：
+任意のデータフォーマットを指定できます。たとえば、`INSERT INTO t VALUES` と記述するときに使用するものと同じ「Values」フォーマットを指定できます。
 
 ```bash
 $ echo '(7),(8),(9)' | curl 'http://localhost:8123/?query=INSERT%20INTO%20t%20FORMAT%20Values' --data-binary @-
 ```
 
-タブ区切りダンプからデータを挿入するには、対応するフォーマットを指定します：
+タブ区切りダンプからデータを挿入するには、対応するフォーマットを指定してください。
 
 ```bash
 $ echo -ne '10\n11\n12\n' | curl 'http://localhost:8123/?query=INSERT%20INTO%20t%20FORMAT%20TabSeparated' --data-binary @-
 ```
 
-テーブルの内容を読み取るには：
+テーブルの内容を確認するには、次のようにします：
 
 ```bash
 $ curl 'http://localhost:8123/?query=SELECT%20a%20FROM%20t'
@@ -249,7 +270,7 @@ $ curl 'http://localhost:8123/?query=SELECT%20a%20FROM%20t'
 ```
 
 :::note
-並行クエリ処理のため、データはランダムな順序で出力されます
+並列クエリ処理のため、データはランダムな順序で出力されます
 :::
 
 テーブルを削除するには：
@@ -258,18 +279,19 @@ $ curl 'http://localhost:8123/?query=SELECT%20a%20FROM%20t'
 $ echo 'DROP TABLE t' | curl 'http://localhost:8123/' --data-binary @-
 ```
 
-データテーブルを返さない成功リクエストの場合、空のレスポンスボディが返されます。
+データテーブルを返さない成功したリクエストでは、空のレスポンスボディが返されます。
+
 ## 圧縮 {#compression}
 
-圧縮は、大量のデータを転送する際にネットワークトラフィックを削減するためや、一時的に圧縮されたダンプを作成するために使用できます。
+大量のデータを送信する際のネットワークトラフィックを削減したり、その場で圧縮済みのダンプを作成したりするために、圧縮を使用できます。
 
-データを転送する際に内部ClickHouse圧縮フォーマットを使用できます。圧縮されたデータは非標準フォーマットであり、`clickhouse-compressor`プログラムを使用して取り扱う必要があります。これはデフォルトで`clickhouse-client`パッケージにインストールされています。
+データ送信時に、ClickHouse の内部圧縮フォーマットを使用できます。圧縮されたデータは独自フォーマットであり、これを扱うには `clickhouse-compressor` プログラムが必要です。これは `clickhouse-client` パッケージと共にデフォルトでインストールされます。 
 
-データ挿入の効率を高めるために、[`http_native_compression_disable_checksumming_on_decompress`](../operations/settings/settings.md#http_native_compression_disable_checksumming_on_decompress)設定を使用して、サーバー側のチェックサム検証を無効にします。
+データ挿入の効率を高めるには、[`http_native_compression_disable_checksumming_on_decompress`](../operations/settings/settings.md#http_native_compression_disable_checksumming_on_decompress) 設定を使用して、サーバー側のチェックサム検証を無効にします。
 
-URLに `compress=1` を指定すると、サーバーは送信するデータを圧縮します。URLに `decompress=1` を指定すると、サーバーは`POST`メソッドで渡されたデータを解凍します。
+URL に `compress=1` を指定すると、サーバーは送信するデータを圧縮します。URL に `decompress=1` を指定すると、サーバーは `POST` メソッドで送信したデータを解凍します。
 
-[HTTP圧縮](https://en.wikipedia.org/wiki/HTTP_compression)を使用することもできます。ClickHouseは次の[圧縮方式](https://en.wikipedia.org/wiki/HTTP_compression#Content-Encoding_tokens)をサポートしています：
+[HTTP 圧縮](https://en.wikipedia.org/wiki/HTTP_compression) を使用することもできます。ClickHouse は次の [圧縮方式](https://en.wikipedia.org/wiki/HTTP_compression#Content-Encoding_tokens) をサポートしています。
 
 - `gzip`
 - `br`
@@ -280,25 +302,26 @@ URLに `compress=1` を指定すると、サーバーは送信するデータを
 - `bz2`
 - `snappy`
 
-圧縮された`POST`リクエストを送信するには、リクエストヘッダー`Content-Encoding: compression_method`を追加します。
+圧縮された `POST` リクエストを送信するには、リクエストヘッダーに `Content-Encoding: compression_method` を追加します。
 
-ClickHouseがレスポンスを圧縮するためには、[`enable_http_compression`](../operations/settings/settings.md#enable_http_compression)設定を有効にし、リクエストに`Accept-Encoding: compression_method`ヘッダーを追加します。
+ClickHouse にレスポンスを圧縮させるには、リクエストに `Accept-Encoding: compression_method` ヘッダーを追加します。 
 
-データ圧縮レベルは、[`http_zlib_compression_level`](../operations/settings/settings.md#http_zlib_compression_level)設定を使用してすべての圧縮方法に対して設定できます。
+すべての圧縮方式に対して、[`http_zlib_compression_level`](../operations/settings/settings.md#http_zlib_compression_level) 設定を使用してデータ圧縮レベルを設定できます。
 
 :::info
-一部のHTTPクライアントは、デフォルトでサーバーからのデータを解凍する可能性があり（`gzip`と`deflate`で）、圧縮設定を正しく使用している場合でも解凍されたデータが返されることがあります。
+一部の HTTP クライアントは、デフォルトで（`gzip` および `deflate` を用いて）サーバーからのデータを自動的に解凍する場合があり、その場合は圧縮設定を正しく使用していても、解凍済みのデータを受け取ることがあります。
 :::
+
 ## 例 {#examples-compression}
 
-サーバーに圧縮データを送信するには：
+圧縮データをサーバーに送信するには：
 
 ```bash
 echo "SELECT 1" | gzip -c | \
 curl -sS --data-binary @- -H 'Content-Encoding: gzip' 'http://localhost:8123/'
 ```
 
-サーバーから圧縮データアーカイブを受信するには：
+サーバーから圧縮されたデータアーカイブを受信するには：
 
 ```bash
 curl -vsS "http://localhost:8123/?enable_http_compression=1" \
@@ -310,7 +333,7 @@ zcat result.gz
 2
 ```
 
-サーバーから圧縮データを受信し、gunzipを使用して解凍データを受信するには：
+サーバーから圧縮データを受信し、展開されたデータを取得するには、gunzip を使用します。
 
 ```bash
 curl -sS "http://localhost:8123/?enable_http_compression=1" \
@@ -319,9 +342,10 @@ curl -sS "http://localhost:8123/?enable_http_compression=1" \
 1
 2
 ```
+
 ## デフォルトデータベース {#default-database}
 
-`database` URLパラメータまたは `X-ClickHouse-Database` ヘッダーを使用して、デフォルトデータベースを指定できます。
+デフォルトデータベースを指定するには、`database` URL パラメータまたは `X-ClickHouse-Database` ヘッダーを使用できます。
 
 ```bash
 echo 'SELECT number FROM numbers LIMIT 10' | curl 'http://localhost:8123/?database=system' --data-binary @-
@@ -337,43 +361,44 @@ echo 'SELECT number FROM numbers LIMIT 10' | curl 'http://localhost:8123/?databa
 9
 ```
 
-デフォルトでは、サーバー設定に登録されているデータベースがデフォルトデータベースとして使用されます。初期状態では、これは`default`という名前のデータベースです。あるいは、常にテーブル名の前にドットを付けてデータベースを指定できます。
+既定では、サーバー設定で登録されているデータベースが既定のデータベースとして使用されます。インストール直後の状態では、これは `default` という名前のデータベースです。あるいは、テーブル名の前にドットを付けてデータベース名を明示的に指定することもできます。
+
 ## 認証 {#authentication}
 
-ユーザー名とパスワードは、次の3つの方法のいずれかで指定できます：
+ユーザー名とパスワードは、次の3つの方法のいずれかで指定できます。
 
-1. HTTP基本認証を使用。
+1. HTTP Basic 認証を使用する。
 
-例えば：
+例：
 
 ```bash
 echo 'SELECT 1' | curl 'http://user:password@localhost:8123/' -d @-
 ```
 
-2. `user`および`password` URLパラメータに指定
+2. `user` および `password` を URL パラメータで指定する方法
 
 :::warning
-この方法は、パラメータがWebプロキシによってログに記録され、ブラウザにキャッシュされる可能性があるため、推奨しません。
+パラメータが Web プロキシでログに記録されたり、ブラウザにキャッシュされたりする可能性があるため、この方法は推奨しません
 :::
 
-例えば：
+例:
 
 ```bash
 echo 'SELECT 1' | curl 'http://localhost:8123/?user=user&password=password' -d @-
 ```
 
-3. 'X-ClickHouse-User'および'X-ClickHouse-Key'ヘッダーを使用
+3. 「X-ClickHouse-User」ヘッダーと「X-ClickHouse-Key」ヘッダーを使用する
 
-例えば：
+例：
 
 ```bash
 echo 'SELECT 1' | curl -H 'X-ClickHouse-User: user' -H 'X-ClickHouse-Key: password' 'http://localhost:8123/' -d @-
 ```
 
-ユーザー名が指定されていない場合は、`default`名が使用されます。パスワードが指定されていない場合は、空のパスワードが使用されます。
-クエリの処理に対して、任意の設定を指定するためにURLパラメータを使用することもできます。
+ユーザー名が指定されていない場合は、`default` というユーザー名が使用されます。パスワードが指定されていない場合は、空のパスワードが使用されます。
+単一のクエリや設定プロファイル全体に対する任意の設定を指定するために、URL パラメータを使用することもできます。
 
-例えば：
+例：
 
 ```text
 http://localhost:8123/?profile=web&max_rows_to_read=1000000000&query=SELECT+1
@@ -393,107 +418,116 @@ $ echo 'SELECT number FROM system.numbers LIMIT 10' | curl 'http://localhost:812
 9
 ```
 
-詳細については、次を参照してください：
-- [設定](/operations/settings/settings)
-- [SET](/sql-reference/statements/set)
-## HTTPプロトコルでのClickHouseセッションの利用 {#using-clickhouse-sessions-in-the-http-protocol}
+詳細については、以下を参照してください。
 
-HTTPプロトコルでClickHouseセッションを使用することもできます。そのためには、リクエストに`session_id` `GET`パラメータを追加する必要があります。セッションIDには任意の文字列を使用できます。
+* [設定](/operations/settings/settings)
+* [SET](/sql-reference/statements/set)
 
-デフォルトでは、セッションは60秒の非アクティブ状態で終了します。このタイムアウト（秒単位）を変更するには、サーバー設定で`default_session_timeout`の設定を変更するか、リクエストに`session_timeout` `GET`パラメータを追加します。
+## HTTP プロトコルでの ClickHouse セッションの使用 {#using-clickhouse-sessions-in-the-http-protocol}
 
-セッションの状態を確認するには、`session_check=1`パラメータを使用します。1つのセッション内で同時に実行できるクエリは1つだけです。
+ClickHouse セッションは HTTP プロトコルでも使用できます。そのためには、リクエストに `session_id` の `GET` パラメータを追加する必要があります。セッション ID には任意の文字列を指定できます。
 
-クエリの進捗に関する情報は、`X-ClickHouse-Progress`レスポンスヘッダーで受け取ることができます。これを行うには、[`send_progress_in_http_headers`](../operations/settings/settings.md#send_progress_in_http_headers)を有効にします。
+デフォルトでは、セッションは 60 秒間アクティビティがないと終了します。このタイムアウト値（秒）を変更するには、サーバー設定の `default_session_timeout` を変更するか、リクエストに `session_timeout` の `GET` パラメータを追加します。
 
-以下は、ヘッダーのシーケンスの例です：
+セッションの状態を確認するには、`session_check=1` パラメータを指定します。1 つのセッション内で同時に実行できるクエリは 1 つだけです。
+
+クエリの進行状況に関する情報は、`X-ClickHouse-Progress` レスポンスヘッダーで受け取ることができます。そのためには、[`send_progress_in_http_headers`](../operations/settings/settings.md#send_progress_in_http_headers) を有効にします。
+
+以下にヘッダーのシーケンス例を示します。
 
 ```text
-X-ClickHouse-Progress: {"read_rows":"2752512","read_bytes":"240570816","total_rows_to_read":"8880128","elapsed_ns":"662334"}
-X-ClickHouse-Progress: {"read_rows":"5439488","read_bytes":"482285394","total_rows_to_read":"8880128","elapsed_ns":"992334"}
-X-ClickHouse-Progress: {"read_rows":"8783786","read_bytes":"819092887","total_rows_to_read":"8880128","elapsed_ns":"1232334"}
+X-ClickHouse-Progress: {"read_rows":"261636","read_bytes":"2093088","total_rows_to_read":"1000000","elapsed_ns":"14050417","memory_usage":"22205975"}
+X-ClickHouse-Progress: {"read_rows":"654090","read_bytes":"5232720","total_rows_to_read":"1000000","elapsed_ns":"27948667","memory_usage":"83400279"}
+X-ClickHouse-Progress: {"read_rows":"1000000","read_bytes":"8000000","total_rows_to_read":"1000000","elapsed_ns":"38002417","memory_usage":"80715679"}
 ```
 
-可能なヘッダーフィールドは次の通りです：
+利用可能なヘッダーフィールドは次のとおりです。
 
-| ヘッダーフィールド        | 説明                       |
-|---------------------------|---------------------------|
-| `read_rows`              | 読まれた行の数。          |
-| `read_bytes`             | 読まれたデータのサイズ（バイト）。   |
-| `total_rows_to_read`     | 読み取る必要のある行の合計数。|
-| `written_rows`           | 書き込まれた行の数。      |
-| `written_bytes`          | 書き込まれたデータのサイズ（バイト）。 |
+| Header field         | Description         |
+| -------------------- | ------------------- |
+| `read_rows`          | 読み込まれた行数。           |
+| `read_bytes`         | バイト単位での読み込みデータ量。    |
+| `total_rows_to_read` | 読み取る予定の総行数。         |
+| `written_rows`       | 書き込まれた行数。           |
+| `written_bytes`      | バイト単位での書き込みデータ量。    |
+| `elapsed_ns`         | ナノ秒単位のクエリ実行時間。      |
+| `memory_usage`       | クエリで使用されたメモリ量（バイト）。 |
 
-HTTP接続が失われても、リクエストは自動的に停止しません。パースとデータフォーマットはサーバー側で行われ、ネットワークを利用することが非効率的な場合があります。
+実行中のリクエストは、HTTP 接続が失われても自動的には停止しません。パース処理とデータのフォーマットはサーバー側で実行されるため、ネットワークの利用が非効率になる場合があります。
 
-以下のオプションパラメータがあります：
+次のオプションパラメータが存在します。
 
-| パラメータ                | 説明                                               |
-|---------------------------|---------------------------------------------------|
-| `query_id`（オプション） | クエリIDとして渡すことができます（任意の文字列）。[`replace_running_query`](/operations/settings/settings#replace_running_query)|
-| `quota_key`（オプション）| クオータキーとして渡すことができます（任意の文字列）。["クオータ"](/operations/quotas)   |
+| Parameters             | Description                                                                                                 |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `query_id` (optional)  | クエリ ID として渡すことができます（任意の文字列）。 [`replace_running_query`](/operations/settings/settings#replace_running_query) |
+| `quota_key` (optional) | クオータキーとして渡すことができます（任意の文字列）。 [「Quotas」](/operations/quotas)                                                  |
 
-HTTPインターフェースを介して、クエリのための外部データ（外部一時テーブル）を渡すことができます。詳細は、["クエリ処理のための外部データ"](/engines/table-engines/special/external-data)を参照してください。
-## レスポンスバッファリング {#response-buffering}
+HTTP インターフェイスでは、クエリ用に外部データ（外部一時テーブル）を渡すことができます。詳細は [「External data for query processing」](/engines/table-engines/special/external-data) を参照してください。
 
-レスポンスバッファリングはサーバー側で有効にできます。次のURLパラメータが提供されています：
-- `buffer_size`
-- `wait_end_of_query`
+## レスポンスのバッファリング {#response-buffering}
 
-次の設定が使用できます：
-- [`http_response_buffer_size`](/operations/settings/settings#http_response_buffer_size)
-- [`http_wait_end_of_query`](/operations/settings/settings#http_wait_end_of_query)
+レスポンスのバッファリングはサーバー側で有効化できます。このために、次の URL パラメータが用意されています。
 
-`buffer_size`は、サーバーメモリにバッファとして保存する結果のバイト数を決定します。結果ボディがこの閾値を超える場合、バッファはHTTPチャネルに書き込まれ、残りのデータがHTTPチャネルに直接送信されます。
+* `buffer_size`
+* `wait_end_of_query`
 
-全体のレスポンスがバッファリングされるようにするには、`wait_end_of_query=1`を設定します。この場合、メモリに保存されないデータは、一時的なサーバーファイルにバッファリングされます。
+次の設定を使用できます。
 
-例えば：
+* [`http_response_buffer_size`](/operations/settings/settings#http_response_buffer_size)
+* [`http_wait_end_of_query`](/operations/settings/settings#http_wait_end_of_query)
+
+`buffer_size` は、サーバーメモリ内でバッファリングする結果のバイト数を指定します。レスポンスボディがこの閾値より大きい場合、バッファは HTTP チャネルに書き出され、残りのデータは直接 HTTP チャネルに送信されます。
+
+レスポンス全体を確実にバッファリングするには、`wait_end_of_query=1` を設定します。この場合、メモリに保持されないデータはサーバー上の一時ファイルにバッファリングされます。
+
+例:
 
 ```bash
 curl -sS 'http://localhost:8123/?max_result_bytes=4000000&buffer_size=3000000&wait_end_of_query=1' -d 'SELECT toUInt8(number) FROM system.numbers LIMIT 9000000 FORMAT RowBinary'
 ```
 
 :::tip
-バッファリングを使用して、レスポンスコードとHTTPヘッダーがクライアントに送信された後にクエリ処理エラーが発生した状況を回避します。この場合、エラーメッセージはレスポンスボディの最後に書き込まれ、クライアント側ではパースの段階でのみエラーを検出できます。
+バッファリングを使用して、レスポンスコードおよび HTTP ヘッダーがクライアントに送信された後にクエリの処理エラーが発生する状況を回避してください。このような場合、エラーメッセージはレスポンスボディの末尾に書き込まれ、クライアント側ではパース処理の段階になって初めてエラーを検知できます。
 :::
-## クエリパラメータでの役割の設定 {#setting-role-with-query-parameters}
 
-この機能はClickHouse 24.4で追加されました。
+## クエリパラメーターを使用してロールを設定する {#setting-role-with-query-parameters}
 
-特定のシナリオでは、ステートメント自体を実行する前に付与された役割を設定する必要があります。
-ただし、`SET ROLE`とステートメントを同時に送信することはできません。複数のステートメントは許可されていないためです：
+この機能は ClickHouse 24.4 で追加されました。
+
+特定のケースでは、ステートメント自体を実行する前に、付与されたロールを先に設定する必要がある場合があります。
+ただし、マルチステートメントは許可されていないため、`SET ROLE` とステートメントをまとめて送信することはできません。
 
 ```bash
 curl -sS "http://localhost:8123" --data-binary "SET ROLE my_role;SELECT * FROM my_table;"
 ```
 
-上記のコマンドはエラーになります：
+上記のコマンドを実行すると、エラーが発生します。
 
 ```sql
-Code: 62. DB::Exception: Syntax error (Multi-statements are not allowed)
+コード: 62. DB::Exception: 構文エラー (複数のステートメントは許可されていません)
 ```
 
-この制限を克服するために、`role`クエリパラメータを使用します：
+この制限を回避するには、代わりに `role` クエリパラメータを使用してください。
 
 ```bash
 curl -sS "http://localhost:8123?role=my_role" --data-binary "SELECT * FROM my_table;"
 ```
 
-これは、ステートメントの前に`SET ROLE my_role`を実行するのと同じです。
+これは、ステートメントの前に `SET ROLE my_role` を実行するのと同じ意味になります。
 
-また、複数の`role`クエリパラメータを指定することも可能です：
+また、`role` クエリパラメータを複数指定することもできます。
 
 ```bash
 curl -sS "http://localhost:8123?role=my_role&role=my_other_role" --data-binary "SELECT * FROM my_table;"
 ```
 
-この場合、`?role=my_role&role=my_other_role`は、ステートメントの前に`SET ROLE my_role, my_other_role`を実行するのと同様に機能します。
-## HTTPレスポンスコードの注意事項 {#http_response_codes_caveats}
+この場合、`?role=my_role&role=my_other_role` は、ステートメントを実行する前に `SET ROLE my_role, my_other_role` を実行した場合と同様に動作します。
 
-HTTPプロトコルの制限により、HTTP 200レスポンスコードはクエリが成功した保証にはなりません。
+## HTTP レスポンスコードに関する注意点 {#http_response_codes_caveats}
 
-以下に例を示します：
+HTTP プロトコルの制約上、HTTP 200 のレスポンスコードであっても、クエリが成功したことは保証されません。
+
+以下に例を示します。
 
 ```bash
 curl -v -Ss "http://localhost:8123/?max_block_size=1&query=select+sleepEachRow(0.001),throwIf(number=2)from+numbers(5)"
@@ -501,29 +535,101 @@ curl -v -Ss "http://localhost:8123/?max_block_size=1&query=select+sleepEachRow(0
 ...
 < HTTP/1.1 200 OK
 ...
-Code: 395. DB::Exception: Value passed to 'throwIf' function is non-zero: while executing 'FUNCTION throwIf(equals(number, 2) :: 1) -> throwIf(equals(number, 2))
+Code: 395. DB::Exception: 'throwIf' 関数に渡された値が非ゼロです: 'FUNCTION throwIf(equals(number, 2) :: 1) -> throwIf(equals(number, 2))' の実行中
 ```
 
-この動作の理由はHTTPプロトコルの性質です。HTTPヘッダーが最初にHTTPコード200と共に送信され、次にHTTPボディが送信され、その後エラーがプレーンテキストとしてボディに注入されます。
+この動作が発生する理由は、HTTP プロトコルの性質によるものです。まず HTTP ヘッダーが HTTP ステータスコード 200 とともに送信され、その後に HTTP ボディが続き、そのボディの中にエラーがプレーンテキストとして差し込まれます。
 
-この動作は、フォーマットが`Native`、`TSV`、`JSON`などであっても独立しており、エラーメッセージは常にレスポンスストリームの中間にあります。
+この動作は使用されるフォーマット、つまり `Native`、`TSV`、`JSON` のいずれであっても変わらず、エラーメッセージは常にレスポンスストリームの途中に現れます。
 
-この問題を緩和するために、`wait_end_of_query=1`を有効にします（[レスポンスバッファリング](#response-buffering)）。この場合、HTTPヘッダーの送信は、クエリが解決されるまで遅延されます。ただし、これは完全に問題を解決するわけではなく、結果はまだ[`http_response_buffer_size`](/operations/settings/settings#http_response_buffer_size)内に収めなければならず、[`send_progress_in_http_headers`](/operations/settings/settings#send_progress_in_http_headers)などの他の設定がヘッダーの遅延に影響を与える可能性があります。
+この問題は、`wait_end_of_query=1`（[Response Buffering](#response-buffering)）を有効にすることで軽減できます。この場合、クエリ全体が完了するまで HTTP ヘッダーの送信が遅延されます。ただし、この方法でも問題は完全には解決されません。というのも、結果は依然として [`http_response_buffer_size`](/operations/settings/settings#http_response_buffer_size) の範囲内に収まる必要があり、[`send_progress_in_http_headers`](/operations/settings/settings#send_progress_in_http_headers) などの他の設定がヘッダー送信の遅延と干渉し得るためです。
 
 :::tip
-すべてのエラーをキャッチする唯一の方法は、必要なフォーマットを使用する前にHTTPボディを解析することです。
+すべてのエラーを確実に検出する唯一の方法は、必要なフォーマットでパースする前に HTTP ボディを解析することです。
 :::
-## パラメータ付きクエリ {#cli-queries-with-parameters}
 
-パラメータのあるクエリを作成し、対応するHTTPリクエストパラメータからそれらの値を渡すことができます。詳細については、[CLI用のパラメータ付きクエリ](../interfaces/cli.md#cli-queries-with-parameters)を参照してください。
+ClickHouse におけるこのような例外は、`http_write_exception_in_output_format=0`（デフォルト）の場合、使用されるフォーマット（`Native`、`TSV`、`JSON` など）に関係なく、以下のように一貫した例外フォーマットを持ちます。これにより、クライアント側でエラーメッセージをパースおよび抽出しやすくなります。
+
+```text
+\r\n
+__exception__\r\n
+<TAG>\r\n
+<error message>\r\n
+<message_length> <TAG>\r\n
+__exception__\r\n
+
+```
+
+ここで `<TAG>` は 16 バイトのランダムなタグであり、`X-ClickHouse-Exception-Tag` レスポンスヘッダーで送信されるタグと同じです。
+`<error message>` は実際の例外メッセージです（正確な長さは `<message_length>` で確認できます）。上で説明した例外ブロック全体のサイズは最大 16 KiB です。
+
+`JSON` 形式での例を次に示します。
+
+```bash
+$ curl -v -Ss "http://localhost:8123/?max_block_size=1&query=select+sleepEachRow(0.001),throwIf(number=2)from+numbers(5)+FORMAT+JSON"
+...
+{
+    "meta":
+    [
+        {
+            "name": "sleepEachRow(0.001)",
+            "type": "UInt8"
+        },
+        {
+            "name": "throwIf(equals(number, 2))",
+            "type": "UInt8"
+        }
+    ],
+
+    "data":
+    [
+        {
+            "sleepEachRow(0.001)": 0,
+            "throwIf(equals(number, 2))": 0
+        },
+        {
+            "sleepEachRow(0.001)": 0,
+            "throwIf(equals(number, 2))": 0
+        }
+__exception__
+dmrdfnujjqvszhav
+Code: 395. DB::Exception: Value passed to 'throwIf' function is non-zero: while executing 'FUNCTION throwIf(equals(__table1.number, 2_UInt8) :: 1) -> throwIf(equals(__table1.number, 2_UInt8)) UInt8 : 0'. (FUNCTION_THROW_IF_VALUE_IS_NON_ZERO) (version 25.11.1.1)
+262 dmrdfnujjqvszhav
+__exception__
+```
+
+こちらは `CSV` 形式の同様の例です
+
+```bash
+$ curl -v -Ss "http://localhost:8123/?max_block_size=1&query=select+sleepEachRow(0.001),throwIf(number=2)from+numbers(5)+FORMAT+CSV"
+...
+<
+0,0
+0,0
+```
+
+**例外**
+rumfyutuqkncbgau
+Code: 395. DB::Exception: `throwIf` 関数に渡された値がゼロ以外です: `FUNCTION throwIf(equals(__table1.number, 2_UInt8) :: 1) -> throwIf(equals(__table1.number, 2_UInt8)) UInt8 : 0` を実行中に発生しました。 (FUNCTION&#95;THROW&#95;IF&#95;VALUE&#95;IS&#95;NON&#95;ZERO) (version 25.11.1.1)
+262 rumfyutuqkncbgau
+**例外**
+
+```
+```
+
+## パラメーター付きクエリ {#cli-queries-with-parameters}
+
+パラメーター付きのクエリを作成し、対応する HTTP リクエストのパラメーターから値を渡すことができます。詳細については、[CLI 向けパラメーター付きクエリ](../interfaces/cli.md#cli-queries-with-parameters)を参照してください。
+
 ### 例 {#example-3}
 
 ```bash
 $ curl -sS "<address>?param_id=2&param_phrase=test" -d "SELECT * FROM table WHERE int_column = {id:UInt8} and string_column = {phrase:String}"
 ```
-### URLパラメータ内のタブ {#tabs-in-url-parameters}
 
-クエリパラメータは「エスケープ」形式から解析されます。これは、nullを明示的に解析できるという利点があります。つまり、タブ文字は`\\t`（または`\`とタブ）としてエンコードする必要があります。例えば、次のように`abc`と`123`の間に実際のタブが含まれていて、入力文字列が2つの値に分割されます：
+### URL パラメータ内のタブ文字 {#tabs-in-url-parameters}
+
+クエリパラメータは「エスケープ」形式から解析されます。これには、`\N` を null としてあいまいさなく解析できるといった利点があります。これは、タブ文字は `\t`（または `\` とタブ文字）としてエンコードする必要があることを意味します。たとえば、次の例では `abc` と `123` の間に実際のタブ文字が含まれており、入力文字列は 2 つの値に分割されます。
 
 ```bash
 curl -sS "http://localhost:8123" -d "SELECT splitByChar('\t', 'abc      123')"
@@ -533,14 +639,14 @@ curl -sS "http://localhost:8123" -d "SELECT splitByChar('\t', 'abc      123')"
 ['abc','123']
 ```
 
-ただし、URLパラメータで実際のタブを`%09`を使ってエンコードしようとすると、正しく解析されません：
+しかし、URL パラメータで実際のタブ文字を `%09` としてエンコードしても、正しく解釈されません。
 
 ```bash
 curl -sS "http://localhost:8123?param_arg1=abc%09123" -d "SELECT splitByChar('\t', {arg1:String})"
-Code: 457. DB::Exception: Value abc    123 cannot be parsed as String for query parameter 'arg1' because it isn't parsed completely: only 3 of 7 bytes was parsed: abc. (BAD_QUERY_PARAMETER) (version 23.4.1.869 (official build))
+Code: 457. DB::Exception: クエリパラメータ 'arg1' の値 abc    123 を String として解析できません。完全に解析されていないため: 7バイト中3バイトのみ解析されました: abc。(BAD_QUERY_PARAMETER) (version 23.4.1.869 (official build))
 ```
 
-URLパラメータを使用している場合、`\t`を`%5C%09`のようにエンコードする必要があります。例えば：
+URL パラメータを使用する場合は、`\t` を `%5C%09` にエンコードする必要があります。例：
 
 ```bash
 curl -sS "http://localhost:8123?param_arg1=abc%5C%09123" -d "SELECT splitByChar('\t', {arg1:String})"
@@ -549,19 +655,20 @@ curl -sS "http://localhost:8123?param_arg1=abc%5C%09123" -d "SELECT splitByChar(
 ```response
 ['abc','123']
 ```
-## 予め定義されたHTTPインターフェース {#predefined_http_interface}
 
-ClickHouseは特定のクエリをHTTPインターフェースを介してサポートしています。例えば、テーブルにデータを書き込むには次のようにします：
+## あらかじめ定義された HTTP インターフェイス {#predefined_http_interface}
+
+ClickHouse は、HTTP インターフェイス経由で特定のクエリをサポートしています。たとえば、次のようにテーブルにデータを書き込むことができます。
 
 ```bash
 $ echo '(4),(5),(6)' | curl 'http://localhost:8123/?query=INSERT%20INTO%20t%20VALUES' --data-binary @-
 ```
 
-ClickHouseは、[Prometheusエクスポータ](https://github.com/ClickHouse/clickhouse_exporter)などのサードパーティツールとの統合を容易にするための予め定義されたHTTPインターフェースもサポートしています。例を見てみましょう。
+ClickHouse は、[Prometheus exporter](https://github.com/ClickHouse/clickhouse_exporter) のようなサードパーティツールとの連携を容易にする Predefined HTTP Interface もサポートしています。例を見てみましょう。
 
-まず、サーバー設定ファイルにこのセクションを追加します。
+まず、このセクションをサーバー設定ファイルに追加します。
 
-`http_handlers`は複数の`rule`を含むように設定されます。ClickHouseは受信したHTTPリクエストを`rule`内の予め定義されたタイプにマッチさせ、最初にマッチしたルールがハンドラーを実行します。次に、ClickHouseはマッチが成功した場合に対応する予め定義されたクエリを実行します。
+`http_handlers` には複数の `rule` を含めるように設定します。ClickHouse は受信した HTTP リクエストを `rule` で定義されたタイプと照合し、最初にマッチした `rule` のハンドラーが実行されます。その後、マッチに成功すると、ClickHouse は対応する事前定義クエリを実行します。
 
 ```yaml title="config.xml"
 <http_handlers>
@@ -578,7 +685,7 @@ ClickHouseは、[Prometheusエクスポータ](https://github.com/ClickHouse/cli
 </http_handlers>
 ```
 
-これで、Prometheusフォーマットのデータを取得するためにURLに直接リクエストできます：
+これで、Prometheus 形式のデータを取得するための URL を直接リクエストできます。
 
 ```bash
 $ curl -v 'http://localhost:8123/predefined_query'
@@ -599,82 +706,96 @@ $ curl -v 'http://localhost:8123/predefined_query'
 < X-ClickHouse-Format: Template
 < X-ClickHouse-Timezone: Asia/Shanghai
 < Keep-Alive: timeout=10
-< X-ClickHouse-Summary: {"read_rows":"0","read_bytes":"0","written_rows":"0","written_bytes":"0","total_rows_to_read":"0","elapsed_ns":"662334"}
+< X-ClickHouse-Summary: {"read_rows":"0","read_bytes":"0","written_rows":"0","written_bytes":"0","total_rows_to_read":"0","elapsed_ns":"662334","memory_usage":"8451671"}
 <
-
-# HELP "Query" "実行中のクエリの数"
-
-# TYPE "Query" counter
+# HELP "Query" "Number of executing queries" {#help-query-number-of-executing-queries}
+# TYPE "Query" counter {#type-query-counter}
 "Query" 1
-
-
-# HELP "Merge" "実行中のバックグラウンドマージの数"
-
-# TYPE "Merge" counter
-"Merge" 0
-
-
-# HELP "PartMutation" "ミューテーションの数 (ALTER DELETE/UPDATE)"
-
-# TYPE "PartMutation" counter
-"PartMutation" 0
-
-
-# HELP "ReplicatedFetch" "レプリカからフェッチされているデータパーツの数"
-
-# TYPE "ReplicatedFetch" counter
-"ReplicatedFetch" 0
-
-
-# HELP "ReplicatedSend" "レプリカに送信されているデータパーツの数"
-
-# TYPE "ReplicatedSend" counter
-"ReplicatedSend" 0
-
-* Connection #0 to host localhost left intact
-
-* Connection #0 to host localhost left intact
 ```
 
-`http_handlers`の構成オプションは、次のように機能します。
+# HELP "Merge" "実行中のバックグラウンドマージ数" {#help-merge-number-of-executing-background-merges}
+# TYPE "Merge" counter {#type-merge-counter}
+"Merge" 0
 
-`rule`は次のパラメータを設定できます：
+# HELP "PartMutation" "ミューテーション数 (ALTER DELETE/UPDATE)" {#help-partmutation-number-of-mutations-alter-deleteupdate}
+# TYPE "PartMutation" counter {#type-partmutation-counter}
+"PartMutation" 0
+
+# HELP "ReplicatedFetch" "レプリカから取得中のデータパーツ数" {#help-replicatedfetch-number-of-data-parts-being-fetched-from-replica}
+# TYPE "ReplicatedFetch" counter {#type-replicatedfetch-counter}
+"ReplicatedFetch" 0
+
+# HELP &quot;ReplicatedSend&quot; &quot;レプリカへ送信中のデータパーツ数&quot; {#help-replicatedsend-number-of-data-parts-being-sent-to-replicas}
+
+# TYPE &quot;ReplicatedSend&quot; counter {#type-replicatedsend-counter}
+
+&quot;ReplicatedSend&quot; 0
+
+* ホスト localhost への接続 #0 はそのまま維持されています
+
+* ホスト localhost への接続 #0 はそのまま維持されています
+
+```
+
+`http_handlers`の設定オプションは以下のように動作します。
+
+`rule`では以下のパラメータを設定できます:
 - `method`
 - `headers`
 - `url`
+- `full_url`
 - `handler`
 
-これらは以下で説明されます：
+各パラメータについて以下で説明します:
 
-  - `method`はHTTPリクエストのメソッド部分と一致します。`method`はHTTPプロトコル内の[`method`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)の定義に完全に準拠しています。オプションの構成です。構成ファイルに定義されていない場合、HTTPリクエストのメソッド部分と一致しません。
+- `method`はHTTPリクエストのメソッド部分のマッチングを担当します。`method`はHTTPプロトコルにおける[`method`]    
+  (https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)の定義に完全に準拠しています。これはオプションの設定です。設定ファイルで定義されていない場合、HTTPリクエストのメソッド部分とはマッチングしません。
 
-  - `url`はHTTPリクエストのURL部分と一致します。 [RE2](https://github.com/google/re2)の正規表現と互換性があります。オプションの構成です。構成ファイルに定義されていない場合、HTTPリクエストのURL部分とは一致しません。
+- `url`はHTTPリクエストのURL部分(パスとクエリ文字列)のマッチングを担当します。
+  `url`に`regex:`のプレフィックスが付いている場合、[RE2](https://github.com/google/re2)の正規表現を使用します。
+  これはオプションの設定です。設定ファイルで定義されていない場合、HTTPリクエストのURL部分とはマッチングしません。
 
-  - `headers`はHTTPリクエストのヘッダー部分と一致します。RE2の正規表現と互換性があります。オプションの構成です。構成ファイルに定義されていない場合、HTTPリクエストのヘッダー部分とは一致しません。
+- `full_url`は`url`と同様ですが、完全なURL、すなわち`schema://host:port/path?query_string`を含みます。
+  注意: ClickHouseは「仮想ホスト」をサポートしていないため、`host`はIPアドレスです(`Host`ヘッダーの値ではありません)。
 
-  - `handler`は主な処理部分を含みます。現在、`handler`は`type`、`status`、`content_type`、`http_response_headers`、`response_content`、`query`、`query_param_name`を設定できます。`type`は現在、[`predefined_query_handler`](#predefined_query_handler)、[`dynamic_query_handler`](#dynamic_query_handler)、[`static`](#static)の3つのタイプをサポートしています。
+- `empty_query_string` - リクエストにクエリ文字列(`?query_string`)が存在しないことを保証します
 
-    - `query` — `predefined_query_handler`タイプで使用し、ハンドラー呼び出し時にクエリを実行します。
-    - `query_param_name` — `dynamic_query_handler`タイプで使用し、HTTPリクエストパラメータ内の`query_param_name`値に対応する値を抽出して実行します。
-    - `status` — `static`タイプで使用し、レスポンスのステータスコードです。
-    - `content_type` — いずれのタイプでも使用可能で、レスポンスの[content-type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type)です。
-    - `http_response_headers` — いずれのタイプでも使用可能で、レスポンスヘッダーのマップです。コンテンツタイプを設定するためにも使用できます。
-    - `response_content` — `static`タイプで使用し、ファイルまたは構成からクライアントに送信されるレスポンスコンテンツです。
+- `headers`はHTTPリクエストのヘッダー部分のマッチングを担当します。RE2の正規表現と互換性があります。これはオプションの設定です。設定ファイルで定義されていない場合、HTTPリクエストのヘッダー部分とはマッチングしません。
 
-さまざまな`type`の設定方法については、次で説明します。
+- `handler`はメイン処理部分を含みます。
+
+  以下の`type`を指定できます:
+  - [`predefined_query_handler`](#predefined_query_handler)
+  - [`dynamic_query_handler`](#dynamic_query_handler)
+  - [`static`](#static)
+  - [`redirect`](#redirect)
+
+  また、以下のパラメータを指定できます:
+  - `query` — `predefined_query_handler`タイプで使用し、ハンドラーが呼び出されたときにクエリを実行します。
+  - `query_param_name` — `dynamic_query_handler`タイプで使用し、HTTPリクエストパラメータ内の`query_param_name`値に対応する値を抽出して実行します。
+  - `status` — `static`タイプで使用し、レスポンスステータスコードを指定します。
+  - `content_type` — 任意のタイプで使用し、レスポンスの[content-type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type)を指定します。
+  - `http_response_headers` — 任意のタイプで使用し、レスポンスヘッダーマップを指定します。コンテンツタイプの設定にも使用できます。
+  - `response_content` — `static`タイプで使用し、クライアントに送信されるレスポンスコンテンツを指定します。プレフィックス'file://'または'config://'を使用する場合、ファイルまたは設定からコンテンツを取得してクライアントに送信します。
+  - `user` - クエリを実行するユーザー(デフォルトユーザーは`default`)。
+    **注意**: このユーザーのパスワードを指定する必要はありません。
+
+異なる`type`の設定方法について次に説明します。
+
 ### predefined_query_handler {#predefined_query_handler}
 
-`predefined_query_handler`は`Settings`と`query_params`の値を設定することをサポートしています。設定は、`predefined_query_handler`タイプの`query`として指定できます。
+`predefined_query_handler`は`Settings`と`query_params`の値の設定をサポートします。`predefined_query_handler`タイプで`query`を設定できます。
 
-`query`の値は`predefined_query_handler`の予め定義されたクエリであり、HTTPリクエストが一致したときにClickHouseが実行し、クエリの結果が返されます。これは必須の構成です。
+`query`値は`predefined_query_handler`の事前定義されたクエリであり、HTTPリクエストがマッチしたときにClickHouseによって実行され、クエリの結果が返されます。これは必須の設定です。
 
-以下の例では、[`max_threads`](../operations/settings/settings.md#max_threads)および[`max_final_threads`](/operations/settings/settings#max_final_threads)設定の値を定義し、その後、これらの設定が成功裏に設定されたかどうかを確認するためにシステムテーブルをクエリしています。
+以下の例では、[`max_threads`](../operations/settings/settings.md#max_threads)と[`max_final_threads`](/operations/settings/settings#max_final_threads)設定の値を定義し、その後システムテーブルをクエリしてこれらの設定が正常に設定されたかを確認します。
 
 :::note
-`query`、`play`、`ping`のようなデフォルトの`handlers`を維持するためには、`<defaults/>`ルールを追加してください。
+`query`、`play`、`ping`などのデフォルトの`handlers`を保持するには、`<defaults/>`ルールを追加してください。
 :::
 
-例えば：
+例:
+```
 
 ```yaml
 <http_handlers>
@@ -704,17 +825,18 @@ max_threads    1
 ```
 
 :::note
-1つの`predefined_query_handler`では、1つの`query`のみがサポートされています。
+1つの `predefined_query_handler` では、1つの `query` のみがサポートされます。
 :::
-### dynamic_query_handler {#dynamic_query_handler}
 
-`dynamic_query_handler`では、クエリがHTTPリクエストのパラメータとして記述されます。`predefined_query_handler`ではクエリが設定ファイルに記述されるのとは異なります。`query_param_name`は`dynamic_query_handler`に設定できます。
+### dynamic&#95;query&#95;handler {#dynamic_query_handler}
 
-ClickHouseは、HTTPリクエストのURL内の`query_param_name`値に対応する値を抽出して実行します。`query_param_name`のデフォルト値は`/query`です。これはオプションの構成です。構成ファイルに定義がない場合、そのパラメータは渡されません。
+`dynamic_query_handler` では、クエリは HTTP リクエストのパラメータとして記述されます。`predefined_query_handler` との違いは、後者ではクエリが設定ファイル内に記述される点です。`query_param_name` は `dynamic_query_handler` 内で設定できます。
 
-この機能を試すために、次の例では`max_threads`と`max_final_threads`の値を定義し、設定が成功裏に設定されたかどうかを確認します。
+ClickHouse は、HTTP リクエストの URL 内で `query_param_name` に対応する値を抽出して実行します。`query_param_name` のデフォルト値は `/query` です。これは省略可能な設定項目です。設定ファイル内に定義がない場合は、パラメータは渡されません。
 
-例：
+この機能を試すために、次の例では [`max_threads`](../operations/settings/settings.md#max_threads) と `max_final_threads` の値を定義し、さらに設定が正しく反映されたかどうかを確認する `query` を実行します。
+
+例:
 
 ```yaml
 <http_handlers>
@@ -735,11 +857,12 @@ curl  -H 'XXX:TEST_HEADER_VALUE_DYNAMIC'  'http://localhost:8123/own?max_threads
 max_threads 1
 max_final_threads   2
 ```
+
 ### static {#static}
 
-`static` は [`content_type`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type)、[status](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status) および `response_content` を返すことができます。`response_content` は指定されたコンテンツを返します。
+`static` は [`content_type`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type)、[status](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)、および `response_content` を返すことができます。`response_content` で指定したコンテンツを返せます。
 
-例えば、メッセージ "Say Hi!" を返すには：
+たとえば、&quot;Say Hi!&quot; というメッセージを返すには次のようにします。
 
 ```yaml
 <http_handlers>
@@ -763,7 +886,7 @@ max_final_threads   2
 </http_handlers>
 ```
 
-`http_response_headers` は `content_type` の代わりにコンテンツタイプを設定するために使用できます。
+`content_type` の代わりに `http_response_headers` を使用して Content-Type を設定できます。
 
 ```yaml
 <http_handlers>
@@ -781,7 +904,7 @@ max_final_threads   2
                     <X-My-Custom-Header>43</X-My-Custom-Header>
                 </http_response_headers>
                 #end-highlight
-                <response_content>Say Hi!</response_content>
+                <response_content>こんにちは！</response_content>
             </handler>
         </rule>
         <defaults/>
@@ -804,13 +927,13 @@ curl -vv  -H 'XXX:xxx' 'http://localhost:8123/hi'
 < Content-Type: text/html; charset=UTF-8
 < Transfer-Encoding: chunked
 < Keep-Alive: timeout=10
-< X-ClickHouse-Summary: {"read_rows":"0","read_bytes":"0","written_rows":"0","written_bytes":"0","total_rows_to_read":"0","elapsed_ns":"662334"}
+< X-ClickHouse-Summary: {"read_rows":"0","read_bytes":"0","written_rows":"0","written_bytes":"0","total_rows_to_read":"0","elapsed_ns":"662334","memory_usage":"8451671"}
 <
 * Connection #0 to host localhost left intact
 Say Hi!%
 ```
 
-クライアントに送信される設定からコンテンツを見つけます。
+クライアントに送信される設定内容を特定します。
 
 ```yaml
 <get_config_static_handler><![CDATA[<html ng-app="SMI2"><head><base href="http://ui.tabix.io/"></head><body><div ui-view="" class="content-ui"></div><script src="http://loader.tabix.io/master.js"></script></body></html>]]></get_config_static_handler>
@@ -844,13 +967,13 @@ $ curl -v  -H 'XXX:xxx' 'http://localhost:8123/get_config_static_handler'
 < Content-Type: text/plain; charset=UTF-8
 < Transfer-Encoding: chunked
 < Keep-Alive: timeout=10
-< X-ClickHouse-Summary: {"read_rows":"0","read_bytes":"0","written_rows":"0","written_bytes":"0","total_rows_to_read":"0","elapsed_ns":"662334"}
+< X-ClickHouse-Summary: {"read_rows":"0","read_bytes":"0","written_rows":"0","written_bytes":"0","total_rows_to_read":"0","elapsed_ns":"662334","memory_usage":"8451671"}
 <
 * Connection #0 to host localhost left intact
 <html ng-app="SMI2"><head><base href="http://ui.tabix.io/"></head><body><div ui-view="" class="content-ui"></div><script src="http://loader.tabix.io/master.js"></script></body></html>%
 ```
 
-クライアントに送信されるファイルからコンテンツを見つけるには：
+クライアントに送信したファイル内の内容を確認するには、次のようにします。
 
 ```yaml
 <http_handlers>
@@ -885,8 +1008,8 @@ $ curl -v  -H 'XXX:xxx' 'http://localhost:8123/get_config_static_handler'
 
 ```bash
 $ user_files_path='/var/lib/clickhouse/user_files'
-$ sudo echo "<html><body>Relative Path File</body></html>" > $user_files_path/relative_path_file.html
-$ sudo echo "<html><body>Absolute Path File</body></html>" > $user_files_path/absolute_path_file.html
+$ sudo echo "<html><body>相対パスファイル</body></html>" > $user_files_path/relative_path_file.html
+$ sudo echo "<html><body>絶対パスファイル</body></html>" > $user_files_path/absolute_path_file.html
 $ curl -vv -H 'XXX:xxx' 'http://localhost:8123/get_absolute_path_static_handler'
 *   Trying ::1...
 * Connected to localhost (::1) port 8123 (#0)
@@ -902,9 +1025,9 @@ $ curl -vv -H 'XXX:xxx' 'http://localhost:8123/get_absolute_path_static_handler'
 < Content-Type: text/html; charset=UTF-8
 < Transfer-Encoding: chunked
 < Keep-Alive: timeout=10
-< X-ClickHouse-Summary: {"read_rows":"0","read_bytes":"0","written_rows":"0","written_bytes":"0","total_rows_to_read":"0","elapsed_ns":"662334"}
+< X-ClickHouse-Summary: {"read_rows":"0","read_bytes":"0","written_rows":"0","written_bytes":"0","total_rows_to_read":"0","elapsed_ns":"662334","memory_usage":"8451671"}
 <
-<html><body>Absolute Path File</body></html>
+<html><body>絶対パスファイル</body></html>
 * Connection #0 to host localhost left intact
 $ curl -vv -H 'XXX:xxx' 'http://localhost:8123/get_relative_path_static_handler'
 *   Trying ::1...
@@ -921,18 +1044,76 @@ $ curl -vv -H 'XXX:xxx' 'http://localhost:8123/get_relative_path_static_handler'
 < Content-Type: text/html; charset=UTF-8
 < Transfer-Encoding: chunked
 < Keep-Alive: timeout=10
-< X-ClickHouse-Summary: {"read_rows":"0","read_bytes":"0","written_rows":"0","written_bytes":"0","total_rows_to_read":"0","elapsed_ns":"662334"}
+< X-ClickHouse-Summary: {"read_rows":"0","read_bytes":"0","written_rows":"0","written_bytes":"0","total_rows_to_read":"0","elapsed_ns":"662334","memory_usage":"8451671"}
 <
-<html><body>Relative Path File</body></html>
+<html><body>相対パスファイル</body></html>
 * Connection #0 to host localhost left intact
 ```
-## Valid JSON/XML response on exception during HTTP streaming {#valid-output-on-exception-http-streaming}
 
-クエリの実行中にHTTPを介して例外が発生することがあります。この場合、データの一部がすでに送信されている場合があります。通常、例外はプレーンテキストでクライアントに送信されます。
-特定のデータ形式を使用してデータを出力していた場合、出力が指定されたデータ形式にとって無効になる可能性があります。
-これを防ぐために、設定 [`http_write_exception_in_output_format`](/operations/settings/settings#http_write_exception_in_output_format) を使用できます（デフォルトで有効）。これにより、ClickHouseは指定された形式で例外を書き込むことができます（現在XMLおよびJSON形式でサポートされています）。
+### redirect {#redirect}
 
-例：
+`redirect` は `location` へ `302` リダイレクトを行います。
+
+例えば、ClickHouse play でユーザーを自動的に `play` に設定するには次のようにします。
+
+```xml
+<clickhouse>
+    <http_handlers>
+        <rule>
+            <methods>GET</methods>
+            <url>/play</url>
+            <handler>
+                <type>redirect</type>
+                <location>/play?user=play</location>
+            </handler>
+        </rule>
+    </http_handlers>
+</clickhouse>
+```
+
+## HTTP レスポンスヘッダー {#http-response-headers}
+
+ClickHouse では、設定可能なあらゆる種類のハンドラーに適用できるカスタム HTTP レスポンスヘッダーを設定できます。これらのヘッダーは、ヘッダー名とその値を表すキーと値のペアを指定する `http_response_headers` 設定を使用して設定します。この機能は、カスタムセキュリティヘッダーや CORS ポリシー、その他 ClickHouse の HTTP インターフェイス全体で必要となる HTTP ヘッダー要件を実装するのに特に有用です。
+
+たとえば、次のような対象にヘッダーを設定できます:
+
+* 通常のクエリエンドポイント
+* Web UI
+* ヘルスチェック
+
+また、`common_http_response_headers` を指定することも可能です。これらは、設定で定義されたすべての HTTP ハンドラーに適用されます。
+
+ヘッダーは、設定されたすべてのハンドラーに対する HTTP レスポンスに含まれます。
+
+以下の例では、すべてのサーバーレスポンスに `X-My-Common-Header` と `X-My-Custom-Header` という 2 つのカスタムヘッダーが含まれます。
+
+```xml
+<clickhouse>
+    <http_handlers>
+        <common_http_response_headers>
+            <X-My-Common-Header>共通ヘッダー</X-My-Common-Header>
+        </common_http_response_headers>
+        <rule>
+            <methods>GET</methods>
+            <url>/ping</url>
+            <handler>
+                <type>ping</type>
+                <http_response_headers>
+                    <X-My-Custom-Header>カスタムヘッダー</X-My-Custom-Header>
+                </http_response_headers>
+            </handler>
+        </rule>
+    </http_handlers>
+</clickhouse>
+```
+
+## HTTP ストリーミング中の例外発生時における有効な JSON/XML レスポンス {#valid-output-on-exception-http-streaming}
+
+クエリが HTTP 経由で実行されている間に、データの一部がすでに送信された後で例外が発生することがあります。通常、例外はプレーンテキストとしてクライアントに送信されます。
+特定のデータフォーマットを使用してデータを出力している場合、そのフォーマットの観点から出力が不正になってしまう可能性があります。
+これを防ぐには、ClickHouse に例外を指定したフォーマットで書き出すよう指示する設定 [`http_write_exception_in_output_format`](/operations/settings/settings#http_write_exception_in_output_format)（デフォルトでは無効）を使用できます（現在は XML および JSON* フォーマットでサポートされています）。
+
+例:
 
 ```bash
 $ curl 'http://localhost:8123/?query=SELECT+number,+throwIf(number>3)+from+system.numbers+format+JSON+settings+max_block_size=1&http_write_exception_in_output_format=1'

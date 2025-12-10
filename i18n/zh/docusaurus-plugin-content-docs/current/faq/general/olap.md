@@ -1,44 +1,49 @@
 ---
-'slug': '/faq/general/olap'
-'title': '什么是 OLAP？'
-'toc_hidden': true
-'toc_priority': 100
-'description': '关于 Online Analytical Processing 的解释'
-'keywords':
-- 'OLAP'
+slug: /faq/general/olap
+title: '什么是 OLAP？'
+toc_hidden: true
+toc_priority: 100
+description: '关于联机分析处理（OLAP）的介绍'
+keywords: ['OLAP']
+doc_type: 'reference'
 ---
 
 
-# 什么是 OLAP? {#what-is-olap}
 
-[OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing) 代表在线分析处理。它是一个广泛的术语，可以从两个角度来看待：技术和商业。但是从高层次来看，你可以将这些词反向阅读：
+# 什么是 OLAP？ {#what-is-olap}
 
-处理
-:   一些源数据正在被处理...
+[OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing) 是 Online Analytical Processing（联机分析处理）的缩写。它是一个广泛的术语，可以从技术和业务两个角度来理解。但在更宏观的层面上，你也可以把这个短语倒过来读：
 
-分析
-:   ...以生成一些分析报告和洞察...
+Processing
+:   对一些源数据进行处理……
 
-在线
-:   ...实时处理。
+Analytical
+:   ……以生成分析报表和洞察……
 
-## 从商业角度看 OLAP {#olap-from-the-business-perspective}
+Online
+:   ……并以实时方式完成这一切。
 
-近年来，商界人士开始意识到数据的价值。盲目做出决策的公司往往无法跟上竞争的步伐。成功公司的数据驱动方法迫使他们收集所有可能在做出商业决策时远程有用的数据，并需要及时分析数据的机制。这就是 OLAP 数据库管理系统 (DBMS) 的用武之地。
 
-在商业意义上，OLAP 允许公司持续规划、分析和报告运营活动，从而最大化效率、减少开支，并最终征服市场份额。这可以在内部系统中完成，或者外包给像网络/移动分析服务、CRM 服务等 SaaS 提供商。OLAP 是许多 BI 应用程序（商业智能）背后的技术。
 
-ClickHouse 是一个 OLAP 数据库管理系统，通常作为分析特定域数据的 SaaS 解决方案的后端。然而，一些企业仍然不愿与第三方提供商共享他们的数据，自建数据仓库的场景也是可行的。
+## 从商业视角看 OLAP {#olap-from-the-business-perspective}
+
+近些年，业务人员开始意识到数据的价值。那些在缺乏数据支撑下盲目决策的公司，往往难以跟上竞争对手的步伐。成功企业的数据驱动方法推动它们收集所有可能对业务决策有潜在价值的数据，并需要相应机制对这些数据进行及时分析。OLAP 数据库管理系统（DBMS）正是在这一点上发挥作用。
+
+从商业角度来看，OLAP 使企业能够持续地规划、分析和报告运营活动，从而最大化效率、降低成本，并最终抢占市场份额。这既可以通过自建系统实现，也可以外包给 SaaS 提供商，例如 Web/移动分析服务、CRM 服务等。OLAP 是许多 BI（Business Intelligence，商业智能）应用背后的核心技术。
+
+ClickHouse 是一种 OLAP 数据库管理系统，常被用作这些 SaaS 解决方案的后端，用于分析特定领域的数据。然而，仍有一些企业不愿将其数据共享给第三方服务商，此时自建数据仓库的方案同样可行。
+
+
 
 ## 从技术角度看 OLAP {#olap-from-the-technical-perspective}
 
-所有数据库管理系统都可以分为两类：OLAP（在线**分析**处理）和 OLTP（在线**事务**处理）。前者专注于构建报告，每个报告基于大量历史数据，但频率不高。而后者通常处理持续的事务流，不断修改数据的当前状态。
+所有数据库管理系统大致可以分为两类：OLAP（联机**分析**处理，Online **Analytical** Processing）和 OLTP（联机**事务**处理，Online **Transactional** Processing）。前者侧重于生成报表，每个报表都基于海量历史数据，但生成频率相对较低；而后者通常要处理持续不断的事务流，并不断修改数据的当前状态。
 
-在实践中，OLAP 和 OLTP 并不是类别，更像是一个光谱。大多数真实系统通常专注于其中一个，但提供一些解决方案或权宜之计，如果也需要另一种类型的工作负载。这种情况通常迫使企业运营多个集成的存储系统，这可能不是大问题，但拥有更多的系统使维护成本更高。因此，近年来的趋势是 HTAP（**混合事务/分析处理**），当两种工作负载都能被单一数据库管理系统同样良好地处理时。
+在实践中，OLAP 和 OLTP 并不是截然分明的类别，更像是一个连续体。大多数实际系统通常侧重于其中一类，但如果也需要处理另一类负载，则会提供某些解决方案或变通办法。这种情况往往迫使企业同时运行多个彼此集成的存储系统。本身这可能问题不大，但系统越多，运维成本就越高。因此，近几年的趋势是 HTAP（**混合事务/分析处理**，Hybrid Transactional/Analytical Processing），即由单一数据库管理系统同时高效处理这两类负载。
 
-即使一个 DBMS 最初是作为纯 OLAP 或纯 OLTP 开始的，它们也被迫朝着 HTAP 的方向发展，以跟上竞争。而 ClickHouse 也不例外，最初它被设计为 [尽可能快的 OLAP 系统](../../concepts/why-clickhouse-is-so-fast.md)，并且它仍然没有全面的事务支持，但一些特性如一致的读/写和更新/删除数据的变更功能不得不被添加。
+即便一个 DBMS 起初是纯 OLAP 或纯 OLTP，为了跟上竞争，也被迫朝 HTAP 方向演进。ClickHouse 也不例外，它最初被设计为[尽可能快的 OLAP 系统](../../concepts/why-clickhouse-is-so-fast.mdx)，目前仍然没有完备的事务支持，但仍不得不增加一致性读写以及用于更新/删除数据的变更操作（mutations）等功能。
 
-OLAP 和 OLTP 系统之间的根本权衡仍然存在：
+OLAP 和 OLTP 系统之间的基本权衡依然存在：
 
-- 高效生成分析报告的关键是能够独立读取列，因此大多数 OLAP 数据库是 [列式](../../faq/general/columnar-database.md)，
-- 而将列单独存储会增加对行的操作成本，例如追加或就地修改，这与列的数量成正比（如果系统试图收集事件的所有细节以防万一，则可以非常庞大）。因此，大多数 OLTP 系统将数据按行排列存储。
+- 为了高效生成分析报表，能够按列单独读取至关重要，因此大多数 OLAP 数据库是[列式](../../faq/general/columnar-database.md)的，
+- 然而，按列单独存储会提高基于行的操作（如追加或就地修改）的成本，并且成本与列的数量成正比（如果系统试图“以防万一”地收集某个事件的所有细节，那么列的数量可能非常巨大）。因此，大多数 OLTP 系统按行组织存储数据。

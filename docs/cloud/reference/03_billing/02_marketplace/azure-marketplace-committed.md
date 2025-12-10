@@ -37,7 +37,7 @@ Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarket
 
 <br />
 
-2. Click on the **Review Private Offer** link in the email. This should take you to your GCP Marketplace page with the private offer details.
+2. Click on the **Review Private Offer** link in the email. This should take you to your Azure Marketplace page with the private offer details.
 
 <br />
 

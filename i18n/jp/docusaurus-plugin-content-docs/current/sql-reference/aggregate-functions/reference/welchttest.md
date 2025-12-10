@@ -1,17 +1,15 @@
 ---
-description: 'Applies Welch''s t-test to samples from two populations.'
+description: '2つの母集団から得られた標本に Welch の t 検定を適用します。'
 sidebar_label: 'welchTTest'
 sidebar_position: 214
-slug: '/sql-reference/aggregate-functions/reference/welchttest'
+slug: /sql-reference/aggregate-functions/reference/welchttest
 title: 'welchTTest'
+doc_type: 'reference'
 ---
 
+# welchTTest {#welchttest}
 
-
-
-# welchTTest
-
-Welchのt検定を2つの母集団からのサンプルに適用します。
+2つの母集団からの標本に Welch の t 検定を適用します。
 
 **構文**
 
@@ -19,31 +17,30 @@ Welchのt検定を2つの母集団からのサンプルに適用します。
 welchTTest([confidence_level])(sample_data, sample_index)
 ```
 
-両方のサンプルの値は `sample_data` カラムにあります。 `sample_index` が 0 の場合、行の値は最初の母集団からのサンプルに属します。それ以外の場合は、2番目の母集団からのサンプルに属します。
-帰無仮説は、母集団の平均が等しいというものです。正規分布が仮定されます。母集団は異なる分散を持つ場合があります。
+両方のサンプルの値は `sample_data` カラムにあります。`sample_index` が 0 の場合、その行の値は第1母集団からのサンプルに属します。それ以外の場合は第2母集団からのサンプルに属します。
+帰無仮説は、母集団の平均が等しいというものです。母集団は正規分布に従うと仮定します。母集団の分散は等しくない場合があります。
 
 **引数**
 
-- `sample_data` — サンプルデータ。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点数](../../../sql-reference/data-types/float.md) または [小数](../../../sql-reference/data-types/decimal.md)。
-- `sample_index` — サンプルインデックス。 [整数](../../../sql-reference/data-types/int-uint.md)。
+* `sample_data` — サンプルデータ。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) または [Decimal](../../../sql-reference/data-types/decimal.md)。
+* `sample_index` — サンプルのインデックス。[Integer](../../../sql-reference/data-types/int-uint.md)。
 
 **パラメータ**
 
-- `confidence_level` — 信頼区間を計算するための信頼レベル。 [浮動小数点数](../../../sql-reference/data-types/float.md)。
+* `confidence_level` — 信頼区間を計算するための信頼水準。[Float](../../../sql-reference/data-types/float.md)。
 
 **返される値**
 
-[タプル](../../../sql-reference/data-types/tuple.md)で2つまたは4つの要素（オプションの `confidence_level` が指定されている場合）
+[Tuple](../../../sql-reference/data-types/tuple.md)。要素数は 2 つまたは 4 つ（オプションの `confidence_level` が指定されている場合は 4 つ）
 
-- 計算されたt統計量。 [Float64](../../../sql-reference/data-types/float.md)。
-- 計算されたp値。 [Float64](../../../sql-reference/data-types/float.md)。
-- 計算された信頼区間の下限。 [Float64](../../../sql-reference/data-types/float.md)。
-- 計算された信頼区間の上限。 [Float64](../../../sql-reference/data-types/float.md)。
-
+* 計算された t統計量。[Float64](../../../sql-reference/data-types/float.md)。
+* 計算された p値。[Float64](../../../sql-reference/data-types/float.md)。
+* 計算された信頼区間の下限。[Float64](../../../sql-reference/data-types/float.md)。
+* 計算された信頼区間の上限。[Float64](../../../sql-reference/data-types/float.md)。
 
 **例**
 
-入力テーブル:
+入力テーブル：
 
 ```text
 ┌─sample_data─┬─sample_index─┐
@@ -56,13 +53,13 @@ welchTTest([confidence_level])(sample_data, sample_index)
 └─────────────┴──────────────┘
 ```
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT welchTTest(sample_data, sample_index) FROM welch_ttest;
 ```
 
-結果:
+結果：
 
 ```text
 ┌─welchTTest(sample_data, sample_index)─────┐
@@ -70,7 +67,7 @@ SELECT welchTTest(sample_data, sample_index) FROM welch_ttest;
 └───────────────────────────────────────────┘
 ```
 
-**関連情報**
+**関連項目**
 
-- [Welchのt検定](https://en.wikipedia.org/wiki/Welch%27s_t-test)
-- [studentTTest関数](/sql-reference/aggregate-functions/reference/studentttest)
+* [Welch&#39;s t-test](https://en.wikipedia.org/wiki/Welch%27s_t-test)
+* [studentTTest 関数](/sql-reference/aggregate-functions/reference/studentttest)

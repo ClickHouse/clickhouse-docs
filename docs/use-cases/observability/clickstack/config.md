@@ -4,6 +4,7 @@ title: 'Configuration Options'
 pagination_prev: null
 pagination_next: null
 description: 'Configuration options for ClickStack - The ClickHouse Observability Stack'
+keywords: ['ClickStack configuration', 'observability configuration', 'HyperDX settings', 'collector configuration', 'environment variables']
 doc_type: 'reference'
 ---
 
@@ -20,7 +21,7 @@ The following configuration options are available for each component of ClickSta
 If using the [All in One](/use-cases/observability/clickstack/deployment/all-in-one), [HyperDX Only](/use-cases/observability/clickstack/deployment/hyperdx-only) or [Local Mode](/use-cases/observability/clickstack/deployment/local-mode-only) simply pass the desired setting via an environment variable e.g.
 
 ```shell
-docker run  -e HYPERDX_LOG_LEVEL='debug' -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
+docker run  -e HYPERDX_LOG_LEVEL='debug' -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-all-in-one:latest
 ```
 
 ### Docker Compose {#docker-compose}
@@ -107,7 +108,7 @@ This configuration can be performed inside the application from `Team Settings -
 
 <Image img={hyperdx_25} alt="HyperDX Source configuration" size="lg"/>
 
-Each of these sources require at least one table specified on creation as well as a set of columns which allow HyperDX to query the data.
+Each of these sources require at least one table specified on creation and a set of columns which allow HyperDX to query the data.
 
 If using the [default OpenTelemetry (OTel) schema](/observability/integrating-opentelemetry#out-of-the-box-schema) distributed with ClickStack, these columns can be automatically inferred for each of the sources. If [modifying the schema](#clickhouse) or using a custom schema, users are required to specify and update these mappings.
 
@@ -125,7 +126,7 @@ The following settings are available for each source:
 | `Server Connection`           | Server connection name.                                                                                                | Yes      | No                          | `Default`                                             |
 | `Database`                    | ClickHouse database name.                                                                                              | Yes      | Yes                         | `default`                                             |
 | `Table`                       | Target table name. Set to `otel_logs` if default schema is used.                                                                                                     | Yes      | No                         |                                            |
-| `Timestamp Column`            | Datetime column or expression that is part of your primary key.                                                        | Yes       | Yes                         | `TimestampTime`                                       |
+| `Timestamp Column`            | Datetime column or expression that's part of your primary key.                                                        | Yes       | Yes                         | `TimestampTime`                                       |
 | `Default Select`              | Columns shown in default search results.                                                                               | Yes       | Yes                         | `Timestamp`, `ServiceName`, `SeverityText`, `Body`         |
 | `Service Name Expression`     | Expression or column for the service name.                                                                             | Yes       | Yes                         | `ServiceName`                                         |
 | `Log Level Expression`        | Expression or column for the log level.                                                                                | Yes       | Yes                         | `SeverityText`                                        |
@@ -147,7 +148,7 @@ The following settings are available for each source:
 | `Server Connection`              | Server connection name.                                                                                                | Yes      | No                          | `Default`              |
 | `Database`                       | ClickHouse database name.                                                                                              | Yes      | Yes                         | `default`                |
 | `Table`                          | Target table name. Set to `otel_traces` if using the default schema.                                                                                                    | Yes      | Yes                         |      -       |
-| `Timestamp Column`              | Datetime column or expression that is part of your primary key.                                                        | Yes      | Yes                         | `Timestamp`              |
+| `Timestamp Column`              | Datetime column or expression that's part of your primary key.                                                        | Yes      | Yes                         | `Timestamp`              |
 | `Timestamp`                      | Alias for `Timestamp Column`.                                                                                          | Yes      | Yes                         | `Timestamp`              |
 | `Default Select`                | Columns shown in default search results.                                                                               | Yes      | Yes                         | `Timestamp, ServiceName as service, StatusCode as level, round(Duration / 1e6) as duration, SpanName` |
 | `Duration Expression`           | Expression for calculating span duration.                                                                              | Yes      | Yes                         | `Duration`               |
@@ -188,7 +189,7 @@ The following settings are available for each source:
 | `Server Connection`           | Server connection name.                                                                             | Yes      | No                          | `Default`              |
 | `Database`                    | ClickHouse database name.                                                                           | Yes      | Yes                         | `default`              |
 | `Table`                       | Target table for session data. Target table name. Set to `hyperdx_sessions` if using the default schema.                                                                          | Yes      | Yes                         | -      |
-| `Timestamp Column`           | Datetime column or expression that is part of your primary key.                                    | Yes      | Yes                         | `TimestampTime`            |
+| `Timestamp Column`           | Datetime column or expression that's part of your primary key.                                    | Yes      | Yes                         | `TimestampTime`            |
 | `Log Attributes Expression`   | Expression for extracting log-level attributes from session data.                                  | Yes      | Yes                         | `LogAttributes`        |
 | `LogAttributes`               | Alias or field reference used to store log attributes.                                              | Yes      | Yes                         | `LogAttributes`        |
 | `Resource Attributes Expression` | Expression for extracting resource-level metadata.                                               | Yes      | Yes                         | `ResourceAttributes`   |
@@ -204,7 +205,7 @@ To enable full cross-source correlation in ClickStack, users must configure corr
 - `Metrics`: Can be correlated with logs.
 - `Sessions`: Can be correlated with traces.
 
-By setting these correlations, HyperDX can, for example, render relevant logs alongside a trace or surface metric anomalies linked to a session. Proper configuration ensures a unified and contextual observability experience.
+Setting these correlations enables several features. For example, HyperDX can render relevant logs alongside a trace or surface metric anomalies linked to a session.
 
 For example, below is the Logs source configured with correlated sources:
 
@@ -213,13 +214,13 @@ For example, below is the Logs source configured with correlated sources:
 ### Application configuration settings {#application-configuration-settings}
 
 :::note HyperDX in ClickHouse Cloud
-These settings cannot be modified when HyperDX is managed in ClickHouse Cloud.
+These settings can't be modified when HyperDX is managed in ClickHouse Cloud.
 :::
 
 - `HYPERDX_API_KEY`
   - **Default:** None (required)
   - **Description:** Authentication key for the HyperDX API.
-  - **Guidance:** 
+  - **Guidance:**
   - Required for telemetry and logging
   - In local development, can be any non-empty value
   - For production, use a secure, unique key
@@ -349,47 +350,47 @@ These settings cannot be modified when HyperDX is managed in ClickHouse Cloud.
 
 See ["ClickStack OpenTelemetry Collector"](/use-cases/observability/clickstack/ingesting-data/otel-collector) for more details.
 
-- `CLICKHOUSE_ENDPOINT`  
+- `CLICKHOUSE_ENDPOINT`
   - **Default:** *None (required)* if standalone image. If All-in-one or Docker Compose distribution this is set to the integrated ClickHouse instance.
-  - **Description:** The HTTPS URL of the ClickHouse instance to export telemetry data to.  
-  - **Guidance:**  
-    - Must be a full HTTPS endpoint including port (e.g., `https://clickhouse.example.com:8443`)  
-    - Required for the collector to send data to ClickHouse  
+  - **Description:** The HTTPS URL of the ClickHouse instance to export telemetry data to.
+  - **Guidance:**
+    - Must be a full HTTPS endpoint including port (e.g., `https://clickhouse.example.com:8443`)
+    - Required for the collector to send data to ClickHouse
 
-- `CLICKHOUSE_USER`  
-  - **Default:** `default`  
-  - **Description:** Username used to authenticate with the ClickHouse instance.  
-  - **Guidance:**  
-    - Ensure the user has `INSERT` and `CREATE TABLE` permissions  
-    - Recommended to create a dedicated user for ingestion  
+- `CLICKHOUSE_USER`
+  - **Default:** `default`
+  - **Description:** Username used to authenticate with the ClickHouse instance.
+  - **Guidance:**
+    - Ensure the user has `INSERT` and `CREATE TABLE` permissions
+    - Recommended to create a dedicated user for ingestion
 
-- `CLICKHOUSE_PASSWORD`  
-  - **Default:** *None (required if authentication is enabled)*  
-  - **Description:** Password for the specified ClickHouse user.  
-  - **Guidance:**  
-    - Required if the user account has a password set  
-    - Store securely via secrets in production deployments  
+- `CLICKHOUSE_PASSWORD`
+  - **Default:** *None (required if authentication is enabled)*
+  - **Description:** Password for the specified ClickHouse user.
+  - **Guidance:**
+    - Required if the user account has a password set
+    - Store securely via secrets in production deployments
 
-- `HYPERDX_LOG_LEVEL`  
-  - **Default:** `info`  
-  - **Description:** Log verbosity level for the collector.  
-  - **Guidance:**  
-    - Accepts values like `debug`, `info`, `warn`, `error`  
-    - Use `debug` during troubleshooting  
+- `HYPERDX_LOG_LEVEL`
+  - **Default:** `info`
+  - **Description:** Log verbosity level for the collector.
+  - **Guidance:**
+    - Accepts values like `debug`, `info`, `warn`, `error`
+    - Use `debug` during troubleshooting
 
-- `OPAMP_SERVER_URL`  
+- `OPAMP_SERVER_URL`
   - **Default:** *None (required)* if standalone image. If All-in-one or Docker Compose distribution this points to the deployed HyperDX instance.
   - **Description:** URL of the OpAMP server used to manage the collector (e.g., HyperDX instance). This is port `4320` by default.
-  - **Guidance:**  
-    - Must point to your HyperDX instance  
-    - Enables dynamic configuration and secure ingestion  
+  - **Guidance:**
+    - Must point to your HyperDX instance
+    - Enables dynamic configuration and secure ingestion
 
-- `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE`  
-  - **Default:** `default`  
-  - **Description:** ClickHouse database the collector writes telemetry data to.  
-  - **Guidance:**  
-    - Set if using a custom database name  
-    - Ensure the specified user has access to this database  
+- `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE`
+  - **Default:** `default`
+  - **Description:** ClickHouse database the collector writes telemetry data to.
+  - **Guidance:**
+    - Set if using a custom database name
+    - Ensure the specified user has access to this database
 
 - `OTEL_AGENT_FEATURE_GATE_ARG`
   - **Default:** `<empty string>`
@@ -401,7 +402,7 @@ See ["ClickStack OpenTelemetry Collector"](/use-cases/observability/clickstack/i
 
 ClickStack ships with a default ClickHouse configuration designed for multi-terabyte scale, but users are free to modify and optimize it to suit their workload.
 
-To tune ClickHouse effectively, users should understand key storage concepts such as [parts](/parts), [partitions](/partitions), [shards and replicas](/shards), as well as how [merges](/merges) occur at insert time. We recommend reviewing the fundamentals of [primary indices](/primary-indexes), [sparse secondary indices](/optimize/skipping-indexes), and data skipping indices, along with techniques for [managing data lifecycle](/observability/managing-data) e.g. using a TTL lifecycle.
+To tune ClickHouse effectively, users should understand key storage concepts such as [parts](/parts), [partitions](/partitions), [shards and replicas](/shards), and how [merges](/merges) occur at insert time. We recommend reviewing the fundamentals of [primary indices](/primary-indexes), [sparse secondary indices](/optimize/skipping-indexes), and data skipping indices, along with techniques for [managing data lifecycle](/observability/managing-data) e.g. using a TTL lifecycle.
 
 ClickStack supports [schema customization](/use-cases/observability/schema-design) - users may modify column types, extract new fields (e.g. from logs), apply codecs and dictionaries, and accelerate queries using projections.
 

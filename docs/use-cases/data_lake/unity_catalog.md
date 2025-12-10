@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/data-lake/unity-catalog
-sidebar_label: 'Unity Catalog'
-title: 'Unity Catalog'
+sidebar_label: 'Unity catalog'
+title: 'Unity catalog'
 pagination_prev: null
 pagination_next: null
 description: 'In this guide, we will walk you through the steps to query
@@ -11,9 +11,9 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
-<ExperimentalBadge/>
+<BetaBadge/>
 
 :::note
 Integration with the Unity Catalog works for managed and external tables.

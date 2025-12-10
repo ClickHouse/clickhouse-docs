@@ -1,28 +1,28 @@
 ---
-'description': 'ClickHouse C++ 开发的编码风格指南'
-'sidebar_label': 'C++ 风格指南'
-'sidebar_position': 70
-'slug': '/development/style'
-'title': 'C++ 编程风格指南'
+description: 'ClickHouse C++ 代码风格指南'
+sidebar_label: 'C++ 风格指南'
+sidebar_position: 70
+slug: /development/style
+title: 'C++ 风格指南'
+doc_type: 'guide'
 ---
 
+# C++ 编码风格指南 {#c-style-guide}
 
-# C++ 代码风格指南
+## 通用建议 {#general-recommendations}
 
-## 一般建议 {#general-recommendations}
-
-以下是建议，而非要求。
-如果您正在编辑代码，遵循现有代码的格式是合理的。
-代码风格对于一致性非常重要。一致性使得阅读代码更加容易，也使得搜索代码变得更简单。
-许多规则并没有逻辑上的理由，它们是由既定的实践所决定的。
+以下内容是建议，非强制要求。
+如果你在编辑代码，遵循现有代码的格式通常是更合理的做法。
+代码风格的目的是保持一致性。一致性可以让代码更易阅读，也更便于在代码中搜索。
+许多规则并没有严格的逻辑依据；更多是由既有实践所约定的。
 
 ## 格式 {#formatting}
 
 **1.** 大部分格式由 `clang-format` 自动完成。
 
-**2.** 缩进为4个空格。配置您的开发环境，使得一个制表符添加四个空格。
+**2.** 缩进为 4 个空格。请将你的开发环境配置为按一次 Tab 键插入四个空格。
 
-**3.** 开始和结束的大括号必须单独占一行。
+**3.** 花括号的起始和结束必须各自单独占一行。
 
 ```cpp
 inline void readBoolText(bool & x, ReadBuffer & buf)
@@ -33,14 +33,14 @@ inline void readBoolText(bool & x, ReadBuffer & buf)
 }
 ```
 
-**4.** 如果整个函数体是一个单一的 `statement`，可以放在同一行。大括号周围要留出空格（除了行末的空格）。
+**4.** 如果整个函数体只有一个 `statement`，则可以将其写在一行内。在花括号两侧添加空格（行末已有的空格除外）。
 
 ```cpp
 inline size_t mask() const                { return buf_size() - 1; }
 inline size_t place(HashValue x) const    { return x & mask(); }
 ```
 
-**5.** 对于函数，不要在括号周围加空格。
+**5.** 在函数中，括号内外不要加空格。
 
 ```cpp
 void reinsert(const Value & x)
@@ -50,13 +50,13 @@ void reinsert(const Value & x)
 memcpy(&buf[place_value], &x, sizeof(x));
 ```
 
-**6.** 在 `if`、`for`、`while` 和其他表达式中，打开括号前要插入空格（与函数调用不同）。
+**6.** 在 `if`、`for`、`while` 等表达式中，在左圆括号前加一个空格（与函数调用不同）。
 
 ```cpp
 for (size_t i = 0; i < rows; i += storage.index_granularity)
 ```
 
-**7.** 在二进制运算符（`+`、`-`、`*`、`/`、`%` 等）及三元运算符 `?:` 周围添加空格。
+**7.** 在二元运算符（`+`、`-`、`*`、`/`、`%` 等）和三元运算符 `?:` 的两侧添加空格。
 
 ```cpp
 UInt16 year = (s[0] - '0') * 1000 + (s[1] - '0') * 100 + (s[2] - '0') * 10 + (s[3] - '0');
@@ -64,16 +64,16 @@ UInt8 month = (s[5] - '0') * 10 + (s[6] - '0');
 UInt8 day = (s[8] - '0') * 10 + (s[9] - '0');
 ```
 
-**8.** 如果输入了换行，将运算符换到新的一行，并在前面增加缩进。
+**8.** 如果输入换行符，应将运算符放在新的一行开头，并在其前面增加缩进。
 
 ```cpp
 if (elapsed_ns)
     message << " ("
-        << rows_read_on_server * 1000000000 / elapsed_ns << " rows/s., "
-        << bytes_read_on_server * 1000.0 / elapsed_ns << " MB/s.) ";
+        << rows_read_on_server * 1000000000 / elapsed_ns << " 行/秒，"
+        << bytes_read_on_server * 1000.0 / elapsed_ns << " MB/秒）";
 ```
 
-**9.** 如果需要，您可以在一行内对齐使用空格。
+**9.** 如有需要，可以在同一行内使用空格进行对齐。
 
 ```cpp
 dst.ClickLogID         = click.LogID;
@@ -81,17 +81,17 @@ dst.ClickEventID       = click.EventID;
 dst.ClickGoodEvent     = click.GoodEvent;
 ```
 
-**10.** 不要在运算符 `.` 和 `->` 周围使用空格。
+**10.** 不要在运算符 `.`、`->` 两侧使用空格。
 
-如有必要，运算符可以换到下一行。在这种情况下，前面的缩进应增加。
+如有必要，可以将运算符换行到下一行。在这种情况下，应增加运算符前面的缩进。
 
-**11.** 不要使用空格将一元运算符（`--`、`++`、`*`、`&` 等）与其参数分隔开。
+**11.** 不要使用空格将一元运算符（`--`、`++`、`*`、`&` 等）与其操作数分开。
 
-**12.** 在逗号后加空格，但逗号前不加。对于 `for` 表达式中的分号同样适用。
+**12.** 逗号后面加一个空格，前面不要加空格。`for` 表达式中的分号也遵循同样的规则。
 
-**13.** 不要使用空格将 `[]` 运算符分隔开。
+**13.** 不要在 `[]` 运算符两侧使用空格。
 
-**14.** 在 `template <...>` 表达式中，`template` 和 `<` 之间要留空格；`<` 之后和 `>` 之前不留空格。
+**14.** 在 `template <...>` 表达式中，在 `template` 和 `<` 之间使用一个空格；在 `<` 之后和 `>` 之前不要使用空格。
 
 ```cpp
 template <typename TKey, typename TValue>
@@ -99,32 +99,32 @@ struct AggregatedStatElement
 {}
 ```
 
-**15.** 在类和结构体中，使用 `public`、`private` 和 `protected` 与 `class/struct` 保持在同一级别，其余代码则缩进。
+**15.** 在类和结构中，将 `public`、`private` 和 `protected` 与 `class/struct` 保持同一缩进级别，其余代码再向内缩进。
 
 ```cpp
 template <typename T>
 class MultiVersion
 {
 public:
-    /// Version of object for usage. shared_ptr manage lifetime of version.
+    /// 用于使用的对象版本。shared_ptr 管理版本的生命周期。
     using Version = std::shared_ptr<const T>;
     ...
 }
 ```
 
-**16.** 如果整个文件使用相同的 `namespace`，且没有其他重要内容，则不必在 `namespace` 内进行缩进。
+**16.** 如果整个文件使用相同的 `namespace`，且没有其他特殊之处，则在 `namespace` 内不需要再增加缩进层级。
 
-**17.** 如果 `if`、`for`、`while` 或其他表达式的块只包含一个 `statement`，则括号是可选的。将 `statement` 放在单独的一行中。这条规则也适用于嵌套的 `if`、`for`、`while` 等。
+**17.** 如果 `if`、`for`、`while` 或其他表达式的代码块只包含单个 `statement`，则花括号是可选的。将该 `statement` 单独放在一行即可。此规则同样适用于嵌套的 `if`、`for`、`while` 等。
 
-但如果内部的 `statement` 包含大括号或 `else`，则外部块应使用大括号。
+但如果内部的 `statement` 本身包含花括号或 `else`，则外层代码块应使用花括号书写。
 
 ```cpp
-/// Finish write.
+/// 完成写入操作。
 for (auto & stream : streams)
     stream.second->finalize();
 ```
 
-**18.** 行尾不应有空格。
+**18.** 行尾不应包含任何尾随空格。
 
 **19.** 源文件采用 UTF-8 编码。
 
@@ -134,73 +134,73 @@ for (auto & stream : streams)
 << ", " << (timer.elapsed() / chunks_stats.hits) << " μsec/hit.";
 ```
 
-**21.** 不要在同一行中写多个表达式。
+**21.** 不要在同一行写多个表达式。
 
-**22.** 在函数内部对代码部分进行分组，并用不超过一行的空行进行分隔。
+**22.** 将函数内部的代码按区块分组，区块之间最多用一行空行分隔。
 
-**23.** 使用一到两行空行分隔函数、类等。
+**23.** 使用一到两行空行分隔函数、类等结构。
 
-**24.** `A const`（与值有关的）必须写在类型名之前。
+**24.** 与值相关的 `A const` 必须写在类型名之前。
 
 ```cpp
-//correct
+//正确
 const char * pos
 const std::string & s
-//incorrect
+//不正确
 char const * pos
 ```
 
-**25.** 声明指针或引用时，`*` 和 `&` 符号应在两侧用空格分隔。
+**25.** 在声明指针或引用时，`*` 和 `&` 符号左右两侧都应有空格。
 
 ```cpp
-//correct
+//正确
 const char * pos
-//incorrect
+//错误
 const char* pos
 const char *pos
 ```
 
-**26.** 在使用模板类型时，使用 `using` 关键字为它们命名（除了最简单的情况）。
+**26.** 使用模板类型时，除最简单的情况外，请使用 `using` 关键字为其定义别名。
 
-换句话说，模板参数仅在 `using` 中指定，且不在代码中重复。
+换句话说，模板参数只在 `using` 中指定，不会在代码的其他地方重复出现。
 
-`using` 可以在函数内部局部声明。
+`using` 可以在局部作用域中声明，例如在函数内部。
 
 ```cpp
-//correct
+//正确
 using FileStreams = std::map<std::string, std::shared_ptr<Stream>>;
 FileStreams streams;
-//incorrect
+//错误
 std::map<std::string, std::shared_ptr<Stream>> streams;
 ```
 
-**27.** 不要在一个语句中声明多个不同类型的变量。
+**27.** 不要在同一条语句中同时声明多个不同类型的变量。
 
 ```cpp
-//incorrect
+//不正确
 int x, *y;
 ```
 
-**28.** 不要使用 C 风格的强制转换。
+**28.** 不要使用 C 风格的类型转换。
 
 ```cpp
-//incorrect
+//不正确
 std::cerr << (int)c <<; std::endl;
-//correct
+//正确
 std::cerr << static_cast<int>(c) << std::endl;
 ```
 
-**29.** 在类和结构体中，按可见性范围分别分组成员和函数。
+**29.** 在类和结构体中，应在每个可见性作用域内将数据成员和成员函数分开分组。
 
-**30.** 对于小型类和结构体，不必将方法声明与实现分开。
+**30.** 对于小型类和结构体，没有必要将方法声明与其实现分离。
 
-对于任何类或结构体中的小型方法也同样适用。
+对于任何类或结构体中的小型方法，同样适用。
 
-对于模板类和结构体，不要将方法声明与实现分开（因为否则它们必须在同一个翻译单元中定义）。
+对于模板类和结构体，不要将方法声明与实现分离（否则它们必须在同一个翻译单元中定义）。
 
-**31.** 每行可在140个字符处换行，而不是80个字符。
+**31.** 可以在 140 个字符处换行，而不是 80 个字符。
 
-**32.** 如果不需要后缀递增/递减运算符，请始终使用前缀运算符。
+**32.** 如果不需要后置形式，应始终使用自增/自减运算符的前置形式。
 
 ```cpp
 for (Names::const_iterator it = column_names.begin(); it != column_names.end(); ++it)
@@ -208,96 +208,96 @@ for (Names::const_iterator it = column_names.begin(); it != column_names.end(); 
 
 ## 注释 {#comments}
 
-**1.** 确保为所有非平凡的代码部分添加注释。
+**1.** 一定要为所有非一目了然的代码部分添加注释。
 
-这非常重要。写注释可能会帮助您意识到某部分代码是不必要的，或者设计得不正确。
+这非常重要。编写注释的过程可能会让你意识到这段代码其实没有必要，或者它的设计存在问题。
 
 ```cpp
-/** Part of piece of memory, that can be used.
-  * For example, if internal_buffer is 1MB, and there was only 10 bytes loaded to buffer from file for reading,
-  * then working_buffer will have size of only 10 bytes
-  * (working_buffer.end() will point to position right after those 10 bytes available for read).
+/** 可使用的内存片段部分。
+  * 例如,若 internal_buffer 为 1MB,但从文件加载到缓冲区用于读取的数据仅有 10 字节,
+  * 则 working_buffer 的大小将仅为 10 字节
+  * (working_buffer.end() 将指向这 10 个可读字节之后的位置)。
   */
 ```
 
-**2.** 注释可以根据需要详细。
+**2.** 注释可以根据需要写得足够详细。
 
-**3.** 将注释放在其描述的代码之前。在少数情况下，注释可以在代码后，位于同一行。
+**3.** 将注释放在其描述的代码前面。极少数情况下，注释可以写在代码之后，与代码位于同一行。
 
 ```cpp
-/** Parses and executes the query.
+/** 解析并执行查询。
 */
 void executeQuery(
-    ReadBuffer & istr, /// Where to read the query from (and data for INSERT, if applicable)
-    WriteBuffer & ostr, /// Where to write the result
-    Context & context, /// DB, tables, data types, engines, functions, aggregate functions...
-    BlockInputStreamPtr & query_plan, /// Here could be written the description on how query was executed
-    QueryProcessingStage::Enum stage = QueryProcessingStage::Complete /// Up to which stage process the SELECT query
+    ReadBuffer & istr, /// 读取查询的来源(如适用,还包括 INSERT 的数据)
+    WriteBuffer & ostr, /// 写入结果的目标位置
+    Context & context, /// 数据库、表、数据类型、引擎、函数、聚合函数等
+    BlockInputStreamPtr & query_plan, /// 可在此处写入查询执行方式的描述
+    QueryProcessingStage::Enum stage = QueryProcessingStage::Complete /// SELECT 查询处理到哪个阶段
     )
 ```
 
-**4.** 注释应仅使用英语撰写。
+**4.** 注释应只使用英文编写。
 
-**5.** 如果您正在编写库，请在主要头文件中包含详细注释以进行解释。
+**5.** 如果你在编写一个库，请在主头文件中加入详细注释对其进行说明。
 
-**6.** 不要添加没有额外信息的注释。特别是，不要留下像这这样的空注释：
+**6.** 不要添加没有提供额外信息的注释。特别是不要留下如下这样的空注释：
 
 ```cpp
 /*
-* Procedure Name:
-* Original procedure name:
-* Author:
-* Date of creation:
-* Dates of modification:
-* Modification authors:
-* Original file name:
-* Purpose:
-* Intent:
-* Designation:
-* Classes used:
-* Constants:
-* Local variables:
-* Parameters:
-* Date of creation:
-* Purpose:
+* 过程名称:
+* 原始过程名称:
+* 作者:
+* 创建日期:
+* 修改日期:
+* 修改作者:
+* 原始文件名:
+* 用途:
+* 意图:
+* 说明:
+* 使用的类:
+* 常量:
+* 局部变量:
+* 参数:
+* 创建日期:
+* 用途:
 */
 ```
 
-示例借鉴自资源 http://home.tamk.fi/~jaalto/course/coding-style/doc/unmaintainable-code/.
+该示例借用了资源 [http://home.tamk.fi/~jaalto/course/coding-style/doc/unmaintainable-code/](http://home.tamk.fi/~jaalto/course/coding-style/doc/unmaintainable-code/) 中的内容。
 
-**7.** 不要在每个文件的开头写垃圾注释（作者、创建日期等）。
+**7.** 不要在每个文件开头写无用的注释（作者、创建日期等）。
 
-**8.** 单行注释以三个斜杠开头：`///`，多行注释以 `/**` 开头。这些注释被视为“文档注释”。
+**8.** 单行注释以三个斜杠开头：`///`，多行注释以 `/**` 开头。这些注释被视为“文档”。
 
-注意：您可以使用 Doxygen 从这些注释生成文档。但是通常不使用 Doxygen，因为在 IDE 中导航代码更方便。
+注意：你可以使用 Doxygen 从这些注释生成文档。但一般不会使用 Doxygen，因为在 IDE 中浏览代码更方便。
 
-**9.** 多行注释不得在开头和结尾有空行（关闭多行注释的行除外）。
+**9.** 多行注释的开头和结尾处不能有空行（关闭多行注释的那一行除外）。
 
-**10.** 用于注释掉代码的注释，使用基本注释，而不是“文档”注释。
+**10.** 注释掉代码时使用普通注释，而不是“文档化”注释。
 
-**11.** 提交之前删除注释掉的代码部分。
+**11.** 在提交之前删除被注释掉的代码片段。
 
-**12.** 不要在注释或代码中使用粗俗语言。
+**12.** 不要在注释或代码中使用脏话或辱骂性用语。
 
-**13.** 不要使用大写字母，也不要使用太多标点符号。
+**13.** 不要使用大写字母，也不要使用过多的标点符号。
 
 ```cpp
-/// WHAT THE FAIL???
+/// 这是什么鬼???
 ```
 
-**14.** 不要使用注释来做分隔符。
+**14.** 不要使用注释作为分隔符。
 
 ```cpp
 ///******************************************************
 ```
 
-**15.** 不要在注释中开始讨论。
+**15.** 不要在评论中发起讨论。
 
 ```cpp
-/// Why did you do this stuff?
+/// 为什么要执行这些操作？
 ```
 
-**16.** 不必在块结束时写下描述其内容的注释。
+**16.** 无需在代码块末尾再写注释来说明该块的作用。
 
 ```cpp
 /// for
@@ -305,19 +305,19 @@ void executeQuery(
 
 ## 命名 {#names}
 
-**1.** 在变量和类成员的命名上使用小写字母和下划线。
+**1.** 变量名和类成员名应使用小写字母并以下划线分隔。
 
 ```cpp
 size_t max_block_size;
 ```
 
-**2.** 对于函数（方法）的命名，使用 camelCase 并以小写字母开头。
+**2.** 函数（方法）名使用以小写字母开头的驼峰命名法（camelCase）。
 
 ```cpp
 std::string getName() const override { return "Memory"; }
 ```
 
-**3.** 对于类（结构体）的命名，使用 CamelCase 并以大写字母开头。接口不使用 I 之外的前缀。
+**3.** 对于类（struct）的名称，使用首字母大写的 CamelCase。接口前缀只能使用 I，不使用其他前缀。
 
 ```cpp
 class StorageMemory : public IStorage
@@ -325,54 +325,54 @@ class StorageMemory : public IStorage
 
 **4.** `using` 的命名方式与类相同。
 
-**5.** 模板类型参数的命名：在简单的情况下，使用 `T`；`T`、`U`；`T1`、`T2`。
+**5.** 模板类型参数的命名：在简单情况下，使用 `T`；`T`、`U`；`T1`、`T2`。
 
-对于更复杂的情况，可以遵循类名的命名规则，或者添加前缀 `T`。
+在更复杂的情况下，要么遵循类名的命名规则，要么添加前缀 `T`。
 
 ```cpp
 template <typename TKey, typename TValue>
 struct AggregatedStatElement
 ```
 
-**6.** 模板常量参数的命名：要么遵循变量名的命名规则，要么在简单情况下使用 `N`。
+**6.** 模板常量参数的命名：可以遵循变量命名规则，或在简单情况下使用 `N`。
 
 ```cpp
 template <bool without_www>
 struct ExtractDomain
 ```
 
-**7.** 对于抽象类（接口），可以添加 `I` 前缀。
+**7.** 对于抽象类（接口），可以使用 `I` 作为前缀。
 
 ```cpp
 class IProcessor
 ```
 
-**8.** 如果您在局部使用变量，可以使用简短名称。
+**8.** 如果变量仅在局部使用，可以使用较短的变量名。
 
-在其他情况下，使用能够描述其意义的名称。
+在其他所有情况下，请使用能够体现其含义的变量名。
 
 ```cpp
 bool info_successfully_loaded = false;
 ```
 
-**9.** `define` 和全局常量的名称使用全大写字母和下划线。
+**9.** `define` 和全局常量的名称使用全大写加下划线。
 
 ```cpp
 #define MAX_SRC_TABLE_NAMES_TO_STORE 1000
 ```
 
-**10.** 文件名应与其内容使用相同的风格。
+**10.** 文件名应与其内容使用相同的命名风格。
 
-如果文件只包含一个类，则文件命名应与类同名（CamelCase）。
+如果一个文件只包含一个类，文件名应与类名一致（CamelCase）。
 
-如果文件只包含一个函数，则文件命名应与函数相同（camelCase）。
+如果文件只包含一个函数，文件名应与函数名一致（camelCase）。
 
-**11.** 如果名称包含缩写，则：
+**11.** 如果名称中包含缩写，则：
 
-- 对于变量名称，缩写应使用小写字母 `mysql_connection`（而不是 `mySQL_connection`）。
-- 对于类和函数的名称，保持缩写中的大写字母 `MySQLConnection`（而不是 `MySqlConnection`）。
+* 对于变量名，缩写应使用小写字母 `mysql_connection`（而不是 `mySQL_connection`）。
+* 对于类名和函数名，保留缩写中的大写字母 `MySQLConnection`（而不是 `MySqlConnection`）。
 
-**12.** 仅用于初始化类成员的构造函数参数的命名应与类成员的命名相同，但在末尾加下划线。
+**12.** 仅用于初始化类成员的构造函数参数，其命名应与对应的类成员相同，但在末尾加下划线。
 
 ```cpp
 FileQueueProcessor(
@@ -387,15 +387,15 @@ FileQueueProcessor(
 }
 ```
 
-如果参数在构造函数体中未使用，可以省略下划线后缀。
+如果该参数在构造函数体中未被使用，则可以省略下划线后缀。
 
-**13.** 局部变量和类成员的名称之间不需要区别（不需要前缀）。
+**13.** 局部变量和类成员在命名方式上不作区分（不需要任何前缀）。
 
 ```cpp
-timer (not m_timer)
+timer(而非 m_timer)
 ```
 
-**14.** 对于 `enum` 中的常量，使用大写字母开头的 CamelCase。全大写也是可以的。如果 `enum` 不是局部的，使用 `enum class`。
+**14.** 对于 `enum` 中的常量，使用首字母大写的 CamelCase 命名。也可以使用 ALL&#95;CAPS。如果 `enum` 为非局部枚举，请使用 `enum class`。
 
 ```cpp
 enum class CompressionMethod
@@ -405,74 +405,74 @@ enum class CompressionMethod
 };
 ```
 
-**15.** 所有名称必须使用英语。禁止翻译希伯来词。
+**15.** 所有名称必须使用英文。不允许对希伯来语单词进行音译。
 
-    not T_PAAMAYIM_NEKUDOTAYIM
+不要写 T&#95;PAAMAYIM&#95;NEKUDOTAYIM
 
-**16.** 缩写在众所周知的情况下是可以接受的（当您能轻松在维基百科或搜索引擎中找到缩写的意思时）。
+**16.** 如果缩写广为人知（例如你可以在Wikipedia或搜索引擎中轻松查到其含义），则可以使用缩写。
 
-    `AST`、`SQL`。
+`AST`, `SQL`.
 
-    不是 `NVDH`（一些随机字母）
+不要写 `NVDH`（一些随机字母）
 
-不完整的单词在常用情况下是可以接受的。
+如果截断形式是常用写法，则可以使用不完整的单词。
 
-如果完整名称在注释中有所提及，您也可以使用缩写。
+如果在注释中紧挨着给出了全称，你也可以使用缩写。
 
-**17.** 含有 C++ 源代码的文件必须具有 `.cpp` 扩展名。头文件必须具有 `.h` 扩展名。
+**17.** 包含 C++ 源代码的文件必须使用 `.cpp` 扩展名。头文件必须使用 `.h` 扩展名。
 
 ## 如何编写代码 {#how-to-write-code}
 
 **1.** 内存管理。
 
-手动内存释放（`delete`）只能在库代码中使用。
+手动释放内存（`delete`）只能用于库代码中。
 
-在库代码中，`delete` 操作符只能在析构函数中使用。
+在库代码中，`delete` 运算符只能在析构函数中使用。
 
-在应用程序代码中，内存必须由拥有该内存的对象释放。
+在应用代码中，内存必须由拥有它的对象负责释放。
 
 示例：
 
-- 最简单的方法是将对象放置在栈上，或者使其成为另一个类的成员。
-- 对于大量的小对象，使用容器。
-- 对于在堆中居住的小型对象的自动释放，使用 `shared_ptr/unique_ptr`。
+* 最简单的方法是将对象放在栈上，或者将其作为另一个类的成员。
+* 对于大量小对象，使用容器。
+* 对于少量驻留在堆上的对象的自动释放，使用 `shared_ptr/unique_ptr`。
 
 **2.** 资源管理。
 
-使用 `RAII`，见上文。
+使用 `RAII`，并参考上文。
 
 **3.** 错误处理。
 
-使用异常。在大多数情况下，您只需要抛出异常，而不需要捕获它（由于 `RAII`）。
+使用异常。在大多数情况下，只需要抛出异常，而不需要捕获它（得益于 `RAII`）。
 
-在离线数据处理应用中，不捕获异常通常是可以接受的。
+在离线数据处理应用中，通常可以接受不捕获异常。
 
-在处理用户请求的服务器中，通常只需在连接处理程序的顶层捕获异常即可。
+在处理用户请求的服务器程序中，通常只需在连接处理器的顶层捕获异常。
 
-在线程函数中，您应该捕获并保存所有异常，以便在 `join` 后在主线程中重新抛出它们。
+在线程函数中，应捕获并保存所有异常，以便在 `join` 之后在主线程中重新抛出它们。
 
 ```cpp
-/// If there weren't any calculations yet, calculate the first block synchronously
+/// 如果尚未进行任何计算,则同步计算第一个数据块
 if (!started)
 {
     calculate();
     started = true;
 }
-else /// If calculations are already in progress, wait for the result
+else /// 如果计算正在进行中,则等待结果
     pool.wait();
 
 if (exception)
     exception->rethrow();
 ```
 
-切勿在未处理的情况下隐藏异常。切勿盲目将所有异常记录在日志中。
+切勿在未适当处理时直接吞掉异常；也不要盲目地把所有异常都写入日志。
 
 ```cpp
-//Not correct
+//不正确
 catch (...) {}
 ```
 
-如果需要忽略某些异常，只对特定异常如此，并重新抛出其余异常。
+如果需要忽略某些异常，只忽略特定的异常，并将其余异常重新抛出。
 
 ```cpp
 catch (const DB::Exception & e)
@@ -484,33 +484,33 @@ catch (const DB::Exception & e)
 }
 ```
 
-在使用具有响应码或 `errno` 函数时，始终检查结果并在出现错误的情况下抛出异常。
+在使用带有返回码或 `errno` 的函数时，务必检查返回结果，并在发生错误时抛出异常。
 
 ```cpp
 if (0 != close(fd))
-    throw ErrnoException(ErrorCodes::CANNOT_CLOSE_FILE, "Cannot close file {}", file_name);
+    throw ErrnoException(ErrorCodes::CANNOT_CLOSE_FILE, "无法关闭文件 {}", file_name);
 ```
 
-您可以使用 assert 来检查代码中的不变性。
+你可以使用 `assert` 在代码中检查不变量。
 
 **4.** 异常类型。
 
-在应用程序代码中不需要使用复杂的异常层次结构。异常文本应对系统管理员可理解。
+在应用代码中没有必要使用复杂的异常层次结构。异常信息应当让系统管理员可以理解。
 
 **5.** 从析构函数抛出异常。
 
-这并不推荐，但允许。
+不推荐这么做，但这是被允许的。
 
-使用以下选项：
+可以采用以下方式：
 
-- 创建一个函数（`done()` 或 `finalize()`），在异常可能发生之前完成所有工作。如果该函数已被调用，之后的析构函数中不应有异常。
-- 过于复杂的任务（例如在网络上发送消息）可以放在一个单独的方法中，使用该类的用户必须在销毁之前调用。
-- 如果析构函数中发生异常，最好记录而不是隐藏它（如果日志系统可用）。
-- 在简单应用中，可以依赖于 `std::terminate`（对于 C++11 中默认的 `noexcept` 的情况）来处理异常。
+* 创建一个函数（`done()` 或 `finalize()`），提前完成所有可能导致抛出异常的工作。如果该函数已经被调用，那么之后在析构函数中就不应该再有异常抛出。
+* 过于复杂的任务（例如通过网络发送消息）可以放到一个单独的方法中，由类的使用者在销毁前显式调用。
+* 如果在析构函数中出现异常，最好将其记录到日志中，而不是直接隐藏（前提是有可用的日志记录器）。
+* 在简单应用程序中，可以接受依赖 `std::terminate`（针对 C++11 中默认 `noexcept` 的情况）来处理异常。
 
 **6.** 匿名代码块。
 
-您可以在单个函数内部创建一个单独的代码块，以使某些变量成为局部的，这样当退出此块时，析构函数将被调用。
+你可以在单个函数中创建一个单独的代码块，使某些变量只在该作用域内可见，这样在离开该代码块时就会调用它们的析构函数。
 
 ```cpp
 Block block = data.in->read();
@@ -528,66 +528,66 @@ ready_any.set();
 
 在离线数据处理程序中：
 
-- 尽量在单个 CPU 核心上获得尽可能好的性能。在必要时再对代码进行并行化。
+* 尽量在单个 CPU 核心上获得尽可能好的性能。如有需要，再对代码进行并行化。
 
-在服务器应用中：
+在服务端应用程序中：
 
-- 使用线程池处理请求。目前尚未出现需要用户空间上下文切换的任务。
+* 使用线程池来处理请求。目前为止，我们还没有遇到需要在用户态进行上下文切换的任务。
 
-不使用 fork 进行并行化。
+不要使用 fork 进行并行化。
 
 **8.** 线程同步。
 
-通常可以让不同的线程使用不同的内存单元（更好的是：不同的缓存行），并且不使用任何线程同步（除了 `joinAll`）。
+很多情况下，可以让不同线程使用不同的内存单元（更好的是使用不同的缓存行），从而无需进行任何线程同步（除了 `joinAll`）。
 
-如果需要同步，在大多数情况下，使用 `lock_guard` 下的互斥量就足够了。
+如果需要同步，在大多数情况下，使用配合 `lock_guard` 的互斥量就足够了。
 
-在其他情况下使用系统同步原语。不要使用忙等待。
+在其他情况下使用系统提供的同步原语。不要使用忙等待。
 
-仅在最简单的情况下使用原子操作。
+原子操作只应在最简单的场景中使用。
 
-除非这是您的主要专业领域，否则不要尝试实现无锁数据结构。
+不要尝试实现无锁数据结构，除非这是你的主要专业领域。
 
-**9.** 指针与引用。
+**9.** 指针 vs 引用。
 
-在大多数情况下，优先使用引用。
+在大多数情况下，应优先使用引用。
 
 **10.** `const`。
 
 使用常量引用、指向常量的指针、`const_iterator` 和 `const` 方法。
 
-将 `const` 视为默认，只有在必要时使用非 `const`。
+将 `const` 视为默认选项，仅在确有必要时才使用非 `const`。
 
-在按值传递变量时，使用 `const` 通常没有意义。
+在按值传递变量时，通常使用 `const` 没有意义。
 
-**11.** 无符号。
+**11.** unsigned。
 
-必要时使用 `unsigned`。
+在必要时使用 `unsigned`。
 
 **12.** 数值类型。
 
-使用 `UInt8`、`UInt16`、`UInt32`、`UInt64`、`Int8`、`Int16`、`Int32` 和 `Int64`，以及 `size_t`、`ssize_t` 和 `ptrdiff_t`。
+使用这些类型：`UInt8`、`UInt16`、`UInt32`、`UInt64`、`Int8`、`Int16`、`Int32` 和 `Int64`，以及 `size_t`、`ssize_t` 和 `ptrdiff_t`。
 
-不要使用这些类型数字：`signed/unsigned long`、`long long`、`short`、`signed/unsigned char`、`char`。
+不要对数字使用这些类型：`signed/unsigned long`、`long long`、`short`、`signed/unsigned char`、`char`。
 
 **13.** 传递参数。
 
-对于将被移动的复杂值按值传递，并使用 std::move；如果您想在循环中更新值则按引用传递。
+如果复杂类型的值之后会被移动，则按值传递并使用 `std::move`；如果希望在循环中更新该值，则按引用传递。
 
-如果一个函数获取了在堆上创建对象的所有权，请使参数类型为 `shared_ptr` 或 `unique_ptr`。
+如果函数获取在堆上创建的对象的所有权，则将参数类型设为 `shared_ptr` 或 `unique_ptr`。
 
 **14.** 返回值。
 
-在大多数情况下，使用 `return`。不要写 `return std::move(res)`。
+在大多数情况下，只需使用 `return`。不要写 `return std::move(res)`。
 
-如果函数在堆上分配对象并返回它，使用 `shared_ptr` 或 `unique_ptr`。
+如果函数在堆上分配一个对象并返回它，请使用 `shared_ptr` 或 `unique_ptr`。
 
-在少数情况下（在循环中更新值），您可能需要通过参数返回值。在这种情况下，参数应为引用。
+在少数情况下（在循环中更新一个值），可能需要通过参数返回该值。在这种情况下，该参数应为引用。
 
 ```cpp
 using AggregateFunctionPtr = std::shared_ptr<IAggregateFunction>;
 
-/** Allows creating an aggregate function by its name.
+/** 允许根据名称创建聚合函数。
   */
 class AggregateFunctionFactory
 {
@@ -598,108 +598,108 @@ public:
 
 **15.** `namespace`。
 
-不需要为应用程序代码使用单独的 `namespace`。
+没有必要为应用程序代码单独使用一个 `namespace`。
 
-小型库也不需要这样。
+小型库也不需要这样做。
 
-对于中型到大型库，将所有内容放在一个 `namespace` 中。
+对于中大型库，把所有内容都放在一个 `namespace` 中。
 
-在库的 `.h` 文件中，您可以使用 `namespace detail` 隐藏不需要在应用程序代码中的实现细节。
+在库的 `.h` 文件中，你可以使用 `namespace detail` 来隐藏应用程序代码不需要的实现细节。
 
-在 `.cpp` 文件中，您可以使用 `static` 或匿名 `namespace` 隐藏符号。
+在 `.cpp` 文件中，你可以使用 `static` 或匿名 `namespace` 来隐藏符号。
 
-此外，`namespace` 可用于 `enum` 以防止相应的名称掉入外部 `namespace`（但最好使用 `enum class`）。
+此外，可以为 `enum` 使用一个 `namespace`，以防止相应的名称进入外部 `namespace`（但最好使用 `enum class`）。
 
 **16.** 延迟初始化。
 
 如果初始化需要参数，则通常不应编写默认构造函数。
 
-如果将来需要延迟初始化，您可以添加一个默认构造函数，该构造函数将创建一个无效对象。或者，对于少量对象，可以使用 `shared_ptr/unique_ptr`。
+如果之后需要延迟初始化，可以添加一个默认构造函数，用来创建一个无效对象。或者，对于数量较少的对象，可以使用 `shared_ptr/unique_ptr`。
 
 ```cpp
 Loader(DB::Connection * connection_, const std::string & query, size_t max_block_size_);
 
-/// For deferred initialization
+/// 用于延迟初始化
 Loader() {}
 ```
 
 **17.** 虚函数。
 
-如果类不打算用于多态使用，则不需要使函数为虚函数。这同样适用于析构函数。
+如果类不打算用于多态场景，就不需要将函数声明为虚函数。析构函数同样适用这一原则。
 
 **18.** 编码。
 
-在任何地方都使用 UTF-8。使用 `std::string` 和 `char *`。不要使用 `std::wstring` 和 `wchar_t`。
+统一使用 UTF-8。使用 `std::string` 和 `char *`。不要使用 `std::wstring` 和 `wchar_t`。
 
 **19.** 日志记录。
 
-参见代码中的示例。
+参考代码中的各处示例。
 
-在提交之前，删除所有无意义和调试日志，以及任何其他类型的调试输出。
+在提交之前，删除所有无意义的和调试用的日志记录，以及任何其他类型的调试输出。
 
-在循环中记录应尽量避免，即使在 Trace 等级。
+应尽量避免在循环中记录日志，即使是在 Trace 级别。
 
-日志必须在任何记录级别下都能被阅读。
+在任何日志级别下，日志都必须可读。
 
-日志应主要用于应用程序代码。
+日志记录在大多数情况下只应在应用程序代码中使用。
 
-日志消息必须用英语撰写。
+日志消息必须用英语书写。
 
-日志应尽可能对系统管理员可理解。
+日志最好能让系统管理员容易理解。
 
-不要在日志中使用粗俗语言。
+不要在日志中使用粗话或脏话。
 
-在日志中使用UTF-8编码。在少数情况下，您可以在日志中使用非ASCII字符。
+在日志中使用 UTF-8 编码。在少数情况下，你可以在日志中使用非 ASCII 字符。
 
 **20.** 输入输出。
 
-不要在对应用程序性能至关重要的内部循环中使用 `iostreams`（绝不使用 `stringstream`）。
+不要在对应用性能至关重要的内部循环中使用 `iostreams`（并且绝不要使用 `stringstream`）。
 
-使用 `DB/IO` 库。
+改用 `DB/IO` 库。
 
 **21.** 日期和时间。
 
 参见 `DateLUT` 库。
 
-**22.** 包含。
+**22.** include。
 
-始终使用 `#pragma once`，而不是包含保护。
+一律使用 `#pragma once`，而不是头文件保护宏（include guards）。
 
-**23.** 使用。
+**23.** using。
 
-不使用 `using namespace`。您可以使用 `using` 进行特定的内容。但是使其在类或函数内部局部。
+不要使用 `using namespace`。你可以对某个具体名称使用 `using`，但要将其限制在类或函数的局部范围内。
 
-**24.** 除非必要，否则不使用 `trailing return type`。
+**24.** 除非确有必要，不要对函数使用 `trailing return type`。
 
 ```cpp
 auto f() -> void
 ```
 
-**25.** 变量的声明和初始化。
+**25.** 变量声明和初始化。
 
 ```cpp
-//right way
+//正确方式
 std::string s = "Hello";
 std::string s{"Hello"};
 
-//wrong way
+//错误方式
 auto s = std::string{"Hello"};
 ```
 
-**26.** 对于虚函数，在基类中写 `virtual`，而在派生类中用 `override` 代替 `virtual`。
+**26.** 对于虚函数，在基类中使用 `virtual` 关键字，而在派生类中不要再写 `virtual`，改为写 `override`。
 
-## C++ 的未使用功能 {#unused-features-of-c}
+## 未使用的 C++ 特性 {#unused-features-of-c}
 
 **1.** 不使用虚继承。
 
-**2.** 在现代 C++ 中具有便利语法糖的构造，例如：
+**2.** 在现代 C++ 中具有便捷语法糖的构造，例如：
 
 ```cpp
-// Traditional way without syntactic sugar
-template <typename G, typename = std::enable_if_t<std::is_same<G, F>::value, void>> // SFINAE via std::enable_if, usage of ::value
-std::pair<int, int> func(const E<G> & e) // explicitly specified return type
+// 不使用语法糖的传统方式
+template <typename G, typename = std::enable_if_t<std::is_same<G, F>::value, void>> // 通过 std::enable_if 实现 SFINAE，使用 ::value
+std::pair<int, int> func(const E<G> & e) // 显式指定返回类型
 {
-    if (elements.count(e)) // .count() membership test
+    if (elements.count(e)) // .count() 成员资格测试
     {
         // ...
     }
@@ -710,17 +710,17 @@ std::pair<int, int> func(const E<G> & e) // explicitly specified return type
             [&](const auto x){
                 return x == 1;
             }),
-        elements.end()); // remove-erase idiom
+        elements.end()); // remove-erase 惯用法
 
-    return std::make_pair(1, 2); // create pair via make_pair()
+    return std::make_pair(1, 2); // 通过 make_pair() 创建 pair
 }
 
-// With syntactic sugar (C++14/17/20)
+// 使用语法糖 (C++14/17/20)
 template <typename G>
-requires std::same_v<G, F> // SFINAE via C++20 concept, usage of C++14 template alias
-auto func(const E<G> & e) // auto return type (C++14)
+requires std::same_v<G, F> // 通过 C++20 concept 实现 SFINAE，使用 C++14 模板别名
+auto func(const E<G> & e) // auto 返回类型 (C++14)
 {
-    if (elements.contains(e)) // C++20 .contains membership test
+    if (elements.contains(e)) // C++20 .contains 成员资格测试
     {
         // ...
     }
@@ -731,7 +731,7 @@ auto func(const E<G> & e) // auto return type (C++14)
             return x == 1;
         }); // C++20 std::erase_if
 
-    return {1, 2}; // or: return std::pair(1, 2); // create pair via initialization list or value initialization (C++17)
+    return {1, 2}; // 或者：return std::pair(1, 2); // 通过初始化列表或值初始化创建 pair (C++17)
 }
 ```
 
@@ -739,103 +739,103 @@ auto func(const E<G> & e) // auto return type (C++14)
 
 **1.** 我们为特定平台编写代码。
 
-但在其他条件相同的情况下，优先使用跨平台或可移植的代码。
+但在其他条件相同的情况下，更推荐编写跨平台或可移植的代码。
 
-**2.** 语言：C++20（见可用 [C++20 特性](https://en.cppreference.com/w/cpp/compiler_support#C.2B.2B20_features) 的列表）。
+**2.** 语言：C++20（参见可用的 [C++20 功能列表](https://en.cppreference.com/w/cpp/compiler_support#C.2B.2B20_features)）。
 
-**3.** 编译器：`clang`。截至撰写时（2025年3月），代码使用 `clang` 版本 >= 19 进行编译。
+**3.** 编译器：`clang`。在撰写本文时（2025 年 3 月），代码使用版本 >= 19 的 clang 进行编译。
 
-使用标准库（`libc++`）。
+使用的标准库为 `libc++`。
 
-**4.** 操作系统：Linux Ubuntu，不低于 Precise。
+**4.** 操作系统：Linux Ubuntu，不早于 Precise 版本。
 
-**5.** 代码为 x86_64 CPU 架构编写。
+**5.** 代码针对 x86_64 CPU 架构编写。
 
-CPU 指令集是我们服务器中最低支持的集。目前是 SSE 4.2。
+CPU 指令集为我们服务器中支持的最小公共子集，目前为 SSE 4.2。
 
-**6.** 使用 `-Wall -Wextra -Werror -Weverything` 编译标志，但有一些例外。
+**6.** 使用 `-Wall -Wextra -Werror -Weverything` 编译选项，但有少量例外。
 
-**7.** 除了那些难以静态链接的库外，所有库都使用静态链接（见 `ldd` 命令的输出）。
+**7.** 对除那些难以进行静态链接的库以外的所有库使用静态链接（参见 `ldd` 命令的输出）。
 
-**8.** 在发布设置下开发和调试代码。
+**8.** 使用发布（release）配置进行代码开发和调试。
 
 ## 工具 {#tools}
 
 **1.** KDevelop 是一个不错的 IDE。
 
-**2.** 调试时，使用 `gdb`、`valgrind`（`memcheck`）、`strace`、`-fsanitize=...` 或 `tcmalloc_minimal_debug`。
+**2.** 调试时使用 `gdb`、`valgrind`（`memcheck`）、`strace`、`-fsanitize=...` 或 `tcmalloc_minimal_debug`。
 
-**3.** 进行性能分析时，使用 `Linux Perf`、`valgrind`（`callgrind`）或 `strace -cf`。
+**3.** 性能分析时使用 `Linux Perf`、`valgrind`（`callgrind`）或 `strace -cf`。
 
-**4.** 源代码使用 Git。
+**4.** 源代码托管在 Git 中。
 
-**5.** 汇编使用 `CMake`。
+**5.** 构建使用 `CMake`。
 
 **6.** 程序通过 `deb` 包发布。
 
-**7.** 提交到主分支的更改不能破坏构建。
+**7.** 提交到 master 的变更不得导致构建失败。
 
-虽然仅选择的修订版被认为是可工作的。
+虽然只有选定的修订版本会被视为可用版本。
 
-**8.** 尽可能频繁地进行提交，即使代码只是部分准备好。
+**8.** 尽可能频繁地提交，即使代码只完成了一部分。
 
-为此使用分支。
+为此请使用分支。
 
-如果您在 `master` 分支中的代码尚未可构建，请在 `push` 之前将其排除在构建之外。您需要在几天内完成它或将其删除。
+如果你在 `master` 分支上的代码暂时还无法构建，在 `push` 之前将其从构建中排除。你需要在几天内完成它或将其删除。
 
-**9.** 对于非平凡的更改，使用分支并在服务器上发布。
+**9.** 对于较为复杂的修改，请使用分支并将其发布到服务器上。
 
-**10.** 从存储库中删除未使用的代码。
+**10.** 未使用的代码会从仓库中删除。
 
 ## 库 {#libraries}
 
-**1.** 使用 C++20 标准库（允许实验性扩展），以及 `boost` 和 `Poco` 框架。
+**1.** 使用 C++20 标准库（允许使用 experimental 扩展特性），以及 `boost` 和 `Poco` 框架。
 
-**2.** 不允许使用操作系统包中的库。也不允许使用预安装的库。所有库应以源代码形式放在 `contrib` 目录中并与 ClickHouse 一起构建。有关详细信息，请参见 [添加和维护第三方库的指南](/development/contrib#adding-and-maintaining-third-party-libraries)。
+**2.** 不允许使用来自操作系统软件包的库，也不允许使用预装的库。所有库都应以源代码形式放在 `contrib` 目录中，并与 ClickHouse 一同构建。详情参见[添加新的第三方库指南](/development/contrib#adding-and-maintaining-third-party-libraries)。
 
-**3.** 总是优先考虑已经在使用中的库。
+**3.** 始终优先使用已经在使用的库。
 
-## 一般建议 {#general-recommendations-1}
+## 通用建议 {#general-recommendations-1}
 
-**1.** 写尽可能少的代码。
+**1.** 尽可能少写代码。
 
-**2.** 尝试最简单的解决方案。
+**2.** 优先尝试最简单的解决方案。
 
-**3.** 在知道它将如何工作以及内部循环将如何运行之前，请勿编写代码。
+**3.** 在弄清楚代码将如何工作以及内部循环如何运作之前，不要开始写代码。
 
 **4.** 在最简单的情况下，使用 `using` 而不是类或结构体。
 
-**5.** 如果可能，不要编写复制构造函数、赋值运算符、析构函数（除非是虚构造函数，如果类至少包含一个虚拟函数）、移动构造函数或移动赋值运算符。换句话说，编译器生成的函数必须正常工作。您可以使用 `default`。
+**5.** 如果可能，不要编写拷贝构造函数、赋值运算符、析构函数（如果类中至少有一个虚函数，则虚析构函数除外）、移动构造函数或移动赋值运算符。换句话说，应保证编译器生成的函数就能正确工作。你可以使用 `default`。
 
-**6.** 鼓励代码简化。在可能的情况下减少代码的大小。
+**6.** 鼓励简化代码。在可能的情况下尽量减少代码量。
 
-## 其他建议 {#additional-recommendations}
+## 其他补充建议 {#additional-recommendations}
 
-**1.** 明确指定 `std::` 进行 `stddef.h` 中的类型
+**1.** 对来自 `stddef.h` 的类型显式添加 `std::`
 
-并不推荐。换句话说，我们建议写 `size_t` 而不是 `std::size_t`，因为这样更短。
+是不推荐的。换句话说，我们建议写 `size_t` 而不是 `std::size_t`，因为它更简洁。
 
-可以选择添加 `std::`。
+不过，添加 `std::` 也是可以接受的。
 
-**2.** 明确指定 `std::` 进行标准 C 库中的函数
+**2.** 对来自标准 C 库的函数显式添加 `std::`
 
-并不推荐。换句话说，写 `memcpy` 而不是 `std::memcpy`。
+是不推荐的。换句话说，请写 `memcpy` 而不是 `std::memcpy`。
 
-原因是存在类似的非标准函数，例如 `memmem`。我们确实偶尔会使用这些函数。这些函数不在 `namespace std` 中。
+原因在于存在类似的非标准函数，例如 `memmem`。我们有时会使用这些函数。这些函数并不存在于 `namespace std` 中。
 
-如果您在任何地方写 `std::memcpy` 而不是 `memcpy`，那么没有 `std::` 的 `memmem` 看起来会很奇怪。
+如果你在所有地方都写 `std::memcpy` 而不是 `memcpy`，那么 `memmem` 不带 `std::` 的写法就会显得很奇怪。
 
-尽管如此，如果您更喜欢使用 `std::`，仍然可以。
+尽管如此，如果你更喜欢带 `std::` 的写法，仍然可以使用。
 
-**3.** 当相同的函数可用于标准 C++ 库时，使用 C 的函数。
+**3.** 在标准 C++ 库中存在等价函数时，仍然使用 C 语言库函数。
 
-如果更有效，这是可以接受的。
+如果这样做更高效，这是可以接受的。
 
-例如，对于复制大段内存，使用 `memcpy` 而不是 `std::copy`。
+例如，在复制大块内存时，请使用 `memcpy` 而不是 `std::copy`。
 
 **4.** 多行函数参数。
 
-以下任何包装样式都是允许的：
+以下任一换行风格都是允许的：
 
 ```cpp
 function(

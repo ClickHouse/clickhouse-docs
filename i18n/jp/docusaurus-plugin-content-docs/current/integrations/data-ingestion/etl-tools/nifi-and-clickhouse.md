@@ -1,16 +1,14 @@
 ---
 sidebar_label: 'NiFi'
 sidebar_position: 12
-keywords:
-- 'clickhouse'
-- 'NiFi'
-- 'connect'
-- 'integrate'
-- 'etl'
-- 'data integration'
-slug: '/integrations/nifi'
-description: 'NiFiデータパイプラインを使用してClickHouseにデータをストリーム配信する'
-title: 'Connect Apache NiFi to ClickHouse'
+keywords: ['clickhouse', 'NiFi', '接続', '統合', 'etl', 'データ統合']
+slug: /integrations/nifi
+description: 'NiFi データパイプラインを使用して ClickHouse へデータをストリーミングする'
+title: 'Apache NiFi を ClickHouse に接続する'
+doc_type: 'guide'
+integration:
+  - support_level: 'community'
+  - category: 'data_ingestion'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
@@ -32,130 +30,154 @@ import nifi14 from '@site/static/images/integrations/data-ingestion/etl-tools/ni
 import nifi15 from '@site/static/images/integrations/data-ingestion/etl-tools/nifi_15.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+# Apache NiFiをClickHouseに接続する {#connect-apache-nifi-to-clickhouse}
 
-# Apache NiFiをClickHouseに接続する
+<CommunityMaintainedBadge />
 
-<CommunityMaintainedBadge/>
+<a href='https://nifi.apache.org/' target='_blank'>
+  Apache NiFi
+</a>
+は、ソフトウェアシステム間のデータフローを自動化するために設計されたオープンソースのワークフロー管理ソフトウェアです。ETLデータパイプラインの作成が可能で、300以上のデータプロセッサが同梱されています。このステップバイステップのチュートリアルでは、Apache NiFiをソースと宛先の両方としてClickHouseに接続し、サンプルデータセットをロードする方法を説明します。
 
-<a href="https://nifi.apache.org/" target="_blank">Apache NiFi</a>は、ソフトウェアシステム間のデータフローを自動化するために設計されたオープンソースのワークフロー管理ソフトウェアです。ETLデータパイプラインの作成が可能で、300以上のデータプロセッサが付属しています。このステップバイステップのチュートリアルでは、Apache NiFiをClickHouseにソース及びデスティネーションとして接続し、サンプルデータセットをロードする方法を示します。
+<VerticalStepper headerLevel="h2">
 
-## 1. 接続情報を収集する {#1-gather-your-connection-details}
+## 接続情報を収集する {#1-gather-your-connection-details}
+
 <ConnectionDetails />
 
-## 2. Apache NiFiをダウンロードして実行する {#2-download-and-run-apache-nifi}
+## Apache NiFi のダウンロードと実行 {#2-download-and-run-apache-nifi}
 
-1. 新しいセットアップの場合、https://nifi.apache.org/download.html からバイナリをダウンロードし、`./bin/nifi.sh start`を実行して開始します。
+新規セットアップを行う場合は、https://nifi.apache.org/download.html からバイナリをダウンロードし、`./bin/nifi.sh start` を実行して起動します。
 
-## 3. ClickHouse JDBCドライバをダウンロードする {#3-download-the-clickhouse-jdbc-driver}
+## ClickHouse JDBC ドライバーをダウンロードする {#3-download-the-clickhouse-jdbc-driver}
 
-1. GitHubの<a href="https://github.com/ClickHouse/clickhouse-java/releases" target="_blank">ClickHouse JDBCドライバリリースページ</a>にアクセスし、最新のJDBCリリースバージョンを探します。
-2. リリースバージョン内で「すべてのxxアセットを表示」をクリックし、「shaded」または「all」というキーワードを含むJARファイルを探します。例えば、`clickhouse-jdbc-0.5.0-all.jar`のようなファイルです。
-3. JARファイルをApache NiFiがアクセスできるフォルダに置き、絶対パスをメモします。
+1. GitHub の <a href="https://github.com/ClickHouse/clickhouse-java/releases" target="_blank">ClickHouse JDBC ドライバーのリリースページ</a> にアクセスし、最新の JDBC リリースバージョンを確認します
+2. 対象のリリースバージョンで「Show all xx assets」をクリックし、「shaded」または「all」というキーワードを含む JAR ファイルを探します（例: `clickhouse-jdbc-0.5.0-all.jar`）
+3. JAR ファイルを Apache NiFi からアクセス可能なフォルダに配置し、その絶対パスを控えておきます
 
-## 4. `DBCPConnectionPool`コントローラサービスを追加し、そのプロパティを設定する {#4-add-dbcpconnectionpool-controller-service-and-configure-its-properties}
+## `DBCPConnectionPool` コントローラサービスを追加し、プロパティを設定する {#4-add-dbcpconnectionpool-controller-service-and-configure-its-properties}
 
-1. Apache NiFiでコントローラサービスを設定するには、「ギア」ボタンをクリックしてNiFiフロー設定ページに移動します。
+1. Apache NiFi でコントローラサービスを設定するには、歯車アイコン（"gear" ボタン）をクリックして NiFi Flow Configuration ページを開きます
 
-    <Image img={nifi01} size="sm" border alt="ギアボタンがハイライトされたNiFiフロー設定ページ" />
+    <Image img={nifi01} size="sm" border alt="歯車ボタンが強調表示された NiFi Flow Configuration ページ" />
 
-2. コントローラスサービスタブを選択し、右上の`+`ボタンをクリックして新しいコントローラサービスを追加します。
+2. Controller Services タブを選択し、右上の `+` ボタンをクリックして新しいコントローラサービスを追加します
 
-    <Image img={nifi02} size="lg" border alt="追加ボタンがハイライトされたコントローラスサービスタブ" />
+    <Image img={nifi02} size="lg" border alt="追加ボタンが強調表示された Controller Services タブ" />
 
-3. `DBCPConnectionPool`を検索し、「追加」ボタンをクリックします。
+3. `DBCPConnectionPool` を検索し、「Add」ボタンをクリックします
 
-    <Image img={nifi03} size="lg" border alt="DBCPConnectionPoolがハイライトされたコントローラサービス選択ダイアログ" />
+    <Image img={nifi03} size="lg" border alt="DBCPConnectionPool が強調表示された Controller Service 選択ダイアログ" />
 
-4. 新しく追加された`DBCPConnectionPool`はデフォルトで無効な状態です。「ギア」ボタンをクリックして設定を開始します。
+4. 追加したばかりの `DBCPConnectionPool` は、デフォルトでは無効 (Invalid) 状態になっています。歯車アイコン（"gear" ボタン）をクリックして設定を開始します
 
-    <Image img={nifi04} size="lg" border alt="無効なDBCPConnectionPoolがハイライトされたコントローラスサービスリスト" />
+    <Image img={nifi04} size="lg" border alt="Invalid 状態の DBCPConnectionPool と gear ボタンが強調表示された Controller Services 一覧" />
 
-5. 「プロパティ」セクションで、以下の値を入力します。
+5. 「Properties」セクションで、次の値を入力します
 
-  | プロパティ                      | 値                                                              | 備考                                                               |
-  | ------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------ |
-  | データベース接続URL             | jdbc:ch:https://HOSTNAME:8443/default?ssl=true                   | 接続URL内のHOSTNAMEを適宜置き換えてください                       |
-  | データベースドライバクラス名   | com.clickhouse.jdbc.ClickHouseDriver                             ||
-  | データベースドライバの場所      | /etc/nifi/nifi-X.XX.X/lib/clickhouse-jdbc-0.X.X-patchXX-shaded.jar | ClickHouse JDBCドライバJARファイルの絶対パス                       |
-  | データベースユーザー             | default                                                          | ClickHouseのユーザー名                                              |
-  | パスワード                       | password                                                        | ClickHouseのパスワード                                            |
+  | Property                    | Value                                                              | Remark                                                                        |
+  | --------------------------- | ------------------------------------------------------------------ | ----------------------------------------------------------------------------- |
+  | Database Connection URL     | jdbc:ch:https://HOSTNAME:8443/default?ssl=true                     | 接続 URL 中の HOSTNAME を環境に合わせて置き換えます                          |
+  | Database Driver Class Name  | com.clickhouse.jdbc.ClickHouseDriver                               ||
+  | Database Driver Location(s) | /etc/nifi/nifi-X.XX.X/lib/clickhouse-jdbc-0.X.X-patchXX-shaded.jar | ClickHouse JDBC ドライバ JAR ファイルへの絶対パス                           |
+  | Database User               | default                                                            | ClickHouse ユーザー名                                                         |
+  | Password                    | password                                                           | ClickHouse パスワード                                                         |
 
-6. 設定セクションで、コントローラサービスの名前を「ClickHouse JDBC」に変更して簡単に参照できるようにします。
+6. Settings セクションで、コントローラサービスの名前を分かりやすくするために「ClickHouse JDBC」に変更します
 
-    <Image img={nifi05} size="lg" border alt="プロパティが入力されたDBCPConnectionPool設定ダイアログ" />
+    <Image img={nifi05} size="lg" border alt="プロパティが入力された DBCPConnectionPool 設定ダイアログ" />
 
-7. 「雷」ボタンをクリックし、「有効にする」ボタンをクリックして`DBCPConnectionPool`コントローラサービスを有効にします。
+7. 「lightning」ボタンをクリックし、続いて「Enable」ボタンをクリックして `DBCPConnectionPool` コントローラサービスを有効化します
 
-    <Image img={nifi06} size="lg" border alt="雷ボタンがハイライトされたコントローラスサービスリスト" />
+    <Image img={nifi06} size="lg" border alt="lightning ボタンが強調表示された Controller Services 一覧" />
 
     <br/>
 
-    <Image img={nifi07} size="lg" border alt="コントローラサービスの確認ダイアログ" />
+    <Image img={nifi07} size="lg" border alt="Controller Service を有効化する確認ダイアログ" />
 
-8. コントローラスサービスタブを確認し、コントローラサービスが有効になっていることを確認します。
+8. Controller Services タブを開き、コントローラサービスが有効化されていることを確認します
 
-    <Image img={nifi08} size="lg" border alt="有効なClickHouse JDBCサービスを示すコントローラスサービスリスト" />
+    <Image img={nifi08} size="lg" border alt="有効化された ClickHouse JDBC サービスが表示されている Controller Services 一覧" />
 
-## 5. `ExecuteSQL`プロセッサを使用してテーブルから読み込む {#5-read-from-a-table-using-the-executesql-processor}
+## `ExecuteSQL` プロセッサを使用してテーブルから読み取る {#5-read-from-a-table-using-the-executesql-processor}
 
-1. 適切なアップストリームおよびダウンストリームプロセッサと共に`ExecuteSQL`プロセッサを追加します。
+1. 適切なアップストリームおよびダウンストリームのプロセッサと共に、`ExecuteSQL` プロセッサを追加します
 
-    <Image img={nifi09} size="md" border alt="ワークフローにおけるExecuteSQLプロセッサを示すNiFiキャンバス" />
+    <Image img={nifi09} size="md" border alt="ExecuteSQL プロセッサを含むワークフローを表示している NiFi キャンバス" />
 
-2. `ExecuteSQL`プロセッサの「プロパティ」セクションで、以下の値を入力します。
+2. `ExecuteSQL` プロセッサの「Properties」セクションで、次の値を入力します
 
-    | プロパティ                          | 値                                  | 備考                                                          |
-    |-------------------------------------|--------------------------------------|---------------------------------------------------------------|
-    | データベース接続プーリングサービス | ClickHouse JDBC                      | ClickHouseのために設定されたコントローラサービスを選択します |
-    | SQL選択クエリ                      | SELECT * FROM system.metrics         | ここにクエリを入力します                                      |
+    | Property                            | Value                        | Remark                                                  |
+    |-------------------------------------|------------------------------|---------------------------------------------------------|
+    | Database Connection Pooling Service | ClickHouse JDBC              | ClickHouse 用に設定した Controller Service を選択します |
+    | SQL select query                    | SELECT * FROM system.metrics | ここにクエリを入力します                                |
 
-3. `ExecuteSQL`プロセッサを起動します。
+3. `ExecuteSQL` プロセッサを開始します
 
-    <Image img={nifi10} size="lg" border alt="プロパティが入力されたExecuteSQLプロセッサの設定" />
+    <Image img={nifi10} size="lg" border alt="プロパティが入力された ExecuteSQL プロセッサの設定画面" />
 
-4. クエリが正常に処理されたことを確認するために、出力キュー内の`FlowFile`の1つを検査します。
+4. クエリが正常に処理されたことを確認するため、出力キュー内の `FlowFile` の 1 つを開いて確認します
 
-    <Image img={nifi11} size="lg" border alt="検査のために準備されたflowfilesを示すリストキューのダイアログ" />
+    <Image img={nifi11} size="lg" border alt="検査可能な FlowFile が表示されているキュー一覧ダイアログ" />
 
-5. 結果を見るためにビューを「フォーマット」に切り替えます。
+5. 表示を「formatted」に切り替えて、出力された `FlowFile` の結果を表示します
 
-    <Image img={nifi12} size="lg" border alt="フォーマットされたビューでクエリ結果を示すFlowFileコンテンツビューワー" />
+    <Image img={nifi12} size="lg" border alt="整形ビューでクエリ結果を表示している FlowFile コンテンツビューア" />
 
-## 6. `MergeRecord`と`PutDatabaseRecord`プロセッサを使用してテーブルに書き込む {#6-write-to-a-table-using-mergerecord-and-putdatabaserecord-processor}
+## `MergeRecord`と`PutDatabaseRecord`プロセッサを使用してテーブルに書き込む {#6-write-to-a-table-using-mergerecord-and-putdatabaserecord-processor}
 
-1. 複数の行を単一の挿入で書き込むために、まず複数のレコードを単一のレコードにマージする必要があります。これは`MergeRecord`プロセッサを使用して行えます。
+1. 単一のINSERT文で複数行を書き込むには、まず複数のレコードを1つのレコードにマージする必要があります。これは`MergeRecord`プロセッサを使用して実行できます
 
-2. `MergeRecord`プロセッサの「プロパティ」セクションで、以下の値を入力します。
+2. `MergeRecord`プロセッサの「Properties」セクションで、以下の値を入力してください
 
-    | プロパティ                   | 値                 | 備考                                                                                                                     |
-    |-----------------------------|---------------------|--------------------------------------------------------------------------------------------------------------------------|
-    | レコードリーダー            | `JSONTreeReader`     | 適切なレコードリーダーを選択します                                                                                       |
-    | レコードライター            | `JSONReadSetWriter`  | 適切なレコードライターを選択します                                                                                       |
-    | 最小レコード数              | 1000                | この値を高く変更して、単一のレコードを形成するための最小行数をマージします。デフォルトは1行です                     |
-    | 最大レコード数              | 10000               | 「最小レコード数」よりも高い数字に変更します。デフォルトは1,000行です                                                 |
+   | Property                  | Value               | Remark                                                                                                                 |
+   | ------------------------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+   | Record Reader             | `JSONTreeReader`    | 適切なレコードリーダーを選択してください                                                                                   |
+   | Record Writer             | `JSONReadSetWriter` | 適切なレコードライターを選択してください                                                                                   |
+   | Minimum Number of Records | 1000                | 最小行数をマージして1つのレコードを形成するように、この値をより大きな数値に変更してください。デフォルトは1行です |
+   | Maximum Number of Records | 10000               | 「Minimum Number of Records」よりも大きな数値に変更してください。デフォルトは1,000行です                                 |
 
-3. 複数のレコードがひとつにマージされていることを確認するために、`MergeRecord`プロセッサの入力と出力を検査します。出力が複数の入力レコードの配列であることに注目してください。
+3. 複数のレコードが1つにマージされていることを確認するには、`MergeRecord`プロセッサの入力と出力を確認してください。出力は複数の入力レコードの配列であることに注意してください
 
-    入力
-    <Image img={nifi13} size="sm" border alt="単一レコードを示すMergeRecordプロセッサの入力" />
+   入力
 
-    出力
-    <Image img={nifi14} size="sm" border alt="マージされたレコードの配列を示すMergeRecordプロセッサの出力" />
+   <Image
+     img={nifi13}
+     size='sm'
+     border
+     alt='単一レコードを示すMergeRecordプロセッサの入力'
+   />
 
-4. `PutDatabaseRecord`プロセッサの「プロパティ」セクションで、以下の値を入力します。
+   出力
 
-    | プロパティ                            | 値                | 備考                                                                                                         |
-    |---------------------------------------|--------------------|-------------------------------------------------------------------------------------------------------------|
-    | レコードリーダー                     | `JSONTreeReader`    | 適切なレコードリーダーを選択します                                                                         |
-    | データベースタイプ                   | Generic             | デフォルトのままにします                                                                                    |
-    | ステートメントタイプ                 | INSERT              |                                                                                                             |
-    | データベース接続プーリングサービス   | ClickHouse JDBC     | ClickHouseコントローラサービスを選択します                                                                 |
-    | テーブル名                           | tbl                 | ここにテーブル名を入力します                                                                              |
-    | フィールド名の変換                  | false               | フィールド名を挿入する際にカラム名と一致するように「false」に設定します                                                     |
-    | 最大バッチサイズ                     | 1000                | 挿入ごとの最大行数。この値は`MergeRecord`プロセッサの「最小レコード数」よりも低く設定しないでください。             |
+   <Image
+     img={nifi14}
+     size='sm'
+     border
+     alt='マージされたレコード配列を示すMergeRecordプロセッサの出力'
+   />
 
-4. 各挿入が複数の行を含んでいることを確認するために、テーブルの行数が`MergeRecord`で定義された「最小レコード数」に関連して少なくとも増加していることを確認します。
+4. `PutDatabaseRecord`プロセッサの「Properties」セクションで、以下の値を入力してください
 
-    <Image img={nifi15} size="sm" border alt="宛先テーブルにおける行数を示すクエリ結果" />
+   | Property                            | Value            | Remark                                                                                                                                     |
+   | ----------------------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+   | Record Reader                       | `JSONTreeReader` | 適切なレコードリーダーを選択してください                                                                                                       |
+   | Database Type                       | Generic          | デフォルトのままにしてください                                                                                                                           |
+   | Statement Type                      | INSERT           |                                                                                                                                            |
+   | Database Connection Pooling Service | ClickHouse JDBC  | ClickHouseコントローラーサービスを選択してください                                                                                                   |
+   | Table Name                          | tbl              | ここにテーブル名を入力してください                                                                                                                 |
+   | Translate Field Names               | false            | 挿入されるフィールド名がカラム名と一致する必要があるように「false」に設定してください                                                                     |
+   | Maximum Batch Size                  | 1000             | INSERT文あたりの最大行数。この値は`MergeRecord`プロセッサの「Minimum Number of Records」の値より小さくしないでください |
 
-5. おめでとうございます - Apache NiFiを使用してClickHouseにデータを正常にロードしました！
+5. 各INSERT文に複数行が含まれていることを確認するには、テーブルの行数が`MergeRecord`で定義された「Minimum Number of Records」の値以上ずつ増加していることを確認してください。
+
+   <Image
+     img={nifi15}
+     size='sm'
+     border
+     alt='宛先テーブルの行数を示すクエリ結果'
+   />
+
+6. おめでとうございます - Apache NiFiを使用してClickHouseへのデータ読み込みに成功しました！
+
+</VerticalStepper>

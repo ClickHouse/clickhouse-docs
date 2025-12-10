@@ -1,39 +1,40 @@
 ---
-'slug': '/native-protocol/basics'
-'sidebar_position': 1
-'title': '基础'
-'description': '原生协议基础'
+slug: /native-protocol/basics
+sidebar_position: 1
+title: '基础知识'
+description: '原生协议基础知识'
+keywords: ['原生协议', 'TCP 协议', '协议基础', '二进制协议', '客户端-服务器通信']
+doc_type: 'guide'
 ---
+
+# 基础知识 {#basics}
+
+:::note
+客户端协议参考文档正在编写中。
+
+目前大部分示例仅提供 Go 语言版本。
+:::
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
-# 基础
-
-:::note
-客户端协议参考正在进行中。
-
-大多数示例仅为 Go 语言。
-:::
-
-本文档描述了 ClickHouse TCP 客户端的二进制协议。
+本文档描述了 ClickHouse TCP 客户端使用的二进制协议。
 
 ## Varint {#varint}
 
-对于长度、数据包代码和其他情况，使用 *无符号 varint* 编码。
-使用 [binary.PutUvarint](https://pkg.go.dev/encoding/binary#PutUvarint) 和 [binary.ReadUvarint](https://pkg.go.dev/encoding/binary#ReadUvarint)。
+对于长度、数据包代码以及其他场景，采用 *无符号 varint* 编码。
+请使用 [binary.PutUvarint](https://pkg.go.dev/encoding/binary#PutUvarint) 和 [binary.ReadUvarint](https://pkg.go.dev/encoding/binary#ReadUvarint)。
 
 :::note
-*有符号* varint 未被使用。
+*有符号* varint 不会被使用。
 :::
 
 ## 字符串 {#string}
 
-可变长度字符串编码为 *(长度, 值)*，其中 *长度* 是 [varint](#varint)，*值* 是 utf8 字符串。
+可变长度字符串编码为 *(length, value)*，其中 *length* 为 [varint](#varint)，*value* 为 UTF-8 字符串。
 
 :::important
-验证长度以防止内存溢出：
+校验长度以防止 OOM：
 
 `0 ≤ len < MAX`
 :::
@@ -44,12 +45,12 @@ import TabItem from '@theme/TabItem';
 ```go
 s := "Hello, world!"
 
-// Writing string length as uvarint.
+// 将字符串长度写为 uvarint。
 buf := make([]byte, binary.MaxVarintLen64)
 n := binary.PutUvarint(buf, uint64(len(s)))
 buf = buf[:n]
 
-// Writing string value.
+// 写入字符串内容。
 buf = append(buf, s...)
 ```
 
@@ -62,13 +63,13 @@ r := bytes.NewReader([]byte{
     0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21,
 })
 
-// Read length.
+// 读取长度。
 n, err := binary.ReadUvarint(r)
 if err != nil {
         panic(err)
 }
 
-// Check n to prevent OOM or runtime exception in make().
+// 检查 n 以防止 OOM 或 make() 运行时异常。
 const maxSize = 1024 * 1024 * 10 // 10 MB
 if n > maxSize || n < 0 {
     panic("invalid n")
@@ -116,39 +117,37 @@ data := []byte{
 ## 整数 {#integers}
 
 :::tip
-ClickHouse 使用 **小端** 存储固定大小的整数。
+ClickHouse 对固定大小的整数采用 **小端序（Little Endian）** 存储。
 :::
 
 ### Int32 {#int32}
+
 ```go
 v := int32(1000)
 
-// Encode.
+// 编码。
 buf := make([]byte, 8)
 binary.LittleEndian.PutUint32(buf, uint32(v))
 
-// Decode.
+// 解码。
 d := int32(binary.LittleEndian.Uint32(buf))
 fmt.Println(d) // 1000
 ```
 
 <Tabs>
-<TabItem value="hexdump" label="十六进制转储">
+  <TabItem value="hexdump" label="十六进制转储">
+    ```hexdump
+    00000000  e8 03 00 00 00 00 00 00                           |........|
+    ```
+  </TabItem>
 
-```hexdump
-00000000  e8 03 00 00 00 00 00 00                           |........|
-```
-
-</TabItem>
-<TabItem value="base64" label="Base64">
-
-```text
-6AMAAAAAAAA
-```
-
-</TabItem>
+  <TabItem value="base64" label="Base64">
+    ```text
+    6AMAAAAAAAA
+    ```
+  </TabItem>
 </Tabs>
 
 ## 布尔值 {#boolean}
 
-布尔值由单个字节表示，`1` 是 `true`，`0` 是 `false`。
+布尔值使用单个字节表示，`1` 为 `true`，`0` 为 `false`。

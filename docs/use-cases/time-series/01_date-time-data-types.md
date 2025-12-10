@@ -3,7 +3,7 @@ title: 'Date and time data types - Time-series'
 sidebar_label: 'Date and time data types'
 description: 'Time-series data types in ClickHouse.'
 slug: /use-cases/time-series/date-time-data-types
-keywords: ['Time Series', 'DateTime']
+keywords: ['time-series', 'DateTime', 'DateTime64', 'Date', 'data types', 'temporal data', 'timestamp']
 show_related_blogs: true
 doc_type: 'reference'
 ---
@@ -130,7 +130,7 @@ In the first row, we inserted all values using the `America/New_York` timezone.
 * `dt_2` and `dt64_2` didn't have a time zone specified, so they use the server's local time zone, which in this case is `Europe/London`.
 
 In the second row, we inserted all the values without a timezone, so the server's local time zone was used.
-As in the first row, `dt_1` and `dt_3` are converted to `Europe/Berlin`, while `dt_2` and `dt64_2` use the server's local time zone.
+As in the first row, `dt_1` and `dt64_1` are converted to `Europe/Berlin`, while `dt_2` and `dt64_2` use the server's local time zone.
 
 ## Date and time functions {#time-series-date-time-functions}
 

@@ -1,114 +1,167 @@
 ---
-description: 'Документация по пользовательским функциям UDF (User Defined Functions)'
+description: 'Документация по пользовательским функциям (UDF)'
 sidebar_label: 'UDF'
-sidebar_position: 15
 slug: /sql-reference/functions/udf
-title: 'Пользовательские функции UDF'
+title: 'Пользовательские функции (UDF)'
+doc_type: 'reference'
 ---
 
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-
-# Пользовательские функции UDF
-
-## Исполняемые пользовательские функции {#executable-user-defined-functions}
+# Пользовательская функция (UDF) {#executable-user-defined-functions}
 
 <PrivatePreviewBadge/>
 
 :::note
-Эта функция поддерживается в частном превью в ClickHouse Cloud. Пожалуйста, свяжитесь с поддержкой ClickHouse по адресу https://clickhouse.cloud/support для доступа.
+Эта возможность поддерживается в закрытом предварительном просмотре в ClickHouse Cloud.
+Пожалуйста, свяжитесь со службой поддержки ClickHouse по адресу https://clickhouse.cloud/support для получения доступа.
 :::
 
 ClickHouse может вызывать любую внешнюю исполняемую программу или скрипт для обработки данных.
 
-Конфигурация исполняемых пользовательских функций может находиться в одном или нескольких xml-файлах. Путь к конфигурации указывается в параметре [user_defined_executable_functions_config](../../operations/server-configuration-parameters/settings.md#user_defined_executable_functions_config).
+Конфигурация исполняемых пользовательских функций может находиться в одном или нескольких XML-файлах.
+Путь к конфигурации указывается в параметре [`user_defined_executable_functions_config`](../../operations/server-configuration-parameters/settings.md#user_defined_executable_functions_config).
 
 Конфигурация функции содержит следующие настройки:
 
-- `name` - имя функции.
-- `command` - имя скрипта для выполнения или команда, если `execute_direct` равно false.
-- `argument` - описание аргумента с `type` и необязательным `name` аргумента. Каждый аргумент описывается в отдельной настройке. Указание имени необходимо, если имена аргументов являются частью сериализации для формата пользовательской функции, такого как [Native](/interfaces/formats/Native) или [JSONEachRow](/interfaces/formats/JSONEachRow). Значение имени аргумента по умолчанию - `c` + номер_аргумента.
-- `format` - [формат](../../interfaces/formats.md) передачи аргументов в команду.
-- `return_type` - тип возвращаемого значения.
-- `return_name` - имя возвращаемого значения. Указание имени возврата необходимо, если имя возврата является частью сериализации для формата пользовательской функции, такого как [Native](../../interfaces/formats.md#native) или [JSONEachRow](/interfaces/formats/JSONEachRow). Необязательно. Значение по умолчанию - `result`.
-- `type` - исполняемый тип. Если `type` установлен в `executable`, то запускается одна команда. Если установлен в `executable_pool`, то создается пул команд.
-- `max_command_execution_time` - максимальное время выполнения в секундах для обработки блока данных. Эта настройка действительна только для команд `executable_pool`. Необязательно. Значение по умолчанию - `10`.
-- `command_termination_timeout` - время в секундах, в течение которого команда должна завершиться после закрытия ее канала. По истечении этого времени к процессу, выполняющему команду, отправляется `SIGTERM`. Необязательно. Значение по умолчанию - `10`.
-- `command_read_timeout` - таймаут для чтения данных из stdout команды в миллисекундах. Значение по умолчанию 10000. Необязательный параметр.
-- `command_write_timeout` - таймаут для записи данных в stdin команды в миллисекундах. Значение по умолчанию 10000. Необязательный параметр.
-- `pool_size` - размер пула команд. Необязательно. Значение по умолчанию - `16`.
-- `send_chunk_header` - управляет тем, нужно ли отправлять количество строк перед отправкой блока данных для обработки. Необязательно. Значение по умолчанию - `false`.
-- `execute_direct` - Если `execute_direct` = `1`, то `command` будет искаться в папке user_scripts, указанной переменной [user_scripts_path](../../operations/server-configuration-parameters/settings.md#user_scripts_path). Дополнительные аргументы скрипта могут быть указаны через пробел. Пример: `script_name arg1 arg2`. Если `execute_direct` = `0`, `command` передается в качестве аргумента для `bin/sh -c`. Значение по умолчанию - `1`. Необязательный параметр.
-- `lifetime` - интервал перезагрузки функции в секундах. Если он установлен в `0`, то функция не перезагружается. Значение по умолчанию - `0`. Необязательный параметр.
-- `deterministic` - является ли функция детерминированной (возвращает один и тот же результат для одного и того же ввода). Значение по умолчанию - `false`. Необязательный параметр.
+| Parameter                     | Description                                                                                                                                                                                                                                                                                                                                                                                   | Required  | Default Value         |
+|-------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|-----------------------|
+| `name`                        | Имя функции                                                                                                                                                                                                                                                                                                                                                                                   | Yes       | -                     |
+| `command`                     | Имя скрипта для выполнения или команда, если `execute_direct` имеет значение `false`                                                                                                                                                                                                                                                                                                         | Yes       | -                     |
+| `argument`                    | Описание аргумента с `type` и необязательным `name` аргумента. Каждый аргумент описывается в отдельной настройке. Указание имени требуется, если имена аргументов являются частью сериализации для формата пользовательской функции, такого как [Native](/interfaces/formats/Native) или [JSONEachRow](/interfaces/formats/JSONEachRow)                                                     | Yes       | `c` + argument_number |
+| `format`                      | [Формат](../../interfaces/formats.md), в котором аргументы передаются команде. Ожидается, что вывод команды также будет использовать тот же формат                                                                                                                                                                                                                                           | Yes       | -                     |
+| `return_type`                 | Тип возвращаемого значения                                                                                                                                                                                                                                                                                                                                                                    | Yes       | -                     |
+| `return_name`                 | Имя возвращаемого значения. Указание имени возвращаемого значения требуется, если оно является частью сериализации для формата пользовательской функции, такого как [Native](/interfaces/formats/Native) или [JSONEachRow](/interfaces/formats/JSONEachRow)                                                                                                                                    | Optional  | `result`              |
+| `type`                        | Тип исполняемой сущности. Если `type` имеет значение `executable`, то запускается одна команда. Если задано `executable_pool`, то создаётся пул команд                                                                                                                                                                                                                                       | Yes       | -                     |
+| `max_command_execution_time`  | Максимальное время выполнения в секундах для обработки блока данных. Эта настройка применяется только для команд `executable_pool`                                                                                                                                                                                                                                                            | Optional  | `10`                  |
+| `command_termination_timeout` | Время в секундах, в течение которого команда должна завершить работу после закрытия её канала. По истечении этого времени процессу, выполняющему команду, отправляется сигнал `SIGTERM`                                                                                                                                                                                                       | Optional  | `10`                  |
+| `command_read_timeout`        | Таймаут чтения данных из `stdout` команды в миллисекундах                                                                                                                                                                                                                                                                                                                                     | Optional  | `10000`               |
+| `command_write_timeout`       | Таймаут записи данных в `stdin` команды в миллисекундах                                                                                                                                                                                                                                                                                                                                      | Optional  | `10000`               |
+| `pool_size`                   | Размер пула команд                                                                                                                                                                                                                                                                                                                                                                            | Optional  | `16`                  |
+| `send_chunk_header`           | Определяет, нужно ли отправлять количество строк перед отправкой блока данных на обработку                                                                                                                                                                                                                                                                                                    | Optional  | `false`               |
+| `execute_direct`              | Если `execute_direct` = `1`, то `command` будет искаться в папке `user_scripts`, заданной параметром [user_scripts_path](../../operations/server-configuration-parameters/settings.md#user_scripts_path). Дополнительные аргументы скрипта можно указать, используя пробел в качестве разделителя. Пример: `script_name arg1 arg2`. Если `execute_direct` = `0`, `command` передаётся как аргумент для `bin/sh -c` | Optional  | `1`                   |
+| `lifetime`                    | Интервал перезагрузки функции в секундах. Если установлено значение `0`, функция не перезагружается                                                                                                                                                                                                                                                                                           | Optional  | `0`                   |
+| `deterministic`               | Определяет, является ли функция детерминированной (возвращает одинаковый результат для одинаковых входных данных)                                                                                                                                                                                                                                                                             | Optional  | `false`               |
 
-Команда должна читать аргументы из `STDIN` и выводить результат в `STDOUT`. Команда должна обрабатывать аргументы итеративно. То есть после обработки блока аргументов она должна ждать следующий блок.
+Команда должна читать аргументы из `STDIN` и выводить результат в `STDOUT`. Команда должна обрабатывать аргументы итеративно, то есть после обработки блока аргументов она должна ожидать следующий блок.
 
-### Примеры {#examples}
+## Выполнимые пользовательские функции {#executable-user-defined-functions}
 
-**Встроенный скрипт**
+## Примеры {#examples}
 
-Создание `test_function_sum` с ручным указанием `execute_direct` равным `0` с использованием конфигурации XML.
-Файл `test_function.xml` (`/etc/clickhouse-server/test_function.xml` с настройками пути по умолчанию).
-```xml
-<functions>
-    <function>
-        <type>executable</type>
-        <name>test_function_sum</name>
-        <return_type>UInt64</return_type>
-        <argument>
-            <type>UInt64</type>
-            <name>lhs</name>
-        </argument>
-        <argument>
-            <type>UInt64</type>
-            <name>rhs</name>
-        </argument>
-        <format>TabSeparated</format>
-        <command>cd /; clickhouse-local --input-format TabSeparated --output-format TabSeparated --structure 'x UInt64, y UInt64' --query "SELECT x + y FROM table"</command>
-        <execute_direct>0</execute_direct>
-        <deterministic>true</deterministic>
-    </function>
-</functions>
-```
+### UDF из inline-скрипта {#udf-inline}
 
-Запрос:
+Создайте `test_function_sum`, вручную установив `execute_direct` в `0`, используя конфигурацию в формате XML или YAML.
 
-```sql
+<Tabs>
+  <TabItem value="XML" label="XML" default>
+    Файл `test_function.xml` (`/etc/clickhouse-server/test_function.xml` при настройках путей по умолчанию).
+
+    ```xml title="/etc/clickhouse-server/test_function.xml"
+    <functions>
+        <function>
+            <type>executable</type>
+            <name>test_function_sum</name>
+            <return_type>UInt64</return_type>
+            <argument>
+                <type>UInt64</type>
+                <name>lhs</name>
+            </argument>
+            <argument>
+                <type>UInt64</type>
+                <name>rhs</name>
+            </argument>
+            <format>TabSeparated</format>
+            <command>cd /; clickhouse-local --input-format TabSeparated --output-format TabSeparated --structure 'x UInt64, y UInt64' --query "SELECT x + y FROM table"</command>
+            <execute_direct>0</execute_direct>
+            <deterministic>true</deterministic>
+        </function>
+    </functions>
+    ```
+  </TabItem>
+
+  <TabItem value="YAML" label="YAML">
+    Файл `test_function.yaml` (`/etc/clickhouse-server/test_function.yaml` при настройках путей по умолчанию).
+
+    ```yml title="/etc/clickhouse-server/test_function.yaml"
+    functions:
+      type: executable
+      name: test_function_sum
+      return_type: UInt64
+      argument:
+        - type: UInt64
+          name: lhs
+        - type: UInt64
+          name: rhs
+      format: TabSeparated
+      command: 'cd /; clickhouse-local --input-format TabSeparated --output-format TabSeparated --structure ''x UInt64, y UInt64'' --query "SELECT x + y FROM table"'
+      execute_direct: 0
+      deterministic: true
+    ```
+  </TabItem>
+</Tabs>
+
+<br />
+
+```sql title="Query"
 SELECT test_function_sum(2, 2);
 ```
 
-Результат:
-
-```text
+```text title="Result"
 ┌─test_function_sum(2, 2)─┐
 │                       4 │
 └─────────────────────────┘
 ```
 
-**Python скрипт**
+### UDF из скрипта на Python {#udf-python}
 
-Читает значение из `STDIN` и возвращает его как строку:
+В этом примере мы создаём UDF, который читает значение из `STDIN` и возвращает его в виде строки.
 
-Создание `test_function` с использованием конфигурации XML.
-Файл `test_function.xml` (`/etc/clickhouse-server/test_function.xml` с настройками пути по умолчанию).
-```xml
-<functions>
-    <function>
-        <type>executable</type>
-        <name>test_function_python</name>
-        <return_type>String</return_type>
-        <argument>
-            <type>UInt64</type>
-            <name>value</name>
-        </argument>
-        <format>TabSeparated</format>
-        <command>test_function.py</command>
-    </function>
-</functions>
-```
+Создайте `test_function`, используя конфигурацию в формате XML или YAML.
 
-Файл скрипта в папке `user_scripts` `test_function.py` (`/var/lib/clickhouse/user_scripts/test_function.py` с настройками пути по умолчанию).
+<Tabs>
+  <TabItem value="XML" label="XML" default>
+    Файл `test_function.xml` (`/etc/clickhouse-server/test_function.xml` при стандартных настройках пути).
+
+    ```xml title="/etc/clickhouse-server/test_function.xml"
+    <functions>
+        <function>
+            <type>executable</type>
+            <name>test_function_python</name>
+            <return_type>String</return_type>
+            <argument>
+                <type>UInt64</type>
+                <name>value</name>
+            </argument>
+            <format>TabSeparated</format>
+            <command>test_function.py</command>
+        </function>
+    </functions>
+    ```
+  </TabItem>
+
+  <TabItem value="YAML" label="YAML">
+    Файл `test_function.yaml` (`/etc/clickhouse-server/test_function.yaml` при стандартных настройках пути).
+
+    ```yml title="/etc/clickhouse-server/test_function.yaml"
+    functions:
+      type: executable
+      name: test_function_python
+      return_type: String
+      argument:
+        - type: UInt64
+          name: value
+      format: TabSeparated
+      command: test_function.py
+    ```
+  </TabItem>
+</Tabs>
+
+<br />
+
+Создайте файл скрипта `test_function.py` в каталоге `user_scripts` (`/var/lib/clickhouse/user_scripts/test_function.py` при стандартных настройках пути).
 
 ```python
 #!/usr/bin/python3
@@ -121,46 +174,69 @@ if __name__ == '__main__':
         sys.stdout.flush()
 ```
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT test_function_python(toUInt64(2));
 ```
 
-Результат:
-
-```text
+```text title="Result"
 ┌─test_function_python(2)─┐
-│ Value 2                 │
+│ Значение 2              │
 └─────────────────────────┘
 ```
 
-Читает два значения из `STDIN` и возвращает их сумму в виде JSON-объекта:
+### Считать два значения из `STDIN` и вернуть их сумму в виде JSON-объекта {#udf-stdin}
 
-Создание `test_function_sum_json` с именованными аргументами и форматом [JSONEachRow](../../interfaces/formats.md#jsoneachrow) с использованием конфигурации XML.
-Файл `test_function.xml` (`/etc/clickhouse-server/test_function.xml` с настройками пути по умолчанию).
-```xml
-<functions>
-    <function>
-        <type>executable</type>
-        <name>test_function_sum_json</name>
-        <return_type>UInt64</return_type>
-        <return_name>result_name</return_name>
-        <argument>
-            <type>UInt64</type>
-            <name>argument_1</name>
-        </argument>
-        <argument>
-            <type>UInt64</type>
-            <name>argument_2</name>
-        </argument>
-        <format>JSONEachRow</format>
-        <command>test_function_sum_json.py</command>
-    </function>
-</functions>
-```
+Создайте `test_function_sum_json` с именованными аргументами и форматом [JSONEachRow](/interfaces/formats/JSONEachRow), используя конфигурацию в формате XML или YAML.
 
-Файл скрипта в папке `user_scripts` `test_function_sum_json.py` (`/var/lib/clickhouse/user_scripts/test_function_sum_json.py` с настройками пути по умолчанию).
+<Tabs>
+  <TabItem value="XML" label="XML" default>
+    Файл `test_function.xml` (`/etc/clickhouse-server/test_function.xml` при использовании путей по умолчанию).
+
+    ```xml title="/etc/clickhouse-server/test_function.xml"
+    <functions>
+        <function>
+            <type>executable</type>
+            <name>test_function_sum_json</name>
+            <return_type>UInt64</return_type>
+            <return_name>result_name</return_name>
+            <argument>
+                <type>UInt64</type>
+                <name>argument_1</name>
+            </argument>
+            <argument>
+                <type>UInt64</type>
+                <name>argument_2</name>
+            </argument>
+            <format>JSONEachRow</format>
+            <command>test_function_sum_json.py</command>
+        </function>
+    </functions>
+    ```
+  </TabItem>
+
+  <TabItem value="YAML" label="YAML">
+    Файл `test_function.yaml` (`/etc/clickhouse-server/test_function.yaml` при использовании путей по умолчанию).
+
+    ```yml title="/etc/clickhouse-server/test_function.yaml"
+    functions:
+      type: executable
+      name: test_function_sum_json
+      return_type: UInt64
+      return_name: result_name
+      argument:
+        - type: UInt64
+          name: argument_1
+        - type: UInt64
+          name: argument_2
+      format: JSONEachRow
+      command: test_function_sum_json.py
+    ```
+  </TabItem>
+</Tabs>
+
+<br />
+
+Создайте файл скрипта `test_function_sum_json.py` в каталоге `user_scripts` (`/var/lib/clickhouse/user_scripts/test_function_sum_json.py` при использовании путей по умолчанию).
 
 ```python
 #!/usr/bin/python3
@@ -178,41 +254,62 @@ if __name__ == '__main__':
         sys.stdout.flush()
 ```
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT test_function_sum_json(2, 2);
 ```
 
-Результат:
-
-```text
+```text title="Result"
 ┌─test_function_sum_json(2, 2)─┐
 │                            4 │
 └──────────────────────────────┘
 ```
 
-Используйте параметры в настройке `command`:
+### Использование параметров в настройке `command` {#udf-parameters-in-command}
 
-Исполняемые пользовательские функции могут принимать постоянные параметры, настроенные в настройке `command` (работает только для пользовательских функций типа `executable`). Это также требует опции `execute_direct` (чтобы избежать уязвимости в расширении аргументов оболочки).
-Файл `test_function_parameter_python.xml` (`/etc/clickhouse-server/test_function_parameter_python.xml` с настройками пути по умолчанию).
-```xml
-<functions>
-    <function>
-        <type>executable</type>
-        <execute_direct>true</execute_direct>
-        <name>test_function_parameter_python</name>
-        <return_type>String</return_type>
-        <argument>
-            <type>UInt64</type>
-        </argument>
-        <format>TabSeparated</format>
-        <command>test_function_parameter_python.py {test_parameter:UInt64}</command>
-    </function>
-</functions>
-```
+Исполняемые пользовательские функции могут принимать константные параметры, задаваемые в настройке `command` (это работает только для пользовательских функций типа `executable`).
+Также требуется опция `execute_direct`, чтобы исключить уязвимости, связанные с расширением аргументов оболочкой.
 
-Файл скрипта в папке `user_scripts` `test_function_parameter_python.py` (`/var/lib/clickhouse/user_scripts/test_function_parameter_python.py` с настройками пути по умолчанию).
+<Tabs>
+  <TabItem value="XML" label="XML" default>
+    Файл `test_function_parameter_python.xml` (`/etc/clickhouse-server/test_function_parameter_python.xml` при настройках пути по умолчанию).
+
+    ```xml title="/etc/clickhouse-server/test_function_parameter_python.xml"
+    <functions>
+        <function>
+            <type>executable</type>
+            <execute_direct>true</execute_direct>
+            <name>test_function_parameter_python</name>
+            <return_type>String</return_type>
+            <argument>
+                <type>UInt64</type>
+            </argument>
+            <format>TabSeparated</format>
+            <command>test_function_parameter_python.py {test_parameter:UInt64}</command>
+        </function>
+    </functions>
+    ```
+  </TabItem>
+
+  <TabItem value="YAML" label="YAML">
+    Файл `test_function_parameter_python.yaml` (`/etc/clickhouse-server/test_function_parameter_python.yaml` при настройках пути по умолчанию).
+
+    ```yml title="/etc/clickhouse-server/test_function_parameter_python.yaml"
+    functions:
+      type: executable
+      execute_direct: true
+      name: test_function_parameter_python
+      return_type: String
+      argument:
+        - type: UInt64
+      format: TabSeparated
+      command: test_function_parameter_python.py {test_parameter:UInt64}
+    ```
+  </TabItem>
+</Tabs>
+
+<br />
+
+Создайте файл скрипта `test_function_parameter_python.py` в каталоге `user_scripts` (`/var/lib/clickhouse/user_scripts/test_function_parameter_python.py` при настройках пути по умолчанию).
 
 ```python
 #!/usr/bin/python3
@@ -225,45 +322,63 @@ if __name__ == "__main__":
         sys.stdout.flush()
 ```
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT test_function_parameter_python(1)(2);
 ```
 
-Результат:
-
-```text
+```text title="Result"
 ┌─test_function_parameter_python(1)(2)─┐
-│ Parameter 1 value 2                  │
+│ Параметр 1, значение 2               │
 └──────────────────────────────────────┘
 ```
 
-**Shell скрипт**
+### UDF на основе shell-скрипта {#udf-shell-script}
 
-Shell скрипт, который умножает каждое значение на 2:
+В этом примере мы создаём shell-скрипт, который умножает каждое значение на 2.
 
-Исполняемые пользовательские функции могут использоваться с shell-скриптом.
-Файл `test_function_shell.xml` (`/etc/clickhouse-server/test_function_shell.xml` с настройками пути по умолчанию).
-```xml
-<functions>
-    <function>
-        <type>executable</type>
-        <name>test_shell</name>
-        <return_type>String</return_type>
-        <argument>
-            <type>UInt8</type>
-            <name>value</name>
-        </argument>
-        <format>TabSeparated</format>
-        <command>test_shell.sh</command>
-    </function>
-</functions>
-```
+<Tabs>
+  <TabItem value="XML" label="XML" default>
+    Файл `test_function_shell.xml` (`/etc/clickhouse-server/test_function_shell.xml` при стандартных настройках пути).
 
-Файл скрипта в папке `user_scripts` `test_shell.sh` (`/var/lib/clickhouse/user_scripts/test_shell.sh` с настройками пути по умолчанию).
+    ```xml title="/etc/clickhouse-server/test_function_shell.xml"
+    <functions>
+        <function>
+            <type>executable</type>
+            <name>test_shell</name>
+            <return_type>String</return_type>
+            <argument>
+                <type>UInt8</type>
+                <name>value</name>
+            </argument>
+            <format>TabSeparated</format>
+            <command>test_shell.sh</command>
+        </function>
+    </functions>
+    ```
+  </TabItem>
 
-```bash
+  <TabItem value="YAML" label="YAML">
+    Файл `test_function_shell.yaml` (`/etc/clickhouse-server/test_function_shell.yaml` при стандартных настройках пути).
+
+    ```yml title="/etc/clickhouse-server/test_function_shell.yaml"
+    functions:
+      type: executable
+      name: test_shell
+      return_type: String
+      argument:
+        - type: UInt8
+          name: value
+      format: TabSeparated
+      command: test_shell.sh
+    ```
+  </TabItem>
+</Tabs>
+
+<br />
+
+Создайте файл скрипта `test_shell.sh` в каталоге `user_scripts` (`/var/lib/clickhouse/user_scripts/test_shell.sh` при стандартных настройках пути).
+
+```bash title="/var/lib/clickhouse/user_scripts/test_shell.sh"
 #!/bin/bash
 
 while read read_data;
@@ -271,15 +386,11 @@ while read read_data;
 done
 ```
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT test_shell(number) FROM numbers(10);
 ```
 
-Результат:
-
-```text
+```text title="Result"
     ┌─test_shell(number)─┐
  1. │ 0                  │
  2. │ 2                  │
@@ -294,36 +405,38 @@ SELECT test_shell(number) FROM numbers(10);
     └────────────────────┘
 ```
 
+## Обработка ошибок {#error-handling}
 
-### Обработка ошибок {#error-handling}
+Некоторые функции могут выбрасывать исключение, если данные некорректны.
+В этом случае запрос отменяется, а клиенту возвращается текст ошибки.
+При распределённой обработке, когда исключение происходит на одном из серверов, остальные серверы также пытаются прервать выполнение запроса.
 
-Некоторые функции могут выбросить исключение, если данные недопустимы. В этом случае запрос отменяется, и текст ошибки возвращается клиенту. При распределенной обработке, когда исключение возникает на одном из серверов, другие серверы также пытаются прервать запрос.
+## Вычисление выражений аргументов {#evaluation-of-argument-expressions}
 
-### Оценка выражений аргументов {#evaluation-of-argument-expressions}
+Почти во всех языках программирования один из аргументов может не вычисляться для некоторых операторов.
+Обычно это операторы `&&`, `||` и `?:`.
+В ClickHouse аргументы функций (операторов) всегда вычисляются.
+Это связано с тем, что целые фрагменты столбцов обрабатываются сразу, а не вычисляется каждая строка по отдельности.
 
-Почти во всех языках программирования одно из аргументов может не быть оценено для определенных операторов. Обычно это операторы `&&`, `||` и `?:`.
-Но в ClickHouse аргументы функций (операторов) всегда оцениваются. Это связано с тем, что целые части колонок оцениваются сразу, вместо того чтобы вычислять каждую строку отдельно.
+## Выполнение функций при распределённой обработке запросов {#performing-functions-for-distributed-query-processing}
 
-### Выполнение функций для распределенной обработки запросов {#performing-functions-for-distributed-query-processing}
-
-При распределенной обработке запросов как можно больше этапов обработки запроса выполняется на удаленных серверах, а остальные этапы (слияние промежуточных результатов и все, что идет после этого) выполняются на сервере запрашивающего клиента.
+При распределённой обработке запросов как можно больше стадий обработки выполняется на удалённых серверах, а оставшиеся стадии (слияние промежуточных результатов и всё последующее) выполняются на сервере, инициировавшем запрос.
 
 Это означает, что функции могут выполняться на разных серверах.
 Например, в запросе `SELECT f(sum(g(x))) FROM distributed_table GROUP BY h(y),`
 
-- если `distributed_table` имеет как минимум два шарда, функции 'g' и 'h' выполняются на удаленных серверах, а функция 'f' выполняется на сервере запрашивающего клиента.
-- если `distributed_table` имеет только один шард, все функции 'f', 'g' и 'h' выполняются на сервере этого шарда.
+- если `distributed_table` содержит как минимум два шарда, функции `g` и `h` выполняются на удалённых серверах, а функция `f` выполняется на сервере, инициировавшем запрос;
+- если `distributed_table` содержит только один шард, все функции `f`, `g` и `h` выполняются на сервере этого шарда.
 
-Результат функции обычно не зависит от того, на каком сервере она выполняется. Однако это иногда важно.
-Например, функции, работающие со словарями, используют словарь, который существует на сервере, на котором они выполняются.
-Другой пример - это функция `hostName`, которая возвращает имя сервера, на котором она выполняется, чтобы сделать `GROUP BY` по серверам в запросе `SELECT`.
+Результат выполнения функции обычно не зависит от того, на каком сервере она выполняется. Однако иногда это важно.
+Например, функции, работающие со словарями, используют словарь, размещённый на том сервере, на котором они выполняются.
+Другой пример — функция `hostName`, которая возвращает имя сервера, на котором она выполняется, чтобы можно было сделать `GROUP BY` по серверам в запросе `SELECT`.
 
-Если функция в запросе выполняется на сервере запрашивающего клиента, но нужно выполнить ее на удаленных серверах, вы можете обернуть её в агрегатную функцию 'any' или добавить её в ключ в `GROUP BY`.
+Если функция в запросе выполняется на сервере, инициировавшем запрос, но вам нужно выполнить её на удалённых серверах, вы можете обернуть её в агрегатную функцию `any` или добавить её в ключ группировки в `GROUP BY`.
 
-## SQL пользовательские функции {#sql-user-defined-functions}
+## Определяемые пользователем SQL-функции {#sql-user-defined-functions}
 
-Пользовательские функции из лямбда-выражений могут быть созданы с помощью оператора [CREATE FUNCTION](../statements/create/function.md). Для удаления этих функций используйте оператор [DROP FUNCTION](../statements/drop.md#drop-function).
+Пользовательские функции на основе лямбда-выражений можно создавать с помощью оператора [CREATE FUNCTION](../statements/create/function.md). Чтобы удалить эти функции, используйте оператор [DROP FUNCTION](../statements/drop.md#drop-function).
 
-## Связанный контент {#related-content}
-
-### [Пользовательские функции в ClickHouse Cloud](https://clickhouse.com/blog/user-defined-functions-clickhouse-udfs) {#user-defined-functions-in-clickhouse-cloud}
+## Связанные материалы {#related-content}
+- [Пользовательские функции (UDF) в ClickHouse Cloud](https://clickhouse.com/blog/user-defined-functions-clickhouse-udfs)

@@ -1,8 +1,11 @@
 ---
-slug: '/deployment-modes'
+slug: /deployment-modes
 sidebar_label: 'デプロイメントモード'
-description: 'ClickHouseは、すべて同じ強力なデータベースエンジンを使用する4つのデプロイメントオプションを提供しており、特定のニーズに合わせて異なる形でパッケージ化されています。'
+description: 'ClickHouse は、同一の強力なデータベースエンジンを採用しつつ、それぞれのニーズに合わせてパッケージングが異なる 4 つのデプロイメントオプションを提供します。'
 title: 'デプロイメントモード'
+keywords: ['デプロイメントモード', 'chDB']
+show_related_blogs: true
+doc_type: 'guide'
 ---
 
 import chServer from '@site/static/images/deployment-modes/ch-server.png';
@@ -11,64 +14,71 @@ import chLocal from '@site/static/images/deployment-modes/ch-local.png';
 import chDB from '@site/static/images/deployment-modes/chdb.png';
 import Image from '@theme/IdealImage';
 
-ClickHouseは、ニーズに応じていくつかの異なる方法で展開できる多目的なデータベースシステムです。その核となるのは、すべての展開オプションが**同じ強力なClickHouseデータベースエンジンを使用する**ことです - 異なるのは、それとの対話方法と実行場所です。
+ClickHouse は多用途なデータベースシステムであり、ニーズに応じて複数の方法でデプロイできます。どのオプションでも本質的には **同じ強力な ClickHouse データベースエンジンを使用しており**、異なるのはどこで動作させ、どのように扱うかという点だけです。
 
-大規模な分析を本番環境で実行している場合でも、ローカルデータ分析を行っている場合でも、アプリケーションを構築している場合でも、あなたのユースケースに合った展開オプションがあります。基盤となるエンジンの一貫性により、すべての展開モードで同様の高いパフォーマンスとSQL互換性が得られます。
-このガイドでは、ClickHouseを展開および利用する主要な4つの方法を探ります：
+本番環境で大規模な分析を実行する場合でも、ローカルでデータ分析を行う場合でも、アプリケーションを構築する場合でも、ユースケースに合わせたデプロイメントオプションが用意されています。基盤となるエンジンが一貫しているため、いずれのデプロイメントモードでも同じ高いパフォーマンスと SQL 互換性を得ることができます。
+このガイドでは、ClickHouse をデプロイして利用する主な 4 つの方法を紹介します。
 
-* 伝統的なクライアント/サーバー展開のためのClickHouse Server
-* 完全に管理されたデータベース操作のためのClickHouse Cloud
-* コマンドラインデータ処理用のclickhouse-local
-* アプリケーションに直接ClickHouseを埋め込むためのchDB
+* 従来型のクライアント/サーバーデプロイメント向けの ClickHouse Server
+* 完全マネージドなデータベース運用向けの ClickHouse Cloud
+* コマンドラインでのデータ処理向けの clickhouse-local
+* アプリケーションに ClickHouse を直接組み込むための chDB
 
-各展開モードには自身の強みと理想的なユースケースがあり、以下で詳しく探ります。
+各デプロイメントモードには、それぞれの強みと最適なユースケースがあり、以下で詳しく見ていきます。
 
-<iframe width="1024" height="576" src="https://www.youtube.com/embed/EOXEW_-r10A?si=6IanDSJlRzN8f9Mo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/EOXEW_-r10A?si=6IanDSJlRzN8f9Mo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
+
 
 ## ClickHouse Server {#clickhouse-server}
 
-ClickHouse Serverは伝統的なクライアント/サーバーアーキテクチャを表し、本番環境に最適です。この展開モードは、高スループットおよび低レイテンシのクエリを伴う完全なOLAPデータベース機能を提供し、ClickHouseの特徴です。
+ClickHouse Server は従来型のクライアント／サーバーアーキテクチャに基づいており、本番環境でのデプロイメントに最適です。このデプロイメントモードでは、ClickHouse が特長とする高スループットかつ低レイテンシなクエリを備えた、完全な OLAP データベース機能を提供します。
 
 <Image img={chServer} alt="ClickHouse Server" size="sm"/>
 
 <br/>
 
-展開の柔軟性に関しては、ClickHouse Serverは、開発やテストのためにローカルマシンにインストールしたり、AWS、GCP、Azureなどの主要なクラウドプロバイダーに展開したり、オンプレミスのハードウェアに設定したりできます。より大規模な運用の場合、分散クラスターとして設定し、負荷の増加に対応し、高可用性を提供できます。
+デプロイメントの柔軟性という観点では、ClickHouse Server は開発やテスト用途のためにローカルマシンへインストールできるほか、AWS、GCP、Azure などの主要なクラウドプロバイダーへデプロイしてクラウド環境で運用したり、自前のオンプレミス環境にセットアップしたりできます。より大規模な運用に対しては、分散クラスターとして構成し、負荷増加への対応と高可用性の実現が可能です。
 
-この展開モードは、信頼性、パフォーマンス、およびフル機能アクセスが重要な本番環境の標準的な選択肢です。
+このデプロイメントモードは、信頼性、パフォーマンス、そしてすべての機能を利用できることが重要となる本番環境における最有力な選択肢です。
+
+
 
 ## ClickHouse Cloud {#clickhouse-cloud}
 
-[ClickHouse Cloud](/cloud/overview)は、独自の展開を運用するためのオーバーヘッドを取り除いた完全管理型のClickHouseバージョンです。ClickHouse Serverのすべてのコア機能を保持しつつ、開発と運用をスムーズにする追加機能で体験を強化します。
+[ClickHouse Cloud](/cloud/overview) は、自前のデプロイメント運用に伴うオペレーション負荷を取り除く、完全マネージド版の ClickHouse です。ClickHouse Server の中核となる機能はすべて維持しつつ、開発と運用を効率化するために設計された追加機能によって、利用体験を一段と高めます。
 
 <Image img={chCloud} alt="ClickHouse Cloud" size="sm"/>
 
-ClickHouse Cloudの主な利点は、統合されたツールです。[ClickPipes](/cloud/get-started/cloud-quick-start#clickpipes)は、複雑なETLパイプラインを管理せずに、さまざまなソースからデータを簡単に接続し、ストリームするための堅牢なデータ取り込みフレームワークを提供します。このプラットフォームは、アプリケーションを構築する際に大幅に簡素化された専用の[クエリAPI](/cloud/get-started/query-endpoints)も提供します。
+ClickHouse Cloud の主要な利点の 1 つは、統合されたツール群です。[ClickPipes](/getting-started/quick-start/cloud/#clickpipes) は堅牢なデータ インジェスト基盤を提供し、複雑な ETL パイプラインを管理することなく、さまざまなソースからデータを簡単に接続してストリーミングできるようにします。さらに、このプラットフォームは専用の [querying API](/cloud/get-started/query-endpoints) も提供しており、アプリケーションの構築を大幅に容易にします。
 
-ClickHouse CloudのSQLコンソールには、クエリをインタラクティブな視覚化に変換できる強力な[ダッシュボード](/cloud/manage/dashboards)機能が含まれています。保存されたクエリから構築されたダッシュボードを作成して共有することができ、クエリパラメータを通じてインタラクティブな要素を追加できます。これらのダッシュボードはグローバルフィルターを使用してダイナミックにすることができ、ユーザーはカスタマイズ可能なビューを通じてデータを探索できます - ただし、視覚化を表示するには、少なくとも保存されたクエリへの読み取りアクセスが必要です。
+ClickHouse Cloud の SQL Console には強力な [dashboarding](/cloud/manage/dashboards) 機能が含まれており、クエリをインタラクティブな可視化に変換できます。保存済みクエリからダッシュボードを作成・共有でき、クエリパラメータを通じてインタラクティブな要素を追加することも可能です。これらのダッシュボードはグローバルフィルターを用いることで動的なものにでき、ユーザーはカスタマイズ可能なビューを通じてデータを探索できます。ただし、可視化を閲覧するには、ユーザーが基盤となる保存済みクエリに対して少なくとも読み取りアクセス権を持っている必要がある点に注意してください。
 
-監視と最適化のために、ClickHouse Cloudには組み込みのチャートと[クエリインサイト](/cloud/get-started/query-insights)が含まれています。これらのツールは、クラスターのパフォーマンスに対する深い可視性を提供し、クエリパターン、リソースの使用状況、および最適化機会を理解する手助けをします。このレベルの可観測性は、高性能の分析運用を維持する必要があるチームにとって特に価値があります。
+監視と最適化のために、ClickHouse Cloud には組み込みのチャートと [query insights](/cloud/get-started/query-insights) が用意されています。これらのツールはクラスターのパフォーマンスに関する深い可視性を提供し、クエリパターン、リソース利用状況、および最適化の機会を把握するのに役立ちます。このレベルのオブザーバビリティは、インフラ管理にリソースを割くことなく高パフォーマンスな分析基盤を維持する必要があるチームにとって、特に有用です。
 
-サービスの管理された性質により、更新、バックアップ、スケーリング、またはセキュリティパッチについて心配する必要はありません - これらはすべて自動的に処理されます。これにより、データやアプリケーションに集中したい組織にとって理想的な選択肢となります。
+マネージドサービスであることから、アップデート、バックアップ、スケーリング、セキュリティパッチについて心配する必要はありません — これらはすべて自動的に処理されます。そのため、データベース管理ではなく、自社のデータとアプリケーションに注力したい組織にとって理想的な選択肢となります。
+
+
 
 ## clickhouse-local {#clickhouse-local}
 
-[clickhouse-local](/operations/utilities/clickhouse-local)は、スタンドアロン実行可能ファイルでClickHouseの完全な機能を提供する強力なコマンドラインツールです。基本的にはClickHouse Serverと同じデータベースですが、サーバーインスタンスを実行せずにコマンドラインからClickHouseのすべての機能を直接活用できるようにパッケージ化されています。
+[clickhouse-local](/operations/utilities/clickhouse-local) は、単体の実行ファイルとして ClickHouse の完全な機能を提供する強力なコマンドラインツールです。基本的には ClickHouse Server と同じデータベースですが、サーバーインスタンスを起動することなくコマンドラインから直接 ClickHouse の機能をすべて活用できるようにパッケージされています。
 
 <Image img={chLocal} alt="clickHouse-local" size="sm"/>
 
-このツールは、ローカルファイルやクラウドストレージサービスに保存されたデータでのアドホックデータ分析に優れています。ClickHouseのSQL方言を使用して、さまざまな形式（CSV、JSON、Parquetなど）のファイルを直接クエリすることができ、迅速なデータ探索や一時的な分析タスクに最適な選択肢です。
+このツールはアドホックなデータ分析に優れており、とくにローカルファイルやクラウドストレージサービスに保存されたデータを扱う場合に便利です。さまざまな形式（CSV、JSON、Parquet など）のファイルを ClickHouse の SQL 方言で直接クエリできるため、迅速なデータ探索や単発の分析タスクに最適です。
 
-clickhouse-localにはClickHouseのすべての機能が含まれているため、データ変換、形式変換、または通常ClickHouse Serverで行う他のデータベース操作に使用できます。主に一時的な操作に使用されますが、必要に応じてClickHouse Serverと同じストレージエンジンを使用してデータを保持することも可能です。
+clickhouse-local には ClickHouse の全機能が含まれているため、データ変換、フォーマット変換、あるいは通常 ClickHouse Server で行うその他のデータベース操作にも利用できます。主に一時的な処理に使われますが、必要に応じて ClickHouse Server と同じストレージエンジンを使ってデータを永続化することも可能です。
 
-リモートテーブル関数とローカルファイルシステムへのアクセスの組み合わせにより、clickhouse-localはClickHouse Serverとローカルマシンのファイル間でデータを結合する必要があるシナリオで特に便利です。これは、サーバーにアップロードしたくない機密性の高いまたは一時的なローカルデータを扱う際に特に価値があります。
+リモートテーブル関数とローカルファイルシステムへのアクセスを組み合わせることで、clickhouse-local は ClickHouse Server 上のデータとローカルマシン上のファイルを結合する必要があるシナリオでとくに有用です。サーバーにアップロードしたくない機密性の高いローカルデータや一時的なローカルデータを扱う場合に、きわめて有用です。
+
+
 
 ## chDB {#chdb}
 
-[chDB](/chdb)は、プロセス内データベースエンジンとして埋め込まれたClickHouseであり、主にPythonが実装されていますが、Go、Rust、NodeJS、Bunでも利用可能です。この展開オプションは、ClickHouseの強力なOLAP機能をアプリケーションのプロセス内に直接取り込み、別のデータベースインストールの必要を排除します。
+[chDB](/chdb) は、プロセス内データベースエンジンとして組み込まれた ClickHouse であり、主な実装は Python ですが、Go、Rust、NodeJS、Bun 向けにも利用できます。このデプロイオプションにより、ClickHouse の強力な OLAP 機能をアプリケーションのプロセス内に直接組み込めるため、別途データベースをインストールする必要がなくなります。
 
-<Image img={chDB} alt="chDB - Embedded ClickHouse" size="sm"/>
+<Image img={chDB} alt="chDB - 組み込み ClickHouse" size="sm"/>
 
-chDBはアプリケーションのエコシステムとのシームレスな統合を提供します。例えば、Pythonでは、PandasやArrowなどの一般的なデータサイエンスツールと効率的に連携するように最適化されており、Pythonのmemoryviewを介してデータコピーのオーバーヘッドを最小限に抑えています。これにより、ClickHouseのクエリパフォーマンスを既存のワークフロー内で利用したいデータサイエンティストやアナリストにとって特に価値があります。
+chDB は、アプリケーションのエコシステムとのシームレスな統合を実現します。たとえば Python では、Pandas や Arrow といった一般的なデータサイエンスツールと効率的に連携できるよう最適化されており、Python の `memoryview` を通じてデータコピーのオーバーヘッドを最小限に抑えます。これにより、既存のワークフローの中で ClickHouse のクエリ性能を活用したいデータサイエンティストやアナリストにとって特に有用です。
 
-chDBはまた、clickhouse-localで作成されたデータベースに接続できるため、データを扱う方法に柔軟性をもたらします。これにより、ローカル開発、Pythonでのデータ探索、およびより永続的なストレージソリューション間でシームレスに移行でき、データアクセスパターンを変更することなく利用できます。
+chDB は、`clickhouse-local` で作成したデータベースに接続することもでき、データの扱い方に柔軟性をもたらします。これにより、ローカル開発、Python によるデータ探索、より永続的なストレージソリューション間を、データアクセスパターンを変更することなくシームレスに切り替えることができます。

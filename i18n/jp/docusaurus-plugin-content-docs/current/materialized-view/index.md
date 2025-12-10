@@ -1,21 +1,14 @@
 ---
-slug: '/materialized-views'
-title: 'Materialized View'
-description: 'Materialized Viewに関するインデックスページ'
-keywords:
-- 'materialized views'
-- 'speed up queries'
-- 'query optimization'
-- 'refreshable'
-- 'incremental'
+slug: /materialized-views
+title: 'マテリアライズドビュー'
+description: 'マテリアライズドビューのインデックスページ'
+keywords: ['materialized views', 'クエリの高速化', 'クエリ最適化', 'リフレッシュ可能', '増分更新']
+doc_type: 'landing-page'
 ---
-
-
 
 | Page                                                                                      | Description                                                                                                                                                                                    |
 |-------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [増分物化ビュー](/materialized-view/incremental-materialized-view) | ユーザーがクエリ時間から挿入時間に計算コストをシフトできるようにし、結果としてより高速な `SELECT` クエリを実現します。                                                                             |
-| [リフレッシュ可能な物化ビュー](/materialized-view/refreshable-materialized-view) | 増分物化ビューと概念的に類似していますが、完全なデータセットに対して定期的にクエリを実行する必要があります。その結果は、クエリ用にターゲットテーブルに保存されます。 |
+| [Incremental materialized view](/materialized-view/incremental-materialized-view) | ユーザーは計算コストをクエリ実行時から挿入時へと移すことで、`SELECT` クエリを高速化できます。                                                                             |
+| [Refreshable materialized view](/materialized-view/refreshable-materialized-view) | 概念的には増分型マテリアライズドビューと類似していますが、完全なデータセットに対してクエリを定期的に実行する必要があります。その結果はクエリ実行用にターゲットテーブルに保存されます。 |
 
-
-<iframe width="1024" height="576" src="https://www.youtube.com/embed/-A3EtQgDn_0?si=TBiN_E80BKZ0DPpd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/-A3EtQgDn_0?si=TBiN_E80BKZ0DPpd" title="YouTube 動画プレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

@@ -1,45 +1,47 @@
 ---
-description: 'ODBC で接続されたテーブルを返します。'
-sidebar_label: 'ODBC'
+description: 'ODBC を介して接続されたテーブルを返します。'
+sidebar_label: 'odbc'
 sidebar_position: 150
-slug: '/sql-reference/table-functions/odbc'
+slug: /sql-reference/table-functions/odbc
 title: 'odbc'
+doc_type: 'reference'
 ---
 
+# odbc テーブル関数 {#odbc-table-function}
 
-
-
-# odbc テーブル関数
-
-[ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity)を介して接続されたテーブルを返します。
+[ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity) 経由で接続されたテーブルを返します。
 
 ## 構文 {#syntax}
 
 ```sql
-odbc(connection_settings, external_database, external_table)
+odbc(データソース, 外部データベース, 外部テーブル)
+odbc(データソース, 外部テーブル)
+odbc(名前付きコレクション)
 ```
 
 ## 引数 {#arguments}
 
-| 引数                  | 説明                                                              |
-|-----------------------|-------------------------------------------------------------------|
-| `connection_settings` | `odbc.ini`ファイル内の接続設定のセクション名。                        |
-| `external_database`   | 外部DBMS内のデータベース名。                                        |
-| `external_table`      | `external_database`内のテーブル名。                                |
+| Argument            | Description                                                            |
+|---------------------|------------------------------------------------------------------------|
+| `datasource` | `odbc.ini` ファイル内の接続設定セクション名。 |
+| `external_database` | 外部 DBMS 内のデータベース名。                                |
+| `external_table`    | `external_database` 内のテーブル名。                            |
 
-ODBC接続を安全に実装するために、ClickHouseは別のプログラム `clickhouse-odbc-bridge`を使用します。ODBCドライバが `clickhouse-server`から直接ロードされた場合、ドライバの問題がClickHouseサーバーをクラッシュさせる可能性があります。ClickHouseは必要なときに自動的に `clickhouse-odbc-bridge`を起動します。ODBCブリッジプログラムは、`clickhouse-server`と同じパッケージからインストールされます。
+これらのパラメータは、[named collections](operations/named-collections.md) を使用して渡すこともできます。
 
-外部テーブルからの `NULL`値を持つフィールドは、基本データ型のデフォルト値に変換されます。たとえば、リモートMySQLテーブルのフィールドが `INT NULL`型の場合、ClickHouseの `Int32`データ型のデフォルト値である0に変換されます。
+ODBC 接続を安全に実装するために、ClickHouse は別プログラムである `clickhouse-odbc-bridge` を使用します。ODBC ドライバを `clickhouse-server` から直接ロードすると、ドライバの問題によって ClickHouse サーバーがクラッシュする可能性があります。ClickHouse は必要に応じて自動的に `clickhouse-odbc-bridge` を起動します。ODBC ブリッジプログラムは、`clickhouse-server` と同じパッケージからインストールされます。
+
+外部テーブルのうち値が `NULL` のフィールドは、基になるデータ型のデフォルト値に変換されます。たとえば、リモートの MySQL テーブルフィールドが `INT NULL` 型の場合、0（ClickHouse の `Int32` データ型におけるデフォルト値）に変換されます。
 
 ## 使用例 {#usage-example}
 
-**ODBCを介してローカルMySQLインストールからデータを取得する**
+**ODBC を介してローカルの MySQL インストールからデータを取得する**
 
-この例はUbuntu Linux 18.04およびMySQLサーバー5.7で確認されています。
+この例は Ubuntu Linux 18.04 および MySQL サーバー 5.7 で動作確認されています。
 
-unixODBCおよびMySQL Connectorがインストールされていることを確認してください。
+`unixODBC` と MySQL Connector がインストールされていることを確認します。
 
-デフォルトでは（パッケージからインストールされた場合）、ClickHouseはユーザー `clickhouse`として起動します。したがって、MySQLサーバーでこのユーザーを作成して設定する必要があります。
+デフォルトでは (パッケージからインストールした場合)、ClickHouse はユーザー `clickhouse` として起動します。したがって、MySQL サーバー側でこのユーザーを作成し、構成する必要があります。
 
 ```bash
 $ sudo mysql
@@ -50,7 +52,7 @@ mysql> CREATE USER 'clickhouse'@'localhost' IDENTIFIED BY 'clickhouse';
 mysql> GRANT ALL PRIVILEGES ON *.* TO 'clickhouse'@'clickhouse' WITH GRANT OPTION;
 ```
 
-次に、`/etc/odbc.ini` に接続を設定します。
+次に、`/etc/odbc.ini` で接続設定を行います。
 
 ```bash
 $ cat /etc/odbc.ini
@@ -63,17 +65,17 @@ USERNAME = clickhouse
 PASSWORD = clickhouse
 ```
 
-unixODBCインストールの `isql`ユーティリティを使用して接続を確認できます。
+unixODBC のインストールに含まれる `isql` ユーティリティを使用して接続を確認できます。
 
 ```bash
 $ isql -v mysqlconn
 +-------------------------+
-| Connected!                            |
+| 接続しました!                            |
 |                                       |
 ...
 ```
 
-MySQL内のテーブル:
+MySQL のテーブル：
 
 ```text
 mysql> CREATE TABLE `test`.`test` (
@@ -96,7 +98,7 @@ mysql> select * from test;
 1 row in set (0,00 sec)
 ```
 
-ClickHouseでのMySQLテーブルからのデータ取得:
+ClickHouse で MySQL テーブルからデータを取得する:
 
 ```sql
 SELECT * FROM odbc('DSN=mysqlconn', 'test', 'test')
@@ -108,7 +110,7 @@ SELECT * FROM odbc('DSN=mysqlconn', 'test', 'test')
 └────────┴──────────────┴───────┴────────────────┘
 ```
 
-## 関連 {#see-also}
+## 関連項目 {#see-also}
 
 - [ODBC 辞書](/sql-reference/dictionaries#dbms)
-- [ODBC テーブルエンジン](/engines/table-engines/integrations/odbc).
+- [ODBC テーブルエンジン](/engines/table-engines/integrations/odbc)

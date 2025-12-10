@@ -1,14 +1,14 @@
 ---
-description: 'Вычисляет энтропию Шеннона для колонки значений.'
+description: 'Вычисляет энтропию Шеннона для столбца значений.'
 sidebar_position: 131
 slug: /sql-reference/aggregate-functions/reference/entropy
-title: 'энтропия'
+title: 'entropy'
+doc_type: 'reference'
 ---
 
+# entropy {#entropy}
 
-# энтропия
-
-Вычисляет [энтропию Шеннона](https://en.wikipedia.org/wiki/Entropy_(information_theory)) для колонки значений.
+Вычисляет [энтропию Шеннона](https://en.wikipedia.org/wiki/Entropy_\(information_theory\)) для столбца значений.
 
 **Синтаксис**
 
@@ -18,11 +18,11 @@ entropy(val)
 
 **Аргументы**
 
-- `val` — Колонка значений любого типа.
+* `val` — столбец значений любого типа.
 
 **Возвращаемое значение**
 
-- Этропия Шеннона.
+* энтропия Шеннона.
 
 Тип: [Float64](../../../sql-reference/data-types/float.md).
 

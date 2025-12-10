@@ -1,16 +1,16 @@
 ---
-'description': 'JSONStringsEachRowWithProgress格式的文档'
-'keywords':
-- 'JSONStringsEachRowWithProgress'
-'slug': '/interfaces/formats/JSONStringsEachRowWithProgress'
-'title': 'JSONStringsEachRowWithProgress'
+description: 'JSONStringsEachRowWithProgress 格式文档'
+keywords: ['JSONStringsEachRowWithProgress']
+slug: /interfaces/formats/JSONStringsEachRowWithProgress
+title: 'JSONStringsEachRowWithProgress'
+doc_type: 'reference'
 ---
 
 ## 描述 {#description}
 
-与 `JSONEachRow`/`JSONStringsEachRow` 不同，ClickHouse 还将以 JSON 值的形式提供进度信息。
+与 `JSONEachRow`/`JSONStringsEachRow` 不同，ClickHouse 还会以 JSON 值的形式返回进度信息。
 
-## 示例用法 {#example-usage}
+## 使用示例 {#example-usage}
 
 ```json
 {"row":{"num":42,"str":"hello","arr":[0,1]}}

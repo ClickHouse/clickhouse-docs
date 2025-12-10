@@ -1,60 +1,53 @@
 ---
-description: 'Overview page for settings.'
+description: '設定の概要ページ。'
 sidebar_position: 1
-slug: '/operations/settings/overview'
-title: 'Settings Overview'
+slug: /operations/settings/overview
+title: '設定の概要'
+doc_type: 'reference'
 ---
 
-
-
-
-# 設定の概要
+# 設定の概要 {#settings-overview}
 
 ## 概要 {#overview}
 
 :::note
-XMLベースの設定プロファイルおよび [構成ファイル](/operations/configuration-files) は現在 
-ClickHouse Cloud ではサポートされていません。ClickHouse Cloud サービスの設定を指定するには、 
-[SQL駆動の設定プロファイル](/operations/access-rights#settings-profiles-management) を使用する必要があります。
+XML ベースの設定プロファイルおよび [設定ファイル](/operations/configuration-files) は、現在 ClickHouse Cloud ではサポートされていません。ClickHouse Cloud サービスの設定を指定するには、[SQL ベースの設定プロファイル](/operations/access-rights#settings-profiles-management) を使用する必要があります。
 :::
 
-ClickHouse の設定には主に二つのグループがあります：
+ClickHouse の設定には、大きく分けて 2 つのグループがあります。
 
 - グローバルサーバー設定
 - セッション設定
 
-両者の主な違いは、グローバルサーバー設定は ClickHouse サーバー全体に適用されるのに対し、 
-セッション設定はユーザーセッションや個々のクエリに適用されることです。
+両者の主な違いは、グローバルサーバー設定は ClickHouse サーバー全体に適用されるのに対し、セッション設定はユーザーセッションや個々のクエリに適用される点です。
 
-## 非デフォルト設定の表示 {#see-non-default-settings}
+## 既定値以外の設定の確認 {#see-non-default-settings}
 
-デフォルト値から変更された設定を表示するには、 `system.settings` テーブルにクエリを実行します：
+既定値から変更されている設定を表示するには、`system.settings` テーブルをクエリします。
 
 ```sql
 SELECT name, value FROM system.settings WHERE changed
 ```
 
-変更された設定がデフォルト値から無い場合、ClickHouse は何も返しません。
+設定がデフォルト値からまったく変更されていない場合、ClickHouse は何も返しません。
 
-特定の設定の値を確認するには、クエリにその設定の `name` を指定します：
+特定の設定の値を確認するには、クエリ内でその設定の `name` を指定します。
 
 ```sql
 SELECT name, value FROM system.settings WHERE name = 'max_threads'
 ```
 
-これにより、以下のような結果が返されます：
+次のような結果が得られます：
 
 ```response
 ┌─name────────┬─value─────┐
 │ max_threads │ 'auto(8)' │
 └─────────────┴───────────┘
 
-1 row in set. Elapsed: 0.002 sec.
+1 行の結果。経過時間: 0.002 秒。
 ```
 
-## 詳細情報 {#further-reading}
+## 関連情報 {#further-reading}
 
-- [グローバルサーバー設定](/operations/server-configuration-parameters/settings.md) を参照して、 
-  ClickHouse サーバーをグローバルサーバーレベルで構成する方法を学びます。
-- [セッション設定](/operations/settings/settings-query-level.md) を参照して、 
-  ClickHouse サーバーをセッションレベルで構成する方法を学びます。
+- ClickHouse サーバーをグローバルレベルで構成する方法の詳細については、[グローバルサーバー設定](/operations/server-configuration-parameters/settings.md)を参照してください。
+- ClickHouse サーバーをセッションレベルで構成する方法の詳細については、[セッション設定](/operations/settings/settings-query-level.md)を参照してください。

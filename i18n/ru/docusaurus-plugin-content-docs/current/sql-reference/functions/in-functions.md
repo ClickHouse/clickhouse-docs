@@ -1,14 +1,13 @@
 ---
-description: 'Документация для функций реализации оператора IN'
+description: 'Документация по функциям, реализующим оператор IN'
 sidebar_label: 'Оператор IN'
-sidebar_position: 90
 slug: /sql-reference/functions/in-functions
-title: 'Функции для реализации оператора IN'
+title: 'Функции, реализующие оператор IN'
+doc_type: 'reference'
 ---
 
-
-# Функции для реализации оператора IN
+# Функции для реализации оператора IN {#functions-for-implementing-the-in-operator}
 
 ## in, notIn, globalIn, globalNotIn {#in-notin-globalin-globalnotin}
 
-Смотрите раздел [операторы IN](/sql-reference/operators/in).
+См. раздел [Операторы IN](/sql-reference/operators/in).

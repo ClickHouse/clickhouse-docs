@@ -1,46 +1,49 @@
 ---
-description: 'Overview page for window functions'
-sidebar_label: 'Window Functions'
+description: 'ウィンドウ関数の概要ページ'
+sidebar_label: 'ウィンドウ関数'
 sidebar_position: 1
-slug: '/sql-reference/window-functions/'
-title: 'Window Functions'
+slug: /sql-reference/window-functions/
+title: 'ウィンドウ関数'
+doc_type: 'reference'
 ---
 
-# ウィンドウ関数
+# ウィンドウ関数 {#window-functions}
 
-ウィンドウ関数を使用すると、現在の行に関連する行のセットに対して計算を実行できます。
-実行できる計算の一部は、集約関数でできることに似ていますが、ウィンドウ関数は結果を単一の出力にグループ化しません - 個々の行はまだ返されます。
+ウィンドウ関数を使用すると、現在の行と関連する行の集合を対象に計算を実行できます。
+実行できる計算の一部は集約関数で行えるものと似ていますが、ウィンドウ関数では行が 1 つの結果行にグループ化されないため、各行は個別の行として返されます。
 
 ## 標準ウィンドウ関数 {#standard-window-functions}
 
-ClickHouseは、ウィンドウとウィンドウ関数を定義するための標準文法をサポートしています。以下の表では、機能が現在サポートされているかどうかを示しています。
+ClickHouse は、ウィンドウおよびウィンドウ関数を定義するための標準的な文法をサポートしています。以下の表は、各機能が現在サポートされているかどうかを示します。
 
-| 機能                                                                   | サポートされていますか？                                                                                                                                                                        |
+| 機能                                                                  | サポート状況                                                                                                                                                                       |
 |--------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| adhocウィンドウ指定（`count(*) over (partition by id order by time desc)`） | ✅                                                                                                                                                                                  |
-| ウィンドウ関数を含む式、例えば`(count(*) over ()) / 2`                       | ✅                                                                                                                                                                                   |
-| `WINDOW`句（`select ... from table window w as (partition by id)`）               | ✅                                                                                                                                                                                   |
-| `ROWS`フレーム                                                                | ✅                                                                                                                                                                                   |
-| `RANGE`フレーム                                                               | ✅（デフォルト）                                                                                                                                                                      |
-| `DateTime`の`RANGE OFFSET`フレーム用の`INTERVAL`構文                         | ❌（代わりに秒数を指定 (`RANGE`は任意の数値型で動作します)。）                                                                                                                                 |
-| `GROUPS`フレーム                                                            | ❌                                                                                                                                                                               |
-| フレーム内の集約関数の計算（`sum(value) over (order by time)`）                  | ✅（すべての集約関数がサポートされています）                                                                                                                                                       |
-| `rank()`、`dense_rank()`、`row_number()`                                          | ✅ <br/>エイリアス: `denseRank()`                                                                                                                                                                                   |
-| `percent_rank()` | ✅  データセット内のパーティション内での値の相対的な地位を効率的に計算します。この関数は、より詳細で計算集約的な手動SQL計算の実行を実質的に置き換えます。構文は`ifNull((rank() OVER(PARTITION BY x ORDER BY y) - 1) / nullif(count(1) OVER(PARTITION BY x) - 1, 0), 0)` です。 <br/>エイリアス: `percentRank()`| 
-| `lag/lead(value, offset)`                                                        | ❌ <br/> 次の回避策の1つを使用できます:<br/> 1)  `any(value) over (.... rows between <offset> preceding and <offset> preceding)`、または`lead`用に`following` <br/> 2) `lagInFrame/leadInFrame`、これらは類似ですがウィンドウフレームを尊重します。`lag/lead`と同じ動作を得るには、`rows between unbounded preceding and unbounded following`を使用します。                                                                 |
-| ntile(buckets) | ✅ <br/>ウィンドウは、(partition by x order by y rows between unbounded preceding and unbounded following)のように指定します。 |
+| アドホックなウィンドウ指定（`count(*) over (partition by id order by time desc)`） | ✅                                                                                                                                                                                  |
+| ウィンドウ関数を含む式（例: `(count(*) over ()) / 2`）             | ✅                                                                                                                                                                                   |
+| `WINDOW` 句（`select ... from table window w as (partition by id)`）            | ✅                                                                                                                                                                                   |
+| `ROWS` フレーム                                                                      | ✅                                                                                                                                                                                   |
+| `RANGE` フレーム                                                                     | ✅（デフォルト）                                                                                                                                                                      |
+| `DateTime` 用 `RANGE OFFSET` フレームに対する `INTERVAL` 構文                              | ❌（代わりに秒数を指定してください。`RANGE` は任意の数値型で動作します）                                                                                                                                 |
+| `GROUPS` フレーム                                                                    | ❌                                                                                                                                                                               |
+| フレームに対する集約関数の計算（`sum(value) over (order by time)`）   | ✅（すべての集約関数がサポートされています）                                                                                                                                                       |
+| `rank()`, `dense_rank()`, `row_number()`                                           | ✅ <br/>別名: `denseRank()`                                                                                                                                                                                   |
+| `percent_rank()` | ✅  パーティション内での値の相対的な順位を効率的に計算します。この関数は、`ifNull((rank() OVER(PARTITION BY x ORDER BY y) - 1) / nullif(count(1) OVER(PARTITION BY x) - 1, 0), 0)` のような、より冗長で計算コストの高い手動の SQL 計算を事実上置き換えます。<br/>別名: `percentRank()`| 
+| `cume_dist()` | ✅  値の累積分布を計算します。現在の行の値以下の値を持つ行の割合（パーセンテージ）を返します。 | 
+| `lag/lead(value, offset)`                                                          | ✅ <br/> 次のいずれかの回避策も使用できます:<br/> 1) `any(value) over (.... rows between &lt;offset&gt; preceding and &lt;offset&gt; preceding)`、または `lead` の場合は `following` を使用します。<br/> 2) ウィンドウフレームを考慮する、類似の `lagInFrame/leadInFrame` を使用します。`lag/lead` と同じ動作を得るには、`rows between unbounded preceding and unbounded following` を使用します。                                                                 |
+| ntile(buckets) | ✅ <br/> 次のようにウィンドウを指定します: (partition by x order by y rows between unbounded preceding and unbounded following)。 |
 
-## ClickHouse特有のウィンドウ関数 {#clickhouse-specific-window-functions}
+## ClickHouse固有のウィンドウ関数 {#clickhouse-specific-window-functions}
 
-次のClickHouse特有のウィンドウ関数もあります。
+以下のClickHouse固有のウィンドウ関数も提供されています：
 
 ### nonNegativeDerivative(metric_column, timestamp_column[, INTERVAL X UNITS]) {#nonnegativederivativemetric_column-timestamp_column-interval-x-units}
 
-指定された`metric_column`の非負の導関数を、`timestamp_column`に基づいて計算します。
+指定された`metric_column`の非負の微分値を`timestamp_column`に基づいて算出します。
 `INTERVAL`は省略可能で、デフォルトは`INTERVAL 1 SECOND`です。
-計算された値は各行に対して次のようになります。
-- 1行目のための`0`
-- $i_{th}$行のための$\frac{\text{metric}_i - \text{metric}_{i-1}}{\text{timestamp}_i - \text{timestamp}_{i-1}}  * \text{interval}$。
+各行に対して算出される値は以下の通りです：
+
+- 1行目：`0`
+- $i$行目：${\text{metric}_i - \text{metric}_{i-1} \over \text{timestamp}_i - \text{timestamp}_{i-1}}  * \text{interval}$
 
 ## 構文 {#syntax}
 
@@ -52,46 +55,46 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]])
 ```
 
-- `PARTITION BY` - 結果セットをグループに分ける方法を定義します。
-- `ORDER BY` - 集計関数の計算中にグループ内の行を並べる方法を定義します。
-- `ROWS or RANGE` - フレームの境界を定義し、集計関数はフレーム内で計算されます。
-- `WINDOW` - 複数の式が同じウィンドウ定義を使用できるようにします。
+* `PARTITION BY` - 結果セットをどのようなグループに分割するかを定義します。
+* `ORDER BY` - 集約関数 `aggregate_function` を計算するときに、グループ内の行をどのような順序で並べるかを定義します。
+* `ROWS or RANGE` - フレームの境界を定義し、集約関数 `aggregate_function` はそのフレーム内で計算されます。
+* `WINDOW` - 複数の式で同じウィンドウ定義を共通して利用できるようにします。
 
 ```text
       PARTITION
-┌─────────────────┐  <-- UNBOUNDED PRECEDING (PARTITIONの開始)
+┌─────────────────┐  <-- UNBOUNDED PRECEDING (PARTITIONの先頭)
 │                 │
 │                 │
 │=================│  <-- N PRECEDING  <─┐
 │      N ROWS     │                     │  F
-│  CURRENTの前    │                     │  R
+│  Before CURRENT │                     │  R
 │~~~~~~~~~~~~~~~~~│  <-- CURRENT ROW    │  A
 │     M ROWS      │                     │  M
-│   CURRENTの後    │                     │  E
+│   After CURRENT │                     │  E
 │=================│  <-- M FOLLOWING  <─┘
 │                 │
 │                 │
-└─────────────────┘  <--- UNBOUNDED FOLLOWING (PARTITIONの終了)
+└─────────────────┘  <--- UNBOUNDED FOLLOWING (PARTITIONの末尾)
 ```
 
 ### 関数 {#functions}
 
-これらの関数はウィンドウ関数としてのみ使用できます。
+これらの関数は、ウィンドウ関数としてのみ使用可能です。
 
-- [`row_number()`](./row_number.md) - 現在の行を1から始めてそのパーティション内で番号を付けます。
-- [`first_value(x)`](./first_value.md) - 並べられたフレーム内で評価された最初の値を返します。
-- [`last_value(x)`](./last_value.md) - 並べられたフレーム内で評価された最後の値を返します。
-- [`nth_value(x, offset)`](./nth_value.md) - 並べられたフレーム内でn番目の行（オフセット）に対して評価された最初の非NULL値を返します。
-- [`rank()`](./rank.md) - 現在の行をそのパーティション内で順位付けし、ギャップを使用します。
-- [`dense_rank()`](./dense_rank.md) - 現在の行をそのパーティション内でギャップなしで順位付けします。
-- [`lagInFrame(x)`](./lagInFrame.md) - 並べられたフレーム内の現在の行の前の指定された物理的オフセットの行で評価された値を返します。
-- [`leadInFrame(x)`](./leadInFrame.md) - 並べられたフレーム内の現在の行の後のオフセット行で評価された値を返します。
+* [`row_number()`](./row_number.md) - パーティション内で現在の行に 1 から始まる連番を付与します。
+* [`first_value(x)`](./first_value.md) - 順序付けられたフレーム内で最初に評価された値を返します。
+* [`last_value(x)`](./last_value.md) - 順序付けられたフレーム内で最後に評価された値を返します。
+* [`nth_value(x, offset)`](./nth_value.md) - 順序付けられたフレーム内で、offset で指定された n 行目に対して評価された最初の NULL でない値を返します。
+* [`rank()`](./rank.md) - パーティション内で現在の行に順位を付けます（欠番あり）。
+* [`dense_rank()`](./dense_rank.md) - パーティション内で現在の行に順位を付けます（欠番なし）。
+* [`lagInFrame(x)`](./lagInFrame.md) - 順序付けられたフレーム内で、現在の行から指定された物理オフセットだけ前の行で評価された値を返します。
+* [`leadInFrame(x)`](./leadInFrame.md) - 順序付けられたフレーム内で、現在の行から指定されたオフセットだけ後ろの行で評価された値を返します。
 
 ## 例 {#examples}
 
-ウィンドウ関数の使用方法をいくつかの例で見てみましょう。
+ウィンドウ関数をどのように利用できるか、いくつかの例を見ていきます。
 
-### 行番号の付与 {#numbering-rows}
+### 行に番号を振る {#numbering-rows}
 
 ```sql
 CREATE TABLE salaries
@@ -151,7 +154,7 @@ FROM salaries;
 
 ### 集約関数 {#aggregation-functions}
 
-各プレーヤーの給与をチームの平均と比較します。
+各選手の年俸を、その所属チームの平均年俸と比較します。
 
 ```sql
 SELECT
@@ -173,7 +176,7 @@ FROM salaries;
 └─────────────────┴────────┴───────────────────────────┴─────────┴────────┘
 ```
 
-各プレーヤーの給与をチームの最大値と比較します。
+各選手の給与を、その選手のチーム内での最高給与と比較します。
 
 ```sql
 SELECT
@@ -195,7 +198,7 @@ FROM salaries;
 └─────────────────┴────────┴───────────────────────────┴─────────┴────────┘
 ```
 
-### 列によるパーティショニング {#partitioning-by-column}
+### 列によるパーティション分割 {#partitioning-by-column}
 
 ```sql
 CREATE TABLE wf_partition
@@ -221,10 +224,10 @@ ORDER BY
 
 ┌─part_key─┬─value─┬─order─┬─frame_values─┐
 │        1 │     1 │     1 │ [1,2,3]      │   <┐   
-│        1 │     2 │     2 │ [1,2,3]      │    │  1グループ目
+│        1 │     2 │     2 │ [1,2,3]      │    │  第1グループ
 │        1 │     3 │     3 │ [1,2,3]      │   <┘ 
-│        2 │     0 │     0 │ [0]          │   <- 2グループ目
-│        3 │     0 │     0 │ [0]          │   <- 3グループ目
+│        2 │     0 │     0 │ [0]          │   <- 第2グループ
+│        3 │     0 │     0 │ [0]          │   <- 第3グループ
 └──────────┴───────┴───────┴──────────────┘
 ```
 
@@ -244,7 +247,7 @@ INSERT INTO wf_frame FORMAT Values
 ```
 
 ```sql
--- フレームはパーティションの境界によって制約されます（BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING）
+-- フレームはパーティションの境界で区切られます (BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
 SELECT
     part_key,
     value,
@@ -269,8 +272,8 @@ ORDER BY
 ```
 
 ```sql
--- 短い形式 - 制約式がなく、並べる必要もなく、
--- これは`ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`と同等です。
+-- 短縮形 - 境界式なし、ORDER BY なし
+-- `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` と同等
 SELECT
     part_key,
     value,
@@ -293,7 +296,7 @@ ORDER BY
 ```
 
 ```sql
--- フレームはパーティションの開始と現在の行によって制約されます
+-- フレームはパーティションの先頭から現在行までの範囲となる
 SELECT
     part_key,
     value,
@@ -318,8 +321,8 @@ ORDER BY
 ```
 
 ```sql
--- 短い形式（フレームはパーティションの開始と現在の行によって制約されます）
--- これは`ORDER BY order ASC ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`と同等です。
+-- 短縮形式（フレームはパーティションの開始位置から現在行までの範囲）
+-- `ORDER BY order ASC ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW` と同等
 SELECT
     part_key,
     value,
@@ -343,7 +346,7 @@ ORDER BY
 ```
 
 ```sql
--- フレームはパーティションの開始と現在の行によって制約されますが、順序は逆です
+-- フレームはパーティションの先頭から現在行までに制限されるが、順序は降順
 SELECT
     part_key,
     value,
@@ -364,7 +367,7 @@ ORDER BY
 ```
 
 ```sql
--- スライディングフレーム - 1 PRECEDING ROW AND CURRENT ROW
+-- スライディングフレーム - 1行前から現在行まで
 SELECT
     part_key,
     value,
@@ -414,7 +417,7 @@ ORDER BY
 ```
 
 ```sql
--- row_numberはフレームを尊重しないため、rn_1 = rn_2 = rn_3 != rn_4
+-- row_numberはフレームを尊重しないため、rn_1 = rn_2 = rn_3 != rn_4となる
 SELECT
     part_key,
     value,
@@ -435,18 +438,20 @@ WINDOW
 ORDER BY
     part_key ASC,
     value ASC;
+```
 
-┌─part_key─┬─value─┬─order─┬─frame_values─┬─rn_1─┬─rn_2─┬─rn_3─┬─rn_4─┐
+┌─part&#95;key─┬─value─┬─order─┬─frame&#95;values─┬─rn&#95;1─┬─rn&#95;2─┬─rn&#95;3─┬─rn&#95;4─┐
 │        1 │     1 │     1 │ [5,4,3,2,1]  │    5 │    5 │    5 │    2 │
 │        1 │     2 │     2 │ [5,4,3,2]    │    4 │    4 │    4 │    2 │
 │        1 │     3 │     3 │ [5,4,3]      │    3 │    3 │    3 │    2 │
 │        1 │     4 │     4 │ [5,4]        │    2 │    2 │    2 │    2 │
 │        1 │     5 │     5 │ [5]          │    1 │    1 │    1 │    1 │
 └──────────┴───────┴───────┴──────────────┴──────┴──────┴──────┴──────┘
-```
+
+````
 
 ```sql
--- first_valueとlast_valueはフレームを尊重する
+-- first_value と last_value はフレームに従う
 SELECT
     groupArray(value) OVER w1 AS frame_values_1,
     first_value(value) OVER w1 AS first_value_1,
@@ -469,7 +474,7 @@ ORDER BY
 │ [1,2,3,4]      │             1 │            4 │ [3,4]          │             3 │            4 │
 │ [1,2,3,4,5]    │             1 │            5 │ [4,5]          │             4 │            5 │
 └────────────────┴───────────────┴──────────────┴────────────────┴───────────────┴──────────────┘
-```
+````
 
 ```sql
 -- フレーム内の2番目の値
@@ -492,7 +497,7 @@ ORDER BY
 ```
 
 ```sql
--- フレーム内の2番目の値 + 欠損値にはNULL
+-- フレーム内の2番目の値 + 欠損値に対するNull
 SELECT
     groupArray(value) OVER w1 AS frame_values_1,
     nth_value(toNullable(value), 2) OVER w1 AS second_value
@@ -501,21 +506,24 @@ WINDOW w1 AS (PARTITION BY part_key ORDER BY order ASC ROWS BETWEEN 3 PRECEDING 
 ORDER BY
     part_key ASC,
     value ASC;
+```
 
-┌─frame_values_1─┬─second_value─┐
+┌─frame&#95;values&#95;1─┬─second&#95;value─┐
 │ [1]            │         ᴺᵁᴸᴸ │
 │ [1,2]          │            2 │
 │ [1,2,3]        │            2 │
 │ [1,2,3,4]      │            2 │
 │ [2,3,4,5]      │            3 │
 └────────────────┴──────────────┘
+
+```
 ```
 
-## 実世界の例 {#real-world-examples}
+## 実例 {#real-world-examples}
 
-以下の例は、一般的な実世界の問題を解決します。
+以下は、現場でよくある課題を解決する例です。
 
-### 部門ごとの最大/合計給与 {#maximumtotal-salary-per-department}
+### 部門別の最大／合計給与 {#maximumtotal-salary-per-department}
 
 ```sql
 CREATE TABLE employees
@@ -554,7 +562,7 @@ FROM
     FROM employees
     WINDOW wndw AS (
         PARTITION BY department
-        rows BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+        ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
     )
     ORDER BY
         department ASC,
@@ -571,7 +579,7 @@ FROM
 └────────────┴──────┴────────┴────────────────────┴──────────────────────┴──────────────────┘
 ```
 
-### 累積合計 {#cumulative-sum}
+### 累積和 {#cumulative-sum}
 
 ```sql
 CREATE TABLE warehouse
@@ -580,7 +588,7 @@ CREATE TABLE warehouse
     `ts` DateTime,
     `value` Float
 )
-ENGINE = Memory;
+ENGINE = Memory
 
 INSERT INTO warehouse VALUES
     ('sku38', '2020-01-01', 9),
@@ -589,7 +597,7 @@ INSERT INTO warehouse VALUES
     ('sku1', '2020-01-01', 1),
     ('sku1', '2020-02-01', 1),
     ('sku1', '2020-03-01', 1);
-```    
+```
 
 ```sql
 SELECT
@@ -612,7 +620,7 @@ ORDER BY
 └───────┴─────────────────────┴───────┴───────────────┘
 ```
 
-### 移動平均（3行ごと） {#moving--sliding-average-per-3-rows}
+### 移動平均 / スライディング平均（3行ごと） {#moving--sliding-average-per-3-rows}
 
 ```sql
 CREATE TABLE sensors
@@ -622,16 +630,18 @@ CREATE TABLE sensors
     `value` Float
 )
 ENGINE = Memory;
-
-insert into sensors values('cpu_temp', '2020-01-01 00:00:00', 87),
-                          ('cpu_temp', '2020-01-01 00:00:01', 77),
-                          ('cpu_temp', '2020-01-01 00:00:02', 93),
-                          ('cpu_temp', '2020-01-01 00:00:03', 87),
-                          ('cpu_temp', '2020-01-01 00:00:04', 87),
-                          ('cpu_temp', '2020-01-01 00:00:05', 87),
-                          ('cpu_temp', '2020-01-01 00:00:06', 87),
-                          ('cpu_temp', '2020-01-01 00:00:07', 87);
 ```
+
+insert into sensors values(&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:00&#39;, 87),
+(&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:01&#39;, 77),
+(&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:02&#39;, 93),
+(&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:03&#39;, 87),
+(&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:04&#39;, 87),
+(&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:05&#39;, 87),
+(&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:06&#39;, 87),
+(&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:07&#39;, 87);
+
+````
 
 ```sql
 SELECT
@@ -658,9 +668,9 @@ ORDER BY
 │ cpu_temp │ 2020-01-01 00:00:06 │    87 │                87 │
 │ cpu_temp │ 2020-01-01 00:00:07 │    87 │                87 │
 └──────────┴─────────────────────┴───────┴───────────────────┘
-```
+````
 
-### 移動平均（10秒ごと） {#moving--sliding-average-per-10-seconds}
+### 移動平均／スライディング平均（10秒ごと） {#moving--sliding-average-per-10-seconds}
 
 ```sql
 SELECT
@@ -668,7 +678,7 @@ SELECT
     ts,
     value,
     avg(value) OVER (PARTITION BY metric ORDER BY ts
-      Range BETWEEN 10 PRECEDING AND CURRENT ROW) AS moving_avg_10_seconds_temp
+      RANGE BETWEEN 10 PRECEDING AND CURRENT ROW) AS moving_avg_10_seconds_temp
 FROM sensors
 ORDER BY
     metric ASC,
@@ -686,9 +696,9 @@ ORDER BY
 └──────────┴─────────────────────┴───────┴────────────────────────────┘
 ```
 
-### 移動平均（10日ごと） {#moving--sliding-average-per-10-days}
+### 移動平均 / スライディング平均（10日ごと） {#moving--sliding-average-per-10-days}
 
-温度は秒精度で保存されますが、`Range`と`ORDER BY toDate(ts)`を使用して10単位のサイズのフレームを形成し、`toDate(ts)`によって単位は1日になります。
+温度データは秒精度で保存されていますが、`Range` と `ORDER BY toDate(ts)` を使用することでサイズ 10 のフレームを作成し、`toDate(ts)` によってその単位は日になります。
 
 ```sql
 CREATE TABLE sensors
@@ -698,20 +708,22 @@ CREATE TABLE sensors
     `value` Float
 )
 ENGINE = Memory;
-
-insert into sensors values('ambient_temp', '2020-01-01 00:00:00', 16),
-                          ('ambient_temp', '2020-01-01 12:00:00', 16),
-                          ('ambient_temp', '2020-01-02 11:00:00', 9),
-                          ('ambient_temp', '2020-01-02 12:00:00', 9),                          
-                          ('ambient_temp', '2020-02-01 10:00:00', 10),
-                          ('ambient_temp', '2020-02-01 12:00:00', 10),
-                          ('ambient_temp', '2020-02-10 12:00:00', 12),                          
-                          ('ambient_temp', '2020-02-10 13:00:00', 12),
-                          ('ambient_temp', '2020-02-20 12:00:01', 16),
-                          ('ambient_temp', '2020-03-01 12:00:00', 16),
-                          ('ambient_temp', '2020-03-01 12:00:00', 16),
-                          ('ambient_temp', '2020-03-01 12:00:00', 16);
 ```
+
+insert into sensors values(&#39;ambient&#95;temp&#39;, &#39;2020-01-01 00:00:00&#39;, 16),
+(&#39;ambient&#95;temp&#39;, &#39;2020-01-01 12:00:00&#39;, 16),
+(&#39;ambient&#95;temp&#39;, &#39;2020-01-02 11:00:00&#39;, 9),
+(&#39;ambient&#95;temp&#39;, &#39;2020-01-02 12:00:00&#39;, 9),\
+(&#39;ambient&#95;temp&#39;, &#39;2020-02-01 10:00:00&#39;, 10),
+(&#39;ambient&#95;temp&#39;, &#39;2020-02-01 12:00:00&#39;, 10),
+(&#39;ambient&#95;temp&#39;, &#39;2020-02-10 12:00:00&#39;, 12),\
+(&#39;ambient&#95;temp&#39;, &#39;2020-02-10 13:00:00&#39;, 12),
+(&#39;ambient&#95;temp&#39;, &#39;2020-02-20 12:00:01&#39;, 16),
+(&#39;ambient&#95;temp&#39;, &#39;2020-03-01 12:00:00&#39;, 16),
+(&#39;ambient&#95;temp&#39;, &#39;2020-03-01 12:00:00&#39;, 16),
+(&#39;ambient&#95;temp&#39;, &#39;2020-03-01 12:00:00&#39;, 16);
+
+````
 
 ```sql
 SELECT
@@ -719,7 +731,7 @@ SELECT
     ts,
     value,
     round(avg(value) OVER (PARTITION BY metric ORDER BY toDate(ts) 
-       Range BETWEEN 10 PRECEDING AND CURRENT ROW),2) AS moving_avg_10_days_temp
+       RANGE BETWEEN 10 PRECEDING AND CURRENT ROW),2) AS moving_avg_10_days_temp
 FROM sensors
 ORDER BY
     metric ASC,
@@ -739,19 +751,19 @@ ORDER BY
 │ ambient_temp │ 2020-03-01 12:00:00 │    16 │                      16 │
 │ ambient_temp │ 2020-03-01 12:00:00 │    16 │                      16 │
 └──────────────┴─────────────────────┴───────┴─────────────────────────┘
-```
+````
 
 ## 参考 {#references}
 
-### GitHubの問題 {#github-issues}
+### GitHub Issues {#github-issues}
 
-ウィンドウ関数の初期サポートのロードマップは[この問題](https://github.com/ClickHouse/ClickHouse/issues/18097)にあります。
+ウィンドウ関数の初期サポートに関するロードマップは [この Issue](https://github.com/ClickHouse/ClickHouse/issues/18097) にあります。
 
-ウィンドウ関数に関連するすべてのGitHubの問題には[comp-window-functions](https://github.com/ClickHouse/ClickHouse/labels/comp-window-functions)タグがあります。
+ウィンドウ関数に関連するすべての GitHub Issue には [comp-window-functions](https://github.com/ClickHouse/ClickHouse/labels/comp-window-functions) タグが付いています。
 
 ### テスト {#tests}
 
-これらのテストには、現在サポートされている文法の例が含まれています：
+次のテストには、現在サポートされている構文の例が含まれています。
 
 https://github.com/ClickHouse/ClickHouse/blob/master/tests/performance/window_functions.xml
 
@@ -777,6 +789,6 @@ https://dev.mysql.com/doc/refman/8.0/en/window-functions-frames.html
 
 ## 関連コンテンツ {#related-content}
 
-- ブログ: [ClickHouseでの時系列データの取り扱い](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)
-- ブログ: [Gitコミットシーケンスのためのウィンドウおよび配列関数](https://clickhouse.com/blog/clickhouse-window-array-functions-git-commits)
-- ブログ: [データをClickHouseに取り込む - パート3 - S3の使用](https://clickhouse.com/blog/getting-data-into-clickhouse-part-3-s3)
+- ブログ: [ClickHouse における時系列データの扱い方](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)
+- ブログ: [Git コミットシーケンス向けウィンドウ関数と配列関数](https://clickhouse.com/blog/clickhouse-window-array-functions-git-commits)
+- ブログ: [ClickHouse へのデータ投入 - パート 3 - S3 の利用](https://clickhouse.com/blog/getting-data-into-clickhouse-part-3-s3)

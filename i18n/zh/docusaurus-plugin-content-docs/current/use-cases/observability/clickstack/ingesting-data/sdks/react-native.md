@@ -1,63 +1,67 @@
 ---
-'slug': '/use-cases/observability/clickstack/sdks/react-native'
-'pagination_prev': null
-'pagination_next': null
-'sidebar_position': 7
-'description': 'React Native SDK 用于 ClickStack - ClickHouse 可观察性堆栈'
-'title': 'React Native'
+slug: /use-cases/observability/clickstack/sdks/react-native
+pagination_prev: null
+pagination_next: null
+sidebar_position: 7
+description: '用于 ClickStack 的 React Native SDK - ClickHouse 可观测性栈'
+title: 'React Native'
+doc_type: 'guide'
+keywords: ['clickstack', 'sdk', '日志记录', '集成', '应用监控']
 ---
 
-The ClickStack React Native SDK 允许您对您的 React Native 应用进行仪器以向 ClickStack 发送事件。这使您能够在单一时间线上查看移动网络请求和异常以及后端事件。
+ClickStack React Native SDK 允许你在 React Native 应用中进行埋点，将事件发送到
+ClickStack。这样，你就可以在同一时间轴上，将移动端的网络请求和异常与后端事件一起查看。
 
-本指南集成了：
+本指南集成：
 
 - **XHR/Fetch 请求**
 
-## 开始使用 {#getting-started}
+## 快速入门 {#getting-started}
 
 ### 通过 NPM 安装 {#install-via-npm}
 
-使用以下命令安装 [ClickStack React Native package](https://www.npmjs.com/package/@hyperdx/otel-react-native)。
+使用以下命令安装 [ClickStack React Native 包](https://www.npmjs.com/package/@hyperdx/otel-react-native)。
 
-```bash
+```shell
 npm install @hyperdx/otel-react-native
 ```
 
 ### 初始化 ClickStack {#initialize-clickstack}
 
-尽早在您的应用生命周期初始化库：
+尽可能在应用程序生命周期的最早阶段初始化该库：
 
-```js
+```javascript
 import { HyperDXRum } from '@hyperdx/otel-react-native';
 
 HyperDXRum.init({
   service: 'my-rn-app',
   apiKey: '<YOUR_INGESTION_API_KEY>',
-  tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
+  tracePropagationTargets: [/api.myapp.domain/i], // 设置以关联前端到后端请求的追踪
 });
 ```
 
 ### 附加用户信息或元数据（可选） {#attach-user-information-metadata}
 
-附加用户信息将允许您在 HyperDX 中搜索/过滤会话和事件。可以在客户端会话的任何时刻调用此操作。当前的客户端会话及其后发送的所有事件将与用户信息相关联。
+附加用户信息可以让你在 HyperDX 中搜索和筛选会话及事件。此方法可以在客户端会话的任意时间调用。当前客户端会话以及调用之后发送的所有事件都会与该用户信息关联。
 
-`userEmail`、`userName` 和 `teamName` 将用相应的值填充会话 UI，但可以省略。任何其他额外值也可以指定并用于搜索事件。
+`userEmail`、`userName` 和 `teamName` 会在会话 UI 中显示相应的值，但它们是可选的。你还可以指定任意其他字段，并用于搜索事件。
 
-```js
+```javascript
 HyperDXRum.setGlobalAttributes({
   userId: user.id,
   userEmail: user.email,
   userName: user.name,
   teamName: user.team.name,
-  // Other custom properties...
+  // 其他自定义属性...
 });
 ```
 
-### 为低版本仪器化 {#instrument-lower-versions}
+### 为低版本进行埋点 {#instrument-lower-versions}
 
-要为运行在低于 0.68 的 React Native 版本的应用进行仪器，请编辑您的 `metro.config.js` 文件以强迫 metro 使用特定于浏览器的包。例如：
+要为运行在 React Native 0.68 以下版本上的应用进行埋点，
+请编辑你的 `metro.config.js` 文件，将 metro 强制配置为使用浏览器专用的包。例如：
 
-```js
+```javascript
 const defaultResolver = require('metro-resolver');
 
 module.exports = {
@@ -101,9 +105,9 @@ module.exports = {
 
 支持 [react-navigation](https://github.com/react-navigation/react-navigation) 版本 5 和 6。
 
-以下示例演示了如何仪器化导航：
+以下示例演示如何对导航进行埋点：
 
-```js
+```javascript
 import { startNavigationTracking } from '@hyperdx/otel-react-native';
 
 export default function App() {

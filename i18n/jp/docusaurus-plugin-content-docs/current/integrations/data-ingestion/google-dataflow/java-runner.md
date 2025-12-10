@@ -1,26 +1,27 @@
 ---
-sidebar_label: 'Javaランナー'
-slug: '/integrations/google-dataflow/java-runner'
+sidebar_label: 'Java Runner'
+slug: /integrations/google-dataflow/java-runner
 sidebar_position: 2
-description: 'Users can ingest data into ClickHouse using Google Dataflow Java Runner'
+description: 'Google Dataflow Java Runner を使用して ClickHouse にデータを取り込めます'
 title: 'Dataflow Java Runner'
+doc_type: 'guide'
+keywords: ['Dataflow Java Runner', 'Google Dataflow ClickHouse', 'Apache Beam Java ClickHouse', 'ClickHouseIO connector']
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# Dataflow Java Runner
+# Dataflow Java ランナー {#dataflow-java-runner}
 
 <ClickHouseSupportedBadge/>
 
-Dataflow Java Runnerを使用すると、Google CloudのDataflowサービスでカスタムApache Beamパイプラインを実行できます。このアプローチは最大限の柔軟性を提供し、高度なETLワークフローに適しています。
+Dataflow Java Runner を使用すると、カスタム Apache Beam パイプラインを Google Cloud の Dataflow サービス上で実行できます。このアプローチは柔軟性が最大限に高く、高度な ETL ワークフローに適しています。
 
 ## 仕組み {#how-it-works}
 
-1. **パイプライン実装**
-   Java Runnerを使用するには、公式のApache Beamコネクタである`ClickHouseIO`を使用してBeamパイプラインを実装する必要があります。`ClickHouseIO`の使用方法に関するコード例や指示については、[ClickHouse Apache Beam](/integrations/apache-beam)を訪れてください。
+1. **パイプラインの実装**
+   Java Runner を使用するには、公式の Apache Beam コネクタである `ClickHouseIO` を使って Beam パイプラインを実装する必要があります。コード例および `ClickHouseIO` の使用方法については、[ClickHouse Apache Beam](/integrations/apache-beam) を参照してください。
 
 2. **デプロイメント**
-   パイプラインが実装され、設定されたら、Google Cloudのデプロイメントツールを使用してDataflowにデプロイできます。包括的なデプロイメント手順は、[Google Cloud Dataflow documentation - Java Pipeline](https://cloud.google.com/dataflow/docs/quickstarts/create-pipeline-java)に記載されています。
+   パイプラインを実装して設定したら、Google Cloud のデプロイメントツールを使用して Dataflow にデプロイできます。詳細なデプロイメント手順は、[Google Cloud Dataflow ドキュメント - Java Pipeline](https://cloud.google.com/dataflow/docs/quickstarts/create-pipeline-java) に記載されています。
 
-**注意**: このアプローチはBeamフレームワークへの理解とコーディングスキルを前提としています。ノーコードのソリューションを希望する場合は、[ClickHouseの事前定義されたテンプレート](./templates)の使用を検討してください。
+**注記**: この方法は、Beam フレームワークに関する十分な知識とコーディングの専門スキルを前提としています。ノーコードのソリューションを希望する場合は、[ClickHouse の事前定義テンプレート](./templates)の利用を検討してください。

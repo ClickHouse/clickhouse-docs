@@ -1,18 +1,18 @@
 ---
-'description': '选择最后遇到的值，类似于 `anyLast`，但可以接受 NULL。'
-'sidebar_position': 160
-'slug': '/sql-reference/aggregate-functions/reference/last_value'
-'title': 'last_value'
+description: '选择最后出现的值，类似于 `anyLast`，但允许 NULL 值。'
+sidebar_position: 160
+slug: /sql-reference/aggregate-functions/reference/last_value
+title: 'last_value'
+doc_type: 'reference'
 ---
 
+# last&#95;value {#last&#95;value}
 
-# last_value
+选择最后出现的值，与 `anyLast` 类似，但可以接受 NULL。
+它主要应与[窗口函数](../../window-functions/index.md)一起使用。
+如果不使用窗口函数且源数据流未排序，则结果将是随机的。
 
-选择最近遇到的值，类似于 `anyLast`，但可以接受 NULL。
-主要应与 [Window Functions](../../window-functions/index.md) 一起使用。
-如果源流未排序，则在没有 Window Functions 的情况下，结果将是随机的。
-
-## examples {#examples}
+## 示例 {#examples}
 
 ```sql
 CREATE TABLE test_data
@@ -22,13 +22,15 @@ CREATE TABLE test_data
 )
 ENGINE = Memory;
 
-INSERT INTO test_data (a, b) Values (1,null), (2,3), (4, 5), (6,null)
+INSERT INTO test_data (a, b) VALUES (1,null), (2,3), (4, 5), (6,null)
 ```
 
-### example1 {#example1}
-NULL 值在默认情况下将被忽略。
+### 示例 1 {#example1}
+
+默认情况下会忽略 NULL 值。
+
 ```sql
-select last_value(b) from test_data
+SELECT last_value(b) FROM test_data
 ```
 
 ```text
@@ -37,10 +39,12 @@ select last_value(b) from test_data
 └────────────────────────────┘
 ```
 
-### example2 {#example2}
-NULL 值被忽略。
+### 示例 2 {#example2}
+
+NULL 值会被忽略。
+
 ```sql
-select last_value(b) ignore nulls from test_data
+SELECT last_value(b) IGNORE NULLS FROM test_data
 ```
 
 ```text
@@ -49,10 +53,12 @@ select last_value(b) ignore nulls from test_data
 └────────────────────────────┘
 ```
 
-### example3 {#example3}
-NULL 值被接受。
+### 示例 3 {#example3}
+
+接受 NULL 值。
+
 ```sql
-select last_value(b) respect nulls from test_data
+SELECT last_value(b) RESPECT NULLS FROM test_data
 ```
 
 ```text
@@ -61,8 +67,10 @@ select last_value(b) respect nulls from test_data
 └─────────────────────────────┘
 ```
 
-### example4 {#example4}
-使用带 `ORDER BY` 的子查询稳定结果。
+### 示例 4 {#example4}
+
+使用包含 `ORDER BY` 的子查询来稳定结果。
+
 ```sql
 SELECT
     last_value_respect_nulls(b),

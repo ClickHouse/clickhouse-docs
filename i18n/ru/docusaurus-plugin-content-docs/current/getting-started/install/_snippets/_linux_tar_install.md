@@ -1,25 +1,25 @@
-# Установка ClickHouse с использованием архивов tgz
+# Установка ClickHouse с помощью tgz-архивов {#install-clickhouse-using-tgz-archives}
 
-> Рекомендуется использовать официальные предварительно скомпилированные `tgz` архивы для всех дистрибутивов Linux, где установка пакетов `deb` или `rpm` невозможна.
+> Рекомендуется использовать официальные предкомпилированные `tgz`-архивы для всех дистрибутивов Linux, где установка пакетов `deb` или `rpm` невозможна.
 
 <VerticalStepper>
 
-## Скачивание и установка последней стабильной версии {#install-latest-stable}
+## Загрузка и установка последней стабильной версии {#install-latest-stable}
 
-Необходимую версию можно скачать с помощью `curl` или `wget` из репозитория https://packages.clickhouse.com/tgz/.
-После этого загруженные архивы должны быть разархивированы и установлены с помощью установочных скриптов.
+Необходимую версию можно скачать с помощью `curl` или `wget` из репозитория по адресу https://packages.clickhouse.com/tgz/.
+После этого загруженные архивы нужно распаковать и установить с помощью установочных скриптов.
 
-Ниже приведен пример установки последней стабильной версии.
+Ниже приведён пример установки последней стабильной версии.
 
 :::note
-Для производственных сред рекомендуется использовать последнюю `stable`-версию.
-Вы можете найти номер релиза на этой [странице GitHub](https://github.com/ClickHouse/ClickHouse/tags)
+Для продуктивных (production) сред рекомендуется использовать последнюю стабильную версию (`stable`).
+Номер релиза можно найти на этой [странице GitHub](https://github.com/ClickHouse/ClickHouse/tags)
 с постфиксом `-stable`.
 :::
 
-## Получение последней версии ClickHouse {#get-latest-version}
+## Получите последнюю версию ClickHouse {#get-latest-version}
 
-Получите последнюю версию ClickHouse из GitHub и сохраните ее в переменной `LATEST_VERSION`.
+Получите последнюю версию ClickHouse с GitHub и сохраните её в переменной `LATEST_VERSION`.
 
 ```bash
 LATEST_VERSION=$(curl -s https://raw.githubusercontent.com/ClickHouse/ClickHouse/master/utils/list-versions/version_date.tsv | \
@@ -27,21 +27,21 @@ LATEST_VERSION=$(curl -s https://raw.githubusercontent.com/ClickHouse/ClickHouse
 export LATEST_VERSION
 ```
 
-## Определение архитектуры вашей системы {#detect-system-architecture}
+## Определите архитектуру системы {#detect-system-architecture}
 
-Определите архитектуру системы и установите переменную ARCH соответствующим образом:
+Определите архитектуру системы и задайте переменную ARCH соответствующим образом:
 
 ```bash
 case $(uname -m) in
-  x86_64) ARCH=amd64 ;;         # Для процессоров Intel/AMD 64-бит
-  aarch64) ARCH=arm64 ;;        # Для ARM 64-бит
-  *) echo "Неизвестная архитектура $(uname -m)"; exit 1 ;; # Выйти, если архитектура не поддерживается
+  x86_64) ARCH=amd64 ;;         # Для 64-битных процессоров Intel/AMD
+  aarch64) ARCH=arm64 ;;        # Для 64-битных процессоров ARM
+  *) echo "Неизвестная архитектура $(uname -m)"; exit 1 ;; # Выход при неподдерживаемой архитектуре
 esac
 ```
 
-## Скачивание tarball'ов для каждого компонента ClickHouse {#download-tarballs}
+## Загрузка tar-архивов для каждого компонента ClickHouse {#download-tarballs}
 
-Скачайте tarball'ы для каждого компонента ClickHouse. Цикл сначала пытается получить пакеты, специфичные для архитектуры, а затем переходит на общие.
+Скачайте tar-архивы для каждого компонента ClickHouse. Цикл сначала пытается использовать пакеты, специфичные для архитектуры, затем при необходимости переходит к универсальным.
 
 ```bash
 for PKG in clickhouse-common-static clickhouse-common-static-dbg clickhouse-server clickhouse-client clickhouse-keeper
@@ -53,44 +53,39 @@ done
 
 ## Извлечение и установка пакетов {#extract-and-install}
 
-Запустите команды ниже для извлечения и установки следующих пакетов:
+Выполните следующие команды для распаковки и установки этих пакетов:
 - `clickhouse-common-static`
 
 ```bash
-
-# Извлечение и установка пакета clickhouse-common-static
+# Извлечение и установка пакета clickhouse-common-static {#extract-and-install-clickhouse-common-static-package}
 tar -xzvf "clickhouse-common-static-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-common-static-$LATEST_VERSION.tgz"
 sudo "clickhouse-common-static-$LATEST_VERSION/install/doinst.sh"
 ```
 
-
-- `clickhouse-common-static-dbg`
+* `clickhouse-common-static-dbg`
 
 ```bash
-
-# Извлечение и установка пакета отладочных символов
+# Извлеките и установите пакет отладочных символов {#extract-and-install-debug-symbols-package}
 tar -xzvf "clickhouse-common-static-dbg-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-common-static-dbg-$LATEST_VERSION.tgz"
 sudo "clickhouse-common-static-dbg-$LATEST_VERSION/install/doinst.sh"
 ```
 
-- `clickhouse-server`
+* `clickhouse-server`
 
 ```bash
-
-# Извлечение и установка серверного пакета с конфигурацией
+# Извлечение и установка серверного пакета с конфигурацией {#extract-and-install-server-package-with-configuration}
 tar -xzvf "clickhouse-server-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-server-$LATEST_VERSION.tgz"
 sudo "clickhouse-server-$LATEST_VERSION/install/doinst.sh" configure
 sudo /etc/init.d/clickhouse-server start  # Запуск сервера
 ```
 
-- `clickhouse-client`
+* `clickhouse-client`
 
 ```bash
-
-# Извлечение и установка клиентского пакета
+# Извлечь и установить клиентский пакет {#extract-and-install-client-package}
 tar -xzvf "clickhouse-client-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-client-$LATEST_VERSION.tgz"
 sudo "clickhouse-client-$LATEST_VERSION/install/doinst.sh"

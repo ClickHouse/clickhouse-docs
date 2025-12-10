@@ -1,23 +1,28 @@
 ---
-description: 'Новый аналитический бенчмарк для данных журналов, сгенерированных машинами'
-sidebar_label: 'Бенчмарк Университета Брауна'
+description: 'Новый аналитический бенчмарк для машинно-генерируемых журнальных логов'
+sidebar_label: 'Бенчмарк Brown University'
 slug: /getting-started/example-datasets/brown-benchmark
-title: 'Бенчмарк Университета Брауна'
+title: 'Бенчмарк Brown University'
+keywords: ['Brown University Benchmark', 'MgBench', 'log data benchmark', 'machine-generated data', 'начало работы']
+doc_type: 'guide'
 ---
 
-`MgBench` — это новый аналитический бенчмарк для данных журналов, сгенерированных машинами, [Эндрю Кротти](http://cs.brown.edu/people/acrotty/).
+`MgBench` — это новый аналитический бенчмарк для машинно-генерируемых журнальных логов, разработанный [Эндрю Кроти](http://cs.brown.edu/people/acrotty/).
 
-Скачайте данные:
+Загрузите данные:
+
 ```bash
 wget https://datasets.clickhouse.com/mgbench{1..3}.csv.xz
 ```
 
 Распакуйте данные:
+
 ```bash
 xz -v -d mgbench{1..3}.csv.xz
 ```
 
 Создайте базу данных и таблицы:
+
 ```sql
 CREATE DATABASE mgbench;
 ```
@@ -54,7 +59,6 @@ ENGINE = MergeTree()
 ORDER BY (machine_group, machine_name, log_time);
 ```
 
-
 ```sql
 CREATE TABLE mgbench.logs2 (
   log_time    DateTime,
@@ -66,7 +70,6 @@ CREATE TABLE mgbench.logs2 (
 ENGINE = MergeTree()
 ORDER BY log_time;
 ```
-
 
 ```sql
 CREATE TABLE mgbench.logs3 (
@@ -83,7 +86,7 @@ ENGINE = MergeTree()
 ORDER BY (event_type, log_time);
 ```
 
-Вставьте данные:
+Вставка данных:
 
 ```bash
 clickhouse-client --query "INSERT INTO mgbench.logs1 FORMAT CSVWithNames" < mgbench1.csv
@@ -91,14 +94,14 @@ clickhouse-client --query "INSERT INTO mgbench.logs2 FORMAT CSVWithNames" < mgbe
 clickhouse-client --query "INSERT INTO mgbench.logs3 FORMAT CSVWithNames" < mgbench3.csv
 ```
 
-## Запустите тестовые запросы: {#run-benchmark-queries}
+## Выполните тестовые запросы {#run-benchmark-queries}
 
 ```sql
 USE mgbench;
 ```
 
 ```sql
--- Q1.1: Какова загрузка CPU/сети для каждого веб-сервера с полуночи?
+-- Q1.1: Какова загрузка процессора и сети для каждого веб-сервера с полуночи?
 
 SELECT machine_name,
        MIN(cpu) AS cpu_min,
@@ -122,9 +125,8 @@ FROM (
 GROUP BY machine_name;
 ```
 
-
 ```sql
--- Q1.2: Какие машины в компьютерной лаборатории были недоступны за последний день?
+-- Q1.2: Какие машины компьютерных лабораторий были отключены за последние сутки?
 
 SELECT machine_name,
        log_time
@@ -138,7 +140,7 @@ ORDER BY machine_name,
 ```
 
 ```sql
--- Q1.3: Каковы средние показатели за последний 10 дней для конкретной рабочей станции?
+-- Q1.3: Каковы средние почасовые показатели за последние 10 дней для конкретной рабочей станции?
 
 SELECT dt,
        hr,
@@ -171,7 +173,7 @@ ORDER BY dt,
 ```
 
 ```sql
--- Q1.4: На протяжении 1 месяца, насколько часто каждый сервер блокировался по причине ввода-вывода диска?
+-- Q1.4: За 1 месяц, как часто каждый сервер блокировался на дисковом вводе-выводе?
 
 SELECT machine_name,
        COUNT(*) AS spikes
@@ -186,7 +188,7 @@ LIMIT 10;
 ```
 
 ```sql
--- Q1.5: Какие внешне доступные ВМ испытывали нехватку памяти?
+-- Q1.5: Какие внешне доступные виртуальные машины испытывали нехватку памяти?
 
 SELECT machine_name,
        dt,
@@ -207,7 +209,7 @@ ORDER BY machine_name,
 ```
 
 ```sql
--- Q1.6: Каков общий сетевой трафик за час на всех файловых серверах?
+-- Q1.6: Каков общий почасовой объём сетевого трафика по всем файловым серверам?
 
 SELECT dt,
        hr,
@@ -243,7 +245,7 @@ ORDER BY log_time;
 ```
 
 ```sql
--- Q2.2: За определенный период в 2 недели, была ли утечка файла паролей пользователя?
+-- Q2.2: Произошла ли утечка файла паролей пользователей в течение определенного двухнедельного периода?
 
 SELECT *
 FROM logs2
@@ -253,7 +255,6 @@ WHERE status_code >= 200
   AND log_time >= TIMESTAMP '2012-05-06 00:00:00'
   AND log_time < TIMESTAMP '2012-05-20 00:00:00';
 ```
-
 
 ```sql
 -- Q2.3: Какова средняя глубина пути для запросов верхнего уровня за последний месяц?
@@ -280,9 +281,8 @@ GROUP BY top_level
 ORDER BY top_level;
 ```
 
-
 ```sql
--- Q2.4: За последние 3 месяца, какие клиенты сделали чрезмерное количество запросов?
+-- Q2.4: За последние 3 месяца какие клиенты выполнили чрезмерное количество запросов?
 
 SELECT client_ip,
        COUNT(*) AS num_requests
@@ -293,9 +293,8 @@ HAVING COUNT(*) >= 100000
 ORDER BY num_requests DESC;
 ```
 
-
 ```sql
--- Q2.5: Каково количество уникальных посетителей за день?
+-- Q2.5: Сколько уникальных посетителей в день?
 
 SELECT dt,
        COUNT(DISTINCT client_ip)
@@ -308,9 +307,8 @@ GROUP BY dt
 ORDER BY dt;
 ```
 
-
 ```sql
--- Q2.6: Каковы средние и максимальные скорости передачи данных (Гбит/с)?
+-- Q2.6: Какова средняя и максимальная скорость передачи данных (Гбит/с)?
 
 SELECT AVG(transfer) / 125000000.0 AS transfer_avg,
        MAX(transfer) / 125000000.0 AS transfer_max
@@ -322,9 +320,8 @@ FROM (
 ) AS r;
 ```
 
-
 ```sql
--- Q3.1: Достигала ли внутренняя температура 0 градусов в выходные?
+-- Q3.1: Достигла ли температура в помещении точки замерзания в выходные?
 
 SELECT *
 FROM logs3
@@ -333,9 +330,8 @@ WHERE event_type = 'temperature'
   AND log_time >= '2019-11-29 17:00:00.000';
 ```
 
-
 ```sql
--- Q3.4: Как часто открывались каждую дверь за последние 6 месяцев?
+-- Q3.4: Как часто открывалась каждая дверь за последние 6 месяцев?
 
 SELECT device_name,
        device_floor,
@@ -348,13 +344,14 @@ GROUP BY device_name,
 ORDER BY ct DESC;
 ```
 
-Запрос 3.5 ниже использует UNION. Установите режим для объединения результатов запросов SELECT. Настройка используется только при объединении с UNION без явного указания UNION ALL или UNION DISTINCT.
+Запрос 3.5 ниже использует UNION. Задайте режим объединения результатов запросов SELECT. Этот параметр применяется только к UNION без явного указания UNION ALL или UNION DISTINCT.
+
 ```sql
 SET union_default_mode = 'DISTINCT'
 ```
 
 ```sql
--- Q3.5: Где в здании происходят большие колебания температуры зимой и летом?
+-- Q3.5: В каких частях здания происходят значительные колебания температуры зимой и летом?
 
 WITH temperature AS (
   SELECT dt,
@@ -393,7 +390,7 @@ WITH temperature AS (
 SELECT DISTINCT device_name,
        device_type,
        device_floor,
-       'WINTER'
+       'ЗИМА'
 FROM temperature
 WHERE dt >= DATE '2018-12-01'
   AND dt < DATE '2019-03-01'
@@ -401,15 +398,14 @@ UNION
 SELECT DISTINCT device_name,
        device_type,
        device_floor,
-       'SUMMER'
+       'ЛЕТО'
 FROM temperature
 WHERE dt >= DATE '2019-06-01'
   AND dt < DATE '2019-09-01';
 ```
 
-
 ```sql
--- Q3.6: Какие показатели потребления электроэнергии по месяцам для каждой категории устройств?
+-- Q3.6: Каковы ежемесячные показатели потребления электроэнергии для каждой категории устройств?
 
 SELECT yr,
        mo,
@@ -453,4 +449,4 @@ ORDER BY yr,
          mo;
 ```
 
-Данные также доступны для интерактивных запросов в [Playground](https://sql.clickhouse.com), [пример](https://sql.clickhouse.com?query_id=1MXMHASDLEQIP4P1D1STND).
+Данные также доступны для интерактивных запросов в [Playground](https://sql.clickhouse.com), см. [пример](https://sql.clickhouse.com?query_id=1MXMHASDLEQIP4P1D1STND).

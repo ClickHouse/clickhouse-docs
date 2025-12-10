@@ -1,0 +1,72 @@
+---
+slug: /deletes/overview
+title: '删除概览'
+description: '如何在 ClickHouse 中删除数据'
+keywords: ['delete', 'truncate', 'drop', 'lightweight delete']
+doc_type: 'guide'
+---
+
+在 ClickHouse 中有多种删除数据的方式，每种方式都有各自的优点和性能特征。应根据数据模型以及计划删除的数据量选择合适的方法。
+
+| 方法 | 语法 | 使用场景 |
+| --- | --- | --- |
+| [轻量级删除（Lightweight delete）](/guides/developer/lightweight-delete) | `DELETE FROM [table]` | 适用于只需删除少量数据的场景。被删除的行会在后续所有 SELECT 查询中立即被过滤掉，但最初仅在内部被标记为已删除，而不会立刻从磁盘上物理移除。 |
+| [删除变更（Delete mutation）](/sql-reference/statements/alter/delete) | `ALTER TABLE [table] DELETE` | 适用于必须立即从磁盘中删除数据的场景（例如出于合规性要求）。会对 SELECT 性能产生负面影响。 |
+| [截断表（Truncate table）](/sql-reference/statements/truncate) | `TRUNCATE TABLE [db.table]` | 高效移除表中的所有数据。 |
+| [删除分区（Drop partition）](/sql-reference/statements/alter/partition#drop-partitionpart) | `DROP PARTITION` | 高效移除某个分区中的所有数据。 |
+
+以下是 ClickHouse 中不同数据删除方式的汇总：
+
+## 轻量级删除 \{#lightweight-deletes\}
+
+轻量级删除会将行立即标记为已删除，从而可以在之后的所有 `SELECT` 查询中自动将其过滤掉。随后对这些已删除行的实际移除会在自然合并周期中发生，因此会带来更少的 I/O 开销。其结果是，在一段未明确定义的时间内，数据可能并未真正从存储中删除，而只是被标记为已删除。如果你需要确保数据已经被删除，请考虑使用上述 mutation 命令。
+
+```sql
+-- 使用轻量级删除方式删除 2018 年的所有数据。不建议使用。
+DELETE FROM posts WHERE toYear(CreationDate) = 2018
+```
+
+使用轻量级 `DELETE` 语句删除大量数据也可能对 `SELECT` 查询性能产生负面影响。该命令也不支持带有投影（projection）的表。
+
+请注意，在该操作中会使用 mutation 来[标记被删除的行](/sql-reference/statements/delete#how-lightweight-deletes-work-internally-in-clickhouse)（添加一个 `_row_exists` 列），因此会产生一定的 I/O 开销。
+
+通常情况下，如果可以容忍被删除的数据仍然保留在磁盘上（例如在无需满足合规要求的场景中），应优先选择轻量级删除而不是 mutation。如果必须删除所有数据，则应避免使用这种方法。
+
+详细了解[轻量级删除](/guides/developer/lightweight-delete)。
+
+## 删除变更 \{#delete-mutations\}
+
+删除变更可以通过 `ALTER TABLE ... DELETE` 命令发起，例如：
+
+```sql
+-- 通过 mutation 删除 2018 年的所有数据。不建议使用。
+ALTER TABLE posts DELETE WHERE toYear(CreationDate) = 2018
+```
+
+这些操作可以同步执行（对于非复制表默认同步执行），也可以异步执行（由 [mutations&#95;sync](/operations/settings/settings#mutations_sync) 设置决定）。这些操作会产生非常大的 I/O 开销，会重写所有满足 `WHERE` 条件的数据分片。此过程不具备原子性——一旦变更后的分片就绪，就会立即替换原有分片，而在变更过程中开始执行的 `SELECT` 查询会同时看到已经被变更的分片数据以及尚未被变更的分片数据。用户可以通过 [systems.mutations](/operations/system-tables/mutations#monitoring-mutations) 表跟踪执行进度状态。由于这些是 I/O 密集型操作，应尽量少用，因为它们可能会影响集群的 `SELECT` 性能。
+
+有关[删除类型变更](/sql-reference/statements/alter/delete)的更多信息，请参阅文档。
+
+## 截断表 \{#truncate-table\}
+
+如果需要删除表中的所有数据，请使用下面的 `TRUNCATE TABLE` 命令。此操作较为轻量级。
+
+```sql
+TRUNCATE TABLE posts
+```
+
+在 [TRUNCATE TABLE](/sql-reference/statements/truncate) 中了解更多信息。
+
+## 删除分区 \{#drop-partition\}
+
+如果为数据指定了自定义分区键，则可以高效删除分区。避免使用高基数的分区键。
+
+```sql
+ALTER TABLE posts (DROP PARTITION '2008')
+```
+
+请参阅 [DROP PARTITION](/sql-reference/statements/alter/partition) 了解更多信息。
+
+## 更多资源 \{#more-resources\}
+
+* [在 ClickHouse 中处理更新和删除](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)

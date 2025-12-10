@@ -1,25 +1,31 @@
 ---
 alias: []
-description: 'Документация для формата ProtobufSingle'
+description: 'Документация о формате ProtobufSingle'
 input_format: true
 keywords: ['ProtobufSingle']
 output_format: true
 slug: /interfaces/formats/ProtobufSingle
 title: 'ProtobufSingle'
+doc_type: 'reference'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-<CloudNotSupportedBadge/>
+<CloudNotSupportedBadge />
 
-| Вход | Выход | Псевдоним |
-|-------|--------|-------|
-| ✔     | ✔      |       |
+| Ввод | Вывод | Псевдоним |
+| ---- | ----- | --------- |
+| ✔    | ✔     |           |
+
 
 ## Описание {#description}
 
-Формат `ProtobufSingle` идентичен формату [`Protobuf`](./Protobuf.md), но предназначен для хранения/парсинга одиночных сообщений Protobuf без разделителей длины.
+Формат `ProtobufSingle` аналогичен формату [`Protobuf`](./Protobuf.md), но предназначен для хранения и парсинга одиночных Protobuf‑сообщений без префикса длины.
 
-## Пример Использования {#example-usage}
 
-## Настройки Формата {#format-settings}
+
+## Пример использования {#example-usage}
+
+
+
+## Параметры форматирования {#format-settings}

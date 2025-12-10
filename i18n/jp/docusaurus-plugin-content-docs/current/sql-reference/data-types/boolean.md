@@ -1,20 +1,18 @@
 ---
-description: 'Documentation for the Boolean data type in ClickHouse'
+description: 'ClickHouse の Boolean データ型に関するドキュメント'
 sidebar_label: 'Boolean'
 sidebar_position: 33
-slug: '/sql-reference/data-types/boolean'
+slug: /sql-reference/data-types/boolean
 title: 'Bool'
+doc_type: 'reference'
 ---
 
+# Bool {#bool}
 
-
-
-# Bool
-
-型 `bool` は内部的に UInt8 として保存されます。可能な値は `true` (1) と `false` (0) です。
+型 `bool` は内部的に UInt8 型として保存されます。取りうる値は `true` (1) と `false` (0) です。
 
 ```sql
-select true as col, toTypeName(col);
+SELECT true AS col, toTypeName(col);
 ┌─col──┬─toTypeName(true)─┐
 │ true │ Bool             │
 └──────┴──────────────────┘

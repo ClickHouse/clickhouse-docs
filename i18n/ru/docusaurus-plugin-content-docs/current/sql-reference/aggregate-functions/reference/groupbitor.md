@@ -1,14 +1,14 @@
 ---
-description: 'Применяет побитовый `OR` к серии чисел.'
+description: 'Применяет побитовую операцию `OR` к последовательности чисел.'
 sidebar_position: 152
 slug: /sql-reference/aggregate-functions/reference/groupbitor
 title: 'groupBitOr'
+doc_type: 'reference'
 ---
 
+# groupBitOr {#groupbitor}
 
-# groupBitOr
-
-Применяет побитовый `OR` к серии чисел.
+Применяет операцию побитового `OR` к последовательности чисел.
 
 ```sql
 groupBitOr(expr)
@@ -16,7 +16,7 @@ groupBitOr(expr)
 
 **Аргументы**
 
-`expr` – Выражение, которое возвращает тип `UInt*` или `Int*`.
+`expr` – выражение, результатом которого является значение типа `UInt*` или `Int*`.
 
 **Возвращаемое значение**
 
@@ -27,7 +27,7 @@ groupBitOr(expr)
 Тестовые данные:
 
 ```text
-binary     decimal
+двоичное   десятичное
 00101100 = 44
 00011100 = 28
 00001101 = 13
@@ -40,11 +40,11 @@ binary     decimal
 SELECT groupBitOr(num) FROM t
 ```
 
-Где `num` — это колонка с тестовыми данными.
+Где `num` — столбец с тестовыми данными.
 
 Результат:
 
 ```text
-binary     decimal
+двоичное   десятичное
 01111101 = 125
 ```

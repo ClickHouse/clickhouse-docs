@@ -4,25 +4,29 @@ title: 'sumSimpleState'
 description: 'Пример использования комбинатора sumSimpleState'
 keywords: ['sum', 'state', 'simple', 'combinator', 'examples', 'sumSimpleState']
 sidebar_label: 'sumSimpleState'
+doc_type: 'reference'
 ---
-
 
 # sumSimpleState {#sumsimplestate}
 
 ## Описание {#description}
 
-Комбинатор [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) может быть применен к функции [`sum`](/sql-reference/aggregate-functions/reference/sum) для возвращения суммы по всем входным значениям. Он возвращает результат с типом [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction).
+Комбинатор [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) может быть применён к функции [`sum`](/sql-reference/aggregate-functions/reference/sum) для вычисления суммы по всем входным значениям. Результат имеет тип [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction).
 
 ## Пример использования {#example-usage}
 
-### Отслеживание голосов за и против {#tracking-post-votes}
+### Отслеживание голосов «за» и «против» {#tracking-post-votes}
 
-Рассмотрим практический пример, использующий таблицу, которая отслеживает голоса по публикациям. 
-Для каждой публикации нам нужно поддерживать текущие итоги голосов за, голосов против и общий балл. Использование типа `SimpleAggregateFunction` с функцией sum подходит для этого случая, так как нам нужно хранить только текущие итоги, а не все состояние агрегации. В результате это будет быстрее и не потребует слияния частичных состояний агрегации.
+Рассмотрим практический пример с таблицей, которая отслеживает голоса по постам.
+Для каждого поста мы хотим поддерживать текущее количество голосов «за», голосов «против» и
+общий счёт. Использование типа `SimpleAggregateFunction` с суммированием подходит для
+этого сценария, так как нам нужно хранить только текущие суммы, а не всё состояние
+агрегации. В результате это будет быстрее и не потребует слияния
+частичных агрегатных состояний.
 
-Сначала мы создаем таблицу для сырых данных:
+Сначала создадим таблицу для сырых данных:
 
-```sql title="Запрос"
+```sql title="Query"
 CREATE TABLE raw_votes
 (
     post_id UInt32,
@@ -32,7 +36,7 @@ ENGINE = MergeTree()
 ORDER BY post_id;
 ```
 
-Затем мы создаем целевую таблицу, которая будет хранить агрегированные данные:
+Далее мы создадим целевую таблицу, которая будет хранить агрегированные данные:
 
 ```sql
 CREATE TABLE vote_aggregates
@@ -46,24 +50,24 @@ ENGINE = AggregatingMergeTree()
 ORDER BY post_id;
 ```
 
-Затем мы создаем материализованное представление с колонками типа `SimpleAggregateFunction`:
-       
+Затем создаём материализованное представление со столбцами типа `SimpleAggregateFunction`:
+
 ```sql
 CREATE MATERIALIZED VIEW mv_vote_processor TO vote_aggregates
 AS
 SELECT
   post_id,
-  -- Начальное значение для состояния суммы (1 если голос за, 0 в противном случае)
+  -- Начальное значение для состояния суммы (1 для положительной оценки, 0 в остальных случаях)
   toUInt64(vote_type = 'upvote') AS upvotes,
-  -- Начальное значение для состояния суммы (1 если голос против, 0 в противном случае)
+  -- Начальное значение для состояния суммы (1 для отрицательной оценки, 0 в остальных случаях)
   toUInt64(vote_type = 'downvote') AS downvotes,
-  -- Начальное значение для состояния суммы (1 за голос, -1 против голоса)
+  -- Начальное значение для состояния суммы (1 для положительной оценки, -1 для отрицательной)
   toInt64(vote_type) AS score
 FROM raw_votes;
 ```
 
-Вставить тестовые данные:
-       
+Вставьте пример данных:
+
 ```sql
 INSERT INTO raw_votes VALUES
     (1, 'upvote'),
@@ -74,7 +78,7 @@ INSERT INTO raw_votes VALUES
     (3, 'downvote');
 ```
 
-Запрос к материализованному представлению, используя комбинатор `SimpleState`:
+Выполните запрос к материализованному представлению с помощью комбинатора `SimpleState`:
 
 ```sql
 SELECT
@@ -88,14 +92,14 @@ ORDER BY post_id ASC;
 ```
 
 ```response
-┌─post_id─┬─total_upvotes─┬─total_downvotes─┬─total_score─┐
-│       1 │             2 │               1 │           1 │
-│       2 │             1 │               1 │           0 │
-│       3 │             0 │               1 │          -1 │
-└─────────┴───────────────┴─────────────────┴─────────────┘
+┌─post_id─┬─всего_голосов_за─┬─всего_голосов_против─┬─общий_балл─┐
+│       1 │                2 │                     1 │          1 │
+│       2 │                1 │                     1 │          0 │
+│       3 │                0 │                     1 │         -1 │
+└─────────┴──────────────────┴───────────────────────┴────────────┘
 ```
 
 ## См. также {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [`SimpleState combinator`](/sql-reference/aggregate-functions/combinators#-simplestate)
-- [`SimpleAggregateFunction type`](/sql-reference/data-types/simpleaggregatefunction)
+- [комбинатор `SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate)
+- [тип `SimpleAggregateFunction`](/sql-reference/data-types/simpleaggregatefunction)

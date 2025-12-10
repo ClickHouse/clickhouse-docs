@@ -1,55 +1,45 @@
 ---
-'slug': '/use-cases/observability/clickstack/getting-started/local-data'
-'title': '本地日志与指标'
-'sidebar_position': 1
-'pagination_prev': null
-'pagination_next': null
-'description': '开始使用 ClickStack 的本地和系统数据以及指标'
+slug: /use-cases/observability/clickstack/getting-started/local-data
+title: '本地日志和指标'
+sidebar_position: 1
+pagination_prev: null
+pagination_next: null
+description: '开始使用 ClickStack 的本地和系统数据与指标'
+doc_type: 'guide'
+keywords: ['clickstack', '示例数据', '样本数据集', '日志', '可观测性']
 ---
 
 import Image from '@theme/IdealImage';
-import hyperdx from '@site/static/images/use-cases/observability/hyperdx-1.png';
 import hyperdx_20 from '@site/static/images/use-cases/observability/hyperdx-20.png';
-import hyperdx_3 from '@site/static/images/use-cases/observability/hyperdx-3.png';
-import hyperdx_4 from '@site/static/images/use-cases/observability/hyperdx-4.png';
 import hyperdx_21 from '@site/static/images/use-cases/observability/hyperdx-21.png';
 import hyperdx_22 from '@site/static/images/use-cases/observability/hyperdx-22.png';
 import hyperdx_23 from '@site/static/images/use-cases/observability/hyperdx-23.png';
-import copy_api_key from '@site/static/images/use-cases/observability/copy_api_key.png';
 
-This getting started guide allows you collect local logs and metrics from your system, sending them to ClickStack for visualization and analysis.
+本入门指南将帮助你从本地系统收集日志和指标数据，并将其发送到 ClickStack 进行可视化和分析。
 
-**此示例仅适用于 OS X 和 Linux 系统**
+**此示例仅适用于 OSX 和 Linux 系统**
 
-The following example assumes you have started ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickstack/getting-started) and connected to the [local ClickHouse instance](/use-cases/observability/clickstack/getting-started#complete-connection-credentials) or a [ClickHouse Cloud instance](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
+:::note ClickHouse Cloud 中的 HyperDX
+此示例数据集也可与 ClickHouse Cloud 中的 HyperDX 搭配使用，只需对流程进行少量调整（见文中的说明）。如果在 ClickHouse Cloud 中使用 HyperDX，用户需要按照[该部署模型的入门指南](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud)的说明，在本地运行一个 OpenTelemetry collector 实例。
+:::
 
-<VerticalStepper>
+<VerticalStepper headerLevel="h2">
 
-## Navigate to the HyperDX UI {#navigate-to-the-hyperdx-ui}
+## 创建自定义 OpenTelemetry 配置 {#create-otel-configuration}
 
-Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
+创建一个 `custom-local-config.yaml` 文件,内容如下:
 
-## Copy ingestion API key {#copy-ingestion-api-key}
-
-Navigate to [`Team Settings`](http://localhost:8080/team) and copy the `Ingestion API Key` from the `API Keys` section. This API key ensures data ingestion through the OpenTelemetry collector is secure.
-
-<Image img={copy_api_key} alt="Copy API key" size="lg"/>
-
-## Create a local OpenTelemetry configuration {#create-otel-configuration}
-
-Create a `otel-file-collector.yaml` file with the following content.
-
-**重要**: Populate the value `<YOUR_INGESTION_API_KEY>` with your ingestion API key copied above.
-
-```yml
+```yaml
 receivers:
   filelog:
     include:
-      - /var/log/**/*.log             # Linux
-      - /var/log/syslog
-      - /var/log/messages
-      - /private/var/log/*.log       # macOS
-    start_at: beginning # modify to collect new files only
+      - /host/var/log/**/*.log        # 主机 Linux 日志
+      - /host/var/log/syslog
+      - /host/var/log/messages
+      - /host/private/var/log/*.log   # 主机 macOS 日志
+    start_at: beginning
+    resource:
+      service.name: "system-logs"
 
   hostmetrics:
     collection_interval: 1s
@@ -85,84 +75,104 @@ receivers:
       network:
       processes:
 
-exporters:
-  otlp:
-    endpoint: localhost:4317
-    headers:
-      authorization: <YOUR_INGESTION_API_KEY>
-    tls:
-      insecure: true
-    sending_queue:
-      enabled: true
-      num_consumers: 10
-      queue_size: 262144  # 262,144 items × ~8 KB per item ≈ 2 GB
-
 service:
   pipelines:
-    logs:
+    logs/local:
       receivers: [filelog]
-      exporters: [otlp]
-    metrics:
+      processors:
+        - memory_limiter
+        - batch
+      exporters:
+        - clickhouse
+    metrics/hostmetrics:
       receivers: [hostmetrics]
-      exporters: [otlp]
+      processors:
+        - memory_limiter
+        - batch
+      exporters:
+        - clickhouse
 ```
 
-This configuration collects system logs and metric for OSX and Linux systems, sending the results to ClickStack via the OTLP endpoint on port 4317.
+此配置收集 OSX 和 Linux 系统的系统日志和指标,并将结果发送至 ClickStack。该配置通过添加新的接收器和管道来扩展 ClickStack 采集器——您需引用基础 ClickStack 采集器中已配置的现有 `clickhouse` 导出器和处理器(`memory_limiter`、`batch`)。
 
-:::note Ingestion timestamps
-This configuration adjusts timestamps at ingest, assigning an updated time value to each event. Users should ideally [preprocess or parse timestamps](/use-cases/observability/clickstack/ingesting-data/otel-collector#processing-filtering-transforming-enriching) using OTel processors or operators in their log files to ensure accurate event time is retained.
+:::note 摄取时间戳
+此配置会在摄取时调整时间戳,为每个事件分配更新后的时间值。建议用户在日志文件中使用 OTel 处理器或操作符[预处理或解析时间戳](/use-cases/observability/clickstack/ingesting-data/otel-collector#processing-filtering-transforming-enriching),以确保保留准确的事件时间。
 
-With this example setup, if the receiver or file processor is configured to start at the beginning of the file, all existing log entries will be assigned the same adjusted timestamp - the time of processing rather than the original event time. Any new events appended to the file will receive timestamps approximating their actual generation time.
+在此示例配置中,如果接收器或文件处理器配置为从文件开头开始读取,所有现有日志条目都将被分配相同的调整后时间戳——即处理时间而非原始事件时间。追加到文件的新事件将获得接近其实际生成时间的时间戳。
 
-To avoid this behavior, you can set the start position to `end` in the receiver configuration. This ensures only new entries are ingested and timestamped near their true arrival time.
+为避免此行为,您可以在接收器配置中将起始位置设置为 `end`。这可确保仅摄取新条目,并在接近其真实到达时间时为其添加时间戳。
 :::
 
-For more details on the OpenTelemetry (OTel) configuration structure, we recommend [the official guide](https://opentelemetry.io/docs/collector/configuration/).
+有关 OpenTelemetry (OTel) 配置结构的更多详细信息,请参阅[官方指南](https://opentelemetry.io/docs/collector/configuration/)。
 
-## Start the collector {#start-the-collector}
+## 使用自定义配置启动 ClickStack {#start-clickstack}
 
-Run the following docker command to start an instance of the OTel collector.
+运行以下 docker 命令以使用自定义配置启动一体化容器：
 
-```bash
-docker run --network=host --rm -it \
+```shell
+docker run -d --name clickstack \
+  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
   --user 0:0 \
-  -v "$(pwd)/otel-file-collector.yaml":/etc/otel/config.yaml \
-  -v /var/log:/var/log:ro \
-  -v /private/var/log:/private/var/log:ro \
-  otel/opentelemetry-collector-contrib:latest \
-  --config /etc/otel/config.yaml
+  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+  -v "$(pwd)/custom-local-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+  -v /var/log:/host/var/log:ro \
+  -v /private/var/log:/host/private/var/log:ro \
+  clickhouse/clickstack-all-in-one:latest
 ```
 
-:::note Root user
-We run the collector as the root user to access all system logs—this is necessary to capture logs from protected paths on Linux-based systems. However, this approach is not recommended for production. In production environments, the OpenTelemetry Collector should be deployed as a local agent with only the minimal permissions required to access the intended log sources.
+:::note Root 用户
+我们以 root 用户身份运行采集器以访问所有系统日志——这是从 Linux 系统的受保护路径捕获日志所必需的。但是，不建议在生产环境中采用此方式。在生产环境中，应将 OpenTelemetry Collector 部署为本地代理,并仅授予访问目标日志源所需的最小权限。
+
+请注意,我们将宿主机的 `/var/log` 挂载到容器内的 `/host/var/log`,以避免与容器自身的日志文件产生冲突。
 :::
 
-The collector will immediately begin collecting local system logs and metrics.
+如果在 ClickHouse Cloud 中使用 HyperDX 并配合独立采集器，请改用以下命令：
 
-## Explore system logs {#explore-system-logs}
+```shell
+docker run -d \
+  -p 4317:4317 -p 4318:4318 \
+  --user 0:0 \
+  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+  -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} \
+  -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} \
+  -e CLICKHOUSE_USER=${CLICKHOUSE_USER} \
+  -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
+  -v "$(pwd)/custom-local-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+  -v /var/log:/host/var/log:ro \
+  -v /private/var/log:/host/private/var/log:ro \
+  clickhouse/clickstack-otel-collector:latest
+```
 
-Navigate to the HyperDX UI. The search UI should be populated with local system logs. Expand the filters to select the `system.log`:
+收集器将立即开始收集本地系统日志和指标。
 
-<Image img={hyperdx_20} alt="HyperDX Local logs" size="lg"/>
+## 导航到 HyperDX UI {#navigate-to-the-hyperdx-ui}
 
-## Explore system metrics {#explore-system-metrics}
+本地部署时,访问 [http://localhost:8080](http://localhost:8080) 即可进入 HyperDX UI。若在 ClickHouse Cloud 中使用 HyperDX,请在左侧菜单中依次选择您的服务和 `HyperDX`。
 
-We can explore our metrics using charts.
+## 探索系统日志 {#explore-system-logs}
 
-Navigate to the Chart Explorer via the left menu. Select the source `Metrics` and `Maximum` as the aggregation type. 
+搜索界面应填充本地系统日志。展开过滤器以选择 `system.log`：
 
-For the `Select a Metric` menu simply type `memory` before selecting `system.memory.utilization (Gauge)`.
+<Image img={hyperdx_20} alt="HyperDX 本地日志" size="lg" />
 
-Press the run button to visualize your memory utilization over time.
+## 探索系统指标 {#explore-system-metrics}
 
-<Image img={hyperdx_21} alt="Memory over time" size="lg"/>
+我们可以使用图表探索指标数据。
 
-Note the number is returned as a floating point `%`. To render it more clearly, select `Set number format`. 
+通过左侧菜单导航至 Chart Explorer。选择数据源 `Metrics`，聚合类型选择 `Maximum`。
 
-<Image img={hyperdx_22} alt="Number format" size="lg"/>
+在 `Select a Metric` 菜单中,输入 `memory`,然后选择 `system.memory.utilization (Gauge)`。
 
-From the subsequent menu you can select `Percentage` from the `Output format` drop down before clicking `Apply`.
+点击运行按钮以可视化内存使用率随时间的变化。
 
-<Image img={hyperdx_23} alt="Memory % of time" size="lg"/>
+<Image img={hyperdx_21} alt="内存使用随时间变化" size="lg" />
+
+注意,数字以浮点数 `%` 的形式返回。为了更清晰地显示,请选择 `设置数字格式`。
+
+<Image img={hyperdx_22} alt="数字格式" size="lg" />
+
+在随后的菜单中,从 `Output format` 下拉列表中选择 `Percentage`,然后点击 `Apply`。
+
+<Image img={hyperdx_23} alt="内存时间占比" size="lg" />
 
 </VerticalStepper>

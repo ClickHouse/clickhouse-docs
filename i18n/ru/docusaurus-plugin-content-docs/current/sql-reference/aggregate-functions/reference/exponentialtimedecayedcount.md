@@ -1,13 +1,14 @@
 ---
-description: 'Возвращает кумулятивное экспоненциальное затухание по временным рядам в моменте `t` во времени.'
+description: 'Возвращает значение накопленного экспоненциального затухания для временного ряда в момент времени с индексом `t`.'
 sidebar_position: 134
 slug: /sql-reference/aggregate-functions/reference/exponentialTimeDecayedCount
 title: 'exponentialTimeDecayedCount'
+doc_type: 'reference'
 ---
 
 ## exponentialTimeDecayedCount {#exponentialtimedecayedcount}
 
-Возвращает кумулятивное экспоненциальное затухание по временным рядам в моменте `t` во времени.
+Возвращает накопленный эффект экспоненциального затухания для временного ряда в момент времени с индексом `t`.
 
 **Синтаксис**
 
@@ -17,15 +18,15 @@ exponentialTimeDecayedCount(x)(t)
 
 **Аргументы**
 
-- `t` — Время. [Целое](../../../sql-reference/data-types/int-uint.md), [Число с плавающей точкой](../../../sql-reference/data-types/float.md) или [Десятичное](../../../sql-reference/data-types/decimal.md), [ДатаВремя](../../data-types/datetime.md), [ДатаВремя64](../../data-types/datetime64.md).
+* `t` — Время. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md), [DateTime](../../data-types/datetime.md), [DateTime64](../../data-types/datetime64.md).
 
 **Параметры**
 
-- `x` — Период полураспада. [Целое](../../../sql-reference/data-types/int-uint.md), [Число с плавающей точкой](../../../sql-reference/data-types/float.md) или [Десятичное](../../../sql-reference/data-types/decimal.md).
+* `x` — Период полураспада. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
 
 **Возвращаемые значения**
 
-- Возвращает кумулятивное экспоненциальное затухание в данный момент времени. [Float64](../../data-types/float.md).
+* Возвращает суммарное экспоненциальное затухание в заданный момент времени. [Float64](../../data-types/float.md).
 
 **Пример**
 
@@ -50,7 +51,7 @@ FROM
 Результат:
 
 ```response
-    ┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar────────────────────────┐
+┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar────────────────────────┐
  1. │     1 │    0 │                    1 │ ██▌                        │
  2. │     0 │    1 │                1.905 │ ████▊                      │
  3. │     0 │    2 │                2.724 │ ██████▊                    │

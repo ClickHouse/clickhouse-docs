@@ -1,59 +1,58 @@
 ---
-'title': '如何使用 chDB 查询 Pandas DataFrames'
-'sidebar_label': '查询 Pandas'
-'slug': '/chdb/guides/pandas'
-'description': '学习如何使用 chDB 查询 Pandas DataFrames'
-'keywords':
-- 'chDB'
-- 'Pandas'
-'show_related_blogs': true
+title: '如何使用 chDB 查询 Pandas DataFrame'
+sidebar_label: '查询 Pandas'
+slug: /chdb/guides/pandas
+description: '学习如何使用 chDB 查询 Pandas DataFrame'
+keywords: ['chDB', 'Pandas']
+show_related_blogs: true
+doc_type: 'guide'
 ---
 
-[Pandas](https://pandas.pydata.org/) 是一个流行的 Python 数据处理和分析库。
-在 chDB 的 2 版本中，我们提高了查询 Pandas DataFrames 的性能，并引入了 `Python` 表函数。
-在本指南中，我们将学习如何使用 `Python` 表函数查询 Pandas。
+[Pandas](https://pandas.pydata.org/) 是 Python 中广泛使用的数据处理与分析库。
+在 chDB 的第 2 版中，我们提升了对 Pandas DataFrame 的查询性能，并引入了 `Python` 表函数。
+在本指南中，我们将学习如何使用 `Python` 表函数查询 Pandas DataFrame。
 
-## 设置 {#setup}
+## 环境准备 {#setup}
 
-让我们首先创建一个虚拟环境：
+我们先创建一个虚拟环境：
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-现在我们将安装 chDB。
-确保您使用的是 2.0.2 或更高版本：
+接下来我们将安装 chDB。
+请确保安装的版本为 2.0.2 或更高：
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-接下来，我们将安装 Pandas 和其他几个库：
+接下来我们要安装 Pandas 和另外几个库：
 
 ```bash
-pip install pandas requests ipython
+pip 安装 pandas requests ipython
 ```
 
-我们将使用 `ipython` 在本指南的其余部分运行命令，您可以通过运行以下命令启动：
+接下来我们将使用 `ipython` 来运行本指南其余部分中的命令，你可以通过运行以下命令来启动：
 
 ```bash
 ipython
 ```
 
-您也可以在 Python 脚本或您喜欢的笔记本中使用该代码。
+你也可以在 Python 脚本或常用的 Notebook 环境中使用这段代码。
 
-## 从 URL 创建 Pandas DataFrame {#creating-a-pandas-dataframe-from-a-url}
+## 通过 URL 创建 Pandas DataFrame {#creating-a-pandas-dataframe-from-a-url}
 
 我们将从 [StatsBomb GitHub 仓库](https://github.com/statsbomb/open-data/tree/master?tab=readme-ov-file) 查询一些数据。
-首先，让我们导入 requests 和 pandas：
+先导入 requests 和 pandas：
 
 ```python
 import requests
 import pandas as pd
 ```
 
-然后，我们将加载一个比赛的 JSON 文件到 DataFrame 中：
+然后，我们将把其中一个 matches 的 JSON 文件加载到 DataFrame 中：
 
 ```python
 response = requests.get(
@@ -62,7 +61,7 @@ response = requests.get(
 matches_df = pd.json_normalize(response.json(), sep='_')
 ```
 
-让我们看看我们将处理的数据：
+先来看看我们将要处理的数据：
 
 ```python
 matches_df.iloc[0]
@@ -80,41 +79,41 @@ last_updated                                           2024-07-15T15:50:08.67135
 last_updated_360                                                             None
 match_week                                                                      6
 competition_competition_id                                                    223
-competition_country_name                                            South America
-competition_competition_name                                         Copa America
+competition_country_name                                            南美洲
+competition_competition_name                                         美洲杯
 season_season_id                                                              282
 season_season_name                                                           2024
 home_team_home_team_id                                                        779
-home_team_home_team_name                                                Argentina
+home_team_home_team_name                                                阿根廷
 home_team_home_team_gender                                                   male
 home_team_home_team_group                                                    None
 home_team_country_id                                                           11
-home_team_country_name                                                  Argentina
+home_team_country_name                                                  阿根廷
 home_team_managers              [{'id': 5677, 'name': 'Lionel Sebastián Scalon...
 away_team_away_team_id                                                        769
-away_team_away_team_name                                                 Colombia
+away_team_away_team_name                                                 哥伦比亚
 away_team_away_team_gender                                                   male
 away_team_away_team_group                                                    None
 away_team_country_id                                                           49
-away_team_country_name                                                   Colombia
+away_team_country_name                                                   哥伦比亚
 away_team_managers              [{'id': 5905, 'name': 'Néstor Gabriel Lorenzo'...
 metadata_data_version                                                       1.1.0
 metadata_shot_fidelity_version                                                  2
 metadata_xy_fidelity_version                                                    2
 competition_stage_id                                                           26
-competition_stage_name                                                      Final
+competition_stage_name                                                      决赛
 stadium_id                                                                   5337
 stadium_name                                                    Hard Rock Stadium
 stadium_country_id                                                            241
-stadium_country_name                                     United States of America
+stadium_country_name                                         美国
 referee_id                                                                   2638
 referee_name                                                        Raphael Claus
 referee_country_id                                                             31
-referee_country_name                                                       Brazil
+referee_country_name                                                       巴西
 Name: 0, dtype: object
 ```
 
-接下来，我们将加载一个事件的 JSON 文件，并向该 DataFrame 添加一个名为 `match_id` 的列：
+接下来，我们将加载其中一个事件 JSON 文件，并在该 DataFrame 中添加一个名为 `match_id` 的列：
 
 ```python
 response = requests.get(
@@ -124,7 +123,7 @@ events_df = pd.json_normalize(response.json(), sep='_')
 events_df["match_id"] = 3943077
 ```
 
-然后，让我们看看第一行的数据：
+我们再来看一下第一行：
 
 ```python
 with pd.option_context("display.max_rows", None):
@@ -143,11 +142,11 @@ second                                                                  0
 possession                                                              1
 duration                                                              0.0
 type_id                                                                35
-type_name                                                     Starting XI
+type_name                                                     首发阵容
 possession_team_id                                                    779
 possession_team_name                                            Argentina
 play_pattern_id                                                         1
-play_pattern_name                                            Regular Play
+play_pattern_name                                            常规比赛
 team_id                                                               779
 team_name                                                       Argentina
 tactics_formation                                                   442.0
@@ -156,23 +155,23 @@ match_id                                                          3943077
 Name: 0, dtype: object
 ```
 
-## 查询 Pandas DataFrames {#querying-pandas-dataframes}
+## 查询 Pandas DataFrame {#querying-pandas-dataframes}
 
-接下来，让我们看看如何使用 chDB 查询这些 DataFrames。
-我们将导入库：
+接下来，我们来看如何使用 chDB 查询这些 DataFrame。
+我们先导入该库：
 
 ```python
 import chdb
 ```
 
-我们可以通过使用 `Python` 表函数查询 Pandas DataFrames：
+我们可以使用 `Python` 表函数对 Pandas DataFrame 进行查询：
 
 ```sql
 SELECT *
 FROM Python(<name-of-variable>)
 ```
 
-因此，如果我们想列出 `matches_df` 中的列，可以写如下：
+因此，如果我们想列出 `matches_df` 中的列，可以这样写：
 
 ```python
 chdb.query("""
@@ -182,7 +181,7 @@ SETTINGS describe_compact_output=1
 ```
 
 ```text
-                              name    type
+                              名称    类型
 0                         match_id   Int64
 1                       match_date  String
 2                         kick_off  String
@@ -227,7 +226,7 @@ SETTINGS describe_compact_output=1
 41            referee_country_name  String
 ```
 
-然后，我们可以通过编写以下查询找出裁判执法超过一场比赛的情况：
+然后，我们可以通过编写如下查询来找出哪些裁判执法了多场比赛：
 
 ```python
 chdb.query("""
@@ -240,7 +239,7 @@ ORDER BY count DESC
 ```
 
 ```text
-                    referee_name  count
+                    裁判姓名  计数
 0  César Arturo Ramos Palazuelos      3
 1               Maurizio Mariani      3
 2               Piero Maza Gomez      3
@@ -253,7 +252,7 @@ ORDER BY count DESC
 9                  Raphael Claus      2
 ```
 
-现在，让我们探索 `events_df`。
+现在我们来查看一下 `events_df`。
 
 ```python
 chdb.query("""
@@ -267,23 +266,23 @@ LIMIT 10
 ```
 
 ```text
-               pass_recipient_name  count()
-0            Davinson Sánchez Mina       76
-1  Ángel Fabián Di María Hernández       64
-2              Alexis Mac Allister       62
-3                   Enzo Fernandez       57
-4      James David Rodríguez Rubio       56
-5      Johan Andrés Mojica Palacio       55
-6           Rodrigo Javier De Paul       54
-7     Jefferson Andrés Lerma Solís       53
-8        Jhon Adolfo Arias Andrade       52
-9  Carlos Eccehomo Cuesta Figueroa       50
+               传球接收者姓名  次数()
+0            达文森 桑切斯 米纳       76
+1  安赫尔 法比安 迪 马利亚 赫南德斯       64
+2              亚历克西斯 马克·阿里斯特       62
+3                   恩佐 费尔南德斯       57
+4      詹姆斯 大卫 罗德里格斯 鲁比奥       56
+5      约翰 安德烈斯 莫希卡 帕拉西奥       55
+6           罗德里戈 哈维尔 德保罗       54
+7     杰斐逊 安德烈斯 勒尔马 索利斯       53
+8        约翰 阿道夫 奥 阿里亚斯 安德拉德       52
+9  卡洛斯 埃塞霍莫 库埃斯塔 菲格罗阿       50
 ```
 
-## 联接 Pandas DataFrames {#joining-pandas-dataframes}
+## 连接 Pandas DataFrame {#joining-pandas-dataframes}
 
-我们还可以在查询中将 DataFrames 连接在一起。
-例如，为了获取比赛的概况，我们可以写出以下查询：
+我们也可以在查询中将多个 DataFrame 连接在一起。
+例如，为了获得比赛的总体概况，我们可以编写如下查询：
 
 ```python
 chdb.query("""
@@ -300,8 +299,8 @@ LIMIT 5
 ```
 
 ```text
-home_team_home_team_name    Argentina
-away_team_away_team_name     Colombia
+home_team_home_team_name    阿根廷
+away_team_away_team_name     哥倫比亞
 home_score                          1
 away_score                          0
 home_passes                       527
@@ -311,30 +310,30 @@ away_shots                         19
 Name: 0, dtype: object
 ```
 
-## 从 DataFrame 填充表 {#populating-a-table-from-a-dataframe}
+## 使用 DataFrame 填充表 {#populating-a-table-from-a-dataframe}
 
-我们还可以从 DataFrames 创建并填充 ClickHouse 表。
-如果我们想在 chDB 中创建一个表，需要使用有状态会话 API。
+我们也可以从 DataFrame 创建并填充 ClickHouse 表。
+如果我们想在 chDB 中创建一张表，就需要使用 Stateful Session API。
 
-让我们导入会话模块：
+让我们先导入 session 模块：
 
 ```python
 from chdb import session as chs
 ```
 
-初始化一个会话：
+初始化会话：
 
 ```python
 sess = chs.Session()
 ```
 
-接下来，我们将创建一个数据库：
+接下来，我们将创建数据库：
 
 ```python
 sess.query("CREATE DATABASE statsbomb")
 ```
 
-然后，基于 `events_df` 创建一个 `events` 表：
+然后基于 `events_df` 创建一张 `events` 表：
 
 ```python
 sess.query("""
@@ -344,7 +343,7 @@ FROM Python(events_df)
 """)
 ```
 
-然后我们可以运行查询，返回最顶端的传球接受者：
+然后我们可以运行查询来返回接收次数最多的接收方：
 
 ```python
 sess.query("""
@@ -371,9 +370,9 @@ LIMIT 10
 9  Carlos Eccehomo Cuesta Figueroa       50
 ```
 
-## 联接 Pandas DataFrame 和表 {#joining-a-pandas-dataframe-and-table}
+## 连接 Pandas DataFrame 和表 {#joining-a-pandas-dataframe-and-table}
 
-最后，我们还可以更新我们的联接查询，将 `matches_df` DataFrame 与 `statsbomb.events` 表联接：
+最后，我们还可以更新连接查询，将 `matches_df` DataFrame 与 `statsbomb.events` 表进行连接：
 
 ```python
 sess.query("""
@@ -390,8 +389,8 @@ LIMIT 5
 ```
 
 ```text
-home_team_home_team_name    Argentina
-away_team_away_team_name     Colombia
+home_team_home_team_name    阿根廷
+away_team_away_team_name     哥伦比亚
 home_score                          1
 away_score                          0
 home_passes                       527

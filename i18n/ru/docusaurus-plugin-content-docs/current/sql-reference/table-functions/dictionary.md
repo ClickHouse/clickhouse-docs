@@ -1,33 +1,34 @@
 ---
-description: 'Отображает данные словаря в виде таблицы ClickHouse. Работает так же, как и движок Dictionary.'
-sidebar_label: 'словарь'
+description: 'Представляет данные словаря в виде таблицы ClickHouse. Работает так же,
+  как движок словаря Dictionary.'
+sidebar_label: 'dictionary'
 sidebar_position: 47
 slug: /sql-reference/table-functions/dictionary
-title: 'словарь'
+title: 'dictionary'
+doc_type: 'reference'
 ---
 
+# Табличная функция dictionary {#dictionary-table-function}
 
-# Функция Таблицы dictionary
+Отображает данные словаря [dictionary](../../sql-reference/dictionaries/index.md) в виде таблицы ClickHouse. Работает так же, как движок [Dictionary](../../engines/table-engines/special/dictionary.md).
 
-Отображает данные [словаря](../../sql-reference/dictionaries/index.md) в виде таблицы ClickHouse. Работает так же, как и движок [Dictionary](../../engines/table-engines/special/dictionary.md).
-
-**Синтаксис**
+## Синтаксис {#syntax}
 
 ```sql
 dictionary('dict')
 ```
 
-**Аргументы**
+## Аргументы {#arguments}
 
-- `dict` — Имя словаря. [Строка](../../sql-reference/data-types/string.md).
+- `dict` — Имя словаря. [String](../../sql-reference/data-types/string.md).
 
-**Возвращаемое значение**
+## Возвращаемое значение {#returned_value}
 
 Таблица ClickHouse.
 
-**Пример**
+## Примеры {#examples}
 
-Входная таблица `dictionary_source_table`:
+Исходная таблица `dictionary_source_table`:
 
 ```text
 ┌─id─┬─value─┐
@@ -58,6 +59,6 @@ SELECT * FROM dictionary('new_dictionary');
 └────┴───────┘
 ```
 
-**См. Также**
+## См. также {#related}
 
 - [Движок Dictionary](/engines/table-engines/special/dictionary)

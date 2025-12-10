@@ -1,17 +1,16 @@
 ---
-description: 'Documentation for RENAME Statement'
+description: 'RENAME ステートメントのリファレンス'
 sidebar_label: 'RENAME'
 sidebar_position: 48
-slug: '/sql-reference/statements/rename'
-title: 'RENAME Statement'
+slug: /sql-reference/statements/rename
+title: 'RENAME ステートメント'
+doc_type: 'reference'
 ---
 
+# RENAME ステートメント {#rename-statement}
 
-
-
-# RENAME ステートメント
-
-データベース、テーブル、またはディクショナリの名前を変更します。複数のエンティティは、単一のクエリで名前変更できます。`RENAME` クエリによる複数のエンティティの操作は非原子操作です。エンティティ名を原子的に交換するには、[EXCHANGE](./exchange.md) ステートメントを使用してください。
+データベース、テーブル、またはディクショナリの名前を変更します。1 つのクエリで複数のエンティティの名前を変更できます。
+複数のエンティティを対象とした `RENAME` クエリはアトミックな操作ではないことに注意してください。エンティティ名をアトミックに入れ替えるには、[EXCHANGE](./exchange.md) ステートメントを使用してください。
 
 **構文**
 
@@ -33,7 +32,8 @@ RENAME DATABASE atomic_database1 TO atomic_database2 [,...] [ON CLUSTER cluster]
 
 1 つ以上のテーブルの名前を変更します。
 
-テーブルの名前変更は軽量な操作です。`TO` の後に異なるデータベースを指定すると、テーブルはこのデータベースに移動されます。ただし、データベースを含むディレクトリは同じファイルシステム内に存在している必要があります。そうでない場合、エラーが返されます。1つのクエリで複数のテーブルを名前変更すると、その操作は原子的ではありません。部分的に実行される可能性があり、他のセッションのクエリが `Table ... does not exist ...` エラーを受け取ることがあります。
+テーブル名の変更は軽量な処理です。`TO` の後に別のデータベースを指定した場合、テーブルはそのデータベースに移動されます。ただし、データベースのディレクトリは同一のファイルシステム上に存在している必要があります。そうでない場合はエラーが返されます。
+1 つのクエリで複数のテーブル名を変更する場合、この操作はアトミックではありません。部分的にのみ実行される可能性があり、別のセッションで実行されるクエリが `Table ... does not exist ...` エラーを受け取る場合があります。
 
 **構文**
 
@@ -47,14 +47,15 @@ RENAME TABLE [db1.]name1 TO [db2.]name2 [,...] [ON CLUSTER cluster]
 RENAME TABLE table_A TO table_A_bak, table_B TO table_B_bak;
 ```
 
-より簡単な SQL を使用することもできます:  
+また、より簡潔な SQL を使うこともできます：
+
 ```sql
 RENAME table_A TO table_A_bak, table_B TO table_B_bak;
 ```
 
 ## RENAME DICTIONARY {#rename-dictionary}
 
-1 つまたは複数のディクショナリの名前を変更します。このクエリは、ディクショナリをデータベース間で移動するために使用できます。
+1つまたは複数の辞書の名前を変更します。このクエリは、辞書を別のデータベースに移動するためにも使用できます。
 
 **構文**
 
@@ -62,6 +63,6 @@ RENAME table_A TO table_A_bak, table_B TO table_B_bak;
 RENAME DICTIONARY [db0.]dict_A TO [db1.]dict_B [,...] [ON CLUSTER cluster]
 ```
 
-**関連情報**
+**関連項目**
 
-- [Dictionaries](../../sql-reference/dictionaries/index.md)
+* [辞書](../../sql-reference/dictionaries/index.md)

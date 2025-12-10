@@ -1,8 +1,10 @@
 ---
-sidebar_label: 'Azure Flexible Server for Postgres'
-description: 'Set up Azure Flexible Server for Postgres as a source for ClickPipes'
-slug: '/integrations/clickpipes/postgres/source/azure-flexible-server-postgres'
-title: 'Azure Flexible Server for Postgres Source Setup Guide'
+sidebar_label: 'Postgres 用 Azure Flexible Server'
+description: 'ClickPipes のソースとして Azure Flexible Server for Postgres をセットアップする'
+slug: /integrations/clickpipes/postgres/source/azure-flexible-server-postgres
+title: 'Azure Flexible Server for Postgres ソース設定ガイド'
+keywords: ['azure', 'flexible server', 'postgres', 'ClickPipes', 'wal level']
+doc_type: 'guide'
 ---
 
 import server_parameters from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres/server_parameters.png';
@@ -11,38 +13,37 @@ import restart from '@site/static/images/integrations/data-ingestion/clickpipes/
 import firewall from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres/firewall.png';
 import Image from '@theme/IdealImage';
 
+# Azure Flexible Server for Postgres のソース設定ガイド {#azure-flexible-server-for-postgres-source-setup-guide}
 
-# Azure Flexible Server for Postgres ソースセットアップガイド
+ClickPipes は Postgres バージョン 12 以降をサポートしています。
 
-ClickPipesはPostgresバージョン12以降をサポートしています。
+## 論理レプリケーションを有効にする {#enable-logical-replication}
 
-## 論理レプリケーションの有効化 {#enable-logical-replication}
+`wal_level` が `logical` に設定されている場合は、以下の手順に **従う必要はありません**。別のデータレプリケーションツールから移行する場合、この設定はあらかじめ構成されていることがほとんどです。
 
-`wal_level`が`logical`に設定されている場合、以下の手順を実行する必要はありません。この設定は、別のデータレプリケーションツールから移行する場合、ほとんどの場合、事前に構成されています。
+1. **Server parameters** セクションをクリックします
 
-1. **サーバーパラメータ**セクションをクリックします。
+<Image img={server_parameters} alt="Azure Flexible Server for Postgres の Server Parameters" size="lg" border/>
 
-<Image img={server_parameters} alt="Azure Flexible Server for Postgresのサーバーパラメータ" size="lg" border/>
+2. `wal_level` の値を `logical` に変更します
 
-2. `wal_level`を`logical`に編集します。
+<Image img={wal_level} alt="Azure Flexible Server for Postgres で wal_level を logical に変更" size="lg" border/>
 
-<Image img={wal_level} alt="Azure Flexible Server for Postgresでwal_levelをlogicalに変更" size="lg" border/>
+3. この変更にはサーバーの再起動が必要です。再起動を求められたら実行します。
 
-3. この変更にはサーバーの再起動が必要です。要求された場合は再起動してください。
+<Image img={restart} alt="wal_level を変更した後にサーバーを再起動" size="lg" border/>
 
-<Image img={restart} alt="wal_levelを変更した後にサーバーを再起動" size="lg" border/>
+## ClickPipes ユーザーの作成と権限付与 {#creating-clickpipes-user-and-granting-permissions}
 
-## ClickPipesユーザーの作成と権限付与 {#creating-clickpipes-user-and-granting-permissions}
+管理ユーザーで Azure Flexible Server PostgreSQL に接続し、以下のコマンドを実行します。
 
-管理ユーザーを通じてAzure Flexible Server Postgresに接続し、以下のコマンドを実行します。
-
-1. ClickPipes専用のPostgresユーザーを作成します。
+1. ClickPipes 専用の PostgreSQL ユーザーを作成します。
 
    ```sql
    CREATE USER clickpipes_user PASSWORD 'some-password';
    ```
 
-2. テーブルをレプリケートするスキーマに対する読み取り専用アクセスを`clickpipes_user`に付与します。以下の例は`public`スキーマの権限設定を示しています。複数のスキーマにアクセスを付与したい場合は、それぞれのスキーマについてこれらの3つのコマンドを実行できます。
+2. テーブルをレプリケートするスキーマに対して、`clickpipes_user` に読み取り専用アクセス権を付与します。以下の例では、`public` スキーマに対する権限を設定しています。複数のスキーマにアクセス権を付与したい場合は、各スキーマに対してこれら 3 つのコマンドを実行します。
 
    ```sql
    GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
@@ -50,34 +51,34 @@ ClickPipesはPostgresバージョン12以降をサポートしています。
    ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
    ```
 
-3. このユーザーにレプリケーションアクセスを付与します：
+3. このユーザーにレプリケーション用のアクセス権を付与します。
 
    ```sql
    ALTER ROLE clickpipes_user REPLICATION;
    ```
 
-4. 将来MIRROR（レプリケーション）を作成するために使用する公開出版物を作成します。
+4. 後で MIRROR（レプリケーション）を作成する際に使用する publication を作成します。
 
    ```sql
    CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
    ```
 
-5. `clickpipes_user`の`wal_sender_timeout`を0に設定します。
+5. `clickpipes_user` に対して `wal_sender_timeout` を 0 に設定します。
 
    ```sql
    ALTER ROLE clickpipes_user SET wal_sender_timeout to 0;
    ```
 
+## Firewall に ClickPipes の IP アドレスを追加する {#add-clickpipes-ips-to-firewall}
 
-## ClickPipesのIPをファイアウォールに追加する {#add-clickpipes-ips-to-firewall}
+以下の手順に従って、[ClickPipes の IP アドレス](../../index.md#list-of-static-ips) をネットワークに追加してください。
 
-以下の手順に従って、[ClickPipesのIP](../../index.md#list-of-static-ips)をネットワークに追加してください。
+1. **Networking** タブに移動し、[ClickPipes の IP アドレス](../../index.md#list-of-static-ips) を Azure Flexible Server for Postgres のファイアウォール、
+   または SSH トンネリングを使用している場合は Jump Server/Bastion のファイアウォールに追加します。
 
-1. **ネットワーキング**タブに移動し、[ClickPipesのIP](../../index.md#list-of-static-ips)をAzure Flexible Server PostgresのファイアウォールまたはSSHトンネリングを使用している場合はJump Server/Bastionに追加します。
+<Image img={firewall} alt="Azure Flexible Server for Postgres のファイアウォールに ClickPipes の IP アドレスを追加する" size="lg"/>
 
-<Image img={firewall} alt="Azure Flexible Server for PostgresのファイアウォールにClickPipesのIPを追加" size="lg"/>
+## 次のステップ {#whats-next}
 
-
-## 次は何ですか？ {#whats-next}
-
-これで[ClickPipeを作成](../index.md)し、PostgresインスタンスからClickHouse Cloudへデータを取り込むことができます。Postgresインスタンスをセットアップした際に使用した接続情報を忘れずにメモしておいてください。ClickPipe作成プロセス中にそれらが必要になります。
+これで、[ClickPipe を作成](../index.md)し、Postgres インスタンスから ClickHouse Cloud へデータの取り込みを開始できます。
+ClickPipe の作成プロセスで必要になるため、Postgres インスタンスのセットアップ時に使用した接続情報は必ずメモしておいてください。

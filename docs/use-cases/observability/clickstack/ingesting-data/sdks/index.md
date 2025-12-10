@@ -5,6 +5,8 @@ pagination_next: null
 description: 'Language SDKs for ClickStack - The ClickHouse Observability Stack'
 title: 'Language SDKs'
 doc_type: 'guide'
+keywords: ['ClickStack SDKs', 'ClickStack language SDKs', 'OpenTelemetry SDKs ClickStack', 'application instrumentation SDKs
+', 'telemetry collection SDKs']
 ---
 
 Data is typically sent to ClickStack via the **OpenTelemetry (OTel) collector**, either directly from language SDKs or through intermediate OpenTelemetry collector acting as agents e.g. collecting infrastructure metrics and logs.
@@ -66,4 +68,4 @@ All SDKs support automatic correlation with Kubernetes metadata (pod name, names
 - Correlate application logs and traces with infrastructure metrics
 - Track resource usage and performance across your Kubernetes cluster
 
-To enable this feature, configure the OpenTelemetry collector to forward resource tags to pods. See the [Kubernetes integration guide](/use-cases/observability/clickstack/ingesting-data/kubernetes#forwarding-resouce-tags-to-pods) for detailed setup instructions.
+To enable this feature, configure the OpenTelemetry collector to forward resource tags to pods. See the [Kubernetes integration guide](/use-cases/observability/clickstack/integrations/kubernetes#forwarding-resouce-tags-to-pods) for detailed setup instructions.

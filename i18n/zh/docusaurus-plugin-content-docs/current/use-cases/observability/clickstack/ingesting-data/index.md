@@ -1,18 +1,19 @@
 ---
-'slug': '/use-cases/observability/clickstack/ingesting-data'
-'pagination_prev': null
-'pagination_next': null
-'description': '数据摄取用于 ClickStack - ClickHouse 监控栈'
-'title': '摄取数据'
+slug: /use-cases/observability/clickstack/ingesting-data
+pagination_prev: null
+pagination_next: null
+description: 'ClickStack 的数据摄取 - ClickHouse 可观测性技术栈'
+title: '数据摄取'
+doc_type: 'landing-page'
+keywords: ['ClickStack 数据摄取', '可观测性数据摄取', 'ClickStack OpenTelemetry', 'ClickHouse 可观测性摄取', '遥测数据收集']
 ---
 
-ClickStack 提供多种方法将可观察性数据导入到您的 ClickHouse 实例中。无论您是收集日志、指标、跟踪还是会话数据，都可以使用 OpenTelemetry (OTel) 收集器作为统一的导入点，或者利用特定平台的集成来满足特定用例。
+ClickStack 提供多种方式，将可观测性数据摄取到 ClickHouse 实例中。无论是收集日志、指标、追踪数据还是会话数据，都可以使用 OpenTelemetry (OTel) collector 作为统一的摄取入口，或者利用特定平台的集成来满足专业化的使用场景。
 
-| 部分 | 描述 |
+| Section | Description |
 |------|-------------|
-| [概述](/use-cases/observability/clickstack/ingesting-data/overview) | 数据导入方法和架构的介绍 |
-| [使用 OpenTelemetry 导入数据](/use-cases/observability/clickstack/ingesting-data/opentelemetry) | 为使用 OpenTelemetry 并希望快速与 ClickStack 集成的用户提供支持 |
-| [OpenTelemetry 收集器](/use-cases/observability/clickstack/ingesting-data/otel-collector) | ClickStack OpenTelemetry 收集器的高级细节 |
-| [Kubernetes](/use-cases/observability/clickstack/ingesting-data/kubernetes) | 从 Kubernetes 集群收集可观察性数据的指南 |
-| [表和模式](/use-cases/observability/clickstack/ingesting-data/schemas) | ClickHouse 表及其模式的概述，这些表由 ClickStack 使用 |
-| [语言 SDKs](/use-cases/observability/clickstack/sdks) | 用于仪器编程语言和收集遥测数据的 ClickStack SDKs |
+| [Overview](/use-cases/observability/clickstack/ingesting-data/overview) | 数据摄取方法和架构简介 |
+| [Ingesting data with OpenTelemetry](/use-cases/observability/clickstack/ingesting-data/opentelemetry) | 适用于已经使用 OpenTelemetry 并希望快速集成到 ClickStack 的用户 |
+| [OpenTelemetry collector](/use-cases/observability/clickstack/ingesting-data/otel-collector) | ClickStack OpenTelemetry collector 的高级配置与实现细节 |
+| [Tables and Schemas](/use-cases/observability/clickstack/ingesting-data/schemas) | ClickStack 使用的 ClickHouse 表及其表结构（schema）概览 |
+| [Language SDKs](/use-cases/observability/clickstack/sdks) | 用于对编程语言进行插桩并收集遥测数据的 ClickStack SDKs |

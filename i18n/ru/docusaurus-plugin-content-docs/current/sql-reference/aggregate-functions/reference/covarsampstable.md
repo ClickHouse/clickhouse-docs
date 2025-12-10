@@ -1,14 +1,14 @@
 ---
-description: 'Похож на covarSamp, но работает медленнее, предоставляя меньшую вычислительную ошибку.'
+description: 'Аналогична covarSamp, однако работает медленнее, обеспечивая при этом меньшую вычислительную погрешность.'
 sidebar_position: 126
 slug: /sql-reference/aggregate-functions/reference/covarsampstable
 title: 'covarSampStable'
+doc_type: 'reference'
 ---
 
+# covarSampStable {#covarsampstable}
 
-# covarSampStable
-
-Вычисляет значение `Σ((x - x̅)(y - y̅)) / (n - 1)`. Похож на [covarSamp](../reference/covarsamp.md), но работает медленнее, предоставляя меньшую вычислительную ошибку.
+Вычисляет значение `Σ((x - x̅)(y - y̅)) / (n - 1)`. Аналогична функции [covarSamp](../reference/covarsamp.md), но работает медленнее, обеспечивая при этом меньшую вычислительную погрешность.
 
 **Синтаксис**
 
@@ -18,12 +18,12 @@ covarSampStable(x, y)
 
 **Аргументы**
 
-- `x` — первая переменная. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md).
-- `y` — вторая переменная. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md).
+* `x` — первая переменная. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md).
+* `y` — вторая переменная. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md).
 
 **Возвращаемое значение**
 
-- Выборочная ковариация между `x` и `y`. Для `n <= 1` возвращается `inf`. [Float64](../../data-types/float.md).
+* Выборочная ковариация между `x` и `y`. Для `n <= 1` возвращается значение `inf`. [Float64](../../data-types/float.md).
 
 **Пример**
 

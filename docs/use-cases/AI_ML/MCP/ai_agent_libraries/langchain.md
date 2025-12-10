@@ -33,10 +33,8 @@ You can run the following steps either from your Python REPL or via script.
 Install the required libraries by running the following commands:
 
 ```python
-!pip install -q --upgrade pip
-!pip install -q langchain-mcp-adapters
-!pip install -q langgraph
-!pip install -q "langchain[anthropic]"
+pip install -q --upgrade pip
+pip install -q langchain-mcp-adapters langgraph "langchain[anthropic]"
 ```
 
 ## Setup credentials {#setup-credentials}

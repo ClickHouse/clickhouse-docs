@@ -1,13 +1,18 @@
 ---
-slug: '/integrations/postgresql'
+slug: /integrations/postgresql
 sidebar_label: 'PostgreSQL'
 title: 'PostgreSQL'
-hide_title: false
-description: 'Page describing how to integrate Postgres with ClickHouse'
+show_title: false
+description: 'PostgreSQL を ClickHouse と統合する方法を説明するページ'
+doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
+keywords: ['postgresql', 'データベース統合', '外部テーブル', 'データソース', 'SQL データベース']
 ---
 
 import PostgreSQL from '@site/i18n/jp/docusaurus-plugin-content-docs/current/integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql.md';
 
-PostgreSQL から ClickHouse への完全な移行ガイド、データモデリングおよび同等の概念に関するアドバイスは、[こちら](/migrations/postgresql/overview)で確認できます。次に、ClickHouse と PostgreSQL を接続する方法について説明します。
+> データモデリングや同等の概念に関するアドバイスを含む、PostgreSQL から ClickHouse への包括的な移行ガイドは [こちら](/migrations/postgresql/overview)で確認できます。以下では、ClickHouse と PostgreSQL を接続する方法を説明します。
 
-<PostgreSQL/>
+<PostgreSQL />

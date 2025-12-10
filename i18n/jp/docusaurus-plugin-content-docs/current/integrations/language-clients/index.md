@@ -1,27 +1,20 @@
 ---
-slug: '/integrations/language-clients'
-title: 'Language Clients'
-description: 'Language Clients の目次ページ。'
-keywords:
-- 'Language Clients'
-- 'C++'
-- 'Go'
-- 'JavaScript'
-- 'Java'
-- 'Python'
-- 'Rust'
+slug: /integrations/language-clients
+title: '言語クライアント'
+description: '言語クライアントの目次ページ。'
+keywords: ['Language Clients', 'C++', 'Go', 'JavaScript', 'Java', 'Python', 'Rust']
+doc_type: 'landing-page'
 ---
 
+本セクションでは、ClickHouse が提供するさまざまな言語クライアントとの連携方法について説明します。
 
-
-このドキュメントのセクションでは、ClickHouseが提供する多くの言語クライアント統合について詳しく学ぶことができます。
-
-| ページ                                                                       | 説明                                                                                  |
-|----------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
-| [C++](/interfaces/cpp)                                               | C++ クライアントライブラリと userver 非同期フレームワーク                                   |
-| [Go](/integrations/go)                                               | Go プロジェクトを ClickHouse に接続する方法を学ぶ。                                         |
-| [JavaScript](/integrations/javascript)                               | 公式の JS クライアントを使用して、JS プロジェクトを ClickHouse に接続する方法を学ぶ。        |
-| [Java](/integrations/java)                                           | Java と ClickHouse のためのいくつかの統合について詳しく学ぶ。                                |
-| [Python](/integrations/python)                                       | Python プロジェクトを ClickHouse に接続する方法を学ぶ。                                    |
-| [Rust](/integrations/rust)                                           | Rust プロジェクトを ClickHouse に接続する方法を学ぶ。                                      |
-| [サードパーティクライアント](/interfaces/third-party/client-libraries) | サードパーティの開発者によるクライアントライブラリについて詳しく学ぶ。                       |
+| Page                                                                    | Description                                                                      |
+|-------------------------------------------------------------------------|----------------------------------------------------------------------------------|
+| [C++](/interfaces/cpp)                                          | C++ クライアントライブラリおよび userver 非同期フレームワーク                         |
+| [C#](/integrations/csharp)                                  | C# プロジェクトを ClickHouse に接続する方法について説明します。                         |
+| [Go](/integrations/go)                                          | Go プロジェクトを ClickHouse に接続する方法について説明します。                             |
+| [JavaScript](/integrations/javascript)                          | 公式の JS クライアントを使用して、JS プロジェクトを ClickHouse に接続する方法について説明します。 |
+| [Java](/integrations/java)                                      | Java と ClickHouse のための複数の連携方法について説明します。                   |
+| [Python](/integrations/python)                                  | Python プロジェクトを ClickHouse に接続する方法について説明します。                         |
+| [Rust](/integrations/rust)                                      | Rust プロジェクトを ClickHouse に接続する方法について説明します。                           |
+| [Third-party clients](/interfaces/third-party/client-libraries) | サードパーティ製クライアントライブラリについて説明します。                   |

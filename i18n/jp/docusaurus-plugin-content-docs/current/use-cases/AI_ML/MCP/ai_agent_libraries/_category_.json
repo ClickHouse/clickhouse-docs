@@ -1,0 +1,10 @@
+{
+  "position": 5,
+  "label": "AIエージェントライブラリを統合する",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "ドキュメント",
+    "id": "use-cases/AI_ML/MCP/ai_agent_libraries/index"
+  }
+}

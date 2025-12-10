@@ -3,57 +3,58 @@ slug: /guides/sre/configuring-ssl
 sidebar_label: 'Настройка SSL-TLS'
 sidebar_position: 20
 title: 'Настройка SSL-TLS'
-description: 'Этот гид предоставляет простые и минимальные настройки для конфигурации ClickHouse с использованием сертификатов OpenSSL для проверки соединений.'
+description: 'В этом руководстве описаны простые и минимальные настройки для настройки ClickHouse на использование сертификатов OpenSSL для проверки соединений.'
+keywords: ['конфигурация SSL', 'настройка TLS', 'сертификаты OpenSSL', 'защищённые соединения', 'руководство для SRE']
+doc_type: 'guide'
 ---
 
 import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 import configuringSsl01 from '@site/static/images/guides/sre/configuring-ssl_01.png';
 import Image from '@theme/IdealImage';
 
-
-# Настройка SSL-TLS
+# Настройка SSL-TLS {#configuring-ssl-tls}
 
 <SelfManaged />
 
-Этот гид предоставляет простые и минимальные настройки для конфигурации ClickHouse с использованием сертификатов OpenSSL для проверки соединений. Для этой демонстрации был создан самоподписанный сертификат центра сертификации (CA) и ключ с использованием сертификатов узлов для установления соединений с соответствующими настройками.
+В этом руководстве приведены простые и минимальные настройки для использования ClickHouse с сертификатами OpenSSL для проверки подключений. В рамках этой демонстрации создаются самоподписанный сертификат и ключ центра сертификации (CA), а также сертификаты узлов для установления подключений с соответствующими параметрами.
 
 :::note
-Реализация TLS сложна, и существует множество вариантов, которые необходимо учитывать для обеспечения полностью безопасного и надежного развертывания. Это базовый учебник с примерами базовой конфигурации SSL/TLS. Проконсультируйтесь с вашей командой PKI/безопасности, чтобы сгенерировать правильные сертификаты для вашей организации.
+Реализация TLS сложна, и существует множество вариантов, которые необходимо учитывать для обеспечения полностью безопасного и надежного развертывания. Это базовый учебник с примерами базовой конфигурации SSL/TLS. Проконсультируйтесь с вашей командой PKI/безопасности для выпуска корректных сертификатов для вашей организации.
 
-Просмотрите этот [базовый учебник по использованию сертификатов](https://ubuntu.com/server/docs/security-certificates) для получения вводного обзора.
+Ознакомьтесь с этим [базовым учебником по использованию сертификатов](https://ubuntu.com/server/docs/security-certificates) в качестве вводного обзора.
 :::
 
-## 1. Создайте развертывание ClickHouse {#1-create-a-clickhouse-deployment}
+## 1. Создание развертывания ClickHouse {#1-create-a-clickhouse-deployment}
 
-Этот гид был написан с использованием Ubuntu 20.04 и ClickHouse, установленного на следующих хостах с использованием пакета DEB (с использованием apt). Домен: `marsnet.local`:
+Это руководство подготовлено для Ubuntu 20.04 и ClickHouse, установленного на следующих хостах из DEB-пакета (через apt). Домен — `marsnet.local`:
 
-|Host |IP Address|
+|Хост |IP-адрес|
 |--------|-------------|
 |`chnode1` |192.168.1.221|
 |`chnode2` |192.168.1.222|
 |`chnode3` |192.168.1.223|
 
 :::note
-Просмотрите [Быстрый старт](/getting-started/install/install.mdx) для получения дополнительных сведений о том, как установить ClickHouse.
+Дополнительные сведения об установке ClickHouse см. в разделе [Быстрый старт](/getting-started/install/install.mdx).
 :::
 
-## 2. Создайте SSL сертификаты {#2-create-ssl-certificates}
+## 2. Создание SSL-сертификатов {#2-create-ssl-certificates}
 :::note
-Использование самоподписанных сертификатов предназначено только для демонстрационных целей и не должно использоваться в производстве. Запросы на сертификаты должны быть созданы для подписания организацией и проверены с использованием цепочки CA, которая будет настроена в настройках. Тем не менее, эти шаги могут быть использованы для настройки и тестирования параметров, после чего они могут быть заменены фактическими сертификатами, которые будут использоваться.
+Самоподписанные сертификаты предназначены исключительно для демонстрационных целей и не должны использоваться в продуктивной среде. В рабочей среде запросы на сертификаты следует создавать для последующей подписи их вашей организацией и проверки с использованием цепочки CA, которая будет настроена в конфигурации. Тем не менее, эти шаги можно использовать для настройки и тестирования, а затем заменить временные сертификаты на реальные, которые будут использоваться.
 :::
 
-1. Сгенерируйте ключ, который будет использоваться для нового CA:
+1. Создайте ключ, который будет использоваться для нового CA:
     ```bash
     openssl genrsa -out marsnet_ca.key 2048
     ```
 
-2. Сгенерируйте новый самоподписанный сертификат CA. Следующая команда создаст новый сертификат, который будет использоваться для подписи других сертификатов с помощью ключа CA:
+2. Создайте новый самоподписанный сертификат CA. Следующая команда создаст сертификат, который будет использоваться для подписи других сертификатов с помощью ключа CA:
     ```bash
     openssl req -x509 -subj "/CN=marsnet.local CA" -nodes -key marsnet_ca.key -days 1095 -out marsnet_ca.crt
     ```
 
     :::note
-    Создайте резервную копию ключа и сертификата CA в безопасном месте, не в кластере. После генерации сертификатов узлов, ключ следует удалить с узлов кластера.
+    Сохраните резервную копию ключа и сертификата CA в защищённом месте вне кластера. После генерации узловых сертификатов ключ должен быть удалён с узлов кластера.
     :::
 
 3. Проверьте содержимое нового сертификата CA:
@@ -68,38 +69,38 @@ import Image from '@theme/IdealImage';
     openssl req -newkey rsa:2048 -nodes -subj "/CN=chnode3" -addext "subjectAltName = DNS:chnode3.marsnet.local,IP:192.168.1.223" -keyout chnode3.key -out chnode3.csr
     ```
 
-5. Используя CSR и CA, создайте новые сертификаты и пары ключей:
+5. Используя CSR и CA, создайте новые пары сертификат/ключ:
     ```bash
     openssl x509 -req -in chnode1.csr -out chnode1.crt -CA marsnet_ca.crt -CAkey marsnet_ca.key -days 365 -copy_extensions copy
     openssl x509 -req -in chnode2.csr -out chnode2.crt -CA marsnet_ca.crt -CAkey marsnet_ca.key -days 365 -copy_extensions copy
     openssl x509 -req -in chnode3.csr -out chnode3.crt -CA marsnet_ca.crt -CAkey marsnet_ca.key -days 365 -copy_extensions copy
     ```
 
-6. Проверьте сертификаты на предмет субъекта и издателя:
+6. Проверьте значения полей subject и issuer в сертификате:
     ```bash
     openssl x509 -in chnode1.crt -text -noout
     ```
 
-7. Убедитесь, что новые сертификаты подтверждаются сертификатом CA:
+7. Убедитесь, что новые сертификаты успешно проходят проверку относительно сертификата CA:
     ```bash
     openssl verify -CAfile marsnet_ca.crt chnode1.crt
     chnode1.crt: OK
     ```
 
-## 3. Создайте и настройте директорию для хранения сертификатов и ключей. {#3-create-and-configure-a-directory-to-store-certificates-and-keys}
+## 3. Создайте и настройте каталог для хранения сертификатов и ключей. {#3-create-and-configure-a-directory-to-store-certificates-and-keys}
 
 :::note
-Это необходимо сделать на каждом узле. Используйте соответствующие сертификаты и ключи на каждом хосте.
+Это необходимо выполнить на каждом узле. Используйте соответствующие сертификаты и ключи на каждом хосте.
 :::
 
-1. Создайте папку в директории, доступной для ClickHouse, на каждом узле. Мы рекомендуем использовать директорию по умолчанию (например, `/etc/clickhouse-server`):
+1. Создайте каталог в расположении, доступном для ClickHouse на каждом узле. Мы рекомендуем каталог конфигурации по умолчанию (например, `/etc/clickhouse-server`):
     ```bash
     mkdir /etc/clickhouse-server/certs
     ```
 
-2. Скопируйте сертификат CA, сертификат узла и ключ, соответствующий каждому узлу, в новую директорию сертификатов.
+2. Скопируйте сертификат центра сертификации (CA), сертификат узла и ключ узла в новый каталог `certs`.
 
-3. Обновите владельца и права доступа, чтобы разрешить ClickHouse читать сертификаты:
+3. Измените владельца и права доступа, чтобы ClickHouse мог читать сертификаты:
     ```bash
     chown clickhouse:clickhouse -R /etc/clickhouse-server/certs
     chmod 600 /etc/clickhouse-server/certs/*
@@ -116,20 +117,20 @@ import Image from '@theme/IdealImage';
     -rw------- 1 clickhouse clickhouse 1131 Apr 12 20:23 marsnet_ca.crt
     ```
 
-## 4. Настройте окружение с базовыми кластерами с использованием ClickHouse Keeper {#4-configure-the-environment-with-basic-clusters-using-clickhouse-keeper}
+## 4. Настройка среды с базовыми кластерами с использованием ClickHouse Keeper {#4-configure-the-environment-with-basic-clusters-using-clickhouse-keeper}
 
-Для этого развертывания на каждом узле используются следующие параметры ClickHouse Keeper. Каждый сервер будет иметь свой собственный `<server_id>`. (Например, `<server_id>1</server_id>` для узла `chnode1` и так далее.)
+Для этой среды развертывания на каждом узле используются следующие настройки ClickHouse Keeper. У каждого сервера будет свой собственный `<server_id>`. (Например, `<server_id>1</server_id>` для узла `chnode1` и так далее.)
 
 :::note
-Рекомендуемый порт для ClickHouse Keeper — `9281`. Однако порт можно настроить и изменить, если этот порт уже используется другим приложением в вашей среде.
+Рекомендуемый порт для ClickHouse Keeper — `9281`. Однако порт является настраиваемым и может быть изменён, если он уже используется другим приложением в среде.
 
-Для полного объяснения всех параметров посетите https://clickhouse.com/docs/operations/clickhouse-keeper/
+Полное описание всех опций доступно по адресу https://clickhouse.com/docs/operations/clickhouse-keeper/
 :::
 
-1. Добавьте следующее внутрь тега `<clickhouse>` в конфигурации сервера ClickHouse `config.xml`
+1. Добавьте следующее внутрь тега `<clickhouse>` в файле `config.xml` сервера ClickHouse
 
     :::note
-    Для производственных сред рекомендуется использовать отдельный файл конфигурации `.xml` в директории `config.d`.
+    Для продуктивных сред рекомендуется использовать отдельный конфигурационный файл `.xml` в каталоге `config.d`.
     Для получения дополнительной информации посетите https://clickhouse.com/docs/operations/configuration-files/
     :::
 
@@ -167,7 +168,7 @@ import Image from '@theme/IdealImage';
     </keeper_server>
     ```
 
-2. Раскомментируйте и обновите настройки keeper на всех узлах, установив флаг `<secure>` в значение 1:
+2. Раскомментируйте и обновите настройки keeper на всех узлах и установите флаг `<secure>` в значение 1:
     ```xml
     <zookeeper>
         <node>
@@ -188,13 +189,13 @@ import Image from '@theme/IdealImage';
     </zookeeper>
     ```
 
-3. Обновите и добавьте следующие параметры кластера к `chnode1` и `chnode2`. `chnode3` будет использоваться для кворума ClickHouse Keeper.
+3. Обновите и добавьте следующие настройки кластера на `chnode1` и `chnode2`. `chnode3` будет использоваться для кворума ClickHouse Keeper.
 
     :::note
-    Для этой конфигурации настроен только один пример кластера. Примеры тестовых кластеров должны быть либо удалены, либо закомментированы, или, если существует существующий кластер для тестирования, то порт должен быть обновлен, а опция `<secure>` должна быть добавлена. `<user>` и `<password>` должны быть установлены, если пользователь `default` был изначально настроен на использование пароля во время установки или в файле `users.xml`.
+    В этой конфигурации настраивается только один пример кластера. Тестовые кластеры-примеры должны быть удалены, закомментированы или, если уже существует кластер, используемый для тестирования, его порт должен быть обновлён и должна быть добавлена опция `<secure>`. Параметры `<user>` и `<password>` должны быть заданы, если пользователю `default` был изначально назначен пароль при установке или в файле `users.xml`.
     :::
 
-    Следующий код создает кластер с одной репликой шардов на двух серверах (по одной на каждом узле).
+    Следующая конфигурация создаёт кластер с одним шардом и двумя репликами на двух серверах (по одной на каждом узле).
     ```xml
     <remote_servers>
         <cluster_1S_2R>
@@ -218,7 +219,7 @@ import Image from '@theme/IdealImage';
     </remote_servers>
     ```
 
-4. Определите значения макросов, чтобы иметь возможность создать таблицу ReplicatedMergeTree для тестирования. На `chnode1`:
+4. Определите значения макросов для создания тестовой таблицы ReplicatedMergeTree. На `chnode1`:
     ```xml
     <macros>
         <shard>1</shard>
@@ -234,15 +235,15 @@ import Image from '@theme/IdealImage';
     </macros>
     ```
 
-## 5. Настройте интерфейсы SSL-TLS на узлах ClickHouse {#5-configure-ssl-tls-interfaces-on-clickhouse-nodes}
-Ниже приведены настройки, которые конфигурируются в файле конфигурации ClickHouse `config.xml`.
+## 5. Настройка SSL/TLS‑интерфейсов на узлах ClickHouse {#5-configure-ssl-tls-interfaces-on-clickhouse-nodes}
+Приведённые ниже настройки задаются в `config.xml` сервера ClickHouse.
 
-1. Установите отображаемое имя для развертывания (по желанию):
+1.  Задайте отображаемое имя для развертывания (необязательно):
     ```xml
     <display_name>clickhouse</display_name>
     ```
 
-2. Установите ClickHouse на прослушивание внешних портов:
+2. Настройте ClickHouse на прослушивание внешних портов:
     ```xml
     <listen_host>0.0.0.0</listen_host>
     ```
@@ -253,22 +254,23 @@ import Image from '@theme/IdealImage';
     <!--<http_port>8123</http_port>-->
     ```
 
-4. Настройте безопасный TCP порт ClickHouse Native и отключите порт по умолчанию без шифрования на каждом узле:
+4. Настройте защищённый ClickHouse Native TCP‑порт и отключите небезопасный порт по умолчанию на каждом узле:
     ```xml
     <tcp_port_secure>9440</tcp_port_secure>
     <!--<tcp_port>9000</tcp_port>-->
     ```
 
-5. Настройте порт `interserver https` и отключите порт по умолчанию без шифрования на каждом узле:
+5. Настройте порт `interserver https` и отключите небезопасный порт по умолчанию на каждом узле:
     ```xml
     <interserver_https_port>9010</interserver_https_port>
     <!--<interserver_http_port>9009</interserver_http_port>-->
     ```
 
-6. Настройте OpenSSL с сертификатами и путями.
+6. Настройте OpenSSL с сертификатами и путями
 
     :::note
-    Каждый файл и путь должны быть обновлены, чтобы соответствовать узлу, на котором они настраиваются. Например, обновите запись `<certificateFile>` на `chnode2.crt`, когда настраиваетесь на хосте `chnode2`.
+    Имя файла и путь должны быть изменены в соответствии с узлом, который вы настраиваете.
+    Например, обновите запись `<certificateFile>` до `chnode2.crt` при настройке на хосте `chnode2`.
     :::
 
     ```xml
@@ -296,7 +298,7 @@ import Image from '@theme/IdealImage';
     </openSSL>
     ```
 
-    Для получения дополнительной информации посетите https://clickhouse.com/docs/operations/server-configuration-parameters/settings/#server_configuration_parameters-openssl
+    Дополнительную информацию см. по адресу https://clickhouse.com/docs/operations/server-configuration-parameters/settings/#server_configuration_parameters-openssl
 
 7. Настройте gRPC для SSL на каждом узле:
     ```xml
@@ -314,9 +316,9 @@ import Image from '@theme/IdealImage';
     </grpc>
     ```
 
-    Для получения дополнительной информации посетите https://clickhouse.com/docs/interfaces/grpc/
+    Дополнительную информацию см. по адресу https://clickhouse.com/docs/interfaces/grpc/
 
-8. Настройте клиент ClickHouse на как минимум одном из узлов для использования SSL при соединениях в своем `config.xml` файле (по умолчанию в `/etc/clickhouse-client/`):
+8. Настройте клиент ClickHouse как минимум на одном из узлов для использования SSL при подключениях, в его собственном файле `config.xml` (по умолчанию в `/etc/clickhouse-client/`):
     ```xml
     <openSSL>
         <client>
@@ -332,7 +334,7 @@ import Image from '@theme/IdealImage';
     </openSSL>
     ```
 
-6. Отключите порты эмуляции по умолчанию для MySQL и PostgreSQL:
+6. Отключите стандартные порты эмуляции для MySQL и PostgreSQL:
     ```xml
     <!--mysql_port>9004</mysql_port-->
     <!--postgresql_port>9005</postgresql_port-->
@@ -344,7 +346,7 @@ import Image from '@theme/IdealImage';
     service clickhouse-server start
     ```
 
-2. Убедитесь, что защищенные порты запущены и слушают; они должны выглядеть примерно так на каждом узле:
+2. Убедитесь, что защищённые порты подняты и прослушиваются; на каждом узле вывод должен быть похож на следующий пример:
     ```bash
     root@chnode1:/etc/clickhouse-server# netstat -ano | grep tcp
     ```
@@ -369,43 +371,45 @@ import Image from '@theme/IdealImage';
 
     |ClickHouse Port |Описание|
     |--------|-------------|
-    |8443 | интерфейс https|
-    |9010 | порт interserver https|
-    |9281 | защищенный порт ClickHouse Keeper|
-    |9440 | защищенный протокол Native TCP|
-    |9444 | порт Raft ClickHouse Keeper |
+    |8443 | HTTPS-интерфейс|
+    |9010 | межсерверский HTTPS-порт|
+    |9281 | защищённый порт ClickHouse Keeper|
+    |9440 | защищённый протокол Native TCP|
+    |9444 | порт Raft для ClickHouse Keeper |
 
-3. Проверьте состояние ClickHouse Keeper
-Типичные команды [4 буквы (4lW)](/guides/sre/keeper/index.md#four-letter-word-commands) не будут работать с использованием `echo` без TLS; вот как использовать команды с `openssl`.
-   - Начните интерактивную сессию с `openssl`
+3. Проверьте работоспособность ClickHouse Keeper  
+Обычные команды [4 letter word (4lW)](/guides/sre/keeper/index.md#four-letter-word-commands) не будут работать с помощью `echo` без TLS. Ниже показано, как использовать эти команды с `openssl`.
+   - Запустите интерактивный сеанс с `openssl`
 
-  ```bash
+```bash
   openssl s_client -connect chnode1.marsnet.local:9281
-  ```
-  ```response
-  CONNECTED(00000003)
-  depth=0 CN = chnode1
-  verify error:num=20:unable to get local issuer certificate
-  verify return:1
-  depth=0 CN = chnode1
-  verify error:num=21:unable to verify the first certificate
-  verify return:1
-  ---
-  Certificate chain
-   0 s:CN = chnode1
-     i:CN = marsnet.local CA
-  ---
-  Server certificate
-  -----BEGIN CERTIFICATE-----
-  MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
-  ...
-  ```
+```
 
-   - Отправьте команды 4LW в сессии openssl
+```response
+СОЕДИНЕНО(00000003)
+depth=0 CN = chnode1
+verify error:num=20:не удаётся получить локальный сертификат центра сертификации
+verify return:1
+depth=0 CN = chnode1
+verify error:num=21:не удаётся проверить первый сертификат
+verify return:1
+---
+Цепочка сертификатов
+ 0 s:CN = chnode1
+   i:CN = marsnet.local CA
+---
+Сертификат сервера
+-----BEGIN CERTIFICATE-----
+MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
+...
+```
+
+* Отправьте команды 4LW в сеансе openssl
 
   ```bash
   mntr
   ```
+
   ```response
   ---
   Post-Handshake New Session Ticket arrived:
@@ -438,54 +442,55 @@ import Image from '@theme/IdealImage';
   closed
   ```
 
-4. Запустите клиент ClickHouse, используя флаг `--secure` и порт SSL:
-    ```bash
-    root@chnode1:/etc/clickhouse-server# clickhouse-client --user default --password ClickHouse123! --port 9440 --secure --host chnode1.marsnet.local
-    ClickHouse client version 22.3.3.44 (official build).
-    Connecting to chnode1.marsnet.local:9440 as user default.
-    Connected to ClickHouse server version 22.3.3 revision 54455.
+4. Запустите клиент ClickHouse, используя флаг `--secure` и SSL-порт:
+   ```bash
+   root@chnode1:/etc/clickhouse-server# clickhouse-client --user default --password ClickHouse123! --port 9440 --secure --host chnode1.marsnet.local
+   ClickHouse client version 22.3.3.44 (official build).
+   Connecting to chnode1.marsnet.local:9440 as user default.
+   Connected to ClickHouse server version 22.3.3 revision 54455.
 
-    clickhouse :)
-    ```
+   clickhouse :)
+   ```
 
 5. Войдите в Play UI, используя интерфейс `https` по адресу `https://chnode1.marsnet.local:8443/play`.
 
-    <Image img={configuringSsl01} alt="Настройка SSL" size="md" border />
+   <Image img={configuringSsl01} alt="Настройка SSL" size="md" border />
 
-    :::note
-    браузер покажет неподписанный сертификат, так как он достигается с рабочего места, а сертификаты не находятся в корневых хранилищах CA на клиентском компьютере.
-    При использовании сертификатов, выданных публичным органом или корпоративным CA, он должен отображаться как доверенный.
-    :::
+   :::note
+   Браузер отобразит недоверенный сертификат, так как доступ осуществляется с рабочей станции, а сертификаты отсутствуют в хранилищах корневых центров сертификации на клиентской машине.
+   При использовании сертификатов, выданных публичным центром сертификации или корпоративным CA, сертификат будет отображаться как доверенный.
+   :::
 
-6. Создайте реплицированную таблицу:
-    ```sql
-    clickhouse :) CREATE TABLE repl_table ON CLUSTER cluster_1S_2R
-                (
-                    id UInt64,
-                    column1 Date,
-                    column2 String
-                )
-                ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/default/repl_table', '{replica}' )
-                ORDER BY (id);
-    ```
+6. Создайте реплицируемую таблицу:
 
-    ```response
-    ┌─host──────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
-    │ chnode2.marsnet.local │ 9440 │      0 │       │                   1 │                0 │
-    │ chnode1.marsnet.local │ 9440 │      0 │       │                   0 │                0 │
-    └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
-    ```
+   ```sql
+   clickhouse :) CREATE TABLE repl_table ON CLUSTER cluster_1S_2R
+               (
+                   id UInt64,
+                   column1 Date,
+                   column2 String
+               )
+               ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/default/repl_table', '{replica}' )
+               ORDER BY (id);
+   ```
 
-7. Добавьте несколько строк на `chnode1`:
-    ```sql
-    INSERT INTO repl_table
-    (id, column1, column2)
-    VALUES
-    (1,'2022-04-01','abc'),
-    (2,'2022-04-02','def');
-    ```
+   ```response
+   ┌─host──────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+   │ chnode2.marsnet.local │ 9440 │      0 │       │                   1 │                0 │
+   │ chnode1.marsnet.local │ 9440 │      0 │       │                   0 │                0 │
+   └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
+   ```
 
-8. Проверьте репликацию, просмотрев строки на `chnode2`:
+7. Добавьте пару строк на `chnode1`:
+   ```sql
+   INSERT INTO repl_table
+   (id, column1, column2)
+   VALUES
+   (1,'2022-04-01','abc'),
+   (2,'2022-04-02','def');
+   ```
+
+8. Проверьте репликацию, просмотрев строки на узле `chnode2`:
     ```sql
     SELECT * FROM repl_table
     ```
@@ -497,6 +502,6 @@ import Image from '@theme/IdealImage';
     └────┴────────────┴─────────┘
     ```
 
-## Вывод {#summary}
+## Итоги {#summary}
 
-Эта статья сосредоточена на настройке окружения ClickHouse с SSL/TLS. Настройки будут отличаться в зависимости от различных требований в производственных средах; например, уровни проверки сертификатов, протоколы, шифры и т. д. Но теперь у вас должно быть хорошее понимание шагов, связанных с настройкой и реализацией безопасных соединений.
+В этой статье основное внимание уделялось настройке среды ClickHouse с использованием SSL/TLS. В производственных средах параметры будут отличаться в зависимости от требований — например, уровни проверки сертификатов, протоколы, шифры и т. д. Теперь у вас должно быть чёткое представление о шагах, необходимых для настройки и реализации защищённых подключений.

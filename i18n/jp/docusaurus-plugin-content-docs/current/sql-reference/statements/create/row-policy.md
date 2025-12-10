@@ -1,17 +1,16 @@
 ---
-description: 'Documentation for Row Policy'
+description: '行ポリシーに関するドキュメント'
 sidebar_label: 'ROW POLICY'
 sidebar_position: 41
-slug: '/sql-reference/statements/create/row-policy'
+slug: /sql-reference/statements/create/row-policy
 title: 'CREATE ROW POLICY'
+doc_type: 'reference'
 ---
 
-
-
-Creates a [row policy](../../../guides/sre/user-management/index.md#row-policy-management), すなわち、ユーザーがテーブルから読み取ることのできる行を決定するために使用されるフィルター。
+[行ポリシー](../../../guides/sre/user-management/index.md#row-policy-management)を作成します。行ポリシーとは、ユーザーがテーブルから参照できる行を決定するために使用されるフィルターです。
 
 :::tip
-行ポリシーは、読み取り専用アクセスを持つユーザーにのみ意味があります。ユーザーがテーブルを変更したり、テーブル間でパーティションをコピーできる場合、行ポリシーの制約は無効になります。
+行ポリシーは、読み取り専用アクセスを持つユーザーに対してのみ意味があります。ユーザーがテーブルを変更したり、テーブル間でパーティションをコピーできる場合、行ポリシーによる制限は意味をなさなくなります。
 :::
 
 構文:
@@ -25,77 +24,78 @@ CREATE [ROW] POLICY [IF NOT EXISTS | OR REPLACE] policy_name1 [ON CLUSTER cluste
     [TO {role1 [, role2 ...] | ALL | ALL EXCEPT role1 [, role2 ...]}]
 ```
 
-## USING Clause {#using-clause}
+## USING 句 {#using-clause}
 
-行をフィルタリングする条件を指定できます。条件が行に対して非ゼロと計算される場合、ユーザーはその行を見ることができます。
+行をフィルタリングする条件を指定できます。条件がその行に対して 0 以外の値になると、その行はユーザーに表示されます。
 
-## TO Clause {#to-clause}
+## TO 句 {#to-clause}
 
-`TO`セクションでは、このポリシーが適用されるユーザーやロールのリストを提供できます。例えば、`CREATE ROW POLICY ... TO accountant, john@localhost`。
+`TO` 句では、このポリシーを適用するユーザーおよびロールのリストを指定できます。例えば、`CREATE ROW POLICY ... TO accountant, john@localhost` のようになります。
 
-キーワード`ALL`は、現在のユーザーを含む全てのClickHouseユーザーを意味します。キーワード`ALL EXCEPT`は、全ユーザーリストから一部のユーザーを除外することを可能にします。例えば、`CREATE ROW POLICY ... TO ALL EXCEPT accountant, john@localhost`。
+キーワード `ALL` は、現在のユーザーを含むすべての ClickHouse ユーザーを意味します。キーワード `ALL EXCEPT` は、すべてのユーザーのリストから特定のユーザーを除外することができます。例えば、`CREATE ROW POLICY ... TO ALL EXCEPT accountant, john@localhost` のようになります。
 
 :::note
-テーブルに行ポリシーが定義されていない場合、任意のユーザーはテーブルからすべての行を`SELECT`できます。テーブルに1つ以上の行ポリシーを定義すると、テーブルへのアクセスは行ポリシーに依存し、現在のユーザーに対してこれらの行ポリシーが定義されているかどうかにかかわらず、その影響を受けます。例えば、次のポリシー：
+テーブルに行ポリシーが 1 つも定義されていない場合、どのユーザーもそのテーブルからすべての行を `SELECT` できます。テーブルに 1 つ以上の行ポリシーを定義すると、それらの行ポリシーが現在のユーザー向けに定義されているかどうかに関係なく、テーブルへのアクセスは行ポリシーに依存するようになります。例えば、次のポリシーは:
 
 `CREATE ROW POLICY pol1 ON mydb.table1 USING b=1 TO mira, peter`
 
-はユーザー`mira`および`peter`が`b != 1`の行を見ることを禁止し、非指定のユーザー（例：ユーザー`paul`）は`mydb.table1`の行を全く見ることができません。
+ユーザー `mira` と `peter` が `b != 1` の行を参照することを禁止し、その他の記載されていないユーザー（例えばユーザー `paul`）は `mydb.table1` からは一切行を参照できません。
 
-それが望ましくない場合、次のようにもう1つの行ポリシーを追加することで修正できます：
+これが望ましくない場合は、次のような行ポリシーをもう 1 つ追加することで解決できます。
 
 `CREATE ROW POLICY pol2 ON mydb.table1 USING 1 TO ALL EXCEPT mira, peter`
 :::
 
-## AS Clause {#as-clause}
+## AS 句 {#as-clause}
 
-同じテーブルに対して同じユーザーに複数のポリシーを同時に有効にすることができます。したがって、複数のポリシーから条件を結合する方法が必要です。
+同じテーブルおよび同じユーザーに対して、同時に複数のポリシーを有効にすることができます。そのため、複数のポリシーに含まれる条件を組み合わせる方法が必要になります。
 
-デフォルトでは、ポリシーはブール`OR`演算子を使用して結合されます。例えば、次のポリシー：
+デフォルトでは、ポリシーは論理演算子 `OR` を使って結合されます。たとえば、次のようなポリシーがある場合を考えます。
 
 ```sql
 CREATE ROW POLICY pol1 ON mydb.table1 USING b=1 TO mira, peter
 CREATE ROW POLICY pol2 ON mydb.table1 USING c=2 TO peter, antonio
 ```
 
-はユーザー`peter`が`b=1`または`c=2`のいずれかの行を見ることを可能にします。
+ユーザー `peter` が、`b=1` または `c=2` の行を閲覧できるようにします。
 
-`AS`句は、ポリシーを他のポリシーとどのように結合するかを指定します。ポリシーは許可型または制限型のいずれかとして定義できます。デフォルトでは、ポリシーは許可型であり、これはブール`OR`演算子を使用して結合されることを意味します。
+`AS` 句は、ポリシーを他のポリシーとどのように組み合わせるかを指定します。ポリシーは、許可ポリシー (permissive) または制限ポリシー (restrictive) のいずれかです。デフォルトではポリシーは許可ポリシーであり、ブール演算子 `OR` で組み合わされることを意味します。
 
-ポリシーは代わりに制限型として定義できます。制限型ポリシーはブール`AND`演算子を使用して結合されます。
+代わりにポリシーを制限ポリシーとして定義することもできます。制限ポリシーはブール演算子 `AND` で組み合わされます。
 
-一般的な式は次のとおりです：
+一般的な式は次のとおりです。
 
 ```text
-row_is_visible = (one or more of the permissive policies' conditions are non-zero) AND
-                 (all of the restrictive policies's conditions are non-zero)
+row_is_visible = (1つ以上の許可ポリシーの条件が非ゼロである) AND
+                 (すべての制限ポリシーの条件が非ゼロである)
 ```
 
-例えば、次のポリシー：
+例として、次のようなポリシーが挙げられます。
 
 ```sql
 CREATE ROW POLICY pol1 ON mydb.table1 USING b=1 TO mira, peter
 CREATE ROW POLICY pol2 ON mydb.table1 USING c=2 AS RESTRICTIVE TO peter, antonio
 ```
 
-はユーザー`peter`が両方`b=1`および`c=2`の場合にのみ行を見ることを可能にします。
+ユーザー `peter` が `b=1` かつ `c=2` の行だけを閲覧できるようにします。
 
 データベースポリシーはテーブルポリシーと組み合わされます。
 
-例えば、次のポリシー：
+たとえば、次のポリシーがあります。
 
 ```sql
 CREATE ROW POLICY pol1 ON mydb.* USING b=1 TO mira, peter
 CREATE ROW POLICY pol2 ON mydb.table1 USING c=2 AS RESTRICTIVE TO peter, antonio
 ```
 
-はユーザー`peter`がテーブル1の行を見ることを可能にするのは両方`b=1`および`c=2`である場合に限られますが、mydb内の他の任意のテーブルには、ユーザーに対して`b=1`ポリシーのみが適用されます。
+ユーザー `peter` に対しては、`b=1` かつ `c=2` の両方を満たす場合にのみ table1 の行を参照できるように設定しつつ、
+mydb 内の他のテーブルには、そのユーザーに対して `b=1` のポリシーのみが適用されるようにします。
 
-## ON CLUSTER Clause {#on-cluster-clause}
+## ON CLUSTER 句 {#on-cluster-clause}
 
-クラスター上で行ポリシーを作成することを可能にします。[Distributed DDL](../../../sql-reference/distributed-ddl.md)を参照してください。
+クラスター上で行ポリシーを作成できるようにします。[Distributed DDL](../../../sql-reference/distributed-ddl.md) を参照してください。
 
-## Examples {#examples}
+## 例 {#examples}
 
 `CREATE ROW POLICY filter1 ON mydb.mytable USING a<1000 TO accountant, john@localhost`
 

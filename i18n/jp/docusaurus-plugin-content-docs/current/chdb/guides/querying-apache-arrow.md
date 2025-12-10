@@ -1,21 +1,18 @@
 ---
-title: 'Apache ArrowをchDBでクエリする方法'
-sidebar_label: 'Apache Arrowのクエリ'
-slug: '/chdb/guides/apache-arrow'
-description: 'このガイドでは、Apache ArrowのテーブルをchDBでクエリする方法について学びます'
-keywords:
-- 'chdb'
-- 'Apache Arrow'
+title: 'chDB で Apache Arrow をクエリする方法'
+sidebar_label: 'Apache Arrow のクエリ'
+slug: /chdb/guides/apache-arrow
+description: 'このガイドでは、chDB を使って Apache Arrow テーブルをクエリする方法を説明します'
+keywords: ['chdb', 'Apache Arrow']
+doc_type: 'guide'
 ---
 
-
-
-[Apache Arrow](https://arrow.apache.org/) はデータコミュニティで人気のある標準化された列指向メモリ形式です。
+[Apache Arrow](https://arrow.apache.org/) は、データコミュニティで広く利用されている標準化されたカラム指向のメモリフォーマットです。
 このガイドでは、`Python` テーブル関数を使用して Apache Arrow をクエリする方法を学びます。
 
 ## セットアップ {#setup}
 
-まず最初に、仮想環境を作成しましょう：
+まずは仮想環境を作成します：
 
 ```bash
 python -m venv .venv
@@ -23,29 +20,29 @@ source .venv/bin/activate
 ```
 
 次に、chDB をインストールします。
-バージョン 2.0.2 以上であることを確認してください：
+バージョン 2.0.2 以上であることを確認してください。
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-次に PyArrow、pandas、および ipython をインストールします：
+それでは、PyArrow、pandas、および IPython をインストールします。
 
 ```bash
 pip install pyarrow pandas ipython
 ```
 
-このガイドの残りのコマンドを実行するために `ipython` を使用します。次のコマンドで起動できます：
+このガイドの残りのコマンドは `ipython` を使って実行します。次のコマンドを実行して起動してください：
 
 ```bash
 ipython
 ```
 
-Python スクリプトやお好みのノートブックでもこのコードを使用できます。
+このコードは、Python スクリプトやお好みのノートブック環境でも使用できます。
 
 ## ファイルから Apache Arrow テーブルを作成する {#creating-an-apache-arrow-table-from-a-file}
 
-まず、[Ooklaデータセット](https://github.com/teamookla/ookla-open-data) の Parquet ファイルの1つを、[AWS CLIツール](https://aws.amazon.com/cli/) を使用してダウンロードします：
+まず、[Ookla データセット](https://github.com/teamookla/ookla-open-data)の Parquet ファイルの一つを、[AWS CLI ツール](https://aws.amazon.com/cli/)を使ってダウンロードします。
 
 ```bash
 aws s3 cp \
@@ -54,22 +51,22 @@ aws s3 cp \
 ```
 
 :::note
-もっと多くのファイルをダウンロードしたい場合は、`aws s3 ls` を使用してすべてのファイルのリストを取得し、上記のコマンドを更新してください。
+より多くのファイルをダウンロードしたい場合は、`aws s3 ls` を使用してすべてのファイルの一覧を表示し、それに合わせて上記のコマンドを更新してください。
 :::
 
-次に、`pyarrow` パッケージから Parquet モジュールをインポートします：
+次に、`pyarrow` パッケージから Parquet モジュールをインポートします。
 
 ```python
 import pyarrow.parquet as pq
 ```
 
-次に、Parquet ファイルを Apache Arrow テーブルに読み込みます：
+次に、Parquet ファイルを Apache Arrow のテーブルとして読み込みます:
 
 ```python
 arrow_table = pq.read_table("./2023-04-01_performance_mobile_tiles.parquet")
 ```
 
-スキーマは以下のように表示されます：
+スキーマは次のとおりです。
 
 ```python
 arrow_table.schema
@@ -89,7 +86,7 @@ tests: int64
 devices: int64
 ```
 
-`shape` 属性を呼び出すことで行数と列数を取得できます：
+`shape` 属性から行数と列数を取得できます。
 
 ```python
 arrow_table.shape
@@ -101,14 +98,14 @@ arrow_table.shape
 
 ## Apache Arrow をクエリする {#querying-apache-arrow}
 
-さあ、chDB から Arrow テーブルをクエリしましょう。
-まず、chDB をインポートします：
+ここでは、chDB から Apache Arrow テーブルをクエリしてみましょう。
+まず、chDB をインポートします。
 
 ```python
 import chdb
 ```
 
-次に、テーブルを説明します：
+次に、テーブルの構造を確認します。
 
 ```python
 chdb.query("""
@@ -132,7 +129,7 @@ SETTINGS describe_compact_output=1
 10          devices    Int64
 ```
 
-行数をカウントすることもできます：
+行数も取得できます。
 
 ```python
 chdb.query("SELECT count() FROM Python(arrow_table)", "DataFrame")
@@ -143,8 +140,8 @@ chdb.query("SELECT count() FROM Python(arrow_table)", "DataFrame")
 0  3864546
 ```
 
-次に、少し面白いことをしてみましょう。
-以下のクエリは `quadkey` および `tile.*` カラムを除外し、残りのすべてのカラムの平均値と最大値を計算します：
+では、もう少し興味深いことをしてみましょう。
+次のクエリは `quadkey` と `tile.*` カラムを除外したうえで、残りのすべてのカラムについて平均値と最大値を計算します。
 
 ```python
 chdb.query("""

@@ -1,33 +1,92 @@
 ---
-alias:
-- 'TSVRawWithNamesAndTypes'
-- 'RawWithNamesAndTypes'
-description: 'TabSeparatedRawWithNamesAndTypes フォーマットのドキュメント'
+alias: ['TSVRawWithNamesAndTypes', 'RawWithNamesAndTypes']
+description: 'TabSeparatedRawWithNamesAndTypes 形式のドキュメント'
 input_format: true
-keywords:
-- 'TabSeparatedRawWithNamesAndTypes'
-- 'TSVRawWithNamesAndTypes'
-- 'RawWithNamesAndTypes'
+keywords: ['TabSeparatedRawWithNamesAndTypes', 'TSVRawWithNamesAndTypes', 'RawWithNamesAndTypes']
 output_format: true
-slug: '/interfaces/formats/TabSeparatedRawWithNamesAndTypes'
+slug: /interfaces/formats/TabSeparatedRawWithNamesAndTypes
 title: 'TabSeparatedRawWithNamesAndTypes'
+doc_type: 'reference'
 ---
 
-
-
-| Input | Output | Alias                                             |
-|-------|--------|---------------------------------------------------|
-| ✔     | ✔      | `TSVRawWithNamesAndNames`, `RawWithNamesAndNames` |
+| 入力 | 出力 | エイリアス                                         |
+|------|------|---------------------------------------------------|
+| ✔    | ✔    | `TSVRawWithNamesAndNames`, `RawWithNamesAndNames` |
 
 ## 説明 {#description}
 
-[`TabSeparatedWithNamesAndTypes`](./TabSeparatedWithNamesAndTypes.md) 形式とは異なり、
-行はエスケープなしで書き込まれます。
+この形式は、行がエスケープ処理なしで書き出されるという点で、[`TabSeparatedWithNamesAndTypes`](./TabSeparatedWithNamesAndTypes.md) 形式と異なります。
 
 :::note
-この形式で解析する際には、各フィールドにタブや改行を含めることはできません。
+この形式でパースする場合、各フィールド内にタブや改行文字を含めることはできません。
 :::
 
-## 例の利用法 {#example-usage}
+## 使用例 {#example-usage}
 
-## 形式の設定 {#format-settings}
+### データの挿入 {#inserting-data}
+
+以下の内容の `football.tsv` という名前の TSV ファイルを使用します：
+
+```tsv
+date    season  home_team       away_team       home_team_goals away_team_goals
+Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
+2022-04-30      2021    Sutton United   Bradford City   1       4
+2022-04-30      2021    Swindon Town    Barrow  2       1
+2022-04-30      2021    Tranmere Rovers Oldham Athletic 2       0
+2022-05-02      2021    Port Vale       Newport County  1       2
+2022-05-02      2021    Salford City    Mansfield Town  2       2
+2022-05-07      2021    Barrow  Northampton Town        1       3
+2022-05-07      2021    Bradford City   Carlisle United 2       0
+2022-05-07      2021    Bristol Rovers  Scunthorpe United       7       0
+2022-05-07      2021    Exeter City     Port Vale       0       1
+2022-05-07      2021    Harrogate Town A.F.C.   Sutton United   0       2
+2022-05-07      2021    Hartlepool United       Colchester United       0       2
+2022-05-07      2021    Leyton Orient   Tranmere Rovers 0       1
+2022-05-07      2021    Mansfield Town  Forest Green Rovers     2       2
+2022-05-07      2021    Newport County  Rochdale        0       2
+2022-05-07      2021    Oldham Athletic Crawley Town    3       3
+2022-05-07      2021    Stevenage Borough       Salford City    4       2
+2022-05-07      2021    Walsall Swindon Town    0       3
+```
+
+データを挿入する:
+
+```sql
+INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedRawWithNamesAndTypes;
+```
+
+### データの読み取り {#reading-data}
+
+`TabSeparatedRawWithNamesAndTypes` 形式を使用してデータを読み込みます。
+
+```sql
+SELECT *
+FROM football
+FORMAT TabSeparatedRawWithNamesAndTypes
+```
+
+出力は、列名と型を示す 2 行のヘッダー行を持つタブ区切り形式になります。
+
+```tsv
+date    season  home_team       away_team       home_team_goals away_team_goals
+Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
+2022-04-30      2021    Sutton United   Bradford City   1       4
+2022-04-30      2021    Swindon Town    Barrow  2       1
+2022-04-30      2021    Tranmere Rovers Oldham Athletic 2       0
+2022-05-02      2021    Port Vale       Newport County  1       2
+2022-05-02      2021    Salford City    Mansfield Town  2       2
+2022-05-07      2021    Barrow  Northampton Town        1       3
+2022-05-07      2021    Bradford City   Carlisle United 2       0
+2022-05-07      2021    Bristol Rovers  Scunthorpe United       7       0
+2022-05-07      2021    Exeter City     Port Vale       0       1
+2022-05-07      2021    Harrogate Town A.F.C.   Sutton United   0       2
+2022-05-07      2021    Hartlepool United       Colchester United       0       2
+2022-05-07      2021    Leyton Orient   Tranmere Rovers 0       1
+2022-05-07      2021    Mansfield Town  Forest Green Rovers     2       2
+2022-05-07      2021    Newport County  Rochdale        0       2
+2022-05-07      2021    Oldham Athletic Crawley Town    3       3
+2022-05-07      2021    Stevenage Borough       Salford City    4       2
+2022-05-07      2021    Walsall Swindon Town    0       3
+```
+
+## 書式設定 {#format-settings}

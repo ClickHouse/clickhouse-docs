@@ -4,6 +4,7 @@ description: 'Step-by-step guide on how to set up MongoDB Atlas as a source for 
 slug: /integrations/clickpipes/mongodb/source/atlas
 title: 'MongoDB Atlas source setup guide'
 doc_type: 'guide'
+keywords: ['clickpipes', 'mongodb', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
 import mongo_atlas_configuration from '@site/static/images/integrations/data-ingestion/clickpipes/mongodb/mongo-atlas-cluster-overview-configuration.png'

@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/AI_ML/AIChat
-sidebar_label: 'AI Chat'
+sidebar_label: 'AI chat'
 title: 'Using AI Chat in ClickHouse Cloud'
 pagination_prev: null
 pagination_next: null

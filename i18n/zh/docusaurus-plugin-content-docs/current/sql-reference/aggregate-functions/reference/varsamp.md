@@ -1,9 +1,12 @@
 ---
-'description': '计算数据集的样本方差。'
-'sidebar_position': 212
-'slug': '/sql-reference/aggregate-functions/reference/varSamp'
-'title': 'varSamp'
+description: '计算数据集的样本方差。'
+sidebar_position: 212
+slug: /sql-reference/aggregate-functions/reference/varSamp
+title: 'varSamp'
+doc_type: 'reference'
 ---
+
+
 
 ## varSamp {#varsamp}
 
@@ -15,15 +18,15 @@
 varSamp(x)
 ```
 
-别名: `VAR_SAMP`。
+别名：`VAR_SAMP`。
 
 **参数**
 
-- `x`: 您要计算样本方差的总体。 [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md)。
+- `x`：需要计算样本方差的数据集。[(U)Int\*](../../data-types/int-uint.md)、[Float\*](../../data-types/float.md)、[Decimal\*](../../data-types/decimal.md)。
 
 **返回值**
 
-- 返回输入数据集 `x` 的样本方差。 [Float64](../../data-types/float.md)。
+- 返回输入数据集 `x` 的样本方差。[Float64](../../data-types/float.md)。
 
 **实现细节**
 
@@ -35,11 +38,11 @@ $$
 
 其中：
 
-- `x` 是数据集中每个单独数据点。
-- `mean(x)` 是数据集的算术平均值。
-- `n` 是数据集中数据点的数量。
+- `x` 为数据集中的每个数据点。
+- `mean(x)` 为数据集的算术平均值。
+- `n` 为数据集中的数据点数量。
 
-该函数假定输入数据集代表来自更大总体的样本。如果您想计算整个总体的方差（当您拥有完整数据集时），应使用 [`varPop`](../reference/varpop.md) 代替。
+该函数假定输入数据集是从更大总体中抽取的样本。如果需要计算整个总体的方差（即拥有完整数据集时），应使用 [`varPop`](../reference/varpop.md)。
 
 **示例**
 
@@ -58,7 +61,7 @@ INSERT INTO test_data VALUES (10.5), (12.3), (9.8), (11.2), (10.7);
 SELECT round(varSamp(x),3) AS var_samp FROM test_data;
 ```
 
-响应：
+结果：
 
 ```response
 ┌─var_samp─┐

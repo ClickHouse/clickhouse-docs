@@ -1,24 +1,25 @@
 ---
-slug: '/faq/general/who-is-using-clickhouse'
-title: 'Who is using ClickHouse?'
+slug: /faq/general/who-is-using-clickhouse
+title: '誰が ClickHouse を利用していますか？'
 toc_hidden: true
 toc_priority: 9
-description: 'Describes who is using ClickHouse'
+description: 'ClickHouse の利用ユーザーについて説明します'
+keywords: ['顧客']
+doc_type: 'reference'
 ---
 
 
 
+# 誰が ClickHouse を使っているのか？ {#who-is-using-clickhouse}
 
-# Who is using ClickHouse? {#who-is-using-clickhouse}
+オープンソース製品であるという性質上、この問いに対する答えはそれほど単純ではありません。ClickHouse を使い始めたいと思ったら、誰かに知らせる必要はなく、ソースコードや事前コンパイル済みパッケージを入手してくればそれで済みます。署名すべき契約もなく、[Apache License 2.0](https://github.com/ClickHouse/ClickHouse/blob/master/LICENSE) により、ソフトウェアを制限なく配布できます。
 
-オープンソース製品であるため、この質問に対する答えは簡単ではありません。ClickHouseの使用を開始したい場合、誰にでもそのことを伝える必要はなく、ソースコードやプリコンパイルされたパッケージを入手するだけです。契約書にサインする必要はなく、[Apache 2.0ライセンス](https://github.com/ClickHouse/ClickHouse/blob/master/LICENSE)により、制約のないソフトウェア配布が可能です。
+また、テクノロジースタックは、秘密保持契約（NDA）の対象範囲としてグレーゾーンになることがよくあります。一部の企業は、利用している技術がたとえオープンソースであっても競争優位性であると考え、従業員がその詳細を公開することを認めていません。別の企業は PR 上のリスクを考慮し、実装の詳細を共有する場合には PR 部門の承認がある場合に限るとしています。
 
-また、技術スタックはしばしばNDAの範囲内のグレーゾーンにあります。いくつかの企業は、オープンソースであっても使用する技術を競争上の優位性と見なしており、従業員が公に詳細を共有することを許可していません。一部はPRリスクを考慮し、従業員がPR部門の承認を得てのみ実装の詳細を共有することを許可します。
+では、どのようにして ClickHouse を使っている企業を知ればよいのでしょうか？
 
-では、ClickHouseを使用している人をどのように特定すればよいでしょうか？
+1 つの方法は、**周囲の人に聞いてみること**です。記録に残らない場であれば、自社でどのような技術を使っているか、どのようなユースケースか、どのようなハードウェアを使っているか、データ量はどの程度か、といったことを人はずっと話しやすくなります。私たちは世界各地の [ClickHouse Meetups](https://www.youtube.com/channel/UChtmrD-dsdpspr42P_PyRAw/playlists) で定期的にユーザーと話をしており、1000 社以上の企業が ClickHouse を使っているという話を聞いています。残念ながら、これは再現性のある情報ではなく、潜在的なトラブルを避けるため、そのような話は NDA のもとで聞いたものとして扱うようにしています。ただし、今後のミートアップに参加して、ご自身で他のユーザーと直接会話することは可能です。ミートアップの告知には複数の方法があり、たとえば [ClickHouse の Twitter アカウント](http://twitter.com/ClickHouseDB/) をフォローすることもできます。
 
-一つの方法は、**周りに聞いてみる**ことです。書面になっていない場合、人々は自社で使用している技術、ユースケース、使用しているハードウェア、データ量などについて非常に話しやすくなります。私たちは世界中の[ClickHouse Meetups](https://www.youtube.com/channel/UChtmrD-dsdpspr42P_PyRAw/playlists)で定期的にユーザーと話し、ClickHouseを使用している1000以上の企業についての話を聞いてきました。残念ながら、それは再現可能ではないため、私たちはそのような話をNDAの下で語られたかのように扱うよう努めています。しかし、今後のミートアップに参加して他のユーザーと直接話すことができます。ミートアップの告知方法は複数あります。たとえば、[私たちのTwitter](http://twitter.com/ClickHouseDB/) をフォローすることができます。
+2 つ目の方法は、ClickHouse を使っていると**公言している**企業を探すことです。通常はブログ記事、講演動画、スライド資料など、何らかの明確な証拠が伴うため、こちらのほうがより確実です。私たちはそのような証拠へのリンクを **[Adopters](../../about-us/adopters.md)** ページに集約しています。あなたの勤務先の事例や、たまたま見つけたリンクなども、ぜひ追加してください（ただし、その過程で NDA に違反しないよう注意してください）。
 
-二つ目の方法は、**公に**ClickHouseを使用していると言っている企業を探すことです。これはより実質的で、通常はブログ記事、トークのビデオ録画、スライドデッキなどの確かな証拠があります。私たちはそのような証拠へのリンクを**[Adopters](../../about-us/adopters.md)**ページに集めています。あなたの雇用主のストーリーや偶然見つけたリンクを自由に寄稿してください（ただし、NDAに違反しないように注意してください）。
-
-アダプターリストには、Bloomberg、Cisco、China Telecom、Tencent、Lyftなどの非常に大きな企業の名前を見ることができますが、最初のアプローチでは、さらに多くの企業があることがわかりました。たとえば、[Forbesによる2020年の世界の大手IT企業のリスト](https://www.forbes.com/sites/hanktucker/2020/05/13/worlds-largest-technology-companies-2020-apple-stays-on-top-zoom-and-uber-debut/)を見ると、その半数以上が何らかの形でClickHouseを使用しています。また、ClickHouseを2016年に初めてオープンソース化した企業であり、ヨーロッパで最大のIT企業の一つである[Yandex](../../about-us/history.md)に触れないのは不公平です。
+Adopters の一覧には、Bloomberg、Cisco、China Telecom、Tencent、Lyft といった非常に大きな企業の名前もありますが、最初のアプローチで分かったように、実際にははるかに多くの企業が存在します。たとえば、[the list of largest IT companies by Forbes (2020)](https://www.forbes.com/sites/hanktucker/2020/05/13/worlds-largest-technology-companies-2020-apple-stays-on-top-zoom-and-uber-debut/) を見ると、その半数以上が何らかの形で ClickHouse を利用しています。また、ClickHouse を 2016 年に最初にオープンソースとして公開し、ヨーロッパ最大級の IT 企業の 1 つでもある [Yandex](../../about-us/history.md) に触れないのは不公平でしょう。

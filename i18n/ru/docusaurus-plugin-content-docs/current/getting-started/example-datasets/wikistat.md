@@ -1,19 +1,22 @@
 ---
-description: 'Исследуйте набор данных WikiStat, содержащий 0.5 триллиона записей.'
+description: 'Изучите набор данных WikiStat, содержащий 0,5 триллиона записей.'
 sidebar_label: 'WikiStat'
 slug: /getting-started/example-datasets/wikistat
 title: 'WikiStat'
+doc_type: 'guide'
+keywords: ['пример набора данных', 'wikipedia', 'руководство', 'образец данных', 'просмотры страниц']
 ---
 
-Набор данных содержит 0.5 триллиона записей.
+Набор данных содержит 0,5 триллиона записей.
 
-Смотрите видео с FOSDEM 2023: https://www.youtube.com/watch?v=JlcI2Vfz_uk
+См. видео с FOSDEM 2023: [https://www.youtube.com/watch?v=JlcI2Vfz&#95;uk](https://www.youtube.com/watch?v=JlcI2Vfz_uk)
 
-А также презентацию: https://presentations.clickhouse.com/fosdem2023/
+А также презентацию: [https://presentations.clickhouse.com/fosdem2023/](https://presentations.clickhouse.com/fosdem2023/)
 
-Источник данных: https://dumps.wikimedia.org/other/pageviews/
+Источник данных: [https://dumps.wikimedia.org/other/pageviews/](https://dumps.wikimedia.org/other/pageviews/)
 
 Получение списка ссылок:
+
 ```shell
 for i in {2015..2023}; do
   for j in {01..12}; do
@@ -24,13 +27,14 @@ for i in {2015..2023}; do
 done | sort | uniq | tee links.txt
 ```
 
-Скачивание данных:
+Загрузка данных:
+
 ```shell
 sed -r 's!pageviews-([0-9]{4})([0-9]{2})[0-9]{2}-[0-9]+\.gz!https://dumps.wikimedia.org/other/pageviews/\1/\1-\2/\0!' \
   links.txt | xargs -P3 wget --continue
 ```
 
-(это займет около 3 дней)
+(это займет около трех дней)
 
 Создание таблицы:
 
@@ -64,7 +68,7 @@ clickhouse-local --query "
 " | clickhouse-client --query "INSERT INTO wikistat FORMAT Native"
 ```
 
-Или загрузка очищенных данных:
+Или загрузка данных для очистки:
 
 ```sql
 INSERT INTO wikistat WITH

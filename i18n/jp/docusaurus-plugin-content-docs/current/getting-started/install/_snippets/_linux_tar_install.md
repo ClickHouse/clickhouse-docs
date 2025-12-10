@@ -1,32 +1,24 @@
----
-{}
----
+# tgzアーカイブを使用したClickHouseのインストール {#install-clickhouse-using-tgz-archives}
 
-
-
-
-# ClickHouseのtgzアーカイブを使用したインストール
-
-> `deb` または `rpm` パッケージのインストールが不可能なすべてのLinuxディストリビューションに対して、公式の事前コンパイルされた `tgz` アーカイブを使用することをお勧めします。
+> `deb`または`rpm`パッケージのインストールができないすべてのLinuxディストリビューションでは、公式のプリコンパイル済み`tgz`アーカイブの使用を推奨します。
 
 <VerticalStepper>
 
 ## 最新の安定版をダウンロードしてインストールする {#install-latest-stable}
 
-必要なバージョンは、https://packages.clickhouse.com/tgz/ から `curl` または `wget` を使用してダウンロードできます。
-その後、ダウンロードしたアーカイブを解凍し、インストールスクリプトを使用してインストールする必要があります。
+必要なバージョンは、リポジトリ https://packages.clickhouse.com/tgz/ から `curl` または `wget` を使ってダウンロードできます。
+その後、ダウンロードしたアーカイブを展開し、付属のインストールスクリプトでインストールします。
 
-以下は、最新の安定版をインストールする方法の例です。
+以下は、最新の安定版をインストールする例です。
 
 :::note
-本番環境では、最新の `stable` バージョンを使用することをお勧めします。
-リリース番号は、この [GitHubページ](https://github.com/ClickHouse/ClickHouse/tags) で
-`-stable` の接尾辞を持つものを見つけることができます。
+本番環境では、最新の `stable` 版を使用することを推奨します。
+`-stable` の接尾辞が付いたリリース番号は、この [GitHub ページ](https://github.com/ClickHouse/ClickHouse/tags) で確認できます。
 :::
 
-## 最新のClickHouseバージョンを取得する {#get-latest-version}
+## 最新の ClickHouse バージョンを取得する {#get-latest-version}
 
-GitHubから最新のClickHouseバージョンを取得し、`LATEST_VERSION` 変数に格納します。
+GitHub から最新の ClickHouse バージョンを取得し、`LATEST_VERSION` 変数に設定します。
 
 ```bash
 LATEST_VERSION=$(curl -s https://raw.githubusercontent.com/ClickHouse/ClickHouse/master/utils/list-versions/version_date.tsv | \
@@ -34,9 +26,9 @@ LATEST_VERSION=$(curl -s https://raw.githubusercontent.com/ClickHouse/ClickHouse
 export LATEST_VERSION
 ```
 
-## システムアーキテクチャの検出 {#detect-system-architecture}
+## システムアーキテクチャを特定する {#detect-system-architecture}
 
-システムアーキテクチャを検出し、ARCH変数をそれに応じて設定します。
+システムアーキテクチャを特定し、それに応じて `ARCH` 変数を設定します。
 
 ```bash
 case $(uname -m) in
@@ -46,10 +38,9 @@ case $(uname -m) in
 esac
 ```
 
-## 各ClickHouseコンポーネントのtarボールをダウンロード {#download-tarballs}
+## 各 ClickHouse コンポーネント用の tarball をダウンロードする {#download-tarballs}
 
-各ClickHouseコンポーネントのtarボールをダウンロードします。ループは先にアーキテクチャ固有の 
-パッケージを試し、それが失敗した場合は一般的なものにフォールバックします。
+各 ClickHouse コンポーネント用の tarball をダウンロードします。ループではまずアーキテクチャ固有のパッケージを試し、なければ汎用パッケージにフォールバックします。
 
 ```bash
 for PKG in clickhouse-common-static clickhouse-common-static-dbg clickhouse-server clickhouse-client clickhouse-keeper
@@ -59,46 +50,41 @@ do
 done
 ```
 
-## パッケージの抽出とインストール {#extract-and-install}
+## パッケージの展開とインストール {#extract-and-install}
 
-以下のコマンドを実行して、次のパッケージを抽出してインストールします：
+以下のパッケージを展開してインストールするには、次のコマンドを実行します：
 - `clickhouse-common-static`
 
 ```bash
-
-# clickhouse-common-staticパッケージを抽出してインストール
+# clickhouse-common-static パッケージの展開とインストール {#extract-and-install-clickhouse-common-static-package}
 tar -xzvf "clickhouse-common-static-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-common-static-$LATEST_VERSION.tgz"
 sudo "clickhouse-common-static-$LATEST_VERSION/install/doinst.sh"
 ```
 
-
-- `clickhouse-common-static-dbg`
+* `clickhouse-common-static-dbg`
 
 ```bash
-
-# デバッグシンボルパッケージを抽出してインストール
+# デバッグシンボルパッケージの展開とインストール {#extract-and-install-debug-symbols-package}
 tar -xzvf "clickhouse-common-static-dbg-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-common-static-dbg-$LATEST_VERSION.tgz"
 sudo "clickhouse-common-static-dbg-$LATEST_VERSION/install/doinst.sh"
 ```
 
-- `clickhouse-server`
+* `clickhouse-server`
 
 ```bash
-
-# 設定付きのサーバーパッケージを抽出してインストール
+# サーバーパッケージを展開し、設定を行ってインストール {#extract-and-install-server-package-with-configuration}
 tar -xzvf "clickhouse-server-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-server-$LATEST_VERSION.tgz"
 sudo "clickhouse-server-$LATEST_VERSION/install/doinst.sh" configure
 sudo /etc/init.d/clickhouse-server start  # サーバーを起動
 ```
 
-- `clickhouse-client`
+* `clickhouse-client`
 
 ```bash
-
-# クライアントパッケージを抽出してインストール
+# クライアントパッケージを展開してインストール {#extract-and-install-client-package}
 tar -xzvf "clickhouse-client-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-client-$LATEST_VERSION.tgz"
 sudo "clickhouse-client-$LATEST_VERSION/install/doinst.sh"

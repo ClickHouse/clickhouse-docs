@@ -1,12 +1,12 @@
 ---
-'description': '返回 N 个变量的样本协方差矩阵。'
-'sidebar_position': 125
-'slug': '/sql-reference/aggregate-functions/reference/covarsampmatrix'
-'title': 'covarSampMatrix'
+description: '返回 N 个变量之间的样本协方差矩阵。'
+sidebar_position: 125
+slug: /sql-reference/aggregate-functions/reference/covarsampmatrix
+title: 'covarSampMatrix'
+doc_type: 'reference'
 ---
 
-
-# covarSampMatrix
+# covarSampMatrix {#covarsampmatrix}
 
 返回 N 个变量的样本协方差矩阵。
 
@@ -18,11 +18,11 @@ covarSampMatrix(x[, ...])
 
 **参数**
 
-- `x` — 变量数量的参数。[(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md)。
+* `x` — 数量可变的参数。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
 
 **返回值**
 
-- 样本协方差矩阵。 [Array](../../data-types/array.md)([Array](../../data-types/array.md)([Float64](../../data-types/float.md)))。
+* 样本协方差矩阵。[Array](../../data-types/array.md)([Array](../../data-types/array.md)([Float64](../../data-types/float.md)))。
 
 **示例**
 

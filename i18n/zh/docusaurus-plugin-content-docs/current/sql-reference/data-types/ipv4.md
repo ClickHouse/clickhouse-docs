@@ -1,14 +1,15 @@
 ---
-'description': 'ClickHouse 中 IPv4 数据类型的文档'
-'sidebar_label': 'IPv4'
-'sidebar_position': 28
-'slug': '/sql-reference/data-types/ipv4'
-'title': 'IPv4'
+description: 'ClickHouse 中 IPv4 数据类型文档'
+sidebar_label: 'IPv4'
+sidebar_position: 28
+slug: /sql-reference/data-types/ipv4
+title: 'IPv4'
+doc_type: 'reference'
 ---
 
 ## IPv4 {#ipv4}
 
-IPv4 地址。以 UInt32 的形式存储在 4 字节中。
+IPv4 地址。占用 4 个字节，存储为 UInt32 类型。
 
 ### 基本用法 {#basic-usage}
 
@@ -25,13 +26,13 @@ DESCRIBE TABLE hits;
 └──────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┘
 ```
 
-或者可以将 IPv4 域作为键：
+或者可以使用 IPv4 域名作为键：
 
 ```sql
 CREATE TABLE hits (url String, from IPv4) ENGINE = MergeTree() ORDER BY from;
 ```
 
-`IPv4` 域支持自定义输入格式，如 IPv4 字符串：
+`IPv4` 域支持使用 IPv4 字符串作为自定义输入格式：
 
 ```sql
 INSERT INTO hits (url, from) VALUES ('https://wikipedia.org', '116.253.40.133')('https://clickhouse.com', '183.247.232.58')('https://clickhouse.com/docs/en/', '116.106.34.242');
@@ -47,7 +48,7 @@ SELECT * FROM hits;
 └────────────────────────────────────┴────────────────┘
 ```
 
-值以紧凑的二进制形式存储：
+值以紧凑的二进制格式存储：
 
 ```sql
 SELECT toTypeName(from), hex(from) FROM hits LIMIT 1;
@@ -71,6 +72,6 @@ SELECT toIPv4('127.0.0.1') = toIPv6('::ffff:127.0.0.1');
 └─────────────────────────────────────────────────────────┘
 ```
 
-**另见**
+**另请参阅**
 
-- [处理 IPv4 和 IPv6 地址的函数](../functions/ip-address-functions.md)
+* [用于处理 IPv4 和 IPv6 地址的函数](../functions/ip-address-functions.md)

@@ -1,0 +1,8 @@
+:::note
+虽然可以在同一台服务器上同时运行 ClickHouse Server 和 ClickHouse Keeper，
+但我们强烈建议在生产环境中为 ClickHouse Keeper 使用 *专用* 主机，
+本示例中展示的就是这种做法。
+
+Keeper 服务器可以配置得更小，通常每个 Keeper 服务器配备 4GB 内存就足够使用，
+直到 ClickHouse Server 规模显著增大为止。
+:::

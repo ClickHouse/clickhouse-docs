@@ -1,18 +1,19 @@
 ---
-description: 'Документация для оператора EXCHANGE'
+description: 'Документация по команде EXCHANGE'
 sidebar_label: 'EXCHANGE'
 sidebar_position: 49
 slug: /sql-reference/statements/exchange
-title: 'Оператор EXCHANGE'
+title: 'Команда EXCHANGE'
+doc_type: 'reference'
 ---
 
+# Оператор EXCHANGE {#exchange-statement}
 
-# Оператор EXCHANGE
+Атомарно меняет местами имена двух таблиц или двух словарей.
+Эту задачу можно также выполнить с помощью запроса [`RENAME`](./rename.md) с использованием временного имени, но в этом случае операция не является атомарной.
 
-Меняет названия двух таблиц или словарей атомарно. Эта задача также может быть выполнена с помощью запроса [RENAME](./rename.md), использующего временное имя, но в этом случае операция не атомарна.
-
-:::note    
-Запрос `EXCHANGE` поддерживается только движком базы данных [Atomic](../../engines/database-engines/atomic.md).
+:::note
+Запрос `EXCHANGE` поддерживается только движками баз данных [`Atomic`](../../engines/database-engines/atomic.md) и [`Shared`](/cloud/reference/shared-catalog#shared-database-engine).
 :::
 
 **Синтаксис**
@@ -23,7 +24,7 @@ EXCHANGE TABLES|DICTIONARIES [db0.]name_A AND [db1.]name_B [ON CLUSTER cluster]
 
 ## EXCHANGE TABLES {#exchange-tables}
 
-Меняет названия двух таблиц.
+Обменивает имена двух таблиц.
 
 **Синтаксис**
 
@@ -31,9 +32,69 @@ EXCHANGE TABLES|DICTIONARIES [db0.]name_A AND [db1.]name_B [ON CLUSTER cluster]
 EXCHANGE TABLES [db0.]table_A AND [db1.]table_B [ON CLUSTER cluster]
 ```
 
+### ОБМЕН НЕСКОЛЬКИМИ ТАБЛИЦАМИ {#exchange-multiple-tables}
+
+Вы можете поменять местами несколько пар таблиц в одном запросе, разделяя их запятыми.
+
+:::note
+При обмене несколькими парами таблиц операции выполняются **последовательно, а не атомарно**. Если во время операции произойдет ошибка, некоторые пары таблиц уже могут быть обменяны местами, а другие — нет.
+:::
+
+**Пример**
+
+```sql title="Query"
+-- Создать таблицы
+CREATE TABLE a (a UInt8) ENGINE=Memory;
+CREATE TABLE b (b UInt8) ENGINE=Memory;
+CREATE TABLE c (c UInt8) ENGINE=Memory;
+CREATE TABLE d (d UInt8) ENGINE=Memory;
+
+-- Обменять две пары таблиц в одном запросе
+EXCHANGE TABLES a AND b, c AND d;
+
+SHOW TABLE a;
+SHOW TABLE b;
+SHOW TABLE c;
+SHOW TABLE d;
+```
+
+```sql title="Response"
+-- Теперь таблица 'a' имеет структуру таблицы 'b', а таблица 'b' — структуру таблицы 'a'
+┌─statement──────────────┐
+│ CREATE TABLE default.a↴│
+│↳(                     ↴│
+│↳    `b` UInt8         ↴│
+│↳)                     ↴│
+│↳ENGINE = Memory        │
+└────────────────────────┘
+┌─statement──────────────┐
+│ CREATE TABLE default.b↴│
+│↳(                     ↴│
+│↳    `a` UInt8         ↴│
+│↳)                     ↴│
+│↳ENGINE = Memory        │
+└────────────────────────┘
+
+-- Теперь таблица 'c' имеет структуру таблицы 'd', а таблица 'd' — структуру таблицы 'c'
+┌─statement──────────────┐
+│ CREATE TABLE default.c↴│
+│↳(                     ↴│
+│↳    `d` UInt8         ↴│
+│↳)                     ↴│
+│↳ENGINE = Memory        │
+└────────────────────────┘
+┌─statement──────────────┐
+│ CREATE TABLE default.d↴│
+│↳(                     ↴│
+│↳    `c` UInt8         ↴│
+│↳)                     ↴│
+│↳ENGINE = Memory        │
+└────────────────────────┘
+```
+
 ## EXCHANGE DICTIONARIES {#exchange-dictionaries}
 
-Меняет названия двух словарей.
+Меняет местами имена двух словарей.
 
 **Синтаксис**
 
@@ -41,6 +102,6 @@ EXCHANGE TABLES [db0.]table_A AND [db1.]table_B [ON CLUSTER cluster]
 EXCHANGE DICTIONARIES [db0.]dict_A AND [db1.]dict_B [ON CLUSTER cluster]
 ```
 
-**Смотрите также**
+**См. также**
 
-- [Словари](../../sql-reference/dictionaries/index.md)
+* [Справочники](../../sql-reference/dictionaries/index.md)

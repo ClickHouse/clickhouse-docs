@@ -1,53 +1,60 @@
 ---
-description: 'Начните работу с ClickHouse, используя наши руководства и примерные наборы данных'
-keywords: ['clickhouse', 'установка', 'руководство', 'пример', 'наборы данных']
+description: 'Начните работу с ClickHouse с помощью наших учебных руководств и примеров наборов данных'
+keywords: ['clickhouse', 'install', 'tutorial', 'sample', 'datasets']
 pagination_next: tutorial
 sidebar_label: 'Обзор'
 sidebar_position: 0
 slug: /getting-started/example-datasets/
-title: 'Руководства и Примерные Наборы Данных'
+title: 'Учебные руководства и примеры наборов данных'
+doc_type: 'landing-page'
 ---
 
+# Учебные материалы и примеры наборов данных {#tutorials-and-example-datasets}
 
-# Руководства и Примерные Наборы Данных
+У нас есть множество ресурсов, которые помогут вам начать работу и понять, как работает ClickHouse:
 
-У нас есть много ресурсов, которые помогут вам начать работу и узнать, как работает ClickHouse:
+* Если вам нужно быстро развернуть ClickHouse, ознакомьтесь с разделом [Quick Start](/get-started/quick-start)
+* В руководстве [ClickHouse Tutorial](../tutorial.md) разбирается набор данных поездок на такси в Нью‑Йорке
 
-- Если вам нужно установить ClickHouse и запустить его, ознакомьтесь с нашим [Быстрым Началом](../quick-start.mdx)
-- В [Руководстве по ClickHouse](../tutorial.md) анализируется набор данных о поездках такси в Нью-Йорке
+Кроме того, демонстрационные наборы данных позволяют на практике работать с ClickHouse,
+осваивать важные приёмы и подходы и видеть, как использовать множество мощных
+функций ClickHouse. Демонстрационные наборы данных включают:
 
-Кроме того, примерные наборы данных предлагают отличные возможности для работы с ClickHouse, освоения важных техник и приемов, а также для того, чтобы увидеть, как воспользоваться многими мощными функциями ClickHouse. Примерные наборы данных включают:
+{/* Приведённая ниже таблица автоматически генерируется на этапе сборки
+  скриптом https://github.com/ClickHouse/clickhouse-docs/blob/main/scripts/autogenerate-table-of-contents.sh */ }
 
-<!-- The following table is automatically generated at build time 
-by https://github.com/ClickHouse/clickhouse-docs/blob/main/scripts/autogenerate-table-of-contents.sh -->
-| Страница | Описание |
-|-----|-----|
-| [Данные такси Нью-Йорка](/getting-started/example-datasets/nyc-taxi) | Данные о миллиардах поездок такси и такси на условиях найма (Uber, Lyft и т.д.), начавшихся в Нью-Йорке с 2009 года |
-| [Терабайтные журналы кликов от Criteo](/getting-started/example-datasets/criteo) | Терабайт данных из журналов кликов от Criteo |
-| [WikiStat](/getting-started/example-datasets/wikistat) | Исследуйте набор данных WikiStat, содержащий 0.5 триллиона записей. |
-| [TPC-DS (2012)](/getting-started/example-datasets/tpcds) | Набор данных и запросы для бенчмарка TPC-DS. |
-| [Набор данных рецептов](/getting-started/example-datasets/recipes) | Набор данных RecipeNLG, содержащий 2.2 миллиона рецептов |
-| [Открытые данные COVID-19](/getting-started/example-datasets/covid19) | Открытые данные COVID-19 — это большая база данных с открытым исходным кодом, содержащая эпидемиологические данные о COVID-19 и связанные с ними факторы, такие как демография, экономика и правительственные ответы |
-| [Глобальная историческая сеть климатологии NOAA](/getting-started/example-datasets/noaa) | 2.5 миллиарда строк климатических данных за последние 120 лет |
-| [Набор данных событий GitHub](/getting-started/example-datasets/github-events) | Набор данных, содержащий все события на GitHub с 2011 года по 6 декабря 2020 года, размером 3.1 миллиарда записей. |
-| [Обзоры продуктов Amazon](/getting-started/example-datasets/amazon-reviews) | Более 150 миллионов отзывов клиентов о продуктах Amazon |
-| [Бенчмарк Университета Брауна](/getting-started/example-datasets/brown-benchmark) | Новый аналитический бенчмарк для данных логов, сгенерированных машинами |
-| [Написание запросов в ClickHouse с использованием данных GitHub](/getting-started/example-datasets/github) | Набор данных, содержащий все коммиты и изменения для репозитория ClickHouse |
-| [Анализ данных Stack Overflow с ClickHouse](/getting-started/example-datasets/stackoverflow) | Анализ данных Stack Overflow с ClickHouse |
-| [Бенчмарк Big Data AMPLab](/getting-started/example-datasets/amplab-benchmark) | Набор данных для бенчмарка, используемый для сравнения производительности решений по хранению данных. |
-| [Набор данных "Что на меню?" Библиотеки Нью-Йорка](/getting-started/example-datasets/menus) | Набор данных, содержащий 1.3 миллиона записей исторических данных о меню отелей, ресторанов и кафе с блюдами и их ценами. |
-| [Набор данных Laion-400M](/getting-started/example-datasets/laion-400m-dataset) | Набор данных, содержащий 400 миллионов изображений с английскими подписями к изображениям |
-| [Бенчмарк звёздной схемы (SSB, 2009)](/getting-started/example-datasets/star-schema) | Набор данных и запросы для бенчмарка звёздной схемы (SSB) |
-| [Набор данных цен на недвижимость в Великобритании](/getting-started/example-datasets/uk-price-paid) | Узнайте, как использовать проекции для повышения производительности запросов, которые вы выполняете часто, с использованием набора данных о недвижимости в Великобритании, который содержит данные о ценах, уплаченных за недвижимость в Англии и Уэльсе |
-| [Набор данных комментариев Reddit](/getting-started/example-datasets/reddit-comments) | Набор данных, содержащий общедоступные комментарии на Reddit с декабря 2005 года по март 2023 года, с более чем 14 миллиардами строк данных в формате JSON |
-| [OnTime](/getting-started/example-datasets/ontime) | Набор данных, содержащий данные о пунктуальности рейсов авиакомпаний |
-| [Исторические метеорологические наборы данных Тайваня](/getting-started/example-datasets/tw-weather) | 131 миллион строк данных наблюдений за погодой за последние 128 лет |
-| [Данные о воздушном движении, собранные от The OpenSky Network (2020)](/getting-started/example-datasets/opensky) | Данные в этом наборе получены и очищены из полного набора данных OpenSky, чтобы проиллюстрировать развитие воздушного движения во время пандемии COVID-19. |
-| [Данные жалоб NYPD](/getting-started/example-datasets/nypd_complaint_data) | Прием и запрос данных в формате Tab Separated Value за 5 шагов |
-| [TPC-H (1999)](/getting-started/example-datasets/tpch) | Набор данных и запросы для бенчмарка TPC-H. |
-| [Места на Foursquare](/getting-started/example-datasets/foursquare-places) | Набор данных с более чем 100 миллионами записей, содержащих информацию о местах на карте, таких как магазины, рестораны, парки, игровые площадки и памятники. |
-| [Набор данных YouTube о дизлайках](/getting-started/example-datasets/youtube-dislikes) | Коллекция дизлайков к видео на YouTube. |
-| [Геоданные с использованием набора данных вышек сотовой связи](/getting-started/example-datasets/cell-towers) | Узнайте, как загрузить данные OpenCelliD в ClickHouse, подключить Apache Superset к ClickHouse и создать панель управления на основе данных |
-| [Данные от датчиков окружающей среды](/getting-started/example-datasets/environmental-sensors) | Более 20 миллиардов записей данных от Sensor.Community, глобальной сети сенсоров, созданной участниками, которая создает открытые данные об окружающей среде. |
-| [Анонимизированная веб-аналитика](/getting-started/example-datasets/metrica) | Набор данных, состоящий из двух таблиц, содержащих анонимизированные данные веб-аналитики о посещениях и хитов |
+{/*AUTOGENERATED_START*/ }
 
+| Страница                                                                                                             | Описание                                                                                                                                                                                                             |
+| -------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Отзывы покупателей Amazon](/getting-started/example-datasets/amazon-reviews)                                        | Более 150 млн отзывов покупателей о товарах Amazon                                                                                                                                                                   |
+| [Бенчмарк AMPLab для больших данных](/getting-started/example-datasets/amplab-benchmark)                             | Эталонный набор данных, используемый для сравнения производительности решений для хранилищ данных.                                                                                                                   |
+| [Анализ данных из Stack Overflow с помощью ClickHouse](/getting-started/example-datasets/stackoverflow)              | Анализ данных Stack Overflow в ClickHouse                                                                                                                                                                            |
+| [Анонимизированные данные веб-аналитики](/getting-started/example-datasets/metrica)                                  | Набор данных из двух таблиц с анонимизированными данными веб‑аналитики о хитах и визитах                                                                                                                             |
+| [Бенчмарк Университета Брауна](/getting-started/example-datasets/brown-benchmark)                                    | Новый аналитический бенчмарк для машинно-сгенерированных логов                                                                                                                                                       |
+| [Открытые данные по COVID-19](/getting-started/example-datasets/covid19)                                             | COVID-19 Open-Data — это крупная открытая база эпидемиологических данных о COVID-19 и связанных с ним факторов, таких как демографические и экономические показатели, а также меры реагирования правительств         |
+| [датасет DBpedia](/getting-started/example-datasets/dbpedia-dataset)                                                 | Набор данных, содержащий 1 миллион статей из Википедии и их векторные эмбеддинги                                                                                                                                     |
+| [Данные датчиков окружающей среды](/getting-started/example-datasets/environmental-sensors)                          | Более 20 миллиардов записей данных от Sensor.Community — глобальной сети датчиков, развиваемой участниками сообщества и создающей открытые данные об окружающей среде.                                               |
+| [Заведения Foursquare](/getting-started/example-datasets/foursquare-places)                                          | Набор данных с более 100 миллионами записей, содержащих информацию о местах на карте, таких как магазины, рестораны, парки, детские площадки и памятники.                                                            |
+| [Геоданные на основе набора данных сотовых вышек](/getting-started/example-datasets/cell-towers)                     | Узнайте, как загрузить данные OpenCelliD в ClickHouse, подключить Apache Superset к ClickHouse и построить панель мониторинга на основе этих данных.                                                                 |
+| [Набор данных событий GitHub](/getting-started/example-datasets/github-events)                                       | Набор данных, содержащий все события на GitHub с 2011 года по 6 декабря 2020 года, объёмом 3,1 миллиарда записей.                                                                                                    |
+| [Набор данных Hacker News](/getting-started/example-datasets/hacker-news)                                            | Набор данных с 28 миллионами записей Hacker News.                                                                                                                                                                    |
+| [Набор данных для векторного поиска Hacker News](/getting-started/example-datasets/hackernews-vector-search-dataset) | Набор данных с более чем 28 млн постов на Hacker News и их векторными представлениями                                                                                                                                |
+| [Набор данных LAION 5B](/getting-started/example-datasets/laion-5b-dataset)                                          | Набор данных из 100 миллионов векторов из LAION 5B                                                                                                                                                                   |
+| [Набор данных LAION-400M](/getting-started/example-datasets/laion-400m-dataset)                                      | Набор данных, содержащий 400 миллионов изображений с англоязычными подписями                                                                                                                                         |
+| [Набор данных «What&#39;s on the Menu?» Нью-Йоркской публичной библиотеки](/getting-started/example-datasets/menus)  | Набор данных, содержащий 1,3 млн записей исторических данных о меню отелей, ресторанов и кафе с указанием блюд и их цен.                                                                                             |
+| [Данные такси Нью-Йорка](/getting-started/example-datasets/nyc-taxi)                                                 | Данные о миллиардах поездок на такси и заказных автомобилях (Uber, Lyft и др.), совершённых в Нью‑Йорке с 2009 года                                                                                                  |
+| [NOAA Global Historical Climatology Network](/getting-started/example-datasets/noaa)                                 | 2,5 млрд строк данных о климате за последние 120 лет                                                                                                                                                                 |
+| [Данные жалоб в NYPD](/getting-started/example-datasets/nypd_complaint_data)                                         | Приём и запрос данных в формате TSV за 5 шагов                                                                                                                                                                       |
+| [OnTime](/getting-started/example-datasets/ontime)                                                                   | Набор данных о пунктуальности авиарейсов                                                                                                                                                                             |
+| [Бенчмарк Star Schema (SSB, 2009)](/getting-started/example-datasets/star-schema)                                    | Набор данных и запросы бенчмарка Star Schema (SSB)                                                                                                                                                                   |
+| [Наборы исторических метеоданных Тайваня](/getting-started/example-datasets/tw-weather)                              | 131 млн строк метеонаблюдений за последние 128 лет                                                                                                                                                                   |
+| [Терабайт логов кликов от Criteo](/getting-started/example-datasets/criteo)                                          | Терабайт логов кликов Criteo                                                                                                                                                                                         |
+| [Набор данных о ценах на недвижимость в Великобритании](/getting-started/example-datasets/uk-price-paid)             | Узнайте, как использовать проекции для повышения производительности часто выполняемых запросов на основе набора данных UK property, содержащего информацию о ценах сделок с объектами недвижимости в Англии и Уэльсе |
+| [TPC-DS (2012)](/getting-started/example-datasets/tpcds)                                                             | Набор данных и запросы эталонного теста TPC-DS.                                                                                                                                                                      |
+| [TPC-H (1999)](/getting-started/example-datasets/tpch)                                                               | Набор данных бенчмарка TPC-H и запросы.                                                                                                                                                                              |
+| [WikiStat](/getting-started/example-datasets/wikistat)                                                               | Изучите набор данных WikiStat, содержащий 0,5 триллиона записей.                                                                                                                                                     |
+| [Составление запросов в ClickHouse на данных GitHub](/getting-started/example-datasets/github)                       | Набор данных, содержащий все коммиты и изменения для репозитория ClickHouse                                                                                                                                          |
+| [Набор данных по дизлайкам YouTube](/getting-started/example-datasets/youtube-dislikes)                              | Набор отметок «Не нравится» для видео на YouTube.                                                                                                                                                                    |
+
+{/*AUTOGENERATED_END*/ }

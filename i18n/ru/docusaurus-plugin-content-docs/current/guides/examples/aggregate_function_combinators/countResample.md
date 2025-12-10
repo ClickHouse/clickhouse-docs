@@ -1,25 +1,27 @@
 ---
 slug: '/examples/aggregate-function-combinators/countResample'
 title: 'countResample'
-description: 'Пример использования комбинирования Resample с count'
-keywords: ['count', 'Resample', 'комбинирование', 'примеры', 'countResample']
+description: 'Пример использования комбинатора Resample с функцией count'
+keywords: ['count', 'Resample', 'combinator', 'examples', 'countResample']
 sidebar_label: 'countResample'
+doc_type: 'reference'
 ---
-
 
 # countResample {#countResample}
 
 ## Описание {#description}
 
 Комбинатор [`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
-можно применять к агрегатной функции [`count`](/sql-reference/aggregate-functions/reference/count) для подсчета значений заданной ключевой колонки в фиксированном числе интервалов (`N`).
+можно применить к агрегатной функции [`count`](/sql-reference/aggregate-functions/reference/count),
+чтобы подсчитать значения заданного ключевого столбца по фиксированному числу
+интервалов (`N`).
 
 ## Пример использования {#example-usage}
 
 ### Базовый пример {#basic-example}
 
-Рассмотрим пример. Мы создадим таблицу, которая содержит `name`, `age` и
-`wage` сотрудников, и вставим в нее данные:
+Рассмотрим пример. Мы создадим таблицу, которая будет содержать `name`, `age` и
+`wage` сотрудников, и вставим в неё несколько записей:
 
 ```sql
 CREATE TABLE employee_data 
@@ -32,18 +34,18 @@ ENGINE = MergeTree()
 ORDER BY tuple()
 
 INSERT INTO employee_data (name, age, wage) VALUES
-    ('John', 16, 10.0),
-    ('Alice', 30, 15.0),
-    ('Mary', 35, 8.0),
-    ('Evelyn', 48, 11.5),
-    ('David', 62, 9.9),
-    ('Brian', 60, 16.0);
+    ('Иван', 16, 10.0),
+    ('Алиса', 30, 15.0),
+    ('Мария', 35, 8.0),
+    ('Евелина', 48, 11.5),
+    ('Давид', 62, 9.9),
+    ('Брайан', 60, 16.0);
 ```
 
-Давайте посчитаем людей, чей возраст находится в интервалах `[30,60)` 
-и `[60,75)`. Поскольку мы используем целочисленное представление для возраста, мы получаем возрасты в
-интервалах `[30, 59]` и `[60,74]`. Для этого мы применяем комбинатор `Resample` 
-к `count`
+Посчитаем всех людей, чей возраст лежит в интервалах `[30,60)`
+и `[60,75)`. Поскольку мы используем целочисленное представление возраста, фактически получаем возраста в
+интервалах `[30, 59]` и `[60,74]`. Для этого применим комбинатор `Resample`
+к `count`.
 
 ```sql
 SELECT countResample(30, 75, 30)(name, age) AS amount FROM employee_data
@@ -57,4 +59,4 @@ SELECT countResample(30, 75, 30)(name, age) AS amount FROM employee_data
 
 ## См. также {#see-also}
 - [`count`](/sql-reference/aggregate-functions/reference/count)
-- [`Resample combinator`](/sql-reference/aggregate-functions/combinators#-resample)
+- [`Комбинатор Resample`](/sql-reference/aggregate-functions/combinators#-resample)

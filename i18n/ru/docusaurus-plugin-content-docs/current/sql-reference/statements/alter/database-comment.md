@@ -1,37 +1,37 @@
 ---
-description: 'Документация по командам ALTER DATABASE ... MODIFY COMMENT, 
+description: 'Документация по операторам ALTER DATABASE ... MODIFY COMMENT,
 которые позволяют добавлять, изменять или удалять комментарии к базе данных.'
 slug: /sql-reference/statements/alter/database-comment
 sidebar_position: 51
 sidebar_label: 'ALTER DATABASE ... MODIFY COMMENT'
-title: 'Команды ALTER DATABASE ... MODIFY COMMENT'
+title: 'Операторы ALTER DATABASE ... MODIFY COMMENT'
 keywords: ['ALTER DATABASE', 'MODIFY COMMENT']
+doc_type: 'reference'
 ---
 
+# ALTER DATABASE ... MODIFY COMMENT {#alter-database-modify-comment}
 
-# ALTER DATABASE ... MODIFY COMMENT
-
-Добавляет, изменяет или удаляет комментарий к базе данных, независимо от того, был ли он установлен ранее или нет. Изменение комментария отражается как в [`system.databases`](/operations/system-tables/databases.md), так и в запросе `SHOW CREATE DATABASE`.
+Добавляет, изменяет или удаляет комментарий к базе данных, независимо от того, был ли он задан ранее. Изменение комментария отражается как в [`system.databases`](/operations/system-tables/databases.md), так и в результате запроса `SHOW CREATE DATABASE`.
 
 ## Синтаксис {#syntax}
 
-``` sql
-ALTER DATABASE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Комментарий'
+```sql
+ALTER DATABASE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 ```
 
 ## Примеры {#examples}
 
-Чтобы создать `DATABASE` с комментариями:
+Чтобы создать базу данных (`DATABASE`) с комментарием:
 
-``` sql
+```sql
 CREATE DATABASE database_with_comment ENGINE = Memory COMMENT 'Временная база данных';
 ```
 
-Чтобы изменить комментарий:
+Чтобы отредактировать комментарий:
 
-``` sql
+```sql
 ALTER DATABASE database_with_comment 
-MODIFY COMMENT 'новый комментарий к базе данных';
+MODIFY COMMENT 'new comment on a database';
 ```
 
 Чтобы просмотреть изменённый комментарий:
@@ -44,32 +44,32 @@ WHERE name = 'database_with_comment';
 
 ```text
 ┌─comment─────────────────┐
-│ новый комментарий к базе │
+│ новый комментарий к базе данных │
 └─────────────────────────┘
 ```
 
 Чтобы удалить комментарий к базе данных:
 
-``` sql
+```sql
 ALTER DATABASE database_with_comment 
 MODIFY COMMENT '';
 ```
 
 Чтобы убедиться, что комментарий был удалён:
 
-```sql title="Запрос"
+```sql title="Query"
 SELECT comment 
 FROM system.databases 
-WHERE name = 'database_with_comment';
+WHERE  name = 'database_with_comment';
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─comment─┐
 │         │
 └─────────┘
 ```
 
-## Связанный контент {#related-content}
+## См. также {#related-content}
 
-- [`COMMENT`](/sql-reference/statements/create/table#comment-clause) клаузула
+- Предложение [`COMMENT`](/sql-reference/statements/create/table#comment-clause)
 - [`ALTER TABLE ... MODIFY COMMENT`](./comment.md)

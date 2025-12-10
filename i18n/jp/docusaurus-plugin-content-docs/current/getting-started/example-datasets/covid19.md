@@ -1,24 +1,23 @@
 ---
-description: 'COVID-19 Open-Data is a large, open-source database of COVID-19 epidemiological
-  data and related factors like demographics, economics, and government responses'
-sidebar_label: 'COVID-19 Open-Data'
-slug: '/getting-started/example-datasets/covid19'
+description: 'COVID-19 Open-Data は、COVID-19 の疫学データと、人口統計、経済、政府対応などの関連要因を含む、大規模なオープンソースデータベースです'
+sidebar_label: 'COVID-19 open-data'
+slug: /getting-started/example-datasets/covid19
 title: 'COVID-19 Open-Data'
+keywords: ['COVID-19 データ', '疫学データ', 'ヘルスケアデータセット', 'サンプルデータセット', 'はじめに']
+doc_type: 'guide'
 ---
 
+COVID-19 Open-Data は、最大規模の COVID-19 疫学データベースを構築するとともに、強力で網羅的な共変量データ群を提供することを目指しています。人口統計、経済、疫学、地理、健康、入院状況、モビリティ、政府対応、気象などに関する、オープンかつパブリックソースのライセンス済みデータが含まれています。
 
+詳細は GitHub の[こちら](https://github.com/GoogleCloudPlatform/covid-19-open-data)にあります。
 
-COVID-19 Open-Dataは、Covid-19の疫学データベースを最大化することを目指しており、広範な共変量の強力なセットを提供します。人口統計、経済、疫学、地理、健康、入院、移動、政府の対応、天候などに関連するオープンで公共にソースされたライセンスデータが含まれています。
-
-詳細はGitHubの [こちら](https://github.com/GoogleCloudPlatform/covid-19-open-data) にあります。
-
-このデータをClickHouseに挿入するのは簡単です...
+このデータを ClickHouse に取り込むのは簡単です...
 
 :::note
-以下のコマンドは、[ClickHouse Cloud](https://clickhouse.cloud) の**Production**インスタンスで実行されました。ローカルインストールでも簡単に実行できます。
+以下のコマンドは、[ClickHouse Cloud](https://clickhouse.cloud) の **Production** インスタンス上で実行されたものです。ローカル環境にインストールした ClickHouse でも同様に簡単に実行できます。
 :::
 
-1. データがどのような形をしているか見てみましょう：
+1. まず、データの内容を確認してみましょう。
 
 ```sql
 DESCRIBE url(
@@ -27,7 +26,7 @@ DESCRIBE url(
 );
 ```
 
-CSVファイルには10列があります：
+CSV ファイルには 10 個の列があります：
 
 ```response
 ┌─name─────────────────┬─type─────────────┐
@@ -43,10 +42,10 @@ CSVファイルには10列があります：
 │ cumulative_tested    │ Nullable(Int64)  │
 └──────────────────────┴──────────────────┘
 
-10 rows in set. Elapsed: 0.745 sec.
+10行が設定されています。経過時間: 0.745秒
 ```
 
-2. では、いくつかの行を表示してみましょう：
+2. 次に、いくつかの行を表示してみましょう。
 
 ```sql
 SELECT *
@@ -54,7 +53,8 @@ FROM url('https://storage.googleapis.com/covid19-open-data/v3/epidemiology.csv')
 LIMIT 100;
 ```
 
-`url` 関数はCSVファイルからデータを簡単に読み取ります：
+ここで注目してほしいのは、`url` 関数を使うと CSV ファイルからデータを簡単に読み取れる点です。
+
 
 ```response
 ┌─c1─────────┬─c2───────────┬─c3────────────┬─c4───────────┬─c5────────────┬─c6─────────┬─c7───────────────────┬─c8──────────────────┬─c9───────────────────┬─c10───────────────┐
@@ -68,7 +68,7 @@ LIMIT 100;
 └────────────┴──────────────┴───────────────┴──────────────┴───────────────┴────────────┴──────────────────────┴─────────────────────┴──────────────────────┴───────────────────┘
 ```
 
-3. データがどのようなものか分かったので、テーブルを作成しましょう：
+3. データの構造が把握できたので、テーブルを作成します。
 
 ```sql
 CREATE TABLE covid19 (
@@ -87,7 +87,7 @@ ENGINE = MergeTree
 ORDER BY (location_key, date);
 ```
 
-4. 次のコマンドは、全データセットを`covid19`テーブルに挿入します：
+4. 次のコマンドは、`covid19` テーブルにデータセット全体を挿入します。
 
 ```sql
 INSERT INTO covid19
@@ -109,7 +109,7 @@ INSERT INTO covid19
     );
 ```
 
-5. かなり早く進みます - 挿入された行数を見てみましょう：
+5. 処理はかなり速く終わります ― 挿入された行数を確認してみましょう：
 
 ```sql
 SELECT formatReadableQuantity(count())
@@ -118,11 +118,11 @@ FROM covid19;
 
 ```response
 ┌─formatReadableQuantity(count())─┐
-│ 12.53 million                   │
+│ 1253万                          │
 └─────────────────────────────────┘
 ```
 
-6. Covid-19の合計件数を確認しましょう：
+6. COVID-19 の累計症例数がどれだけ記録されているか確認してみましょう：
 
 ```sql
 SELECT formatReadableQuantity(sum(new_confirmed))
@@ -131,11 +131,12 @@ FROM covid19;
 
 ```response
 ┌─formatReadableQuantity(sum(new_confirmed))─┐
-│ 1.39 billion                               │
+│ 13億9000万                                  │
 └────────────────────────────────────────────┘
 ```
 
-7. データには日付に対して多くの0があることに気づくでしょう - 週末や数値が毎日報告されなかった日です。ウィンドウ関数を使用して、新しいケースの日次平均を平滑化します：
+
+7. データを見ると、日付の値が 0 になっている箇所が多いことに気づくはずです。これは週末であったり、数値が毎日報告されなかった日であったりします。ウィンドウ関数を使って、新規症例数の日次平均を平滑化できます。
 
 ```sql
 SELECT
@@ -146,7 +147,7 @@ SELECT
 FROM covid19;
 ```
 
-8. このクエリは各場所の最新の値を取得します。すべての国が毎日報告しているわけではないので、`max(date)`は使用できませんので、`ROW_NUMBER`を用いて最後の行を取得します：
+8. このクエリは、各ロケーションごとの最新値を取得します。すべての国が毎日データを報告しているわけではないため、`max(date)` は使えません。そのため、`ROW_NUMBER` を使って最後の行を取得します：
 
 ```sql
 WITH latest_deaths_data AS
@@ -154,7 +155,7 @@ WITH latest_deaths_data AS
             date,
             new_deceased,
             new_confirmed,
-            ROW_NUMBER() OVER (PARTITION BY location_key ORDER BY date DESC) as rn
+            ROW_NUMBER() OVER (PARTITION BY location_key ORDER BY date DESC) AS rn
      FROM covid19)
 SELECT location_key,
        date,
@@ -165,7 +166,7 @@ FROM latest_deaths_data
 WHERE rn=1;
 ```
 
-9. `lagInFrame`を使用して毎日の新規症例の`LAG`を決定します。このクエリでは`US_DC`のロケーションでフィルターします：
+9. `lagInFrame` を使用すると、各日の新規症例数の `LAG` を算出できます。このクエリでは `US_DC` ロケーションでフィルタリングします:
 
 ```sql
 SELECT
@@ -177,7 +178,7 @@ FROM covid19
 WHERE location_key = 'US_DC';
 ```
 
-レスポンスは次のようになります：
+レスポンスは次のとおりです：
 
 ```response
 ┌─confirmed_cases_delta─┬─new_confirmed─┬─location_key─┬───────date─┐
@@ -199,7 +200,7 @@ WHERE location_key = 'US_DC';
 │                     3 │            21 │ US_DC        │ 2020-03-23 │
 ```
 
-10. このクエリは毎日の新規ケースの変化のパーセンテージを計算し、結果セットに簡単な`increase`または`decrease`の列を含めます：
+10. このクエリは、日ごとの新規症例数の変化率を計算し、結果セットにシンプルな `increase` または `decrease` 列を含めます。
 
 ```sql
 WITH confirmed_lag AS (
@@ -222,47 +223,48 @@ SELECT
   new_confirmed,
   percent_change,
   CASE
-    WHEN percent_change > 0 THEN 'increase'
-    WHEN percent_change = 0 THEN 'no change'
-    ELSE 'decrease'
+    WHEN percent_change > 0 THEN '増加'
+    WHEN percent_change = 0 THEN '変化なし'
+    ELSE '減少'
   END AS trend
 FROM confirmed_percent_change
 WHERE location_key = 'US_DC';
 ```
 
-結果は次のようになります：
+結果は次のようになります。
+
 
 ```response
 ┌───────date─┬─new_confirmed─┬─percent_change─┬─trend─────┐
-│ 2020-03-08 │             0 │            nan │ decrease  │
-│ 2020-03-09 │             2 │            inf │ increase  │
-│ 2020-03-10 │             0 │           -100 │ decrease  │
-│ 2020-03-11 │             6 │            inf │ increase  │
-│ 2020-03-12 │             0 │           -100 │ decrease  │
-│ 2020-03-13 │             0 │            nan │ decrease  │
-│ 2020-03-14 │             6 │            inf │ increase  │
-│ 2020-03-15 │             1 │            -83 │ decrease  │
-│ 2020-03-16 │             5 │            400 │ increase  │
-│ 2020-03-17 │             9 │             80 │ increase  │
-│ 2020-03-18 │             8 │            -11 │ decrease  │
-│ 2020-03-19 │            32 │            300 │ increase  │
-│ 2020-03-20 │             6 │            -81 │ decrease  │
-│ 2020-03-21 │            21 │            250 │ increase  │
-│ 2020-03-22 │            18 │            -14 │ decrease  │
-│ 2020-03-23 │            21 │             17 │ increase  │
-│ 2020-03-24 │            46 │            119 │ increase  │
-│ 2020-03-25 │            48 │              4 │ increase  │
-│ 2020-03-26 │            36 │            -25 │ decrease  │
-│ 2020-03-27 │            37 │              3 │ increase  │
-│ 2020-03-28 │            38 │              3 │ increase  │
-│ 2020-03-29 │            59 │             55 │ increase  │
-│ 2020-03-30 │            94 │             59 │ increase  │
-│ 2020-03-31 │            91 │             -3 │ decrease  │
-│ 2020-04-01 │            67 │            -26 │ decrease  │
-│ 2020-04-02 │           104 │             55 │ increase  │
-│ 2020-04-03 │           145 │             39 │ increase  │
+│ 2020-03-08 │             0 │            nan │ 減少  │
+│ 2020-03-09 │             2 │            inf │ 増加  │
+│ 2020-03-10 │             0 │           -100 │ 減少  │
+│ 2020-03-11 │             6 │            inf │ 増加  │
+│ 2020-03-12 │             0 │           -100 │ 減少  │
+│ 2020-03-13 │             0 │            nan │ 減少  │
+│ 2020-03-14 │             6 │            inf │ 増加  │
+│ 2020-03-15 │             1 │            -83 │ 減少  │
+│ 2020-03-16 │             5 │            400 │ 増加  │
+│ 2020-03-17 │             9 │             80 │ 増加  │
+│ 2020-03-18 │             8 │            -11 │ 減少  │
+│ 2020-03-19 │            32 │            300 │ 増加  │
+│ 2020-03-20 │             6 │            -81 │ 減少  │
+│ 2020-03-21 │            21 │            250 │ 増加  │
+│ 2020-03-22 │            18 │            -14 │ 減少  │
+│ 2020-03-23 │            21 │             17 │ 増加  │
+│ 2020-03-24 │            46 │            119 │ 増加  │
+│ 2020-03-25 │            48 │              4 │ 増加  │
+│ 2020-03-26 │            36 │            -25 │ 減少  │
+│ 2020-03-27 │            37 │              3 │ 増加  │
+│ 2020-03-28 │            38 │              3 │ 増加  │
+│ 2020-03-29 │            59 │             55 │ 増加  │
+│ 2020-03-30 │            94 │             59 │ 増加  │
+│ 2020-03-31 │            91 │             -3 │ 減少  │
+│ 2020-04-01 │            67 │            -26 │ 減少  │
+│ 2020-04-02 │           104 │             55 │ 増加  │
+│ 2020-04-03 │           145 │             39 │ 増加  │
 ```
 
 :::note
-[GitHubリポジトリ](https://github.com/GoogleCloudPlatform/covid-19-open-data) に記載されているように、このデータセットは2022年9月15日以降は更新されていません。
+[GitHub リポジトリ](https://github.com/GoogleCloudPlatform/covid-19-open-data)で説明されているとおり、このデータセットは 2022 年 9 月 15 日以降更新されていません。
 :::

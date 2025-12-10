@@ -1,23 +1,18 @@
 ---
-description: 'System table containing a single row with a single `dummy` UInt8 column
-  containing the value 0. Similar to the `DUAL` table found in other DBMSs.'
-keywords:
-- 'system table'
-- 'one'
-slug: '/operations/system-tables/one'
+description: 'UInt8 型の `dummy` 列が 1 列だけあり、その列に値 0 が格納された行が 1 行だけ存在するシステムテーブル。他の DBMS にある `DUAL` テーブルに相当します。'
+keywords: ['システムテーブル', 'one']
+slug: /operations/system-tables/one
 title: 'system.one'
+doc_type: 'reference'
 ---
 
+# system.one {#systemone}
 
+このテーブルは 1 行 1 列のテーブルで、UInt8 型の `dummy` 列に値 0 が格納されています。
 
+このテーブルは、`SELECT` クエリで `FROM` 句が指定されていない場合に使用されます。
 
-# system.one
-
-このテーブルは、値 0 を含む単一の `dummy` UInt8 カラムを持つ単一の行を含んでいます。
-
-このテーブルは、`SELECT` クエリが `FROM` 句を指定しない場合に使用されます。
-
-これは、他の DBMS に見られる `DUAL` テーブルに類似しています。
+これは、他の DBMS に存在する `DUAL` テーブルに相当します。
 
 **例**
 
@@ -30,5 +25,5 @@ SELECT * FROM system.one LIMIT 10;
 │     0 │
 └───────┘
 
-1 行がセットに含まれています。経過時間: 0.001 秒。
+1行のデータセット。経過時間: 0.001秒
 ```

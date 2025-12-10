@@ -3,6 +3,7 @@ title: 'Manage and Deploy Overview'
 description: 'Overview page for Manage and Deploy'
 slug: /guides/manage-and-deploy-index
 doc_type: 'landing-page'
+keywords: ['deployment', 'management', 'administration', 'operations', 'guides']
 ---
 
 # Manage and deploy
@@ -27,7 +28,7 @@ This section contains the following topics:
 | [Startup Scripts](/operations/startup-scripts)                                                | Example of how to run startup scripts during startup, useful for migrations or automatic schema creation.                         |
 | [External Disks for Storing Data](/operations/storing-data)                                   | Information and examples on configuring external storage with ClickHouse.                                                         |
 | [Allocation profiling](/operations/allocation-profiling)                                      | Information and examples on allocation sampling and profiling with jemalloc.                                                      |
-| [Backup and Restore](/operations/backup)                                                      | Guide to backing up to a local disk or external storage.                                                                          |
+| [Backup and Restore](/operations/backup/overview)                                             | Guide to backing up to a local disk or external storage.                                                                          |
 | [Caches](/operations/caches)                                                                  | Explainer on the various cache types in ClickHouse.                                                                               |
 | [Workload scheduling](/operations/workload-scheduling)                                        | Explainer on workload scheduling in ClickHouse.                                                                                   |
 | [Self-managed Upgrade](/operations/update)                                                    | Guidelines on carrying out a self-managed upgrade.                                                                                |

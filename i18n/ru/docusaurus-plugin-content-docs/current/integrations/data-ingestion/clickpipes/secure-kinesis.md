@@ -1,99 +1,123 @@
 ---
 slug: /integrations/clickpipes/secure-kinesis
-sidebar_label: 'Контроль доступа на основе ролей Kinesis'
-title: 'Контроль доступа на основе ролей Kinesis'
-description: 'В этой статье показано, как клиенты ClickPipes могут использовать контроль доступа на основе ролей для аутентификации в Amazon Kinesis и безопасного доступа к своим потокам данных.'
+sidebar_label: 'Ролевой доступ Kinesis'
+title: 'Ролевой доступ Kinesis'
+description: 'В этой статье показано, как клиенты ClickPipes могут использовать ролевой доступ для аутентификации в Amazon Kinesis и обеспечения безопасного доступа к своим потокам данных.'
+doc_type: 'guide'
+keywords: ['Amazon Kinesis']
 ---
 
 import secure_kinesis from '@site/static/images/integrations/data-ingestion/clickpipes/securekinesis.jpg';
 import secures3_arn from '@site/static/images/cloud/security/secures3_arn.png';
 import Image from '@theme/IdealImage';
 
-В этой статье показано, как клиенты ClickPipes могут использовать контроль доступа на основе ролей для аутентификации в Amazon Kinesis и безопасного доступа к своим потокам данных.
+В этой статье рассказывается, как клиенты ClickPipes могут использовать доступ на основе ролей для аутентификации в Amazon Kinesis и безопасного доступа к своим потокам данных.
+
+
+## Предварительные требования {#prerequisite}
+
+Для выполнения этого руководства вам потребуется:
+- Действующий сервис ClickHouse Cloud
+- Учетная запись AWS
+
+
 
 ## Введение {#introduction}
 
-Перед тем как углубиться в настройку безопасного доступа к Kinesis, важно понять механизм. Вот обзор того, как ClickPipes может получить доступ к потокам Amazon Kinesis, принимая на себя роль в AWS-аккаунтах клиентов.
+Прежде чем переходить к настройке безопасного доступа к Kinesis, важно понять, как он работает. Ниже приведён обзор того, как ClickPipes могут получать доступ к потокам Amazon Kinesis, принимая роль в учётных записях AWS клиентов.
 
 <Image img={secure_kinesis} alt="Безопасный Kinesis" size="lg" border/>
 
-Используя этот подход, клиенты могут управлять всем доступом к своим потокам данных Kinesis в одном месте (IAM политика предполагаемой роли), не изменяя каждую политику доступа для потока отдельно.
+Используя этот подход, клиенты могут централизованно управлять доступом ко всем своим потокам данных Kinesis через политику IAM принимаемой роли, без необходимости изменять политику доступа каждого потока по отдельности.
+
+
 
 ## Настройка {#setup}
 
-### Получение ARN IAM роли сервиса ClickHouse {#obtaining-the-clickhouse-service-iam-role-arn}
+<VerticalStepper headerLevel="h3"/>
 
-1 - Войдите в свой облачный аккаунт ClickHouse.
+### Получение ARN роли IAM сервиса ClickHouse {#obtaining-the-clickhouse-service-iam-role-arn}
 
-2 - Выберите сервис ClickHouse, с которым вы хотите создать интеграцию.
+- 1. Войдите в свою учетную запись ClickHouse Cloud.
+- 2. Выберите сервис ClickHouse, для которого вы хотите создать интеграцию.
+- 3. Перейдите на вкладку **Settings**.
+- 4. Пролистайте страницу вниз до раздела **Network security information** в нижней части страницы.
+- 5. Скопируйте значение **Service role ID (IAM)**, относящееся к этому сервису, как показано ниже.
 
-3 - Перейдите на вкладку **Настройки**.
+<Image img={secures3_arn} alt="Secure S3 ARN" size="lg" border/>
 
-4 - Прокрутите страницу вниз до раздела **Информация о сетевой безопасности** внизу страницы.
+### Настройка роли IAM для AssumeRole {#setting-up-iam-assume-role}
 
-5 - Скопируйте значение **ID роли сервиса (IAM)**, принадлежащее сервису, как показано ниже.
+#### Ручное создание роли IAM {#manually-create-iam-role}
 
-<Image img={secures3_arn} alt="Безопасный S3 ARN" size="lg" border/>
+- 1. Войдите в свою учетную запись AWS в веб-браузере под пользователем IAM, у которого есть права на создание и управление ролями IAM.
+- 2. Перейдите в консоль сервиса IAM.
+- 3. Создайте новую роль IAM с типом доверенной сущности `AWS account`. Обратите внимание, что имя роли IAM **должно начинаться с** `ClickHouseAccessRole-`, чтобы интеграция работала.
 
-### Настройка IAM роли assume {#setting-up-iam-assume-role}
+   **i. Настройте политику доверия (Trust Policy)**
 
-#### Вручную создайте IAM роль. {#manually-create-iam-role}
+   Политика доверия позволяет роли IAM ClickHouse выполнять AssumeRole для этой роли. Замените `{ClickHouse_IAM_ARN}` на ARN роли IAM из вашего сервиса ClickHouse (полученный на предыдущем шаге).
 
-1 - Войдите в свой AWS аккаунт в веб-браузере с IAM пользователем, который имеет разрешение на создание и управление IAM ролями.
+   ```json
+   {
+     "Version": "2012-10-17",
+     "Statement": [
+       {
+         "Effect": "Allow",
+         "Principal": {
+           "AWS": "{ClickHouse_IAM_ARN}"
+         },
+         "Action": "sts:AssumeRole"
+       }
+     ]
+   }
+   ```
 
-2 - Перейдите в консоль IAM.
+   **ii. Настройте политику прав (Permission Policy)**
 
-3 - Создайте новую IAM роль с следующей IAM и Trust политикой. Обратите внимание, что имя IAM роли **должно начинаться с** `ClickHouseAccessRole-`, чтобы это работало.
+   Политика прав предоставляет доступ к вашему потоку Kinesis. Замените следующие плейсхолдеры:
+  - `{REGION}`: ваш регион AWS (например, `us-east-1`)
+  - `{ACCOUNT_ID}`: идентификатор вашей учетной записи AWS
+  - `{STREAM_NAME}`: имя вашего потока Kinesis
 
-Политика доверия (Пожалуйста, замените `{ClickHouse_IAM_ARN}` на ARN IAM роли, принадлежащей вашему экземпляру ClickHouse):
+   ```json
+   {
+     "Version": "2012-10-17",
+     "Statement": [
+       {
+         "Effect": "Allow",
+         "Action": [
+           "kinesis:DescribeStream",
+           "kinesis:GetShardIterator",
+           "kinesis:GetRecords",
+           "kinesis:ListShards",
+           "kinesis:RegisterStreamConsumer",
+           "kinesis:DeregisterStreamConsumer",
+           "kinesis:ListStreamConsumers"
+         ],
+         "Resource": [
+           "arn:aws:kinesis:{REGION}:{ACCOUNT_ID}:stream/{STREAM_NAME}"
+         ]
+       },
+       {
+         "Effect": "Allow",
+         "Action": [
+           "kinesis:SubscribeToShard",
+           "kinesis:DescribeStreamConsumer"
+         ],
+         "Resource": [
+           "arn:aws:kinesis:{REGION}:{ACCOUNT_ID}:stream/{STREAM_NAME}/*"
+         ]
+       },
+       {
+         "Effect": "Allow",
+         "Action": [
+           "kinesis:ListStreams"
+         ],
+         "Resource": "*"
+       }
+     ]
+   }
+   ```
 
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "{ClickHouse_IAM_ARN}"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-```
-
-IAM политика (Пожалуйста, замените `{STREAM_NAME}` на имя вашего потока Kinesis):
-
-```json
-{
-    "Version": "2012-10-17",
-        "Statement": [
-        {
-            "Action": [
-                "kinesis:DescribeStream",
-                "kinesis:GetShardIterator",
-                "kinesis:GetRecords",
-                "kinesis:ListShards",
-                "kinesis:SubscribeToShard",
-                "kinesis:DescribeStreamConsumer",
-                "kinesis:RegisterStreamConsumer",
-                "kinesis:DeregisterStreamConsumer",
-                "kinesis:ListStreamConsumers"
-            ],
-            "Resource": [
-                "arn:aws:kinesis:region:account-id:stream/{STREAM_NAME}"
-            ],
-            "Effect": "Allow"
-        },
-        {
-            "Action": [
-                "kinesis:ListStreams"
-            ],
-            "Resource": "*",
-            "Effect": "Allow"
-        }
-    ]
-}
-```
-
-4 - Скопируйте новый **IAM Role Arn** после создания. Это то, что необходимо для доступа к вашему потоку Kinesis.
+- 4. После создания скопируйте новый **ARN роли IAM**. Он понадобится для доступа к вашему потоку Kinesis.

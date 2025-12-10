@@ -1,14 +1,16 @@
 ---
-description: 'Документация по манипуляциям с настройками таблиц'
+description: 'Документация по операциям с настройками таблиц'
 sidebar_label: 'SETTING'
 sidebar_position: 38
 slug: /sql-reference/statements/alter/setting
-title: 'Манипуляции с настройками таблиц'
+title: 'Операции с настройками таблиц'
+doc_type: 'reference'
 ---
 
-# Манипуляции с настройками таблиц
+# Операции с настройками таблиц {#table-settings-manipulations}
 
-Существует набор запросов для изменения настроек таблиц. Вы можете изменять настройки или сбрасывать их на значения по умолчанию. Один запрос может изменить несколько настроек одновременно. Если настройка с указанным именем не существует, то запрос вызывает исключение.
+Существует ряд запросов, с помощью которых можно изменять настройки таблицы. Вы можете изменять настройки или сбрасывать их к значениям по умолчанию. Один запрос может изменять несколько настроек одновременно.
+Если настройка с указанным именем не существует, запрос завершится с исключением.
 
 **Синтаксис**
 
@@ -16,8 +18,8 @@ title: 'Манипуляции с настройками таблиц'
 ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY|RESET SETTING ...
 ```
 
-:::note    
-Эти запросы могут применяться только к таблицам [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md).
+:::note
+Эти запросы можно применять только к таблицам [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md).
 :::
 
 ## MODIFY SETTING {#modify-setting}
@@ -40,7 +42,7 @@ ALTER TABLE example_table MODIFY SETTING max_part_loading_threads=8, max_parts_i
 
 ## RESET SETTING {#reset-setting}
 
-Сбрасывает настройки таблицы на значения по умолчанию. Если настройка находится в состоянии по умолчанию, то никаких действий не предпринимается.
+Сбрасывает настройки таблицы до их значений по умолчанию. Если настройка уже имеет значение по умолчанию, действие не выполняется.
 
 **Синтаксис**
 
@@ -59,4 +61,4 @@ ALTER TABLE example_table RESET SETTING max_part_loading_threads;
 
 **См. также**
 
-- [Настройки MergeTree](../../../operations/settings/merge-tree-settings.md)
+* [Настройки MergeTree](../../../operations/settings/merge-tree-settings.md)

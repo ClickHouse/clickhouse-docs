@@ -1,12 +1,13 @@
 ---
-description: 'Документация по команде ATTACH'
+description: 'Документация по оператору ATTACH'
 sidebar_label: 'ATTACH'
 sidebar_position: 40
 slug: /sql-reference/statements/attach
-title: 'Команда ATTACH'
+title: 'Оператор ATTACH'
+doc_type: 'reference'
 ---
 
-Прикрепляет таблицу или словарь, например, при перемещении базы данных на другой сервер.
+Подключает таблицу или словарь, например, при переносе базы данных на другой сервер.
 
 **Синтаксис**
 
@@ -14,11 +15,11 @@ title: 'Команда ATTACH'
 ATTACH TABLE|DICTIONARY|DATABASE [IF NOT EXISTS] [db.]name [ON CLUSTER cluster] ...
 ```
 
-Запрос не создает данные на диске, а предполагает, что данные уже находятся в соответствующих местах, и просто добавляет информацию о указанной таблице, словаре или базе данных на сервер. После выполнения запроса `ATTACH` сервер будет знать о существовании таблицы, словаря или базы данных.
+Запрос не создаёт данные на диске, а предполагает, что данные уже размещены в соответствующих местах, и просто добавляет на сервер информацию об указанной таблице, словаре или базе данных. После выполнения запроса `ATTACH` сервер будет знать о существовании таблицы, словаря или базы данных.
 
-Если таблица ранее была отсоединена (запрос [DETACH](../../sql-reference/statements/detach.md)), то есть её структура известна, вы можете использовать короткую форму без определения структуры.
+Если таблица ранее была отсоединена (запрос [DETACH](../../sql-reference/statements/detach.md)), то есть её структура уже известна, можно использовать сокращённую форму без определения структуры.
 
-## Прикрепить Существующую Таблицу {#attach-existing-table}
+## Подключить существующую таблицу {#attach-existing-table}
 
 **Синтаксис**
 
@@ -26,15 +27,15 @@ ATTACH TABLE|DICTIONARY|DATABASE [IF NOT EXISTS] [db.]name [ON CLUSTER cluster] 
 ATTACH TABLE [IF NOT EXISTS] [db.]name [ON CLUSTER cluster]
 ```
 
-Этот запрос используется при запуске сервера. Сервер хранит метаданные таблицы в виде файлов с запросами `ATTACH`, которые он просто выполняет при запуске (за исключением некоторых системных таблиц, которые создаются на сервере явно).
+Этот запрос используется при запуске сервера. Сервер хранит метаданные таблиц в виде файлов с запросами `ATTACH`, которые он просто выполняет при старте (за исключением некоторых системных таблиц, которые создаются на сервере явно).
 
-Если таблица была отсоединена навсегда, она не будет повторно прикреплена при запуске сервера, поэтому нужно использовать запрос `ATTACH` явно.
+Если таблица была отсоединена окончательно, она не будет повторно присоединена при запуске сервера, поэтому вам нужно явно выполнить запрос `ATTACH`.
 
-## Создать Новую Таблицу И Прикрепить Данные {#create-new-table-and-attach-data}
+## Создание новой таблицы и подключение данных {#create-new-table-and-attach-data}
 
-### С Указанным Путем К Данные Таблицы {#with-specified-path-to-table-data}
+### С указанием пути к данным таблицы {#with-specified-path-to-table-data}
 
-Запрос создает новую таблицу с предоставленной структурой и прикрепляет данные таблицы из указанного каталога в `user_files`.
+Запрос создает новую таблицу с заданной структурой и подключает данные таблицы из указанного каталога в директории `user_files`.
 
 **Синтаксис**
 
@@ -52,6 +53,7 @@ INSERT INTO TABLE FUNCTION file('01188_attach/test/data.TSV', 'TSV', 's String, 
 ATTACH TABLE test FROM '01188_attach/test' (s String, n UInt8) ENGINE = File(TSV);
 SELECT * FROM test;
 ```
+
 Результат:
 
 ```sql
@@ -60,10 +62,10 @@ SELECT * FROM test;
 └──────┴────┘
 ```
 
-### С Указанным UUID Таблицы {#with-specified-table-uuid}
+### С заданным UUID таблицы {#with-specified-table-uuid}
 
-Этот запрос создает новую таблицу с предоставленной структурой и прикрепляет данные из таблицы с указанным UUID.
-Это поддерживается движком баз данных [Atomic](../../engines/database-engines/atomic.md).
+Этот запрос создает новую таблицу с заданной структурой и присоединяет данные из таблицы с указанным UUID.
+Поддерживается в движке базы данных [Atomic](../../engines/database-engines/atomic.md).
 
 **Синтаксис**
 
@@ -71,13 +73,13 @@ SELECT * FROM test;
 ATTACH TABLE name UUID '<uuid>' (col1 Type1, ...)
 ```
 
-## Прикрепить Таблицу MergeTree Как ReplicatedMergeTree {#attach-mergetree-table-as-replicatedmergetree}
+## Подключение таблицы MergeTree как ReplicatedMergeTree {#attach-mergetree-table-as-replicatedmergetree}
 
-Позволяет прикрепить нереплицированную таблицу MergeTree как ReplicatedMergeTree. Таблица ReplicatedMergeTree будет создана с использованием значений настроек `default_replica_path` и `default_replica_name`. Также возможно прикрепить реплицированную таблицу как обычную MergeTree.
+Позволяет подключить нереплицируемую таблицу MergeTree как ReplicatedMergeTree. Таблица ReplicatedMergeTree будет создана с использованием значений настроек `default_replica_path` и `default_replica_name`. Также возможно подключить реплицируемую таблицу как обычную MergeTree.
 
-Обратите внимание, что данные таблицы в ZooKeeper не затрагиваются в этом запросе. Это означает, что вам нужно добавить метаданные в ZooKeeper, используя `SYSTEM RESTORE REPLICA`, или очистить их с помощью `SYSTEM DROP REPLICA ... FROM ZKPATH ...` после прикрепления.
+Обратите внимание, что данные таблицы в ZooKeeper этим запросом не изменяются. Это означает, что вам необходимо либо добавить метаданные в ZooKeeper с помощью `SYSTEM RESTORE REPLICA`, либо очистить их с помощью `SYSTEM DROP REPLICA ... FROM ZKPATH ...` после выполнения операции ATTACH.
 
-Если вы пытаетесь добавить реплику к существующей таблице ReplicatedMergeTree, имейте в виду, что все локальные данные в преобразованной таблице MergeTree будут отсоединены.
+Если вы пытаетесь добавить реплику к уже существующей таблице ReplicatedMergeTree, имейте в виду, что все локальные данные в преобразованной таблице MergeTree будут отсоединены.
 
 **Синтаксис**
 
@@ -85,7 +87,7 @@ ATTACH TABLE name UUID '<uuid>' (col1 Type1, ...)
 ATTACH TABLE [db.]name AS [NOT] REPLICATED
 ```
 
-**Преобразовать таблицу в реплицированную**
+**Преобразование таблицы в реплицируемую таблицу**
 
 ```sql
 DETACH TABLE test;
@@ -93,29 +95,33 @@ ATTACH TABLE test AS REPLICATED;
 SYSTEM RESTORE REPLICA test;
 ```
 
-**Преобразовать таблицу в нереплицированную**
+**Преобразовать таблицу в нереплицируемую**
 
-Получите путь ZooKeeper и имя реплики для таблицы:
+Определите путь в ZooKeeper и имя реплики таблицы:
 
 ```sql
 SELECT replica_name, zookeeper_path FROM system.replicas WHERE table='test';
 ```
+
 Результат:
+
 ```sql
 ┌─replica_name─┬─zookeeper_path─────────────────────────────────────────────┐
 │ r1           │ /clickhouse/tables/401e6a1f-9bf2-41a3-a900-abb7e94dff98/s1 │
 └──────────────┴────────────────────────────────────────────────────────────┘
 ```
-Прикрепите таблицу как нереплицированную и удалите данные реплики из ZooKeeper:
+
+Подключите таблицу как нереплицируемую и удалите данные этой реплики из ZooKeeper:
+
 ```sql
 DETACH TABLE test;
 ATTACH TABLE test AS NOT REPLICATED;
 SYSTEM DROP REPLICA 'r1' FROM ZKPATH '/clickhouse/tables/401e6a1f-9bf2-41a3-a900-abb7e94dff98/s1';
 ```
 
-## Прикрепить Существующий Словарь {#attach-existing-dictionary}
+## Подключить существующий словарь {#attach-existing-dictionary}
 
-Прикрепляет ранее отсоединенный словарь.
+Подключает ранее отключённый словарь.
 
 **Синтаксис**
 
@@ -123,12 +129,12 @@ SYSTEM DROP REPLICA 'r1' FROM ZKPATH '/clickhouse/tables/401e6a1f-9bf2-41a3-a900
 ATTACH DICTIONARY [IF NOT EXISTS] [db.]name [ON CLUSTER cluster]
 ```
 
-## Прикрепить Существующую Базу Данных {#attach-existing-database}
+## Подключить существующую базу данных {#attach-existing-database}
 
-Прикрепляет ранее отсоединенную базу данных.
+Подключает ранее отсоединённую базу данных.
 
 **Синтаксис**
 
 ```sql
-ATTACH DATABASE [IF NOT EXISTS] name [ENGINE=<database engine>] [ON CLUSTER cluster]
+ATTACH DATABASE [IF NOT EXISTS] имя [ENGINE=<движок_базы_данных>] [ON CLUSTER кластер]
 ```

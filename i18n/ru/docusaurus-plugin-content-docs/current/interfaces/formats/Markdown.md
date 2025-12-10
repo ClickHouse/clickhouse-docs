@@ -1,15 +1,21 @@
 ---
-description: 'Документация для формата Markdown'
+alias: ['MD']
+description: 'Документация по формату Markdown'
 keywords: ['Markdown']
 slug: /interfaces/formats/Markdown
 title: 'Markdown'
+doc_type: 'reference'
 ---
+
+| Вход | Выход | Сокращение |
+|-------|--------|-------|
+| ✗     | ✔      | `MD`  |
 
 ## Описание {#description}
 
-Вы можете экспортировать результаты в формате [Markdown](https://en.wikipedia.org/wiki/Markdown) для генерации вывода, готового к вставке в ваши `.md` файлы:
+Вы можете экспортировать результаты в формате [Markdown](https://en.wikipedia.org/wiki/Markdown), чтобы получить данные, готовые для вставки в ваши файлы `.md`:
 
-Markdown-таблица будет сгенерирована автоматически и может быть использована на платформах, поддерживающих markdown, таких как Github. Этот формат используется только для вывода.
+Таблица в формате Markdown будет сгенерирована автоматически и может использоваться на платформах с поддержкой Markdown, таких как GitHub. Этот формат используется только для представления результатов.
 
 ## Пример использования {#example-usage}
 
@@ -20,6 +26,7 @@ SELECT
 FROM numbers(5)
 FORMAT Markdown
 ```
+
 ```results
 | number | multiply(number, 2) |
 |-:|-:|
@@ -30,4 +37,4 @@ FORMAT Markdown
 | 4 | 8 |
 ```
 
-## Настройки формата {#format-settings}
+## Параметры форматирования {#format-settings}

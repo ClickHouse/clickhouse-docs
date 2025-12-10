@@ -1,20 +1,15 @@
 ---
-slug: '/integrations/tools/data-integrations'
-keywords:
-- 'Retool'
-- 'Easypanel'
-- 'Splunk'
-title: 'データインテグレーション'
-description: 'データインテグレーションセクションのランディングページ'
+slug: /integrations/tools/data-integrations
+keywords: ['Retool', 'Easypanel', 'Splunk']
+title: 'データ統合'
+description: 'データ統合セクションのランディングページ'
+doc_type: 'landing-page'
 ---
 
+# データ連携 {#data-integrations}
 
-
-
-# データインテグレーション
-
-| ページ      | 説明                                                                                                                        |
-|-----------|---------------------------------------------------------------------------------------------------------------------------|
-| [Easypanel](/integrations/easypanel) | Easypanelを使用すると、自分のサーバーにClickHouseをデプロイできます。                                                                    |
-| [Retool](/integrations/retool)    | リッチなユーザーインターフェースを持つウェブおよびモバイルアプリを迅速に構築し、複雑なタスクを自動化し、AIを統合します。すべてはあなたのデータから動いています。 |
-| [Splunk](/integrations/audit-splunk)     | ClickHouse Cloudの監査ログをSplunkに保存します。                                                                                  |
+| ページ      | 説明                                                                                                                     |
+|-----------|---------------------------------------------------------------------------------------------------------------------------------|
+| [Easypanel](/integrations/easypanel) | Easypanel を使用すると、自前のサーバー上に ClickHouse をデプロイできます                                                                    |
+| [Retool](/integrations/retool)    | リッチなユーザーインターフェースを備えた Web およびモバイルアプリをすばやく構築し、複雑なタスクを自動化し、データを基盤として AI と統合できます。 |
+| [Splunk](/integrations/audit-splunk)     | ClickHouse Cloud の監査ログを Splunk に保存します。                                                                                  |

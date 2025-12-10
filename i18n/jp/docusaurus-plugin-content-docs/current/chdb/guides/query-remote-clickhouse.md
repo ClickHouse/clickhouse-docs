@@ -1,67 +1,64 @@
 ---
-title: 'リモートClickHouseサーバーのクエリ方法'
-sidebar_label: 'リモートClickHouseのクエリ'
-slug: '/chdb/guides/query-remote-clickhouse'
-description: 'このガイドでは、chDBからリモートClickHouseサーバーにクエリする方法について学びます。'
-keywords:
-- 'chdb'
-- 'clickhouse'
+title: 'リモート ClickHouse サーバーへのクエリ実行方法'
+sidebar_label: 'リモート ClickHouse へのクエリ実行'
+slug: /chdb/guides/query-remote-clickhouse
+description: 'このガイドでは、chDB からリモート ClickHouse サーバーにクエリを実行する方法を説明します。'
+keywords: ['chdb', 'clickhouse']
+doc_type: 'guide'
 ---
 
+このガイドでは、chDB からリモート ClickHouse サーバーにクエリを実行する方法について説明します。
 
+## セットアップ {#setup}
 
-In this guide, we're going to learn how to query a remote ClickHouse server from chDB.
-
-## Setup {#setup}
-
-まず、仮想環境を作成します。
+まずは仮想環境を作成します。
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-次に、chDBをインストールします。
-バージョン2.0.2以上であることを確認してください：
+それでは、chDB をインストールします。
+バージョン 2.0.2 以上であることを確認してください。
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-次に、pandasとipythonをインストールします：
+それでは、pandas と IPython をインストールします。
 
 ```bash
 pip install pandas ipython
 ```
 
-このガイドの残りの部分でコマンドを実行するために、`ipython`を使用します。これを起動するには、次のコマンドを実行します：
+このガイドの以降の手順では、`ipython` を使ってコマンドを実行します。次を実行して起動してください:
 
 ```bash
 ipython
 ```
 
-コードをPythonスクリプトやお気に入りのノートブックで使用することもできます。
+このコードは、Python スクリプトやお使いのノートブック環境でも利用できます。
 
-## An intro to ClickPy {#an-intro-to-clickpy}
+## ClickPy 入門 {#an-intro-to-clickpy}
 
-私たちがクエリを実行するリモートClickHouseサーバーは[ClickPy](https://clickpy.clickhouse.com)です。
-ClickPyはPyPIパッケージのすべてのダウンロードを追跡し、UIを介してパッケージの統計を探索できます。
-基礎データベースは`play`ユーザーを使用してクエリが可能です。
+これからクエリを実行する対象となるリモート ClickHouse サーバーは [ClickPy](https://clickpy.clickhouse.com) です。
+ClickPy は PyPI パッケージのすべてのダウンロードを記録し、UI 上からパッケージの統計情報を探索できるようにします。
+基盤となるデータベースは `play` ユーザーでクエリできます。
 
-ClickPyの詳細については、[GitHubリポジトリ](https://github.com/ClickHouse/clickpy)を参照してください。
+ClickPy について詳しくは、[GitHub リポジトリ](https://github.com/ClickHouse/clickpy)を参照してください。
 
-## Querying the ClickPy ClickHouse service {#querying-the-clickpy-clickhouse-service}
+## ClickPy ClickHouse サービスにクエリを実行する {#querying-the-clickpy-clickhouse-service}
 
-まずchDBをインポートします：
+chDB をインポートします：
 
 ```python
 import chdb
 ```
 
-`remoteSecure`関数を使ってClickPyにクエリを実行します。
-この関数は、ホスト名、テーブル名、ユーザー名を最低限必要とします。
+`remoteSecure` 関数を使って ClickPy に対してクエリを実行します。
+この関数は、少なくともホスト名、テーブル名、ユーザー名を引数として受け取ります。
 
-次のクエリを記述して、[`openai`パッケージ](https://clickpy.clickhouse.com/dashboard/openai)の1日あたりのダウンロード数をPandas DataFrameとして返します：
+次のクエリを実行することで、[`openai` package](https://clickpy.clickhouse.com/dashboard/openai) の 1 日あたりのダウンロード数を Pandas の DataFrame として取得できます。
 
 ```python
 query = """
@@ -96,7 +93,7 @@ openai_df.sort_values(by=["x"], ascending=False).head(n=10)
 2383  2024-09-23  1777554
 ```
 
-次に、[`scikit-learn`](https://clickpy.clickhouse.com/dashboard/scikit-learn)のダウンロード数を返すために同じことを行います：
+では、同じ要領で [`scikit-learn`](https://clickpy.clickhouse.com/dashboard/scikit-learn) のダウンロード数を取得してみましょう。
 
 ```python
 query = """
@@ -131,9 +128,9 @@ sklearn_df.sort_values(by=["x"], ascending=False).head(n=10)
 2383  2024-09-23  1777554
 ```
 
-## Merging Pandas DataFrames {#merging-pandas-dataframes}
+## Pandas の DataFrame を結合する {#merging-pandas-dataframes}
 
-現在、2つのDataFrameができたので、日付（`x`列）に基づいてマージできます：
+これで 2 つの DataFrame が揃ったので、日付（`x` 列）をキーとして、次のように結合できます。
 
 ```python
 df = openai_df.merge(
@@ -153,7 +150,7 @@ df.head(n=5)
 4  2018-03-02         5      23842
 ```
 
-次に、Open AIのダウンロード数と`scikit-learn`のダウンロード数の比率を計算します：
+次に、OpenAI のダウンロード数と `scikit-learn` のダウンロード数の比率を、次のように計算します。
 
 ```python
 df['ratio'] = df['y_openai'] / df['y_sklearn']
@@ -169,10 +166,10 @@ df.head(n=5)
 4  2018-03-02         5      23842  0.000210
 ```
 
-## Querying Pandas DataFrames {#querying-pandas-dataframes}
+## Pandas DataFrame をクエリする {#querying-pandas-dataframes}
 
-次に、最高と最低の比率の日付を見つけたいとしましょう。
-chDBに戻ってそれらの値を計算できます：
+次に、最も良い比率と最も悪い比率となっている日付を見つけたいとします。
+そのために chDB に戻り、それらの値を計算します。
 
 ```python
 chdb.query("""
@@ -185,8 +182,8 @@ FROM Python(df)
 ```
 
 ```text
-   bestRatio    bestDate  worstRatio   worstDate
+   最良比率    最良日付  最悪比率   最悪日付
 0   0.693855  2024-09-19    0.000003  2020-02-09
 ```
 
-Pandas DataFramesのクエリについてさらに学ぶには、[Pandas DataFrames開発者ガイド](querying-pandas.md)を参照してください。
+Pandas DataFrame へのクエリについて詳しく知りたい場合は、[Pandas DataFrame 開発者ガイド](querying-pandas.md) を参照してください。

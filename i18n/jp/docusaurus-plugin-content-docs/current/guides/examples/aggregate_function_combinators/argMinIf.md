@@ -1,32 +1,28 @@
 ---
 slug: '/examples/aggregate-function-combinators/argMinIf'
 title: 'argMinIf'
-description: 'Example of using the argMinIf combinator'
-keywords:
-- 'argMin'
-- 'if'
-- 'combinator'
-- 'examples'
-- 'argMinIf'
+description: 'argMinIf コンビネータの使用例'
+keywords: ['argMin', 'if', 'コンビネータ', '例', 'argMinIf']
 sidebar_label: 'argMinIf'
+doc_type: 'reference'
 ---
-
-
-
 
 # argMinIf {#argminif}
 
 ## 説明 {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネータは、[`argMin`](/sql-reference/aggregate-functions/reference/argmin) 関数に適用して、条件が真である行について `val` の最小値に対応する `arg` の値を見つけるために使用されます。これは `argMinIf` 集約コンビネータ関数を使用して行います。
+[`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネータは、[`argMin`](/sql-reference/aggregate-functions/reference/argmin)
+関数に適用することで、条件が真となる行について `val` の最小値に対応する `arg` の値を求めることができます。この処理には `argMinIf` 集約コンビネータ関数を使用します。
 
-`argMinIf` 関数は、データセット内の最小値に関連付けられた値を見つける必要があるが、特定の条件を満たす行のみを考慮する場合に便利です。
+`argMinIf` 関数は、データセット内で最小値に対応する値を特定する必要があるものの、
+特定の条件を満たす行に限定してそれを行いたい場合に有用です。
 
 ## 使用例 {#example-usage}
 
-この例では、製品の価格とそのタイムスタンプを保存するテーブルを作成し、`argMinIf` を使用して、在庫があるときの各製品の最低価格を見つけます。
+この例では、商品価格とそのタイムスタンプを格納するテーブルを作成し、
+在庫がある場合に各商品の最安値を求めるために `argMinIf` を使用します。
 
-```sql title="クエリ"
+```sql title="Query"
 CREATE TABLE product_prices(
     product_id UInt32,
     price Decimal(10,2),
@@ -44,16 +40,17 @@ INSERT INTO product_prices VALUES
 
 SELECT
     product_id,
-    argMinIf(price, timestamp, in_stock = 1) as lowest_price_when_in_stock
+    argMinIf(price, timestamp, in_stock = 1) AS lowest_price_when_in_stock
 FROM product_prices
 GROUP BY product_id;
 ```
 
-`argMinIf` 関数は、各製品の最も早いタイムスタンプに対応する価格を見つけますが、`in_stock = 1` の行のみを考慮します。例えば:
-- 製品 1: 在庫がある行の中で、10.99 が最も早いタイムスタンプ（10:00:00）を持っています。
-- 製品 2: 在庫がある行の中で、20.99 が最も早いタイムスタンプ（11:00:00）を持っています。
+`argMinIf` 関数は、`in_stock = 1` の行のみを対象に、各商品について最も早いタイムスタンプに対応する price を求めます。例えば次のとおりです。
 
-```response title="レスポンス"
+* 商品 1: 在庫ありの行の中では、10.99 のタイムスタンプが最も早い (10:00:00)
+* 商品 2: 在庫ありの行の中では、20.99 のタイムスタンプが最も早い (11:00:00)
+
+```response title="Response"
    ┌─product_id─┬─lowest_price_when_in_stock─┐
 1. │          1 │                      10.99 │
 2. │          2 │                      20.99 │
@@ -64,4 +61,4 @@ GROUP BY product_id;
 - [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
 - [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
 - [`argMaxIf`](/examples/aggregate-function-combinators/argMaxIf)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+- [`If コンビネータ`](/sql-reference/aggregate-functions/combinators#-if)

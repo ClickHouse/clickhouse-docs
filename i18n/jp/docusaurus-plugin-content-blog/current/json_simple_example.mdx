@@ -1,0 +1,109 @@
+---
+title: マテリアライズドビュー付きランディングテーブルを使用したJSONデータ抽出の簡単なサンプルフロー
+description: "マテリアライズドビュー付きランディングテーブルを使用したJSONデータ抽出の簡単なサンプルフロー"
+date: 2024-05-20
+tags: ['データ形式']
+keywords: ['JSON', 'Landing Table', 'マテリアライズドビュー']
+---
+
+{frontMatter.description}
+
+{/* 中略 */}
+
+## Question \{#question\}
+
+マテリアライズドビューで抽出するために、ソーステーブルまたはランディングテーブルを使って JSON メッセージを扱うにはどうすればよいですか？\
+experimental JSON Object 機能を使わずに JSON を扱うにはどうすればよいですか？
+
+## 回答 \{#answer\}
+
+JSON データを扱う際の一般的なパターンとしては、まずデータをランディングテーブルに送信し、`JSONExtract` 関数を用いるマテリアライズドビューのトリガーでそのデータを新しいテーブルへ展開します。
+これは通常、次のようなフローとパターンで行われます。
+
+```
+ソースデータ --> MergeTreeテーブル --> マテリアライズドビュー（ベーステーブル付き） --> アプリケーション/クライアント
+```
+
+ランディングテーブルには、生の JSON を保存するための `raw` という文字列フィールドを用意する必要があります。さらに、そのテーブルをパーティション分割したり、データの経時的な古さに応じて削除できるように、管理用途で使えるフィールドを 1〜2 個持たせるべきです。
+
+*一部の統合では、たとえば ClickHouse Kafka Connector Sink を使用している場合などに、元のデータにフィールドを追加できるものもあります。
+
+簡略化した例を以下に示します。
+
+* サンプル用データベースを作成する
+
+```
+create database db1;
+```
+
+* 生の JSON を挿入するためのランディングテーブルを作成します。
+
+```
+create table db1.table2_json_raw
+(
+    id Int32,
+    timestamp DateTime,
+    raw String
+)
+engine = MergeTree()
+order by timestamp;
+```
+
+* マテリアライズドビュー用のベースとなるテーブルを作成する
+
+```
+create table db1.table2_json_mv_base
+(
+ id Int32,
+ timestamp DateTime,
+ raw_string String,
+ custId Int8,
+ custName String
+)
+engine = MergeTree()
+order by timestamp;
+```
+
+* ベーステーブル用のマテリアライズドビューを作成する
+
+```
+create materialized view db1.table2_json_mv to db1.table2_json_mv_base
+AS SELECT
+ id,
+ timestamp,
+ raw as raw_string,
+ simpleJSONExtractRaw(raw, 'customerId') as custId,
+ simpleJSONExtractRaw(raw, 'customerName') as custName
+ FROM
+db1.table2_json_raw;
+```
+
+* サンプル行をいくつか挿入する
+
+```
+ insert into db1.table2_json_raw
+ values
+ (1, '2024-05-16 00:00:00', '{"customerId":1, "customerName":"ABC"}'),
+ (2, '2024-05-16 00:00:01', '{"customerId":2, "customerName":"XYZ"}');
+```
+
+* 抽出結果と、クエリで使用されるマテリアライズドビューを確認する
+
+```
+clickhouse-cloud :) select * from db1.table2_json_mv;
+
+SELECT *
+FROM db1.table2_json_mv
+
+Query id: 12655fd3-567a-4dfb-9ef7-abc4b11ad044
+
+┌─id─┬───────────timestamp─┬─raw_string─────────────────────────────┬─custId─┬─custName─┐
+│  1 │ 2024-05-16 00:00:00 │ {"customerId":1, "customerName":"ABC"} │ 1      │ "ABC"    │
+│  2 │ 2024-05-16 00:00:01 │ {"customerId":2, "customerName":"XYZ"} │ 2      │ "XYZ"    │
+└────┴─────────────────────┴────────────────────────────────────────┴────────┴──────────┘
+```
+
+追加の参考リンク:\
+マテリアライズドビュー: [https://clickhouse.com/docs/guides/developer/cascading-materialized-views](https://clickhouse.com/docs/guides/developer/cascading-materialized-views)
+JSON の操作: [https://clickhouse.com/docs/integrations/data-formats/json#other-approaches](https://clickhouse.com/docs/integrations/data-formats/json#other-approaches)
+JSON 関数: [https://clickhouse.com/docs/sql-reference/functions/json-functions](https://clickhouse.com/docs/sql-reference/functions/json-functions)

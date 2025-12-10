@@ -6,6 +6,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Getting started with ClickStack and a sample dataset with logs, sessions, traces and metrics'
 doc_type: 'guide'
+keywords: ['clickstack', 'example data', 'sample dataset', 'logs', 'observability']
 ---
 
 import Image from '@theme/IdealImage';
@@ -93,7 +94,7 @@ for filename in $(tar -tf sample.tar.gz); do
   endpoint="http://localhost:4318/v1/${filename%.json}"
   echo "loading ${filename%.json}"
   tar -xOf sample.tar.gz "$filename" | while read -r line; do
-    echo "$line" | curl -s -o /dev/null -X POST "$endpoint" \
+    printf '%s\n' "$line" | curl -s -o /dev/null -X POST "$endpoint" \
     -H "Content-Type: application/json" \
     -H "authorization: ${CLICKSTACK_API_KEY}" \
     --data-binary @-

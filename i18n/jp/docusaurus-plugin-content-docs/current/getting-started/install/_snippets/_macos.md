@@ -1,103 +1,104 @@
----
-{}
----
-
 import Image from "@theme/IdealImage";
 import dev_error from "@site/static/images/knowledgebase/fix-the-developer-verification-error-in-macos/dev-verification-error.png";
 import privacy_default from "@site/static/images/knowledgebase/fix-the-developer-verification-error-in-macos/privacy-and-security-default-view.png";
 import privacy_allow from "@site/static/images/knowledgebase/fix-the-developer-verification-error-in-macos/privacy-and-security-screen-allow-anyway.png";
 
-
-# ClickHouseをHomebrewを使用してインストールする
+# HomebrewによるClickHouseのインストール {#install-clickhouse-using-homebrew}
 
 <VerticalStepper>
 
-## コミュニティのHomebrewフォーミュラを使用してインストールする {#install-using-community-homebrew-formula}
+## コミュニティ版 Homebrew フォーミュラを使用してインストールする {#install-using-community-homebrew-formula}
 
-[Homebrew](https://brew.sh/)を使用してmacOSにClickHouseをインストールするには、ClickHouseコミュニティの[homebrewフォーミュラ](https://formulae.brew.sh/cask/clickhouse)を使用できます。
+macOS で [Homebrew](https://brew.sh/) を使用して ClickHouse をインストールするには、
+ClickHouse コミュニティの [Homebrew フォーミュラ](https://formulae.brew.sh/cask/clickhouse) を使用できます。
 
 ```bash
 brew install --cask clickhouse
 ```
 
-## MacOSでの開発者検証エラーを修正する {#fix-developer-verification-error-macos}
+## macOS での開発元検証エラーの解消 {#fix-developer-verification-error-macos}
 
-`brew`を使用してClickHouseをインストールすると、MacOSからエラーが表示されることがあります。デフォルトでは、MacOSは検証できない開発者によって作成されたアプリケーションやツールを実行しません。
+`brew` を使用して ClickHouse をインストールした場合、macOS からエラーが表示されることがあります。
+デフォルトでは、macOS は確認できない開発元によって作成されたアプリケーションやツールを実行しません。
 
-任意の`clickhouse`コマンドを実行しようとすると、次のエラーが表示されることがあります：
+`clickhouse` コマンドを実行しようとすると、次のようなエラーが表示されることがあります。
 
-<Image img={dev_error} size="sm" alt="MacOSの開発者検証エラーのダイアログ" border />
+<Image img={dev_error} size="sm" alt="MacOS developer verification error dialog" border />
 
-この検証エラーを回避するには、以下の方法でMacOSの隔離ビンからアプリを削除する必要があります。システム設定ウィンドウ内の適切な設定を見つけるか、ターミナルを使用するか、ClickHouseを再インストールする方法があります。
+この検証エラーを回避するには、システム設定ウィンドウで該当する設定を変更するか、ターミナルを使用するか、または ClickHouse を再インストールするなどして、いずれかの方法で macOS の隔離領域からアプリを削除する必要があります。
 
-### システム設定のプロセス {#system-settings-process}
+### システム設定での手順 {#system-settings-process}
 
-`clickhouse`実行ファイルを隔離ビンから削除する最も簡単な方法は以下の通りです：
+`clickhouse` 実行ファイルを隔離領域から削除する最も簡単な方法は次のとおりです。
 
-1. **システム設定**を開きます。
-1. **プライバシーとセキュリティ**に移動します：
+1. **システム設定** を開きます。
 
-    <Image img={privacy_default} size="md" alt="MacOSのプライバシーとセキュリティ設定のデフォルトビュー" border />
+2. **プライバシーとセキュリティ** に移動します。
 
-1. ウィンドウの下部までスクロールして、_「clickhouse-macos-aarch64」が未確認の開発者からのものであるため、使用がブロックされました_というメッセージを見つけます。
-1. **許可する**をクリックします。
+   <Image img={privacy_default} size="md" alt="MacOS Privacy & Security settings default view" border />
 
-    <Image img={privacy_allow} size="md" alt="MacOSのプライバシーとセキュリティ設定に「許可する」ボタンが表示されている" border />
+3. ウィンドウの一番下までスクロールし、「&#95;&quot;clickhouse-macos-aarch64&quot; は、認証済みの開発元によるものではないため、使用がブロックされました。」というメッセージを探します。
 
-1. MacOSユーザーパスワードを入力します。
+4. **それでも開く** をクリックします。
 
-これでターミナルで`clickhouse`コマンドを実行できるようになるはずです。
+   <Image img={privacy_allow} size="md" alt="MacOS Privacy & Security settings showing Allow Anyway button" border />
 
-### ターミナルプロセス {#terminal-process}
+5. macOS のユーザーアカウントのパスワードを入力します。
 
-場合によっては、`許可する`ボタンを押してもこの問題が解決しないことがあります。その場合は、コマンドラインを使用してこのプロセスを実行することもできます。また、コマンドラインの使用を好むかもしれません！
+これでターミナルで `clickhouse` コマンドを実行できるようになるはずです。
 
-まず、Homebrewが`clickhouse`実行ファイルをインストールした場所を確認します：
+### ターミナルでの手順 {#terminal-process}
+
+`Allow Anyway` ボタンを押してもこの問題が解消しない場合は、コマンドラインを使って同じ処理を行うことができます。
+あるいは、単にコマンドラインを使う方が好みの場合もあるでしょう。
+
+まず、Homebrew が `clickhouse` 実行ファイルをどこにインストールしたかを確認します。
 
 ```shell
 which clickhouse
 ```
 
-これにより、次のような出力が得られます：
+次のような結果が出力されます。
 
 ```shell
 /opt/homebrew/bin/clickhouse
 ```
 
-次のコマンドで`xattr -d com.apple.quarantine`を実行し、前のコマンドのパスを続けて入力して、`clickhouse`を隔離ビンから削除します：
+前のコマンドで表示されたパスを指定して `xattr -d com.apple.quarantine` を実行し、`clickhouse` を隔離領域から削除します：
 
 ```shell
 xattr -d com.apple.quarantine /opt/homebrew/bin/clickhouse
 ```
 
-これで`clickhouse`実行ファイルを実行できるようになります：
+これで `clickhouse` 実行ファイルを実行できるようになったはずです。
 
 ```shell
-clickhouse
+ClickHouse
 ```
 
-これにより、次のような出力が得られます：
+次のような出力が得られるはずです:
 
 ```bash
-次のコマンドのいずれかを使用してください：
+以下のいずれかのコマンドを使用します：
 clickhouse local [args]
 clickhouse client [args]
 clickhouse benchmark [args]
-...
+```
 
 ## ClickHouseを再インストールして問題を修正する {#fix-issue}
 
-Brewには、インストールされたバイナリの隔離を避けるためのコマンドラインオプションがあります。
+Brewには、インストールされたバイナリを隔離対象から除外するコマンドラインオプションがあります。
 
-まず、ClickHouseをアンインストールします：
+まず、ClickHouseをアンインストールします:
 
 ```shell
 brew uninstall clickhouse
 ```
 
-次に、`--no-quarantine`オプションを使用してClickHouseを再インストールします：
+次に、`--no-quarantine`を指定してClickHouseを再インストールします:
 
 ```shell
 brew install --no-quarantine clickhouse
 ```
+
 </VerticalStepper>

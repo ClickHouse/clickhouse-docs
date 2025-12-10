@@ -1,60 +1,56 @@
 ---
-title: 'Parquetファイルのクエリ方法'
-sidebar_label: 'Parquetファイルのクエリ'
-slug: '/chdb/guides/querying-parquet'
-description: 'chDBでParquetファイルをクエリする方法について学びます。'
-keywords:
-- 'chdb'
-- 'parquet'
+title: 'Parquet ファイルのクエリ方法'
+sidebar_label: 'Parquet ファイルのクエリ'
+slug: /chdb/guides/querying-parquet
+description: 'chDB を使用して Parquet ファイルにクエリを実行する方法を学びます。'
+keywords: ['chdb', 'parquet']
+doc_type: 'guide'
 ---
 
+世界中のデータの多くは Amazon S3 バケット内に保存されています。
+このガイドでは、chDB を使用してそうしたデータに対してクエリを実行する方法を学びます。
 
+## セットアップ {#setup}
 
-A lot of the world's data lives in Amazon S3 buckets.  
-このガイドでは、chDBを使用してそのデータをクエリする方法を学びます。
-
-## Setup {#setup}
-
-まず、仮想環境を作成しましょう：
+まず仮想環境を作成します。
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-次に、chDBをインストールします。  
-バージョン2.0.2以上であることを確認してください：
+では、chDB をインストールします。
+バージョン 2.0.2 以上であることを確認してください：
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-次に、IPythonをインストールします：
+では、次に IPython をインストールします。
 
 ```bash
 pip install ipython
 ```
 
-今後のガイドのコマンドを実行するために`ipython`を使用します。  
-次のコマンドで起動できます：
+このガイドの以降のコマンドは `ipython` 上で実行します。`ipython` を起動するには、次のコマンドを実行してください：
 
 ```bash
 ipython
 ```
 
-Pythonスクリプトやお気に入りのノートブックでもこのコードを使用できます。
+このコードは、Python スクリプトやお使いのノートブックでも使用できます。
 
-## Exploring Parquet metadata {#exploring-parquet-metadata}
+## Parquet メタデータを探索する {#exploring-parquet-metadata}
 
-[Amazon reviews](/getting-started/example-datasets/amazon-reviews)データセットからParquetファイルを探索します。  
-まず、`chDB`をインストールしましょう：
+[Amazon reviews](/getting-started/example-datasets/amazon-reviews) データセットの Parquet ファイルを探索していきます。
+その前に、まずは `chDB` をインストールしましょう。
 
 ```python
 import chdb
 ```
 
-Parquetファイルをクエリする際には、ファイルの内容ではなくParquetメタデータを返すために、[`ParquetMetadata`](/interfaces/formats/ParquetMetadata)入力形式を使用できます。  
-この形式を使用したときに返されるフィールドを見るために`DESCRIBE`句を使用しましょう：
+Parquet ファイルに対してクエリを実行する際には、[`ParquetMetadata`](/interfaces/formats/ParquetMetadata) 入力フォーマットを使用することで、ファイルの内容ではなく Parquet メタデータを返すことができます。
+このフォーマットを使用した場合にどのようなフィールドが返されるかを確認するために、`DESCRIBE` 句を使ってみましょう。
 
 ```python
 query = """
@@ -80,8 +76,8 @@ columns Array(Tuple(name String, path String, max_definition_level UInt64, max_r
 row_groups      Array(Tuple(num_columns UInt64, num_rows UInt64, total_uncompressed_size UInt64, total_compressed_size UInt64, columns Array(Tuple(name String, path String, total_compressed_size UInt64, total_uncompressed_size UInt64, have_statistics Bool, statistics Tuple(num_values Nullable(UInt64), null_count Nullable(UInt64), distinct_count Nullable(UInt64), min Nullable(String), max Nullable(String))))))
 ```
 
-このファイルのメタデータを見てみましょう。  
-`columns`と`row_groups`は、それぞれ多くのプロパティを含むタプルの配列を含んでいるため、今回はこれを除外します。
+それでは、このファイルのメタデータを確認してみましょう。
+`columns` と `row_groups` には、多くのプロパティを持つタプルの配列が含まれているため、ここではそれらは除外します。
 
 ```python
 query = """
@@ -107,11 +103,11 @@ total_uncompressed_size: 14615827169
 total_compressed_size:   9272262304
 ```
 
-この出力から、このParquetファイルは4200万行以上を持ち、42の行グループに分割され、各行に15カラムのデータがあることがわかります。  
-行グループは、データを行に水平に論理的にパーティショニングしたものです。  
-各行グループには関連するメタデータがあり、クエリツールはそのメタデータを利用してファイルを効率的にクエリできます。
+この出力から、この Parquet ファイルには 4,000 万行を超えるデータが含まれており、42 個の row group に分割され、1 行あたり 15 列のデータがあることが分かります。
+row group は、データを行単位で論理的に水平分割したものです。
+各 row group にはメタデータが関連付けられており、クエリツールはそのメタデータを利用してファイルを効率的に検索できます。
 
-行グループの1つを見てみましょう：
+それでは、row group の 1 つを見てみましょう。
 
 ```python
 query = """
@@ -154,10 +150,10 @@ chdb.query(query, 'DataFrame')
 14        review_body              145886383                232457911                                                                                              🚅 +🐧=💥 😀
 ```
 
-## Querying Parquet files {#querying-parquet-files}
+## Parquet ファイルのクエリ {#querying-parquet-files}
 
-次に、ファイルの内容をクエリします。  
-上記のクエリから`ParquetMetadata`を削除することで、すべてのレビューにわたる最も人気のある`star_rating`を計算できます：
+次に、ファイルの内容をクエリしてみましょう。
+これを行うには、先ほどのクエリから `ParquetMetadata` を削除して調整し、たとえばすべてのレビューにおける最も頻出する `star_rating` を計算します。
 
 ```python
 query = """
@@ -181,5 +177,5 @@ chdb.query(query, 'DataFrame')
 4            5  27078664                   27.08 million
 ```
 
-興味深いことに、5つ星のレビューは他のすべての評価を合わせたよりも多いです！  
-アマゾンの製品が好まれているようです、あるいは、もし好まれていないのなら、評価を提出していないだけかもしれません。
+興味深いことに、星5つのレビューは他のすべての評価を合計した数よりも多くなっています！
+Amazonの商品を気に入っているか、そうでない場合はそもそも評価を投稿していないようです。

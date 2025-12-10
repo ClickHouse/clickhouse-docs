@@ -1,11 +1,11 @@
 ---
-'description': '本节包含服务器设置的描述，即无法在会话或查询级别更改的设置。'
-'keywords':
-- 'global server settings'
-'sidebar_label': '服务器设置'
-'sidebar_position': 57
-'slug': '/operations/server-configuration-parameters/settings'
-'title': '服务器设置'
+description: '本节介绍服务器设置，即无法在会话或查询级别更改的设置。'
+keywords: ['全局服务器设置']
+sidebar_label: '服务器设置'
+sidebar_position: 57
+slug: /operations/server-configuration-parameters/settings
+title: '服务器设置'
+doc_type: 'reference'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -13,29 +13,35 @@ import TabItem from '@theme/TabItem';
 import SystemLogParameters from '@site/i18n/zh/docusaurus-plugin-content-docs/current/operations/server-configuration-parameters/_snippets/_system-log-parameters.md';
 import SettingsInfoBlock from '@theme/SettingsInfoBlock/SettingsInfoBlock';
 
+# 服务器设置 {#server-settings}
 
-# 服务器设置
+本节介绍服务器设置。这些设置无法在会话级或查询级进行更改。
 
-本部分包含服务器设置的描述。这些设置无法在会话或查询级别更改。
+有关 ClickHouse 中配置文件的更多信息，请参阅 [“Configuration Files”](/operations/configuration-files)。
 
-有关 ClickHouse 中配置文件的更多信息，请参见 [""配置文件""](/operations/configuration-files)。
+其他设置在 “[Settings](/operations/settings/overview)” 部分中有说明。
+在学习这些设置之前，建议先阅读 [Configuration Files](/operations/configuration-files)
+部分，并注意其中替换机制的用法（`incl` 和 `optional` 属性）。
 
-其他设置在 ""[设置](/operations/settings/overview)"" 部分进行了描述。在研究设置之前，我们建议先阅读 [配置文件](/operations/configuration-files) 部分，并注意替换的使用（`incl` 和 `optional` 属性）。
-## access_control_improvements {#access_control_improvements} 
+## abort_on_logical_error {#abort_on_logical_error} 
 
-用于访问控制系统的可选改进的设置。
+<SettingsInfoBlock type="Bool" default_value="0" />在遇到 LOGICAL_ERROR 异常时使服务器崩溃。仅限专家使用。
 
-| 设置                                           | 描述                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | 默认   |
-|------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------|
-| `users_without_row_policies_can_read_rows`      | 设置没有宽松行级访问控制策略的用户是否仍可以使用 `SELECT` 查询读取行。例如，如果有两个用户 A 和 B，而行级政策仅为 A 定义，那么如果此设置为真，用户 B 将看到所有行。如果此设置为假，则用户 B 将看不到任何行。                                                                                                                                                                                                                                                             | `true`  |
-| `on_cluster_queries_require_cluster_grant`      | 设置 `ON CLUSTER` 查询是否需要 `CLUSTER` 授权。                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `true`  |
-| `select_from_system_db_requires_grant`          | 设置 `SELECT * FROM system.<table>` 是否需要任何授权，可以由任何用户执行。如果设置为 true，则该查询需要 `GRANT SELECT ON system.<table>`，就像对待非系统表一样。例外情况：一些系统表（`tables`、`columns`、`databases` 以及一些常量表，如 `one`、`contributors`）仍然对所有人可访问；如果授予了 `SHOW` 权限（例如 `SHOW USERS`），则相应的系统表（即 `system.users`）将可访问。 | `true`  |
-| `select_from_information_schema_requires_grant` | 设置 `SELECT * FROM information_schema.<table>` 是否需要任何授权，可以由任何用户执行。如果设置为 true，则该查询需要 `GRANT SELECT ON information_schema.<table>`，就像对待普通表一样。                                                                                                                                                                                                                                                                              | `true`  |
-| `settings_constraints_replace_previous`         | 设置某些设置的设置配置文件中的约束是否会取消对该设置的先前约束（在其他配置文件中定义）的操作，包括未被新约束设置的字段。它还启用 `changeable_in_readonly` 约束类型。                                                                                                                                                                                                                                                                       | `true`  |
-| `table_engines_require_grant`                   | 设置创建具有特定表引擎的表是否需要授权。                                                                                                                                                                                                                                                                                                                                                                                                                                                       | `false` |
-| `role_cache_expiration_time_seconds`            | 设置角色在角色缓存中存储的最后访问后经过的秒数。                                                                                                                                                                                                                                                                                                                                                                                                                                              | `600`   |
+## access&#95;control&#95;improvements {#access_control_improvements}
 
-示例：
+访问控制系统中可选改进相关的设置。
+
+| Setting                                         | Description                                                                                                                                                                                                                                                                                  | Default |
+| ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| `users_without_row_policies_can_read_rows`      | 设置没有宽松 ROW POLICY 的用户是否仍然可以使用 `SELECT` 查询读取行。比如，如果有两个用户 A 和 B，并且只为 A 定义了 ROW POLICY，那么如果此设置为 true，用户 B 将看到所有行；如果此设置为 false，用户 B 将看不到任何行。                                                                                                                                                     | `true`  |
+| `on_cluster_queries_require_cluster_grant`      | 设置 `ON CLUSTER` 查询是否需要 `CLUSTER` 权限。                                                                                                                                                                                                                                                         | `true`  |
+| `select_from_system_db_requires_grant`          | 设置 `SELECT * FROM system.<table>` 是否需要授予任何权限，或者是否可以由任意用户执行。如果设为 true，则此查询需要 `GRANT SELECT ON system.<table>`，与非 system 表相同。例外情况：少数 system 表（`tables`、`columns`、`databases`，以及一些常量表如 `one`、`contributors`）仍然对所有人可访问；并且如果授予了某个 `SHOW` 权限（例如 `SHOW USERS`），则对应的 system 表（即 `system.users`）将可访问。 | `true`  |
+| `select_from_information_schema_requires_grant` | 设置 `SELECT * FROM information_schema.<table>` 是否需要授予任何权限，或者是否可以由任意用户执行。如果设为 true，则此查询需要 `GRANT SELECT ON information_schema.<table>`，与普通表相同。                                                                                                                                                 | `true`  |
+| `settings_constraints_replace_previous`         | 设置在某个 SETTINGS PROFILE 中为某个 setting 定义的约束，是否会取消该 setting 之前约束（在其他 profile 中定义）的效果，包括新约束未设置的字段。同时也会启用 `changeable_in_readonly` 约束类型。                                                                                                                                                          | `true`  |
+| `table_engines_require_grant`                   | 设置使用特定表引擎创建表时是否需要权限。                                                                                                                                                                                                                                                                         | `false` |
+| `role_cache_expiration_time_seconds`            | 设置某个角色自上次访问以来在 Role Cache 中可被缓存的秒数。                                                                                                                                                                                                                                                          | `600`   |
+
+Example:
 
 ```xml
 <access_control_improvements>
@@ -48,97 +54,122 @@ import SettingsInfoBlock from '@theme/SettingsInfoBlock/SettingsInfoBlock';
     <role_cache_expiration_time_seconds>600</role_cache_expiration_time_seconds>
 </access_control_improvements>
 ```
+
 ## access_control_path {#access_control_path} 
 
-ClickHouse 服务器存储由 SQL 命令创建的用户和角色配置的文件夹路径。
+ClickHouse 服务器用于存储通过 SQL 命令创建的用户和角色配置的文件夹路径。
 
-**另请参见**
+**另请参阅**
 
-- [访问控制和帐户管理](/operations/access-rights#access-control-usage)
+- [访问控制和账户管理](/operations/access-rights#access-control-usage)
+
 ## aggregate_function_group_array_action_when_limit_is_reached {#aggregate_function_group_array_action_when_limit_is_reached} 
 
-<SettingsInfoBlock type="GroupArrayActionWhenLimitReached" default_value="throw" />当 groupArray 中达到最大数组元素大小时执行的操作：`throw` 异常，或 `discard` 多余的值
+<SettingsInfoBlock type="GroupArrayActionWhenLimitReached" default_value="throw" />当 `groupArray` 中的数组元素数量超过最大限制时要执行的操作：抛出 `throw` 异常，或者丢弃（`discard`）多余的值
+
 ## aggregate_function_group_array_max_element_size {#aggregate_function_group_array_max_element_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="16777215" />groupArray 函数的最大数组元素大小（以字节为单位）。此限制在序列化时检查，帮助避免大型状态大小。
+<SettingsInfoBlock type="UInt64" default_value="16777215" />groupArray FUNCTION 的数组元素最大字节大小。该限制在序列化阶段进行检查，以避免状态过大。
+
 ## allow_feature_tier {#allow_feature_tier} 
 
 <SettingsInfoBlock type="UInt32" default_value="0" />
-控制用户是否可以更改与不同功能级别相关的设置。
 
-- `0` - 允许对任何设置进行更改（实验性、测试版、生产版）。
-- `1` - 仅允许对测试版和生产功能设置进行更改。对实验性设置的更改会被拒绝。
-- `2` - 仅允许对生产设置进行更改。对实验性或测试版设置的更改会被拒绝。
+控制是否允许用户更改与不同功能层级相关的设置。
 
-这相当于对所有 `EXPERIMENTAL` / `BETA` 功能设置只读约束。
+- `0` - 允许更改任何设置（experimental、beta、production）。
+- `1` - 仅允许更改 beta 和 production 功能设置。对 experimental 设置的更改会被拒绝。
+- `2` - 仅允许更改 production 设置。对 experimental 或 beta 设置的更改会被拒绝。
+
+这等价于对所有 `EXPERIMENTAL` / `BETA` 功能添加只读 CONSTRAINT。
 
 :::note
-值为 `0` 表示可以更改所有设置。
+值为 `0` 表示所有设置都可以被更改。
 :::
-## allow_implicit_no_password {#allow_implicit_no_password} 
 
-禁止创建没有密码的用户，除非明确指定 'IDENTIFIED WITH no_password'。
+## allow_impersonate_user {#allow_impersonate_user} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />启用或禁用 IMPERSONATE 功能（EXECUTE AS target_user）。
+
+## allow&#95;implicit&#95;no&#95;password {#allow_implicit_no_password}
+
+除非显式指定 &#39;IDENTIFIED WITH no&#95;password&#39;，否则禁止创建无密码用户。
 
 ```xml
 <allow_implicit_no_password>1</allow_implicit_no_password>
 ```
-## allow_no_password {#allow_no_password} 
 
-设置是否允许不安全的无密码类型。
+## allow&#95;no&#95;password {#allow_no_password}
+
+设置是否允许使用不安全的 `no_password` 密码类型。
 
 ```xml
 <allow_no_password>1</allow_no_password>
 ```
-## allow_plaintext_password {#allow_plaintext_password} 
 
-设置是否允许明文密码类型（不安全）。
+## allow&#95;plaintext&#95;password {#allow_plaintext_password}
+
+设置是否允许使用不安全的明文密码类型。
 
 ```xml
 <allow_plaintext_password>1</allow_plaintext_password>
 ```
+
 ## allow_use_jemalloc_memory {#allow_use_jemalloc_memory} 
 
-<SettingsInfoBlock type="Bool" default_value="1" />允许使用 jemalloc 内存。
+<SettingsInfoBlock type="Bool" default_value="1" />允许使用 jemalloc 管理内存。
+
+## allowed_disks_for_table_engines {#allowed_disks_for_table_engines} 
+
+允许用于 Iceberg 的磁盘列表
+
 ## async_insert_queue_flush_on_shutdown {#async_insert_queue_flush_on_shutdown} 
 
-<SettingsInfoBlock type="Bool" default_value="1" />如果为真，则在优雅关闭时刷新异步插入队列
+<SettingsInfoBlock type="Bool" default_value="1" />如果为 true，则在正常关闭时会刷新异步插入队列
+
 ## async_insert_threads {#async_insert_threads} 
 
-<SettingsInfoBlock type="UInt64" default_value="16" />解析和插入数据的最大线程数。零表示禁用异步模式
-## async_load_databases {#async_load_databases} 
+<SettingsInfoBlock type="UInt64" default_value="16" />在后台实际解析和插入数据所能使用的最大线程数。设置为 0 表示禁用异步插入模式
+
+## async&#95;load&#95;databases {#async_load_databases}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
 异步加载数据库和表。
 
-- 如果 `true`，所有使用 `Ordinary`、`Atomic` 和 `Replicated` 引擎的非系统数据库将在 ClickHouse 服务器启动后异步加载。请参见 `system.asynchronous_loader` 表、`tables_loader_background_pool_size` 和 `tables_loader_foreground_pool_size` 服务器设置。任何尝试访问尚未加载的表的查询将会等待该表启动。如果加载作业失败，查询将抛出错误（而不是在 `async_load_databases = false` 的情况下关闭整个服务器）。至少一个查询等待的表将以更高的优先级加载。DDL 查询将在该数据库启动之前等待该数据库。考虑设置 `max_waiting_queries` 来限制等待查询的总数。
-- 如果 `false`，则在服务器启动时加载所有数据库。
+* 如果为 `true`，在 ClickHouse 服务器启动后，所有使用 `Ordinary`、`Atomic` 和 `Replicated` 引擎的非系统数据库都会被异步加载。请参阅 `system.asynchronous_loader` 表，以及 `tables_loader_background_pool_size` 和 `tables_loader_foreground_pool_size` 服务器设置。任何试图访问尚未加载表的查询，都会等待该表完成启动。如果加载任务失败，查询会重新抛出错误（而不是在 `async_load_databases = false` 的情况下关闭整个服务器）。至少有一个查询正在等待的表会以更高优先级加载。对某个数据库执行的 DDL 查询会等待该数据库完成启动。同时也可以考虑通过 `max_waiting_queries` 限制等待中的查询总数。
+* 如果为 `false`，服务器启动时会加载所有数据库。
 
 **示例**
 
 ```xml
 <async_load_databases>true</async_load_databases>
 ```
-## async_load_system_database {#async_load_system_database} 
+
+## async&#95;load&#95;system&#95;database {#async_load_system_database}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
-异步加载系统表。如果 `system` 数据库中有大量日志表和分区片段，这将很有用。独立于 `async_load_databases` 设置。
 
-- 如果设置为 `true`，使用 `Ordinary`、`Atomic` 和 `Replicated` 引擎的所有系统数据库将在 ClickHouse 服务器启动后异步加载。请参见 `system.asynchronous_loader` 表、`tables_loader_background_pool_size` 和 `tables_loader_foreground_pool_size` 服务器设置。任何试图访问一个尚未加载的系统表的查询将会等待该表启动。至少一个查询正在等待的表将以更高的优先级加载。还考虑设置 `max_waiting_queries` 设置来限制总的等待查询数。
-- 如果设置为 `false`，则系统数据库会在服务器启动之前加载。
+系统表的异步加载。如果 `system` 数据库中存在大量日志表和分区片段，则此设置会很有帮助。独立于 `async_load_databases` 设置。
+
+* 如果设置为 `true`，则在 ClickHouse 服务器启动之后，所有使用 `Ordinary`、`Atomic` 和 `Replicated` 引擎的 system 数据库都将异步加载。参见 `system.asynchronous_loader` 表，以及 `tables_loader_background_pool_size` 和 `tables_loader_foreground_pool_size` 服务器设置。任何试图访问尚未加载的 system 表的查询，都将等待该表完成启动。至少被一个查询等待的表将以更高优先级加载。也可以考虑设置 `max_waiting_queries` 来限制等待查询的总数量。
+* 如果设置为 `false`，system 数据库会在服务器启动前完成加载。
 
 **示例**
 
 ```xml
 <async_load_system_database>true</async_load_system_database>
 ```
+
 ## asynchronous_heavy_metrics_update_period_s {#asynchronous_heavy_metrics_update_period_s} 
 
-<SettingsInfoBlock type="UInt32" default_value="120" />更新重异步指标的周期（以秒为单位）。
-## asynchronous_insert_log {#asynchronous_insert_log} 
+<SettingsInfoBlock type="UInt32" default_value="120" />用于更新高开销异步指标的时间间隔（以秒为单位）。
 
-[asynchronous_insert_log](/operations/system-tables/asynchronous_insert_log) 系统表的设置，用于记录异步插入。
+## asynchronous&#95;insert&#95;log {#asynchronous_insert_log}
 
-<SystemLogParameters/>
+用于记录异步插入操作日志的 [asynchronous&#95;insert&#95;log](/operations/system-tables/asynchronous_insert_log) 系统表的设置。
+
+<SystemLogParameters />
 
 **示例**
 
@@ -157,15 +188,16 @@ ClickHouse 服务器存储由 SQL 命令创建的用户和角色配置的文件�
     </asynchronous_insert_log>
 </clickhouse>
 ```
-## asynchronous_metric_log {#asynchronous_metric_log} 
+
+## asynchronous&#95;metric&#95;log {#asynchronous_metric_log}
 
 在 ClickHouse Cloud 部署中默认启用。
 
-如果在您的环境中此设置未默认启用，则可以根据 ClickHouse 的安装方式遵循以下说明来启用或禁用它。
+如果在你的环境中该设置不是默认启用的，则可以根据 ClickHouse 的安装方式，按照下面的说明将其启用或禁用。
 
 **启用**
 
-要手动打开异步指标日志历史记录收集 [`system.asynchronous_metric_log`](../../operations/system-tables/asynchronous_metric_log.md)，请创建 `/etc/clickhouse-server/config.d/asynchronous_metric_log.xml`，内容如下：
+要手动开启异步指标日志历史记录收集功能 [`system.asynchronous_metric_log`](../../operations/system-tables/asynchronous_metric_log.md)，请创建 `/etc/clickhouse-server/config.d/asynchronous_metric_log.xml` 文件，并写入以下内容：
 
 ```xml
 <clickhouse>
@@ -184,101 +216,129 @@ ClickHouse 服务器存储由 SQL 命令创建的用户和角色配置的文件�
 
 **禁用**
 
-要禁用 `asynchronous_metric_log` 设置，您应创建以下文件 `/etc/clickhouse-server/config.d/disable_asynchronous_metric_log.xml`，内容如下：
+要禁用 `asynchronous_metric_log` 设置，请创建文件 `/etc/clickhouse-server/config.d/disable_asynchronous_metric_log.xml`，内容如下：
 
 ```xml
 <clickhouse><asynchronous_metric_log remove="1" /></clickhouse>
 ```
 
-<SystemLogParameters/>
+<SystemLogParameters />
+
 ## asynchronous_metrics_enable_heavy_metrics {#asynchronous_metrics_enable_heavy_metrics} 
 
-<SettingsInfoBlock type="Bool" default_value="0" />启用重异步指标的计算。
+<SettingsInfoBlock type="Bool" default_value="0" />启用高开销异步指标的计算。
+
+## asynchronous_metrics_keeper_metrics_only {#asynchronous_metrics_keeper_metrics_only} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />使异步指标仅统计 keeper 相关的指标。
+
 ## asynchronous_metrics_update_period_s {#asynchronous_metrics_update_period_s} 
 
-<SettingsInfoBlock type="UInt32" default_value="1" />更新异步指标的周期（以秒为单位）。
+<SettingsInfoBlock type="UInt32" default_value="1" />以秒为单位的异步指标更新周期。
+
 ## auth_use_forwarded_address {#auth_use_forwarded_address} 
 
-对通过代理连接的客户端使用原始地址进行身份验证。
+对通过代理连接的客户端，在身份验证时使用其源地址。
 
 :::note
-使用此设置时应格外谨慎，因为转发地址容易被伪造 - 接受此类身份验证的服务器不应直接访问，而应仅通过受信任的代理访问。
+此设置应格外谨慎使用，因为转发地址很容易被伪造——接受此类身份验证的服务器不应被直接访问，而应只能通过受信任的代理进行访问。
 :::
+
 ## background_buffer_flush_schedule_pool_size {#background_buffer_flush_schedule_pool_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="16" />用于后台执行 [Buffer-engine tables](/engines/table-engines/special/buffer) 刷新操作的最大线程数。
+<SettingsInfoBlock type="UInt64" default_value="16" />在后台执行 [Buffer 引擎表](/engines/table-engines/special/buffer) 刷新操作时可用的最大线程数。
+
 ## background_common_pool_size {#background_common_pool_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="8" />用于后台执行各种操作（主要是垃圾收集）的 [*MergeTree-engine](/engines/table-engines/mergetree-family) 表的最大线程数。
+<SettingsInfoBlock type="UInt64" default_value="8" />在后台对 [*MergeTree-engine](/engines/table-engines/mergetree-family) 表执行各种操作（主要是垃圾回收）时可使用的最大线程数。
+
 ## background_distributed_schedule_pool_size {#background_distributed_schedule_pool_size} 
 
 <SettingsInfoBlock type="UInt64" default_value="16" />用于执行分布式发送的最大线程数。
+
 ## background_fetches_pool_size {#background_fetches_pool_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="16" />从另一个副本中获取数据片段的最大线程数，用于后台中的 [*MergeTree-engine](/engines/table-engines/mergetree-family) 表。
+<SettingsInfoBlock type="UInt64" default_value="16" />在后台为 [*MergeTree 引擎](/engines/table-engines/mergetree-family) 表从其他副本获取数据分区片段时可使用的最大线程数。
+
 ## background_merges_mutations_concurrency_ratio {#background_merges_mutations_concurrency_ratio} 
 
 <SettingsInfoBlock type="Float" default_value="2" />
-设置线程数与可以同时执行的后台合并和变更的数量之间的比例。
 
-例如，如果比率等于 2 并且 [`background_pool_size`](/operations/server-configuration-parameters/settings#background_pool_size) 设置为 16，则 ClickHouse 可以同时执行 32 个后台合并。这是可能的，因为后台操作可以被暂停和推迟。这是为了给小合并提供更高的执行优先级。
+设置线程数量与可并发执行的后台合并（merges）和变更（mutations）操作数量之间的比例。
+
+例如，如果该比例等于 2，且 [`background_pool_size`](/operations/server-configuration-parameters/settings#background_pool_size) 被设置为 16，则 ClickHouse 可以并发执行 32 个后台合并。这之所以可行，是因为后台操作可以被挂起或延后执行。这样可以为较小的合并提供更高的执行优先级。
 
 :::note
-您只能在运行时增加此比率。要降低比率，您必须重新启动服务器。
+你只能在运行时增加该比例。要降低它，必须重启服务器。
 
-与 [`background_pool_size`](/operations/server-configuration-parameters/settings#background_pool_size) 设置相同，[`background_merges_mutations_concurrency_ratio`](/operations/server-configuration-parameters/settings#background_merges_mutations_concurrency_ratio) 可以从 `default` 配置文件应用以保持向后兼容性。
+与 [`background_pool_size`](/operations/server-configuration-parameters/settings#background_pool_size) 设置项一样，为了向后兼容，可以从 `default` profile 应用 [`background_merges_mutations_concurrency_ratio`](/operations/server-configuration-parameters/settings#background_merges_mutations_concurrency_ratio)。
 :::
+
 ## background_merges_mutations_scheduling_policy {#background_merges_mutations_scheduling_policy} 
 
 <SettingsInfoBlock type="String" default_value="round_robin" />
-规定如何对后台合并和变更进行调度的策略。可能的值为：`round_robin` 和 `shortest_task_first`。
 
-用于选择由后台线程池执行的下一个合并或变更的算法。策略可以在运行时更改，而无需重新启动服务器。
-可以从 `default` 配置文件应用，以保持向后兼容性。
+用于为后台合并（merge）和变更（mutation）进行调度的策略。可选值为：`round_robin` 和 `shortest_task_first`。
 
-可能的值：
+用于选择下一个由后台线程池执行的合并或变更的算法。此策略可在运行时更改，而无需重启服务器。
+可以通过 `default` profile 应用，以保持向后兼容性。
 
-- `round_robin` — 每个并发合并和变更按轮询顺序执行，以确保无饥饿操作。由于较小的合并块较少，其完成速度会比较大的合并快。
-- `shortest_task_first` — 始终优先执行较小的合并或变更。合并和变更根据其结果大小分配优先级。较小的合并严格优先于较大的合并。该策略确保尽可能快速地合并小片段，但在大量 `INSERT` 操作过载的分区中，可能会导致较大合并的无限期饥饿。
+可能的取值：
+
+- `round_robin` — 按轮询顺序执行每个并发合并和变更，以避免任务饥饿。较小的合并由于需要合并的块更少，会比大的合并更快完成。
+- `shortest_task_first` — 始终优先执行较小的合并或变更。合并和变更会根据其合并后的结果大小分配优先级。结果较小的合并会被严格优先于较大的合并。该策略可确保以尽可能快的速度完成小型分区片段的合并，但在 INSERT 写入压力很大的分区中，可能导致大型合并长期得不到执行（出现无限期饥饿）。
+
 ## background_message_broker_schedule_pool_size {#background_message_broker_schedule_pool_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="16" />用于执行消息流的后台操作的最大线程数。
+<SettingsInfoBlock type="UInt64" default_value="16" />用于执行消息流相关后台任务的最大线程数。
+
 ## background_move_pool_size {#background_move_pool_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="8" />用于后台中将数据片段移动到另一个磁盘或卷的最大线程数，用于 *MergeTree-engine 表。
-## background_pool_size {#background_pool_size} 
+<SettingsInfoBlock type="UInt64" default_value="8" />用于在后台将 MergeTree 引擎表的数据分区片段移动到其他磁盘或卷的最大线程数。
+
+## background&#95;pool&#95;size {#background_pool_size}
 
 <SettingsInfoBlock type="UInt64" default_value="16" />
-设置执行 MergeTree 引擎表的后台合并和变更的线程数。
+
+设置用于对 MergeTree 引擎表执行后台合并和变更操作的线程数量。
 
 :::note
-- 此设置也可以在服务器启动时从 `default` 配置文件配置，以保持与 ClickHouse 服务器启动时的向后兼容性。
-- 您只能在运行时增加线程数。
-- 要降低线程数，您必须重新启动服务器。
-- 通过调整此设置，您可以管理 CPU 和磁盘负载。
-:::
+
+* 为了在 ClickHouse 服务器启动时保持向后兼容性，也可以在服务器启动时通过 `default` profile 配置来应用此设置。
+* 在运行时，只能增加线程数量。
+* 要减少线程数量，必须重启服务器。
+* 通过调整此设置，可以管理 CPU 和磁盘负载。
+  :::
 
 :::danger
-较小的池大小会利用较少的 CPU 和磁盘资源，但后台进程的推进速度较慢，这可能最终会影响查询性能。
+较小的池大小会使用更少的 CPU 和磁盘资源，但后台进程推进得更慢，最终可能会影响查询性能。
 :::
 
-在更改之前，请查看相关的 MergeTree 设置，例如：
-- [`number_of_free_entries_in_pool_to_lower_max_size_of_merge`](../../operations/settings/merge-tree-settings.md#number_of_free_entries_in_pool_to_lower_max_size_of_merge).
-- [`number_of_free_entries_in_pool_to_execute_mutation`](../../operations/settings/merge-tree-settings.md#number_of_free_entries_in_pool_to_execute_mutation).
+在修改该设置之前，请同时查看相关的 MergeTree 设置，例如：
+
+* [`number_of_free_entries_in_pool_to_lower_max_size_of_merge`](../../operations/settings/merge-tree-settings.md#number_of_free_entries_in_pool_to_lower_max_size_of_merge)。
+* [`number_of_free_entries_in_pool_to_execute_mutation`](../../operations/settings/merge-tree-settings.md#number_of_free_entries_in_pool_to_execute_mutation)。
+* [`number_of_free_entries_in_pool_to_execute_optimize_entire_partition`](/operations/settings/merge-tree-settings#number_of_free_entries_in_pool_to_execute_optimize_entire_partition)
 
 **示例**
 
 ```xml
 <background_pool_size>16</background_pool_size>
 ```
+
+## background_schedule_pool_max_parallel_tasks_per_type_ratio {#background_schedule_pool_max_parallel_tasks_per_type_ratio} 
+
+<SettingsInfoBlock type="Float" default_value="0.8" />线程池中可同时执行同一类型任务的线程最大比例。
+
 ## background_schedule_pool_size {#background_schedule_pool_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="512" />用于持续执行复制表、Kafka 流和 DNS 缓存更新的一些轻量级定期操作的最大线程数。
-## backup_log {#backup_log} 
+<SettingsInfoBlock type="UInt64" default_value="512" />用于持续执行复制表、Kafka 流式处理以及 DNS 缓存更新等轻量级周期性操作所能使用的最大线程数。
 
-设置用于 [backup_log](../../operations/system-tables/backup_log.md) 系统表以记录 `BACKUP` 和 `RESTORE` 操作。
+## backup&#95;log {#backup_log}
 
-<SystemLogParameters/>
+用于记录 `BACKUP` 和 `RESTORE` 操作的 [backup&#95;log](../../operations/system-tables/backup_log.md) 系统表的设置。
+
+<SystemLogParameters />
 
 **示例**
 
@@ -297,48 +357,98 @@ ClickHouse 服务器存储由 SQL 命令创建的用户和角色配置的文件�
     </backup_log>
 </clickhouse>
 ```
+
 ## backup_threads {#backup_threads} 
 
-<SettingsInfoBlock type="NonZeroUInt64" default_value="16" />执行 `BACKUP` 请求的最大线程数。
-## backups {#backups} 
+<SettingsInfoBlock type="NonZeroUInt64" default_value="16" />用于执行 `BACKUP` 请求的最大线程数。
 
-执行 `BACKUP TO File()` 时使用的备份设置。
+## 备份 {#backups}
+
+与备份相关的设置，在执行 [`BACKUP` 和 `RESTORE`](/operations/backup/overview) 语句时使用。
 
 以下设置可以通过子标签进行配置：
 
-| 设置                                   | 描述                                                                                                                                                                 | 默认   |
-|---------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------|
-| `allowed_path`                       | 使用 `File()` 时备份的路径。必须设置此设置以使用 `File`。该路径可以相对于实例目录，也可以是绝对路径。                                                             | `true`  |
-| `remove_backup_files_after_failure` | 如果 `BACKUP` 命令失败，ClickHouse 将尝试在失败之前删除已复制到备份的文件；否则将保留已复制的文件。                                                               | `true`  |
+{/* SQL
+  WITH settings AS (
+  SELECT arrayJoin([
+    ('allow_concurrent_backups', 'Bool','确定是否允许在同一主机上并发运行多个备份操作。', 'true'),
+    ('allow_concurrent_restores', 'Bool', '确定是否允许在同一主机上并发运行多个恢复操作。', 'true'),
+    ('allowed_disk', 'String', '使用 `File()` 进行备份时要使用的磁盘。必须先设置此项才能使用 `File`。', ''),
+    ('allowed_path', 'String', '使用 `File()` 进行备份时要使用的路径。必须先设置此项才能使用 `File`。', ''),
+    ('attempts_to_collect_metadata_before_sleep', 'UInt', '在比较已收集的元数据后发现不一致时，在进入休眠前尝试收集元数据的次数。', '2'),
+    ('collect_metadata_timeout', 'UInt64', '备份期间收集元数据的超时时间（毫秒）。', '600000'),
+    ('compare_collected_metadata', 'Bool', '如果为 true，则将收集到的元数据与现有元数据进行比较，以确保它们在备份期间未发生更改。', 'true'),
+    ('create_table_timeout', 'UInt64', '恢复期间创建表的超时时间（毫秒）。', '300000'),
+    ('max_attempts_after_bad_version', 'UInt64', '在协调备份/恢复过程中遇到版本错误后重试的最大尝试次数。', '3'),
+    ('max_sleep_before_next_attempt_to_collect_metadata', 'UInt64', '在下一次尝试收集元数据之前的最长休眠时间（毫秒）。', '100'),
+    ('min_sleep_before_next_attempt_to_collect_metadata', 'UInt64', '在下一次尝试收集元数据之前的最短休眠时间（毫秒）。', '5000'),
+    ('remove_backup_files_after_failure', 'Bool', '如果 `BACKUP` 命令失败，ClickHouse 将尝试删除在失败前已复制到备份中的文件；否则将保留已复制的文件不变。', 'true'),
+    ('sync_period_ms', 'UInt64', '协调备份/恢复的同步周期（毫秒）。', '5000'),
+    ('test_inject_sleep', 'Bool', '测试相关的休眠设置。', 'false'),
+    ('test_randomize_order', 'Bool', '如果为 true，则会随机化某些操作的顺序以用于测试。', 'false'),
+    ('zookeeper_path', 'String', '使用 `ON CLUSTER` 子句时，在 ZooKeeper 中存储备份和恢复元数据的路径。', '/clickhouse/backups')
+  ]) AS t )
+  SELECT concat('`', t.1, '`') AS Setting, t.2 AS Type, t.3 AS Description, concat('`', t.4, '`') AS Default FROM settings FORMAT Markdown
+  */ }
 
-此设置默认配置为：
+
+| Setting                                             | Type   | Description                                                    | Default               |
+| :-------------------------------------------------- | :----- | :------------------------------------------------------------- | :-------------------- |
+| `allow_concurrent_backups`                          | Bool   | 决定是否允许在同一主机上并发运行多个备份操作。                                        | `true`                |
+| `allow_concurrent_restores`                         | Bool   | 决定是否允许在同一主机上并发运行多个恢复操作。                                        | `true`                |
+| `allowed_disk`                                      | String | 使用 `File()` 时备份所用的磁盘。必须设置此设置才能使用 `File`。                       | ``                    |
+| `allowed_path`                                      | String | 使用 `File()` 时备份所用的路径。必须设置此设置才能使用 `File`。                       | ``                    |
+| `attempts_to_collect_metadata_before_sleep`         | UInt   | 在比较已收集的元数据后发现不一致时，在进入休眠前尝试重新收集元数据的次数。                          | `2`                   |
+| `collect_metadata_timeout`                          | UInt64 | 备份期间收集元数据的超时时间（毫秒）。                                            | `600000`              |
+| `compare_collected_metadata`                        | Bool   | 若为 true，则将收集到的元数据与现有元数据进行比较，以确保它们在备份期间未发生更改。                   | `true`                |
+| `create_table_timeout`                              | UInt64 | 恢复期间创建表的超时时间（毫秒）。                                              | `300000`              |
+| `max_attempts_after_bad_version`                    | UInt64 | 在协调备份/恢复过程中遇到 bad version 错误后的最大重试次数。                          | `3`                   |
+| `max_sleep_before_next_attempt_to_collect_metadata` | UInt64 | 在下一次尝试收集元数据之前的最大休眠时间（毫秒）。                                      | `100`                 |
+| `min_sleep_before_next_attempt_to_collect_metadata` | UInt64 | 在下一次尝试收集元数据之前的最小休眠时间（毫秒）。                                      | `5000`                |
+| `remove_backup_files_after_failure`                 | Bool   | 如果 `BACKUP` 命令失败，ClickHouse 将尝试删除在失败前已复制到备份中的文件，否则将保留这些已复制的文件。 | `true`                |
+| `sync_period_ms`                                    | UInt64 | 协调备份/恢复的同步周期（毫秒）。                                              | `5000`                |
+| `test_inject_sleep`                                 | Bool   | 用于测试的休眠注入控制。                                                   | `false`               |
+| `test_randomize_order`                              | Bool   | 若为 true，则会为了测试目的随机化某些操作的执行顺序。                                  | `false`               |
+| `zookeeper_path`                                    | String | 使用 `ON CLUSTER` 子句时，在 ZooKeeper 中存储备份和恢复元数据的路径。                | `/clickhouse/backups` |
+
+该设置的默认配置如下：
 
 ```xml
 <backups>
-    <allowed_path>backups</allowed_path>
-    <remove_backup_files_after_failure>true</remove_backup_files_after_failure>
+    ....
 </backups>
 ```
+
 ## backups_io_thread_pool_queue_size {#backups_io_thread_pool_queue_size} 
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
-可以在备份 IO 线程池上调度的最大作业数。建议由于当前的 S3 备份逻辑保持此队列无限制。
+
+可调度到 Backups IO 线程池中的作业的最大数量。鉴于当前的 S3 备份逻辑，建议将此队列大小设置为无限制。
 
 :::note
 值为 `0`（默认）表示无限制。
 :::
-## bcrypt_workfactor {#bcrypt_workfactor} 
 
-使用 [Bcrypt algorithm](https://wildlyinaccurate.com/bcrypt-choosing-a-work-factor/) 的 bcrypt_password 身份验证类型的工作因子。
+## bcrypt&#95;workfactor {#bcrypt_workfactor}
+
+`bcrypt_password` 认证类型的工作因子（work factor），该类型使用 [Bcrypt 算法](https://wildlyinaccurate.com/bcrypt-choosing-a-work-factor/)。
+工作因子决定了计算哈希值以及验证密码所需的计算量和时间。
 
 ```xml
 <bcrypt_workfactor>12</bcrypt_workfactor>
 ```
-## blog_storage_log {#blog_storage_log} 
 
-[`blob_storage_log`](../system-tables/blob_storage_log.md) 系统表的设置。
+:::warning
+对于身份验证频率较高的应用，
+请考虑采用其他身份验证方法，因为在较高工作因子下，
+bcrypt 的计算开销会显著增加。
+:::
 
-<SystemLogParameters/>
+## blob&#95;storage&#95;log {#blob_storage_log}
+
+[`blob_storage_log`](../system-tables/blob_storage_log.md) 系统表的相关设置。
+
+<SystemLogParameters />
 
 示例：
 
@@ -351,61 +461,49 @@ ClickHouse 服务器存储由 SQL 命令创建的用户和角色配置的文件�
     <ttl>event_date + INTERVAL 30 DAY</ttl>
 </blob_storage_log>
 ```
-## builtin_dictionaries_reload_interval {#builtin_dictionaries_reload_interval} 
 
-重新加载内置字典前的时间间隔（以秒为单位）。
+## builtin&#95;dictionaries&#95;reload&#95;interval {#builtin_dictionaries_reload_interval}
 
-ClickHouse 每 x 秒重新加载内置字典。这使得在不重新启动服务器的情况下“动态”编辑字典成为可能。
+内置字典重新加载的时间间隔（秒）。
+
+ClickHouse 每隔 x 秒会重新加载一次内置字典。这样可以在无需重启服务器的情况下“实时”编辑字典。
 
 **示例**
 
 ```xml
 <builtin_dictionaries_reload_interval>3600</builtin_dictionaries_reload_interval>
 ```
+
 ## cache_size_to_ram_max_ratio {#cache_size_to_ram_max_ratio} 
 
-<SettingsInfoBlock type="Double" default_value="0.5" />设置缓存大小对 RAM 最大比例。允许在低内存系统上降低缓存大小。
+<SettingsInfoBlock type="Double" default_value="0.5" />将缓存大小设置为 RAM 的最大占比。可在低内存系统上减小缓存大小。
+
 ## cannot_allocate_thread_fault_injection_probability {#cannot_allocate_thread_fault_injection_probability} 
 
-<SettingsInfoBlock type="Double" default_value="0" />用于测试目的。
-## cgroup_memory_watcher_hard_limit_ratio {#cgroup_memory_watcher_hard_limit_ratio} 
+<SettingsInfoBlock type="Double" default_value="0" />用于测试。
 
-<SettingsInfoBlock type="Double" default_value="0.95" />
-指定根据 cgroups 的服务器进程的内存消耗“硬”阈值，达到该阈值后，服务器的最大内存消耗将调整为阈值值。
-
-请参见设置:
-- [`cgroups_memory_usage_observer_wait_time`](/operations/server-configuration-parameters/settings#cgroups_memory_usage_observer_wait_time)
-- [`cgroup_memory_watcher_soft_limit_ratio`](/operations/server-configuration-parameters/settings#cgroup_memory_watcher_soft_limit_ratio)
-## cgroup_memory_watcher_soft_limit_ratio {#cgroup_memory_watcher_soft_limit_ratio} 
-
-<SettingsInfoBlock type="Double" default_value="0.9" />
-指定根据 cgroups 的服务器进程的内存消耗的“软”阈值，达到该阈值后会清除 jemalloc 中的 arena。
-
-请参见设置:
-- [`cgroups_memory_usage_observer_wait_time`](/operations/server-configuration-parameters/settings#cgroups_memory_usage_observer_wait_time)
-- [`cgroup_memory_watcher_hard_limit_ratio`](/operations/server-configuration-parameters/settings#cgroup_memory_watcher_hard_limit_ratio)
 ## cgroups_memory_usage_observer_wait_time {#cgroups_memory_usage_observer_wait_time} 
 
 <SettingsInfoBlock type="UInt64" default_value="15" />
-调整服务器最大允许内存消耗的时间间隔（以秒为单位），根据 cgroups 的相应阈值进行调整。
 
-要禁用 cgroup 观察者，请将此值设置为 `0`。
+以秒为单位的时间间隔，在此期间服务器允许的最大内存使用量会根据 cgroups 中对应的阈值进行调整。
 
-请参见设置:
-- [`cgroup_memory_watcher_hard_limit_ratio`](/operations/server-configuration-parameters/settings#cgroup_memory_watcher_hard_limit_ratio)
-- [`cgroup_memory_watcher_soft_limit_ratio`](/operations/server-configuration-parameters/settings#cgroup_memory_watcher_soft_limit_ratio)。
+要禁用 cgroup 观察器，将该值设置为 `0`。
+
 ## compiled_expression_cache_elements_size {#compiled_expression_cache_elements_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="10000" />设置 [compiled expressions](../../operations/caches.md) 的缓存大小（以元素为单位）。
+<SettingsInfoBlock type="UInt64" default_value="10000" />设置用于[编译表达式](../../operations/caches.md)的缓存大小（以元素个数计）。
+
 ## compiled_expression_cache_size {#compiled_expression_cache_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="134217728" />设置 [compiled expressions](../../operations/caches.md) 的缓存大小（以字节为单位）。
-## compression {#compression} 
+<SettingsInfoBlock type="UInt64" default_value="134217728" /> 设置 [已编译表达式](../../operations/caches.md) 的缓存大小（以字节为单位）。
+
+## compression {#compression}
 
 用于 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 引擎表的数据压缩设置。
 
 :::note
-我们建议在刚开始使用 ClickHouse 时不要更改此设置。
+如果你刚开始使用 ClickHouse，我们建议不要修改该配置。
 :::
 
 **配置模板**：
@@ -424,22 +522,22 @@ ClickHouse 每 x 秒重新加载内置字典。这使得在不重新启动服务
 
 **`<case>` 字段**：
 
-- `min_part_size` – 数据部分的最小大小。
-- `min_part_size_ratio` – 数据部分大小与表大小的比率。
-- `method` – 压缩方法。可接受值：`lz4`、`lz4hc`、`zstd`、`deflate_qpl`。
-- `level` – 压缩级别。请参阅 [Codecs](/sql-reference/statements/create/table#general-purpose-codecs)。
+* `min_part_size` – 数据分片的最小大小。
+* `min_part_size_ratio` – 数据分片大小与表大小的比例。
+* `method` – 压缩方法。可接受的值：`lz4`、`lz4hc`、`zstd`、`deflate_qpl`。
+* `level` – 压缩级别。参见 [Codecs](/sql-reference/statements/create/table#general-purpose-codecs)。
 
 :::note
-您可以配置多个 `<case>` 部分。
+你可以配置多个 `<case>` 段。
 :::
 
 **满足条件时的操作**：
 
-- 如果数据部分符合设置的条件，ClickHouse 将使用指定的压缩方法。
-- 如果数据部分符合多个条件集，ClickHouse 将使用第一个匹配的条件集。
+* 如果一个数据分片满足某个条件集，ClickHouse 使用指定的压缩方法。
+* 如果一个数据分片满足多个条件集，ClickHouse 使用第一个匹配的条件集。
 
 :::note
-如果数据部分没有满足条件，ClickHouse 将使用 `lz4` 压缩。
+如果某个数据分片不满足任何条件，ClickHouse 使用 `lz4` 压缩。
 :::
 
 **示例**
@@ -454,36 +552,44 @@ ClickHouse 每 x 秒重新加载内置字典。这使得在不重新启动服务
     </case>
 </compression>
 ```
+
 ## concurrent_threads_scheduler {#concurrent_threads_scheduler} 
 
-<SettingsInfoBlock type="String" default_value="round_robin" />
-对 `concurrent_threads_soft_limit_num` 和 `concurrent_threads_soft_limit_ratio_to_cores` 所指定的 CPU 时隙的调度策略。用于管理有限的 CPU 时隙在并发查询之间的分配的算法。调度程序可在运行时更改，而无需重新启动服务器。
+<SettingsInfoBlock type="String" default_value="fair_round_robin" />
 
-可能的值：
+由 `concurrent_threads_soft_limit_num` 和 `concurrent_threads_soft_limit_ratio_to_cores` 指定的 CPU 插槽调度策略。该算法用于控制在受限数量的 CPU 插槽下，如何在并发查询之间进行分配。调度器可以在运行时更改，而无需重启服务器。
 
-- `round_robin` — 每个设置 `use_concurrency_control` = 1 的查询最多分配 `max_threads` 个 CPU 时隙。每个线程一个时隙。在竞争时，CPU 时隙将按轮询分配给查询。请注意，第一个时隙无条件分配，这可能导致不公平性，并在查询数较多且高 `max_threads` 的情况下提高查询延迟。
-- `fair_round_robin` — 每个设置 `use_concurrency_control` = 1 的查询最多分配 `max_threads - 1` 个 CPU 时隙。`round_robin` 的变化，不需要为每个查询的第一个线程分配 CPU 时隙。这样，`max_threads` = 1 的查询不需要任何时隙，并且不会不公平地分配所有时隙。没有无条件授予的时隙。
+可能的取值：
+
+- `round_robin` — 每个 `use_concurrency_control` = 1 的查询最多分配 `max_threads` 个 CPU 插槽，每个线程一个插槽。在发生竞争时，CPU 插槽按轮询方式（round-robin）分配给各个查询。注意，第一个插槽是无条件授予的，这在存在大量 `max_threads` = 1 的查询时，可能导致 `max_threads` 较大的查询受到不公平对待并产生更高的延迟。
+- `fair_round_robin` — 每个 `use_concurrency_control` = 1 的查询最多分配 `max_threads - 1` 个 CPU 插槽。这是 `round_robin` 的一种变体，它不要求每个查询的第一个线程必须占用一个 CPU 插槽。这样，`max_threads` = 1 的查询不需要任何插槽，也就不会不公平地占用全部插槽。不会无条件授予任何插槽。
+
 ## concurrent_threads_soft_limit_num {#concurrent_threads_soft_limit_num} 
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
-运行所有查询时，允许的查询处理线程的最大数量，排除从远程服务器检索数据的线程。这不是硬限制。如果达到限制，查询仍然会至少获取一个线程进行运行。如果在执行期间有更多线程可用，查询可以升级到所需的线程数。
+
+允许用于运行所有查询的最大查询处理线程总数，不包括用于从远程服务器获取数据的线程。该值不是严格的硬限制。如果达到该限制，查询仍然至少会获得一个线程来运行。如果在执行期间有更多线程可用，查询可以按需扩展到期望的线程数。
 
 :::note
 值为 `0`（默认）表示无限制。
 :::
+
 ## concurrent_threads_soft_limit_ratio_to_cores {#concurrent_threads_soft_limit_ratio_to_cores} 
 
-<SettingsInfoBlock type="UInt64" default_value="0" />与 [`concurrent_threads_soft_limit_num`](#concurrent_threads_soft_limit_num) 相同，但与核心的比例。
+<SettingsInfoBlock type="UInt64" default_value="0" />与 [`concurrent_threads_soft_limit_num`](#concurrent_threads_soft_limit_num) 相同，但按 CPU 核心数的比例来表示。
+
 ## config_reload_interval_ms {#config_reload_interval_ms} 
 
 <SettingsInfoBlock type="UInt64" default_value="2000" />
-ClickHouse 多久将重新加载配置并检查新更改。
-## core_dump {#core_dump} 
 
-配置核心转储文件大小的软限制。
+ClickHouse 重新加载配置并检查是否存在新变更的时间间隔
+
+## core&#95;dump {#core_dump}
+
+配置 core dump 文件大小的软限制。
 
 :::note
-硬限制由系统工具配置。
+硬限制通过系统工具配置。
 :::
 
 **示例**
@@ -493,13 +599,81 @@ ClickHouse 多久将重新加载配置并检查新更改。
      <size_limit>1073741824</size_limit>
 </core_dump>
 ```
-## crash_log {#crash_log} 
 
-用于 [crash_log](../../operations/system-tables/crash-log.md) 系统表操作的设置。
+## cpu&#95;slot&#95;preemption {#cpu_slot_preemption}
 
-<SystemLogParameters/>
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-默认服务器配置文件 `config.xml` 包含以下设置部分：
+定义如何在 CPU 资源（MASTER THREAD 和 WORKER THREAD）上进行工作负载调度。
+
+* 如果为 `true`（推荐），计量基于实际消耗的 CPU 时间。会为相互竞争的工作负载分配公平数量的 CPU 时间。slot 会在有限的一段时间内被分配，到期后需要重新请求。在 CPU 资源过载时，请求 slot 可能会阻塞线程执行，即可能发生抢占。这能够保证 CPU 时间使用上的公平性。
+* 如果为 `false`（默认），计量基于分配的 CPU slot 数量。会为相互竞争的工作负载分配公平数量的 CPU slot。线程启动时分配一个 slot，在线程执行期间持续持有，在线程结束执行时释放。用于执行查询的线程数只能从 1 增加到 `max_threads`，且不会减少。这种方式对长时间运行的查询更有利，但可能导致短查询出现 CPU 资源饥饿。
+
+**Example**
+
+```xml
+<cpu_slot_preemption>true</cpu_slot_preemption>
+```
+
+**另请参阅**
+
+* [工作负载调度](/operations/workload-scheduling.md)
+
+## cpu&#95;slot&#95;preemption&#95;timeout&#95;ms {#cpu_slot_preemption_timeout_ms}
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+它定义了在抢占期间工作线程最多可以等待多少毫秒，即等待分配到另一个 CPU slot 的时间。超过该超时时间后，如果线程仍未能获取新的 CPU slot，则会退出，该查询会被动态缩减为更少数量的并发执行线程。注意主线程不会被缩减，但可能会被无限期抢占。只有在启用了 `cpu_slot_preemption` 且为 WORKER THREAD 定义了 CPU 资源时，此设置才有意义。
+
+**示例**
+
+```xml
+<cpu_slot_preemption_timeout_ms>1000</cpu_slot_preemption_timeout_ms>
+```
+
+**另请参阅**
+
+* [工作负载调度](/operations/workload-scheduling.md)
+
+## cpu&#95;slot&#95;quantum&#95;ns {#cpu_slot_quantum_ns}
+
+<SettingsInfoBlock type="UInt64" default_value="10000000" />
+
+该参数定义了线程在获取一个 CPU 插槽后到需要再次请求 CPU 插槽之前允许消耗的 CPU 纳秒数。仅当启用了 `cpu_slot_preemption` 且为 MASTER THREAD 或 WORKER THREAD 定义了 CPU 资源时才生效。
+
+**示例**
+
+```xml
+<cpu_slot_quantum_ns>10000000</cpu_slot_quantum_ns>
+```
+
+**另请参阅**
+
+* [工作负载调度](/operations/workload-scheduling.md)
+
+## crash&#95;log {#crash_log}
+
+[crash&#95;log](../../operations/system-tables/crash_log.md) 系统表操作的相关设置。
+
+以下设置可以通过子标签进行配置：
+
+| Setting                            | Description                                                                                                       | Default             | Note                                                               |
+| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ------------------- | ------------------------------------------------------------------ |
+| `database`                         | 数据库名称。                                                                                                            |                     |                                                                    |
+| `table`                            | 系统表名称。                                                                                                            |                     |                                                                    |
+| `engine`                           | 系统表的 [MergeTree 引擎定义](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-creating-a-table)。 |                     | 如果定义了 `partition_by` 或 `order_by`，则不能使用该参数。如果未指定，则默认选择 `MergeTree` |
+| `partition_by`                     | 系统表的[自定义分区键](/engines/table-engines/mergetree-family/custom-partitioning-key.md)。                                 |                     | 如果为系统表指定了 `engine`，则必须在 &#39;engine&#39; 内直接指定 `partition_by` 参数   |
+| `ttl`                              | 指定表的[生存时间 (TTL)](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl)。                   |                     | 如果为系统表指定了 `engine`，则必须在 &#39;engine&#39; 内直接指定 `ttl` 参数            |
+| `order_by`                         | 系统表的[自定义排序键](/engines/table-engines/mergetree-family/mergetree#order_by)。如果定义了 `engine`，则不能使用该参数。                 |                     | 如果为系统表指定了 `engine`，则必须在 &#39;engine&#39; 内直接指定 `order_by` 参数       |
+| `storage_policy`                   | 表所使用的存储策略名称（可选）。                                                                                                  |                     | 如果为系统表指定了 `engine`，则必须在 &#39;engine&#39; 内直接指定 `storage_policy` 参数 |
+| `settings`                         | 控制 MergeTree 行为的[附加参数](/engines/table-engines/mergetree-family/mergetree/#settings)（可选）。                          |                     | 如果为系统表指定了 `engine`，则必须在 &#39;engine&#39; 内直接指定 `settings` 参数       |
+| `flush_interval_milliseconds`      | 将数据从内存缓冲区刷写到表的时间间隔。                                                                                               | `7500`              |                                                                    |
+| `max_size_rows`                    | 日志的最大行数。当未刷新的日志数量达到 `max_size_rows` 时，日志会被写入磁盘。                                                                   | `1024`              |                                                                    |
+| `reserved_size_rows`               | 为日志预分配的内存行数。                                                                                                      | `1024`              |                                                                    |
+| `buffer_size_rows_flush_threshold` | 行数阈值。如果达到该阈值，则会在后台触发将日志刷写到磁盘。                                                                                     | `max_size_rows / 2` |                                                                    |
+| `flush_on_crash`                   | 设置在发生崩溃时是否需要将日志写入磁盘。                                                                                              | `false`             |                                                                    |
+
+默认的服务器配置文件 `config.xml` 包含以下设置部分：
 
 ```xml
 <crash_log>
@@ -513,15 +687,18 @@ ClickHouse 多久将重新加载配置并检查新更改。
     <flush_on_crash>false</flush_on_crash>
 </crash_log>
 ```
-## custom_cached_disks_base_directory {#custom_cached_disks_base_directory} 
 
-此设置指定自定义（通过 SQL 创建的）缓存磁盘的缓存路径。
-`custom_cached_disks_base_directory` 对自定义磁盘的优先级高于 `filesystem_caches_path`（在 `filesystem_caches_path.xml` 中），如果前者不存在，则使用后者。
-文件系统缓存设置路径必须位于该目录内，否则会抛出异常，阻止磁盘的创建。
+## custom&#95;cached&#95;disks&#95;base&#95;directory {#custom_cached_disks_base_directory}
+
+此设置用于指定自定义（通过 SQL 创建的）缓存磁盘的缓存路径。
+对于自定义磁盘，`custom_cached_disks_base_directory` 的优先级高于 `filesystem_caches_path`（定义在 `filesystem_caches_path.xml` 中），
+如果前者未配置，则会使用后者。
+文件系统缓存的路径配置必须位于该目录之内，
+否则将抛出异常，阻止磁盘被创建。
 
 :::note
-这不会影响在服务器升级的旧版本上创建的磁盘。
-在这种情况下，不会抛出异常，以允许服务器成功启动。
+这不会影响在旧版本中已创建、且随后升级服务器时保留的磁盘。
+在这种情况下，为了使服务器能够成功启动，将不会抛出异常。
 :::
 
 示例：
@@ -529,9 +706,10 @@ ClickHouse 多久将重新加载配置并检查新更改。
 ```xml
 <custom_cached_disks_base_directory>/var/lib/clickhouse/caches/</custom_cached_disks_base_directory>
 ```
-## custom_settings_prefixes {#custom_settings_prefixes} 
 
-[custom settings](/operations/settings/query-level#custom_settings) 的前缀列表。前缀必须用逗号分隔。
+## custom&#95;settings&#95;prefixes {#custom_settings_prefixes}
+
+[自定义设置](/operations/settings/query-level#custom_settings) 的前缀列表。这些前缀必须用逗号分隔。
 
 **示例**
 
@@ -539,79 +717,122 @@ ClickHouse 多久将重新加载配置并检查新更改。
 <custom_settings_prefixes>custom_</custom_settings_prefixes>
 ```
 
-**另请参见**
+**另请参阅**
 
-- [自定义设置](/operations/settings/query-level#custom_settings)
+* [自定义设置](/operations/settings/query-level#custom_settings)
+
 ## database_atomic_delay_before_drop_table_sec {#database_atomic_delay_before_drop_table_sec} 
 
 <SettingsInfoBlock type="UInt64" default_value="480" />
-在此期间，可以使用 [`UNDROP`](/sql-reference/statements/undrop.md) 语句恢复已删除的表。如果 `DROP TABLE` 以 `SYNC` 修饰符运行，则该设置将被忽略。
+
+在此延迟时间内，可以使用 [`UNDROP`](/sql-reference/statements/undrop.md) 语句恢复已删除的表。如果 `DROP TABLE` 使用 `SYNC` 修饰符运行，则该设置将被忽略。
 此设置的默认值为 `480`（8 分钟）。
+
 ## database_catalog_drop_error_cooldown_sec {#database_catalog_drop_error_cooldown_sec} 
 
-<SettingsInfoBlock type="UInt64" default_value="5" />在表删除失败的情况下，ClickHouse 将在重试操作之前等待此超时。
+<SettingsInfoBlock type="UInt64" default_value="5" />如果删除表失败，ClickHouse 会在等待该超时时间后重新尝试该操作。
+
 ## database_catalog_drop_table_concurrency {#database_catalog_drop_table_concurrency} 
 
-<SettingsInfoBlock type="UInt64" default_value="16" />用于删除表的线程池的大小。
+<SettingsInfoBlock type="UInt64" default_value="16" />用于执行删除表操作的线程池大小。
+
 ## database_catalog_unused_dir_cleanup_period_sec {#database_catalog_unused_dir_cleanup_period_sec} 
 
 <SettingsInfoBlock type="UInt64" default_value="86400" />
-清理 `store/` 目录中的垃圾的任务参数。
-设置任务的调度周期。
+
+用于清理 `store/` 目录中无用数据的任务参数。
+设置该任务的调度周期。
 
 :::note
-值为 `0` 表示“从不”。默认值对应于 1 天。
+值为 `0` 表示“从不”。默认值对应 1 天。
 :::
+
 ## database_catalog_unused_dir_hide_timeout_sec {#database_catalog_unused_dir_hide_timeout_sec} 
 
 <SettingsInfoBlock type="UInt64" default_value="3600" />
-清理 `store/` 目录中的垃圾的任务参数。
-如果某个子目录未被 clickhouse-server 使用，并且在 [`database_catalog_unused_dir_hide_timeout_sec`](/operations/server-configuration-parameters/settings#database_catalog_unused_dir_hide_timeout_sec) 秒内未做修改，则该任务将“隐藏”该目录，通过移除所有访问权限来实现。它也适用于 clickhouse-server 不希望在 `store/` 目录中看到的目录。
+
+用于清理 `store/` 目录中无用数据的任务参数。
+如果某个子目录未被 clickhouse-server 使用，且该目录在过去
+[`database_catalog_unused_dir_hide_timeout_sec`](/operations/server-configuration-parameters/settings#database_catalog_unused_dir_hide_timeout_sec) 秒内未被修改，则该任务会通过
+移除所有访问权限来“隐藏”该目录。对于 clickhouse-server 不期望出现在 `store/` 内的目录，同样适用。
 
 :::note
-值为 `0` 表示“立即”。
+取值为 `0` 表示“立即”。
 :::
+
 ## database_catalog_unused_dir_rm_timeout_sec {#database_catalog_unused_dir_rm_timeout_sec} 
 
 <SettingsInfoBlock type="UInt64" default_value="2592000" />
-清理 `store/` 目录中的垃圾的任务参数。
-如果某个子目录未被 clickhouse-server 使用，并且该目录先前已被“隐藏”（请参见 [database_catalog_unused_dir_hide_timeout_sec](/operations/server-configuration-parameters/settings#database_catalog_unused_dir_hide_timeout_sec)），并且在 [`database_catalog_unused_dir_rm_timeout_sec`](/operations/server-configuration-parameters/settings#database_catalog_unused_dir_rm_timeout_sec) 秒内没有做修改，该任务将删除此目录。
-它也适用于 clickhouse-server 不希望在 `store/` 目录中看到的目录。
+
+用于控制清理 `store/` 目录中垃圾任务的参数。
+如果某个子目录未被 clickhouse-server 使用，并且之前已被“隐藏”
+（参见 [database_catalog_unused_dir_hide_timeout_sec](/operations/server-configuration-parameters/settings#database_catalog_unused_dir_hide_timeout_sec)），
+且该目录在最近
+[`database_catalog_unused_dir_rm_timeout_sec`](/operations/server-configuration-parameters/settings#database_catalog_unused_dir_rm_timeout_sec) 秒内未被修改，则该任务会删除此目录。
+这同样适用于 clickhouse-server 不期望在 `store/` 中看到的目录。
 
 :::note
-值为 `0` 表示“从不”。默认值对应于 30 天。
+取值为 `0` 表示“从不删除”。默认值对应 30 天。
 :::
+
 ## database_replicated_allow_detach_permanently {#database_replicated_allow_detach_permanently} 
 
-<SettingsInfoBlock type="Bool" default_value="1" />允许在复制数据库中永久分离表。
+<SettingsInfoBlock type="Bool" default_value="1" />允许在 Replicated 数据库中永久分离（detach）表
+
+## database_replicated_drop_broken_tables {#database_replicated_drop_broken_tables} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />将 Replicated 数据库中出现的非预期表直接删除，而不是将它们移动到单独的本地数据库中
+
+## dead&#95;letter&#95;queue {#dead_letter_queue}
+
+&#39;dead&#95;letter&#95;queue&#39; 系统表的设置。
+
+<SystemLogParameters />
+
+默认设置如下：
+
+```xml
+<dead_letter_queue>
+    <database>system</database>
+    <table>dead_letter</table>
+    <partition_by>toYYYYMM(event_date)</partition_by>
+    <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+</dead_letter_queue>
+```
+
 ## default_database {#default_database} 
 
 <SettingsInfoBlock type="String" default_value="default" />默认数据库名称。
-## default_password_type {#default_password_type} 
 
-设置在像 `CREATE USER u IDENTIFIED BY 'p'` 这样的查询中自动设置的密码类型。
+## default&#95;password&#95;type {#default_password_type}
 
-接受的值为：
-- `plaintext_password`
-- `sha256_password`
-- `double_sha1_password`
-- `bcrypt_password`
+设置在 `CREATE USER u IDENTIFIED BY 'p'` 这类查询中自动使用的密码类型。
+
+可接受的值为：
+
+* `plaintext_password`
+* `sha256_password`
+* `double_sha1_password`
+* `bcrypt_password`
 
 ```xml
 <default_password_type>sha256_password</default_password_type>
 ```
-## default_profile {#default_profile} 
 
-默认设置配置文件。设置配置文件位于设置 `user_config` 指定的文件中。
+## default&#95;profile {#default_profile}
+
+默认的 SETTINGS PROFILE。SETTINGS PROFILE 位于由 `user_config` SETTING 指定的文件中。
 
 **示例**
 
 ```xml
 <default_profile>default</default_profile>
 ```
-## default_replica_name {#default_replica_name} 
+
+## default&#95;replica&#95;name {#default_replica_name}
 
 <SettingsInfoBlock type="String" default_value="{replica}" />
+
 ZooKeeper 中的副本名称。
 
 **示例**
@@ -619,9 +840,11 @@ ZooKeeper 中的副本名称。
 ```xml
 <default_replica_name>{replica}</default_replica_name>
 ```
-## default_replica_path {#default_replica_path} 
+
+## default&#95;replica&#95;path {#default_replica_path}
 
 <SettingsInfoBlock type="String" default_value="/clickhouse/tables/{uuid}/{shard}" />
+
 ZooKeeper 中表的路径。
 
 **示例**
@@ -629,40 +852,45 @@ ZooKeeper 中表的路径。
 ```xml
 <default_replica_path>/clickhouse/tables/{uuid}/{shard}</default_replica_path>
 ```
-## default_session_timeout {#default_session_timeout} 
 
-默认会话超时，以秒为单位。
+## default&#95;session&#95;timeout {#default_session_timeout}
+
+默认会话超时时长，单位为秒。
 
 ```xml
 <default_session_timeout>60</default_session_timeout>
 ```
-## dictionaries_config {#dictionaries_config} 
+
+## dictionaries&#95;config {#dictionaries_config}
 
 字典配置文件的路径。
 
 路径：
 
-- 指定绝对路径或相对于服务器配置文件的路径。
-- 路径可以包含通配符 * 和 ?。
+* 指定绝对路径或相对于服务器配置文件的相对路径。
+* 路径中可以包含通配符 * 和 ?。
 
-另见：
-- "[Dictionaries](../../sql-reference/dictionaries/index.md)".
+另请参阅：
+
+* “[Dictionaries](../../sql-reference/dictionaries/index.md)”。
 
 **示例**
 
 ```xml
 <dictionaries_config>*_dictionary.xml</dictionaries_config>
 ```
-## dictionaries_lazy_load {#dictionaries_lazy_load} 
+
+## dictionaries&#95;lazy&#95;load {#dictionaries_lazy_load}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
-字典的懒加载。
 
-- 如果为 `true`，则每个字典在首次使用时加载。如果加载失败，使用该字典的函数会抛出异常。
-- 如果为 `false`，则服务器在启动时加载所有字典。
+按需（惰性）加载字典。
+
+* 如果为 `true`，则每个字典在首次使用时才会加载。如果加载失败，使用该字典的函数会抛出异常。
+* 如果为 `false`，则服务器会在启动时加载所有字典。
 
 :::note
-服务器将在启动时等待所有字典加载完成，然后才能接收任何连接
+服务器在启动时会等待所有字典加载完成之后，才会开始接收任何连接
 （例外情况：如果 [`wait_dictionaries_load_at_startup`](/operations/server-configuration-parameters/settings#wait_dictionaries_load_at_startup) 被设置为 `false`）。
 :::
 
@@ -671,30 +899,35 @@ ZooKeeper 中表的路径。
 ```xml
 <dictionaries_lazy_load>true</dictionaries_lazy_load>
 ```
+
 ## dictionary_background_reconnect_interval {#dictionary_background_reconnect_interval} 
 
-<SettingsInfoBlock type="UInt64" default_value="1000" />启用 `background_reconnect` 的失败的 MySQL 和 Postgres 字典的重连尝试间隔（以毫秒为单位）。
+<SettingsInfoBlock type="UInt64" default_value="1000" />启用 `background_reconnect` 时，对失败的 MySQL 和 Postgres 字典进行重连尝试的时间间隔（毫秒）。
+
 ## disable_insertion_and_mutation {#disable_insertion_and_mutation} 
 
 <SettingsInfoBlock type="Bool" default_value="0" />
-禁用所有插入/更改/删除查询。此设置在需要只读节点以防止插入和变更影响读取性能时启用。
+
+禁用 insert/alter/delete 查询。如果需要将某些节点设置为只读，以避免插入和变更操作影响读取性能，可以启用此设置。即使启用了此设置，仍然允许向外部引擎（S3、DataLake、MySQL、PostrgeSQL、Kafka 等）执行插入操作。
+
 ## disable_internal_dns_cache {#disable_internal_dns_cache} 
 
-<SettingsInfoBlock type="Bool" default_value="0" />禁用内部 DNS 缓存。推荐在基础设施频繁变化的系统（如 Kubernetes）中操作 ClickHouse。
-## disable_tunneling_for_https_requests_over_http_proxy {#disable_tunneling_for_https_requests_over_http_proxy} 
+<SettingsInfoBlock type="Bool" default_value="0" />禁用内部 DNS 缓存。建议在基础设施经常变动的系统（例如 Kubernetes）中运行 ClickHouse 时禁用该选项。
 
-默认情况下，隧道（即 `HTTP CONNECT`）用于通过 `HTTP` 代理进行 `HTTPS` 请求。此设置可用于禁用它。
+## disable&#95;tunneling&#95;for&#95;https&#95;requests&#95;over&#95;http&#95;proxy {#disable_tunneling_for_https_requests_over_http_proxy}
 
-**no_proxy**
+默认情况下，会使用隧道（即 `HTTP CONNECT`）通过 `HTTP` 代理发送 `HTTPS` 请求。可以通过此设置将其禁用。
 
-默认情况下，所有请求将通过代理。为了禁用特定主机的代理，必须设置 `no_proxy` 变量。
-它可以在 `<proxy>` 子句中为列表和远程解析器设置，也可以作为环境变量为环境解析器设置。
-它支持 IP 地址、域名、子域名和 `'*'` 通配符以供完全绕过。前导点按 curl 的做法被去掉。
+**no&#95;proxy**
 
-**示例**
+默认情况下，所有请求都会通过代理。若要对特定主机禁用代理，必须设置 `no_proxy` 变量。
+它可以在 list 和 remote 解析器的 `<proxy>` 子句中设置，也可以作为 environment 解析器的环境变量来设置。
+它支持 IP 地址、域名、子域名，以及用于完全跳过代理的 `'*'` 通配符。前导点会被去除，其行为与 curl 相同。
 
-下面的配置绕过对 `clickhouse.cloud` 及其所有子域（例如，`auth.clickhouse.cloud`）的代理请求。
-同样适用于 GitLab，即使它有一个前导点。`gitlab.com` 和 `about.gitlab.com` 都会绕过代理。
+**Example**
+
+下面的配置会绕过对 `clickhouse.cloud` 及其所有子域名（例如 `auth.clickhouse.cloud`）的代理请求。
+对于 GitLab 也是同样的效果，即使它带有前导点。`gitlab.com` 和 `about.gitlab.com` 都会绕过代理。
 
 ```xml
 <proxy>
@@ -708,102 +941,136 @@ ZooKeeper 中表的路径。
     </https>
 </proxy>
 ```
+
+## disk_connections_hard_limit {#disk_connections_hard_limit} 
+
+<SettingsInfoBlock type="UInt64" default_value="200000" />如果在创建时达到此限制，将会抛出异常。将其设为 0 可关闭硬性限制。该限制适用于磁盘连接数。
+
 ## disk_connections_soft_limit {#disk_connections_soft_limit} 
 
-<SettingsInfoBlock type="UInt64" default_value="5000" />超过此限制的连接具有显著更短的生存时间。该限制适用于磁盘连接。
+<SettingsInfoBlock type="UInt64" default_value="5000" />超过此限制的连接，其存活时间会显著缩短。该限制适用于磁盘连接。
+
 ## disk_connections_store_limit {#disk_connections_store_limit} 
 
-<SettingsInfoBlock type="UInt64" default_value="30000" />超过此限制的连接在使用后被重置。设置为 0 以关闭连接缓存。该限制适用于磁盘连接。
+<SettingsInfoBlock type="UInt64" default_value="10000" />超过该上限的连接在使用后会被重置。将其设置为 0 可关闭连接缓存。该限制适用于磁盘连接。
+
 ## disk_connections_warn_limit {#disk_connections_warn_limit} 
 
-<SettingsInfoBlock type="UInt64" default_value="10000" /> 如果正在使用的连接数量高于此限制，则会将警告消息记录到日志。该限制适用于磁盘连接。
+<SettingsInfoBlock type="UInt64" default_value="8000" />如果正在使用的连接数超过该限制，将在日志中记录警告信息。该限制适用于磁盘连接。
+
 ## display_secrets_in_show_and_select {#display_secrets_in_show_and_select} 
 
 <SettingsInfoBlock type="Bool" default_value="0" />
-启用或禁用在 `SHOW` 和 `SELECT` 查询中显示表、数据库、表函数和字典的秘密。
 
-希望查看秘密的用户还必须具有
+启用或禁用在针对表、数据库、表函数和字典执行的 `SHOW` 和 `SELECT` 查询结果中显示机密信息。
+
+希望查看机密信息的用户还必须启用
 [`format_display_secrets_in_show_and_select` 格式设置](../settings/formats#format_display_secrets_in_show_and_select)
-开启，以及
+并具备
 [`displaySecretsInShowAndSelect`](/sql-reference/statements/grant#displaysecretsinshowandselect) 权限。
 
-可能的值：
+可能的取值：
 
 - `0` — 禁用。
 - `1` — 启用。
+
+## distributed_cache_apply_throttling_settings_from_client {#distributed_cache_apply_throttling_settings_from_client} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />缓存服务器是否应应用客户端传来的限流设置。
+
 ## distributed_cache_keep_up_free_connections_ratio {#distributed_cache_keep_up_free_connections_ratio} 
 
-<SettingsInfoBlock type="Float" default_value="0.1" />Active 连接的软限制，分布式缓存将尝试保持自由。 当自由连接的数量低于 distributed_cache_keep_up_free_connections_ratio * max_connections 时，将关闭最旧活动的连接，直到数量超过限制。
-## distributed_ddl {#distributed_ddl} 
+<SettingsInfoBlock type="Float" default_value="0.1" />分布式缓存尝试保持的空闲连接数量的软限制。当空闲连接数低于 distributed_cache_keep_up_free_connections_ratio * max_connections 时，将关闭空闲时间最长的连接，直到空闲连接数重新高于该限制。
 
-管理在集群上执行 [distributed ddl 查询](../../sql-reference/distributed-ddl.md)（`CREATE`、`DROP`、`ALTER`、`RENAME`）。
-仅在启用 [ZooKeeper](/operations/server-configuration-parameters/settings#zookeeper) 时有效。
+## distributed&#95;ddl {#distributed_ddl}
 
-`<distributed_ddl>` 中的可配置设置包括：
+在集群上管理执行[分布式 DDL 查询](../../sql-reference/distributed-ddl.md)（`CREATE`、`DROP`、`ALTER`、`RENAME`）。
+仅在启用 [ZooKeeper](/operations/server-configuration-parameters/settings#zookeeper) 时生效。
 
-| 设置                   | 描述                                                                                                                        | 默认值                                |
-|------------------------|-----------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
-| `path`                 | Keeper 中用于 DDL 查询的 `task_queue` 路径                                                                                |                                      |
-| `profile`              | 用于执行 DDL 查询的配置文件                                                                                               |                                      |
-| `pool_size`            | 可以同时运行多少个 `ON CLUSTER` 查询                                                                                       |                                      |
-| `max_tasks_in_queue`   | 队列中可以存在的最大任务数。                                                                                               | `1,000`                              |
-| `task_max_lifetime`    | 如果节点的年龄超过此值则删除节点。                                                                                        | `7 * 24 * 60 * 60`（一周的秒数）     |
-| `cleanup_delay_period` | 如果最后一次清理在 `cleanup_delay_period` 秒之前未进行，则在接收到新节点事件后开始清理。                              | `60` 秒                             |
+`<distributed_ddl>` 中可配置的参数包括：
+
+| Setting                | Description                                            | Default Value             |
+| ---------------------- | ------------------------------------------------------ | ------------------------- |
+| `path`                 | Keeper 中用于 DDL 查询 `task_queue` 的路径                     |                           |
+| `profile`              | 执行 DDL 查询所使用的 profile                                  |                           |
+| `pool_size`            | 可以同时运行的 `ON CLUSTER` 查询数量                              |                           |
+| `max_tasks_in_queue`   | 队列中允许存在的最大任务数量                                         | `1,000`                   |
+| `task_max_lifetime`    | 如果节点存在时间超过该值，则将其删除                                     | `7 * 24 * 60 * 60`（一周的秒数） |
+| `cleanup_delay_period` | 收到新节点事件后，如果自上次清理以来已过去至少 `cleanup_delay_period` 秒，则开始清理 | `60` 秒                    |
 
 **示例**
 
 ```xml
 <distributed_ddl>
-    <!-- Path in ZooKeeper to queue with DDL queries -->
+    <!-- ZooKeeper 中 DDL 查询队列的路径 -->
     <path>/clickhouse/task_queue/ddl</path>
 
-    <!-- Settings from this profile will be used to execute DDL queries -->
+    <!-- 执行 DDL 查询时将使用此配置文件中的设置 -->
     <profile>default</profile>
 
-    <!-- Controls how much ON CLUSTER queries can be run simultaneously. -->
+    <!-- 控制可同时运行的 ON CLUSTER 查询数量 -->
     <pool_size>1</pool_size>
 
     <!--
-         Cleanup settings (active tasks will not be removed)
+         清理设置(活动任务不会被删除)
     -->
 
-    <!-- Controls task TTL (default 1 week) -->
+    <!-- 控制任务生存时间 (TTL)(默认为 1 周) -->
     <task_max_lifetime>604800</task_max_lifetime>
 
-    <!-- Controls how often cleanup should be performed (in seconds) -->
+    <!-- 控制清理执行频率(单位:秒) -->
     <cleanup_delay_period>60</cleanup_delay_period>
 
-    <!-- Controls how many tasks could be in the queue -->
+    <!-- 控制队列中可容纳的任务数量 -->
     <max_tasks_in_queue>1000</max_tasks_in_queue>
 </distributed_ddl>
 ```
+
+## distributed_ddl_use_initial_user_and_roles {#distributed_ddl_use_initial_user_and_roles} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />如果启用，`ON CLUSTER` 查询将在远程分片上保留并使用发起查询的用户及其角色来执行。这样可确保整个集群内访问控制的一致性，但要求该用户及其角色在所有节点上都已存在。
+
 ## dns_allow_resolve_names_to_ipv4 {#dns_allow_resolve_names_to_ipv4} 
 
-<SettingsInfoBlock type="Bool" default_value="1" />允许将名称解析为 IPv4 地址。
+<SettingsInfoBlock type="Bool" default_value="1" />允许将主机名解析为 IPv4 地址。
+
 ## dns_allow_resolve_names_to_ipv6 {#dns_allow_resolve_names_to_ipv6} 
 
-<SettingsInfoBlock type="Bool" default_value="1" />允许将名称解析为 IPv6 地址。
+<SettingsInfoBlock type="Bool" default_value="1" />允许将主机名解析为 IPv6 地址。
+
 ## dns_cache_max_entries {#dns_cache_max_entries} 
 
-<SettingsInfoBlock type="UInt64" default_value="10000" />内部 DNS 缓存最大条目数。
+<SettingsInfoBlock type="UInt64" default_value="10000" />内部 DNS 缓存的最大条目数。
+
 ## dns_cache_update_period {#dns_cache_update_period} 
 
-<SettingsInfoBlock type="Int32" default_value="15" />内部 DNS 缓存更新时间（以秒为单位）。
+<SettingsInfoBlock type="Int32" default_value="15" />内部 DNS 缓存的更新周期（以秒为单位）。
+
 ## dns_max_consecutive_failures {#dns_max_consecutive_failures} 
 
-主机名 DNS 解析失败的最大次数，在此之后将主机名从 ClickHouse DNS 缓存中删除。
+<SettingsInfoBlock type="UInt32" default_value="10" />在将主机名从 ClickHouse 的 DNS 缓存中移除之前，该主机名允许发生的连续 DNS 解析失败的最大次数。
+
+## drop_distributed_cache_pool_size {#drop_distributed_cache_pool_size} 
+
+<SettingsInfoBlock type="UInt64" default_value="8" />用于删除分布式缓存的线程池的大小。
+
+## drop_distributed_cache_queue_size {#drop_distributed_cache_queue_size} 
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />用于清理分布式缓存的线程池的队列大小。
+
 ## enable_azure_sdk_logging {#enable_azure_sdk_logging} 
 
-<SettingsInfoBlock type="Bool" default_value="0" />启用 Azure sdk 的日志记录
-## encryption {#encryption} 
+<SettingsInfoBlock type="Bool" default_value="0" />启用 Azure SDK 的日志记录功能
 
-配置用于 [encryption codecs](/sql-reference/statements/create/table#encryption-codecs) 的密钥获取命令。密钥（或密钥）应该写入环境变量或在配置文件中设置。
+## encryption {#encryption}
 
-密钥可以是十六进制或长度为 16 字节的字符串。
+配置用于获取密钥的命令，该密钥将被 [加密编解码器](/sql-reference/statements/create/table#encryption-codecs) 使用。密钥（或多个密钥）应通过环境变量提供，或在配置文件中进行设置。
+
+密钥可以是十六进制格式，或者是长度为 16 字节的字符串。
 
 **示例**
 
-从配置加载：
+从配置文件加载：
 
 ```xml
 <encryption_codecs>
@@ -814,10 +1081,10 @@ ZooKeeper 中表的路径。
 ```
 
 :::note
-不推荐在配置文件中存储密钥。这并不安全。您可以将密钥移动到安全磁盘上的单独配置文件中，并将该配置文件的符号链接放入 `config.d/` 文件夹中。
+不建议在配置文件中存储密钥，这样不安全。你可以将密钥移到安全磁盘上的单独配置文件中，并在 `config.d/` 文件夹中为该配置文件创建一个符号链接。
 :::
 
-从配置中加载，当密钥为十六进制时：
+当密钥为十六进制格式时，从配置中加载：
 
 ```xml
 <encryption_codecs>
@@ -827,7 +1094,7 @@ ZooKeeper 中表的路径。
 </encryption_codecs>
 ```
 
-从环境变量加载密钥：
+从环境变量中加载密钥：
 
 ```xml
 <encryption_codecs>
@@ -837,9 +1104,9 @@ ZooKeeper 中表的路径。
 </encryption_codecs>
 ```
 
-在这里，`current_key_id` 设置用于加密的当前密钥，所有指定的密钥都可以用于解密。
+在此，`current_key_id` 用于设置加密所用的当前密钥，而所有指定的密钥都可用于解密。
 
-这些方法都可以应用于多个密钥：
+以下这些方法都可以用于多个密钥：
 
 ```xml
 <encryption_codecs>
@@ -851,9 +1118,9 @@ ZooKeeper 中表的路径。
 </encryption_codecs>
 ```
 
-这里的 `current_key_id` 显示为加密的当前密钥。
+这里 `current_key_id` 表示当前用于加密的密钥。
 
-此外，用户可以添加必须为 12 字节长的 nonce（默认情况下加密和解密过程使用由零字节组成的 nonce）：
+此外，用户可以添加长度必须为 12 字节的 nonce（默认情况下，加密和解密过程使用由零字节构成的 nonce）：
 
 ```xml
 <encryption_codecs>
@@ -863,7 +1130,7 @@ ZooKeeper 中表的路径。
 </encryption_codecs>
 ```
 
-或者可以以十六进制设置：
+也可以设置为十六进制：
 
 ```xml
 <encryption_codecs>
@@ -872,16 +1139,18 @@ ZooKeeper 中表的路径。
     </aes_128_gcm_siv>
 </encryption_codecs>
 ```
-:::note
-上述所有内容可以应用于 `aes_256_gcm_siv` （但密钥必须为 32 字节长）。
-:::
-## error_log {#error_log} 
 
-默认情况下禁用。
+:::note
+上面提到的所有内容同样适用于 `aes_256_gcm_siv`（但密钥长度必须为 32 字节）。
+:::
+
+## error&#95;log {#error_log}
+
+默认情况下处于禁用状态。
 
 **启用**
 
-要手动开启错误历史记录收集 [`system.error_log`](../../operations/system-tables/error_log.md)，创建 `/etc/clickhouse-server/config.d/error_log.xml`，内容如下：
+要手动启用错误历史记录收集功能 [`system.error_log`](../../operations/system-tables/error_log.md)，请创建 `/etc/clickhouse-server/config.d/error_log.xml` 文件，并写入以下内容：
 
 ```xml
 <clickhouse>
@@ -900,7 +1169,7 @@ ZooKeeper 中表的路径。
 
 **禁用**
 
-要禁用 `error_log` 设置，您应该创建以下文件 `/etc/clickhouse-server/config.d/disable_error_log.xml`，内容如下：
+要禁用 `error_log` 设置，你需要创建以下文件 `/etc/clickhouse-server/config.d/disable_error_log.xml`，内容如下：
 
 ```xml
 <clickhouse>
@@ -908,49 +1177,64 @@ ZooKeeper 中表的路径。
 </clickhouse>
 ```
 
-<SystemLogParameters/>
-## format_schema_path {#format_schema_path} 
+<SystemLogParameters />
 
-输入数据模式所在目录的路径，例如 [CapnProto](../../interfaces/formats.md#capnproto) 格式的模式。
+## format_parsing_thread_pool_queue_size {#format_parsing_thread_pool_queue_size} 
+
+<SettingsInfoBlock type="UInt64" default_value="10000" />
+
+在用于解析输入的线程池队列中可排队的任务的最大数量。
+
+:::note
+值为 `0` 表示无限制。
+:::
+
+## format&#95;schema&#95;path {#format_schema_path}
+
+输入数据 schema 所在目录的路径，例如 [CapnProto](/interfaces/formats/CapnProto) 格式的 schema 目录。
 
 **示例**
 
 ```xml
-<!-- Directory containing schema files for various input formats. -->
+<!-- 包含各种输入格式架构文件的目录。 -->
 <format_schema_path>format_schemas/</format_schema_path>
 ```
+
 ## global_profiler_cpu_time_period_ns {#global_profiler_cpu_time_period_ns} 
 
-<SettingsInfoBlock type="UInt64" default_value="0" />全局分析器的 CPU 时钟计时器周期（以纳秒为单位）。设置为 0 以关闭 CPU 时钟全局分析器。建议在单个查询中至少设置为 10000000（每秒 100 次），或者在集群宽度分析中至少设置为 1000000000（每秒 1 次）。
+<SettingsInfoBlock type="UInt64" default_value="10000000000" />全局分析器的 CPU 时钟计时器周期（单位为纳秒）。将该值设置为 0 可关闭 CPU 时钟全局分析器。对于单个查询，推荐值至少为 10000000（每秒 100 次）；对于集群范围的分析，则推荐 1000000000（每秒一次）。
+
 ## global_profiler_real_time_period_ns {#global_profiler_real_time_period_ns} 
 
-<SettingsInfoBlock type="UInt64" default_value="0" />全局分析器的实际时钟计时器周期（以纳秒为单位）。设置为 0 以关闭实际时钟全局分析器。建议在单个查询中至少设置为 10000000（每秒 100 次），或者在集群宽度分析中至少设置为 1000000000（每秒 1 次）。
-## google_protos_path {#google_protos_path} 
+<SettingsInfoBlock type="UInt64" default_value="10000000000" />全局 profiler 的实时时钟计时器周期（单位：纳秒）。将该值设置为 0 可关闭实时时钟全局 profiler。推荐值：单个查询至少使用 10000000（每秒 100 次），集群范围 profiling 使用 1000000000（每秒 1 次）。
 
-定义包含 Protobuf 类型 proto 文件的目录。
+## google&#95;protos&#95;path {#google_protos_path}
+
+定义一个目录，用于存放 Protobuf 类型的 proto 文件。
 
 示例：
 
 ```xml
 <google_protos_path>/usr/share/clickhouse/protos/</google_protos_path>
 ```
-## graphite {#graphite} 
 
-发送数据到 [Graphite](https://github.com/graphite-project).
+## graphite {#graphite}
+
+向 [Graphite](https://github.com/graphite-project) 发送数据。
 
 设置：
 
-- `host` – Graphite 服务器。
-- `port` – Graphite 服务器上的端口。
-- `interval` – 发送间隔（以秒为单位）。
-- `timeout` – 发送数据的超时（以秒为单位）。
-- `root_path` – 键的前缀。
-- `metrics` – 从 [system.metrics](/operations/system-tables/metrics) 表发送数据。
-- `events` – 从 [system.events](/operations/system-tables/events) 表发送在时间段内累积的 delta 数据。
-- `events_cumulative` – 从 [system.events](/operations/system-tables/events) 表发送累积数据。
-- `asynchronous_metrics` – 从 [system.asynchronous_metrics](/operations/system-tables/asynchronous_metrics) 表发送数据。
+* `host` – Graphite 服务器。
+* `port` – Graphite 服务器上的端口。
+* `interval` – 发送间隔（秒）。
+* `timeout` – 发送数据的超时时间（秒）。
+* `root_path` – 键的前缀。
+* `metrics` – 从 [system.metrics](/operations/system-tables/metrics) 表发送数据。
+* `events` – 从 [system.events](/operations/system-tables/events) 表发送在指定时间段内累积的增量数据。
+* `events_cumulative` – 从 [system.events](/operations/system-tables/events) 表发送累积数据。
+* `asynchronous_metrics` – 从 [system.asynchronous&#95;metrics](/operations/system-tables/asynchronous_metrics) 表发送数据。
 
-您可以配置多个 `<graphite>` 子句。例如，您可以使用这个来在不同的间隔发送不同的数据。
+可以配置多个 `<graphite>` 配置块。例如，可以使用它以不同的时间间隔发送不同的数据。
 
 **示例**
 
@@ -967,11 +1251,12 @@ ZooKeeper 中表的路径。
     <asynchronous_metrics>true</asynchronous_metrics>
 </graphite>
 ```
-## graphite_rollup {#graphite_rollup} 
 
-用于 Graphite 的数据稀疏设置。
+## graphite&#95;rollup {#graphite_rollup}
 
-有关更多详细信息，请参见 [GraphiteMergeTree](../../engines/table-engines/mergetree-family/graphitemergetree.md)。
+用于对 Graphite 数据进行降采样（汇总）的设置。
+
+更多详情，参见 [GraphiteMergeTree](../../engines/table-engines/mergetree-family/graphitemergetree.md)。
 
 **示例**
 
@@ -994,12 +1279,13 @@ ZooKeeper 中表的路径。
     </default>
 </graphite_rollup_example>
 ```
-## hsts_max_age {#hsts_max_age} 
 
-HSTS 的过期时间（以秒为单位）。
+## hsts&#95;max&#95;age {#hsts_max_age}
+
+HSTS 的有效期（以秒为单位）。
 
 :::note
-值为 `0` 表示 ClickHouse 禁用 HSTS。如果您设置一个正数，HSTS 将启用，最大年龄是您设置的数字。
+值为 `0` 表示 ClickHouse 将禁用 HSTS。若设置为正数，则会启用 HSTS，且 `max-age` 即为你设置的数值。
 :::
 
 **示例**
@@ -1007,45 +1293,53 @@ HSTS 的过期时间（以秒为单位）。
 ```xml
 <hsts_max_age>600000</hsts_max_age>
 ```
+
+## http_connections_hard_limit {#http_connections_hard_limit} 
+
+<SettingsInfoBlock type="UInt64" default_value="200000" />当达到此限制时，尝试创建新的 http 连接会抛出异常。将其设置为 0 可关闭此硬限制。该限制适用于不属于任何磁盘或存储的 http 连接。
+
 ## http_connections_soft_limit {#http_connections_soft_limit} 
 
-<SettingsInfoBlock type="UInt64" default_value="100" />超过此限制的连接具有显著更短的生存时间。该限制适用于不属于任何磁盘或存储的 http 连接。
+<SettingsInfoBlock type="UInt64" default_value="100" />超过此限制的连接其存活时间会明显缩短。该限制适用于不属于任何磁盘或存储的 HTTP 连接。
+
 ## http_connections_store_limit {#http_connections_store_limit} 
 
-<SettingsInfoBlock type="UInt64" default_value="5000" />超过此限制的连接在使用后被重置。设置为 0 以关闭连接缓存。该限制适用于不属于任何磁盘或存储的 http 连接。
+<SettingsInfoBlock type="UInt64" default_value="1000" />超过此限制的连接在使用后将会被重置。将其设置为 0 可关闭连接缓存。该限制适用于不属于任何磁盘或存储的 HTTP 连接。
+
 ## http_connections_warn_limit {#http_connections_warn_limit} 
 
-<SettingsInfoBlock type="UInt64" default_value="1000" /> 如果正在使用的连接数量高于此限制，则会将警告消息记录到日志。该限制适用于不属于任何磁盘或存储的 http 连接。
-## http_handlers {#http_handlers} 
+<SettingsInfoBlock type="UInt64" default_value="500" />如果正在使用的连接数超过此限制，将把警告消息写入日志。该限制适用于不属于任何磁盘或存储的 HTTP 连接。
 
-允许使用自定义 HTTP 处理程序。
-要添加新的 http 处理程序，只需新增 `<rule>`。
-规则从上到下检查，如所定义的，
-第一个匹配的将运行处理程序。
+## http&#95;handlers {#http_handlers}
+
+允许使用自定义 HTTP 处理器。
+要添加新的 HTTP 处理器，只需添加一个新的 `<rule>`。
+规则会按照定义的顺序自上而下进行检查，
+第一个匹配项会运行对应的处理器。
 
 以下设置可以通过子标签进行配置：
 
-| 子标签              | 定义                                                                                                                                                     |
-|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `url`               | 要匹配请求 URL，您可以使用 'regex:' 前缀来使用正则匹配（可选）                                                                                           |
-| `methods`           | 要匹配请求方法，可以使用逗号分隔多个方法匹配（可选）                                                                                                      |
-| `headers`           | 要匹配请求头，匹配每个子元素（子元素名称为头部名称），您可以使用 'regex:' 前缀来使用正则匹配（可选）                                                    |
-| `handler`           | 请求处理程序                                                                                                                                           |
-| `empty_query_string`| 检查 URL 中是否没有查询字符串                                                                                                                              |
+| Sub-tags             | Definition                                                              |
+| -------------------- | ----------------------------------------------------------------------- |
+| `url`                | 用于匹配请求 URL，可以使用前缀 &#39;regex:&#39; 进行正则匹配（可选）                           |
+| `methods`            | 用于匹配请求方法，可以使用逗号分隔多个要匹配的方法（可选）                                           |
+| `headers`            | 用于匹配请求头，对每个子元素进行匹配（子元素名称为 header 名称），可以使用前缀 &#39;regex:&#39; 进行正则匹配（可选） |
+| `handler`            | 请求处理器                                                                   |
+| `empty_query_string` | 检查 URL 中是否没有查询字符串                                                       |
 
-`handler` 包含以下设置，可以通过子标签进行配置：
+`handler` 包含以下设置，这些设置可以通过子标签进行配置：
 
-| 子标签              | 定义                                                                                                                                                     |
-|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `url`               | 重定向位置                                                                                                                                               |
-| `type`              | 支持的类型：static、dynamic_query_handler、predefined_query_handler、redirect                                                                               |
-| `status`            | 与 static 类型一起使用，响应状态码                                                                                                                      |
-| `query_param_name`  | 与 dynamic_query_handler 类型一起使用，提取并执行与 HTTP 请求参数中的 `<query_param_name>` 值相对应的值                                                  |
-| `query`             | 与 predefined_query_handler 类型一起使用，当调用处理程序时执行查询                                                                                            |
-| `content_type`      | 与 static 类型一起使用，响应内容类型                                                                                                                      |
-| `response_content`  | 与 static 类型一起使用，发送给客户端的响应内容，当使用前缀 'file://' 或 'config://' 时，从文件或配置中查找内容并发送给客户端                                 |
+| Sub-tags           | Definition                                                                                     |
+| ------------------ | ---------------------------------------------------------------------------------------------- |
+| `url`              | 重定向目标地址                                                                                        |
+| `type`             | 支持的类型：static、dynamic&#95;query&#95;handler、predefined&#95;query&#95;handler、redirect           |
+| `status`           | 与 static 类型一起使用，响应状态码                                                                          |
+| `query_param_name` | 与 dynamic&#95;query&#95;handler 类型一起使用，从 HTTP 请求参数中提取并执行与 `<query_param_name>` 对应的参数值          |
+| `query`            | 与 predefined&#95;query&#95;handler 类型一起使用，在处理器被调用时执行查询                                         |
+| `content_type`     | 与 static 类型一起使用，响应的 content-type                                                               |
+| `response_content` | 与 static 类型一起使用，发送给客户端的响应内容；当使用前缀 &#39;file://&#39; 或 &#39;config://&#39; 时，从文件或配置中读取内容并发送给客户端 |
 
-除了规则列表之外，您还可以指定 `<defaults/>`，它指定启用所有默认处理程序。
+除了规则列表以外，你还可以指定 `<defaults/>`，用于启用所有默认处理器。
 
 示例：
 
@@ -1080,12 +1374,13 @@ HSTS 的过期时间（以秒为单位）。
     </rule>
 </http_handlers>
 ```
-## http_options_response {#http_options_response} 
 
-用于在 `OPTIONS` HTTP 请求中添加响应头。
-`OPTIONS` 方法在进行 CORS 预检请求时使用。
+## http&#95;options&#95;response {#http_options_response}
 
-有关更多信息，请参见 [OPTIONS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/OPTIONS)。
+用于在 `OPTIONS` HTTP 请求的响应中添加响应头。
+`OPTIONS` 方法用于发起 CORS 预检请求。
+
+更多信息，参见 [OPTIONS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/OPTIONS)。
 
 示例：
 
@@ -1109,64 +1404,77 @@ HSTS 的过期时间（以秒为单位）。
      </header>
 </http_options_response>
 ```
-## http_server_default_response {#http_server_default_response} 
 
-访问 ClickHouse HTTP(s) 服务器时默认显示的页面。
-默认值为 "Ok."（行尾带换行符）
+## http&#95;server&#95;default&#95;response {#http_server_default_response}
+
+当你访问 ClickHouse HTTP(s) 服务器时默认显示的页面。
+默认值为 “Ok.”（末尾带有换行符）
 
 **示例**
 
-访问 `http://localhost: http_port` 时会打开 `https://tabix.io/`。
+当访问 `http://localhost: http_port` 时，将打开 `https://tabix.io/`。
 
 ```xml
 <http_server_default_response>
   <![CDATA[<html ng-app="SMI2"><head><base href="http://ui.tabix.io/"></head><body><div ui-view="" class="content-ui"></div><script src="http://loader.tabix.io/master.js"></script></body></html>]]>
 </http_server_default_response>
 ```
+
 ## iceberg_catalog_threadpool_pool_size {#iceberg_catalog_threadpool_pool_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="50" />冰山目录的后台线程池大小
+<SettingsInfoBlock type="UInt64" default_value="50" />Iceberg catalog 的后台线程池大小
+
 ## iceberg_catalog_threadpool_queue_size {#iceberg_catalog_threadpool_queue_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />可以推入冰山目录池的任务数量
+<SettingsInfoBlock type="UInt64" default_value="1000000" />可以推入 Iceberg catalog 线程池队列中的任务数量上限
+
 ## iceberg_metadata_files_cache_max_entries {#iceberg_metadata_files_cache_max_entries} 
 
-冰山元数据文件缓存的最大条目数。零表示禁用。
+<SettingsInfoBlock type="UInt64" default_value="1000" />iceberg 元数据文件缓存中允许的最大条目数。0 表示禁用。
+
 ## iceberg_metadata_files_cache_policy {#iceberg_metadata_files_cache_policy} 
 
-冰山元数据缓存策略名称。
+<SettingsInfoBlock type="String" default_value="SLRU" />Iceberg 元数据文件缓存策略名称。
+
 ## iceberg_metadata_files_cache_size {#iceberg_metadata_files_cache_size} 
 
-冰山元数据缓存的最大大小（以字节为单位）。零表示禁用。
+<SettingsInfoBlock type="UInt64" default_value="1073741824" />iceberg 元数据缓存的最大容量（字节）。设为 0 表示禁用。
+
 ## iceberg_metadata_files_cache_size_ratio {#iceberg_metadata_files_cache_size_ratio} 
 
-在冰山元数据缓存中受保护队列的大小（在 SLRU 策略的情况下），相对于缓存的总大小。
+<SettingsInfoBlock type="Double" default_value="0.5" />表示在使用 SLRU 策略时，iceberg 元数据缓存中受保护队列大小相对于缓存总大小的比例。
+
 ## ignore_empty_sql_security_in_create_view_query {#ignore_empty_sql_security_in_create_view_query} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
-如果为 true，ClickHouse 不会在 `CREATE VIEW` 查询中为空的 SQL 安全语句写入默认值。
+
+如果设置为 true，ClickHouse 不会为 `CREATE VIEW` 查询中空的 SQL SECURITY 子句写入默认值。
 
 :::note
-此设置仅在迁移期间是必要的，并将在 24.4 中变得过时。
+此设置仅在迁移期间需要，并将在 24.4 版本中被废弃。
 :::
-## include_from {#include_from} 
 
-包含替代项的文件的路径。支持 XML 和 YAML 格式。
+## include&#95;from {#include_from}
 
-有关更多信息，请参见 "[Configuration files](/operations/configuration-files)" 部分。
+包含替换项的文件路径。支持 XML 和 YAML 两种格式。
+
+有关更多信息，请参阅“[配置文件](/operations/configuration-files)”章节。
 
 **示例**
 
 ```xml
 <include_from>/etc/metrica.xml</include_from>
 ```
+
 ## index_mark_cache_policy {#index_mark_cache_policy} 
 
-<SettingsInfoBlock type="String" default_value="SLRU" />二级索引标记缓存策略名称。
+<SettingsInfoBlock type="String" default_value="SLRU" />二级索引标记缓存策略的名称。
+
 ## index_mark_cache_size {#index_mark_cache_size} 
 
 <SettingsInfoBlock type="UInt64" default_value="5368709120" />
-索引标记缓存的最大大小。
+
+索引标记缓存的最大容量。
 
 :::note
 
@@ -1174,48 +1482,55 @@ HSTS 的过期时间（以秒为单位）。
 
 此设置可以在运行时修改，并会立即生效。
 :::
+
 ## index_mark_cache_size_ratio {#index_mark_cache_size_ratio} 
 
-<SettingsInfoBlock type="Double" default_value="0.3" />在二级索引标记缓存中受保护队列的大小（在 SLRU 策略的情况下），相对于缓存的总大小。
+<SettingsInfoBlock type="Double" default_value="0.3" />在二级索引标记缓存中，受保护队列（在使用 SLRU 策略时）的大小相对于缓存总大小的比例。
+
 ## index_uncompressed_cache_policy {#index_uncompressed_cache_policy} 
 
-<SettingsInfoBlock type="String" default_value="SLRU" />二级索引未压缩缓存策略名称。
+<SettingsInfoBlock type="String" default_value="SLRU" />二级索引未压缩缓存策略的名称。
+
 ## index_uncompressed_cache_size {#index_uncompressed_cache_size} 
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
-`MergeTree` 索引未压缩块的缓存的最大大小。
+
+未压缩 `MergeTree` 索引数据块缓存的最大容量。
 
 :::note
 值为 `0` 表示禁用。
 
 此设置可以在运行时修改，并会立即生效。
 :::
+
 ## index_uncompressed_cache_size_ratio {#index_uncompressed_cache_size_ratio} 
 
-<SettingsInfoBlock type="Double" default_value="0.5" />在二级索引未压缩缓存中受保护队列的大小（在 SLRU 策略的情况下），相对于缓存的总大小。
-## interserver_http_credentials {#interserver_http_credentials} 
+<SettingsInfoBlock type="Double" default_value="0.5" />二级索引未压缩缓存中受保护队列（在使用 SLRU 策略时）的大小占该缓存总大小的比例。
 
-用于在 [复制](../../engines/table-engines/mergetree-family/replication.md) 时连接到其他服务器的用户名和密码。此外，服务器使用这些凭据验证其他副本。
-因此，`interserver_http_credentials` 必须在集群中的所有副本中相同。
+## interserver&#95;http&#95;credentials {#interserver_http_credentials}
+
+在[复制](../../engines/table-engines/mergetree-family/replication.md)期间用于连接其他服务器的用户名和密码。此外，服务器还会使用这些凭证对其他副本进行身份验证。
+因此，一个集群中所有副本的 `interserver_http_credentials` 必须相同。
 
 :::note
-- 默认情况下，如果省略 `interserver_http_credentials` 部分，则在复制期间不使用身份验证。
-- `interserver_http_credentials` 设置与 ClickHouse 客户端凭据 [配置](../../interfaces/cli.md#configuration_files) 无关。
-- 这些凭据适用于通过 `HTTP` 和 `HTTPS` 进行复制。
-:::
 
-以下设置可以通过子标签进行配置：
+* 默认情况下，如果省略 `interserver_http_credentials` 部分，则在复制过程中不使用身份验证。
+* `interserver_http_credentials` 设置与 ClickHouse 客户端凭证的[配置](../../interfaces/cli.md#configuration_files)无关。
+* 这些凭证在通过 `HTTP` 和 `HTTPS` 进行复制时通用。
+  :::
 
-- `user` — 用户名。
-- `password` — 密码。
-- `allow_empty` — 如果为 `true`，则允许其他副本在设置凭据的情况下无身份验证连接。如果为 `false`，则拒绝无身份验证连接。默认：`false`。
-- `old` — 包含在凭据轮换期间使用过的旧 `user` 和 `password`。可以指定多个 `old` 部分。
+可以通过子标签配置以下设置：
 
-**凭据轮换**
+* `user` — 用户名。
+* `password` — 密码。
+* `allow_empty` — 如果为 `true`，则即使设置了凭证，也允许其他副本在没有身份验证的情况下进行连接。如果为 `false`，则拒绝未进行身份验证的连接。默认值：`false`。
+* `old` — 包含在凭证轮换期间使用的旧 `user` 和 `password`。可以指定多个 `old` 部分。
 
-ClickHouse 支持动态的 interserver 凭据轮换，而无需同时停止所有副本以更新它们的配置。凭据可以分几个步骤进行更改。
+**凭证轮换**
 
-要启用身份验证，请将 `interserver_http_credentials.allow_empty` 设置为 `true` 并添加凭据。这允许带有和不带身份验证的连接。
+ClickHouse 支持在无需同时停止所有副本来更新其配置的情况下，动态轮换 interserver 凭证。可以通过多个步骤更改凭证。
+
+要启用身份验证，请将 `interserver_http_credentials.allow_empty` 设置为 `true` 并添加凭证。这样既允许带身份验证的连接，也允许不带身份验证的连接。
 
 ```xml
 <interserver_http_credentials>
@@ -1225,9 +1540,9 @@ ClickHouse 支持动态的 interserver 凭据轮换，而无需同时停止所�
 </interserver_http_credentials>
 ```
 
-在配置所有副本后，将 `allow_empty` 设置为 `false` 或移除此设置。这使得使用新凭据的身份验证成为强制。
+在配置完所有副本之后，将 `allow_empty` 设置为 `false`，或者删除该 setting。这样会强制必须使用新凭证进行身份验证。
 
-要更改现有凭据，请将用户名和密码移动到 `interserver_http_credentials.old` 部分，并用新值更新 `user` 和 `password`。此时，服务器使用新凭据连接到其他副本，并接受新旧凭据的连接。
+要更改现有凭证，请将用户名和密码移动到 `interserver_http_credentials.old` 部分，并使用新值更新 `user` 和 `password`。此时，服务器会使用新凭证连接到其他副本，同时接受使用新旧凭证进行的连接。
 
 ```xml
 <interserver_http_credentials>
@@ -1244,51 +1559,56 @@ ClickHouse 支持动态的 interserver 凭据轮换，而无需同时停止所�
 </interserver_http_credentials>
 ```
 
-当新凭据应用于所有副本后，可以删除旧凭据。
-## interserver_http_host {#interserver_http_host} 
+当新凭证已应用到所有副本后，即可删除旧凭证。
 
-其他服务器可以用来访问此服务器的主机名。
+## interserver&#95;http&#95;host {#interserver_http_host}
 
-如果省略，它的定义与 `hostname -f` 命令相同。
+可被其他服务器用来访问本服务器的主机名。
 
-有助于摆脱特定网络界面。
+如果未设置，则与执行 `hostname -f` 命令得到的主机名相同。
+
+有助于取消对特定网络接口的依赖。
 
 **示例**
 
 ```xml
 <interserver_http_host>example.clickhouse.com</interserver_http_host>
 ```
-## interserver_http_port {#interserver_http_port} 
 
-ClickHouse 服务器之间交换数据的端口。
+## interserver&#95;http&#95;port {#interserver_http_port}
+
+用于 ClickHouse 服务器之间数据交换的端口。
 
 **示例**
 
 ```xml
 <interserver_http_port>9009</interserver_http_port>
 ```
-## interserver_https_host {#interserver_https_host} 
 
-类似于 [`interserver_http_host`](#interserver_http_host)，只是此主机名可以被其他服务器用来通过 `HTTPS` 访问此服务器。
+## interserver&#95;https&#95;host {#interserver_https_host}
+
+类似于 [`interserver_http_host`](#interserver_http_host)，但该主机名可以被其他服务器用于通过 `HTTPS` 访问本服务器。
 
 **示例**
 
 ```xml
 <interserver_https_host>example.clickhouse.com</interserver_https_host>
 ```
-## interserver_https_port {#interserver_https_port} 
 
-ClickHouse 服务器之间通过 `HTTPS` 交换数据的端口。
+## interserver&#95;https&#95;port {#interserver_https_port}
+
+用于在 ClickHouse 服务器之间通过 `HTTPS` 协议交换数据的端口。
 
 **示例**
 
 ```xml
 <interserver_https_port>9010</interserver_https_port>
 ```
-## interserver_listen_host {#interserver_listen_host} 
 
-在 ClickHouse 服务器之间交换数据的主机限制。
-如果使用 Keeper，则在不同的 Keeper 实例之间也将应用相同的限制。
+## interserver&#95;listen&#95;host {#interserver_listen_host}
+
+限制可在 ClickHouse 服务器之间交换数据的主机。
+如果使用 Keeper，该限制同样适用于不同 Keeper 实例之间的通信。
 
 :::note
 默认情况下，该值等于 [`listen_host`](#listen_host) 设置。
@@ -1304,92 +1624,100 @@ ClickHouse 服务器之间通过 `HTTPS` 交换数据的端口。
 类型：
 
 默认值：
+
 ## io_thread_pool_queue_size {#io_thread_pool_queue_size} 
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
-可以在 I/O 线程池中调度的最大作业数量。
+
+可在 IO 线程池中调度的任务的最大数量。
 
 :::note
 值为 `0` 表示无限制。
 :::
-## keep_alive_timeout {#keep_alive_timeout} 
+
+## jemalloc_collect_global_profile_samples_in_trace_log {#jemalloc_collect_global_profile_samples_in_trace_log} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />在 system.trace_log 中存储 jemalloc 的采样内存分配记录
+
+## jemalloc_enable_background_threads {#jemalloc_enable_background_threads} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />启用 jemalloc 后台线程。Jemalloc 使用后台线程清理空闲内存页。禁用该功能可能会导致性能下降。
+
+## jemalloc_enable_global_profiler {#jemalloc_enable_global_profiler} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />为所有线程启用 jemalloc 的分配分析器。Jemalloc 将对内存分配进行采样，并对已采样分配的所有释放操作进行采样。
+可以使用 SYSTEM JEMALLOC FLUSH PROFILE 刷新分析数据，用于分配分析。
+采样数据也可以通过配置项 jemalloc_collect_global_profile_samples_in_trace_log，或通过查询设置 jemalloc_collect_profile_samples_in_trace_log 存储到 system.trace_log 中。
+参见 [Allocation Profiling](/operations/allocation-profiling)
+
+## jemalloc_flush_profile_interval_bytes {#jemalloc_flush_profile_interval_bytes} 
+
+<SettingsInfoBlock type="UInt64" default_value="0" />当全局峰值内存使用量相较之前增加了 jemalloc_flush_profile_interval_bytes 后，将执行一次 jemalloc profile 刷新操作
+
+## jemalloc_flush_profile_on_memory_exceeded {#jemalloc_flush_profile_on_memory_exceeded} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />在发生总内存超限错误时将刷新 jemalloc profile
+
+## jemalloc_max_background_threads_num {#jemalloc_max_background_threads_num} 
+
+<SettingsInfoBlock type="UInt64" default_value="0" />要创建的 jemalloc 后台线程数上限，将其设为 0 以使用 jemalloc 的默认值
+
+## keep&#95;alive&#95;timeout {#keep_alive_timeout}
 
 <SettingsInfoBlock type="Seconds" default_value="30" />
-ClickHouse 等待 HTTP 协议的传入请求的秒数，然后关闭连接。
+
+ClickHouse 在关闭连接之前，等待 HTTP 协议传入请求的时间（以秒为单位）。
 
 **示例**
 
 ```xml
 <keep_alive_timeout>10</keep_alive_timeout>
 ```
+
+## keeper_hosts {#keeper_hosts} 
+
+动态设置。包含 ClickHouse 可能连接的一组 [Zoo]Keeper 主机。不会暴露 `<auxiliary_zookeepers>` 中的信息。
+
 ## keeper_multiread_batch_size {#keeper_multiread_batch_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="10000" />支持批处理的 [Zoo]Keeper 的 MultiRead 请求的最大批量大小。如果设置为 0，则禁用批处理。仅在 ClickHouse Cloud 中可用。
-## latency_log {#latency_log} 
+<SettingsInfoBlock type="UInt64" default_value="10000" />
 
-默认情况下禁用。
+针对支持批处理的 [Zoo]Keeper 的 MultiRead 请求的最大单次批量大小。若设置为 0，则禁用批处理。仅在 ClickHouse Cloud 中可用。
 
-**启用**
-
-要手动开启延迟历史记录收集 [`system.latency_log`](../../operations/system-tables/latency_log.md)，创建 `/etc/clickhouse-server/config.d/latency_log.xml`，内容如下：
-
-```xml
-<clickhouse>
-    <latency_log>
-        <database>system</database>
-        <table>latency_log</table>
-        <flush_interval_milliseconds>7500</flush_interval_milliseconds>
-        <collect_interval_milliseconds>1000</collect_interval_milliseconds>
-        <max_size_rows>1048576</max_size_rows>
-        <reserved_size_rows>8192</reserved_size_rows>
-        <buffer_size_rows_flush_threshold>524288</buffer_size_rows_flush_threshold>
-        <flush_on_crash>false</flush_on_crash>
-    </latency_log>
-</clickhouse>
-```
-
-**禁用**
-
-要禁用 `latency_log` 设置，您应该创建以下文件 `/etc/clickhouse-server/config.d/disable_latency_log.xml`，内容如下：
-
-```xml
-<clickhouse>
-<latency_log remove="1" />
-</clickhouse>
-```
 ## ldap_servers {#ldap_servers} 
 
-在此列出 LDAP 服务器及其连接参数，以：
-- 将其用作具有“ldap”身份验证机制的专用本地用户的身份验证器，而非“password”
+在此列出 LDAP 服务器及其连接参数，以便：
+
+- 将其用作特定本地用户的认证服务，这些用户的认证机制配置为 `ldap` 而不是 `password`
 - 将其用作远程用户目录。
 
 可以通过子标签配置以下设置：
 
-| 设置                           | 描述                                                                                                                                                                                                                                                                                                                                                                    |
-|--------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `host`                         | LDAP 服务器主机名或 IP，此参数是必填的，不能为空。                                                                                                                                                                                                                                                                                                                        |
-| `port`                         | LDAP 服务器端口，如果 `enable_tls` 设置为 true，则默认为 636，否则默认为 389。                                                                                                                                                                                                                                                                                       |
-| `bind_dn`                      | 用于构造绑定的 DN 的模板。在每次身份验证尝试期间，结果 DN 将通过替换模板中的所有 `\{user_name\}` 子字符串为实际用户名构建。                                                                                                                                                                                                                          |
-| `user_dn_detection`            | 具有 LDAP 搜索参数的部分，检测绑定用户的实际用户 DN。这主要在服务器为 Active Directory 时用于进一步角色映射的搜索过滤器。替换 `\{user_dn\}` 子字符串时将使用结果用户 DN。默认情况下，用户 DN 设置为等于绑定 DN，但一旦执行搜索，将用实际检测到的用户 DN 值进行更新。                               |
-| `verification_cooldown`        | 在成功的绑定尝试后，期间（以秒为单位），用户将被认为在所有连续请求中成功通过身份验证，在此期间无需联系 LDAP 服务器。指定 `0`（默认）以禁用缓存并强制在每个身份验证请求时联系 LDAP 服务器。                                                                                                           |
-| `enable_tls`                   | 触发与 LDAP 服务器的安全连接的标志。指定 `no` 使用明文（`ldap://`）协议（不推荐）。指定 `yes` 使用 SSL/TLS 保护的 LDAP（`ldaps://`）协议（推荐，默认）。指定 `starttls` 使用旧版 StartTLS 协议（明文（`ldap://`）协议，升级到 TLS）。                                                                         |
-| `tls_minimum_protocol_version` | SSL/TLS 的最低协议版本。接受的值包括：`ssl2`，`ssl3`，`tls1.0`，`tls1.1`，`tls1.2`（默认）。                                                                                                                                                                                                                                                                 |
-| `tls_require_cert`             | SSL/TLS 对等证书验证行为。接受的值包括：`never`，`allow`，`try`，`demand`（默认）。                                                                                                                                                                                                                                                                              |
-| `tls_cert_file`                | 证书文件的路径。                                                                                                                                                                                                                                                                                                                                                            |
-| `tls_key_file`                 | 证书密钥文件的路径。                                                                                                                                                                                                                                                                                                                                                        |
-| `tls_ca_cert_file`             | CA 证书文件的路径。                                                                                                                                                                                                                                                                                                                                                          |
-| `tls_ca_cert_dir`              | 包含 CA 证书的目录的路径。                                                                                                                                                                                                                                                                                                                                                  |
-| `tls_cipher_suite`             | 允许的密码套件（以 OpenSSL 符号表示）。                                                                                                                                                                                                                                                                                                                                    |
+| Setting                        | Description                                                                                                                                                                                                                                                                                                                                                                                                                              |
+|--------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `host`                         | LDAP 服务器主机名或 IP，此参数为必填项且不能为空。                                                                                                                                                                                                                                                                                                                                                             |
+| `port`                         | LDAP 服务器端口，如果 `enable_tls` 设置为 true，则默认值为 636，否则为 `389`。                                                                                                                                                                                                                                                                                                                                                        |
+| `bind_dn`                      | 用于构造绑定 DN 的模板。最终 DN 会在每次认证尝试时，将模板中所有 `\{user_name\}` 子串替换为实际用户名后构造而成。                                                                                                                                                                                                                                                                                               |
+| `user_dn_detection`            | 用于检测绑定用户实际用户 DN 的 LDAP 搜索参数部分。当服务器为 Active Directory 时，主要在搜索过滤器中用于后续角色映射。最终的用户 DN 会在允许的地方用于替换 `\{user_dn\}` 子串。默认情况下，用户 DN 被设置为等于 bind DN，但一旦执行搜索后，会更新为实际检测到的用户 DN 值。 |
+| `verification_cooldown`        | 在成功绑定尝试之后的一段时间（以秒为单位），在此期间将假定用户对所有连续请求都已成功认证，而无需联系 LDAP 服务器。指定 `0`（默认值）可禁用缓存，并在每次认证请求时都强制联系 LDAP 服务器。                                                                                                                  |
+| `enable_tls`                   | 控制是否使用到 LDAP 服务器的安全连接的标志。指定 `no` 以使用明文（`ldap://`）协议（不推荐）。指定 `yes` 以使用基于 SSL/TLS 的 LDAP（`ldaps://`）协议（推荐，默认值）。指定 `starttls` 以使用传统的 StartTLS 协议（明文 `ldap://` 协议，再升级为 TLS）。                                                                                                               |
+| `tls_minimum_protocol_version` | SSL/TLS 的最小协议版本。可接受的值为：`ssl2`、`ssl3`、`tls1.0`、`tls1.1`、`tls1.2`（默认值）。                                                                                                                                                                                                                                                                                                                |
+| `tls_require_cert`             | SSL/TLS 对端证书验证行为。可接受的值为：`never`、`allow`、`try`、`demand`（默认值）。                                                                                                                                                                                                                                                                                                                    |
+| `tls_cert_file`                | 证书文件路径。                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `tls_key_file`                 | 证书密钥文件路径。                                                                                                                                                                                                                                                                                                                                                                                                            |
+| `tls_ca_cert_file`             | CA 证书文件路径。                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `tls_ca_cert_dir`              | 包含 CA 证书的目录路径。                                                                                                                                                                                                                                                                                                                                                                                        |
+| `tls_cipher_suite`             | 允许的密码套件（OpenSSL 表示法）。                                                                                                                                                                                                                                                                                                                                                                                              |
 
-`user_dn_detection` 的设置可以通过子标签进行配置：
+`user_dn_detection` 设置可以通过子标签进行配置：
 
-| 设置              | 描述                                                                                                                                                                                                                                                                                                                                |
-|------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `base_dn`        | 用于构造 LDAP 搜索的基本 DN 的模板。在 LDAP 搜索期间，将通过替换模板中的所有 `\{user_name\}` 和 '\{bind_dn\}' 子字符串为实际用户名和绑定 DN 来构造结果 DN。                                                                                                                                                                 |
-| `scope`          | LDAP 搜索的范围。接受的值包括：`base`，`one_level`，`children`，`subtree`（默认）。                                                                                                                                                                                                                                                 |
-| `search_filter`  | 用于构造 LDAP 搜索的搜索过滤器的模板。在 LDAP 搜索期间，将通过替换模板中的所有 `\{user_name\}`， `\{bind_dn\}` 和 `\{base_dn\}` 子字符串为实际用户名、绑定 DN 和基本 DN 来构造结果过滤器。注意，特殊字符必须在 XML 中正确转义。                                                             |
+| Setting         | Description                                                                                                                                                                                                                                                                                                                                    |
+|-----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `base_dn`       | 用于构造 LDAP 搜索基准 DN 的模板。最终 DN 会在 LDAP 搜索期间，将模板中所有 `\{user_name\}` 和 `\{bind_dn\}` 子串替换为实际用户名和 bind DN 后构造而成。                                                                                                       |
+| `scope`         | LDAP 搜索的范围。可接受的值为：`base`、`one_level`、`children`、`subtree`（默认值）。                                                                                                                                                                                                                                       |
+| `search_filter` | 用于构造 LDAP 搜索过滤器的模板。最终过滤器会在 LDAP 搜索期间，将模板中所有 `\{user_name\}`、`\{bind_dn\}` 和 `\{base_dn\}` 子串替换为实际用户名、bind DN 和 base DN 后构造而成。注意，必须在 XML 中正确转义特殊字符。  |
 
-示例：
+Example:
 
 ```xml
 <my_ldap_server>
@@ -1408,7 +1736,7 @@ ClickHouse 等待 HTTP 协议的传入请求的秒数，然后关闭连接。
 </my_ldap_server>
 ```
 
-示例（典型的 Active Directory，已配置用户 DN 检测以进行进一步角色映射）：
+示例（典型的 Active Directory，并已配置用户 DN 检测，用于后续角色映射）：
 
 ```xml
 <my_ad_server>
@@ -1422,29 +1750,34 @@ ClickHouse 等待 HTTP 协议的传入请求的秒数，然后关闭连接。
     <enable_tls>no</enable_tls>
 </my_ad_server>
 ```
+
 ## license_key {#license_key} 
 
-ClickHouse 企业版的许可证密钥
-## listen_backlog {#listen_backlog} 
+ClickHouse 企业版许可证密钥
 
-监听套接字的回退（待处理连接的队列大小）。默认值 `4096` 与 Linux [5.4+](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=19f92a030ca6d772ab44b22ee6a01378a8cb32d4)的值相同。
+## listen&#95;backlog {#listen_backlog}
 
-通常无需更改此值，因为：
-- 默认值足够大，
-- 服务器有单独的线程来接收客户端连接。
+监听套接字的 backlog（待处理连接的队列大小）。默认值 `4096` 与 Linux [5.4+](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=19f92a030ca6d772ab44b22ee6a01378a8cb32d4)) 中的默认值相同。
 
-因此，即使您有 `TcpExtListenOverflows` （来自 `nstat`）非零，这个计数器在 ClickHouse 服务器上增长，也不意味着需要增加此值，因为：
-- 通常，如果 `4096` 不够，这表明存在某些内部的 ClickHouse 扩展问题，因此最好报告问题。
-- 这并不意味着服务器将来可以处理更多连接（即使它能够，在那时客户端可能已经消失或断开连接）。
+通常不需要更改此值，因为：
+
+* 默认值已经足够大，
+* 服务器有单独的线程用于接受客户端连接。
+
+因此，即使你在 ClickHouse 服务器上看到 `TcpExtListenOverflows`（来自 `nstat`）为非零且该计数器持续增长，这也并不意味着需要增大该值，因为：
+
+* 通常如果 `4096` 不够，这表明存在某种 ClickHouse 内部扩展性问题，因此最好提交一个 issue。
+* 这并不意味着服务器之后可以处理更多连接（即使可以，到那时客户端可能已经离开或断开连接）。
 
 **示例**
 
 ```xml
 <listen_backlog>4096</listen_backlog>
 ```
-## listen_host {#listen_host} 
 
-请求可以来自的主机的限制。如果您希望服务器响应所有请求，请指定 `::`。
+## listen&#95;host {#listen_host}
+
+限制允许向服务器发送请求的主机。如果希望服务器接受来自所有主机的请求，请指定 `::`。
 
 示例：
 
@@ -1452,9 +1785,10 @@ ClickHouse 企业版的许可证密钥
 <listen_host>::1</listen_host>
 <listen_host>127.0.0.1</listen_host>
 ```
-## listen_reuse_port {#listen_reuse_port} 
 
-允许多个服务器在同一地址：端口上监听。请求将由操作系统随机路由到服务器。建议不要启用此设置。
+## listen&#95;reuse&#95;port {#listen_reuse_port}
+
+允许多个服务器监听同一地址:端口。操作系统会将请求随机路由到某个服务器。不建议启用该设置。
 
 **示例**
 
@@ -1464,87 +1798,95 @@ ClickHouse 企业版的许可证密钥
 
 类型：
 
-默认：
-## listen_try {#listen_try} 
+默认值：
 
-如果在尝试监听时 IPv6 或 IPv4 网络不可用，服务器将不会退出。
+## listen&#95;try {#listen_try}
+
+在尝试监听时，如果 IPv6 或 IPv4 网络不可用，服务器不会退出。
 
 **示例**
 
 ```xml
 <listen_try>0</listen_try>
 ```
+
 ## load_marks_threadpool_pool_size {#load_marks_threadpool_pool_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="50" />用于标记加载的后台池的大小
+<SettingsInfoBlock type="UInt64" default_value="50" />用于加载标记的后台线程池大小
+
 ## load_marks_threadpool_queue_size {#load_marks_threadpool_queue_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />可以推入预取池的任务数
+<SettingsInfoBlock type="UInt64" default_value="1000000" />可以推入预取池的任务最大数量
+
 ## logger {#logger} 
 
 日志消息的位置和格式。
 
 **键**：
 
-| 键                          | 描述                                                                                                                                                                         |
-|-----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `level`                     | 日志级别。可接受的值：`none`（关闭日志），`fatal`，`critical`，`error`，`warning`，`notice`，`information`，`debug`，`trace`，`test`                                  |
-| `log`                       | 日志文件的路径。                                                                                                                                                           |
-| `errorlog`                  | 错误日志文件的路径。                                                                                                                                                     |
-| `size`                      | 轮换策略：日志文件的最大大小（字节）。一旦日志文件大小超过此阈值，将被重命名并归档，并创建一个新的日志文件。                  |
-| `count`                     | 轮换策略：Clickhouse 最多保留多少个历史日志文件。                                                                                                           |
-| `stream_compress`           | 使用 LZ4 压缩日志消息。设置为 `1` 或 `true` 启用。                                                                                                                      |
-| `console`                   | 不将日志消息写入日志文件，而是将其打印到控制台。设置为 `1` 或 `true` 启用。如果 Clickhouse 不以守护进程模式运行，则默认值为 `1`，否则为 `0`。 |
-| `console_log_level`         | 控制台输出的日志级别。默认为 `level`。                                                                                                                                  |
-| `formatting`                | 控制台输出的日志格式。目前，仅支持 `json`                                                                                                                  |
-| `use_syslog`                | 还将日志输出转发到 syslog。                                                                                                                                                  |
-| `syslog_level`              | 记录到 syslog 的日志级别。                                                                                                                                                    |
+| Key                    | Description                                                                                                                                                        |
+|------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `level`                | 日志级别。可接受的值：`none`（关闭日志）、`fatal`、`critical`、`error`、`warning`、`notice`、`information`、`debug`、`trace`、`test`                                   |
+| `log`                  | 日志文件的路径。                                                                                                                                                    |
+| `errorlog`             | 错误日志文件的路径。                                                                                                                                                |
+| `size`                 | 日志轮转策略：日志文件的最大大小（字节）。当日志文件大小超过此阈值时，会被重命名并归档，然后创建一个新的日志文件。                                                 |
+| `count`                | 日志轮转策略：最多保留的历史日志文件数量。                                                                                                                          |
+| `stream_compress`      | 使用 LZ4 压缩日志消息。设置为 `1` 或 `true` 以启用。                                                                                                               |
+| `console`              | 启用将日志输出到控制台。设置为 `1` 或 `true` 以启用。如果 ClickHouse 不以守护进程模式运行，默认值为 `1`，否则为 `0`。                                              |
+| `console_log_level`    | 控制台输出的日志级别。默认为 `level` 的值。                                                                                                                        |
+| `formatting.type`      | 控制台输出的日志格式。目前仅支持 `json`。                                                                                                                          |
+| `use_syslog`           | 另外将日志输出转发到 syslog。                                                                                                                                       |
+| `syslog_level`         | 输出到 syslog 时使用的日志级别。                                                                                                                                    |
+| `async`                | 当为 `true`（默认）时，日志记录将以异步方式进行（每个输出通道一个后台线程）。否则将在调用 LOG 的线程中进行日志记录。                                              |
+| `async_queue_max_size` | 使用异步日志记录时，队列中最多保留的待刷新消息数量。超出的消息将被丢弃。                                                                                           |
+| `startup_level`        | 启动级别用于在服务器启动时设置根 logger 的级别。启动完成后，日志级别会恢复为 `level` 设置的值。                                                                    |
+| `shutdown_level`       | 关闭级别用于在服务器关闭时设置根 logger 的级别。                                                                                                                   |
 
 **日志格式说明符**
 
-`log` 和 `errorLog` 路径中的文件名支持以下格式说明符以生成文件名（目录部分不支持它们）。
+`log` 和 `errorLog` 路径中的文件名支持以下格式说明符，用于生成最终的文件名（目录部分不支持这些说明符）。
 
-“示例”列显示输出在 `2023-07-06 18:32:07` 的结果。
+“Example” 列显示的是在 `2023-07-06 18:32:07` 时的输出。
 
-| 说明符     | 描述                                                                                                         | 示例                   |
-|-------------|---------------------------------------------------------------------------------------------------------------------|-------------------------|
-| `%%`        | 字面百分号                                                                                                           | `%`                      |
-| `%n`        | 新行字符                                                                                                  |                          |
-| `%t`        | 水平制表符                                                                                            |                          |
-| `%Y`        | 年，以十进制数表示，例如 2017                                                                                 | `2023`                  |
-| `%y`        | 年的最后两位数字（范围 [00,99]）                                                           | `23`                     |
-| `%C`        | 年的前两位数字（范围 [00,99]）                                                          | `20`                       |
-| `%G`        | 四位数 [ISO 8601 基于周的年份](https://en.wikipedia.org/wiki/ISO_8601#Week_dates)，即包含指定周的年份。通常仅与 `%V` 一起使用 | `2023`                  |
-| `%g`        | 最后两位 [ISO 8601 基于周的年份](https://en.wikipedia.org/wiki/ISO_8601#Week_dates)，即包含指定周的年份。                        | `23`                    |
-| `%b`        | 缩写月份名称，例如 Oct（依赖于区域设置）                                                                 | `Jul`                     |
-| `%h`        | %b 的同义词                                                                                                       | `Jul`                     |
-| `%B`        | 完整的月份名称，例如 October（依赖于区域设置）                                                                    | `July`                   |
-| `%m`        | 月份，以十进制数表示（范围 [01,12]）                                                                           | `07`                    |
-| `%U`        | 一年中的周，以十进制数字表示（周日为一周的第一天）（范围 [00,53]）                          | `27`                    |
-| `%W`        | 一年中的周，以十进制数字表示（周一为一周的第一天）（范围 [00,53]）                          | `27`                    |
-| `%V`        | ISO 8601 周数（范围 [01,53]）                                                                                | `27`                    |
-| `%j`        | 一年中的天数，以十进制数字表示（范围 [001,366]）                                                               | `187`                    |
-| `%d`        | 月中的天数，以零填充的十进制数字表示（范围 [01,31]）。单个数字前加零。                 | `06`                     |
-| `%e`        | 月中的天数，以空格填充的十进制数字表示（范围 [1,31]）。单个数字前加空格。              | `&nbsp; 6`               |
-| `%a`        | 缩写的星期名，例如 Fri（依赖于区域设置）                                                               | `Thu`                    |
-| `%A`        | 完整的星期名，例如 Friday（依赖于区域设置）                                                                   | `Thursday`               |
-| `%w`        | 星期几的整数，周日为 0（范围 [0-6]）                                                          | `4`                      |
-| `%u`        | 星期几的十进制数字，周一为 1（ISO 8601 格式）（范围 [1-7]）                                      | `4`                      |
-| `%H`        | 24 小时制的小时数，以十进制数字表示（范围 [00-23]）                                                             | `18`                     |
-| `%I`        | 12 小时制的小时数，以十进制数字表示（范围 [01,12]）                                                             | `06`                     |
-| `%M`        | 分钟数，以十进制数字表示（范围 [00,59]）                                                                          | `32`                     |
-| `%S`        | 秒数，以十进制数字表示（范围 [00,60]）                                                                          | `07`                     |
-| `%c`        | 标准日期和时间字符串，例如 Sun Oct 17 04:41:13 2010（依赖于区域设置）                                     | `Thu Jul  6 18:32:07 2023` |
-| `%x`        | 本地化日期表示（依赖于区域设置）                                                                    | `07/06/23`               |
-| `%X`        | 本地化时间表示，例如 18:40:20 或 6:40:20 PM（依赖于区域设置）                                       | `18:32:07`               |
-| `%D`        | 短格式 MM/DD/YY 日期，相当于 %m/%d/%y                                                                         | `07/06/23`               |
-| `%F`        | 短格式 YYYY-MM-DD 日期，相当于 %Y-%m-%d                                                                       | `2023-07-06`             |
-| `%r`        | 本地化的 12 小时制时间（依赖于区域设置）                                                                     | `06:32:07 PM`            |
-| `%R`        | 相当于 "%H:%M"                                                                                               | `18:32`                  |
-| `%T`        | 相当于 "%H:%M:%S"（ISO 8601 时间格式）                                                                 | `18:32:07`               |
-| `%p`        | 本地化的 a.m. 或 p.m. 表示（依赖于区域设置）                                                               | `PM`                     |
-| `%z`        | 以 ISO 8601 格式的 UTC 偏移（例如 -0430），或者如果没有时区信息，则没有字符 | `+0800`                  |
-| `%Z`        | 依赖于区域设置的时区名称或缩写，或者如果没有时区信息，则没有字符    | `Z AWST `                |
+| 说明符  | 描述                                                                                                           | 示例                         |
+| ---- | ------------------------------------------------------------------------------------------------------------ | -------------------------- |
+| `%%` | 字面量 %                                                                                                        | `%`                        |
+| `%n` | 换行符                                                                                                          |                            |
+| `%t` | 水平制表符                                                                                                        |                            |
+| `%Y` | 以十进制表示的年份，例如 2017                                                                                            | `2023`                     |
+| `%y` | 年份最后两位的十进制数（范围 [00,99]）                                                                                      | `23`                       |
+| `%C` | 年份的前 2 位数字（十进制，范围 [00,99]）                                                                                   | `20`                       |
+| `%G` | 四位数的 [ISO 8601 以周为基础的年份](https://en.wikipedia.org/wiki/ISO_8601#Week_dates)，即包含所指定周的年份。通常只在与 `%V` 搭配使用时才有意义。 | `2023`                     |
+| `%g` | [ISO 8601 周历年份](https://en.wikipedia.org/wiki/ISO_8601#Week_dates) 的后 2 位数字，即包含指定周的年份。                       | `23`                       |
+| `%b` | 缩写的月份名称，例如 Oct（取决于语言环境）                                                                                      | `7月`                       |
+| `%h` | %b 的同义词                                                                                                      | `Jul`                      |
+| `%B` | 完整月份名称，例如 October（取决于区域设置）                                                                                   | `7 月`                      |
+| `%m` | 月份的十进制表示（范围为 [01,12]）                                                                                        | `07`                       |
+| `%U` | 一年中的第几周，用十进制数字表示（星期日为一周的第一天）（范围 [00,53]）                                                                     | `27`                       |
+| `%W` | 一年中的周序号（十进制数，星期一为一周的第一天）（范围 [00,53]）                                                                         | `27`                       |
+| `%V` | ISO 8601 周编号（范围 [01,53]）                                                                                     | `27`                       |
+| `%j` | 一年中的第几天，以十进制数字表示（范围为 [001,366]）                                                                              | `187`                      |
+| `%d` | 以零填充的十进制数字表示的月份中的日期（范围 [01,31]）。一位数前补零。                                                                      | `06`                       |
+| `%e` | 月份中的日期，表示为带前导空格的十进制数（范围 [1,31]）。一位数前面用一个空格填充。                                                                | `&nbsp; 6`                 |
+| `%a` | 星期缩写名称，例如 Fri（因本地化设置而异）                                                                                      | `周四`                       |
+| `%A` | 完整的星期名称，例如 Friday（取决于区域设置）                                                                                   | `星期四`                      |
+| `%w` | 用整数表示的星期几，其中星期日为 0（取值范围为 0–6）                                                                                | `4`                        |
+| `%u` | 用十进制数字表示星期几，其中星期一为 1（ISO 8601 格式）（范围 [1-7]）                                                                  | `4`                        |
+| `%H` | 小时，24 小时制，以十进制数字表示（范围 [00-23]）                                                                               | `18`                       |
+| `%I` | 表示小时的十进制数，12 小时制（范围 [01,12]）                                                                                 | `06`                       |
+| `%M` | 分钟（十进制数，范围 [00,59]）                                                                                          | `32`                       |
+| `%S` | 以十进制数表示的秒数（范围 [00,60]）                                                                                       | `07`                       |
+| `%c` | 标准日期和时间字符串，例如 Sun Oct 17 04:41:13 2010（取决于区域设置）                                                              | `Thu Jul  6 18:32:07 2023` |
+| `%x` | 本地化日期格式（取决于区域设置）                                                                                             | `07/06/23`                 |
+| `%X` | 本地化的时间表示形式，例如 18:40:20 或 6:40:20 PM（取决于区域设置）                                                                 | `18:32:07`                 |
+| `%D` | 简写的 MM/DD/YY 日期格式，等同于 %m/%d/%y                                                                               | `2023/07/06`               |
+| `%F` | 简短的 YYYY-MM-DD 日期格式，与 %Y-%m-%d 等价                                                                            | `2023-07-06`               |
+| `%r` | 本地化的 12 小时制时间（因区域设置而异）                                                                                       | `06:32:07 PM`              |
+| `%R` | 等同于 &quot;%H:%M&quot;                                                                                        | `18:32`                    |
+| `%T` | 等价于 &quot;%H:%M:%S&quot;（ISO 8601 时间格式）                                                                      | `18:32:07`                 |
+| `%p` | 根据语言环境本地化的 a.m./p.m. 标记                                                                                      | `PM`                       |
+| `%z` | 与 UTC 的偏移量，采用 ISO 8601 格式（例如 -0430）；如果时区信息不可用，则不包含任何字符                                                       | `+0800`                    |
+| `%Z` | 与区域设置相关的时区名称或缩写；如果时区信息不可用，则不输出任何字符                                                                           | `Z AWST `                  |
 
 **示例**
 
@@ -1559,7 +1901,7 @@ ClickHouse 企业版的许可证密钥
 </logger>
 ```
 
-仅在控制台中打印日志消息：
+要仅在控制台输出日志消息：
 
 ```xml
 <logger>
@@ -1568,9 +1910,9 @@ ClickHouse 企业版的许可证密钥
 </logger>
 ```
 
-**每级覆盖**
+**按级别覆盖**
 
-可以覆盖单个日志名称的日志级别。例如，要静音所有 "Backup" 和 "RBAC" 日志记录器的消息。
+可以单独覆盖特定日志记录器的日志级别。例如，要静默日志记录器 &quot;Backup&quot; 和 &quot;RBAC&quot; 的所有消息。
 
 ```xml
 <logger>
@@ -1589,7 +1931,7 @@ ClickHouse 企业版的许可证密钥
 
 **syslog**
 
-另外写入日志消息到 syslog：
+要将日志消息同时写入 syslog：
 
 ```xml
 <logger>
@@ -1603,22 +1945,22 @@ ClickHouse 企业版的许可证密钥
 </logger>
 ```
 
-`<syslog>` 的键：
+`<syslog>` 的配置项：
 
-| 键        | 描述                                                                                                                                                                                                                                                     |
-|------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `address`  | syslog 的地址，格式为 `host\[:port\]`。如果省略，则使用本地守护程序。                                                                                                                                                                                |
-| `hostname` | 发送日志的主机名称（可选）。                                                                                                                                                                                                                            |
-| `facility` | syslog [设施关键字](https://en.wikipedia.org/wiki/Syslog#Facility)。必须以大写字母表示，并以 "LOG_" 前缀开头，例如 `LOG_USER`，`LOG_DAEMON`，`LOG_LOCAL3` 等。如果指定了 `address`，则默认为 `LOG_USER`，否则为 `LOG_DAEMON`。                                                      |
-| `format`   | 日志消息格式。可能的值有：`bsd` 和 `syslog`。                                                                                                                                                                                                            |
+| Key        | Description                                                                                                                                                                              |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `address`  | syslog 的地址，格式为 `host\[:port\]`。如果省略，则使用本地守护进程。                                                                                                                                           |
+| `hostname` | 发送日志的主机名（可选）。                                                                                                                                                                            |
+| `facility` | syslog 的[facility 关键字](https://en.wikipedia.org/wiki/Syslog#Facility)。必须使用大写，并以 `LOG_` 为前缀，例如 `LOG_USER`、`LOG_DAEMON`、`LOG_LOCAL3` 等。默认值：如果指定了 `address`，则为 `LOG_USER`，否则为 `LOG_DAEMON`。 |
+| `format`   | 日志消息格式。可选值：`bsd` 和 `syslog`。                                                                                                                                                             |
 
 **日志格式**
 
-可以指定将在控制台日志中输出的日志格式。目前，只支持 JSON。
+可以指定在控制台日志中输出的日志格式。目前仅支持 JSON。
 
 **示例**
 
-这是输出 JSON 日志的示例：
+下面是一个输出 JSON 日志的示例：
 
 ```json
 {
@@ -1641,6 +1983,8 @@ ClickHouse 企业版的许可证密钥
 <logger>
     <formatting>
         <type>json</type>
+        <!-- 可按通道单独配置(log、errorlog、console、syslog),或为所有通道全局配置(省略此项即可)。 -->
+        <!-- <channel></channel> -->
         <names>
             <date_time>date_time</date_time>
             <thread_name>thread_name</thread_name>
@@ -1656,219 +2000,316 @@ ClickHouse 企业版的许可证密钥
 </logger>
 ```
 
-**重命名 JSON 日志的键**
+**为 JSON 日志重命名键**
 
-可以通过更改 `<names>` 标签内的标签值来修改键名称。例如，要将 `DATE_TIME` 更改为 `MY_DATE_TIME`，可以使用 `<date_time>MY_DATE_TIME</date_time>`。
+可以通过修改 `<names>` 标签中的标签内容来更改键名。例如，要将 `DATE_TIME` 更改为 `MY_DATE_TIME`，可以使用 `<date_time>MY_DATE_TIME</date_time>`。
 
-**省略 JSON 日志的键**
+**在 JSON 日志中省略键**
 
-可以通过注释掉属性来省略日志属性。例如，如果您不希望日志打印 `query_id`，可以注释掉 `<query_id>` 标签。
-## macros {#macros} 
+可以通过将属性注释掉来省略日志属性。例如，如果不希望日志打印 `query_id`，可以将 `<query_id>` 标签注释掉。
 
-复制表的参数替换。
+## macros {#macros}
+
+用于复制表的参数替换。
 
 如果不使用复制表，可以省略。
 
-有关更多信息，请参见[创建复制表](../../engines/table-engines/mergetree-family/replication.md#creating-replicated-tables)部分。
+更多信息，参见[创建复制表](../../engines/table-engines/mergetree-family/replication.md#creating-replicated-tables)一节。
 
 **示例**
 
 ```xml
 <macros incl="macros" optional="true" />
 ```
+
 ## mark_cache_policy {#mark_cache_policy} 
 
-<SettingsInfoBlock type="String" default_value="SLRU" />标记缓存策略名称。
+<SettingsInfoBlock type="String" default_value="SLRU" />mark cache 策略名称。
+
 ## mark_cache_prewarm_ratio {#mark_cache_prewarm_ratio} 
 
-<SettingsInfoBlock type="Double" default_value="0.95" />在预热期间填充的标记缓存总大小的比例。
+<SettingsInfoBlock type="Double" default_value="0.95" />在预热期间要填充的 mark cache 总大小的比例。
+
 ## mark_cache_size {#mark_cache_size} 
 
 <SettingsInfoBlock type="UInt64" default_value="5368709120" />
-标记缓存的最大大小（`MergeTree`家族表的索引）。
+
+最大缓存大小，用于 `MergeTree` 表引擎族的标记（索引）（参见 [/engines/table-engines/mergetree-family](/engines/table-engines/mergetree-family)）。
 
 :::note
-此设置可以在运行时修改，并将立即生效。
+此设置可以在运行时修改，并会立即生效。
 :::
+
 ## mark_cache_size_ratio {#mark_cache_size_ratio} 
 
-<SettingsInfoBlock type="Double" default_value="0.5" />标记缓存中受保护队列的大小（在 SLRU 策略下）相对于缓存的总大小。
+<SettingsInfoBlock type="Double" default_value="0.5" />在采用 SLRU 策略时，mark 缓存中受保护队列的大小占缓存总大小的比例。
+
 ## max_active_parts_loading_thread_pool_size {#max_active_parts_loading_thread_pool_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="64" />启动时加载活动数据部分（活动的）集合的线程数。
+<SettingsInfoBlock type="UInt64" default_value="64" />在启动时用于加载活动分区片段集合的线程数。
+
 ## max_authentication_methods_per_user {#max_authentication_methods_per_user} 
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
-用户可以创建或更改的最大身份验证方法数量。
-更改此设置不会影响现有用户。如果创建/更改身份验证相关的查询超出此设置中指定的限制，则会失败。
-非身份验证创建/更改查询将成功。
+
+为单个用户创建或修改时允许的最大身份验证方法数量。
+更改该设置不会影响现有用户。如果创建或修改与身份验证相关的查询超出该设置中指定的上限，将会失败。
+与身份验证无关的创建或修改查询仍会成功。
 
 :::note
 值为 `0` 表示无限制。
 :::
+
 ## max_backup_bandwidth_for_server {#max_backup_bandwidth_for_server} 
 
-<SettingsInfoBlock type="UInt64" default_value="0" />服务器上所有备份的最大读取速度（以字节每秒为单位）。零表示无限制。
+<SettingsInfoBlock type="UInt64" default_value="0" />服务器上所有备份的最大读取带宽（字节/秒）。0 表示无限制。
+
 ## max_backups_io_thread_pool_free_size {#max_backups_io_thread_pool_free_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="0" />如果备份 IO 线程池中 **空闲** 线程的数量超过 `max_backup_io_thread_pool_free_size`，ClickHouse 将释放空闲线程占用的资源，并减少池的大小。如果必要，可以再次创建线程。
+<SettingsInfoBlock type="UInt64" default_value="0" />如果 Backups IO 线程池中**空闲**线程的数量超过 `max_backup_io_thread_pool_free_size`，ClickHouse 会释放这些空闲线程占用的资源并减少线程池的大小。如有必要，可以重新创建这些线程。
+
 ## max_backups_io_thread_pool_size {#max_backups_io_thread_pool_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="1000" />ClickHouse 使用备份 IO 线程池中的线程执行 S3 备份 IO 操作。`max_backups_io_thread_pool_size` 限制池中的最大线程数量。
+<SettingsInfoBlock type="UInt64" default_value="1000" />ClickHouse 使用备份 IO 线程池中的线程来执行 S3 备份 IO 操作。`max_backups_io_thread_pool_size` 用于限制该线程池中的最大线程数。
+
 ## max_build_vector_similarity_index_thread_pool_size {#max_build_vector_similarity_index_thread_pool_size} 
 
 <SettingsInfoBlock type="UInt64" default_value="16" />
-用于构建向量索引的最大线程数量。
+
+用于构建向量索引时可使用的最大线程数。
 
 :::note
-值为 `0` 表示使用所有核心。
+值为 `0` 表示使用所有 CPU 核心。
 :::
+
 ## max_concurrent_insert_queries {#max_concurrent_insert_queries} 
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
-限制同时插入查询的总数量。
+
+限制同时执行的 INSERT 查询总数。
 
 :::note
 
-值为 `0`（默认值）表示无限制。
+值为 `0`（默认）表示不限制。
 
-此设置可以在运行时修改，并将立即生效。已经在运行的查询将保持不变。
+该设置可在运行时修改，并会立即生效。已在运行中的查询将不受影响。
 :::
+
 ## max_concurrent_queries {#max_concurrent_queries} 
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
-限制同时执行查询的总数量。请注意，还必须考虑对 `INSERT` 和 `SELECT` 查询的限制，以及用户的最大查询数量。
 
-另见：
+对并发执行的查询总数的限制。请注意，还必须同时考虑对 `INSERT` 和 `SELECT` 查询的限制，以及对每个用户的最大查询数限制。
+
+另请参阅：
+
 - [`max_concurrent_insert_queries`](/operations/server-configuration-parameters/settings#max_concurrent_insert_queries)
 - [`max_concurrent_select_queries`](/operations/server-configuration-parameters/settings#max_concurrent_select_queries)
 - [`max_concurrent_queries_for_all_users`](/operations/settings/settings#max_concurrent_queries_for_all_users)
 
 :::note
 
-值为 `0`（默认值）表示无限制。
+值为 `0`（默认）表示不限制。
 
-此设置可以在运行时修改，并将立即生效。已经在运行的查询将保持不变。
+此设置可以在运行时修改，并会立即生效。已在运行中的查询不会受到影响。
 :::
+
 ## max_concurrent_select_queries {#max_concurrent_select_queries} 
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
-限制同时执行的选择查询的总数量。
+
+对并发执行的 `SELECT` 查询总数的限制。
 
 :::note
 
-值为 `0`（默认值）表示无限制。
+值为 `0`（默认）表示不做限制。
 
-此设置可以在运行时修改，并将立即生效。已经在运行的查询将保持不变。
+此设置可以在运行时修改，并会立即生效。已在运行中的查询将保持不变。
 :::
+
 ## max_connections {#max_connections} 
 
-<SettingsInfoBlock type="Int32" default_value="4096" />最大服务器连接数。
+<SettingsInfoBlock type="Int32" default_value="4096" />服务器允许的最大连接数。
+
 ## max_database_num_to_throw {#max_database_num_to_throw} 
 
-<SettingsInfoBlock type="UInt64" default_value="0" />如果数据库数量大于此值，服务器将引发异常。值为 0 表示无限制。
-## max_database_num_to_warn {#max_database_num_to_warn} 
+<SettingsInfoBlock type="UInt64" default_value="0" />如果数据库的数量大于该值，服务器将抛出异常。0 表示不限。
+
+## max&#95;database&#95;num&#95;to&#95;warn {#max_database_num_to_warn}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
-如果附加的数据库数量超过指定值，ClickHouse 服务器将向 `system.warnings` 表添加警告信息。
+
+如果已附加的数据库数量超过指定值，ClickHouse 服务器会向 `system.warnings` 表添加警告消息。
 
 **示例**
 
 ```xml
 <max_database_num_to_warn>50</max_database_num_to_warn>
 ```
+
 ## max_database_replicated_create_table_thread_pool_size {#max_database_replicated_create_table_thread_pool_size} 
 
-<SettingsInfoBlock type="UInt32" default_value="1" />在 DatabaseReplicated 中恢复副本时创建表的线程数量。零表示线程的数量等于核心的数量。
-## max_dictionary_num_to_throw {#max_dictionary_num_to_throw} 
+<SettingsInfoBlock type="UInt32" default_value="1" />在 DatabaseReplicated 中用于在副本恢复期间创建表的线程数。设置为 0 表示线程数等于 CPU 核心数。
+
+## max&#95;dictionary&#95;num&#95;to&#95;throw {#max_dictionary_num_to_throw}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
-如果字典的数量超过此值，服务器将引发异常。
 
-仅计算数据库引擎的表：
-- Atomic
-- Ordinary
-- Replicated
-- Lazy
+如果字典数量超过该值，服务器将抛出异常。
+
+仅统计以下数据库引擎的表：
+
+* Atomic
+* Ordinary
+* Replicated
+* Lazy
 
 :::note
-值为 `0` 表示无限制。
+值为 `0` 表示不作限制。
 :::
 
 **示例**
+
 ```xml
 <max_dictionary_num_to_throw>400</max_dictionary_num_to_throw>
 ```
-## max_dictionary_num_to_warn {#max_dictionary_num_to_warn} 
+
+## max&#95;dictionary&#95;num&#95;to&#95;warn {#max_dictionary_num_to_warn}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
-如果附加的字典数量超过指定值，ClickHouse 服务器将向 `system.warnings` 表添加警告信息。
+
+如果已挂载字典的数量超过指定值，ClickHouse 服务器会向 `system.warnings` 表中添加警告消息。
 
 **示例**
 
 ```xml
 <max_dictionary_num_to_warn>400</max_dictionary_num_to_warn>
 ```
+
+## max_distributed_cache_read_bandwidth_for_server {#max_distributed_cache_read_bandwidth_for_server} 
+
+<SettingsInfoBlock type="UInt64" default_value="0" />服务器从分布式缓存读取数据的最大总带宽（字节/秒）。0 表示不限制。
+
+## max_distributed_cache_write_bandwidth_for_server {#max_distributed_cache_write_bandwidth_for_server} 
+
+<SettingsInfoBlock type="UInt64" default_value="0" />服务器写入分布式缓存的最大总带宽（字节/秒）。0 表示无限制。
+
 ## max_entries_for_hash_table_stats {#max_entries_for_hash_table_stats} 
 
-<SettingsInfoBlock type="UInt64" default_value="10000" />在聚合期间收集的哈希表统计信息所允许的条目数量
+<SettingsInfoBlock type="UInt64" default_value="10000" />在聚合过程中收集的哈希表统计信息中允许包含的最大条目数
+
 ## max_fetch_partition_thread_pool_size {#max_fetch_partition_thread_pool_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="64" />用于 ALTER TABLE FETCH PARTITION 的线程数量。
+<SettingsInfoBlock type="UInt64" default_value="64" />用于执行 ALTER TABLE FETCH PARTITION 的线程数。
+
+## max_format_parsing_thread_pool_free_size {#max_format_parsing_thread_pool_free_size} 
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+用于解析输入的线程池中可保留的最大空闲备用线程数。
+
+## max_format_parsing_thread_pool_size {#max_format_parsing_thread_pool_size} 
+
+<SettingsInfoBlock type="UInt64" default_value="100" />
+
+用于解析输入的最大线程总数。
+
 ## max_io_thread_pool_free_size {#max_io_thread_pool_free_size} 
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
-如果 IO 线程池中的 **空闲** 线程数量超过 `max_io_thread_pool_free_size`，ClickHouse 将释放空闲线程占用的资源，并减少池的大小。如果必要，可以再次创建线程。
+
+如果 IO 线程池中**空闲**线程的数量大于 `max_io_thread_pool_free_size`，ClickHouse 将释放这些空闲线程占用的资源，并缩减线程池的大小。必要时会重新创建线程。
+
 ## max_io_thread_pool_size {#max_io_thread_pool_size} 
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
-ClickHouse 使用 IO 线程池中的线程执行某些 IO 操作（例如，与 S3 交互）。`max_io_thread_pool_size` 限制池中的最大线程数量。
-## max_keep_alive_requests {#max_keep_alive_requests} 
+
+ClickHouse 使用 IO 线程池中的线程执行某些 IO 操作（例如与 S3 的交互）。`max_io_thread_pool_size` 用于限制线程池中的线程最大数量。
+
+## max&#95;keep&#95;alive&#95;requests {#max_keep_alive_requests}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
-通过单个保持活动连接处理的请求的最大数量，直到 ClickHouse 服务器关闭该连接。
+
+单个 keep-alive 连接在被 ClickHouse 服务器关闭之前所能处理的最大请求数量。
 
 **示例**
 
 ```xml
 <max_keep_alive_requests>10</max_keep_alive_requests>
 ```
+
 ## max_local_read_bandwidth_for_server {#max_local_read_bandwidth_for_server} 
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
-本地读取的最大速度，以字节每秒为单位。
+
+最大本地读取速度，单位为字节/秒。
 
 :::note
 值为 `0` 表示无限制。
 :::
+
 ## max_local_write_bandwidth_for_server {#max_local_write_bandwidth_for_server} 
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
-本地写入的最大速度，以字节每秒为单位。
+
+服务器本地写入的最大速度，以字节/秒为单位。
 
 :::note
 值为 `0` 表示无限制。
 :::
+
 ## max_materialized_views_count_for_table {#max_materialized_views_count_for_table} 
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
-附加到表上的物化视图数量的限制。
+
+限制附加到单个表的 materialized view 数量。
 
 :::note
-这里只考虑直接依赖的视图，而在一个视图上创建另一个视图不在此考虑之内。
+这里只统计直接依赖该表的视图，不包括在其他视图之上再创建视图的情况。
 :::
+
 ## max_merges_bandwidth_for_server {#max_merges_bandwidth_for_server} 
 
-<SettingsInfoBlock type="UInt64" default_value="0" />服务器上所有合并的最大读取速度，以字节每秒为单位。值为零表示无限制。
+<SettingsInfoBlock type="UInt64" default_value="0" />服务器上所有合并操作的最大读取速率（字节/秒）。数值 0 表示不限制。
+
 ## max_mutations_bandwidth_for_server {#max_mutations_bandwidth_for_server} 
 
-<SettingsInfoBlock type="UInt64" default_value="0" />服务器上所有变更的最大读取速度，以字节每秒为单位。值为零表示无限制。
-## max_open_files {#max_open_files} 
+<SettingsInfoBlock type="UInt64" default_value="0" />服务器上所有 mutation 的最大读取速率，以字节/秒为单位。0 表示无限制。
 
-打开文件的最大数量。
+## max&#95;named&#95;collection&#95;num&#95;to&#95;throw {#max_named_collection_num_to_throw}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+如果命名集合的数量超过该值，服务器将抛出异常。
 
 :::note
-我们建议在 macOS 中使用此选项，因为 `getrlimit()` 函数返回了不正确的值。
+值为 `0` 表示不作限制。
+:::
+
+**示例**
+
+```xml
+<max_named_collection_num_to_throw>400</max_named_collection_num_to_throw>
+```
+
+## max&#95;named&#95;collection&#95;num&#95;to&#95;warn {#max_named_collection_num_to_warn}
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+如果命名集合的数量超过该值，ClickHouse 服务器会在 `system.warnings` 表中添加警告信息。
+
+**示例**
+
+```xml
+<max_named_collection_num_to_warn>400</max_named_collection_num_to_warn>
+```
+
+## max&#95;open&#95;files {#max_open_files}
+
+最大打开文件数。
+
+:::note
+我们建议在 macOS 上使用此选项，因为 `getrlimit()` 函数返回的值不正确。
 :::
 
 **示例**
@@ -1876,36 +2317,43 @@ ClickHouse 使用 IO 线程池中的线程执行某些 IO 操作（例如，与 
 ```xml
 <max_open_files>262144</max_open_files>
 ```
+
 ## max_os_cpu_wait_time_ratio_to_drop_connection {#max_os_cpu_wait_time_ratio_to_drop_connection} 
 
 <SettingsInfoBlock type="Float" default_value="0" />
-考虑丢弃连接的操作系统 CPU 等待（OSCPUWaitMicroseconds 指标）和繁忙（OSCPUVirtualTimeMicroseconds 指标）时间之间的最大比率。使用最小和最大比率之间的线性插值来计算概率，该概率在此点上为 1。
-有关详细信息，请参见 [控制服务器 CPU 超负载的行为](/operations/settings/server-overload)。
+
+用于在考虑是否断开连接时，限制操作系统 CPU 等待时间（OSCPUWaitMicroseconds 指标）与忙碌时间（OSCPUVirtualTimeMicroseconds 指标）之间的最大比率。通过在最小和最大比率之间进行线性插值来计算概率，在该比率点时概率为 1。
+更多信息参见 [在服务器 CPU 过载时控制行为](/operations/settings/server-overload)。
+
 ## max_outdated_parts_loading_thread_pool_size {#max_outdated_parts_loading_thread_pool_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="32" />启动时用于加载非活动数据部分（过时部分）的线程数量。
-## max_part_num_to_warn {#max_part_num_to_warn} 
+<SettingsInfoBlock type="UInt64" default_value="32" />在启动时用于加载处于非活动状态的数据分区片段（过期分区片段）的线程数。
+
+## max&#95;part&#95;num&#95;to&#95;warn {#max_part_num_to_warn}
 
 <SettingsInfoBlock type="UInt64" default_value="100000" />
-如果活动部分的数量超过指定值，clickhouse 服务器将向 `system.warnings` 表中添加警告消息。
+
+如果活动分区片段的数量超过指定值，ClickHouse 服务器会向 `system.warnings` 表中记录警告信息。
 
 **示例**
 
 ```xml
 <max_part_num_to_warn>400</max_part_num_to_warn>
 ```
-## max_partition_size_to_drop {#max_partition_size_to_drop} 
+
+## max&#95;partition&#95;size&#95;to&#95;drop {#max_partition_size_to_drop}
 
 <SettingsInfoBlock type="UInt64" default_value="50000000000" />
-删除分区的限制。
 
-如果 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 表的大小超过 [`max_partition_size_to_drop`](#max_partition_size_to_drop) （以字节为单位），则无法通过 [DROP PARTITION](../../sql-reference/statements/alter/partition.md#drop-partitionpart) 查询删除分区。
-此设置不需要重新启动 ClickHouse 服务器即可应用。禁用限制的另一种方法是创建 `<clickhouse-path>/flags/force_drop_table` 文件。
+删除分区的大小限制。
+
+如果 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 表的大小超过 [`max_partition_size_to_drop`](#max_partition_size_to_drop)（字节），则不能使用 [DROP PARTITION](../../sql-reference/statements/alter/partition.md#drop-partitionpart) 查询来删除分区。
+应用此设置不需要重启 ClickHouse 服务器。禁用该限制的另一种方式是创建 `<clickhouse-path>/flags/force_drop_table` 文件。
 
 :::note
-值为 `0` 表示可以无限制地删除分区。
+值 `0` 表示可以在没有任何限制的情况下删除分区。
 
-此限制不限制删除表和截断表，请参见 [max_table_size_to_drop](/operations/settings/settings#max_table_size_to_drop)
+该限制不影响 DROP TABLE 和 TRUNCATE TABLE 操作，参见 [max&#95;table&#95;size&#95;to&#95;drop](/operations/settings/settings#max_table_size_to_drop)
 :::
 
 **示例**
@@ -1913,156 +2361,189 @@ ClickHouse 使用 IO 线程池中的线程执行某些 IO 操作（例如，与 
 ```xml
 <max_partition_size_to_drop>0</max_partition_size_to_drop>
 ```
+
 ## max_parts_cleaning_thread_pool_size {#max_parts_cleaning_thread_pool_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="128" />用于同时删除非活动数据部分的线程数量。
-## max_pending_mutations_execution_time_to_warn {#max_pending_mutations_execution_time_to_warn} 
+<SettingsInfoBlock type="UInt64" default_value="128" />用于并发清理非活动数据分区片段的线程数。
+
+## max&#95;pending&#95;mutations&#95;execution&#95;time&#95;to&#95;warn {#max_pending_mutations_execution_time_to_warn}
 
 <SettingsInfoBlock type="UInt64" default_value="86400" />
-如果任何待处理的变更超过指定值（以秒为单位），clickhouse 服务器将向 `system.warnings` 表中添加警告消息。
+
+如果任意处于等待执行状态的 mutation 的执行时间超过指定的秒数，ClickHouse 服务器会向 `system.warnings` 表添加警告消息。
 
 **示例**
 
 ```xml
 <max_pending_mutations_execution_time_to_warn>10000</max_pending_mutations_execution_time_to_warn>
 ```
-## max_pending_mutations_to_warn {#max_pending_mutations_to_warn} 
+
+## max&#95;pending&#95;mutations&#95;to&#95;warn {#max_pending_mutations_to_warn}
 
 <SettingsInfoBlock type="UInt64" default_value="500" />
-如果待处理变更的数量超过指定值，clickhouse 服务器将向 `system.warnings` 表中添加警告消息。
+
+如果待处理的 mutation 数量超过指定值，ClickHouse 服务器会向 `system.warnings` 表中添加警告信息。
 
 **示例**
 
 ```xml
 <max_pending_mutations_to_warn>400</max_pending_mutations_to_warn>
 ```
+
 ## max_prefixes_deserialization_thread_pool_free_size {#max_prefixes_deserialization_thread_pool_free_size} 
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
-如果前缀反序列化线程池中的 **空闲** 线程数量超过 `max_prefixes_deserialization_thread_pool_free_size` ， ClickHouse 将释放占用空闲线程的资源并减少池大小。如有必要，可以重新创建线程。
+
+如果前缀反序列化线程池中的**空闲**线程数超过 `max_prefixes_deserialization_thread_pool_free_size`，ClickHouse 将释放这些空闲线程占用的资源并缩减线程池大小。如有需要，可以重新创建线程。
+
 ## max_prefixes_deserialization_thread_pool_size {#max_prefixes_deserialization_thread_pool_size} 
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
-ClickHouse 使用来自前缀反序列化线程池的线程以并行方式读取 MergeTree 中宽部分文件前缀的列和子列的元数据。 `max_prefixes_deserialization_thread_pool_size` 限制池中的最大线程数量。
+
+ClickHouse 使用前缀反序列化线程池中的线程，从 MergeTree 中的 Wide 格式分区片段的文件前缀中并行读取列和子列的元数据。`max_prefixes_deserialization_thread_pool_size` 用于限制该线程池中的最大线程数。
+
 ## max_remote_read_network_bandwidth_for_server {#max_remote_read_network_bandwidth_for_server} 
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
-读取时，通过网络交换数据的最大速度，以字节每秒为单位。
+
+读取时通过网络进行数据交换的最大速度，单位为字节/秒。
 
 :::note
-值为 `0` （默认）表示无限制。
+值为 `0`（默认）表示不限制。
 :::
+
 ## max_remote_write_network_bandwidth_for_server {#max_remote_write_network_bandwidth_for_server} 
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
-写入时，通过网络交换数据的最大速度，以字节每秒为单位。
+
+写入时服务器通过网络进行数据交换的最大速度，以字节每秒为单位。
 
 :::note
-值为 `0` （默认）表示无限制。
+值为 `0`（默认）表示无限制。
 :::
+
 ## max_replicated_fetches_network_bandwidth_for_server {#max_replicated_fetches_network_bandwidth_for_server} 
 
-<SettingsInfoBlock type="UInt64" default_value="0" />通过网络交换数据的最大速度，以字节每秒为单位，用于复制获取。值为零表示无限制。
+<SettingsInfoBlock type="UInt64" default_value="0" />副本拉取时通过网络进行数据交换的最大速度（以字节/秒计）。0 表示不受限制。
+
 ## max_replicated_sends_network_bandwidth_for_server {#max_replicated_sends_network_bandwidth_for_server} 
 
-<SettingsInfoBlock type="UInt64" default_value="0" />通过网络交换数据的最大速度，以字节每秒为单位，用于复制发送。值为零表示无限制。
-## max_replicated_table_num_to_throw {#max_replicated_table_num_to_throw} 
+<SettingsInfoBlock type="UInt64" default_value="0" />用于副本数据发送时，通过网络进行数据交换的最大速率（以字节/秒计）。零表示无限制。
+
+## max&#95;replicated&#95;table&#95;num&#95;to&#95;throw {#max_replicated_table_num_to_throw}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
-如果复制表的数量大于此值，服务器将抛出异常。
 
-仅计入数据库引擎的表：
-- Atomic
-- Ordinary
-- Replicated
-- Lazy
+如果复制表的数量超过该值，服务器将抛出异常。
+
+仅统计以下数据库引擎的表：
+
+* Atomic
+* Ordinary
+* Replicated
+* Lazy
 
 :::note
-值为 `0` 表示没有限制。
+值为 `0` 表示不做限制。
 :::
 
 **示例**
+
 ```xml
 <max_replicated_table_num_to_throw>400</max_replicated_table_num_to_throw>
 ```
+
 ## max_server_memory_usage {#max_server_memory_usage} 
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
+
 服务器允许使用的最大内存量，以字节为单位。
 
 :::note
-服务器的最大内存消耗受到 `max_server_memory_usage_to_ram_ratio` 设置的进一步限制。
+服务器的最大内存使用量还会受到 `max_server_memory_usage_to_ram_ratio` 的进一步限制。
 :::
 
-作为特例，值为 `0` （默认）表示服务器可以使用所有可用内存（不包括 `max_server_memory_usage_to_ram_ratio` 强加的进一步限制）。
+作为一个特殊情况，值为 `0`（默认）表示服务器可以使用所有可用内存，但仍受 `max_server_memory_usage_to_ram_ratio` 施加的进一步限制。
+
 ## max_server_memory_usage_to_ram_ratio {#max_server_memory_usage_to_ram_ratio} 
 
 <SettingsInfoBlock type="Double" default_value="0.9" />
-服务器允许使用的最大内存量，以所有可用内存的比例表示。
 
-例如，值为 `0.9` （默认）表示服务器可以使用 90% 的可用内存。
+服务器允许使用的最大内存量，以可用总内存的比例表示。
 
-允许在低内存系统上降低内存使用。
-在内存和交换空间有限的主机上，可能需要将 [`max_server_memory_usage_to_ram_ratio`](#max_server_memory_usage_to_ram_ratio) 设置大于 1。
+例如，值为 `0.9`（默认）表示服务器可以使用 90% 的可用内存。
+
+可用于在内存较小的系统上降低内存占用。
+在 RAM 和交换空间（swap）较少的主机上，可能需要将 [`max_server_memory_usage_to_ram_ratio`](#max_server_memory_usage_to_ram_ratio) 设置为大于 1 的值。
 
 :::note
-服务器的最大内存消耗受到 `max_server_memory_usage` 设置的进一步限制。
+服务器的最大内存使用量还会受到 `max_server_memory_usage` SETTING 的进一步限制。
 :::
-## max_session_timeout {#max_session_timeout} 
 
-最大会话超时时间，以秒为单位。
+## max&#95;session&#95;timeout {#max_session_timeout}
+
+最大会话超时时间（秒）。
 
 示例：
 
 ```xml
 <max_session_timeout>3600</max_session_timeout>
 ```
-## max_table_num_to_throw {#max_table_num_to_throw} 
+
+## max&#95;table&#95;num&#95;to&#95;throw {#max_table_num_to_throw}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
-如果表的数量大于此值，服务器将抛出异常。
 
-以下表不计入：
-- view
-- remote
-- dictionary
-- system
+如果表数量大于该值，服务器将抛出异常。
 
-仅计入数据库引擎的表：
-- Atomic
-- Ordinary
-- Replicated
-- Lazy
+下列表不会被计入统计：
+
+* view
+* remote
+* dictionary
+* system
+
+仅统计以下数据库引擎中的表：
+
+* Atomic
+* Ordinary
+* Replicated
+* Lazy
 
 :::note
-值为 `0` 表示没有限制。
+值为 `0` 表示不设限制。
 :::
 
 **示例**
+
 ```xml
 <max_table_num_to_throw>400</max_table_num_to_throw>
 ```
-## max_table_num_to_warn {#max_table_num_to_warn} 
+
+## max&#95;table&#95;num&#95;to&#95;warn {#max_table_num_to_warn}
 
 <SettingsInfoBlock type="UInt64" default_value="5000" />
-如果附加的表数量超过指定值，clickhouse 服务器将向 `system.warnings` 表中添加警告消息。
+
+如果已附加的表数量超过指定的数值，ClickHouse 服务器会向 `system.warnings` 表中添加警告消息。
 
 **示例**
 
 ```xml
 <max_table_num_to_warn>400</max_table_num_to_warn>
 ```
-## max_table_size_to_drop {#max_table_size_to_drop} 
+
+## max&#95;table&#95;size&#95;to&#95;drop {#max_table_size_to_drop}
 
 <SettingsInfoBlock type="UInt64" default_value="50000000000" />
+
 删除表的限制。
 
-如果 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 表的大小超过 `max_table_size_to_drop` （以字节为单位），则无法通过 [`DROP`](../../sql-reference/statements/drop.md) 查询或 [`TRUNCATE`](../../sql-reference/statements/truncate.md) 查询删除它。
+如果某个 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 表的大小超过 `max_table_size_to_drop`（以字节为单位），则无法使用 [`DROP`](../../sql-reference/statements/drop.md) 查询或 [`TRUNCATE`](../../sql-reference/statements/truncate.md) 查询将其删除。
 
 :::note
-值为 `0` 表示可以无限制地删除所有表。
+`0` 表示可以在没有任何限制的情况下删除所有表。
 
-此设置不需要重新启动 ClickHouse 服务器来应用。禁用限制的另一种方法是创建 `<clickhouse-path>/flags/force_drop_table` 文件。
+使该设置在 ClickHouse 服务器中生效不需要重启。禁用此限制的另一种方法是创建 `<clickhouse-path>/flags/force_drop_table` 文件。
 :::
 
 **示例**
@@ -2070,79 +2551,95 @@ ClickHouse 使用来自前缀反序列化线程池的线程以并行方式读取
 ```xml
 <max_table_size_to_drop>0</max_table_size_to_drop>
 ```
+
 ## max_temporary_data_on_disk_size {#max_temporary_data_on_disk_size} 
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
-可用于外部聚合、连接或排序的最大存储量。
-超出此限制的查询将因异常而失败。
+
+可用于外部聚合、连接或排序的最大磁盘空间。
+超过此限制的查询将抛出异常并失败。
 
 :::note
-值为 `0` 表示无限制。
+值为 `0` 表示不限制。
 :::
 
-另请参见：
+另请参阅：
+
 - [`max_temporary_data_on_disk_size_for_user`](/operations/settings/settings#max_temporary_data_on_disk_size_for_user)
 - [`max_temporary_data_on_disk_size_for_query`](/operations/settings/settings#max_temporary_data_on_disk_size_for_query)
-## max_thread_pool_free_size {#max_thread_pool_free_size} 
+
+## max&#95;thread&#95;pool&#95;free&#95;size {#max_thread_pool_free_size}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
-如果全局线程池中的 **空闲** 线程数量大于 [`max_thread_pool_free_size`](/operations/server-configuration-parameters/settings#max_thread_pool_free_size)，ClickHouse 将释放某些线程所占用的资源并减少池的大小。如有必要，可以重新创建线程。
+
+如果全局线程池中**空闲**线程的数量大于 [`max_thread_pool_free_size`](/operations/server-configuration-parameters/settings#max_thread_pool_free_size)，则 ClickHouse 会释放部分线程所占用的资源，并缩小线程池的大小。如有需要，可以重新创建线程。
 
 **示例**
 
 ```xml
 <max_thread_pool_free_size>1200</max_thread_pool_free_size>
 ```
-## max_thread_pool_size {#max_thread_pool_size} 
+
+## max&#95;thread&#95;pool&#95;size {#max_thread_pool_size}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
-ClickHouse 使用全局线程池中的线程来处理查询。如果没有空闲线程来处理查询，则在池中创建一个新线程。 `max_thread_pool_size` 限制池中的最大线程数量。
+
+ClickHouse 使用全局线程池中的线程来处理查询。如果没有空闲线程可用于处理查询，则会在池中创建一个新线程。`max_thread_pool_size` 用于限制池中的最大线程数量。
 
 **示例**
 
 ```xml
 <max_thread_pool_size>12000</max_thread_pool_size>
 ```
+
 ## max_unexpected_parts_loading_thread_pool_size {#max_unexpected_parts_loading_thread_pool_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="8" />启动时用于加载非活动数据部分（意外部分）的线程数量。
-## max_view_num_to_throw {#max_view_num_to_throw} 
+<SettingsInfoBlock type="UInt64" default_value="8" />在启动时用于加载处于非活动状态的意外分区片段集合的线程数量。
+
+## max&#95;view&#95;num&#95;to&#95;throw {#max_view_num_to_throw}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
-如果视图的数量大于此值，服务器将抛出异常。
 
-仅计入数据库引擎的表：
-- Atomic
-- Ordinary
-- Replicated
-- Lazy
+如果 VIEW 的数量超过该值，服务器将抛出异常。
+
+仅统计使用以下数据库引擎的表：
+
+* Atomic
+* Ordinary
+* Replicated
+* Lazy
 
 :::note
-值为 `0` 表示没有限制。
+值为 `0` 表示不作限制。
 :::
 
 **示例**
+
 ```xml
 <max_view_num_to_throw>400</max_view_num_to_throw>
 ```
-## max_view_num_to_warn {#max_view_num_to_warn} 
+
+## max&#95;view&#95;num&#95;to&#95;warn {#max_view_num_to_warn}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
-如果附加的视图数量超过指定值，clickhouse 服务器将向 `system.warnings` 表中添加警告消息。
+
+如果已附加的 VIEW 数量超过指定值，ClickHouse 服务器会向 `system.warnings` 表写入警告消息。
 
 **示例**
 
 ```xml
 <max_view_num_to_warn>400</max_view_num_to_warn>
 ```
+
 ## max_waiting_queries {#max_waiting_queries} 
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
-并发等待查询的总数量限制。
-在所需的表异步加载时，等待查询的执行将被阻塞（请参见 [`async_load_databases`](/operations/server-configuration-parameters/settings#async_load_databases)。
+
+对同时处于等待状态的查询总数的限制。
+当所需的表以异步方式加载时（参见 [`async_load_databases`](/operations/server-configuration-parameters/settings#async_load_databases)），等待中的查询执行会被阻塞。
 
 :::note
-在检查以下设置所控制的限制时，不计算等待查询：
+在检查由以下设置控制的限制时，不会统计等待中的查询：
 
 - [`max_concurrent_queries`](/operations/server-configuration-parameters/settings#max_concurrent_queries)
 - [`max_concurrent_insert_queries`](/operations/server-configuration-parameters/settings#max_concurrent_insert_queries)
@@ -2150,30 +2647,37 @@ ClickHouse 使用全局线程池中的线程来处理查询。如果没有空闲
 - [`max_concurrent_queries_for_user`](/operations/settings/settings#max_concurrent_queries_for_user)
 - [`max_concurrent_queries_for_all_users`](/operations/settings/settings#max_concurrent_queries_for_all_users)
 
-此更正是为了避免在服务器启动后立即达到这些限制。
+进行此调整是为了避免在服务器启动后立刻触及这些限制。
 :::
 
 :::note
 
-值为 `0` （默认）表示无限制。
+值为 `0`（默认）表示不限制。
 
-此设置可以在运行时修改，并将立即生效。已在运行的查询将保持不变。
+此设置可以在运行时修改，并会立即生效。已在运行中的查询将保持不变。
 :::
+
 ## memory_worker_correct_memory_tracker {#memory_worker_correct_memory_tracker} 
 
 <SettingsInfoBlock type="Bool" default_value="0" />
-背景内存工作器是否应该根据来自外部来源（如 jemalloc 和 cgroups）的信息校正内部内存跟踪器。
+
+后台内存工作线程是否应根据来自 jemalloc、cgroups 等外部来源的信息来校正内部内存跟踪器。
+
 ## memory_worker_period_ms {#memory_worker_period_ms} 
 
-后台内存工作器的滴答周期，该工作器根据内存使用量来修正内存跟踪器的内存使用情况并清理未使用的页面。如果设置为 0，将根据内存使用来源使用默认值。
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+后台内存 worker 的执行周期，用于在内存使用较高时修正内存跟踪器的内存用量，并清理未使用的页。如果设置为 0，则会根据内存使用来源使用默认值。
+
 ## memory_worker_use_cgroup {#memory_worker_use_cgroup} 
 
-使用当前 cgroup 内存使用信息来修正内存跟踪。
-## merge_tree {#merge_tree} 
+<SettingsInfoBlock type="Bool" default_value="1" />根据当前 cgroup 的内存使用信息校正内存跟踪。
 
-[MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 中表的细调。
+## merge&#95;tree {#merge_tree}
 
-具体信息请参见 MergeTreeSettings.h 头文件。
+针对 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 表的精细调优。
+
+有关更多信息，请参阅头文件 MergeTreeSettings.h。
 
 **示例**
 
@@ -2182,18 +2686,23 @@ ClickHouse 使用全局线程池中的线程来处理查询。如果没有空闲
     <max_suspicious_broken_parts>5</max_suspicious_broken_parts>
 </merge_tree>
 ```
+
 ## merge_workload {#merge_workload} 
 
 <SettingsInfoBlock type="String" default_value="default" />
-用于调节资源在合并和其他工作负载之间的利用和共享。指定的值作为所有后台合并的 `workload` 设置值。可以被合并树设置覆盖。
 
-**另请参见**
+用于调节合并与其他工作负载之间的资源使用和共享方式。指定的值会作为所有后台合并的 `workload` 设置项的取值。可以通过 MergeTree 的设置进行覆盖。
+
+**另请参阅**
+
 - [工作负载调度](/operations/workload-scheduling.md)
-## merges_mutations_memory_usage_soft_limit {#merges_mutations_memory_usage_soft_limit} 
+
+## merges&#95;mutations&#95;memory&#95;usage&#95;soft&#95;limit {#merges_mutations_memory_usage_soft_limit}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
-设置进行合并和变更操作允许使用的 RAM 限制。
-如果 ClickHouse 达到设定的限制，则不会安排任何新的后台合并或变更操作，但将继续执行已安排的任务。
+
+设置在执行合并（merge）和变更（mutation）操作时允许使用的 RAM 上限。
+如果 ClickHouse 达到该限制，它将不会再调度任何新的后台合并或变更操作，但会继续执行已经调度的任务。
 
 :::note
 值为 `0` 表示无限制。
@@ -2204,22 +2713,25 @@ ClickHouse 使用全局线程池中的线程来处理查询。如果没有空闲
 ```xml
 <merges_mutations_memory_usage_soft_limit>0</merges_mutations_memory_usage_soft_limit>
 ```
+
 ## merges_mutations_memory_usage_to_ram_ratio {#merges_mutations_memory_usage_to_ram_ratio} 
 
 <SettingsInfoBlock type="Double" default_value="0.5" />
-默认的 `merges_mutations_memory_usage_soft_limit` 值计算为 `memory_amount * merges_mutations_memory_usage_to_ram_ratio`。
 
-**另请参见：**
+默认的 `merges_mutations_memory_usage_soft_limit` 值按照如下公式计算：`memory_amount * merges_mutations_memory_usage_to_ram_ratio`。
+
+**另请参阅：**
 
 - [max_memory_usage](/operations/settings/settings#max_memory_usage)
 - [merges_mutations_memory_usage_soft_limit](/operations/server-configuration-parameters/settings#merges_mutations_memory_usage_soft_limit)
-## metric_log {#metric_log} 
 
-默认情况下禁用。
+## metric&#95;log {#metric_log}
+
+默认情况下处于禁用状态。
 
 **启用**
 
-要手动启用指标历史记录收集 [`system.metric_log`](../../operations/system-tables/metric_log.md)，请创建 `/etc/clickhouse-server/config.d/metric_log.xml` ，内容如下：
+要手动开启指标历史数据收集 [`system.metric_log`](../../operations/system-tables/metric_log.md)，请创建 `/etc/clickhouse-server/config.d/metric_log.xml` 文件，并填入以下内容：
 
 ```xml
 <clickhouse>
@@ -2238,7 +2750,7 @@ ClickHouse 使用全局线程池中的线程来处理查询。如果没有空闲
 
 **禁用**
 
-要禁用 `metric_log` 设置，您应该创建以下文件 `/etc/clickhouse-server/config.d/disable_metric_log.xml`，内容如下：
+要禁用 `metric_log` 配置项，需要创建如下文件 `/etc/clickhouse-server/config.d/disable_metric_log.xml`，内容如下：
 
 ```xml
 <clickhouse>
@@ -2246,19 +2758,22 @@ ClickHouse 使用全局线程池中的线程来处理查询。如果没有空闲
 </clickhouse>
 ```
 
-<SystemLogParameters/>
+<SystemLogParameters />
+
 ## min_os_cpu_wait_time_ratio_to_drop_connection {#min_os_cpu_wait_time_ratio_to_drop_connection} 
 
 <SettingsInfoBlock type="Float" default_value="0" />
-考虑丢弃连接的操作系统 CPU 等待（OSCPUWaitMicroseconds 指标）和繁忙（OSCPUVirtualTimeMicroseconds 指标）时间之间的最小比率。使用最小和最大比率之间的线性插值来计算概率，该概率在此点上为 0。
-有关详细信息，请参见 [控制服务器 CPU 超负载的行为](/operations/settings/server-overload)。
-## mlock_executable {#mlock_executable} 
 
-在启动后执行 `mlockall` ，以降低首次查询的延迟并防止 clickhouse 可执行文件在高 IO 负载下被换出。
+在考虑断开连接时，操作系统 CPU 等待时间（OSCPUWaitMicroseconds 指标）与忙碌时间（OSCPUVirtualTimeMicroseconds 指标）之间的最小比值。通过在最小和最大比值之间进行线性插值来计算概率，在该最小比值处概率为 0。
+更多详细信息，参见[控制服务器 CPU 过载时的行为](/operations/settings/server-overload)。
+
+## mlock&#95;executable {#mlock_executable}
+
+在启动后执行 `mlockall`，以降低首个查询的延迟，并防止在高 IO 负载下 ClickHouse 可执行文件被换出（分页到磁盘）。
 
 :::note
-建议启用此选项，但会导致启动时间增加至数秒。
-请记住，这个设置在没有 "CAP_IPC_LOCK" 权限的情况下不会起作用。
+建议启用此选项，但这会使启动时间增加最多几秒钟。
+请注意，如果没有 “CAP&#95;IPC&#95;LOCK” 能力，此 SETTING 将不会生效。
 :::
 
 **示例**
@@ -2266,75 +2781,84 @@ ClickHouse 使用全局线程池中的线程来处理查询。如果没有空闲
 ```xml
 <mlock_executable>false</mlock_executable>
 ```
+
 ## mmap_cache_size {#mmap_cache_size} 
 
 <SettingsInfoBlock type="UInt64" default_value="1024" />
-设置映射文件的缓存大小（以字节为单位）。此设置可以避免频繁的打开/关闭调用（由于随后的页面错误而非常昂贵），并可以在多个线程和查询中重用映射。设置值是映射区域的数量（通常等于映射文件的数量）。
 
-可以在以下系统表中监控映射文件中的数据量，并具有以下指标：
+此设置用于避免频繁的 open/close 调用（由于随之而来的缺页异常开销非常高），并允许在多个线程和查询之间复用映射。该设置的值表示已映射区域的数量（通常等于已映射文件的数量）。
 
-| 系统表                                                                                                                                                                                                                                                                                                                                                       | 指标                                                                                                   |
-|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
-| [`system.metrics`](/operations/system-tables/metrics) 和 [`system.metric_log`](/operations/system-tables/metric_log)                                                                                                                                                                                                                              | `MMappedFiles` 和 `MMappedFileBytes`                                                                    |
-| [`system.asynchronous_metrics_log`](/operations/system-tables/asynchronous_metric_log)                                                                                                                                                                                                                                                                     | `MMapCacheCells`                                                                                         |
-| [`system.events`](/operations/system-tables/events), [`system.processes`](/operations/system-tables/processes), [`system.query_log`](/operations/system-tables/query_log), [`system.query_thread_log`](/operations/system-tables/query_thread_log), [`system.query_views_log`](/operations/system-tables/query_views_log)  | `CreatedReadBufferMMap`、`CreatedReadBufferMMapFailed`、`MMappedFileCacheHits`、`MMappedFileCacheMisses` |
+可以通过以下系统表中的相关指标监控已映射文件中的数据量：
+
+- `MMappedFiles`/`MMappedFileBytes`/`MMapCacheCells` 位于 [`system.metrics`](/operations/system-tables/metrics)、[`system.metric_log`](/operations/system-tables/metric_log)
+- `CreatedReadBufferMMap`/`CreatedReadBufferMMapFailed`/`MMappedFileCacheHits`/`MMappedFileCacheMisses` 位于 [`system.events`](/operations/system-tables/events)、[`system.processes`](/operations/system-tables/processes)、[`system.query_log`](/operations/system-tables/query_log)、[`system.query_thread_log`](/operations/system-tables/query_thread_log)、[`system.query_views_log`](/operations/system-tables/query_views_log)
 
 :::note
-映射文件中的数据量不会直接消耗内存，并且在查询或服务器内存使用中不会被计算——因为这部分内存可以像操作系统页面缓存一样被丢弃。在 MergeTree 系列表中删除旧部分时，缓存会自动被丢弃（文件关闭），也可以通过 `SYSTEM DROP MMAP CACHE` 查询手动丢弃。
+已映射文件中的数据量不会直接消耗内存，并且不会计入查询或服务器的内存使用中——因为这部分内存可以像操作系统页缓存一样被丢弃。当 MergeTree 系列的表中旧的分区片段被删除时，此缓存会自动被丢弃（文件会被关闭），也可以通过执行 `SYSTEM DROP MMAP CACHE` 查询手动丢弃。
 
-此设置可以在运行时修改，并将立即生效。
+此设置可以在运行时修改，并会立即生效。
 :::
+
 ## mutation_workload {#mutation_workload} 
 
 <SettingsInfoBlock type="String" default_value="default" />
-用于调节资源在变更和其他工作负载之间的利用和共享。指定的值作为所有后台变更的 `workload` 设置值。可以被合并树设置覆盖。
 
-**另请参见**
+用于调节在 mutation 与其他工作负载之间如何使用和共享资源。指定的值会作为所有后台 mutation 的 `workload` SETTING 的取值。可以通过 MergeTree 设置进行覆盖。
+
+**另请参阅**
+
 - [工作负载调度](/operations/workload-scheduling.md)
-## mysql_port {#mysql_port} 
 
-通过 MySQL 协议与客户端通信的端口。
+## mysql&#95;port {#mysql_port}
+
+用于通过 MySQL 协议与客户端进行通信的端口。
 
 :::note
-- 正整数指定要监听的端口号
-- 空值用于禁用通过 MySQL 协议与客户端的通信。
-:::
+
+* 正整数表示要监听的端口号。
+* 留空表示禁用通过 MySQL 协议与客户端的通信。
+  :::
 
 **示例**
 
 ```xml
 <mysql_port>9004</mysql_port>
 ```
+
+## mysql_require_secure_transport {#mysql_require_secure_transport} 
+
+如果设置为 `true`，则要求通过 [mysql_port](#mysql_port) 与客户端进行安全通信。带有 `--ssl-mode=none` 选项的连接将被拒绝。应与 [OpenSSL](#openssl) 设置配合使用。
+
 ## openSSL {#openssl} 
 
 SSL 客户端/服务器配置。
 
-SSL 的支持由 `libpoco` 库提供。可用的配置选项在 [SSLManager.h](https://github.com/ClickHouse-Extras/poco/blob/master/NetSSL_OpenSSL/include/Poco/Net/SSLManager.h) 中解释。默认值可以在 [SSLManager.cpp](https://github.com/ClickHouse-Extras/poco/blob/master/NetSSL_OpenSSL/src/SSLManager.cpp) 中找到。
+对 SSL 的支持由 `libpoco` 库提供。可用的配置选项在 [SSLManager.h](https://github.com/ClickHouse-Extras/poco/blob/master/NetSSL_OpenSSL/include/Poco/Net/SSLManager.h) 中进行了说明。默认值可以在 [SSLManager.cpp](https://github.com/ClickHouse-Extras/poco/blob/master/NetSSL_OpenSSL/src/SSLManager.cpp) 中找到。
 
-服务器/客户端设置的密钥：
+用于服务器/客户端设置的键：
 
-| 选项                        | 描述                                                                                                                                                                                                                                                                                                                                                                                                                                                             | 默认值                              |
-|-----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------|
-| `privateKeyFile`            | 包含 PEM 证书的私钥文件的路径。该文件可以同时包含密钥和证书。                                                                                                                                                                                                                                                                                                                                                                                                               |                                     |
-| `certificateFile`           | PEM 格式的客户端/服务器证书文件的路径。如果 `privateKeyFile` 包含证书，您可以省略此项。                                                                                                                                                                                                                                                                                                                                                                               |                                     |
-| `caConfig`                  | 包含受信任 CA 证书的文件或目录的路径。如果指向一个文件，则该文件必须是 PEM 格式，并且可以包含多个 CA 证书。如果指向一个目录，则必须为每个 CA 证书包含一个 .pem 文件。文件名根据 CA 主体名称哈希值进行查找。详细信息请参见 [SSL_CTX_load_verify_locations](https://www.openssl.org/docs/man3.0/man3/SSL_CTX_load_verify_locations.html) 的手册页。 |                                     |
-| `verificationMode`          | 检查节点证书的方法。详细信息请参见 [Context](https://github.com/ClickHouse-Extras/poco/blob/master/NetSSL_OpenSSL/include/Poco/Net/Context.h) 类的描述。可能的值：`none`、`relaxed`、`strict`、`once`。                                                                                                                                                                                                                                       | `relaxed`                           |
-| `verificationDepth`         | 验证链的最大长度。如果证书链的长度超过设置值，验证将失败。                                                                                                                                                                                                                                                                                                                                                                                                               | `9`                                 |
-| `loadDefaultCAFile`         | 是否使用OpenSSL的内置 CA 证书。ClickHouse 假设内置 CA 证书位于文件 `/etc/ssl/cert.pem`（或目录 `/etc/ssl/certs`）中，或在环境变量 `SSL_CERT_FILE`（或 `SSL_CERT_DIR`）指定的文件（或目录）中。                                                                                                                                                                                                                             | `true`                              |
-| `cipherList`                | 支持的 OpenSSL 加密。                                                                                                                                                                                                                                                                                                                                                                                                                                            | `ALL:!ADH:!LOW:!EXP:!MD5:!3DES:@STRENGTH` |
-| `cacheSessions`             | 启用或禁用会话缓存。必须与 `sessionIdContext` 一起使用。可接受的值：`true`、`false`。                                                                                                                                                                                                                                                                                                                                                                            | `false`                             |
-| `sessionIdContext`          | 一组唯一的随机字符，服务器附加到每个生成的标识符。字符串的长度不得超过 `SSL_MAX_SSL_SESSION_ID_LENGTH`。强烈推荐使用此参数，因为它有助于避免服务器缓存会话和客户端请求缓存时出现的问题。                                                                                                                                                                                                         | `$\{application.name\}`                 |
-| `sessionCacheSize`          | 服务器缓存的最大会话数。值为 `0` 表示无限制会话。                                                                                                                                                                                                                                                                                                                                                                                                                  | [1024\*20](https://github.com/ClickHouse/boringssl/blob/master/include/openssl/ssl.h#L1978)   |
-| `sessionTimeout`            | 服务器上缓存会话的时间（小时）。                                                                                                                                                                                                                                                                                                                                                                                                                                | `2`                                 |
-| `extendedVerification`      | 如果启用，则验证证书 CN 或 SAN 是否与对等主机名匹配。                                                                                                                                                                                                                                                                                                                                                                                                                  | `false`                             |
-| `requireTLSv1`              | 要求使用 TLSv1 连接。可接受的值：`true`、`false`。                                                                                                                                                                                                                                                                                                                                                                                                                 | `false`                             |
-| `requireTLSv1_1`            | 要求使用 TLSv1.1 连接。可接受的值：`true`、`false`。                                                                                                                                                                                                                                                                                                                                                                                                               | `false`                             |
-| `requireTLSv1_2`            | 要求使用 TLSv1.2 连接。可接受的值：`true`、`false`。                                                                                                                                                                                                                                                                                                                                                                                                               | `false`                             |
-| `fips`                      | 激活 OpenSSL FIPS 模式。如果库的 OpenSSL 版本支持 FIPS，将支持此模式。                                                                                                                                                                                                                                                                                                                                                                                                | `false`                             |
-| `privateKeyPassphraseHandler` | 请求访问私钥所需的密码短语的类（PrivateKeyPassphraseHandler 子类）。例如： `<privateKeyPassphraseHandler>`、`<name>KeyFileHandler</name>`、`<options><password>test</password></options>`、`</privateKeyPassphraseHandler>`。                                                                                                                                                                           | `KeyConsoleHandler`                 |
-| `invalidCertificateHandler`  | 验证无效证书的类（CertificateHandler 的子类）。例如： `<invalidCertificateHandler> <name>RejectCertificateHandler</name> </invalidCertificateHandler>` 。                                                                                                                                                                                                                                                                                             | `RejectCertificateHandler`          |
-| `disableProtocols`          | 不允许使用的协议。                                                                                                                                                                                                                                                                                                                                                                                                                                                  |                                     |
-| `preferServerCiphers`       | 客户端首选的服务器密码。                                                                                                                                                                                                                                                                                                                                                                                                                                            | `false`                             |
+| 选项                            | 说明                                                                                                                                                                                                                                                                       | 默认值                                                                                        |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| `privateKeyFile`              | PEM 证书私钥所在文件的路径。该文件可以同时包含私钥和证书。                                                                                                                                                                                                                                          |                                                                                            |
+| `certificateFile`             | PEM 格式的客户端/服务器证书文件路径。如果 `privateKeyFile` 已包含该证书，则可以省略此项。                                                                                                                                                                                                                 |                                                                                            |
+| `caConfig`                    | 包含受信任 CA 证书的文件或目录的路径。若指向文件，则该文件必须为 PEM 格式，并且可以包含多个 CA 证书。若指向目录，则该目录中必须为每个 CA 证书提供一个 .pem 文件。文件名是根据 CA subject 名称的哈希值进行查找的。更多细节可参见 [SSL&#95;CTX&#95;load&#95;verify&#95;locations](https://www.openssl.org/docs/man3.0/man3/SSL_CTX_load_verify_locations.html) 的 man 手册。 |                                                                                            |
+| `verificationMode`            | 用于校验节点证书的方式。详细信息请参见 [Context](https://github.com/ClickHouse-Extras/poco/blob/master/NetSSL_OpenSSL/include/Poco/Net/Context.h) 类的说明。可能的取值：`none`、`relaxed`、`strict`、`once`。                                                                                              | `relaxed`                                                                                  |
+| `verificationDepth`           | 验证链的最大长度。如果证书链长度超过设定值，则验证会失败。                                                                                                                                                                                                                                            | `9`                                                                                        |
+| `loadDefaultCAFile`           | 是否使用 OpenSSL 的内置 CA 证书。ClickHouse 假定内置 CA 证书位于文件 `/etc/ssl/cert.pem`（或目录 `/etc/ssl/certs`），或者位于由环境变量 `SSL_CERT_FILE`（或 `SSL_CERT_DIR`）指定的文件（或目录）中。                                                                                                                       | `true`                                                                                     |
+| `cipherList`                  | OpenSSL 支持的加密算法。                                                                                                                                                                                                                                                         | `ALL:!ADH:!LOW:!EXP:!MD5:!3DES:@STRENGTH`                                                  |
+| `cacheSessions`               | 启用或禁用会话缓存。必须与 `sessionIdContext` 配合使用。可接受的取值：`true`、`false`。                                                                                                                                                                                                             | `false`                                                                                    |
+| `sessionIdContext`            | 服务器为每个生成的标识符附加的一组唯一的随机字符。该字符串的长度不得超过 `SSL_MAX_SSL_SESSION_ID_LENGTH`。始终建议配置此参数，因为无论是服务器缓存会话还是客户端请求缓存会话，它都有助于避免相关问题。                                                                                                                                                      | `$\{application.name\}`                                                                    |
+| `sessionCacheSize`            | 服务器缓存的最大会话数量。值为 `0` 表示会话数量无限制。                                                                                                                                                                                                                                           | [1024*20](https://github.com/ClickHouse/boringssl/blob/master/include/openssl/ssl.h#L1978) |
+| `sessionTimeout`              | 会话在服务器上的缓存时间（小时）。                                                                                                                                                                                                                                                        | `2`                                                                                        |
+| `extendedVerification`        | 如果启用该选项，请验证证书的 CN 或 SAN 是否与对端主机名一致。                                                                                                                                                                                                                                      | `false`                                                                                    |
+| `requireTLSv1`                | 要求 TLSv1 连接。可接受的值：`true`、`false`。                                                                                                                                                                                                                                        | `false`                                                                                    |
+| `requireTLSv1_1`              | 是否要求使用 TLSv1.1 连接。可接受的取值：`true`、`false`。                                                                                                                                                                                                                                 | `false`                                                                                    |
+| `requireTLSv1_2`              | 是否要求使用 TLSv1.2 连接。可取值：`true`、`false`。                                                                                                                                                                                                                                    | `false`                                                                                    |
+| `fips`                        | 启用 OpenSSL FIPS 模式。仅当库使用的 OpenSSL 版本支持 FIPS 时才受支持。                                                                                                                                                                                                                       | `false`                                                                                    |
+| `privateKeyPassphraseHandler` | 用于请求访问私钥口令的类（PrivateKeyPassphraseHandler 的子类）。例如：`<privateKeyPassphraseHandler>`、`<name>KeyFileHandler</name>`、`<options><password>test</password></options>`、`</privateKeyPassphraseHandler>`。                                                                          | `KeyConsoleHandler`                                                                        |
+| `invalidCertificateHandler`   | 用于验证无效证书的类（CertificateHandler 的子类）。例如：`<invalidCertificateHandler> <name>RejectCertificateHandler</name> </invalidCertificateHandler>`。                                                                                                                                  | `RejectCertificateHandler`                                                                 |
+| `disableProtocols`            | 禁止使用的协议。                                                                                                                                                                                                                                                                 |                                                                                            |
+| `preferServerCiphers`         | 服务器端采用客户端首选的密码套件。                                                                                                                                                                                                                                                        | `false`                                                                                    |
 
 **设置示例：**
 
@@ -2357,19 +2881,20 @@ SSL 的支持由 `libpoco` 库提供。可用的配置选项在 [SSLManager.h](h
         <cacheSessions>true</cacheSessions>
         <disableProtocols>sslv2,sslv3</disableProtocols>
         <preferServerCiphers>true</preferServerCiphers>
-        <!-- Use for self-signed: <verificationMode>none</verificationMode> -->
+        <!-- 用于自签名证书: <verificationMode>none</verificationMode> -->
         <invalidCertificateHandler>
-            <!-- Use for self-signed: <name>AcceptCertificateHandler</name> -->
+            <!-- 用于自签名证书: <name>AcceptCertificateHandler</name> -->
             <name>RejectCertificateHandler</name>
         </invalidCertificateHandler>
     </client>
 </openSSL>
 ```
-## opentelemetry_span_log {#opentelemetry_span_log} 
 
-[`opentelemetry_span_log`](../system-tables/opentelemetry_span_log.md) 系统表的设置。
+## opentelemetry&#95;span&#95;log {#opentelemetry_span_log}
 
-<SystemLogParameters/>
+[`opentelemetry_span_log`](../system-tables/opentelemetry_span_log.md) 系统表的相关设置。
+
+<SystemLogParameters />
 
 示例：
 
@@ -2389,37 +2914,76 @@ SSL 的支持由 `libpoco` 库提供。可用的配置选项在 [SSLManager.h](h
     <flush_on_crash>false</flush_on_crash>
 </opentelemetry_span_log>
 ```
+
 ## os_cpu_busy_time_threshold {#os_cpu_busy_time_threshold} 
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />操作系统 CPU 繁忙时间的阈值（以微秒为单位，OSCPUVirtualTimeMicroseconds 指标），用于认为 CPU 正在进行一些有用的工作，如果繁忙时间低于此值，则不会被认为 CPU 过载。
+<SettingsInfoBlock type="UInt64" default_value="1000000" />操作系统 CPU 忙碌时间的阈值（单位：微秒，对应 OSCPUVirtualTimeMicroseconds 指标），用于判定 CPU 是否在执行实际有用的工作。如果忙碌时间低于该值，则不会认为存在 CPU 过载。
+
+## os_threads_nice_value_distributed_cache_tcp_handler {#os_threads_nice_value_distributed_cache_tcp_handler} 
+
+<SettingsInfoBlock type="Int32" default_value="0" />
+
+分布式缓存 TCP 处理器线程的 Linux nice 值。值越低，CPU 优先级越高。
+
+需要 CAP_SYS_NICE 权限，否则不会产生任何效果。
+
+取值范围：-20 到 19。
+
+## os_threads_nice_value_merge_mutate {#os_threads_nice_value_merge_mutate} 
+
+<SettingsInfoBlock type="Int32" default_value="0" />
+
+用于合并和变更操作线程的 Linux nice 值。值越低表示 CPU 优先级越高。
+
+需要 CAP_SYS_NICE 权限，否则不起作用。
+
+可能的取值范围：-20 到 19。
+
+## os_threads_nice_value_zookeeper_client_send_receive {#os_threads_nice_value_zookeeper_client_send_receive} 
+
+<SettingsInfoBlock type="Int32" default_value="0" />
+
+用于 ZooKeeper 客户端中发送和接收线程的 Linux nice 值。值越低，CPU 优先级越高。
+
+需要 CAP_SYS_NICE 权限，否则不生效。
+
+可选值范围：-20 到 19。
+
 ## page_cache_free_memory_ratio {#page_cache_free_memory_ratio} 
 
-<SettingsInfoBlock type="Double" default_value="0.15" />保持在用户空间页面缓存中空闲的内存限制的比例。类似于 Linux 的 min_free_kbytes 设置。
+<SettingsInfoBlock type="Double" default_value="0.15" />指定在用户空间页缓存中需要保持空闲的内存在整体内存上限中的比例。类似于 Linux 的 `min_free_kbytes` 设置。
+
 ## page_cache_history_window_ms {#page_cache_history_window_ms} 
 
-<SettingsInfoBlock type="UInt64" default_value="1000" />释放的内存可以被用户空间页面缓存使用之前的延迟。
+<SettingsInfoBlock type="UInt64" default_value="1000" />在释放的内存可被用户空间页缓存重新使用之前的延迟时间。
+
 ## page_cache_max_size {#page_cache_max_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="0" />用户空间页面缓存的最大大小。设置为 0 以禁用缓存。如果大于 page_cache_min_size，缓存大小将在此范围内持续调整，以使用大部分可用内存，同时保持总内存使用低于限制（max_server_memory_usage[_to_ram_ratio]）。
+<SettingsInfoBlock type="UInt64" default_value="0" />用户空间页面缓存的最大容量。设置为 0 可禁用该缓存。如果该值大于 `page_cache_min_size`，则缓存大小会在此范围内动态调整，在尽可能利用可用内存的同时，保证总内存使用低于限制值（`max_server_memory_usage[_to_ram_ratio]`）。
+
 ## page_cache_min_size {#page_cache_min_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="104857600" />用户空间页面缓存的最小大小。
+<SettingsInfoBlock type="UInt64" default_value="104857600" />用户空间页缓存的最小大小。
+
 ## page_cache_policy {#page_cache_policy} 
 
-<SettingsInfoBlock type="String" default_value="SLRU" />用户空间页面缓存策略名称。
+<SettingsInfoBlock type="String" default_value="SLRU" />用户态页缓存策略名称。
+
 ## page_cache_shards {#page_cache_shards} 
 
-<SettingsInfoBlock type="UInt64" default_value="4" />在此数量分片上划分用户空间页面缓存，以减少互斥量争用。实验性质，不太可能提高性能。
+<SettingsInfoBlock type="UInt64" default_value="4" />将用户态页缓存按指定数量的分片进行划分，以减少互斥锁争用。实验性功能，不太可能带来性能提升。
+
 ## page_cache_size_ratio {#page_cache_size_ratio} 
 
-<SettingsInfoBlock type="Double" default_value="0.5" />用户空间页面缓存中受保护队列的大小相对于缓存的总大小。
-## part_log {#part_log} 
+<SettingsInfoBlock type="Double" default_value="0.5" />用户空间页缓存中受保护队列的大小，占该缓存总大小的比例。
 
-记录与 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 相关的事件。例如，添加或合并数据。您可以使用日志来模拟合并算法并比较其特性。您可以可视化合并过程。
+## part&#95;log {#part_log}
 
-查询记录在 [system.part_log](/operations/system-tables/part_log) 表中，而不是在单独的文件中。您可以在 `table` 参数中配置此表的名称（见下文）。
+与 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 相关的日志事件，例如添加或合并数据。可以使用该日志来模拟合并算法并比较其特性，也可以对合并过程进行可视化。
 
-<SystemLogParameters/>
+查询会记录在 [system.part&#95;log](/operations/system-tables/part_log) 表中，而不是单独的文件。可以通过 `table` 参数配置该表的名称（见下文）。
+
+<SystemLogParameters />
 
 **示例**
 
@@ -2435,24 +2999,31 @@ SSL 的支持由 `libpoco` 库提供。可用的配置选项在 [SSLManager.h](h
     <flush_on_crash>false</flush_on_crash>
 </part_log>
 ```
+
 ## parts_kill_delay_period {#parts_kill_delay_period} 
 
 <SettingsInfoBlock type="UInt64" default_value="30" />
-用于 SharedMergeTree 完全移除部分的周期。仅在 ClickHouse Cloud 中可用。
+
+在 SharedMergeTree 中彻底删除分区片段前等待的时间间隔。仅在 ClickHouse Cloud 中可用。
+
 ## parts_kill_delay_period_random_add {#parts_kill_delay_period_random_add} 
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
-从 0 到 x 秒均匀分布的值添加到 kill_delay_period，以避免过多请求对 ZooKeeper 造成的效应，并在表数量非常大的情况下后续出现的 DoS。仅在 ClickHouse Cloud 中可用。
+
+向 `kill_delay_period` 添加从 0 到 x 秒之间均匀分布的随机值，以避免在存在非常大量表的情况下出现惊群效应，从而对 ZooKeeper 造成 DoS。仅在 ClickHouse Cloud 中可用。
+
 ## parts_killer_pool_size {#parts_killer_pool_size} 
 
 <SettingsInfoBlock type="UInt64" default_value="128" />
-清理共享合并树过时线程的线程数。仅在 ClickHouse Cloud 中可用。
-## path {#path} 
 
-包含数据的目录的路径。
+用于在 shared merge tree 中执行过期清理的线程数。仅在 ClickHouse Cloud 中可用
+
+## path {#path}
+
+包含数据的目录路径。
 
 :::note
-尾随斜杠是必需的。
+路径末尾必须带斜杠。
 :::
 
 **示例**
@@ -2460,68 +3031,87 @@ SSL 的支持由 `libpoco` 库提供。可用的配置选项在 [SSLManager.h](h
 ```xml
 <path>/var/lib/clickhouse/</path>
 ```
-## postgresql_port {#postgresql_port} 
 
-通过 PostgreSQL 协议与客户端通信的端口。
+## postgresql&#95;port {#postgresql_port}
+
+用于通过 PostgreSQL 协议与客户端通信的端口。
 
 :::note
-- 正整数指定监听的端口号
-- 空值用于禁用通过 MySQL 协议与客户端通信。
-:::
+
+* 正整数指定要监听的端口号
+* 留空则会禁用通过 PostgreSQL 协议与客户端的通信。
+  :::
 
 **示例**
 
 ```xml
 <postgresql_port>9005</postgresql_port>
 ```
+
+## postgresql_require_secure_transport {#postgresql_require_secure_transport} 
+
+如果设置为 true，则客户端必须通过 [postgresql_port](#postgresql_port) 使用安全通信。带有 `sslmode=disable` 选项的连接将被拒绝。请结合 [OpenSSL](#openssl) 相关设置一起使用。
+
 ## prefetch_threadpool_pool_size {#prefetch_threadpool_pool_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="100" />用于远程对象存储的预取的后台池的大小。
+<SettingsInfoBlock type="NonZeroUInt64" default_value="100" />用于处理远程对象存储预取的后台线程池大小
+
 ## prefetch_threadpool_queue_size {#prefetch_threadpool_queue_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />可以推送到预取池中的任务数。
+<SettingsInfoBlock type="UInt64" default_value="1000000" />可推送到预取线程池中的最大任务数
+
 ## prefixes_deserialization_thread_pool_thread_pool_queue_size {#prefixes_deserialization_thread_pool_thread_pool_queue_size} 
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
-可以在前缀反序列化线程池中调度的最大作业数。
+
+可调度到前缀反序列化线程池中的任务的最大数量。
 
 :::note
-值为 `0` 表示无限制。
+值为 `0` 表示不限制。
 :::
+
 ## prepare_system_log_tables_on_startup {#prepare_system_log_tables_on_startup} 
 
 <SettingsInfoBlock type="Bool" default_value="0" />
-如果为 true，ClickHouse 会在启动之前创建所有配置的 `system.*_log` 表。如果某些启动脚本依赖于这些表，这可能会很有帮助。
+
+如果为 true，ClickHouse 会在启动前创建所有已配置的 `system.*_log` 表。如果某些启动脚本依赖这些表，这会很有用。
+
 ## primary_index_cache_policy {#primary_index_cache_policy} 
 
-<SettingsInfoBlock type="String" default_value="SLRU" />主索引缓存策略名称。
+<SettingsInfoBlock type="String" default_value="SLRU" />主索引缓存策略的名称。
+
 ## primary_index_cache_prewarm_ratio {#primary_index_cache_prewarm_ratio} 
 
-<SettingsInfoBlock type="Double" default_value="0.95" />在预热期间要填充的标记缓存的总大小的比例。
+<SettingsInfoBlock type="Double" default_value="0.95" />在预热阶段应填充的标记缓存总大小的比例。
+
 ## primary_index_cache_size {#primary_index_cache_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="5368709120" />主索引的最大缓存大小（MergeTree 表系列的索引）。
+<SettingsInfoBlock type="UInt64" default_value="5368709120" />主索引（MergeTree 系列表的索引）缓存的最大大小。
+
 ## primary_index_cache_size_ratio {#primary_index_cache_size_ratio} 
 
-<SettingsInfoBlock type="Double" default_value="0.5" />主索引缓存中受保护队列的大小（在 SLRU 策略的情况下）相对于缓存的总大小。
-## process_query_plan_packet {#process_query_plan_packet} 
+<SettingsInfoBlock type="Double" default_value="0.5" />在主索引缓存中，受保护队列（在采用 SLRU 策略时）的大小与缓存总大小之比。
+
+## process&#95;query&#95;plan&#95;packet {#process_query_plan_packet}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
-此设置允许读取 QueryPlan 数据包。当 serialize_query_plan 启用时，此数据包会在分布式查询中发送。
-默认情况下禁用以避免可能由查询计划二进制反序列化中的错误引起的安全问题。
+
+该设置允许读取 QueryPlan 数据包。在启用 serialize&#95;query&#95;plan 时，对分布式查询会发送此数据包。
+默认情况下为禁用状态，以避免在查询计划二进制反序列化存在缺陷时可能导致的安全问题。
 
 **示例**
 
 ```xml
 <process_query_plan_packet>true</process_query_plan_packet>
 ```
-## processors_profile_log {#processors_profile_log} 
+
+## processors&#95;profile&#95;log {#processors_profile_log}
 
 [`processors_profile_log`](../system-tables/processors_profile_log.md) 系统表的设置。
 
-<SystemLogParameters/>
+<SystemLogParameters />
 
-默认设置为：
+默认设置如下：
 
 ```xml
 <processors_profile_log>
@@ -2535,18 +3125,19 @@ SSL 的支持由 `libpoco` 库提供。可用的配置选项在 [SSLManager.h](h
     <flush_on_crash>false</flush_on_crash>
 </processors_profile_log>
 ```
-## prometheus {#prometheus} 
 
-暴露供 [Prometheus](https://prometheus.io) 抓取的度量数据。
+## prometheus {#prometheus}
 
-设置：
+为 [Prometheus](https://prometheus.io) 提供可被抓取的指标数据。
 
-- `endpoint` – 用于 Prometheus 服务器抓取度量的 HTTP 端点。以 '/' 开头。
-- `port` – `endpoint` 的端口。
-- `metrics` – 从 [system.metrics](/operations/system-tables/metrics) 表中暴露度量。
-- `events` – 从 [system.events](/operations/system-tables/events) 表中暴露度量。
-- `asynchronous_metrics` – 从 [system.asynchronous_metrics](/operations/system-tables/asynchronous_metrics) 表中暴露当前度量值。
-- `errors` - 暴露自上次服务器重启以来按错误代码发生的错误数量。此信息也可以从 [system.errors](/operations/system-tables/errors) 获取。
+Settings:
+
+* `endpoint` – Prometheus 服务器用于抓取指标的 HTTP endpoint，必须以 &#39;/&#39; 开头。
+* `port` – `endpoint` 所在的端口。
+* `metrics` – 暴露来自 [system.metrics](/operations/system-tables/metrics) 表的指标。
+* `events` – 暴露来自 [system.events](/operations/system-tables/events) 表的指标。
+* `asynchronous_metrics` – 暴露来自 [system.asynchronous&#95;metrics](/operations/system-tables/asynchronous_metrics) 表的当前指标值。
+* `errors` - 暴露自上次服务器重启以来按错误码统计的错误次数。该信息同样可以从 [system.errors](/operations/system-tables/errors) 中获取。
 
 **示例**
 
@@ -2568,32 +3159,41 @@ SSL 的支持由 `libpoco` 库提供。可用的配置选项在 [SSLManager.h](h
 </clickhouse>
 ```
 
-检查（将 `127.0.0.1` 替换为您的 ClickHouse 服务器的 IP 地址或主机名）：
+检查（将 `127.0.0.1` 替换为 ClickHouse 服务器的 IP 地址或主机名）：
+
 ```bash
 curl 127.0.0.1:9363/metrics
 ```
-## proxy {#proxy} 
 
-为 HTTP 和 HTTPS 请求定义代理服务器，目前受 S3 存储、S3 表函数和 URL 函数支持。
+## proxy {#proxy}
+
+为 HTTP 和 HTTPS 请求定义代理服务器，目前 S3 存储、S3 表函数和 URL 函数已支持该功能。
 
 定义代理服务器有三种方式：
-- 环境变量
-- 代理列表
-- 远程代理解析器。
 
-通过使用 `no_proxy` 也支持为特定主机绕过代理服务器。
+* 环境变量
+* 代理列表
+* 远程代理解析器
 
-**环境变量**
+还可以通过使用 `no_proxy` 为特定主机跳过代理服务器。
 
-`http_proxy` 和 `https_proxy` 环境变量允许您为给定协议指定代理服务器。如果您在系统上设置了它，应该可以无缝使用。
+**Environment variables**
 
-这是最简单的方法，如果给定协议只有一个代理服务器并且该代理服务器不变。
+`http_proxy` 和 `https_proxy` 环境变量允许为给定协议指定
+代理服务器。如果已在系统中设置，它通常可以直接生效，无需额外配置。
 
-**代理列表**
+如果某个协议只有一个代理服务器且该代理服务器不会变更，
+这是最简单的方式。
 
-此方法允许您为协议指定一个或多个代理服务器。如果定义了多个代理服务器，ClickHouse 将以轮询方式使用不同的代理，以在服务器之间平衡负载。如果协议有多个代理服务器且代理服务器列表不变，这是最简单的方法。
+**Proxy lists**
 
-**配置模板**
+这种方式允许为某个协议指定一个或多个
+代理服务器。如果定义了多个代理服务器，
+ClickHouse 会以轮询（round-robin）的方式使用不同代理，从而在服务器之间
+平衡负载。如果某个协议存在多个代理服务器且代理服务器列表不会变更，
+这是最简单的方式。
+
+**Configuration template**
 
 ```xml
 <proxy>
@@ -2606,29 +3206,27 @@ curl 127.0.0.1:9363/metrics
     </https>
 </proxy>
 ```
-在下面的选项卡中选择一个父字段以查看它们的子字段：
+
+在下方选项卡中选择父字段以查看其子字段：
 
 <Tabs>
   <TabItem value="proxy" label="<proxy>" default>
-
-| 字段     | 描述                              |
-|-----------|-------------------------------------|
-| `<http>`  | 一个或多个 HTTP 代理的列表        |
-| `<https>` | 一个或多个 HTTPS 代理的列表       |
-
+    | Field     | Description       |
+    | --------- | ----------------- |
+    | `<http>`  | 一个或多个 HTTP 代理的列表  |
+    | `<https>` | 一个或多个 HTTPS 代理的列表 |
   </TabItem>
-  <TabItem value="http_https" label="<http> 和 <https>">
 
-| 字段   | 描述               |
-|---------|-----------------------|
-| `<uri>` | 代理的 URI        |
-
+  <TabItem value="http_https" label="<http> and <https>">
+    | Field   | Description |
+    | ------- | ----------- |
+    | `<uri>` | 代理的 URI     |
   </TabItem>
 </Tabs>
 
 **远程代理解析器**
 
-代理服务器可能会动态更改。在这种情况下，您可以定义解析者的端点。ClickHouse 向该端点发送空的 GET 请求，远程解析器应返回代理主机。ClickHouse 将使用以下模板形成代理 URI：`\{proxy_scheme\}://\{proxy_host\}:{proxy_port}`
+代理服务器可能会动态变化。在这种情况下，可以定义解析器的端点（endpoint）。ClickHouse 会向该端点发送一个空的 GET 请求，远程解析器应返回代理主机。ClickHouse 随后会根据以下模板将其组装成代理 URI：`\{proxy_scheme\}://\{proxy_host\}:{proxy_port}`
 
 **配置模板**
 
@@ -2655,72 +3253,69 @@ curl 127.0.0.1:9363/metrics
 </proxy>
 ```
 
-在下面的选项卡中选择一个父字段以查看它们的子字段：
+在下方的选项卡中选择一个父字段以查看其子字段：
 
 <Tabs>
   <TabItem value="proxy" label="<proxy>" default>
-
-| 字段    | 描述                        |
-|---------|------------------------------|
-| `<http>` | 一个或多个解析器的列表*    |
-| `<https>` | 一个或多个解析器的列表*    |
-
+    | 字段        | 描述           |
+    | --------- | ------------ |
+    | `<http>`  | 一个或多个解析器的列表* |
+    | `<https>` | 一个或多个解析器的列表* |
   </TabItem>
+
   <TabItem value="http_https" label="<http> 和 <https>">
+    | 字段           | 描述            |
+    | ------------ | ------------- |
+    | `<resolver>` | 解析器的端点和其他详细信息 |
 
-| 字段       | 描述                                           |
-|-------------|-------------------------------------------------|
-| `<resolver>` | 解析器的端点和其他详细信息                     |
-
-:::note
-可以有多个 `<resolver>` 元素，但仅使用给定协议的第一个
-`<resolver>`。该协议的任何其他 `<resolver>` 元素将被忽略。这意味着负载均衡
-（如果需要）应该由远程解析器实现。
-:::
-
+    :::note
+    可以包含多个 `<resolver>` 元素，但对于给定协议，只会使用第一个
+    `<resolver>`。该协议的其他任何 `<resolver>` 元素都会被忽略。这意味着，如果需要负载均衡，则应由远程解析器来实现。
+    :::
   </TabItem>
+
   <TabItem value="resolver" label="<resolver>">
-
-| 字段               | 描述                                                                                                                                                                            |
-|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `<endpoint>`        | 代理解析器的 URI                                                                                                                                                          |
-| `<proxy_scheme>`    | 最终代理 URI 的协议。可以是 `http` 或 `https`。                                                                                                             |
-| `<proxy_port>`      | 代理解析器的端口号                                                                                                                                                  |
-| `<proxy_cache_time>` | ClickHouse 应缓存解析器的值的时间（以秒为单位）。将此值设置为 `0` 会导致 ClickHouse 针对每个 HTTP 或 HTTPS 请求联系解析器。 |
-
+    | 字段                   | 描述                                                                                     |
+    | -------------------- | -------------------------------------------------------------------------------------- |
+    | `<endpoint>`         | 代理解析器的 URI                                                                             |
+    | `<proxy_scheme>`     | 最终代理 URI 的协议。可以是 `http` 或 `https`。                                                     |
+    | `<proxy_port>`       | 代理解析器的端口号                                                                              |
+    | `<proxy_cache_time>` | 从解析器获取的值在 ClickHouse 中应被缓存的时间（秒）。将此值设置为 `0` 会导致 ClickHouse 在每次 HTTP 或 HTTPS 请求时都联系解析器。 |
   </TabItem>
 </Tabs>
 
 **优先级**
 
-代理设置的确定顺序如下：
+代理设置按以下顺序确定：
 
-| 顺序 | 设置                      |
-|-------|------------------------|
-| 1.    | 远程代理解析器          |
-| 2.    | 代理列表                |
-| 3.    | 环境变量                |
+| 顺序 | 设置      |
+| -- | ------- |
+| 1. | 远程代理解析器 |
+| 2. | 代理列表    |
+| 3. | 环境变量    |
 
-ClickHouse 会检查请求协议的最高优先级解析器类型。如果未定义，
-它将检查下一个最高优先级的解析器类型，直到找到环境解析器。
-这还允许使用混合解析器类型。
-## query_cache {#query_cache} 
+ClickHouse 将根据请求协议检查优先级最高的解析器类型。若未定义该解析器类型，
+则会继续检查下一个优先级最高的解析器类型，直到使用 environment 解析器。
+这也允许混合使用不同类型的解析器。
 
-[查询缓存](../query-cache.md) 配置。
+## query&#95;cache {#query_cache}
+
+[Query cache](../query-cache.md) 配置。
 
 可用的设置如下：
 
-| 设置                       | 描述                                                                            | 默认值        |
-|---------------------------|--------------------------------------------------------------------------------|--------------|
-| `max_size_in_bytes`       | 最大缓存大小（以字节为单位）。`0` 表示查询缓存被禁用。                        | `1073741824` |
-| `max_entries`             | 存储在缓存中的 `SELECT` 查询结果的最大数量。                                    | `1024`       |
-| `max_entry_size_in_bytes` | 可保存到缓存中的 `SELECT` 查询结果的最大字节数。                               | `1048576`    |
-| `max_entry_size_in_rows`  | 可保存到缓存中的 `SELECT` 查询结果的最大行数。                                 | `30000000`   |
+| Setting                   | Description                              | Default Value |
+| ------------------------- | ---------------------------------------- | ------------- |
+| `max_size_in_bytes`       | 以字节为单位的最大缓存大小。`0` 表示禁用查询缓存。              | `1073741824`  |
+| `max_entries`             | 缓存中可存储的 `SELECT` 查询结果的最大数量。              | `1024`        |
+| `max_entry_size_in_bytes` | 以字节为单位的、可缓存在查询缓存中的单个 `SELECT` 查询结果的最大大小。 | `1048576`     |
+| `max_entry_size_in_rows`  | 可缓存在查询缓存中的单个 `SELECT` 查询结果的最大行数。         | `30000000`    |
 
 :::note
-- 更改的设置会立即生效。
-- 查询缓存的数据分配在 DRAM 中。如果内存紧张，请确保设置较小的 `max_size_in_bytes` 值或完全禁用查询缓存。
-:::
+
+* 修改后的设置会立即生效。
+* 查询缓存的数据分配在 DRAM 中。如果内存紧张，请确保为 `max_size_in_bytes` 设置较小的值，或完全禁用查询缓存。
+  :::
 
 **示例**
 
@@ -2732,28 +3327,33 @@ ClickHouse 会检查请求协议的最高优先级解析器类型。如果未定
     <max_entry_size_in_rows>30000000</max_entry_size_in_rows>
 </query_cache>
 ```
+
 ## query_condition_cache_policy {#query_condition_cache_policy} 
 
-<SettingsInfoBlock type="String" default_value="SLRU" />查询条件缓存策略名称。
+<SettingsInfoBlock type="String" default_value="SLRU" />查询条件缓存策略的名称。
+
 ## query_condition_cache_size {#query_condition_cache_size} 
 
 <SettingsInfoBlock type="UInt64" default_value="104857600" />
-查询条件缓存的最大大小。
+
+查询条件缓存的最大容量。
 :::note
-此设置可以在运行时修改，并将立即生效。
+此设置可以在运行时修改，并会立即生效。
 :::
+
 ## query_condition_cache_size_ratio {#query_condition_cache_size_ratio} 
 
-<SettingsInfoBlock type="Double" default_value="0.5" />查询条件缓存中受保护队列的大小（在 SLRU 策略的情况下）相对于缓存的总大小。
-## query_log {#query_log} 
+<SettingsInfoBlock type="Double" default_value="0.5" />在使用 SLRU 策略时，查询条件缓存中受保护队列的大小占缓存总大小的比例。
 
-使用 [log_queries=1](../../operations/settings/settings.md) 设置记录收到的查询。
+## query&#95;log {#query_log}
 
-查询记录在 [system.query_log](/operations/system-tables/query_log) 表中，而不是在单独的文件中。您可以修改 `table` 参数中的表名称（见下文）。
+用于在启用 [log&#95;queries=1](../../operations/settings/settings.md) 设置时记录接收到的查询。
 
-<SystemLogParameters/>
+查询会被记录到 [system.query&#95;log](/operations/system-tables/query_log) 表中，而不是单独的文件。可以通过 `table` 参数更改该表的名称（见下文）。
 
-如果表不存在，ClickHouse 将创建它。如果在更新 ClickHouse 服务器时查询日志的结构发生变化，则旧结构的表会被重命名，并自动创建一个新表。
+<SystemLogParameters />
+
+如果该表不存在，ClickHouse 会创建它。如果在更新 ClickHouse 服务器时 query log 的结构发生了变化，则旧结构的表会被重命名，并自动创建一个新表。
 
 **示例**
 
@@ -2769,17 +3369,17 @@ ClickHouse 会检查请求协议的最高优先级解析器类型。如果未定
     <flush_on_crash>false</flush_on_crash>
 </query_log>
 ```
-## query_masking_rules {#query_masking_rules} 
 
-基于正则表达式的规则，将在存储到服务器日志、[`system.query_log`](/operations/system-tables/query_log)、[`system.text_log`](/operations/system-tables/text_log)、[`system.processes`](/operations/system-tables/processes) 表以及发送到客户端的日志消息之前应用。这可以防止
-SQL 查询中的敏感数据泄露，如名称、电子邮件、个人标识符或信用卡号码等。
+## query&#95;masking&#95;rules {#query_masking_rules}
+
+基于正则表达式的规则，会在将查询以及所有日志消息写入服务器日志、[`system.query_log`](/operations/system-tables/query_log)、[`system.text_log`](/operations/system-tables/text_log)、[`system.processes`](/operations/system-tables/processes) 表，以及发送给客户端的日志之前应用。这样可以防止来自 SQL 查询的敏感数据（例如姓名、电子邮件、个人标识符或信用卡号）泄漏到日志中。
 
 **示例**
 
 ```xml
 <query_masking_rules>
     <rule>
-        <name>hide SSN</name>
+        <name>隐藏 SSN</name>
         <regexp>(^|\D)\d{3}-\d{2}-\d{4}($|\D)</regexp>
         <replace>000-00-0000</replace>
     </rule>
@@ -2788,25 +3388,25 @@ SQL 查询中的敏感数据泄露，如名称、电子邮件、个人标识符�
 
 **配置字段**：
 
-| 设置     | 描述                                                                       |
-|-----------|-------------------------------------------------------------------------------|
-| `name`    | 规则名称（可选）                                                            |
-| `regexp`  | 兼容 RE2 的正则表达式（强制）                                           |
-| `replace` | 敏感数据的替代字符串（可选，默认为六个星号）                                        |
+| Setting   | Description               |
+| --------- | ------------------------- |
+| `name`    | 规则名称（可选）                  |
+| `regexp`  | 与 RE2 兼容的正则表达式（必需）        |
+| `replace` | 用于替换敏感数据的字符串（可选，默认值为六个星号） |
 
-掩码规则应用于整个查询（以防止来自格式错误/无法解析查询的敏感数据泄露）。
+掩码规则会应用到整个查询（用于防止因格式错误或无法解析的查询泄露敏感数据）。
 
-[`system.events`](/operations/system-tables/events) 表具有计数器 `QueryMaskingRulesMatch`，其具有查询掩码规则匹配的总数。
+[`system.events`](/operations/system-tables/events) 表包含名为 `QueryMaskingRulesMatch` 的计数器，用于统计查询掩码规则被匹配的总次数。
 
-对于分布式查询，每个服务器必须单独进行配置，否则传递给其他
-节点的子查询将不带掩码存储。
-## query_metric_log {#query_metric_log} 
+对于分布式查询，必须分别在每个服务器上进行配置，否则传递给其他节点的子查询将会在未进行掩码的情况下存储。
+
+## query&#95;metric&#95;log {#query_metric_log}
 
 默认禁用。
 
 **启用**
 
-要手动开启度量历史收集 [`system.query_metric_log`](../../operations/system-tables/query_metric_log.md)，请创建 `/etc/clickhouse-server/config.d/query_metric_log.xml`，并使用以下内容：
+要手动开启指标历史记录收集 [`system.query_metric_log`](../../operations/system-tables/query_metric_log.md)，请创建 `/etc/clickhouse-server/config.d/query_metric_log.xml` 文件，并写入以下内容：
 
 ```xml
 <clickhouse>
@@ -2825,7 +3425,7 @@ SQL 查询中的敏感数据泄露，如名称、电子邮件、个人标识符�
 
 **禁用**
 
-要禁用 `query_metric_log` 设置，您应创建以下文件 `/etc/clickhouse-server/config.d/disable_query_metric_log.xml`，并使用以下内容：
+要禁用 `query_metric_log` 设置，请创建以下文件 `/etc/clickhouse-server/config.d/disable_query_metric_log.xml`，并写入如下内容：
 
 ```xml
 <clickhouse>
@@ -2833,16 +3433,17 @@ SQL 查询中的敏感数据泄露，如名称、电子邮件、个人标识符�
 </clickhouse>
 ```
 
-<SystemLogParameters/>
-## query_thread_log {#query_thread_log} 
+<SystemLogParameters />
 
-设置日志记录收到的查询线程，使用 [log_query_threads=1](/operations/settings/settings#log_query_threads) 设置。
+## query&#95;thread&#95;log {#query_thread_log}
 
-查询记录在 [system.query_thread_log](/operations/system-tables/query_thread_log) 表中，而不是在单独的文件中。您可以修改 `table` 参数中的表名称（见下文）。
+用于在启用 [log&#95;query&#95;threads=1](/operations/settings/settings#log_query_threads) 设置时记录接收到的查询线程的设置。
 
-<SystemLogParameters/>
+查询会被记录到 [system.query&#95;thread&#95;log](/operations/system-tables/query_thread_log) 表中，而不是单独的文件中。可以通过 `table` 参数（见下文）修改该表的名称。
 
-如果表不存在，ClickHouse 将创建它。如果在更新 ClickHouse 服务器时查询线程日志的结构发生变化，则旧结构的表会被重命名，并自动创建一个新表。
+<SystemLogParameters />
+
+如果该表不存在，ClickHouse 会自动创建它。如果在更新 ClickHouse 服务器时查询线程日志的结构发生了变化，则旧结构的表会被重命名，并自动创建一个新表。
 
 **示例**
 
@@ -2858,15 +3459,16 @@ SQL 查询中的敏感数据泄露，如名称、电子邮件、个人标识符�
     <flush_on_crash>false</flush_on_crash>
 </query_thread_log>
 ```
-## query_views_log {#query_views_log} 
 
-设置日志记录视图（实时、物化等），依赖于使用 [log_query_views=1](/operations/settings/settings#log_query_views) 接收的查询。
+## query&#95;views&#95;log {#query_views_log}
 
-查询记录在 [system.query_views_log](/operations/system-tables/query_views_log) 表中，而不是在单独的文件中。您可以修改 `table` 参数中的表名称（见下文）。
+用于记录视图（live、materialized 等）日志的设置，其行为取决于在 [log&#95;query&#95;views=1](/operations/settings/settings#log_query_views) 设置开启时接收到的查询。
 
-<SystemLogParameters/>
+查询会记录在 [system.query&#95;views&#95;log](/operations/system-tables/query_views_log) 表中，而不是单独的文件中。可以在 `table` 参数中修改该表的名称（见下文）。
 
-如果表不存在，ClickHouse 将创建它。如果在更新 ClickHouse 服务器时查询视图日志的结构发生变化，则旧结构的表会被重命名，并自动创建一个新表。
+<SystemLogParameters />
+
+如果该表不存在，ClickHouse 会创建它。如果在更新 ClickHouse 服务器时 query views 日志的结构发生了变化，则具有旧结构的表会被重命名，并自动创建一个新表。
 
 **示例**
 
@@ -2882,12 +3484,13 @@ SQL 查询中的敏感数据泄露，如名称、电子邮件、个人标识符�
     <flush_on_crash>false</flush_on_crash>
 </query_views_log>
 ```
-## remap_executable {#remap_executable} 
 
-设置使用大页面重新分配机器代码（“文本”的内存）。
+## remap&#95;executable {#remap_executable}
+
+用于使用 huge pages 重新分配机器代码（“text”）内存的设置项。
 
 :::note
-此功能高度实验性。
+该功能仍处于高度实验性阶段。
 :::
 
 示例：
@@ -2895,7 +3498,8 @@ SQL 查询中的敏感数据泄露，如名称、电子邮件、个人标识符�
 ```xml
 <remap_executable>false</remap_executable>
 ```
-## remote_servers {#remote_servers} 
+
+## remote&#95;servers {#remote_servers}
 
 由 [Distributed](../../engines/table-engines/special/distributed.md) 表引擎和 `cluster` 表函数使用的集群配置。
 
@@ -2905,23 +3509,25 @@ SQL 查询中的敏感数据泄露，如名称、电子邮件、个人标识符�
 <remote_servers incl="clickhouse_remote_servers" />
 ```
 
-有关 `incl` 属性的值，请参阅 “[配置文件](/operations/configuration-files)” 部分。
+有关 `incl` 属性的取值，请参阅“[Configuration files](/operations/configuration-files)”一节。
 
-**另见**
+**另请参阅**
 
-- [skip_unavailable_shards](../../operations/settings/settings.md#skip_unavailable_shards)
-- [Cluster Discovery](../../operations/cluster-discovery.md)
-- [Replicated database engine](../../engines/database-engines/replicated.md)
-## remote_url_allow_hosts {#remote_url_allow_hosts} 
+* [skip&#95;unavailable&#95;shards](../../operations/settings/settings.md#skip_unavailable_shards)
+* [Cluster Discovery](../../operations/cluster-discovery.md)
+* [Replicated database engine](../../engines/database-engines/replicated.md)
+
+## remote&#95;url&#95;allow&#95;hosts {#remote_url_allow_hosts}
 
 允许在与 URL 相关的存储引擎和表函数中使用的主机列表。
 
-在使用 `\<host\>` XML 标签添加主机时：
-- 必须与 URL 中的名称完全一致，因为在 DNS 解析之前会进行检查。例如：`<host>clickhouse.com</host>`
-- 如果在 URL 中明确指定了端口，则对主机:端口作为整体进行检查。例如：`<host>clickhouse.com:80</host>`
-- 如果指定的主机没有端口，则允许主机的任何端口。例如：如果指定了 `<host>clickhouse.com</host>`，则 `clickhouse.com:20`（FTP）、`clickhouse.com:80`（HTTP）、`clickhouse.com:443`（HTTPS）等都允许。
-- 如果主机指定为 IP 地址，则按 URL 中指定的方式进行检查。例如：[2a02:6b8:a::a]。
-- 如果有重定向并且启用重定向支持，则检查每个重定向（位置字段）。
+在通过 `\<host\>` XML 标签添加主机时：
+
+* 必须与 URL 中的写法完全一致，因为会在 DNS 解析之前先检查名称。例如：`<host>clickhouse.com</host>`
+* 如果在 URL 中显式指定了端口，则会将 host:port 作为一个整体进行检查。例如：`<host>clickhouse.com:80</host>`
+* 如果主机未指定端口，则该主机上的任意端口都被允许。例如：如果指定了 `<host>clickhouse.com</host>`，则 `clickhouse.com:20`（FTP）、`clickhouse.com:80`（HTTP）、`clickhouse.com:443`（HTTPS）等都被允许。
+* 如果主机以 IP 地址的形式指定，则会按 URL 中的写法进行检查。例如：`[2a02:6b8:a::a]`。
+* 如果存在重定向并且启用了对重定向的支持，则每一次重定向（Location 字段）都会被检查。
 
 例如：
 
@@ -2930,34 +3536,39 @@ SQL 查询中的敏感数据泄露，如名称、电子邮件、个人标识符�
     <host>clickhouse.com</host>
 </remote_url_allow_hosts>
 ```
-## replica_group_name {#replica_group_name} 
 
-数据库 Replicated 的副本组名称。
+## replica&#95;group&#95;name {#replica_group_name}
 
-由 Replicated 数据库创建的集群将由同一组中的副本组成。
-DDL 查询只会等待同一组中的副本。
+用于 Replicated 数据库的副本组名称。
 
-默认情况下为空。
+由 Replicated 数据库创建的集群将由同一副本组中的副本组成。
+DDL 查询只会等待同一副本组内的副本。
+
+默认为空。
 
 **示例**
 
 ```xml
-<replica_group_name>backups</replica_group_name>
+<replica_group_name>备份</replica_group_name>
 ```
+
 ## replicated_fetches_http_connection_timeout {#replicated_fetches_http_connection_timeout} 
 
-<SettingsInfoBlock type="Seconds" default_value="0" />用于部分获取请求的 HTTP 连接超时。如果未明确设置则从默认配置文件 `http_connection_timeout` 继承。
+<SettingsInfoBlock type="Seconds" default_value="0" />用于通过 HTTP 拉取数据 part 的连接超时时间。如果未显式设置，则继承默认 profile 中的 `http_connection_timeout`。
+
 ## replicated_fetches_http_receive_timeout {#replicated_fetches_http_receive_timeout} 
 
-<SettingsInfoBlock type="Seconds" default_value="0" />获取部分请求的 HTTP 接收超时。如果未明确设置则从默认配置文件 `http_receive_timeout` 继承。
+<SettingsInfoBlock type="Seconds" default_value="0" />用于处理 part 拉取请求的 HTTP 接收超时时间。如果未显式设置，则继承默认 profile 中的 `http_receive_timeout`。
+
 ## replicated_fetches_http_send_timeout {#replicated_fetches_http_send_timeout} 
 
-<SettingsInfoBlock type="Seconds" default_value="0" />用于部分获取请求的 HTTP 发送超时。如果未明确设置则从默认配置文件 `http_send_timeout` 继承。
-## replicated_merge_tree {#replicated_merge_tree} 
+<SettingsInfoBlock type="Seconds" default_value="0" />用于分片数据获取请求的 HTTP 发送超时时间。如果未显式设置，则继承默认 profile 中的 `http_send_timeout`。
 
-[ReplicatedMergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 中表的微调。该设置具有更高的优先级。
+## replicated&#95;merge&#95;tree {#replicated_merge_tree}
 
-有关更多信息，请参见 MergeTreeSettings.h 头文件。
+用于对 [ReplicatedMergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 中的表进行精细调优。此 SETTING 的优先级更高。
+
+有关更多信息，请参阅 MergeTreeSettings.h 头文件。
 
 **示例**
 
@@ -2966,14 +3577,32 @@ DDL 查询只会等待同一组中的副本。
     <max_suspicious_broken_parts>5</max_suspicious_broken_parts>
 </replicated_merge_tree>
 ```
+
 ## restore_threads {#restore_threads} 
 
-<SettingsInfoBlock type="NonZeroUInt64" default_value="16" />执行 RESTORE 请求的最大线程数。
-## s3queue_log {#s3queue_log} 
+<SettingsInfoBlock type="NonZeroUInt64" default_value="16" />用于执行 RESTORE 请求的最大线程数。
+
+## s3_credentials_provider_max_cache_size {#s3_credentials_provider_max_cache_size} 
+
+<SettingsInfoBlock type="UInt64" default_value="100" />可缓存的 S3 凭证提供程序的最大数量
+
+## s3_max_redirects {#s3_max_redirects} 
+
+<SettingsInfoBlock type="UInt64" default_value="10" />S3 重定向允许的最大跳数。
+
+## s3_retry_attempts {#s3_retry_attempts} 
+
+<SettingsInfoBlock type="UInt64" default_value="500" />为 Aws::Client::RetryStrategy 配置的重试次数，Aws::Client 会自行执行重试，0 表示不重试
+
+## s3queue_disable_streaming {#s3queue_disable_streaming} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />即使已创建表并已附加物化视图，也在 S3Queue 中禁用流式处理
+
+## s3queue&#95;log {#s3queue_log}
 
 `s3queue_log` 系统表的设置。
 
-<SystemLogParameters/>
+<SystemLogParameters />
 
 默认设置为：
 
@@ -2985,19 +3614,20 @@ DDL 查询只会等待同一组中的副本。
     <flush_interval_milliseconds>7500</flush_interval_milliseconds>
 </s3queue_log>
 ```
-## send_crash_reports {#send_crash_reports} 
 
-用于向 ClickHouse 核心开发者团队发送崩溃报告的设置。
+## send&#95;crash&#95;reports {#send_crash_reports}
 
-在生产前环境中启用此功能，尤其受到高度重视。
+用于将崩溃报告发送给 ClickHouse 核心开发团队的设置。
+
+建议在预生产环境中启用该功能。
 
 键：
 
-| 键                     | 描述                                                                                                                              |
-|-----------------------|----------------------------------------------------------------------------------------------------------------------------------|
-| `enabled`             | 启用此功能的布尔标志，默认为 `true`。设置为 `false` 以避免发送崩溃报告。                                                           |
-| `send_logical_errors` | `LOGICAL_ERROR` 就像一个 `assert`，这是 ClickHouse 中的一个 bug。此布尔标志启用发送此异常（默认值：`true`）。                  |
-| `endpoint`            | 您可以覆盖发送崩溃报告的端点 URL。                                                                                             |
+| Key                   | Description                                                                     |
+| --------------------- | ------------------------------------------------------------------------------- |
+| `enabled`             | 用于启用该功能的布尔开关，默认值为 `true`。将其设置为 `false` 可避免发送崩溃报告。                               |
+| `send_logical_errors` | `LOGICAL_ERROR` 类似于 `assert`，表示 ClickHouse 中的一个 bug。此布尔开关用于启用发送此类异常（默认：`true`）。 |
+| `endpoint`            | 可以自定义用于发送崩溃报告的 endpoint URL。                                                    |
 
 **推荐用法**
 
@@ -3006,28 +3636,39 @@ DDL 查询只会等待同一组中的副本。
     <enabled>true</enabled>
 </send_crash_reports>
 ```
+
 ## series_keeper_path {#series_keeper_path} 
 
 <SettingsInfoBlock type="String" default_value="/clickhouse/series" />
-Keeper 中带有自动递增数字的路径，由 `generateSerialID` 函数生成。每个系列将是该路径下的一个节点。
+
+Keeper 中带有自增编号的路径，由 `generateSerialID` 函数生成。每个 series 都将作为该路径下的一个节点。
+
 ## show_addresses_in_stack_traces {#show_addresses_in_stack_traces} 
 
-<SettingsInfoBlock type="Bool" default_value="1" />如果设置为 true，将在堆栈跟踪中显示地址。
+<SettingsInfoBlock type="Bool" default_value="1" />当设置为 true 时，将在堆栈跟踪中显示地址。
+
 ## shutdown_wait_backups_and_restores {#shutdown_wait_backups_and_restores} 
 
-<SettingsInfoBlock type="Bool" default_value="1" />如果设置为 true，ClickHouse 将等待正在运行的备份和恢复完成后再关闭。
+<SettingsInfoBlock type="Bool" default_value="1" />如果设置为 true，ClickHouse 会在关闭前等待正在运行的备份和恢复操作完成。
+
 ## shutdown_wait_unfinished {#shutdown_wait_unfinished} 
 
-<SettingsInfoBlock type="UInt64" default_value="5" />等待未完成查询的延迟（以秒为单位）。
+<SettingsInfoBlock type="UInt64" default_value="5" />以秒为单位等待未完成查询结束的时间
+
 ## shutdown_wait_unfinished_queries {#shutdown_wait_unfinished_queries} 
 
-<SettingsInfoBlock type="Bool" default_value="0" />如果设置为 true，ClickHouse 将等待正在运行的查询完成后再关闭。
-## ssh_server {#ssh_server} 
+<SettingsInfoBlock type="Bool" default_value="0" />如果设置为 true，ClickHouse 将在关闭前等待正在运行的查询完成。
 
-主机密钥的公共部分将在 SSH 客户端第一次连接时写入 known_hosts 文件。
+## skip_binary_checksum_checks {#skip_binary_checksum_checks} 
 
-主机密钥配置默认情况下未激活。
-取消注释主机密钥配置，并提供相应 SSH 密钥的路径以激活它们：
+<SettingsInfoBlock type="Bool" default_value="0" />跳过 ClickHouse 二进制文件校验和完整性检查
+
+## ssh&#95;server {#ssh_server}
+
+在首次连接时，主机密钥的公钥部分会被写入 SSH 客户端一侧的 known&#95;hosts 文件。
+
+主机密钥配置默认处于未启用状态。
+取消注释主机密钥配置，并提供对应 ssh 密钥的路径以启用它们：
 
 示例：
 
@@ -3038,28 +3679,31 @@ Keeper 中带有自动递增数字的路径，由 `generateSerialID` 函数生�
     <host_ed25519_key>path_to_the_ssh_key</host_ed25519_key>
 </ssh_server>
 ```
+
 ## startup_mv_delay_ms {#startup_mv_delay_ms} 
 
-<SettingsInfoBlock type="UInt64" default_value="0" />调试参数，用于模拟物化视图创建延迟。
-## storage_configuration {#storage_configuration} 
+<SettingsInfoBlock type="UInt64" default_value="0" />用于模拟物化视图创建延迟的调试参数
 
-允许存储的多磁盘配置。
+## storage&#95;configuration {#storage_configuration}
+
+允许进行多磁盘存储配置。
 
 存储配置遵循以下结构：
 
 ```xml
 <storage_configuration>
     <disks>
-        <!-- configuration -->
+        <!-- 配置 -->
     </disks>
     <policies>
-        <!-- configuration -->
+        <!-- 配置 -->
     </policies>
 </storage_configuration>
 ```
-### Configuration of disks {#configuration-of-disks}
 
-`disks` 的配置遵循下面给出的结构：
+### 磁盘配置 {#configuration-of-disks}
+
+`disks` 的配置遵循如下所示的结构：
 
 ```xml
 <storage_configuration>
@@ -3080,117 +3724,145 @@ Keeper 中带有自动递增数字的路径，由 `generateSerialID` 函数生�
 </storage_configuration>
 ```
 
-上述子标签定义了 `disks` 的以下设置：
+上面的子标签为 `disks` 定义了如下设置：
 
-| 设置                     | 描述                                                                                             |
-|-------------------------|--------------------------------------------------------------------------------------------------|
-| `<disk_name_N>`         | 磁盘的名称，必须唯一。                                                                           |
-| `path`                  | 存储服务器数据的路径（`data` 和 `shadow` 目录）。应该以 `/` 结尾。                          |
-| `keep_free_space_bytes` | 磁盘上保留的自由空间的大小。                                                                     |
+| Setting                 | Description                                   |
+| ----------------------- | --------------------------------------------- |
+| `<disk_name_N>`         | 磁盘的名称，必须唯一。                                   |
+| `path`                  | 用于存储服务器数据（`data` 和 `shadow` 目录）的路径，应以 `/` 结尾。 |
+| `keep_free_space_bytes` | 磁盘上预留空闲空间的大小。                                 |
 
 :::note
-磁盘的顺序不重要。
+磁盘的先后顺序无关紧要。
 :::
-### Configuration of policies {#configuration-of-policies}
 
-上述子标签定义了 `policies` 的以下设置：
+### 策略配置 {#configuration-of-policies}
 
-| 设置                        | 描述                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-|-----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `policy_name_N`              | 政策的名称。政策名称必须唯一。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| `volume_name_N`              | 卷的名称。卷名称必须唯一。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| `disk`                       | 位于卷内的磁盘。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| `max_data_part_size_bytes`   | 此卷中可存在任何磁盘上的数据块的最大大小。如果合并结果预计的块大小大于 max_data_part_size_bytes，该块将写入下一个卷。基本上，此功能允许您在热（SSD）卷上存储新的/较小的块，并在它们达到较大规模时将它们移动到冷（HDD）卷。如果政策仅有一个卷，则不要使用此选项。                                                                                |
-| `move_factor`                | 卷上可用自由空间的份额。如果空间减少，数据将开始转移到下一个卷（如果存在）。为了进行转移，块按大小从大到小（降序）排序，并选择总大小足以满足 `move_factor` 条件的块，如果所有块的总大小不足，则移动所有块。                                                                                                                                                                                                         |
-| `perform_ttl_move_on_insert` | 禁用插入时移动过期生存时间的数据显示。默认情况下（如果启用），如果我们插入根据移除生命规则已经过期的数据，则它会立即移动到指定的目标卷/磁盘。这可能会显著减慢插入速度，特别是在目标卷/磁盘较慢（例如 S3）的情况下。如果禁用，则过期的数据部分将被写入默认卷，然后立即移动到指定的过期生存时间规则的卷中。                                            |
-| `load_balancing`             | 磁盘平衡策略，可以是 `round_robin` 或 `least_used`。                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| `least_used_ttl_ms`          | 设置更新所有磁盘上可用空间的超时（以毫秒为单位）（`0` - 始终更新，`-1` - 从不更新，默认值为 `60000`）。请注意，如果磁盘仅由 ClickHouse 使用，并且不会受到文件系统动态调整的影响，您可以使用 `-1` 值。在所有其他情况下，不推荐使用此值，因为这最终会导致不正确的空间分配。                                                                                                                     |
-| `prefer_not_to_merge`        | 禁用在该卷上的数据合并。注意：这可能有害并导致性能下降。当启用此设置时（请勿这样做），将禁止在此卷上合并数据（这很糟糕）。这允许控制 ClickHouse 如何与较慢的磁盘交互。我们建议根本不使用此选项。                                                                                                                                                                                                          |
-| `volume_priority`            | 定义填充卷的优先级（顺序）。数值越小，优先级越高。参数值应为自然数字，并覆盖从 1 到 N（N 为指定的最大参数值）的范围，没有间隔。                                                                                                                                                                                                                                                                                                                                             |
+上面的子标签为 `policies` 定义了以下设置：
+
+| 设置                         | 说明                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+|------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `policy_name_N`              | 策略名称。策略名称必须唯一。                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `volume_name_N`              | volume 名称。volume 名称必须唯一。                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `disk`                       | 位于该 volume 内部的 disk。                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `max_data_part_size_bytes`   | 此 volume 中任意 disk 上可以存放的数据分片的最大大小。如果合并结果预期产生的数据分片会大于 `max_data_part_size_bytes`，该分片将被写入下一个 volume。该特性本质上允许你将新的 / 较小的数据分片存放在热（SSD）volume 上，并在它们达到较大尺寸时将其移动到冷（HDD）volume。若策略只包含一个 volume，请不要使用此选项。                                                                                                           |
+| `move_factor`                | volume 中可用空闲空间的占比。如果可用空间变少，数据将开始传输到下一个 volume（如果存在）。在传输时，数据分片会按大小从大到小（降序）排序，并选择其总大小足以满足 `move_factor` 条件的数据分片；如果所有数据分片的总大小仍不足以满足条件，则会移动所有数据分片。                                                                                                                                                                         |
+| `perform_ttl_move_on_insert` | 禁用在插入时移动已过期生存时间 (TTL) 的数据。默认情况下（启用时），如果插入的数据根据“按生命周期移动”规则已经过期，它会立即被移动到该规则指定的 volume / disk。在目标 volume / disk 较慢的情况下（例如 S3），这会显著降低插入性能。如果禁用，则已过期的数据部分会先写入默认 volume，然后再根据针对已过期生存时间 (TTL) 的规则立即移动到指定 volume。                                                                           |
+| `load_balancing`             | disk 负载均衡策略，`round_robin` 或 `least_used`。                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `least_used_ttl_ms`          | 设置用于刷新所有 disk 上可用空间信息的超时时间（毫秒）（`0` 表示始终更新，`-1` 表示从不更新，默认值为 `60000`）。注意，如果该 disk 仅由 ClickHouse 使用，且不会在运行时进行文件系统在线扩容或缩容，则可以使用 `-1`。在其他所有情况下不建议这样做，因为最终会导致错误的空间分配。                                                                                                                                                          |
+| `prefer_not_to_merge`        | 禁用在此 volume 上对数据分区片段进行合并。注意：这可能有害并导致性能下降。当启用此设置时（不建议启用），禁止在该 volume 上执行数据合并（这是不利的）。这提供了一种控制 ClickHouse 如何与慢速 disk 交互的手段。我们建议完全不要使用此设置。                                                                                                                                                                                                             |
+| `volume_priority`            | 定义填充 volume 的优先级（顺序）。数值越小，优先级越高。参数值必须是自然数，并且在 1 到 N（N 为指定的最大参数值）范围内连续无空缺。                                                                                                                                                                                                                                                                                                                             |
 
 对于 `volume_priority`：
-- 如果所有卷都有此参数，则按指定顺序优先。
-- 如果只有某些卷具有此参数，则没有此参数的卷优先级最低。具有此参数的会根据标签值进行优先排序，其余的优先级则由在配置文件中相对彼此的描述顺序决定。
-- 如果没有卷给此参数，则其顺序由配置文件中的描述顺序决定。
-- 卷的优先级可能不相同。
+
+- 如果所有 volume 都具有此参数，则按指定顺序确定优先级。
+- 如果只有 _部分_ volume 具有此参数，则不具有该参数的 volume 优先级最低。具有该参数的 volume 按标签值确定优先级，其余 volume 的优先级由它们在配置文件中的相对描述顺序决定。
+- 如果 _没有_ 任何 volume 被赋予此参数，则它们的顺序由其在配置文件中的描述顺序决定。
+- volume 之间的优先级可以不同，不要求相同。
+
+## storage_connections_hard_limit {#storage_connections_hard_limit} 
+
+<SettingsInfoBlock type="UInt64" default_value="200000" />在达到该限制后，后续的创建尝试会抛出异常。将其设为 0 可关闭硬性限制。此限制适用于存储的连接数。
+
 ## storage_connections_soft_limit {#storage_connections_soft_limit} 
 
-<SettingsInfoBlock type="UInt64" default_value="100" />超出此限制的连接生命时间显著缩短。限制适用于存储连接。
+<SettingsInfoBlock type="UInt64" default_value="100" />超过此限制的连接的存活时间会显著缩短。该限制适用于存储连接。
+
 ## storage_connections_store_limit {#storage_connections_store_limit} 
 
-<SettingsInfoBlock type="UInt64" default_value="5000" />超出此限制的连接在使用之后将重置。设置为 0 将关闭连接缓存。限制适用于存储连接。
+<SettingsInfoBlock type="UInt64" default_value="1000" />超过此限制的连接在使用后会被重置。将其设置为 0 可关闭连接缓存。该限制适用于存储引擎连接。
+
 ## storage_connections_warn_limit {#storage_connections_warn_limit} 
 
-<SettingsInfoBlock type="UInt64" default_value="1000" />如果使用中的连接数高于此限制，则警告消息将写入日志。限制适用于存储连接。
+<SettingsInfoBlock type="UInt64" default_value="500" />当正在使用的连接数超过该限制时，将在日志中记录警告消息。该限制适用于存储的连接。
+
 ## storage_metadata_write_full_object_key {#storage_metadata_write_full_object_key} 
 
-<SettingsInfoBlock type="Bool" default_value="0" />以 VERSION_FULL_OBJECT_KEY 格式写入磁盘元数据文件。
+<SettingsInfoBlock type="Bool" default_value="1" />以 VERSION_FULL_OBJECT_KEY 格式写入磁盘元数据文件。默认启用。该设置已弃用。
+
 ## storage_shared_set_join_use_inner_uuid {#storage_shared_set_join_use_inner_uuid} 
 
-如果启用，在创建 SharedSet 和 SharedJoin 时将生成内部 UUID。仅限 ClickHouse Cloud。
+<SettingsInfoBlock type="Bool" default_value="1" />启用后，在创建 SharedSet 和 SharedJoin 时会生成内部 UUID。仅限 ClickHouse Cloud
+
 ## table_engines_require_grant {#table_engines_require_grant} 
 
-如果设置为 true，用户需要获得授权才能创建具有特定引擎的表，例如 `GRANT TABLE ENGINE ON TinyLog to user`。
+如果设置为 true，用户在使用特定引擎创建表时需要先被授予相应权限，例如：`GRANT TABLE ENGINE ON TinyLog to user`。
 
 :::note
-默认情况下，为了向后兼容，创建带有特定表引擎的表会忽略授权，但是您可以通过将其设置为 true 来更改此行为。
+默认情况下，为了保持向后兼容性，使用特定表引擎创建表时会忽略权限检查，不过您可以通过将此设置为 true 来改变这一行为。
 :::
+
 ## tables_loader_background_pool_size {#tables_loader_background_pool_size} 
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
-设置在后台池中执行异步加载作业的线程数。当服务器启动后如果没有等待加载表的查询，则使用后台池异步加载表。如果表的数量很多，建议保持后台池中线程数量较低。这将为并发查询执行保留 CPU 资源。
+
+设置在后台线程池中执行异步加载任务的线程数量。后台线程池用于在服务器启动后，在没有查询等待该表的情况下异步加载表。如果表很多，适当降低后台线程池中的线程数量可能会更有利，这样可以为并发查询执行保留 CPU 资源。
 
 :::note
-值为 `0` 表示将使用所有可用 CPU。
+值为 `0` 表示将使用所有可用的 CPU。
 :::
+
 ## tables_loader_foreground_pool_size {#tables_loader_foreground_pool_size} 
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
-设置在前台池中执行加载作业的线程数。前台池用于在服务器开始监听端口之前的同步加载表，以及加载等待的表。前台池的优先级高于后台池。这意味着在前台池中有作业运行时，后台池中不会开始任何作业。
+
+设置在前台线程池中执行加载任务的线程数量。前台线程池用于在服务器开始监听端口之前同步加载表，以及加载那些需要等待其加载完成的表。前台线程池的优先级高于后台线程池。这意味着，只要前台线程池中仍有任务在运行，后台线程池中就不会启动任何任务。
 
 :::note
-值为 `0` 表示将使用所有可用 CPU。
+值为 `0` 表示将使用所有可用的 CPU。
 :::
-## tcp_port {#tcp_port} 
 
-用于通过 TCP 协议与客户端通信的端口。
+## tcp_close_connection_after_queries_num {#tcp_close_connection_after_queries_num} 
+
+<SettingsInfoBlock type="UInt64" default_value="0" />在关闭 TCP 连接之前允许的最大查询次数。设置为 0 表示不限制查询次数。
+
+## tcp_close_connection_after_queries_seconds {#tcp_close_connection_after_queries_seconds} 
+
+<SettingsInfoBlock type="UInt64" default_value="0" />TCP 连接在关闭前的最⻓存活时间（秒）。将其设置为 0 表示连接的存活时间不受限制。
+
+## tcp&#95;port {#tcp_port}
+
+用于通过 TCP 协议与客户端进行通信的端口。
 
 **示例**
 
 ```xml
 <tcp_port>9000</tcp_port>
 ```
-## tcp_port_secure {#tcp_port_secure} 
 
-用于与客户端进行安全通信的 TCP 端口。与 [OpenSSL](#openssl) 设置一起使用。
+## tcp&#95;port&#95;secure {#tcp_port_secure}
+
+用于与客户端进行安全通信的 TCP 端口。请与 [OpenSSL](#openssl) 设置搭配使用。
 
 **默认值**
 
 ```xml
 <tcp_port_secure>9440</tcp_port_secure>
 ```
-## tcp_ssh_port {#tcp_ssh_port} 
 
-用于 SSH 服务器的端口，允许用户通过嵌入式客户端以交互方式连接和执行查询。
+## tcp&#95;ssh&#95;port {#tcp_ssh_port}
+
+SSH 服务器使用的端口，允许用户通过 PTY 使用嵌入式客户端以交互方式连接并执行查询。
 
 示例：
 
 ```xml
 <tcp_ssh_port>9022</tcp_ssh_port>
 ```
-## temporary_data_in_cache {#temporary_data_in_cache} 
 
-有了这个选项，临时数据将在特定磁盘的缓存中存储。
-在此部分中，您应指定类型为 `cache` 的磁盘名称。
-在这种情况下，缓存和临时数据将共享相同的空间，并且可以将磁盘缓存逐出以创建临时数据。
+## temporary&#95;data&#95;in&#95;cache {#temporary_data_in_cache}
+
+使用此选项时，临时数据将存储在特定磁盘的缓存中。
+在本节中，需要指定一个类型为 `cache` 的磁盘名称。
+在这种情况下，缓存和临时数据将共享同一空间，并且可以通过驱逐磁盘缓存来为临时数据腾出空间。
 
 :::note
-只能使用一个选项来配置临时数据存储： `tmp_path` ，`tmp_policy`， `temporary_data_in_cache`。
+临时数据存储只能从以下选项中选择一种进行配置：`tmp_path`、`tmp_policy`、`temporary_data_in_cache`。
 :::
 
 **示例**
 
-`local_disk` 的缓存和临时数据将存储在文件系统上由 `tiny_local_cache` 管理的 `/tiny_local_cache` 中。
+`local_disk` 的缓存和临时数据都会存储在文件系统上的 `/tiny_local_cache` 中，由 `tiny_local_cache` 进行管理。
 
 ```xml
 <clickhouse>
@@ -3219,17 +3891,82 @@ Keeper 中带有自动递增数字的路径，由 `generateSerialID` 函数生�
 <!-- highlight-end -->
 </clickhouse>
 ```
-## text_log {#text_log} 
 
-用于记录文本消息的 [text_log](/operations/system-tables/text_log) 系统表的设置。
+## temporary_data_in_distributed_cache {#temporary_data_in_distributed_cache} 
 
-<SystemLogParameters/>
+<SettingsInfoBlock type="Bool" default_value="0" />将临时数据存储在分布式缓存中。
+
+## text_index_dictionary_block_cache_max_entries {#text_index_dictionary_block_cache_max_entries} 
+
+<SettingsInfoBlock type="UInt64" default_value="1000000" />文本索引字典块缓存的大小（按条目数量计）。为 0 表示禁用。
+
+## text_index_dictionary_block_cache_policy {#text_index_dictionary_block_cache_policy} 
+
+<SettingsInfoBlock type="String" default_value="SLRU" />文本索引字典块缓存策略的名称。
+
+## text_index_dictionary_block_cache_size {#text_index_dictionary_block_cache_size} 
+
+<SettingsInfoBlock type="UInt64" default_value="1073741824" />文本索引字典块的缓存大小。0 表示禁用。
+
+:::note
+此设置可以在运行时修改，并会立即生效。
+:::
+
+## text_index_dictionary_block_cache_size_ratio {#text_index_dictionary_block_cache_size_ratio} 
+
+<SettingsInfoBlock type="Double" default_value="0.5" />在采用 SLRU 策略时，文本索引字典块缓存中受保护队列的大小相对于缓存总大小的比例。
+
+## text_index_header_cache_max_entries {#text_index_header_cache_max_entries} 
+
+<SettingsInfoBlock type="UInt64" default_value="100000" />文本索引头缓存的大小（按条目数计）。设置为 0 表示禁用。
+
+## text_index_header_cache_policy {#text_index_header_cache_policy} 
+
+<SettingsInfoBlock type="String" default_value="SLRU" />文本索引头部缓存策略名称。
+
+## text_index_header_cache_size {#text_index_header_cache_size} 
+
+<SettingsInfoBlock type="UInt64" default_value="1073741824" />文本索引头缓存的大小。设置为 0 表示禁用。
+
+:::note
+此设置可以在运行时修改，并会立即生效。
+:::
+
+## text_index_header_cache_size_ratio {#text_index_header_cache_size_ratio} 
+
+<SettingsInfoBlock type="Double" default_value="0.5" />在采用 SLRU 策略时，文本索引头部缓存中受保护队列的大小，相对于该缓存总大小的比例。
+
+## text_index_postings_cache_max_entries {#text_index_postings_cache_max_entries} 
+
+<SettingsInfoBlock type="UInt64" default_value="1000000" />文本索引 posting 列表的缓存大小（按条目数计）。将其设为 0 表示禁用。
+
+## text_index_postings_cache_policy {#text_index_postings_cache_policy} 
+
+<SettingsInfoBlock type="String" default_value="SLRU" />文本索引 posting 列表缓存策略的名称。
+
+## text_index_postings_cache_size {#text_index_postings_cache_size} 
+
+<SettingsInfoBlock type="UInt64" default_value="2147483648" />用于文本索引倒排列表的缓存大小。零表示禁用。
+
+:::note
+此设置可以在运行时修改，并会立即生效。
+:::
+
+## text_index_postings_cache_size_ratio {#text_index_postings_cache_size_ratio} 
+
+<SettingsInfoBlock type="Double" default_value="0.5" />在文本索引的倒排列表缓存中，受保护队列（在采用 SLRU 策略时）的大小占缓存总大小的比例。
+
+## text&#95;log {#text_log}
+
+用于记录文本消息的 [text&#95;log](/operations/system-tables/text_log) 系统表相关设置。
+
+<SystemLogParameters />
 
 此外：
 
-| 设置   | 描述                                                                                                                                                                                                           | 默认值           |
-|--------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
-| `level` | 最大消息级别（默认 `Trace`）将被存储在表中。                                                                                                                                                                | `Trace`           |
+| Setting | Description                  | Default Value |
+| ------- | ---------------------------- | ------------- |
+| `level` | 表中将会存储的最大消息级别（默认值为 `Trace`）。 | `Trace`       |
 
 **示例**
 
@@ -3249,13 +3986,15 @@ Keeper 中带有自动递增数字的路径，由 `generateSerialID` 函数生�
     </text_log>
 </clickhouse>
 ```
-## thread_pool_queue_size {#thread_pool_queue_size} 
+
+## thread&#95;pool&#95;queue&#95;size {#thread_pool_queue_size}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
-可以在全局线程池中调度的最大作业数。增加队列大小会导致更大的内存使用。建议保持该值等于 [`max_thread_pool_size`](/operations/server-configuration-parameters/settings#max_thread_pool_size)。
+
+可在全局线程池（Global Thread pool）中排队调度的作业最大数量。增大队列大小会增加内存占用。建议将该值设置为与 [`max_thread_pool_size`](/operations/server-configuration-parameters/settings#max_thread_pool_size) 相同。
 
 :::note
-值为 `0` 表示无限。
+值为 `0` 表示不设上限。
 :::
 
 **示例**
@@ -3263,19 +4002,39 @@ Keeper 中带有自动递增数字的路径，由 `generateSerialID` 函数生�
 ```xml
 <thread_pool_queue_size>12000</thread_pool_queue_size>
 ```
+
+## threadpool_local_fs_reader_pool_size {#threadpool_local_fs_reader_pool_size} 
+
+<SettingsInfoBlock type="NonZeroUInt64" default_value="100" />当 `local_filesystem_read_method = 'pread_threadpool'` 时，用于从本地文件系统读取数据的线程池的线程数。
+
+## threadpool_local_fs_reader_queue_size {#threadpool_local_fs_reader_queue_size} 
+
+<SettingsInfoBlock type="UInt64" default_value="1000000" />用于从本地文件系统读取数据的线程池中可排队的最大任务数。
+
+## threadpool_remote_fs_reader_pool_size {#threadpool_remote_fs_reader_pool_size} 
+
+<SettingsInfoBlock type="NonZeroUInt64" default_value="250" />当 `remote_filesystem_read_method = 'threadpool'` 时，用于从远程文件系统读取数据的线程池中的线程数。
+
+## threadpool_remote_fs_reader_queue_size {#threadpool_remote_fs_reader_queue_size} 
+
+<SettingsInfoBlock type="UInt64" default_value="1000000" />用于从远程文件系统读取数据的线程池中可调度的最大任务数量。
+
 ## threadpool_writer_pool_size {#threadpool_writer_pool_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="100" />向对象存储发送写请求的后台池的大小。
+<SettingsInfoBlock type="NonZeroUInt64" default_value="100" />用于处理向对象存储写入请求的后台线程池大小
+
 ## threadpool_writer_queue_size {#threadpool_writer_queue_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />可以推入后台池的写请求任务数。
-## throw_on_unknown_workload {#throw_on_unknown_workload} 
+<SettingsInfoBlock type="UInt64" default_value="1000000" />能够推送到用于处理对象存储写入请求的后台线程池中的最大任务数
+
+## throw&#95;on&#95;unknown&#95;workload {#throw_on_unknown_workload}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
-定义对带有查询设置 'workload' 的未知 WORKLOAD 的访问行为。
 
-- 如果为 `true`，将从尝试访问未知工作负载的查询中抛出 RESOURCE_ACCESS_DENIED 异常。这对于在建立了 WORKLOAD 层次结构并包含 WORKLOAD 默认的所有查询强制执行资源调度很有用。
-- 如果为 `false`（默认），对于指向未知 WORKLOAD 的查询在没有资源调度的情况下提供无限访问。这在设置 WORKLOAD 层次结构期间很重要，在添加 WORKLOAD 默认之前。
+定义在通过查询设置 `workload` 访问未知 WORKLOAD 时的行为。
+
+* 如果为 `true`，在查询尝试访问未知 WORKLOAD 时会抛出 RESOURCE&#95;ACCESS&#95;DENIED 异常。在建立包含默认 WORKLOAD 的 WORKLOAD 层级之后，可用它来强制所有查询都进行资源调度。
+* 如果为 `false`（默认），则对其 `workload` 查询设置指向未知 WORKLOAD 的查询，在没有资源调度的情况下提供无限制访问。这在设置 WORKLOAD 层级、且尚未添加默认 WORKLOAD 期间非常重要。
 
 **示例**
 
@@ -3283,15 +4042,17 @@ Keeper 中带有自动递增数字的路径，由 `generateSerialID` 函数生�
 <throw_on_unknown_workload>true</throw_on_unknown_workload>
 ```
 
-**另见**
-- [Workload Scheduling](/operations/workload-scheduling.md)
-## timezone {#timezone} 
+**另请参阅**
+
+* [工作负载调度](/operations/workload-scheduling.md)
+
+## timezone {#timezone}
 
 服务器的时区。
 
-指定为 UTC 时区或地理位置的 IANA 标识符（例如，Africa/Abidjan）。
+指定为表示 UTC 时区或地理位置的 IANA 标识符（例如 Africa/Abidjan）。
 
-时区在将 DateTime 字段输出到文本格式（打印到屏幕或文件）时以及从字符串获取 DateTime 时，必要用于在字符串和 DateTime 格式之间的转换。此外，在未接收输入参数中的时区时，时区在处理时间和日期的函数中使用。
+在将 DateTime 字段输出为文本格式（打印到屏幕或写入文件）以及从字符串解析为 DateTime 时，需要使用时区在 String 与 DateTime 格式之间进行转换。此外，在处理时间和日期的函数的输入参数中未指定时区时，也会使用该时区。
 
 **示例**
 
@@ -3299,36 +4060,50 @@ Keeper 中带有自动递增数字的路径，由 `generateSerialID` 函数生�
 <timezone>Asia/Istanbul</timezone>
 ```
 
-**另见**
+**另请参阅**
 
-- [session_timezone](../settings/settings.md#session_timezone)
-## tmp_path {#tmp_path} 
+* [session&#95;timezone](../settings/settings.md#session_timezone)
 
-在本地文件系统上存储临时数据的路径，用于处理大查询。
+## tmp&#95;path {#tmp_path}
+
+本地文件系统上的路径，用于在处理大型查询时存储临时数据。
 
 :::note
-- 只能使用一个选项来配置临时数据存储： `tmp_path` ，`tmp_policy`， `temporary_data_in_cache`。
-- 尾部斜杠是强制性的。
-:::
+
+* 临时数据存储只能通过以下选项之一进行配置：`tmp_path`、`tmp_policy`、`temporary_data_in_cache`。
+* 路径末尾必须带有斜杠。
+  :::
 
 **示例**
 
 ```xml
 <tmp_path>/var/lib/clickhouse/tmp/</tmp_path>
 ```
-## tmp_policy {#tmp_policy} 
 
-带有临时数据的存储策略。有关更多信息，请参阅 [MergeTree Table Engine](/engines/table-engines/mergetree-family/mergetree) 文档。
+## tmp&#95;policy {#tmp_policy}
+
+用于临时数据存储的策略。所有以 `tmp` 前缀命名的文件都会在启动时被删除。
 
 :::note
-- 只能使用一个选项来配置临时数据存储： `tmp_path` ，`tmp_policy`， `temporary_data_in_cache`。
-- `move_factor`、`keep_free_space_bytes`、`max_data_part_size_bytes` 被忽略。
-- 策略应只有一个 *local* 磁盘的 *一个卷*。
+将对象存储用作 `tmp_policy` 时的建议：
+
+* 在每台服务器上使用独立的 `bucket:path`
+* 使用 `metadata_type=plain`
+* 还可以考虑为此 bucket 设置生存时间 (TTL)
+  :::
+
+:::note
+
+* 只能使用一个选项来配置临时数据存储：`tmp_path`、`tmp_policy`、`temporary_data_in_cache`。
+* `move_factor`、`keep_free_space_bytes`、`max_data_part_size_bytes` 将被忽略。
+* 策略必须且只能包含 *一个卷（volume）*
+
+更多信息，参见 [MergeTree Table Engine](/engines/table-engines/mergetree-family/mergetree) 文档。
 :::
 
 **示例**
 
-当 `/disk1` 满时，临时数据将存储在 `/disk2` 上。
+当 `/disk1` 已满时，临时数据将会存储在 `/disk2` 上。
 
 ```xml
 <clickhouse>
@@ -3361,9 +4136,10 @@ Keeper 中带有自动递增数字的路径，由 `generateSerialID` 函数生�
 <!-- highlight-end -->
 </clickhouse>
 ```
-## top_level_domains_list {#top_level_domains_list} 
 
-定义要添加的自定义顶级域的列表，每个条目的格式为 `<name>/path/to/file</name>`。
+## top&#95;level&#95;domains&#95;list {#top_level_domains_list}
+
+定义要添加的自定义顶级域名列表，其中每个条目的格式为 `<name>/path/to/file</name>`。
 
 例如：
 
@@ -3373,33 +4149,41 @@ Keeper 中带有自动递增数字的路径，由 `generateSerialID` 函数生�
 </top_level_domains_lists>
 ```
 
-另见：
-- 函数 [`cutToFirstSignificantSubdomainCustom`](../../sql-reference/functions/url-functions.md/#cuttofirstsignificantsubdomaincustom) 及其变体，接受自定义 TLD 列表名称，返回包含顶级子域的域的部分，直到第一个重要子域。
+另请参阅：
+
+* 函数 [`cutToFirstSignificantSubdomainCustom`](../../sql-reference/functions/url-functions.md/#cutToFirstSignificantSubdomainCustom) 及其变体，
+  它接受一个自定义的 TLD 列表名称，并返回域名中从顶级子域名开始直至第一个关键子域名的那一部分。
+
 ## total_memory_profiler_sample_max_allocation_size {#total_memory_profiler_sample_max_allocation_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="0" />以小于或等于指定值的概率收集随机分配。0 意味着禁用。您可能希望将 'max_untracked_memory' 设置为 0，以使该阈值按预期工作。
+<SettingsInfoBlock type="UInt64" default_value="0" />以概率 `total_memory_profiler_sample_probability` 收集大小小于或等于指定值的随机内存分配。0 表示禁用。可能需要将 `max_untracked_memory` 设置为 0，才能使该阈值按预期生效。
+
 ## total_memory_profiler_sample_min_allocation_size {#total_memory_profiler_sample_min_allocation_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="0" />以大于或等于指定值的概率收集随机分配。0 意味着禁用。您可能希望将 'max_untracked_memory' 设置为 0，以使该阈值按预期工作。
+<SettingsInfoBlock type="UInt64" default_value="0" />以概率 `total_memory_profiler_sample_probability` 随机抽样收集大小大于或等于指定值的内存分配。0 表示禁用。您可能需要将 `max_untracked_memory` 设置为 0，才能使该阈值按预期生效。
+
 ## total_memory_profiler_step {#total_memory_profiler_step} 
 
-<SettingsInfoBlock type="UInt64" default_value="0" />每当服务器内存使用量大于每个步骤的字节数时，内存分析器将收集分配的堆栈跟踪。零表示禁用内存分析器。低于几兆字节的值将减慢服务器。
+<SettingsInfoBlock type="UInt64" default_value="0" />每当服务器的内存使用量（以字节为单位）超过下一个步长阈值时，内存分析器都会收集分配时的堆栈跟踪。零表示禁用内存分析器。将该值设置为低于几兆字节会降低服务器性能。
+
 ## total_memory_tracker_sample_probability {#total_memory_tracker_sample_probability} 
 
 <SettingsInfoBlock type="Double" default_value="0" />
-允许收集随机分配和取消分配，并以 `trace_type` 等于 `MemorySample` 的形式将其写入 [system.trace_log](../../operations/system-tables/trace_log.md) 系统表，具有指定的概率。该概率适用于每个分配或取消分配，与分配的大小无关。注意，采样仅在未跟踪内存超出未跟踪内存限制时发生（默认值为 `4` MiB）。如果 [total_memory_profiler_step](/operations/server-configuration-parameters/settings#total_memory_profiler_step) 降低，则可以降低此限制。您可以将 `total_memory_profiler_step` 设置为 `1` 以进行更精细的采样。
 
-可能值：
+用于随机采样内存分配和释放操作，并以指定的概率将这些事件写入 [system.trace_log](../../operations/system-tables/trace_log.md) 系统表中，记录为 `trace_type` 等于 `MemorySample` 的条目。该概率作用于每一次分配或释放操作，与分配大小无关。请注意，只有当未跟踪内存的数量超过未跟踪内存限制时（默认值为 `4` MiB）才会进行采样。如果 [total_memory_profiler_step](/operations/server-configuration-parameters/settings#total_memory_profiler_step) 被调低，则该限制也可以被降低。可以将 `total_memory_profiler_step` 设置为 `1` 以获得更精细的采样。
 
-- 正整数。
-- `0` — 禁用在 `system.trace_log` 系统表中写入随机分配和取消分配。
-## trace_log {#trace_log} 
+可能的取值：
 
-[trace_log](/operations/system-tables/trace_log) 系统表操作的设置。
+- 正的双精度浮点数。
+- `0` — 禁用将随机的内存分配和释放写入 `system.trace_log` 系统表。
 
-<SystemLogParameters/>
+## trace&#95;log {#trace_log}
 
-默认服务器配置文件 `config.xml` 包含以下设置部分：
+[trace&#95;log](/operations/system-tables/trace_log) 系统表操作的相关设置。
+
+<SystemLogParameters />
+
+默认的服务器配置文件 `config.xml` 包含如下设置部分：
 
 ```xml
 <trace_log>
@@ -3414,29 +4198,34 @@ Keeper 中带有自动递增数字的路径，由 `generateSerialID` 函数生�
     <symbolize>false</symbolize>
 </trace_log>
 ```
-## uncompressed_cache_policy {#uncompressed_cache_policy} 
+
+## 未压缩缓存策略 {#uncompressed_cache_policy} 
 
 <SettingsInfoBlock type="String" default_value="SLRU" />未压缩缓存策略名称。
+
 ## uncompressed_cache_size {#uncompressed_cache_size} 
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
-用于 MergeTree 系列表引擎的未压缩数据的最大大小（以字节为单位）。
 
-服务器有一个共享缓存。内存根据需要分配。如果启用选项 `use_uncompressed_cache` ，则使用此缓存。
+MergeTree 家族中的表引擎用于存储未压缩数据的最大缓存大小（以字节为单位）。
 
-未压缩缓存对于非常短的查询在个别情况下是有利的。
+服务器上只有一个共享缓存。内存按需分配。仅当启用了 `use_uncompressed_cache` 选项时才会使用该缓存。
+
+在某些情况下，对于非常短的查询，使用未压缩缓存更有优势。
 
 :::note
 值为 `0` 表示禁用。
 
-此设置可以在运行时修改，并将立即生效。
+此设置可以在运行时修改，并会立即生效。
 :::
+
 ## uncompressed_cache_size_ratio {#uncompressed_cache_size_ratio} 
 
-<SettingsInfoBlock type="Double" default_value="0.5" />相对于缓存总大小，在未压缩缓存中受保护队列的大小（在 SLRU 策略中）。
-## url_scheme_mappers {#url_scheme_mappers} 
+<SettingsInfoBlock type="Double" default_value="0.5" />在未压缩缓存中，采用 SLRU 策略时受保护队列的大小，相对于该缓存总大小的比例。
 
-将缩略或符号 URL 前缀转换为完整 URL 的配置。
+## url&#95;scheme&#95;mappers {#url_scheme_mappers}
+
+用于将简写或符号化的 URL 前缀映射为完整 URL 的配置。
 
 示例：
 
@@ -3453,66 +4242,72 @@ Keeper 中带有自动递增数字的路径，由 `generateSerialID` 函数生�
     </oss>
 </url_scheme_mappers>
 ```
+
 ## use_minimalistic_part_header_in_zookeeper {#use_minimalistic_part_header_in_zookeeper} 
 
-ZooKeeper 中数据部分头的存储方式。此设置仅适用于 [`MergeTree`](/engines/table-engines/mergetree-family) 系列。可以按如下方式指定：
+在 ZooKeeper 中存储数据分区片段头信息的方式。此设置仅适用于 [`MergeTree`](/engines/table-engines/mergetree-family) 系列。可以通过以下方式指定：
 
-**全局设置在 `config.xml` 文件的 [merge_tree](#merge_tree) 部分**
+**在 `config.xml` 文件的 [merge_tree](#merge_tree) 部分中进行全局设置**
 
-ClickHouse 对服务器上的所有表使用该设置。您可以随时更改该设置。当设置更改时，现有表的行为将发生变化。
+ClickHouse 会对该服务器上的所有表使用此设置。你可以在任意时间更改此设置。现有表在设置更改后会改变其行为。
 
-**对于每个表**
+**针对每个表分别设置**
 
-在创建表时，请指定相应的 [engine setting](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-creating-a-table)。即使全局设置更改，具有此设置的现有表的行为也不会改变。
+在创建表时，指定相应的 [engine setting](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-creating-a-table)。已经存在的表在使用该设置后，其行为不会随全局设置的变化而改变。
 
-**可能值**
+**可能的取值**
 
 - `0` — 功能关闭。
 - `1` — 功能开启。
 
-如果 [`use_minimalistic_part_header_in_zookeeper = 1`](#use_minimalistic_part_header_in_zookeeper)，则 [replicated](../../engines/table-engines/mergetree-family/replication.md) 表使用单个 `znode` 紧凑存储数据部分的头。如果表包含多个列，则此存储方式显著减少了存储在 Zookeeper 中的数据量。
+如果 [`use_minimalistic_part_header_in_zookeeper = 1`](#use_minimalistic_part_header_in_zookeeper)，则[复制](../../engines/table-engines/mergetree-family/replication.md)表会使用单个 `znode` 以紧凑方式存储数据分区片段头信息。如果表包含大量列，这种存储方式可以显著减少在 ZooKeeper 中存储的数据量。
 
 :::note
-在应用 `use_minimalistic_part_header_in_zookeeper = 1` 后，您无法将 ClickHouse 服务器降级到不支持此设置的版本。在升级集群服务器上的 ClickHouse 时，请小心。不要一次性升级所有服务器。在测试环境中或仅在集群的少数几台服务器上测试新版本的 ClickHouse 更为安全。
+在应用 `use_minimalistic_part_header_in_zookeeper = 1` 之后，你无法将 ClickHouse 服务器降级到不支持此设置的版本。在集群中的服务器上升级 ClickHouse 时请务必小心。不要一次性升级所有服务器。更安全的做法是先在测试环境中，或者在集群中的少量服务器上测试新的 ClickHouse 版本。
 
-已经使用此设置存储的数据部分头无法恢复到其先前的（非紧凑）表示形式。
+已经使用此设置存储的数据分区片段头信息无法恢复为之前的（非紧凑）表示形式。
 :::
-## user_defined_executable_functions_config {#user_defined_executable_functions_config} 
 
-可执行用户定义函数的配置文件路径。
+## user&#95;defined&#95;executable&#95;functions&#95;config {#user_defined_executable_functions_config}
+
+可执行用户自定义函数配置文件的路径。
 
 路径：
 
-- 指定绝对路径或相对于服务器配置文件的路径。
-- 路径可以包含通配符 \* 和 ?。
+* 可以指定绝对路径，或相对于服务器配置文件的相对路径。
+* 路径可以包含通配符 * 和 ?。
 
-另见：
-- "[Executable User Defined Functions](/sql-reference/functions/udf#executable-user-defined-functions)。"
+另请参阅：
+
+* &quot;[Executable User Defined Functions](/sql-reference/functions/udf#executable-user-defined-functions).&quot;.
 
 **示例**
 
 ```xml
 <user_defined_executable_functions_config>*_function.xml</user_defined_executable_functions_config>
 ```
-## user_defined_path {#user_defined_path} 
 
-用户定义文件的目录。用于 SQL 用户定义函数 [SQL User Defined Functions](/sql-reference/functions/udf)。
+## user&#95;defined&#95;path {#user_defined_path}
+
+包含用户自定义文件的目录，供 SQL 用户自定义函数 [SQL User Defined Functions](/sql-reference/functions/udf) 使用。
 
 **示例**
 
 ```xml
 <user_defined_path>/var/lib/clickhouse/user_defined/</user_defined_path>
 ```
-## user_directories {#user_directories} 
 
-配置文件的部分，包含设置：
-- 预定义用户的配置文件路径。
-- 存储由 SQL 命令创建的用户的文件夹路径。
-- 存储和复制由 SQL 命令创建的用户的 ZooKeeper 节点路径（实验性）。
+## user&#95;directories {#user_directories}
 
-如果该部分被指定，则将不使用 [users_config](/operations/server-configuration-parameters/settings#users_config) 和 [access_control_path](../../operations/server-configuration-parameters/settings.md#access_control_path) 中的路径。
+配置文件中包含以下设置的部分：
 
-`user_directories` 部分可以包含任意数量的项，项的顺序表示优先级（项越高，优先级越高）。
+* 预定义用户配置文件的路径。
+* 通过 SQL 命令创建的用户所存储的文件夹路径。
+* 通过 SQL 命令创建并进行副本同步的用户在 ZooKeeper 中的节点路径。
+
+如果指定了此部分，则不会使用 [users&#95;config](/operations/server-configuration-parameters/settings#users_config) 和 [access&#95;control&#95;path](../../operations/server-configuration-parameters/settings.md#access_control_path) 中的路径。
+
+`user_directories` 部分可以包含任意数量的条目，条目的顺序表示其优先级（条目越靠前，优先级越高）。
 
 **示例**
 
@@ -3527,7 +4322,7 @@ ClickHouse 对服务器上的所有表使用该设置。您可以随时更改该
 </user_directories>
 ```
 
-用户、角色、行策略、配额和配置文件也可以存储在 ZooKeeper 中：
+用户、角色、行级策略、配额和配置文件也可以存储在 ZooKeeper 中：
 
 ```xml
 <user_directories>
@@ -3540,14 +4335,14 @@ ClickHouse 对服务器上的所有表使用该设置。您可以随时更改该
 </user_directories>
 ```
 
-您还可以定义 `memory` 部分 —— 仅表示在内存中存储信息，而不写入磁盘，以及 `ldap` 部分 —— 表示在 LDAP 服务器上存储信息。
+You can also define sections `memory` — means storing information only in memory, without writing to disk, and `ldap` — means storing information on an LDAP server.
 
-要将 LDAP 服务器作为远程用户目录添加到未在本地定义的用户中，请定义一个包含以下设置的单个 `ldap` 部分：
+To add an LDAP server as a remote user directory of users that are not defined locally, define a single `ldap` section with the following settings:
 
-| 设置    | 描述                                                                                                                                                                                                                                                                                                                                                                   |
-|---------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `server` | 定义在 `ldap_servers` 配置部分中的 LDAP 服务器名称之一。此参数是强制性的，不能为空。                                                                                                                                                                                                                                                                                     |
-| `roles`  | 含有从 LDAP 服务器检索的每个用户将被赋予的本地定义角色列表的部分。如果没有指定角色，用户在身份验证后将无法执行任何操作。如果在身份验证时列出的任何角色不在本地定义，则身份验证尝试将失败，就像提供的密码不正确一样。 |
+| 设置项      | 描述                                                                                                                     |
+| -------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `server` | 在 `ldap_servers` 配置段中定义的 LDAP 服务器名称之一。该参数为必填项，不能为空。                                                                    |
+| `roles`  | 包含本地已定义角色列表的配置段，这些角色会分配给从 LDAP 服务器获取到的每个用户。如果未指定任何角色，用户在完成认证后将无法执行任何操作。如果在认证时，列表中的任意角色尚未在本地定义，则本次认证将失败，其表现与提供了错误密码时相同。 |
 
 **示例**
 
@@ -3560,18 +4355,20 @@ ClickHouse 对服务器上的所有表使用该设置。您可以随时更改该
         </roles>
 </ldap>
 ```
-## user_files_path {#user_files_path} 
 
-用户文件目录。用于表函数 [file()](../../sql-reference/table-functions/file.md)、[fileCluster()](../../sql-reference/table-functions/fileCluster.md)。
+## user&#95;files&#95;path {#user_files_path}
+
+存放用户文件的目录。用于表函数 [file()](../../sql-reference/table-functions/file.md)、[fileCluster()](../../sql-reference/table-functions/fileCluster.md)。
 
 **示例**
 
 ```xml
 <user_files_path>/var/lib/clickhouse/user_files/</user_files_path>
 ```
-## user_scripts_path {#user_scripts_path} 
 
-用户脚本文件的目录。用于可执行用户定义函数 [Executable User Defined Functions](/sql-reference/functions/udf#executable-user-defined-functions)。
+## user&#95;scripts&#95;path {#user_scripts_path}
+
+包含用户脚本文件的目录。供 Executable 用户自定义函数使用，参见 [Executable User Defined Functions](/sql-reference/functions/udf#executable-user-defined-functions)。
 
 **示例**
 
@@ -3581,68 +4378,77 @@ ClickHouse 对服务器上的所有表使用该设置。您可以随时更改该
 
 类型：
 
-默认：
-## users_config {#users_config} 
+默认值：
+
+## users&#95;config {#users_config}
 
 包含以下内容的文件路径：
 
-- 用户配置。
-- 访问权限。
-- 设置配置文件。
-- 配额设置。
+* 用户配置
+* 访问权限
+* SETTINGS PROFILE 配置
+* QUOTA 设置
 
 **示例**
 
 ```xml
 <users_config>users.xml</users_config>
 ```
-## validate_tcp_client_information {#validate_tcp_client_information} 
 
-<SettingsInfoBlock type="Bool" default_value="0" />确定在接收查询数据包时是否启用客户端信息验证。
+## validate&#95;tcp&#95;client&#95;information {#validate_tcp_client_information}
 
-默认情况下，设置为 `false`：
+<SettingsInfoBlock type="Bool" default_value="0" />用于控制在接收到查询数据包时，是否启用客户端信息验证。
+
+默认值为 `false`：
 
 ```xml
 <validate_tcp_client_information>false</validate_tcp_client_information>
 ```
+
 ## vector_similarity_index_cache_max_entries {#vector_similarity_index_cache_max_entries} 
 
-<SettingsInfoBlock type="UInt64" default_value="10000000" />向量相似度索引的缓存大小，以条目计。零表示禁用。
+<SettingsInfoBlock type="UInt64" default_value="10000000" />向量相似度索引缓存的大小（按条目数计）。0 表示禁用。
+
 ## vector_similarity_index_cache_policy {#vector_similarity_index_cache_policy} 
 
-<SettingsInfoBlock type="String" default_value="SLRU" />向量相似度索引的缓存策略名称。
+<SettingsInfoBlock type="String" default_value="SLRU" />向量相似度索引缓存策略的名称。
+
 ## vector_similarity_index_cache_size {#vector_similarity_index_cache_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="5368709120" />向量相似度索引的缓存大小。零表示禁用。
+<SettingsInfoBlock type="UInt64" default_value="5368709120" />向量相似度索引缓存大小。将其设为 0 表示禁用。
 
 :::note
-此设置可以在运行时修改，并将立即生效。
+此设置可以在运行时修改，并会立即生效。
 :::
+
 ## vector_similarity_index_cache_size_ratio {#vector_similarity_index_cache_size_ratio} 
 
-<SettingsInfoBlock type="Double" default_value="0.5" />向量相似度索引缓存中受保护队列的大小（在使用SLRU策略的情况下），相对于缓存的总大小。
-## wait_dictionaries_load_at_startup {#wait_dictionaries_load_at_startup} 
+<SettingsInfoBlock type="Double" default_value="0.5" />向量相似度索引缓存中受保护队列（在使用 SLRU 策略时）的大小占整个缓存大小的比例。
+
+## wait&#95;dictionaries&#95;load&#95;at&#95;startup {#wait_dictionaries_load_at_startup}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
-此设置允许指定当 `dictionaries_lazy_load` 为 `false` 时的行为。
-（如果 `dictionaries_lazy_load` 为 `true`，此设置将不影响任何内容。）
 
-如果 `wait_dictionaries_load_at_startup` 为 `false`，则服务器将在启动时开始加载所有字典，并将在加载期间接收连接。
-当在查询中首次使用字典时，如果字典尚未加载，则查询将在字典加载完成之前等待。
-将 `wait_dictionaries_load_at_startup` 设置为 `false` 可以加快 ClickHouse 启动，但某些查询的执行速度可能会变慢
-（因为它们将不得不等待某些字典加载）。
+此设置用于指定在 `dictionaries_lazy_load` 为 `false` 时的行为。
+（如果 `dictionaries_lazy_load` 为 `true`，则此设置不会产生任何影响。）
 
-如果 `wait_dictionaries_load_at_startup` 为 `true`，则服务器将在启动时等待
-直到所有字典完成加载（无论成功与否）后再接收任何连接。
+如果 `wait_dictionaries_load_at_startup` 为 `false`，则服务器会在启动时开始加载所有字典，并在加载的同时并行接受连接。
+当某个字典在查询中第一次被使用时，如果该字典尚未加载完成，则该查询会等待字典加载完成。
+将 `wait_dictionaries_load_at_startup` 设为 `false` 可以让 ClickHouse 启动得更快，但某些查询可能会执行得更慢
+（因为它们必须等待部分字典完成加载）。
+
+如果 `wait_dictionaries_load_at_startup` 为 `true`，则服务器会在启动时等待
+直至所有字典完成加载（无论成功或失败）之后，才会接受任何连接。
 
 **示例**
 
 ```xml
 <wait_dictionaries_load_at_startup>true</wait_dictionaries_load_at_startup>
 ```
-## workload_path {#workload_path} 
 
-用作所有 `CREATE WORKLOAD` 和 `CREATE RESOURCE` 查询存储的目录。默认情况下使用服务器工作目录下的 `/workload/` 文件夹。
+## workload&#95;path {#workload_path}
+
+用于存储所有 `CREATE WORKLOAD` 和 `CREATE RESOURCE` 查询的目录。默认使用服务器工作目录下的 `/workload/` 文件夹。
 
 **示例**
 
@@ -3650,12 +4456,14 @@ ClickHouse 对服务器上的所有表使用该设置。您可以随时更改该
 <workload_path>/var/lib/clickhouse/workload/</workload_path>
 ```
 
-**另见**
-- [工作负载层次结构](/operations/workload-scheduling.md#workloads)
-- [workload_zookeeper_path](#workload_zookeeper_path)
-## workload_zookeeper_path {#workload_zookeeper_path} 
+**另请参阅**
 
-存储所有 `CREATE WORKLOAD` 和 `CREATE RESOURCE` 查询的 ZooKeeper 节点的路径。为了一致性，所有 SQL 定义都存储为这个单一 znode 的值。默认情况下，不使用 ZooKeeper，定义存储在 [disk](#workload_path)。
+* [Workload 层次结构](/operations/workload-scheduling.md#workloads)
+* [workload&#95;zookeeper&#95;path](#workload_zookeeper_path)
+
+## workload&#95;zookeeper&#95;path {#workload_zookeeper_path}
+
+ZooKeeper 节点的路径，用于存储所有 `CREATE WORKLOAD` 和 `CREATE RESOURCE` 查询。为保证一致性，所有 SQL 定义都作为这一单个 znode 的值进行存储。默认情况下不使用 ZooKeeper，定义会存储在[磁盘](#workload_path)上。
 
 **示例**
 
@@ -3663,38 +4471,40 @@ ClickHouse 对服务器上的所有表使用该设置。您可以随时更改该
 <workload_zookeeper_path>/clickhouse/workload/definitions.sql</workload_zookeeper_path>
 ```
 
-**另见**
-- [工作负载层次结构](/operations/workload-scheduling.md#workloads)
-- [workload_path](#workload_path)
-## zookeeper {#zookeeper} 
+**另请参阅**
 
-包含允许 ClickHouse 与 [ZooKeeper](http://zookeeper.apache.org/) 集群交互的设置。当使用复制表时，ClickHouse 使用 ZooKeeper 存储副本的元数据。如果不使用复制表，则可以省略此参数部分。
+* [Workload 层次结构](/operations/workload-scheduling.md#workloads)
+* [workload&#95;path](#workload_path)
 
-以下设置可以通过子标签配置：
+## zookeeper {#zookeeper}
 
-| 设置                                     | 描述                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|----------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `node`                                 | ZooKeeper 端点。您可以设置多个端点。例如：`<node index="1"><host>example_host</host><port>2181</port></node>`。`index` 属性指定在尝试连接到 ZooKeeper 集群时的节点顺序。                                                                                                                                                                                                                                                                                           |
-| `session_timeout_ms`                   | 客户端会话的最大超时，以毫秒为单位。                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `operation_timeout_ms`                 | 单个操作的最大超时，以毫秒为单位。                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| `root`（可选）                         | 用作 ClickHouse 服务器使用的 znodes 的根的 znode。                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| `fallback_session_lifetime.min`（可选） | 当主节点不可用时，转向节点的 ZooKeeper 会话的最小生存时间限制（负载均衡）。以秒为单位。默认：3 小时。                                                                                                                                                                                                                                                                                                                                                                                           |
-| `fallback_session_lifetime.max`（可选） | 当主节点不可用时，转向节点的 ZooKeeper 会话的最大生存时间限制（负载均衡）。以秒为单位。默认：6 小时。                                                                                                                                                                                                                                                                                                                                                                                           |
-| `identity`（可选）                    | ZooKeeper 访问请求的 znodes 所需的用户和密码。                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| `use_compression`（可选）              | 如果设置为 true，则在 Keeper 协议中启用压缩。                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+包含允许 ClickHouse 与 [ZooKeeper](http://zookeeper.apache.org/) 集群交互的设置。ClickHouse 在使用复制表时，会使用 ZooKeeper 存储副本的元数据。如果不使用复制表，可以省略本节参数。
 
-还有 `zookeeper_load_balancing` 设置（可选），它允许您选择 ZooKeeper 节点选择的算法：
+以下设置可以通过子标签进行配置：
 
-| 算法名称                       | 描述                                                                                                                    |
-|------------------------------|------------------------------------------------------------------------------------------------------------------------|
-| `random`                     | 随机选择一个 ZooKeeper 节点。                                                                                          |
-| `in_order`                   | 选择第一个 ZooKeeper 节点，如果不可用则选择第二个，以此类推。                                                             |
-| `nearest_hostname`           | 选择与服务器主机名最相似的 ZooKeeper 节点，主机名与名称前缀进行比较。                                                 |
-| `hostname_levenshtein_distance` | 就像 nearest_hostname，但它以 levenshtein 距离方式比较主机名。                                                    |
-| `first_or_random`            | 选择第一个 ZooKeeper 节点，如果不可用则随机选择剩余的 ZooKeeper 节点中的一个。                                         |
-| `round_robin`                | 选择第一个 ZooKeeper 节点，如果发生重新连接，则选择下一个。                                                            |
+| Setting                                    | Description                                                                                                                        |
+| ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `node`                                     | ZooKeeper 端点。可以设置多个端点。例如：`<node index="1"><host>example_host</host><port>2181</port></node>`。`index` 属性指定在尝试连接 ZooKeeper 集群时节点的顺序。 |
+| `session_timeout_ms`                       | 客户端会话的最大超时时间，单位为毫秒。                                                                                                                |
+| `operation_timeout_ms`                     | 单次操作的最大超时时间，单位为毫秒。                                                                                                                 |
+| `root` (optional)                          | 作为 ClickHouse 服务器所使用 znodes 根路径的 znode。                                                                                            |
+| `fallback_session_lifetime.min` (optional) | 当主节点不可用（负载均衡）时，到备用节点的 ZooKeeper 会话生命周期的最小限制。以秒为单位设置。默认值：3 小时。                                                                      |
+| `fallback_session_lifetime.max` (optional) | 当主节点不可用（负载均衡）时，到备用节点的 ZooKeeper 会话生命周期的最大限制。以秒为单位设置。默认值：6 小时。                                                                      |
+| `identity` (optional)                      | ZooKeeper 访问所请求 znode 所需的用户和密码。                                                                                                    |
+| `use_compression` (optional)               | 如果设置为 true，则在 Keeper 协议中启用压缩。                                                                                                      |
 
-**示例配置**
+还有一个可选的 `zookeeper_load_balancing` 设置，用于选择 ZooKeeper 节点选择算法：
+
+| Algorithm Name                  | Description                                        |
+| ------------------------------- | -------------------------------------------------- |
+| `random`                        | 随机选择一个 ZooKeeper 节点。                               |
+| `in_order`                      | 选择第一个 ZooKeeper 节点，如果不可用则选择第二个，依此类推。               |
+| `nearest_hostname`              | 选择主机名与服务器主机名最相似的 ZooKeeper 节点，主机名按名称前缀进行比较。        |
+| `hostname_levenshtein_distance` | 与 `nearest_hostname` 类似，但使用 Levenshtein 距离方式比较主机名。 |
+| `first_or_random`               | 选择第一个 ZooKeeper 节点，如果不可用则从剩余的 ZooKeeper 节点中随机选择一个。 |
+| `round_robin`                   | 选择第一个 ZooKeeper 节点，如果发生重连则选择下一个。                   |
+
+**配置示例**
 
 ```xml
 <zookeeper>
@@ -3708,17 +4518,38 @@ ClickHouse 对服务器上的所有表使用该设置。您可以随时更改该
     </node>
     <session_timeout_ms>30000</session_timeout_ms>
     <operation_timeout_ms>10000</operation_timeout_ms>
-    <!-- Optional. Chroot suffix. Should exist. -->
+    <!-- 可选。Chroot 后缀。该路径必须存在。 -->
     <root>/path/to/zookeeper/node</root>
-    <!-- Optional. Zookeeper digest ACL string. -->
+    <!-- 可选。Zookeeper digest ACL 字符串。 -->
     <identity>user:password</identity>
     <!--<zookeeper_load_balancing>random / in_order / nearest_hostname / hostname_levenshtein_distance / first_or_random / round_robin</zookeeper_load_balancing>-->
     <zookeeper_load_balancing>random</zookeeper_load_balancing>
 </zookeeper>
 ```
 
-**另见**
+**另请参阅**
 
-- [复制](../../engines/table-engines/mergetree-family/replication.md)
-- [ZooKeeper 程序员指南](http://zookeeper.apache.org/doc/current/zookeeperProgrammers.html)
-- [ClickHouse 和 Zookeeper 之间的可选安全通信](/operations/ssl-zookeeper)
+* [复制](../../engines/table-engines/mergetree-family/replication.md)
+* [ZooKeeper 程序员指南](http://zookeeper.apache.org/doc/current/zookeeperProgrammers.html)
+* [ClickHouse 与 ZooKeeper 之间的可选安全通信](/operations/ssl-zookeeper)
+
+## zookeeper&#95;log {#zookeeper_log}
+
+[`zookeeper_log`](/operations/system-tables/zookeeper_log) 系统表的相关设置。
+
+可以通过子标签配置以下参数：
+
+<SystemLogParameters />
+
+**示例**
+
+```xml
+<clickhouse>
+    <zookeeper_log>
+        <database>system</database>
+        <table>zookeeper_log</table>
+        <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+        <ttl>event_date + INTERVAL 1 WEEK DELETE</ttl>
+    </zookeeper_log>
+</clickhouse>
+```

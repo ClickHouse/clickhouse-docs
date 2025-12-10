@@ -2,25 +2,26 @@
 sidebar_label: 'Java Runner'
 slug: /integrations/google-dataflow/java-runner
 sidebar_position: 2
-description: 'Пользователи могут загружать данные в ClickHouse с помощью Google Dataflow Java Runner'
+description: 'Пользователи могут осуществлять приём данных в ClickHouse с помощью Java Runner для Google Dataflow'
 title: 'Dataflow Java Runner'
+doc_type: 'guide'
+keywords: ['Dataflow Java Runner', 'Google Dataflow ClickHouse', 'Apache Beam Java ClickHouse', 'коннектор ClickHouseIO']
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# Dataflow Java Runner
+# Java-раннер Dataflow {#dataflow-java-runner}
 
 <ClickHouseSupportedBadge/>
 
-Dataflow Java Runner позволяет вам выполнять пользовательские конвейеры Apache Beam на сервисе Dataflow от Google Cloud. Этот подход предоставляет максимальную гибкость и хорошо подходит для продвинутых ETL процессов.
+Java-раннер Dataflow позволяет выполнять пользовательские конвейеры Apache Beam в службе Dataflow в Google Cloud. Такой подход обеспечивает максимальную гибкость и хорошо подходит для сложных ETL‑процессов.
 
-## How It Works {#how-it-works}
+## Как это работает {#how-it-works}
 
 1. **Реализация конвейера**
-   Чтобы использовать Java Runner, вам необходимо реализовать свой конвейер Beam с использованием `ClickHouseIO` - нашего официального коннектора Apache Beam. Для примеров кода и инструкций по использованию `ClickHouseIO`, пожалуйста, посетите [ClickHouse Apache Beam](/integrations/apache-beam).
+   Чтобы использовать Java Runner, вам нужно реализовать конвейер Beam с помощью `ClickHouseIO` — нашего официального коннектора Apache Beam. Примеры кода и инструкции по использованию `ClickHouseIO` доступны на странице [ClickHouse Apache Beam](/integrations/apache-beam).
 
 2. **Развертывание**
-   Как только ваш конвейер реализован и сконфигурирован, вы можете развернуть его в Dataflow с использованием инструментов развертывания Google Cloud. Полные инструкции по развертыванию приведены в [документации Google Cloud Dataflow - Java Pipeline](https://cloud.google.com/dataflow/docs/quickstarts/create-pipeline-java).
+   После того как ваш конвейер реализован и настроен, вы можете развернуть его в сервисе Dataflow с помощью инструментов развертывания Google Cloud. Подробные инструкции по развертыванию приведены в разделе [Google Cloud Dataflow — конвейер на Java](https://cloud.google.com/dataflow/docs/quickstarts/create-pipeline-java).
 
-**Примечание**: Этот подход предполагает знакомство с фреймворком Beam и знания в программировании. Если вы предпочитаете решение без кода, рассмотрите возможность использования [предварительно определенных шаблонов ClickHouse](./templates).
+**Примечание**: Этот подход предполагает, что вы знакомы с фреймворком Beam и обладаете опытом программирования. Если вы предпочитаете решение без написания кода, рассмотрите возможность использования [предопределённых шаблонов ClickHouse](./templates).

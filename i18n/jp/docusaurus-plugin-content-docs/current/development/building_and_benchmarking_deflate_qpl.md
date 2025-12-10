@@ -1,90 +1,89 @@
 ---
-description: 'How to build Clickhouse and run benchmark with DEFLATE_QPL Codec'
-sidebar_label: 'Building and Benchmarking DEFLATE_QPL'
+description: 'DEFLATE_QPL Codec を用いて ClickHouse をビルドし、ベンチマークを実行する方法'
+sidebar_label: 'DEFLATE_QPL のビルドとベンチマーク'
 sidebar_position: 73
-slug: '/development/building_and_benchmarking_deflate_qpl'
-title: 'Build Clickhouse with DEFLATE_QPL'
+slug: /development/building_and_benchmarking_deflate_qpl
+title: 'DEFLATE_QPL を使用して ClickHouse をビルドする'
+doc_type: 'guide'
 ---
 
+# DEFLATE_QPL を使用して ClickHouse をビルドする {#build-clickhouse-with-deflate_qpl}
 
+- ホストマシンが QPL の要求する[前提条件](https://intel.github.io/qpl/documentation/get_started_docs/installation.html#prerequisites)を満たしていることを確認してください
+- `cmake` ビルド時には `deflate_qpl` はデフォルトで有効になっています。誤って設定を変更してしまった場合は、ビルドフラグ `ENABLE_QPL=1` になっていることを必ず再確認してください
 
+- 一般的な要件については、ClickHouse の一般的な[ビルド手順](/development/build.md)を参照してください
 
-# DEFLATE_QPLを使ってClickhouseをビルドする
+# DEFLATE_QPL を使ってベンチマークを実行する {#run-benchmark-with-deflate_qpl}
 
-- ホストマシンがQPLの必要な[前提条件](https://intel.github.io/qpl/documentation/get_started_docs/installation.html#prerequisites)を満たしていることを確認してください。
-- deflate_qplはcmakeビルド中にデフォルトで有効です。もし、誤って変更した場合は、ビルドフラグを再確認してください: ENABLE_QPL=1
+## ファイル一覧 {#files-list}
 
-- 一般的な要件については、Clickhouseの一般的な[ビルド手順](/development/build.md)を参照してください。
+[qpl-cmake](https://github.com/ClickHouse/ClickHouse/tree/master/contrib/qpl-cmake) 配下の `benchmark_sample` フォルダには、Python スクリプトを用いてベンチマークを実行するためのサンプルが含まれています。
 
+`client_scripts` には、代表的なベンチマークを実行するための Python スクリプトが含まれています。例えば:
+- `client_stressing_test.py`: 1〜4 台のサーバーインスタンスに対してクエリのストレステストを行う Python スクリプト。
+- `queries_ssb.sql`: [Star Schema Benchmark](/getting-started/example-datasets/star-schema/) の全クエリを列挙したファイル。
+- `allin1_ssb.sh`: ベンチマークのワークフローを自動で一括実行するシェルスクリプト。
 
-# DEFLATE_QPLを使ったベンチマークの実行
+`database_files` には、lz4/deflate/zstd コーデックごとにデータベースファイルが保存されます。
 
-## ファイルリスト {#files-list}
-
-フォルダ `benchmark_sample` は、[qpl-cmake](https://github.com/ClickHouse/ClickHouse/tree/master/contrib/qpl-cmake) 内にあり、Pythonスクリプトを使ってベンチマークを実行する方法の例を提供します：
-
-`client_scripts` には典型的なベンチマークを実行するためのPythonスクリプトが含まれています。例えば：
-- `client_stressing_test.py`: [1~4]のサーバーインスタンスを使ったクエリストレステスト用のPythonスクリプトです。
-- `queries_ssb.sql`: [Star Schema Benchmark](/getting-started/example-datasets/star-schema/) のすべてのクエリをリストしたファイルです。
-- `allin1_ssb.sh`: このシェルスクリプトは、ベンチマークのワークフローをすべて自動的に実行します。
-
-`database_files` は、lz4/deflate/zstd コーデックに従ってデータベースファイルを保存することを意味します。
-
-## Star Schemaの自動ベンチマーク実行: {#run-benchmark-automatically-for-star-schema}
+## スター・スキーマ向けベンチマークを自動実行する: {#run-benchmark-automatically-for-star-schema}
 
 ```bash
 $ cd ./benchmark_sample/client_scripts
 $ sh run_ssb.sh
 ```
 
-完了後、すべての結果はこのフォルダ:`./output/`に保存されます。
+処理が完了したら、`./output/` フォルダ内のすべての結果を確認してください。
 
-失敗した場合は、以下のセクションに従って手動でベンチマークを実行してください。
+失敗した場合は、以下のセクションに従ってベンチマークを手動で実行してください。
 
 ## 定義 {#definition}
 
-[CLICKHOUSE_EXE] は、ClickHouse実行可能プログラムのパスを意味します。
+[CLICKHOUSE_EXE] は ClickHouse の実行可能ファイルへのパスを表します。
 
 ## 環境 {#environment}
 
-- CPU: Sapphire Rapid
-- OS要件は[QPLのシステム要件](https://intel.github.io/qpl/documentation/get_started_docs/installation.html#system-requirements)を参照してください。
-- IAAセットアップは[アクセラレータの設定](https://intel.github.io/qpl/documentation/get_started_docs/installation.html#accelerator-configuration)を参照してください。
-- Pythonモジュールのインストール:
+* CPU: Sapphire Rapid
+* OS 要件については [System Requirements for QPL](https://intel.github.io/qpl/documentation/get_started_docs/installation.html#system-requirements) を参照してください
+* IAA のセットアップについては [Accelerator Configuration](https://intel.github.io/qpl/documentation/get_started_docs/installation.html#accelerator-configuration) を参照してください
+* Python モジュールをインストールします:
 
 ```bash
 pip3 install clickhouse_driver numpy
 ```
 
-[IAAの自己チェック]
+[IAA の自己チェック]
 
 ```bash
 $ accel-config list | grep -P 'iax|state'
 ```
 
-期待される出力は次のようになります：
+期待される出力は次のとおりです：
+
 ```bash
     "dev":"iax1",
-    "state":"enabled",
-            "state":"enabled",
+    "state":"有効",
+            "state":"有効",
 ```
 
-何も出力されない場合は、IAAが作動する準備ができていないことを意味します。再度IAA設定を確認してください。
+何も出力されない場合は、IAA の準備がまだ整っていないことを意味します。IAA のセットアップを再度確認してください。
 
-## 生データの生成 {#generate-raw-data}
+## 未加工データを生成する {#generate-raw-data}
 
 ```bash
 $ cd ./benchmark_sample
 $ mkdir rawdata_dir && cd rawdata_dir
 ```
 
-[`dbgen`](/getting-started/example-datasets/star-schema)を使用して、パラメータ-s 20で1億行のデータを生成します。
+[`dbgen`](/getting-started/example-datasets/star-schema) を使用し、次のパラメータで 1 億行のデータを生成します:
+-s 20
 
-`*.tbl`のようなファイルは、`./benchmark_sample/rawdata_dir/ssb-dbgen`の下に出力されることが期待されます。
+`*.tbl` のようなファイルは、`./benchmark_sample/rawdata_dir/ssb-dbgen` 配下に出力されます:
 
 ## データベースのセットアップ {#database-setup}
 
-LZ4 コーデックでデータベースをセットアップします。
+LZ4 コーデックを使用したデータベースのセットアップ
 
 ```bash
 $ cd ./database_dir/lz4
@@ -92,14 +91,15 @@ $ [CLICKHOUSE_EXE] server -C config_lz4.xml >&/dev/null&
 $ [CLICKHOUSE_EXE] client
 ```
 
-ここで、コンソールに `Connected to ClickHouse server` のメッセージが表示されれば、クライアントがサーバーとの接続を正常にセットアップしたことを意味します。
+コンソールに `Connected to ClickHouse server` というメッセージが表示されていれば、クライアントがサーバーへの接続を正常に確立できたことを意味します。
 
-[Star Schema Benchmark](/getting-started/example-datasets/star-schema) に記載されている以下の3つのステップを完了してください。
-- ClickHouse内のテーブルの作成
-- データの挿入。ここでは、`./benchmark_sample/rawdata_dir/ssb-dbgen/*.tbl`を入力データとして使用する必要があります。
-- "star schema"を非正規化された"flat schema"に変換します。
+[Star Schema Benchmark](/getting-started/example-datasets/star-schema) で説明されている以下の 3 ステップを完了します。
 
-IAA Deflate コーデックでデータベースをセットアップします。
+* ClickHouse にテーブルを作成します
+* データを挿入します。ここでは入力データとして `./benchmark_sample/rawdata_dir/ssb-dbgen/*.tbl` を使用します。
+* &quot;star schema&quot; を非正規化した &quot;flat schema&quot; に変換します
+
+IAA Deflate コーデックを使用してデータベースをセットアップします。
 
 ```bash
 $ cd ./database_dir/deflate
@@ -107,9 +107,9 @@ $ [CLICKHOUSE_EXE] server -C config_deflate.xml >&/dev/null&
 $ [CLICKHOUSE_EXE] client
 ```
 
-LZ4と同様に、上記の3つのステップを完了してください。
+上記の lz4 と同様に 3 つの手順を完了します
 
-ZSTD コーデックでデータベースをセットアップします。
+ZSTD コーデックを使用してデータベースをセットアップします
 
 ```bash
 $ cd ./database_dir/zstd
@@ -117,44 +117,52 @@ $ [CLICKHOUSE_EXE] server -C config_zstd.xml >&/dev/null&
 $ [CLICKHOUSE_EXE] client
 ```
 
-LZ4と同様に、上記の3つのステップを完了してください。
+上記の lz4 と同様に、同じ 3 つの手順を実行してください
 
-[自己チェック]
-各コーデック(lz4/zstd/deflate)について、以下のクエリを実行してデータベースが正常に作成されたことを確認してください：
+[self-check]
+各コーデック（lz4/zstd/deflate）について、データベースが正しく作成されていることを確認するために、次のクエリを実行してください:
+
 ```sql
-select count() from lineorder_flat
+SELECT count() FROM lineorder_flat
 ```
-期待される出力は以下の通りです：
+
+想定される出力は次のとおりです：
+
 ```sql
 ┌───count()─┐
 │ 119994608 │
 └───────────┘
 ```
-[IAA Deflate コーデックの自己チェック]
 
-クライアントから挿入またはクエリを初めて実行すると、ClickHouseサーバーコンソールは次のログを表示することが期待されます：
+[IAA Deflate コーデックのセルフチェック]
+
+クライアントから初めて挿入やクエリを実行した際に、ClickHouse サーバーのコンソールには次のログが出力されるはずです:
+
 ```text
-Hardware-assisted DeflateQpl codec is ready!
+ハードウェアアクセラレーション対応DeflateQplコーデックが利用可能になりました！
 ```
-これが見つからず、次のようなログが表示された場合：
+
+もしこれが一度も出力されず、代わりに次のような別のログが表示される場合:
+
 ```text
-Initialization of hardware-assisted DeflateQpl codec failed
+ハードウェアアクセラレーション対応DeflateQplコーデックの初期化に失敗しました
 ```
-それはIAAデバイスが準備ができていないことを意味し、再度IAA設定を確認する必要があります。
+
+これは IAA デバイスが使用可能な状態になっていないことを意味します。IAA のセットアップをもう一度確認する必要があります。
 
 ## 単一インスタンスでのベンチマーク {#benchmark-with-single-instance}
 
-- ベンチマークを開始する前に、C6を無効にし、CPU周波数のガバナーを `performance` に設定してください。
+* ベンチマークを開始する前に、C6 を無効化し、CPU周波数ガバナーを `performance` に設定してください
 
 ```bash
 $ cpupower idle-set -d 3
 $ cpupower frequency-set -g performance
 ```
 
-- メモリバウンドの影響を排除するために、`numactl`を使用してサーバーを1つのソケットに、クライアントを別のソケットにバインドします。
-- 単一インスタンスとは、単一のクライアントに接続された単一のサーバーを意味します。
+* ソケットをまたぐメモリアクセスによるボトルネックの影響を排除するため、`numactl` を使用してサーバーを一方のソケットに、クライアントをもう一方のソケットにバインドします。
+* シングルインスタンスとは、1つのサーバーが1つのクライアントに接続されている構成を意味します。
 
-今、LZ4/Deflate/ZSTDそれぞれのベンチマークを実行します：
+次に、LZ4/Deflate/ZSTD のベンチマークをそれぞれ実行します：
 
 LZ4:
 
@@ -165,7 +173,7 @@ $ cd ./client_scripts
 $ numactl -m 1 -N 1 python3 client_stressing_test.py queries_ssb.sql 1 > lz4.log
 ```
 
-IAA Deflate:
+IAA Deflate：
 
 ```bash
 $ cd ./database_dir/deflate
@@ -183,31 +191,32 @@ $ cd ./client_scripts
 $ numactl -m 1 -N 1 python3 client_stressing_test.py queries_ssb.sql 1 > zstd.log
 ```
 
-今、3つのログが期待通りに出力されるはずです：
+これで、想定どおり 3 件のログが出力されるはずです。
+
 ```text
 lz4.log
 deflate.log
 zstd.log
 ```
 
-性能指標を確認する方法：
+パフォーマンスメトリクスの確認方法：
 
-私たちはQPSに焦点を当てています。キーワード`QPS_Final`を検索し、統計を収集してください。
+QPS を中心に確認します。キーワード `QPS_Final` を検索し、統計情報を収集してください
 
-## 複数インスタンスでのベンチマーク {#benchmark-with-multi-instances}
+## マルチインスタンスでのベンチマーク {#benchmark-with-multi-instances}
 
-- スレッドが多すぎるためにメモリの影響を減らすために、複数インスタンスでベンチマークを実行することをお勧めします。
-- 複数インスタンスとは、複数（2または4）のサーバーがそれぞれのクライアントに接続されていることを意味します。
-- 1つのソケットのコアは均等に分けられ、サーバーにそれぞれ割り当てられる必要があります。
-- 複数インスタンスの場合は、各コーデック用に新しいフォルダを作成し、単一インスタンスでの手順に従ってデータセットを挿入する必要があります。
+* メモリボトルネックがスレッド数の増加に与える影響を抑えるため、マルチインスタンス構成でベンチマークを実行することを推奨します。
+* マルチインスタンスとは、複数（2 または 4）台のサーバーがそれぞれ個別のクライアントに接続されている構成を指します。
+* 1 ソケット内のコアは均等に分割し、各サーバーにそれぞれ割り当てる必要があります。
+* マルチインスタンスの場合、各 codec 用に新しいディレクトリを作成し、シングルインスタンスと同様の手順でデータセットを挿入する必要があります。
 
-2つの違いがあります：
-- クライアント側では、テーブルの作成とデータの挿入時に割り当てられたポートでClickHouseを起動する必要があります。
-- サーバー側では、ポートが割り当てられた特定のxml設定ファイルでClickHouseを起動する必要があります。すべてのカスタマイズされたxml設定ファイルは、./server_configに提供されています。
+主な違いは 2 つあります:
 
-ここでは、ソケットあたり60コアとし、2インスタンスを例に取ります。
-最初のインスタンスのサーバーを起動します。
+* クライアント側では、テーブル作成およびデータ挿入時に、割り当てられたポートで ClickHouse を起動する必要があります。
+* サーバー側では、ポートが割り当てられた特定の XML 設定ファイルを指定して ClickHouse を起動する必要があります。マルチインスタンス用のすべてのカスタマイズ済み XML 設定ファイルは、./server&#95;config 配下に用意されています。
 
+ここでは、1 ソケットあたり 60 コアあり、2 インスタンスを起動する例を示します。
+最初のインスタンス用のサーバーを起動します
 LZ4:
 
 ```bash
@@ -229,7 +238,7 @@ $ cd ./database_dir/deflate
 $ numactl -C 0-29,120-149 [CLICKHOUSE_EXE] server -C config_deflate.xml >&/dev/null&
 ```
 
-[2番目のインスタンスのサーバーを起動]
+[2つ目のインスタンス用サーバーを起動する]
 
 LZ4:
 
@@ -247,7 +256,7 @@ $ cp ../../server_config/config_zstd_s2.xml ./
 $ numactl -C 30-59,150-179 [CLICKHOUSE_EXE] server -C config_zstd_s2.xml >&/dev/null&
 ```
 
-IAA Deflate:
+IAA Deflate：
 
 ```bash
 $ cd ./database_dir && mkdir deflate_s2 && cd deflate_s2
@@ -255,24 +264,24 @@ $ cp ../../server_config/config_deflate_s2.xml ./
 $ numactl -C 30-59,150-179 [CLICKHOUSE_EXE] server -C config_deflate_s2.xml >&/dev/null&
 ```
 
-2番目のインスタンスのためのテーブルの作成とデータの挿入
+第2インスタンス向けテーブルの作成とデータ挿入
 
-テーブルの作成:
+テーブルの作成：
 
 ```bash
 $ [CLICKHOUSE_EXE] client -m --port=9001 
 ```
 
-データの挿入:
+データの挿入：
 
 ```bash
 $ [CLICKHOUSE_EXE] client --query "INSERT INTO [TBL_FILE_NAME] FORMAT CSV" < [TBL_FILE_NAME].tbl  --port=9001
 ```
 
-- [TBL_FILE_NAME]は、`./benchmark_sample/rawdata_dir/ssb-dbgen`の下にある正規表現：*. tblで命名されたファイルの名前を表します。
-- `--port=9001` は、config_lz4_s2.xml/config_zstd_s2.xml/config_deflate_s2.xmlで定義されたサーバーインスタンスのための割り当てられたポートを示します。さらに多くのインスタンスの場合は、9002/9003という値に置き換えなければなりません。これはそれぞれs3/s4インスタンスを意味します。割り当てを行わない場合、ポートはデフォルトで9000となり、最初のインスタンスによって使用されます。
+* [TBL&#95;FILE&#95;NAME] は、`./benchmark_sample/rawdata_dir/ssb-dbgen` 配下にあり、正規表現 *. tbl にマッチするファイルの名前を表します。
+* `--port=9001` はサーバーインスタンスに割り当てられたポートを表し、config&#95;lz4&#95;s2.xml/config&#95;zstd&#95;s2.xml/config&#95;deflate&#95;s2.xml でも定義されています。さらに多くのインスタンスを起動する場合は、s3/s4 インスタンスをそれぞれ表す 9002/9003 に置き換える必要があります。指定しない場合、デフォルトのポートは 9000 で、これは最初のインスタンスで使用されています。
 
-2インスタンスでのベンチマーキング
+2 インスタンスでのベンチマーク
 
 LZ4:
 
@@ -296,7 +305,7 @@ $ cd ./client_scripts
 $ numactl -m 1 -N 1 python3 client_stressing_test.py queries_ssb.sql 2 > zstd_2insts.log
 ```
 
-IAA Deflate:
+IAA deflate
 
 ```bash
 $ cd ./database_dir/deflate
@@ -307,28 +316,30 @@ $ cd ./client_scripts
 $ numactl -m 1 -N 1 python3 client_stressing_test.py queries_ssb.sql 2 > deflate_2insts.log
 ```
 
-ここで、`client_stressing_test.py`の最後の引数：`2`はインスタンスの数を意味します。さらに多くのインスタンスのためには、`3`または`4`という値に置き換える必要があります。このスクリプトは最大4インスタンスをサポートしています。
+ここで、client&#95;stressing&#95;test.py の最後の引数 `2` はインスタンス数を表します。インスタンス数を増やす場合は、この値を 3 または 4 に変更してください。このスクリプトは最大 4 インスタンスまでサポートします。
 
-今、3つのログが期待通りに出力されるはずです：
+これで、期待どおり 3 件のログが出力されるはずです。
 
 ```text
 lz4_2insts.log
 deflate_2insts.log
 zstd_2insts.log
 ```
-性能指標を確認する方法：
 
-私たちはQPSに焦点を当てています。キーワード`QPS_Final`を検索し、統計を収集してください。
+パフォーマンスメトリクスの確認方法：
 
-4インスタンスのベンチマークセットアップは、上記の2インスタンスと似ています。
-最終報告のレビューには、2インスタンスのベンチマークデータを使用することをお勧めします。
+ここでは QPS に注目します。キーワード `QPS_Final` を検索し、統計情報を収集してください。
+
+4 インスタンス構成でのベンチマーク環境は、上記の 2 インスタンス構成の場合と同様です。
+レビュー用の最終レポートには、2 インスタンス構成のベンチマークデータを採用することを推奨します。
 
 ## ヒント {#tips}
 
-新しいClickhouseサーバーを起動する前に、バックグラウンドのClickhouseプロセスが動いていないことを確認してください。古いプロセスを確認し、終了させてください。
+新しい ClickHouse サーバーを起動する前には毎回、バックグラウンドで動作している ClickHouse プロセスがないことを必ず確認し、残っている古いプロセスがあれば終了させてください。
 
 ```bash
 $ ps -aux| grep clickhouse
 $ kill -9 [PID]
 ```
-./client_scripts/queries_ssb.sql内のクエリリストを公式の[Star Schema Benchmark](/getting-started/example-datasets/star-schema)と比較すると、Q1.2/Q1.3/Q3.4の3つのクエリが含まれていないことがわかります。これは、これらのクエリのCPU使用率%が非常に低く< 10%であり、性能の違いを示すことができないことを意味します。
+
+./client&#95;scripts/queries&#95;ssb.sql 内のクエリ一覧を公式の [Star Schema Benchmark](/getting-started/example-datasets/star-schema) と比較すると、Q1.2 / Q1.3 / Q3.4 の 3 つのクエリが含まれていないことが確認できます。これは、これらのクエリでは CPU 使用率が 10% 未満と非常に低く、性能差を示すことができないためです。

@@ -1,15 +1,15 @@
 ---
-'description': '对来自两个总体的样本应用 Kolmogorov-Smirnov 检验。'
-'sidebar_label': 'kolmogorovSmirnovTest'
-'sidebar_position': 156
-'slug': '/sql-reference/aggregate-functions/reference/kolmogorovsmirnovtest'
-'title': 'kolmogorovSmirnovTest'
+description: '对来自两个总体的样本进行 Kolmogorov-Smirnov 检验。'
+sidebar_label: 'kolmogorovSmirnovTest'
+sidebar_position: 156
+slug: /sql-reference/aggregate-functions/reference/kolmogorovsmirnovtest
+title: 'kolmogorovSmirnovTest'
+doc_type: 'reference'
 ---
 
+# kolmogorovSmirnovTest {#kolmogorovsmirnovtest}
 
-# kolmogorovSmirnovTest
-
-对来自两个总体的样本应用 Kolmogorov-Smirnov 检验。
+将 Kolmogorov-Smirnov 检验应用于来自两个总体的样本。
 
 **语法**
 
@@ -17,40 +17,40 @@
 kolmogorovSmirnovTest([alternative, computation_method])(sample_data, sample_index)
 ```
 
-两个样本的值在 `sample_data` 列中。如果 `sample_index` 等于 0，则该行的值属于第一个总体的样本。否则，它属于第二个总体的样本。
-样本必须属于连续的一维概率分布。
+两个样本的值都在 `sample_data` 列中。如果 `sample_index` 等于 0，则该行中的值属于第一总体的样本，否则属于第二总体的样本。\
+样本必须来自连续的一维概率分布。
 
 **参数**
 
-- `sample_data` — 样本数据。 [整数](../../../sql-reference/data-types/int-uint.md), [浮点数](../../../sql-reference/data-types/float.md)或[小数](../../../sql-reference/data-types/decimal.md)。
-- `sample_index` — 样本索引。 [整数](../../../sql-reference/data-types/int-uint.md)。
+* `sample_data` — 样本数据。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) 或 [Decimal](../../../sql-reference/data-types/decimal.md)。
+* `sample_index` — 样本索引。[Integer](../../../sql-reference/data-types/int-uint.md)。
 
-**参数说明**
+**设置项**
 
-- `alternative` — 备择假设。（可选，默认值：`'two-sided'`。） [字符串](../../../sql-reference/data-types/string.md)。
-    设 F(x) 和 G(x) 分别为第一个和第二个分布的 CDF。
-    - `'two-sided'`
-        零假设是样本来自同一分布，例如对于所有 x 有 `F(x) = G(x)`。
-        备择假设是分布不相同。
-    - `'greater'`
-        零假设是第一个样本中的值 *随机地小于* 第二个样本中的值，
-        例如，第一个分布的 CDF 位于第二个分布的左上方。
-        这实际上意味着对于所有 x 有 `F(x) >= G(x)`。此情况下的备择假设是至少存在一个 x，使得 `F(x) < G(x)`。
-    - `'less'`
-        零假设是第一个样本中的值 *随机地大于* 第二个样本中的值，
-        例如，第一个分布的 CDF 位于第二个分布的右下方。
-        这实际上意味着对于所有 x 有 `F(x) <= G(x)`。此情况下的备择假设是至少存在一个 x，使得 `F(x) > G(x)`。
-- `computation_method` — 用于计算 p 值的方法。（可选，默认值：`'auto'`。） [字符串](../../../sql-reference/data-types/string.md)。
-    - `'exact'` - 计算是使用检验统计量的精确概率分布进行的。计算密集且浪费，除非样本较小。
-    - `'asymp'` (`'asymptotic'`) - 计算是使用近似进行的。对于大样本大小，精确和渐近的 p 值非常相似。
-    - `'auto'`  - 当最大样本数量少于 10,000 时，使用 `'exact'` 方法。
+* `alternative` — 备择假设。（可选，默认：`'two-sided'`。）[String](../../../sql-reference/data-types/string.md)。\
+  设 F(x) 和 G(x) 分别为第一和第二分布的累积分布函数（CDF）。
+  * `'two-sided'`\
+    原假设为样本来自同一分布，例如对所有 x 都有 `F(x) = G(x)`。\
+    备择假设为两个分布并不相同。
+  * `'greater'`\
+    原假设为第一样本中的值在随机意义上 *小于* 第二样本中的值，\
+    即第一个分布的 CDF 位于第二个分布之上，因此也在其左侧。\
+    这实际上意味着对所有 x 都有 `F(x) >= G(x)`。在这种情况下，备择假设为至少存在一个 x 使得 `F(x) < G(x)`。
+  * `'less'`。\
+    原假设为第一样本中的值在随机意义上 *大于* 第二样本中的值，\
+    即第一个分布的 CDF 位于第二个分布之下，因此也在其右侧。\
+    这实际上意味着对所有 x 都有 `F(x) <= G(x)`。在这种情况下，备择假设为至少存在一个 x 使得 `F(x) > G(x)`。
+* `computation_method` — 用于计算 p-value 的方法。（可选，默认：`'auto'`。）[String](../../../sql-reference/data-types/string.md)。
+  * `'exact'` - 使用检验统计量的精确概率分布进行计算。除小样本外，计算开销较大且不划算。
+  * `'asymp'` (`'asymptotic'`) - 使用近似方法进行计算。对于大样本，精确与渐近 p-value 非常接近。
+  * `'auto'`  - 当样本数量的最大值小于 10&#39;000 时使用 `'exact'` 方法。
 
 **返回值**
 
-包含两个元素的 [元组](../../../sql-reference/data-types/tuple.md)：
+包含两个元素的 [Tuple](../../../sql-reference/data-types/tuple.md)：
 
-- 计算的统计量。 [Float64](../../../sql-reference/data-types/float.md)。
-- 计算的 p 值。 [Float64](../../../sql-reference/data-types/float.md)。
+* 计算得到的统计量。[Float64](../../../sql-reference/data-types/float.md)。
+* 计算得到的 p-value。[Float64](../../../sql-reference/data-types/float.md)。
 
 **示例**
 
@@ -81,7 +81,7 @@ FROM
 ```
 
 注意：
-p 值大于 0.05（在 95% 置信水平下），因此不拒绝零假设。
+P 值大于 0.05（对应 95% 的置信水平），因此原假设不被拒绝。
 
 查询：
 
@@ -109,9 +109,9 @@ FROM
 └─────────────────────────────────────────────────────────┘
 ```
 
-注意：
-p 值小于 0.05（在 95% 置信水平下），因此拒绝零假设。
+注：
+P 值小于 0.05（对应 95% 的置信水平），因此应当拒绝原假设。
 
-**另见**
+**另请参阅**
 
-- [Kolmogorov-Smirnov检验](https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test)
+* [Kolmogorov-Smirnov 检验](https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test)

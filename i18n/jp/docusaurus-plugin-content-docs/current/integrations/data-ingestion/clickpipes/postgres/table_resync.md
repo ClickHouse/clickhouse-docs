@@ -1,27 +1,29 @@
 ---
-title: '特定のテーブルの再同期'
-description: 'Postgres ClickPipe内の特定のテーブルを再同期します'
-slug: '/integrations/clickpipes/postgres/table_resync'
-sidebar_label: 'テーブル再同期'
+title: '特定テーブルの再同期'
+description: 'Postgres ClickPipe で特定のテーブルを再同期する'
+slug: /integrations/clickpipes/postgres/table_resync
+sidebar_label: 'テーブルの再同期'
+doc_type: 'guide'
+keywords: ['clickpipes', 'postgresql', 'cdc', 'インジェスト', 'リアルタイム同期']
 ---
-
 
 
 
 # 特定のテーブルの再同期 {#resync-tables}
 
-パイプの特定のテーブルを再同期することが有用なシナリオがあります。いくつかのサンプルユースケースとしては、Postgresでの大規模なスキーマ変更や、ClickHouseでのデータの再モデル化が考えられます。
+パイプ内の特定のテーブルを再同期できると便利なケースがあります。例としては、Postgres 上での大規模なスキーマ変更や、ClickHouse 上でのデータ再モデリングなどが挙げられます。
 
-ボタンのクリックで個別のテーブルを再同期する作業は進行中ですが、このガイドでは、Postgres ClickPipeでこれを実現するための手順を共有します。
+ボタン操作で個々のテーブルを再同期する機能は現在開発中ですが、本ガイドでは、現時点で Postgres ClickPipe を用いて同様のことを行う手順を説明します。
 
 ### 1. パイプからテーブルを削除する {#removing-table}
 
-これは、[テーブル削除ガイド](./removing_tables)に従って行うことができます。
+この手順については、[テーブル削除ガイド](./removing_tables)に従ってください。
 
-### 2. ClickHouseでテーブルをトランケートまたは削除する {#truncate-drop-table}
+### 2. ClickHouse 上のテーブルを TRUNCATE または DROP する {#truncate-drop-table}
 
-このステップは、次のステップでこのテーブルを再追加する際にデータの重複を避けるためのものです。これを行うには、ClickHouse Cloudの**SQL Console**タブに移動し、クエリを実行します。PeerDBはデフォルトでReplacingMergeTreeテーブルを作成するため、テーブルが一時的な重複が無害なほど小さい場合は、このステップをスキップできます。
+このステップは、次のステップでこのテーブルを再度追加する際にデータの重複を避けるためのものです。ClickHouse Cloud の **SQL Console** タブを開き、クエリを実行して実施します。
+なお、ClickHouse に対象のテーブルがすでに存在していて、かつ空でない場合は、そのテーブルの追加をブロックするバリデーションが行われます。
 
-### 3. 再度ClickPipeにテーブルを追加する {#add-table-again}
+### 3. ClickPipe にテーブルを再追加する {#add-table-again}
 
-これは、[テーブル追加ガイド](./add_table)に従って行うことができます。
+この手順については、[テーブル追加ガイド](./add_table)に従ってください。

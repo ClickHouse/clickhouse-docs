@@ -1,15 +1,17 @@
 ---
-'slug': '/concepts/faq'
-'title': '常见问题'
-'description': '常见问题的登录页面'
-'pagination_prev': null
-'pagination_next': null
+slug: /concepts/faq
+title: '常见问题（FAQ）'
+description: 'FAQ 目录页'
+pagination_prev: null
+pagination_next: null
+doc_type: 'landing-page'
+keywords: ['FAQ', '常见问题', '解答']
 ---
 
-| 页面                                                          | 描述                                                                                   |
-|---------------------------------------------------------------|----------------------------------------------------------------------------------------|
-| [关于 ClickHouse 的常见问题](general/index.md)                | 我们收到的一些关于 ClickHouse 的常见问题。                                            |
-| [为什么不使用类似 MapReduce 的东西？](general/mapreduce.md)   | 解释为什么 MapReduce 实现不适合 OLAP 场景。                                          |
-| [“не тормозит”是什么意思](general/ne-tormozit.md)            | 解释“не тормозит”的意思，你可能在 ClickHouse 的 T 恤上看到过这个词。                 |
-| [什么是 OLAP](general/olap.md)                               | 解释什么是在线分析处理（Online Analytical Processing）。                              |
-| [谁在使用 ClickHouse](general/who-is-using-clickhouse.md)   | 了解谁在使用 ClickHouse。                                                            |
+| 页面                                                          | 说明                                                                                      |
+|---------------------------------------------------------------|-------------------------------------------------------------------------------------------|
+| [General Questions about ClickHouse](general/index.md)        | 关于 ClickHouse 的常见问题汇总。                                                          |
+| [Why not use something like MapReduce?](general/mapreduce.md) | 说明为什么 MapReduce 的实现并不适用于 OLAP（联机分析处理）场景。                          |
+| [What does "не тормозит" mean](general/ne-tormozit.md)        | 解释俄语短语 "не тормозит" 的含义，你可能在 ClickHouse T 恤上见过它。                      |
+| [What is OLAP](general/olap.md)                               | 介绍什么是 OLAP（Online Analytical Processing，联机分析处理）。                            |
+| [Who is using ClickHouse](general/who-is-using-clickhouse.md) | 了解哪些组织和团队在使用 ClickHouse。                                                      |

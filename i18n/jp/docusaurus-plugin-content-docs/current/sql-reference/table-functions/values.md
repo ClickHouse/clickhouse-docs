@@ -1,34 +1,30 @@
 ---
-description: '列に値を入れて一時的なストレージを作成します。'
-keywords:
-- 'values'
-- 'table function'
-sidebar_label: '値'
+description: '列を値で埋めるための一時ストレージを作成します。'
+keywords: ['値', 'テーブル関数']
+sidebar_label: 'values'
 sidebar_position: 210
-slug: '/sql-reference/table-functions/values'
+slug: /sql-reference/table-functions/values
 title: 'values'
+doc_type: 'reference'
 ---
 
+# Values テーブル関数 {#values-table-function}
 
-
-
-# Values Table Function {#values-table-function}
-
-`Values` テーブル関数を使用すると、値でカラムを埋める一時ストレージを作成できます。これは、迅速なテストやサンプルデータの生成に役立ちます。
+`Values` テーブル関数を使用すると、一時的なストレージを作成し、その列を値で埋めることができます。簡単なテストやサンプルデータの生成に便利です。
 
 :::note
-Values は大文字と小文字を区別しない関数です。つまり、`VALUES` または `values` の両方が有効です。
+Values は大文字小文字を区別しない関数です。つまり、`VALUES` と `values` のどちらも有効です。
 :::
 
-## Syntax {#syntax}
+## 構文 {#syntax}
 
-`VALUES` テーブル関数の基本構文は次のとおりです：
+`VALUES` テーブル関数の基本構文は次のとおりです。
 
 ```sql
 VALUES([structure,] values...)
 ```
 
-一般的に次のように使用されます：
+一般的には次のように使われます：
 
 ```sql
 VALUES(
@@ -39,22 +35,23 @@ VALUES(
 )
 ```
 
-## Arguments {#arguments}
+## 引数 {#arguments}
 
-- `column1_name Type1, ...`（オプション）。 [String](/sql-reference/data-types/string) 
-  カラム名とタイプを指定します。この引数が省略されると、カラムは `c1`、`c2` などと名付けられます。
-- `(value1_row1, value2_row1)`。 [Tuples](/sql-reference/data-types/tuple) 
+- `column1_name Type1, ...`（省略可）。列名と型を指定する[String](/sql-reference/data-types/string) 型。  
+  この引数を省略した場合、列名は `c1`、`c2` などになります。
+- `(value1_row1, value2_row1)`。[Tuples](/sql-reference/data-types/tuple)  
    任意の型の値を含むタプル。
 
 :::note
-カンマ区切りのタプルは単一の値に置き換えることもできます。この場合、各値は新しい行と見なされます。詳細については [examples](#examples) セクションを参照してください。
+カンマ区切りのタプルは、単一の値で置き換えることもできます。この場合、
+各値は新しい行として扱われます。詳細は[例](#examples)セクションを参照してください。
 :::
 
-## Returned value {#returned-value}
+## 戻り値 {#returned-value}
 
-- 提供された値を含む一時テーブルを返します。
+- 指定された値を含む一時テーブルを返します。
 
-## Examples {#examples}
+## 使用例 {#examples}
 
 ```sql title="Query"
 SELECT *
@@ -88,7 +85,7 @@ FROM VALUES(
     └──────────┴───────────┘
 ```
 
-`VALUES` はタプルではなく単一の値でも使用できます。例えば：
+`VALUES` はタプルだけでなく、単一の値にも使用できます。例:
 
 ```sql title="Query"
 SELECT *
@@ -122,12 +119,12 @@ FROM VALUES(
     └──────────┘
 ```
 
-また、行の仕様を提供せずに（[syntax](#syntax) の `'column1_name Type1, column2_name Type2, ...'`）、その場合はカラムが自動的に名前付けされます。
+または、[構文](#syntax)内で行仕様（`'column1_name Type1, column2_name Type2, ...'`）を指定しない場合は、列名が自動的に割り当てられます。
 
-例えば：
+例：
 
 ```sql title="Query"
--- tuples as values
+-- 値としてのタプル
 SELECT *
 FROM VALUES(
     ('Noah', 'Paris'),
@@ -156,10 +153,10 @@ FROM VALUES(
  9. │ Mason    │ Venice    │
 10. │ Isabella │ Prague    │
     └──────────┴───────────┘
-```   
+```
 
 ```sql
--- single values
+-- 単一値
 SELECT *
 FROM VALUES(
     'Noah',
@@ -190,6 +187,6 @@ FROM VALUES(
     └──────────┘
 ```
 
-## See also {#see-also}
+## 関連項目 {#see-also}
 
-- [Values format](/interfaces/formats/Values)
+- [Values 形式](/interfaces/formats/Values)

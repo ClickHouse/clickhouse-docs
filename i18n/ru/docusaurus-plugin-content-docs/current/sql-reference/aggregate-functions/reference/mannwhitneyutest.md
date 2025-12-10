@@ -1,15 +1,15 @@
 ---
-description: 'Применяет rank-тест Манна-Уитни к выборкам из двух популяций.'
+description: 'Применяет ранговый критерий Манна — Уитни к выборкам из двух генеральных совокупностей.'
 sidebar_label: 'mannWhitneyUTest'
 sidebar_position: 161
 slug: /sql-reference/aggregate-functions/reference/mannwhitneyutest
 title: 'mannWhitneyUTest'
+doc_type: 'reference'
 ---
 
+# mannWhitneyUTest {#mannwhitneyutest}
 
-# mannWhitneyUTest
-
-Применяет rank-тест Манна-Уитни к выборкам из двух популяций.
+Применяет ранговый критерий Манна — Уитни к выборкам из двух генеральных совокупностей.
 
 **Синтаксис**
 
@@ -17,28 +17,28 @@ title: 'mannWhitneyUTest'
 mannWhitneyUTest[(alternative[, continuity_correction])](sample_data, sample_index)
 ```
 
-Значения обеих выборок находятся в колонке `sample_data`. Если `sample_index` равен 0, то значение в этой строке принадлежит выборке из первой популяции. В противном случае оно принадлежит выборке из второй популяции. Нулевая гипотеза заключается в том, что две популяции статистически равны. Также могут быть проверены односторонние гипотезы. Этот тест не предполагает, что данные имеют нормальное распределение.
+Значения обеих выборок находятся в столбце `sample_data`. Если `sample_index` равен 0, то значение в этой строке принадлежит выборке из первой совокупности. В противном случае оно принадлежит выборке из второй совокупности.
+Нулевая гипотеза состоит в том, что две совокупности стохастически равны. Также можно проверять односторонние гипотезы. Тест не предполагает, что данные имеют нормальное распределение.
 
 **Аргументы**
 
-- `sample_data` — данные выборки. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
-- `sample_index` — индекс выборки. [Integer](../../../sql-reference/data-types/int-uint.md).
+* `sample_data` — данные выборки. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
+* `sample_index` — индекс выборки. [Integer](../../../sql-reference/data-types/int-uint.md).
 
 **Параметры**
 
-- `alternative` — альтернативная гипотеза. (Необязательный, по умолчанию: `'two-sided'`.) [String](../../../sql-reference/data-types/string.md).
-    - `'two-sided'`;
-    - `'greater'`;
-    - `'less'`.
-- `continuity_correction` — если не 0, то применяется корректировка непрерывности в нормальном приближении для p-значения. (Необязательный, по умолчанию: 1.) [UInt64](../../../sql-reference/data-types/int-uint.md).
+* `alternative` — альтернативная гипотеза (необязательный параметр, по умолчанию — `'two-sided'`). [String](../../../sql-reference/data-types/string.md).
+  * `'two-sided'`;
+  * `'greater'`;
+  * `'less'`.
+* `continuity_correction` — если не равен 0, применяется поправка на непрерывность в нормальном приближении p-значения (необязательный параметр, по умолчанию — 1). [UInt64](../../../sql-reference/data-types/int-uint.md).
 
 **Возвращаемые значения**
 
-[Tuple](../../../sql-reference/data-types/tuple.md) с двумя элементами:
+[Tuple](../../../sql-reference/data-types/tuple.md) из двух элементов:
 
-- вычисленный U-статистик. [Float64](../../../sql-reference/data-types/float.md).
-- вычисленное p-значение. [Float64](../../../sql-reference/data-types/float.md).
-
+* вычисленная U-статистика. [Float64](../../../sql-reference/data-types/float.md).
+* вычисленное p-значение. [Float64](../../../sql-reference/data-types/float.md).
 
 **Пример**
 
@@ -71,5 +71,5 @@ SELECT mannWhitneyUTest('greater')(sample_data, sample_index) FROM mww_ttest;
 
 **См. также**
 
-- [Mann–Whitney U test](https://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U_test)
-- [Stochastic ordering](https://en.wikipedia.org/wiki/Stochastic_ordering)
+* [Критерий Манна — Уитни](https://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U_test)
+* [Стохастический порядок](https://en.wikipedia.org/wiki/Stochastic_ordering)

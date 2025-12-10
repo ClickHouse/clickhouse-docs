@@ -1,22 +1,19 @@
 ---
-description: 'SummingMergeTree inherits from the MergeTree engine. Its key feature
-  is the ability to automatically sum numeric data during part merges.'
+description: 'SummingMergeTree は MergeTree エンジンを継承します。その主な機能は、パーツのマージ時に数値データを自動的に合計できることです。'
 sidebar_label: 'SummingMergeTree'
 sidebar_position: 50
-slug: '/engines/table-engines/mergetree-family/summingmergetree'
-title: 'SummingMergeTree'
+slug: /engines/table-engines/mergetree-family/summingmergetree
+title: 'SummingMergeTree テーブルエンジン'
+doc_type: 'reference'
 ---
 
+# SummingMergeTree テーブルエンジン {#summingmergetree-table-engine}
 
+このエンジンは [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) を継承しています。違いは、`SummingMergeTree` テーブルでデータパーツをマージする際に、ClickHouse が同じ主キー（より正確には同じ [ソートキー](../../../engines/table-engines/mergetree-family/mergetree.md)）を持つすべての行を、数値データ型のカラムの値を合計した 1 行に置き換える点です。ソートキーの構成によって、1 つのキー値に多数の行が対応する場合、これにより必要なストレージ容量を大幅に削減し、データ取得の高速化を実現できます。
 
+このエンジンは `MergeTree` と組み合わせて使用することを推奨します。生データ（完全なデータ）は `MergeTree` テーブルに保存し、集計済みデータの保存には `SummingMergeTree` を使用します（たとえばレポートを作成する場合など）。このようなアプローチにより、不適切に構成された主キーが原因で貴重なデータを失うことを防止できます。
 
-# SummingMergeTree
-
-このエンジンは [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) から継承されています。違いは、`SummingMergeTree` テーブルのデータパーツをマージする際に、ClickHouse が同じ主キーのすべての行（より正確には、同じ [ソートキー](../../../engines/table-engines/mergetree-family/mergetree.md)）を持つ行を、数値データ型のカラムの合計値を持つ1行に置き換える点です。ソートキーが単一のキー値に大きな数の行が対応するように構成されている場合、これによりストレージボリュームが大幅に削減され、データ選択が迅速になります。
-
-エンジンは `MergeTree` と共に使用することをお勧めします。すべてのデータを `MergeTree` テーブルに保存し、集計データを保存するために `SummingMergeTree` を使用します。たとえば、レポートを作成するときです。このアプローチにより、誤って構成された主キーによる貴重なデータ損失を防ぐことができます。
-
-## テーブルの作成 {#creating-a-table}
+## テーブルを作成する {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -35,43 +32,41 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 ### SummingMergeTree のパラメータ {#parameters-of-summingmergetree}
 
-#### columns {#columns}
+#### カラム {#columns}
 
-`columns` - 値が合計されるカラムの名前のタプル。オプションのパラメータです。
-カラムは数値型でなければならず、パーティションまたはソートキーに含まれてはいけません。
+`columns` - 値を集計（合計）するカラム名を含むタプルです。省略可能なパラメータです。
+カラムは数値型である必要があり、パーティションキーまたはソートキーに含めることはできません。
 
-`columns` が指定されない場合、ClickHouse はソートキーに含まれないすべての数値データ型のカラムの値を合計します。
+`columns` が指定されていない場合、ClickHouse はソートキーに含まれていない数値データ型のすべてのカラムの値を集計します。
 
 ### クエリ句 {#query-clauses}
 
-`SummingMergeTree` テーブルを作成する際には、`MergeTree` テーブルを作成する時と同じ [句](../../../engines/table-engines/mergetree-family/mergetree.md) が必要です。
+`SummingMergeTree` テーブルを作成する際には、`MergeTree` テーブルを作成する場合と同じ [句](../../../engines/table-engines/mergetree-family/mergetree.md) を指定する必要があります。
 
 <details markdown="1">
+  <summary>テーブル作成の非推奨メソッド</summary>
 
-<summary>テーブルを作成するための非推奨メソッド</summary>
+  :::note
+  新しいプロジェクトではこの方法を使用しないでください。可能であれば、既存のプロジェクトも上で説明した方法に切り替えてください。
+  :::
 
-:::note
-このメソッドは新しいプロジェクトでは使用しないでください。可能であれば、古いプロジェクトを上記に記載した方法に切り替えてください。
-:::
+  ```sql
+  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+  (
+      name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
+      name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
+      ...
+  ) ENGINE [=] SummingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [columns])
+  ```
 
-```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-(
-    name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
-    name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
-    ...
-) ENGINE [=] SummingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [columns])
-```
+  `columns` 以外のすべてのパラメータは、`MergeTree` における意味と同じです。
 
-すべてのパラメータは `MergeTree` での意味と同じです。
-
-- `columns` - 合計されるカラムの名前のタプル。オプションのパラメータです。詳細は上記のテキストを参照してください。
-
+  * `columns` — 値を集計（合計）するカラム名を含むタプルです。省略可能なパラメータです。詳細は上記を参照してください。
 </details>
 
 ## 使用例 {#usage-example}
 
-次のテーブルを考えてみましょう。
+次のテーブルを例にします。
 
 ```sql
 CREATE TABLE summtt
@@ -83,13 +78,13 @@ ENGINE = SummingMergeTree()
 ORDER BY key
 ```
 
-データを挿入します。
+データを挿入します：
 
 ```sql
-INSERT INTO summtt Values(1,1),(1,2),(2,1)
+INSERT INTO summtt VALUES(1,1),(1,2),(2,1)
 ```
 
-ClickHouse はすべての行を完全に合計しない場合があります（[下記参照](#data-processing)）。そのため、クエリ内で集計関数 `sum` と `GROUP BY` 句を使用します。
+ClickHouse はすべての行を完全には集計しない場合があります（[後述](#data-processing) を参照してください）。そのため、クエリでは集約関数 `sum` と `GROUP BY` 句を使用します。
 
 ```sql
 SELECT key, sum(value) FROM summtt GROUP BY key
@@ -104,36 +99,36 @@ SELECT key, sum(value) FROM summtt GROUP BY key
 
 ## データ処理 {#data-processing}
 
-データがテーブルに挿入されると、それらはそのまま保存されます。ClickHouse は挿入されたデータパーツを定期的にマージし、この際に同じ主キーを持つ行が合計され、それぞれのデータパーツごとに1つに置き換えられます。
+データがテーブルに挿入されると、そのままの形で保存されます。ClickHouse は挿入されたデータパートを定期的にマージし、その際に同じ主キーを持つ行が合計され、各結果データパートごとに 1 行に置き換えられます。
 
-ClickHouse はデータパーツをマージできるため、異なる結果のデータパーツが同じ主キーを持つ行で構成されることがあります。すなわち、合計が不完全になる可能性があります。そのため、クエリ内で集計関数 [sum()](/sql-reference/aggregate-functions/reference/sum) と `GROUP BY` 句を使用する必要があります。上記の例のように。
+ClickHouse はデータパートをマージする際、マージの結果として異なるデータパート同士に同じ主キーを持つ行が分かれて存在する場合があります。つまり、合計処理が不完全になる可能性があります。そのため、上記の例で説明したように、クエリでは集約関数 [`sum()`](/sql-reference/aggregate-functions/reference/sum) と `GROUP BY` 句を組み合わせて使用する必要があります。
 
-### 合計に関する一般規則 {#common-rules-for-summation}
+### 集計に関する共通ルール {#common-rules-for-summation}
 
-数値データ型のカラムの値が合計されます。カラムのセットは `columns` パラメータによって定義されます。
+数値データ型の列に含まれる値は合計されます。対象となる列の集合はパラメータ `columns` で定義されます。
 
-合計のためのカラムのすべての値が 0 である場合、その行は削除されます。
+合計対象となるすべての列の値が 0 であった場合、その行は削除されます。
 
-カラムが主キーに含まれておらず、合計されない場合、既存の値から任意の値が選択されます。
+列が主キーに含まれておらず、かつ合計対象でもない場合、既存の値の中から任意の値が選択されます。
 
-主キーのカラムについては、値は合計されません。
+主キーに含まれる列の値は合計されません。
 
-### 集約関数カラムでの合計 {#the-summation-in-the-aggregatefunction-columns}
+### AggregateFunction 列における集計 {#the-summation-in-the-aggregatefunction-columns}
 
-[AggregateFunction 型](../../../sql-reference/data-types/aggregatefunction.md) のカラムについて、ClickHouse はその関数に従って集約する [AggregatingMergeTree](../../../engines/table-engines/mergetree-family/aggregatingmergetree.md) エンジンのように動作します。
+[AggregateFunction 型](../../../sql-reference/data-types/aggregatefunction.md)の列に対しては、ClickHouse は [AggregatingMergeTree](../../../engines/table-engines/mergetree-family/aggregatingmergetree.md) エンジンと同様に、関数に従って集約処理を行います。
 
-### ネストされた構造 {#nested-structures}
+### ネストした構造 {#nested-structures}
 
-テーブルは特別な方法で処理されるネストされたデータ構造を持つことができます。
+テーブルには特別な方法で処理されるネストしたデータ構造を含めることができます。
 
-ネストされたテーブルの名前が `Map` で終わり、少なくとも次の条件を満たす2カラム以上を含む場合：
+ネストしたテーブル名が `Map` で終わり、かつ次の条件を満たす 2 列以上を含んでいる場合:
 
-- 最初のカラムは数値型 `(*Int*, Date, DateTime)` または文字列 `(String, FixedString)` で、これを `key` と呼びます。
-- 他のカラムは算術型 `(*Int*, Float32/64)` で、これを `(values...)` と呼びます。
+* 1 列目が数値型 `(*Int*, Date, DateTime)` または文字列型 `(String, FixedString)` である列（これを `key` と呼びます）,
+* その他の列が算術型 `(*Int*, Float32/64)` である列（これらを `(values...)` と呼びます）、
 
-このネストされたテーブルは `key => (values...)` のマッピングとして解釈され、行をマージするときに、2つのデータセットの要素が `key` によってマージされ、対応する `(values...)` の合計が計算されます。
+このネストしたテーブルは `key => (values...)` という対応関係を表すものとして解釈されます。このテーブルの行をマージする際には、2 つのデータセットの要素が `key` を基準にマージされ、それに対応する `(values...)` が合計されます。
 
-例：
+例:
 
 ```text
 DROP TABLE IF EXISTS nested_sum;
@@ -154,7 +149,7 @@ INSERT INTO nested_sum VALUES ('2020-01-01', 12, ['Chrome', 'Firefox'], [20, 1],
 INSERT INTO nested_sum VALUES ('2020-01-01', 12, ['IE'], [22], [0]);
 INSERT INTO nested_sum VALUES ('2020-01-01', 10, ['Chrome'], [4], [3]);
 
-OPTIMIZE TABLE nested_sum FINAL; -- マージをエミュレート
+OPTIMIZE TABLE nested_sum FINAL; -- マージをエミュレートする 
 
 SELECT * FROM nested_sum;
 ┌───────date─┬─site─┬─hitsMap.browser───────────────────┬─hitsMap.imps─┬─hitsMap.clicks─┐
@@ -189,10 +184,10 @@ ARRAY JOIN
 └──────┴─────────┴─────────────┴────────┘
 ```
 
-データを要求する際には、`Map` の集計には [sumMap(key, value)](../../../sql-reference/aggregate-functions/reference/summap.md) 関数を使用します。
+データを取得する際は、`Map` を集計するために [sumMap(key, value)](../../../sql-reference/aggregate-functions/reference/summap.md) 関数を使用します。
 
-ネストされたデータ構造では、合計のためのカラムのタプルにそのカラムを指定する必要はありません。
+ネストされたデータ構造の場合、集計対象のカラムのタプル内で、その構造に含まれるカラムを個別に指定する必要はありません。
 
 ## 関連コンテンツ {#related-content}
 
-- ブログ: [ClickHouse における集約関数コンビネータの使用](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
+- ブログ記事: [Using Aggregate Combinators in ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)

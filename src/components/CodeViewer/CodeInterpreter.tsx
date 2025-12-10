@@ -1,6 +1,6 @@
 import { Button, Icon, RadioGroup, Tooltip } from '@clickhouse/click-ui/bundled'
 import { createClient as createWebClient } from '@clickhouse/client-web'
-import { parse } from 'json5'
+import json5 from 'json5';
 import { useEffect, useState } from 'react'
 import short from 'short-uuid'
 import CodeResults, { DefaultView } from './CodeResults'
@@ -90,7 +90,7 @@ function CodeInterpreter({
     params.forEach((param) => {
       if (param.type && /^(Array|Map|Tuple|Nested)/.test(param.type)) {
         try {
-          query_params[param.name] = parse(param.value)
+          query_params[param.name] = json5.parse(param.value)
         } catch (e) {
           // just send and let clickhouse error
           query_params[param.name] = param.value

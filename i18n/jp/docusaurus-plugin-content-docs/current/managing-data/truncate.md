@@ -1,13 +1,15 @@
 ---
-slug: '/managing-data/truncate'
+slug: /managing-data/truncate
 sidebar_label: 'テーブルのトランケート'
 title: 'テーブルのトランケート'
 hide_title: false
-description: 'トランケートは、テーブルまたはデータベース内のデータを削除することを可能にしますが、その存在は保持します。'
+description: 'TRUNCATE は、テーブルまたはデータベース内のデータを削除しつつ、テーブル／データベース自体は残す操作です。'
+doc_type: 'reference'
+keywords: ['truncate', 'データ削除', 'データの削除', 'テーブルを空にする', 'テーブルメンテナンス']
 ---
+
+TRUNCATE は、テーブルまたはデータベース内のデータを削除しつつ、テーブル／データベース自体は残しておくことを可能にします。これは軽量な操作であり、一度実行すると元に戻すことはできません。
 
 import Truncate from '@site/i18n/jp/docusaurus-plugin-content-docs/current/sql-reference/statements/truncate.md';
 
-Truncate は、テーブルやデータベースのデータを削除しながら、その存在を保持します。これは軽量な操作であり、元に戻すことはできません。
-
-<Truncate/>
+<Truncate />

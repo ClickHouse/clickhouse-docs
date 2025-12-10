@@ -1,17 +1,17 @@
 ---
-slug: '/concepts/faq'
-title: 'FAQ'
-description: 'Landing page for FAQ'
+slug: /concepts/faq
+title: 'FAQ（よくある質問）'
+description: 'FAQ のランディングページ'
 pagination_prev: null
 pagination_next: null
+doc_type: 'landing-page'
+keywords: ['FAQ', '質問', '回答']
 ---
 
-
-
-| Page                                                          | Description                                                                            |
+| ページ                                                       | 説明                                                                                   |
 |---------------------------------------------------------------|----------------------------------------------------------------------------------------|
-| [ClickHouseに関する一般的な質問](general/index.md)        | ClickHouseに関してよく受ける一般的な質問です。                                             |
-| [MapReduceのようなものを使わないのはなぜですか？](general/mapreduce.md) | OLAPシナリオにMapReduce実装が適していない理由の解説です。  |
-| [「не тормозит」は何を意味しますか](general/ne-tormozit.md)        | ClickHouseのTシャツで見たかもしれない「не тормозит」の意味に関する解説です。 |
-| [OLAPとは何ですか](general/olap.md)                               | オンライン分析処理（OLAP）とは何かに関する解説です。                                     |
-| [ClickHouseを使用しているのは誰ですか](general/who-is-using-clickhouse.md) | ClickHouseを使用している人々について学びます。                                                   |
+| [General Questions about ClickHouse](general/index.md)        | ClickHouse についてよく寄せられる一般的な質問をまとめています。                        |
+| [Why not use something like MapReduce?](general/mapreduce.md) | なぜ MapReduce の実装が OLAP のシナリオに適さないのかを説明します。                    |
+| [What does "не тормозит" mean](general/ne-tormozit.md)        | ClickHouse の T シャツなどで見かけることがある「не тормозит」（「重くならない／もたつかない」の意）の意味を説明します。 |
+| [What is OLAP](general/olap.md)                               | Online Analytical Processing（OLAP）とは何かを説明します。                             |
+| [Who is using ClickHouse](general/who-is-using-clickhouse.md) | ClickHouse を利用しているユーザーや組織について説明します。                            |

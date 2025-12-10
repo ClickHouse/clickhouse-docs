@@ -1,30 +1,31 @@
 ---
-'slug': '/native-protocol/hash'
-'sidebar_position': 5
-'title': 'CityHash'
-'description': '本地协议哈希'
+slug: /native-protocol/hash
+sidebar_position: 5
+title: 'CityHash'
+description: '原生协议散列'
+doc_type: 'reference'
+keywords: ['CityHash', '原生协议散列', '哈希函数', 'Google CityHash', '协议散列']
 ---
 
+# CityHash {#cityhash}
 
-# CityHash
-
-ClickHouse 使用 **之前的一个** 版本的 [CityHash from Google](https://github.com/google/cityhash)。
+ClickHouse 使用的是 [Google 的 CityHash](https://github.com/google/cityhash) 的**一个较早版本**。
 
 :::info
-CityHash 在我们将其添加到 ClickHouse 之后更改了算法。
+在我们将 CityHash 引入 ClickHouse 之后，CityHash 更改了算法。
 
-CityHash 文档特别指出，用户不应依赖特定的哈希值，不应将其保存或用作分片键。
+CityHash 的文档明确指出，用户不应依赖具体的哈希值，也不应将其保存到任何地方或用作分片键。
 
-但是由于我们将此功能暴露给用户，我们不得不修复 CityHash 的版本（为 1.0.2）。现在我们保证在 SQL 中可用的 CityHash 函数的行为不会更改。
+但由于我们将此函数暴露给用户使用，因此必须将 CityHash 的版本固定为 1.0.2。现在我们保证，SQL 中可用的 CityHash 函数的行为将不会改变。
 
 — Alexey Milovidov
 :::
 
 :::note 注意
 
-谷歌的 CityHash 当前版本与 ClickHouse 的 `cityHash64` 变体 [不同](https://github.com/ClickHouse/ClickHouse/issues/8354)。
+当前 Google 的 CityHash 版本与 ClickHouse 的 `cityHash64` 变体[不同](https://github.com/ClickHouse/ClickHouse/issues/8354)。
 
-不要使用 `farmHash64` 来获取谷歌的 CityHash 值！ [FarmHash](https://opensource.googleblog.com/2014/03/introducing-farmhash.html) 是 CityHash 的继任者，但它们并不完全兼容。
+不要使用 `farmHash64` 来获取 Google CityHash 的值！[FarmHash](https://opensource.googleblog.com/2014/03/introducing-farmhash.html) 是 CityHash 的后继者，但它们并不完全兼容。
 
 | 字符串                                                     | ClickHouse64         | CityHash64          | FarmHash64           |
 |------------------------------------------------------------|----------------------|---------------------|----------------------|
@@ -33,10 +34,10 @@ CityHash 文档特别指出，用户不应依赖特定的哈希值，不应将�
 
 :::
 
-另见 [Introducing CityHash](https://opensource.googleblog.com/2011/04/introducing-cityhash.html) 了解创建的描述和原因。简而言之，这是一个 **非加密** 哈希，比 [MurmurHash](http://en.wikipedia.org/wiki/MurmurHash) 更快，但更复杂。
+另请参阅 [Introducing CityHash](https://opensource.googleblog.com/2011/04/introducing-cityhash.html)，了解其设计说明和创建动机。简而言之：这是一种**非加密**哈希，比 [MurmurHash](http://en.wikipedia.org/wiki/MurmurHash) 更快，但实现更复杂。
 
 ## 实现 {#implementations}
 
 ### Go {#go}
 
-您可以使用 [go-faster/city](https://github.com/go-faster/city) Go 包，它实现了两种变体。
+可以使用 [go-faster/city](https://github.com/go-faster/city) 这个 Go 包，该包实现了这两种变体。

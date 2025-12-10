@@ -1,0 +1,145 @@
+---
+sidebar_position: 1
+sidebar_label: '为什么 ClickHouse 这么快？'
+description: '它从设计之初就以速度为核心。在整个开发过程中，查询执行性能始终被放在首位，同时也兼顾了易用性、可扩展性和安全性等重要特性，从而使 ClickHouse 能够成为真正适用于生产环境的系统。'
+title: '为什么 ClickHouse 这么快？'
+slug: /concepts/why-clickhouse-is-so-fast
+keywords: ['Architecture', 'VLDB', 'Performance']
+show_related_blogs: true
+doc_type: 'guide'
+---
+
+# 为什么 ClickHouse 如此之快？ \{#why-clickhouse-is-so-fast\}
+
+除了[数据存储方式](/intro#row-oriented-vs-column-oriented-storage)之外，还有许多其他因素会影响数据库的性能。
+接下来我们将更详细地解释是什么让 ClickHouse 如此之快，尤其是与其他列式数据库相比。
+
+从架构角度来看，数据库至少由存储层和查询处理层组成。存储层负责保存、加载和维护表数据，而查询处理层则负责执行用户查询。与其他数据库相比，ClickHouse 在这两个层面都进行了创新，从而实现了极快的插入和 SELECT 查询。
+
+## 存储层：并发插入彼此之间是相互隔离的 \{#storage-layer-concurrent-inserts-are-isolated-from-each-other\}
+
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/vsykFYns0Ws?si=hE2qnOf6cDKn-otP" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
+
+在 ClickHouse 中，每个表由多个 “table part” 组成。每当用户向表中插入数据（`INSERT` 语句）时，就会创建一个新的 [part](/parts)。查询始终会在查询开始时已存在的所有 table part 上执行。
+
+为避免累积过多的 part，ClickHouse 会在后台运行 [merge](/merges) 操作，持续地将多个较小的 part 合并为一个更大的 part。
+
+这种设计有几个优点：所有数据处理都可以[卸载到后台的 part merge](/concepts/why-clickhouse-is-so-fast#storage-layer-merge-time-computation)，从而保持数据写入轻量且高效。单次插入在某种意义上是“局部”的，因为它们不需要更新全局（即表级别）的数据结构。因此，多个并发插入之间，以及与已有表数据之间都不需要相互同步，插入操作几乎可以接近磁盘 I/O 的速度完成。
+
+🤿 想要更深入了解，请参阅我们 VLDB 2024 论文网页版中的 [On-Disk Format](/docs/academic_overview#3-1-on-disk-format) 章节。
+
+## 存储层：并发 INSERT 和 SELECT 相互隔离 \{#storage-layer-concurrent-inserts-and-selects-are-isolated\}
+
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/dvGlPh2bJFo?si=F3MSALPpe0gAoq5k" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
+
+INSERT 操作与 SELECT 查询完全隔离，已插入数据片段的合并在后台进行，不会影响并发查询的执行。
+
+🤿 在我们 VLDB 2024 论文网页版的 [Storage Layer](/docs/academic_overview#3-storage-layer) 章节中深入了解存储层。
+
+## 存储层：合并阶段计算 \{#storage-layer-merge-time-computation\}
+
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/_w3zQg695c0?si=g0Wa_Petn-LcmC-6" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
+
+与其他数据库不同，ClickHouse 通过在后台的 [merge](/merges) 合并过程中执行所有额外的数据转换，来保持数据写入轻量且高效。例如：
+
+* **替换合并（replacing merges）**：只保留输入分片中某行的最新版本，并丢弃该行的所有其他版本。可以将替换合并视为在合并阶段执行的清理操作。
+
+* **聚合合并（aggregating merges）**：将输入分片中的中间聚合状态合并为一个新的聚合状态。虽然这看起来有些难以理解，但本质上只是实现了增量聚合。
+
+* **TTL（time-to-live，存活时间）合并**：根据某些基于时间的规则对行进行压缩、移动或删除。
+
+这些转换的目的是将工作量（计算）从用户查询执行的时间点转移到合并阶段。这在两个方面很重要：
+
+一方面，如果查询能够利用“已转换”的数据（例如预聚合数据），用户查询的速度可能会显著提升，有时甚至可以快 1000 倍或更多。
+
+另一方面，合并运行时间的主要开销来自加载输入分片和保存输出分片。在合并过程中对数据进行额外转换通常不会对合并的总运行时间产生太大影响。所有这些机制对用户完全透明，并不会改变查询结果（除了性能方面的改进）。
+
+🤿 可以在我们 VLDB 2024 论文网页版中的 [Merge-time Data Transformation](/docs/academic_overview#3-3-merge-time-data-transformation) 一节中深入了解这一主题。
+
+## 存储层：数据裁剪 \{#storage-layer-data-pruning\}
+
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/UJpVAx7o1aY?si=w-AfhBcRIO-e3Ysj" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
+
+在实践中，许多查询是重复的，即在固定时间间隔内周期性地运行，且查询本身保持不变或只做轻微修改（例如使用不同的参数值）。反复运行相同或相似的查询，使我们可以添加索引或重新组织数据，从而让高频查询能够更快地访问数据。这种方法也被称为“数据裁剪（data pruning）”，ClickHouse 为此提供了三种技术：
+
+1. [主键索引](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design)，用于定义表数据的排序顺序。精心选择的主键可以让过滤条件（例如上述查询中的 WHERE 子句）通过快速的二分查找来评估，而无需对整列进行扫描。从更技术的角度来说，扫描的运行时间相对于数据规模会从线性变为对数级别。
+
+2. [表投影](/sql-reference/statements/alter/projection)，作为表的另一种内部版本，存储相同的数据，但按照不同的主键排序。当存在多种高频过滤条件时，投影会非常有用。
+
+3. [跳过索引](/optimize/skipping-indexes)，将额外的数据统计信息嵌入到列中，例如最小值和最大值、唯一值集合等。跳过索引与主键和表投影相互独立，并且根据列中的数据分布情况，它们可以极大地加速过滤条件的评估。
+
+这三种技术的共同目标，都是在整列读取时尽可能多地跳过行，因为读取数据最快的方式就是尽可能不去读取它。
+
+🤿 欢迎在我们 VLDB 2024 论文网页版本的 [Data Pruning](/docs/academic_overview#3-2-data-pruning) 一节中，深入探讨这一主题。
+
+## 存储层：数据压缩 \{#storage-layer-data-compression\}
+
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/MH10E3rVvnM?si=duWmS_OatCLx-akH" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
+
+此外，ClickHouse 的存储层还可以（可选地）使用不同的编解码器对原始表数据进行压缩。
+
+列式存储尤其适合此类压缩，因为相同类型且具有相似数据分布的值会被存放在一起。
+
+用户可以[指定](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema)使用各种通用压缩算法（如 ZSTD）或专用编解码器来压缩列，例如针对浮点值的 Gorilla 和 FPC，针对整数值的 Delta 和 GCD，甚至可以使用 AES 作为加密编解码器。
+
+数据压缩不仅可以减少数据库表的存储空间，在很多情况下还可以提升查询性能，因为本地磁盘和网络 I/O 往往受限于较低的吞吐量。
+
+🤿 想深入了解，请参阅我们 VLDB 2024 论文网页版中的 [磁盘格式](/docs/academic_overview#3-1-on-disk-format) 章节。
+
+## 最先进的查询处理层 \{#state-of-the-art-query-processing-layer\}
+
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/O5qecdQ7Y18?si=XVtOIuVd8NLbqyox" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
+
+最后，ClickHouse 使用向量化查询处理层，在最大程度上并行化查询执行，以利用全部资源，实现最高速度和效率。
+
+“Vectorization” 指的是查询计划算子以批次而非单行的方式传递中间结果行。这样可以更好地利用 CPU 缓存，并允许算子应用 SIMD 指令一次处理多个值。事实上，许多算子都提供多个版本——每一代 SIMD 指令集对应一个版本。ClickHouse 会根据其运行所在硬件的能力，自动选择最新、最快的版本。
+
+现代系统通常具有数十个 CPU 核心。为了用满所有核心，ClickHouse 会将查询计划展开为多条执行通道，通常每个核心对应一条通道。每条通道处理表数据中互不重叠的一个范围。通过这种方式，数据库性能会随着可用核心数量实现“纵向”扩展。
+
+如果单个节点过小，无法容纳表数据，可以添加更多节点组成集群。表可以被拆分（“分片”）并分布到各个节点上。ClickHouse 将在所有存储表数据的节点上运行查询，从而随着可用节点数量实现“横向”扩展。
+
+🤿 欢迎在我们 VLDB 2024 论文网页版的 [Query Processing Layer](/academic_overview#4-query-processing-layer) 章节中深入了解本节内容。
+
+## 对细节的极致打磨 \{#meticulous-attention-to-detail\}
+
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/dccGLSuYWy0?si=rQ-Jp-z5Ik_-Rb8S" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
+
+> **“ClickHouse 是一个很‘怪’的系统——你们有 20 个版本的哈希表。你们为各种场景准备了这些惊人的东西，而大多数系统只会有一个哈希表** **……** **ClickHouse 之所以有如此惊人的性能，是因为它拥有所有这些高度专用的组件”** [Andy Pavlo，CMU 数据库教授](https://www.youtube.com/watch?v=Vy2t_wZx4Is\&t=3579s)
+
+让 ClickHouse 与众不同的[关键](https://www.youtube.com/watch?v=CAS2otEoerM)，在于对底层优化的极致打磨。构建一个“能用”的数据库是一回事，而要把它工程化到能够在多样的查询类型、数据结构、分布方式和索引配置下都保持高速，才是真正体现出这个“[freak system](https://youtu.be/Vy2t_wZx4Is?si=K7MyzsBBxgmGcuGU\&t=3579)”艺术性的地方。
+
+**哈希表（Hash Tables）。** 以哈希表为例。哈希表是连接（join）和聚合所依赖的核心数据结构。作为程序员，需要考虑如下设计决策：
+
+* 选择哪种哈希函数，
+* 冲突解决方式：[开放寻址](https://en.wikipedia.org/wiki/Open_addressing)还是[链式散列](https://en.wikipedia.org/wiki/Hash_table#Separate_chaining)，
+* 内存布局：键和值共用一个数组还是分开存放在不同数组？
+* 装载因子（fill factor）：何时以及如何扩容？扩容时如何迁移数据？
+* 删除：哈希表是否需要支持逐出（evict）条目？
+
+使用第三方库提供的标准哈希表在功能上可以工作，但速度远远不够。要获得卓越性能，就需要细致入微的基准测试和大量试验。
+
+[ClickHouse 中的哈希表实现](https://clickhouse.com/blog/hash-tables-in-clickhouse-and-zero-cost-abstractions)会根据查询和数据的具体特征，从 **30 多种预编译的哈希表变体** 中选择最合适的一种。
+
+**算法（Algorithms）。** 算法也是同样的思路。以排序为例，你需要考虑：
+
+* 要排序的是什么：数字、元组、字符串还是结构体？
+* 数据是否在 RAM 中？
+* 是否需要稳定排序？
+* 需要对全部数据排序，还是部分排序就足够？
+
+依赖数据特性的算法往往比通用算法表现更好。如果事先不知道数据特性，系统可以在运行时尝试多种实现，并选择表现最好的那个。示例可参考这篇[关于 ClickHouse 中如何实现 LZ4 解压缩的文章](https://habr.com/en/company/yandex/blog/457612/)。
+
+🤿 想要更深入了解，可参见我们 VLDB 2024 论文网页版中的 [整体性能优化（Holistic Performance Optimization）](/academic_overview#4-4-holistic-performance-optimization) 一节。
+
+## VLDB 2024 论文 \{#vldb-2024-paper\}
+
+在 2024 年 8 月，我们的第一篇研究论文被 VLDB 会议接收并发表。
+VLDB 是一个专注于超大规模数据库的国际会议，被广泛认为是数据管理领域的顶级会议之一。
+在数百篇投稿中，VLDB 的录用率通常约为 20%。
+
+您可以阅读这篇论文的 [PDF 版本](https://www.vldb.org/pvldb/vol17/p3731-schulze.pdf)，或者我们的[网页版本](/docs/academic_overview)，其中简要介绍了 ClickHouse 中一些最有趣、也是使其如此之快的架构和系统设计组件。
+
+ClickHouse 的创始人兼 CTO Alexey Milovidov 在会上进行了论文报告（幻灯片在[这里](https://raw.githubusercontent.com/ClickHouse/clickhouse-presentations/master/2024-vldb/VLDB_2024_presentation.pdf)），之后进行了问答环节（很快就时间不够了！）。
+您可以在这里观看录制的演讲：
+
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/7QXKBKDOkJE?si=5uFerjqPSXQWqDkF" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />

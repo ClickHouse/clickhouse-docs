@@ -1,23 +1,26 @@
 ---
 slug: '/examples/aggregate-function-combinators/countIf'
 title: 'countIf'
-description: 'Пример использования комбинированной функции countIf'
+description: 'Пример использования комбинатора countIf'
 keywords: ['count', 'if', 'combinator', 'examples', 'countIf']
 sidebar_label: 'countIf'
+doc_type: 'reference'
 ---
-
 
 # countIf {#countif}
 
 ## Описание {#description}
 
-Комбинированная функция [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применена к функции [`count`](/sql-reference/aggregate-functions/reference/count) для подсчета количества строк, где условие истинно, с использованием агрегатной комбинированной функции `countIf`.
+Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к функции [`count`](/sql-reference/aggregate-functions/reference/count)
+для подсчёта числа строк, удовлетворяющих условию,
+с помощью агрегатной функции-комбинатора `countIf`.
 
 ## Пример использования {#example-usage}
 
-В этом примере мы создадим таблицу, которая хранит попытки входа пользователей, и мы используем `countIf` для подсчета количества успешных входов.
+В этом примере мы создадим таблицу, которая хранит попытки входа пользователей в систему,
+и используем `countIf`, чтобы посчитать количество успешных входов.
 
-```sql title="Запрос"
+```sql title="Query"
 CREATE TABLE login_attempts(
     user_id UInt32,
     timestamp DateTime,
@@ -34,14 +37,14 @@ INSERT INTO login_attempts VALUES
 
 SELECT
     user_id,
-    countIf(is_successful = 1) as successful_logins
+    countIf(is_successful = 1) AS successful_logins
 FROM login_attempts
 GROUP BY user_id;
 ```
 
-Функция `countIf` будет подсчитывать только строки, где `is_successful = 1` для каждого пользователя.
+Функция `countIf` для каждого пользователя будет подсчитывать только те строки, в которых `is_successful = 1`.
 
-```response title="Ответ"
+```response title="Response"
    ┌─user_id─┬─successful_logins─┐
 1. │       1 │                 2 │
 2. │       2 │                 2 │
@@ -50,4 +53,4 @@ GROUP BY user_id;
 
 ## См. также {#see-also}
 - [`count`](/sql-reference/aggregate-functions/reference/count)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+- [`Комбинатор If`](/sql-reference/aggregate-functions/combinators#-if)

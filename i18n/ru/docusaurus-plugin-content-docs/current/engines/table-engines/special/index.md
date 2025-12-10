@@ -1,43 +1,49 @@
 ---
-description: 'Документация для Специальных Движков Таблиц'
+description: 'Документация по специальным движкам таблиц'
 sidebar_label: 'Специальные'
 sidebar_position: 50
 slug: /engines/table-engines/special/
-title: 'Специальные Движки Таблиц'
+title: 'Специальные движки таблиц'
+doc_type: 'reference'
 ---
 
+# Специальные движки таблиц {#special-table-engines}
 
-# Специальные Движки Таблиц
+Существует три основные категории движков таблиц:
 
-Существует три основных категории движков таблиц:
+* [Семейство движков MergeTree](../../../engines/table-engines/mergetree-family/index.md) для основного использования в продакшене.
+* [Семейство движков Log](../../../engines/table-engines/log-family/index.md) для небольших временных данных.
+* [Движки таблиц для интеграций](../../../engines/table-engines/integrations/index.md).
 
-- [Семейство движков MergeTree](../../../engines/table-engines/mergetree-family/index.md) для основного производственного использования.
-- [Семейство движков Log](../../../engines/table-engines/log-family/index.md) для небольших временных данных.
-- [Движки таблиц для интеграций](../../../engines/table-engines/integrations/index.md).
+Оставшиеся движки уникальны по своему назначению и пока не объединены в семейства, поэтому они отнесены к этой «специальной» категории.
 
-Оставшиеся движки уникальны по своему назначению и пока не сгруппированы в семьи, поэтому они помещены в эту "специальную" категорию.
+{/* Оглавление для этой страницы генерируется автоматически с помощью 
+  https://github.com/ClickHouse/clickhouse-docs/blob/main/scripts/autogenerate-table-of-contents.sh
+  на основе полей YAML front matter: slug, description, title.
 
-<!-- Таблица содержания для этой страницы автоматически генерируется с 
-https://github.com/ClickHouse/clickhouse-docs/blob/main/scripts/autogenerate-table-of-contents.sh
-из полей YAML front matter: slug, description, title.
+  Если вы заметили ошибку, отредактируйте YAML front matter соответствующих страниц.
+  */ }
 
-Если вы заметили ошибку, пожалуйста, отредактируйте YML frontmatter страниц непосредственно.
--->
-| Страница | Описание |
-|-----|-----|
-| [Движок таблицы Buffer](/engines/table-engines/special/buffer) | Буферизует данные для записи в RAM, периодически сбрасывая их в другую таблицу. Во время операции чтения данные считываются из буфера и другой таблицы одновременно. |
-| [Движки таблиц Executable и ExecutablePool](/engines/table-engines/special/executable) | Движки таблиц `Executable` и `ExecutablePool` позволяют вам определить таблицу, строки которой генерируются из скрипта, который вы определяете (путем записи строк в **stdout**). |
-| [Движок таблицы URL](/engines/table-engines/special/url) | Запрашивает данные из/в удаленный HTTP/HTTPS сервер. Этот движок похож на движок File. |
-| [Движок таблицы View](/engines/table-engines/special/view) | Используется для реализации представлений (для получения дополнительной информации см. запрос `CREATE VIEW`). Он не хранит данные, а только хранит указанный `SELECT` запрос. При чтении из таблицы выполняется этот запрос (и все ненужные столбцы удаляются из запроса). |
-| [Движок таблицы Distributed](/engines/table-engines/special/distributed) | Таблицы с движком Distributed не хранят никаких собственных данных, но позволяют распределенную обработку запросов на нескольких серверах. Чтение автоматически параллелизуется. При чтении используются индексы таблицы на удаленных серверах, если таковые имеются. |
-| [Движок таблицы File](/engines/table-engines/special/file) | Движок таблицы File хранит данные в файле в одном из поддерживаемых форматов файлов (`TabSeparated`, `Native` и т.д.). |
-| [Движок FileLog](/engines/table-engines/special/filelog) | Этот движок позволяет обрабатывать файлы журналов приложений как поток записей. |
-| [Движок таблицы Set](/engines/table-engines/special/set) | Набор данных, который всегда находится в RAM. Предназначен для использования на правой стороне оператора `IN`. |
-| [Движок таблицы Dictionary](/engines/table-engines/special/dictionary) | Движок `Dictionary` отображает данные словаря в виде таблицы ClickHouse. |
-| [Движок таблицы GenerateRandom](/engines/table-engines/special/generate) | Движок GenerateRandom генерирует случайные данные для заданной схемы таблицы. |
-| [Движок таблицы Memory](/engines/table-engines/special/memory) | Движок Memory хранит данные в RAM в несжатом виде. Данные хранятся в точно таком же виде, в каком они поступают при чтении. Иными словами, чтение из этой таблицы совершенно бесплатно. |
-| [Движок таблицы Merge](/engines/table-engines/special/merge) | Движок `Merge` (не путать с `MergeTree`) не хранит данные сам по себе, но позволяет читать из любого количества других таблиц одновременно. |
-| [Внешние данные для обработки запросов](/engines/table-engines/special/external-data) | ClickHouse позволяет отправлять серверу данные, необходимые для обработки запроса, вместе с запросом `SELECT`. Эти данные помещаются во временную таблицу и могут быть использованы в запросе (например, в операторах `IN`). |
-| [Движок таблицы Join](/engines/table-engines/special/join) | Необязательная подготовленная структура данных для использования в операциях JOIN. |
-| [KeeperMap](/engines/table-engines/special/keeper-map) | Этот движок позволяет использовать кластер Keeper/ZooKeeper как согласованное хранилище ключ-значение с линейно последовательными записями и последовательными согласованными чтениями. |
-| [Движок таблицы Null](/engines/table-engines/special/null) | При записи в таблицу `Null` данные игнорируются. При чтении из таблицы `Null` ответ пуст. |
+{/*AUTOGENERATED_START*/ }
+
+| Page                                                                                     | Description                                                                                                                                                                                                                                                     |
+| ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Alias table engine](/engines/table-engines/special/alias)                               | Движок таблиц Alias создает прозрачный прокси для другой таблицы. Все операции перенаправляются в целевую таблицу, при этом алиас сам по себе не хранит данные.                                                                                                 |
+| [Distributed table engine](/engines/table-engines/special/distributed)                   | Таблицы с движком Distributed не хранят собственные данные, но позволяют выполнять распределенную обработку запросов на нескольких серверах. Чтение автоматически параллелизуется. При чтении используются индексы таблиц на удаленных серверах, если они есть. |
+| [Dictionary table engine](/engines/table-engines/special/dictionary)                     | Движок `Dictionary` отображает данные словаря в виде таблицы ClickHouse.                                                                                                                                                                                        |
+| [Merge table engine](/engines/table-engines/special/merge)                               | Движок `Merge` (не путать с `MergeTree`) сам по себе не хранит данные, но позволяет одновременно читать из любого количества других таблиц.                                                                                                                     |
+| [Executable and ExecutablePool table engines](/engines/table-engines/special/executable) | Движки таблиц `Executable` и `ExecutablePool` позволяют определить таблицу, строки которой генерируются заданным вами скриптом (путем записи строк в **stdout**).                                                                                               |
+| [File table engine](/engines/table-engines/special/file)                                 | Движок таблиц File хранит данные в файле в одном из поддерживаемых форматов (`TabSeparated`, `Native` и т. д.).                                                                                                                                                 |
+| [Null table engine](/engines/table-engines/special/null)                                 | При записи в таблицу `Null` данные игнорируются. При чтении из таблицы `Null` результат пуст.                                                                                                                                                                   |
+| [Set table engine](/engines/table-engines/special/set)                                   | Набор данных, который всегда находится в оперативной памяти (RAM). Предназначен для использования в правой части оператора `IN`.                                                                                                                                |
+| [Join table engine](/engines/table-engines/special/join)                                 | Опциональная предварительно подготовленная структура данных для использования в операциях JOIN.                                                                                                                                                                 |
+| [URL table engine](/engines/table-engines/special/url)                                   | Выполняет запросы данных к удаленному HTTP/HTTPS-серверу и с него. Этот движок похож на движок File.                                                                                                                                                            |
+| [View table engine](/engines/table-engines/special/view)                                 | Используется для реализации представлений (подробнее см. запрос `CREATE VIEW`). Он не хранит данные, а только сохраняет указанный запрос `SELECT`. При чтении из таблицы выполняется этот запрос (и из него удаляются все ненужные столбцы).                    |
+| [Memory table engine](/engines/table-engines/special/memory)                             | Движок Memory хранит данные в оперативной памяти (RAM) в несжатом виде. Данные хранятся в точности в том виде, в каком они получены при чтении. Другими словами, чтение из этой таблицы практически бесплатное.                                                 |
+| [Buffer table engine](/engines/table-engines/special/buffer)                             | Буферизует данные для записи в оперативной памяти, периодически сбрасывая их в другую таблицу. При чтении данные считываются одновременно из буфера и из другой таблицы.                                                                                        |
+| [External data for query processing](/engines/table-engines/special/external-data)       | ClickHouse позволяет отправлять на сервер данные, необходимые для обработки запроса, вместе с запросом `SELECT`. Эти данные помещаются во временную таблицу и могут использоваться в запросе (например, в операторах `IN`).                                     |
+| [GenerateRandom table engine](/engines/table-engines/special/generate)                   | Движок таблиц GenerateRandom генерирует случайные данные для заданной схемы таблицы.                                                                                                                                                                            |
+| [KeeperMap table engine](/engines/table-engines/special/keeper-map)                      | Этот движок позволяет использовать кластер Keeper/ZooKeeper как согласованное key-value-хранилище с линеаризуемыми записями и последовательно согласованными чтениями.                                                                                          |
+| [FileLog table engine](/engines/table-engines/special/filelog)                           | Этот движок позволяет обрабатывать файлы журналов приложений как поток записей.                                                                                                                                                                                 |
+
+{/*AUTOGENERATED_END*/ }

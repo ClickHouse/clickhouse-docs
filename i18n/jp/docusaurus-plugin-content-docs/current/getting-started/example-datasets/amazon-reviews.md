@@ -1,22 +1,23 @@
 ---
-description: 'Over 150M customer reviews of Amazon products'
-sidebar_label: 'Amazon customer reviews'
-slug: '/getting-started/example-datasets/amazon-reviews'
-title: 'Amazon Customer Review'
+description: '1億5,000万件以上のAmazon商品のカスタマーレビュー'
+sidebar_label: 'Amazon カスタマーレビュー'
+slug: /getting-started/example-datasets/amazon-reviews
+title: 'Amazon カスタマーレビュー'
+doc_type: 'guide'
+keywords: ['Amazon レビュー', 'カスタマーレビュー データセット', 'eコマース データ', 'サンプルデータセット', 'はじめに']
 ---
 
-
-
-This dataset contains over 150M customer reviews of Amazon products. The data is in snappy-compressed Parquet files in AWS S3 that total 49GB in size (compressed). Let's walk through the steps to insert it into ClickHouse.
+このデータセットには、Amazon 商品に対する1億5,000万件以上のカスタマーレビューが含まれています。データは AWS S3 上の snappy で圧縮された Parquet ファイルとして提供されており、圧縮後の合計サイズは 49GB です。これを ClickHouse に取り込む手順を順を追って確認していきます。
 
 :::note
-The queries below were executed on a **Production** instance of ClickHouse Cloud. For more information see
-["Playground specifications"](/getting-started/playground#specifications).
+以下のクエリは、**Production** 環境の ClickHouse Cloud インスタンス上で実行されています。詳細については
+[&quot;Playground specifications&quot;](/getting-started/playground#specifications)
+を参照してください。
 :::
 
 ## データセットの読み込み {#loading-the-dataset}
 
-1. ClickHouseにデータを挿入せずに、その場でクエリを実行できます。いくつかの行を取得して、どのようなものか見てみましょう：
+1. データを ClickHouse に挿入しなくても、元の場所に対して直接クエリを実行できます。どのようなデータか確認するために、いくつか行を取得してみましょう。
 
 ```sql
 SELECT *
@@ -24,65 +25,65 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_review
 LIMIT 3
 ```
 
-行は次のようになります：
+行は次のような形になります：
 
 ```response
 Row 1:
 ──────
 review_date:       16462
 marketplace:       US
-customer_id:       25444946 -- 25.44百万
+customer_id:       25444946 -- 2544万
 review_id:         R146L9MMZYG0WA
 product_id:        B00NV85102
-product_parent:    908181913 -- 908.18百万
-product_title:     XIKEZAN iPhone 6 Plus 5.5インチ防水ケース、衝撃防止、防塵、防雪フルボディスキンケース、ハンドストラップ＆ヘッドフォンアダプタ＆キックスタンド付き
+product_parent:    908181913 -- 9億818万
+product_title:     XIKEZAN iPhone 6 Plus 5.5 inch Waterproof Case, Shockproof Dirtproof Snowproof Full Body Skin Case Protective Cover with Hand Strap & Headphone Adapter & Kickstand
 product_category:  Wireless
 star_rating:       4
 helpful_votes:     0
 total_votes:       0
 vine:              false
 verified_purchase: true
-review_headline:   ケースは頑丈で、私が望む通りに保護します
-review_body:       防水部分は過信しません（下のゴムシールは私の神経を使ったので外しました）。でも、このケースは頑丈で、私が望む通りに保護します。
+review_headline:   ケースは頑丈で期待通りの保護性能
+review_body:       防水機能は期待していない(底部のゴムシールが煩わしかったので外した)。しかしケースは頑丈で、期待通りの保護性能を発揮してくれる。
 
 Row 2:
 ──────
 review_date:       16462
 marketplace:       US
-customer_id:       1974568 -- 1.97百万
+customer_id:       1974568 -- 197万
 review_id:         R2LXDXT293LG1T
 product_id:        B00OTFZ23M
-product_parent:    951208259 -- 951.21百万
-product_title:     Season.C シカゴ・ブルズ マリリン・モンロー No.1 ハードバックケースカバー サムスンギャラクシーS5 i9600用
+product_parent:    951208259 -- 9億5121万
+product_title:     Season.C Chicago Bulls Marilyn Monroe No.1 Hard Back Case Cover for Samsung Galaxy S5 i9600
 product_category:  Wireless
 star_rating:       1
 helpful_votes:     0
 total_votes:       0
 vine:              false
 verified_purchase: true
-review_headline:   一つ星
-review_body:       ケースが電話に合わないので使えません。お金の無駄です！
+review_headline:   星1つ
+review_body:       ケースがスマートフォンに対して大きすぎて使用できない。金の無駄!
 
 Row 3:
 ──────
 review_date:       16462
 marketplace:       US
-customer_id:       24803564 -- 24.80百万
+customer_id:       24803564 -- 2480万
 review_id:         R7K9U5OEIRJWR
 product_id:        B00LB8C4U4
-product_parent:    524588109 -- 524.59百万
-product_title:     iPhone 5s ケース、BUDDIBOX [Shield] 薄型デュアルレイヤー保護ケース キックスタンド付き Apple iPhone 5および5s用
+product_parent:    524588109 -- 5億2459万
+product_title:     iPhone 5s Case, BUDDIBOX [Shield] Slim Dual Layer Protective Case with Kickstand for Apple iPhone 5 and 5s
 product_category:  Wireless
 star_rating:       4
 helpful_votes:     0
 total_votes:       0
 vine:              false
 verified_purchase: true
-review_headline:   しかし全体的にこのケースはかなり頑丈で、電話を良く保護します
-review_body:       最初は前面の部分を電話に固定するのが少し難しかったですが、全体的にこのケースはかなり頑丈で、電話を良く保護します。これは私が必要なことです。このケースを再度購入するつもりです。
+review_headline:   全体的にはかなり頑丈でスマートフォンをしっかり保護してくれる
+review_body:       最初は前面パーツをスマートフォンに固定するのが少し難しかったが、全体的にはこのケースはかなり頑丈で、スマートフォンをしっかり保護してくれる。これが私に必要なものだ。このケースをまた購入するだろう。
 ```
 
-2. データをClickHouseに保存するために、新しい `MergeTree` テーブル `amazon_reviews` を定義しましょう：
+2. このデータを格納するために、ClickHouse に `amazon_reviews` という名前の新しい `MergeTree` テーブルを定義します。
 
 ```sql
 CREATE DATABASE amazon
@@ -114,7 +115,7 @@ ENGINE = MergeTree
 ORDER BY (review_date, product_category)
 ```
 
-3. 次の `INSERT` コマンドは、`s3Cluster` テーブル関数を使用しており、これによりクラスタのすべてのノードを使用して複数のS3ファイルを同時に処理できます。また、`https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_*.snappy.parquet` という名前で始まるファイルを挿入するためにワイルドカードも使用しています：
+3. 次の `INSERT` コマンドでは、`s3Cluster` テーブル関数を使用します。これにより、クラスター内のすべてのノードを使って複数の S3 ファイルを並列に処理できます。また、`https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_*.snappy.parquet` という名前で始まるすべてのファイルを挿入するために、ワイルドカードも使用します。
 
 ```sql
 INSERT INTO amazon.amazon_reviews SELECT *
@@ -123,17 +124,17 @@ FROM s3Cluster('default',
 ```
 
 :::tip
-ClickHouse Cloudでは、クラスタの名前は `default` です。 `default` をあなたのクラスタ名に変更するか、クラスタがない場合は `s3Cluster` の代わりに `s3` テーブル関数を使用してください。
+ClickHouse Cloud では、クラスター名は `default` です。`default` を環境のクラスター名に置き換えてください。クラスターがない場合は、`s3Cluster` の代わりに `s3` テーブル関数を使用してください。
 :::
 
-5. このクエリは時間がかからず、平均して毎秒約300,000行の速度で処理されます。5分ほどの間にすべての行が挿入されるはずです：
+5. このクエリはそれほど時間がかからず、平均で毎秒約 300,000 行を処理します。およそ 5 分以内に、すべての行が挿入されていることを確認できるはずです。
 
 ```sql runnable
 SELECT formatReadableQuantity(count())
 FROM amazon.amazon_reviews
 ```
 
-6. データがどれだけのスペースを使用しているか見てみましょう：
+6. データがどれくらいの容量を使用しているか確認しましょう。
 
 ```sql runnable
 SELECT
@@ -149,11 +150,11 @@ GROUP BY disk_name
 ORDER BY size DESC
 ```
 
-元のデータは約70Gでしたが、ClickHouseでは約30Gのサイズを占めました。
+元のデータは約 70G ありましたが、ClickHouse で圧縮されると約 30G に収まります。
 
-## 例のクエリ {#example-queries}
+## クエリ例 {#example-queries}
 
-7. いくつかのクエリを実行してみましょう。データセット内で最も役立つレビューのトップ10はこちらです：
+7. クエリをいくつか実行してみましょう。こちらは、このデータセットで最も役に立ったレビューの上位 10 件です。
 
 ```sql runnable
 SELECT
@@ -165,10 +166,10 @@ LIMIT 10
 ```
 
 :::note
-このクエリは、パフォーマンスを向上させるために [プロジェクション](/data-modeling/projections) を使用しています。
+このクエリは、パフォーマンスを向上させるために [projection](/data-modeling/projections) を使用しています。
 :::
 
-8. Amazonでレビューが最も多いトップ10製品はこちらです：
+8. Amazon でレビュー数が最も多い商品のトップ 10 は次のとおりです。
 
 ```sql runnable
 SELECT
@@ -180,7 +181,7 @@ ORDER BY 2 DESC
 LIMIT 10;
 ```
 
-9. 各製品の月ごとの平均レビュー評価を示します（実際の [Amazonの就職面接質問](https://datalemur.com/questions/sql-avg-review-ratings)！）：
+9. 各商品の月ごとの平均レビュー評価は次のとおりです（実際の[Amazonの採用面接で出題された質問](https://datalemur.com/questions/sql-avg-review-ratings)！）：
 
 ```sql runnable
 SELECT
@@ -197,7 +198,7 @@ ORDER BY
 LIMIT 20;
 ```
 
-10. 各製品カテゴリごとの投票総数を示します。このクエリは、`product_category` が主キーに含まれているため高速です：
+10. 各商品カテゴリごとの投票総数は次のとおりです。`product_category` が主キーに含まれているため、このクエリは高速です。
 
 ```sql runnable
 SELECT
@@ -208,7 +209,7 @@ GROUP BY product_category
 ORDER BY 1 DESC
 ```
 
-11. レビュー内で最も頻繁に**"awful"**という単語が出現する製品を探します。これは大きな作業です - 1.51億以上の文字列を解析して単語を探す必要があります：
+11. レビューの中で単語 **&quot;awful&quot;** が最も頻繁に出現している商品を探します。これは大規模な処理で、単一の単語を探すために 1 億 5,100 万以上の文字列をパースする必要があります。
 
 ```sql runnable settings={'enable_parallel_replicas':1}
 SELECT
@@ -223,9 +224,9 @@ ORDER BY count DESC
 LIMIT 50;
 ```
 
-このような大量のデータに対するクエリ時間に注目してください。結果も読むのが楽しいです！
+このような大量のデータに対するクエリ時間に注目してください。結果も読んでみるとなかなか楽しいはずです。
 
-12. 同じクエリを再度実行できますが、今回はレビュー内で**awesome**を検索します：
+12. 同じクエリをもう一度実行しますが、今度はレビューの中から **awesome** を検索してみます。
 
 ```sql runnable settings={'enable_parallel_replicas':1}
 SELECT 

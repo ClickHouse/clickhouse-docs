@@ -1,0 +1,22 @@
+---
+slug: /use-cases/observability/clickstack/deployment
+title: 'Варианты развертывания'
+pagination_prev: null
+pagination_next: null
+description: 'Развертывание ClickStack — стека наблюдаемости ClickHouse'
+doc_type: 'reference'
+keywords: ['ClickStack', 'observability']
+---
+
+ClickStack предоставляет несколько вариантов развертывания для разных сценариев использования.
+
+Краткое описание каждого варианта развертывания приведено ниже. В [руководстве по началу работы](/use-cases/observability/clickstack/getting-started) подробно рассматриваются варианты 1 и 2. Они включены сюда для полноты.
+
+| Название         | Описание                                                                                                            | Подходит для                                                                                          | Ограничения                                                                                                 | Пример                                                                                                                                           |
+|------------------|----------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| All-in-One       | Один Docker-контейнер со всеми компонентами ClickStack.                                                             | Продакшен-развертывания, демо, пилотные проекты                                                       | Не рекомендуется для промышленной эксплуатации                                                               | [All-in-One](/use-cases/observability/clickstack/deployment/all-in-one)                               |
+| ClickHouse Cloud       | ClickHouse и HyperDX размещены в ClickHouse Cloud.                                                      | Демо, локальное тестирование полного стека                                                             | Не рекомендуется для промышленной эксплуатации                                                               | [All-in-One](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud)                               |
+| Helm             | Официальный Helm-чарт для развертываний в Kubernetes. Поддерживает ClickHouse Cloud и масштабирование для продакшена. | Продакшен-развертывания в Kubernetes                                                                   | Требуются знания Kubernetes, настройка через Helm                                                            | [Helm](/use-cases/observability/clickstack/deployment/helm)                                          |
+| Docker Compose   | Развертывание каждого компонента ClickStack отдельно с помощью Docker Compose.                                      | Локальное тестирование, пилотные проекты, эксплуатация на одном сервере, собственный ClickHouse       | Отсутствие отказоустойчивости, необходимо управлять несколькими контейнерами                                | [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose)                       |
+| HyperDX Only     | Использование HyperDX отдельно с вашим собственным ClickHouse и схемой.                                             | Пользователи существующего ClickHouse, кастомные конвейеры событий                                    | ClickHouse не включён, пользователь должен самостоятельно управлять ингестией и схемой                      | [HyperDX Only](/use-cases/observability/clickstack/deployment/hyperdx-only)                           |
+| Local Mode Only  | Полностью работает в браузере с локальным хранилищем. Без бэкенда и постоянного хранилища данных.                  | Демо, отладка, разработка с HyperDX                                                                   | Нет аутентификации, нет постоянного хранилища данных, нет оповещений, только один пользователь              | [Local Mode Only](/use-cases/observability/clickstack/deployment/local-mode-only)                     |
