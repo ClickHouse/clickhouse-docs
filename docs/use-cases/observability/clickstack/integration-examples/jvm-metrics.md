@@ -281,7 +281,11 @@ Ensure you're using the latest stable agent version (currently 2.22.0), as newer
 
 Now that you have JVM metrics flowing into ClickStack, consider:
 
-- **Set up alerts** for critical metrics like high heap usage, frequent GC pauses, or thread exhaustion
-- **Correlate with traces** by enabling trace collection with the same agent to see how JVM performance impacts request latency
-- **Monitor multiple instances** and compare JVM behavior across different services or environments
-- **Create custom dashboards** tailored to your specific application's memory and performance characteristics
+- Set up [alerts](/use-cases/observability/clickstack/alerts) for critical metrics like high heap usage, frequent GC pauses, or thread exhaustion
+- Explore [other ClickStack integrations](/use-cases/observability/clickstack/integration-guides) to unify your observability data
+
+## Going to production {#going-to-production}
+
+This guide demonstrates configuring the OpenTelemetry Java agent for local testing. For production deployments, include the agent JAR in your container images and configure via environment variables for easier management. For larger environments with many JVM instances, deploy a centralized OpenTelemetry Collector to batch and forward metrics from multiple applications instead of sending directly to ClickStack.
+
+See [Ingesting with OpenTelemetry](/use-cases/observability/clickstack/ingesting-data/opentelemetry) for production deployment patterns and collector configuration examples.
