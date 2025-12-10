@@ -115,17 +115,9 @@ Object Storage ClickPipes follow the POSIX standard for file pattern matching. A
 
 Various types of failures can occur when ingesting large dataset, which can result in a partial inserts or duplicate data. Object Storage ClickPipes are resilient to insert failures and provides exactly-once semantics. This is accomplished by using temporary "staging" tables. Data is first inserted into the staging tables. If something goes wrong with this insert, the staging table can be truncated and the insert can be retried from a clean state. Only when an insert is completed and successful, the partitions in the staging table are moved to target table. To read more about this strategy, check-out [this blog post](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part3).
 
-### Archive table {#archive-table}
-
-ClickPipes will create a table next to your destination table with the postfix `s3_clickpipe_<clickpipe_id>_archive`. This table will contain a list of all the files that have been ingested by the ClickPipe. This table is used to track files during ingestion and can be used to verify files have been ingested. The archive table has a [TTL](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) of 7 days.
-
-:::note
-These tables will not be visible using ClickHouse Cloud SQL Console, you will need to connect via an external client either using HTTPS or Native connection to read them.
-:::
-
 ### Virtual columns {#virtual-columns}
 
-To track which files have been ingested, incaddlude the `_file` virtual column to the column mapping list. The `_file` virtual column contains the filename of the source object, which can be used to query which files have been processed.
+To track which files have been ingested, include the `_file` virtual column to the column mapping list. The `_file` virtual column contains the filename of the source object, which can be used to query which files have been processed.
 
 ## Access control {#access-control}
 

@@ -74,7 +74,9 @@ Object Storage ClickPipes follow the POSIX standard for file pattern matching. A
 
 Various types of failures can occur when ingesting large dataset, which can result in a partial inserts or duplicate data. Object Storage ClickPipes are resilient to insert failures and provides exactly-once semantics. This is accomplished by using temporary "staging" tables. Data is first inserted into the staging tables. If something goes wrong with this insert, the staging table can be truncated and the insert can be retried from a clean state. Only when an insert is completed and successful, the partitions in the staging table are moved to target table. To read more about this strategy, check-out [this blog post](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part3).
 
-[//]: # "TODO Verify archive table prefix for ABS"
+### Virtual columns {#virtual-columns}
+
+To track which files have been ingested, include the `_file` virtual column to the column mapping list. The `_file` virtual column contains the filename of the source object, which can be used to query which files have been processed.
 
 ## Access control {#access-control}
 
