@@ -12,7 +12,7 @@ doc_type: 'reference'
 **Синтаксис**
 
 ```sql
-CREATE FUNCTION имя [ON CLUSTER кластер] AS (параметр0, ...) -> выражение
+CREATE [OR REPLACE] FUNCTION name [ON CLUSTER cluster] AS (parameter0, ...) -> expression
 ```
 
 Функция может иметь произвольное количество параметров.
@@ -44,7 +44,7 @@ SELECT number, linear_equation(number, 2, 1) FROM numbers(3);
 └────────┴──────────────────────────────┘
 ```
 
-[Условная функция](../../../sql-reference/functions/conditional-functions.md) вызывается в функции, определяемой пользователем, в следующем запросе:
+[Условная функция](../../../sql-reference/functions/conditional-functions.md) вызывается в пользовательской функции в следующем запросе:
 
 ```sql
 CREATE FUNCTION parity_str AS (n) -> if(n % 2, 'odd', 'even');
@@ -55,10 +55,31 @@ SELECT number, parity_str(number) FROM numbers(3);
 
 ```text
 ┌─number─┬─if(modulo(number, 2), 'odd', 'even')─┐
-│      0 │ чётное                               │
-│      1 │ нечётное                             │
-│      2 │ чётное                               │
+│      0 │ even                                 │
+│      1 │ odd                                  │
+│      2 │ even                                 │
 └────────┴──────────────────────────────────────┘
+```
+
+Замените существующую пользовательскую функцию (UDF):
+
+```sql
+CREATE FUNCTION exampleReplaceFunction AS frame -> frame;
+SELECT create_query FROM system.functions WHERE name = 'exampleReplaceFunction';
+CREATE OR REPLACE FUNCTION exampleReplaceFunction AS frame -> frame + 1;
+SELECT create_query FROM system.functions WHERE name = 'exampleReplaceFunction';
+```
+
+Результат:
+
+```text
+┌─create_query─────────────────────────────────────────────┐
+│ CREATE FUNCTION exampleReplaceFunction AS frame -> frame │
+└──────────────────────────────────────────────────────────┘
+
+┌─create_query───────────────────────────────────────────────────┐
+│ CREATE FUNCTION exampleReplaceFunction AS frame -> (frame + 1) │
+└────────────────────────────────────────────────────────────────┘
 ```
 
 

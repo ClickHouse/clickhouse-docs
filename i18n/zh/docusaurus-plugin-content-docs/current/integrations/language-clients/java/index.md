@@ -1,5 +1,6 @@
 ---
 title: 'Java'
+sidebar_position: 1
 keywords: ['clickhouse', 'java', 'jdbc', 'client', 'integrate', 'r2dbc']
 description: '使用 Java 连接 ClickHouse 的选项'
 slug: /integrations/java
@@ -9,6 +10,7 @@ doc_type: 'reference'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+
 
 # Java 客户端概览 {#java-clients-overview}
 
@@ -20,7 +22,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 Java 客户端是一个实现自身 API 的库，用于屏蔽与 ClickHouse 服务器进行网络通信的细节。目前仅支持 HTTP 接口。该库提供了用于处理不同 ClickHouse 格式以及其他相关功能的实用工具。
 
-Java 客户端最早开发于 2015 年，其代码库如今变得非常难以维护，API 设计令人困惑，也难以进一步优化。因此我们在 2024 年将其重构为新的组件 `client-v2`。它具有清晰的 API、更轻量的代码库和更多性能优化，并对 ClickHouse 格式提供了更好的支持（主要是 RowBinary 和 Native）。JDBC 将在不久的将来使用该客户端。  
+Java 客户端最早开发于 2015 年，其代码库如今变得非常难以维护，API 设计令人困惑，也难以进一步优化。因此我们在 2024 年将其重构为新的组件 `client-v2`。它具有清晰的 API、更轻量的代码库和更多性能优化，并对 ClickHouse 格式提供了更好的支持（主要是 RowBinary 和 Native）。JDBC 将在不久的将来使用该客户端。
 
 ### 支持的数据类型 {#supported-data-types}
 
@@ -95,6 +97,7 @@ Java 客户端最早开发于 2015 年，其代码库如今变得非常难以维
 |----------------------------------------------|:---------:|:---------:|:---------:|
 | HTTP Connection                              |✔       |✔      | |
 | HTTP Compression (LZ4)                       |✔       |✔      | |
+| Application Controlled Compression           |✔       |✗      | |
 | Server Response Compression - LZ4            |✔       |✔      | | 
 | Client Request Compression - LZ4             |✔       |✔      | |
 | HTTPS                                        |✔       |✔      | |
@@ -110,6 +113,7 @@ Java 客户端最早开发于 2015 年，其代码库如今变得非常难以维
 | Log Comment                                  |✔       |✔      | |
 | Session Roles                                |✔       |✔      | |
 | SSL Client Authentication                    |✔       |✔      | |
+| SNI Configuration                            |✔       |✗      | |
 | Session timezone                             |✔       |✔      | |
 
 JDBC 驱动继承其底层客户端实现所具备的相同功能。其他 JDBC 功能列在其[页面](/integrations/language-clients/java/jdbc)中。
@@ -132,24 +136,25 @@ JDBC 驱动继承其底层客户端实现所具备的相同功能。其他 JDBC 
     <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
-        <version>2.0.16</version> <!-- 使用最新版本 -->
+        <version>2.0.16</version> <!-- Use the latest version -->
     </dependency>
 
     <!-- Logback Core -->
     <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-core</artifactId>
-        <version>1.5.16</version> <!-- 使用最新版本 -->
+        <version>1.5.16</version> <!-- Use the latest version -->
     </dependency>
 
-    <!-- Logback Classic(桥接 SLF4J 与 Logback)-->
+    <!-- Logback Classic (bridges SLF4J to Logback) -->
     <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
-        <version>1.5.16</version> <!-- 使用最新版本 -->
+        <version>1.5.16</version> <!-- Use the latest version -->
     </dependency>
 </dependencies>
 ```
+
 
 #### 配置日志记录 {#configuring-logging}
 

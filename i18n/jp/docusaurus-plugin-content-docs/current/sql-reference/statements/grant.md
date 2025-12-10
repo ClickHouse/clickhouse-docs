@@ -461,7 +461,7 @@ GRANT INSERT(x,y) ON db.table TO john
 
 ### BACKUP {#backup}
 
-クエリ内で [`BACKUP`] を実行できるようにします。バックアップの詳細については「[Backup and Restore](../../operations/backup.md)」を参照してください。
+クエリ内で [`BACKUP`] を実行できるようにします。バックアップの詳細については「[Backup and Restore](/operations/backup/overview)」を参照してください。
 
 ### CREATE {#create}
 

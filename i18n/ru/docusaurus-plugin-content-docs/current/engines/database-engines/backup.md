@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # Backup {#backup}
 
-База данных Backup позволяет мгновенно подключить таблицу или базу данных из [резервных копий](../../operations/backup) в режиме только для чтения.
+База данных Backup позволяет мгновенно подключить таблицу или базу данных из [резервных копий](/operations/backup/overview) в режиме только для чтения.
 
 База данных Backup работает как с инкрементными, так и с неинкрементными резервными копиями.
 
@@ -20,7 +20,7 @@ CREATE DATABASE backup_database
 ENGINE = Backup('database_name_inside_backup', 'backup_destination')
 ```
 
-Назначением резервной копии может быть любой допустимый [пункт назначения](../../operations/backup#configure-a-backup-destination), например `Disk`, `S3`, `File`.
+Назначением резервной копии может быть любой допустимый [пункт назначения](/operations/backup/disk#configure-backup-destinations-for-disk), например `Disk`, `S3`, `File`.
 
 Если в качестве пункта назначения резервной копии используется `Disk`, запрос на создание базы данных из резервной копии выглядит следующим образом:
 
@@ -33,6 +33,7 @@ ENGINE = Backup('database_name_inside_backup', Disk('disk_name', 'backup_name'))
 
 * `database_name_inside_backup` — Имя базы данных внутри резервной копии.
 * `backup_destination` — Место размещения резервной копии.
+
 
 ## Пример использования {#usage-example}
 
@@ -70,13 +71,13 @@ INSERT INTO test_database.test_table_3 VALUES (0, 'test_database.test_table_3');
 BACKUP DATABASE test_database TO Disk('backups', 'test_database_backup');
 ```
 
-Теперь, когда у нас есть резервная копия `test_database_backup`, создадим резервную копию базы данных:
+Теперь, когда у нас есть резервная копия `test_database_backup`, создадим базу данных из этой резервной копии:
 
 ```sql
 CREATE DATABASE test_database_backup ENGINE = Backup('test_database', Disk('backups', 'test_database_backup'));
 ```
 
-Теперь мы можем выполнять запросы к любым таблицам в базе данных:
+Теперь мы можем выполнять запросы к любым таблицам из базы данных:
 
 ```sql
 SELECT id, value FROM test_database_backup.test_table_1;

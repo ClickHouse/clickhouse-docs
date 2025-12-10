@@ -42,10 +42,10 @@ TypeScript を使用する場合は、[バージョン 4.5 以上](https://www.t
 
 | Node.js version | Supported?      |
 |-----------------|-----------------|
+| 24.x            | ✔               |
 | 22.x            | ✔               |
 | 20.x            | ✔               |
-| 18.x            | ✔               |
-| 16.x            | ベストエフォート |
+| 18.x            | ベストエフォート |
 
 ## 環境要件（Web） {#environment-requirements-web}
 

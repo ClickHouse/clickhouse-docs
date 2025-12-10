@@ -42,10 +42,10 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 | Версия Node.js | Поддерживается? |
 |----------------|-----------------|
+| 24.x           | ✔               |
 | 22.x           | ✔               |
 | 20.x           | ✔               |
-| 18.x           | ✔               |
-| 16.x           | По возможности  |
+| 18.x           | По возможности  |
 
 ## Требования к среде (веб) {#environment-requirements-web}
 

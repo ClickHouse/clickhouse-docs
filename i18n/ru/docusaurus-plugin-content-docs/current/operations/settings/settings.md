@@ -9345,6 +9345,14 @@ a   Tuple(
 
 Задает максимальное значение лимита, при котором может использоваться план запроса для оптимизации ленивой материализации. Если значение равно нулю, лимит отсутствует.
 
+## query_plan_max_limit_for_top_k_optimization {#query_plan_max_limit_for_top_k_optimization} 
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1000"},{"label": "Новая настройка"}]}]}/>
+
+Определяет максимальное значение `LIMIT`, при котором выполняется оценка плана запроса для оптимизации TopK с использованием индекса пропуска minmax и динамической фильтрации по пороговому значению. Если значение равно нулю, ограничение отсутствует.
+
 ## query_plan_max_optimizations_to_apply {#query_plan_max_optimizations_to_apply} 
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
@@ -11249,6 +11257,21 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 - 0 — Отключено.
 - 1 — Включено.
 
+## use_skip_indexes_for_top_k {#use_skip_indexes_for_top_k} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+Включает использование индексов пропуска данных для фильтрации TopK.
+
+При включении, если существует minmax-индекс пропуска данных для столбца в запросе `ORDER BY <column> LIMIT n`, оптимизатор попытается использовать minmax-индекс, чтобы пропустить гранулы, не имеющие отношения к итоговому результату. Это может снизить задержку выполнения запроса.
+
+Возможные значения:
+
+- 0 — Отключено.
+- 1 — Включено.
+
 ## use_skip_indexes_if_final {#use_skip_indexes_if_final} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -11338,6 +11361,21 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Определяет, использовать ли кэш десериализованных списков вхождений текстового индекса.
 Использование кэша списков вхождений текстового индекса может значительно снизить задержку и увеличить пропускную способность при выполнении большого числа запросов по текстовому индексу.
+
+## use_top_k_dynamic_filtering {#use_top_k_dynamic_filtering} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+Включает оптимизацию динамической фильтрации при выполнении запроса `ORDER BY <column> LIMIT n`.
+
+При включении движок выполнения запросов будет пытаться пропускать гранулы и строки, которые не будут частью итоговых `top N` строк в результирующем наборе. Эта оптимизация имеет динамический характер, и уменьшение задержки зависит от распределения данных и наличия других предикатов в запросе.
+
+Возможные значения:
+
+- 0 — Отключено.
+- 1 — Включено.
 
 ## use_uncompressed_cache {#use_uncompressed_cache} 
 

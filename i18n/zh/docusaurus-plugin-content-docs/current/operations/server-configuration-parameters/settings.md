@@ -364,7 +364,7 @@ ClickHouse 服务器用于存储通过 SQL 命令创建的用户和角色配置�
 
 ## 备份 {#backups}
 
-与备份相关的设置，在执行 [`BACKUP` 和 `RESTORE`](../backup.md) 语句时使用。
+与备份相关的设置，在执行 [`BACKUP` 和 `RESTORE`](/operations/backup/overview) 语句时使用。
 
 以下设置可以通过子标签进行配置：
 
@@ -384,12 +384,13 @@ ClickHouse 服务器用于存储通过 SQL 命令创建的用户和角色配置�
     ('min_sleep_before_next_attempt_to_collect_metadata', 'UInt64', '在下一次尝试收集元数据之前的最短休眠时间（毫秒）。', '5000'),
     ('remove_backup_files_after_failure', 'Bool', '如果 `BACKUP` 命令失败，ClickHouse 将尝试删除在失败前已复制到备份中的文件；否则将保留已复制的文件不变。', 'true'),
     ('sync_period_ms', 'UInt64', '协调备份/恢复的同步周期（毫秒）。', '5000'),
-    ('test_inject_sleep', 'Bool', '用于测试的休眠注入控制。', 'false'),
+    ('test_inject_sleep', 'Bool', '测试相关的休眠设置。', 'false'),
     ('test_randomize_order', 'Bool', '如果为 true，则会随机化某些操作的顺序以用于测试。', 'false'),
     ('zookeeper_path', 'String', '使用 `ON CLUSTER` 子句时，在 ZooKeeper 中存储备份和恢复元数据的路径。', '/clickhouse/backups')
   ]) AS t )
   SELECT concat('`', t.1, '`') AS Setting, t.2 AS Type, t.3 AS Description, concat('`', t.4, '`') AS Default FROM settings FORMAT Markdown
   */ }
+
 
 | Setting                                             | Type   | Description                                                    | Default               |
 | :-------------------------------------------------- | :----- | :------------------------------------------------------------- | :-------------------- |
@@ -943,7 +944,7 @@ ZooKeeper 中表的路径。
 
 ## disk_connections_hard_limit {#disk_connections_hard_limit} 
 
-<SettingsInfoBlock type="UInt64" default_value="20000" />如果在创建时达到此限制，将会抛出异常。将其设为 0 可关闭硬性限制。该限制适用于磁盘连接数。
+<SettingsInfoBlock type="UInt64" default_value="200000" />如果在创建时达到此限制，将会抛出异常。将其设为 0 可关闭硬性限制。该限制适用于磁盘连接数。
 
 ## disk_connections_soft_limit {#disk_connections_soft_limit} 
 
@@ -1295,7 +1296,7 @@ HSTS 的有效期（以秒为单位）。
 
 ## http_connections_hard_limit {#http_connections_hard_limit} 
 
-<SettingsInfoBlock type="UInt64" default_value="5000" />当达到此限制时，尝试创建新的 http 连接会抛出异常。将其设置为 0 可关闭此硬限制。该限制适用于不属于任何磁盘或存储的 http 连接。
+<SettingsInfoBlock type="UInt64" default_value="200000" />当达到此限制时，尝试创建新的 http 连接会抛出异常。将其设置为 0 可关闭此硬限制。该限制适用于不属于任何磁盘或存储的 http 连接。
 
 ## http_connections_soft_limit {#http_connections_soft_limit} 
 
@@ -3761,7 +3762,7 @@ Keeper 中带有自增编号的路径，由 `generateSerialID` 函数生成。�
 
 ## storage_connections_hard_limit {#storage_connections_hard_limit} 
 
-<SettingsInfoBlock type="UInt64" default_value="5000" />在达到该限制后，后续的创建尝试会抛出异常。将其设为 0 可关闭硬性限制。此限制适用于存储的连接数。
+<SettingsInfoBlock type="UInt64" default_value="200000" />在达到该限制后，后续的创建尝试会抛出异常。将其设为 0 可关闭硬性限制。此限制适用于存储的连接数。
 
 ## storage_connections_soft_limit {#storage_connections_soft_limit} 
 

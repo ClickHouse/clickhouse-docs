@@ -12,7 +12,7 @@ doc_type: 'reference'
 **语法**
 
 ```sql
-CREATE FUNCTION name [ON CLUSTER cluster] AS (parameter0, ...) -> expression
+CREATE [OR REPLACE] FUNCTION name [ON CLUSTER cluster] AS (parameter0, ...) -> expression
 ```
 
 一个函数可以有任意数量的参数。
@@ -44,7 +44,7 @@ SELECT number, linear_equation(number, 2, 1) FROM numbers(3);
 └────────┴──────────────────────────────┘
 ```
 
-在以下查询中，在用户自定义函数中调用了一个[条件函数](../../../sql-reference/functions/conditional-functions.md)：
+在下面的查询中，在一个用户定义函数中调用了[条件函数](../../../sql-reference/functions/conditional-functions.md)：
 
 ```sql
 CREATE FUNCTION parity_str AS (n) -> if(n % 2, 'odd', 'even');
@@ -59,6 +59,27 @@ SELECT number, parity_str(number) FROM numbers(3);
 │      1 │ odd                                  │
 │      2 │ even                                 │
 └────────┴──────────────────────────────────────┘
+```
+
+替换现有 UDF：
+
+```sql
+CREATE FUNCTION exampleReplaceFunction AS frame -> frame;
+SELECT create_query FROM system.functions WHERE name = 'exampleReplaceFunction';
+CREATE OR REPLACE FUNCTION exampleReplaceFunction AS frame -> frame + 1;
+SELECT create_query FROM system.functions WHERE name = 'exampleReplaceFunction';
+```
+
+结果：
+
+```text
+┌─create_query─────────────────────────────────────────────┐
+│ CREATE FUNCTION exampleReplaceFunction AS frame -> frame │
+└──────────────────────────────────────────────────────────┘
+
+┌─create_query───────────────────────────────────────────────────┐
+│ CREATE FUNCTION exampleReplaceFunction AS frame -> (frame + 1) │
+└────────────────────────────────────────────────────────────────┘
 ```
 
 

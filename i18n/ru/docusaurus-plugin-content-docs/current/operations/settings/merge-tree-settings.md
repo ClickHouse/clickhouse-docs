@@ -544,7 +544,7 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "Новая настройка"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "Добавлена новая настройка для ограничения максимального объёма данных (в байтах) для min_age_to_force_merge."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "Добавлена новая настройка для ограничения максимального объёма данных (в байтах) для min_age_to_force_merge."}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "Новая настройка"}]}]}/>
 
 Определяет, должны ли настройки `min_age_to_force_merge_seconds` и
 `min_age_to_force_merge_on_partition_only` учитывать настройку
@@ -1081,15 +1081,15 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 
 ## max_part_loading_threads {#max_part_loading_threads} 
 
-<SettingsInfoBlock type="MaxThreads" default_value="'auto(1)'" />
+<SettingsInfoBlock type="MaxThreads" default_value="'auto(17)'" />
 
 Устаревшая настройка, не оказывает никакого эффекта.
 
 ## max_part_removal_threads {#max_part_removal_threads} 
 
-<SettingsInfoBlock type="MaxThreads" default_value="'auto(1)'" />
+<SettingsInfoBlock type="MaxThreads" default_value="'auto(17)'" />
 
-Устаревший параметр, не используется.
+Устаревший параметр, не оказывает эффекта.
 
 ## max_partitions_to_read {#max_partitions_to_read} 
 
@@ -1383,6 +1383,16 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 Включает эвристику выбора частей для слияния, которая удаляет части с правой
 границы диапазона, если их размер меньше заданного соотношения (0.01) от sum_size.
 Работает для селекторов слияний Simple и StochasticSimple.
+
+## merge_selector_heuristic_to_lower_max_parts_to_merge_at_once_exponent {#merge_selector_heuristic_to_lower_max_parts_to_merge_at_once_exponent} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="UInt64" default_value="5" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "5"},{"label": "New setting"}]}]}/>
+
+Управляет значением показателя степени, используемым в формулах, описывающих нисходящую кривую. Уменьшение показателя степени приведёт к уменьшению ширины слияний, что увеличит коэффициент усиления записи. Обратное также верно.
 
 ## merge_selector_window_size {#merge_selector_window_size} 
 

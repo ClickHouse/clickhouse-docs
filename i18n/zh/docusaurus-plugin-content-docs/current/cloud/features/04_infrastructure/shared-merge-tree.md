@@ -3,7 +3,7 @@ slug: /cloud/reference/shared-merge-tree
 sidebar_label: 'SharedMergeTree'
 title: 'SharedMergeTree'
 keywords: ['SharedMergeTree']
-description: 'SharedMergeTree 表引擎说明'
+description: '描述 SharedMergeTree 表引擎'
 doc_type: 'reference'
 ---
 
@@ -11,9 +11,10 @@ import shared_merge_tree from '@site/static/images/cloud/reference/shared-merge-
 import shared_merge_tree_2 from '@site/static/images/cloud/reference/shared-merge-tree-2.png';
 import Image from '@theme/IdealImage';
 
+
 # SharedMergeTree 表引擎 {#sharedmergetree-table-engine}
 
-SharedMergeTree 表引擎系列是面向云环境、用于替代 ReplicatedMergeTree 引擎的解决方案，并针对在共享存储之上运行进行了优化（例如 Amazon S3、Google Cloud Storage、MinIO、Azure Blob Storage）。每一种具体的 MergeTree 引擎类型都有对应的 SharedMergeTree 变体，例如 ReplacingSharedMergeTree 用来替代 ReplacingReplicatedMergeTree。
+SharedMergeTree 表引擎系列是面向云环境、用于替代 ReplicatedMergeTree 引擎的解决方案，并针对在共享存储之上运行进行了优化（例如 Amazon S3、Google Cloud Storage、MinIO、Azure Blob Storage）。每一种具体的 MergeTree 引擎类型都有对应的 SharedMergeTree 变体，例如 SharedReplacingMergeTree 用来替代 ReplicatedReplacingMergeTree。
 
 SharedMergeTree 表引擎系列是 ClickHouse Cloud 的核心存储引擎。对最终用户而言，无需进行任何更改，就可以开始使用 SharedMergeTree 引擎系列来替代基于 ReplicatedMergeTree 的引擎。它提供了以下额外优势：
 
@@ -39,7 +40,7 @@ SharedMergeTree 带来的一个重要改进是：相比 ReplicatedMergeTree，�
 
 **system.virtual_parts**
 
-此表在 SharedMergeTree 中作为 `system.replication_queue` 的替代表。它存储最近一组当前部件的信息，以及正在进行中的未来部件，例如合并（merge）、变更（mutation）和被删除的分区。
+此表在 SharedMergeTree 中作为 `system.replication_queue` 的替代表。它存储最近一组当前分区片段的信息，以及正在进行中的、即将生成的分区片段的信息，例如合并（merge）、变更（mutation）和被删除的分区。
 
 **system.shared_merge_tree_fetches**
 
@@ -72,7 +73,7 @@ CREATE TABLE my_table(
 ORDER BY key
 ```
 
-如果你使用 ReplacingMergeTree、CollapsingMergeTree、AggregatingMergeTree、SummingMergeTree、VersionedCollapsingMergeTree 或 GraphiteMergeTree 表，它们会自动转换为相应的 SharedMergeTree 系列表引擎。
+如果您使用 ReplacingMergeTree、CollapsingMergeTree、AggregatingMergeTree、SummingMergeTree、VersionedCollapsingMergeTree 或 GraphiteMergeTree 表，它们会自动转换为相应的 SharedMergeTree 系列表引擎。
 
 ```sql
 CREATE TABLE myFirstReplacingMT
@@ -98,13 +99,14 @@ ENGINE = SharedReplacingMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica
 ORDER BY key
 ```
 
+
 ## 设置 {#settings}
 
 某些设置的行为发生了显著变化：
 
 - `insert_quorum` -- 所有对 SharedMergeTree 的插入都是 quorum 插入（写入到共享存储），因此在使用 SharedMergeTree 表引擎时无需配置该设置。
 - `insert_quorum_parallel` -- 所有对 SharedMergeTree 的插入都是 quorum 插入（写入到共享存储），因此在使用 SharedMergeTree 表引擎时无需配置该设置。
-- `select_sequential_consistency` -- 不要求使用 quorum 插入，但会在执行 `SELECT` 查询时给 clickhouse-keeper 带来额外负载
+- `select_sequential_consistency` -- 不要求使用 quorum 插入，但会在执行 `SELECT` 查询时给 clickhouse-keeper 带来额外负载。
 
 ## 一致性 {#consistency}
 

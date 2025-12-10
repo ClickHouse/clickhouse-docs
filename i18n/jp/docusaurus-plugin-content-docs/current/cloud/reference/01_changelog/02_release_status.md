@@ -42,11 +42,12 @@ Enterprise ティアのサービスでは、すべてのリリースチャネル
    {
     changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',
     version: '25.10',
-    fast_date: '2025-12-09',
+    fast_date: '2025-12-11',
     regular_date: '2026-01-05',
     slow_date: 'TBD',
-    fast_progress: 'green',
+    fast_progress: 'orange',
     regular_progress: 'green',
-    slow_progress: 'green'
+    slow_progress: 'green',
+    fast_delay_note: '社内テストで検出された問題を解消するため延期されました。',
   }
 ]} />

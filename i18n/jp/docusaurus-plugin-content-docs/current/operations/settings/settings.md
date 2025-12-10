@@ -9313,6 +9313,14 @@ Possible values:
 
 遅延マテリアライゼーション最適化でクエリプランを使用できる最大値を制御します。0 の場合、上限はありません。
 
+## query_plan_max_limit_for_top_k_optimization {#query_plan_max_limit_for_top_k_optimization} 
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1000"},{"label": "新しい設定"}]}]}/>
+
+minmax skip 索引と動的しきい値フィルタリングを使用して TopK 最適化のためのクエリプランを評価できる最大の LIMIT 値を制御します。0 を指定すると制限はありません。
+
 ## query_plan_max_optimizations_to_apply {#query_plan_max_optimizations_to_apply} 
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
@@ -11212,6 +11220,21 @@ AND と OR が混在する WHERE 句の条件を、skip 索引を用いて評価
 - 0 — 無効。
 - 1 — 有効。
 
+## use_skip_indexes_for_top_k {#use_skip_indexes_for_top_k} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+TopK フィルタリングのためにデータスキッピングインデックスを使用できるようにします。
+
+有効にすると、`ORDER BY <column> LIMIT n` クエリのカラムに minmax データスキッピングインデックスが存在する場合、オプティマイザは最終結果に関係しないグラニュールをスキップするためにそのインデックスを使用しようとします。これにより、クエリのレイテンシを低減できる可能性があります。
+
+設定値:
+
+- 0 — 無効。
+- 1 — 有効。
+
 ## use_skip_indexes_if_final {#use_skip_indexes_if_final} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -11301,6 +11324,21 @@ AND と OR が混在する WHERE 句の条件を、skip 索引を用いて評価
 
 テキスト索引ポスティングリストのデシリアライズ結果をキャッシュとして使用するかどうかを制御します。
 text index postings cache を有効にすると、大量のテキスト索引クエリを処理する際のレイテンシを大幅に削減し、スループットを向上させることができます。
+
+## use_top_k_dynamic_filtering {#use_top_k_dynamic_filtering} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+`ORDER BY <column> LIMIT n` クエリを実行する際に、動的フィルタリングの最適化を有効にします。
+
+有効にすると、クエリエグゼキュータは、結果セットの最終的な `top N` 行には含まれないグラニュールおよび行をスキップしようとします。この最適化は動的な性質を持ち、レイテンシ改善の度合いはデータ分布およびクエリ内に存在する他の述語に依存します。
+
+取り得る値:
+
+- 0 — 無効。
+- 1 — 有効。
 
 ## use_uncompressed_cache {#use_uncompressed_cache} 
 

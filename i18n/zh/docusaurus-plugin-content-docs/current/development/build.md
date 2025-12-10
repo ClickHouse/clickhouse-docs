@@ -87,12 +87,12 @@ cd build
 可选：如果你安装了多个编译器版本，可以指定要使用的具体编译器。
 
 ```sh
-export CC=clang-19
-export CXX=clang++-19
+export CC=clang-21
+export CXX=clang++-21
 ```
 
-出于开发环境的需求，建议使用调试构建（debug builds）。
-与发布构建（release builds）相比，它们使用更低级别的编译器优化级别（`-O`），从而提供更好的调试体验。
+出于开发目的，推荐使用调试构建（debug builds）。
+与发布构建（release builds）相比，它们使用更低的编译器优化级别（`-O`），从而带来更好的调试体验。
 此外，类型为 `LOGICAL_ERROR` 的内部异常会立即导致崩溃，而不会被优雅地捕获和处理。
 
 ```sh
@@ -115,7 +115,7 @@ ninja clickhouse
 ninja
 ```
 
-你可以使用参数 `-j` 来控制并行构建作业的数量：
+你可以使用参数 `-j` 来控制并行构建任务的数量：
 
 ```sh
 ninja -j 1 clickhouse-server clickhouse-client
@@ -125,11 +125,12 @@ ninja -j 1 clickhouse-server clickhouse-client
 CMake 为这些命令提供了快捷方式：
 
 ```sh
-cmake -S . -B build  # 配置构建，从代码仓库顶层目录运行
-cmake --build build  # 编译
+cmake -S . -B build  # configure build, run from repository top-level directory
+cmake --build build  # compile
 ```
 
 :::
+
 
 ## 运行 ClickHouse 可执行文件 {#running-the-clickhouse-executable}
 
