@@ -6,7 +6,7 @@ sidebar_position: 1
 title: 'Integrating Google Cloud Storage with ClickHouse Cloud'
 ---
 
-import cp_iam from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/cp_iam.png';
+import cp_iam from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_iam.png';
 import cp_credentials from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/cp_credentials.png';
 import Image from '@theme/IdealImage';
 
