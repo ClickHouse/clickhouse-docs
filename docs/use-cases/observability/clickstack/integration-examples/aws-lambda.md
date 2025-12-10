@@ -13,8 +13,11 @@ import Image from '@theme/IdealImage';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import log_view from '@site/static/images/clickstack/lambda/lambda-log-view.png';
 import log from '@site/static/images/clickstack/lambda/lambda-log.png';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 # Monitoring AWS Lambda Logs with ClickStack using Rotel {#lambda-clickstack}
+
+<CommunityMaintainedBadge/>
 
 :::note[TL;DR]
 This guide shows you how to monitor AWS Lambda functions with ClickStack by using the Rotel Lambda Extension to collect and forward function logs, extension logs, and OpenTelemetry data directly to ClickHouse. You'll learn how to:
