@@ -26,3 +26,4 @@ ClickStack は、オブザーバビリティデータを ClickHouse インスタ
 | [PostgreSQL Metrics](/use-cases/observability/clickstack/integrations/postgresql-metrics) | PostgreSQL メトリクス向けクイックスタートガイド |
 | [Redis Logs](/use-cases/observability/clickstack/integrations/redis) | Redis ログ向けクイックスタートガイド |
 | [Redis Metrics](/use-cases/observability/clickstack/integrations/redis-metrics) | Redis メトリクス向けクイックスタートガイド |
+| [AWS Lambda Logs using Rotel](/use-cases/observability/clickstack/integrations/aws-lambda) | Rotel を利用した AWS Lambda ログ向けクイックスタートガイド |

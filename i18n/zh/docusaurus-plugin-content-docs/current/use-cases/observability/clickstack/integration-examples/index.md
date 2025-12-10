@@ -26,3 +26,4 @@ ClickStack 提供多种方式，将可观测性数据摄取到 ClickHouse 实例
 | [PostgreSQL Metrics](/use-cases/observability/clickstack/integrations/postgresql-metrics) | PostgreSQL 指标快速入门指南 |
 | [Redis Logs](/use-cases/observability/clickstack/integrations/redis) | Redis 日志快速入门指南 |
 | [Redis Metrics](/use-cases/observability/clickstack/integrations/redis-metrics) | Redis 指标快速入门指南 |
+| [AWS Lambda Logs using Rotel](/use-cases/observability/clickstack/integrations/aws-lambda) | 使用 Rotel 的 AWS Lambda 日志快速入门指南 |

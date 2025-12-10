@@ -9367,6 +9367,21 @@ EXPLAIN PLAN 中步骤描述的最大长度。
 
 允许在查询计划中合并过滤条件。
 
+## query_plan_optimize_join_order_algorithm {#query_plan_optimize_join_order_algorithm} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="JoinOrderAlgorithm" default_value="greedy" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "greedy"},{"label": "New experimental setting."}]}]}/>
+
+指定在查询计划优化期间要尝试的 JOIN 顺序算法。可用的算法如下：
+
+- 'greedy' - 基本的贪心算法，执行速度快，但可能无法产生最优的 JOIN 顺序
+- 'dpsize' - 实现 DPsize 算法，目前仅适用于 INNER JOIN，会考虑所有可能的 JOIN 顺序并找到最优的那个，但对于包含许多表和 JOIN 谓词的查询可能会较慢。
+
+可以指定多个算法，例如 'dpsize,greedy'。
+
 ## query_plan_optimize_join_order_limit {#query_plan_optimize_join_order_limit} 
 
 <SettingsInfoBlock type="UInt64" default_value="10" />

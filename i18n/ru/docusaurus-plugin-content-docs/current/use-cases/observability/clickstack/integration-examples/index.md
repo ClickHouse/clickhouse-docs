@@ -26,3 +26,4 @@ ClickStack предоставляет несколько способов при
 | [PostgreSQL Metrics](/use-cases/observability/clickstack/integrations/postgresql-metrics) | Краткое руководство по метрикам PostgreSQL |
 | [Redis Logs](/use-cases/observability/clickstack/integrations/redis) | Краткое руководство по логам Redis |
 | [Redis Metrics](/use-cases/observability/clickstack/integrations/redis-metrics) | Краткое руководство по метрикам Redis |
+| [AWS Lambda Logs using Rotel](/use-cases/observability/clickstack/integrations/aws-lambda) | Краткое руководство по логам AWS Lambda с использованием Rotel |

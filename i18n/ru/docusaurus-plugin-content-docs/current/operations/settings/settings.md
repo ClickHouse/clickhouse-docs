@@ -9406,6 +9406,21 @@ a   Tuple(
 
 Разрешить объединение фильтров в плане запроса.
 
+## query_plan_optimize_join_order_algorithm {#query_plan_optimize_join_order_algorithm} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="JoinOrderAlgorithm" default_value="greedy" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "greedy"},{"label": "Новая экспериментальная настройка."}]}]}/>
+
+Определяет, какие алгоритмы выбора порядка JOIN следует пробовать при оптимизации плана запроса. Доступны следующие алгоритмы:
+
+- 'greedy' — базовый жадный алгоритм, работает быстро, но может не дать наилучший порядок соединения;
+- 'dpsize' — реализует алгоритм DPsize (в данный момент только для INNER JOIN); рассматривает все возможные порядки соединения и находит оптимальный, но может работать медленно для запросов с большим количеством таблиц и предикатов соединения.
+
+Можно указать несколько алгоритмов, например: 'dpsize,greedy'.
+
 ## query_plan_optimize_join_order_limit {#query_plan_optimize_join_order_limit} 
 
 <SettingsInfoBlock type="UInt64" default_value="10" />

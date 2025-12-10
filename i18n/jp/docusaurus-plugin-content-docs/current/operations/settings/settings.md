@@ -9374,6 +9374,20 @@ EXPLAIN PLAN におけるステップの説明文の最大長さ。
 
 クエリプラン内のフィルタのマージを許可します。
 
+## query_plan_optimize_join_order_algorithm {#query_plan_optimize_join_order_algorithm} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="JoinOrderAlgorithm" default_value="greedy" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "greedy"},{"label": "New experimental setting."}]}]}/>
+
+クエリプランの最適化時に試行する JOIN 順序アルゴリズムを指定します。利用可能なアルゴリズムは次のとおりです:
+
+- 'greedy' - 基本的な貪欲法アルゴリズムです。高速に動作しますが、常に最適な JOIN 順序を生成できるとは限りません。
+ - 'dpsize' - 現在は Inner join に対してのみ有効な DPsize アルゴリズムです。考えられるすべての JOIN 順序を考慮して最適なものを選択しますが、多数のテーブルや JOIN 述語を含むクエリでは遅くなる可能性があります。
+複数のアルゴリズムを指定できます (例: 'dpsize,greedy')。
+
 ## query_plan_optimize_join_order_limit {#query_plan_optimize_join_order_limit} 
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
