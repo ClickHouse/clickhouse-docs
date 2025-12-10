@@ -23,11 +23,11 @@ Organizations must have one administrative user with an alternate authentication
 
 ### Enable invitations {#enable-invitations}
 
-Log in to [ClickHouse Cloud](https://console.clickhouse.cloud) and ubmit a support ticket with the subject `Enable invitations for SAML organization`. This is to request the ability to add users using a method other than SAML.
+Log in to [ClickHouse Cloud](https://console.clickhouse.cloud) and submit a support ticket with the subject `Enable invitations for SAML organization`. This is to request the ability to add users using a method other than SAML.
 
 ### Note users to be re-invited {#note-users-to-be-reinvited}
 
-Click the organization name on the bottom left, then select Users and roles. Review the `Provider` column for each user; any users showing `Signed in with SSO` will need to be re-invited back to the organization after SAML is removed.
+Click the organization name on the bottom left, then select `Users and Roles`. Review the `Provider` column for each user; any users showing `Signed in with SSO` will need to be re-invited back to the organization after SAML is removed.
 
 Ensure users are aware they need to accept the new invitations before accessing the account once SAML is removed.
 
@@ -39,7 +39,7 @@ Ensure users are aware they need to accept the new invitations before accessing 
 
 ### Invite users {#invite-users}
 
-Click the organization name on the bottom left, then select Users and Roles. Follow the instructions to [Invite users](/cloud/security/manage-cloud-users#invite-users). 
+Click the organization name on the bottom left, then select `Users and Roles`. Follow the instructions to [Invite users](/cloud/security/manage-cloud-users#invite-users). 
 
 ### Users accept the invitation {#accept-invitation}
 
