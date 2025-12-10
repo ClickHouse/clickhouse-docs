@@ -1691,7 +1691,9 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 
 ## check_query_single_value_result {#check_query_single_value_result} 
 
-<SettingsInfoBlock type="Bool" default_value="1" />
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "Изменён параметр, чтобы сделать команду CHECK TABLE более полезной"}]}]}/>
 
 Определяет уровень детализации результата выполнения запроса [CHECK TABLE](/sql-reference/statements/check-table) для движков семейства `MergeTree`.
 
@@ -9405,6 +9407,21 @@ a   Tuple(
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "Разрешить объединение фильтров в плане запроса"}]}, {"id": "row-2","items": [{"label": "24.11"},{"label": "1"},{"label": "Разрешить объединение фильтров в плане запроса. Это необходимо для корректной поддержки механизма filter-push-down новым анализатором."}]}]}/>
 
 Разрешить объединение фильтров в плане запроса.
+
+## query_plan_optimize_join_order_algorithm {#query_plan_optimize_join_order_algorithm} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="JoinOrderAlgorithm" default_value="greedy" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "greedy"},{"label": "Новая экспериментальная настройка."}]}]}/>
+
+Определяет, какие алгоритмы выбора порядка JOIN следует пробовать при оптимизации плана запроса. Доступны следующие алгоритмы:
+
+- 'greedy' — базовый жадный алгоритм, работает быстро, но может не дать наилучший порядок соединения;
+- 'dpsize' — реализует алгоритм DPsize (в данный момент только для INNER JOIN); рассматривает все возможные порядки соединения и находит оптимальный, но может работать медленно для запросов с большим количеством таблиц и предикатов соединения.
+
+Можно указать несколько алгоритмов, например: 'dpsize,greedy'.
 
 ## query_plan_optimize_join_order_limit {#query_plan_optimize_join_order_limit} 
 

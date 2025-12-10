@@ -1689,7 +1689,9 @@ String から Variant への変換時に型推論を行います。
 
 ## check_query_single_value_result {#check_query_single_value_result} 
 
-<SettingsInfoBlock type="Bool" default_value="1" />
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "CHECK TABLE をより有用にするために設定を変更"}]}]}/>
 
 `MergeTree` ファミリーのエンジンに対する [CHECK TABLE](/sql-reference/statements/check-table) クエリ結果の詳細レベルを定義します。
 
@@ -9373,6 +9375,20 @@ EXPLAIN PLAN におけるステップの説明文の最大長さ。
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "クエリプラン内のフィルタのマージを許可します"}]}, {"id": "row-2","items": [{"label": "24.11"},{"label": "1"},{"label": "クエリプラン内のフィルタのマージを許可します。これは、新しいアナライザでのフィルタプッシュダウンを正しくサポートするために必要です。"}]}]}/>
 
 クエリプラン内のフィルタのマージを許可します。
+
+## query_plan_optimize_join_order_algorithm {#query_plan_optimize_join_order_algorithm} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="JoinOrderAlgorithm" default_value="greedy" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "greedy"},{"label": "New experimental setting."}]}]}/>
+
+クエリプランの最適化時に試行する JOIN 順序アルゴリズムを指定します。利用可能なアルゴリズムは次のとおりです:
+
+- 'greedy' - 基本的な貪欲法アルゴリズムです。高速に動作しますが、常に最適な JOIN 順序を生成できるとは限りません。
+ - 'dpsize' - 現在は Inner join に対してのみ有効な DPsize アルゴリズムです。考えられるすべての JOIN 順序を考慮して最適なものを選択しますが、多数のテーブルや JOIN 述語を含むクエリでは遅くなる可能性があります。
+複数のアルゴリズムを指定できます (例: 'dpsize,greedy')。
 
 ## query_plan_optimize_join_order_limit {#query_plan_optimize_join_order_limit} 
 

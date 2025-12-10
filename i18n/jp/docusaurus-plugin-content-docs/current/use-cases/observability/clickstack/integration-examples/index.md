@@ -16,13 +16,15 @@ ClickStack は、オブザーバビリティデータを ClickHouse インスタ
 
 | Section | Description |
 |------|-------------|
-| [Generic Host Logs](/use-cases/observability/clickstack/integrations/host-logs) | Generic Host Logs 向けクイックスタートガイド |
-| [EC2 Host Logs](/use-cases/observability/clickstack/integrations/host-logs/ec2) | EC2 Host Logs 向けクイックスタートガイド |
-| [Kafka Metrics](/use-cases/observability/clickstack/integrations/kafka-metrics) | Kafka メトリクス向けクイックスタートガイド |
-| [Kubernetes](/use-cases/observability/clickstack/integrations/kubernetes) | Kubernetes 向けクイックスタートガイド |
-| [Nginx Logs](/use-cases/observability/clickstack/integrations/nginx) | Nginx ログ向けクイックスタートガイド |
-| [Nginx Traces](/use-cases/observability/clickstack/integrations/nginx-traces) | Nginx トレース向けクイックスタートガイド |
-| [PostgreSQL Logs](/use-cases/observability/clickstack/integrations/postgresql-logs) | PostgreSQL ログ向けクイックスタートガイド |
-| [PostgreSQL Metrics](/use-cases/observability/clickstack/integrations/postgresql-metrics) | PostgreSQL メトリクス向けクイックスタートガイド |
-| [Redis Logs](/use-cases/observability/clickstack/integrations/redis) | Redis ログ向けクイックスタートガイド |
-| [Redis Metrics](/use-cases/observability/clickstack/integrations/redis-metrics) | Redis メトリクス向けクイックスタートガイド |
+| [Generic Host Logs](/use-cases/observability/clickstack/integrations/host-logs) | ホストシステムのログを収集する |
+| [EC2 Host Logs](/use-cases/observability/clickstack/integrations/host-logs/ec2) | EC2 インスタンスのログを監視する |
+| [AWS Lambda Logs using Rotel](/use-cases/observability/clickstack/integrations/aws-lambda) | Rotel で Lambda ログを転送する |
+| [AWS CloudWatch](/use-cases/observability/clickstack/integrations/aws-cloudwatch-logs) | CloudWatch のロググループを転送する |
+| [Kafka Metrics](/use-cases/observability/clickstack/integrations/kafka-metrics) | Kafka のパフォーマンスを監視する |
+| [Kubernetes](/use-cases/observability/clickstack/integrations/kubernetes) | K8s クラスターを監視する |
+| [Nginx Logs](/use-cases/observability/clickstack/integrations/nginx) | Nginx のアクセス/エラーログを収集する |
+| [Nginx Traces](/use-cases/observability/clickstack/integrations/nginx-traces) | Nginx の HTTP リクエストをトレースする |
+| [PostgreSQL Logs](/use-cases/observability/clickstack/integrations/postgresql-logs) | Postgres ログを収集する |
+| [PostgreSQL Metrics](/use-cases/observability/clickstack/integrations/postgresql-metrics) | Postgres のパフォーマンスを監視する |
+| [Redis Logs](/use-cases/observability/clickstack/integrations/redis) | Redis サーバーログを収集する |
+| [Redis Metrics](/use-cases/observability/clickstack/integrations/redis-metrics) | Redis のパフォーマンスを監視する |

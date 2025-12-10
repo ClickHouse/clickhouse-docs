@@ -16,13 +16,15 @@ ClickStack 提供多种方式，将可观测性数据摄取到 ClickHouse 实例
 
 | 部分 | 描述 |
 |------|-------------|
-| [Generic Host Logs](/use-cases/observability/clickstack/integrations/host-logs) | Generic Host Logs 快速入门指南 |
-| [EC2 Host Logs](/use-cases/observability/clickstack/integrations/host-logs/ec2) | EC2 Host Logs 快速入门指南 |
-| [Kafka Metrics](/use-cases/observability/clickstack/integrations/kafka-metrics) | Kafka 指标快速入门指南 |
-| [Kubernetes](/use-cases/observability/clickstack/integrations/kubernetes) | Kubernetes 快速入门指南 |
-| [Nginx Logs](/use-cases/observability/clickstack/integrations/nginx) | Nginx 日志快速入门指南 |
-| [Nginx Traces](/use-cases/observability/clickstack/integrations/nginx-traces) | Nginx 链路追踪快速入门指南 |
-| [PostgreSQL Logs](/use-cases/observability/clickstack/integrations/postgresql-logs) | PostgreSQL 日志快速入门指南 |
-| [PostgreSQL Metrics](/use-cases/observability/clickstack/integrations/postgresql-metrics) | PostgreSQL 指标快速入门指南 |
-| [Redis Logs](/use-cases/observability/clickstack/integrations/redis) | Redis 日志快速入门指南 |
-| [Redis Metrics](/use-cases/observability/clickstack/integrations/redis-metrics) | Redis 指标快速入门指南 |
+| [Generic Host Logs](/use-cases/observability/clickstack/integrations/host-logs) | 收集主机系统日志 |
+| [EC2 Host Logs](/use-cases/observability/clickstack/integrations/host-logs/ec2) | 监控 EC2 实例日志 |
+| [AWS Lambda Logs using Rotel](/use-cases/observability/clickstack/integrations/aws-lambda) | 使用 Rotel 转发 Lambda 日志 |
+| [AWS CloudWatch](/use-cases/observability/clickstack/integrations/aws-cloudwatch-logs) | 转发 CloudWatch 日志组 |
+| [Kafka Metrics](/use-cases/observability/clickstack/integrations/kafka-metrics) | 监控 Kafka 性能 |
+| [Kubernetes](/use-cases/observability/clickstack/integrations/kubernetes) | 监控 K8s 集群 |
+| [Nginx Logs](/use-cases/observability/clickstack/integrations/nginx) | 收集 Nginx 访问/错误日志 |
+| [Nginx Traces](/use-cases/observability/clickstack/integrations/nginx-traces) | 追踪 Nginx HTTP 请求 |
+| [PostgreSQL Logs](/use-cases/observability/clickstack/integrations/postgresql-logs) | 收集 Postgres 日志 |
+| [PostgreSQL Metrics](/use-cases/observability/clickstack/integrations/postgresql-metrics) | 监控 Postgres 性能 |
+| [Redis Logs](/use-cases/observability/clickstack/integrations/redis) | 收集 Redis 服务器日志 |
+| [Redis Metrics](/use-cases/observability/clickstack/integrations/redis-metrics) | 监控 Redis 性能 |

@@ -30,7 +30,7 @@ CHECK TABLE table_name [PARTITION partition_expression | PART part_name] [FORMAT
 * `part_name`：（可选）如果要检查表中的某个特定数据分片，可以添加字符串字面量来指定分片名称。
 * `FORMAT format`：（可选）用于指定结果的输出格式。
 * `SETTINGS`：（可选）用于设置附加参数。
-  * **`check_query_single_value_result`**：（可选）该设置允许你在详细结果（`0`）和汇总结果（`1`）之间切换。
+  * （可选）：[check&#95;query&#95;single&#95;value&#95;result](../../operations/settings/settings#check_query_single_value_result)：该设置控制输出是详细结果（`0`）还是汇总结果（`1`）。
   * 也可以应用其他设置。如果你不需要结果具有确定性的顺序，可以将 `max_threads` 设为大于 1 的值以加快查询速度。
 
 查询的响应结果取决于 `check_query_single_value_result` 设置的取值。
@@ -39,8 +39,8 @@ CHECK TABLE table_name [PARTITION partition_expression | PART part_name] [FORMAT
 当 `check_query_single_value_result = 0` 时，查询会返回以下列：
 
 * `part_path`：表示数据分片的路径或文件名。
-* `is_passed`：如果该分片的检查成功则返回 1，否则返回 0。
-* `message`：与检查相关的任何附加消息，例如错误或成功消息。
+  * `is_passed`：如果该分片的检查成功则返回 1，否则返回 0。
+  * `message`：与检查相关的任何附加消息，例如错误或成功消息。
 
 `CHECK TABLE` 查询支持以下表引擎：
 
@@ -52,6 +52,7 @@ CHECK TABLE table_name [PARTITION partition_expression | PART part_name] [FORMAT
 在使用其他表引擎的表上执行该查询会引发 `NOT_IMPLEMENTED` 异常。
 
 `*Log` 家族中的引擎在发生故障时不提供自动数据恢复。使用 `CHECK TABLE` 查询来及时跟踪数据丢失情况。
+
 
 ## 示例 {#examples}
 
@@ -86,7 +87,7 @@ SETTINGS check_query_single_value_result = 0
 └──────────────┴───────────┴─────────┘
 ```
 
-同样，你可以使用 `PART` 关键字来检查表的特定部件。
+同样，你可以使用 `PART` 关键字来检查表中的特定数据分片。
 
 ```sql
 CHECK TABLE t0 PART '201003_7_7_0'
@@ -102,23 +103,24 @@ SETTINGS check_query_single_value_result = 0
 └──────────────┴───────────┴─────────┘
 ```
 
-请注意，如果该 part 不存在，查询将返回错误：
+请注意，如果该 part 不存在，查询将报错：
 
 ```sql
 CHECK TABLE t0 PART '201003_111_222_0'
 ```
 
 ```text
-DB::Exception: 表 'default.t0' 中不存在要检查的数据分区 '201003_111_222_0'。(NO_SUCH_DATA_PART)
+DB::Exception: No such data part '201003_111_222_0' to check in table 'default.t0'. (NO_SUCH_DATA_PART)
 ```
+
 
 ### 遇到“Corrupted”结果 {#receiving-a-corrupted-result}
 
 :::warning
-免责声明：此处描述的操作流程（包括直接在数据目录中手动修改或删除文件）仅适用于实验或开发环境。**不要**在生产服务器上尝试此操作，否则可能导致数据丢失或其他意外后果。
+免责声明：此处描述的操作步骤（包括直接在数据目录中手动修改或删除文件）仅适用于实验或开发环境。**不要**在生产服务器上尝试此操作，否则可能导致数据丢失或其他意外后果。
 :::
 
-删除现有的校验文件：
+删除现有的校验和文件：
 
 ```bash
 rm /var/lib/clickhouse-server/data/default/t0/201003_3_3_0/checksums.txt
@@ -130,7 +132,7 @@ FORMAT PrettyCompactMonoBlock
 SETTINGS check_query_single_value_result = 0
 
 
-输出:
+Output:
 
 ```text
 ┌─part_path────┬─is_passed─┬─message──────────────────────────────────┐
@@ -139,7 +141,7 @@ SETTINGS check_query_single_value_result = 0
 └──────────────┴───────────┴──────────────────────────────────────────┘
 ````
 
-如果缺少 `checksums.txt` 文件，可以将其恢复。它会在针对特定分区执行 `CHECK TABLE` 命令时被重新计算并重写，且状态仍将报告为 &#39;is&#95;passed = 1&#39;。
+如果缺少 `checksums.txt` 文件，可以恢复该文件。它会在针对特定分区执行 `CHECK TABLE` 命令时被重新计算并写回磁盘，且状态仍将报告为 `is_passed = 1`。
 
 可以通过使用 `CHECK ALL TABLES` 查询一次性检查所有现有的 `(Replicated)MergeTree` 表。
 
@@ -163,6 +165,7 @@ SETTINGS check_query_single_value_result = 0
 │ default  │ t1       │ all_7_38_2  │         1 │         │
 └──────────┴──────────┴─────────────┴───────────┴─────────┘
 ```
+
 
 ## 如果数据已损坏 {#if-the-data-is-corrupted}
 
