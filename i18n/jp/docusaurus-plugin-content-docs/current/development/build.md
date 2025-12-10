@@ -87,8 +87,8 @@ cd build
 オプション: 複数のコンパイラバージョンがインストールされている場合、使用するコンパイラを明示的に指定することもできます。
 
 ```sh
-export CC=clang-19
-export CXX=clang++-19
+export CC=clang-21
+export CXX=clang++-21
 ```
 
 開発用途には、`debug` ビルドの使用を推奨します。
@@ -109,7 +109,7 @@ gdb のようなデバッガを使用したい場合は、上記のコマンド�
 ninja clickhouse
 ```
 
-すべてのバイナリ（ユーティリティおよびテスト）をビルドするには、引数を付けずに `ninja` を実行します。
+すべてのバイナリ（ユーティリティおよびテスト）をビルドするには、引数を指定せずに `ninja` を実行します。
 
 ```sh
 ninja
@@ -122,14 +122,15 @@ ninja -j 1 clickhouse-server clickhouse-client
 ```
 
 :::tip
-CMake には、上記のコマンドを簡略化するショートカットが用意されています:
+CMake には、上記のコマンドを簡略化するためのショートカットが用意されています：
 
 ```sh
-cmake -S . -B build  # ビルドを構成します。リポジトリのトップレベルディレクトリから実行してください
-cmake --build build  # コンパイルします
+cmake -S . -B build  # configure build, run from repository top-level directory
+cmake --build build  # compile
 ```
 
 :::
+
 
 ## ClickHouse 実行ファイルの起動 {#running-the-clickhouse-executable}
 
