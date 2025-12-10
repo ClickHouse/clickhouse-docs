@@ -1,6 +1,6 @@
 import Image from '@theme/IdealImage';
 import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png';
-import cp_step2 from '@site/static/images/integrations/data-ingestion/clickpipes/amazon-s3/cp_step2.png';
+import cp_step2 from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_step2.png';
 import cp_step3_object_storage from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step3_object_storage.png';
 import cp_step4a from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step4a.png';
 import cp_step4a3 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step4a3.png';
