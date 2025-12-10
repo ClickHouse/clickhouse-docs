@@ -52,10 +52,14 @@ This section covers configuring the OpenTelemetry Collector to pull logs from yo
 If you would like to test the integration before configuring your production setup, you can test with our demo dataset in the [demo dataset section](#demo-dataset).
 
 ### Prerequisites {#prerequisites}
+
 - ClickStack instance running
 - AWS account with CloudWatch log groups
 - AWS credentials with appropriate IAM permissions
-- Docker installed (for running the OpenTelemetry Collector)
+
+:::note
+Unlike file-based log integrations (nginx, Redis), CloudWatch requires running a separate OpenTelemetry Collector that polls the CloudWatch API. This collector cannot run inside ClickStack's all-in-one image as it needs AWS credentials and API access.
+:::
 
 <VerticalStepper headerLevel="h4">
 
@@ -473,3 +477,9 @@ Now that you have CloudWatch logs flowing into ClickStack:
 - Set up [alerts](/use-cases/observability/clickstack/alerts) for critical events (connection failures, error spikes)
 - Reduce CloudWatch costs by adjusting retention periods or archiving to S3, now that you have logs in ClickStack
 - Filter noisy log groups by removing them from the collector configuration to reduce ingestion volume
+
+## Going to production {#going-to-production}
+
+This guide demonstrates running the OpenTelemetry Collector locally with Docker Compose for testing. For production deployments, run the collector on infrastructure with AWS access (EC2 with IAM roles, EKS with IRSA, or ECS with task roles) to eliminate the need for managing access keys. Deploy collectors in the same AWS region as your CloudWatch log groups to reduce latency and costs.
+
+See [Ingesting with OpenTelemetry](/use-cases/observability/clickstack/ingesting-data/opentelemetry) for production deployment patterns and collector configuration examples.
