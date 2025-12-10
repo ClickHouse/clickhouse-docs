@@ -32,7 +32,7 @@ By default, the GCS ClickPipe will load all files matched by a pattern from the 
 
 ### Continuous ingestion {#continuous-ingestion}
 
-When continuous ingestion is enabled, ClickPipes continuously ingests data from the specified path. To determine ingestion order, the GCS ClickPipe relies on the implicit [lexicographical order](#lexicographical-order) of files.
+When continuous ingestion is enabled, ClickPipes continuously ingests data from the specified path. To determine ingestion order, the GCS ClickPipe relies on the implicit [lexicographical order](#continuous-ingestion-lexicographical-order) of files.
 
 #### Lexicographical order {#continuous-ingestion-lexicographical-order}
 

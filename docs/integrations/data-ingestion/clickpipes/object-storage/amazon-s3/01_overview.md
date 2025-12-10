@@ -47,7 +47,7 @@ By default, the S3 ClickPipe will load all files matched by a pattern from the s
 
 ### Continuous ingestion {#continuous-ingestion}
 
-When continuous ingestion is enabled, ClickPipes continuously ingests data from the specified path. To determine ingestion order, the S3 ClickPipe relies on the implicit [lexicographical order](#lexicographical-order) of files, by default. It can also be configured to ingest files in [any order](#any-order) using an [Amazon SQS](https://aws.amazon.com/sqs/) queue connected to the bucket.
+When continuous ingestion is enabled, ClickPipes continuously ingests data from the specified path. To determine ingestion order, the S3 ClickPipe relies on the implicit [lexicographical order](#continuous-ingestion-lexicographical-order) of files, by default. It can also be configured to ingest files in [any order](#continuous-ingestion-any-order) using an [Amazon SQS](https://aws.amazon.com/sqs/) queue connected to the bucket.
 
 #### Lexicographical order {#continuous-ingestion-lexicographical-order}
 
