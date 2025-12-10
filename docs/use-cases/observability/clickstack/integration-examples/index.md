@@ -26,4 +26,4 @@ Several of these integration guides use ClickStack's built-in OpenTelemetry Coll
 | [PostgreSQL Metrics](/use-cases/observability/clickstack/integrations/postgresql-metrics) | Quick start guide for PostgreSQL Metrics |
 | [Redis Logs](/use-cases/observability/clickstack/integrations/redis) | Quick start guide for Redis Logs |
 | [Redis Metrics](/use-cases/observability/clickstack/integrations/redis-metrics) | Quick start guide for Redis Metrics |
-| [AWS Lambda Logs](/use-cases/observability/clickstack/integrations/aws-lambda) | Quick start guide for AWS Lambda Logs |
+| [AWS Lambda Logs using Rotel](/use-cases/observability/clickstack/integrations/aws-lambda) | Quick start guide for AWS Lambda Logs using Rotel |

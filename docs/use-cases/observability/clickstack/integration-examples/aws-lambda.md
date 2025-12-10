@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/aws-lambda
-title: 'Monitoring AWS Lambda Logs with ClickStack'
+title: 'Monitoring AWS Lambda Logs with ClickStack using Rotel'
 sidebar_label: 'AWS Lambda Logs'
 pagination_prev: null
 pagination_next: null
-description: 'Monitoring AWS Lambda Logs with ClickStack'
+description: 'Monitoring AWS Lambda Logs with ClickStack using Rotel'
 doc_type: 'guide'
 keywords: ['AWS', 'Lambda', 'OTEL', 'ClickStack', 'logs', 'CloudWatch']
 ---
@@ -13,9 +13,8 @@ import Image from '@theme/IdealImage';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import log_view from '@site/static/images/clickstack/lambda/lambda-log-view.png';
 import log from '@site/static/images/clickstack/lambda/lambda-log.png';
-import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Monitoring AWS Lambda Logs with ClickStack {#lambda-clickstack}
+# Monitoring AWS Lambda Logs with ClickStack using Rotel {#lambda-clickstack}
 
 :::note[TL;DR]
 This guide shows you how to monitor AWS Lambda functions with ClickStack by using the Rotel Lambda Extension to collect and forward function logs, extension logs, and OpenTelemetry data directly to ClickHouse. You'll learn how to:
@@ -23,9 +22,8 @@ This guide shows you how to monitor AWS Lambda functions with ClickStack by usin
 - Deploy the Rotel Lambda Extension layer to your Lambda functions
 - Configure the extension to export logs and traces to ClickStack
 - Optionally disable CloudWatch Logs to reduce costs
-- Use pre-built dashboards to visualize Lambda metrics (invocations, errors, duration, cold starts)
 
-This approach can **significantly reduce your Lambda observability costs** by bypassing CloudWatch Logs entirely.
+This approach can significantly reduce your Lambda observability costs by bypassing CloudWatch Logs entirely.
 
 Time Required: 5-10 minutes
 :::
@@ -99,7 +97,7 @@ Resources:
 
 The Rotel Lambda Extension is configured using environment variables. You need to configure the OTLP exporter endpoint to point to your ClickStack instance. The examples assume your AWS Lambda function is able to reach the ClickStack instance.
 
-##### Basic Configuration (Environment Variables) {#basic-config}
+##### Basic configuration (environment variables) {#basic-config}
 
 Add these environment variables to your Lambda function:
 
@@ -114,7 +112,7 @@ ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=<YOUR_INGESTION_API_KEY>"
 ROTEL_OTEL_RESOURCE_ATTRIBUTES="service.name=my-lambda-api,service.version=1.0.0"
 ```
 
-##### Advanced Configuration (Using .env file) {#advanced-config}
+##### Advanced configuration (using .env file) {#advanced-config}
 
 For more complex configurations, create a `rotel.env` file in your Lambda function bundle:
 
@@ -220,7 +218,7 @@ Look for these key attributes in the logs:
 
 </VerticalStepper>
 
-## Disabling CloudWatch Logs (Cost Optimization) {#disable-cloudwatch}
+## Disabling CloudWatch Logs (cost optimization) {#disable-cloudwatch}
 
 By default, AWS Lambda sends all logs to CloudWatch Logs, which can be expensive at scale. Once you've verified that logs are flowing to ClickStack, you can disable CloudWatch logging to reduce costs.
 
