@@ -2734,6 +2734,26 @@ ENGINE = Log
 
 仅在 ClickHouse Cloud 中生效。会重新抛出在与分布式缓存通信期间发生的异常，或从分布式缓存接收到的异常。否则，在发生错误时会退回为跳过分布式缓存。
 
+## distributed_cache_use_clients_cache_for_read {#distributed_cache_use_clients_cache_for_read} 
+
+<CloudOnlyBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+仅在 ClickHouse Cloud 中生效。对读请求使用客户端缓存。
+
+## distributed_cache_use_clients_cache_for_write {#distributed_cache_use_clients_cache_for_write} 
+
+<CloudOnlyBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+仅在 ClickHouse Cloud 中生效。对写请求使用客户端缓存。
+
 ## distributed_cache_wait_connection_from_pool_milliseconds {#distributed_cache_wait_connection_from_pool_milliseconds} 
 
 <CloudOnlyBadge/>

@@ -110,7 +110,7 @@ ORDER BY id;
 
 ### Создайте ClickPipe для снимка {#create-the-snapshot-clickpipe}
 
-Теперь вы можете создать ClickPipe для загрузки данных снимка из S3 в ClickHouse. Следуйте руководству по S3 ClickPipe [здесь](/integrations/clickpipes/object-storage), но используйте следующие настройки:
+Теперь вы можете создать ClickPipe для загрузки данных снимка из S3 в ClickHouse. Следуйте руководству по S3 ClickPipe [здесь](/integrations/clickpipes/object-storage/s3/overview), но используйте следующие настройки:
 
 * **Ingest path**: вам нужно будет найти путь к экспортированным json‑файлам в S3. Путь будет выглядеть примерно так:
 
