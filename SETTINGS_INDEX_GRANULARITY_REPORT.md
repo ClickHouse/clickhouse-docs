@@ -9,7 +9,7 @@ Total occurrences found: **76**
 ## Distribution by Category
 
 ### 1. English Documentation (docs/)
-**Total: 12 occurrences**
+**Total: 10 occurrences**
 
 #### Example Datasets - Anonymized Web Analytics (Metrica)
 - **File:** `docs/getting-started/example-datasets/anon_web_analytics_metrica.md`
@@ -40,7 +40,7 @@ Total occurrences found: **76**
   - Line 56: Table creation with ttl_only_drop_parts = 1
 
 ### 2. Russian Documentation (i18n/ru/)
-**Total: 24 occurrences**
+**Total: 21 occurrences**
 
 #### System Tables - Tables
 - **File:** `i18n/ru/docusaurus-plugin-content-docs/current/operations/system-tables/tables.md`
@@ -102,7 +102,7 @@ Total occurrences found: **76**
   - Line 209: Table creation example
 
 ### 3. Japanese Documentation (i18n/jp/)
-**Total: 22 occurrences**
+**Total: 21 occurrences**
 
 #### System Tables - Tables
 - **File:** `i18n/jp/docusaurus-plugin-content-docs/current/operations/system-tables/tables.md`
@@ -164,7 +164,7 @@ Total occurrences found: **76**
   - Line 210: Table creation example
 
 ### 4. Chinese Documentation (i18n/zh/)
-**Total: 16 occurrences**
+**Total: 21 occurrences**
 
 #### System Tables - Tables
 - **File:** `i18n/zh/docusaurus-plugin-content-docs/current/operations/system-tables/tables.md`
