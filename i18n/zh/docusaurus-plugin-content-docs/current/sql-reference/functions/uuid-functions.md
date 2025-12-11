@@ -1861,7 +1861,7 @@ SELECT toUUIDOrDefault('-----61f0c404-5cb3-11e7-907b-a6006ad3dba0', toUUID('59f0
 自 v20.12 引入
 
 将输入值转换为 `UUID` 类型的值，但在发生错误时返回 `NULL`。
-类似于 [`toUUID`](#touuid)，但在转换出错时返回 `NULL`，而不是抛出异常。
+类似于 [`toUUID`](/sql-reference/functions/uuid-functions#touuid)，但在转换出错时返回 `NULL`，而不是抛出异常。
 
 支持的参数：
 

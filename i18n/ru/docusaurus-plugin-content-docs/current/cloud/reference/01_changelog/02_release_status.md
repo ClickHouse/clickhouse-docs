@@ -42,12 +42,12 @@ ClickHouse Cloud предлагает разные каналы релизов, 
    {
     changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',
     version: '25.10',
-    fast_date: '2025-12-11',
+    fast_date: 'С 2025-12-11',
     regular_date: '2026-01-05',
     slow_date: 'TBD',
-    fast_progress: 'orange',
+    fast_progress: 'green',
     regular_progress: 'green',
     slow_progress: 'green',
-    fast_delay_note: 'Релиз отложен для устранения проблем, выявленных во внутреннем тестировании.',
+    fast_delay_note: 'Выпуск в процессе',
   }
 ]} />

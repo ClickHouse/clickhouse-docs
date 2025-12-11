@@ -6911,6 +6911,14 @@ Cloud 默认值：`0`。
 
 在执行 join 之前，允许在所有哈希表中为元素预先分配空间的总元素数量上限
 
+## max_streams_for_files_processing_in_cluster_functions {#max_streams_for_files_processing_in_cluster_functions} 
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "添加一个新的设置，用于限制 *Cluster 表函数* 在处理文件时的流数量"}]}]}/>
+
+如果该值不为零，则限制 *Cluster 表函数* 中从文件读取数据的线程数量。
+
 ## max_streams_for_merge_tree_reading {#max_streams_for_merge_tree_reading} 
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -8510,6 +8518,14 @@ Linux 中查询处理线程的 nice 值。值越低，CPU 优先级越高。
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "1"},{"label": "如果为 true，IN 子查询会在每个从属副本上执行。"}]}]}/>
 
 如果为 true，IN 子查询会在每个从属副本上执行。
+
+## parallel_replicas_allow_materialized_views {#parallel_replicas_allow_materialized_views} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "允许在使用并行副本时使用 materialized views"}]}]}/>
+
+允许在使用并行副本时使用 materialized views
 
 ## parallel_replicas_connect_timeout_ms {#parallel_replicas_connect_timeout_ms} 
 
