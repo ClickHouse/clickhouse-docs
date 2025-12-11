@@ -2736,6 +2736,26 @@ ENGINE = Log
 
 Действует только в ClickHouse Cloud. Повторно выбрасывает исключение, возникшее во время взаимодействия с распределённым кэшем, или исключение, полученное от распределённого кэша. В противном случае при ошибке происходит отказ от использования распределённого кэша.
 
+## distributed_cache_use_clients_cache_for_read {#distributed_cache_use_clients_cache_for_read} 
+
+<CloudOnlyBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+Применяется только в ClickHouse Cloud. При обработке запросов на чтение использует кэш клиентов.
+
+## distributed_cache_use_clients_cache_for_write {#distributed_cache_use_clients_cache_for_write} 
+
+<CloudOnlyBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+Действует только в ClickHouse Cloud. Использовать кэш клиентских соединений для запросов на запись.
+
 ## distributed_cache_wait_connection_from_pool_milliseconds {#distributed_cache_wait_connection_from_pool_milliseconds} 
 
 <CloudOnlyBadge/>

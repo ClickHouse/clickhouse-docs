@@ -2735,6 +2735,26 @@ ClickHouse Cloud でのみ効果があります。TCP が keepalive プローブ
 
 ClickHouse Cloud でのみ有効です。distributed cache との通信中に発生した例外、または distributed cache から受信した例外を再スローします。それ以外の場合は、エラー時に distributed cache をスキップするフォールバック動作になります。
 
+## distributed_cache_use_clients_cache_for_read {#distributed_cache_use_clients_cache_for_read} 
+
+<CloudOnlyBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+ClickHouse Cloud でのみ有効です。読み取りリクエストにクライアントキャッシュを使用します。
+
+## distributed_cache_use_clients_cache_for_write {#distributed_cache_use_clients_cache_for_write} 
+
+<CloudOnlyBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+ClickHouse Cloud でのみ有効です。書き込みリクエストに対して clients cache を使用します。
+
 ## distributed_cache_wait_connection_from_pool_milliseconds {#distributed_cache_wait_connection_from_pool_milliseconds} 
 
 <CloudOnlyBadge/>

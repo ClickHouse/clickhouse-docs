@@ -110,7 +110,7 @@ ORDER BY id;
 
 ### スナップショット用 ClickPipe を作成する {#create-the-snapshot-clickpipe}
 
-これで、S3 から ClickHouse へスナップショットデータをロードするための ClickPipe を作成できます。S3 ClickPipe ガイドは[こちら](/integrations/clickpipes/object-storage)を参照し、以下の設定を使用してください。
+これで、S3 から ClickHouse へスナップショットデータをロードするための ClickPipe を作成できます。S3 ClickPipe ガイドは[こちら](/integrations/clickpipes/object-storage/s3/overview)を参照し、以下の設定を使用してください。
 
 * **Ingest path**: S3 にエクスポートされた JSON ファイルのパスを特定する必要があります。パスは次のような形式になります。
 

@@ -110,7 +110,7 @@ ORDER BY id;
 
 ### 创建快照 ClickPipe {#create-the-snapshot-clickpipe}
 
-现在你可以创建一个 ClickPipe，将快照数据从 S3 加载到 ClickHouse。请按照 S3 ClickPipe 指南[此处](/integrations/clickpipes/object-storage)中的说明进行操作，但使用以下设置：
+现在你可以创建一个 ClickPipe，将快照数据从 S3 加载到 ClickHouse。请按照 S3 ClickPipe 指南[此处](/integrations/clickpipes/object-storage/s3/overview)中的说明进行操作，但使用以下设置：
 
 * **Ingest path**：你需要在 S3 中找到导出的 JSON 文件所在的路径。该路径看起来类似于：
 
