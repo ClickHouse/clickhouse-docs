@@ -227,7 +227,7 @@ This assumes the collector has been configured to use the database `otel`. This 
 
 ## Processing - filtering, transforming, and enriching {#processing-filtering-transforming-enriching}
 
-You will invariably want to filter, transform, and enrich event messages during ingestion. Since the configuration for the ClickStack connector cannot be modified, we recommend users who need further event filtering and processing either:
+Users will invariably want to filter, transform, and enrich event messages during ingestion. Since the configuration for the ClickStack connector cannot be modified, we recommend users who need further event filtering and processing either:
 
 - Deploy their own version of the OTel collector performing filtering and processing, sending events to the ClickStack collector via OTLP for ingestion into ClickHouse.
 - Deploy their own version of the OTel collector and send events directly to ClickHouse using the ClickHouse exporter.
