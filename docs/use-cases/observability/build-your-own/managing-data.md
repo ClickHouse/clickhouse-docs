@@ -192,7 +192,7 @@ TTLs are not applied immediately but rather on a schedule, as noted above. The M
 
 ### Column level TTL {#column-level-ttl}
 
-The above example expires data at a table level. You can also expire data at a column level. As data ages, this can be used to drop columns whose value in investigations does not justify their resource overhead to retain. For example, we recommend retaining the `Body` column in case new dynamic metadata is added that has not been extracted at insert time, e.g., a new Kubernetes label. After a period e.g. 1 month, it might be obvious that this additional metadata is not useful - thus limiting the value in retaining the `Body` column.
+The above example expires data at the table level. You can also expire data at the column level. As data ages, this can be used to drop columns whose value in investigations does not justify their resource overhead to retain. For example, we recommend retaining the `Body` column in case new dynamic metadata is added that has not been extracted at insert time, e.g., a new Kubernetes label. After a period e.g. 1 month, it might be obvious that this additional metadata is not useful - thus limiting the value in retaining the `Body` column.
 
 Below, we show how the `Body` column can be dropped after 30 days.
 

@@ -22,7 +22,7 @@ ClickHouse has four organization level roles available for user management. Only
 ## Service roles {#service-roles}
 Refer to [Manage cloud users](/cloud/security/manage-cloud-users) for instructions on assigning service roles.
 
-Service permissions must be explicitly granted by an admin to you with roles other than admin. Service Admin is pre-configured with SQL console admin access, but may be modified to reduce or remove permissions.
+Service permissions must be explicitly granted by an admin to users with roles other than the admin role. The service admin role is pre-configured with SQL console admin access, but may be modified to reduce or remove permissions.
 
 | Role              | Description                 |
 |-------------------|-----------------------------|

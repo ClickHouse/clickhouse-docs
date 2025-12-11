@@ -316,7 +316,7 @@ ALTER TABLE pypi_downloads_v2 MOVE PARTITION () TO pypi_downloads
 If the historical data is an isolated bucket, the above time filter is not required. If a time or monotonic column is unavailable, isolate your historical data.
 
 :::note Just use ClickPipes in ClickHouse Cloud
-ClickHouse Cloud you should use ClickPipes for restoring historical backups if the data can be isolated in its own bucket (and a filter is not required). As well as parallelizing the load with multiple workers, thus reducing the load time, ClickPipes automates the above process - creating duplicate tables for both the main table and materialized views.
+If you are using ClickHouse Cloud you should use ClickPipes for restoring historical backups if the data can be isolated in its own bucket (and a filter is not required). In addition to reducing the load time by parallelizing the load with multiple workers, ClickPipes automates the above process and creates duplicate tables for both the main table and materialized views.
 :::
 
 ## Scenario 2: Adding materialized views to existing tables {#scenario-2-adding-materialized-views-to-existing-tables}
@@ -394,7 +394,7 @@ Peak memory usage: 543.71 MiB.
 ```
 
 :::note
-In the above example our target table is a [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree). In this case we can simply use our original aggregation query. For more complex use cases which exploit the [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree), you will use `-State` functions for the aggregates. An example of this can be found [here](/integrations/s3/performance#be-aware-of-merges).
+In the above example our target table is a [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree). In this case we can simply use our original aggregation query. For more complex use cases which exploit the [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree), you will use `-State` functions for the aggregates. An example of this can be found in this [integration guide](/integrations/s3/performance#be-aware-of-merges).
 :::
 
 In our case, this is a relatively lightweight aggregation that completes in under 3s and uses less than 600MiB of memory. For more complex or longer-running aggregations, you can make this process more resilient by using the earlier duplicate table approach i.e. create a shadow target table, e.g., `pypi_downloads_per_day_v2`, insert into this, and attach its resulting partitions to `pypi_downloads_per_day`.

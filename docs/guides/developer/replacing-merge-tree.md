@@ -329,7 +329,7 @@ While merging aims to minimize the number of parts, it also balances this goal a
 
 The ReplacingMergeTree engine in ClickHouse is optimized for managing duplicate rows by merging data parts, keeping only the latest version of each row based on a specified unique key. However, when a merged part reaches the max_bytes_to_merge_at_max_space_in_pool threshold, it will no longer be selected for further merging, even if min_age_to_force_merge_seconds is set. As a result, automatic merges can no longer be relied upon to remove duplicates that may accumulate with ongoing data insertion.
 
-To address this, you can invoke OPTIMIZE FINAL to manually merge parts and remove duplicates. Unlike automatic merges, OPTIMIZE FINAL bypasses the max_bytes_to_merge_at_max_space_in_pool threshold, merging parts based solely on available resources, particularly disk space, until a single part remains in each partition. However, this approach can be memory-intensive on large tables and may require repeated execution as new data is added.
+To address this, you can invoke `OPTIMIZE FINAL` to manually merge parts and remove duplicates. Unlike automatic merges, `OPTIMIZE FINAL` bypasses the `max_bytes_to_merge_at_max_space_in_pool` threshold, merging parts based solely on available resources, particularly disk space, until a single part remains in each partition. However, this approach can be memory-intensive on large tables and may require repeated execution as new data is added.
 
 For a more sustainable solution that maintains performance, partitioning the table is recommended. This can help prevent data parts from reaching the maximum merge size and reduces the need for ongoing manual optimizations.
 

@@ -181,7 +181,7 @@ INSERT INTO badges SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3
 0 rows in set. Elapsed: 18.126 sec. Processed 51.29 million rows, 797.05 MB (2.83 million rows/s., 43.97 MB/s.)
 ```
 
-While you may acquire badges frequently, this is unlikely to be a dataset we need to update more than daily. The relationship between badges and users are one-to-many. Maybe we can simply denormalize badges onto users as a list of tuples? While possible, a quick check to confirm the highest number of badges per user suggests this isn't ideal:
+While users may acquire badges frequently, this is unlikely to be a dataset we need to update more frequently than daily. The relationship between badges and users are one-to-many. Maybe we can simply denormalize badges onto users as a list of tuples? While possible, a quick check to confirm the highest number of badges per user suggests this isn't ideal:
 
 ```sql
 SELECT UserId, count() AS c FROM badges GROUP BY UserId ORDER BY c DESC LIMIT 5
@@ -197,7 +197,7 @@ SELECT UserId, count() AS c FROM badges GROUP BY UserId ORDER BY c DESC LIMIT 5
 
 It's probably not realistic to denormalize 19k objects onto a single row. This relationship may be best left as separate tables or with statistics added.
 
-> We may wish to denormalize statistics from badges on to you e.g. the number of badges. We consider such an example when using dictionaries for this dataset at insert time.
+> We may wish to denormalize statistics from badges on to users e.g. the number of badges. We consider such an example when using dictionaries for this dataset at insert time.
 
 ### Posts and PostLinks {#posts-and-postlinks}
 

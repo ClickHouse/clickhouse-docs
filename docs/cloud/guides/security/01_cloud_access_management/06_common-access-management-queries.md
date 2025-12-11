@@ -46,7 +46,7 @@ Admin users are assigned the `sql_console_admin` role by default, so nothing cha
 
 ### Granular access control {#granular-access-control}
 
-This access control functionality can also be configured manually for user-level granularity. Before assigning the new `sql_console_*` roles to you, SQL console user-specific database roles matching the namespace `sql-console-role:<email>` should be created. For example: 
+This access control functionality can also be configured manually for user-level granularity. Before assigning the new `sql_console_*` roles to users, SQL console user-specific database roles matching the namespace `sql-console-role:<email>` should be created. For example: 
 
 ```sql
 CREATE ROLE OR REPLACE sql-console-role:<email>;
