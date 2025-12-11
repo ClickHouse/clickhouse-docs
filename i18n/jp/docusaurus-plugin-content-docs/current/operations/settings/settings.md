@@ -6916,6 +6916,14 @@ ORDER BY 演算で処理する必要がある行数が指定した値を超え�
 
 結合を行う前に、すべてのハッシュテーブルで事前に領域を確保できる要素数の合計上限。
 
+## max_streams_for_files_processing_in_cluster_functions {#max_streams_for_files_processing_in_cluster_functions} 
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "ファイル処理における *Cluster テーブル関数でのストリーム数を制限する新しい設定を追加"}]}]}/>
+
+ゼロ以外の値に設定されている場合、*Cluster テーブル関数でファイルからデータを読み取るスレッド数を制限します。
+
 ## max_streams_for_merge_tree_reading {#max_streams_for_merge_tree_reading} 
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -8517,6 +8525,14 @@ CAP_SYS_NICE ケーパビリティが必要で、ない場合は何も行われ�
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "1"},{"label": "true の場合、IN 句のサブクエリがすべてのフォロワー レプリカで実行されます"}]}]}/>
 
 true の場合、IN 句のサブクエリがすべてのフォロワー レプリカで実行されます。
+
+## parallel_replicas_allow_materialized_views {#parallel_replicas_allow_materialized_views} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "parallel replicas で materialized view を使用できるようにする"}]}]}/>
+
+parallel replicas で materialized view を使用できるようにする
 
 ## parallel_replicas_connect_timeout_ms {#parallel_replicas_connect_timeout_ms} 
 
