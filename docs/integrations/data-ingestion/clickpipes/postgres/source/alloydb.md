@@ -3,6 +3,7 @@ sidebar_label: 'AlloyDB Postgres'
 description: 'Set up an AlloyDB Postgres instance as a source for ClickPipes'
 slug: /integrations/clickpipes/postgres/source/alloydb
 title: 'AlloyDB Postgres Source Setup Guide'
+doc_type: 'guide'
 ---
 
 import edit_instance from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/alloydb/1_edit_instance.png';
