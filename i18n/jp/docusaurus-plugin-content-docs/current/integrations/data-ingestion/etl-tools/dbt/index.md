@@ -55,38 +55,30 @@ dbt-core 1.10 までのすべての機能がサポートされています。こ
 
 このアダプターは現時点ではまだ [dbt Cloud](https://docs.getdbt.com/docs/dbt-cloud/cloud-overview) 内では利用できませんが、近いうちに利用可能にする予定です。詳細についてはサポートまでお問い合わせください。
 
-## 概念 {#concepts}
+## dbt のコンセプトとサポートされているマテリアライゼーション {#concepts-and-supported-materializations}
 
-dbt は「モデル (model)」という概念を導入します。これは、複数のテーブルを結合することもある SQL 文として定義されます。モデルは複数の方法で「マテリアライズ」できます。マテリアライゼーションは、そのモデルの SELECT クエリに対するビルド戦略を表します。マテリアライゼーションを実装するコードは、SELECT クエリをラップして新しいリレーションを作成したり、既存のリレーションを更新したりするための定型的な SQL です。
+dbt では、モデルというコンセプトが導入されています。これは、多数のテーブルを結合することもある SQL 文として定義されます。モデルは複数の方法で「マテリアライズ」できます。マテリアライゼーションは、モデルの SELECT クエリに対するビルド戦略を表します。マテリアライゼーションの背後にあるコードは、SELECT クエリを別の文でラップして新しいリレーションを作成したり、既存のリレーションを更新したりするボイラープレートの SQL です。
 
-dbt は 4 種類のマテリアライゼーションを提供します:
+dbt は 5 種類のマテリアライゼーションを提供しており、すべてが `dbt-clickhouse` でサポートされています:
 
-* **view** (デフォルト): モデルはデータベース内の view として構築されます。
-* **table**: モデルはデータベース内の table として構築されます。
-* **ephemeral**: モデル自体はデータベース内に直接構築されず、代わりに依存するモデル内で共通テーブル式 (CTE) として取り込まれます。
-* **incremental**: 初回はモデルを table としてマテリアライズし、その後の実行では、dbt が新規行の挿入と変更行の更新のみを table に対して行います。
+* **view**（デフォルト）: モデルはデータベース内の view として構築されます。ClickHouse では、これは [view](/sql-reference/statements/create/view) として構築されます。
+* **table**: モデルはデータベース内の table として構築されます。ClickHouse では、これは [table](/sql-reference/statements/create/table) として構築されます。
+* **ephemeral**: モデルはデータベース内に直接構築されるのではなく、CTE（Common Table Expressions）として依存モデルに取り込まれます。
+* **incremental**: モデルは最初に table としてマテリアライズされ、その後の実行では dbt が新しい行を挿入し、変更された行を table 内で更新します。
+* **materialized view**: モデルはデータベース内の materialized view として構築されます。ClickHouse では、これは [materialized view](/sql-reference/statements/create/view#materialized-view) として構築されます。
 
-追加の構文や句によって、基盤となるデータが変更された場合に、これらのモデルをどのように更新すべきかが定義されます。dbt では一般的に、パフォーマンスが問題になるまでは view マテリアライゼーションから始めることを推奨しています。table マテリアライゼーションは、モデルのクエリ結果を table として保持することで、ストレージ使用量の増加と引き換えにクエリ時のパフォーマンスを向上させます。incremental アプローチはこれをさらに発展させ、基盤となるデータへのその後の更新をターゲット table に取り込めるようにします。
+追加の構文や句によって、基盤となるデータが変更された場合に、これらのモデルをどのように更新するかが定義されます。一般的に dbt では、パフォーマンスが問題になるまでは view マテリアライゼーションから始めることが推奨されています。table マテリアライゼーションは、モデルのクエリ結果を table として保持することで、ストレージの増加と引き換えにクエリ時のパフォーマンスを向上させます。incremental アプローチはこれをさらに発展させ、基盤となるデータへの後続の更新をターゲット table に取り込めるようにします。
 
-ClickHouse 向けの[現在のアダプタ](https://github.com/silentsokolov/dbt-clickhouse)は、**materialized view**、**dictionary**、**distributed table**、および **distributed incremental** マテリアライゼーションもサポートします。また、このアダプタは dbt の[スナップショット](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots#check-strategy)および [seeds](https://docs.getdbt.com/docs/building-a-dbt-project/seeds) もサポートします。
+ClickHouse 用の[現在のアダプタ](https://github.com/silentsokolov/dbt-clickhouse)は、**dictionary**、**distributed table**、**distributed incremental** のマテリアライゼーションもサポートします。このアダプタは、dbt の [snapshots](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots#check-strategy) や [seeds](https://docs.getdbt.com/docs/building-a-dbt-project/seeds) もサポートしています。
 
-### サポートされているマテリアライゼーションの詳細 {#details-about-supported-materializations}
+以下は `dbt-clickhouse` における[実験的機能](https://clickhouse.com/docs/en/beta-and-experimental-features)です:
 
-| Type                        | Supported? | Details                                                                                                                          |
-|-----------------------------|-----------|----------------------------------------------------------------------------------------------------------------------------------|
-| view materialization        | はい      | [view](https://clickhouse.com/docs/en/sql-reference/table-functions/view/) を作成します。                                         |
-| table materialization       | はい      | [table](https://clickhouse.com/docs/en/operations/system-tables/tables/) を作成します。サポートされているエンジンの一覧については、以下を参照してください。 |
-| incremental materialization | はい      | table が存在しない場合は作成し、その後は更新分のみを書き込みます。                                                                 |
-| ephemeral materialized      | はい      | ephemeral/CTE マテリアライゼーションを作成します。このモデルは dbt の内部専用であり、データベースオブジェクトは作成しません。      |
-
-以下は ClickHouse における[実験的機能](https://clickhouse.com/docs/en/beta-and-experimental-features)です:
-
-| Type                                    | Supported?        | Details                                                                                                                                                                                                                                         |
-|-----------------------------------------|-------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Materialized View materialization       | はい（実験的）    | [マテリアライズドビュー](https://clickhouse.com/docs/en/materialized-view) を作成します。                                                                                                                                                       |
-| Distributed table materialization       | はい（実験的）    | [distributed table](https://clickhouse.com/docs/en/engines/table-engines/special/distributed) を作成します。                                                                                                                                    |
-| Distributed incremental materialization | はい（実験的）    | distributed table と同じ考え方に基づく incremental モデルです。すべての戦略がサポートされているわけではない点に注意してください。詳細については[こちら](https://github.com/ClickHouse/dbt-clickhouse?tab=readme-ov-file#distributed-incremental-materialization)を参照してください。 |
-| Dictionary materialization              | はい（実験的）    | [dictionary](https://clickhouse.com/docs/en/engines/table-engines/special/dictionary) を作成します。                                                                                                                                            |
+| Type                                    | Supported?     | Details                                                                                                                                                                                                                                         |
+|-----------------------------------------|----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Materialized View materialization       | はい（実験的） | [マテリアライズドビュー](https://clickhouse.com/docs/en/materialized-view) を作成します。                                                                                                                                                       |
+| Distributed table materialization       | はい（実験的） | [distributed table](https://clickhouse.com/docs/en/engines/table-engines/special/distributed) を作成します。                                                                                                                                    |
+| Distributed incremental materialization | はい（実験的） | distributed table と同じ考え方に基づく incremental モデルです。すべての戦略がサポートされているわけではない点に注意してください。詳細については[こちら](https://github.com/ClickHouse/dbt-clickhouse?tab=readme-ov-file#distributed-incremental-materialization)を参照してください。 |
+| Dictionary materialization              | はい（実験的） | [dictionary](https://clickhouse.com/docs/en/engines/table-engines/special/dictionary) を作成します。                                                                                                                                            |
 
 ## dbt と ClickHouse アダプターのセットアップ {#setup-of-dbt-and-the-clickhouse-adapter}
 

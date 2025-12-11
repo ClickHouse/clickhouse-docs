@@ -135,21 +135,21 @@ dbt は read-after-insert 一貫性モデルに依存しています。これは
 
 ## 機能に関する一般情報 {#general-information-about-features}
 
-### テーブルの一般的な設定 {#general-table-configurations}
+### モデルの一般的な設定 {#general-model-configurations}
+
+次のテーブルは、利用可能な一部のマテリアライゼーションで共通して使用される設定を示します。一般的な dbt モデル設定の詳細については、[dbt ドキュメント](https://docs.getdbt.com/category/general-configs) を参照してください。
 
 | Option             | Description                                                                                                                                                     | Default if any |
 | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
 | engine             | テーブル作成時に使用するテーブルエンジン（テーブルの種類）                                                                                                                                   | `MergeTree()`  |
-| order&#95;by       | 列名または任意の式のタプル。小さなスパースインデックスを作成し、データ検索を高速化するために使用されます。                                                                                                           | `tuple()`      |
-| partition&#95;by   | パーティションは、指定した条件でテーブル内のレコードを論理的にまとめたものです。パーティションキーには、テーブル列を用いた任意の式を指定できます。                                                                                       |                |
-| sharding&#95;key   | Sharding key は、Distributed エンジンテーブルへの挿入時に、宛先サーバーを決定します。Sharding key はランダム、またはハッシュ関数の出力とすることができます。                                                               | `rand()`)      |
-| primary&#95;key    | order&#95;by と同様の ClickHouse の primary key 式です。指定しない場合、ClickHouse は order by 式を primary key として使用します。                                                           |                |
-| unique&#95;key     | 行を一意に識別する列名のタプル。インクリメンタルモデルでの更新に使用されます。                                                                                                                         |                |
-| settings           | このモデルで &#39;CREATE TABLE&#39; などの DDL 文に使用される、&quot;TABLE&quot; 設定のマップ／ディクショナリ                                                                                  |                |
-| query&#95;settings | このモデルと組み合わせて `INSERT` または `DELETE` 文で使用する、ClickHouse ユーザーレベル設定のマップ／ディクショナリ                                                                                      |                |
+| order_by           | 列名または任意の式のタプル。小さなスパースインデックスを作成し、データ検索を高速化するために使用されます。                                                                                                           | `tuple()`      |
+| partition_by       | パーティションは、指定した条件でテーブル内のレコードを論理的にまとめたものです。パーティションキーには、テーブル列を用いた任意の式を指定できます。                                                                                       |                |
+| primary_key        | order_by と同様の ClickHouse の primary key 式です。指定しない場合、ClickHouse は order by 式を primary key として使用します。                                                           |                |
+| settings           | このモデルで 'CREATE TABLE' などの DDL 文に使用される、"TABLE" 設定のマップ／ディクショナリ                                                                                  |                |
+| query_settings     | このモデルと組み合わせて `INSERT` または `DELETE` 文で使用する、ClickHouse ユーザーレベル設定のマップ／ディクショナリ                                                                                      |                |
 | ttl                | テーブルで使用する TTL 式。TTL 式は、テーブルの TTL を指定するための文字列です。                                                                                                                 |                |
-| indexes            | 作成する[データスキッピングインデックスの一覧](/optimize/skipping-indexes)。詳細は以下を参照してください。                                                                                            |                |
-| sql&#95;security   | ビューの基礎となるクエリを実行する際に使用する ClickHouse ユーザーを指定できます。`SQL SECURITY` [には 2 つの有効な値](/sql-reference/statements/create/view#sql_security) があり、`definer` または `invoker` です。 |                |
+| indexes            | 作成する[データスキッピングインデックス](/optimize/skipping-indexes)の一覧。[データスキッピングインデックスについて](#data-skipping-indexes)を参照してください。                                                                                          |                |
+| sql_security       | ビューの基礎となるクエリを実行する際に使用する ClickHouse ユーザー。[有効な値](/sql-reference/statements/create/view#sql_security): `definer`, `invoker`。                                                                                 |                |
 | definer            | `sql_security` に `definer` を設定した場合、`definer` 句で既存のユーザーまたは `CURRENT_USER` を指定する必要があります。                                                                          |                |
 | projections        | 作成する[プロジェクション](/data-modeling/projections)の一覧。[プロジェクションについて](#projections)を参照してください。                                                                            |                |
 
@@ -197,6 +197,8 @@ dbt は read-after-insert 一貫性モデルに依存しています。これは
 | S3                     | [https://clickhouse.com/docs/en/engines/table-engines/integrations/s3](https://clickhouse.com/docs/en/engines/table-engines/integrations/s3)                                           |
 | EmbeddedRocksDB        | [https://clickhouse.com/docs/en/engines/table-engines/integrations/embedded-rocksdb](https://clickhouse.com/docs/en/engines/table-engines/integrations/embedded-rocksdb)               |
 | Hive                   | [https://clickhouse.com/docs/en/engines/table-engines/integrations/hive](https://clickhouse.com/docs/en/engines/table-engines/integrations/hive)                                       |
+
+**注意**: materialized view の場合は、すべての *MergeTree エンジンがサポートされています。
 
 ### 実験的にサポートされているテーブルエンジン {#experimental-supported-table-engines}
 
@@ -356,7 +358,7 @@ models:
 ```
 
 
-#### 設定 {#configurations}
+#### 設定 {#incremental-configurations}
 
 このマテリアライゼーションタイプに特有の設定は以下のとおりです。
 
@@ -364,7 +366,7 @@ models:
 | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
 | `unique_key`             | 行を一意に識別するカラム名のタプル。ユニーク制約の詳細については[こちら](https://docs.getdbt.com/docs/build/incremental-models#defining-a-unique-key-optional)を参照してください。                                                                 | 必須。指定しない場合、変更された行がインクリメンタルテーブルに二重に追加されます。 |
 | `inserts_only`           | 同じ動作を行うインクリメンタル `strategy` である `append` の利用が推奨されるようになり、非推奨となりました。インクリメンタルモデルに対して `True` を設定すると、中間テーブルを作成せずにインクリメンタル更新が直接ターゲットテーブルに挿入されます。`inserts_only` が設定されている場合、`incremental_strategy` は無視されます。    | 任意 (デフォルト: `False`)                       |
-| `incremental_strategy`   | インクリメンタルマテリアライゼーションに使用する戦略。`delete+insert`、`append`、`insert_overwrite`、`microbatch` がサポートされています。戦略の詳細については[こちら](/integrations/dbt/features-and-configurations#incremental-model-strategies)を参照してください。 | 任意 (デフォルト: &#39;default&#39;)             |
+| `incremental_strategy`   | インクリメンタルマテリアライゼーションに使用する戦略。`delete+insert`、`append`、`insert_overwrite`、`microbatch` がサポートされています。戦略の詳細については[こちら](/integrations/dbt/features-and-configurations#incremental-model-strategies)を参照してください。 | 任意 (デフォルト: 'default')             |
 | `incremental_predicates` | インクリメンタルマテリアライゼーションに適用される追加条件（`delete+insert` 戦略にのみ適用されます）                                                                                                                                            | 任意                                        |                      
 
 #### インクリメンタルモデルの戦略 {#incremental-model-strategies}
@@ -602,6 +604,14 @@ CREATE TABLE db.table on cluster cluster (
     ENGINE = Distributed ('cluster', 'db', 'table_local', cityHash64(id));
 ```
 
+
+#### 設定 {#distributed-table-configurations}
+
+このマテリアライゼーションタイプに固有の設定は以下のとおりです。
+
+| Option             | Description                                                                                                                                                     | Default if any |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| sharding&#95;key   | Sharding key は、Distributed エンジンテーブルへの挿入時に、宛先サーバーを決定します。Sharding key はランダム、またはハッシュ関数の出力とすることができます。                                                               | `rand()`)      |
 
 ### materialization: distributed_incremental (experimental) {#materialization-distributed-incremental}
 
