@@ -1,21 +1,22 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/anylast'
+description: 'Выбирает последнее встреченное значение в столбце.'
 sidebar_position: 105
-description: 'Выбирает последнее встреченное значение колонки.'
-title: anyLast
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/anylast
+title: 'anyLast'
+doc_type: 'reference'
 ---
-# anyLast
 
-Выбирает последнее встреченное значение в колонке.
+# anyLast {#anylast}
+
+Выбирает последнее встреченное значение столбца.
 
 :::warning
 Поскольку запрос может выполняться в произвольном порядке, результат этой функции является недетерминированным.
 Если вам нужен произвольный, но детерминированный результат, используйте функции [`min`](../reference/min.md) или [`max`](../reference/max.md).
 :::
 
-По умолчанию функция никогда не возвращает NULL, т.е. игнорирует NULL значения в входной колонке.
-Однако если функция используется с модификатором `RESPECT NULLS`, она возвращает первое прочитанное значение независимо от того, является ли оно NULL или нет.
+По умолчанию функция никогда не возвращает NULL, то есть игнорирует значения NULL во входном столбце.
+Однако, если функция используется с модификатором `RESPECT NULLS`, она возвращает первое прочитанное значение, независимо от того, является оно NULL или нет.
 
 **Синтаксис**
 
@@ -24,18 +25,21 @@ anyLast(column) [RESPECT NULLS]
 ```
 
 Псевдоним `anyLast(column)` (без `RESPECT NULLS`)
-- [`last_value`](../reference/last_value.md).
+
+* [`last_value`](../reference/last_value.md).
 
 Псевдонимы для `anyLast(column) RESPECT NULLS`
-- `anyLastRespectNulls`, `anyLast_respect_nulls`
-- `lastValueRespectNulls`, `last_value_respect_nulls`
+
+* `anyLastRespectNulls`, `anyLast_respect_nulls`
+* `lastValueRespectNulls`, `last_value_respect_nulls`
 
 **Параметры**
-- `column`: Имя колонки.
+
+* `column`: имя столбца.
 
 **Возвращаемое значение**
 
-- Последнее встреченное значение.
+* Последнее встреченное значение.
 
 **Пример**
 

@@ -1,25 +1,27 @@
 ---
-slug: '/interfaces/formats/JSONCompactEachRowWithNames'
-description: 'Документация для формата JSONCompactEachRowWithNames'
-title: JSONCompactEachRowWithNames
-keywords: ['JSONCompactEachRowWithNames']
-doc_type: reference
+alias: []
+description: 'Документация по формату JSONCompactEachRowWithNames'
 input_format: true
+keywords: ['JSONCompactEachRowWithNames']
 output_format: true
+slug: /interfaces/formats/JSONCompactEachRowWithNames
+title: 'JSONCompactEachRowWithNames'
+doc_type: 'reference'
 ---
-| Input | Output | Alias |
+
+| Вход | Выход | Псевдоним |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## Описание {#description}
 
-Отличается от формата [`JSONCompactEachRow`](./JSONCompactEachRow.md) тем, что также выводит строку заголовка с именами колонок, аналогично формату [`TabSeparatedWithNames`](../TabSeparated/TabSeparatedWithNames.md).
+Отличается от формата [`JSONCompactEachRow`](./JSONCompactEachRow.md) тем, что также выводит строку заголовка с именами столбцов, аналогично формату [`TabSeparatedWithNames`](../TabSeparated/TabSeparatedWithNames.md).
 
 ## Пример использования {#example-usage}
 
 ### Вставка данных {#inserting-data}
 
-Используя JSON файл со следующими данными, названный `football.json`:
+Используйте JSON-файл со следующими данными с именем `football.json`:
 
 ```json
 ["date", "season", "home_team", "away_team", "home_team_goals", "away_team_goals"]
@@ -42,7 +44,7 @@ output_format: true
 ["2022-05-07", 2021, "Walsall", "Swindon Town", 0, 3]
 ```
 
-Вставьте данные:
+Добавьте данные:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactEachRowWithNames;
@@ -50,7 +52,7 @@ INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactEachRowWithNa
 
 ### Чтение данных {#reading-data}
 
-Читать данные, используя формат `JSONCompactEachRowWithNames`:
+Считывайте данные в формате `JSONCompactEachRowWithNames`:
 
 ```sql
 SELECT *
@@ -58,7 +60,7 @@ FROM football
 FORMAT JSONCompactEachRowWithNames
 ```
 
-Вывод будет в формате JSON:
+Результат будет в формате JSON:
 
 ```json
 ["date", "season", "home_team", "away_team", "home_team_goals", "away_team_goals"]
@@ -84,7 +86,7 @@ FORMAT JSONCompactEachRowWithNames
 ## Настройки формата {#format-settings}
 
 :::note
-Если установка [`input_format_with_names_use_header`](/operations/settings/settings-formats.md/#input_format_with_names_use_header) установлена в 1,
-колонки из входных данных будут сопоставлены с колонками из таблицы по их именам, колонки с незнакомыми именами будут пропущены, если установка [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлена в 1.
+Если настройка [`input_format_with_names_use_header`](/operations/settings/settings-formats.md/#input_format_with_names_use_header) равна 1,
+столбцы из входных данных будут сопоставлены со столбцами таблицы по их именам, а столбцы с неизвестными именами будут пропускаться, если настройка [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) равна 1.
 В противном случае первая строка будет пропущена.
 :::

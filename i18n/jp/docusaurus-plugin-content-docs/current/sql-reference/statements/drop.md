@@ -1,20 +1,19 @@
 ---
-'description': 'DROP 文書'
-'sidebar_label': 'DROP'
-'sidebar_position': 44
-'slug': '/sql-reference/statements/drop'
-'title': 'DROP Statements'
-'doc_type': 'reference'
+description: 'DROP ステートメントに関するドキュメント'
+sidebar_label: 'DROP'
+sidebar_position: 44
+slug: /sql-reference/statements/drop
+title: 'DROP ステートメント'
+doc_type: 'reference'
 ---
 
+# DROP ステートメント {#drop-statements}
 
-# DROPステートメント
-
-既存のエンティティを削除します。`IF EXISTS`句が指定されている場合、エンティティが存在しない場合でもこれらのクエリはエラーを返しません。`SYNC`修飾子が指定されている場合、エンティティは遅延なく削除されます。
+既存のエンティティを削除します。`IF EXISTS` 句が指定されている場合、エンティティが存在しない場合でもクエリはエラーを返しません。`SYNC` 修飾子が指定されている場合、エンティティは即座に削除されます。
 
 ## DROP DATABASE {#drop-database}
 
-`db`データベース内のすべてのテーブルを削除した後、`db`データベース自体を削除します。
+`db` データベース内のすべてのテーブルを削除してから、`db` データベース自体を削除します。
 
 構文:
 
@@ -27,7 +26,7 @@ DROP DATABASE [IF EXISTS] db [ON CLUSTER cluster] [SYNC]
 1つ以上のテーブルを削除します。
 
 :::tip
-テーブルの削除を元に戻すには、[UNDROP TABLE](/sql-reference/statements/undrop.md)を参照してください。
+削除したテーブルを元に戻すには、[UNDROP TABLE](/sql-reference/statements/undrop.md) を参照してください。
 :::
 
 構文:
@@ -37,14 +36,15 @@ DROP [TEMPORARY] TABLE [IF EXISTS] [IF EMPTY]  [db1.]name_1[, [db2.]name_2, ...]
 ```
 
 制限事項:
-- `IF EMPTY`句が指定されている場合、サーバーはクエリを受信したレプリカのみでテーブルの空をチェックします。  
-- 複数のテーブルを一度に削除することは原子的な操作ではなく、つまり、テーブルの削除に失敗した場合、その後のテーブルは削除されません。
+
+* 句 `IF EMPTY` が指定されている場合、サーバーはクエリを受信したレプリカでのみテーブルが空かどうかを確認します。
+* 複数のテーブルを一度に削除する操作はアトミックではありません。つまり、あるテーブルの削除に失敗した場合、その後に続くテーブルは削除されません。
 
 ## DROP DICTIONARY {#drop-dictionary}
 
 辞書を削除します。
 
-構文:
+構文：
 
 ```sql
 DROP DICTIONARY [IF EXISTS] [db.]name [SYNC]
@@ -54,7 +54,7 @@ DROP DICTIONARY [IF EXISTS] [db.]name [SYNC]
 
 ユーザーを削除します。
 
-構文:
+構文：
 
 ```sql
 DROP USER [IF EXISTS] name [,...] [ON CLUSTER cluster_name] [FROM access_storage_type]
@@ -62,7 +62,7 @@ DROP USER [IF EXISTS] name [,...] [ON CLUSTER cluster_name] [FROM access_storage
 
 ## DROP ROLE {#drop-role}
 
-ロールを削除します。削除されたロールは、割り当てられていたすべてのエンティティから取り消されます。
+ロールを削除します。削除されたロールは、割り当てられていたすべてのエンティティからの付与が取り消されます。
 
 構文:
 
@@ -72,7 +72,7 @@ DROP ROLE [IF EXISTS] name [,...] [ON CLUSTER cluster_name] [FROM access_storage
 
 ## DROP ROW POLICY {#drop-row-policy}
 
-行ポリシーを削除します。削除された行ポリシーは、割り当てられていたすべてのエンティティから取り消されます。
+行ポリシーを削除します。削除された行ポリシーは、割り当てられていたすべてのエンティティから自動的に解除されます。
 
 構文:
 
@@ -82,7 +82,7 @@ DROP [ROW] POLICY [IF EXISTS] name [,...] ON [database.]table [,...] [ON CLUSTER
 
 ## DROP QUOTA {#drop-quota}
 
-クオータを削除します。削除されたクオータは、割り当てられていたすべてのエンティティから取り消されます。
+クォータを削除します。削除されたクォータは、それが割り当てられていたすべてのエンティティから自動的に解除されます。
 
 構文:
 
@@ -92,7 +92,7 @@ DROP QUOTA [IF EXISTS] name [,...] [ON CLUSTER cluster_name] [FROM access_storag
 
 ## DROP SETTINGS PROFILE {#drop-settings-profile}
 
-設定プロファイルを削除します。削除された設定プロファイルは、割り当てられていたすべてのエンティティから取り消されます。
+設定プロファイルを削除します。削除された設定プロファイルは、割り当てられていたすべての対象から取り消されます。
 
 構文:
 
@@ -102,7 +102,7 @@ DROP [SETTINGS] PROFILE [IF EXISTS] name [,...] [ON CLUSTER cluster_name] [FROM 
 
 ## DROP VIEW {#drop-view}
 
-ビューを削除します。ビューは`DROP TABLE`コマンドでも削除できますが、`DROP VIEW`は`[db.]name`がビューであることを確認します。
+ビューを削除します。ビューは `DROP TABLE` コマンドでも削除できますが、`DROP VIEW` では `[db.]name` がビューであることを確認します。
 
 構文:
 
@@ -112,13 +112,13 @@ DROP VIEW [IF EXISTS] [db.]name [ON CLUSTER cluster] [SYNC]
 
 ## DROP FUNCTION {#drop-function}
 
-[CREATE FUNCTION](./create/function.md)によって作成されたユーザー定義の関数を削除します。
+[CREATE FUNCTION](./create/function.md) で作成されたユーザー定義関数を削除します。
 システム関数は削除できません。
 
 **構文**
 
 ```sql
-DROP FUNCTION [IF EXISTS] function_name [on CLUSTER cluster]
+DROP FUNCTION [IF EXISTS] 関数名 [ON CLUSTER クラスター]
 ```
 
 **例**
@@ -135,7 +135,7 @@ DROP FUNCTION linear_equation;
 **構文**
 
 ```sql
-DROP NAMED COLLECTION [IF EXISTS] name [on CLUSTER cluster]
+NAMED COLLECTION を削除 [IF EXISTS] name [on CLUSTER cluster]
 ```
 
 **例**

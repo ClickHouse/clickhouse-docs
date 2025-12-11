@@ -1,67 +1,65 @@
 ---
-'title': 'リモート ClickHouse サーバーへのクエリの方法'
-'sidebar_label': 'リモート ClickHouse のクエリ'
-'slug': '/chdb/guides/query-remote-clickhouse'
-'description': 'このガイドでは、chDB からリモート ClickHouse サーバーにクエリを送信する方法を学びます。'
-'keywords':
-- 'chdb'
-- 'clickhouse'
-'doc_type': 'guide'
+title: 'リモート ClickHouse サーバーへのクエリ実行方法'
+sidebar_label: 'リモート ClickHouse へのクエリ実行'
+slug: /chdb/guides/query-remote-clickhouse
+description: 'このガイドでは、chDB からリモート ClickHouse サーバーにクエリを実行する方法を説明します。'
+keywords: ['chdb', 'clickhouse']
+doc_type: 'guide'
 ---
 
-In this guide, we're going to learn how to query a remote ClickHouse server from chDB.
+このガイドでは、chDB からリモート ClickHouse サーバーにクエリを実行する方法について説明します。
 
-## Setup {#setup}
+## セットアップ {#setup}
 
-Let's first create a virtual environment:
+まずは仮想環境を作成します。
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-And now we'll install chDB.
-Make sure you have version 2.0.2 or higher:
+それでは、chDB をインストールします。
+バージョン 2.0.2 以上であることを確認してください。
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-And now we're going to install pandas, and ipython:
+それでは、pandas と IPython をインストールします。
 
 ```bash
 pip install pandas ipython
 ```
 
-We're going to use `ipython` to run the commands in the rest of the guide, which you can launch by running:
+このガイドの以降の手順では、`ipython` を使ってコマンドを実行します。次を実行して起動してください:
 
 ```bash
 ipython
 ```
 
-You can also use the code in a Python script or in your favorite notebook.
+このコードは、Python スクリプトやお使いのノートブック環境でも利用できます。
 
-## An intro to ClickPy {#an-intro-to-clickpy}
+## ClickPy 入門 {#an-intro-to-clickpy}
 
-クエリを実行するリモート ClickHouse サーバーは [ClickPy](https://clickpy.clickhouse.com) です。
-ClickPy は PyPI パッケージのダウンロードを追跡し、UI を介してパッケージの統計を探索することを可能にします。
-基盤となるデータベースは、`play` ユーザーを使用してクエリを実行できます。
+これからクエリを実行する対象となるリモート ClickHouse サーバーは [ClickPy](https://clickpy.clickhouse.com) です。
+ClickPy は PyPI パッケージのすべてのダウンロードを記録し、UI 上からパッケージの統計情報を探索できるようにします。
+基盤となるデータベースは `play` ユーザーでクエリできます。
 
-ClickPy についての詳細は [その GitHub レポジトリ](https://github.com/ClickHouse/clickpy) を参照してください。
+ClickPy について詳しくは、[GitHub リポジトリ](https://github.com/ClickHouse/clickpy)を参照してください。
 
-## Querying the ClickPy ClickHouse service {#querying-the-clickpy-clickhouse-service}
+## ClickPy ClickHouse サービスにクエリを実行する {#querying-the-clickpy-clickhouse-service}
 
-Let's import chDB:
+chDB をインポートします：
 
 ```python
 import chdb
 ```
 
-We're going to query ClickPy using the `remoteSecure` function.
-This function takes in a host name, table name, and username at a minimum.
+`remoteSecure` 関数を使って ClickPy に対してクエリを実行します。
+この関数は、少なくともホスト名、テーブル名、ユーザー名を引数として受け取ります。
 
-We can write the following query to return the number of downloads per day of the [`openai` package](https://clickpy.clickhouse.com/dashboard/openai) as a Pandas DataFrame:
- 
+次のクエリを実行することで、[`openai` package](https://clickpy.clickhouse.com/dashboard/openai) の 1 日あたりのダウンロード数を Pandas の DataFrame として取得できます。
+
 ```python
 query = """
 SELECT
@@ -95,7 +93,7 @@ openai_df.sort_values(by=["x"], ascending=False).head(n=10)
 2383  2024-09-23  1777554
 ```
 
-Now let's do the same to return the downloads for [`scikit-learn`](https://clickpy.clickhouse.com/dashboard/scikit-learn):
+では、同じ要領で [`scikit-learn`](https://clickpy.clickhouse.com/dashboard/scikit-learn) のダウンロード数を取得してみましょう。
 
 ```python
 query = """
@@ -130,9 +128,9 @@ sklearn_df.sort_values(by=["x"], ascending=False).head(n=10)
 2383  2024-09-23  1777554
 ```
 
-## Merging Pandas DataFrames {#merging-pandas-dataframes}
+## Pandas の DataFrame を結合する {#merging-pandas-dataframes}
 
-We now have two DataFrames, which we can merge together based on date (which is the `x` column) like this:
+これで 2 つの DataFrame が揃ったので、日付（`x` 列）をキーとして、次のように結合できます。
 
 ```python
 df = openai_df.merge(
@@ -152,7 +150,7 @@ df.head(n=5)
 4  2018-03-02         5      23842
 ```
 
-We can then compute the ratio of Open AI downloads to `scikit-learn` downloads like this:
+次に、OpenAI のダウンロード数と `scikit-learn` のダウンロード数の比率を、次のように計算します。
 
 ```python
 df['ratio'] = df['y_openai'] / df['y_sklearn']
@@ -168,10 +166,10 @@ df.head(n=5)
 4  2018-03-02         5      23842  0.000210
 ```
 
-## Querying Pandas DataFrames {#querying-pandas-dataframes}
+## Pandas DataFrame をクエリする {#querying-pandas-dataframes}
 
-Next, let's say we want to find the dates with the best and worst ratios. 
-We can go back to chDB and compute those values:
+次に、最も良い比率と最も悪い比率となっている日付を見つけたいとします。
+そのために chDB に戻り、それらの値を計算します。
 
 ```python
 chdb.query("""
@@ -184,8 +182,8 @@ FROM Python(df)
 ```
 
 ```text
-   bestRatio    bestDate  worstRatio   worstDate
+   最良比率    最良日付  最悪比率   最悪日付
 0   0.693855  2024-09-19    0.000003  2020-02-09
 ```
 
-If you want to learn more about querying Pandas DataFrames, see the [Pandas DataFrames developer guide](querying-pandas.md).
+Pandas DataFrame へのクエリについて詳しく知りたい場合は、[Pandas DataFrame 開発者ガイド](querying-pandas.md) を参照してください。

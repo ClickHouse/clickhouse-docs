@@ -1,18 +1,20 @@
 ---
-slug: '/operations/external-authenticators/ssl-x509'
-description: 'Документация для Ssl X509'
-title: 'Аутентификация по сертификату SSL X.509'
-doc_type: reference
+description: 'Документация по SSL X.509'
+slug: /operations/external-authenticators/ssl-x509
+title: 'Аутентификация по SSL-сертификату X.509'
+doc_type: 'reference'
 ---
+
 import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 
-[Опция SSL 'strict'](../server-configuration-parameters/settings.md#openssl) включает обязательную проверку сертификатов для входящих соединений. В этом случае могут быть установлены только соединения с доверенными сертификатами. Соединения с недоверенными сертификатами будут отклонены. Таким образом, проверка сертификатов позволяет уникально аутентифицировать входящее соединение. Поле `Common Name` или расширение `subjectAltName` сертификата используется для идентификации подключенного пользователя. Расширение `subjectAltName` поддерживает использование одного подстановочного символа '*' в конфигурации сервера. Это позволяет ассоциировать несколько сертификатов с одним и тем же пользователем. Кроме того, переиздание и аннулирование сертификатов не влияют на конфигурацию ClickHouse.
+Параметр [SSL &#39;strict&#39;](../server-configuration-parameters/settings.md#openssl) включает обязательную проверку сертификатов для входящих подключений. В этом случае могут быть установлены только соединения с доверенными сертификатами. Подключения с недоверенными сертификатами будут отклонены. Таким образом, проверка сертификатов позволяет однозначно аутентифицировать входящее подключение. Для идентификации подключенного пользователя используется поле сертификата `Common Name` или расширение `subjectAltName`. Расширение `subjectAltName` поддерживает использование одного подстановочного символа &#39;*&#39; в конфигурации сервера. Это позволяет связать несколько сертификатов с одним и тем же пользователем. Кроме того, перевыпуск и отзыв сертификатов не влияет на конфигурацию ClickHouse.
 
-Для включения аутентификации по SSL-сертификату необходимо указать список `Common Name` или `Subject Alt Name` для каждого пользователя ClickHouse в файле настроек `users.xml`:
+Чтобы включить аутентификацию по SSL-сертификату, в файле настроек `users.xml` должен быть указан список значений полей `Common Name` или `Subject Alt Name` для каждого пользователя ClickHouse:
 
 **Пример**
+
 ```xml
 <clickhouse>
     <!- ... -->
@@ -21,20 +23,20 @@ import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_s
             <ssl_certificates>
                 <common_name>host.domain.com:example_user</common_name>
                 <common_name>host.domain.com:example_user_dev</common_name>
-                <!-- More names -->
+                <!-- Дополнительные имена -->
             </ssl_certificates>
-            <!-- Other settings -->
+            <!-- Прочие настройки -->
         </user_name_1>
         <user_name_2>
             <ssl_certificates>
                 <subject_alt_name>DNS:host.domain.com</subject_alt_name>
-                <!-- More names -->
+                <!-- Дополнительные имена -->
             </ssl_certificates>
-            <!-- Other settings -->
+            <!-- Прочие настройки -->
         </user_name_2>
         <user_name_3>
             <ssl_certificates>
-                <!-- Wildcard support -->
+                <!-- Поддержка масок -->
                 <subject_alt_name>URI:spiffe://foo.com/*/bar</subject_alt_name>
             </ssl_certificates>
         </user_name_3>
@@ -42,4 +44,4 @@ import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_s
 </clickhouse>
 ```
 
-Для корректной работы [цепочки доверия](https://en.wikipedia.org/wiki/Chain_of_trust) важно также убедиться, что параметр [`caConfig`](../server-configuration-parameters/settings.md#openssl) настроен правильно.
+Чтобы SSL-цепочка доверия ([`chain of trust`](https://en.wikipedia.org/wiki/Chain_of_trust)) работала корректно, также важно убедиться, что параметр [`caConfig`](../server-configuration-parameters/settings.md#openssl) настроен правильно.

@@ -1,11 +1,12 @@
 ---
-'slug': '/use-cases/observability/clickstack/sdks/elixir'
-'pagination_prev': null
-'pagination_next': null
-'sidebar_position': 1
-'description': 'エリクサー SDK for ClickStack - The ClickHouse 可観測性スタック'
-'title': 'エリクサー'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/sdks/elixir
+pagination_prev: null
+pagination_next: null
+sidebar_position: 1
+description: 'Elixir 向け ClickStack SDK - ClickHouse オブザーバビリティスタック'
+title: 'Elixir'
+doc_type: 'guide'
+keywords: ['Elixir ClickStack SDK', 'Elixir オブザーバビリティ', 'HyperDX Elixir', 'Elixir ロギング SDK', 'ClickStack Elixir 連携']
 ---
 
 <table>
@@ -17,13 +18,14 @@
     </tr>
   </tbody>
 </table>
-_🚧 OpenTelemetry メトリクスとトレースの計測は近日登場予定！_
+
+_🚧 OpenTelemetry のメトリクスおよびトレース向け計装は近日対応予定です！_
 
 ## はじめに {#getting-started}
 
-### ClickStack ロガーバックエンドパッケージのインストール {#install-hyperdx-logger-backend-package}
+### ClickStack logger backend パッケージをインストールする {#install-hyperdx-logger-backend-package}
 
-このパッケージは、`mix.exs` の依存関係リストに `hyperdx` を追加することでインストールできます。
+`mix.exs` の依存関係リストに `hyperdx` を追加することで、パッケージをインストールできます。
 
 ```elixir
 def deps do
@@ -35,24 +37,23 @@ end
 
 ### ロガーの設定 {#configure-logger}
 
-次の内容を `config.exs` ファイルに追加してください：
+次の内容を `config.exs` ファイルに追加してください。
 
 ```elixir
-
-# config/releases.exs
+# config/releases.exs {#configreleasesexs}
 
 config :logger,
   level: :info,
   backends: [:console, {Hyperdx.Backend, :hyperdx}]
 ```
 
-### 環境変数の設定 {#configure-environment-variables}
+### 環境変数を設定する {#configure-environment-variables}
 
-その後、テレメトリーを ClickStack に送信するために、シェル内で以下の環境変数を設定する必要があります：
+ClickStack にテレメトリを送信するために、シェル環境で次の環境変数を設定します。
 
 ```shell
-export HYPERDX_API_KEY='<YOUR_INGESTION_API_KEY>' \
-OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>'
+export HYPERDX_API_KEY='<インジェストAPIキー>' \
+OTEL_SERVICE_NAME='<アプリまたはサービスの名前>'
 ```
 
-_`OTEL_SERVICE_NAME` 環境変数は HyperDX アプリ内でサービスを識別するために使用されます。任意の名前を指定できます。_
+*`OTEL_SERVICE_NAME` 環境変数は、HyperDX アプリケーション内でサービスを識別するために使用されます。任意の名前を指定できます。*

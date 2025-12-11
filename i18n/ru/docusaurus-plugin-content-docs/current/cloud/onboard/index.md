@@ -1,46 +1,47 @@
 ---
-'slug': '/cloud/get-started'
-'title': 'Начало работы с ClickHouse Cloud'
-'description': 'Полное руководство по началу работы с ClickHouse Cloud - от изучения
-  функций до развертывания и оптимизации'
-'hide_title': true
-'doc_type': 'guide'
+slug: /cloud/get-started
+title: 'Начало работы с ClickHouse Cloud'
+description: 'Полное руководство по началу работы с ClickHouse Cloud: от знакомства с возможностями до развертывания и оптимизации'
+hide_title: true
+doc_type: 'guide'
+keywords: ['онбординг', 'начало работы', 'настройка в облаке', 'быстрый старт', 'введение']
 ---
-# Начало работы с ClickHouse Cloud
 
-Вы новичок в ClickHouse Cloud и не знаете, с чего начать? В этом разделе документации
-мы проведем вас через все, что нужно, чтобы быстро запуститься. Мы 
-разделили этот раздел «Начало работы» на три подсекции, чтобы помочь вам 
-на каждом этапе процесса, пока вы изучаете ClickHouse Cloud.
+# Начало работы с ClickHouse Cloud {#get-started-with-clickhouse-cloud}
+
+Впервые используете ClickHouse Cloud и не знаете, с чего начать? В этом разделе документации
+мы покажем вам всё необходимое для быстрого запуска и начала работы. Мы
+разделили этот раздел на три подраздела, чтобы помочь вам пройти каждый этап
+в процессе освоения ClickHouse Cloud.
 
 <VerticalStepper headerLevel="h2">
 
-## Узнайте о ClickHouse Cloud {#discover-clickhouse-cloud}
+## Познакомьтесь с ClickHouse Cloud {#discover-clickhouse-cloud}
 
 - [Узнайте](/cloud/overview), что такое ClickHouse Cloud и чем он отличается от версии с открытым исходным кодом
-- [Откройте для себя](/cloud/get-started/cloud/use-cases/overview) основные случаи использования ClickHouse Cloud
+- [Ознакомьтесь](/cloud/get-started/cloud/use-cases/overview) с основными сценариями использования ClickHouse Cloud
 
-## Настройте ClickHouse Cloud {#get-set-up-with-clickhouse-cloud}
+## Начало работы с ClickHouse Cloud {#get-set-up-with-clickhouse-cloud}
 
-Теперь, когда вы знаете, что такое ClickHouse Cloud, мы проведем вас через процесс 
-загрузки ваших данных в ClickHouse Cloud, покажем вам основные доступные функции 
-и направим вас на некоторые общие лучшие практики, которые вам следует знать.
+Теперь, когда вы знаете, что такое ClickHouse Cloud, мы шаг за шагом покажем,
+как передать ваши данные в ClickHouse Cloud, познакомим с основными доступными возможностями
+и укажем на некоторые общие рекомендации и лучшие практики, о которых стоит знать.
 
-Темы включают: 
+Темы включают:
 
 - [Руководства по миграции](/integrations/migration/overview) с различных платформ
 
 ## Настройте развертывание ClickHouse Cloud {#evaluate-clickhouse-cloud}
 
-Теперь, когда ваши данные находятся в ClickHouse Cloud, мы расскажем вам о некоторых более сложных 
-темах, чтобы помочь вам извлечь максимальную пользу из вашего опыта работы с ClickHouse Cloud и исследовать 
-возможности платформы.
+Теперь, когда ваши данные уже в ClickHouse Cloud, мы рассмотрим ряд более продвинутых
+тем, которые помогут вам получить максимум от работы с ClickHouse Cloud и лучше ознакомиться
+с возможностями этой платформы.
 
-Темы включают:
+В этой части рассматриваются следующие темы:
 
-- [Производительность запросов и оптимизация](/cloud/get-started/cloud/resource-tour#query-optimization)
+- [Производительность и оптимизация запросов](/cloud/get-started/cloud/resource-tour#query-optimization)
 - [Мониторинг](/cloud/get-started/cloud/resource-tour#monitoring)
-- [Соображения по безопасности](/cloud/get-started/cloud/resource-tour#security)
-- [Советы по устранению неполадок](/troubleshooting)
+- [Аспекты безопасности](/cloud/get-started/cloud/resource-tour#security)
+- [Рекомендации по устранению неполадок](/troubleshooting)
 
 </VerticalStepper>

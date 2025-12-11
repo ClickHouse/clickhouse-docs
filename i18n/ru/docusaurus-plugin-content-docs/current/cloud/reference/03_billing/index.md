@@ -1,19 +1,18 @@
 ---
-'slug': '/cloud/manage/billing'
-'title': 'Счет'
-'description': 'Страница содержании для билинга.'
-'keywords':
-- 'billing'
-- 'payment thresholds'
-- 'trouble shooting'
-- 'marketplace'
-'doc_type': 'landing-page'
+slug: /cloud/manage/billing
+title: 'Биллинг'
+description: 'Страница содержания раздела биллинга.'
+keywords: ['биллинг', 'пороги оплаты', 'устранение неполадок', 'marketplace']
+doc_type: 'landing-page'
 ---
-Этот раздел документации охватывает темы, связанные с выставлением счетов, и содержит следующие страницы:
+
+В этом разделе документации рассматриваются вопросы, связанные с биллингом, и он включает следующие страницы:
 
 | Страница                              | Описание                                                             |
 |---------------------------------------|----------------------------------------------------------------------|
-| [Обзор](/cloud/marketplace/marketplace-billing)                      | Обзор и страницы часто задаваемых вопросов по выставлению счетов на рынке. |
-| [Пороговые значения платежей](/cloud/billing/payment-thresholds)     | Узнайте больше о том, как работают пороговые значения платежей и как их можно настроить. |
-| [Устранение проблем с выставлением счетов](/manage/clickhouse-cloud-billing-compliance) | Устранение распространенных проблем с выставлением счетов.         |
-| [Маркетплейс](/cloud/manage/marketplace/)                    | Основная страница для дальнейших тем, связанных с маркетплейсом.    |
+| [Overview](/cloud/manage/billing/overview)                       | Примеры тарифов и ответы на часто задаваемые вопросы по биллингу.                      | 
+| [Payment Thresholds](/cloud/billing/payment-thresholds)             | Узнайте, как устроены пороги оплаты и как их настроить. |
+| [Troubleshooting Billing Issues](/manage/clickhouse-cloud-billing-compliance) | Диагностика и устранение распространённых проблем с биллингом.                                  |
+| [Marketplace](/cloud/manage/marketplace/)                    | Стартовая страница для других тем, связанных с Marketplace.                 |
+
+https://clickhouse.com/docs/cloud/

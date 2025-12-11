@@ -1,53 +1,54 @@
 ---
-'slug': '/about-us/cloud'
-'sidebar_label': '云服务'
-'sidebar_position': 10
-'description': 'ClickHouse Cloud'
-'title': 'ClickHouse Cloud'
-'doc_type': 'reference'
+slug: /about-us/cloud
+sidebar_label: '云服务'
+sidebar_position: 10
+description: 'ClickHouse Cloud'
+title: 'ClickHouse Cloud'
+keywords: ['ClickHouse Cloud', '云数据库', '托管式 ClickHouse', 'Serverless 数据库', '云 OLAP']
+doc_type: 'reference'
 ---
 
+# ClickHouse Cloud {#clickhouse-cloud}
 
-# ClickHouse Cloud
-
-ClickHouse Cloud 是由流行的开源 OLAP 数据库 ClickHouse 的原始开发者创建的云服务。您可以通过 [开始免费试用](https://console.clickhouse.cloud/signUp) 来体验 ClickHouse Cloud。
+ClickHouse Cloud 是由广受欢迎的开源 OLAP 数据库 ClickHouse 的原始作者打造的云服务。
+您可以通过[开始免费试用](https://console.clickhouse.cloud/signUp)来体验 ClickHouse Cloud。
 
 ## ClickHouse Cloud 的优势 {#clickhouse-cloud-benefits}
 
-使用 ClickHouse Cloud 的一些优势如下：
+下面是使用 ClickHouse Cloud 的部分优势：
 
-- **快速价值实现**：立即开始构建，无需对集群进行大小和扩展计算。
-- **无缝扩展**：自动扩展能够适应可变的工作负载，因此您无需为高峰使用过度配置。
-- **无服务器操作**：放松身心，我们将负责大小、扩展、安全性、可靠性和升级。
-- **透明定价**：仅为您使用的资源付费，提供资源预留和扩展控制。
-- **总拥有成本**：最佳价格/性能比和低管理开销。
-- **广泛的生态系统**：带上您最喜欢的数据连接器、可视化工具、SQL 和语言客户端。
+- **快速实现价值**：无需预先规划和扩展集群规模，即可立即开始构建。
+- **无缝扩展**：自动扩缩容以适配变化的工作负载，无需为峰值负载过度预留资源。
+- **无服务器运维体验**：我们负责容量规划、扩缩容、安全性、可靠性和升级，你可以专注于业务本身。
+- **透明定价**：只需为实际使用付费，并可通过资源预留和扩缩容控制来管理成本。
+- **总体拥有成本更低**：提供极佳的性价比，并将运维管理开销降至最低。
+- **广泛的生态系统**：可以继续使用你偏好的数据连接器、可视化工具、SQL 和各类语言客户端。
 
-<!--
-## OSS 与 ClickHouse Cloud 比较 {#oss-vs-clickhouse-cloud}
+{/*
+  ## OSS 与 ClickHouse Cloud 对比                           
 
-| 特性                           | 优势                                                                                                                                                                                                                                                                                                  | OSS ClickHouse  | ClickHouse Cloud  |
-|-------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|-------------------|
-| **部署模式**                  | ClickHouse 提供灵活性，可以选择自我管理的开源版本或在云中部署。使用 ClickHouse Local 处理本地文件而无需服务器，或者使用 chDB 将 ClickHouse 嵌入到您的应用程序中。                                                                                                           | ✅               | ✅                 |
-| **存储**                      | 作为一个开源和云托管产品，ClickHouse 可以在共享磁盘和无共享架构中部署。                                                                                                                                                                                                                              | ✅               | ✅                 |
-| **监控和警报**                | 监控和警报服务状态对确保最佳性能和主动检测潜在问题至关重要。                                                                                                                                                                                                                                    | ✅               | ✅                 |
-| **ClickPipes**               | ClickPipes 是 ClickHouse 的管理摄取管道，允许您无缝连接外部数据源（如数据库、API 和流服务）到 ClickHouse Cloud，消除了管理管道、自定义作业或 ETL 过程的需要。它支持各种规模的工作负载。                                                                                       | ❌               | ✅                 |
-| **预构建集成**                | ClickHouse 提供与流行工具和服务（如数据湖、SQL 和语言客户端、可视化库等）的预构建集成。                                                                                                                                                                                                             | ❌               | ✅                 |
-| **SQL 控制台**                | SQL 控制台提供快速、直观的方式来连接、探索和查询 ClickHouse 数据库，具有光滑的标题、查询界面、数据导入工具、可视化、协作功能和 GenAI 驱动的 SQL 辅助功能。                                                                                                                                   | ❌               | ✅                 |
-| **合规性**                    | ClickHouse Cloud 的合规性包括 CCPA、EU-US DPF、GDPR、HIPAA、ISO 27001、ISO 27001 SoA、PCI DSS 和 SOC2。ClickHouse Cloud 的安全性、可用性、处理完整性和机密性流程均经过独立审计。详细信息请见：trust.clickhouse.com。                                                                 | ❌               | ✅                 |
-| **企业级安全性**             | 支持高级安全功能，如 SSO、多因素身份验证、基于角色的访问控制 (RBAC)、私密和安全连接，支持 Private Link 和 Private Service Connect、IP 过滤、客户管理的加密密钥 (CMEK) 等。                                                                                                 | ❌               | ✅                 |
-| **扩展与优化**                | 根据工作负载无缝扩展支持水平和垂直扩展。通过自动备份、复制和高可用性，ClickHouse 为用户提供了最佳的资源分配。                                                                                                                                                                             | ❌               | ✅                 |
-| **支持服务**                  | 我们一流的支持服务和开源社区资源为您选择的任何部署模式提供覆盖。                                                                                                                                                                                                                                   | ❌               | ✅                 |
-| **数据库升级**                | 定期的数据库升级对建立强大的安全态势和访问最新功能与性能改进至关重要。                                                                                                                                                                                                                               | ❌               | ✅                 |
-| **备份**                      | 备份和恢复功能确保数据持久性，并支持在发生停电或其他中断的情况下优雅恢复。                                                                                                                                                                                                                         | ❌               | ✅                 |
-| **计算与存储分离**            | 用户可以独立扩展计算资源，从而使团队和工作负载可以共享相同的存储并维持专用计算资源。这确保一个工作负载的性能不会干扰另一个，从而增强灵活性、性能和成本效率。                                                                                                         | ❌               | ✅                 |
-| **托管服务**                  | 通过云托管服务，团队可以专注于业务成果，并加快上市时间，而无需担心 ClickHouse 的大小、设置和维护的运营开销。                                                                                                                                                                                | ❌               | ✅                 |
--->
+  | Feature                        | Benefits                                                                                                                                                                                                                                                                                                   | OSS ClickHouse  | ClickHouse Cloud  |
+  |--------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|-------------------|
+  | **Deployment modes**           | ClickHouse 提供灵活的部署选项，您可以自行管理开源版本，或选择在云端托管部署。对于本地文件，可使用无需服务器的 ClickHouse Local；也可以使用 chDB 将 ClickHouse 直接嵌入到您的应用程序中。                                                                                                  | ✅               | ✅                 |
+  | **Storage**                    | 作为开源与云托管产品，ClickHouse 支持在共享磁盘和 shared-nothing 架构中进行部署。                                                                                                                                                                               | ✅               | ✅                 |
+  | **Monitoring and alerting**    | 针对服务状态进行监控与告警对于确保最佳性能，以及主动检测和排查潜在问题至关重要。                                                                                                                                      | ✅               | ✅                 |
+  | **ClickPipes**                 | ClickPipes 是 ClickHouse 的托管摄取流水线，可让您将外部数据源（如数据库、API 和流式服务）无缝接入 ClickHouse Cloud，免去管理流水线、自定义作业或 ETL 流程的负担，并支持各种规模的工作负载。 | ❌               | ✅                 |
+  | **Pre-built integrations**     | ClickHouse 提供预构建的集成能力，可将 ClickHouse 连接到常见工具和服务，如数据湖、SQL 与语言客户端、可视化库等。                                                                                                                          | ❌               | ✅                 |
+  | **SQL console**                | SQL 控制台提供快速、直观的方式来连接、探索和查询 ClickHouse 数据库，具备流畅的界面、查询编辑器、数据导入工具、可视化功能、协作能力以及由 GenAI 驱动的 SQL 辅助功能。                                                                 | ❌               | ✅                 |
+  | **Compliance**                 | ClickHouse Cloud 的合规涵盖 CCPA、EU-US DPF、GDPR、HIPAA、ISO 27001、ISO 27001 SoA、PCI DSS、SOC2。ClickHouse Cloud 在安全性、可用性、处理完整性和机密性等方面的流程均通过独立审计。详情参见：trust.clickhouse.com。                                   | ❌               | ✅                 |
+  | **Enterprise-grade security**  | 支持高级安全特性，例如 SSO、多因素认证、基于角色的访问控制（RBAC）、通过 Private Link 与 Private Service Connect 提供的私有且安全的连接、IP 过滤、客户管理的加密密钥（CMEK）等。                              | ❌               | ✅                 |
+  | **Scaling and optimization**   | 可根据工作负载无缝向上或向下扩展，支持水平与垂直扩展。借助自动备份、复制和高可用性，ClickHouse 为用户提供最佳资源分配。                                                                               | ❌               | ✅                 |
+  | **Support services**           | 我们一流的支持服务与开源社区资源，可为您选择的任意部署模型提供全面支持。                                                                                                                                                                         | ❌               | ✅                 |
+  | **Database upgrades**          | 定期进行数据库升级对于构建强健的安全态势，以及获取最新特性与性能改进至关重要。                                                                                                                                                                | ❌               | ✅                 |
+  | **Backups**                    | 备份与恢复功能可确保数据持久性，并在发生中断或其他故障时支持平滑恢复。                                                                                                                                                                     | ❌               | ✅                 |
+  | **Compute-compute separation** | 用户可以在独立于存储的前提下扩展计算资源，使团队与工作负载能够共享同一存储，同时保持各自独立的计算资源。这能确保某一工作负载的性能不会干扰另一工作负载，从而提升灵活性、性能与成本效率。         | ❌               | ✅                 |
+  | **Managed services**           | 借助云托管服务，团队可以专注于业务成果、加速产品上市，而无需操心 ClickHouse 的容量规划、部署和维护等运维开销。                                                                                                   | ❌               | ✅                 |
+  */ }
 
-## ClickHouse Cloud 使用的 ClickHouse 版本是什么？ {#what-version-of-clickhouse-does-clickhouse-cloud-use}
+## ClickHouse Cloud 使用的是哪个版本的 ClickHouse？ {#what-version-of-clickhouse-does-clickhouse-cloud-use}
 
-Clickhouse Cloud 会持续升级您的服务到更新版本。在开源中发布核心数据库版本后，我们会在云 staging 环境中进行额外验证，通常需要 6-8 周时间，然后再推出到生产环境。发布是按云服务提供商、服务类型和区域分阶段进行的。
+ClickHouse Cloud 会持续将您的服务升级到更新的版本。在开源社区发布一个核心数据库版本之后，我们会在云端预发布环境中进行额外验证，这通常需要 6–8 周时间，然后才会推送到生产环境。版本发布会按云服务提供商、服务类型和区域分阶段逐步进行。
 
-我们提供“快速”发布频道，以便用户提前订阅更新。有关更多详细信息，请参见 ["快速发布频道"](/manage/updates#fast-release-channel-early-upgrades)。
+我们提供一个 “Fast” 发布通道，允许您在常规发布节奏之前订阅更新。更多详情，请参阅 ["Fast Release Channel"](/manage/updates#fast-release-channel-early-upgrades)。
 
-如果您依赖于早期版本中的功能，您在某些情况下可以使用服务的兼容性设置恢复到先前的行为。
+如果您依赖于早期版本中的某些功能，在某些情况下，可以通过服务的兼容性设置恢复到之前的行为。

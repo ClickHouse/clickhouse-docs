@@ -1,28 +1,27 @@
 ---
-'alias': []
-'description': 'JSONStringsフォーマットのDocumentation'
-'input_format': true
-'keywords':
-- 'JSONStrings'
-'output_format': true
-'slug': '/interfaces/formats/JSONStrings'
-'title': 'JSONStrings'
-'doc_type': 'reference'
+alias: []
+description: 'JSONStrings フォーマットのドキュメント'
+input_format: true
+keywords: ['JSONStrings']
+output_format: true
+slug: /interfaces/formats/JSONStrings
+title: 'JSONStrings'
+doc_type: 'reference'
 ---
 
-| Input | Output | Alias |
+| 入力 | 出力 | 別名 |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## 説明 {#description}
 
-データフィールドが型付きのJSON値ではなく、文字列として出力されることを除いて、[JSON](./JSON.md)フォーマットとは異なります。
+[JSON](./JSON.md) 形式との違いは、データ フィールドが型付きの JSON 値ではなく、文字列として出力される点だけです。
 
 ## 使用例 {#example-usage}
 
 ### データの挿入 {#inserting-data}
 
-次のデータを含むJSONファイルを使用し、`football.json`という名前にします：
+次のデータを含んだ JSON ファイルを `football.json` という名前で用意します：
 
 ```json
 {
@@ -195,7 +194,7 @@
 }
 ```
 
-データを挿入します：
+データを挿入します。
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONStrings;
@@ -203,7 +202,7 @@ INSERT INTO football FROM INFILE 'football.json' FORMAT JSONStrings;
 
 ### データの読み込み {#reading-data}
 
-`JSONStrings`フォーマットを使用してデータを読み込みます：
+`JSONStrings` 形式を使用してデータを読み込みます。
 
 ```sql
 SELECT *
@@ -211,7 +210,7 @@ FROM football
 FORMAT JSONStrings
 ```
 
-出力はJSONフォーマットになります：
+出力は JSON 形式で表示されます。
 
 ```json
 {

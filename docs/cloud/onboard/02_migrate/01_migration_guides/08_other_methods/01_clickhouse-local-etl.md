@@ -19,7 +19,7 @@ import ch_local_04 from '@site/static/images/integrations/migration/ch-local-04.
 
 # Migrating to ClickHouse using clickhouse-local
 
-<Image img={ch_local_01} size='sm' alt='Migrating Self-managed ClickHouse' background='white' />
+<Image img={ch_local_01} size='lg' alt='Migrating Self-managed ClickHouse'/>
 
 You can use ClickHouse, or to be more specific,[`clickhouse-local`](/operations/utilities/clickhouse-local.md)
 as an ETL tool for migrating data from your current database system to ClickHouse Cloud, as long as for your current database system there is either a
@@ -33,7 +33,7 @@ For all other popular database systems, there is JDBC driver or ODBC driver avai
 
 ## What is clickhouse-local? {#what-is-clickhouse-local}
 
-<Image img={ch_local_02} size='lg' alt='Migrating Self-managed ClickHouse' background='white' />
+<Image img={ch_local_02} size='lg' alt='Migrating Self-managed ClickHouse'  />
 
 Typically, ClickHouse is run in the form of a cluster, where several instances of the ClickHouse database engine are running in a distributed fashion on different servers.
 
@@ -92,7 +92,7 @@ In order for the `remoteSecure` function to connect to your ClickHouse Cloud ser
 We will use the [integration table engine](/engines/table-engines/integrations/mysql/) (created on-the-fly by the [mysql table function](/sql-reference/table-functions/mysql/)) for reading data from the source MySQL database and we will use the [remoteSecure table function](/sql-reference/table-functions/remote/)
 for writing the data into a destination table on your ClickHouse cloud service.
 
-<Image img={ch_local_03} size='sm' alt='Migrating Self-managed ClickHouse' background='white' />
+<Image img={ch_local_03} size='lg' alt='Migrating Self-managed ClickHouse'  />
 
 ### On the destination ClickHouse Cloud service: {#on-the-destination-clickhouse-cloud-service}
 
@@ -133,7 +133,7 @@ No data is stored locally on the `clickhouse-local` host machine. Instead, the d
 We will use the [JDBC integration table engine](/engines/table-engines/integrations/jdbc.md) (created on-the-fly by the [jdbc table function](/sql-reference/table-functions/jdbc.md)) together with the [ClickHouse JDBC Bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge) and the MySQL JDBC driver for reading data from the source MySQL database and we will use the [remoteSecure table function](/sql-reference/table-functions/remote.md)
 for writing the data into a destination table on your ClickHouse cloud service.
 
-<Image img={ch_local_04} size='sm' alt='Migrating Self-managed ClickHouse' background='white' />
+<Image img={ch_local_04} size='lg' alt='Migrating Self-managed ClickHouse'  />
 
 ### On the destination ClickHouse Cloud service: {#on-the-destination-clickhouse-cloud-service-1}
 

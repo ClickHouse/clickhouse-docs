@@ -1,16 +1,16 @@
 ---
-'description': 'Row Policy 的文档'
-'sidebar_label': 'ROW POLICY'
-'sidebar_position': 41
-'slug': '/sql-reference/statements/create/row-policy'
-'title': 'CREATE ROW POLICY'
-'doc_type': 'reference'
+description: 'ROW POLICY 文档'
+sidebar_label: 'ROW POLICY'
+sidebar_position: 41
+slug: /sql-reference/statements/create/row-policy
+title: 'CREATE ROW POLICY'
+doc_type: 'reference'
 ---
 
-创建一个 [行策略](../../../guides/sre/user-management/index.md#row-policy-management)，即用于确定用户可以从表中读取哪些行的过滤器。
+创建一个 [row policy](../../../guides/sre/user-management/index.md#row-policy-management)，即用于确定用户可以从表中读取哪些行的过滤器。
 
 :::tip
-行策略仅对具有只读访问权限的用户有意义。如果用户可以修改表或在表之间复制分区，则会破坏行策略的限制。
+Row policy 仅对只读访问的用户有意义。如果某个用户可以修改表或在表之间复制分区，那么 row policy 的限制将会失效。
 :::
 
 语法：
@@ -26,60 +26,60 @@ CREATE [ROW] POLICY [IF NOT EXISTS | OR REPLACE] policy_name1 [ON CLUSTER cluste
 
 ## USING 子句 {#using-clause}
 
-允许指定条件以过滤行。只有在条件对该行计算为非零时，用户才能看到该行。
+允许指定条件来过滤行。只有当对某行计算该条件的结果为非零值时，用户才能看到该行。
 
 ## TO 子句 {#to-clause}
 
-在 `TO` 部分，您可以提供一个用户和角色的列表，该策略应适用于这些用户。例如，`CREATE ROW POLICY ... TO accountant, john@localhost`。
+在 `TO` 部分中，可以提供该策略适用的用户和角色列表。例如：`CREATE ROW POLICY ... TO accountant, john@localhost`。
 
-关键字 `ALL` 表示所有 ClickHouse 用户，包括当前用户。关键字 `ALL EXCEPT` 允许从所有用户列表中排除某些用户，例如，`CREATE ROW POLICY ... TO ALL EXCEPT accountant, john@localhost`。
+关键字 `ALL` 表示所有 ClickHouse 用户，包括当前用户。关键字 `ALL EXCEPT` 允许从全部用户列表中排除某些用户，例如：`CREATE ROW POLICY ... TO ALL EXCEPT accountant, john@localhost`
 
 :::note
-如果没有为表定义行策略，则任何用户都可以 `SELECT` 表中的所有行。为表定义一个或多个行策略会使访问表依赖于行策略，无论这些行策略是否为当前用户定义。例如，以下策略：
+如果没有为某个表定义任何行策略，那么任意用户都可以对该表执行 `SELECT` 以读取所有行。为该表定义一个或多个行策略后，对该表的访问将依赖这些行策略，而不管这些行策略是否是为当前用户定义的。例如，下面的策略：
 
 `CREATE ROW POLICY pol1 ON mydb.table1 USING b=1 TO mira, peter`
 
-禁止用户 `mira` 和 `peter` 查看 `b != 1` 的行，并且任何未提及的用户（例如用户 `paul`）将完全看不到 `mydb.table1` 中的任何行。
+禁止用户 `mira` 和 `peter` 查看满足 `b != 1` 的行，且任何未被提及的用户（例如用户 `paul`）将完全看不到 `mydb.table1` 中的任何行。
 
-如果这不是所期望的，可以通过添加另一个行策略来解决，如下所示：
+如果这不是期望的行为，可以通过再添加一个行策略来修正，例如：
 
 `CREATE ROW POLICY pol2 ON mydb.table1 USING 1 TO ALL EXCEPT mira, peter`
 :::
 
 ## AS 子句 {#as-clause}
 
-允许同一用户在同一表上同时启用多个策略。因此，我们需要一种方法来结合多个策略的条件。
+允许在同一张表上针对同一用户同时启用多个策略。因此，我们需要一种方法将多个策略中的条件组合起来。
 
-默认情况下，策略是使用布尔 `OR` 运算符组合的。例如，以下策略：
+默认情况下，策略会使用布尔运算符 `OR` 进行组合。例如，以下策略：
 
 ```sql
 CREATE ROW POLICY pol1 ON mydb.table1 USING b=1 TO mira, peter
 CREATE ROW POLICY pol2 ON mydb.table1 USING c=2 TO peter, antonio
 ```
 
-使用户 `peter` 能够查看 `b=1` 或 `c=2` 的行。
+使用户 `peter` 能够看到满足 `b=1` 或 `c=2` 的行。
 
-`AS` 子句指定策略如何与其他策略组合。策略可以是允许的或限制性的。默认情况下，策略是允许的，这意味着它们使用布尔 `OR` 运算符组合。
+`AS` 子句指定策略应如何与其他策略组合。策略可以是宽松型（permissive）或严格型（restrictive）。默认情况下，策略是宽松型的，这意味着它们使用布尔运算符 `OR` 进行组合。
 
-策略也可以被定义为限制性的作为一种替代方案。限制性策略是使用布尔 `AND` 运算符组合的。
+也可以将策略定义为严格型。严格型策略使用布尔运算符 `AND` 进行组合。
 
-这里是一般公式：
+通用公式如下：
 
 ```text
-row_is_visible = (one or more of the permissive policies' conditions are non-zero) AND
-                 (all of the restrictive policies's conditions are non-zero)
+row_is_visible = (一个或多个宽松策略的条件为非零) AND
+                 (所有限制性策略的条件均为非零)
 ```
 
-例如，以下策略：
+例如，下面的策略：
 
 ```sql
 CREATE ROW POLICY pol1 ON mydb.table1 USING b=1 TO mira, peter
 CREATE ROW POLICY pol2 ON mydb.table1 USING c=2 AS RESTRICTIVE TO peter, antonio
 ```
 
-使用户 `peter` 仅在 `b=1` AND `c=2` 两个条件都为真时才能查看行。
+使用户 `peter` 仅当同时满足 `b=1` 且 `c=2` 时才能查看行。
 
-数据库策略与表策略相结合。
+数据库策略会与表策略组合应用。
 
 例如，以下策略：
 
@@ -88,12 +88,12 @@ CREATE ROW POLICY pol1 ON mydb.* USING b=1 TO mira, peter
 CREATE ROW POLICY pol2 ON mydb.table1 USING c=2 AS RESTRICTIVE TO peter, antonio
 ```
 
-使用户 `peter` 仅在 `b=1` AND `c=2` 两个条件都为真时才能查看 table1 的行，尽管
-mydb 中的任何其他表对该用户仅应用 `b=1` 策略。
+使用户 `peter` 只能在 `b=1` 且 `c=2` 时查看 table1 的行，尽管
+mydb 中的其他任何表对该用户只会应用 `b=1` 的策略。
 
 ## ON CLUSTER 子句 {#on-cluster-clause}
 
-允许在集群上创建行策略，请参见 [Distributed DDL](../../../sql-reference/distributed-ddl.md)。
+允许在集群中创建行策略，参见 [Distributed DDL](../../../sql-reference/distributed-ddl.md)。
 
 ## 示例 {#examples}
 

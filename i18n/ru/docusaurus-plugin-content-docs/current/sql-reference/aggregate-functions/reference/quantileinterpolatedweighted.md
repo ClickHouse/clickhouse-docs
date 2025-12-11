@@ -1,17 +1,19 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/quantileInterpolatedWeighted'
+description: 'Вычисляет квантиль последовательности числовых данных с использованием линейной интерполяции
+  с учетом веса каждого элемента.'
 sidebar_position: 176
-description: 'Вычисляет квантиль числовой последовательности данных с использованием'
-title: quantileInterpolatedWeighted
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/quantileInterpolatedWeighted
+title: 'quantileInterpolatedWeighted'
+doc_type: 'reference'
 ---
-# quantileInterpolatedWeighted
 
-Вычисляет [квантиль](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных с использованием линейной интерполяции, принимая во внимание вес каждого элемента.
+# quantileInterpolatedWeighted {#quantileinterpolatedweighted}
 
-Чтобы получить интерполированное значение, все переданные значения объединяются в массив, который затем сортируется по соответствующим весам. Затем выполняется интерполяция квантиля с использованием [взвешенного процентного метода](https://en.wikipedia.org/wiki/Percentile#The_weighted_percentile_method) путем построения кумулятивного распределения на основе весов, а затем выполняется линейная интерполяция с использованием весов и значений для вычисления квантилей.
+Вычисляет [квантиль](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных с использованием линейной интерполяции с учётом веса каждого элемента.
 
-При использовании нескольких функций `quantile*` с различными уровнями в запросе внутренние состояния не комбинируются (то есть запрос работает менее эффективно, чем мог бы). В этом случае используйте функцию [quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles).
+Для получения интерполированного значения все переданные значения объединяются в массив, который затем сортируется по соответствующим весам. Интерполяция квантилей затем выполняется с использованием [метода взвешенного перцентиля](https://en.wikipedia.org/wiki/Percentile#The_weighted_percentile_method) путём построения накопленного распределения на основе весов, после чего выполняется линейная интерполяция по весам и значениям для вычисления квантилей.
+
+При использовании нескольких функций `quantile*` с разными уровнями в одном запросе их внутренние состояния не объединяются (то есть запрос выполняется менее эффективно, чем мог бы). В этом случае используйте функцию [quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles).
 
 **Синтаксис**
 
@@ -23,19 +25,19 @@ quantileInterpolatedWeighted(level)(expr, weight)
 
 **Аргументы**
 
-- `level` — Уровень квантиля. Необязательный параметр. Константное число с плавающей запятой от 0 до 1. Рекомендуется использовать значение `level` в диапазоне `[0.01, 0.99]`. Значение по умолчанию: 0.5. При `level=0.5` функция вычисляет [медиану](https://en.wikipedia.org/wiki/Median).
-- `expr` — Выражение по значениям колонки, дающее числовые [типы данных](/sql-reference/data-types), [Date](../../../sql-reference/data-types/date.md) или [DateTime](../../../sql-reference/data-types/datetime.md).
-- `weight` — Колонка с весами членов последовательности. Вес — это количество вхождений значения.
+* `level` — уровень квантиля. Необязательный параметр. Константа с плавающей запятой от 0 до 1. Рекомендуется использовать значение `level` в диапазоне `[0.01, 0.99]`. Значение по умолчанию: 0.5. При `level=0.5` функция вычисляет [медиану](https://en.wikipedia.org/wiki/Median).
+* `expr` — выражение над значениями столбца, результатом которого являются числовые [типы данных](/sql-reference/data-types), [Date](../../../sql-reference/data-types/date.md) или [DateTime](../../../sql-reference/data-types/datetime.md).
+* `weight` — столбец с весами элементов последовательности. Вес — это количество вхождений значения.
 
 **Возвращаемое значение**
 
-- Квантиль заданного уровня.
+* Квантиль заданного уровня.
 
 Тип:
 
-- [Float64](../../../sql-reference/data-types/float.md) для входного числового типа данных.
-- [Date](../../../sql-reference/data-types/date.md), если входные значения имеют тип `Date`.
-- [DateTime](../../../sql-reference/data-types/datetime.md), если входные значения имеют тип `DateTime`.
+* [Float64](../../../sql-reference/data-types/float.md) для числового типа данных во входных данных.
+* [Date](../../../sql-reference/data-types/date.md), если входные значения имеют тип `Date`.
+* [DateTime](../../../sql-reference/data-types/datetime.md), если входные значения имеют тип `DateTime`.
 
 **Пример**
 
@@ -64,7 +66,7 @@ SELECT quantileInterpolatedWeighted(n, val) FROM t
 └──────────────────────────────────────┘
 ```
 
-**Смотрите Также**
+**См. также**
 
-- [median](/sql-reference/aggregate-functions/reference/median)
-- [quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles)
+* [median](/sql-reference/aggregate-functions/reference/median)
+* [quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles)

@@ -1,30 +1,25 @@
 ---
-'slug': '/examples/aggregate-function-combinators/quantilesTimingArrayIf'
-'title': 'quantilesTimingArrayIf'
-'description': 'quantilesTimingArrayIf コムビネーターを使った例'
-'keywords':
-- 'quantilesTiming'
-- 'array'
-- 'if'
-- 'combinator'
-- 'examples'
-- 'quantilesTimingArrayIf'
-'sidebar_label': 'quantilesTimingArrayIf'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/quantilesTimingArrayIf'
+title: 'quantilesTimingArrayIf'
+description: 'quantilesTimingArrayIf コンビネータを使用する例'
+keywords: ['quantilesTiming', 'array', 'if', 'combinator', 'examples', 'quantilesTimingArrayIf']
+sidebar_label: 'quantilesTimingArrayIf'
+doc_type: 'reference'
 ---
-
 
 # quantilesTimingArrayIf {#quantilestimingarrayif}
 
 ## 説明 {#description}
 
 [`Array`](/sql-reference/aggregate-functions/combinators#-array) および [`If`](/sql-reference/aggregate-functions/combinators#-if) 
-コンビネータを使用して、条件が真である行の配列内のタイミング値の分位数を計算するために、[`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming) 
-関数に適用することができます。この目的のために `quantilesTimingArrayIf` 集約コンビネータ関数が利用されます。
+コンビネータは、[`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
+関数に適用でき、`quantilesTimingArrayIf` 集約コンビネータ関数を使用して、
+条件が真の行に対して配列内のタイミング値の分位数を計算できます。
 
 ## 使用例 {#example-usage}
 
-この例では、異なるエンドポイントのAPIレスポンスタイムを格納するテーブルを作成し、成功したリクエストのレスポンスタイムの分位数を計算するために `quantilesTimingArrayIf` を使用します。
+この例では、さまざまなエンドポイントごとの API レスポンス時間を保存するテーブルを作成し、
+成功したリクエストに対するレスポンス時間の分位数を計算するために `quantilesTimingArrayIf` を使用します。
 
 ```sql title="Query"
 CREATE TABLE api_responses(
@@ -45,22 +40,23 @@ FROM api_responses
 GROUP BY endpoint;
 ```
 
-`quantilesTimingArrayIf` 関数は、成功率が95%を超えるエンドポイントに対してのみ分位数を計算します。
-返される配列には、以下の分位数が順に含まれています：
-- 0 (最小値)
-- 0.25 (第1四分位数)
-- 0.5 (中央値)
-- 0.75 (第3四分位数)
-- 0.95 (95パーセンタイル)
-- 0.99 (99パーセンタイル)
-- 1.0 (最大値)
+`quantilesTimingArrayIf` 関数は、成功率が 95% を上回るエンドポイントに対してのみ分位数を計算します。
+返される配列には、次の分位数がこの順序で含まれます:
+
+* 0 (最小値)
+* 0.25 (第 1 四分位数)
+* 0.5 (中央値)
+* 0.75 (第 3 四分位数)
+* 0.95 (95 パーセンタイル)
+* 0.99 (99 パーセンタイル)
+* 1.0 (最大値)
 
 ```response title="Response"
-   ┌─endpoint─┬─response_time_quantiles─────────────────────────────────────────────┐
-1. │ orders   │ [82, 87, 92, 98, 103, 104, 105]                                     │
-2. │ products │ [45, 47, 49, 51, 52, 52, 53]                                        │
-3. │ users    │ [nan, nan, nan, nan, nan, nan, nan]                                 │
-   └──────────┴─────────────────────────────────────────────────────────────────────┘
+   ┌─エンドポイント─┬─応答時間分位数─────────────────────────────────────────────┐
+1. │ 注文     │ [82, 87, 92, 98, 103, 104, 105]                                     │
+2. │ 製品     │ [45, 47, 49, 51, 52, 52, 53]                                        │
+3. │ ユーザー │ [nan, nan, nan, nan, nan, nan, nan]                                 │
+   └────────────┴──────────────────────────────────────────────────────────────────┘
 ```
 
 ## 関連項目 {#see-also}

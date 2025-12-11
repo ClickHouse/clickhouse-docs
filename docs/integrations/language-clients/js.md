@@ -41,10 +41,10 @@ Current Node.js versions support:
 
 | Node.js version | Supported?  |
 |-----------------|-------------|
+| 24.x            | ✔           |
 | 22.x            | ✔           |
 | 20.x            | ✔           |
-| 18.x            | ✔           |
-| 16.x            | Best effort |
+| 18.x            | Best effort |
 
 ## Environment requirements (web) {#environment-requirements-web}
 

@@ -1,36 +1,32 @@
 ---
-'title': 'ClickHouseとKafkaを名前付きコレクションを使用して統合する'
-'description': '名前付きコレクションを使用してClickHouseをKafkaに接続する方法'
-'keywords':
-- 'named collection'
-- 'how to'
-- 'kafka'
-'slug': '/integrations/data-ingestion/kafka/kafka-table-engine-named-collections'
-'doc_type': 'guide'
+title: 'Named Collection を使用した ClickHouse と Kafka の連携'
+description: 'Named Collection を使用して ClickHouse と Kafka を連携させる方法'
+keywords: ['Named Collection', '手順', 'kafka']
+slug: /integrations/data-ingestion/kafka/kafka-table-engine-named-collections
+doc_type: 'guide'
 ---
 
-
-# ClickHouseとKafkaを名前付きコレクションを使用して統合する
+# 名前付きコレクションを用いた ClickHouse と Kafka の統合 {#integrating-clickhouse-with-kafka-using-named-collections}
 
 ## はじめに {#introduction}
 
-このガイドでは、名前付きコレクションを使用してClickHouseをKafkaに接続する方法を探ります。名前付きコレクションの設定ファイルを使用することにはいくつかの利点があります：
-- 設定の管理が集中化されるため、簡素化されます。
-- 設定を変更する際にSQLテーブルの定義を変更する必要がありません。
-- 単一の設定ファイルを検査することで、設定のレビューとトラブルシューティングが容易になります。
+このガイドでは、named collection（名前付きコレクション）を使用して ClickHouse を Kafka に接続する方法を解説します。named collection 用の設定ファイルを使用することで、次のような利点があります。
+- 設定を一元的かつ容易に管理できる。
+- 設定項目を変更する際に、SQL テーブル定義を変更する必要がない。
+- 単一の設定ファイルを確認するだけで、設定内容のレビューやトラブルシューティングを実施しやすい。
 
-このガイドは、Apache Kafka 3.4.1 と ClickHouse 24.5.1 でテストされています。
+このガイドは、Apache Kafka 3.4.1 と ClickHouse 24.5.1 で検証されています。
 
 ## 前提条件 {#assumptions}
 
-この文書では、以下の事項があることを前提としています：
-1. 動作中のKafkaクラスターがあること。
-2. セットアップされて稼働中のClickHouseクラスターがあること。
-3. SQLの基本的な知識と、ClickHouseおよびKafkaの設定に対する理解があること。
+このドキュメントでは、以下を前提としています。
+1. 稼働中の Kafka クラスター。
+2. セットアップ済みで稼働中の ClickHouse クラスター。
+3. SQL の基本的な知識と、ClickHouse および Kafka の設定に関する基本的な理解。
 
 ## 前提条件 {#prerequisites}
 
-名前付きコレクションを作成するユーザーが必要なアクセス権を持っていることを確認してください：
+名前付きコレクションを作成するユーザーに、必要なアクセス権限が付与されていることを確認してください。
 
 ```xml
 <access_management>1</access_management>
@@ -39,17 +35,17 @@
 <show_named_collections_secrets>1</show_named_collections_secrets>
 ```
 
-アクセス制御の有効化に関する詳細は、[ユーザー管理ガイド](./../../../guides/sre/user-management/index.md)を参照してください。
+アクセス制御を有効にする方法の詳細については、[User Management Guide](./../../../guides/sre/user-management/index.md) を参照してください。
 
 ## 設定 {#configuration}
 
-以下のセクションをClickHouseの `config.xml` ファイルに追加します：
+次のセクションを ClickHouse の `config.xml` ファイルに追加してください。
 
 ```xml
-<!-- Named collections for Kafka integration -->
+<!-- Kafka統合用の名前付きコレクション -->
 <named_collections>
     <cluster_1>
-        <!-- ClickHouse Kafka engine parameters -->
+        <!-- ClickHouse Kafkaエンジンのパラメータ -->
         <kafka_broker_list>c1-kafka-1:9094,c1-kafka-2:9094,c1-kafka-3:9094</kafka_broker_list>
         <kafka_topic_list>cluster_1_clickhouse_topic</kafka_topic_list>
         <kafka_group_name>cluster_1_clickhouse_consumer</kafka_group_name>
@@ -58,7 +54,7 @@
         <kafka_num_consumers>1</kafka_num_consumers>
         <kafka_thread_per_consumer>1</kafka_thread_per_consumer>
 
-        <!-- Kafka extended configuration -->
+        <!-- Kafka拡張構成 -->
         <kafka>
             <security_protocol>SASL_SSL</security_protocol>
             <enable_ssl_certificate_verification>false</enable_ssl_certificate_verification>
@@ -71,7 +67,7 @@
     </cluster_1>
 
     <cluster_2>
-        <!-- ClickHouse Kafka engine parameters -->
+        <!-- ClickHouse Kafkaエンジンのパラメータ -->
         <kafka_broker_list>c2-kafka-1:29094,c2-kafka-2:29094,c2-kafka-3:29094</kafka_broker_list>
         <kafka_topic_list>cluster_2_clickhouse_topic</kafka_topic_list>
         <kafka_group_name>cluster_2_clickhouse_consumer</kafka_group_name>
@@ -80,7 +76,7 @@
         <kafka_num_consumers>1</kafka_num_consumers>
         <kafka_thread_per_consumer>1</kafka_thread_per_consumer>
 
-        <!-- Kafka extended configuration -->
+        <!-- Kafka拡張構成 -->
         <kafka>
             <security_protocol>SASL_SSL</security_protocol>
             <enable_ssl_certificate_verification>false</enable_ssl_certificate_verification>
@@ -94,16 +90,16 @@
 </named_collections>
 ```
 
-### 設定ノート {#configuration-notes}
+### 設定に関する注意事項 {#configuration-notes}
 
-1. Kafkaのアドレスや関連設定を、あなたのKafkaクラスターのセットアップに合わせて調整してください。
-2. `<kafka>`の前のセクションにはClickHouse Kafkaエンジンのパラメータが含まれています。パラメータの完全なリストについては、[Kafkaエンジンのパラメータ](/engines/table-engines/integrations/kafka)を参照してください。
-3. `<kafka>`内のセクションには拡張Kafka設定オプションが含まれています。さらなるオプションについては、[librdkafkaの設定](https://github.com/confluentinc/librdkafka/blob/master/CONFIGURATION.md)を参照してください。
-4. この例では `SASL_SSL` セキュリティプロトコルと `PLAIN` メカニズムを使用しています。これらの設定は、あなたのKafkaクラスターの設定に基づいて調整してください。
+1. Kafka のアドレスおよび関連する設定を、利用している Kafka クラスター構成に合わせて調整してください。
+2. `<kafka>` の前のセクションには、ClickHouse の Kafka エンジンのパラメータが含まれます。パラメータの一覧については、[Kafka engine parameters](/engines/table-engines/integrations/kafka) を参照してください。
+3. `<kafka>` 内のセクションには、追加の Kafka 設定オプションが含まれます。利用可能なオプションの詳細については、[librdkafka configuration](https://github.com/confluentinc/librdkafka/blob/master/CONFIGURATION.md) を参照してください。
+4. この例では、`SASL_SSL` セキュリティプロトコルと `PLAIN` メカニズムを使用しています。これらの設定は、利用している Kafka クラスター構成に応じて調整してください。
 
 ## テーブルとデータベースの作成 {#creating-tables-and-databases}
 
-ClickHouseクラスター上に必要なデータベースとテーブルを作成します。ClickHouseを単一ノードで実行している場合は、SQLコマンドのクラスター部分を省略し、`ReplicatedMergeTree` の代わりに他のエンジンを使用します。
+ClickHouse クラスター上に必要なデータベースとテーブルを作成します。ClickHouse をシングルノード構成で実行している場合は、SQL コマンド内のクラスター指定部分を省略し、`ReplicatedMergeTree` の代わりに別のエンジンを使用してください。
 
 ### データベースの作成 {#create-the-database}
 
@@ -111,9 +107,9 @@ ClickHouseクラスター上に必要なデータベースとテーブルを作�
 CREATE DATABASE kafka_testing ON CLUSTER LAB_CLICKHOUSE_CLUSTER;
 ```
 
-### Kafkaテーブルの作成 {#create-kafka-tables}
+### Kafka テーブルの作成 {#create-kafka-tables}
 
-最初のKafkaクラスターのための最初のKafkaテーブルを作成します：
+最初の Kafka クラスター向けの最初の Kafka テーブルを作成します。
 
 ```sql
 CREATE TABLE kafka_testing.first_kafka_table ON CLUSTER LAB_CLICKHOUSE_CLUSTER
@@ -125,7 +121,7 @@ CREATE TABLE kafka_testing.first_kafka_table ON CLUSTER LAB_CLICKHOUSE_CLUSTER
 ENGINE = Kafka(cluster_1);
 ```
 
-2番目のKafkaクラスターのための2番目のKafkaテーブルを作成します：
+2つ目のKafkaクラスター用の2つ目のKafkaテーブルを作成します：
 
 ```sql
 CREATE TABLE kafka_testing.second_kafka_table ON CLUSTER STAGE_CLICKHOUSE_CLUSTER
@@ -137,9 +133,9 @@ CREATE TABLE kafka_testing.second_kafka_table ON CLUSTER STAGE_CLICKHOUSE_CLUSTE
 ENGINE = Kafka(cluster_2);
 ```
 
-### レプリケートされたテーブルの作成 {#create-replicated-tables}
+### レプリケーテッドテーブルを作成する {#create-replicated-tables}
 
-最初のKafkaテーブルのためのテーブルを作成します：
+最初の Kafka 用テーブルを作成します。
 
 ```sql
 CREATE TABLE kafka_testing.first_replicated_table ON CLUSTER STAGE_CLICKHOUSE_CLUSTER
@@ -151,7 +147,7 @@ CREATE TABLE kafka_testing.first_replicated_table ON CLUSTER STAGE_CLICKHOUSE_CL
 ORDER BY id;
 ```
 
-2番目のKafkaテーブルのためのテーブルを作成します：
+2つ目の Kafka テーブル向けのテーブルを作成します。
 
 ```sql
 CREATE TABLE kafka_testing.second_replicated_table ON CLUSTER STAGE_CLICKHOUSE_CLUSTER
@@ -165,7 +161,7 @@ ORDER BY id;
 
 ### マテリアライズドビューの作成 {#create-materialized-views}
 
-最初のKafkaテーブルから最初のレプリケートテーブルにデータを挿入するためのマテリアライズドビューを作成します：
+最初の Kafka テーブルから最初のレプリケートされたテーブルにデータを挿入するマテリアライズドビューを作成します：
 
 ```sql
 CREATE MATERIALIZED VIEW kafka_testing.cluster_1_mv ON CLUSTER STAGE_CLICKHOUSE_CLUSTER TO first_replicated_table AS
@@ -176,7 +172,7 @@ SELECT
 FROM first_kafka_table;
 ```
 
-2番目のKafkaテーブルから2番目のレプリケートテーブルにデータを挿入するためのマテリアライズドビューを作成します：
+2つ目の Kafka テーブルから 2つ目のレプリケーテッドテーブルへデータを挿入するマテリアライズドビューを作成します。
 
 ```sql
 CREATE MATERIALIZED VIEW kafka_testing.cluster_2_mv ON CLUSTER STAGE_CLICKHOUSE_CLUSTER TO second_replicated_table AS
@@ -187,13 +183,14 @@ SELECT
 FROM second_kafka_table;
 ```
 
-## セットアップの確認 {#verifying-the-setup}
+## セットアップの検証 {#verifying-the-setup}
 
-これで、Kafkaクラスター上に相対的なコンシューマーグループが表示されるはずです：
-- `cluster_1_clickhouse_consumer` が `cluster_1` に
-- `cluster_2_clickhouse_consumer` が `cluster_2` に
+これで、Kafka クラスター上にそれぞれに対応するコンシューマグループが表示されているはずです:
 
-いずれかのClickHouseノードで以下のクエリを実行して、両方のテーブルのデータを確認してください：
+* `cluster_1` 上の `cluster_1_clickhouse_consumer`
+* `cluster_2` 上の `cluster_2_clickhouse_consumer`
+
+両方のテーブルのデータを確認するには、任意の ClickHouse ノードで次のクエリを実行します:
 
 ```sql
 SELECT * FROM first_replicated_table LIMIT 10;
@@ -203,11 +200,11 @@ SELECT * FROM first_replicated_table LIMIT 10;
 SELECT * FROM second_replicated_table LIMIT 10;
 ```
 
-### 注意 {#note}
+### 補足 {#note}
 
-このガイドでは、両方のKafkaトピックに取り込まれるデータは同じです。あなたの場合は異なるでしょう。必要に応じて、任意の数のKafkaクラスターを追加できます。
+このガイドでは、両方の Kafka トピックに取り込まれるデータは同一です。実際の環境では、それぞれ異なるデータになるはずです。必要なだけ多くの Kafka クラスターを追加できます。
 
-例の出力：
+出力例：
 
 ```sql
 ┌─id─┬─first_name─┬─last_name─┐
@@ -217,4 +214,4 @@ SELECT * FROM second_replicated_table LIMIT 10;
 └────┴────────────┴───────────┘
 ```
 
-これで、名前付きコレクションを使用してClickHouseとKafkaを統合するための設定が完了しました。ClickHouseの `config.xml` ファイルでKafka設定を集中管理することにより、設定をより簡単に管理および調整でき、スムーズで効率的な統合が確保されます。
+これで、named collection を用いた ClickHouse と Kafka の統合設定は完了です。Kafka の設定を ClickHouse の `config.xml` ファイルに一元化することで、設定の管理や調整が容易になり、スムーズで効率的な統合を実現できます。

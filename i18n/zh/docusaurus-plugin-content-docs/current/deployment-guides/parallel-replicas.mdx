@@ -1,10 +1,9 @@
 ---
-'slug': '/deployment-guides/parallel-replicas'
-'title': '并行副本'
-'keywords':
-- 'parallel replica'
-'description': '在本指南中，我们将首先讨论 ClickHouse 如何通过分布式表在多个分片之间分配查询，然后查询如何利用多个副本进行执行。'
-'doc_type': 'reference'
+slug: /deployment-guides/parallel-replicas
+title: '并行副本'
+keywords: ['parallel replica']
+description: '在本指南中，我们将首先讨论 ClickHouse 如何通过分布式表将查询分发到多个分片上，然后再说明查询如何利用多个副本来完成执行。'
+doc_type: 'reference'
 ---
 
 import Image from '@theme/IdealImage';
@@ -19,238 +18,269 @@ import image_7 from '@site/static/images/deployment-guides/parallel-replicas-7.p
 import image_8 from '@site/static/images/deployment-guides/parallel-replicas-8.png'
 import image_9 from '@site/static/images/deployment-guides/parallel-replicas-9.png'
 
-<BetaBadge/>
+<BetaBadge />
 
-## 介绍 {#introduction}
+## 简介 \{#introduction\}
 
-ClickHouse 可以非常快速地处理查询，但这些查询是如何在多个服务器之间分配和并行化的呢？
+ClickHouse 处理查询的速度极快，但这些查询是如何在多台服务器之间被分发并并行执行的呢？
 
-> 在本指南中，我们将首先讨论 ClickHouse 如何通过分布式表将查询分配到多个分片上，然后讨论查询如何利用多个副本来执行。
+> 在本指南中，我们将首先介绍 ClickHouse 如何通过分布式表在多个分片之间分发查询，然后说明查询如何利用多个副本来完成执行。
 
-## 分片架构 {#sharded-architecture}
+## 分片架构 \{#sharded-architecture\}
 
-在无共享架构中，集群通常被拆分为多个分片，每个分片包含整体数据的一个子集。一个分布式表位于这些分片之上，为完整数据提供统一视图。
+在无共享（shared-nothing）架构中，集群通常被拆分为多个分片（shard），每个分片包含整体数据的一个子集。一个分布式表位于这些分片之上，为完整数据提供统一视图。
 
-读取请求可以发送到本地表。查询执行将仅在指定的分片上发生，或者可以将其发送到分布式表，在这种情况下，每个分片将执行给定的查询。发出查询的服务器将聚合数据并响应客户端：
+读取请求可以发送到本地表，此时查询只会在指定分片上执行；也可以发送到分布式表，此时每个分片都会执行该查询。发起对分布式表查询的服务器会聚合数据并将结果返回给客户端：
 
-<Image img={image_1} size="md" alt="sharded architecture" />
+<Image img={image_1} size="md" alt="分片架构" />
 
-上图可视化了客户查询分布式表时发生的情况：
+上图展示了客户端查询分布式表时发生的过程：
 
 <ol className="docs-ordered-list">
-    <li>
-        选择查询通过负载均衡器以任意方式发送到节点上的分布式表（通过轮询策略或在被指向特定服务器后）。该节点将充当协调者。
-    </li>
-    <li>
-        节点将通过分布式表指定的信息找到需要执行查询的每个分片，并将查询发送到每个分片。
-    </li>
-    <li>
-        每个分片本地读取、过滤和聚合数据，然后将可合并的状态发送回协调者。
-    </li>
-    <li>
-        协调节点合并数据，然后将响应发送回客户端。
-    </li>
+  <li>
+    SELECT 查询被任意发送到某个节点上的分布式表
+    （通过轮询策略，或在经过负载均衡器路由到特定服务器之后）。
+    该节点随后将作为协调器。
+  </li>
+
+  <li>
+    节点会根据分布式表中指定的信息，定位需要执行查询的每个分片，
+    并将查询发送给各个分片。
+  </li>
+
+  <li>
+    每个分片在本地读取、过滤并聚合数据，然后将可合并的中间状态
+    返回给协调器。
+  </li>
+
+  <li>
+    协调器节点对数据进行合并，然后将响应返回给客户端。
+  </li>
 </ol>
 
-当我们将副本引入混合时，过程相似，唯一的区别是每个分片仅有一个副本会执行查询。这意味着可以并行处理更多查询。
+当我们引入副本时，流程基本相同，唯一的区别是每个分片中只有一个副本会执行查询，
+从而能够并行处理更多查询请求。
 
-## 非分片架构 {#non-sharded-architecture}
+## 非分片架构 \{#non-sharded-architecture\}
 
-ClickHouse Cloud 具有与上述不同的架构。（有关更多细节，请参见 ["ClickHouse Cloud Architecture"](https://clickhouse.com/docs/cloud/reference/architecture)）。通过计算与存储的分离，以及几乎无限的存储，分片的需求变得不那么重要。
+ClickHouse Cloud 的架构与上文所介绍的架构有很大差异。
+（参见 [&quot;ClickHouse Cloud Architecture&quot;](https://clickhouse.com/docs/cloud/reference/architecture)
+了解更多详情。）由于计算与存储的分离，以及几乎无限的存储容量，对分片的需求就不那么重要了。
 
-下图展示了 ClickHouse Cloud 架构：
+下图展示了 ClickHouse Cloud 的架构：
 
-<Image img={image_2} size="md" alt="non sharded architecture" />
+<Image img={image_2} size="md" alt="非分片架构" />
 
-这种架构使我们能够几乎瞬时地添加和移除副本，从而确保非常高的集群可扩展性。ClickHouse Keeper 集群（如右所示）确保我们拥有元数据的单一真实性来源。副本可以从 ClickHouse Keeper 集群获取元数据，并且所有副本维护相同的数据。数据本身存储在对象存储中，SSD 缓存使查询速度得以提升。
+这种架构使我们几乎可以瞬时添加和移除副本，从而确保集群具有极高的可扩展性。右侧所示的 ClickHouse
+Keeper 集群确保我们拥有元数据的唯一可信来源。各个副本可以从 ClickHouse Keeper
+集群获取元数据，并都维护相同的数据。数据本身存储在对象存储中，而 SSD 缓存则可以加速查询。
 
-但我们如何在多个服务器之间分配查询执行呢？在分片架构中很明显，因为每个分片实际上可以在数据的子集上执行查询。当没有分片时，这会如何工作呢？
+但是，现在我们如何将查询执行分布到多台服务器上呢？在分片架构中，这一点相对显而易见，因为每个分片实际上都可以在其数据子集上执行查询。那么，在没有分片的情况下这是如何实现的呢？
 
-## 引入并行副本 {#introducing-parallel-replicas}
+## 并行副本简介 \{#introducing-parallel-replicas\}
 
-为了通过多个服务器并行化查询执行，我们首先需要能够将我们的一个服务器指定为协调者。协调者负责创建需要执行的任务列表，确保所有任务都被执行、聚合并将结果返回给客户端。与大多数分布式系统一样，这将是接收初始查询的节点的角色。我们还需要定义工作单元。在分片架构中，工作单元是分片，即数据的子集。使用并行副本时，我们将使用表的一个小部分，称为 [granules](/docs/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing)，作为工作单元。
+为了在多台服务器上实现查询的并行执行，我们首先需要能够将其中一台服务器指定为协调节点。协调节点负责创建需要执行的任务列表，确保这些任务全部执行、聚合，并将结果返回给客户端。与大多数分布式系统类似，这个角色由接收初始查询的节点承担。我们还需要定义工作单元。在分片架构中，工作单元是分片，即数据的一个子集。使用并行副本时，我们将使用表中的一小部分数据，称为[粒度](/docs/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing)，作为工作单元。
 
-现在，让我们看看实际操作中的工作流程，借助下图：
+现在，让我们借助下图来看看它在实践中是如何工作的：
 
 <Image img={image_3} size="md" alt="Parallel replicas" />
 
 使用并行副本时：
 
 <ol className="docs-ordered-list">
-    <li>
-        客户端的查询在经过负载均衡器后发送到一个节点。该节点成为此查询的协调者。
-    </li>
-    <li>
-        节点分析每个部分的索引，并选择正确的部分和 granules 进行处理。
-    </li>
-    <li>
-        协调者将工作负载拆分为可以分配给不同副本的一组 granules。
-    </li>
-    <li>
-        每组 granules 由相应的副本处理，完成时将可合并的状态发送给协调者。
-    </li>
-    <li>
-        最后，协调者合并来自副本的所有结果，然后将响应返回给客户端。
-    </li>
+  <li>
+    来自客户端的查询在经过负载均衡器后被发送到某个节点。该节点成为此查询的协调节点。
+  </li>
+
+  <li>
+    该节点分析每个 part 的索引，并选择需要处理的合适 part 和粒度。
+  </li>
+
+  <li>
+    协调节点将工作负载拆分成一组可以分配给不同副本的粒度。
+  </li>
+
+  <li>
+    每组粒度由相应的副本进行处理，完成后将可合并的中间状态发送给协调节点。
+  </li>
+
+  <li>
+    最后，协调节点合并来自各副本的所有结果，然后将响应返回给客户端。
+  </li>
 </ol>
 
-上述步骤概述了并行副本在理论上的工作原理。然而，在实际中，有许多因素可能会阻止这种逻辑完美运行：
+上述步骤描述了并行副本在理论上的工作方式。
+然而在实践中，存在许多因素会阻碍这套逻辑完美运行：
 
 <ol className="docs-ordered-list">
-    <li>
-        一些副本可能不可用。
-    </li>
-    <li>
-        ClickHouse 中的复制是异步的，一些副本在某些时间点可能没有相同的部分。
-    </li>
-    <li>
-        需要以某种方式处理副本之间的尾延迟。
-    </li>
-    <li>
-        文件系统缓存因每个副本的活动而异，这意味着随机的任务分配可能导致由于缓存局部性而性能不佳。
-    </li>
+  <li>
+    某些副本可能不可用。
+  </li>
+
+  <li>
+    ClickHouse 中的复制是异步的，在某些时间点上，一些副本可能不具有相同的 part。
+  </li>
+
+  <li>
+    副本之间的尾延迟需要以某种方式进行处理。
+  </li>
+
+  <li>
+    文件系统缓存会根据各副本上的活动在副本之间有所差异，这意味着随机分配任务在缓存局部性方面可能导致性能不够理想。
+  </li>
 </ol>
 
-我们将在接下来的部分中探讨如何克服这些因素。
+在接下来的小节中，我们将讨论如何克服这些因素。
 
-### 公告 {#announcements}
+### 公告 \{#announcements\}
 
-为了解决上述列表中的（1）和（2），我们引入了公告的概念。让我们通过下图来可视化它的工作原理：
+为了解决上面列表中的 (1) 和 (2)，我们引入了“公告”（announcement）的概念。其工作方式如下图所示：
 
 <Image img={image_4} size="md" alt="Announcements" />
 
 <ol className="docs-ordered-list">
-    <li>
-        客户端的查询在经过负载均衡器后发送到一个节点。该节点成为此查询的协调者。
-    </li>
-    <li>
-        协调节点向集群中的所有副本发送请求以获取公告。副本可能对表的当前部分集有稍微不同的视图。因此，我们需要收集这些信息，以避免不正确的调度决策。
-    </li>
-    <li>
-        协调节点然后使用公告来定义可以分配给不同副本的一组 granules。在这里，例如，我们可以看到由于副本 2 在其公告中没有提供这个部分，因此没有来自部分 3 的 granules 被分配给副本 2。同时注意，由于副本没有提供公告，没有任务被分配给副本 3。
-    </li>
-    <li>
-        每个副本处理完其 granules 子集的查询后，将可合并的状态发送回协调者，协调者合并结果，响应发送给客户端。
-    </li>
+  <li>
+    来自客户端的查询在经过负载均衡器后被发送到某个节点，该节点成为此查询的协调节点。
+  </li>
+
+  <li>
+    协调节点发送请求，从集群中所有副本获取公告。副本对于某个表当前分区（parts）集合的视图可能略有不同。因此，我们需要收集这些信息以避免做出错误的调度决策。
+  </li>
+
+  <li>
+    随后，协调节点使用这些公告来确定一组可分配给不同副本的粒度单元。例如，在这里我们可以看到，没有来自 part 3 的粒度被分配给副本 2，因为该副本在其公告中未声明该分区。还要注意，没有任务被分配给副本 3，因为该副本没有提供公告。
+  </li>
+
+  <li>
+    在每个副本都处理完其粒度子集上的查询，并将可合并状态发送回协调节点之后，协调节点会合并结果，并将响应返回给客户端。
+  </li>
 </ol>
 
-### 动态协调 {#dynamic-coordination}
+### 动态协调 \{#dynamic-coordination\}
 
-为了解决尾延迟的问题，我们添加了动态协调。这意味着所有 granules 不会在一次请求中发送给副本，而是每个副本将能够向协调者请求新的任务（要处理的一组 granules）。协调者将根据接收到的公告为副本提供一组 granules。
+为了解决尾延迟问题，我们引入了动态协调机制。这意味着，所有 granule 不再在一次请求中全部发送到同一个副本，而是由每个副本向协调节点请求新的任务（要处理的一组 granule）。协调节点会根据收到的公告，为副本分配相应的一组 granule。
 
-假设我们处于处理过程的阶段，此时所有副本都已发送包含所有部分的公告。
+假设当前处于这样一个阶段：所有副本都已经发送了包含所有 part 的公告。
 
-下图可视化了动态协调的工作方式：
+下图展示了动态协调的工作方式：
 
-<Image img={image_5} size="md" alt="Dynamic Coordination - part 1" />
+<Image img={image_5} size="md" alt="动态协调 - 第 1 部分" />
 
 <ol className="docs-ordered-list">
-    <li>
-        副本向协调节点表明它们能够处理任务，同时它们还可以指定自己能够处理多少工作。
-    </li>
-    <li>
-        协调者将任务分配给副本。
-    </li>
+  <li>
+    各副本向协调节点表明它们可以处理任务，同时还可以指定各自能够处理的工作量。
+  </li>
+
+  <li>
+    协调节点将任务分配给这些副本。
+  </li>
 </ol>
 
-<Image img={image_6} size="md" alt="Dynamic Coordination - part 2" />
+<Image img={image_6} size="md" alt="动态协调 - 第 2 部分" />
 
 <ol className="docs-ordered-list">
-    <li>
-        副本 1 和 2 能够非常快地完成其任务。它们将向协调节点请求另一个任务。
-    </li>
-    <li>
-        协调者将新任务分配给副本 1 和 2。
-    </li>
+  <li>
+    副本 1 和 2 能够非常快速地完成各自的任务，它们会向协调节点请求新的任务。
+  </li>
+
+  <li>
+    协调节点为副本 1 和 2 分配新的任务。
+  </li>
 </ol>
 
-<Image img={image_7} size="md" alt="Dynamic Coordination - part 3" />
+<Image img={image_7} size="md" alt="动态协调 - 第 3 部分" />
 
 <ol className="docs-ordered-list">
-    <li>
-        所有副本现在都完成了对其任务的处理。它们请求更多任务。
-    </li>
-    <li>
-        协调者根据公告检查剩余需要处理的任务，但没有剩余任务。
-    </li>
-    <li>
-        协调者告诉副本一切都已处理。它将合并所有可合并的状态并对查询做出响应。
-    </li>
+  <li>
+    所有副本现在都已完成各自任务的处理，它们会请求更多任务。
+  </li>
+
+  <li>
+    协调节点利用公告检查还有哪些任务尚未被处理，但已经没有剩余任务了。
+  </li>
+
+  <li>
+    协调节点会告知副本所有内容都已处理完成。随后它会合并所有可合并的状态，并返回查询结果。
+  </li>
 </ol>
 
-### 管理缓存局部性 {#managing-cache-locality}
+### 管理缓存局部性 \{#managing-cache-locality\}
 
-最后一个可能存在的问题是我们如何处理缓存局部性。如果查询多次执行，我们如何确保相同的任务路由到相同的副本？在前面的例子中，我们有以下任务分配：
+最后一个潜在的问题是如何处理缓存局部性。如果多次执行同一个查询，如何确保相同的任务被路由到同一副本？在前面的示例中，我们有如下任务分配：
 
 <table>
-    <thead>
-        <tr>
-            <th></th>
-            <th>副本 1</th>
-            <th>副本 2</th>
-            <th>副本 3</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>部分 1</td>
-            <td>g1, g6, g7</td>
-            <td>g2, g4, g5</td>
-            <td>g3</td>
-        </tr>
-        <tr>
-            <td>部分 2</td>
-            <td>g1</td>
-            <td>g2, g4, g5</td>
-            <td>g3</td>
-        </tr>
-        <tr>
-            <td>部分 3</td>
-            <td>g1, g6</td>
-            <td>g2, g4, g5</td>
-            <td>g3</td>
-        </tr>
-    </tbody>
+  <thead>
+    <tr>
+      <th />
+
+      <th>副本 1</th>
+      <th>副本 2</th>
+      <th>副本 3</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>Part 1</td>
+      <td>g1, g6, g7</td>
+      <td>g2, g4, g5</td>
+      <td>g3</td>
+    </tr>
+
+    <tr>
+      <td>Part 2</td>
+      <td>g1</td>
+      <td>g2, g4, g5</td>
+      <td>g3</td>
+    </tr>
+
+    <tr>
+      <td>Part 3</td>
+      <td>g1, g6</td>
+      <td>g2, g4, g5</td>
+      <td>g3</td>
+    </tr>
+  </tbody>
 </table>
 
-为了确保相同的任务被分配给相同的副本并能够受益于缓存，会发生两件事。部分 + granules 集合（即一个任务）的哈希会被计算。然后应用一个模数来决定任务分配的副本数量。
+为了确保相同的任务被分配到同一副本并能从缓存中获益，会进行两步操作：首先计算分片 + 一组 granule（即一个任务）的哈希值；然后对副本数量取模以进行任务分配。
 
-在纸面上，这听起来不错，但在实际中，如果某个副本突然负载过重，或网络出现降级，则可能导致尾延迟，因为相同的副本持续用于执行某些任务。如果 `max_parallel_replicas` 小于副本的数量，则会随机选择副本进行查询执行。
+理论上这听起来没问题，但在实际中，如果某个副本突然负载升高或网络质量下降，而该副本又持续用于执行某些任务，就会引入尾延迟。如果 `max_parallel_replicas` 小于副本数量，那么会随机选择副本来执行查询。
 
-### 任务窃取 {#task-stealing}
+### 任务窃取 \{#task-stealing\}
 
-如果某个副本处理任务的速度比其他副本慢，其他副本将尝试通过哈希“窃取”原则上属于该副本的任务，以减少尾延迟。
+如果某个副本处理任务的速度比其他副本慢，其他副本会尝试从该副本那里“窃取”按哈希分配本应由它处理的任务，以降低尾部延迟。
 
-### 限制 {#limitations}
+### 限制 \{#limitations\}
 
-此功能已知有一些限制，其中主要限制在本节中进行了文档说明。
+此功能存在一些已知限制，主要限制记录在本节中。
 
 :::note
-如果您发现一个问题，并不属于下面列出的限制，并怀疑并行副本可能是原因，请在 GitHub 上打开一个问题，使用标签 `comp-parallel-replicas`。
+如果您发现的问题不在下面列出的限制之中，并且怀疑是由并行副本（parallel replica）导致的，请在 GitHub 上使用 `comp-parallel-replicas` 标签提交 issue。
 :::
 
-| 限制                                          | 描述                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|-----------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 复杂查询                                      | 当前并行副本对于简单查询功能良好。CTE、子查询、JOIN、非平铺查询等复杂性层将对查询性能产生负面影响。                                                                                                                                                                                                                                                                                                                                                                   |
-| 小查询                                        | 如果您执行的查询处理的行数不多，在多个副本上执行可能不会提高性能，因为副本之间的协调网络时间可能导致查询执行中额外的周期。通过使用设置 [`parallel_replicas_min_number_of_rows_per_replica`](/docs/operations/settings/settings#parallel_replicas_min_number_of_rows_per_replica) 可以减少这些问题的影响。                              |
-| FINAL 时禁用并行副本                         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| 投影与并行副本不一起使用                     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| 高基数数据和复杂聚合                          | 高基数聚合需要发送大量数据，会显著减慢查询速度。                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| 与新分析器的兼容性                           | 在特定情况下，新的分析器可能会显著减慢或加快查询执行。                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| 限制                                           | 说明                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+|-----------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 复杂查询                                      | 目前，并行副本在处理简单查询时表现良好。增加复杂度的层级（例如 CTE、子查询、JOIN、非扁平查询等）可能会对查询性能产生负面影响。                                                                                                                                                                                                                                                                                                    |
+| 小型查询                                      | 如果您执行的查询处理的行数不多，将其在多个副本上执行可能并不能带来更好的性能，因为副本之间协调所需的网络时间会在查询执行中引入额外开销。您可以通过使用以下设置来减少这些问题：[`parallel_replicas_min_number_of_rows_per_replica`](/docs/operations/settings/settings#parallel_replicas_min_number_of_rows_per_replica)。  |
+| 使用 FINAL 时禁用并行副本                     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| 投影与并行副本不会同时使用                    |                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| 高基数数据与复杂聚合                          | 需要发送大量数据的高基数聚合会显著拖慢查询。                                                                                                                                                                                                                                                                                                                                                                                     |
+| 与新分析器的兼容性                            | 在特定场景下，新分析器可能会显著减慢或加速查询执行。                                                                                                                                                                                                                                                                                                                                                                            |
 
-## 与并行副本相关的设置 {#settings-related-to-parallel-replicas}
+## 与并行副本相关的设置 \{#settings-related-to-parallel-replicas\}
 
-| 设置                                            | 描述                                                                                                                                                                                                                                                        |
-|------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `enable_parallel_replicas`                     | `0`: 禁用<br/> `1`: 启用<br/>`2`: 强制使用并行副本，如果不使用将抛出异常。                                                                                                                                                                                 |
-| `cluster_for_parallel_replicas`                | 用于并行复制的集群名称；如果您使用 ClickHouse Cloud，请使用 `default`。                                                                                                                                                                                  |
-| `max_parallel_replicas`                        | 用于在多个副本上执行查询的最大副本数，如果指定的数量低于集群中的副本数，则将随机选择节点。该值也可以被超分配以考虑水平扩展。                                                                                                                       |
-| `parallel_replicas_min_number_of_rows_per_replica` | 帮助限制基于需要处理的行数的副本数，使用的副本数由以下公式定义：<br/> `estimated rows to read` / `min_number_of_rows_per_replica`。                                                                                                                     |
-| `allow_experimental_analyzer`                  | `0`: 使用旧分析器<br/> `1`: 使用新分析器。<br/><br/>并行副本的行为可能会根据使用的分析器而有所不同。                                                                                                                                                     |
+| Setting                                            | Description                                                                                                                                                                                                                                                         |
+|----------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `enable_parallel_replicas`                         | `0`: 禁用<br /> `1`: 启用 <br />`2`: 强制启用并行副本，如果无法使用并行副本则抛出异常。                                                                                                                                                          |
+| `cluster_for_parallel_replicas`                    | 用于并行副本的集群名称；如果你使用的是 ClickHouse Cloud，请使用 `default`。                                                                                                                                                                 |
+| `max_parallel_replicas`                            | 在多个副本上执行查询时可使用的最大副本数；如果指定的值小于集群中的副本数，则会随机选择节点。此值也可以设置得高于实际副本数，以预留水平扩展空间。 |
+| `parallel_replicas_min_number_of_rows_per_replica` | 用于根据需要处理的行数来限制所使用的副本数量，实际使用的副本数定义为：<br /> `estimated rows to read` / `min_number_of_rows_per_replica`。                                                               |
+| `allow_experimental_analyzer`                      | `0`: 使用旧分析器<br /> `1`: 使用新分析器。 <br /><br />并行副本的行为可能会因所使用的分析器不同而发生变化。                                                                                                                                    |
 
-## 调查并行副本问题 {#investigating-issues-with-parallel-replicas}
+## 排查并行副本相关问题 \{#investigating-issues-with-parallel-replicas\}
 
-您可以通过 [`system.query_log`](/docs/operations/system-tables/query_log) 表检查每个查询使用的设置。您还可以查看 [`system.events`](/docs/operations/system-tables/events) 表，以查看在服务器上发生的所有事件，您可以使用 [`clusterAllReplicas`](/docs/sql-reference/table-functions/cluster) 表函数查看所有副本上的表（如果您是云用户，请使用 `default`）。
+你可以在 [`system.query_log`](/docs/operations/system-tables/query_log) 表中检查每个查询实际使用的设置。你也可以查看 [`system.events`](/docs/operations/system-tables/events) 表，了解服务器上发生的所有事件，并使用 [`clusterAllReplicas`](/docs/sql-reference/table-functions/cluster) 表函数查看所有副本上的表（如果你是云用户，请将集群名设为 `default`）。
 
 ```sql title="Query"
 SELECT
@@ -259,57 +289,59 @@ SELECT
 FROM clusterAllReplicas('default', system.events)
 WHERE event ILIKE '%ParallelReplicas%'
 ```
+
 <details>
-<summary>响应</summary>
-```response title="Response"
-┌─hostname()───────────────────────┬─event──────────────────────────────────────────┬─value─┬─description──────────────────────────────────────────────────────────────────────────────────────────┐
-│ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasHandleRequestMicroseconds      │   438 │ Time spent processing requests for marks from replicas                                               │
-│ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasHandleAnnouncementMicroseconds │   558 │ Time spent processing replicas announcements                                                         │
-│ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasReadUnassignedMarks            │   240 │ Sum across all replicas of how many unassigned marks were scheduled                                  │
-│ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasReadAssignedForStealingMarks   │     4 │ Sum across all replicas of how many of scheduled marks were assigned for stealing by consistent hash │
-│ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasStealingByHashMicroseconds     │     5 │ Time spent collecting segments meant for stealing by hash                                            │
-│ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasProcessingPartsMicroseconds    │     5 │ Time spent processing data parts                                                                     │
-│ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasStealingLeftoversMicroseconds  │     3 │ Time spent collecting orphaned segments                                                              │
-│ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasUsedCount                      │     2 │ Number of replicas used to execute a query with task-based parallel replicas                         │
-│ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasAvailableCount                 │     6 │ Number of replicas available to execute a query with task-based parallel replicas                    │
-└──────────────────────────────────┴────────────────────────────────────────────────┴───────┴──────────────────────────────────────────────────────────────────────────────────────────────────────┘
-┌─hostname()───────────────────────┬─event──────────────────────────────────────────┬─value─┬─description──────────────────────────────────────────────────────────────────────────────────────────┐
-│ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasHandleRequestMicroseconds      │   698 │ Time spent processing requests for marks from replicas                                               │
-│ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasHandleAnnouncementMicroseconds │   644 │ Time spent processing replicas announcements                                                         │
-│ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasReadUnassignedMarks            │   190 │ Sum across all replicas of how many unassigned marks were scheduled                                  │
-│ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasReadAssignedForStealingMarks   │    54 │ Sum across all replicas of how many of scheduled marks were assigned for stealing by consistent hash │
-│ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasStealingByHashMicroseconds     │     8 │ Time spent collecting segments meant for stealing by hash                                            │
-│ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasProcessingPartsMicroseconds    │     4 │ Time spent processing data parts                                                                     │
-│ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasStealingLeftoversMicroseconds  │     2 │ Time spent collecting orphaned segments                                                              │
-│ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasUsedCount                      │     2 │ Number of replicas used to execute a query with task-based parallel replicas                         │
-│ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasAvailableCount                 │     6 │ Number of replicas available to execute a query with task-based parallel replicas                    │
-└──────────────────────────────────┴────────────────────────────────────────────────┴───────┴──────────────────────────────────────────────────────────────────────────────────────────────────────┘
-┌─hostname()───────────────────────┬─event──────────────────────────────────────────┬─value─┬─description──────────────────────────────────────────────────────────────────────────────────────────┐
-│ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasHandleRequestMicroseconds      │   620 │ Time spent processing requests for marks from replicas                                               │
-│ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasHandleAnnouncementMicroseconds │   656 │ Time spent processing replicas announcements                                                         │
-│ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasReadUnassignedMarks            │     1 │ Sum across all replicas of how many unassigned marks were scheduled                                  │
-│ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasReadAssignedForStealingMarks   │     1 │ Sum across all replicas of how many of scheduled marks were assigned for stealing by consistent hash │
-│ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasStealingByHashMicroseconds     │     4 │ Time spent collecting segments meant for stealing by hash                                            │
-│ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasProcessingPartsMicroseconds    │     3 │ Time spent processing data parts                                                                     │
-│ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasStealingLeftoversMicroseconds  │     1 │ Time spent collecting orphaned segments                                                              │
-│ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasUsedCount                      │     2 │ Number of replicas used to execute a query with task-based parallel replicas                         │
-│ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasAvailableCount                 │    12 │ Number of replicas available to execute a query with task-based parallel replicas                    │
-└──────────────────────────────────┴────────────────────────────────────────────────┴───────┴──────────────────────────────────────────────────────────────────────────────────────────────────────┘
-┌─hostname()───────────────────────┬─event──────────────────────────────────────────┬─value─┬─description──────────────────────────────────────────────────────────────────────────────────────────┐
-│ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasHandleRequestMicroseconds      │   696 │ Time spent processing requests for marks from replicas                                               │
-│ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasHandleAnnouncementMicroseconds │   717 │ Time spent processing replicas announcements                                                         │
-│ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasReadUnassignedMarks            │     2 │ Sum across all replicas of how many unassigned marks were scheduled                                  │
-│ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasReadAssignedForStealingMarks   │     2 │ Sum across all replicas of how many of scheduled marks were assigned for stealing by consistent hash │
-│ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasStealingByHashMicroseconds     │    10 │ Time spent collecting segments meant for stealing by hash                                            │
-│ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasProcessingPartsMicroseconds    │     6 │ Time spent processing data parts                                                                     │
-│ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasStealingLeftoversMicroseconds  │     2 │ Time spent collecting orphaned segments                                                              │
-│ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasUsedCount                      │     2 │ Number of replicas used to execute a query with task-based parallel replicas                         │
-│ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasAvailableCount                 │    12 │ Number of replicas available to execute a query with task-based parallel replicas                    │
-└──────────────────────────────────┴────────────────────────────────────────────────┴───────┴──────────────────────────────────────────────────────────────────────────────────────────────────────┘
-```
+  <summary>响应</summary>
+
+  ```response title="Response"
+  ┌─hostname()───────────────────────┬─event──────────────────────────────────────────┬─value─┬─description──────────────────────────────────────────────────────────────────────────────────────────┐
+  │ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasHandleRequestMicroseconds      │   438 │ 处理来自副本的标记请求所用时间                                               │
+  │ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasHandleAnnouncementMicroseconds │   558 │ 处理副本通告所用时间                                                         │
+  │ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasReadUnassignedMarks            │   240 │ 所有副本中已调度未分配标记的总数                                  │
+  │ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasReadAssignedForStealingMarks   │     4 │ 所有副本中通过一致性哈希分配用于窃取的已调度标记总数 │
+  │ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasStealingByHashMicroseconds     │     5 │ 收集用于哈希窃取的段所用时间                                            │
+  │ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasProcessingPartsMicroseconds    │     5 │ 处理数据部分所用时间                                                                     │
+  │ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasStealingLeftoversMicroseconds  │     3 │ 收集孤立段所用时间                                                              │
+  │ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasUsedCount                      │     2 │ 执行基于任务的并行副本查询所用的副本数                         │
+  │ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasAvailableCount                 │     6 │ 可用于执行基于任务的并行副本查询的副本数                    │
+  └──────────────────────────────────┴────────────────────────────────────────────────┴───────┴──────────────────────────────────────────────────────────────────────────────────────────────────────┘
+  ┌─hostname()───────────────────────┬─event──────────────────────────────────────────┬─value─┬─description──────────────────────────────────────────────────────────────────────────────────────────┐
+  │ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasHandleRequestMicroseconds      │   698 │ 处理来自副本的标记请求所用时间                                               │
+  │ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasHandleAnnouncementMicroseconds │   644 │ 处理副本通告所用时间                                                         │
+  │ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasReadUnassignedMarks            │   190 │ 所有副本中已调度未分配标记的总数                                  │
+  │ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasReadAssignedForStealingMarks   │    54 │ 所有副本中通过一致性哈希分配用于窃取的已调度标记总数 │
+  │ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasStealingByHashMicroseconds     │     8 │ 收集用于哈希窃取的段所用时间                                            │
+  │ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasProcessingPartsMicroseconds    │     4 │ 处理数据部分所用时间                                                                     │
+  │ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasStealingLeftoversMicroseconds  │     2 │ 收集孤立段所用时间                                                              │
+  │ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasUsedCount                      │     2 │ 执行基于任务的并行副本查询所用的副本数                         │
+  │ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasAvailableCount                 │     6 │ 可用于执行基于任务的并行副本查询的副本数                    │
+  └──────────────────────────────────┴────────────────────────────────────────────────┴───────┴──────────────────────────────────────────────────────────────────────────────────────────────────────┘
+  ┌─hostname()───────────────────────┬─event──────────────────────────────────────────┬─value─┬─description──────────────────────────────────────────────────────────────────────────────────────────┐
+  │ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasHandleRequestMicroseconds      │   620 │ 处理来自副本的标记请求所用时间                                               │
+  │ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasHandleAnnouncementMicroseconds │   656 │ 处理副本通告所用时间                                                         │
+  │ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasReadUnassignedMarks            │     1 │ 所有副本中已调度未分配标记的总数                                  │
+  │ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasReadAssignedForStealingMarks   │     1 │ 所有副本中通过一致性哈希分配用于窃取的已调度标记总数 │
+  │ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasStealingByHashMicroseconds     │     4 │ 收集用于哈希窃取的段所用时间                                            │
+  │ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasProcessingPartsMicroseconds    │     3 │ 处理数据部分所用时间                                                                     │
+  │ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasStealingLeftoversMicroseconds  │     1 │ 收集孤立段所用时间                                                              │
+  │ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasUsedCount                      │     2 │ 执行基于任务的并行副本查询所用的副本数                         │
+  │ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasAvailableCount                 │    12 │ 可用于执行基于任务的并行副本查询的副本数                    │
+  └──────────────────────────────────┴────────────────────────────────────────────────┴───────┴──────────────────────────────────────────────────────────────────────────────────────────────────────┘
+  ┌─hostname()───────────────────────┬─event──────────────────────────────────────────┬─value─┬─description──────────────────────────────────────────────────────────────────────────────────────────┐
+  │ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasHandleRequestMicroseconds      │   696 │ 处理来自副本的标记请求所用时间                                               │
+  │ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasHandleAnnouncementMicroseconds │   717 │ 处理副本通告所用时间                                                         │
+  │ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasReadUnassignedMarks            │     2 │ 所有副本中已调度未分配标记的总数                                  │
+  │ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasReadAssignedForStealingMarks   │     2 │ 所有副本中通过一致性哈希分配用于窃取的已调度标记总数 │
+  │ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasStealingByHashMicroseconds     │    10 │ 收集用于哈希窃取的段所用时间                                            │
+  │ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasProcessingPartsMicroseconds    │     6 │ 处理数据部分所用时间                                                                     │
+  │ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasStealingLeftoversMicroseconds  │     2 │ 收集孤立段所用时间                                                              │
+  │ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasUsedCount                      │     2 │ 执行基于任务的并行副本查询所用的副本数                         │
+  │ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasAvailableCount                 │    12 │ 可用于执行基于任务的并行副本查询的副本数                    │
+  └──────────────────────────────────┴────────────────────────────────────────────────┴───────┴──────────────────────────────────────────────────────────────────────────────────────────────────────┘
+  ```
 </details>
 
-[`system.text_log`](/docs/operations/system-tables/text_log) 表还包含有关使用并行副本执行查询的信息：
+[`system.text_log`](/docs/operations/system-tables/text_log) 表中还包含有关使用并行副本执行查询的信息：
 
 ```sql title="Query"
 SELECT message
@@ -319,70 +351,71 @@ ORDER BY event_time_microseconds ASC
 ```
 
 <details>
-<summary>响应</summary>
-```response title="Response"
-┌─message────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ (from 54.218.178.249:59198) SELECT * FROM session_events WHERE type='type2' LIMIT 10 SETTINGS allow_experimental_parallel_reading_from_replicas=2; (stage: Complete)                                                                                       │
-│ Query SELECT __table1.clientId AS clientId, __table1.sessionId AS sessionId, __table1.pageId AS pageId, __table1.timestamp AS timestamp, __table1.type AS type FROM default.session_events AS __table1 WHERE __table1.type = 'type2' LIMIT _CAST(10, 'UInt64') SETTINGS allow_experimental_parallel_reading_from_replicas = 2 to stage Complete │
-│ Access granted: SELECT(clientId, sessionId, pageId, timestamp, type) ON default.session_events                                                                                                                                                             │
-│ Query SELECT __table1.clientId AS clientId, __table1.sessionId AS sessionId, __table1.pageId AS pageId, __table1.timestamp AS timestamp, __table1.type AS type FROM default.session_events AS __table1 WHERE __table1.type = 'type2' LIMIT _CAST(10, 'UInt64') to stage WithMergeableState only analyze │
-│ Access granted: SELECT(clientId, sessionId, pageId, timestamp, type) ON default.session_events                                                                                                                                                             │
-│ Query SELECT __table1.clientId AS clientId, __table1.sessionId AS sessionId, __table1.pageId AS pageId, __table1.timestamp AS timestamp, __table1.type AS type FROM default.session_events AS __table1 WHERE __table1.type = 'type2' LIMIT _CAST(10, 'UInt64') from stage FetchColumns to stage WithMergeableState only analyze │
-│ Query SELECT __table1.clientId AS clientId, __table1.sessionId AS sessionId, __table1.pageId AS pageId, __table1.timestamp AS timestamp, __table1.type AS type FROM default.session_events AS __table1 WHERE __table1.type = 'type2' LIMIT _CAST(10, 'UInt64') SETTINGS allow_experimental_parallel_reading_from_replicas = 2 to stage WithMergeableState only analyze │
-│ Access granted: SELECT(clientId, sessionId, pageId, timestamp, type) ON default.session_events                                                                                                                                                             │
-│ Query SELECT __table1.clientId AS clientId, __table1.sessionId AS sessionId, __table1.pageId AS pageId, __table1.timestamp AS timestamp, __table1.type AS type FROM default.session_events AS __table1 WHERE __table1.type = 'type2' LIMIT _CAST(10, 'UInt64') SETTINGS allow_experimental_parallel_reading_from_replicas = 2 from stage FetchColumns to stage WithMergeableState only analyze │
-│ Query SELECT __table1.clientId AS clientId, __table1.sessionId AS sessionId, __table1.pageId AS pageId, __table1.timestamp AS timestamp, __table1.type AS type FROM default.session_events AS __table1 WHERE __table1.type = 'type2' LIMIT _CAST(10, 'UInt64') SETTINGS allow_experimental_parallel_reading_from_replicas = 2 from stage WithMergeableState to stage Complete │
-│ The number of replicas requested (100) is bigger than the real number available in the cluster (6). Will use the latter number to execute the query.                                                                                                       │
-│ Initial request from replica 4: 2 parts: [part all_0_2_1 with ranges [(0, 182)], part all_3_3_0 with ranges [(0, 62)]]----------
-Received from 4 replica
-                                                                                                   │
-│ Reading state is fully initialized: part all_0_2_1 with ranges [(0, 182)] in replicas [4]; part all_3_3_0 with ranges [(0, 62)] in replicas [4]                                                                                                            │
-│ Sent initial requests: 1 Replicas count: 6                                                                                                                                                                                                                 │
-│ Initial request from replica 2: 2 parts: [part all_0_2_1 with ranges [(0, 182)], part all_3_3_0 with ranges [(0, 62)]]----------
-Received from 2 replica
-                                                                                                   │
-│ Sent initial requests: 2 Replicas count: 6                                                                                                                                                                                                                 │
-│ Handling request from replica 4, minimal marks size is 240                                                                                                                                                                                                 │
-│ Going to respond to replica 4 with 1 parts: [part all_0_2_1 with ranges [(128, 182)]]. Finish: false; mine_marks=0, stolen_by_hash=54, stolen_rest=0                                                                                                       │
-│ Initial request from replica 1: 2 parts: [part all_0_2_1 with ranges [(0, 182)], part all_3_3_0 with ranges [(0, 62)]]----------
-Received from 1 replica
-                                                                                                   │
-│ Sent initial requests: 3 Replicas count: 6                                                                                                                                                                                                                 │
-│ Handling request from replica 4, minimal marks size is 240                                                                                                                                                                                                 │
-│ Going to respond to replica 4 with 2 parts: [part all_0_2_1 with ranges [(0, 128)], part all_3_3_0 with ranges [(0, 62)]]. Finish: false; mine_marks=0, stolen_by_hash=0, stolen_rest=190                                                                  │
-│ Initial request from replica 0: 2 parts: [part all_0_2_1 with ranges [(0, 182)], part all_3_3_0 with ranges [(0, 62)]]----------
-Received from 0 replica
-                                                                                                   │
-│ Sent initial requests: 4 Replicas count: 6                                                                                                                                                                                                                 │
-│ Initial request from replica 5: 2 parts: [part all_0_2_1 with ranges [(0, 182)], part all_3_3_0 with ranges [(0, 62)]]----------
-Received from 5 replica
-                                                                                                   │
-│ Sent initial requests: 5 Replicas count: 6                                                                                                                                                                                                                 │
-│ Handling request from replica 2, minimal marks size is 240                                                                                                                                                                                                 │
-│ Going to respond to replica 2 with 0 parts: []. Finish: true; mine_marks=0, stolen_by_hash=0, stolen_rest=0                                                                                                                                                │
-│ Initial request from replica 3: 2 parts: [part all_0_2_1 with ranges [(0, 182)], part all_3_3_0 with ranges [(0, 62)]]----------
-Received from 3 replica
-                                                                                                   │
-│ Sent initial requests: 6 Replicas count: 6                                                                                                                                                                                                                 │
-│ Total rows to read: 2000000                                                                                                                                                                                                                                │
-│ Handling request from replica 5, minimal marks size is 240                                                                                                                                                                                                 │
-│ Going to respond to replica 5 with 0 parts: []. Finish: true; mine_marks=0, stolen_by_hash=0, stolen_rest=0                                                                                                                                                │
-│ Handling request from replica 0, minimal marks size is 240                                                                                                                                                                                                 │
-│ Going to respond to replica 0 with 0 parts: []. Finish: true; mine_marks=0, stolen_by_hash=0, stolen_rest=0                                                                                                                                                │
-│ Handling request from replica 1, minimal marks size is 240                                                                                                                                                                                                 │
-│ Going to respond to replica 1 with 0 parts: []. Finish: true; mine_marks=0, stolen_by_hash=0, stolen_rest=0                                                                                                                                                │
-│ Handling request from replica 3, minimal marks size is 240                                                                                                                                                                                                 │
-│ Going to respond to replica 3 with 0 parts: []. Finish: true; mine_marks=0, stolen_by_hash=0, stolen_rest=0                                                                                                                                                │
-│ (c-crimson-vd-86-server-rdhnsx3-0.c-crimson-vd-86-server-headless.ns-crimson-vd-86.svc.cluster.local:9000) Cancelling query because enough data has been read                                                                                              │
-│ Read 81920 rows, 5.16 MiB in 0.013166 sec., 6222087.194288318 rows/sec., 391.63 MiB/sec.                                                                                                                                                                   │
-│ Coordination done: Statistics: replica 0 - {requests: 2 marks: 0 assigned_to_me: 0 stolen_by_hash: 0 stolen_unassigned: 0}; replica 1 - {requests: 2 marks: 0 assigned_to_me: 0 stolen_by_hash: 0 stolen_unassigned: 0}; replica 2 - {requests: 2 marks: 0 assigned_to_me: 0 stolen_by_hash: 0 stolen_unassigned: 0}; replica 3 - {requests: 2 marks: 0 assigned_to_me: 0 stolen_by_hash: 0 stolen_unassigned: 0}; replica 4 - {requests: 3 marks: 244 assigned_to_me: 0 stolen_by_hash: 54 stolen_unassigned: 190}; replica 5 - {requests: 2 marks: 0 assigned_to_me: 0 stolen_by_hash: 0 stolen_unassigned: 0} │
-│ Peak memory usage (for query): 1.81 MiB.                                                                                                                                                                                                                   │
-│ Processed in 0.024095586 sec.                                                                                                                                                                                                                              │
-└────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-```
+  <summary>响应</summary>
+
+  ```response title="Response"
+  ┌─message────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ (来自 54.218.178.249:59198) SELECT * FROM session_events WHERE type='type2' LIMIT 10 SETTINGS allow_experimental_parallel_reading_from_replicas=2; (阶段: Complete)                                                                                       │
+  │ 查询 SELECT __table1.clientId AS clientId, __table1.sessionId AS sessionId, __table1.pageId AS pageId, __table1.timestamp AS timestamp, __table1.type AS type FROM default.session_events AS __table1 WHERE __table1.type = 'type2' LIMIT _CAST(10, 'UInt64') SETTINGS allow_experimental_parallel_reading_from_replicas = 2 到阶段 Complete │
+  │ 已授予访问权限: SELECT(clientId, sessionId, pageId, timestamp, type) ON default.session_events                                                                                                                                                             │
+  │ 查询 SELECT __table1.clientId AS clientId, __table1.sessionId AS sessionId, __table1.pageId AS pageId, __table1.timestamp AS timestamp, __table1.type AS type FROM default.session_events AS __table1 WHERE __table1.type = 'type2' LIMIT _CAST(10, 'UInt64') 到阶段 WithMergeableState 仅分析 │
+  │ 已授予访问权限: SELECT(clientId, sessionId, pageId, timestamp, type) ON default.session_events                                                                                                                                                             │
+  │ 查询 SELECT __table1.clientId AS clientId, __table1.sessionId AS sessionId, __table1.pageId AS pageId, __table1.timestamp AS timestamp, __table1.type AS type FROM default.session_events AS __table1 WHERE __table1.type = 'type2' LIMIT _CAST(10, 'UInt64') 从阶段 FetchColumns 到阶段 WithMergeableState 仅分析 │
+  │ 查询 SELECT __table1.clientId AS clientId, __table1.sessionId AS sessionId, __table1.pageId AS pageId, __table1.timestamp AS timestamp, __table1.type AS type FROM default.session_events AS __table1 WHERE __table1.type = 'type2' LIMIT _CAST(10, 'UInt64') SETTINGS allow_experimental_parallel_reading_from_replicas = 2 到阶段 WithMergeableState 仅分析 │
+  │ 已授予访问权限: SELECT(clientId, sessionId, pageId, timestamp, type) ON default.session_events                                                                                                                                                             │
+  │ 查询 SELECT __table1.clientId AS clientId, __table1.sessionId AS sessionId, __table1.pageId AS pageId, __table1.timestamp AS timestamp, __table1.type AS type FROM default.session_events AS __table1 WHERE __table1.type = 'type2' LIMIT _CAST(10, 'UInt64') SETTINGS allow_experimental_parallel_reading_from_replicas = 2 从阶段 FetchColumns 到阶段 WithMergeableState 仅分析 │
+  │ 查询 SELECT __table1.clientId AS clientId, __table1.sessionId AS sessionId, __table1.pageId AS pageId, __table1.timestamp AS timestamp, __table1.type AS type FROM default.session_events AS __table1 WHERE __table1.type = 'type2' LIMIT _CAST(10, 'UInt64') SETTINGS allow_experimental_parallel_reading_from_replicas = 2 从阶段 WithMergeableState 到阶段 Complete │
+  │ 请求的副本数量 (100) 大于集群中实际可用的副本数量 (6)。将使用后者执行查询。                                                                                                       │
+  │ 来自副本 4 的初始请求: 2 个分区: [分区 all_0_2_1 范围 [(0, 182)], 分区 all_3_3_0 范围 [(0, 62)]]----------
+  已从副本 4 接收
+                                                                                                     │
+  │ 读取状态已完全初始化: 分区 all_0_2_1 范围 [(0, 182)] 位于副本 [4]; 分区 all_3_3_0 范围 [(0, 62)] 位于副本 [4]                                                                                                            │
+  │ 已发送初始请求: 1 副本数量: 6                                                                                                                                                                                                                 │
+  │ 来自副本 2 的初始请求: 2 个分区: [分区 all_0_2_1 范围 [(0, 182)], 分区 all_3_3_0 范围 [(0, 62)]]----------
+  已从副本 2 接收
+                                                                                                     │
+  │ 已发送初始请求: 2 副本数量: 6                                                                                                                                                                                                                 │
+  │ 正在处理来自副本 4 的请求,最小标记大小为 240                                                                                                                                                                                                                 │
+  │ 将向副本 4 响应 1 个分区: [分区 all_0_2_1 范围 [(128, 182)]]。完成: false; mine_marks=0, stolen_by_hash=54, stolen_rest=0                                                                                                       │
+  │ 来自副本 1 的初始请求: 2 个分区: [分区 all_0_2_1 范围 [(0, 182)], 分区 all_3_3_0 范围 [(0, 62)]]----------
+  已从副本 1 接收
+                                                                                                     │
+  │ 已发送初始请求: 3 副本数量: 6                                                                                                                                                                                                                 │
+  │ 正在处理来自副本 4 的请求,最小标记大小为 240                                                                                                                                                                                                                 │
+  │ 将向副本 4 响应 2 个分区: [分区 all_0_2_1 范围 [(0, 128)], 分区 all_3_3_0 范围 [(0, 62)]]。完成: false; mine_marks=0, stolen_by_hash=0, stolen_rest=190                                                                  │
+  │ 来自副本 0 的初始请求: 2 个分区: [分区 all_0_2_1 范围 [(0, 182)], 分区 all_3_3_0 范围 [(0, 62)]]----------
+  已从副本 0 接收
+                                                                                                     │
+  │ 已发送初始请求: 4 副本数量: 6                                                                                                                                                                                                                 │
+  │ 来自副本 5 的初始请求: 2 个分区: [分区 all_0_2_1 范围 [(0, 182)], 分区 all_3_3_0 范围 [(0, 62)]]----------
+  已从副本 5 接收
+                                                                                                     │
+  │ 已发送初始请求: 5 副本数量: 6                                                                                                                                                                                                                 │
+  │ 正在处理来自副本 2 的请求,最小标记大小为 240                                                                                                                                                                                                                 │
+  │ 将向副本 2 响应 0 个分区: []。完成: true; mine_marks=0, stolen_by_hash=0, stolen_rest=0                                                                                                                                                │
+  │ 来自副本 3 的初始请求: 2 个分区: [分区 all_0_2_1 范围 [(0, 182)], 分区 all_3_3_0 范围 [(0, 62)]]----------
+  已从副本 3 接收
+                                                                                                     │
+  │ 已发送初始请求: 6 副本数量: 6                                                                                                                                                                                                                 │
+  │ 总读取行数: 2000000                                                                                                                                                                                                                                │
+  │ 正在处理来自副本 5 的请求,最小标记大小为 240                                                                                                                                                                                                                 │
+  │ 将向副本 5 响应 0 个分区: []。完成: true; mine_marks=0, stolen_by_hash=0, stolen_rest=0                                                                                                                                                │
+  │ 正在处理来自副本 0 的请求,最小标记大小为 240                                                                                                                                                                                                                 │
+  │ 将向副本 0 响应 0 个分区: []。完成: true; mine_marks=0, stolen_by_hash=0, stolen_rest=0                                                                                                                                                │
+  │ 正在处理来自副本 1 的请求,最小标记大小为 240                                                                                                                                                                                                                 │
+  │ 将向副本 1 响应 0 个分区: []。完成: true; mine_marks=0, stolen_by_hash=0, stolen_rest=0                                                                                                                                                │
+  │ 正在处理来自副本 3 的请求,最小标记大小为 240                                                                                                                                                                                                                 │
+  │ 将向副本 3 响应 0 个分区: []。完成: true; mine_marks=0, stolen_by_hash=0, stolen_rest=0                                                                                                                                                │
+  │ (c-crimson-vd-86-server-rdhnsx3-0.c-crimson-vd-86-server-headless.ns-crimson-vd-86.svc.cluster.local:9000) 正在取消查询,因为已读取足够的数据                                                                                              │
+  │ 已读取 81920 行,5.16 MiB,耗时 0.013166 秒,6222087.194288318 行/秒,391.63 MiB/秒。                                                                                                                                                                   │
+  │ 协调完成: 统计信息: 副本 0 - {请求数: 2 标记数: 0 分配给我的: 0 通过哈希窃取: 0 窃取未分配的: 0}; 副本 1 - {请求数: 2 标记数: 0 分配给我的: 0 通过哈希窃取: 0 窃取未分配的: 0}; 副本 2 - {请求数: 2 标记数: 0 分配给我的: 0 通过哈希窃取: 0 窃取未分配的: 0}; 副本 3 - {请求数: 2 标记数: 0 分配给我的: 0 通过哈希窃取: 0 窃取未分配的: 0}; 副本 4 - {请求数: 3 标记数: 244 分配给我的: 0 通过哈希窃取: 54 窃取未分配的: 190}; 副本 5 - {请求数: 2 标记数: 0 分配给我的: 0 通过哈希窃取: 0 窃取未分配的: 0} │
+  │ 峰值内存使用量 (查询): 1.81 MiB。                                                                                                                                                                                                   │
+  │ 处理耗时 0.024095586 秒。                                                                                                                                                                                                              │
+  └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+  ```
 </details>
 
-最后，您还可以使用 `EXPLAIN PIPELINE`。这将突出显示 ClickHouse 将如何执行查询以及用于执行查询的资源。以以下查询为例：
+最后，你还可以使用 `EXPLAIN PIPELINE`。它会直观展示 ClickHouse 将如何执行查询，以及在执行该查询时将使用哪些资源。比如下面这个查询：
 
 ```sql
 SELECT count(), uniq(pageId) , min(timestamp), max(timestamp) 
@@ -391,7 +424,7 @@ WHERE type='type3'
 GROUP BY toYear(timestamp) LIMIT 10
 ```
 
-让我们来看一下没有并行副本的查询管道：
+我们先来看一下在没有并行副本时的查询流水线：
 
 ```sql title="EXPLAIN PIPELINE (without parallel replica)"
 EXPLAIN PIPELINE graph = 1, compact = 0 
@@ -404,9 +437,9 @@ SETTINGS allow_experimental_parallel_reading_from_replicas=0
 FORMAT TSV;
 ```
 
-<Image img={image_8} size="lg" alt="EXPLAIN without parallel replica" />
+<Image img={image_8} size="lg" alt="未使用 parallel_replica 的 EXPLAIN" />
 
-现在有并行副本：
+现在开启 parallel replica：
 
 ```sql title="EXPLAIN PIPELINE (with parallel replica)"
 EXPLAIN PIPELINE graph = 1, compact = 0 
@@ -419,4 +452,4 @@ SETTINGS allow_experimental_parallel_reading_from_replicas=2
 FORMAT TSV;
 ```
 
-<Image img={image_9} size="lg" alt="EXPLAIN with parallel replica"/>
+<Image img={image_9} size="lg" alt="带有 parallel_replica 的 EXPLAIN" />

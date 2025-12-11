@@ -1,81 +1,78 @@
 ---
-'description': 'Системная таблица, содержащая информацию о частях проекции для таблиц
-  семейства MergeTree.'
-'keywords':
-- 'system table'
-- 'projection_parts'
-'slug': '/operations/system-tables/projection_parts'
-'title': 'system.projection_parts'
-'doc_type': 'reference'
+description: 'Системная таблица, содержащая информацию о частях проекций таблиц семейства MergeTree.'
+keywords: ['system table', 'projection_parts']
+slug: /operations/system-tables/projection_parts
+title: 'system.projection_parts'
+doc_type: 'reference'
 ---
-# system.projection_parts
+
+# system.projection_parts {#systemprojection_parts}
 
 Эта таблица содержит информацию о частях проекций для таблиц семейства MergeTree.
 
-## Columns {#columns}
+## Столбцы {#columns}
 
-| Column                                  | Description                                                                                                                                                                                                 | Type            |
-|-----------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|
-| `partition`                             | Имя партиции.                                                                                                                                                                                             | String          |
-| `name`                                  | Имя части данных.                                                                                                                                                                                          | String          |
-| `part_type`                             | Формат хранения части данных. Возможные значения: Wide (файл на колонку) и Compact (один файл для всех колонок).                                                                                          | String          |
-| `parent_name`                           | Имя исходной (родительской) части данных.                                                                                                                                                                  | String          |
-| `parent_uuid`                           | UUID исходной (родительской) части данных.                                                                                                                                                                  | UUID            |
-| `parent_part_type`                      | Формат хранения исходной (родительской) части данных.                                                                                                                                                     | String          |
-| `active`                                | Флаг, который указывает, активна ли часть данных. Если часть данных активна, она используется в таблице. В противном случае она собирается на удаление. Невостребованные части данных появляются после операций слияния и мутации. | UInt8           |
-| `marks`                                 | Количество меток. Чтобы получить приблизительное количество строк в части данных, умножьте метки на гранулярность индекса (обычно 8192) (данный совет не работает для адаптивной гранулярности).            | UInt64          |
-| `rows`                                  | Количество строк.                                                                                                                                                                                         | UInt64          |
-| `bytes_on_disk`                         | Общий размер всех файлов части данных в байтах.                                                                                                                                                             | UInt64          |
-| `data_compressed_bytes`                 | Общий размер сжатых данных в части данных. Все вспомогательные файлы (например, файлы с метками) не включаются.                                                                                           | UInt64          |
-| `data_uncompressed_bytes`               | Общий размер несжатых данных в части данных. Все вспомогательные файлы (например, файлы с метками) не включаются.                                                                                         | UInt64          |
-| `marks_bytes`                           | Размер файла с метками.                                                                                                                                                                                    | UInt64          |
-| `parent_marks`                          | Количество меток в исходной (родительской) части.                                                                                                                                                          | UInt64          |
-| `parent_rows`                           | Количество строк в исходной (родительской) части.                                                                                                                                                          | UInt64          |
-| `parent_bytes_on_disk`                  | Общий размер всех файлов исходной (родительской) части данных в байтах.                                                                                                                                   | UInt64          |
-| `parent_data_compressed_bytes`          | Общий размер сжатых данных в исходной (родительской) части данных.                                                                                                                                         | UInt64          |
-| `parent_data_uncompressed_bytes`        | Общий размер несжатых данных в исходной (родительской) части данных.                                                                                                                                       | UInt64          |
-| `parent_marks_bytes`                    | Размер файла с метками в исходной (родительской) части данных.                                                                                                                                           | UInt64          |
-| `modification_time`                     | Время, когда каталог с частью данных был изменен. Это обычно соответствует времени создания части данных.                                                                                                 | DateTime        |
-| `remove_time`                           | Время, когда часть данных стала неактивной.                                                                                                                                                                | DateTime        |
-| `refcount`                              | Количество мест, где используется часть данных. Значение больше 2 указывает на то, что часть данных используется в запросах или слияниях.                                                                  | UInt32          |
-| `min_date`                              | Минимальное значение ключа даты в части данных.                                                                                                                                                           | Date            |
-| `max_date`                              | Максимальное значение ключа даты в части данных.                                                                                                                                                           | Date            |
-| `min_time`                              | Минимальное значение ключа даты и времени в части данных.                                                                                                                                                 | DateTime        |
-| `max_time`                              | Максимальное значение ключа даты и времени в части данных.                                                                                                                                                 | DateTime        |
-| `partition_id`                          | ID партиции.                                                                                                                                                                                              | String          |
-| `min_block_number`                      | Минимальное количество частей данных, которые составляют текущую часть после слияния.                                                                                                                     | Int64           |
-| `max_block_number`                      | Максимальное количество частей данных, которые составляют текущую часть после слияния.                                                                                                                     | Int64           |
-| `level`                                 | Глубина дерева слияния. Ноль означает, что текущая часть была создана путем вставки, а не слияния других частей.                                                                                           | UInt32          |
-| `data_version`                          | Номер, который используется для определения, какие мутации должны быть применены к части данных (мутации с версией, выше чем data_version).                                                                  | UInt64          |
-| `primary_key_bytes_in_memory`           | Объем памяти (в байтах), используемый значениями первичного ключа.                                                                                                                                       | UInt64          |
-| `primary_key_bytes_in_memory_allocated` | Объем памяти (в байтах), зарезервированный для значений первичного ключа.                                                                                                                                 | UInt64          |
-| `is_frozen`                             | Флаг, показывающий, что резервная копия данных по партиции существует. 1 — резервная копия существует. 0 — резервная копия не существует.                                                                  | UInt8           |
-| `database`                              | Имя базы данных.                                                                                                                                                                                           | String          |
-| `table`                                 | Имя таблицы.                                                                                                                                                                                              | String          |
-| `engine`                                | Имя движка таблицы без параметров.                                                                                                                                                                          | String          |
-| `disk_name`                             | Имя диска, на котором хранится часть данных.                                                                                                                                                               | String          |
-| `path`                                  | Абсолютный путь к папке с файлами части данных.                                                                                                                                                           | String          |
-| `hash_of_all_files`                     | sipHash128 сжатых файлов.                                                                                                                                                                                  | String          |
-| `hash_of_uncompressed_files`            | sipHash128 несжатых файлов (файлы с метками, файл индекса и т.д.).                                                                                                                                       | String          |
-| `uncompressed_hash_of_compressed_files` | sipHash128 данных в сжатых файлах, как если бы они были несжаты.                                                                                                                                         | String          |
-| `delete_ttl_info_min`                   | Минимальное значение ключа даты и времени для правила TTL УДАЛЕНИЯ.                                                                                                                                       | DateTime        |
-| `delete_ttl_info_max`                   | Максимальное значение ключа даты и времени для правила TTL УДАЛЕНИЯ.                                                                                                                                       | DateTime        |
-| `move_ttl_info.expression`              | Массив выражений. Каждое выражение определяет правило TTL ПЕРЕМЕЩЕНИЯ.                                                                                                                                  | Array(String)   |
-| `move_ttl_info.min`                     | Массив значений даты и времени. Каждый элемент описывает минимальное значение ключа для правила TTL ПЕРЕМЕЩЕНИЯ.                                                                                          | Array(DateTime) |
-| `move_ttl_info.max`                     | Массив значений даты и времени. Каждый элемент описывает максимальное значение ключа для правила TTL ПЕРЕМЕЩЕНИЯ.                                                                                          | Array(DateTime) |
-| `default_compression_codec`             | Имя кодека, используемого для сжатия этой части данных (в случае, если нет явного кодека для колонок).                                                                                                   | String          |
-| `recompression_ttl_info.expression`     | Выражение TTL.                                                                                                                                                                                           | Array(String)   |
-| `recompression_ttl_info.min`            | Минимальное значение рассчитанного выражения TTL в этой части. Используется для понимания, есть ли хотя бы одна строка с истекшим TTL.                                                                     | Array(DateTime) |
-| `recompression_ttl_info.max`            | Максимальное значение рассчитанного выражения TTL в этой части. Используется для понимания, есть ли все строки с истекшим TTL.                                                                          | Array(DateTime) |
-| `group_by_ttl_info.expression`          | Выражение TTL.                                                                                                                                                                                           | Array(String)   |
-| `group_by_ttl_info.min`                 | Минимальное значение рассчитанного выражения TTL в этой части. Используется для понимания, есть ли хотя бы одна строка с истекшим TTL.                                                                     | Array(DateTime) |
-| `group_by_ttl_info.max`                 | Максимальное значение рассчитанного выражения TTL в этой части. Используется для понимания, есть ли все строки с истекшим TTL.                                                                          | Array(DateTime) |
-| `rows_where_ttl_info.expression`        | Выражение TTL.                                                                                                                                                                                           | Array(String)   |
-| `rows_where_ttl_info.min`               | Минимальное значение рассчитанного выражения TTL в этой части. Используется для понимания, есть ли хотя бы одна строка с истекшим TTL.                                                                     | Array(DateTime) |
-| `rows_where_ttl_info.max`               | Максимальное значение рассчитанного выражения TTL в этой части. Используется для понимания, есть ли все строки с истекшим TTL.                                                                          | Array(DateTime) |
-| `is_broken`                             | Показатель того, сломана ли часть проекции                                                                                                                                                                 | UInt8           |
-| `exception_code`                        | Сообщение об исключении, объясняющее сломанное состояние части проекции                                                                                                                                  | Int32           |
-| `exception`                             | Код исключения, объясняющий сломанное состояние части проекции                                                                                                                                           | String          |
-| `bytes`                                 | Псевдоним для bytes_on_disk                                                                                                                                                                               | UInt64          |
-| `marks_size`                            | Псевдоним для marks_bytes                                                                                                                                                                                 | UInt64          |
-| `part_name`                             | Псевдоним для name                                                                                                                                                                                        | String          |                                                                                                                                       | ALIAS           | name |
+{/*AUTOGENERATED_START*/ }
+
+* `partition` ([String](../../sql-reference/data-types/)) — имя партиции.
+* `name` ([String](../../sql-reference/data-types/)) — имя части данных.
+* `part_type` ([String](../../sql-reference/data-types/)) — формат хранения части данных. Возможные значения: Wide (отдельный файл для каждого столбца) и Compact (один файл для всех столбцов).
+* `parent_name` ([String](../../sql-reference/data-types/)) — Имя исходной (родительской) части данных.
+* `parent_uuid` ([UUID](../../sql-reference/data-types/)) — UUID исходной (родительской) части данных.
+* `parent_part_type` ([String](../../sql-reference/data-types/)) — Формат хранения исходной (родительской) части данных.
+* `active` ([UInt8](../../sql-reference/data-types/)) — признак, указывающий, активна ли часть данных. Если часть данных активна, она используется в таблице. В противном случае она подлежит удалению. Неактивные части данных появляются после операций слияния (merge) и мутаций (mutation).
+* `marks` ([UInt64](../../sql-reference/data-types/)) — Количество меток. Чтобы получить приблизительное количество строк в части данных, умножьте число меток на гранулярность индекса (обычно 8192) (этот прием не работает при адаптивной гранулярности).
+* `rows` ([UInt64](../../sql-reference/data-types/)) — Количество строк.
+* `bytes_on_disk` ([UInt64](../../sql-reference/data-types/)) — общий размер всех файлов частей данных в байтах.
+* `data_compressed_bytes` ([UInt64](../../sql-reference/data-types/)) — Общий размер сжатых данных в части данных. Все вспомогательные файлы (например, файлы с метками) не учитываются.`
+* `data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/)) — Общий размер несжатых данных в части данных таблицы. Все вспомогательные файлы (например, файлы с метками) не учитываются.
+* `marks_bytes` ([UInt64](../../sql-reference/data-types/)) — размер файла с метками.
+* `parent_marks` ([UInt64](../../sql-reference/data-types/)) — количество меток в исходной (родительской) части.
+* `parent_rows` ([UInt64](../../sql-reference/data-types/)) — Количество строк в исходной (родительской) части.
+* `parent_bytes_on_disk` ([UInt64](../../sql-reference/data-types/)) — Общий размер всех файлов исходных (родительских) частей данных в байтах.
+* `parent_data_compressed_bytes` ([UInt64](../../sql-reference/data-types/)) — Общий объём сжатых данных в исходной (родительской) части данных.
+* `parent_data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/)) — Общий объём несжатых данных в исходной (родительской) части данных.
+* `parent_marks_bytes` ([UInt64](../../sql-reference/data-types/)) — размер файла с метками в исходной (родительской) части данных.
+* `modification_time` ([DateTime](../../sql-reference/data-types/)) — Время изменения каталога, содержащего часть данных. Обычно соответствует времени создания этой части данных.`
+* `remove_time` ([DateTime](../../sql-reference/data-types/)) — время, когда часть данных стала неактивной.
+* `refcount` ([UInt32](../../sql-reference/data-types/)) — Количество мест, где используется часть данных. Значение, большее 2, указывает на то, что часть данных используется в запросах или слияниях.
+* `min_date` ([Date](../../sql-reference/data-types/)) — минимальное значение ключа даты в части данных.
+* `max_date` ([Date](../../sql-reference/data-types/)) — максимальное значение ключа даты в части данных.
+* `min_time` ([DateTime](../../sql-reference/data-types/)) — минимальное значение ключа типа DateTime в части данных.
+* `max_time` ([DateTime](../../sql-reference/data-types/)) — максимальное значение ключа даты и времени в части данных.
+* `partition_id` ([String](../../sql-reference/data-types/)) — идентификатор раздела.
+* `min_block_number` ([Int64](../../sql-reference/data-types/)) — минимальное количество частей данных, образующих текущую часть после слияния.
+* `max_block_number` ([Int64](../../sql-reference/data-types/)) — Максимальный номер блока среди кусков данных, составляющих текущий кусок после слияния.
+* `level` ([UInt32](../../sql-reference/data-types/)) — Глубина дерева слияния. Ноль означает, что текущая часть была создана в результате вставки, а не слияния других частей.
+* `data_version` ([UInt64](../../sql-reference/data-types/)) — число, используемое для определения того, какие мутации должны быть применены к части данных (мутации с версией, превышающей значение `data_version`).
+* `primary_key_bytes_in_memory` ([UInt64](../../sql-reference/data-types/)) — объём памяти (в байтах), который занимают значения первичного ключа.
+* `primary_key_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/)) — Объем памяти (в байтах), выделенный для значений первичного ключа.
+* `is_frozen` ([UInt8](../../sql-reference/data-types/)) — флаг, показывающий наличие резервной копии данных партиции. 1 — резервная копия существует. 0 — резервная копия отсутствует.
+* `database` ([String](../../sql-reference/data-types/)) — имя базы данных.
+* `table` ([String](../../sql-reference/data-types/)) — Имя таблицы.
+* `engine` ([String](../../sql-reference/data-types/)) — Имя движка таблицы без параметров.
+* `disk_name` ([String](../../sql-reference/data-types/)) — Имя диска, на котором хранится часть данных.
+* `path` ([String](../../sql-reference/data-types/)) — Абсолютный путь к каталогу с файлами частей данных.
+* `hash_of_all_files` ([String](../../sql-reference/data-types/)) — sipHash128 от сжатых файлов.
+* `hash_of_uncompressed_files` ([String](../../sql-reference/data-types/)) — значение sipHash128 для несжатых файлов (файлов с метками, файла индекса и т. д.).
+* `uncompressed_hash_of_compressed_files` ([String](../../sql-reference/data-types/)) — sipHash128 данных в сжатых файлах, как если бы они были распакованы.
+* `delete_ttl_info_min` ([DateTime](../../sql-reference/data-types/)) — минимальное значение ключа даты и времени для правила TTL DELETE.`
+* `delete_ttl_info_max` ([DateTime](../../sql-reference/data-types/)) — максимальное значение ключа даты и времени для правила DELETE TTL.
+* `move_ttl_info.expression` ([Array(String)](../../sql-reference/data-types/)) — массив выражений. Каждое выражение определяет правило TTL MOVE.
+* `move_ttl_info.min` ([Array(DateTime)](../../sql-reference/data-types/)) — массив значений даты и времени. Каждый элемент соответствует минимальному значению ключа для правила TTL MOVE.
+* `move_ttl_info.max` ([Array(DateTime)](../../sql-reference/data-types/)) — массив значений типа DateTime. Каждый элемент задаёт максимальное значение ключа для правила TTL MOVE.
+* `default_compression_codec` ([String](../../sql-reference/data-types/)) — Название кодека, который используется для сжатия этой части данных (если для столбцов не задан явный кодек).
+* `recompression_ttl_info.expression` ([Array(String)](../../sql-reference/data-types/)) — выражение TTL.
+* `recompression_ttl_info.min` ([Array(DateTime)](../../sql-reference/data-types/)) — минимальное значение вычисленного TTL-выражения в пределах данной части. Используется, чтобы определить, есть ли хотя бы одна строка с истёкшим TTL.
+* `recompression_ttl_info.max` ([Array(DateTime)](../../sql-reference/data-types/)) — Максимальное значение вычисленного TTL-выражения в этой части. Используется, чтобы понять, содержатся ли в этой части все строки с истекшим TTL.
+* `group_by_ttl_info.expression` ([Array(String)](../../sql-reference/data-types/)) — выражение TTL.
+* `group_by_ttl_info.min` ([Array(DateTime)](../../sql-reference/data-types/)) — минимальное значение результата вычисления выражения TTL для данной части. Используется, чтобы определить, есть ли хотя бы одна строка с истекшим TTL.
+* `group_by_ttl_info.max` ([Array(DateTime)](../../sql-reference/data-types/)) — максимальное значение рассчитанного TTL-выражения в данной части. Используется для определения, содержатся ли здесь все строки с истёкшим TTL.`
+* `rows_where_ttl_info.expression` ([Array(String)](../../sql-reference/data-types/)) — выражение TTL.
+* `rows_where_ttl_info.min` ([Array(DateTime)](../../sql-reference/data-types/)) — Наименьшее значение вычисленного выражения TTL в этой части. Используется для определения, есть ли хотя бы одна строка с истекшим TTL.
+* `rows_where_ttl_info.max` ([Array(DateTime)](../../sql-reference/data-types/)) — максимальное значение вычисленного TTL-выражения в этой части. Используется, чтобы определить, содержатся ли здесь все строки с истекшим сроком действия TTL.`
+* `is_broken` ([UInt8](../../sql-reference/data-types/)) — Повреждена ли часть проекции
+* `exception_code` ([Int32](../../sql-reference/data-types/)) — Сообщение об исключении, объясняющее повреждённое состояние части проекции
+* `exception` ([String](../../sql-reference/data-types/)) — Код исключения, объясняющий нарушенное состояние части проекции
+
+{/*AUTOGENERATED_END*/ }

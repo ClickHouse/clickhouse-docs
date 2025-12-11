@@ -1,13 +1,12 @@
 ---
-'alias': []
-'description': 'BSONEachRow フォーマットに関するドキュメント'
-'input_format': true
-'keywords':
-- 'BSONEachRow'
-'output_format': true
-'slug': '/interfaces/formats/BSONEachRow'
-'title': 'BSONEachRow'
-'doc_type': 'reference'
+alias: []
+description: 'BSONEachRow 形式についてのドキュメント'
+input_format: true
+keywords: ['BSONEachRow']
+output_format: true
+slug: /interfaces/formats/BSONEachRow
+title: 'BSONEachRow'
+doc_type: 'reference'
 ---
 
 | Input | Output | Alias |
@@ -16,11 +15,12 @@
 
 ## 説明 {#description}
 
-`BSONEachRow` フォーマットは、区切りなしでバイナリ JSON (BSON) ドキュメントのシーケンスとしてデータを解析します。各行は単一のドキュメントとしてフォーマットされ、各カラムはカラム名をキーとした単一の BSON ドキュメントフィールドとしてフォーマットされます。
+`BSONEachRow` フォーマットは、データを区切りなしの連続した Binary JSON (BSON) ドキュメントのシーケンスとして解釈します。
+各行は 1 つのドキュメントとして表現され、各列は列名をキーとする 1 つの BSON ドキュメントフィールドとして表現されます。
 
 ## データ型の対応 {#data-types-matching}
 
-出力では、ClickHouse タイプと BSON タイプの間に以下の対応を使用します。
+出力時には、ClickHouse の型と BSON の型の間で次の対応を使用します。
 
 | ClickHouse type                                                                                                       | BSON Type                                                                                                     |
 |-----------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------|
@@ -36,20 +36,20 @@
 | [DateTime64](/sql-reference/data-types/datetime64.md)                                                         | `\x09` datetime                                                                                               |
 | [Decimal32](/sql-reference/data-types/decimal.md)                                                             | `\x10` int32                                                                                                  |
 | [Decimal64](/sql-reference/data-types/decimal.md)                                                             | `\x12` int64                                                                                                  |
-| [Decimal128](/sql-reference/data-types/decimal.md)                                                            | `\x05` binary, `\x00` binary subtype, size = 16                                                               |
-| [Decimal256](/sql-reference/data-types/decimal.md)                                                            | `\x05` binary, `\x00` binary subtype, size = 32                                                               |
-| [Int128/UInt128](/sql-reference/data-types/int-uint.md)                                                       | `\x05` binary, `\x00` binary subtype, size = 16                                                               |
-| [Int256/UInt256](/sql-reference/data-types/int-uint.md)                                                       | `\x05` binary, `\x00` binary subtype, size = 32                                                               |
-| [String](/sql-reference/data-types/string.md)/[FixedString](/sql-reference/data-types/fixedstring.md) | `\x05` binary, `\x00` binary subtype または \x02 string if setting output_format_bson_string_as_string is enabled |
-| [UUID](/sql-reference/data-types/uuid.md)                                                                     | `\x05` binary, `\x04` uuid subtype, size = 16                                                                 |
+| [Decimal128](/sql-reference/data-types/decimal.md)                                                            | `\x05` binary、`\x00` binary サブタイプ、サイズ = 16                                                         |
+| [Decimal256](/sql-reference/data-types/decimal.md)                                                            | `\x05` binary、`\x00` binary サブタイプ、サイズ = 32                                                         |
+| [Int128/UInt128](/sql-reference/data-types/int-uint.md)                                                       | `\x05` binary、`\x00` binary サブタイプ、サイズ = 16                                                         |
+| [Int256/UInt256](/sql-reference/data-types/int-uint.md)                                                       | `\x05` binary、`\x00` binary サブタイプ、サイズ = 32                                                         |
+| [String](/sql-reference/data-types/string.md)/[FixedString](/sql-reference/data-types/fixedstring.md) | `\x05` binary、`\x00` binary サブタイプ、または設定 output_format_bson_string_as_string が有効な場合は `\x02` string |
+| [UUID](/sql-reference/data-types/uuid.md)                                                                     | `\x05` binary、`\x04` uuid サブタイプ、サイズ = 16                                                           |
 | [Array](/sql-reference/data-types/array.md)                                                                   | `\x04` array                                                                                                  |
 | [Tuple](/sql-reference/data-types/tuple.md)                                                                   | `\x04` array                                                                                                  |
 | [Named Tuple](/sql-reference/data-types/tuple.md)                                                             | `\x03` document                                                                                               |
 | [Map](/sql-reference/data-types/map.md)                                                                       | `\x03` document                                                                                               |
 | [IPv4](/sql-reference/data-types/ipv4.md)                                                                     | `\x10` int32                                                                                                  |
-| [IPv6](/sql-reference/data-types/ipv6.md)                                                                     | `\x05` binary, `\x00` binary subtype                                                                          |
+| [IPv6](/sql-reference/data-types/ipv6.md)                                                                     | `\x05` binary、`\x00` binary サブタイプ                                                                      |
 
-入力では、BSON タイプと ClickHouse タイプの間に以下の対応を使用します。
+入力時には、BSON の型と ClickHouse の型の間で次の対応を使用します。
 
 | BSON Type                                | ClickHouse Type                                                                                                                                                                                                                             |
 |------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -70,19 +70,21 @@
 | `\x10` int32                             | [Int32/UInt32](/sql-reference/data-types/int-uint.md)/[Decimal32](/sql-reference/data-types/decimal.md)/[IPv4](/sql-reference/data-types/ipv4.md)/[Enum8/Enum16](/sql-reference/data-types/enum.md) |
 | `\x12` int64                             | [Int64/UInt64](/sql-reference/data-types/int-uint.md)/[Decimal64](/sql-reference/data-types/decimal.md)/[DateTime64](/sql-reference/data-types/datetime64.md)                                                       |
 
-他の BSON タイプはサポートされていません。さらに、異なる整数型間の変換を実施します。例えば、BSON `int32` 値を ClickHouse に [`UInt8`](../../sql-reference/data-types/int-uint.md) として挿入することが可能です。
+その他の BSON 型はサポートされていません。さらに、異なる整数型どうしの変換も行われます。
+たとえば、BSON の `int32` 値を ClickHouse の [`UInt8`](../../sql-reference/data-types/int-uint.md) として挿入することが可能です。
 
-`Int128`/`UInt128`/`Int256`/`UInt256`/`Decimal128`/`Decimal256` のような大きな整数および十進数は、 `\x00` バイナリサブタイプを持つ BSON バイナリ値から解析できます。この場合、フォーマットはバイナリデータのサイズが期待される値のサイズと等しいことを検証します。
+`Int128`/`UInt128`/`Int256`/`UInt256`/`Decimal128`/`Decimal256` のような大きな整数および小数値は、バイナリサブタイプが `\x00` の BSON Binary 値から解析できます。
+この場合、この形式はバイナリデータのサイズが期待される値のサイズと等しいことを検証します。
 
 :::note
-このフォーマットはビッグエンディアンプラットフォームでは正しく動作しません。
+この形式はビッグエンディアンプラットフォームでは正しく動作しません。
 :::
 
 ## 使用例 {#example-usage}
 
 ### データの挿入 {#inserting-data}
 
-以下のデータを持つ BSON ファイルを使用し、名前を `football.bson` とします。
+次のデータを含む、`football.bson` という名前の BSON ファイルを使用します。
 
 ```text
     ┌───────date─┬─season─┬─home_team─────────────┬─away_team───────────┬─home_team_goals─┬─away_team_goals─┐
@@ -106,15 +108,15 @@
     └────────────┴────────┴───────────────────────┴─────────────────────┴─────────────────┴─────────────────┘
 ```
 
-データを挿入します：
+データの挿入：
 
 ```sql
 INSERT INTO football FROM INFILE 'football.bson' FORMAT BSONEachRow;
 ```
 
-### データの読み取り {#reading-data}
+### データの読み込み {#reading-data}
 
-`BSONEachRow` フォーマットを使用してデータを読み取ります：
+`BSONEachRow` 形式を使用してデータを読み込みます。
 
 ```sql
 SELECT *
@@ -123,12 +125,12 @@ FORMAT BSONEachRow
 ```
 
 :::tip
-BSON は、端末で人間が読み取れる形式で表示されないバイナリフォーマットです。BSON ファイルを出力するには `INTO OUTFILE` を使用してください。
+BSON はバイナリ形式のデータであり、ターミナル上では人間が読める形では表示されません。`INTO OUTFILE` を使用して BSON ファイルとして出力してください。
 :::
 
 ## フォーマット設定 {#format-settings}
 
-| 設定                                                                                                                                                                                               | 説明                                                                                       | デフォルト  |
-|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------|----------|
-| [`output_format_bson_string_as_string`](../../operations/settings/settings-formats.md/#output_format_bson_string_as_string)                                                                           | 文字列カラムのためにバイナリの代わりに BSON 文字列型を使用します。                             | `false`  |
-| [`input_format_bson_skip_fields_with_unsupported_types_in_schema_inference`](../../operations/settings/settings-formats.md/#input_format_bson_skip_fields_with_unsupported_types_in_schema_inference) | フォーマット BSONEachRow のスキーマ推論中にサポートされていないタイプのカラムをスキップを許可します。 | `false`  |
+| 設定                                                                                                                                                                                               | 説明                                                                                                         | 既定値   |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|----------|
+| [`output_format_bson_string_as_string`](../../operations/settings/settings-formats.md/#output_format_bson_string_as_string)                                                                           | String 列に対しては、Binary 型ではなく BSON の String 型を使用します。                                       | `false`  |
+| [`input_format_bson_skip_fields_with_unsupported_types_in_schema_inference`](../../operations/settings/settings-formats.md/#input_format_bson_skip_fields_with_unsupported_types_in_schema_inference) | BSONEachRow フォーマットのスキーマ推論時に、サポートされていない型を持つ列をスキップすることを許可します。 | `false`  |

@@ -1,10 +1,9 @@
 ---
-'slug': '/deployment-guides/parallel-replicas'
-'title': '並列レプリカ'
-'keywords':
-- 'parallel replica'
-'description': 'このガイドでは、まず ClickHouse が分散テーブルを介して複数のシャードにクエリを分散する方法について説明し、次にクエリがその実行のために複数のレプリカを活用する方法について説明します。'
-'doc_type': 'reference'
+slug: /deployment-guides/parallel-replicas
+title: 'パラレルレプリカ'
+keywords: ['パラレルレプリカ']
+description: 'このガイドではまず、ClickHouse が分散テーブルを通じてクエリを複数のシャードにどのように分散するかを説明し、そのうえでクエリの実行に複数のレプリカをどのように活用できるかを解説します。'
+doc_type: 'reference'
 ---
 
 import Image from '@theme/IdealImage';
@@ -19,241 +18,307 @@ import image_7 from '@site/static/images/deployment-guides/parallel-replicas-7.p
 import image_8 from '@site/static/images/deployment-guides/parallel-replicas-8.png'
 import image_9 from '@site/static/images/deployment-guides/parallel-replicas-9.png'
 
-<BetaBadge/>
+<BetaBadge />
 
-## Introduction {#introduction}
+## はじめに \{#introduction\}
 
-ClickHouseはクエリを非常に迅速に処理しますが、これらのクエリはどのように複数のサーバーに分散および並列処理されるのでしょうか？
+ClickHouse はクエリを非常に高速に処理しますが、これらのクエリはどのようにして
+複数のサーバーに分散され、並列実行されているのでしょうか。
 
-> このガイドでは、まずClickHouseがどのように分散テーブルを介してクエリを複数のシャードに分配するかを説明し、その後、クエリがどのように複数のレプリカを活用して実行されるかについて説明します。
+> このガイドではまず、ClickHouse が分散テーブルを用いてクエリを複数のシャードにどのように分散するかを説明し、その後、クエリの実行に複数のレプリカをどのように活用できるかを解説します。
 
-## Sharded architecture {#sharded-architecture}
+## Sharded architecture \{#sharded-architecture\}
 
-共有無用アーキテクチャでは、クラスターは通常、複数のシャードに分割され、各シャードは全体のデータのサブセットを含んでいます。分散テーブルはこれらのシャードの上に位置し、完全なデータの統一ビューを提供します。
+シェアードナッシング（shared-nothing）アーキテクチャでは、クラスタは一般的に複数のシャードに分割され、各シャードには全体のデータのサブセットが含まれます。その上位に分散テーブルが配置され、全データの一貫したビューを提供します。
 
-読み込みはローカルテーブルに送信できます。クエリの実行は指定されたシャードのみで発生するか、分散テーブルに送信され、その場合、各シャードが指定されたクエリを実行します。分散テーブルがクエリされたサーバーはデータを集約し、クライアントに応答します：
+読み取りはローカルテーブルに送ることもできます。この場合、クエリ実行は指定したシャード上でのみ行われます。または分散テーブルに送ることもでき、その場合は各シャードが指定されたクエリを実行します。分散テーブルに対してクエリが発行されたサーバーがデータを集約し、クライアントに応答します。
 
-<Image img={image_1} size="md" alt="sharded archtiecture" />
+<Image img={image_1} size="md" alt="シャーディングされたアーキテクチャ" />
 
-上の図は、クライアントが分散テーブルをクエリしたときに何が起こるかを可視化しています：
+上図は、クライアントが分散テーブルにクエリを実行したときに何が起こるかを示しています。
 
 <ol className="docs-ordered-list">
-    <li>
-        SELECTクエリは、ノード上の分散テーブルにランダムに送信されます
-        （ラウンドロビン戦略を介して、または負荷分散装置によって特定のサーバーにルーティングされた後）。このノードは、コーディネーターとして機能します。
-    </li>
-    <li>
-        ノードは、分散テーブルによって指定された情報を介してクエリを実行する必要がある各シャードを特定し、クエリを各シャードに送信します。
-    </li>
-    <li>
-        各シャードはローカルでデータを読み取り、フィルタリングし、集約し、マージ可能な状態をコーディネーターに送信します。
-    </li>
-    <li>
-        コーディネーターはデータをマージし、クライアントに応答を返します。
-    </li>
+  <li>
+    SELECT クエリは、任意のノード上の分散テーブルに送信されます
+    （ラウンドロビン戦略で選択されたノード、またはロードバランサーによって
+    特定のサーバーにルーティングされたノードなど）。このノードが
+    コーディネータとして動作します。
+  </li>
+
+  <li>
+    ノードは、分散テーブルに指定された情報を用いて、クエリを実行する必要がある
+    各シャードを特定し、クエリをそれぞれのシャードに送信します。
+  </li>
+
+  <li>
+    各シャードはローカルでデータを読み取り、フィルタおよび集約したうえで、
+    マージ可能な状態をコーディネータに返します。
+  </li>
+
+  <li>
+    コーディネータノードがデータをマージし、その結果をクライアントに
+    応答として返します。
+  </li>
 </ol>
 
-レプリカを組み込むと、プロセスは非常に似ています。唯一の違いは、各シャードからの単一のレプリカのみがクエリを実行することです。これにより、より多くのクエリを並行して処理できるようになります。
+レプリカを追加した場合もプロセスはほぼ同様で、唯一の違いは、各シャードからは単一のレプリカのみがクエリを実行する点です。これにより、より多くのクエリを並列に処理できるようになります。
 
-## Non-sharded architecture {#non-sharded-architecture}
+## 非シャーディングアーキテクチャ \{#non-sharded-architecture\}
 
-ClickHouse Cloudは、上記のアーキテクチャとは非常に異なるアーキテクチャを持っています。
-（詳しくは["ClickHouse Cloud Architecture"](https://clickhouse.com/docs/cloud/reference/architecture)を参照してください）。計算とストレージが分離され、事実上無限のストレージがあるため、シャードの必要性はそれほど重要ではなくなります。
+ClickHouse Cloud は、前述のアーキテクチャとは大きく異なるアーキテクチャを採用しています。
+（詳細については、[&quot;ClickHouse Cloud Architecture&quot;](https://clickhouse.com/docs/cloud/reference/architecture)
+を参照してください）。コンピュートとストレージが分離され、事実上無制限のストレージ容量が
+利用できるため、シャードの必要性はそれほど重要ではなくなります。
 
-以下の図はClickHouse Cloudのアーキテクチャを示しています：
+次の図は ClickHouse Cloud のアーキテクチャを示しています。
 
 <Image img={image_2} size="md" alt="non sharded architecture" />
 
-このアーキテクチャでは、レプリカをほぼ瞬時に追加および削除できるため、非常に高いクラスターのスケーラビリティを確保できます。ClickHouse Keeperクラスター（右側に示す）は、メタデータの単一の真実のソースを持つことを保証します。レプリカはClickHouse Keeperクラスターからメタデータを取得し、すべては同じデータを維持します。データ自体はオブジェクトストレージに格納されており、SSDキャッシュによりクエリを高速化することができます。
+このアーキテクチャにより、レプリカをほぼ瞬時に追加・削除できるようになり、クラスタの
+スケーラビリティを非常に高いレベルで確保できます。右側に示されている ClickHouse
+Keeper クラスタは、メタデータに関する単一の信頼できる情報源
+（single source of truth）として機能します。レプリカは ClickHouse Keeper
+クラスタからメタデータを取得し、すべて同じデータを保持します。データ本体は
+オブジェクトストレージに保存され、SSD キャッシュによってクエリを高速化します。
 
-では、クエリの実行をどのように複数のサーバーに分散できるのでしょうか？シャードアーキテクチャでは、各シャードが実際にデータのサブセットに対してクエリを実行できるため、それはかなり明らかでした。シャーディングがない場合、どうすればよいのでしょうか？
+では、どのようにしてクエリ実行を複数のサーバーに分散させればよいのでしょうか。
+シャーディングされたアーキテクチャでは、各シャードがデータのサブセットに対して
+クエリを実行できるため、その方法は比較的明確でした。では、シャーディングがない場合には
+どのように実現しているのでしょうか。
 
-## Introducing parallel replicas {#introducing-parallel-replicas}
+## 並列レプリカの概要 \{#introducing-parallel-replicas\}
 
-複数のサーバーでのクエリ実行を並列化するには、まずサーバーの1つをコーディネーターとして割り当てる必要があります。コーディネーターは実行する必要のあるタスクのリストを作成し、それらがすべて実行され、集約され、結果がクライアントに返されることを保証します。ほとんどの分散システムと同様に、初期クエリを受信するノードがこの役割を担います。また、作業の単位を定義する必要があります。シャードアーキテクチャでは、作業の単位はシャードであり、データのサブセットです。並列レプリカを使用すると、[グラニュール](/docs/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing)と呼ばれるテーブルの小さな部分を作業の単位として使用します。
+複数のサーバーでクエリ実行を並列化するには、まずサーバーの 1 つを
+コーディネーターとして割り当てられるようにする必要があります。コーディネーターは、
+実行すべきタスクの一覧を作成し、それらがすべて実行・集約され、結果がクライアントに
+返されることを保証する役割を担います。多くの分散システムと同様に、この役割は
+最初のクエリを受け取るノードが担当します。また、作業単位も定義する必要があります。
+シャーディングアーキテクチャでは、作業単位はデータの部分集合であるシャードです。
+並列レプリカでは、作業単位として、テーブルの一部である
+[granules](/docs/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing)
+と呼ばれる小さな単位を使用します。
 
-では、下の図を使って、実際にどのように機能するか見てみましょう：
+では、以下の図を用いて、実際にどのように動作するかを見ていきましょう。
 
-<Image img={image_3} size="md" alt="Parallel replicas" />
+<Image img={image_3} size="md" alt="並列レプリカ" />
 
-並列レプリカを使用すると：
-
-<ol className="docs-ordered-list">
-    <li>
-        クライアントからのクエリは負荷分散装置を通過した後、1つのノードに送信されます。このノードはこのクエリのコーディネーターになります。
-    </li>
-    <li>
-        ノードは各パーツのインデックスを分析し、処理するための正しいパーツとグラニュールを選択します。
-    </li>
-    <li>
-        コーディネーターは作業負荷を、異なるレプリカに割り当てることができるグラニュールのセットに分割します。
-    </li>
-    <li>
-        各グラニュールのセットは対応するレプリカによって処理され、終了するとマージ可能な状態がコーディネーターに送信されます。
-    </li>
-    <li>
-        最後に、コーディネーターはすべてのレプリカから結果をマージし、クライアントに応答を返します。
-    </li>
-</ol>
-
-上記のステップは、理論上の並列レプリカの動作を概説しています。しかし、実際には、その論理が完璧に機能するのを妨げる多くの要因があります：
+並列レプリカでは、次のようになります。
 
 <ol className="docs-ordered-list">
-    <li>
-        一部のレプリカは利用できない場合があります。
-    </li>
-    <li>
-        ClickHouseのレプリケーションは非同期であるため、一部のレプリカは時間的に異なるパーツを持つ可能性があります。
-    </li>
-    <li>
-        レプリカ間の遅延ラテシーを何らかの方法で処理する必要があります。
-    </li>
-    <li>
-        ファイルシステムキャッシュはレプリカごとにアクティビティに応じて異なるため、ランダムなタスク割り当てはキャッシュの局所性に基づいて最適性能を妨げる可能性があります。
-    </li>
+  <li>
+    クライアントからのクエリはロードバランサーを通過した後、1 つのノードに
+    送信されます。このノードがこのクエリのコーディネーターになります。
+  </li>
+
+  <li>
+    ノードは各パーツのインデックスを解析し、処理すべき適切なパーツと
+    granule を選択します。
+  </li>
+
+  <li>
+    コーディネーターは、ワークロードを複数の granule の集合に分割し、
+    それぞれを異なるレプリカに割り当てられるようにします。
+  </li>
+
+  <li>
+    各 granule の集合は対応するレプリカによって処理され、完了後、
+    マージ可能な状態がコーディネーターに送信されます。
+  </li>
+
+  <li>
+    最後に、コーディネーターがレプリカからのすべての結果をマージし、
+    レスポンスをクライアントに返します。
+  </li>
 </ol>
 
-これらの要因に対処する方法を次のセクションで探ります。
+上記のステップは、並列レプリカが理論上どのように動作するかを説明したものです。
+しかし、実際には、このようなロジックが完全には機能しない要因が多数存在します。
 
-### Announcements {#announcements}
+<ol className="docs-ordered-list">
+  <li>
+    一部のレプリカが利用不能になっている場合があります。
+  </li>
 
-上記のリストの（1）および（2）に対処するために、アナウンスメントの概念を導入しました。以下の図を使って、どのように機能するかを可視化しましょう：
+  <li>
+    ClickHouse におけるレプリケーションは非同期であるため、ある時点では
+    一部のレプリカが同じパーツを保持していない可能性があります。
+  </li>
+
+  <li>
+    レプリカ間のテールレイテンシを何らかの方法で扱う必要があります。
+  </li>
+
+  <li>
+    ファイルシステムキャッシュは各レプリカ上のアクティビティに応じて
+    レプリカごとに異なるため、タスクをランダムに割り当てると、
+    キャッシュの局所性を考慮した場合に最適とは言えない性能につながることがあります。
+  </li>
+</ol>
+
+これらの要因をどのように克服するかについては、次のセクションで説明します。
+
+### アナウンスメント \{#announcements\}
+
+上記のリストの (1) と (2) に対応するために、「アナウンスメント」という概念を導入しました。以下の図を使って、その仕組みを確認してみましょう。
 
 <Image img={image_4} size="md" alt="Announcements" />
 
 <ol className="docs-ordered-list">
-    <li>
-        クライアントからのクエリは負荷分散装置を通過した後、1つのノードに送信されます。このノードはこのクエリのコーディネーターになります。
-    </li>
-    <li>
-        コーディネーターのノードは、クラスター内のすべてのレプリカからアナウンスメントを取得するリクエストを送信します。レプリカは、テーブルの現在のパーツセットに対してわずかに異なるビューを持つ可能性があります。そのため、不正確なスケジューリング決定を避けるために、この情報を収集する必要があります。
-    </li>
-    <li>
-        コーディネーターのノードは、アナウンスメントを使用して、さまざまなレプリカに割り当てることができるグラニュールのセットを定義します。ここでは、パート3のグラニュールはレプリカ2に割り当てられていないことがわかります。なぜなら、このレプリカはそのアナウンスメントにこのパートを提供しなかったからです。また、レプリカ3にはアナウンスメントが提供されなかったため、タスクは割り当てられていません。
-    </li>
-    <li>
-        各レプリカは、自身のグラニュールサブセットでクエリを処理し、マージ可能な状態をコーディネーターに送信した後、コーディネーターは結果をマージし、応答がクライアントに送信されます。
-    </li>
+  <li>
+    クライアントからのクエリはロードバランサーを経由して 1 つのノードに送信されます。このノードがこのクエリのコーディネーターになります。
+  </li>
+
+  <li>
+    コーディネーターノードは、クラスター内のすべてのレプリカからアナウンスメントを取得するリクエストを送信します。レプリカは、テーブルの現在のパーツ集合について、わずかに異なる見え方をしている場合があります。そのため、誤ったスケジューリング判断を避けるために、この情報を収集する必要があります。
+  </li>
+
+  <li>
+    その後、コーディネーターノードはアナウンスメントを使用して、異なるレプリカに割り当て可能なグラニュールの集合を定義します。たとえばここでは、レプリカ 2 は自分のアナウンスメントで part 3 を提示していないため、part 3 のグラニュールはレプリカ 2 には一切割り当てられていないことがわかります。また、レプリカ 3 はアナウンスメントを提供していないため、このレプリカにはタスクが割り当てられていない点にも注意してください。
+  </li>
+
+  <li>
+    各レプリカがそれぞれのグラニュールのサブセットに対してクエリ処理を行い、マージ可能な状態をコーディネーターに送り返した後、コーディネーターは結果をマージし、そのレスポンスをクライアントに送信します。
+  </li>
 </ol>
 
-### Dynamic coordination {#dynamic-coordination}
+### 動的なコーディネーション \{#dynamic-coordination\}
 
-尾の遅延の問題に対処するために、動的コーディネーションを追加しました。これは、すべてのグラニュールを1回のリクエストでレプリカに送信するのではなく、各レプリカがコーディネーターに新しいタスク（処理するグラニュールのセット）をリクエストできることを意味します。コーディネーターは、受け取ったアナウンスメントに基づいてレプリカにグラニュールのセットを割り当てます。
+テールレイテンシの問題に対処するために、動的なコーディネーションを導入しました。これは、すべてのグラニュールを 1 回のリクエストでレプリカに送信するのではなく、各レプリカがコーディネータに対して新しいタスク（処理すべきグラニュールの集合）を要求できるようにする、ということを意味します。コーディネータは、受信したアナウンスに基づいて、そのレプリカに渡すグラニュールの集合を決定します。
 
-すべてのレプリカがすべてのパーツを含むアナウンスメントを送信した段階であると仮定しましょう。
+すべてのレプリカが、すべてのパーツに関するアナウンスをすでに送信し終えている段階にあると仮定します。
 
-以下の図は、動的コーディネーションがどのように機能するかを可視化しています：
+以下の図は、動的なコーディネーションがどのように機能するかを示しています。
 
-<Image img={image_5} size="md" alt="Dynamic Coordination - part 1" />
+<Image img={image_5} size="md" alt="動的コーディネーション - パート 1" />
 
 <ol className="docs-ordered-list">
-    <li>
-        レプリカはコーディネーターノードにタスクを処理できることを知らせ、処理できる作業量を指定することもできます。
-    </li>
-    <li>
-        コーディネーターはレプリカにタスクを割り当てます。
-    </li>
+  <li>
+    レプリカは、タスクを処理可能であること、またどの程度の作業量を処理可能かをコーディネータノードに通知します。
+  </li>
+
+  <li>
+    コーディネータは、レプリカにタスクを割り当てます。
+  </li>
 </ol>
 
-<Image img={image_6} size="md" alt="Dynamic Coordination - part 2" />
+<Image img={image_6} size="md" alt="動的コーディネーション - パート 2" />
 
 <ol className="docs-ordered-list">
-    <li>
-        レプリカ1と2はタスクを非常に速く終了できます。それらはコーディネーターノードに別のタスクをリクエストします。
-    </li>
-    <li>
-        コーディネーターはレプリカ1と2に新しいタスクを割り当てます。
-    </li>
+  <li>
+    レプリカ 1 と 2 はタスクを非常に速く完了できます。そのため、コーディネータノードに別のタスクを要求します。
+  </li>
+
+  <li>
+    コーディネータは、新しいタスクをレプリカ 1 と 2 に割り当てます。
+  </li>
 </ol>
 
-<Image img={image_7} size="md" alt="Dynamic Coordination - part 3" />
+<Image img={image_7} size="md" alt="動的コーディネーション - パート 3" />
 
 <ol className="docs-ordered-list">
-    <li>
-        すべてのレプリカはタスクの処理を終了しました。彼らはさらにタスクを要求します。
-    </li>
-    <li>
-        コーディネーターはアナウンスメントを使用して、処理される残りのタスクをチェックしますが、残っているタスクはありません。
-    </li>
-    <li>
-        コーディネーターは、すべてが処理されたことをレプリカに通知します。現在、すべてのマージ可能な状態をマージし、クエリに応答します。
-    </li>
+  <li>
+    すべてのレプリカが、自身に割り当てられたタスクの処理を完了しました。そこで、さらにタスクを要求します。
+  </li>
+
+  <li>
+    コーディネータは、アナウンスを使って残っているタスクを確認しますが、もはや残りのタスクはありません。
+  </li>
+
+  <li>
+    コーディネータは、すべての処理が完了したことをレプリカに通知します。次に、マージ可能な状態をすべてマージし、クエリに応答します。
+  </li>
 </ol>
 
-### Managing cache locality {#managing-cache-locality}
+### キャッシュローカリティの管理 \{#managing-cache-locality\}
 
-最後に残された潜在的な問題は、キャッシュの局所性をどのように処理するかです。クエリが複数回実行される場合、同じタスクが同じレプリカにルーティングされることをどのように保証できますか？前の例では、次のタスクが割り当てられました：
+最後に残る潜在的な問題は、キャッシュローカリティをどのように扱うかです。同じクエリが
+複数回実行された場合、どのようにして同じタスクが同じレプリカにルーティングされるように
+保証できるでしょうか。前の例では、次のようにタスクが割り当てられていました。
 
 <table>
-    <thead>
-        <tr>
-            <th></th>
-            <th>レプリカ1</th>
-            <th>レプリカ2</th>
-            <th>レプリカ3</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>パート1</td>
-            <td>g1, g6, g7</td>
-            <td>g2, g4, g5</td>
-            <td>g3</td>
-        </tr>
-        <tr>
-            <td>パート2</td>
-            <td>g1</td>
-            <td>g2, g4, g5</td>
-            <td>g3</td>
-        </tr>
-        <tr>
-            <td>パート3</td>
-            <td>g1, g6</td>
-            <td>g2, g4, g5</td>
-            <td>g3</td>
-        </tr>
-    </tbody>
+  <thead>
+    <tr>
+      <th />
+
+      <th>レプリカ 1</th>
+      <th>レプリカ 2</th>
+      <th>レプリカ 3</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>パート 1</td>
+      <td>g1, g6, g7</td>
+      <td>g2, g4, g5</td>
+      <td>g3</td>
+    </tr>
+
+    <tr>
+      <td>パート 2</td>
+      <td>g1</td>
+      <td>g2, g4, g5</td>
+      <td>g3</td>
+    </tr>
+
+    <tr>
+      <td>パート 3</td>
+      <td>g1, g6</td>
+      <td>g2, g4, g5</td>
+      <td>g3</td>
+    </tr>
+  </tbody>
 </table>
 
-同じタスクが同じレプリカに割り当てられてキャッシュの恩恵を受けることを保証するために、2つのことが起こります。パート+グラニュールのセット（タスク）のハッシュが計算されます。タスク割り当てにはレプリカの数でモジュロが適用されます。
+同じタスクが同じレプリカに割り当てられ、キャッシュの恩恵を受けられるようにするために、
+2 つのことが行われます。まず、パート + グラニュールの集合（1 つのタスク）のハッシュが
+計算されます。次に、タスク割り当てのためにレプリカ数に対するモジュロ演算が適用されます。
 
-紙の上ではこれはうまく見えるかもしれませんが、実際には、一つのレプリカへの突然の負荷やネットワークの劣化が、特定のタスクを実行するために同じレプリカが一貫して使用される場合に遅延ラテシーを導入する可能性があります。`max_parallel_replicas`がレプリカの数より少ない場合、クエリ実行のためにランダムなレプリカが選択されます。
+理論上はうまくいきそうですが、実際には、あるレプリカへの突発的な負荷や
+ネットワーク品質の低下により、特定のタスクの実行に同じレプリカが継続的に使用されると、
+テイルレイテンシが発生する可能性があります。`max_parallel_replicas` がレプリカ数より
+小さい場合は、クエリ実行のためにレプリカがランダムに選択されます。
 
-### Task stealing {#task-stealing}
+### タスクスティーリング \{#task-stealing\}
 
-あるレプリカが他よりもタスクを遅く処理している場合、他のレプリカはそのレプリカに本来属するべきタスクをハッシュで「盗もう」として、尾の遅延を減少させます。
+あるレプリカが他のレプリカよりもタスクの処理が遅い場合、他のレプリカはテールレイテンシを低減するために、本来はハッシュに基づいてそのレプリカに割り当てられているタスクを「盗む」ことを試みます。
 
-### Limitations {#limitations}
+### 制約事項 \{#limitations\}
 
-この機能には知られた制限がありますが、その主なものはこのセクションに文書化されています。
+この機能には既知の制約事項があり、その主なものを本セクションにまとめます。
 
 :::note
-以下に示す制限のいずれでもない問題を見つけ、並列レプリカが原因であると疑う場合は、`comp-parallel-replicas`ラベルを使用してGitHubに問題を開いてください。
+以下で挙げている制約事項に当てはまらない問題を発見し、その原因が parallel replica であると疑われる場合は、GitHub で `comp-parallel-replicas` ラベルを付けて issue を作成してください。
 :::
 
-| 制限                                       | 説明                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-|-------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 複雑なクエリ                               | 現在、並列レプリカは単純なクエリに対してかなり良好に機能します。CTE、サブクエリ、JOIN、非平坦クエリなどの複雑さの層は、クエリパフォーマンスに悪影響を与える可能性があります。                                                                                                                                                                                                                                                                                  |
-| 小さなクエリ                               | 多くの行を処理しないクエリを実行している場合、複数のレプリカで実行してもパフォーマンスが向上しない可能性があります。これは、レプリカ間の調整のためのネットワーク時間が追加のサイクルをクエリ実行にもたらす可能性があるからです。これらの問題を制限するには、設定を使用します: [`parallel_replicas_min_number_of_rows_per_replica`](/docs/operations/settings/settings#parallel_replicas_min_number_of_rows_per_replica)。  |
-| FINALでの並列レプリカの無効化        |                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| プロジェクションと並列レプリカの同時使用は不可       |                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| 高いカーディナリティデータと複雑な集約 | 多くのデータを送信する必要がある高カーディナリティ集約は、クエリを著しく遅くする可能性があります。                                                                                                                                                                                                                                                                                                                                                                     |
-| 新しいアナライザーとの互換性          | 新しいアナライザーは、特定のシナリオでクエリ実行を著しく遅くしたり、逆に高速化したりする可能性があります。                                                                                                                                                                                                                                                                                                                                                                       |
+| 制約事項                                       | 説明                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-----------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 複雑なクエリ                                   | 現在、parallel replica は単純なクエリに対しては比較的良好に動作します。CTE、サブクエリ、JOIN、フラットでないクエリなどの複雑化要因は、クエリのパフォーマンスに悪影響を与える可能性があります。                                                                                                                                                                                                                                                                       |
+| 小さいクエリ                                   | 処理対象の行数が多くないクエリを実行している場合、複数のレプリカで実行してもパフォーマンス向上が得られないことがあります。これは、レプリカ間の調整に必要なネットワーク時間がクエリ実行に追加のオーバーヘッドをもたらす可能性があるためです。これらの問題は、設定 [`parallel_replicas_min_number_of_rows_per_replica`](/docs/operations/settings/settings#parallel_replicas_min_number_of_rows_per_replica) を使用することで軽減できます。  |
+| FINAL 使用時は parallel replicas が無効になる |                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| プロジェクションは parallel replicas と併用されない |                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| 高カーディナリティデータと複雑な集約           | 大量のデータ送信を伴う高カーディナリティの集約は、クエリを大幅に遅くする可能性があります。                                                                                                                                                                                                                                                                                                                                                                            |
+| 新しいアナライザとの互換性                     | 新しいアナライザは、特定のシナリオにおいてクエリ実行を大幅に遅くしたり速くしたりする可能性があります。                                                                                                                                                                                                                                                                                                                                                               |
 
-## Settings related to parallel replicas {#settings-related-to-parallel-replicas}
+## 並列レプリカに関連する設定 \{#settings-related-to-parallel-replicas\}
 
-| 設定                                                   | 説明                                                                                                                                                                                                                                                         |
-|-------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `enable_parallel_replicas`                            | `0`: 無効<br/> `1`: 有効 <br/>`2`: 並列レプリカの使用を強制し、使用されなければ例外をスローします。                                                                                                                                                          |
-| `cluster_for_parallel_replicas`                       | 並列レプリケーションに使用するクラスタ名; ClickHouse Cloudを使用している場合は、`default`を使用してください。                                                                                                                                                                 |
-| `max_parallel_replicas`                               | 複数のレプリカでのクエリ実行に使用する最大レプリカ数。一部のレプリカの数より少ない数が指定されると、ノードはランダムに選択されます。この値も水平方向のスケーリングに対応できるように過剰な値を書くことができます。 |
-| `parallel_replicas_min_number_of_rows_per_replica`   | 処理する必要のある行数に基づいて使用されるレプリカの数を制限するのに役立ちます。使用されるレプリカの数は次のように定義されます：<br/> `estimated rows to read` / `min_number_of_rows_per_replica`。                                                               |
-| `allow_experimental_analyzer`                         | `0`: 古いアナライザーを使用<br/> `1`: 新しいアナライザーを使用します。<br/><br/>並列レプリカの動作は使用されるアナライザーに基づいて変わる可能性があります。                                                                                                                                    |
+| Setting                                            | Description                                                                                                                                                                                                                                                         |
+|----------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `enable_parallel_replicas`                         | `0`: 無効<br /> `1`: 有効 <br />`2`: 並列レプリカの使用を強制し、使用されない場合は例外をスローします。                                                                                                                                                          |
+| `cluster_for_parallel_replicas`                    | 並列レプリケーションに使用するクラスタ名。ClickHouse Cloud を使用している場合は `default` を指定します。                                                                                                                                                                 |
+| `max_parallel_replicas`                            | 複数レプリカ上でクエリを実行する際に使用するレプリカの最大数。クラスタ内のレプリカ数より小さい値を指定した場合、ノードはランダムに選択されます。この値は水平方向のスケーリングを考慮してオーバーコミットとして設定することもできます。 |
+| `parallel_replicas_min_number_of_rows_per_replica` | 処理が必要な行数に基づいて使用するレプリカ数を制限するのに役立ちます。使用されるレプリカ数は次の式で決まります：<br /> `estimated rows to read` / `min_number_of_rows_per_replica`.                                                               |
+| `allow_experimental_analyzer`                      | `0`: 旧アナライザを使用<br /> `1`: 新アナライザを使用 <br /><br />使用するアナライザによって、並列レプリカの動作が変わる場合があります。                                                                                                                                    |
 
-## Investigating issues with parallel replicas {#investigating-issues-with-parallel-replicas}
+## パラレルレプリカに関する問題の調査 \{#investigating-issues-with-parallel-replicas\}
 
-[`system.query_log`](/docs/operations/system-tables/query_log)テーブルで、各クエリに使用されている設定を確認できます。また、[`system.events`](/docs/operations/system-tables/events)テーブルを確認してサーバーで発生したすべてのイベントを確認でき、[`clusterAllReplicas`](/docs/sql-reference/table-functions/cluster)テーブル関数を使用してすべてのレプリカ上のテーブルを確認できます
-（クラウドユーザーの場合は`default`を使用します）。
+各クエリでどの設定が使用されているかは、
+[`system.query_log`](/docs/operations/system-tables/query_log) テーブルで確認できます。
+また、サーバー上で発生したすべてのイベントは
+[`system.events`](/docs/operations/system-tables/events)
+テーブルで確認できます。さらに、
+[`clusterAllReplicas`](/docs/sql-reference/table-functions/cluster) テーブル関数を使用して、すべてのレプリカ上のテーブルを確認できます
+(クラウドユーザーの場合は `default` を使用してください)。
 
 ```sql title="Query"
 SELECT
@@ -262,57 +327,60 @@ SELECT
 FROM clusterAllReplicas('default', system.events)
 WHERE event ILIKE '%ParallelReplicas%'
 ```
+
 <details>
-<summary>Response</summary>
-```response title="Response"
-┌─hostname()───────────────────────┬─event──────────────────────────────────────────┬─value─┬─description──────────────────────────────────────────────────────────────────────────────────────────┐
-│ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasHandleRequestMicroseconds      │   438 │ Time spent processing requests for marks from replicas                                               │
-│ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasHandleAnnouncementMicroseconds │   558 │ Time spent processing replicas announcements                                                         │
-│ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasReadUnassignedMarks            │   240 │ Sum across all replicas of how many unassigned marks were scheduled                                  │
-│ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasReadAssignedForStealingMarks   │     4 │ Sum across all replicas of how many of scheduled marks were assigned for stealing by consistent hash │
-│ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasStealingByHashMicroseconds     │     5 │ Time spent collecting segments meant for stealing by hash                                            │
-│ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasProcessingPartsMicroseconds    │     5 │ Time spent processing data parts                                                                     │
-│ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasStealingLeftoversMicroseconds  │     3 │ Time spent collecting orphaned segments                                                              │
-│ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasUsedCount                      │     2 │ Number of replicas used to execute a query with task-based parallel replicas                         │
-│ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasAvailableCount                 │     6 │ Number of replicas available to execute a query with task-based parallel replicas                    │
-└──────────────────────────────────┴────────────────────────────────────────────────┴───────┴──────────────────────────────────────────────────────────────────────────────────────────────────────┘
-┌─hostname()───────────────────────┬─event──────────────────────────────────────────┬─value─┬─description──────────────────────────────────────────────────────────────────────────────────────────┐
-│ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasHandleRequestMicroseconds      │   698 │ Time spent processing requests for marks from replicas                                               │
-│ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasHandleAnnouncementMicroseconds │   644 │ Time spent processing replicas announcements                                                         │
-│ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasReadUnassignedMarks            │   190 │ Sum across all replicas of how many unassigned marks were scheduled                                  │
-│ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasReadAssignedForStealingMarks   │    54 │ Sum across all replicas of how many of scheduled marks were assigned for stealing by consistent hash │
-│ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasStealingByHashMicroseconds     │     8 │ Time spent collecting segments meant for stealing by hash                                            │
-│ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasProcessingPartsMicroseconds    │     4 │ Time spent processing data parts                                                                     │
-│ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasStealingLeftoversMicroseconds  │     2 │ Time spent collecting orphaned segments                                                              │
-│ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasUsedCount                      │     2 │ Number of replicas used to execute a query with task-based parallel replicas                         │
-│ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasAvailableCount                 │     6 │ Number of replicas available to execute a query with task-based parallel replicas                    │
-└──────────────────────────────────┴────────────────────────────────────────────────┴───────┴──────────────────────────────────────────────────────────────────────────────────────────────────────┘
-┌─hostname()───────────────────────┬─event──────────────────────────────────────────┬─value─┬─description──────────────────────────────────────────────────────────────────────────────────────────┐
-│ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasHandleRequestMicroseconds      │   620 │ Time spent processing requests for marks from replicas                                               │
-│ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasHandleAnnouncementMicroseconds │   656 │ Time spent processing replicas announcements                                                         │
-│ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasReadUnassignedMarks            │     1 │ Sum across all replicas of how many unassigned marks were scheduled                                  │
-│ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasReadAssignedForStealingMarks   │     1 │ Sum across all replicas of how many of scheduled marks were assigned for stealing by consistent hash │
-│ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasStealingByHashMicroseconds     │     4 │ Time spent collecting segments meant for stealing by hash                                            │
-│ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasProcessingPartsMicroseconds    │     3 │ Time spent processing data parts                                                                     │
-│ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasStealingLeftoversMicroseconds  │     1 │ Time spent collecting orphaned segments                                                              │
-│ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasUsedCount                      │     2 │ Number of replicas used to execute a query with task-based parallel replicas                         │
-│ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasAvailableCount                 │    12 │ Number of replicas available to execute a query with task-based parallel replicas                    │
-└──────────────────────────────────┴────────────────────────────────────────────────┴───────┴──────────────────────────────────────────────────────────────────────────────────────────────────────┘
-┌─hostname()───────────────────────┬─event──────────────────────────────────────────┬─value─┬─description──────────────────────────────────────────────────────────────────────────────────────────┐
-│ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasHandleRequestMicroseconds      │   696 │ Time spent processing requests for marks from replicas                                               │
-│ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasHandleAnnouncementMicroseconds │   717 │ Time spent processing replicas announcements                                                         │
-│ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasReadUnassignedMarks            │     2 │ Sum across all replicas of how many unassigned marks were scheduled                                  │
-│ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasReadAssignedForStealingMarks   │     2 │ Sum across all replicas of how many of scheduled marks were assigned for stealing by consistent hash │
-│ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasStealingByHashMicroseconds     │    10 │ Time spent collecting segments meant for stealing by hash                                            │
-│ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasProcessingPartsMicroseconds    │     6 │ Time spent processing data parts                                                                     │
-│ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasStealingLeftoversMicroseconds  │     2 │ Time spent collecting orphaned segments                                                              │
-│ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasUsedCount                      │     2 │ Number of replicas used to execute a query with task-based parallel replicas                         │
-│ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasAvailableCount                 │    12 │ Number of replicas available to execute a query with task-based parallel replicas                    │
-└──────────────────────────────────┴────────────────────────────────────────────────┴───────┴──────────────────────────────────────────────────────────────────────────────────────────────────────┘
-```
+  <summary>レスポンス</summary>
+
+  ```response title="Response"
+  ┌─hostname()───────────────────────┬─event──────────────────────────────────────────┬─value─┬─description──────────────────────────────────────────────────────────────────────────────────────────┐
+  │ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasHandleRequestMicroseconds      │   438 │ レプリカからのマーク要求処理に要した時間                                               │
+  │ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasHandleAnnouncementMicroseconds │   558 │ レプリカアナウンス処理に要した時間                                                         │
+  │ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasReadUnassignedMarks            │   240 │ 全レプリカにおいてスケジュールされた未割り当てマークの合計数                                  │
+  │ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasReadAssignedForStealingMarks   │     4 │ 全レプリカにおいてコンシステントハッシュによるスティーリングに割り当てられたスケジュール済みマークの合計数 │
+  │ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasStealingByHashMicroseconds     │     5 │ ハッシュによるスティーリング対象セグメントの収集に要した時間                                            │
+  │ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasProcessingPartsMicroseconds    │     5 │ データパート処理に要した時間                                                                     │
+  │ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasStealingLeftoversMicroseconds  │     3 │ 孤立セグメントの収集に要した時間                                                              │
+  │ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasUsedCount                      │     2 │ タスクベース並列レプリカによるクエリ実行に使用されたレプリカ数                         │
+  │ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasAvailableCount                 │     6 │ タスクベース並列レプリカによるクエリ実行に利用可能なレプリカ数                    │
+  └──────────────────────────────────┴────────────────────────────────────────────────┴───────┴──────────────────────────────────────────────────────────────────────────────────────────────────────┘
+  ┌─hostname()───────────────────────┬─event──────────────────────────────────────────┬─value─┬─description──────────────────────────────────────────────────────────────────────────────────────────┐
+  │ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasHandleRequestMicroseconds      │   698 │ レプリカからのマーク要求処理に要した時間                                               │
+  │ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasHandleAnnouncementMicroseconds │   644 │ レプリカアナウンス処理に要した時間                                                         │
+  │ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasReadUnassignedMarks            │   190 │ 全レプリカにおいてスケジュールされた未割り当てマークの合計数                                  │
+  │ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasReadAssignedForStealingMarks   │    54 │ 全レプリカにおいてコンシステントハッシュによるスティーリングに割り当てられたスケジュール済みマークの合計数 │
+  │ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasStealingByHashMicroseconds     │     8 │ ハッシュによるスティーリング対象セグメントの収集に要した時間                                            │
+  │ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasProcessingPartsMicroseconds    │     4 │ データパート処理に要した時間                                                                     │
+  │ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasStealingLeftoversMicroseconds  │     2 │ 孤立セグメントの収集に要した時間                                                              │
+  │ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasUsedCount                      │     2 │ タスクベース並列レプリカによるクエリ実行に使用されたレプリカ数                         │
+  │ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasAvailableCount                 │     6 │ タスクベース並列レプリカによるクエリ実行に利用可能なレプリカ数                    │
+  └──────────────────────────────────┴────────────────────────────────────────────────┴───────┴──────────────────────────────────────────────────────────────────────────────────────────────────────┘
+  ┌─hostname()───────────────────────┬─event──────────────────────────────────────────┬─value─┬─description──────────────────────────────────────────────────────────────────────────────────────────┐
+  │ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasHandleRequestMicroseconds      │   620 │ レプリカからのマーク要求処理に要した時間                                               │
+  │ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasHandleAnnouncementMicroseconds │   656 │ レプリカアナウンス処理に要した時間                                                         │
+  │ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasReadUnassignedMarks            │     1 │ 全レプリカにおいてスケジュールされた未割り当てマークの合計数                                  │
+  │ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasReadAssignedForStealingMarks   │     1 │ 全レプリカにおいてコンシステントハッシュによるスティーリングに割り当てられたスケジュール済みマークの合計数 │
+  │ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasStealingByHashMicroseconds     │     4 │ ハッシュによるスティーリング対象セグメントの収集に要した時間                                            │
+  │ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasProcessingPartsMicroseconds    │     3 │ データパート処理に要した時間                                                                     │
+  │ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasStealingLeftoversMicroseconds  │     1 │ 孤立セグメントの収集に要した時間                                                              │
+  │ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasUsedCount                      │     2 │ タスクベース並列レプリカによるクエリ実行に使用されたレプリカ数                         │
+  │ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasAvailableCount                 │    12 │ タスクベース並列レプリカによるクエリ実行に利用可能なレプリカ数                    │
+  └──────────────────────────────────┴────────────────────────────────────────────────┴───────┴──────────────────────────────────────────────────────────────────────────────────────────────────────┘
+  ┌─hostname()───────────────────────┬─event──────────────────────────────────────────┬─value─┬─description──────────────────────────────────────────────────────────────────────────────────────────┐
+  │ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasHandleRequestMicroseconds      │   696 │ レプリカからのマーク要求処理に要した時間                                               │
+  │ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasHandleAnnouncementMicroseconds │   717 │ レプリカアナウンス処理に要した時間                                                         │
+  │ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasReadUnassignedMarks            │     2 │ 全レプリカにおいてスケジュールされた未割り当てマークの合計数                                  │
+  │ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasReadAssignedForStealingMarks   │     2 │ 全レプリカにおいてコンシステントハッシュによるスティーリングに割り当てられたスケジュール済みマークの合計数 │
+  │ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasStealingByHashMicroseconds     │    10 │ ハッシュによるスティーリング対象セグメントの収集に要した時間                                            │
+  │ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasProcessingPartsMicroseconds    │     6 │ データパート処理に要した時間                                                                     │
+  │ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasStealingLeftoversMicroseconds  │     2 │ 孤立セグメントの収集に要した時間                                                              │
+  │ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasUsedCount                      │     2 │ タスクベース並列レプリカによるクエリ実行に使用されたレプリカ数                         │
+  │ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasAvailableCount                 │    12 │ タスクベース並列レプリカによるクエリ実行に利用可能なレプリカ数                    │
+  └──────────────────────────────────┴────────────────────────────────────────────────┴───────┴──────────────────────────────────────────────────────────────────────────────────────────────────────┘
+  ```
 </details>
 
-[`system.text_log`](/docs/operations/system-tables/text_log)テーブルには、並列レプリカを使用したクエリの実行に関する情報も含まれています：
+[`system.text_log`](/docs/operations/system-tables/text_log) テーブルには、
+並列レプリカを使用して実行されたクエリに関する情報も含まれています。
 
 ```sql title="Query"
 SELECT message
@@ -322,70 +390,71 @@ ORDER BY event_time_microseconds ASC
 ```
 
 <details>
-<summary>Response</summary>
-```response title="Response"
-┌─message────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ (from 54.218.178.249:59198) SELECT * FROM session_events WHERE type='type2' LIMIT 10 SETTINGS allow_experimental_parallel_reading_from_replicas=2; (stage: Complete)                                                                                       │
-│ Query SELECT __table1.clientId AS clientId, __table1.sessionId AS sessionId, __table1.pageId AS pageId, __table1.timestamp AS timestamp, __table1.type AS type FROM default.session_events AS __table1 WHERE __table1.type = 'type2' LIMIT _CAST(10, 'UInt64') SETTINGS allow_experimental_parallel_reading_from_replicas = 2 to stage Complete │
-│ Access granted: SELECT(clientId, sessionId, pageId, timestamp, type) ON default.session_events                                                                                                                                                             │
-│ Query SELECT __table1.clientId AS clientId, __table1.sessionId AS sessionId, __table1.pageId AS pageId, __table1.timestamp AS timestamp, __table1.type AS type FROM default.session_events AS __table1 WHERE __table1.type = 'type2' LIMIT _CAST(10, 'UInt64') to stage WithMergeableState only analyze │
-│ Access granted: SELECT(clientId, sessionId, pageId, timestamp, type) ON default.session_events                                                                                                                                                             │
-│ Query SELECT __table1.clientId AS clientId, __table1.sessionId AS sessionId, __table1.pageId AS pageId, __table1.timestamp AS timestamp, __table1.type AS type FROM default.session_events AS __table1 WHERE __table1.type = 'type2' LIMIT _CAST(10, 'UInt64') from stage FetchColumns to stage WithMergeableState only analyze │
-│ Query SELECT __table1.clientId AS clientId, __table1.sessionId AS sessionId, __table1.pageId AS pageId, __table1.timestamp AS timestamp, __table1.type AS type FROM default.session_events AS __table1 WHERE __table1.type = 'type2' LIMIT _CAST(10, 'UInt64') SETTINGS allow_experimental_parallel_reading_from_replicas = 2 to stage WithMergeableState only analyze │
-│ Access granted: SELECT(clientId, sessionId, pageId, timestamp, type) ON default.session_events                                                                                                                                                             │
-│ Query SELECT __table1.clientId AS clientId, __table1.sessionId AS sessionId, __table1.pageId AS pageId, __table1.timestamp AS timestamp, __table1.type AS type FROM default.session_events AS __table1 WHERE __table1.type = 'type2' LIMIT _CAST(10, 'UInt64') SETTINGS allow_experimental_parallel_reading_from_replicas = 2 from stage FetchColumns to stage WithMergeableState only analyze │
-│ Query SELECT __table1.clientId AS clientId, __table1.sessionId AS sessionId, __table1.pageId AS pageId, __table1.timestamp AS timestamp, __table1.type AS type FROM default.session_events AS __table1 WHERE __table1.type = 'type2' LIMIT _CAST(10, 'UInt64') SETTINGS allow_experimental_parallel_reading_from_replicas = 2 from stage WithMergeableState to stage Complete │
-│ The number of replicas requested (100) is bigger than the real number available in the cluster (6). Will use the latter number to execute the query.                                                                                                       │
-│ Initial request from replica 4: 2 parts: [part all_0_2_1 with ranges [(0, 182)], part all_3_3_0 with ranges [(0, 62)]]----------
-Received from 4 replica
-                                                                                                   │
-│ Reading state is fully initialized: part all_0_2_1 with ranges [(0, 182)] in replicas [4]; part all_3_3_0 with ranges [(0, 62)] in replicas [4]                                                                                                            │
-│ Sent initial requests: 1 Replicas count: 6                                                                                                                                                                                                                 │
-│ Initial request from replica 2: 2 parts: [part all_0_2_1 with ranges [(0, 182)], part all_3_3_0 with ranges [(0, 62)]]----------
-Received from 2 replica
-                                                                                                   │
-│ Sent initial requests: 2 Replicas count: 6                                                                                                                                                                                                                 │
-│ Handling request from replica 4, minimal marks size is 240                                                                                                                                                                                                 │
-│ Going to respond to replica 4 with 1 parts: [part all_0_2_1 with ranges [(128, 182)]]. Finish: false; mine_marks=0, stolen_by_hash=54, stolen_rest=0                                                                                                       │
-│ Initial request from replica 1: 2 parts: [part all_0_2_1 with ranges [(0, 182)], part all_3_3_0 with ranges [(0, 62)]]----------
-Received from 1 replica
-                                                                                                   │
-│ Sent initial requests: 3 Replicas count: 6                                                                                                                                                                                                                 │
-│ Handling request from replica 4, minimal marks size is 240                                                                                                                                                                                                 │
-│ Going to respond to replica 4 with 2 parts: [part all_0_2_1 with ranges [(0, 128)], part all_3_3_0 with ranges [(0, 62)]]. Finish: false; mine_marks=0, stolen_by_hash=0, stolen_rest=190                                                                  │
-│ Initial request from replica 0: 2 parts: [part all_0_2_1 with ranges [(0, 182)], part all_3_3_0 with ranges [(0, 62)]]----------
-Received from 0 replica
-                                                                                                   │
-│ Sent initial requests: 4 Replicas count: 6                                                                                                                                                                                                                 │
-│ Initial request from replica 5: 2 parts: [part all_0_2_1 with ranges [(0, 182)], part all_3_3_0 with ranges [(0, 62)]]----------
-Received from 5 replica
-                                                                                                   │
-│ Sent initial requests: 5 Replicas count: 6                                                                                                                                                                                                                 │
-│ Handling request from replica 2, minimal marks size is 240                                                                                                                                                                                                 │
-│ Going to respond to replica 2 with 0 parts: []. Finish: true; mine_marks=0, stolen_by_hash=0, stolen_rest=0                                                                                                                                                │
-│ Initial request from replica 3: 2 parts: [part all_0_2_1 with ranges [(0, 182)], part all_3_3_0 with ranges [(0, 62)]]----------
-Received from 3 replica
-                                                                                                   │
-│ Sent initial requests: 6 Replicas count: 6                                                                                                                                                                                                                 │
-│ Total rows to read: 2000000                                                                                                                                                                                                                                │
-│ Handling request from replica 5, minimal marks size is 240                                                                                                                                                                                                 │
-│ Going to respond to replica 5 with 0 parts: []. Finish: true; mine_marks=0, stolen_by_hash=0, stolen_rest=0                                                                                                                                                │
-│ Handling request from replica 0, minimal marks size is 240                                                                                                                                                                                                 │
-│ Going to respond to replica 0 with 0 parts: []. Finish: true; mine_marks=0, stolen_by_hash=0, stolen_rest=0                                                                                                                                                │
-│ Handling request from replica 1, minimal marks size is 240                                                                                                                                                                                                 │
-│ Going to respond to replica 1 with 0 parts: []. Finish: true; mine_marks=0, stolen_by_hash=0, stolen_rest=0                                                                                                                                                │
-│ Handling request from replica 3, minimal marks size is 240                                                                                                                                                                                                 │
-│ Going to respond to replica 3 with 0 parts: []. Finish: true; mine_marks=0, stolen_by_hash=0, stolen_rest=0                                                                                                                                                │
-│ (c-crimson-vd-86-server-rdhnsx3-0.c-crimson-vd-86-server-headless.ns-crimson-vd-86.svc.cluster.local:9000) Cancelling query because enough data has been read                                                                                              │
-│ Read 81920 rows, 5.16 MiB in 0.013166 sec., 6222087.194288318 rows/sec., 391.63 MiB/sec.                                                                                                                                                                   │
-│ Coordination done: Statistics: replica 0 - {requests: 2 marks: 0 assigned_to_me: 0 stolen_by_hash: 0 stolen_unassigned: 0}; replica 1 - {requests: 2 marks: 0 assigned_to_me: 0 stolen_by_hash: 0 stolen_unassigned: 0}; replica 2 - {requests: 2 marks: 0 assigned_to_me: 0 stolen_by_hash: 0 stolen_unassigned: 0}; replica 3 - {requests: 2 marks: 0 assigned_to_me: 0 stolen_by_hash: 0 stolen_unassigned: 0}; replica 4 - {requests: 3 marks: 244 assigned_to_me: 0 stolen_by_hash: 54 stolen_unassigned: 190}; replica 5 - {requests: 2 marks: 0 assigned_to_me: 0 stolen_by_hash: 0 stolen_unassigned: 0} │
-│ Peak memory usage (for query): 1.81 MiB.                                                                                                                                                                                                                   │
-│ Processed in 0.024095586 sec.                                                                                                                                                                                                                              │
-└────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-```
+  <summary>レスポンス</summary>
+
+  ```response title="Response"
+  ┌─message────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ (from 54.218.178.249:59198) SELECT * FROM session_events WHERE type='type2' LIMIT 10 SETTINGS allow_experimental_parallel_reading_from_replicas=2; (stage: Complete)                                                                                       │
+  │ Query SELECT __table1.clientId AS clientId, __table1.sessionId AS sessionId, __table1.pageId AS pageId, __table1.timestamp AS timestamp, __table1.type AS type FROM default.session_events AS __table1 WHERE __table1.type = 'type2' LIMIT _CAST(10, 'UInt64') SETTINGS allow_experimental_parallel_reading_from_replicas = 2 to stage Complete │
+  │ アクセス許可: SELECT(clientId, sessionId, pageId, timestamp, type) ON default.session_events                                                                                                                                                             │
+  │ Query SELECT __table1.clientId AS clientId, __table1.sessionId AS sessionId, __table1.pageId AS pageId, __table1.timestamp AS timestamp, __table1.type AS type FROM default.session_events AS __table1 WHERE __table1.type = 'type2' LIMIT _CAST(10, 'UInt64') to stage WithMergeableState only analyze │
+  │ アクセス許可: SELECT(clientId, sessionId, pageId, timestamp, type) ON default.session_events                                                                                                                                                             │
+  │ Query SELECT __table1.clientId AS clientId, __table1.sessionId AS sessionId, __table1.pageId AS pageId, __table1.timestamp AS timestamp, __table1.type AS type FROM default.session_events AS __table1 WHERE __table1.type = 'type2' LIMIT _CAST(10, 'UInt64') from stage FetchColumns to stage WithMergeableState only analyze │
+  │ Query SELECT __table1.clientId AS clientId, __table1.sessionId AS sessionId, __table1.pageId AS pageId, __table1.timestamp AS timestamp, __table1.type AS type FROM default.session_events AS __table1 WHERE __table1.type = 'type2' LIMIT _CAST(10, 'UInt64') SETTINGS allow_experimental_parallel_reading_from_replicas = 2 to stage WithMergeableState only analyze │
+  │ アクセス許可: SELECT(clientId, sessionId, pageId, timestamp, type) ON default.session_events                                                                                                                                                             │
+  │ Query SELECT __table1.clientId AS clientId, __table1.sessionId AS sessionId, __table1.pageId AS pageId, __table1.timestamp AS timestamp, __table1.type AS type FROM default.session_events AS __table1 WHERE __table1.type = 'type2' LIMIT _CAST(10, 'UInt64') SETTINGS allow_experimental_parallel_reading_from_replicas = 2 from stage FetchColumns to stage WithMergeableState only analyze │
+  │ Query SELECT __table1.clientId AS clientId, __table1.sessionId AS sessionId, __table1.pageId AS pageId, __table1.timestamp AS timestamp, __table1.type AS type FROM default.session_events AS __table1 WHERE __table1.type = 'type2' LIMIT _CAST(10, 'UInt64') SETTINGS allow_experimental_parallel_reading_from_replicas = 2 from stage WithMergeableState to stage Complete │
+  │ 要求されたレプリカ数(100)がクラスタで利用可能な実際の数(6)を超えています。クエリ実行には後者の数を使用します。                                                                                                       │
+  │ レプリカ4からの初期リクエスト: 2パーツ: [part all_0_2_1 with ranges [(0, 182)], part all_3_3_0 with ranges [(0, 62)]]----------
+  レプリカ4から受信
+                                                                                                     │
+  │ 読み取り状態の初期化完了: part all_0_2_1 with ranges [(0, 182)] in replicas [4]; part all_3_3_0 with ranges [(0, 62)] in replicas [4]                                                                                                            │
+  │ 初期リクエスト送信数: 1 レプリカ数: 6                                                                                                                                                                                                                 │
+  │ レプリカ2からの初期リクエスト: 2パーツ: [part all_0_2_1 with ranges [(0, 182)], part all_3_3_0 with ranges [(0, 62)]]----------
+  レプリカ2から受信
+                                                                                                     │
+  │ 初期リクエスト送信数: 2 レプリカ数: 6                                                                                                                                                                                                                 │
+  │ レプリカ4からのリクエストを処理中、最小マークサイズは240                                                                                                                                                                                                 │
+  │ レプリカ4に1パーツで応答: [part all_0_2_1 with ranges [(128, 182)]]. 完了: false; mine_marks=0, stolen_by_hash=54, stolen_rest=0                                                                                                       │
+  │ レプリカ1からの初期リクエスト: 2パーツ: [part all_0_2_1 with ranges [(0, 182)], part all_3_3_0 with ranges [(0, 62)]]----------
+  レプリカ1から受信
+                                                                                                     │
+  │ 初期リクエスト送信数: 3 レプリカ数: 6                                                                                                                                                                                                                 │
+  │ レプリカ4からのリクエストを処理中、最小マークサイズは240                                                                                                                                                                                                 │
+  │ レプリカ4に2パーツで応答: [part all_0_2_1 with ranges [(0, 128)], part all_3_3_0 with ranges [(0, 62)]]. 完了: false; mine_marks=0, stolen_by_hash=0, stolen_rest=190                                                                  │
+  │ レプリカ0からの初期リクエスト: 2パーツ: [part all_0_2_1 with ranges [(0, 182)], part all_3_3_0 with ranges [(0, 62)]]----------
+  レプリカ0から受信
+                                                                                                     │
+  │ 初期リクエスト送信数: 4 レプリカ数: 6                                                                                                                                                                                                                 │
+  │ レプリカ5からの初期リクエスト: 2パーツ: [part all_0_2_1 with ranges [(0, 182)], part all_3_3_0 with ranges [(0, 62)]]----------
+  レプリカ5から受信
+                                                                                                     │
+  │ 初期リクエスト送信数: 5 レプリカ数: 6                                                                                                                                                                                                                 │
+  │ レプリカ2からのリクエストを処理中、最小マークサイズは240                                                                                                                                                                                                 │
+  │ レプリカ2に0パーツで応答: []. 完了: true; mine_marks=0, stolen_by_hash=0, stolen_rest=0                                                                                                                                                │
+  │ レプリカ3からの初期リクエスト: 2パーツ: [part all_0_2_1 with ranges [(0, 182)], part all_3_3_0 with ranges [(0, 62)]]----------
+  レプリカ3から受信
+                                                                                                     │
+  │ 初期リクエスト送信数: 6 レプリカ数: 6                                                                                                                                                                                                                 │
+  │ 読み取り対象の総行数: 2000000                                                                                                                                                                                                                                │
+  │ レプリカ5からのリクエストを処理中、最小マークサイズは240                                                                                                                                                                                                 │
+  │ レプリカ5に0パーツで応答: []. 完了: true; mine_marks=0, stolen_by_hash=0, stolen_rest=0                                                                                                                                                │
+  │ レプリカ0からのリクエストを処理中、最小マークサイズは240                                                                                                                                                                                                 │
+  │ レプリカ0に0パーツで応答: []. 完了: true; mine_marks=0, stolen_by_hash=0, stolen_rest=0                                                                                                                                                │
+  │ レプリカ1からのリクエストを処理中、最小マークサイズは240                                                                                                                                                                                                 │
+  │ レプリカ1に0パーツで応答: []. 完了: true; mine_marks=0, stolen_by_hash=0, stolen_rest=0                                                                                                                                                │
+  │ レプリカ3からのリクエストを処理中、最小マークサイズは240                                                                                                                                                                                                 │
+  │ レプリカ3に0パーツで応答: []. 完了: true; mine_marks=0, stolen_by_hash=0, stolen_rest=0                                                                                                                                                │
+  │ (c-crimson-vd-86-server-rdhnsx3-0.c-crimson-vd-86-server-headless.ns-crimson-vd-86.svc.cluster.local:9000) 十分なデータが読み取られたためクエリをキャンセル中                                                                                              │
+  │ 81920行、5.16 MiBを0.013166秒で読み取り、6222087.194288318行/秒、391.63 MiB/秒                                                                                                                                                                   │
+  │ 調整完了: 統計: replica 0 - {requests: 2 marks: 0 assigned_to_me: 0 stolen_by_hash: 0 stolen_unassigned: 0}; replica 1 - {requests: 2 marks: 0 assigned_to_me: 0 stolen_by_hash: 0 stolen_unassigned: 0}; replica 2 - {requests: 2 marks: 0 assigned_to_me: 0 stolen_by_hash: 0 stolen_unassigned: 0}; replica 3 - {requests: 2 marks: 0 assigned_to_me: 0 stolen_by_hash: 0 stolen_unassigned: 0}; replica 4 - {requests: 3 marks: 244 assigned_to_me: 0 stolen_by_hash: 54 stolen_unassigned: 190}; replica 5 - {requests: 2 marks: 0 assigned_to_me: 0 stolen_by_hash: 0 stolen_unassigned: 0} │
+  │ ピークメモリ使用量(クエリ): 1.81 MiB。                                                                                                                                                                                                                   │
+  │ 処理時間: 0.024095586秒。                                                                                                                                                                                                                              │
+  └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+  ```
 </details>
 
-最後に、`EXPLAIN PIPELINE`も使用できます。これにより、ClickHouseがどのようにクエリを実行し、クエリの実行にどのリソースが必要かを強調表示します。以下のクエリを例としてみましょう：
+最後に、`EXPLAIN PIPELINE` も利用できます。これは、ClickHouse がクエリをどのように実行し、その実行にどのようなリソースを使用するかを示します。例として、次のクエリを見てみましょう。
 
 ```sql
 SELECT count(), uniq(pageId) , min(timestamp), max(timestamp) 
@@ -394,7 +463,7 @@ WHERE type='type3'
 GROUP BY toYear(timestamp) LIMIT 10
 ```
 
-並列レプリカなしのクエリパイプラインを見てみましょう：
+並列レプリカなしの場合のクエリパイプラインを見てみましょう。
 
 ```sql title="EXPLAIN PIPELINE (without parallel replica)"
 EXPLAIN PIPELINE graph = 1, compact = 0 
@@ -407,9 +476,9 @@ SETTINGS allow_experimental_parallel_reading_from_replicas=0
 FORMAT TSV;
 ```
 
-<Image img={image_8} size="lg" alt="EXPLAIN without parallel_replica" />
+<Image img={image_8} size="lg" alt="parallel_replica を使用しない EXPLAIN" />
 
-そして今、並列レプリカありでは：
+次は parallel&#95;replica を使用した場合です:
 
 ```sql title="EXPLAIN PIPELINE (with parallel replica)"
 EXPLAIN PIPELINE graph = 1, compact = 0 
@@ -422,4 +491,4 @@ SETTINGS allow_experimental_parallel_reading_from_replicas=2
 FORMAT TSV;
 ```
 
-<Image img={image_9} size="lg" alt="EXPLAIN with parallel_replica"/>
+<Image img={image_9} size="lg" alt="parallel_replica を使った EXPLAIN" />

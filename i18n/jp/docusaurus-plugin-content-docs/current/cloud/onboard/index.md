@@ -1,40 +1,40 @@
 ---
-'slug': '/cloud/get-started'
-'title': 'ClickHouse Cloud入門'
-'description': 'ClickHouse Cloudの機能の発見からデプロイメントと最適化まで、入門のための完全ガイド'
-'hide_title': true
-'doc_type': 'guide'
+slug: /cloud/get-started
+title: 'ClickHouse Cloud を使い始める'
+description: 'ClickHouse Cloud のはじめ方を、機能の理解からデプロイと最適化まで網羅的に解説するガイド'
+hide_title: true
+doc_type: 'guide'
+keywords: ['オンボーディング', 'はじめに', 'クラウド設定', 'クイックスタート', '概要']
 ---
 
+# ClickHouse Cloud を始める {#get-started-with-clickhouse-cloud}
 
-# ClickHouse Cloudの始め方
-
-ClickHouse Cloudを初めて利用する方で、どこから始めればよいのか分からないですか？このドキュメントのセクションでは、迅速に始めるために必要なすべての手順を案内します。この始め方セクションは、ClickHouse Cloudを探索しながら、プロセスの各ステップを案内するために3つのサブセクションに整理されています。
+ClickHouse Cloud を初めて使用する方で、どこから始めればよいかわからない場合、このドキュメントセクションでは、迅速に稼働させるために必要なすべての手順を説明します。ClickHouse Cloud を探索する過程で各ステップをガイドできるよう、この入門セクションを3つのサブセクションに分けて構成しています。
 
 <VerticalStepper headerLevel="h2">
 
-## ClickHouse Cloudの発見 {#discover-clickhouse-cloud}
+## ClickHouse Cloud を知る {#discover-clickhouse-cloud}
 
-- [ClickHouse Cloudが何であるか](/cloud/overview)を学び、オープンソース版との違いを理解する
-- ClickHouse Cloudの主なユースケースを[発見](/cloud/get-started/cloud/use-cases/overview)する
+- [ClickHouse Cloud が何であり、オープンソース版とどのように異なるかを学ぶ](/cloud/overview)
+- [ClickHouse Cloud の主なユースケースを把握する](/cloud/get-started/cloud/use-cases/overview)
 
-## ClickHouse Cloudのセットアップ {#get-set-up-with-clickhouse-cloud}
+## ClickHouse Cloud をセットアップする {#get-set-up-with-clickhouse-cloud}
 
-ClickHouse Cloudが何であるかを理解した今、データをClickHouse Cloudに取り込むプロセスを案内し、利用可能な主な機能を示し、知っておくべき一般的なベストプラクティスをご紹介します。
+ClickHouse Cloud が何かを理解したところで、ここからはデータを ClickHouse Cloud に取り込むまでの手順を順を追って説明し、利用可能な主な機能を紹介するとともに、知っておきたい一般的なベストプラクティスもいくつかご案内します。
 
-トピックには以下が含まれます： 
+以下のトピックを扱います:
 
-- 様々なプラットフォームからの[移行ガイド](/integrations/migration/overview)
+- 各種プラットフォームからの[移行ガイド](/integrations/migration/overview)
 
-## ClickHouse Cloudデプロイメントの調整 {#evaluate-clickhouse-cloud}
+## ClickHouse Cloudデプロイメントのチューニング {#evaluate-clickhouse-cloud}
 
-データがClickHouse Cloudに取り込まれたので、ClickHouse Cloudの体験を最適化し、プラットフォームが提供するものを探索するための、より高度なトピックを案内します。
+データがClickHouse Cloudに格納されましたので、ClickHouse Cloudを最大限に活用し、プラットフォームが提供する機能を探索するための、より高度なトピックについてご案内します。
 
-トピックには以下が含まれます：
+トピックには以下が含まれます:
 
-- [クエリのパフォーマンスと最適化](/cloud/get-started/cloud/resource-tour#query-optimization)
-- [監視](/cloud/get-started/cloud/resource-tour#monitoring)
+- [クエリパフォーマンスと最適化](/cloud/get-started/cloud/resource-tour#query-optimization)
+- [モニタリング](/cloud/get-started/cloud/resource-tour#monitoring)
 - [セキュリティに関する考慮事項](/cloud/get-started/cloud/resource-tour#security)
-- [トラoubleshootingのヒント](/troubleshooting)
+- [トラブルシューティングのヒント](/troubleshooting)
 
 </VerticalStepper>

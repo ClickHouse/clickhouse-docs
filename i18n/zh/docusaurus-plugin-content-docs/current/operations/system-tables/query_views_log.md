@@ -1,63 +1,60 @@
 ---
-'description': '系统表包含有关执行查询时运行的依赖视图的信息，例如视图类型或执行时间。'
-'keywords':
-- 'system table'
-- 'query_views_log'
-'slug': '/operations/system-tables/query_views_log'
-'title': 'system.query_views_log'
-'doc_type': 'reference'
+description: '在运行查询时记录已执行依赖视图信息的系统表，例如视图类型或执行时间。'
+keywords: ['系统表', 'query_views_log']
+slug: /operations/system-tables/query_views_log
+title: 'system.query_views_log'
+doc_type: 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
+# system.query&#95;views&#95;log {#systemquery&#95;views&#95;log}
 
-# system.query_views_log
+<SystemTableCloud />
 
-<SystemTableCloud/>
+包含在运行查询时执行的依赖视图的信息，例如视图类型或执行时间。
 
-包含有关运行查询时执行的依赖视图的信息，例如视图类型或执行时间。
+要开始记录日志：
 
-要开始记录：
+1. 在 [query&#95;views&#95;log](../../operations/server-configuration-parameters/settings.md#query_views_log) 部分配置参数。
+2. 将 [log&#95;query&#95;views](/operations/settings/settings#log_query_views) 设置为 1。
 
-1. 在 [query_views_log](../../operations/server-configuration-parameters/settings.md#query_views_log) 部分配置参数。
-2. 将 [log_query_views](/operations/settings/settings#log_query_views) 设置为 1。
+数据刷新的周期由服务器设置部分 [query&#95;views&#95;log](../../operations/server-configuration-parameters/settings.md#query_views_log) 中的 `flush_interval_milliseconds` 参数指定。要强制刷新，请使用 [SYSTEM FLUSH LOGS](/sql-reference/statements/system#flush-logs) 查询。
 
-数据的刷新周期在 [query_views_log](../../operations/server-configuration-parameters/settings.md#query_views_log) 服务器设置部分的 `flush_interval_milliseconds` 参数中设置。要强制刷新，请使用 [SYSTEM FLUSH LOGS](/sql-reference/statements/system#flush-logs) 查询。
+ClickHouse 不会自动从该表中删除数据。更多详情参见[简介](/operations/system-tables/overview#system-tables-introduction)。
 
-ClickHouse 不会自动从表中删除数据。有关更多详细信息，请参见 [Introduction](/operations/system-tables/overview#system-tables-introduction)。
-
-您可以使用 [log_queries_probability](/operations/settings/settings#log_queries_probability) 设置来减少在 `query_views_log` 表中注册的查询数量。
+可以使用 [log&#95;queries&#95;probability](/operations/settings/settings#log_queries_probability)) 设置来减少在 `query_views_log` 表中记录的查询数量。
 
 列：
 
-- `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 执行查询的服务器的主机名。
-- `event_date` ([Date](../../sql-reference/data-types/date.md)) — 最后一个视图事件发生的日期。
-- `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 视图完成执行的日期和时间。
-- `event_time_microseconds` ([DateTime](../../sql-reference/data-types/datetime.md)) — 视图完成执行的日期和时间，精确到微秒。
-- `view_duration_ms` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 视图执行的持续时间（其阶段的总和），单位为毫秒。
-- `initial_query_id` ([String](../../sql-reference/data-types/string.md)) — 初始查询的 ID（用于分布式查询执行）。
-- `view_name` ([String](../../sql-reference/data-types/string.md)) — 视图的名称。
-- `view_uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — 视图的 UUID。
-- `view_type` ([Enum8](../../sql-reference/data-types/enum.md)) — 视图的类型。值：
-  - `'Default' = 1` — [默认视图](/sql-reference/statements/create/view#normal-view)。不应出现在此日志中。
-  - `'Materialized' = 2` — [物化视图](/sql-reference/statements/create/view#materialized-view)。
-  - `'Live' = 3` — [实时视图](../../sql-reference/statements/create/view.md#live-view)。
-- `view_query` ([String](../../sql-reference/data-types/string.md)) — 视图执行的查询。
-- `view_target` ([String](../../sql-reference/data-types/string.md)) — 视图目标表的名称。
-- `read_rows` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 读取的行数。
-- `read_bytes` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 读取的字节数。
-- `written_rows` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 写入的行数。
-- `written_bytes` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 写入的字节数。
-- `peak_memory_usage` ([Int64](../../sql-reference/data-types/int-uint.md)) — 在该视图上下文中，分配和释放的内存之间的最大差异。
-- `ProfileEvents` ([Map(String, UInt64)](../../sql-reference/data-types/array.md)) — 测量不同指标的 ProfileEvents。其描述可以在 [system.events](/operations/system-tables/events) 表中找到。
-- `status` ([Enum8](../../sql-reference/data-types/enum.md)) — 视图的状态。值：
-  - `'QueryStart' = 1` — 成功开始视图执行。不应出现。
-  - `'QueryFinish' = 2` — 成功结束视图执行。
-  - `'ExceptionBeforeStart' = 3` — 视图执行开始前的异常。
-  - `'ExceptionWhileProcessing' = 4` — 视图执行期间的异常。
-- `exception_code` ([Int32](../../sql-reference/data-types/int-uint.md)) — 异常的代码。
-- `exception` ([String](../../sql-reference/data-types/string.md)) — 异常消息。
-- `stack_trace` ([String](../../sql-reference/data-types/string.md)) — [堆栈跟踪](https://en.wikipedia.org/wiki/Stack_trace)。如果查询成功完成，则为一个空字符串。
+* `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 执行查询的服务器主机名。
+* `event_date` ([Date](../../sql-reference/data-types/date.md)) — 视图最后一次事件发生的日期。
+* `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 视图完成执行的日期和时间。
+* `event_time_microseconds` ([DateTime](../../sql-reference/data-types/datetime.md)) — 视图完成执行的日期和时间（微秒精度）。
+* `view_duration_ms` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 视图执行的持续时间（各阶段之和），单位为毫秒。
+* `initial_query_id` ([String](../../sql-reference/data-types/string.md)) — 初始查询的 ID（用于分布式查询执行）。
+* `view_name` ([String](../../sql-reference/data-types/string.md)) — 视图名称。
+* `view_uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — 视图的 UUID。
+* `view_type` ([Enum8](../../sql-reference/data-types/enum.md)) — 视图类型。取值：
+  * `'Default' = 1` — [默认视图](/sql-reference/statements/create/view#normal-view)。不应出现在该日志中。
+  * `'Materialized' = 2` — [物化视图](/sql-reference/statements/create/view#materialized-view)。
+  * `'Live' = 3` — [Live 视图](../../sql-reference/statements/create/view.md#live-view)。
+* `view_query` ([String](../../sql-reference/data-types/string.md)) — 由视图执行的查询。
+* `view_target` ([String](../../sql-reference/data-types/string.md)) — 视图目标表的名称。
+* `read_rows` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 读取的行数。
+* `read_bytes` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 读取的字节数。
+* `written_rows` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 写入的行数。
+* `written_bytes` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 写入的字节数。
+* `peak_memory_usage` ([Int64](../../sql-reference/data-types/int-uint.md)) — 在该视图上下文中，已分配与已释放内存量之间的最大差值。
+* `ProfileEvents` ([Map(String, UInt64)](../../sql-reference/data-types/array.md)) — 用于度量不同指标的 ProfileEvents。其说明可在表 [system.events](/operations/system-tables/events) 中找到。
+* `status` ([Enum8](../../sql-reference/data-types/enum.md)) — 视图状态。取值：
+  * `'QueryStart' = 1` — 成功开始视图的执行。不应出现在该日志中。
+  * `'QueryFinish' = 2` — 视图执行成功结束。
+  * `'ExceptionBeforeStart' = 3` — 在视图开始执行前发生异常。
+  * `'ExceptionWhileProcessing' = 4` — 在视图执行过程中发生异常。
+* `exception_code` ([Int32](../../sql-reference/data-types/int-uint.md)) — 异常代码。
+* `exception` ([String](../../sql-reference/data-types/string.md)) — 异常消息。
+* `stack_trace` ([String](../../sql-reference/data-types/string.md)) — [堆栈跟踪](https://en.wikipedia.org/wiki/Stack_trace)。如果查询成功完成，则为空字符串。
 
 **示例**
 
@@ -70,7 +67,7 @@ SELECT * FROM system.query_views_log LIMIT 1 \G;
 结果：
 
 ```text
-Row 1:
+第 1 行:
 ──────
 hostname:                clickhouse.eu-central1.internal
 event_date:              2021-06-22
@@ -95,7 +92,8 @@ exception:
 stack_trace:
 ```
 
-**另见**
+**另请参见**
 
-- [system.query_log](/operations/system-tables/query_log) — 描述 `query_log` 系统表的内容，该表包含有关查询执行的常见信息。
-- [system.query_thread_log](/operations/system-tables/query_thread_log) — 此表包含有关每个查询执行线程的信息。
+{/*AUTOGENERATED_START*/ }
+
+{/*AUTOGENERATED_END*/ }

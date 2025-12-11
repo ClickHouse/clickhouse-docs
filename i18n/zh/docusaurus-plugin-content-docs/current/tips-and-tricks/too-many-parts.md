@@ -1,46 +1,46 @@
 ---
-'sidebar_position': 1
-'slug': '/tips-and-tricks/too-many-parts'
-'sidebar_label': '过多分区片段'
-'doc_type': 'guide'
-'keywords':
-- 'clickhouse too many parts'
-- 'too many parts error'
-- 'clickhouse insert batching'
-- 'part explosion problem'
-- 'clickhouse merge performance'
-- 'batch insert optimization'
-- 'clickhouse async inserts'
-- 'small insert problems'
-- 'clickhouse parts management'
-- 'insert performance optimization'
-- 'clickhouse batching strategy'
-- 'database insert patterns'
-'title': '课程 - 过多分区片段问题'
-'description': '过多分区片段的解决方案和预防措施'
+sidebar_position: 1
+slug: /tips-and-tricks/too-many-parts
+sidebar_label: 'Too Many Parts 问题'
+doc_type: 'guide'
+keywords: [
+  'clickhouse too many parts',
+  'too many parts 错误',
+  'clickhouse 批量写入',
+  'part 过多问题',
+  'clickhouse 合并性能',
+  '批量写入优化',
+  'clickhouse async inserts',
+  '小批量写入问题',
+  'clickhouse part 管理',
+  '写入性能优化',
+  'clickhouse 批量写入策略',
+  '数据库写入模式'
+]
+title: '经验总结 - Too Many Parts 问题'
+description: 'Too Many Parts 问题的解决方案与预防'
 ---
 
-
-# 过多分区片段问题 {#the-too-many-parts-problem}
-*本指南是从社区会议中获得的一系列发现的一部分。有关更多实际解决方案和见解，您可以[按特定问题浏览](./community-wisdom.md)。*
-*需要更多性能优化建议吗？查看[性能优化](./performance-optimization.md)社区见解指南。*
+# 部分过多问题 {#the-too-many-parts-problem}
+*本指南属于一系列基于社区线下交流与经验分享整理而成的内容。若想获取更多真实场景下的解决方案和见解，可以[按具体问题浏览](./community-wisdom.md)。*
+*需要更多性能优化方面的建议？请查看[性能优化](./performance-optimization.md)社区洞见指南。*
 
 ## 理解问题 {#understanding-the-problem}
 
-ClickHouse 会抛出“过多分区片段”错误，以防止严重的性能下降。小分区片段会导致多个问题：读取和合并更多文件时查询性能较差，内存使用增加因为每个分区片段都需要在内存中存储元数据，较小的数据块压缩效率降低，更多文件句柄和寻址操作加大了 I/O 开销，以及较慢的后台合并使合并调度器的工作量增加。
+ClickHouse 会抛出 “Too many parts” 错误，以避免出现严重的性能下降。过多的小 part 会引发多种问题：查询期间需要读取和合并更多文件，导致查询性能下降；内存使用增加，因为每个 part 都需要在内存中保存元数据；压缩效率降低，因为更小的数据块压缩效果更差；由于更多的文件句柄和寻道操作而带来更高的 I/O 开销；以及后台合并变慢，使合并调度器的工作量显著增加。
 
 **相关文档**
-- [MergeTree 引擎](/engines/table-engines/mergetree-family/mergetree)
-- [分区片段](/parts)
-- [分区片段系统表](/operations/system-tables/parts)
+- [MergeTree Engine](/engines/table-engines/mergetree-family/mergetree)
+- [Parts](/parts)
+- [Parts System Table](/operations/system-tables/parts)
 
 ## 及早识别问题 {#recognize-parts-problem}
 
-此查询通过分析所有活动表中的分区片段数量和大小来监控表碎片。它识别出可能需要合并优化的分区片段过多或过小的表。定期使用此查询，以在对查询性能产生影响之前捕捉到碎片问题。
+此查询通过分析所有活动表的分片数量和大小来监控表碎片情况。它会识别出分片数量过多或过小、可能需要合并优化的表。请定期使用此查询，在碎片问题影响查询性能之前将其发现。
 
 ```sql runnable editable
--- Challenge: Replace with your actual database and table names for production use
--- Experiment: Adjust the part count thresholds (1000, 500, 100) based on your system
+-- 挑战：在生产环境中替换为实际的数据库和表名
+-- 实验：根据您的系统调整数据分片数量阈值（1000、500、100）
 SELECT 
     database,
     table,
@@ -51,16 +51,16 @@ SELECT
     max(rows) as max_rows_per_part,
     round(sum(bytes_on_disk) / 1024 / 1024, 2) as total_size_mb,
     CASE 
-        WHEN count() > 1000 THEN 'CRITICAL - Too many parts (>1000)'
-        WHEN count() > 500 THEN 'WARNING - Many parts (>500)'
-        WHEN count() > 100 THEN 'CAUTION - Getting many parts (>100)'
-        ELSE 'OK - Reasonable part count'
+        WHEN count() > 1000 THEN 'CRITICAL - 数据分片过多 (>1000)'
+        WHEN count() > 500 THEN 'WARNING - 数据分片较多 (>500)'
+        WHEN count() > 100 THEN 'CAUTION - 数据分片数量增多 (>100)'
+        ELSE 'OK - 数据分片数量合理'
     END as parts_assessment,
     CASE 
-        WHEN avg(rows) < 1000 THEN 'POOR - Very small parts'
-        WHEN avg(rows) < 10000 THEN 'FAIR - Small parts'
-        WHEN avg(rows) < 100000 THEN 'GOOD - Medium parts'
-        ELSE 'EXCELLENT - Large parts'
+        WHEN avg(rows) < 1000 THEN 'POOR - 数据分片过小'
+        WHEN avg(rows) < 10000 THEN 'FAIR - 数据分片较小'
+        WHEN avg(rows) < 100000 THEN 'GOOD - 数据分片中等'
+        ELSE 'EXCELLENT - 数据分片较大'
     END as part_size_assessment
 FROM system.parts
 WHERE active = 1
@@ -70,7 +70,7 @@ ORDER BY total_parts DESC
 LIMIT 20;
 ```
 
-## 视频来源 {#video-sources}
+## 视频资源 {#video-sources}
 
-- [ClickHouse 中快速、并发和一致的异步插入](https://www.youtube.com/watch?v=AsMPEfN5QtM) - ClickHouse 团队成员解释异步插入和过多分区片段问题
-- [大规模生产 ClickHouse](https://www.youtube.com/watch?v=liTgGiTuhJE) - 观察平台的实际批处理策略
+- [Fast, Concurrent, and Consistent Asynchronous INSERTS in ClickHouse](https://www.youtube.com/watch?v=AsMPEfN5QtM) - 由 ClickHouse 团队成员讲解异步 INSERT 及 “too many parts” 问题
+- [Production ClickHouse at Scale](https://www.youtube.com/watch?v=liTgGiTuhJE) - 来自可观测性平台的真实大规模生产环境批处理策略

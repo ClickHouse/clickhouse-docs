@@ -1,27 +1,29 @@
 ---
-slug: '/engines/database-engines/sqlite'
-sidebar_label: SQLite
+description: 'Позволяет подключаться к базам данных SQLite и выполнять операторы `INSERT` и `SELECT`
+  для обмена данными между ClickHouse и SQLite.'
+sidebar_label: 'SQLite'
 sidebar_position: 55
-description: 'Позволяет подключаться к SQLite базам данных и выполнять `INSERT`'
-title: SQLite
-doc_type: reference
+slug: /engines/database-engines/sqlite
+title: 'SQLite'
+doc_type: 'reference'
 ---
-# SQLite
+
+# SQLite {#sqlite}
 
 Позволяет подключаться к базе данных [SQLite](https://www.sqlite.org/index.html) и выполнять запросы `INSERT` и `SELECT` для обмена данными между ClickHouse и SQLite.
 
 ## Создание базы данных {#creating-a-database}
 
 ```sql
-CREATE DATABASE sqlite_database
-ENGINE = SQLite('db_path')
+    CREATE DATABASE sqlite_database
+    ENGINE = SQLite('db_path')
 ```
 
-**Параметры движка**
+**Параметры двигателя**
 
-- `db_path` — Путь к файлу с базой данных SQLite.
+* `db_path` — Путь к файлу с базой данных SQLite.
 
-## Поддержка типов данных {#data_types-support}
+## Поддерживаемые типы данных {#data_types-support}
 
 |  SQLite   | ClickHouse                                              |
 |---------------|---------------------------------------------------------|
@@ -30,14 +32,14 @@ ENGINE = SQLite('db_path')
 | TEXT          | [String](../../sql-reference/data-types/string.md)      |
 | BLOB          | [String](../../sql-reference/data-types/string.md)      |
 
-## Специфика и рекомендации {#specifics-and-recommendations}
+## Особенности и рекомендации {#specifics-and-recommendations}
 
-SQLite хранит всю базу данных (определения, таблицы, индексы и сами данные) как единый кроссплатформенный файл на хост-машине. Во время записи SQLite блокирует весь файл базы данных, поэтому операции записи выполняются последовательно. Операции чтения могут выполняться параллельно.
-SQLite не требует управления службой (таких как скрипты запуска) или контроля доступа на основе `GRANT` и паролей. Контроль доступа осуществляется с помощью разрешений файловой системы, выданных самому файлу базы данных.
+SQLite хранит всю базу данных (определения, таблицы, индексы и сами данные) в одном кроссплатформенном файле на хосте. Во время записи SQLite блокирует весь файл базы данных, поэтому операции записи выполняются последовательно. Операции чтения могут выполняться параллельно.
+SQLite не требует отдельного управления службой (например, скриптов запуска) или управления доступом на основе `GRANT` и паролей. Контроль доступа осуществляется с помощью разрешений файловой системы, заданных непосредственно для файла базы данных.
 
 ## Пример использования {#usage-example}
 
-База данных в ClickHouse, подключенная к SQLite:
+База данных в ClickHouse, подключённая к SQLite:
 
 ```sql
 CREATE DATABASE sqlite_db ENGINE = SQLite('sqlite.db');
@@ -51,7 +53,7 @@ SHOW TABLES FROM sqlite_db;
 └─────────┘
 ```
 
-Показан список таблиц:
+Выводит таблицы:
 
 ```sql
 SELECT * FROM sqlite_db.table1;
@@ -64,7 +66,8 @@ SELECT * FROM sqlite_db.table1;
 │ line3 │    3 │
 └───────┴──────┘
 ```
-Вставка данных в таблицу SQLite из таблицы ClickHouse:
+
+Запись данных в таблицу SQLite из таблицы ClickHouse:
 
 ```sql
 CREATE TABLE clickhouse_table(`col1` String,`col2` Int16) ENGINE = MergeTree() ORDER BY col2;

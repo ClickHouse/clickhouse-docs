@@ -1,31 +1,30 @@
 ---
-'alias': []
-'description': 'Npy 形式に関する文書'
-'input_format': true
-'keywords':
-- 'Npy'
-'output_format': true
-'slug': '/interfaces/formats/Npy'
-'title': 'Npy'
-'doc_type': 'reference'
+alias: []
+description: 'Npy 形式に関するドキュメント'
+input_format: true
+keywords: ['Npy']
+output_format: true
+slug: /interfaces/formats/Npy
+title: 'Npy'
+doc_type: 'reference'
 ---
 
-| Input | Output | Alias |
+| 入力 | 出力 | エイリアス |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## 説明 {#description}
 
-`Npy` 形式は、`.npy` ファイルから NumPy 配列を ClickHouse にロードするために設計されています。 
-NumPy ファイル形式は、数値データの配列を効率的に保存するために使用されるバイナリ形式です。 
-インポート中、ClickHouse は最上位次元を単一カラムの行の配列として扱います。
+`Npy` 形式は、`.npy` ファイルから NumPy 配列を ClickHouse に読み込むために設計されています。
+NumPy のファイル形式は、数値データの配列を効率的に保存するために使用されるバイナリ形式です。
+インポート時、ClickHouse は最上位の次元を、単一列を持つ行の配列として扱います。
 
-以下の表は、サポートされている Npy データ型とそれに対応する ClickHouse の型を示しています。
+下表は、サポートされている Npy データ型と、それに対応する ClickHouse の型を示します。
 
 ## データ型の対応 {#data_types-matching}
 
-| Npy データ型 (`INSERT`) | ClickHouse データ型                                             | Npy データ型 (`SELECT`) |
-|--------------------------|----------------------------------------------------------------|-------------------------|
+| Npy データ型（`INSERT`） | ClickHouse データ型                                            | Npy データ型（`SELECT`） |
+|--------------------------|-----------------------------------------------------------------|-------------------------|
 | `i1`                     | [Int8](/sql-reference/data-types/int-uint.md)           | `i1`                    |
 | `i2`                     | [Int16](/sql-reference/data-types/int-uint.md)          | `i2`                    |
 | `i4`                     | [Int32](/sql-reference/data-types/int-uint.md)          | `i4`                    |
@@ -41,7 +40,7 @@ NumPy ファイル形式は、数値データの配列を効率的に保存す�
 
 ## 使用例 {#example-usage}
 
-### Python を使って .npy 形式で配列を保存する {#saving-an-array-in-npy-format-using-python}
+### Python を使って配列を .npy 形式で保存する {#saving-an-array-in-npy-format-using-python}
 
 ```Python
 import numpy as np
@@ -65,10 +64,10 @@ FROM file('example_array.npy', Npy)
 
 ### データの選択 {#selecting-data}
 
-ClickHouse のテーブルからデータを選択し、clickhouse-client を使用して Npy 形式のファイルに保存することができます。
+`clickhouse-client` で次のコマンドを実行すると、ClickHouse のテーブルからデータを抽出し、Npy 形式のファイルとして保存できます。
 
 ```bash
 $ clickhouse-client --query="SELECT {column} FROM {some_table} FORMAT Npy" > {filename.npy}
 ```
 
-## 形式設定 {#format-settings}
+## 書式設定 {#format-settings}

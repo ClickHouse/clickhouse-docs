@@ -1,14 +1,13 @@
 ---
-'description': 'ClickHouseのループテーブル関数は、クエリ結果を無限ループで返すために使用されます。'
-'slug': '/sql-reference/table-functions/loop'
-'title': 'ループ'
-'doc_type': 'reference'
+description: 'ClickHouse の loop テーブル関数は、クエリ結果を無限ループで繰り返し返すために使用されます。'
+slug: /sql-reference/table-functions/loop
+title: 'loop'
+doc_type: 'reference'
 ---
 
+# loop テーブル関数 {#loop-table-function}
 
-# loop Table Function
-
-## Syntax {#syntax}
+## 構文 {#syntax}
 
 ```sql
 SELECT ... FROM loop(database, table);
@@ -17,21 +16,21 @@ SELECT ... FROM loop(table);
 SELECT ... FROM loop(other_table_function(...));
 ```
 
-## Arguments {#arguments}
+## 引数 {#arguments}
 
-| 引数                          | 説明                                                                                                                |
-|-------------------------------|----------------------------------------------------------------------------------------------------------------------|
-| `database`                    | データベース名。                                                                                                   |
-| `table`                       | テーブル名。                                                                                                      |
-| `other_table_function(...)`   | 他のテーブル関数。例: `SELECT * FROM loop(numbers(10));` ここで `other_table_function(...)` は `numbers(10)` です。 |
+| 引数                        | 説明                                                                                                                 |
+|-----------------------------|----------------------------------------------------------------------------------------------------------------------|
+| `database`                  | データベース名。                                                                                                     |
+| `table`                     | テーブル名。                                                                                                         |
+| `other_table_function(...)` | 他のテーブル関数。この場合の例: `SELECT * FROM loop(numbers(10));` において、`other_table_function(...)` は `numbers(10)`。 |
 
-## Returned values {#returned_values}
+## 戻り値 {#returned_values}
 
-クエリ結果を返す無限ループ。
+クエリ結果を返し続ける無限ループ。
 
-## Examples {#examples}
+## 例 {#examples}
 
-ClickHouseからのデータ選択:
+ClickHouse からデータを取得する：
 
 ```sql
 SELECT * FROM loop(test_database, test_table);
@@ -39,7 +38,7 @@ SELECT * FROM loop(test_database.test_table);
 SELECT * FROM loop(test_table);
 ```
 
-または他のテーブル関数を使用:
+または、他のテーブル関数を使用する場合:
 
 ```sql
 SELECT * FROM loop(numbers(3)) LIMIT 7;
@@ -57,6 +56,7 @@ SELECT * FROM loop(numbers(3)) LIMIT 7;
 7. │      0 │
    └────────┘
 ```
+
 ```sql
 SELECT * FROM loop(mysql('localhost:3306', 'test', 'test', 'user', 'password'));
 ...

@@ -1,42 +1,41 @@
 ---
 slug: '/examples/aggregate-function-combinators/sumForEach'
-sidebar_label: sumArray
+title: 'sumForEach'
 description: 'Пример использования агрегатной функции sumForEach'
-title: sumForEach
-keywords: ['sum', 'array', 'combinator', 'examples', 'sumArray']
-doc_type: reference
+keywords: ['sum', 'ForEach', 'combinator', 'examples', 'sumForEach']
+sidebar_label: 'sumForEach'
+doc_type: 'reference'
 ---
+
 # sumForEach {#sumforeach}
 
 ## Описание {#description}
 
-Комбинатор [`ForEach`](/sql-reference/aggregate-functions/combinators#-foreach) 
-можно применить к агрегатной функции [`sum`](/sql-reference/aggregate-functions/reference/sum), чтобы превратить её из агрегатной 
-функции, которая работает с значениями строк, в агрегатную функцию, которая работает с 
-колонками массивов, применяя агрегат к каждому элементу массива по строкам.
+Комбинатор [`ForEach`](/sql-reference/aggregate-functions/combinators#-foreach)
+может быть применён к агрегатной функции [`sum`](/sql-reference/aggregate-functions/reference/sum), чтобы преобразовать её из агрегатной
+функции, работающей со значениями строк, в агрегатную функцию, работающую со
+столбцами-массивами и применяющую агрегирование к каждому элементу массива по всем строкам.
 
 ## Пример использования {#example-usage}
 
 В этом примере мы воспользуемся набором данных `hits`, доступным в нашем [SQL playground](https://sql.clickhouse.com/).
 
-Таблица `hits` содержит колонку `isMobile` типа UInt8, которая может быть 
-`0` для настольных ПК или `1` для мобильных устройств:
+Таблица `hits` содержит столбец `isMobile` типа UInt8, который может быть
+`0` для настольных устройств или `1` для мобильных:
 
 ```sql runnable
 SELECT EventTime, IsMobile FROM metrica.hits ORDER BY rand() LIMIT 10
 ```
 
-Мы используем агрегатор `sumForEach`, чтобы проанализировать, как 
-трафик с настольных ПК и мобильных устройств варьируется по часам дня. Нажмите кнопку воспроизведения 
-ниже, чтобы выполнить запрос интерактивно:
+Мы воспользуемся агрегатным комбинатором `sumForEach`, чтобы проанализировать, как по часам суток отличается трафик с десктопных и мобильных устройств. Нажмите кнопку воспроизведения ниже, чтобы интерактивно выполнить запрос:
 
 ```sql runnable
 SELECT
     toHour(EventTime) AS hour_of_day,
-    -- Use sumForEach to count desktop and mobile visits in one pass
+    -- Используем sumForEach для подсчёта посещений с десктопа и мобильных устройств за один проход
     sumForEach([
-        IsMobile = 0, -- Desktop visits (IsMobile = 0)
-        IsMobile = 1  -- Mobile visits (IsMobile = 1)
+        IsMobile = 0, -- Посещения с десктопа (IsMobile = 0)
+        IsMobile = 1  -- Посещения с мобильных устройств (IsMobile = 1)
     ]) AS device_counts
 FROM metrica.hits
 GROUP BY hour_of_day
@@ -45,4 +44,4 @@ ORDER BY hour_of_day;
 
 ## См. также {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [`Комбинатор ForEach`](/sql-reference/aggregate-functions/combinators#-foreach)
+- [комбинатор `ForEach`](/sql-reference/aggregate-functions/combinators#-foreach)

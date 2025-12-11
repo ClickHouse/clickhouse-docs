@@ -1,55 +1,56 @@
 ---
-'sidebar_label': 'アーキテクチャ'
-'slug': '/cloud/reference/architecture'
-'title': 'ClickHouse Cloud アーキテクチャ'
-'description': 'このページでは ClickHouse Cloud のアーキテクチャについて説明します。'
-'doc_type': 'reference'
+sidebar_label: 'アーキテクチャ'
+slug: /cloud/reference/architecture
+title: 'ClickHouse Cloud アーキテクチャ'
+description: 'このページでは ClickHouse Cloud のアーキテクチャを説明します'
+keywords: ['ClickHouse Cloud', 'クラウドアーキテクチャ', 'ストレージとコンピュートの分離']
+doc_type: 'reference'
 ---
 
 import Image from '@theme/IdealImage';
 import Architecture from '@site/static/images/cloud/reference/architecture.png';
 
-# ClickHouse Cloud アーキテクチャ
+# ClickHouse Cloud アーキテクチャ {#clickhouse-cloud-architecture}
 
-<Image img={Architecture} size='lg' alt='Cloud architecture'/>
+<Image img={Architecture} size='lg' alt='ClickHouse Cloud のアーキテクチャ'/>
 
-## オブジェクトストアにバックアップされたストレージ {#storage-backed-by-object-store}
-- 実質的に無限のストレージ
+## オブジェクトストレージをバックエンドにしたストレージ {#storage-backed-by-object-store}
+- 事実上無制限のストレージ容量
 - データを手動で共有する必要がない
-- 特にあまり頻繁にアクセスされないデータのストレージコストが大幅に削減
+- 特にアクセス頻度の低いデータの保存において、コストを大幅に削減できる
 
 ## コンピュート {#compute}
-- 自動スケーリングとアイドル状態: 事前にサイズを指定する必要はなく、ピーク使用のために過剰にプロビジョニングする必要がない
-- 自動アイドルと再開: 誰も使用していない間、未使用のコンピュートを実行し続ける必要がない
-- デフォルトで安全かつ高可用性
+- 自動スケーリングとアイドリング: 事前にリソース容量を見積もる必要がなく、ピーク時を見越した過剰なプロビジョニングも不要
+- 自動アイドリングと再開: 利用者がいない間に未使用のコンピュートリソースを動かしておく必要がない
+- 標準でセキュアかつ高可用
 
 ## 管理 {#administration}
-- セットアップ、監視、バックアップ、請求は自動で行われます。
-- コスト管理はデフォルトで有効になっており、Cloud コンソールを通じて調整可能です。
+- セットアップ、モニタリング、バックアップ、課金はすべてサービス側で実行されます。
+- コスト管理機能はデフォルトで有効になっており、Cloud コンソールから調整できます。
 
-## サービスの隔離 {#service-isolation}
+## サービス分離 {#service-isolation}
 
-### ネットワークの隔離 {#network-isolation}
+### ネットワーク分離 {#network-isolation}
 
-すべてのサービスはネットワーク層で隔離されています。
+すべてのサービスはネットワーク層で分離されています。
 
-### コンピュートの隔離 {#compute-isolation}
+### コンピュート分離 {#compute-isolation}
 
-すべてのサービスは、それぞれのKubernetesスペースの独立したポッドにデプロイされ、ネットワークレベルの隔離が実施されています。
+すべてのサービスは、それぞれの Kubernetes 名前空間内で個別のポッドとしてデプロイされており、ネットワークレベルで分離されています。
 
-### ストレージの隔離 {#storage-isolation}
+### ストレージ分離 {#storage-isolation}
 
-すべてのサービスは、共有バケット (AWS, GCP) またはストレージコンテナ (Azure) の別々のサブパスを使用します。
+すべてのサービスは、共有バケット（AWS、GCP）またはストレージコンテナ（Azure）内の、サービス専用サブパスを使用します。
 
-AWSの場合、ストレージへのアクセスはAWS IAMを通じて制御され、各IAMロールはサービスごとにユニークです。エンタープライズサービスについては、[CMEK](/cloud/security/cmek)を有効にすることで、静止データの高度な隔離を提供できます。CMEKは現在のところAWSサービスにのみ対応しています。
+AWS の場合、ストレージへのアクセスは AWS IAM によって制御されており、各 IAM ロールはサービスごとに固有です。Enterprise サービスでは、保存データの高度な分離を提供するために [CMEK](/cloud/security/cmek) を有効化できます。現時点では、CMEK は AWS サービスでのみサポートされています。
 
-GCPとAzureの場合、サービスはオブジェクトストレージの隔離を持っており（すべてのサービスには独自のバケットまたはストレージコンテナがあります）。
+GCP および Azure の場合、サービスはオブジェクトストレージレベルで分離されており（すべてのサービスが独自のバケットまたはストレージコンテナを持ちます）。
 
-## コンピュート間の分離 {#compute-compute-separation}
-[コンピュート間の分離](/cloud/reference/warehouses)により、ユーザーはそれぞれ独自のサービスURLを持つ複数のコンピュートノードグループを作成できます。これらのグループはすべて同じ共有オブジェクトストレージを使用します。これにより、同じデータを共有する書き込みからの読み込みなど、異なるユースケースのコンピュート隔離が可能になります。必要に応じてコンピュートグループを独立してスケールさせることで、リソースの利用効率も向上します。
+## コンピュート間分離 {#compute-compute-separation}
+[コンピュート間分離](/cloud/reference/warehouses) により、同じオブジェクトストレージを共有しつつ、それぞれ固有のサービス URL を持つ複数のコンピュートグループを作成できます。これにより、同一データを共有しながら、読み取りと書き込みなどの異なるユースケース間でコンピュートリソースを分離できます。また、コンピュートグループごとに必要に応じて独立してスケーリングできるため、リソースをより効率的に活用できます。
 
 ## 同時実行制限 {#concurrency-limits}
 
-ClickHouse Cloudサービスでの秒間クエリ数 (QPS) に制限はありません。ただし、各レプリカに対して1000の同時クエリ制限があります。QPSは最終的には平均クエリ実行時間とサービス内のレプリカ数によって決まります。
+ClickHouse Cloud サービスでは、1 秒あたりのクエリ数（QPS）に上限はありません。ただし、レプリカごとの同時実行クエリ数には 1000 件という上限があります。QPS は最終的には、平均クエリ実行時間とサービス内のレプリカ数によって決まります。
 
-ClickHouse Cloudの主要な利点は、セルフマネージドのClickHouseインスタンスや他のデータベース/データウェアハウスと比較して、[レプリカを追加することで同時実行性を簡単に増加させることができる (水平スケーリング)](/manage/scaling#manual-horizontal-scaling) ということです。
+自己管理型の ClickHouse インスタンスや他のデータベース／データウェアハウスと比較した場合、ClickHouse Cloud の大きな利点は、[レプリカを追加する（水平スケーリング）ことで](/manage/scaling#manual-horizontal-scaling) 同時実行数を簡単に増やせることです。

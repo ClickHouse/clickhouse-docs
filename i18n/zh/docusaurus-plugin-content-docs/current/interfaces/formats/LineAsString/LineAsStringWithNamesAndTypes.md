@@ -1,24 +1,24 @@
 ---
-'alias': []
-'description': 'LineAsStringWithNamesAndTypes 格式的文档'
-'input_format': false
-'keywords':
-- 'LineAsStringWithNamesAndTypes'
-'output_format': true
-'slug': '/interfaces/formats/LineAsStringWithNamesAndTypes'
-'title': 'LineAsStringWithNamesAndTypes'
-'doc_type': 'reference'
+alias: []
+description: 'LineAsStringWithNamesAndTypes 格式文档'
+input_format: false
+keywords: ['LineAsStringWithNamesAndTypes']
+output_format: true
+slug: /interfaces/formats/LineAsStringWithNamesAndTypes
+title: 'LineAsStringWithNamesAndTypes'
+doc_type: 'reference'
 ---
 
-| Input | Output | Alias |
+| 输入 | 输出 | 别名 |
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
 ## 描述 {#description}
 
-`LineAsStringWithNames` 格式类似于 [`LineAsString`](./LineAsString.md) 格式，但打印两个头行：一个是列名，另一个是类型。
+`LineAsStringWithNames` 格式类似于 [`LineAsString`](./LineAsString.md) 格式，
+但会打印两行表头：第一行是列名，第二行是类型。
 
-## 示例用法 {#example-usage}
+## 使用示例 {#example-usage}
 
 ```sql
 CREATE TABLE example (

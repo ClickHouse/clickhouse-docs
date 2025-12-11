@@ -1,15 +1,15 @@
 ---
-'description': 'Settings Profileのドキュメント'
-'sidebar_label': 'SETTINGS PROFILE'
-'sidebar_position': 48
-'slug': '/sql-reference/statements/alter/settings-profile'
-'title': 'ALTER SETTINGS PROFILE'
-'doc_type': 'reference'
+description: '設定プロファイルに関するドキュメント'
+sidebar_label: 'SETTINGS PROFILE'
+sidebar_position: 48
+slug: /sql-reference/statements/alter/settings-profile
+title: 'ALTER SETTINGS PROFILE'
+doc_type: 'reference'
 ---
 
-Changes settings profiles.
+設定プロファイルを変更します。
 
-Syntax:
+構文:
 
 ```sql
 ALTER SETTINGS PROFILE [IF EXISTS] name1 [RENAME TO new_name |, name2 [,...]] 

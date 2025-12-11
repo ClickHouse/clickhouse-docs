@@ -1,6 +1,9 @@
 {
-  "label": "Release notes",
+  "label": "リリースノート",
   "collapsible": true,
   "collapsed": true,
-  "link": { "type": "doc", "id": "cloud/reference/changelog/release_notes/index" }
+  "link": {
+    "type": "ドキュメント",
+    "id": "cloud/reference/changelog/release_notes/index"
+  }
 }

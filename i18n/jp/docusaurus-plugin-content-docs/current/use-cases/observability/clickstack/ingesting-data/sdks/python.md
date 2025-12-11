@@ -1,65 +1,66 @@
 ---
-'slug': '/use-cases/observability/clickstack/sdks/python'
-'pagination_prev': null
-'pagination_next': null
-'sidebar_position': 7
-'description': 'Python for ClickStack - The ClickHouse 可観測性スタック'
-'title': 'Python'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/sdks/python
+pagination_prev: null
+pagination_next: null
+sidebar_position: 7
+description: 'ClickStack 向け Python - ClickHouse Observability Stack'
+title: 'Python'
+doc_type: 'guide'
+keywords: ['clickstack', 'sdk', 'ロギング', '連携', 'アプリケーション監視']
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-ClickStackは、テレメトリーデータ（ログとトレース）を収集するためにOpenTelemetry標準を使用しています。トレースは自動計測により自動生成されるため、トレーシングから価値を引き出すために手動での計測は必要ありません。
+ClickStack は、テレメトリーデータ（ログとトレース）を収集するために OpenTelemetry の標準を使用します。トレースは自動インストルメンテーションによって自動生成されるため、トレースを活用するために手動でインストルメンテーションを行う必要はありません。
 
-このガイドは以下を統合しています：
+このガイドでは次を統合します：
 
-- **ログ**
-- **メトリック**
-- **トレース**
+* **ログ**
+* **メトリクス**
+* **トレース**
 
-## 始めに {#getting-started}
+## はじめに {#getting-started}
 
-### ClickStack OpenTelemetry計測パッケージのインストール {#install-clickstack-otel-instrumentation-package}
+### ClickStack OpenTelemetry インストルメンテーションパッケージのインストール {#install-clickstack-otel-instrumentation-package}
 
-次のコマンドを使用して[ClickStack OpenTelemetryパッケージ](https://pypi.org/project/hyperdx-opentelemetry/)をインストールします。
+次のコマンドで、[ClickStack OpenTelemetry パッケージ](https://pypi.org/project/hyperdx-opentelemetry/) をインストールします。
 
 ```shell
 pip install hyperdx-opentelemetry
 ```
 
-Pythonアプリケーションで使用されるパッケージのために、OpenTelemetry自動計測ライブラリをインストールします。アプリケーションパッケージをスキャンして利用可能なライブラリのリストを生成するために、OpenTelemetry Python SDKに付属の`opentelemetry-bootstrap`ツールを使用することをお勧めします。
+Python アプリケーションで使用しているパッケージ向けの OpenTelemetry 自動計装ライブラリをインストールします。アプリケーションのパッケージをスキャンして利用可能なライブラリのリストを生成するために、OpenTelemetry Python SDK に付属する `opentelemetry-bootstrap` ツールを使用することを推奨します。
 
 ```shell
 opentelemetry-bootstrap -a install
 ```
 
-### 環境変数の設定 {#configure-environment-variables}
+### 環境変数を設定する {#configure-environment-variables}
 
-その後、テレメトリをClickStackに送信するために、シェル内で以下の環境変数を設定する必要があります：
+その後、ClickStack にテレメトリを送信するために、シェル環境で以下の環境変数を設定する必要があります。
 
 ```shell
-export HYPERDX_API_KEY='<YOUR_INGESTION_API_KEY>' \
-OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
+export HYPERDX_API_KEY='<あなたの取り込みAPIキー>' \
+OTEL_SERVICE_NAME='<アプリまたはサービスの名前>' \
 OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 
 ```
 
-_`OTEL_SERVICE_NAME`環境変数は、HyperDXアプリでサービスを識別するために使用され、任意の名前を付けることができます。_
+*`OTEL_SERVICE_NAME` 環境変数は、HyperDX アプリ内でサービスを識別するために使用されます。任意の名前を指定できます。*
 
-### OpenTelemetry Pythonエージェントでアプリケーションを実行する {#run-the-application-with-otel-python-agent}
+### OpenTelemetry Python エージェントでアプリケーションを実行する {#run-the-application-with-otel-python-agent}
 
-これで、OpenTelemetry Pythonエージェント（`opentelemetry-instrument`）を使用してアプリケーションを実行できます。
+OpenTelemetry Python エージェント（`opentelemetry-instrument`）を使用してアプリケーションを実行できます。
 
 ```shell
 opentelemetry-instrument python app.py
 ```
 
-#### `Gunicorn`、`uWSGI`、または`uvicorn`を使用している場合 {#using-uvicorn-gunicorn-uwsgi}
+#### `Gunicorn`、`uWSGI` または `uvicorn` を使用している場合 {#using-uvicorn-gunicorn-uwsgi}
 
-この場合、OpenTelemetry Pythonエージェントが動作するためには追加の変更が必要です。
+このような場合は、OpenTelemetry Python エージェントを動作させるには追加の設定が必要です。
 
-フォーク前のウェブサーバーモードを使用してアプリケーションサーバーのOpenTelemetryを構成するには、ポストフォークフック内で`configure_opentelemetry`メソッドを呼び出すことを確認してください。
+プリフォーク型の Web サーバーモードを使用するアプリケーションサーバーで OpenTelemetry を構成するには、post-fork フック内で `configure_opentelemetry` メソッドを必ず呼び出してください。
 
 <Tabs groupId="python-alternative">
 <TabItem value="gunicorn" label="Gunicorn" default>
@@ -86,17 +87,17 @@ def init_tracing():
 
 <TabItem value="uvicorn" label="uvicorn" default>
 
-OpenTelemetryは、`--reload`フラグを使用して実行される`uvicorn`やマルチワーカー（`--workers`）では[現在動作しません](https://github.com/open-telemetry/opentelemetry-python-contrib/issues/385)。テスト中はこれらのフラグを無効にするか、Gunicornを使用することをお勧めします。
+OpenTelemetry は、`--reload` フラグを付けて実行された `uvicorn` や、マルチワーカー（`--workers`）構成では[現在は動作しません](https://github.com/open-telemetry/opentelemetry-python-contrib/issues/385)。テスト時はこれらのフラグを無効にするか、代わりに Gunicorn を使用することを推奨します。
 
 </TabItem>
 
 </Tabs>
 
-## 高度な構成 {#advanced-configuration}
+## 高度な設定 {#advanced-configuration}
 
 #### ネットワークキャプチャ {#network-capture}
 
-ネットワークキャプチャ機能を有効にすることで、開発者はHTTPリクエストヘッダーやボディペイロードを効果的にデバッグする能力を得ます。これは、`HYPERDX_ENABLE_ADVANCED_NETWORK_CAPTURE`フラグを1に設定するだけで実現できます。
+ネットワークキャプチャ機能を有効にすることで、開発者は HTTP リクエストヘッダーおよびリクエストボディのペイロードを効果的にデバッグできるようになります。これは、`HYPERDX_ENABLE_ADVANCED_NETWORK_CAPTURE` フラグを 1 に設定するだけで有効化できます。
 
 ```shell
 export HYPERDX_ENABLE_ADVANCED_NETWORK_CAPTURE=1
@@ -104,9 +105,11 @@ export HYPERDX_ENABLE_ADVANCED_NETWORK_CAPTURE=1
 
 ## トラブルシューティング {#troubleshooting}
 
-### ログレベルによるログ未表示 {#logs-not-appearing-due-to-log-level}
+### ログレベルが原因でログが表示されない場合 {#logs-not-appearing-due-to-log-level}
 
-デフォルトでは、OpenTelemetryのロギングハンドラーは`logging.NOTSET`レベルを使用し、これがWARNINGレベルになります。ロガーを作成するときにロギングレベルを指定できます：
+デフォルトでは、OpenTelemetry の logging handler は `logging.NOTSET` レベルを使用しており、
+これは結果的に WARNING レベルとして扱われます。logger を作成するときに、
+ログレベルを指定できます。
 
 ```python
 import logging
@@ -117,11 +120,11 @@ logger.setLevel(logging.DEBUG)
 
 ### コンソールへのエクスポート {#exporting-to-the-console}
 
-OpenTelemetry Python SDKは、エラーが発生すると通常コンソールに表示します。しかし、エラーに遭遇しないがデータがHyperDXに期待通りに表示されない場合は、デバッグモードを有効にするオプションがあります。デバッグモードが有効になると、すべてのテレメトリーがコンソールに印刷され、アプリケーションが期待されるデータで正しく計測されているかどうかを確認できます。
+OpenTelemetry Python SDK は、通常、エラーが発生するとコンソールにエラーを表示します。しかし、エラーは発生していないにもかかわらず、期待どおりにデータが HyperDX に表示されない場合は、デバッグモードを有効にすることができます。デバッグモードを有効にすると、すべてのテレメトリーデータがコンソールに出力されるため、アプリケーションが期待どおりのデータで正しく計装されているかを確認できます。
 
 ```shell
 export DEBUG=true
 ```
 
-Python OpenTelemetry計測についての詳しい情報は、こちらを参照してください：
+Python 向け OpenTelemetry インストルメンテーションの詳細については、こちらのドキュメントをご覧ください:
 [https://opentelemetry.io/docs/instrumentation/python/manual/](https://opentelemetry.io/docs/instrumentation/python/manual/)

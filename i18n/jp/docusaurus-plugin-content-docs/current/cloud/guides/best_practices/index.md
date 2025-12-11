@@ -1,34 +1,23 @@
 ---
-'slug': '/cloud/bestpractices'
-'keywords':
-- 'Cloud'
-- 'Best Practices'
-- 'Bulk Inserts'
-- 'Asynchronous Inserts'
-- 'Avoid Mutations'
-- 'Avoid Nullable Columns'
-- 'Avoid Optimize Final'
-- 'Low Cardinality Partitioning Key'
-- 'Multi Tenancy'
-- 'Usage Limits'
-'title': '概要'
-'hide_title': true
-'description': 'ClickHouse Cloud のベストプラクティスセクションのランディングページ'
-'doc_type': 'landing-page'
+slug: /cloud/bestpractices
+keywords: ['クラウド', 'ベストプラクティス', 'バルク挿入', '非同期挿入', 'Mutation の回避', 'Nullable カラムの回避', 'OPTIMIZE FINAL の回避', '低カーディナリティなパーティションキー', 'マルチテナンシー', '利用制限']
+title: '概要'
+hide_title: true
+description: 'ClickHouse Cloud に関するベストプラクティスセクションのランディングページ'
+doc_type: 'landing-page'
 ---
 
 import TableOfContents from '@site/i18n/jp/docusaurus-plugin-content-docs/current/best-practices/_snippets/_table_of_contents.md';
 
+# ClickHouse Cloud におけるベストプラクティス {#best-practices-in-clickhouse-cloud}
 
-# Best Practices in ClickHouse Cloud {#best-practices-in-clickhouse-cloud}
+このセクションでは、ClickHouse Cloud を最大限に活用するために従うべきベストプラクティスを紹介します。
 
-このセクションでは、ClickHouse Cloud を最大限に活用するために従うべきベストプラクティスを提供します。
+| ページ                                                   | 説明                                                                         |
+|----------------------------------------------------------|------------------------------------------------------------------------------|
+| [Usage Limits](/cloud/bestpractices/usage-limits)        | ClickHouse の利用上の各種制限について確認します。                            |
+| [Multi tenancy](/cloud/bestpractices/multi-tenancy)      | マルチテナンシーを実現するためのさまざまな戦略について学びます。             |
 
-| ページ                                                    | 説明                                                                       |
-|----------------------------------------------------------|----------------------------------------------------------------------------|
-| [Usage Limits](/cloud/bestpractices/usage-limits)      | ClickHouse の制限について調べます。                                        |
-| [Multi tenancy](/cloud/bestpractices/multi-tenancy)    | マルチテナンシーを実装するための異なる戦略について学びます。              |
-
-これらは、すべての ClickHouse のデプロイメントに適用される標準のベストプラクティスに加えられています。
+これらは、すべての ClickHouse デプロイメントに適用される標準的なベストプラクティスに加えて適用されるものです。
 
 <TableOfContents />

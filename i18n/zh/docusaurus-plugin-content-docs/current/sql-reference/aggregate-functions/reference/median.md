@@ -1,28 +1,27 @@
 ---
-'description': '`median*` 函数是对应的 `quantile*` 函数的别名。它们计算数值数据样本的中位数。'
-'sidebar_position': 167
-'slug': '/sql-reference/aggregate-functions/reference/median'
-'title': '中位数'
-'doc_type': 'reference'
+description: '`median*` 函数是对应 `quantile*` 函数的别名。它们用于计算数值型数据样本的中位数。'
+sidebar_position: 167
+slug: /sql-reference/aggregate-functions/reference/median
+title: 'median'
+doc_type: 'reference'
 ---
 
+# median {#median}
 
-# median
-
-`median*` 函数是相应的 `quantile*` 函数的别名。它们计算数值数据样本的中位数。
+`median*` 函数是对应 `quantile*` 函数的别名。它们用于计算数值型数据样本的中位数。
 
 函数：
 
-- `median` — [quantile](/sql-reference/aggregate-functions/reference/quantile) 的别名。
-- `medianDeterministic` — [quantileDeterministic](/sql-reference/aggregate-functions/reference/quantiledeterministic) 的别名。
-- `medianExact` — [quantileExact](/sql-reference/aggregate-functions/reference/quantileexact#quantileexact) 的别名。
-- `medianExactWeighted` — [quantileExactWeighted](/sql-reference/aggregate-functions/reference/quantileexactweighted) 的别名。
-- `medianTiming` — [quantileTiming](/sql-reference/aggregate-functions/reference/quantiletiming) 的别名。
-- `medianTimingWeighted` — [quantileTimingWeighted](/sql-reference/aggregate-functions/reference/quantiletimingweighted) 的别名。
-- `medianTDigest` — [quantileTDigest](/sql-reference/aggregate-functions/reference/quantiletdigest) 的别名。
-- `medianTDigestWeighted` — [quantileTDigestWeighted](/sql-reference/aggregate-functions/reference/quantiletdigestweighted) 的别名。
-- `medianBFloat16` — [quantileBFloat16](/sql-reference/aggregate-functions/reference/quantilebfloat16) 的别名。
-- `medianDD` — [quantileDD](/sql-reference/aggregate-functions/reference/quantileddsketch) 的别名。
+* `median` — [quantile](/sql-reference/aggregate-functions/reference/quantile) 的别名。
+* `medianDeterministic` — [quantileDeterministic](/sql-reference/aggregate-functions/reference/quantiledeterministic) 的别名。
+* `medianExact` — [quantileExact](/sql-reference/aggregate-functions/reference/quantileexact#quantileexact) 的别名。
+* `medianExactWeighted` — [quantileExactWeighted](/sql-reference/aggregate-functions/reference/quantileexactweighted) 的别名。
+* `medianTiming` — [quantileTiming](/sql-reference/aggregate-functions/reference/quantiletiming) 的别名。
+* `medianTimingWeighted` — [quantileTimingWeighted](/sql-reference/aggregate-functions/reference/quantiletimingweighted) 的别名。
+* `medianTDigest` — [quantileTDigest](/sql-reference/aggregate-functions/reference/quantiletdigest) 的别名。
+* `medianTDigestWeighted` — [quantileTDigestWeighted](/sql-reference/aggregate-functions/reference/quantiletdigestweighted) 的别名。
+* `medianBFloat16` — [quantileBFloat16](/sql-reference/aggregate-functions/reference/quantilebfloat16) 的别名。
+* `medianDD` — [quantileDD](/sql-reference/aggregate-functions/reference/quantileddsketch) 的别名。
 
 **示例**
 

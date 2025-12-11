@@ -1,9 +1,10 @@
 ---
-'sidebar_label': 'AWS PrivateLink for ClickPipes'
-'description': 'AWS PrivateLinkを使用して、ClickPipesとデータソース間に安全な接続を確立します。'
-'slug': '/integrations/clickpipes/aws-privatelink'
-'title': 'AWS PrivateLink for ClickPipes'
-'doc_type': 'guide'
+sidebar_label: 'ClickPipes 用 AWS PrivateLink'
+description: 'AWS PrivateLink を使用して、ClickPipes とデータソースとの間にセキュアな接続を確立します。'
+slug: /integrations/clickpipes/aws-privatelink
+title: 'ClickPipes 用 AWS PrivateLink'
+doc_type: 'guide'
+keywords: ['aws privatelink', 'ClickPipes セキュリティ', 'VPC エンドポイント', 'プライベート接続', 'VPC リソース']
 ---
 
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
@@ -17,58 +18,62 @@ import cp_rpe_settings0 from '@site/static/images/integrations/data-ingestion/cl
 import cp_rpe_settings1 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_rpe_settings1.png';
 import Image from '@theme/IdealImage';
 
+# ClickPipes 向け AWS PrivateLink {#aws-privatelink-for-clickpipes}
 
+[AWS PrivateLink](https://aws.amazon.com/privatelink/) を使用すると、VPC、AWS サービス、オンプレミス環境、および ClickHouse Cloud 間で、安全な接続を確立できます。このとき、トラフィックをパブリックインターネットに公開する必要はありません。
 
-# AWS PrivateLink for ClickPipes
+本ドキュメントでは、AWS PrivateLink の VPC エンドポイントを構成するための、ClickPipes のリバースプライベートエンドポイント機能について説明します。
 
-[こちら](https://aws.amazon.com/privatelink/)を使用して、VPC、AWSサービス、オンプレミスシステム、ClickHouse Cloud間の安全な接続性を確立できます。これにより、トラフィックを公衆インターネットにさらすことなく接続できます。
+## サポートされている ClickPipes データソース {#supported-sources}
 
-この文書は、AWS PrivateLink VPCエンドポイントを設定するためのClickPipesリバースプライベートエンドポイント機能について説明します。
-
-## Supported ClickPipes data sources {#supported-sources}
-
-ClickPipesリバースプライベートエンドポイント機能は、以下のデータソースタイプに制限されています：
+ClickPipes のリバースプライベートエンドポイント機能は、以下の
+データソースタイプでのみ利用できます:
 - Kafka
 - Postgres
 - MySQL
+- MongoDB
 
-## Supported AWS PrivateLink endpoint types {#aws-privatelink-endpoint-types}
+## サポートされているAWS PrivateLinkエンドポイントタイプ {#aws-privatelink-endpoint-types}
 
 ClickPipesリバースプライベートエンドポイントは、以下のいずれかのAWS PrivateLinkアプローチで構成できます：
 
-- [VPCリソース](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html)
-- [MSK ClickPipe用のMSKマルチVPC接続](https://docs.aws.amazon.com/msk/latest/developerguide/aws-access-mult-vpc.html)
-- [VPCエンドポイントサービス](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html)
+- [VPCリソース](#vpc-resource)
+- [MSK ClickPipe用のMSKマルチVPC接続](#msk-multi-vpc)
+- [VPCエンドポイントサービス](#vpc-endpoint-service)
 
-### VPC resource {#vpc-resource}
+### VPCリソース {#vpc-resource}
 
-あなたのVPCリソースは、[PrivateLink](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html)を使用してClickPipesでアクセスできます。このアプローチは、データソースの前にロードバランサーを設定する必要がありません。
-
-リソース構成は、特定のホストまたはRDSクラスタARNにターゲットを絞ることができます。
+:::info
 クロスリージョンはサポートされていません。
+:::
 
-これは、RDSクラスターからデータを取り込むPostgres CDCのための推奨選択肢です。
+VPCリソースは、[PrivateLink](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html)を使用してClickPipesからアクセスできます。このアプローチでは、データソースの前にロードバランサーを設定する必要はありません。
 
-PrivateLinkをVPCリソースでセットアップするには：
-1. リソースゲートウェイを作成します
-2. リソース構成を作成します
-3. リソース共有を作成します
+リソース構成は、特定のホストまたはRDSクラスターARNを対象として設定できます。
+
+RDSクラスターからデータを取り込むPostgreSQL CDC（変更データキャプチャ）には、この方法が推奨されます。
+
+VPCリソースでPrivateLinkを設定するには：
+
+1. リソースゲートウェイを作成する
+2. リソース構成を作成する
+3. リソース共有を作成する
 
 <VerticalStepper headerLevel="h4">
 
-#### Create a resource gateway {#create-resource-gateway}
+#### リソースゲートウェイを作成する {#create-resource-gateway}
 
 リソースゲートウェイは、VPC内の指定されたリソースへのトラフィックを受信するポイントです。
 
 :::note
-リソースゲートウェイに接続されたサブネットには、十分なIPアドレスが利用可能であることを推奨します。
-各サブネットには少なくとも `/26` サブネットマスクを持つことが推奨されます。
+リソースゲートウェイに接続されたサブネットには、十分なIPアドレスが利用可能であることが推奨されます。
+各サブネットには少なくとも`/26`サブネットマスクを使用することが推奨されます。
 
-各VPCエンドポイント（各リバースプライベートエンドポイント）には、AWSが各サブネットごとに連続した16のIPアドレスのブロックを要求します。（`/28` サブネットマスク）
+各VPCエンドポイント（各リバースプライベートエンドポイント）について、AWSはサブネットごとに連続した16個のIPアドレスブロック（`/28`サブネットマスク）を必要とします。
 この要件が満たされない場合、リバースプライベートエンドポイントは失敗状態に遷移します。
 :::
 
-リソースゲートウェイは、[AWSコンソール](https://docs.aws.amazon.com/vpc/latest/privatelink/create-resource-gateway.html)から作成することができます。または、以下のコマンドを使用して作成できます：
+リソースゲートウェイは、[AWSコンソール](https://docs.aws.amazon.com/vpc/latest/privatelink/create-resource-gateway.html)から、または以下のコマンドで作成できます：
 
 ```bash
 aws vpc-lattice create-resource-gateway \
@@ -78,20 +83,20 @@ aws vpc-lattice create-resource-gateway \
     --name <RESOURCE_GATEWAY_NAME>
 ```
 
-出力には、次のステップで必要となるリソースゲートウェイIDが含まれます。
+出力にはリソースゲートウェイIDが含まれます。これは次のステップで必要になります。
 
-次に進む前に、リソースゲートウェイが`Active`状態になるまで待つ必要があります。状態を確認するには、次のコマンドを実行します：
+続行する前に、リソースゲートウェイが`Active`状態になるまで待つ必要があります。以下のコマンドを実行して状態を確認できます：
 
 ```bash
 aws vpc-lattice get-resource-gateway \
     --resource-gateway-identifier <RESOURCE_GATEWAY_ID>
 ```
 
-#### Create a VPC Resource-Configuration {#create-resource-configuration}
+#### VPCリソース構成を作成する {#create-resource-configuration}
 
-リソース構成は、リソースゲートウェイに関連付けられ、リソースを利用可能にします。
+リソース構成はリソースゲートウェイに関連付けられ、リソースをアクセス可能にします。
 
-リソース構成は、[AWSコンソール](https://docs.aws.amazon.com/vpc/latest/privatelink/create-resource-configuration.html)から作成することができます。または、以下のコマンドを使って作成することができます：
+リソース構成は、[AWSコンソール](https://docs.aws.amazon.com/vpc/latest/privatelink/create-resource-configuration.html)から、または以下のコマンドで作成できます：
 
 ```bash
 aws vpc-lattice create-resource-configuration \
@@ -101,9 +106,9 @@ aws vpc-lattice create-resource-configuration \
     --name <RESOURCE_CONFIGURATION_NAME>
 ```
 
-最もシンプルな[リソース構成タイプ](https://docs.aws.amazon.com/vpc-lattice/latest/ug/resource-configuration.html#resource-configuration-types)は、シングルリソース構成です。ARNを直接構成するか、公開されて解決可能なIPアドレスまたはドメイン名を共有することができます。
+最もシンプルな[リソース構成タイプ](https://docs.aws.amazon.com/vpc-lattice/latest/ug/resource-configuration.html#resource-configuration-types)は、単一のリソース構成です。ARNを直接指定して構成するか、公開解決可能なIPアドレスまたはドメイン名を共有できます。
 
-たとえば、RDSクラスタのARNを使って構成するには：
+例えば、RDSクラスターのARNで構成するには：
 
 ```bash
 aws vpc-lattice create-resource-configuration \
@@ -114,19 +119,19 @@ aws vpc-lattice create-resource-configuration \
 ```
 
 :::note
-パブリックアクセス可能なクラスターのためのリソース構成を作成することはできません。
-クラスターが公開可能である場合は、リソース構成を作成する前に、クラスターをプライベートに変更する必要があります 
-または、[IP allow list](/integrations/clickpipes#list-of-static-ips)を代わりに使用してください。 
+公開アクセス可能なクラスターに対してリソース構成を作成することはできません。
+クラスターが公開アクセス可能な場合は、リソース構成を作成する前にクラスターを変更してプライベートにするか、
+代わりに[IP許可リスト](/integrations/clickpipes#list-of-static-ips)を使用する必要があります。
 詳細については、[AWSドキュメント](https://docs.aws.amazon.com/vpc/latest/privatelink/resource-configuration.html#resource-definition)を参照してください。
 :::
 
-出力には、次のステップで必要なリソース構成ARNが含まれます。また、VPCリソースとのClickPipe接続を設定するために必要なリソース構成IDも含まれます。
+出力にはリソース構成ARNが含まれます。これは次のステップで必要になります。また、リソース構成IDも含まれます。これはVPCリソースでClickPipe接続を設定する際に必要になります。
 
-#### Create a Resource-Share {#create-resource-share}
+#### リソース共有を作成する {#create-resource-share}
 
-リソースを共有するには、リソース共有が必要です。これはリソースアクセスマネージャー（RAM）を通じて容易になります。
+リソースを共有するには、リソース共有が必要です。これはResource Access Manager（RAM）を通じて実現されます。
 
-リソース構成をリソース共有に追加するには、[AWSコンソール](https://docs.aws.amazon.com/ram/latest/userguide/working-with-sharing-create.html)を使用するか、以下のコマンドをClickPipesアカウントID `072088201116` (arn:aws:iam::072088201116:root)を使用して実行します：
+Resource-ConfigurationをResource-Shareに配置するには、[AWSコンソール](https://docs.aws.amazon.com/ram/latest/userguide/working-with-sharing-create.html)を使用するか、ClickPipesアカウントID `072088201116`（arn:aws:iam::072088201116:root）を指定して以下のコマンドを実行します。
 
 ```bash
 aws ram create-resource-share \
@@ -135,151 +140,152 @@ aws ram create-resource-share \
     --name <RESOURCE_SHARE_NAME>
 ```
 
-出力には、VPCリソースとのClickPipe接続を設定するために必要なリソース共有ARNが含まれます。
+出力にはResource-Share ARNが含まれます。これはVPCリソースを使用したClickPipe接続のセットアップに必要となります。
 
-あなたは、VPCリソースを使用して[リバースプライベートエンドポイントでClickPipeを作成する](#creating-clickpipe)準備が整いました。次のことを行う必要があります：
-- `VPCエンドポイントタイプ`を`VPC Resource`に設定します。
-- `リソース構成ID`をステップ2で作成されたリソース構成のIDに設定します。
-- `リソース共有ARN`をステップ3で作成されたリソース共有のARNに設定します。
+VPCリソースを使用して[リバースプライベートエンドポイントを持つClickPipeを作成](#creating-clickpipe)する準備が整いました。以下の設定が必要です。
 
-VPCリソースのPrivateLinkの詳細については、[AWSドキュメント](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html)を参照してください。
+- `VPC endpoint type`を`VPC Resource`に設定します。
+- `Resource configuration ID`をステップ2で作成したResource-ConfigurationのIDに設定します。
+- `Resource share ARN`をステップ3で作成したResource-ShareのARNに設定します。
+
+VPCリソースを使用したPrivateLinkの詳細については、[AWSドキュメント](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html)を参照してください。
 
 </VerticalStepper>
 
-### MSK multi-VPC connectivity {#msk-multi-vpc}
+### MSKマルチVPC接続 {#msk-multi-vpc}
 
-[AWS MSKの[マルチVPC接続](https://docs.aws.amazon.com/msk/latest/developerguide/aws-access-mult-vpc.html)]は、複数のVPCを単一のMSKクラスターに接続できるAWS MSKのビルトイン機能です。プライベートDNSサポートは標準で提供され、追加の設定は必要ありません。
+[マルチVPC接続](https://docs.aws.amazon.com/msk/latest/developerguide/aws-access-mult-vpc.html)は、AWS MSKの組み込み機能であり、単一のMSKクラスタに複数のVPCを接続できます。
+プライベートDNSサポートは標準で提供されており、追加の設定は不要です。
 クロスリージョンはサポートされていません。
 
-これは、ClickPipes for MSKに推奨されるオプションです。
+これはMSK向けClickPipesの推奨オプションです。
 詳細については、[はじめに](https://docs.aws.amazon.com/msk/latest/developerguide/mvpc-getting-started.html)ガイドを参照してください。
 
 :::info
-MSKクラスターのポリシーを更新し、`072088201116`を許可されたプリンシパルに追加してください。
-詳細については、AWSガイドの[クラスターポリシーの関連付け](https://docs.aws.amazon.com/msk/latest/developerguide/mvpc-cluster-owner-action-policy.html)を参照してください。
+MSKクラスタポリシーを更新し、`072088201116`を許可されたプリンシパルとしてMSKクラスタに追加します。
+詳細については、[クラスタポリシーのアタッチ](https://docs.aws.amazon.com/msk/latest/developerguide/mvpc-cluster-owner-action-policy.html)に関するAWSガイドを参照してください。
 :::
 
-ClickPipesの接続を設定する方法については、[MSKセットアップガイド](https://knowledgebase.aws-privatelink-setup-for-msk-clickpipes)を参照してください。
+接続のセットアップ方法については、[ClickPipes向けMSKセットアップガイド](/knowledgebase/aws-privatelink-setup-for-msk-clickpipes)を参照してください。
 
-### VPC endpoint service {#vpc-endpoint-service}
+### VPCエンドポイントサービス {#vpc-endpoint-service}
 
-[VPCエンドポイントサービス](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html)は、ClickPipesとデータソースを共有するための別のアプローチです。
-データソースの前にNLB（ネットワークロードバランサー）を設定する必要があります
-そして、NLBを使用するようにVPCエンドポイントサービスを構成します。
+[VPCエンドポイントサービス](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html)は、データソースをClickPipesと共有するもう一つの方法です。
+データソースの前にNLB（Network Load Balancer）をセットアップし、
+VPCエンドポイントサービスがNLBを使用するように設定する必要があります。
 
-VPCエンドポイントサービスは、[プライベートDNSで構成](https://docs.aws.amazon.com/vpc/latest/privatelink/manage-dns-names.html)でき、
-ClickPipes VPC内でアクセス可能になります。
+VPCエンドポイントサービスは[プライベートDNSで設定](https://docs.aws.amazon.com/vpc/latest/privatelink/manage-dns-names.html)でき、ClickPipes VPC内でアクセス可能になります。
 
-これは以下のための推奨される選択です：
+以下の場合に推奨される選択肢です。
 
-- プライベートDNSサポートを必要とする任意のオンプレミスKafkaセットアップ
-- [Postgres CDC用のクロスリージョン接続](/knowledgebase/aws-privatelink-setup-for-clickpipes)
-- MSKクラスター用のクロスリージョン接続。サポートチームに連絡して支援を受けてください。
+- プライベートDNSサポートが必要なオンプレミスKafkaセットアップ
+- [PostgreSQL CDC（変更データキャプチャ）のクロスリージョン接続](/knowledgebase/aws-privatelink-setup-for-clickpipes)
+- MSKクラスタのクロスリージョン接続。サポートが必要な場合は、ClickHouseサポートチームにお問い合わせください。
 
 詳細については、[はじめに](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html)ガイドを参照してください。
 
 :::info
-ClickPipesアカウントID `072088201116`をVPCエンドポイントサービスの許可されたプリンシパルに追加してください。
-詳細については、AWSガイドの[アクセス権の管理](https://docs.aws.amazon.com/vpc/latest/privatelink/configure-endpoint-service.html#add-remove-permissions)を参照してください。
+ClickPipesアカウントID `072088201116`を、VPCエンドポイントサービスの許可されたプリンシパルに追加します。
+詳細については、[権限の管理](https://docs.aws.amazon.com/vpc/latest/privatelink/configure-endpoint-service.html#add-remove-permissions)に関するAWSガイドを参照してください。
 :::
 
 :::info
-[クロスリージョンアクセス](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html#endpoint-service-cross-region)
-は、ClickPipesに対して構成できます。VPCエンドポイントサービスで許可されたリージョンに[あなたのClickPipeリージョン](#aws-privatelink-regions)を追加してください。
+ClickPipes向けに[クロスリージョンアクセス](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html#endpoint-service-cross-region)を設定できます。VPCエンドポイントサービスの許可されたリージョンに[ClickPipeのリージョン](#aws-privatelink-regions)を追加してください。
 :::
 
-## Creating a ClickPipe with reverse private endpoint {#creating-clickpipe}
+## リバースプライベートエンドポイントを使用して ClickPipe を作成する {#creating-clickpipe}
 
 <VerticalStepper headerLevel="list">
 
-1. ClickHouse CloudサービスのSQLコンソールにアクセスします。
+1. ClickHouse Cloud サービスの SQL Console にアクセスします。
 
-<Image img={cp_service} alt="ClickPipes service" size="md" border/>
+<Image img={cp_service} alt="ClickPipes サービス" size="md" border/>
 
-2. 左側のメニューから`データソース`ボタンを選択し、「ClickPipeをセットアップ」をクリックします。
+2. 左側メニューの `Data Sources` ボタンを選択し、「Set up a ClickPipe」をクリックします。
 
-<Image img={cp_step0} alt="Select imports" size="lg" border/>
+<Image img={cp_step0} alt="インポートの選択" size="lg" border/>
 
-3. データソースとしてKafkaまたはPostgresを選択します。
+3. データソースとして Kafka か Postgres のいずれかを選択します。
 
-<Image img={cp_rpe_select} alt="Select data source" size="lg" border/>
+<Image img={cp_rpe_select} alt="データソースの選択" size="lg" border/>
 
-4. `リバースプライベートエンドポイント`オプションを選択します。
+4. `Reverse private endpoint` オプションを選択します。
 
-<Image img={cp_rpe_step0} alt="Select reverse private endpoint" size="lg" border/>
+<Image img={cp_rpe_step0} alt="リバースプライベートエンドポイントの選択" size="lg" border/>
 
-5. 既存のリバースプライベートエンドポイントのいずれかを選択するか、新しいものを作成します。
+5. 既存のリバースプライベートエンドポイントを選択するか、新しく作成します。
 
 :::info
-RDSのためにクロスリージョンアクセスが必要な場合、VPCエンドポイントサービスを作成する必要があります。
-この[ガイド](https://knowledgebase.aws-privatelink-setup-for-clickpipes)は、設定を開始するための良い出発点となるはずです。
+RDS でリージョンをまたいだアクセスが必要な場合は、VPC エンドポイントサービスを作成する必要があります。
+そのセットアップの出発点として、[このガイド](/knowledgebase/aws-privatelink-setup-for-clickpipes) が有用です。
 
-同一リージョンのアクセスには、VPCリソースを作成することが推奨されます。
+同一リージョン内でのアクセスの場合は、VPC Resource を作成する方法が推奨されます。
 :::
 
-<Image img={cp_rpe_step1} alt="Select reverse private endpoint" size="lg" border/>
+<Image img={cp_rpe_step1} alt="リバースプライベートエンドポイントの選択" size="lg" border/>
 
-6. 選択したエンドポイントタイプのための必要なパラメータを提供します。
+6. 選択したエンドポイントタイプに必要なパラメータを指定します。
 
-<Image img={cp_rpe_step2} alt="Select reverse private endpoint" size="lg" border/>
+<Image img={cp_rpe_step2} alt="リバースプライベートエンドポイントの選択" size="lg" border/>
 
-    - VPCリソースの場合、構成共有ARNおよび構成IDを提供します。
-    - MSKマルチVPCの場合、クラスターARNおよび作成したエンドポイントで使用される認証方法を提供します。
-    - VPCエンドポイントサービスの場合、サービス名を提供します。
+    - VPC resource の場合は、configuration share ARN と configuration ID を指定します。
+    - MSK multi-VPC の場合は、作成済みエンドポイントで使用する cluster ARN と認証方法を指定します。
+    - VPC endpoint service の場合は、service name を指定します。
 
-7. `作成`をクリックし、リバースプライベートエンドポイントが準備完了になるのを待ちます。
+7. `Create` をクリックし、リバースプライベートエンドポイントの準備が完了するまで待ちます。
 
-   新しいエンドポイントを作成する場合、エンドポイントの設定には時間がかかります。
-   エンドポイントが準備完了になると、ページが自動的に更新されます。
-   VPCエンドポイントサービスでは、AWSコンソールで接続リクエストを受け入れる必要があるかもしれません。
+   新しいエンドポイントを作成している場合は、エンドポイントのセットアップに少し時間がかかります。
+   エンドポイントの準備が整うと、ページは自動的に更新されます。
+   VPC endpoint service の場合は、AWS コンソールで接続リクエストを承認する必要がある場合があります。
 
-<Image img={cp_rpe_step3} alt="Select reverse private endpoint" size="lg" border/>
+<Image img={cp_rpe_step3} alt="リバースプライベートエンドポイントの選択" size="lg" border/>
 
-8. エンドポイントが準備完了になれば、DNS名を使用してデータソースに接続できます。
+8. エンドポイントの準備が整ったら、DNS 名を使用してデータソースに接続できます。
 
-   エンドポイントのリストに、利用可能なエンドポイントのDNS名が表示されます。
-   それは、ClickPipesによりプロビジョニングされた内部DNS名またはPrivateLinkサービスによって提供されたプライベートDNS名のいずれかです。
-   DNS名は完全なネットワークアドレスではありません。
-   データソースに応じてポートを追加してください。
+   エンドポイント一覧では、利用可能なエンドポイントの DNS 名を確認できます。
+   これは、ClickPipes によって内部的にプロビジョニングされた DNS 名か、PrivateLink サービスから提供されたプライベート DNS 名のいずれかです。
+   DNS 名は完全なネットワークアドレスではありません。
+   データソースに応じてポートを付加してください。
 
-   MSK接続文字列は、AWSコンソールでアクセスできます。
+   MSK の接続文字列は AWS コンソールから参照できます。
 
-   DNS名の全リストを見るには、クラウドサービス設定でアクセスしてください。
+   すべての DNS 名の一覧は、クラウドサービスの設定から参照できます。
 
 </VerticalStepper>
 
-## Managing existing reverse private endpoints {#managing-existing-endpoints}
+## 既存のリバースプライベートエンドポイントの管理 {#managing-existing-endpoints}
 
-You can manage existing reverse private endpoints in the ClickHouse Cloud service settings:
+ClickHouse Cloud のサービス設定で、既存のリバースプライベートエンドポイントを管理できます。
 
 <VerticalStepper headerLevel="list">
 
-1. On a sidebar find the `Settings` button and click on it.
+1. サイドバーの `Settings` ボタンをクリックします。
 
-    <Image img={cp_rpe_settings0} alt="ClickHouse Cloud settings" size="lg" border/>
+    <Image img={cp_rpe_settings0} alt="ClickHouse Cloud 設定" size="lg" border/>
 
-2. Click on `Reverse private endpoints` in a `ClickPipe reverse private endpoints` section.
+2. `ClickPipe reverse private endpoints` セクション内の `Reverse private endpoints` をクリックします。
 
-    <Image img={cp_rpe_settings1} alt="ClickHouse Cloud settings" size="md" border/>
+    <Image img={cp_rpe_settings1} alt="ClickHouse Cloud 設定" size="md" border/>
 
-    リバースプライベートエンドポイントの詳細情報がフライアウトに表示されます。
+   リバースプライベートエンドポイントの詳細情報がフライアウトパネルに表示されます。
 
-    ここからエンドポイントを削除できます。これにより、このエンドポイントを使用しているすべてのClickPipesに影響します。
+   ここからエンドポイントを削除できます。この操作は、このエンドポイントを使用しているすべての ClickPipes に影響します。
 
 </VerticalStepper>
 
-## Supported AWS regions {#aws-privatelink-regions}
+## サポートされている AWS リージョン {#aws-privatelink-regions}
 
-AWS PrivateLinkサポートは、ClickPipesの特定のAWSリージョンに制限されています。
-利用可能なリージョンについては、[ClickPipesリージョンリスト](/integrations/clickpipes#list-of-static-ips)を参照してください。
+AWS PrivateLink のサポートは、ClickPipes 用では特定の AWS リージョンに限定されています。
+利用可能なリージョンについては、[ClickPipes のリージョン一覧](/integrations/clickpipes#list-of-static-ips)を参照してください。
 
-この制限は、クロスリージョン接続が有効なPrivateLink VPCエンドポイントサービスには適用されません。
+この制限は、リージョン間接続が有効になっている PrivateLink VPC エンドポイントサービスには適用されません。
 
-## Limitations {#limitations}
+## 制限事項 {#limitations}
 
-ClickHouse Cloudで作成されたClickPipes用のAWS PrivateLinkエンドポイントは、ClickHouse Cloudサービスと同じAWSリージョンで作成されることは保証されていません。
+ClickHouse Cloud で作成された ClickPipes 用の AWS PrivateLink エンドポイントは、
+ClickHouse Cloud サービスと同じ AWS リージョン内に作成されるとは限りません。
 
-現在、VPCエンドポイントサービスのみがクロスリージョン接続をサポートしています。
+現在のところ、クロスリージョン接続をサポートしているのは VPC エンドポイントサービスのみです。
 
-プライベートエンドポイントは特定のClickHouseサービスにリンクされており、サービス間での移動はできません。
-単一のClickHouseサービスに対して複数のClickPipesが同じエンドポイントを再利用することができます。
+プライベートエンドポイントは特定の ClickHouse サービスに紐づけられており、サービス間で共有・移行することはできません。
+1 つの ClickHouse サービスに対して複数の ClickPipes が同じエンドポイントを再利用できます。

@@ -1,9 +1,10 @@
 ---
-'title': 'Postgres ClickPipeの同期制御'
-'description': 'Postgres ClickPipeの同期を制御するためのドキュメント'
-'slug': '/integrations/clickpipes/postgres/sync_control'
-'sidebar_label': '同期の制御'
-'doc_type': 'guide'
+title: 'Postgres ClickPipe の同期を制御する'
+description: 'Postgres ClickPipe の同期を制御するためのガイド'
+slug: /integrations/clickpipes/postgres/sync_control
+sidebar_label: '同期の制御'
+keywords: ['同期制御', 'postgres', 'clickpipes', 'バッチサイズ', '同期間隔']
+doc_type: 'guide'
 ---
 
 import edit_sync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/edit_sync_button.png'
@@ -12,54 +13,55 @@ import edit_sync_settings from '@site/static/images/integrations/data-ingestion/
 import cdc_syncs from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/cdc_syncs.png'
 import Image from '@theme/IdealImage';
 
-このドキュメントでは、ClickPipeが**CDC (実行中) モード**にあるときのPostgres ClickPipeの同期を制御する方法について説明します。
+このドキュメントでは、ClickPipe が **CDC（実行中）モード**のときに Postgres ClickPipe の同期を制御する方法を説明します。
+
 
 ## 概要 {#overview}
 
-データベースのClickPipeは、ソースデータベースからデータをプルし、ターゲットデータベースにプッシュする2つの並行プロセスで構成されるアーキテクチャを持っています。プルプロセスは、データをどのくらいの頻度でプルするか、また一度にどれだけのデータをプルするかを定義した同期設定によって制御されます。「一度に」というのは、バッチを意味します ― ClickPipeはデータをバッチでプルおよびプッシュします。
+データベース用 ClickPipes のアーキテクチャは、ソースデータベースからのプル処理とターゲットデータベースへのプッシュ処理という 2 つの並列プロセスで構成されています。プル処理は、データをどのくらいの頻度で、そして一度にどのくらいの量をプルするかを定義する同期設定（sync configuration）によって制御されます。ここで「一度に」とは 1 バッチを意味します。ClickPipe はデータをバッチ単位でプルおよびプッシュするためです。
 
-Postgres ClickPipeの同期を制御する方法は主に2つあります。以下の設定のいずれかが有効になると、ClickPipeはプッシュを開始します。
+Postgres ClickPipe の同期を制御する主な方法は 2 つあります。ClickPipe は、以下のいずれかの設定条件を満たしたタイミングでプッシュを開始します。
 
 ### 同期間隔 {#interval}
 
-パイプの同期間隔は、ClickPipeがソースデータベースからレコードをプルする時間（秒単位）です。ClickHouseにプッシュするための時間は、この間隔には含まれません。
+パイプの同期間隔は、ClickPipe がソースデータベースからレコードをプルする時間（秒）です。ClickHouse へプッシュする時間は、この間隔には含まれません。
 
-デフォルトは**1分**です。
-同期間隔は任意の正の整数値に設定できますが、10秒以上に保つことを推奨します。
+デフォルトは **1 分** です。
+同期間隔は任意の正の整数値に設定できますが、10 秒以上に保つことを推奨します。
 
 ### プルバッチサイズ {#batch-size}
 
-プルバッチサイズは、ClickPipeが一度のバッチでソースデータベースからプルするレコードの数です。レコードとは、パイプの一部であるテーブルで行われた挿入、更新、削除を意味します。
+プルバッチサイズは、ClickPipe が 1 バッチでソースデータベースからプルするレコード数です。ここでいうレコードとは、パイプの対象テーブルに対して実行された insert、update、delete を指します。
 
-デフォルトは**100,000**レコードです。
-安全な最大値は1000万です。
+デフォルトは **100,000** レコードです。
+安全な上限は 1,000 万です。
 
-### 例外：ソースでの長時間トランザクション {#transactions}
+### 例外: ソース側の長時間実行トランザクション {#transactions}
 
-ソースデータベースでトランザクションが実行されると、ClickPipeはそのトランザクションのCOMMITを受信するまで進行を待ちます。これは、同期間隔とプルバッチサイズの**オーバーライド**を伴います。
+トランザクションがソースデータベース上で実行されている場合、ClickPipe はそのトランザクションの COMMIT を受信するまで先に進まずに待機します。この動作は、同期間隔とプルバッチサイズの両方よりも優先されます。
 
 ### 同期設定の構成 {#configuring}
 
-ClickPipeを作成するか、既存のClickPipeを編集する際に、同期間隔とプルバッチサイズを設定できます。
-ClickPipeを作成する際、以下のように作成ウィザードの第2ステップで表示されます。
+同期間隔とプルバッチサイズは、ClickPipe の作成時または既存 ClickPipe の編集時に設定できます。
+ClickPipe の作成時には、以下のように作成ウィザードの 2 番目のステップで表示されます:
 
 <Image img={create_sync_settings} alt="同期設定を作成" size="md"/>
 
-既存のClickPipeを編集する際には、パイプの**設定**タブに移動し、パイプを一時停止した後、ここで**構成**をクリックします：
+既存の ClickPipe を編集する場合は、そのパイプの **Settings** タブに移動し、パイプを一時停止してから、ここで **Configure** をクリックします:
 
-<Image img={edit_sync_button} alt="同期構成ボタンを編集" size="md"/>
+<Image img={edit_sync_button} alt="同期設定を編集するボタン" size="md"/>
 
-これにより、同期設定が表示されるフライアウトが開き、同期間隔とプルバッチサイズを変更できます：
+これにより同期設定のフライアウトが開き、同期間隔とプルバッチサイズを変更できます:
 
 <Image img={edit_sync_settings} alt="同期設定を編集" size="md"/>
 
-### レプリケーションスロットの成長に対応するための同期設定の微調整 {#tweaking}
+### レプリケーションスロットの肥大化対策として同期設定を調整する {#tweaking}
 
-CDCパイプの大規模なレプリケーションスロットを扱うために、これらの設定を使用する方法についてお話ししましょう。
-ClickHouseへのプッシュ時間は、ソースデータベースからのプル時間と線形にスケールしません。これを活用して、大きなレプリケーションスロットのサイズを削減できます。
-同期間隔とプルバッチサイズの両方を増やすことで、ClickPipeはソースデータベースから大量のデータを一度にプルし、その後ClickHouseにプッシュします。
+ここでは、CDC パイプのレプリケーションスロットが大きくなった場合の対処として、これらの設定をどのように利用するかを説明します。
+ClickHouse へのプッシュ時間は、ソースデータベースからのプル時間に対して比例して増えるわけではありません。この特性を利用して、大きなレプリケーションスロットのサイズを削減できます。
+同期間隔とプルバッチサイズの両方を増やすことで、ClickPipe はソースデータベースから一度に大量のデータをプルし、その後 ClickHouse へプッシュします。
 
-### 同期制御の動作を監視する {#monitoring}
-ClickPipeの**メトリクス**タブにある**CDC Syncs**テーブルで、各バッチにかかる時間を確認できます。ここでの時間にはプッシュ時間が含まれており、行が入ってこない場合、ClickPipeは待機し、その待機時間も期間に含まれます。
+### 同期制御の動作監視 {#monitoring}
+各バッチにどのくらい時間がかかっているかは、ClickPipe の **Metrics** タブにある **CDC Syncs** テーブルで確認できます。ここに表示される duration にはプッシュ時間が含まれる点に注意してください。また、受信行がない場合、ClickPipe は待機し、その待機時間も duration に含まれます。
 
-<Image img={cdc_syncs} alt="CDC Syncsテーブル" size="md"/>
+<Image img={cdc_syncs} alt="CDC Syncs テーブル" size="md"/>

@@ -1,25 +1,26 @@
 ---
-slug: '/interfaces/formats/PrettyJSONEachRow'
-description: 'Документация для формата PrettyJSONLines'
-title: PrettyJSONEachRow
-keywords: ['PrettyJSONEachRow', 'PrettyJSONLines', 'PrettyNDJSON']
-doc_type: guide
-alias: 
+alias: ['PrettyJSONLines', 'PrettyNDJSON']
+description: 'Документация по формату PrettyJSONLines'
 input_format: false
+keywords: ['PrettyJSONEachRow', 'PrettyJSONLines', 'PrettyNDJSON']
 output_format: true
+slug: /interfaces/formats/PrettyJSONEachRow
+title: 'PrettyJSONEachRow'
+doc_type: 'guide'
 ---
-| Входные данные | Выходные данные | Псевдоним                         |
-|----------------|-----------------|-----------------------------------|
-| ✗              | ✔               | `PrettyJSONLines`, `PrettyNDJSON` |
+
+| Вход | Выход | Псевдонимы                        |
+|------|-------|-----------------------------------|
+| ✗    | ✔     | `PrettyJSONLines`, `PrettyNDJSON` |
 
 ## Описание {#description}
 
-Отличается от [JSONEachRow](./JSONEachRow.md) только тем, что JSON форматируется с переносами строк и отступами в 4 пробела.
+Отличается от [JSONEachRow](./JSONEachRow.md) только тем, что JSON форматируется в читабельном виде с разделением по строкам и отступом в 4 пробела.
 
 ## Пример использования {#example-usage}
 ### Вставка данных {#inserting-data}
 
-Используя JSON файл со следующими данными, названный `football.json`:
+Используем JSON-файл `football.json` со следующими данными:
 
 ```json
 {
@@ -157,7 +158,7 @@ output_format: true
     "away_team": "Swindon Town",
     "home_team_goals": 0,
     "away_team_goals": 3
-} 
+}
 ```
 
 Вставьте данные:
@@ -168,7 +169,7 @@ INSERT INTO football FROM INFILE 'football.json' FORMAT PrettyJSONEachRow;
 
 ### Чтение данных {#reading-data}
 
-Чтение данных с использованием формата `PrettyJSONEachRow`:
+Прочитайте данные, используя формат `PrettyJSONEachRow`:
 
 ```sql
 SELECT *
@@ -176,7 +177,7 @@ FROM football
 FORMAT PrettyJSONEachRow
 ```
 
-Вывод будет в формате JSON:
+Результат будет в формате JSON:
 
 ```json
 {
@@ -314,7 +315,9 @@ FORMAT PrettyJSONEachRow
     "away_team": "Swindon Town",
     "home_team_goals": 0,
     "away_team_goals": 3
-}  
+}
 ```
 
-## Настройки формата {#format-settings}
+
+
+## Параметры форматирования {#format-settings}

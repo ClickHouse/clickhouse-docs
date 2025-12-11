@@ -1,20 +1,13 @@
 ---
-'sidebar_label': 'Retool'
-'slug': '/integrations/retool'
-'keywords':
-- 'clickhouse'
-- 'retool'
-- 'connect'
-- 'integrate'
-- 'ui'
-- 'admin'
-- 'panel'
-- 'dashboard'
-- 'nocode'
-- 'no-code'
-'description': "豊富なユーザーインターフェースを持つウェブおよびモバイルアプリを迅速に構築し、複雑なタスクを自動化し、AIを統合します\b0;すべてはあなたのデータによって支えられています。"
-'title': 'RetoolとClickHouseの接続'
-'doc_type': 'guide'
+sidebar_label: 'Retool'
+slug: /integrations/retool
+keywords: ['clickhouse', 'retool', 'connect', 'integrate', 'ui', 'admin', 'panel', 'dashboard', 'nocode', 'no-code']
+description: 'リッチなユーザーインターフェースを備えた Web およびモバイルアプリをすばやく構築し、複雑なタスクを自動化し、AI と統合できます。これらすべてをお客様のデータを基盤として実現します。'
+title: 'Retool と ClickHouse を接続する'
+doc_type: 'guide'
+integration:
+  - support_level: 'partner'
+  - category: 'data_integration'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
@@ -24,42 +17,41 @@ import retool_02 from '@site/static/images/integrations/tools/data-integration/r
 import retool_03 from '@site/static/images/integrations/tools/data-integration/retool/retool_03.png';
 import retool_04 from '@site/static/images/integrations/tools/data-integration/retool/retool_04.png';
 import retool_05 from '@site/static/images/integrations/tools/data-integration/retool/retool_05.png';
-import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
+import PartnerBadge from '@theme/badges/PartnerBadge';
 
+# Retool を ClickHouse に接続する {#connecting-retool-to-clickhouse}
 
-# RetoolをClickHouseに接続する
+<PartnerBadge/>
 
-<CommunityMaintainedBadge/>
-
-## 1. 接続詳細を収集する {#1-gather-your-connection-details}
+## 1. 接続情報を準備する {#1-gather-your-connection-details}
 <ConnectionDetails />
 
-## 2. ClickHouseリソースを作成する {#2-create-a-clickhouse-resource}
+## 2. ClickHouse リソースを作成する {#2-create-a-clickhouse-resource}
 
-Retoolアカウントにログインし、_Resources_ タブに移動します。「Create New」 -> 「Resource」を選択します:
+Retool アカウントにログインし、_Resources_ タブに移動します。「Create New」 -> 「Resource」を選択します:
 
 <Image img={retool_01} size="lg" border alt="新しいリソースを作成する" />
 <br/>
 
-利用可能なコネクタのリストから「JDBC」を選択します:
+利用可能なコネクタ一覧から「JDBC」を選択します:
 
-<Image img={retool_02} size="lg" border alt="JDBCコネクタの選択" />
+<Image img={retool_02} size="lg" border alt="JDBC コネクタを選択する" />
 <br/>
 
-セットアップウィザードで、「Driver name」として `com.clickhouse.jdbc.ClickHouseDriver` を選択することを確認します:
+セットアップウィザードで、必ず "Driver name" に `com.clickhouse.jdbc.ClickHouseDriver` を選択します:
 
-<Image img={retool_03} size="lg" border alt="正しいドライバーの選択" />
+<Image img={retool_03} size="lg" border alt="正しいドライバーを選択する" />
 <br/>
 
-次の形式でClickHouseの資格情報を入力します: `jdbc:clickhouse://HOST:PORT/DATABASE?user=USERNAME&password=PASSWORD`。
-インスタンスがSSLを必要とする場合やClickHouse Cloudを使用している場合は、接続文字列に `&ssl=true` を追加します。これにより、次のようになります: `jdbc:clickhouse://HOST:PORT/DATABASE?user=USERNAME&password=PASSWORD&ssl=true`
+次の形式で ClickHouse の認証情報を入力します: `jdbc:clickhouse://HOST:PORT/DATABASE?user=USERNAME&password=PASSWORD`。
+インスタンスで SSL が必須の場合、または ClickHouse Cloud を使用している場合は、接続文字列に `&ssl=true` を追加し、`jdbc:clickhouse://HOST:PORT/DATABASE?user=USERNAME&password=PASSWORD&ssl=true` のようにします。
 
-<Image img={retool_04} size="lg" border alt="資格情報を指定する" />
+<Image img={retool_04} size="lg" border alt="認証情報を指定する" />
 <br/>
 
 その後、接続をテストします:
 
-<Image img={retool_05} size="lg" border alt="接続のテスト" />
+<Image img={retool_05} size="lg" border alt="接続をテストする" />
 <br/>
 
-これで、ClickHouseリソースを使用してアプリに進むことができるはずです。
+これで、ClickHouse リソースを使用してアプリの作成を続行できるようになります。

@@ -1,18 +1,20 @@
 ---
-slug: '/engines/table-engines/mergetree-family/replacingmergetree'
-sidebar_label: ReplacingMergeTree
+description: 'отличается от MergeTree тем, что удаляет дублирующиеся записи с
+  одинаковым значением сортировочного ключа (секция `ORDER BY` таблицы, а не `PRIMARY KEY`).'
+sidebar_label: 'ReplacingMergeTree'
 sidebar_position: 40
-description: 'отличается от MergeTree тем, что он удаляет дубликаты с одинаковым'
-title: ReplacingMergeTree
-doc_type: reference
+slug: /engines/table-engines/mergetree-family/replacingmergetree
+title: 'Движок таблицы ReplacingMergeTree'
+doc_type: 'reference'
 ---
-# ReplacingMergeTree
 
-Движок отличается от [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) тем, что он удаляет дублирующиеся записи с одинаковым значением [ключа сортировки](../../../engines/table-engines/mergetree-family/mergetree.md) (`ORDER BY` секция таблицы, не `PRIMARY KEY`).
+# Движок таблиц ReplacingMergeTree {#replacingmergetree-table-engine}
 
-Дедупликация данных происходит только во время слияния. Слияние происходит в фоновом режиме в неизвестное время, поэтому вы не можете планировать его. Некоторые данные могут остаться не обработанными. Хотя вы можете выполнить несогласованное слияние с помощью запроса `OPTIMIZE`, не стоит на это полагаться, так как запрос `OPTIMIZE` будет читать и записывать большое количество данных.
+Этот движок отличается от [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) тем, что удаляет дублирующиеся записи с одинаковым значением [ключа сортировки](../../../engines/table-engines/mergetree-family/mergetree.md) (раздел `ORDER BY` в определении таблицы, а не `PRIMARY KEY`).
 
-Таким образом, `ReplacingMergeTree` подходит для фонов очистки дублирующихся данных с целью экономии места, но он не гарантирует отсутствие дубликатов.
+Дедупликация данных происходит только во время слияния. Слияния выполняются в фоновом режиме в неизвестный момент времени, поэтому вы не можете планировать их выполнение. Часть данных может остаться необработанной. Хотя вы можете запустить внеплановое слияние с помощью запроса `OPTIMIZE`, не рассчитывайте на это, потому что запрос `OPTIMIZE` будет считывать и записывать большой объем данных.
+
+Таким образом, `ReplacingMergeTree` подходит для фоновой очистки дублирующихся данных с целью экономии места, но не гарантирует отсутствие дубликатов.
 
 :::note
 Подробное руководство по ReplacingMergeTree, включая лучшие практики и способы оптимизации производительности, доступно [здесь](/guides/replacing-merge-tree).
@@ -34,27 +36,27 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 [SETTINGS name=value, ...]
 ```
 
-Для описания параметров запроса см. [описание операторов](../../../sql-reference/statements/create/table.md).
+Описание параметров запроса см. в [описании оператора](../../../sql-reference/statements/create/table.md).
 
 :::note
-Уникальность строк определяется секцией `ORDER BY` таблицы, а не `PRIMARY KEY`.
+Уникальность строк определяется разделом таблицы `ORDER BY`, а не `PRIMARY KEY`.
 :::
 
 ## Параметры ReplacingMergeTree {#replacingmergetree-parameters}
 
 ### `ver` {#ver}
 
-`ver` — колонка с номером версии. Тип `UInt*`, `Date`, `DateTime` или `DateTime64`. Необязательный параметр.
+`ver` — столбец с номером версии. Тип `UInt*`, `Date`, `DateTime` или `DateTime64`. Необязательный параметр.
 
-При слиянии `ReplacingMergeTree` из всех строк с одинаковым ключом сортировки оставляет только одну:
+При слиянии `ReplacingMergeTree` из всех строк с одинаковым сортировочным ключом оставляет только одну:
 
-- Последнюю в выборке, если `ver` не установлен. Выборка — это набор строк в наборе частей, участвующих в слиянии. Самая недавно созданная часть (последняя вставка) будет последней в выборке. Таким образом, после дедупликации останется самая последняя строка из самой недавней вставки для каждого уникального ключа сортировки.
-- С максимальной версией, если `ver` указан. Если `ver` одинаково для нескольких строк, то будет использоваться правило "если `ver` не указан" для них, т.е. останется самая последняя вставленная строка.
+* Последнюю в выборке, если `ver` не указан. Выборка — это набор строк в наборе кусков, участвующих в слиянии. Самый недавно созданный кусок (последняя вставка) будет последним в выборке. Таким образом, после дедупликации для каждого уникального сортировочного ключа останется самая последняя строка из самой свежей вставки.
+* С максимальной версией, если `ver` указан. Если `ver` одинаков для нескольких строк, для них используется правило «если `ver` не указан», то есть останется самая недавно вставленная строка.
 
 Пример:
 
 ```sql
--- without ver - the last inserted 'wins'
+-- без ver - «побеждает» последняя вставленная запись
 CREATE TABLE myFirstReplacingMT
 (
     `key` Int64,
@@ -64,17 +66,17 @@ CREATE TABLE myFirstReplacingMT
 ENGINE = ReplacingMergeTree
 ORDER BY key;
 
-INSERT INTO myFirstReplacingMT Values (1, 'first', '2020-01-01 01:01:01');
-INSERT INTO myFirstReplacingMT Values (1, 'second', '2020-01-01 00:00:00');
+INSERT INTO myFirstReplacingMT Values (1, 'первая', '2020-01-01 01:01:01');
+INSERT INTO myFirstReplacingMT Values (1, 'вторая', '2020-01-01 00:00:00');
 
 SELECT * FROM myFirstReplacingMT FINAL;
 
 ┌─key─┬─someCol─┬───────────eventTime─┐
-│   1 │ second  │ 2020-01-01 00:00:00 │
+│   1 │ вторая  │ 2020-01-01 00:00:00 │
 └─────┴─────────┴─────────────────────┘
 
 
--- with ver - the row with the biggest ver 'wins'
+-- с ver - «побеждает» запись с наибольшим значением ver
 CREATE TABLE mySecondReplacingMT
 (
     `key` Int64,
@@ -84,41 +86,41 @@ CREATE TABLE mySecondReplacingMT
 ENGINE = ReplacingMergeTree(eventTime)
 ORDER BY key;
 
-INSERT INTO mySecondReplacingMT Values (1, 'first', '2020-01-01 01:01:01');
-INSERT INTO mySecondReplacingMT Values (1, 'second', '2020-01-01 00:00:00');
+INSERT INTO mySecondReplacingMT Values (1, 'первая', '2020-01-01 01:01:01');
+INSERT INTO mySecondReplacingMT Values (1, 'вторая', '2020-01-01 00:00:00');
 
 SELECT * FROM mySecondReplacingMT FINAL;
 
 ┌─key─┬─someCol─┬───────────eventTime─┐
-│   1 │ first   │ 2020-01-01 01:01:01 │
+│   1 │ первая   │ 2020-01-01 01:01:01 │
 └─────┴─────────┴─────────────────────┘
 ```
 
 ### `is_deleted` {#is_deleted}
 
-`is_deleted` — название колонки, используемой во время слияния для определения, представляет ли данные в этой строке состояние или должны быть удалены; `1` — строка "удалена", `0` — строка "состояния".
+`is_deleted` — имя столбца, используемого во время слияния для определения, представляет ли строка состояние или подлежит удалению; `1` — строка-удаление, `0` — строка-состояние.
 
-Тип данных колонки — `UInt8`.
+Тип данных столбца — `UInt8`.
 
 :::note
-`is_deleted` может быть включен только при использовании `ver`.
+`is_deleted` может быть включён только при использовании `ver`.
 
-Независимо от операции с данными, версия должна увеличиваться. Если две вставленные строки имеют одинаковый номер версии, сохраняется последняя вставленная строка.
+Независимо от выполняемой над данными операции, версия должна увеличиваться. Если две вставленные строки имеют одинаковый номер версии, сохраняется последняя вставленная строка.
 
-По умолчанию ClickHouse сохранит последнюю строку для ключа, даже если эта строка является строкой удаления. Это сделано для того, чтобы любые будущие строки с более низкими версиями могли
-быть безопасно вставлены, и строка удаления все еще применялась.
+По умолчанию ClickHouse сохраняет последнюю строку для ключа, даже если эта строка является строкой удаления. Это нужно для того, чтобы любые будущие строки с более низкими версиями могли быть безопасно вставлены, и строка удаления всё равно применялась.
 
-Чтобы навсегда удалить такие строки удаления, включите настройку таблицы `allow_experimental_replacing_merge_with_cleanup` и либо:
+Чтобы навсегда удалить такие строки удаления, включите настройку таблицы `allow_experimental_replacing_merge_with_cleanup` и выполните одно из следующих действий:
 
-1. Установите настройки таблицы `enable_replacing_merge_with_cleanup_for_min_age_to_force_merge`, `min_age_to_force_merge_on_partition_only` и `min_age_to_force_merge_seconds`. Если все части в партиции старше `min_age_to_force_merge_seconds`, ClickHouse объединит их
-в одну часть и удалит любые строки удаления.
+1. Задайте настройки таблицы `enable_replacing_merge_with_cleanup_for_min_age_to_force_merge`, `min_age_to_force_merge_on_partition_only` и `min_age_to_force_merge_seconds`. Если все части в партиции старше, чем `min_age_to_force_merge_seconds`, ClickHouse выполнит их слияние
+   в одну часть и удалит все строки удаления.
 
 2. Вручную выполните `OPTIMIZE TABLE table [PARTITION partition | PARTITION ID 'partition_id'] FINAL CLEANUP`.
-:::
+   :::
 
 Пример:
+
 ```sql
--- with ver and is_deleted
+-- с ver и is_deleted
 CREATE OR REPLACE TABLE myThirdReplacingMT
 (
     `key` Int64,
@@ -132,33 +134,36 @@ SETTINGS allow_experimental_replacing_merge_with_cleanup = 1;
 
 INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 01:01:01', 0);
 INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 01:01:01', 1);
-
-select * from myThirdReplacingMT final;
-
-0 rows in set. Elapsed: 0.003 sec.
-
--- delete rows with is_deleted
-OPTIMIZE TABLE myThirdReplacingMT FINAL CLEANUP;
-
-INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 00:00:00', 0);
-
-select * from myThirdReplacingMT final;
-
-┌─key─┬─someCol─┬───────────eventTime─┬─is_deleted─┐
-│   1 │ first   │ 2020-01-01 00:00:00 │          0 │
-└─────┴─────────┴─────────────────────┴────────────┘
 ```
 
-## Операторы запроса {#query-clauses}
+select * from myThirdReplacingMT final;
 
-При создании таблицы `ReplacingMergeTree` требуются те же [операторы](../../../engines/table-engines/mergetree-family/mergetree.md), что и при создании таблицы `MergeTree`.
+0 строк в наборе. Прошло: 0.003 сек.
+
+-- удалить строки с is&#95;deleted
+OPTIMIZE TABLE myThirdReplacingMT FINAL CLEANUP;
+
+INSERT INTO myThirdReplacingMT Values (1, &#39;first&#39;, &#39;2020-01-01 00:00:00&#39;, 0);
+
+select * from myThirdReplacingMT final;
+
+┌─key─┬─someCol─┬───────────eventTime─┬─is&#95;deleted─┐
+│   1 │ first   │ 2020-01-01 00:00:00 │          0 │
+└─────┴─────────┴─────────────────────┴────────────┘
+
+```
+```
+
+## Части запроса {#query-clauses}
+
+При создании таблицы `ReplacingMergeTree` необходимо указывать те же [части запроса](../../../engines/table-engines/mergetree-family/mergetree.md), что и при создании таблицы `MergeTree`.
 
 <details markdown="1">
 
-<summary>Устаревший метод создания таблицы</summary>
+<summary>Устаревший способ создания таблицы</summary>
 
 :::note
-Не используйте этот метод в новых проектах и, если возможно, перейдите на метод, описанный выше, в старых проектах.
+Не используйте этот способ в новых проектах и, по возможности, переведите старые проекты на способ, описанный выше.
 :::
 
 ```sql
@@ -170,17 +175,17 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ) ENGINE [=] ReplacingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [ver])
 ```
 
-Все параметры, кроме `ver`, имеют то же значение, что и в `MergeTree`.
+Все параметры, за исключением `ver`, имеют тот же смысл, что и в `MergeTree`.
 
-- `ver` - колонка с версией. Необязательный параметр. Для описания смотрите текст выше.
+- `ver` — столбец с версией. Необязательный параметр. Описание см. в тексте выше.
 
 </details>
 
-## Дедупликация во время запроса и FINAL {#query-time-de-duplication--final}
+## Дедупликация при выполнении запроса &amp; FINAL {#query-time-de-duplication--final}
 
-Во время слияния ReplacingMergeTree идентифицирует дублирующиеся строки, используя значения колонок `ORDER BY` (используемые для создания таблицы) в качестве уникального идентификатора, и сохраняет только наивысшую версию. Однако это обеспечивает только конечную корректность - он не гарантирует, что строки будут дедуплицированы, и на это не следует полагаться. Поэтому запросы могут давать некорректные ответы из-за включения строк обновления и удаления в запросы.
+Во время слияния ReplacingMergeTree определяет дублирующиеся строки, используя значения столбцов `ORDER BY` (указанных при создании таблицы) в качестве уникального идентификатора и сохраняя только самую позднюю версию. Однако это обеспечивает лишь корректность «в конечном счёте» — нет гарантии, что строки будут дедуплицированы, и полагаться на это не следует. Поэтому запросы могут возвращать некорректные результаты, так как строки с обновлениями и удалениями учитываются в запросах.
 
-Для получения правильных ответов пользователи должны дополнить фоновые операции слияния дедупликацией во время запроса и удалением строк. Это можно сделать с помощью оператора `FINAL`. Например, рассмотрим следующий пример:
+Для получения корректных результатов пользователям необходимо дополнять фоновые слияния дедупликацией и удалением строк при выполнении запроса. Это можно сделать с помощью оператора `FINAL`. Например, рассмотрим следующий пример:
 
 ```sql
 CREATE TABLE rmt_example
@@ -193,9 +198,10 @@ ORDER BY number
 INSERT INTO rmt_example SELECT floor(randUniform(0, 100)) AS number
 FROM numbers(1000000000)
 
-0 rows in set. Elapsed: 19.958 sec. Processed 1.00 billion rows, 8.00 GB (50.11 million rows/s., 400.84 MB/s.)
+0 строк в наборе. Затрачено: 19.958 сек. Обработано 1.00 миллиард строк, 8.00 ГБ (50.11 миллионов строк/с., 400.84 МБ/с.)
 ```
-Запрос без `FINAL` дает некорректный счет (точный результат будет зависеть от слияний):
+
+Запрос без `FINAL` возвращает некорректный результат подсчёта (точное значение будет отличаться в зависимости от выполняемых слияний):
 
 ```sql
 SELECT count()
@@ -208,7 +214,7 @@ FROM rmt_example
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-Добавление FINAL дает правильный результат:
+Добавление FINAL даёт правильный результат:
 
 ```sql
 SELECT count()
@@ -219,7 +225,7 @@ FINAL
 │     100 │
 └─────────┘
 
-1 row in set. Elapsed: 0.002 sec.
+1 строка в наборе. Затрачено: 0.002 сек.
 ```
 
-Для получения дополнительной информации о `FINAL`, включая способы оптимизации производительности `FINAL`, мы рекомендуем прочитать наше [подробное руководство по ReplacingMergeTree](/guides/replacing-merge-tree).
+Для получения дополнительных сведений о `FINAL`, включая рекомендации по оптимизации его производительности, мы рекомендуем ознакомиться с [подробным руководством по ReplacingMergeTree](/guides/replacing-merge-tree).

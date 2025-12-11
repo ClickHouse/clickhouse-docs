@@ -1,12 +1,9 @@
 ---
-'slug': '/data-modeling/schema-design'
-'title': 'スキーマ設計'
-'description': 'クエリパフォーマンスのための ClickHouse スキーマの最適化'
-'keywords':
-- 'schema'
-- 'schema design'
-- 'query optimization'
-'doc_type': 'guide'
+slug: /data-modeling/schema-design
+title: 'Schema Design'
+description: 'Optimizing ClickHouse schema for query performance'
+keywords: ['schema', 'schema design', 'query optimization']
+doc_type: 'guide'
 ---
 
 import stackOverflowSchema from '@site/static/images/data-modeling/stackoverflow-schema.png';
@@ -125,6 +122,7 @@ With our initial schema defined, we can populate the data using an `INSERT INTO 
 INSERT INTO posts SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet')
 
 0 rows in set. Elapsed: 148.140 sec. Processed 59.82 million rows, 38.07 GB (403.80 thousand rows/s., 257.00 MB/s.)
+
 ```
 
 > The above query loads 60m rows. While small for ClickHouse, users with slower internet connections may wish to load a subset of data. This can be achieved by simply specifying the years they wish to load via a glob pattern e.g. `https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2008.parquet` or `https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/{2008, 2009}.parquet`. See [here](/sql-reference/table-functions/file#globs-in-path) for how glob patterns can be used to target subsets of files.
@@ -221,7 +219,6 @@ INSERT INTO posts_v2 SELECT * FROM posts
 ```
 
 We don't retain any nulls in our new schema. The above insert converts these implicitly to default values for their respective types - 0 for integers and an empty value for strings. ClickHouse also automatically converts any numerics to their target precision.
-
 Primary (Ordering) Keys in ClickHouse
 Users coming from OLTP databases often look for the equivalent concept in ClickHouse.
 

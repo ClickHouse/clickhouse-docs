@@ -1,0 +1,145 @@
+---
+title: 如何使用 array join 通过 map 的键和值提取和查询不同属性
+description: "通过简单示例说明如何使用 array join 通过 map 的键和值提取和查询不同属性"
+date: 2024-06-21
+tags: ['Functions']
+keywords: ['arrayJoin']
+---
+
+{frontMatter.description}
+
+{/* 截断 */}
+
+## 问题 \{#question\}
+
+如果某列中存有使用 `Map` 类型表示的不同属性，该如何将它们提取出来并在查询中使用？
+
+## 答案 \{#answer\}
+
+这是一个从可变 attributes 字段中提取键和值的基本示例。
+这种方法会在源/原始表的每一行上生成看似重复的记录。不过，由于我们将键和值提取了出来，它们可以被放入主键（Primary Key）或带索引的二级索引中，例如 bloom filter。
+
+在这个示例中，我们基本上有一个用于创建指标表（metrics table）的数据源，它在 attributes 字段中包含多个可应用的属性，该字段是一个 Map。\
+如果有某些属性会始终存在于记录中，最好将这些属性单独提取到各自的列中并填充数据。
+
+你可以直接复制粘贴这些内容来查看输出结果，以及在本例中物化视图的作用。
+
+创建一个示例数据库：
+
+```
+创建数据库 db1;
+```
+
+创建一个用于存储行及其属性的初始表：
+
+```
+create table db1.table1_metric_map
+(
+  id UInt32,
+  timestamp DateTime,
+  metric_name String,
+  metric_value Int32,
+  attributes Map(String, String)
+)
+engine = MergeTree()
+order by timestamp;
+```
+
+向表中插入一些示例行。示例数据量特意设置得较小，这样在创建物化视图时，你可以看到每一行是如何根据各个属性被“乘以”展开成多条记录的。
+
+```
+insert into db1.table1_metric_map
+VALUES
+(1, '2023-09-20 00:01:00', 'ABC', 10, {'env':'prod','app':'app1','server':'server1'}),
+(2, '2023-09-20 00:01:00', 'ABC', 20,{'env':'prod','app':'app2','server':'server1','dc':'dc1'}),
+(3, '2023-09-20 00:01:00', 'ABC', 30,{'env':'qa','app':'app1','server':'server1'}),
+(4, '2023-09-20 00:01:00', 'ABC', 40,{'env':'qa','app':'app2','server':'server1','dc':'dc1'}),
+(5, '2023-09-20 00:01:00', 'DEF', 50,{'env':'prod','app':'app1','server':'server2'}),
+(6, '2023-09-20 00:01:00', 'DEF', 60, {'env':'prod','app':'app2','server':'server1'}),
+(7, '2023-09-20 00:01:00', 'DEF', 70,{'env':'qa','app':'app1','server':'server1'}),
+(8, '2023-09-20 00:01:00', 'DEF', 80,{'env':'qa','app':'app2','server':'server1'}),
+(9, '2023-09-20 00:02:00', 'ABC', 90,{'env':'prod','app':'app1','server':'server1'}),
+(10, '2023-09-20 00:02:00', 'ABC', 100,{'env':'prod','app':'app1','server':'server2'}),
+(11, '2023-09-20 00:02:00', 'ABC', 110,{'env':'qa','app':'app1','server':'server1'}),
+(12, '2023-09-20 00:02:00', 'ABC', 120,{'env':'qa','app':'app1','server':'server1'}),
+(13, '2023-09-20 00:02:00', 'DEF', 130,{'env':'prod','app':'app1','server':'server1'}),
+(14, '2023-09-20 00:02:00', 'DEF', 140,{'env':'prod','app':'app2','server':'server1','dc':'dc1'}),
+(15, '2023-09-20 00:02:00', 'DEF', 150,{'env':'qa','app':'app1','server':'server2'}),
+(16, '2023-09-20 00:02:00', 'DEF', 160,{'env':'qa','app':'app1','server':'server1','dc':'dc1'}),
+(17, '2023-09-20 00:03:00', 'ABC', 170,{'env':'prod','app':'app1','server':'server1'}),
+(18, '2023-09-20 00:03:00', 'ABC', 180,{'env':'prod','app':'app1','server':'server1'}),
+(19, '2023-09-20 00:03:00', 'ABC', 190,{'env':'qa','app':'app1','server':'server1'}),
+(20, '2023-09-20 00:03:00', 'ABC', 200,{'env':'qa','app':'app1','server':'server2'}),
+(21, '2023-09-20 00:03:00', 'DEF', 210,{'env':'prod','app':'app1','server':'server1'}),
+(22, '2023-09-20 00:03:00', 'DEF', 220,{'env':'prod','app':'app1','server':'server1'}),
+(23, '2023-09-20 00:03:00', 'DEF', 230,{'env':'qa','app':'app1','server':'server1'}),
+(24, '2023-09-20 00:03:00', 'DEF', 240,{'env':'qa','app':'app1','server':'server1'});
+```
+
+然后，我们可以创建一个带有 array join 的物化视图，将 map 类型的属性展开到 keys 和 values 两列中。为了演示，在下面的示例中使用的是隐式表（通过 POPULATE 命令以及类似 `.inner.{uuid}...` 的底层表）。不过，推荐的最佳实践是使用显式表：先定义表本身，然后再使用 `TO` 命令在其之上创建物化视图。
+
+```
+CREATE MATERIALIZED VIEW db1.table1_metric_map_mv
+ORDER BY id
+POPULATE AS
+select 
+  *, 
+  attributes.keys as attribute_keys, 
+  attributes.values as attribute_values
+from db1.table1_metric_map
+array join attributes
+where notEmpty(attributes.keys);
+```
+
+新建的表将包含更多行，且其中的键会被提取出来，如下所示：
+
+```
+SELECT *
+FROM db1.table1_metric_map_mv
+LIMIT 5
+
+Query id: b7384381-53af-4e3e-bc54-871f61c033a6
+
+┌─id─┬───────────timestamp─┬─metric_name─┬─metric_value─┬─attributes───────────┬─attribute_keys─┬─attribute_values─┐
+│  1 │ 2023-09-20 00:01:00 │ ABC         │           10 │ ('env','prod')       │ env            │ prod             │
+│  1 │ 2023-09-20 00:01:00 │ ABC         │           10 │ ('app','app1')       │ app            │ app1             │
+│  1 │ 2023-09-20 00:01:00 │ ABC         │           10 │ ('server','server1') │ server         │ server1          │
+│  2 │ 2023-09-20 00:01:00 │ ABC         │           20 │ ('env','prod')       │ env            │ prod             │
+│  2 │ 2023-09-20 00:01:00 │ ABC         │           20 │ ('app','app2')       │ app            │ app2             │
+└────┴─────────────────────┴─────────────┴──────────────┴──────────────────────┴────────────────┴──────────────────┘
+```
+
+接下来，要查询满足特定属性条件的行，可以执行类似如下的操作：
+
+```
+SELECT
+    t1_app.id AS id,
+    timestamp,
+    metric_name,
+    metric_value
+FROM
+(
+    SELECT *
+    FROM db1.table1_metric_map_mv
+    WHERE (attribute_keys = 'app') AND (attribute_values = 'app1') AND (metric_name = 'ABC')
+) AS t1_app
+INNER JOIN
+(
+    SELECT *
+    FROM db1.table1_metric_map_mv
+    WHERE (attribute_keys = 'server') AND (attribute_values = 'server1')
+) AS t2_server ON t1_app.id = t2_server.id
+
+Query id: 72ce7f19-b02a-4b6e-81e7-a955f257436d
+
+┌─id─┬───────────timestamp─┬─metric_name─┬─metric_value─┐
+│  1 │ 2023-09-20 00:01:00 │ ABC         │           10 │
+│  3 │ 2023-09-20 00:01:00 │ ABC         │           30 │
+│  9 │ 2023-09-20 00:02:00 │ ABC         │           90 │
+│ 11 │ 2023-09-20 00:02:00 │ ABC         │          110 │
+│ 12 │ 2023-09-20 00:02:00 │ ABC         │          120 │
+│ 17 │ 2023-09-20 00:03:00 │ ABC         │          170 │
+│ 18 │ 2023-09-20 00:03:00 │ ABC         │          180 │
+│ 19 │ 2023-09-20 00:03:00 │ ABC         │          190 │
+└────┴─────────────────────┴─────────────┴──────────────┘
+```

@@ -1,27 +1,24 @@
 ---
-'slug': '/examples/aggregate-function-combinators/countIf'
-'title': 'countIf'
-'description': '使用 countIf 组合器的示例'
-'keywords':
-- 'count'
-- 'if'
-- 'combinator'
-- 'examples'
-- 'countIf'
-'sidebar_label': 'countIf'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/countIf'
+title: 'countIf'
+description: 'countIf 聚合函数组合器的使用示例'
+keywords: ['count', 'if', '组合器', '示例', 'countIf']
+sidebar_label: 'countIf'
+doc_type: 'reference'
 ---
-
 
 # countIf {#countif}
 
 ## 描述 {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可以应用于 [`count`](/sql-reference/aggregate-functions/reference/count) 函数，以计算条件为真的行数，使用 `countIf` 聚合组合器函数。
+[`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可以应用于 [`count`](/sql-reference/aggregate-functions/reference/count)
+函数，从而通过 `countIf` 聚合函数组合器统计条件为 `true`
+的行数。
 
-## 示例用法 {#example-usage}
+## 用法示例 {#example-usage}
 
-在这个示例中，我们将创建一个表，用于存储用户登录尝试，并将使用 `countIf` 来计算成功登录的次数。
+在这个示例中，我们将创建一个用于存储用户登录尝试记录的表，
+并使用 `countIf` 来统计成功登录的次数。
 
 ```sql title="Query"
 CREATE TABLE login_attempts(
@@ -45,7 +42,7 @@ FROM login_attempts
 GROUP BY user_id;
 ```
 
-`countIf` 函数将仅计算 `is_successful = 1` 的行数，针对每个用户。
+`countIf` 函数只会统计每个用户中满足 `is_successful = 1` 的行数。
 
 ```response title="Response"
    ┌─user_id─┬─successful_logins─┐
@@ -54,6 +51,6 @@ GROUP BY user_id;
    └─────────┴───────────────────┘
 ```
 
-## 另见 {#see-also}
+## 另请参阅 {#see-also}
 - [`count`](/sql-reference/aggregate-functions/reference/count)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+- [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)

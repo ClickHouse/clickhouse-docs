@@ -1,11 +1,12 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/simplelinearregression'
-sidebar_position: 183
 description: 'Выполняет простую (одномерную) линейную регрессию.'
-title: simpleLinearRegression
-doc_type: reference
+sidebar_position: 183
+slug: /sql-reference/aggregate-functions/reference/simplelinearregression
+title: 'simpleLinearRegression'
+doc_type: 'reference'
 ---
-# simpleLinearRegression
+
+# simpleLinearRegression {#simplelinearregression}
 
 Выполняет простую (одномерную) линейную регрессию.
 
@@ -15,12 +16,12 @@ simpleLinearRegression(x, y)
 
 Параметры:
 
-- `x` — Колонка со значениями объясняющей переменной.
-- `y` — Колонка со значениями зависимой переменной.
+* `x` — столбец, содержащий значения объясняющей переменной.
+* `y` — столбец, содержащий значения зависимой переменной.
 
 Возвращаемые значения:
 
-Константы `(k, b)` результирующей линии `y = k*x + b`.
+Константы `(k, b)` результирующей прямой `y = k*x + b`.
 
 **Примеры**
 

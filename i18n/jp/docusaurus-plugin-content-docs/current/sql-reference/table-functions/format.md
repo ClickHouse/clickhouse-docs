@@ -1,38 +1,38 @@
 ---
-'description': '指定された入力フォーマットに従って、引数からデータを解析します。structure引数が指定されていない場合は、データから抽出されます。'
-'slug': '/sql-reference/table-functions/format'
-'sidebar_position': 65
-'sidebar_label': 'フォーマット'
-'title': 'フォーマット'
-'doc_type': 'reference'
+description: '指定された入力形式に従って引数からデータを解析します。structure 引数が指定されていない場合は、データから構造を自動的に抽出します。'
+slug: /sql-reference/table-functions/format
+sidebar_position: 65
+sidebar_label: 'format'
+title: 'format'
+doc_type: 'reference'
 ---
 
+# format テーブル関数 {#format-table-function}
 
-# format Table Function
+指定された入力フォーマットに従って、引数からデータをパースします。`structure` 引数が指定されていない場合は、データから自動的に抽出されます。
 
-指定された入力形式に従って、引数からデータを解析します。structure 引数が指定されていない場合、データから抽出されます。
-
-## Syntax {#syntax}
+## 構文 {#syntax}
 
 ```sql
 format(format_name, [structure], data)
 ```
 
-## Arguments {#arguments}
+## 引数 {#arguments}
 
-- `format_name` — データの [フォーマット](/sql-reference/formats)。
-- `structure` - テーブルの構造。オプション。形式 'column1_name column1_type, column2_name column2_type, ...'。
-- `data` — 指定された形式のデータを含む文字列を返す文字列リテラルまたは定数式。
+- `format_name` — データの[フォーマット](/sql-reference/formats)。
+- `structure` - テーブル構造。省略可能。形式は `column1_name column1_type, column2_name column2_type, ...`。
+- `data` — 指定したフォーマットのデータを含む文字列を返す文字列リテラルまたは定数式。
 
-## Returned value {#returned_value}
+## 返される値 {#returned_value}
 
-指定されたフォーマットおよび指定または抽出された構造に従って、`data` 引数から解析されたデータを持つテーブル。
+指定された形式および、指定または抽出された構造に従って `data` 引数を解析した結果を含むテーブル。
 
-## Examples {#examples}
+## 例 {#examples}
 
 `structure` 引数なしの場合:
 
-**Query:**
+**クエリ:**
+
 ```sql
 SELECT * FROM format(JSONEachRow,
 $$
@@ -43,18 +43,19 @@ $$
 $$)
 ```
 
-**Result:**
+**結果:**
 
 ```response
 ┌───b─┬─a─────┐
-│ 111 │ Hello │
-│ 123 │ World │
-│ 112 │ Hello │
-│ 124 │ World │
+│ 111 │ こんにちは │
+│ 123 │ 世界 │
+│ 112 │ こんにちは │
+│ 124 │ 世界 │
 └─────┴───────┘
 ```
 
-**Query:**
+**クエリ：**
+
 ```sql
 DESC format(JSONEachRow,
 $$
@@ -65,7 +66,7 @@ $$
 $$)
 ```
 
-**Result:**
+**結果:**
 
 ```response
 ┌─name─┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -74,9 +75,10 @@ $$)
 └──────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-`structure` 引数ありの場合:
+`structure` 引数を指定する場合:
 
-**Query:**
+**クエリ：**
+
 ```sql
 SELECT * FROM format(JSONEachRow, 'a String, b UInt32',
 $$
@@ -87,16 +89,17 @@ $$
 $$)
 ```
 
-**Result:**
+**結果:**
+
 ```response
 ┌─a─────┬───b─┐
-│ Hello │ 111 │
-│ World │ 123 │
-│ Hello │ 112 │
-│ World │ 124 │
+│ こんにちは │ 111 │
+│ 世界       │ 123 │
+│ こんにちは │ 112 │
+│ 世界       │ 124 │
 └───────┴─────┘
 ```
 
-## Related {#related}
+## 関連項目 {#related}
 
-- [Formats](../../interfaces/formats.md)
+- [フォーマット](../../interfaces/formats.md)

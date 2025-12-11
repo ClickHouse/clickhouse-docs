@@ -1,13 +1,14 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/varpopstable'
+description: 'Возвращает генеральную дисперсию. В отличие от varPop, эта функция использует численно устойчивый алгоритм. Она работает медленнее, но обеспечивает меньшую вычислительную погрешность.'
 sidebar_position: 211
-description: 'Возвращает дисперсию популяции. В отличие от varPop, эта функция использует'
-title: varPopStable
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/varpopstable
+title: 'varPopStable'
+doc_type: 'reference'
 ---
+
 ## varPopStable {#varpopstable}
 
-Возвращает дисперсию популяции. В отличие от [`varPop`](../reference/varpop.md), эта функция использует [численно стабильный](https://en.wikipedia.org/wiki/Numerical_stability) алгоритм. Он работает медленнее, но обеспечивает меньшую вычислительную ошибку.
+Возвращает дисперсию генеральной совокупности. В отличие от [`varPop`](../reference/varpop.md), эта функция использует [численно устойчивый](https://en.wikipedia.org/wiki/Numerical_stability) алгоритм. Она работает медленнее, но обеспечивает меньшую вычислительную погрешность.
 
 **Синтаксис**
 
@@ -19,11 +20,11 @@ varPopStable(x)
 
 **Параметры**
 
-- `x`: Популяция значений, для которых необходимо найти дисперсию. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md).
+* `x`: набор значений, для которого вычисляется генеральная дисперсия. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md).
 
 **Возвращаемое значение**
 
-- Возвращает дисперсию популяции `x`. [Float64](../../data-types/float.md).
+* Возвращает генеральную дисперсию для `x`. [Float64](../../data-types/float.md).
 
 **Пример**
 

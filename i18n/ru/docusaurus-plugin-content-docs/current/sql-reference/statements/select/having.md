@@ -1,16 +1,48 @@
 ---
-slug: '/sql-reference/statements/select/having'
-sidebar_label: HAVING
-description: 'Документация для HAVING Clause'
+description: 'Описание оператора HAVING'
+sidebar_label: 'HAVING'
+slug: /sql-reference/statements/select/having
 title: 'Оператор HAVING'
-doc_type: reference
+doc_type: 'reference'
 ---
-# Условие HAVING
 
-Позволяет фильтровать результаты агрегации, полученные с помощью [GROUP BY](/sql-reference/statements/select/group-by). Оно аналогично условию [WHERE](../../../sql-reference/statements/select/where.md), но разница заключается в том, что `WHERE` выполняется до агрегации, тогда как `HAVING` выполняется после неё.
+# Предложение HAVING {#having-clause}
 
-Возможно ссылаться на результаты агрегации из условия `SELECT` в условии `HAVING` по их псевдониму. Кроме того, условие `HAVING` может фильтровать результаты дополнительных агрегаций, которые не возвращаются в результатах запроса.
+Позволяет фильтровать результаты агрегирования, полученные с помощью [GROUP BY](/sql-reference/statements/select/group-by). Оно похоже на предложение [WHERE](../../../sql-reference/statements/select/where.md), но разница в том, что `WHERE` выполняется до агрегирования, тогда как `HAVING` выполняется после него.
+
+В предложении `HAVING` можно ссылаться на результаты агрегирования из списка `SELECT` по их псевдонимам. Либо предложение `HAVING` может фильтровать по результатам дополнительных агрегатных функций, которые не возвращаются в результатах запроса.
+
+## Пример {#example}
+
+Если у вас есть таблица `sales` следующей структуры:
+
+```sql
+CREATE TABLE sales
+(
+    region String,
+    salesperson String,
+    amount Float64
+)
+ORDER BY (region, salesperson);
+```
+
+Вы можете выполнить запрос следующим образом:
+
+```sql
+SELECT
+    region,
+    salesperson,
+    sum(amount) AS total_sales
+FROM sales
+GROUP BY
+    region,
+    salesperson
+HAVING total_sales > 10000
+ORDER BY total_sales DESC;
+```
+
+Это выведет список продавцов с суммарным объемом продаж более 10 000 в их регионе.
 
 ## Ограничения {#limitations}
 
-`HAVING` не может быть использовано, если агрегация не выполняется. Используйте `WHERE` вместо этого.
+`HAVING` нельзя использовать, если не выполняется агрегация. Вместо этого используйте `WHERE`.

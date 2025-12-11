@@ -1,17 +1,18 @@
 ---
-'slug': '/managing-data/drop_partition'
-'sidebar_label': 'Drop Partition'
-'title': '删除分区'
-'hide_title': false
-'description': '页面描述删除分区'
-'doc_type': 'reference'
+slug: /managing-data/drop_partition
+sidebar_label: '删除分区'
+title: '删除分区'
+hide_title: false
+description: '介绍如何删除分区的页面'
+keywords: ['DROP PARTITION', '删除分区', '删除分区', '移除分区', '分区管理']
+doc_type: 'reference'
 ---
 
-## 背景 {#background}
+## Background \{#background\}
 
-在通过 `PARTITION BY` 子句初始定义表时指定分区。此子句可以包含对任何列的 SQL 表达式，其结果将定义行发送到哪个分区。
+在创建表时，通过 `PARTITION BY` 子句来指定分区。该子句可以包含针对任意列的 SQL 表达式，其结果将决定每一行被发送到哪个分区。
 
-数据片段在逻辑上与磁盘上的每个分区相关联，可以单独查询。以下示例中，我们使用表达式 `toYear(CreationDate)` 按年对 `posts` 表进行分区。当行插入到 ClickHouse 中时，将针对每行评估此表达式，并在存在的情况下将其路由到结果分区（如果该行是某年的第一行，则将创建该分区）。
+数据片段在磁盘上在逻辑上与各个分区关联，并且可以被单独查询。对于下面的示例，我们使用表达式 `toYear(CreationDate)` 按年份对 `posts` 表进行分区。当向 ClickHouse 插入行时，会对每一行计算该表达式，并将其路由到对应的分区（如果该年份尚无数据行，则会创建对应的分区）。
 
 ```sql
  CREATE TABLE posts
@@ -28,21 +29,21 @@ ORDER BY (PostTypeId, toDate(CreationDate), CreationDate)
 PARTITION BY toYear(CreationDate)
 ```
 
-阅读关于设置分区表达式的部分 [如何设置分区表达式](/sql-reference/statements/alter/partition/#how-to-set-partition-expression)。
+请参阅章节[如何设置分区表达式](/sql-reference/statements/alter/partition/#how-to-set-partition-expression)了解如何设置分区表达式。
 
-在 ClickHouse 中，用户应主要将分区视为数据管理功能，而不是查询优化技术。通过根据关键字逻辑地分离数据，每个分区都可以独立操作，例如删除。这使得用户可以在时间或 [过期数据/从集群有效删除](/sql-reference/statements/alter/partition) 之间有效地移动分区及其子集，进而在 [存储层](/integrations/s3#storage-tiers) 之间移动。
+在 ClickHouse 中，分区原则上应被视为一种数据管理功能，而不是查询优化技术。通过基于某个键对数据进行逻辑划分，可以对每个分区进行独立操作，例如删除。这样，用户就可以根据时间在[存储层级](/integrations/s3#storage-tiers)之间高效地移动分区（即数据子集），或[让数据过期/从集群中高效删除数据](/sql-reference/statements/alter/partition)。
 
-## 删除分区 {#drop-partitions}
+## 删除分区 \{#drop-partitions\}
 
-`ALTER TABLE ... DROP PARTITION` 提供了一种具有成本效益的方式来删除整个分区。
+`ALTER TABLE ... DROP PARTITION` 提供了一种低成本的方式来删除整个分区。
 
 ```sql
-ALTER TABLE table_name [ON CLUSTER cluster] DROP PARTITION|PART partition_expr
+ALTER TABLE 表名 [ON CLUSTER 集群名] DROP PARTITION|PART 分区表达式
 ```
 
-此查询将分区标记为非活动状态并完全删除数据，约需 10 分钟。该查询是复制的 – 它在所有副本上删除数据。
+此查询会将该分区标记为非活动，并在大约 10 分钟内彻底删除数据。该查询会在所有副本间复制执行，从而删除所有副本上的数据。
 
-在下面的示例中，我们通过删除相关分区来移除 2008 年的帖子。
+在下面的示例中，我们通过删除关联的分区，从前面那个表中移除 2008 年的帖子。
 
 ```sql
 SELECT DISTINCT partition

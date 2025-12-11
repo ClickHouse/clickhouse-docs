@@ -1,0 +1,64 @@
+---
+title: "`remote` および `remoteSecure` テーブル関数でのタイムアウトエラーの解消"
+description: "ClickHouse で `remote` または `remoteSecure` テーブル関数を使用する際に、接続タイムアウト設定を調整してタイムアウトエラーを解消する方法を説明します。"
+date: 2023-03-20
+tags: ['エラーと例外']
+keywords: ['接続試行が失敗しました']
+---
+
+{frontMatter.description}
+
+{/* 省略 */}
+
+## コード: 279. DB::NetException: All connection tries failed. \{#code-279-dbnetexception-all-connection-tries-failed\}
+
+**問題**
+[`remote()` または `remoteSecure()`](https://clickhouse.com/docs/sql-reference/table-functions/remote/) テーブル関数を使用すると、別の ClickHouse ノード上のリモートテーブルにアクセスできます。
+
+これらの関数を使用するノードが、リモートノードとのレイテンシが 100ms を超える場合、タイムアウトエラーが発生することがよくあります。
+
+例:
+
+```
+4776d4bd8190 :) SELECT * FROM remoteSecure('HOSTNAME.us-east-2.aws.clickhouse.cloud', DATABASE, TABLE, 'USER', 'USER_PASSWORD')
+
+SELECT *
+FROM remoteSecure('HOSTNAME.us-east-2.aws.clickhouse.cloud', DATABASE, TABLE, 'USER', 'USER_PASSWORD')
+
+Query id: 2bd6ddd0-66d9-4d19-830f-87e3cec3724b
+
+
+0 rows in set. Elapsed: 1.213 sec.
+
+Received exception from server (version 22.6.9):
+Code: 519. DB::Exception: Received from localhost:9000. DB::NetException. DB::NetException: All attempts to get table structure failed. Log:
+
+Code: 279. DB::NetException: All connection tries failed. Log:
+
+Code: 209. DB::NetException: Timeout: connect timed out: 18.218.245.169:9440 (hc7d963h1t.us-east-2.aws.clickhouse.cloud:9440, connection timeout 100 ms). (SOCKET_TIMEOUT) (version 22.6.9.11 (official build))
+Code: 209. DB::NetException: Timeout: connect timed out: 18.218.245.169:9440 (hc7d963h1t.us-east-2.aws.clickhouse.cloud:9440, connection timeout 100 ms). (SOCKET_TIMEOUT) (version 22.6.9.11 (official build))
+Code: 209. DB::NetException: Timeout: connect timed out: 18.218.245.169:9440 (hc7d963h1t.us-east-2.aws.clickhouse.cloud:9440, connection timeout 100 ms). (SOCKET_TIMEOUT) (version 22.6.9.11 (official build))
+
+. (ALL_CONNECTION_TRIES_FAILED) (version 22.6.9.11 (official build))
+
+. (NO_REMOTE_SHARD_AVAILABLE)
+```
+
+**回避策**
+接続タイムアウトを延長するには、[`connect_timeout_with_failover_secure_ms`](https://github.com/ClickHouse/ClickHouse/blob/master/src/Core/Settings.h#L67) をデフォルトの 100ms から、例えば 1 秒などのより大きな値に設定します。
+
+```
+4776d4bd8190 :) SELECT * FROM remoteSecure('HOSTNAME.us-east-2.aws.clickhouse.cloud:9440', DATABASE, TABLE, 'USER', 'USER_PASSWORD') SETTINGS connect_timeout_with_failover_secure_ms = 1000
+
+SELECT *
+FROM remoteSecure('HOSTNAME.us-east-2.aws.clickhouse.cloud:9440', DATABASE, TABLE, 'USER', 'USER_PASSWORD')
+SETTINGS connect_timeout_with_failover_secure_ms = 1000
+
+Query id: 8e2f4d41-307b-4e61-abb8-809190023247
+
+┌─x─┐
+│ 1 │
+└───┘
+
+1行が結果セットに含まれています。経過時間: 2.403秒。
+```

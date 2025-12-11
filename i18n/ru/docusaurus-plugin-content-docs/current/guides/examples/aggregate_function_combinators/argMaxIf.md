@@ -1,22 +1,27 @@
 ---
 slug: '/examples/aggregate-function-combinators/argMaxIf'
-sidebar_label: argMaxIf
-description: 'Пример использования комбиниратора argMaxIf'
-title: argMaxIf
+title: 'argMaxIf'
+description: 'Пример использования комбинатора argMaxIf'
 keywords: ['argMax', 'if', 'combinator', 'examples', 'argMaxIf']
-doc_type: reference
+sidebar_label: 'argMaxIf'
+doc_type: 'reference'
 ---
+
 # argMaxIf {#argmaxif}
 
 ## Описание {#description}
 
-Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) можно применить к функции [`argMax`](/sql-reference/aggregate-functions/reference/argmax), чтобы найти значение `arg`, которое соответствует максимальному значению `val` для строк, где условие истинно, используя агрегатную функцию-комбинатор `argMaxIf`.
+Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к функции [`argMax`](/sql-reference/aggregate-functions/reference/argmax),
+чтобы найти значение `arg`, которое соответствует максимальному значению `val` для строк, где условие истинно,
+с помощью агрегатной функции-комбинатора `argMaxIf`.
 
-Функция `argMaxIf` полезна, когда вам нужно найти значение, связанное с максимальным значением в наборе данных, но только для строк, которые удовлетворяют конкретному условию.
+Функция `argMaxIf` полезна, когда вам нужно найти значение, связанное с
+максимальным значением в наборе данных, но только для строк, которые удовлетворяют определённому
+условию.
 
 ## Пример использования {#example-usage}
 
-В этом примере мы будем использовать выборку данных о продажах продуктов, чтобы продемонстрировать, как работает `argMaxIf`. Мы найдем название продукта, который имеет самую высокую цену, но только для продуктов, которые были проданы как минимум 10 раз.
+В этом примере мы используем демонстрационный набор данных о продажах товаров, чтобы показать, как работает `argMaxIf`. Мы найдём название товара с наивысшей ценой, но только среди тех товаров, которые были проданы как минимум 10 раз.
 
 ```sql title="Query"
 CREATE TABLE product_sales
@@ -37,11 +42,14 @@ SELECT argMaxIf(product_name, price, sales_count >= 10) AS most_expensive_popula
 FROM product_sales;
 ```
 
-Функция `argMaxIf` вернет название продукта, который имеет самую высокую цену среди всех продуктов, которые были проданы как минимум 10 раз (sales_count >= 10). В данном случае она вернет 'Laptop', поскольку он имеет самую высокую цену (999.99) среди популярных продуктов.
+Функция `argMaxIf` вернёт название товара с наивысшей ценой
+среди всех товаров, которые были проданы как минимум 10 раз (sales&#95;count &gt;= 10).
+В этом случае она вернёт &#39;Laptop&#39;, так как у него самая высокая цена (999.99)
+среди популярных товаров.
 
 ```response title="Response"
-   ┌─most_expensi⋯lar_product─┐
-1. │ Laptop                   │
+   ┌─самый_дорого⋯й_продукт────┐
+1. │ Ноутбук                  │
    └──────────────────────────┘
 ```
 
@@ -49,4 +57,4 @@ FROM product_sales;
 - [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
 - [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
 - [`argMinIf`](/examples/aggregate-function-combinators/argMinIf)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+- [`комбинатор If`](/sql-reference/aggregate-functions/combinators#-if)

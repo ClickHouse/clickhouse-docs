@@ -1,41 +1,40 @@
 ---
-'description': '将子查询转换为一个 TABLE。此功能实现了 视图。'
-'sidebar_label': '视图'
-'sidebar_position': 210
-'slug': '/sql-reference/table-functions/view'
-'title': '视图'
-'doc_type': 'reference'
+description: '将子查询转换为一张表。该函数实现视图功能。'
+sidebar_label: '视图'
+sidebar_position: 210
+slug: /sql-reference/table-functions/view
+title: '视图'
+doc_type: 'reference'
 ---
 
+# view 表函数 {#view-table-function}
 
-# view Table Function
+将子查询转换为一张表。该函数用于实现视图（参见 [CREATE VIEW](/sql-reference/statements/create/view)）。生成的表本身不存储数据，而只保存指定的 `SELECT` 查询。从该表读取时，ClickHouse 会执行该查询，并从结果中丢弃所有不需要的列。
 
-将子查询转换为一个表。该函数实现视图 (参见 [CREATE VIEW](/sql-reference/statements/create/view))。生成的表不存储数据，而只存储指定的 `SELECT` 查询。当从该表读取时，ClickHouse 执行查询并删除结果中所有不必要的列。
-
-## Syntax {#syntax}
+## 语法 {#syntax}
 
 ```sql
 view(subquery)
 ```
 
-## Arguments {#arguments}
+## 参数 {#arguments}
 
 - `subquery` — `SELECT` 查询。
 
-## Returned value {#returned_value}
+## 返回值 {#returned_value}
 
-- 一个表。
+- 一张表。
 
-## Examples {#examples}
+## 示例 {#examples}
 
 输入表：
 
 ```text
 ┌─id─┬─name─────┬─days─┐
-│  1 │ January  │   31 │
-│  2 │ February │   29 │
-│  3 │ March    │   31 │
-│  4 │ April    │   30 │
+│  1 │ 一月     │   31 │
+│  2 │ 二月     │   29 │
+│  3 │ 三月     │   31 │
+│  4 │ 四月     │   30 │
 └────┴──────────┴──────┘
 ```
 
@@ -49,14 +48,14 @@ SELECT * FROM view(SELECT name FROM months);
 
 ```text
 ┌─name─────┐
-│ January  │
-│ February │
-│ March    │
-│ April    │
+│ 一月  │
+│ 二月 │
+│ 三月    │
+│ 四月    │
 └──────────┘
 ```
 
-您可以将 `view` 函数用作 [remote](/sql-reference/table-functions/remote) 和 [cluster](/sql-reference/table-functions/cluster) 表函数的参数：
+您可以将 `view` 函数作为 [remote](/sql-reference/table-functions/remote) 和 [cluster](/sql-reference/table-functions/cluster) 表函数的参数使用：
 
 ```sql
 SELECT * FROM remote(`127.0.0.1`, view(SELECT a, b, c FROM table_name));
@@ -66,6 +65,6 @@ SELECT * FROM remote(`127.0.0.1`, view(SELECT a, b, c FROM table_name));
 SELECT * FROM cluster(`cluster_name`, view(SELECT a, b, c FROM table_name));
 ```
 
-## Related {#related}
+## 相关内容 {#related}
 
-- [View Table Engine](/engines/table-engines/special/view/)
+- [View 表引擎](/engines/table-engines/special/view/)

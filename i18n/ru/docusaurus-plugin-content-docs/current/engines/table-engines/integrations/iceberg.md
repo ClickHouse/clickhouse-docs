@@ -1,26 +1,27 @@
 ---
-slug: '/engines/table-engines/integrations/iceberg'
-sidebar_label: Iceberg
+description: 'Этот движок обеспечивает доступ только для чтения к существующим таблицам Apache Iceberg в Amazon S3, Azure, HDFS и локальном хранилище.'
+sidebar_label: 'Iceberg'
 sidebar_position: 90
-description: 'Этот движок предоставляет интеграцию только для чтения с существующими'
+slug: /engines/table-engines/integrations/iceberg
 title: 'Движок таблиц Iceberg'
-doc_type: reference
+doc_type: 'reference'
 ---
-# Движок таблиц Iceberg {#iceberg-table-engine}
+
+# Движок таблицы Iceberg {#iceberg-table-engine}
 
 :::warning 
-Мы рекомендуем использовать [функцию таблицы Iceberg](/sql-reference/table-functions/iceberg.md) для работы с данными Iceberg в ClickHouse. Функция таблицы Iceberg в настоящее время предоставляет достаточную функциональность, предлагая частичный интерфейс только для чтения для таблиц Iceberg.
+Мы рекомендуем использовать [табличную функцию Iceberg](/sql-reference/table-functions/iceberg.md) для работы с данными Iceberg в ClickHouse. В настоящее время табличная функция Iceberg предоставляет достаточную функциональность, реализуя частичный интерфейс только для чтения к таблицам Iceberg.
 
-Движок таблицы Iceberg доступен, но может иметь ограничения. ClickHouse изначально не был спроектирован для поддержки таблиц с изменяющимися схемами, что может повлиять на функциональность движка таблицы Iceberg. В результате некоторые функции, которые работают с обычными таблицами, могут быть недоступны или не работать корректно, особенно при использовании старого анализатора.
+Движок таблицы Iceberg доступен, но может иметь ограничения. Изначально ClickHouse не был спроектирован для поддержки таблиц со схемами, которые изменяются извне, что может влиять на работу движка таблицы Iceberg. В результате некоторые возможности, доступные для обычных таблиц, могут быть недоступны или работать некорректно, особенно при использовании старого анализатора запросов.
 
-Для оптимальной совместимости мы предлагаем использовать функцию таблицы Iceberg, пока мы продолжаем улучшать поддержку движка таблицы Iceberg.
+Для оптимальной совместимости мы рекомендуем использовать табличную функцию Iceberg, пока мы продолжаем улучшать поддержку движка таблицы Iceberg.
 :::
 
-Этот движок предоставляет интеграцию только для чтения с существующими таблицами Apache [Iceberg](https://iceberg.apache.org/) в Amazon S3, Azure, HDFS и локально хранимыми таблицами.
+Этот движок обеспечивает доступ только для чтения к существующим таблицам Apache [Iceberg](https://iceberg.apache.org/) в Amazon S3, Azure, HDFS, а также к локально хранимым таблицам.
 
 ## Создание таблицы {#create-table}
 
-Обратите внимание, что таблица Iceberg должна уже существовать в хранилище, эта команда не принимает параметры DDL для создания новой таблицы.
+Обратите внимание, что таблица Iceberg должна уже существовать в хранилище: эта команда не принимает параметры DDL для создания новой таблицы.
 
 ```sql
 CREATE TABLE iceberg_table_s3
@@ -36,12 +37,12 @@ CREATE TABLE iceberg_table_local
     ENGINE = IcebergLocal(path_to_table, [,format] [,compression_method])
 ```
 
-## Аргументы движка {#engine-arguments}
+## Параметры движка {#engine-arguments}
 
-Описание аргументов совпадает с описанием аргументов в движках `S3`, `AzureBlobStorage`, `HDFS` и `File` соответственно. 
-`format` обозначает формат файлов данных в таблице Iceberg.
+Описание аргументов соответствует описанию аргументов в движках `S3`, `AzureBlobStorage`, `HDFS` и `File` соответственно.
+`format` обозначает формат файлов с данными в таблице Iceberg.
 
-Параметры движка могут быть указаны с использованием [именованных коллекций](../../../operations/named-collections.md).
+Параметры движка могут быть заданы с использованием [Named Collections](../../../operations/named-collections.md).
 
 ### Пример {#example}
 
@@ -70,36 +71,37 @@ CREATE TABLE iceberg_table ENGINE=IcebergS3(iceberg_conf, filename = 'test_table
 
 ## Псевдонимы {#aliases}
 
-Движок таблицы `Iceberg` теперь является псевдонимом для `IcebergS3`.
+Движок таблицы `Iceberg` теперь является псевдонимом движка `IcebergS3`.
 
 ## Эволюция схемы {#schema-evolution}
-
-На данный момент с помощью CH вы можете читать таблицы iceberg, схема которых изменялась со временем. В настоящее время мы поддерживаем чтение таблиц, в которых были добавлены и удалены колонки, а их порядок изменился. Вы также можете изменить колонку, где значение обязательно, на ту, где NULL допустимо. Дополнительно мы поддерживаем разрешенные преобразования типов для простых типов, а именно:  
+В данный момент с помощью CH вы можете читать таблицы Iceberg, схема которых со временем изменялась. В настоящее время поддерживается чтение таблиц, в которых столбцы добавлялись и удалялись, а их порядок менялся. Вы также можете изменить столбец с обязательным значением на столбец, в котором допускается значение NULL. Дополнительно поддерживаются разрешённые преобразования типов для простых типов, а именно:  
 * int -> long
 * float -> double
-* decimal(P, S) -> decimal(P', S) где P' > P.
+* decimal(P, S) -> decimal(P', S), где P' > P. 
 
-В настоящее время невозможно изменить вложенные структуры или типы элементов внутри массивов и карт.
+Сейчас невозможно изменять вложенные структуры или типы элементов внутри массивов и отображений.
 
-Чтобы прочитать таблицу, схема которой изменилась после ее создания с динамическим выводом схемы, установите allow_dynamic_metadata_for_data_lakes = true при создании таблицы.
+Чтобы прочитать таблицу, схема которой изменилась после её создания, с использованием динамического вывода схемы, установите allow_dynamic_metadata_for_data_lakes = true при создании таблицы.
 
-## Оптимизация партиций {#partition-pruning}
+## Отсечение партиций {#partition-pruning}
 
-ClickHouse поддерживает оптимизацию партиций во время запросов SELECT для таблиц Iceberg, что помогает оптимизировать производительность запросов, пропуская неактуальные файлы данных. Чтобы включить оптимизацию партиций, установите `use_iceberg_partition_pruning = 1`. Для получения дополнительной информации об оптимизации партиций iceberg обратитесь к https://iceberg.apache.org/spec/#partitioning.
+ClickHouse поддерживает отсечение партиций в запросах SELECT к таблицам Iceberg, что помогает оптимизировать производительность запросов за счёт пропуска нерелевантных файлов данных. Чтобы включить отсечение партиций, установите `use_iceberg_partition_pruning = 1`. Дополнительную информацию об отсечении партиций в Iceberg см. в спецификации: https://iceberg.apache.org/spec/#partitioning
 
-## Путешествие во времени {#time-travel}
+## Time travel {#time-travel}
 
-ClickHouse поддерживает путешествие во времени для таблиц Iceberg, что позволяет вам запрашивать исторические данные с определенной меткой времени или идентификатором снимка.
+В ClickHouse поддерживается механизм time travel для таблиц Iceberg, который позволяет выполнять запросы к историческим данным по заданной временной метке или идентификатору снимка (snapshot).
 
-## Обработка таблиц с удаленными строками {#deleted-rows}
+## Обработка таблиц с удалёнными строками {#deleted-rows}
 
-В настоящее время поддерживаются только таблицы Iceberg с [позиционными удалениями](https://iceberg.apache.org/spec/#position-delete-files).
+В настоящее время поддерживаются только таблицы Iceberg с [позиционными удалениями (position deletes)](https://iceberg.apache.org/spec/#position-delete-files).
 
 Следующие методы удаления **не поддерживаются**:
-- [Удостоверяющие удаления](https://iceberg.apache.org/spec/#equality-delete-files)
-- [Векторы удаления](https://iceberg.apache.org/spec/#deletion-vectors) (введены в версии 3)
 
-### Основное использование {#basic-usage}
+* [удаления по равенству (equality deletes)](https://iceberg.apache.org/spec/#equality-delete-files)
+* [векторы удаления (deletion vectors)](https://iceberg.apache.org/spec/#deletion-vectors) (введены в версии 3)
+
+### Базовое использование {#basic-usage}
+
 ```sql
 SELECT * FROM example_table ORDER BY 1 
 SETTINGS iceberg_timestamp_ms = 1714636800000
@@ -110,66 +112,66 @@ SELECT * FROM example_table ORDER BY 1
 SETTINGS iceberg_snapshot_id = 3547395809148285433
 ```
 
-Примечание: Вы не можете указать одновременно параметры `iceberg_timestamp_ms` и `iceberg_snapshot_id` в одном запросе.
+Примечание: Нельзя указывать параметры `iceberg_timestamp_ms` и `iceberg_snapshot_id` в одном запросе одновременно.
 
-### Важные моменты {#important-considerations}
+### Важные замечания {#important-considerations}
 
-- **Снимки** обычно создаются, когда:
-  - Новые данные записываются в таблицу
-  - Выполняется какая-либо компоновка данных
+* **Снапшоты** обычно создаются, когда:
+  * В таблицу записываются новые данные
+  * Выполняется операция компакции данных
 
-- **Изменения схемы обычно не создают снимков** - Это приводит к важным особенностям при использовании путешествия во времени с таблицами, которые претерпели эволюцию схемы.
+* **Изменения схемы, как правило, не создают снапшоты** — это приводит к важным особенностям поведения при использовании механизма time travel для таблиц, которые претерпели эволюцию схемы.
 
 ### Примеры сценариев {#example-scenarios}
 
-Все сценарии написаны в Spark, поскольку CH еще не поддерживает запись в таблицы Iceberg.
+Все сценарии приведены на Spark, потому что ClickHouse (CH) пока не поддерживает запись в таблицы Iceberg.
 
-#### Сценарий 1: Изменения схемы без новых снимков {#scenario-1}
+#### Сценарий 1: Изменения схемы без новых снапшотов {#scenario-1}
 
-Рассмотрим эту последовательность операций:
+Рассмотрим следующую последовательность операций:
 
 ```sql
- -- Create a table with two columns
-  CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example (
-  order_number int, 
-  product_code string
-  ) 
-  USING iceberg 
-  OPTIONS ('format-version'='2')
+-- Создать таблицу с двумя столбцами
+ CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example (
+ order_number int, 
+ product_code string
+ ) 
+ USING iceberg 
+ OPTIONS ('format-version'='2')
 
--- Insert data into the table
-  INSERT INTO spark_catalog.db.time_travel_example VALUES 
-    (1, 'Mars')
+-- Вставить данные в таблицу
+ INSERT INTO spark_catalog.db.time_travel_example VALUES 
+   (1, 'Mars')
 
-  ts1 = now() // A piece of pseudo code
+ ts1 = now() // Фрагмент псевдокода
 
--- Alter table to add a new column
-  ALTER TABLE spark_catalog.db.time_travel_example ADD COLUMN (price double)
+-- Изменить таблицу, добавив новый столбец
+ ALTER TABLE spark_catalog.db.time_travel_example ADD COLUMN (price double)
 
-  ts2 = now()
+ ts2 = now()
 
--- Insert data into the table
-  INSERT INTO spark_catalog.db.time_travel_example VALUES (2, 'Venus', 100)
+-- Вставить данные в таблицу
+ INSERT INTO spark_catalog.db.time_travel_example VALUES (2, 'Venus', 100)
 
-   ts3 = now()
+  ts3 = now()
 
--- Query the table at each timestamp
-  SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts1;
-
-+------------+------------+
-|order_number|product_code|
-+------------+------------+
-|           1|        Mars|
-+------------+------------+
-  SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts2;
+-- Запросить таблицу для каждой временной метки
+ SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts1;
 
 +------------+------------+
 |order_number|product_code|
 +------------+------------+
 |           1|        Mars|
 +------------+------------+
+ SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts2;
 
-  SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts3;
++------------+------------+
+|order_number|product_code|
++------------+------------+
+|           1|        Mars|
++------------+------------+
+
+ SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts3;
 
 +------------+------------+-----+
 |order_number|product_code|price|
@@ -181,15 +183,15 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 
 Результаты запроса в разные моменты времени:
 
-- На ts1 и ts2: Появляются только оригинальные две колонки
-- На ts3: Появляются все три колонки, при этом для цены первой строки значение NULL
+* В моменты ts1 и ts2: отображаются только исходные два столбца
+* В момент ts3: отображаются все три столбца, при этом для первой строки значение price равно NULL
 
-#### Сценарий 2: Исторические и текущие различия в схеме {#scenario-2}
+#### Сценарий 2: Отличия между исторической и текущей схемами {#scenario-2}
 
-Запрос "путешествие во времени" в текущий момент может показать схему, отличающуюся от текущей таблицы:
+Запрос time travel, выполненный в текущий момент времени, может показать схему, отличающуюся от текущей схемы таблицы:
 
 ```sql
--- Create a table
+-- Создание таблицы
   CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example_2 (
   order_number int, 
   product_code string
@@ -197,15 +199,15 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
   USING iceberg 
   OPTIONS ('format-version'='2')
 
--- Insert initial data into the table
+-- Вставка начальных данных в таблицу
   INSERT INTO spark_catalog.db.time_travel_example_2 VALUES (2, 'Venus');
 
--- Alter table to add a new column
+-- Изменение таблицы для добавления нового столбца
   ALTER TABLE spark_catalog.db.time_travel_example_2 ADD COLUMN (price double);
 
   ts = now();
 
--- Query the table at a current moment but using timestamp syntax
+-- Запрос таблицы на текущий момент с использованием синтаксиса временной метки
 
   SELECT * FROM spark_catalog.db.time_travel_example_2 TIMESTAMP AS OF ts;
 
@@ -215,7 +217,7 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
     |           2|       Venus|
     +------------+------------+
 
--- Query the table at a current moment
+-- Запрос таблицы на текущий момент
   SELECT * FROM spark_catalog.db.time_travel_example_2;
     +------------+------------+-----+
     |order_number|product_code|price|
@@ -224,14 +226,14 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
     +------------+------------+-----+
 ```
 
-Это происходит потому, что `ALTER TABLE` не создает новый снимок, но для текущей таблицы Spark берет значение `schema_id` из последнего файла метаданных, а не из снимка.
+Это происходит потому, что `ALTER TABLE` не создает новый снимок, а для текущей таблицы Spark берет значение `schema_id` из последнего файла метаданных, а не из снимка.
 
-#### Сценарий 3: Исторические и текущие различия в схеме {#scenario-3}
+#### Сценарий 3: Отличия между исторической и текущей схемами {#scenario-3}
 
-Второй момент заключается в том, что, выполняя путешествие во времени, вы не можете получить состояние таблицы до того, как в нее были записаны какие-либо данные:
+Второй момент заключается в том, что при выполнении операции time travel вы не можете получить состояние таблицы до того, как в неё были записаны какие-либо данные:
 
 ```sql
--- Create a table
+-- Создание таблицы
   CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example_3 (
   order_number int, 
   product_code string
@@ -241,41 +243,45 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 
   ts = now();
 
--- Query the table at a specific timestamp
-  SELECT * FROM spark_catalog.db.time_travel_example_3 TIMESTAMP AS OF ts; -- Finises with error: Cannot find a snapshot older than ts.
+-- Запрос таблицы на определённую временную метку
+  SELECT * FROM spark_catalog.db.time_travel_example_3 TIMESTAMP AS OF ts; -- Завершается ошибкой: Cannot find a snapshot older than ts.
 ```
 
-В ClickHouse поведение совпадает со Spark. Вы можете мысленно заменить запросы Select Spark на запросы Select ClickHouse, и это будет работать так же.
+В ClickHouse поведение аналогично Spark. Вы можете мысленно заменить запросы Select в Spark на запросы Select в ClickHouse — и всё будет работать так же.
 
-## Разрешение файлов метаданных {#metadata-file-resolution}
+## Определение файла метаданных {#metadata-file-resolution}
 
-При использовании движка таблицы `Iceberg` в ClickHouse системе необходимо найти правильный файл metadata.json, который описывает структуру таблицы Iceberg. Вот как работает этот процесс разрешения:
+При использовании движка таблиц `Iceberg` в ClickHouse системе необходимо найти корректный файл metadata.json, который описывает структуру таблицы Iceberg. Ниже описано, как работает этот процесс определения:
 
 ### Поиск кандидатов {#candidate-search}
 
-1. **Прямое указание пути**:
-* Если вы задаете `iceberg_metadata_file_path`, система будет использовать этот точный путь, комбинируя его с путем к директории таблицы Iceberg.
-* Когда это значение задано, все другие параметры разрешения игнорируются.
-2. **Совпадение UUID таблицы**:
+1. **Явное указание пути**:
+
+* Если вы задаёте `iceberg_metadata_file_path`, система будет использовать именно этот путь, комбинируя его с путём к директории таблицы Iceberg.
+* При наличии этого параметра все остальные параметры определения игнорируются.
+
+2. **Сопоставление UUID таблицы**:
+
 * Если указан `iceberg_metadata_table_uuid`, система будет:
-  * Искать только `.metadata.json` файлы в директории `metadata`
-  * Фильтровать файлы, содержащие поле `table-uuid`, совпадающее с вашим указанным UUID (без учета регистра)
+  * Рассматривать только файлы `.metadata.json` в директории `metadata`
+  * Отфильтровывать файлы, содержащие поле `table-uuid`, совпадающее с указанным UUID (без учёта регистра)
 
 3. **Поиск по умолчанию**:
-* Если ни одно из вышеуказанных значений не указано, все `.metadata.json` файлы в директории `metadata` становятся кандидатами.
 
-### Выбор самого последнего файла {#most-recent-file}
+* Если ни один из вышеперечисленных параметров не задан, все файлы `.metadata.json` в директории `metadata` рассматриваются как кандидаты
 
-После определения кандидатных файлов с использованием вышеуказанных правил система определяет, какой из них является самым последним:
+### Выбор самого нового файла {#most-recent-file}
 
-* Если включен `iceberg_recent_metadata_file_by_last_updated_ms_field`:
-  * Выбирается файл с наибольшим значением `last-updated-ms`.
+После определения файлов-кандидатов по указанным правилам система решает, какой из них является самым новым:
+
+* Если включён `iceberg_recent_metadata_file_by_last_updated_ms_field`:
+  * Выбирается файл с максимальным значением поля `last-updated-ms`
 
 * В противном случае:
-  * Выбирается файл с самым высоким номером версии,
-  * (Версия отображается как `V` в именах файлов формата `V.metadata.json` или `V-uuid.metadata.json`).
+  * Выбирается файл с наибольшим номером версии
+  * (Версия представлена как `V` в именах файлов формата `V.metadata.json` или `V-uuid.metadata.json`)
 
-**Примечание**: Все упомянутые настройки являются настройками уровня движка и должны быть указаны при создании таблицы, как показано ниже:
+**Примечание**: Все упомянутые параметры являются настройками на уровне движка и должны указываться при создании таблицы, как показано ниже:
 
 ```sql
 CREATE TABLE example_table ENGINE = Iceberg(
@@ -283,16 +289,16 @@ CREATE TABLE example_table ENGINE = Iceberg(
 ) SETTINGS iceberg_metadata_table_uuid = '6f6f6407-c6a5-465f-a808-ea8900e35a38';
 ```
 
-**Примечание**: Хотя каталоги Iceberg обычно обрабатывают разрешение метаданных, движок таблицы `Iceberg` в ClickHouse напрямую интерпретирует файлы, хранящиеся в S3, как таблицы Iceberg, поэтому понимание этих правил разрешения имеет значение.
+**Примечание**: Хотя каталоги Iceberg обычно отвечают за разрешение метаданных, табличный движок `Iceberg` в ClickHouse напрямую интерпретирует файлы, хранящиеся в S3, как таблицы Iceberg, поэтому важно понимать правила их разрешения.
 
 ## Кэш данных {#data-cache}
 
-Движок таблицы `Iceberg` и функция таблицы поддерживают кэширование данных так же, как и хранилища `S3`, `AzureBlobStorage`, `HDFS`. Смотрите [здесь](../../../engines/table-engines/integrations/s3.md#data-cache).
+Табличный движок `Iceberg` и одноимённая табличная функция поддерживают кэширование данных так же, как и хранилища `S3`, `AzureBlobStorage`, `HDFS`. См. [здесь](../../../engines/table-engines/integrations/s3.md#data-cache).
 
 ## Кэш метаданных {#metadata-cache}
 
-Движок таблицы `Iceberg` и функция таблицы поддерживают кэш метаданных, хранящий информацию о файлах манифеста, списках манифестов и файлах JSON метаданных. Кэш хранится в памяти. Эта функция контролируется установкой `use_iceberg_metadata_files_cache`, которая включена по умолчанию.
+Движок таблиц и табличная функция `Iceberg` поддерживают кэш метаданных, в котором хранится информация о manifest-файлах, списке manifest и JSON-файле метаданных. Кэш хранится в памяти. Эта функция управляется настройкой `use_iceberg_metadata_files_cache`, которая по умолчанию включена.
 
-## Смотрите также {#see-also}
+## См. также {#see-also}
 
-- [функция таблицы iceberg](/sql-reference/table-functions/iceberg.md)
+- [табличная функция iceberg](/sql-reference/table-functions/iceberg.md)

@@ -1,32 +1,31 @@
 ---
-'alias': []
-'description': 'CSVWithNamesAndTypes フォーマットに関するドキュメント'
-'input_format': true
-'keywords':
-- 'CSVWithNamesAndTypes'
-'output_format': true
-'slug': '/interfaces/formats/CSVWithNamesAndTypes'
-'title': 'CSVWithNamesAndTypes'
-'doc_type': 'reference'
+alias: []
+description: 'CSVWithNamesAndTypes 形式に関するドキュメント'
+input_format: true
+keywords: ['CSVWithNamesAndTypes']
+output_format: true
+slug: /interfaces/formats/CSVWithNamesAndTypes
+title: 'CSVWithNamesAndTypes'
+doc_type: 'reference'
 ---
 
-| Input | Output | Alias |
+| 入力 | 出力 | 別名 |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## 説明 {#description}
 
-このフォーマットは、[TabSeparatedWithNamesAndTypes](../formats/TabSeparatedWithNamesAndTypes) のように、カラム名とタイプを含む2つのヘッダー行も印刷します。
+[TabSeparatedWithNamesAndTypes](../formats/TabSeparatedWithNamesAndTypes) と同様に、列名と型が記載されたヘッダー行を 2 行出力します。
 
 ## 使用例 {#example-usage}
 
 ### データの挿入 {#inserting-data}
 
 :::tip
-[バージョン](https://github.com/ClickHouse/ClickHouse/releases) 23.1以降、ClickHouseは`CSV`フォーマットを使用する際にCSVファイル内のヘッダーを自動的に検出しますので、`CSVWithNames`や`CSVWithNamesAndTypes`を使用する必要はありません。
+[バージョン](https://github.com/ClickHouse/ClickHouse/releases) 23.1 以降では、ClickHouse は `CSV` フォーマットを使用する際に CSV ファイル内のヘッダーを自動検出するため、`CSVWithNames` や `CSVWithNamesAndTypes` を使用する必要はありません。
 :::
 
-`football_types.csv`という名前の次のCSVファイルを使用します:
+以下の内容の CSV ファイル（`football_types.csv` という名前）を使用します。
 
 ```csv
 date,season,home_team,away_team,home_team_goals,away_team_goals
@@ -50,7 +49,7 @@ Date,Int16,LowCardinality(String),LowCardinality(String),Int8,Int8
 2022-05-07,2021,Walsall,Swindon Town,0,3
 ```
 
-テーブルを作成します:
+テーブルを作成する:
 
 ```sql
 CREATE TABLE football
@@ -66,7 +65,7 @@ ENGINE = MergeTree
 ORDER BY (date, home_team);
 ```
 
-`CSVWithNamesAndTypes`フォーマットを使用してデータを挿入します:
+`CSVWithNamesAndTypes` 形式を使用してデータを挿入します：
 
 ```sql
 INSERT INTO football FROM INFILE 'football_types.csv' FORMAT CSVWithNamesAndTypes;
@@ -74,7 +73,7 @@ INSERT INTO football FROM INFILE 'football_types.csv' FORMAT CSVWithNamesAndType
 
 ### データの読み込み {#reading-data}
 
-`CSVWithNamesAndTypes`フォーマットを使用してデータを読み込みます:
+`CSVWithNamesAndTypes` 形式を使用してデータを読み込みます。
 
 ```sql
 SELECT *
@@ -82,7 +81,7 @@ FROM football
 FORMAT CSVWithNamesAndTypes
 ```
 
-出力は、カラム名とタイプのための2つのヘッダー行を含むCSVになります:
+出力は、列名と型を表す 2 行のヘッダー行を持つ CSV になります。
 
 ```csv
 "date","season","home_team","away_team","home_team_goals","away_team_goals"
@@ -109,12 +108,12 @@ FORMAT CSVWithNamesAndTypes
 ## フォーマット設定 {#format-settings}
 
 :::note
-設定 [input_format_with_names_use_header](/operations/settings/settings-formats.md/#input_format_with_names_use_header) が `1` に設定されている場合、
-入力データのカラムはテーブルのカラムと名前でマッピングされ、未知の名前のカラムは設定 [input_format_skip_unknown_fields](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) が `1` に設定されている場合はスキップされます。
-そうでない場合、最初の行はスキップされます。
+[input_format_with_names_use_header](/operations/settings/settings-formats.md/#input_format_with_names_use_header) 設定が `1` の場合、
+入力データの列は名前に基づいてテーブルの列にマッピングされます。[input_format_skip_unknown_fields](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 設定が `1` の場合、名前が不明な列はスキップされます。
+それ以外の場合は、最初の行がスキップされます。
 :::
 
 :::note
-設定 [input_format_with_types_use_header](../../../operations/settings/settings-formats.md/#input_format_with_types_use_header) が `1` に設定されている場合、
-入力データのタイプはテーブルの対応するカラムのタイプと比較されます。そうでない場合、2行目はスキップされます。
+[input_format_with_types_use_header](../../../operations/settings/settings-formats.md/#input_format_with_types_use_header) 設定が `1` の場合、
+入力データの型は、テーブル内の対応する列の型と比較されます。そうでない場合は、2 行目がスキップされます。
 :::

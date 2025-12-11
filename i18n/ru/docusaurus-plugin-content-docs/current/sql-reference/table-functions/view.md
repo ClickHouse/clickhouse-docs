@@ -1,39 +1,40 @@
 ---
-slug: '/sql-reference/table-functions/view'
-sidebar_label: представление
+description: 'Преобразует подзапрос в таблицу. Функция реализует представления.'
+sidebar_label: 'view'
 sidebar_position: 210
-description: 'Преобразует подзапрос в таблицу. Функция реализует views.'
-title: представление
-doc_type: reference
+slug: /sql-reference/table-functions/view
+title: 'view'
+doc_type: 'reference'
 ---
-# view Table Function
 
-Преобразует подзапрос в таблицу. Функция реализует представления (см. [CREATE VIEW](/sql-reference/statements/create/view)). Результирующая таблица не хранит данные, а только сохраняет указанный `SELECT` запрос. При чтении из таблицы ClickHouse выполняет запрос и удаляет все ненужные столбцы из результата.
+# Табличная функция view {#view-table-function}
 
-## Syntax {#syntax}
+Преобразует подзапрос в таблицу. Функция реализует представления (см. [CREATE VIEW](/sql-reference/statements/create/view)). Результирующая таблица не хранит данные, а содержит только указанный запрос `SELECT`. При чтении из таблицы ClickHouse выполняет этот запрос и удаляет из результата все ненужные столбцы.
+
+## Синтаксис {#syntax}
 
 ```sql
-view(subquery)
+view(подзапрос)
 ```
 
-## Arguments {#arguments}
+## Аргументы {#arguments}
 
-- `subquery` — `SELECT` запрос.
+- `subquery` — запрос типа `SELECT`.
 
-## Returned value {#returned_value}
+## Возвращаемое значение {#returned_value}
 
 - Таблица.
 
-## Examples {#examples}
+## Примеры {#examples}
 
 Входная таблица:
 
 ```text
 ┌─id─┬─name─────┬─days─┐
-│  1 │ January  │   31 │
-│  2 │ February │   29 │
-│  3 │ March    │   31 │
-│  4 │ April    │   30 │
+│  1 │ Январь   │   31 │
+│  2 │ Февраль  │   29 │
+│  3 │ Март     │   31 │
+│  4 │ Апрель   │   30 │
 └────┴──────────┴──────┘
 ```
 
@@ -47,14 +48,14 @@ SELECT * FROM view(SELECT name FROM months);
 
 ```text
 ┌─name─────┐
-│ January  │
-│ February │
-│ March    │
-│ April    │
+│ Январь  │
+│ Февраль │
+│ Март    │
+│ Апрель    │
 └──────────┘
 ```
 
-Вы можете использовать функцию `view` в качестве параметра для [remote](/sql-reference/table-functions/remote) и [cluster](/sql-reference/table-functions/cluster) таблиц:
+Вы можете использовать функцию `view` в качестве параметра табличных функций [remote](/sql-reference/table-functions/remote) и [cluster](/sql-reference/table-functions/cluster):
 
 ```sql
 SELECT * FROM remote(`127.0.0.1`, view(SELECT a, b, c FROM table_name));
@@ -64,6 +65,6 @@ SELECT * FROM remote(`127.0.0.1`, view(SELECT a, b, c FROM table_name));
 SELECT * FROM cluster(`cluster_name`, view(SELECT a, b, c FROM table_name));
 ```
 
-## Related {#related}
+## См. также {#related}
 
-- [View Table Engine](/engines/table-engines/special/view/)
+- [Табличный движок View](/engines/table-engines/special/view/)

@@ -1,53 +1,55 @@
 ---
-slug: '/getting-started/playground'
-sidebar_label: 'Playground ClickHouse'
-description: 'ClickHouse Playground позволяет людям экспериментировать с ClickHouse,'
-title: 'Playground ClickHouse'
-keywords: ['clickhouse', 'playground', 'getting', 'started', 'docs']
-doc_type: guide
+description: 'ClickHouse Playground позволяет экспериментировать с ClickHouse, мгновенно выполняя запросы без необходимости настраивать собственный сервер или кластер.'
+keywords: ['clickhouse', 'песочница', 'быстрый', 'старт', 'документация']
+sidebar_label: 'Песочница ClickHouse'
+slug: /getting-started/playground
+title: 'Песочница ClickHouse'
+doc_type: 'guide'
 ---
-# Playground ClickHouse
 
-[ClickHouse Playground](https://sql.clickhouse.com) позволяет пользователям экспериментировать с ClickHouse, выполняя запросы мгновенно, без необходимости настройки собственного сервера или кластера. В Playground доступны несколько примеров наборов данных.
+# Песочница ClickHouse {#clickhouse-playground}
 
-Вы можете выполнять запросы к Playground, используя любой HTTP-клиент, например [curl](https://curl.haxx.se) или [wget](https://www.gnu.org/software/wget/), или настроить подключение с помощью драйверов [JDBC](../interfaces/jdbc.md) или [ODBC](../interfaces/odbc.md). Дополнительную информацию о программных продуктах, которые поддерживают ClickHouse, можно найти [здесь](../integrations/index.mdx).
+[ClickHouse Playground](https://sql.clickhouse.com) позволяет экспериментировать с ClickHouse, мгновенно выполняя запросы без необходимости развертывать собственный сервер или кластер.
+В Playground доступно несколько примеров наборов данных.
+
+Вы можете отправлять запросы в Playground с помощью любого HTTP‑клиента, например [curl](https://curl.haxx.se) или [wget](https://www.gnu.org/software/wget/), или настроить подключение с использованием драйверов [JDBC](../interfaces/jdbc.md) или [ODBC](../interfaces/odbc.md). Дополнительная информация о программном обеспечении, поддерживающем ClickHouse, доступна [здесь](../integrations/index.mdx).
 
 ## Учетные данные {#credentials}
 
-| Параметр           | Значение                              |
-|:--------------------|:--------------------------------------|
-| HTTPS endpoint      | `https://play.clickhouse.com:443/`   |
-| Native TCP endpoint | `play.clickhouse.com:9440`           |
-| Пользователь        | `explorer` или `play`                |
-| Пароль             | (пусто)                             |
+| Параметр              | Значение                           |
+|:----------------------|:-----------------------------------|
+| HTTPS-эндпоинт        | `https://play.clickhouse.com:443/` |
+| Нативный TCP-эндпоинт | `play.clickhouse.com:9440`         |
+| Пользователь          | `explorer` или `play`              |
+| Пароль                | (пустой)                           |
 
 ## Ограничения {#limitations}
 
-Запросы выполняются от имени пользователя с правами только для чтения, что накладывает определенные ограничения:
+Запросы выполняются от имени пользователя только с правами чтения. Это накладывает некоторые ограничения:
 
-- Запросы DDL не разрешены
-- Запросы INSERT не разрешены
+- DDL-запросы не допускаются
+- INSERT-запросы не допускаются
 
-Сервис также имеет квоты на свое использование.
+Для использования сервиса также установлены квоты.
 
 ## Примеры {#examples}
 
-Пример HTTPS endpoint с `curl`:
+Пример HTTPS-эндпоинта с использованием `curl`:
 
 ```bash
-curl "https://play.clickhouse.com/?user=explorer" --data-binary "SELECT 'Play ClickHouse'"
+curl "https://play.clickhouse.com/?user=explorer" --data-binary "SELECT 'Попробовать ClickHouse'"
 ```
 
-Пример TCP endpoint с [CLI](../interfaces/cli.md):
+Пример TCP-эндпоинта с помощью [CLI](../interfaces/cli.md):
 
 ```bash
 clickhouse client --secure --host play.clickhouse.com --user explorer
 ```
 
-## Спецификации Playground {#specifications}
+## Характеристики Playground {#specifications}
 
-Наш ClickHouse Playground работает с следующими спецификациями:
+Наш ClickHouse Playground работает со следующими характеристиками:
 
-- Хостится в Google Cloud (GCE) в центральном регионе США (US-Central-1)
-- Настройка с 3 репликами
-- 256 GiB хранилища и 59 виртуальных ЦП каждый.
+- Размещён в Google Cloud (GCE) в центральном регионе США (US-Central-1)
+- Трёхрепликовая конфигурация
+- По 256 GiB хранилища и 59 виртуальных ЦП на каждый узел.

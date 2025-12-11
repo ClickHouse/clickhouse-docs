@@ -1,357 +1,168 @@
 ---
-slug: '/sql-reference/functions/url-functions'
-sidebar_label: URL
-description: 'Документация для Функции для работы с URL'
-title: 'Функции для работы с URL'
-doc_type: reference
+description: 'Документация по функциям для работы с URL-адресами'
+sidebar_label: 'URL-адреса'
+slug: /sql-reference/functions/url-functions
+title: 'Функции для работы с URL-адресами'
+doc_type: 'reference'
 ---
-# Функции для работы с URL
+
+# Функции для работы с URL {#functions-for-working-with-urls}
+
+## Обзор {#overview}
 
 :::note
-Функции, упомянутые в этом разделе, оптимизированы для максимальной производительности и в основном не соответствуют стандарту RFC-3986. Функции, которые реализуют RFC-3986, имеют суффикс `RFC` в названии функции и, как правило, работают медленнее.
+Функции, упомянутые в этом разделе, оптимизированы для максимальной производительности и в большинстве случаев не следуют стандарту RFC-3986.
+Функции, которые реализуют RFC-3986, имеют суффикс `RFC` в имени функции и, как правило, работают медленнее.
 :::
 
-Вы можете использовать варианты функций без `RFC` при работе с общедоступно зарегистрированными доменами, которые не содержат строк пользователей и символов `@`.
-В таблице ниже указано, какие символы в URL могут (`✔`) или не могут (`✗`) быть обработаны соответствующими вариантами `RFC` и non-`RFC`:
+Как правило, вы можете использовать варианты функций без `RFC` при работе с публично зарегистрированными доменами, которые не содержат ни пользовательской части, ни символа `@`.
+В таблице ниже указано, какие символы в URL могут (`✔`) или не могут (`✗`) быть разобраны соответствующими вариантами с `RFC` и без `RFC`:
 
-| Символ | non-`RFC` | `RFC` |
-|--------|-----------|-------|
-| ' '    | ✗         | ✗     |
-|  \t    | ✗         | ✗     |
-|  &lt;  | ✗         | ✗     |
-|  >     | ✗         | ✗     |
-|  %     | ✗         | ✔*    |
-|  \{    | ✗         | ✗     |
-|  }     | ✗         | ✗     |
-|  \|    | ✗         | ✗     |
-|  \\    | ✗         | ✗     |
-|  ^     | ✗         | ✗     |
-|  ~     | ✗         | ✔*    |
-|  [     | ✗         | ✗     |
-|  ]     | ✗         | ✔     |
-|  ;     | ✗         | ✔*    |
-|  =     | ✗         | ✔*    |
-|  &     | ✗         | ✔*    |
+| Symbol      | non-`RFC` | `RFC` |   |
+| ----------- | --------- | ----- | - |
+| &#39; &#39; | ✗         | ✗     |   |
+| \t          | ✗         | ✗     |   |
+| &lt;        | ✗         | ✗     |   |
+| &gt;        | ✗         | ✗     |   |
+| %           | ✗         | ✔*    |   |
+| &#123;      | ✗         | ✗     |   |
+| &#125;      | ✗         | ✗     |   |
+|             |           | ✗     | ✗ |
+| \           | ✗         | ✗     |   |
+| ^           | ✗         | ✗     |   |
+| ~           | ✗         | ✔*    |   |
+| [           | ✗         | ✗     |   |
+| ]           | ✗         | ✔     |   |
+| ;           | ✗         | ✔*    |   |
+| =           | ✗         | ✔*    |   |
+| &amp;       | ✗         | ✔*    |   |
 
-Символы, помеченные `*`, являются суб-делимитерами в RFC 3986 и разрешены для пользовательской информации после символа `@`.
+Символы, помеченные `*`, являются субразделителями в RFC 3986 и допускаются в пользовательской информации, следующей за символом `@`.
 
-## Функции, извлекающие части URL {#functions-that-extract-parts-of-a-url}
+Существует два типа функций для работы с URL:
 
-Если соответствующая часть отсутствует в URL, возвращается пустая строка.
-
-### protocol {#protocol}
-
-Извлекает протокол из URL.
-
-Примеры типичных возвращаемых значений: http, https, ftp, mailto, tel, magnet.
-
-### domain {#domain}
-
-Извлекает имя хоста из URL.
-
-**Синтаксис**
-
-```sql
-domain(url)
-```
-
-**Аргументы**
-
-- `url` — URL. [String](../../sql-reference/data-types/string.md).
-
-URL может быть указан с протоколом или без него. Примеры:
-
-```text
-svn+ssh://some.svn-hosting.com:80/repo/trunk
-some.svn-hosting.com:80/repo/trunk
-https://clickhouse.com/time/
-```
-
-Для этих примеров функция `domain` возвращает следующие результаты:
-
-```text
-some.svn-hosting.com
-some.svn-hosting.com
-clickhouse.com
-```
-
-**Возвращаемые значения**
-
-- Имя хоста, если входная строка может быть проанализирована как URL, иначе пустая строка. [String](../data-types/string.md).
-
-**Пример**
-
-```sql
-SELECT domain('svn+ssh://some.svn-hosting.com:80/repo/trunk');
-```
-
-```text
-┌─domain('svn+ssh://some.svn-hosting.com:80/repo/trunk')─┐
-│ some.svn-hosting.com                                   │
-└────────────────────────────────────────────────────────┘
-```
-
-### domainRFC {#domainrfc}
-
-Извлекает имя хоста из URL. Похоже на [domain](#domain), но соответствует RFC 3986.
-
-**Синтаксис**
-
-```sql
-domainRFC(url)
-```
-
-**Аргументы**
-
-- `url` — URL. [String](../data-types/string.md).
-
-**Возвращаемые значения**
-
-- Имя хоста, если входная строка может быть проанализирована как URL, иначе пустая строка. [String](../data-types/string.md).
-
-**Пример**
-
-```sql
-SELECT
-    domain('http://user:password@example.com:8080/path?query=value#fragment'),
-    domainRFC('http://user:password@example.com:8080/path?query=value#fragment');
-```
-
-```text
-┌─domain('http://user:password@example.com:8080/path?query=value#fragment')─┬─domainRFC('http://user:password@example.com:8080/path?query=value#fragment')─┐
-│                                                                           │ example.com                                                                  │
-└───────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────┘
-```
-
-### domainWithoutWWW {#domainwithoutwww}
-
-Возвращает домен без ведущего `www.`, если он присутствует.
-
-**Синтаксис**
-
-```sql
-domainWithoutWWW(url)
-```
-
-**Аргументы**
-
-- `url` — URL. [String](../data-types/string.md).
-
-**Возвращаемые значения**
-
-- Имя домена, если входная строка может быть проанализирована как URL (без ведущего `www.`), иначе пустая строка. [String](../data-types/string.md).
-
-**Пример**
-
-```sql
-SELECT domainWithoutWWW('http://paul@www.example.com:80/');
-```
-
-```text
-┌─domainWithoutWWW('http://paul@www.example.com:80/')─┐
-│ example.com                                         │
-└─────────────────────────────────────────────────────┘
-```
-
-### domainWithoutWWWRFC {#domainwithoutwwwrfc}
-
-Возвращает домен без ведущего `www.`, если он присутствует. Похоже на [domainWithoutWWW](#domainwithoutwww), но соответствует RFC 3986.
-
-**Синтаксис**
-
-```sql
-domainWithoutWWWRFC(url)
-```
-
-**Аргументы**
-
-- `url` — URL. [String](../data-types/string.md).
-
-**Возвращаемые значения**
-
-- Имя домена, если входная строка может быть проанализирована как URL (без ведущего `www.`), иначе пустая строка. [String](../data-types/string.md).
-
-**Пример**
-
-Запрос:
-
-```sql
-SELECT
-    domainWithoutWWW('http://user:password@www.example.com:8080/path?query=value#fragment'),
-    domainWithoutWWWRFC('http://user:password@www.example.com:8080/path?query=value#fragment');
-```
-
-Результат:
-
-```response
-┌─domainWithoutWWW('http://user:password@www.example.com:8080/path?query=value#fragment')─┬─domainWithoutWWWRFC('http://user:password@www.example.com:8080/path?query=value#fragment')─┐
-│                                                                                         │ example.com                                                                                │
-└─────────────────────────────────────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────┘
-```
-
-### topLevelDomain {#topleveldomain}
-
-Извлекает домен верхнего уровня из URL.
-
-```sql
-topLevelDomain(url)
-```
-
-**Аргументы**
-
-- `url` — URL. [String](../../sql-reference/data-types/string.md).
+* Функции, которые извлекают части URL. Если соответствующая часть отсутствует в URL, возвращается пустая строка.
+* Функции, которые удаляют часть URL. Если в URL нет ничего подобного, URL остаётся без изменений.
 
 :::note
-URL может быть указан с протоколом или без него. Примеры:
-
-```text
-svn+ssh://some.svn-hosting.com:80/repo/trunk
-some.svn-hosting.com:80/repo/trunk
-https://clickhouse.com/time/
-```
+Приведённые ниже функции сгенерированы из системной таблицы `system.functions`.
 :::
 
-**Возвращаемые значения**
+{/* 
+  Внутреннее содержимое расположенных ниже тегов при сборке фреймворка документации
+  заменяется документацией, сгенерированной из system.functions. Пожалуйста, не изменяйте и не удаляйте эти теги.
+  См.: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
+  */ }
 
-- Имя домена, если входная строка может быть проанализирована как URL. В противном случае — пустая строка. [String](../../sql-reference/data-types/string.md).
+{/*AUTOGENERATED_START*/ }
 
-**Пример**
+## cutFragment {#cutFragment}
 
-Запрос:
+Добавлено в версии v1.1
 
-```sql
-SELECT topLevelDomain('svn+ssh://www.some.svn-hosting.com:80/repo/trunk');
-```
-
-Результат:
-
-```text
-┌─topLevelDomain('svn+ssh://www.some.svn-hosting.com:80/repo/trunk')─┐
-│ com                                                                │
-└────────────────────────────────────────────────────────────────────┘
-```
-
-### topLevelDomainRFC {#topleveldomainrfc}
-
-Извлекает домен верхнего уровня из URL. Похоже на [topLevelDomain](#topleveldomain), но соответствует RFC 3986.
-
-```sql
-topLevelDomainRFC(url)
-```
-
-**Аргументы**
-
-- `url` — URL. [String](../../sql-reference/data-types/string.md).
-
-:::note
-URL может быть указан с протоколом или без него. Примеры:
-
-```text
-svn+ssh://some.svn-hosting.com:80/repo/trunk
-some.svn-hosting.com:80/repo/trunk
-https://clickhouse.com/time/
-```
-:::
-
-**Возвращаемые значения**
-
-- Имя домена, если входная строка может быть проанализирована как URL. В противном случае — пустая строка. [String](../../sql-reference/data-types/string.md).
-
-**Пример**
-
-Запрос:
-
-```sql
-SELECT topLevelDomain('http://foo:foo%41bar@foo.com'), topLevelDomainRFC('http://foo:foo%41bar@foo.com');
-```
-
-Результат:
-
-```text
-┌─topLevelDomain('http://foo:foo%41bar@foo.com')─┬─topLevelDomainRFC('http://foo:foo%41bar@foo.com')─┐
-│                                                │ com                                               │
-└────────────────────────────────────────────────┴───────────────────────────────────────────────────┘
-```
-
-### firstSignificantSubdomain {#firstsignificantsubdomain}
-
-Возвращает "первый значимый поддомен".
-Первый значимый поддомен — это домен второго уровня для `com`, `net`, `org` или `co`, иначе это домен третьего уровня.
-Например, `firstSignificantSubdomain ('https://news.clickhouse.com/') = 'clickhouse'`, `firstSignificantSubdomain ('https://news.clickhouse.com.tr/') = 'clickhouse'`.
-Список "незначительных" доменов второго уровня и другие детали реализации могут измениться в будущем.
+Удаляет идентификатор фрагмента, включая символ `#` (решётку), из URL.
 
 **Синтаксис**
 
 ```sql
-firstSignificantSubdomain(url)
+cutFragment(url)
 ```
 
 **Аргументы**
 
-- `url` — URL. [String](../../sql-reference/data-types/string.md).
+* `url` — URL. [`String`](/sql-reference/data-types/string)
 
 **Возвращаемое значение**
 
-- Первый значимый поддомен. [String](../data-types/string.md).
+Возвращает URL без идентификатора фрагмента. [`String`](/sql-reference/data-types/string)
 
-**Пример**
+**Примеры**
 
-Запрос:
+**Пример использования**
 
-```sql
-SELECT firstSignificantSubdomain('http://www.example.com/a/b/c?a=b')
+```sql title=Query
+SELECT cutFragment('http://example.com/path?query=value#fragment123');
 ```
 
-Результат:
-
-```reference
-┌─firstSignificantSubdomain('http://www.example.com/a/b/c?a=b')─┐
-│ example                                                       │
-└───────────────────────────────────────────────────────────────┘
+```response title=Response
+┌─cutFragment('http://example.com/path?query=value#fragment123')─┐
+│ http://example.com/path?query=value                            │
+└────────────────────────────────────────────────────────────────┘
 ```
 
-### firstSignificantSubdomainRFC {#firstsignificantsubdomainrfc}
+## cutQueryString {#cutQueryString}
 
-Возвращает "первый значимый поддомен".
-Первый значимый поддомен — это домен второго уровня для `com`, `net`, `org` или `co`, иначе это домен третьего уровня.
-Например, `firstSignificantSubdomain ('https://news.clickhouse.com/') = 'clickhouse'`, `firstSignificantSubdomain ('https://news.clickhouse.com.tr/') = 'clickhouse'`.
-Список "незначительных" доменов второго уровня и другие детали реализации могут измениться в будущем. Похоже на [firstSignificantSubdomain](#firstsignificantsubdomain), но соответствует RFC 1034.
+Впервые представлена в версии v1.1
+
+Удаляет строку запроса, включая знак вопроса, из URL-адреса.
 
 **Синтаксис**
 
 ```sql
-firstSignificantSubdomainRFC(url)
+cutQueryString(url)
 ```
 
 **Аргументы**
 
-- `url` — URL. [String](../../sql-reference/data-types/string.md).
+* `url` — URL. [`String`](/sql-reference/data-types/string)
 
 **Возвращаемое значение**
 
-- Первый значимый поддомен. [String](../data-types/string.md).
+Возвращает URL без строки запроса. [`String`](/sql-reference/data-types/string)
 
-**Пример**
+**Примеры**
 
-Запрос:
+**Пример использования**
+
+```sql title=Query
+SELECT cutQueryString('http://example.com/path?query=value&param=123#fragment');
+```
+
+```response title=Response
+┌─cutQueryString('http://example.com/path?query=value&param=123#fragment')─┐
+│ http://example.com/path#fragment                                         │
+└──────────────────────────────────────────────────────────────────────────┘
+```
+
+## cutQueryStringAndFragment {#cutQueryStringAndFragment}
+
+Появилось в версии: v1.1
+
+Удаляет строку запроса и идентификатор фрагмента, включая вопросительный знак и символ решётки, из URL-адреса.
+
+**Синтаксис**
 
 ```sql
-SELECT
-    firstSignificantSubdomain('http://user:password@example.com:8080/path?query=value#fragment'),
-    firstSignificantSubdomainRFC('http://user:password@example.com:8080/path?query=value#fragment');
+cutQueryStringAndFragment(url)
 ```
 
-Результат:
+**Аргументы**
 
-```reference
-┌─firstSignificantSubdomain('http://user:password@example.com:8080/path?query=value#fragment')─┬─firstSignificantSubdomainRFC('http://user:password@example.com:8080/path?query=value#fragment')─┐
-│                                                                                              │ example                                                                                         │
-└──────────────────────────────────────────────────────────────────────────────────────────────┴─────────────────────────────────────────────────────────────────────────────────────────────────┘
+* `url` — URL. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает URL без строки запроса и идентификатора фрагмента. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT cutQueryStringAndFragment('http://example.com/path?query=value&param=123#fragment');
 ```
 
-### cutToFirstSignificantSubdomain {#cuttofirstsignificantsubdomain}
+```response title=Response
+┌─cutQueryStringAndFragment('http://example.com/path?query=value&param=123#fragment')─┐
+│ http://example.com/path                                                             │
+└─────────────────────────────────────────────────────────────────────────────────────┘
+```
 
-Возвращает часть домена, которая включает домены верхнего уровня до ["первого значимого поддомена"](#firstsignificantsubdomain).
+## cutToFirstSignificantSubdomain {#cutToFirstSignificantSubdomain}
+
+Добавлено в: v1.1
+
+Возвращает часть доменного имени, которая включает поддомены верхнего уровня до [первого значимого поддомена](/sql-reference/functions/url-functions#firstSignificantSubdomain).
 
 **Синтаксис**
 
@@ -361,34 +172,220 @@ cutToFirstSignificantSubdomain(url)
 
 **Аргументы**
 
-- `url` — URL. [String](../../sql-reference/data-types/string.md).
+* `url` — URL или строка с доменным именем для обработки. [`String`](/sql-reference/data-types/string)
 
 **Возвращаемое значение**
 
-- Часть домена, которая включает домены верхнего уровня до первого значимого поддомена, если это возможно, в противном случае возвращает пустую строку. [String](../data-types/string.md).
+Возвращает часть домена, которая включает поддомены верхнего уровня вплоть до первого значимого поддомена, если это возможно, в противном случае возвращает пустую строку. [`String`](/sql-reference/data-types/string)
 
-**Пример**
+**Примеры**
 
-Запрос:
+**Пример использования**
 
-```sql
+```sql title=Query
 SELECT
     cutToFirstSignificantSubdomain('https://news.clickhouse.com.tr/'),
     cutToFirstSignificantSubdomain('www.tr'),
     cutToFirstSignificantSubdomain('tr');
 ```
 
-Результат:
-
-```response
+```response title=Response
 ┌─cutToFirstSignificantSubdomain('https://news.clickhouse.com.tr/')─┬─cutToFirstSignificantSubdomain('www.tr')─┬─cutToFirstSignificantSubdomain('tr')─┐
 │ clickhouse.com.tr                                                 │ tr                                       │                                      │
 └───────────────────────────────────────────────────────────────────┴──────────────────────────────────────────┴──────────────────────────────────────┘
 ```
 
-### cutToFirstSignificantSubdomainRFC {#cuttofirstsignificantsubdomainrfc}
+## cutToFirstSignificantSubdomainCustom {#cutToFirstSignificantSubdomainCustom}
 
-Возвращает часть домена, которая включает домены верхнего уровня до ["первого значимого поддомена"](#firstsignificantsubdomain). Похоже на [cutToFirstSignificantSubdomain](#cuttofirstsignificantsubdomain), но соответствует RFC 3986.
+Добавлено в: v21.1
+
+Возвращает часть домена, которая включает домены верхнего уровня и субдомены до первого значимого субдомена. Принимает имя пользовательского списка [TLD](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains). Эта функция может быть полезна, если вам нужен обновлённый список TLD или если у вас есть собственный список.
+
+**Пример конфигурации**
+
+```yaml
+<!-- <top_level_domains_path>/var/lib/clickhouse/top_level_domains/</top_level_domains_path> -->
+<top_level_domains_lists>
+    <!-- https://publicsuffix.org/list/public_suffix_list.dat -->
+    <public_suffix_list>public_suffix_list.dat</public_suffix_list>
+    <!-- ПРИМЕЧАНИЕ: путь указан относительно top_level_domains_path -->
+</top_level_domains_lists>
+```
+
+**Синтаксис**
+
+```sql
+cutToFirstSignificantSubdomainCustom(url, имя_списка_доменных_зон)
+```
+
+**Аргументы**
+
+* `url` — URL или доменное имя в виде строки для обработки. [`String`](/sql-reference/data-types/string)
+* `tld_list_name` — имя пользовательского списка TLD, настроенного в ClickHouse. [`const String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает часть доменного имени, которая включает поддомены верхнего уровня до первого значимого поддомена. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Использование пользовательского списка TLD для нестандартных доменов**
+
+```sql title=Query
+SELECT cutToFirstSignificantSubdomainCustom('bar.foo.there-is-no-such-domain', 'public_suffix_list')
+```
+
+```response title=Response
+foo.there-is-no-such-domain
+```
+
+## cutToFirstSignificantSubdomainCustomRFC {#cutToFirstSignificantSubdomainCustomRFC}
+
+Появилась в версии v22.10
+
+Возвращает часть домена, которая включает поддомены верхнего уровня вплоть до первого значимого поддомена.
+Принимает имя пользовательского списка [TLD](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains).
+Эта функция может быть полезна, если вам нужен обновлённый список TLD или если у вас есть собственный список.
+Аналогична [cutToFirstSignificantSubdomainCustom](#cutToFirstSignificantSubdomainCustom), но соответствует RFC 3986.
+
+**Пример конфигурации**
+
+```xml
+<!-- <top_level_domains_path>/var/lib/clickhouse/top_level_domains/</top_level_domains_path> -->
+<top_level_domains_lists>
+    <!-- https://publicsuffix.org/list/public_suffix_list.dat -->
+    <public_suffix_list>public_suffix_list.dat</public_suffix_list>
+    <!-- ПРИМЕЧАНИЕ: путь указывается относительно top_level_domains_path -->
+</top_level_domains_lists>
+```
+
+**Синтаксис**
+
+```sql
+cutToFirstSignificantSubdomainCustomRFC(url, tld_list_name)
+```
+
+**Аргументы**
+
+* `url` — строка URL или доменного имени для обработки в соответствии с RFC 3986.
+* `tld_list_name` — имя пользовательского списка TLD, настроенного в ClickHouse.
+
+**Возвращаемое значение**
+
+Возвращает часть домена, которая включает верхние поддомены вплоть до первого значимого поддомена. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT cutToFirstSignificantSubdomainCustomRFC('www.foo', 'public_suffix_list');
+```
+
+```response title=Response
+┌─cutToFirstSignificantSubdomainCustomRFC('www.foo', 'public_suffix_list')─────┐
+│ www.foo                                                                      │
+└──────────────────────────────────────────────────────────────────────────────┘
+```
+
+## cutToFirstSignificantSubdomainCustomWithWWW {#cutToFirstSignificantSubdomainCustomWithWWW}
+
+Добавлена в версии v21.1
+
+Возвращает часть домена, которая включает поддомены верхнего уровня вплоть до первого значимого поддомена, не удаляя `www`. Принимает имя пользовательского списка TLD. Это может быть полезно, если вам нужен актуальный список TLD или у вас есть собственный список.
+
+**Пример конфигурации**
+
+````yaml
+<!-- <top_level_domains_path>/var/lib/clickhouse/top_level_domains/</top_level_domains_path> -->
+<top_level_domains_lists>
+    <!-- https://publicsuffix.org/list/public_suffix_list.dat -->
+    <public_suffix_list>public_suffix_list.dat</public_suffix_list>
+    <!-- NOTE: path is under top_level_domains_path -->
+</top_level_domains_lists>
+    
+
+**Синтаксис**
+
+```sql
+cutToFirstSignificantSubdomainCustomWithWWW(url, tld_list_name)
+````
+
+**Аргументы**
+
+* `url` — URL или строка домена для обработки.
+* `tld_list_name` — имя пользовательского списка TLD, настроенного в ClickHouse.
+
+**Возвращаемое значение**
+
+Часть домена, которая включает поддомены верхнего уровня до первого значимого поддомена, при этом `www` не удаляется. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT cutToFirstSignificantSubdomainCustomWithWWW('www.foo', 'public_suffix_list');
+```
+
+```response title=Response
+┌─cutToFirstSignificantSubdomainCustomWithWWW('www.foo', 'public_suffix_list')─┐
+│ www.foo                                                                      │
+└──────────────────────────────────────────────────────────────────────────────┘
+```
+
+## cutToFirstSignificantSubdomainCustomWithWWWRFC {#cutToFirstSignificantSubdomainCustomWithWWWRFC}
+
+Появилась в версии v22.10
+
+Возвращает часть доменного имени, включающую поддомены верхних уровней до первого значимого поддомена, при этом `www` не удаляется.
+Принимает имя пользовательского списка TLD.
+Может быть полезна, если вам нужен обновлённый список TLD или у вас есть собственный список.
+Аналогична [cutToFirstSignificantSubdomainCustomWithWWW](#cutToFirstSignificantSubdomainCustomWithWWW), но соответствует [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986).
+
+**Пример конфигурации**
+
+````xml
+<!-- <top_level_domains_path>/var/lib/clickhouse/top_level_domains/</top_level_domains_path> -->
+<top_level_domains_lists>
+    <!-- https://publicsuffix.org/list/public_suffix_list.dat -->
+    <public_suffix_list>public_suffix_list.dat</public_suffix_list>
+    <!-- ПРИМЕЧАНИЕ: путь указывается относительно top_level_domains_path -->
+</top_level_domains_lists>
+    
+
+**Синтаксис**
+
+```sql
+cutToFirstSignificantSubdomainCustomWithWWWRFC(url, tld_list_name)
+````
+
+**Аргументы**
+
+* `url` — строка URL или доменного имени для обработки в соответствии с RFC 3986.
+* `tld_list_name` — имя пользовательского списка TLD, настроенного в ClickHouse.
+
+**Возвращаемое значение**
+
+Возвращает часть доменного имени, которая включает домены верхнего уровня и субдомены вплоть до первого значимого субдомена, без удаления `www`. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Разбор RFC 3986 с сохранением www и пользовательским списком TLD**
+
+```sql title=Query
+SELECT cutToFirstSignificantSubdomainCustomWithWWWRFC('https://www.subdomain.example.custom', 'public_suffix_list')
+```
+
+```response title=Response
+www.example.custom
+```
+
+## cutToFirstSignificantSubdomainRFC {#cutToFirstSignificantSubdomainRFC}
+
+Впервые представлена в: v22.10
+
+Возвращает часть доменного имени, которая включает старшие поддомены вплоть до [&quot;первого значимого поддомена&quot;](/sql-reference/functions/url-functions#firstSignificantSubdomain). Аналогична [`cutToFirstSignificantSubdomain`](#cutToFirstSignificantSubdomain), но соответствует [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986).
 
 **Синтаксис**
 
@@ -398,33 +395,35 @@ cutToFirstSignificantSubdomainRFC(url)
 
 **Аргументы**
 
-- `url` — URL. [String](../../sql-reference/data-types/string.md).
+* `url` — URL или строка с доменным именем для обработки в соответствии с RFC 3986. [`String`](/sql-reference/data-types/string)
 
 **Возвращаемое значение**
 
-- Часть домена, которая включает домены верхнего уровня до первого значимого поддомена, если это возможно, в противном случае возвращает пустую строку. [String](../data-types/string.md).
+Возвращает часть доменного имени, которая включает домены верхнего уровня вплоть до первого значимого поддомена, если это возможно, в противном случае возвращает пустую строку. [`String`](/sql-reference/data-types/string)
 
-**Пример**
+**Примеры**
 
-Запрос:
+**Пример использования**
 
-```sql
+```sql title=Query
 SELECT
     cutToFirstSignificantSubdomain('http://user:password@example.com:8080'),
     cutToFirstSignificantSubdomainRFC('http://user:password@example.com:8080');
 ```
 
-Результат:
-
-```response
+```response title=Response
 ┌─cutToFirstSignificantSubdomain('http://user:password@example.com:8080')─┬─cutToFirstSignificantSubdomainRFC('http://user:password@example.com:8080')─┐
 │                                                                         │ example.com                                                                │
 └─────────────────────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### cutToFirstSignificantSubdomainWithWWW {#cuttofirstsignificantsubdomainwithwww}
+## cutToFirstSignificantSubdomainWithWWW {#cutToFirstSignificantSubdomainWithWWW}
 
-Возвращает часть домена, которая включает домены верхнего уровня до "первого значимого поддомена", не удаляя `www`.
+Введена в: v20.12
+
+Возвращает часть домена, которая включает субдомены верхнего уровня вплоть до «первого значимого субдомена», не удаляя префикс &#39;[www](http://www).&#39;.
+
+Аналогична [`cutToFirstSignificantSubdomain`](#cutToFirstSignificantSubdomain), но сохраняет префикс &#39;[www](http://www).&#39;, если он присутствует.
 
 **Синтаксис**
 
@@ -434,590 +433,71 @@ cutToFirstSignificantSubdomainWithWWW(url)
 
 **Аргументы**
 
-- `url` — URL. [String](../../sql-reference/data-types/string.md).
+* `url` — URL или строка с доменным именем для обработки. [`String`](/sql-reference/data-types/string)
 
 **Возвращаемое значение**
 
-- Часть домена, которая включает домены верхнего уровня до первого значимого поддомена (с `www`), если это возможно, в противном случае возвращает пустую строку. [String](../data-types/string.md).
+Возвращает часть домена, которая включает поддомены верхнего уровня до первого значимого поддомена (включая www), если возможно, иначе возвращает пустую строку. [`String`](/sql-reference/data-types/string)
 
-**Пример**
+**Примеры**
 
-Запрос:
+**Пример использования**
 
-```sql
+```sql title=Query
 SELECT
     cutToFirstSignificantSubdomainWithWWW('https://news.clickhouse.com.tr/'),
     cutToFirstSignificantSubdomainWithWWW('www.tr'),
     cutToFirstSignificantSubdomainWithWWW('tr');
 ```
 
-Результат:
-
-```response
+```response title=Response
 ┌─cutToFirstSignificantSubdomainWithWWW('https://news.clickhouse.com.tr/')─┬─cutToFirstSignificantSubdomainWithWWW('www.tr')─┬─cutToFirstSignificantSubdomainWithWWW('tr')─┐
 │ clickhouse.com.tr                                                        │ www.tr                                          │                                             │
 └──────────────────────────────────────────────────────────────────────────┴─────────────────────────────────────────────────┴─────────────────────────────────────────────┘
 ```
 
-### cutToFirstSignificantSubdomainWithWWWRFC {#cuttofirstsignificantsubdomainwithwwwrfc}
+## cutToFirstSignificantSubdomainWithWWWRFC {#cutToFirstSignificantSubdomainWithWWWRFC}
 
-Возвращает часть домена, которая включает домены верхнего уровня до "первого значимого поддомена", не удаляя `www`. Похоже на [cutToFirstSignificantSubdomainWithWWW](#cuttofirstsignificantsubdomainwithwww), но соответствует RFC 3986.
+Добавлено в версии: v22.10
+
+Возвращает часть доменного имени, включающую поддомены верхнего уровня вплоть до «первого значимого поддомена», без удаления `www`. Аналогично [`cutToFirstSignificantSubdomainWithWWW`](#cutToFirstSignificantSubdomainWithWWW), но соответствует [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986).
 
 **Синтаксис**
 
 ```sql
-cutToFirstSignificantSubdomainWithWWW(url)
+cutToFirstSignificantSubdomainWithWWWRFC(url)
 ```
 
 **Аргументы**
 
-- `url` — URL. [String](../../sql-reference/data-types/string.md).
+* `url` — URL или строка с доменным именем для обработки в соответствии с RFC 3986.
 
 **Возвращаемое значение**
 
-- Часть домена, которая включает домены верхнего уровня до первого значимого поддомена (с "www"), если это возможно, в противном случае возвращает пустую строку. [String](../data-types/string.md).
+Возвращает часть доменного имени, включающую все старшие поддомены вплоть до первого значимого поддомена (с `www`, если он есть); в противном случае возвращает пустую строку типа [`String`](/sql-reference/data-types/string).
 
-**Пример**
+**Примеры**
 
-Запрос:
+**Пример использования**
 
-```sql
+```sql title=Query
 SELECT
     cutToFirstSignificantSubdomainWithWWW('http:%2F%2Fwwwww.nova@mail.ru/economicheskiy'),
     cutToFirstSignificantSubdomainWithWWWRFC('http:%2F%2Fwwwww.nova@mail.ru/economicheskiy');
 ```
 
-Результат:
-
-```response
+```response title=Response
 ┌─cutToFirstSignificantSubdomainWithWWW('http:%2F%2Fwwwww.nova@mail.ru/economicheskiy')─┬─cutToFirstSignificantSubdomainWithWWWRFC('http:%2F%2Fwwwww.nova@mail.ru/economicheskiy')─┐
 │                                                                                       │ mail.ru                                                                                  │
 └───────────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### cutToFirstSignificantSubdomainCustom {#cuttofirstsignificantsubdomaincustom}
+## cutURLParameter {#cutURLParameter}
 
-Возвращает часть домена, которая включает домены верхнего уровня до первого значимого поддомена.
-Принимает произвольное имя [списка TLD](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains).
-Эта функция может быть полезна, если вам нужен новый список TLD или если у вас есть пользовательский список.
-
-**Пример конфигурации**
-
-```xml
-<!-- <top_level_domains_path>/var/lib/clickhouse/top_level_domains/</top_level_domains_path> -->
-<top_level_domains_lists>
-    <!-- https://publicsuffix.org/list/public_suffix_list.dat -->
-    <public_suffix_list>public_suffix_list.dat</public_suffix_list>
-    <!-- NOTE: path is under top_level_domains_path -->
-</top_level_domains_lists>
-```
-
-**Синтаксис**
-
-```sql
-cutToFirstSignificantSubdomain(url, tld)
-```
-
-**Аргументы**
-
-- `url` — URL. [String](../../sql-reference/data-types/string.md).
-- `tld` — Имя произвольного списка TLD. [String](../../sql-reference/data-types/string.md).
-
-**Возвращаемое значение**
-
-- Часть домена, которая включает домены верхнего уровня до первого значимого поддомена. [String](../../sql-reference/data-types/string.md).
-
-**Пример**
-
-Запрос:
-
-```sql
-SELECT cutToFirstSignificantSubdomainCustom('bar.foo.there-is-no-such-domain', 'public_suffix_list');
-```
-
-Результат:
-
-```text
-┌─cutToFirstSignificantSubdomainCustom('bar.foo.there-is-no-such-domain', 'public_suffix_list')─┐
-│ foo.there-is-no-such-domain                                                                   │
-└───────────────────────────────────────────────────────────────────────────────────────────────┘
-```
-
-**Смотрите также**
-
-- [firstSignificantSubdomain](#firstsignificantsubdomain).
-
-### cutToFirstSignificantSubdomainCustomRFC {#cuttofirstsignificantsubdomaincustomrfc}
-
-Возвращает часть домена, которая включает домены верхнего уровня до первого значимого поддомена.
-Принимает произвольное имя [списка TLD](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains).
-Эта функция может быть полезна, если вам нужен новый список TLD или если у вас есть пользовательский список. Похоже на [cutToFirstSignificantSubdomainCustom](#cuttofirstsignificantsubdomaincustom), но соответствует RFC 3986.
-
-**Синтаксис**
-
-```sql
-cutToFirstSignificantSubdomainRFC(url, tld)
-```
-
-**Аргументы**
-
-- `url` — URL. [String](../../sql-reference/data-types/string.md).
-- `tld` — Имя произвольного списка TLD. [String](../../sql-reference/data-types/string.md).
-
-**Возвращаемое значение**
-
-- Часть домена, которая включает домены верхнего уровня до первого значимого поддомена. [String](../../sql-reference/data-types/string.md).
-
-**Смотрите также**
-
-- [firstSignificantSubdomain](#firstsignificantsubdomain).
-
-### cutToFirstSignificantSubdomainCustomWithWWW {#cuttofirstsignificantsubdomaincustomwithwww}
-
-Возвращает часть домена, которая включает домены верхнего уровня до первого значимого поддомена без удаления `www`.
-Принимает произвольное имя списка TLD.
-Это может быть полезно, если вам нужен новый список TLD или если у вас есть пользовательский список.
-
-**Пример конфигурации**
-
-```xml
-<!-- <top_level_domains_path>/var/lib/clickhouse/top_level_domains/</top_level_domains_path> -->
-<top_level_domains_lists>
-    <!-- https://publicsuffix.org/list/public_suffix_list.dat -->
-    <public_suffix_list>public_suffix_list.dat</public_suffix_list>
-    <!-- NOTE: path is under top_level_domains_path -->
-</top_level_domains_lists>
-```
-
-**Синтаксис**
-
-```sql
-cutToFirstSignificantSubdomainCustomWithWWW(url, tld)
-```
-
-**Аргументы**
-
-- `url` — URL. [String](../../sql-reference/data-types/string.md).
-- `tld` — Имя произвольного списка TLD. [String](../../sql-reference/data-types/string.md).
-
-**Возвращаемое значение**
-
-- Часть домена, которая включает домены верхнего уровня до первого значимого поддомена без удаления `www`. [String](../data-types/string.md).
-
-**Пример**
-
-Запрос:
-
-```sql
-SELECT cutToFirstSignificantSubdomainCustomWithWWW('www.foo', 'public_suffix_list');
-```
-
-Результат:
-
-```text
-┌─cutToFirstSignificantSubdomainCustomWithWWW('www.foo', 'public_suffix_list')─┐
-│ www.foo                                                                      │
-└──────────────────────────────────────────────────────────────────────────────┘
-```
-
-**Смотрите также**
-
-- [firstSignificantSubdomain](#firstsignificantsubdomain).
-- [top_level_domains_list](../../operations/server-configuration-parameters/settings.md/#top_level_domains_list)
-
-### cutToFirstSignificantSubdomainCustomWithWWWRFC {#cuttofirstsignificantsubdomaincustomwithwwwrfc}
-
-Возвращает часть домена, которая включает домены верхнего уровня до первого значимого поддомена без удаления `www`.
-Принимает произвольное имя списка TLD.
-Это может быть полезно, если вам нужен новый список TLD или если у вас есть пользовательский список. Похоже на [cutToFirstSignificantSubdomainCustomWithWWW](#cuttofirstsignificantsubdomaincustomwithwww), но соответствует RFC 3986.
-
-**Синтаксис**
-
-```sql
-cutToFirstSignificantSubdomainCustomWithWWWRFC(url, tld)
-```
-
-**Аргументы**
-
-- `url` — URL. [String](../../sql-reference/data-types/string.md).
-- `tld` — Имя произвольного списка TLD. [String](../../sql-reference/data-types/string.md).
-
-**Возвращаемое значение**
-
-- Часть домена, которая включает домены верхнего уровня до первого значимого поддомена без удаления `www`. [String](../../sql-reference/data-types/string.md).
-
-**Смотрите также**
-
-- [firstSignificantSubdomain](#firstsignificantsubdomain).
-- [top_level_domains_list](../../operations/server-configuration-parameters/settings.md/#top_level_domains_list)
-
-### firstSignificantSubdomainCustom {#firstsignificantsubdomaincustom}
-
-Возвращает первый значимый поддомен.
-Принимает произвольное имя списка TLD.
-Может быть полезно, если вам нужен новый список TLD или у вас есть пользовательский.
-
-Пример конфигурации:
-
-```xml
-<!-- <top_level_domains_path>/var/lib/clickhouse/top_level_domains/</top_level_domains_path> -->
-<top_level_domains_lists>
-    <!-- https://publicsuffix.org/list/public_suffix_list.dat -->
-    <public_suffix_list>public_suffix_list.dat</public_suffix_list>
-    <!-- NOTE: path is under top_level_domains_path -->
-</top_level_domains_lists>
-```
-
-**Синтаксис**
-
-```sql
-firstSignificantSubdomainCustom(url, tld)
-```
-
-**Аргументы**
-
-- `url` — URL. [String](../../sql-reference/data-types/string.md).
-- `tld` — Имя произвольного списка TLD. [String](../../sql-reference/data-types/string.md).
-
-**Возвращаемое значение**
-
-- Первый значимый поддомен. [String](../../sql-reference/data-types/string.md).
-
-**Пример**
-
-Запрос:
-
-```sql
-SELECT firstSignificantSubdomainCustom('bar.foo.there-is-no-such-domain', 'public_suffix_list');
-```
-
-Результат:
-
-```text
-┌─firstSignificantSubdomainCustom('bar.foo.there-is-no-such-domain', 'public_suffix_list')─┐
-│ foo                                                                                      │
-└──────────────────────────────────────────────────────────────────────────────────────────┘
-```
-
-**Смотрите также**
-
-- [firstSignificantSubdomain](#firstsignificantsubdomain).
-- [top_level_domains_list](../../operations/server-configuration-parameters/settings.md/#top_level_domains_list)
-
-### firstSignificantSubdomainCustomRFC {#firstsignificantsubdomaincustomrfc}
-
-Возвращает первый значимый поддомен. Принимает произвольное имя списка TLD. Может быть полезно, если вам нужен новый список TLD или у вас есть пользовательский. Похоже на [firstSignificantSubdomainCustom](#firstsignificantsubdomaincustom), но соответствует RFC 3986.
-
-**Синтаксис**
-
-```sql
-firstSignificantSubdomainCustomRFC(url, tld)
-```
-
-**Аргументы**
-
-- `url` — URL. [String](../../sql-reference/data-types/string.md).
-- `tld` — Имя произвольного списка TLD. [String](../../sql-reference/data-types/string.md).
-
-**Возвращаемое значение**
-
-- Первый значимый поддомен. [String](../../sql-reference/data-types/string.md).
-
-**Смотрите также**
-
-- [firstSignificantSubdomain](#firstsignificantsubdomain).
-- [top_level_domains_list](../../operations/server-configuration-parameters/settings.md/#top_level_domains_list)
-
-### port {#port}
-
-Возвращает порт или `default_port`, если URL не содержит порта или не может быть проанализирован.
-
-**Синтаксис**
-
-```sql
-port(url [, default_port = 0])
-```
-
-**Аргументы**
-
-- `url` — URL. [String](../data-types/string.md).
-- `default_port` — Номер порта по умолчанию, который будет возвращен. [UInt16](../data-types/int-uint.md).
-
-**Возвращаемое значение**
-
-- Порт или порт по умолчанию, если в URL нет порта или в случае ошибки проверки. [UInt16](../data-types/int-uint.md).
-
-**Пример**
-
-Запрос:
-
-```sql
-SELECT port('http://paul@www.example.com:80/');
-```
-
-Результат:
-
-```response
-┌─port('http://paul@www.example.com:80/')─┐
-│                                      80 │
-└─────────────────────────────────────────┘
-```
-
-### portRFC {#portrfc}
-
-Возвращает порт или `default_port`, если URL не содержит порта или не может быть проанализирован. Похоже на [port](#port), но соответствует RFC 3986.
-
-**Синтаксис**
-
-```sql
-portRFC(url [, default_port = 0])
-```
-
-**Аргументы**
-
-- `url` — URL. [String](../../sql-reference/data-types/string.md).
-- `default_port` — Номер порта по умолчанию, который будет возвращен. [UInt16](../data-types/int-uint.md).
-
-**Возвращаемое значение**
-
-- Порт или порт по умолчанию, если в URL нет порта или в случае ошибки проверки. [UInt16](../data-types/int-uint.md).
-
-**Пример**
-
-Запрос:
-
-```sql
-SELECT
-    port('http://user:password@example.com:8080'),
-    portRFC('http://user:password@example.com:8080');
-```
-
-Результат:
-
-```resposne
-┌─port('http://user:password@example.com:8080')─┬─portRFC('http://user:password@example.com:8080')─┐
-│                                             0 │                                             8080 │
-└───────────────────────────────────────────────┴──────────────────────────────────────────────────┘
-```
-
-### path {#path}
-
-Возвращает путь без строки запроса.
-
-Пример: `/top/news.html`.
-
-### pathFull {#pathfull}
-
-То же самое, что и выше, но включает строку запроса и фрагмент.
-
-Пример: `/top/news.html?page=2#comments`.
-
-### protocol {#protocol-1}
-
-Извлекает протокол из URL.
-
-**Синтаксис**
-
-```sql
-protocol(url)
-```
-
-**Аргументы**
-
-- `url` — URL, из которого извлекается протокол. [String](../data-types/string.md).
-
-**Возвращаемое значение**
-
-- Протокол или пустая строка, если его нельзя определить. [String](../data-types/string.md).
-
-**Пример**
-
-Запрос:
-
-```sql
-SELECT protocol('https://clickhouse.com/');
-```
-
-Результат:
-
-```response
-┌─protocol('https://clickhouse.com/')─┐
-│ https                               │
-└─────────────────────────────────────┘
-```
-
-### queryString {#querystring}
-
-Возвращает строку запроса без начального знака вопроса, `#` и всего, что после `#`.
-
-Пример: `page=1&lr=213`.
-
-### fragment {#fragment}
-
-Возвращает идентификатор фрагмента без начального символа хеширования.
-
-### queryStringAndFragment {#querystringandfragment}
-
-Возвращает строку запроса и идентификатор фрагмента.
-
-Пример: `page=1#29390`.
-
-### extractURLParameter(url, name) {#extracturlparameterurl-name}
-
-Возвращает значение параметра `name` в URL, если он присутствует, иначе возвращается пустая строка.
-Если есть несколько параметров с этим именем, возвращается первое вхождение.
-Функция предполагает, что параметр в параметре `url` закодирован так же, как и в аргументе `name`.
-
-### extractURLParameters(url) {#extracturlparametersurl}
-
-Возвращает массив строк `name=value`, соответствующих параметрам URL.
-Значения не декодируются.
-
-### extractURLParameterNames(url) {#extracturlparameternamesurl}
-
-Возвращает массив строк имен, соответствующих именам параметров URL.
-Значения не декодируются.
-
-### URLHierarchy(url) {#urlhierarchyurl}
-
-Возвращает массив, содержащий URL, обрезанный в конце символами /,? в пути и строке запроса.
-Последовательные символы-разделители учитываются как один.
-Нарезка производится сразу после всех последовательных символов-разделителей.
-
-### URLPathHierarchy(url) {#urlpathhierarchyurl}
-
-То же самое, что и выше, но без протокола и хоста в результате. Элемент / (корень) не включен.
-
-```text
-URLPathHierarchy('https://example.com/browse/CONV-6788') =
-[
-    '/browse/',
-    '/browse/CONV-6788'
-]
-```
-
-### encodeURLComponent(url) {#encodeurlcomponenturl}
-
-Возвращает закодированный URL.
-
-Пример:
-
-```sql
-SELECT encodeURLComponent('http://127.0.0.1:8123/?query=SELECT 1;') AS EncodedURL;
-```
-
-```text
-┌─EncodedURL───────────────────────────────────────────────┐
-│ http%3A%2F%2F127.0.0.1%3A8123%2F%3Fquery%3DSELECT%201%3B │
-└──────────────────────────────────────────────────────────┘
-```
-
-### decodeURLComponent(url) {#decodeurlcomponenturl}
-
-Возвращает декодированный URL.
-
-Пример:
-
-```sql
-SELECT decodeURLComponent('http://127.0.0.1:8123/?query=SELECT%201%3B') AS DecodedURL;
-```
-
-```text
-┌─DecodedURL─────────────────────────────┐
-│ http://127.0.0.1:8123/?query=SELECT 1; │
-└────────────────────────────────────────┘
-```
-
-### encodeURLFormComponent(url) {#encodeurlformcomponenturl}
-
-Возвращает закодированный URL. Соответствует rfc-1866, пробел (` `) закодирован как плюс (`+`).
-
-Пример:
-
-```sql
-SELECT encodeURLFormComponent('http://127.0.0.1:8123/?query=SELECT 1 2+3') AS EncodedURL;
-```
-
-```text
-┌─EncodedURL────────────────────────────────────────────────┐
-│ http%3A%2F%2F127.0.0.1%3A8123%2F%3Fquery%3DSELECT+1+2%2B3 │
-└───────────────────────────────────────────────────────────┘
-```
-
-### decodeURLFormComponent(url) {#decodeurlformcomponenturl}
-
-Возвращает декодированный URL. Соответствует rfc-1866, простой плюс (`+`) декодируется как пробел (` `).
-
-Пример:
-
-```sql
-SELECT decodeURLFormComponent('http://127.0.0.1:8123/?query=SELECT%201+2%2B3') AS DecodedURL;
-```
-
-```text
-┌─DecodedURL────────────────────────────────┐
-│ http://127.0.0.1:8123/?query=SELECT 1 2+3 │
-└───────────────────────────────────────────┘
-```
-
-### netloc {#netloc}
-
-Извлекает сетевую локальность (`username:password@host:port`) из URL.
-
-**Синтаксис**
-
-```sql
-netloc(url)
-```
-
-**Аргументы**
-
-- `url` — URL. [String](../../sql-reference/data-types/string.md).
-
-**Возвращаемое значение**
-
-- `username:password@host:port`. [String](../data-types/string.md).
-
-**Пример**
-
-Запрос:
-
-```sql
-SELECT netloc('http://paul@www.example.com:80/');
-```
-
-Результат:
-
-```text
-┌─netloc('http://paul@www.example.com:80/')─┐
-│ paul@www.example.com:80                   │
-└───────────────────────────────────────────┘
-```
-
-## Функции, которые удаляют часть URL {#functions-that-remove-part-of-a-url}
-
-Если в URL нет ничего подобного, URL остается без изменений.
-
-### cutWWW {#cutwww}
-
-Удаляет ведущий `www.` (если присутствует) из домена URL.
-
-### cutQueryString {#cutquerystring}
-
-Удаляет строку запроса, включая знак вопроса.
-
-### cutFragment {#cutfragment}
-
-Удаляет идентификатор фрагмента, включая знак решетки.
-
-### cutQueryStringAndFragment {#cutquerystringandfragment}
-
-Удаляет строку запроса и идентификатор фрагмента, включая знак вопроса и знак решетки.
-
-### cutURLParameter(url, name) {#cuturlparameterurl-name}
+Введена в версии: v1.1
 
 Удаляет параметр `name` из URL, если он присутствует.
-Эта функция не кодирует и не декодирует символы в именах параметров, например, `Client ID` и `Client%20ID` рассматриваются как разные имена параметров.
+Эта функция не кодирует и не декодирует символы в именах параметров, например `Client ID` и `Client%20ID` рассматриваются как разные имена параметров.
 
 **Синтаксис**
 
@@ -1027,27 +507,893 @@ cutURLParameter(url, name)
 
 **Аргументы**
 
-- `url` — URL. [String](../../sql-reference/data-types/string.md).
-- `name` — имя параметра URL. [String](../../sql-reference/data-types/string.md) или [Array](../../sql-reference/data-types/array.md) строк.
+* `url` — URL. [`String`](/sql-reference/data-types/string)
+* `name` — Имя параметра URL. [`String`](/sql-reference/data-types/string) или [`Array(String)`](/sql-reference/data-types/array)
 
 **Возвращаемое значение**
 
-- url с удаленным параметром URL `name`. [String](../data-types/string.md).
+URL, из которого удалён параметр URL с именем `name`. [`String`](/sql-reference/data-types/string)
 
-**Пример**
+**Примеры**
 
-Запрос:
+**Пример использования**
 
-```sql
+```sql title=Query
 SELECT
-    cutURLParameter('http://bigmir.net/?a=b&c=d&e=f#g', 'a') AS url_without_a,
-    cutURLParameter('http://bigmir.net/?a=b&c=d&e=f#g', ['c', 'e']) AS url_without_c_and_e;
+    cutURLParameter('http://bigmir.net/?a=b&c=d&e=f#g', 'a') AS url_без_a,
+    cutURLParameter('http://bigmir.net/?a=b&c=d&e=f#g', ['c', 'e']) AS url_без_c_и_e;
 ```
 
-Результат:
-
-```text
+```response title=Response
 ┌─url_without_a────────────────┬─url_without_c_and_e──────┐
 │ http://bigmir.net/?c=d&e=f#g │ http://bigmir.net/?a=b#g │
 └──────────────────────────────┴──────────────────────────┘
 ```
+
+## cutWWW {#cutWWW}
+
+Добавлена в версии: v1.1
+
+Удаляет начальный `www.`, если он присутствует, из доменного имени URL-адреса.
+
+**Синтаксис**
+
+```sql
+cutWWW(url)
+```
+
+**Аргументы**
+
+* `url` — URL. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает URL, в домене которого удалён начальный префикс `www.`. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT cutWWW('http://www.example.com/path?query=value#fragment');
+```
+
+```response title=Response
+┌─cutWWW('http://www.example.com/path?query=value#fragment')─┐
+│ http://example.com/path?query=value#fragment               │
+└────────────────────────────────────────────────────────────┘
+```
+
+## decodeURLComponent {#decodeURLComponent}
+
+Появилась в версии: v1.1
+
+Принимает URL-кодированную строку на вход и декодирует её обратно в исходный, человекочитаемый вид.
+
+**Синтаксис**
+
+```sql
+decodeURLComponent(url)
+```
+
+**Аргументы**
+
+* `url` — URL. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает декодированный URL. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT decodeURLComponent('http://127.0.0.1:8123/?query=SELECT%201%3B') AS DecodedURL;
+```
+
+```response title=Response
+┌─DecodedURL─────────────────────────────┐
+│ http://127.0.0.1:8123/?query=SELECT 1; │
+└────────────────────────────────────────┘
+```
+
+## decodeURLFormComponent {#decodeURLFormComponent}
+
+Добавлено в версии: v1.1
+
+Декодирует строки в URL-кодировке с использованием правил кодирования веб-форм ([RFC-1866](https://www.rfc-editor.org/rfc/rfc1866.html)), при которых знаки `+` преобразуются в пробелы, а символы в percent-кодировке декодируются.
+
+**Синтаксис**
+
+```sql
+decodeURLFormComponent(url)
+```
+
+**Аргументы**
+
+* `url` — URL. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает декодированный URL. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT decodeURLFormComponent('http://127.0.0.1:8123/?query=SELECT%201+2%2B3') AS DecodedURL;
+```
+
+```response title=Response
+┌─DecodedURL────────────────────────────────┐
+│ http://127.0.0.1:8123/?query=SELECT 1 2+3 │
+└───────────────────────────────────────────┘
+```
+
+## domain {#domain}
+
+Появилась в версии v1.1
+
+Извлекает имя хоста из URL-адреса.
+
+URL-адрес может быть указан с протоколом или без него.
+
+**Синтаксис**
+
+```sql
+domain(url)
+```
+
+**Аргументы**
+
+* `url` — URL. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает имя хоста, если входная строка может быть интерпретирована как URL, в противном случае — пустую строку. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT domain('svn+ssh://some.svn-hosting.com:80/repo/trunk');
+```
+
+```response title=Response
+┌─domain('svn+ssh://some.svn-hosting.com:80/repo/trunk')─┐
+│ some.svn-hosting.com                                   │
+└────────────────────────────────────────────────────────┘
+```
+
+## domainRFC {#domainRFC}
+
+Добавлена в версии: v22.10
+
+Извлекает имя хоста из URL.
+Аналогична [`domain`](#domain), но соответствует [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986).
+
+**Синтаксис**
+
+```sql
+domainRFC(url)
+```
+
+**Аргументы**
+
+* `url` — URL. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает имя хоста, если входная строка может быть разобрана как URL, в противном случае — пустую строку. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT
+    domain('http://user:password@example.com:8080/path?query=value#fragment'),
+    domainRFC('http://user:password@example.com:8080/path?query=value#fragment');
+```
+
+```response title=Response
+┌─domain('http://user:password@example.com:8080/path?query=value#fragment')─┬─domainRFC('http://user:password@example.com:8080/path?query=value#fragment')─┐
+│                                                                           │ example.com                                                                  │
+└───────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────┘
+```
+
+## domainWithoutWWW {#domainWithoutWWW}
+
+Введена в версии: v1.1
+
+Возвращает домен из URL без ведущего `www.`, если он присутствует.
+
+**Синтаксис**
+
+```sql
+domainWithoutWWW(url)
+```
+
+**Аргументы**
+
+* `url` — URL. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает имя домена, если входная строка может быть интерпретирована как URL (без начального `www.`), в противном случае — пустую строку. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT domainWithoutWWW('http://paul@www.example.com:80/');
+```
+
+```response title=Response
+┌─domainWithoutWWW('http://paul@www.example.com:80/')─┐
+│ example.com                                         │
+└─────────────────────────────────────────────────────┘
+```
+
+## domainWithoutWWWRFC {#domainWithoutWWWRFC}
+
+Добавлена в: v1.1
+
+Возвращает домен без начального `www.`, если он присутствует. Аналогична [`domainWithoutWWW`](#domainWithoutWWW), но соответствует [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986).
+
+**Синтаксис**
+
+```sql
+domainWithoutWWWRFC(url)
+```
+
+**Аргументы**
+
+* `url` — URL-адрес. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает доменное имя, если входная строка может быть интерпретирована как URL-адрес (без ведущего `www.`), в противном случае — пустую строку. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT
+    domainWithoutWWW('http://user:password@www.example.com:8080/path?query=value#fragment'),
+    domainWithoutWWWRFC('http://user:password@www.example.com:8080/path?query=value#fragment');
+```
+
+```response title=Response
+┌─domainWithoutWWW('http://user:password@www.example.com:8080/path?query=value#fragment')─┬─domainWithoutWWWRFC('http://user:password@www.example.com:8080/path?query=value#fragment')─┐
+│                                                                                         │ example.com                                                                                │
+└─────────────────────────────────────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+## encodeURLComponent {#encodeURLComponent}
+
+Появилась в: v22.3
+
+Принимает обычную строку и преобразует её в URL-кодированный (процентное кодирование) формат, в котором специальные символы заменяются их процентно закодированными эквивалентами.
+
+**Синтаксис**
+
+```sql
+encodeURLComponent(url)
+```
+
+**Аргументы**
+
+* `url` — URL. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает закодированный URL. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT encodeURLComponent('http://127.0.0.1:8123/?query=SELECT 1;') AS EncodedURL;
+```
+
+```response title=Response
+┌─EncodedURL───────────────────────────────────────────────┐
+│ http%3A%2F%2F127.0.0.1%3A8123%2F%3Fquery%3DSELECT%201%3B │
+└──────────────────────────────────────────────────────────┘
+```
+
+## encodeURLFormComponent {#encodeURLFormComponent}
+
+Добавлена в версии: v22.3
+
+Кодирует строки по правилам кодирования веб-форм ([RFC-1866](https://www.rfc-editor.org/rfc/rfc1866.html)), при которых пробелы преобразуются в символ «+», а специальные символы представляются в виде percent-encoding.
+
+**Синтаксис**
+
+```sql
+encodeURLFormComponent(url)
+```
+
+**Аргументы**
+
+* `url` — URL. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает закодированный URL. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT encodeURLFormComponent('http://127.0.0.1:8123/?query=SELECT 1 2+3') AS EncodedURL;
+```
+
+```response title=Response
+┌─EncodedURL────────────────────────────────────────────────┐
+│ http%3A%2F%2F127.0.0.1%3A8123%2F%3Fquery%3DSELECT+1+2%2B3 │
+└───────────────────────────────────────────────────────────┘
+```
+
+## extractURLParameter {#extractURLParameter}
+
+Появилась в версии: v1.1
+
+Возвращает значение параметра `name` в URL, если он присутствует, в противном случае возвращается пустая строка.
+Если в URL несколько параметров с таким именем, возвращается первое вхождение.
+Функция предполагает, что URL в аргументе `url` закодирован тем же способом, что и значение аргумента `name`.
+
+**Синтаксис**
+
+```sql
+extractURLParameter(url, name)
+```
+
+**Аргументы**
+
+* `url` — URL. [`String`](/sql-reference/data-types/string)
+* `name` — имя параметра. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает значение параметра URL с указанным именем. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT extractURLParameter('http://example.com/?param1=value1&param2=value2', 'param1');
+```
+
+```response title=Response
+┌─extractURLPa⋯, 'param1')─┐
+│ value1                   │
+└──────────────────────────┘
+```
+
+## extractURLParameterNames {#extractURLParameterNames}
+
+Добавлено в: v1.1
+
+Возвращает массив строк с именами параметров URL.
+Значения не декодируются.
+
+**Синтаксис**
+
+```sql
+extractURLParameterNames(url)
+```
+
+**Аргументы**
+
+* `url` — URL. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает массив строк с именами параметров URL. [`Array(String)`](/sql-reference/data-types/array)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT extractURLParameterNames('http://example.com/?param1=value1&param2=value2');
+```
+
+```response title=Response
+┌─extractURLPa⋯m2=value2')─┐
+│ ['param1','param2']      │
+└──────────────────────────┘
+```
+
+## extractURLParameters {#extractURLParameters}
+
+Добавлена в версии v1.1
+
+Возвращает массив строк `name=value`, соответствующих параметрам URL-адреса.
+Значения не декодируются.
+
+**Синтаксис**
+
+```sql
+extractURLParameters(url)
+```
+
+**Аргументы**
+
+* `url` — URL. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает массив строк вида `name=value`, соответствующих параметрам URL. [`Array(String)`](/sql-reference/data-types/array)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT extractURLParameters('http://example.com/?param1=value1&param2=value2');
+```
+
+```response title=Response
+┌─extractURLParame⋯&param2=value2')─┐
+│ ['param1=value1','param2=value2'] │
+└───────────────────────────────────┘
+```
+
+## firstSignificantSubdomain {#firstSignificantSubdomain}
+
+Добавлена в версии: v
+
+Возвращает «первый значимый поддомен».
+
+Первым значимым поддоменом считается домен второго уровня, если он равен &#39;com&#39;, &#39;net&#39;, &#39;org&#39; или &#39;co&#39;.
+В противном случае это домен третьего уровня.
+
+Например, firstSignificantSubdomain(&#39;[https://news.clickhouse.com/](https://news.clickhouse.com/)&#39;) = &#39;clickhouse&#39;, firstSignificantSubdomain(&#39;[https://news.clickhouse.com.tr/](https://news.clickhouse.com.tr/)&#39;) = &#39;clickhouse&#39;.
+
+Список «незначимых» доменов второго уровня и другие детали реализации могут измениться в будущем.
+
+**Синтаксис**
+
+```sql
+```
+
+**Аргументы**
+
+* Нет.
+
+**Возвращаемое значение**
+
+**Примеры**
+
+**firstSignificantSubdomain**
+
+```sql title=Query
+SELECT firstSignificantSubdomain('https://news.clickhouse.com/')
+```
+
+```response title=Response
+```
+
+## firstSignificantSubdomainRFC {#firstSignificantSubdomainRFC}
+
+Появилась в версии: v
+
+Возвращает «первый значимый поддомен» в соответствии с RFC 1034.
+
+**Синтаксис**
+
+```sql
+```
+
+**Аргументы**
+
+* Нет.
+
+**Возвращаемое значение**
+
+**Примеры**
+
+## fragment {#fragment}
+
+Добавлена в версии: v1.1
+
+Возвращает идентификатор фрагмента без начального символа `#`.
+
+**Синтаксис**
+
+```sql
+fragment(url)
+```
+
+**Аргументы**
+
+* `url` — URL. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает идентификатор фрагмента без начального символа `#`. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT fragment('https://clickhouse.com/docs/getting-started/quick-start/cloud#1-create-a-clickhouse-service');
+```
+
+```response title=Response
+┌─fragment('http⋯ouse-service')─┐
+│ 1-create-a-clickhouse-service │
+└───────────────────────────────┘
+```
+
+## netloc {#netloc}
+
+Введена в версии v20.5
+
+Извлекает сетевую часть (`username:password@host:port`) из URL.
+
+**Синтаксис**
+
+```sql
+netloc(url)
+```
+
+**Аргументы**
+
+* `url` — URL. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает `username:password@host:port` из переданного URL. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT netloc('http://paul@www.example.com:80/');
+```
+
+```response title=Response
+┌─netloc('http⋯e.com:80/')─┐
+│ paul@www.example.com:80  │
+└──────────────────────────┘
+```
+
+## path {#path}
+
+Добавлено в: v1.1
+
+Возвращает путь из URL-адреса без строки запроса.
+
+**Синтаксис**
+
+```sql
+path(url)
+```
+
+**Аргументы**
+
+* `url` — URL. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает путь URL-адреса без строки запроса. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT path('https://clickhouse.com/docs/sql-reference/functions/url-functions/?query=value');
+```
+
+```response title=Response
+┌─path('https://clickhouse.com/en/sql-reference/functions/url-functions/?query=value')─┐
+│ /docs/sql-reference/functions/url-functions/                                         │
+└──────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+## pathFull {#pathFull}
+
+Добавлено в версии: v1.1
+
+То же, что и [`path`](#path), но включает строку запроса и фрагмент URL-адреса.
+
+**Синтаксис**
+
+```sql
+pathFull(url)
+```
+
+**Аргументы**
+
+* `url` — URL. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает путь URL-адреса, включая строку запроса и фрагмент. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT pathFull('https://clickhouse.com/docs/sql-reference/functions/url-functions/?query=value#section');
+```
+
+```response title=Response
+┌─pathFull('https://clickhouse.com⋯unctions/?query=value#section')─┐
+│ /docs/sql-reference/functions/url-functions/?query=value#section │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+## port {#port}
+
+Добавлена в версии: v20.5
+
+Возвращает порт URL-адреса или `default_port`, если URL не содержит указания порта или не может быть разобран.
+
+**Синтаксис**
+
+```sql
+port(url[, default_port])
+```
+
+**Аргументы**
+
+* `url` — URL. [`String`](/sql-reference/data-types/string)
+* `default_port` — Необязательный параметр. Номер порта по умолчанию, который будет возвращён. Если не задан, по умолчанию `0`. [`UInt16`](/sql-reference/data-types/int-uint)
+
+**Возвращаемое значение**
+
+Возвращает порт из URL или порт по умолчанию, если в URL порт не указан или в случае ошибки валидации. [`UInt16`](/sql-reference/data-types/int-uint)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT port('https://clickhouse.com:8443/docs'), port('https://clickhouse.com/docs', 443);
+```
+
+```response title=Response
+┌─port('https://clickhouse.com:8443/docs')─┬─port('https://clickhouse.com/docs', 443)─┐
+│                                     8443 │                                      443 │
+└──────────────────────────────────────────┴──────────────────────────────────────────┘
+```
+
+## portRFC {#portRFC}
+
+Добавлена в версии: v22.10
+
+Возвращает порт или `default_port`, если URL не содержит порт или его невозможно разобрать.
+Аналогична функции [`port`](#port), но соответствует [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986).
+
+**Синтаксис**
+
+```sql
+portRFC(url[, default_port])
+```
+
+**Аргументы**
+
+* `url` — URL. [`String`](/sql-reference/data-types/string)
+* `default_port` — необязательный параметр. Номер порта по умолчанию, который будет возвращён. По умолчанию `0`. [`UInt16`](/sql-reference/data-types/int-uint)
+
+**Возвращаемое значение**
+
+Возвращает порт или порт по умолчанию, если в URL не указан порт или при ошибке валидации. [`UInt16`](/sql-reference/data-types/int-uint)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT port('http://user:password@example.com:8080/'), portRFC('http://user:password@example.com:8080/');
+```
+
+```response title=Response
+┌─port('http:/⋯com:8080/')─┬─portRFC('htt⋯com:8080/')─┐
+│                        0 │                     8080 │
+└──────────────────────────┴──────────────────────────┘
+```
+
+## protocol {#protocol}
+
+Добавлена в версии: v1.1
+
+Извлекает протокол из URL-адреса.
+
+Примеры типичных возвращаемых значений: http, https, ftp, mailto, tel, magnet.
+
+**Синтаксис**
+
+```sql
+protocol(url)
+```
+
+**Аргументы**
+
+* `url` — URL. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает протокол URL-адреса или пустую строку, если его не удаётся определить. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT protocol('https://clickhouse.com/');
+```
+
+```response title=Response
+┌─protocol('https://clickhouse.com/')─┐
+│ https                               │
+└─────────────────────────────────────┘
+```
+
+## queryString {#queryString}
+
+Добавлена в версии: v1.1
+
+Возвращает строку запроса в URL без начального вопросительного знака, символа `#` и всего, что следует после `#`.
+
+**Синтаксис**
+
+```sql
+queryString(url)
+```
+
+**Аргументы**
+
+* `url` — URL. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает строку запроса из URL без начального знака вопроса и фрагмента. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT queryString('https://clickhouse.com/docs?query=value&param=123#section');
+```
+
+```response title=Response
+┌─queryString(⋯3#section')─┐
+│ query=value&param=123    │
+└──────────────────────────┘
+```
+
+## queryStringAndFragment {#queryStringAndFragment}
+
+Впервые представлена в: v1.1
+
+Возвращает строку запроса и идентификатор фрагмента URL-адреса.
+
+**Синтаксис**
+
+```sql
+queryStringAndFragment(url)
+```
+
+**Аргументы**
+
+* `url` — URL. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает строку запроса и идентификатор фрагмента URL-адреса. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT queryStringAndFragment('https://clickhouse.com/docs?query=value&param=123#section');
+```
+
+```response title=Response
+┌─queryStringAnd⋯=123#section')─┐
+│ query=value&param=123#section │
+└───────────────────────────────┘
+```
+
+## topLevelDomain {#topLevelDomain}
+
+Добавлено в версии: v1.1
+
+Извлекает домен верхнего уровня из URL.
+
+:::note
+URL можно указывать с протоколом или без него.
+Например:
+
+```text
+svn+ssh://some.svn-hosting.com:80/repo/trunk
+some.svn-hosting.com:80/repo/trunk
+https://clickhouse.com/time/
+```
+
+:::
+
+**Синтаксис**
+
+```sql
+topLevelDomain(url)
+```
+
+**Аргументы**
+
+* `url` — URL-адрес. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает доменное имя, если входную строку можно интерпретировать как URL-адрес. В противном случае — пустую строку. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT topLevelDomain('svn+ssh://www.some.svn-hosting.com:80/repo/trunk');
+```
+
+```response title=Response
+┌─topLevelDomain('svn+ssh://www.some.svn-hosting.com:80/repo/trunk')─┐
+│ com                                                                │
+└────────────────────────────────────────────────────────────────────┘
+```
+
+## topLevelDomainRFC {#topLevelDomainRFC}
+
+Добавлена в версии: v22.10
+
+Извлекает домен верхнего уровня из URL-адреса.
+Аналогична [`topLevelDomain`](#topLevelDomain), но соответствует [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986).
+
+**Синтаксис**
+
+```sql
+topLevelDomainRFC(url)
+```
+
+**Аргументы**
+
+* `url` — URL-адрес. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Доменное имя, если входная строка может быть интерпретирована как URL-адрес. В противном случае — пустая строка. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT topLevelDomain('http://foo:foo%41bar@foo.com'), topLevelDomainRFC('http://foo:foo%41bar@foo.com');
+```
+
+```response title=Response
+┌─topLevelDomain('http://foo:foo%41bar@foo.com')─┬─topLevelDomainRFC('http://foo:foo%41bar@foo.com')─┐
+│                                                │ com                                               │
+└────────────────────────────────────────────────┴───────────────────────────────────────────────────┘
+```
+
+{/*AUTOGENERATED_END*/ }

@@ -1,65 +1,56 @@
 ---
-'description': 'ClickHouseにおけるJSONデータ型のドキュメントで、JSONデータを扱うためのネイティブサポートを提供します。'
-'keywords':
-- 'json'
-- 'data type'
-'sidebar_label': 'JSON'
-'sidebar_position': 63
-'slug': '/sql-reference/data-types/newjson'
-'title': 'JSON データ型'
-'doc_type': 'reference'
+description: 'ClickHouse における JSON データ型のドキュメントで、JSON データを扱うためのネイティブサポートについて説明します'
+keywords: ['json', 'data type']
+sidebar_label: 'JSON'
+sidebar_position: 63
+slug: /sql-reference/data-types/newjson
+title: 'JSON データ型'
+doc_type: 'reference'
 ---
 
 import {CardSecondary} from '@clickhouse/click-ui/bundled';
 import Link from '@docusaurus/Link'
 
-
 <Link to="/docs/best-practices/use-json-where-appropriate" style={{display: 'flex', textDecoration: 'none', width: 'fit-content'}}>
-<CardSecondary
-  badgeState="success"
-  badgeText=""
-  description="JSON タイプの使用に関する例、高度な機能、および考慮事項についてのベストプラクティスガイドをご覧ください。"
-  icon="book"
-  infoText="続きを読む"
-  infoUrl="/docs/best-practices/use-json-where-appropriate"
-  title="ガイドはありますか？"
-/>
+  <CardSecondary badgeState="success" badgeText="" description="JSON 型を使用する際の例、高度な機能、および考慮事項については、JSON ベストプラクティスガイドをご覧ください。" icon="book" infoText="詳しく読む" infoUrl="/docs/best-practices/use-json-where-appropriate" title="ガイドをお探しですか？" />
 </Link>
-<br/>
 
-`JSON` タイプは、JavaScript Object Notation (JSON) ドキュメントを単一カラムに格納します。
+<br />
+
+`JSON` 型は、JavaScript Object Notation (JSON) ドキュメントを 1 つの列に保存します。
 
 :::note
-ClickHouseオープンソースのJSONデータ型は、バージョン25.3で本番環境向けに準備が整ったとされています。以前のバージョンでこのタイプを本番環境で使用することは推奨されません。
+ClickHouse オープンソース版では、バージョン 25.3 で JSON データ型が本番利用可能 (production ready) としてマークされています。以前のバージョンでこの型を本番環境で使用することは推奨されません。
 :::
 
-`JSON` タイプのカラムを宣言するには、以下の構文を使用できます。
+`JSON` 型の列を宣言するには、次の構文を使用できます。
 
 ```sql
-<column_name> JSON
+<カラム名> JSON
 (
     max_dynamic_paths=N, 
     max_dynamic_types=M, 
-    some.path TypeName, 
+    some.path 型名, 
     SKIP path.to.skip, 
     SKIP REGEXP 'paths_regexp'
 )
 ```
-上記の構文におけるパラメーターは以下の通りです。
 
-| Parameter                   | Description                                                                                                                                                                                                                                                                                                                                                | Default Value |
-|-----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
-| `max_dynamic_paths`         | 単一のデータブロック内で別々のサブカラムとして格納できるパスの最大数を示すオプションのパラメーターです（たとえば、MergeTreeテーブルの単一データパート内で）。<br/><br/>この制限を超えると、他のすべてのパスは単一の構造にまとめて格納されます。                                                                                                      | `1024`        |
-| `max_dynamic_types`         | 単一のパスカラム内に格納できる異なるデータタイプの最大数を示すオプションのパラメーターです（`Dynamic`タイプ）。<br/><br/>この制限を超えると、新しいタイプはすべて`String`タイプに変換されます。 | `32`          |
-| `some.path TypeName`        | JSON内の特定のパスに対するオプションのタイプヒントです。このようなパスは常に指定されたタイプのサブカラムとして格納されます。                                                                                                                                                                                                                                |               |
-| `SKIP path.to.skip`         | JSON解析中にスキップされるべき特定のパスに対するオプションのヒントです。このようなパスはJSONカラムに格納されることは決してありません。指定されたパスがネストされたJSONオブジェクトである場合、全体のネストされたオブジェクトがスキップされます。                                                                                                                                   |               |
-| `SKIP REGEXP 'path_regexp'` | JSON解析中にパスをスキップするために使用される正規表現を含むオプションのヒントです。この正規表現と一致するすべてのパスは、JSONカラムに格納されることは決してありません。                                                                                                                                                                           |               |
+上記の構文内の各パラメータは、次のように定義されます。
 
-## JSONを作成する {#creating-json}
+| Parameter                   | Description                                                                                                                                                                                 | Default Value |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| `max_dynamic_paths`         | 個別に保存される 1 つのデータブロック内で（例えば、MergeTree テーブルの 1 つのデータパーツ内で）、いくつのパスをサブカラムとして個別に保持できるかを示すオプションのパラメータです。<br /><br />この制限を超えた場合、それ以外のすべてのパスは 1 つの共通の構造体としてまとめて保存されます。                              | `1024`        |
+| `max_dynamic_types`         | 個別に保存される 1 つのデータブロック内で（例えば、MergeTree テーブルの 1 つのデータパーツ内で）、型 `Dynamic` を持つ 1 つのパスカラム内にいくつの異なるデータ型を保存できるかを示す、`1` から `255` の範囲のオプションのパラメータです。<br /><br />この制限を超えた場合、新しい型はすべて `String` 型に変換されます。 | `32`          |
+| `some.path TypeName`        | JSON 内の特定のパスに対するオプションの型ヒントです。そのようなパスは、常に指定された型のサブカラムとして保存されます。                                                                                                                              |               |
+| `SKIP path.to.skip`         | JSON パース時にスキップすべき特定のパスを指定するオプションのヒントです。そのようなパスは JSON カラム内に保存されることはありません。指定されたパスがネストされた JSON オブジェクトである場合、そのネストされたオブジェクト全体がスキップされます。                                                          |               |
+| `SKIP REGEXP 'path_regexp'` | JSON パース中にパスをスキップするために使用される正規表現を指定するオプションのヒントです。この正規表現にマッチするすべてのパスは、JSON カラム内に保存されることはありません。                                                                                                |               |
 
-このセクションでは、`JSON` を作成するさまざまな方法を見ていきます。
+## JSON の生成 {#creating-json}
 
-### テーブルカラム定義での `JSON` の使用 {#using-json-in-a-table-column-definition}
+このセクションでは、`JSON` を生成するさまざまな方法を確認します。
+
+### テーブルの列定義で `JSON` を使用する {#using-json-in-a-table-column-definition}
 
 ```sql title="Query (Example 1)"
 CREATE TABLE test (json JSON) ENGINE = Memory;
@@ -70,7 +61,7 @@ SELECT json FROM test;
 ```text title="Response (Example 1)"
 ┌─json────────────────────────────────────────┐
 │ {"a":{"b":"42"},"c":["1","2","3"]}          │
-│ {"f":"Hello, World!"}                       │
+│ {"f":"こんにちは、世界！"}                       │
 │ {"a":{"b":"43","e":"10"},"c":["4","5","6"]} │
 └─────────────────────────────────────────────┘
 ```
@@ -84,16 +75,16 @@ SELECT json FROM test;
 ```text title="Response (Example 2)"
 ┌─json──────────────────────────────┐
 │ {"a":{"b":42},"c":["1","2","3"]}  │
-│ {"a":{"b":0},"f":"Hello, World!"} │
+│ {"a":{"b":0},"f":"こんにちは、世界！"} │
 │ {"a":{"b":43},"c":["4","5","6"]}  │
 └───────────────────────────────────┘
 ```
 
-### `::JSON` を使ったCAST {#using-cast-with-json}
+### `::JSON` を使用した CAST {#using-cast-with-json}
 
-特別な構文 `::JSON` を使用して、さまざまなタイプをキャストすることが可能です。
+特別な構文 `::JSON` を使用して、さまざまな型の値を `JSON` 型にキャストできます。
 
-#### `String` から `JSON` へのCAST {#cast-from-string-to-json}
+#### `String` から `JSON` への CAST {#cast-from-string-to-json}
 
 ```sql title="Query"
 SELECT '{"a" : {"b" : 42},"c" : [1, 2, 3], "d" : "Hello, World!"}'::JSON AS json;
@@ -101,11 +92,11 @@ SELECT '{"a" : {"b" : 42},"c" : [1, 2, 3], "d" : "Hello, World!"}'::JSON AS json
 
 ```text title="Response"
 ┌─json───────────────────────────────────────────────────┐
-│ {"a":{"b":"42"},"c":["1","2","3"],"d":"Hello, World!"} │
+│ {"a":{"b":"42"},"c":["1","2","3"],"d":"こんにちは、世界！"} │
 └────────────────────────────────────────────────────────┘
 ```
 
-#### `Tuple` から `JSON` へのCAST {#cast-from-tuple-to-json}
+#### `Tuple` から `JSON` への CAST {#cast-from-tuple-to-json}
 
 ```sql title="Query"
 SET enable_named_columns_in_function_tuple = 1;
@@ -114,11 +105,11 @@ SELECT (tuple(42 AS b) AS a, [1, 2, 3] AS c, 'Hello, World!' AS d)::JSON AS json
 
 ```text title="Response"
 ┌─json───────────────────────────────────────────────────┐
-│ {"a":{"b":"42"},"c":["1","2","3"],"d":"Hello, World!"} │
+│ {"a":{"b":"42"},"c":["1","2","3"],"d":"こんにちは、世界！"} │
 └────────────────────────────────────────────────────────┘
 ```
 
-#### `Map` から `JSON` へのCAST {#cast-from-map-to-json}
+#### `Map` を `JSON` に CAST する {#cast-from-map-to-json}
 
 ```sql title="Query"
 SET use_variant_as_common_type=1;
@@ -127,34 +118,22 @@ SELECT map('a', map('b', 42), 'c', [1,2,3], 'd', 'Hello, World!')::JSON AS json;
 
 ```text title="Response"
 ┌─json───────────────────────────────────────────────────┐
-│ {"a":{"b":"42"},"c":["1","2","3"],"d":"Hello, World!"} │
-└────────────────────────────────────────────────────────┘
-```
-
-#### 廃止された `Object('json')` から `JSON` へのCAST {#cast-from-deprecated-objectjson-to-json}
-
-```sql title="Query"
-SET allow_experimental_object_type = 1;
-SELECT '{"a" : {"b" : 42},"c" : [1, 2, 3], "d" : "Hello, World!"}'::Object('json')::JSON AS json;
-```
-
-```text title="Response"
-┌─json───────────────────────────────────────────────────┐
-│ {"a":{"b":"42"},"c":["1","2","3"],"d":"Hello, World!"} │
+│ {"a":{"b":"42"},"c":["1","2","3"],"d":"こんにちは、世界！"} │
 └────────────────────────────────────────────────────────┘
 ```
 
 :::note
-JSONパスはフラットに格納されます。これは、`a.b.c` のようなパスからJSONオブジェクトがフォーマットされるときに、オブジェクトが `{ "a.b.c" : ... }` として構築されるべきか `{ "a" : { "b" : { "c" : ... }}}` として構築されるべきかを知ることができないことを意味します。
-私たちの実装は常に後者を想定します。
+JSON のパスはフラット化されたパスとして保存されます。これは、`a.b.c` のようなパスから JSON オブジェクトを整形する際に、
+そのオブジェクトを `{ "a.b.c" : ... }` として構築すべきなのか、あるいは `{ "a": { "b": { "c": ... } } }` として構築すべきなのかを判別できないことを意味します。
+本実装では常に後者として解釈します。
 
-例えば：
+例えば次のとおりです。
 
 ```sql
 SELECT CAST('{"a.b.c" : 42}', 'JSON') AS json
 ```
 
-は次のように返されます。
+は以下を返します:
 
 ```response
    ┌─json───────────────────┐
@@ -162,22 +141,23 @@ SELECT CAST('{"a.b.c" : 42}', 'JSON') AS json
    └────────────────────────┘
 ```
 
-であり、**そうではない**：
+そして、**次のようにしてはいけません**:
 
 ```sql
    ┌─json───────────┐
 1. │ {"a.b.c":"42"} │
    └────────────────┘
 ```
+
 :::
 
-## JSONパスをサブカラムとして読み取る {#reading-json-paths-as-sub-columns}
+## JSON パスをサブカラムとして読み取る {#reading-json-paths-as-sub-columns}
 
-`JSON` タイプは、すべてのパスを別々のサブカラムとして読み取ることをサポートしています。 
-要求されたパスのタイプがJSONタイプ宣言で指定されていない場合、 
-そのパスのサブカラムは常にタイプ [Dynamic](/sql-reference/data-types/dynamic.md) になります。
+`JSON` 型では、各パスを個別のサブカラムとして読み取ることができます。
+要求されたパスの型が JSON 型の宣言で指定されていない場合、
+そのパスのサブカラムは常に型 [Dynamic](/sql-reference/data-types/dynamic.md) になります。
 
-例えば：
+例：
 
 ```sql title="Query"
 CREATE TABLE test (json JSON(a.b UInt32, SKIP a.e)) ENGINE = Memory;
@@ -205,7 +185,7 @@ SELECT json.a.b, json.a.g, json.c, json.d FROM test;
 └──────────┴──────────┴─────────┴────────────┘
 ```
 
-また、`getSubcolumn` 関数を使用して JSON タイプからサブカラムを読み取ることもできます：
+`getSubcolumn` 関数を使用して、`JSON` 型からサブカラムを読み取ることもできます。
 
 ```sql title="Query"
 SELECT getSubcolumn(json, 'a.b'), getSubcolumn(json, 'a.g'), getSubcolumn(json, 'c'), getSubcolumn(json, 'd') FROM test;
@@ -219,7 +199,7 @@ SELECT getSubcolumn(json, 'a.b'), getSubcolumn(json, 'a.g'), getSubcolumn(json, 
 └───────────────────────────┴───────────────────────────┴─────────────────────────┴─────────────────────────┘
 ```
 
-要求されたパスがデータ内に見つからなかった場合、それは `NULL` 値で埋められます：
+要求されたパスがデータ内に存在しなかった場合、そのパスは `NULL` 値で埋められます：
 
 ```sql title="Query"
 SELECT json.non.existing.path FROM test;
@@ -233,7 +213,7 @@ SELECT json.non.existing.path FROM test;
 └────────────────────────┘
 ```
 
-返されたサブカラムのデータタイプを確認してみましょう：
+返されたサブカラムのデータ型を確認してみましょう。
 
 ```sql title="Query"
 SELECT toTypeName(json.a.b), toTypeName(json.a.g), toTypeName(json.c), toTypeName(json.d) FROM test;
@@ -247,9 +227,29 @@ SELECT toTypeName(json.a.b), toTypeName(json.a.g), toTypeName(json.c), toTypeNam
 └──────────────────────┴──────────────────────┴────────────────────┴────────────────────┘
 ```
 
-`a.b` の場合、タイプはJSONタイプ宣言で指定したとおり `UInt32` であり、他のすべてのサブカラムのタイプは `Dynamic` です。
+上記のとおり、`a.b` については JSON の型宣言で指定したとおり型は `UInt32` になっており、
+それ以外のすべてのサブカラムの型は `Dynamic` になっています。
 
-`Dynamic` タイプのサブカラムは任意のデータタイプにキャストできます。この場合、`Dynamic` 内部の内部型が要求された型にキャストできない場合は例外がスローされます：
+また、特別な構文 `json.some.path.:TypeName` を使用して、`Dynamic` 型のサブカラムを読み取ることもできます。
+
+```sql title="Query"
+SELECT
+    json.a.g.:Float64,
+    dynamicType(json.a.g),
+    json.d.:Date,
+    dynamicType(json.d)
+FROM test
+```
+
+```text title="Response"
+┌─json.a.g.:`Float64`─┬─dynamicType(json.a.g)─┬─json.d.:`Date`─┬─dynamicType(json.d)─┐
+│               42.42 │ Float64               │     2020-01-01 │ Date                │
+│                ᴺᵁᴸᴸ │ None                  │     2020-01-02 │ Date                │
+│               43.43 │ Float64               │           ᴺᵁᴸᴸ │ None                │
+└─────────────────────┴───────────────────────┴────────────────┴─────────────────────┘
+```
+
+`Dynamic` のサブカラムは任意のデータ型にキャストできます。このとき、`Dynamic` の内部型を要求された型にキャストできない場合には、例外がスローされます。
 
 ```sql title="Query"
 SELECT json.a.g::UInt64 AS uint 
@@ -270,21 +270,21 @@ FROM test;
 ```
 
 ```text title="Response"
-Received exception from server:
+サーバーから例外を受信しました:
 Code: 48. DB::Exception: Received from localhost:9000. DB::Exception: 
-Conversion between numeric types and UUID is not supported. 
-Probably the passed UUID is unquoted: 
-while executing 'FUNCTION CAST(__table1.json.a.g :: 2, 'UUID'_String :: 1) -> CAST(__table1.json.a.g, 'UUID'_String) UUID : 0'. 
+数値型とUUID間の変換はサポートされていません。
+渡されたUUIDが引用符で囲まれていない可能性があります: 
+'FUNCTION CAST(__table1.json.a.g :: 2, 'UUID'_String :: 1) -> CAST(__table1.json.a.g, 'UUID'_String) UUID : 0'の実行中。
 (NOT_IMPLEMENTED)
 ```
 
 :::note
-Compact MergeTree パーツからサブカラムを効率的に読み取るには、MergeTree 設定 [write_marks_for_substreams_in_compact_parts](../../operations/settings/merge-tree-settings.md#write_marks_for_substreams_in_compact_parts) を有効にしてください。
+Compact MergeTree のパーツからサブカラムを効率的に読み込むには、MergeTree 設定 [write&#95;marks&#95;for&#95;substreams&#95;in&#95;compact&#95;parts](../../operations/settings/merge-tree-settings.md#write_marks_for_substreams_in_compact_parts) が有効になっていることを確認してください。
 :::
 
-## JSONサブオブジェクトをサブカラムとして読み取る {#reading-json-sub-objects-as-sub-columns}
+## JSON サブオブジェクトをサブカラムとして読み取る {#reading-json-sub-objects-as-sub-columns}
 
-`JSON` タイプは、特別な構文 `json.^some.path` を使用して、タイプ `JSON` のネストされたオブジェクトをサブカラムとして読み取ることをサポートしています：
+`JSON` 型では、特別な構文 `json.^some.path` を使うことで、ネストされたオブジェクトを型 `JSON` のサブカラムとして読み取ることができます。
 
 ```sql title="Query"
 CREATE TABLE test (json JSON) ENGINE = Memory;
@@ -313,30 +313,30 @@ SELECT json.^a.b, json.^d.e.f FROM test;
 ```
 
 :::note
-サブオブジェクトをサブカラムとして読み取ることは効率的ではない可能性があり、JSONデータのほぼ完全なスキャンが必要になる可能性があります。
+サブオブジェクトをサブカラムとして読み出すことは非効率になる可能性があります。JSON データをほぼ全件スキャンする必要が生じる場合があるためです。
 :::
 
 ## パスの型推論 {#type-inference-for-paths}
 
-`JSON` を解析中に、ClickHouseは各JSONパスに対して最も適切なデータタイプを検出しようとします。 
-これは、[入力データからの自動スキーマ推論](/interfaces/schema-inference.md)と同様に機能し、
-次の設定によって制御されます：
- 
-- [input_format_try_infer_dates](/operations/settings/formats#input_format_try_infer_dates)
-- [input_format_try_infer_datetimes](/operations/settings/formats#input_format_try_infer_datetimes)
-- [schema_inference_make_columns_nullable](/operations/settings/formats#schema_inference_make_columns_nullable)
-- [input_format_json_try_infer_numbers_from_strings](/operations/settings/formats#input_format_json_try_infer_numbers_from_strings)
-- [input_format_json_infer_incomplete_types_as_strings](/operations/settings/formats#input_format_json_infer_incomplete_types_as_strings)
-- [input_format_json_read_numbers_as_strings](/operations/settings/formats#input_format_json_read_numbers_as_strings)
-- [input_format_json_read_bools_as_strings](/operations/settings/formats#input_format_json_read_bools_as_strings)
-- [input_format_json_read_bools_as_numbers](/operations/settings/formats#input_format_json_read_bools_as_numbers)
-- [input_format_json_read_arrays_as_strings](/operations/settings/formats#input_format_json_read_arrays_as_strings)
-- [input_format_json_infer_array_of_dynamic_from_array_of_different_types](/operations/settings/formats#input_format_json_infer_array_of_dynamic_from_array_of_different_types)
+`JSON` のパース中、ClickHouse は各 JSON パスに対して最も適切なデータ型を推定しようとします。
+これは [入力データからの自動スキーマ推論](/interfaces/schema-inference.md) と同様に動作し、
+同じ設定によって制御されます：
 
-いくつかの例を見てみましょう：
+* [input&#95;format&#95;try&#95;infer&#95;dates](/operations/settings/formats#input_format_try_infer_dates)
+* [input&#95;format&#95;try&#95;infer&#95;datetimes](/operations/settings/formats#input_format_try_infer_datetimes)
+* [schema&#95;inference&#95;make&#95;columns&#95;nullable](/operations/settings/formats#schema_inference_make_columns_nullable)
+* [input&#95;format&#95;json&#95;try&#95;infer&#95;numbers&#95;from&#95;strings](/operations/settings/formats#input_format_json_try_infer_numbers_from_strings)
+* [input&#95;format&#95;json&#95;infer&#95;incomplete&#95;types&#95;as&#95;strings](/operations/settings/formats#input_format_json_infer_incomplete_types_as_strings)
+* [input&#95;format&#95;json&#95;read&#95;numbers&#95;as&#95;strings](/operations/settings/formats#input_format_json_read_numbers_as_strings)
+* [input&#95;format&#95;json&#95;read&#95;bools&#95;as&#95;strings](/operations/settings/formats#input_format_json_read_bools_as_strings)
+* [input&#95;format&#95;json&#95;read&#95;bools&#95;as&#95;numbers](/operations/settings/formats#input_format_json_read_bools_as_numbers)
+* [input&#95;format&#95;json&#95;read&#95;arrays&#95;as&#95;strings](/operations/settings/formats#input_format_json_read_arrays_as_strings)
+* [input&#95;format&#95;json&#95;infer&#95;array&#95;of&#95;dynamic&#95;from&#95;array&#95;of&#95;different&#95;types](/operations/settings/formats#input_format_json_infer_array_of_dynamic_from_array_of_different_types)
+
+いくつかの例を見てみましょう。
 
 ```sql title="Query"
-SELECT JSONAllPathsWithTypes('{"a" : "2020-01-01", "b" : "2020-01-01 10:00:00"}'::JSON) AS paths_with_types settings input_format_try_infer_dates=1, input_format_try_infer_datetimes=1;
+SELECT JSONAllPathsWithTypes('{"a" : "2020-01-01", "b" : "2020-01-01 10:00:00"}'::JSON) AS paths_with_types SETTINGS input_format_try_infer_dates=1, input_format_try_infer_datetimes=1;
 ```
 
 ```text title="Response"
@@ -346,7 +346,7 @@ SELECT JSONAllPathsWithTypes('{"a" : "2020-01-01", "b" : "2020-01-01 10:00:00"}'
 ```
 
 ```sql title="Query"
-SELECT JSONAllPathsWithTypes('{"a" : "2020-01-01", "b" : "2020-01-01 10:00:00"}'::JSON) AS paths_with_types settings input_format_try_infer_dates=0, input_format_try_infer_datetimes=0;
+SELECT JSONAllPathsWithTypes('{"a" : "2020-01-01", "b" : "2020-01-01 10:00:00"}'::JSON) AS paths_with_types SETTINGS input_format_try_infer_dates=0, input_format_try_infer_datetimes=0;
 ```
 
 ```text title="Response"
@@ -375,10 +375,10 @@ SELECT JSONAllPathsWithTypes('{"a" : [1, 2, 3]}'::JSON) AS paths_with_types sett
 └──────────────────────┘
 ```
 
-## JSONオブジェクトの配列の処理 {#handling-arrays-of-json-objects}
+## JSON オブジェクト配列の扱い方 {#handling-arrays-of-json-objects}
 
-オブジェクトの配列を含むJSONパスは、`Array(JSON)` として解析され、パスの `Dynamic` カラムに挿入されます。 
-オブジェクトの配列を読み取るには、`Dynamic` カラムからサブカラムとして抽出できます。
+JSON オブジェクトの配列を含む JSON パスは、型 `Array(JSON)` として解釈され、そのパスに対応する `Dynamic` 列に挿入されます。
+オブジェクト配列を読み取るには、`Dynamic` 列からサブカラムとして抽出します。
 
 ```sql title="Query"
 CREATE TABLE test (json JSON) ENGINE = Memory;
@@ -391,9 +391,9 @@ SELECT json FROM test;
 
 ```text title="Response"
 ┌─json────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ {"a":{"b":[{"c":"42","d":"Hello","f":[[{"g":42.42}]],"k":{"j":"1000"}},{"c":"43"},{"d":"My","e":["1","2","3"],"f":[[{"g":43.43,"h":"2020-01-01"}]],"k":{"j":"2000"}}]}} │
+│ {"a":{"b":[{"c":"42","d":"こんにちは","f":[[{"g":42.42}]],"k":{"j":"1000"}},{"c":"43"},{"d":"私の","e":["1","2","3"],"f":[[{"g":43.43,"h":"2020-01-01"}]],"k":{"j":"2000"}}]}} │
 │ {"a":{"b":["1","2","3"]}}                                                                                                                                               │
-│ {"a":{"b":[{"c":"44","f":[[{"h":"2020-01-02"}]]},{"d":"World","e":["4","5","6"],"f":[[{"g":44.44}]],"k":{"j":"3000"}}]}}                                                │
+│ {"a":{"b":[{"c":"44","f":[[{"h":"2020-01-02"}]]},{"d":"世界","e":["4","5","6"],"f":[[{"g":44.44}]],"k":{"j":"3000"}}]}}                                                │
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -409,10 +409,10 @@ SELECT json.a.b, dynamicType(json.a.b) FROM test;
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────┘
 ```
 
-ご覧の通り、ネストされた `JSON` タイプの `max_dynamic_types`/`max_dynamic_paths` パラメータはデフォルト値と比較して減少しています。 
-これは、ネストされたJSONオブジェクトの配列のサブカラムの数の増加を避けるために必要です。
+ご覧のとおり、ネストされた `JSON` 型の `max_dynamic_types` と `max_dynamic_paths` パラメータは、デフォルト値よりも小さい値に減らされています。
+これは、JSON オブジェクトの配列が入れ子になっている場合に、サブカラムの数が際限なく増加するのを防ぐために必要です。
 
-ネストされた `JSON` カラムからサブカラムを読み取ってみましょう：
+ネストされた `JSON` カラムからサブカラムを読み取ってみましょう。
 
 ```sql title="Query"
 SELECT json.a.b.:`Array(JSON)`.c, json.a.b.:`Array(JSON)`.f, json.a.b.:`Array(JSON)`.d FROM test; 
@@ -426,7 +426,7 @@ SELECT json.a.b.:`Array(JSON)`.c, json.a.b.:`Array(JSON)`.f, json.a.b.:`Array(JS
 └───────────────────────────┴─────────────────────────────────────────────────────────────┴───────────────────────────┘
 ```
 
-`Array(JSON)` サブカラム名を書く必要がない特別な構文を使用して、次のように読み取ることができます：
+特別な構文を使うことで、`Array(JSON)` サブカラムの名前を記述せずに済みます。
 
 ```sql title="Query"
 SELECT json.a.b[].c, json.a.b[].f, json.a.b[].d FROM test;
@@ -440,9 +440,9 @@ SELECT json.a.b[].c, json.a.b[].f, json.a.b[].d FROM test;
 └───────────────────────────┴─────────────────────────────────────────────────────────────┴───────────────────────────┘
 ```
 
-パスの後ろの `[]` の数は配列のレベルを示します。たとえば、`json.path[][]` は `json.path.:Array(Array(JSON))` に変換されます。
+パスの後に続く `[]` の数は配列のネストレベルを示します。例えば、`json.path[][]` は `json.path.:Array(Array(JSON))` に変換されます。
 
-`Array(JSON)` 内のパスと型を確認してみましょう：
+`Array(JSON)` 内のパスと型を確認してみましょう。
 
 ```sql title="Query"
 SELECT DISTINCT arrayJoin(JSONAllPathsWithTypes(arrayJoin(json.a.b[]))) FROM test;
@@ -458,7 +458,7 @@ SELECT DISTINCT arrayJoin(JSONAllPathsWithTypes(arrayJoin(json.a.b[]))) FROM tes
 └───────────────────────────────────────────────────────────────────────┘
 ```
 
-`Array(JSON)` カラムからサブカラムを読み取ってみましょう：
+`Array(JSON)` 型の列からサブカラムを読み取ってみましょう：
 
 ```sql title="Query"
 SELECT json.a.b[].c.:Int64, json.a.b[].f[][].g.:Float64, json.a.b[].f[][].h.:Date FROM test;
@@ -472,7 +472,7 @@ SELECT json.a.b[].c.:Int64, json.a.b[].f[][].g.:Float64, json.a.b[].f[][].h.:Dat
 └────────────────────────────────────┴──────────────────────────────────────────────────────────────┴───────────────────────────────────────────────────────────┘
 ```
 
-ネストされた `JSON` カラムからサブオブジェクトのサブカラムを読み取ることもできます：
+ネストされた `JSON` カラムからサブオブジェクト内のサブカラムを読み取ることもできます。
 
 ```sql title="Query"
 SELECT json.a.b[].^k FROM test
@@ -486,15 +486,32 @@ SELECT json.a.b[].^k FROM test
 └──────────────────────────────────────┘
 ```
 
-## ドットを含むJSONキーの処理 {#handling-json-keys-with-dots}
+## NULL を含む JSON キーの扱い {#handling-json-keys-with-nulls}
 
-内部的にJSONカラムはすべてのパスと値をフラットな形で格納します。これにより、デフォルトではこれら2つのオブジェクトは同じものと見なされます：
+本製品の JSON 実装では、`null` と値が存在しない状態は同等と見なされます。
+
+```sql title="Query"
+SELECT '{}'::JSON AS json1, '{"a" : null}'::JSON AS json2, json1 = json2
+```
+
+```text title="Response"
+┌─json1─┬─json2─┬─equals(json1, json2)─┐
+│ {}    │ {}    │                    1 │
+└───────┴───────┴──────────────────────┘
+```
+
+これは、元の JSON データに NULL 値を持つパスが含まれていたのか、それともそのようなパスがそもそも含まれていなかったのかを判定することが不可能であることを意味します。
+
+## ドットを含む JSON キーの扱い {#handling-json-keys-with-dots}
+
+内部的に、JSON カラムではすべてのパスと値がフラットな形式で保存されます。つまり、デフォルトでは次の 2 つのオブジェクトは同一のものとして扱われます。
+
 ```json
 {"a" : {"b" : 42}}
 {"a.b" : 42}
 ```
 
-これらは内部で `a.b` というパスと `42` という値のペアとして格納されます。JSONのフォーマット中に、常にドットで区切られたパス部分に基づいてネストされたオブジェクトを形成します：
+どちらも内部的には、パス `a.b` と値 `42` の組として保存されます。JSON を整形する際には、ドットで区切られたパスの各要素に基づいて、常に入れ子のオブジェクトを構築します。
 
 ```sql title="Query"
 SELECT '{"a" : {"b" : 42}}'::JSON AS json1, '{"a.b" : 42}'::JSON AS json2, JSONAllPaths(json1), JSONAllPaths(json2);
@@ -506,19 +523,19 @@ SELECT '{"a" : {"b" : 42}}'::JSON AS json1, '{"a.b" : 42}'::JSON AS json2, JSONA
 └──────────────────┴──────────────────┴─────────────────────┴─────────────────────┘
 ```
 
-ご覧の通り、初期JSON `{"a.b" : 42}` は `{"a" : {"b" : 42}}` としてフォーマットされています。
+ご覧のとおり、元の JSON `{"a.b" : 42}` は、`{"a" : {"b" : 42}}` のような形式に変換されています。
 
-この制限により、次のような有効なJSONオブジェクトを解析することができなくなります：
+この制約により、次のような有効な JSON オブジェクトも正しく解析できません。
 
 ```sql title="Query"
 SELECT '{"a.b" : 42, "a" : {"b" : "Hello World!"}}'::JSON AS json;
 ```
 
 ```text title="Response"
-Code: 117. DB::Exception: Cannot insert data into JSON column: Duplicate path found during parsing JSON object: a.b. You can enable setting type_json_skip_duplicated_paths to skip duplicated paths during insert: In scope SELECT CAST('{"a.b" : 42, "a" : {"b" : "Hello, World"}}', 'JSON') AS json. (INCORRECT_DATA)
+コード: 117. DB::Exception: JSONカラムへのデータ挿入ができません: JSONオブジェクトの解析中に重複パスが検出されました: a.b。挿入時に重複パスをスキップするには、type_json_skip_duplicated_paths 設定を有効にしてください: スコープ SELECT CAST('{"a.b" : 42, "a" : {"b" : "Hello, World"}}', 'JSON') AS json 内。(INCORRECT_DATA)
 ```
 
-ドットを含むキーを保持し、ネストされたオブジェクトとしてフォーマットされないようにするには、設定 [json_type_escape_dots_in_keys](../../operations/settings/formats#json_type_escape_dots_in_keys) を有効にしてください（バージョン`25.8`から利用可能）。この場合、解析中にJSONキー内のすべてのドットは `%2E` にエスケープされ、フォーマット中に元に戻されます。
+ドットを含むキーをそのまま保持し、それらをネストされたオブジェクトとして解釈させたくない場合は、`25.8` バージョン以降で利用可能な設定 [json&#95;type&#95;escape&#95;dots&#95;in&#95;keys](/operations/settings/formats#json_type_escape_dots_in_keys) を有効にしてください。この場合、パース時に JSON キー内のすべてのドットは `%2E` にエスケープされ、フォーマット時に元に戻されます。
 
 ```sql title="Query"
 SET json_type_escape_dots_in_keys=1;
@@ -542,7 +559,7 @@ SELECT '{"a.b" : 42, "a" : {"b" : "Hello World!"}}'::JSON AS json, JSONAllPaths(
 └───────────────────────────────────────┴────────────────────┘
 ```
 
-エスケープされたドットを含むキーをサブカラムとして読み取るには、サブカラム名にエスケープされたドットを使用する必要があります：
+エスケープされたドットを含むキーをサブカラムとして読み取るには、サブカラム名にもエスケープされたドットを使用する必要があります。
 
 ```sql title="Query"
 SET json_type_escape_dots_in_keys=1;
@@ -555,7 +572,7 @@ SELECT '{"a.b" : 42, "a" : {"b" : "Hello World!"}}'::JSON AS json, json.`a%2Eb`,
 └───────────────────────────────────────┴────────────┴──────────────┘
 ```
 
-注: 識別子パーサーとアナライザーの制限により、サブカラム ``json.`a.b`\`` はサブカラム `json.a.b` と同等であり、エスケープされたドットを持つパスを読み取ることはできません。
+注意: 識別子パーサーおよびアナライザーの制限により、サブカラム `` json.`a.b` `` はサブカラム `json.a.b` と同等とみなされ、エスケープされたドットを含むパスとしては解釈されません:
 
 ```sql title="Query"
 SET json_type_escape_dots_in_keys=1;
@@ -568,7 +585,7 @@ SELECT '{"a.b" : 42, "a" : {"b" : "Hello World!"}}'::JSON AS json, json.`a%2Eb`,
 └───────────────────────────────────────┴────────────┴──────────────┴──────────────┘
 ```
 
-また、ドットを含むJSONパスに対するヒントを指定したい場合（または `SKIP`/`SKIP REGEX` セクションで使用する場合）、ヒント内でエスケープされたドットを使用する必要があります。
+また、キー名にドットを含む JSON パスに対してヒントを指定する場合（あるいはそれを `SKIP` / `SKIP REGEX` セクションで使用する場合）は、ヒント内ではドットをエスケープして記述する必要があります。
 
 ```sql title="Query"
 SET json_type_escape_dots_in_keys=1;
@@ -588,20 +605,20 @@ SELECT '{"a.b" : 42, "a" : {"b" : "Hello World!"}}'::JSON(SKIP `a%2Eb`) as json,
 
 ```text title="Response"
 ┌─json───────────────────────┬─json.a%2Eb─┐
-│ {"a":{"b":"Hello World!"}} │ ᴺᵁᴸᴸ       │
+│ {"a":{"b":"こんにちは世界！"}} │ ᴺᵁᴸᴸ       │
 └────────────────────────────┴────────────┘
 ```
 
-## データからJSONタイプを読み取る {#reading-json-type-from-data}
+## データから JSON 型を読み込む {#reading-json-type-from-data}
 
-すべてのテキストフォーマット 
-([`JSONEachRow`](../../interfaces/formats/JSON/JSONEachRow.md), 
-[`TSV`](../../interfaces/formats/TabSeparated/TabSeparated.md), 
-[`CSV`](../../interfaces/formats/CSV/CSV.md), 
-[`CustomSeparated`](../../interfaces/formats/CustomSeparated/CustomSeparated.md), 
-[`Values`](../../interfaces/formats/Values.md), など) は `JSON` タイプの読み取りをサポートしています。
+すべてのテキストフォーマット
+([`JSONEachRow`](/interfaces/formats/JSONEachRow),
+[`TSV`](/interfaces/formats/TabSeparated),
+[`CSV`](/interfaces/formats/CSV),
+[`CustomSeparated`](/interfaces/formats/CustomSeparated),
+[`Values`](/interfaces/formats/Values) など) は、`JSON` 型のデータの読み取りをサポートしています。
 
-例：
+例:
 
 ```sql title="Query"
 SELECT json FROM format(JSONEachRow, 'json JSON(a.b.c UInt32, SKIP a.b.d, SKIP d.e, SKIP REGEXP \'b.*\')', '
@@ -617,13 +634,13 @@ SELECT json FROM format(JSONEachRow, 'json JSON(a.b.c UInt32, SKIP a.b.d, SKIP d
 ┌─json──────────────────────────────────────────────────────────┐
 │ {"a":{"b":{"c":1}},"c":"42","d":{"i":["1","2","3"]}}          │
 │ {"a":{"b":{"c":2}},"d":{"i":["4","5","6"]}}                   │
-│ {"a":{"b":{"c":3}},"e":"Hello, World!"}                       │
+│ {"a":{"b":{"c":3}},"e":"こんにちは、世界！"}                       │
 │ {"a":{"b":{"c":4}},"c":"43"}                                  │
 │ {"a":{"b":{"c":5}},"d":{"h":"2020-02-02 10:00:00.000000000"}} │
 └───────────────────────────────────────────────────────────────┘
 ```
 
-`CSV`/`TSV`などのテキストフォーマットの場合、`JSON` はJSONオブジェクトを含む文字列から解析されます：
+`CSV` や `TSV` などのテキスト形式では、`JSON` は JSON オブジェクトを含む文字列から解析されます。
 
 ```sql title="Query"
 SELECT json FROM format(TSV, 'json JSON(a.b.c UInt32, SKIP a.b.d, SKIP REGEXP \'b.*\')',
@@ -638,27 +655,28 @@ SELECT json FROM format(TSV, 'json JSON(a.b.c UInt32, SKIP a.b.d, SKIP REGEXP \'
 ┌─json──────────────────────────────────────────────────────────┐
 │ {"a":{"b":{"c":1}},"c":"42","d":{"i":["1","2","3"]}}          │
 │ {"a":{"b":{"c":2}},"d":{"i":["4","5","6"]}}                   │
-│ {"a":{"b":{"c":3}},"e":"Hello, World!"}                       │
+│ {"a":{"b":{"c":3}},"e":"こんにちは、世界！"}                       │
 │ {"a":{"b":{"c":4}},"c":"43"}                                  │
 │ {"a":{"b":{"c":5}},"d":{"h":"2020-02-02 10:00:00.000000000"}} │
 └───────────────────────────────────────────────────────────────┘
 ```
 
-## JSON内の動的パスの制限に達する {#reaching-the-limit-of-dynamic-paths-inside-json}
+## JSON 内部の動的パス数の上限に到達する場合 {#reaching-the-limit-of-dynamic-paths-inside-json}
 
-`JSON` データタイプは、内部で分離されたサブカラムとして格納できるパスの限られた数しか保存できません。 
-デフォルトでは、この制限は `1024` ですが、`max_dynamic_paths` パラメーターを使用してタイプ宣言で変更できます。
+`JSON` データ型は、内部的にサブカラムとして保持できるパスの数に上限があります。
+デフォルトではこの上限は `1024` ですが、型宣言時にパラメータ `max_dynamic_paths` を指定して変更できます。
 
-制限に達すると、挿入されたすべての新しいパスは `JSON` カラム内で単一の共有データ構造に格納されます。 
-そのようなパスはサブカラムとして読み取ることはできますが、効率が低下する可能性があります（[共有データに関するセクションを参照してください](#shared-data-structure)）。 
-この制限は、テーブルを使えなくなるほど異なるサブカラムが膨大に増えることを防ぐためにあります。
+上限に到達すると、その後に `JSON` カラムへ挿入される新しいパスは、1 つの共有データ構造に格納されます。
+そのようなパスも引き続きサブカラムとして読み取ることは可能ですが、
+効率は低下する可能性があります（[共有データに関するセクション](#shared-data-structure) を参照）。
+この上限は、テーブルが使用不能になるほど膨大な数のサブカラムが作成されるのを防ぐために必要です。
 
-いくつかの異なるシナリオで制限に達した場合に何が起こるか見てみましょう。
+いくつかのシナリオで、この上限に到達した場合に何が起こるかを見ていきます。
 
-### データ解析中に制限に達する {#reaching-the-limit-during-data-parsing}
+### データのパース中に上限へ到達する場合 {#reaching-the-limit-during-data-parsing}
 
-データから `JSON` オブジェクトを解析中に、現在のデータブロックの制限に達した場合、 
-新しいすべてのパスは共有データ構造に格納されます。以下の2つのインストロスペクション関数 `JSONDynamicPaths`, `JSONSharedDataPaths` を使用できます：
+データから `JSON` オブジェクトをパースしている際に、現在のデータブロックで上限に達した場合、
+それ以降のすべての新しいパスは共有データ構造に格納されます。次の 2 つのイントロスペクション関数 `JSONDynamicPaths`、`JSONSharedDataPaths` を使用できます。
 
 ```sql title="Query"
 SELECT json, JSONDynamicPaths(json), JSONSharedDataPaths(json) FROM format(JSONEachRow, 'json JSON(max_dynamic_paths=3)', '
@@ -680,18 +698,22 @@ SELECT json, JSONDynamicPaths(json), JSONSharedDataPaths(json) FROM format(JSONE
 └────────────────────────────────────────────────────────────────┴────────────────────────┴───────────────────────────┘
 ```
 
-パス `e` と `f.g` を挿入した後に制限に達したことが分かりますが、 
-それらは共有データ構造に挿入されました。
+ご覧のとおり、パス `e` と `f.g` を挿入した後に上限に達し、
+それらは共有データ構造に格納されました。
 
-### MergeTree テーブルエンジン内のデータパーツのマージ中 {#during-merges-of-data-parts-in-mergetree-table-engines}
+### MergeTree テーブルエンジンにおけるデータパーツのマージ中 {#during-merges-of-data-parts-in-mergetree-table-engines}
 
-`MergeTree` テーブルで複数のデータパーツをマージする際に、結果のデータパーツ内の `JSON` カラムは動的パスの制限に達し、
-ソースパーツからすべてのパスをサブカラムとして格納できなくなる可能性があります。
-この場合、ClickHouseは、マージ後にどのパスがサブカラムとして残るか、どのパスが共有データ構造に格納されるかを選択します。 
-大抵の場合、ClickHouseは、最も多くの非NULL値を含むパスを保持し、希少なパスを共有データ構造に移動しようとします。ただし、これは実装に依存します。
+`MergeTree` テーブルで複数のデータパーツをマージする際、結果として得られるデータパーツ内の `JSON` 列が動的パスの上限に達し、
+元のパーツに含まれるすべてのパスをサブカラムとして保持できなくなる場合があります。
+この場合、ClickHouse はマージ後もサブカラムとして残すパスと、
+共有データ構造に格納するパスを選択します。
+多くの場合、ClickHouse は非 NULL 値の数が最も多いパスを保持し、
+出現頻度の低いパスを共有データ構造に移動しようとします。
+ただし、これは実装に依存します。
 
-このようなマージの例を見てみましょう。 
-まず、`JSON` カラムを持つテーブルを作成し、動的パスの制限を `3` に設定し、次に `5` つの異なるパスを持つ値を挿入します：
+このようなマージの例を見てみましょう。
+まず、`JSON` 列を持つテーブルを作成し、動的パスの上限を `3` に設定してから、
+`5` つの異なるパスを持つ値を挿入してみます。
 
 ```sql title="Query"
 CREATE TABLE test (id UInt64, json JSON(max_dynamic_paths=3)) ENGINE=MergeTree ORDER BY id;
@@ -703,7 +725,7 @@ INSERT INTO test SELECT number, formatRow('JSONEachRow', number as d) FROM numbe
 INSERT INTO test SELECT number, formatRow('JSONEachRow', number as e) FROM numbers(1);
 ```
 
-各挿入は、`JSON` カラムを持つ別々のデータパートを作成します：
+各 `INSERT` は、1 つのパスのみを含む `JSON` 列を持つ、別個のデータパーツを作成します。
 
 ```sql title="Query"
 SELECT
@@ -726,7 +748,7 @@ ORDER BY _part ASC
 └─────────┴───────────────┴───────────────────┴───────────┘
 ```
 
-では、すべてのパーツを1つにマージして、何が起こるか見てみましょう：
+では、すべてのパーツをひとつにまとめて、どうなるか確認してみましょう。
 
 ```sql title="Query"
 SELECT
@@ -745,69 +767,83 @@ ORDER BY _part ASC
 └─────────┴───────────────┴───────────────────┴───────────┘
 ```
 
-見ての通り、ClickHouseは最も頻繁なパス `a`, `b` と `c` を保持し、`d` と `e`のパスを共有データ構造に移動しました。
+ご覧のとおり、ClickHouse は最も頻出するパスである `a`、`b`、`c` を保持し、パス `d` と `e` を共有のデータ構造に移しました。
 
 ## 共有データ構造 {#shared-data-structure}
 
-前のセクションで説明したように、`max_dynamic_paths` 制限に達すると、すべての新しいパスが単一の共有データ構造に格納されます。
-このセクションでは、共有データ構造の詳細と、そこからパスのサブカラムを読み取る方法について見ていきます。
+前のセクションで説明したように、`max_dynamic_paths` の制限に達すると、すべての新しいパスは 1 つの共有データ構造に保存されます。
+このセクションでは、その共有データ構造の詳細と、そこからパスのサブカラムをどのように読み取るかを見ていきます。
 
-JSONカラムの内容を調査するために使用される関数の詳細については、["introspection functions"](/sql-reference/data-types/newjson#introspection-functions) セクションを参照してください。
+JSON カラムの内容を調査するために使用される関数の詳細については、「["introspection functions"](/sql-reference/data-types/newjson#introspection-functions)」セクションを参照してください。
 
-### メモリ内の共有データ構造 {#shared-data-structure-in-memory}
+### メモリ上の共有データ構造 {#shared-data-structure-in-memory}
 
-メモリ内で、共有データ構造は、フラットにされたJSONパスとバイナリエンコードされた値のマッピングを格納する `Map(String, String)` タイプのサブカラムに過ぎません。
-それからパスのサブカラムを抽出するには、この `Map` カラム内のすべての行を繰り返し、要求されたパスとその値を見つけようとします。
+メモリ上では、共有データ構造は単に `Map(String, String)` 型のサブカラムであり、フラット化された JSON パスからバイナリエンコードされた値へのマッピングを保持します。
+そこから特定のパスのサブカラムを抽出するには、この `Map` カラムのすべての行を走査し、要求されたパスとその値を探します。
 
 ### MergeTree パーツ内の共有データ構造 {#shared-data-structure-in-merge-tree-parts}
 
-[MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルでは、すべてのデータをディスクに格納します（ローカルまたはリモート）。ディスク上のデータはメモリとは異なる方法で格納されることがあります。
-現在、MergeTreeデータパーツには `map`、`map_with_buckets`、および `advanced` の3つの異なる共有データ構造のシリアライゼーションがあります。
+[MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルでは、ローカルまたはリモートのディスク上にあるすべてのデータを格納するデータパーツにデータを保存します。ディスク上のデータは、メモリとは異なる方式で保存される場合があります。
+現在、MergeTree のデータパーツには 3 種類の共有データ構造シリアライゼーションがあります: `map`、`map_with_buckets`、
+および `advanced` です。
 
-シリアライゼーションバージョンは、MergeTree設定 [object_shared_data_serialization_version](../../operations/settings/merge-tree-settings.md#object_shared_data_serialization_version) および [object_shared_data_serialization_version_for_zero_level_parts](../../operations/settings/merge-tree-settings.md#object_shared_data_serialization_version_for_zero_level_parts) によって制御されます 
-（ゼロレベルパートはテーブルへのデータ挿入中に作成され、高レベルのマージパーツがあります）。
+シリアライゼーションのバージョンは MergeTree の
+設定 [object_shared_data_serialization_version](../../operations/settings/merge-tree-settings.md#object_shared_data_serialization_version)
+と [object_shared_data_serialization_version_for_zero_level_parts](../../operations/settings/merge-tree-settings.md#object_shared_data_serialization_version_for_zero_level_parts) 
+によって制御されます（ゼロレベルパーツはテーブルへのデータ挿入時に作成されるパーツであり、マージ中に作成されるパーツはより高いレベルを持ちます）。
 
-注: 共有データ構造のシリアライゼーションの変更は、`v3` [オブジェクトのシリアライゼーションバージョン](../../operations/settings/merge-tree-settings.md#object_serialization_version) のみでサポートされています。
+注記: 共有データ構造のシリアライゼーションの変更がサポートされるのは、
+`v3` の [object serialization version](../../operations/settings/merge-tree-settings.md#object_serialization_version) の場合のみです。
 
-#### マップ {#shared-data-map}
+#### Map {#shared-data-map}
 
-`map` シリアライゼーションバージョンでは、共有データはメモリと同様に `Map(String, String)` タイプの単一カラムとしてシリアライズされます。このシリアライゼーションタイプからパスのサブカラムを読み取るには、ClickHouseは全体の `Map` カラムを読み取り、要求されたパスをメモリに抽出します。
+`map` シリアライゼーションバージョンでは、共有データはメモリ上と同様に、`Map(String, String)` 型の単一カラムとしてシリアライズされます。
+この形式のシリアライゼーションからパスのサブカラムを読み取るために、ClickHouse は `Map` カラム全体を読み込み、
+メモリ上で要求されたパスを抽出します。
 
-このシリアライゼーションは、データの書き込みと全体の `JSON` カラムの読み取りには効率的ですが、パスのサブカラムを読み取るには効率的ではありません。
+このシリアライゼーションはデータの書き込みや `JSON` カラム全体の読み取りには効率的ですが、パスのサブカラムの読み取りには効率的ではありません。
 
-#### バケット付きマップ {#shared-data-map-with-buckets}
+#### Map with buckets {#shared-data-map-with-buckets} 
 
-`map_with_buckets` シリアライゼーションバージョンでは、共有データは `Map(String, String)` タイプの `N` カラム（「バケット」）としてシリアライズされます。 
-各バケットには、パスのサブセットのみが含まれます。このタイプのシリアライゼーションからパスのサブカラムを読み取るには、ClickHouseは単一のバケットから全体の `Map` カラムを読み取り、要求されたパスをメモリに抽出します。
+`map_with_buckets` シリアライゼーションバージョンでは、共有データは `Map(String, String)` 型の `N` 個のカラム（「バケット」）としてシリアライズされます。
+各バケットにはパスのサブセットのみが含まれます。この形式のシリアライゼーションからパスのサブカラムを読み取るために、ClickHouse は
+単一のバケットから `Map` カラム全体を読み込み、メモリ上で要求されたパスを抽出します。
 
-このシリアライゼーションはデータの書き込みと全体の `JSON` カラムの読み取りにはあまり効率的ではありませんが、パスのサブカラムを読み取るには効率的です。なぜなら、必要なバケットからのみデータを読み取るためです。
+このシリアライゼーションはデータの書き込みや `JSON` カラム全体の読み取りについては効率が低くなりますが、必要なバケットからのみデータを読み取るため、
+パスのサブカラムの読み取りにはより効率的です。
 
-バケットの数 `N` は、MergeTree 設定 [object_shared_data_buckets_for_compact_part](../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_compact_part) (デフォルトは8) および [object_shared_data_buckets_for_wide_part](../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_wide_part) (デフォルトは32) によって制御されます。
+バケット数 `N` は、MergeTree 設定 [object_shared_data_buckets_for_compact_part](
+../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_compact_part)（デフォルト 8）
+および [object_shared_data_buckets_for_wide_part](
+../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_wide_part)（デフォルト 32）によって制御されます。
 
-#### 高度 {#shared-data-advanced}
+#### Advanced {#shared-data-advanced}
 
-`advanced` シリアライゼーションバージョンでは、共有データは、要求されたパスのデータのみを読み取ることを可能にする追加情報を格納する特別なデータ構造としてシリアライズされます。
-このシリアライゼーションはバケットもサポートしているため、各バケットはパスのサブセットのみを含みます。
+`advanced` シリアライゼーションバージョンでは、共有データはパスのサブカラムの読み取り性能を最大化するための特殊なデータ構造としてシリアライズされます。このデータ構造では、要求されたパスのデータのみを読み取れるようにする追加情報を保持します。
+このシリアライゼーションもバケットをサポートしており、各バケットにはパスのサブセットのみが含まれます。
 
-このシリアライゼーションはデータの書き込みにとっては非常に効率が悪いため（したがって、ゼロレベルのパーツにはこのシリアライゼーションを使用することは推奨されません）、全体の `JSON` カラムを読み取る際は `map` シリアライゼーションと比べてわずかに効率が低下しますが、パスのサブカラムの読み取りには非常に効率的です。
+このシリアライゼーションはデータの書き込みにはかなり非効率的であるため（ゼロレベルパーツでこのシリアライゼーションを使用することは推奨されません）、`JSON` カラム全体の読み取りは `map` シリアライゼーションと比較してわずかに効率が低下しますが、パスのサブカラムの読み取りには非常に効率的です。
 
-注: 追加の情報をデータ構造内に保存するため、このシリアライゼーションでは、ディスク上のストレージサイズは、`map` および `map_with_buckets` シリアライゼーションと比較して大きくなります。
+注記: データ構造内部に追加情報を保存するため、このシリアライゼーションでは `map` および `map_with_buckets` シリアライゼーションと比較してディスクのストレージサイズが大きくなります。
 
-## インストロスペクション関数 {#introspection-functions}
+新しい共有データシリアライゼーションのより詳細な概要と実装の詳細については、[ブログ記事](https://clickhouse.com/blog/json-data-type-gets-even-better) を参照してください。
 
-JSONカラムの内容を調査するのに役立ついくつかの関数があります：
-- [`JSONAllPaths`](../functions/json-functions.md#JSONAllPaths)
-- [`JSONAllPathsWithTypes`](../functions/json-functions.md#JSONAllPathsWithTypes)
-- [`JSONDynamicPaths`](../functions/json-functions.md#JSONDynamicPaths)
-- [`JSONDynamicPathsWithTypes`](../functions/json-functions.md#JSONDynamicPathsWithTypes)
-- [`JSONSharedDataPaths`](../functions/json-functions.md#JSONSharedDataPaths)
-- [`JSONSharedDataPathsWithTypes`](../functions/json-functions.md#JSONSharedDataPathsWithTypes)
-- [`distinctDynamicTypes`](../aggregate-functions/reference/distinctdynamictypes.md)
-- [`distinctJSONPaths and distinctJSONPathsAndTypes`](../aggregate-functions/reference/distinctjsonpaths.md)
+## イントロスペクション関数 {#introspection-functions}
+
+JSON 列の内容を調査するのに役立つ関数がいくつかあります：
+
+* [`JSONAllPaths`](../functions/json-functions.md#JSONAllPaths)
+* [`JSONAllPathsWithTypes`](../functions/json-functions.md#JSONAllPathsWithTypes)
+* [`JSONDynamicPaths`](../functions/json-functions.md#JSONDynamicPaths)
+* [`JSONDynamicPathsWithTypes`](../functions/json-functions.md#JSONDynamicPathsWithTypes)
+* [`JSONSharedDataPaths`](../functions/json-functions.md#JSONSharedDataPaths)
+* [`JSONSharedDataPathsWithTypes`](../functions/json-functions.md#JSONSharedDataPathsWithTypes)
+* [`distinctDynamicTypes`](../aggregate-functions/reference/distinctdynamictypes.md)
+* [`distinctJSONPaths and distinctJSONPathsAndTypes`](../aggregate-functions/reference/distinctjsonpaths.md)
 
 **例**
 
-`2020-01-01`の日付で[GH Archive](https://www.gharchive.org/)データセットの内容を調査してみましょう：
+`2020-01-01` の [GH Archive](https://www.gharchive.org/) データセットの内容を調査してみましょう。
 
 ```sql title="Query"
 SELECT arrayJoin(distinctJSONPaths(json))
@@ -930,9 +966,9 @@ SETTINGS date_time_input_format = 'best_effort'
 └─arrayJoin(distinctJSONPathsAndTypes(json))──────────────────┘
 ```
 
-## ALTER MODIFY COLUMN を使用して JSON タイプに変更 {#alter-modify-column-to-json-type}
+## ALTER MODIFY COLUMN で JSON 型に変更する {#alter-modify-column-to-json-type}
 
-既存のテーブルを変更し、カラムのタイプを新しい `JSON` タイプに変更することが可能です。 現在、`String` タイプからだけ `ALTER` がサポートされています。
+既存のテーブルに対して `ALTER` を実行し、列の型を新しい `JSON` 型に変更できます。現時点では、`String` 型からの `ALTER` のみがサポートされています。
 
 **例**
 
@@ -952,11 +988,11 @@ SELECT json, json.a, json.b, json.c FROM test;
 └──────────────────────────────┴────────┴─────────┴────────────┘
 ```
 
-## JSON タイプの値の比較 {#comparison-between-values-of-the-json-type}
+## JSON 型の値の比較 {#comparison-between-values-of-the-json-type}
 
-JSONオブジェクトは、マップと同様に比較されます。 
+JSON オブジェクトは Map 型と同様に比較されます。
 
-例えば：
+例：
 
 ```sql title="Query"
 CREATE TABLE test (json1 JSON, json2 JSON) ENGINE=Memory;
@@ -988,18 +1024,18 @@ SELECT json1, json2, json1 < json2, json1 = json2, json1 > json2 FROM test;
 └────────────┴─────────────────────┴────────────────────┴──────────────────────┴───────────────────────┘
 ```
 
-**注:** 2つのパスが異なるデータタイプの値を含む場合、これらは `Variant` データタイプの [比較ルール](/sql-reference/data-types/variant#comparing-values-of-variant-data) に従って比較されます。
+**注:** 2 つのパスに含まれる値のデータ型が異なる場合、それらは `Variant` データ型の[比較ルール](/sql-reference/data-types/variant#comparing-values-of-variant-data)に従って比較されます。
 
-## JSON タイプのより良い使用に関するヒント {#tips-for-better-usage-of-the-json-type}
+## JSON 型をより効果的に利用するためのヒント {#tips-for-better-usage-of-the-json-type}
 
-`JSON` カラムを作成する前に、データを読み込む際には次のヒントを考慮してください。
+`JSON` カラムを作成してデータを読み込む前に、次の点を検討してください。
 
-- データを調査し、可能な限り多くのパスヒントとタイプを指定してください。これにより、ストレージと読み取りの効率が大幅に向上します。
-- どのパスが必要で、どのパスが決して必要でないかについて考えてください。必要ないパスは `SKIP` セクション、および必要に応じて `SKIP REGEXP` セクションに指定してください。これにより、ストレージが改善されます。
-- `max_dynamic_paths` パラメーターを非常に高い値に設定しないでください。そうするとストレージと読み取りが効率的ではなくなる場合があります。 
-  システムのメモリやCPUなどのパラメータによって大きく異なりますが、一般的な目安として、ローカルファイルシステムのストレージでは `max_dynamic_paths` を10,000より大きく設定しないこと、リモートファイルシステムのストレージでは1024より大きく設定しないことをお勧めします。
+- データを調査し、可能な限り多くのパスヒントとその型を指定してください。これにより、保存および読み取りがより効率的になります。
+- 必要となるパスと、今後も使用しないパスを検討してください。不要なパスは `SKIP` セクションに、必要に応じて `SKIP REGEXP` セクションに指定します。これによりストレージ効率が向上します。
+- `max_dynamic_paths` パラメータを過度に大きな値に設定しないでください。保存および読み取りが非効率になる可能性があります。  
+  メモリ、CPU などのシステムパラメータに大きく依存しますが、一般的な目安として、ローカルファイルシステムストレージでは `max_dynamic_paths` を 10 000 を超える値に設定せず、リモートファイルシステムストレージでは 1024 を超える値に設定しないことを推奨します。
 
-## さらなる情報 {#further-reading}
+## 関連ドキュメント {#further-reading}
 
-- [ClickHouse 用に新しい強力な JSON データタイプを構築した方法](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse)
-- [10億ドキュメントの JSON チャレンジ: ClickHouse 対 MongoDB、Elasticsearch、その他](https://clickhouse.com/blog/json-bench-clickhouse-vs-mongodb-elasticsearch-duckdb-postgresql)
+- [ClickHouse 向けに新しい強力な JSON データ型を構築した方法](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse)
+- [10 億件 JSON ドキュメントチャレンジ: ClickHouse、MongoDB、Elasticsearch などの比較](https://clickhouse.com/blog/json-bench-clickhouse-vs-mongodb-elasticsearch-duckdb-postgresql)

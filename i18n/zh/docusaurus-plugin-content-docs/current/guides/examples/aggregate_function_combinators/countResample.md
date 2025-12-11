@@ -1,29 +1,26 @@
 ---
-'slug': '/examples/aggregate-function-combinators/countResample'
-'title': 'countResample'
-'description': '使用 count 的 Resample 组合子的示例'
-'keywords':
-- 'count'
-- 'Resample'
-- 'combinator'
-- 'examples'
-- 'countResample'
-'sidebar_label': 'countResample'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/countResample'
+title: 'countResample'
+description: '将 Resample 组合器与 count 一起使用的示例'
+keywords: ['count', 'Resample', 'combinator', '示例', 'countResample']
+sidebar_label: 'countResample'
+doc_type: 'reference'
 ---
-
 
 # countResample {#countResample}
 
-## Description {#description}
+## 描述 {#description}
 
-[`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 组合器可以应用于 [`count`](/sql-reference/aggregate-functions/reference/count) 聚合函数，以在固定数量的区间（`N`）中统计指定键列的值。
+可以将 [`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
+组合器应用到 [`count`](/sql-reference/aggregate-functions/reference/count)
+聚合函数上，以在固定数量（`N`）的区间内统计指定键列的值的数量。
 
-## Example usage {#example-usage}
+## 示例用法 {#example-usage}
 
-### Basic example {#basic-example}
+### 基本示例 {#basic-example}
 
-让我们看一个例子。我们将创建一个包含员工的 `name`、`age` 和 `wage` 的表，并向其中插入一些数据：
+我们来看一个示例。我们将创建一个包含员工 `name`、`age` 和
+`wage` 字段的表，并向其中插入一些数据：
 
 ```sql
 CREATE TABLE employee_data 
@@ -44,7 +41,7 @@ INSERT INTO employee_data (name, age, wage) VALUES
     ('Brian', 60, 16.0);
 ```
 
-我们将统计年龄在区间 `[30,60)` 和 `[60,75)` 的所有人。由于我们使用整数表示年龄，因此我们得到的年龄在 `[30, 59]` 和 `[60,74]` 区间内。为此，我们将 `Resample` 组合器应用于 `count`。
+让我们统计所有年龄落在区间 `[30,60)` 和 `[60,75)` 内的人数。由于我们使用整数来表示年龄，因此实际得到的是 `[30, 59]` 和 `[60,74]` 这两个区间的年龄。为此，我们对 `count` 使用 `Resample` 组合器。
 
 ```sql
 SELECT countResample(30, 75, 30)(name, age) AS amount FROM employee_data
@@ -56,6 +53,6 @@ SELECT countResample(30, 75, 30)(name, age) AS amount FROM employee_data
 └────────┘
 ```
 
-## See also {#see-also}
+## 另请参阅 {#see-also}
 - [`count`](/sql-reference/aggregate-functions/reference/count)
 - [`Resample combinator`](/sql-reference/aggregate-functions/combinators#-resample)

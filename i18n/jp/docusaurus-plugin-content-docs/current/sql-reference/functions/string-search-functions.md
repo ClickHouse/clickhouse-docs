@@ -1,1655 +1,48 @@
 ---
-'description': 'Functions for Searching in Strings に関するドキュメント'
-'sidebar_label': '文字列検索'
-'slug': '/sql-reference/functions/string-search-functions'
-'title': '文字列検索のための関数'
-'doc_type': 'reference'
+description: '文字列検索用関数のドキュメント'
+sidebar_label: '文字列の検索'
+slug: /sql-reference/functions/string-search-functions
+title: '文字列の検索関数'
+doc_type: 'reference'
 ---
 
+# 文字列検索用の関数 {#functions-for-searching-in-strings}
 
-# 文字列内検索のための関数
-
-このセクションのすべての関数は、デフォルトで大文字と小文字を区別して検索します。大文字小文字を区別しない検索は、通常、別の関数バリアントで提供されています。
-
-:::note
-大文字小文字を区別しない検索は、英語の小文字・大文字ルールに従います。例えば、英語での大文字の `i` は `I` ですが、トルコ語では `İ` です - 英語以外の言語に対する結果は予期しないものとなる場合があります。
-:::
-
-このセクションの関数は、検索対象の文字列（ここでは `haystack` と呼ばれます）および検索文字列（ここでは `needle` と呼ばれます）が、シングルバイトエンコードテキストであると仮定しています。この仮定が崩れると、例外はスローされず、結果は未定義です。UTF-8エンコードされた文字列での検索は、通常、別の関数バリアントで提供されています。同様に、UTF-8 関数バリアントが使用され、入力文字列がUTF-8エンコードテキストでない場合も例外はスローされず、結果は未定義です。自動的なUnicode正規化は行われませんが、そのためには [normalizeUTF8*()](https://clickhouse.com../functions/string-functions/) 関数を使用できます。
-
-[一般的な文字列関数](string-functions.md) と [文字列内の置換のための関数](string-replace-functions.md) は別途説明されています。
-## position {#position}
-
-文字列 `haystack` 内の部分文字列 `needle` の位置（バイト単位、1から始まる）を返します。
-
-**構文**
-
-```sql
-position(haystack, needle[, start_pos])
-```
-
-エイリアス:
-- `position(needle IN haystack)`
-
-**引数**
-
-- `haystack` — 検索を行う文字列。 [String](../data-types/string.md) または [Enum](../data-types/string.md)。
-- `needle` — 検索される部分文字列。 [String](../data-types/string.md)。
-- `start_pos` – 検索を開始する `haystack` 内の位置（1ベース）。 [UInt](../data-types/int-uint.md)。オプション。
-
-**戻り値**
-
-- 部分文字列が見つかった場合、1からカウントしバイト単位の開始位置。 [UInt64](../data-types/int-uint.md)。
-- 部分文字列が見つからなかった場合、0。 [UInt64](../data-types/int-uint.md)。
-
-部分文字列 `needle` が空の場合、次のルールが適用されます：
-- `start_pos` が指定されていない場合：`1` を返す
-- `start_pos = 0` の場合：`1` を返す
-- `start_pos >= 1` かつ `start_pos <= length(haystack) + 1` の場合：`start_pos` を返す
-- それ以外の場合：`0` を返す
-
-同じルールは、関数 `locate`、`positionCaseInsensitive`、`positionUTF8` および `positionCaseInsensitiveUTF8` にも適用されます。
-
-**例**
-
-クエリ：
-
-```sql
-SELECT position('Hello, world!', '!');
-```
-
-結果：
-
-```text
-┌─position('Hello, world!', '!')─┐
-│                             13 │
-└────────────────────────────────┘
-```
-
-`start_pos` 引数を使用した例：
-
-クエリ：
-
-```sql
-SELECT
-    position('Hello, world!', 'o', 1),
-    position('Hello, world!', 'o', 7)
-```
-
-結果：
-
-```text
-┌─position('Hello, world!', 'o', 1)─┬─position('Hello, world!', 'o', 7)─┐
-│                                 5 │                                 9 │
-└───────────────────────────────────┴───────────────────────────────────┘
-```
-
-`needle IN haystack` 構文の例：
-
-クエリ：
-
-```sql
-SELECT 6 = position('/' IN s) FROM (SELECT 'Hello/World' AS s);
-```
-
-結果：
-
-```text
-┌─equals(6, position(s, '/'))─┐
-│                           1 │
-└─────────────────────────────┘
-```
-
-空の `needle` 部分文字列の例：
-
-クエリ：
-
-```sql
-SELECT
-    position('abc', ''),
-    position('abc', '', 0),
-    position('abc', '', 1),
-    position('abc', '', 2),
-    position('abc', '', 3),
-    position('abc', '', 4),
-    position('abc', '', 5)
-```
-
-結果：
-
-```text
-┌─position('abc', '')─┬─position('abc', '', 0)─┬─position('abc', '', 1)─┬─position('abc', '', 2)─┬─position('abc', '', 3)─┬─position('abc', '', 4)─┬─position('abc', '', 5)─┐
-│                   1 │                      1 │                      1 │                      2 │                      3 │                      4 │                      0 │
-└─────────────────────┴────────────────────────┴────────────────────────┴────────────────────────┴────────────────────────┴────────────────────────┴────────────────────────┘
-```
-## locate {#locate}
-
-[position](#position) と同様ですが、引数 `haystack` と `locate` が入れ替わります。
-
-この関数の動作は ClickHouse のバージョンによって依存します：
-- v24.3 より前のバージョンでは、`locate` は関数 `position` のエイリアスであり、引数 `(haystack, needle[, start_pos])` を受け入れていました。
-- v24.3 以降では、`locate` は個別の関数（MySQLとの互換性向上のため）であり、引数 `(needle, haystack[, start_pos])` を受け入れます。以前の動作は、設定 [function_locate_has_mysql_compatible_argument_order = false](/operations/settings/settings#function_locate_has_mysql_compatible_argument_order) を使用して復元できます。
-
-**構文**
-
-```sql
-locate(needle, haystack[, start_pos])
-```
-## positionCaseInsensitive {#positioncaseinsensitive}
-
-[機能](#position) の大文字小文字を区別しないバリアント。
-
-**例**
-
-クエリ：
-
-```sql
-SELECT positionCaseInsensitive('Hello, world!', 'hello');
-```
-
-結果：
-
-```text
-┌─positionCaseInsensitive('Hello, world!', 'hello')─┐
-│                                                 1 │
-└───────────────────────────────────────────────────┘
-```
-## positionUTF8 {#positionutf8}
-
-[機能](#position) と同様ですが、`haystack` と `needle` がUTF-8エンコードされた文字列であると仮定します。
-
-**例**
-
-関数 `positionUTF8` は、文字 `ö`（二等点で表される）を単一のUnicodeコードポイントとして正しくカウントします：
-
-クエリ：
-
-```sql
-SELECT positionUTF8('Motörhead', 'r');
-```
-
-結果：
-
-```text
-┌─position('Motörhead', 'r')─┐
-│                          5 │
-└────────────────────────────┘
-```
-## positionCaseInsensitiveUTF8 {#positioncaseinsensitiveutf8}
-
-[機能](#positionutf8) と同様ですが、大文字小文字を区別せずに検索します。
-## multiSearchAllPositions {#multisearchallpositions}
-
-[機能](#position) と同様ですが、`haystack` 文字列内の複数の `needle` 部分文字列の位置を (バイト単位、1から始まる) 配列として返します。
+このセクションのすべての関数は、デフォルトでは大文字・小文字を区別して検索します。大文字・小文字を区別しない検索は、通常は別の関数バリアントとして提供されています。
 
 :::note
-すべての `multiSearch*()` 関数は、最大 2<sup>8</sup> の needles をサポートします。
+大文字・小文字を区別しない検索は、英語の小文字・大文字の規則に従います。例えば、英語における小文字 `i` の大文字は `I` ですが、トルコ語では `İ` になります。そのため、英語以外の言語では予期しない結果になる可能性があります。
 :::
 
-**構文**
+このセクションの関数は、検索対象の文字列（このセクションでは `haystack` と呼びます）と検索文字列（このセクションでは `needle` と呼びます）が、単一バイト文字エンコーディングされたテキストであることを前提としています。この前提が満たされない場合でも、例外はスローされず、結果は未定義です。UTF-8 エンコードされた文字列に対する検索は、通常は別の関数バリアントとして提供されています。同様に、UTF-8 対応の関数バリアントを使用していても、入力文字列が UTF-8 エンコードされたテキストでない場合、例外はスローされず、結果は未定義です。自動的な Unicode 正規化は行われない点に注意してください。ただし、そのためには
+[normalizeUTF8*()](https://clickhouse.com../functions/string-functions/) 関数を使用できます。
 
-```sql
-multiSearchAllPositions(haystack, [needle1, needle2, ..., needleN])
-```
-
-**引数**
-
-- `haystack` — 検索が行われる文字列。 [String](../data-types/string.md)。
-- `needle` — 検索される部分文字列。 [Array](../data-types/array.md)。
-
-**戻り値**
-
-- 部分文字列が見つかった場合、1からカウントしバイト単位の開始位置の配列。
-- 部分文字列が見つからなかった場合、0。
-
-**例**
-
-クエリ：
-
-```sql
-SELECT multiSearchAllPositions('Hello, World!', ['hello', '!', 'world']);
-```
-
-結果：
-
-```text
-┌─multiSearchAllPositions('Hello, World!', ['hello', '!', 'world'])─┐
-│ [0,13,0]                                                          │
-└───────────────────────────────────────────────────────────────────┘
-```
-## multiSearchAllPositionsCaseInsensitive {#multisearchallpositionscaseinsensitive}
-
-[機能](#multisearchallpositions) と同様ですが、大文字小文字を無視します。
-
-**構文**
-
-```sql
-multiSearchAllPositionsCaseInsensitive(haystack, [needle1, needle2, ..., needleN])
-```
-
-**引数**
-
-- `haystack` — 検索が行われる文字列。 [String](../data-types/string.md)。
-- `needle` — 検索される部分文字列。 [Array](../data-types/array.md)。
-
-**戻り値**
-
-- 部分文字列が見つかった場合、1からカウントしバイト単位の開始位置の配列。
-- 部分文字列が見つからなかった場合、0。
-
-**例**
-
-クエリ：
-
-```sql
-SELECT multiSearchAllPositionsCaseInsensitive('ClickHouse',['c','h']);
-```
-
-結果：
-
-```response
-["1","6"]
-```
-## multiSearchAllPositionsUTF8 {#multisearchallpositionsutf8}
-
-[機能](#multisearchallpositions) と同様ですが、`haystack` と `needle` 部分文字列がUTF-8エンコードされた文字列であると仮定します。
-
-**構文**
-
-```sql
-multiSearchAllPositionsUTF8(haystack, [needle1, needle2, ..., needleN])
-```
-
-**引数**
-
-- `haystack` — 検索が行われるUTF-8エンコードされた文字列。 [String](../data-types/string.md)。
-- `needle` — 検索されるUTF-8エンコードされた部分文字列。 [Array](../data-types/array.md)。
-
-**戻り値**
-
-- 部分文字列が見つかった場合、1からカウントしバイト単位の開始位置の配列。
-- 部分文字列が見つからなかった場合、0。
-
-**例**
-
-`ClickHouse` をUTF-8文字列として与え、`C`（`\x43`）および `H`（`\x48`）の位置を見つけます。
-
-クエリ：
-
-```sql
-SELECT multiSearchAllPositionsUTF8('\x43\x6c\x69\x63\x6b\x48\x6f\x75\x73\x65',['\x43','\x48']);
-```
-
-結果：
-
-```response
-["1","6"]
-```
-## multiSearchAllPositionsCaseInsensitiveUTF8 {#multisearchallpositionscaseinsensitiveutf8}
-
-[機能](#multisearchallpositionsutf8) と同様ですが、大文字小文字を無視します。
-
-**構文**
-
-```sql
-multiSearchAllPositionsCaseInsensitiveUTF8(haystack, [needle1, needle2, ..., needleN])
-```
-
-**引数**
-
-- `haystack` — 検索が行われるUTF-8エンコードされた文字列。 [String](../data-types/string.md)。
-- `needle` — 検索されるUTF-8エンコードされた部分文字列。 [Array](../data-types/array.md)。
-
-**戻り値**
-
-- 部分文字列が見つかった場合、1からカウントしバイト単位の開始位置の配列。
-- 部分文字列が見つからなかった場合、0。
-
-**例**
-
-`ClickHouse` をUTF-8文字列として与え、`c`（`\x63`）および `h`（`\x68`）の位置を見つけます。
-
-クエリ：
-
-```sql
-SELECT multiSearchAllPositionsCaseInsensitiveUTF8('\x43\x6c\x69\x63\x6b\x48\x6f\x75\x73\x65',['\x63','\x68']);
-```
-
-結果：
-
-```response
-["1","6"]
-```
-## multiSearchFirstPosition {#multisearchfirstposition}
-
-[`position`](#position) と同様ですが、複数の `needle` 文字列のどれかに一致する `haystack` 文字列内の最も左側のオフセットを返します。
-
-関数 [`multiSearchFirstPositionCaseInsensitive`](#multisearchfirstpositioncaseinsensitive)、[`multiSearchFirstPositionUTF8`](#multisearchfirstpositionutf8) および [`multiSearchFirstPositionCaseInsensitiveUTF8`](#multisearchfirstpositioncaseinsensitiveutf8) は、この関数の大文字小文字を区別しないおよび/またはUTF-8バリアントを提供します。
-
-**構文**
-
-```sql
-multiSearchFirstPosition(haystack, [needle1, needle2, ..., needleN])
-```
-
-**引数**
-
-- `haystack` — 検索が行われる文字列。 [String](../data-types/string.md)。
-- `needle` — 検索される部分文字列。 [Array](../data-types/array.md)。
-
-**戻り値**
-
-- 複数の `needle` 文字列のいずれかに一致する `haystack` 文字列内の最も左側のオフセット。
-- 一致がなかった場合、0。
-
-**例**
-
-クエリ：
-
-```sql
-SELECT multiSearchFirstPosition('Hello World',['llo', 'Wor', 'ld']);
-```
-
-結果：
-
-```response
-3
-```
-## multiSearchFirstPositionCaseInsensitive {#multisearchfirstpositioncaseinsensitive}
-
-[`multiSearchFirstPosition`](#multisearchfirstposition) と同様ですが、大文字小文字を無視します。
-
-**構文**
-
-```sql
-multiSearchFirstPositionCaseInsensitive(haystack, [needle1, needle2, ..., needleN])
-```
-
-**引数**
-
-- `haystack` — 検索が行われる文字列。 [String](../data-types/string.md)。
-- `needle` — 検索される部分文字列の配列。 [Array](../data-types/array.md)。
-
-**戻り値**
-
-- 複数の `needle` 文字列のいずれかに一致する `haystack` 文字列内の最も左側のオフセット。
-- 一致がなかった場合、0。
-
-**例**
-
-クエリ：
-
-```sql
-SELECT multiSearchFirstPositionCaseInsensitive('HELLO WORLD',['wor', 'ld', 'ello']);
-```
-
-結果：
-
-```response
-2
-```
-## multiSearchFirstPositionUTF8 {#multisearchfirstpositionutf8}
-
-[`multiSearchFirstPosition`](#multisearchfirstposition) と同様ですが、`haystack` と `needle` がUTF-8文字列であると仮定します。
-
-**構文**
-
-```sql
-multiSearchFirstPositionUTF8(haystack, [needle1, needle2, ..., needleN])
-```
-
-**引数**
-
-- `haystack` — 検索が行われるUTF-8文字列。 [String](../data-types/string.md)。
-- `needle` — 検索されるUTF-8部分文字列の配列。 [Array](../data-types/array.md)。
-
-**戻り値**
-
-- 複数の `needle` 文字列のいずれかに一致する `haystack` 文字列内の最も左側のオフセット。
-- 一致がなかった場合、0。
-
-**例**
-
-UTF-8文字列 `hello world` 内の、与えられたneedleに一致する最も左側のオフセットを見つけます。
-
-クエリ：
-
-```sql
-SELECT multiSearchFirstPositionUTF8('\x68\x65\x6c\x6c\x6f\x20\x77\x6f\x72\x6c\x64',['wor', 'ld', 'ello']);
-```
-
-結果：
-
-```response
-2
-```
-## multiSearchFirstPositionCaseInsensitiveUTF8 {#multisearchfirstpositioncaseinsensitiveutf8}
-
-[`multiSearchFirstPosition`](#multisearchfirstposition) と同様ですが、`haystack` と `needle` がUTF-8文字列であり、大文字小文字を無視します。
-
-**構文**
-
-```sql
-multiSearchFirstPositionCaseInsensitiveUTF8(haystack, [needle1, needle2, ..., needleN])
-```
-
-**引数**
-
-- `haystack` — 検索が行われるUTF-8文字列。 [String](../data-types/string.md)。
-- `needle` — 検索されるUTF-8部分文字列の配列。 [Array](../data-types/array.md)。
-
-**戻り値**
-
-- 複数の `needle` 文字列のいずれかに一致する `haystack` 文字列内の最も左側のオフセット（大文字小文字を無視）。
-- 一致がなかった場合、0。
-
-**例**
-
-UTF-8文字列 `HELLO WORLD` 内の、与えられたneedleに一致する最も左側のオフセットを見つけます。
-
-クエリ：
-
-```sql
-SELECT multiSearchFirstPositionCaseInsensitiveUTF8('\x48\x45\x4c\x4c\x4f\x20\x57\x4f\x52\x4c\x44',['wor', 'ld', 'ello']);
-```
-
-結果：
-
-```response
-2
-```
-## multiSearchFirstIndex {#multisearchfirstindex}
-
-`haystack` 文字列内の最も左側に見つかった `needle<sub>i</sub>` のインデックス `i`（1から開始）を返し、それ以外の場合は 0 を返します。
-
-関数 [`multiSearchFirstIndexCaseInsensitive`](#multisearchfirstindexcaseinsensitive)、[`multiSearchFirstIndexUTF8`](#multisearchfirstindexutf8) および [`multiSearchFirstIndexCaseInsensitiveUTF8`](#multisearchfirstindexcaseinsensitiveutf8) は、この関数の大文字小文字を区別しないおよび/またはUTF-8バリアントを提供します。
-
-**構文**
-
-```sql
-multiSearchFirstIndex(haystack, [needle1, needle2, ..., needleN])
-```
-**引数**
-
-- `haystack` — 検索が行われる文字列。 [String](../data-types/string.md)。
-- `needle` — 検索される部分文字列の配列。 [Array](../data-types/array.md)。
-
-**戻り値**
-
-- 最も左側に見つかった `needle` のインデックス（1から開始）。一致がなかった場合は 0。 [UInt8](../data-types/int-uint.md)。
-
-**例**
-
-クエリ：
-
-```sql
-SELECT multiSearchFirstIndex('Hello World',['World','Hello']);
-```
-
-結果：
-
-```response
-1
-```
-## multiSearchFirstIndexCaseInsensitive {#multisearchfirstindexcaseinsensitive}
-
-`haystack` 文字列内の最も左側に見つかった `needle<sub>i</sub>` のインデックス `i`（1から開始）を返し、それ以外の場合は 0 を返します。大文字小文字を無視します。
-
-**構文**
-
-```sql
-multiSearchFirstIndexCaseInsensitive(haystack, [needle1, needle2, ..., needleN])
-```
-
-**引数**
-
-- `haystack` — 検索が行われる文字列。 [String](../data-types/string.md)。
-- `needle` — 検索される部分文字列の配列。 [Array](../data-types/array.md)。
-
-**戻り値**
-
-- 最も左側に見つかった `needle` のインデックス（1から開始）。一致がなかった場合は 0。 [UInt8](../data-types/int-uint.md)。
-
-**例**
-
-クエリ：
-
-```sql
-SELECT multiSearchFirstIndexCaseInsensitive('hElLo WoRlD',['World','Hello']);
-```
-
-結果：
-
-```response
-1
-```
-## multiSearchFirstIndexUTF8 {#multisearchfirstindexutf8}
-
-`haystack` 文字列内の最も左側に見つかった `needle<sub>i</sub>` のインデックス `i`（1から開始）を返し、それ以外の場合は 0 を返します。`haystack` と `needle` がUTF-8エンコードされた文字列であると仮定します。
-
-**構文**
-
-```sql
-multiSearchFirstIndexUTF8(haystack, [needle1, needle2, ..., needleN])
-```
-
-**引数**
-
-- `haystack` — 検索が行われるUTF-8文字列。 [String](../data-types/string.md)。
-- `needle` — 検索されるUTF-8部分文字列の配列。 [Array](../data-types/array.md)。
-
-**戻り値**
-
-- 最も左側に見つかった `needle` のインデックス（1から開始）。一致がなかった場合は 0。 [UInt8](../data-types/int-uint.md)。
-
-**例**
-
-`Hello World` をUTF-8文字列として与え、UTF-8文字列 `Hello` と `World` の最初のインデックスを見つけます。
-
-クエリ：
-
-```sql
-SELECT multiSearchFirstIndexUTF8('\x48\x65\x6c\x6c\x6f\x20\x57\x6f\x72\x6c\x64',['\x57\x6f\x72\x6c\x64','\x48\x65\x6c\x6c\x6f']);
-```
-
-結果：
-
-```response
-1
-```
-## multiSearchFirstIndexCaseInsensitiveUTF8 {#multisearchfirstindexcaseinsensitiveutf8}
-
-`haystack` 文字列内の最も左側に見つかった `needle<sub>i</sub>` のインデックス `i`（1から開始）を返し、それ以外の場合は 0 を返します。`haystack` と `needle` がUTF-8エンコードされた文字列であると仮定します。大文字小文字を無視します。
-
-**構文**
-
-```sql
-multiSearchFirstIndexCaseInsensitiveUTF8(haystack, [needle1, needle2, ..., needleN])
-```
-
-**引数**
-
-- `haystack` — 検索が行われるUTF-8文字列。 [String](../data-types/string.md)。
-- `needle` — 検索されるUTF-8部分文字列の配列。 [Array](../data-types/array.md)。
-
-**戻り値**
-
-- 最も左側に見つかった `needle` のインデックス（1から開始）。一致がなかった場合は 0。 [UInt8](../data-types/int-uint.md)。
-
-**例**
-
-`HELLO WORLD` をUTF-8文字列として与え、UTF-8文字列 `hello` と `world` の最初のインデックスを見つけます。
-
-クエリ：
-
-```sql
-SELECT multiSearchFirstIndexCaseInsensitiveUTF8('\x48\x45\x4c\x4c\x4f\x20\x57\x4f\x52\x4c\x44',['\x68\x65\x6c\x6c\x6f','\x77\x6f\x72\x6c\x64']);
-```
-
-結果：
-
-```response
-1
-```
-## multiSearchAny {#multisearchany}
-
-文字列 `haystack` に対して、少なくとも1つの文字列 `needle<sub>i</sub>` が一致する場合は1を返し、それ以外の場合は0を返します。
-
-関数 [`multiSearchAnyCaseInsensitive`](#multisearchanycaseinsensitive)、[`multiSearchAnyUTF8`](#multisearchanyutf8) および [`multiSearchAnyCaseInsensitiveUTF8`](#multisearchanycaseinsensitiveutf8) は、この関数の大文字小文字を区別しないおよび/またはUTF-8バリアントを提供します。
-
-**構文**
-
-```sql
-multiSearchAny(haystack, [needle1, needle2, ..., needleN])
-```
-
-**引数**
-
-- `haystack` — 検索が行われる文字列。 [String](../data-types/string.md)。
-- `needle` — 検索される部分文字列の配列。 [Array](../data-types/array.md)。
-
-**戻り値**
-
-- 一致があった場合は1。
-- 一致がなかった場合は0。
-
-**例**
-
-クエリ：
-
-```sql
-SELECT multiSearchAny('ClickHouse',['C','H']);
-```
-
-結果：
-
-```response
-1
-```
-## multiSearchAnyCaseInsensitive {#multisearchanycaseinsensitive}
-
-[機能](#multisearchany) と同様ですが、大文字小文字を無視します。
-
-**構文**
-
-```sql
-multiSearchAnyCaseInsensitive(haystack, [needle1, needle2, ..., needleN])
-```
-
-**引数**
-
-- `haystack` — 検索が行われる文字列。 [String](../data-types/string.md)。
-- `needle` — 検索される部分文字列の配列。 [Array](../data-types/array.md)。
-
-**戻り値**
-
-- 大文字小文字を無視した一致があった場合は1。
-- 一致がなかった場合は0。
-
-**例**
-
-クエリ：
-
-```sql
-SELECT multiSearchAnyCaseInsensitive('ClickHouse',['c','h']);
-```
-
-結果：
-
-```response
-1
-```
-## multiSearchAnyUTF8 {#multisearchanyutf8}
-
-[機能](#multisearchany) と同様ですが、`haystack` と `needle` の部分文字列がUTF-8エンコードされた文字列であると仮定します。
-
-**構文**
-
-```sql
-multiSearchAnyUTF8(haystack, [needle1, needle2, ..., needleN])
-```
-
-**引数**
-
-- `haystack` — 検索が行われるUTF-8文字列。 [String](../data-types/string.md)。
-- `needle` — 検索されるUTF-8部分文字列の配列。 [Array](../data-types/array.md)。
-
-**戻り値**
-
-- 一致があった場合は1。
-- 一致がなかった場合は0。
-
-**例**
-
-`ClickHouse` をUTF-8文字列として与え、単語内に `C`（'\x43'）または `H`（'\x48'）の文字があるかどうかを確認します。
-
-クエリ：
-
-```sql
-SELECT multiSearchAnyUTF8('\x43\x6c\x69\x63\x6b\x48\x6f\x75\x73\x65',['\x43','\x48']);
-```
-
-結果：
-
-```response
-1
-```
-## multiSearchAnyCaseInsensitiveUTF8 {#multisearchanycaseinsensitiveutf8}
-
-[機能](#multisearchanyutf8) と同様ですが、大文字小文字を無視します。
-
-**構文**
-
-```sql
-multiSearchAnyCaseInsensitiveUTF8(haystack, [needle1, needle2, ..., needleN])
-```
-
-**引数**
-
-- `haystack` — 検索が行われるUTF-8文字列。 [String](../data-types/string.md)。
-- `needle` — 検索されるUTF-8部分文字列の配列。 [Array](../data-types/array.md)。
-
-**戻り値**
-
-- 大文字小文字を無視した一致があった場合は1。
-- 一致がなかった場合は0。
-
-**例**
-
-`ClickHouse` をUTF-8文字列として与え、単語内に `h`（'\x68'）の文字があるかどうかを確認します（ケースを無視します）。
-
-クエリ：
-
-```sql
-SELECT multiSearchAnyCaseInsensitiveUTF8('\x43\x6c\x69\x63\x6b\x48\x6f\x75\x73\x65',['\x68']);
-```
-
-結果：
-
-```response
-1
-```
-## hasAnyTokens {#hasanytokens}
+[一般的な文字列関数](string-functions.md)および[文字列置換用の関数](string-replace-functions.md)については別途説明しています。
 
 :::note
-この関数は、設定 [allow_experimental_full_text_index](/operations/settings/settings#allow_experimental_full_text_index) が有効な場合にのみ使用できます。
+以下のドキュメントは、`system.functions` システムテーブルから生成されています。
 :::
 
-文字列 `input` 列に対して、少なくとも1つの文字列 `needle<sub>i</sub>` が一致する場合は1を返し、それ以外の場合は0を返します。
+{/* 
+  以下のタグの内側の内容は、ドキュメントフレームワークのビルド時に
+  system.functions から自動生成されたドキュメントで置き換えられます。タグは変更や削除を行わないでください。
+  参照: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
+  */ }
 
-**構文**
+{/*AUTOGENERATED_START*/ }
 
-```sql
-hasAnyTokens(input, ['needle1', 'needle2', ..., 'needleN'])
-```
+## countMatches {#countMatches}
 
-**引数**
+導入バージョン: v21.1
 
-- `input` — 入力列。 [String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
-- `needles` — 検索されるトークン。最大64トークンをサポートします。 [Array](../data-types/array.md)（[String](../data-types/string.md)）。
+文字列内で正規表現にマッチした回数を返します。
 
-:::note
-列 `input` は [テキストインデックス][../../engines/table-engines/mergetree-family/invertedindexes.md] を持っている必要があります。
-:::
+:::note バージョン依存の挙動
+この関数の挙動は ClickHouse のバージョンに依存します。
 
-`input` 文字列は、インデックス定義のトークナイザーによってトークン化されます。
-
-各 `needle` 配列要素トークン<sub>i</sub> は、単一のトークンと見なされ、さらなるトークン化は行われません。
-例えば、`tokenizer = ngrams(5)` のインデックスで `ClickHouse` を検索したい場合、以下のようなトークンを提供します：`['Click', 'lickH', 'ickHo', 'ckHou', 'kHous', 'House']`。
-トークンを生成するには、[tokens](/sql-reference/functions/splitting-merging-functions.md/#tokens) 関数を使用できます。
-重複トークンは無視されます。例えば `['ClickHouse', 'ClickHouse']` は `['ClickHouse']` と同じです。
-
-**戻り値**
-
-- 一致があった場合は1。
-- 一致がなかった場合は0。
-
-**例**
-
-クエリ：
-
-```sql
-CREATE TABLE table (
-    id UInt32,
-    msg String,
-    INDEX idx(msg) TYPE text(tokenizer = splitByString(['()', '\\'])
-)
-ENGINE = MergeTree
-ORDER BY id;
-
-INSERT INTO table VALUES (1, '()a,\\bc()d'), (2, '()\\a()bc\\d'), (3, ',()a\\,bc,(),d,');
-
-SELECT count() FROM table WHERE hasAnyTokens(msg, ['a', 'd']);
-```
-
-結果：
-
-```response
-3
-```
-
-**`tokens` 関数を使用してトークンを生成**
-
-クエリ：
-
-```sql
-SELECT count() FROM table WHERE hasAnyTokens(msg, tokens('a()d', 'splitByString', ['()', '\\']));
-```
-
-結果：
-
-```response
-3
-```
-## hasAllTokens {#hasalltokens}
-
-:::note
-この関数は、設定 [allow_experimental_full_text_index](/operations/settings/settings#allow_experimental_full_text_index) が有効な場合にのみ使用できます。
-:::
-
-[hasAnyTokens](#hasanytokens) と同様ですが、すべての文字列 `needle<sub>i</sub>` が `input` 列に一致する場合のみ1を返し、それ以外の場合は0を返します。
-
-**構文**
-
-```sql
-hasAllTokens(input, ['needle1', 'needle2', ..., 'needleN'])
-```
-
-**引数**
-
-- `input` — 入力列。 [String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
-- `needles` — 検索されるトークン。最大64トークンをサポートします。 [Array](../data-types/array.md)（[String](../data-types/string.md)）。
-
-:::note
-列 `input` は [テキストインデックス][../../engines/table-engines/mergetree-family/invertedindexes.md] を持っている必要があります。
-:::
-
-`input` 文字列は、インデックス定義のトークナイザーによってトークン化されます。
-
-各 `needle` 配列要素トークン<sub>i</sub> は、単一のトークンと見なされ、さらなるトークン化は行われません。
-例えば、`tokenizer = ngrams(5)` のインデックスで `ClickHouse` を検索したい場合、以下のようなトークンを提供します：`['Click', 'lickH', 'ickHo', 'ckHou', 'kHous', 'House']`。
-トークンを生成するには、[tokens](/sql-reference/functions/splitting-merging-functions.md/#tokens) 関数を使用できます。
-重複トークンは無視されます。例えば `['ClickHouse', 'ClickHouse']` は `['ClickHouse']` と同じです。
-
-**戻り値**
-
-- すべてのトークンが一致した場合は1。
-- 一致しなかった場合は0。
-
-**例**
-
-クエリ：
-
-```sql
-CREATE TABLE table (
-    id UInt32,
-    msg String,
-    INDEX idx(msg) TYPE text(tokenizer = splitByString(['()', '\\'])
-)
-ENGINE = MergeTree
-ORDER BY id;
-
-INSERT INTO table VALUES (1, '()a,\\bc()d'), (2, '()\\a()bc\\d'), (3, ',()a\\,bc,(),d,');
-
-SELECT count() FROM table WHERE hasAllTokens(msg, ['a', 'd']);
-```
-
-結果：
-
-```response
-1
-```
-
-**`tokens` 関数を使用してトークンを生成**
-
-クエリ：
-
-```sql
-SELECT count() FROM table WHERE hasAllTokens(msg, tokens('a()d', 'splitByString', ['()', '\\']));
-```
-
-結果：
-
-```response
-1
-```
-## match {#match}
-
-文字列 `haystack` が正規表現 `pattern` に一致するかどうかを返します。これは [re2 正規表現構文](https://github.com/google/re2/wiki/Syntax) に従います。
-
-マッチングはUTF-8に基づいています。例として、`.` は二バイトで表現されるUnicodeコードポイント `¥` に一致します。正規表現にはヌルバイトを含めてはいけません。`haystack` または `pattern` が無効なUTF-8の場合、その動作は未定義です。
-
-re2のデフォルトの動作とは異なり、`.` は改行に一致します。これを無効にするには、パターンの最初に `(?-s)` を前置します。
-
-文字列内の部分文字列を検索したい場合は、[like](#like) や [position](#position) のような関数を使用することができます - これらはこの関数よりもはるかに高速です。
-
-**構文**
-
-```sql
-match(haystack, pattern)
-```
-
-エイリアス：`haystack REGEXP pattern operator`
-## multiMatchAny {#multimatchany}
-
-`match` と同様ですが、少なくとも1つのパターンが一致すれば1を返し、それ以外の場合は0を返します。
-
-:::note
-`multi[Fuzzy]Match*()` 系の関数は (Vectorscan)[https://github.com/VectorCamp/vectorscan] ライブラリを使用します。したがって、ClickHouse がベクトルスキャンのサポートを有効にしてコンパイルされている場合にのみ使用可能です。
-
-すべてのハイパースキャンを使用する関数をオフにするには、設定 `SET allow_hyperscan = 0;` を使用します。
-
-ベクトルスキャンの制限により、`haystack` 文字列は 2<sup>32</sup> バイト未満でなければなりません。
-
-ハイパースキャンは、一般に正規表現サービス拒否（ReDoS）攻撃に脆弱であるため、提供されるパターンを慎重に確認することをお勧めします。
-:::
-
-文字列内の複数の部分文字列を検索したい場合は、[multiSearchAny](#multisearchany) 関数を使用することができます - これはこの関数よりもはるかに高速です。
-
-**構文**
-
-```sql
-multiMatchAny(haystack, \[pattern<sub>1</sub>, pattern<sub>2</sub>, ..., pattern<sub>n</sub>\])
-```
-## multiMatchAnyIndex {#multimatchanyindex}
-
-`multiMatchAny` と同様ですが、`haystack` に一致する任意のインデックスを返します。
-
-**構文**
-
-```sql
-multiMatchAnyIndex(haystack, \[pattern<sub>1</sub>, pattern<sub>2</sub>, ..., pattern<sub>n</sub>\])
-```
-## multiMatchAllIndices {#multimatchallindices}
-
-`multiMatchAny` と同様ですが、`haystack` に一致するすべてのインデックスの配列を返します。
-
-**構文**
-
-```sql
-multiMatchAllIndices(haystack, \[pattern<sub>1</sub>, pattern<sub>2</sub>, ..., pattern<sub>n</sub>\])
-```
-## multiFuzzyMatchAny {#multifuzzymatchany}
-
-`multiMatchAny` と同様ですが、常に一定の [編集距離](https://en.wikipedia.org/wiki/Edit_distance) 内で `haystack` に一致する場合は1を返します。この関数は [hyperscan](https://intel.github.io/hyperscan/dev-reference/compilation.html#approximate-matching) ライブラリの実験機能に依存しており、一部のコーナーケースでは遅くなることがあります。パフォーマンスは編集距離の値やパターンによって異なりますが、常に非ファジー系のバリアントよりもコストがかかります。
-
-:::note
-`multiFuzzyMatch*()` 系の関数は、ハイパースキャンの制限により、UTF-8正規表現をサポートしていません（バイト列として扱われます）。
-:::
-
-**構文**
-
-```sql
-multiFuzzyMatchAny(haystack, distance, \[pattern<sub>1</sub>, pattern<sub>2</sub>, ..., pattern<sub>n</sub>\])
-```
-## multiFuzzyMatchAnyIndex {#multifuzzymatchanyindex}
-
-`multiFuzzyMatchAny` と同様ですが、一定の編集距離内で `haystack` に一致する任意のインデックスを返します。
-
-**構文**
-
-```sql
-multiFuzzyMatchAnyIndex(haystack, distance, \[pattern<sub>1</sub>, pattern<sub>2</sub>, ..., pattern<sub>n</sub>\])
-```
-## multiFuzzyMatchAllIndices {#multifuzzymatchallindices}
-
-`multiFuzzyMatchAny` と同様ですが、一定の編集距離内で `haystack` に一致するすべてのインデックスの配列を返します。
-
-**構文**
-
-```sql
-multiFuzzyMatchAllIndices(haystack, distance, \[pattern<sub>1</sub>, pattern<sub>2</sub>, ..., pattern<sub>n</sub>\])
-```
-## extract {#extract}
-
-文字列内の正規表現の最初の一致を返します。
-`haystack` が `pattern` 正規表現に一致しない場合、空の文字列が返されます。
-
-正規表現にキャプチャグループがある場合、関数は入力文字列を最初のキャプチャグループに対してマッチさせます。
-
-**構文**
-
-```sql
-extract(haystack, pattern)
-```
-
-**引数**
-
-- `haystack` — 入力文字列。 [String](../data-types/string.md)。
-- `pattern` — [re2 正規表現構文](https://github.com/google/re2/wiki/Syntax) の正規表現。
-
-**戻り値**
-
-- `haystack` 文字列内の正規表現の最初の一致。 [String](../data-types/string.md)。
-
-**例**
-
-クエリ：
-
-```sql
-SELECT extract('number: 1, number: 2, number: 3', '\\d+') AS result;
-```
-
-結果：
-
-```response
-┌─result─┐
-│ 1      │
-└────────┘
-```
-## extractAll {#extractall}
-
-文字列内の正規表現のすべての一致を配列として返します。`haystack` が `pattern` 正規表現に一致しない場合、空の文字列が返されます。
-
-サブパターンに関する動作は、関数 [`extract`](#extract) と同じです。
-
-**構文**
-
-```sql
-extractAll(haystack, pattern)
-```
-
-**引数**
-
-- `haystack` — 入力文字列。 [String](../data-types/string.md)。
-- `pattern` — [re2 正規表現構文](https://github.com/google/re2/wiki/Syntax) の正規表現。
-
-**戻り値**
-
-- `haystack` 文字列内の正規表現の一致の配列。 [Array](../data-types/array.md)（[String](../data-types/string.md)）。
-
-**例**
-
-クエリ：
-
-```sql
-SELECT extractAll('number: 1, number: 2, number: 3', '\\d+') AS result;
-```
-
-結果：
-
-```response
-┌─result────────┐
-│ ['1','2','3'] │
-└───────────────┘
-```
-## extractAllGroupsHorizontal {#extractallgroupshorizontal}
-
-`haystack` 文字列のすべてのグループを `pattern` 正規表現を使用してマッチさせます。最初の配列には最初のグループに一致するすべてのフラグメントが含まれ、次の配列には2番目のグループに一致するものが含まれます。
-
-この関数は [extractAllGroupsVertical](#extractallgroupsvertical) より遅いです。
-
-**構文**
-
-```sql
-extractAllGroupsHorizontal(haystack, pattern)
-```
-
-**引数**
-
-- `haystack` — 入力文字列。 [String](../data-types/string.md)。
-- `pattern` — [re2 正規表現構文](https://github.com/google/re2/wiki/Syntax) の正規表現。グループを含む必要があり、各グループは括弧で囲まれます。`pattern` にグループが含まれていない場合、例外がスローされます。 [String](../data-types/string.md)。
-
-**戻り値**
-
-- 一致の配列の配列。 [Array](../data-types/array.md)。
-
-:::note
-`haystack` が `pattern` 正規表現に一致しない場合、空の配列が返されます。
-:::
-
-**例**
-
-```sql
-SELECT extractAllGroupsHorizontal('abc=111, def=222, ghi=333', '("[^"]+"|\\w+)=("[^"]+"|\\w+)');
-```
-
-結果：
-
-```text
-┌─extractAllGroupsHorizontal('abc=111, def=222, ghi=333', '("[^"]+"|\\w+)=("[^"]+"|\\w+)')─┐
-│ [['abc','def','ghi'],['111','222','333']]                                                │
-└──────────────────────────────────────────────────────────────────────────────────────────┘
-```
-## extractGroups {#extractgroups}
-
-与えられた入力文字列を与えられた正規表現とマッチさせ、マッチの配列の配列を返します。
-
-**構文**
-
-```sql
-extractGroups(haystack, pattern)
-```
-
-**引数**
-
-- `haystack` — 入力文字列。 [String](../data-types/string.md)。
-- `pattern` — [re2 正規表現構文](https://github.com/google/re2/wiki/Syntax) の正規表現。グループを含む必要があり、各グループは括弧で囲まれます。`pattern` にグループが含まれていない場合、例外がスローされます。 [String](../data-types/string.md)。
-
-**戻り値**
-
-- 一致の配列の配列。 [Array](../data-types/array.md)。
-
-**例**
-
-```sql
-SELECT extractGroups('hello abc=111 world', '("[^"]+"|\\w+)=("[^"]+"|\\w+)') AS result;
-```
-
-結果：
-
-```text
-┌─result────────┐
-│ ['abc','111'] │
-└───────────────┘
-```
-## extractAllGroupsVertical {#extractallgroupsvertical}
-
-`haystack` 文字列のすべてのグループを `pattern` 正規表現を使用してマッチさせます。すべてのグループからの一致フラグメントを含む各配列を返します。フラグメントは `haystack` 内での出現順にグループ化されます。
-
-**構文**
-
-```sql
-extractAllGroupsVertical(haystack, pattern)
-```
-
-**引数**
-
-- `haystack` — 入力文字列。 [String](../data-types/string.md)。
-- `pattern` — [re2 正規表現構文](https://github.com/google/re2/wiki/Syntax) の正規表現。グループを含む必要があり、各グループは括弧で囲まれます。`pattern` にグループが含まれていない場合、例外がスローされます。 [String](../data-types/string.md)。
-
-**戻り値**
-
-- 一致の配列の配列。 [Array](../data-types/array.md)。
-
-:::note
-`haystack` が `pattern` 正規表現に一致しない場合、空の配列が返されます。
-:::
-
-**例**
-
-```sql
-SELECT extractAllGroupsVertical('abc=111, def=222, ghi=333', '("[^"]+"|\\w+)=("[^"]+"|\\w+)');
-```
-
-結果：
-
-```text
-┌─extractAllGroupsVertical('abc=111, def=222, ghi=333', '("[^"]+"|\\w+)=("[^"]+"|\\w+)')─┐
-│ [['abc','111'],['def','222'],['ghi','333']]                                            │
-└────────────────────────────────────────────────────────────────────────────────────────┘
-```
-## like {#like}
-
-文字列 `haystack` が LIKE 式 `pattern` に一致するかどうかを返します。
-
-LIKE 式には通常の文字と次のメタシンボルを含めることができます：
-
-- `%` は任意の数の任意の文字（ゼロ文字を含む）を示します。
-- `_` は任意の1文字を示します。
-- `\` はリテラル `%`、`_` および `\` をエスケープするためのものです。
-
-マッチングはUTF-8に基づいています。例として、`_` は二バイトで表現されるUnicodeコードポイント `¥` に一致します。
-
-`haystack` または LIKE 式が無効なUTF-8である場合、その動作は未定義です。
-
-自動的なUnicode正規化は行われないため、そのためには [normalizeUTF8*()](https://clickhouse.com../functions/string-functions/) 関数を使用できます。
-
-リテラル `%`、`_` および `\`（LIKEのメタ文字）と一致させるには、前にバックスラッシュを付けます：`\%`、`\_` および `\\`。
-バックスラッシュは特殊な意味を失い（リテラルとして解釈され）、`%`、`_` または `\` 以外の文字の前に付けられている場合は特に意味を持たなくなります。
-ClickHouse では、文字列内のバックスラッシュも [引用符で囲む必要がある](../syntax.md#string) ため、実際には `\\%`、`\\_` および `\\\\` と書く必要があります。
-
-`%needle%` 形式のLIKE式の場合、この関数は `position` 関数と同じ速度です。
-それ以外のすべてのLIKE式は内部的に正規表現に変換され、`match` 関数に似たパフォーマンスで実行されます。
-
-**構文**
-
-```sql
-like(haystack, pattern)
-```
-
-エイリアス: `haystack LIKE pattern` (演算子)
-## notLike {#notlike}
-
-`like` と同様ですが、結果を否定します。
-
-エイリアス: `haystack NOT LIKE pattern` (演算子)
-## ilike {#ilike}
-
-`like` と同様ですが、大文字小文字を無視して検索します。
-
-エイリアス: `haystack ILIKE pattern` (演算子)
-## notILike {#notilike}
-
-`ilike` と同様ですが、結果を否定します。
-
-エイリアス: `haystack NOT ILIKE pattern` (演算子)
-## ngramDistance {#ngramdistance}
-
-`haystack` 文字列と `needle` 文字列の間の4-グラム距離を計算します。これには、2つのマルチセットの4-グラム間の対称差をカウントし、それを各マルチセットの基数の合計で正規化します。0から1の間の [Float32](/sql-reference/data-types/float) の値を返します。結果が小さいほど、文字列は互いに似ています。
-
-関数 [`ngramDistanceCaseInsensitive`](#ngramdistancecaseinsensitive)、[`ngramDistanceUTF8`](#ngramdistanceutf8)、[`ngramDistanceCaseInsensitiveUTF8`](#ngramdistancecaseinsensitiveutf8) は、大文字小文字を区別しないおよび/またはUTF-8のバリアントを提供します。
-
-**構文**
-
-```sql
-ngramDistance(haystack, needle)
-```
-
-**引数**
-
-- `haystack`: 最初の比較文字列。 [String literal](/sql-reference/syntax#string)
-- `needle`: 2番目の比較文字列。 [String literal](/sql-reference/syntax#string)
-
-**戻り値**
-
-- 2つの文字列間の類似性を示す 0 から 1 の間の値。 [Float32](/sql-reference/data-types/float)
-
-**実装の詳細**
-
-この関数は、定数 `needle` または `haystack` 引数が32Kbを超えた場合、例外をスローします。もし任意の非定数 `haystack` か `needle` 引数が32Kbを超えている場合、距離は常に1になります。
-
-**例**
-
-2つの文字列が互いに似ているほど、結果は0に近づきます（同一）。
-
-クエリ：
-
-```sql
-SELECT ngramDistance('ClickHouse','ClickHouse!');
-```
-
-結果：
-
-```response
-0.06666667
-```
-
-2つの文字列が互いに似ていないほど、結果は大きくなります。
-クエリ：
-
-```sql
-SELECT ngramDistance('ClickHouse','House');
-```
-
-結果：
-
-```response
-0.5555556
-```
-## ngramDistanceCaseInsensitive {#ngramdistancecaseinsensitive}
-
-[ngramDistance](#ngramdistance) の大文字小文字を区別しないバリアントを提供します。
-
-**構文**
-
-```sql
-ngramDistanceCaseInsensitive(haystack, needle)
-```
-
-**引数**
-
-- `haystack`: 最初の比較文字列。 [String literal](/sql-reference/syntax#string)
-- `needle`: 2番目の比較文字列。 [String literal](/sql-reference/syntax#string)
-
-**戻り値**
-
-- 2つの文字列間の類似性を示す 0 から 1 の間の値。 [Float32](/sql-reference/data-types/float)
-
-**例**
-
-[ngramDistance](#ngramdistance) では、大文字小文字の違いが類似性値に影響を与えます：
-
-クエリ：
-
-```sql
-SELECT ngramDistance('ClickHouse','clickhouse');
-```
-
-結果：
-
-```response
-0.71428573
-```
-
-[ngramDistanceCaseInsensitive](#ngramdistancecaseinsensitive) では大文字小文字が無視されるため、大文字小文字のみの違いがある2つの同一の文字列は、低い類似性値を返します：
-
-クエリ：
-
-```sql
-SELECT ngramDistanceCaseInsensitive('ClickHouse','clickhouse');
-```
-
-結果：
-
-```response
-0
-```
-## ngramDistanceUTF8 {#ngramdistanceutf8}
-
-提供するのは、[ngramDistance](#ngramdistance)のUTF-8バリアントです。`needle`と`haystack`の文字列はUTF-8エンコーディングされた文字列であると仮定します。
-
-**構文**
-
-```sql
-ngramDistanceUTF8(haystack, needle)
-```
-
-**パラメータ**
-
-- `haystack`: 最初のUTF-8エンコーディングされた比較文字列。[文字列リテラル](/sql-reference/syntax#string)
-- `needle`: 二番目のUTF-8エンコーディングされた比較文字列。[文字列リテラル](/sql-reference/syntax#string)
-
-**返される値**
-
-- 0から1の値で、2つの文字列の類似度を表します。[Float32](/sql-reference/data-types/float)
-
-**例**
-
-クエリ:
-
-```sql
-SELECT ngramDistanceUTF8('abcde','cde');
-```
-
-結果:
-
-```response
-0.5
-```
-## ngramDistanceCaseInsensitiveUTF8 {#ngramdistancecaseinsensitiveutf8}
-
-提供するのは、[ngramDistanceUTF8](#ngramdistanceutf8)の大文字小文字を区別しないバリアントです。
-
-**構文**
-
-```sql
-ngramDistanceCaseInsensitiveUTF8(haystack, needle)
-```
-
-**パラメータ**
-
-- `haystack`: 最初のUTF-8エンコーディングされた比較文字列。[文字列リテラル](/sql-reference/syntax#string)
-- `needle`: 二番目のUTF-8エンコーディングされた比較文字列。[文字列リテラル](/sql-reference/syntax#string)
-
-**返される値**
-
-- 0から1の値で、2つの文字列の類似度を表します。[Float32](/sql-reference/data-types/float)
-
-**例**
-
-クエリ:
-
-```sql
-SELECT ngramDistanceCaseInsensitiveUTF8('abcde','CDE');
-```
-
-結果:
-
-```response
-0.5
-```
-## ngramSearch {#ngramsearch}
-
-`ngramDistance`と似ていますが、`needle`文字列と`haystack`文字列の非対称差を計算します。すなわち、needleのn-グラム数から共通のn-グラム数を引き、`needle`のn-グラム数で正規化したものです。0から1の間の[Float32](/sql-reference/data-types/float)を返します。結果が大きいほど、`needle`は`haystack`に含まれる可能性が高くなります。この関数はファジー文字列検索に役立ちます。関数[`soundex`](../../sql-reference/functions/string-functions#soundex)も参照してください。
-
-関数[`ngramSearchCaseInsensitive`](#ngramsearchcaseinsensitive)、[`ngramSearchUTF8`](#ngramsearchutf8)、[`ngramSearchCaseInsensitiveUTF8`](#ngramsearchcaseinsensitiveutf8)は、この関数の大文字小文字を区別しないおよび/またはUTF-8バリアントを提供します。
-
-**構文**
-
-```sql
-ngramSearch(haystack, needle)
-```
-
-**パラメータ**
-
-- `haystack`: 最初の比較文字列。[文字列リテラル](/sql-reference/syntax#string)
-- `needle`: 二番目の比較文字列。[文字列リテラル](/sql-reference/syntax#string)
-
-**返される値**
-
-- `needle`が`haystack`に含まれる可能性を示す0から1の値。[Float32](/sql-reference/data-types/float)
-
-**実装の詳細**
-
-:::note
-UTF-8バリアントは3-グラム距離を使用します。これらは完全には公平なn-グラム距離ではありません。n-グラムをハッシュ化するために2バイトハッシュを使用し、これらのハッシュテーブル間の（非）対称差を計算します – 衝突が発生する可能性があります。UTF-8大文字小文字を区別しない形式では公平な`tolower`関数を使用しておらず、各コードポイントバイトの5番目のビットをゼロにし、バイトが1以上の場合は最初のバイトの最初のビットをゼロにします – これはラテン文字およびほぼすべてのキリル文字に対して機能します。
-:::
-
-**例**
-
-クエリ:
-
-```sql
-SELECT ngramSearch('Hello World','World Hello');
-```
-
-結果:
-
-```response
-0.5
-```
-## ngramSearchCaseInsensitive {#ngramsearchcaseinsensitive}
-
-提供するのは、[ngramSearch](#ngramsearch)の大文字小文字を区別しないバリアントです。
-
-**構文**
-
-```sql
-ngramSearchCaseInsensitive(haystack, needle)
-```
-
-**パラメータ**
-
-- `haystack`: 最初の比較文字列。[文字列リテラル](/sql-reference/syntax#string)
-- `needle`: 二番目の比較文字列。[文字列リテラル](/sql-reference/syntax#string)
-
-**返される値**
-
-- `needle`が`haystack`に含まれる可能性を示す0から1の値。[Float32](/sql-reference/data-types/float)
-
-結果が大きいほど、`needle`は`haystack`に含まれる可能性が高くなります。
-
-**例**
-
-クエリ:
-
-```sql
-SELECT ngramSearchCaseInsensitive('Hello World','hello');
-```
-
-結果:
-
-```response
-1
-```
-## ngramSearchUTF8 {#ngramsearchutf8}
-
-提供するのは、[ngramSearch](#ngramsearch)のUTF-8バリアントで、`needle`と`haystack`はUTF-8エンコーディングされた文字列であると仮定します。
-
-**構文**
-
-```sql
-ngramSearchUTF8(haystack, needle)
-```
-
-**パラメータ**
-
-- `haystack`: 最初のUTF-8エンコーディングされた比較文字列。[文字列リテラル](/sql-reference/syntax#string)
-- `needle`: 二番目のUTF-8エンコーディングされた比較文字列。[文字列リテラル](/sql-reference/syntax#string)
-
-**返される値**
-
-- `needle`が`haystack`に含まれる可能性を示す0から1の値。[Float32](/sql-reference/data-types/float)
-
-結果が大きいほど、`needle`は`haystack`に含まれる可能性が高くなります。
-
-**例**
-
-クエリ:
-
-```sql
-SELECT ngramSearchUTF8('абвгдеёжз', 'гдеёзд');
-```
-
-結果:
-
-```response
-0.5
-```
-## ngramSearchCaseInsensitiveUTF8 {#ngramsearchcaseinsensitiveutf8}
-
-提供するのは、[ngramSearchUTF8](#ngramsearchutf8)の大文字小文字を区別しないバリアントです。
-
-**構文**
-
-```sql
-ngramSearchCaseInsensitiveUTF8(haystack, needle)
-```
-
-**パラメータ**
-
-- `haystack`: 最初のUTF-8エンコーディングされた比較文字列。[文字列リテラル](/sql-reference/syntax#string)
-- `needle`: 二番目のUTF-8エンコーディングされた比較文字列。[文字列リテラル](/sql-reference/syntax#string)
-
-**返される値**
-
-- `needle`が`haystack`に含まれる可能性を示す0から1の値。[Float32](/sql-reference/data-types/float)
-
-結果が大きいほど、`needle`は`haystack`に含まれる可能性が高くなります。
-
-**例**
-
-クエリ:
-
-```sql
-SELECT ngramSearchCaseInsensitiveUTF8('абвГДЕёжз', 'АбвгдЕЁжз');
-```
-
-結果:
-
-```response
-0.57142854
-```
-## countSubstrings {#countsubstrings}
-
-`needle`という部分文字列が`haystack`という文字列に何回出現するかを返します。
-
-関数[`countSubstringsCaseInsensitive`](#countsubstringscaseinsensitive)および[`countSubstringsCaseInsensitiveUTF8`](#countsubstringscaseinsensitiveutf8)は、それぞれ大文字小文字を区別しないおよび大文字小文字を区別しない + UTF-8バリアントを提供します。
-
-**構文**
-
-```sql
-countSubstrings(haystack, needle[, start_pos])
-```
-
-**引数**
-
-- `haystack` — 検索が行われる文字列。[文字列](../data-types/string.md)または[列挙型](../data-types/enum.md)。
-- `needle` — 検索される部分文字列。[文字列](../data-types/string.md)。
-- `start_pos` – 検索が開始される`haystack`内の位置（1から始まる）。[UInt](../data-types/int-uint.md)。オプション。
-
-**返される値**
-
-- 出現回数。[UInt64](../data-types/int-uint.md)。
-
-**例**
-
-```sql
-SELECT countSubstrings('aaaa', 'aa');
-```
-
-結果:
-
-```text
-┌─countSubstrings('aaaa', 'aa')─┐
-│                             2 │
-└───────────────────────────────┘
-```
-
-`start_pos`引数を使った例:
-
-```sql
-SELECT countSubstrings('abc___abc', 'abc', 4);
-```
-
-結果:
-
-```text
-┌─countSubstrings('abc___abc', 'abc', 4)─┐
-│                                      1 │
-└────────────────────────────────────────┘
-```
-## countSubstringsCaseInsensitive {#countsubstringscaseinsensitive}
-
-`needle`という部分文字列が`haystack`という文字列に何回出現するかを返します。大文字小文字を無視します。
-
-**構文**
-
-```sql
-countSubstringsCaseInsensitive(haystack, needle[, start_pos])
-```
-
-**引数**
-
-- `haystack` — 検索が行われる文字列。[文字列](../data-types/string.md)または[列挙型](../data-types/enum.md)。
-- `needle` — 検索される部分文字列。[文字列](../data-types/string.md)。
-- `start_pos` – 検索が開始される`haystack`内の位置（1から始まる）。[UInt](../data-types/int-uint.md)。オプション。
-
-**返される値**
-
-- 出現回数。[UInt64](../data-types/int-uint.md)。
-
-**例**
-
-クエリ:
-
-```sql
-SELECT countSubstringsCaseInsensitive('AAAA', 'aa');
-```
-
-結果:
-
-```text
-┌─countSubstringsCaseInsensitive('AAAA', 'aa')─┐
-│                                            2 │
-└──────────────────────────────────────────────┘
-```
-
-`start_pos`引数を使った例:
-
-クエリ:
-
-```sql
-SELECT countSubstringsCaseInsensitive('abc___ABC___abc', 'abc', 4);
-```
-
-結果:
-
-```text
-┌─countSubstringsCaseInsensitive('abc___ABC___abc', 'abc', 4)─┐
-│                                                           2 │
-└─────────────────────────────────────────────────────────────┘
-```
-## countSubstringsCaseInsensitiveUTF8 {#countsubstringscaseinsensitiveutf8}
-
-`needle`という部分文字列が`haystack`という文字列に何回出現するかを返します。大文字小文字を無視し、`haystack`はUTF8文字列であると仮定します。
-
-**構文**
-
-```sql
-countSubstringsCaseInsensitiveUTF8(haystack, needle[, start_pos])
-```
-
-**引数**
-
-- `haystack` — 検索が行われるUTF-8文字列。[文字列](../data-types/string.md)または[列挙型](../data-types/enum.md)。
-- `needle` — 検索される部分文字列。[文字列](../data-types/string.md)。
-- `start_pos` – 検索が開始される`haystack`内の位置（1から始まる）。[UInt](../data-types/int-uint.md)。オプション。
-
-**返される値**
-
-- 出現回数。[UInt64](../data-types/int-uint.md)。
-
-**例**
-
-クエリ:
-
-```sql
-SELECT countSubstringsCaseInsensitiveUTF8('ложка, кошка, картошка', 'КА');
-```
-
-結果:
-
-```text
-┌─countSubstringsCaseInsensitiveUTF8('ложка, кошка, картошка', 'КА')─┐
-│                                                                  4 │
-└────────────────────────────────────────────────────────────────────┘
-```
-
-`start_pos`引数を使った例:
-
-クエリ:
-
-```sql
-SELECT countSubstringsCaseInsensitiveUTF8('ложка, кошка, картошка', 'КА', 13);
-```
-
-結果:
-
-```text
-┌─countSubstringsCaseInsensitiveUTF8('ложка, кошка, картошка', 'КА', 13)─┐
-│                                                                      2 │
-└────────────────────────────────────────────────────────────────────────┘
-```
-## countMatches {#countmatches}
-
-`haystack`内の`pattern`に対する正規表現マッチの数を返します。
-
-この関数の動作はClickHouseのバージョンによって異なります：
-- バージョン < v25.6では、`countMatches`は、パターンが受け入れる場合でも、最初の空のマッチでカウントを停止します。
-- バージョン >= 25.6では、`countMatches`は空のマッチが発生した場合でも実行を続けます。
-  旧作の動作は設定[count_matches_stop_at_empty_match = true](/operations/settings/settings#count_matches_stop_at_empty_match)を使用して復元できます。
+* v25.6 未満のバージョンでは、パターンが空文字列にもマッチしうる場合でも、最初の空マッチでカウントを停止します。
+* v25.6 以上のバージョンでは、空マッチが発生しても処理を継続します。従来の挙動は、設定 `count_matches_stop_at_empty_match = true` を使用して復元できます。
+  :::
 
 **構文**
 
@@ -1659,41 +52,32 @@ countMatches(haystack, pattern)
 
 **引数**
 
-- `haystack` — 検索対象の文字列。[文字列](../data-types/string.md)。
-- `pattern` — [re2正規表現構文](https://github.com/google/re2/wiki/Syntax)を使用した正規表現。[文字列](../data-types/string.md)。
+* `haystack` — 検索対象の文字列。[`String`](/sql-reference/data-types/string)
+* `pattern` — 正規表現パターン。[`String`](/sql-reference/data-types/string)
 
-**返される値**
+**返り値**
 
-- マッチの数。[UInt64](../data-types/int-uint.md)。
+見つかった一致の数を返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
 **例**
 
-```sql
-SELECT countMatches('foobar.com', 'o+');
+**数字列のカウント**
+
+```sql title=Query
+SELECT countMatches('hello 123 world 456 test', '[0-9]+')
 ```
 
-結果:
-
-```text
-┌─countMatches('foobar.com', 'o+')─┐
-│                                2 │
-└──────────────────────────────────┘
+```response title=Response
+┌─countMatches('hello 123 world 456 test', '[0-9]+')─┐
+│                                                   2 │
+└─────────────────────────────────────────────────────┘
 ```
 
-```sql
-SELECT countMatches('aaaa', 'aa');
-```
+## countMatchesCaseInsensitive {#countMatchesCaseInsensitive}
 
-結果:
+導入バージョン: v21.1
 
-```text
-┌─countMatches('aaaa', 'aa')────┐
-│                             2 │
-└───────────────────────────────┘
-```
-## countMatchesCaseInsensitive {#countmatchescaseinsensitive}
-
-`haystack`内のパターンに対する正規表現マッチの数を返します。`countMatches`と同様ですが、大文字小文字を無視します。
+[`countMatches`](#countMatches) と同様ですが、大文字と小文字を区別せずにマッチングを行います。
 
 **構文**
 
@@ -1703,67 +87,643 @@ countMatchesCaseInsensitive(haystack, pattern)
 
 **引数**
 
-- `haystack` — 検索対象の文字列。[文字列](../data-types/string.md)。
-- `pattern` — [re2正規表現構文](https://github.com/google/re2/wiki/Syntax)を使用した正規表現。[文字列](../data-types/string.md)。
+* `haystack` — 検索対象の文字列。[`String`](/sql-reference/data-types/string)
+* `pattern` — 正規表現パターン。[`const String`](/sql-reference/data-types/string)
 
-**返される値**
+**戻り値**
 
-- マッチの数。[UInt64](../data-types/int-uint.md)。
+マッチした件数を返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
 **例**
 
-クエリ:
+**大文字・小文字を区別しないカウント**
 
-```sql
-SELECT countMatchesCaseInsensitive('AAAA', 'aa');
+```sql title=Query
+SELECT countMatchesCaseInsensitive('Hello HELLO world', 'hello')
 ```
 
-結果:
-
-```text
-┌─countMatchesCaseInsensitive('AAAA', 'aa')────┐
-│                                            2 │
-└──────────────────────────────────────────────┘
+```response title=Response
+┌─countMatchesCaseInsensitive('Hello HELLO world', 'hello')─┐
+│                                                         2 │
+└───────────────────────────────────────────────────────────┘
 ```
-## regexpExtract {#regexpextract}
 
-`haystack`内で正規表現パターンと一致する最初の文字列を抽出し、正規表現グループインデックスに対応します。
+## countSubstrings {#countSubstrings}
+
+導入バージョン: v21.1
+
+部分文字列 `needle` が文字列 `haystack` 内に出現する回数を返します。
 
 **構文**
 
-エイリアス: `REGEXP_EXTRACT(haystack, pattern[, index])`。
+```sql
+countSubstrings(haystack, needle[, start_pos])
+```
 
 **引数**
 
-- `haystack` — 正規表現パターンが一致する文字列。[文字列](../data-types/string.md)。
-- `pattern` — 文字列、正規表現式で、定数でなければなりません。[文字列](../data-types/string.md)。
-- `index` – 0以上の整数で、デフォルトは1です。抽出する正規表現グループを表します。[UIntまたはInt](../data-types/int-uint.md)。オプション。
+* `haystack` — 検索を行う対象の文字列。[String](../../sql-reference/data-types/string.md) または [Enum](../../sql-reference/data-types/enum.md)。 - `needle` — 検索する部分文字列。[String](../../sql-reference/data-types/string.md)。 - `start_pos` — 検索を開始する `haystack` 内の位置 (1 始まり)。[UInt](../../sql-reference/data-types/int-uint.md)。省略可能。
 
 **返される値**
 
-`pattern`は複数の正規表現グループを含む場合があり、`index`は抽出する正規表現グループを示します。インデックスが0の場合は、全体の正規表現との一致を意味します。[文字列](../data-types/string.md)。
+出現回数。[`UInt64`](/sql-reference/data-types/int-uint)
 
 **例**
 
+**使用例**
+
+```sql title=Query
+SELECT countSubstrings('aaaa', 'aa');
+```
+
+```response title=Response
+┌─countSubstrings('aaaa', 'aa')─┐
+│                             2 │
+└───────────────────────────────┘
+```
+
+**start&#95;pos 引数あり**
+
+```sql title=Query
+SELECT countSubstrings('abc___abc', 'abc', 4);
+```
+
+```response title=Response
+┌─countSubstrings('abc___abc', 'abc', 4)─┐
+│                                      1 │
+└────────────────────────────────────────┘
+```
+
+## countSubstringsCaseInsensitive {#countSubstringsCaseInsensitive}
+
+導入バージョン: v21.1
+
+[`countSubstrings`](#countSubstrings) と同様ですが、大文字と小文字を区別せずにカウントします。
+
+**構文**
+
 ```sql
-SELECT
-    regexpExtract('100-200', '(\\d+)-(\\d+)', 1),
-    regexpExtract('100-200', '(\\d+)-(\\d+)', 2),
-    regexpExtract('100-200', '(\\d+)-(\\d+)', 0),
-    regexpExtract('100-200', '(\\d+)-(\\d+)');
+countSubstringsCaseInsensitive(haystack, needle[, start_pos])
 ```
 
-結果:
+**引数**
 
-```text
-┌─regexpExtract('100-200', '(\\d+)-(\\d+)', 1)─┬─regexpExtract('100-200', '(\\d+)-(\\d+)', 2)─┬─regexpExtract('100-200', '(\\d+)-(\\d+)', 0)─┬─regexpExtract('100-200', '(\\d+)-(\\d+)')─┐
-│ 100                                          │ 200                                          │ 100-200                                      │ 100                                       │
-└──────────────────────────────────────────────┴──────────────────────────────────────────────┴──────────────────────────────────────────────┴───────────────────────────────────────────┘
+* `haystack` — 検索を実行する文字列。[`String`](/sql-reference/data-types/string) または [`Enum`](/sql-reference/data-types/enum)
+* `needle` — 検索する部分文字列。[`String`](/sql-reference/data-types/string)
+* `start_pos` — 省略可能。検索を開始する `haystack` 内の位置（1始まり）。[`UInt*`](/sql-reference/data-types/int-uint)
+
+**戻り値**
+
+`haystack` 内に出現する `needle` の回数を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**使用例**
+
+```sql title=Query
+SELECT countSubstringsCaseInsensitive('AAAA', 'aa');
 ```
-## hasSubsequence {#hassubsequence}
 
-`needle`が`haystack`の部分列である場合は1を返し、そうでない場合は0を返します。
-文字列の部分列とは、与えられた文字列から0個以上の要素を削除しても順序が変わらない、得られるシーケンスのことです。
+```response title=Response
+┌─countSubstri⋯AAA', 'aa')─┐
+│                        2 │
+└──────────────────────────┘
+```
+
+**start&#95;pos 引数を指定した場合**
+
+```sql title=Query
+SELECT countSubstringsCaseInsensitive('abc___ABC___abc', 'abc', 4);
+```
+
+```response title=Response
+┌─countSubstri⋯, 'abc', 4)─┐
+│                        2 │
+└──────────────────────────┘
+```
+
+## countSubstringsCaseInsensitiveUTF8 {#countSubstringsCaseInsensitiveUTF8}
+
+導入バージョン: v21.1
+
+[`countSubstrings`](#countSubstrings) と同様ですが、大文字小文字を区別せずにカウントし、haystack が UTF-8 文字列であることを前提とします。
+
+**構文**
+
+```sql
+countSubstringsCaseInsensitiveUTF8(haystack, needle[, start_pos])
+```
+
+**引数**
+
+* `haystack` — 検索対象の UTF-8 文字列。[`String`](/sql-reference/data-types/string) または [`Enum`](/sql-reference/data-types/enum)
+* `needle` — 検索する部分文字列。[`String`](/sql-reference/data-types/string)
+* `start_pos` — 省略可能。検索を開始する `haystack` 内の位置（1 始まり）。[`UInt*`](/sql-reference/data-types/int-uint)
+
+**戻り値**
+
+`haystack` 内に出現する `needle` の回数を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**使用例**
+
+```sql title=Query
+SELECT countSubstringsCaseInsensitiveUTF8('ложка, кошка, картошка', 'КА');
+```
+
+```response title=Response
+┌─countSubstri⋯шка', 'КА')─┐
+│                        4 │
+└──────────────────────────┘
+```
+
+**start&#95;pos 引数を指定した場合**
+
+```sql title=Query
+SELECT countSubstringsCaseInsensitiveUTF8('ложка, кошка, картошка', 'КА', 13);
+```
+
+```response title=Response
+┌─countSubstri⋯, 'КА', 13)─┐
+│                        2 │
+└──────────────────────────┘
+```
+
+## extract {#extract}
+
+導入バージョン: v1.1
+
+文字列内で、正規表現に最初にマッチした部分を抽出します。
+`haystack` が `pattern` にマッチしない場合、空文字列が返されます。
+
+この関数は RE2 正規表現ライブラリを使用します。サポートされている構文については [re2](https://github.com/google/re2/wiki/Syntax) を参照してください。
+
+正規表現にキャプチャグループ（サブパターン）が含まれている場合、この関数は入力文字列から、最初のキャプチャグループに対応する部分文字列を抽出します。
+
+**構文**
+
+```sql
+extract(haystack, pattern)
+```
+
+**引数**
+
+* `haystack` — 抽出対象の文字列。[`String`](/sql-reference/data-types/string)
+* `pattern` — 正規表現。通常はキャプチャグループを含みます。[`const String`](/sql-reference/data-types/string)
+
+**戻り値**
+
+抽出された部分を文字列として返します。型は [`String`](/sql-reference/data-types/string) です。
+
+**使用例**
+
+**メールアドレスからドメインを抽出する**
+
+```sql title=Query
+SELECT extract('test@clickhouse.com', '.*@(.*)$')
+```
+
+```response title=Response
+┌─extract('test@clickhouse.com', '.*@(.*)$')─┐
+│ clickhouse.com                            │
+└───────────────────────────────────────────┘
+```
+
+**一致しない場合は空文字列を返します**
+
+```sql title=Query
+SELECT extract('test@clickhouse.com', 'no_match')
+```
+
+```response title=Response
+┌─extract('test@clickhouse.com', 'no_match')─┐
+│                                            │
+└────────────────────────────────────────────┘
+```
+
+## extractAll {#extractAll}
+
+導入: v1.1
+
+[`extract`](#extract) と同様ですが、文字列内で正規表現に一致したすべての結果を配列として返します。
+&#39;haystack&#39; が &#39;pattern&#39; の正規表現に一致しない場合、空の配列が返されます。
+
+正規表現にキャプチャグループ（サブパターン）が含まれている場合、この関数は最初のキャプチャグループに対して入力文字列を照合します。
+
+**構文**
+
+```sql
+extractAll(haystack, pattern)
+```
+
+**引数**
+
+* `haystack` — フラグメント（部分文字列）を抽出する対象の文字列。[`String`](/sql-reference/data-types/string)
+* `pattern` — 任意でキャプチャグループを含む正規表現。[`const String`](/sql-reference/data-types/string)
+
+**戻り値**
+
+抽出されたフラグメントの配列を返します。[`Array(String)`](/sql-reference/data-types/array)
+
+**例**
+
+**すべての数値を抽出**
+
+```sql title=Query
+SELECT extractAll('hello 123 world 456', '[0-9]+')
+```
+
+```response title=Response
+┌─extractAll('hello 123 world 456', '[0-9]+')─┐
+│ ['123','456']                               │
+└─────────────────────────────────────────────┘
+```
+
+**キャプチャグループを使って抽出する**
+
+```sql title=Query
+SELECT extractAll('test@example.com, user@domain.org', '([a-zA-Z0-9]+)@')
+```
+
+```response title=Response
+┌─extractAll('test@example.com, user@domain.org', '([a-zA-Z0-9]+)@')─┐
+│ ['test','user']                                                    │
+└────────────────────────────────────────────────────────────────────┘
+```
+
+## extractAllGroupsHorizontal {#extractAllGroupsHorizontal}
+
+導入バージョン: v20.5
+
+指定された正規表現を使用して文字列中のすべてのグループに対してマッチングを行い、配列の配列を返します。各配列には、同じキャプチャグループからのすべてのキャプチャがグループ番号ごとにまとめて格納されます。
+
+**構文**
+
+```sql
+extractAllGroupsHorizontal(s, regexp)
+```
+
+**引数**
+
+* `s` — 抽出対象の入力文字列。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
+* `regexp` — 照合に使用する正規表現。[`const String`](/sql-reference/data-types/string) または [`const FixedString`](/sql-reference/data-types/fixedstring)
+
+**返り値**
+
+配列の配列を返します。各内側の配列には、すべての一致にわたって 1 つのキャプチャグループから得られたすべてのキャプチャが含まれます。最初の内側の配列にはグループ 1 からのすべてのキャプチャ、2 番目にはグループ 2 からのすべてのキャプチャ、というように続きます。一致が見つからない場合は空配列を返します。[`Array(Array(String))`](/sql-reference/data-types/array)
+
+**例**
+
+**使用例**
+
+```sql title=Query
+WITH '< Server: nginx
+< Date: Tue, 22 Jan 2019 00:26:14 GMT
+< Content-Type: text/html; charset=UTF-8
+< Connection: keep-alive
+' AS s
+SELECT extractAllGroupsHorizontal(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
+```
+
+```response title=Response
+[['Server','Date','Content-Type','Connection'],['nginx','Tue, 22 Jan 2019 00:26:14 GMT','text/html; charset=UTF-8','keep-alive']]
+```
+
+## extractGroups {#extractGroups}
+
+導入: v20.5
+
+正規表現にマッチする、非重複の部分文字列からすべてのグループを抽出します。
+
+**構文**
+
+```sql
+extractAllGroups(s, regexp)
+```
+
+**引数**
+
+* `s` — 抽出対象の入力文字列。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
+* `regexp` — 正規表現。定数。[`const String`](/sql-reference/data-types/string) または [`const FixedString`](/sql-reference/data-types/fixedstring)
+
+**返される値**
+
+関数が 1 つ以上の一致するグループを見つけた場合、グループ ID（`1` から `N`、ここで `N` は regexp 内のキャプチャグループ数）ごとにまとめられた Array(Array(String)) 列を返します。一致するグループがない場合は空配列を返します。[`Array(Array(String))`](/sql-reference/data-types/array)
+
+**例**
+
+**使用例**
+
+```sql title=Query
+WITH '< Server: nginx
+< Date: Tue, 22 Jan 2019 00:26:14 GMT
+< Content-Type: text/html; charset=UTF-8
+< Connection: keep-alive
+' AS s
+SELECT extractAllGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
+```
+
+```response title=Response
+[['Server','nginx'],['Date','Tue, 22 Jan 2019 00:26:14 GMT'],['Content-Type','text/html; charset=UTF-8'],['Connection','keep-alive']]
+```
+
+## hasAllTokens {#hasAllTokens}
+
+導入バージョン: v25.10
+
+[`hasAnyTokens`](#hasAnyTokens) と同様ですが、`needle` 文字列または配列内のすべてのトークンが `input` 文字列にマッチする場合は 1 を返し、それ以外の場合は 0 を返します。`input` がカラムの場合、この条件を満たすすべての行を返します。
+
+:::note
+最適なパフォーマンスのため、カラム `input` には [text index](../../engines/table-engines/mergetree-family/invertedindexes) が定義されている必要があります。
+text index が定義されていない場合、この関数はカラム全体の総当たりスキャンを実行し、インデックス検索と比較して桁違いに遅くなります。
+:::
+
+検索を行う前に、この関数は次をトークン化します。
+
+* `input` 引数（常に）
+* `needle` 引数（[String](../../sql-reference/data-types/string.md) として指定された場合）。この場合、text index に対して指定された tokenizer を使用します。
+  カラムに text index が定義されていない場合は、代わりに `splitByNonAlpha` tokenizer が使用されます。
+  `needle` 引数が [Array(String)](../../sql-reference/data-types/array.md) 型の場合、配列の各要素はトークンとして扱われ、追加のトークン化は行われません。
+
+重複するトークンは無視されます。
+たとえば、needles = [&#39;ClickHouse&#39;, &#39;ClickHouse&#39;] は [&#39;ClickHouse&#39;] と同じように扱われます。
+
+**構文**
+
+```sql
+hasAllTokens(input, needles)
+```
+
+**エイリアス**: `hasAllToken`
+
+**引数**
+
+* `input` — 入力カラム。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring) または [`Array(String)`](/sql-reference/data-types/array) または [`Array(FixedString)`](/sql-reference/data-types/array)
+* `needles` — 検索するトークン。トークンは最大 64 個まで指定できます。[`String`](/sql-reference/data-types/string) または [`Array(String)`](/sql-reference/data-types/array)
+
+**返される値**
+
+すべてのトークンが一致した場合は 1 を返し、それ以外の場合は 0 を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**文字列カラムに対する使用例**
+
+```sql title=Query
+CREATE TABLE table (
+    id UInt32,
+    msg String,
+    INDEX idx(msg) TYPE text(tokenizer = splitByString(['()', '\\']))
+)
+ENGINE = MergeTree
+ORDER BY id;
+
+INSERT INTO table VALUES (1, '()a,\\bc()d'), (2, '()\\a()bc\\d'), (3, ',()a\\,bc,(),d,');
+
+SELECT count() FROM table WHERE hasAllTokens(msg, 'a\\d()');
+```
+
+```response title=Response
+┌─count()─┐
+│       1 │
+└─────────┘
+```
+
+**配列内で、トークナイズせずにそのまま (AS-IS) 検索するニードルを指定します**
+
+```sql title=Query
+SELECT count() FROM table WHERE hasAllTokens(msg, ['a', 'd']);
+```
+
+```response title=Response
+┌─count()─┐
+│       1 │
+└─────────┘
+```
+
+**`tokens` 関数を使用してニードルを生成する**
+
+```sql title=Query
+SELECT count() FROM table WHERE hasAllTokens(msg, tokens('a()d', 'splitByString', ['()', '\\']));
+```
+
+```response title=Response
+┌─count()─┐
+│       1 │
+└─────────┘
+```
+
+**Array 列および Map 列の使用例**
+
+```sql title=Query
+CREATE TABLE log (
+    id UInt32,
+    tags Array(String),
+    attributes Map(String, String),
+    INDEX idx_tags (tags) TYPE text(tokenizer = splitByNonAlpha),
+    INDEX idx_attributes_keys mapKeys(attributes) TYPE text(tokenizer = array),
+    INDEX idx_attributes_vals mapValues(attributes) TYPE text(tokenizer = array)
+)
+ENGINE = MergeTree
+ORDER BY id;
+
+INSERT INTO log VALUES
+    (1, ['clickhouse', 'clickhouse cloud'], {'address': '192.0.0.1', 'log_level': 'INFO'}),
+    (2, ['chdb'], {'embedded': 'true', 'log_level': 'DEBUG'});
+```
+
+```response title=Response
+```
+
+**配列列の例**
+
+```sql title=Query
+SELECT count() FROM log WHERE hasAllTokens(tags, 'clickhouse');
+```
+
+```response title=Response
+┌─count()─┐
+│       1 │
+└─────────┘
+```
+
+**mapKeys の使用例**
+
+```sql title=Query
+SELECT count() FROM log WHERE hasAllTokens(mapKeys(attributes), ['address', 'log_level']);
+```
+
+```response title=Response
+┌─count()─┐
+│       1 │
+└─────────┘
+```
+
+**mapValues の例**
+
+```sql title=Query
+SELECT count() FROM log WHERE hasAllTokens(mapValues(attributes), ['192.0.0.1', 'DEBUG']);
+```
+
+```response title=Response
+┌─count()─┐
+│       0 │
+└─────────┘
+```
+
+## hasAnyTokens {#hasAnyTokens}
+
+導入バージョン: v25.10
+
+`needle` 文字列または配列内のトークンのうち少なくとも 1 つが `input` 文字列に一致する場合は 1 を返し、それ以外の場合は 0 を返します。`input` がカラムの場合、この条件を満たすすべての行を返します。
+
+:::note
+最適なパフォーマンスを得るためには、カラム `input` に [text index](../../engines/table-engines/mergetree-family/invertedindexes) が定義されている必要があります。
+text index が定義されていない場合、この関数はインデックス検索よりも桁違いに遅い総当たりのカラムスキャンを実行します。
+:::
+
+検索を行う前に、この関数は次の対象をトークン化します。
+
+* `input` 引数（常に）
+* `needle` 引数（[String](../../sql-reference/data-types/string.md) として与えられた場合）
+
+これらは text index に指定された tokenizer を使用してトークン化されます。
+カラムに text index が定義されていない場合は、代わりに `splitByNonAlpha` tokenizer が使用されます。
+`needle` 引数が [Array(String)](../../sql-reference/data-types/array.md) 型である場合、配列要素それぞれがトークンとして扱われ、追加のトークン化は行われません。
+
+重複するトークンは無視されます。
+例えば、[&#39;ClickHouse&#39;, &#39;ClickHouse&#39;] は [&#39;ClickHouse&#39;] と同じものとして扱われます。
+
+**構文**
+
+```sql
+hasAnyTokens(input, needles)
+```
+
+**エイリアス**: `hasAnyToken`
+
+**引数**
+
+* `input` — 入力列。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring) または [`Array(String)`](/sql-reference/data-types/array) または [`Array(FixedString)`](/sql-reference/data-types/array)
+* `needles` — 検索するトークン。最大 64 個のトークンをサポートします。[`String`](/sql-reference/data-types/string) または [`Array(String)`](/sql-reference/data-types/array)
+
+**戻り値**
+
+少なくとも 1 件一致があれば `1` を返し、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**文字列列での使用例**
+
+```sql title=Query
+CREATE TABLE table (
+    id UInt32,
+    msg String,
+    INDEX idx(msg) TYPE text(tokenizer = splitByString(['()', '\\']))
+)
+ENGINE = MergeTree
+ORDER BY id;
+
+INSERT INTO table VALUES (1, '()a,\\bc()d'), (2, '()\\a()bc\\d'), (3, ',()a\\,bc,(),d,');
+
+SELECT count() FROM table WHERE hasAnyTokens(msg, 'a\\d()');
+```
+
+```response title=Response
+┌─count()─┐
+│       3 │
+└─────────┘
+```
+
+**トークン化せず AS-IS で検索する文字列を配列として指定します**
+
+```sql title=Query
+SELECT count() FROM table WHERE hasAnyTokens(msg, ['a', 'd']);
+```
+
+```response title=Response
+┌─count()─┐
+│       3 │
+└─────────┘
+```
+
+**`tokens` 関数を使って needle を生成する**
+
+```sql title=Query
+SELECT count() FROM table WHERE hasAnyTokens(msg, tokens('a()d', 'splitByString', ['()', '\\']));
+```
+
+```response title=Response
+┌─count()─┐
+│       3 │
+└─────────┘
+```
+
+**Array 型および Map 型列の使用例**
+
+```sql title=Query
+CREATE TABLE log (
+    id UInt32,
+    tags Array(String),
+    attributes Map(String, String),
+    INDEX idx_tags (tags) TYPE text(tokenizer = splitByNonAlpha),
+    INDEX idx_attributes_keys mapKeys(attributes) TYPE text(tokenizer = array),
+    INDEX idx_attributes_vals mapValues(attributes) TYPE text(tokenizer = array)
+)
+ENGINE = MergeTree
+ORDER BY id;
+
+INSERT INTO log VALUES
+    (1, ['clickhouse', 'clickhouse cloud'], {'address': '192.0.0.1', 'log_level': 'INFO'}),
+    (2, ['chdb'], {'embedded': 'true', 'log_level': 'DEBUG'});
+```
+
+```response title=Response
+```
+
+**配列カラムの例**
+
+```sql title=Query
+SELECT count() FROM log WHERE hasAnyTokens(tags, 'clickhouse');
+```
+
+```response title=Response
+┌─count()─┐
+│       1 │
+└─────────┘
+```
+
+**mapKeys の例**
+
+```sql title=Query
+SELECT count() FROM log WHERE hasAnyTokens(mapKeys(attributes), ['address', 'log_level']);
+```
+
+```response title=Response
+┌─count()─┐
+│       2 │
+└─────────┘
+```
+
+**mapValues の例**
+
+```sql title=Query
+SELECT count() FROM log WHERE hasAnyTokens(mapValues(attributes), ['192.0.0.1', 'DEBUG']);
+```
+
+```response title=Response
+┌─count()─┐
+│       2 │
+└─────────┘
+```
+
+## hasSubsequence {#hasSubsequence}
+
+導入バージョン: v23.7
+
+文字列 `haystack` の中に、文字列 `needle` が部分列として含まれているかどうかを判定します。
+文字列の部分列とは、残りの文字の順序を変えずに、ある文字列からいくつか、または 1 つも文字を削除せずに得られる文字列のことです。
 
 **構文**
 
@@ -1773,31 +733,44 @@ hasSubsequence(haystack, needle)
 
 **引数**
 
-- `haystack` — 検索が行われる文字列。[文字列](../data-types/string.md)。
-- `needle` — 検索される部分列。[文字列](../data-types/string.md)。
+* `haystack` — 部分列を検索する対象となる文字列。[`String`](/sql-reference/data-types/string)
+* `needle` — 検索する部分列。[`String`](/sql-reference/data-types/string)
 
-**返される値**
+**戻り値**
 
-- `needle`が`haystack`の部分列である場合は1、そうでない場合は0。[UInt8](../data-types/int-uint.md)。
+`needle` が `haystack` の部分列であれば `1`、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
-**例**
+**使用例**
 
-クエリ:
+**基本的な部分列チェック**
 
-```sql
-SELECT hasSubsequence('garbage', 'arg');
+```sql title=Query
+SELECT hasSubsequence('Hello World', 'HlWrd')
 ```
 
-結果:
-
-```text
-┌─hasSubsequence('garbage', 'arg')─┐
-│                                1 │
-└──────────────────────────────────┘
+```response title=Response
+┌─hasSubsequence('Hello World', 'HlWrd')─┐
+│                                      1 │
+└────────────────────────────────────────┘
 ```
-## hasSubsequenceCaseInsensitive {#hassubsequencecaseinsensitive}
 
-[hasSubsequence](#hassubsequence)と同様ですが、大文字小文字を無視して検索します。
+**該当する部分列は見つかりません**
+
+```sql title=Query
+SELECT hasSubsequence('Hello World', 'xyz')
+```
+
+```response title=Response
+┌─hasSubsequence('Hello World', 'xyz')─┐
+│                                    0 │
+└──────────────────────────────────────┘
+```
+
+## hasSubsequenceCaseInsensitive {#hasSubsequenceCaseInsensitive}
+
+導入バージョン: v23.7
+
+[`hasSubsequence`](#hasSubsequence) と同様ですが、大文字と小文字を区別せずに検索します。
 
 **構文**
 
@@ -1807,65 +780,32 @@ hasSubsequenceCaseInsensitive(haystack, needle)
 
 **引数**
 
-- `haystack` — 検索が行われる文字列。[文字列](../data-types/string.md)。
-- `needle` — 検索される部分列。[文字列](../data-types/string.md)。
+* `haystack` — 検索が実行される文字列。[`String`](/sql-reference/data-types/string)
+* `needle` — 検索対象となる部分列。[`String`](/sql-reference/data-types/string)
 
 **返される値**
 
-- `needle`が`haystack`の部分列である場合は1、そうでない場合は0。[UInt8](../data-types/int-uint.md)。
+`needle` が `haystack` の部分列であれば 1、そうでなければ 0 を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **例**
 
-クエリ:
+**使用例**
 
-```sql
+```sql title=Query
 SELECT hasSubsequenceCaseInsensitive('garbage', 'ARG');
 ```
 
-結果:
-
-```text
+```response title=Response
 ┌─hasSubsequenceCaseInsensitive('garbage', 'ARG')─┐
 │                                               1 │
 └─────────────────────────────────────────────────┘
 ```
-## hasSubsequenceUTF8 {#hassubsequenceutf8}
 
-[hasSubsequence](#hassubsequence)と同様ですが、`haystack`と`needle`がUTF-8エンコーディングされた文字列であると仮定します。
+## hasSubsequenceCaseInsensitiveUTF8 {#hasSubsequenceCaseInsensitiveUTF8}
 
-**構文**
+導入バージョン: v23.7
 
-```sql
-hasSubsequenceUTF8(haystack, needle)
-```
-
-**引数**
-
-- `haystack` — 検索が行われる文字列。[UTF-8エンコーディングされた文字列](../data-types/string.md)。
-- `needle` — 検索される部分列。[UTF-8エンコーディングされた文字列](../data-types/string.md)。
-
-**返される値**
-
-- `needle`が`haystack`の部分列である場合は1、そうでない場合は0。[UInt8](../data-types/int-uint.md)。
-
-クエリ:
-
-**例**
-
-```sql
-SELECT hasSubsequenceUTF8('ClickHouse - столбцовая система управления базами данных', 'система');
-```
-
-結果:
-
-```text
-┌─hasSubsequenceUTF8('ClickHouse - столбцовая система управления базами данных', 'система')─┐
-│                                                                                         1 │
-└───────────────────────────────────────────────────────────────────────────────────────────┘
-```
-## hasSubsequenceCaseInsensitiveUTF8 {#hassubsequencecaseinsensitiveutf8}
-
-[hasSubsequenceUTF8](#hassubsequenceutf8)と同様ですが、大文字小文字を無視して検索します。
+[`hasSubsequenceUTF8`](#hasSubsequenceUTF8) と同様ですが、大文字と小文字を区別せずに検索します。
 
 **構文**
 
@@ -1875,31 +815,81 @@ hasSubsequenceCaseInsensitiveUTF8(haystack, needle)
 
 **引数**
 
-- `haystack` — 検索が行われる文字列。[UTF-8エンコーディングされた文字列](../data-types/string.md)。
-- `needle` — 検索される部分列。[UTF-8エンコーディングされた文字列](../data-types/string.md)。
+* `haystack` — 検索を行う UTF-8 エンコードされた文字列。[`String`](/sql-reference/data-types/string)
+* `needle` — 検索対象となる UTF-8 エンコードされた部分文字列。[`String`](/sql-reference/data-types/string)
 
-**返される値**
+**戻り値**
 
-- `needle`が`haystack`の部分列である場合は1、そうでない場合は0。[UInt8](../data-types/int-uint.md)。
+`needle` が `haystack` の部分文字列であれば 1、そうでなければ 0 を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **例**
 
-クエリ:
+**使用例**
 
-```sql
+```sql title=Query
 SELECT hasSubsequenceCaseInsensitiveUTF8('ClickHouse - столбцовая система управления базами данных', 'СИСТЕМА');
 ```
 
-結果:
-
-```text
-┌─hasSubsequenceCaseInsensitiveUTF8('ClickHouse - столбцовая система управления базами данных', 'СИСТЕМА')─┐
-│                                                                                                        1 │
-└──────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+```response title=Response
+┌─hasSubsequen⋯ 'СИСТЕМА')─┐
+│                        1 │
+└──────────────────────────┘
 ```
-## hasToken {#hastoken}
 
-指定されたトークンがhaystackに存在する場合は1を返し、そうでない場合は0を返します。
+## hasSubsequenceUTF8 {#hasSubsequenceUTF8}
+
+導入バージョン: v23.7
+
+[`hasSubsequence`](/sql-reference/functions/string-search-functions#hasSubsequence) と同様ですが、`haystack` と `needle` が UTF-8 でエンコードされた文字列であると仮定します。
+
+**構文**
+
+```sql
+hasSubsequenceUTF8(haystack, needle)
+```
+
+**引数**
+
+* `haystack` — 検索対象の文字列。[`String`](/sql-reference/data-types/string)
+* `needle` — 検索する部分列。[`String`](/sql-reference/data-types/string)
+
+**戻り値**
+
+`needle` が `haystack` の部分列であれば `1` を返し、それ以外は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**使用例**
+
+```sql title=Query
+SELECT hasSubsequenceUTF8('картошка', 'кошка');
+```
+
+```response title=Response
+┌─hasSubsequen⋯', 'кошка')─┐
+│                        1 │
+└──────────────────────────┘
+```
+
+**一致しない部分列**
+
+```sql title=Query
+SELECT hasSubsequenceUTF8('картошка', 'апельсин');
+```
+
+```response title=Response
+┌─hasSubsequen⋯'апельсин')─┐
+│                        0 │
+└──────────────────────────┘
+```
+
+## hasToken {#hasToken}
+
+導入バージョン: v20.1
+
+指定されたトークンが対象文字列内に存在するかを判定します。
+
+トークンは、連続する文字 `[0-9A-Za-z_]`（数字、ASCII 英字、およびアンダースコア）からなる、可能な限り最長の部分列として定義されます。
 
 **構文**
 
@@ -1907,33 +897,72 @@ SELECT hasSubsequenceCaseInsensitiveUTF8('ClickHouse - столбцовая си
 hasToken(haystack, token)
 ```
 
-**パラメータ**
+**引数**
 
-- `haystack`: 検索が行われる文字列。[文字列](../data-types/string.md)または[列挙型](../data-types/enum.md)。
-- `token`: 2つの非英数字ASCII文字（またはhaystackの境界）の間の最大長の部分文字列。
+* `haystack` — 検索対象の文字列。[`String`](/sql-reference/data-types/string)
+* `token` — 検索するトークン。[`const String`](/sql-reference/data-types/string)
 
-**返される値**
+**戻り値**
 
-- トークンがhaystackに存在する場合は1、そうでない場合は0。[UInt8](../data-types/int-uint.md)。
-
-**実装の詳細**
-
-トークンは定数の文字列でなければなりません。tokenbf_v1インデックスの特化がサポートされています。
+トークンが見つかった場合は `1`、見つからない場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **例**
 
-クエリ:
+**トークン検索**
+
+```sql title=Query
+SELECT hasToken('clickhouse test', 'test')
+```
+
+```response title=Response
+┌─hasToken('clickhouse test', 'test')─┐
+│                                   1 │
+└─────────────────────────────────────┘
+```
+
+## hasTokenCaseInsensitive {#hasTokenCaseInsensitive}
+
+導入バージョン: v
+
+`tokenbf_v1` インデックスを使用して、`haystack` 内で `needle` を大文字・小文字を区別せずに検索します。
+
+**構文**
 
 ```sql
-SELECT hasToken('Hello World','Hello');
 ```
 
-```response
-1
-```
-## hasTokenOrNull {#hastokenornull}
+**引数**
 
-指定されたトークンが存在する場合は1を返し、存在しない場合は0を返し、トークンが不正な形式の場合はnullを返します。
+* なし。
+
+**戻り値**
+
+**例**
+
+## hasTokenCaseInsensitiveOrNull {#hasTokenCaseInsensitiveOrNull}
+
+導入バージョン: v
+
+`tokenbf_v1` インデックスを使用して、`haystack` 内の `needle` を大文字小文字を区別せずに検索します。`needle` が不正な形式の場合は `null` を返します。
+
+**構文**
+
+```sql
+```
+
+**引数**
+
+* なし。
+
+**戻り値**
+
+**例**
+
+## hasTokenOrNull {#hasTokenOrNull}
+
+導入バージョン: v20.1
+
+[`hasToken`](#hasToken) と同様ですが、トークンが不正な形式の場合は null を返します。
 
 **構文**
 
@@ -1941,108 +970,1675 @@ SELECT hasToken('Hello World','Hello');
 hasTokenOrNull(haystack, token)
 ```
 
-**パラメータ**
+**引数**
 
-- `haystack`: 検索が行われる文字列。[文字列](../data-types/string.md)または[列挙型](../data-types/enum.md)。
-- `token`: 2つの非英数字ASCII文字（またはhaystackの境界）の間の最大長の部分文字列。
+* `haystack` — 検索対象となる文字列。定数である必要があります。[`String`](/sql-reference/data-types/string)
+* `token` — 検索するトークン。定数文字列です。[`const String`](/sql-reference/data-types/string)
 
-**返される値**
+**戻り値**
 
-- トークンがhaystackに存在する場合は1、そうでない場合は0、不正なトークンの場合はnullを返します。
-
-**実装の詳細**
-
-トークンは定数の文字列でなければなりません。tokenbf_v1インデックスの特化がサポートされています。
+トークンが見つかった場合は `1`、見つからない場合は `0` を返し、トークンが不正な形式の場合は `null` を返します。[`Nullable(UInt8)`](/sql-reference/data-types/nullable)
 
 **例**
 
-`hasToken`が不正なトークンに対してエラーをスローする場合、`hasTokenOrNull`は不正なトークンに対してnullを返します。
+**使用例**
 
-クエリ:
-
-```sql
-SELECT hasTokenOrNull('Hello World','Hello,World');
+```sql title=Query
+SELECT hasTokenOrNull('apple banana cherry', 'ban ana');
 ```
 
-```response
-null
+```response title=Response
+┌─hasTokenOrNu⋯ 'ban ana')─┐
+│                     ᴺᵁᴸᴸ │
+└──────────────────────────┘
 ```
-## hasTokenCaseInsensitive {#hastokencaseinsensitive}
 
-指定されたトークンがhaystackに存在する場合は1を返し、そうでない場合は0を返します。大文字小文字を無視します。
+## ilike {#ilike}
+
+導入バージョン: v20.6
+
+[`like`](#like) と同様ですが、大文字と小文字を区別せずに検索します。
 
 **構文**
 
 ```sql
-hasTokenCaseInsensitive(haystack, token)
+ilike(haystack, pattern)
+-- haystack ILIKE pattern
 ```
 
-**パラメータ**
+**引数**
 
-- `haystack`: 検索が行われる文字列。[文字列](../data-types/string.md)または[列挙型](../data-types/enum.md)。
-- `token`: 2つの非英数字ASCII文字（またはhaystackの境界）の間の最大長の部分文字列。
+* `haystack` — 検索対象の文字列。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
+* `pattern` — 照合に使用する LIKE パターン。[`String`](/sql-reference/data-types/string)
 
 **返される値**
 
-- トークンがhaystackに存在する場合は1、そうでない場合は0。[UInt8](../data-types/int-uint.md)。
-
-**実装の詳細**
-
-トークンは定数の文字列でなければなりません。tokenbf_v1インデックスの特化がサポートされています。
+文字列が LIKE パターンにマッチした場合は `1`（大文字小文字は区別しない）、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **例**
 
-クエリ:
+**使用例**
 
-```sql
-SELECT hasTokenCaseInsensitive('Hello World','hello');
+```sql title=Query
+SELECT ilike('ClickHouse', '%house%');
 ```
 
-```response
-1
+```response title=Response
+┌─ilike('ClickHouse', '%house%')─┐
+│                              1 │
+└────────────────────────────────┘
 ```
-## hasTokenCaseInsensitiveOrNull {#hastokencaseinsensitivesornull}
 
-指定されたトークンがhaystackに存在する場合は1を返し、そうでない場合は0を返します。大文字小文字を無視し、不正なトークンの場合はnullを返します。
+## like {#like}
+
+導入バージョン: v1.1
+
+文字列 `haystack` が `LIKE` 式 `pattern` にマッチするかどうかを返します。
+
+`LIKE` 式には通常の文字と、次のメタ文字を含めることができます。
+
+* `%` は任意の長さの任意の文字列（長さ 0 も含む）を表します。
+* `_` は任意の 1 文字を表します。
+* `\` はリテラルの `%`、`_`、`\` をエスケープするために使用します。
+
+マッチングは UTF-8 に基づいて行われます。たとえば `_` は、UTF-8 では 2 バイトで表現される Unicode コードポイント `¥` にマッチします。
+
+`haystack` または `LIKE` 式が不正な UTF-8 の場合、その動作は未定義です。
+
+Unicode の正規化は自動では行われません。必要に応じて `normalizeUTF8*` 関数を使用してください。
+
+リテラルの `%`、`_`、`\`（`LIKE` のメタ文字）にマッチさせるには、先頭にバックスラッシュを付けて `\%`、`\_`、`\\` のように記述します。
+バックスラッシュが `%`、`_`、`\` 以外の文字の前に付いている場合、その特別な意味は失われ（すなわちリテラルとして解釈され）ます。
+
+:::note
+ClickHouse では、文字列内のバックスラッシュも[クォートする必要がある](../syntax.md#string)ため、実際には `\\%`、`\\_`、`\\\\` と書く必要があります。
+:::
+
+`%needle%` という形式の `LIKE` 式に対しては、この関数は `position` 関数と同等の速度です。
+それ以外の `LIKE` 式は内部的に正規表現に変換され、関数 `match` と同程度の性能で実行されます。
 
 **構文**
 
 ```sql
-hasTokenCaseInsensitiveOrNull(haystack, token)
+like(haystack, pattern)
+-- haystack LIKE pattern
 ```
 
-**パラメータ**
+**引数**
 
-- `haystack`: 検索が行われる文字列。[文字列](../data-types/string.md)または[列挙型](../data-types/enum.md)。
-- `token`: 2つの非英数字ASCII文字（またはhaystackの境界）の間の最大長の部分文字列。
+* `haystack` — 検索対象の文字列。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
+* `pattern` — 照合に使用する `LIKE` パターン。`%`（任意の長さの文字列に一致）、`_`（任意の1文字に一致）、およびエスケープ用の `\` を含めることができます。[`String`](/sql-reference/data-types/string)
 
-**返される値**
+**戻り値**
 
-- トークンがhaystackに存在する場合は1、トークンが存在しない場合は0、他の場合は不正なトークンの場合は[`null`](../data-types/nullable.md)。[UInt8](../data-types/int-uint.md)。
-
-**実装の詳細**
-
-トークンは定数の文字列でなければなりません。tokenbf_v1インデックスの特化がサポートされています。
+文字列が `LIKE` パターンに一致する場合は `1` を返し、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **例**
 
-`hasTokenCaseInsensitive`が不正なトークンに対してエラーをスローする場合、`hasTokenCaseInsensitiveOrNull`は不正なトークンに対してnullを返します。
+**使用例**
 
-クエリ:
+```sql title=Query
+SELECT like('ClickHouse', '%House');
+```
+
+```response title=Response
+┌─like('ClickHouse', '%House')─┐
+│                            1 │
+└──────────────────────────────┘
+```
+
+**1文字ワイルドカード**
+
+```sql title=Query
+SELECT like('ClickHouse', 'Click_ouse');
+```
+
+```response title=Response
+┌─like('ClickH⋯lick_ouse')─┐
+│                        1 │
+└──────────────────────────┘
+```
+
+**マッチしないパターン**
+
+```sql title=Query
+SELECT like('ClickHouse', '%SQL%');
+```
+
+```response title=Response
+┌─like('ClickHouse', '%SQL%')─┐
+│                           0 │
+└─────────────────────────────┘
+```
+
+## locate {#locate}
+
+導入バージョン: v18.16
+
+[`position`](#position) と同様ですが、引数 `haystack` と `needle` の順序が逆になっています。
+
+:::note バージョンによる動作の違い
+この関数の動作は ClickHouse のバージョンに依存します:
+
+* v24.3 未満のバージョンでは、`locate` は関数 `position` のエイリアスであり、引数 `(haystack, needle[, start_pos])` を受け取っていました。
+* v24.3 以上のバージョンでは、`locate` は個別の関数（MySQL との互換性向上のため）となり、引数 `(needle, haystack[, start_pos])` を受け取ります。\
+  以前の動作は、設定 `function_locate_has_mysql_compatible_argument_order = false` を使用することで復元できます。
+  :::
+
+**構文**
 
 ```sql
-SELECT hasTokenCaseInsensitiveOrNull('Hello World','hello,world');
+locate(needle, haystack[, start_pos])
 ```
 
-```response
-null
+**引数**
+
+* `needle` — 検索する部分文字列。[`String`](/sql-reference/data-types/string)
+* `haystack` — 検索を実行する文字列。[`String`](/sql-reference/data-types/string) または [`Enum`](/sql-reference/data-types/enum)
+* `start_pos` — 省略可能。検索を開始する `haystack` 内の位置（1 始まり）。[`UInt`](/sql-reference/data-types/int-uint)
+
+**戻り値**
+
+部分文字列が見つかった場合は、先頭位置（バイト単位、1 起算）を返し、見つからなかった場合は `0` を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**基本的な使用方法**
+
+```sql title=Query
+SELECT locate('ca', 'abcabc')
 ```
 
-<!-- 
-The inner content of the tags below are replaced at doc framework build time with 
-docs generated from system.functions. Please do not modify or remove the tags.
-See: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
--->
+```response title=Response
+┌─locate('ca', 'abcabc')─┐
+│                      3 │
+└────────────────────────┘
+```
 
-<!--AUTOGENERATED_START-->
-<!--AUTOGENERATED_END-->
+## match {#match}
+
+導入バージョン: v1.1
+
+指定された文字列が、指定された正規表現パターンにマッチするかを確認します。
+
+この関数は RE2 正規表現ライブラリを使用します。サポートされている構文については [re2](https://github.com/google/re2/wiki/Syntax) を参照してください。
+
+マッチングは UTF-8 を前提として動作します。例えば、`¥` は内部的には 2 バイトで表現されますが、マッチング時には 1 つのコードポイントとして扱われます。
+正規表現には NULL バイトを含めてはいけません。
+`haystack` またはパターンが無効な UTF-8 の場合、その動作は未定義です。
+
+re2 のデフォルト動作と異なり、`.` は改行にもマッチします。これを無効にするには、パターンの先頭に `(?-s)` を付けてください。
+
+パターンは両端で自動的にアンカーされます（パターンが &#39;^&#39; で始まり &#39;$&#39; で終わるかのように扱われます）。
+
+部分文字列のみを検索したい場合は、代わりに関数 [`like`](#like) または [`position`](#position) を使用できます。これらはこの関数よりもはるかに高速に動作します。
+
+演算子の別構文: `haystack REGEXP pattern`。
+
+**構文**
+
+```sql
+match(haystack, pattern)
+```
+
+**別名**: `REGEXP_MATCHES`
+
+**引数**
+
+* `haystack` — パターンを検索する文字列。[`String`](/sql-reference/data-types/string)
+* `pattern` — 正規表現パターン。[`const String`](/sql-reference/data-types/string)
+
+**戻り値**
+
+パターンが一致した場合は `1`、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**使用例**
+
+**基本的なパターンマッチング**
+
+```sql title=Query
+SELECT match('Hello World', 'Hello.*')
+```
+
+```response title=Response
+┌─match('Hello World', 'Hello.*')─┐
+│                               1 │
+└─────────────────────────────────┘
+```
+
+**パターンが一致しません**
+
+```sql title=Query
+SELECT match('Hello World', 'goodbye.*')
+```
+
+```response title=Response
+┌─match('Hello World', 'goodbye.*')─┐
+│                                 0 │
+└───────────────────────────────────┘
+```
+
+## multiFuzzyMatchAllIndices {#multiFuzzyMatchAllIndices}
+
+導入バージョン: v20.1
+
+[`multiFuzzyMatchAny`](#multiFuzzyMatchAny) と似ていますが、一定の[編集距離](https://en.wikipedia.org/wiki/Edit_distance)以内で haystack に一致する、すべてのインデックスを任意の順序で要素とする配列を返します。
+
+**構文**
+
+```sql
+multiFuzzyMatchAllIndices(haystack, distance, [pattern1, pattern2, ..., patternN])
+```
+
+**引数**
+
+* `haystack` — 検索を実行する対象の文字列。[`String`](/sql-reference/data-types/string)
+* `distance` — ファジーマッチにおける最大編集距離。[`UInt8`](/sql-reference/data-types/int-uint)
+* `pattern` — 照合対象となるパターンの配列。[`Array(String)`](/sql-reference/data-types/array)
+
+**戻り値**
+
+指定した編集距離以内で `haystack` にマッチする、`pattern` 配列内のすべてのインデックス（1 から開始）を任意の順序で含む配列を返します。一致が見つからない場合は空配列を返します。[`Array(UInt64)`](/sql-reference/data-types/array)
+
+**例**
+
+**使用例**
+
+```sql title=Query
+SELECT multiFuzzyMatchAllIndices('ClickHouse', 2, ['ClickHouse', 'ClckHouse', 'ClickHose', 'House']);
+```
+
+```response title=Response
+┌─multiFuzzyMa⋯, 'House'])─┐
+│ [3,1,4,2]                │
+└──────────────────────────┘
+```
+
+## multiFuzzyMatchAny {#multiFuzzyMatchAny}
+
+導入バージョン: v20.1
+
+[`multiMatchAny`](#multiMatchAny) と同様ですが、検索対象文字列に対して、いずれかのパターンが一定の[編集距離](https://en.wikipedia.org/wiki/Edit_distance)以内でマッチした場合に 1 を返します。
+この関数は [hyperscan](https://intel.github.io/hyperscan/dev-reference/compilation.html#approximate-matching) ライブラリの実験的機能に依存しており、一部の特殊なケースでは低速になる可能性があります。
+パフォーマンスは編集距離の値と使用されるパターンに依存しますが、常に非ファジーなバリアントよりもコストが高くなります。
+
+:::note
+`multiFuzzyMatch*()` 関数ファミリーは、hyperscan の制約により UTF-8 の正規表現をサポートしません（バイト列として扱います）。
+:::
+
+**構文**
+
+```sql
+multiFuzzyMatchAny(haystack, distance, [pattern1, pattern2, ..., patternN])
+```
+
+**引数**
+
+* `haystack` — 検索対象の文字列。[`String`](/sql-reference/data-types/string)
+* `distance` — あいまい一致における最大編集距離。[`UInt8`](/sql-reference/data-types/int-uint)
+* `pattern` — オプション。照合対象となるパターンの配列。[`Array(String)`](/sql-reference/data-types/array)
+
+**返される値**
+
+指定された編集距離以内で、いずれかのパターンが `haystack` にマッチした場合は `1` を、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**使用例**
+
+```sql title=Query
+SELECT multiFuzzyMatchAny('ClickHouse', 2, ['ClickHouse', 'ClckHouse', 'ClickHose']);
+```
+
+```response title=Response
+┌─multiFuzzyMa⋯lickHose'])─┐
+│                        1 │
+└──────────────────────────┘
+```
+
+## multiFuzzyMatchAnyIndex {#multiFuzzyMatchAnyIndex}
+
+導入バージョン: v20.1
+
+[`multiFuzzyMatchAny`](#multiFuzzyMatchAny) と同様ですが、一定の[編集距離](https://en.wikipedia.org/wiki/Edit_distance)以内で検索対象にマッチするインデックスのいずれかを返します。
+
+**構文**
+
+```sql
+multiFuzzyMatchAnyIndex(haystack, distance, [pattern1, pattern2, ..., patternn])
+```
+
+**引数**
+
+* `haystack` — 検索対象の文字列。[`String`](/sql-reference/data-types/string)
+* `distance` — あいまい一致における最大編集距離。[`UInt8`](/sql-reference/data-types/int-uint)
+* `pattern` — 照合対象となるパターンの配列。[`Array(String)`](/sql-reference/data-types/array)
+
+**返り値**
+
+指定した編集距離以内で `haystack` に一致するパターンのいずれかについて、そのインデックス（1 から始まる）を返し、一致しない場合は `0` を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**使用例**
+
+```sql title=Query
+SELECT multiFuzzyMatchAnyIndex('ClickHouse', 2, ['ClckHouse', 'ClickHose', 'ClickHouse']);
+```
+
+```response title=Response
+┌─multiFuzzyMa⋯ickHouse'])─┐
+│                        2 │
+└──────────────────────────┘
+```
+
+## multiMatchAllIndices {#multiMatchAllIndices}
+
+導入バージョン: v20.1
+
+[`multiMatchAny`](#multiMatchAny) と同様ですが、順不同で haystack にマッチするすべてのインデックスを配列で返します。
+
+**構文**
+
+```sql
+multiMatchAllIndices(haystack, [pattern1, pattern2, ..., patternn])
+```
+
+**引数**
+
+* `haystack` — 検索対象の文字列。[`String`](/sql-reference/data-types/string)
+* `pattern` — マッチに使用する正規表現。[`String`](/sql-reference/data-types/string)
+
+**返される値**
+
+`haystack` にマッチしたすべてのインデックス（1 から始まる）の配列。順不同。一致が見つからない場合は空配列を返す。[`Array(UInt64)`](/sql-reference/data-types/array)
+
+**例**
+
+**使用例**
+
+```sql title=Query
+SELECT multiMatchAllIndices('ClickHouse', ['[0-9]', 'House', 'Click', 'ouse']);
+```
+
+```response title=Response
+┌─multiMatchAl⋯', 'ouse'])─┐
+│ [3, 2, 4]                │
+└──────────────────────────┘
+```
+
+## multiMatchAny {#multiMatchAny}
+
+導入バージョン: v20.1
+
+複数の正規表現パターンのうち少なくとも1つが対象文字列にマッチするかを判定します。
+
+文字列内で複数の部分文字列を検索したいだけであれば、代わりに関数 [`multiSearchAny`](#multiSearchAny) を使用できます。本関数よりもはるかに高速に動作します。
+
+**構文**
+
+```sql
+multiMatchAny(haystack, pattern1[, pattern2, ...])
+```
+
+**引数**
+
+* `haystack` — パターンを検索する対象の文字列。[`String`](/sql-reference/data-types/string)
+* `pattern1[, pattern2, ...]` — 1 つ以上の正規表現パターンからなる配列。[`Array(String)`](/sql-reference/data-types/array)
+
+**戻り値**
+
+いずれかのパターンにマッチした場合は `1`、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**複数パターンでのマッチング**
+
+```sql title=Query
+SELECT multiMatchAny('Hello World', ['Hello.*', 'foo.*'])
+```
+
+```response title=Response
+┌─multiMatchAny('Hello World', ['Hello.*', 'foo.*'])─┐
+│                                                  1 │
+└────────────────────────────────────────────────────┘
+```
+
+**一致するパターンがありません**
+
+```sql title=Query
+SELECT multiMatchAny('Hello World', ['goodbye.*', 'foo.*'])
+```
+
+```response title=Response
+┌─multiMatchAny('Hello World', ['goodbye.*', 'foo.*'])─┐
+│                                                    0 │
+└──────────────────────────────────────────────────────┘
+```
+
+## multiMatchAnyIndex {#multiMatchAnyIndex}
+
+導入バージョン: v20.1
+
+[`multiMatchAny`](#multiMatchAny) と同様ですが、検索対象（haystack）内でマッチした位置のいずれかのインデックスを返します。
+
+**構文**
+
+```sql
+multiMatchAnyIndex(haystack, [pattern1, pattern2, ..., patternn])
+```
+
+**引数**
+
+* `haystack` — 検索を行う対象の文字列。[`String`](/sql-reference/data-types/string)
+* `pattern` — マッチさせる正規表現パターン。[`Array(String)`](/sql-reference/data-types/array)
+
+**戻り値**
+
+最初にマッチしたパターンのインデックス（1 から始まる）を返し、マッチが見つからない場合は 0 を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**使用例**
+
+```sql title=Query
+SELECT multiMatchAnyIndex('ClickHouse', ['[0-9]', 'House', 'Click']);
+```
+
+```response title=Response
+┌─multiMatchAn⋯, 'Click'])─┐
+│                        3 │
+└──────────────────────────┘
+```
+
+## multiSearchAllPositions {#multiSearchAllPositions}
+
+導入バージョン: v20.1
+
+[`position`](#position) と似ていますが、`haystack` 文字列内の複数の `needle` 部分文字列に対する位置（バイト単位、1 起算）の配列を返します。
+
+すべての `multiSearch*()` 関数は、最大 2^8 個の `needle` までしかサポートしません。
+
+**構文**
+
+```sql
+multiSearchAllPositions(haystack, needle1[, needle2, ...])
+```
+
+**引数**
+
+* `haystack` — 検索を実行する文字列。[`String`](/sql-reference/data-types/string)
+* `needle1[, needle2, ...]` — 検索対象となる 1 個以上の部分文字列からなる配列。[`Array(String)`](/sql-reference/data-types/array)
+
+**返される値**
+
+各部分文字列について、見つかった場合は 1 から数えたバイト単位での開始位置、見つからなかった場合は `0` を要素とする配列を返します。[`Array(UInt64)`](/sql-reference/data-types/array)
+
+**例**
+
+**複数 needle の検索**
+
+```sql title=Query
+SELECT multiSearchAllPositions('Hello, World!', ['hello', '!', 'world'])
+```
+
+```response title=Response
+┌─multiSearchAllPositions('Hello, World!', ['hello', '!', 'world'])─┐
+│ [0,13,0]                                                          │
+└───────────────────────────────────────────────────────────────────┘
+```
+
+## multiSearchAllPositionsCaseInsensitive {#multiSearchAllPositionsCaseInsensitive}
+
+導入バージョン: v20.1
+
+[`multiSearchAllPositions`](#multiSearchAllPositions) と同様ですが、大文字小文字を区別しません。
+
+**構文**
+
+```sql
+multiSearchAllPositionsCaseInsensitive(haystack, needle1[, needle2, ...])
+```
+
+**引数**
+
+* `haystack` — 検索対象の文字列。[`String`](/sql-reference/data-types/string)
+* `needle1[, needle2, ...]` — 検索する 1 つ以上の部分文字列からなる配列。[`Array(String)`](/sql-reference/data-types/array)
+
+**返り値**
+
+見つかった各部分文字列について、1 から数えたバイト単位の開始位置を要素とする配列を返します。部分文字列が見つからなかった場合、その要素として `0` を返します。[`Array(UInt64)`](/sql-reference/data-types/array)
+
+**例**
+
+**大文字小文字を区別しない複数文字列検索**
+
+```sql title=Query
+SELECT multiSearchAllPositionsCaseInsensitive('ClickHouse',['c','h'])
+```
+
+```response title=Response
+┌─multiSearchA⋯['c', 'h'])─┐
+│ [1,6]                    │
+└──────────────────────────┘
+```
+
+## multiSearchAllPositionsCaseInsensitiveUTF8 {#multiSearchAllPositionsCaseInsensitiveUTF8}
+
+導入バージョン: v20.1
+
+[`multiSearchAllPositionsUTF8`](#multiSearchAllPositionsUTF8) と同様ですが、大文字と小文字を区別しません。
+
+**構文**
+
+```sql
+multiSearchAllPositionsCaseInsensitiveUTF8(haystack, [needle1, needle2, ..., needleN])
+```
+
+**引数**
+
+* `haystack` — 検索を実行する UTF-8 でエンコードされた文字列。[`String`](/sql-reference/data-types/string)
+* `needle` — 検索対象となる UTF-8 でエンコードされた部分文字列の配列。[`Array(String)`](/sql-reference/data-types/array)
+
+**返される値**
+
+見つかった部分文字列それぞれについて、バイト単位（1 からカウント）での開始位置を要素とする配列。部分文字列が見つからなかった場合は 0 を返します。[`Array`](/sql-reference/data-types/array)
+
+**例**
+
+**大文字小文字を区別しない UTF-8 検索**
+
+```sql title=Query
+SELECT multiSearchAllPositionsCaseInsensitiveUTF8('Здравствуй, мир!', ['здравствуй', 'МИР']);
+```
+
+```response title=Response
+┌─multiSearchA⋯й', 'МИР'])─┐
+│ [1, 13]                  │
+└──────────────────────────┘
+```
+
+## multiSearchAllPositionsUTF8 {#multiSearchAllPositionsUTF8}
+
+導入バージョン: v20.1
+
+[`multiSearchAllPositions`](#multiSearchAllPositions) と同様ですが、`haystack` および `needle` の部分文字列が UTF-8 でエンコードされた文字列であることを前提とします。
+
+**構文**
+
+```sql
+multiSearchAllPositionsUTF8(haystack, needle1[, needle2, ...])
+```
+
+**引数**
+
+* `haystack` — 検索を行う UTF-8 でエンコードされた文字列。[`String`](/sql-reference/data-types/string)
+* `needle1[, needle2, ...]` — 検索対象となる UTF-8 でエンコードされた部分文字列の配列。[`Array(String)`](/sql-reference/data-types/array)
+
+**返される値**
+
+部分文字列が見つかった場合は 1 から数えたバイト単位での開始位置を、見つからなかった場合は `0` を要素とする配列を返します。[`Array`](/sql-reference/data-types/array)
+
+**例**
+
+**UTF-8 マルチ検索**
+
+```sql title=Query
+SELECT multiSearchAllPositionsUTF8('ClickHouse',['C','H'])
+```
+
+```response title=Response
+┌─multiSearchAllPositionsUTF8('ClickHouse', ['C', 'H'])─┐
+│ [1,6]                                                 │
+└───────────────────────────────────────────────────────┘
+```
+
+## multiSearchAny {#multiSearchAny}
+
+導入バージョン: v20.1
+
+複数のニードル文字列のうち少なくとも 1 つが、ヘイスタック文字列にマッチするかどうかをチェックします。
+
+関数 [`multiSearchAnyCaseInsensitive`](#multiSearchAnyCaseInsensitive)、[`multiSearchAnyUTF8`](#multiSearchAnyUTF8)、[`multiSearchAnyCaseInsensitiveUTF8`](#multiSearchAnyCaseInsensitiveUTF8) は、この関数の大文字小文字を区別しない、または UTF-8 対応のバリエーションを提供します。
+
+**構文**
+
+```sql
+multiSearchAny(haystack, needle1[, needle2, ...])
+```
+
+**引数**
+
+* `haystack` — 検索を行う文字列。[`String`](/sql-reference/data-types/string)
+* `needle1[, needle2, ...]` — 検索対象とする部分文字列の配列。[`Array(String)`](/sql-reference/data-types/array)
+
+**返り値**
+
+1 つ以上の一致があれば `1` を返し、一致が 1 つもなければ `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**いずれかへのマッチ検索**
+
+```sql title=Query
+SELECT multiSearchAny('ClickHouse',['C','H'])
+```
+
+```response title=Response
+┌─multiSearchAny('ClickHouse', ['C', 'H'])─┐
+│                                        1 │
+└──────────────────────────────────────────┘
+```
+
+## multiSearchAnyCaseInsensitive {#multiSearchAnyCaseInsensitive}
+
+導入バージョン: v20.1
+
+[multiSearchAny](#multiSearchAny) と同様ですが、大文字と小文字は区別しません。
+
+**構文**
+
+```sql
+multiSearchAnyCaseInsensitive(haystack, [needle1, needle2, ..., needleN])
+```
+
+**引数**
+
+* `haystack` — 検索を実行する文字列。[`String`](/sql-reference/data-types/string)
+* `needle` — 検索対象の部分文字列の配列。[`Array(String)`](/sql-reference/data-types/array)
+
+**戻り値**
+
+少なくとも 1 件の大文字小文字を区別しない一致があれば `1` を返し、なければ `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**使用例**
+
+**大文字小文字を区別しない検索**
+
+```sql title=Query
+SELECT multiSearchAnyCaseInsensitive('ClickHouse',['c','h'])
+```
+
+```response title=Response
+┌─multiSearchAnyCaseInsensitive('ClickHouse', ['c', 'h'])─┐
+│                                                       1 │
+└─────────────────────────────────────────────────────────┘
+```
+
+## multiSearchAnyCaseInsensitiveUTF8 {#multiSearchAnyCaseInsensitiveUTF8}
+
+導入バージョン: v20.1
+
+[multiSearchAnyUTF8](#multiSearchAnyUTF8) と同様ですが、大文字と小文字を区別しません。
+
+**構文**
+
+```sql
+multiSearchAnyCaseInsensitiveUTF8(haystack, [needle1, needle2, ..., needleN])
+```
+
+**引数**
+
+* `haystack` — 検索を実行する UTF-8 文字列。[`String`](/sql-reference/data-types/string)
+* `needle` — 検索対象の UTF-8 部分文字列。[`Array(String)`](/sql-reference/data-types/array)
+
+**戻り値**
+
+少なくとも 1 件の大文字小文字を区別しない一致があれば `1` を返し、1 件も一致がなければ `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**UTF-8 文字列 &#39;Здравствуйте&#39; に小文字の文字 &#39;з&#39; が含まれているかを確認します**
+
+```sql title=Query
+SELECT multiSearchAnyCaseInsensitiveUTF8('Здравствуйте',['з'])
+```
+
+```response title=Response
+┌─multiSearchA⋯те', ['з'])─┐
+│                        1 │
+└──────────────────────────┘
+```
+
+## multiSearchAnyUTF8 {#multiSearchAnyUTF8}
+
+導入バージョン: v20.1
+
+[multiSearchAny](#multiSearchAny) と同様ですが、`haystack` および `needle` の部分文字列が UTF-8 でエンコードされた文字列であると見なします。
+
+**構文**
+
+```sql
+multiSearchAnyUTF8(haystack, [needle1, needle2, ..., needleN])
+```
+
+**引数**
+
+* `haystack` — 検索を実行する UTF-8 文字列。[`String`](/sql-reference/data-types/string)
+* `needle` — 検索対象となる UTF-8 部分文字列。[`Array(String)`](/sql-reference/data-types/array)
+
+**返される値**
+
+少なくとも 1 件の一致があれば `1` を返し、一致が 1 件もなければ `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**UTF-8 文字列 &#39;你好，世界&#39;（&#39;Hello, world&#39;）が与えられたとき、その文字列内に 你 または 界 の文字が存在するかどうかを確認します**
+
+```sql title=Query
+SELECT multiSearchAnyUTF8('你好，世界', ['你', '界'])
+```
+
+```response title=Response
+┌─multiSearchA⋯你', '界'])─┐
+│                        1 │
+└──────────────────────────┘
+```
+
+## multiSearchFirstIndex {#multiSearchFirstIndex}
+
+導入バージョン: v20.1
+
+大文字小文字を区別して、複数の needle 文字列を haystack 文字列内で検索し、最初に見つかった needle の 1 から始まるインデックスを返します。
+
+**構文**
+
+```sql
+multiSearchFirstIndex(haystack, [needle1, needle2, ..., needleN])
+```
+
+**引数**
+
+* `haystack` — 検索対象となる文字列。[`String`](/sql-reference/data-types/string)
+* `needles` — 検索する文字列の配列。[`Array(String)`](/sql-reference/data-types/array)
+
+**戻り値**
+
+`haystack` 内で最初に見つかった `needle` の、`needles` 配列における 1 起算のインデックス（位置）を返します。どの `needle` も見つからない場合は 0 を返します。検索は大文字・小文字を区別します。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**使用例**
+
+```sql title=Query
+SELECT multiSearchFirstIndex('ClickHouse Database', ['Click', 'Database', 'Server']);
+```
+
+```response title=Response
+┌─multiSearchF⋯ 'Server'])─┐
+│                        1 │
+└──────────────────────────┘
+```
+
+**大文字と小文字を区別する挙動**
+
+```sql title=Query
+SELECT multiSearchFirstIndex('ClickHouse Database', ['CLICK', 'Database', 'Server']);
+```
+
+```response title=Response
+┌─multiSearchF⋯ 'Server'])─┐
+│                        2 │
+└──────────────────────────┘
+```
+
+**一致するものが見つかりません**
+
+```sql title=Query
+SELECT multiSearchFirstIndex('Hello World', ['goodbye', 'test']);
+```
+
+```response title=Response
+┌─multiSearchF⋯', 'test'])─┐
+│                        0 │
+└──────────────────────────┘
+```
+
+## multiSearchFirstIndexCaseInsensitive {#multiSearchFirstIndexCaseInsensitive}
+
+導入バージョン: v20.1
+
+文字列 `haystack` 内で最も左（先頭）側で見つかった needle&#95;i のインデックス `i`（1 起算）を返し、それ以外の場合は 0 を返します。
+大文字と小文字を区別しません。
+
+**構文**
+
+```sql
+multiSearchFirstIndexCaseInsensitive(haystack, [needle1, needle2, ..., needleN]
+```
+
+**引数**
+
+* `haystack` — 検索対象の文字列。[`String`](/sql-reference/data-types/string)
+* `needle` — 検索する部分文字列。[`Array(String)`](/sql-reference/data-types/array)
+
+**戻り値**
+
+最も左側で見つかった `needle` のインデックス（1 起算）を返します。一致がない場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**使用例**
+
+```sql title=Query
+SELECT multiSearchFirstIndexCaseInsensitive('hElLo WoRlD', ['World', 'Hello']);
+```
+
+```response title=Response
+┌─multiSearchF⋯, 'Hello'])─┐
+│                        1 │
+└──────────────────────────┘
+```
+
+## multiSearchFirstIndexCaseInsensitiveUTF8 {#multiSearchFirstIndexCaseInsensitiveUTF8}
+
+導入バージョン: v20.1
+
+UTF-8 エンコーディングをサポートし、大文字・小文字を区別せずに、ある文字列（検索対象）の中から複数の検索文字列を検索し、最初に見つかった検索文字列の 1 始まりのインデックスを返します。
+
+**構文**
+
+```sql
+multiSearchFirstIndexCaseInsensitiveUTF8(haystack, [needle1, needle2, ..., needleN])
+```
+
+**引数**
+
+* `haystack` — 検索対象の文字列。[`String`](/sql-reference/data-types/string)
+* `needles` — 検索する文字列の配列。[`Array(String)`](/sql-reference/data-types/array)
+
+**返される値**
+
+`haystack` 内で最初に見つかった `needle` の 1 始まりのインデックス値（`needles` 配列内での位置）を返します。`needle` が 1 つも見つからない場合は 0 を返します。検索は大文字小文字を区別せず、UTF-8 の文字エンコーディングに対応します。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**使用例**
+
+```sql title=Query
+SELECT multiSearchFirstIndexCaseInsensitiveUTF8('ClickHouse Database', ['CLICK', 'data', 'server']);
+```
+
+```response title=Response
+┌─multiSearchF⋯ 'server'])─┐
+│                        1 │
+└──────────────────────────┘
+```
+
+**UTF-8 における大文字・小文字の扱い**
+
+```sql title=Query
+SELECT multiSearchFirstIndexCaseInsensitiveUTF8('Привет Мир', ['мир', 'ПРИВЕТ']);
+```
+
+```response title=Response
+┌─multiSearchF⋯ 'ПРИВЕТ'])─┐
+│                        1 │
+└──────────────────────────┘
+```
+
+**一致するものが見つかりません**
+
+```sql title=Query
+SELECT multiSearchFirstIndexCaseInsensitiveUTF8('Hello World', ['goodbye', 'test']);
+```
+
+```response title=Response
+┌─multiSearchF⋯', 'test'])─┐
+│                        0 │
+└──────────────────────────┘
+```
+
+## multiSearchFirstIndexUTF8 {#multiSearchFirstIndexUTF8}
+
+導入バージョン: v20.1
+
+文字列 `haystack` 内で最も左側に見つかった needle&#95;i のインデックス `i`（1 から開始）を返し、該当するものがない場合は 0 を返します。
+`haystack` と `needle` は UTF-8 でエンコードされた文字列であると仮定します。
+
+**構文**
+
+```sql
+multiSearchFirstIndexUTF8(haystack, [needle1, needle2, ..., needleN])
+```
+
+**引数**
+
+* `haystack` — 検索を実行する UTF-8 文字列。[`String`](/sql-reference/data-types/string)
+* `needle` — 検索対象となる UTF-8 部分文字列の配列。[`Array(String)`](/sql-reference/data-types/array)
+
+**返り値**
+
+最も左側で見つかった needle のインデックス（1 起算）を返します。一致がない場合は 0 を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**使用例**
+
+```sql title=Query
+SELECT multiSearchFirstIndexUTF8('Здравствуйте мир', ['мир', 'здравствуйте']);
+```
+
+```response title=Response
+┌─multiSearchF⋯вствуйте'])─┐
+│                        1 │
+└──────────────────────────┘
+```
+
+## multiSearchFirstPosition {#multiSearchFirstPosition}
+
+導入バージョン: v20.1
+
+[`position`](#position) と同様ですが、複数の `needle` 文字列のいずれかに一致する、`haystack` 文字列内の最も左側の位置（オフセット）を返します。
+
+[`multiSearchFirstPositionCaseInsensitive`](#multiSearchFirstPositionCaseInsensitive)、[`multiSearchFirstPositionUTF8`](#multiSearchFirstPositionUTF8)、[`multiSearchFirstPositionCaseInsensitiveUTF8`](#multiSearchFirstPositionCaseInsensitiveUTF8) 関数は、この関数の大文字小文字を区別しない／UTF-8 対応のバリアントを提供します。
+
+**構文**
+
+```sql
+multiSearchFirstPosition(haystack, needle1[, needle2, ...])
+```
+
+**引数**
+
+* `haystack` — 検索を行う対象の文字列。[`String`](/sql-reference/data-types/string)
+* `needle1[, needle2, ...]` — 検索対象とする 1 つ以上の部分文字列を要素とする配列。[`Array(String)`](/sql-reference/data-types/array)
+
+**返される値**
+
+`haystack` 文字列の中で、複数の `needle` 文字列のいずれかに一致する最も左側のオフセット（位置）を返します。一致がない場合は `0` を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**先頭位置の検索**
+
+```sql title=Query
+SELECT multiSearchFirstPosition('Hello World',['llo', 'Wor', 'ld'])
+```
+
+```response title=Response
+┌─multiSearchFirstPosition('Hello World', ['llo', 'Wor', 'ld'])─┐
+│                                                             3 │
+└───────────────────────────────────────────────────────────────┘
+```
+
+## multiSearchFirstPositionCaseInsensitive {#multiSearchFirstPositionCaseInsensitive}
+
+導入バージョン: v20.1
+
+[multiSearchFirstPosition](#multiSearchFirstPosition) と同様ですが、大文字と小文字を区別しません。
+
+**構文**
+
+```sql
+multiSearchFirstPositionCaseInsensitive(haystack, [needle1, needle2, ..., needleN])
+```
+
+**引数**
+
+* `haystack` — 検索を行う文字列。[`String`](/sql-reference/data-types/string)
+* `needle` — 検索対象となる部分文字列の配列。[`Array(String)`](/sql-reference/data-types/array)
+
+**戻り値**
+
+複数の `needle` 文字列のいずれかに一致する `haystack` 文字列内の最も左側の位置（オフセット）を返します。一致がない場合は `0` を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**大文字小文字を区別しない場合の最初の位置**
+
+```sql title=Query
+SELECT multiSearchFirstPositionCaseInsensitive('HELLO WORLD',['wor', 'ld', 'ello'])
+```
+
+```response title=Response
+┌─multiSearchFirstPositionCaseInsensitive('HELLO WORLD', ['wor', 'ld', 'ello'])─┐
+│                                                                             2 │
+└───────────────────────────────────────────────────────────────────────────────┘
+```
+
+## multiSearchFirstPositionCaseInsensitiveUTF8 {#multiSearchFirstPositionCaseInsensitiveUTF8}
+
+導入バージョン: v20.1
+
+[multiSearchFirstPosition](#multiSearchFirstPosition) と同様ですが、`haystack` と `needle` を UTF-8 文字列として扱い、大文字小文字を区別しません。
+
+**構文**
+
+```sql
+multiSearchFirstPositionCaseInsensitiveUTF8(haystack, [needle1, needle2, ..., needleN])
+```
+
+**引数**
+
+* `haystack` — 検索を行う UTF-8 文字列。[`String`](/sql-reference/data-types/string)
+* `needle` — 検索対象となる UTF-8 部分文字列からなる配列。[`Array(String)`](/sql-reference/data-types/array)
+
+**戻り値**
+
+`haystack` 文字列の中で、複数の `needle` 文字列のいずれかに一致する最も左側のオフセットを、大文字小文字を区別せずに返します。一致がない場合は `0` を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**与えられた needle のいずれかに一致する、UTF-8 文字列 &#39;Здравствуй, мир&#39;（&#39;Hello, world&#39;）内の最も左側のオフセットを検索**
+
+```sql title=Query
+SELECT multiSearchFirstPositionCaseInsensitiveUTF8('Здравствуй, мир', ['МИР', 'вст', 'Здра'])
+```
+
+```response title=Response
+┌─multiSearchFirstPositionCaseInsensitiveUTF8('Здравствуй, мир', ['мир', 'вст', 'Здра'])─┐
+│                                                                                      3 │
+└────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+## multiSearchFirstPositionUTF8 {#multiSearchFirstPositionUTF8}
+
+導入バージョン: v20.1
+
+[multiSearchFirstPosition](#multiSearchFirstPosition) と同様ですが、`haystack` と `needle` を UTF-8 エンコードされた文字列であると仮定します。
+
+**構文**
+
+```sql
+multiSearchFirstPositionUTF8(haystack, [needle1, needle2, ..., needleN])
+```
+
+**引数**
+
+* `haystack` — 検索を行う UTF-8 文字列。[`String`](/sql-reference/data-types/string)
+* `needle` — 検索対象となる UTF-8 部分文字列の配列。[`Array(String)`](/sql-reference/data-types/array)
+
+**戻り値**
+
+複数の `needle` のうちいずれかに一致する、`haystack` 文字列内の最も左にあるオフセット。一致するものがない場合は `0` を返す。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**UTF-8 文字列 &#39;Здравствуй, мир&#39;（&#39;Hello, world&#39;）内で、与えられた needle のいずれかに一致する最も左にあるオフセットを求める**
+
+```sql title=Query
+SELECT multiSearchFirstPositionUTF8('Здравствуй, мир',['мир', 'вст', 'авст'])
+```
+
+```response title=Response
+┌─multiSearchFirstPositionUTF8('Здравствуй, мир', ['мир', 'вст', 'авст'])─┐
+│                                                                       3 │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+## ngramDistance {#ngramDistance}
+
+導入バージョン: v20.1
+
+2つの文字列間の 4-gram 距離を計算します。
+このために、2つの 4-gram マルチセット間の対称差を数え、その値をそれぞれの要素数の総和で正規化します。
+返される値が小さいほど、文字列同士はより類似しています。
+
+大文字小文字を区別しない検索や UTF-8 形式での検索には、[`ngramDistanceCaseInsensitive`](#ngramDistanceCaseInsensitive)、[`ngramDistanceUTF8`](#ngramDistanceUTF8)、[`ngramDistanceCaseInsensitiveUTF8`](#ngramDistanceCaseInsensitiveUTF8) 関数を使用します。
+
+**構文**
+
+```sql
+ngramDistance(haystack, needle)
+```
+
+**引数**
+
+* `haystack` — 比較対象となる文字列。[`String`](/sql-reference/data-types/string)
+* `needle` — 比較対象となる文字列。[`String`](/sql-reference/data-types/string)
+
+**戻り値**
+
+`0` から `1` の間の Float32 型の数値を返します。返される値が小さいほど、文字列同士の類似度は高くなります。[`Float32`](/sql-reference/data-types/float)
+
+**例**
+
+**4-グラム距離を計算**
+
+```sql title=Query
+SELECT ngramDistance('ClickHouse', 'ClickHouses')
+```
+
+```response title=Response
+┌─ngramDistance('ClickHouse', 'ClickHouses')─┐
+│                                        0.1 │
+└────────────────────────────────────────────┘
+```
+
+## ngramDistanceCaseInsensitive {#ngramDistanceCaseInsensitive}
+
+導入バージョン: v20.1
+
+[`ngramDistance`](#ngramDistance) の大文字小文字を区別しないバージョンを提供します。
+2 つの文字列の 4-グラム距離を、大文字小文字を無視して計算します。
+返される値が小さいほど、文字列同士の類似度が高くなります。
+
+**構文**
+
+```sql
+ngramDistanceCaseInsensitive(haystack, needle)
+```
+
+**引数**
+
+* `haystack` — 1 番目の比較文字列。[`String`](/sql-reference/data-types/string)
+* `needle` — 2 番目の比較文字列。[`String`](/sql-reference/data-types/string)
+
+**返される値**
+
+`0` 以上 `1` 以下の `Float32` 型の数値を返します。[`Float32`](/sql-reference/data-types/float)
+
+**例**
+
+**大文字小文字を区別しない 4-gram 距離**
+
+```sql title=Query
+SELECT ngramDistanceCaseInsensitive('ClickHouse','clickhouse')
+```
+
+```response title=Response
+┌─ngramDistanceCaseInsensitive('ClickHouse','clickhouse')─┐
+│                                                       0 │
+└─────────────────────────────────────────────────────────┘
+```
+
+## ngramDistanceCaseInsensitiveUTF8 {#ngramDistanceCaseInsensitiveUTF8}
+
+導入バージョン: v20.1
+
+[`ngramDistance`](#ngramDistance) の、大文字小文字を区別しない UTF-8 版を提供します。
+`needle` と `haystack` の文字列が UTF-8 でエンコードされていることを前提とし、大文字小文字を無視します。
+2 つの UTF-8 文字列間の 3-gram 距離を、大文字小文字を無視して計算します。
+返される値が小さいほど、文字列同士がより類似していることを意味します。
+
+**構文**
+
+```sql
+ngramDistanceCaseInsensitiveUTF8(haystack, needle)
+```
+
+**引数**
+
+* `haystack` — 1 番目の UTF-8 エンコードされた比較文字列。[`String`](/sql-reference/data-types/string)
+* `needle` — 2 番目の UTF-8 エンコードされた比較文字列。[`String`](/sql-reference/data-types/string)
+
+**返される値**
+
+`0` から `1` の間の Float32 型の数値を返します。[`Float32`](/sql-reference/data-types/float)
+
+**例**
+
+**大文字小文字を区別しない UTF-8 3-グラム距離**
+
+```sql title=Query
+SELECT ngramDistanceCaseInsensitiveUTF8('abcde','CDE')
+```
+
+```response title=Response
+┌─ngramDistanceCaseInsensitiveUTF8('abcde','CDE')─┐
+│                                             0.5 │
+└─────────────────────────────────────────────────┘
+```
+
+## ngramDistanceUTF8 {#ngramDistanceUTF8}
+
+導入バージョン: v20.1
+
+[`ngramDistance`](#ngramDistance) の UTF-8 版を提供します。
+`needle` と `haystack` の文字列が UTF-8 エンコードされた文字列であると仮定します。
+2 つの UTF-8 文字列間の 3-gram 距離を計算します。
+返される値が小さいほど、文字列同士はより類似しています。
+
+**構文**
+
+```sql
+ngramDistanceUTF8(haystack, needle)
+```
+
+**引数**
+
+* `haystack` — 比較対象となる最初の UTF-8 エンコード済み文字列。[`String`](/sql-reference/data-types/string)
+* `needle` — 比較対象となる2番目の UTF-8 エンコード済み文字列。[`String`](/sql-reference/data-types/string)
+
+**返される値**
+
+`0` から `1` の間の `Float32` 型の数値を返します。[`Float32`](/sql-reference/data-types/float)
+
+**例**
+
+**UTF-8 3-gram 距離**
+
+```sql title=Query
+SELECT ngramDistanceUTF8('abcde','cde')
+```
+
+```response title=Response
+┌─ngramDistanceUTF8('abcde','cde')─┐
+│                               0.5 │
+└───────────────────────────────────┘
+```
+
+## ngramSearch {#ngramSearch}
+
+導入バージョン: v20.1
+
+2 つの文字列間の 4-gram 距離が、指定されたしきい値以下かどうかを判定します。
+
+大文字小文字を区別しない検索や UTF-8 形式の検索には、`ngramSearchCaseInsensitive`、`ngramSearchUTF8`、`ngramSearchCaseInsensitiveUTF8` 関数を使用します。
+
+**構文**
+
+```sql
+ngramSearch(haystack, needle)
+```
+
+**引数**
+
+* `haystack` — 比較に用いる文字列。[`String`](/sql-reference/data-types/string)
+* `needle` — 比較に用いる文字列。[`String`](/sql-reference/data-types/string)
+
+**返される値**
+
+文字列間の 4-gram 距離がしきい値（デフォルトは `1.0`）以下の場合は `1`、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**4-gram を使用した検索**
+
+```sql title=Query
+SELECT ngramSearch('ClickHouse', 'Click')
+```
+
+```response title=Response
+┌─ngramSearch('ClickHouse', 'Click')─┐
+│                                  1 │
+└────────────────────────────────────┘
+```
+
+## ngramSearchCaseInsensitive {#ngramSearchCaseInsensitive}
+
+導入バージョン: v20.1
+
+[`ngramSearch`](#ngramSearch) の大文字・小文字を区別しないバージョンを提供します。
+ニードル文字列とヘイスタック文字列の非対称な差分を計算します。つまり、ニードルから得られる n-gram の数から共通する n-gram の数を引き、その値をニードルの n-gram 数で正規化したものです。
+大文字・小文字を無視して、2 つの文字列の 4-gram 距離が指定されたしきい値以下かどうかをチェックします。
+
+**構文**
+
+```sql
+ngramSearchCaseInsensitive(haystack, needle)
+```
+
+**引数**
+
+* `haystack` — 比較対象となる文字列。[`String`](/sql-reference/data-types/string)
+* `needle` — 比較対象となる文字列。[`String`](/sql-reference/data-types/string)
+
+**返り値**
+
+2つの文字列間の4-グラム距離がしきい値（デフォルトは `1.0`）以下の場合は `1` を返し、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**4-グラムを使用した大文字・小文字を区別しない検索**
+
+```sql title=Query
+SELECT ngramSearchCaseInsensitive('Hello World','hello')
+```
+
+```response title=Response
+┌─ngramSearchCaseInsensitive('Hello World','hello')─┐
+│                                                  1 │
+└────────────────────────────────────────────────────┘
+```
+
+## ngramSearchCaseInsensitiveUTF8 {#ngramSearchCaseInsensitiveUTF8}
+
+導入バージョン: v20.1
+
+[`ngramSearch`](#ngramSearch) の大文字小文字を区別しない UTF-8 版を提供します。
+`haystack` と `needle` は UTF-8 文字列であると仮定し、大文字小文字を無視します。
+2 つの UTF-8 文字列間の 3-グラム距離が、指定されたしきい値以下かどうかを、大文字小文字を無視して判定します。
+
+**構文**
+
+```sql
+ngramSearchCaseInsensitiveUTF8(haystack, needle)
+```
+
+**引数**
+
+* `haystack` — 比較に用いる UTF-8 文字列。[`String`](/sql-reference/data-types/string)
+* `needle` — 比較に用いる UTF-8 文字列。[`String`](/sql-reference/data-types/string)
+
+**返される値**
+
+文字列間の 3-gram 距離がしきい値（デフォルトでは `1.0`）以下の場合は `1` を、そうでない場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**3-gram を使用した大文字小文字を区別しない UTF-8 検索**
+
+```sql title=Query
+SELECT ngramSearchCaseInsensitiveUTF8('абвГДЕёжз', 'АбвгдЕЁжз')
+```
+
+```response title=Response
+┌─ngramSearchCaseInsensitiveUTF8('абвГДЕёжз', 'АбвгдЕЁжз')─┐
+│                                                        1 │
+└──────────────────────────────────────────────────────────┘
+```
+
+## ngramSearchUTF8 {#ngramSearchUTF8}
+
+導入バージョン: v20.1
+
+`ngramSearch` の UTF-8 版を提供します。
+`haystack` と `needle` が UTF-8 文字列であることを前提とします。
+2 つの UTF-8 文字列間の 3-グラム距離が、指定されたしきい値以下かどうかを確認します。
+
+**構文**
+
+```sql
+ngramSearchUTF8(haystack, needle)
+```
+
+**引数**
+
+* `haystack` — 比較対象となる UTF-8 文字列。[`String`](/sql-reference/data-types/string)
+* `needle` — 比較対象となる UTF-8 文字列。[`String`](/sql-reference/data-types/string)
+
+**戻り値**
+
+文字列間の 3-gram 距離がしきい値（デフォルトは `1.0`）以下であれば `1`、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**3-gram を使用した UTF-8 検索**
+
+```sql title=Query
+SELECT ngramSearchUTF8('абвгдеёжз', 'гдеёзд')
+```
+
+```response title=Response
+┌─ngramSearchUTF8('абвгдеёжз', 'гдеёзд')─┐
+│                                      1 │
+└────────────────────────────────────────┘
+```
+
+## notILike {#notILike}
+
+導入バージョン: v20.6
+
+文字列がパターンに一致しないかどうかを、大文字小文字を区別せずに判定します。パターンには、SQL の LIKE マッチング用の特殊文字 `%` および `_` を含めることができます。
+
+**構文**
+
+```sql
+notILike(haystack, pattern)
+```
+
+**引数**
+
+* `haystack` — 検索対象となる入力文字列。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
+* `pattern` — 照合に使用する SQL LIKE パターン。`%` は任意の長さ（0 文字を含む）の文字列に一致し、`_` はちょうど 1 文字に一致する。[`String`](/sql-reference/data-types/string)
+
+**戻り値**
+
+文字列がパターンに一致しない場合は `1` を返し（比較は大文字小文字を区別しない）、それ以外の場合は `0` を返す。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**使用例**
+
+```sql title=Query
+SELECT notILike('ClickHouse', '%house%');
+```
+
+```response title=Response
+┌─notILike('Cl⋯ '%house%')─┐
+│                        0 │
+└──────────────────────────┘
+```
+
+## notLike {#notLike}
+
+導入: v1.1
+
+[`like`](#like) と似ていますが、結果を否定します。
+
+**構文**
+
+```sql
+notLike(haystack, pattern)
+-- haystack NOT LIKE pattern
+```
+
+**引数**
+
+* `haystack` — 検索対象の文字列。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
+* `pattern` — 照合する LIKE パターン。[`String`](/sql-reference/data-types/string)
+
+**返り値**
+
+文字列が `LIKE` パターンに一致しない場合は `1`、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**使用例**
+
+```sql title=Query
+SELECT notLike('ClickHouse', '%House%');
+```
+
+```response title=Response
+┌─notLike('Cli⋯ '%House%')─┐
+│                        0 │
+└──────────────────────────┘
+```
+
+**非マッチパターン**
+
+```sql title=Query
+SELECT notLike('ClickHouse', '%SQL%');
+```
+
+```response title=Response
+┌─notLike('Cli⋯', '%SQL%')─┐
+│                        1 │
+└──────────────────────────┘
+```
+
+## position {#position}
+
+導入: v1.1
+
+部分文字列 `needle` が文字列 `haystack` 内に現れる位置（バイト単位、1 始まり）を返します。
+
+部分文字列 `needle` が空文字列の場合、以下の規則が適用されます:
+
+* `start_pos` が指定されていない場合: `1` を返す
+* `start_pos = 0` の場合: `1` を返す
+* `start_pos >= 1` かつ `start_pos <= length(haystack) + 1` の場合: `start_pos` を返す
+* それ以外の場合: `0` を返す
+
+同じ規則は、関数 [`locate`](#locate)、[`positionCaseInsensitive`](#positionCaseInsensitive)、[`positionUTF8`](#positionUTF8)、[`positionCaseInsensitiveUTF8`](#positionCaseInsensitiveUTF8) にも適用されます。
+
+**構文**
+
+```sql
+position(haystack, needle[, start_pos])
+```
+
+**引数**
+
+* `haystack` — 検索を行う文字列。[`String`](/sql-reference/data-types/string) または [`Enum`](/sql-reference/data-types/enum)
+* `needle` — 検索対象の部分文字列。[`String`](/sql-reference/data-types/string)
+* `start_pos` — 検索を開始する `haystack` 内の位置 (1 始まり)。省略可能。[`UInt`](/sql-reference/data-types/int-uint)
+
+**戻り値**
+
+部分文字列が見つかった場合は、バイト単位で 1 から数えた開始位置を返し、見つからなかった場合は `0` を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**基本的な使用例**
+
+```sql title=Query
+SELECT position('Hello, world!', '!')
+```
+
+```response title=Response
+┌─position('Hello, world!', '!')─┐
+│                             13 │
+└────────────────────────────────┘
+```
+
+**start&#95;pos 引数を指定する場合**
+
+```sql title=Query
+SELECT position('Hello, world!', 'o', 1), position('Hello, world!', 'o', 7)
+```
+
+```response title=Response
+┌─position('Hello, world!', 'o', 1)─┬─position('Hello, world!', 'o', 7)─┐
+│                                 5 │                                 9 │
+└───────────────────────────────────┴───────────────────────────────────┘
+```
+
+**Needle IN haystack 構文**
+
+```sql title=Query
+SELECT 6 = position('/' IN s) FROM (SELECT 'Hello/World' AS s)
+```
+
+```response title=Response
+┌─equals(6, position(s, '/'))─┐
+│                           1 │
+└─────────────────────────────┘
+```
+
+**空の検索文字列**
+
+```sql title=Query
+SELECT position('abc', ''), position('abc', '', 0), position('abc', '', 1), position('abc', '', 2), position('abc', '', 3), position('abc', '', 4), position('abc', '', 5)
+```
+
+```response title=Response
+┌─position('abc', '')─┬─position('abc', '', 0)─┬─position('abc', '', 1)─┬─position('abc', '', 2)─┬─position('abc', '', 3)─┬─position('abc', '', 4)─┬─position('abc', '', 5)─┐
+│                   1 │                      1 │                      1 │                      2 │                      3 │                      4 │                      0 │
+└─────────────────────┴────────────────────────┴────────────────────────┴────────────────────────┴────────────────────────┴────────────────────────┴────────────────────────┘
+```
+
+## positionCaseInsensitive {#positionCaseInsensitive}
+
+導入バージョン: v1.1
+
+[`position`](#position) と同様ですが、大文字と小文字を区別しません。
+
+**構文**
+
+```sql
+positionCaseInsensitive(haystack, needle[, start_pos])
+```
+
+**別名**: `instr`
+
+**引数**
+
+* `haystack` — 検索対象の文字列。[`String`](/sql-reference/data-types/string) または [`Enum`](/sql-reference/data-types/enum)
+* `needle` — 検索する部分文字列。[`String`](/sql-reference/data-types/string)
+* `start_pos` — 省略可。検索を開始する `haystack` 内の位置（1始まり）。[`UInt*`](/sql-reference/data-types/int-uint)
+
+**戻り値**
+
+部分文字列が見つかった場合は、先頭から 1 始まりでバイト単位の開始位置を返し、見つからなかった場合は `0` を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**大文字小文字を区別しない検索**
+
+```sql title=Query
+SELECT positionCaseInsensitive('Hello, world!', 'hello')
+```
+
+```response title=Response
+┌─positionCaseInsensitive('Hello, world!', 'hello')─┐
+│                                                 1 │
+└───────────────────────────────────────────────────┘
+```
+
+## positionCaseInsensitiveUTF8 {#positionCaseInsensitiveUTF8}
+
+導入バージョン: v1.1
+
+[`positionUTF8`](#positionUTF8) と同様ですが、大文字小文字を区別せずに検索します。
+
+**構文**
+
+```sql
+positionCaseInsensitiveUTF8(haystack, needle[, start_pos])
+```
+
+**引数**
+
+* `haystack` — 検索を実行する対象の文字列。[`String`](/sql-reference/data-types/string) または [`Enum`](/sql-reference/data-types/enum)
+* `needle` — 検索対象の部分文字列。[`String`](/sql-reference/data-types/string)
+* `start_pos` — 省略可。検索を開始する `haystack` 内の位置（1 始まり）。[`UInt*`](/sql-reference/data-types/int-uint)
+
+**戻り値**
+
+部分文字列が見つかった場合は、その開始位置をバイト単位で 1 始まりとして返し、見つからなかった場合は `0` を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**大文字小文字を区別しない UTF-8 検索**
+
+```sql title=Query
+SELECT positionCaseInsensitiveUTF8('Привет мир', 'МИР')
+```
+
+```response title=Response
+┌─positionCaseInsensitiveUTF8('Привет мир', 'МИР')─┐
+│                                                8 │
+└──────────────────────────────────────────────────┘
+```
+
+## positionUTF8 {#positionUTF8}
+
+導入バージョン: v1.1
+
+[`position`](#position) と同様ですが、`haystack` と `needle` が UTF-8 でエンコードされた文字列であると仮定します。
+
+**構文**
+
+```sql
+positionUTF8(haystack, needle[, start_pos])
+```
+
+**引数**
+
+* `haystack` — 検索を行う文字列。[`String`](/sql-reference/data-types/string) または [`Enum`](/sql-reference/data-types/enum)
+* `needle` — 検索対象の部分文字列。[`String`](/sql-reference/data-types/string)
+* `start_pos` — オプション。検索を開始する `haystack` 内の位置（1 始まり）。[`UInt*`](/sql-reference/data-types/int-uint)
+
+**戻り値**
+
+部分文字列が見つかった場合は、その開始位置（バイト単位、1 始まり）を返し、見つからなかった場合は `0` を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**UTF-8 文字数のカウント**
+
+```sql title=Query
+SELECT positionUTF8('Motörhead', 'r')
+```
+
+```response title=Response
+┌─position('Motörhead', 'r')─┐
+│                          5 │
+└────────────────────────────┘
+```
+
+{/*AUTOGENERATED_END*/ }

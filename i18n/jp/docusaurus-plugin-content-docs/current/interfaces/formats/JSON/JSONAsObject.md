@@ -1,20 +1,19 @@
 ---
-'alias': []
-'description': 'JSONAsObject フォーマットのドキュメント'
-'input_format': true
-'keywords':
-- 'JSONAsObject'
-'output_format': false
-'slug': '/interfaces/formats/JSONAsObject'
-'title': 'JSONAsObject'
-'doc_type': 'reference'
+alias: []
+description: 'JSONAsObject 形式に関するドキュメント'
+input_format: true
+keywords: ['JSONAsObject']
+output_format: false
+slug: /interfaces/formats/JSONAsObject
+title: 'JSONAsObject'
+doc_type: 'reference'
 ---
 
 ## 説明 {#description}
 
-このフォーマットでは、単一の JSON オブジェクトが単一の [JSON](/sql-reference/data-types/newjson.md) 値として解釈されます。入力に複数の JSON オブジェクト（コンマで区切られた場合）がある場合、それらは別々の行として解釈されます。入力データが角括弧で囲まれている場合、それは JSON の配列として解釈されます。
+この形式では、1 つの JSON オブジェクトが 1 つの [JSON](/sql-reference/data-types/newjson.md) 値として解釈されます。入力に複数の JSON オブジェクト（カンマ区切り）が含まれる場合、それぞれが個別の行として解釈されます。入力データが角括弧で囲まれている場合は、JSON の配列として解釈されます。
 
-このフォーマットは、単一の [JSON](/sql-reference/data-types/newjson.md) 型のフィールドを持つテーブルのみで解析できます。残りのカラムは [`DEFAULT`](/sql-reference/statements/create/table.md/#default) または [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view) に設定する必要があります。
+この形式をパースできるのは、[JSON](/sql-reference/data-types/newjson.md) 型のフィールドが 1 つだけのテーブルに対してのみです。残りのカラムは [`DEFAULT`](/sql-reference/statements/create/table.md/#default) または [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view) に設定されている必要があります。
 
 ## 使用例 {#example-usage}
 
@@ -45,7 +44,7 @@ SELECT * FROM json_square_brackets FORMAT JSONEachRow;
 {"field":{"id":"2","name":"name2"}}
 ```
 
-### デフォルト値を持つカラム {#columns-with-default-values}
+### デフォルト値を持つ列 {#columns-with-default-values}
 
 ```sql title="Query"
 CREATE TABLE json_as_object (json JSON, time DateTime MATERIALIZED now()) ENGINE = Memory;

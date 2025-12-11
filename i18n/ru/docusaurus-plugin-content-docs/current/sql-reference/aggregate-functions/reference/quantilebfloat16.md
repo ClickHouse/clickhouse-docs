@@ -1,15 +1,18 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/quantilebfloat16'
+description: 'Вычисляет приближённый квантиль выборки, состоящей из чисел в формате bfloat16.'
 sidebar_position: 171
-description: 'Вычисляет приблизительный квантиль выборки, состоящей из bfloat16'
-title: quantileBFloat16
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/quantilebfloat16
+title: 'quantileBFloat16'
+doc_type: 'reference'
 ---
-# quantileBFloat16Weighted
 
-Как и `quantileBFloat16`, но учитывает вес каждого элемента последовательности.
+# quantileBFloat16Weighted {#quantilebfloat16weighted}
 
-Вычисляет приближенный [квантиль](https://en.wikipedia.org/wiki/Quantile) выборки, состоящей из [bfloat16](https://en.wikipedia.org/wiki/Bfloat16_floating-point_format) чисел. `bfloat16` — это тип данных с плавающей запятой с 1 битом знака, 8 битами экспоненты и 7 битами дробной части. Функция преобразует входные значения в 32-битные числа с плавающей запятой и берет 16 наиболее значащих бит. Затем она вычисляет значение квантиля `bfloat16` и преобразует результат в 64-битное число с плавающей запятой, добавляя нулевые биты. Функция является быстрым оценщиком квантили с относительной ошибкой не более 0.390625%.
+Как `quantileBFloat16`, но с учётом веса каждого элемента последовательности.
+
+Вычисляет приближённый [квантиль](https://en.wikipedia.org/wiki/Quantile) выборки, состоящей из чисел в формате [bfloat16](https://en.wikipedia.org/wiki/Bfloat16_floating-point_format). `bfloat16` — это тип чисел с плавающей запятой с 1 битом знака, 8 битами порядка и 7 битами мантиссы.
+Функция преобразует входные значения в 32-битные числа с плавающей запятой и берёт 16 наиболее значимых битов. Затем она вычисляет значение квантиля в формате `bfloat16` и преобразует результат в 64-битное число с плавающей запятой путём добавления нулевых битов.
+Функция является быстрым оценивателем квантиля с относительной погрешностью не более 0,390625%.
 
 **Синтаксис**
 
@@ -21,21 +24,21 @@ quantileBFloat16[(level)](expr)
 
 **Аргументы**
 
-- `expr` — Колонка с числовыми данными. [Целое](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md).
+* `expr` — столбец с числовыми данными. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md).
 
 **Параметры**
 
-- `level` — Уровень квантиля. Необязательный. Возможные значения находятся в диапазоне от 0 до 1. Значение по умолчанию: 0.5. [Float](../../../sql-reference/data-types/float.md).
+* `level` — уровень квантиля. Необязательный параметр. Возможные значения находятся в диапазоне от 0 до 1. Значение по умолчанию: 0.5. [Float](../../../sql-reference/data-types/float.md).
 
 **Возвращаемое значение**
 
-- Приблизительный квантиль указанного уровня.
+* Приближённый квантиль указанного уровня.
 
 Тип: [Float64](/sql-reference/data-types/float).
 
 **Пример**
 
-Входная таблица содержит целочисленные и плавающие колонки:
+Входная таблица содержит целочисленный столбец и столбец с плавающей запятой:
 
 ```text
 ┌─a─┬─────b─┐
@@ -46,7 +49,7 @@ quantileBFloat16[(level)](expr)
 └───┴───────┘
 ```
 
-Запрос на вычисление 0.75-квантили (третий квартиль):
+Запрос для вычисления 0,75-квантили (третьего квартиля):
 
 ```sql
 SELECT quantileBFloat16(0.75)(a), quantileBFloat16(0.75)(b) FROM example_table;
@@ -59,9 +62,10 @@ SELECT quantileBFloat16(0.75)(a), quantileBFloat16(0.75)(b) FROM example_table;
 │                         3 │                         1 │
 └───────────────────────────┴───────────────────────────┘
 ```
-Обратите внимание, что все значения с плавающей запятой в примере обрезаются до 1.0 при преобразовании в `bfloat16`.
 
-**См. Также**
+Обратите внимание, что все числа с плавающей запятой в примере усекаются до 1.0 при преобразовании в `bfloat16`.
 
-- [median](/sql-reference/aggregate-functions/reference/median)
-- [quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles)
+**См. также**
+
+* [median](/sql-reference/aggregate-functions/reference/median)
+* [quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles)

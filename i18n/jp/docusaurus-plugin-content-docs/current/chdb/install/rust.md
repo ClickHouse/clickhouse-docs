@@ -1,67 +1,59 @@
 ---
-'title': 'RustのためのchDBのインストール'
-'sidebar_label': 'Rust'
-'slug': '/chdb/install/rust'
-'description': 'chDB Rust バインディングのインストールと使用方法'
-'keywords':
-- 'chdb'
-- 'embedded'
-- 'clickhouse-lite'
-- 'rust'
-- 'install'
-- 'ffi'
-- 'bindings'
-'doc_type': 'guide'
+title: 'Rust 向け chDB のインストール'
+sidebar_label: 'Rust'
+slug: /chdb/install/rust
+description: 'chDB の Rust バインディングのインストールと使用方法'
+keywords: ['chdb', 'embedded', 'clickhouse-lite', 'rust', 'install', 'ffi', 'bindings']
+doc_type: 'guide'
 ---
 
+# Rust 向け chDB {#chdb-for-rust}
 
-# chDB for Rust {#chdb-for-rust}
+chDB-rust は chDB 向けの実験的な FFI（Foreign Function Interface）バインディングを提供し、外部への依存関係なしに Rust アプリケーション内から直接 ClickHouse クエリを実行できるようにします。
 
-chDB-rustは、chDBの実験的なFFI（Foreign Function Interface）バインディングを提供し、ClickHouseクエリをRustアプリケーションで外部依存関係なしに直接実行できるようにします。
+## インストール {#installation}
 
-## Installation {#installation}
+### libchdb のインストール {#install-libchdb}
 
-### Install libchdb {#install-libchdb}
-
-chDBライブラリをインストールします：
+chDB ライブラリをインストールします。
 
 ```bash
 curl -sL https://lib.chdb.io | bash
 ```
 
-## Usage {#usage}
+## 使用方法 {#usage}
 
-chDB Rustは、ステートレスおよびステートフルなクエリ実行モードの両方を提供します。
+chDB Rust は、ステートレスおよびステートフルの 2 種類のクエリ実行モードを提供します。
 
-### Stateless usage {#stateless-usage}
+### ステートレスモードでの利用 {#stateless-usage}
 
-永続的な状態なしでのシンプルなクエリの場合：
+永続的な状態を保持する必要のないシンプルなクエリ向け:
 
 ```rust
 use chdb_rust::{execute, arg::Arg, format::OutputFormat};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // Execute a simple query
+    // シンプルなクエリを実行
     let result = execute(
         "SELECT version()",
         Some(&[Arg::OutputFormat(OutputFormat::JSONEachRow)])
     )?;
-    println!("ClickHouse version: {}", result.data_utf8()?);
-
-    // Query with CSV file
+    println!("ClickHouseのバージョン: {}", result.data_utf8()?);
+    
+    // CSVファイルに対するクエリ
     let result = execute(
         "SELECT * FROM file('data.csv', 'CSV')",
         Some(&[Arg::OutputFormat(OutputFormat::JSONEachRow)])
     )?;
-    println!("CSV data: {}", result.data_utf8()?);
-
+    println!("CSVデータ: {}", result.data_utf8()?);
+    
     Ok(())
 }
 ```
 
-### Stateful usage (Sessions) {#stateful-usage-sessions}
+### ステートフルな利用（セッション） {#stateful-usage-sessions}
 
-データベースやテーブルのような永続的な状態を必要とするクエリの場合：
+データベースやテーブルなど、永続的な状態を必要とするクエリの場合:
 
 ```rust
 use chdb_rust::{
@@ -73,17 +65,17 @@ use chdb_rust::{
 use tempdir::TempDir;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // Create a temporary directory for database storage
+    // データベースストレージ用の一時ディレクトリを作成
     let tmp = TempDir::new("chdb-rust")?;
-
-    // Build session with configuration
+    
+    // 設定を使用してセッションを構築
     let session = SessionBuilder::new()
         .with_data_path(tmp.path())
         .with_arg(Arg::LogLevel(LogLevel::Debug))
-        .with_auto_cleanup(true)  // Cleanup on drop
+        .with_auto_cleanup(true)  // ドロップ時に自動クリーンアップ
         .build()?;
 
-    // Create database and table
+    // データベースとテーブルを作成
     session.execute(
         "CREATE DATABASE demo; USE demo", 
         Some(&[Arg::MultiQuery])
@@ -94,76 +86,77 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         None,
     )?;
 
-    // Insert data
+    // データを挿入
     session.execute(
         "INSERT INTO logs (id, msg) VALUES (1, 'Hello'), (2, 'World')",
         None,
     )?;
 
-    // Query data
+    // データをクエリ実行
     let result = session.execute(
         "SELECT * FROM logs ORDER BY id",
         Some(&[Arg::OutputFormat(OutputFormat::JSONEachRow)]),
     )?;
 
-    println!("Query results:\n{}", result.data_utf8()?);
-
-    // Get query statistics
-    println!("Rows read: {}", result.rows_read());
-    println!("Bytes read: {}", result.bytes_read());
-    println!("Query time: {:?}", result.elapsed());
+    println!("クエリ結果:\n{}", result.data_utf8()?);
+    
+    // クエリ統計情報を取得
+    println!("読み取り行数: {}", result.rows_read());
+    println!("読み取りバイト数: {}", result.bytes_read());
+    println!("クエリ実行時間: {:?}", result.elapsed());
 
     Ok(())
 }
 ```
 
-## Building and testing {#building-testing}
+## ビルドとテスト {#building-testing}
 
-### Build the project {#build-the-project}
+### プロジェクトをビルドする {#build-the-project}
 
 ```bash
 cargo build
 ```
 
-### Run tests {#run-tests}
+### テストの実行 {#run-tests}
 
 ```bash
 cargo test
 ```
 
-### Development dependencies {#development-dependencies}
+### 開発用依存関係 {#development-dependencies}
 
-プロジェクトには以下の開発依存関係が含まれています：
-- `bindgen` (v0.70.1) - CヘッダーからFFIバインディングを生成
-- `tempdir` (v0.3.7) - テストにおける一時ディレクトリの処理
-- `thiserror` (v1) - エラーハンドリングユーティリティ
+このプロジェクトには、以下の開発用依存関係が含まれています。
 
-## Error handling {#error-handling}
+* `bindgen` (v0.70.1) - C ヘッダーから FFI バインディングを生成
+* `tempdir` (v0.3.7) - テスト用の一時ディレクトリ処理
+* `thiserror` (v1) - エラー処理ユーティリティ
 
-chDB Rustは、`Error`列挙型を通じて包括的なエラーハンドリングを提供します：
+## エラー処理 {#error-handling}
+
+chDB Rust は、`Error` 列挙型を通じて包括的なエラー処理機能を提供します。
 
 ```rust
 use chdb_rust::{execute, error::Error};
 
 match execute("SELECT 1", None) {
     Ok(result) => {
-        println!("Success: {}", result.data_utf8()?);
+        println!("成功: {}", result.data_utf8()?);
     },
     Err(Error::QueryError(msg)) => {
-        eprintln!("Query failed: {}", msg);
+        eprintln!("クエリ失敗: {}", msg);
     },
     Err(Error::NoResult) => {
-        eprintln!("No result returned");
+        eprintln!("結果が返されませんでした");
     },
     Err(Error::NonUtf8Sequence(e)) => {
-        eprintln!("Invalid UTF-8: {}", e);
+        eprintln!("無効なUTF-8: {}", e);
     },
     Err(e) => {
-        eprintln!("Other error: {}", e);
+        eprintln!("その他のエラー: {}", e);
     }
 }
 ```
 
-## GitHub repository {#github-repository}
+## GitHub リポジトリ {#github-repository}
 
-プロジェクトのGitHubリポジトリは、[chdb-io/chdb-rust](https://github.com/chdb-io/chdb-rust)で見つけることができます。
+このプロジェクトの GitHub リポジトリは [chdb-io/chdb-rust](https://github.com/chdb-io/chdb-rust) で公開されています。

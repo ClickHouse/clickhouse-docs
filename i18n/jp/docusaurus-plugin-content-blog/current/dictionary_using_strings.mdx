@@ -1,0 +1,92 @@
+---
+title: 文字列キーと文字列値を持つ ClickHouse Dictionary の作成方法
+description: MergeTree テーブルをソースとして文字列キーと文字列値を用いる ClickHouse Dictionary を作成する方法を、設定手順と使用例とともに解説します。
+date: 2023-07-10
+tags: ['データモデリング']
+keywords: ['Dictionary', '文字列キー', '文字列値']
+---
+
+{frontMatter.description}
+
+{/* truncate */}
+
+## 質問 \{#question\}
+
+MergeTree テーブルをソースとし、文字列キーおよび文字列値を使用する ClickHouse 辞書の作成方法
+
+## 回答 \{#answer\}
+
+* 辞書の元となるテーブルを作成します
+
+```
+CREATE TABLE db1.table1_dict_source
+(
+  id UInt32,
+  email String,
+  name String
+)
+ENGINE = MergeTree()
+ORDER BY id;
+```
+
+* 行を挿入
+
+```
+INSERT INTO db1.table1_dict_source
+(id, email, name)
+VALUES
+(1, 'me@domain.com', 'me'),
+(2, 'you@domain.com', 'you');
+```
+
+* キーと値の両方が String 型のディクショナリを作成する
+
+```
+CREATE DICTIONARY db1.table1_dict
+(
+    email String,
+    name String
+)
+PRIMARY KEY email
+SOURCE(
+CLICKHOUSE(
+TABLE 'table1_dict_source'
+USER 'default'
+PASSWORD 'ClickHouse123!'))
+LAYOUT(COMPLEX_KEY_HASHED())
+LIFETIME(MIN 0 MAX 1000);
+```
+
+* 辞書をテストする
+
+```
+clickhouse-cloud :) SELECT * from db1.table1_dict;
+
+SELECT *
+FROM db1.table1_dict
+
+Query id: 098396ce-11dd-4c71-a0e1-40723dd67ddc
+
+┌─email──────────┬─name─┐
+│ me@domain.com  │ me   │
+│ you@domain.com │ you  │
+└────────────────┴──────┘
+
+2 rows in set. Elapsed: 0.001 sec. 
+```
+
+また、次のように `dictGet` 関数を使って値を取得できます：
+
+```
+SELECT dictGet('db1.table1_dict', 'name', 'me@domain.com');
+```
+
+Response:
+
+```
+┌─dictGet('db1.table1_dict', 'name', 'me@domain.com')─┐
+│ me                                                  │
+└─────────────────────────────────────────────────────┘
+```
+
+詳細については、[https://clickhouse.com/docs/sql-reference/functions/ext-dict-functions](https://clickhouse.com/docs/sql-reference/functions/ext-dict-functions) を参照してください。

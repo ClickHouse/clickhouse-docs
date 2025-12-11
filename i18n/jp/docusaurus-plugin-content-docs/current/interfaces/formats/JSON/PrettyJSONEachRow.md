@@ -1,31 +1,26 @@
 ---
-'alias':
-- 'PrettyJSONLines'
-- 'PrettyNDJSON'
-'description': 'PrettyJSONLinesフォーマットのDocumentation'
-'input_format': false
-'keywords':
-- 'PrettyJSONEachRow'
-- 'PrettyJSONLines'
-- 'PrettyNDJSON'
-'output_format': true
-'slug': '/interfaces/formats/PrettyJSONEachRow'
-'title': 'PrettyJSONEachRow'
-'doc_type': 'guide'
+alias: ['PrettyJSONLines', 'PrettyNDJSON']
+description: 'PrettyJSONLines 形式に関するドキュメント'
+input_format: false
+keywords: ['PrettyJSONEachRow', 'PrettyJSONLines', 'PrettyNDJSON']
+output_format: true
+slug: /interfaces/formats/PrettyJSONEachRow
+title: 'PrettyJSONEachRow'
+doc_type: 'guide'
 ---
 
-| Input | Output | Alias                             |
-|-------|--------|-----------------------------------|
-| ✗     | ✔      | `PrettyJSONLines`, `PrettyNDJSON` |
+| 入力 | 出力 | 別名                             |
+|------|------|-----------------------------------|
+| ✗    | ✔    | `PrettyJSONLines`, `PrettyNDJSON` |
 
 ## 説明 {#description}
 
-[JSONEachRow](./JSONEachRow.md) とは異なり、JSONが改行区切りと4スペースのインデントで整形されます。
+[JSONEachRow](./JSONEachRow.md) と異なる点は、JSON が改行区切りおよび 4 つのスペースによるインデントを付けて整形されていることだけです。
 
 ## 使用例 {#example-usage}
 ### データの挿入 {#inserting-data}
 
-`football.json` という名前の以下のデータを含むJSONファイルを使用します:
+次のデータを含む JSON ファイル `football.json` を用意します。
 
 ```json
 {
@@ -163,18 +158,18 @@
     "away_team": "Swindon Town",
     "home_team_goals": 0,
     "away_team_goals": 3
-} 
+}
 ```
 
-データを挿入します:
+データを挿入する:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT PrettyJSONEachRow;
 ```
 
-### データの読み込み {#reading-data}
+### データの読み取り {#reading-data}
 
-`PrettyJSONEachRow` 形式を使用してデータを読み込みます:
+`PrettyJSONEachRow` フォーマットを使用してデータを読み込みます：
 
 ```sql
 SELECT *
@@ -182,7 +177,7 @@ FROM football
 FORMAT PrettyJSONEachRow
 ```
 
-出力はJSON形式になります:
+出力は JSON 形式です。
 
 ```json
 {
@@ -320,7 +315,9 @@ FORMAT PrettyJSONEachRow
     "away_team": "Swindon Town",
     "home_team_goals": 0,
     "away_team_goals": 3
-}  
+}
 ```
 
-## フォーマット設定 {#format-settings}
+
+
+## 形式設定 {#format-settings}

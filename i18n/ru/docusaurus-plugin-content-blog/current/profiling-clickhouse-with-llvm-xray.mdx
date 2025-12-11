@@ -1,0 +1,146 @@
+---
+title: "Профилирование ClickHouse с помощью LLVM XRay"
+date: 2024-11-13
+description: "Научитесь профилировать ClickHouse с помощью инструментального профилировщика LLVM XRay, визуализировать трейсы и анализировать производительность."
+tags: ['Производительность и оптимизации', 'Инструменты и утилиты']
+---
+
+import Image from "@theme/IdealImage";
+import time_order from '@site/static/images/knowledgebase/profiling-clickhouse-with-llvm-xray/time-order.png'
+import left_heavy from '@site/static/images/knowledgebase/profiling-clickhouse-with-llvm-xray/left-heavy.png'
+import sandwich from '@site/static/images/knowledgebase/profiling-clickhouse-with-llvm-xray/sandwich.png'
+import clickhouse_time_order from '@site/static/images/knowledgebase/profiling-clickhouse-with-llvm-xray/clickhouse-time-order.png'
+
+{frontMatter.description}
+
+{/* TRUNCATE */}
+
+## Типы профайлеров \{#types-of-profilers\}
+
+LLVM уже включает инструмент, который добавляет в код инструментацию и позволяет выполнять [профилирование с инструментированием](https://en.wikipedia.org/wiki/Profiling_\(computer_programming\)#Instrumentation). В отличие от [семплирующего или статистического профилирования](https://en.wikipedia.org/wiki/Profiling_\(computer_programming\)#Statistical_profilers),
+оно обладает высокой точностью и не теряет ни одного вызова, но требует инструментирования кода и более ресурсоёмко.
+
+Проще говоря, профайлер с инструментированием добавляет новый код для отслеживания вызовов всех функций.
+Статистические профайлеры позволяют запускать код без каких-либо изменений, периодически делая снимки
+состояния приложения. Поэтому учитываются только те функции, которые выполняются в момент снятия снимка.
+[perf](https://en.wikipedia.org/wiki/Perf_%28Linux%29) — очень известный статистический профайлер.
+
+## Как проводить профилирование с помощью XRay \{#how-to-profile-with-xray\}
+
+### Инструментируйте код \{#instrument-the-code\}
+
+Рассмотрим следующий исходный код:
+
+```cpp
+#include <chrono>
+#include <cstdio>
+#include <thread>
+
+void one()
+{
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+}
+
+void two()
+{
+    std::this_thread::sleep_for(std::chrono::milliseconds(5));
+}
+
+int main()
+{
+    printf("Start\n");
+
+    for (int i = 0; i < 10; ++i)
+    {
+        one();
+        two();
+    }
+
+    printf("Finish\n");
+}
+```
+
+Чтобы включить инструментирование с XRay, необходимо добавить следующие флаги:
+
+```bash
+clang++ -o test test.cpp -fxray-instrument -fxray-instruction-threshold=1
+```
+
+* `-fxray-instrument` нужен для инструментации кода.
+* `-fxray-instruction-threshold=1` используется, чтобы инструментировать все функции, даже если они
+  очень маленькие, как в нашем примере. По умолчанию инструментируются функции как минимум с [200
+  инструкциями](https://llvm.org/docs/XRay.html#instrumenting-your-c-c-objective-c-application).
+
+Мы можем убедиться, что код был корректно инструментирован, проверив, что в бинарном файле появился новый раздел:
+
+```bash
+objdump -h -j xray_instr_map test
+
+test:     file format elf64-x86-64
+
+Sections:
+Idx Name          Size      VMA               LMA               File off  Algn
+ 17 xray_instr_map 000005c0  000000000002f91c  000000000002f91c  0002f91c  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+```
+
+### Запустите процесс с корректными значениями переменных окружения для сбора трассировки \{#run-the-process-with-proper-env-var-values-to-collect-the-trace\}
+
+По умолчанию профилировщик ничего не собирает, если его явно не задействовать. Другими словами, если мы не проводим профилирование, накладные расходы пренебрежимо малы. Мы можем задать разные значения для `XRAY_OPTIONS`, чтобы настроить, когда профилировщик начинает сбор данных и как он это делает.
+
+```bash
+XRAY_OPTIONS="patch_premain=true xray_mode=xray-basic verbosity=1" ./test
+==74394==XRay: Log file in 'xray-log.test.14imlN'
+Начало
+Завершение
+==74394==Cleaned up log for TID: 74394
+```
+
+### Преобразование трассировок \{#convert-the-trace\}
+
+Трассировки XRAy можно преобразовывать в несколько форматов. Формат `trace_event` очень удобен, так как его легко парсить, и уже существует множество инструментов, которые его поддерживают, поэтому мы будем использовать именно его:
+
+```bash
+llvm-xray convert --symbolize --instr_map=./test --output-format=trace_event xray-log.test.14imlN | gzip > test-trace.txt.gz
+```
+
+### Визуализация трассировки \{#visualize-the-trace\}
+
+Мы можем использовать веб-интерфейсы, такие как [speedscope.app](https://www.speedscope.app/) или
+[Perfetto](https://ui.perfetto.dev).
+
+Хотя Perfetto упрощает визуализацию нескольких потоков и выполнение запросов к данным, speedscope лучше
+подходит для построения flame-графа и слоистого (sandwich) представления ваших данных.
+
+#### Временной порядок \{#time-order\}
+
+<Image img={time_order} size="md" alt="временной порядок" />
+
+#### Смещение влево \{#left-heavy\}
+
+<Image img={left_heavy} size="md" alt="смещение влево" />
+
+#### Сэндвич \{#sandwitch\}
+
+<Image img={sandwich} size="md" alt="сэндвич" />
+
+## Профилирование ClickHouse \{#profiling-clickhouse\}
+
+1. Передайте `-DENABLE_XRAY=1` в `cmake` при сборке ClickHouse. Это [устанавливает необходимые
+   флаги компилятора](https://github.com/ClickHouse/ClickHouse/blob/9caac43b2aa5e7c5474a87b7596dea95f5a2569a/cmake/xray_instrumentation.cmake).
+2. Установите переменную окружения `XRAY_OPTIONS="patch_premain=true xray_mode=xray-basic verbosity=1"` при запуске
+   ClickHouse для генерации трейса.
+3. Преобразуйте трейс в удобный формат, например trace event: `llvm-xray convert --symbolize --instr_map=./build/programs/clickhouse --output-format=trace_event xray-log.clickhouse.ZqKprE |
+   gzip > clickhouse-trace.txt.gz`.
+4. Визуализируйте трейс в [speedscope.app](https://www.speedscope.app/) или
+   [Perfetto](https://ui.perfetto.dev).
+
+<Image img={clickhouse_time_order} alt="ClickHouse: порядок по времени" size="md" />
+
+Обратите внимание, что это визуализация только одного потока. Вы можете выбрать другие `tid` на
+верхней панели.
+
+## Ознакомьтесь с документацией \{#check-out-the-docs\}
+
+Подробнее см. документацию [XRay Instrumentation](https://llvm.org/docs/XRay.html) и [Debugging with
+XRay](https://llvm.org/docs/XRayExample.html).

@@ -8,13 +8,13 @@ import {VerticalStepper} from "@clickhouse/click-ui/bundled";
 
 <VerticalStepper headerLevel="h4">
 
-#### Select `Connect your app` {#select-connect-your-app}
+#### Select `Connect your app` \{#select-connect-your-app\}
 
 After creating your ClickHouse Cloud Service, on the `Connect your app` screen, select MySQL from the drop down.
 
 <Image size="lg" img={mysql_1} alt="ClickHouse Cloud credentials screen showing MySQL interface selection dropdown" border />
 
-#### Enable the MySQL interface {#enable-mysql-interface}
+#### Enable the MySQL interface \{#enable-mysql-interface\}
 
 Toggle the switch to enable the MySQL interface for this specific service.
 This will expose port `3306` for this service and prompt you with a MySQL connection screen that includes your unique MySQL username.
@@ -23,20 +23,20 @@ This will expose port `3306` for this service and prompt you with a MySQL connec
 
 Alternatively, in order to enable the MySQL interface for an existing service:
 
-#### Select `Connect` {#select-connect}
+#### Select `Connect` \{#select-connect\}
 
 Ensure your service is in `Running` state then click on the service you want to enable the MySQL interface for.
 Select "Connect" from the left menu:
 
 <Image size="lg" img={mysql_3} alt="ClickHouse Cloud service connection screen with Connect option highlighted" border />
 
-#### Choose `MySQL` {#choose-mysql}
+#### Choose `MySQL` \{#choose-mysql\}
 
 Select `MySQL` from the `Connect With` drop down.
 
 <Image size="md" img={mysql_4} alt="ClickHouse Cloud connection screen showing MySQL option selection" border />
 
-#### Enable the MySQL interface {#enable-mysql-interface}
+#### Enable the MySQL interface \{#enable-mysql-interface\}
 
 Toggle the switch to enable the MySQL interface for this specific service.
 This will expose port `3306` for this service and prompt you with your MySQL connection screen that include your unique MySQL username.
@@ -45,7 +45,7 @@ This will expose port `3306` for this service and prompt you with your MySQL con
 
 <Image size="md" img={mysql_5} alt="ClickHouse Cloud connection screen with MySQL interface enabled showing connection details" border />
 
-## Creating a readonly MySQL user in ClickHouse Cloud {#creating-multiple-mysql-users-in-clickhouse-cloud}
+## Creating a readonly MySQL user in ClickHouse Cloud \{#creating-multiple-mysql-users-in-clickhouse-cloud\}
 
 ClickHouse Cloud automatically creates a `mysql4<subdomain>` user that shares the same password as the default user.
 The `<subdomain>` portion corresponds to the first part of your ClickHouse Cloud hostname.
@@ -64,7 +64,7 @@ For a ClickHouse Cloud hostname like `foobar.us-east1.aws.clickhouse.cloud`, the
 
 <VerticalStepper headerLevel="h4">
 
-#### Create a readonly settings profile {#create-a-custom-settings-user}
+#### Create a readonly settings profile \{#create-a-custom-settings-user\}
 
 Create a [settings profile](/sql-reference/statements/create/settings-profile) to apply to your readonly user,
 setting the `readonly` setting to `1`:
@@ -73,7 +73,7 @@ setting the `readonly` setting to `1`:
 CREATE SETTINGS PROFILE readonly_profile SETTINGS readonly = 1
 ```
 
-#### Create a new readonly MySQL user {#create-a-readonly-mysql-user}
+#### Create a new readonly MySQL user \{#create-a-readonly-mysql-user\}
 
 [Create a user](/sql-reference/statements/create/user) with a name following this format:
 
@@ -89,7 +89,7 @@ IDENTIFIED WITH double_sha1_password BY 'YourPassword42$'
 SETTINGS PROFILE 'readonly_profile';
 ```
 
-#### Grant the new user permissions to access the desired tables {#grant-the-new-user-the-necessary-permissions}
+#### Grant the new user permissions to access the desired tables \{#grant-the-new-user-the-necessary-permissions\}
 
 [Grant](/sql-reference/statements/grant) the new user the necessary permissions to interact with the desired tables or databases.
 For example, if you want to grant access to `system.query_log` only:
@@ -106,7 +106,7 @@ The newly created user can be used to connect to your ClickHouse Cloud service w
 
 </VerticalStepper>
 
-### Troubleshooting multiple MySQL users in ClickHouse Cloud {#troubleshooting-multiple-mysql-users-in-clickhouse-cloud}
+### Troubleshooting multiple MySQL users in ClickHouse Cloud \{#troubleshooting-multiple-mysql-users-in-clickhouse-cloud\}
 
 If you created a new MySQL user, and you see the following error while connecting via MySQL CLI client:
 

@@ -1,19 +1,20 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/covarpopstable'
+description: 'Вычисляет значение ковариации генеральной совокупности'
 sidebar_position: 123
-description: 'Вычисляет значение общей ковариации населения'
-title: covarPopStable
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/covarpopstable
+title: 'covarPopStable'
+doc_type: 'reference'
 ---
-# covarPopStable
 
-Вычисляет значение популяционной ковариации:
+# covarPopStable {#covarpopstable}
+
+Вычисляет значение ковариации для генеральной совокупности:
 
 $$
 \frac{\Sigma{(x - \bar{x})(y - \bar{y})}}{n}
 $$
 
-Это похоже на функцию [covarPop](../reference/covarpop.md), но использует численно стабильный алгоритм. В результате `covarPopStable` работает медленнее, чем `covarPop`, но дает более точный результат.
+Функция аналогична [covarPop](../reference/covarpop.md), но использует численно устойчивый алгоритм. В результате `covarPopStable` работает медленнее `covarPop`, но обеспечивает более точный результат.
 
 **Синтаксис**
 
@@ -23,12 +24,12 @@ covarPop(x, y)
 
 **Аргументы**
 
-- `x` — первая переменная. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md).
-- `y` — вторая переменная. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md).
+- `x` — первая переменная. [(U)Int\*](../../data-types/int-uint.md), [Float\*](../../data-types/float.md), [Decimal](../../data-types/decimal.md).
+- `y` — вторая переменная. [(U)Int\*](../../data-types/int-uint.md), [Float\*](../../data-types/float.md), [Decimal](../../data-types/decimal.md).
 
 **Возвращаемое значение**
 
-- Популяционная ковариация между `x` и `y`. [Float64](../../data-types/float.md).
+- Ковариация генеральной совокупности между `x` и `y`. [Float64](../../data-types/float.md).
 
 **Пример**
 

@@ -1,26 +1,27 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/median'
+description: 'Функции `median*` являются псевдонимами соответствующих функций `quantile*`. Они вычисляют медиану по выборке числовых данных.'
 sidebar_position: 167
-description: 'Функции `median*` являются псевдонимами для соответствующих функций'
-title: median
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/median
+title: 'median'
+doc_type: 'reference'
 ---
-# медиана
 
-Функции `median*` являются псевдонимами для соответствующих функций `quantile*`. Они вычисляют медиану выборки числовых данных.
+# median {#median}
+
+Функции `median*` являются псевдонимами соответствующих функций `quantile*`. Они вычисляют медиану по числовой выборке данных.
 
 Функции:
 
-- `median` — Псевдоним для [quantile](/sql-reference/aggregate-functions/reference/quantile).
-- `medianDeterministic` — Псевдоним для [quantileDeterministic](/sql-reference/aggregate-functions/reference/quantiledeterministic).
-- `medianExact` — Псевдоним для [quantileExact](/sql-reference/aggregate-functions/reference/quantileexact#quantileexact).
-- `medianExactWeighted` — Псевдоним для [quantileExactWeighted](/sql-reference/aggregate-functions/reference/quantileexactweighted).
-- `medianTiming` — Псевдоним для [quantileTiming](/sql-reference/aggregate-functions/reference/quantiletiming).
-- `medianTimingWeighted` — Псевдоним для [quantileTimingWeighted](/sql-reference/aggregate-functions/reference/quantiletimingweighted).
-- `medianTDigest` — Псевдоним для [quantileTDigest](/sql-reference/aggregate-functions/reference/quantiletdigest).
-- `medianTDigestWeighted` — Псевдоним для [quantileTDigestWeighted](/sql-reference/aggregate-functions/reference/quantiletdigestweighted).
-- `medianBFloat16` — Псевдоним для [quantileBFloat16](/sql-reference/aggregate-functions/reference/quantilebfloat16).
-- `medianDD` — Псевдоним для [quantileDD](/sql-reference/aggregate-functions/reference/quantileddsketch).
+* `median` — псевдоним для [quantile](/sql-reference/aggregate-functions/reference/quantile).
+* `medianDeterministic` — псевдоним для [quantileDeterministic](/sql-reference/aggregate-functions/reference/quantiledeterministic).
+* `medianExact` — псевдоним для [quantileExact](/sql-reference/aggregate-functions/reference/quantileexact#quantileexact).
+* `medianExactWeighted` — псевдоним для [quantileExactWeighted](/sql-reference/aggregate-functions/reference/quantileexactweighted).
+* `medianTiming` — псевдоним для [quantileTiming](/sql-reference/aggregate-functions/reference/quantiletiming).
+* `medianTimingWeighted` — псевдоним для [quantileTimingWeighted](/sql-reference/aggregate-functions/reference/quantiletimingweighted).
+* `medianTDigest` — псевдоним для [quantileTDigest](/sql-reference/aggregate-functions/reference/quantiletdigest).
+* `medianTDigestWeighted` — псевдоним для [quantileTDigestWeighted](/sql-reference/aggregate-functions/reference/quantiletdigestweighted).
+* `medianBFloat16` — псевдоним для [quantileBFloat16](/sql-reference/aggregate-functions/reference/quantilebfloat16).
+* `medianDD` — псевдоним для [quantileDD](/sql-reference/aggregate-functions/reference/quantileddsketch).
 
 **Пример**
 

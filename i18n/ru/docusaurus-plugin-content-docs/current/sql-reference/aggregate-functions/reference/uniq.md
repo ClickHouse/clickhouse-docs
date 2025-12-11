@@ -1,13 +1,14 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/uniq'
+description: 'Вычисляет приблизительное количество различных значений аргумента.'
 sidebar_position: 204
-description: 'Вычисляет временное количество различных значений аргумента.'
-title: uniq
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/uniq
+title: 'uniq'
+doc_type: 'reference'
 ---
-# uniq
 
-Вычисляет приблизительное количество различных значений аргумента.
+# uniq {#uniq}
+
+Вычисляет приблизительное количество уникальных значений аргумента.
 
 ```sql
 uniq(x[, ...])
@@ -15,28 +16,28 @@ uniq(x[, ...])
 
 **Аргументы**
 
-Функция принимает переменное количество параметров. Параметры могут быть `Tuple`, `Array`, `Date`, `DateTime`, `String` или числовыми типами.
+Функция принимает переменное количество аргументов. Аргументы могут иметь типы `Tuple`, `Array`, `Date`, `DateTime`, `String` или числовые типы.
 
 **Возвращаемое значение**
 
-- Число типа [UInt64](../../../sql-reference/data-types/int-uint.md).
+* Число типа [UInt64](../../../sql-reference/data-types/int-uint.md).
 
-**Детали реализации**
+**Подробности реализации**
 
 Функция:
 
-- Вычисляет хеш для всех параметров в агрегации, а затем использует его в расчетах.
+* Вычисляет хэш для всех аргументов в агрегате, затем использует его в вычислениях.
 
-- Использует адаптивный алгоритм выборки. Для состояния расчета функция использует выборку хеш-значений элементов до 65536. Этот алгоритм очень точный и очень эффективный по отношению к CPU. Когда запрос содержит несколько из этих функций, использование `uniq` почти так же быстро, как использование других аггрегатных функций.
+* Использует адаптивный алгоритм выборки. Для состояния вычисления функция использует выборку значений хэшей элементов размером до 65536. Этот алгоритм очень точен и очень эффективен с точки зрения использования CPU. Когда запрос содержит несколько таких функций, использование `uniq` почти так же быстро, как использование других агрегатных функций.
 
-- Обеспечивает результат детерминирированно (он не зависит от порядка обработки запросов).
+* Обеспечивает детерминированный результат (он не зависит от порядка обработки запроса).
 
-Мы рекомендуем использовать эту функцию почти во всех сценариях.
+Мы рекомендуем использовать эту функцию практически во всех сценариях.
 
-**Смотрите также**
+**См. также**
 
-- [uniqCombined](/sql-reference/aggregate-functions/reference/uniqcombined)
-- [uniqCombined64](/sql-reference/aggregate-functions/reference/uniqcombined64)
-- [uniqHLL12](/sql-reference/aggregate-functions/reference/uniqhll12)
-- [uniqExact](/sql-reference/aggregate-functions/reference/uniqexact)
-- [uniqTheta](/sql-reference/aggregate-functions/reference/uniqthetasketch)
+* [uniqCombined](/sql-reference/aggregate-functions/reference/uniqcombined)
+* [uniqCombined64](/sql-reference/aggregate-functions/reference/uniqcombined64)
+* [uniqHLL12](/sql-reference/aggregate-functions/reference/uniqhll12)
+* [uniqExact](/sql-reference/aggregate-functions/reference/uniqexact)
+* [uniqTheta](/sql-reference/aggregate-functions/reference/uniqthetasketch)
