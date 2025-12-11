@@ -34,7 +34,7 @@ DROP DATABASE db1;
 
 ## Non-admin users {#non-admin-users}
 
-You should have the privileges necessary, and not all be admin users. The rest of this document provides example scenarios and the roles required.
+Users should have the privileges necessary, and not all be admin users. The rest of this document provides example scenarios and the roles required.
 
 ### Preparation {#preparation}
 
@@ -116,7 +116,7 @@ With this set of examples:
 
 - roles for different privileges, such as columns and rows will be created
 - privileges will be granted to the roles
-- you will be assigned to each role
+- users will be assigned to each role
 
 Roles are used to define groups of users for certain privileges instead of managing each user separately.
 
@@ -292,7 +292,7 @@ Roles are used to define groups of users for certain privileges instead of manag
 
 ## Modifying users and roles {#modifying-users-and-roles}
 
-You can be assigned multiple roles for a combination of privileges needed. When using multiple roles, the system will combine the roles to determine privileges, the net effect will be that the role permissions will be cumulative.
+Users can be assigned multiple roles for a combination of privileges needed. When using multiple roles, the system will combine the roles to determine privileges, the net effect will be that the role permissions will be cumulative.
 
 For example, if one `role1` allows for only select on `column1` and `role2` allows for select on `column1` and `column2` then the user will have access to both columns.
 
@@ -468,4 +468,4 @@ DROP USER row_user;
 
 ## Summary {#summary}
 
-This article demonstrated the basics of creating SQL users and roles and provided steps to set and modify privileges for you and roles. For more detailed information on each please refer to our user guides and reference documentation.
+This article demonstrated the basics of creating SQL users and roles and provided steps to set and modify privileges for users and roles. For more detailed information on each please refer to our user guides and reference documentation.
