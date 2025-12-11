@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/source/aurora
 title: 'Aurora Postgres Source Setup Guide'
 doc_type: 'guide'
 keywords: ['Amazon Aurora', 'PostgreSQL', 'ClickPipes', 'AWS database', 'logical replication setup']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 import parameter_group_in_blade from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/parameter_group_in_blade.png';

@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/maintenance
 title: 'Maintenance windows for ClickPipes for Postgres'
 doc_type: 'reference'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 # Maintenance windows for ClickPipes for Postgres

@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/aws-privatelink
 title: 'AWS PrivateLink for ClickPipes'
 doc_type: 'guide'
 keywords: ['aws privatelink', 'ClickPipes security', 'vpc endpoint', 'private connectivity', 'vpc resource']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';

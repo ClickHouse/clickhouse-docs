@@ -5,6 +5,9 @@ sidebar_label: 'Pause table'
 slug: /integrations/clickpipes/mysql/pause_and_resume
 doc_type: 'guide'
 keywords: ['clickpipes', 'mysql', 'cdc', 'data ingestion', 'real-time sync']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import Image from '@theme/IdealImage';

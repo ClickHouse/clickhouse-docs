@@ -7,7 +7,7 @@ description: 'Astrato brings true Self-Service BI to Enterprises & Data Business
 title: 'Connecting Astrato to ClickHouse'
 doc_type: 'guide'
 integration:
-  - support_level: 'partner'
+  - support_level: 'community'
   - category: 'data_visualization'
 ---
 

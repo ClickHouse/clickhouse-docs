@@ -8,7 +8,7 @@ title: 'Connecting Metabase to ClickHouse'
 show_related_blogs: true
 doc_type: 'guide'
 integration:
-  - support_level: 'core'
+  - support_level: 'partner'
   - category: 'data_visualization'
   - website: 'https://github.com/clickhouse/metabase-clickhouse-driver'
 ---

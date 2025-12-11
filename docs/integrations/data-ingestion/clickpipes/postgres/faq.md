@@ -6,6 +6,9 @@ sidebar_position: 2
 title: 'ClickPipes for Postgres FAQ'
 keywords: ['postgres faq', 'clickpipes', 'toast columns', 'replication slot', 'publications']
 doc_type: 'reference'
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import failover_slot from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/failover_slot.png'
