@@ -105,7 +105,7 @@ doc_type: 'changelog'
 
 #### Improvement
 * UNION should unify types with `Variant` if needed when `use_variant_as_common_type` is set. Resolves [#82772](https://github.com/ClickHouse/ClickHouse/issues/82772). [#83246](https://github.com/ClickHouse/ClickHouse/pull/83246) ([Mithun p](https://github.com/mithunputhusseri)).
-* Roles defined in SQL can now be granted to you defined in `users.xml`. [#88139](https://github.com/ClickHouse/ClickHouse/pull/88139) ([c-end](https://github.com/c-end)).
+* Roles defined in SQL can now be granted to users defined in `users.xml`. [#88139](https://github.com/ClickHouse/ClickHouse/pull/88139) ([c-end](https://github.com/c-end)).
 * Log internal queries (those executed internally by dictionaries, refreshable materialized views, etc) and add the new `is_internal` column to `system.query_log`. [#83277](https://github.com/ClickHouse/ClickHouse/pull/83277) ([Miсhael Stetsyuk](https://github.com/mstetsyuk)).
 * Enhanced `IS NOT DISTINCT FROM` (`<=>`) operator: added support for inverse `IS DISTINCT FROM`, support compatible numeric operands of different types (e.g., `Nullable(UInt32)` and `Nullable(Int64)`). Resolves [#86763](https://github.com/ClickHouse/ClickHouse/issues/86763). [#87581](https://github.com/ClickHouse/ClickHouse/pull/87581) ([yanglongwei](https://github.com/ylw510)).
 * `clickhouse-client` and `clickhouse-local` in the interactive mode will highlight identifiers in the command line that have the same name as the current one under the cursor. [#89689](https://github.com/ClickHouse/ClickHouse/pull/89689) ([Alexey Milovidov](https://github.com/alexey-milovidov)).
