@@ -195,7 +195,7 @@ to get up and running.
   roles: **Service Admin** and **Service Read Only**.
   **Member** is an organization level role that is assigned to SAML SSO users by 
   default and provides only sign-in and profile update capabilities. **Service Admin** 
-  and **Service Read Only** roles for one or more services can be assigned to you 
+  and **Service Read Only** roles for one or more services can be assigned to users 
   with **Member**, **Developer**, or **Billing Admin** roles. For more information 
   see ["Access control in ClickHouse Cloud"](https://clickhouse.com/docs/cloud/security/cloud-access-management/overview)
 - ClickHouse Cloud now offers **HIPAA** and **PCI** services in the following regions
@@ -338,7 +338,7 @@ We now support HIPAA in compliant regions, including AWS `us-east-1`, `us-west-2
 
 ### Scheduled upgrades {#scheduled-upgrades}
 
-You can schedule upgrades for their services. This feature is supported for Enterprise tier services only. For more information on Scheduled upgrades, please refer to the [documentation](/manage/updates).
+You can schedule upgrades for your services. This feature is supported for Enterprise tier services only. For more information on Scheduled upgrades, please refer to the [documentation](/manage/updates).
 
 ### Language client support for complex types {#language-client-support-for-complex-types}
 

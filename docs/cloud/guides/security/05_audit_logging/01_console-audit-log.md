@@ -14,7 +14,7 @@ import activity_log_3 from '@site/static/images/cloud/security/activity_log3.png
 
 # Console audit log {#console-audit-log}
 
-User console activities are recorded in the audit log, which is available to you with the Admin or Developer organization role to review and integrate with logging systems. Specific events included in the console audit log are shown in the 
+User console activities are recorded in the audit log, available to users with the Admin or Developer organization role to review and integrate with logging systems. Specific events included in the console audit log are shown in the 
 
 ## Access the console log via the user interface {#console-audit-log-ui}
 

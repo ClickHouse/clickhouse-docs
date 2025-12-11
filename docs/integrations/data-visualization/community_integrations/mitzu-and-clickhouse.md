@@ -107,7 +107,7 @@ You can choose any event or user property for breakdowns (see below for how to i
 
 ## 5. Run funnel queries {#5-run-funnel-queries}
 
-Select up to 9 steps for a funnel. Choose the time window within which your you can complete the funnel.
+Select up to 9 steps for a funnel. Choose the time window within which your users can complete the funnel.
 Get immediate conversion rate insights without writing a single line of SQL code.
 
 <Image size="lg" img={mitzu_07} alt="Mitzu funnel analysis view showing conversion rates between steps" border />
@@ -132,7 +132,7 @@ Pick `Weekly cohort retention` to visualize how your retention rates change over
 :::
 
 ## 7. Run journey queries {#7-run-journey-queries}
-Select up to 9 steps for a funnel. Choose the time window within which your you can finish the journey. The Mitzu journey chart gives you a visual map of every path users take through the selected events.
+Select up to 9 steps for a funnel. Choose the time window within which your users can finish the journey. The Mitzu journey chart gives you a visual map of every path users take through the selected events.
 
 <Image size="lg" img={mitzu_09} alt="Mitzu journey visualization showing user path flow between events" border />
 <br/>

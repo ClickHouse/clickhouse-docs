@@ -16,7 +16,7 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
 A [getting started](../etl-tools/vector-to-clickhouse.md) guide for Vector with ClickHouse focuses on the log use case and reading events from a file. We utilize the [Github sample dataset](https://datasets-documentation.s3.eu-west-3.amazonaws.com/kafka/github_all_columns.ndjson) with events held on a Kafka topic.
 
-Vector utilizes [sources](https://vector.dev/docs/about/concepts/#sources) for retrieving data through a push or pull model. [Sinks](https://vector.dev/docs/about/concepts/#sinks) meanwhile provide a destination for events. We, therefore, utilize the Kafka source and ClickHouse sink. Note that whilst Kafka is supported as a Sink, a ClickHouse source is not available. Vector is as a result not appropriate for you wishing to transfer data to Kafka from ClickHouse.
+Vector utilizes [sources](https://vector.dev/docs/about/concepts/#sources) for retrieving data through a push or pull model. [Sinks](https://vector.dev/docs/about/concepts/#sinks) meanwhile provide a destination for events. We, therefore, utilize the Kafka source and ClickHouse sink. Note that whilst Kafka is supported as a Sink, a ClickHouse source is not available. Vector is as a result not appropriate if you want to transfer data to Kafka from ClickHouse.
 
 Vector also supports the [transformation](https://vector.dev/docs/reference/configuration/transforms/) of data. This is beyond the scope of this guide. The user is referred to the Vector documentation should they need this on their dataset.
 

@@ -12,7 +12,7 @@ doc_type: 'guide'
 
 Starting from ClickHouse 25.7, [ClickHouse Client](https://clickhouse.com/docs/interfaces/cli) and [clickhouse-local](https://clickhouse.com/docs/operations/utilities/clickhouse-local) include [AI-powered functionality](https://clickhouse.com/docs/interfaces/cli#ai-sql-generation) that converts natural language descriptions into SQL queries. This feature allows you to describe your data requirements in plain text, which the system then translates into corresponding SQL statements.
 
-This capability is particularly useful if you may not be familiar with complex SQL syntax or need to quickly generate queries for exploratory data analysis. The feature works with standard ClickHouse tables and supports common query patterns including filtering, aggregation, and joins.
+This capability is particularly useful if you're not familiar with complex SQL syntax or need to quickly generate queries for exploratory data analysis. The feature works with standard ClickHouse tables and supports common query patterns including filtering, aggregation, and joins.
 
 It does this with help from the following in-built tools/functions:
 
