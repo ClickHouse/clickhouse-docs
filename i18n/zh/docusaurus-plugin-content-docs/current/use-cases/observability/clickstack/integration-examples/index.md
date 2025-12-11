@@ -20,6 +20,7 @@ ClickStack 提供多种方式，将可观测性数据摄取到 ClickHouse 实例
 | [EC2 Host Logs](/use-cases/observability/clickstack/integrations/host-logs/ec2) | 监控 EC2 实例日志 |
 | [AWS Lambda Logs using Rotel](/use-cases/observability/clickstack/integrations/aws-lambda) | 使用 Rotel 转发 Lambda 日志 |
 | [AWS CloudWatch](/use-cases/observability/clickstack/integrations/aws-cloudwatch-logs) | 转发 CloudWatch 日志组 |
+| [JVM Metrics](/use-cases/observability/clickstack/integrations/jvm-metrics) | 监控 JVM 性能 |
 | [Kafka Metrics](/use-cases/observability/clickstack/integrations/kafka-metrics) | 监控 Kafka 性能 |
 | [Kubernetes](/use-cases/observability/clickstack/integrations/kubernetes) | 监控 K8s 集群 |
 | [Nginx Logs](/use-cases/observability/clickstack/integrations/nginx) | 收集 Nginx 访问/错误日志 |
