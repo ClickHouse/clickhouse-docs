@@ -53,31 +53,23 @@ All features up to dbt-core 1.10 are supported, including `--sample` flag and al
 
 This adapter is still not available for use inside [dbt Cloud](https://docs.getdbt.com/docs/dbt-cloud/cloud-overview), but we expect to make it available soon. Please reach out to support to get more information on this.
 
-## Concepts {#concepts}
+## dbt concepts and supported materializations {#concepts-and-supported-materializations}
 
 dbt introduces the concept of a model. This is defined as a SQL statement, potentially joining many tables. A model can be "materialized" in a number of ways. A materialization represents a build strategy for the model's select query. The code behind a materialization is boilerplate SQL that wraps your SELECT query in a statement in order to create a new or update an existing relation.
 
-dbt provides 4 types of materialization:
+dbt provides 5 types of materialization. All of them are supported by `dbt-clickhouse`:
 
-* **view** (default): The model is built as a view in the database.
-* **table**: The model is built as a table in the database.
-* **ephemeral**: The model is not directly built in the database but is instead pulled into dependent models as common table expressions.
+* **view** (default): The model is built as a view in the database. At ClickHouse this is built as a [view](/sql-reference/statements/create/view).
+* **table**: The model is built as a table in the database. At ClickHouse this is built as a [table](/sql-reference/statements/create/table).
+* **ephemeral**: The model is not directly built in the database but is instead pulled into dependent models as CTEs (Common Table Expressions).
 * **incremental**: The model is initially materialized as a table, and in subsequent runs, dbt inserts new rows and updates changed rows in the table.
+* **materialized view**: The model is built as a materialized view in the database. At ClickHouse this is built as a [materialized view](/sql-reference/statements/create/view#materialized-view).
 
 Additional syntax and clauses define how these models should be updated if their underlying data changes. dbt generally recommends starting with the view materialization until performance becomes a concern. The table materialization provides a query time performance improvement by capturing the results of the model's query as a table at the expense of increased storage. The incremental approach builds on this further to allow subsequent updates to the underlying data to be captured in the target table.
 
-The[ current adapter](https://github.com/silentsokolov/dbt-clickhouse) for ClickHouse supports also support **materialized view**, **dictionary**, **distributed table** and **distributed incremental** materializations. The adapter also supports dbt[ snapshots](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots#check-strategy) and [seeds](https://docs.getdbt.com/docs/building-a-dbt-project/seeds).
+The[ current adapter](https://github.com/silentsokolov/dbt-clickhouse) for ClickHouse supports also support **dictionary**, **distributed table** and **distributed incremental** materializations. The adapter also supports dbt [snapshots](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots#check-strategy) and [seeds](https://docs.getdbt.com/docs/building-a-dbt-project/seeds).
 
-### Details about supported materializations {#details-about-supported-materializations}
-
-| Type                        | Supported? | Details                                                                                                                          |
-|-----------------------------|------------|----------------------------------------------------------------------------------------------------------------------------------|
-| view materialization        | YES        | Creates a [view](https://clickhouse.com/docs/en/sql-reference/table-functions/view/).                                            |
-| table materialization       | YES        | Creates a [table](https://clickhouse.com/docs/en/operations/system-tables/tables/). See below for the list of supported engines. |
-| incremental materialization | YES        | Creates a table if it doesn't exist, and then writes only updates to it.                                                         |
-| ephemeral materialized      | YES        | Creates a ephemeral/CTE materialization.  This does model is internal to dbt and does not create any database objects            |
-
-The following are [experimental features](https://clickhouse.com/docs/en/beta-and-experimental-features) in ClickHouse:
+The following are [experimental features](https://clickhouse.com/docs/en/beta-and-experimental-features) in `dbt-clickhouse`:
 
 | Type                                    | Supported?        | Details                                                                                                                                                                                                                                         |
 |-----------------------------------------|-------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
