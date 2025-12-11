@@ -43,7 +43,7 @@ Click the organization name on the bottom left, then select `Users and Roles`. F
 
 ### Users accept the invitation {#accept-invitation}
 
-You should be fully logged out from any SAML connections before accepting the invitation. When accepting the invitation with Google or Microsoft social login, you should click the `Continue with Google` or `Continue with Microsoft` buttons. Users using email and password should go to https://console.clickhouse.cloud/?with=email to log in and accept the invitation.
+Users should be fully logged out from any SAML connections before accepting the invitation. When accepting the invitation with Google or Microsoft social login, users should click the `Continue with Google` or `Continue with Microsoft` buttons. Users using email and password should go to https://console.clickhouse.cloud/?with=email to log in and accept the invitation.
 
 :::note
 The best route to ensure users are not automatically redirected based on SAML configurations is to copy the link to accept the invitation and paste into a separate browser or private browsing/incognito session to accept the invitation.

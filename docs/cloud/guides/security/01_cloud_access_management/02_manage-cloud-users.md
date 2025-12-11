@@ -17,7 +17,7 @@ import step_6 from '@site/static/images/cloud/guides/sql_console/org_level_acces
 import step_7 from '@site/static/images/cloud/guides/sql_console/org_level_access/7_org_settings.png'
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
-This guide is intended if you have the Organization Admin role in ClickHouse Cloud.
+This guide is intended for users with the Organization Admin role in ClickHouse Cloud.
 
 ## Add users to your organization {#add-users}
 
@@ -33,7 +33,7 @@ To invite users:
 5. Select the organization and service roles that will be assigned to the users
 6. Click `Send invites`
 
-You will receive an email from which they can join the organization. For more information on accepting invitations, see [Manage my account](/cloud/security/manage-my-account).
+Users will receive an email from which they can join the organization. For more information on accepting invitations, see [Manage my account](/cloud/security/manage-my-account).
 
 ### Add users via SAML identity provider {#add-users-via-saml}
 
@@ -41,7 +41,7 @@ You will receive an email from which they can join the organization. For more in
 
 If your organization is configured for [SAML SSO](/cloud/security/saml-setup) follow these steps to add users to your organization.
 
-1. Add users to your SAML application in your identity provider, the you will not appear in ClickHouse until they have logged in once
+1. Add users to your SAML application in your identity provider, the users will not appear in ClickHouse until they have logged in once
 2. When the user logs in to ClickHouse Cloud they will automatically be assigned the `Member` role which may only log in and has no other access
 3. Follow the instructions in the `Manage user role assignments` below to grant permissions
 
