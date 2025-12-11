@@ -395,7 +395,6 @@ print(result)
 # )
 # ENGINE = MergeTree {#engine-mergetree}
 # ORDER BY tuple() {#order-by-tuple}
-# SETTINGS index_granularity = 8192 {#settings-index_granularity-8192}
 
 # Удаление таблицы {#drop-table}
 client.command("DROP TABLE test_command")

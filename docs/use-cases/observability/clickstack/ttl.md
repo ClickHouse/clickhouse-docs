@@ -53,7 +53,7 @@ PARTITION BY toDate(TimestampTime)
 PRIMARY KEY (ServiceName, TimestampTime)
 ORDER BY (ServiceName, TimestampTime, Timestamp)
 TTL TimestampTime + toIntervalDay(3)
-SETTINGS index_granularity = 8192, ttl_only_drop_parts = 1
+SETTINGS ttl_only_drop_parts = 1
 ```
 
 Partitioning in ClickHouse allows data to be logically separated on disk according to a column or SQL expression. By separating data logically, each partition can be operated on independently e.g. deleted when it expires according to a TTL policy. 

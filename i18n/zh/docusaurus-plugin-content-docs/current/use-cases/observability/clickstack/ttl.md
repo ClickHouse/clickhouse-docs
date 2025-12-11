@@ -53,7 +53,7 @@ PARTITION BY toDate(TimestampTime)
 PRIMARY KEY (ServiceName, TimestampTime)
 ORDER BY (ServiceName, TimestampTime, Timestamp)
 TTL TimestampTime + toIntervalDay(3)
-SETTINGS index_granularity = 8192, ttl_only_drop_parts = 1
+SETTINGS ttl_only_drop_parts = 1
 ```
 
 在 ClickHouse 中进行分区，可以根据某一列或 SQL 表达式在磁盘上对数据进行逻辑划分。通过对数据进行逻辑分隔，每个分区都可以被独立操作，例如在其按 TTL 策略到期时将其删除。
