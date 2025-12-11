@@ -10,8 +10,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-
-
 # 如何使用 Claude Agent SDK 和 ClickHouse MCP Server 构建 AI Agent {#how-to-build-an-ai-agent-with-claude-agent-sdk-and-the-clickhouse-mcp-server}
 
 在本指南中，您将学习如何使用 [ClickHouse 的 MCP Server](https://github.com/ClickHouse/mcp-clickhouse)，构建一个可以与 [ClickHouse 的 SQL Playground](https://sql.clickhouse.com/) 交互的 [Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/overview) AI Agent。
@@ -19,8 +17,6 @@ doc_type: 'guide'
 :::note 示例笔记本
 该示例可以在 [examples 仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/claude-agent/claude-agent.ipynb) 中找到对应的笔记本。
 :::
-
-
 
 ## 前提条件 {#prerequisites}
 
@@ -32,7 +28,6 @@ doc_type: 'guide'
 
 <VerticalStepper headerLevel="h2">
 
-
 ## 安装库 {#install-libraries}
 
 运行以下命令安装 Claude Agent SDK 库：
@@ -42,7 +37,6 @@ pip install -q --upgrade pip
 pip install -q claude-agent-sdk
 pip install -q ipywidgets
 ```
-
 
 ## 设置凭据 {#setup-credentials}
 
@@ -68,7 +62,6 @@ env = {
     "CLICKHOUSE_SECURE": "true"
 }
 ```
-
 
 ## 初始化 MCP 服务器和 Claude Agent SDK 代理 {#initialize-mcp-and-agent}
 

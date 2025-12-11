@@ -7,18 +7,12 @@ sidebar_label: 'anyIf'
 doc_type: 'reference'
 ---
 
-
-
 # anyIf {#avgif}
-
-
 
 ## 描述 {#description}
 
 可以将 [`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器应用于 [`any`](/sql-reference/aggregate-functions/reference/any)
 聚合函数，从给定列中选出首个满足指定条件的元素。
-
-
 
 ## 示例用法 {#example-usage}
 
@@ -57,7 +51,6 @@ FROM sales;
 │          1 │          4 │
 └────────────┴────────────┘
 ```
-
 
 ## 另请参阅 {#see-also}
 - [`any`](/sql-reference/aggregate-functions/reference/any)

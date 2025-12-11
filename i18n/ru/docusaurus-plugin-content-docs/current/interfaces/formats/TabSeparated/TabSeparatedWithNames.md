@@ -13,8 +13,6 @@ doc_type: 'reference'
 |-------|--------|--------------------------------|
 |     ✔    |     ✔     | `TSVWithNames`, `RawWithNames` |
 
-
-
 ## Описание {#description}
 
 Отличается от формата [`TabSeparated`](./TabSeparated.md) тем, что имена столбцов записаны в первой строке.
@@ -26,8 +24,6 @@ doc_type: 'reference'
 столбцы из входных данных будут сопоставлены со столбцами таблицы по их именам, а столбцы с неизвестными именами будут пропущены, если параметр [`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлен в значение `1`.
 В противном случае первая строка будет пропущена.
 :::
-
-
 
 ## Пример использования {#example-usage}
 
@@ -94,6 +90,5 @@ date    season  home_team       away_team       home_team_goals away_team_goals
 2022-05-07      2021    Stevenage Borough       Salford City    4       2
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
-
 
 ## Настройки формата {#format-settings}

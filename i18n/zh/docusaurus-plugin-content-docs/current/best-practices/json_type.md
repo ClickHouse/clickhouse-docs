@@ -11,8 +11,6 @@ doc_type: 'reference'
 
 ClickHouse 现在提供了一种原生的 JSON 列类型，用于处理半结构化和动态数据。需要特别说明的是，**这是一种列类型，而不是一种数据格式**——可以将 JSON 作为字符串插入到 ClickHouse 中，或者通过诸如 [JSONEachRow](/interfaces/formats/JSONEachRow) 之类的受支持格式进行插入，但这并不意味着在使用 JSON 列类型。只有当数据结构本身是动态的，而不是只是碰巧以 JSON 形式存储时，才应使用 JSON 列类型。
 
-
-
 ## 何时使用 JSON 类型 {#when-to-use-the-json-type}
 
 在以下情况下使用 JSON 类型：
@@ -29,8 +27,6 @@ ClickHouse 现在提供了一种原生的 JSON 列类型，用于处理半结构
 
 也可以混合使用多种方式——例如，为可预测的顶层字段使用静态列，同时为负载中动态变化的部分使用单个 JSON 列。
 
-
-
 ## 使用 JSON 的注意事项和技巧 {#considerations-and-tips-for-using-json}
 
 `JSON` 类型通过将路径展平成子列，实现了高效的列式存储。但更高的灵活性也意味着需要承担相应的责任。要高效地使用它：
@@ -43,8 +39,6 @@ ClickHouse 现在提供了一种原生的 JSON 列类型，用于处理半结构
 类型提示不仅仅是避免不必要类型推断的一种方式——它还能彻底消除存储和处理过程中的间接层。带有类型提示的 JSON 路径始终与传统列以相同方式存储，从而不再需要在查询时依赖[**判别器列（discriminator columns）**](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse#storage-extension-for-dynamically-changing-data)或进行动态解析。也就是说，在类型提示定义完善的情况下，嵌套的 JSON 字段可以获得与从一开始就建模为顶层字段几乎相同的性能和效率。因此，对于大多数结构相对稳定、但仍希望保留 JSON 灵活性的数据集，类型提示提供了一种便捷方式，在无需重构模式（schema）或摄取管道的前提下，保持性能。
 :::
 
-
-
 ## 高级功能 {#advanced-features}
 
 * JSON 列**可以像其他任意列一样用于主键**。不能为子列指定编解码器（codec）。
@@ -53,8 +47,6 @@ ClickHouse 现在提供了一种原生的 JSON 列类型，用于处理半结构
 * 查询语法可能与标准 SQL 不同，对嵌套字段可能需要使用特殊的类型转换或操作符。
 
 如需更多指导，请参阅 [ClickHouse JSON 文档](/sql-reference/data-types/newjson)，或查看我们的博文 [A New Powerful JSON Data Type for ClickHouse](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse)。
-
-
 
 ## 示例 {#examples}
 
@@ -159,7 +151,6 @@ ORDER BY update_date
 
 同样，我们可以以 JSON 格式插入数据：
 
-
 ```sql
 INSERT INTO arxiv FORMAT JSONEachRow 
 {"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]]}
@@ -236,7 +227,6 @@ ORDER BY doc.update_date
 
 我们可以向该表插入数据，并使用 [`JSONAllPathsWithTypes`](/sql-reference/functions/json-functions#JSONAllPathsWithTypes) 函数和 [`PrettyJSONEachRow`](/interfaces/formats/PrettyJSONEachRow) 输出格式查看后续推断出的 schema：
 
-
 ```sql
 INSERT INTO arxiv FORMAT JSONAsObject 
 {"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"每秒千兆字节的数字解析","comments":"软件位于 https://github.com/fastfloat/fast_float 和\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"随着磁盘和网络提供每秒千兆字节的速度....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"ClickHouse user","score":"A+","comment":"值得一读,适用于 ClickHouse"},"28_03_2025":{"name":"professor X","score":10,"comment":"收获不大","updates":[{"name":"professor X","comment":"Wolverine 觉得更有趣"}]}}}
@@ -304,7 +294,6 @@ ORDER BY update_date
 INSERT INTO arxiv FORMAT JSONEachRow 
 {"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"ClickHouse 用户","score":"A+","comment":"值得一读，适用于 ClickHouse"},"28_03_2025":{"name":"professor X","score":10,"comment":"收获不大","updates":[{"name":"professor X","comment":"金刚狼认为更有意思"}]}}}
 ```
-
 
 现在我们就可以推断出子列 `tags` 的类型了。
 

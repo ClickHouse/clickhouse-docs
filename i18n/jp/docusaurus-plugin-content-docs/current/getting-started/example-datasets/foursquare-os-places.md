@@ -13,7 +13,6 @@ import visualization_2 from '@site/static/images/getting-started/example-dataset
 import visualization_3 from '@site/static/images/getting-started/example-datasets/visualization_3.png';
 import visualization_4 from '@site/static/images/getting-started/example-datasets/visualization_4.png';
 
-
 ## データセット {#dataset}
 
 Foursquare によるこのデータセットは、[ダウンロード](https://docs.foursquare.com/data-products/docs/access-fsq-os-places)
@@ -72,7 +71,6 @@ bbox:                (-122.39003793803701,37.62120111687914,-122.39003793803701,
 SELECT * FROM s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*')
    WHERE address IS NOT NULL AND postcode IS NOT NULL AND instagram IS NOT NULL LIMIT 1
 ```
-
 
 ```response
 Row 1:
@@ -145,7 +143,6 @@ DESCRIBE s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*
     │                     │↳    ymax Nullable(Float64)) │
     └─────────────────────┴─────────────────────────────┘
 ```
-
 
 ## データを ClickHouse に取り込む {#loading-the-data}
 
@@ -253,7 +250,6 @@ INDEX idx_y mercator_y TYPE minmax
 INSERT INTO foursquare_mercator 
 SELECT * FROM s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*')
 ```
-
 
 ## データの可視化 {#data-visualization}
 

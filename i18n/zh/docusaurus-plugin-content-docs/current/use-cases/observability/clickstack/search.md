@@ -18,7 +18,6 @@ ClickStack 允许您对事件（日志和跟踪）执行全文搜索。您只需
 
 同样的搜索语法也适用于在仪表板和图表中对事件进行过滤。
 
-
 ## 搜索功能 {#search-features}
 
 ### 自然语言搜索语法 {#natural-language-syntax}

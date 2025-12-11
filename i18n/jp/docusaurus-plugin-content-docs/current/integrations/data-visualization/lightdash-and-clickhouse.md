@@ -21,7 +21,6 @@ import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/curr
 import Image from '@theme/IdealImage';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
 # Lightdash {#lightdash}
 
 <PartnerBadge/>
@@ -31,8 +30,6 @@ Lightdash は、dbt のオープン性と ClickHouse のパフォーマンスを
 開発者は、オープンなアーキテクチャ、バージョン管理された YAML モデル、GitHub から IDE までワークフローに直接組み込める各種インテグレーションにより、Lightdash を高く評価しています。
 
 このパートナーシップにより、**ClickHouse の高速性** と **Lightdash の開発者エクスペリエンス** が組み合わさり、AI を活用してインサイトを探索・可視化・自動化することがこれまでになく容易になります。
-
-
 
 ## Lightdash と ClickHouse でインタラクティブなダッシュボードを構築する {#build-an-interactive-dashboard}
 
@@ -128,7 +125,6 @@ dbt プロジェクトが Lightdash に接続されて同期されると、**テ
 
 **Explore** ページは、5 つの主要な領域で構成されています。
 
-
 1. **Dimensions and Metrics** — 選択したテーブルで利用可能なすべてのフィールドです
 2. **Filters** — クエリで返されるデータを制限します
 3. **Chart** — クエリ結果を可視化します
@@ -195,7 +191,6 @@ AI Agents の詳細については、次を参照してください: [AI Agents 
 :::
 
 </VerticalStepper>
-
 
 ## 詳細はこちら {#learn-more}
 

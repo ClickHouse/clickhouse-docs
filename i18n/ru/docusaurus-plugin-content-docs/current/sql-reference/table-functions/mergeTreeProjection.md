@@ -8,20 +8,15 @@ title: 'mergeTreeProjection'
 doc_type: 'reference'
 ---
 
-
-
 # Табличная функция mergeTreeProjection {#mergetreeprojection-table-function}
 
 Представляет содержимое некоторой проекции в таблицах MergeTree. Может использоваться для интроспекции.
-
-
 
 ## Синтаксис {#syntax}
 
 ```sql
 mergeTreeProjection(база_данных, таблица, проекция)
 ```
-
 
 ## Аргументы {#arguments}
 
@@ -31,13 +26,9 @@ mergeTreeProjection(база_данных, таблица, проекция)
 | `table`      | Имя таблицы, из которой считывается проекция.     |
 | `projection` | Проекция, из которой выполняется чтение.          |
 
-
-
 ## Возвращаемое значение {#returned_value}
 
 Объект таблицы с набором столбцов, определённых указанной проекцией.
-
-
 
 ## Пример использования {#usage-example}
 

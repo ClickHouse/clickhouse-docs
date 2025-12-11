@@ -7,20 +7,15 @@ title: 'hudi'
 doc_type: 'reference'
 ---
 
-
-
 # Табличная функция hudi {#hudi-table-function}
 
 Предоставляет интерфейс только для чтения, аналогичный таблице, для работы с таблицами Apache [Hudi](https://hudi.apache.org/) в Amazon S3.
-
-
 
 ## Синтаксис {#syntax}
 
 ```sql
 hudi(url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])
 ```
-
 
 ## Аргументы {#arguments}
 
@@ -32,13 +27,9 @@ hudi(url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,co
 | `structure`                                  | Структура таблицы. Формат: `'column1_name column1_type, column2_name column2_type, ...'`.                                                                                                                                                                                                                                                                                            |
 | `compression`                                | Параметр является необязательным. Поддерживаемые значения: `none`, `gzip/gz`, `brotli/br`, `xz/LZMA`, `zstd/zst`. По умолчанию тип сжатия автоматически определяется по расширению файла.                                                                                                                                                                                             |
 
-
-
 ## Возвращаемое значение {#returned_value}
 
 Таблица с заданной структурой для чтения данных из указанной таблицы Hudi в S3.
-
-
 
 ## Виртуальные столбцы {#virtual-columns}
 
@@ -47,8 +38,6 @@ hudi(url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,co
 - `_size` — Размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер файла неизвестен, значение — `NULL`.
 - `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
 - `_etag` — ETag файла. Тип: `LowCardinality(String)`. Если ETag неизвестен, значение — `NULL`.
-
-
 
 ## Связанные материалы {#related}
 

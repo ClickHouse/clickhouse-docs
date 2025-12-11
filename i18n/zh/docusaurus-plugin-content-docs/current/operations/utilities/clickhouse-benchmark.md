@@ -7,8 +7,6 @@ title: 'clickhouse-benchmark'
 doc_type: 'reference'
 ---
 
-
-
 # clickhouse-benchmark {#clickhouse-benchmark}
 
 连接到 ClickHouse 服务器并反复执行指定查询。
@@ -44,7 +42,6 @@ SELECT 1;
 clickhouse-benchmark [keys] < queries_file;
 ```
 
-
 ## 命令行选项 {#clickhouse-benchmark-command-line-options}
 
 - `--query=QUERY` — 要执行的查询。如果未传递此参数，`clickhouse-benchmark` 将从标准输入读取查询。
@@ -78,14 +75,10 @@ clickhouse-benchmark [keys] < queries_file;
 
 如果希望为查询应用一些[设置](/operations/settings/overview)，可以以 `--<session setting name>= SETTING_VALUE` 的形式传递它们。例如：`--max_memory_usage=1048576`。
 
-
-
 ## 环境变量选项 {#clickhouse-benchmark-environment-variable-options}
 
 可以通过环境变量 `CLICKHOUSE_USER`、`CLICKHOUSE_PASSWORD` 和 `CLICKHOUSE_HOST` 设置用户名、密码和主机。  
 命令行参数 `--user`、`--password` 或 `--host` 优先于环境变量。
-
-
 
 ## 输出 {#clickhouse-benchmark-output}
 
@@ -130,14 +123,11 @@ localhost:9000, 查询数 10，QPS: 6.772, RPS: 67904487.440, MiB/s: 518.070, re
 
 * 查询执行时间的分位数（百分位）。
 
-
 ## 比较模式 {#clickhouse-benchmark-comparison-mode}
 
 `clickhouse-benchmark` 可以比较两个正在运行的 ClickHouse 服务器的性能。
 
 要使用比较模式，请通过两组 `--host` 和 `--port` 参数来指定两个服务器的端点。参数按照它们在参数列表中的顺序进行一一匹配，第一个 `--host` 与第一个 `--port` 匹配，依此类推。`clickhouse-benchmark` 会同时与这两个服务器建立连接，然后发送查询。每条查询都会被发送到随机选取的其中一个服务器。结果会以表格形式显示。
-
-
 
 ## 示例 {#clickhouse-benchmark-example}
 

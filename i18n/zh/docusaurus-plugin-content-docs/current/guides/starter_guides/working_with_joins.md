@@ -21,7 +21,6 @@ import asof_example from '@site/static/images/starter_guides/joins/asof_example.
 ClickHouse 完全支持标准 SQL 联接（join），从而实现高效的数据分析。
 在本指南中，你将通过维恩图和示例查询，基于来自[关系型数据集仓库](https://relational.fit.cvut.cz/dataset/IMDb)的规范化 [IMDB](https://en.wikipedia.org/wiki/IMDb) 数据集，了解一些常用的联接类型以及如何使用它们。
 
-
 ## 测试数据和资源 {#test-data-and-resources}
 
 用于创建和加载这些表的说明可以在[此处](/integrations/dbt/guides)找到。
@@ -97,7 +96,6 @@ LIMIT 10;
 
 可以通过使用以下其他连接类型之一来扩展或修改 `INNER JOIN` 的行为。
 
-
 ## (LEFT / RIGHT / FULL) OUTER JOIN {#left--right--full-outer-join}
 
 `LEFT OUTER JOIN` 的行为类似于 `INNER JOIN`；另外，对于左表中未匹配的行，ClickHouse 会为右表的列返回[默认值](/sql-reference/statements/create/table#default_values)。
@@ -143,7 +141,6 @@ LIMIT 10;
 :::note
 可以省略 `OUTER` 关键字。
 :::
-
 
 ## CROSS JOIN {#cross-join}
 
@@ -241,7 +238,6 @@ ALL
 
 并且由于如上所述，在 `RIGHT OUTER JOIN` 中可以省略 `OUTER` 关键字，并且可以添加可选的 `ALL` 关键字，因此你可以写成 `ALL RIGHT JOIN`，它同样可以正常工作。
 
-
 ## (LEFT / RIGHT) SEMI JOIN {#left--right-semi-join}
 
 `LEFT SEMI JOIN` 查询会返回左表中那些在右表中至少存在一个联接键匹配的行的列值。
@@ -280,7 +276,6 @@ LIMIT 10;
 └────────────┴────────────────────────┘
 ```
 
-
 ## (LEFT / RIGHT) ANTI JOIN {#left--right-anti-join}
 
 `LEFT ANTI JOIN` 返回左表中所有未匹配行的列值。
@@ -315,7 +310,6 @@ LIMIT 10;
 │ """美国老爹"""                            │
 └───────────────────────────────────────────┘
 ```
-
 
 ## (LEFT / RIGHT / INNER) ANY JOIN {#left--right--inner-any-join}
 
@@ -392,7 +386,6 @@ INNER ANY JOIN right_table AS r ON l.c = r.c;
 └─────┴─────┘
 ```
 
-
 ## ASOF JOIN {#asof-join}
 
 `ASOF JOIN` 提供了非精确匹配的功能。
@@ -449,7 +442,6 @@ FORMAT Vertical;
 :::note
 `ASOF JOIN` 的 `ON` 子句是必需的，用于在 `AND` 子句的非精确匹配条件之外，再指定一个精确匹配条件。
 :::
-
 
 ## 摘要 {#summary}
 

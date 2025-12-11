@@ -47,7 +47,6 @@ import Link from '@docusaurus/Link'
 | `SKIP path.to.skip`         | Необязательная подсказка для конкретного пути, который должен быть пропущен при разборе JSON. Такие пути никогда не будут сохранены в столбце JSON. Если указанный путь является вложенным объектом JSON, весь вложенный объект будет пропущен.                                                                                          |                       |
 | `SKIP REGEXP 'path_regexp'` | Необязательная подсказка с регулярным выражением, которое используется для пропуска путей при разборе JSON. Все пути, соответствующие этому регулярному выражению, никогда не будут сохранены в столбце JSON.                                                                                                                            |                       |
 
-
 ## Создание JSON {#creating-json}
 
 В этом разделе мы рассмотрим различные способы создания `JSON`.
@@ -145,7 +144,6 @@ SELECT CAST('{"a.b.c" : 42}', 'JSON') AS json
 
 а **не**:
 
-
 ```sql
    ┌─json───────────┐
 1. │ {"a.b.c":"42"} │
@@ -153,7 +151,6 @@ SELECT CAST('{"a.b.c" : 42}', 'JSON') AS json
 ```
 
 :::
-
 
 ## Чтение JSON-путей как подстолбцов {#reading-json-paths-as-sub-columns}
 
@@ -223,7 +220,6 @@ SELECT json.non.existing.path FROM test;
 SELECT toTypeName(json.a.b), toTypeName(json.a.g), toTypeName(json.c), toTypeName(json.d) FROM test;
 ```
 
-
 ```text title="Response"
 ┌─toTypeName(json.a.b)─┬─toTypeName(json.a.g)─┬─toTypeName(json.c)─┬─toTypeName(json.d)─┐
 │ UInt32               │ Dynamic              │ Dynamic            │ Dynamic            │
@@ -287,7 +283,6 @@ FROM test;
 Чтобы эффективно считывать подстолбцы из частей Compact MergeTree, убедитесь, что настройка MergeTree [write&#95;marks&#95;for&#95;substreams&#95;in&#95;compact&#95;parts](../../operations/settings/merge-tree-settings.md#write_marks_for_substreams_in_compact_parts) включена.
 :::
 
-
 ## Чтение вложенных объектов JSON как подстолбцов {#reading-json-sub-objects-as-sub-columns}
 
 Тип `JSON` поддерживает чтение вложенных объектов как подстолбцов типа `JSON` с использованием специального синтаксиса `json.^some.path`:
@@ -321,7 +316,6 @@ SELECT json.^a.b, json.^d.e.f FROM test;
 :::note
 Чтение вложенных объектов как подстолбцов может быть неэффективным, так как для этого может потребоваться практически полное сканирование данных JSON.
 :::
-
 
 ## Определение типов для путей {#type-inference-for-paths}
 
@@ -382,7 +376,6 @@ SELECT JSONAllPathsWithTypes('{"a" : [1, 2, 3]}'::JSON) AS paths_with_types sett
 └──────────────────────┘
 ```
 
-
 ## Обработка массивов JSON-объектов {#handling-arrays-of-json-objects}
 
 JSON-пути, содержащие массив объектов, интерпретируются как тип `Array(JSON)` и записываются в столбец `Dynamic` для этого пути.
@@ -425,7 +418,6 @@ SELECT json.a.b, dynamicType(json.a.b) FROM test;
 ```sql title="Query"
 SELECT json.a.b.:`Array(JSON)`.c, json.a.b.:`Array(JSON)`.f, json.a.b.:`Array(JSON)`.d FROM test; 
 ```
-
 
 ```text title="Response"
 ┌─json.a.b.:`Array(JSON)`.c─┬─json.a.b.:`Array(JSON)`.f───────────────────────────────────┬─json.a.b.:`Array(JSON)`.d─┐
@@ -495,7 +487,6 @@ SELECT json.a.b[].^k FROM test
 └──────────────────────────────────────┘
 ```
 
-
 ## Обработка JSON-ключей со значением NULL {#handling-json-keys-with-nulls}
 
 В нашей реализации JSON значение `null` и отсутствие значения считаются эквивалентными:
@@ -511,7 +502,6 @@ SELECT '{}'::JSON AS json1, '{"a" : null}'::JSON AS json2, json1 = json2
 ```
 
 Это означает, что невозможно определить, содержали ли исходные данные JSON какой‑либо путь со значением NULL или не содержали его вовсе.
-
 
 ## Обработка ключей JSON с точками {#handling-json-keys-with-dots}
 
@@ -585,7 +575,6 @@ SELECT '{"a.b" : 42, "a" : {"b" : "Hello World!"}}'::JSON AS json, json.`a%2Eb`,
 
 Примечание: из-за ограничений парсера и анализатора идентификаторов подколонка `` json.`a.b` `` эквивалентна подколонке `json.a.b` и не распознаёт путь с экранированной точкой:
 
-
 ```sql title="Query"
 SET json_type_escape_dots_in_keys=1;
 SELECT '{"a.b" : 42, "a" : {"b" : "Hello World!"}}'::JSON AS json, json.`a%2Eb`, json.`a.b`, json.a.b;
@@ -621,7 +610,6 @@ SELECT '{"a.b" : 42, "a" : {"b" : "Hello World!"}}'::JSON(SKIP `a%2Eb`) as json,
 └────────────────────────────┴────────────┘
 ```
 
-
 ## Чтение типа JSON из данных {#reading-json-type-from-data}
 
 Все текстовые форматы
@@ -655,7 +643,6 @@ SELECT json FROM format(JSONEachRow, 'json JSON(a.b.c UInt32, SKIP a.b.d, SKIP d
 
 Для текстовых форматов, таких как `CSV`/`TSV`/и т. д., `JSON` разбирается из строки, содержащей объект JSON:
 
-
 ```sql title="Query"
 SELECT json FROM format(TSV, 'json JSON(a.b.c UInt32, SKIP a.b.d, SKIP REGEXP \'b.*\')',
 '{"a" : {"b" : {"c" : 1, "d" : [0, 1]}}, "b" : "2020-01-01", "c" : 42, "d" : {"e" : {"f" : ["s1", "s2"]}, "i" : [1, 2, 3]}}
@@ -674,7 +661,6 @@ SELECT json FROM format(TSV, 'json JSON(a.b.c UInt32, SKIP a.b.d, SKIP REGEXP \'
 │ {"a":{"b":{"c":5}},"d":{"h":"2020-02-02 10:00:00.000000000"}} │
 └───────────────────────────────────────────────────────────────┘
 ```
-
 
 ## Достижение предела динамических путей внутри JSON {#reaching-the-limit-of-dynamic-paths-inside-json}
 
@@ -726,7 +712,6 @@ SELECT json, JSONDynamicPaths(json), JSONSharedDataPaths(json) FROM format(JSONE
 
 Рассмотрим пример такого слияния.
 Сначала создадим таблицу со столбцом `JSON`, установим лимит динамических путей, равный `3`, а затем вставим значения с `5` разными путями:
-
 
 ```sql title="Query"
 CREATE TABLE test (id UInt64, json JSON(max_dynamic_paths=3)) ENGINE=MergeTree ORDER BY id;
@@ -781,7 +766,6 @@ ORDER BY _part ASC
 ```
 
 Как мы видим, ClickHouse сохранил наиболее частые пути `a`, `b` и `c` и перенёс пути `d` и `e` в общую структуру данных.
-
 
 ## Общая структура данных {#shared-data-structure}
 
@@ -843,8 +827,6 @@ ORDER BY _part ASC
 сериализациями `map` и `map_with_buckets`.
 
 Более подробный обзор новых сериализаций общей структуры данных и деталей реализации см. в [публикации в блоге](https://clickhouse.com/blog/json-data-type-gets-even-better).
-
-
 
 ## Функции интроспекции {#introspection-functions}
 
@@ -929,7 +911,6 @@ FROM s3('s3://clickhouse-public-datasets/gharchive/original/2020-01-01-*.json.gz
 SETTINGS date_time_input_format = 'best_effort'
 ```
 
-
 ```text
 ┌─arrayJoin(distinctJSONPathsAndTypes(json))──────────────────┐
 │ ('actor.avatar_url',['String'])                             │
@@ -985,7 +966,6 @@ SETTINGS date_time_input_format = 'best_effort'
 └─arrayJoin(distinctJSONPathsAndTypes(json))──────────────────┘
 ```
 
-
 ## ALTER MODIFY COLUMN к типу JSON {#alter-modify-column-to-json-type}
 
 Можно изменить существующую таблицу и сменить тип столбца на новый тип `JSON`. На данный момент поддерживается только `ALTER` для столбцов типа `String`.
@@ -1007,7 +987,6 @@ SELECT json, json.a, json.b, json.c FROM test;
 │ {"c":"2020-01-01"}           │ ᴺᵁᴸᴸ   │ ᴺᵁᴸᴸ    │ 2020-01-01 │
 └──────────────────────────────┴────────┴─────────┴────────────┘
 ```
-
 
 ## Сравнение значений типа JSON {#comparison-between-values-of-the-json-type}
 
@@ -1047,7 +1026,6 @@ SELECT json1, json2, json1 < json2, json1 = json2, json1 > json2 FROM test;
 
 **Примечание:** когда два пути содержат значения разных типов данных, они сравниваются в соответствии с [правилом сравнения](/sql-reference/data-types/variant#comparing-values-of-variant-data) типа данных `Variant`.
 
-
 ## Рекомендации по более эффективному использованию типа JSON {#tips-for-better-usage-of-the-json-type}
 
 Прежде чем создавать столбец `JSON` и загружать в него данные, учитывайте следующие рекомендации:
@@ -1056,8 +1034,6 @@ SELECT json1, json2, json1 < json2, json1 = json2, json1 > json2 FROM test;
 - Продумайте, какие пути вам понадобятся, а какие — никогда. Укажите пути, которые вам не нужны, в разделе `SKIP`, а при необходимости — в разделе `SKIP REGEXP`. Это улучшит эффективность хранения.
 - Не устанавливайте параметр `max_dynamic_paths` на слишком большие значения, так как это может сделать хранение и чтение менее эффективными. 
   Хотя это сильно зависит от системных параметров, таких как память, CPU и т.д., в качестве общего ориентира не следует устанавливать `max_dynamic_paths` более 10 000 для хранилища на локальной файловой системе и 1024 для хранилища на удалённой файловой системе.
-
-
 
 ## Дополнительные материалы {#further-reading}
 

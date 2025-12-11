@@ -13,7 +13,6 @@ import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # Spark JDBC {#spark-jdbc}
 
 <ClickHouseSupportedBadge/>
@@ -22,8 +21,6 @@ JDBC 是 Spark 中最常用的数据源之一。
 在本节中，我们将介绍如何使用 [ClickHouse 官方 JDBC 连接器](/integrations/language-clients/java/jdbc) 与 Spark 集成。
 
 <TOCInline toc={toc}></TOCInline>
-
-
 
 ## 读取数据 {#read-data}
 
@@ -120,7 +117,6 @@ jar_files = [
 
 ```
 
-
 # 使用 JAR 文件初始化 Spark 会话 {#initialize-spark-session-with-jars}
 
 spark = SparkSession.builder \
@@ -166,7 +162,6 @@ df.show()
 
 </TabItem>
 </Tabs>
-
 
 ## 写入数据 {#write-data}
 
@@ -290,15 +285,12 @@ jar_files = [
 
 ```
 
-
 # 使用 JAR 包初始化 Spark 会话 {#initialize-spark-session-with-jars}
 spark = SparkSession.builder \
     .appName("example") \
     .master("local") \
     .config("spark.jars", ",".join(jar_files)) \
     .getOrCreate()
-
-
 
 # 创建 DataFrame {#create-dataframe}
 data = [Row(id=11, name="John"), Row(id=12, name="Doe")]
@@ -308,8 +300,6 @@ url = "jdbc:ch://localhost:8123/default"
 user = "your_user" 
 password = "your_password"  
 driver = "com.clickhouse.jdbc.ClickHouseDriver"
-
-
 
 # 将 DataFrame 写入 ClickHouse {#write-dataframe-to-clickhouse}
 
@@ -347,15 +337,12 @@ df.write \
 </TabItem>
 </Tabs>
 
-
 ## 并行度 {#parallelism}
 
 使用 Spark JDBC 时，Spark 默认只使用单个分区读取数据。要获得更高的并行度，你需要指定
 `partitionColumn`、`lowerBound`、`upperBound` 和 `numPartitions`，用于定义在由多个 worker 并行读取时如何对表进行分区。
 如需了解更多信息，请参阅 Apache Spark 官方文档中的
 [JDBC 配置](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html#data-source-option)。
-
-
 
 ## JDBC 限制 {#jdbc-limitations}
 

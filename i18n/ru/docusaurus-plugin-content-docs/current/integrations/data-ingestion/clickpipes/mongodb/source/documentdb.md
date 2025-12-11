@@ -13,16 +13,11 @@ import docdb_apply_parameter_group from '@site/static/images/integrations/data-i
 import docdb_parameter_group_status from '@site/static/images/integrations/data-ingestion/clickpipes/mongodb/docdb-parameter-group-status.png'
 import Image from '@theme/IdealImage';
 
-
 # Руководство по настройке источника данных Amazon DocumentDB {#amazon-documentdb-source-setup-guide}
-
-
 
 ## Поддерживаемые версии DocumentDB {#supported-documentdb-versions}
 
 ClickPipes поддерживает DocumentDB версии 5.0.
-
-
 
 ## Настройка периода хранения журналов потока изменений {#configure-change-stream-log-retention}
 
@@ -60,7 +55,6 @@ aws docdb describe-db-cluster-parameters --db-cluster-parameter-group-name <PARA
 aws docdb modify-db-cluster-parameter-group --db-cluster-parameter-group-name <PARAMETER_GROUP_NAME> --parameters "ParameterName=change_stream_log_retention_duration,ParameterValue=259200,ApplyMethod=immediate"
 ```
 
-
 ## Настройте пользователя базы данных {#configure-database-user}
 
 Подключитесь к своему кластеру DocumentDB с учетной записью администратора и выполните следующую команду, чтобы создать пользователя базы данных для MongoDB CDC ClickPipes:
@@ -76,7 +70,6 @@ db.getSiblingDB("admin").createUser({
 :::note
 Обязательно замените `clickpipes_user` и `some_secure_password` на выбранные вами имя пользователя и пароль.
 :::
-
 
 ## Что дальше? {#whats-next}
 

@@ -10,7 +10,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 <EnterprisePlanFeatureBadge />
 
-ClickHouse Cloud 支持将备份写入您自己的云服务提供商（CSP）账户（AWS S3、Google Cloud Storage 或 Azure Blob Storage）。\
+ClickHouse Cloud 支持将备份写入您自己的云服务提供商（CSP）账户（AWS S3、Google Cloud Storage 或 Azure Blob Storage）。
 关于 ClickHouse Cloud 备份的工作原理（包括“完整”备份与“增量”备份）的详细信息，请参阅 [backups](/cloud/manage/backups/overview) 文档。
 
 本指南演示如何将完整和增量备份写入 AWS、GCP、Azure 对象存储，以及如何从这些备份中进行恢复。
@@ -18,6 +18,7 @@ ClickHouse Cloud 支持将备份写入您自己的云服务提供商（CSP）账
 :::note
 用户需要注意，如果备份被导出到同一云服务提供商的其他区域，将会产生 [data transfer](/cloud/manage/network-data-transfer) 费用。目前我们尚不支持跨云备份。
 :::
+
 
 ## 前提条件 {#requirements}
 
@@ -28,19 +29,19 @@ ClickHouse Cloud 支持将备份写入您自己的云服务提供商（CSP）账
 1. AWS S3 端点，格式如下：
 
 ```text
-s3://<bucket_name>.s3.amazonaws.com/<directory>
+  s3://<bucket_name>.s3.amazonaws.com/<directory>
 ```
 
 例如：
 
 ```text
-s3://testchbackups.s3.amazonaws.com/backups/
+  s3://testchbackups.s3.amazonaws.com/backups/
 ```
 
 Where:
 
 * `testchbackups` 是用于导出备份的 S3 bucket 名称。
-* `backups` 是一个可选的子目录。
+  * `backups` 是一个可选的子目录。
 
 2. AWS access key 和 secret。也支持基于 AWS role 的身份验证，并且可以替代 AWS access key 和 secret 使用。
 
@@ -48,11 +49,12 @@ Where:
 若要使用基于 role 的身份验证，请按照 Secure S3 的[配置步骤](https://clickhouse.com/docs/cloud/security/secure-s3)。此外，你还需要在[此处](https://clickhouse.com/docs/cloud/security/secure-s3#option-2-manually-create-iam-role)所述的 IAM 策略中添加 `s3:PutObject` 和 `s3:DeleteObject` 权限。
 :::
 
+
 ### Azure {#azure}
 
-1. Azure storage connection string。
-2. 存储帐户中的 Azure container 名称。
-3. container 中的 Azure Blob。
+1. Azure 存储连接字符串。
+2. 存储帐户中 Azure 容器的名称。
+3. 容器中的 Azure Blob 对象。
 
 ### Google Cloud Storage (GCS) {#google-cloud-storage-gcs}
 
@@ -63,7 +65,7 @@ Where:
    ```
 2. 用于访问的 HMAC key 和 HMAC secret。
 
-<hr />
+<hr/>
 
 # 备份与恢复 {#backup-restore}
 
@@ -82,7 +84,7 @@ TO S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key
 
 :::note
 你需要在该子目录中为每次新的备份使用不同的 UUID，否则会收到 `BACKUP_ALREADY_EXISTS` 错误。
-例如，如果你进行的是每日备份，则需要每天使用一个新的 UUID。\
+例如，如果你进行的是每日备份，则需要每天使用一个新的 UUID。
 :::
 
 **增量备份**
@@ -93,15 +95,17 @@ TO S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key
 SETTINGS base_backup = S3('https://testchbackups.s3.amazonaws.com/backups/<base-backup-uuid>', '<key id>', '<key secret>')
 ```
 
+
 ### 从备份中恢复 {#restore-from-a-backup}
 
 ```sql
 RESTORE DATABASE test_backups 
 AS test_backups_restored 
-FROM S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<密钥 ID>', '<密钥密文>')
+FROM S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key secret>')
 ```
 
-详情请参见：[将 BACKUP/RESTORE 配置为使用 S3 端点](/operations/backup#configuring-backuprestore-to-use-an-s3-endpoint)。
+详情请参见：[将 BACKUP/RESTORE 配置为使用 S3 端点](/operations/backup/s3_endpoint)。
+
 
 ## 备份 / 恢复到 Azure Blob 存储 {#backup--restore-to-azure-blob-storage}
 
@@ -124,6 +128,7 @@ TO AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container
 SETTINGS base_backup = AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container>', '<blob>/<uuid>')
 ```
 
+
 ### 从备份中恢复 {#restore-from-a-backup-1}
 
 ```sql
@@ -132,7 +137,8 @@ AS test_backups_restored_azure
 FROM AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container>', '<blob>/<uuid>')
 ```
 
-请参阅：[配置 BACKUP/RESTORE 以使用 S3 端点](/operations/backup#configuring-backuprestore-to-use-an-azureblobstorage-endpoint) 了解更多详情。
+请参阅：[配置 BACKUP/RESTORE 以使用 AzureBlobStorage 端点](/operations/backup/azure#configuring-backuprestore-to-use-an-azureblobstorage-endpoint) 了解更多详情。
+
 
 ## 备份 / 恢复到 Google Cloud Storage (GCS) {#backup--restore-to-google-cloud-storage-gcs}
 
@@ -154,6 +160,7 @@ BACKUP DATABASE test_backups
 TO S3('https://storage.googleapis.com/test_gcs_backups/<uuid>/my_incremental', 'key', 'secret')
 SETTINGS base_backup = S3('https://storage.googleapis.com/test_gcs_backups/<uuid>', 'key', 'secret')
 ```
+
 
 ### 从备份恢复 {#restore-from-a-backup-2}
 

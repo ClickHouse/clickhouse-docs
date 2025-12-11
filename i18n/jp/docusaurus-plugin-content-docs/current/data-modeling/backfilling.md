@@ -9,7 +9,6 @@ doc_type: 'guide'
 import nullTableMV from '@site/static/images/data-modeling/null_table_mv.png';
 import Image from '@theme/IdealImage';
 
-
 # データのバックフィル {#backfilling-data}
 
 ClickHouse を新規に利用している場合でも、既存のデプロイメントを担当している場合でも、履歴データでテーブルをバックフィルする必要が生じることがあります。状況によっては比較的単純ですが、マテリアライズドビューをバックフィルする必要がある場合は、より複雑になることがあります。本ガイドでは、そのようなタスクに対してユーザーが自身のユースケースに適用できるいくつかの手順を説明します。
@@ -17,8 +16,6 @@ ClickHouse を新規に利用している場合でも、既存のデプロイメ
 :::note
 本ガイドでは、ユーザーがすでに [インクリメンタルマテリアライズドビュー](/materialized-view/incremental-materialized-view) の概念と、[S3 や GCS などのテーブル関数を用いたデータ読み込み](/integrations/s3) に精通していることを前提としています。また、[オブジェクトストレージからの挿入パフォーマンス最適化](/integrations/s3/performance) に関するガイドも併せて読むことを推奨します。そこでの推奨事項は、このガイド全体で行う挿入処理に適用できます。
 :::
-
-
 
 ## サンプルデータセット {#example-dataset}
 
@@ -71,7 +68,6 @@ SETTINGS describe_compact_output = 1
 1兆行を超える完全な PyPI データセットは、公開デモ環境である [clickpy.clickhouse.com](https://clickpy.clickhouse.com) で利用できます。このデータセットの詳細（デモがパフォーマンス向上のためにマテリアライズドビューをどのように活用しているかや、データが毎日どのように取り込まれているかなど）については、[こちら](https://github.com/ClickHouse/clickpy) を参照してください。
 :::
 
-
 ## バックフィルのシナリオ {#backfilling-scenarios}
 
 バックフィルは通常、ある時点以降のデータストリームを取り込んでいる場合に必要になります。このデータは [インクリメンタルなマテリアライズドビュー](/materialized-view/incremental-materialized-view) を介して ClickHouse のテーブルに挿入され、ブロックが挿入されるたびにトリガーされます。これらのビューは、挿入前にデータを変換したり、集計を計算して、その結果をダウンストリームのアプリケーションで後から使用するためのターゲットテーブルに送信している場合があります。
@@ -84,8 +80,6 @@ SETTINGS describe_compact_output = 1
 データはオブジェクトストレージからバックフィルされるものとします。いずれの場合も、データ挿入の中断は避けることを目指します。
 
 履歴データのバックフィルには、オブジェクトストレージ上のデータを用いて実施することを推奨します。データは、可能であれば Parquet にエクスポートしておくと、読み取り性能と圧縮率（ネットワーク転送量の削減）の観点で最適です。ファイルサイズは 150MB 前後が一般的に好まれますが、ClickHouse は [70 を超えるファイルフォーマット](/interfaces/formats) をサポートしており、あらゆるサイズのファイルを処理できます。
-
-
 
 ## 複製テーブルとビューの使用 {#using-duplicate-tables-and-views}
 
@@ -198,7 +192,6 @@ FROM pypi_downloads_v2
 ピークメモリ使用量: 688.77 KiB。
 ```
 
-
 この 2 回目のロードのいずれかの時点で障害が発生した場合でも、単に `pypi_v2` および `pypi_downloads_v2` テーブルを [TRUNCATE](/managing-data/truncate) して、データロードをやり直すことができます。
 
 データロードが完了したら、[`ALTER TABLE MOVE PARTITION`](/sql-reference/statements/alter/partition#move-partition-to-table) 句を使用して、複製テーブルからメインテーブルにデータを移動できます。
@@ -264,7 +257,6 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-
 ClickPipes はオブジェクトストレージからデータをロードする際にこのアプローチを使用し、ターゲットテーブルとそのマテリアライズドビューの複製を自動的に作成することで、ユーザーが上記の手順を実行する必要がなくなります。さらに、複数のワーカースレッドを使用し、それぞれが glob パターンを使って異なるサブセットを自身の複製テーブルで処理することで、「厳密 1 回だけの処理 (exactly-once)」セマンティクスを保ちながら高速にデータをロードできます。興味がある方は、[このブログ](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part3)でさらに詳しい内容を確認できます。
 :::
 
-
 ## シナリオ 1: 既存のデータインジェストを利用したデータのバックフィル {#scenario-1-backfilling-data-with-existing-data-ingestion}
 
 このシナリオでは、バックフィル対象のデータが専用のバケットに存在せず、フィルタリングが必要であると仮定します。データの挿入はすでに行われており、どこから履歴データをバックフィルする必要があるかを示すタイムスタンプまたは単調増加するカラムを特定できます。
@@ -327,7 +319,6 @@ ALTER TABLE pypi_downloads_v2 MOVE PARTITION () TO pypi_downloads
 :::note ClickHouse Cloud では ClickPipes を使うだけでよい
 ClickHouse Cloud のユーザーは、データを専用のバケットに分離でき（かつフィルターが不要な）場合、履歴バックアップの復元には ClickPipes を使用することを推奨します。複数ワーカーによるロードの並列化でロード時間を短縮できるだけでなく、ClickPipes は上記のプロセスを自動化し、メインテーブルおよびマテリアライズドビューの両方に対して複製テーブルを作成します。
 :::
-
 
 ## シナリオ 2: 既存テーブルへのマテリアライズドビューの追加 {#scenario-2-adding-materialized-views-to-existing-tables}
 
@@ -407,7 +398,6 @@ OK.
 上記の例では、対象テーブルは [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree) です。この場合は、元の集約クエリをそのまま使用できます。より複雑なユースケースで [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree) を利用する場合は、集約のために `-State` 関数を使用します。この例は[こちら](/integrations/s3/performance#be-aware-of-merges)で確認できます。
 :::
 
-
 このケースでは、比較的軽量な集約で、3 秒未満で完了し、メモリ使用量も 600MiB 未満です。より複雑または長時間実行される集約の場合は、前述の複製テーブルのアプローチ、すなわちシャドウ用のターゲットテーブル（例: `pypi_downloads_per_day_v2`）を作成し、そこに `INSERT` してから、その結果のパーティションを `pypi_downloads_per_day` にアタッチすることで、このプロセスをより堅牢にできます。
 
 多くの場合、マテリアライズドビューのクエリはより複雑で（そうでなければユーザーがビューを使わないことも多いため、これは珍しくありません）、リソースを消費します。まれに、クエリに必要なリソースがサーバーの能力を超えることもあります。これは、ClickHouse のマテリアライズドビューの利点の 1 つを示しています。すなわち、マテリアライズドビューはインクリメンタルに処理され、一度にデータセット全体を処理するわけではない、という点です。
@@ -469,7 +459,6 @@ INSERT INTO pypi_v2 SELECT timestamp, project FROM pypi WHERE timestamp < '2024-
 
 ここではメモリ使用量が `639.47 MiB` になっていることに注目してください。
 
-
 ##### パフォーマンスとリソースのチューニング {#tuning-performance--resources}
 
 上記のシナリオにおけるパフォーマンスとリソース使用量は、複数の要因によって決まります。チューニングを行う前に、[Optimizing for S3 Insert and Read Performance guide](/integrations/s3/performance) の [Using Threads for Reads](/integrations/s3/performance#using-threads-for-reads) セクションで詳細に説明されている挿入メカニズムを理解しておくことを推奨します。要点は次のとおりです。
@@ -512,7 +501,6 @@ Ok.
 0 rows in set. Elapsed: 43.907 sec. Processed 1.50 billion rows, 33.48 GB (34.06 million rows/s., 762.54 MB/s.)
 Peak memory usage: 272.53 MiB.
 ```
-
 
 最後に、`min_insert_block_size_rows` を 0（ブロックサイズを決定する要因として無効化）に、`min_insert_block_size_bytes` を 10485760（10MiB）に設定することで、メモリ使用量をさらに削減できます。
 
@@ -626,7 +614,6 @@ GROUP BY
 
 結果セット 0 行。経過時間: 3.719 秒。20.4 億行、47.15 GB を処理しました (548.57 百万行/秒、12.68 GB/秒)。
 ```
-
 
 DROP TABLE pypi&#95;v2;
 

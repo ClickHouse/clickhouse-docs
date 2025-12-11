@@ -7,13 +7,9 @@ keywords: ['chdb', 'go', 'golang', 'embedded', 'clickhouse', 'sql', 'olap']
 doc_type: 'guide'
 ---
 
-
-
 # chDB for Go {#chdb-for-go}
 
 chDB-go 为 chDB 提供 Go 语言绑定，使你能够在 Go 应用程序中直接运行 ClickHouse 查询，且完全不依赖任何外部组件。
-
-
 
 ## 安装 {#installation}
 
@@ -39,25 +35,19 @@ go install github.com/chdb-io/chdb-go@latest
 go get github.com/chdb-io/chdb-go
 ```
 
-
 ## 用法 {#usage}
 
 ### 命令行界面（CLI） {#cli}
 
 chDB-go 包含一个用于快速查询的命令行界面（CLI）：
 
-
-
 ```bash
 # 简单查询 {#simple-query}
 ./chdb-go "SELECT 123"
 ```
 
-
 # 交互式模式 {#interactive-mode}
 ./chdb-go
-
-
 
 # 启用持久化存储的交互式模式 {#interactive-mode-with-persistent-storage}
 
@@ -242,14 +232,11 @@ func main() {
 }
 ```
 
-
 **流式查询的优势：**
 - **内存高效** - 处理大型数据集而无需将所有数据一次性加载到内存中
 - **实时处理** - 从第一批数据到达时就可以开始处理
 - **支持取消** - 可以使用 `Cancel()` 取消长时间运行的查询
 - **错误处理** - 使用 `Error()` 在流式处理中检查错误
-
-
 
 ## API 文档 {#api-documentation}
 
@@ -257,8 +244,6 @@ chDB-go 提供高级和低级 API：
 
 - **[高级 API 文档](https://github.com/chdb-io/chdb-go/blob/main/chdb.md)** - 推荐用于大多数使用场景
 - **[低级 API 文档](https://github.com/chdb-io/chdb-go/blob/main/lowApi.md)** - 适用于需要细粒度控制的高级使用场景
-
-
 
 ## 系统要求 {#requirements}
 

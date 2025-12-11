@@ -361,7 +361,7 @@ sources:
 
 </VerticalStepper>
 
-### Запуск Elastic Agent как коллектора OpenTelemetry
+### Запуск Elastic Agent как коллектора OpenTelemetry {#sending-data-via-vector}
 
 Elastic Agent включает встроенный EDOT Collector, который позволяет один раз инструментировать ваши приложения и инфраструктуру и отправлять данные нескольким поставщикам и в разные бэкэнды.
 

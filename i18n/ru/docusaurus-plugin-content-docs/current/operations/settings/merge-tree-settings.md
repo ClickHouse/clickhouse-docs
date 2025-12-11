@@ -45,17 +45,15 @@ ALTER TABLE tab MODIFY SETTING max_suspicious_broken_parts = 100;
 ALTER TABLE tab RESET SETTING max_suspicious_broken_parts;
 ```
 
-
 ## Настройки MergeTree {#mergetree-settings}
 
 {/* Нижеуказанные настройки автоматически создаются скриптом по адресу 
   https://github.com/ClickHouse/clickhouse-docs/blob/main/scripts/settings/autogenerate-settings.sh
   */ }
 
-
 ## adaptive_write_buffer_initial_size {#adaptive_write_buffer_initial_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="16384" />
+<SettingsInfoBlock type="NonZeroUInt64" default_value="16384" />
 
 Начальный размер адаптивного буфера записи
 
@@ -141,7 +139,6 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 При использовании в запросе `ORDER BY time DESC` будет применён `ReadInOrder`.
 
 **Значение по умолчанию:** false
-
 
 ## allow_floating_point_partition_key {#allow_floating_point_partition_key} 
 
@@ -391,9 +388,9 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 
 ## compact_parts_max_granules_to_buffer {#compact_parts_max_granules_to_buffer} 
 
-<SettingsInfoBlock type="UInt64" default_value="128" />
+<SettingsInfoBlock type="NonZeroUInt64" default_value="128" />
 
-Доступен только в ClickHouse Cloud. Максимальное количество гранул, которые можно записать в одну полосу в компактных частях
+Доступен только в ClickHouse Cloud. Максимальное число гранул, которые можно записать в одну полосу компактных частей.
 
 ## compact_parts_merge_max_bytes_to_prefetch_part {#compact_parts_merge_max_bytes_to_prefetch_part} 
 
@@ -547,7 +544,7 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "Новая настройка"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "Добавлена новая настройка для ограничения максимального объёма данных в байтах для min_age_to_force_merge."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "Добавлена новая настройка для ограничения максимального объёма данных (в байтах) для min_age_to_force_merge."}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "Новая настройка"}]}]}/>
 
 Определяет, должны ли настройки `min_age_to_force_merge_seconds` и
 `min_age_to_force_merge_on_partition_only` учитывать настройку
@@ -668,7 +665,6 @@ ALTER TABLE tab MODIFY SETTING exclude_materialize_skip_indexes_on_merge = 'idx_
 -- настройка по умолчанию, индексы не исключаются из обновления при слиянии
 ALTER TABLE tab MODIFY SETTING exclude_materialize_skip_indexes_on_merge = '';
 ```
-
 
 ## execute_merges_on_single_replica_time_threshold {#execute_merges_on_single_replica_time_threshold} 
 
@@ -966,7 +962,6 @@ drop или rebuild.
 <max_concurrent_queries>50</max_concurrent_queries>
 ```
 
-
 ## max&#95;delay&#95;to&#95;insert {#max_delay_to_insert}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
@@ -1005,7 +1000,6 @@ delay_milliseconds = max(min_delay_to_insert_ms, (max_delay_to_insert * 1000)
 = 300, parts&#95;to&#95;delay&#95;insert = 150, max&#95;delay&#95;to&#95;insert = 1,
 min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается на `max( 10, 1 * 1000 *
 (224 - 150 + 1) / (300 - 150) ) = 500` миллисекунд.
-
 
 ## max_delay_to_mutate_ms {#max_delay_to_mutate_ms} 
 
@@ -1089,13 +1083,13 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 
 <SettingsInfoBlock type="MaxThreads" default_value="'auto(17)'" />
 
-Устаревший параметр, ничего не делает.
+Устаревшая настройка, не оказывает никакого эффекта.
 
 ## max_part_removal_threads {#max_part_removal_threads} 
 
 <SettingsInfoBlock type="MaxThreads" default_value="'auto(17)'" />
 
-Устаревшая настройка, не оказывает никакого эффекта.
+Устаревший параметр, не оказывает эффекта.
 
 ## max_partitions_to_read {#max_partitions_to_read} 
 
@@ -1370,6 +1364,18 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 Определяет, когда срабатывает логика по отношению к количеству частей в
 партиции. Чем больше коэффициент, тем позже будет реакция.
 
+## merge_selector_enable_heuristic_to_lower_max_parts_to_merge_at_once {#merge_selector_enable_heuristic_to_lower_max_parts_to_merge_at_once} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+Включает эвристику для простого селектора слияний, которая будет снижать максимальное ограничение при выборе слияний.
+Таким образом, число одновременных слияний увеличится, что может помочь с ошибками TOO_MANY_PARTS,
+но при этом увеличится write amplification.
+
 ## merge_selector_enable_heuristic_to_remove_small_parts_at_right {#merge_selector_enable_heuristic_to_remove_small_parts_at_right} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -1377,6 +1383,16 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 Включает эвристику выбора частей для слияния, которая удаляет части с правой
 границы диапазона, если их размер меньше заданного соотношения (0.01) от sum_size.
 Работает для селекторов слияний Simple и StochasticSimple.
+
+## merge_selector_heuristic_to_lower_max_parts_to_merge_at_once_exponent {#merge_selector_heuristic_to_lower_max_parts_to_merge_at_once_exponent} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="UInt64" default_value="5" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "5"},{"label": "New setting"}]}]}/>
+
+Управляет значением показателя степени, используемым в формулах, описывающих нисходящую кривую. Уменьшение показателя степени приведёт к уменьшению ширины слияний, что увеличит коэффициент усиления записи. Обратное также верно.
 
 ## merge_selector_window_size {#merge_selector_window_size} 
 
@@ -1655,7 +1671,6 @@ ClickHouse будет ориентироваться на то значение,
 <min_marks_to_honor_max_concurrent_queries>10</min_marks_to_honor_max_concurrent_queries>
 ```
 
-
 ## min_merge_bytes_to_use_direct_io {#min_merge_bytes_to_use_direct_io} 
 
 <SettingsInfoBlock type="UInt64" default_value="10737418240" />
@@ -1763,6 +1778,20 @@ ZooKeeper перед очисткой.
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "Cloud sync"}]}]}/>
 
 Уведомляет SharedJoin или SharedSet о самом последнем номере блока. Только в ClickHouse Cloud.
+
+## nullable_serialization_version {#nullable_serialization_version} 
+
+<SettingsInfoBlock type="MergeTreeNullableSerializationVersion" default_value="basic" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "basic"},{"label": "Новая настройка"}]}]}/>
+
+Определяет метод сериализации, который используется для столбцов `Nullable(T)`.
+
+Возможные значения:
+
+- basic — Использовать стандартную сериализацию для `Nullable(T)`.
+
+- allow_sparse — Разрешить использовать разреженное кодирование для `Nullable(T)`.
 
 ## number_of_free_entries_in_pool_to_execute_mutation {#number_of_free_entries_in_pool_to_execute_mutation} 
 
@@ -2244,7 +2273,6 @@ WHERE table LIKE 'my_sparse_table';
 │ s      │ Sparse             │
 └────────┴────────────────────┘
 ```
-
 
 ## reduce_blocking_parts_sleep_ms {#reduce_blocking_parts_sleep_ms} 
 
@@ -2969,22 +2997,22 @@ Cloud
 
 <SettingsInfoBlock type="MergeTreeStringSerializationVersion" default_value="with_size_stream" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "with_size_stream"},{"label": "Переход на новый формат с раздельным хранением размеров"}]}, {"id": "row-2","items": [{"label": "25.10"},{"label": "single_stream"},{"label": "Новая настройка"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "with_size_stream"},{"label": "Переход на более новый формат с отдельными размерами"}]}, {"id": "row-2","items": [{"label": "25.10"},{"label": "single_stream"},{"label": "Новый параметр"}]}]}/>
 
 Управляет форматом сериализации для столбцов верхнего уровня типа `String`.
 
-Эта настройка действует только, когда `serialization_info_version` установлена в значение "with_types".
-При включении столбцы верхнего уровня `String` сериализуются с отдельным
-подстолбцом `.size`, который хранит длины строк, а не встроенно. Это позволяет
+Этот параметр действует только, если `serialization_info_version` установлен в "with_types".
+Если задано значение `with_size_stream`, столбцы верхнего уровня типа `String` сериализуются
+с отдельным подстолбцом `.size`, в котором хранятся длины строк, а не inline. Это позволяет
 использовать реальные подстолбцы `.size` и может повысить эффективность сжатия.
 
 Вложенные типы `String` (например, внутри `Nullable`, `LowCardinality`, `Array` или `Map`)
-не затрагиваются, за исключением случаев, когда они встречаются в `Tuple`.
+не затрагиваются, за исключением случаев, когда они появляются в `Tuple`.
 
 Возможные значения:
 
-- `single_stream` — использовать стандартный формат сериализации с встроенным хранением размеров.
-- `with_size_stream` — использовать отдельный поток для размеров для столбцов верхнего уровня `String`.
+- `single_stream` — использовать стандартный формат сериализации с inline-размерами.
+- `with_size_stream` — использовать отдельный поток для размеров для столбцов верхнего уровня типа `String`.
 
 ## table_disk {#table_disk} 
 

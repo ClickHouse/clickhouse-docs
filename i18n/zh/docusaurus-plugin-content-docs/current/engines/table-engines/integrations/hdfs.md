@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # HDFS 表引擎 {#hdfs-table-engine}
 
 <CloudNotSupportedBadge/>
@@ -17,8 +16,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 该引擎通过允许通过 ClickHouse 管理 [HDFS](https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html) 上的数据，为 [Apache Hadoop](https://en.wikipedia.org/wiki/Apache_Hadoop) 生态系统提供集成能力。此引擎类似于 [File](/engines/table-engines/special/file) 和 [URL](/engines/table-engines/special/url) 引擎，但提供了 Hadoop 特有的功能。
 
 此功能目前不由 ClickHouse 工程团队官方支持，且已知质量不佳。如遇任何问题，请自行修复并提交 Pull Request。
-
-
 
 ## 用法 {#usage}
 
@@ -67,7 +64,6 @@ SELECT * FROM hdfs_engine_table LIMIT 2
 │ two  │     2 │
 └──────┴───────┘
 ```
-
 
 ## 实现细节 {#implementation-details}
 
@@ -132,7 +128,6 @@ CREATE TABLE table_with_asterisk (name String, value UInt32) ENGINE = HDFS('hdfs
 
 创建一个表，该表使用名为 `file000`、`file001`、…、`file999` 的文件：
 
-
 ```sql
 CREATE TABLE big_table (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9000/big_dir/file{0..9}{0..9}{0..9}', 'CSV')
 ```
@@ -158,7 +153,6 @@ CREATE TABLE big_table (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9
 ### 配置选项 {#configuration-options}
 
 #### libhdfs3 支持的选项 {#supported-by-libhdfs3}
-
 
 | **参数**                                         | **默认值**       |
 | -                                                  | -                    |
@@ -217,16 +211,12 @@ CREATE TABLE big_table (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9
 ### 限制 {#limitations}
 * `hadoop_security_kerberos_ticket_cache_path` 和 `libhdfs3_conf` 只能作为全局配置使用，不能针对单个用户设置
 
-
-
 ## Kerberos 支持 {#kerberos-support}
 
 如果 `hadoop_security_authentication` 参数的值为 `kerberos`，ClickHouse 将通过 Kerberos 进行认证。
 相关参数见[此处](#clickhouse-extras)，`hadoop_security_kerberos_ticket_cache_path` 可能会有所帮助。
 请注意，由于 libhdfs3 的限制，仅支持传统的旧式方案，
 datanode 通信不会通过 SASL 进行安全保护（`HADOOP_SECURE_DN_USER` 是此类安全机制的可靠指示器）。可参考 `tests/integration/test_storage_kerberized_hdfs/hdfs_configs/bootstrap.sh`。
-
-
 
 如果指定了 `hadoop_kerberos_keytab`、`hadoop_kerberos_principal` 或 `hadoop_security_kerberos_ticket_cache_path`，则会使用 Kerberos 身份验证。在这种情况下，`hadoop_kerberos_keytab` 和 `hadoop_kerberos_principal` 是必需的。
 
@@ -245,15 +235,12 @@ libhdfs3 支持 HDFS Namenode 高可用（HA）。
 
 * 然后使用 `hdfs-site.xml` 中 `dfs.nameservices` 配置项的值，作为 HDFS URI 中的 NameNode 地址。例如，将 `hdfs://appadmin@192.168.101.11:8020/abc/` 替换为 `hdfs://appadmin@my_nameservice/abc/`。
 
-
 ## 虚拟列 {#virtual-columns}
 
 - `_path` — 文件路径。类型：`LowCardinality(String)`。
 - `_file` — 文件名。类型：`LowCardinality(String)`。
 - `_size` — 文件大小（字节）。类型：`Nullable(UInt64)`。如果大小未知，则该值为 `NULL`。
 - `_time` — 文件的最后修改时间。类型：`Nullable(DateTime)`。如果时间未知，则该值为 `NULL`。
-
-
 
 ## 存储设置 {#storage-settings}
 

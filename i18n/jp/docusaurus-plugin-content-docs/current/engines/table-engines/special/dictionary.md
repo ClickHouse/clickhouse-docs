@@ -1,19 +1,19 @@
 ---
-description: '`Dictionary` エンジンは、辞書データを ClickHouse のテーブルとして扱えるようにします。'
+description: '`Dictionary` エンジンは、Dictionary のデータを ClickHouse のテーブルとして表示します。'
 sidebar_label: 'Dictionary'
 sidebar_position: 20
 slug: /engines/table-engines/special/dictionary
 title: 'Dictionary テーブルエンジン'
-doc_type: 'リファレンス'
+doc_type: 'reference'
 ---
 
 # Dictionary テーブルエンジン {#dictionary-table-engine}
 
-`Dictionary` エンジンは、[dictionary](../../../sql-reference/dictionaries/index.md) のデータを ClickHouse のテーブルとして扱います。
+`Dictionary` エンジンは、[Dictionary](../../../sql-reference/dictionaries/index.md) のデータを ClickHouse のテーブルとして利用できるようにします。
 
 ## 例 {#example}
 
-例として、次のように構成された `products` 辞書を考えます。
+例として、次のように構成された `products` の Dictionary を考えます。
 
 ```xml
 <dictionaries>
@@ -46,7 +46,7 @@ doc_type: 'リファレンス'
 </dictionaries>
 ```
 
-辞書データにクエリを実行する:
+Dictionary データをクエリします:
 
 ```sql
 SELECT
@@ -68,11 +68,11 @@ WHERE name = 'products'
 └──────────┴──────┴────────┴─────────────────┴─────────────────┴─────────────────┴───────────────┴─────────────────┘
 ```
 
-この形式で辞書データを取得するには、[dictGet*](/sql-reference/functions/ext-dict-functions#dictget-dictgetordefault-dictgetornull) 関数を使用できます。
+[dictGet*](/sql-reference/functions/ext-dict-functions) 関数を使用して、この形式で Dictionary データを取得できます。
 
-生データを取得する必要がある場合や、`JOIN` 操作を実行する場合には、このビューは有用ではありません。これらの場合には、`Dictionary` エンジンを使用することで、辞書データをテーブルとして表示できます。
+このビューは、生データを取得したい場合や `JOIN` 演算を行う場合にはあまり役に立ちません。こうしたケースでは、Dictionary データをテーブルとして表示する `Dictionary` エンジンを使用できます。
 
-構文:
+構文：
 
 ```sql
 CREATE TABLE %table_name% (%fields%) engine = Dictionary(%dictionary_name%)`
@@ -86,7 +86,7 @@ CREATE TABLE products (product_id UInt64, title String) ENGINE = Dictionary(prod
 
 では
 
-テーブルの内容を確認しましょう。
+テーブルの中身を確認してみましょう。
 
 ```sql
 SELECT * FROM products LIMIT 1;

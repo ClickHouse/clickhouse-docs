@@ -20,12 +20,9 @@ import dashboards_9 from '@site/static/images/cloud/dashboards/9_dashboards.png'
 import dashboards_10 from '@site/static/images/cloud/dashboards/10_dashboards.png';
 import dashboards_11 from '@site/static/images/cloud/dashboards/11_dashboards.png';
 
-
 # Панели мониторинга {#dashboards}
 
 Функция панелей мониторинга в SQL Console позволяет собирать и совместно использовать визуализации на основе сохранённых запросов. Начните с сохранения и визуализации запросов, добавления их визуализаций на панель и сделайте панель интерактивной с помощью параметров запросов.
-
-
 
 ## Базовые понятия {#core-concepts}
 
@@ -39,13 +36,9 @@ import dashboards_11 from '@site/static/images/cloud/dashboards/11_dashboards.pn
 
 Вы можете включать и отключать поле ввода параметра запроса через боковую панель фильтров **Global**, выбрав тип «filter» в настройках визуализации. Также вы можете включать и отключать ввод параметра запроса, связав его с другим объектом (например, таблицей) на панели. См. раздел «[configure a filter](/cloud/manage/dashboards#configure-a-filter)» в кратком руководстве по быстрому старту ниже. 
 
-
-
 ## Быстрый старт {#quick-start}
 
 Создадим панель мониторинга для нашего сервиса ClickHouse, используя системную таблицу [query\_log](/operations/system-tables/query_log). 
-
-
 
 ## Быстрый старт {#quick-start-1}
 

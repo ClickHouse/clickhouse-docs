@@ -11,12 +11,9 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # CREATE VIEW {#create-view}
 
 创建一个新视图。视图可以是[普通视图](#normal-view)、[物化视图](#materialized-view)、[可刷新的物化视图](#refreshable-materialized-view)以及[窗口视图](/sql-reference/statements/create/view#window-view)。
-
-
 
 ## 普通视图 {#normal-view}
 
@@ -49,7 +46,6 @@ SELECT a, b, c FROM view
 SELECT a, b, c FROM (SELECT ...)
 ```
 
-
 ## 参数化视图 {#parameterized-view}
 
 参数化视图与普通视图类似，但在创建时可以指定不会立即解析的参数。这类视图可以配合表函数使用：将视图名称作为函数名，将参数值作为函数参数传入。
@@ -63,7 +59,6 @@ CREATE VIEW view AS SELECT * FROM TABLE WHERE Column1={column1:datatype1} and Co
 ```sql
 SELECT * FROM view(column1=value1, column2=value2 ...)
 ```
-
 
 ## 物化视图 {#materialized-view}
 
@@ -119,7 +114,6 @@ ClickHouse 中的物化视图在实现上更类似于插入触发器。如果视
 
 要删除视图，请使用 [DROP VIEW](../../../sql-reference/statements/drop.md#drop-view)。尽管 `DROP TABLE` 对 VIEW 也同样可用。
 
-
 ## SQL 安全性 {#sql_security}
 
 `DEFINER` 和 `SQL SECURITY` 允许你指定在执行视图底层查询时要使用的 ClickHouse 用户。
@@ -166,7 +160,6 @@ SQL SECURITY INVOKER
 AS SELECT ...
 ```
 
-
 ## 实时视图 {#live-view}
 
 <DeprecatedBadge/>
@@ -174,8 +167,6 @@ AS SELECT ...
 此功能已被弃用，并将在未来的版本中移除。
 
 为方便查阅，旧版文档位于[此处](https://pastila.nl/?00f32652/fdf07272a7b54bda7e13b919264e449f.md)
-
-
 
 ## 可刷新物化视图 {#refreshable-materialized-view}
 
@@ -244,7 +235,6 @@ REFRESH EVERY 1 DAY OFFSET 2 HOUR RANDOMIZE FOR 1 HOUR -- 每天在 01:30 至 02
 如果可刷新的物化视图位于 [Replicated 数据库](../../../engines/database-engines/replicated.md) 中，副本之间会相互协调，使得在每个计划的刷新时间点仅有一个副本执行刷新。需要使用 [ReplicatedMergeTree](../../../engines/table-engines/mergetree-family/replication.md) 表引擎，以确保所有副本都能看到刷新产生的数据。
 
 在 `APPEND` 模式下，可以通过 `SETTINGS all_replicas = 1` 禁用这种协调。这样会使各个副本彼此独立地执行刷新。在这种情况下，不再需要使用 ReplicatedMergeTree。
-
 
 在非 `APPEND` 模式下，仅支持协调刷新。对于非协调刷新，请使用 `Atomic` 数据库以及 `CREATE ... ON CLUSTER` 查询，在所有副本上创建可刷新物化视图。
 
@@ -317,7 +307,6 @@ ALTER TABLE [db.]name MODIFY REFRESH EVERY|AFTER ... [RANDOMIZE FOR ...] [DEPEND
 
 ### 其他操作 {#other-operations}
 
-
 所有可刷新的物化视图的状态都可以在表 [`system.view_refreshes`](../../../operations/system-tables/view_refreshes.md) 中查看。该表包含刷新进度（如果正在运行）、上次和下次刷新时间，以及在刷新失败时的异常消息。
 
 要手动停止、启动、触发或取消刷新，请使用 [`SYSTEM STOP|START|REFRESH|WAIT|CANCEL VIEW`](../system.md#refreshable-materialized-views)。
@@ -327,8 +316,6 @@ ALTER TABLE [db.]name MODIFY REFRESH EVERY|AFTER ... [RANDOMIZE FOR ...] [DEPEND
 :::note
 趣闻：刷新查询可以从正在刷新的视图中读取数据，读取到的是刷新前版本的数据。这意味着你可以实现康威生命游戏（Conway's Game of Life）：https://pastila.nl/?00021a4b/d6156ff819c83d490ad2dcec05676865#O0LGWTO7maUQIA4AcGUtlA==
 :::
-
-
 
 ## 窗口视图 {#window-view}
 
@@ -390,7 +377,6 @@ CREATE WINDOW VIEW test.wv TO test.dst WATERMARK=ASCENDING ALLOWED_LATENESS=INTE
 ```
 
 请注意，由延迟触发产生的元素应被视为对先前计算结果的更新。与在窗口结束时触发不同，窗口视图会在延迟事件到达时立即触发。因此，同一个窗口将产生多次输出。用户需要将这些重复结果纳入考虑，或对其进行去重处理。
-
 
 你可以使用 `ALTER TABLE ... MODIFY QUERY` 语句修改在 window view 中定义的 `SELECT` 查询。新的 `SELECT` 查询所产生的数据结构，在使用或不使用 `TO [db.]name` 子句时，都必须与原始的 `SELECT` 查询保持一致。请注意，当前窗口中的数据将会丢失，因为中间状态无法复用。
 
@@ -462,13 +448,10 @@ Window View 在以下场景中非常有用：
 * **监控**：按时间对指标日志进行聚合和计算，并将结果输出到目标表。Dashboard 可以将该目标表作为数据源表使用。
 * **分析**：在时间窗口内自动聚合和预处理数据，这在分析海量日志时尤其有用。预处理可以消除多个查询中的重复计算，降低查询延迟。
 
-
 ## 相关内容 {#related-content}
 
 - 博客文章：[在 ClickHouse 中处理时间序列数据](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)
 - 博客文章：[使用 ClickHouse 构建可观测性解决方案（第二部分：链路追踪）](https://clickhouse.com/blog/storing-traces-and-spans-open-telemetry-in-clickhouse)
-
-
 
 ## 临时视图 {#temporary-views}
 

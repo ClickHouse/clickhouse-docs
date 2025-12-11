@@ -8,16 +8,11 @@ doc_type: 'guide'
 
 import Syntax from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
 
-
 # Резервное копирование и восстановление в/из Azure Blob Storage {#backup-to-azure-blob-storage}
-
-
 
 ## Синтаксис {#syntax}
 
 <Syntax/>
-
-
 
 ## Настройка BACKUP / RESTORE для использования конечной точки AzureBlobStorage {#configuring-backuprestore-to-use-an-azureblobstorage-endpoint}
 

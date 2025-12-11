@@ -11,10 +11,7 @@ doc_type: 'guide'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # TTL（Time To Live）を使ったデータ管理 {#manage-data-with-ttl-time-to-live}
-
-
 
 ## TTL の概要 {#overview-of-ttl}
 
@@ -27,8 +24,6 @@ TTL (time-to-live) は、一定時間が経過した後に、行や列を移動�
 :::note
 TTL はテーブル全体にも特定の列にも適用できます。
 :::
-
-
 
 ## TTL の構文 {#ttl-syntax}
 
@@ -54,7 +49,6 @@ ORDER BY tuple()
 TTL のルールは変更または削除できます。詳細は [Manipulations with Table TTL](/sql-reference/statements/alter/ttl.md) ページを参照してください。
 :::
 
-
 ## TTL イベントのトリガー {#triggering-ttl-events}
 
 期限切れ行の削除や集約は即時には行われず、テーブルのマージ時にのみ実行されます。何らかの理由でマージが積極的に行われていないテーブルがある場合、TTL イベントをトリガーするための設定が 2 つあります:
@@ -73,7 +67,6 @@ OPTIMIZE TABLE example1 FINAL
 
 `OPTIMIZE` はテーブルを構成するパーツのスケジュールされていないマージ処理を開始し、テーブルがすでに単一パーツである場合は `FINAL` によって再度の最適化が強制されます。
 :::
-
 
 ## 行の削除 {#removing-rows}
 
@@ -108,7 +101,6 @@ TTL time + INTERVAL 1 MONTH DELETE WHERE event != 'error',
     time + INTERVAL 6 MONTH DELETE WHERE event = 'error'
 ```
 
-
 ## 列の削除 {#removing-columns}
 
 行全体を削除するのではなく、`balance` 列と `address` 列だけに有効期限を設定したいとします。`customers` テーブルを変更して、両方の列に 2 時間の TTL を設定してみましょう。
@@ -118,7 +110,6 @@ ALTER TABLE customers
 MODIFY COLUMN balance Int32 TTL timestamp + INTERVAL 2 HOUR,
 MODIFY COLUMN address String TTL timestamp + INTERVAL 2 HOUR
 ```
-
 
 ## ロールアップの実装 {#implementing-a-rollup}
 
@@ -148,7 +139,6 @@ TTL timestamp + INTERVAL 1 DAY
 * `TTL` 句内の `GROUP BY` 列は `PRIMARY KEY` の先頭部分である必要があり、さらに結果を日単位（1 日の開始時刻）でグループ化したいので、`PRIMARY KEY` に `toStartOfDay(timestamp)` を追加しました
 * 集計結果を保存するために、`max_hits` と `sum_hits` の 2 つのフィールドを追加しました
 * `SET` 句の定義に基づくロジックが正しく動作するようにするには、`max_hits` と `sum_hits` のデフォルト値を `hits` に設定しておく必要があります
-
 
 ## ホット／ウォーム／コールド アーキテクチャの実装 {#implementing-a-hotwarmcold-architecture}
 
@@ -264,7 +254,6 @@ WHERE (table = 'my_table') AND (active = 1)
 ```
 
 レスポンスは次のようになります。
-
 
 ```response
 ┌─name────────┬─disk_name─┐

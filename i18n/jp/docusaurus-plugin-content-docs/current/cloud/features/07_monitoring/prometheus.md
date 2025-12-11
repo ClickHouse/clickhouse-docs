@@ -15,7 +15,6 @@ import prometheus_grafana_metrics_explorer from '@site/static/images/integration
 import prometheus_datadog from '@site/static/images/integrations/prometheus-datadog.png';
 import Image from '@theme/IdealImage';
 
-
 # Prometheus 連携 {#prometheus-integration}
 
 この機能では、[Prometheus](https://prometheus.io/) と連携させて ClickHouse Cloud サービスを監視できます。Prometheus メトリクスへのアクセスは [ClickHouse Cloud API](/cloud/manage/api/api-overview) エンドポイントを通じて提供されており、ユーザーはこのエンドポイントに安全に接続し、メトリクスを Prometheus のメトリクスコレクターへエクスポートできます。これらのメトリクスは、Grafana や Datadog などのダッシュボードツールと連携させて可視化できます。
@@ -58,7 +57,6 @@ curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organiz
 export SERVICE_ID=<service_id>
 curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/prometheus?filtered_metrics=true
 ```
-
 
 ### サンプルレスポンス {#sample-response}
 
@@ -187,7 +185,6 @@ scrape_configs:
 
 `honor_labels` 構成パラメータは、`instance` ラベルが正しく設定されるように `true` に設定する必要があります。さらに、上記の例では `filtered_metrics` が `true` に設定されていますが、これはユーザーの好みに応じて設定してください。
 
-
 ## Grafana との統合 {#integrating-with-grafana}
 
 ユーザーが Grafana と統合する主な方法は 2 つあります。
@@ -260,7 +257,6 @@ prometheus.remote_write "metrics_service" {
 
 `honor_labels` 設定パラメータは、インスタンスラベルが正しく設定されるように `true` に設定する必要があります。
 
-
 ### Alloy を使用した自己管理型 Grafana {#grafana-self-managed-with-alloy}
 
 自己管理で Grafana を運用しているユーザーは、Alloy エージェントのインストール手順を [こちら](https://grafana.com/docs/alloy/latest/get-started/install/) で確認できます。ここでは、ユーザーが Alloy を構成して Prometheus メトリクスを任意の送信先に送信するようにしていることを前提とします。以下の `prometheus.scrape` コンポーネントにより、Alloy は ClickHouse Cloud エンドポイントをスクレイプします。スクレイプされたメトリクスは `prometheus.remote_write` が受信すると想定しています。これが存在しない場合、または別の送信先を利用する場合は、`forward_to` キーを対象の送信先に合わせて調整してください。
@@ -292,7 +288,6 @@ prometheus.scrape "clickhouse_cloud" {
 <br />
 
 `instance` ラベルが正しく設定されるようにするには、`honor_labels` 設定パラメータを `true` に設定する必要がある点に注意してください。
-
 
 ## Datadog との統合 {#integrating-with-datadog}
 

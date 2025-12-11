@@ -29,7 +29,6 @@ md5sum 2021_08_01_07_01_17_data.tgz
 必要に応じて、[http://menus.nypl.org/data](http://menus.nypl.org/data) にある最新のリンクに差し替えてください。
 ダウンロードサイズは約 35 MB です。
 
-
 ## データセットの展開 {#unpack-dataset}
 
 ```bash
@@ -44,7 +43,6 @@ tar xvf 2021_08_01_07_01_17_data.tgz
 * `Dish` — 料理に関する情報。料理名とその特徴に関する情報などを含みます。
 * `MenuPage` — メニュー内のページに関する情報。各ページは必ずいずれかのメニューに属します。
 * `MenuItem` — メニュー項目。特定のメニューページ上での料理とその価格を表し、`Dish` と `MenuPage` へのリンクを持ちます。
-
 
 ## テーブルを作成する {#create-tables}
 
@@ -113,7 +111,6 @@ CREATE TABLE menu_item
 ) ENGINE = MergeTree ORDER BY id;
 ```
 
-
 ## データをインポートする {#import-data}
 
 ClickHouse にデータをアップロードするには、次のコマンドを実行します:
@@ -132,7 +129,6 @@ clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_defa
 [NULL](/operations/settings/formats#input_format_null_as_default) をデータとして使用していないため、[input&#95;format&#95;null&#95;as&#95;default](/operations/settings/formats#input_format_null_as_default) を無効にします。有効な場合、ClickHouse は `\N` というシーケンスをパースしようとし、データ内の `\` と紛らわしくなる可能性があります。
 
 [date&#95;time&#95;input&#95;format best&#95;effort](/operations/settings/formats#date_time_input_format) 設定により、[DateTime](../../sql-reference/data-types/datetime.md) フィールドをさまざまなフォーマットでパースできます。例えば、秒なしの ISO-8601 形式である「2000-01-01 01:02」も認識されます。この設定を有効にしない場合、固定形式の DateTime フォーマットのみが許可されます。
-
 
 ## データを非正規化する {#denormalize-data}
 
@@ -186,7 +182,6 @@ FROM menu_item
     JOIN menu ON menu_page.menu_id = menu.id;
 ```
 
-
 ## データを検証する {#validate-data}
 
 クエリ：
@@ -202,7 +197,6 @@ SELECT count() FROM menu_item_denorm;
 │ 1329175 │
 └─────────┘
 ```
-
 
 ## いくつかのクエリを実行してみる {#run-queries}
 
@@ -248,7 +242,6 @@ ORDER BY d ASC;
 
 あくまで目安としてお考えください。
 
-
 ### ハンバーガーの価格 {#query-burger-prices}
 
 クエリ：
@@ -286,7 +279,6 @@ ORDER BY d ASC;
 └──────┴─────────┴──────────────────────┴───────────────────────────────────────┘
 ```
 
-
 ### ウォッカ {#query-vodka}
 
 クエリ：
@@ -320,7 +312,6 @@ ORDER BY d ASC;
 ```
 
 ウォッカを取得するには `ILIKE '%vodka%'` と書く必要があり、これはなかなかインパクトのある書き方です。
-
 
 ### キャビア {#query-caviar}
 
@@ -364,7 +355,6 @@ ORDER BY d ASC;
 ```
 
 少なくともウォッカにはキャビアが付いてる。いい感じだ。
-
 
 ## オンラインプレイグラウンド {#playground}
 

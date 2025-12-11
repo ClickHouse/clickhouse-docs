@@ -41,7 +41,6 @@ sudo apt-get update
 sudo apt-get install build-essential git cmake ccache python3 ninja-build nasm yasm gawk lsb-release wget software-properties-common gnupg
 ```
 
-
 ## 安装 Clang 编译器 {#install-the-clang-compiler}
 
 要在 Ubuntu/Debian 上安装 Clang，请使用 LLVM 的自动安装脚本，详见[此页面](https://apt.llvm.org/)。
@@ -54,7 +53,6 @@ sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
 
 截至 2025 年 3 月，需要使用 Clang 19 或更高版本。
 不支持 GCC 或其他编译器。
-
 
 ## 安装 Rust 编译器（可选） {#install-the-rust-compiler-optional}
 
@@ -75,7 +73,6 @@ rustup default nightly-2025-07-07
 rustup component add rust-src
 ```
 
-
 ## 构建 ClickHouse {#build-clickhouse}
 
 我们建议在 ClickHouse 项目中创建一个单独的 `build` 目录，用于存放所有构建产物：
@@ -90,12 +87,12 @@ cd build
 可选：如果你安装了多个编译器版本，可以指定要使用的具体编译器。
 
 ```sh
-export CC=clang-19
-export CXX=clang++-19
+export CC=clang-21
+export CXX=clang++-21
 ```
 
-出于开发环境的需求，建议使用调试构建（debug builds）。
-与发布构建（release builds）相比，它们使用更低级别的编译器优化级别（`-O`），从而提供更好的调试体验。
+出于开发目的，推荐使用调试构建（debug builds）。
+与发布构建（release builds）相比，它们使用更低的编译器优化级别（`-O`），从而带来更好的调试体验。
 此外，类型为 `LOGICAL_ERROR` 的内部异常会立即导致崩溃，而不会被优雅地捕获和处理。
 
 ```sh
@@ -118,7 +115,7 @@ ninja clickhouse
 ninja
 ```
 
-你可以使用参数 `-j` 来控制并行构建作业的数量：
+你可以使用参数 `-j` 来控制并行构建任务的数量：
 
 ```sh
 ninja -j 1 clickhouse-server clickhouse-client
@@ -128,8 +125,8 @@ ninja -j 1 clickhouse-server clickhouse-client
 CMake 为这些命令提供了快捷方式：
 
 ```sh
-cmake -S . -B build  # 配置构建，从代码仓库顶层目录运行
-cmake --build build  # 编译
+cmake -S . -B build  # configure build, run from repository top-level directory
+cmake --build build  # compile
 ```
 
 :::
@@ -150,7 +147,6 @@ ClickHouse 服务器会尝试在当前目录查找配置文件 `config.xml`。
 clickhouse client --host 127.0.0.1
 ```
 
-
 ## 高级选项 {#advanced-options}
 
 ### 最小构建 {#minimal-build}
@@ -168,7 +164,6 @@ Rust 需要网络连接。若要禁用 Rust 支持：
 ```sh
 cmake -DENABLE_RUST=OFF
 ```
-
 
 ### 运行 ClickHouse 可执行文件 {#running-the-clickhouse-executable-1}
 
@@ -190,7 +185,6 @@ sudo service clickhouse-server start
 sudo service clickhouse-server stop
 sudo -u clickhouse ClickHouse/build/programs/clickhouse server --config-file /etc/clickhouse-server/config.xml
 ```
-
 
 ### 在任何 Linux 上构建 {#building-on-any-linux}
 
@@ -214,7 +208,6 @@ mkdir build
 cmake -S . -B build
 cmake --build build
 ```
-
 
 ### 在 Docker 中构建 {#building-in-docker}
 

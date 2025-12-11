@@ -7,13 +7,9 @@ doc_type: 'guide'
 keywords: ['формат SQL', 'экспорт данных', 'импорт данных', 'резервное копирование', 'дампы SQL']
 ---
 
-
-
 # Вставка и выгрузка SQL-данных в ClickHouse {#inserting-and-dumping-sql-data-in-clickhouse}
 
 ClickHouse можно легко интегрировать в OLTP‑инфраструктуры баз данных разными способами. Один из вариантов — передавать данные между другими базами данных и ClickHouse с помощью SQL‑дампов.
-
-
 
 ## Создание SQL-дампов {#creating-sql-dumps}
 
@@ -57,7 +53,6 @@ SELECT * FROM some_data LIMIT 3 FORMAT Values
 ```response
 ('Bangor_City_Forest','2015-07-01',34),('Alireza_Afzal','2017-02-01',24),('Akhaura-Laksam-Chittagong_Line','2015-09-01',30)
 ```
-
 
 ## Импорт данных из SQL-дампов {#inserting-data-from-sql-dumps}
 
@@ -109,7 +104,6 @@ DESCRIBE TABLE table_from_mysql;
 │ hits  │ Nullable(UInt32) │              │                    │         │                  │                │
 └───────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
-
 
 ## Другие форматы {#other-formats}
 

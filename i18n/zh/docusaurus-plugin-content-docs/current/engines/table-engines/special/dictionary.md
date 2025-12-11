@@ -1,6 +1,5 @@
 ---
-description: '`Dictionary` 引擎将字典数据展示为 ClickHouse
-  表。'
+description: '`Dictionary` 引擎以 ClickHouse 表的形式展示字典数据。'
 sidebar_label: 'Dictionary'
 sidebar_position: 20
 slug: /engines/table-engines/special/dictionary
@@ -69,9 +68,9 @@ WHERE name = 'products'
 └──────────┴──────┴────────┴─────────────────┴─────────────────┴─────────────────┴───────────────┴─────────────────┘
 ```
 
-你可以使用 [dictGet*](/sql-reference/functions/ext-dict-functions#dictget-dictgetordefault-dictgetornull) 函数以这种格式获取字典数据。
+可以使用 [dictGet*](/sql-reference/functions/ext-dict-functions) 函数按此格式获取字典数据。
 
-当你需要获取原始数据或执行 `JOIN` 操作时，此视图并不太有用。对于这些场景，你可以使用 `Dictionary` 引擎，它会以表格形式展示字典数据。
+当需要获取原始数据或执行 `JOIN` 操作时，此视图并不适用。在这些情况下，可以使用 `Dictionary` 引擎，以表格形式展示字典数据。
 
 语法：
 
@@ -79,7 +78,7 @@ WHERE name = 'products'
 CREATE TABLE %table_name% (%fields%) engine = Dictionary(%dictionary_name%)`
 ```
 
-用法示例：
+使用示例：
 
 ```sql
 CREATE TABLE products (product_id UInt64, title String) ENGINE = Dictionary(products);
@@ -87,7 +86,7 @@ CREATE TABLE products (product_id UInt64, title String) ENGINE = Dictionary(prod
 
 好的
 
-来看一下表里的内容。
+看一下表里的内容。
 
 ```sql
 SELECT * FROM products LIMIT 1;
@@ -95,10 +94,10 @@ SELECT * FROM products LIMIT 1;
 
 ```text
 ┌────product_id─┬─title───────────┐
-│        152689 │ 某个商品        │
+│        152689 │ Some item       │
 └───────────────┴─────────────────┘
 ```
 
 **另请参阅**
 
-* [Dictionary 函数](/sql-reference/table-functions/dictionary)
+* [字典函数](/sql-reference/table-functions/dictionary)

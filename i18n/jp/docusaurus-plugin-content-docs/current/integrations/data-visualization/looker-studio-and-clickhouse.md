@@ -23,24 +23,17 @@ import looker_studio_enable_mysql from '@site/static/images/integrations/data-vi
 import looker_studio_mysql_cloud from '@site/static/images/integrations/data-visualization/looker_studio_mysql_cloud.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
 # Looker Studio {#looker-studio}
 
 <PartnerBadge/>
 
 Looker Studio は、公式の Google MySQL データソースを使用して、MySQL インターフェース経由で ClickHouse に接続できます。
 
-
-
 ## ClickHouse Cloud のセットアップ {#clickhouse-cloud-setup}
 <MySQLCloudSetup />
 
-
-
 ## オンプレミス環境での ClickHouse サーバーのセットアップ {#on-premise-clickhouse-server-setup}
 <MySQLOnPremiseSetup />
-
-
 
 ## Looker Studio を ClickHouse に接続する {#connecting-looker-studio-to-clickhouse}
 
@@ -76,8 +69,6 @@ Google が提供する公式の MySQL コネクタ（名前は **MySQL**）を�
 <br/>
 
 これで、データの探索や新しいレポートの作成に進むことができます。
-
-
 
 ## ClickHouse Cloud で Looker Studio を使用する {#using-looker-studio-with-clickhouse-cloud}
 

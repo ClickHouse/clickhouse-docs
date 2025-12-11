@@ -31,7 +31,6 @@ assert qr[0][0] == 4
 
 `InsertContext` には挿入処理中に更新される可変な状態が含まれるため、スレッドセーフではありません。
 
-
 ### 書き込みフォーマット {#write-formats}
 
 書き込みフォーマットは、現在は限られた数の型に対してのみ実装されています。ほとんどの場合、ClickHouse Connect は、最初の（null でない）データ値の型を確認することで、その列に対して適切な書き込みフォーマットを自動的に判定しようとします。たとえば、`DateTime` 列に挿入する際に、その列の最初の挿入値が Python の整数であれば、ClickHouse Connect はそれが実際にはエポック秒であるとみなし、その整数値をそのまま挿入します。
@@ -97,7 +96,6 @@ df = pd.DataFrame({
 client.insert_df("users", df)
 ```
 
-
 #### PyArrow テーブルへの挿入 {#pyarrow-table-insert}
 
 ```python
@@ -114,7 +112,6 @@ arrow_table = pa.table({
 
 client.insert_arrow("users", arrow_table)
 ```
-
 
 #### Arrow バックエンドを利用した DataFrame 挿入（pandas 2.x） {#arrow-backed-dataframe-insert-pandas-2}
 
@@ -133,7 +130,6 @@ df = pd.DataFrame({
 
 client.insert_df_arrow("users", df)
 ```
-
 
 ### タイムゾーン {#time-zones}
 
@@ -176,7 +172,6 @@ print(*results.result_rows, sep="\n")
 pytz を使用する場合、タイムゾーン情報のない（naive な）datetime にタイムゾーン情報を付与するには、`localize()` メソッドを使用する必要があります。`tzinfo=` を直接 datetime コンストラクタに渡すと、過去のオフセットが誤った値になります。UTC の場合は、`tzinfo=pytz.UTC` は正しく動作します。詳細は [pytz docs](https://pythonhosted.org/pytz/#localized-times-and-date-arithmetic) を参照してください。
 :::
 
-
 #### タイムゾーン情報を持たない datetime オブジェクト {#timezone-naive-datetime-objects}
 
 タイムゾーン情報を持たない Python の `datetime.datetime` オブジェクト（`tzinfo` が設定されていないもの）を挿入すると、`.timestamp()` メソッドはそれをシステムのローカルタイムゾーンとして解釈します。曖昧さを避けるため、次のいずれかを推奨します。
@@ -201,7 +196,6 @@ naive_time = datetime(2023, 6, 15, 10, 30, 0)
 epoch_timestamp = int(naive_time.replace(tzinfo=pytz.UTC).timestamp())
 client.insert('events', [[epoch_timestamp]], column_names=['event_time'])
 ```
-
 
 #### タイムゾーンメタデータを持つ DateTime カラム {#datetime-columns-with-timezone-metadata}
 
@@ -231,7 +225,6 @@ print(*results.result_rows, sep="\n")
 # 出力: {#output}
 # (datetime.datetime(2023, 6, 15, 7, 30, tzinfo=<DstTzInfo 'America/Los_Angeles' PDT-1 day, 17:00:00 DST>),) {#datetimedatetime2023-6-15-7-30-tzinfodsttzinfo-americalos_angeles-pdt-1-day-170000-dst}
 ```
-
 
 ## ファイルからの挿入 {#file-inserts}
 

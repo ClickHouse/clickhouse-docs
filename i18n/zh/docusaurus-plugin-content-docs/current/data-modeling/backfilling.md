@@ -9,7 +9,6 @@ doc_type: '指南'
 import nullTableMV from '@site/static/images/data-modeling/null_table_mv.png';
 import Image from '@theme/IdealImage';
 
-
 # 回填数据 {#backfilling-data}
 
 无论是刚接触 ClickHouse，还是负责维护现有部署，用户往往需要将历史数据回填到表中。在某些情况下，这相对简单，但当需要填充物化视图时，就可能变得更加复杂。本指南介绍了一些可用于执行此任务的流程，用户可以根据自己的用例进行应用。
@@ -17,8 +16,6 @@ import Image from '@theme/IdealImage';
 :::note
 本指南假定用户已经熟悉 [增量物化视图](/materialized-view/incremental-materialized-view) 的概念，以及 [使用诸如 S3 和 GCS 等表函数进行数据加载](/integrations/s3)。我们还建议用户阅读我们的[从对象存储优化插入性能](/integrations/s3/performance)指南，其中的建议适用于本指南中涉及的所有插入操作。
 :::
-
-
 
 ## 示例数据集 {#example-dataset}
 
@@ -71,7 +68,6 @@ SETTINGS describe_compact_output = 1
 完整的 PyPI 数据集（包含超过 1 万亿行数据）可在我们的公共演示环境 [clickpy.clickhouse.com](https://clickpy.clickhouse.com) 中访问。关于该数据集的更多详情（包括演示如何利用物化视图提升性能，以及数据如何按日写入和更新），请参见[此处](https://github.com/ClickHouse/clickpy)。
 :::
 
-
 ## 回填场景 {#backfilling-scenarios}
 
 通常在从某个时间点开始消费数据流时，需要进行回填。这些数据会被插入到带有[增量物化视图](/materialized-view/incremental-materialized-view)的 ClickHouse 表中，并在数据块被插入时触发。这些视图可能在插入前对数据进行转换，或者计算聚合并将结果发送到目标表，以便下游应用后续使用。
@@ -84,8 +80,6 @@ SETTINGS describe_compact_output = 1
 我们假设数据将从对象存储中进行回填。在所有情况下，我们的目标都是避免中断数据插入。
 
 我们建议从对象存储中回填历史数据。应尽可能将数据导出为 Parquet 格式，以获得最佳的读取性能和压缩效果（减少网络传输）。文件大小通常以约 150MB 为佳，但 ClickHouse 支持超过 [70 种文件格式](/interfaces/formats)，并能够处理各种大小的文件。
-
-
 
 ## 使用副本表和视图 {#using-duplicate-tables-and-views}
 
@@ -198,7 +192,6 @@ FROM pypi_downloads_v2
 内存峰值:688.77 KiB。
 ```
 
-
 如果我们在第二次加载的任意阶段遇到失败，可以直接[截断](/managing-data/truncate)我们的 `pypi_v2` 和 `pypi_downloads_v2`，然后重新执行数据加载。
 
 在完成数据加载后，我们可以使用 [`ALTER TABLE MOVE PARTITION`](/sql-reference/statements/alter/partition#move-partition-to-table) 子句，将数据从副本表移动到主表中。
@@ -264,7 +257,6 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-
 ClickPipes 在从对象存储加载数据时会使用这种方法，自动创建目标表及其物化视图的副本，从而避免用户手动执行上述步骤。通过同时使用多个 worker 线程（每个线程处理不同的子集（通过 glob 模式匹配）并拥有自己的一组副本表），可以在确保 exactly-once 语义的同时快速加载数据。感兴趣的读者可以在[这篇博客](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part3)中了解更多详情。
 :::
 
-
 ## 场景 1：在现有数据摄取基础上回填数据 {#scenario-1-backfilling-data-with-existing-data-ingestion}
 
 在此场景中，我们假设需要回填的数据并不在一个独立的 bucket 中，因此需要进行过滤。数据已经在持续写入，并且可以确定一个时间戳或单调递增的列，用于界定需要回填的历史数据起点。
@@ -327,7 +319,6 @@ ALTER TABLE pypi_downloads_v2 MOVE PARTITION () TO pypi_downloads
 :::note 在 ClickHouse Cloud 中直接使用 ClickPipes
 如果数据可以隔离在其自身的 bucket 中（且不需要过滤器），ClickHouse Cloud 用户应使用 ClickPipes 来恢复历史备份。除了可以通过多个 worker 并行加载以减少加载时间外，ClickPipes 还会将上述流程自动化——为主表和物化视图创建对应的副本表。
 :::
-
 
 ## 场景 2：向现有表添加物化视图 {#scenario-2-adding-materialized-views-to-existing-tables}
 
@@ -407,7 +398,6 @@ Ok.
 在上述示例中，我们的目标表是 [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree)。在这种情况下，我们可以直接使用原始聚合查询。对于更复杂、基于 [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree) 的用例，则需要为聚合使用带有 `-State` 后缀的函数。相关示例见[此处](/integrations/s3/performance#be-aware-of-merges)。
 :::
 
-
 在我们的例子中，这是一个相对轻量级的聚合，运行时间少于 3 秒，且使用的内存不到 600MiB。对于更复杂或运行时间更长的聚合，用户可以通过使用前面介绍的重复表方案使该过程更健壮，即创建一个影子目标表，例如 `pypi_downloads_per_day_v2`，将数据插入其中，然后将其生成的分区附加到 `pypi_downloads_per_day`。
 
 通常物化视图的查询会更复杂（这很常见，否则用户也不会使用视图！），并且会消耗较多资源。在更少见的情况下，查询所需的资源会超过服务器可用资源。这突出了 ClickHouse 物化视图的一个优势——它们是增量执行的，不会一次性处理整个数据集！
@@ -469,7 +459,6 @@ Peak memory usage: 639.47 MiB.
 
 请注意，此处的内存使用量为 `639.47 MiB`。
 
-
 ##### 调优性能和资源 {#tuning-performance--resources}
 
 在上述场景中，有多个因素会影响性能和资源使用情况。在尝试调优之前，建议先理解《[Optimizing for S3 Insert and Read Performance](/integrations/s3/performance)》指南中 [Using Threads for Reads](/integrations/s3/performance#using-threads-for-reads) 一节所详细说明的写入机制。总结如下：
@@ -512,7 +501,6 @@ Ok.
 0 rows in set. Elapsed: 43.907 sec. Processed 1.50 billion rows, 33.48 GB (34.06 million rows/s., 762.54 MB/s.)
 Peak memory usage: 272.53 MiB.
 ```
-
 
 最后，我们可以通过将 `min_insert_block_size_rows` 设置为 0（使其不再作为块大小的判定因素）以及将 `min_insert_block_size_bytes` 设置为 10485760（10MiB），来进一步减少内存占用。
 
@@ -626,7 +614,6 @@ GROUP BY
 
 0 行结果。耗时 3.719 秒。已处理 20.4 亿行，47.15 GB（548.57 百万行/秒，12.68 GB/秒）。
 ```
-
 
 DROP TABLE pypi&#95;v2;
 

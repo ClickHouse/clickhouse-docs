@@ -7,13 +7,9 @@ title: 'odbc'
 doc_type: 'reference'
 ---
 
-
-
 # odbc 表函数 {#odbc-table-function}
 
 返回一个通过 [ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity) 连接的表。
-
-
 
 ## 语法 {#syntax}
 
@@ -22,7 +18,6 @@ odbc(数据源, external_database, external_table)
 odbc(数据源, external_table)
 odbc(named_collection)
 ```
-
 
 ## 参数 {#arguments}
 
@@ -37,8 +32,6 @@ odbc(named_collection)
 为了安全地使用 ODBC 连接，ClickHouse 使用一个单独的程序 `clickhouse-odbc-bridge`。如果直接从 `clickhouse-server` 加载 ODBC 驱动程序，驱动程序问题可能会导致 ClickHouse 服务器崩溃。ClickHouse 会在需要时自动启动 `clickhouse-odbc-bridge`。ODBC bridge 程序与 `clickhouse-server` 打包在同一个安装包中。
 
 外部表中值为 `NULL` 的字段会被转换为其基础数据类型的默认值。比如，如果远程 MySQL 表的某个字段类型为 `INT NULL`，它会被转换为 0（ClickHouse `Int32` 数据类型的默认值）。
-
-
 
 ## 使用示例 {#usage-example}
 
@@ -116,7 +109,6 @@ SELECT * FROM odbc('DSN=mysqlconn', 'test', 'test')
 │      1 │            0 │     2 │              0 │
 └────────┴──────────────┴───────┴────────────────┘
 ```
-
 
 ## 另请参阅 {#see-also}
 

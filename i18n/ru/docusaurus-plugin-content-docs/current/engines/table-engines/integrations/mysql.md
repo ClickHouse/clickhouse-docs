@@ -7,13 +7,9 @@ title: 'Табличный движок MySQL'
 doc_type: 'reference'
 ---
 
-
-
 # Движок таблицы MySQL {#mysql-table-engine}
 
 Движок MySQL позволяет выполнять запросы `SELECT` и `INSERT` к данным, которые хранятся на удалённом сервере MySQL.
-
-
 
 ## Создание таблицы {#creating-a-table}
 
@@ -65,7 +61,6 @@ SETTINGS
 ```sql
 CREATE TABLE test_replicas (id UInt32, name String, age UInt32, money UInt32) ENGINE = MySQL(`mysql{2|3|4}:3306`, 'clickhouse', 'test_replicas', 'root', 'clickhouse');
 ```
-
 
 ## Пример использования {#usage-example}
 
@@ -132,7 +127,6 @@ SELECT * FROM mysql_table
 └────────────────┴────────┘
 ```
 
-
 ## Настройки {#mysql-settings}
 
 Настройки по умолчанию не очень эффективны, поскольку соединения при этом даже не переиспользуются. Эти настройки позволяют увеличить число запросов, выполняемых сервером в секунду.
@@ -198,8 +192,6 @@ SELECT * FROM mysql_table
 - Положительное целое число.
 
 Значение по умолчанию: `300`.
-
-
 
 ## См. также {#see-also}
 

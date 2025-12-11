@@ -7,8 +7,6 @@ title: 'ALTER TABLE ... MODIFY QUERY 语句'
 doc_type: 'reference'
 ---
 
-
-
 # ALTER TABLE ... MODIFY QUERY 语句 {#alter-table-modify-query-statement}
 
 您可以使用 `ALTER TABLE ... MODIFY QUERY` 语句修改创建 [物化视图](/sql-reference/statements/create/view#materialized-view) 时指定的 `SELECT` 查询，而不会中断数据摄取过程。
@@ -92,7 +90,6 @@ ALTER TABLE mv MODIFY QUERY
   GROUP BY ts, event_type, browser;
 ```
 
-
 INSERT INTO events
 SELECT Date &#39;2020-01-03&#39; + interval number * 900 second,
 [&#39;imp&#39;, &#39;click&#39;][number%2+1],
@@ -172,7 +169,6 @@ browser
 该应用程序功能非常受限，因为只能修改 `SELECT` 子句，无法添加新的列。
 ```
 
-
 ```sql
 CREATE TABLE src_table (`a` UInt32) ENGINE = MergeTree ORDER BY a;
 CREATE MATERIALIZED VIEW mv (`a` UInt32) ENGINE = MergeTree ORDER BY a AS SELECT a FROM src_table;
@@ -203,7 +199,6 @@ SELECT * FROM mv;
 │ 2 │
 └───┘
 ```
-
 
 ## ALTER TABLE ... MODIFY REFRESH 语句 {#alter-table--modify-refresh-statement}
 

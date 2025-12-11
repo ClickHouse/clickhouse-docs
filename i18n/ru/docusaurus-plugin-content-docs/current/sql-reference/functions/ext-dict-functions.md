@@ -14,574 +14,6 @@ doc_type: 'reference'
 
 Информацию о подключении и настройке словарей см. в разделе [Словари](../../sql-reference/dictionaries/index.md).
 
-## dictGet, dictGetOrDefault, dictGetOrNull {#dictget-dictgetordefault-dictgetornull}
-
-Извлекает значения из словаря.
-
-```sql
-dictGet('dict_name', attr_names, id_expr)
-dictGetOrDefault('dict_name', attr_names, id_expr, default_value_expr)
-dictGetOrNull('dict_name', attr_name, id_expr)
-```
-
-**Аргументы**
-
-* `dict_name` — имя словаря. [Строковый литерал](/sql-reference/syntax#string).
-* `attr_names` — имя столбца словаря, [строковый литерал](/sql-reference/syntax#string), или кортеж имён столбцов — [Tuple](/sql-reference/data-types/tuple)([строковый литерал](/sql-reference/syntax#string)).
-* `id_expr` — значение ключа. [Выражение](/sql-reference/syntax#expressions), возвращающее значение типа ключа словаря или значение типа [Tuple](../data-types/tuple.md) в зависимости от конфигурации словаря.
-* `default_value_expr` — значения, возвращаемые, если в словаре нет строки с ключом `id_expr`. [Expression](/sql-reference/syntax#expressions) или [Tuple](../data-types/tuple.md)([Expression](/sql-reference/syntax#expressions)), возвращающее значение (или значения) в типах данных, настроенных для атрибута `attr_names`.
-
-**Возвращаемое значение**
-
-* Если ClickHouse успешно приводит атрибут к [типу данных атрибута](/sql-reference/dictionaries#dictionary-key-and-fields), функции возвращают значение атрибута словаря, соответствующее `id_expr`.
-
-* Если в словаре отсутствует ключ, соответствующий `id_expr`, то:
-
-  * `dictGet` возвращает содержимое элемента `<null_value>`, указанного для атрибута в конфигурации словаря.
-  * `dictGetOrDefault` возвращает значение, переданное в параметре `default_value_expr`.
-  * `dictGetOrNull` возвращает `NULL`, если ключ не найден в словаре.
-
-ClickHouse выдает исключение, если не может распарсить значение атрибута или значение не соответствует типу данных атрибута.
-
-**Пример словаря с простым ключом**
-
-Создайте текстовый файл `ext-dict-test.csv` со следующим содержимым:
-
-```text
-1,1
-2,2
-```
-
-Первый столбец — `id`, второй столбец — `c1`.
-
-Настройте словарь:
-
-```xml
-<clickhouse>
-    <dictionary>
-        <name>ext-dict-test</name>
-        <source>
-            <file>
-                <path>/path-to/ext-dict-test.csv</path>
-                <format>CSV</format>
-            </file>
-        </source>
-        <layout>
-            <flat />
-        </layout>
-        <structure>
-            <id>
-                <name>id</name>
-            </id>
-            <attribute>
-                <name>c1</name>
-                <type>UInt32</type>
-                <null_value></null_value>
-            </attribute>
-        </structure>
-        <lifetime>0</lifetime>
-    </dictionary>
-</clickhouse>
-```
-
-Выполните запрос:
-
-```sql
-SELECT
-    dictGetOrDefault('ext-dict-test', 'c1', number + 1, toUInt32(number * 10)) AS val,
-    toTypeName(val) AS type
-FROM system.numbers
-LIMIT 3;
-```
-
-```text
-┌─val─┬─type───┐
-│   1 │ UInt32 │
-│   2 │ UInt32 │
-│  20 │ UInt32 │
-└─────┴────────┘
-```
-
-**Пример словаря со сложным ключом**
-
-Создайте текстовый файл `ext-dict-mult.csv` со следующим содержимым:
-
-```text
-1,1,'1'
-2,2,'2'
-3,3,'3'
-```
-
-Первый столбец — `id`, второй — `c1`, третий — `c2`.
-
-Настройте словарь:
-
-```xml
-<clickhouse>
-    <dictionary>
-        <name>ext-dict-mult</name>
-        <source>
-            <file>
-                <path>/path-to/ext-dict-mult.csv</path>
-                <format>CSV</format>
-            </file>
-        </source>
-        <layout>
-            <flat />
-        </layout>
-        <structure>
-            <id>
-                <name>id</name>
-            </id>
-            <attribute>
-                <name>c1</name>
-                <type>UInt32</type>
-                <null_value></null_value>
-            </attribute>
-            <attribute>
-                <name>c2</name>
-                <type>String</type>
-                <null_value></null_value>
-            </attribute>
-        </structure>
-        <lifetime>0</lifetime>
-    </dictionary>
-</clickhouse>
-```
-
-Выполните запрос:
-
-```sql
-SELECT
-    dictGet('ext-dict-mult', ('c1','c2'), number + 1) AS val,
-    toTypeName(val) AS type
-FROM system.numbers
-LIMIT 3;
-```
-
-```text
-┌─val─────┬─type──────────────────┐
-│ (1,'1') │ Tuple(UInt8, String)  │
-│ (2,'2') │ Tuple(UInt8, String)  │
-│ (3,'3') │ Tuple(UInt8, String)  │
-└─────────┴───────────────────────┘
-```
-
-**Пример словаря с диапазонным ключом**
-
-Входная таблица:
-
-```sql
-CREATE TABLE range_key_dictionary_source_table
-(
-    key UInt64,
-    start_date Date,
-    end_date Date,
-    value String,
-    value_nullable Nullable(String)
-)
-ENGINE = TinyLog();
-
-INSERT INTO range_key_dictionary_source_table VALUES(1, toDate('2019-05-20'), toDate('2019-05-20'), 'First', 'First');
-INSERT INTO range_key_dictionary_source_table VALUES(2, toDate('2019-05-20'), toDate('2019-05-20'), 'Second', NULL);
-INSERT INTO range_key_dictionary_source_table VALUES(3, toDate('2019-05-20'), toDate('2019-05-20'), 'Third', 'Third');
-```
-
-Создайте словарь:
-
-```sql
-CREATE DICTIONARY range_key_dictionary
-(
-    key UInt64,
-    start_date Date,
-    end_date Date,
-    value String,
-    value_nullable Nullable(String)
-)
-PRIMARY KEY key
-SOURCE(CLICKHOUSE(HOST 'localhost' PORT tcpPort() TABLE 'range_key_dictionary_source_table'))
-LIFETIME(MIN 1 MAX 1000)
-LAYOUT(RANGE_HASHED())
-RANGE(MIN start_date MAX end_date);
-```
-
-Выполните запрос:
-
-```sql
-SELECT
-    (number, toDate('2019-05-20')),
-    dictHas('range_key_dictionary', number, toDate('2019-05-20')),
-    dictGetOrNull('range_key_dictionary', 'value', number, toDate('2019-05-20')),
-    dictGetOrNull('range_key_dictionary', 'value_nullable', number, toDate('2019-05-20')),
-    dictGetOrNull('range_key_dictionary', ('value', 'value_nullable'), number, toDate('2019-05-20'))
-FROM system.numbers LIMIT 5 FORMAT TabSeparated;
-```
-
-Результат:
-
-```text
-(0,'2019-05-20')        0       \N      \N      (NULL,NULL)
-(1,'2019-05-20')        1       First   First   ('First','First')
-(2,'2019-05-20')        1       Second  \N      ('Second',NULL)
-(3,'2019-05-20')        1       Third   Third   ('Third','Third')
-(4,'2019-05-20')        0       \N      \N      (NULL,NULL)
-```
-
-**См. также**
-
-* [Словари](../../sql-reference/dictionaries/index.md)
-
-
-## dictHas {#dicthas}
-
-Проверяет, присутствует ли ключ в словаре.
-
-```sql
-dictHas('dict_name', id_expr)
-```
-
-**Аргументы**
-
-* `dict_name` — имя словаря. [Строковый литерал](/sql-reference/syntax#string).
-* `id_expr` — значение ключа. [Выражение](/sql-reference/syntax#expressions), возвращающее значение типа ключа словаря или значение типа [Tuple](../data-types/tuple.md) в зависимости от конфигурации словаря.
-
-**Возвращаемое значение**
-
-* 0, если ключ отсутствует. [UInt8](../data-types/int-uint.md).
-* 1, если ключ существует. [UInt8](../data-types/int-uint.md).
-
-
-## dictGetHierarchy {#dictgethierarchy}
-
-Создаёт массив, содержащий всех родителей заданного ключа в [иерархическом словаре](../../sql-reference/dictionaries/index.md#hierarchical-dictionaries).
-
-**Синтаксис**
-
-```sql
-dictGetHierarchy('dict_name', key)
-```
-
-**Аргументы**
-
-* `dict_name` — Имя словаря. [Строковый литерал](/sql-reference/syntax#string).
-* `key` — Значение ключа. [Выражение](/sql-reference/syntax#expressions), возвращающее значение типа [UInt64](../data-types/int-uint.md).
-
-**Возвращаемое значение**
-
-* Родительские элементы для ключа. [Array(UInt64)](../data-types/array.md).
-
-
-## dictIsIn {#dictisin}
-
-Проверяет наличие предка ключа во всей иерархической цепочке словаря.
-
-```sql
-dictIsIn('dict_name', child_id_expr, ancestor_id_expr)
-```
-
-**Аргументы**
-
-* `dict_name` — имя словаря. [Строковый литерал](/sql-reference/syntax#string).
-* `child_id_expr` — ключ, который требуется проверить. [Выражение](/sql-reference/syntax#expressions), возвращающее значение типа [UInt64](../data-types/int-uint.md).
-* `ancestor_id_expr` — предполагаемый предок ключа `child_id_expr`. [Выражение](/sql-reference/syntax#expressions), возвращающее значение типа [UInt64](../data-types/int-uint.md).
-
-**Возвращаемое значение**
-
-* 0, если `child_id_expr` не является потомком `ancestor_id_expr`. [UInt8](../data-types/int-uint.md).
-* 1, если `child_id_expr` является потомком `ancestor_id_expr` или если `child_id_expr` равен `ancestor_id_expr`. [UInt8](../data-types/int-uint.md).
-
-
-## dictGetChildren {#dictgetchildren}
-
-Возвращает дочерние элементы первого уровня в виде массива индексов. Является обратной операцией к [dictGetHierarchy](#dictgethierarchy).
-
-**Синтаксис**
-
-```sql
-dictGetChildren(имя_словаря, ключ)
-```
-
-**Аргументы**
-
-* `dict_name` — имя словаря. [Строковый литерал](/sql-reference/syntax#string).
-* `key` — значение ключа. [Выражение](/sql-reference/syntax#expressions), возвращающее значение типа [UInt64](../data-types/int-uint.md).
-
-**Возвращаемые значения**
-
-* Потомки первого уровня для ключа. [Array](../data-types/array.md)([UInt64](../data-types/int-uint.md)).
-
-**Пример**
-
-Рассмотрим иерархический словарь:
-
-```text
-┌─id─┬─parent_id─┐
-│  1 │         0 │
-│  2 │         1 │
-│  3 │         1 │
-│  4 │         2 │
-└────┴───────────┘
-```
-
-Дочерние элементы первого уровня:
-
-```sql
-SELECT dictGetChildren('hierarchy_flat_dictionary', number) FROM system.numbers LIMIT 4;
-```
-
-```text
-┌─dictGetChildren('hierarchy_flat_dictionary', number)─┐
-│ [1]                                                  │
-│ [2,3]                                                │
-│ [4]                                                  │
-│ []                                                   │
-└──────────────────────────────────────────────────────┘
-```
-
-
-## dictGetDescendant {#dictgetdescendant}
-
-Возвращает всех потомков так, как если бы функция [dictGetChildren](#dictgetchildren) была рекурсивно применена `level` раз.
-
-**Синтаксис**
-
-```sql
-dictGetDescendants(dict_name, key, level)
-```
-
-**Аргументы**
-
-* `dict_name` — имя словаря. [Строковый литерал](/sql-reference/syntax#string).
-* `key` — значение ключа. [Выражение](/sql-reference/syntax#expressions), возвращающее значение типа [UInt64](../data-types/int-uint.md).
-* `level` — уровень иерархии. Если `level = 0`, возвращает всех потомков до последнего уровня. [UInt8](../data-types/int-uint.md).
-
-**Возвращаемые значения**
-
-* Потомки указанного ключа. [Array](../data-types/array.md)([UInt64](../data-types/int-uint.md)).
-
-**Пример**
-
-Рассмотрим иерархический словарь:
-
-```text
-┌─id─┬─parent_id─┐
-│  1 │         0 │
-│  2 │         1 │
-│  3 │         1 │
-│  4 │         2 │
-└────┴───────────┘
-```
-
-Все потомки:
-
-```sql
-SELECT dictGetDescendants('hierarchy_flat_dictionary', number) FROM system.numbers LIMIT 4;
-```
-
-```text
-┌─dictGetDescendants('hierarchy_flat_dictionary', number)─┐
-│ [1,2,3,4]                                               │
-│ [2,3,4]                                                 │
-│ [4]                                                     │
-│ []                                                      │
-└─────────────────────────────────────────────────────────┘
-```
-
-Потомки первого уровня:
-
-```sql
-SELECT dictGetDescendants('hierarchy_flat_dictionary', number, 1) FROM system.numbers LIMIT 4;
-```
-
-```text
-┌─dictGetDescendants('hierarchy_flat_dictionary', number, 1)─┐
-│ [1]                                                        │
-│ [2,3]                                                      │
-│ [4]                                                        │
-│ []                                                         │
-└────────────────────────────────────────────────────────────┘
-```
-
-
-## dictGetAll {#dictgetall}
-
-Извлекает значения атрибутов всех узлов, соответствующих каждому ключу в [словаре на основе дерева регулярных выражений](../../sql-reference/dictionaries/index.md#regexp-tree-dictionary).
-
-Помимо возврата значений типа `Array(T)` вместо `T`, эта функция ведёт себя аналогично [`dictGet`](#dictget-dictgetordefault-dictgetornull).
-
-**Синтаксис**
-
-```sql
-dictGetAll('dict_name', attr_names, id_expr[, limit])
-```
-
-**Аргументы**
-
-* `dict_name` — имя словаря. [Строковый литерал](/sql-reference/syntax#string).
-* `attr_names` — имя столбца словаря — [строковый литерал](/sql-reference/syntax#string) — или кортеж имён столбцов — [Tuple](/sql-reference/data-types/tuple)([строковый литерал](/sql-reference/syntax#string)).
-* `id_expr` — значение ключа. [Выражение](/sql-reference/syntax#expressions), возвращающее массив значений типа ключа словаря или значение типа [Tuple](/sql-reference/data-types/tuple) в зависимости от конфигурации словаря.
-* `limit` — максимальная длина для каждого возвращаемого массива значений. При усечении дочерние узлы имеют приоритет над родительскими, а в остальных случаях соблюдается определённый порядок списка для словаря regexp tree. Если параметр не указан, длина массива не ограничена.
-
-**Возвращаемое значение**
-
-* Если ClickHouse успешно интерпретирует значение атрибута в его тип данных, определённый в словаре, возвращается массив значений атрибутов словаря, которые соответствуют `id_expr` для каждого атрибута, указанного в `attr_names`.
-
-* Если в словаре нет ключа, соответствующего `id_expr`, возвращается пустой массив.
-
-ClickHouse выбрасывает исключение, если не может интерпретировать значение атрибута или значение не соответствует типу данных атрибута.
-
-**Пример**
-
-Рассмотрим следующий словарь regexp tree:
-
-```sql
-CREATE DICTIONARY regexp_dict
-(
-    regexp String,
-    tag String
-)
-PRIMARY KEY(regexp)
-SOURCE(YAMLRegExpTree(PATH '/var/lib/clickhouse/user_files/regexp_tree.yaml'))
-LAYOUT(regexp_tree)
-...
-```
-
-```yaml
-# /var/lib/clickhouse/user_files/regexp_tree.yaml {#varlibclickhouseuser_filesregexp_treeyaml}
-- regexp: 'foo'
-  tag: 'foo_attr'
-- regexp: 'bar'
-  tag: 'bar_attr'
-- regexp: 'baz'
-  tag: 'baz_attr'
-```
-
-Получить все совпадающие значения:
-
-```sql
-SELECT dictGetAll('regexp_dict', 'tag', 'foobarbaz');
-```
-
-```text
-┌─dictGetAll('regexp_dict', 'tag', 'foobarbaz')─┐
-│ ['foo_attr','bar_attr','baz_attr']            │
-└───────────────────────────────────────────────┘
-```
-
-Получите до двух совпадающих значений:
-
-```sql
-SELECT dictGetAll('regexp_dict', 'tag', 'foobarbaz', 2);
-```
-
-```text
-┌─dictGetAll('regexp_dict', 'tag', 'foobarbaz', 2)─┐
-│ ['foo_attr','bar_attr']                          │
-└──────────────────────────────────────────────────┘
-```
-
-
-## dictGetKeys {#dictgetkeys}
-
-Возвращает ключ(и) словаря, значение указанного атрибута которых равно заданному значению. Является обратной функцией к [`dictGet`](#dictget-dictgetordefault-dictgetornull) по одному атрибуту.
-
-**Синтаксис**
-
-```sql
-dictGetKeys('dict_name', 'attr_name', value_expr);
-```
-
-**Аргументы**
-
-* `dict_name` — имя словаря. [Строковый литерал](/sql-reference/syntax#string).
-* `attr_name` — имя столбца атрибута словаря. [Строковый литерал](/sql-reference/syntax#string).
-* `value_expr` — значение для сравнения с атрибутом. [Выражение](/sql-reference/syntax#expressions), которое может быть приведено к типу данных атрибута.
-
-**Возвращаемое значение**
-
-* Для словарей с простым ключом: массив ключей, для которых значение атрибута равно `value_expr`. [Array(T)](../data-types/array.md), где `T` — тип данных ключа словаря.
-
-* Для словарей с составным ключом: массив кортежей ключей, для которых значение атрибута равно `value_expr`. [Array](../data-types/array.md)([Tuple(T1, T2, ...)](../data-types/tuple.md)), где каждый `Tuple` содержит столбцы ключа словаря в заданном порядке.
-
-* Если в словаре нет атрибута, соответствующего `value_expr`, возвращается пустой массив.
-
-ClickHouse генерирует исключение, если не удаётся интерпретировать значение атрибута или привести его к типу данных атрибута.
-
-**Пример**
-
-Рассмотрим следующий словарь:
-
-```txt
- ┌─id─┬─level──┐
- │  1 │ low    │
- │  2 │ high   │
- │  3 │ medium │
- │  4 │ high   │
- └────┴────────┘
-```
-
-Теперь получим все идентификаторы с уровнем `high`:
-
-```sql
-SELECT dictGetKeys('levels', 'level', 'high') AS ids;
-```
-
-```text
- ┌─ids───┐
- │ [4,2] │
- └───────┘
-```
-
-:::note
-Используйте параметр `max_reverse_dictionary_lookup_cache_size_bytes`, чтобы ограничить размер кеша обратного поиска для каждого запроса, используемого `dictGetKeys`. Кеш хранит сериализованные кортежи ключей для каждого значения атрибута, чтобы избежать повторного сканирования словаря в рамках одного и того же запроса. Кеш не сохраняется между запросами. Когда лимит достигается, записи вытесняются по принципу LRU. Это наиболее эффективно для больших словарей, когда входные данные имеют низкую кардинальность и рабочий набор помещается в кеш. Установите значение `0`, чтобы отключить кеширование.
-
-Кроме того, если уникальные значения столбца `attr_name` помещаются в кеш, то в большинстве случаев выполнение функции должно быть линейным по количеству входных строк плюс небольшое количество сканирований словаря.
-:::
-
-
-## Другие функции {#other-functions}
-
-ClickHouse поддерживает специализированные функции, которые преобразуют значения атрибутов словаря в определённый тип данных независимо от конфигурации словаря.
-
-Функции:
-
-* `dictGetInt8`, `dictGetInt16`, `dictGetInt32`, `dictGetInt64`
-* `dictGetUInt8`, `dictGetUInt16`, `dictGetUInt32`, `dictGetUInt64`
-* `dictGetFloat32`, `dictGetFloat64`
-* `dictGetDate`
-* `dictGetDateTime`
-* `dictGetUUID`
-* `dictGetString`
-* `dictGetIPv4`, `dictGetIPv6`
-
-Все эти функции имеют модификацию `OrDefault`. Например, `dictGetDateOrDefault`.
-
-Синтаксис:
-
-```sql
-dictGet[Type]('dict_name', 'attr_name', id_expr)
-dictGet[Type]OrDefault('dict_name', 'attr_name', id_expr, default_value_expr)
-```
-
-**Аргументы**
-
-* `dict_name` — Имя словаря. [Строковый литерал](/sql-reference/syntax#string).
-* `attr_name` — Имя столбца словаря. [Строковый литерал](/sql-reference/syntax#string).
-* `id_expr` — Значение ключа. [Выражение](/sql-reference/syntax#expressions), возвращающее значение типа [UInt64](../data-types/int-uint.md) или [Tuple](../data-types/tuple.md) в зависимости от конфигурации словаря.
-* `default_value_expr` — Значение, возвращаемое, если в словаре нет строки с ключом `id_expr`. [Выражение](/sql-reference/syntax#expressions), возвращающее значение в тип данных, настроенный для атрибута `attr_name`.
-
-**Возвращаемое значение**
-
-* Если ClickHouse успешно разбирает атрибут в [тип данных атрибута](/sql-reference/dictionaries#dictionary-key-and-fields), функции возвращают значение атрибута словаря, соответствующее `id_expr`.
-
-* Если запрошенный `id_expr` отсутствует в словаре, то:
-
-  * `dictGet[Type]` возвращает содержимое элемента `<null_value>`, указанного для атрибута в конфигурации словаря.
-  * `dictGet[Type]OrDefault` возвращает значение, переданное в параметре `default_value_expr`.
-
-ClickHouse генерирует исключение, если не может разобрать значение атрибута или если значение не соответствует типу данных атрибута.
-
-
 ## Примеры словарей {#example-dictionary}
 
 Примеры в этом разделе используют следующие словари. Вы можете создать их в ClickHouse,
@@ -868,7 +300,6 @@ LAYOUT(REGEXP_TREE);
 
 {/*AUTOGENERATED_START*/ }
 
-
 ## dictGet {#dictGet}
 
 Появилась в версии: v18.16
@@ -928,7 +359,6 @@ LIMIT 3;
 └─────────┴────────────────┘
 ```
 
-
 ## dictGetAll {#dictGetAll}
 
 Появилась в версии: v23.5
@@ -977,12 +407,11 @@ SELECT
 └────────────────────────────────────────────────────────────────┴─────────────────────────────────────────┴─────────────┘
 ```
 
-
 ## dictGetChildren {#dictGetChildren}
 
 Появилась в версии: v21.4
 
-Возвращает дочерние элементы первого уровня в виде массива индексов. Является обратным преобразованием к [dictGetHierarchy](#dictgethierarchy).
+Возвращает дочерние элементы первого уровня в виде массива индексов. Является обратным преобразованием для [dictGetHierarchy](#dictGetHierarchy).
 
 **Синтаксис**
 
@@ -997,11 +426,11 @@ dictGetChildren(dict_name, key)
 
 **Возвращаемое значение**
 
-Возвращает потомков первого уровня для ключа. [`Array(UInt64)`](/sql-reference/data-types/array)
+Возвращает дочерние элементы (потомков) первого уровня для указанного ключа. [`Array(UInt64)`](/sql-reference/data-types/array)
 
 **Примеры**
 
-**Получение потомков первого уровня словаря**
+**Получить дочерние элементы первого уровня словаря**
 
 ```sql title=Query
 SELECT dictGetChildren('hierarchical_dictionary', 2);
@@ -1012,7 +441,6 @@ SELECT dictGetChildren('hierarchical_dictionary', 2);
 │ [4,5]                    │
 └──────────────────────────┘
 ```
-
 
 ## dictGetDate {#dictGetDate}
 
@@ -1054,7 +482,6 @@ SELECT dictGetDate('all_types_dict', 'Date_value', 1)
 │               2020-01-01 │
 └──────────────────────────┘
 ```
-
 
 ## dictGetDateOrDefault {#dictGetDateOrDefault}
 
@@ -1105,7 +532,6 @@ SELECT dictGetDateOrDefault('all_types_dict', 'Date_value', 999, toDate('1970-01
 └──────────────────────────┘
 ```
 
-
 ## dictGetDateTime {#dictGetDateTime}
 
 Появилась в версии: v1.1
@@ -1146,7 +572,6 @@ SELECT dictGetDateTime('all_types_dict', 'DateTime_value', 1)
 │      2024-01-15 10:30:00 │
 └──────────────────────────┘
 ```
-
 
 ## dictGetDateTimeOrDefault {#dictGetDateTimeOrDefault}
 
@@ -1197,7 +622,6 @@ SELECT dictGetDateTimeOrDefault('all_types_dict', 'DateTime_value', 999, toDateT
 └──────────────────────────┘
 ```
 
-
 ## dictGetDescendants {#dictGetDescendants}
 
 Добавлено в: v21.4
@@ -1243,7 +667,6 @@ SELECT dictGetDescendants('hierarchical_dictionary', 0, 2)
 └──────────────────────────┘
 ```
 
-
 ## dictGetFloat32 {#dictGetFloat32}
 
 Появилась в версии: v1.1
@@ -1284,7 +707,6 @@ SELECT dictGetFloat32('all_types_dict', 'Float32_value', 1)
 │               -123.123   │
 └──────────────────────────┘
 ```
-
 
 ## dictGetFloat32OrDefault {#dictGetFloat32OrDefault}
 
@@ -1335,7 +757,6 @@ SELECT dictGetFloat32OrDefault('all_types_dict', 'Float32_value', 999, -1.0);
 └───────────────────────────┘
 ```
 
-
 ## dictGetFloat64 {#dictGetFloat64}
 
 Впервые представлена в версии v1.1
@@ -1376,7 +797,6 @@ SELECT dictGetFloat64('all_types_dict', 'Float64_value', 1)
 │                 -123.123 │
 └──────────────────────────┘
 ```
-
 
 ## dictGetFloat64OrDefault {#dictGetFloat64OrDefault}
 
@@ -1427,7 +847,6 @@ SELECT dictGetFloat64OrDefault('all_types_dict', 'Float64_value', 999, nan);
 └──────────────────────────┘
 ```
 
-
 ## dictGetHierarchy {#dictGetHierarchy}
 
 Появилось в версии: v1.1
@@ -1462,7 +881,6 @@ SELECT dictGetHierarchy('hierarchical_dictionary', 5)
 │ [5,2,1]                  │
 └──────────────────────────┘
 ```
-
 
 ## dictGetIPv4 {#dictGetIPv4}
 
@@ -1504,7 +922,6 @@ SELECT dictGetIPv4('all_types_dict', 'IPv4_value', 1)
 │ 192.168.0.1                         │
 └─────────────────────────────────────┘
 ```
-
 
 ## dictGetIPv4OrDefault {#dictGetIPv4OrDefault}
 
@@ -1555,7 +972,6 @@ SELECT dictGetIPv4OrDefault('all_types_dict', 'IPv4_value', 999, toIPv4('0.0.0.0
 └──────────────────────────────┘
 ```
 
-
 ## dictGetIPv6 {#dictGetIPv6}
 
 Добавлена в версии: v23.1
@@ -1596,7 +1012,6 @@ SELECT dictGetIPv6('all_types_dict', 'IPv6_value', 1)
 │ 2001:db8:85a3::8a2e:370:7334        │
 └─────────────────────────────────────┘
 ```
-
 
 ## dictGetIPv6OrDefault {#dictGetIPv6OrDefault}
 
@@ -1647,7 +1062,6 @@ SELECT dictGetIPv6OrDefault('all_types_dict', 'IPv6_value', 999, '::1'::IPv6);
 └──────────────────────────────┘
 ```
 
-
 ## dictGetInt16 {#dictGetInt16}
 
 Добавлено в: v1.1
@@ -1688,7 +1102,6 @@ SELECT dictGetInt16('all_types_dict', 'Int16_value', 1)
 │                    -5000 │
 └──────────────────────────┘
 ```
-
 
 ## dictGetInt16OrDefault {#dictGetInt16OrDefault}
 
@@ -1739,7 +1152,6 @@ SELECT dictGetInt16OrDefault('all_types_dict', 'Int16_value', 999, -1);
 └──────────────────────────┘
 ```
 
-
 ## dictGetInt32 {#dictGetInt32}
 
 Добавлена в версии: v1.1
@@ -1780,7 +1192,6 @@ SELECT dictGetInt32('all_types_dict', 'Int32_value', 1)
 │                -1000000  │
 └──────────────────────────┘
 ```
-
 
 ## dictGetInt32OrDefault {#dictGetInt32OrDefault}
 
@@ -1831,7 +1242,6 @@ SELECT dictGetInt32OrDefault('all_types_dict', 'Int32_value', 999, -1);
 └──────────────────────────┘
 ```
 
-
 ## dictGetInt64 {#dictGetInt64}
 
 Добавлена в: v1.1
@@ -1872,7 +1282,6 @@ SELECT dictGetInt64('all_types_dict', 'Int64_value', 1)
 │       -9223372036854775807 │
 └────────────────────────────┘
 ```
-
 
 ## dictGetInt64OrDefault {#dictGetInt64OrDefault}
 
@@ -1923,7 +1332,6 @@ SELECT dictGetInt64OrDefault('all_types_dict', 'Int64_value', 999, -1);
 └──────────────────────────┘
 ```
 
-
 ## dictGetInt8 {#dictGetInt8}
 
 Введена в версии: v1.1
@@ -1964,7 +1372,6 @@ SELECT dictGetInt8('all_types_dict', 'Int8_value', 1)
 │                     -100 │
 └──────────────────────────┘
 ```
-
 
 ## dictGetInt8OrDefault {#dictGetInt8OrDefault}
 
@@ -2015,7 +1422,6 @@ SELECT dictGetInt8OrDefault('all_types_dict', 'Int8_value', 999, -1);
 └──────────────────────────┘
 ```
 
-
 ## dictGetKeys {#dictGetKeys}
 
 Введена в версии v25.12
@@ -2057,7 +1463,6 @@ SELECT dictGetKeys('task_id_to_priority_dictionary', 'priority_level', 'high') A
 └───────┘
 ```
 
-
 ## dictGetOrDefault {#dictGetOrDefault}
 
 Добавлена в версии v18.16
@@ -2093,7 +1498,6 @@ SELECT dictGetOrDefault('ext_dict_mult', 'c1', toUInt64(999), 0) AS val
 ```response title=Response
 0
 ```
-
 
 ## dictGetOrNull {#dictGetOrNull}
 
@@ -2135,7 +1539,6 @@ FROM system.numbers LIMIT 5 FORMAT TabSeparated;
 (4,'2019-05-20')  \N
 ```
 
-
 ## dictGetString {#dictGetString}
 
 Добавлена в версии: v1.1
@@ -2176,7 +1579,6 @@ SELECT dictGetString('all_types_dict', 'String_value', 1)
 │ test string                │
 └────────────────────────────┘
 ```
-
 
 ## dictGetStringOrDefault {#dictGetStringOrDefault}
 
@@ -2227,7 +1629,6 @@ SELECT dictGetStringOrDefault('all_types_dict', 'String_value', 999, 'default');
 └─────────────────────────────────┘
 ```
 
-
 ## dictGetUInt16 {#dictGetUInt16}
 
 Впервые появилась в версии v1.1
@@ -2268,7 +1669,6 @@ SELECT dictGetUInt16('all_types_dict', 'UInt16_value', 1)
 │                     5000 │
 └──────────────────────────┘
 ```
-
 
 ## dictGetUInt16OrDefault {#dictGetUInt16OrDefault}
 
@@ -2319,7 +1719,6 @@ SELECT dictGetUInt16OrDefault('all_types_dict', 'UInt16_value', 999, 0);
 └──────────────────────────┘
 ```
 
-
 ## dictGetUInt32 {#dictGetUInt32}
 
 Добавлена в версии: v1.1
@@ -2360,7 +1759,6 @@ SELECT dictGetUInt32('all_types_dict', 'UInt32_value', 1)
 │                  1000000 │
 └──────────────────────────┘
 ```
-
 
 ## dictGetUInt32OrDefault {#dictGetUInt32OrDefault}
 
@@ -2411,7 +1809,6 @@ SELECT dictGetUInt32OrDefault('all_types_dict', 'UInt32_value', 999, 0);
 └──────────────────────────┘
 ```
 
-
 ## dictGetUInt64 {#dictGetUInt64}
 
 Впервые представлена в версии v1.1
@@ -2452,7 +1849,6 @@ SELECT dictGetUInt64('all_types_dict', 'UInt64_value', 1)
 │      9223372036854775807 │
 └──────────────────────────┘
 ```
-
 
 ## dictGetUInt64OrDefault {#dictGetUInt64OrDefault}
 
@@ -2503,7 +1899,6 @@ SELECT dictGetUInt64OrDefault('all_types_dict', 'UInt64_value', 999, 0);
 └──────────────────────────┘
 ```
 
-
 ## dictGetUInt8 {#dictGetUInt8}
 
 Добавлена в версии v1.1
@@ -2544,7 +1939,6 @@ SELECT dictGetUInt8('all_types_dict', 'UInt8_value', 1)
 │                      100 │
 └──────────────────────────┘
 ```
-
 
 ## dictGetUInt8OrDefault {#dictGetUInt8OrDefault}
 
@@ -2595,7 +1989,6 @@ SELECT dictGetUInt8OrDefault('all_types_dict', 'UInt8_value', 999, 0);
 └──────────────────────────┘
 ```
 
-
 ## dictGetUUID {#dictGetUUID}
 
 Появилось в версии: v1.1
@@ -2636,7 +2029,6 @@ SELECT dictGetUUID('all_types_dict', 'UUID_value', 1)
 │ 123e4567-e89b-12d3-a456-426614174000 │
 └──────────────────────────────────────┘
 ```
-
 
 ## dictGetUUIDOrDefault {#dictGetUUIDOrDefault}
 
@@ -2687,7 +2079,6 @@ SELECT dictGetUUIDOrDefault('all_types_dict', 'UUID_value', 999, '00000000-0000-
 └────────────────────────────────────────┘
 ```
 
-
 ## dictHas {#dictHas}
 
 Добавлена в версии: v1.1
@@ -2735,7 +2126,6 @@ SELECT dictHas('hierarchical_dictionary', 7);
 │                        0 │
 └──────────────────────────┘
 ```
-
 
 ## dictIsIn {#dictIsIn}
 

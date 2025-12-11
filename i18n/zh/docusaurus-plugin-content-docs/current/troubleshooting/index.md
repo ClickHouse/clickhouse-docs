@@ -20,13 +20,9 @@ title: '常见问题故障排查'
 description: '查找最常见 ClickHouse 问题的解决方案，包括慢查询、内存错误、连接问题和配置问题。'
 ---
 
-
-
 # 常见问题排查 {#troubleshooting-common-issues}
 
 使用 ClickHouse 时遇到问题了？你可以在这里找到常见问题的解决方案。
-
-
 
 ## 性能和错误 {#performance-and-errors}
 
@@ -60,8 +56,6 @@ description: '查找最常见 ClickHouse 问题的解决方案，包括慢查询
 - **其他问题** → [在集群中跟踪错误](/docs/operations/system-tables/errors)
 </details>
 
-
-
 ## 内存和资源 {#memory-and-resources}
 
 高内存占用、内存不足导致的崩溃，或需要帮助确定 ClickHouse 部署的资源规格。
@@ -89,8 +83,6 @@ description: '查找最常见 ClickHouse 问题的解决方案，包括慢查询
 
 </details>
 
-
-
 ## 连接与身份验证 {#connections-and-authentication}
 
 无法连接 ClickHouse、身份验证失败、SSL 证书错误或客户端配置问题。
@@ -115,8 +107,6 @@ description: '查找最常见 ClickHouse 问题的解决方案，包括慢查询
 - [数据格式解析问题](/docs/interfaces/formats)
 
 </details>
-
-
 
 ## 安装与配置 {#setup-and-configuration}
 
@@ -145,12 +135,10 @@ description: '查找最常见 ClickHouse 问题的解决方案，包括慢查询
 - [设置数据复制](/docs/engines/table-engines/mergetree-family/replication)
 - [配置分布式表](/docs/engines/table-engines/special/distributed)
 <!-- - [ClickHouse Keeper setup](/docs/guides/sre/keeper/index.md) -->
-- [设置备份与恢复](/docs/operations/backup)
+- [设置备份与恢复](/docs/operations/backup/overview)
 - [配置监控](/docs/operations/system-tables/overview)
 
 </details>
-
-
 
 ## 还需要帮助？ {#still-need-help}
 

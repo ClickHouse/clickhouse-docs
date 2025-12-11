@@ -7,20 +7,15 @@ title: 'mysql'
 doc_type: 'reference'
 ---
 
-
-
 # MySQL 表函数 {#mysql-table-function}
 
 允许对存储在远程 MySQL 服务器中的数据执行 `SELECT` 和 `INSERT` 查询。
-
-
 
 ## 语法 {#syntax}
 
 ```sql
 mysql({host:port, database, table, user, password[, replace_query, on_duplicate_clause] | named_collection[, option=value [,..]]})
 ```
-
 
 ## 参数 {#arguments}
 
@@ -52,7 +47,6 @@ SELECT name FROM mysql(`mysql{1|2|3}:3306`, 'mysql_database', 'mysql_table', 'us
 SELECT name FROM mysql(`mysql1:3306|mysql2:3306|mysql3:3306`, 'mysql_database', 'mysql_table', 'user', 'password');
 ```
 
-
 ## 返回值 {#returned_value}
 
 一个表对象，其列与原始 MySQL 表相同。
@@ -64,8 +58,6 @@ SELECT name FROM mysql(`mysql1:3306|mysql2:3306|mysql3:3306`, 'mysql_database', 
 :::note
 在 `INSERT` 查询中，为了区分表函数 `mysql(...)` 与带列名列表的表名，必须使用关键字 `FUNCTION` 或 `TABLE FUNCTION`。见下方示例。
 :::
-
-
 
 ## 示例 {#examples}
 
@@ -149,7 +141,6 @@ INSERT INTO mysql_copy
 SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password')
 WHERE id > (SELECT max(id) FROM mysql_copy);
 ```
-
 
 ## 相关内容 {#related}
 

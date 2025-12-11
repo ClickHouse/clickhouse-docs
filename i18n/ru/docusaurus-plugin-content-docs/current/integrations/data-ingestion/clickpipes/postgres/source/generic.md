@@ -7,8 +7,6 @@ doc_type: 'guide'
 keywords: ['postgres', 'clickpipes', 'logical replication', 'pg_hba.conf', 'wal level']
 ---
 
-
-
 # Универсальное руководство по настройке источника Postgres {#generic-postgres-source-setup-guide}
 
 :::info
@@ -18,8 +16,6 @@ keywords: ['postgres', 'clickpipes', 'logical replication', 'pg_hba.conf', 'wal 
 :::
 
 ClickPipes поддерживает Postgres версий 12 и выше.
-
-
 
 ## Включение логической репликации {#enable-logical-replication}
 
@@ -56,8 +52,6 @@ ClickPipes поддерживает Postgres версий 12 и выше.
     ```
 3. Если вы внесли какие-либо изменения в конфигурацию, как описано выше, вам НЕОБХОДИМО ПЕРЕЗАПУСТИТЬ экземпляр Postgres, чтобы изменения вступили в силу.
 
-
-
 ## Создание пользователя с правами и публикацией {#creating-a-user-with-permissions-and-publication}
 
 Создайте нового пользователя для ClickPipes с необходимыми правами, подходящими для CDC,
@@ -84,7 +78,6 @@ ClickPipes поддерживает Postgres версий 12 и выше.
 
 :::
 
-
 ## Разрешение подключений в pg_hba.conf для пользователя ClickPipes {#enabling-connections-in-pg_hbaconf-to-the-clickpipes-user}
 
 Если вы развертываете всё самостоятельно, вам необходимо разрешить подключения к пользователю ClickPipes с IP-адресов ClickPipes, выполнив описанные ниже шаги. Если вы используете управляемый сервис, вы можете сделать то же самое, следуя документации провайдера.
@@ -98,8 +91,6 @@ ClickPipes поддерживает Postgres версий 12 и выше.
     ```sql
     SELECT pg_reload_conf();
     ```
-
-
 
 ## Увеличение `max_slot_wal_keep_size` {#increase-max_slot_wal_keep_size}
 
@@ -122,7 +113,6 @@ SELECT pg_reload_conf();
 Для более точного подбора этого значения вы можете связаться с командой ClickPipes.
 
 :::
-
 
 ## Что дальше? {#whats-next}
 

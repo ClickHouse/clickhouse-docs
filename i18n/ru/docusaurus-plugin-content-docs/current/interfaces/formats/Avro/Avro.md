@@ -15,7 +15,6 @@ import DataTypeMapping from './_snippets/data-types-matching.md'
 | ---- | ----- | --------- |
 | ✔    | ✔     |           |
 
-
 ## Описание {#description}
 
 [Apache Avro](https://avro.apache.org/) — это строчно-ориентированный формат сериализации данных, который использует двоичное кодирование для эффективной обработки. Формат `Avro` поддерживает чтение и запись [файлов данных Avro](https://avro.apache.org/docs/++version++/specification/#object-container-files). Этот формат рассчитан на самоописательные сообщения со встроенной схемой. Если вы используете Avro с реестром схем, обратитесь к формату [`AvroConfluent`](./AvroConfluent.md).
@@ -54,7 +53,6 @@ $ cat file.avro | clickhouse-client --query="INSERT INTO {some_table} FORMAT Avr
 
 При импорте данных, если поле не найдено в схеме и включена настройка [`input_format_avro_allow_missing_fields`](/operations/settings/settings-formats.md/#input_format_avro_allow_missing_fields), вместо генерации ошибки будет использовано значение по умолчанию.
 
-
 ### Запись данных в формате Avro {#writing-avro-data}
 
 Чтобы записать данные из таблицы ClickHouse в файл формата Avro:
@@ -69,7 +67,6 @@ $ clickhouse-client --query="SELECT * FROM {some_table} FORMAT Avro" > file.avro
 * Далее могут включать только `[A-Za-z0-9_]`
 
 Сжатие выходных данных и интервал синхронизации для файлов Avro можно настроить с помощью параметров [`output_format_avro_codec`](/operations/settings/settings-formats.md/#output_format_avro_codec) и [`output_format_avro_sync_interval`](/operations/settings/settings-formats.md/#output_format_avro_sync_interval) соответственно.
-
 
 ### Определение схемы Avro {#inferring-the-avro-schema}
 

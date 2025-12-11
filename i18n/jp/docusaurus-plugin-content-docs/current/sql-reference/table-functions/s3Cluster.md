@@ -7,15 +7,11 @@ title: 's3Cluster'
 doc_type: 'reference'
 ---
 
-
-
 # s3Cluster テーブル関数 {#s3cluster-table-function}
 
 これは [s3](sql-reference/table-functions/s3.md) テーブル関数の拡張です。
 
 指定したクラスタ内の多数のノードで、[Amazon S3](https://aws.amazon.com/s3/) および [Google Cloud Storage](https://cloud.google.com/storage/) 上のファイルを並列処理できます。イニシエーター側では、クラスタ内のすべてのノードへの接続を確立し、S3 ファイルパス中のアスタリスクを展開し、各ファイルを動的に割り当てます。ワーカーノード側では、処理すべき次のタスクをイニシエーターに問い合わせて、そのタスクを処理します。すべてのタスクが完了するまで、これを繰り返します。
-
-
 
 ## 構文 {#syntax}
 
@@ -23,7 +19,6 @@ doc_type: 'reference'
 s3Cluster(cluster_name, url[, NOSIGN | access_key_id, secret_access_key,[session_token]][, format][, structure][, compression_method][, headers][, extra_credentials])
 s3Cluster(cluster_name, named_collection[, option=value [,..]])
 ```
-
 
 ## 引数 {#arguments}
 
@@ -49,13 +44,9 @@ s3Cluster(cluster_name, named_collection[, option=value [,..]])
 | `no_sign_request`              | デフォルトで無効です。                                                                                                                                                                                                              |
 | `expiration_window_seconds`    | デフォルト値は 120 です。                                                                                                                                                                                                             |
 
-
-
 ## 返される値 {#returned_value}
 
 指定した構造を持ち、指定したファイル内のデータを読み書きするためのテーブル。
-
-
 
 ## 例 {#examples}
 
@@ -91,18 +82,13 @@ SELECT count(*) FROM s3Cluster(
 )
 ```
 
-
 ## プライベートバケットとパブリックバケットへのアクセス {#accessing-private-and-public-buckets}
 
 ユーザーは、`s3` 関数について[こちら](/sql-reference/table-functions/s3#accessing-public-buckets)で説明されているのと同様の方法を利用できます。
 
-
-
 ## パフォーマンス最適化 {#optimizing-performance}
 
 `s3` 関数のパフォーマンスを最適化する方法の詳細は、[詳細ガイド](/integrations/s3/performance) を参照してください。
-
-
 
 ## 関連項目 {#related}
 

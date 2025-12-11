@@ -10,7 +10,6 @@ doc_type: 'reference'
 
 import Image from '@theme/IdealImage';
 
-
 # Мониторинг {#monitoring}
 
 :::note
@@ -21,8 +20,6 @@ import Image from '@theme/IdealImage';
 
 - Использование аппаратных ресурсов.
 - Метрики сервера ClickHouse.
-
-
 
 ## Встроенная расширенная панель наблюдаемости {#built-in-advanced-observability-dashboard}
 
@@ -45,8 +42,6 @@ ClickHouse включает встроенную расширенную пане
 - Общее количество частей MergeTree
 - Максимальное количество частей на раздел
 
-
-
 ## Использование ресурсов {#resource-utilization}
 
 ClickHouse также самостоятельно отслеживает состояние аппаратных ресурсов, таких как:
@@ -55,8 +50,6 @@ ClickHouse также самостоятельно отслеживает сос
 - Использование системы хранения, оперативной памяти и сети.
 
 Эти данные собираются в таблице `system.asynchronous_metric_log`.
-
-
 
 ## Метрики сервера ClickHouse {#clickhouse-server-metrics}
 

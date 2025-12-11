@@ -1,5 +1,5 @@
 ---
-description: 'LIMIT 句に関するドキュメント'
+description: 'LIMIT 句のドキュメント'
 sidebar_label: 'LIMIT'
 slug: /sql-reference/statements/select/limit
 title: 'LIMIT 句'
@@ -8,63 +8,89 @@ doc_type: 'reference'
 
 # LIMIT 句 {#limit-clause}
 
-`LIMIT m` は、結果の先頭から `m` 行を取得します。
+`LIMIT` 句は、クエリの結果として返される行数を制御します。
 
-`LIMIT n, m` は、結果の先頭から `n` 行をスキップした後の `m` 行を取得します。`LIMIT m OFFSET n` 構文はこれと同等です。
+## 基本構文 {#basic-syntax}
 
-上記の標準的な形式では、`n` と `m` は 0 以上の整数です。
+**先頭の行を選択:**
 
-さらに、負の LIMIT もサポートされています:
+```sql
+LIMIT m
+```
 
-`LIMIT -m` は、結果の末尾から `m` 行を取得します。
+結果セットから先頭の `m` 行を返します。結果セットのレコード数が `m` 未満の場合は、すべてのレコードを返します。
 
-`LIMIT -m OFFSET -n` は、結果の末尾から `n` 行をスキップした後の末尾側の `m` 行を取得します。`LIMIT -n, -m` 構文はこれと同等です。
+**代替 TOP 構文（MS SQL Server 互換）：**
 
-また、結果の一部（割合）を選択することもサポートされています:
+```sql
+-- SELECT TOP 数値|パーセント カラム名 FROM テーブル名
+SELECT TOP 10 * FROM numbers(100);
+SELECT TOP 0.1 * FROM numbers(100);
+```
 
-`LIMIT m` - 0 &lt; m &lt; 1 の場合、先頭から全行の m * 100% が返されます。
+これは `LIMIT m` と同等であり、Microsoft SQL Server 用のクエリとの互換性を保つために使用できます。
 
-`LIMIT m OFFSET n` - 0 &lt; m &lt; 1 かつ 0 &lt; n &lt; 1 の場合、全体のうち先頭から n * 100% の行をスキップした後、その位置からさらに m * 100% に相当する行が返されます。`LIMIT n, m` 構文はこれと同等です。
+**オフセット指定付き SELECT:**
 
-例:
-• `LIMIT 0.1` - 結果の先頭 10% を取得します。
-• `LIMIT 1 OFFSET 0.5` - 中央の行（中央値の行）を取得します。
-• `LIMIT 0.25 OFFSET 0.5` - 結果の第 3 四分位を取得します。
+```sql
+LIMIT m OFFSET n
+-- または同等に:
+LIMIT n, m
+```
 
-> **Note**
-> • 比率を表す値は、1 未満かつ 0 より大きい [Float64](../../data-types/float.md) 型の数値でなければなりません。
-> • 計算結果として行数が小数になる場合は、次の整数値に切り上げられます。
+最初の `n` 行をスキップし、その後の `m` 行を返します。
 
-> **Note**
-> • 通常の LIMIT と小数の OFFSET を組み合わせることができます（およびその逆も可能です）。
-> • 通常の LIMIT と負の OFFSET を組み合わせることができます（およびその逆も可能です）。
+どちらの形式でも、`n` と `m` は 0 以上の整数でなければなりません。
 
-結果を明示的にソートする [ORDER BY](../../../sql-reference/statements/select/order-by.md) 句が存在しない場合、結果として選択される行は任意かつ非決定的になります。
+## 負の LIMIT {#negative-limits}
 
-:::note\
-結果セット内の行数は、[limit](../../../operations/settings/settings.md#limit) 設定にも依存する場合があります。
+負の値を使用して、結果セットの*末尾*から行を選択します。
+
+| 構文 | 結果 |
+|--------|--------|
+| `LIMIT -m` | 末尾の `m` 行 |
+| `LIMIT -m OFFSET -n` | 末尾の `n` 行をスキップした後の末尾の `m` 行 |
+| `LIMIT m OFFSET -n` | 末尾の `n` 行をスキップした後の先頭の `m` 行 |
+| `LIMIT -m OFFSET n` | 先頭の `n` 行をスキップした後の末尾の `m` 行 |
+
+`LIMIT -n, -m` 構文は `LIMIT -m OFFSET -n` と同等です。
+
+## 小数による LIMIT {#fractional-limits}
+
+0 から 1 の間の小数値を使って、行の一定割合を選択できます:
+
+| 構文 | 結果 |
+|--------|--------|
+| `LIMIT 0.1` | 先頭 10% の行 |
+| `LIMIT 1 OFFSET 0.5` | 中央の行 |
+| `LIMIT 0.25 OFFSET 0.5` | 第3四分位（先頭 50% をスキップした後の 25% の行） |
+
+:::note
+
+- 小数は 0 より大きく 1 より小さい [Float64](../../data-types/float.md) 型の値でなければなりません。
+- 小数で指定された行数は、最も近い整数に丸められます。
 :::
 
-## LIMIT ... WITH TIES 修飾子 {#limit--with-ties-modifier}
+## 制限タイプの組み合わせ {#combining-limit-types}
 
-`LIMIT n[,m]` に対して `WITH TIES` 修飾子を設定し、`ORDER BY expr_list` を指定すると、結果として、先頭の `n` 行（`LIMIT n` の場合）または `n,m` 行（`LIMIT n,m` の場合）に加えて、`LIMIT n` の場合は位置 `n` の行、`LIMIT n,m` の場合は位置 `m` の行と同じ `ORDER BY` フィールド値を持つすべての行が返されます。
+標準の整数と小数や負のオフセットを組み合わせて使用できます。
 
-> **注記**\
-> • `WITH TIES` は現在、負の `LIMIT` との組み合わせではサポートされていません。
+```sql
+LIMIT 10 OFFSET 0.5    -- 中間地点から10行
+LIMIT 10 OFFSET -20    -- 最後の20行をスキップした後の10行
+```
 
-この修飾子は、[ORDER BY ... WITH FILL 修飾子](/sql-reference/statements/select/order-by#order-by-expr-with-fill-modifier) と組み合わせることもできます。
+## LIMIT ... WITH TIES {#limit--with-ties-modifier}
 
-例えば、次のクエリでは
+`WITH TIES` 修飾子は、LIMIT 句で取得される最後の行と同じ `ORDER BY` の値を持つ行を、追加で結果に含めます。
 
 ```sql
 SELECT * FROM (
-    SELECT number%50 AS n FROM numbers(100)
+    SELECT number % 50 AS n FROM numbers(100)
 ) ORDER BY n LIMIT 0, 5
 ```
 
-戻り値
-
-```text
+```response
 ┌─n─┐
 │ 0 │
 │ 0 │
@@ -74,17 +100,15 @@ SELECT * FROM (
 └───┘
 ```
 
-しかし`WITH TIES`修飾子を適用すると
+`WITH TIES` を指定すると、最後の値と同じ値を持つすべての行が含まれます。
 
 ```sql
 SELECT * FROM (
-    SELECT number%50 AS n FROM numbers(100)
+    SELECT number % 50 AS n FROM numbers(100)
 ) ORDER BY n LIMIT 0, 5 WITH TIES
 ```
 
-別の結果セットを返します
-
-```text
+```response
 ┌─n─┐
 │ 0 │
 │ 0 │
@@ -95,4 +119,20 @@ SELECT * FROM (
 └───┘
 ```
 
-行番号6は、フィールド `n` の値が行番号5と同じ「2」であるためです
+行 6 は、行 5 と同じ値（`2`）を持つため含まれます。
+
+:::note
+`WITH TIES` は負の LIMIT 値ではサポートされていません。
+:::
+
+この修飾子は、[`ORDER BY ... WITH FILL`](/sql-reference/statements/select/order-by#order-by-expr-with-fill-modifier) 修飾子と組み合わせて使用できます。
+
+## 考慮事項 {#considerations}
+
+**非決定的な結果:** [`ORDER BY`](../../../sql-reference/statements/select/order-by.md) 句がない場合、返される行は任意のものとなり、クエリの実行ごとに結果が変わる可能性があります。
+
+**サーバー側の制限:** 返される行数は、[limit 設定](../../../operations/settings/settings.md#limit) によっても影響を受けます。
+
+## 関連項目 {#see-also}
+
+- [LIMIT BY](/sql-reference/statements/select/limit-by) — 値のグループごとに行数を制限でき、各カテゴリ内で上位 N 件の結果を取得するのに便利です。

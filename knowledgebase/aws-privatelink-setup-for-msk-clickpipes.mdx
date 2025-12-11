@@ -52,6 +52,11 @@ Your MSK cluster VPC must be located in one of our ClickPipes regions. See [Clic
         }
         ```
 
+:::tip
+Cluster IAM policy enables ClickPipes to initiate the connection from ClickPipes to your MSK cluster.
+If you want to configure IAM authentication for your MSK cluster, please refer to the [IAM authentication documentation](/integrations/clickpipes/kafka/best-practices#iam).
+:::
+
 ## Creating reverse private endpoint \{#creating-reverse-private-endpoint\}
 
 Follow reverse private endpoint creation steps in the [ClickPipes documentation](/integrations/clickpipes/aws-privatelink#creating-clickpipe).

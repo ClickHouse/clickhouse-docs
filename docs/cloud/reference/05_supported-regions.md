@@ -57,7 +57,8 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 **Private Region:**
 
-- JapanEast
+- Japan East (Tokyo, Saitama)
+- UAE North (Dubai)
 
 :::note 
 Need to deploy to a region not currently listed? [Submit a request](https://clickhouse.com/pricing?modal=open). 

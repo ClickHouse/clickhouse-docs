@@ -435,9 +435,9 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "0"},{"label": "Новая настройка "}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "0"},{"label": "Новая настройка"}]}]}/>
 
-Разрешает явное использование команды `OPTIMIZE` для таблиц Iceberg.
+Разрешает явное использование `OPTIMIZE` для таблиц Iceberg.
 
 ## allow_experimental_insert_into_iceberg {#allow_experimental_insert_into_iceberg} 
 
@@ -1691,7 +1691,9 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 
 ## check_query_single_value_result {#check_query_single_value_result} 
 
-<SettingsInfoBlock type="Bool" default_value="1" />
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "Изменён параметр, чтобы сделать команду CHECK TABLE более полезной"}]}]}/>
 
 Определяет уровень детализации результата выполнения запроса [CHECK TABLE](/sql-reference/statements/check-table) для движков семейства `MergeTree`.
 
@@ -1823,6 +1825,16 @@ UInt64, чтобы минимизировать публичную часть
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Совместимость: игнорировать COLLATION в CREATE TABLE
+
+## compatibility_s3_presigned_url_query_in_path {#compatibility_s3_presigned_url_query_in_path} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+Совместимость: при включении переносит параметры запроса предварительно подписанного URL (например, X-Amz-*) в ключ S3 (устаревшее поведение),
+так что «?» действует как подстановочный знак в пути. При отключении (по умолчанию) параметры запроса предварительно подписанного URL остаются в query-части URL,
+чтобы избежать интерпретации «?» как подстановочного знака.
 
 ## compile_aggregate_expressions {#compile_aggregate_expressions} 
 
@@ -2867,11 +2879,11 @@ FORMAT PrettyCompactMonoBlock
 
 <ExperimentalBadge/>
 
-<SettingsInfoBlock type="UInt64" default_value="8" />
+<SettingsInfoBlock type="NonZeroUInt64" default_value="8" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "8"},{"label": "Новая экспериментальная настройка."}]}]}/>
 
-Количество бакетов по умолчанию для распределённого shuffle-hash-join.
+Количество бакетов по умолчанию для распределённого shuffle-hash join.
 
 ## distributed_plan_execute_locally {#distributed_plan_execute_locally} 
 
@@ -9335,6 +9347,14 @@ a   Tuple(
 
 Задает максимальное значение лимита, при котором может использоваться план запроса для оптимизации ленивой материализации. Если значение равно нулю, лимит отсутствует.
 
+## query_plan_max_limit_for_top_k_optimization {#query_plan_max_limit_for_top_k_optimization} 
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1000"},{"label": "Новая настройка"}]}]}/>
+
+Определяет максимальное значение `LIMIT`, при котором выполняется оценка плана запроса для оптимизации TopK с использованием индекса пропуска minmax и динамической фильтрации по пороговому значению. Если значение равно нулю, ограничение отсутствует.
+
 ## query_plan_max_optimizations_to_apply {#query_plan_max_optimizations_to_apply} 
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
@@ -9387,6 +9407,21 @@ a   Tuple(
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "Разрешить объединение фильтров в плане запроса"}]}, {"id": "row-2","items": [{"label": "24.11"},{"label": "1"},{"label": "Разрешить объединение фильтров в плане запроса. Это необходимо для корректной поддержки механизма filter-push-down новым анализатором."}]}]}/>
 
 Разрешить объединение фильтров в плане запроса.
+
+## query_plan_optimize_join_order_algorithm {#query_plan_optimize_join_order_algorithm} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="JoinOrderAlgorithm" default_value="greedy" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "greedy"},{"label": "Новая экспериментальная настройка."}]}]}/>
+
+Определяет, какие алгоритмы выбора порядка JOIN следует пробовать при оптимизации плана запроса. Доступны следующие алгоритмы:
+
+- 'greedy' — базовый жадный алгоритм, работает быстро, но может не дать наилучший порядок соединения;
+- 'dpsize' — реализует алгоритм DPsize (в данный момент только для INNER JOIN); рассматривает все возможные порядки соединения и находит оптимальный, но может работать медленно для запросов с большим количеством таблиц и предикатов соединения.
+
+Можно указать несколько алгоритмов, например: 'dpsize,greedy'.
 
 ## query_plan_optimize_join_order_limit {#query_plan_optimize_join_order_limit} 
 
@@ -9444,6 +9479,14 @@ a   Tuple(
 
 - 0 - Отключить
 - 1 - Включить
+
+## query_plan_read_in_order_through_join {#query_plan_read_in_order_through_join} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+Сохраняет порядок чтения строк из левой таблицы в операциях JOIN, что может быть использовано последующими шагами.
 
 ## query_plan_remove_redundant_distinct {#query_plan_remove_redundant_distinct} 
 
@@ -10105,6 +10148,15 @@ FORMAT Null;
 
 Минимальный размер части при многочастичной загрузке в S3.
 
+## s3_path_filter_limit {#s3_path_filter_limit} 
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1000"},{"label": "Новая настройка"}]}]}/>
+
+Максимальное количество значений `_path`, которое может быть извлечено из фильтров запроса и использовано для итерации по файлам
+вместо перечисления файлов по glob-шаблону. Значение 0 означает, что настройка отключена.
+
 ## s3_request_timeout_ms {#s3_request_timeout_ms} 
 
 <SettingsInfoBlock type="UInt64" default_value="30000" />
@@ -10340,6 +10392,14 @@ FORMAT Null;
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.4"},{"label": "0"},{"label": "NewSetting"}]}]}/>
 
 Сериализовать план запроса для распределённой обработки
+
+## serialize_string_in_memory_with_zero_byte {#serialize_string_in_memory_with_zero_byte} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "1"},{"label": "New setting"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+Сериализует значения типа String при агрегации с нулевым байтом в конце. Включите, чтобы сохранить совместимость при выполнении запросов к кластеру с несовместимыми версиями.
 
 ## session&#95;timezone {#session_timezone}
 
@@ -10661,7 +10721,8 @@ SELECT ((4 + 2) + 1, ((4 + 2) + 1) + 2)
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "21.12"},{"label": "0"},{"label": "По умолчанию не разрешать прямой SELECT для Kafka/RabbitMQ/FileLog"}]}]}/>
 
-Разрешает выполнение прямого запроса SELECT для движков Kafka, RabbitMQ, FileLog, Redis Streams и NATS. При наличии подключённых materialized views выполнение запроса SELECT запрещено, даже если этот параметр включён.
+Разрешает выполнение прямого запроса SELECT для движков Kafka, RabbitMQ, FileLog, Redis Streams, S3Queue, AzureQueue и NATS. При наличии подключённых materialized views выполнение запроса SELECT запрещено, даже если этот параметр включён.
+Если нет подключённых materialized views, включение этого параметра позволяет читать данные. Имейте в виду, что обычно прочитанные данные удаляются из очереди. Чтобы избежать удаления прочитанных данных, соответствующие настройки движка должны быть настроены должным образом.
 
 ## stream_like_engine_insert_queue {#stream_like_engine_insert_queue} 
 
@@ -11213,6 +11274,21 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 - 0 — Отключено.
 - 1 — Включено.
 
+## use_skip_indexes_for_top_k {#use_skip_indexes_for_top_k} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+Включает использование индексов пропуска данных для фильтрации TopK.
+
+При включении, если существует minmax-индекс пропуска данных для столбца в запросе `ORDER BY <column> LIMIT n`, оптимизатор попытается использовать minmax-индекс, чтобы пропустить гранулы, не имеющие отношения к итоговому результату. Это может снизить задержку выполнения запроса.
+
+Возможные значения:
+
+- 0 — Отключено.
+- 1 — Включено.
+
 ## use_skip_indexes_if_final {#use_skip_indexes_if_final} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -11302,6 +11378,21 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Определяет, использовать ли кэш десериализованных списков вхождений текстового индекса.
 Использование кэша списков вхождений текстового индекса может значительно снизить задержку и увеличить пропускную способность при выполнении большого числа запросов по текстовому индексу.
+
+## use_top_k_dynamic_filtering {#use_top_k_dynamic_filtering} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+Включает оптимизацию динамической фильтрации при выполнении запроса `ORDER BY <column> LIMIT n`.
+
+При включении движок выполнения запросов будет пытаться пропускать гранулы и строки, которые не будут частью итоговых `top N` строк в результирующем наборе. Эта оптимизация имеет динамический характер, и уменьшение задержки зависит от распределения данных и наличия других предикатов в запросе.
+
+Возможные значения:
+
+- 0 — Отключено.
+- 1 — Включено.
 
 ## use_uncompressed_cache {#use_uncompressed_cache} 
 

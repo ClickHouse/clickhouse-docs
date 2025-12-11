@@ -11,10 +11,7 @@ import Image from '@theme/IdealImage';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 import cmek_performance from '@site/static/images/_snippets/cmek-performance.png';
 
-
 # 数据加密 {#data-encryption}
-
-
 
 ## 存储层加密 {#storage-encryption}
 
@@ -22,8 +19,6 @@ ClickHouse Cloud 默认启用静态数据加密，使用由云服务提供商管
 - [用于 S3 的 AWS 服务器端加密](https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingServerSideEncryption.html)
 - [GCP 默认静态数据加密](https://cloud.google.com/docs/security/encryption/default-encryption)
 - [Azure 存储中静态数据的加密](https://learn.microsoft.com/en-us/azure/storage/common/storage-service-encryption)
-
-
 
 ## 数据库级加密 {#database-encryption}
 
@@ -111,15 +106,11 @@ TDE 必须在创建服务时启用。现有服务在创建后无法再启用加�
 
 #### KMS 密钥轮询器 {#kms-key-poller}
 
-
-
 在使用 CMEK 时，系统每 10 分钟检查一次所提供的 KMS 密钥是否仍然有效。如果对该 KMS 密钥的访问权限失效，ClickHouse 服务将会停止运行。要恢复服务，请先按照本指南中的步骤恢复对 KMS 密钥的访问，然后重新启动服务。
 
 ### 备份和恢复 {#backup-and-restore}
 
 备份会使用与关联服务相同的密钥进行加密。当你恢复一个已加密的备份时，会创建一个新的加密实例，并使用与原始实例相同的 KMS 密钥。如果需要，你可以在恢复后轮换 KMS 密钥；更多详情请参见 [密钥轮换](#key-rotation)。
-
-
 
 ## 性能 {#performance}
 

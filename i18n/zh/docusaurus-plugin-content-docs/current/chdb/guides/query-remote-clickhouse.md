@@ -9,8 +9,6 @@ doc_type: 'guide'
 
 在本指南中，我们将学习如何使用 chDB 查询远程 ClickHouse 服务器。
 
-
-
 ## 设置 {#setup}
 
 首先创建一个虚拟环境：
@@ -41,7 +39,6 @@ ipython
 
 你也可以在 Python 脚本或常用的笔记本环境中使用这段代码。
 
-
 ## ClickPy 简介 {#an-intro-to-clickpy}
 
 我们将要查询的远程 ClickHouse 服务器是 [ClickPy](https://clickpy.clickhouse.com)。
@@ -49,8 +46,6 @@ ClickPy 记录所有 PyPI 包的下载情况，并通过 UI 让你探索各个�
 可以使用 `play` 用户查询底层数据库。
 
 你可以在 [其 GitHub 仓库](https://github.com/ClickHouse/clickpy) 中了解更多关于 ClickPy 的信息。
-
-
 
 ## 查询 ClickPy ClickHouse 服务 {#querying-the-clickpy-clickhouse-service}
 
@@ -133,7 +128,6 @@ sklearn_df.sort_values(by=["x"], ascending=False).head(n=10)
 2383  2024-09-23  1777554
 ```
 
-
 ## 合并 Pandas DataFrame {#merging-pandas-dataframes}
 
 现在我们已经有两个 DataFrame，可以按日期（即 `x` 列）将它们合并，如下所示：
@@ -171,7 +165,6 @@ df.head(n=5)
 3  2018-03-01         8      20912  0.000383
 4  2018-03-02         5      23842  0.000210
 ```
-
 
 ## 查询 Pandas DataFrame {#querying-pandas-dataframes}
 

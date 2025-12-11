@@ -17,7 +17,6 @@ import finish_import from '@site/static/images/clickstack/kafka/import-kafka-das
 import example_dashboard from '@site/static/images/clickstack/kafka/kafka-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # Мониторинг метрик Kafka с помощью ClickStack {#kafka-metrics-clickstack}
 
 :::note[TL;DR]
@@ -48,22 +47,22 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 <VerticalStepper headerLevel="h4">
   #### Получите API-ключ ClickStack
 
-  JMX Metric Gatherer отправляет данные на OTLP-эндпоинт ClickStack, который требует аутентификации.
+  JMX Metric Gatherer отправляет данные в OTLP-эндпоинт ClickStack, для которого требуется аутентификация.
 
-  1. Откройте HyperDX по URL-адресу ClickStack (например, [http://localhost:8080](http://localhost:8080))
-  2. Создайте учетную запись или, при необходимости, войдите в систему
+  1. Откройте HyperDX по адресу вашего ClickStack (например, [http://localhost:8080](http://localhost:8080))
+  2. При необходимости создайте учетную запись или войдите в систему
   3. Перейдите в раздел **Team Settings → API Keys**
-  4. Скопируйте **ключ API для приёма данных**
+  4. Скопируйте свой **ключ API для приёма данных**
 
   <Image img={api_key} alt="API-ключ ClickStack" />
 
-  5. Задайте его в переменной окружения:
+  5. Задайте её как переменную окружения:
 
   ```bash
   export CLICKSTACK_API_KEY=your-api-key-here
   ```
 
-  #### Загрузите сборщик метрик JMX для OpenTelemetry
+  #### Загрузите OpenTelemetry JMX Metric Gatherer
 
   Скачайте JAR-файл JMX Metric Gatherer:
 
@@ -101,14 +100,14 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   netstat -an | grep 9999
   ```
 
-  #### Развертывание сборщика метрик JMX с помощью Docker Compose
+  #### Развертывание JMX Metric Gatherer с помощью Docker Compose
 
-  Этот пример демонстрирует полную настройку с Kafka, JMX Metric Gatherer и ClickStack. Укажите имена сервисов и конечные точки в соответствии с вашим существующим развертыванием:
+  Данный пример демонстрирует полную конфигурацию с Kafka, JMX Metric Gatherer и ClickStack. Укажите имена сервисов и конечные точки в соответствии с вашим развертыванием:
 
   ```yaml
   services:
     clickstack:
-      image: docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+      image: clickhouse/clickstack-all-in-one:latest
       ports:
         - "8080:8080"
         - "4317:4317"
@@ -172,11 +171,11 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
   **Ключевые параметры конфигурации:**
 
-  * `service:jmx:rmi:///jndi/rmi://kafka:9999/jmxrmi` - URL подключения JMX (используйте имя хоста вашего кластера Kafka)
-  * `otel.jmx.target.system=kafka` - Включает метрики Kafka
-  * `http://clickstack:4318` — HTTP-эндпоинт OTLP (используйте имя хоста ClickStack)
-  * `authorization=\${CLICKSTACK_API_KEY}` — ключ API для аутентификации (обязателен)
-  * `service.name=kafka,kafka.broker.id=broker-0` - атрибуты ресурса, используемые для фильтрации
+  * `service:jmx:rmi:///jndi/rmi://kafka:9999/jmxrmi` - URL JMX-подключения (используйте имя хоста Kafka)
+  * `otel.jmx.target.system=kafka` - Включает специализированные метрики Kafka
+  * `http://clickstack:4318` - OTLP HTTP endpoint (используйте имя хоста вашего ClickStack)
+  * `authorization=\${CLICKSTACK_API_KEY}` - ключ API для аутентификации (обязательный параметр)
+  * `service.name=kafka,kafka.broker.id=broker-0` - атрибуты ресурса для фильтрации
   * `10000` - Интервал сбора данных в миллисекундах (10 секунд)
 
   #### Проверка метрик в HyperDX
@@ -189,83 +188,83 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
   **Ключевые метрики для проверки:**
 
-  * `kafka.message.count` - Общее количество обработанных сообщений
-  * `kafka.partition.count` - Общее количество партиций
-  * `kafka.partition.under_replicated` - в здоровом кластере это значение должно быть равно 0
+  * `kafka.message.count` - Общее число обработанных сообщений
+  * `kafka.partition.count` - Общее число партиций
+  * `kafka.partition.under_replicated` - В исправном кластере значение должно быть 0
   * `kafka.network.io` - Пропускная способность сети
-  * `kafka.request.time.*` - Процентили времени обработки запросов
+  * `kafka.request.time.*` - Перцентили времени отклика запросов
 
-  Чтобы создать активность и получить больше метрик:
+  Чтобы сгенерировать активность и получить больше метрик:
 
   ```bash
-  # Создание тестового топика
+  # Создайте тестовый топик
   docker exec kafka bash -c "unset JMX_PORT && kafka-topics --create --topic test-topic --bootstrap-server kafka:9092 --partitions 3 --replication-factor 1"
 
-  # Отправка тестовых сообщений
+  # Отправьте тестовые сообщения
   echo -e "Message 1\nMessage 2\nMessage 3" | docker exec -i kafka bash -c "unset JMX_PORT && kafka-console-producer --topic test-topic --bootstrap-server kafka:9092"
   ```
 
   :::note
-  При запуске клиентских команд Kafka (kafka-topics, kafka-console-producer и т. д.) внутри контейнера Kafka используйте префикс `unset JMX_PORT &&`, чтобы избежать конфликтов портов JMX.
+  При запуске клиентских команд Kafka (kafka-topics, kafka-console-producer и т. д.) внутри контейнера Kafka используйте префикс `unset JMX_PORT &&` для предотвращения конфликтов портов JMX.
   :::
 </VerticalStepper>
 
 ## Демонстрационный набор данных {#demo-dataset}
 
-Для пользователей, которые хотят протестировать интеграцию метрик Kafka перед настройкой продуктивных систем, мы предоставляем заранее сгенерированный набор данных с реалистичными паттернами метрик Kafka.
+Для пользователей, которые хотят протестировать интеграцию метрик Kafka до настройки продуктивных систем, мы предоставляем заранее сгенерированный набор данных с реалистичными шаблонами метрик Kafka.
 
 <VerticalStepper headerLevel="h4">
 
-#### Загрузите пример набора метрик {#download-sample}
+#### Загрузите пример набора данных с метриками {#download-sample}
 
-Скачайте заранее сгенерированные файлы метрик (29 часов метрик Kafka с реалистичными паттернами):
+Скачайте заранее сгенерированные файлы метрик (29 часов метрик Kafka с реалистичными шаблонами):
 ```bash
-# Загрузка gauge-метрик (количество партиций, размеры очередей, задержки, лаг потребителя)
+# Загрузить gauge‑метрики (количество партиций, размеры очередей, задержки, лаг потребителей)
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/kafka/kafka-metrics-gauge.csv
 
-# Загрузка sum-метрик (скорость сообщений, скорость по байтам, количество запросов)
+# Загрузить sum‑метрики (скорости сообщений, пропускная способность по байтам, количество запросов)
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/kafka/kafka-metrics-sum.csv
 ```
 
-Набор данных включает реалистичные паттерны для e-commerce кластера Kafka с одним брокером:
-- **06:00-08:00: Утренний всплеск** — резкий рост трафика относительно ночного базового уровня
-- **10:00-10:15: Молниеносная распродажа** — резкий всплеск до 3.5× обычного трафика
-- **11:30: Событие развертывания** — 12× всплеск лага потребителя с недореплицированными партициями
-- **14:00-15:30: Пиковый период покупок** — устойчиво высокий трафик на уровне 2.8× от базового
-- **17:00-17:30: После работы** — вторичный пик трафика
-- **18:45: Перебалансировка потребителей** — 6× всплеск лага во время перебалансировки
-- **20:00-22:00: Вечернее снижение** — резкое снижение до ночного уровня
+Набор данных включает реалистичные шаблоны для одноброкерного кластера Kafka для e‑commerce:
+- **06:00-08:00: Утренний всплеск** — резкий рост трафика от ночного базового уровня
+- **10:00-10:15: Флеш‑распродажа** — резкий скачок до 3.5× нормального трафика
+- **11:30: Событие развертывания** — 12× скачок лага потребителей с недореплицированными партициями
+- **14:00-15:30: Пиковые покупки** — устойчиво высокий трафик на уровне 2.8× базового
+- **17:00-17:30: Вечерний всплеск после работы** — вторичный пик трафика
+- **18:45: Перебалансировка потребителей** — 6× скачок лага во время перебалансировки
+- **20:00-22:00: Вечерний спад** — резкое снижение до ночного уровня
 
-#### Запуск ClickStack {#start-clickstack}
+#### Запустите ClickStack {#start-clickstack}
 
 Запустите экземпляр ClickStack:
 ```bash
 docker run -d --name clickstack-demo \
   -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
-#### Загрузка метрик в ClickStack {#load-metrics}
+#### Загрузите метрики в ClickStack {#load-metrics}
 
 Загрузите метрики напрямую в ClickHouse:
 ```bash
-# Загрузка gauge-метрик (количество партиций, размеры очередей, задержки, лаг потребителя) {#send-test-messages}
+# Загрузить gauge‑метрики (количество партиций, размеры очередей, задержки, лаг потребителей)
 cat kafka-metrics-gauge.csv | docker exec -i clickstack-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_gauge FORMAT CSVWithNames"
 
-# Загрузка sum-метрик (скорость сообщений, скорость по байтам, количество запросов)
+# Загрузить sum‑метрики (скорости сообщений, пропускная способность по байтам, количество запросов)
 cat kafka-metrics-sum.csv | docker exec -i clickstack-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_sum FORMAT CSVWithNames"
 ```
 
-#### Проверка метрик в HyperDX {#verify-demo-metrics}
+#### Проверьте метрики в HyperDX {#verify-demo-metrics}
 
-После загрузки самый быстрый способ просмотреть метрики — использовать преднастроенный дашборд.
+После загрузки самый быстрый способ посмотреть метрики — воспользоваться преднастроенным дашбордом.
 
 Перейдите к разделу [Дашборды и визуализация](#dashboards), чтобы импортировать дашборд и просмотреть все метрики Kafka одновременно.
 
-:::note[Отображение часового пояса]
-HyperDX отображает отметки времени в часовом поясе, настроенном в браузере. Демонстрационные данные охватывают период **2025-11-05 16:00:00 - 2025-11-06 16:00:00 (UTC)**. Установите диапазон времени на **2025-11-04 16:00:00 - 2025-11-07 16:00:00**, чтобы гарантированно увидеть демонстрационные метрики независимо от вашего местоположения. После того как вы увидите метрики, вы можете сузить диапазон до 24 часов для более наглядной визуализации.
+:::note[Отображение часовых поясов]
+HyperDX отображает временные метки в локальном часовом поясе вашего браузера. Демонстрационные данные охватывают период **2025-11-05 16:00:00 - 2025-11-06 16:00:00 (UTC)**. Установите диапазон времени на **2025-11-04 16:00:00 - 2025-11-07 16:00:00**, чтобы гарантированно увидеть демонстрационные метрики, независимо от вашего местоположения. После того как метрики будут видны, вы можете сузить диапазон до 24 часов для более наглядной визуализации.
 :::
 
 </VerticalStepper>
@@ -349,7 +348,6 @@ docker exec kafka bash -c "unset JMX_PORT && kafka-topics --create --topic test-
 echo -e "Message 1\nMessage 2\nMessage 3" | docker exec -i kafka bash -c "unset JMX_PORT && kafka-console-producer --topic test-topic --bootstrap-server kafka:9092"
 ```
 
-
 #### Ошибки авторизации {#created-dashboard}
 
 Если вы видите `Authorization failed` или `401 Unauthorized`:
@@ -363,8 +361,7 @@ docker compose down
 docker compose up -d
 ```
 
-
-#### Конфликты портов при выполнении команд клиента Kafka
+#### Конфликты портов при выполнении команд клиента Kafka {#import-dashboard}
 
 При выполнении команд клиента Kafka внутри контейнера Kafka вы можете увидеть:
 
@@ -377,7 +374,6 @@ docker compose up -d
 ```bash
 docker exec kafka bash -c "unset JMX_PORT && kafka-topics --list --bootstrap-server kafka:9092"
 ```
-
 
 #### Проблемы с сетевым подключением {#no-metrics}
 
@@ -396,7 +392,6 @@ docker network inspect <имя-сети>
 # Из JMX-экспортера в ClickStack {#check-environment-variable}
 docker exec <jmx-exporter-container> sh -c "timeout 2 bash -c 'cat < /dev/null > /dev/tcp/clickstack/4318' && echo 'Connected' || echo 'Failed'"
 ```
-
 
 ## Переход в продакшн {#going-to-production}
 

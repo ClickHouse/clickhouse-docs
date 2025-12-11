@@ -9,12 +9,9 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
 # system.iceberg_metadata_log {#systemiceberg_metadata_log}
 
 Таблица `system.iceberg_metadata_log` фиксирует события доступа к метаданным и их разбора для таблиц Iceberg, прочитанных ClickHouse. Она предоставляет подробную информацию о каждом обработанном файле или записи метаданных, что полезно для отладки, аудита и анализа эволюции структуры таблиц Iceberg.
-
-
 
 ## Назначение {#purpose}
 
@@ -23,8 +20,6 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 :::note
 Эта таблица в первую очередь предназначена для отладки.
 :::
-
-
 
 ## Столбцы {#columns}
 
@@ -39,8 +34,6 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 | `content`      | [String](../../sql-reference/data-types/string.md)    | Содержимое в формате JSON (исходные метаданные из файла .json, метаданные Avro или запись Avro). |
 | `row_in_file`  | [Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md)) | Номер строки в файле, если применимо. Заполняется для типов содержимого `ManifestListEntry` и `ManifestFileEntry`. |
 
-
-
 ## Значения `content_type` {#content-type-values}
 
 - `None`: Нет содержимого.
@@ -51,8 +44,6 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 - `ManifestFileEntry`: Запись в файле манифеста.
 
 <SystemTableCloud/>
-
-
 
 ## Управление подробностью журналирования {#controlling-log-verbosity}
 
@@ -90,7 +81,6 @@ WHERE query_id = '{previous_query_id}';
 * Таблица может содержать дублирующиеся записи, так как она предназначена в первую очередь для отладки и не гарантирует уникальность записей для каждой сущности.
 * Если вы используете `content_type`, более подробный, чем `ManifestListMetadata`, кэш метаданных Iceberg для списков манифестов отключается.
 * Аналогично, если вы используете `content_type`, более подробный, чем `ManifestFileMetadata`, кэш метаданных Iceberg для файлов манифестов отключается.
-
 
 ## См. также {#see-also}
 - [Движок таблиц Iceberg](../../engines/table-engines/integrations/iceberg.md)

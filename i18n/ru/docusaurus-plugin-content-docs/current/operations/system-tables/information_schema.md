@@ -47,7 +47,6 @@ SHOW TABLES FROM information_schema;
 
 Эквивалентные, нечувствительные к регистру представления, например `INFORMATION_SCHEMA.columns`, доступны для обеспечения совместимости с другими системами управления базами данных. То же самое относится ко всем столбцам в этих представлениях — доступны варианты как в нижнем регистре (например, `table_name`), так и в верхнем (`TABLE_NAME`).
 
-
 ## СТОЛБЦЫ {#columns}
 
 Содержит столбцы, считанные из системной таблицы [system.columns](../../operations/system-tables/columns.md), а также столбцы, которые не поддерживаются в ClickHouse или не имеют смысла (всегда `NULL`), но должны присутствовать согласно стандарту.
@@ -125,7 +124,6 @@ domain_schema:            ᴺᵁᴸᴸ
 domain_name:              ᴺᵁᴸᴸ
 ```
 
-
 ## SCHEMATA {#schemata}
 
 Содержит столбцы, получаемые из системной таблицы [system.databases](../../operations/system-tables/databases.md), а также столбцы, которые не поддерживаются в ClickHouse или не имеют смысла (всегда `NULL`), но предусмотрены стандартом.
@@ -171,7 +169,6 @@ default_character_set_schema:  ᴺᵁᴸᴸ
 default_character_set_name:    ᴺᵁᴸᴸ
 sql_path:                      ᴺᵁᴸᴸ
 ```
-
 
 ## TABLES {#tables}
 
@@ -224,7 +221,6 @@ table_type:      BASE TABLE
 table_collation: utf8mb4_0900_ai_ci
 table_comment:   
 ```
-
 
 ## ПРЕДСТАВЛЕНИЯ {#views}
 
@@ -285,7 +281,6 @@ is_trigger_deletable:       NO
 is_trigger_insertable_into: NO
 ```
 
-
 ## KEY&#95;COLUMN&#95;USAGE {#key_column_usage}
 
 Содержит столбцы из системной таблицы [system.tables](../../operations/system-tables/tables.md), для которых заданы ограничения.
@@ -345,7 +340,6 @@ referenced_table_name:         ᴺᵁᴸᴸ
 referenced_column_name:        ᴺᵁᴸᴸ
 ```
 
-
 ## REFERENTIAL_CONSTRAINTS {#referential_constraints}
 
 Содержит информацию о внешних ключах. В настоящее время возвращает пустой результат (без строк), что достаточно для обеспечения совместимости со сторонними инструментами, такими как Tableau Online.
@@ -363,8 +357,6 @@ referenced_column_name:        ᴺᵁᴸᴸ
 - `delete_rule` ([String](../../sql-reference/data-types/string.md)) — в настоящее время не используется.
 - `table_name` ([String](../../sql-reference/data-types/string.md)) — в настоящее время не используется.
 - `referenced_table_name` ([String](../../sql-reference/data-types/string.md)) — в настоящее время не используется.
-
-
 
 ## STATISTICS {#statistics}
 

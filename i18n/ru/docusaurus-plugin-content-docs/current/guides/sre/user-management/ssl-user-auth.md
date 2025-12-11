@@ -8,8 +8,6 @@ doc_type: 'guide'
 keywords: ['ssl', 'authentication', 'security', 'certificates', 'user management']
 ---
 
-
-
 # Настройка аутентификации по пользовательскому SSL‑сертификату {#configuring-ssl-user-certificate-for-authentication}
 
 import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
@@ -27,7 +25,6 @@ import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_s
 
 > I would like to be able to configure our NLB proxy protocol v2 as below `proxy_protocol_v2.client_to_server.header_placement,Value=on_first_ack`.
 > :::
-
 
 ## 1. Создание пользовательских сертификатов SSL {#1-create-ssl-user-certificates}
 
@@ -55,8 +52,6 @@ import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_s
     ```bash
     openssl x509 -req -in chnode1_cert_user.csr -out chnode1_cert_user.crt -CA marsnet_ca.crt -CAkey marsnet_ca.key -days 365
     ```
-
-
 
 ## 2. Создание SQL‑пользователя и выдача прав {#2-create-a-sql-user-and-grant-permissions}
 
@@ -96,8 +91,6 @@ import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_s
     ```
     :::
 
-
-
 ## 3. Тестирование {#3-testing}
 
 1. Скопируйте пользовательский сертификат, пользовательский ключ и сертификат CA (центра сертификации) на удалённый узел.
@@ -122,8 +115,6 @@ import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_s
     Обратите внимание, что пароль, переданный в clickhouse-client, игнорируется, если в конфигурации указан сертификат.
     :::
 
-
-
 ## 4. Тестирование HTTP {#4-testing-http}
 
 1. Скопируйте пользовательский сертификат, пользовательский ключ и сертификат УЦ на удалённый узел.
@@ -146,8 +137,6 @@ import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_s
     :::note
     Обратите внимание, что пароль не указывался: сертификат используется вместо пароля, и именно с его помощью ClickHouse аутентифицирует пользователя.
     :::
-
-
 
 ## Итоги {#summary}
 

@@ -18,7 +18,6 @@ import image_7 from '@site/static/images/use-cases/AI_ML/jupyter/7.png';
 import image_8 from '@site/static/images/use-cases/AI_ML/jupyter/8.png';
 import image_9 from '@site/static/images/use-cases/AI_ML/jupyter/9.png';
 
-
 # Исследование данных с помощью Jupyter Notebook и chDB {#exploring-data-with-jupyter-notebooks-and-chdb}
 
 В этом руководстве вы узнаете, как исследовать данные в ClickHouse Cloud в Jupyter Notebook с помощью [chDB](/chdb) — быстрого встроенного SQL OLAP-движка на базе ClickHouse.
@@ -111,7 +110,6 @@ import chdb
 result = chdb.query("SELECT 'Привет, ClickHouse!' as message")
 print(result)
 ```
-
 
 ## Исследование данных {#exploring-the-data}
 
@@ -237,7 +235,6 @@ df_2 = chdb.query(query, "DataFrame")
 df_2.head()
 ```
 
-
 <details>
   <summary>Чтение из нескольких источников за один шаг</summary>
   Также можно читать данные из нескольких источников за один шаг. Для этого вы можете использовать приведённый ниже запрос с `JOIN`:
@@ -322,7 +319,6 @@ plt.show()
 Цены, напротив, демонстрировали стабильный и плавный рост: с примерно £150 000 в 1995 году до около £300 000 к 2005 году.
 После 2012 года рост существенно ускорился, резко поднявшись примерно с £400 000 до более чем £1 000 000 к 2019 году.
 В отличие от объёма продаж, цены испытали минимальное влияние кризиса 2008 года и сохранили восходящую тенденцию. Вот это да!
-
 
 ## Итоги {#summary}
 

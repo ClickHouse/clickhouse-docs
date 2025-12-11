@@ -45,19 +45,17 @@ ALTER TABLE tab MODIFY SETTING max_suspicious_broken_parts = 100;
 ALTER TABLE tab RESET SETTING max_suspicious_broken_parts;
 ```
 
-
 ## MergeTree の設定 {#mergetree-settings}
 
 {/* 以下の設定は、次のスクリプトによって自動生成されたものです
   https://github.com/ClickHouse/clickhouse-docs/blob/main/scripts/settings/autogenerate-settings.sh
   */ }
 
-
 ## adaptive_write_buffer_initial_size {#adaptive_write_buffer_initial_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="16384" />
+<SettingsInfoBlock type="NonZeroUInt64" default_value="16384" />
 
-アダプティブな書き込みバッファの初期サイズ
+アダプティブ書き込みバッファの初期サイズ
 
 ## add_implicit_sign_column_constraint_for_collapsing_engine {#add_implicit_sign_column_constraint_for_collapsing_engine} 
 
@@ -130,7 +128,6 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 クエリに `ORDER BY time DESC` を指定すると、`ReadInOrder` が適用されます。
 
 **デフォルト値:** false
-
 
 ## allow_floating_point_partition_key {#allow_floating_point_partition_key} 
 
@@ -374,9 +371,9 @@ ClickHouse Cloud でのみ利用可能です。コンパクトパーツにおい
 
 ## compact_parts_max_granules_to_buffer {#compact_parts_max_granules_to_buffer} 
 
-<SettingsInfoBlock type="UInt64" default_value="128" />
+<SettingsInfoBlock type="NonZeroUInt64" default_value="128" />
 
-ClickHouse Cloud でのみ利用可能です。compact パーツで 1 つのストライプに書き込むグラニュール数の上限。
+ClickHouse Cloud でのみ利用可能です。コンパクトパーツで単一ストライプに書き込めるグラニュールの最大数です。
 
 ## compact_parts_merge_max_bytes_to_prefetch_part {#compact_parts_merge_max_bytes_to_prefetch_part} 
 
@@ -525,13 +522,13 @@ Dynamic データ型のシリアル化バージョン。互換性のために必
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "新しい設定"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "min_age_to_force_merge 用の最大バイト数を制限する新しい設定を追加。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "min_age_to_force_merge 用の最大バイト数を制限する新しい設定を追加。"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新しい設定"}]}]}/>
 
-`min_age_to_force_merge_seconds` および
-`min_age_to_force_merge_on_partition_only` の各設定が、
-`max_bytes_to_merge_at_max_space_in_pool` 設定を尊重する（従う）かどうかを制御します。
+`min_age_to_force_merge_seconds` と
+`min_age_to_force_merge_on_partition_only` の両設定が、
+`max_bytes_to_merge_at_max_space_in_pool` の設定に従うかどうかを制御します。
 
-取りうる値:
+設定可能な値:
 
 - `true`
 - `false`
@@ -638,7 +635,6 @@ ALTER TABLE tab MODIFY SETTING exclude_materialize_skip_indexes_on_merge = 'idx_
 -- デフォルト設定、マージ時の更新から除外される索引はありません
 ALTER TABLE tab MODIFY SETTING exclude_materialize_skip_indexes_on_merge = '';
 ```
-
 
 ## execute_merges_on_single_replica_time_threshold {#execute_merges_on_single_replica_time_threshold} 
 
@@ -907,7 +903,6 @@ MergeTree テーブルに関連して同時に実行されるクエリの最大�
 <max_concurrent_queries>50</max_concurrent_queries>
 ```
 
-
 ## max&#95;delay&#95;to&#95;insert {#max_delay_to_insert}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
@@ -945,7 +940,6 @@ delay_milliseconds = max(min_delay_to_insert_ms, (max_delay_to_insert * 1000)
 = 300、parts&#95;to&#95;delay&#95;insert = 150、max&#95;delay&#95;to&#95;insert = 1、
 min&#95;delay&#95;to&#95;insert&#95;ms = 10 の場合、`INSERT` は `max( 10, 1 * 1000 *
 (224 - 150 + 1) / (300 - 150) ) = 500` ミリ秒だけ遅延します。
-
 
 ## max_delay_to_mutate_ms {#max_delay_to_mutate_ms} 
 
@@ -1025,13 +1019,13 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10 の場合、`INSERT` は `max( 10, 1
 
 <SettingsInfoBlock type="MaxThreads" default_value="'auto(17)'" />
 
-この設定は廃止されており、現在は何の効果もありません。
+廃止された設定で、現在は効果がありません。
 
 ## max_part_removal_threads {#max_part_removal_threads} 
 
 <SettingsInfoBlock type="MaxThreads" default_value="'auto(17)'" />
 
-廃止済みの設定であり、現在は何の効果もありません。
+廃止された設定であり、現在は何の効果もありません。
 
 ## max_partitions_to_read {#max_partitions_to_read} 
 
@@ -1291,12 +1285,33 @@ Wide データパートへのマージ後には、このパート内の動的パ
 
 パーティション内のパーツ数に応じて、このロジックがいつ適用されるかを制御します。係数が大きいほど、反応の開始はより遅くなります。
 
+## merge_selector_enable_heuristic_to_lower_max_parts_to_merge_at_once {#merge_selector_enable_heuristic_to_lower_max_parts_to_merge_at_once} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+シンプルなマージセレクタに対して、マージ選択時の上限値を引き下げるヒューリスティックを有効にします。
+これにより同時に実行されるマージの数が増え、TOO_MANY_PARTS エラーの軽減に役立つ可能性がありますが、その一方で書き込み増幅も増加します。
+
 ## merge_selector_enable_heuristic_to_remove_small_parts_at_right {#merge_selector_enable_heuristic_to_remove_small_parts_at_right} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 マージ対象のパーツを選択する際に、範囲の右側にあるパーツについて、そのサイズが合計サイズ `sum_size` に対する指定比率 (0.01) 未満の場合に、そのパーツをマージ対象から外すヒューリスティックを有効にします。
 Simple および StochasticSimple マージセレクタで動作します。
+
+## merge_selector_heuristic_to_lower_max_parts_to_merge_at_once_exponent {#merge_selector_heuristic_to_lower_max_parts_to_merge_at_once_exponent} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="UInt64" default_value="5" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "5"},{"label": "New setting"}]}]}/>
+
+減少カーブを形成するために数式で使用される指数値を制御します。指数を小さくするとマージ幅が小さくなり、その結果、書き込み増幅が大きくなります。逆も同様です。
 
 ## merge_selector_window_size {#merge_selector_window_size} 
 
@@ -1553,7 +1568,6 @@ ClickHouse Cloud でのみ利用可能。データパートに対して、packed
 <min_marks_to_honor_max_concurrent_queries>10</min_marks_to_honor_max_concurrent_queries>
 ```
 
-
 ## min_merge_bytes_to_use_direct_io {#min_merge_bytes_to_use_direct_io} 
 
 <SettingsInfoBlock type="UInt64" default_value="10737418240" />
@@ -1654,6 +1668,20 @@ ClickHouse Cloud でのみ利用可能です。データパーツに対して pa
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "Cloud sync"}]}]}/>
 
 最新のブロック番号を SharedJoin または SharedSet に通知します。ClickHouse Cloud でのみ利用可能です。
+
+## nullable_serialization_version {#nullable_serialization_version} 
+
+<SettingsInfoBlock type="MergeTreeNullableSerializationVersion" default_value="basic" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "basic"},{"label": "新しい設定"}]}]}/>
+
+`Nullable(T)` カラムで使用されるシリアライズ方式を制御します。
+
+指定可能な値:
+
+- basic — `Nullable(T)` に対して標準的なシリアライズ方式を使用します。
+
+- allow_sparse — `Nullable(T)` でスパースエンコーディングを使用できるようにします。
 
 ## number_of_free_entries_in_pool_to_execute_mutation {#number_of_free_entries_in_pool_to_execute_mutation} 
 
@@ -2111,7 +2139,6 @@ WHERE table LIKE 'my_sparse_table';
 │ s      │ Sparse             │
 └────────┴────────────────────┘
 ```
-
 
 ## reduce_blocking_parts_sleep_ms {#reduce_blocking_parts_sleep_ms} 
 
@@ -2817,22 +2844,22 @@ ClickHouse Cloud でのみ利用可能です。
 
 <SettingsInfoBlock type="MergeTreeStringSerializationVersion" default_value="with_size_stream" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "with_size_stream"},{"label": "サイズを分離した新しいフォーマットへの変更"}]}, {"id": "row-2","items": [{"label": "25.10"},{"label": "single_stream"},{"label": "新しい設定項目"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "with_size_stream"},{"label": "サイズを別ストリームで扱う新しい形式に変更"}]}, {"id": "row-2","items": [{"label": "25.10"},{"label": "single_stream"},{"label": "新しい設定を追加"}]}]}/>
 
 トップレベルの `String` カラムに対するシリアライズ形式を制御します。
 
-この設定は、`serialization_info_version` が "with_types" に設定されている場合にのみ有効です。
-有効な場合、トップレベルの `String` カラムはインラインではなく、文字列長を格納する `.size`
-サブカラムを別途用いてシリアライズされます。これにより実際の `.size`
-サブカラムが利用可能になり、圧縮効率の向上につながる場合があります。
+この設定が有効になるのは、`serialization_info_version` が "with_types" に設定されている場合のみです。
+`with_size_stream` に設定すると、トップレベルの `String` カラムはインラインではなく、
+文字列長を保持する `.size` サブカラムを別途用いてシリアライズされます。これにより実際の `.size`
+サブカラムを利用でき、圧縮効率が向上する可能性があります。
 
-ネストされた `String` 型（`Nullable`、`LowCardinality`、`Array`、`Map` の内部など）は、
-`Tuple` 内に現れる場合を除き、この設定の影響を受けません。
+ネストされた `String` 型（例: `Nullable`、`LowCardinality`、`Array`、`Map` 内）は、
+`Tuple` 内に現れる場合を除き、影響を受けません。
 
-取り得る値:
+指定可能な値:
 
-- `single_stream` — サイズをインラインで格納する標準的なシリアライズ形式を使用します。
-- `with_size_stream` — トップレベルの `String` カラムに対して、サイズ専用のストリームを別に使用します。
+- `single_stream` — サイズをインラインで保持する標準的なシリアライズ形式を使用します。
+- `with_size_stream` — トップレベルの `String` カラムに対し、サイズ用の別ストリームを使用します。
 
 ## table_disk {#table_disk} 
 

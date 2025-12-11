@@ -59,7 +59,6 @@ md5sum daily_weather_preprocessed_1896_2023.csv
 # 校验和应为:1132248c78195c43d93f843753881754 {#checksum-should-be-equal-to-1132248c78195c43d93f843753881754}
 ```
 
-
 ### 原始数据 {#original-raw-data}
 
 以下内容介绍如何下载原始数据，以便按需进行转换和处理。
@@ -89,7 +88,6 @@ cat *.csv | md5sum
 # 校验和应为:b26db404bf84d4063fac42e576464ce1 {#checksum-should-be-equal-to-b26db404bf84d4063fac42e576464ce1}
 ```
 
-
 #### 获取台湾地区气象站列表 {#retrieve-the-taiwan-weather-stations}
 
 ```bash
@@ -98,7 +96,6 @@ wget -O weather_sta_list.csv https://github.com/Raingel/weather_station_list/raw
 # 可选:将 UTF-8-BOM 转换为 UTF-8 编码 {#option-convert-the-utf-8-bom-to-utf-8-encoding}
 sed -i '1s/^\xEF\xBB\xBF//' weather_sta_list.csv
 ```
-
 
 ## 创建表结构 {#create-table-schema}
 
@@ -141,7 +138,6 @@ ENGINE = MergeTree
 ORDER BY (MeasuredDate);
 ```
 
-
 ## 向 ClickHouse 插入数据 {#inserting-into-clickhouse}
 
 ### 从本地文件插入 {#inserting-from-local-file}
@@ -164,7 +160,6 @@ INSERT INTO tw_weather_data FROM INFILE '/path/to/daily_weather_preprocessed_189
 峰值内存使用量:583.23 MiB。
 ```
 
-
 ### 从 URL 插入数据 {#inserting-from-url}
 
 ```sql
@@ -174,7 +169,6 @@ FROM url('https://storage.googleapis.com/taiwan-weather-observaiton-datasets/dai
 ```
 
 如需了解如何加快这一过程，请参阅我们关于[优化大规模数据加载](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part2)的博文。
-
 
 ## 检查数据行和大小 {#check-data-rows-and-sizes}
 
@@ -206,7 +200,6 @@ WHERE (`table` = 'tw_weather_data') AND active
 │ 2.13 GiB  │ 32.94 GiB         │
 └───────────┴───────────────────┘
 ```
-
 
 ## 查询示例 {#sample-queries}
 
@@ -256,7 +249,6 @@ GROUP BY StationId
 返回 30 行。用时:0.045 秒。已处理 641 万行,187.33 MB(1.4392 亿行/秒,4.21 GB/秒)。
 ```
 
-
 ### Q2: 在特定时间范围内按字段和气象站获取原始数据 {#q2-raw-data-fetching-with-the-specific-duration-time-range-fields-and-weather-station}
 
 ```sql
@@ -294,7 +286,6 @@ LIMIT 10
 
 返回 10 行。用时:0.009 秒。已处理 9.17 万行,2.33 MB(967 万行/秒,245.31 MB/秒)。
 ```
-
 
 ## 致谢 {#credits}
 

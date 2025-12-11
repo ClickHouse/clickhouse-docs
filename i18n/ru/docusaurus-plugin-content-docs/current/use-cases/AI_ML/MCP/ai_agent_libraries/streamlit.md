@@ -10,8 +10,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-
-
 # Как создать агента ИИ на базе ClickHouse с помощью Streamlit {#how-to-build-a-clickhouse-backed-ai-agent-with-streamlit}
 
 В этом руководстве вы узнаете, как создать веб-агента ИИ с использованием [Streamlit](https://streamlit.io/), способного взаимодействовать с [SQL-песочницей ClickHouse](https://sql.clickhouse.com/) через [MCP-сервер ClickHouse](https://github.com/ClickHouse/mcp-clickhouse) и [Agno](https://github.com/agno-agi/agno).
@@ -20,8 +18,6 @@ doc_type: 'guide'
 В этом примере создаётся полнофункциональное веб-приложение, предоставляющее чат-интерфейс для выполнения запросов к данным ClickHouse.
 Исходный код этого примера вы можете найти в [репозитории examples](https://github.com/ClickHouse/examples/tree/main/ai/mcp/streamlit).
 :::
-
-
 
 ## Предварительные требования {#prerequisites}
 
@@ -33,7 +29,6 @@ doc_type: 'guide'
 
 <VerticalStepper headerLevel="h2">
 
-
 ## Установка библиотек {#install-libraries}
 
 Установите необходимые библиотеки, выполнив следующие команды:
@@ -41,7 +36,6 @@ doc_type: 'guide'
 ```bash
 pip install streamlit agno ipywidgets
 ```
-
 
 ## Создайте файл с утилитами {#create-utilities}
 
@@ -70,7 +64,6 @@ def apply_styles():
   <hr class='divider' />""", unsafe_allow_html=True)
 ```
 
-
 ## Настройка учётных данных {#setup-credentials}
 
 Установите ключ API Anthropic в переменную окружения:
@@ -83,7 +76,6 @@ export ANTHROPIC_API_KEY="ваш_ключ_api"
 Если у вас нет ключа API Anthropic и вы хотите использовать другого провайдера LLM,
 вы можете найти инструкции по настройке учетных данных в документации [Agno «Integrations»](https://docs.agentops.ai/v2/integrations/ag2)
 :::
-
 
 ## Импорт необходимых библиотек {#import-libraries}
 
@@ -108,7 +100,6 @@ import asyncio
 import threading
 from queue import Queue
 ```
-
 
 ## Определите функцию потоковой передачи агента {#define-agent-function}
 
@@ -160,7 +151,6 @@ async def stream_clickhouse_agent(message):
                     yield chunk.content
 ```
 
-
 ## Добавьте синхронные функции-обёртки {#add-wrapper-functions}
 
 Добавьте вспомогательные функции для обработки асинхронного стриминга в Streamlit:
@@ -182,7 +172,6 @@ async def _agent_stream_to_queue(message, queue):
     async for chunk in stream_clickhouse_agent(message):
         queue.put(chunk)
 ```
-
 
 ## Создайте интерфейс Streamlit {#create-interface}
 
@@ -212,7 +201,6 @@ if prompt := st.chat_input("Чем могу помочь?"):
     response = st.write_stream(run_agent_query_sync(prompt))
   st.session_state.messages.append({"role": "assistant", "content": response})
 ```
-
 
 ## Запуск приложения {#run-application}
 

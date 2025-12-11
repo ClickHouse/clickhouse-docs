@@ -56,7 +56,6 @@ hyperdx:
 helm install my-clickstack clickstack/clickstack -f values-external-clickhouse.yaml
 ```
 
-
 ### Вариант 2: Внешний секрет (рекомендуется для production) {#external-clickhouse-secret}
 
 Для production-развертываний, где вы хотите хранить учетные данные отдельно от конфигурации Helm:
@@ -174,7 +173,6 @@ hyperdx:
 
 Подробный пример подключения к ClickHouse Cloud см. в разделе [«Создание подключения к ClickHouse Cloud»](/docs/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
 
-
 ## Внешний OTel collector {#external-otel-collector}
 
 Если у вас уже есть инфраструктура OTel collector:
@@ -193,7 +191,6 @@ helm install my-clickstack clickstack/clickstack -f values-external-otel.yaml
 ```
 
 См. раздел [Настройка входного шлюза](/docs/use-cases/observability/clickstack/deployment/helm-configuration#otel-collector-ingress) для инструкций по публикации конечных точек OTel collector через входной шлюз.
-
 
 ## Минимальное развертывание {#minimal-deployment}
 
@@ -232,7 +229,6 @@ hyperdx:
 ```shell
 helm install my-clickstack clickstack/clickstack -f values-minimal.yaml
 ```
-
 
 ## Следующие шаги {#next-steps}
 

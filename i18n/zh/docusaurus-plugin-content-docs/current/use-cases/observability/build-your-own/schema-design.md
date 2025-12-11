@@ -13,7 +13,6 @@ import observability_12 from '@site/static/images/use-cases/observability/observ
 import observability_13 from '@site/static/images/use-cases/observability/observability-13.png';
 import Image from '@theme/IdealImage';
 
-
 # 为可观测性设计 schema {#designing-a-schema-for-observability}
 
 我们建议用户始终为日志和追踪数据创建自己的 schema，原因如下：
@@ -81,7 +80,6 @@ LIMIT 5
 :::note Prefer ClickHouse for parsing
 我们通常建议用户在 ClickHouse 中对结构化日志进行 JSON 解析。我们有信心 ClickHouse 提供了最快的 JSON 解析实现。不过，我们也意识到，有些用户可能希望将日志发送到其他系统，而不希望将这部分逻辑写在 SQL 中。
 :::
-
 
 ```sql
 SELECT path(JSONExtractString(Body, 'request_path')) AS path, count() AS c
@@ -156,7 +154,6 @@ LIMIT 5
 用户也可以按[此处](/observability/integrating-opentelemetry#processing---filtering-transforming-and-enriching)所述，使用 OTel Collector 的 processors 和 operators 进行处理。在大多数情况下，用户会发现 ClickHouse 在资源利用率和速度方面都明显优于 collector 的 processors。使用 SQL 执行所有事件处理的主要缺点是会将你的解决方案与 ClickHouse 紧密耦合。例如，用户可能希望从 OTel collector 将已处理日志发送到其他目的地，例如 S3。
 :::
 
-
 ### 物化列 {#materialized-columns}
 
 物化列是从其他列中提取结构化信息的最简单方案。这类列的值始终在插入时计算，且不能在 INSERT 查询中显式指定。
@@ -224,7 +221,6 @@ Peak memory usage: 3.16 MiB.
 默认情况下，物化列不会包含在 `SELECT *` 的返回结果中。这样可以保持这样一个不变量：`SELECT *` 的结果始终可以通过 INSERT 语句原样插回同一张表。可以通过将 `asterisk_include_materialized_columns` 设置为 1 来关闭此行为，也可以在 Grafana 中启用该设置（参见数据源配置中的 `Additional Settings -> Custom Settings`）。
 :::
 
-
 ## 物化视图 {#materialized-views}
 
 [物化视图](/materialized-views) 提供了一种更强大的方式，用于对日志和追踪应用 SQL 过滤和转换。
@@ -267,7 +263,6 @@ CREATE TABLE otel_logs
 Null 表引擎是一种强大的优化手段——可以把它类比为 `/dev/null`。这个表本身不会存储任何数据，但任何附加其上的物化视图仍然会在行被丢弃之前，基于插入的行继续执行。
 
 来看下面的查询。它将我们的行转换为希望保留的格式，从 `LogAttributes` 中提取所有列（我们假设这是由采集器使用 `json_parser` 算子设置的），并设置 `SeverityText` 和 `SeverityNumber`（基于一些简单条件以及对[这些列](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-severitytext)的定义）。在这个例子中，我们还仅选择那些我们确定会被填充的列——忽略诸如 `TraceId`、`SpanId` 和 `TraceFlags` 等列。
-
 
 ```sql
 SELECT
@@ -354,7 +349,6 @@ ORDER BY (ServiceName, Timestamp)
 请注意，我们在这里对 schema（模式）进行了大幅调整。实际场景中，用户很可能还会有希望保留的 Trace 列，以及 `ResourceAttributes` 列（通常包含 Kubernetes 元数据）。Grafana 可以利用这些 Trace 列在日志与 Trace 之间提供跳转/关联功能——参见 [&quot;Using Grafana&quot;](/observability/grafana)。
 :::
 
-
 下面，我们创建一个物化视图 `otel_logs_mv`，它对 `otel_logs` 表执行上述 SELECT 查询，并将结果写入 `otel_logs_v2`。
 
 ```sql
@@ -417,7 +411,6 @@ SeverityNumber:  9
 
 下面展示了一个等效的物化视图，它通过使用 JSON 函数从 `Body` 列中解析并提取各个字段：
 
-
 ```sql
 CREATE MATERIALIZED VIEW otel_logs_mv TO otel_logs_v2 AS
 SELECT  Body, 
@@ -439,7 +432,6 @@ SELECT  Body,
         multiIf(Status::UInt64 > 500, 20, Status::UInt64 > 400, 17, Status::UInt64 > 300, 13, 9) AS SeverityNumber
 FROM otel_logs
 ```
-
 
 ### 注意类型 {#beware-types}
 
@@ -494,7 +486,6 @@ groupArrayDistinctArray(mapKeys(LogAttributes)): ['remote_user','run_time','requ
 :::note 避免使用点号
 我们不建议在 Map 列名中使用点号，将来可能会取消对此的支持。请改用 `_`。
 :::
-
 
 ## 使用别名 {#using-aliases}
 
@@ -572,7 +563,6 @@ LIMIT 5
 :::note 默认排除 Alias
 默认情况下，`SELECT *` 会排除 ALIAS 列。可以通过将 `asterisk_include_alias_columns` 设置为 `1` 来关闭此行为。
 :::
-
 
 ## 优化类型 {#optimizing-types}
 
@@ -694,7 +684,6 @@ LIMIT 4;
 4 行数据。耗时: 0.259 秒。
 ```
 
-
 :::note
 上面的查询内容较多。感兴趣的读者可以查看这篇精彩的[说明](https://clickhouse.com/blog/geolocating-ips-in-clickhouse-and-grafana#using-bit-functions-to-convert-ip-ranges-to-cidr-notation)。否则，只需知道上述查询会为一个 IP 范围计算出 CIDR 即可。
 :::
@@ -775,7 +764,6 @@ SELECT dictGet('ip_trie', ('country_code', 'latitude', 'longitude'), CAST('85.24
 
 回到我们原始的日志数据集，我们可以利用上述结果按国家对日志进行聚合。下面的示例假设我们使用的是之前物化视图生成的 schema，其中包含提取出的 `RemoteAddress` 列。
 
-
 ```sql
 SELECT dictGet('ip_trie', 'country_code', tuple(RemoteAddress)) AS country,
         formatReadableQuantity(count()) AS num_requests
@@ -832,7 +820,6 @@ ORDER BY (ServiceName, Timestamp)
 :::
 
 上述国家和坐标信息不仅支持按国家进行分组和过滤，还提供了更丰富的可视化能力。可参考 [&quot;可视化地理数据&quot;](/observability/grafana#visualizing-geo-data) 获取灵感。
-
 
 ### 使用正则表达式字典（User-Agent 解析） {#using-regex-dictionaries-user-agent-parsing}
 
@@ -929,7 +916,6 @@ LAYOUT(regexp_tree);
 
 在加载了这些字典之后，我们可以提供一个示例 user-agent 字符串，并测试我们新的字典提取能力：
 
-
 ```sql
 WITH 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:127.0) Gecko/20100101 Firefox/127.0' AS user_agent
 SELECT
@@ -1006,7 +992,6 @@ ORDER BY (ServiceName, Timestamp, Status)
 
 在重启 collector 并按照前文所述步骤摄取结构化日志之后，我们就可以对新提取出的 Device、Browser 和 Os 列进行查询了。
 
-
 ```sql
 SELECT Device, Browser, Os
 FROM otel_logs_v2
@@ -1023,7 +1008,6 @@ Os:     ('Other','0','0','0')
 :::note 用于复杂结构的 Tuple
 请注意这些 user agent 列中对 Tuple 的使用。对于层级结构在预先已知的复杂结构，推荐使用 Tuple。子列在提供对异构类型支持的同时，能够保持与常规列相同的性能（不同于 Map 的键）。
 :::
-
 
 ### 延伸阅读 {#further-reading}
 
@@ -1111,7 +1095,6 @@ FINAL
 1 row in set. Elapsed: 0.039 sec.
 ```
 
-
 通过存储查询结果，我们实际上将这里的行数从 1000 万（`otel_logs` 中）减少到了 113。关键在于，当有新的日志插入到 `otel_logs` 表时，其所属小时的最新数值会写入 `bytes_per_hour`，并在后台自动异步合并——由于我们每小时只保留一行，因此 `bytes_per_hour` 始终既数据量小又保持最新。
 
 由于行合并是异步进行的，当用户查询时，每小时可能会存在多行。为了确保在查询时将所有尚未合并的行合并，我们有两个选项：
@@ -1164,7 +1147,6 @@ LIMIT 5
 :::note
 在更大的数据集上执行更复杂的查询时，这种收益会更加显著。示例请参见[这里](https://github.com/ClickHouse/clickpy)。
 :::
-
 
 #### 更复杂的示例 {#a-more-complex-example}
 
@@ -1244,7 +1226,6 @@ ORDER BY Hour DESC
 
 请注意，这里我们使用 `GROUP BY` 而不是 `FINAL`。
 
-
 ### 使用物化视图（增量）实现快速查询 {#using-materialized-views-incremental--for-fast-lookups}
 
 在选择 ClickHouse 排序键时，用户应结合自身的访问模式，将在过滤和聚合子句中经常使用的列包含在排序键中。但在可观测性场景下，这种方式可能会受到限制，因为用户的访问模式更加多样，无法用单一的一组列来概括。默认 OTel schema 中内置的一个示例最能说明这一点。以 traces 的默认 schema 为例：
@@ -1316,7 +1297,6 @@ WHERE TraceId != ''
 GROUP BY TraceId
 ```
 
-
 该视图可以有效确保表 `otel_traces_trace_id_ts` 记录了每个 trace 的最小和最大时间戳。该表按 `TraceId` 排序，使得这些时间戳可以被高效检索。随后，在查询主表 `otel_traces` 时可以利用这些时间戳范围。更具体地说，当通过 id 检索某个 trace 时，Grafana 会使用以下查询：
 
 ```sql
@@ -1349,7 +1329,6 @@ LIMIT 1000
 这里的 CTE 会先确定 trace id `ae9226c78d1d360601e6383928e4d22d` 对应的最小和最大时间戳，然后再使用这些时间戳去过滤主表 `otel_traces`，以获取与其关联的 spans。
 
 同样的方法也可以应用于类似的访问模式。我们在数据建模章节中[这里](/materialized-view/incremental-materialized-view#lookup-table)探讨了一个类似的示例。
-
 
 ### 使用投影 {#using-projections}
 
@@ -1459,7 +1438,6 @@ FORMAT `Null`
 ```
 
 在上面的示例中，我们在投影中指定了先前查询中使用的列。这意味着只有这些指定的列会作为投影的一部分存储在磁盘上，并按照 Status 排序。或者，如果我们在这里使用 `SELECT *`，则所有列都会被包含在投影中并存储。这样虽然可以让更多查询（使用任意列子集）从该投影中获益，但会带来额外的存储开销。有关磁盘空间占用和压缩情况的衡量，请参见 [&quot;Measuring table size &amp; compression&quot;](#measuring-table-size--compression)。
-
 
 ### Secondary/data skipping indices {#secondarydata-skipping-indices}
 
@@ -1616,7 +1594,6 @@ WHERE Referer LIKE '%ultra%'
 
 通常只有当布隆过滤器本身比该列更小时，它才会更快。如果它更大，那么性能收益很可能可以忽略不计。使用以下查询将过滤器的大小与该列进行比较：
 
-
 ```sql
 SELECT
         name,
@@ -1653,7 +1630,6 @@ WHERE `table` = 'otel_logs_bloom'
 Bloom filter 可能需要进行较为细致的调优。我们建议参考[此处](/engines/table-engines/mergetree-family/mergetree#bloom-filter)的说明，以帮助确定最优配置。Bloom filter 在插入和合并阶段的开销也可能较大。用户应在将 Bloom filter 引入生产环境之前，先评估其对插入性能的影响。
 
 关于二级跳过索引的更多细节可以在[此处](/optimize/skipping-indexes#skip-index-functions)找到。
-
 
 ### 从 Map 中提取数据 {#extracting-from-maps}
 

@@ -8,8 +8,6 @@ hide_title: false
 doc_type: 'guide'
 ---
 
-
-
 ## 从源码编译 {#compile-from-source}
 
 要手动编译 ClickHouse，请按照 [Linux](/development/build.md) 或 [macOS](/development/build-osx.md) 的说明进行操作。
@@ -29,7 +27,6 @@ doc_type: 'guide'
 ```
 
 在 Gentoo 上，你只需运行 `emerge clickhouse` 即可从源代码安装 ClickHouse。
-
 
 ## 安装 CI 生成的二进制文件 {#install-a-ci-generated-binary}
 

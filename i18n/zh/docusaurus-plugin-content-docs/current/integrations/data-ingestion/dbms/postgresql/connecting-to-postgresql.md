@@ -290,7 +290,7 @@ host    db1             clickhouse_user 192.168.1.0/24          password
  psql -U clickhouse_user -W -d db1 -h <你的_postgresql_主机>
 ```
 
-### 2. 在 ClickHouse 中
+### 2. 在 ClickHouse 中 {#2-in-clickhouse}
 
 1. 登录到 ClickHouse CLI
 

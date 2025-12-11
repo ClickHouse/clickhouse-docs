@@ -268,7 +268,7 @@
     "description": "Метка категории «Специальные типы данных» в боковой панели sqlreference"
   },
   "sidebar.sqlreference.category.Statements": {
-    "message": "Операторы",
+    "message": "SQL-операторы",
     "description": "Метка категории Statements в боковой панели sqlreference"
   },
   "sidebar.sqlreference.category.SELECT": {

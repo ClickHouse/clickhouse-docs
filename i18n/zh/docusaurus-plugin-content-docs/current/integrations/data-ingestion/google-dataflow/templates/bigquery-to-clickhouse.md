@@ -18,7 +18,6 @@ import dataflow_extended_template_form from '@site/static/images/integrations/da
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 # Dataflow BigQuery 到 ClickHouse 模板 {#dataflow-bigquery-to-clickhouse-template}
 
 BigQuery 到 ClickHouse 模板是一个批处理管道，用于将 BigQuery 表中的数据摄取到 ClickHouse 表中。
@@ -26,15 +25,11 @@ BigQuery 到 ClickHouse 模板是一个批处理管道，用于将 BigQuery 表�
 
 <TOCInline toc={toc}   maxHeadingLevel={2}></TOCInline>
 
-
-
 ## 管道要求 {#pipeline-requirements}
 
 * 源 BigQuery 表必须已存在。
 * 目标 ClickHouse 表必须已存在。
 * 必须能从 Dataflow 工作器实例访问 ClickHouse 主机。
-
-
 
 ## 模板参数 {#template-parameters}
 
@@ -60,13 +55,9 @@ BigQuery 到 ClickHouse 模板是一个批处理管道，用于将 BigQuery 表�
 | `queryTempDataset`      | 设置一个已存在的数据集，用于创建存储查询结果的临时表。例如：`temp_dataset`。                                                                                                                                                                                                                                                                       |          |                                                                                                                                                                                                                                                                  |
 | `KMSEncryptionKey`      | 当使用 query 作为数据源从 BigQuery 读取时，使用此 Cloud KMS 密钥对创建的任何临时表进行加密。例如：`projects/your-project/locations/global/keyRings/your-keyring/cryptoKeys/your-key`。                                                                                                                     |          |                                                                                                                                                                                                                                                                  |
 
-
-
 :::note
 所有 `ClickHouseIO` 参数的默认值可以在 [`ClickHouseIO` Apache Beam Connector](/integrations/apache-beam#clickhouseiowrite-parameters) 中找到。
 :::
-
-
 
 ## 源表与目标表的模式 {#source-and-target-tables-schema}
 
@@ -81,8 +72,6 @@ BigQuery 到 ClickHouse 模板是一个批处理管道，用于将 BigQuery 表�
 因此，你的 BigQuery 数据集（无论是表还是查询）必须与 ClickHouse 目标表具有完全相同的列名。
 :::
 
-
-
 ## 数据类型映射 {#data-types-mapping}
 
 BigQuery 类型会根据 ClickHouse 表的定义进行转换。因此，上表列出了在目标 ClickHouse 表中（针对给定的 BigQuery 表/查询）推荐使用的映射关系：
@@ -96,8 +85,6 @@ BigQuery 类型会根据 ClickHouse 表的定义进行转换。因此，上表�
 | [**String Type**](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#string_type)               | [**String Type**](../../../sql-reference/data-types/string)     | 在 BigQuery 中，所有 Int 类型（`INT`、`SMALLINT`、`INTEGER`、`BIGINT`、`TINYINT`、`BYTEINT`）都是 `INT64` 的别名。建议在 ClickHouse 中为列设置合适的整数宽度，因为模板会根据定义的列类型（`Int8`、`Int16`、`Int32`、`Int64`）来转换列。                                                                                                                          |
 | [**Numeric - Integer Types**](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types) | [**Integer Types**](../../../sql-reference/data-types/int-uint) | 在 BigQuery 中，所有 Int 类型（`INT`、`SMALLINT`、`INTEGER`、`BIGINT`、`TINYINT`、`BYTEINT`）都是 `INT64` 的别名。建议在 ClickHouse 中为列设置合适的整数宽度，因为模板会根据定义的列类型（`Int8`、`Int16`、`Int32`、`Int64`）来转换列。如果在 ClickHouse 表中使用了无符号 Int 类型（`UInt8`、`UInt16`、`UInt32`、`UInt64`），模板也会对其进行转换。 |
 | [**Numeric - Float Types**](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types)   | [**Float Types**](../../../sql-reference/data-types/float)      | 支持的 ClickHouse 类型：`Float32` 和 `Float64`                                                                                                                                                                                                                                                                                                                                                                    |
-
-
 
 ## 运行模板 {#running-the-template}
 
@@ -185,11 +172,7 @@ job:
 
 在 Google Cloud 控制台中导航到 [Dataflow Jobs 选项卡](https://console.cloud.google.com/dataflow/jobs)，以监控作业状态。你可以查看作业详情，包括进度和任何错误信息：
 
-
-
 <Image img={dataflow_inqueue_job} size="lg" border alt="DataFlow 控制台显示一个正在运行的从 BigQuery 到 ClickHouse 的作业" />
-
-
 
 ## 疑难解答 {#troubleshooting}
 
@@ -199,8 +182,6 @@ job:
 
 * 增加实例资源：将 ClickHouse 服务器升级为具有更多内存的更大实例，以应对数据处理负载。
 * 减小批大小：在 Dataflow 作业配置中调整批大小，以较小的数据块发送到 ClickHouse，从而降低每个批次的内存消耗。这些更改有助于在数据摄取过程中平衡资源使用。
-
-
 
 ## 模板源代码 {#template-source-code}
 
