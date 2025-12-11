@@ -32,7 +32,7 @@ Before connecting, ensure you have the following:
 - **Network Access:** Your ClickHouse server must be accessible from [Holistics' IP addresses](/docs/connect/ip-whitelisting).
 - **Database User:** Create a dedicated, read-only user for Holistics rather than using an admin account.
 
-### Recommended Privileges {#recommended-privileges}
+### Recommended privileges {#recommended-privileges}
 
 The dedicated user requires `SELECT` privileges on the tables you wish to query, as well as the `system` tables (for schema detection).
 
@@ -44,7 +44,9 @@ GRANT SELECT ON my_database.* TO holistics_user;
 GRANT SELECT ON system.* TO holistics_user;
 ```
 
-## Step 1: Gather Connection Details {#step-1-gather-connection-details}
+<VerticalStepper headerLevel="h2">
+
+## Gather connection details {#step-1-gather-connection-details}
 
 To connect to ClickHouse with HTTP(S) you will need this information:
 
@@ -60,7 +62,7 @@ You can find these details by clicking the **Connect** button in your ClickHouse
 
 <Image size="md" img={holistics_01} alt="Location of the Connect button in the ClickHouse Cloud console" border />
 
-## Step 2: Configure Network Access {#step-2-configure-network-access}
+## Configure network access {#step-2-configure-network-access}
 
 Since Holistics is a cloud-based application, its servers must be able to reach your database. You have two options:
 
@@ -70,7 +72,7 @@ Since Holistics is a cloud-based application, its servers must be able to reach 
 
 2. **Reverse SSH Tunnel:** If your database is in a private network (VPC) and cannot be exposed publicly, use a [Reverse SSH Tunnel](/docs/connect/connect-tunnel).
 
-## Step 3: Add Data Source in Holistics {#step-3-add-data-source-in-holistics}
+## Add data source in Holistics {#step-3-add-data-source-in-holistics}
 
 1. In Holistics, go to **Settings → Data Sources**.
 
@@ -98,7 +100,9 @@ Since Holistics is a cloud-based application, its servers must be able to reach 
    - **Success:** Click **Save**.
    - **Failure:** Check your username/password and ensure the [Holistics IPs are allowlisted](/docs/connect/ip-whitelisting).
 
-## Known Limitations {#known-limitations}
+</VerticalStepper>
+
+## Known limitations {#known-limitations}
 
 Holistics supports most standard SQL features in ClickHouse, with the following exceptions:
 
