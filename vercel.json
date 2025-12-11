@@ -3477,11 +3477,6 @@
       "permanent": true
     },
     {
-      "source": "/docs/integrations/clickpipes/object-storage/amazon-s3/get-started",
-      "destination": "/docs/integrations/clickpipes/object-storage/s3/get-started",
-      "permanent": true
-    },
-    {
       "source": "/docs/integrations/connecting-to-mysql",
       "destination": "/docs/integrations/mysql",
       "permanent": true
