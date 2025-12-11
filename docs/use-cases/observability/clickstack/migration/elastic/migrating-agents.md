@@ -318,7 +318,7 @@ The Elastic Agent consolidates the different Elastic Beats into a single package
 
 Users with Elastic Agents deployed have several migration paths:
 
-- Configure the agent to send to a Vector endpoint over the Lumberjack protocol. **This has currently been tested for you collecting log data with the Elastic Agent only.** This can be centrally configured via the Fleet UI in Kibana.
+- Configure the agent to send to a Vector endpoint over the Lumberjack protocol. **This has currently been tested for users collecting log data with the Elastic Agent only.** This can be centrally configured via the Fleet UI in Kibana.
 - [Run the agent as Elastic OpenTelemetry Collector (EDOT)](https://www.elastic.co/docs/reference/fleet/otel-agent). The Elastic Agent includes an embedded EDOT Collector that allows you to instrument your applications and infrastructure once and send data to multiple vendors and backends. In this configuration, you can simply configure the EDOT collector to forward events to the ClickStack OTel collector over OTLP. **This approach supports all event types.**
 
 We demonstrate both of these options below.
