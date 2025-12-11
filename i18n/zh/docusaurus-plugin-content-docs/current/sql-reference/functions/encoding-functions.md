@@ -548,7 +548,7 @@ CREATE TABLE hilbert_numbers(
     n2 UInt32
 )
 ENGINE=MergeTree()
-ORDER BY n1 SETTINGS, index_granularity_bytes = '10Mi';
+ORDER BY n1 SETTINGS index_granularity_bytes = '10Mi';
 insert into hilbert_numbers (*) values(1,2);
 
 -- 使用列名而非常量作为函数参数
