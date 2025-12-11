@@ -16,13 +16,15 @@ ClickStack предоставляет несколько способов при
 
 | Раздел | Описание |
 |------|-------------|
-| [Generic Host Logs](/use-cases/observability/clickstack/integrations/host-logs) | Краткое руководство по логам Generic Host |
-| [EC2 Host Logs](/use-cases/observability/clickstack/integrations/host-logs/ec2) | Краткое руководство по логам EC2 Host |
-| [Kafka Metrics](/use-cases/observability/clickstack/integrations/kafka-metrics) | Краткое руководство по Kafka Metrics |
-| [Kubernetes](/use-cases/observability/clickstack/integrations/kubernetes) | Краткое руководство по Kubernetes |
-| [Nginx Logs](/use-cases/observability/clickstack/integrations/nginx) | Краткое руководство по логам Nginx |
-| [Nginx Traces](/use-cases/observability/clickstack/integrations/nginx-traces) | Краткое руководство по трейсингу Nginx |
-| [PostgreSQL Logs](/use-cases/observability/clickstack/integrations/postgresql-logs) | Краткое руководство по логам PostgreSQL |
-| [PostgreSQL Metrics](/use-cases/observability/clickstack/integrations/postgresql-metrics) | Краткое руководство по метрикам PostgreSQL |
-| [Redis Logs](/use-cases/observability/clickstack/integrations/redis) | Краткое руководство по логам Redis |
-| [Redis Metrics](/use-cases/observability/clickstack/integrations/redis-metrics) | Краткое руководство по метрикам Redis |
+| [Generic Host Logs](/use-cases/observability/clickstack/integrations/host-logs) | Сбор системных логов хоста |
+| [EC2 Host Logs](/use-cases/observability/clickstack/integrations/host-logs/ec2) | Мониторинг логов инстансов EC2 |
+| [AWS Lambda Logs using Rotel](/use-cases/observability/clickstack/integrations/aws-lambda) | Проброс логов Lambda с помощью Rotel |
+| [AWS CloudWatch](/use-cases/observability/clickstack/integrations/aws-cloudwatch-logs) | Проброс групп логов CloudWatch |
+| [Kafka Metrics](/use-cases/observability/clickstack/integrations/kafka-metrics) | Мониторинг производительности Kafka |
+| [Kubernetes](/use-cases/observability/clickstack/integrations/kubernetes) | Мониторинг кластеров K8s |
+| [Nginx Logs](/use-cases/observability/clickstack/integrations/nginx) | Сбор логов доступа и ошибок Nginx |
+| [Nginx Traces](/use-cases/observability/clickstack/integrations/nginx-traces) | Трейсинг HTTP‑запросов Nginx |
+| [PostgreSQL Logs](/use-cases/observability/clickstack/integrations/postgresql-logs) | Сбор логов Postgres |
+| [PostgreSQL Metrics](/use-cases/observability/clickstack/integrations/postgresql-metrics) | Мониторинг производительности Postgres |
+| [Redis Logs](/use-cases/observability/clickstack/integrations/redis) | Сбор логов сервера Redis |
+| [Redis Metrics](/use-cases/observability/clickstack/integrations/redis-metrics) | Мониторинг производительности Redis |

@@ -33,8 +33,8 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
   [ClickHouse Cloud](https://console.clickhouse.cloud)で無料のClickHouseサービスを作成するには、以下の手順に従ってサインアップしてください：
 
   * [サインアップページ](https://console.clickhouse.cloud/signUp)でアカウントを作成してください
-  * メールアドレスでサインアップするか、Google SSO、Microsoft SSO、AWS Marketplace、Google Cloud、Microsoft Azure のいずれかを利用してサインアップできます
-  * メールアドレスとパスワードでサインアップした場合は、届いたメール内のリンクから24時間以内にメールアドレスを確認することを忘れないでください
+  * メールアドレス、または Google SSO、Microsoft SSO、AWS Marketplace、Google Cloud、Microsoft Azure のいずれかを利用してサインアップできます
+  * メールアドレスとパスワードでサインアップした場合は、届いたメール内のリンクから24時間以内にメールアドレスの確認を完了してください
   * 先ほど作成したユーザー名とパスワードでログインしてください
 
   <Image img={signup_page} size="md" alt="プランを選択" border />
@@ -43,15 +43,15 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
   ログイン後、ClickHouse Cloudのオンボーディングウィザードが起動し、新しいClickHouseサービスの作成手順を案内します。サービスをデプロイするリージョンを選択し、新しいサービスに名前を付けてください。
 
-  <Image img={createservice1} size="md" alt="新規 ClickHouse サービス" border />
+  <Image img={createservice1} size="md" alt="新しい ClickHouse サービス" border />
 
   <br />
 
-  デフォルトでは、新規組織はScaleティアに配置され、各レプリカに4 vCPUと16 GiB RAMを持つ3つのレプリカが作成されます。 Scaleティアでは、[垂直オートスケーリング](/manage/scaling#vertical-auto-scaling)がデフォルトで有効になります。 組織ティアは、サービス作成後に組織の「Plans」ページで変更できます。
+  デフォルトでは、新規組織はScaleティアに配置され、各レプリカに4 vCPUと16 GiB RAMを持つ3つのレプリカが作成されます。 Scaleティアでは、[垂直オートスケーリング](/manage/scaling#vertical-auto-scaling)がデフォルトで有効になります。 組織ティアは、後で「Plans」ページで変更できます。
 
-  必要に応じて、サービスリソースをカスタマイズし、レプリカのスケール範囲となる最小サイズと最大サイズを指定できます。準備ができたら、`Create service`を選択します。
+  必要に応じて、レプリカのスケール範囲となる最小サイズと最大サイズを指定して、サービスリソースをカスタマイズします。準備ができたら、`Create service`を選択します。
 
-  <Image img={scaling_limits} size="md" alt="スケーリングの制約" border />
+  <Image img={scaling_limits} size="md" alt="スケーリング上限" border />
 
   <br />
 
@@ -62,7 +62,7 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
   ClickHouseへの接続方法は2つあります:
 
   * Web ベースの SQL コンソールから接続する
-  * アプリケーションを接続する
+  * アプリケーションから接続する
 
   <br />
 
@@ -80,7 +80,7 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
   リストには4つのデータベースと、追加したデータベースがあればそれらも表示されます。
 
-  <Image img={show_databases} size="md" alt="SQL コンソール" border />
+  <Image img={show_databases} size="md" alt="SQLコンソール" border />
 
   <br />
 
@@ -90,7 +90,7 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
   ナビゲーションメニューから接続ボタンをクリックします。モーダルが開き、サービスの認証情報と、使用するインターフェースまたは言語クライアントでの接続手順が表示されます。
 
-  <Image img={service_connect} size="md" alt="サービスコネクト" border />
+  <Image img={service_connect} size="md" alt="サービス接続" border />
 
   <br />
 
@@ -106,15 +106,15 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
   以下の方法でデータをアップロードできます：
 
-  * S3、Postgres、Kafka、GCS などのデータソースからデータの取り込みを開始できるように、ClickPipe をセットアップする
+  * S3、Postgres、Kafka、GCS などのデータソースからのデータ取り込みを開始するために、ClickPipe をセットアップする
   * SQL コンソールを使用する
   * ClickHouse クライアントの使用
   * ファイルをアップロード - 対応形式は JSON、CSV、TSV です
-  * ファイルURLからデータをアップロードする
+  * ファイル URL からデータをアップロードする
 
   ### ClickPipes \{#clickpipes\}
 
-  [ClickPipes](http://clickhouse.com/docs/integrations/clickpipes)は、多様なソースからのデータ取り込みを数クリックで実現するマネージド統合プラットフォームです。 最も要求の厳しいワークロードに対応するよう設計されたClickPipesの堅牢でスケーラブルなアーキテクチャは、一貫したパフォーマンスと信頼性を保証します。 ClickPipesは、長期的なストリーミングニーズや一回限りのデータロードジョブに使用できます。
+  [ClickPipes](http://clickhouse.com/docs/integrations/clickpipes)は、多様なソースからのデータ取り込みを数クリックで実現するマネージド統合プラットフォームです。最も要求の厳しいワークロードに対応するよう設計されたClickPipesの堅牢でスケーラブルなアーキテクチャは、一貫したパフォーマンスと信頼性を保証します。ClickPipesは、長期的なストリーミングニーズや一回限りのデータロードジョブに使用できます。
 
   <Image img={select_data_source} size="md" alt="データソースを選択" border />
 
@@ -122,7 +122,7 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
   ### SQLコンソールを使用したデータの追加 \{#add-data-using-the-sql-console\}
 
-  多くのデータベース管理システムと同様に、ClickHouseはテーブルを論理的に**データベース**にグループ化します。ClickHouseで新しいデータベースを作成するには、[`CREATE DATABASE`](../../sql-reference/statements/create/database.md)コマンドを使用します。
+  多くのデータベース管理システムと同様に、ClickHouseはテーブルを論理的に**データベース**にグループ化します。ClickHouseで新しいデータベースを作成するには、[`CREATE DATABASE`](../../sql-reference/statements/create/database.md)コマンドを使用します:
 
   ```sql
   CREATE DATABASE IF NOT EXISTS helloworld
@@ -145,15 +145,15 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
   上記の例では、`my_first_table`は4つのカラムを持つ[`MergeTree`](../../engines/table-engines/mergetree-family/mergetree.md)テーブルです:
 
   * `user_id`: 32ビット符号なし整数（[UInt32](../../sql-reference/data-types/int-uint.md)）
-  * `message`: 他のデータベースシステムで使われる `VARCHAR`、`BLOB`、`CLOB` などの型を置き換える [String](../../sql-reference/data-types/string.md) データ型
-  * `timestamp`: ある時点を表す [DateTime](../../sql-reference/data-types/datetime.md) 値
-  * `metric`: 32ビット浮動小数点数（[Float32](../../sql-reference/data-types/float.md)）
+  * `message`: 他のデータベースシステムで使用される `VARCHAR`、`BLOB`、`CLOB` などの型に相当する [String](../../sql-reference/data-types/string.md) データ型
+  * `timestamp`: ある瞬間を表す [DateTime](../../sql-reference/data-types/datetime.md) 値
+  * `metric`: 32ビット浮動小数点数（[Float32](../../sql-reference/data-types/float.md))
 
   :::note テーブルエンジン
   テーブルエンジンは以下を決定します：
 
   * データの保存場所と方法
-  * サポート対象のクエリ
+  * サポートされるクエリ
   * データがレプリケーションされているかどうか
 
   <br />
@@ -165,9 +165,9 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
   先に進む前に、ClickHouseにおけるプライマリキーの動作原理を理解しておくことが重要です（プライマリキーの実装は予想外に感じられるかもしれません）：
 
-  * ClickHouse のプライマリキーは、テーブル内の各行ごと&#x306B;***一意である必要はありません***
+  * ClickHouse のプライマリキーは、テーブル内の各行に対し&#x3066;***一意ではありません***
 
-  ClickHouseテーブルの^^主キー^^は、ディスクへの書き込み時にデータがどのようにソートされるかを決定します。 8,192行または10MBごとのデータ(**インデックス粒度**と呼ばれます)が、^^主キー^^インデックスファイルにエントリを作成します。 この粒度の概念により、メモリに容易に収まる**^^疎インデックス^^**が作成されます。各粒度は、`SELECT`クエリの実行時に処理される最小単位のカラムデータのストライプを表します。
+  ClickHouseテーブルの^^主キー^^は、ディスクへの書き込み時にデータがどのようにソートされるかを決定します。8,192行または10MBごとのデータ(**インデックス粒度**と呼ばれます)が、^^主キー^^インデックスファイルにエントリを作成します。この粒度の概念により、メモリに容易に収まる**^^スパースインデックス^^**が作成されます。各粒度は、`SELECT`クエリの実行時に処理される最小単位のカラムデータのストライプを表します。
 
   ^^プライマリキー^^は`PRIMARY KEY`パラメータを使用して定義できます。`PRIMARY KEY`を指定せずにテーブルを定義した場合、キーは`ORDER BY`句で指定されたタプルになります。`PRIMARY KEY`と`ORDER BY`の両方を指定した場合、^^プライマリキー^^はソート順のサブセットである必要があります。
 
@@ -189,14 +189,14 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
   ```sql
   INSERT INTO helloworld.my_first_table (user_id, message, timestamp, metric) VALUES
-      (101, 'こんにちは、ClickHouse!',                                 now(),       -1.0    ),
-      (102, 'バッチごとに大量の行を挿入する',                     yesterday(), 1.41421 ),
-      (102, 'よく使用するクエリに基づいてデータをソートする', today(),     2.718   ),
-      (101, 'グラニュールは読み取られるデータの最小チャンク',      now() + 5,   3.14159 )
+      (101, 'Hello, ClickHouse!',                                 now(),       -1.0    ),
+      (102, 'Insert a lot of rows per batch',                     yesterday(), 1.41421 ),
+      (102, 'Sort your data based on your commonly-used queries', today(),     2.718   ),
+      (101, 'Granules are the smallest chunks of data read',      now() + 5,   3.14159 )
   ```
 
   :::note
-  `timestamp`列は、さまざまな[**Date**](../../sql-reference/data-types/date.md)および[**DateTime**](../../sql-reference/data-types/datetime.md)関数を使用して値が設定されています。ClickHouseには数百の便利な関数があり、[**関数**セクション](/sql-reference/functions/)で確認できます。
+  `timestamp`カラムは、さまざまな[**Date**](../../sql-reference/data-types/date.md)および[**DateTime**](../../sql-reference/data-types/datetime.md)関数を使用して値が設定されています。ClickHouseには数百の便利な関数があり、[**関数**セクション](/sql-reference/functions/)で確認できます。
   :::
 
   動作確認を行います:
@@ -244,16 +244,16 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
   ```response
   ┌─user_id─┬─message────────────────────────────────────────────┬───────────timestamp─┬──metric─┐
-  │     102 │ バッチごとに大量の行を挿入する                                │ 2022-03-21 00:00:00 │ 1.41421 │
-  │     102 │ よく使用するクエリに基づいてデータをソートする                        │ 2022-03-22 00:00:00 │   2.718 │
+  │     102 │ Insert a lot of rows per batch                     │ 2022-03-21 00:00:00 │ 1.41421 │
+  │     102 │ Sort your data based on your commonly-used queries │ 2022-03-22 00:00:00 │   2.718 │
   │     101 │ Hello, ClickHouse!                                 │ 2022-03-22 14:04:09 │      -1 │
-  │     101 │ グラニュールは読み取られるデータの最小チャンク                        │ 2022-03-22 14:04:14 │ 3.14159 │
+  │     101 │ Granules are the smallest chunks of data read      │ 2022-03-22 14:04:14 │ 3.14159 │
   └─────────┴────────────────────────────────────────────────────┴─────────────────────┴─────────┘
 
-  4行が返されました。経過時間: 0.008秒
+  4 rows in set. Elapsed: 0.008 sec.
   ```
 
-  4. [`FORMAT`](../../sql-reference/statements/select/format.md) 句を追加して、[ClickHouse がサポートする多様な出力フォーマット](/interfaces/formats) のいずれかを指定します。
+  4. [`FORMAT`](../../sql-reference/statements/select/format.md) 句を追加して、[ClickHouse がサポートする多様な出力フォーマット](/interfaces/formats)のいずれかを指定します。
 
   <br />
 
@@ -269,15 +269,15 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
   ```response
   Query id: 3604df1c-acfd-4117-9c56-f86c69721121
 
-  102 バッチごとに大量の行を挿入する      2022-03-21 00:00:00     1.41421
-  102 よく使用するクエリに基づいてデータをソートする  2022-03-22 00:00:00     2.718
+  102 Insert a lot of rows per batch      2022-03-21 00:00:00     1.41421
+  102 Sort your data based on your commonly-used queries  2022-03-22 00:00:00     2.718
   101 Hello, ClickHouse!  2022-03-22 14:04:09     -1
-  101 グラニュールは読み取られるデータの最小チャンクである       2022-03-22 14:04:14     3.14159
+  101 Granules are the smallest chunks of data read       2022-03-22 14:04:14     3.14159
 
   4 rows in set. Elapsed: 0.005 sec.
   ```
 
-  5. `clickhouse client` を終了するには、**exit** コマンドを入力します。
+  5. `clickhouse client` を終了するには、**exit** と入力します。
 
   <br />
 
@@ -292,9 +292,9 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
   `data.csv`という名前のCSVファイルに以下のテキストが含まれているとします:
 
   ```bash title="data.csv"
-  102,これはファイル内のデータです,2022-02-22 10:43:28,123.45
-  101,カンマ区切りです,2022-02-23 00:00:00,456.78
-  103,FORMATを使用してフォーマットを指定します,2022-02-21 10:43:30,678.90
+  102,This is data in a file,2022-02-22 10:43:28,123.45
+  101,It is comma-separated,2022-02-23 00:00:00,456.78
+  103,Use FORMAT to specify the format,2022-02-21 10:43:30,678.90
   ```
 
   1. 次のコマンドでデータを `my_first_table` に挿入します。
@@ -313,16 +313,16 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
   <br />
 
-  <Image img={new_rows_from_csv} size="md" alt="CSV ファイルからの新しい行" />
+  <Image img={new_rows_from_csv} size="md" alt="CSV ファイルから追加された行" />
 
   <br />
 </VerticalStepper>
 
-## 次のステップ \{#whats-next\}
+## 次のステップは？ \{#whats-next\}
 
 * [チュートリアル](/tutorial.md) では、テーブルに 200 万行を挿入し、いくつかの分析クエリを実行します
-* [サンプルデータセット](/getting-started/index.md) と、その挿入手順を一覧で提供しています
+* [サンプルデータセット](/getting-started/index.md) の一覧と、それらを挿入する手順を用意しています
 * [Getting Started with ClickHouse](https://clickhouse.com/company/events/getting-started-with-clickhouse/) の 25 分間の動画をご覧ください
-* データが外部ソースから来る場合は、メッセージキュー、データベース、パイプラインなどへの接続方法をまとめた[連携ガイド集](/integrations/index.mdx)を参照してください
-* UI/BI 可視化ツールを使用している場合は、[UI を ClickHouse に接続するためのユーザーガイド](/integrations/data-visualization) を参照してください
-* [プライマリキー](/guides/best-practices/sparse-primary-indexes.md) に関するユーザーガイドには、プライマリキーについて知っておくべきことと、その定義方法がすべて記載されています
+* データを外部ソースから取り込む場合は、メッセージキュー、データベース、パイプラインなどへの接続方法を説明した [インテグレーションガイド集](/integrations/index.mdx) を参照してください
+* UI/BI の可視化ツールを使用している場合は、[UI を ClickHouse に接続するためのユーザーガイド](/integrations/data-visualization) を参照してください
+* [プライマリキー](/guides/best-practices/sparse-primary-indexes.md) に関するユーザーガイドには、プライマリキーについて知っておくべきことと、その定義方法に関する情報がすべてまとまっています
