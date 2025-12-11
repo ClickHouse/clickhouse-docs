@@ -25,7 +25,7 @@ The Elastic Stack provides a number of Observability data collection agents. Spe
 - The [`Elastic Agent`](https://www.elastic.co/elastic-agent) provides a unified agent capable of collecting logs, metrics, and traces. This agent can be centrally managed via the [Elastic Fleet Server](https://www.elastic.co/docs/reference/fleet/manage-elastic-agents-in-fleet) and supports output to Elasticsearch, Logstash, Kafka, or Redis.
 - Elastic also provides a distribution of the [OpenTelemetry Collector - EDOT](https://www.elastic.co/docs/reference/opentelemetry). While it currently cannot be orchestrated by the Fleet Server, it offers a more flexible and open path for you migrating to ClickStack.
 
-The best migration path depends on the agent(s) currently in use. In the sections that follow, we document migration options for each major agent type. Our goal is to minimize friction and, where possible, allow you to continue using their existing agents during the transition.
+The best migration path depends on the agent(s) currently in use. In the sections that follow, we document migration options for each major agent type. Our goal is to minimize friction and, where possible, allow you to continue using your existing agents during the transition.
 
 ## Preferred migration path {#prefered-migration-path}
 

@@ -22,7 +22,7 @@ Any Observability solution requires a means of collecting and exporting logs and
 
 "OpenTelemetry is an Observability framework and toolkit designed to create and manage telemetry data such as traces, metrics, and logs."
 
-Unlike ClickHouse or Prometheus, OpenTelemetry is not an observability backend and rather focuses on the generation, collection, management, and export of telemetry data. While the initial goal of OpenTelemetry was to allow you to instrument their applications or systems using language-specific SDKs easily, it has expanded to include the collection of logs through the OpenTelemetry collector - an agent or proxy that receives, processes, and exports telemetry data.
+Unlike ClickHouse or Prometheus, OpenTelemetry is not an observability backend and rather focuses on the generation, collection, management, and export of telemetry data. While the initial goal of OpenTelemetry was to allow you to instrument your applications or systems using language-specific SDKs easily, it has expanded to include the collection of logs through the OpenTelemetry collector - an agent or proxy that receives, processes, and exports telemetry data.
 
 ## ClickHouse relevant components {#clickhouse-relevant-components}
 

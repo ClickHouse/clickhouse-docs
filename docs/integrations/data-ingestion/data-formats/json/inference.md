@@ -59,7 +59,7 @@ This data requires a far more complex schema than previous examples. We outline 
 
 This dataset is stored in a public S3 bucket at `s3://datasets-documentation/arxiv/arxiv.json.gz`.
 
-You can see that the dataset above contains nested JSON objects. While you should draft and version their schemas, inference allows types to be inferred from the data. This allows the schema DDL to be auto-generated, avoiding the need to build it manually and accelerating the development process.
+You can see that the dataset above contains nested JSON objects. While you should draft and version your schemas, inference allows types to be inferred from the data. This allows the schema DDL to be auto-generated, avoiding the need to build it manually and accelerating the development process.
 
 :::note Auto format detection
 As well as detecting the schema, JSON schema inference will automatically infer the format of the data from the file extension and contents. The above file is detected as being NDJSON automatically as a result.

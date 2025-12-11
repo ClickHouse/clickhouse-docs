@@ -125,7 +125,7 @@ If ClickPipes cannot connect to a data source after 15 min or to a destination a
 ## FAQ {#faq}
 - **What is ClickPipes?**
 
-  ClickPipes is a ClickHouse Cloud feature that makes it easy for you to connect their ClickHouse services to external data sources, specifically Kafka. With ClickPipes for Kafka, you can easily continuously load data into ClickHouse, making it available for real-time analytics.
+  ClickPipes is a ClickHouse Cloud feature that makes it easy for you to connect your ClickHouse services to external data sources, specifically Kafka. With ClickPipes for Kafka, you can easily continuously load data into ClickHouse, making it available for real-time analytics.
 
 - **Does ClickPipes support data transformation?**
 

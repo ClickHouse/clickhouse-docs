@@ -161,7 +161,7 @@ clickhouse-go provides a high-level interface, allowing users to query and inser
 
 From version 2.3, Clickhouse-go utilizes ch-go for low-level functions such as encoding, decoding, and compression. Note that clickhouse-go also supports the Go `database/sql` interface standard. Both clients use the native format for their encoding to provide optimal performance and can communicate over the native ClickHouse protocol. clickhouse-go also supports HTTP as its transport mechanism for cases where users have a requirement to proxy or load balance traffic.
 
-When choosing a client library, you should be aware of their respective pros and cons - see Choosing a Client Library.
+When choosing a client library, you should be aware of the respective pros and cons - see Choosing a Client Library.
 
 |               | Native format | Native protocol | HTTP protocol | Row Orientated API | Column Orientated API | Type flexibility | Compression | Query Placeholders |
 |:-------------:|:-------------:|:---------------:|:-------------:|:------------------:|:---------------------:|:----------------:|:-----------:|:------------------:|

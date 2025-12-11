@@ -255,8 +255,8 @@ Yes. Usage is consumed with the following payment methods in this order:
 
 ### What controls does ClickHouse Cloud offer to manage costs for Scale and Enterprise services? {#what-controls-does-clickhouse-cloud-offer-to-manage-costs-for-scale-and-enterprise-services}
 
-- Trial and Annual Commit customers are notified automatically by email when their consumption hits certain thresholds: `50%`, `75%`, and `90%`. This allows you to proactively manage their usage.
-- ClickHouse Cloud allows you to set a maximum auto-scaling limit on their compute via [Advanced scaling control](/manage/scaling), a significant cost factor for analytical workloads.
+- Trial and Annual Commit customers are notified automatically by email when their consumption hits certain thresholds: `50%`, `75%`, and `90%`. This allows you to proactively manage your usage.
+- ClickHouse Cloud allows you to set a maximum auto-scaling limit on your compute via [Advanced scaling control](/manage/scaling), a significant cost factor for analytical workloads.
 - The [Advanced scaling control](/manage/scaling) lets you set memory limits with an option to control the behavior of pausing/idling during inactivity.
 
 ### What controls does ClickHouse Cloud offer to manage costs for Basic services? {#what-controls-does-clickhouse-cloud-offer-to-manage-costs-for-basic-services}

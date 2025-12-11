@@ -309,7 +309,7 @@ To enable alerts, at least one user with **Service Admin** permissions (mapped t
 
 ### Create a data source {#create-a-datasource}
 
-HyperDX is Open Telemetry native but not Open Telemetry exclusive - you can use their own table schemas if desired.
+HyperDX is Open Telemetry native but not Open Telemetry exclusive - you can use your own table schemas if desired.
 
 #### Using Open Telemetry schemas  {#using-otel-schemas}
 

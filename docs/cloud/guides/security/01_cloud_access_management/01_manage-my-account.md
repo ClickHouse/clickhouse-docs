@@ -29,7 +29,7 @@ Passwords must contain a minimum of 12 characters and meet 3 of 4 complexity req
 
 Use `Continue with Google` or `Continue with Microsoft Account` to sign up for services or accept invitations.
 
-If your company uses Google Workspace or Microsoft 365, you can leverage your current single sign-on setup within ClickHouse Cloud. To do this, simply sign up using your company email address and invite other users using their company email. The effect is that your you must login using your company's login flows, whether via your identity provider or directly through Google or Microsoft authentication, before they can authenticate into ClickHouse Cloud. 
+If your company uses Google Workspace or Microsoft 365, you can leverage your current single sign-on setup within ClickHouse Cloud. To do this, simply sign up using your company email address and invite other users using their company email. The effect is that your users must login using your company's login flows, whether via your identity provider or directly through Google or Microsoft authentication, before they can authenticate into ClickHouse Cloud. 
 
 ### SAML single sign-on (SSO) {#saml-sso}
 

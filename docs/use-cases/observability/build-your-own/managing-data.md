@@ -373,7 +373,7 @@ Subsequent rows will have a `Size` column populated at insert time.
 
 ### Create new tables {#create-new-tables}
 
-As an alternative to the above process, you can simply create a new target table with the new schema.  Any materialized views can then be modified to use the new table using the above `ALTER TABLE MODIFY QUERY.` With this approach, you can version their tables e.g. `otel_logs_v3`.
+As an alternative to the above process, you can simply create a new target table with the new schema.  Any materialized views can then be modified to use the new table using the above `ALTER TABLE MODIFY QUERY.` With this approach, you can version your tables e.g. `otel_logs_v3`.
 
 This approach leaves the users with multiple tables to query. To query across tables, you can use the [`merge` function](/sql-reference/table-functions/merge) which accepts wildcard patterns for the table name. We demonstrate this below by querying a v2 and v3 of the `otel_logs` table:
 

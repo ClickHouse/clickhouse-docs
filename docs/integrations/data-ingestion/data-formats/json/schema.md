@@ -14,7 +14,7 @@ import shared_json_column from '@site/static/images/integrations/data-ingestion/
 
 # Designing your schema
 
-While [schema inference](/integrations/data-formats/json/inference) can be used to establish an initial schema for JSON data and query JSON data files in place, e.g., in S3, you should aim to establish an optimized versioned schema for their data. We discuss the recommended approach for modeling JSON structures below.
+While [schema inference](/integrations/data-formats/json/inference) can be used to establish an initial schema for JSON data and query JSON data files in place, e.g., in S3, you should aim to establish an optimized versioned schema for your data. We discuss the recommended approach for modeling JSON structures below.
 
 ## Static vs dynamic JSON {#static-vs-dynamic-json}
 
