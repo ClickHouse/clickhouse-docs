@@ -29,7 +29,7 @@ By connecting ClickHouse to Holistics, your teams get a fast, reliable AI-powere
 Before connecting, ensure you have the following:
 
 - **Permissions:** You must be an Admin in Holistics to add new Data Sources.
-- **Network Access:** Your ClickHouse server must be accessible from [Holistics' IP addresses](/docs/connect/ip-whitelisting).
+- **Network Access:** Your ClickHouse server must be accessible from [Holistics' IP addresses](https://docs.holistics.io/docs/connect/ip-whitelisting).
 - **Database User:** Create a dedicated, read-only user for Holistics rather than using an admin account.
 
 ### Recommended privileges {#recommended-privileges}
@@ -66,11 +66,11 @@ You can find these details by clicking the **Connect** button in your ClickHouse
 
 Since Holistics is a cloud-based application, its servers must be able to reach your database. You have two options:
 
-1. **Direct Connection (Recommended):** Allowlist Holistics' IP addresses in your firewall or ClickHouse Cloud IP Access List. You can find the list of IPs in the [IP Whitelisting guide](/docs/connect/ip-whitelisting).
+1. **Direct Connection (Recommended):** Allowlist Holistics' IP addresses in your firewall or ClickHouse Cloud IP Access List. You can find the list of IPs in the [IP Whitelisting guide](https://docs.holistics.io/docs/connect/ip-whitelisting).
 
    <Image size="md" img={holistics_02} alt="Example of IP allowlisting in ClickHouse Cloud" border />
 
-2. **Reverse SSH Tunnel:** If your database is in a private network (VPC) and cannot be exposed publicly, use a [Reverse SSH Tunnel](/docs/connect/connect-tunnel).
+2. **Reverse SSH Tunnel:** If your database is in a private network (VPC) and cannot be exposed publicly, use a [Reverse SSH Tunnel](https://docs.holistics.io/docs/connect/connect-tunnel).
 
 ## Add data source in Holistics {#step-3-add-data-source-in-holistics}
 
@@ -98,7 +98,7 @@ Since Holistics is a cloud-based application, its servers must be able to reach 
    <Image size="md" img={holistics_06} alt="Successful ClickHouse connection test in Holistics" border />
 
    - **Success:** Click **Save**.
-   - **Failure:** Check your username/password and ensure the [Holistics IPs are allowlisted](/docs/connect/ip-whitelisting).
+   - **Failure:** Check your username/password and ensure the [Holistics IPs are allowlisted](https://docs.holistics.io/docs/connect/ip-whitelisting).
 
 </VerticalStepper>
 
@@ -109,4 +109,4 @@ Holistics supports most standard SQL features in ClickHouse, with the following 
 - **Running Total:** This analytic function currently has limited support on ClickHouse.
 - **Nested Data Types:** Deeply nested JSON or Array structures may require flattening via SQL models before visualization.
 
-For a full list of supported features, please refer to the [Database-specific Limitations page](/docs/connect/faqs/clickhouse-limitations).
+For a full list of supported features, please refer to the [Database-specific Limitations page](https://docs.holistics.io/docs/connect/faqs/clickhouse-limitations).
