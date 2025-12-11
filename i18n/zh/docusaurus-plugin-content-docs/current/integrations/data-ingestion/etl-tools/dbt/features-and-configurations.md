@@ -632,8 +632,7 @@ CREATE TABLE db.table_local on cluster cluster (
     `created_at` DateTime,
     `item` String
 )
-    ENGINE = MergeTree
-    SETTINGS;
+    ENGINE = MergeTree;
 
 CREATE TABLE db.table on cluster cluster (
     `id` UInt64,
