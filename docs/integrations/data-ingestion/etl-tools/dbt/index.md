@@ -2,7 +2,7 @@
 sidebar_label: 'Overview'
 slug: /integrations/dbt
 sidebar_position: 1
-description: 'Users can transform and model their data in ClickHouse using dbt'
+description: 'You can transform and model their data in ClickHouse using dbt'
 title: 'Integrating dbt and ClickHouse'
 keywords: ['dbt', 'data transformation', 'analytics engineering', 'SQL modeling', 'ELT pipeline']
 doc_type: 'guide'
@@ -20,7 +20,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 <ClickHouseSupportedBadge/>
 
 ## The dbt-clickhouse Adapter {#dbt-clickhouse-adapter}
-**dbt** (data build tool) enables analytics engineers to transform data in their warehouses by simply writing select statements. dbt handles materializing these select statements into objects in the database in the form of tables and views - performing the T of [Extract Load and Transform (ELT)](https://en.wikipedia.org/wiki/Extract,_load,_transform). Users can create a model defined by a SELECT statement.
+**dbt** (data build tool) enables analytics engineers to transform data in their warehouses by simply writing select statements. dbt handles materializing these select statements into objects in the database in the form of tables and views - performing the T of [Extract Load and Transform (ELT)](https://en.wikipedia.org/wiki/Extract,_load,_transform). You can create a model defined by a SELECT statement.
 
 Within dbt, these models can be cross-referenced and layered to allow the construction of higher-level concepts. The boilerplate SQL required to connect models is automatically generated. Furthermore, dbt identifies dependencies between models and ensures they are created in the appropriate order using a directed acyclic graph (DAG).
 
@@ -176,12 +176,12 @@ Some operations may take longer than expected due to specific ClickHouse queries
 
 ## Limitations {#limitations}
 
-The current ClickHouse adapter for dbt has several limitations users should be aware of:
+The current ClickHouse adapter for dbt has several limitations you should be aware of:
 
 - The plugin uses syntax that requires ClickHouse version 25.3 or newer. We do not test older versions of Clickhouse. We also do not currently test Replicated tables.
 - Different runs of the `dbt-adapter` may collide if they are run at the same time as internally they can use the same table names for the same operations. For more information, check the issue [#420](https://github.com/ClickHouse/dbt-clickhouse/issues/420).
 - The adapter currently materializes models as tables using an [INSERT INTO SELECT](https://clickhouse.com/docs/sql-reference/statements/insert-into#inserting-the-results-of-select). This effectively means data duplication if the run is executed again. Very large datasets (PB) can result in extremely long run times, making some models unviable. To improve performance, use ClickHouse Materialized Views by implementing the view as `materialized: materialization_view`. Additionally, aim to minimize the number of rows returned by any query by utilizing `GROUP BY` where possible. Prefer models that summarize data over those that simply transform while maintaining row counts of the source.
-- To use Distributed tables to represent a model, users must create the underlying replicated tables on each node manually. The Distributed table can, in turn, be created on top of these. The adapter does not manage cluster creation.
+- To use Distributed tables to represent a model, you must create the underlying replicated tables on each node manually. The Distributed table can, in turn, be created on top of these. The adapter does not manage cluster creation.
 - When dbt creates a relation (table/view) in a database, it usually creates it as: `{{ database }}.{{ schema }}.{{ table/view id }}`. ClickHouse has no notion of schemas. The adapter therefore uses `{{schema}}.{{ table/view id }}`, where `schema` is the ClickHouse database.
 - Ephemeral models/CTEs don't work if placed before the `INSERT INTO` in a ClickHouse insert statement, see https://github.com/ClickHouse/ClickHouse/issues/30323. This should not affect most models, but care should be taken where an ephemeral model is placed in model definitions and other SQL statements. <!-- TODO review this limitation, looks like the issue was already closed and the fix was introduced in 24.10 -->
 

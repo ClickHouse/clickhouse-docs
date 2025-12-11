@@ -255,8 +255,8 @@ Yes. Usage is consumed with the following payment methods in this order:
 
 ### What controls does ClickHouse Cloud offer to manage costs for Scale and Enterprise services? {#what-controls-does-clickhouse-cloud-offer-to-manage-costs-for-scale-and-enterprise-services}
 
-- Trial and Annual Commit customers are notified automatically by email when their consumption hits certain thresholds: `50%`, `75%`, and `90%`. This allows users to proactively manage their usage.
-- ClickHouse Cloud allows users to set a maximum auto-scaling limit on their compute via [Advanced scaling control](/manage/scaling), a significant cost factor for analytical workloads.
+- Trial and Annual Commit customers are notified automatically by email when their consumption hits certain thresholds: `50%`, `75%`, and `90%`. This allows you to proactively manage their usage.
+- ClickHouse Cloud allows you to set a maximum auto-scaling limit on their compute via [Advanced scaling control](/manage/scaling), a significant cost factor for analytical workloads.
 - The [Advanced scaling control](/manage/scaling) lets you set memory limits with an option to control the behavior of pausing/idling during inactivity.
 
 ### What controls does ClickHouse Cloud offer to manage costs for Basic services? {#what-controls-does-clickhouse-cloud-offer-to-manage-costs-for-basic-services}
@@ -296,7 +296,7 @@ an invoice is generated between 3-Jan and 5-Jan-2025
 ClickHouse Cloud usage statements follow a different billing cycle where usage is metered 
 and reported over 30 days starting from the day of sign up.
 
-The usage and invoice dates will differ if these dates are not the same. Since usage statements track usage by day for a given service, users can rely on statements to see the breakdown of costs.
+The usage and invoice dates will differ if these dates are not the same. Since usage statements track usage by day for a given service, you can rely on statements to see the breakdown of costs.
 
 ### Are there any restrictions around the usage of prepaid credits? {#are-there-any-restrictions-around-the-usage-of-prepaid-credits}
 

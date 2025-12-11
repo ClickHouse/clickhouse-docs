@@ -32,7 +32,7 @@ If you're new to ClickHouse Cloud, click
 <TrackedLink href="/docs/cloud/overview" eventName="docs.clickstack_deployment.cloud_learn_more_cta">here</TrackedLink>  to learn more or <TrackedLink href="https://clickhouse.cloud/signUp" eventName="docs.clickstack_deployment.cloud_signup_cta" target="_blank" rel="noopener noreferrer">sign up for a free trial</TrackedLink> to get started.
 ::::
 
-This option is designed for users who are using ClickHouse Cloud. In this deployment pattern, both ClickHouse and HyperDX are hosted in ClickHouse Cloud, minimizing the number of components the user needs to self-host.
+This option is designed for you who are using ClickHouse Cloud. In this deployment pattern, both ClickHouse and HyperDX are hosted in ClickHouse Cloud, minimizing the number of components the user needs to self-host.
 
 As well as reducing infrastructure management, this deployment pattern ensures authentication is integrated with ClickHouse Cloud SSO/SAML. Unlike self-hosted deployments, there is also no need to provision a MongoDB instance to store application state — such as dashboards, saved searches, user settings, and alerts.
 
@@ -309,7 +309,7 @@ To enable alerts, at least one user with **Service Admin** permissions (mapped t
 
 ### Create a data source {#create-a-datasource}
 
-HyperDX is Open Telemetry native but not Open Telemetry exclusive - users can use their own table schemas if desired.
+HyperDX is Open Telemetry native but not Open Telemetry exclusive - you can use their own table schemas if desired.
 
 #### Using Open Telemetry schemas  {#using-otel-schemas}
 
@@ -317,7 +317,7 @@ If you're using the above OTel collector to create the database and tables withi
 
 <Image img={hyperdx_cloud_datasource} alt="ClickHouse Cloud HyperDX Datasource" size="lg"/>
 
-To create sources for traces and OTel metrics, users can select `Create New Source` from the top menu.
+To create sources for traces and OTel metrics, you can select `Create New Source` from the top menu.
 
 <Image img={hyperdx_create_new_source} alt="HyperDX create new source" size="lg"/>
 
@@ -339,4 +339,4 @@ If using your own schema, we recommend creating a Logs source ensuring the requi
 
 <JSONSupport/>
 
-Additionally, users should contact support@clickhouse.com to ensure JSON is enabled on both their ClickHouse Cloud service.
+Additionally, you should contact support@clickhouse.com to ensure JSON is enabled on both their ClickHouse Cloud service.

@@ -60,7 +60,7 @@ helm install cert-manager jetstack/cert-manager --namespace cert-manager --creat
 
 ### Deploy the OpenTelemetry Demo (Optional) {#deploy-otel-demo}
 
-This **step is optional and intended for users with no existing pods to monitor**. Although users with existing services deployed in their Kubernetes environment can skip, this demo does include instrumented microservices which generate trace and session replay data - allowing users to explore all features of ClickStack.
+This **step is optional and intended for you with no existing pods to monitor**. Although users with existing services deployed in their Kubernetes environment can skip, this demo does include instrumented microservices which generate trace and session replay data - allowing users to explore all features of ClickStack.
 
 The following deploys the ClickStack fork of the OpenTelemetry Demo application stack within a Kubernetes cluster, tailored for observability testing and showcasing instrumentation. It includes backend microservices, load generators, telemetry pipelines, supporting infrastructure (e.g., Kafka, Redis), and SDK integrations with ClickStack.
 
@@ -178,7 +178,7 @@ helm install my-hyperdx hyperdx/hdx-oss-v2  --set clickhouse.enabled=false --set
 
 </details>
 
-To verify the deployment status, run the following command and confirm all components are in the `Running` state. Note that ClickHouse will be absent from this for users using ClickHouse Cloud:
+To verify the deployment status, run the following command and confirm all components are in the `Running` state. Note that ClickHouse will be absent from this for you using ClickHouse Cloud:
 
 ```shell
 kubectl get pods -l "app.kubernetes.io/name=hdx-oss-v2" -n otel-demo
@@ -477,7 +477,7 @@ When prompted to create a datasource, retain all default values within the creat
 
 You will also need to create a datasource for traces and metrics.
 
-For example, to create sources for traces and OTel metrics, users can select `Create New Source` from the top menu.
+For example, to create sources for traces and OTel metrics, you can select `Create New Source` from the top menu.
 
 <Image force img={hyperdx_create_new_source} alt="HyperDX create new source" size="lg"/>
 

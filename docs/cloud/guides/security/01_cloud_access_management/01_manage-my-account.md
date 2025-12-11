@@ -2,7 +2,7 @@
 sidebar_label: 'Manage my account'
 slug: /cloud/security/manage-my-account
 title: 'Manage my account'
-description: 'This page describes how users can accept invitations, manage MFA settings, and reset passwords'
+description: 'This page describes how you can accept invitations, manage MFA settings, and reset passwords'
 doc_type: 'guide'
 keywords: ['account management', 'user profile', 'security', 'cloud console', 'settings']
 ---
@@ -11,7 +11,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 ## Accept an invitation {#accept-invitation}
 
-Users may use multiple methods to accept an invitation to join an organization. If this is your first invitation, select the appropriate authentication method for your organization below. 
+You may use multiple methods to accept an invitation to join an organization. If this is your first invitation, select the appropriate authentication method for your organization below. 
 
 If this is not your first organization, either sign in with your existing organization then accept the invitation from the lower left hand side of the page OR accept the invitation from your email and sign in with your existing account. 
 
@@ -29,7 +29,7 @@ Passwords must contain a minimum of 12 characters and meet 3 of 4 complexity req
 
 Use `Continue with Google` or `Continue with Microsoft Account` to sign up for services or accept invitations.
 
-If your company uses Google Workspace or Microsoft 365, you can leverage your current single sign-on setup within ClickHouse Cloud. To do this, simply sign up using your company email address and invite other users using their company email. The effect is that your users must login using your company's login flows, whether via your identity provider or directly through Google or Microsoft authentication, before they can authenticate into ClickHouse Cloud. 
+If your company uses Google Workspace or Microsoft 365, you can leverage your current single sign-on setup within ClickHouse Cloud. To do this, simply sign up using your company email address and invite other users using their company email. The effect is that your you must login using your company's login flows, whether via your identity provider or directly through Google or Microsoft authentication, before they can authenticate into ClickHouse Cloud. 
 
 ### SAML single sign-on (SSO) {#saml-sso}
 

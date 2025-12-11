@@ -14,7 +14,7 @@ import shared_json_column from '@site/static/images/integrations/data-ingestion/
 
 # Designing your schema
 
-While [schema inference](/integrations/data-formats/json/inference) can be used to establish an initial schema for JSON data and query JSON data files in place, e.g., in S3, users should aim to establish an optimized versioned schema for their data. We discuss the recommended approach for modeling JSON structures below.
+While [schema inference](/integrations/data-formats/json/inference) can be used to establish an initial schema for JSON data and query JSON data files in place, e.g., in S3, you should aim to establish an optimized versioned schema for their data. We discuss the recommended approach for modeling JSON structures below.
 
 ## Static vs dynamic JSON {#static-vs-dynamic-json}
 
@@ -275,7 +275,7 @@ FORMAT PrettyJSONEachRow
 ```
 
 :::note Differentiating empty and null
-If users need to differentiate between a value being empty and not provided, the [Nullable](/sql-reference/data-types/nullable) type can be used. This [should be avoided](/best-practices/select-data-types#avoid-nullable-columns) unless absolutely required, as it will negatively impact storage and query performance on these columns.
+If you need to differentiate between a value being empty and not provided, the [Nullable](/sql-reference/data-types/nullable) type can be used. This [should be avoided](/best-practices/select-data-types#avoid-nullable-columns) unless absolutely required, as it will negatively impact storage and query performance on these columns.
 :::
 
 ### Handling new columns {#handling-new-columns}

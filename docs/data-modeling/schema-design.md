@@ -132,7 +132,7 @@ One of the secrets to ClickHouse query performance is compression.
 
 Less data on disk means less I/O and thus faster queries and inserts. The overhead of any compression algorithm with respect to CPU will in most cases be out weighted by the reduction in IO. Improving the compression of the data should therefore be the first focus when working on ensuring ClickHouse queries are fast.
 
-> For why ClickHouse compresses data so well, we recommend [this article](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema). In summary, as a column-oriented database, values will be written in column order. If these values are sorted, the same values will be adjacent to each other. Compression algorithms exploit contiguous patterns of data. On top of this, ClickHouse has codecs and granular data types which allow users to tune the compression techniques further.
+> For why ClickHouse compresses data so well, we recommend [this article](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema). In summary, as a column-oriented database, values will be written in column order. If these values are sorted, the same values will be adjacent to each other. Compression algorithms exploit contiguous patterns of data. On top of this, ClickHouse has codecs and granular data types which allow you to tune the compression techniques further.
 
 Compression in ClickHouse will be impacted by 3 main factors: the ordering key, the data types, and any codecs used. All of these are configured through the schema.
 
@@ -146,7 +146,7 @@ Use the minimal precision for numeric types - ClickHouse has a number of numeric
 FixedString for special cases - Strings which have a fixed length can be encoded with the FixedString type e.g. language and currency codes.  This is efficient when data has the length of precisely N bytes. In all other cases, it is likely to reduce efficiency and LowCardinality is preferred.
 - **Enums for data validation** - The Enum type can be used to efficiently encode enumerated types. Enums can either be 8 or 16 bits, depending on the number of unique values they are required to store. Consider using this if you need either the associated validation at insert time (undeclared values will be rejected) or wish to perform queries which exploit a natural ordering in the Enum values e.g. imagine a feedback column containing user responses `Enum(':(' = 1, ':|' = 2, ':)' = 3)`.
 
-> Tip: To find the range of all columns, and the number of distinct values, users can use the simple query `SELECT * APPLY min, * APPLY  max, * APPLY uniq FROM table FORMAT Vertical`. We recommend performing this over a smaller subset of the data as this can be expensive. This query requires numerics to be at least defined as such for an accurate result i.e. not a String.
+> Tip: To find the range of all columns, and the number of distinct values, you can use the simple query `SELECT * APPLY min, * APPLY  max, * APPLY uniq FROM table FORMAT Vertical`. We recommend performing this over a smaller subset of the data as this can be expensive. This query requires numerics to be at least defined as such for an accurate result i.e. not a String.
 
 By applying these simple rules to our posts table, we can identify an optimal type for each column:
 
@@ -231,7 +231,7 @@ The selected key in ClickHouse will determine not only the index, but also order
 
 > All columns in a table will be sorted based on the value of the specified ordering key, regardless of whether they are included in the key itself. For instance, if `CreationDate` is used as the key, the order of values in all other columns will correspond to the order of values in the `CreationDate` column. Multiple ordering keys can be specified - this will order with the same semantics as an `ORDER BY` clause in a `SELECT` query.
 
-Some simple rules can be applied to help choose an ordering key. The following can sometimes be in conflict, so consider these in order. Users can identify a number of keys from this process, with 4-5 typically sufficient:
+Some simple rules can be applied to help choose an ordering key. The following can sometimes be in conflict, so consider these in order. You can identify a number of keys from this process, with 4-5 typically sufficient:
 
 - Select columns which align with your common filters. If a column is used frequently in `WHERE` clauses, prioritize including these in your key over those which are used less frequently.
 Prefer columns which help exclude a large percentage of the total rows when filtered, thus reducing the amount of data which needs to be read.
@@ -325,7 +325,7 @@ LIMIT 3
 10 rows in set. Elapsed: 0.020 sec. Processed 290.09 thousand rows, 21.03 MB (14.65 million rows/s., 1.06 GB/s.)
 ```
 
-For users interested in the compression improvements achieved by using specific types and appropriate ordering keys, see [Compression in ClickHouse](/data-compression/compression-in-clickhouse). If users need to further improve compression we also recommend the section [Choosing the right column compression codec](/data-compression/compression-in-clickhouse#choosing-the-right-column-compression-codec).
+For users interested in the compression improvements achieved by using specific types and appropriate ordering keys, see [Compression in ClickHouse](/data-compression/compression-in-clickhouse). If you need to further improve compression we also recommend the section [Choosing the right column compression codec](/data-compression/compression-in-clickhouse#choosing-the-right-column-compression-codec).
 
 ## Next: Data Modeling Techniques {#next-data-modeling-techniques}
 

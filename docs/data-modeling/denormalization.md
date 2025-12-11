@@ -41,7 +41,7 @@ The denormalization work can be handled in either ClickHouse or upstream e.g. us
 
 ## Avoid denormalization on frequently updated data {#avoid-denormalization-on-frequently-updated-data}
 
-For ClickHouse, denormalization is one of several options users can use in order to optimize query performance but should be used carefully. If data is updated frequently and needs to be updated in near-real time, this approach should be avoided. Use this if the main table is largely append only or can be reloaded periodically as a batch e.g. daily.
+For ClickHouse, denormalization is one of several options you can use in order to optimize query performance but should be used carefully. If data is updated frequently and needs to be updated in near-real time, this approach should be avoided. Use this if the main table is largely append only or can be reloaded periodically as a batch e.g. daily.
 
 As an approach it suffers from one principal challenge - write performance and updating data. More specifically, denormalization effectively shifts the responsibility of the data join from query time to ingestion time. While this can significantly improve query performance, it complicates ingestion and means that data pipelines need to re-insert a row into ClickHouse should any of the rows which were used to compose it change. This can mean that a change in one source row potentially means many rows in ClickHouse need to be updated. In complicated schemas, where rows have been composed from complex joins, a single row change in a nested component of a join can potentially mean millions of rows need to be updated.
 
@@ -181,7 +181,7 @@ INSERT INTO badges SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3
 0 rows in set. Elapsed: 18.126 sec. Processed 51.29 million rows, 797.05 MB (2.83 million rows/s., 43.97 MB/s.)
 ```
 
-While users may acquire badges frequently, this is unlikely to be a dataset we need to update more than daily. The relationship between badges and users are one-to-many. Maybe we can simply denormalize badges onto users as a list of tuples? While possible, a quick check to confirm the highest number of badges per user suggests this isn't ideal:
+While you may acquire badges frequently, this is unlikely to be a dataset we need to update more than daily. The relationship between badges and users are one-to-many. Maybe we can simply denormalize badges onto users as a list of tuples? While possible, a quick check to confirm the highest number of badges per user suggests this isn't ideal:
 
 ```sql
 SELECT UserId, count() AS c FROM badges GROUP BY UserId ORDER BY c DESC LIMIT 5
@@ -197,7 +197,7 @@ SELECT UserId, count() AS c FROM badges GROUP BY UserId ORDER BY c DESC LIMIT 5
 
 It's probably not realistic to denormalize 19k objects onto a single row. This relationship may be best left as separate tables or with statistics added.
 
-> We may wish to denormalize statistics from badges on to users e.g. the number of badges. We consider such an example when using dictionaries for this dataset at insert time.
+> We may wish to denormalize statistics from badges on to you e.g. the number of badges. We consider such an example when using dictionaries for this dataset at insert time.
 
 ### Posts and PostLinks {#posts-and-postlinks}
 
@@ -291,9 +291,9 @@ LEFT JOIN
 
 ### Exploiting complex types for one-to-many relationships {#exploiting-complex-types-for-one-to-many-relationships}
 
-In order to perform denormalization, we often need to exploit complex types. If a one-to-one relationship is being denormalized, with a low number of columns, users can simply add these as rows with their original types as shown above. However, this is often undesirable for larger objects and not possible for one-to-many relationships.
+In order to perform denormalization, we often need to exploit complex types. If a one-to-one relationship is being denormalized, with a low number of columns, you can simply add these as rows with their original types as shown above. However, this is often undesirable for larger objects and not possible for one-to-many relationships.
 
-In cases of complex objects or one-to-many relationships, users can use:
+In cases of complex objects or one-to-many relationships, you can use:
 
 - Named Tuples - These allow a related structure to be represented as a set of columns.
 - Array(Tuple) or Nested - An array of named tuples, also known as Nested, with each entry representing an object. Applicable to one-to-many relationships.
@@ -371,4 +371,4 @@ Users have several options for orchestrating this in ClickHouse, assuming a peri
 
 ### Streaming {#streaming}
 
-Users may alternatively wish to perform this outside of ClickHouse, prior to insertion, using streaming technologies such as [Apache Flink](https://flink.apache.org/). Alternatively, incremental [materialized views](/guides/developer/cascading-materialized-views) can be used to perform this process as data is inserted.
+You may alternatively wish to perform this outside of ClickHouse, prior to insertion, using streaming technologies such as [Apache Flink](https://flink.apache.org/). Alternatively, incremental [materialized views](/guides/developer/cascading-materialized-views) can be used to perform this process as data is inserted.

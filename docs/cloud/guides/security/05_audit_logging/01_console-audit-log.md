@@ -2,7 +2,7 @@
 sidebar_label: 'Console audit log'
 slug: /cloud/security/audit-logging/console-audit-log
 title: 'Console audit log'
-description: 'This page describes how users can review the cloud audit log'
+description: 'This page describes how you can review the cloud audit log'
 doc_type: 'guide'
 keywords: ['audit log']
 ---
@@ -14,7 +14,7 @@ import activity_log_3 from '@site/static/images/cloud/security/activity_log3.png
 
 # Console audit log {#console-audit-log}
 
-User console activities are recorded in the audit log, which is available to users with the Admin or Developer organization role to review and integrate with logging systems. Specific events included in the console audit log are shown in the 
+User console activities are recorded in the audit log, which is available to you with the Admin or Developer organization role to review and integrate with logging systems. Specific events included in the console audit log are shown in the 
 
 ## Access the console log via the user interface {#console-audit-log-ui}
 
@@ -55,10 +55,10 @@ You can use the search bar provided to isolate events based on some criteria lik
 
 ## Access the console audit log via the API {#console-audit-log-api}
 
-Users can use the ClickHouse Cloud API `activity` endpoint to obtain an export 
+You can use the ClickHouse Cloud API `activity` endpoint to obtain an export 
 of audit events. Further details can be found in the [API reference](https://clickhouse.com/docs/cloud/manage/api/swagger).
 
 ## Log integrations {#log-integrations}
 
-Users can use the API to integrate with a logging platform of their choice. The following have supported out-of-the-box connectors:
+You can use the API to integrate with a logging platform of their choice. The following have supported out-of-the-box connectors:
 - [ClickHouse Cloud Audit add-on for Splunk](/integrations/audit-splunk)

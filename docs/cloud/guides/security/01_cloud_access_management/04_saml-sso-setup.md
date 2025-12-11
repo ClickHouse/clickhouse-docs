@@ -87,7 +87,7 @@ It may take several minutes for the DNS record to update and be verified. You ma
 
 ### Update default role and session timeout {#update-defaults}
 
-Once the SAML setup is complete, you can set the default role all users will be assigned when they log in and also adjust session timeout settings.
+Once the SAML setup is complete, you can set the default role all you will be assigned when they log in and also adjust session timeout settings.
 
 Available default roles include:
 - Admin
@@ -151,7 +151,7 @@ You will configure two App Integrations in Okta for each ClickHouse organization
 </details>
 
 <details>
-   <summary>  2. Create a bookmark app to enable users to seamlessly log in  </summary>
+   <summary>  2. Create a bookmark app to enable you to seamlessly log in  </summary>
    
    1. Select **Applications** on the left, then select the **Applications** subheading.
    
@@ -178,7 +178,7 @@ You will configure two App Integrations in Okta for each ClickHouse organization
    
    3. Select SAML 2.0 and click Next.
    
-   4. Enter a name for your application and check the box next to **Do not display application icon to users** then click **Next**. 
+   4. Enter a name for your application and check the box next to **Do not display application icon to you** then click **Next**. 
    
    5. Use the following values to populate the SAML settings screen.
    
@@ -350,7 +350,7 @@ ClickHouse Cloud supports multi-organization SSO by providing a separate connect
 
 Security is our top priority when it comes to authentication. For this reason, we made a few decisions when implementing SSO that we need you to know.
 
-- **We only process service provider-initiated authentication flows.** Users must navigate to `https://console.clickhouse.cloud` and enter an email address to be redirected to your identity provider. Instructions to add a bookmark application or shortcut are provided for your convenience so your users don't need to remember the URL.
+- **We only process service provider-initiated authentication flows.** You must navigate to `https://console.clickhouse.cloud` and enter an email address to be redirected to your identity provider. Instructions to add a bookmark application or shortcut are provided for your convenience so your users don't need to remember the URL.
 
 - **We do not automatically link SSO and non-SSO accounts.** You may see multiple accounts for your users in your ClickHouse user list even if they are using the same email address.
 

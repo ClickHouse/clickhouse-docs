@@ -59,7 +59,7 @@ This data requires a far more complex schema than previous examples. We outline 
 
 This dataset is stored in a public S3 bucket at `s3://datasets-documentation/arxiv/arxiv.json.gz`.
 
-You can see that the dataset above contains nested JSON objects. While users should draft and version their schemas, inference allows types to be inferred from the data. This allows the schema DDL to be auto-generated, avoiding the need to build it manually and accelerating the development process.
+You can see that the dataset above contains nested JSON objects. While you should draft and version their schemas, inference allows types to be inferred from the data. This allows the schema DDL to be auto-generated, avoiding the need to build it manually and accelerating the development process.
 
 :::note Auto format detection
 As well as detecting the schema, JSON schema inference will automatically infer the format of the data from the file extension and contents. The above file is detected as being NDJSON automatically as a result.
@@ -184,11 +184,11 @@ ENGINE = MergeTree
 ORDER BY update_date
 ```
 
-The above is the correct schema for this data. Schema inference is based on sampling the data and reading the data row by row. Column values are extracted according to the format, with recursive parsers and heuristics used to determine the type for each value. The maximum number of rows and bytes read from the data in schema inference is controlled by the settings [`input_format_max_rows_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference) (25000 by default) and [`input_format_max_bytes_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference) (32MB by default). In the event detection is not correct, users can provide hints as described [here](/operations/settings/formats#schema_inference_make_columns_nullable).
+The above is the correct schema for this data. Schema inference is based on sampling the data and reading the data row by row. Column values are extracted according to the format, with recursive parsers and heuristics used to determine the type for each value. The maximum number of rows and bytes read from the data in schema inference is controlled by the settings [`input_format_max_rows_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference) (25000 by default) and [`input_format_max_bytes_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference) (32MB by default). In the event detection is not correct, you can provide hints as described [here](/operations/settings/formats#schema_inference_make_columns_nullable).
 
 ### Creating tables from snippets {#creating-tables-from-snippets}
 
-The above example uses a file on S3 to create the table schema. Users may wish to create a schema from a single-row snippet. This can be achieved using the [format](/sql-reference/table-functions/format) function as shown below:
+The above example uses a file on S3 to create the table schema. You may wish to create a schema from a single-row snippet. This can be achieved using the [format](/sql-reference/table-functions/format) function as shown below:
 
 ```sql
 CREATE TABLE arxiv
@@ -316,7 +316,7 @@ DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi
 
 The primary issue here is that the `JSONEachRow` format is used for inference. This attempts to infer **a column type per key in the JSON** - effectively trying to apply a static schema to the data without using the [`JSON`](/sql-reference/data-types/newjson) type. 
 
-With thousands of unique columns this approach to inference is slow. As an alternative, users can use the `JSONAsObject` format.
+With thousands of unique columns this approach to inference is slow. As an alternative, you can use the `JSONAsObject` format.
 
 `JSONAsObject` treats the entire input as a single JSON object and stores it in a single column of type [`JSON`](/sql-reference/data-types/newjson), making it better suited for highly dynamic or nested JSON payloads. 
 

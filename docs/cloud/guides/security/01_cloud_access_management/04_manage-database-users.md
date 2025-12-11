@@ -17,7 +17,7 @@ SQL console users are created for each session and authenticated using X.509 cer
 
 ## SQL console users and roles {#sql-console-users-and-roles}
 
-Basic SQL console roles can be assigned to users with Service Read Only and Service Admin permissions. For more information, refer to [Manage SQL Console Role Assignments](/cloud/guides/sql-console/manage-sql-console-role-assignments). This guide demonstrates how to create a custom role for a SQL console user.
+Basic SQL console roles can be assigned to you with Service Read Only and Service Admin permissions. For more information, refer to [Manage SQL Console Role Assignments](/cloud/guides/sql-console/manage-sql-console-role-assignments). This guide demonstrates how to create a custom role for a SQL console user.
 
 To create a custom role for a SQL console user and grant it a general role, run the following commands. The email address must match the user's email address in the console. 
 
@@ -106,7 +106,7 @@ We recommend creating a new user account associated with a person and granting t
   GRANT default_role to userID;
   ```
 
-Users can use a SHA256 hash generator or code function such as `hashlib` in Python to convert a 12+ character password with appropriate complexity to a SHA256 string to provide to the system administrator as the password. This ensures the administrator does not see or handle clear text passwords.
+You can use a SHA256 hash generator or code function such as `hashlib` in Python to convert a 12+ character password with appropriate complexity to a SHA256 string to provide to the system administrator as the password. This ensures the administrator does not see or handle clear text passwords.
 
 ### Database access listings with SQL console users {#database-access-listings-with-sql-console-users}
 The following process can be used to generate a complete access listing across the SQL console and databases in your organization.

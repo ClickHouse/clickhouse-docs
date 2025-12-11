@@ -2,7 +2,7 @@
 sidebar_label: 'Integrating Dataflow with ClickHouse'
 slug: /integrations/google-dataflow/dataflow
 sidebar_position: 1
-description: 'Users can ingest data into ClickHouse using Google Dataflow'
+description: 'You can ingest data into ClickHouse using Google Dataflow'
 title: 'Integrating Google Dataflow with ClickHouse'
 doc_type: 'guide'
 keywords: ['Google Dataflow ClickHouse', 'Dataflow ClickHouse integration', 'Apache Beam ClickHouse', 'ClickHouseIO connector', 'Google Cloud ClickHouse integration']
@@ -22,7 +22,7 @@ These are:
 - [Predefined templates](#2-predefined-templates)
 
 ## Java runner {#1-java-runner}
-The [Java runner](./java-runner) allows users to implement custom Dataflow pipelines using the Apache Beam SDK `ClickHouseIO` integration. This approach provides full flexibility and control over the pipeline logic, enabling users to tailor the ETL process to specific requirements.
+The [Java runner](./java-runner) allows you to implement custom Dataflow pipelines using the Apache Beam SDK `ClickHouseIO` integration. This approach provides full flexibility and control over the pipeline logic, enabling you to tailor the ETL process to specific requirements.
 However, this option requires knowledge of Java programming and familiarity with the Apache Beam framework.
 
 ### Key features {#key-features}
@@ -31,11 +31,11 @@ However, this option requires knowledge of Java programming and familiarity with
 - Requires coding and understanding of the Beam API.
 
 ## Predefined templates {#2-predefined-templates}
-ClickHouse offers [predefined templates](./templates) designed for specific use cases, such as importing data from BigQuery into ClickHouse. These templates are ready-to-use and simplify the integration process, making them an excellent choice for users who prefer a no-code solution.
+ClickHouse offers [predefined templates](./templates) designed for specific use cases, such as importing data from BigQuery into ClickHouse. These templates are ready-to-use and simplify the integration process, making them an excellent choice for you who prefer a no-code solution.
 
 ### Key features {#key-features-1}
 - No Beam coding required.
 - Quick and easy setup for simple use cases.
-- Suitable also for users with minimal programming expertise.
+- Suitable also for you with minimal programming expertise.
 
 Both approaches are fully compatible with Google Cloud and the ClickHouse ecosystem, offering flexibility depending on your technical expertise and project requirements.

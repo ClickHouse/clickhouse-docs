@@ -44,7 +44,7 @@ Configure Elastic's TTL settings to match your desired retention period. Set up 
 
 4. **Gradual Transition**:
 <br/>
-- As data naturally expires from Elastic, users will increasingly rely on ClickStack
+- As data naturally expires from Elastic, you will increasingly rely on ClickStack
 - Once confidence in ClickStack is established, you can begin redirecting queries and dashboards
 
 ### Long-term retention {#long-term-retention}
@@ -115,7 +115,7 @@ The following steps allow the migration of a single Elasticsearch index from Cli
 
 ### Migrate schema {#migrate-scheme}
 
-Create a table in ClickHouse for the index being migrated from Elasticsearch. Users can map [Elasticsearch types to their ClickHouse](/use-cases/observability/clickstack/migration/elastic/types) equivalent. Alternatively, users can simply rely on the JSON data type in ClickHouse, which will dynamically create columns of the appropriate type as data is inserted.
+Create a table in ClickHouse for the index being migrated from Elasticsearch. You can map [Elasticsearch types to their ClickHouse](/use-cases/observability/clickstack/migration/elastic/types) equivalent. Alternatively, you can simply rely on the JSON data type in ClickHouse, which will dynamically create columns of the appropriate type as data is inserted.
 
 Consider the following Elasticsearch mapping for an index containing `syslog` data:
 
@@ -530,7 +530,7 @@ This strict schema has a number of benefits:
 - **Avoids risk of column explosion**: although the JSON type scales to potentially thousands of columns, where subcolumns are stored as dedicated columns, this can lead to a column file explosion where an excessive number of column files are created that impacts performance. To mitigate this, the underlying [Dynamic type](/sql-reference/data-types/dynamic) used by JSON offers a [`max_dynamic_paths`](/sql-reference/data-types/newjson#reading-json-paths-as-sub-columns) parameter, which limits the number of unique paths stored as separate column files. Once the threshold is reached, additional paths are stored in a shared column file using a compact encoded format, maintaining performance and storage efficiency while supporting flexible data ingestion. Accessing this shared column file is, however, not as performant. Note, however, that the JSON column can be used with [type hints](/integrations/data-formats/json/schema#using-type-hints-and-skipping-paths). "Hinted" columns will deliver the same performance as dedicated columns.
 - **Simpler introspection of paths and types**: although the JSON type supports [introspection functions](/sql-reference/data-types/newjson#introspection-functions) to determine the types and paths that have been inferred, static structures can be simpler to explore e.g. with `DESCRIBE`.
 <br/>
-Alternatively, users can simply create a table with one `JSON` column.
+Alternatively, you can simply create a table with one `JSON` column.
 
 ```sql
 SET enable_json_type = 1;
@@ -607,10 +607,10 @@ Our ClickHouse client parameters here (aside from credentials):
 - `min_insert_block_size_rows=1000` - Squashes blocks from clients on the server side. In this case, we set to `max_insert_block_size` so rows appear immediately. Increase to improve throughput.
 - `query="INSERT INTO logs_system_syslog FORMAT JSONAsRow"` - Inserting the data as [JSONEachRow format](/integrations/data-formats/json/other-formats). This is appropriate if sending to a well-defined schema such as `logs_system_syslog.`
 <br/>
-**Users can expect throughput in order of thousands of rows per second.**
+**You can expect throughput in order of thousands of rows per second.**
 
 :::note Inserting into single JSON row
-If inserting into a single JSON column (see the `syslog_json` schema above), the same insert command can be used. However, users must specify `JSONAsObject` as the format instead of `JSONEachRow` e.g.
+If inserting into a single JSON column (see the `syslog_json` schema above), the same insert command can be used. However, you must specify `JSONAsObject` as the format instead of `JSONEachRow` e.g.
 
 ```shell
 elasticdump --input=${ELASTICSEARCH_URL} --type=data --input-index ${ELASTICSEARCH_INDEX} --output=$ --sourceOnly --searchAfter --pit=true | 

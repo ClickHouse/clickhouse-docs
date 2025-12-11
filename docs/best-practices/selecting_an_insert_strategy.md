@@ -71,7 +71,7 @@ For sharded clusters, you have two options:
 * Insert directly into a **MergeTree** or **ReplicatedMergeTree** table. This is the most efficient option when the client can perform load balancing across shards. With `internal_replication = true`, ClickHouse handles replication transparently.
 * Insert into a [Distributed table](/engines/table-engines/special/distributed). This allows clients to send data to any node and let ClickHouse forward it to the correct shard. This is simpler but slightly less performant due to the extra forwarding step. `internal_replication = true` is still recommended.
 
-**In ClickHouse Cloud all nodes read and write to the same single shard. Inserts are automatically balanced across nodes. Users can simply send inserts to the exposed endpoint.**
+**In ClickHouse Cloud all nodes read and write to the same single shard. Inserts are automatically balanced across nodes. You can simply send inserts to the exposed endpoint.**
 
 ### Choose the right format {#choose-the-right-format}
 

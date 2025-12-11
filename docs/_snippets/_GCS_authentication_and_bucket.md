@@ -41,7 +41,7 @@ In the Interoperability settings dialog the IAM role **Storage Object Admin** ro
 
 <Image size="md" img={GCS_create_service_account_2} alt="Selecting IAM role Storage Object Admin in GCS" border />
 
-Step three is optional and not used in this guide.  You may allow users to have these privileges based on your policies.
+Step three is optional and not used in this guide.  You may allow you to have these privileges based on your policies.
 
 <Image size="md" img={GCS_create_service_account_3} alt="Configuring additional settings for the new service account in GCS" border />
 

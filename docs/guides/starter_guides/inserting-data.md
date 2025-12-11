@@ -21,7 +21,7 @@ In contrast, OLTP databases such as Postgres are specifically optimized for tran
 PostgreSQL uses MVCC (Multi-Version Concurrency Control) to handle concurrent transactions, which involves maintaining multiple versions of the data.
 These transactions can potentially involve a small number of rows at a time, with considerable overhead incurred due to the reliability guarantees limiting insert performance.
 
-To achieve high insert performance while maintaining strong consistency guarantees, users should adhere to the simple rules described below when inserting data into ClickHouse.
+To achieve high insert performance while maintaining strong consistency guarantees, you should adhere to the simple rules described below when inserting data into ClickHouse.
 Following these rules will help to avoid issues users commonly encounter the first time they use ClickHouse, and try to replicate an insert strategy that works for OLTP databases.
 
 ## Best practices for Inserts {#best-practices-for-inserts}
@@ -53,7 +53,7 @@ As long as the retried insert query contains the same data in the same order, Cl
 We recommend inserting directly into a MergeTree (or Replicated table), balancing the requests across a set of nodes if the data is sharded, and setting `internal_replication=true`.
 This will leave ClickHouse to replicate the data to any available replica shards and ensure the data is eventually consistent.
 
-If this client side load balancing is inconvenient then users can insert via a [distributed table](/engines/table-engines/special/distributed) which will then distribute writes across the nodes. Again, it is advised to set `internal_replication=true`.
+If this client side load balancing is inconvenient then you can insert via a [distributed table](/engines/table-engines/special/distributed) which will then distribute writes across the nodes. Again, it is advised to set `internal_replication=true`.
 It should be noted however that this approach is a little less performant as writes have to be made locally on the node with the distributed table and then sent to the shards.
 
 ### Use asynchronous inserts for small batches {#use-asynchronous-inserts-for-small-batches}
@@ -61,7 +61,7 @@ It should be noted however that this approach is a little less performant as wri
 There are scenarios where client-side batching is not feasible e.g. an observability use case with 100s or 1000s of single-purpose agents sending logs, metrics, traces, etc.
 In this scenario real-time transport of that data is key to detect issues and anomalies as quickly as possible.
 Furthermore, there is a risk of event spikes in the observed systems, which could potentially cause large memory spikes and related issues when trying to buffer observability data client-side.
-If large batches cannot be inserted, users can delegate batching to ClickHouse using [asynchronous inserts](/best-practices/selecting-an-insert-strategy#asynchronous-inserts).
+If large batches cannot be inserted, you can delegate batching to ClickHouse using [asynchronous inserts](/best-practices/selecting-an-insert-strategy#asynchronous-inserts).
 
 With asynchronous inserts, data is inserted into a buffer first and then written to the database storage later in 3 steps, as illustrated by the diagram below:
 
@@ -96,18 +96,18 @@ ClickHouse supports many [input formats](/interfaces/formats) at insert (and que
 This is a significant difference with OLTP databases and makes loading data from external sources much easier - especially when coupled with [table functions](/sql-reference/table-functions) and the ability to load data from files on disk.
 These formats are ideal for ad hoc data loading and data engineering tasks.
 
-For applications looking to achieve optimal insert performance, users should insert using the [Native](/interfaces/formats/Native) format.
+For applications looking to achieve optimal insert performance, you should insert using the [Native](/interfaces/formats/Native) format.
 This is supported by most clients (such as Go and Python) and ensures the server has to do a minimal amount of work since this format is already column-oriented.
 By doing so the responsibility for converting data into a column-oriented format is placed on the client side. This is important for scaling inserts efficiently.
 
-Alternatively, users can use [RowBinary format](/interfaces/formats/RowBinary) (as used by the Java client) if a row format is preferred - this is typically easier to write than the Native format.
+Alternatively, you can use [RowBinary format](/interfaces/formats/RowBinary) (as used by the Java client) if a row format is preferred - this is typically easier to write than the Native format.
 This is more efficient, in terms of compression, network overhead, and processing on the server, than alternative row formats such as [JSON](/interfaces/formats/JSON).
-The [JSONEachRow](/interfaces/formats/JSONEachRow) format can be considered for users with lower write throughput looking to integrate quickly. Users should be aware this format will incur a CPU overhead in ClickHouse for parsing.
+The [JSONEachRow](/interfaces/formats/JSONEachRow) format can be considered for you with lower write throughput looking to integrate quickly. You should be aware this format will incur a CPU overhead in ClickHouse for parsing.
 
 ### Use the HTTP interface {#use-the-http-interface}
 
 Unlike many traditional databases, ClickHouse supports an HTTP interface.
-Users can use this for both inserting and querying data, using any of the above formats.
+You can use this for both inserting and querying data, using any of the above formats.
 This is often preferable to ClickHouse's native protocol as it allows traffic to be easily switched with load balancers.
 We expect small differences in insert performance with the native protocol, which incurs a little less overhead.
 Existing clients use either of these protocols (in some cases both e.g. the Go client).
@@ -145,7 +145,7 @@ user_id message                                             timestamp           
 
 ## Loading data from Postgres {#loading-data-from-postgres}
 
-For loading data from Postgres, users can use:
+For loading data from Postgres, you can use:
 
 - `ClickPipes`, an ETL tool specifically designed for PostgreSQL database replication. This is available in both:
   - ClickHouse Cloud - available through our [managed ingestion service](/integrations/clickpipes/postgres) in ClickPipes.

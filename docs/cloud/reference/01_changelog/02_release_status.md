@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 import ReleaseSchedule from '@site/src/components/ReleaseSchedule/ReleaseSchedule';
 
-ClickHouse Cloud offers different release channels to cater to different user needs regarding stability, access to new features, and upgrade predictability. Each channel has a distinct upgrade schedule and is meant to address the different usecases - for users that want instant access to new releases and those that want to defer upgrades to ensure they receive the most stable version of the release.
+ClickHouse Cloud offers different release channels to cater to different user needs regarding stability, access to new features, and upgrade predictability. Each channel has a distinct upgrade schedule and is meant to address the different usecases - for you that want instant access to new releases and those that want to defer upgrades to ensure they receive the most stable version of the release.
 
 ## Release channel details {#release-channel-details}
 
@@ -20,7 +20,7 @@ ClickHouse Cloud offers different release channels to cater to different user ne
 | :--- | :--- | :--- | :--- |
 | **Fast (Early Release)** | Recommended for non production environments. This is the first release channel for every database version upgrade | New feature access over stability.<br/>Ability to test releases in non production environments ahead of production upgrade | Basic (default)<br/>Scale, Enterprise tiers |
 | **Regular** | Default release channel for all multi replica services.<br/>Updates on this channel typically happen two weeks post the Fast release channel. | Default/ fleetwide upgrades.<br/>Upgrades on this channel are usually done two weeks post the Fast release channel upgrade | Scale and Enterprise |
-| **Slow (Deferred)** | Recommended for those more risk averse users that want their services to be upgraded towards the end of the release schedule.<br/>Updates on this channel typically happen two weeks post the Regular release channel. | Maximum stability and predictability.<br/>Meant for users that need more testing of new releases on either the Fast/Regular channel | Enterprise |
+| **Slow (Deferred)** | Recommended for those more risk averse users that want their services to be upgraded towards the end of the release schedule.<br/>Updates on this channel typically happen two weeks post the Regular release channel. | Maximum stability and predictability.<br/>Meant for you that need more testing of new releases on either the Fast/Regular channel | Enterprise |
 
 <br/>
 <br/>
@@ -31,7 +31,7 @@ All single replica services are automatically enrolled in the Fast release chann
 
 </details>
 
-Scheduled upgrades are available for all release channels for services in the Enterprise tier. This feature allows users to configure a time window on a given day of the week for upgrades.
+Scheduled upgrades are available for all release channels for services in the Enterprise tier. This feature allows you to configure a time window on a given day of the week for upgrades.
 
 ## Release schedule {#release-schedule}
 

@@ -33,13 +33,13 @@ Visualizations can be created from traces, metrics, logs, or any user-defined wi
 
 ## Creating visualizations {#creating-visualizations}
 
-The **Chart Explorer** interface in HyperDX allows users to visualize metrics, traces, and logs over time, making it easy to create quick visualizations for data analysis. This interface is also reused when creating dashboards. The following section walks through the process of creating a visualization using Chart Explorer.
+The **Chart Explorer** interface in HyperDX allows you to visualize metrics, traces, and logs over time, making it easy to create quick visualizations for data analysis. This interface is also reused when creating dashboards. The following section walks through the process of creating a visualization using Chart Explorer.
 
 Each visualization begins by selecting a **data source**, followed by a **metric**, with optional **filter expressions** and **group by** fields. Conceptually, visualizations in HyperDX map to a SQL `GROUP BY` query under the hood — users define metrics to aggregate across selected dimensions.
 
 For example, you might chart the number of errors (`count()`) grouped by service name.
 
-For the examples below, we use the remote dataset available at [sql.clickhouse.com](https://sql.clickhouse.com), described in the guide ["Remote Demo Dataset"](/use-cases/observability/clickstack/getting-started/remote-demo-data). **Users can also reproduce these examples by visiting [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com).**
+For the examples below, we use the remote dataset available at [sql.clickhouse.com](https://sql.clickhouse.com), described in the guide ["Remote Demo Dataset"](/use-cases/observability/clickstack/getting-started/remote-demo-data). **You can also reproduce these examples by visiting [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com).**
 
 <VerticalStepper headerLevel="h3">
 
@@ -63,7 +63,7 @@ Select the `Line/Bar` visualization type from the top menu, followed by the `Tra
 
 <Image img={visualization_2} alt="Simple visualization" size="lg"/>
 
-Note that users can filter events using either a SQL `WHERE` clause or Lucene syntax and set the time frame over which events should be visualized. Multiple series are also supported.
+Note that you can filter events using either a SQL `WHERE` clause or Lucene syntax and set the time frame over which events should be visualized. Multiple series are also supported.
 
 For example, filter by the service `frontend` by adding the filter `ServiceName:"frontend"`. Add a second series for the count of events over time with the alias `Count` by clicking `Add Series`.
 
@@ -72,14 +72,14 @@ For example, filter by the service `frontend` by adding the filter `ServiceName:
 :::note
 Visualizations can be created from any data source — metrics, traces, or logs. ClickStack treats all of these as wide events. Any **numeric column** can be charted over time, and **string**, **date**, or **numeric** columns can be used for groupings.
 
-This unified approach allows users to build dashboards across telemetry types using a consistent, flexible model.
+This unified approach allows you to build dashboards across telemetry types using a consistent, flexible model.
 :::
 
 </VerticalStepper>
 
 ## Creating dashboards {#creating-dashboards}
 
-Dashboards provide a way to group related visualizations, enabling users to compare metrics and explore patterns side by side to identify potential root causes in their systems. These dashboards can be used for ad-hoc investigations or saved for ongoing monitoring.
+Dashboards provide a way to group related visualizations, enabling you to compare metrics and explore patterns side by side to identify potential root causes in their systems. These dashboards can be used for ad-hoc investigations or saved for ongoing monitoring.
 
 Global filters can be applied at the dashboard level, automatically propagating to all visualizations within that dashboard. This allows for consistent drill-down across charts and simplifies correlation of events across services and telemetry types.
 
@@ -202,7 +202,7 @@ Visualizations can be filtered using Lucene or SQL syntax, and the time window c
 
 ### Kubernetes dashboard {#kubernetes-dashboard}
 
-This dashboard allows users to explore Kubernetes events collected via OpenTelemetry. It includes advanced filtering options, enabling users to filter by Kubernetes Pod, Deployment, Node name, Namespace, and Cluster, as well as perform free-text searches.
+This dashboard allows you to explore Kubernetes events collected via OpenTelemetry. It includes advanced filtering options, enabling you to filter by Kubernetes Pod, Deployment, Node name, Namespace, and Cluster, as well as perform free-text searches.
 
 Kubernetes data is organized across three tabs for easy navigation: Pods, Nodes, and Namespaces.
 

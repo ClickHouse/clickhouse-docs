@@ -31,7 +31,7 @@ The table below outlines how each stack maps its components to these roles:
 
 | **Role** | **Elastic Stack** | **ClickStack** | **Comments** |
 |--------------------------|--------------------------------------------------|--------------------------------------------------|--------------|
-| **UI & Alerting** | **Kibana** — dashboards, search, and alerts      | **HyperDX** — real-time UI, search, and alerts   | Both serve as the primary interface for users, including visualizations and alert management. HyperDX is purpose-built for observability and tightly coupled to OpenTelemetry semantics. |
+| **UI & Alerting** | **Kibana** — dashboards, search, and alerts      | **HyperDX** — real-time UI, search, and alerts   | Both serve as the primary interface for you, including visualizations and alert management. HyperDX is purpose-built for observability and tightly coupled to OpenTelemetry semantics. |
 | **Storage & Query Engine** | **Elasticsearch** — JSON document store with inverted index | **ClickHouse** — column-oriented database with vectorized engine | Elasticsearch uses an inverted index optimized for search; ClickHouse uses columnar storage and SQL for high-speed analytics over structured and semi-structured data. |
 | **Data Collection** | **Elastic Agent**, **Beats** (e.g. Filebeat, Metricbeat) | **OpenTelemetry Collector** (edge + gateway)     | Elastic supports custom shippers and a unified agent managed by Fleet. ClickStack relies on OpenTelemetry, allowing vendor-neutral data collection and processing. |
 | **Instrumentation SDKs** | **Elastic APM agents** (proprietary)             | **OpenTelemetry SDKs** (distributed by ClickStack) | Elastic SDKs are tied to the Elastic stack. ClickStack builds on OpenTelemetry SDKs for logs, metrics, and traces in major languages. |
@@ -44,7 +44,7 @@ Given that **Elasticsearch** and **ClickHouse** are the core engines responsible
 
 ## Elasticsearch vs ClickHouse {#elasticsearch-vs-clickhouse}
 
-ClickHouse and Elasticsearch organize and query data using different underlying models, but many core concepts serve similar purposes. This section outlines key equivalences for users familiar with Elastic, mapping them to their ClickHouse counterparts. While the terminology differs, most observability workflows can be reproduced - often more efficiently - in ClickStack.
+ClickHouse and Elasticsearch organize and query data using different underlying models, but many core concepts serve similar purposes. This section outlines key equivalences for you familiar with Elastic, mapping them to their ClickHouse counterparts. While the terminology differs, most observability workflows can be reproduced - often more efficiently - in ClickStack.
 
 ### Core structural concepts {#core-structural-concepts}
 
@@ -72,7 +72,7 @@ For enrichment, Elasticsearch supports dedicated [enrich processors](https://www
 
 ### Query languages {#query-languages}
 
-Elasticsearch supports a [number of query languages](https://www.elastic.co/docs/explore-analyze/query-filter/languages) including [DSL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/querydsl), [ES|QL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/esql), [EQL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/eql) and [KQL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/kql) (Lucene style) queries, but has limited support for joins — only **left outer joins** are available via [`ES|QL`](https://www.elastic.co/guide/en/elasticsearch/reference/8.x/esql-commands.html#esql-lookup-join). ClickHouse supports **full SQL syntax**, including [all join types](/sql-reference/statements/select/join#supported-types-of-join), [window functions](/sql-reference/window-functions), subqueries (and correlated), and CTEs. This is a major advantage for users needing to correlate between observability signals and business or infrastructure data.
+Elasticsearch supports a [number of query languages](https://www.elastic.co/docs/explore-analyze/query-filter/languages) including [DSL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/querydsl), [ES|QL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/esql), [EQL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/eql) and [KQL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/kql) (Lucene style) queries, but has limited support for joins — only **left outer joins** are available via [`ES|QL`](https://www.elastic.co/guide/en/elasticsearch/reference/8.x/esql-commands.html#esql-lookup-join). ClickHouse supports **full SQL syntax**, including [all join types](/sql-reference/statements/select/join#supported-types-of-join), [window functions](/sql-reference/window-functions), subqueries (and correlated), and CTEs. This is a major advantage for you needing to correlate between observability signals and business or infrastructure data.
 
 In ClickStack, [HyperDX provides a Lucene-compatible search interface](/use-cases/observability/clickstack/search) for ease of transition, alongside full SQL support via the ClickHouse backend. This syntax is comparable to the [Elastic query string](https://www.elastic.co/docs/reference/query-languages/query-dsl/query-dsl-query-string-query#query-string-syntax) syntax. For an exact comparison of this syntax, see ["Searching in ClickStack and Elastic"](/use-cases/observability/clickstack/migration/elastic/search).
 
@@ -104,7 +104,7 @@ ClickHouse, by contrast, is **column-oriented** — every column is stored indep
 
 <Image img={clickhouse} alt="ClickHouse" size="lg"/>
 
-ClickHouse also supports [**skip indexes**](/optimize/skipping-indexes), which accelerate filtering by precomputing index data for selected columns. These must be explicitly defined but can significantly improve performance. Additionally, ClickHouse lets users specify [compression codecs](/use-cases/observability/schema-design#using-codecs) and compression algorithms per column — something Elasticsearch does not support (its [compression](https://www.elastic.co/docs/reference/elasticsearch/index-settings/index-modules) only applies to `_source` JSON storage).
+ClickHouse also supports [**skip indexes**](/optimize/skipping-indexes), which accelerate filtering by precomputing index data for selected columns. These must be explicitly defined but can significantly improve performance. Additionally, ClickHouse lets you specify [compression codecs](/use-cases/observability/schema-design#using-codecs) and compression algorithms per column — something Elasticsearch does not support (its [compression](https://www.elastic.co/docs/reference/elasticsearch/index-settings/index-modules) only applies to `_source` JSON storage).
 
 ClickHouse also supports sharding, but its model is designed to favor **vertical scaling**. A single shard can store **trillions of rows** and continues to perform efficiently as long as memory, CPU, and disk permit. Unlike Elasticsearch, there is **no hard row limit** per shard. Shards in ClickHouse are logical — effectively individual tables — and do not require partitioning unless the dataset exceeds the capacity of a single node. This typically occurs due to disk size constraints, with sharding ①  introduced only when horizontal scale-out is necessary - reducing complexity and overhead. In this case, similar to Elasticsearch, a shard will hold a subset of the data. The data within a single shard is organized as a collection of ② immutable data parts containing ③ several data structures.
 
@@ -137,7 +137,7 @@ Ultimately, ClickHouse favors simplicity and performance at scale by minimizing 
 
 Elasticsearch de-duplicates documents based on their `_id`, routing them to shards accordingly. ClickHouse does not store a default row identifier but supports **insert-time deduplication**, allowing users to retry failed inserts safely. For more control, `ReplacingMergeTree` and other table engines enable deduplication by specific columns.
 
-Index routing in Elasticsearch ensures specific documents are always routed to specific shards. In ClickHouse, users can define **shard keys** or use `Distributed` tables to achieve similar data locality.
+Index routing in Elasticsearch ensures specific documents are always routed to specific shards. In ClickHouse, you can define **shard keys** or use `Distributed` tables to achieve similar data locality.
 
 ### Aggregations and execution model {#aggregations-execution-model}
 
@@ -149,7 +149,7 @@ The equivalent to a ClickHouse `SELECT count(*) FROM ... GROUP BY ...` SQL query
 
 ClickHouse's `GROUP BY` with a `count(*)` and Elasticsearch's terms aggregation are generally equivalent in terms of functionality, but they differ widely in their implementation, performance, and result quality.
 
-This aggregation in Elasticsearch [estimates results in "top-N" queries](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-terms-aggregation#terms-agg-doc-count-error) (e.g., top 10 hosts by count), when the queried data spans multiple shards. This estimation improves speed but can compromise accuracy. Users can reduce this error by [inspecting `doc_count_error_upper_bound`](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html#terms-agg-doc-count-error) and increasing the `shard_size` parameter — at the cost of increased memory usage and slower query performance.
+This aggregation in Elasticsearch [estimates results in "top-N" queries](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-terms-aggregation#terms-agg-doc-count-error) (e.g., top 10 hosts by count), when the queried data spans multiple shards. This estimation improves speed but can compromise accuracy. You can reduce this error by [inspecting `doc_count_error_upper_bound`](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html#terms-agg-doc-count-error) and increasing the `shard_size` parameter — at the cost of increased memory usage and slower query performance.
 
 Elasticsearch also requires a [`size` setting](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html#search-aggregations-bucket-terms-aggregation-size) for all bucketed aggregations — there's no way to return all unique groups without explicitly setting a limit. High-cardinality aggregations risk hitting [`max_buckets` limits](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-settings.html#search-settings-max-buckets) or require paginating with a [composite aggregation](https://www.elastic.co/docs/reference/aggregations/bucket/composite-aggregation), which is often complex and inefficient.
 
@@ -187,7 +187,7 @@ Elasticsearch and ClickHouse take fundamentally different approaches to managing
 
 #### Index lifecycle management vs native TTL {#lifecycle-vs-ttl}
 
-In Elasticsearch, long-term data management is handled through **Index Lifecycle Management (ILM)** and **Data Streams**. These features allow users to define policies that govern when indices are rolled over (e.g. after reaching a certain size or age), when older indices are moved to lower-cost storage (e.g. warm or cold tiers), and when they are ultimately deleted. This is necessary because Elasticsearch does **not support re-sharding**, and shards cannot grow indefinitely without performance degradation. To manage shard sizes and support efficient deletion, new indices must be created periodically and old ones removed — effectively rotating data at the index level.
+In Elasticsearch, long-term data management is handled through **Index Lifecycle Management (ILM)** and **Data Streams**. These features allow you to define policies that govern when indices are rolled over (e.g. after reaching a certain size or age), when older indices are moved to lower-cost storage (e.g. warm or cold tiers), and when they are ultimately deleted. This is necessary because Elasticsearch does **not support re-sharding**, and shards cannot grow indefinitely without performance degradation. To manage shard sizes and support efficient deletion, new indices must be created periodically and old ones removed — effectively rotating data at the index level.
 
 ClickHouse takes a different approach. Data is typically stored in a **single table** and managed using **TTL (time-to-live) expressions** at the column or partition level. Data can be **partitioned by date**, allowing efficient deletion without the need to create new tables or perform index rollovers. As data ages and meets the TTL condition, ClickHouse will automatically remove it — no additional infrastructure is required to manage rotation.
 
@@ -213,7 +213,7 @@ Continuous transforms use transform [checkpoints](https://www.elastic.co/guide/e
 
 ClickHouse takes a fundamentally different approach. Rather than re-aggregating data periodically, ClickHouse supports **incremental materialized views**, which transform and aggregate data **at insert time**. When new data is written to a source table, a materialized view executes a pre-defined SQL aggregation query on only the new **inserted blocks**, and writes the aggregated results to a target table.
 
-This model is made possible by ClickHouse's support for [**partial aggregate states**](https://clickhouse.com/docs/en/sql-reference/data-types/aggregatefunction) — intermediate representations of aggregation functions that can be stored and later merged. This allows users to maintain partially aggregated results that are fast to query and cheap to update. Since the aggregation happens as data arrives, there's no need to run expensive recurring jobs or re-summarize older data.
+This model is made possible by ClickHouse's support for [**partial aggregate states**](https://clickhouse.com/docs/en/sql-reference/data-types/aggregatefunction) — intermediate representations of aggregation functions that can be stored and later merged. This allows you to maintain partially aggregated results that are fast to query and cheap to update. Since the aggregation happens as data arrives, there's no need to run expensive recurring jobs or re-summarize older data.
 
 We sketch the mechanics of incremental materialized views abstractly (note that we use the blue color for all rows belonging to the same group for which we want to pre-calculate aggregate values): 
 
@@ -233,7 +233,7 @@ The advantages of ClickHouse's approach include:
 - **Composable**: materialized views can be layered or joined with other views and tables for more complex query acceleration strategies.
 - **Different TTLs**: different TTL settings can be applied to the source table and target table of the materialized view.
 
-This model is particularly powerful for observability use cases where users need to compute metrics such as per-minute error rates, latencies, or top-N breakdowns without scanning billions of raw records per query.
+This model is particularly powerful for observability use cases where you need to compute metrics such as per-minute error rates, latencies, or top-N breakdowns without scanning billions of raw records per query.
 
 ### Lakehouse support {#lakehouse-support}
 

@@ -84,7 +84,7 @@ filters. This places greater emphasis on user applications and increases
 client-side complexity.
 
 Despite these advantages, projections come with some inherent limitations which
-users should be aware of and thus should be deployed sparingly.
+you should be aware of and thus should be deployed sparingly.
 
 - Projections don't allow using different TTL for the source table and the 
   (hidden) target table, materialized views allow different TTLs.
@@ -101,7 +101,7 @@ We recommend using projections when:
   projection can, in theory, use a `GROUP BY,` materialized views are more 
   effective for maintaining aggregates. The query optimizer is also more likely
   to exploit projections that use a simple reordering, i.e., `SELECT * ORDER BY x`.
-  Users can select a subset of columns in this expression to reduce storage 
+  You can select a subset of columns in this expression to reduce storage 
   footprint.
 - Users are comfortable with the potential associated increase in storage footprint and 
   overhead of writing data twice. Test the impact on insertion speed and 

@@ -3,7 +3,7 @@ sidebar_label: 'Go'
 sidebar_position: 1
 keywords: ['clickhouse', 'go', 'client', 'golang']
 slug: /integrations/go
-description: 'The Go clients for ClickHouse allows users to connect to ClickHouse using either the Go standard database/sql interface or an optimized native interface.'
+description: 'The Go clients for ClickHouse allows you to connect to ClickHouse using either the Go standard database/sql interface or an optimized native interface.'
 title: 'ClickHouse Go'
 doc_type: 'reference'
 integration:
@@ -161,7 +161,7 @@ clickhouse-go provides a high-level interface, allowing users to query and inser
 
 From version 2.3, Clickhouse-go utilizes ch-go for low-level functions such as encoding, decoding, and compression. Note that clickhouse-go also supports the Go `database/sql` interface standard. Both clients use the native format for their encoding to provide optimal performance and can communicate over the native ClickHouse protocol. clickhouse-go also supports HTTP as its transport mechanism for cases where users have a requirement to proxy or load balance traffic.
 
-When choosing a client library, users should be aware of their respective pros and cons - see Choosing a Client Library.
+When choosing a client library, you should be aware of their respective pros and cons - see Choosing a Client Library.
 
 |               | Native format | Native protocol | HTTP protocol | Row Orientated API | Column Orientated API | Type flexibility | Compression | Query Placeholders |
 |:-------------:|:-------------:|:---------------:|:-------------:|:------------------:|:---------------------:|:----------------:|:-----------:|:------------------:|
@@ -172,7 +172,7 @@ When choosing a client library, users should be aware of their respective pros a
 
 Selecting a client library depends on your usage patterns and need for optimal performance. For insert heavy use cases, where millions of inserts are required per second, we recommend using the low level client [ch-go](https://github.com/ClickHouse/ch-go). This client avoids the associated overhead of pivoting the data from a row-orientated format to columns, as the ClickHouse native format requires. Furthermore, it avoids any reflection or use of the `interface{}` (`any`) type to simplify usage.
 
-For query workloads focused on aggregations or lower throughput insert workloads, the [clickhouse-go](https://github.com/ClickHouse/clickhouse-go) provides a familiar `database/sql` interface and more straightforward row semantics. Users can also optionally use HTTP for the transport protocol and take advantage of helper functions to marshal rows to and from structs.
+For query workloads focused on aggregations or lower throughput insert workloads, the [clickhouse-go](https://github.com/ClickHouse/clickhouse-go) provides a familiar `database/sql` interface and more straightforward row semantics. You can also optionally use HTTP for the transport protocol and take advantage of helper functions to marshal rows to and from structs.
 
 ## The clickhouse-go client {#the-clickhouse-go-client}
 
@@ -192,7 +192,7 @@ Both interfaces encode data using the [native format](/native-protocol/basics.md
 
 ## Installation {#installation}
 
-v1 of the driver is deprecated and will not reach feature updates or support for new ClickHouse types. Users should migrate to v2, which offers superior performance.
+v1 of the driver is deprecated and will not reach feature updates or support for new ClickHouse types. You should migrate to v2, which offers superior performance.
 
 To install the 2.x version of the client, add the package to your go.mod file:
 
@@ -607,7 +607,7 @@ For a full summary of supported go types for each column type, see [Type Convers
 
 ### Querying rows {#querying-rows}
 
-Users can either query for a single row using the `QueryRow` method or obtain a cursor for iteration over a result set via `Query`. While the former accepts a destination for the data to be serialized into, the latter requires the call to `Scan` on each row.
+You can either query for a single row using the `QueryRow` method or obtain a cursor for iteration over a result set via `Query`. While the former accepts a destination for the data to be serialized into, the latter requires the call to `Scan` on each row.
 
 ```go
 row := conn.QueryRow(context.Background(), "SELECT * FROM example")
@@ -806,7 +806,7 @@ for i := 0; i < 1_000; i++ {
 
 ### Type conversions {#type-conversions}
 
-The client aims to be as flexible as possible concerning accepting variable types for both insertion and marshaling of responses. In most cases, an equivalent Golang type exists for a ClickHouse column type, e.g., [UInt64](/sql-reference/data-types/int-uint/) to [uint64](https://pkg.go.dev/builtin#uint64). These logical mappings should always be supported. Users may wish to utilize variable types that can be inserted into columns or used to receive a response if the conversion of either the variable or received data takes place first. The client aims to support these conversions transparently, so users do not need to convert their data to align precisely before insertion and to provide flexible marshaling at query time. This transparent conversion does not allow for precision loss. For example, a uint32 cannot be used to receive data from a UInt64 column. Conversely, a string can be inserted into a datetime64 field provided it meets the format requirements.
+The client aims to be as flexible as possible concerning accepting variable types for both insertion and marshaling of responses. In most cases, an equivalent Golang type exists for a ClickHouse column type, e.g., [UInt64](/sql-reference/data-types/int-uint/) to [uint64](https://pkg.go.dev/builtin#uint64). These logical mappings should always be supported. You may wish to utilize variable types that can be inserted into columns or used to receive a response if the conversion of either the variable or received data takes place first. The client aims to support these conversions transparently, so users do not need to convert their data to align precisely before insertion and to provide flexible marshaling at query time. This transparent conversion does not allow for precision loss. For example, a uint32 cannot be used to receive data from a UInt64 column. Conversely, a string can be inserted into a datetime64 field provided it meets the format requirements.
 
 The type conversions currently supported for primitive types are captured [here](https://github.com/ClickHouse/clickhouse-go/blob/main/TYPES.md).
 
@@ -982,7 +982,7 @@ Note: typed slices and maps are supported, provide the sub-columns in the named 
 
 A Nested field is equivalent to an Array of named Tuples. Usage depends on whether the user has set [flatten_nested](/operations/settings/settings#flatten_nested) to 1 or 0.
 
-By setting flatten_nested to 0, Nested columns stay as a single array of tuples. This allows users to use slices of maps for insertion and retrieval and arbitrary levels of nesting. The map's key must equal the column's name, as shown in the example below.
+By setting flatten_nested to 0, Nested columns stay as a single array of tuples. This allows you to use slices of maps for insertion and retrieval and arbitrary levels of nesting. The map's key must equal the column's name, as shown in the example below.
 
 Note: since the maps represent a tuple, they must be of the type `map[string]interface{}`. The values are currently not strongly typed.
 
@@ -1240,7 +1240,7 @@ if err = conn.QueryRow(ctx, "SELECT * FROM example").Scan(&point, &ring, &polygo
 
 #### UUID {#uuid}
 
-The UUID type is supported by the [github.com/google/uuid](https://github.com/google/uuid) package. Users can also send and marshal a UUID as a string or any type which implements `sql.Scanner` or `Stringify`.
+The UUID type is supported by the [github.com/google/uuid](https://github.com/google/uuid) package. You can also send and marshal a UUID as a string or any type which implements `sql.Scanner` or `Stringify`.
 
 ```go
 if err = conn.Exec(ctx, `
@@ -1539,9 +1539,9 @@ fmt.Printf("Named bind count: %d\n", count)
 
 #### Special cases {#special-cases}
 
-By default, slices will be unfolded into a comma-separated list of values if passed as a parameter to a query. If users require a set of values to be injected with wrapping `[ ]`, `ArraySet` should be used.
+By default, slices will be unfolded into a comma-separated list of values if passed as a parameter to a query. If you require a set of values to be injected with wrapping `[ ]`, `ArraySet` should be used.
 
-If groups/tuples are required, with wrapping `( )` e.g., for use with IN operators, users can use a `GroupSet`. This is particularly useful for cases where multiple groups are required, as shown in the example below.
+If groups/tuples are required, with wrapping `( )` e.g., for use with IN operators, you can use a `GroupSet`. This is particularly useful for cases where multiple groups are required, as shown in the example below.
 
 Finally, DateTime64 fields require precision in order to ensure parameters are rendered appropriately. The precision level for the field is unknown by the client, however, so the user must provide it. To facilitate this, we provide the `DateNamed` parameter.
 
@@ -1578,15 +1578,15 @@ fmt.Printf("NamedDate count: %d\n", count)
 
 ### Using context {#using-context}
 
-Go contexts provide a means of passing deadlines, cancellation signals, and other request-scoped values across API boundaries. All methods on a connection accept a context as their first variable. While previous examples used context.Background(), users can use this capability to pass settings and deadlines and to cancel queries.
+Go contexts provide a means of passing deadlines, cancellation signals, and other request-scoped values across API boundaries. All methods on a connection accept a context as their first variable. While previous examples used context.Background(), you can use this capability to pass settings and deadlines and to cancel queries.
 
 Passing a context created `withDeadline` allows execution time limits to be placed on queries. Note this is an absolute time and expiry will only release the connection and send a cancel signal to ClickHouse. `WithCancel` can alternatively be used to cancel a query explicitly.
 
 The helpers  `clickhouse.WithQueryID` and `clickhouse.WithQuotaKey` allow a query id and quota key to be specified. Query ids can be useful for tracking queries in logs and for cancellation purposes. A quota key can be used to impose limits on ClickHouse usage based on a unique key value - see [Quotas Management ](/operations/access-rights#quotas-management)for further details.
 
-Users can also use the context to ensure a setting is only applied for a specific query - rather than for the entire connection, as shown in [Connection Settings](#connection-settings).
+You can also use the context to ensure a setting is only applied for a specific query - rather than for the entire connection, as shown in [Connection Settings](#connection-settings).
 
-Finally, users can control the size of the block buffer via the `clickhouse.WithBlockSize`. This overrides the connection level setting `BlockBufferSize` and controls the maximum number of blocks that are decoded and held in memory at any time. Larger values potentially mean more parallelization at the expense of memory.
+Finally, you can control the size of the block buffer via the `clickhouse.WithBlockSize`. This overrides the connection level setting `BlockBufferSize` and controls the maximum number of blocks that are decoded and held in memory at any time. Larger values potentially mean more parallelization at the expense of memory.
 
 Examples of the above are shown below.
 
@@ -1709,7 +1709,7 @@ rows.Close()
 
 ### Dynamic scanning {#dynamic-scanning}
 
-Users may need to read tables for which they do not know the schema or type of the fields being returned. This is common in cases where ad-hoc data analysis is performed or generic tooling is written. To achieve this, column-type information is available on query responses. This can be used with Go reflection to create runtime instances of correctly typed variables which can be passed to Scan.
+You may need to read tables for which they do not know the schema or type of the fields being returned. This is common in cases where ad-hoc data analysis is performed or generic tooling is written. To achieve this, column-type information is available on query responses. This can be used with Go reflection to create runtime instances of correctly typed variables which can be passed to Scan.
 
 ```go
 const query = `
@@ -1835,7 +1835,7 @@ Full details on exploiting tracing can be found under [OpenTelemetry support](/o
 
 ## Database/SQL API {#databasesql-api}
 
-The `database/sql` or "standard" API allows users to use the client in scenarios where application code should be agnostic of the underlying databases by conforming to a standard interface. This comes at some expense - additional layers of abstraction and indirection and primitives which are not necessarily aligned with ClickHouse. These costs are, however, typically acceptable in scenarios where tooling needs to connect to multiple databases.
+The `database/sql` or "standard" API allows you to use the client in scenarios where application code should be agnostic of the underlying databases by conforming to a standard interface. This comes at some expense - additional layers of abstraction and indirection and primitives which are not necessarily aligned with ClickHouse. These costs are, however, typically acceptable in scenarios where tooling needs to connect to multiple databases.
 
 Additionally, this client supports using HTTP as the transport layer - data will still be encoded in the native format for optimal performance.
 
@@ -1901,7 +1901,7 @@ The following parameters can be passed in the DSN string:
   - `zstd`, `lz4` - ignored
 * `secure` - establish secure SSL connection (default is `false`)
 * `skip_verify` - skip certificate verification (default is `false`)
-* `block_buffer_size` - allows users to control the block buffer size. See [`BlockBufferSize`](#connection-settings). (default is `2`)
+* `block_buffer_size` - allows you to control the block buffer size. See [`BlockBufferSize`](#connection-settings). (default is `2`)
 
 ```go
 func ConnectSettings() error {
@@ -1920,7 +1920,7 @@ func ConnectSettings() error {
 
 #### Connection pooling {#connection-pooling-1}
 
-Users can influence the use of the provided list of node addresses as described in [Connecting to Multiple Nodes](#connecting-to-multiple-nodes). Connection management and pooling is, however, delegated to `sql.DB` by design.
+You can influence the use of the provided list of node addresses as described in [Connecting to Multiple Nodes](#connecting-to-multiple-nodes). Connection management and pooling is, however, delegated to `sql.DB` by design.
 
 #### Connecting over HTTP {#connecting-over-http}
 
@@ -2101,7 +2101,7 @@ func ConnectDSNAuth() error {
 
 ### Execution {#execution-1}
 
-Once a connection has been obtained, users can issue `sql` statements for execution via the Exec method.
+Once a connection has been obtained, you can issue `sql` statements for execution via the Exec method.
 
 ```go
 conn.Exec(`DROP TABLE IF EXISTS example`)
@@ -2119,7 +2119,7 @@ _, err = conn.Exec("INSERT INTO example VALUES (1, 'test-1')")
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/exec.go)
 
-This method does not support receiving a context - by default, it executes with the background context. Users can use `ExecContext` if this is needed - see [Using Context](#using-context).
+This method does not support receiving a context - by default, it executes with the background context. You can use `ExecContext` if this is needed - see [Using Context](#using-context).
 
 ### Batch Insert {#batch-insert-1}
 
@@ -2363,7 +2363,7 @@ Note [special cases](#special-cases) still apply.
 
 ### Using context {#using-context-1}
 
-The standard API supports the same ability to pass deadlines, cancellation signals, and other request-scoped values via the context as the [ClickHouse API](#using-context). Unlike the ClickHouse API, this is achieved by using `Context` variants of the methods i.e. methods such as `Exec`, which use the background context by default, have a variant `ExecContext` to which a context can be passed as the first parameter. This allows a context to be passed at any stage of an application flow. For example, users can pass a context when establishing a connection via `ConnContext` or when requesting a query row via `QueryRowContext`. Examples of all available methods are shown below.
+The standard API supports the same ability to pass deadlines, cancellation signals, and other request-scoped values via the context as the [ClickHouse API](#using-context). Unlike the ClickHouse API, this is achieved by using `Context` variants of the methods i.e. methods such as `Exec`, which use the background context by default, have a variant `ExecContext` to which a context can be passed as the first parameter. This allows a context to be passed at any stage of an application flow. For example, you can pass a context when establishing a connection via `ConnContext` or when requesting a query row via `QueryRowContext`. Examples of all available methods are shown below.
 
 For more detail on using the context to pass deadlines, cancellation signals, query ids, quota keys and connection settings see Using Context for the [ClickHouse API](#using-context).
 
@@ -2511,7 +2511,7 @@ for rows.Next() {
 
 ### Dynamic scanning {#dynamic-scanning-1}
 
-Similar to the [ClickHouse API](#dynamic-scanning), column type information is available to allow users to create runtime instances of correctly typed variables which can be passed to Scan. This allows columns to be read where the type is not known.
+Similar to the [ClickHouse API](#dynamic-scanning), column type information is available to allow you to create runtime instances of correctly typed variables which can be passed to Scan. This allows columns to be read where the type is not known.
 
 ```go
 const query = `

@@ -26,7 +26,7 @@ Instead, ClickHouse provides a different type of index, which in specific circum
 
 ## Basic operation {#basic-operation}
 
-Users can only employ Data Skipping Indexes on the MergeTree family of tables. Each data skipping has four primary arguments:
+You can only employ Data Skipping Indexes on the MergeTree family of tables. Each data skipping has four primary arguments:
 
 - Index name. The index name is used to create the index file in each partition. Also, it is required as a parameter when dropping or materializing the index.
 - Index expression. The index expression is used to calculate the set of values stored in the index. It can be a combination of columns, simple operators, and/or a subset of functions determined by the index type.
@@ -103,7 +103,7 @@ were skipped without reading from disk:
 
 <Image img={simple_skip} size="md" alt="Simple Skip"/>
 
-Users can access detailed information about skip index usage by enabling the trace when executing queries.  From
+You can access detailed information about skip index usage by enabling the trace when executing queries.  From
 clickhouse-client, set the `send_logs_level`:
 
 ```sql
@@ -178,7 +178,7 @@ consuming server resources.
 
 ## Skip index best practices {#skip-best-practices}
 
-Skip indexes are not intuitive, especially for users accustomed to secondary row-based indexes from the RDMS realm or inverted indexes from document stores. To get any benefit, applying a ClickHouse data skipping index must avoid enough granule reads to offset the cost of calculating the index. Critically, if a value occurs even once in an indexed block, it means the entire block must be read into memory and evaluated, and the index cost has been needlessly incurred.
+Skip indexes are not intuitive, especially for you accustomed to secondary row-based indexes from the RDMS realm or inverted indexes from document stores. To get any benefit, applying a ClickHouse data skipping index must avoid enough granule reads to offset the cost of calculating the index. Critically, if a value occurs even once in an indexed block, it means the entire block must be read into memory and evaluated, and the index cost has been needlessly incurred.
 
 Consider the following data distribution:
 

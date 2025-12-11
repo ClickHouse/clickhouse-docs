@@ -16,11 +16,11 @@ This integration is not recommended for ClickHouse Cloud deployments due to inco
 
 ### Using system tables directly {#system-tables}
 
-Users can perform deep query performance analysis by connecting to ClickHouse system tables, particularly `system.query_log` and querying directly. Using either the SQL console or clickhouse client, teams can identify slow queries, analyze resource usage, and track usage patterns across the organization.
+You can perform deep query performance analysis by connecting to ClickHouse system tables, particularly `system.query_log` and querying directly. Using either the SQL console or clickhouse client, teams can identify slow queries, analyze resource usage, and track usage patterns across the organization.
 
 **Query Performance Analysis**
 
-Users can use the system table query logs to perform Query Performance Analysis.
+You can use the system table query logs to perform Query Performance Analysis.
 
 **Example query**: Find the top 5 long-running queries across all cluster replicas:
 

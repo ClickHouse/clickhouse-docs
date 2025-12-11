@@ -84,7 +84,7 @@ If prompted to create a source, retain all default values and complete the `Tabl
 
 ## Modifying compose settings {#modifying-settings}
 
-Users can modify settings for the stack, such as the version used, through the environment variable file:
+You can modify settings for the stack, such as the version used, through the environment variable file:
 
 ```shell
 user@example-host clickstack % cat .env
@@ -117,7 +117,7 @@ The OTel collector configuration can be modified if required - see ["Modifying c
 
 ## Using ClickHouse Cloud {#using-clickhouse-cloud}
 
-This distribution can be used with ClickHouse Cloud. Users should:
+This distribution can be used with ClickHouse Cloud. You should:
 
 - Remove the ClickHouse service from the `docker-compose.yml` file. This is optional if testing, as the deployed ClickHouse instance will simply be ignored - although waste local resources. If removing the service, ensure any references to the service such as `depends_on` are removed.
 - Modify the OTel collector to use a ClickHouse Cloud instance by setting the environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USER` and `CLICKHOUSE_PASSWORD` in the compose file. Specifically, add the environment variables to the OTel collector service:

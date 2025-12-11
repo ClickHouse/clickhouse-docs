@@ -88,7 +88,7 @@ ORDER BY count() DESC;
 
 Disk space exhaustion in replicated setups creates cascading problems. When one node runs out of space, other nodes continue trying to sync with it, causing network traffic spikes and confusing symptoms. One community member spent 4 hours debugging what was simply low disk space. Check out this [query](/knowledgebase/useful-queries-for-troubleshooting#show-disk-storage-number-of-parts-number-of-rows-in-systemparts-and-marks-across-databases) to monitor your disk storage on a particular cluster.
 
-AWS users should be aware that default general purpose EBS volumes have a 16TB limit.
+AWS you should be aware that default general purpose EBS volumes have a 16TB limit.
 
 ### Too many parts error {#too-many-parts-error}
 
