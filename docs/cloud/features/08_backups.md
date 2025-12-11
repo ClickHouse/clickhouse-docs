@@ -66,7 +66,7 @@ In this guide, we walk through how you can export backups to your AWS, GCP, Azur
 We also share backup / restore commands that allow you to export backups to your bucket and restore them.
 
 :::note Cross-region backups
-You should be aware that any usage where backups are being exported to a
+Any usage where backups are being exported to a
 different region in the same cloud provider will incur [data transfer](/cloud/manage/network-data-transfer)
 charges.
 

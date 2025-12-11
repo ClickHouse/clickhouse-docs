@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 import ReleaseSchedule from '@site/src/components/ReleaseSchedule/ReleaseSchedule';
 
-ClickHouse Cloud offers different release channels to cater to different user needs regarding stability, access to new features, and upgrade predictability. Each channel has a distinct upgrade schedule and caters two different types of users: those who want instant access to new releases and those who want to defer upgrades to ensure they receive the most stable version of the release.
+ClickHouse Cloud offers different release channels to cater to different user needs regarding stability, access to new features, and upgrade predictability. Each channel has a distinct upgrade schedule and is meant to address the different usecases - for users that want instant access to new releases and those that want to defer upgrades to ensure they receive the most stable version of the release.
 
 ## Release channel details {#release-channel-details}
 

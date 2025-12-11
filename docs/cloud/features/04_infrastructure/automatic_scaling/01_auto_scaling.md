@@ -23,7 +23,7 @@ Scaling is the ability to adjust available resources to meet client demands. Sca
 <ScalePlanFeatureBadge feature="Automatic vertical scaling"/>
 
 :::note
-Scale and Enterprise tiers supports both single and multi-replica services, whereas, Basic tier supports only single replica services. Single replica services are meant to be fixed in size and do not allow vertical or horizontal scaling. You can upgrade to the Scale or Enterprise tier to scale your services.
+Scale and Enterprise tiers supports both single and multi-replica services, whereas, Basic tier supports only single replica services. Single replica services are meant to be fixed in size and don't allow vertical or horizontal scaling. You can upgrade to the Scale or Enterprise tier to scale your services.
 :::
 
 ## How scaling works in ClickHouse Cloud {#how-scaling-works-in-clickhouse-cloud}

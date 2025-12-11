@@ -14,7 +14,7 @@ import activity_log_3 from '@site/static/images/cloud/security/activity_log3.png
 
 # Console audit log {#console-audit-log}
 
-User console activities are recorded in the audit log, available to users with the Admin or Developer organization role to review and integrate with logging systems. Specific events included in the console audit log are shown in the 
+Console activities are recorded in the audit log. If you have the Admin or Developer organization role, you can review the log and integrate it with your logging systems.
 
 ## Access the console log via the user interface {#console-audit-log-ui}
 
@@ -55,7 +55,7 @@ You can use the search bar provided to isolate events based on some criteria lik
 
 ## Access the console audit log via the API {#console-audit-log-api}
 
-You can use the ClickHouse Cloud API `activity` endpoint to obtain an export 
+You can use the ClickHouse Cloud API `activity` endpoint to obtain an export
 of audit events. Further details can be found in the [API reference](https://clickhouse.com/docs/cloud/manage/api/swagger).
 
 ## Log integrations {#log-integrations}

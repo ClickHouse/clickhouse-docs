@@ -130,7 +130,7 @@ Time: 112508.083 ms (01:52.508)
 
 **Aggregate functions**
 
-Where possible, you should exploit ClickHouse aggregate functions. Below we show the use of the [argMax](/sql-reference/aggregate-functions/reference/argmax) function to compute the most viewed question of each year.
+Where possible, you should leverage ClickHouse aggregate functions. Below we show the use of the [argMax](/sql-reference/aggregate-functions/reference/argmax) function to compute the most viewed question of each year.
 
 ```sql
 --ClickHouse
