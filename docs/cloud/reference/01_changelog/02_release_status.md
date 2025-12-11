@@ -47,6 +47,6 @@ The release dates given below are an estimate and may be subject to change.
     fast_progress: 'green',
     regular_progress: 'green',
     slow_progress: 'green',
-    fast_delay_note: 'In progress.',
+    fast_delay_note: 'In progress',
   }
 ]} />
