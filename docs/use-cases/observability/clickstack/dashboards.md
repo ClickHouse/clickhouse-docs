@@ -79,7 +79,7 @@ This unified approach allows you to build dashboards across telemetry types usin
 
 ## Creating dashboards {#creating-dashboards}
 
-Dashboards provide a way to group related visualizations, enabling you to compare metrics and explore patterns side by side to identify potential root causes in their systems. These dashboards can be used for ad-hoc investigations or saved for ongoing monitoring.
+Dashboards provide a way to group related visualizations, enabling you to compare metrics and explore patterns side by side to identify potential root causes in your systems. These dashboards can be used for ad-hoc investigations or saved for ongoing monitoring.
 
 Global filters can be applied at the dashboard level, automatically propagating to all visualizations within that dashboard. This allows for consistent drill-down across charts and simplifies correlation of events across services and telemetry types.
 

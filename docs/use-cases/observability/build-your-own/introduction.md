@@ -15,7 +15,7 @@ import Image from '@theme/IdealImage';
 
 ## Introduction {#introduction}
 
-This guide is designed for you looking to build your own SQL-based Observability solution using ClickHouse, focusing on logs and traces. This covers all aspects of building your own solution including considerations for ingestion, optimizing schemas for your access patterns and extracting structure from unstructured logs.
+This guide is designed for if you're looking to build your own SQL-based Observability solution using ClickHouse, focusing on logs and traces. This covers all aspects of building your own solution including considerations for ingestion, optimizing schemas for your access patterns and extracting structure from unstructured logs.
 
 ClickHouse alone is not an out-of-the-box solution for Observability. It can, however, be used as a highly efficient storage engine for Observability data, capable of unrivaled compression rates and lightning-fast query response times. In order for you to use ClickHouse within an Observability solution, both a user interface and data collection framework are required. We currently recommend using **Grafana** for visualization of Observability signals and **OpenTelemetry** for data collection (both are officially supported integrations).
 

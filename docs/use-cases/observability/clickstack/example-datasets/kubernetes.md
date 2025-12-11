@@ -60,7 +60,7 @@ helm install cert-manager jetstack/cert-manager --namespace cert-manager --creat
 
 ### Deploy the OpenTelemetry Demo (Optional) {#deploy-otel-demo}
 
-This **step is optional and intended for you with no existing pods to monitor**. Although users with existing services deployed in their Kubernetes environment can skip, this demo does include instrumented microservices which generate trace and session replay data - allowing users to explore all features of ClickStack.
+This **step is optional and intended if you have no existing pods to monitor**. Although users with existing services deployed in their Kubernetes environment can skip, this demo does include instrumented microservices which generate trace and session replay data - allowing users to explore all features of ClickStack.
 
 The following deploys the ClickStack fork of the OpenTelemetry Demo application stack within a Kubernetes cluster, tailored for observability testing and showcasing instrumentation. It includes backend microservices, load generators, telemetry pipelines, supporting infrastructure (e.g., Kafka, Redis), and SDK integrations with ClickStack.
 

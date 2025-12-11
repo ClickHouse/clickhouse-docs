@@ -17,7 +17,7 @@ import Image from '@theme/IdealImage';
 
 # Prometheus Integration
 
-The feature supports integrating [Prometheus](https://prometheus.io/) to monitor ClickHouse Cloud services. Access to Prometheus metrics is exposed via the [ClickHouse Cloud API](/cloud/manage/api/api-overview) endpoint that allows you to securely connect and export metrics into their Prometheus metrics collector. These metrics can be integrated with dashboards e.g., Grafana, Datadog for visualization.
+The feature supports integrating [Prometheus](https://prometheus.io/) to monitor ClickHouse Cloud services. Access to Prometheus metrics is exposed via the [ClickHouse Cloud API](/cloud/manage/api/api-overview) endpoint that allows you to securely connect and export metrics into your Prometheus metrics collector. These metrics can be integrated with dashboards e.g., Grafana, Datadog for visualization.
 
 To get started, [generate an API key](/cloud/manage/openapi).
 

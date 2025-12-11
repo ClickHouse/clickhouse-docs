@@ -24,7 +24,7 @@ In this guide, you'll explore some of the available commonly used join types and
 ## Test Data and Resources {#test-data-and-resources}
 
 Instructions for creating and loading the tables can be found [here](/integrations/dbt/guides).
-The dataset is also available in the [playground](https://sql.clickhouse.com?query_id=AACTS8ZBT3G7SSGN8ZJBJY) for you who don't want to create and load
+The dataset is also available in the [playground](https://sql.clickhouse.com?query_id=AACTS8ZBT3G7SSGN8ZJBJY) if you don't want to create and load
 the tables locally.
 
 You'll use the following four tables from the example dataset:

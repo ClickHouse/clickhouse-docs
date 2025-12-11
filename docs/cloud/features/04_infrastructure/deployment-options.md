@@ -9,12 +9,12 @@ doc_type: 'reference'
 # ClickHouse Deployment Options
 
 ClickHouse provides a range of deployment options to cater to diverse customer requirements, offering varying degrees of control, compliance, and operational overhead.
-This document outlines the distinct deployment types available, enabling you to select the optimal solution that aligns with their specific architectural preferences, regulatory obligations, and resource management strategies.
+This document outlines the distinct deployment types available, enabling you to select the optimal solution that aligns with your specific architectural preferences, regulatory obligations, and resource management strategies.
 
 ## ClickHouse Cloud {#clickhouse-cloud}
 
 ClickHouse Cloud is a fully managed, cloud-native service that delivers the power and speed of ClickHouse without the operational complexities of self-management.
-This option is ideal for you who prioritize rapid deployment, scalability, and minimal administrative overhead.
+This option is ideal if you prioritize rapid deployment, scalability, and minimal administrative overhead.
 ClickHouse Cloud handles all aspects of infrastructure provisioning, scaling, maintenance, and updates, allowing users to focus entirely on data analysis and application development.
 It offers consumption-based pricing, and automatic scaling, ensuring reliable and cost-effective performance for analytical workloads. It is available across AWS, GCP and Azure, with direct marketplace billing options.
 

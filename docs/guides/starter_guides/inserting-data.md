@@ -102,7 +102,7 @@ By doing so the responsibility for converting data into a column-oriented format
 
 Alternatively, you can use [RowBinary format](/interfaces/formats/RowBinary) (as used by the Java client) if a row format is preferred - this is typically easier to write than the Native format.
 This is more efficient, in terms of compression, network overhead, and processing on the server, than alternative row formats such as [JSON](/interfaces/formats/JSON).
-The [JSONEachRow](/interfaces/formats/JSONEachRow) format can be considered for you with lower write throughput looking to integrate quickly. You should be aware this format will incur a CPU overhead in ClickHouse for parsing.
+The [JSONEachRow](/interfaces/formats/JSONEachRow) format can be considered if you have lower write throughput looking to integrate quickly. You should be aware this format will incur a CPU overhead in ClickHouse for parsing.
 
 ### Use the HTTP interface {#use-the-http-interface}
 

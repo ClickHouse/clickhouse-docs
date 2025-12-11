@@ -17,7 +17,7 @@ import step_6 from '@site/static/images/cloud/guides/sql_console/org_level_acces
 import step_7 from '@site/static/images/cloud/guides/sql_console/org_level_access/7_org_settings.png'
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
-This guide is intended for you with the Organization Admin role in ClickHouse Cloud.
+This guide is intended if you have the Organization Admin role in ClickHouse Cloud.
 
 ## Add users to your organization {#add-users}
 

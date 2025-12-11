@@ -259,7 +259,7 @@ within a secure customer environment.
 
 ### Postgres CDC connector for ClickPipes {#postgres-cdc-connector-for-clickpipes}
 
-Postgres CDC connector for ClickPipes allows you to seamlessly replicate their Postgres databases to ClickHouse Cloud.
+Postgres CDC connector for ClickPipes allows you to seamlessly replicate your Postgres databases to ClickHouse Cloud.
 
 - To get started, refer to the [documentation](https://clickhouse.com/docs/integrations/clickpipes/postgres) for ClickPipes Postgres CDC connector.
 - For more information on customer use cases and features, please refer to the [landing page](https://clickhouse.com/cloud/clickpipes/postgres-cdc-connector) and the [launch blog](https://clickhouse.com/blog/postgres-cdc-connector-clickpipes-public-beta).
@@ -615,8 +615,8 @@ Until recently, whenever you set up a new [Kafka Connector for ClickPipes](/inte
 ClickPipes for Kafka has added a new feature that enhances the flexibility and control over data consumption from Kafka topics. You can now configure the offset from which data is consumed.
 
 The following options are available:
-- From the beginning: Start consuming data from the very beginning of the Kafka topic. This option is ideal for you who need to reprocess all historical data.
-- From latest: Begin consuming data from the most recent offset. This is useful for you who are only interested in new messages.
+- From the beginning: Start consuming data from the very beginning of the Kafka topic. This option is ideal if you need to reprocess all historical data.
+- From latest: Begin consuming data from the most recent offset. This is useful if you are only interested in new messages.
 - From a timestamp: Start consuming data from messages that were produced at or after a specific timestamp. This feature allows for more precise control, enabling you to resume processing from an exact point in time.
 
 <Image img={kafka_config} size="lg" alt="ClickPipes Kafka connector configuration interface showing offset selection options" border />
@@ -899,7 +899,7 @@ This release brings a new region in GCP (us-east1), ability to self-service secu
 - Enabled ability to set up AWS Private Link and GCP Private Service Connect via OpenAPI
 
 ### Console changes {#console-changes-7}
-- Enabled seamless login to SQL console for you with the Developer role
+- Enabled seamless login to SQL console if you have the Developer role
 - Streamlined workflow for setting idling controls during onboarding
 
 ### Integrations changes {#integrations-changes-7}

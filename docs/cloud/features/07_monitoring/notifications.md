@@ -30,7 +30,7 @@ Notifications can be received via various channels. For now, ClickHouse Cloud su
 
 For each notification, you can customize how you receive the notification. You can access the settings screen from the notifications flyout or from the second tab on the notifications activity log.
 
-Cloud you can customize notifications delivered via the Cloud UI, and these customizations are reflected for each individual user. Cloud you can also customize notifications delivered to their own emails, but only users with admin permissions can customize notifications delivered to custom emails and notifications delivered to Slack channels.
+You can customize notifications delivered via the Cloud UI, and these customizations are reflected for each individual user. You can also customize notifications delivered to your own emails, but only users with admin permissions can customize notifications delivered to custom emails and notifications delivered to Slack channels.
 
 To configure delivery for a specific notification, click on the pencil icon to modify the notification delivery channels.
 

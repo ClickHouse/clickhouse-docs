@@ -15,7 +15,7 @@ import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-lo
 import hyperdx_2 from '@site/static/images/use-cases/observability/hyperdx-2.png';
 import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
-This option is designed for you who already have a running ClickHouse instance populated with observability or event data.
+This option is designed if you already have a running ClickHouse instance populated with observability or event data.
 
 HyperDX can be used independently of the rest of the stack and is compatible with any data schema - not just OpenTelemetry (OTel). This makes it suitable for custom observability pipelines already built on ClickHouse.
 

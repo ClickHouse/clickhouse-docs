@@ -175,7 +175,7 @@ GRANT SELECT, INSERT, CREATE TABLE, CREATE VIEW ON otel.* TO hyperdx_ingest;
 Deploy ClickStack - the [Helm](/use-cases/observability/clickstack/deployment/helm) or [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose) (modified to exclude ClickHouse) deployment models are preferred. 
 
 :::note Deploying components separately
-Advanced you can deploy the [OTel collector](/use-cases/observability/clickstack/ingesting-data/opentelemetry#standalone) and [HyperDX](/use-cases/observability/clickstack/deployment/hyperdx-only) separately with their respective standalone deployment modes.
+If you're an advanced user, you can deploy the [OTel collector](/use-cases/observability/clickstack/ingesting-data/opentelemetry#standalone) and [HyperDX](/use-cases/observability/clickstack/deployment/hyperdx-only) separately with their respective standalone deployment modes.
 :::
 
 Instructions for using ClickHouse Cloud with the Helm chart can be found [here](/use-cases/observability/clickstack/deployment/helm#using-clickhouse-cloud). Equivalent instructions for Docker Compose can be found [here](/use-cases/observability/clickstack/deployment/docker-compose).
