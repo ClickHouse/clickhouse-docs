@@ -55,31 +55,23 @@ dbt 通过一个 ClickHouse 官方适配器与 ClickHouse 集成：[dbt-clickhou
 
 该适配器目前尚不能在 [dbt Cloud](https://docs.getdbt.com/docs/dbt-cloud/cloud-overview) 中使用，但我们预计很快会提供支持。若需要更多信息，请联系支持团队。
 
-## 概念 {#concepts}
+## dbt 概念与支持的物化方式 {#concepts-and-supported-materializations}
 
-dbt 引入了 model（模型）的概念。它被定义为一条 SQL 语句，可能会连接多张表。一个模型可以通过多种方式被“物化”。一种物化（materialization）表示该模型的 `SELECT` 查询的构建策略。物化背后的代码是一些样板 SQL，会将你的 `SELECT` 查询包装成用于创建新的或更新已有关系（relation）对象的语句。
+dbt 引入了 model（模型）的概念。它被定义为一条 SQL 语句，可能会关联多张表。一个 model 可以通过多种方式被“物化”（materialized）。物化方式表示该模型的 SELECT 查询的构建策略。物化方式背后的代码是一段样板 SQL，它会将你的 SELECT 查询包装在一个语句中，用于创建一个新的关系或更新已有的关系。
 
-dbt 提供 4 种物化方式：
+dbt 提供了 5 种物化方式，它们都受 `dbt-clickhouse` 支持：
 
-* **view**（默认）：在数据库中将模型构建为视图。
-* **table**：在数据库中将模型构建为表。
-* **ephemeral**：模型不会直接在数据库中构建，而是作为公用表表达式（CTE）被内联到依赖模型中。
-* **incremental**：模型初始会被物化为一张表，在后续运行中，dbt 只会向该表插入新行并更新已变更的行。
+* **view**（默认）：model 在数据库中以 view 的形式构建。在 ClickHouse 中会构建为一个 [view](/sql-reference/statements/create/view)。
+* **table**：model 在数据库中以 table 的形式构建。在 ClickHouse 中会构建为一张 [table](/sql-reference/statements/create/table)。
+* **ephemeral**：model 不会直接在数据库中构建，而是作为 CTE（Common Table Expressions，公用表表达式）被内联到依赖它的其他 model 中。
+* **incremental**：model 最初会以 table 的形式物化，在后续运行中，dbt 会向该表插入新的行并更新有变更的行。
+* **materialized view**：model 在数据库中会以 materialized view 的形式构建。在 ClickHouse 中会构建为一个 [materialized view](/sql-reference/statements/create/view#materialized-view)。
 
-额外的语法和子句用于定义当底层数据发生变化时，这些模型应如何被更新。dbt 一般建议先从 view 物化开始，直到性能成为问题为止。table 物化通过将模型查询的结果捕获成一张表，在增加存储占用的代价下，提供了查询时的性能提升。incremental 方式在此基础上更进一步，使后续对底层数据的更新可以被捕获到目标表中。
+还可以通过额外的语法和子句来定义当底层数据发生变化时，应该如何更新这些 model。dbt 通常建议先使用 view 物化方式，直到性能成为问题为止。table 物化方式通过将模型查询的结果捕获为一张表，提升了查询时的性能，但以增加存储开销为代价。incremental 方式在此基础上更进一步，使后续对底层数据的更新能够被写入目标表中。
 
-适用于 ClickHouse 的 [当前 adapter](https://github.com/silentsokolov/dbt-clickhouse) 还支持 **物化视图（materialized view）**、**dictionary**、**distributed table** 和 **distributed incremental** 物化方式。该适配器还支持 dbt 的 [snapshots](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots#check-strategy) 和 [seeds](https://docs.getdbt.com/docs/building-a-dbt-project/seeds)。
+适用于 ClickHouse 的当前[适配器](https://github.com/silentsokolov/dbt-clickhouse)还支持 **dictionary**、**distributed table** 和 **distributed incremental** 物化方式。该适配器同样支持 dbt 的 [snapshots](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots#check-strategy) 和 [seeds](https://docs.getdbt.com/docs/building-a-dbt-project/seeds)。
 
-### 支持的物化方式详情 {#details-about-supported-materializations}
-
-| 类型                         | 是否支持 | 详情                                                                                                                              |
-|-----------------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------|
-| view 物化方式               | YES      | 创建一个 [view](https://clickhouse.com/docs/en/sql-reference/table-functions/view/)。                                            |
-| table 物化方式              | YES      | 创建一张 [table](https://clickhouse.com/docs/en/operations/system-tables/tables/)。支持的引擎列表见下文。                         |
-| incremental 物化方式        | YES      | 如果表不存在则创建一张表，然后只向其中写入更新。                                                                                 |
-| ephemeral 物化方式          | YES      | 创建一个 ephemeral/CTE 物化。该模型仅在 dbt 内部使用，不会在数据库中创建任何对象。                                               |
-
-以下内容在 ClickHouse 中属于[实验性特性](https://clickhouse.com/docs/en/beta-and-experimental-features)：
+以下内容在 `dbt-clickhouse` 中属于[实验性特性](https://clickhouse.com/docs/en/beta-and-experimental-features)：
 
 | 类型                                     | 是否支持          | 详情                                                                                                                                                                                                                                            |
 |------------------------------------------|-------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

@@ -138,21 +138,21 @@ dbt полагается на модель согласованности чте
 
 ## Общая информация о возможностях {#general-information-about-features}
 
-### Общие конфигурации таблиц {#general-table-configurations}
+### Общие конфигурации моделей {#general-model-configurations}
+
+В следующей таблице показаны конфигурации, общие для некоторых доступных материализаций. Подробную информацию об общих конфигурациях моделей dbt см. в [документации dbt](https://docs.getdbt.com/category/general-configs):
 
 | Option             | Description                                                                                                                                                                                                                                 | Default if any |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
 | engine             | Движок таблицы (тип таблицы), который используется при создании таблиц                                                                                                                                                                      | `MergeTree()`  |
 | order&#95;by       | Кортеж имён столбцов или произвольных выражений. Это позволяет создать небольшой разреженный индекс, который помогает быстрее находить данные.                                                                                              | `tuple()`      |
 | partition&#95;by   | Партиция — это логическое объединение записей в таблице по заданному критерию. Ключ партиционирования может быть любым выражением из столбцов таблицы.                                                                                      |                |
-| sharding&#95;key   | Ключ шардирования определяет целевой сервер при вставке в таблицу с распределённым движком. Ключ шардирования может быть случайным или представлять собой результат хеш-функции                                                             | `rand()`)      |
 | primary&#95;key    | Как и order&#95;by, выражение первичного ключа ClickHouse. Если не указано, ClickHouse использует выражение ORDER BY в качестве первичного ключа                                                                                            |                |
-| unique&#95;key     | Кортеж имён столбцов, которые однозначно идентифицируют строки. Используется с инкрементальными моделями для обновлений.                                                                                                                    |                |
 | settings           | Отображение/словарь настроек уровня &quot;TABLE&quot;, которые будут использоваться в DDL-выражениях, таких как &#39;CREATE TABLE&#39;, для этой модели                                                                                     |                |
 | query&#95;settings | Отображение/словарь пользовательских настроек ClickHouse, которые будут использоваться с выражениями `INSERT` или `DELETE` в сочетании с этой моделью                                                                                       |                |
 | ttl                | Выражение TTL, которое будет использоваться с таблицей. Выражение TTL — это строка, задающая время жизни (TTL) для таблицы.                                                                                                                 |                |
-| indexes            | Список [data skipping индексов для создания](/optimize/skipping-indexes). Дополнительная информация приведена ниже.                                                                                                                         |                |
-| sql&#95;security   | Позволяет указать, какого пользователя ClickHouse использовать при выполнении базового запроса представления. `SQL SECURITY` [принимает два допустимых значения](/sql-reference/statements/create/view#sql_security): `definer`, `invoker`. |                |
+| indexes            | Список [индексов пропуска данных](/optimize/skipping-indexes), которые нужно создать. Подробности см. в разделе [Об индексах пропуска данных](#data-skipping-indexes).                                                                     |                |
+| sql&#95;security   | Пользователь ClickHouse, от имени которого выполняется базовый запрос представления. [Допустимые значения](/sql-reference/statements/create/view#sql_security): `definer`, `invoker`.                                                       |                |
 | definer            | Если `sql_security` установлено в значение `definer`, необходимо указать любого существующего пользователя или `CURRENT_USER` в предложении `definer`.                                                                                      |                |
 | projections        | Список [проекций](/data-modeling/projections), которые будут созданы. Подробности см. в разделе [О проекциях](#projections).                                                                                                                |                |
 
@@ -200,6 +200,8 @@ Data skipping индексы доступны только для материа
 | S3                       | [https://clickhouse.com/docs/en/engines/table-engines/integrations/s3](https://clickhouse.com/docs/en/engines/table-engines/integrations/s3)                                           |
 | EmbeddedRocksDB          | [https://clickhouse.com/docs/en/engines/table-engines/integrations/embedded-rocksdb](https://clickhouse.com/docs/en/engines/table-engines/integrations/embedded-rocksdb)               |
 | Hive                     | [https://clickhouse.com/docs/en/engines/table-engines/integrations/hive](https://clickhouse.com/docs/en/engines/table-engines/integrations/hive)                                       |
+
+**Примечание**: для materialized view поддерживаются все движки семейства *MergeTree*.
 
 ### Экспериментально поддерживаемые табличные движки {#experimental-supported-table-engines}
 
@@ -362,7 +364,7 @@ models:
 ```
 
 
-#### Конфигурации {#configurations}
+#### Конфигурации {#incremental-configurations}
 
 Конфигурации, специфические для этого типа материализации, перечислены ниже:
 
@@ -626,6 +628,14 @@ CREATE TABLE db.table on cluster cluster (
     ENGINE = Distributed ('cluster', 'db', 'table_local', cityHash64(id));
 ```
 
+
+#### Конфигурации {#distributed-table-configurations}
+
+Ниже перечислены конфигурации, специфичные для этого типа материализации:
+
+| Option             | Description                                                                                                                                                                                                                                 | Default if any |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| sharding&#95;key   | Ключ шардирования определяет целевой сервер при вставке в таблицу с распределённым движком. Ключ шардирования может быть случайным или представлять собой результат хеш-функции                                                             | `rand()`)      |
 
 ### materialization: distributed_incremental (экспериментальная) {#materialization-distributed-incremental}
 

@@ -129,21 +129,21 @@ dbt 依赖写入后读取（read-after-insert）的一致性模型。如果无�
 
 ## 功能概览 {#general-information-about-features}
 
-### 通用表配置 {#general-table-configurations}
+### 通用模型配置 {#general-model-configurations}
+
+下表展示了一些可用物化类型所共享的配置。有关 dbt 模型通用配置的详细信息，请参阅 [dbt 文档](https://docs.getdbt.com/category/general-configs)：
 
 | Option             | Description                                                                                                                         | Default if any |
 | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------- | -------------- |
 | engine             | 在创建表时使用的表引擎（表类型）                                                                                                                    | `MergeTree()`  |
-| order&#95;by       | 由列名或任意表达式组成的元组。这可以创建一个较小的稀疏索引，用于更快速地查找数据。                                                                                           | `tuple()`      |
-| partition&#95;by   | 分区是根据指定条件对表中记录进行的逻辑组合。分区键可以是基于表列的任意表达式。                                                                                             |                |
-| sharding&#95;key   | 分片键在向分布式引擎表插入数据时决定目标服务器。分片键可以是随机值，也可以是哈希函数的输出。                                                                                      | `rand()`)      |
-| primary&#95;key    | 与 order&#95;by 类似，是 ClickHouse 的主键表达式。如果未指定，ClickHouse 将使用 order by 表达式作为主键。                                                        |                |
-| unique&#95;key     | 能唯一标识行的列名元组。与增量模型配合用于更新。                                                                                                            |                |
+| order_by           | 由列名或任意表达式组成的元组。这可以创建一个较小的稀疏索引，用于更快速地查找数据。                                                                                           | `tuple()`      |
+| partition_by       | 分区是根据指定条件对表中记录进行的逻辑组合。分区键可以是基于表列的任意表达式。                                                                                             |                |
+| primary_key        | 与 order_by 类似，是 ClickHouse 的主键表达式。如果未指定，ClickHouse 将使用 order_by 表达式作为主键。                                                        |                |
 | settings           | “TABLE” 级别设置的映射/字典，将在诸如 `CREATE TABLE` 的 DDL 语句中与此模型一起使用                                                                            |                |
-| query&#95;settings | ClickHouse 用户级别设置的映射/字典，将在与此模型相关的 `INSERT` 或 `DELETE` 语句中使用                                                                         |                |
+| query_settings     | ClickHouse 用户级别设置的映射/字典，将在与此模型相关的 `INSERT` 或 `DELETE` 语句中使用                                                                         |                |
 | ttl                | 与表一起使用的 TTL 表达式。TTL 表达式是一个字符串，用于为该表指定 TTL。                                                                                          |                |
-| indexes            | 要创建的[数据跳过索引列表](/optimize/skipping-indexes)。更多信息见下文。                                                                                 |                |
-| sql&#95;security   | 允许你指定在执行视图底层查询时使用哪个 ClickHouse 用户。`SQL SECURITY` [有两个合法取值](/sql-reference/statements/create/view#sql_security)：`definer`、`invoker`。 |                |
+| indexes            | 要创建的[数据跳过索引列表](/optimize/skipping-indexes)。详细信息参见[关于数据跳过索引](#data-skipping-indexes)。                                                             |                |
+| sql_security       | 在执行视图底层查询时要使用的 ClickHouse 用户。[可接受的取值](/sql-reference/statements/create/view#sql_security)：`definer`、`invoker`。                              |                |
 | definer            | 如果 `sql_security` 设置为 `definer`，则必须在 `definer` 子句中指定某个已存在的用户或 `CURRENT_USER`。                                                       |                |
 | projections        | 要创建的[投影（projections）列表](/data-modeling/projections)。详细信息参见[关于投影](#projections)。                                                     |                |
 
@@ -191,6 +191,8 @@ dbt 依赖写入后读取（read-after-insert）的一致性模型。如果无�
 | S3                     | [https://clickhouse.com/docs/en/engines/table-engines/integrations/s3](https://clickhouse.com/docs/en/engines/table-engines/integrations/s3)                                           |
 | EmbeddedRocksDB        | [https://clickhouse.com/docs/en/engines/table-engines/integrations/embedded-rocksdb](https://clickhouse.com/docs/en/engines/table-engines/integrations/embedded-rocksdb)               |
 | Hive                   | [https://clickhouse.com/docs/en/engines/table-engines/integrations/hive](https://clickhouse.com/docs/en/engines/table-engines/integrations/hive)                                       |
+
+**注意**：对于 materialized view，所有 *MergeTree 引擎均受支持。
 
 ### 实验性支持的表引擎 {#experimental-supported-table-engines}
 
@@ -344,7 +346,7 @@ models:
 ```
 
 
-#### 配置 {#configurations}
+#### 配置 {#incremental-configurations}
 
 针对此物化类型的特定配置如下所示：
 
@@ -586,6 +588,14 @@ CREATE TABLE db.table on cluster cluster (
     ENGINE = Distributed ('cluster', 'db', 'table_local', cityHash64(id));
 ```
 
+
+#### 配置 {#distributed-table-configurations}
+
+下面列出了此物化类型特有的配置：
+
+| Option                 | Description                                                                                                                                                                                                                                                                                                          | Default if any |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| sharding_key           | 分片键在向分布式引擎表插入数据时决定目标服务器。分片键可以是随机值，也可以是哈希函数的输出。                                                                                                                                                                                                                      | `rand()`)      |
 
 ### materialization: distributed&#95;incremental（实验性） {#materialization-distributed-incremental}
 
