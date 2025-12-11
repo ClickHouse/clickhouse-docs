@@ -2250,7 +2250,7 @@ Unless stated, complex type handling should be the same as the [ClickHouse API](
 
 #### Maps {#maps}
 
-Unlike the ClickHouse API, the standard API requires maps to be strongly typed at scan type. For example, users cannot pass a `map[string]interface{}` for a `Map(String,String)` field and must use a `map[string]string` instead. An `interface{}` variable will always be compatible and can be used for more complex structures. Structs are not supported at read time.
+Unlike the ClickHouse API, the standard API requires maps to be strongly typed at scan type. For example, you cannot pass a `map[string]interface{}` for a `Map(String,String)` field and must use a `map[string]string` instead. An `interface{}` variable will always be compatible and can be used for more complex structures. Structs are not supported at read time.
 
 ```go
 var (

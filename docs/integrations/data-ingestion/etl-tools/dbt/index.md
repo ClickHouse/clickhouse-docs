@@ -2,7 +2,7 @@
 sidebar_label: 'Overview'
 slug: /integrations/dbt
 sidebar_position: 1
-description: 'You can transform and model their data in ClickHouse using dbt'
+description: 'You can transform and model your data in ClickHouse using dbt'
 title: 'Integrating dbt and ClickHouse'
 keywords: ['dbt', 'data transformation', 'analytics engineering', 'SQL modeling', 'ELT pipeline']
 doc_type: 'guide'

@@ -607,7 +607,7 @@ Our ClickHouse client parameters here (aside from credentials):
 - `min_insert_block_size_rows=1000` - Squashes blocks from clients on the server side. In this case, we set to `max_insert_block_size` so rows appear immediately. Increase to improve throughput.
 - `query="INSERT INTO logs_system_syslog FORMAT JSONAsRow"` - Inserting the data as [JSONEachRow format](/integrations/data-formats/json/other-formats). This is appropriate if sending to a well-defined schema such as `logs_system_syslog.`
 <br/>
-**You can expect throughput in order of thousands of rows per second.**
+**You can expect throughput on the order of thousands of rows per second.**
 
 :::note Inserting into single JSON row
 If inserting into a single JSON column (see the `syslog_json` schema above), the same insert command can be used. However, you must specify `JSONAsObject` as the format instead of `JSONEachRow` e.g.
