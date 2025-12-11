@@ -20,6 +20,7 @@ Several of these integration guides use ClickStack's built-in OpenTelemetry Coll
 | [EC2 Host Logs](/use-cases/observability/clickstack/integrations/host-logs/ec2) | Monitor EC2 instance logs |
 | [AWS Lambda Logs using Rotel](/use-cases/observability/clickstack/integrations/aws-lambda) | Forward Lambda logs with Rotel |
 | [AWS CloudWatch](/use-cases/observability/clickstack/integrations/aws-cloudwatch-logs) | Forward CloudWatch log groups |
+| [JVM Metrics](/use-cases/observability/clickstack/integrations/jvm-metrics) | Monitor JVM performance |
 | [Kafka Metrics](/use-cases/observability/clickstack/integrations/kafka-metrics) | Monitor Kafka performance |
 | [Kubernetes](/use-cases/observability/clickstack/integrations/kubernetes) | Monitor K8s clusters |
 | [Nginx Logs](/use-cases/observability/clickstack/integrations/nginx) | Collect Nginx access/error logs |
