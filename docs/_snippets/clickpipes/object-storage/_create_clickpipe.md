@@ -41,7 +41,7 @@ import ABSDataSource from '@site/docs/_snippets/clickpipes/object-storage/azure-
 
 The UI will display a list of files in the specified bucket.
 Select your data format (we currently support a subset of ClickHouse formats) and if you want to enable continuous ingestion.
-([More details below](/integrations/clickpipes/object-storage/reference/#continuous-ingest)).
+([See "continuous ingest" for more details](./01_overview.md/#continuous-ingestion)).
 
 <Image img={cp_step3_object_storage} alt="Set data format and topic" size="lg" border/>
 
