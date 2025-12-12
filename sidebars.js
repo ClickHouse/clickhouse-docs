@@ -1453,6 +1453,7 @@ const sidebars = {
           collapsible: true,
           link: { type: "doc", id: "guides/sre/tls/index" },
           items: [
+            "guides/sre/configuring-ssl",
             "guides/sre/tls/configuring-tls",
             "guides/sre/tls/configuring-tls-acme-client",
           ],
