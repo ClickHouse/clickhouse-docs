@@ -120,17 +120,17 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
 
 <Tabs>
   <TabItem value="Service level" label="サービスレベル" default>
-    ```sql
+```sql
 SELECT
-    server_id,
-    region,
-    avgMerge(avg_response_time) AS avg_response_ms
+server_id,
+region,
+avgMerge(avg_response_time) AS avg_response_ms
 FROM server_performance
 GROUP BY server_id, region
 ORDER BY region, server_id;
 ```
 
-    ```response
+```response
 ┌─server_id─┬─region─────┬─avg_response_ms─┐
 │       301 │ eu-central │             145 │
 │       302 │ eu-central │             155 │
@@ -143,17 +143,18 @@ ORDER BY region, server_id;
   </TabItem>
 
   <TabItem value="Regional level" label="リージョンレベル">
-    ```sql
+
+```sql
 SELECT
-    region,
-    datacenter,
-    avgMerge(avg_response_time) AS avg_response_ms
+region,
+datacenter,
+avgMerge(avg_response_time) AS avg_response_ms
 FROM region_performance
 GROUP BY region, datacenter
 ORDER BY datacenter, region;
 ```
 
-    ```response
+```response
 ┌─region─────┬─datacenter─┬────avg_response_ms─┐
 │ us-east    │ dc1        │ 121.66666666666667 │
 │ us-west    │ dc1        │                100 │
@@ -163,16 +164,16 @@ ORDER BY datacenter, region;
   </TabItem>
 
   <TabItem value="Datacenter level" label="データセンターレベル">
-    ```sql
+```sql
 SELECT
-    datacenter,
-    avgMerge(avg_response_time) AS avg_response_ms
+datacenter,
+avgMerge(avg_response_time) AS avg_response_ms
 FROM datacenter_performance
 GROUP BY datacenter
 ORDER BY datacenter;
 ```
 
-    ```response
+```response
 ┌─datacenter─┬─avg_response_ms─┐
 │ dc1        │             113 │
 │ dc2        │             150 │

@@ -173,8 +173,8 @@ WHERE oid = 'postgres_table'::regclass;
 各テーブルでは、複製するカラムのサブセットを角括弧で囲んで指定できます。カラムのサブセットを省略した場合、そのテーブルのすべてのカラムが複製されます。
 
 ```sql
-    materialized_postgresql_tables_list = 'table1(co1, col2),table2,table3(co3, col5, col7)
-    ```
+materialized_postgresql_tables_list = 'table1(co1, col2),table2,table3(co3, col5, col7)
+```
 
 デフォルト値: 空リスト。空リストの場合、PostgreSQL データベース全体がレプリケートされます。
 
@@ -205,18 +205,18 @@ PostgreSQL データベースのテーブルにデータをフラッシュする
 スナップショットを識別する文字列であり、このスナップショットから [PostgreSQL テーブルの初回ダンプ](../../engines/database-engines/materialized-postgresql.md) が実行されます。`materialized_postgresql_replication_slot` と一緒に使用する必要があります。
 
 ```sql
-    CREATE DATABASE database1
-    ENGINE = MaterializedPostgreSQL('postgres1:5432', 'postgres_database', 'postgres_user', 'postgres_password')
-    SETTINGS materialized_postgresql_tables_list = 'table1,table2,table3';
+CREATE DATABASE database1
+ENGINE = MaterializedPostgreSQL('postgres1:5432', 'postgres_database', 'postgres_user', 'postgres_password')
+SETTINGS materialized_postgresql_tables_list = 'table1,table2,table3';
 
-    SELECT * FROM database1.table1;
-    ```
+SELECT * FROM database1.table1;
+```
 
 必要に応じて、設定は DDL クエリを使用して変更できます。ただし、`materialized_postgresql_tables_list` 設定そのものを変更することはできません。この設定のテーブルリストを更新するには、`ATTACH TABLE` クエリを使用してください。
 
 ```sql
-    ALTER DATABASE postgres_database MODIFY SETTING materialized_postgresql_max_block_size = <new_size>;
-    ```
+ALTER DATABASE postgres_database MODIFY SETTING materialized_postgresql_max_block_size = <new_size>;
+```
 
 ### `materialized_postgresql_use_unique_replication_consumer_identifier` {#materialized_postgresql_use_unique_replication_consumer_identifier}
 

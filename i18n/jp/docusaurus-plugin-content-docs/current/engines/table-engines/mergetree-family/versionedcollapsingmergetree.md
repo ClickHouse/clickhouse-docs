@@ -57,12 +57,12 @@ VersionedCollapsingMergeTree(sign, version)
   新しいプロジェクトではこの方法を使用しないでください。可能であれば、既存プロジェクトも上で説明した方法に切り替えてください。
   :::
 
-  ```sql
+```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 (
-    name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
-    name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
-    ...
+  name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
+  name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
+  ...
 ) ENGINE [=] VersionedCollapsingMergeTree(date-column [, samp#table_engines_versionedcollapsingmergetreeling_expression], (primary, key), index_granularity, sign, version)
 ```
 

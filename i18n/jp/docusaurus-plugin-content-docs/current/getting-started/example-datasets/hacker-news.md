@@ -20,8 +20,8 @@ keywords: ['サンプルデータセット', 'Hacker News', 'サンプルデー�
   データセットのCSV版は、公開[S3バケット](https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz)からダウンロードするか、以下のコマンドを実行することで取得できます:
 
   ```bash
-wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz
-```
+  wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz
+  ```
 
   この圧縮ファイルは4.6GB、2800万行で、ダウンロードには5〜10分程度かかります。
 
@@ -33,56 +33,56 @@ wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hackne
   コンソールから以下を実行します:
 
   ```bash
-clickhouse-local
-```
+  clickhouse-local
+  ```
 
   次に、以下のコマンドを実行してデータを探索します。
 
   ```sql title="Query"
-SELECT *
-FROM file('hacknernews.csv.gz', CSVWithNames)
-LIMIT 2
-SETTINGS input_format_try_infer_datetimes = 0
-FORMAT Vertical
-```
+  SELECT *
+  FROM file('hacknernews.csv.gz', CSVWithNames)
+  LIMIT 2
+  SETTINGS input_format_try_infer_datetimes = 0
+  FORMAT Vertical
+  ```
 
   ```response title="Response"
-Row 1:
-──────
-id:          344065
-deleted:     0
-type:        comment
-by:          callmeed
-time:        2008-10-26 05:06:58
-text:        What kind of reports do you need?<p>ActiveMerchant just connects your app to a gateway for cc approval and processing.<p>Braintree has very nice reports on transactions and it's very easy to refund a payment.<p>Beyond that, you are dealing with Rails after all–it's pretty easy to scaffold out some reports from your subscriber base.
-dead:        0
-parent:      344038
-poll:        0
-kids:        []
-url:
-score:       0
-title:
-parts:       []
-descendants: 0
+  Row 1:
+  ──────
+  id:          344065
+  deleted:     0
+  type:        comment
+  by:          callmeed
+  time:        2008-10-26 05:06:58
+  text:        What kind of reports do you need?<p>ActiveMerchant just connects your app to a gateway for cc approval and processing.<p>Braintree has very nice reports on transactions and it's very easy to refund a payment.<p>Beyond that, you are dealing with Rails after all–it's pretty easy to scaffold out some reports from your subscriber base.
+  dead:        0
+  parent:      344038
+  poll:        0
+  kids:        []
+  url:
+  score:       0
+  title:
+  parts:       []
+  descendants: 0
 
-Row 2:
-──────
-id:          344066
-deleted:     0
-type:        story
-by:          acangiano
-time:        2008-10-26 05:07:59
-text:
-dead:        0
-parent:      0
-poll:        0
-kids:        [344111,344202,344329,344606]
-url:         http://antoniocangiano.com/2008/10/26/what-arc-should-learn-from-ruby/
-score:       33
-title:       What Arc should learn from Ruby
-parts:       []
-descendants: 10
-```
+  Row 2:
+  ──────
+  id:          344066
+  deleted:     0
+  type:        story
+  by:          acangiano
+  time:        2008-10-26 05:07:59
+  text:
+  dead:        0
+  parent:      0
+  poll:        0
+  kids:        [344111,344202,344329,344606]
+  url:         http://antoniocangiano.com/2008/10/26/what-arc-should-learn-from-ruby/
+  score:       33
+  title:       What Arc should learn from Ruby
+  parts:       []
+  descendants: 10
+  ```
 
   このコマンドには多くの便利な機能があります。
   [`file`](/sql-reference/functions/files/#file)演算子を使用すると、`CSVWithNames`形式を指定するだけでローカルディスクからファイルを読み取ることができます。
@@ -99,45 +99,45 @@ descendants: 10
   スキーマは自動的に推論されます：
 
   ```sql
-CREATE TABLE hackernews ENGINE = MergeTree ORDER BY tuple
-(
-) EMPTY AS SELECT * FROM url('https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz', 'CSVWithNames');
-```
+  CREATE TABLE hackernews ENGINE = MergeTree ORDER BY tuple
+  (
+  ) EMPTY AS SELECT * FROM url('https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz', 'CSVWithNames');
+  ```
 
   これにより、データから推測されたスキーマを使用して空のテーブルが作成されます。
   [`DESCRIBE TABLE`](/sql-reference/statements/describe-table) コマンドを使用することで、割り当てられた型を確認できます。
 
   ```sql title="Query"
-DESCRIBE TABLE hackernews
-```
+  DESCRIBE TABLE hackernews
+  ```
 
   ```text title="Response"
-┌─name────────┬─type─────────────────────┬
-│ id          │ Nullable(Float64)        │
-│ deleted     │ Nullable(Float64)        │
-│ type        │ Nullable(String)         │
-│ by          │ Nullable(String)         │
-│ time        │ Nullable(String)         │
-│ text        │ Nullable(String)         │
-│ dead        │ Nullable(Float64)        │
-│ parent      │ Nullable(Float64)        │
-│ poll        │ Nullable(Float64)        │
-│ kids        │ Array(Nullable(Float64)) │
-│ url         │ Nullable(String)         │
-│ score       │ Nullable(Float64)        │
-│ title       │ Nullable(String)         │
-│ parts       │ Array(Nullable(Float64)) │
-│ descendants │ Nullable(Float64)        │
-└─────────────┴──────────────────────────┴
-```
+  ┌─name────────┬─type─────────────────────┬
+  │ id          │ Nullable(Float64)        │
+  │ deleted     │ Nullable(Float64)        │
+  │ type        │ Nullable(String)         │
+  │ by          │ Nullable(String)         │
+  │ time        │ Nullable(String)         │
+  │ text        │ Nullable(String)         │
+  │ dead        │ Nullable(Float64)        │
+  │ parent      │ Nullable(Float64)        │
+  │ poll        │ Nullable(Float64)        │
+  │ kids        │ Array(Nullable(Float64)) │
+  │ url         │ Nullable(String)         │
+  │ score       │ Nullable(Float64)        │
+  │ title       │ Nullable(String)         │
+  │ parts       │ Array(Nullable(Float64)) │
+  │ descendants │ Nullable(Float64)        │
+  └─────────────┴──────────────────────────┴
+  ```
 
   このテーブルにデータを挿入するには、`INSERT INTO, SELECT`コマンドを使用します。
   `url`関数と組み合わせることで、URLから直接データがストリーミングされます:
 
   ```sql
-INSERT INTO hackernews SELECT *
-FROM url('https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz', 'CSVWithNames')
-```
+  INSERT INTO hackernews SELECT *
+  FROM url('https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz', 'CSVWithNames')
+  ```
 
   単一のコマンドで2800万行をClickHouseに正常に挿入しました！
 
@@ -146,51 +146,51 @@ FROM url('https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/h
   以下のクエリを実行して、Hacker Newsのストーリーと特定の列をサンプリングします：
 
   ```sql title="Query"
-SELECT
-    id,
-    title,
-    type,
-    by,
-    time,
-    url,
-    score
-FROM hackernews
-WHERE type = 'story'
-LIMIT 3
-FORMAT Vertical
-```
+  SELECT
+      id,
+      title,
+      type,
+      by,
+      time,
+      url,
+      score
+  FROM hackernews
+  WHERE type = 'story'
+  LIMIT 3
+  FORMAT Vertical
+  ```
 
   ```response title="Response"
-Row 1:
-──────
-id:    2596866
-title:
-type:  story
-by:
-time:  1306685152
-url:
-score: 0
+  Row 1:
+  ──────
+  id:    2596866
+  title:
+  type:  story
+  by:
+  time:  1306685152
+  url:
+  score: 0
 
-Row 2:
-──────
-id:    2596870
-title: WordPress capture users last login date and time
-type:  story
-by:    wpsnipp
-time:  1306685252
-url:   http://wpsnipp.com/index.php/date/capture-users-last-login-date-and-time/
-score: 1
+  Row 2:
+  ──────
+  id:    2596870
+  title: WordPress capture users last login date and time
+  type:  story
+  by:    wpsnipp
+  time:  1306685252
+  url:   http://wpsnipp.com/index.php/date/capture-users-last-login-date-and-time/
+  score: 1
 
-Row 3:
-──────
-id:    2596872
-title: Recent college graduates get some startup wisdom
-type:  story
-by:    whenimgone
-time:  1306685352
-url:   http://articles.chicagotribune.com/2011-05-27/business/sc-cons-0526-started-20110527_1_business-plan-recession-college-graduates
-score: 1
-```
+  Row 3:
+  ──────
+  id:    2596872
+  title: Recent college graduates get some startup wisdom
+  type:  story
+  by:    whenimgone
+  time:  1306685352
+  url:   http://articles.chicagotribune.com/2011-05-27/business/sc-cons-0526-started-20110527_1_business-plan-recession-college-graduates
+  score: 1
+  ```
 
   スキーマ推論は初期のデータ探索には有用なツールですが、「ベストエフォート」型の機能であり、データに最適なスキーマを定義することの長期的な代替手段にはなりません。
 
@@ -205,36 +205,36 @@ score: 1
   以下のクエリを実行して、既存のスキーマを削除し、改善されたスキーマを作成します:
 
   ```sql title="Query"
-DROP TABLE IF EXISTS hackernews;
+  DROP TABLE IF EXISTS hackernews;
 
-CREATE TABLE hackernews
-(
-    `id` UInt32,
-    `deleted` UInt8,
-    `type` Enum('story' = 1, 'comment' = 2, 'poll' = 3, 'pollopt' = 4, 'job' = 5),
-    `by` LowCardinality(String),
-    `time` DateTime,
-    `text` String,
-    `dead` UInt8,
-    `parent` UInt32,
-    `poll` UInt32,
-    `kids` Array(UInt32),
-    `url` String,
-    `score` Int32,
-    `title` String,
-    `parts` Array(UInt32),
-    `descendants` Int32
-)
-    ENGINE = MergeTree
-ORDER BY id
-```
+  CREATE TABLE hackernews
+  (
+      `id` UInt32,
+      `deleted` UInt8,
+      `type` Enum('story' = 1, 'comment' = 2, 'poll' = 3, 'pollopt' = 4, 'job' = 5),
+      `by` LowCardinality(String),
+      `time` DateTime,
+      `text` String,
+      `dead` UInt8,
+      `parent` UInt32,
+      `poll` UInt32,
+      `kids` Array(UInt32),
+      `url` String,
+      `score` Int32,
+      `title` String,
+      `parts` Array(UInt32),
+      `descendants` Int32
+  )
+      ENGINE = MergeTree
+  ORDER BY id
+  ```
 
   最適化されたスキーマを使用することで、ローカルファイルシステムからデータを挿入できます。
   再び`clickhouse-client`を使用して、明示的な`INSERT INTO`文と`INFILE`句でファイルを挿入します。
 
   ```sql title="Query"
-INSERT INTO hackernews FROM INFILE '/data/hacknernews.csv.gz' FORMAT CSVWithNames
-```
+  INSERT INTO hackernews FROM INFILE '/data/hacknernews.csv.gz' FORMAT CSVWithNames
+  ```
 
   ### サンプルクエリを実行する
 
@@ -245,153 +245,153 @@ INSERT INTO hackernews FROM INFILE '/data/hacknernews.csv.gz' FORMAT CSVWithName
   scoreフィールドはストーリーの人気度の指標を提供し、`id`フィールドと`||`連結演算子を使用して元の投稿へのリンクを生成できます。
 
   ```sql title="Query"
-SELECT
-    time,
-    score,
-    descendants,
-    title,
-    url,
-    'https://news.ycombinator.com/item?id=' || toString(id) AS hn_url
-FROM hackernews
-WHERE (type = 'story') AND (title ILIKE '%ClickHouse%')
-ORDER BY score DESC
-LIMIT 5 FORMAT Vertical
-```
+  SELECT
+      time,
+      score,
+      descendants,
+      title,
+      url,
+      'https://news.ycombinator.com/item?id=' || toString(id) AS hn_url
+  FROM hackernews
+  WHERE (type = 'story') AND (title ILIKE '%ClickHouse%')
+  ORDER BY score DESC
+  LIMIT 5 FORMAT Vertical
+  ```
 
-  ```response title="Response"
-Row 1:
-──────
-time:        1632154428
-score:       519
-descendants: 159
-title:       ClickHouse, Inc.
-url:         https://github.com/ClickHouse/ClickHouse/blob/master/website/blog/en/2021/clickhouse-inc.md
-hn_url:      https://news.ycombinator.com/item?id=28595419
+    ```response title="Response"
+  Row 1:
+  ──────
+  time:        1632154428
+  score:       519
+  descendants: 159
+  title:       ClickHouse, Inc.
+  url:         https://github.com/ClickHouse/ClickHouse/blob/master/website/blog/en/2021/clickhouse-inc.md
+  hn_url:      https://news.ycombinator.com/item?id=28595419
 
-Row 2:
-──────
-time:        1614699632
-score:       383
-descendants: 134
-title:       ClickHouse as an alternative to Elasticsearch for log storage and analysis
-url:         https://pixeljets.com/blog/clickhouse-vs-elasticsearch/
-hn_url:      https://news.ycombinator.com/item?id=26316401
+  Row 2:
+  ──────
+  time:        1614699632
+  score:       383
+  descendants: 134
+  title:       ClickHouse as an alternative to Elasticsearch for log storage and analysis
+  url:         https://pixeljets.com/blog/clickhouse-vs-elasticsearch/
+  hn_url:      https://news.ycombinator.com/item?id=26316401
 
-Row 3:
-──────
-time:        1465985177
-score:       243
-descendants: 70
-title:       ClickHouse – high-performance open-source distributed column-oriented DBMS
-url:         https://clickhouse.yandex/reference_en.html
-hn_url:      https://news.ycombinator.com/item?id=11908254
+  Row 3:
+  ──────
+  time:        1465985177
+  score:       243
+  descendants: 70
+  title:       ClickHouse – high-performance open-source distributed column-oriented DBMS
+  url:         https://clickhouse.yandex/reference_en.html
+  hn_url:      https://news.ycombinator.com/item?id=11908254
 
-Row 4:
-──────
-time:        1578331410
-score:       216
-descendants: 86
-title:       ClickHouse cost-efficiency in action: analyzing 500B rows on an Intel NUC
-url:         https://www.altinity.com/blog/2020/1/1/clickhouse-cost-efficiency-in-action-analyzing-500-billion-rows-on-an-intel-nuc
-hn_url:      https://news.ycombinator.com/item?id=21970952
+  Row 4:
+  ──────
+  time:        1578331410
+  score:       216
+  descendants: 86
+  title:       ClickHouse cost-efficiency in action: analyzing 500B rows on an Intel NUC
+  url:         https://www.altinity.com/blog/2020/1/1/clickhouse-cost-efficiency-in-action-analyzing-500-billion-rows-on-an-intel-nuc
+  hn_url:      https://news.ycombinator.com/item?id=21970952
 
-Row 5:
-──────
-time:        1622160768
-score:       198
-descendants: 55
-title:       ClickHouse: An open-source column-oriented database management system
-url:         https://github.com/ClickHouse/ClickHouse
-hn_url:      https://news.ycombinator.com/item?id=27310247
-```
+  Row 5:
+  ──────
+  time:        1622160768
+  score:       198
+  descendants: 55
+  title:       ClickHouse: An open-source column-oriented database management system
+  url:         https://github.com/ClickHouse/ClickHouse
+  hn_url:      https://news.ycombinator.com/item?id=27310247
+  ```
 
   ClickHouseは時間の経過とともにより多くのノイズを生成しているでしょうか？ここでは、`time`フィールドを`DateTime`として定義することの有用性が示されています。適切なデータ型を使用することで、`toYYYYMM()`関数を利用できます：
 
   ```sql title="Query"
-SELECT
-   toYYYYMM(time) AS monthYear,
-   bar(count(), 0, 120, 20)
-FROM hackernews
-WHERE (type IN ('story', 'comment')) AND ((title ILIKE '%ClickHouse%') OR (text ILIKE '%ClickHouse%'))
-GROUP BY monthYear
-ORDER BY monthYear ASC
-```
+  SELECT
+    toYYYYMM(time) AS monthYear,
+    bar(count(), 0, 120, 20)
+  FROM hackernews
+  WHERE (type IN ('story', 'comment')) AND ((title ILIKE '%ClickHouse%') OR (text ILIKE '%ClickHouse%'))
+  GROUP BY monthYear
+  ORDER BY monthYear ASC
+  ```
 
   ```response title="Response"
-┌─monthYear─┬─bar(count(), 0, 120, 20)─┐
-│    201606 │ ██▎                      │
-│    201607 │ ▏                        │
-│    201610 │ ▎                        │
-│    201612 │ ▏                        │
-│    201701 │ ▎                        │
-│    201702 │ █                        │
-│    201703 │ ▋                        │
-│    201704 │ █                        │
-│    201705 │ ██                       │
-│    201706 │ ▎                        │
-│    201707 │ ▎                        │
-│    201708 │ ▏                        │
-│    201709 │ ▎                        │
-│    201710 │ █▌                       │
-│    201711 │ █▌                       │
-│    201712 │ ▌                        │
-│    201801 │ █▌                       │
-│    201802 │ ▋                        │
-│    201803 │ ███▏                     │
-│    201804 │ ██▏                      │
-│    201805 │ ▋                        │
-│    201806 │ █▏                       │
-│    201807 │ █▌                       │
-│    201808 │ ▋                        │
-│    201809 │ █▌                       │
-│    201810 │ ███▌                     │
-│    201811 │ ████                     │
-│    201812 │ █▌                       │
-│    201901 │ ████▋                    │
-│    201902 │ ███                      │
-│    201903 │ ▋                        │
-│    201904 │ █                        │
-│    201905 │ ███▋                     │
-│    201906 │ █▏                       │
-│    201907 │ ██▎                      │
-│    201908 │ ██▋                      │
-│    201909 │ █▋                       │
-│    201910 │ █                        │
-│    201911 │ ███                      │
-│    201912 │ █▎                       │
-│    202001 │ ███████████▋             │
-│    202002 │ ██████▌                  │
-│    202003 │ ███████████▋             │
-│    202004 │ ███████▎                 │
-│    202005 │ ██████▏                  │
-│    202006 │ ██████▏                  │
-│    202007 │ ███████▋                 │
-│    202008 │ ███▋                     │
-│    202009 │ ████                     │
-│    202010 │ ████▌                    │
-│    202011 │ █████▏                   │
-│    202012 │ ███▋                     │
-│    202101 │ ███▏                     │
-│    202102 │ █████████                │
-│    202103 │ █████████████▋           │
-│    202104 │ ███▏                     │
-│    202105 │ ████████████▋            │
-│    202106 │ ███                      │
-│    202107 │ █████▏                   │
-│    202108 │ ████▎                    │
-│    202109 │ ██████████████████▎      │
-│    202110 │ ▏                        │
-└───────────┴──────────────────────────┘
-```
+  ┌─monthYear─┬─bar(count(), 0, 120, 20)─┐
+  │    201606 │ ██▎                      │
+  │    201607 │ ▏                        │
+  │    201610 │ ▎                        │
+  │    201612 │ ▏                        │
+  │    201701 │ ▎                        │
+  │    201702 │ █                        │
+  │    201703 │ ▋                        │
+  │    201704 │ █                        │
+  │    201705 │ ██                       │
+  │    201706 │ ▎                        │
+  │    201707 │ ▎                        │
+  │    201708 │ ▏                        │
+  │    201709 │ ▎                        │
+  │    201710 │ █▌                       │
+  │    201711 │ █▌                       │
+  │    201712 │ ▌                        │
+  │    201801 │ █▌                       │
+  │    201802 │ ▋                        │
+  │    201803 │ ███▏                     │
+  │    201804 │ ██▏                      │
+  │    201805 │ ▋                        │
+  │    201806 │ █▏                       │
+  │    201807 │ █▌                       │
+  │    201808 │ ▋                        │
+  │    201809 │ █▌                       │
+  │    201810 │ ███▌                     │
+  │    201811 │ ████                     │
+  │    201812 │ █▌                       │
+  │    201901 │ ████▋                    │
+  │    201902 │ ███                      │
+  │    201903 │ ▋                        │
+  │    201904 │ █                        │
+  │    201905 │ ███▋                     │
+  │    201906 │ █▏                       │
+  │    201907 │ ██▎                      │
+  │    201908 │ ██▋                      │
+  │    201909 │ █▋                       │
+  │    201910 │ █                        │
+  │    201911 │ ███                      │
+  │    201912 │ █▎                       │
+  │    202001 │ ███████████▋             │
+  │    202002 │ ██████▌                  │
+  │    202003 │ ███████████▋             │
+  │    202004 │ ███████▎                 │
+  │    202005 │ ██████▏                  │
+  │    202006 │ ██████▏                  │
+  │    202007 │ ███████▋                 │
+  │    202008 │ ███▋                     │
+  │    202009 │ ████                     │
+  │    202010 │ ████▌                    │
+  │    202011 │ █████▏                   │
+  │    202012 │ ███▋                     │
+  │    202101 │ ███▏                     │
+  │    202102 │ █████████                │
+  │    202103 │ █████████████▋           │
+  │    202104 │ ███▏                     │
+  │    202105 │ ████████████▋            │
+  │    202106 │ ███                      │
+  │    202107 │ █████▏                   │
+  │    202108 │ ████▎                    │
+  │    202109 │ ██████████████████▎      │
+  │    202110 │ ▏                        │
+  └───────────┴──────────────────────────┘
+  ```
 
   &quot;ClickHouse&quot;の人気が時間とともに高まっているようです。
 
   #### ClickHouse関連記事のトップコメント投稿者は誰か？
 
-  ```sql title="Query"
+```sql title="Query"
 SELECT
-   by,
-   count() AS comments
+by,
+count() AS comments
 FROM hackernews
 WHERE (type IN ('story', 'comment')) AND ((title ILIKE '%ClickHouse%') OR (text ILIKE '%ClickHouse%'))
 GROUP BY by
@@ -399,7 +399,7 @@ ORDER BY comments DESC
 LIMIT 5
 ```
 
-  ```response title="Response"
+```response title="Response"
 ┌─by──────────┬─comments─┐
 │ hodgesrm    │       78 │
 │ zX41ZdbW    │       45 │
@@ -411,11 +411,11 @@ LIMIT 5
 
   #### どのコメントが最も関心を集めているか？
 
-  ```sql title="Query"
+```sql title="Query"
 SELECT
-  by,
-  sum(score) AS total_score,
-  sum(length(kids)) AS total_sub_comments
+by,
+sum(score) AS total_score,
+sum(length(kids)) AS total_sub_comments
 FROM hackernews
 WHERE (type IN ('story', 'comment')) AND ((title ILIKE '%ClickHouse%') OR (text ILIKE '%ClickHouse%'))
 GROUP BY by
@@ -423,7 +423,7 @@ ORDER BY total_score DESC
 LIMIT 5
 ```
 
-  ```response title="Response"
+```response title="Response"
 ┌─by───────┬─total_score─┬─total_sub_comments─┐
 │ zX41ZdbW │        571  │              50    │
 │ jetter   │        386  │              30    │
@@ -449,7 +449,7 @@ Parquet ファイルに対する型推論では、CSV ファイルのスキー�
 
   以下のクエリを実行して、同じデータをParquet形式で読み取ります。ここでも`url`関数を使用してリモートデータを読み取ります:
 
-  ```sql
+```sql
 DROP TABLE IF EXISTS hackernews;
 
 CREATE TABLE hackernews
@@ -463,13 +463,13 @@ INSERT INTO hackernews SELECT *
 FROM url('https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.parquet', 'Parquet')
 ```
 
-  :::note ParquetにおけるNullキー
-  Parquet形式の仕様上、実際のデータには存在しない場合でも、キーが`NULL`になる可能性を考慮する必要があります。
-  :::
+:::note ParquetにおけるNullキー
+Parquet形式の仕様上、実際のデータには存在しない場合でも、キーが`NULL`になる可能性を考慮する必要があります。
+:::
 
-  推論されたスキーマを表示するには、次のコマンドを実行します:
+推論されたスキーマを表示するには、次のコマンドを実行します:
 
-  ```sql title="Query"
+```sql title="Query"
 ┌─name────────┬─type───────────────────┬
 │ id          │ Nullable(Int64)        │
 │ deleted     │ Nullable(UInt8)        │
@@ -488,62 +488,62 @@ FROM url('https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/h
 └─────────────┴────────────────────────┴
 ```
 
-  CSV ファイルの場合と同様に、選択する型をより細かく制御するためにスキーマを手動で指定し、S3 から直接データを挿入できます。
+CSV ファイルの場合と同様に、選択する型をより細かく制御するためにスキーマを手動で指定し、S3 から直接データを挿入できます。
 
-  ```sql
+```sql
 CREATE TABLE hackernews
 (
-    `id` UInt64,
-    `deleted` UInt8,
-    `type` String,
-    `author` String,
-    `timestamp` DateTime,
-    `comment` String,
-    `dead` UInt8,
-    `parent` UInt64,
-    `poll` UInt64,
-    `children` Array(UInt32),
-    `url` String,
-    `score` UInt32,
-    `title` String,
-    `parts` Array(UInt32),
-    `descendants` UInt32
+  `id` UInt64,
+  `deleted` UInt8,
+  `type` String,
+  `author` String,
+  `timestamp` DateTime,
+  `comment` String,
+  `dead` UInt8,
+  `parent` UInt64,
+  `poll` UInt64,
+  `children` Array(UInt32),
+  `url` String,
+  `score` UInt32,
+  `title` String,
+  `parts` Array(UInt32),
+  `descendants` UInt32
 )
 ENGINE = MergeTree
 ORDER BY (type, author);
 
 INSERT INTO hackernews
 SELECT * FROM s3(
-        'https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.parquet',
-        'Parquet',
-        'id UInt64,
-         deleted UInt8,
-         type String,
-         by String,
-         time DateTime,
-         text String,
-         dead UInt8,
-         parent UInt64,
-         poll UInt64,
-         kids Array(UInt32),
-         url String,
-         score UInt32,
-         title String,
-         parts Array(UInt32),
-         descendants UInt32');
+      'https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.parquet',
+      'Parquet',
+      'id UInt64,
+        deleted UInt8,
+        type String,
+        by String,
+        time DateTime,
+        text String,
+        dead UInt8,
+        parent UInt64,
+        poll UInt64,
+        kids Array(UInt32),
+        url String,
+        score UInt32,
+        title String,
+        parts Array(UInt32),
+        descendants UInt32');
 ```
 
-  ### クエリを高速化するスキッピングインデックスの追加
+### クエリを高速化するスキッピングインデックスの追加
 
-  「ClickHouse」に言及しているコメント数を確認するには、以下のクエリを実行します：
+「ClickHouse」に言及しているコメント数を確認するには、以下のクエリを実行します：
 
-  ```sql title="Query"
+```sql title="Query"
 SELECT count(*)
 FROM hackernews
 WHERE hasToken(lower(comment), 'ClickHouse');
 ```
 
-  ```response title="Response"
+```response title="Response"
 #highlight-next-line
 1 row in set. Elapsed: 0.843 sec. Processed 28.74 million rows, 9.75 GB (34.08 million rows/s., 11.57 GB/s.)
 ┌─count()─┐
@@ -551,29 +551,29 @@ WHERE hasToken(lower(comment), 'ClickHouse');
 └─────────┘
 ```
 
-  次に、このクエリを高速化するために、「comment」列に転置[インデックス](/engines/table-engines/mergetree-family/invertedindexes)を作成します。
-  なお、コメントは小文字に変換されてインデックス化されるため、大文字小文字を区別せずに用語を検索できます。
+次に、このクエリを高速化するために、「comment」列に転置[インデックス](/engines/table-engines/mergetree-family/invertedindexes)を作成します。
+なお、コメントは小文字に変換されてインデックス化されるため、大文字小文字を区別せずに用語を検索できます。
 
-  以下のコマンドを実行してインデックスを作成します。
+以下のコマンドを実行してインデックスを作成します。
 
-  ```sql
+```sql
 ALTER TABLE hackernews ADD INDEX comment_idx(lower(comment)) TYPE inverted;
 ALTER TABLE hackernews MATERIALIZE INDEX comment_idx;
 ```
 
-  インデックスのマテリアライゼーションには時間がかかります（インデックスが作成されたかどうかを確認するには、システムテーブル `system.data_skipping_indices` を使用します）。
+インデックスのマテリアライゼーションには時間がかかります（インデックスが作成されたかどうかを確認するには、システムテーブル `system.data_skipping_indices` を使用します）。
 
-  インデックスの作成後、クエリを再実行してください：
+インデックスの作成後、クエリを再実行してください：
 
-  ```sql title="Query"
+```sql title="Query"
 SELECT count(*)
 FROM hackernews
 WHERE hasToken(lower(comment), 'clickhouse');
 ```
 
-  インデックスを使用することで、クエリの実行時間が0.843秒から0.248秒に短縮されました:
+インデックスを使用することで、クエリの実行時間が0.843秒から0.248秒に短縮されました:
 
-  ```response title="Response"
+```response title="Response"
 #highlight-next-line
 1 row in set. Elapsed: 0.248 sec. Processed 4.54 million rows, 1.79 GB (18.34 million rows/s., 7.24 GB/s.)
 ┌─count()─┐
@@ -581,34 +581,34 @@ WHERE hasToken(lower(comment), 'clickhouse');
 └─────────┘
 ```
 
-  [`EXPLAIN`](/sql-reference/statements/explain)句を使用して、このインデックスの追加によりクエリのパフォーマンスが約3.4倍向上した理由を確認できます。
+[`EXPLAIN`](/sql-reference/statements/explain)句を使用して、このインデックスの追加によりクエリのパフォーマンスが約3.4倍向上した理由を確認できます。
 
-  ```response text="Query"
-  EXPLAIN indexes = 1
-  SELECT count(*)
-  FROM hackernews
-  WHERE hasToken(lower(comment), 'clickhouse')
-  ```
+```response text="Query"
+EXPLAIN indexes = 1
+SELECT count(*)
+FROM hackernews
+WHERE hasToken(lower(comment), 'clickhouse')
+```
 
 ```response title="Response"
-  ┌─explain─────────────────────────────────────────┐
-  │ Expression ((Projection + Before ORDER BY))     │
-  │   Aggregating                                   │
-  │     Expression (Before GROUP BY)                │
-  │       Filter (WHERE)                            │
-  │         ReadFromMergeTree (default.hackernews)  │
-  │         Indexes:                                │
-  │           PrimaryKey                            │
-  │             Condition: true                     │
-  │             Parts: 4/4                          │
-  │             Granules: 3528/3528                 │
-  │           Skip                                  │
-  │             Name: comment_idx                   │
-  │             Description: inverted GRANULARITY 1 │
-  │             Parts: 4/4                          │
-  │             Granules: 554/3528                  │
-  └─────────────────────────────────────────────────┘
-  ```
+┌─explain─────────────────────────────────────────┐
+│ Expression ((Projection + Before ORDER BY))     │
+│   Aggregating                                   │
+│     Expression (Before GROUP BY)                │
+│       Filter (WHERE)                            │
+│         ReadFromMergeTree (default.hackernews)  │
+│         Indexes:                                │
+│           PrimaryKey                            │
+│             Condition: true                     │
+│             Parts: 4/4                          │
+│             Granules: 3528/3528                 │
+│           Skip                                  │
+│             Name: comment_idx                   │
+│             Description: inverted GRANULARITY 1 │
+│             Parts: 4/4                          │
+│             Granules: 554/3528                  │
+└─────────────────────────────────────────────────┘
+```
 
 Notice how the index allowed skipping of a substantial number of granules
 to speed up the query.
@@ -616,26 +616,27 @@ to speed up the query.
 It's also possible to now efficiently search for one, or all of multiple terms:
 
 ```sql title="Query"
-  SELECT count(*)
-  FROM hackernews
-  WHERE multiSearchAny(lower(comment), ['oltp', 'olap']);
-  ```
+SELECT count(*)
+FROM hackernews
+WHERE multiSearchAny(lower(comment), ['oltp', 'olap']);
+```
 
 ```response title="Response"
-  ┌─count()─┐
-  │    2177 │
-  └─────────┘
-  ```
+┌─count()─┐
+│    2177 │
+└─────────┘
+```
 
 ```sql title="Query"
-  SELECT count(*)
-  FROM hackernews
-  WHERE hasToken(lower(comment), 'avx') AND hasToken(lower(comment), 'sve');
-  ```
+SELECT count(*)
+FROM hackernews
+WHERE hasToken(lower(comment), 'avx') AND hasToken(lower(comment), 'sve');
+```
 
 ```response
-  ┌─count()─┐
-  │      22 │
-  └─────────┘
-  ```
+┌─count()─┐
+│      22 │
+└─────────┘
+```
+
 </VerticalStepper>

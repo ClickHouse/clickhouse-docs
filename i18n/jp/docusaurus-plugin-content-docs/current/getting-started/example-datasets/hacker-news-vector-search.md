@@ -28,28 +28,28 @@ doc_type: 'guide'
   投稿とその埋め込みベクトル、および関連属性を格納する `hackernews` テーブルを作成します:
 
   ```sql
-CREATE TABLE hackernews
-(
-    `id` Int32,
-    `doc_id` Int32,
-    `text` String,
-    `vector` Array(Float32),
-    `node_info` Tuple(
-        start Nullable(UInt64),
-        end Nullable(UInt64)),
-    `metadata` String,
-    `type` Enum8('story' = 1, 'comment' = 2, 'poll' = 3, 'pollopt' = 4, 'job' = 5),
-    `by` LowCardinality(String),
-    `time` DateTime,
-    `title` String,
-    `post_score` Int32,
-    `dead` UInt8,
-    `deleted` UInt8,
-    `length` UInt32
-)
-ENGINE = MergeTree
-ORDER BY id;
-```
+  CREATE TABLE hackernews
+  (
+      `id` Int32,
+      `doc_id` Int32,
+      `text` String,
+      `vector` Array(Float32),
+      `node_info` Tuple(
+          start Nullable(UInt64),
+          end Nullable(UInt64)),
+      `metadata` String,
+      `type` Enum8('story' = 1, 'comment' = 2, 'poll' = 3, 'pollopt' = 4, 'job' = 5),
+      `by` LowCardinality(String),
+      `time` DateTime,
+      `title` String,
+      `post_score` Int32,
+      `dead` UInt8,
+      `deleted` UInt8,
+      `length` UInt32
+  )
+  ENGINE = MergeTree
+  ORDER BY id;
+  ```
 
   `id` は単なる増分整数です。追加の属性は述語内で使用でき、[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)で説明されているポストフィルタリング/プレフィルタリングと組み合わせたベクトル類似検索を理解するために活用できます
 
@@ -58,8 +58,8 @@ ORDER BY id;
   `Parquet`ファイルからデータセットをロードするには、以下のSQLステートメントを実行します:
 
   ```sql
-INSERT INTO hackernews SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/hackernews-miniLM/hackernews_part_1_of_1.parquet');
-```
+  INSERT INTO hackernews SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/hackernews-miniLM/hackernews_part_1_of_1.parquet');
+  ```
 
   テーブルへの2,874万行の挿入には数分かかります。
 
@@ -68,10 +68,10 @@ INSERT INTO hackernews SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaw
   以下のSQLを実行して、`hackernews`テーブルの`vector`列にベクトル類似性インデックスを定義および構築します：
 
   ```sql
-ALTER TABLE hackernews ADD INDEX vector_index vector TYPE vector_similarity('hnsw', 'cosineDistance', 384, 'bf16', 64, 512);
+  ALTER TABLE hackernews ADD INDEX vector_index vector TYPE vector_similarity('hnsw', 'cosineDistance', 384, 'bf16', 64, 512);
 
-ALTER TABLE hackernews MATERIALIZE INDEX vector_index SETTINGS mutations_sync = 2;
-```
+  ALTER TABLE hackernews MATERIALIZE INDEX vector_index SETTINGS mutations_sync = 2;
+  ```
 
   インデックスの作成と検索に関するパラメータおよびパフォーマンスの考慮事項については、[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)を参照してください。
   上記のステートメントでは、HNSWハイパーパラメータ`M`と`ef_construction`にそれぞれ64と512の値を使用しています。
@@ -84,12 +84,12 @@ ALTER TABLE hackernews MATERIALIZE INDEX vector_index SETTINGS mutations_sync = 
   ベクトル類似性インデックスが構築されると、ベクトル検索クエリは自動的にインデックスを使用します:
 
   ```sql title="Query"
-SELECT id, title, text
-FROM hackernews
-ORDER BY cosineDistance( vector, <search vector>)
-LIMIT 10
+  SELECT id, title, text
+  FROM hackernews
+  ORDER BY cosineDistance( vector, <search vector>)
+  LIMIT 10
 
-```
+  ```
 
   ベクトルインデックスの初回メモリロード時には、数秒から数分程度かかる場合があります。
 
@@ -221,117 +221,117 @@ rstuart4133: I remember hearing about OLAP cubes donkey&#x27;s years ago (probab
   本アプリケーションは、顧客感情分析、技術サポートの自動化、ユーザー会話の分析、法的文書、医療記録、会議議事録、財務諸表など、複数のエンタープライズ領域に適用可能な生成AIユースケースを実証します
 
   ```shell
-$ python3 summarize.py
+  $ python3 summarize.py
 
-Enter a search topic :
-ClickHouse performance experiences
+  Enter a search topic :
+  ClickHouse performance experiences
 
-Generating the embedding for ---->  ClickHouse performance experiences
+  Generating the embedding for ---->  ClickHouse performance experiences
 
-Querying ClickHouse to retrieve relevant articles...
+  Querying ClickHouse to retrieve relevant articles...
 
-Initializing chatgpt-3.5-turbo model...
+  Initializing chatgpt-3.5-turbo model...
 
-Summarizing search results retrieved from ClickHouse...
+  Summarizing search results retrieved from ClickHouse...
 
-Summary from chatgpt-3.5:
-The discussion focuses on comparing ClickHouse with various databases like TimescaleDB, Apache Spark,
-AWS Redshift, and QuestDB, highlighting ClickHouse's cost-efficient high performance and suitability
-for analytical applications. Users praise ClickHouse for its simplicity, speed, and resource efficiency
-in handling large-scale analytics workloads, although some challenges like DMLs and difficulty in backups
-are mentioned. ClickHouse is recognized for its real-time aggregate computation capabilities and solid
-engineering, with comparisons made to other databases like Druid and MemSQL. Overall, ClickHouse is seen
-as a powerful tool for real-time data processing, analytics, and handling large volumes of data
-efficiently, gaining popularity for its impressive performance and cost-effectiveness.
-```
+  Summary from chatgpt-3.5:
+  The discussion focuses on comparing ClickHouse with various databases like TimescaleDB, Apache Spark,
+  AWS Redshift, and QuestDB, highlighting ClickHouse's cost-efficient high performance and suitability
+  for analytical applications. Users praise ClickHouse for its simplicity, speed, and resource efficiency
+  in handling large-scale analytics workloads, although some challenges like DMLs and difficulty in backups
+  are mentioned. ClickHouse is recognized for its real-time aggregate computation capabilities and solid
+  engineering, with comparisons made to other databases like Druid and MemSQL. Overall, ClickHouse is seen
+  as a powerful tool for real-time data processing, analytics, and handling large volumes of data
+  efficiently, gaining popularity for its impressive performance and cost-effectiveness.
+  ```
 
   上記アプリケーションのコード：
 
   ```python
-print("Initializing...")
+  print("Initializing...")
 
-import sys
-import json
-import time
-from sentence_transformers import SentenceTransformer
+  import sys
+  import json
+  import time
+  from sentence_transformers import SentenceTransformer
 
-import clickhouse_connect
+  import clickhouse_connect
 
-from langchain.docstore.document import Document
-from langchain.text_splitter import CharacterTextSplitter
-from langchain.chat_models import ChatOpenAI
-from langchain.prompts import PromptTemplate
-from langchain.chains.summarize import load_summarize_chain
-import textwrap
-import tiktoken
+  from langchain.docstore.document import Document
+  from langchain.text_splitter import CharacterTextSplitter
+  from langchain.chat_models import ChatOpenAI
+  from langchain.prompts import PromptTemplate
+  from langchain.chains.summarize import load_summarize_chain
+  import textwrap
+  import tiktoken
 
-def num_tokens_from_string(string: str, encoding_name: str) -> int:
-    encoding = tiktoken.encoding_for_model(encoding_name)
-    num_tokens = len(encoding.encode(string))
-    return num_tokens
+  def num_tokens_from_string(string: str, encoding_name: str) -> int:
+      encoding = tiktoken.encoding_for_model(encoding_name)
+      num_tokens = len(encoding.encode(string))
+      return num_tokens
 
-model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+  model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 
-chclient = clickhouse_connect.get_client(compress=False) # ClickHouse credentials here
+  chclient = clickhouse_connect.get_client(compress=False) # ClickHouse credentials here
 
-while True:
-    # Take the search query from user
-    print("Enter a search topic :")
-    input_query = sys.stdin.readline();
-    texts = [input_query]
+  while True:
+      # Take the search query from user
+      print("Enter a search topic :")
+      input_query = sys.stdin.readline();
+      texts = [input_query]
 
-    # Run the model and obtain search or reference vector
-    print("Generating the embedding for ----> ", input_query);
-    embeddings = model.encode(texts)
+      # Run the model and obtain search or reference vector
+      print("Generating the embedding for ----> ", input_query);
+      embeddings = model.encode(texts)
 
-    print("Querying ClickHouse...")
-    params = {'v1':list(embeddings[0]), 'v2':100}
-    result = chclient.query("SELECT id,title,text FROM hackernews ORDER BY cosineDistance(vector, %(v1)s) LIMIT %(v2)s", parameters=params)
+      print("Querying ClickHouse...")
+      params = {'v1':list(embeddings[0]), 'v2':100}
+      result = chclient.query("SELECT id,title,text FROM hackernews ORDER BY cosineDistance(vector, %(v1)s) LIMIT %(v2)s", parameters=params)
 
-    # Just join all the search results
-    doc_results = ""
-    for row in result.result_rows:
-        doc_results = doc_results + "\n" + row[2]
+      # Just join all the search results
+      doc_results = ""
+      for row in result.result_rows:
+          doc_results = doc_results + "\n" + row[2]
 
-    print("Initializing chatgpt-3.5-turbo model")
-    model_name = "gpt-3.5-turbo"
+      print("Initializing chatgpt-3.5-turbo model")
+      model_name = "gpt-3.5-turbo"
 
-    text_splitter = CharacterTextSplitter.from_tiktoken_encoder(
-        model_name=model_name
-    )
+      text_splitter = CharacterTextSplitter.from_tiktoken_encoder(
+          model_name=model_name
+      )
 
-    texts = text_splitter.split_text(doc_results)
+      texts = text_splitter.split_text(doc_results)
 
-    docs = [Document(page_content=t) for t in texts]
+      docs = [Document(page_content=t) for t in texts]
 
-    llm = ChatOpenAI(temperature=0, model_name=model_name)
+      llm = ChatOpenAI(temperature=0, model_name=model_name)
 
-    prompt_template = """
-Write a concise summary of the following in not more than 10 sentences:
-
-
-{text}
+      prompt_template = """
+  Write a concise summary of the following in not more than 10 sentences:
 
 
-CONSCISE SUMMARY :
-"""
+  {text}
 
-    prompt = PromptTemplate(template=prompt_template, input_variables=["text"])
 
-    num_tokens = num_tokens_from_string(doc_results, model_name)
+  CONSCISE SUMMARY :
+  """
 
-    gpt_35_turbo_max_tokens = 4096
-    verbose = False
+      prompt = PromptTemplate(template=prompt_template, input_variables=["text"])
 
-    print("Summarizing search results retrieved from ClickHouse...")
+      num_tokens = num_tokens_from_string(doc_results, model_name)
 
-    if num_tokens <= gpt_35_turbo_max_tokens:
-        chain = load_summarize_chain(llm, chain_type="stuff", prompt=prompt, verbose=verbose)
-    else:
-        chain = load_summarize_chain(llm, chain_type="map_reduce", map_prompt=prompt, combine_prompt=prompt, verbose=verbose)
+      gpt_35_turbo_max_tokens = 4096
+      verbose = False
 
-    summary = chain.run(docs)
+      print("Summarizing search results retrieved from ClickHouse...")
 
-    print(f"Summary from chatgpt-3.5: {summary}")
-```
+      if num_tokens <= gpt_35_turbo_max_tokens:
+          chain = load_summarize_chain(llm, chain_type="stuff", prompt=prompt, verbose=verbose)
+      else:
+          chain = load_summarize_chain(llm, chain_type="map_reduce", map_prompt=prompt, combine_prompt=prompt, verbose=verbose)
+
+      summary = chain.run(docs)
+
+      print(f"Summary from chatgpt-3.5: {summary}")
+  ```
 </VerticalStepper>

@@ -103,14 +103,14 @@ ClickHouse は Iceberg テーブルに対するタイムトラベルをサポー
 ### 基本的な使用方法 {#basic-usage}
 
 ```sql
- SELECT * FROM example_table ORDER BY 1 
- SETTINGS iceberg_timestamp_ms = 1714636800000
- ```
+SELECT * FROM example_table ORDER BY 1 
+SETTINGS iceberg_timestamp_ms = 1714636800000
+```
 
 ```sql
- SELECT * FROM example_table ORDER BY 1 
- SETTINGS iceberg_snapshot_id = 3547395809148285433
- ```
+SELECT * FROM example_table ORDER BY 1 
+SETTINGS iceberg_snapshot_id = 3547395809148285433
+```
 
 注意: 同じクエリ内で `iceberg_timestamp_ms` パラメータと `iceberg_snapshot_id` パラメータを同時に指定することはできません。
 
@@ -283,7 +283,7 @@ ClickHouse で `Iceberg` テーブルエンジンを使用する場合、シス�
 
 **Note**: 上記で言及した設定はすべてエンジンレベルの設定であり、以下に示すようにテーブル作成時に指定する必要があります。
 
-```sql 
+```sql
 CREATE TABLE example_table ENGINE = Iceberg(
     's3://bucket/path/to/iceberg_table'
 ) SETTINGS iceberg_metadata_table_uuid = '6f6f6407-c6a5-465f-a808-ea8900e35a38';

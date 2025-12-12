@@ -1,645 +1,292 @@
 ---
-slug: /data-modeling/projections
-title: 'プロジェクション'
-description: 'このページでは、プロジェクションとは何か、クエリパフォーマンスの改善にどのように活用できるか、そしてマテリアライズドビューとの違いについて説明します。'
-keywords: ['プロジェクション', 'プロジェクション', 'クエリ最適化']
-sidebar_order: 1
-doc_type: 'guide'
+slug: /data-compression/compression-in-clickhouse
+title: 'ClickHouseにおける圧縮'
+description: 'ClickHouseの圧縮アルゴリズムの選択'
+keywords: ['compression', 'codec', 'encoding']
+doc_type: 'reference'
 ---
 
-import projections_1 from '@site/static/images/data-modeling/projections_1.png';
-import projections_2 from '@site/static/images/data-modeling/projections_2.png';
-import Image from '@theme/IdealImage';
+ClickHouseのクエリパフォーマンスの秘密の1つは圧縮です。
 
-# プロジェクション {#projections}
+ディスク上のデータが少なければ、I/Oが減り、クエリと挿入が高速になります。CPUに対する圧縮アルゴリズムのオーバーヘッドは、ほとんどの場合、I/Oの削減によって相殺されます。したがって、ClickHouseクエリを高速にするための最初の焦点は、データの圧縮を改善することにあるべきです。
 
-## はじめに {#introduction}
+> ClickHouseがデータをこれほどうまく圧縮する理由については、[この記事](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema)を読むことをお勧めします。簡単に言うと、我々のカラム指向データベースは、カラム順に値を書き込みます。これらの値がソートされると、同一の値が隣接して配置され、圧縮アルゴリズムはデータの連続したパターンを活用します。さらに、ClickHouseにはコーデックと詳細なデータ型があり、圧縮をさらに簡単に調整できます。
 
-ClickHouse は、リアルタイムなシナリオで大規模なデータに対する分析クエリを高速化するための、さまざまなメカニズムを提供します。その 1 つが、_Projection_ を利用してクエリを高速化する方法です。Projection は、関心のある属性でデータを並べ替えることでクエリを最適化します。これは次のような形を取ることができます。
+ClickHouseにおける圧縮は、主に3つの要因によって影響を受けます：
+- オーダリングキー
+- データ型
+- 使用されるコーデック
 
-1. テーブル全体の並べ替え
-2. 元のテーブルの一部を、異なる順序で保持したもの
-3. 事前計算された集計（マテリアライズドビューに類似）であり、集計に合わせた並び順を持つもの
+これらはすべてスキーマを通じて設定されます。
 
-<br/>
+## 圧縮を最適化するための適切なデータ型の選択 {#choose-the-right-data-type-to-optimize-compression}
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/6CdnUdZSEG0?si=1zUyrP-tCvn9tXse" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+Stack Overflowデータセットを例として使用しましょう。`posts`テーブルの以下のスキーマの圧縮統計を比較してみましょう：
 
-## Projection はどのように動作しますか？ {#how-do-projections-work}
+- `posts` - オーダリングキーのない型最適化されていないスキーマ。
+- `posts_v3` - 各カラムに適切な型とビットサイズを持ち、オーダリングキー`(PostTypeId, toDate(CreationDate), CommentCount)`を持つ型最適化されたスキーマ。
 
-実際には、Projection は元のテーブルに付随する追加の「不可視なテーブル」のようなものと考えることができます。Projection は元のテーブルとは異なる行の順序を持つことができ、その結果として異なるプライマリインデックスを持つことができ、さらに集約値を自動的かつインクリメンタルに事前計算できます。その結果、Projection を使用すると、クエリ実行を高速化するための 2 つの「チューニング手段」を得られます:
-
-- **プライマリインデックスを適切に活用すること**
-- **集約を事前計算すること**
-
-Projection は、複数の行順序を持ち、挿入時に集約を事前計算できるという点で [Materialized Views](/materialized-views)
-（マテリアライズドビュー）と似ています。
-Projection は自動的に更新され、元のテーブルと同期が維持されますが、マテリアライズドビューは明示的に更新する必要があります。クエリが元のテーブルを対象とする場合、
-ClickHouse はプライマリキーを自動的にサンプリングし、同じ正しい結果を生成でき、かつ読み取る必要があるデータ量が最も少ないテーブルを、以下の図のように選択します:
-
-<Image img={projections_1} size="md" alt="ClickHouse における Projection"/>
-
-### `_part_offset` を用いたよりスマートなストレージ {#smarter_storage_with_part_offset}
-
-バージョン 25.5 以降、ClickHouse はプロジェクション内で仮想カラム `_part_offset` を
-サポートしており、プロジェクションの新しい定義方法を提供します。
-
-現在、プロジェクションを定義する方法は 2 通りあります。
-
-- **全カラムを保存する（従来の動作）**: プロジェクションには完全なデータが含まれ、
-  プロジェクションのソート順とフィルタが一致する場合は、プロジェクションから直接読み取ることで
-  高速に処理できます。
-
-- **ソートキー + `_part_offset` のみを保存する**: プロジェクションはインデックスのように動作します。
-  ClickHouse はプロジェクションのプライマリインデックスを使って一致する行を特定しますが、
-  実際のデータはベーステーブルから読み取ります。これにより、クエリ時の I/O がやや増える
-  代わりにストレージのオーバーヘッドを削減できます。
-
-上記のアプローチは組み合わせることもでき、プロジェクションに一部のカラムを直接保存し、
-その他のカラムを `_part_offset` を介して間接的に保存できます。
-
-## プロジェクションを使用するタイミング {#when-to-use-projections}
-
-プロジェクションは、新しいユーザーにとって魅力的な機能です。というのも、データ挿入時に自動的に
-維持されるためです。さらに、クエリは 1 つのテーブルに対して送信するだけでよく、可能な場合には
-プロジェクションが利用されて応答時間が短縮されます。
-
-これはマテリアライズドビューとは対照的であり、マテリアライズドビューでは、ユーザーはフィルタに
-応じて適切に最適化されたターゲットテーブルを選択するか、クエリを書き換える必要があります。
-これにより、ユーザーアプリケーションへの依存度が高まり、クライアント側の複雑さが増します。
-
-これらの利点にもかかわらず、プロジェクションには本質的な制約がいくつか存在するため、
-ユーザーはその点を理解したうえで、必要最小限の利用にとどめるべきです。
-
-- プロジェクションでは、ソーステーブルと（非表示の）ターゲットテーブルで異なる TTL を
-  使用することはできませんが、マテリアライズドビューでは異なる TTL を使用できます。
-- プロジェクションを持つテーブルでは、軽量な更新および削除はサポートされていません。
-- マテリアライズドビューはチェーン化できます。1 つのマテリアライズドビューのターゲットテーブルを、
-  別のマテリアライズドビューのソーステーブルとして利用することができます。このようなことは
-  プロジェクションでは不可能です。
-- プロジェクション定義では JOIN はサポートされませんが、マテリアライズドビューではサポートされます。
-  ただし、プロジェクションを持つテーブルに対するクエリでは、自由に JOIN を使用できます。
-- プロジェクション定義ではフィルタ（`WHERE` 句）はサポートされませんが、マテリアライズドビューでは
-  サポートされます。とはいえ、プロジェクションを持つテーブルに対するクエリでは、自由にフィルタできます。
-
-プロジェクションの使用を推奨するのは、次のような場合です。
-
-- データの完全な並べ替えが必要な場合。理論上は、プロジェクション内の式で `GROUP BY` を
-  使用することも可能ですが、集計の維持にはマテリアライズドビューの方が効果的です。
-  クエリオプティマイザも、単純な並べ替え、すなわち `SELECT * ORDER BY x` を使用する
-  プロジェクションの方をより活用しやすくなります。
-  ユーザーは、この式内で列のサブセットを選択することで、ストレージフットプリントを削減できます。
-- ストレージフットプリントの増加や、データを書き込む処理が 2 回になることに伴うオーバーヘッドを
-  許容できる場合。挿入速度への影響をテストし、
-  [ストレージオーバーヘッドを評価](/data-compression/compression-in-clickhouse)してください。
-
-## 例 {#examples}
-
-### プライマリキーに含まれないカラムでのフィルタリング {#filtering-without-using-primary-keys}
-
-この例では、テーブルに Projection を追加する方法を説明します。
-また、この Projection を使用して、テーブルのプライマリキーに含まれない
-カラムでフィルタリングを行うクエリを高速化する方法も見ていきます。
-
-この例では、`pickup_datetime` で並べ替えられている、
-[sql.clickhouse.com](https://sql.clickhouse.com/) で利用可能な New York Taxi Data
-データセットを使用します。
-
-乗客が運転手に 200 ドルを超える額のチップを支払った
-すべてのトリップ ID を検索する、簡単なクエリを書いてみましょう。
-
-```sql runnable
-SELECT
-  tip_amount,
-  trip_id,
-  dateDiff('minutes', pickup_datetime, dropoff_datetime) AS trip_duration_min
-FROM nyc_taxi.trips WHERE tip_amount > 200 AND trip_duration_min > 0
-ORDER BY tip_amount, trip_id ASC
-```
-
-Notice that because we are filtering on `tip_amount` which is not in the `ORDER BY`, ClickHouse 
-had to do a full table scan. Let's speed this query up.
-
-So as to preserve the original table and results, we'll create a new table and copy the data using an `INSERT INTO SELECT`:
+以下のクエリを使用して、各カラムの現在の圧縮サイズと非圧縮サイズを測定できます。オーダリングキーのない初期最適化スキーマ`posts`のサイズを調べてみましょう。
 
 ```sql
-CREATE TABLE nyc_taxi.trips_with_projection AS nyc_taxi.trips;
-INSERT INTO nyc_taxi.trips_with_projection SELECT * FROM nyc_taxi.trips;
+SELECT name,
+   formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
+   formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
+   round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
+FROM system.columns
+WHERE table = 'posts'
+GROUP BY name
+
+┌─name──────────────────┬─compressed_size─┬─uncompressed_size─┬───ratio────┐
+│ Body                  │ 46.14 GiB       │ 127.31 GiB        │ 2.76       │
+│ Title                 │ 1.20 GiB        │ 2.63 GiB          │ 2.19       │
+│ Score                 │ 84.77 MiB       │ 736.45 MiB        │ 8.69       │
+│ Tags                  │ 475.56 MiB      │ 1.40 GiB          │ 3.02       │
+│ ParentId              │ 210.91 MiB      │ 696.20 MiB        │ 3.3        │
+│ Id                    │ 111.17 MiB      │ 736.45 MiB        │ 6.62       │
+│ AcceptedAnswerId      │ 81.55 MiB       │ 736.45 MiB        │ 9.03       │
+│ ClosedDate            │ 13.99 MiB       │ 517.82 MiB        │ 37.02      │
+│ LastActivityDate      │ 489.84 MiB      │ 964.64 MiB        │ 1.97       │
+│ CommentCount          │ 37.62 MiB       │ 565.30 MiB        │ 15.03      │
+│ OwnerUserId           │ 368.98 MiB      │ 736.45 MiB        │ 2          │
+│ AnswerCount           │ 21.82 MiB       │ 622.35 MiB        │ 28.53      │
+│ FavoriteCount         │ 280.95 KiB      │ 508.40 MiB        │ 1853.02    │
+│ ViewCount             │ 95.77 MiB       │ 736.45 MiB        │ 7.69       │
+│ LastEditorUserId      │ 179.47 MiB      │ 736.45 MiB        │ 4.1        │
+│ ContentLicense        │ 5.45 MiB        │ 847.92 MiB        │ 155.5      │
+│ OwnerDisplayName      │ 14.30 MiB       │ 142.58 MiB        │ 9.97       │
+│ PostTypeId            │ 20.93 MiB       │ 565.30 MiB        │ 27         │
+│ CreationDate          │ 314.17 MiB      │ 964.64 MiB        │ 3.07       │
+│ LastEditDate          │ 346.32 MiB      │ 964.64 MiB        │ 2.79       │
+│ LastEditorDisplayName │ 5.46 MiB        │ 124.25 MiB        │ 22.75      │
+│ CommunityOwnedDate    │ 2.21 MiB        │ 509.60 MiB        │ 230.94     │
+└───────────────────────┴─────────────────┴───────────────────┴────────────┘
 ```
 
-To add a projection we use the `ALTER TABLE` statement together with the `ADD PROJECTION`
-statement:
+<details>
+   
+<summary>コンパクトパーツとワイドパーツに関する注記</summary>
 
-```sql
-ALTER TABLE nyc_taxi.trips_with_projection
-ADD PROJECTION prj_tip_amount
-(
-    SELECT *
-    ORDER BY tip_amount, dateDiff('minutes', pickup_datetime, dropoff_datetime)
+`compressed_size`または`uncompressed_size`の値が`0`と表示される場合、パーツのタイプが`wide`ではなく`compact`である可能性があります（[`system.parts`](/operations/system-tables/parts)の`part_type`の説明を参照）。
+パーツ形式は設定[`min_bytes_for_wide_part`](/operations/settings/merge-tree-settings#min_bytes_for_wide_part)および[`min_rows_for_wide_part`](/operations/settings/merge-tree-settings#min_rows_for_wide_part)によって制御されます。つまり、挿入されたデータが上記の設定値を超えないパーツになる場合、パーツはワイドではなくコンパクトになり、`compressed_size`や`uncompressed_size`の値は表示されません。
+
+デモンストレーション：
+
+```sql title="クエリ"
+-- コンパクトパーツを持つテーブルを作成
+CREATE TABLE compact (
+  number UInt32
 )
-```
+ENGINE = MergeTree()
+ORDER BY number 
+AS SELECT * FROM numbers(100000); -- min_bytes_for_wide_part = 10485760のデフォルトを超えない程度の小ささ
 
-It is necessary after adding a projection to use the `MATERIALIZE PROJECTION` 
-statement so that the data in it is physically ordered and rewritten according
-to the specified query above:
+-- パーツのタイプを確認
+SELECT table, name, part_type from system.parts where table = 'compact';
 
-```sql
-ALTER TABLE nyc.trips_with_projection MATERIALIZE PROJECTION prj_tip_amount
-```
+-- コンパクトテーブルの圧縮および非圧縮カラムサイズを取得
+SELECT name,
+   formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
+   formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
+   round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
+FROM system.columns
+WHERE table = 'compact'
+GROUP BY name;
 
-Let's run the query again now that we've added the projection:
-
-```sql runnable
-SELECT
-  tip_amount,
-  trip_id,
-  dateDiff('minutes', pickup_datetime, dropoff_datetime) AS trip_duration_min
-FROM nyc_taxi.trips_with_projection WHERE tip_amount > 200 AND trip_duration_min > 0
-ORDER BY tip_amount, trip_id ASC
-```
-
-Notice how we were able to decrease the query time substantially, and needed to scan
-less rows.
-
-We can confirm that our query above did indeed use the projection we made by
-querying the `system.query_log` table:
-
-```sql
-SELECT query, projections 
-FROM system.query_log 
-WHERE query_id='<query_id>'
-```
-
-```response
-   ┌─query─────────────────────────────────────────────────────────────────────────┬─projections──────────────────────┐
-   │ SELECT                                                                       ↴│ ['default.trips.prj_tip_amount'] │
-   │↳  tip_amount,                                                                ↴│                                  │
-   │↳  trip_id,                                                                   ↴│                                  │
-   │↳  dateDiff('minutes', pickup_datetime, dropoff_datetime) AS trip_duration_min↴│                                  │
-   │↳FROM trips WHERE tip_amount > 200 AND trip_duration_min > 0                   │                                  │
-   └───────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────┘
-```
-
-### Using projections to speed up UK price paid queries {#using-projections-to-speed-up-UK-price-paid}
-
-To demonstrate how projections can be used to speed up query performance, let's
-take a look at an example using a real life dataset. For this example we'll be 
-using the table from our [UK Property Price Paid](https://clickhouse.com/docs/getting-started/example-datasets/uk-price-paid)
-tutorial with 30.03 million rows. This dataset is also available within our 
-[sql.clickhouse.com](https://sql.clickhouse.com/?query_id=6IDMHK3OMR1C97J6M9EUQS)
-environment.
-
-If you would like to see how the table was created and data inserted, you can
-refer to ["The UK property prices dataset"](/getting-started/example-datasets/uk-price-paid)
-page.
-
-We can run two simple queries on this dataset. The first lists the counties in London which
-have the highest prices paid, and the second calculates the average price for the counties:
-
-```sql runnable
-SELECT
-  county,
-  price
-FROM uk.uk_price_paid
-WHERE town = 'LONDON'
-ORDER BY price DESC
-LIMIT 3
-```
-
-```sql runnable
-SELECT
-    county,
-    avg(price)
-FROM uk.uk_price_paid
-GROUP BY county
-ORDER BY avg(price) DESC
-LIMIT 3
-```
-
-Notice that despite being very fast how a full table scan of all 30.03 million rows occurred for both queries, due 
-to the fact that neither `town` nor `price` were in our `ORDER BY` statement when we
-created the table:
-
-```sql
-CREATE TABLE uk.uk_price_paid
-(
-  ...
+-- ワイドパーツを持つテーブルを作成 
+CREATE TABLE wide (
+  number UInt32
 )
-ENGINE = MergeTree
---highlight-next-line
-ORDER BY (postcode1, postcode2, addr1, addr2);
+ENGINE = MergeTree()
+ORDER BY number
+SETTINGS min_bytes_for_wide_part=0
+AS SELECT * FROM numbers(100000);
+
+-- パーツのタイプを確認
+SELECT table, name, part_type from system.parts where table = 'wide';
+
+-- ワイドテーブルの圧縮および非圧縮サイズを取得
+SELECT name,
+   formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
+   formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
+   round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
+FROM system.columns
+WHERE table = 'wide'
+GROUP BY name;
 ```
 
-Let's see if we can speed this query up using projections.
+```response title="レスポンス"
+   ┌─table───┬─name──────┬─part_type─┐
+1. │ compact │ all_1_1_0 │ Compact   │
+   └─────────┴───────────┴───────────┘
+   ┌─name───┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
+1. │ number │ 0.00 B          │ 0.00 B            │   nan │
+   └────────┴─────────────────┴───────────────────┴───────┘
+   ┌─table─┬─name──────┬─part_type─┐
+1. │ wide  │ all_1_1_0 │ Wide      │
+   └───────┴───────────┴───────────┘
+   ┌─name───┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
+1. │ number │ 392.31 KiB      │ 390.63 KiB        │     1 │
+   └────────┴─────────────────┴───────────────────┴───────┘
+```
 
-To preserve the original table and results, we'll create a new table and copy the data using an `INSERT INTO SELECT`:
+</details>
+
+ここでは圧縮サイズと非圧縮サイズの両方を示しています。両方とも重要です。圧縮サイズは、ディスクから読み取る必要があるものに相当し、クエリパフォーマンス（およびストレージコスト）のために最小化したいものです。このデータは読み取る前に解凍する必要があります。この非圧縮サイズのサイズは、この場合使用されるデータ型に依存します。このサイズを最小化することで、クエリのメモリオーバーヘッドとクエリで処理する必要があるデータ量が削減され、キャッシュの利用が改善され、最終的にクエリ時間が短縮されます。
+
+> 上記のクエリは、システムデータベースの`columns`テーブルに依存しています。このデータベースはClickHouseによって管理されており、クエリパフォーマンスメトリクスからバックグラウンドクラスターログまで、有用な情報の宝庫です。興味のある読者には、["System Tables and a Window into the Internals of ClickHouse"](https://clickhouse.com/blog/clickhouse-debugging-issues-with-system-tables)および関連記事[[1]](https://clickhouse.com/blog/monitoring-troubleshooting-insert-queries-clickhouse)[[2]](https://clickhouse.com/blog/monitoring-troubleshooting-select-queries-clickhouse)をお勧めします。
+
+テーブルの合計サイズを要約するために、上記のクエリを簡素化できます：
 
 ```sql
-CREATE TABLE uk.uk_price_paid_with_projections AS uk_price_paid;
-INSERT INTO uk.uk_price_paid_with_projections SELECT * FROM uk.uk_price_paid;
+SELECT formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
+    formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
+    round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
+FROM system.columns
+WHERE table = 'posts'
+
+┌─compressed_size─┬─uncompressed_size─┬─ratio─┐
+│ 50.16 GiB       │ 143.47 GiB        │  2.86 │
+└─────────────────┴───────────────────┴───────┘
 ```
 
-We create and populate projection `prj_oby_town_price` which produces an 
-additional (hidden) table with a primary index, ordering by town and price, to 
-optimize the query that lists the counties in a specific town for the highest 
-paid prices:
-
-```sql
-ALTER TABLE uk.uk_price_paid_with_projections
-  (ADD PROJECTION prj_obj_town_price
-  (
-    SELECT *
-    ORDER BY
-        town,
-        price
-  ))
-```
-
-```sql
-ALTER TABLE uk.uk_price_paid_with_projections
-  (MATERIALIZE PROJECTION prj_obj_town_price)
-SETTINGS mutations_sync = 1
-```
-
-The [`mutations_sync`](/operations/settings/settings#mutations_sync) setting is
-used to force synchronous execution.
-
-We create and populate projection `prj_gby_county` – an additional (hidden) table
-that incrementally pre-computes the avg(price) aggregate values for all existing
-130 UK counties:
-
-```sql
-ALTER TABLE uk.uk_price_paid_with_projections
-  (ADD PROJECTION prj_gby_county
-  (
-    SELECT
-        county,
-        avg(price)
-    GROUP BY county
-  ))
-```
-```sql
-ALTER TABLE uk.uk_price_paid_with_projections
-  (MATERIALIZE PROJECTION prj_gby_county)
-SETTINGS mutations_sync = 1
-```
-
-:::note
-If there is a `GROUP BY` clause used in a projection like in the `prj_gby_county`
-projection above, then the underlying storage engine for the (hidden) table 
-becomes `AggregatingMergeTree`, and all aggregate functions are converted to 
-`AggregateFunction`. This ensures proper incremental data aggregation.
-:::
-
-The figure below is a visualization of the main table `uk_price_paid_with_projections`
-and its two projections:
-
-<Image img={projections_2} size="md" alt="Visualization of the main table uk_price_paid_with_projections and its two projections"/>
-
-If we now run the query that lists the counties in London for the three highest 
-paid prices again, we see an improvement in query performance:
-
-```sql runnable
-SELECT
-  county,
-  price
-FROM uk.uk_price_paid_with_projections
-WHERE town = 'LONDON'
-ORDER BY price DESC
-LIMIT 3
-```
-
-Likewise, for the query that lists the U.K. counties with the three highest 
-average-paid prices:
-
-```sql runnable
-SELECT
-    county,
-    avg(price)
-FROM uk.uk_price_paid_with_projections
-GROUP BY county
-ORDER BY avg(price) DESC
-LIMIT 3
-```
-
-Note that both queries target the original table, and that both queries resulted
-in a full table scan (all 30.03 million rows got streamed from disk) before we 
-created the two projections.
-
-Also, note that the query that lists the counties in London for the three highest
-paid prices is streaming 2.17 million rows. When we directly used a second table
-optimized for this query, only 81.92 thousand rows were streamed from disk.
-
-The reason for the difference is that currently, the `optimize_read_in_order` 
-optimization mentioned above isn't supported for projections.
-
-We inspect the `system.query_log` table to see that ClickHouse 
-automatically used the two projections for the two queries above (see the 
-projections column below):
+最適化された型とオーダリングキーを持つテーブル`posts_v3`に対してこのクエリを繰り返すと、非圧縮サイズと圧縮サイズの両方で大幅な削減が見られます。
 
 ```sql
 SELECT
-  tables,
-  query,
-  query_duration_ms::String ||  ' ms' AS query_duration,
-        formatReadableQuantity(read_rows) AS read_rows,
-  projections
-FROM clusterAllReplicas(default, system.query_log)
-WHERE (type = 'QueryFinish') AND (tables = ['default.uk_price_paid_with_projections'])
-ORDER BY initial_query_start_time DESC
-  LIMIT 2
-FORMAT Vertical
+    formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
+    formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
+    round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
+FROM system.columns
+WHERE `table` = 'posts_v3'
+
+┌─compressed_size─┬─uncompressed_size─┬─ratio─┐
+│ 25.15 GiB       │ 68.87 GiB         │  2.74 │
+└─────────────────┴───────────────────┴───────┘
 ```
 
-```response
-行 1:
-──────
-tables:         ['uk.uk_price_paid_with_projections']
-query:          SELECT
-    county,
-    avg(price)
-FROM uk_price_paid_with_projections
-GROUP BY county
-ORDER BY avg(price) DESC
-LIMIT 3
-query_duration: 5 ms
-read_rows:      132.00
-projections:    ['uk.uk_price_paid_with_projections.prj_gby_county']
-
-行 2:
-──────
-tables:         ['uk.uk_price_paid_with_projections']
-query:          SELECT
-  county,
-  price
-FROM uk_price_paid_with_projections
-WHERE town = 'LONDON'
-ORDER BY price DESC
-LIMIT 3
-SETTINGS log_queries=1
-query_duration: 11 ms
-read_rows:      2.29 million
-projections:    ['uk.uk_price_paid_with_projections.prj_obj_town_price']
-
-2行のセット。経過時間: 0.006秒
-```
-
-### Further examples {#further-examples}
-
-The following examples use the same UK price dataset, contrasting queries with and without projections.
-
-In order to preserve our original table (and performance), we again create a copy of the table using `CREATE AS` and `INSERT INTO SELECT`.
+完全なカラムの内訳では、圧縮前にデータを順序付けし、適切な型を使用することで、`Body`、`Title`、`Tags`、`CreationDate`カラムで大幅な節約が達成されていることがわかります。
 
 ```sql
-CREATE TABLE uk.uk_price_paid_with_projections_v2 AS uk.uk_price_paid;
-INSERT INTO uk.uk_price_paid_with_projections_v2 SELECT * FROM uk.uk_price_paid;
+SELECT
+    name,
+    formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
+    formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
+    round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
+FROM system.columns
+WHERE `table` = 'posts_v3'
+GROUP BY name
+
+┌─name──────────────────┬─compressed_size─┬─uncompressed_size─┬───ratio─┐
+│ Body                  │ 23.10 GiB       │ 63.63 GiB         │    2.75 │
+│ Title                 │ 614.65 MiB      │ 1.28 GiB          │    2.14 │
+│ Score                 │ 40.28 MiB       │ 227.38 MiB        │    5.65 │
+│ Tags                  │ 234.05 MiB      │ 688.49 MiB        │    2.94 │
+│ ParentId              │ 107.78 MiB      │ 321.33 MiB        │    2.98 │
+│ Id                    │ 159.70 MiB      │ 227.38 MiB        │    1.42 │
+│ AcceptedAnswerId      │ 40.34 MiB       │ 227.38 MiB        │    5.64 │
+│ ClosedDate            │ 5.93 MiB        │ 9.49 MiB          │     1.6 │
+│ LastActivityDate      │ 246.55 MiB      │ 454.76 MiB        │    1.84 │
+│ CommentCount          │ 635.78 KiB      │ 56.84 MiB         │   91.55 │
+│ OwnerUserId           │ 183.86 MiB      │ 227.38 MiB        │    1.24 │
+│ AnswerCount           │ 9.67 MiB        │ 113.69 MiB        │   11.76 │
+│ FavoriteCount         │ 19.77 KiB       │ 147.32 KiB        │    7.45 │
+│ ViewCount             │ 45.04 MiB       │ 227.38 MiB        │    5.05 │
+│ LastEditorUserId      │ 86.25 MiB       │ 227.38 MiB        │    2.64 │
+│ ContentLicense        │ 2.17 MiB        │ 57.10 MiB         │   26.37 │
+│ OwnerDisplayName      │ 5.95 MiB        │ 16.19 MiB         │    2.72 │
+│ PostTypeId            │ 39.49 KiB       │ 56.84 MiB         │ 1474.01 │
+│ CreationDate          │ 181.23 MiB      │ 454.76 MiB        │    2.51 │
+│ LastEditDate          │ 134.07 MiB      │ 454.76 MiB        │    3.39 │
+│ LastEditorDisplayName │ 2.15 MiB        │ 6.25 MiB          │    2.91 │
+│ CommunityOwnedDate    │ 824.60 KiB      │ 1.34 MiB          │    1.66 │
+└───────────────────────┴─────────────────┴───────────────────┴─────────┘
 ```
 
-#### Build a Projection {#build-projection}
+## 適切なカラム圧縮コーデックの選択 {#choosing-the-right-column-compression-codec}
 
-Let's create an aggregate projection by the dimensions `toYear(date)`, `district`, and `town`:
+カラム圧縮コーデックを使用すると、各カラムのエンコードと圧縮に使用されるアルゴリズム（およびその設定）を変更できます。
+
+エンコーディングと圧縮は、同じ目的（データサイズの削減）を持ちながら、わずかに異なる動作をします。エンコーディングは、データ型のプロパティを活用して関数に基づいて値を変換することで、データにマッピングを適用します。逆に、圧縮はバイトレベルでデータを圧縮する汎用アルゴリズムを使用します。
+
+通常、圧縮が使用される前にエンコーディングが最初に適用されます。異なるエンコーディングと圧縮アルゴリズムは異なる値の分布に効果的であるため、データを理解する必要があります。
+
+ClickHouseは多数のコーデックと圧縮アルゴリズムをサポートしています。以下は重要度順のいくつかの推奨事項です：
+
+推奨事項                                           | 理由
+---                                                |    ---
+**`ZSTD`を全面的に使用**                           | `ZSTD`圧縮は最高の圧縮率を提供します。`ZSTD(1)`は最も一般的な型のデフォルトとすべきです。数値を変更することで、より高い圧縮率を試すことができます。圧縮コストの増加（挿入が遅くなる）に対して、3より高い値で十分な利点が得られることはまれです。
+**日付と整数シーケンスには`Delta`**                | `Delta`ベースのコーデックは、単調シーケンスや連続値間の小さな差分がある場合にうまく機能します。より具体的には、導関数が小さな数を生成する場合にDeltaコーデックはうまく機能します。そうでない場合は、`DoubleDelta`を試す価値があります（`Delta`からの一次導関数がすでに非常に小さい場合、これはほとんど追加されません）。単調増加が均一なシーケンスは、さらによく圧縮されます。例えばDateTimeフィールドなど。
+**`Delta`は`ZSTD`を改善**                          | `ZSTD`はデルタデータに効果的なコーデックです - 逆に、デルタエンコーディングは`ZSTD`圧縮を改善できます。`ZSTD`がある場合、他のコーデックがさらなる改善を提供することはまれです。
+**可能なら`ZSTD`より`LZ4`**                        | `LZ4`と`ZSTD`で同等の圧縮が得られる場合、前者を優先してください。より高速な解凍とより少ないCPUが必要です。ただし、ほとんどの場合、`ZSTD`は`LZ4`を大幅に上回ります。これらのコーデックの一部は、`LZ4`と組み合わせると、コーデックなしの`ZSTD`と同等の圧縮を提供しながら、より高速に動作する場合があります。これはデータ固有であり、テストが必要です。
+**疎またはレンジが小さい場合は`T64`**              | `T64`は疎データやブロック内の範囲が小さい場合に効果的です。ランダムな数には`T64`を避けてください。
+**パターンが不明な場合は`Gorilla`と`T64`?**        | データに未知のパターンがある場合、`Gorilla`と`T64`を試す価値があるかもしれません。
+**ゲージデータには`Gorilla`**                      | `Gorilla`は浮動小数点データ、特にゲージ読み取り（ランダムなスパイク）を表すデータに効果的です。
+
+その他のオプションについては[こちら](/sql-reference/statements/create/table#column_compression_codec)を参照してください。
+
+以下では、`Id`、`ViewCount`、`AnswerCount`に`Delta`コーデックを指定しています。これらがオーダリングキーと線形相関があり、したがってDeltaエンコーディングの恩恵を受けると仮定しています。
 
 ```sql
-ALTER TABLE uk.uk_price_paid_with_projections_v2
-    ADD PROJECTION projection_by_year_district_town
-    (
-        SELECT
-            toYear(date),
-            district,
-            town,
-            avg(price),
-            sum(price),
-            count()
-        GROUP BY
-            toYear(date),
-            district,
-            town
-    )
-```
-
-Populate the projection for existing data. (Without materializing it, the projection will be created for only newly inserted data):
-
-```sql
-ALTER TABLE uk.uk_price_paid_with_projections_v2
-    MATERIALIZE PROJECTION projection_by_year_district_town
-SETTINGS mutations_sync = 1
-```
-
-The following queries contrast performance with and without projections. To disable projection use we use the setting [`optimize_use_projections`](/operations/settings/settings#optimize_use_projections), which is enabled by default.
-
-#### Query 1. Average price per year {#average-price-projections}
-
-```sql runnable
-SELECT
-    toYear(date) AS year,
-    round(avg(price)) AS price,
-    bar(price, 0, 1000000, 80)
-FROM uk.uk_price_paid_with_projections_v2
-GROUP BY year
-ORDER BY year ASC
-SETTINGS optimize_use_projections=0
-```
-
-```sql runnable
-SELECT
-    toYear(date) AS year,
-    round(avg(price)) AS price,
-    bar(price, 0, 1000000, 80)
-FROM uk.uk_price_paid_with_projections_v2
-GROUP BY year
-ORDER BY year ASC
-
-```
-The results should be the same, but the performance better on the latter example!
-
-#### Query 2. Average price per year in London {#average-price-london-projections}
-
-```sql runnable
-SELECT
-    toYear(date) AS year,
-    round(avg(price)) AS price,
-    bar(price, 0, 2000000, 100)
-FROM uk.uk_price_paid_with_projections_v2
-WHERE town = 'LONDON'
-GROUP BY year
-ORDER BY year ASC
-SETTINGS optimize_use_projections=0
-```
-
-```sql runnable
-SELECT
-    toYear(date) AS year,
-    round(avg(price)) AS price,
-    bar(price, 0, 2000000, 100)
-FROM uk.uk_price_paid_with_projections_v2
-WHERE town = 'LONDON'
-GROUP BY year
-ORDER BY year ASC
-```
-
-#### Query 3. The most expensive neighborhoods {#most-expensive-neighborhoods-projections}
-
-The condition (date >= '2020-01-01') needs to be modified so that it matches the projection dimension (`toYear(date) >= 2020)`:
-
-```sql runnable
-SELECT
-    town,
-    district,
-    count() AS c,
-    round(avg(price)) AS price,
-    bar(price, 0, 5000000, 100)
-FROM uk.uk_price_paid_with_projections_v2
-WHERE toYear(date) >= 2020
-GROUP BY
-    town,
-    district
-HAVING c >= 100
-ORDER BY price DESC
-LIMIT 100
-SETTINGS optimize_use_projections=0
-```
-
-```sql runnable
-SELECT
-    town,
-    district,
-    count() AS c,
-    round(avg(price)) AS price,
-    bar(price, 0, 5000000, 100)
-FROM uk.uk_price_paid_with_projections_v2
-WHERE toYear(date) >= 2020
-GROUP BY
-    town,
-    district
-HAVING c >= 100
-ORDER BY price DESC
-LIMIT 100
-```
-
-Again, the result is the same but notice the improvement in query performance for the 2nd query.
-
-### Combining projections in one query {#combining-projections}
-
-Starting in version 25.6, building on the `_part_offset` support introduced in 
-the previous version, ClickHouse can now use multiple projections to accelerate 
-a single query with multiple filters.
-
-Importantly, ClickHouse still reads data from only one projection (or the base table), 
-but can use other projections' primary indexes to prune unnecessary parts before reading.
-This is especially useful for queries that filter on multiple columns, each 
-potentially matching a different projection.
-
-> Currently, this mechanism only prunes entire parts. Granule-level pruning is 
-  not yet supported.
-
-To demonstrate this, we define the table (with projections using `_part_offset` columns)
-and insert five example rows matching the diagrams above.
-
-```sql
-CREATE TABLE page_views
+CREATE TABLE posts_v4
 (
-    id UInt64,
-    event_date Date,
-    user_id UInt32,
-    url String,
-    region String,
-    PROJECTION region_proj
-    (
-        SELECT _part_offset ORDER BY region
-    ),
-    PROJECTION user_id_proj
-    (
-        SELECT _part_offset ORDER BY user_id
-    )
+        `Id` Int32 CODEC(Delta, ZSTD),
+        `PostTypeId` Enum('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8),
+        `AcceptedAnswerId` UInt32,
+        `CreationDate` DateTime64(3, 'UTC'),
+        `Score` Int32,
+        `ViewCount` UInt32 CODEC(Delta, ZSTD),
+        `Body` String,
+        `OwnerUserId` Int32,
+        `OwnerDisplayName` String,
+        `LastEditorUserId` Int32,
+        `LastEditorDisplayName` String,
+        `LastEditDate` DateTime64(3, 'UTC'),
+        `LastActivityDate` DateTime64(3, 'UTC'),
+        `Title` String,
+        `Tags` String,
+        `AnswerCount` UInt16 CODEC(Delta, ZSTD),
+        `CommentCount` UInt8,
+        `FavoriteCount` UInt8,
+        `ContentLicense` LowCardinality(String),
+        `ParentId` String,
+        `CommunityOwnedDate` DateTime64(3, 'UTC'),
+        `ClosedDate` DateTime64(3, 'UTC')
 )
 ENGINE = MergeTree
-ORDER BY (event_date, id)
-SETTINGS
-  index_granularity = 1, -- グラニュールあたり1行
-  max_bytes_to_merge_at_max_space_in_pool = 1; -- マージを無効化
+ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
 ```
 
-Then we insert data into the table:
+これらのカラムの圧縮改善を以下に示します：
 
 ```sql
-INSERT INTO page_views VALUES (
-1, '2025-07-01', 101, 'https://example.com/page1', 'europe');
-INSERT INTO page_views VALUES (
-2, '2025-07-01', 102, 'https://example.com/page2', 'us_west');
-INSERT INTO page_views VALUES (
-3, '2025-07-02', 106, 'https://example.com/page3', 'us_west');
-INSERT INTO page_views VALUES (
-4, '2025-07-02', 107, 'https://example.com/page4', 'us_west');
-INSERT INTO page_views VALUES (
-5, '2025-07-03', 104, 'https://example.com/page5', 'asia');
+SELECT
+    `table`,
+    name,
+    formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
+    formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
+    round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
+FROM system.columns
+WHERE (name IN ('Id', 'ViewCount', 'AnswerCount')) AND (`table` IN ('posts_v3', 'posts_v4'))
+GROUP BY
+    `table`,
+    name
+ORDER BY
+    name ASC,
+    `table` ASC
+
+┌─table────┬─name────────┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
+│ posts_v3 │ AnswerCount │ 9.67 MiB        │ 113.69 MiB        │ 11.76 │
+│ posts_v4 │ AnswerCount │ 10.39 MiB       │ 111.31 MiB        │ 10.71 │
+│ posts_v3 │ Id          │ 159.70 MiB      │ 227.38 MiB        │  1.42 │
+│ posts_v4 │ Id          │ 64.91 MiB       │ 222.63 MiB        │  3.43 │
+│ posts_v3 │ ViewCount   │ 45.04 MiB       │ 227.38 MiB        │  5.05 │
+│ posts_v4 │ ViewCount   │ 52.72 MiB       │ 222.63 MiB        │  4.22 │
+└──────────┴─────────────┴─────────────────┴───────────────────┴───────┘
+
+6 rows in set. Elapsed: 0.008 sec
 ```
 
-:::note
-Note: The table uses custom settings for illustration, such as one-row granules 
-and disabled part merges, which are not recommended for production use.
-:::
+### ClickHouse Cloudにおける圧縮 {#compression-in-clickhouse-cloud}
 
-This setup produces:
-- Five separate parts (one per inserted row)
-- One primary index entry per row (in the base table and each projection)
-- Each part contains exactly one row
-
-With this setup, we run a query filtering on both `region` and `user_id`. 
-Since the base table’s primary index is built from `event_date` and `id`, it
-is unhelpful here, ClickHouse therefore uses:
-
-- `region_proj` to prune parts by region
-- `user_id_proj` to further prune by `user_id`
-
-This behavior is visible using `EXPLAIN projections = 1`, which shows how 
-ClickHouse selects and applies projections.
-
-```sql
-EXPLAIN projections=1
-SELECT * FROM page_views WHERE region = 'us_west' AND user_id = 107;
-```
-
-```response
-    ┌─explain────────────────────────────────────────────────────────────────────────────────┐
- 1. │ Expression ((Project names + Projection))                                              │
- 2. │   Expression                                                                           │                                                                        
- 3. │     ReadFromMergeTree (default.page_views)                                             │
- 4. │     Projections:                                                                       │
- 5. │       Name: region_proj                                                                │
- 6. │         Description: Projection has been analyzed and is used for part-level filtering │
- 7. │         Condition: (region in ['us_west', 'us_west'])                                  │
- 8. │         Search Algorithm: binary search                                                │
- 9. │         Parts: 3                                                                       │
-10. │         Marks: 3                                                                       │
-11. │         Ranges: 3                                                                      │
-12. │         Rows: 3                                                                        │
-13. │         Filtered Parts: 2                                                              │
-14. │       Name: user_id_proj                                                               │
-15. │         Description: Projection has been analyzed and is used for part-level filtering │
-16. │         Condition: (user_id in [107, 107])                                             │
-17. │         Search Algorithm: binary search                                                │
-18. │         Parts: 1                                                                       │
-19. │         Marks: 1                                                                       │
-20. │         Ranges: 1                                                                      │
-21. │         Rows: 1                                                                        │
-22. │         Filtered Parts: 2                                                              │
-    └────────────────────────────────────────────────────────────────────────────────────────┘
-```
-
-上に示した `EXPLAIN` の出力は、論理クエリプランを上から下へと示しています。
-
-| 行番号 | 説明                                                                                                         |
-|--------|--------------------------------------------------------------------------------------------------------------|
-| 3      | `page_views` ベーステーブルから読み取りを行う                                                               |
-| 5-13   | `region_proj` を使用して region = 'us_west' である 3 つのパーツを特定し、5 つのパーツのうち 2 つを除外      |
-| 14-22  | `user_id_proj` を使用して `user_id = 107` である 1 つのパーツを特定し、残り 3 つのパーツのうちさらに 2 つを除外 |
-
-最終的に、ベーステーブルから読み取られるのは **5 つのパーツのうち 1 つだけ** です。
-複数の Projection に対するインデックス解析を組み合わせることで、ClickHouse はスキャンするデータ量を大幅に削減し、
-ストレージのオーバーヘッドを抑えつつパフォーマンスを向上させます。
-
-## 関連コンテンツ {#related-content}
-
-- [ClickHouse のプライマリインデックス実践入門](/guides/best-practices/sparse-primary-indexes#option-3-projections)
-- [マテリアライズドビュー](/docs/materialized-views)
-- [ALTER PROJECTION](/sql-reference/statements/alter/projection)
+ClickHouse Cloudでは、デフォルトで`ZSTD`圧縮アルゴリズム（デフォルト値1）を使用しています。このアルゴリズムの圧縮速度は圧縮レベルによって異なりますが（高い = 遅い）、解凍では一貫して高速（約20%の変動）であり、並列化できるという利点があります。過去のテストでも、このアルゴリズムは十分に効果的であり、コーデックと組み合わせた`LZ4`を上回ることさえあることが示されています。ほとんどのデータ型と情報分布に効果的であり、したがって賢明な汎用デフォルトであり、最適化なしでも初期の圧縮がすでに優れている理由です。

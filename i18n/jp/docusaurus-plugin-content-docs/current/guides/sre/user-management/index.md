@@ -238,8 +238,8 @@ CREATE USER my_alter_admin IDENTIFIED BY 'password';
 例えば、次のようになります。
 
 ```sql
-  GRANT ALTER ON my_db.* WITH GRANT OPTION
-  ```
+GRANT ALTER ON my_db.* WITH GRANT OPTION
+```
 
 `GRANT` または `REVOKE` で権限を付与・取り消しするには、そのユーザー自身が事前にその権限を保持している必要があります。
 :::
@@ -482,12 +482,6 @@ DESCRIBE my_db.my_table;
 DESCRIBE TABLE my_db.my_table
 
 Query id: ab9cb2d0-5b1a-42e1-bc9c-c7ff351cb272
-
-┌─name────┬─type───┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ id      │ UInt64 │              │                    │         │                  │                │
-│ column1 │ String │              │                    │         │                  │                │
-│ column2 │ String │              │                    │         │                  │                │
-└─────────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
 ┌─name────┬─type───┬─default&#95;type─┬─default&#95;expression─┬─comment─┬─codec&#95;expression─┬─ttl&#95;expression─┐

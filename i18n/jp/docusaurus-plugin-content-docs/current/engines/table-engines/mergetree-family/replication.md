@@ -177,7 +177,7 @@ SAMPLE BY intHash32(UserID);
 <details markdown="1">
   <summary>非推奨の構文の例</summary>
 
-  ```sql
+```sql
 CREATE TABLE table_name
 (
     EventDate DateTime,
@@ -185,6 +185,7 @@ CREATE TABLE table_name
     UserID UInt32
 ) ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/table_name', '{replica}', EventDate, intHash32(UserID), (CounterID, EventDate, intHash32(UserID), EventTime), 8192);
 ```
+
 </details>
 
 この例が示すように、これらのパラメータには波括弧で囲まれた置換用プレースホルダーを含めることができます。置換される値は、設定ファイルの [macros](/operations/server-configuration-parameters/settings.md/#macros) セクションから取得されます。
