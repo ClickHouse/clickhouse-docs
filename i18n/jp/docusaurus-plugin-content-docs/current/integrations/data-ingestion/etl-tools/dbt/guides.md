@@ -536,26 +536,26 @@ LIMIT 5;
 
 2. `dbt run` を実行し、生成されたテーブルの結果を確認します:
 
-   ```response
-    clickhouse-user@clickhouse:~/imdb$  dbt run
-    15:33:34  Running with dbt=1.1.0
-    15:33:34  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 6 sources, 0 exposures, 0 metrics
-    15:33:34
-    15:33:35  Concurrency: 1 threads (target='dev')
-    15:33:35
-    15:33:35  1 of 1 START incremental model imdb_dbt.actor_summary........................... [RUN]
-    15:33:41  1 of 1 OK created incremental model imdb_dbt.actor_summary...................... [OK in 6.33s]
-    15:33:41
-    15:33:41  Finished running 1 incremental model in 7.30s.
-    15:33:41
-    15:33:41  Completed successfully
-    15:33:41
-    15:33:41  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
-    ```
+```response
+clickhouse-user@clickhouse:~/imdb$  dbt run
+15:33:34  Running with dbt=1.1.0
+15:33:34  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 6 sources, 0 exposures, 0 metrics
+15:33:34
+15:33:35  Concurrency: 1 threads (target='dev')
+15:33:35
+15:33:35  1 of 1 START incremental model imdb_dbt.actor_summary........................... [RUN]
+15:33:41  1 of 1 OK created incremental model imdb_dbt.actor_summary...................... [OK in 6.33s]
+15:33:41
+15:33:41  Finished running 1 incremental model in 7.30s.
+15:33:41
+15:33:41  Completed successfully
+15:33:41
+15:33:41  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
+```
 
-   ```sql
-    SELECT * FROM imdb_dbt.actor_summary ORDER BY num_movies DESC LIMIT 5;
-    ```
+```sql
+SELECT * FROM imdb_dbt.actor_summary ORDER BY num_movies DESC LIMIT 5;
+```
 
 ```response
     +------+------------+----------+------------------+------+---------+-------------------+
@@ -571,57 +571,57 @@ LIMIT 5;
 
 3. ここではインクリメンタル更新を説明するために、モデルにデータを追加します。`actors` テーブルに俳優「Clicky McClickHouse」を追加します:
 
-   ```sql
-    INSERT INTO imdb.actors VALUES (845466, 'Clicky', 'McClickHouse', 'M');
-    ```
+```sql
+INSERT INTO imdb.actors VALUES (845466, 'Clicky', 'McClickHouse', 'M');
+```
 
 4. 次に「Clicky」をランダムな 910 本の映画に出演させます:
 
-   ```sql
-    INSERT INTO imdb.roles
-    SELECT now() as created_at, 845466 as actor_id, id as movie_id, 'Himself' as role
-    FROM imdb.movies
-    LIMIT 910 OFFSET 10000;
-    ```
+```sql
+INSERT INTO imdb.roles
+SELECT now() as created_at, 845466 as actor_id, id as movie_id, 'Himself' as role
+FROM imdb.movies
+LIMIT 910 OFFSET 10000;
+```
 
 5. 元のソーステーブルをクエリし、dbt モデルを経由せずに、彼が実際に最も多く出演している俳優になっていることを確認します:
 
-   ```sql
-    SELECT id,
-        any(actor_name)          as name,
-        uniqExact(movie_id)    as num_movies,
-        avg(rank)                as avg_rank,
-        uniqExact(genre)         as unique_genres,
-        uniqExact(director_name) as uniq_directors,
-        max(created_at)          as updated_at
-    FROM (
-            SELECT imdb.actors.id                                                   as id,
-                    concat(imdb.actors.first_name, ' ', imdb.actors.last_name)       as actor_name,
-                    imdb.movies.id as movie_id,
-                    imdb.movies.rank                                                 as rank,
-                    genre,
-                    concat(imdb.directors.first_name, ' ', imdb.directors.last_name) as director_name,
-                    created_at
-            FROM imdb.actors
-                    JOIN imdb.roles ON imdb.roles.actor_id = imdb.actors.id
-                    LEFT OUTER JOIN imdb.movies ON imdb.movies.id = imdb.roles.movie_id
-                    LEFT OUTER JOIN imdb.genres ON imdb.genres.movie_id = imdb.movies.id
-                    LEFT OUTER JOIN imdb.movie_directors ON imdb.movie_directors.movie_id = imdb.movies.id
-                    LEFT OUTER JOIN imdb.directors ON imdb.directors.id = imdb.movie_directors.director_id
-            )
-    GROUP BY id
-    ORDER BY num_movies DESC
-    LIMIT 2;
-    ```
+```sql
+SELECT id,
+    any(actor_name)          as name,
+    uniqExact(movie_id)    as num_movies,
+    avg(rank)                as avg_rank,
+    uniqExact(genre)         as unique_genres,
+    uniqExact(director_name) as uniq_directors,
+    max(created_at)          as updated_at
+FROM (
+        SELECT imdb.actors.id                                                   as id,
+                concat(imdb.actors.first_name, ' ', imdb.actors.last_name)       as actor_name,
+                imdb.movies.id as movie_id,
+                imdb.movies.rank                                                 as rank,
+                genre,
+                concat(imdb.directors.first_name, ' ', imdb.directors.last_name) as director_name,
+                created_at
+        FROM imdb.actors
+                JOIN imdb.roles ON imdb.roles.actor_id = imdb.actors.id
+                LEFT OUTER JOIN imdb.movies ON imdb.movies.id = imdb.roles.movie_id
+                LEFT OUTER JOIN imdb.genres ON imdb.genres.movie_id = imdb.movies.id
+                LEFT OUTER JOIN imdb.movie_directors ON imdb.movie_directors.movie_id = imdb.movies.id
+                LEFT OUTER JOIN imdb.directors ON imdb.directors.id = imdb.movie_directors.director_id
+        )
+GROUP BY id
+ORDER BY num_movies DESC
+LIMIT 2;
+```
 
-   ```response
-    +------+-------------------+----------+------------------+------+---------+-------------------+
-    |id    |name               |num_movies|avg_rank          |genres|directors|updated_at         |
-    +------+-------------------+----------+------------------+------+---------+-------------------+
-    |845466|Clicky McClickHouse|910       |1.4687938697032283|21    |662      |2022-04-26 16:20:36|
-    |45332 |Mel Blanc          |909       |5.7884792542982515|19    |148      |2022-04-26 16:17:42|
-    +------+-------------------+----------+------------------+------+---------+-------------------+
-    ```
+```response
++------+-------------------+----------+------------------+------+---------+-------------------+
+|id    |name               |num_movies|avg_rank          |genres|directors|updated_at         |
++------+-------------------+----------+------------------+------+---------+-------------------+
+|845466|Clicky McClickHouse|910       |1.4687938697032283|21    |662      |2022-04-26 16:20:36|
+|45332 |Mel Blanc          |909       |5.7884792542982515|19    |148      |2022-04-26 16:17:42|
++------+-------------------+----------+------------------+------+---------+-------------------+
+```
 
 6. `dbt run` を実行し、モデルが更新され、上記の結果と一致していることを確認します:
 
@@ -643,17 +643,17 @@ LIMIT 5;
     ```
 
 ```sql
-    SELECT * FROM imdb_dbt.actor_summary ORDER BY num_movies DESC LIMIT 2;
-    ```
+SELECT * FROM imdb_dbt.actor_summary ORDER BY num_movies DESC LIMIT 2;
+```
 
 ```response
-    +------+-------------------+----------+------------------+------+---------+-------------------+
-    |id    |name               |num_movies|avg_rank          |genres|directors|updated_at         |
-    +------+-------------------+----------+------------------+------+---------+-------------------+
-    |845466|Clicky McClickHouse|910       |1.4687938697032283|21    |662      |2022-04-26 16:20:36|
-    |45332 |Mel Blanc          |909       |5.7884792542982515|19    |148      |2022-04-26 16:17:42|
-    +------+-------------------+----------+------------------+------+---------+-------------------+
-    ```
++------+-------------------+----------+------------------+------+---------+-------------------+
+|id    |name               |num_movies|avg_rank          |genres|directors|updated_at         |
++------+-------------------+----------+------------------+------+---------+-------------------+
+|845466|Clicky McClickHouse|910       |1.4687938697032283|21    |662      |2022-04-26 16:20:36|
+|45332 |Mel Blanc          |909       |5.7884792542982515|19    |148      |2022-04-26 16:17:42|
++------+-------------------+----------+------------------+------+---------+-------------------+
+```
 
 ### 内部動作 {#internals}
 
@@ -699,11 +699,11 @@ AND event_time > subtractMinutes(now(), 15) ORDER BY event_time LIMIT 100;
 3. Danny を 920 本のランダムな映画に出演させます。
 
 ```sql
-   INSERT INTO imdb.roles
-   SELECT now() as created_at, 845467 as actor_id, id as movie_id, 'Himself' as role
-   FROM imdb.movies
-   LIMIT 920 OFFSET 10000;
-   ```
+INSERT INTO imdb.roles
+SELECT now() as created_at, 845467 as actor_id, id as movie_id, 'Himself' as role
+FROM imdb.movies
+LIMIT 920 OFFSET 10000;
+```
 
 4. `dbt run` を実行し、Danny が actor-summary テーブルに追加されたことを確認します
 

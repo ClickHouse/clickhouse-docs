@@ -463,7 +463,7 @@ ClickHouse Keeper 用の推奨ポートは `9281` です。ただし、このポ
 
 6. レプリケートテーブルを作成します:
 
-   ```sql
+    ```sql
     clickhouse :) CREATE TABLE repl_table ON CLUSTER cluster_1S_2R
                 (
                     id UInt64,
@@ -474,7 +474,7 @@ ClickHouse Keeper 用の推奨ポートは `9281` です。ただし、このポ
                 ORDER BY (id);
     ```
 
-   ```response
+    ```response
     ┌─host──────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
     │ chnode2.marsnet.local │ 9440 │      0 │       │                   1 │                0 │
     │ chnode1.marsnet.local │ 9440 │      0 │       │                   0 │                0 │
@@ -482,7 +482,8 @@ ClickHouse Keeper 用の推奨ポートは `9281` です。ただし、このポ
     ```
 
 7. `chnode1` 上で 2 行のデータを追加します:
-   ```sql
+
+    ```sql
     INSERT INTO repl_table
     (id, column1, column2)
     VALUES

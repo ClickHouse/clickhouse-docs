@@ -61,10 +61,10 @@ wget https://github.com/ClickHouse/clickhouse-jdbc-bridge/releases/download/v2.0
 MySQL に接続できるように、名前付きデータソースを作成します。
 
 ```bash
- cd ~/clickhouse-jdbc-bridge
- mkdir -p config/datasources
- touch config/datasources/mysql8.json
- ```
+cd ~/clickhouse-jdbc-bridge
+mkdir -p config/datasources
+touch config/datasources/mysql8.json
+```
 
 これで、以下の設定を `~/clickhouse-jdbc-bridge/config/datasources/mysql8.json` ファイルにコピーして貼り付けることができます：
 
@@ -95,9 +95,9 @@ MySQL に接続できるように、名前付きデータソースを作成し�
 これで ClickHouse JDBC Bridge を起動する準備が整いました。
 
 ```bash
- cd ~/clickhouse-jdbc-bridge
- java -jar clickhouse-jdbc-bridge-2.0.7-shaded.jar
- ```
+cd ~/clickhouse-jdbc-bridge
+java -jar clickhouse-jdbc-bridge-2.0.7-shaded.jar
+```
 
 :::note
 ClickHouse JDBC Bridge をフォアグラウンドモードで起動しました。Bridge を停止するには、先ほど開いた Unix シェルウィンドウをフォアグラウンドに切り替え、`CTRL+C` を押します。
@@ -112,8 +112,8 @@ ClickHouse は、[jdbc テーブル関数](/sql-reference/table-functions/jdbc.m
 * jdbc テーブル関数:
 
 ```sql
- SELECT * FROM jdbc('mysql8', 'mydatabase', 'mytable');
- ```
+SELECT * FROM jdbc('mysql8', 'mydatabase', 'mytable');
+```
 
 :::note
 `jdbc` テーブル関数の最初のパラメータとして、上で構成した名前付きデータソースの名前を使用します。

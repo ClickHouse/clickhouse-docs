@@ -58,18 +58,22 @@ MySQL および MariaDB ではこの制約は適用されず、`Initial Load Onl
 ##### PostgreSQL {#setting-up-the-database-user-postgres}
 
 1. RDS/Aurora インスタンスに接続し、次のコマンドで新しいデータベースユーザーを作成します:
-   ```sql
-    CREATE USER clickpipes_iam_user; 
-    GRANT rds_iam TO clickpipes_iam_user;
-    ```
+
+```sql
+CREATE USER clickpipes_iam_user; 
+GRANT rds_iam TO clickpipes_iam_user;
+```
+
 2. RDS インスタンスを ClickPipes 用に設定するため、[PostgreSQL source setup guide](postgres/source/rds) に記載されている残りの手順に従います。
 
 ##### MySQL / MariaDB {#setting-up-the-database-user-mysql}
 
 1. RDS/Aurora インスタンスに接続し、次のコマンドで新しいデータベースユーザーを作成します:
-   ```sql
-    CREATE USER 'clickpipes_iam_user' IDENTIFIED WITH AWSAuthenticationPlugin AS 'RDS';
-    ```
+
+```sql
+CREATE USER 'clickpipes_iam_user' IDENTIFIED WITH AWSAuthenticationPlugin AS 'RDS';
+```
+
 2. RDS/Aurora インスタンスを ClickPipes 用に設定するため、[MySQL source setup guide](mysql/source/rds) に記載されている残りの手順に従います。
 
 ### IAM ロールの設定 {#setting-up-iam-role}
