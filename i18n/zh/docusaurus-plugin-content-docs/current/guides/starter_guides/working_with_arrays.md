@@ -282,7 +282,7 @@ GROUP BY FlightDate, Origin
 ORDER BY length(Destinations)
 ```
 
-上面的查询中使用了 [`toStringCutToZero`](/sql-reference/functions/type-conversion-functions#tostringcuttozero)，用于去除出现在部分机场三字代码后面的空字符。
+上面的查询中使用了 [`toStringCutToZero`](/sql-reference/functions/type-conversion-functions#toStringCutToZero)，用于去除出现在部分机场三字代码后面的空字符。
 
 在这种数据格式下，我们可以通过计算汇总后的 “Destinations” 数组长度，轻松确定各个最繁忙机场的先后顺序：
 

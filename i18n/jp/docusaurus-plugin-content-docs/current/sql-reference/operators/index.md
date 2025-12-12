@@ -340,7 +340,7 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 **関連項目**
 
 * [Interval](../../sql-reference/data-types/special-data-types/interval.md) データ型
-* [toInterval](/sql-reference/functions/type-conversion-functions#tointervalyear) 型変換関数
+* [toInterval](/sql-reference/functions/type-conversion-functions#toIntervalYear) 型変換関数
 
 ## 論理AND演算子 {#logical-and-operator}
 

@@ -283,7 +283,7 @@ GROUP BY FlightDate, Origin
 ORDER BY length(Destinations)
 ```
 
-上記のクエリで使用している [`toStringCutToZero`](/sql-reference/functions/type-conversion-functions#tostringcuttozero) は、一部の空港コード（3文字）の後に現れるヌル文字を取り除くために使われています。
+上記のクエリで使用している [`toStringCutToZero`](/sql-reference/functions/type-conversion-functions#toStringCutToZero) は、一部の空港コード（3文字）の後に現れるヌル文字を取り除くために使われています。
 
 データがこの形式になっていれば、集約された「Destinations」配列の長さを求めることで、最も利用の多い空港の順位を簡単に特定できます。
 

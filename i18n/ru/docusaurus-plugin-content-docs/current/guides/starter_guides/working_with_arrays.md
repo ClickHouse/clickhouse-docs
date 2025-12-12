@@ -283,7 +283,7 @@ GROUP BY FlightDate, Origin
 ORDER BY length(Destinations)
 ```
 
-Функция [`toStringCutToZero`](/sql-reference/functions/type-conversion-functions#tostringcuttozero) в приведённом выше запросе используется для удаления нулевых символов, которые появляются после некоторых трёхбуквенных кодов аэропортов.
+Функция [`toStringCutToZero`](/sql-reference/functions/type-conversion-functions#toStringCutToZero) в приведённом выше запросе используется для удаления нулевых символов, которые появляются после некоторых трёхбуквенных кодов аэропортов.
 
 Имея данные в таком формате, мы можем легко определить рейтинг самых загруженных аэропортов, посчитав длину агрегированных массивов «Destinations»:
 
