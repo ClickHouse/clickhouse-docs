@@ -82,7 +82,7 @@ SELECT * FROM system.trace_log LIMIT 1 \G
 ```
 
 ```text
-行 1:
+Row 1:
 ──────
 hostname:                clickhouse.eu-central1.internal
 event_date:              2025-11-11
@@ -92,7 +92,7 @@ timestamp_ns:            1762862039128333000
 revision:                54504
 trace_type:              Instrumentation
 cpu_id:                  19
-thread_id:               3166432 -- 317万
+thread_id:               3166432 -- 3.17 million
 query_id:                ef462508-e189-4ea2-b231-4489506728e8
 trace:                   [350594916,447733712,447742095,447727324,447726659,221642873,450882315,451852359,451905441,451885554,512404306,512509092,612861767,612863269,612466367,612455825,137631896259267,137631896856768]
 size:                    0

@@ -98,12 +98,12 @@ ClickHouse Cloud コンソールで、PrivateLink 経由で接続したいサー
 まず、コマンドを実行する前に次の環境変数を設定します。
 
 ```shell
-REGION=<AWSフォーマットを使用したリージョンコード、例: us-west-2>
+REGION=<Your region code using the AWS format, for example: us-west-2>
 PROVIDER=aws
-KEY_ID=<ClickHouseキーID>
-KEY_SECRET=<ClickHouseキーシークレット>
-ORG_ID=<ClickHouse組織ID>
-SERVICE_NAME=<ClickHouseサービス名>
+KEY_ID=<Your ClickHouse key ID>
+KEY_SECRET=<Your ClickHouse key secret>
+ORG_ID=<Your ClickHouse organization ID>
+SERVICE_NAME=<Your ClickHouse service name>
 ```
 
 リージョン、プロバイダー、サービス名で絞り込んで ClickHouse の `INSTANCE_ID` を取得します。
@@ -181,7 +181,7 @@ Resources:
     Properties:
       VpcEndpointType: Interface
       PrivateDnsEnabled: false
-      ServiceName: <サービス名(endpointServiceId)、上記参照>
+      ServiceName: <Service name(endpointServiceId), pls see above>
       VpcId: vpc-vpc_id
       SubnetIds:
         - subnet-subnet_id1
@@ -209,7 +209,7 @@ resource "aws_vpc_endpoint" "this" {
   ]
   subnet_ids          = [var.subnet_id1,var.subnet_id2,var.subnet_id3]
   private_dns_enabled = false
-  service_region      = "(オプション) 指定した場合、VPCエンドポイントは指定されたリージョン内のサービスに接続します。複数リージョンにまたがるPrivateLink接続を構成する際に定義してください。"
+  service_region      = "(Optional) If specified, the VPC endpoint will connect to the service in the provided region. Define it for multi-regional PrivateLink connections."
 }
 ```
 
@@ -246,12 +246,12 @@ PrivateLink 経由で利用可能にする必要がある各インスタンス�
 コマンドを実行する前に、次の環境変数を設定します。
 
 ```bash
-REGION=<AWS 形式を使用したリージョンコード (例: us-west-2)>
+REGION=<Your region code using the AWS format, for example: us-west-2>
 PROVIDER=aws
-KEY_ID=<ClickHouse のキー ID>
-KEY_SECRET=<ClickHouse のキーシークレット>
-ORG_ID=<ClickHouse の組織 ID>
-SERVICE_NAME=<ClickHouse のサービス名>
+KEY_ID=<Your ClickHouse key ID>
+KEY_SECRET=<Your ClickHouse key secret>
+ORG_ID=<Your ClickHouse organization ID>
+SERVICE_NAME=<Your ClickHouse service name>
 ```
 
 許可リストにエンドポイント ID を追加するには、次の手順を実行します。
@@ -309,10 +309,10 @@ ClickHouse Cloud コンソールで **Settings** に移動します。**Set up p
 コマンドを実行する前に、次の環境変数を設定します:
 
 ```bash
-KEY_ID=<あなたのClickHouseキーID>
-KEY_SECRET=<あなたのClickHouseキーシークレット>
-ORG_ID=<あなたのClickHouse組織ID>
-INSTANCE_ID=<あなたのClickHouseサービス名>
+KEY_ID=<Your ClickHouse key ID>
+KEY_SECRET=<Your ClickHouse key secret>
+ORG_ID=<Your ClickHouse organization ID>
+INSTANCE_ID=<Your ClickHouse service name>
 ```
 
 `INSTANCE_ID` は [こちらの手順](#option-2-api)から取得できます。
@@ -360,10 +360,10 @@ jq .result
 コマンドを実行する前に、次の環境変数を設定してください。
 
 ```bash
-KEY_ID=<キーID>
-KEY_SECRET=<キーシークレット>
-ORG_ID=<ClickHouse組織IDを設定>
-INSTANCE_ID=<インスタンスID>
+KEY_ID=<Key ID>
+KEY_SECRET=<Key secret>
+ORG_ID=<please set ClickHouse organization ID>
+INSTANCE_ID=<Instance ID>
 ```
 
 `INSTANCE_ID` は [こちらの手順](#option-2-api)から取得できます。

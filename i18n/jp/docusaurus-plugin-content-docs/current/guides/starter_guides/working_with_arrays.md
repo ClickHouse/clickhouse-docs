@@ -66,8 +66,8 @@ SELECT array('Hello', 'world', 1, 2, 3)
 共通のスーパータイプが存在しない場合、配列を作成しようとすると例外が発生します。
 
 ```sql
-例外が発生しました:
-Code: 386. DB::Exception: 型 String、String、UInt8、UInt8、UInt8 に対する共通のスーパータイプが存在しません。一部が String/FixedString/Enum 型であり、一部がそれ以外の型であるためです: スコープ SELECT ['Hello', 'world', 1, 2, 3] 内。(NO_COMMON_TYPE)
+Received exception:
+Code: 386. DB::Exception: There is no supertype for types String, String, UInt8, UInt8, UInt8 because some of them are String/FixedString/Enum and some of them are not: In scope SELECT ['Hello', 'world', 1, 2, 3]. (NO_COMMON_TYPE)
 ```
 
 配列をその場で作成する場合、ClickHouse はすべての要素が収まる最も狭い型を選択します。
@@ -90,34 +90,34 @@ SELECT [1::UInt8, 2.5::Float32, 3::UInt8] AS mixed_array, toTypeName([1, 2.5, 3]
   例:
 
   ```sql
-  SELECT
-      [1, 'ClickHouse', ['Another', 'Array']] AS array,
-      toTypeName(array)
-  SETTINGS use_variant_as_common_type = 1;
-  ```
+SELECT
+    [1, 'ClickHouse', ['Another', 'Array']] AS array,
+    toTypeName(array)
+SETTINGS use_variant_as_common_type = 1;
+```
 
   ```response
-  ┌─array────────────────────────────────┬─toTypeName(array)────────────────────────────┐
-  │ [1,'ClickHouse',['Another','Array']] │ Array(Variant(Array(String), String, UInt8)) │
-  └──────────────────────────────────────┴──────────────────────────────────────────────┘
-  ```
+┌─array────────────────────────────────┬─toTypeName(array)────────────────────────────┐
+│ [1,'ClickHouse',['Another','Array']] │ Array(Variant(Array(String), String, UInt8)) │
+└──────────────────────────────────────┴──────────────────────────────────────────────┘
+```
 
   この設定により、配列から型名を指定して値を読み出すこともできます:
 
   ```sql
-  SELECT
-      [1, 'ClickHouse', ['Another', 'Array']] AS array,
-      array.UInt8,
-      array.String,
-      array.`Array(String)`
-  SETTINGS use_variant_as_common_type = 1;
-  ```
+SELECT
+    [1, 'ClickHouse', ['Another', 'Array']] AS array,
+    array.UInt8,
+    array.String,
+    array.`Array(String)`
+SETTINGS use_variant_as_common_type = 1;
+```
 
   ```response
-  ┌─array────────────────────────────────┬─array.UInt8───┬─array.String─────────────┬─array.Array(String)─────────┐
-  │ [1,'ClickHouse',['Another','Array']] │ [1,NULL,NULL] │ [NULL,'ClickHouse',NULL] │ [[],[],['Another','Array']] │
-  └──────────────────────────────────────┴───────────────┴──────────────────────────┴─────────────────────────────┘
-  ```
+┌─array────────────────────────────────┬─array.UInt8───┬─array.String─────────────┬─array.Array(String)─────────┐
+│ [1,'ClickHouse',['Another','Array']] │ [1,NULL,NULL] │ [NULL,'ClickHouse',NULL] │ [[],[],['Another','Array']] │
+└──────────────────────────────────────┴───────────────┴──────────────────────────┴─────────────────────────────┘
+```
 </details>
 
 角括弧を使ったインデックス指定は、配列要素にアクセスする便利な方法です。
@@ -264,13 +264,13 @@ SELECT
 FROM ontime.ontime LIMIT 5
 ```
 
-ランダムに選んだ特定の日付、例えば「2024-01-01」における、米国内の最も混雑している空港トップ10を見てみましょう。
-各空港から何便のフライトが出発しているかを把握したいとします。
-データにはフライトごとに1行が含まれていますが、出発空港ごとにデータをグループ化し、目的地を配列にまとめられると便利です。
+Let's take a look at the top 10 busiest airports in the US on a particular day chosen at random, say '2024-01-01'.
+We're interested in understanding how many flights depart from each airport.
+Our data contains one row per flight, but it would be convenient if we could group the data by the origin airport and roll the destinations into an array.
 
-これを実現するには、[`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) 集約関数を使用します。この関数は、各行から指定した列の値を取り出し、それらを配列としてグループ化します。
+To achieve this we can use the [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) aggregate function, which takes values of the specified column from each row and groups them in an array.
 
-次のクエリを実行して、どのように動作するか確認してください。
+Run the query below to see how it works:
 
 ```sql runnable
 SELECT
@@ -283,9 +283,9 @@ GROUP BY FlightDate, Origin
 ORDER BY length(Destinations)
 ```
 
-上記のクエリで使用している [`toStringCutToZero`](/sql-reference/functions/type-conversion-functions#tostringcuttozero) は、一部の空港コード（3文字）の後に現れるヌル文字を取り除くために使われています。
+The [`toStringCutToZero`](/sql-reference/functions/type-conversion-functions#tostringcuttozero) in the query above is used to remove null characters which appear after some of the airport's 3 letter designation.
 
-データがこの形式になっていれば、集約された「Destinations」配列の長さを求めることで、最も利用の多い空港の順位を簡単に特定できます。
+With the data in this format, we can easily find the order of the busiest airports by finding the length of the rolled up "Destinations" arrays:
 
 ```sql runnable
 WITH
@@ -309,16 +309,16 @@ FROM busy_airports
 ORDER BY outward_flights DESC
 ```
 
-### arrayMap と arrayZip {#arraymap}
+### arrayMap and arrayZip {#arraymap}
 
-前のクエリで、デンバー国際空港が、今回選択した特定の日に最も出発便の多い空港であることがわかりました。
-これらのフライトのうち、定刻通りだったもの、15〜30分遅延したもの、30分以上遅延したものがそれぞれどれくらいあったかを確認してみましょう。
+We saw in the previous query that Denver International Airport was the airport with the most outward flights for our particular chosen day.
+Let's take a look at how many of those flights were on-time, delayed by 15-30 minutes or delayed by more than 30 minutes.
 
-ClickHouse の多くの配列関数は、いわゆる[「高階関数」](/sql-reference/functions/overview#higher-order-functions)であり、最初の引数としてラムダ式を受け取ります。
-[`arrayMap`](/sql-reference/functions/array-functions#arrayMap) 関数はそのような高階関数の一例であり、元の配列の各要素にラムダ式を適用することで、新しい配列を返します。
+Many of the array functions in ClickHouse are so-called ["higher-order functions"](/sql-reference/functions/overview#higher-order-functions) and accept a lambda function as the first parameter.
+The [`arrayMap`](/sql-reference/functions/array-functions#arrayMap) function is an example of one such higher-order function and returns a new array from the provided array by applying a lambda function to each element of the original array.
 
-以下のクエリを実行して、`arrayMap` 関数を使い、どのフライトが遅延し、どのフライトが定刻通りだったかを確認しましょう。
-出発地/到着地のペアごとに、全フライトのテールナンバーとステータスを表示します：
+Run the query below which uses the `arrayMap` function to see which flights were delayed or on-time.
+For pairs of origin/destinations, it shows the tail number and status for every flight:
 
 ```sql runnable
 WITH arrayMap(
@@ -327,16 +327,13 @@ WITH arrayMap(
     ) AS statuses
 ```
 
-SELECT
-Origin,
-toStringCutToZero(Dest) AS Destination,
-arrayZip(groupArray(Tail&#95;Number), statuses) as tailNumberStatuses
-FROM ontime.ontime
-WHERE Origin = &#39;DEN&#39;
-AND FlightDate = &#39;2024-01-01&#39;
-AND DepTime IS NOT NULL
-AND DepDelayMinutes IS NOT NULL
-GROUP BY ALL
+In the above query, the `arrayMap` function takes a single-element array `[DepDelayMinutes]` and applies the lambda function `d -> if(d >= 30, 'DELAYED', if(d >= 15, 'WARNING', 'ON-TIME'` to categorize it.
+Then the first element of the resulting array is extracted with `[DepDelayMinutes][1]`.
+The [`arrayZip`](/sql-reference/functions/array-functions#arrayZip) function combines the `Tail_Number` array and the `statuses` array into a single array.
+
+### arrayFilter {#arrayfilter}
+
+Next we'll look only at the number of flights that were delayed by 30 minutes or more, for airports `DEN`, `ATL` and `DFW`:
 
 ````
 
@@ -361,20 +358,20 @@ GROUP BY Origin, OriginCityName
 ORDER BY num_delays_30_min_or_more DESC
 ````
 
-上記のクエリでは、[`arrayFilter`](/sql-reference/functions/array-functions#arrayFilter) 関数の第1引数としてラムダ関数を渡しています。
-このラムダ関数自体は、遅延時間（分）を表す `d` を受け取り、条件が満たされれば `1` を、そうでなければ `0` を返します。
+In the query above we pass a lambda function as the first argument to the [`arrayFilter`](/sql-reference/functions/array-functions#arrayFilter) function.
+This lambda function itself takes the delay in minutes (d) and returns `1` if the condition is met, else `0`.
 
 ```sql
 d -> d >= 30
 ```
 
-### arraySort と arrayIntersect {#arraysort-and-arrayintersect}
+### arraySort and arrayIntersect {#arraysort-and-arrayintersect}
 
-次に、[`arraySort`](/sql-reference/functions/array-functions#arraySort) と [`arrayIntersect`](/sql-reference/functions/array-functions#arrayIntersect) 関数を使って、主要な米国空港のペアのうち、どのペアが最も多くの共通の目的地に就航しているかを調べます。
-`arraySort` は配列を受け取り、デフォルトでは要素を昇順に並べ替えますが、ラムダ関数を渡してソート順を指定することもできます。
-`arrayIntersect` は複数の配列を受け取り、すべての配列に共通して含まれる要素のみから成る配列を返します。
+Next, we'll figure out which pairs of major US airports serve the most common destinations with the help of the [`arraySort`](/sql-reference/functions/array-functions#arraySort) and [`arrayIntersect`](/sql-reference/functions/array-functions#arrayIntersect) functions.
+`arraySort` takes an array and sorts the elements in ascending order by default, although you can also pass a lambda function to it to define the sorting order.
+`arrayIntersect` takes multiple arrays and returns an array which contains elements present in all the arrays.
 
-以下のクエリを実行して、これら 2 つの配列関数の動作を確認しましょう。
+Run the query below to see these two array functions in action:
 
 ```sql runnable
 WITH airport_routes AS (
@@ -400,23 +397,24 @@ ORDER BY common_destinations DESC
 LIMIT 10
 ```
 
-このクエリは、主に 2 つの段階で動作します。
-まず、共通テーブル式 (CTE) を使って `airport_routes` という一時データセットを作成します。これは 2024 年 1 月 1 日のすべてのフライトを対象とし、各出発空港ごとに、その空港が運航しているすべての重複のない目的地のソート済みリストを構築します。
-たとえば、`airport_routes` の結果セットでは、DEN には `['ATL', 'BOS', 'LAX', 'MIA', ...]` のように、その空港が就航しているすべての都市を含む配列が格納されます。
+The query works in two main stages.
+First, it creates a temporary dataset called `airport_routes` using a Common Table Expression (CTE) that looks at all flights on January 1, 2024, and for each origin airport, builds a sorted list of every unique destination which that airport serves.
+In the `airport_routes` result set, for example, DEN might have an array containing all the cities it flies to, like `['ATL', 'BOS', 'LAX', 'MIA', ...]` and so on.
 
-第 2 段階では、クエリは 5 つの主要な米国ハブ空港 (`DEN`、`ATL`、`DFW`、`ORD`、`LAS`) を取り上げ、それらのあらゆるペアの組み合わせを比較します。
-これはクロスジョインを使って実行され、これらの空港のすべての組み合わせを生成します。
-その後、各ペアごとに `arrayIntersect` 関数を使って、両方の空港のリストに共通して現れる目的地を特定します。
-`length` 関数は、それらが共通して持つ目的地の数をカウントします。
+In the second stage, the query takes five major US hub airports (`DEN`, `ATL`, `DFW`, `ORD`, and `LAS`) and compares every possible pair of them.
+It does this using a cross join, which creates all combinations of these airports.
+Then, for each pair, it uses the `arrayIntersect` function to find which destinations appear in both airports' lists.
+The length function counts how many destinations they have in common.
 
-`a1.Origin < a2.Origin` という条件により、各ペアが 1 回だけ現れるようにしています。
-これがないと、同じ比較であるにもかかわらず、JFK-LAX と LAX-JFK の両方が別々の結果として返されてしまい、冗長になります。
-最後に、このクエリは結果をソートして、どの空港ペアが最も多くの共通の目的地を持っているかを示し、上位 10 件だけを返します。
-これにより、どの主要ハブが最もルートネットワークの重なりが大きいかが分かり、複数の航空会社が同じ都市ペアを運航している競合市場である可能性や、類似した地理的地域にサービスを提供していて旅行者にとって代替的な乗り継ぎ拠点として利用できるハブである可能性を示唆します。
+The condition `a1.Origin < a2.Origin`, ensures that each pair only appears once.
+Without this, you'd get both JFK-LAX and LAX-JFK as separate results, which would be redundant since they represent the same comparison.
+Finally, the query sorts the results to show which airport pairs have the highest number of shared destinations and returns just the top 10.
+This reveals which major hubs have the most overlapping route networks, which could indicate competitive markets where multiple airlines are serving the same city pairs, or hubs that serve similar geographic regions and could potentially be used as alternative connection points for travelers.
 
 ### arrayReduce {#arrayReduce}
 
-遅延を見ているついでに、さらに別の高階配列関数である `arrayReduce` を使って、デンバー国際空港発の各ルートについて平均遅延と最大遅延を求めてみましょう。
+While we're looking at delays, let's use yet another higher-order array function, `arrayReduce`, to find the average and maximum delay
+for each route from Denver International Airport:
 
 ```sql runnable
 SELECT
@@ -435,29 +433,29 @@ GROUP BY Origin, Destination
 ORDER BY avg_delay DESC
 ```
 
-上の例では、`arrayReduce` を使用して、`DEN` から出発するさまざまな便について、平均遅延時間と最大遅延時間を求めました。
-`arrayReduce` は、関数の最初のパラメータで指定された集約関数を、関数の 2 番目のパラメータで指定された配列の要素に適用します。
+In the example above, we used `arrayReduce` to find the average and maximum delays for various outward flights from `DEN`.
+`arrayReduce` applies an aggregate function, specified in the first parameter to the function, to the elements of the provided array, specified in the second parameter of the function.
 
 ### arrayJoin {#arrayJoin}
 
-ClickHouse の通常の関数は、受け取った行数と同じ行数を返すという性質を持っています。
-ただし、この規則を破る、学んでおく価値のあるユニークで興味深い関数が 1 つあります。それが `arrayJoin` 関数です。
+Regular functions in ClickHouse have the property that they return the same number of rows than they receive.
+There is however, one interesting and unique function that breaks this rule, which is worth learning about - the `arrayJoin` function.
 
-`arrayJoin` は配列を「展開」し、その配列を受け取って、各要素ごとに個別の行を作成します。
-これは、他のデータベースにおける `UNNEST` や `EXPLODE` といった SQL 関数と似ています。
+`arrayJoin` "explodes" an array by taking it and creating a separate row for each element.
+This is similar to the `UNNEST` or `EXPLODE` SQL functions in other databases.
 
-配列やスカラー値を返すほとんどの配列関数とは異なり、`arrayJoin` は行数を増やすことで結果セットを根本的に変更します。
+Unlike most array functions that return arrays or scalar values, `arrayJoin` fundamentally changes the result set by multiplying the number of rows.
 
-次のクエリを考えてみましょう。これは 0 から 100 までを 10 刻みで表す値の配列を返します。
-この配列は、0 分、10 分、20 分、といった具合に、さまざまな遅延時間を表していると考えることができます。
+Consider the query below which returns an array of values from 0 to 100 in steps of 10.
+We could consider the array to be different delay times: 0 minutes, 10 minutes, 20 minutes, and so on.
 
 ```sql runnable
 WITH range(0, 100, 10) AS delay
 SELECT delay
 ```
 
-`arrayJoin` を使ったクエリを書くことで、2 つの空港間のフライトについて、遅延時間がある分数以下となる便が何件あったかを求めることができます。
-以下のクエリは、累積遅延バケットを使って、2024 年 1 月 1 日におけるデンバー (DEN) からマイアミ (MIA) へのフライト遅延の分布を示すヒストグラムを作成します。
+We can write a query using `arrayJoin` to work out how many delays there were of up to that number of minutes between two airports.
+The query below creates a histogram showing the distribution of flight delays from Denver (DEN) to Miami (MIA) on January 1, 2024, using cumulative delay buckets:
 
 ```sql runnable
 WITH range(0, 100, 10) AS delay,
@@ -472,17 +470,17 @@ GROUP BY delayTime
 ORDER BY flightsDelayed DESC
 ```
 
-上記のクエリでは、CTE 句（`WITH` 句）を使って遅延時間の配列を返しています。
-`Destination` は目的地コードを文字列に変換します。
+In the query above we return an array of delays using a CTE clause (`WITH` clause).
+`Destination` converts the destination code to a string.
 
-`arrayJoin` を使用して、遅延時間の配列を複数の行に展開します。
-`delay` 配列の各値は、エイリアス `del` を持つ独立した行となり、
-`del=0` の行が 1 つ、`del=10` の行が 1 つ、`del=20` の行が 1 つ、といった具合に合計 10 行が得られます。
-各遅延しきい値（`del`）ごとに、クエリはそのしきい値以上の遅延があったフライトの数を
-`countIf(DepDelayMinutes >= del)` を使ってカウントします。
+We use `arrayJoin` to explode the delay array into separate rows.
+Each value from the `delay` array becomes its own row with alias `del`,
+and we get 10 rows: one for `del=0`, one for `del=10`, one for `del=20`, etc.
+For each delay threshold (`del`), the query counts how many flights had delays greater than or equal to that threshold
+using `countIf(DepDelayMinutes >= del)`.
 
-`arrayJoin` には、同等の SQL コマンドである `ARRAY JOIN` もあります。
-上記のクエリを、この SQL コマンドを用いた同等の表現として書き換えたものを、比較のために以下に示します。
+`arrayJoin` also has a SQL command equivalent `ARRAY JOIN`.
+The query above is reproduced below with the SQL command equivalent for comparison:
 
 ```sql runnable
 WITH range(0, 100, 10) AS delay, 

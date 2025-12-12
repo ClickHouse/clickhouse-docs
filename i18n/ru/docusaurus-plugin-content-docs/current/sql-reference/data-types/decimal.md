@@ -86,7 +86,7 @@ SELECT toDecimal32(4.2, 8) AS x, x * x
 ```
 
 ```text
-DB::Exception: Значение масштаба выходит за допустимые пределы.
+DB::Exception: Scale is out of bounds.
 ```
 
 ```sql
@@ -94,7 +94,7 @@ SELECT toDecimal32(4.2, 8) AS x, 6 * x
 ```
 
 ```text
-DB::Exception: Переполнение при арифметических операциях с типом Decimal.
+DB::Exception: Decimal math overflow.
 ```
 
 Проверки на переполнение приводят к замедлению операций. Если известно, что переполнения невозможны, имеет смысл отключить их с помощью настройки `decimal_check_overflow`. Когда проверки отключены и происходит переполнение, результат будет некорректным:
@@ -117,7 +117,7 @@ SELECT toDecimal32(1, 8) < 100
 ```
 
 ```text
-DB::Exception: Невозможно выполнить сравнение.
+DB::Exception: Can't compare.
 ```
 
 **См. также**

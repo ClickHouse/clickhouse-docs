@@ -55,29 +55,34 @@ SELECT ULIDStringToDateTime('01GNB2S2FGN2P93QPXDNB4EN2R')
 └────────────────────────────────────────────────────┘
 ```
 
+
+
 ## generateULID {#generateULID}
 
-導入バージョン: v23.2
+Introduced in: v23.2
 
-[Universally Unique Lexicographically Sortable Identifier (ULID)](https://github.com/ulid/spec) を生成します。
 
-**構文**
+Generates a [Universally Unique Lexicographically Sortable Identifier (ULID)](https://github.com/ulid/spec).
+    
+
+**Syntax**
 
 ```sql
 generateULID([x])
 ```
 
-**引数**
+**Arguments**
 
-* `x` — 省略可。サポートされている任意のデータ型の値を返す式。結果の値自体は破棄されますが、クエリ内でこの関数が複数回呼び出される場合に、[共通部分式除去](/sql-reference/functions/overview#common-subexpression-elimination) を回避するために式そのものが利用されます。型は [`Any`](/sql-reference/data-types) です。
+- `x` — Optional. An expression resulting in any of the supported data types. The resulting value is discarded, but the expression itself if used for bypassing [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) if the function is called multiple times in one query. [`Any`](/sql-reference/data-types)
 
-**戻り値**
 
-ULID を返します。型は [`FixedString(26)`](/sql-reference/data-types/fixedstring) です。
+**Returned value**
 
-**例**
+Returns a ULID. [`FixedString(26)`](/sql-reference/data-types/fixedstring)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT generateULID()
@@ -89,7 +94,7 @@ SELECT generateULID()
 └────────────────────────────┘
 ```
 
-**1 行に複数の値を生成する必要がある場合の使用例**
+**Usage example if it is needed to generate multiple values in one row**
 
 ```sql title=Query
 SELECT generateULID(1), generateULID(2)

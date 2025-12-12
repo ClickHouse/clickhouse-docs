@@ -32,58 +32,58 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 1. `postgresql.conf` で、PostgreSQL がネットワークインターフェイスで待ち受けできるようにするため、次の設定を追加します。
 
 ```text
-listen_addresses = '*'
-```
+  listen_addresses = '*'
+  ```
 
 2. ClickHouse から接続するためのユーザーを作成します。デモンストレーション目的のため、この例ではスーパーユーザー権限をすべて付与します。
 
 ```sql
-CREATE ROLE clickhouse_user SUPERUSER LOGIN PASSWORD 'ClickHouse_123';
-```
+  CREATE ROLE clickhouse_user SUPERUSER LOGIN PASSWORD 'ClickHouse_123';
+  ```
 
 3. PostgreSQL で新しいデータベースを作成する:
 
 ```sql
-CREATE DATABASE db_in_psg;
-```
+  CREATE DATABASE db_in_psg;
+  ```
 
 4. 新しいテーブルを作成します：
 
 ```sql
-CREATE TABLE table1 (
-    id         integer primary key,
-    column1    varchar(10)
-);
-```
+  CREATE TABLE table1 (
+      id         integer primary key,
+      column1    varchar(10)
+  );
+  ```
 
 5. テスト用にいくつか行を追加しましょう。
 
 ```sql
-INSERT INTO table1
-  (id, column1)
-VALUES
-  (1, 'abc'),
-  (2, 'def');
-```
+  INSERT INTO table1
+    (id, column1)
+  VALUES
+    (1, 'abc'),
+    (2, 'def');
+  ```
 
 6. レプリケーション用の新しいユーザーが新しいデータベースに接続できるように PostgreSQL を構成するには、`pg_hba.conf` ファイルに次のエントリを追加します。`address` 行のアドレスを、PostgreSQL サーバーのサブネットまたは IP アドレスに更新してください。
 
 ```text
-# TYPE  DATABASE        USER            ADDRESS                 METHOD
-host    db_in_psg             clickhouse_user 192.168.1.0/24          password
-```
+  # TYPE  DATABASE        USER            ADDRESS                 METHOD
+  host    db_in_psg             clickhouse_user 192.168.1.0/24          password
+  ```
 
 7. `pg_hba.conf` 設定ファイルを再読み込みします（利用しているバージョンに応じてこのコマンドを調整してください）:
 
 ```text
-/usr/pgsql-12/bin/pg_ctl reload
-```
+  /usr/pgsql-12/bin/pg_ctl reload
+  ```
 
 8. 新しい `clickhouse_user` がログインできることを確認します。
 
 ```text
-psql -U clickhouse_user -W -d db_in_psg -h <PostgreSQLホスト>
-```
+  psql -U clickhouse_user -W -d db_in_psg -h <your_postgresql_host>
+  ```
 
 :::note
 ClickHouse Cloud 上でこの機能を利用している場合、ClickHouse Cloud の IP アドレスから PostgreSQL インスタンスへのアクセスを許可する必要がある場合があります。
@@ -95,25 +95,25 @@ ClickHouse Cloud 上でこの機能を利用している場合、ClickHouse Clou
 1. `clickhouse-client` にログインします:
 
 ```bash
-clickhouse-client --user default --password ClickHouse123!
-```
+  clickhouse-client --user default --password ClickHouse123!
+  ```
 
 2. 新しいデータベースを作成します。
 
 ```sql
-CREATE DATABASE db_in_ch;
-```
+  CREATE DATABASE db_in_ch;
+  ```
 
 3. `PostgreSQL` を使用するテーブルを作成します：
 
 ```sql
-CREATE TABLE db_in_ch.table1
-(
-    id UInt64,
-    column1 String
-)
-ENGINE = PostgreSQL('postgres-host.domain.com:5432', 'db_in_psg', 'table1', 'clickhouse_user', 'ClickHouse_123');
-```
+  CREATE TABLE db_in_ch.table1
+  (
+      id UInt64,
+      column1 String
+  )
+  ENGINE = PostgreSQL('postgres-host.domain.com:5432', 'db_in_psg', 'table1', 'clickhouse_user', 'ClickHouse_123');
+  ```
 
 必要となる最小限のパラメータは次のとおりです:
 
@@ -133,73 +133,73 @@ ENGINE = PostgreSQL('postgres-host.domain.com:5432', 'db_in_psg', 'table1', 'cli
 1. ClickHouse で初期の行を表示します:
 
 ```sql
-SELECT * FROM db_in_ch.table1
-```
+  SELECT * FROM db_in_ch.table1
+  ```
 
 ClickHouse のテーブルには、PostgreSQL のテーブル内に既に存在していた 2 行が自動的に格納されているはずです。
 
 ```response
-クエリID: 34193d31-fe21-44ac-a182-36aaefbd78bf
+  Query id: 34193d31-fe21-44ac-a182-36aaefbd78bf
 
-┌─id─┬─column1─┐
-│  1 │ abc     │
-│  2 │ def     │
-└────┴─────────┘
-```
+  ┌─id─┬─column1─┐
+  │  1 │ abc     │
+  │  2 │ def     │
+  └────┴─────────┘
+  ```
 
 2. PostgreSQL に戻り、テーブルにいくつか行を追加します：
 
 ```sql
-INSERT INTO table1
-  (id, column1)
-VALUES
-  (3, 'ghi'),
-  (4, 'jkl');
-```
+  INSERT INTO table1
+    (id, column1)
+  VALUES
+    (3, 'ghi'),
+    (4, 'jkl');
+  ```
 
 4. その 2 つの新しい行が ClickHouse のテーブルに表示されているはずです。
 
 ```sql
-SELECT * FROM db_in_ch.table1
-```
+  SELECT * FROM db_in_ch.table1
+  ```
 
 レスポンスは次のとおりです。
 
 ```response
-Query id: 86fa2c62-d320-4e47-b564-47ebf3d5d27b
+  Query id: 86fa2c62-d320-4e47-b564-47ebf3d5d27b
 
-┌─id─┬─column1─┐
-│  1 │ abc     │
-│  2 │ def     │
-│  3 │ ghi     │
-│  4 │ jkl     │
-└────┴─────────┘
-```
+  ┌─id─┬─column1─┐
+  │  1 │ abc     │
+  │  2 │ def     │
+  │  3 │ ghi     │
+  │  4 │ jkl     │
+  └────┴─────────┘
+  ```
 
 5. ClickHouse テーブルに行を追加したときにどうなるか確認してみましょう。
 
 ```sql
-INSERT INTO db_in_ch.table1
-  (id, column1)
-VALUES
-  (5, 'mno'),
-  (6, 'pqr');
-```
+  INSERT INTO db_in_ch.table1
+    (id, column1)
+  VALUES
+    (5, 'mno'),
+    (6, 'pqr');
+  ```
 
 6. ClickHouse に追加された行が PostgreSQL のテーブルに表示されているはずです。
 
 ```sql
-db_in_psg=# SELECT * FROM table1;
-id | column1
-----+---------
-  1 | abc
-  2 | def
-  3 | ghi
-  4 | jkl
-  5 | mno
-  6 | pqr
-(6 rows)
-```
+  db_in_psg=# SELECT * FROM table1;
+  id | column1
+  ----+---------
+    1 | abc
+    2 | def
+    3 | ghi
+    4 | jkl
+    5 | mno
+    6 | pqr
+  (6 rows)
+  ```
 
 この例では、`PostrgeSQL` テーブルエンジンを使用して、PostgreSQL と ClickHouse の間の基本的な連携方法を示しました。
 スキーマの指定、特定のカラムのみを返す設定、複数レプリカへの接続など、さらに多くの機能については、[PostgreSQL テーブルエンジンのドキュメントページ](/engines/table-engines/integrations/postgresql) を参照してください。また、ブログ記事 [ClickHouse and PostgreSQL - a match made in data heaven - part 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres) もあわせてご覧ください。
@@ -286,7 +286,7 @@ host    db1             clickhouse_user 192.168.1.0/24          password
 9. 新しい `clickhouse_user` でログインできるかテストします。
 
 ```text
- psql -U clickhouse_user -W -d db1 -h <PostgreSQLホスト>
+ psql -U clickhouse_user -W -d db1 -h <your_postgresql_host>
 ```
 
 ### 2. ClickHouse で {#2-in-clickhouse}

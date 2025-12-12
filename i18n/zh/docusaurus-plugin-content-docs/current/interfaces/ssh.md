@@ -24,7 +24,7 @@ ClickHouse 服务器允许客户端通过 SSH 协议直接连接到服务器本�
 在创建了一个[以 SSH 密钥标识的数据库用户](/knowledgebase/how-to-connect-to-ch-cloud-using-ssh-keys)之后：
 
 ```sql
-CREATE USER abcuser IDENTIFIED WITH ssh_key BY KEY '<已隐藏>' TYPE 'ssh-ed25519';
+CREATE USER abcuser IDENTIFIED WITH ssh_key BY KEY '<REDACTED>' TYPE 'ssh-ed25519';
 ```
 
 你可以使用此密钥连接到 ClickHouse 服务器。这会打开一个伪终端（PTY），并启动一个交互式的 clickhouse-client 会话。
@@ -60,19 +60,19 @@ Query id: cdd91b7f-215b-4537-b7df-86d19bf63f64
 ```xml
 <tcp_ssh_port>9022</tcp_ssh_port>
 <ssh_server>
-   <host_rsa_key>密钥文件路径</host_rsa_key>
-   <!--host_ecdsa_key>密钥文件路径</host_ecdsa_key-->
-   <!--host_ed25519_key>密钥文件路径</host_ed25519_key-->
+   <host_rsa_key>path-to-the-key</host_rsa_key>
+   <!--host_ecdsa_key>path-to-the-key</host_ecdsa_key-->
+   <!--host_ed25519_key>path-to-the-key</host_ed25519_key-->
 </ssh_server>
 ```
 
 主机密钥是 SSH 协议中的重要组成部分。该密钥的公钥部分保存在客户端的 `~/.ssh/known_hosts` 文件中，通常用于防止中间人攻击。首次连接到服务器时，您会看到类似下面的消息：
 
 ```shell
-无法确认主机 '[localhost]:9022 ([127.0.0.1]:9022)' 的真实性。
-RSA 密钥指纹为 SHA256:3qxVlJKMr/PEKw/hfeg06HAK451Tt0eenhwqQvh58Do。
-此密钥未被任何其他名称识别。
-确定要继续连接吗(yes/no/[fingerprint])?
+The authenticity of host '[localhost]:9022 ([127.0.0.1]:9022)' can't be established.
+RSA key fingerprint is SHA256:3qxVlJKMr/PEKw/hfeg06HAK451Tt0eenhwqQvh58Do.
+This key is not known by any other names
+Are you sure you want to continue connecting (yes/no/[fingerprint])?
 ```
 
 事实上，这句话的意思是：“是否要记住该主机的公钥并继续连接？”

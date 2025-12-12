@@ -32,35 +32,35 @@ your_profile_name:
       type: clickhouse
 
       # Optional
-      schema: [default] # dbtモデル用のClickHouseデータベース
-      driver: [http] # httpまたはnative。未設定の場合、ポート設定に基づいて自動判定されます
+      schema: [default] # ClickHouse database for dbt models
+      driver: [http] # http or native.  If not set this will be autodetermined based on port setting
       host: [localhost] 
-      port: [8123]  # 未設定の場合、secureとdriverの設定に応じて8123、8443、9000、9440のいずれかがデフォルトになります
-      user: [default] # すべてのデータベース操作に使用するユーザー
-      password: [<empty string>] # ユーザーのパスワード
-      cluster: [<empty string>] # 設定されている場合、特定のDDL/テーブル操作がこのクラスタを使用して`ON CLUSTER`句で実行されます。分散マテリアライゼーションにはこの設定が必要です。詳細については、以下のClickHouseクラスタセクションを参照してください。
-      verify: [True] # TLS/SSL使用時にTLS証明書を検証します
-      secure: [False] # TLS(ネイティブプロトコル)またはHTTPS(httpプロトコル)を使用します
-      client_cert: [null] # .pem形式のTLSクライアント証明書へのパス
-      client_cert_key: [null] # TLSクライアント証明書の秘密鍵へのパス
-      retries: [1] # 「再試行可能な」データベース例外(503 'Service Unavailable'エラーなど)の再試行回数
-      compression: [<empty string>] # 真値の場合はgzip圧縮を使用(http)、またはネイティブ接続の圧縮タイプを指定
-      connect_timeout: [10] # ClickHouseへの接続確立のタイムアウト(秒)
-      send_receive_timeout: [300] # ClickHouseサーバーからのデータ受信のタイムアウト(秒)
-      cluster_mode: [False] # レプリケートされたデータベースでの動作を改善するための特定の設定を使用します(ClickHouse Cloudで推奨)
-      use_lw_deletes: [False] # デフォルトのインクリメンタル戦略として`delete+insert`戦略を使用します。
-      check_exchange: [True] # ClickHouseがアトミックなEXCHANGE TABLESコマンドをサポートしていることを検証します。(ほとんどのClickHouseバージョンでは不要)
-      local_suffix: [_local] # 分散マテリアライゼーション用のシャード上のローカルテーブルのテーブルサフィックス。
-      local_db_prefix: [<empty string>] # 分散マテリアライゼーション用のシャード上のローカルテーブルのデータベースプレフィックス。空の場合、分散テーブルと同じデータベースを使用します。
-      allow_automatic_deduplication: [False] # レプリケートされたテーブルに対してClickHouseの自動重複排除を有効にします
-      tcp_keepalive: [False] # ネイティブクライアントのみ、TCP keepalive設定を指定します。カスタムkeepalive設定を[idle_time_sec, interval_sec, probes]として指定します。
-      custom_settings: [{}] # 接続用のカスタムClickHouse設定の辞書/マッピング - デフォルトは空です。
-      database_engine: '' # 新しいClickHouseスキーマ(データベース)作成時に使用するデータベースエンジン。未設定の場合(デフォルト)、新しいデータベースはデフォルトのClickHouseデータベースエンジン(通常はAtomic)を使用します。
-      threads: [1] # クエリ実行時に使用するスレッド数。1より大きい数値に設定する前に、[read-after-write consistency](#read-after-write-consistency)セクションを必ず読んでください。
+      port: [8123]  # If not set, defaults to 8123, 8443, 9000, 9440 depending on the secure and driver settings 
+      user: [default] # User for all database operations
+      password: [<empty string>] # Password for the user
+      cluster: [<empty string>] # If set, certain DDL/table operations will be executed with the `ON CLUSTER` clause using this cluster. Distributed materializations require this setting to work. See the following ClickHouse Cluster section for more details.
+      verify: [True] # Validate TLS certificate if using TLS/SSL
+      secure: [False] # Use TLS (native protocol) or HTTPS (http protocol)
+      client_cert: [null] # Path to a TLS client certificate in .pem format
+      client_cert_key: [null] # Path to the private key for the TLS client certificate
+      retries: [1] # Number of times to retry a "retriable" database exception (such as a 503 'Service Unavailable' error)
+      compression: [<empty string>] # Use gzip compression if truthy (http), or compression type for a native connection
+      connect_timeout: [10] # Timeout in seconds to establish a connection to ClickHouse
+      send_receive_timeout: [300] # Timeout in seconds to receive data from the ClickHouse server
+      cluster_mode: [False] # Use specific settings designed to improve operation on Replicated databases (recommended for ClickHouse Cloud)
+      use_lw_deletes: [False] # Use the strategy `delete+insert` as the default incremental strategy.
+      check_exchange: [True] # Validate that clickhouse support the atomic EXCHANGE TABLES command.  (Not needed for most ClickHouse versions)
+      local_suffix: [_local] # Table suffix of local tables on shards for distributed materializations.
+      local_db_prefix: [<empty string>] # Database prefix of local tables on shards for distributed materializations. If empty, it uses the same database as the distributed table.
+      allow_automatic_deduplication: [False] # Enable ClickHouse automatic deduplication for Replicated tables
+      tcp_keepalive: [False] # Native client only, specify TCP keepalive configuration. Specify custom keepalive settings as [idle_time_sec, interval_sec, probes].
+      custom_settings: [{}] # A dictionary/mapping of custom ClickHouse settings for the connection - default is empty.
+      database_engine: '' # Database engine to use when creating new ClickHouse schemas (databases).  If not set (the default), new databases will use the default ClickHouse database engine (usually Atomic).
+      threads: [1] # Number of threads to use when running queries. Before setting it to a number higher than 1, make sure to read the [read-after-write consistency](#read-after-write-consistency) section.
       
-      # ネイティブ(clickhouse-driver)接続設定
-      sync_request_timeout: [5] # サーバーpingのタイムアウト
-      compress_block_size: [1048576] # 圧縮有効時の圧縮ブロックサイズ
+      # Native (clickhouse-driver) connection settings
+      sync_request_timeout: [5] # Timeout for server ping
+      compress_block_size: [1048576] # Compression block size if compression is enabled
 ```
 
 
@@ -85,7 +85,7 @@ dbt モデルのリレーション識別子 `database.schema.table` は ClickHou
 
 ```yaml
 seeds:
-  +quote_columns: false  # CSV列ヘッダーにスペースが含まれている場合は `true` に設定
+  +quote_columns: false  #or `true` if you have CSV column headers with spaces
 ```
 
 
@@ -234,7 +234,7 @@ ClickHouse の設定は数百個あり、「テーブル」設定と「ユーザ
 ```yaml
 models:
   - name: table_column_configs
-    description: '列レベル設定のテスト'
+    description: 'Testing column-level configurations'
     config:
       contract:
         enforced: true
@@ -262,11 +262,11 @@ dbt は、モデルの定義に用いられた SQL を解析して、各カラ�
 }}
 
 select
-  -- event_type は String として推論されますが、LowCardinality(String) の使用を推奨します:
+  -- event_type may be infered as a String but we may prefer LowCardinality(String):
   CAST(event_type, 'LowCardinality(String)') as event_type,
-  -- countState() は `AggregateFunction(count)` として推論されますが、引数の型を変更することを推奨します:
+  -- countState() may be infered as `AggregateFunction(count)` but we may prefer to change the type of the argument used:
   CAST(countState(), 'AggregateFunction(count, UInt32)') as response_count, 
-  -- maxSimpleState() は `SimpleAggregateFunction(max, String)` として推論されますが、引数の型も変更することを推奨します:
+  -- maxSimpleState() may be infered as `SimpleAggregateFunction(max, String)` but we may prefer to also change the type of the argument used:
   CAST(maxSimpleState(event_type), 'SimpleAggregateFunction(max, LowCardinality(String))') as max_event_type
 from {{ ref('user_events') }}
 group by event_type
@@ -755,7 +755,7 @@ ClickHouse は最近、Apache Iceberg テーブルおよびデータカタログ
 1. **外部カタログを参照するデータベースを作成します。**
 
 ```sql
--- REST カタログの例
+-- Example with REST Catalog
 SET allow_experimental_database_iceberg = 1;
 
 CREATE DATABASE iceberg_catalog

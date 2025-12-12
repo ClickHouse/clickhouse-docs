@@ -86,29 +86,33 @@ SELECT json, JSONAllPaths(json) FROM test;
 ```
 
 
+
 ## JSONAllPathsWithTypes {#JSONAllPathsWithTypes}
 
-自 v24.8 引入
+Introduced in: v24.8
 
-返回 JSON 列中每一行所存储的所有路径及其数据类型的列表。
 
-**语法**
+Returns the list of all paths and their data types stored in each row in JSON column.
+        
+
+**Syntax**
 
 ```sql
 JSONAllPathsWithTypes(json)
 ```
 
-**参数**
+**Arguments**
 
-* `json` — JSON 列。[`JSON`](/sql-reference/data-types/newjson)
+- `json` — JSON column. [`JSON`](/sql-reference/data-types/newjson)
 
-**返回值**
 
-返回 JSON 列中所有路径及其数据类型的映射。[`Map(String, String)`](/sql-reference/data-types/map)
+**Returned value**
 
-**示例**
+Returns a map of all paths and their data types in the JSON column. [`Map(String, String)`](/sql-reference/data-types/map)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE test (json JSON(max_dynamic_paths=1)) ENGINE = Memory;
@@ -125,32 +129,36 @@ SELECT json, JSONAllPathsWithTypes(json) FROM test;
 ```
 
 
+
 ## JSONArrayLength {#JSONArrayLength}
 
-引入版本：v23.2
+Introduced in: v23.2
 
-返回最外层 JSON 数组中元素的数量。
-如果输入的 JSON 字符串无效，该函数返回 `NULL`。
 
-**语法**
+Returns the number of elements in the outermost JSON array.
+The function returns `NULL` if input JSON string is invalid.
+    
+
+**Syntax**
 
 ```sql
 JSONArrayLength(json)
 ```
 
-**别名**：`JSON_ARRAY_LENGTH`
+**Aliases**: `JSON_ARRAY_LENGTH`
 
-**参数**
+**Arguments**
 
-* `json` — 含有有效 JSON 的字符串。[`String`](/sql-reference/data-types/string)
+- `json` — String with valid JSON. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-如果 `json` 是有效的 JSON 数组字符串，则返回数组元素的个数，否则返回 `NULL`。[`Nullable(UInt64)`](/sql-reference/data-types/nullable)
+**Returned value**
 
-**示例**
+Returns the number of array elements if `json` is a valid JSON array string, otherwise returns `NULL`. [`Nullable(UInt64)`](/sql-reference/data-types/nullable)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT
@@ -165,29 +173,33 @@ SELECT
 ```
 
 
+
 ## JSONDynamicPaths {#JSONDynamicPaths}
 
-自 v24.8 引入
+Introduced in: v24.8
 
-返回作为 JSON 列中单独子列存储的动态路径列表。
 
-**语法**
+Returns the list of dynamic paths that are stored as separate subcolumns in JSON column.
+        
+
+**Syntax**
 
 ```sql
 JSONDynamicPaths(json)
 ```
 
-**参数**
+**Arguments**
 
-* `json` — JSON 列。[`JSON`](/sql-reference/data-types/newjson)
+- `json` — JSON column. [`JSON`](/sql-reference/data-types/newjson)
 
-**返回值**
 
-返回一个包含 JSON 列中动态路径的数组。[`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**示例**
+Returns an array of dynamic paths in the JSON column. [`Array(String)`](/sql-reference/data-types/array)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE test (json JSON(max_dynamic_paths=1)) ENGINE = Memory;
@@ -204,29 +216,33 @@ SELECT json, JSONDynamicPaths(json) FROM test;
 ```
 
 
+
 ## JSONDynamicPathsWithTypes {#JSONDynamicPathsWithTypes}
 
-引入于：v24.8
+Introduced in: v24.8
 
-返回 JSON 列中每一行里，以独立子列形式存储的动态路径及其类型列表。
 
-**语法**
+Returns the list of dynamic paths that are stored as separate subcolumns and their types in each row in JSON column.
+        
+
+**Syntax**
 
 ```sql
 JSONDynamicPathsWithTypes(json)
 ```
 
-**参数**
+**Arguments**
 
-* `json` — JSON 列。[`JSON`](/sql-reference/data-types/newjson)
+- `json` — JSON column. [`JSON`](/sql-reference/data-types/newjson)
 
-**返回值**
 
-返回一个包含动态路径及其在 JSON 列中数据类型的映射。[`Map(String, String)`](/sql-reference/data-types/map)
+**Returned value**
 
-**示例**
+Returns a map of dynamic paths and their data types in the JSON column. [`Map(String, String)`](/sql-reference/data-types/map)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE test (json JSON(max_dynamic_paths=1)) ENGINE = Memory;
@@ -243,31 +259,35 @@ SELECT json, JSONDynamicPathsWithTypes(json) FROM test;
 ```
 
 
+
 ## JSONExtract {#JSONExtract}
 
-自 v19.14 引入
+Introduced in: v19.14
 
-解析 JSON，并按指定的 ClickHouse 数据类型提取值。
 
-**语法**
+Parses JSON and extracts a value with given ClickHouse data type.
+        
+
+**Syntax**
 
 ```sql
 JSONExtract(json[, indices_or_keys, ...], return_type)
 ```
 
-**参数**
+**Arguments**
 
-* `json` — 要解析的 JSON 字符串。[`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 由零个或多个参数组成的列表，每个参数可以是字符串或整数。[`String`](/sql-reference/data-types/string) 或 [`(U)Int*`](/sql-reference/data-types/int-uint)
-* `return_type` — 要返回的 ClickHouse 数据类型。[`String`](/sql-reference/data-types/string)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `return_type` — ClickHouse data type to return. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-在可能的情况下，返回指定的 ClickHouse 数据类型的值，否则返回该类型的默认值。
+**Returned value**
 
-**示例**
+Returns a value of specified ClickHouse data type if possible, otherwise returns the default value for that type.
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtract('{"a": "hello", "b": [-100, 200.0, 300]}', 'Tuple(String, Array(Float64))') AS res;
@@ -280,30 +300,34 @@ SELECT JSONExtract('{"a": "hello", "b": [-100, 200.0, 300]}', 'Tuple(String, Arr
 ```
 
 
+
 ## JSONExtractArrayRaw {#JSONExtractArrayRaw}
 
-自 v20.1 引入
+Introduced in: v20.1
 
-返回一个数组，其元素为 JSON 数组中的各个元素，每个元素以未解析的原始字符串形式表示。
 
-**语法**
+Returns an array with elements of JSON array, each represented as unparsed string.
+        
+
+**Syntax**
 
 ```sql
 JSONExtractArrayRaw(json[, indices_or_keys, ...])
 ```
 
-**参数**
+**Arguments**
 
-* `json` — 要解析的 JSON 字符串。[`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 由零个或多个参数组成的列表，每个参数可以是字符串或整数。[`String`](/sql-reference/data-types/string) 或 [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回一个由 JSON 数组元素组成的字符串数组。如果相应部分不是数组或不存在，则返回空数组。[`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**示例**
+Returns an array of strings with JSON array elements. If the part is not an array or does not exist, an empty array will be returned. [`Array(String)`](/sql-reference/data-types/array)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtractArrayRaw('{"a": "hello", "b": [-100, 200.0, "hello"]}', 'b') AS res;
@@ -316,30 +340,34 @@ SELECT JSONExtractArrayRaw('{"a": "hello", "b": [-100, 200.0, "hello"]}', 'b') A
 ```
 
 
+
 ## JSONExtractArrayRawCaseInsensitive {#JSONExtractArrayRawCaseInsensitive}
 
-引入版本：v25.8
+Introduced in: v25.8
 
-返回一个数组，其中包含 JSON 数组的各个元素，每个元素以未解析的字符串形式表示，并使用不区分大小写的键匹配。此函数类似于 [`JSONExtractArrayRaw`](#JSONExtractArrayRaw)。
 
-**语法**
+Returns an array with elements of JSON array, each represented as unparsed string, using case-insensitive key matching. This function is similar to [`JSONExtractArrayRaw`](#JSONExtractArrayRaw).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractArrayRawCaseInsensitive(json [, indices_or_keys]...)
 ```
 
-**参数**
+**Arguments**
 
-* `json` — 要解析的 JSON 字符串 [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 可选。用于定位到数组的索引或键。键名进行大小写不敏感匹配 [`String`](/sql-reference/data-types/string) 或 [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the array. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回原始 JSON 字符串的数组。[`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**示例**
+Returns an array of raw JSON strings. [`Array(String)`](/sql-reference/data-types/array)
 
-**基本示例**
+**Examples**
+
+**basic**
 
 ```sql title=Query
 SELECT JSONExtractArrayRawCaseInsensitive('{"Items": [1, 2, 3]}', 'ITEMS')
@@ -350,30 +378,34 @@ SELECT JSONExtractArrayRawCaseInsensitive('{"Items": [1, 2, 3]}', 'ITEMS')
 ```
 
 
+
 ## JSONExtractBool {#JSONExtractBool}
 
-引入版本：v20.1
+Introduced in: v20.1
 
-解析 JSON 并提取 Bool 类型的值。
 
-**语法**
+Parses JSON and extracts a value of Bool type.
+        
+
+**Syntax**
 
 ```sql
 JSONExtractBool(json[, indices_or_keys, ...])
 ```
 
-**参数**
+**Arguments**
 
-* `json` — 要解析的 JSON 字符串。[`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 由零个或多个参数组成的列表，每个参数可以是字符串或整数。[`String`](/sql-reference/data-types/string) 或 [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-如果存在则返回 Bool 值，否则返回 `0`。[`Bool`](/sql-reference/data-types/boolean)
+**Returned value**
 
-**示例**
+Returns a Bool value if it exists, otherwise returns `0`. [`Bool`](/sql-reference/data-types/boolean)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtractBool('{"passed": true}', 'passed') AS res;
@@ -386,30 +418,34 @@ SELECT JSONExtractBool('{"passed": true}', 'passed') AS res;
 ```
 
 
+
 ## JSONExtractBoolCaseInsensitive {#JSONExtractBoolCaseInsensitive}
 
-自 v25.8 起引入。
+Introduced in: v25.8
 
-解析 JSON，并通过不区分大小写的键名匹配提取布尔值。该函数类似于 [`JSONExtractBool`](#JSONExtractBool)。
 
-**语法**
+Parses JSON and extracts a boolean value using case-insensitive key matching. This function is similar to [`JSONExtractBool`](#JSONExtractBool).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractBoolCaseInsensitive(json [, indices_or_keys]...)
 ```
 
-**参数**
+**Arguments**
 
-* `json` — 要解析的 JSON 字符串 [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 可选。用于导航到目标字段的索引或键。键进行不区分大小写的匹配 [`String`](/sql-reference/data-types/string) 或 [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the field. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回提取的布尔值（true 为 1，false 为 0），未找到时返回 0。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns the extracted boolean value (1 for true, 0 for false), 0 if not found. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**基础用法**
+**Examples**
+
+**basic**
 
 ```sql title=Query
 SELECT JSONExtractBoolCaseInsensitive('{"IsActive": true}', 'isactive')
@@ -420,31 +456,35 @@ SELECT JSONExtractBoolCaseInsensitive('{"IsActive": true}', 'isactive')
 ```
 
 
+
 ## JSONExtractCaseInsensitive {#JSONExtractCaseInsensitive}
 
-引入版本：v25.8
+Introduced in: v25.8
 
-解析 JSON，并使用不区分大小写的键进行匹配，提取指定 ClickHouse 数据类型的值。此函数类似于 [`JSONExtract`](#JSONExtract)。
 
-**语法**
+Parses JSON and extracts a value of the given ClickHouse data type using case-insensitive key matching. This function is similar to [`JSONExtract`](#JSONExtract).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractCaseInsensitive(json [, indices_or_keys...], return_type)
 ```
 
-**参数**
+**Arguments**
 
-* `json` — 要解析的 JSON 字符串 [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 可选。用于导航到目标字段的索引或键。键匹配时不区分大小写 [`String`](/sql-reference/data-types/string) 或 [`(U)Int*`](/sql-reference/data-types/int-uint)
-* `return_type` — 要将结果提取为的 ClickHouse 数据类型 [`String`](/sql-reference/data-types/string)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the field. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `return_type` — The ClickHouse data type to extract [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回提取出的值，类型为指定的数据类型。[`Any`](/sql-reference/data-types)
+**Returned value**
 
-**示例**
+Returns the extracted value in the specified data type. [`Any`](/sql-reference/data-types)
 
-**int&#95;type**
+**Examples**
+
+**int_type**
 
 ```sql title=Query
 SELECT JSONExtractCaseInsensitive('{"Number": 123}', 'number', 'Int32')
@@ -454,7 +494,7 @@ SELECT JSONExtractCaseInsensitive('{"Number": 123}', 'number', 'Int32')
 123
 ```
 
-**array&#95;type**
+**array_type**
 
 ```sql title=Query
 SELECT JSONExtractCaseInsensitive('{"List": [1, 2, 3]}', 'list', 'Array(Int32)')
@@ -465,30 +505,34 @@ SELECT JSONExtractCaseInsensitive('{"List": [1, 2, 3]}', 'list', 'Array(Int32)')
 ```
 
 
+
 ## JSONExtractFloat {#JSONExtractFloat}
 
-引入版本：v20.1
+Introduced in: v20.1
 
-解析 JSON 并提取 `Float` 类型值。
 
-**语法**
+Parses JSON and extracts a value of Float type.
+        
+
+**Syntax**
 
 ```sql
 JSONExtractFloat(json[, indices_or_keys, ...])
 ```
 
-**参数**
+**Arguments**
 
-* `json` — 要解析的 JSON 字符串。[`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 由零个或多个参数组成的列表，每个参数可以是字符串或整数。[`String`](/sql-reference/data-types/string) 或 [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-如果存在则返回 Float 值，否则返回 `0`。[`Float64`](/sql-reference/data-types/float)
+**Returned value**
 
-**示例**
+Returns a Float value if it exists, otherwise returns `0`. [`Float64`](/sql-reference/data-types/float)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtractFloat('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 2) AS res;
@@ -501,30 +545,34 @@ SELECT JSONExtractFloat('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 2) AS re
 ```
 
 
+
 ## JSONExtractFloatCaseInsensitive {#JSONExtractFloatCaseInsensitive}
 
-自 v25.8 版本引入
+Introduced in: v25.8
 
-解析 JSON，并使用不区分大小写的键匹配提取 Float 类型的值。该函数类似于 [`JSONExtractFloat`](#JSONExtractFloat)。
 
-**语法**
+Parses JSON and extracts a value of Float type using case-insensitive key matching. This function is similar to [`JSONExtractFloat`](#JSONExtractFloat).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractFloatCaseInsensitive(json [, indices_or_keys]...)
 ```
 
-**参数**
+**Arguments**
 
-* `json` — 要解析的 JSON 字符串 [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 可选。用于导航到目标字段的索引或键。键进行不区分大小写的匹配 [`String`](/sql-reference/data-types/string) 或 [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the field. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回提取到的浮点数值，若未找到或无法转换则返回 0。[`Float64`](/sql-reference/data-types/float)
+**Returned value**
 
-**示例**
+Returns the extracted Float value, 0 if not found or cannot be converted. [`Float64`](/sql-reference/data-types/float)
 
-**基本示例**
+**Examples**
+
+**basic**
 
 ```sql title=Query
 SELECT JSONExtractFloatCaseInsensitive('{"Price": 12.34}', 'PRICE')
@@ -535,30 +583,34 @@ SELECT JSONExtractFloatCaseInsensitive('{"Price": 12.34}', 'PRICE')
 ```
 
 
+
 ## JSONExtractInt {#JSONExtractInt}
 
-首次引入于：v20.1
+Introduced in: v20.1
 
-解析 JSON 并提取 Int 类型的值。
 
-**语法**
+Parses JSON and extracts a value of Int type.
+        
+
+**Syntax**
 
 ```sql
 JSONExtractInt(json[, indices_or_keys, ...])
 ```
 
-**参数**
+**Arguments**
 
-* `json` — 要解析的 JSON 字符串。[`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 由零个或多个参数组成的列表，每个参数可以是字符串或整数。[`String`](/sql-reference/data-types/string) 或 [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-如果对应值存在则返回整型值，否则返回 `0`。[`Int64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns an Int value if it exists, otherwise returns `0`. [`Int64`](/sql-reference/data-types/int-uint)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtractInt('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 1) AS res;
@@ -571,30 +623,34 @@ SELECT JSONExtractInt('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 1) AS res;
 ```
 
 
+
 ## JSONExtractIntCaseInsensitive {#JSONExtractIntCaseInsensitive}
 
-引入版本：v25.8
+Introduced in: v25.8
 
-解析 JSON，并通过不区分大小写的键匹配来提取 Int 类型的值。此函数类似于 [`JSONExtractInt`](#JSONExtractInt)。
 
-**语法**
+Parses JSON and extracts a value of Int type using case-insensitive key matching. This function is similar to [`JSONExtractInt`](#JSONExtractInt).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractIntCaseInsensitive(json [, indices_or_keys]...)
 ```
 
-**参数**
+**Arguments**
 
-* `json` — 要解析的 JSON 字符串 [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 可选。用于导航到字段的索引或键。键使用不区分大小写的匹配方式 [`String`](/sql-reference/data-types/string) 或 [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the field. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回提取到的 Int 值；如果未找到或无法转换则返回 0。[`Int64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns the extracted Int value, 0 if not found or cannot be converted. [`Int64`](/sql-reference/data-types/int-uint)
 
-**基本示例**
+**Examples**
+
+**basic**
 
 ```sql title=Query
 SELECT JSONExtractIntCaseInsensitive('{"Value": 123}', 'value')
@@ -604,7 +660,7 @@ SELECT JSONExtractIntCaseInsensitive('{"Value": 123}', 'value')
 123
 ```
 
-**嵌套**
+**nested**
 
 ```sql title=Query
 SELECT JSONExtractIntCaseInsensitive('{"DATA": {"COUNT": 42}}', 'data', 'Count')
@@ -615,30 +671,34 @@ SELECT JSONExtractIntCaseInsensitive('{"DATA": {"COUNT": 42}}', 'data', 'Count')
 ```
 
 
+
 ## JSONExtractKeys {#JSONExtractKeys}
 
-自 v21.11 引入
+Introduced in: v21.11
 
-解析一个 JSON 字符串并提取其中的键。
 
-**语法**
+Parses a JSON string and extracts the keys.
+        
+
+**Syntax**
 
 ```sql
 JSONExtractKeys(json[, indices_or_keys, ...])
 ```
 
-**参数**
+**Arguments**
 
-* `json` — 要解析的 JSON 字符串。[`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 由零个或多个参数组成的列表，每个参数可以是字符串或整数类型。[`String`](/sql-reference/data-types/string) 或 [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回一个包含该 JSON 对象键的数组。[`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**示例**
+Returns an array with the keys of the JSON object. [`Array(String)`](/sql-reference/data-types/array)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtractKeys('{"a": "hello", "b": [-100, 200.0, 300]}') AS res;
@@ -651,31 +711,35 @@ SELECT JSONExtractKeys('{"a": "hello", "b": [-100, 200.0, 300]}') AS res;
 ```
 
 
+
 ## JSONExtractKeysAndValues {#JSONExtractKeysAndValues}
 
-自 v20.1 起引入
+Introduced in: v20.1
 
-从 JSON 中解析键值对，其中值为指定的 ClickHouse 数据类型。
 
-**语法**
+Parses key-value pairs from a JSON where the values are of the given ClickHouse data type.
+        
+
+**Syntax**
 
 ```sql
 JSONExtractKeysAndValues(json[, indices_or_keys, ...], value_type)
 ```
 
-**参数**
+**Arguments**
 
-* `json` — 要解析的 JSON 字符串。[`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 由零个或多个参数组成的列表，每个参数可以是字符串或整数。[`String`](/sql-reference/data-types/string) 或 [`(U)Int*`](/sql-reference/data-types/int-uint)
-* `value_type` — 值在 ClickHouse 中的数据类型。[`String`](/sql-reference/data-types/string)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `value_type` — ClickHouse data type of the values. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回一个元组数组，其中包含解析出的键值对。[`Array(Tuple(String, value_type))`](/sql-reference/data-types/array)
+**Returned value**
 
-**示例**
+Returns an array of tuples with the parsed key-value pairs. [`Array(Tuple(String, value_type))`](/sql-reference/data-types/array)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtractKeysAndValues('{"x": {"a": 5, "b": 7, "c": 11}}', 'Int8', 'x') AS res;
@@ -688,31 +752,35 @@ SELECT JSONExtractKeysAndValues('{"x": {"a": 5, "b": 7, "c": 11}}', 'Int8', 'x')
 ```
 
 
+
 ## JSONExtractKeysAndValuesCaseInsensitive {#JSONExtractKeysAndValuesCaseInsensitive}
 
-引入自：v25.8
+Introduced in: v25.8
 
-使用对键名大小写不敏感的匹配方式，从 JSON 中解析键值对。此函数类似于 [`JSONExtractKeysAndValues`](#JSONExtractKeysAndValues)。
 
-**语法**
+Parses key-value pairs from JSON using case-insensitive key matching. This function is similar to [`JSONExtractKeysAndValues`](#JSONExtractKeysAndValues).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractKeysAndValuesCaseInsensitive(json [, indices_or_keys...], value_type)
 ```
 
-**参数**
+**Arguments**
 
-* `json` — 要解析的 JSON 字符串 [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 可选。用于定位到目标对象的索引或键。键匹配不区分大小写 [`String`](/sql-reference/data-types/string) 或 [`(U)Int*`](/sql-reference/data-types/int-uint)
-* `value_type` — 值在 ClickHouse 中的数据类型 [`String`](/sql-reference/data-types/string)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the object. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `value_type` — The ClickHouse data type of the values [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回一个包含键值对的元组数组。[`Array(Tuple(String, T))`](/sql-reference/data-types/array)
+**Returned value**
 
-**示例**
+Returns an array of tuples containing key-value pairs. [`Array(Tuple(String, T))`](/sql-reference/data-types/array)
 
-**基础示例**
+**Examples**
+
+**basic**
 
 ```sql title=Query
 SELECT JSONExtractKeysAndValuesCaseInsensitive('{"Name": "Alice", "AGE": 30}', 'String')
@@ -723,30 +791,34 @@ SELECT JSONExtractKeysAndValuesCaseInsensitive('{"Name": "Alice", "AGE": 30}', '
 ```
 
 
+
 ## JSONExtractKeysAndValuesRaw {#JSONExtractKeysAndValuesRaw}
 
-自 v20.4 起引入
+Introduced in: v20.4
 
-返回一个由元组组成的数组，每个元组包含 JSON 对象中的键和值。所有值都以未解析的字符串形式表示。
 
-**语法**
+Returns an array of tuples with keys and values from a JSON object. All values are represented as unparsed strings.
+        
+
+**Syntax**
 
 ```sql
 JSONExtractKeysAndValuesRaw(json[, indices_or_keys, ...])
 ```
 
-**参数**
+**Arguments**
 
-* `json` — 要解析的 JSON 字符串。[`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 由零个或多个参数组成的列表，每个参数可以是字符串或整数。[`String`](/sql-reference/data-types/string) 或 [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回一个包含已解析键值对的元组数组，其中各值为未进一步解析的字符串。[`Array(Tuple(String, String))`](/sql-reference/data-types/array)
+**Returned value**
 
-**示例**
+Returns an array of tuples with parsed key-value pairs where values are unparsed strings. [`Array(Tuple(String, String))`](/sql-reference/data-types/array)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b": "hello"}') AS res;
@@ -759,30 +831,34 @@ SELECT JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b": "hello"}') AS res;
 ```
 
 
+
 ## JSONExtractKeysAndValuesRawCaseInsensitive {#JSONExtractKeysAndValuesRawCaseInsensitive}
 
-引入于：v25.8
+Introduced in: v25.8
 
-使用不区分大小写的键匹配，从 JSON 中提取原始键值对。此函数类似于 [`JSONExtractKeysAndValuesRaw`](#JSONExtractKeysAndValuesRaw)。
 
-**语法**
+Extracts raw key-value pairs from JSON using case-insensitive key matching. This function is similar to [`JSONExtractKeysAndValuesRaw`](#JSONExtractKeysAndValuesRaw).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractKeysAndValuesRawCaseInsensitive(json [, indices_or_keys]...)
 ```
 
-**参数**
+**Arguments**
 
-* `json` — 要解析的 JSON 字符串 [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 可选。用于定位到目标对象的索引或键。键不区分大小写进行匹配，可为 [`String`](/sql-reference/data-types/string) 或 [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the object. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回一个由元组组成的数组，每个元组包含一组键值对的原始字符串形式。[`Array(Tuple(String, String))`](/sql-reference/data-types/array)
+**Returned value**
 
-**示例**
+Returns an array of tuples containing key-value pairs as raw strings. [`Array(Tuple(String, String))`](/sql-reference/data-types/array)
 
-**基础用法**
+**Examples**
+
+**basic**
 
 ```sql title=Query
 SELECT JSONExtractKeysAndValuesRawCaseInsensitive('{"Name": "Alice", "AGE": 30}')
@@ -793,30 +869,34 @@ SELECT JSONExtractKeysAndValuesRawCaseInsensitive('{"Name": "Alice", "AGE": 30}'
 ```
 
 
+
 ## JSONExtractKeysCaseInsensitive {#JSONExtractKeysCaseInsensitive}
 
-引入版本：v25.8
+Introduced in: v25.8
 
-解析 JSON 字符串，并通过不区分大小写的键匹配导航到嵌套对象，从中提取键。此函数类似于 [`JSONExtractKeys`](#JSONExtractKeys)。
 
-**语法**
+Parses a JSON string and extracts the keys using case-insensitive key matching to navigate to nested objects. This function is similar to [`JSONExtractKeys`](#JSONExtractKeys).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractKeysCaseInsensitive(json [, indices_or_keys]...)
 ```
 
-**参数**
+**Arguments**
 
-* `json` — 要解析的 JSON 字符串 [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 可选。用于导航到目标对象的索引或键。键进行不区分大小写的匹配，可为 [`String`](/sql-reference/data-types/string) 或 [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the object. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回 JSON 对象中的键组成的数组。[`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**示例**
+Returns an array of keys from the JSON object. [`Array(String)`](/sql-reference/data-types/array)
 
-**基本示例**
+**Examples**
+
+**basic**
 
 ```sql title=Query
 SELECT JSONExtractKeysCaseInsensitive('{"Name": "Alice", "AGE": 30}')
@@ -826,7 +906,7 @@ SELECT JSONExtractKeysCaseInsensitive('{"Name": "Alice", "AGE": 30}')
 ['Name','AGE']
 ```
 
-**嵌套**
+**nested**
 
 ```sql title=Query
 SELECT JSONExtractKeysCaseInsensitive('{"User": {"name": "John", "AGE": 25}}', 'user')
@@ -837,30 +917,34 @@ SELECT JSONExtractKeysCaseInsensitive('{"User": {"name": "John", "AGE": 25}}', '
 ```
 
 
+
 ## JSONExtractRaw {#JSONExtractRaw}
 
-自 v20.1 版本引入
+Introduced in: v20.1
 
-以未解析的字符串形式返回 JSON 的一部分。
 
-**语法**
+Returns a part of JSON as unparsed string.
+        
+
+**Syntax**
 
 ```sql
 JSONExtractRaw(json[, indices_or_keys, ...])
 ```
 
-**参数**
+**Arguments**
 
-* `json` — 要解析的 JSON 字符串。[`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 由零个或多个参数组成的列表，每个参数可以是字符串或整数。[`String`](/sql-reference/data-types/string) 或 [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回 JSON 中对应部分的原始未解析字符串。如果该部分不存在或类型不匹配，则返回空字符串。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns the part of JSON as an unparsed string. If the part does not exist or has a wrong type, an empty string will be returned. [`String`](/sql-reference/data-types/string)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtractRaw('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') AS res;
@@ -873,28 +957,32 @@ SELECT JSONExtractRaw('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') AS res;
 ```
 
 
+
 ## JSONExtractRawCaseInsensitive {#JSONExtractRawCaseInsensitive}
 
-引入于：v25.8
+Introduced in: v25.8
 
-使用不区分大小写的键名匹配，从 JSON 中返回部分内容作为未解析字符串。此函数类似于 [`JSONExtractRaw`](#JSONExtractRaw)。
 
-**语法**
+Returns part of the JSON as an unparsed string using case-insensitive key matching. This function is similar to [`JSONExtractRaw`](#JSONExtractRaw).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractRawCaseInsensitive(json [, indices_or_keys]...)
 ```
 
-**参数**
+**Arguments**
 
-* `json` — 要解析的 JSON 字符串 [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 可选。用于导航到目标字段的索引或键。键名进行大小写不敏感匹配 [`String`](/sql-reference/data-types/string) 或 [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the field. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回提取元素的原始 JSON 字符串。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns the raw JSON string of the extracted element. [`String`](/sql-reference/data-types/string)
+
+**Examples**
 
 **object**
 
@@ -907,30 +995,34 @@ SELECT JSONExtractRawCaseInsensitive('{"Object": {"key": "value"}}', 'OBJECT')
 ```
 
 
+
 ## JSONExtractString {#JSONExtractString}
 
-自 v20.1 版本引入
+Introduced in: v20.1
 
-解析 JSON 并提取 String 类型的值。
 
-**语法**
+Parses JSON and extracts a value of String type.
+        
+
+**Syntax**
 
 ```sql
 JSONExtractString(json[, indices_or_keys, ...])
 ```
 
-**参数**
+**Arguments**
 
-* `json` — 要解析的 JSON 字符串。[`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 由零个或多个参数组成的列表，每个参数可以是字符串或整数。[`String`](/sql-reference/data-types/string) 或 [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-如果存在则返回一个 String 类型的值，否则返回空字符串。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns a String value if it exists, otherwise returns an empty string. [`String`](/sql-reference/data-types/string)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtractString('{"a": "hello", "b": [-100, 200.0, 300]}', 'a') AS res;
@@ -943,30 +1035,34 @@ SELECT JSONExtractString('{"a": "hello", "b": [-100, 200.0, 300]}', 'a') AS res;
 ```
 
 
+
 ## JSONExtractStringCaseInsensitive {#JSONExtractStringCaseInsensitive}
 
-自 v25.8 引入
+Introduced in: v25.8
 
-解析 JSON，并使用不区分大小写的键匹配来提取字符串。此函数类似于 [`JSONExtractString`](#JSONExtractString)。
 
-**语法**
+Parses JSON and extracts a string using case-insensitive key matching. This function is similar to [`JSONExtractString`](#JSONExtractString).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractStringCaseInsensitive(json [, indices_or_keys]...)
 ```
 
-**参数**
+**Arguments**
 
-* `json` — 要解析的 JSON 字符串 [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 可选。用于导航到目标字段的索引或键。键进行不区分大小写的匹配 [`String`](/sql-reference/data-types/string) 或 [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the field. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回提取出的字符串值，如果未找到则返回空字符串。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns the extracted string value, empty string if not found. [`String`](/sql-reference/data-types/string)
 
-**基础用法**
+**Examples**
+
+**basic**
 
 ```sql title=Query
 SELECT JSONExtractStringCaseInsensitive('{"ABC": "def"}', 'abc')
@@ -976,7 +1072,7 @@ SELECT JSONExtractStringCaseInsensitive('{"ABC": "def"}', 'abc')
 def
 ```
 
-**嵌套**
+**nested**
 
 ```sql title=Query
 SELECT JSONExtractStringCaseInsensitive('{"User": {"Name": "John"}}', 'user', 'name')
@@ -987,30 +1083,34 @@ John
 ```
 
 
+
 ## JSONExtractUInt {#JSONExtractUInt}
 
-自 v20.1 起引入
+Introduced in: v20.1
 
-解析 JSON 并提取 `UInt` 类型的值。
 
-**语法**
+Parses JSON and extracts a value of UInt type.
+        
+
+**Syntax**
 
 ```sql
 JSONExtractUInt(json [, indices_or_keys, ...])
 ```
 
-**参数**
+**Arguments**
 
-* `json` — 要解析的 JSON 字符串。[`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 由零个或多个参数组成的列表，每个参数可以是字符串或整数。[`String`](/sql-reference/data-types/string) 或 [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-如果对应值存在则返回一个 UInt 值，否则返回 `0`。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns a UInt value if it exists, otherwise returns `0`. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtractUInt('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', -1) AS res;
@@ -1023,30 +1123,34 @@ SELECT JSONExtractUInt('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', -1) AS re
 ```
 
 
+
 ## JSONExtractUIntCaseInsensitive {#JSONExtractUIntCaseInsensitive}
 
-引入于：v25.8
+Introduced in: v25.8
 
-解析 JSON，并使用不区分大小写的键名匹配来提取 `UInt` 类型的值。此函数类似于 [`JSONExtractUInt`](#JSONExtractUInt)。
 
-**语法**
+Parses JSON and extracts a value of UInt type using case-insensitive key matching. This function is similar to [`JSONExtractUInt`](#JSONExtractUInt).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractUIntCaseInsensitive(json [, indices_or_keys]...)
 ```
 
-**参数**
+**Arguments**
 
-* `json` — 要解析的 JSON 字符串 [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 可选。用于定位到目标字段的索引或键。键使用不区分大小写匹配 [`String`](/sql-reference/data-types/string) 或 [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the field. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回提取到的 UInt 值；如果未找到或无法转换，则返回 0。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns the extracted UInt value, 0 if not found or cannot be converted. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**基本用法**
+**Examples**
+
+**basic**
 
 ```sql title=Query
 SELECT JSONExtractUIntCaseInsensitive('{"COUNT": 789}', 'count')
@@ -1057,30 +1161,34 @@ SELECT JSONExtractUIntCaseInsensitive('{"COUNT": 789}', 'count')
 ```
 
 
+
 ## JSONHas {#JSONHas}
 
-引入版本：v20.1
+Introduced in: v20.1
 
-检查 JSON 文档中是否存在提供的值（一个或多个）。
 
-**语法**
+Checks for the existence of the provided value(s) in the JSON document.
+        
+
+**Syntax**
 
 ```sql
 JSONHas(json[ ,indices_or_keys, ...])
 ```
 
-**参数**
+**Arguments**
 
-* `json` — 要解析的 JSON 字符串 [`String`](/sql-reference/data-types/string)
-* `[ ,indices_or_keys, ...]` — 由零个或多个参数组成的列表。[`String`](/sql-reference/data-types/string) 或 [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `[ ,indices_or_keys, ...]` — A list of zero or more arguments. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-如果该值在 `json` 中存在，则返回 `1`，否则返回 `0` [`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns `1` if the value exists in `json`, otherwise `0` [`UInt8`](/sql-reference/data-types/int-uint)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') = 1;
@@ -1093,31 +1201,35 @@ SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 4) = 0;
 ```
 
 
+
 ## JSONLength {#JSONLength}
 
-自 v20.1 版本起引入
+Introduced in: v20.1
 
-返回 JSON 数组或 JSON 对象的长度。
-如果值不存在或类型不匹配，则返回 `0`。
 
-**语法**
+Return the length of a JSON array or a JSON object.
+If the value does not exist or has the wrong type, `0` will be returned.
+        
+
+**Syntax**
 
 ```sql
 JSONLength(json [, indices_or_keys, ...])
 ```
 
-**参数**
+**Arguments**
 
-* `json` — 要解析的 JSON 字符串 [`String`](/sql-reference/data-types/string)
-* `[, indices_or_keys, ...]` — 可选。由零个或多个参数组成的列表，参数类型为 [`String`](/sql-reference/data-types/string) 或 [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `[, indices_or_keys, ...]` — Optional. A list of zero or more arguments. [`String`](/sql-reference/data-types/string) or [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回 JSON 数组或 JSON 对象的长度；如果值不存在或类型不正确，则返回 `0`。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns the length of the JSON array or JSON object, otherwise returns `0` if the value does not exist or has the wrong type. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONLength('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') = 3;
@@ -1130,31 +1242,35 @@ SELECT JSONLength('{"a": "hello", "b": [-100, 200.0, 300]}') = 2;
 ```
 
 
+
 ## JSONMergePatch {#JSONMergePatch}
 
-引入版本：v23.10
+Introduced in: v23.10
 
-返回合并多个 JSON 对象所得的合并后 JSON 对象字符串。
 
-**语法**
+Returns the merged JSON object string which is formed by merging multiple JSON objects.
+    
+
+**Syntax**
 
 ```sql
 jsonMergePatch(json1[, json2, ...])
 ```
 
-**别名**: `jsonMergePatch`
+**Aliases**: `jsonMergePatch`
 
-**参数**
+**Arguments**
 
-* `json1[, json2, ...]` — 一个或多个有效的 JSON 字符串。[`String`](/sql-reference/data-types/string)
+- `json1[, json2, ...]` — One or more strings with valid JSON. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-在 JSON 对象字符串有效的情况下，返回合并后的 JSON 对象字符串。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns the merged JSON object string, if the JSON object strings are valid. [`String`](/sql-reference/data-types/string)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT jsonMergePatch('{"a":1}', '{"name": "joey"}', '{"name": "tom"}', '{"name": "zoey"}') AS res;
@@ -1167,29 +1283,33 @@ SELECT jsonMergePatch('{"a":1}', '{"name": "joey"}', '{"name": "tom"}', '{"name"
 ```
 
 
+
 ## JSONSharedDataPaths {#JSONSharedDataPaths}
 
-引入版本：v24.8
+Introduced in: v24.8
 
-返回 JSON 列中共享数据结构所保存的路径列表。
 
-**语法**
+Returns the list of paths that are stored in shared data structure in JSON column.
+        
+
+**Syntax**
 
 ```sql
 JSONSharedDataPaths(json)
 ```
 
-**参数**
+**Arguments**
 
-* `json` — JSON 列。[`JSON`](/sql-reference/data-types/newjson)
+- `json` — JSON column. [`JSON`](/sql-reference/data-types/newjson)
 
-**返回值**
 
-返回一个字符串数组，包含存储在该 JSON 列共享数据结构中的各个路径。[`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**示例**
+Returns an array of paths stored in shared data structure in the JSON column. [`Array(String)`](/sql-reference/data-types/array)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE test (json JSON(max_dynamic_paths=1)) ENGINE = Memory;
@@ -1206,29 +1326,33 @@ SELECT json, JSONSharedDataPaths(json) FROM test;
 ```
 
 
+
 ## JSONSharedDataPathsWithTypes {#JSONSharedDataPathsWithTypes}
 
-自 v24.8 引入
+Introduced in: v24.8
 
-返回 JSON 列中每一行的共享数据结构里所存储的路径列表及其类型。
 
-**语法**
+Returns the list of paths that are stored in shared data structure and their types in each row in JSON column.
+        
+
+**Syntax**
 
 ```sql
 JSONSharedDataPathsWithTypes(json)
 ```
 
-**参数**
+**Arguments**
 
-* `json` — JSON 列。[`JSON`](/sql-reference/data-types/newjson)
+- `json` — JSON column. [`JSON`](/sql-reference/data-types/newjson)
 
-**返回值**
 
-返回一个映射，内容为存储在共享的数据结构中的路径及其在 JSON 列中的数据类型。[`Map(String, String)`](/sql-reference/data-types/map)
+**Returned value**
 
-**示例**
+Returns a map of paths stored in shared data structure and their data types in the JSON column. [`Map(String, String)`](/sql-reference/data-types/map)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE test (json JSON(max_dynamic_paths=1)) ENGINE = Memory;
@@ -1245,30 +1369,34 @@ SELECT json, JSONSharedDataPathsWithTypes(json) FROM test;
 ```
 
 
+
 ## JSONType {#JSONType}
 
-自 v20.1 引入
+Introduced in: v20.1
 
-返回 JSON 值的类型。若该值不存在，则会返回 `Null=0`。
 
-**语法**
+Return the type of a JSON value. If the value does not exist, `Null=0` will be returned.
+        
+
+**Syntax**
 
 ```sql
 JSONType(json[, indices_or_keys, ...])
 ```
 
-**参数**
+**Arguments**
 
-* `json` — 要解析的 JSON 字符串 [`String`](/sql-reference/data-types/string)
-* `json[, indices_or_keys, ...]` — 由零个或多个参数组成的列表，每个参数可以是字符串或整数，即 [`String`](/sql-reference/data-types/string) 或 [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `json[, indices_or_keys, ...]` — A list of zero or more arguments, each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-以字符串形式返回 JSON 值的类型；如果该值不存在，则返回枚举值 `Null=0` [`Enum`](/sql-reference/data-types/enum)
+**Returned value**
 
-**示例**
+Returns the type of a JSON value as a string, otherwise if the value doesn't exist it returns `Null=0` [`Enum`](/sql-reference/data-types/enum)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONType('{"a": "hello", "b": [-100, 200.0, 300]}') = 'Object';
@@ -1283,31 +1411,35 @@ SELECT JSONType('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') = 'Array';
 ```
 
 
-## JSON&#95;EXISTS {#JSON_EXISTS}
 
-引入版本：v21.8
+## JSON_EXISTS {#JSON_EXISTS}
 
-如果 JSON 文档中存在该值，则返回 `1`。
-如果该值不存在，则返回 `0`。
+Introduced in: v21.8
 
-**语法**
+
+If the value exists in the JSON document, `1` will be returned.
+If the value does not exist, `0` will be returned.
+        
+
+**Syntax**
 
 ```sql
 JSON_EXISTS(json, path)
 ```
 
-**参数**
+**Arguments**
 
-* `json` — 包含有效 JSON 的字符串。[`String`](/sql-reference/data-types/string)
-* `path` — 表示路径的字符串。[`String`](/sql-reference/data-types/string)
+- `json` — A string with valid JSON. [`String`](/sql-reference/data-types/string)
+- `path` — A string representing the path. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-如果该值在 JSON 文档中存在，则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns `1` if the value exists in the JSON document, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSON_EXISTS('{"hello":1}', '$.hello');
@@ -1332,31 +1464,35 @@ SELECT JSON_EXISTS('{"hello":["world"]}', '$.hello[0]');
 ```
 
 
-## JSON&#95;QUERY {#JSON_QUERY}
 
-引入版本：v21.8
+## JSON_QUERY {#JSON_QUERY}
 
-解析 JSON，并以 JSON 数组或 JSON 对象的形式提取某个值。
-如果该值不存在，将返回一个空字符串。
+Introduced in: v21.8
 
-**语法**
+
+Parses a JSON and extract a value as a JSON array or JSON object.
+If the value does not exist, an empty string will be returned.
+        
+
+**Syntax**
 
 ```sql
 JSON_QUERY(json, path)
 ```
 
-**参数**
+**Arguments**
 
-* `json` — 含有有效 JSON 的字符串。[`String`](/sql-reference/data-types/string)
-* `path` — 表示路径的字符串。[`String`](/sql-reference/data-types/string)
+- `json` — A string with valid JSON. [`String`](/sql-reference/data-types/string)
+- `path` — A string representing the path. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回提取出的 JSON 数组或 JSON 对象的字符串形式，若该值不存在，则返回空字符串。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns the extracted JSON array or JSON object as a string, or an empty string if the value does not exist. [`String`](/sql-reference/data-types/string)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSON_QUERY('{"hello":"world"}', '$.hello');
@@ -1373,35 +1509,38 @@ String
 ```
 
 
-## JSON&#95;VALUE {#JSON_VALUE}
 
-引入版本：v21.11
+## JSON_VALUE {#JSON_VALUE}
 
-解析 JSON 并将某个值提取为 JSON 标量返回。如果该值不存在，默认返回空字符串。
+Introduced in: v21.11
 
-此函数受以下设置控制：
 
-* 通过 SET `function_json_value_return_type_allow_nullable` = `true` 时，将返回 `NULL`。如果该值是复杂类型（例如：struct、array、map），则默认返回空字符串。
-* 通过 SET `function_json_value_return_type_allow_complex` = `true` 时，将返回复杂类型的值。
+Parses a JSON and extract a value as a JSON scalar. If the value does not exist, an empty string will be returned by default.
 
-**语法**
+This function is controlled by the following settings:
+- by SET `function_json_value_return_type_allow_nullable` = `true`, `NULL` will be returned. If the value is complex type (such as: struct, array, map), an empty string will be returned by default.
+- by SET `function_json_value_return_type_allow_complex` = `true`, the complex value will be returned.
+        
+
+**Syntax**
 
 ```sql
 JSON_VALUE(json, path)
 ```
 
-**参数**
+**Arguments**
 
-* `json` — 包含有效 JSON 的字符串。[`String`](/sql-reference/data-types/string)
-* `path` — 表示路径的字符串。[`String`](/sql-reference/data-types/string)
+- `json` — A string with valid JSON. [`String`](/sql-reference/data-types/string)
+- `path` — A string representing the path. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回提取到的 JSON 标量值（以字符串形式），如果该值不存在则返回空字符串。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns the extracted JSON scalar as a string, or an empty string if the value does not exist. [`String`](/sql-reference/data-types/string)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSON_VALUE('{"hello":"world"}', '$.hello');
@@ -1418,32 +1557,37 @@ world
 ```
 
 
+
 ## dynamicElement {#dynamicElement}
 
-引入版本：v24.1
+Introduced in: v24.1
 
-从 `Dynamic` 列中提取具有指定类型的列值。
 
-此函数用于从 `Dynamic` 列中提取特定类型的值。如果某一行包含所请求类型的值，则返回该值；如果该行包含不同类型或 NULL，则对于标量类型返回 NULL，对于数组类型返回空数组。
+Extracts a column with specified type from a `Dynamic` column.
 
-**语法**
+This function allows you to extract values of a specific type from a Dynamic column. If a row contains a value
+of the requested type, it returns that value. If the row contains a different type or NULL, it returns NULL
+for scalar types or an empty array for array types.
+    
+
+**Syntax**
 
 ```sql
 dynamicElement(dynamic, type_name)
 ```
 
-**参数**
+**Arguments**
 
-* `dynamic` — 要从中提取数据的 Dynamic 列。[`Dynamic`](/sql-reference/data-types/dynamic)
-* `type_name` — 要提取的变体类型的名称（例如，&#39;String&#39;、&#39;Int64&#39;、&#39;Array(Int64)&#39;）。
+- `dynamic` — Dynamic column to extract from. [`Dynamic`](/sql-reference/data-types/dynamic)
+- `type_name` — The name of the variant type to extract (e.g., 'String', 'Int64', 'Array(Int64)'). 
 
-**返回值**
+**Returned value**
 
-返回 Dynamic 列中指定类型的值。对于类型不匹配的值返回 NULL（对于数组类型则返回空数组）。[`Any`](/sql-reference/data-types)
+Returns values of the specified type from the Dynamic column. Returns NULL for non-matching types (or empty array for array types). [`Any`](/sql-reference/data-types)
 
-**示例**
+**Examples**
 
-**从 Dynamic 列中提取不同类型**
+**Extracting different types from Dynamic column**
 
 ```sql title=Query
 CREATE TABLE test (d Dynamic) ENGINE = Memory;
@@ -1461,31 +1605,36 @@ SELECT d, dynamicType(d), dynamicElement(d, 'String'), dynamicElement(d, 'Int64'
 ```
 
 
+
 ## dynamicType {#dynamicType}
 
-引入版本：v24.1
+Introduced in: v24.1
 
-返回 `Dynamic` 列中每一行对应的变体类型名称。
 
-对于包含 NULL 的行，函数返回 &#39;None&#39;。对于所有其他行，返回存储在该 Dynamic 列该行中的实际数据类型（例如，&#39;Int64&#39;、&#39;String&#39;、&#39;Array(Int64)&#39;）。
+Returns the variant type name for each row of a `Dynamic` column.
 
-**语法**
+For rows containing NULL, the function returns 'None'. For all other rows, it returns the actual data type
+stored in that row of the Dynamic column (e.g., 'Int64', 'String', 'Array(Int64)').
+
+
+**Syntax**
 
 ```sql
 dynamicType(dynamic)
 ```
 
-**参数**
+**Arguments**
 
-* `dynamic` — 要检查的 Dynamic 类型列。[`Dynamic`](/sql-reference/data-types/dynamic)
+- `dynamic` — Dynamic column to inspect. [`Dynamic`](/sql-reference/data-types/dynamic)
 
-**返回值**
 
-返回每一行中存储的值的类型名称，对于 NULL 值返回 &#39;None&#39;。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns the type name of the value stored in each row, or 'None' for NULL values. [`String`](/sql-reference/data-types/string)
 
-**检查 Dynamic 列中值的类型**
+**Examples**
+
+**Inspecting types in Dynamic column**
 
 ```sql title=Query
 CREATE TABLE test (d Dynamic) ENGINE = Memory;
@@ -1503,32 +1652,36 @@ SELECT d, dynamicType(d) FROM test;
 ```
 
 
+
 ## isDynamicElementInSharedData {#isDynamicElementInSharedData}
 
-引入版本：v24.1
+Introduced in: v24.1
 
-对于 Dynamic 列中那些以共享变体格式存储（而不是作为独立子列存储）的行返回 true。
 
-当一个 Dynamic 列设置了 `max_types` 限制时，超过此限制的值会以共享二进制格式存储，
-而不是被拆分为单独的类型化子列。此函数用于识别哪些行是以这种共享格式存储的。
+Returns true for rows in a Dynamic column that are stored in shared variant format rather than as separate subcolumns.
 
-**语法**
+When a Dynamic column has a `max_types` limit, values that exceed this limit are stored in a shared binary format
+instead of being separated into individual typed subcolumns. This function identifies which rows are stored in this shared format.
+    
+
+**Syntax**
 
 ```sql
 isDynamicElementInSharedData(dynamic)
 ```
 
-**参数**
+**Arguments**
 
-* `dynamic` — 要检查的 Dynamic 类型列。[`Dynamic`](/sql-reference/data-types/dynamic)
+- `dynamic` — Dynamic column to inspect. [`Dynamic`](/sql-reference/data-types/dynamic)
 
-**返回值**
 
-如果值以 shared variant 格式存储，则返回 true；如果作为单独的子列存储或为 NULL，则返回 false。[`Bool`](/sql-reference/data-types/boolean)
+**Returned value**
 
-**示例**
+Returns true if the value is stored in shared variant format, false if stored as a separate subcolumn or is NULL. [`Bool`](/sql-reference/data-types/boolean)
 
-**检查带有 max&#95;types 限制的 Dynamic 列中的存储格式**
+**Examples**
+
+**Checking storage format in Dynamic column with max_types limit**
 
 ```sql title=Query
 CREATE TABLE test (d Dynamic(max_types=2)) ENGINE = Memory;
@@ -1546,29 +1699,33 @@ SELECT d, isDynamicElementInSharedData(d) FROM test;
 ```
 
 
+
 ## isValidJSON {#isValidJSON}
 
-引入版本：v20.1
+Introduced in: v20.1
 
-检查传入的字符串是否为有效的 JSON。
 
-**语法**
+Checks that the string passed is valid JSON.
+        
+
+**Syntax**
 
 ```sql
 isValidJSON(json)
 ```
 
-**参数**
+**Arguments**
 
-* `json` — 要验证的 JSON 字符串 [`String`](/sql-reference/data-types/string)
+- `json` — JSON string to validate [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-如果字符串是有效的 JSON，则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns `1` if the string is valid JSON, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT isValidJSON('{"a": "hello", "b": [-100, 200.0, 300]}') = 1;
@@ -1580,7 +1737,7 @@ SELECT isValidJSON('not JSON') = 0;
 0
 ```
 
-**使用整数访问 JSON 数组和 JSON 对象**
+**Using integers to access both JSON arrays and JSON objects**
 
 ```sql title=Query
 SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 0);
@@ -1602,37 +1759,40 @@ SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 3);
 ```
 
 
+
 ## simpleJSONExtractBool {#simpleJSONExtractBool}
 
-引入版本：v21.4
+Introduced in: v21.4
 
-从名为 `field_name` 的字段值中解析布尔值（true/false）。
-结果类型为 `UInt8`。
 
-**语法**
+Parses a true/false value from the value of the field named `field_name`.
+The result is `UInt8`.
+
+
+**Syntax**
 
 ```sql
 simpleJSONExtractBool(json, field_name)
 ```
 
-**别名**: `visitParamExtractBool`
+**Aliases**: `visitParamExtractBool`
 
-**参数**
+**Arguments**
 
-* `json` — 要在其中查找字段的 JSON。[`String`](/sql-reference/data-types/string)
-* `field_name` — 要查找的字段名。[`const String`](/sql-reference/data-types/string)
+- `json` — The JSON in which the field is searched for. [`String`](/sql-reference/data-types/string)
+- `field_name` — The name of the field to search for. [`const String`](/sql-reference/data-types/string)
 
-**返回值**
 
-如果字段的值为 `true`，则返回 `1`，否则返回 `0`。这意味着函数在包括但不限于以下情况时都会返回 `0`：
+**Returned value**
 
-* 字段不存在。
-* 字段包含字符串形式的 `true`，例如：`{"field":"true"}`。
-* 字段包含数值形式的 `1`。[`UInt8`](/sql-reference/data-types/int-uint)
+Returns `1` if the value of the field is `true`, `0` otherwise. This means this function will return `0` including (and not only) in the following cases:
+- If the field doesn't exists.
+- If the field contains `true` as a string, e.g.: `{"field":"true"}`.
+- If the field contains `1` as a numerical value. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**示例**
+**Examples**
 
-**用法示例**
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE jsons
@@ -1657,34 +1817,38 @@ SELECT simpleJSONExtractBool(json, 'foo') FROM jsons ORDER BY json;
 ```
 
 
+
 ## simpleJSONExtractFloat {#simpleJSONExtractFloat}
 
-自 v21.4 起引入
+Introduced in: v21.4
 
-从名为 `field_name` 的字段值中解析 `Float64` 类型的数值。
-如果 `field_name` 是字符串字段，则会尝试从字符串开头解析一个数字。
-如果字段不存在，或者存在但不包含数字，则返回 `0`。
 
-**语法**
+Parses `Float64` from the value of the field named `field_name`.
+If `field_name` is a string field, it tries to parse a number from the beginning of the string.
+If the field does not exist, or it exists but does not contain a number, it returns `0`.
+
+
+**Syntax**
 
 ```sql
 simpleJSONExtractFloat(json, field_name)
 ```
 
-**别名**: `visitParamExtractFloat`
+**Aliases**: `visitParamExtractFloat`
 
-**参数**
+**Arguments**
 
-* `json` — 要在其中搜索字段的 JSON 字符串。[`String`](/sql-reference/data-types/string)
-* `field_name` — 要搜索的字段名。[`const String`](/sql-reference/data-types/string)
+- `json` — The JSON in which the field is searched for. [`String`](/sql-reference/data-types/string)
+- `field_name` — The name of the field to search for. [`const String`](/sql-reference/data-types/string)
 
-**返回值**
 
-如果字段存在且包含数字，则返回从该字段解析出的数字，否则返回 `0`。[`Float64`](/sql-reference/data-types/float)
+**Returned value**
 
-**示例**
+Returns the number parsed from the field if the field exists and contains a number, otherwise `0`. [`Float64`](/sql-reference/data-types/float)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE jsons
@@ -1712,34 +1876,38 @@ SELECT simpleJSONExtractFloat(json, 'foo') FROM jsons ORDER BY json;
 ```
 
 
+
 ## simpleJSONExtractInt {#simpleJSONExtractInt}
 
-自 v21.4 引入
+Introduced in: v21.4
 
-从名为 `field_name` 的字段值中解析 `Int64` 类型的值。
-如果 `field_name` 是字符串字段，则尝试从字符串开头解析一个数字。
-如果该字段不存在，或者存在但不包含数字，则返回 `0`。
 
-**语法**
+Parses `Int64` from the value of the field named `field_name`.
+If `field_name` is a string field, it tries to parse a number from the beginning of the string.
+If the field does not exist, or it exists but does not contain a number, it returns `0`.
+
+
+**Syntax**
 
 ```sql
 simpleJSONExtractInt(json, field_name)
 ```
 
-**别名**: `visitParamExtractInt`
+**Aliases**: `visitParamExtractInt`
 
-**参数**
+**Arguments**
 
-* `json` — 要在其中搜索字段的 JSON 字符串。[`String`](/sql-reference/data-types/string)
-* `field_name` — 要搜索的字段名称。[`const String`](/sql-reference/data-types/string)
+- `json` — The JSON in which the field is searched for. [`String`](/sql-reference/data-types/string)
+- `field_name` — The name of the field to search for. [`const String`](/sql-reference/data-types/string)
 
-**返回值**
 
-如果字段存在且包含数字，则返回从该字段中解析出的数字，否则返回 `0`。[`Int64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns the number parsed from the field if the field exists and contains a number, `0` otherwise [`Int64`](/sql-reference/data-types/int-uint)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE jsons
@@ -1767,32 +1935,36 @@ SELECT simpleJSONExtractInt(json, 'foo') FROM jsons ORDER BY json;
 ```
 
 
+
 ## simpleJSONExtractRaw {#simpleJSONExtractRaw}
 
-引入版本：v21.4
+Introduced in: v21.4
 
-返回名为 `field_name` 的字段值，类型为 `String`，包含分隔符在内。
 
-**语法**
+Returns the value of the field named `field_name` as a `String`, including separators.
+
+
+**Syntax**
 
 ```sql
 simpleJSONExtractRaw(json, field_name)
 ```
 
-**别名**: `visitParamExtractRaw`
+**Aliases**: `visitParamExtractRaw`
 
-**参数**
+**Arguments**
 
-* `json` — 在其中查找字段的 JSON。[`String`](/sql-reference/data-types/string)
-* `field_name` — 要查找的字段名。[`const String`](/sql-reference/data-types/string)
+- `json` — The JSON in which the field is searched for. [`String`](/sql-reference/data-types/string)
+- `field_name` — The name of the field to search for. [`const String`](/sql-reference/data-types/string)
 
-**返回值**
 
-如果字段存在，则返回该字段的值（包含分隔符），否则返回空字符串。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns the value of the field as a string, including separators if the field exists, or an empty string otherwise [`String`](/sql-reference/data-types/string)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE jsons
@@ -1819,36 +1991,40 @@ SELECT simpleJSONExtractRaw(json, 'foo') FROM jsons ORDER BY json;
 ```
 
 
+
 ## simpleJSONExtractString {#simpleJSONExtractString}
 
-引入版本：v21.4
+Introduced in: v21.4
 
-从名为 `field_name` 的字段值中解析被双引号包裹的 `String`。
 
-**实现细节**
+Parses `String` in double quotes from the value of the field named `field_name`.
 
-目前不支持以 `\uXXXX\uYYYY` 格式表示、且不在基本多文种平面中的码点（这些码点会被转换为 CESU-8 而不是 UTF-8）。
+**Implementation details**
 
-**语法**
+There is currently no support for code points in the format `\uXXXX\uYYYY` that are not from the basic multilingual plane (they are converted to CESU-8 instead of UTF-8).
+
+
+**Syntax**
 
 ```sql
 simpleJSONExtractString(json, field_name)
 ```
 
-**别名**: `visitParamExtractString`
+**Aliases**: `visitParamExtractString`
 
-**参数**
+**Arguments**
 
-* `json` — 要在其中查找字段的 JSON 字符串。[`String`](/sql-reference/data-types/string)
-* `field_name` — 要查找的字段名称。[`const String`](/sql-reference/data-types/string)
+- `json` — The JSON in which the field is searched for. [`String`](/sql-reference/data-types/string)
+- `field_name` — The name of the field to search for. [`const String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回字段经反转义后的字符串值（包括分隔符）。如果字段不包含带双引号的字符串、反转义失败或字段不存在，则返回空字符串。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns the unescaped value of a field as a string, including separators. An empty string is returned if the field doesn't contain a double quoted string, if unescaping fails or if the field doesn't exist [`String`](/sql-reference/data-types/string)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE jsons
@@ -1873,34 +2049,38 @@ SELECT simpleJSONExtractString(json, 'foo') FROM jsons ORDER BY json;
 ```
 
 
+
 ## simpleJSONExtractUInt {#simpleJSONExtractUInt}
 
-引入版本：v21.4
+Introduced in: v21.4
 
-从名为 `field_name` 的字段值中解析出 `UInt64`。
-如果 `field_name` 是字符串字段，则会尝试从字符串开头解析一个数字。
-如果字段不存在，或者字段存在但不包含数字，则返回 `0`。
 
-**语法**
+Parses `UInt64` from the value of the field named `field_name`.
+If `field_name` is a string field, it tries to parse a number from the beginning of the string.
+If the field does not exist, or it exists but does not contain a number, it returns `0`.
+
+
+**Syntax**
 
 ```sql
 simpleJSONExtractUInt(json, field_name)
 ```
 
-**别名**: `visitParamExtractUInt`
+**Aliases**: `visitParamExtractUInt`
 
-**参数**
+**Arguments**
 
-* `json` — 要在其中查找字段的 JSON 字符串。[`String`](/sql-reference/data-types/string)
-* `field_name` — 要查找的字段名称。[`const String`](/sql-reference/data-types/string)
+- `json` — The JSON in which the field is searched for. [`String`](/sql-reference/data-types/string)
+- `field_name` — The name of the field to search for. [`const String`](/sql-reference/data-types/string)
 
-**返回值**
 
-如果字段存在且包含数值，则返回从该字段解析出的数字，否则返回 `0`。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns the number parsed from the field if the field exists and contains a number, `0` otherwise [`UInt64`](/sql-reference/data-types/int-uint)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE jsons
@@ -1928,32 +2108,36 @@ SELECT simpleJSONExtractUInt(json, 'foo') FROM jsons ORDER BY json;
 ```
 
 
+
 ## simpleJSONHas {#simpleJSONHas}
 
-自 v21.4 起引入
+Introduced in: v21.4
 
-检查是否存在名为 `field_name` 的字段。
 
-**语法**
+Checks whether there is a field named `field_name`.
+
+
+**Syntax**
 
 ```sql
 simpleJSONHas(json, field_name)
 ```
 
-**别名**: `visitParamHas`
+**Aliases**: `visitParamHas`
 
-**参数**
+**Arguments**
 
-* `json` — 要在其中搜索字段的 JSON。[`String`](/sql-reference/data-types/string)
-* `field_name` — 要搜索的字段名称。[`const String`](/sql-reference/data-types/string)
+- `json` — The JSON in which the field is searched for. [`String`](/sql-reference/data-types/string)
+- `field_name` — The name of the field to search for. [`const String`](/sql-reference/data-types/string)
 
-**返回值**
 
-如果字段存在则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns `1` if the field exists, `0` otherwise [`UInt8`](/sql-reference/data-types/int-uint)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE jsons
@@ -1975,37 +2159,40 @@ SELECT simpleJSONHas(json, 'bar') FROM jsons;
 ```
 
 
+
 ## toJSONString {#toJSONString}
 
-引入版本：v21.7
+Introduced in: v21.7
 
-将一个值序列化为其 JSON 表示形式。支持多种数据类型和嵌套结构。
-64 位[整数](../data-types/int-uint.md)或更大的整数（例如 `UInt64` 或 `Int128`）默认会被包裹在引号中。[output&#95;format&#95;json&#95;quote&#95;64bit&#95;integers](/operations/settings/formats#output_format_json_quote_64bit_integers) 控制此行为。
-特殊值 `NaN` 和 `inf` 会被替换为 `null`。启用 [output&#95;format&#95;json&#95;quote&#95;denormals](/operations/settings/formats#output_format_json_quote_denormals) 设置可以按原样显示它们。
-在序列化 [Enum](../data-types/enum.md) 值时，该函数会输出其名称。
 
-另请参阅：
+Serializes a value to its JSON representation. Various data types and nested structures are supported.
+64-bit [integers](../data-types/int-uint.md) or bigger (like `UInt64` or `Int128`) are enclosed in quotes by default. [output_format_json_quote_64bit_integers](/operations/settings/formats#output_format_json_quote_64bit_integers) controls this behavior.
+Special values `NaN` and `inf` are replaced with `null`. Enable [output_format_json_quote_denormals](/operations/settings/formats#output_format_json_quote_denormals) setting to show them.
+When serializing an [Enum](../data-types/enum.md) value, the function outputs its name.
 
-* [output&#95;format&#95;json&#95;quote&#95;64bit&#95;integers](/operations/settings/formats#output_format_json_quote_64bit_integers)
-* [output&#95;format&#95;json&#95;quote&#95;denormals](/operations/settings/formats#output_format_json_quote_denormals)
+See also:
+- [output_format_json_quote_64bit_integers](/operations/settings/formats#output_format_json_quote_64bit_integers)
+- [output_format_json_quote_denormals](/operations/settings/formats#output_format_json_quote_denormals)
+    
 
-**语法**
+**Syntax**
 
 ```sql
 toJSONString(value)
 ```
 
-**参数**
+**Arguments**
 
-* `value` — 要序列化的值。可以是任意数据类型。[`Any`](/sql-reference/data-types)
+- `value` — Value to serialize. Value may be of any data type. [`Any`](/sql-reference/data-types)
 
-**返回值**
 
-返回该值的 JSON 表示形式。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns the JSON representation of the value. [`String`](/sql-reference/data-types/string)
 
-**Map 的序列化**
+**Examples**
+
+**Map serialization**
 
 ```sql title=Query
 SELECT toJSONString(map('key1', 1, 'key2', 2));
@@ -2017,7 +2204,7 @@ SELECT toJSONString(map('key1', 1, 'key2', 2));
 └─────────────────────────────────────────┘
 ```
 
-**特殊值**
+**Special values**
 
 ```sql title=Query
 SELECT toJSONString(tuple(1.25, NULL, NaN, +inf, -inf, [])) SETTINGS output_format_json_quote_denormals = 1;

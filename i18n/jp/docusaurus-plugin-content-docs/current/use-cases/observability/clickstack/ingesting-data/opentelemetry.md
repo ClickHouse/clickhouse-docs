@@ -58,13 +58,13 @@ export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 言語別 SDK 向けには、`init` 関数で設定するか、`OTEL_EXPORTER_OTLP_HEADERS` 環境変数で設定できます。例えば次のように設定します:
 
 ```shell
-OTEL_EXPORTER_OTLP_HEADERS='authorization=<あなたのインジェストAPIキー>'
+OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 ```
 
 エージェントも同様に、すべての OTLP 通信にこの Authorization ヘッダーを含める必要があります。たとえば、エージェントとして [OTel collector の contrib ディストリビューション](https://github.com/open-telemetry/opentelemetry-collector-contrib) をデプロイする場合、OTLP exporter を使用できます。次に、この [構造化ログファイル](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-structured.log.gz) を取り込むエージェントの設定例を示します。Authorization 用のキーを指定する必要がある点に注意してください。`<YOUR_API_INGESTION_KEY>` を指定します。
 
 ```yaml
-# clickhouse-agent-config.yaml {#clickhouse-agent-configyaml}
+# clickhouse-agent-config.yaml
 receivers:
   filelog:
     include:
@@ -96,7 +96,7 @@ processors:
 service:
   telemetry:
     metrics:
-      address: 0.0.0.0:9888 # 同一ホスト上で2つのコレクターを実行しているため変更
+      address: 0.0.0.0:9888 # Modified as 2 collectors running on same host
   pipelines:
     logs:
       receivers: [filelog]

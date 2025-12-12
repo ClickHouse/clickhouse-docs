@@ -161,13 +161,13 @@ SELECT extractKeyValuePairs('name:neymar, age:31 team:psg,nationality:brazil') A
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-引用文字としてシングルクォート（`'`）を使用する場合:
+With a single quote `'` as quoting character:
 
 ```sql
 SELECT extractKeyValuePairs('name:\'neymar\';\'age\':31;team:psg;nationality:brazil,last_key:last_value', ':', ';,', '\'') AS kv
 ```
 
-結果：
+Result:
 
 ```text
 ┌─kv───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -175,9 +175,9 @@ SELECT extractKeyValuePairs('name:\'neymar\';\'age\':31;team:psg;nationality:bra
 └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-unexpected&#95;quoting&#95;character&#95;strategy の設定例:
+unexpected_quoting_character_strategy examples:
 
-unexpected&#95;quoting&#95;character&#95;strategy=invalid
+unexpected_quoting_character_strategy=invalid
 
 ```sql
 SELECT extractKeyValuePairs('name"abc:5', ':', ' ,;', '\"', 'INVALID') AS kv;
@@ -199,7 +199,7 @@ SELECT extractKeyValuePairs('name"abc":5', ':', ' ,;', '\"', 'INVALID') AS kv;
 └─────┘
 ```
 
-unexpected&#95;quoting&#95;character&#95;strategy=accept
+unexpected_quoting_character_strategy=accept
 
 ```sql
 SELECT extractKeyValuePairs('name"abc:5', ':', ' ,;', '\"', 'ACCEPT') AS kv;
@@ -221,7 +221,7 @@ SELECT extractKeyValuePairs('name"abc":5', ':', ' ,;', '\"', 'ACCEPT') AS kv;
 └────────────────────┘
 ```
 
-unexpected&#95;quoting&#95;character&#95;strategy=promote
+unexpected_quoting_character_strategy=promote
 
 ```sql
 SELECT extractKeyValuePairs('name"abc:5', ':', ' ,;', '\"', 'PROMOTE') AS kv;
@@ -243,13 +243,13 @@ SELECT extractKeyValuePairs('name"abc":5', ':', ' ,;', '\"', 'PROMOTE') AS kv;
 └──────────────┘
 ```
 
-エスケープシーケンス（エスケープシーケンス非対応環境向け）:
+Escape sequences without escape sequences support:
 
 ```sql
 SELECT extractKeyValuePairs('age:a\\x0A\\n\\0') AS kv
 ```
 
-結果：
+Result:
 
 ```text
 ┌─kv─────────────────────┐
@@ -257,7 +257,7 @@ SELECT extractKeyValuePairs('age:a\\x0A\\n\\0') AS kv
 └────────────────────────┘
 ```
 
-`toString` でシリアライズされた map の文字列キーと値のペアを復元するには、次のようにします。
+To restore a map string key-value pairs serialized with `toString`:
 
 ```sql
 SELECT
@@ -267,7 +267,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-結果：
+Result:
 
 ```response
 行 1:
@@ -279,29 +279,28 @@ map_restored:   {'John':'33','Paula':'31'}
 
 ## extractKeyValuePairsWithEscaping {#extractkeyvaluepairswithescaping}
 
-`extractKeyValuePairs` と同様ですが、エスケープシーケンスに対応しています。
+Same as `extractKeyValuePairs` but supports escaping.
 
-サポートされるエスケープシーケンス: `\x`, `\N`, `\a`, `\b`, `\e`, `\f`, `\n`, `\r`, `\t`, `\v`, `\0`。
-標準的でないエスケープシーケンスは、次のいずれかの場合を除き、そのまま（バックスラッシュを含めて）返されます:
-`\\`, `'`, `"`, `backtick`, `/`, `=` または ASCII 制御文字 (c &lt;= 31)。
+Supported escape sequences: `\x`, `\N`, `\a`, `\b`, `\e`, `\f`, `\n`, `\r`, `\t`, `\v` and `\0`.
+Non standard escape sequences are returned as it is (including the backslash) unless they are one of the following:
+`\\`, `'`, `"`, `backtick`, `/`, `=` or ASCII control characters (c &lt;= 31).
 
-この関数は、事前エスケープや事後エスケープでは対処できないユースケースに適しています。たとえば、次の
-入力文字列を考えます: `a: "aaaa\"bbb"`。期待される出力は: `a: aaaa\"bbbb` です。
+This function will satisfy the use case where pre-escaping and post-escaping are not suitable. For instance, consider the following
+input string: `a: "aaaa\"bbb"`. The expected output is: `a: aaaa\"bbbb`.
+- Pre-escaping: Pre-escaping it will output: `a: "aaaa"bbb"` and `extractKeyValuePairs` will then output: `a: aaaa`
+- Post-escaping: `extractKeyValuePairs` will output `a: aaaa\` and post-escaping will keep it as it is.
 
-* 事前エスケープ: 事前エスケープすると出力は `a: "aaaa"bbb"` となり、その後 `extractKeyValuePairs` は `a: aaaa` を出力します
-* 事後エスケープ: `extractKeyValuePairs` は `a: aaaa\` を出力し、事後エスケープではそれをそのまま保持します。
+Leading escape sequences will be skipped in keys and will be considered invalid for values.
 
-キー内の先頭のエスケープシーケンスはスキップされ、値に対しては無効とみなされます。
+**Examples**
 
-**例**
-
-エスケープシーケンスのサポートを有効にした場合の動作例:
+Escape sequences with escape sequence support turned on:
 
 ```sql
 SELECT extractKeyValuePairsWithEscaping('age:a\\x0A\\n\\0') AS kv
 ```
 
-結果：
+Result:
 
 ```response
 ┌─kv────────────────┐
@@ -311,31 +310,31 @@ SELECT extractKeyValuePairsWithEscaping('age:a\\x0A\\n\\0') AS kv
 
 ## mapAdd {#mapadd}
 
-すべてのキーを集めて、それぞれに対応する値を合計します。
+Collect all the keys and sum corresponding values.
 
-**構文**
+**Syntax**
 
 ```sql
 mapAdd(arg1, arg2 [, ...])
 ```
 
-**引数**
+**Arguments**
 
-引数は、2 つの[配列](/sql-reference/data-types/array)から構成される[map](../data-types/map.md)または[tuple](/sql-reference/data-types/tuple)であり、最初の配列の要素がキーを表し、2 番目の配列に各キーに対応する値が含まれます。すべてのキー配列は同じ型でなければならず、すべての値配列は 1 つの型（[Int64](/sql-reference/data-types/int-uint#integer-ranges)、[UInt64](/sql-reference/data-types/int-uint#integer-ranges)、または [Float64](/sql-reference/data-types/float)）へと昇格可能な要素を含んでいる必要があります。共通の昇格後の型が、結果配列の型として使用されます。
+Arguments are [maps](../data-types/map.md) or [tuples](/sql-reference/data-types/tuple) of two [arrays](/sql-reference/data-types/array), where items in the first array represent keys, and the second array contains values for the each key. All key arrays should have same type, and all value arrays should contain items which are promoted to the one type ([Int64](/sql-reference/data-types/int-uint#integer-ranges), [UInt64](/sql-reference/data-types/int-uint#integer-ranges) or [Float64](/sql-reference/data-types/float)). The common promoted type is used as a type for the result array.
 
-**戻り値**
+**Returned value**
 
-* 引数に応じて、最初の配列にソート済みのキーを含み、2 番目の配列に値を含む [map](../data-types/map.md) または [tuple](/sql-reference/data-types/tuple) を 1 つ返します。
+- Depending on the arguments returns one [map](../data-types/map.md) or [tuple](/sql-reference/data-types/tuple), where the first array contains the sorted keys and the second array contains values.
 
-**例**
+**Example**
 
-`Map` 型を使ったクエリ:
+Query with `Map` type:
 
 ```sql
 SELECT mapAdd(map(1,1), map(1,1));
 ```
 
-結果：
+Result:
 
 ```text
 ┌─mapAdd(map(1, 1), map(1, 1))─┐
@@ -343,13 +342,13 @@ SELECT mapAdd(map(1,1), map(1,1));
 └──────────────────────────────┘
 ```
 
-タプルを用いたクエリ：
+Query with a tuple:
 
 ```sql
 SELECT mapAdd(([toUInt8(1), 2], [1, 1]), ([toUInt8(1), 2], [1, 1])) AS res, toTypeName(res) AS type;
 ```
 
-結果：
+Result:
 
 ```text
 ┌─res───────────┬─type───────────────────────────────┐
@@ -359,31 +358,31 @@ SELECT mapAdd(([toUInt8(1), 2], [1, 1]), ([toUInt8(1), 2], [1, 1])) AS res, toTy
 
 ## mapSubtract {#mapsubtract}
 
-すべてのキーを集約し、対応する値の差を取ります。
+Collect all the keys and subtract corresponding values.
 
-**構文**
+**Syntax**
 
 ```sql
 mapSubtract(Tuple(Array, Array), Tuple(Array, Array) [, ...])
 ```
 
-**引数**
+**Arguments**
 
-引数は 2 つの [配列](/sql-reference/data-types/array)から構成される [map](../data-types/map.md) または [tuple](/sql-reference/data-types/tuple) であり、1 つ目の配列の要素がキーを表し、2 つ目の配列が各キーに対応する値を含みます。すべてのキー配列は同じ型である必要があり、すべての値配列は 1 つの共通の型（[Int64](/sql-reference/data-types/int-uint#integer-ranges)、[UInt64](/sql-reference/data-types/int-uint#integer-ranges)、または [Float64](/sql-reference/data-types/float)）へ昇格される要素を含んでいる必要があります。この共通の昇格後の型が、結果配列の型として使用されます。
+Arguments are [maps](../data-types/map.md) or [tuples](/sql-reference/data-types/tuple) of two [arrays](/sql-reference/data-types/array), where items in the first array represent keys, and the second array contains values for the each key. All key arrays should have same type, and all value arrays should contain items which are promote to the one type ([Int64](/sql-reference/data-types/int-uint#integer-ranges), [UInt64](/sql-reference/data-types/int-uint#integer-ranges) or [Float64](/sql-reference/data-types/float)). The common promoted type is used as a type for the result array.
 
-**戻り値**
+**Returned value**
 
-* 引数に応じて 1 つの [map](../data-types/map.md) または [tuple](/sql-reference/data-types/tuple) を返し、1 つ目の配列にはソートされたキーが、2 つ目の配列には値が含まれます。
+- Depending on the arguments returns one [map](../data-types/map.md) or [tuple](/sql-reference/data-types/tuple), where the first array contains the sorted keys and the second array contains values.
 
-**例**
+**Example**
 
-`Map` 型を使用したクエリ:
+Query with `Map` type:
 
 ```sql
 SELECT mapSubtract(map(1,1), map(1,1));
 ```
 
-結果：
+Result:
 
 ```text
 ┌─mapSubtract(map(1, 1), map(1, 1))─┐
@@ -391,13 +390,13 @@ SELECT mapSubtract(map(1,1), map(1,1));
 └───────────────────────────────────┘
 ```
 
-タプルマップを使用したクエリ：
+Query with a tuple map:
 
 ```sql
 SELECT mapSubtract(([toUInt8(1), 2], [toInt32(1), 1]), ([toUInt8(1), 2], [toInt32(2), 1])) AS res, toTypeName(res) AS type;
 ```
 
-結果：
+Result:
 
 ```text
 ┌─res────────────┬─type──────────────────────────────┐
@@ -407,48 +406,48 @@ SELECT mapSubtract(([toUInt8(1), 2], [toInt32(1), 1]), ([toUInt8(1), 2], [toInt3
 
 ## mapPopulateSeries {#mappopulateseries}
 
-整数キーを持つマップで、欠損しているキーと値のペアを補完します。
-最大値を超えてキーを拡張できるように、最大キーを指定することができます。
-より正確には、この関数は、キーが最小キーから最大キー（指定されていれば引数 `max`）までステップ幅 1 の数列を成し、それぞれに対応する値を持つマップを返します。
-あるキーに対して値が指定されていない場合、そのキーの値としてデフォルト値が使用されます。
-キーが重複している場合、そのキーには（出現順に）最初の値のみが対応付けられます。
+Fills missing key-value pairs in a map with integer keys.
+To support extending the keys beyond the largest value, a maximum key can be specified.
+More specifically, the function returns a map in which the the keys form a series from the smallest to the largest key (or `max` argument if it specified) with step size of 1, and corresponding values.
+If no value is specified for a key, a default value is used as value.
+In case keys repeat, only the first value (in order of appearance) is associated with the key.
 
-**構文**
+**Syntax**
 
 ```sql
 mapPopulateSeries(map[, max])
 mapPopulateSeries(keys, values[, max])
 ```
 
-配列引数の場合、各行ごとに `keys` と `values` の要素数は同じでなければなりません。
+For array arguments the number of elements in `keys` and `values` must be the same for each row.
 
 **Arguments**
 
-引数は [Maps](../data-types/map.md) か、または 2 つの [Arrays](/sql-reference/data-types/array) で、1 つ目と 2 つ目の配列にはそれぞれキーと、その各キーに対応する値が含まれます。
+Arguments are [Maps](../data-types/map.md) or two [Arrays](/sql-reference/data-types/array), where the first and second array contains keys and values for the each key.
 
-マップされた配列:
+Mapped arrays:
 
-* `map` — 整数キーを持つ Map。 [Map](../data-types/map.md)。
+- `map` — Map with integer keys. [Map](../data-types/map.md).
 
-または
+or
 
-* `keys` — キーの配列。 [Array](/sql-reference/data-types/array)([Int](/sql-reference/data-types/int-uint#integer-ranges))。
-* `values` — 値の配列。 [Array](/sql-reference/data-types/array)([Int](/sql-reference/data-types/int-uint#integer-ranges))。
-* `max` — キーの最大値。省略可能。 [Int8, Int16, Int32, Int64, Int128, Int256](/sql-reference/data-types/int-uint#integer-ranges)。
+- `keys` — Array of keys. [Array](/sql-reference/data-types/array)([Int](/sql-reference/data-types/int-uint#integer-ranges)).
+- `values` — Array of values. [Array](/sql-reference/data-types/array)([Int](/sql-reference/data-types/int-uint#integer-ranges)).
+- `max` — Maximum key value. Optional. [Int8, Int16, Int32, Int64, Int128, Int256](/sql-reference/data-types/int-uint#integer-ranges).
 
 **Returned value**
 
-* 引数に応じて、[Map](../data-types/map.md) または 2 つの [Arrays](/sql-reference/data-types/array) からなる [Tuple](/sql-reference/data-types/tuple) が返されます。前者はソート済みのキー、後者はそれぞれのキーに対応する値です。
+- Depending on the arguments a [Map](../data-types/map.md) or a [Tuple](/sql-reference/data-types/tuple) of two [Arrays](/sql-reference/data-types/array): keys in sorted order, and values the corresponding keys.
 
 **Example**
 
-`Map` 型を使ったクエリ:
+Query with `Map` type:
 
 ```sql
 SELECT mapPopulateSeries(map(1, 10, 5, 20), 6);
 ```
 
-結果：
+Result:
 
 ```text
 ┌─mapPopulateSeries(map(1, 10, 5, 20), 6)─┐
@@ -456,13 +455,13 @@ SELECT mapPopulateSeries(map(1, 10, 5, 20), 6);
 └─────────────────────────────────────────┘
 ```
 
-マッピングされた配列に対するクエリ：
+Query with mapped arrays:
 
 ```sql
 SELECT mapPopulateSeries([1,2,4], [11,22,44], 5) AS res, toTypeName(res) AS type;
 ```
 
-結果：
+Result:
 
 ```text
 ┌─res──────────────────────────┬─type──────────────────────────────┐
@@ -472,29 +471,29 @@ SELECT mapPopulateSeries([1,2,4], [11,22,44], 5) AS res, toTypeName(res) AS type
 
 ## mapKeys {#mapkeys}
 
-指定された map のキーを返します。
+Returns the keys of a given map.
 
-この関数は、setting [optimize&#95;functions&#95;to&#95;subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns) を有効にすることで最適化できます。
-この setting を有効にすると、この関数は map 全体ではなく [keys](/sql-reference/data-types/map#reading-subcolumns-of-map) サブカラムだけを読み取ります。
-クエリ `SELECT mapKeys(m) FROM table` は `SELECT m.keys FROM table` に変換されます。
+This function can be optimized by enabling setting [optimize_functions_to_subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns).
+With enabled setting, the function only reads the [keys](/sql-reference/data-types/map#reading-subcolumns-of-map) subcolumn instead the whole map.
+The query `SELECT mapKeys(m) FROM table` is transformed to `SELECT m.keys FROM table`.
 
-**構文**
+**Syntax**
 
 ```sql
 mapKeys(map)
 ```
 
-**引数**
+**Arguments**
 
-* `map` — マップ。[Map](../data-types/map.md)。
+- `map` — Map. [Map](../data-types/map.md).
 
-**返される値**
+**Returned value**
 
-* `map` に含まれるすべてのキーを含む配列。[Array](../data-types/array.md)。
+- Array containing all keys from the `map`. [Array](../data-types/array.md).
 
-**例**
+**Example**
 
-クエリ：
+Query:
 
 ```sql
 CREATE TABLE tab (a Map(String, String)) ENGINE = Memory;
@@ -504,7 +503,7 @@ INSERT INTO tab VALUES ({'name':'eleven','age':'11'}), ({'number':'twelve','posi
 SELECT mapKeys(a) FROM tab;
 ```
 
-結果:
+Result:
 
 ```text
 ┌─mapKeys(a)────────────┐
@@ -515,28 +514,28 @@ SELECT mapKeys(a) FROM tab;
 
 ## mapContains {#mapcontains}
 
-指定したマップに指定したキーが含まれているかどうかを返します。
+Returns if a given key is contained in a given map.
 
-**構文**
+**Syntax**
 
 ```sql
 mapContains(map, key)
 ```
 
-エイリアス: `mapContainsKey(map, key)`
+Alias: `mapContainsKey(map, key)`
 
-**引数**
+**Arguments**
 
-* `map` — マップ。[Map](../data-types/map.md)。
-* `key` — キー。型は `map` のキー型と一致している必要があります。
+- `map` — Map. [Map](../data-types/map.md).
+- `key` — Key. Type must match the key type of `map`.
 
-**返り値**
+**Returned value**
 
-* `map` に `key` が含まれていれば `1`、含まれていなければ `0`。[UInt8](../data-types/int-uint.md)。
+- `1` if `map` contains `key`, `0` if not. [UInt8](../data-types/int-uint.md).
 
-**例**
+**Example**
 
-クエリ:
+Query:
 
 ```sql
 CREATE TABLE tab (a Map(String, String)) ENGINE = Memory;
@@ -547,7 +546,7 @@ SELECT mapContains(a, 'name') FROM tab;
 
 ```
 
-結果：
+Result:
 
 ```text
 ┌─mapContains(a, 'name')─┐
@@ -558,24 +557,23 @@ SELECT mapContains(a, 'name') FROM tab;
 
 ## mapContainsKeyLike {#mapcontainskeylike}
 
-**構文**
+**Syntax**
 
 ```sql
 mapContainsKeyLike(map, pattern)
 ```
 
-**引数**
+**Arguments**
+- `map` — Map. [Map](../data-types/map.md).
+- `pattern`  - String pattern to match.
 
-* `map` — Map 型。[Map](../data-types/map.md)。
-* `pattern`  - マッチさせる文字列パターン。
+**Returned value**
 
-**戻り値**
+- `1` if `map` contains `key` like specified pattern, `0` if not.
 
-* `map` が指定されたパターンにマッチする `key` を含む場合は `1`、含まない場合は `0`。
+**Example**
 
-**例**
-
-クエリ:
+Query:
 
 ```sql
 CREATE TABLE tab (a Map(String, String)) ENGINE = Memory;
@@ -585,7 +583,7 @@ INSERT INTO tab VALUES ({'abc':'abc','def':'def'}), ({'hij':'hij','klm':'klm'});
 SELECT mapContainsKeyLike(a, 'a%') FROM tab;
 ```
 
-結果：
+Result:
 
 ```text
 ┌─mapContainsKeyLike(a, 'a%')─┐
@@ -596,26 +594,26 @@ SELECT mapContainsKeyLike(a, 'a%') FROM tab;
 
 ## mapExtractKeyLike {#mapextractkeylike}
 
-文字列キーを持つ `Map` と LIKE パターンが与えられると、この関数はキーがそのパターンに一致する要素のみを含む `Map` を返します。
+Give a map with string keys and a LIKE pattern, this function returns a map with elements where the key matches the pattern.
 
-**構文**
+**Syntax**
 
 ```sql
 mapExtractKeyLike(map, pattern)
 ```
 
-**引数**
+**Arguments**
 
-* `map` — Map 型。[Map](../data-types/map.md)。
-* `pattern`  - マッチさせる文字列パターン。
+- `map` — Map. [Map](../data-types/map.md).
+- `pattern`  - String pattern to match.
 
-**戻り値**
+**Returned value**
 
-* 指定したパターンに一致するキーを持つ要素のみを含む Map。一致する要素がない場合は、空の Map が返されます。
+- A map containing elements the key matching the specified pattern. If no elements match the pattern, an empty map is returned.
 
-**例**
+**Example**
 
-クエリ：
+Query:
 
 ```sql
 CREATE TABLE tab (a Map(String, String)) ENGINE = Memory;
@@ -625,7 +623,7 @@ INSERT INTO tab VALUES ({'abc':'abc','def':'def'}), ({'hij':'hij','klm':'klm'});
 SELECT mapExtractKeyLike(a, 'a%') FROM tab;
 ```
 
-結果：
+Result:
 
 ```text
 ┌─mapExtractKeyLike(a, 'a%')─┐
@@ -636,29 +634,29 @@ SELECT mapExtractKeyLike(a, 'a%') FROM tab;
 
 ## mapValues {#mapvalues}
 
-指定された map の値を返します。
+Returns the values of a given map.
 
-この関数は、設定 [optimize&#95;functions&#95;to&#95;subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns) を有効にすることで最適化できます。
-この設定を有効にすると、関数は map 全体ではなく、[values](/sql-reference/data-types/map#reading-subcolumns-of-map) サブカラムのみを読み取ります。
-クエリ `SELECT mapValues(m) FROM table` は `SELECT m.values FROM table` に変換されます。
+This function can be optimized by enabling setting [optimize_functions_to_subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns).
+With enabled setting, the function only reads the [values](/sql-reference/data-types/map#reading-subcolumns-of-map) subcolumn instead the whole map.
+The query `SELECT mapValues(m) FROM table` is transformed to `SELECT m.values FROM table`.
 
-**構文**
+**Syntax**
 
 ```sql
 mapValues(map)
 ```
 
-**引数**
+**Arguments**
 
-* `map` — Map 型。[Map](../data-types/map.md)。
+- `map` — Map. [Map](../data-types/map.md).
 
-**戻り値**
+**Returned value**
 
-* `map` に含まれるすべての値を格納した配列。[Array](../data-types/array.md)。
+- Array containing all the values from `map`. [Array](../data-types/array.md).
 
-**例**
+**Example**
 
-クエリ：
+Query:
 
 ```sql
 CREATE TABLE tab (a Map(String, String)) ENGINE = Memory;
@@ -668,7 +666,7 @@ INSERT INTO tab VALUES ({'name':'eleven','age':'11'}), ({'number':'twelve','posi
 SELECT mapValues(a) FROM tab;
 ```
 
-結果：
+Result:
 
 ```text
 ┌─mapValues(a)─────┐
@@ -679,28 +677,28 @@ SELECT mapValues(a) FROM tab;
 
 ## mapContainsValue {#mapcontainsvalue}
 
-指定した map に指定したキーが含まれているかどうかを返します。
+Returns if a given key is contained in a given map.
 
-**構文**
+**Syntax**
 
 ```sql
 mapContainsValue(map, value)
 ```
 
-別名: `mapContainsValue(map, value)`
+Alias: `mapContainsValue(map, value)`
 
-**引数**
+**Arguments**
 
-* `map` — マップ。[Map](../data-types/map.md)。
-* `value` — 値。型は `map` の値の型と一致している必要があります。
+- `map` — Map. [Map](../data-types/map.md).
+- `value` — Value. Type must match the value type of `map`.
 
-**戻り値**
+**Returned value**
 
-* `map` に `value` が含まれていれば `1`、含まれていなければ `0`。[UInt8](../data-types/int-uint.md)。
+- `1` if `map` contains `value`, `0` if not. [UInt8](../data-types/int-uint.md).
 
-**例**
+**Example**
 
-クエリ:
+Query:
 
 ```sql
 CREATE TABLE tab (a Map(String, String)) ENGINE = Memory;
@@ -711,7 +709,7 @@ SELECT mapContainsValue(a, '11') FROM tab;
 
 ```
 
-結果：
+Result:
 
 ```text
 ┌─mapContainsValue(a, '11')─┐
@@ -722,24 +720,23 @@ SELECT mapContainsValue(a, '11') FROM tab;
 
 ## mapContainsValueLike {#mapcontainsvaluelike}
 
-**構文**
+**Syntax**
 
 ```sql
 mapContainsValueLike(map, pattern)
 ```
 
-**引数**
+**Arguments**
+- `map` — Map. [Map](../data-types/map.md).
+- `pattern`  - String pattern to match.
 
-* `map` — Map。 [Map](../data-types/map.md)。
-* `pattern`  - 照合する文字列パターン。
+**Returned value**
 
-**返り値**
+- `1` if `map` contains `value` like specified pattern, `0` if not.
 
-* `map` に、指定したパターンにマッチする `value` が含まれていれば `1`、含まれていなければ `0`。
+**Example**
 
-**例**
-
-クエリ:
+Query:
 
 ```sql
 CREATE TABLE tab (a Map(String, String)) ENGINE = Memory;
@@ -749,7 +746,7 @@ INSERT INTO tab VALUES ({'abc':'abc','def':'def'}), ({'hij':'hij','klm':'klm'});
 SELECT mapContainsValueLike(a, 'a%') FROM tab;
 ```
 
-結果：
+Result:
 
 ```text
 ┌─mapContainsV⋯ke(a, 'a%')─┐
@@ -760,26 +757,26 @@ SELECT mapContainsValueLike(a, 'a%') FROM tab;
 
 ## mapExtractValueLike {#mapextractvaluelike}
 
-文字列値を持つ Map と LIKE パターンを指定すると、この関数は値がパターンにマッチする要素のみを含む Map を返します。
+Give a map with string values and a LIKE pattern, this function returns a map with elements where the value matches the pattern.
 
-**構文**
+**Syntax**
 
 ```sql
 mapExtractValueLike(map, pattern)
 ```
 
-**引数**
+**Arguments**
 
-* `map` — Map。[Map](../data-types/map.md)。
-* `pattern`  - 照合する文字列パターン。
+- `map` — Map. [Map](../data-types/map.md).
+- `pattern`  - String pattern to match.
 
-**返り値**
+**Returned value**
 
-* 値が指定したパターンに一致する要素を含む map。パターンに一致する要素がない場合は、空の map が返されます。
+- A map containing elements the value matching the specified pattern. If no elements match the pattern, an empty map is returned.
 
-**例**
+**Example**
 
-クエリ:
+Query:
 
 ```sql
 CREATE TABLE tab (a Map(String, String)) ENGINE = Memory;
@@ -789,7 +786,7 @@ INSERT INTO tab VALUES ({'abc':'abc','def':'def'}), ({'hij':'hij','klm':'klm'});
 SELECT mapExtractValueLike(a, 'a%') FROM tab;
 ```
 
-結果：
+Result:
 
 ```text
 ┌─mapExtractValueLike(a, 'a%')─┐
@@ -800,26 +797,26 @@ SELECT mapExtractValueLike(a, 'a%') FROM tab;
 
 ## mapApply {#mapapply}
 
-map の各要素に関数を適用します。
+Applies a function to each element of a map.
 
-**構文**
+**Syntax**
 
 ```sql
 mapApply(func, map)
 ```
 
-**引数**
+**Arguments**
 
-* `func` — [ラムダ関数](/sql-reference/functions/overview#higher-order-functions)。
-* `map` — [Map](../data-types/map.md)。
+- `func` — [Lambda function](/sql-reference/functions/overview#higher-order-functions).
+- `map` — [Map](../data-types/map.md).
 
-**返り値**
+**Returned value**
 
-* 各要素に対して `func(map1[i], ..., mapN[i])` を適用することで、元のマップから得られるマップを返します。
+- Returns a map obtained from the original map by application of `func(map1[i], ..., mapN[i])` for each element.
 
-**例**
+**Example**
 
-クエリ:
+Query:
 
 ```sql
 SELECT mapApply((k, v) -> (k, v * 10), _map) AS r
@@ -830,7 +827,7 @@ FROM
 )
 ```
 
-結果：
+Result:
 
 ```text
 ┌─r─────────────────────┐
@@ -842,26 +839,26 @@ FROM
 
 ## mapFilter {#mapfilter}
 
-マップの各要素に関数を適用してフィルタリングします。
+Filters a map by applying a function to each map element.
 
-**構文**
+**Syntax**
 
 ```sql
 mapFilter(func, map)
 ```
 
-**引数**
+**Arguments**
 
-* `func`  - [ラムダ関数](/sql-reference/functions/overview#higher-order-functions)。
-* `map` — [Map](../data-types/map.md)。
+- `func`  - [Lambda function](/sql-reference/functions/overview#higher-order-functions).
+- `map` — [Map](../data-types/map.md).
 
-**戻り値**
+**Returned value**
 
-* `func(map1[i], ..., mapN[i])` が 0 以外の値を返す要素のみを含む `map` を返します。
+- Returns a map containing only the elements in `map` for which `func(map1[i], ..., mapN[i])` returns something other than 0.
 
-**例**
+**Example**
 
-クエリ:
+Query:
 
 ```sql
 SELECT mapFilter((k, v) -> ((v % 2) = 0), _map) AS r
@@ -872,7 +869,7 @@ FROM
 )
 ```
 
-結果：
+Result:
 
 ```text
 ┌─r───────────────────┐
@@ -884,30 +881,30 @@ FROM
 
 ## mapUpdate {#mapupdate}
 
-**構文**
+**Syntax**
 
 ```sql
 mapUpdate(map1, map2)
 ```
 
-**引数**
+**Arguments**
 
-* `map1` [Map](../data-types/map.md)。
-* `map2` [Map](../data-types/map.md)。
+- `map1` [Map](../data-types/map.md).
+- `map2` [Map](../data-types/map.md).
 
-**戻り値**
+**Returned value**
 
-* `map2` の対応するキーの値で値を更新した `map1` を返します。
+- Returns a map1 with values updated of values for the corresponding keys in map2.
 
-**例**
+**Example**
 
-クエリ:
+Query:
 
 ```sql
 SELECT mapUpdate(map('key1', 0, 'key3', 0), map('key1', 10, 'key2', 10)) AS map;
 ```
 
-結果:
+Result:
 
 ```text
 ┌─map────────────────────────────┐
@@ -917,32 +914,32 @@ SELECT mapUpdate(map('key1', 0, 'key3', 0), map('key1', 10, 'key2', 10)) AS map;
 
 ## mapConcat {#mapconcat}
 
-キーの一致に基づいて複数の map を連結します。
-同じキーを持つ要素が複数の入力 map に存在する場合、すべての要素が結果の map に追加されますが、`[]` 演算子でアクセスできるのは最初の要素のみです。
+Concatenates multiple maps based on the equality of their keys.
+If elements with the same key exist in more than one input map, all elements are added to the result map, but only the first one is accessible via operator `[]`
 
-**構文**
+**Syntax**
 
 ```sql
 mapConcat(maps)
 ```
 
-**引数**
+**Arguments**
 
-* `maps` – 任意数の[Map](../data-types/map.md)。
+-   `maps` – Arbitrarily many [Maps](../data-types/map.md).
 
-**返される値**
+**Returned value**
 
-* 引数として渡された Map を連結した結果の Map を返します。
+- Returns a map with concatenated maps passed as arguments.
 
-**例**
+**Examples**
 
-クエリ:
+Query:
 
 ```sql
 SELECT mapConcat(map('key1', 1, 'key3', 3), map('key2', 2)) AS map;
 ```
 
-結果：
+Result:
 
 ```text
 ┌─map──────────────────────────┐
@@ -950,13 +947,13 @@ SELECT mapConcat(map('key1', 1, 'key3', 3), map('key2', 2)) AS map;
 └──────────────────────────────┘
 ```
 
-クエリ：
+Query:
 
 ```sql
 SELECT mapConcat(map('key1', 1, 'key2', 2), map('key1', 3)) AS map, map['key1'];
 ```
 
-結果：
+Result:
 
 ```text
 ┌─map──────────────────────────┬─elem─┐
@@ -964,24 +961,24 @@ SELECT mapConcat(map('key1', 1, 'key2', 2), map('key1', 3)) AS map, map['key1'];
 └──────────────────────────────┴──────┘
 ```
 
-## mapExists([func,], map) {#mapexistsfunc-map}
+## mapExists(\[func,\], map) {#mapexistsfunc-map}
 
-`map` 内の少なくとも1つのキーと値のペアについて、`func(key, value)` が0以外を返す場合は1を返します。そうでない場合は0を返します。
+Returns 1 if at least one key-value pair in `map` exists for which `func(key, value)` returns something other than 0. Otherwise, it returns 0.
 
 :::note
-`mapExists` は[高階関数](/sql-reference/functions/overview#higher-order-functions)です。
-第1引数としてラムダ関数を渡すことができます。
+`mapExists` is a [higher-order function](/sql-reference/functions/overview#higher-order-functions).
+You can pass a lambda function to it as the first argument.
 :::
 
-**例**
+**Example**
 
-クエリ:
+Query:
 
 ```sql
 SELECT mapExists((k, v) -> (v = 1), map('k1', 1, 'k2', 2)) AS res
 ```
 
-結果：
+Result:
 
 ```response
 ┌─res─┐
@@ -989,24 +986,24 @@ SELECT mapExists((k, v) -> (v = 1), map('k1', 1, 'k2', 2)) AS res
 └─────┘
 ```
 
-## mapAll([func,] map) {#mapallfunc-map}
+## mapAll(\[func,\] map) {#mapallfunc-map}
 
-`map` 内のすべてのキーと値のペアに対して `func(key, value)` が 0 以外の値を返す場合は 1 を返し、そうでない場合は 0 を返します。
+Returns 1 if `func(key, value)` returns something other than 0 for all key-value pairs in `map`. Otherwise, it returns 0.
 
 :::note
-`mapAll` は [高階関数](/sql-reference/functions/overview#higher-order-functions) です。
-第 1 引数としてラムダ関数を渡すことができます。
+Note that the `mapAll` is a [higher-order function](/sql-reference/functions/overview#higher-order-functions).
+You can pass a lambda function to it as the first argument.
 :::
 
-**例**
+**Example**
 
-クエリ:
+Query:
 
 ```sql
 SELECT mapAll((k, v) -> (v = 1), map('k1', 1, 'k2', 2)) AS res
 ```
 
-結果：
+Result:
 
 ```response
 ┌─res─┐
@@ -1014,12 +1011,12 @@ SELECT mapAll((k, v) -> (v = 1), map('k1', 1, 'k2', 2)) AS res
 └─────┘
 ```
 
-## mapSort([func,], map) {#mapsortfunc-map}
+## mapSort(\[func,\], map) {#mapsortfunc-map}
 
-map の要素を昇順に並べ替えます。
-`func` 関数が指定されている場合、map のキーと値に `func` 関数を適用した結果によって並べ替え順が決定されます。
+Sorts the elements of a map in ascending order.
+If the `func` function is specified, the sorting order is determined by the result of the `func` function applied to the keys and values of the map.
 
-**例**
+**Examples**
 
 ```sql
 SELECT mapSort(map('key2', 2, 'key3', 1, 'key1', 3)) AS map;
@@ -1041,30 +1038,29 @@ SELECT mapSort((k, v) -> v, map('key2', 2, 'key3', 1, 'key1', 3)) AS map;
 └──────────────────────────────┘
 ```
 
-詳細については、`arraySort` 関数の[リファレンス](/sql-reference/functions/array-functions#arraySort)を参照してください。
+For more details see the [reference](/sql-reference/functions/array-functions#arraySort) for `arraySort` function. 
 
 ## mapPartialSort {#mappartialsort}
 
-map の要素を昇順にソートします。`limit` 引数によって部分ソートを指定できます。
-`func` 関数が指定された場合、map のキーおよび値に `func` 関数を適用した結果に基づいてソート順が決定されます。
+Sorts the elements of a map in ascending order with additional `limit` argument allowing partial sorting. 
+If the `func` function is specified, the sorting order is determined by the result of the `func` function applied to the keys and values of the map.
 
-**構文**
+**Syntax**
 
 ```sql
 mapPartialSort([func,] limit, map)
 ```
+**Arguments**
 
-**引数**
+- `func` – Optional function to apply to the keys and values of the map. [Lambda function](/sql-reference/functions/overview#higher-order-functions).
+- `limit` – Elements in range [1..limit] are sorted. [(U)Int](../data-types/int-uint.md).
+- `map` – Map to sort. [Map](../data-types/map.md).
 
-* `func` – map のキーと値に適用する任意の関数。[Lambda function](/sql-reference/functions/overview#higher-order-functions)。
-* `limit` – 範囲 [1..limit] の要素がソートされます。[(U)Int](../data-types/int-uint.md)。
-* `map` – ソートする map。[Map](../data-types/map.md)。
+**Returned value**
 
-**戻り値**
+- Partially sorted map. [Map](../data-types/map.md).
 
-* 部分的にソートされた map。[Map](../data-types/map.md)。
-
-**例**
+**Example**
 
 ```sql
 SELECT mapPartialSort((k, v) -> v, 2, map('k1', 3, 'k2', 1, 'k3', 2));
@@ -1076,12 +1072,12 @@ SELECT mapPartialSort((k, v) -> v, 2, map('k1', 3, 'k2', 1, 'k3', 2));
 └───────────────────────────────────────────────────────────────────────────┘
 ```
 
-## mapReverseSort([func,], map) {#mapreversesortfunc-map}
+## mapReverseSort(\[func,\], map) {#mapreversesortfunc-map}
 
-マップの要素を降順にソートします。
-`func` 関数が指定されている場合、マップのキーおよび値に `func` 関数を適用した結果に基づいてソートされます。
+Sorts the elements of a map in descending order.
+If the `func` function is specified, the sorting order is determined by the result of the `func` function applied to the keys and values of the map.
 
-**例**
+**Examples**
 
 ```sql
 SELECT mapReverseSort(map('key2', 2, 'key3', 1, 'key1', 3)) AS map;
@@ -1103,30 +1099,29 @@ SELECT mapReverseSort((k, v) -> v, map('key2', 2, 'key3', 1, 'key1', 3)) AS map;
 └──────────────────────────────┘
 ```
 
-詳細は、関数 [arrayReverseSort](/sql-reference/functions/array-functions#arrayReverseSort) を参照してください。
+For more details see function [arrayReverseSort](/sql-reference/functions/array-functions#arrayReverseSort).
 
 ## mapPartialReverseSort {#mappartialreversesort}
 
-追加の `limit` 引数により、マップの要素を降順に部分ソートします。
-`func` 関数が指定されている場合は、マップのキーおよび値に `func` 関数を適用した結果に基づいてソート順が決定されます。
+Sorts the elements of a map in descending order with additional `limit` argument allowing partial sorting.
+If the `func` function is specified, the sorting order is determined by the result of the `func` function applied to the keys and values of the map.
 
-**構文**
+**Syntax**
 
 ```sql
 mapPartialReverseSort([func,] limit, map)
 ```
+**Arguments**
 
-**引数**
+- `func` – Optional function to apply to the keys and values of the map. [Lambda function](/sql-reference/functions/overview#higher-order-functions).
+- `limit` – Elements in range [1..limit] are sorted. [(U)Int](../data-types/int-uint.md).
+- `map` – Map to sort. [Map](../data-types/map.md).
 
-* `func` – map のキーと値に適用する任意の関数。[Lambda 関数](/sql-reference/functions/overview#higher-order-functions)。
-* `limit` – 範囲 [1..limit] 内の要素をソートします。[(U)Int](../data-types/int-uint.md)。
-* `map` – ソート対象の map。[Map](../data-types/map.md)。
+**Returned value**
 
-**戻り値**
+- Partially sorted map. [Map](../data-types/map.md).
 
-* 部分的にソートされた map。[Map](../data-types/map.md)。
-
-**例**
+**Example**
 
 ```sql
 SELECT mapPartialReverseSort((k, v) -> v, 2, map('k1', 3, 'k2', 1, 'k3', 2));
@@ -1138,49 +1133,44 @@ SELECT mapPartialReverseSort((k, v) -> v, 2, map('k1', 3, 'k2', 1, 'k3', 2));
 └──────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-{/* 
-  以下のタグの内側の内容は、ドキュメントフレームワークのビルド時に
-  system.functions から自動生成されたドキュメントで置き換えられます。タグを変更または削除しないでください。
-  詳細は https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md を参照してください。
-  */ }
+<!-- 
+The inner content of the tags below are replaced at doc framework build time with 
+docs generated from system.functions. Please do not modify or remove the tags.
+See: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
+-->
 
-{/*AUTOGENERATED_START*/ }
-
+<!--AUTOGENERATED_START-->
 ## extractKeyValuePairs {#extractKeyValuePairs}
 
-導入バージョン: v
+Introduced in: v
 
-任意の文字列からキーと値のペアを抽出します。文字列は 100% キー・バリュー形式で構造化されている必要はありません。
+Extracts key-value pairs from any string. The string does not need to be 100% structured in a key value pair format;
 
-ノイズ（例: ログファイル）を含んでいても問題ありません。解釈対象となるキー・バリュー形式は、関数の引数で指定する必要があります。
+            It can contain noise (e.g. log files). The key-value pair format to be interpreted should be specified via function arguments.
 
-キーと値のペアは、キーに続いて `key_value_delimiter` と値が並ぶ形で構成されます。引用符付きのキーおよび値にも対応しています。キーと値のペア同士は、ペア区切り文字で区切られている必要があります。
+            A key-value pair consists of a key followed by a `key_value_delimiter` and a value. Quoted keys and values are also supported. Key value pairs must be separated by pair delimiters.
 
-**構文**
-
-```sql
+            **Syntax**
+            ```sql
             extractKeyValuePairs(data, [key_value_delimiter], [pair_delimiter], [quoting_character])
 ```
 
-**引数**
+            **Arguments**
+            - `data` - String to extract key-value pairs from. [String](../../sql-reference/data-types/string.md) or [FixedString](../../sql-reference/data-types/fixedstring.md).
+            - `key_value_delimiter` - Character to be used as delimiter between the key and the value. Defaults to `:`. [String](../../sql-reference/data-types/string.md) or [FixedString](../../sql-reference/data-types/fixedstring.md).
+            - `pair_delimiters` - Set of character to be used as delimiters between pairs. Defaults to `\space`, `,` and `;`. [String](../../sql-reference/data-types/string.md) or [FixedString](../../sql-reference/data-types/fixedstring.md).
+            - `quoting_character` - Character to be used as quoting character. Defaults to `"`. [String](../../sql-reference/data-types/string.md) or [FixedString](../../sql-reference/data-types/fixedstring.md).
+            - `unexpected_quoting_character_strategy` - Strategy to handle quoting characters in unexpected places during `read_key` and `read_value` phase. Possible values: `invalid`, `accept` and `promote`. Invalid will discard key/value and transition back to `WAITING_KEY` state. Accept will treat it as a normal character. Promote will transition to `READ_QUOTED_{KEY/VALUE}` state and start from next character. The default value is `INVALID`
 
-* `data` - キーと値のペアを抽出する対象の文字列。[String](../../sql-reference/data-types/string.md) または [FixedString](../../sql-reference/data-types/fixedstring.md)。
-  * `key_value_delimiter` - キーと値の間の区切り文字として使用する文字。デフォルトは `:`。型は [String](../../sql-reference/data-types/string.md) または [FixedString](../../sql-reference/data-types/fixedstring.md)。
-  * `pair_delimiters` - ペア間の区切り文字として使用する文字の集合。デフォルトは `\space`、`,`、`;`。型は [String](../../sql-reference/data-types/string.md) または [FixedString](../../sql-reference/data-types/fixedstring.md)。
-  * `quoting_character` - クオート文字として使用する文字。デフォルトは `"`. 型は [String](../../sql-reference/data-types/string.md) または [FixedString](../../sql-reference/data-types/fixedstring.md)。
-  * `unexpected_quoting_character_strategy` - `read_key` および `read_value` フェーズ中に想定外の位置に現れたクオート文字を処理するための戦略。指定可能な値: `invalid`、`accept`、`promote`。`invalid` はキー/値を破棄して `WAITING_KEY` 状態に戻ります。`accept` は通常の文字として扱います。`promote` は `READ_QUOTED_{KEY/VALUE}` 状態へ遷移し、次の文字から処理を開始します。デフォルト値は `INVALID` です。
+            **Returned values**
+            - The extracted key-value pairs in a Map(String, String).
 
-**戻り値**
+            **Examples**
 
-* 抽出されたキーと値のペアを Map(String, String) 型のマップとして返します。
+            Query:
 
-**例**
-
-クエリ:
-
-**単純な例**
-
-```sql
+            **Simple case**
+            ```sql
             arthur :) select extractKeyValuePairs('name:neymar, age:31 team:psg,nationality:brazil') as kv
 
             SELECT extractKeyValuePairs('name:neymar, age:31 team:psg,nationality:brazil') as kv
@@ -1192,9 +1182,8 @@ SELECT mapPartialReverseSort((k, v) -> v, 2, map('k1', 3, 'k2', 1, 'k3', 2));
             └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-**引用文字としての単一引用符**
-
-```sql
+            **Single quote as quoting character**
+            ```sql
             arthur :) select extractKeyValuePairs('name:\'neymar\';\'age\':31;team:psg;nationality:brazil,last_key:last_value', ':', ';,', '\'') as kv
 
             SELECT extractKeyValuePairs('name:\'neymar\';\'age\':31;team:psg;nationality:brazil,last_key:last_value', ':', ';,', '\'') as kv
@@ -1206,77 +1195,76 @@ SELECT mapPartialReverseSort((k, v) -> v, 2, map('k1', 3, 'k2', 1, 'k3', 2));
             └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-unexpected&#95;quoting&#95;character&#95;strategy の例:
+            unexpected_quoting_character_strategy examples:
 
-unexpected&#95;quoting&#95;character&#95;strategy=invalid
+            unexpected_quoting_character_strategy=invalid
 
-```sql
+            ```sql
             SELECT extractKeyValuePairs('name"abc:5', ':', ' ,;', '\"', 'INVALID') as kv;
 ```
 
-```text
+            ```text
             ┌─kv────────────────┐
             │ {'abc':'5'}  │
             └───────────────────┘
 ```
 
-```sql
+            ```sql
             SELECT extractKeyValuePairs('name"abc":5', ':', ' ,;', '\"', 'INVALID') as kv;
 ```
 
-```text
+            ```text
             ┌─kv──┐
             │ {}  │
             └─────┘
 ```
 
-unexpected&#95;quoting&#95;character&#95;strategy=accept
+            unexpected_quoting_character_strategy=accept
 
-```sql
+            ```sql
             SELECT extractKeyValuePairs('name"abc:5', ':', ' ,;', '\"', 'ACCEPT') as kv;
 ```
 
-```text
+            ```text
             ┌─kv────────────────┐
             │ {'name"abc':'5'}  │
             └───────────────────┘
 ```
 
-```sql
+            ```sql
             SELECT extractKeyValuePairs('name"abc":5', ':', ' ,;', '\"', 'ACCEPT') as kv;
 ```
 
-```text
+            ```text
             ┌─kv─────────────────┐
             │ {'name"abc"':'5'}  │
             └────────────────────┘
 ```
 
-unexpected&#95;quoting&#95;character&#95;strategy=promote
+            unexpected_quoting_character_strategy=promote
 
-```sql
+            ```sql
             SELECT extractKeyValuePairs('name"abc:5', ':', ' ,;', '\"', 'PROMOTE') as kv;
 ```
 
-```text
+            ```text
             ┌─kv──┐
             │ {}  │
             └─────┘
 ```
 
-```sql
+            ```sql
             SELECT extractKeyValuePairs('name"abc":5', ':', ' ,;', '\"', 'PROMOTE') as kv;
 ```
 
-```text
+            ```text
             ┌─kv───────────┐
             │ {'abc':'5'}  │
             └──────────────┘
 ```
 
-**エスケープシーケンス非対応環境でのエスケープ**
-
-```sql
+            **Escape sequences without escape sequences support**
+            ```sql
             arthur :) select extractKeyValuePairs('age:a\\x0A\\n\\0') as kv
 
             SELECT extractKeyValuePairs('age:a\\x0A\\n\\0') AS kv
@@ -1288,42 +1276,44 @@ unexpected&#95;quoting&#95;character&#95;strategy=promote
             └───────────────────────┘
 ```
 
-**構文**
+**Syntax**
 
 ```sql
 ```
 
-**別名**: `str_to_map`, `mapFromString`
+**Aliases**: `str_to_map`, `mapFromString`
 
-**引数**
+**Arguments**
 
-* なし。
+- None.
 
-**戻り値**
+**Returned value**
 
-**例**
+
+
+**Examples**
+
+
 
 ## extractKeyValuePairsWithEscaping {#extractKeyValuePairsWithEscaping}
 
-導入バージョン: v
+Introduced in: v
 
-`extractKeyValuePairs` と同じですが、エスケープシーケンスに対応しています。
+Same as `extractKeyValuePairs` but with escaping support.
 
-サポートされるエスケープシーケンス: `\x`, `\N`, `\a`, `\b`, `\e`, `\f`, `\n`, `\r`, `\t`, `\v`, `\0`。
-標準外のエスケープシーケンスは、次のいずれかに該当しない限り、そのまま（バックスラッシュを含めて）返されます:
-`\\`, `'`, `"`, `backtick`, `/`, `=` または ASCII 制御文字 (`c <= 31`)。
+            Escape sequences supported: `\x`, `\N`, `\a`, `\b`, `\e`, `\f`, `\n`, `\r`, `\t`, `\v` and `\0`.
+            Non standard escape sequences are returned as it is (including the backslash) unless they are one of the following:
+            `\\`, `'`, `"`, `backtick`, `/`, `=` or ASCII control characters (`c <= 31`).
 
-この関数は、事前エスケープおよび事後エスケープが適さないユースケースに適しています。例えば、次の入力文字列を考えます:
-`a: "aaaa\"bbb"`。期待される出力は `a: aaaa\"bbbb` です。
+            This function will satisfy the use case where pre-escaping and post-escaping are not suitable. For instance, consider the following
+            input string: `a: "aaaa\"bbb"`. The expected output is: `a: aaaa\"bbbb`.
+            - Pre-escaping: Pre-escaping it will output: `a: "aaaa"bbb"` and `extractKeyValuePairs` will then output: `a: aaaa`
+            - Post-escaping: `extractKeyValuePairs` will output `a: aaaa\` and post-escaping will keep it as it is.
 
-* 事前エスケープ: 事前エスケープすると、出力は `a: "aaaa"bbb"` となり、その後 `extractKeyValuePairs` は `a: aaaa` を出力します。
-  * 事後エスケープ: `extractKeyValuePairs` は `a: aaaa\` を出力し、事後エスケープを行ってもそのまま保持されます。
+            Leading escape sequences will be skipped in keys and will be considered invalid for values.
 
-先頭のエスケープシーケンスはキーではスキップされ、値に対しては不正とみなされます。
-
-**エスケープシーケンス対応が有効な場合のエスケープシーケンス**
-
-```sql
+            **Escape sequences with escape sequence support turned on**
+            ```sql
             arthur :) select extractKeyValuePairsWithEscaping('age:a\\x0A\\n\\0') as kv
 
             SELECT extractKeyValuePairsWithEscaping('age:a\\x0A\\n\\0') AS kv
@@ -1335,43 +1325,50 @@ unexpected&#95;quoting&#95;character&#95;strategy=promote
             └──────────────────┘
 ```
 
-**構文**
+**Syntax**
 
 ```sql
 ```
 
-**引数**
+**Arguments**
 
-* なし。
+- None.
 
-**戻り値**
+**Returned value**
 
-**例**
+
+
+**Examples**
+
+
 
 ## map {#map}
 
-導入バージョン: v21.1
+Introduced in: v21.1
 
-キーと値のペアから、`Map(key, value)` 型の値を作成します。
 
-**構文**
+Creates a value of type `Map(key, value)` from key-value pairs.
+
+
+**Syntax**
 
 ```sql
 map(key1, value1[, key2, value2, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `key_n` — マップエントリのキー。[`Any`](/sql-reference/data-types)
-* `value_n` — マップエントリの値。[`Any`](/sql-reference/data-types)
+- `key_n` — The keys of the map entries. [`Any`](/sql-reference/data-types)
+- `value_n` — The values of the map entries. [`Any`](/sql-reference/data-types)
 
-**返り値**
 
-キーと値のペアを含むマップを返します。[`Map(Any, Any)`](/sql-reference/data-types/map)
+**Returned value**
 
-**例**
+Returns a map containing key:value pairs. [`Map(Any, Any)`](/sql-reference/data-types/map)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT map('key1', number, 'key2', number * 2) FROM numbers(3)
@@ -1383,29 +1380,34 @@ SELECT map('key1', number, 'key2', number * 2) FROM numbers(3)
 {'key1':2,'key2':4}
 ```
 
+
+
 ## mapAdd {#mapAdd}
 
-導入バージョン: v20.7
+Introduced in: v20.7
 
-すべてのキーを集約し、それぞれのキーに対応する値を合計します。
 
-**構文**
+Collect all the keys and sum corresponding values.
+
+
+**Syntax**
 
 ```sql
 mapAdd(arg1[, arg2, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `arg1[, arg2, ...]` — 2 つの配列からなる Map またはタプルであり、1 つ目の配列の要素がキー、2 つ目の配列の要素が各キーに対応する値になります。[`Map(K, V)`](/sql-reference/data-types/map) または [`Tuple(Array(T), Array(T))`](/sql-reference/data-types/tuple)
+- `arg1[, arg2, ...]` — Maps or tuples of two arrays in which items in the first array represent keys, and the second array contains values for each key. [`Map(K, V)`](/sql-reference/data-types/map) or [`Tuple(Array(T), Array(T))`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-Map またはタプルを返します。1 つ目の配列にはソート済みのキーが含まれ、2 つ目の配列には対応する値が含まれます。[`Map(K, V)`](/sql-reference/data-types/map) または [`Tuple(Array(T), Array(T))`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns a map or returns a tuple, where the first array contains the sorted keys and the second array contains values. [`Map(K, V)`](/sql-reference/data-types/map) or [`Tuple(Array(T), Array(T))`](/sql-reference/data-types/tuple)
 
-**Map 型での使用例**
+**Examples**
+
+**With Map type**
 
 ```sql title=Query
 SELECT mapAdd(map(1, 1), map(1, 1))
@@ -1415,7 +1417,7 @@ SELECT mapAdd(map(1, 1), map(1, 1))
 {1:2}
 ```
 
-**タプルを使用する場合**
+**With tuple**
 
 ```sql title=Query
 SELECT mapAdd(([toUInt8(1), 2], [1, 1]), ([toUInt8(1), 2], [1, 1]))
@@ -1425,32 +1427,37 @@ SELECT mapAdd(([toUInt8(1), 2], [1, 1]), ([toUInt8(1), 2], [1, 1]))
 ([1, 2], [2, 2])
 ```
 
+
+
 ## mapAll {#mapAll}
 
-導入バージョン: v23.4
+Introduced in: v23.4
 
-マップ内のすべてのキーと値のペアに対して、ある条件が成り立つかどうかを判定します。
-`mapAll` は高階関数です。
-第1引数としてラムダ関数を渡すことができます。
 
-**構文**
+Tests whether a condition holds for all key-value pairs in a map.
+`mapAll` is a higher-order function.
+You can pass a lambda function to it as the first argument.
+
+
+**Syntax**
 
 ```sql
 mapAll([func,] map)
 ```
 
-**引数**
+**Arguments**
 
-* `func` — ラムダ関数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-* `map` — 検査対象のマップ。[`Map(K, V)`](/sql-reference/data-types/map)
+- `func` — Lambda function. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+- `map` — Map to check. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**返り値**
 
-すべてのキーと値のペアが条件を満たす場合は `1`、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns `1` if all key-value pairs satisfy the condition, `0` otherwise. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT mapAll((k, v) -> v = 1, map('k1', 1, 'k2', 2))
@@ -1460,30 +1467,35 @@ SELECT mapAll((k, v) -> v = 1, map('k1', 1, 'k2', 2))
 0
 ```
 
+
+
 ## mapApply {#mapApply}
 
-導入バージョン: v22.3
+Introduced in: v22.3
 
-関数を map の各要素に適用します。
 
-**構文**
+Applies a function to each element of a map.
+
+
+**Syntax**
 
 ```sql
 mapApply(func, map)
 ```
 
-**引数**
+**Arguments**
 
-* `func` — ラムダ関数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-* `map` — 関数を適用する対象の Map。[`Map(K, V)`](/sql-reference/data-types/map)
+- `func` — Lambda function. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+- `map` — Map to apply function to. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**戻り値**
 
-元の Map の各要素に `func` を適用して得られる新しい Map を返します。[`Map(K, V)`](/sql-reference/data-types/map)
+**Returned value**
 
-**例**
+Returns a new map obtained from the original map by application of `func` for each element. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT mapApply((k, v) -> (k, v * 2), map('k1', 1, 'k2', 2))
@@ -1493,30 +1505,35 @@ SELECT mapApply((k, v) -> (k, v * 2), map('k1', 1, 'k2', 2))
 {'k1':2,'k2':4}
 ```
 
+
+
 ## mapConcat {#mapConcat}
 
-導入バージョン: v23.4
+Introduced in: v23.4
 
-複数の `map` を、そのキーの等値性に基づいて連結します。
-同じキーを持つ要素が複数の入力 `map` に存在する場合、すべての要素が結果の `map` に追加されますが、演算子 `[]` で参照できるのは最初の要素のみです。
 
-**構文**
+Concatenates multiple maps based on the equality of their keys.
+If elements with the same key exist in more than one input map, all elements are added to the result map, but only the first one is accessible via operator [].
+
+
+**Syntax**
 
 ```sql
 mapConcat(maps)
 ```
 
-**引数**
+**Arguments**
 
-* `maps` — 任意個の Map。[`Map`](/sql-reference/data-types/map)
+- `maps` — Arbitrarily many maps. [`Map`](/sql-reference/data-types/map)
 
-**返り値**
 
-引数として渡された Map を連結した Map を返します。[`Map`](/sql-reference/data-types/map)
+**Returned value**
 
-**例**
+Returns a map with concatenated maps passed as arguments. [`Map`](/sql-reference/data-types/map)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT mapConcat(map('k1', 'v1'), map('k2', 'v2'))
@@ -1526,32 +1543,37 @@ SELECT mapConcat(map('k1', 'v1'), map('k2', 'v2'))
 {'k1':'v1','k2':'v2'}
 ```
 
+
+
 ## mapContainsKey {#mapContainsKey}
 
-導入バージョン: v21.2
+Introduced in: v21.2
 
-マップにキーが含まれているかどうかを判定します。
 
-**構文**
+Determines if a key is contained in a map.
+
+
+**Syntax**
 
 ```sql
 mapContains(map, key)
 ```
 
-**エイリアス**: `mapContains`
+**Aliases**: `mapContains`
 
-**引数**
+**Arguments**
 
-* `map` — 検索対象のマップ。[`Map(K, V)`](/sql-reference/data-types/map)
-* `key` — 検索するキー。型はマップのキー型と一致している必要があります。[`Any`](/sql-reference/data-types)
+- `map` — Map to search in. [`Map(K, V)`](/sql-reference/data-types/map)
+- `key` — Key to search for. Type must match the key type of the map. [`Any`](/sql-reference/data-types)
 
-**戻り値**
 
-マップにキーが含まれていれば 1、含まれていなければ 0 を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns 1 if map contains key, 0 if not. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT mapContainsKey(map('k1', 'v1', 'k2', 'v2'), 'k1')
@@ -1561,30 +1583,35 @@ SELECT mapContainsKey(map('k1', 'v1', 'k2', 'v2'), 'k1')
 1
 ```
 
+
+
 ## mapContainsKeyLike {#mapContainsKeyLike}
 
-導入バージョン: v23.4
+Introduced in: v23.4
 
-マップに、`LIKE` で指定したパターンに一致するキーが含まれているかを判定します。
 
-**構文**
+Checks whether map contains key `LIKE` specified pattern.
+
+
+**Syntax**
 
 ```sql
 mapContainsKeyLike(map, pattern)
 ```
 
-**引数**
+**Arguments**
 
-* `map` — 検索対象のマップ。[`Map(K, V)`](/sql-reference/data-types/map)
-* `pattern` — キーと照合するパターン。[`const String`](/sql-reference/data-types/string)
+- `map` — Map to search in. [`Map(K, V)`](/sql-reference/data-types/map)
+- `pattern` — Pattern to match keys against. [`const String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-`map` に `pattern` に一致するキーが含まれていれば `1`、そうでなければ `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns `1` if `map` contains a key matching `pattern`, `0` otherwise. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE tab (a Map(String, String))
@@ -1603,30 +1630,35 @@ SELECT mapContainsKeyLike(a, 'a%') FROM tab;
 └─────────────────────────────┘
 ```
 
+
+
 ## mapContainsValue {#mapContainsValue}
 
-導入バージョン: v25.6
+Introduced in: v25.6
 
-マップに指定した値が含まれているかどうかを判定します。
 
-**構文**
+Determines if a value is contained in a map.
+
+
+**Syntax**
 
 ```sql
 mapContainsValue(map, value)
 ```
 
-**引数**
+**Arguments**
 
-* `map` — 検索対象のマップ。[`Map(K, V)`](/sql-reference/data-types/map)
-* `value` — 検索する値。型は `map` の値の型と一致している必要があります。[`Any`](/sql-reference/data-types)
+- `map` — Map to search in. [`Map(K, V)`](/sql-reference/data-types/map)
+- `value` — Value to search for. Type must match the value type of map. [`Any`](/sql-reference/data-types)
 
-**戻り値**
 
-`map` に値が含まれていれば `1`、含まれていなければ `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns `1` if the map contains the value, `0` if not. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT mapContainsValue(map('k1', 'v1', 'k2', 'v2'), 'v1')
@@ -1636,30 +1668,35 @@ SELECT mapContainsValue(map('k1', 'v1', 'k2', 'v2'), 'v1')
 1
 ```
 
+
+
 ## mapContainsValueLike {#mapContainsValueLike}
 
-導入バージョン: v25.5
+Introduced in: v25.5
 
-マップに、指定したパターンに対して `LIKE` マッチする値が含まれているかをチェックします。
 
-**構文**
+Checks whether a map contains a value `LIKE` the specified pattern.
+
+
+**Syntax**
 
 ```sql
 mapContainsValueLike(map, pattern)
 ```
 
-**引数**
+**Arguments**
 
-* `map` — 検索対象のマップ。[`Map(K, V)`](/sql-reference/data-types/map)
-* `pattern` — 値と照合するパターン。[`const String`](/sql-reference/data-types/string)
+- `map` — Map to search in. [`Map(K, V)`](/sql-reference/data-types/map)
+- `pattern` — Pattern to match values against. [`const String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-`map` に `pattern` と一致する値が含まれている場合は `1`、それ以外は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns `1` if `map` contains a value matching `pattern`, `0` otherwise. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE tab (a Map(String, String))
@@ -1678,32 +1715,37 @@ SELECT mapContainsValueLike(a, 'a%') FROM tab;
 └──────────────────────────┘
 ```
 
+
+
 ## mapExists {#mapExists}
 
-導入バージョン: v23.4
+Introduced in: v23.4
 
-マップ内の少なくとも 1 つのキーと値のペアについて、条件が成り立つかどうかをテストします。
-`mapExists` は高階関数です。
-第 1 引数としてラムダ関数を渡すことができます。
 
-**構文**
+Tests whether a condition holds for at least one key-value pair in a map.
+`mapExists` is a higher-order function.
+You can pass a lambda function to it as the first argument.
+
+
+**Syntax**
 
 ```sql
 mapExists([func,] map)
 ```
 
-**引数**
+**Arguments**
 
-* `func` — 省略可能。ラムダ関数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-* `map` — チェック対象のマップ。[`Map(K, V)`](/sql-reference/data-types/map)
+- `func` — Optional. Lambda function. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+- `map` — Map to check. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**返される値**
 
-少なくとも 1 つのキーと値の組が条件を満たす場合は `1` を返し、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns `1` if at least one key-value pair satisfies the condition, `0` otherwise. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT mapExists((k, v) -> v = 1, map('k1', 1, 'k2', 2))
@@ -1713,30 +1755,35 @@ SELECT mapExists((k, v) -> v = 1, map('k1', 1, 'k2', 2))
 1
 ```
 
+
+
 ## mapExtractKeyLike {#mapExtractKeyLike}
 
-導入: v23.4
+Introduced in: v23.4
 
-文字列キーを持つ map と `LIKE` パターンを引数に取り、この関数はキーがそのパターンにマッチする要素のみを含む map を返します。
 
-**構文**
+Give a map with string keys and a `LIKE` pattern, this function returns a map with elements where the key matches the pattern.
+
+
+**Syntax**
 
 ```sql
 mapExtractKeyLike(map, pattern)
 ```
 
-**引数**
+**Arguments**
 
-* `map` — 抽出元となるマップ。[`Map(K, V)`](/sql-reference/data-types/map)
-* `pattern` — キーと照合するためのパターン。[`const String`](/sql-reference/data-types/string)
+- `map` — Map to extract from. [`Map(K, V)`](/sql-reference/data-types/map)
+- `pattern` — Pattern to match keys against. [`const String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-キーが指定したパターンにマッチする要素のみを含むマップを返します。パターンに一致する要素がない場合は、空のマップを返します。[`Map(K, V)`](/sql-reference/data-types/map)
+**Returned value**
 
-**例**
+Returns a map containing elements the key matching the specified pattern. If no elements match the pattern, an empty map is returned. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE tab (a Map(String, String))
@@ -1755,30 +1802,35 @@ SELECT mapExtractKeyLike(a, 'a%') FROM tab;
 └────────────────────────────┘
 ```
 
+
+
 ## mapExtractValueLike {#mapExtractValueLike}
 
-導入バージョン: v25.5
+Introduced in: v25.5
 
-文字列値を持つマップと `LIKE` パターンを指定すると、この関数は値がそのパターンに一致する要素のみを含むマップを返します。
 
-**構文**
+Given a map with string values and a `LIKE` pattern, this function returns a map with elements where the value matches the pattern.
+
+
+**Syntax**
 
 ```sql
 mapExtractValueLike(map, pattern)
 ```
 
-**引数**
+**Arguments**
 
-* `map` — 抽出対象とするマップ。[`Map(K, V)`](/sql-reference/data-types/map)
-* `pattern` — 値と照合するパターン。[`const String`](/sql-reference/data-types/string)
+- `map` — Map to extract from. [`Map(K, V)`](/sql-reference/data-types/map)
+- `pattern` — Pattern to match values against. [`const String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-指定したパターンにマッチする値を持つ要素だけを含むマップを返します。パターンにマッチする要素がない場合は、空のマップが返されます。[`Map(K, V)`](/sql-reference/data-types/map)
+**Returned value**
 
-**例**
+Returns a map containing elements the value matching the specified pattern. If no elements match the pattern, an empty map is returned. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE tab (a Map(String, String))
@@ -1797,30 +1849,35 @@ SELECT mapExtractValueLike(a, 'a%') FROM tab;
 └──────────────────────────────┘
 ```
 
+
+
 ## mapFilter {#mapFilter}
 
-導入バージョン: v22.3
+Introduced in: v22.3
 
-マップの各要素に関数を適用し、その結果に基づいてマップをフィルタリングします。
 
-**構文**
+Filters a map by applying a function to each map element.
+
+
+**Syntax**
 
 ```sql
 mapFilter(func, map)
 ```
 
-**引数**
+**Arguments**
 
-* `func` — ラムダ関数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-* `map` — フィルタ対象の Map。[`Map(K, V)`](/sql-reference/data-types/map)
+- `func` — Lambda function. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+- `map` — Map to filter. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**戻り値**
 
-`func` が `0` 以外の値を返す要素だけを含む Map を返します。[`Map(K, V)`](/sql-reference/data-types/map)
+**Returned value**
 
-**例**
+Returns a map containing only the elements in the map for which `func` returns something other than `0`. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT mapFilter((k, v) -> v > 1, map('k1', 1, 'k2', 2))
@@ -1830,33 +1887,38 @@ SELECT mapFilter((k, v) -> v > 1, map('k1', 1, 'k2', 2))
 {'k2':2}
 ```
 
+
+
 ## mapFromArrays {#mapFromArrays}
 
-v23.3 で導入。
+Introduced in: v23.3
 
-キーの配列（またはマップ）と値の配列（またはマップ）からマップを作成します。
-この関数は、構文 `CAST([...], 'Map(key_type, value_type)')` の便利な代替手段です。
 
-**構文**
+Creates a map from an array or map of keys and an array or map of values.
+The function is a convenient alternative to syntax `CAST([...], 'Map(key_type, value_type)')`.
+
+
+**Syntax**
 
 ```sql
 mapFromArrays(keys, values)
 ```
 
-**別名**: `MAP_FROM_ARRAYS`
+**Aliases**: `MAP_FROM_ARRAYS`
 
-**引数**
+**Arguments**
 
-* `keys` — マップを作成するためのキーの配列またはマップ。[`Array`](/sql-reference/data-types/array) または [`Map`](/sql-reference/data-types/map)
-* `values` — マップを作成するための値の配列またはマップ。[`Array`](/sql-reference/data-types/array) または [`Map`](/sql-reference/data-types/map)
+- `keys` — Array or map of keys to create the map from. [`Array`](/sql-reference/data-types/array) or [`Map`](/sql-reference/data-types/map)
+- `values` — Array or map of values to create the map from. [`Array`](/sql-reference/data-types/array) or [`Map`](/sql-reference/data-types/map)
 
-**戻り値**
 
-キー配列および値の配列/マップから構成されるキーと値を持つマップを返します。[`Map`](/sql-reference/data-types/map)
+**Returned value**
 
-**例**
+Returns a map with keys and values constructed from the key array and value array/map. [`Map`](/sql-reference/data-types/map)
 
-**基本的な使い方**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT mapFromArrays(['a', 'b', 'c'], [1, 2, 3])
@@ -1866,7 +1928,7 @@ SELECT mapFromArrays(['a', 'b', 'c'], [1, 2, 3])
 {'a':1,'b':2,'c':3}
 ```
 
-**map 型を入力とする場合**
+**With map inputs**
 
 ```sql title=Query
 SELECT mapFromArrays([1, 2, 3], map('a', 1, 'b', 2, 'c', 3))
@@ -1876,32 +1938,37 @@ SELECT mapFromArrays([1, 2, 3], map('a', 1, 'b', 2, 'c', 3))
 {1:('a', 1), 2:('b', 2), 3:('c', 3)}
 ```
 
+
+
 ## mapKeys {#mapKeys}
 
-導入バージョン: v21.2
+Introduced in: v21.2
 
-指定されたマップのキーを返します。
-この関数は、設定 [`optimize_functions_to_subcolumns`](/operations/settings/settings#optimize_functions_to_subcolumns) を有効にすることで最適化できます。
-この設定を有効にすると、関数はマップ全体ではなく `keys` サブカラムだけを読み取ります。
-クエリ `SELECT mapKeys(m) FROM table` は `SELECT m.keys FROM table` に変換されます。
 
-**構文**
+Returns the keys of a given map.
+This function can be optimized by enabling setting [`optimize_functions_to_subcolumns`](/operations/settings/settings#optimize_functions_to_subcolumns).
+With the setting enabled, the function only reads the `keys` subcolumn instead of the entire map.
+The query `SELECT mapKeys(m) FROM table` is transformed to `SELECT m.keys FROM table`.
+
+
+**Syntax**
 
 ```sql
 mapKeys(map)
 ```
 
-**引数**
+**Arguments**
 
-* `map` — キーを抽出する対象のマップ。[`Map(K, V)`](/sql-reference/data-types/map)
+- `map` — Map to extract keys from. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**戻り値**
 
-マップ内のすべてのキーを含む配列を返します。[`Array(T)`](/sql-reference/data-types/array)
+**Returned value**
 
-**例**
+Returns array containing all keys from the map. [`Array(T)`](/sql-reference/data-types/array)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT mapKeys(map('k1', 'v1', 'k2', 'v2'))
@@ -1911,32 +1978,37 @@ SELECT mapKeys(map('k1', 'v1', 'k2', 'v2'))
 ['k1','k2']
 ```
 
+
+
 ## mapPartialReverseSort {#mapPartialReverseSort}
 
-導入バージョン: v23.4
+Introduced in: v23.4
 
-map の要素を降順にソートし、追加の limit 引数によって先頭の一部だけをソートできます。
-func 関数が指定されている場合、map のキーと値に func 関数を適用した結果に基づいてソート順が決まります。
 
-**構文**
+Sorts the elements of a map in descending order with additional limit argument allowing partial sorting.
+If the func function is specified, the sorting order is determined by the result of the func function applied to the keys and values of the map.
+
+
+**Syntax**
 
 ```sql
 mapPartialReverseSort([func,] limit, map)
 ```
 
-**引数**
+**Arguments**
 
-* `func` — 省略可能。ラムダ関数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-* `limit` — 範囲 `[1..limit]` 内の要素がソートされます。[`(U)Int*`](/sql-reference/data-types/int-uint)
-* `map` — ソート対象のマップ。[`Map(K, V)`](/sql-reference/data-types/map)
+- `func` — Optional. Lambda function. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+- `limit` — Elements in the range `[1..limit]` are sorted. [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `map` — Map to sort. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**返される値**
 
-降順で部分的にソートされたマップを返します。[`Map(K, V)`](/sql-reference/data-types/map)
+**Returned value**
 
-**例**
+Returns a partially sorted map in descending order. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT mapPartialReverseSort((k, v) -> v, 2, map('k1', 3, 'k2', 1, 'k3', 2))
@@ -1946,32 +2018,37 @@ SELECT mapPartialReverseSort((k, v) -> v, 2, map('k1', 3, 'k2', 1, 'k3', 2))
 {'k1':3,'k3':2,'k2':1}
 ```
 
+
+
 ## mapPartialSort {#mapPartialSort}
 
-導入バージョン: v23.4
+Introduced in: v23.4
 
-`map` の要素を昇順にソートします。追加の `limit` 引数を指定することで、一部のみを対象とした「部分ソート」が可能です。
-`func` 関数が指定されている場合は、`map` のキーおよび値に `func` 関数を適用した結果に基づいてソート順が決定されます。
 
-**構文**
+Sorts the elements of a map in ascending order with additional limit argument allowing partial sorting.
+If the func function is specified, the sorting order is determined by the result of the func function applied to the keys and values of the map.
+
+
+**Syntax**
 
 ```sql
 mapPartialSort([func,] limit, map)
 ```
 
-**引数**
+**Arguments**
 
-* `func` — 省略可能。Lambda 関数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-* `limit` — 範囲 `[1..limit]` 内の要素がソートされます。[`(U)Int*`](/sql-reference/data-types/int-uint)
-* `map` — ソート対象の Map。[`Map(K, V)`](/sql-reference/data-types/map)
+- `func` — Optional. Lambda function. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+- `limit` — Elements in the range `[1..limit]` are sorted. [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `map` — Map to sort. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**戻り値**
 
-部分的にソートされた Map を返します。[`Map(K, V)`](/sql-reference/data-types/map)
+**Returned value**
 
-**例**
+Returns a partially sorted map. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT mapPartialSort((k, v) -> v, 2, map('k1', 3, 'k2', 1, 'k3', 2))
@@ -1981,36 +2058,41 @@ SELECT mapPartialSort((k, v) -> v, 2, map('k1', 3, 'k2', 1, 'k3', 2))
 {'k2':1,'k3':2,'k1':3}
 ```
 
+
+
 ## mapPopulateSeries {#mapPopulateSeries}
 
-導入バージョン: v20.10
+Introduced in: v20.10
 
-整数キーを持つマップにおいて、欠けているキーと値のペアを補完します。
-既存の最大値より大きいキーも拡張できるように、最大キーを指定できます。
-より正確には、この関数は、キーが最小キーから最大キー（指定されている場合は `max` 引数）までステップ幅 1 の数列を形成し、それに対応する値を持つマップを返します。
-あるキーに値が指定されていない場合、そのキーの値としてデフォルト値が使用されます。
-キーが重複している場合、先に出現した値のみがそのキーに関連付けられます。
 
-**構文**
+Fills missing key-value pairs in a map with integer keys.
+To support extending the keys beyond the largest value, a maximum key can be specified.
+More specifically, the function returns a map in which the keys form a series from the smallest to the largest key (or max argument if specified) with step size of 1, and corresponding values.
+If no value is specified for a key, a default value is used as value.
+In case keys repeat, only the first value (in order of appearance) is associated with the key.
+
+
+**Syntax**
 
 ```sql
 mapPopulateSeries(map[, max]) | mapPopulateSeries(keys, values[, max])
 ```
 
-**引数**
+**Arguments**
 
-* `map` — 整数キーを持つ Map 型。[`Map((U)Int*, V)`](/sql-reference/data-types/map)
-* `keys` — キーの配列。[`Array(T)`](/sql-reference/data-types/array)
-* `values` — 値の配列。[`Array(T)`](/sql-reference/data-types/array)
-* `max` — オプション。キーの最大値を指定します。[`Int8`](/sql-reference/data-types/int-uint) または [`Int16`](/sql-reference/data-types/int-uint) または [`Int32`](/sql-reference/data-types/int-uint) または [`Int64`](/sql-reference/data-types/int-uint) または [`Int128`](/sql-reference/data-types/int-uint) または [`Int256`](/sql-reference/data-types/int-uint)
+- `map` — Map with integer keys. [`Map((U)Int*, V)`](/sql-reference/data-types/map)
+- `keys` — Array of keys. [`Array(T)`](/sql-reference/data-types/array)
+- `values` — Array of values. [`Array(T)`](/sql-reference/data-types/array)
+- `max` — Optional. Maximum key value. [`Int8`](/sql-reference/data-types/int-uint) or [`Int16`](/sql-reference/data-types/int-uint) or [`Int32`](/sql-reference/data-types/int-uint) or [`Int64`](/sql-reference/data-types/int-uint) or [`Int128`](/sql-reference/data-types/int-uint) or [`Int256`](/sql-reference/data-types/int-uint)
 
-**返される値**
 
-ソート済みのキーを持つ Map、または 1 つ目にソート済みのキー、2 つ目に対応する値を持つ 2 つの配列からなるタプルを返します。[`Map(K, V)`](/sql-reference/data-types/map) または [`Tuple(Array(UInt*), Array(Any))`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns a map or a tuple of two arrays where the first has keys in sorted order, and the second values for the corresponding keys. [`Map(K, V)`](/sql-reference/data-types/map) or [`Tuple(Array(UInt*), Array(Any))`](/sql-reference/data-types/tuple)
 
-**Map 型を使用する場合**
+**Examples**
+
+**With Map type**
 
 ```sql title=Query
 SELECT mapPopulateSeries(map(1, 10, 5, 20), 6)
@@ -2020,7 +2102,7 @@ SELECT mapPopulateSeries(map(1, 10, 5, 20), 6)
 {1:10, 2:0, 3:0, 4:0, 5:20, 6:0}
 ```
 
-**マップされた配列を使う場合**
+**With mapped arrays**
 
 ```sql title=Query
 SELECT mapPopulateSeries([1, 2, 4], [11, 22, 44], 5)
@@ -2030,31 +2112,36 @@ SELECT mapPopulateSeries([1, 2, 4], [11, 22, 44], 5)
 ([1, 2, 3, 4, 5], [11, 22, 0, 44, 0])
 ```
 
+
+
 ## mapReverseSort {#mapReverseSort}
 
-導入バージョン: v23.4
+Introduced in: v23.4
 
-map の要素を降順に並べ替えます。
-`func` 関数が指定されている場合、map のキーおよび値に `func` 関数を適用した結果によってソート順が決まります。
 
-**構文**
+Sorts the elements of a map in descending order.
+If the func function is specified, the sorting order is determined by the result of the func function applied to the keys and values of the map.
+
+
+**Syntax**
 
 ```sql
 mapReverseSort([func,] map)
 ```
 
-**引数**
+**Arguments**
 
-* `func` — オプションのラムダ関数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-* `map` — ソート対象のマップ。[`Map(K, V)`](/sql-reference/data-types/map)
+- `func` — Optional. Lambda function. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+- `map` — Map to sort. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**戻り値**
 
-降順にソートされたマップを返します。[`Map(K, V)`](/sql-reference/data-types/map)
+**Returned value**
 
-**例**
+Returns a map sorted in descending order. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT mapReverseSort((k, v) -> v, map('k1', 3, 'k2', 1, 'k3', 2))
@@ -2064,31 +2151,36 @@ SELECT mapReverseSort((k, v) -> v, map('k1', 3, 'k2', 1, 'k3', 2))
 {'k1':3,'k3':2,'k2':1}
 ```
 
+
+
 ## mapSort {#mapSort}
 
 Introduced in: v23.4
 
-マップの要素を昇順で並べ替えます。
-`func` 関数が指定されている場合、マップのキーと値に `func` 関数を適用した結果によってソート順が決まります。
 
-**構文**
+Sorts the elements of a map in ascending order.
+If the func function is specified, the sorting order is determined by the result of the func function applied to the keys and values of the map.
+
+
+**Syntax**
 
 ```sql
 mapSort([func,] map)
 ```
 
-**引数**
+**Arguments**
 
-* `func` — 任意。ラムダ関数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-* `map` — ソート対象のマップ。[`Map(K, V)`](/sql-reference/data-types/map)
+- `func` — Optional. Lambda function. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+- `map` — Map to sort. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**戻り値**
 
-昇順にソートされたマップを返します。[`Map(K, V)`](/sql-reference/data-types/map)
+**Returned value**
 
-**例**
+Returns a map sorted in ascending order. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT mapSort((k, v) -> v, map('k1', 3, 'k2', 1, 'k3', 2))
@@ -2098,29 +2190,34 @@ SELECT mapSort((k, v) -> v, map('k1', 3, 'k2', 1, 'k3', 2))
 {'k2':1,'k3':2,'k1':3}
 ```
 
+
+
 ## mapSubtract {#mapSubtract}
 
-導入バージョン: v20.7
+Introduced in: v20.7
 
-すべてのキーを取得し、対応する値同士の差を計算します。
 
-**構文**
+Collect all the keys and subtract corresponding values.
+
+
+**Syntax**
 
 ```sql
 mapSubtract(arg1[, arg2, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `arg1[, arg2, ...]` — 2 つの配列からなる Map またはタプル。1 つ目の配列の要素がキーを表し、2 つ目の配列には各キーに対応する値が含まれます。[`Map(K, V)`](/sql-reference/data-types/map) または [`Tuple(Array(T), Array(T))`](/sql-reference/data-types/tuple)
+- `arg1[, arg2, ...]` — Maps or tuples of two arrays in which items in the first array represent keys, and the second array contains values for each key. [`Map(K, V)`](/sql-reference/data-types/map) or [`Tuple(Array(T), Array(T))`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-戻り値は 1 つの Map またはタプルで、1 つ目の配列にはソート済みのキーが含まれ、2 つ目の配列には値が含まれます。[`Map(K, V)`](/sql-reference/data-types/map) または [`Tuple(Array(T), Array(T))`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns one map or tuple, where the first array contains the sorted keys and the second array contains values. [`Map(K, V)`](/sql-reference/data-types/map) or [`Tuple(Array(T), Array(T))`](/sql-reference/data-types/tuple)
 
-**Map 型の場合**
+**Examples**
+
+**With Map type**
 
 ```sql title=Query
 SELECT mapSubtract(map(1, 1), map(1, 1))
@@ -2130,7 +2227,7 @@ SELECT mapSubtract(map(1, 1), map(1, 1))
 {1:0}
 ```
 
-**タプルマップを使用する場合**
+**With tuple map**
 
 ```sql title=Query
 SELECT mapSubtract(([toUInt8(1), 2], [toInt32(1), 1]), ([toUInt8(1), 2], [toInt32(2), 1]))
@@ -2140,30 +2237,35 @@ SELECT mapSubtract(([toUInt8(1), 2], [toInt32(1), 1]), ([toUInt8(1), 2], [toInt3
 ([1, 2], [-1, 0])
 ```
 
+
+
 ## mapUpdate {#mapUpdate}
 
-導入バージョン: v22.3
+Introduced in: v22.3
 
-2つのマップを受け取り、2つ目のマップの対応するキーの値で値を更新した1つ目のマップを返します。
 
-**構文**
+For two maps, returns the first map with values updated on the values for the corresponding keys in the second map.
+
+
+**Syntax**
 
 ```sql
 mapUpdate(map1, map2)
 ```
 
-**引数**
+**Arguments**
 
-* `map1` — 更新対象のマップ。[`Map(K, V)`](/sql-reference/data-types/map)
-* `map2` — 更新に使用するマップ。[`Map(K, V)`](/sql-reference/data-types/map)
+- `map1` — The map to update. [`Map(K, V)`](/sql-reference/data-types/map)
+- `map2` — The map to use for updating. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**返される値**
 
-`map2` に含まれる同じキーの値で更新された `map1` を返します。[`Map(K, V)`](/sql-reference/data-types/map)
+**Returned value**
 
-**使用例**
+Returns `map1` with values updated from values for the corresponding keys in `map2`. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**基本的な使い方**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT mapUpdate(map('key1', 0, 'key3', 0), map('key1', 10, 'key2', 10))
@@ -2173,32 +2275,37 @@ SELECT mapUpdate(map('key1', 0, 'key3', 0), map('key1', 10, 'key2', 10))
 {'key3':0,'key1':10,'key2':10}
 ```
 
+
+
 ## mapValues {#mapValues}
 
-導入バージョン: v21.2
+Introduced in: v21.2
 
-指定された map の値を返します。
-この関数は、[`optimize_functions_to_subcolumns`](/operations/settings/settings#optimize_functions_to_subcolumns) の設定を有効にすることで最適化できます。
-設定を有効にすると、この関数は map 全体ではなく `values` サブカラムのみを読み取ります。
-クエリ `SELECT mapValues(m) FROM table` は `SELECT m.values FROM table` に変換されます。
 
-**構文**
+Returns the values of a given map.
+This function can be optimized by enabling setting [`optimize_functions_to_subcolumns`](/operations/settings/settings#optimize_functions_to_subcolumns).
+With the setting enabled, the function only reads the `values` subcolumn instead of the entire map.
+The query `SELECT mapValues(m) FROM table` is transformed to `SELECT m.values FROM table`.
+
+
+**Syntax**
 
 ```sql
 mapValues(map)
 ```
 
-**引数**
+**Arguments**
 
-* `map` — 値を抽出する対象のマップ。[`Map(K, V)`](/sql-reference/data-types/map)
+- `map` — Map to extract values from. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**戻り値**
 
-マップ内のすべての値を含む配列を返します。[`Array(T)`](/sql-reference/data-types/array)
+**Returned value**
 
-**例**
+Returns an array containing all the values from the map. [`Array(T)`](/sql-reference/data-types/array)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT mapValues(map('k1', 'v1', 'k2', 'v2'))

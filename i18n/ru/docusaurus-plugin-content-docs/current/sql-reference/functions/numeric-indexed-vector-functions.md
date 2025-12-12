@@ -135,29 +135,34 @@ SELECT numericIndexedVectorAllValueSum(numericIndexedVectorBuild(mapFromArrays([
 └─────┘
 ```
 
+
+
 ## numericIndexedVectorBuild {#numericIndexedVectorBuild}
 
-Появилось в: v25.7
+Introduced in: v25.7
 
-Создаёт NumericIndexedVector из отображения (map). Ключи отображения задают индекс вектора, а значения — элементы вектора.
 
-**Синтаксис**
+Creates a NumericIndexedVector from a map. The map's keys represent the vector's index and map's value represents the vector's value.
+        
+
+**Syntax**
 
 ```sql
 numericIndexedVectorBuild(map)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `map` — отображение индекса в значение. [`Map`](/sql-reference/data-types/map)
+- `map` — A mapping from index to value. [`Map`](/sql-reference/data-types/map)
 
-**Возвращаемое значение**
 
-Возвращает объект NumericIndexedVector. [`AggregateFunction`](/sql-reference/data-types/aggregatefunction)
+**Returned value**
 
-**Примеры**
+Returns a NumericIndexedVector object. [`AggregateFunction`](/sql-reference/data-types/aggregatefunction)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT numericIndexedVectorBuild(mapFromArrays([1, 2, 3], [10, 20, 30])) AS res, toTypeName(res);
@@ -169,29 +174,34 @@ SELECT numericIndexedVectorBuild(mapFromArrays([1, 2, 3], [10, 20, 30])) AS res,
 └─────┴────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## numericIndexedVectorCardinality {#numericIndexedVectorCardinality}
 
-Впервые представлена в: v25.7
+Introduced in: v25.7
 
-Возвращает кардинальность (число уникальных индексов) объекта numericIndexedVector.
 
-**Синтаксис**
+Returns the cardinality (number of unique indexes) of the numericIndexedVector.
+        
+
+**Syntax**
 
 ```sql
 numericIndexedVectorCardinality(v)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `v` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+- `v` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
-**Возвращаемое значение**
 
-Возвращает число уникальных индексов. [`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the number of unique indexes. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT numericIndexedVectorCardinality(numericIndexedVectorBuild(mapFromArrays([1, 2, 3], [10, 20, 30]))) AS res;
@@ -203,30 +213,35 @@ SELECT numericIndexedVectorCardinality(numericIndexedVectorBuild(mapFromArrays([
 └─────┘
 ```
 
+
+
 ## numericIndexedVectorGetValue {#numericIndexedVectorGetValue}
 
-Появилась в версии: v25.7
+Introduced in: v25.7
 
-Извлекает значение, соответствующее указанному индексу, из `numericIndexedVector`.
 
-**Синтаксис**
+Retrieves the value corresponding to a specified index from a numericIndexedVector.
+        
+
+**Syntax**
 
 ```sql
 numericIndexedVectorGetValue(v, i)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `v` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-* `i` — Индекс, по которому извлекается значение. [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `v` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+- `i` — The index for which the value is to be retrieved. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Числовое значение того же типа, что и тип значений NumericIndexedVector: [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+**Returned value**
 
-**Примеры**
+A numeric value with the same type as the value type of NumericIndexedVector. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT numericIndexedVectorGetValue(numericIndexedVectorBuild(mapFromArrays([1, 2, 3], [10, 20, 30])), 3) AS res;
@@ -238,30 +253,35 @@ SELECT numericIndexedVectorGetValue(numericIndexedVectorBuild(mapFromArrays([1, 
 └─────┘
 ```
 
+
+
 ## numericIndexedVectorPointwiseAdd {#numericIndexedVectorPointwiseAdd}
 
-Представлен в версии: v25.7
+Introduced in: v25.7
 
-Выполняет покомпонентное сложение между `numericIndexedVector` и другим `numericIndexedVector` или числовой константой.
 
-**Синтаксис**
+Performs pointwise addition between a numericIndexedVector and either another numericIndexedVector or a numeric constant.
+        
+
+**Syntax**
 
 ```sql
 numericIndexedVectorPointwiseAdd(v1, v2)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `v1` — [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-* `v2` — числовая константа или объект типа `numericIndexedVector`. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+- `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+- `v2` — A numeric constant or numericIndexedVector object. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
-**Возвращаемое значение**
 
-Возвращает новый объект типа `numericIndexedVector`. [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+**Returned value**
 
-**Примеры**
+Returns a new numericIndexedVector object. [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 WITH
@@ -278,30 +298,35 @@ SELECT
 └───────────────────────┴──────────────────┘
 ```
 
+
+
 ## numericIndexedVectorPointwiseDivide {#numericIndexedVectorPointwiseDivide}
 
-Введён в версии: v25.7
+Introduced in: v25.7
 
-Выполняет покомпонентное деление между numericIndexedVector и другим numericIndexedVector или числовой константой.
 
-**Синтаксис**
+Performs pointwise division between a numericIndexedVector and either another numericIndexedVector or a numeric constant.
+        
+
+**Syntax**
 
 ```sql
 numericIndexedVectorPointwiseDivide(v1, v2)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `v1` — [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-* `v2` — числовая константа или объект типа numericIndexedVector. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+- `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+- `v2` — A numeric constant or numericIndexedVector object. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
-**Возвращаемое значение**
 
-Возвращает новый объект типа numericIndexedVector. [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+**Returned value**
 
-**Примеры**
+Returns a new numericIndexedVector object. [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 with
@@ -318,31 +343,36 @@ SELECT
 └─────────────┴─────────────────┘
 ```
 
+
+
 ## numericIndexedVectorPointwiseEqual {#numericIndexedVectorPointwiseEqual}
 
-Введено в: v25.7
+Introduced in: v25.7
 
-Выполняет покомпонентное сравнение между `numericIndexedVector` и другим `numericIndexedVector` или числовой константой.
-Результатом является `numericIndexedVector`, содержащий индексы элементов, значения которых равны, при этом всем соответствующим значениям присваивается 1.
 
-**Синтаксис**
+Performs pointwise comparison between a numericIndexedVector and either another numericIndexedVector or a numeric constant.
+The result is a numericIndexedVector containing the indices where the values are equal, with all corresponding values set to 1.
+        
+
+**Syntax**
 
 ```sql
 numericIndexedVectorPointwiseEqual(v1, v2)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `v1` — объект типа [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-* `v2` — числовая константа или объект типа numericIndexedVector: [`(U)Int*`](/sql-reference/data-types/int-uint), [`Float*`](/sql-reference/data-types/float) или [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+- `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+- `v2` — A numeric constant or numericIndexedVector object. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
-**Возвращаемое значение**
 
-Возвращает новый объект типа numericIndexedVector. [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+**Returned value**
 
-**Примеры**
+Returns a new numericIndexedVector object. [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
-***
+**Examples**
+
+****
 
 ```sql title=Query
 with
@@ -359,31 +389,36 @@ SELECT
 └───────┴───────┘
 ```
 
+
+
 ## numericIndexedVectorPointwiseGreater {#numericIndexedVectorPointwiseGreater}
 
-Появилась в версии: v25.7
+Introduced in: v25.7
 
-Выполняет покомпонентное сравнение между `numericIndexedVector` и другим `numericIndexedVector` либо числовой константой.
-Результатом является `numericIndexedVector`, содержащий индексы, для которых значение первого вектора больше значения второго, при этом все соответствующие значения устанавливаются равными 1.
 
-**Синтаксис**
+Performs pointwise comparison between a numericIndexedVector and either another numericIndexedVector or a numeric constant.
+The result is a numericIndexedVector containing the indices where the first vector's value is greater than the second vector's value, with all corresponding values set to 1.
+        
+
+**Syntax**
 
 ```sql
 numericIndexedVectorPointwiseGreater(v1, v2)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `v1` — [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-* `v2` — числовая константа или объект типа `numericIndexedVector`. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+- `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+- `v2` — A numeric constant or numericIndexedVector object. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
-**Возвращаемое значение**
 
-Возвращает новый объект типа `numericIndexedVector`. [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+**Returned value**
 
-**Примеры**
+Returns a new numericIndexedVector object. [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 with
@@ -400,31 +435,36 @@ SELECT
 └───────────┴───────┘
 ```
 
+
+
 ## numericIndexedVectorPointwiseGreaterEqual {#numericIndexedVectorPointwiseGreaterEqual}
 
-Введено в: v25.7
+Introduced in: v25.7
 
-Выполняет поэлементное сравнение между `numericIndexedVector` и другим `numericIndexedVector` или числовой константой.
-Результатом является `numericIndexedVector`, содержащий индексы позиций, где значение первого вектора больше либо равно значению второго вектора, при этом все соответствующие значения устанавливаются равными 1.
 
-**Синтаксис**
+Performs pointwise comparison between a numericIndexedVector and either another numericIndexedVector or a numeric constant.
+The result is a numericIndexedVector containing the indices where the first vector's value is greater than or equal to the second vector's value, with all corresponding values set to 1.
+        
+
+**Syntax**
 
 ```sql
 numericIndexedVectorPointwiseGreaterEqual(v1, v2)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `v1` — [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-* `v2` — числовая константа или объект типа `numericIndexedVector`. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+- `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+- `v2` — A numeric constant or numericIndexedVector object. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
-**Возвращаемое значение**
 
-Возвращает новый объект типа `numericIndexedVector`. [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+**Returned value**
 
-**Примеры**
+Returns a new numericIndexedVector object. [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 with
@@ -441,31 +481,36 @@ SELECT
 └───────────────┴───────────┘
 ```
 
+
+
 ## numericIndexedVectorPointwiseLess {#numericIndexedVectorPointwiseLess}
 
-Впервые представлено в: v25.7
+Introduced in: v25.7
 
-Выполняет покомпонентное сравнение `numericIndexedVector` либо с другим `numericIndexedVector`, либо с числовой константой.
-Результатом является `numericIndexedVector`, содержащий индексы, где значение первого вектора меньше значения второго, при этом все соответствующие значения равны 1.
 
-**Синтаксис**
+Performs pointwise comparison between a numericIndexedVector and either another numericIndexedVector or a numeric constant.
+The result is a numericIndexedVector containing the indices where the first vector's value is less than the second vector's value, with all corresponding values set to 1.
+        
+
+**Syntax**
 
 ```sql
 numericIndexedVectorPointwiseLess(v1, v2)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `v1` — [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-* `v2` — числовая константа или объект `numericIndexedVector`. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+- `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+- `v2` — A numeric constant or numericIndexedVector object. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
-**Возвращаемое значение**
 
-Возвращает новый объект `numericIndexedVector`. [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+**Returned value**
 
-**Примеры**
+Returns a new numericIndexedVector object. [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 with
@@ -482,31 +527,36 @@ SELECT
 └───────────┴───────┘
 ```
 
+
+
 ## numericIndexedVectorPointwiseLessEqual {#numericIndexedVectorPointwiseLessEqual}
 
-Добавлена в: v25.7
+Introduced in: v25.7
 
-Выполняет поэлементное сравнение между `numericIndexedVector` и другим `numericIndexedVector` или числовой константой.
-Результатом является `numericIndexedVector`, содержащий индексы, для которых значение первого вектора меньше либо равно значению второго вектора, при этом все соответствующие значения установлены в 1.
 
-**Синтаксис**
+Performs pointwise comparison between a numericIndexedVector and either another numericIndexedVector or a numeric constant.
+The result is a numericIndexedVector containing the indices where the first vector's value is less than or equal to the second vector's value, with all corresponding values set to 1.
+        
+
+**Syntax**
 
 ```sql
 numericIndexedVectorPointwiseLessEqual(v1, v2)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `v1` — [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-* `v2` — числовая константа или объект [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object) типов [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+- `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+- `v2` — A numeric constant or numericIndexedVector object [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
-**Возвращаемое значение**
 
-Возвращает новый объект [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object).
+**Returned value**
 
-**Примеры**
+Returns a new numericIndexedVector object. [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 with
@@ -523,30 +573,35 @@ SELECT
 └───────────────┴───────────┘
 ```
 
+
+
 ## numericIndexedVectorPointwiseMultiply {#numericIndexedVectorPointwiseMultiply}
 
-Введено в: v25.7
+Introduced in: v25.7
 
-Выполняет поэлементное умножение между `numericIndexedVector` и другим `numericIndexedVector` или числовой константой.
 
-**Синтаксис**
+Performs pointwise multiplication between a numericIndexedVector and either another numericIndexedVector or a numeric constant.
+        
+
+**Syntax**
 
 ```sql
 numericIndexedVectorPointwiseMultiply(v1, v2)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-* `v2` — числовая константа или объект типа `numericIndexedVector`. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+- `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+- `v2` — A numeric constant or numericIndexedVector object. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
-**Возвращаемое значение**
 
-Возвращает новый объект типа `numericIndexedVector`. [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+**Returned value**
 
-**Примеры**
+Returns a new numericIndexedVector object. [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
-***
+**Examples**
+
+****
 
 ```sql title=Query
 with
@@ -563,31 +618,36 @@ SELECT
 └───────────────┴──────────────────┘
 ```
 
+
+
 ## numericIndexedVectorPointwiseNotEqual {#numericIndexedVectorPointwiseNotEqual}
 
-Впервые появился в: v25.7
+Introduced in: v25.7
 
-Выполняет покомпонентное сравнение между `numericIndexedVector` и либо другим `numericIndexedVector`, либо числовой константой.
-Результатом является `numericIndexedVector`, содержащий индексы, для которых значения не равны, при этом все соответствующие значения равны 1.
 
-**Синтаксис**
+Performs pointwise comparison between a numericIndexedVector and either another numericIndexedVector or a numeric constant.
+The result is a numericIndexedVector containing the indices where the values are not equal, with all corresponding values set to 1.
+        
+
+**Syntax**
 
 ```sql
 numericIndexedVectorPointwiseNotEqual(v1, v2)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-* `v2` — числовая константа или объект типа [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object). [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+- `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+- `v2` — A numeric constant or numericIndexedVector object. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
-**Возвращаемое значение**
 
-Возвращает новый объект типа [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object).
+**Returned value**
 
-**Примеры**
+Returns a new numericIndexedVector object. [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 with
@@ -604,30 +664,35 @@ SELECT
 └───────────────┴───────────┘
 ```
 
+
+
 ## numericIndexedVectorPointwiseSubtract {#numericIndexedVectorPointwiseSubtract}
 
-Представлено в: v25.7
+Introduced in: v25.7
 
-Выполняет покомпонентное вычитание между `numericIndexedVector` и другим `numericIndexedVector` или числовой константой.
 
-**Синтаксис**
+Performs pointwise subtraction between a numericIndexedVector and either another numericIndexedVector or a numeric constant.
+        
+
+**Syntax**
 
 ```sql
 numericIndexedVectorPointwiseSubtract(v1, v2)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `v1` — [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-* `v2` — числовая константа или объект `numericIndexedVector`: [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+- `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+- `v2` — A numeric constant or numericIndexedVector object. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
-**Возвращаемое значение**
 
-Возвращает новый объект `numericIndexedVector`. [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+**Returned value**
 
-**Примеры**
+Returns a new numericIndexedVector object. [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 WITH
@@ -644,30 +709,35 @@ SELECT
 └────────────────────────┴─────────────────┘
 ```
 
+
+
 ## numericIndexedVectorShortDebugString {#numericIndexedVectorShortDebugString}
 
-Появилась в версии: v25.7
+Introduced in: v25.7
 
-Возвращает внутреннюю информацию о numericIndexedVector в формате JSON.
-Эта функция в основном используется для отладки.
 
-**Синтаксис**
+Returns internal information of the numericIndexedVector in JSON format.
+This function is primarily used for debugging purposes.
+        
+
+**Syntax**
 
 ```sql
 numericIndexedVectorShortDebugString(v)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `v` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+- `v` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
-**Возвращаемое значение**
 
-Возвращает JSON-строку с отладочной информацией. [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**Примеры**
+Returns a JSON string containing debug information. [`String`](/sql-reference/data-types/string)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT numericIndexedVectorShortDebugString(numericIndexedVectorBuild(mapFromArrays([1, 2, 3], [10, 20, 30]))) AS res\G;
@@ -679,29 +749,34 @@ SELECT numericIndexedVectorShortDebugString(numericIndexedVectorBuild(mapFromArr
 res: {"vector_type":"BSI","index_type":"char8_t","value_type":"char8_t","integer_bit_num":8,"fraction_bit_num":0,"zero_indexes_info":{"cardinality":"0"},"non_zero_indexes_info":{"total_cardinality":"3","all_value_sum":60,"number_of_bitmaps":"8","bitmap_info":{"cardinality":{"0":"0","1":"2","2":"2","3":"2","4":"2","5":"0","6":"0","7":"0"}}}}
 ```
 
+
+
 ## numericIndexedVectorToMap {#numericIndexedVectorToMap}
 
-Впервые появилась в версии v25.7
+Introduced in: v25.7
 
-Преобразует значение типа numericIndexedVector в map.
 
-**Синтаксис**
+Converts a numericIndexedVector to a map.
+        
+
+**Syntax**
 
 ```sql
 numericIndexedVectorToMap(v)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `v` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+- `v` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
-**Возвращаемое значение**
 
-Возвращает отображение [`Map`](/sql-reference/data-types/map) с парами индекс–значение.
+**Returned value**
 
-**Примеры**
+Returns a map with index-value pairs. [`Map`](/sql-reference/data-types/map)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT numericIndexedVectorToMap(numericIndexedVectorBuild(mapFromArrays([1, 2, 3], [10, 20, 30]))) AS res;

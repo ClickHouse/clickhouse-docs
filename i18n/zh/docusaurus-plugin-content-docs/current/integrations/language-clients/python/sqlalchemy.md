@@ -45,11 +45,11 @@ metadata = MetaData(schema="mydb")
 users = Table("users", metadata, autoload_with=engine)
 orders = Table("orders", metadata, autoload_with=engine)
 
-# 基本 SELECT 查询 {#basic-select}
+# Basic SELECT
 with engine.begin() as conn:
     rows = conn.execute(select(users.c.id, users.c.name).order_by(users.c.id).limit(10)).fetchall()
 
-# JOIN 连接（INNER/LEFT OUTER/FULL OUTER/CROSS） {#joins-innerleft-outerfull-outercross}
+# JOINs (INNER/LEFT OUTER/FULL OUTER/CROSS)
 with engine.begin() as conn:
     stmt = (
         select(users.c.name, orders.c.product)
@@ -106,11 +106,11 @@ with engine.begin() as conn:
 插入既可以通过 SQLAlchemy Core 实现，也可以为方便起见使用简单的 ORM 模型来完成。
 
 ```python
-# 核心插入操作 {#core-insert}
+# Core insert
 with engine.begin() as conn:
     conn.execute(table.insert().values(id=1, user="joe"))
 
-# 基础 ORM 插入操作 {#basic-orm-insert}
+# Basic ORM insert
 from sqlalchemy.orm import declarative_base, Session
 
 Base = declarative_base(metadata=MetaData(schema="example_db"))

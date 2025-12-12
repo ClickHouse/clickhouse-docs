@@ -49,7 +49,7 @@ CREATE DATABASE db_name ENGINE = engine(...) COMMENT 'Comment'
 クエリ:
 
 ```sql
-CREATE DATABASE db_comment ENGINE = Memory COMMENT '一時データベース';
+CREATE DATABASE db_comment ENGINE = Memory COMMENT 'The temporary database';
 SELECT name, comment FROM system.databases WHERE name = 'db_comment';
 ```
 
@@ -57,6 +57,6 @@ SELECT name, comment FROM system.databases WHERE name = 'db_comment';
 
 ```text
 ┌─name───────┬─comment────────────────┐
-│ db_comment │ 一時データベース       │
+│ db_comment │ The temporary database │
 └────────────┴────────────────────────┘
 ```

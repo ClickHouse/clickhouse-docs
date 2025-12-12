@@ -268,8 +268,8 @@ SYSTEM INSTRUMENT ADD FUNCTION HANDLER [PARAMETERS]
 Выводит переданный в качестве аргумента текст и стек вызовов при входе (`ENTRY`) или выходе (`EXIT`) из функции.
 
 ```sql
-SYSTEM INSTRUMENT ADD `QueryMetricLog::startQuery` LOG ENTRY 'это лог, выводимый при входе в функцию'
-SYSTEM INSTRUMENT ADD `QueryMetricLog::startQuery` LOG EXIT 'это лог, выводимый при выходе из функции'
+SYSTEM INSTRUMENT ADD `QueryMetricLog::startQuery` LOG ENTRY 'this is a log printed at entry'
+SYSTEM INSTRUMENT ADD `QueryMetricLog::startQuery` LOG EXIT 'this is a log printed at exit'
 ```
 
 
@@ -310,7 +310,7 @@ SYSTEM INSTRUMENT REMOVE ID
 все они с параметром `ALL`:
 
 ```sql
-УДАЛИТЬ ВСЕ СИСТЕМНЫЕ ИНСТРУМЕНТЫ
+SYSTEM INSTRUMENT REMOVE ALL
 ```
 
 или набор идентификаторов из подзапроса:
@@ -636,7 +636,7 @@ CREATE TABLE repl_db.test_table (n UInt32)
 ENGINE = ReplicatedMergeTree
 ORDER BY n PARTITION BY n % 10;
 
--- zookeeper_delete_path("/clickhouse/repl_db", recursive=True) <- потеря корня.
+-- zookeeper_delete_path("/clickhouse/repl_db", recursive=True) <- root loss.
 
 SYSTEM RESTORE DATABASE REPLICA repl_db;
 ```
@@ -664,7 +664,7 @@ ORDER BY n PARTITION BY n % 10;
 
 INSERT INTO test SELECT * FROM numbers(1000);
 
--- zookeeper_delete_path("/clickhouse/tables/test", recursive=True) <- потеря корня.
+-- zookeeper_delete_path("/clickhouse/tables/test", recursive=True) <- root loss.
 
 SYSTEM RESTART REPLICA test;
 SYSTEM RESTORE REPLICA test;
@@ -699,7 +699,7 @@ SYSTEM DROP FILESYSTEM CACHE [ON CLUSTER cluster_name]
 Вызывает системный вызов sync.
 
 ```sql
-SYSTEM SYNC FILE CACHE [ON CLUSTER имя_кластера]
+SYSTEM SYNC FILE CACHE [ON CLUSTER cluster_name]
 ```
 
 
@@ -712,7 +712,7 @@ SYSTEM LOAD PRIMARY KEY [db.]name
 ```
 
 ```sql
-СИСТЕМНАЯ ЗАГРУЗКА ПЕРВИЧНЫЙ КЛЮЧ
+SYSTEM LOAD PRIMARY KEY
 ```
 
 
@@ -759,7 +759,7 @@ SYSTEM STOP VIEW [db.]name
 ```
 
 ```sql
-ВИДЫ СИСТЕМНЫХ ОСТАНОВОК
+SYSTEM STOP VIEWS
 ```
 
 

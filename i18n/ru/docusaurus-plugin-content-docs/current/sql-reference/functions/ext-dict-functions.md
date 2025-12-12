@@ -23,44 +23,44 @@ doc_type: 'reference'
 <summary>Пример словаря для функций dictGet&lt;T&gt; и dictGet&lt;T&gt;OrDefault</summary>
 
 ```sql
--- Создать таблицу со всеми необходимыми типами данных
+-- Create table with all the required data types
 CREATE TABLE all_types_test (
     `id` UInt32,
     
-    -- Тип String
+    -- String type
     `String_value` String,
     
-    -- Беззнаковые целочисленные типы
+    -- Unsigned integer types
     `UInt8_value` UInt8,
     `UInt16_value` UInt16,
     `UInt32_value` UInt32,
     `UInt64_value` UInt64,
     
-    -- Знаковые целочисленные типы
+    -- Signed integer types
     `Int8_value` Int8,
     `Int16_value` Int16,
     `Int32_value` Int32,
     `Int64_value` Int64,
     
-    -- Типы с плавающей точкой
+    -- Floating point types
     `Float32_value` Float32,
     `Float64_value` Float64,
     
-    -- Типы даты/времени
+    -- Date/time types
     `Date_value` Date,
     `DateTime_value` DateTime,
     
-    -- Сетевые типы
+    -- Network types
     `IPv4_value` IPv4,
     `IPv6_value` IPv6,
     
-    -- Тип UUID
+    -- UUID type
     `UUID_value` UUID
 ) ENGINE = MergeTree() 
 ORDER BY id;
 ```
 ```sql
--- Вставить тестовые данные
+-- Insert test data
 INSERT INTO all_types_test VALUES
 (
     1,                              -- id
@@ -84,7 +84,7 @@ INSERT INTO all_types_test VALUES
 ```
 
 ```sql
--- Создать словарь
+-- Create dictionary
 CREATE DICTIONARY all_types_dict
 (
     id UInt32,
@@ -164,42 +164,42 @@ LAYOUT(REGEXP_TREE);
   Создайте исходную таблицу:
 
   ```sql
-  CREATE TABLE range_key_dictionary_source_table
-  (
-      key UInt64,
-      start_date Date,
-      end_date Date,
-      value String,
-      value_nullable Nullable(String)
-  )
-  ENGINE = TinyLog();
-  ```
+CREATE TABLE range_key_dictionary_source_table
+(
+    key UInt64,
+    start_date Date,
+    end_date Date,
+    value String,
+    value_nullable Nullable(String)
+)
+ENGINE = TinyLog();
+```
 
   Вставьте данные в исходную таблицу:
 
   ```sql
-  INSERT INTO range_key_dictionary_source_table VALUES(1, toDate('2019-05-20'), toDate('2019-05-20'), 'First', 'First');
-  INSERT INTO range_key_dictionary_source_table VALUES(2, toDate('2019-05-20'), toDate('2019-05-20'), 'Second', NULL);
-  INSERT INTO range_key_dictionary_source_table VALUES(3, toDate('2019-05-20'), toDate('2019-05-20'), 'Third', 'Third');
-  ```
+INSERT INTO range_key_dictionary_source_table VALUES(1, toDate('2019-05-20'), toDate('2019-05-20'), 'First', 'First');
+INSERT INTO range_key_dictionary_source_table VALUES(2, toDate('2019-05-20'), toDate('2019-05-20'), 'Second', NULL);
+INSERT INTO range_key_dictionary_source_table VALUES(3, toDate('2019-05-20'), toDate('2019-05-20'), 'Third', 'Third');
+```
 
   Создайте словарь:
 
   ```sql
-  CREATE DICTIONARY range_key_dictionary
-  (
-      key UInt64,
-      start_date Date,
-      end_date Date,
-      value String,
-      value_nullable Nullable(String)
-  )
-  PRIMARY KEY key
-  SOURCE(CLICKHOUSE(HOST 'localhost' PORT tcpPort() TABLE 'range_key_dictionary_source_table'))
-  LIFETIME(MIN 1 MAX 1000)
-  LAYOUT(RANGE_HASHED())
-  RANGE(MIN start_date MAX end_date);
-  ```
+CREATE DICTIONARY range_key_dictionary
+(
+    key UInt64,
+    start_date Date,
+    end_date Date,
+    value String,
+    value_nullable Nullable(String)
+)
+PRIMARY KEY key
+SOURCE(CLICKHOUSE(HOST 'localhost' PORT tcpPort() TABLE 'range_key_dictionary_source_table'))
+LIFETIME(MIN 1 MAX 1000)
+LAYOUT(RANGE_HASHED())
+RANGE(MIN start_date MAX end_date);
+```
 </details>
 
 <details>
@@ -208,37 +208,37 @@ LAYOUT(REGEXP_TREE);
   Создайте исходную таблицу:
 
   ```sql
-  CREATE TABLE dict_mult_source
-  (
-  id UInt32,
-  c1 UInt32,
-  c2 String
-  ) ENGINE = Memory;
-  ```
+CREATE TABLE dict_mult_source
+(
+id UInt32,
+c1 UInt32,
+c2 String
+) ENGINE = Memory;
+```
 
   Вставьте данные в исходную таблицу:
 
   ```sql
-  INSERT INTO dict_mult_source VALUES
-  (1, 1, '1'),
-  (2, 2, '2'),
-  (3, 3, '3');
-  ```
+INSERT INTO dict_mult_source VALUES
+(1, 1, '1'),
+(2, 2, '2'),
+(3, 3, '3');
+```
 
   Создайте словарь:
 
   ```sql
-  CREATE DICTIONARY ext_dict_mult
-  (
-      id UInt32,
-      c1 UInt32,
-      c2 String
-  )
-  PRIMARY KEY id
-  SOURCE(CLICKHOUSE(HOST 'localhost' PORT 9000 USER 'default' TABLE 'dict_mult_source' DB 'default'))
-  LAYOUT(FLAT())
-  LIFETIME(MIN 0 MAX 0);
-  ```
+CREATE DICTIONARY ext_dict_mult
+(
+    id UInt32,
+    c1 UInt32,
+    c2 String
+)
+PRIMARY KEY id
+SOURCE(CLICKHOUSE(HOST 'localhost' PORT 9000 USER 'default' TABLE 'dict_mult_source' DB 'default'))
+LAYOUT(FLAT())
+LIFETIME(MIN 0 MAX 0);
+```
 </details>
 
 <details>
@@ -247,49 +247,49 @@ LAYOUT(REGEXP_TREE);
   Создайте исходную таблицу:
 
   ```sql
-  CREATE TABLE hierarchy_source
-  (
-    id UInt64,
-    parent_id UInt64,
-    name String
-  ) ENGINE = Memory;
-  ```
+CREATE TABLE hierarchy_source
+(
+  id UInt64,
+  parent_id UInt64,
+  name String
+) ENGINE = Memory;
+```
 
   Вставьте данные в исходную таблицу:
 
   ```sql
-  INSERT INTO hierarchy_source VALUES
-  (0, 0, 'Root'),
-  (1, 0, 'Level 1 - Node 1'),
-  (2, 1, 'Level 2 - Node 2'),
-  (3, 1, 'Level 2 - Node 3'),
-  (4, 2, 'Level 3 - Node 4'),
-  (5, 2, 'Level 3 - Node 5'),
-  (6, 3, 'Level 3 - Node 6');
+INSERT INTO hierarchy_source VALUES
+(0, 0, 'Root'),
+(1, 0, 'Level 1 - Node 1'),
+(2, 1, 'Level 2 - Node 2'),
+(3, 1, 'Level 2 - Node 3'),
+(4, 2, 'Level 3 - Node 4'),
+(5, 2, 'Level 3 - Node 5'),
+(6, 3, 'Level 3 - Node 6');
 
-  -- 0 (Корень)
-  -- └── 1 (Уровень 1 - Узел 1)
-  --     ├── 2 (Уровень 2 - Узел 2)
-  --     │   ├── 4 (Уровень 3 - Узел 4)
-  --     │   └── 5 (Уровень 3 - Узел 5)
-  --     └── 3 (Уровень 2 - Узел 3)
-  --         └── 6 (Уровень 3 - Узел 6)
-  ```
+-- 0 (Root)
+-- └── 1 (Level 1 - Node 1)
+--     ├── 2 (Level 2 - Node 2)
+--     │   ├── 4 (Level 3 - Node 4)
+--     │   └── 5 (Level 3 - Node 5)
+--     └── 3 (Level 2 - Node 3)
+--         └── 6 (Level 3 - Node 6)
+```
 
   Создайте словарь:
 
   ```sql
-  CREATE DICTIONARY hierarchical_dictionary
-  (
-      id UInt64,
-      parent_id UInt64 HIERARCHICAL,
-      name String
-  )
-  PRIMARY KEY id
-  SOURCE(CLICKHOUSE(HOST 'localhost' PORT 9000 USER 'default' TABLE 'hierarchy_source' DB 'default'))
-  LAYOUT(HASHED())
-  LIFETIME(MIN 300 MAX 600);
-  ```
+CREATE DICTIONARY hierarchical_dictionary
+(
+    id UInt64,
+    parent_id UInt64 HIERARCHICAL,
+    name String
+)
+PRIMARY KEY id
+SOURCE(CLICKHOUSE(HOST 'localhost' PORT 9000 USER 'default' TABLE 'hierarchy_source' DB 'default'))
+LAYOUT(HASHED())
+LIFETIME(MIN 300 MAX 600);
+```
 </details>
 
 {/* 
@@ -335,7 +335,7 @@ SELECT dictGet('ext_dict_test', 'c1', toUInt64(1)) AS val
 1
 ```
 
-**Несколько атрибутов**
+**Multiple attributes**
 
 ```sql title=Query
 SELECT
@@ -359,36 +359,39 @@ LIMIT 3;
 └─────────┴────────────────┘
 ```
 
+
+
 ## dictGetAll {#dictGetAll}
 
-Появилась в версии: v23.5
+Introduced in: v23.5
 
-Преобразует значение атрибута словаря в тип данных `All` независимо от конфигурации словаря.
+Converts a dictionary attribute value to `All` data type regardless of the dictionary configuration.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetAll(dict_name, attr_name, id_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — Имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — Значение ключа. Выражение, возвращающее значение типа ключа словаря или кортеж (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, которое соответствует `id_expr`,
-в противном случае возвращает содержимое элемента `<null_value>`, указанного для атрибута в конфигурации словаря.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-ClickHouse выбрасывает исключение, если не может распарсить значение атрибута или если значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT
@@ -407,30 +410,35 @@ SELECT
 └────────────────────────────────────────────────────────────────┴─────────────────────────────────────────┴─────────────┘
 ```
 
+
+
 ## dictGetChildren {#dictGetChildren}
 
-Появилась в версии: v21.4
+Introduced in: v21.4
 
-Возвращает дочерние элементы первого уровня в виде массива индексов. Является обратным преобразованием для [dictGetHierarchy](#dictGetHierarchy).
 
-**Синтаксис**
+Returns first-level children as an array of indexes. It is the inverse transformation for [dictGetHierarchy](#dictGetHierarchy).
+
+
+**Syntax**
 
 ```sql
 dictGetChildren(dict_name, key)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — имя словаря. [`String`](/sql-reference/data-types/string)
-* `key` — ключ, который требуется проверить. [`const String`](/sql-reference/data-types/string)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `key` — Key to be checked. [`const String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает дочерние элементы (потомков) первого уровня для указанного ключа. [`Array(UInt64)`](/sql-reference/data-types/array)
+**Returned value**
 
-**Примеры**
+Returns the first-level descendants for the key. [`Array(UInt64)`](/sql-reference/data-types/array)
 
-**Получить дочерние элементы первого уровня словаря**
+**Examples**
+
+**Get the first-level children of a dictionary**
 
 ```sql title=Query
 SELECT dictGetChildren('hierarchical_dictionary', 2);
@@ -442,36 +450,39 @@ SELECT dictGetChildren('hierarchical_dictionary', 2);
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetDate {#dictGetDate}
 
-Введена в версии: v1.1
+Introduced in: v1.1
 
-Преобразует значение атрибута словаря к типу данных `Date` независимо от конфигурации словаря.
+Converts a dictionary attribute value to `Date` data type regardless of the dictionary configuration.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetDate(dict_name, attr_name, id_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — Имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — Значение ключа. Выражение, возвращающее значение типа ключа словаря или кортеж (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, которое соответствует `id_expr`,
-в противном случае возвращает содержимое элемента `<null_value>`, заданного для атрибута в конфигурации словаря.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-ClickHouse выбрасывает исключение, если не может разобрать значение атрибута или если значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetDate('all_types_dict', 'Date_value', 1)
@@ -483,37 +494,40 @@ SELECT dictGetDate('all_types_dict', 'Date_value', 1)
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetDateOrDefault {#dictGetDateOrDefault}
 
-Добавлено в: v1.1
+Introduced in: v1.1
 
-Преобразует значение атрибута словаря в тип данных `Date` независимо от настроек словаря или возвращает указанное значение по умолчанию, если ключ не найден.
+Converts a dictionary attribute value to `Date` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetDateOrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — Имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — Значение ключа. Выражение, возвращающее значение типа ключа словаря или значение-кортеж (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — Значение или значения, возвращаемые, если словарь не содержит строки с ключом `id_expr`. [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, соответствующее `id_expr`,
-в противном случае — значение, переданное в параметре `default_value_expr`.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-ClickHouse генерирует исключение, если не может распарсить значение атрибута или если значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 -- для существующего ключа
@@ -532,36 +546,39 @@ SELECT dictGetDateOrDefault('all_types_dict', 'Date_value', 999, toDate('1970-01
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetDateTime {#dictGetDateTime}
 
-Появилась в версии: v1.1
+Introduced in: v1.1
 
-Преобразует значение атрибута словаря в тип данных `DateTime` независимо от конфигурации словаря.
+Converts a dictionary attribute value to `DateTime` data type regardless of the dictionary configuration.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetDateTime(dict_name, attr_name, id_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — Имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — Значение ключа. Выражение, возвращающее значение типа ключа словаря или кортеж (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, которое соответствует `id_expr`,
-в противном случае — содержимое элемента `<null_value>`, указанного для атрибута в конфигурации словаря.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-ClickHouse генерирует исключение, если не может распарсить значение атрибута или если значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetDateTime('all_types_dict', 'DateTime_value', 1)
@@ -573,37 +590,40 @@ SELECT dictGetDateTime('all_types_dict', 'DateTime_value', 1)
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetDateTimeOrDefault {#dictGetDateTimeOrDefault}
 
-Добавлена в версии: v1.1
+Introduced in: v1.1
 
-Преобразует значение атрибута словаря к типу данных `DateTime` независимо от конфигурации словаря или возвращает указанное значение по умолчанию, если ключ не найден.
+Converts a dictionary attribute value to `DateTime` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetDateTimeOrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — Имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — Значение ключа. Выражение, возвращающее значение типа ключа словаря или значение кортежа (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — Значение или значения, возвращаемые, если словарь не содержит строки с ключом `id_expr`. [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, которое соответствует `id_expr`,
-иначе возвращает значение, переданное в параметре `default_value_expr`.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-ClickHouse генерирует исключение, если не может разобрать значение атрибута или если значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 -- для существующего ключа
@@ -622,31 +642,36 @@ SELECT dictGetDateTimeOrDefault('all_types_dict', 'DateTime_value', 999, toDateT
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetDescendants {#dictGetDescendants}
 
-Добавлено в: v21.4
+Introduced in: v21.4
 
-Возвращает всех потомков так, как если бы функция [`dictGetChildren`](#dictGetChildren) была рекурсивно применена `level` раз.
 
-**Синтаксис**
+Returns all descendants as if the [`dictGetChildren`](#dictGetChildren) function were applied `level` times recursively.
+
+
+**Syntax**
 
 ```sql
 dictGetDescendants(dict_name, key, level)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — имя словаря. [`String`](/sql-reference/data-types/string)
-* `key` — ключ, который нужно проверить. [`const String`](/sql-reference/data-types/string)
-* `level` — уровень иерархии. Если `level = 0`, возвращает всех потомков до конца. [`UInt8`](/sql-reference/data-types/int-uint)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `key` — Key to be checked. [`const String`](/sql-reference/data-types/string)
+- `level` — Key to be checked. Hierarchy level. If `level = 0` returns all descendants to the end. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает потомков для ключа. [`Array(UInt64)`](/sql-reference/data-types/array)
+**Returned value**
 
-**Примеры**
+Returns the descendants for the key. [`Array(UInt64)`](/sql-reference/data-types/array)
 
-**Получение дочерних элементов словаря первого уровня**
+**Examples**
+
+**Get the first-level children of a dictionary**
 
 ```sql title=Query
 -- рассмотрим следующий иерархический словарь:
@@ -667,36 +692,39 @@ SELECT dictGetDescendants('hierarchical_dictionary', 0, 2)
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetFloat32 {#dictGetFloat32}
 
-Появилась в версии: v1.1
+Introduced in: v1.1
 
-Преобразует значение атрибута словаря к типу данных `Float32` независимо от конфигурации словаря.
+Converts a dictionary attribute value to `Float32` data type regardless of the dictionary configuration.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetFloat32(dict_name, attr_name, id_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — Имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — Значение ключа. Выражение, возвращающее значение типа ключа словаря или значение-кортеж (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, соответствующее `id_expr`,
-в противном случае возвращает содержимое элемента `<null_value>`, указанного для атрибута в конфигурации словаря.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-ClickHouse генерирует исключение, если не может разобрать значение атрибута или если значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetFloat32('all_types_dict', 'Float32_value', 1)
@@ -708,37 +736,40 @@ SELECT dictGetFloat32('all_types_dict', 'Float32_value', 1)
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetFloat32OrDefault {#dictGetFloat32OrDefault}
 
-Добавлена в версии: v1.1
+Introduced in: v1.1
 
-Преобразует значение атрибута словаря к типу данных `Float32` независимо от конфигурации словаря или возвращает указанное значение по умолчанию, если ключ не найден.
+Converts a dictionary attribute value to `Float32` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetFloat32OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — Имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — Значение ключа. Выражение, возвращающее значение типа ключа словаря или кортеж (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — Значение или значения, возвращаемые, если в словаре нет строки с ключом `id_expr`. [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, соответствующее `id_expr`,
-в противном случае возвращает значение, переданное в параметре `default_value_expr`.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-ClickHouse генерирует исключение, если не может разобрать значение атрибута или если значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 -- для существующего ключа
@@ -757,36 +788,39 @@ SELECT dictGetFloat32OrDefault('all_types_dict', 'Float32_value', 999, -1.0);
 └───────────────────────────┘
 ```
 
+
+
 ## dictGetFloat64 {#dictGetFloat64}
 
-Впервые представлена в версии v1.1
+Introduced in: v1.1
 
-Преобразует значение атрибута словаря к типу данных `Float64` независимо от конфигурации словаря.
+Converts a dictionary attribute value to `Float64` data type regardless of the dictionary configuration.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetFloat64(dict_name, attr_name, id_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — Имя атрибута словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — Значение ключа. Выражение, возвращающее значение типа ключа словаря или кортеж значений (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, которое соответствует `id_expr`,
-в противном случае возвращает содержимое элемента `<null_value>`, указанного для атрибута в конфигурации словаря.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-ClickHouse выбрасывает исключение, если не может распарсить значение атрибута или если значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetFloat64('all_types_dict', 'Float64_value', 1)
@@ -798,37 +832,40 @@ SELECT dictGetFloat64('all_types_dict', 'Float64_value', 1)
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetFloat64OrDefault {#dictGetFloat64OrDefault}
 
-Впервые представлена в: v1.1
+Introduced in: v1.1
 
-Преобразует значение атрибута словаря к типу данных `Float64` независимо от конфигурации словаря или возвращает указанное значение по умолчанию, если ключ не найден.
+Converts a dictionary attribute value to `Float64` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetFloat64OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — Имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — Значение ключа. Выражение, возвращающее значение типа ключа словаря или значение кортежа (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — Значение или значения, которые возвращаются, если словарь не содержит строку с ключом `id_expr`. [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, соответствующее `id_expr`,
-в противном случае возвращает значение, переданное в параметре `default_value_expr`.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-ClickHouse генерирует исключение, если не удаётся разобрать значение атрибута или если значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 -- для существующего ключа
@@ -847,30 +884,35 @@ SELECT dictGetFloat64OrDefault('all_types_dict', 'Float64_value', 999, nan);
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetHierarchy {#dictGetHierarchy}
 
-Появилось в версии: v1.1
+Introduced in: v1.1
 
-Создаёт массив, содержащий всех родителей ключа в [иерархическом словаре](../../sql-reference/dictionaries/index.md#hierarchical-dictionaries).
 
-**Синтаксис**
+Creates an array, containing all the parents of a key in the [hierarchical dictionary](../../sql-reference/dictionaries/index.md#hierarchical-dictionaries).
+
+
+**Syntax**
 
 ```sql
 dictGetHierarchy(dict_name, key)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `key` — Значение ключа. [`const String`](/sql-reference/data-types/string)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `key` — Key value. [`const String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает родителей для ключа. [`Array(UInt64)`](/sql-reference/data-types/array)
+**Returned value**
 
-**Примеры**
+Returns parents for the key. [`Array(UInt64)`](/sql-reference/data-types/array)
 
-**Получение иерархии для ключа**
+**Examples**
+
+**Get hierarchy for a key**
 
 ```sql title=Query
 SELECT dictGetHierarchy('hierarchical_dictionary', 5)
@@ -882,36 +924,39 @@ SELECT dictGetHierarchy('hierarchical_dictionary', 5)
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetIPv4 {#dictGetIPv4}
 
-Впервые появилась в версии v1.1
+Introduced in: v1.1
 
-Преобразует значение атрибута словаря в тип данных `IPv4` независимо от конфигурации словаря.
+Converts a dictionary attribute value to `IPv4` data type regardless of the dictionary configuration.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetIPv4(dict_name, attr_name, id_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — Имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — Значение ключа. Выражение, возвращающее значение типа ключа словаря или значение кортежа (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, соответствующее `id_expr`,
-иначе возвращает содержимое элемента `<null_value>`, указанного для атрибута в конфигурации словаря.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-ClickHouse генерирует исключение, если не удаётся разобрать значение атрибута или если значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetIPv4('all_types_dict', 'IPv4_value', 1)
@@ -923,37 +968,40 @@ SELECT dictGetIPv4('all_types_dict', 'IPv4_value', 1)
 └─────────────────────────────────────┘
 ```
 
+
+
 ## dictGetIPv4OrDefault {#dictGetIPv4OrDefault}
 
-Впервые появилась в: v23.1
+Introduced in: v23.1
 
-Преобразует значение атрибута словаря к типу данных `IPv4` независимо от конфигурации словаря или возвращает указанное значение по умолчанию, если ключ не найден.
+Converts a dictionary attribute value to `IPv4` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetIPv4OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — Имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — Значение ключа. Выражение, возвращающее значение типа ключа словаря или кортеж (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — Значение или значения, возвращаемые, если словарь не содержит строки с ключом `id_expr`. [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, соответствующее `id_expr`,
-в противном случае возвращает значение, переданное через параметр `default_value_expr`.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-ClickHouse генерирует исключение, если не может разобрать значение атрибута или если значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 -- для существующего ключа
@@ -972,36 +1020,39 @@ SELECT dictGetIPv4OrDefault('all_types_dict', 'IPv4_value', 999, toIPv4('0.0.0.0
 └──────────────────────────────┘
 ```
 
+
+
 ## dictGetIPv6 {#dictGetIPv6}
 
-Добавлена в версии: v23.1
+Introduced in: v23.1
 
-Преобразует значение атрибута словаря в тип данных `IPv6` независимо от конфигурации словаря.
+Converts a dictionary attribute value to `IPv6` data type regardless of the dictionary configuration.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetIPv6(dict_name, attr_name, id_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — Имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — Значение ключа. Выражение, возвращающее значение типа ключа словаря или значение кортежа (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, соответствующее `id_expr`,
-иначе возвращает содержимое элемента `<null_value>`, указанного для атрибута в конфигурации словаря.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-ClickHouse генерирует исключение, если не удаётся распарсить значение атрибута или оно не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetIPv6('all_types_dict', 'IPv6_value', 1)
@@ -1013,37 +1064,40 @@ SELECT dictGetIPv6('all_types_dict', 'IPv6_value', 1)
 └─────────────────────────────────────┘
 ```
 
+
+
 ## dictGetIPv6OrDefault {#dictGetIPv6OrDefault}
 
-Введена в версии: v23.1
+Introduced in: v23.1
 
-Преобразует значение атрибута словаря к типу данных `IPv6` независимо от конфигурации словаря или возвращает указанное значение по умолчанию, если ключ не найден.
+Converts a dictionary attribute value to `IPv6` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetIPv6OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — Имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — Значение ключа. Выражение, возвращающее значение типа ключа словаря или значение кортежа (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — Значение или значения, возвращаемые, если словарь не содержит строку с ключом `id_expr`. [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, которое соответствует `id_expr`,
-иначе возвращает значение, переданное в параметре `default_value_expr`.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-ClickHouse выбрасывает исключение, если не может распарсить значение атрибута или если значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 -- для существующего ключа
@@ -1062,36 +1116,39 @@ SELECT dictGetIPv6OrDefault('all_types_dict', 'IPv6_value', 999, '::1'::IPv6);
 └──────────────────────────────┘
 ```
 
+
+
 ## dictGetInt16 {#dictGetInt16}
 
-Добавлено в: v1.1
+Introduced in: v1.1
 
-Преобразует значение атрибута словаря к типу данных `Int16` независимо от конфигурации словаря.
+Converts a dictionary attribute value to `Int16` data type regardless of the dictionary configuration.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetInt16(dict_name, attr_name, id_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — Имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — Значение ключа. Выражение, возвращающее значение типа ключа словаря или кортеж (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, которое соответствует `id_expr`,
-в противном случае возвращает содержимое элемента `<null_value>`, указанного для атрибута в конфигурации словаря.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-ClickHouse выбрасывает исключение, если не удаётся разобрать значение атрибута или если значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetInt16('all_types_dict', 'Int16_value', 1)
@@ -1103,37 +1160,40 @@ SELECT dictGetInt16('all_types_dict', 'Int16_value', 1)
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetInt16OrDefault {#dictGetInt16OrDefault}
 
-Впервые представлена в: v1.1
+Introduced in: v1.1
 
-Преобразует значение атрибута словаря к типу данных `Int16` независимо от конфигурации словаря или возвращает указанное значение по умолчанию, если ключ не найден.
+Converts a dictionary attribute value to `Int16` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetInt16OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — значение ключа. Выражение, возвращающее значение типа ключа словаря или кортеж значений (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — значение или значения, возвращаемые, если словарь не содержит строки с ключом `id_expr`. [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, соответствующее `id_expr`,
-в противном случае возвращает значение, переданное в параметре `default_value_expr`.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-ClickHouse генерирует исключение, если не может разобрать значение атрибута или если значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 -- для существующего ключа
@@ -1152,36 +1212,39 @@ SELECT dictGetInt16OrDefault('all_types_dict', 'Int16_value', 999, -1);
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetInt32 {#dictGetInt32}
 
-Добавлена в версии: v1.1
+Introduced in: v1.1
 
-Преобразует значение атрибута словаря к типу данных `Int32` независимо от конфигурации словаря.
+Converts a dictionary attribute value to `Int32` data type regardless of the dictionary configuration.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetInt32(dict_name, attr_name, id_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — Имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — Значение ключа. Выражение, возвращающее значение типа ключа словаря или кортеж (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, которое соответствует `id_expr`,
-иначе возвращает содержимое элемента `<null_value>`, указанного для атрибута в конфигурации словаря.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-ClickHouse генерирует исключение, если не может интерпретировать значение атрибута или если значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetInt32('all_types_dict', 'Int32_value', 1)
@@ -1193,37 +1256,40 @@ SELECT dictGetInt32('all_types_dict', 'Int32_value', 1)
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetInt32OrDefault {#dictGetInt32OrDefault}
 
-Введён в версии: v1.1
+Introduced in: v1.1
 
-Преобразует значение атрибута словаря к типу данных `Int32` независимо от конфигурации словаря или возвращает указанное значение по умолчанию, если ключ не найден.
+Converts a dictionary attribute value to `Int32` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetInt32OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — Имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — Значение ключа. Выражение, возвращающее значение типа ключа словаря или значение-кортеж (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — Значение (значения), возвращаемое, если словарь не содержит строки с ключом `id_expr`. [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, соответствующее `id_expr`,
-в противном случае возвращает значение, переданное в параметре `default_value_expr`.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-ClickHouse вызывает исключение, если не может разобрать значение атрибута или если значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 -- для существующего ключа
@@ -1242,36 +1308,39 @@ SELECT dictGetInt32OrDefault('all_types_dict', 'Int32_value', 999, -1);
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetInt64 {#dictGetInt64}
 
-Добавлена в: v1.1
+Introduced in: v1.1
 
-Преобразует значение атрибута словаря к типу данных `Int64` независимо от конфигурации словаря.
+Converts a dictionary attribute value to `Int64` data type regardless of the dictionary configuration.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetInt64(dict_name, attr_name, id_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — значение ключа. Выражение, возвращающее значение типа ключа словаря или кортеж (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, которое соответствует `id_expr`,
-в противном случае возвращает значение элемента `<null_value>`, заданного для атрибута в конфигурации словаря.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-ClickHouse генерирует исключение, если не может разобрать значение атрибута или если значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetInt64('all_types_dict', 'Int64_value', 1)
@@ -1283,37 +1352,40 @@ SELECT dictGetInt64('all_types_dict', 'Int64_value', 1)
 └────────────────────────────┘
 ```
 
+
+
 ## dictGetInt64OrDefault {#dictGetInt64OrDefault}
 
-Добавлена в версии: v1.1
+Introduced in: v1.1
 
-Преобразует значение атрибута словаря к типу данных `Int64` независимо от конфигурации словаря или возвращает указанное значение по умолчанию, если ключ не найден.
+Converts a dictionary attribute value to `Int64` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetInt64OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — Имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — Значение ключа. Выражение, возвращающее значение типа ключа словаря или кортеж (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — Значение или значения, которые возвращаются, если словарь не содержит строки с ключом `id_expr`. [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, которое соответствует `id_expr`,
-в противном случае возвращает значение, переданное в параметре `default_value_expr`.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-ClickHouse генерирует исключение, если не может разобрать значение атрибута или если это значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 -- для существующего ключа
@@ -1332,36 +1404,39 @@ SELECT dictGetInt64OrDefault('all_types_dict', 'Int64_value', 999, -1);
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetInt8 {#dictGetInt8}
 
-Введена в версии: v1.1
+Introduced in: v1.1
 
-Преобразует значение атрибута словаря в тип данных `Int8` независимо от конфигурации словаря.
+Converts a dictionary attribute value to `Int8` data type regardless of the dictionary configuration.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetInt8(dict_name, attr_name, id_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — Имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — Значение ключа. Выражение, возвращающее значение типа ключа словаря или значение-кортеж (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, которое соответствует `id_expr`,
-в противном случае возвращает содержимое элемента `<null_value>`, указанного для атрибута в конфигурации словаря.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-ClickHouse генерирует исключение, если не может разобрать значение атрибута или если значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetInt8('all_types_dict', 'Int8_value', 1)
@@ -1373,37 +1448,40 @@ SELECT dictGetInt8('all_types_dict', 'Int8_value', 1)
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetInt8OrDefault {#dictGetInt8OrDefault}
 
-Введена в версии v1.1
+Introduced in: v1.1
 
-Преобразует значение атрибута словаря к типу данных `Int8` независимо от конфигурации словаря или возвращает переданное значение по умолчанию, если ключ не найден.
+Converts a dictionary attribute value to `Int8` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetInt8OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — Имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — Значение ключа. Выражение, возвращающее значение ключевого типа словаря или значение кортежа (зависит от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — Значение или значения, возвращаемые, если словарь не содержит строки с ключом `id_expr`. [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, которое соответствует `id_expr`,
-в противном случае возвращает значение, переданное в параметре `default_value_expr`.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-ClickHouse выбрасывает исключение, если не может интерпретировать значение атрибута или значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 -- для существующего ключа
@@ -1422,36 +1500,41 @@ SELECT dictGetInt8OrDefault('all_types_dict', 'Int8_value', 999, -1);
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetKeys {#dictGetKeys}
 
-Введена в версии v25.12
+Introduced in: v25.12
 
-Возвращает ключ(и) словаря, для которых значение атрибута равно указанному. Это обратная операция к функции `dictGet` для одного атрибута.
 
-Используйте SETTING `max_reverse_dictionary_lookup_cache_size_bytes`, чтобы ограничить размер кэша обратного поиска для каждого запроса, используемого в `dictGetKeys`.
-Кэш хранит сериализованные кортежи ключей для каждого значения атрибута, чтобы избежать повторного сканирования словаря в рамках одного запроса.
-Кэш не сохраняется между запросами. При достижении лимита записи вытесняются по алгоритму LRU.
-Функция наиболее эффективна для больших словарей, когда входные данные имеют низкую кардинальность, а рабочий набор помещается в кэш. Установите `0`, чтобы отключить кэширование.
+Returns the dictionary key(s) whose attribute equals the specified value. This is the inverse of the function `dictGet` on a single attribute.
 
-**Синтаксис**
+Use setting `max_reverse_dictionary_lookup_cache_size_bytes` to cap the size of the per-query reverse-lookup cache used by `dictGetKeys`.
+The cache stores serialized key tuples for each attribute value to avoid re-scanning the dictionary within the same query.
+The cache is not persistent across queries. When the limit is reached, entries are evicted with LRU.
+This is most effective with large dictionaries when the input has low cardinality and the working set fits in the cache. Set to `0` to disable caching.
+    
+
+**Syntax**
 
 ```sql
 dictGetKeys('dict_name', 'attr_name', value_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — атрибут для сравнения. [`String`](/sql-reference/data-types/string)
-* `value_expr` — значение для сравнения с атрибутом. [`Expression`](/sql-reference/data-types/special-data-types/expression)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Attribute to match. [`String`](/sql-reference/data-types/string)
+- `value_expr` — Value to match against the attribute. [`Expression`](/sql-reference/data-types/special-data-types/expression)
 
-**Возвращаемое значение**
 
-Для словарей с одним ключом: массив ключей, атрибут которых равен `value_expr`. Для словарей с составным ключом: массив кортежей ключей, атрибут которых равен `value_expr`. Если в словаре нет атрибута, соответствующего значению `value_expr`, возвращается пустой массив. ClickHouse генерирует исключение, если не может разобрать значение атрибута или если значение не может быть преобразовано к типу данных атрибута.
+**Returned value**
 
-**Примеры**
+For single key dictionaries: an array of keys whose attribute equals `value_expr`. For multi key dictionaries: an array of tuples of keys whose attribute equals `value_expr`. If there is no attribute corresponding to `value_expr` in the dictionary, then an empty array is returned. ClickHouse throws an exception if it cannot parse the value of the attribute or the value cannot be converted to the attribute data type.
 
-**Пример использования**
+**Examples**
+
+**Sample usage**
 
 ```sql title=Query
 SELECT dictGetKeys('task_id_to_priority_dictionary', 'priority_level', 'high') AS ids;
@@ -1463,33 +1546,35 @@ SELECT dictGetKeys('task_id_to_priority_dictionary', 'priority_level', 'high') A
 └───────┘
 ```
 
+
+
 ## dictGetOrDefault {#dictGetOrDefault}
 
-Добавлена в версии v18.16
+Introduced in: v18.16
 
-Извлекает значения из словаря, возвращая значение по умолчанию, если ключ не найден.
+Retrieves values from a dictionary, with a default value if the key is not found.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetOrDefault('dict_name', attr_names, id_expr, default_value)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_names` — Имя столбца словаря или кортеж имён столбцов. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — Значение ключа. Выражение, возвращающее UInt64/Tuple(T). [`UInt64`](/sql-reference/data-types/int-uint) или [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value` — Значение по умолчанию, которое возвращается, если ключ не найден. Тип должен соответствовать типу данных атрибута.
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_names` — Name of the column of the dictionary, or tuple of column names. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning UInt64/Tuple(T). [`UInt64`](/sql-reference/data-types/int-uint) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value` — Default value to return if the key is not found. Type must match the attribute's data type. 
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает значение атрибута словаря, которое соответствует `id_expr`, если ключ найден.
-Если ключ не найден, возвращает переданное значение `default_value`.
+Returns the value of the dictionary attribute that corresponds to `id_expr` if the key is found.
+If the key is not found, returns the `default_value` provided.
 
-**Примеры**
+**Examples**
 
-**Получение значения с заданным значением по умолчанию**
+**Get value with default**
 
 ```sql title=Query
 SELECT dictGetOrDefault('ext_dict_mult', 'c1', toUInt64(999), 0) AS val
@@ -1499,30 +1584,32 @@ SELECT dictGetOrDefault('ext_dict_mult', 'c1', toUInt64(999), 0) AS val
 0
 ```
 
+
+
 ## dictGetOrNull {#dictGetOrNull}
 
-Появилась в версии: v21.4
+Introduced in: v21.4
 
-Извлекает значения из словаря, возвращая NULL, если ключ не найден.
+Retrieves values from a dictionary, returning NULL if the key is not found.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetOrNull('dict_name', 'attr_name', id_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. Строковый литерал. - `attr_name` — Имя столбца, значение которого нужно получить. Строковый литерал. - `id_expr` — Значение ключа. Выражение, возвращающее значение типа ключа словаря.
+- `dict_name` — Name of the dictionary. String literal. - `attr_name` — Name of the column to retrieve. String literal. - `id_expr` — Key value. Expression returning dictionary key-type value. 
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает значение атрибута словаря, соответствующее `id_expr`, если ключ найден.
-Если ключ не найден, возвращает `NULL`.
+Returns the value of the dictionary attribute that corresponds to `id_expr` if the key is found.
+If the key is not found, returns `NULL`.
 
-**Примеры**
+**Examples**
 
-**Пример с использованием словаря с диапазонным ключом**
+**Example using the range key dictionary**
 
 ```sql title=Query
 SELECT
@@ -1539,36 +1626,39 @@ FROM system.numbers LIMIT 5 FORMAT TabSeparated;
 (4,'2019-05-20')  \N
 ```
 
+
+
 ## dictGetString {#dictGetString}
 
-Добавлена в версии: v1.1
+Introduced in: v1.1
 
-Преобразует значение атрибута словаря в тип данных `String` независимо от конфигурации словаря.
+Converts a dictionary attribute value to `String` data type regardless of the dictionary configuration.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetString(dict_name, attr_name, id_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — Имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — Значение ключа. Выражение, возвращающее значение типа ключа словаря или кортеж (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, соответствующее `id_expr`,
-в противном случае возвращает содержимое элемента `<null_value>`, указанного для атрибута в конфигурации словаря.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-ClickHouse генерирует исключение, если не может разобрать значение атрибута или если значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetString('all_types_dict', 'String_value', 1)
@@ -1580,37 +1670,40 @@ SELECT dictGetString('all_types_dict', 'String_value', 1)
 └────────────────────────────┘
 ```
 
+
+
 ## dictGetStringOrDefault {#dictGetStringOrDefault}
 
-Введена в версии: v1.1
+Introduced in: v1.1
 
-Преобразует значение атрибута словаря к типу данных `String` независимо от конфигурации словаря или возвращает указанное значение по умолчанию, если ключ не найден.
+Converts a dictionary attribute value to `String` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetStringOrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — Имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — Значение ключа. Выражение, возвращающее значение типа ключа словаря или значение типа кортежа (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — Значение (или значения), возвращаемое, если в словаре нет строки с ключом `id_expr`. [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, которое соответствует `id_expr`,
-в противном случае возвращает значение, переданное в параметре `default_value_expr`.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-ClickHouse выбрасывает исключение, если не может разобрать значение атрибута или если значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 -- для существующего ключа
@@ -1629,36 +1722,39 @@ SELECT dictGetStringOrDefault('all_types_dict', 'String_value', 999, 'default');
 └─────────────────────────────────┘
 ```
 
+
+
 ## dictGetUInt16 {#dictGetUInt16}
 
-Впервые появилась в версии v1.1
+Introduced in: v1.1
 
-Преобразует значение атрибута словаря к типу данных `UInt16` независимо от конфигурации словаря.
+Converts a dictionary attribute value to `UInt16` data type regardless of the dictionary configuration.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetUInt16(dict_name, attr_name, id_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — Имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — Значение ключа. Выражение, возвращающее значение типа ключа словаря или значение кортежа (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, которое соответствует `id_expr`,
-в противном случае возвращает содержимое элемента `<null_value>`, указанного для атрибута в конфигурации словаря.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-ClickHouse выбрасывает исключение, если не может разобрать значение атрибута или если значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetUInt16('all_types_dict', 'UInt16_value', 1)
@@ -1670,37 +1766,40 @@ SELECT dictGetUInt16('all_types_dict', 'UInt16_value', 1)
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetUInt16OrDefault {#dictGetUInt16OrDefault}
 
-Впервые появилась в: v1.1
+Introduced in: v1.1
 
-Преобразует значение атрибута словаря в тип данных `UInt16` независимо от конфигурации словаря либо возвращает указанное значение по умолчанию, если ключ не найден.
+Converts a dictionary attribute value to `UInt16` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetUInt16OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — Имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — Значение ключа. Выражение, возвращающее значение типа ключа словаря или значение-кортеж (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — Значение или значения, возвращаемые, если словарь не содержит строку с ключом `id_expr`. [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, которое соответствует значению `id_expr`,
-в противном случае возвращает значение, переданное в параметре `default_value_expr`.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-ClickHouse выбрасывает исключение, если не может разобрать значение атрибута или если значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 -- для существующего ключа
@@ -1719,36 +1818,39 @@ SELECT dictGetUInt16OrDefault('all_types_dict', 'UInt16_value', 999, 0);
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetUInt32 {#dictGetUInt32}
 
-Добавлена в версии: v1.1
+Introduced in: v1.1
 
-Преобразует значение атрибута словаря к типу данных `UInt32` независимо от конфигурации словаря.
+Converts a dictionary attribute value to `UInt32` data type regardless of the dictionary configuration.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetUInt32(dict_name, attr_name, id_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — Имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — Значение ключа. Выражение, возвращающее значение типа ключа словаря или значение кортежа (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, которое соответствует `id_expr`,
-иначе возвращает содержимое элемента `<null_value>`, указанного для атрибута в конфигурации словаря.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-ClickHouse выбрасывает исключение, если не может распознать значение атрибута или если значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetUInt32('all_types_dict', 'UInt32_value', 1)
@@ -1760,37 +1862,40 @@ SELECT dictGetUInt32('all_types_dict', 'UInt32_value', 1)
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetUInt32OrDefault {#dictGetUInt32OrDefault}
 
-Добавлено в версии: v1.1
+Introduced in: v1.1
 
-Преобразует значение атрибута словаря в тип данных `UInt32` вне зависимости от конфигурации словаря или возвращает указанное значение по умолчанию, если ключ не найден.
+Converts a dictionary attribute value to `UInt32` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetUInt32OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — Имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — Значение ключа. Выражение, возвращающее значение типа ключа словаря или кортеж значений (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — Значение (значения), возвращаемое, если в словаре нет строки с ключом `id_expr`. [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, которое соответствует `id_expr`,
-в противном случае возвращает значение, переданное в параметре `default_value_expr`.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-ClickHouse выбрасывает исключение, если не может проанализировать значение атрибута или если значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 -- для существующего ключа
@@ -1809,36 +1914,39 @@ SELECT dictGetUInt32OrDefault('all_types_dict', 'UInt32_value', 999, 0);
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetUInt64 {#dictGetUInt64}
 
-Впервые представлена в версии v1.1
+Introduced in: v1.1
 
-Преобразует значение атрибута словаря к типу данных `UInt64` независимо от конфигурации словаря.
+Converts a dictionary attribute value to `UInt64` data type regardless of the dictionary configuration.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetUInt64(dict_name, attr_name, id_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — Имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — Значение ключа. Выражение, возвращающее значение типа ключа словаря или кортеж (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, которое соответствует `id_expr`,
-в противном случае — содержимое элемента `<null_value>`, указанного для атрибута в конфигурации словаря.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-ClickHouse выбрасывает исключение, если не может интерпретировать значение атрибута или значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetUInt64('all_types_dict', 'UInt64_value', 1)
@@ -1850,37 +1958,40 @@ SELECT dictGetUInt64('all_types_dict', 'UInt64_value', 1)
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetUInt64OrDefault {#dictGetUInt64OrDefault}
 
-Добавлена в версии v1.1
+Introduced in: v1.1
 
-Преобразует значение атрибута словаря к типу данных `UInt64` независимо от конфигурации словаря или возвращает указанное значение по умолчанию, если ключ не найден.
+Converts a dictionary attribute value to `UInt64` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetUInt64OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — Имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — Значение ключа. Выражение, возвращающее значение типа ключа словаря или кортеж (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — Значение (значения), возвращаемое, если словарь не содержит строку с ключом `id_expr`. [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, соответствующее `id_expr`,
-в противном случае — значение, переданное в параметре `default_value_expr`.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-ClickHouse генерирует исключение, если не может интерпретировать значение атрибута или если значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 -- для существующего ключа
@@ -1899,36 +2010,39 @@ SELECT dictGetUInt64OrDefault('all_types_dict', 'UInt64_value', 999, 0);
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetUInt8 {#dictGetUInt8}
 
-Добавлена в версии v1.1
+Introduced in: v1.1
 
-Преобразует значение атрибута словаря к типу данных `UInt8` независимо от конфигурации словаря.
+Converts a dictionary attribute value to `UInt8` data type regardless of the dictionary configuration.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetUInt8(dict_name, attr_name, id_expr)
 ```
 
-**Параметры**
+**Arguments**
 
-* `dict_name` — имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — значение ключа. Выражение, возвращающее значение типа ключа словаря или кортеж (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, которое соответствует `id_expr`,
-в противном случае — содержимое элемента `<null_value>`, указанного для атрибута в конфигурации словаря.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-ClickHouse генерирует исключение, если не может распарсить значение атрибута или если значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetUInt8('all_types_dict', 'UInt8_value', 1)
@@ -1940,37 +2054,40 @@ SELECT dictGetUInt8('all_types_dict', 'UInt8_value', 1)
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetUInt8OrDefault {#dictGetUInt8OrDefault}
 
-Добавлена в версии v1.1
+Introduced in: v1.1
 
-Преобразует значение атрибута словаря к типу данных `UInt8` независимо от конфигурации словаря или возвращает указанное значение по умолчанию, если ключ не найден.
+Converts a dictionary attribute value to `UInt8` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetUInt8OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — Имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — Значение ключа. Выражение, которое возвращает значение типа ключа словаря или кортеж значений (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — Значение или кортеж значений, возвращаемые, если словарь не содержит строки с ключом `id_expr`. [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, которое соответствует `id_expr`,
-в противном случае возвращает значение, переданное в параметре `default_value_expr`.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-ClickHouse возбуждает исключение, если не может разобрать значение атрибута или если значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 -- для существующего ключа
@@ -1989,36 +2106,39 @@ SELECT dictGetUInt8OrDefault('all_types_dict', 'UInt8_value', 999, 0);
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetUUID {#dictGetUUID}
 
-Появилось в версии: v1.1
+Introduced in: v1.1
 
-Преобразует значение атрибута словаря в тип данных `UUID` независимо от конфигурации словаря.
+Converts a dictionary attribute value to `UUID` data type regardless of the dictionary configuration.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetUUID(dict_name, attr_name, id_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — значение ключа. Выражение, возвращающее значение типа ключа словаря или кортеж (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, которое соответствует `id_expr`,
-в противном случае возвращает содержимое элемента `<null_value>`, указанного для этого атрибута в конфигурации словаря.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-ClickHouse выбрасывает исключение, если не может разобрать значение атрибута или если значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetUUID('all_types_dict', 'UUID_value', 1)
@@ -2030,37 +2150,40 @@ SELECT dictGetUUID('all_types_dict', 'UUID_value', 1)
 └──────────────────────────────────────┘
 ```
 
+
+
 ## dictGetUUIDOrDefault {#dictGetUUIDOrDefault}
 
-Появилась в версии: v1.1
+Introduced in: v1.1
 
-Преобразует значение атрибута словаря к типу данных `UUID` независимо от конфигурации словаря или возвращает указанное значение по умолчанию, если ключ не найден.
+Converts a dictionary attribute value to `UUID` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictGetUUIDOrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `attr_name` — Имя столбца словаря. [`String`](/sql-reference/data-types/string) или [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — Значение ключа. Выражение, возвращающее значение ключевого типа словаря или кортеж значений (в зависимости от конфигурации словаря). [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — Значение (значения), возвращаемое, если словарь не содержит строки с ключом `id_expr`. [`Expression`](/sql-reference/data-types/special-data-types/expression) или [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает значение атрибута словаря, которое соответствует `id_expr`,
-в противном случае возвращает значение, переданное в параметр `default_value_expr`.
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-ClickHouse выбрасывает исключение, если не может разобрать значение атрибута или значение не соответствует типу данных атрибута.
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 -- для существующего ключа
@@ -2079,30 +2202,33 @@ SELECT dictGetUUIDOrDefault('all_types_dict', 'UUID_value', 999, '00000000-0000-
 └────────────────────────────────────────┘
 ```
 
+
+
 ## dictHas {#dictHas}
 
-Добавлена в версии: v1.1
+Introduced in: v1.1
 
-Проверяет, существует ли ключ в словаре.
+Checks whether a key is present in a dictionary.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dictHas('dict_name', id_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — Имя словаря. [`String`](/sql-reference/data-types/string)
-* `id_expr` — Значение ключа. [`const String`](/sql-reference/data-types/string)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `id_expr` — Key value [`const String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает `1`, если ключ существует, иначе `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns `1` if the key exists, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Проверка существования ключа в словаре**
+**Examples**
+
+**Check for the existence of a key in a dictionary**
 
 ```sql title=Query
 -- рассмотрим следующий иерархический словарь:
@@ -2127,31 +2253,36 @@ SELECT dictHas('hierarchical_dictionary', 7);
 └──────────────────────────┘
 ```
 
+
+
 ## dictIsIn {#dictIsIn}
 
-Появилась в версии: v1.1
+Introduced in: v1.1
 
-Проверяет наличие предка ключа по всей иерархической цепочке в словаре.
 
-**Синтаксис**
+Checks the ancestor of a key through the whole hierarchical chain in the dictionary.
+
+
+**Syntax**
 
 ```sql
 dictIsIn(dict_name, child_id_expr, ancestor_id_expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dict_name` — имя словаря. [`String`](/sql-reference/data-types/string)
-* `child_id_expr` — ключ, подлежащий проверке. [`String`](/sql-reference/data-types/string)
-* `ancestor_id_expr` — предполагаемый предок ключа `child_id_expr`. [`const String`](/sql-reference/data-types/string)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `child_id_expr` — Key to be checked. [`String`](/sql-reference/data-types/string)
+- `ancestor_id_expr` — Alleged ancestor of the `child_id_expr` key. [`const String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает `0`, если `child_id_expr` не является потомком `ancestor_id_expr`, и `1`, если `child_id_expr` является потомком `ancestor_id_expr` или если `child_id_expr` равен `ancestor_id_expr`. [`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns `0` if `child_id_expr` is not a child of `ancestor_id_expr`, `1` if `child_id_expr` is a child of `ancestor_id_expr` or if `child_id_expr` is an `ancestor_id_expr`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Проверка иерархического отношения**
+**Examples**
+
+**Check hierarchical relationship**
 
 ```sql title=Query
 -- корректная иерархия

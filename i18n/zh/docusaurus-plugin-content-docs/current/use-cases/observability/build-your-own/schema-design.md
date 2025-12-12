@@ -69,8 +69,8 @@ LIMIT 5
 │ /site/productAdditives   │ 10866 │
 └──────────────────────────┴───────┘
 
-返回 5 行。用时:0.735 秒。已处理 1036 万行,4.65 GB(1410 万行/秒,6.32 GB/秒)。
-内存峰值:153.71 MiB。
+5 rows in set. Elapsed: 0.735 sec. Processed 10.36 million rows, 4.65 GB (14.10 million rows/s., 6.32 GB/s.)
+Peak memory usage: 153.71 MiB.
 ```
 
 请注意此处使用的 map 语法，例如 `LogAttributes['request_path']`，以及用于从 URL 中去掉查询参数部分的 [`path` 函数](/sql-reference/functions/url-functions#path)。
@@ -97,8 +97,8 @@ LIMIT 5
 │ /site/productModelImages │ 10866 │
 └──────────────────────────┴───────┘
 
-返回 5 行。耗时：0.668 秒。处理了 1037 万行，5.13 GB（1552 万行/秒，7.68 GB/秒）。
-峰值内存使用：172.30 MiB。
+5 rows in set. Elapsed: 0.668 sec. Processed 10.37 million rows, 5.13 GB (15.52 million rows/s., 7.68 GB/s.)
+Peak memory usage: 172.30 MiB.
 ```
 
 现在来看非结构化日志的情况：
@@ -109,7 +109,7 @@ FROM otel_logs
 LIMIT 1
 FORMAT Vertical
 
-第 1 行:
+Row 1:
 ──────
 Body:           151.233.185.144 - - [22/Jan/2019:19:08:54 +0330] "GET /image/105/brand HTTP/1.1" 200 2653 "https://www.zanbil.ir/filter/b43,p56" "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36" "-"
 LogAttributes: {'log.file.name':'access-unstructured.log'}
@@ -139,7 +139,7 @@ LIMIT 5
 │ /site/productAdditives   │ 10866 │
 └──────────────────────────┴───────┘
 
-返回 5 行。用时:1.953 秒。已处理 1037 万行,3.59 GB(531 万行/秒,1.84 GB/秒)。
+5 rows in set. Elapsed: 1.953 sec. Processed 10.37 million rows, 3.59 GB (5.31 million rows/s., 1.84 GB/s.)
 ```
 
 对于解析非结构化日志的查询，其复杂性和成本都会增加（注意性能差异），这也是我们建议用户在可能的情况下尽量使用结构化日志的原因。
@@ -406,7 +406,7 @@ RequestPage:    /filter/27|13 ,27|  5 ,p53
 SeverityText:   INFO
 SeverityNumber:  9
 
-返回 1 行。用时：0.010 秒。
+1 row in set. Elapsed: 0.010 sec.
 ```
 
 下面展示了一个等效的物化视图，它通过使用 JSON 函数从 `Body` 列中解析并提取各个字段：
@@ -475,12 +475,12 @@ SELECT groupArrayDistinctArray(mapKeys(LogAttributes))
 FROM otel_logs
 FORMAT Vertical
 
-第 1 行：
+Row 1:
 ──────
 groupArrayDistinctArray(mapKeys(LogAttributes)): ['remote_user','run_time','request_type','log.file.name','referer','request_path','status','user_agent','remote_addr','time_local','size','request_protocol']
 
-结果共 1 行。耗时 1.139 秒。已处理 563 万行，2.53 GB（494 万行/秒，2.22 GB/秒）。
-峰值内存占用：71.90 MiB。
+1 row in set. Elapsed: 1.139 sec. Processed 5.63 million rows, 2.53 GB (4.94 million rows/s., 2.22 GB/s.)
+Peak memory usage: 71.90 MiB.
 ```
 
 :::note 避免使用点号
@@ -536,7 +536,7 @@ LIMIT 5
 │ 91.99.72.15   │
 └───────────────┘
 
-返回了 5 行。耗时: 0.011 秒。
+5 rows in set. Elapsed: 0.011 sec.
 ```
 
 此外，通过 `ALTER TABLE` 命令添加 `ALIAS` 非常容易。这些列会立即生效，例如：
@@ -557,7 +557,7 @@ LIMIT 5
 │ 41483 │
 └───────┘
 
-返回 5 行。用时：0.014 秒。
+5 rows in set. Elapsed: 0.014 sec.
 ```
 
 :::note 默认排除 Alias
@@ -652,7 +652,7 @@ CREATE TABLE geoip_url(
 select count() from geoip_url;
 
 ┌─count()─┐
-│ 3261621 │ -- 326 万
+│ 3261621 │ -- 3.26 million
 └─────────┘
 ```
 
@@ -681,7 +681,7 @@ LIMIT 4;
 │ 1.0.8.0        │ 1.0.15.255   │ 1.0.8.0/21 │
 └────────────────┴──────────────┴────────────┘
 
-4 行数据。耗时: 0.259 秒。
+4 rows in set. Elapsed: 0.259 sec.
 ```
 
 :::note
@@ -741,7 +741,7 @@ SELECT * FROM ip_trie LIMIT 3
 │ 1.0.4.0/22 │ -38.0267 │   145.301 │ AU           │
 └────────────┴──────────┴───────────┴──────────────┘
 
-返回 3 行。用时:4.662 秒。
+3 rows in set. Elapsed: 4.662 sec.
 ```
 
 :::note 定期刷新
@@ -757,7 +757,7 @@ SELECT dictGet('ip_trie', ('country_code', 'latitude', 'longitude'), CAST('85.24
 │ ('PT',38.7944,-9.34284) │
 └─────────────────────────┘
 
-返回 1 行。用时:0.003 秒。
+1 row in set. Elapsed: 0.003 sec.
 ```
 
 注意这里的检索速度。这使我们可以对日志进行富化。在本例中，我们选择在 **查询时进行富化（query time enrichment）**。
@@ -998,7 +998,7 @@ FROM otel_logs_v2
 LIMIT 1
 FORMAT Vertical
 
-行 1:
+Row 1:
 ──────
 Device:  ('Spider','Spider','Desktop')
 Browser: ('AhrefsBot','6','1')
@@ -1121,7 +1121,7 @@ LIMIT 5
 │ 2019-01-26 12:00:00 │ 1736840933 │
 └─────────────────────┴────────────┘
 
-返回 5 行数据。用时：0.008 秒。
+5 rows in set. Elapsed: 0.008 sec.
 
 SELECT
         Hour,
@@ -1139,7 +1139,7 @@ LIMIT 5
 │ 2019-01-26 12:00:00 │ 1736840933 │
 └─────────────────────┴────────────┘
 
-返回 5 行数据。用时：0.005 秒。
+5 rows in set. Elapsed: 0.005 sec.
 ```
 
 这将我们的查询耗时从 0.6s 缩短到了 0.008s —— 提速超过 75 倍！
@@ -1165,7 +1165,7 @@ ORDER BY Hour DESC
 │ 2019-01-22 00:00:00 │     536     │
 └─────────────────────┴─────────────┘
 
-结果集包含 113 行。耗时:0.667 秒。已处理 1037 万行,4.73 GB(每秒 1553 万行,7.09 GB/秒)
+113 rows in set. Elapsed: 0.667 sec. Processed 10.37 million rows, 4.73 GB (15.53 million rows/s., 7.09 GB/s.)
 ```
 
 为了在增量更新时持久化基数统计，需要使用 AggregatingMergeTree。
@@ -1433,8 +1433,8 @@ FROM otel_logs_v2
 WHERE Status = 500
 FORMAT `Null`
 
-返回 0 行。耗时：0.031 秒。处理了 51.42 千行，22.85 MB（1.65 百万行/秒，734.63 MB/秒）。
-峰值内存使用：27.85 MiB。
+0 rows in set. Elapsed: 0.031 sec. Processed 51.42 thousand rows, 22.85 MB (1.65 million rows/s., 734.63 MB/s.)
+Peak memory usage: 27.85 MiB.
 ```
 
 在上面的示例中，我们在投影中指定了先前查询中使用的列。这意味着只有这些指定的列会作为投影的一部分存储在磁盘上，并按照 Status 排序。或者，如果我们在这里使用 `SELECT *`，则所有列都会被包含在投影中并存储。这样虽然可以让更多查询（使用任意列子集）从该投影中获益，但会带来额外的存储开销。有关磁盘空间占用和压缩情况的衡量，请参见 [&quot;Measuring table size &amp; compression&quot;](#measuring-table-size--compression)。
@@ -1566,7 +1566,7 @@ WHERE Referer LIKE '%ultra%'
 │               Granules: 1278/1278                                  │
 └────────────────────────────────────────────────────────────────────┘
 
-返回 10 行。耗时：0.016 秒。
+10 rows in set. Elapsed: 0.016 sec.
 
 EXPLAIN indexes = 1
 SELECT count()

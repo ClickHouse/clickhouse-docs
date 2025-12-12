@@ -88,10 +88,10 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 </clickhouse>
 ```
 
-#### Базовая конфигурация для одного серверного узла ClickHouse с включённым ClickHouse Keeper {#basic-configuration-for-a-single-clickhouse-server-node-with-clickhouse-keeper-enabled}
+#### Basic configuration for a single ClickHouse server node with ClickHouse Keeper enabled {#basic-configuration-for-a-single-clickhouse-server-node-with-clickhouse-keeper-enabled}
 
 :::note
-См. документацию по [развертыванию](/deployment-guides/terminology.md) для получения подробной информации о развертывании сервера ClickHouse и настройке корректного кворума узлов ClickHouse Keeper. Приведённая здесь конфигурация предназначена только для экспериментального использования.
+See the [deployment](/deployment-guides/terminology.md) documentation for details on deploying ClickHouse server and a proper quorum of ClickHouse Keeper nodes.  The configuration shown here is for experimental purposes.
 :::
 
 ```xml title=/etc/clickhouse-server/config.d/config.xml
@@ -134,22 +134,21 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 </clickhouse>
 ```
 
-### Пример {#example}
+### Example {#example}
 
-#### Проверьте, что экспериментальные транзакции включены {#verify-that-experimental-transactions-are-enabled}
+#### Verify that experimental transactions are enabled {#verify-that-experimental-transactions-are-enabled}
 
-Выполните `BEGIN TRANSACTION` или `START TRANSACTION`, а затем `ROLLBACK`, чтобы убедиться, что экспериментальные транзакции включены, а также что ClickHouse Keeper включён, поскольку он используется для отслеживания транзакций.
+Issue a `BEGIN TRANSACTION` or `START TRANSACTION` followed by a `ROLLBACK` to verify that experimental transactions are enabled, and that ClickHouse Keeper is enabled as it is used to track transactions. 
 
 ```sql
 BEGIN TRANSACTION
 ```
-
 ```response
 ОК.
 ```
 
 :::tip
-Если вы видите следующую ошибку, проверьте файл конфигурации и убедитесь, что параметр `allow_experimental_transactions` установлен в значение `1` (или любое другое значение, кроме `0` или `false`).
+If you see the following error, then check your configuration file to make sure that `allow_experimental_transactions` is set to `1` (or any value other than `0` or `false`).
 
 ```response
 Код: 48. DB::Exception: Получено от localhost:9000.
@@ -157,13 +156,13 @@ DB::Exception: Транзакции не поддерживаются.
 (NOT_IMPLEMENTED)
 ```
 
-Вы также можете проверить ClickHouse Keeper, выполнив следующую команду
+You can also check ClickHouse Keeper by issuing
 
 ```bash
 echo ruok | nc localhost 9181
 ```
 
-ClickHouse Keeper должен вернуть ответ `imok`.
+ClickHouse Keeper should respond with `imok`.
 :::
 
 ```sql
@@ -174,10 +173,10 @@ ROLLBACK
 ОК.
 ```
 
-#### Создание таблицы для тестирования {#create-a-table-for-testing}
+#### Create a table for testing {#create-a-table-for-testing}
 
 :::tip
-Создание таблиц не является транзакционной операцией. Выполните этот DDL-запрос вне транзакции.
+Creation of tables is not transactional.  Run this DDL query outside of a transaction.
 :::
 
 ```sql
@@ -193,7 +192,7 @@ ORDER BY n
 Ok.
 ```
 
-#### Начните транзакцию и добавьте строку {#begin-a-transaction-and-insert-a-row}
+#### Begin a transaction and insert a row {#begin-a-transaction-and-insert-a-row}
 
 ```sql
 BEGIN TRANSACTION
@@ -223,12 +222,12 @@ FROM mergetree_table
 ```
 
 :::note
-Вы можете выполнить запрос к таблице в рамках транзакции и увидеть, что строка была вставлена, даже несмотря на то, что транзакция еще не была зафиксирована.
+You can query the table from within a transaction and see that the row was inserted even though it has not yet been committed.
 :::
 
-#### Откатите транзакцию и снова выполните запрос к таблице {#rollback-the-transaction-and-query-the-table-again}
+#### Rollback the transaction, and query the table again {#rollback-the-transaction-and-query-the-table-again}
 
-Убедитесь, что транзакция была откатена:
+Verify that the transaction is rolled back:
 
 ```sql
 ROLLBACK
@@ -242,19 +241,17 @@ Ok.
 SELECT *
 FROM mergetree_table
 ```
-
 ```response
 Ok.
 
 0 строк в наборе. Прошло: 0.002 сек.
 ```
 
-#### Завершите транзакцию и выполните запрос к таблице ещё раз {#complete-a-transaction-and-query-the-table-again}
+#### Complete a transaction and query the table again {#complete-a-transaction-and-query-the-table-again}
 
 ```sql
 BEGIN TRANSACTION
 ```
-
 ```response
 Ok.
 ```
@@ -286,9 +283,10 @@ FROM mergetree_table
 └────┘
 ```
 
-### Анализ транзакций {#transactions-introspection}
+### Transactions introspection {#transactions-introspection}
 
-Вы можете просматривать транзакции, выполняя запрос к таблице `system.transactions`, однако учтите, что выполнять запросы к этой таблице нельзя из сеанса, в котором уже открыта транзакция. Откройте второй сеанс `clickhouse client`, чтобы запрашивать эту таблицу.
+You can inspect transactions by querying the `system.transactions` table, but note that you cannot query that
+table from a session that is in a transaction. Open a second `clickhouse client` session to query that table.
 
 ```sql
 SELECT *

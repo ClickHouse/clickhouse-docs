@@ -53,13 +53,13 @@ WHERE (B = 0) AND (C = 'x');
 
 1 row in set. Elapsed: 0.074 sec. Processed 10.00 million rows, 168.89 MB (134.98 million rows/s., 2.28 GB/s.)
 
--- 启用跟踪以查看哪些谓词被移至 PREWHERE
+-- let's enable tracing to see which predicate are moved to PREWHERE
 set send_logs_level='debug';
 
 MergeTreeWhereOptimizer: condition "B = 0" moved to PREWHERE  
--- ClickHouse 自动将 `B = 0` 移至 PREWHERE,但这没有意义,因为 B 始终为 0。
+-- Clickhouse moves automatically `B = 0` to PREWHERE, but it has no sense because B is always 0.
 
--- 将另一个谓词 `C = 'x'` 移至 PREWHERE 
+-- Let's move other predicate `C = 'x'` 
 
 SELECT count()
 FROM mydata
@@ -68,5 +68,5 @@ WHERE B = 0;
 
 1 row in set. Elapsed: 0.069 sec. Processed 10.00 million rows, 158.89 MB (144.90 million rows/s., 2.30 GB/s.)
 
--- 手动指定 `PREWHERE` 的查询处理的数据量略少:158.89 MB 对比 168.89 MB
+-- This query with manual `PREWHERE` processes slightly less data: 158.89 MB VS 168.89 MB
 ```

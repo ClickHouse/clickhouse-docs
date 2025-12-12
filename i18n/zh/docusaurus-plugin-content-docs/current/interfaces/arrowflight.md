@@ -43,7 +43,7 @@ Arrow Flight 接口目前为实验性功能，仍在积极开发中。已知限�
 重启 ClickHouse 服务器。启动成功后，您应当能看到类似下面的日志输出：
 
 ```bash
-{} <Information> Application: Arrow Flight 兼容协议：0.0.0.0:9005
+{} <Information> Application: Arrow Flight compatibility protocol: 0.0.0.0:9005
 ```
 
 ## 通过 Arrow Flight SQL 连接 ClickHouse {#connecting-to-clickhouse}

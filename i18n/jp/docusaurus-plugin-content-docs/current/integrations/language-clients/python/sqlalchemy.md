@@ -45,11 +45,11 @@ metadata = MetaData(schema="mydb")
 users = Table("users", metadata, autoload_with=engine)
 orders = Table("orders", metadata, autoload_with=engine)
 
-# 基本的なSELECT {#basic-select}
+# Basic SELECT
 with engine.begin() as conn:
     rows = conn.execute(select(users.c.id, users.c.name).order_by(users.c.id).limit(10)).fetchall()
 
-# JOIN（INNER/LEFT OUTER/FULL OUTER/CROSS） {#joins-innerleft-outerfull-outercross}
+# JOINs (INNER/LEFT OUTER/FULL OUTER/CROSS)
 with engine.begin() as conn:
     stmt = (
         select(users.c.name, orders.c.product)
@@ -106,11 +106,11 @@ with engine.begin() as conn:
 INSERT は、SQLAlchemy Core 経由だけでなく、利便性のためにシンプルな ORM モデルを使っても実行できます。
 
 ```python
-# コア挿入 {#core-insert}
+# Core insert
 with engine.begin() as conn:
     conn.execute(table.insert().values(id=1, user="joe"))
 
-# 基本的なORM挿入 {#basic-orm-insert}
+# Basic ORM insert
 from sqlalchemy.orm import declarative_base, Session
 
 Base = declarative_base(metadata=MetaData(schema="example_db"))

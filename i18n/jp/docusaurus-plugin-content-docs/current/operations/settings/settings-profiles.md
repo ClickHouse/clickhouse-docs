@@ -34,15 +34,15 @@ SET profile = 'web'
 例：
 
 ```xml
-<!-- 設定プロファイル -->
+<!-- Settings profiles -->
 <profiles>
-    <!-- デフォルト設定 -->
+    <!-- Default settings -->
     <default>
-        <!-- 単一クエリ実行時の最大スレッド数 -->
+        <!-- The maximum number of threads when running a single query. -->
         <max_threads>8</max_threads>
     </default>
 
-    <!-- ユーザーインターフェースからのクエリの設定 -->
+    <!-- Settings for queries from the user interface -->
     <web>
         <max_rows_to_read>1000000000</max_rows_to_read>
         <max_bytes_to_read>100000000000</max_bytes_to_read>

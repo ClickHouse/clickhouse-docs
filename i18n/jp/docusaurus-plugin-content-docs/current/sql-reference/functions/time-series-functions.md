@@ -73,32 +73,37 @@ SELECT seriesDecomposeSTL([10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## seriesOutliersDetectTukey {#seriesOutliersDetectTukey}
 
-導入バージョン: v24.2
+Introduced in: v24.2
 
-[Tukey Fences](https://en.wikipedia.org/wiki/Outlier#Tukey%27s_fences) を使用して、系列データ内の外れ値を検出します。
 
-**構文**
+Detects outliers in series data using [Tukey Fences](https://en.wikipedia.org/wiki/Outlier#Tukey%27s_fences).
+    
+
+**Syntax**
 
 ```sql
 seriesOutliersDetectTukey(series[, min_percentile, max_percentile, K])
 ```
 
-**引数**
+**Arguments**
 
-* `series` — 数値の配列。[`Array((UInt8/16/32/64))`](/sql-reference/data-types/array) または [`Array(Float*)`](/sql-reference/data-types/array)
-* `min_percentile` — 省略可。四分位範囲 [(IQR)](https://en.wikipedia.org/wiki/Interquartile_range) を計算する際に使用される最小パーセンタイル値。値は [0.02,0.98] の範囲内である必要があります。デフォルトは 0.25 です。[`Float*`](/sql-reference/data-types/float)
-* `max_percentile` — 省略可。四分位範囲 (IQR) を計算する際に使用される最大パーセンタイル値。値は [0.02,0.98] の範囲内である必要があります。デフォルトは 0.75 です。[`Float*`](/sql-reference/data-types/float)
-* `K` — 省略可。弱い外れ値または強い外れ値を検出するために使用される 0 以上の定数値。デフォルト値は 1.5 です。[`Float*`](/sql-reference/data-types/float)
+- `series` — An array of numeric values. [`Array((UInt8/16/32/64))`](/sql-reference/data-types/array) or [`Array(Float*)`](/sql-reference/data-types/array)
+- `min_percentile` — Optional. The minimum percentile to be used to calculate inter-quantile range [(IQR)](https://en.wikipedia.org/wiki/Interquartile_range). The value must be in range [0.02,0.98]. The default is 0.25. [`Float*`](/sql-reference/data-types/float)
+- `max_percentile` — Optional. The maximum percentile to be used to calculate inter-quantile range (IQR). The value must be in range [0.02,0.98]. The default is 0.75. [`Float*`](/sql-reference/data-types/float)
+- `K` — Optional. Non-negative constant value to detect mild or stronger outliers. The default value is 1.5. [`Float*`](/sql-reference/data-types/float)
 
-**戻り値**
 
-入力配列と同じ長さの配列を返します。各値は、系列内の対応する要素が異常である可能性を表すスコアです。0 以外のスコアは異常の可能性を示します。[`Array(Float32)`](/sql-reference/data-types/array)
+**Returned value**
 
-**例**
+Returns an array of the same length as the input array where each value represents score of possible anomaly of corresponding element in the series. A non-zero score indicates a possible anomaly. [`Array(Float32)`](/sql-reference/data-types/array)
 
-**基本的な外れ値検出**
+**Examples**
+
+**Basic outlier detection**
 
 ```sql title=Query
 SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4, 5, 12, 45, 12, 3, 3, 4, 5, 6]) AS print_0
@@ -110,7 +115,7 @@ SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4, 5, 12, 45, 12, 3, 3, 4,
 └───────────────────────────────────┘
 ```
 
-**カスタムパラメーターを用いた外れ値検出**
+**Custom parameters outlier detection**
 
 ```sql title=Query
 SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4.50, 5, 12, 45, 12, 3.40, 3, 4, 5, 6], 0.2, 0.8, 1.5) AS print_0
@@ -122,29 +127,34 @@ SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4.50, 5, 12, 45, 12, 3.40,
 └──────────────────────────────────────┘
 ```
 
+
+
 ## seriesPeriodDetectFFT {#seriesPeriodDetectFFT}
 
-導入バージョン: v23.12
+Introduced in: v23.12
 
-FFT（[Fast Fourier transform](https://en.wikipedia.org/wiki/Fast_Fourier_transform)）を使用して、指定された時系列データの周期を検出します。
 
-**構文**
+Finds the period of the given series data using FFT - [Fast Fourier transform](https://en.wikipedia.org/wiki/Fast_Fourier_transform)
+    
+
+**Syntax**
 
 ```sql
 seriesPeriodDetectFFT(series)
 ```
 
-**引数**
+**Arguments**
 
-* `series` — 数値の配列。[`Array((U)Int8/16/32/64)`](/sql-reference/data-types/array) または [`Array(Float*)`](/sql-reference/data-types/array)
+- `series` — An array of numeric values. [`Array((U)Int8/16/32/64)`](/sql-reference/data-types/array) or [`Array(Float*)`](/sql-reference/data-types/array)
 
-**戻り値**
 
-系列データの周期を表す実数値を返します。データポイント数が 4 未満の場合は NaN を返します。[`Float64`](/sql-reference/data-types/float)
+**Returned value**
 
-**例**
+Returns a real value equal to the period of series data. NaN when number of data points are less than four. [`Float64`](/sql-reference/data-types/float)
 
-**単純なパターンを用いた周期検出**
+**Examples**
+
+**Period detection with simple pattern**
 
 ```sql title=Query
 SELECT seriesPeriodDetectFFT([1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6]) AS print_0
@@ -156,7 +166,7 @@ SELECT seriesPeriodDetectFFT([1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4,
 └────────────────────────┘
 ```
 
-**複雑なパターンを用いた周期検出**
+**Period detection with complex pattern**
 
 ```sql title=Query
 SELECT seriesPeriodDetectFFT(arrayMap(x -> abs((x % 6) - 3), range(1000))) AS print_0
@@ -168,40 +178,44 @@ SELECT seriesPeriodDetectFFT(arrayMap(x -> abs((x % 6) - 3), range(1000))) AS pr
 └─────────┘
 ```
 
+
+
 ## timeSeriesFromGrid {#timeSeriesFromGrid}
 
-導入されたバージョン: v25.8
+Introduced in: v25.8
 
-値の配列 `[x1, x2, x3, ...]` をタプルの配列
-`[(start_timestamp, x1), (start_timestamp + step, x2), (start_timestamp + 2 * step, x3), ...]`
-に変換します。
 
-現在のタイムスタンプは `step` ずつ増加し、`end_timestamp` を超えるまで続きます。
-値の個数がタイムスタンプの個数と一致しない場合、関数は例外をスローします。
+Converts an array of values `[x1, x2, x3, ...]` to an array of tuples
+`[(start_timestamp, x1), (start_timestamp + step, x2), (start_timestamp + 2 * step, x3), ...]`.
 
-`[x1, x2, x3, ...]` 内の NULL 値はスキップされますが、その場合でも現在のタイムスタンプはインクリメントされます。
-たとえば、`[value1, NULL, x2]` に対しては、関数は `[(start_timestamp, x1), (start_timestamp + 2 * step, x2)]` を返します。
+The current timestamp is increased by `step` until it becomes greater than `end_timestamp`
+If the number of the values doesn't match the number of the timestamps, the function throws an exception.
 
-**構文**
+NULL values in `[x1, x2, x3, ...]` are skipped but the current timestamp is still incremented.
+For example, for `[value1, NULL, x2]` the function returns `[(start_timestamp, x1), (start_timestamp + 2 * step, x2)]`.
+    
+
+**Syntax**
 
 ```sql
 timeSeriesFromGrid(start_timestamp, end_timestamp, step, values)
 ```
 
-**引数**
+**Arguments**
 
-* `start_timestamp` — グリッドの開始時刻。[`DateTime64`](/sql-reference/data-types/datetime64) または [`DateTime`](/sql-reference/data-types/datetime) または [`UInt32`](/sql-reference/data-types/int-uint)
-* `end_timestamp` — グリッドの終了時刻。[`DateTime64`](/sql-reference/data-types/datetime64) または [`DateTime`](/sql-reference/data-types/datetime) または [`UInt32`](/sql-reference/data-types/int-uint)
-* `step` — グリッドの間隔（秒）。[`Decimal64`](/sql-reference/data-types/decimal) または [`Decimal32`](/sql-reference/data-types/decimal) または [`UInt32/64`](/sql-reference/data-types/int-uint)
-* `values` — 値の配列。[`Array(Float*)`](/sql-reference/data-types/array) または [`Array(Nullable(Float*))`](/sql-reference/data-types/array)
+- `start_timestamp` — Start of the grid. [`DateTime64`](/sql-reference/data-types/datetime64) or [`DateTime`](/sql-reference/data-types/datetime) or [`UInt32`](/sql-reference/data-types/int-uint)
+- `end_timestamp` — End of the grid. [`DateTime64`](/sql-reference/data-types/datetime64) or [`DateTime`](/sql-reference/data-types/datetime) or [`UInt32`](/sql-reference/data-types/int-uint)
+- `step` — Step of the grid in seconds [`Decimal64`](/sql-reference/data-types/decimal) or [`Decimal32`](/sql-reference/data-types/decimal) or [`UInt32/64`](/sql-reference/data-types/int-uint)
+- `values` — Array of values [`Array(Float*)`](/sql-reference/data-types/array) or [`Array(Nullable(Float*))`](/sql-reference/data-types/array)
 
-**戻り値**
 
-`start_timestamp` と `step` で定義された等間隔の時間グリッド上で、タイムスタンプと組み合わせた元の値配列中の値を返します。[`Array(Tuple(DateTime64, Float64))`](/sql-reference/data-types/array)
+**Returned value**
 
-**例**
+Returns values from the source array of values combined with timestamps on a regular time grid described by `start_timestamp` and `step`. [`Array(Tuple(DateTime64, Float64))`](/sql-reference/data-types/array)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT timeSeriesFromGrid('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:01:30.000'::DateTime64(3), 30, [10, 20, NULL, 30]) AS result;
@@ -213,29 +227,32 @@ SELECT timeSeriesFromGrid('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:0
 └────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## timeSeriesIdToTags {#timeSeriesIdToTags}
 
-導入バージョン: v25.8
+Introduced in: v25.8
 
-指定された時系列識別子に関連付けられているタグを取得します。
+Finds tags associated with the specified identifier of a time series.
 
-**構文**
+**Syntax**
 
 ```sql
 timeSeriesIdToTags(id)
 ```
 
-**引数**
+**Arguments**
 
-* `id` — 時系列の識別子。[`UInt64`](/sql-reference/data-types/int-uint)、[`UInt128`](/sql-reference/data-types/int-uint)、[`UUID`](/sql-reference/data-types/uuid)、または [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+- `id` — Identifier of a time series. [`UInt64`](/sql-reference/data-types/int-uint) or [`UInt128`](/sql-reference/data-types/int-uint) or [`UUID`](/sql-reference/data-types/uuid) or [`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-**戻り値**
 
-(tag&#95;name, tag&#95;value) のペアの配列を返します。[`Array(Tuple(String, String))`](/sql-reference/data-types/array)
+**Returned value**
 
-**使用例**
+Returns an array of pairs (tag_name, tag_value). [`Array(Tuple(String, String))`](/sql-reference/data-types/array)
 
-**例**
+**Examples**
+
+**Example**
 
 ```sql title=Query
 SELECT timeSeriesStoreTags(8374283493092, [('region', 'eu'), ('env', 'dev')], '__name__', 'http_requests_count') AS id, timeSeriesIdToTags(id)
@@ -245,29 +262,32 @@ SELECT timeSeriesStoreTags(8374283493092, [('region', 'eu'), ('env', 'dev')], '_
 8374283493092    [('__name__', ''http_requests_count''), ('env', 'dev'), ('region', 'eu')]
 ```
 
+
+
 ## timeSeriesIdToTagsGroup {#timeSeriesIdToTagsGroup}
 
-導入バージョン: v25.8
+Introduced in: v25.8
 
-指定した時系列の識別子を、そのグループ索引に変換します。グループ索引は 0, 1, 2, 3 などの数値で、現在実行中のクエリのコンテキストにおいて、各一意なタグセットごとに割り当てられます。
+Converts the specified identifier of a time series to its group index. Group indices are numbers 0, 1, 2, 3 associated with each unique set of tags in the context of the currently executed query.
 
-**構文**
+**Syntax**
 
 ```sql
 timeSeriesIdToTagsGroup(id)
 ```
 
-**引数**
+**Arguments**
 
-* `id` — 時系列を識別する ID。[`UInt64`](/sql-reference/data-types/int-uint) または [`UInt128`](/sql-reference/data-types/int-uint) または [`UUID`](/sql-reference/data-types/uuid) または [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+- `id` — Identifier of a time series. [`UInt64`](/sql-reference/data-types/int-uint) or [`UInt128`](/sql-reference/data-types/int-uint) or [`UUID`](/sql-reference/data-types/uuid) or [`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-**戻り値**
 
-このタグの集合に対応するグループ索引を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**使用例**
+Returns a group index associated with this set of tags. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**例**
+**Examples**
+
+**Example**
 
 ```sql title=Query
 SELECT timeSeriesStoreTags(8374283493092, [('region', 'eu'), ('env', 'dev')], '__name__', 'http_requests_count') AS id, timeSeriesIdToTagsGroup(id)
@@ -277,35 +297,40 @@ SELECT timeSeriesStoreTags(8374283493092, [('region', 'eu'), ('env', 'dev')], '_
 8374283493092    0
 ```
 
+
+
 ## timeSeriesRange {#timeSeriesRange}
 
-導入バージョン: v25.8
+Introduced in: v25.8
 
-タイムスタンプの範囲 `[start_timestamp, start_timestamp + step, start_timestamp + 2 * step, ..., end_timestamp]` を生成します。
 
-`start_timestamp` が `end_timestamp` と等しい場合、関数は `[start_timestamp]` を含む要素数 1 の配列を返します。
+Generates a range of timestamps [start_timestamp, start_timestamp + step, start_timestamp + 2 * step, ..., end_timestamp].
 
-`timeSeriesRange()` 関数は [range](../functions/array-functions.md#range) 関数と類似しています。
+If `start_timestamp` is equal to `end_timestamp`, the function returns a 1-element array containing `[start_timestamp]`.
 
-**構文**
+Function `timeSeriesRange()` is similar to function [range](../functions/array-functions.md#range).
+
+
+**Syntax**
 
 ```sql
 timeSeriesRange(start_timestamp, end_timestamp, step)
 ```
 
-**引数**
+**Arguments**
 
-* `start_timestamp` — 範囲の開始時刻。[`DateTime64`](/sql-reference/data-types/datetime64) または [`DateTime`](/sql-reference/data-types/datetime) または [`UInt32`](/sql-reference/data-types/int-uint)
-* `end_timestamp` — 範囲の終了時刻。[`DateTime64`](/sql-reference/data-types/datetime64) または [`DateTime`](/sql-reference/data-types/datetime) または [`UInt32`](/sql-reference/data-types/int-uint)
-* `step` — 範囲の刻み幅（秒単位）。[`UInt32/64`](/sql-reference/data-types/int-uint) または [`Decimal32/64`](/sql-reference/data-types/decimal)
+- `start_timestamp` — Start of the range. [`DateTime64`](/sql-reference/data-types/datetime64) or [`DateTime`](/sql-reference/data-types/datetime) or [`UInt32`](/sql-reference/data-types/int-uint)
+- `end_timestamp` — End of the range. [`DateTime64`](/sql-reference/data-types/datetime64) or [`DateTime`](/sql-reference/data-types/datetime) or [`UInt32`](/sql-reference/data-types/int-uint)
+- `step` — Step of the range in seconds [`UInt32/64`](/sql-reference/data-types/int-uint) or [`Decimal32/64`](/sql-reference/data-types/decimal)
 
-**戻り値**
 
-タイムスタンプの範囲（配列）を返します。[`Array(DateTime64)`](/sql-reference/data-types/array)
+**Returned value**
 
-**例**
+Returns a range of timestamps. [`Array(DateTime64)`](/sql-reference/data-types/array)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT timeSeriesRange('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:01:00'::DateTime64(3), 30)
@@ -317,32 +342,35 @@ SELECT timeSeriesRange('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:01:0
 └───────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## timeSeriesStoreTags {#timeSeriesStoreTags}
 
-導入バージョン: v25.8
+Introduced in: v25.8
 
-時系列の識別子とそのタグとの対応付けをクエリコンテキスト内に保存し、後で timeSeriesIdToTags() 関数がこれらのタグを抽出できるようにします。
+Stores mapping between the identifier of a time series and its tags in the query context, so that function timeSeriesIdToTags() can extract these tags later.
 
-**構文**
+**Syntax**
 
 ```sql
 timeSeriesStoreTags(id, tags_array, separate_tag_name_1, separate_tag_value_1, ...)
 ```
 
-**引数**
+**Arguments**
 
-* `id` — 時系列の識別子。[`UInt64`](/sql-reference/data-types/int-uint) または [`UInt128`](/sql-reference/data-types/int-uint) または [`UUID`](/sql-reference/data-types/uuid) または [`FixedString(16)`](/sql-reference/data-types/fixedstring)
-* `tags_array` — ペア (tag&#95;name, tag&#95;value) の配列。[`Array(Tuple(String, String))`](/sql-reference/data-types/array) または [`NULL`](/sql-reference/syntax#null)
-* `separate_tag_name_i` — タグ名。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
-* `separate_tag_value_i` — タグ値。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring) または [`Nullable(String)`](/sql-reference/data-types/nullable)
+- `id` — Identifier of a time series. [`UInt64`](/sql-reference/data-types/int-uint) or [`UInt128`](/sql-reference/data-types/int-uint) or [`UUID`](/sql-reference/data-types/uuid) or [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+- `tags_array` — Array of pairs (tag_name, tag_value). [`Array(Tuple(String, String))`](/sql-reference/data-types/array) or [`NULL`](/sql-reference/syntax#null)
+- `separate_tag_name_i` — The name of a tag. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+- `separate_tag_value_i` — The value of a tag. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring) or [`Nullable(String)`](/sql-reference/data-types/nullable)
 
-**戻り値**
 
-最初の引数である時系列の識別子を返します。
+**Returned value**
 
-**例**
+Returns the first argument, i.e. the identifier of a time series.
 
-**例**
+**Examples**
+
+**Example**
 
 ```sql title=Query
 SELECT timeSeriesStoreTags(8374283493092, [('region', 'eu'), ('env', 'dev')], '__name__', 'http_requests_count')
@@ -352,29 +380,32 @@ SELECT timeSeriesStoreTags(8374283493092, [('region', 'eu'), ('env', 'dev')], '_
 8374283493092
 ```
 
+
+
 ## timeSeriesTagsGroupToTags {#timeSeriesTagsGroupToTags}
 
-導入バージョン: v25.8
+Introduced in: v25.8
 
-グループインデックスに関連付けられたタグを取得します。グループインデックスは、現在実行中のクエリのコンテキストにおいて、一意なタグセットごとに割り当てられる 0, 1, 2, 3 などの数値です。
+Finds tags associated with a group index. Group indices are numbers 0, 1, 2, 3 associated with each unique set of tags in the context of the currently executed query.
 
-**構文**
+**Syntax**
 
 ```sql
 timeSeriesTagsGroupToTags(group)
 ```
 
-**引数**
+**Arguments**
 
-* `group` — 時系列に関連付けられたグループ索引。[`UInt64`](/sql-reference/data-types/int-uint)
+- `group` — Group index associated with a time series. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-ペア（tag&#95;name, tag&#95;value）の配列。[`Array(Tuple(String, String))`](/sql-reference/data-types/array)
+**Returned value**
 
-**使用例**
+Array of pairs (tag_name, tag_value). [`Array(Tuple(String, String))`](/sql-reference/data-types/array)
 
-**例**
+**Examples**
+
+**Example**
 
 ```sql title=Query
 SELECT timeSeriesStoreTags(8374283493092, [('region', 'eu'), ('env', 'dev')], '__name__', 'http_requests_count') AS id, timeSeriesIdToTagsGroup(id) AS group, timeSeriesTagsGroupToTags(group)

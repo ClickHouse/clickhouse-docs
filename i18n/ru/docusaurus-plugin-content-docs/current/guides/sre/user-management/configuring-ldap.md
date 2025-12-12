@@ -25,12 +25,12 @@ ClickHouse можно настроить на использование LDAP д
 
     Ответ будет примерно таким:
     ```response
-    # расширенный LDIF
+    # extended LDIF
     #
     # LDAPv3
-    # база <dc=example,dc=com> с областью subtree
-    # фильтр: (objectclass=*)
-    # запрос: ALL
+    # base <dc=example,dc=com> with scope subtree
+    # filter: (objectclass=*)
+    # requesting: ALL
     #
 
     # example.com

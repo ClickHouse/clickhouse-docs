@@ -58,7 +58,7 @@ SELECT ceiling(123.45, 1) AS rounded
 └─────────┘
 ```
 
-**負の精度**
+**Negative precision**
 
 ```sql title=Query
 SELECT ceiling(123.45, -1)
@@ -70,35 +70,40 @@ SELECT ceiling(123.45, -1)
 └─────────────────────┘
 ```
 
+
+
 ## floor {#floor}
 
-導入: v1.1
+Introduced in: v1.1
 
-`x` 以下で最大となる丸め後の数値を返します。この丸め後の数値は `1 / 10 * N` の倍数であるか、`1 / 10 * N` が正確に表現できない場合は、対応するデータ型で表現可能な最も近い数値です。
 
-整数の引数は、`N` を負の値にすることで丸めることができます。
-`N` が負でない場合、この関数は `x` をそのまま返します。
+Returns the largest rounded number less than or equal to `x`, where the rounded number is a multiple of `1 / 10 * N`, or the nearest number of the appropriate data type if `1 / 10 * N` isn't exact.
 
-丸めによってオーバーフローが発生した場合（例: `floor(-128, -1)`）、結果は未定義です。
+Integer arguments may be rounded with a negative `N` argument.
+With non-negative `N` the function returns `x`.
 
-**構文**
+If rounding causes an overflow (for example, `floor(-128, -1)`), the result is undefined.
+
+
+**Syntax**
 
 ```sql
 floor(x[, N])
 ```
 
-**引数**
+**Arguments**
 
-* `x` — 丸め対象の値。[`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal) または [`(U)Int*`](/sql-reference/data-types/int-uint)
-* `N` — 省略可。丸め先の小数桁数。既定値は 0 で、この場合は整数に丸めます。負の値も指定可能です。[`(U)Int*`](/sql-reference/data-types/int-uint)
+- `x` — The value to round. [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal) or [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `N` — Optional. The number of decimal places to round to. Defaults to zero, which means rounding to an integer. Can be negative. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返される値**
 
-`x` と同じ型の丸め後の数値を返します。[`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal) または [`(U)Int*`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns a rounded number of the same type as `x`. [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT floor(123.45, 1) AS rounded
@@ -110,7 +115,7 @@ SELECT floor(123.45, 1) AS rounded
 └─────────┘
 ```
 
-**負の精度**
+**Negative precision**
 
 ```sql title=Query
 SELECT floor(123.45, -1)
@@ -122,39 +127,44 @@ SELECT floor(123.45, -1)
 └───────────────────┘
 ```
 
+
+
 ## round {#round}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-値を `N` で指定された小数桁数に丸めます。
 
-* `N > 0` の場合、小数点の右側の桁に丸めます。
-* `N < 0` の場合、小数点の左側の桁に丸めます。
-* `N = 0` の場合、最も近い整数に丸めます。
+Rounds a value to a specified number of decimal places `N`.
 
-この関数は、指定された桁における最も近い数値を返します。
-入力値が両隣の数値から等距離の場合、`Float*` 型の入力に対してはバンカーズラウンディング（銀行丸め）を使用し、それ以外の数値型（`Decimal*`）に対してはゼロから遠ざかる方向に丸めます。
+- If `N > 0`, the function rounds to the right of the decimal point.
+- If `N < 0`, the function rounds to the left of the decimal point.
+- If `N = 0`, the function rounds to the next integer.
 
-丸めによってオーバーフローが発生する場合（例: `round(255, -1)`）、結果は未定義です。
+The function returns the nearest number of the specified order.
+If the input value has equal distance to two neighboring numbers, the function uses banker's rounding for `Float*` inputs and rounds away from zero for the other number types (`Decimal*`).
 
-**構文**
+If rounding causes an overflow (for example, `round(255, -1)`), the result is undefined.
+
+
+**Syntax**
 
 ```sql
 round(x[, N])
 ```
 
-**引数**
+**Arguments**
 
-* `x` — 丸める対象の数値。[`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal) または [`(U)Int*`](/sql-reference/data-types/int-uint)
-* `N` — 省略可能。丸める小数点以下の桁数を指定します。省略時は `0` です。[`(U)Int*`](/sql-reference/data-types/int-uint)
+- `x` — A number to round. [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal) or [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `N` — Optional. The number of decimal places to round to. Defaults to `0`. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-`x` と同じ型の丸められた数値を返します。[`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal) または [`(U)Int*`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns a rounded number of the same type as `x`. [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Float 型の入力**
+**Examples**
+
+**Float inputs**
 
 ```sql title=Query
 SELECT number / 2 AS x, round(x) FROM system.numbers LIMIT 3;
@@ -168,7 +178,7 @@ SELECT number / 2 AS x, round(x) FROM system.numbers LIMIT 3;
 └─────┴──────────┘
 ```
 
-**10進数の入力**
+**Decimal inputs**
 
 ```sql title=Query
 SELECT cast(number / 2 AS  Decimal(10,4)) AS x, round(x) FROM system.numbers LIMIT 3;
@@ -182,37 +192,42 @@ SELECT cast(number / 2 AS  Decimal(10,4)) AS x, round(x) FROM system.numbers LIM
 └─────┴──────────┘
 ```
 
+
+
 ## roundAge {#roundAge}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-人の年齢を表す数値を受け取り、標準的な年齢帯と比較し、その数値が属する年齢帯の上限または下限の値を返します。
 
-* `age < 1` の場合、`0` を返します。
-* `1 ≤ age ≤ 17` の場合、`17` を返します。
-* `18 ≤ age ≤ 24` の場合、`18` を返します。
-* `25 ≤ age ≤ 34` の場合、`25` を返します。
-* `35 ≤ age ≤ 44` の場合、`35` を返します。
-* `45 ≤ age ≤ 54` の場合、`45` を返します。
-* `age ≥ 55` の場合、`55` を返します。
+Takes a number representing a human age, compares it to standard age ranges, and returns either the highest or lowest value of the range the number falls within.
 
-**構文**
+- Returns `0`, for `age < 1`.
+- Returns `17`, for `1 ≤ age ≤ 17`.
+- Returns `18`, for `18 ≤ age ≤ 24`.
+- Returns `25`, for `25 ≤ age ≤ 34`.
+- Returns `35`, for `35 ≤ age ≤ 44`.
+- Returns `45`, for `45 ≤ age ≤ 54`.
+- Returns `55`, for `age ≥ 55`.
+
+
+**Syntax**
 
 ```sql
 roundAge(num)
 ```
 
-**引数**
+**Arguments**
 
-* `age` — 年齢（年単位）を表す数値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+- `age` — A number representing an age in years. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**返り値**
 
-`age` が属する範囲の、上限または下限のいずれかの年齢を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns either the highest or lowest age of the range `age` falls within. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT *, roundAge(*) FROM system.numbers WHERE number IN (0, 5, 20, 31, 37, 54, 72);
@@ -230,54 +245,57 @@ SELECT *, roundAge(*) FROM system.numbers WHERE number IN (0, 5, 20, 31, 37, 54,
 └────────┴──────────────────┘
 ```
 
+
+
 ## roundBankers {#roundBankers}
 
-導入バージョン: v20.1
+Introduced in: v20.1
 
-数値を指定した小数桁 `N` に丸めます。
-丸め対象の値が 2 つの数値のちょうど中間の場合、この関数は、IEEE 754 で浮動小数点数のデフォルトの丸め方法として規定されている、バンカーズラウンディング（銀行丸め）と呼ばれる方式で丸めを行います。
 
-* `N > 0` の場合、小数点より右側を丸めます
-* `N < 0` の場合、小数点より左側を丸めます
-* `N = 0` の場合、最も近い整数に丸めます
+Rounds a number to a specified decimal position `N`.
+If the rounding number is halfway between two numbers, the function uses a method of rounding called banker's rounding, which is the default rounding method for floating point numbers defined in IEEE 754.
+
+- If `N > 0`, the function rounds to the right of the decimal point
+- If `N < 0`, the function rounds to the left of the decimal point
+- If `N = 0`, the function rounds to the next integer
 
 :::info Notes
+- When the rounding number is halfway between two numbers, it's rounded to the nearest even digit at the specified decimal position.
+For example: `3.5` rounds up to `4`, `2.5` rounds down to `2`.
+- The `round` function performs the same rounding for floating point numbers.
+- The `roundBankers` function also rounds integers the same way, for example, `roundBankers(45, -1) = 40`.
+- In other cases, the function rounds numbers to the nearest integer.
+:::
 
-* 丸め対象の値が 2 つの数値のちょうど中間の場合、指定した小数桁において、最も近い偶数の桁に丸められます。
-  例: `3.5` は `4` に切り上げられ、`2.5` は `2` に切り下げられます。
-* `round` 関数は、浮動小数点数に対して同じ丸めを行います。
-* `roundBankers` 関数は整数に対しても同じ方法で丸めを行います。例えば、`roundBankers(45, -1) = 40` となります。
-* その他の場合、この関数は最も近い整数へ丸めます。
-  :::
+:::tip Use banker's rounding for summation or subtraction of numbers
+Using banker's rounding, you can reduce the effect that rounding numbers has on the results of summing or subtracting these numbers.
 
-:::tip 合計や減算にはバンカーズラウンディングを使用する
-バンカーズラウンディングを使用することで、丸めがそれらの合計値や差分の結果に与える影響を軽減できます。
+For example, sum numbers `1.5, 2.5, 3.5, 4.5` with different rounding:
+- No rounding: `1.5 + 2.5 + 3.5 + 4.5 = 12`.
+- Banker's rounding: `2 + 2 + 4 + 4 = 12`.
+- Rounding to the nearest integer: `2 + 3 + 4 + 5 = 14`.
+:::
 
-例として、`1.5, 2.5, 3.5, 4.5` を異なる丸め方法で合計します:
 
-* 丸めなし: `1.5 + 2.5 + 3.5 + 4.5 = 12`。
-* バンカーズラウンディング: `2 + 2 + 4 + 4 = 12`。
-* 最も近い整数への丸め: `2 + 3 + 4 + 5 = 14`。
-  :::
-
-**構文**
+**Syntax**
 
 ```sql
 roundBankers(x[, N])
 ```
 
-**引数**
+**Arguments**
 
-* `x` — 丸め対象の数値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Decimal*`](/sql-reference/data-types/decimal) または [`Float*`](/sql-reference/data-types/float)
-* `[, N]` — 省略可能。丸める小数点以下の桁数。指定しない場合は `0`。[`(U)Int*`](/sql-reference/data-types/int-uint)
+- `x` — A number to round. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Decimal*`](/sql-reference/data-types/decimal) or [`Float*`](/sql-reference/data-types/float)
+- `[, N]` — Optional. The number of decimal places to round to. Defaults to `0`. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返される値**
 
-銀行丸め（banker&#39;s rounding）方式で丸められた値を返します。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Decimal*`](/sql-reference/data-types/decimal) または [`Float*`](/sql-reference/data-types/float)
+**Returned value**
 
-**例**
+Returns a value rounded by the banker's rounding method. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Decimal*`](/sql-reference/data-types/decimal) or [`Float*`](/sql-reference/data-types/float)
 
-**基本的な使い方**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT number / 2 AS x, roundBankers(x, 0) AS b FROM system.numbers LIMIT 10
@@ -298,31 +316,36 @@ SELECT number / 2 AS x, roundBankers(x, 0) AS b FROM system.numbers LIMIT 10
 └─────┴───┘
 ```
 
+
+
 ## roundDown {#roundDown}
 
-導入バージョン: v20.1
+Introduced in: v20.1
 
-数値を指定された配列内のいずれかの要素に切り捨てます。
-値が下限値より小さい場合は、下限値が返されます。
 
-**構文**
+Rounds a number down to an element in the specified array.
+If the value is less than the lower bound, the lower bound is returned.
+
+
+**Syntax**
 
 ```sql
 roundDown(num, arr)
 ```
 
-**引数**
+**Arguments**
 
-* `num` — 切り捨てる対象の数値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Decimal*`](/sql-reference/data-types/decimal) または [`Float*`](/sql-reference/data-types/float)
-* `arr` — `num` を切り捨てる先となる値の配列。[`Array((U)Int*)`](/sql-reference/data-types/array) または [`Array(Float*)`](/sql-reference/data-types/array)
+- `num` — A number to round down. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Decimal*`](/sql-reference/data-types/decimal) or [`Float*`](/sql-reference/data-types/float)
+- `arr` — Array of elements to round `num` down to. [`Array((U)Int*)`](/sql-reference/data-types/array) or [`Array(Float*)`](/sql-reference/data-types/array)
 
-**戻り値**
 
-`arr` 内の要素のうち、`num` を切り捨てた結果の値を返します。値が配列内の最小値より小さい場合は、その最小値を返します。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+**Returned value**
 
-**例**
+Returns a number rounded down to an element in `arr`. If the value is less than the lowest bound, the lowest bound is returned. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT *, roundDown(*, [3, 4, 5]) FROM system.numbers WHERE number IN (0, 1, 2, 3, 4, 5)
@@ -339,30 +362,35 @@ SELECT *, roundDown(*, [3, 4, 5]) FROM system.numbers WHERE number IN (0, 1, 2, 
 └────────┴──────────────────────────────┘
 ```
 
+
+
 ## roundDuration {#roundDuration}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-一般的に使用される時間間隔 `1, 10, 30, 60, 120, 180, 240, 300, 600, 1200, 1800, 3600, 7200, 18000, 36000` の集合の中から、与えられた数値をそれ以下で最も近い値に切り捨てます。\
-数値が 1 未満の場合は `0` を返します。
 
-**構文**
+Rounds a number down to the closest from a set of commonly used durations: `1, 10, 30, 60, 120, 180, 240, 300, 600, 1200, 1800, 3600, 7200, 18000, 36000`.
+If the number is less than one, it returns `0`.
+
+
+**Syntax**
 
 ```sql
 roundDuration(num)
 ```
 
-**引数**
+**Arguments**
 
-* `num` — 一般的によく使われる継続時間の集合のいずれかの値に丸める数値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+- `num` — A number to round to one of the numbers in the set of common durations. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**戻り値**
 
-`num` &lt; 1 の場合は `0` を返します。それ以外の場合は、次のいずれかの値を返します: `1, 10, 30, 60, 120, 180, 240, 300, 600, 1200, 1800, 3600, 7200, 18000, 36000`。[`UInt16`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns `0`, for `num` < 1. Otherwise, one of: `1, 10, 30, 60, 120, 180, 240, 300, 600, 1200, 1800, 3600, 7200, 18000, 36000`. [`UInt16`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT *, roundDuration(*) FROM system.numbers WHERE number IN (0, 9, 19, 47, 101, 149, 205, 271, 421, 789, 1423, 2345, 4567, 9876, 24680, 42573)
@@ -389,30 +417,35 @@ SELECT *, roundDuration(*) FROM system.numbers WHERE number IN (0, 9, 19, 47, 10
 └────────┴───────────────────────┘
 ```
 
+
+
 ## roundToExp2 {#roundToExp2}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-数値を、それ以下で最も近い（非負の整数）2 の冪に切り下げます。
-数値が 1 未満の場合は `0` を返します。
 
-**構文**
+Rounds a number down to the nearest (whole non-negative) power of two.
+If the number is less than one, it returns `0`.
+
+
+**Syntax**
 
 ```sql
 roundToExp2(num)
 ```
 
-**引数**
+**Arguments**
 
-* `num` — 丸める数値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+- `num` — A number to round. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**戻り値**
 
-`num` 以下で最大の（0 以上の整数の）2 のべき乗に切り下げた値を返します。`num < 1` の場合は `0` を返します。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+**Returned value**
 
-**例**
+Returns `num` rounded down to the nearest (whole non-negative) power of two, otherwise `0` for `num < 1`. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT *, roundToExp2(*) FROM system.numbers WHERE number IN (0, 2, 5, 10, 19, 50)
@@ -429,32 +462,37 @@ SELECT *, roundToExp2(*) FROM system.numbers WHERE number IN (0, 2, 5, 10, 19, 5
 └────────┴─────────────────────┘
 ```
 
+
+
 ## trunc {#trunc}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-[`floor`](#floor) に似ていますが、`x` の絶対値以下で可能な限り大きな絶対値となるように丸めた値を返します。
 
-**構文**
+Like [`floor`](#floor) but returns the rounded number with the largest absolute value less than or equal to that of `x`.
+
+
+**Syntax**
 
 ```sql
 truncate(x[, N])
 ```
 
-**別名**: `truncate`
+**Aliases**: `truncate`
 
-**引数**
+**Arguments**
 
-* `x` — 丸める値。[`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal) または [`(U)Int*`](/sql-reference/data-types/int-uint)
-* `N` — 省略可能。丸める小数桁数。既定値は 0 で、この場合は整数に丸めます。[`(U)Int*`](/sql-reference/data-types/int-uint)
+- `x` — The value to round. [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal) or [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `N` — Optional. The number of decimal places to round to. Defaults to zero, which means rounding to an integer. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-`x` と同じ型の丸められた値を返します。[`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal) または [`(U)Int*`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns a rounded number of the same type as `x`. [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**基本的な使用例**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT truncate(123.499, 1) AS res;

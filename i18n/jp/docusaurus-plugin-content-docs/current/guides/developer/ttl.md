@@ -244,7 +244,7 @@ ALTER TABLE my_table
 6. `system.parts` テーブルで、データが期待どおりのディスクに移動されたことを確認します。
 
 ```sql
-system.parts テーブルを使用して、crypto_prices テーブルの各パーツがどのディスク上に配置されているかを確認します。
+Using the system.parts table, view which disks the parts are on for the crypto_prices table:
 
 SELECT
     name,

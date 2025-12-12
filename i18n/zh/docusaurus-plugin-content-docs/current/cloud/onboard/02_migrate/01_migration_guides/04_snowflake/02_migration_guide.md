@@ -43,14 +43,14 @@ CREATE TABLE MYDATASET (
 ```sql
 CREATE FILE FORMAT my_parquet_format TYPE = parquet;
 
--- 创建外部阶段，指定要复制数据到的 S3 存储桶
+-- Create the external stage that specifies the S3 bucket to copy into
 CREATE OR REPLACE STAGE external_stage
 URL='s3://mybucket/mydataset'
 CREDENTIALS=(AWS_KEY_ID='<key>' AWS_SECRET_KEY='<secret>')
 FILE_FORMAT = my_parquet_format;
 
--- 为所有文件应用"mydataset"前缀，并指定最大文件大小为 150MB
--- 必须使用 `header=true` 参数以获取列名
+-- Apply "mydataset" prefix to all files and specify a max file size of 150mb
+-- The `header=true` parameter is required to get column names
 COPY INTO @external_stage/mydataset from mydataset max_file_size=157286400 header=true;
 ```
 
@@ -92,8 +92,8 @@ SELECT
     'Tuple(filename String, description String)'
   ) AS complex_data,
 FROM s3('https://mybucket.s3.amazonaws.com/mydataset/mydataset*.parquet')
-SETTINGS input_format_null_as_default = 1, -- 确保当值为 null 时,列以默认值插入
-input_format_parquet_case_insensitive_column_matching = 1 -- 源数据与目标表之间的列匹配不区分大小写
+SETTINGS input_format_null_as_default = 1, -- Ensure columns are inserted as default if values are null
+input_format_parquet_case_insensitive_column_matching = 1 -- Column matching between source data and target table should be case insensitive
 ```
 
 :::note 关于嵌套列结构的说明

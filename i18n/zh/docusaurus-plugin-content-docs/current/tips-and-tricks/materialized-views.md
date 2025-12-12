@@ -44,7 +44,7 @@ description: '物化视图的真实案例、常见问题与解决方案'
 * **存储倍数** = 你的 MV 相比原始表会放大/缩小多少倍
 
 ```sql
--- 替换为实际的表名和列名
+-- Replace with your actual table and columns
 SELECT 
     count() as total_rows,
     uniq(your_group_by_columns) as unique_combinations,
@@ -52,8 +52,8 @@ SELECT
 FROM your_table
 WHERE your_filter_conditions;
 
--- 如果 aggregation_ratio > 70%，请重新考虑物化视图设计
--- 如果 aggregation_ratio < 10%，将获得良好的压缩效果
+-- If aggregation_ratio > 70%, reconsider your MV design
+-- If aggregation_ratio < 10%, you'll get good compression
 ```
 
 ## 当物化视图开始带来问题时 {#mv-problems}

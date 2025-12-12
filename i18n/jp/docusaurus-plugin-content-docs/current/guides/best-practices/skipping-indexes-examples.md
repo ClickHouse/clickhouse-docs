@@ -35,7 +35,7 @@ ClickHouse は 5 種類のスキップインデックスをサポートしてい
 `minmax` インデックスは、おおまかにソートされたデータや、`ORDER BY` と相関のあるカラムに対する範囲条件に最適です。
 
 ```sql
--- CREATE TABLE で定義
+-- Define in CREATE TABLE
 CREATE TABLE events
 (
   ts DateTime,
@@ -46,14 +46,14 @@ CREATE TABLE events
 ENGINE=MergeTree
 ORDER BY ts;
 
--- または後から追加してマテリアライズ
+-- Or add later and materialize
 ALTER TABLE events ADD INDEX ts_minmax ts TYPE minmax GRANULARITY 1;
 ALTER TABLE events MATERIALIZE INDEX ts_minmax;
 
--- インデックスを活用するクエリ
+-- Query that benefits from the index
 SELECT count() FROM events WHERE ts >= now() - 3600;
 
--- 使用状況の確認
+-- Verify usage
 EXPLAIN indexes = 1
 SELECT count() FROM events WHERE ts >= now() - 3600;
 ```
@@ -95,11 +95,11 @@ SELECT * FROM events WHERE value IN (7, 42, 99);
 `ngrambf_v1` インデックスは、文字列を N-gram に分割します。`LIKE '%...%'` クエリに対して有効です。String/FixedString/Map（mapKeys/mapValues 経由）をサポートし、サイズ、ハッシュ数、シードを調整できます。詳細については、[N-gram Bloom filter](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter) のドキュメントを参照してください。
 
 ```sql
--- 部分文字列検索用インデックスの作成
+-- Create index for substring search
 ALTER TABLE logs ADD INDEX msg_ngram msg TYPE ngrambf_v1(3, 10000, 3, 7) GRANULARITY 1;
 ALTER TABLE logs MATERIALIZE INDEX msg_ngram;
 
--- 部分文字列検索
+-- Substring search
 SELECT count() FROM logs WHERE msg LIKE '%timeout%';
 
 EXPLAIN indexes = 1
@@ -119,9 +119,9 @@ CREATE FUNCTION bfEstimateFunctions AS
 CREATE FUNCTION bfEstimateBmSize AS
 (total_grams, p_false) -> ceil((total_grams * log(p_false)) / log(1 / pow(2, log(2))));
 
--- 4300個のn-gram、p_false = 0.0001の場合のサイズ計算例
-SELECT bfEstimateBmSize(4300, 0.0001) / 8 AS size_bytes;  -- 約10304
-SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) AS k; -- 約13
+-- Example sizing for 4300 ngrams, p_false = 0.0001
+SELECT bfEstimateBmSize(4300, 0.0001) / 8 AS size_bytes;  -- ~10304
+SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) AS k; -- ~13
 ```
 
 チューニングに関する完全なガイダンスについては、[パラメータのドキュメント](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter)を参照してください。
@@ -136,7 +136,7 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) AS k; -- 約13
 ALTER TABLE logs ADD INDEX msg_token lower(msg) TYPE tokenbf_v1(10000, 7, 7) GRANULARITY 1;
 ALTER TABLE logs MATERIALIZE INDEX msg_token;
 
--- 単語検索（lowerによる大文字小文字を区別しない検索）
+-- Word search (case-insensitive via lower)
 SELECT count() FROM logs WHERE hasToken(lower(msg), 'exception');
 
 EXPLAIN indexes = 1
@@ -176,7 +176,7 @@ ALTER TABLE t MATERIALIZE INDEX idx_bf;
 EXPLAIN indexes = 1
 SELECT count() FROM t WHERE u64 IN (123, 456);
 
--- オプション: 詳細な刈り込み情報
+-- Optional: detailed pruning info
 SET send_logs_level = 'trace';
 ```
 
@@ -204,7 +204,7 @@ SET send_logs_level = 'trace';
 テストやトラブルシューティングの際に、個々のクエリごとに名前を指定して特定のインデックスを無効化できます。必要に応じてインデックスの使用を強制するための設定もあります。[`ignore_data_skipping_indices`](/operations/settings/settings#ignore_data_skipping_indices) を参照してください。
 
 ```sql
--- 名前を指定してインデックスを無視
+-- Ignore an index by name
 SELECT * FROM logs
 WHERE hasToken(lower(msg), 'exception')
 SETTINGS ignore_data_skipping_indices = 'msg_token';

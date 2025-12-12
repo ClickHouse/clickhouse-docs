@@ -54,31 +54,36 @@ SELECT L1Distance((1, 2), (2, 3))
 └────────────────────────────┘
 ```
 
+
+
 ## L1Norm {#L1Norm}
 
-導入バージョン: v21.11
+Introduced in: v21.11
 
-ベクトル要素の絶対値の総和を計算します。
 
-**構文**
+Calculates the sum of absolute elements of a vector.
+    
+
+**Syntax**
 
 ```sql
 L1Norm(vector)
 ```
 
-**別名**: `normL1`
+**Aliases**: `normL1`
 
-**引数**
+**Arguments**
 
-* `vector` — 数値のベクトルまたはタプル。[`Array(T)`](/sql-reference/data-types/array) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `vector` — Vector or tuple of numeric values. [`Array(T)`](/sql-reference/data-types/array) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**返り値**
 
-L1 ノルム（[タクシー幾何学](https://en.wikipedia.org/wiki/Taxicab_geometry) における距離）を返します。[`UInt*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
+**Returned value**
 
-**使用例**
+Returns the L1-norm or [taxicab geometry](https://en.wikipedia.org/wiki/Taxicab_geometry) distance. [`UInt*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
 
-**基本的な使い方**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT L1Norm((1, 2))
@@ -90,31 +95,36 @@ SELECT L1Norm((1, 2))
 └────────────────┘
 ```
 
+
+
 ## L1Normalize {#L1Normalize}
 
-導入バージョン: v21.11
+Introduced in: v21.11
 
-与えられたベクトル（タプルの要素が座標）に対して、`L1` 空間（[タクシー幾何学](https://en.wikipedia.org/wiki/Taxicab_geometry)）における単位ベクトルを計算します。
 
-**構文**
+Calculates the unit vector of a given vector (the elements of the tuple are the coordinates) in `L1` space ([taxicab geometry](https://en.wikipedia.org/wiki/Taxicab_geometry)).
+    
+
+**Syntax**
 
 ```sql
 L1Normalize(tuple)
 ```
 
-**別名**: `normalizeL1`
+**Aliases**: `normalizeL1`
 
-**引数**
+**Arguments**
 
-* `tuple` — 数値からなるタプル。[`Tuple(T)`](/sql-reference/data-types/tuple)
+- `tuple` — A tuple of numeric values. [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-単位ベクトルを返します。[`Tuple(Float64)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns the unit vector. [`Tuple(Float64)`](/sql-reference/data-types/tuple)
 
-**基本的な使用例**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT L1Normalize((1, 2))
@@ -126,32 +136,37 @@ SELECT L1Normalize((1, 2))
 └─────────────────────────────────────────┘
 ```
 
+
+
 ## L2Distance {#L2Distance}
 
-導入: v21.11
+Introduced in: v21.11
 
-ユークリッド空間において、2つの点間の距離（ここでベクトルの要素が座標を表します）を[ユークリッド距離](https://en.wikipedia.org/wiki/Euclidean_distance)として計算します。
 
-**構文**
+Calculates the distance between two points (the elements of the vectors are the coordinates) in Euclidean space ([Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance)).
+    
+
+**Syntax**
 
 ```sql
 L2Distance(vector1, vector2)
 ```
 
-**別名**: `distanceL2`
+**Aliases**: `distanceL2`
 
-**引数**
+**Arguments**
 
-* `vector1` — 1つ目のベクトル。[`Tuple(T)`](/sql-reference/data-types/tuple) または [`Array(T)`](/sql-reference/data-types/array)
-* `vector2` — 2つ目のベクトル。[`Tuple(T)`](/sql-reference/data-types/tuple) または [`Array(T)`](/sql-reference/data-types/array)
+- `vector1` — First vector. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
+- `vector2` — Second vector. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
 
-**戻り値**
 
-2-ノルム距離を返します。[`Float64`](/sql-reference/data-types/float)
+**Returned value**
 
-**例**
+Returns the 2-norm distance. [`Float64`](/sql-reference/data-types/float)
 
-**基本的な使用方法**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT L2Distance((1, 2), (2, 3))
@@ -163,33 +178,37 @@ SELECT L2Distance((1, 2), (2, 3))
 └────────────────────────────┘
 ```
 
+
+
 ## L2DistanceTransposed {#L2DistanceTransposed}
 
-導入バージョン: v25.10
+Introduced in: v25.10
 
-ユークリッド空間における 2 点間のユークリッド距離（[Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance)）を、ベクトルの各成分を座標として近似的に計算します。
 
-**構文**
+Calculates the approximate distance between two points (the values of the vectors are the coordinates) in Euclidean space ([Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance)).    
+
+**Syntax**
 
 ```sql
 L2DistanceTransposed(vector1, vector2, p)
 ```
 
-**エイリアス**: `distanceL2Transposed`
+**Aliases**: `distanceL2Transposed`
 
-**引数**
+**Arguments**
 
-* `vectors` — ベクトル。[`QBit(T, UInt64)`](/sql-reference/data-types/qbit)
-* `reference` — 参照ベクトル。[`Array(T)`](/sql-reference/data-types/array)
-* `p` — 距離計算で各ベクトル要素から使用するビット数（1 から要素のビット幅まで）。量子化レベルによって、精度と速度のトレードオフを調整します。使用するビット数を減らすと I/O と計算は高速になりますが精度は低下し、ビット数を増やすと精度は向上しますがパフォーマンスは低下します。[`UInt`](/sql-reference/data-types/int-uint)
+- `vectors` — Vectors. [`QBit(T, UInt64)`](/sql-reference/data-types/qbit)
+- `reference` — Reference vector. [`Array(T)`](/sql-reference/data-types/array)
+- `p` — Number of bits from each vector element to use in the distance calculation (1 to element bit-width). The quantization level controls the precision-speed trade-off. Using fewer bits results in faster I/O and calculations with reduced accuracy, while using more bits increases accuracy at the cost of performance. [`UInt`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-概算の 2-ノルム距離を返します。[`Float64`](/sql-reference/data-types/float)
+**Returned value**
 
-**使用例**
+Returns the approximate 2-norm distance. [`Float64`](/sql-reference/data-types/float)
 
-**基本的な使用例**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 CREATE TABLE qbit (id UInt32, vec QBit(Float64, 2)) ENGINE = Memory;
@@ -203,31 +222,36 @@ SELECT L2DistanceTransposed(vec, array(1.0, 2.0), 16) FROM qbit;"
 └──────────────────────────────────────────────┘
 ```
 
+
+
 ## L2Norm {#L2Norm}
 
-導入バージョン: v21.11
+Introduced in: v21.11
 
-ベクトル各要素を二乗した値の和の平方根を計算します。
 
-**構文**
+Calculates the square root of the sum of the squares of the vector elements.
+    
+
+**Syntax**
 
 ```sql
 L2Norm(vector)
 ```
 
-**別名**: `normL2`
+**Aliases**: `normL2`
 
-**引数**
+**Arguments**
 
-* `vector` — 数値のベクトルまたはタプル。[`Tuple(T)`](/sql-reference/data-types/tuple) または [`Array(T)`](/sql-reference/data-types/array)
+- `vector` — Vector or tuple of numeric values. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
 
-**戻り値**
 
-L2 ノルムまたは[ユークリッド距離](https://en.wikipedia.org/wiki/Euclidean_distance)を返します。[`UInt*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+**Returned value**
 
-**例**
+Returns the L2-norm or [Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance). [`UInt*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**基本的な使用例**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT L2Norm((1, 2))
@@ -239,31 +263,36 @@ SELECT L2Norm((1, 2))
 └──────────────────┘
 ```
 
+
+
 ## L2Normalize {#L2Normalize}
 
-導入バージョン: v21.11
+Introduced in: v21.11
 
-ユークリッド空間において、与えられたベクトル（タプルの要素を座標とする）から単位ベクトルを計算します（[ユークリッド距離](https://en.wikipedia.org/wiki/Euclidean_distance) を使用）。
 
-**構文**
+Calculates the unit vector of a given vector (the elements of the tuple are the coordinates) in Euclidean space (using [Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance)).
+    
+
+**Syntax**
 
 ```sql
 L2Normalize(tuple)
 ```
 
-**別名**: `normalizeL2`
+**Aliases**: `normalizeL2`
 
-**引数**
+**Arguments**
 
-* `tuple` — 数値のタプル。[`Tuple(T)`](/sql-reference/data-types/tuple)
+- `tuple` — A tuple of numeric values. [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-単位ベクトルを返します。[`Tuple(Float64)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns the unit vector. [`Tuple(Float64)`](/sql-reference/data-types/tuple)
 
-**基本的な使用例**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT L2Normalize((3, 4))
@@ -275,32 +304,37 @@ SELECT L2Normalize((3, 4))
 └─────────────────────┘
 ```
 
+
+
 ## L2SquaredDistance {#L2SquaredDistance}
 
-導入バージョン: v22.7
+Introduced in: v22.7
 
-2 つのベクトルの対応する要素の差の二乗の和を計算します。
 
-**構文**
+Calculates the sum of the squares of the difference between the corresponding elements of two vectors.
+    
+
+**Syntax**
 
 ```sql
 L2SquaredDistance(vector1, vector2)
 ```
 
-**エイリアス**: `distanceL2Squared`
+**Aliases**: `distanceL2Squared`
 
-**引数**
+**Arguments**
 
-* `vector1` — 1つ目のベクトル。[`Tuple(T)`](/sql-reference/data-types/tuple) または [`Array(T)`](/sql-reference/data-types/array)
-* `vector2` — 2つ目のベクトル。[`Tuple(T)`](/sql-reference/data-types/tuple) または [`Array(T)`](/sql-reference/data-types/array)
+- `vector1` — First vector. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
+- `vector2` — Second vector. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
 
-**返り値**
 
-2つのベクトルの対応する要素の差の二乗の和を返します。[`Float64`](/sql-reference/data-types/float)
+**Returned value**
 
-**例**
+Returns the sum of the squares of the difference between the corresponding elements of two vectors. [`Float64`](/sql-reference/data-types/float)
 
-**基本的な使用例**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT L2SquaredDistance([1, 2, 3], [0, 0, 0])
@@ -312,31 +346,36 @@ SELECT L2SquaredDistance([1, 2, 3], [0, 0, 0])
 └──────────────────────────┘
 ```
 
+
+
 ## L2SquaredNorm {#L2SquaredNorm}
 
-導入バージョン: v22.7
+Introduced in: v22.7
 
-ベクトル要素の二乗和の平方根（[`L2Norm`](#L2Norm)）の二乗を計算します。
 
-**構文**
+Calculates the square root of the sum of the squares of the vector elements (the [`L2Norm`](#L2Norm)) squared.
+    
+
+**Syntax**
 
 ```sql
 L2SquaredNorm(vector)
 ```
 
-**別名**: `normL2Squared`
+**Aliases**: `normL2Squared`
 
-**引数**
+**Arguments**
 
-* `vector` — 数値のベクトルまたはタプル。[`Array(T)`](/sql-reference/data-types/array) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `vector` — Vector or tuple of numeric values. [`Array(T)`](/sql-reference/data-types/array) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-L2 ノルムの二乗を返します。[`UInt*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
+**Returned value**
 
-**例**
+Returns the L2-norm squared. [`UInt*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
 
-**基本的な使い方**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT L2SquaredNorm((1, 2))
@@ -348,32 +387,37 @@ SELECT L2SquaredNorm((1, 2))
 └───────────────────────┘
 ```
 
+
+
 ## LinfDistance {#LinfDistance}
 
-導入バージョン: v21.11
+Introduced in: v21.11
 
-ベクトルの要素を座標とみなした 2 点間の距離を、`L_{inf}` 空間（[最大ノルム]([https://en.wikipedia.org/wiki/Norm&#95;(mathematics)#Maximum&#95;norm&#95;(special&#95;case&#95;of:&#95;infinity&#95;norm,&#95;uniform&#95;norm,&#95;or&#95;supremum&#95;norm)））で計算します。](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#Maximum_norm_\(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm\)））で計算します。)
 
-**構文**
+Calculates the distance between two points (the elements of the vectors are the coordinates) in `L_{inf}` space ([maximum norm](https://en.wikipedia.org/wiki/Norm_(mathematics)#Maximum_norm_(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm))).
+    
+
+**Syntax**
 
 ```sql
 LinfDistance(vector1, vector2)
 ```
 
-**別名**: `distanceLinf`
+**Aliases**: `distanceLinf`
 
-**引数**
+**Arguments**
 
-* `vector1` — 1番目のベクトル。[`Tuple(T)`](/sql-reference/data-types/tuple) または [`Array(T)`](/sql-reference/data-types/array)
-* `vector2` — 2番目のベクトル。[`Tuple(T)`](/sql-reference/data-types/tuple) または [`Array(T)`](/sql-reference/data-types/array)
+- `vector1` — First vector. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
+- `vector2` — Second vector. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
 
-**戻り値**
 
-無限ノルム距離を返します。[`Float64`](/sql-reference/data-types/float)
+**Returned value**
 
-**使用例**
+Returns the Infinity-norm distance. [`Float64`](/sql-reference/data-types/float)
 
-**基本的な使用方法**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT LinfDistance((1, 2), (2, 3))
@@ -385,31 +429,36 @@ SELECT LinfDistance((1, 2), (2, 3))
 └──────────────────────────────┘
 ```
 
+
+
 ## LinfNorm {#LinfNorm}
 
-導入バージョン: v21.11
+Introduced in: v21.11
 
-ベクトル要素の絶対値のうち最大のものを計算します。
 
-**構文**
+Calculates the maximum of absolute elements of a vector.
+    
+
+**Syntax**
 
 ```sql
 LinfNorm(vector)
 ```
 
-**別名**: `normLinf`
+**Aliases**: `normLinf`
 
-**引数**
+**Arguments**
 
-* `vector` — 数値のベクトルまたはタプル。[`Array(T)`](/sql-reference/data-types/array) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `vector` — Vector or tuple of numeric values. [`Array(T)`](/sql-reference/data-types/array) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-Linf ノルム、つまり絶対値の最大値を返します。[`Float64`](/sql-reference/data-types/float)
+**Returned value**
 
-**例**
+Returns the Linf-norm or the maximum absolute value. [`Float64`](/sql-reference/data-types/float)
 
-**基本的な使い方**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT LinfNorm((1, -2))
@@ -421,31 +470,36 @@ SELECT LinfNorm((1, -2))
 └───────────────────┘
 ```
 
+
+
 ## LinfNormalize {#LinfNormalize}
 
-導入バージョン: v21.11
+Introduced in: v21.11
 
-与えられたベクトル（タプルの要素を座標とみなす）について、`L_{inf}` 空間における単位ベクトル（[最大ノルム](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#Maximum_norm_\(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm\))を使用）を計算します。
 
-**構文**
+Calculates the unit vector of a given vector (the elements of the tuple are the coordinates) in `L_{inf}` space (using [maximum norm](https://en.wikipedia.org/wiki/Norm_(mathematics)#Maximum_norm_(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm))).
+    
+
+**Syntax**
 
 ```sql
 LinfNormalize(tuple)
 ```
 
-**エイリアス**: `normalizeLinf`
+**Aliases**: `normalizeLinf`
 
-**引数**
+**Arguments**
 
-* `tuple` — 数値のタプル。[`Tuple(T)`](/sql-reference/data-types/tuple)
+- `tuple` — A tuple of numeric values. [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**返される値**
 
-単位ベクトルを返します。[`Tuple(Float64)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns the unit vector. [`Tuple(Float64)`](/sql-reference/data-types/tuple)
 
-**基本的な使用例**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT LinfNormalize((3, 4))
@@ -457,33 +511,38 @@ SELECT LinfNormalize((3, 4))
 └───────────────────────┘
 ```
 
+
+
 ## LpDistance {#LpDistance}
 
-導入バージョン: v21.11
+Introduced in: v21.11
 
-`Lp` 空間（[p-ノルム距離](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#p-norm)）において、ベクトルの要素を座標とみなした 2 点間の距離を計算します。
 
-**構文**
+Calculates the distance between two points (the elements of the vectors are the coordinates) in `Lp` space ([p-norm distance](https://en.wikipedia.org/wiki/Norm_(mathematics)#p-norm)).
+    
+
+**Syntax**
 
 ```sql
 LpDistance(vector1, vector2, p)
 ```
 
-**別名**: `distanceLp`
+**Aliases**: `distanceLp`
 
-**引数**
+**Arguments**
 
-* `vector1` — 第1ベクトル。[`Tuple(T)`](/sql-reference/data-types/tuple) または [`Array(T)`](/sql-reference/data-types/array)
-* `vector2` — 第2ベクトル。[`Tuple(T)`](/sql-reference/data-types/tuple) または [`Array(T)`](/sql-reference/data-types/array)
-* `p` — 冪指数。取りうる値: `[1; inf)` の実数。[`UInt*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+- `vector1` — First vector. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
+- `vector2` — Second vector. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
+- `p` — The power. Possible values: real number from `[1; inf)`. [`UInt*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**戻り値**
 
-p-ノルム距離を返します。[`Float64`](/sql-reference/data-types/float)
+**Returned value**
 
-**例**
+Returns the p-norm distance. [`Float64`](/sql-reference/data-types/float)
 
-**基本的な使用方法**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT LpDistance((1, 2), (2, 3), 3)
@@ -495,38 +554,42 @@ SELECT LpDistance((1, 2), (2, 3), 3)
 └───────────────────────────────┘
 ```
 
+
+
 ## LpNorm {#LpNorm}
 
-導入バージョン: v21.11
+Introduced in: v21.11
 
-ベクトルの p-ノルムを計算します。これは、その要素の絶対値の p 乗の総和の p 乗根です。
 
-特別な場合:
+Calculates the p-norm of a vector, which is the p-th root of the sum of the p-th powers of the absolute elements of its elements.
 
-* p=1 のとき、L1Norm（マンハッタン距離）と同等です。
-* p=2 のとき、L2Norm（ユークリッド距離）と同等です。
-* p=∞ のとき、LinfNorm（最大ノルム）と同等です。
+Special cases:
+- When p=1, it's equivalent to L1Norm (Manhattan distance).
+- When p=2, it's equivalent to L2Norm (Euclidean distance).
+- When p=∞, it's equivalent to LinfNorm (maximum norm).
+    
 
-**構文**
+**Syntax**
 
 ```sql
 LpNorm(vector, p)
 ```
 
-**エイリアス**: `normLp`
+**Aliases**: `normLp`
 
-**引数**
+**Arguments**
 
-* `vector` — 数値のベクトルまたはタプル。[`Tuple(T)`](/sql-reference/data-types/tuple) または [`Array(T)`](/sql-reference/data-types/array)
-* `p` — 冪指数。取り得る値は `[1; inf)` の範囲の実数です。型は [`UInt*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+- `vector` — Vector or tuple of numeric values. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
+- `p` — The power. Possible values are real numbers in the range `[1; inf)`. [`UInt*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**戻り値**
 
-[Lp-ノルム](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#p-norm) を返します。型は [`Float64`](/sql-reference/data-types/float) です。
+**Returned value**
 
-**例**
+Returns the [Lp-norm](https://en.wikipedia.org/wiki/Norm_(mathematics)#p-norm). [`Float64`](/sql-reference/data-types/float)
 
-**基本的な使い方**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT LpNorm((1, -2), 2)
@@ -538,32 +601,37 @@ SELECT LpNorm((1, -2), 2)
 └────────────────────┘
 ```
 
+
+
 ## LpNormalize {#LpNormalize}
 
-導入バージョン: v21.11
+Introduced in: v21.11
 
-与えられたベクトル（タプルの要素を座標とする）について、`Lp` 空間における単位ベクトル（[p-ノルム](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#p-norm)を用いる）を計算します。
 
-**構文**
+Calculates the unit vector of a given vector (the elements of the tuple are the coordinates) in `Lp` space (using [p-norm](https://en.wikipedia.org/wiki/Norm_(mathematics)#p-norm)).
+        
+
+**Syntax**
 
 ```sql
 LpNormalize(tuple, p)
 ```
 
-**別名**: `normalizeLp`
+**Aliases**: `normalizeLp`
 
-**引数**
+**Arguments**
 
-* `tuple` — 数値からなるタプル。[`Tuple(T)`](/sql-reference/data-types/tuple)
-* `p` — べき数。取りうる値は `[1; inf)`（1以上の任意の数値）の範囲内。[`UInt*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+- `tuple` — A tuple of numeric values. [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `p` — The power. Possible values are any number in the range range from `[1; inf)`. [`UInt*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**戻り値**
 
-単位ベクトルを返します。[`Tuple(Float64)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns the unit vector. [`Tuple(Float64)`](/sql-reference/data-types/tuple)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT LpNormalize((3, 4), 5)
@@ -575,30 +643,35 @@ SELECT LpNormalize((3, 4), 5)
 └─────────────────────────────────────────┘
 ```
 
+
+
 ## cosineDistance {#cosineDistance}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-2 つのベクトル間のコサイン距離を計算します（タプルの要素は座標を表します）。返される値が小さいほど、ベクトル同士の類似度は高くなります。
 
-**構文**
+Calculates the cosine distance between two vectors (the elements of the tuples are the coordinates). The smaller the returned value is, the more similar are the vectors.
+    
+
+**Syntax**
 
 ```sql
 cosineDistance(vector1, vector2)
 ```
 
-**引数**
+**Arguments**
 
-* `vector1` — 1 番目のタプル。[`Tuple(T)`](/sql-reference/data-types/tuple) または [`Array(T)`](/sql-reference/data-types/array)
-* `vector2` — 2 番目のタプル。[`Tuple(T)`](/sql-reference/data-types/tuple) または [`Array(T)`](/sql-reference/data-types/array)
+- `vector1` — First tuple. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
+- `vector2` — Second tuple. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
 
-**戻り値**
 
-2 つのベクトル間のなす角の余弦を 1 から引いた値を返します。[`Float64`](/sql-reference/data-types/float)
+**Returned value**
 
-**使用例**
+Returns the cosine of the angle between two vectors subtracted from one. [`Float64`](/sql-reference/data-types/float)
 
-**基本的な使い方**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT cosineDistance((1, 2), (2, 3));

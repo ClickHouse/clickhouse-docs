@@ -554,13 +554,13 @@ var loggerFactory = LoggerFactory.Create(builder =>
 {
     builder
         .AddConsole()
-        .SetMinimumLevel(LogLevel.Trace); // ネットワークイベントを確認するにはTraceレベルが必要
+        .SetMinimumLevel(LogLevel.Trace); // Must be Trace level to see network events
 });
 
 var settings = new ClickHouseClientSettings()
 {
     LoggerFactory = loggerFactory,
-    EnableDebugMode = true,  // 低レベルのネットワークトレースを有効化
+    EnableDebugMode = true,  // Enable low-level network tracing
 };
 ```
 

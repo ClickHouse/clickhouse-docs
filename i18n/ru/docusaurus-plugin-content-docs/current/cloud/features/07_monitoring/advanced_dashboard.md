@@ -187,7 +187,7 @@ FORMAT VERTICAL
 ```
 
 ```response title="Response"
-Строка 1:
+Row 1:
 ──────
 type:              QueryFinish
 event_time:        2024-12-23 11:22:55
@@ -208,6 +208,72 @@ ORDER BY
 LIMIT 20
 read_rows:         150957260
 tables:            ['default.amazon_reviews_no_pk']
+
+Row 2:
+──────
+type:              QueryFinish
+event_time:        2024-12-23 11:26:50
+query_duration_ms: 7325
+query:             SELECT
+    toStartOfMonth(review_date) AS month,
+    any(product_title),
+    avg(star_rating) AS avg_stars
+FROM amazon_reviews_no_pk
+WHERE
+    product_category = 'Home'
+GROUP BY
+    month,
+    product_id
+ORDER BY
+    month DESC,
+    product_id ASC
+LIMIT 20
+read_rows:         150957260
+tables:            ['default.amazon_reviews_no_pk']
+
+Row 3:
+──────
+type:              QueryFinish
+event_time:        2024-12-23 11:24:10
+query_duration_ms: 3270
+query:             SELECT
+    toStartOfMonth(review_date) AS month,
+    any(product_title),
+    avg(star_rating) AS avg_stars
+FROM amazon_reviews_pk
+WHERE
+    product_category = 'Home'
+GROUP BY
+    month,
+    product_id
+ORDER BY
+    month DESC,
+    product_id ASC
+LIMIT 20
+read_rows:         6242304
+tables:            ['default.amazon_reviews_pk']
+
+Row 4:
+──────
+type:              QueryFinish
+event_time:        2024-12-23 11:28:10
+query_duration_ms: 2786
+query:             SELECT
+    toStartOfMonth(review_date) AS month,
+    any(product_title),
+    avg(star_rating) AS avg_stars
+FROM amazon_reviews_pk
+WHERE
+    product_category = 'Home'
+GROUP BY
+    month,
+    product_id
+ORDER BY
+    month DESC,
+    product_id ASC
+LIMIT 20
+read_rows:         6242304
+tables:            ['default.amazon_reviews_pk']
 ```
 
 Строка 2:

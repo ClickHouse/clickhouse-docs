@@ -43,6 +43,37 @@ cat /opt/data/github/github_all_columns.ndjson | kcat -b <host>:<port> -X securi
 2. 対象テーブルが作成されていることを確認します。ここではデフォルトデータベースを使用します。
 
 ```sql
+
+CREATE TABLE github
+(
+    file_time DateTime,
+    event_type Enum('CommitCommentEvent' = 1, 'CreateEvent' = 2, 'DeleteEvent' = 3, 'ForkEvent' = 4,
+                    'GollumEvent' = 5, 'IssueCommentEvent' = 6, 'IssuesEvent' = 7, 'MemberEvent' = 8, 'PublicEvent' = 9, 'PullRequestEvent' = 10, 'PullRequestReviewCommentEvent' = 11, 'PushEvent' = 12, 'ReleaseEvent' = 13, 'SponsorshipEvent' = 14, 'WatchEvent' = 15, 'GistEvent' = 16, 'FollowEvent' = 17, 'DownloadEvent' = 18, 'PullRequestReviewEvent' = 19, 'ForkApplyEvent' = 20, 'Event' = 21, 'TeamAddEvent' = 22),
+    actor_login LowCardinality(String),
+    repo_name LowCardinality(String),
+    created_at DateTime,
+    updated_at DateTime,
+    action Enum('none' = 0, 'created' = 1, 'added' = 2, 'edited' = 3, 'deleted' = 4, 'opened' = 5, 'closed' = 6, 'reopened' = 7, 'assigned' = 8, 'unassigned' = 9, 'labeled' = 10, 'unlabeled' = 11, 'review_requested' = 12, 'review_request_removed' = 13, 'synchronize' = 14, 'started' = 15, 'published' = 16, 'update' = 17, 'create' = 18, 'fork' = 19, 'merged' = 20),
+    comment_id UInt64,
+    path String,
+    ref LowCardinality(String),
+    ref_type Enum('none' = 0, 'branch' = 1, 'tag' = 2, 'repository' = 3, 'unknown' = 4),
+    creator_user_login LowCardinality(String),
+    number UInt32,
+    title String,
+    labels Array(LowCardinality(String)),
+    state Enum('none' = 0, 'open' = 1, 'closed' = 2),
+    assignee LowCardinality(String),
+    assignees Array(LowCardinality(String)),
+    closed_at DateTime,
+    merged_at DateTime,
+    merge_commit_sha String,
+    requested_reviewers Array(LowCardinality(String)),
+    merged_by LowCardinality(String),
+    review_comments UInt32,
+    member_login LowCardinality(String)
+) ENGINE = MergeTree ORDER BY (event_type, repo_name, created_at);
+
 ```
 
 CREATE TABLE github
@@ -75,10 +106,32 @@ review&#95;comments UInt32,
 member&#95;login LowCardinality(String)
 ) ENGINE = MergeTree ORDER BY (event&#95;type, repo&#95;name, created&#95;at);
 
-````
+````toml
+[sources.github]
+type = "kafka"
+auto_offset_reset = "smallest"
+bootstrap_servers = "<kafka_host>:<kafka_port>"
+group_id = "vector"
+topics = [ "github" ]
+tls.enabled = true
+sasl.enabled = true
+sasl.mechanism = "PLAIN"
+sasl.username = "<username>"
+sasl.password = "<password>"
+decoding.codec = "json"
 
-3. [Vectorをダウンロードしてインストールします](https://vector.dev/docs/setup/quickstart/)。`kafka.toml`設定ファイルを作成し、KafkaおよびClickHouseインスタンスに合わせて値を変更してください。
-
+[sinks.clickhouse]
+type = "clickhouse"
+inputs = ["github"]
+endpoint = "http://localhost:8123"
+database = "default"
+table = "github"
+skip_unknown_fields = true
+auth.strategy = "basic"
+auth.user = "username"
+auth.password = "password"
+buffer.max_events = 10000
+batch.timeout_secs = 1
 ```toml
 [sources.github]
 type = "kafka"
@@ -105,28 +158,12 @@ auth.user = "username"
 auth.password = "password"
 buffer.max_events = 10000
 batch.timeout_secs = 1
-````
-
-この設定および Vector の動作について、いくつか重要な注意点があります。
-
-* この例は Confluent Cloud に対してテストされています。そのため、`sasl.*` および `ssl.enabled` セキュリティオプションは、セルフマネージドなケースでは適切でない可能性があります。
-* 設定パラメータ `bootstrap_servers` にはプロトコルのプレフィックスは不要です（例: `pkc-2396y.us-east-1.aws.confluent.cloud:9092`）。
-* ソースパラメータ `decoding.codec = "json"` は、メッセージが単一の JSON オブジェクトとして ClickHouse sink に渡されることを保証します。メッセージを文字列として扱い、デフォルト値の `bytes` を使用する場合、メッセージの内容はフィールド `message` に格納されます。多くの場合、これは [Vector getting started](../etl-tools/vector-to-clickhouse.md#4-parse-the-logs) ガイドで説明しているように、ClickHouse 側での処理が必要になります。
-* Vector はメッセージに対して[多数のフィールドを追加](https://vector.dev/docs/reference/configuration/sources/kafka/#output-data)します。この例では、ClickHouse sink の設定パラメータ `skip_unknown_fields = true` によって、これらのフィールドを無視しています。これは、ターゲットテーブルのスキーマに含まれないフィールドを無視する設定です。`offset` のようなこれらのメタフィールドが追加されるように、スキーマを調整してもかまいません。
-* `inputs` パラメータによって、sink がイベントのソースを参照している点に注目してください。
-* ClickHouse sink の動作については[こちら](https://vector.dev/docs/reference/configuration/sinks/clickhouse/#buffers-and-batches)を参照してください。スループットを最適化するため、`buffer.max_events`、`batch.timeout_secs`、`batch.max_bytes` パラメータのチューニングを検討してください。ClickHouse の[推奨事項](/sql-reference/statements/insert-into#performance-considerations)に従うと、1 バッチあたりのイベント数については、1000 を最小値として考慮する必要があります。スループットが一様に高いユースケースでは、`buffer.max_events` パラメータを増やすことができます。スループットにばらつきがある場合は、`batch.timeout_secs` パラメータの調整が必要になることがあります。
-* パラメータ `auto_offset_reset = "smallest"` は、Kafka ソースがトピックの先頭から読み取りを開始することを強制し、これによりステップ (1) で公開されたメッセージを確実に消費できるようにします。ユーザーによっては、異なる動作が必要になることがあります。詳細は[こちら](https://vector.dev/docs/reference/configuration/sources/kafka/#auto_offset_reset)を参照してください。
-
-4. Vector を起動する
-
+````bash
+vector --config ./kafka.toml
 ```bash
 vector --config ./kafka.toml
-```
-
-デフォルトでは、ClickHouse への挿入処理が開始される前に、[health check](https://vector.dev/docs/reference/configuration/sinks/clickhouse/#healthcheck) が必要です。これにより、接続が確立できることと、スキーマが読み取れることが保証されます。問題が発生した場合に役立つ、より詳細なログを取得するには、コマンドの前に `VECTOR_LOG=debug` を付けて実行してください。
-
-5. データが挿入されたことを確認します。
-
+```sql
+SELECT count() AS count FROM github;
 ```sql
 SELECT count() AS count FROM github;
 ```

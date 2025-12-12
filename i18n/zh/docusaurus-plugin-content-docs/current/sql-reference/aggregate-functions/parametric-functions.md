@@ -34,8 +34,8 @@ histogram(number_of_bins)(values)
 * 由以下格式的[元组](../../sql-reference/data-types/tuple.md)构成的[数组](../../sql-reference/data-types/array.md)：
 
   ```
-  [(lower_1, upper_1, height_1), ... (lower_N, upper_N, height_N)]
-  ```
+        [(lower_1, upper_1, height_1), ... (lower_N, upper_N, height_N)]
+        ```
 
   * `lower` — 箱的下边界。
   * `upper` — 箱的上边界。
@@ -761,14 +761,19 @@ INSERT INTO test_flow VALUES (1, 3, 'Gift') (2, 3, 'Home') (3, 3, 'Gift') (4, 3,
 SELECT id, sequenceNextNode('forward', 'head')(dt, page, page = 'Home', page = 'Home', page = 'Gift') FROM test_flow GROUP BY id;
 
                   dt   id   page
- 1970-01-01 09:00:01    1   Home // 基准点,匹配 Home
- 1970-01-01 09:00:02    1   Gift // 匹配 Gift
- 1970-01-01 09:00:03    1   Exit // 结果
+ 1970-01-01 09:00:01    1   Home // Base point, Matched with Home
+ 1970-01-01 09:00:02    1   Gift // Matched with Gift
+ 1970-01-01 09:00:03    1   Exit // The result
 
- 1970-01-01 09:00:01    2   Home // 基准点,匹配 Home
- 1970-01-01 09:00:02    2   Home // 不匹配 Gift
+ 1970-01-01 09:00:01    2   Home // Base point, Matched with Home
+ 1970-01-01 09:00:02    2   Home // Unmatched with Gift
  1970-01-01 09:00:03    2   Gift
  1970-01-01 09:00:04    2   Basket
+
+ 1970-01-01 09:00:01    3   Gift // Base point, Unmatched with Home
+ 1970-01-01 09:00:02    3   Home
+ 1970-01-01 09:00:03    3   Gift
+ 1970-01-01 09:00:04    3   Basket
 ```
 
 1970-01-01 09:00:01    3   Gift // 基准点，未与 Home 匹配
@@ -776,10 +781,23 @@ SELECT id, sequenceNextNode('forward', 'head')(dt, page, page = 'Home', page = '
 1970-01-01 09:00:03    3   Gift
 1970-01-01 09:00:04    3   Basket
 
-````
+````sql
+SELECT id, sequenceNextNode('backward', 'tail')(dt, page, page = 'Basket', page = 'Basket', page = 'Gift') FROM test_flow GROUP BY id;
 
-**`backward` 和 `tail` 的行为**
+                 dt   id   page
+1970-01-01 09:00:01    1   Home
+1970-01-01 09:00:02    1   Gift
+1970-01-01 09:00:03    1   Exit // Base point, Unmatched with Basket
 
+1970-01-01 09:00:01    2   Home
+1970-01-01 09:00:02    2   Home // The result
+1970-01-01 09:00:03    2   Gift // Matched with Gift
+1970-01-01 09:00:04    2   Basket // Base point, Matched with Basket
+
+1970-01-01 09:00:01    3   Gift
+1970-01-01 09:00:02    3   Home // The result
+1970-01-01 09:00:03    3   Gift // Base point, Matched with Gift
+1970-01-01 09:00:04    3   Basket // Base point, Matched with Basket
 ```sql
 SELECT id, sequenceNextNode('backward', 'tail')(dt, page, page = 'Basket', page = 'Basket', page = 'Gift') FROM test_flow GROUP BY id;
 
@@ -797,10 +815,23 @@ SELECT id, sequenceNextNode('backward', 'tail')(dt, page, page = 'Basket', page 
 1970-01-01 09:00:02    3   Home // 结果
 1970-01-01 09:00:03    3   Gift // Base point, Matched with Gift
 1970-01-01 09:00:04    3   Basket // 基准点,与 Basket 匹配
-````
+````sql
+SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', page = 'Gift') FROM test_flow GROUP BY id;
 
-**`forward` 和 `first_match` 的行为**
+                 dt   id   page
+1970-01-01 09:00:01    1   Home
+1970-01-01 09:00:02    1   Gift // Base point
+1970-01-01 09:00:03    1   Exit // The result
 
+1970-01-01 09:00:01    2   Home
+1970-01-01 09:00:02    2   Home
+1970-01-01 09:00:03    2   Gift // Base point
+1970-01-01 09:00:04    2   Basket  The result
+
+1970-01-01 09:00:01    3   Gift // Base point
+1970-01-01 09:00:02    3   Home // The result
+1970-01-01 09:00:03    3   Gift
+1970-01-01 09:00:04    3   Basket
 ```sql
 SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', page = 'Gift') FROM test_flow GROUP BY id;
 
@@ -818,8 +849,23 @@ SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', p
 1970-01-01 09:00:02    3   Home // 结果
 1970-01-01 09:00:03    3   Gift
 1970-01-01 09:00:04    3   Basket
-```
+```sql
+SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', page = 'Gift', page = 'Home') FROM test_flow GROUP BY id;
 
+                 dt   id   page
+1970-01-01 09:00:01    1   Home
+1970-01-01 09:00:02    1   Gift // Base point
+1970-01-01 09:00:03    1   Exit // Unmatched with Home
+
+1970-01-01 09:00:01    2   Home
+1970-01-01 09:00:02    2   Home
+1970-01-01 09:00:03    2   Gift // Base point
+1970-01-01 09:00:04    2   Basket // Unmatched with Home
+
+1970-01-01 09:00:01    3   Gift // Base point
+1970-01-01 09:00:02    3   Home // Matched with Home
+1970-01-01 09:00:03    3   Gift // The result
+1970-01-01 09:00:04    3   Basket
 ```sql
 SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', page = 'Gift', page = 'Home') FROM test_flow GROUP BY id;
 
@@ -837,51 +883,43 @@ SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', p
 1970-01-01 09:00:02    3   Home // 与 Home 匹配
 1970-01-01 09:00:03    3   Gift // 结果
 1970-01-01 09:00:04    3   Basket
-```
-
-**`backward` 和 `last_match` 的行为**
-
 ```sql
 SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, page = 'Gift', page = 'Gift') FROM test_flow GROUP BY id;
-```
 
-dt   id   page
-1970-01-01 09:00:01    1   Home // 结果
-1970-01-01 09:00:02    1   Gift // 基准点
+                 dt   id   page
+1970-01-01 09:00:01    1   Home // The result
+1970-01-01 09:00:02    1   Gift // Base point
 1970-01-01 09:00:03    1   Exit
 
 1970-01-01 09:00:01    2   Home
-1970-01-01 09:00:02    2   Home // 结果
-1970-01-01 09:00:03    2   Gift // 基准点
+1970-01-01 09:00:02    2   Home // The result
+1970-01-01 09:00:03    2   Gift // Base point
 1970-01-01 09:00:04    2   Basket
 
 1970-01-01 09:00:01    3   Gift
-1970-01-01 09:00:02    3   Home // 结果
-1970-01-01 09:00:03    3   Gift // 基准点
+1970-01-01 09:00:02    3   Home // The result
+1970-01-01 09:00:03    3   Gift // Base point
 1970-01-01 09:00:04    3   Basket
-
-````
-
+```sql
+SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, page = 'Gift', page = 'Gift') FROM test_flow GROUP BY id;
 ```sql
 SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, page = 'Gift', page = 'Gift', page = 'Home') FROM test_flow GROUP BY id;
 
                  dt   id   page
-1970-01-01 09:00:01    1   Home // 与 Home 匹配,结果为 null
-1970-01-01 09:00:02    1   Gift // 基点
+1970-01-01 09:00:01    1   Home // Matched with Home, the result is null
+1970-01-01 09:00:02    1   Gift // Base point
 1970-01-01 09:00:03    1   Exit
 
-1970-01-01 09:00:01    2   Home // 结果
-1970-01-01 09:00:02    2   Home // 与 Home 匹配
-1970-01-01 09:00:03    2   Gift // 基点
+1970-01-01 09:00:01    2   Home // The result
+1970-01-01 09:00:02    2   Home // Matched with Home
+1970-01-01 09:00:03    2   Gift // Base point
 1970-01-01 09:00:04    2   Basket
 
-1970-01-01 09:00:01    3   Gift // 结果
-1970-01-01 09:00:02    3   Home // 与 Home 匹配
-1970-01-01 09:00:03    3   Gift // 基点
+1970-01-01 09:00:01    3   Gift // The result
+1970-01-01 09:00:02    3   Home // Matched with Home
+1970-01-01 09:00:03    3   Gift // Base point
 1970-01-01 09:00:04    3   Basket
 ````
-
-**`base_condition` 的行为**
 
 ```sql
 CREATE TABLE test_flow_basecond
@@ -896,17 +934,19 @@ PARTITION BY toYYYYMMDD(dt)
 ORDER BY id;
 
 INSERT INTO test_flow_basecond VALUES (1, 1, 'A', 'ref4') (2, 1, 'A', 'ref3') (3, 1, 'B', 'ref2') (4, 1, 'B', 'ref1');
-```
+````
+
+**`base_condition` 的行为**
 
 ```sql
 SELECT id, sequenceNextNode('forward', 'head')(dt, page, ref = 'ref1', page = 'A') FROM test_flow_basecond GROUP BY id;
 
                   dt   id   page   ref
- 1970-01-01 09:00:01    1   A      ref4 // 头部记录不能作为基准点,因为其 ref 列的值与 'ref1' 不匹配。
+ 1970-01-01 09:00:01    1   A      ref4 // The head can not be base point because the ref column of the head unmatched with 'ref1'.
  1970-01-01 09:00:02    1   A      ref3
  1970-01-01 09:00:03    1   B      ref2
  1970-01-01 09:00:04    1   B      ref1
-```
+ ```
 
 ```sql
 SELECT id, sequenceNextNode('backward', 'tail')(dt, page, ref = 'ref4', page = 'B') FROM test_flow_basecond GROUP BY id;
@@ -915,11 +955,27 @@ SELECT id, sequenceNextNode('backward', 'tail')(dt, page, ref = 'ref4', page = '
  1970-01-01 09:00:01    1   A      ref4
  1970-01-01 09:00:02    1   A      ref3
  1970-01-01 09:00:03    1   B      ref2
- 1970-01-01 09:00:04    1   B      ref1 // 尾部不能作为基点,因为尾部的 ref 列与 'ref4' 不匹配。
+ 1970-01-01 09:00:04    1   B      ref1 // The tail can not be base point because the ref column of the tail unmatched with 'ref4'.
 ```
 
 ```sql
 SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, ref = 'ref3', page = 'A') FROM test_flow_basecond GROUP BY id;
+
+                  dt   id   page   ref
+ 1970-01-01 09:00:01    1   A      ref4 // This row can not be base point because the ref column unmatched with 'ref3'.
+ 1970-01-01 09:00:02    1   A      ref3 // Base point
+ 1970-01-01 09:00:03    1   B      ref2 // The result
+ 1970-01-01 09:00:04    1   B      ref1
+```
+
+```sql
+SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, ref = 'ref2', page = 'B') FROM test_flow_basecond GROUP BY id;
+
+                  dt   id   page   ref
+ 1970-01-01 09:00:01    1   A      ref4
+ 1970-01-01 09:00:02    1   A      ref3 // The result
+ 1970-01-01 09:00:03    1   B      ref2 // Base point
+ 1970-01-01 09:00:04    1   B      ref1 // This row can not be base point because the ref column unmatched with 'ref2'.
 ```
 
 dt   id   page   ref

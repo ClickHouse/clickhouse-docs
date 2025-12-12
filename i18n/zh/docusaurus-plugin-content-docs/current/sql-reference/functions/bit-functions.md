@@ -71,34 +71,37 @@ FROM bits
 └───┴───┴──────────────┘
 ```
 
+
+
 ## bitCount {#bitCount}
 
-引入版本：v20.3
+Introduced in: v20.3
 
-计算一个数在二进制表示中为 1 的比特数量。
+Calculates the number of bits set to one in the binary representation of a number.
 
-**语法**
+**Syntax**
 
 ```sql
 bitCount(x)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 整数或浮点数值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
+- `x` — An integer or float value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**返回值**
 
-返回 `x` 中值为 1 的比特位数量。[`UInt8`](../data-types/int-uint.md)。
+**Returned value**
+
+Returns the number of bits set to one in `x`. [`UInt8`](../data-types/int-uint.md).
 
 :::note
-该函数不会通过符号扩展将输入值转换为更大类型（[符号扩展](https://en.wikipedia.org/wiki/Sign_extension)）。
-例如：`bitCount(toUInt8(-1)) = 8`。
+The function does not convert the input value to a larger type ([sign extension](https://en.wikipedia.org/wiki/Sign_extension)).
+For example: `bitCount(toUInt8(-1)) = 8`.
 :::
 
-**示例**
+**Examples**
 
-**用法示例**
+**Usage example**
 
 ```sql title=Query
 SELECT bin(333), bitCount(333);
@@ -110,32 +113,37 @@ SELECT bin(333), bitCount(333);
 └──────────────────┴───────────────┘
 ```
 
+
+
 ## bitHammingDistance {#bitHammingDistance}
 
-引入于：v21.1
+Introduced in: v21.1
 
-返回两个数字二进制位表示之间的[汉明距离](https://en.wikipedia.org/wiki/Hamming_distance)。
-可与 [`SimHash`](../../sql-reference/functions/hash-functions.md#ngramSimHash) 函数一起用于检测近似重复的字符串。
-距离越小，字符串越相似。
 
-**语法**
+Returns the [Hamming Distance](https://en.wikipedia.org/wiki/Hamming_distance) between the bit representations of two numbers.
+Can be used with [`SimHash`](../../sql-reference/functions/hash-functions.md#ngramSimHash) functions for detection of semi-duplicate strings.
+The smaller the distance, the more similar the strings are.
+
+
+**Syntax**
 
 ```sql
 bitHammingDistance(x, y)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 用于计算汉明距离的第一个数值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
-* `y` — 用于计算汉明距离的第二个数值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
+- `x` — First number for Hamming distance calculation. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+- `y` — Second number for Hamming distance calculation. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**返回值**
 
-返回 `x` 和 `y` 之间的汉明距离，类型为 [`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns the hamming distance between `x` and `y` [`UInt8`](/sql-reference/data-types/int-uint)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT bitHammingDistance(111, 121);
@@ -147,29 +155,32 @@ SELECT bitHammingDistance(111, 121);
 └──────────────────────────────┘
 ```
 
+
+
 ## bitNot {#bitNot}
 
-自 v1.1 起引入
+Introduced in: v1.1
 
-执行按位取反运算。
+Performs the bitwise NOT operation.
 
-**语法**
+**Syntax**
 
 ```sql
 bitNot(a)
 ```
 
-**参数**
+**Arguments**
 
-* `a` — 要对其执行按位 NOT 运算的值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`String`](/sql-reference/data-types/string)
+- `a` — Value for which to apply bitwise NOT operation. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回 `~a` 的结果，即对 `a` 的各比特位取反。
+**Returned value**
 
-**示例**
+Returns the result of `~a` i.e `a` with bits flipped.
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT
@@ -185,30 +196,33 @@ SELECT
 └──────────┴─────────────────┴────────┴───────────────┘
 ```
 
+
+
 ## bitOr {#bitOr}
 
-自 v1.1 起引入
+Introduced in: v1.1
 
-对两个值执行按位或运算。
+Performs bitwise OR operation between two values.
 
-**语法**
+**Syntax**
 
 ```sql
 bitOr(a, b)
 ```
 
-**参数**
+**Arguments**
 
-* `a` — 第一个值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
-* `b` — 第二个值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
+- `a` — First value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+- `b` — Second value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**返回值**
 
-返回按位或运算 `a OR b` 的结果。
+**Returned value**
 
-**示例**
+Returns the result of bitwise operation `a OR b`
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE bits
@@ -236,30 +250,33 @@ FROM bits;
 └───┴───┴─────────────┘
 ```
 
+
+
 ## bitRotateLeft {#bitRotateLeft}
 
-引入于：v1.1
+Introduced in: v1.1
 
-将位向左旋转指定的位数。移出的位会从右侧回绕。
+Rotate bits left by a certain number of positions. Bits that fall off wrap around to the right.
 
-**语法**
+**Syntax**
 
 ```sql
 bitRotateLeft(a, N)
 ```
 
-**参数**
+**Arguments**
 
-* `a` — 要进行旋转的值。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
-* `N` — 向左旋转的位数。[`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+- `a` — A value to rotate. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+- `N` — The number of positions to rotate left. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回旋转后的值，其类型与 `a` 相同。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns the rotated value with type equal to that of `a`. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT 99 AS a, bin(a), bitRotateLeft(a, 2) AS a_rotated, bin(a_rotated);
@@ -271,30 +288,33 @@ SELECT 99 AS a, bin(a), bitRotateLeft(a, 2) AS a_rotated, bin(a_rotated);
 └────┴──────────┴───────────┴────────────────┘
 ```
 
+
+
 ## bitRotateRight {#bitRotateRight}
 
-自 v1.1 引入
+Introduced in: v1.1
 
-按指定的位数将位向右旋转。右侧移出的位会从左侧补回。
+Rotate bits right by a certain number of positions. Bits that fall off wrap around to the left.
 
-**语法**
+**Syntax**
 
 ```sql
 bitRotateRight(a, N)
 ```
 
-**参数**
+**Arguments**
 
-* `a` — 要旋转的值。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
-* `N` — 向右旋转的位数。[`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+- `a` — A value to rotate. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+- `N` — The number of positions to rotate right. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回旋转后的值，类型与 `a` 相同。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns the rotated value with type equal to that of `a`. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT 99 AS a, bin(a), bitRotateRight(a, 2) AS a_rotated, bin(a_rotated);
@@ -306,35 +326,40 @@ SELECT 99 AS a, bin(a), bitRotateRight(a, 2) AS a_rotated, bin(a_rotated);
 └────┴──────────┴───────────┴────────────────┘
 ```
 
+
+
 ## bitShiftLeft {#bitShiftLeft}
 
-引入于：v1.1
+Introduced in: v1.1
 
-将一个值的二进制表示按指定的位数向左移位。
 
-`FixedString` 或 `String` 被视为一个多字节值。
+Shifts the binary representation of a value to the left by a specified number of bit positions.
 
-`FixedString` 值在移位过程中被移出的位会丢失。
-相反，`String` 值会通过追加额外字节进行扩展，因此不会丢失任何位。
+A `FixedString` or a `String` is treated as a single multibyte value.
 
-**语法**
+Bits of a `FixedString` value are lost as they are shifted out.
+On the contrary, a `String` value is extended with additional bytes, so no bits are lost.
+
+
+**Syntax**
 
 ```sql
 bitShiftLeft(a, N)
 ```
 
-**参数**
+**Arguments**
 
-* `a` — 要移位的值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
-* `N` — 要移位的位数。[`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+- `a` — A value to shift. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+- `N` — The number of positions to shift. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回移位后的值，其类型与 `a` 相同。
+**Returned value**
 
-**示例**
+Returns the shifted value with type equal to that of `a`.
 
-**二进制编码用法示例**
+**Examples**
+
+**Usage example with binary encoding**
 
 ```sql title=Query
 SELECT 99 AS a, bin(a), bitShiftLeft(a, 2) AS a_shifted, bin(a_shifted);
@@ -346,7 +371,7 @@ SELECT 99 AS a, bin(a), bitShiftLeft(a, 2) AS a_shifted, bin(a_shifted);
 └────┴──────────┴───────────┴──────────────────────────┘
 ```
 
-**十六进制编码的使用示例**
+**Usage example with hexadecimal encoding**
 
 ```sql title=Query
 SELECT 'abc' AS a, hex(a), bitShiftLeft(a, 4) AS a_shifted, hex(a_shifted);
@@ -358,7 +383,7 @@ SELECT 'abc' AS a, hex(a), bitShiftLeft(a, 4) AS a_shifted, hex(a_shifted);
 └─────┴────────────┴───────────┴─────────────────────────────┘
 ```
 
-**使用 FixedString 编码的示例用法**
+**Usage example with Fixed String encoding**
 
 ```sql title=Query
 SELECT toFixedString('abc', 3) AS a, hex(a), bitShiftLeft(a, 4) AS a_shifted, hex(a_shifted);
@@ -370,35 +395,40 @@ SELECT toFixedString('abc', 3) AS a, hex(a), bitShiftLeft(a, 4) AS a_shifted, he
 └─────┴──────────────────────────────┴───────────┴───────────────────────────────────────────────┘
 ```
 
+
+
 ## bitShiftRight {#bitShiftRight}
 
-引入于：v1.1
+Introduced in: v1.1
 
-将一个值的二进制表示向右移动指定位数。
 
-`FixedString` 或 `String` 被视为一个多字节值。
+Shifts the binary representation of a value to the right by a specified number of bit positions.
 
-`FixedString` 值在移出时会丢失位。
-相反，`String` 值会通过附加字节进行扩展，因此不会丢失任何位。
+A `FixedString` or a `String` is treated as a single multibyte value.
 
-**语法**
+Bits of a `FixedString` value are lost as they are shifted out.
+On the contrary, a `String` value is extended with additional bytes, so no bits are lost.
+
+
+**Syntax**
 
 ```sql
 bitShiftRight(a, N)
 ```
 
-**参数**
+**Arguments**
 
-* `a` — 要移位的值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
-* `N` — 要移位的位数。[`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+- `a` — A value to shift. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+- `N` — The number of positions to shift. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回移位后的值，类型与 `a` 相同。
+**Returned value**
 
-**示例**
+Returns the shifted value with type equal to that of `a`.
 
-**使用二进制编码的示例用法**
+**Examples**
+
+**Usage example with binary encoding**
 
 ```sql title=Query
 SELECT 101 AS a, bin(a), bitShiftRight(a, 2) AS a_shifted, bin(a_shifted);
@@ -410,7 +440,7 @@ SELECT 101 AS a, bin(a), bitShiftRight(a, 2) AS a_shifted, bin(a_shifted);
 └─────┴──────────┴───────────┴────────────────────────────┘
 ```
 
-**十六进制编码用法示例**
+**Usage example with hexadecimal encoding**
 
 ```sql title=Query
 SELECT 'abc' AS a, hex(a), bitShiftLeft(a, 4) AS a_shifted, hex(a_shifted);
@@ -422,7 +452,7 @@ SELECT 'abc' AS a, hex(a), bitShiftLeft(a, 4) AS a_shifted, hex(a_shifted);
 └─────┴────────────┴───────────┴───────────────────────────────┘
 ```
 
-**FixedString 编码的使用示例**
+**Usage example with Fixed String encoding**
 
 ```sql title=Query
 SELECT toFixedString('abc', 3) AS a, hex(a), bitShiftRight(a, 12) AS a_shifted, hex(a_shifted);
@@ -434,42 +464,45 @@ SELECT toFixedString('abc', 3) AS a, hex(a), bitShiftRight(a, 12) AS a_shifted, 
 └─────┴──────────────────────────────┴───────────┴─────────────────────────────────────────────────┘
 ```
 
+
+
 ## bitSlice {#bitSlice}
 
-自 v22.2 引入
+Introduced in: v22.2
 
-返回一个子字符串，从位索引 &#39;offset&#39; 开始，长度为 &#39;length&#39; 位。
+Returns a substring starting with the bit from the 'offset' index that is 'length' bits long.
 
-**语法**
+**Syntax**
 
 ```sql
 bitSlice(s, offset[, length])
 ```
 
-**参数**
+**Arguments**
 
-* `s` — 要进行切片的 String 或 Fixed String。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
-* `offset` —
-  起始位位置（从 1 开始计数）。
-* 正值：从字符串开头开始计数。
-* 负值：从字符串末尾开始计数。
+- `s` — The String or Fixed String to slice. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+- `offset` — 
+Returns the starting bit position (1-based indexing).
+- Positive values: count from the beginning of the string.
+- Negative values: count from the end of the string.
 
-  [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
-* `length` —
-  可选。要提取的位数。
-* 正值：提取 `length` 位。
-* 负值：从偏移位置提取到 `(string_length - |length|)` 位。
-* 省略：从偏移位置提取到字符串末尾。
-* 如果 length 不是 8 的倍数，则结果在右侧用 0 填充。
-  [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
+         [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+- `length` — 
+Optional. The number of bits to extract.
+- Positive values: extract `length` bits.
+- Negative values: extract from the offset to `(string_length - |length|)`.
+- Omitted: extract from offset to end of string.
+- If length is not a multiple of 8, the result is padded with zeros on the right.
+         [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**返回值**
 
-返回一个包含提取位的字符串，以二进制序列表示。结果始终补齐到字节边界（8 位的倍数）[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns a string containing the extracted bits, represented as a binary sequence. The result is always padded to byte boundaries (multiples of 8 bits) [`String`](/sql-reference/data-types/string)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT bin('Hello'), bin(bitSlice('Hello', 1, 8));
@@ -493,30 +526,33 @@ SELECT bin('Hello'), bin(bitSlice('Hello', -4, 8));
 └──────────────────────────────────────────┴───────────────────────────────┘
 ```
 
+
+
 ## bitTest {#bitTest}
 
-引入版本：v1.1
+Introduced in: v1.1
 
-接受任意数值并将其转换为[二进制形式](https://en.wikipedia.org/wiki/Binary_number)，然后返回指定位置处的比特位值。计数从右向左进行，从 0 开始。
+Takes any number and converts it into [binary form](https://en.wikipedia.org/wiki/Binary_number), then returns the value of the bit at a specified position. Counting is done right-to-left, starting at 0.
 
-**语法**
+**Syntax**
 
 ```sql
 bitTest(a, i)
 ```
 
-**参数**
+**Arguments**
 
-* `a` — 要转换的数值。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
-* `i` — 要返回的比特位位置。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
+- `a` — Number to convert. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+- `i` — Position of the bit to return. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**返回值**
 
-返回 `a` 的二进制表示中第 `i` 个比特位的值，类型为 [`UInt8`](/sql-reference/data-types/int-uint)。
+**Returned value**
 
-**示例**
+Returns the value of the bit at position `i` in the binary representation of `a` [`UInt8`](/sql-reference/data-types/int-uint)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT bin(2), bitTest(2, 1);
@@ -528,33 +564,38 @@ SELECT bin(2), bitTest(2, 1);
 └──────────┴───────────────┘
 ```
 
+
+
 ## bitTestAll {#bitTestAll}
 
-引入于：v1.1
+Introduced in: v1.1
 
-返回给定位置上所有位的[逻辑与](https://en.wikipedia.org/wiki/Logical_conjunction)（AND 运算符）结果。
-从右到左计数，起始索引为 0。
 
-两个位之间的逻辑与仅当两个输入位都为真时结果为真。
+Returns result of the [logical conjunction](https://en.wikipedia.org/wiki/Logical_conjunction) (AND operator) of all bits at the given positions.
+Counts right-to-left, starting at 0.
 
-**语法**
+The logical AND between two bits is true if and only if both input bits are true.
+    
+
+**Syntax**
 
 ```sql
 bitTestAll(a, index1[, index2, ... , indexN])
 ```
 
-**参数**
+**Arguments**
 
-* `a` — 整数值。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
-* `index1, ...` — 一个或多个比特位的位置。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+- `a` — An integer value. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+- `index1, ...` — One or multiple positions of bits. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回逻辑与运算结果，类型为 [`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns the result of the logical conjunction [`UInt8`](/sql-reference/data-types/int-uint)
 
-**用法示例 1**
+**Examples**
+
+**Usage example 1**
 
 ```sql title=Query
 SELECT bitTestAll(43, 0, 1, 3, 5);
@@ -566,7 +607,7 @@ SELECT bitTestAll(43, 0, 1, 3, 5);
 └──────────┴────────────────────────────┘
 ```
 
-**使用示例 2**
+**Usage example 2**
 
 ```sql title=Query
 SELECT bitTestAll(43, 0, 1, 3, 5, 2);
@@ -578,33 +619,38 @@ SELECT bitTestAll(43, 0, 1, 3, 5, 2);
 └──────────┴──────────────────────────┘
 ```
 
+
+
 ## bitTestAny {#bitTestAny}
 
-自 v1.1 引入
+Introduced in: v1.1
 
-返回对给定数字中指定位置上所有位执行[逻辑析取](https://en.wikipedia.org/wiki/Logical_disjunction)（OR 运算符）的结果。
-从右向左计数，起始索引为 0。
 
-两个位之间的逻辑 OR 只要至少有一个输入位为 true，结果就为 true。
+Returns result of the [logical disjunction](https://en.wikipedia.org/wiki/Logical_disjunction) (OR operator) of all bits at the given positions in a number.
+Counts right-to-left, starting at 0.
 
-**语法**
+The logical OR between two bits is true if at least one of the input bits is true.
+    
+
+**Syntax**
 
 ```sql
 bitTestAny(a, index1[, index2, ... , indexN])
 ```
 
-**参数**
+**Arguments**
 
-* `a` — 一个整数值。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
-* `index1, ...` — 一个或多个位的位置。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+- `a` — An integer value. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+- `index1, ...` — One or multiple positions of bits. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回逻辑或运算的结果 [`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns the result of the logical disjunction [`UInt8`](/sql-reference/data-types/int-uint)
 
-**用法示例 1**
+**Examples**
+
+**Usage example 1**
 
 ```sql title=Query
 SELECT bitTestAny(43, 0, 2);
@@ -616,7 +662,7 @@ SELECT bitTestAny(43, 0, 2);
 └──────────┴──────────────────────┘
 ```
 
-**使用示例 2**
+**Usage example 2**
 
 ```sql title=Query
 SELECT bitTestAny(43, 4, 2);
@@ -628,30 +674,33 @@ SELECT bitTestAny(43, 4, 2);
 └──────────┴──────────────────────┘
 ```
 
+
+
 ## bitXor {#bitXor}
 
-自 v1.1 引入
+Introduced in: v1.1
 
-对两个值执行按位异或（XOR）运算。
+Performs bitwise exclusive or (XOR) operation between two values.
 
-**语法**
+**Syntax**
 
 ```sql
 bitXor(a, b)
 ```
 
-**参数**
+**Arguments**
 
-* `a` — 第一个值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
-* `b` — 第二个值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
+- `a` — First value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+- `b` — Second value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**返回值**
 
-返回按位异或运算 `a XOR b` 的结果。
+**Returned value**
 
-**示例**
+Returns the result of bitwise operation `a XOR b`
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE bits

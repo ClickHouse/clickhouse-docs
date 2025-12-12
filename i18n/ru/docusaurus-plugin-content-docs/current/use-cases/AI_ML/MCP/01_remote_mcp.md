@@ -38,7 +38,7 @@ import img7 from '@site/static/images/use-cases/AI_ML/MCP/7usage_mcp.png';
 
 2. Скопируйте URL-адрес MCP-сервера ClickHouse Cloud из окна `Connect` или из блока ниже
 
-```bash
+```bash 
 https://mcp.clickhouse.cloud/mcp
 ```
 

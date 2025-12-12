@@ -169,7 +169,7 @@ SELECT throwIf((
    ) != (
    SELECT groupArray(tuple(*))
    FROM test_db.test_table_restored
-), 'BACKUP/RESTORE 之后数据不一致')
+), 'Data does not match after BACKUP/RESTORE')
 ```
 
 </VerticalStepper>

@@ -123,8 +123,8 @@ SETTINGS optimize_move_to_prewhere = false;
 3. │ AVENUE ROAD │
    └─────────────┘
 
-3 строки в наборе. Затрачено: 0.056 сек. Обработано 2.31 миллиона строк, 23.36 МБ (41.09 миллиона строк/с., 415.43 МБ/с.)
-Пиковое использование памяти: 132.10 МиБ.
+3 rows in set. Elapsed: 0.056 sec. Processed 2.31 million rows, 23.36 MB (41.09 million rows/s., 415.43 MB/s.)
+Peak memory usage: 132.10 MiB.
 ```
 
 ClickHouse прочитал **23.36 MB** столбцовых данных при обработке 2.31 миллиона строк при выполнении запроса.
@@ -148,8 +148,8 @@ SETTINGS optimize_move_to_prewhere = true;
 3. │ AVENUE ROAD │
    └─────────────┘
 
-3 строки в наборе. Затрачено: 0.017 сек. Обработано 2.31 млн строк, 6.74 МБ (135.29 млн строк/с., 394.44 МБ/с.)
-Пиковое использование памяти: 132.11 МиБ.
+3 rows in set. Elapsed: 0.017 sec. Processed 2.31 million rows, 6.74 MB (135.29 million rows/s., 394.44 MB/s.)
+Peak memory usage: 132.11 MiB.
 ```
 
 Было обработано то же количество строк (2,31 миллиона), но благодаря PREWHERE ClickHouse прочитал более чем в три раза меньше столбцовых данных — всего 6,74 МБ вместо 23,36 МБ, — что сократило общее время выполнения в 3 раза.
@@ -158,7 +158,7 @@ SETTINGS optimize_move_to_prewhere = true;
 
 Мы изучаем логический план запроса с помощью предложения [EXPLAIN](/sql-reference/statements/explain#explain-plan):
 
-```sql
+```sql 
 EXPLAIN PLAN actions = 1
 SELECT
     street
@@ -170,8 +170,8 @@ WHERE
 
 ```txt
 ...
-Информация о Prewhere                                                                                                                                                                                                                                          
-  Столбец фильтра Prewhere: 
+Prewhere info                                                                                                                                                                                                                                          
+  Prewhere filter column: 
     and(greater(__table1.date, '2024-12-31'_String), 
     less(__table1.price, 10000_UInt16), 
     equals(__table1.town, 'LONDON'_String)) 
@@ -196,12 +196,12 @@ SETTINGS send_logs_level = 'test';
 
 ```txt
 ...
-<Trace> ... Условие greater(date, '2024-12-31'_String) перенесено в PREWHERE
-<Trace> ... Условие less(price, 10000_UInt16) перенесено в PREWHERE
-<Trace> ... Условие equals(town, 'LONDON'_String) перенесено в PREWHERE
+<Trace> ... Condition greater(date, '2024-12-31'_String) moved to PREWHERE
+<Trace> ... Condition less(price, 10000_UInt16) moved to PREWHERE
+<Trace> ... Condition equals(town, 'LONDON'_String) moved to PREWHERE
 ...
-<Test> ... Выполнение действий prewhere на блоке: greater(__table1.date, '2024-12-31'_String)
-<Test> ... Выполнение действий prewhere на блоке: less(__table1.price, 10000_UInt16)
+<Test> ... Executing prewhere actions on block: greater(__table1.date, '2024-12-31'_String)
+<Test> ... Executing prewhere actions on block: less(__table1.price, 10000_UInt16)
 ...
 ```
 

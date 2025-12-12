@@ -94,11 +94,11 @@ Docker Compose を使用する際は、上記と同じ環境変数を使用し�
       CLICKHOUSE_PASSWORD: 'password'
       OPAMP_SERVER_URL: 'http://app:${HYPERDX_OPAMP_PORT}'
     ports:
-      - '13133:13133' # health_check拡張
-      - '24225:24225' # fluentdレシーバー
-      - '4317:4317' # OTLP gRPCレシーバー
-      - '4318:4318' # OTLP httpレシーバー
-      - '8888:8888' # metrics拡張
+      - '13133:13133' # health_check extension
+      - '24225:24225' # fluentd receiver
+      - '4317:4317' # OTLP gRPC receiver
+      - '4318:4318' # OTLP http receiver
+      - '8888:8888' # metrics extension
     restart: always
     networks:
       - internal
@@ -120,7 +120,7 @@ ClickStack ディストリビューションの OTel collector では、カス�
 
 ```yaml
 receivers:
-  # ローカルファイルからログを収集
+  # Collect logs from local files
   filelog:
     include:
       - /var/log/**/*.log
@@ -128,7 +128,7 @@ receivers:
       - /var/log/messages
     start_at: beginning
 
-  # ホストシステムのメトリクスを収集
+  # Collect host system metrics
   hostmetrics:
     collection_interval: 30s
     scrapers:
@@ -149,7 +149,7 @@ receivers:
 
 service:
   pipelines:
-    # ログパイプライン
+    # Logs pipeline
     logs/host:
       receivers: [filelog]
       processors:
@@ -159,7 +159,7 @@ service:
       exporters:
         - clickhouse
     
-    # メトリクスパイプライン
+    # Metrics pipeline
     metrics/hostmetrics:
       receivers: [hostmetrics]
       processors:
@@ -306,167 +306,166 @@ service:
 
 ```
 
-すべての OTLP 通信で、[インジェスト API key を含む Authorization ヘッダー](#securing-the-collector) を必ず付与する必要がある点に注意してください。
+Note the need to include an [authorization header containing your ingestion API key](#securing-the-collector) in any OTLP communication.
 
-より高度な設定については、[OpenTelemetry Collector のドキュメント](https://opentelemetry.io/docs/collector/) を参照してください。
+For more advanced configuration, we suggest the [OpenTelemetry collector documentation](https://opentelemetry.io/docs/collector/).
 
-## 挿入の最適化 {#optimizing-inserts}
+## Optimizing inserts {#optimizing-inserts}
 
-ClickStack collector 経由で Observability データを ClickHouse に挿入する際に、高い挿入性能と強い一貫性保証を両立するには、いくつかの単純なルールに従う必要があります。OTel collector を正しく構成すれば、これらのルールに従うことは容易になります。これにより、ClickHouse を初めて利用するユーザーが直面しがちな[一般的な問題](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse)も回避できます。
+In order to achieve high insert performance while obtaining strong consistency guarantees, users should adhere to simple rules when inserting Observability data into ClickHouse via the ClickStack collector. With the correct configuration of the OTel collector, the following rules should be straightforward to follow. This also avoids [common issues](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse) users encounter when using ClickHouse for the first time.
 
-### バッチ処理 {#batching}
+### Batching {#batching}
 
-デフォルトでは、ClickHouse に送信された各 insert に対して、ClickHouse はその insert のデータと、あわせて保存する必要があるその他のメタデータを含むストレージパーツを即座に作成します。したがって、各 insert に少量のデータしか含まない大量の insert を送信するよりも、各 insert により多くのデータを含めた少数の insert を送信するほうが、必要な書き込み回数を削減できます。データは一度に少なくとも 1,000 行以上の、十分に大きなバッチで挿入することを推奨します。詳細は[こちら](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance)を参照してください。
+By default, each insert sent to ClickHouse causes ClickHouse to immediately create a part of storage containing the data from the insert together with other metadata that needs to be stored. Therefore sending a smaller amount of inserts that each contain more data, compared to sending a larger amount of inserts that each contain less data, will reduce the number of writes required. We recommend inserting data in fairly large batches of at least 1,000 rows at a time. Further details [here](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance).
 
-デフォルトでは、ClickHouse への insert は同期的に実行され、内容が同一であれば冪等です。merge tree エンジンファミリーのテーブルに対しては、ClickHouse はデフォルトで自動的に [insert の重複排除](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#5-deduplication-at-insert-time)を行います。これは、次のようなケースでも insert が安全に扱えることを意味します。
+By default, inserts into ClickHouse are synchronous and idempotent if identical. For tables of the merge tree engine family, ClickHouse will, by default, automatically [deduplicate inserts](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#5-deduplication-at-insert-time). This means inserts are tolerant in cases like the following:
 
-- (1) データを受け取るノードに問題がある場合、insert クエリはタイムアウト（またはより具体的なエラー）となり、ACK（確認応答）を受け取りません。
-- (2) データ自体はノードによって書き込まれたものの、ネットワーク障害によりクエリ送信元へ ACK を返せない場合、送信元はタイムアウトまたはネットワークエラーを受け取ります。
+- (1) If the node receiving the data has issues, the insert query will time out (or get a more specific error) and not receive an acknowledgment.
+- (2) If the data got written by the node, but the acknowledgement can't be returned to the sender of the query because of network interruptions, the sender will either get a timeout or a network error.
 
-collector の視点からは、(1) と (2) を区別するのは難しい場合があります。しかし、どちらの場合でも、ACK が返ってこなかった insert はそのまま直ちにリトライできます。リトライした insert クエリが同じ順序で同じデータを含んでいる限り、元の（ACK されなかった）insert が成功していれば、ClickHouse はリトライされた insert を自動的に無視します。
+From the collector's perspective, (1) and (2) can be hard to distinguish. However, in both cases, the unacknowledged insert can just be retried immediately. As long as the retried insert query contains the same data in the same order, ClickHouse will automatically ignore the retried insert if the original (unacknowledged) insert succeeded.
 
-このため、ClickStack に含まれる OTel collector では [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md) を使用しています。これにより、上記の要件を満たす行の一貫したバッチとして insert が送信されます。collector に高いスループット（毎秒イベント数）が想定されており、各 insert で少なくとも 5,000 イベントを送信できる場合、通常はパイプラインで必要となるバッチ処理はこれだけで十分です。この場合、collector は batch processor の `timeout` に達する前にバッチをフラッシュし、パイプライン全体のレイテンシを低く保ちつつ、バッチサイズの一貫性を確保します。
+For this reason, the ClickStack distribution of the OTel collector uses the [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md). This ensures inserts are sent as consistent batches of rows satisfying the above requirements. If a collector is expected to have high throughput (events per second), and at least 5000 events can be sent in each insert, this is usually the only batching required in the pipeline. In this case the collector will flush batches before the batch processor's `timeout` is reached, ensuring the end-to-end latency of the pipeline remains low and batches are of a consistent size.
 
-### 非同期挿入を使用する {#use-asynchronous-inserts}
+### Use asynchronous inserts {#use-asynchronous-inserts}
 
-通常、コレクターのスループットが低い場合、ユーザーはより小さなバッチを送信せざるを得ませんが、それでもエンドツーエンドのレイテンシーを最小限に抑えつつ、データが ClickHouse に届くことを期待します。このような場合、バッチプロセッサの `timeout` が切れると小さなバッチが送信されます。これが問題を引き起こすことがあり、その際に非同期挿入が必要となります。ユーザーが Gateway として動作する ClickStack コレクターにデータを送信している場合、この問題はまれです。アグリゲーターとして動作することでこの問題を緩和できるためです。詳細は [Collector roles](#collector-roles) を参照してください。
+Typically, users are forced to send smaller batches when the throughput of a collector is low, and yet they still expect data to reach ClickHouse within a minimum end-to-end latency. In this case, small batches are sent when the `timeout` of the batch processor expires. This can cause problems and is when asynchronous inserts are required. This issue is rare if users are sending data to the ClickStack collector acting as a Gateway - by acting as aggregators, they alleviate this problem - see [Collector roles](#collector-roles).
 
-大きなバッチを保証できない場合、ユーザーは [Asynchronous Inserts](/best-practices/selecting-an-insert-strategy#asynchronous-inserts) を使用してバッチ処理を ClickHouse に委譲できます。非同期挿入では、データはまずバッファに挿入され、その後データベースストレージに後から、すなわち非同期に書き込まれます。
+If large batches cannot be guaranteed, users can delegate batching to ClickHouse using [Asynchronous Inserts](/best-practices/selecting-an-insert-strategy#asynchronous-inserts). With asynchronous inserts, data is inserted into a buffer first and then written to the database storage later or asynchronously respectively.
 
-<Image img={observability_6} alt="非同期挿入" size="md"/>
+<Image img={observability_6} alt="Async inserts" size="md"/>
 
-[非同期挿入が有効](/optimize/asynchronous-inserts#enabling-asynchronous-inserts)な場合、ClickHouse が ① 挿入クエリを受信すると、そのクエリのデータは ② まず即座にインメモリバッファに書き込まれます。③ 次のバッファフラッシュが発生すると、バッファ内のデータは [ソートされ](/guides/best-practices/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns)、パーツとしてデータベースストレージに書き込まれます。なお、データはデータベースストレージにフラッシュされるまではクエリで検索できません。バッファフラッシュのタイミングは[設定可能](/optimize/asynchronous-inserts)です。
+With [asynchronous inserts enabled](/optimize/asynchronous-inserts#enabling-asynchronous-inserts), when ClickHouse ① receives an insert query, the query's data is ② immediately written into an in-memory buffer first. When ③ the next buffer flush takes place, the buffer's data is [sorted](/guides/best-practices/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns) and written as a part to the database storage. Note, that the data is not searchable by queries before being flushed to the database storage; the buffer flush is [configurable](/optimize/asynchronous-inserts).
 
-コレクターで非同期挿入を有効にするには、接続文字列に `async_insert=1` を追加します。到達保証を得るために、`wait_for_async_insert=1`（デフォルト）の使用を推奨します。詳細は[こちら](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)を参照してください。
+To enable asynchronous inserts for the collector, add `async_insert=1` to the connection string. We recommend users use `wait_for_async_insert=1` (the default) to get delivery guarantees - see [here](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse) for further details.
 
-非同期挿入によるデータは、ClickHouse のバッファがフラッシュされたときに挿入されます。これは、[`async_insert_max_data_size`](/operations/settings/settings#async_insert_max_data_size) を超えた場合、または最初の INSERT クエリから [`async_insert_busy_timeout_ms`](/operations/settings/settings#async_insert_max_data_size) ミリ秒経過した場合のいずれかで発生します。`async_insert_stale_timeout_ms` にゼロ以外の値が設定されている場合は、最後のクエリから `async_insert_stale_timeout_ms milliseconds` 経過後にデータが挿入されます。ユーザーはこれらの設定を調整することで、パイプラインのエンドツーエンドレイテンシーを制御できます。バッファフラッシュの調整に使用できるその他の設定は[こちら](/operations/settings/settings#async_insert)に記載されています。一般的には、デフォルト値で問題ありません。
+Data from an async insert is inserted once the ClickHouse buffer is flushed. This occurs either after the [`async_insert_max_data_size`](/operations/settings/settings#async_insert_max_data_size) is exceeded or after [`async_insert_busy_timeout_ms`](/operations/settings/settings#async_insert_max_data_size) milliseconds since the first INSERT query. If the `async_insert_stale_timeout_ms` is set to a non-zero value, the data is inserted after `async_insert_stale_timeout_ms milliseconds` since the last query. Users can tune these settings to control the end-to-end latency of their pipeline. Further settings that can be used to tune buffer flushing are documented [here](/operations/settings/settings#async_insert). Generally, defaults are appropriate.
 
-:::note 適応型非同期挿入の検討
-エージェント数が少なく、スループットも低い一方でエンドツーエンドレイテンシーに厳しい要件がある場合、[adaptive asynchronous inserts](https://clickhouse.com/blog/clickhouse-release-24-02#adaptive-asynchronous-inserts) が有用な場合があります。一般的に、これは ClickHouse で見られるような高スループットの Observability ユースケースにはあまり適していません。
+:::note Consider Adaptive Asynchronous Inserts
+In cases where a low number of agents are in use, with low throughput but strict end-to-end latency requirements, [adaptive asynchronous inserts](https://clickhouse.com/blog/clickhouse-release-24-02#adaptive-asynchronous-inserts) may be useful. Generally, these are not applicable to high throughput Observability use cases, as seen with ClickHouse.
 :::
 
-最後に、ClickHouse への同期挿入に関連付けられていた従来の重複排除動作は、非同期挿入を使用する場合はデフォルトでは有効になりません。必要に応じて、設定 [`async_insert_deduplicate`](/operations/settings/settings#async_insert_deduplicate) を参照してください。
+Finally, the previous deduplication behavior associated with synchronous inserts into ClickHouse is not enabled by default when using asynchronous inserts. If required, see the setting [`async_insert_deduplicate`](/operations/settings/settings#async_insert_deduplicate).
 
-この機能の設定方法の詳細は、この[ドキュメントページ](/optimize/asynchronous-inserts#enabling-asynchronous-inserts)や、より詳しい[ブログ記事](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)を参照してください。
+Full details on configuring this feature can be found on this [docs page](/optimize/asynchronous-inserts#enabling-asynchronous-inserts), or with a deep dive [blog post](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse).
 
-## スケーリング {#scaling}
+## Scaling {#scaling}
 
-ClickStack の OTel collector はゲートウェイ インスタンスとして動作します。詳細は [Collector roles](#collector-roles) を参照してください。これは通常、データセンターごと、あるいはリージョンごとに独立したサービスとして提供されます。これらはアプリケーション（またはエージェントロールの他の collector）から、単一の OTLP エンドポイント経由でイベントを受信します。一般的には複数の collector インスタンスをデプロイし、標準的なロードバランサーを使用して、それらの間で負荷を分散します。
+The ClickStack OTel collector acts a Gateway instance - see [Collector roles](#collector-roles). These provide a standalone service, typically per data center or per region. These receive events from applications (or other collectors in the agent role) via a single OTLP endpoint. Typically a set of collector instances are deployed, with an out-of-the-box load balancer used to distribute the load amongst them.
 
-<Image img={clickstack_with_gateways} alt="ゲートウェイによるスケーリング" size="lg"/>
+<Image img={clickstack_with_gateways} alt="Scaling with gateways" size="lg"/>
 
-このアーキテクチャの目的は、計算負荷の高い処理をエージェントからオフロードし、エージェントのリソース使用量を最小限に抑えることです。これらの ClickStack ゲートウェイは、本来であればエージェント側で実行する必要がある変換処理を実行できます。さらに、多数のエージェントからイベントを集約することで、ゲートウェイは ClickHouse に対して大きなバッチを送信できるようになり、効率的な挿入が可能になります。エージェントや SDK ソースの追加やイベントスループットの増加に応じて、これらのゲートウェイ collector は容易にスケールアウトできます。 
+The objective of this architecture is to offload computationally intensive processing from the agents, thereby minimizing their resource usage. These ClickStack gateways can perform transformation tasks that would otherwise need to be done by agents. Furthermore, by aggregating events from many agents, the gateways can ensure large batches are sent to ClickHouse - allowing efficient insertion. These gateway collectors can easily be scaled as more agents and SDK sources are added and event throughput increases. 
 
-### Kafka の追加 {#adding-kafka}
+### Adding Kafka {#adding-kafka}
 
-ここまでに示したアーキテクチャでは、メッセージキューとして Kafka を使用していないことに気付く読者もいるでしょう。
+Readers may notice the above architectures do not use Kafka as a message queue.
 
-メッセージバッファとして Kafka キューを用いるのは、ログ収集アーキテクチャでよく見られる一般的な設計パターンであり、ELK スタックによって広く普及しました。これにはいくつかの利点があります。主として、より強いメッセージ配送保証を提供し、バックプレッシャーへの対応に役立つ点です。メッセージは収集エージェントから Kafka に送信され、ディスクに書き込まれます。理論上、クラスタ構成の Kafka インスタンスは、高スループットなメッセージバッファを提供できます。これは、メッセージを解析・処理するよりも、データをディスクに線形に書き込む方が計算オーバーヘッドが小さいためです。例えば Elastic では、トークナイズやインデックス作成に大きなオーバーヘッドが発生します。データをエージェントから切り離すことで、送信元でのログローテーションによってメッセージを失うリスクも減らすことができます。最後に、一部のユースケースでは魅力となり得る、メッセージのリプレイ機能やリージョン間レプリケーション機能も提供します。
+Using a Kafka queue as a message buffer is a popular design pattern seen in logging architectures and was popularized by the ELK stack. It provides a few benefits: principally, it helps provide stronger message delivery guarantees and helps deal with backpressure. Messages are sent from collection agents to Kafka and written to disk. In theory, a clustered Kafka instance should provide a high throughput message buffer since it incurs less computational overhead to write data linearly to disk than parse and process a message. In Elastic, for example, tokenization and indexing incurs significant overhead. By moving data away from the agents, you also incur less risk of losing messages as a result of log rotation at the source. Finally, it offers some message reply and cross-region replication capabilities, which might be attractive for some use cases.
 
-しかし、ClickHouse はデータを非常に高速に挿入でき、通常のハードウェアでも毎秒数百万行を処理できます。ClickHouse 側でバックプレッシャーが発生することはまれです。多くの場合、Kafka キューを活用することは、アーキテクチャの複雑さとコストの増加を意味します。ログは銀行取引やその他のミッションクリティカルなデータと同等の配送保証を必要としない、という原則を受け入れられるのであれば、Kafka を導入してまでアーキテクチャを複雑化させることは避けることを推奨します。
+However, ClickHouse can handle inserting data very quickly - millions of rows per second on moderate hardware. Backpressure from ClickHouse is rare. Often, leveraging a Kafka queue means more architectural complexity and cost. If you can embrace the principle that logs do not need the same delivery guarantees as bank transactions and other mission-critical data, we recommend avoiding the complexity of Kafka.
 
-一方で、高い配送保証や（複数の宛先に対して）データをリプレイできる機能が必要な場合、Kafka は有用なアーキテクチャ上の追加要素となり得ます。
+However, if you require high delivery guarantees or the ability to replay data (potentially to multiple sources), Kafka can be a useful architectural addition.
 
-<Image img={observability_8} alt="Kafka の追加" size="lg"/>
+<Image img={observability_8} alt="Adding kafka" size="lg"/>
 
-この場合、OTel エージェントは [Kafka exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/kafkaexporter/README.md) を使用して Kafka にデータを送信するよう構成できます。ゲートウェイインスタンスは、[Kafka receiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/kafkareceiver/README.md) を使用してメッセージを消費します。詳細については Confluent と OTel のドキュメントを参照することを推奨します。
+In this case, OTel agents can be configured to send data to Kafka via the [Kafka exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/kafkaexporter/README.md). Gateway instances, in turn, consume messages using the [Kafka receiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/kafkareceiver/README.md). We recommend the Confluent and OTel documentation for further details.
 
-:::note OTel collector の構成
-ClickStack の OpenTelemetry collector ディストリビューションは、[custom collector configuration](#extending-collector-config) を使用して Kafka を組み込むように構成できます。
+:::note OTel collector configuration
+The ClickStack OpenTelemetry collector distribution can be configured with Kafka using [custom collector configuration](#extending-collector-config).
 :::
 
-## リソースの見積もり {#estimating-resources}
+## Estimating resources {#estimating-resources}
 
-OTel collector のリソース要件は、イベントのスループット、メッセージサイズ、および実行される処理量によって異なります。OpenTelemetry プロジェクトは、リソース要件を見積もる際に使用できる[ベンチマーク](https://opentelemetry.io/docs/collector/benchmarks/)を提供しています。
+Resource requirements for the OTel collector will depend on the event throughput, the size of messages and amount of processing performed. The OpenTelemetry project maintains [benchmarks users](https://opentelemetry.io/docs/collector/benchmarks/) can use to estimate resource requirements.
 
-[当社の経験では](https://clickhouse.com/blog/building-a-logging-platform-with-clickhouse-and-saving-millions-over-datadog#architectural-overview)、3 コアと 12GB の RAM を持つ ClickStack ゲートウェイのインスタンスで、1 秒あたり約 60k イベントを処理できます。これは、フィールド名の変更のみを行い、正規表現を使用しない最小限の処理パイプラインを想定しています。
+[In our experience](https://clickhouse.com/blog/building-a-logging-platform-with-clickhouse-and-saving-millions-over-datadog#architectural-overview), a ClickStack gateway instance with 3 cores and 12GB of RAM can handle around 60k events per second. This assumes a minimal processing pipeline responsible for renaming fields and no regular expressions.
 
-ゲートウェイへのイベント転送と、イベントへのタイムスタンプ設定のみを担当するエージェントインスタンスについては、想定される 1 秒あたりのログ数に基づいてサイジングすることを推奨します。以下は、検討を始める際の目安となる概算値です。
+For agent instances responsible for shipping events to a gateway, and only setting the timestamp on the event, we recommend users size based on the anticipated logs per second. The following represent approximate numbers users can use as a starting point:
 
-| ログレート | collector エージェントへのリソース |
+| Logging rate | Resources to collector agent |
 |--------------|------------------------------|
-| 1k/秒        | 0.2 CPU, 0.2GiB             |
-| 5k/秒        | 0.5 CPU, 0.5GiB             |
-| 10k/秒       | 1 CPU, 1GiB                 |
+| 1k/second    | 0.2CPU, 0.2GiB              |
+| 5k/second    | 0.5 CPU, 0.5GiB             |
+| 10k/second   | 1 CPU, 1GiB                 |
 
-## JSON サポート {#json-support}
+## JSON support {#json-support}
 
 <BetaBadge/>
 
-:::warning ベータ機能
-**ClickStack** における JSON 型サポートは**ベータ機能**です。JSON 型自体は ClickHouse 25.3+ で本番運用が可能な状態ですが、ClickStack 内での統合は現在も活発に開発が進められており、制限があったり、将来変更されたり、不具合を含む可能性があります。
+:::warning Beta Feature
+JSON type support in **ClickStack** is a **beta feature**. While the JSON type itself is production-ready in ClickHouse 25.3+, its integration within ClickStack is still under active development and may have limitations, change in the future, or contain bugs
 :::
 
-ClickStack はバージョン `2.0.4` から [JSON 型](/interfaces/formats/JSON) のベータサポートを提供しています。
+ClickStack has beta support for the [JSON type](/interfaces/formats/JSON) from version `2.0.4`.
 
-### JSON 型の利点 {#benefits-json-type}
+### Benefits of the JSON type {#benefits-json-type}
 
-JSON 型は、ClickStack ユーザーに対して次のような利点を提供します。
+The JSON type offers the following benefits to ClickStack users:
 
-- **型の保持** - 数値は数値のまま、boolean は boolean のまま維持され、すべてを文字列にフラット化する必要がなくなります。これにより、キャストが減り、クエリがシンプルになり、集計の精度も向上します。
-- **パスレベルのカラム** - 各 JSON パスはそれぞれ独立したサブカラムになり、I/O が削減されます。クエリは必要なフィールドだけを読み取るため、特定のフィールドを問い合わせるためにカラム全体を読み込む必要があった従来の Map 型に比べて、大きな性能向上が得られます。
-- **深いネストにもそのまま対応** - 複雑で深くネストした構造を、Map 型で必要とされていたような手動のフラット化や、その後の扱いづらい JSONExtract 関数なしで自然に扱えます。
-- **動的で進化するスキーマ** - チームが時間とともに新しいタグや属性を追加していくようなオブザーバビリティデータに最適です。JSON はこれらの変更をスキーマ移行なしで自動的に処理します。
-- **より高速なクエリと低いメモリ消費** - `LogAttributes` のような属性に対する典型的な集計では、読み取るデータ量が 5〜10 倍少なくなり、クエリ速度が劇的に向上することで、クエリ時間とピークメモリ使用量の両方を削減できます。
-- **シンプルな管理** - 性能のためにカラムを事前にマテリアライズする必要はありません。各フィールドが独立したサブカラムとなり、ネイティブな ClickHouse カラムと同等の速度を実現します。
+- **Type preservation** - Numbers stay numbers, booleans stay booleans—no more flattening everything into strings. This means fewer casts, simpler queries, and more accurate aggregations.
+- **Path-level columns** - Each JSON path becomes its own sub-column, reducing I/O. Queries only read the fields they need, unlocking major performance gains over the old Map type which required the entire column to be read in order to query a specific field.
+- **Deep nesting just works** - Naturally handle complex, deeply nested structures without manual flattening (as required by the Map type) and subsequent awkward JSONExtract functions.
+- **Dynamic, evolving schemas** - Perfect for observability data where teams add new tags and attributes over time. JSON handles these changes automatically, without schema migrations. 
+- **Faster queries, lower memory** - Typical aggregations over attributes like `LogAttributes` see 5-10x less data read and dramatic speedups, cutting both query time and peak memory usage.
+- **Simple management** - No need to pre-materialize columns for performance. Each field becomes its own sub-column, delivering the same speed as native ClickHouse columns.
 
-### JSON サポートを有効化する {#enabling-json-support}
+### Enabling JSON support {#enabling-json-support}
 
-コレクターでこのサポートを有効にするには、コレクターを含む任意のデプロイメントに対して環境変数 `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'` を設定します。これにより、ClickHouse 上でスキーマが JSON 型として作成されます。
+To enable this support for the collector, set the environment variable `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'` on any deployment that includes the collector. This ensures the schemas are created in ClickHouse using the JSON type.
 
-:::note HyperDX のサポート
-JSON 型をクエリできるようにするには、環境変数 `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` を設定し、HyperDX のアプリケーションレイヤーでもサポートを有効化する必要があります。
+:::note HyperDX support
+In order to query the JSON type, support must also be enabled in the HyperDX application layer via the environment variable `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true`.
 :::
 
-たとえば、次のように設定します。
+For example:
 
 ```shell
 docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
 ```
 
+### Migrating from map-based schemas to the JSON type {#migrating-from-map-based-schemas-to-json}
 
-### Map ベースのスキーマから JSON 型への移行 {#migrating-from-map-based-schemas-to-json}
-
-:::important 後方互換性
-[JSON type](/interfaces/formats/JSON) は既存の Map ベースのスキーマと **後方互換性がありません**。この機能を有効にすると、`JSON` 型を使用する新しいテーブルが作成されるため、データ移行を手動で実施する必要があります。
+:::important Backwards compatibility
+The [JSON type](/interfaces/formats/JSON) is **not backwards compatible** with existing map-based schemas. Enabling this feature will create new tables using the `JSON` type and requires manual data migration.
 :::
 
-Map ベースのスキーマから移行するには、次の手順に従います。
+To migrate from the Map-based schemas, follow these steps:
 
 <VerticalStepper headerLevel="h4">
 
-#### OTel collector を停止する {#stop-the-collector}
+#### Stop the OTel collector {#stop-the-collector}
 
-#### 既存のテーブル名を変更し、ソースを更新する {#rename-existing-tables-sources}
+#### Rename existing tables and update sources {#rename-existing-tables-sources}
 
-既存のテーブル名を変更し、HyperDX 内のデータソースを更新します。
+Rename existing tables and update data sources in HyperDX. 
 
-例えば次のように実行します:
+For example:
 
 ```sql
 RENAME TABLE otel_logs TO otel_logs_map;
 RENAME TABLE otel_metrics TO otel_metrics_map;
 ```
 
-#### OTel collector をデプロイする  {#deploy-the-collector}
+#### Deploy the collector  {#deploy-the-collector}
 
-`OTEL_AGENT_FEATURE_GATE_ARG` を設定した状態で OTel collector をデプロイします。
+Deploy the collector with `OTEL_AGENT_FEATURE_GATE_ARG` set.
 
-#### JSON スキーマ対応の HyperDX コンテナを再起動する {#restart-the-hyperdx-container}
+#### Restart the HyperDX container with JSON schema support {#restart-the-hyperdx-container}
 
 ```shell
 export BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true
 ```
 
-#### 新しいデータソースを作成する {#create-new-data-sources}
+#### Create new data sources {#create-new-data-sources}
 
-JSON テーブルを参照する新しいデータソースを HyperDX 内に作成します。
+Create new data sources in HyperDX pointing to the JSON tables.
 
 </VerticalStepper>
 
-#### 既存データの移行（任意） {#migrating-existing-data}
+#### Migrating existing data (optional) {#migrating-existing-data}
 
-既存のデータを新しい JSON テーブルに移行するには:
+To move old data into the new JSON tables:
 
 ```sql
 INSERT INTO otel_logs SELECT * FROM otel_logs_map;

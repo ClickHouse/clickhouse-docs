@@ -219,7 +219,7 @@ ClickHouse Cloud 使用云对象存储，并根据存储在 ClickHouse 表中的
 ```sql title="Estimating compression"
 SELECT formatReadableSize(total_bytes) 
 FROM system.tables 
-WHERE name = <你的表名>
+WHERE name = <your table name>
 ```
 
 ### 如果我有自管部署，ClickHouse 提供哪些工具来预估在云端运行服务的成本？ {#what-tools-does-clickhouse-offer-to-estimate-the-cost-of-running-a-service-in-the-cloud-if-i-have-a-self-managed-deployment}

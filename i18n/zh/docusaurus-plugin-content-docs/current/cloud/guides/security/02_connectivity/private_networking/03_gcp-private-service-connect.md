@@ -69,12 +69,12 @@ ClickHouse 会尝试对您的服务进行分组，以便在同一 GCP 区域内�
 您需要获取有关 ClickHouse Cloud 服务的一些信息。可以通过 ClickHouse Cloud 控制台或 ClickHouse API 来完成此操作。如果计划使用 ClickHouse API，请在继续之前先设置以下环境变量：
 
 ```shell
-REGION=<您的区域代码,使用 GCP 格式,例如:us-central1>
+REGION=<Your region code using the GCP format, for example: us-central1>
 PROVIDER=gcp
-KEY_ID=<您的 ClickHouse 密钥 ID>
-KEY_SECRET=<您的 ClickHouse 密钥>
-ORG_ID=<您的 ClickHouse 组织 ID>
-SERVICE_NAME=<您的 ClickHouse 服务名称>
+KEY_ID=<Your ClickHouse key ID>
+KEY_SECRET=<Your ClickHouse key secret>
+ORG_ID=<Your ClickHouse organization ID>
+SERVICE_NAME=<Your ClickHouse service name>
 ```
 
 你可以[创建新的 ClickHouse Cloud API 密钥](/cloud/manage/openapi)，或者使用现有的密钥。
@@ -203,7 +203,7 @@ resource "google_compute_forwarding_rule" "clickhouse_cloud_psc" {
 
 output "psc_connection_id" {
   value       = google_compute_forwarding_rule.clickhouse_cloud_psc.psc_connection_id
-  description = "将 GCP PSC 连接 ID 添加到实例级别的允许列表中。"
+  description = "Add GCP PSC Connection ID to allow list on instance level."
 }
 ```
 
@@ -245,7 +245,7 @@ cat <<EOF | tee pl_config_org.json
       {
         "cloudProvider": "gcp",
         "id": "${ENDPOINT_ID:?}",
-        "description": "GCP 私有端点",
+        "description": "A GCP private endpoint",
         "region": "${REGION:?}"
       }
     ]
@@ -370,9 +370,9 @@ nslookup $DNS_NAME
 ```
 
 ```response
-非权威应答：
+Non-authoritative answer:
 ...
-地址：10.128.0.2
+Address: 10.128.0.2
 ```
 
 ### 对端重置连接（Connection reset by peer） {#connection-reset-by-peer}
@@ -392,24 +392,24 @@ openssl s_client -connect ${DNS_NAME}:9440
 ```
 
 ```response
-# highlight-next-line {#highlight-next-line}
+# highlight-next-line
 CONNECTED(00000003)
 write:errno=104
 ---
-无可用的对等证书
+no peer certificate available
 ---
-未发送客户端证书 CA 名称
+No client certificate CA names sent
 ---
-SSL 握手已读取 0 字节并写入 335 字节
-验证：OK
+SSL handshake has read 0 bytes and written 335 bytes
+Verification: OK
 ---
-新建，(无)，密码为 (无)
-不支持安全重新协商
-压缩：无
-扩展：无
-未协商 ALPN
-未发送早期数据
-验证返回码：0 (正常)
+New, (NONE), Cipher is (NONE)
+Secure Renegotiation IS NOT supported
+Compression: NONE
+Expansion: NONE
+No ALPN negotiated
+Early data was not sent
+Verify return code: 0 (ok)
 ```
 
 ### 检查端点过滤规则 {#checking-endpoint-filters}

@@ -78,18 +78,18 @@ OpenTelemetry Collector обеспечивает масштабируемое и
   Vector должен быть настроен для приёма событий по протоколу Lumberjack, имитируя экземпляр Logstash. Это достигается путём настройки [источника `logstash`](https://vector.dev/docs/reference/configuration/sources/logstash/) для Vector:
 
   ```yaml
-  sources:
-    beats:
-      type: logstash
-      address: 0.0.0.0:5044
-      tls:
-        enabled: false  # Установите значение true при использовании TLS
-        # Файлы ниже генерируются в соответствии с инструкциями по адресу https://www.elastic.co/docs/reference/fleet/secure-logstash-connections#generate-logstash-certs
-        # crt_file: logstash.crt
-        # key_file: logstash.key
-        # ca_file: ca.crt
-        # verify_certificate: true
-  ```
+sources:
+  beats:
+    type: logstash
+    address: 0.0.0.0:5044
+    tls:
+      enabled: false  # Set to true if you're using TLS
+      # The files below are generated from the steps at https://www.elastic.co/docs/reference/fleet/secure-logstash-connections#generate-logstash-certs
+      # crt_file: logstash.crt
+      # key_file: logstash.key
+      # ca_file: ca.crt
+      # verify_certificate: true
+```
 
   :::note Конфигурация TLS
   Если требуется взаимная TLS-аутентификация (Mutual TLS), сгенерируйте сертификаты и ключи, используя руководство Elastic [«Configure SSL/TLS for the Logstash output»](https://www.elastic.co/docs/reference/fleet/secure-logstash-connections#use-ls-output). После этого их можно указать в конфигурации, как показано выше.
@@ -98,12 +98,12 @@ OpenTelemetry Collector обеспечивает масштабируемое и
   События будут получены в формате ECS. Их можно преобразовать в схему OpenTelemetry с помощью трансформера Vector Remap Language (VRL). Настройка этого трансформера проста — файл скрипта хранится отдельно:
 
   ```yaml
-  transforms:
-    remap_filebeat:
-      inputs: ["beats"]
-      type: "remap"
-      file: 'beat_to_otel.vrl'
-  ```
+transforms:
+  remap_filebeat:
+    inputs: ["beats"]
+    type: "remap"
+    file: 'beat_to_otel.vrl'
+```
 
   Обратите внимание, что он получает события из указанного выше источника `beats`. Наш скрипт преобразования (remap) показан ниже. Этот скрипт был протестирован только с событиями журналов, но может служить основой для других форматов.
 
@@ -111,142 +111,142 @@ OpenTelemetry Collector обеспечивает масштабируемое и
     <summary>VRL — из ECS в OTel</summary>
 
     ```javascript
-    # Определение ключей для игнорирования на корневом уровне
-    ignored_keys = ["@metadata"]
+# Define keys to ignore at root level
+ignored_keys = ["@metadata"]
 
-    # Определение префиксов ключей ресурсов
-    resource_keys = ["host", "cloud", "agent", "service"]
+# Define resource key prefixes
+resource_keys = ["host", "cloud", "agent", "service"]
 
-    # Создание отдельных объектов для полей ресурсов и записей журнала
-    resource_obj = {}
-    log_record_obj = {}
+# Create separate objects for resource and log record fields
+resource_obj = {}
+log_record_obj = {}
 
-    # Копирование всех неигнорируемых корневых ключей в соответствующие объекты
-    root_keys = keys(.)
-    for_each(root_keys) -> |_index, key| {
-        if !includes(ignored_keys, key) {
-            val, err = get(., [key])
-            if err == null {
-                # Проверка, является ли это полем ресурса
-                is_resource = false
-                if includes(resource_keys, key) {
-                    is_resource = true
-                }
+# Copy all non-ignored root keys to appropriate objects
+root_keys = keys(.)
+for_each(root_keys) -> |_index, key| {
+    if !includes(ignored_keys, key) {
+        val, err = get(., [key])
+        if err == null {
+            # Check if this is a resource field
+            is_resource = false
+            if includes(resource_keys, key) {
+                is_resource = true
+            }
 
-                # Добавление в соответствующий объект
-                if is_resource {
-                    resource_obj = set(resource_obj, [key], val) ?? resource_obj
-                } else {
-                    log_record_obj = set(log_record_obj, [key], val) ?? log_record_obj
-                }
+            # Add to appropriate object
+            if is_resource {
+                resource_obj = set(resource_obj, [key], val) ?? resource_obj
+            } else {
+                log_record_obj = set(log_record_obj, [key], val) ?? log_record_obj
             }
         }
     }
+}
 
-    # Выравнивание обоих объектов по отдельности
-    flattened_resources = flatten(resource_obj, separator: ".")
-    flattened_logs = flatten(log_record_obj, separator: ".")
+# Flatten both objects separately
+flattened_resources = flatten(resource_obj, separator: ".")
+flattened_logs = flatten(log_record_obj, separator: ".")
 
-    # Обработка атрибутов ресурсов
-    resource_attributes = []
-    resource_keys_list = keys(flattened_resources)
-    for_each(resource_keys_list) -> |_index, field_key| {
-        field_value, err = get(flattened_resources, [field_key])
-        if err == null && field_value != null {
-            attribute, err = {
-                "key": field_key,
-                "value": {
-                    "stringValue": to_string(field_value)
-                }
-            }
-            if (err == null) {
-                resource_attributes = push(resource_attributes, attribute)
+# Process resource attributes
+resource_attributes = []
+resource_keys_list = keys(flattened_resources)
+for_each(resource_keys_list) -> |_index, field_key| {
+    field_value, err = get(flattened_resources, [field_key])
+    if err == null && field_value != null {
+        attribute, err = {
+            "key": field_key,
+            "value": {
+                "stringValue": to_string(field_value)
             }
         }
-    }
-
-    # Обработка атрибутов записей журнала
-    log_attributes = []
-    log_keys_list = keys(flattened_logs)
-    for_each(log_keys_list) -> |_index, field_key| {
-        field_value, err = get(flattened_logs, [field_key])
-        if err == null && field_value != null {
-            attribute, err = {
-                "key": field_key,
-                "value": {
-                    "stringValue": to_string(field_value)
-                }
-            }
-            if (err == null) {
-                log_attributes = push(log_attributes, attribute)
-            }
+        if (err == null) {
+            resource_attributes = push(resource_attributes, attribute)
         }
     }
+}
 
-    # Получение временной метки для timeUnixNano (преобразование в наносекунды)
-    timestamp_nano = if exists(.@timestamp) {
-        to_unix_timestamp!(parse_timestamp!(.@timestamp, format: "%Y-%m-%dT%H:%M:%S%.3fZ"), unit: "nanoseconds")
-    } else {
-        to_unix_timestamp(now(), unit: "nanoseconds")
-    }
-
-    # Получение поля message/body
-    body_value = if exists(.message) {
-        to_string!(.message)
-    } else if exists(.body) {
-        to_string!(.body)
-    } else {
-        ""
-    }
-
-    # Создание структуры OpenTelemetry
-    . = {
-        "resourceLogs": [
-            {
-                "resource": {
-                    "attributes": resource_attributes
-                },
-                "scopeLogs": [
-                    {
-                        "scope": {},
-                        "logRecords": [
-                            {
-                                "timeUnixNano": to_string(timestamp_nano),
-                                "severityNumber": 9,
-                                "severityText": "info",
-                                "body": {
-                                    "stringValue": body_value
-                                },
-                                "attributes": log_attributes
-                            }
-                        ]
-                    }
-                ]
+# Process log record attributes
+log_attributes = []
+log_keys_list = keys(flattened_logs)
+for_each(log_keys_list) -> |_index, field_key| {
+    field_value, err = get(flattened_logs, [field_key])
+    if err == null && field_value != null {
+        attribute, err = {
+            "key": field_key,
+            "value": {
+                "stringValue": to_string(field_value)
             }
-        ]
+        }
+        if (err == null) {
+            log_attributes = push(log_attributes, attribute)
+        }
     }
-    ```
+}
+
+# Get timestamp for timeUnixNano (convert to nanoseconds)
+timestamp_nano = if exists(.@timestamp) {
+    to_unix_timestamp!(parse_timestamp!(.@timestamp, format: "%Y-%m-%dT%H:%M:%S%.3fZ"), unit: "nanoseconds")
+} else {
+    to_unix_timestamp(now(), unit: "nanoseconds")
+}
+
+# Get message/body field
+body_value = if exists(.message) {
+    to_string!(.message)
+} else if exists(.body) {
+    to_string!(.body)
+} else {
+    ""
+}
+
+# Create the OpenTelemetry structure
+. = {
+    "resourceLogs": [
+        {
+            "resource": {
+                "attributes": resource_attributes
+            },
+            "scopeLogs": [
+                {
+                    "scope": {},
+                    "logRecords": [
+                        {
+                            "timeUnixNano": to_string(timestamp_nano),
+                            "severityNumber": 9,
+                            "severityText": "info",
+                            "body": {
+                                "stringValue": body_value
+                            },
+                            "attributes": log_attributes
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+```
   </details>
 
   Наконец, преобразованные события можно отправить в ClickStack через коллектор OpenTelemetry по протоколу OTLP. Для этого необходимо настроить приёмник OTLP в Vector, который получает события из преобразования `remap_filebeat`:
 
   ```yaml
-  sinks:
-    otlp:
-      type: opentelemetry
-      inputs: [remap_filebeat] # получает события из преобразования remap — см. ниже
-      protocol:
-        type: http  # Используйте "grpc" для порта 4317
-        uri: http://localhost:4318/v1/logs # конечная точка логов для OTel collector 
-        method: post
-        encoding:
-          codec: json
-        framing:
-          method: newline_delimited
-        headers:
-          content-type: application/json
-          authorization: ${YOUR_INGESTION_API_KEY}
-  ```
+sinks:
+  otlp:
+    type: opentelemetry
+    inputs: [remap_filebeat] # receives events from a remap transform - see below
+    protocol:
+      type: http  # Use "grpc" for port 4317
+      uri: http://localhost:4318/v1/logs # logs endpoint for the OTel collector 
+      method: post
+      encoding:
+        codec: json
+      framing:
+        method: newline_delimited
+      headers:
+        content-type: application/json
+        authorization: ${YOUR_INGESTION_API_KEY}
+```
 
   Значение `YOUR_INGESTION_API_KEY` генерируется ClickStack. Ключ можно найти в приложении HyperDX в разделе `Team Settings → API Keys`.
 
@@ -255,59 +255,59 @@ OpenTelemetry Collector обеспечивает масштабируемое и
   Итоговая полная конфигурация представлена ниже:
 
   ```yaml
-  sources:
-    beats:
-      type: logstash
-      address: 0.0.0.0:5044
-      tls:
-        enabled: false  # Установите значение true, если используете TLS
-          #crt_file: /data/elasticsearch-9.0.1/logstash/logstash.crt
-          #key_file: /data/elasticsearch-9.0.1/logstash/logstash.key
-          #ca_file: /data/elasticsearch-9.0.1/ca/ca.crt
-          #verify_certificate: true
+sources:
+  beats:
+    type: logstash
+    address: 0.0.0.0:5044
+    tls:
+      enabled: false  # Set to true if you're using TLS
+        #crt_file: /data/elasticsearch-9.0.1/logstash/logstash.crt
+        #key_file: /data/elasticsearch-9.0.1/logstash/logstash.key
+        #ca_file: /data/elasticsearch-9.0.1/ca/ca.crt
+        #verify_certificate: true
 
-  transforms:
-    remap_filebeat:
-      inputs: ["beats"]
-      type: "remap"
-      file: 'beat_to_otel.vrl'
+transforms:
+  remap_filebeat:
+    inputs: ["beats"]
+    type: "remap"
+    file: 'beat_to_otel.vrl'
 
-  sinks:
-    otlp:
-      type: opentelemetry
-      inputs: [remap_filebeat]
-      protocol:
-        type: http  # Используйте "grpc" для порта 4317
-        uri: http://localhost:4318/v1/logs
-        method: post
-        encoding:
-          codec: json
-        framing:
-          method: newline_delimited
-        headers:
-          content-type: application/json
-  ```
+sinks:
+  otlp:
+    type: opentelemetry
+    inputs: [remap_filebeat]
+    protocol:
+      type: http  # Use "grpc" for port 4317
+      uri: http://localhost:4318/v1/logs
+      method: post
+      encoding:
+        codec: json
+      framing:
+        method: newline_delimited
+      headers:
+        content-type: application/json
+```
 
   ### Настройка Filebeat
 
   Существующие установки Filebeat достаточно изменить для отправки событий в Vector. Для этого необходимо настроить выходной канал Logstash — при необходимости можно также настроить TLS:
 
   ```yaml
-  # ------------------------------ Вывод Logstash -------------------------------
-  output.logstash:
-    # Хосты Logstash
-    hosts: ["localhost:5044"]
+# ------------------------------ Logstash Output -------------------------------
+output.logstash:
+  # The Logstash hosts
+  hosts: ["localhost:5044"]
 
-    # Необязательный параметр SSL. По умолчанию отключен.
-    # Список корневых сертификатов для проверки HTTPS-серверов
-    #ssl.certificate_authorities: ["/etc/pki/root/ca.pem"]
+  # Optional SSL. By default is off.
+  # List of root certificates for HTTPS server verifications
+  #ssl.certificate_authorities: ["/etc/pki/root/ca.pem"]
 
-    # Сертификат для аутентификации SSL-клиента
-    #ssl.certificate: "/etc/pki/client/cert.pem"
+  # Certificate for SSL client authentication
+  #ssl.certificate: "/etc/pki/client/cert.pem"
 
-    # Ключ клиентского сертификата
-    #ssl.key: "/etc/pki/client/cert.key"
-  ```
+  # Client Certificate Key
+  #ssl.key: "/etc/pki/client/cert.key"
+```
 </VerticalStepper>
 
 ## Миграция с Elastic Agent {#migrating-from-elastic-agent}
@@ -351,8 +351,8 @@ sources:
     type: logstash
     address: 0.0.0.0:5044
     tls:
-      enabled: true  # Установите true, если вы используете TLS. 
-      # Файлы ниже генерируются по шагам из https://www.elastic.co/docs/reference/fleet/secure-logstash-connections#generate-logstash-certs
+      enabled: true  # Set to true if you're using TLS. 
+      # The files below are generated from the steps at https://www.elastic.co/docs/reference/fleet/secure-logstash-connections#generate-logstash-certs
       crt_file: logstash.crt
       key_file: logstash.key
       ca_file: ca.crt
@@ -373,7 +373,7 @@ Elastic Agent включает встроенный EDOT Collector, которы
 
 ```yaml
 exporters:
-  # Экспортер для отправки логов и метрик в Elasticsearch Managed OTLP Input
+  # Exporter to send logs and metrics to Elasticsearch Managed OTLP Input
   otlp:
     endpoint: localhost:4317
     headers:
@@ -390,7 +390,7 @@ exporters:
 
 ```yaml
 exporters:
-  # Экспортер для отправки логов и метрик в Elasticsearch Managed OTLP Input
+  # Exporter to send logs and metrics to Elasticsearch Managed OTLP Input
   otlp:
     endpoint: localhost:4317
     headers:

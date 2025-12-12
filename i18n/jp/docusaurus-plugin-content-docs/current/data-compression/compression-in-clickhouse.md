@@ -73,18 +73,18 @@ GROUP BY name
 以下に例を示します:
 
 ```sql title="Query"
--- compactパートを持つテーブルを作成
+-- Create a table with compact parts
 CREATE TABLE compact (
   number UInt32
 )
 ENGINE = MergeTree()
-ORDER BY number
-AS SELECT * FROM numbers(100000); -- min_bytes_for_wide_part = 10485760のデフォルト値を超えるほど大きくない
+ORDER BY number 
+AS SELECT * FROM numbers(100000); -- Not big enough to exceed default of min_bytes_for_wide_part = 10485760
 
--- パートのタイプを確認
+-- Check the type of the parts
 SELECT table, name, part_type from system.parts where table = 'compact';
 
--- compactテーブルの圧縮済みおよび非圧縮のカラムサイズを取得
+-- Get the compressed and uncompressed column sizes for the compact table
 SELECT name,
    formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
    formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
@@ -93,7 +93,7 @@ FROM system.columns
 WHERE table = 'compact'
 GROUP BY name;
 
--- wideパートを持つテーブルを作成
+-- Create a table with wide parts 
 CREATE TABLE wide (
   number UInt32
 )
@@ -102,10 +102,10 @@ ORDER BY number
 SETTINGS min_bytes_for_wide_part=0
 AS SELECT * FROM numbers(100000);
 
--- パートのタイプを確認
+-- Check the type of the parts
 SELECT table, name, part_type from system.parts where table = 'wide';
 
--- wideテーブルの圧縮済みおよび非圧縮のサイズを取得
+-- Get the compressed and uncompressed sizes for the wide table
 SELECT name,
    formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
    formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
@@ -176,6 +176,31 @@ SELECT
 FROM system.columns
 WHERE `table` = 'posts_v3'
 GROUP BY name
+
+┌─name──────────────────┬─compressed_size─┬─uncompressed_size─┬───ratio─┐
+│ Body                  │ 23.10 GiB       │ 63.63 GiB         │    2.75 │
+│ Title                 │ 614.65 MiB      │ 1.28 GiB          │    2.14 │
+│ Score                 │ 40.28 MiB       │ 227.38 MiB        │    5.65 │
+│ Tags                  │ 234.05 MiB      │ 688.49 MiB        │    2.94 │
+│ ParentId              │ 107.78 MiB      │ 321.33 MiB        │    2.98 │
+│ Id                    │ 159.70 MiB      │ 227.38 MiB        │    1.42 │
+│ AcceptedAnswerId      │ 40.34 MiB       │ 227.38 MiB        │    5.64 │
+│ ClosedDate            │ 5.93 MiB        │ 9.49 MiB          │     1.6 │
+│ LastActivityDate      │ 246.55 MiB      │ 454.76 MiB        │    1.84 │
+│ CommentCount          │ 635.78 KiB      │ 56.84 MiB         │   91.55 │
+│ OwnerUserId           │ 183.86 MiB      │ 227.38 MiB        │    1.24 │
+│ AnswerCount           │ 9.67 MiB        │ 113.69 MiB        │   11.76 │
+│ FavoriteCount         │ 19.77 KiB       │ 147.32 KiB        │    7.45 │
+│ ViewCount             │ 45.04 MiB       │ 227.38 MiB        │    5.05 │
+│ LastEditorUserId      │ 86.25 MiB       │ 227.38 MiB        │    2.64 │
+│ ContentLicense        │ 2.17 MiB        │ 57.10 MiB         │   26.37 │
+│ OwnerDisplayName      │ 5.95 MiB        │ 16.19 MiB         │    2.72 │
+│ PostTypeId            │ 39.49 KiB       │ 56.84 MiB         │ 1474.01 │
+│ CreationDate          │ 181.23 MiB      │ 454.76 MiB        │    2.51 │
+│ LastEditDate          │ 134.07 MiB      │ 454.76 MiB        │    3.39 │
+│ LastEditorDisplayName │ 2.15 MiB        │ 6.25 MiB          │    2.91 │
+│ CommunityOwnedDate    │ 824.60 KiB      │ 1.34 MiB          │    1.66 │
+└───────────────────────┴─────────────────┴───────────────────┴─────────┘
 ```
 
 ┌─name──────────────────┬─compressed&#95;size─┬─uncompressed&#95;size─┬───ratio─┐
@@ -202,33 +227,6 @@ GROUP BY name
 │ LastEditorDisplayName │ 2.15 MiB        │ 6.25 MiB          │    2.91 │
 │ CommunityOwnedDate    │ 824.60 KiB      │ 1.34 MiB          │    1.66 │
 └───────────────────────┴─────────────────┴───────────────────┴─────────┘
-
-```
-```
-
-## 適切なカラム圧縮コーデックの選択 {#choosing-the-right-column-compression-codec}
-
-カラム圧縮コーデックを用いることで、各カラムのエンコードおよび圧縮に使用されるアルゴリズム（およびその設定）を変更できます。
-
-エンコードと圧縮は、目的（データサイズの削減）は同じですが、動作が少し異なります。エンコードはデータ型の特性を利用し、関数に基づくマッピングを適用して値を変換します。一方、圧縮はより汎用的なアルゴリズムを用いて、バイトレベルでデータを圧縮します。
-
-一般的には、圧縮を行う前にまずエンコードが適用されます。エンコードや圧縮アルゴリズムの有効性は値の分布によって異なるため、自分たちのデータを理解しておく必要があります。
-
-ClickHouse は多数のコーデックと圧縮アルゴリズムをサポートしています。以下に、重要度順でいくつか推奨事項を示します。
-
-| Recommendation                                | Reasoning                                                                                                                                                                                                                                     |
-| --------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **`ZSTD` all the way**                        | `ZSTD` 圧縮は最も優れた圧縮率を提供します。`ZSTD(1)` は、ほとんどの一般的な型に対するデフォルトとすべきです。数値を変更することで、より高い圧縮率を試すことができます。ただし、圧縮コスト（挿入が遅くなる）の増大に対して、値を 3 より大きくしても十分なメリットが得られるケースはまれです。                                                                                      |
-| **`Delta` for date and integer sequences**    | `Delta` ベースのコーデックは、単調増加（減少）シーケンスや連続する値の差分（デルタ）が小さい場合に有効です。より具体的には、隣接差分が小さい値を生成する場合に Delta コーデックは有効に機能します。そうでない場合は `DoubleDelta` を試す価値があります（ただし、`Delta` による 1 次差分がすでに十分小さい場合には、追加の効果はほとんどありません）。単調な増分が一定のシーケンスはさらによく圧縮されます（例: DateTime フィールド）。 |
-| **`Delta` improves `ZSTD`**                   | `ZSTD` はデルタデータに対して効果的なコーデックであり、逆にデルタエンコードは `ZSTD` 圧縮を改善できます。`ZSTD` を使用している場合、他のコーデックがそれ以上の改善をもたらすことはほとんどありません。                                                                                                                                |
-| **`LZ4` over `ZSTD` if possible**             | `LZ4` と `ZSTD` で同程度の圧縮率が得られる場合は、展開が高速で CPU 使用量も少ない `LZ4` を優先してください。ただし、ほとんどのケースでは `ZSTD` は `LZ4` を大きく上回る圧縮性能を発揮します。これらのコーデックの中には、単独の `ZSTD` と同等の圧縮率を維持しつつ、`LZ4` と組み合わせることでより高速に動作するものもあります。ただしこれはデータに依存し、検証が必要です。                             |
-| **`T64` for sparse or small ranges**          | `T64` はスパースなデータや、ブロック内の値の範囲が小さい場合に有効です。乱数には `T64` を使用しないでください。                                                                                                                                                                                |
-| **`Gorilla` and `T64` for unknown patterns?** | データのパターンが不明な場合は、`Gorilla` や `T64` を試してみる価値があります。                                                                                                                                                                                              |
-| **`Gorilla` for gauge data**                  | `Gorilla` は、特にゲージ値（例: ランダムなスパイクを示す値）を表す浮動小数点データに対して有効です。                                                                                                                                                                                      |
-
-その他のオプションについては[こちら](/sql-reference/statements/create/table#column_compression_codec)を参照してください。
-
-以下では、`Id`、`ViewCount`、`AnswerCount` に対して `Delta` コーデックを指定しています。これらの値は順序付けキーと線形に相関付けられていると仮定しており、そのため Delta エンコードによるメリットが期待できます。
 
 ```sql
 CREATE TABLE posts_v4
@@ -258,6 +256,58 @@ CREATE TABLE posts_v4
 )
 ENGINE = MergeTree
 ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
+```
+
+## 適切なカラム圧縮コーデックの選択 {#choosing-the-right-column-compression-codec}
+
+カラム圧縮コーデックを用いることで、各カラムのエンコードおよび圧縮に使用されるアルゴリズム（およびその設定）を変更できます。
+
+エンコードと圧縮は、目的（データサイズの削減）は同じですが、動作が少し異なります。エンコードはデータ型の特性を利用し、関数に基づくマッピングを適用して値を変換します。一方、圧縮はより汎用的なアルゴリズムを用いて、バイトレベルでデータを圧縮します。
+
+一般的には、圧縮を行う前にまずエンコードが適用されます。エンコードや圧縮アルゴリズムの有効性は値の分布によって異なるため、自分たちのデータを理解しておく必要があります。
+
+ClickHouse は多数のコーデックと圧縮アルゴリズムをサポートしています。以下に、重要度順でいくつか推奨事項を示します。
+
+| Recommendation                                | Reasoning                                                                                                                                                                                                                                     |
+| --------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`ZSTD` all the way**                        | `ZSTD` 圧縮は最も優れた圧縮率を提供します。`ZSTD(1)` は、ほとんどの一般的な型に対するデフォルトとすべきです。数値を変更することで、より高い圧縮率を試すことができます。ただし、圧縮コスト（挿入が遅くなる）の増大に対して、値を 3 より大きくしても十分なメリットが得られるケースはまれです。                                                                                      |
+| **`Delta` for date and integer sequences**    | `Delta` ベースのコーデックは、単調増加（減少）シーケンスや連続する値の差分（デルタ）が小さい場合に有効です。より具体的には、隣接差分が小さい値を生成する場合に Delta コーデックは有効に機能します。そうでない場合は `DoubleDelta` を試す価値があります（ただし、`Delta` による 1 次差分がすでに十分小さい場合には、追加の効果はほとんどありません）。単調な増分が一定のシーケンスはさらによく圧縮されます（例: DateTime フィールド）。 |
+| **`Delta` improves `ZSTD`**                   | `ZSTD` はデルタデータに対して効果的なコーデックであり、逆にデルタエンコードは `ZSTD` 圧縮を改善できます。`ZSTD` を使用している場合、他のコーデックがそれ以上の改善をもたらすことはほとんどありません。                                                                                                                                |
+| **`LZ4` over `ZSTD` if possible**             | `LZ4` と `ZSTD` で同程度の圧縮率が得られる場合は、展開が高速で CPU 使用量も少ない `LZ4` を優先してください。ただし、ほとんどのケースでは `ZSTD` は `LZ4` を大きく上回る圧縮性能を発揮します。これらのコーデックの中には、単独の `ZSTD` と同等の圧縮率を維持しつつ、`LZ4` と組み合わせることでより高速に動作するものもあります。ただしこれはデータに依存し、検証が必要です。                             |
+| **`T64` for sparse or small ranges**          | `T64` はスパースなデータや、ブロック内の値の範囲が小さい場合に有効です。乱数には `T64` を使用しないでください。                                                                                                                                                                                |
+| **`Gorilla` and `T64` for unknown patterns?** | データのパターンが不明な場合は、`Gorilla` や `T64` を試してみる価値があります。                                                                                                                                                                                              |
+| **`Gorilla` for gauge data**                  | `Gorilla` は、特にゲージ値（例: ランダムなスパイクを示す値）を表す浮動小数点データに対して有効です。                                                                                                                                                                                      |
+
+その他のオプションについては[こちら](/sql-reference/statements/create/table#column_compression_codec)を参照してください。
+
+以下では、`Id`、`ViewCount`、`AnswerCount` に対して `Delta` コーデックを指定しています。これらの値は順序付けキーと線形に相関付けられていると仮定しており、そのため Delta エンコードによるメリットが期待できます。
+
+```sql
+SELECT
+    `table`,
+    name,
+    formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
+    formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
+    round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
+FROM system.columns
+WHERE (name IN ('Id', 'ViewCount', 'AnswerCount')) AND (`table` IN ('posts_v3', 'posts_v4'))
+GROUP BY
+    `table`,
+    name
+ORDER BY
+    name ASC,
+    `table` ASC
+
+┌─table────┬─name────────┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
+│ posts_v3 │ AnswerCount │ 9.67 MiB        │ 113.69 MiB        │ 11.76 │
+│ posts_v4 │ AnswerCount │ 10.39 MiB       │ 111.31 MiB        │ 10.71 │
+│ posts_v3 │ Id          │ 159.70 MiB      │ 227.38 MiB        │  1.42 │
+│ posts_v4 │ Id          │ 64.91 MiB       │ 222.63 MiB        │  3.43 │
+│ posts_v3 │ ViewCount   │ 45.04 MiB       │ 227.38 MiB        │  5.05 │
+│ posts_v4 │ ViewCount   │ 52.72 MiB       │ 222.63 MiB        │  4.22 │
+└──────────┴─────────────┴─────────────────┴───────────────────┴───────┘
+
+6 rows in set. Elapsed: 0.008 sec
 ```
 
 これらのカラムにおける圧縮の改善結果を以下に示します。

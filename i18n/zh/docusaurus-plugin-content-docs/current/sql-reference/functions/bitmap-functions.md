@@ -54,29 +54,31 @@ SELECT bitmapToArray(bitmapAnd(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5]))) 
 └─────┘
 ```
 
+
+
 ## bitmapAndCardinality {#bitmapAndCardinality}
 
-自 v20.1 引入
+Introduced in: v20.1
 
-返回两个位图进行逻辑与（AND）运算结果的基数。
+Returns the cardinality of the logical conjunction (AND) of two bitmaps.
 
-**语法**
+**Syntax**
 
 ```sql
 bitmapAndCardinality(bitmap1, bitmap2)
 ```
 
-**参数**
+**Arguments**
 
-* `bitmap1` — 第一个 bitmap 对象。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)。- `bitmap2` — 第二个 bitmap 对象。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)。
+- `bitmap1` — First bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — Second bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
 
-**返回值**
+**Returned value**
 
-返回两个 bitmap 交集中被置位的位数。[`UInt64`](/sql-reference/data-types/int-uint)
+Returns the number of set bits in the intersection of the two bitmaps [`UInt64`](/sql-reference/data-types/int-uint)
 
-**示例**
+**Examples**
 
-**使用示例**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapAndCardinality(bitmapBuild([1,2,3]), bitmapBuild([3,4,5])) AS res;
@@ -88,29 +90,31 @@ SELECT bitmapAndCardinality(bitmapBuild([1,2,3]), bitmapBuild([3,4,5])) AS res;
 └─────┘
 ```
 
+
+
 ## bitmapAndnot {#bitmapAndnot}
 
-引入于：v20.1
+Introduced in: v20.1
 
-计算两个位图的集合差 A AND-NOT B。
+Computes the set difference A AND-NOT B of two bitmaps.
 
-**语法**
+**Syntax**
 
 ```sql
 bitmapAndnot(bitmap1, bitmap2)
 ```
 
-**参数**
+**Arguments**
 
-* `bitmap1` — 第一个位图对象。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — 第二个位图对象。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction).
+- `bitmap1` — First bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — Second bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
 
-**返回值**
+**Returned value**
 
-返回一个位图对象，其中包含在第一个位图中出现但在第二个位图中不存在的已设置位。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
+Returns a bitmap containing set bits present in the first bitmap but not in the second [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
 
-**示例**
+**Examples**
 
-**使用示例**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapToArray(bitmapAndnot(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5]))) AS res;
@@ -122,29 +126,31 @@ SELECT bitmapToArray(bitmapAndnot(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5])
 └────────┘
 ```
 
+
+
 ## bitmapAndnotCardinality {#bitmapAndnotCardinality}
 
-引入版本：v20.1
+Introduced in: v20.1
 
-返回对两个 bitmap 执行 AND-NOT 运算结果的基数。
+Returns the cardinality of the AND-NOT operation of two bitmaps.
 
-**语法**
+**Syntax**
 
 ```sql
 bitmapAndnotCardinality(bitmap1, bitmap2)
 ```
 
-**参数**
+**Arguments**
 
-* `bitmap1` — 第一个 bitmap 对象，类型为 [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — 第二个 bitmap 对象，类型为 [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction).
+- `bitmap1` — First bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — Second bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
 
-**返回值**
+**Returned value**
 
-返回表达式 `bitmap1 AND-NOT bitmap2` 结果中已设置位（为 1 的位）的数量，类型为 [`UInt64`](/sql-reference/data-types/int-uint)
+Returns the number of set bits in the result of `bitmap1 AND-NOT bitmap2` [`UInt64`](/sql-reference/data-types/int-uint)
 
-**示例**
+**Examples**
 
-**使用示例**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapAndnotCardinality(bitmapBuild([1,2,3]), bitmapBuild([3,4,5])) AS res;
@@ -156,29 +162,32 @@ SELECT bitmapAndnotCardinality(bitmapBuild([1,2,3]), bitmapBuild([3,4,5])) AS re
 └─────┘
 ```
 
+
+
 ## bitmapBuild {#bitmapBuild}
 
-自 v20.1 引入
+Introduced in: v20.1
 
-根据无符号整数数组构建位图。它与函数 [`bitmapToArray`](/sql-reference/functions/bitmap-functions#bitmapToArray) 的作用相反。
+Builds a bitmap from an unsigned integer array. It is the opposite of function [`bitmapToArray`](/sql-reference/functions/bitmap-functions#bitmapToArray).
 
-**语法**
+**Syntax**
 
 ```sql
 bitmapBuild(array)
 ```
 
-**参数**
+**Arguments**
 
-* `array` — 无符号整数数组。[`Array(UInt*)`](/sql-reference/data-types/array)
+- `array` — Unsigned integer array. [`Array(UInt*)`](/sql-reference/data-types/array)
 
-**返回值**
 
-从提供的数组生成并返回一个位图。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
+**Returned value**
 
-**示例**
+Returns a bitmap from the provided array [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapBuild([1, 2, 3, 4, 5]) AS res, toTypeName(res);
@@ -190,29 +199,31 @@ SELECT bitmapBuild([1, 2, 3, 4, 5]) AS res, toTypeName(res);
 └─────┴──────────────────────────────────────────────┘
 ```
 
+
+
 ## bitmapCardinality {#bitmapCardinality}
 
-自 v20.1 起引入
+Introduced in: v20.1
 
-返回位图中已设置位的数量（基数）。
+Returns the number of bits set (the cardinality) in the bitmap.
 
-**语法**
+**Syntax**
 
 ```sql
 bitmapCardinality(bitmap)
 ```
 
-**参数**
+**Arguments**
 
-* `bitmap` — Bitmap 对象。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)。
+- `bitmap` — Bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
 
-**返回值**
+**Returned value**
 
-返回 bitmap 中已置位的位数，类型为 [`UInt64`](/sql-reference/data-types/int-uint)。
+Returns the number of bits set in the bitmap [`UInt64`](/sql-reference/data-types/int-uint)
 
-**示例**
+**Examples**
 
-**使用示例**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapCardinality(bitmapBuild([1, 3, 3, 5, 7, 7])) AS res
@@ -224,29 +235,31 @@ SELECT bitmapCardinality(bitmapBuild([1, 3, 3, 5, 7, 7])) AS res
 └─────┘
 ```
 
+
+
 ## bitmapContains {#bitmapContains}
 
-自 v20.1 版本引入
+Introduced in: v20.1
 
-检查位图中是否包含特定元素。
+Checks if the bitmap contains a specific element.
 
-**语法**
+**Syntax**
 
 ```sql
 bitmapContains(bitmap, value)
 ```
 
-**参数**
+**Arguments**
 
-* `bitmap` — 位图对象。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)。- `value` — 待检查的元素。[(U)Int8/16/32/64](/sql-reference/data-types/int-uint/)
+- `bitmap` — Bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `value` — Element to check for. [(U)Int8/16/32/64](/sql-reference/data-types/int-uint/) 
 
-**返回值**
+**Returned value**
 
-如果位图包含指定的值，则返回 `1`，否则返回 `0`，返回类型为 [`UInt8`](/sql-reference/data-types/int-uint)
+Returns `1` if the bitmap contains the specified value, otherwise `0` [`UInt8`](/sql-reference/data-types/int-uint)
 
-**示例**
+**Examples**
 
-**使用示例**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapContains(bitmapBuild([1, 2, 3]), 2) AS res;
@@ -258,29 +271,31 @@ SELECT bitmapContains(bitmapBuild([1, 2, 3]), 2) AS res;
 └─────┘
 ```
 
+
+
 ## bitmapHasAll {#bitmapHasAll}
 
-自 v20.1 起引入
+Introduced in: v20.1
 
-检查第一个位图是否包含第二个位图中所有已设置的位。
+Checks if the first bitmap contains all set bits of the second bitmap.
 
-**语法**
+**Syntax**
 
 ```sql
 bitmapHasAll(bitmap1, bitmap2)
 ```
 
-**参数**
+**Arguments**
 
-* `bitmap1` — 第一个位图对象。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)。- `bitmap2` — 第二个位图对象。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)。
+- `bitmap1` — First bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — Second bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
 
-**返回值**
+**Returned value**
 
-如果第二个位图中所有已设置的位都存在于第一个位图中，则返回 `1`，否则返回 `0`，返回类型为 [`UInt8`](/sql-reference/data-types/int-uint)
+Returns `1` if all set bits of the second bitmap are present in the first bitmap, otherwise `0` [`UInt8`](/sql-reference/data-types/int-uint)
 
-**示例**
+**Examples**
 
-**使用示例**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapHasAll(bitmapBuild([1, 2, 3]), bitmapBuild([2, 3])) AS res;
@@ -292,29 +307,31 @@ SELECT bitmapHasAll(bitmapBuild([1, 2, 3]), bitmapBuild([2, 3])) AS res;
 └─────┘
 ```
 
+
+
 ## bitmapHasAny {#bitmapHasAny}
 
-引入版本：v20.1
+Introduced in: v20.1
 
-检查第一个 bitmap 是否包含第二个 bitmap 中设置的任意一位。
+Checks if the first bitmap contains any set bits of the second bitmap.
 
-**语法**
+**Syntax**
 
 ```sql
 bitmapHasAny(bitmap1, bitmap2)
 ```
 
-**参数**
+**Arguments**
 
-* `bitmap1` — 第一个位图对象。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction) - `bitmap2` — 第二个位图对象。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction).
+- `bitmap1` — First bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — Second bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
 
-**返回值**
+**Returned value**
 
-如果第二个位图中的任意位在第一个位图中存在，则返回 `1`，否则返回 `0` [`UInt8`](/sql-reference/data-types/int-uint)
+Returns `1` if any bits of the second bitmap are present in the first bitmap, otherwise `0` [`UInt8`](/sql-reference/data-types/int-uint)
 
-**示例**
+**Examples**
 
-**用法示例**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapHasAny(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5])) AS res;
@@ -326,29 +343,31 @@ SELECT bitmapHasAny(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5])) AS res;
 └─────┘
 ```
 
+
+
 ## bitmapMax {#bitmapMax}
 
-引入版本：v20.1
+Introduced in: v20.1
 
-返回位图中被置位的最高位的位置，如果位图为空则返回 `0`。
+Returns the position of the greatest bit set in a bitmap, or `0` if the bitmap is empty.
 
-**语法**
+**Syntax**
 
 ```sql
 bitmapMax(bitmap)
 ```
 
-**参数**
+**Arguments**
 
-* `bitmap` — 位图对象。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)。
+- `bitmap` — Bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
 
-**返回值**
+**Returned value**
 
-返回位图中最高被置位的位的位置，否则返回 `0`，类型为 [`UInt64`](/sql-reference/data-types/int-uint)
+Returns the position of the greatest bit set in the bitmap, otherwise `0` [`UInt64`](/sql-reference/data-types/int-uint)
 
-**示例**
+**Examples**
 
-**用法示例**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapMax(bitmapBuild([1, 2, 3, 4, 5])) AS res;
@@ -360,29 +379,31 @@ SELECT bitmapMax(bitmapBuild([1, 2, 3, 4, 5])) AS res;
 └─────┘
 ```
 
+
+
 ## bitmapMin {#bitmapMin}
 
-引入于：v20.1
+Introduced in: v20.1
 
-返回位图中第一个被设置为 1 的位的位置。如果所有位都未设置，则返回 `UINT32_MAX`（如果位图包含超过 `2^64` 位，则返回 `UINT64_MAX`）。
+Returns the position of the smallest bit set in a bitmap. If all bits are unset, or `UINT32_MAX` (`UINT64_MAX` if the bitmap contains more than `2^64` bits).
 
-**语法**
+**Syntax**
 
 ```sql
 bitmapMin(bitmap)
 ```
 
-**参数**
+**Arguments**
 
-* `bitmap` — Bitmap 对象。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)。
+- `bitmap` — Bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
 
-**返回值**
+**Returned value**
 
-返回 bitmap 中被置位的最小位的位置，如果不存在则返回 `UINT32_MAX`/`UINT64_MAX` [`UInt64`](/sql-reference/data-types/int-uint)。
+Returns the position of the smallest bit set in the bitmap, or `UINT32_MAX`/`UINT64_MAX` [`UInt64`](/sql-reference/data-types/int-uint)
 
-**示例**
+**Examples**
 
-**使用示例**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapMin(bitmapBuild([3, 5, 2, 6])) AS res;
@@ -394,29 +415,31 @@ SELECT bitmapMin(bitmapBuild([3, 5, 2, 6])) AS res;
 └─────┘
 ```
 
+
+
 ## bitmapOr {#bitmapOr}
 
-引入版本：v20.1
+Introduced in: v20.1
 
-计算两个 bitmap 的逻辑或（OR）。
+Computes the logical disjunction (OR) of two bitmaps.
 
-**语法**
+**Syntax**
 
 ```sql
 bitmapOr(bitmap1, bitmap2)
 ```
 
-**参数**
+**Arguments**
 
-* `bitmap1` — 第一个 bitmap 对象。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — 第二个 bitmap 对象。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction).
+- `bitmap1` — First bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — Second bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
 
-**返回值**
+**Returned value**
 
-返回一个 bitmap，其中包含在任一输入 bitmap 中被置位的比特。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
+Returns a bitmap containing set bits present in either input bitmap [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
 
-**示例**
+**Examples**
 
-**使用示例**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapToArray(bitmapOr(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5]))) AS res;
@@ -428,29 +451,31 @@ SELECT bitmapToArray(bitmapOr(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5]))) A
 └─────────────────┘
 ```
 
+
+
 ## bitmapOrCardinality {#bitmapOrCardinality}
 
-自 v20.1 引入
+Introduced in: v20.1
 
-返回两个位图进行逻辑或（OR）运算后的基数。
+Returns the cardinality of the logical disjunction (OR) of two bitmaps.
 
-**语法**
+**Syntax**
 
 ```sql
 bitmapOrCardinality(bitmap1, bitmap2)
 ```
 
-**参数**
+**Arguments**
 
-* `bitmap1` — 第一个位图对象。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — 第二个位图对象。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction).
+- `bitmap1` — First bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — Second bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
 
-**返回值**
+**Returned value**
 
-返回两个位图并集中的已置位位数，类型为 [`UInt64`](/sql-reference/data-types/int-uint)
+Returns the number of set bits in the union of the two bitmaps [`UInt64`](/sql-reference/data-types/int-uint)
 
-**示例**
+**Examples**
 
-**用法示例**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapOrCardinality(bitmapBuild([1,2,3]), bitmapBuild([3,4,5])) AS res;
@@ -462,29 +487,31 @@ SELECT bitmapOrCardinality(bitmapBuild([1,2,3]), bitmapBuild([3,4,5])) AS res;
 └─────┘
 ```
 
+
+
 ## bitmapSubsetInRange {#bitmapSubsetInRange}
 
-自 v20.1 起引入
+Introduced in: v20.1
 
-返回位图在指定范围 [start, end) 内的一个子集，仅包含该范围内已置位的比特。索引从 1 开始计数。
+Returns a subset of the bitmap, containing only the set bits in the specified range [start, end). Uses 1-based indexing.
 
-**语法**
+**Syntax**
 
 ```sql
 bitmapSubsetInRange(bitmap, start, end)
 ```
 
-**参数**
+**Arguments**
 
-* `bitmap` — 要从中提取子集的位图。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)。 - `start` — 范围起始位置（包含）。[`UInt*`](/sql-reference/data-types/int-uint) - `end` — 范围结束位置（不包含）。[`UInt*`](/sql-reference/data-types/int-uint)
+- `bitmap` — Bitmap to extract the subset from. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `start` — Start of the range (inclusive). [`UInt*`](/sql-reference/data-types/int-uint) - `end` — End of the range (exclusive). [`UInt*`](/sql-reference/data-types/int-uint) 
 
-**返回值**
+**Returned value**
 
-返回一个仅包含指定范围内已设置位的位图。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
+Returns a bitmap containing only the set bits in the specified range [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
 
-**示例**
+**Examples**
 
-**用法示例**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapToArray(bitmapSubsetInRange(bitmapBuild([1, 2, 3, 4, 5]), 2, 5)) AS res;
@@ -496,31 +523,31 @@ SELECT bitmapToArray(bitmapSubsetInRange(bitmapBuild([1, 2, 3, 4, 5]), 2, 5)) AS
 └───────────┘
 ```
 
+
+
 ## bitmapSubsetLimit {#bitmapSubsetLimit}
 
-自 v20.1 引入
+Introduced in: v20.1
 
-返回位图中从位置 `range_start` 开始的一个子集，其中最多包含 `cardinality_limit` 个已置位的位。索引从 1 开始计数。
+Returns a subset of a bitmap from position `range_start` with at most `cardinality_limit` set bits. Uses 1-based indexing.
 
-**语法**
+**Syntax**
 
 ```sql
 bitmapSubsetLimit(bitmap, range_start, cardinality_limit)
 ```
 
-**参数**
+**Arguments**
 
-* `bitmap` — Bitmap 对象。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
-* `range_start` — 范围起始值（含）。[`UInt32`](/sql-reference/data-types/int-uint)
-* `cardinality_limit` — 子集的最大基数。[`UInt32`](/sql-reference/data-types/int-uint)
+- `bitmap` — Bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `range_start` — Start of the range (inclusive). [`UInt32`](/sql-reference/data-types/int-uint) - `cardinality_limit` — Maximum cardinality of the subset. [`UInt32`](/sql-reference/data-types/int-uint) 
 
-**返回值**
+**Returned value**
 
-返回一个 bitmap，其中从 `range_start` 开始，至多包含 `cardinality_limit` 个已设置的位。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
+Returns a bitmap containing at most `cardinality_limit` set bits, starting from `range_start` [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
 
-**示例**
+**Examples**
 
-**使用示例**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapToArray(bitmapSubsetLimit(bitmapBuild([1, 5, 3, 2, 8]), 3, 2)) AS res;
@@ -532,29 +559,31 @@ SELECT bitmapToArray(bitmapSubsetLimit(bitmapBuild([1, 5, 3, 2, 8]), 3, 2)) AS r
 └────────┘
 ```
 
+
+
 ## bitmapToArray {#bitmapToArray}
 
-自 v20.1 起引入
+Introduced in: v20.1
 
-将 bitmap 转换为无符号整数数组。它与函数 [`bitmapBuild`](/sql-reference/functions/bitmap-functions#bitmapBuild) 的作用相反。
+Converts a bitmap to an array of unsigned integers. It is the opposite of function [`bitmapBuild`](/sql-reference/functions/bitmap-functions#bitmapBuild).
 
-**语法**
+**Syntax**
 
 ```sql
 bitmapToArray(bitmap)
 ```
 
-**参数**
+**Arguments**
 
-* `bitmap` — 要转换的位图。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)。
+- `bitmap` — Bitmap to convert. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
 
-**返回值**
+**Returned value**
 
-返回一个由位图中包含的无符号整数组成的数组 [`Array(UInt*)`](/sql-reference/data-types/array)。
+Returns an array of unsigned integers contained in the bitmap [`Array(UInt*)`](/sql-reference/data-types/array)
 
-**示例**
+**Examples**
 
-**使用示例**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapToArray(bitmapBuild([1, 2, 3, 4, 5])) AS res;
@@ -566,29 +595,33 @@ SELECT bitmapToArray(bitmapBuild([1, 2, 3, 4, 5])) AS res;
 └─────────────────┘
 ```
 
+
+
 ## bitmapTransform {#bitmapTransform}
 
-自 v20.1 引入
+Introduced in: v20.1
 
-通过将 `from_array` 中指定的位值替换为 `to_array` 中对应的位值，最多可以修改位图中的 N 个比特位。
 
-**语法**
+Changes up to N bits in a bitmap by swapping specific bit values in `from_array` with corresponding ones in `to_array`.
+    
+
+**Syntax**
 
 ```sql
 bitmapTransform(bitmap, from_array, to_array)
 ```
 
-**参数**
+**Arguments**
 
-* `bitmap` — Bitmap 对象。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)。 - `from_array` — 包含要被替换的原始置位比特的数组。[`Array(T)`](/sql-reference/data-types/array)。 - `to_array` — 包含用于替换的新置位比特的数组。[`Array(T)`](/sql-reference/data-types/array)。
+- `bitmap` — Bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `from_array` — Array of original set bits to be replaced. [`Array(T)`](/sql-reference/data-types/array). - `to_array` — Array of new set bits to replace with. [`Array(T)`](/sql-reference/data-types/array). 
 
-**返回值**
+**Returned value**
 
-返回一个根据给定映射关系完成元素转换的 bitmap。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
+Returns a bitmap with elements transformed according to the given mapping [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
 
-**示例**
+**Examples**
 
-**用法示例**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapToArray(bitmapTransform(bitmapBuild([1, 2, 3, 4, 5]), [2, 4], [20, 40])) AS res;
@@ -600,29 +633,31 @@ SELECT bitmapToArray(bitmapTransform(bitmapBuild([1, 2, 3, 4, 5]), [2, 4], [20, 
 └───────────────────┘
 ```
 
+
+
 ## bitmapXor {#bitmapXor}
 
-自 v20.1 版本引入
+Introduced in: v20.1
 
-计算两个位图的对称差（异或）。
+Computes the symmetric difference (XOR) of two bitmaps.
 
-**语法**
+**Syntax**
 
 ```sql
 bitmapXor(bitmap1, bitmap2)
 ```
 
-**参数**
+**Arguments**
 
-* `bitmap1` — 第一个 bitmap 对象。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — 第二个 bitmap 对象。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction).
+- `bitmap1` — First bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — Second bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
 
-**返回值**
+**Returned value**
 
-返回一个 bitmap，其中包含在任一输入 bitmap 中、但不同时出现在两个 bitmap 中的已置位比特。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
+Returns a bitmap containing set bits present in either input bitmap, but not in both [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
 
-**示例**
+**Examples**
 
-**用法示例**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapToArray(bitmapXor(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5]))) AS res;
@@ -634,30 +669,31 @@ SELECT bitmapToArray(bitmapXor(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5]))) 
 └──────────────┘
 ```
 
+
+
 ## bitmapXorCardinality {#bitmapXorCardinality}
 
-引入版本：v20.1
+Introduced in: v20.1
 
-返回两个 bitmap 的 XOR（对称差）运算结果的基数。
+Returns the cardinality of the XOR (symmetric difference) of two bitmaps.
 
-**语法**
+**Syntax**
 
 ```sql
 bitmapXorCardinality(bitmap1, bitmap2)
 ```
 
-**参数**
+**Arguments**
 
-* `bitmap1` — 第一个位图对象。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
-* `bitmap2` — 第二个位图对象。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
+- `bitmap1` — First bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — Second bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
 
-**返回值**
+**Returned value**
 
-返回两个位图对称差中被置位的比特数，[`UInt64`](/sql-reference/data-types/int-uint)
+Returns the number of set bits in the symmetric difference of the two bitmaps [`UInt64`](/sql-reference/data-types/int-uint)
 
-**示例**
+**Examples**
 
-**使用示例**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapXorCardinality(bitmapBuild([1,2,3]), bitmapBuild([3,4,5])) AS res;
@@ -669,29 +705,31 @@ SELECT bitmapXorCardinality(bitmapBuild([1,2,3]), bitmapBuild([3,4,5])) AS res;
 └─────┘
 ```
 
+
+
 ## subBitmap {#subBitmap}
 
-自 v21.9 起引入
+Introduced in: v21.9
 
-返回一个从位置 `offset` 开始的位图子集。返回位图的最大基数为 `cardinality_limit`。
+Returns a subset of the bitmap, starting from position `offset`. The maximum cardinality of the returned bitmap is `cardinality_limit`.
 
-**语法**
+**Syntax**
 
 ```sql
 subBitmap(bitmap, offset, cardinality_limit)
 ```
 
-**参数**
+**Arguments**
 
-* `bitmap` — 位图对象。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)。- `offset` — 从起始位置开始需要跳过的已置位位的数量（从零开始计数）。[`UInt32`](/sql-reference/data-types/int-uint) - `cardinality_limit` — 要包含在子集中的已置位位的最大数量。[`UInt32`](/sql-reference/data-types/int-uint)
+- `bitmap` — Bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `offset` — Number of set bits to skip from the beginning (zero-based). [`UInt32`](/sql-reference/data-types/int-uint) - `cardinality_limit` — Maximum number of set bits to include in the subset. [`UInt32`](/sql-reference/data-types/int-uint) 
 
-**返回值**
+**Returned value**
 
-返回一个位图，在按升序跳过 `offset` 个已置位位之后，最多包含 `limit` 个已置位位。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
+Returns a bitmap containing at most `limit` set bits, starting after skipping `offset` set bits in ascending order [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
 
-**示例**
+**Examples**
 
-**使用示例**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapToArray(subBitmap(bitmapBuild([1, 2, 3, 4, 5]), 2, 2)) AS res;

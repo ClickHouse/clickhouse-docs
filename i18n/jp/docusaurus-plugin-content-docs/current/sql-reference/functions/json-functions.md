@@ -86,29 +86,33 @@ SELECT json, JSONAllPaths(json) FROM test;
 ```
 
 
+
 ## JSONAllPathsWithTypes {#JSONAllPathsWithTypes}
 
-導入バージョン: v24.8
+Introduced in: v24.8
 
-JSON カラム内の各行に保存されている、すべてのパスとそのデータ型の一覧を返します。
 
-**構文**
+Returns the list of all paths and their data types stored in each row in JSON column.
+        
+
+**Syntax**
 
 ```sql
 JSONAllPathsWithTypes(json)
 ```
 
-**引数**
+**Arguments**
 
-* `json` — JSON カラム。[`JSON`](/sql-reference/data-types/newjson)
+- `json` — JSON column. [`JSON`](/sql-reference/data-types/newjson)
 
-**戻り値**
 
-JSON カラム内のすべてのパスとそのデータ型のマップを返します。[`Map(String, String)`](/sql-reference/data-types/map)
+**Returned value**
 
-**例**
+Returns a map of all paths and their data types in the JSON column. [`Map(String, String)`](/sql-reference/data-types/map)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE test (json JSON(max_dynamic_paths=1)) ENGINE = Memory;
@@ -125,32 +129,36 @@ SELECT json, JSONAllPathsWithTypes(json) FROM test;
 ```
 
 
+
 ## JSONArrayLength {#JSONArrayLength}
 
-導入バージョン: v23.2
+Introduced in: v23.2
 
-最も外側の JSON 配列内の要素数を返します。
-入力 JSON 文字列が無効な場合、関数は `NULL` を返します。
 
-**構文**
+Returns the number of elements in the outermost JSON array.
+The function returns `NULL` if input JSON string is invalid.
+    
+
+**Syntax**
 
 ```sql
 JSONArrayLength(json)
 ```
 
-**別名**: `JSON_ARRAY_LENGTH`
+**Aliases**: `JSON_ARRAY_LENGTH`
 
-**引数**
+**Arguments**
 
-* `json` — 有効な JSON を表す文字列。[`String`](/sql-reference/data-types/string)
+- `json` — String with valid JSON. [`String`](/sql-reference/data-types/string)
 
-**返される値**
 
-`json` が有効な JSON 配列を表す文字列であれば配列要素の数を返し、それ以外の場合は `NULL` を返します。[`Nullable(UInt64)`](/sql-reference/data-types/nullable)
+**Returned value**
 
-**例**
+Returns the number of array elements if `json` is a valid JSON array string, otherwise returns `NULL`. [`Nullable(UInt64)`](/sql-reference/data-types/nullable)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT
@@ -165,29 +173,33 @@ SELECT
 ```
 
 
+
 ## JSONDynamicPaths {#JSONDynamicPaths}
 
-導入バージョン: v24.8
+Introduced in: v24.8
 
-JSON カラム内で個別のサブカラムとして保存されている動的パスの一覧を返します。
 
-**構文**
+Returns the list of dynamic paths that are stored as separate subcolumns in JSON column.
+        
+
+**Syntax**
 
 ```sql
 JSONDynamicPaths(json)
 ```
 
-**引数**
+**Arguments**
 
-* `json` — JSON カラム。[`JSON`](/sql-reference/data-types/newjson)
+- `json` — JSON column. [`JSON`](/sql-reference/data-types/newjson)
 
-**戻り値**
 
-JSON カラム内に含まれる動的パスの配列を返します。[`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**例**
+Returns an array of dynamic paths in the JSON column. [`Array(String)`](/sql-reference/data-types/array)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE test (json JSON(max_dynamic_paths=1)) ENGINE = Memory;
@@ -204,29 +216,33 @@ SELECT json, JSONDynamicPaths(json) FROM test;
 ```
 
 
+
 ## JSONDynamicPathsWithTypes {#JSONDynamicPathsWithTypes}
 
-導入されたバージョン: v24.8
+Introduced in: v24.8
 
-JSON カラム内の各行について、個別のサブカラムとして保存されている動的パスとその型の一覧を返します。
 
-**構文**
+Returns the list of dynamic paths that are stored as separate subcolumns and their types in each row in JSON column.
+        
+
+**Syntax**
 
 ```sql
 JSONDynamicPathsWithTypes(json)
 ```
 
-**引数**
+**Arguments**
 
-* `json` — JSONカラム。[`JSON`](/sql-reference/data-types/newjson)
+- `json` — JSON column. [`JSON`](/sql-reference/data-types/newjson)
 
-**戻り値**
 
-JSONカラム内に存在する動的パスと、それぞれのデータ型のマップを返します。[`Map(String, String)`](/sql-reference/data-types/map)
+**Returned value**
 
-**例**
+Returns a map of dynamic paths and their data types in the JSON column. [`Map(String, String)`](/sql-reference/data-types/map)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE test (json JSON(max_dynamic_paths=1)) ENGINE = Memory;
@@ -243,31 +259,35 @@ SELECT json, JSONDynamicPathsWithTypes(json) FROM test;
 ```
 
 
+
 ## JSONExtract {#JSONExtract}
 
-導入バージョン: v19.14
+Introduced in: v19.14
 
-JSON をパースし、指定された ClickHouse データ型の値を抽出します。
 
-**構文**
+Parses JSON and extracts a value with given ClickHouse data type.
+        
+
+**Syntax**
 
 ```sql
 JSONExtract(json[, indices_or_keys, ...], return_type)
 ```
 
-**引数**
+**Arguments**
 
-* `json` — 解析する JSON 文字列。[`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 0 個以上の引数からなるリストで、それぞれは文字列または整数を指定できます。[`String`](/sql-reference/data-types/string) または [`(U)Int*`](/sql-reference/data-types/int-uint)
-* `return_type` — 返す ClickHouse のデータ型。[`String`](/sql-reference/data-types/string)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `return_type` — ClickHouse data type to return. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-可能であれば指定された ClickHouse のデータ型の値を返し、それ以外の場合はその型のデフォルト値を返します。
+**Returned value**
 
-**例**
+Returns a value of specified ClickHouse data type if possible, otherwise returns the default value for that type.
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtract('{"a": "hello", "b": [-100, 200.0, 300]}', 'Tuple(String, Array(Float64))') AS res;
@@ -280,30 +300,34 @@ SELECT JSONExtract('{"a": "hello", "b": [-100, 200.0, 300]}', 'Tuple(String, Arr
 ```
 
 
+
 ## JSONExtractArrayRaw {#JSONExtractArrayRaw}
 
-導入バージョン: v20.1
+Introduced in: v20.1
 
-JSON 配列の各要素を、パース前の文字列のまま格納した配列を返します。
 
-**構文**
+Returns an array with elements of JSON array, each represented as unparsed string.
+        
+
+**Syntax**
 
 ```sql
 JSONExtractArrayRaw(json[, indices_or_keys, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `json` — 解析する JSON 文字列。[`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 0 個以上の引数からなるリストで、それぞれは文字列または整数とすることができます。[`String`](/sql-reference/data-types/string) または [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-JSON 配列の要素を表す文字列の配列を返します。対象の部分が配列でない場合や存在しない場合は、空配列を返します。[`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**例**
+Returns an array of strings with JSON array elements. If the part is not an array or does not exist, an empty array will be returned. [`Array(String)`](/sql-reference/data-types/array)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtractArrayRaw('{"a": "hello", "b": [-100, 200.0, "hello"]}', 'b') AS res;
@@ -316,30 +340,34 @@ SELECT JSONExtractArrayRaw('{"a": "hello", "b": [-100, 200.0, "hello"]}', 'b') A
 ```
 
 
+
 ## JSONExtractArrayRawCaseInsensitive {#JSONExtractArrayRawCaseInsensitive}
 
-導入バージョン: v25.8
+Introduced in: v25.8
 
-JSON 配列の各要素を、それぞれパースされていない文字列として表現した配列を、キーの大文字・小文字を区別しない一致で取得して返します。この関数は [`JSONExtractArrayRaw`](#JSONExtractArrayRaw) と類似しています。
 
-**構文**
+Returns an array with elements of JSON array, each represented as unparsed string, using case-insensitive key matching. This function is similar to [`JSONExtractArrayRaw`](#JSONExtractArrayRaw).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractArrayRawCaseInsensitive(json [, indices_or_keys]...)
 ```
 
-**引数**
+**Arguments**
 
-* `json` — 解析する JSON 文字列 [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 省略可。配列内を走査するためのインデックスまたはキー。キーは大文字小文字を区別せずに照合される [`String`](/sql-reference/data-types/string) または [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the array. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返される値**
 
-生の JSON 文字列からなる配列を返します。[`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**使用例**
+Returns an array of raw JSON strings. [`Array(String)`](/sql-reference/data-types/array)
 
-**基本**
+**Examples**
+
+**basic**
 
 ```sql title=Query
 SELECT JSONExtractArrayRawCaseInsensitive('{"Items": [1, 2, 3]}', 'ITEMS')
@@ -350,30 +378,34 @@ SELECT JSONExtractArrayRawCaseInsensitive('{"Items": [1, 2, 3]}', 'ITEMS')
 ```
 
 
+
 ## JSONExtractBool {#JSONExtractBool}
 
-導入バージョン: v20.1
+Introduced in: v20.1
 
-JSON をパースし、Bool 型の値を抽出します。
 
-**構文**
+Parses JSON and extracts a value of Bool type.
+        
+
+**Syntax**
 
 ```sql
 JSONExtractBool(json[, indices_or_keys, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `json` — 解析する JSON 文字列。[`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 0 個以上の引数からなるリストで、各要素は文字列または整数のいずれかです。[`String`](/sql-reference/data-types/string) または [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返り値**
 
-存在する場合は `Bool` 型の値を返し、存在しない場合は `0` を返します。[`Bool`](/sql-reference/data-types/boolean)
+**Returned value**
 
-**例**
+Returns a Bool value if it exists, otherwise returns `0`. [`Bool`](/sql-reference/data-types/boolean)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtractBool('{"passed": true}', 'passed') AS res;
@@ -386,30 +418,34 @@ SELECT JSONExtractBool('{"passed": true}', 'passed') AS res;
 ```
 
 
+
 ## JSONExtractBoolCaseInsensitive {#JSONExtractBoolCaseInsensitive}
 
-導入バージョン: v25.8
+Introduced in: v25.8
 
-JSON をパースし、キーを大文字小文字を区別せずに照合してブール値を抽出します。この関数は [`JSONExtractBool`](#JSONExtractBool) と同様です。
 
-**構文**
+Parses JSON and extracts a boolean value using case-insensitive key matching. This function is similar to [`JSONExtractBool`](#JSONExtractBool).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractBoolCaseInsensitive(json [, indices_or_keys]...)
 ```
 
-**引数**
+**Arguments**
 
-* `json` — 解析する JSON 文字列 [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — オプション。フィールドへアクセスするためのインデックスまたはキー。キーは大文字小文字を区別せずに照合される [`String`](/sql-reference/data-types/string) または [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the field. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返り値**
 
-抽出されたブール値（true の場合は 1、false の場合は 0）、見つからない場合は 0 を返す。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**使用例**
+Returns the extracted boolean value (1 for true, 0 for false), 0 if not found. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**基本**
+**Examples**
+
+**basic**
 
 ```sql title=Query
 SELECT JSONExtractBoolCaseInsensitive('{"IsActive": true}', 'isactive')
@@ -420,31 +456,35 @@ SELECT JSONExtractBoolCaseInsensitive('{"IsActive": true}', 'isactive')
 ```
 
 
+
 ## JSONExtractCaseInsensitive {#JSONExtractCaseInsensitive}
 
-導入バージョン: v25.8
+Introduced in: v25.8
 
-JSON を解析し、キーに対して大文字・小文字を区別しない照合を行って、指定された ClickHouse データ型の値を抽出します。この関数は [`JSONExtract`](#JSONExtract) と類似しています。
 
-**構文**
+Parses JSON and extracts a value of the given ClickHouse data type using case-insensitive key matching. This function is similar to [`JSONExtract`](#JSONExtract).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractCaseInsensitive(json [, indices_or_keys...], return_type)
 ```
 
-**引数**
+**Arguments**
 
-* `json` — 解析する JSON 文字列 [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 省略可能。フィールドにアクセスするためのインデックスまたはキー。キーは大文字小文字を区別せずに照合される [`String`](/sql-reference/data-types/string) または [`(U)Int*`](/sql-reference/data-types/int-uint)
-* `return_type` — 抽出する ClickHouse のデータ型 [`String`](/sql-reference/data-types/string)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the field. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `return_type` — The ClickHouse data type to extract [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-指定されたデータ型で抽出された値を返します。 [`Any`](/sql-reference/data-types)
+**Returned value**
 
-**例**
+Returns the extracted value in the specified data type. [`Any`](/sql-reference/data-types)
 
-**int&#95;type**
+**Examples**
+
+**int_type**
 
 ```sql title=Query
 SELECT JSONExtractCaseInsensitive('{"Number": 123}', 'number', 'Int32')
@@ -454,7 +494,7 @@ SELECT JSONExtractCaseInsensitive('{"Number": 123}', 'number', 'Int32')
 123
 ```
 
-**array&#95;type**
+**array_type**
 
 ```sql title=Query
 SELECT JSONExtractCaseInsensitive('{"List": [1, 2, 3]}', 'list', 'Array(Int32)')
@@ -465,30 +505,34 @@ SELECT JSONExtractCaseInsensitive('{"List": [1, 2, 3]}', 'list', 'Array(Int32)')
 ```
 
 
+
 ## JSONExtractFloat {#JSONExtractFloat}
 
-導入バージョン: v20.1
+Introduced in: v20.1
 
-JSON を解析し、Float 型の値を抽出します。
 
-**構文**
+Parses JSON and extracts a value of Float type.
+        
+
+**Syntax**
 
 ```sql
 JSONExtractFloat(json[, indices_or_keys, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `json` — 解析する JSON 文字列。[`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 0 個以上の引数からなるリストで、それぞれは文字列または整数です。[`String`](/sql-reference/data-types/string) または [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-存在する場合は浮動小数点値を返し、存在しない場合は `0` を返します。[`Float64`](/sql-reference/data-types/float)
+**Returned value**
 
-**例**
+Returns a Float value if it exists, otherwise returns `0`. [`Float64`](/sql-reference/data-types/float)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtractFloat('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 2) AS res;
@@ -501,30 +545,34 @@ SELECT JSONExtractFloat('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 2) AS re
 ```
 
 
+
 ## JSONExtractFloatCaseInsensitive {#JSONExtractFloatCaseInsensitive}
 
-導入されたバージョン: v25.8
+Introduced in: v25.8
 
-JSON を解析し、大文字・小文字を区別しないキーの照合によって Float 型の値を抽出します。この関数は [`JSONExtractFloat`](#JSONExtractFloat) と類似しています。
 
-**構文**
+Parses JSON and extracts a value of Float type using case-insensitive key matching. This function is similar to [`JSONExtractFloat`](#JSONExtractFloat).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractFloatCaseInsensitive(json [, indices_or_keys]...)
 ```
 
-**引数**
+**Arguments**
 
-* `json` — 解析する JSON 文字列 [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 省略可。フィールドを参照するためのインデックスまたはキー。キーは大文字小文字を区別せずに照合されます [`String`](/sql-reference/data-types/string) または [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the field. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-抽出された浮動小数点数の値を返します。見つからない場合、または変換できない場合は 0 を返します。[`Float64`](/sql-reference/data-types/float)
+**Returned value**
 
-**例**
+Returns the extracted Float value, 0 if not found or cannot be converted. [`Float64`](/sql-reference/data-types/float)
 
-**基本**
+**Examples**
+
+**basic**
 
 ```sql title=Query
 SELECT JSONExtractFloatCaseInsensitive('{"Price": 12.34}', 'PRICE')
@@ -535,30 +583,34 @@ SELECT JSONExtractFloatCaseInsensitive('{"Price": 12.34}', 'PRICE')
 ```
 
 
+
 ## JSONExtractInt {#JSONExtractInt}
 
-導入バージョン: v20.1
+Introduced in: v20.1
 
-JSONを解析して、Int 型の値を抽出します。
 
-**構文**
+Parses JSON and extracts a value of Int type.
+        
+
+**Syntax**
 
 ```sql
 JSONExtractInt(json[, indices_or_keys, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `json` — パースする JSON 文字列。[`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 0 個以上の引数からなるリストで、それぞれは文字列または整数とすることができます。[`String`](/sql-reference/data-types/string) または [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-値が存在する場合は整数値を返し、存在しない場合は `0` を返します。[`Int64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns an Int value if it exists, otherwise returns `0`. [`Int64`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtractInt('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 1) AS res;
@@ -571,30 +623,34 @@ SELECT JSONExtractInt('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 1) AS res;
 ```
 
 
+
 ## JSONExtractIntCaseInsensitive {#JSONExtractIntCaseInsensitive}
 
-導入バージョン: v25.8
+Introduced in: v25.8
 
-JSON をパースし、キーの大文字と小文字を区別せずに Int 型の値を抽出します。この関数は [`JSONExtractInt`](#JSONExtractInt) と同様です。
 
-**構文**
+Parses JSON and extracts a value of Int type using case-insensitive key matching. This function is similar to [`JSONExtractInt`](#JSONExtractInt).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractIntCaseInsensitive(json [, indices_or_keys]...)
 ```
 
-**引数**
+**Arguments**
 
-* `json` — パースする JSON 文字列 [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 省略可。フィールドに移動するためのインデックスまたはキー。キーは大文字・小文字を区別せずに照合される [`String`](/sql-reference/data-types/string) または [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the field. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返される値**
 
-抽出された Int 値を返します。見つからない場合や変換できない場合は 0 を返します。[`Int64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**使用例**
+Returns the extracted Int value, 0 if not found or cannot be converted. [`Int64`](/sql-reference/data-types/int-uint)
 
-**基本**
+**Examples**
+
+**basic**
 
 ```sql title=Query
 SELECT JSONExtractIntCaseInsensitive('{"Value": 123}', 'value')
@@ -604,7 +660,7 @@ SELECT JSONExtractIntCaseInsensitive('{"Value": 123}', 'value')
 123
 ```
 
-**ネスト**
+**nested**
 
 ```sql title=Query
 SELECT JSONExtractIntCaseInsensitive('{"DATA": {"COUNT": 42}}', 'data', 'Count')
@@ -615,30 +671,34 @@ SELECT JSONExtractIntCaseInsensitive('{"DATA": {"COUNT": 42}}', 'data', 'Count')
 ```
 
 
+
 ## JSONExtractKeys {#JSONExtractKeys}
 
-導入バージョン：v21.11
+Introduced in: v21.11
 
-JSON 文字列を解析し、キーを抽出します。
 
-**構文**
+Parses a JSON string and extracts the keys.
+        
+
+**Syntax**
 
 ```sql
 JSONExtractKeys(json[, indices_or_keys, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `json` — 解析する JSON 文字列。[`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 0 個以上の引数からなるリストで、各引数は文字列または整数を指定可能。[`String`](/sql-reference/data-types/string) または [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返り値**
 
-JSON オブジェクトのキーを要素とする配列を返します。[`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**例**
+Returns an array with the keys of the JSON object. [`Array(String)`](/sql-reference/data-types/array)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtractKeys('{"a": "hello", "b": [-100, 200.0, 300]}') AS res;
@@ -651,31 +711,35 @@ SELECT JSONExtractKeys('{"a": "hello", "b": [-100, 200.0, 300]}') AS res;
 ```
 
 
+
 ## JSONExtractKeysAndValues {#JSONExtractKeysAndValues}
 
-導入バージョン: v20.1
+Introduced in: v20.1
 
-指定した ClickHouse データ型の値を持つ JSON から、キーと値のペアを抽出します。
 
-**構文**
+Parses key-value pairs from a JSON where the values are of the given ClickHouse data type.
+        
+
+**Syntax**
 
 ```sql
 JSONExtractKeysAndValues(json[, indices_or_keys, ...], value_type)
 ```
 
-**引数**
+**Arguments**
 
-* `json` — 解析する JSON 文字列。[`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 0 個以上の引数からなるリストで、それぞれの要素は文字列または整数です。[`String`](/sql-reference/data-types/string) または [`(U)Int*`](/sql-reference/data-types/int-uint)
-* `value_type` — 値の ClickHouse データ型。[`String`](/sql-reference/data-types/string)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `value_type` — ClickHouse data type of the values. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-解析されたキーと値のペアからなるタプルの配列を返します。[`Array(Tuple(String, value_type))`](/sql-reference/data-types/array)
+**Returned value**
 
-**例**
+Returns an array of tuples with the parsed key-value pairs. [`Array(Tuple(String, value_type))`](/sql-reference/data-types/array)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtractKeysAndValues('{"x": {"a": 5, "b": 7, "c": 11}}', 'Int8', 'x') AS res;
@@ -688,31 +752,35 @@ SELECT JSONExtractKeysAndValues('{"x": {"a": 5, "b": 7, "c": 11}}', 'Int8', 'x')
 ```
 
 
+
 ## JSONExtractKeysAndValuesCaseInsensitive {#JSONExtractKeysAndValuesCaseInsensitive}
 
-導入バージョン: v25.8
+Introduced in: v25.8
 
-キー名の大文字小文字を区別しないマッチングを用いて、JSON からキーと値のペアを抽出します。この関数は [`JSONExtractKeysAndValues`](#JSONExtractKeysAndValues) に類似しています。
 
-**構文**
+Parses key-value pairs from JSON using case-insensitive key matching. This function is similar to [`JSONExtractKeysAndValues`](#JSONExtractKeysAndValues).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractKeysAndValuesCaseInsensitive(json [, indices_or_keys...], value_type)
 ```
 
-**引数**
+**Arguments**
 
-* `json` — 解析する JSON 文字列 [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 省略可。オブジェクト内をたどるためのインデックスまたはキー。キーは大文字小文字を区別せずに照合される [`String`](/sql-reference/data-types/string) または [`(U)Int*`](/sql-reference/data-types/int-uint)
-* `value_type` — 値の ClickHouse データ型 [`String`](/sql-reference/data-types/string)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the object. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `value_type` — The ClickHouse data type of the values [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-キーと値のペアを含むタプルの配列を返します。[`Array(Tuple(String, T))`](/sql-reference/data-types/array)
+**Returned value**
 
-**使用例**
+Returns an array of tuples containing key-value pairs. [`Array(Tuple(String, T))`](/sql-reference/data-types/array)
 
-**基本**
+**Examples**
+
+**basic**
 
 ```sql title=Query
 SELECT JSONExtractKeysAndValuesCaseInsensitive('{"Name": "Alice", "AGE": 30}', 'String')
@@ -723,30 +791,34 @@ SELECT JSONExtractKeysAndValuesCaseInsensitive('{"Name": "Alice", "AGE": 30}', '
 ```
 
 
+
 ## JSONExtractKeysAndValuesRaw {#JSONExtractKeysAndValuesRaw}
 
-導入: v20.4
+Introduced in: v20.4
 
-JSON オブジェクトからキーと値を含むタプルの配列を返します。すべての値は未パースの文字列として表現されます。
 
-**構文**
+Returns an array of tuples with keys and values from a JSON object. All values are represented as unparsed strings.
+        
+
+**Syntax**
 
 ```sql
 JSONExtractKeysAndValuesRaw(json[, indices_or_keys, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `json` — 解析する JSON 文字列。[`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 0 個以上の引数からなるリストで、それぞれは文字列または整数です。[`String`](/sql-reference/data-types/string) または [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返り値**
 
-キーと値のペアを表すタプルの配列を返します。値は未解析の文字列のままです。[`Array(Tuple(String, String))`](/sql-reference/data-types/array)
+**Returned value**
 
-**例**
+Returns an array of tuples with parsed key-value pairs where values are unparsed strings. [`Array(Tuple(String, String))`](/sql-reference/data-types/array)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b": "hello"}') AS res;
@@ -759,30 +831,34 @@ SELECT JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b": "hello"}') AS res;
 ```
 
 
+
 ## JSONExtractKeysAndValuesRawCaseInsensitive {#JSONExtractKeysAndValuesRawCaseInsensitive}
 
-導入: v25.8
+Introduced in: v25.8
 
-キーの大文字・小文字を区別しない照合で、JSON から生のキーと値のペアを抽出します。この関数は [`JSONExtractKeysAndValuesRaw`](#JSONExtractKeysAndValuesRaw) と同様です。
 
-**構文**
+Extracts raw key-value pairs from JSON using case-insensitive key matching. This function is similar to [`JSONExtractKeysAndValuesRaw`](#JSONExtractKeysAndValuesRaw).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractKeysAndValuesRawCaseInsensitive(json [, indices_or_keys]...)
 ```
 
-**引数**
+**Arguments**
 
-* `json` — 解析対象の JSON 文字列 [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 省略可。オブジェクト内を辿るためのインデックスまたはキー。キーは大文字小文字を区別せずに照合される [`String`](/sql-reference/data-types/string) または [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the object. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返される値**
 
-キーと値のペアを生の文字列として含むタプルの配列を返します。[`Array(Tuple(String, String))`](/sql-reference/data-types/array)
+**Returned value**
 
-**例**
+Returns an array of tuples containing key-value pairs as raw strings. [`Array(Tuple(String, String))`](/sql-reference/data-types/array)
 
-**基本例**
+**Examples**
+
+**basic**
 
 ```sql title=Query
 SELECT JSONExtractKeysAndValuesRawCaseInsensitive('{"Name": "Alice", "AGE": 30}')
@@ -793,30 +869,34 @@ SELECT JSONExtractKeysAndValuesRawCaseInsensitive('{"Name": "Alice", "AGE": 30}'
 ```
 
 
+
 ## JSONExtractKeysCaseInsensitive {#JSONExtractKeysCaseInsensitive}
 
-導入バージョン: v25.8
+Introduced in: v25.8
 
-JSON 文字列をパースし、大文字と小文字を区別しないキー照合を用いてネストされたオブジェクトをたどり、キーを抽出します。この関数は [`JSONExtractKeys`](#JSONExtractKeys) と類似しています。
 
-**構文**
+Parses a JSON string and extracts the keys using case-insensitive key matching to navigate to nested objects. This function is similar to [`JSONExtractKeys`](#JSONExtractKeys).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractKeysCaseInsensitive(json [, indices_or_keys]...)
 ```
 
-**引数**
+**Arguments**
 
-* `json` — 解析する JSON 文字列 [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 省略可。オブジェクト内をたどるためのインデックスまたはキー。キーは大文字小文字を区別せずに照合される [`String`](/sql-reference/data-types/string) または [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the object. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-JSON オブジェクトからキーの配列を返します。[`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**使用例**
+Returns an array of keys from the JSON object. [`Array(String)`](/sql-reference/data-types/array)
 
-**基本例**
+**Examples**
+
+**basic**
 
 ```sql title=Query
 SELECT JSONExtractKeysCaseInsensitive('{"Name": "Alice", "AGE": 30}')
@@ -826,7 +906,7 @@ SELECT JSONExtractKeysCaseInsensitive('{"Name": "Alice", "AGE": 30}')
 ['Name','AGE']
 ```
 
-**ネストされた**
+**nested**
 
 ```sql title=Query
 SELECT JSONExtractKeysCaseInsensitive('{"User": {"name": "John", "AGE": 25}}', 'user')
@@ -837,30 +917,34 @@ SELECT JSONExtractKeysCaseInsensitive('{"User": {"name": "John", "AGE": 25}}', '
 ```
 
 
+
 ## JSONExtractRaw {#JSONExtractRaw}
 
-導入バージョン: v20.1
+Introduced in: v20.1
 
-JSON の一部を未解析の文字列として返します。
 
-**構文**
+Returns a part of JSON as unparsed string.
+        
+
+**Syntax**
 
 ```sql
 JSONExtractRaw(json[, indices_or_keys, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `json` — 解析する JSON 文字列。[`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 各要素が文字列または整数になり得る 0 個以上の引数のリスト。[`String`](/sql-reference/data-types/string) または [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返される値**
 
-JSON の一部をパースされていない文字列として返します。その部分が存在しないか、型が期待と異なる場合は空文字列が返されます。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**例**
+Returns the part of JSON as an unparsed string. If the part does not exist or has a wrong type, an empty string will be returned. [`String`](/sql-reference/data-types/string)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtractRaw('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') AS res;
@@ -873,28 +957,32 @@ SELECT JSONExtractRaw('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') AS res;
 ```
 
 
+
 ## JSONExtractRawCaseInsensitive {#JSONExtractRawCaseInsensitive}
 
-導入バージョン: v25.8
+Introduced in: v25.8
 
-キーの大文字・小文字を区別しない（一致をケースインセンシティブにする）方式で、JSON の一部を未解析の文字列として返します。この関数は [`JSONExtractRaw`](#JSONExtractRaw) と似ています。
 
-**構文**
+Returns part of the JSON as an unparsed string using case-insensitive key matching. This function is similar to [`JSONExtractRaw`](#JSONExtractRaw).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractRawCaseInsensitive(json [, indices_or_keys]...)
 ```
 
-**引数**
+**Arguments**
 
-* `json` — 解析する JSON 文字列 [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 省略可能。フィールドを指すインデックスまたはキー。キーは大文字小文字を区別せずに照合される [`String`](/sql-reference/data-types/string) または [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the field. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-抽出された要素の生の JSON 文字列を返します。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**例**
+Returns the raw JSON string of the extracted element. [`String`](/sql-reference/data-types/string)
+
+**Examples**
 
 **object**
 
@@ -907,30 +995,34 @@ SELECT JSONExtractRawCaseInsensitive('{"Object": {"key": "value"}}', 'OBJECT')
 ```
 
 
+
 ## JSONExtractString {#JSONExtractString}
 
-導入バージョン: v20.1
+Introduced in: v20.1
 
-JSON を解析し、`String` 型の値を抽出します。
 
-**構文**
+Parses JSON and extracts a value of String type.
+        
+
+**Syntax**
 
 ```sql
 JSONExtractString(json[, indices_or_keys, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `json` — 解析する JSON 文字列。[`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 0 個以上の引数からなるリストで、それぞれは文字列または整数値のいずれか。[`String`](/sql-reference/data-types/string) または [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-値が存在する場合は String 型の値を返し、存在しない場合は空文字列を返します。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**例**
+Returns a String value if it exists, otherwise returns an empty string. [`String`](/sql-reference/data-types/string)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtractString('{"a": "hello", "b": [-100, 200.0, 300]}', 'a') AS res;
@@ -943,30 +1035,34 @@ SELECT JSONExtractString('{"a": "hello", "b": [-100, 200.0, 300]}', 'a') AS res;
 ```
 
 
+
 ## JSONExtractStringCaseInsensitive {#JSONExtractStringCaseInsensitive}
 
-導入バージョン: v25.8
+Introduced in: v25.8
 
-JSON を解析し、キーの大文字・小文字を区別しない一致で文字列を抽出します。この関数は [`JSONExtractString`](#JSONExtractString) と類似しています。
 
-**構文**
+Parses JSON and extracts a string using case-insensitive key matching. This function is similar to [`JSONExtractString`](#JSONExtractString).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractStringCaseInsensitive(json [, indices_or_keys]...)
 ```
 
-**引数**
+**Arguments**
 
-* `json` — 解析する JSON 文字列 [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 任意。対象フィールドへアクセスするためのインデックスまたはキー。キーは大文字小文字を区別しないマッチングを行う [`String`](/sql-reference/data-types/string) または [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the field. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-抽出された文字列値を返します。見つからない場合は空文字列を返します。 [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**例**
+Returns the extracted string value, empty string if not found. [`String`](/sql-reference/data-types/string)
 
-**基本**
+**Examples**
+
+**basic**
 
 ```sql title=Query
 SELECT JSONExtractStringCaseInsensitive('{"ABC": "def"}', 'abc')
@@ -976,7 +1072,7 @@ SELECT JSONExtractStringCaseInsensitive('{"ABC": "def"}', 'abc')
 def
 ```
 
-**ネスト**
+**nested**
 
 ```sql title=Query
 SELECT JSONExtractStringCaseInsensitive('{"User": {"Name": "John"}}', 'user', 'name')
@@ -987,30 +1083,34 @@ John
 ```
 
 
+
 ## JSONExtractUInt {#JSONExtractUInt}
 
-v20.1 で導入。
+Introduced in: v20.1
 
-JSON を解析して、UInt 型の値を抽出します。
 
-**構文**
+Parses JSON and extracts a value of UInt type.
+        
+
+**Syntax**
 
 ```sql
 JSONExtractUInt(json [, indices_or_keys, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `json` — 解析する JSON 文字列。[`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — 0 個以上の引数からなるリストで、各引数は文字列または整数を指定できます。[`String`](/sql-reference/data-types/string) または [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返される値**
 
-値が存在する場合は UInt 値を返し、存在しない場合は `0` を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns a UInt value if it exists, otherwise returns `0`. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtractUInt('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', -1) AS res;
@@ -1023,30 +1123,34 @@ SELECT JSONExtractUInt('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', -1) AS re
 ```
 
 
+
 ## JSONExtractUIntCaseInsensitive {#JSONExtractUIntCaseInsensitive}
 
-導入バージョン: v25.8
+Introduced in: v25.8
 
-JSON を解析し、キーの大文字・小文字を区別しない照合で UInt 型の値を抽出します。この関数は [`JSONExtractUInt`](#JSONExtractUInt) と類似しています。
 
-**構文**
+Parses JSON and extracts a value of UInt type using case-insensitive key matching. This function is similar to [`JSONExtractUInt`](#JSONExtractUInt).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractUIntCaseInsensitive(json [, indices_or_keys]...)
 ```
 
-**引数**
+**Arguments**
 
-* `json` — 解析する JSON 文字列 [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — オプションの引数。フィールドへ移動するためのインデックスまたはキー。キーは大文字小文字を区別せずにマッチングされる [`String`](/sql-reference/data-types/string) または [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the field. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返される値**
 
-抽出された UInt 値を返します。見つからない場合や変換できない場合は 0 を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the extracted UInt value, 0 if not found or cannot be converted. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**基本的な例**
+**Examples**
+
+**basic**
 
 ```sql title=Query
 SELECT JSONExtractUIntCaseInsensitive('{"COUNT": 789}', 'count')
@@ -1057,30 +1161,34 @@ SELECT JSONExtractUIntCaseInsensitive('{"COUNT": 789}', 'count')
 ```
 
 
+
 ## JSONHas {#JSONHas}
 
-導入バージョン: v20.1
+Introduced in: v20.1
 
-指定した値（複数可）が JSON ドキュメント内に存在するかどうかを確認します。
 
-**構文**
+Checks for the existence of the provided value(s) in the JSON document.
+        
+
+**Syntax**
 
 ```sql
 JSONHas(json[ ,indices_or_keys, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `json` — 解析する JSON 文字列 [`String`](/sql-reference/data-types/string)
-* `[ ,indices_or_keys, ...]` — 0 個以上の引数からなるリスト。[`String`](/sql-reference/data-types/string) または [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `[ ,indices_or_keys, ...]` — A list of zero or more arguments. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-値が `json` 内に存在する場合は `1`、存在しない場合は `0` を返す [`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns `1` if the value exists in `json`, otherwise `0` [`UInt8`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') = 1;
@@ -1093,31 +1201,35 @@ SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 4) = 0;
 ```
 
 
+
 ## JSONLength {#JSONLength}
 
-導入バージョン: v20.1
+Introduced in: v20.1
 
-JSON 配列または JSON オブジェクトの長さを返します。
-値が存在しないか、型が正しくない場合は `0` を返します。
 
-**構文**
+Return the length of a JSON array or a JSON object.
+If the value does not exist or has the wrong type, `0` will be returned.
+        
+
+**Syntax**
 
 ```sql
 JSONLength(json [, indices_or_keys, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `json` — パースする JSON 文字列 [`String`](/sql-reference/data-types/string)
-* `[, indices_or_keys, ...]` — 省略可能。0 個以上の引数のリスト。[`String`](/sql-reference/data-types/string) または [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `[, indices_or_keys, ...]` — Optional. A list of zero or more arguments. [`String`](/sql-reference/data-types/string) or [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-JSON 配列または JSON オブジェクトの長さを返します。値が存在しないか、型が誤っている場合は `0` を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the length of the JSON array or JSON object, otherwise returns `0` if the value does not exist or has the wrong type. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONLength('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') = 3;
@@ -1130,31 +1242,35 @@ SELECT JSONLength('{"a": "hello", "b": [-100, 200.0, 300]}') = 2;
 ```
 
 
+
 ## JSONMergePatch {#JSONMergePatch}
 
-導入バージョン: v23.10
+Introduced in: v23.10
 
-複数の JSON オブジェクトをマージして生成される、マージされた JSON オブジェクト文字列を返します。
 
-**構文**
+Returns the merged JSON object string which is formed by merging multiple JSON objects.
+    
+
+**Syntax**
 
 ```sql
 jsonMergePatch(json1[, json2, ...])
 ```
 
-**別名**: `jsonMergePatch`
+**Aliases**: `jsonMergePatch`
 
-**引数**
+**Arguments**
 
-* `json1[, json2, ...]` — 1 つ以上の有効な JSON 文字列。[`String`](/sql-reference/data-types/string)
+- `json1[, json2, ...]` — One or more strings with valid JSON. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-有効な JSON オブジェクト文字列が指定された場合、それらをマージした JSON オブジェクト文字列を返します。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**例**
+Returns the merged JSON object string, if the JSON object strings are valid. [`String`](/sql-reference/data-types/string)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT jsonMergePatch('{"a":1}', '{"name": "joey"}', '{"name": "tom"}', '{"name": "zoey"}') AS res;
@@ -1167,29 +1283,33 @@ SELECT jsonMergePatch('{"a":1}', '{"name": "joey"}', '{"name": "tom"}', '{"name"
 ```
 
 
+
 ## JSONSharedDataPaths {#JSONSharedDataPaths}
 
-導入バージョン: v24.8
+Introduced in: v24.8
 
-JSON カラムの共有データ構造に格納されているパスの一覧を返します。
 
-**構文**
+Returns the list of paths that are stored in shared data structure in JSON column.
+        
+
+**Syntax**
 
 ```sql
 JSONSharedDataPaths(json)
 ```
 
-**引数**
+**Arguments**
 
-* `json` — JSONカラム。[`JSON`](/sql-reference/data-types/newjson)
+- `json` — JSON column. [`JSON`](/sql-reference/data-types/newjson)
 
-**戻り値**
 
-JSONカラム内の共有データ構造に保存されているパスの配列を返します。[`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**例**
+Returns an array of paths stored in shared data structure in the JSON column. [`Array(String)`](/sql-reference/data-types/array)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE test (json JSON(max_dynamic_paths=1)) ENGINE = Memory;
@@ -1206,29 +1326,33 @@ SELECT json, JSONSharedDataPaths(json) FROM test;
 ```
 
 
+
 ## JSONSharedDataPathsWithTypes {#JSONSharedDataPathsWithTypes}
 
-導入バージョン: v24.8
+Introduced in: v24.8
 
-共有データ構造に格納されているパスの一覧と、JSONカラムの各行におけるそれらの型を返します。
 
-**構文**
+Returns the list of paths that are stored in shared data structure and their types in each row in JSON column.
+        
+
+**Syntax**
 
 ```sql
 JSONSharedDataPathsWithTypes(json)
 ```
 
-**引数**
+**Arguments**
 
-* `json` — JSONカラム。[`JSON`](/sql-reference/data-types/newjson)
+- `json` — JSON column. [`JSON`](/sql-reference/data-types/newjson)
 
-**戻り値**
 
-共有データ構造内に保存されているパスと、そのJSONカラム内でのデータ型のマップを返します。[`Map(String, String)`](/sql-reference/data-types/map)
+**Returned value**
 
-**例**
+Returns a map of paths stored in shared data structure and their data types in the JSON column. [`Map(String, String)`](/sql-reference/data-types/map)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE test (json JSON(max_dynamic_paths=1)) ENGINE = Memory;
@@ -1245,30 +1369,34 @@ SELECT json, JSONSharedDataPathsWithTypes(json) FROM test;
 ```
 
 
+
 ## JSONType {#JSONType}
 
-導入バージョン: v20.1
+Introduced in: v20.1
 
-JSON 値の型を返します。値が存在しない場合は、`Null = 0` を返します。
 
-**構文**
+Return the type of a JSON value. If the value does not exist, `Null=0` will be returned.
+        
+
+**Syntax**
 
 ```sql
 JSONType(json[, indices_or_keys, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `json` — パースする JSON 文字列 [`String`](/sql-reference/data-types/string)
-* `json[, indices_or_keys, ...]` — 0 個以上の引数のリストで、それぞれは文字列または整数です。[`String`](/sql-reference/data-types/string) または [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `json[, indices_or_keys, ...]` — A list of zero or more arguments, each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-JSON 値の型を文字列として返します。値が存在しない場合は、[`Enum`](/sql-reference/data-types/enum) 型の `Null=0` を返します。
+**Returned value**
 
-**例**
+Returns the type of a JSON value as a string, otherwise if the value doesn't exist it returns `Null=0` [`Enum`](/sql-reference/data-types/enum)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONType('{"a": "hello", "b": [-100, 200.0, 300]}') = 'Object';
@@ -1283,31 +1411,35 @@ SELECT JSONType('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') = 'Array';
 ```
 
 
-## JSON&#95;EXISTS {#JSON_EXISTS}
 
-導入バージョン: v21.8
+## JSON_EXISTS {#JSON_EXISTS}
 
-JSON ドキュメント内に値が存在する場合は `1` を返します。
-値が存在しない場合は `0` を返します。
+Introduced in: v21.8
 
-**構文**
+
+If the value exists in the JSON document, `1` will be returned.
+If the value does not exist, `0` will be returned.
+        
+
+**Syntax**
 
 ```sql
 JSON_EXISTS(json, path)
 ```
 
-**引数**
+**Arguments**
 
-* `json` — 有効な JSON 文字列。[`String`](/sql-reference/data-types/string)
-* `path` — パスを表す文字列。[`String`](/sql-reference/data-types/string)
+- `json` — A string with valid JSON. [`String`](/sql-reference/data-types/string)
+- `path` — A string representing the path. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-JSON ドキュメント内の指定したパスに値が存在する場合は `1` を、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns `1` if the value exists in the JSON document, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSON_EXISTS('{"hello":1}', '$.hello');
@@ -1332,31 +1464,35 @@ SELECT JSON_EXISTS('{"hello":["world"]}', '$.hello[0]');
 ```
 
 
-## JSON&#95;QUERY {#JSON_QUERY}
 
-導入バージョン: v21.8
+## JSON_QUERY {#JSON_QUERY}
 
-JSON を解析して、値を JSON 配列または JSON オブジェクトとして抽出します。
-値が存在しない場合は、空文字列が返されます。
+Introduced in: v21.8
 
-**構文**
+
+Parses a JSON and extract a value as a JSON array or JSON object.
+If the value does not exist, an empty string will be returned.
+        
+
+**Syntax**
 
 ```sql
 JSON_QUERY(json, path)
 ```
 
-**引数**
+**Arguments**
 
-* `json` — 有効な JSON を含む文字列。[`String`](/sql-reference/data-types/string)
-* `path` — パスを表す文字列。[`String`](/sql-reference/data-types/string)
+- `json` — A string with valid JSON. [`String`](/sql-reference/data-types/string)
+- `path` — A string representing the path. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-抽出された JSON 配列または JSON オブジェクトを文字列として返します。値が存在しない場合は空文字列を返します。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**例**
+Returns the extracted JSON array or JSON object as a string, or an empty string if the value does not exist. [`String`](/sql-reference/data-types/string)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSON_QUERY('{"hello":"world"}', '$.hello');
@@ -1373,35 +1509,38 @@ String
 ```
 
 
-## JSON&#95;VALUE {#JSON_VALUE}
 
-導入バージョン: v21.11
+## JSON_VALUE {#JSON_VALUE}
 
-JSON を解析して、値を JSON のスカラー値として抽出します。値が存在しない場合、デフォルトでは空文字列が返されます。
+Introduced in: v21.11
 
-この関数の挙動は次の設定で制御されます。
 
-* SET `function_json_value_return_type_allow_nullable` = `true` の場合、`NULL` が返されます。値が複合型（struct、array、map など）の場合、デフォルトでは空文字列が返されます。
-* SET `function_json_value_return_type_allow_complex` = `true` の場合、複合値が返されます。
+Parses a JSON and extract a value as a JSON scalar. If the value does not exist, an empty string will be returned by default.
 
-**構文**
+This function is controlled by the following settings:
+- by SET `function_json_value_return_type_allow_nullable` = `true`, `NULL` will be returned. If the value is complex type (such as: struct, array, map), an empty string will be returned by default.
+- by SET `function_json_value_return_type_allow_complex` = `true`, the complex value will be returned.
+        
+
+**Syntax**
 
 ```sql
 JSON_VALUE(json, path)
 ```
 
-**引数**
+**Arguments**
 
-* `json` — 有効な JSON を表す文字列。[`String`](/sql-reference/data-types/string)
-* `path` — パスを表す文字列。[`String`](/sql-reference/data-types/string)
+- `json` — A string with valid JSON. [`String`](/sql-reference/data-types/string)
+- `path` — A string representing the path. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-抽出された JSON スカラ値を文字列として返します。値が存在しない場合は空文字列を返します。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**例**
+Returns the extracted JSON scalar as a string, or an empty string if the value does not exist. [`String`](/sql-reference/data-types/string)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSON_VALUE('{"hello":"world"}', '$.hello');
@@ -1418,34 +1557,37 @@ world
 ```
 
 
+
 ## dynamicElement {#dynamicElement}
 
-導入バージョン: v24.1
+Introduced in: v24.1
 
-`Dynamic` カラムから、指定した型のカラムを抽出します。
 
-この関数は、`Dynamic` カラムから特定の型の値を抽出します。行に要求された型の値が
-含まれている場合は、その値を返します。行に別の型または NULL が含まれている場合は、スカラー型に対しては NULL を、
-配列型に対しては空の配列を返します。
+Extracts a column with specified type from a `Dynamic` column.
 
-**構文**
+This function allows you to extract values of a specific type from a Dynamic column. If a row contains a value
+of the requested type, it returns that value. If the row contains a different type or NULL, it returns NULL
+for scalar types or an empty array for array types.
+    
+
+**Syntax**
 
 ```sql
 dynamicElement(dynamic, type_name)
 ```
 
-**引数**
+**Arguments**
 
-* `dynamic` — 抽出元の Dynamic カラム。[`Dynamic`](/sql-reference/data-types/dynamic)
-* `type_name` — 抽出するバリアント型の名前 (例: &#39;String&#39;, &#39;Int64&#39;, &#39;Array(Int64)&#39;)。
+- `dynamic` — Dynamic column to extract from. [`Dynamic`](/sql-reference/data-types/dynamic)
+- `type_name` — The name of the variant type to extract (e.g., 'String', 'Int64', 'Array(Int64)'). 
 
-**戻り値**
+**Returned value**
 
-指定された型に対応する値を Dynamic カラムから返します。一致しない型の場合は NULL を返し、配列型の場合は空配列を返します。[`Any`](/sql-reference/data-types)
+Returns values of the specified type from the Dynamic column. Returns NULL for non-matching types (or empty array for array types). [`Any`](/sql-reference/data-types)
 
-**例**
+**Examples**
 
-**Dynamic カラムから異なる型を抽出する**
+**Extracting different types from Dynamic column**
 
 ```sql title=Query
 CREATE TABLE test (d Dynamic) ENGINE = Memory;
@@ -1463,31 +1605,36 @@ SELECT d, dynamicType(d), dynamicElement(d, 'String'), dynamicElement(d, 'Int64'
 ```
 
 
+
 ## dynamicType {#dynamicType}
 
-導入バージョン: v24.1
+Introduced in: v24.1
 
-`Dynamic` カラムの各行に対して、そのバリアントの型名を返します。
 
-NULL を含む行では、関数は &#39;None&#39; を返します。それ以外の行では、`Dynamic` カラムのその行に格納されている実際のデータ型（例: &#39;Int64&#39;、&#39;String&#39;、&#39;Array(Int64)&#39;）を返します。
+Returns the variant type name for each row of a `Dynamic` column.
 
-**構文**
+For rows containing NULL, the function returns 'None'. For all other rows, it returns the actual data type
+stored in that row of the Dynamic column (e.g., 'Int64', 'String', 'Array(Int64)').
+
+
+**Syntax**
 
 ```sql
 dynamicType(dynamic)
 ```
 
-**引数**
+**Arguments**
 
-* `dynamic` — 検査する動的カラム。[`Dynamic`](/sql-reference/data-types/dynamic)
+- `dynamic` — Dynamic column to inspect. [`Dynamic`](/sql-reference/data-types/dynamic)
 
-**戻り値**
 
-各行に格納されている値の型名を返します。NULL 値の場合は &#39;None&#39; を返します。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**例**
+Returns the type name of the value stored in each row, or 'None' for NULL values. [`String`](/sql-reference/data-types/string)
 
-**Dynamic カラム内の型を確認**
+**Examples**
+
+**Inspecting types in Dynamic column**
 
 ```sql title=Query
 CREATE TABLE test (d Dynamic) ENGINE = Memory;
@@ -1505,31 +1652,36 @@ SELECT d, dynamicType(d) FROM test;
 ```
 
 
+
 ## isDynamicElementInSharedData {#isDynamicElementInSharedData}
 
-導入バージョン: v24.1
+Introduced in: v24.1
 
-Dynamic カラムのうち、個別のサブカラムとしてではなく共有のバリアント形式で保存されている行に対して true を返します。
 
-Dynamic カラムに `max_types` 制限が設定されている場合、この制限を超えた値は、個別の型付きサブカラムに分割される代わりに、共有のバイナリ形式で保存されます。この関数は、どの行がこの共有形式で保存されているかを判別します。
+Returns true for rows in a Dynamic column that are stored in shared variant format rather than as separate subcolumns.
 
-**構文**
+When a Dynamic column has a `max_types` limit, values that exceed this limit are stored in a shared binary format
+instead of being separated into individual typed subcolumns. This function identifies which rows are stored in this shared format.
+    
+
+**Syntax**
 
 ```sql
 isDynamicElementInSharedData(dynamic)
 ```
 
-**引数**
+**Arguments**
 
-* `dynamic` — 確認する Dynamic カラム。[`Dynamic`](/sql-reference/data-types/dynamic)
+- `dynamic` — Dynamic column to inspect. [`Dynamic`](/sql-reference/data-types/dynamic)
 
-**戻り値**
 
-値が shared variant 形式で保存されている場合は true を返し、個別のサブカラムとして保存されている場合、または NULL の場合は false を返します。[`Bool`](/sql-reference/data-types/boolean)
+**Returned value**
 
-**例**
+Returns true if the value is stored in shared variant format, false if stored as a separate subcolumn or is NULL. [`Bool`](/sql-reference/data-types/boolean)
 
-**max&#95;types 制限付きの Dynamic カラムにおけるストレージ形式の確認**
+**Examples**
+
+**Checking storage format in Dynamic column with max_types limit**
 
 ```sql title=Query
 CREATE TABLE test (d Dynamic(max_types=2)) ENGINE = Memory;
@@ -1547,29 +1699,33 @@ SELECT d, isDynamicElementInSharedData(d) FROM test;
 ```
 
 
+
 ## isValidJSON {#isValidJSON}
 
-導入バージョン: v20.1
+Introduced in: v20.1
 
-渡された文字列が有効な JSON 形式かどうかを検証します。
 
-**構文**
+Checks that the string passed is valid JSON.
+        
+
+**Syntax**
 
 ```sql
 isValidJSON(json)
 ```
 
-**引数**
+**Arguments**
 
-* `json` — 検証対象の JSON 文字列 [`String`](/sql-reference/data-types/string)
+- `json` — JSON string to validate [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-文字列が有効な JSON であれば `1`、そうでなければ `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns `1` if the string is valid JSON, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT isValidJSON('{"a": "hello", "b": [-100, 200.0, 300]}') = 1;
@@ -1581,7 +1737,7 @@ SELECT isValidJSON('not JSON') = 0;
 0
 ```
 
-**整数を使って JSON 配列および JSON オブジェクトの両方にアクセスする**
+**Using integers to access both JSON arrays and JSON objects**
 
 ```sql title=Query
 SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 0);
@@ -1603,37 +1759,40 @@ SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 3);
 ```
 
 
+
 ## simpleJSONExtractBool {#simpleJSONExtractBool}
 
-導入バージョン: v21.4
+Introduced in: v21.4
 
-`field_name` という名前のフィールドの値から true/false の真偽値をパースします。
-結果の型は `UInt8` です。
 
-**構文**
+Parses a true/false value from the value of the field named `field_name`.
+The result is `UInt8`.
+
+
+**Syntax**
 
 ```sql
 simpleJSONExtractBool(json, field_name)
 ```
 
-**エイリアス**: `visitParamExtractBool`
+**Aliases**: `visitParamExtractBool`
 
-**引数**
+**Arguments**
 
-* `json` — フィールドを検索する対象の JSON。[`String`](/sql-reference/data-types/string)
-* `field_name` — 検索対象のフィールド名。[`const String`](/sql-reference/data-types/string)
+- `json` — The JSON in which the field is searched for. [`String`](/sql-reference/data-types/string)
+- `field_name` — The name of the field to search for. [`const String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-フィールドの値が `true` の場合は `1` を返し、それ以外の場合は `0` を返します。これは、この関数が次のような場合を含めて（これらに限定されず）`0` を返すことを意味します：
+**Returned value**
 
-* フィールドが存在しない場合。
-* フィールドの値が文字列の `true` である場合。例: `{"field":"true"}`。
-* フィールドの値が数値の `1` である場合。[`UInt8`](/sql-reference/data-types/int-uint)
+Returns `1` if the value of the field is `true`, `0` otherwise. This means this function will return `0` including (and not only) in the following cases:
+- If the field doesn't exists.
+- If the field contains `true` as a string, e.g.: `{"field":"true"}`.
+- If the field contains `1` as a numerical value. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE jsons
@@ -1658,34 +1817,38 @@ SELECT simpleJSONExtractBool(json, 'foo') FROM jsons ORDER BY json;
 ```
 
 
+
 ## simpleJSONExtractFloat {#simpleJSONExtractFloat}
 
-導入バージョン: v21.4
+Introduced in: v21.4
 
-`field_name` という名前のフィールドの値から `Float64` をパースします。
-`field_name` が文字列フィールドの場合、文字列の先頭から数値として解釈できるか試みます。
-フィールドが存在しない場合、または存在しても数値を含まない場合は `0` を返します。
 
-**構文**
+Parses `Float64` from the value of the field named `field_name`.
+If `field_name` is a string field, it tries to parse a number from the beginning of the string.
+If the field does not exist, or it exists but does not contain a number, it returns `0`.
+
+
+**Syntax**
 
 ```sql
 simpleJSONExtractFloat(json, field_name)
 ```
 
-**エイリアス**: `visitParamExtractFloat`
+**Aliases**: `visitParamExtractFloat`
 
-**引数**
+**Arguments**
 
-* `json` — フィールドを検索する対象の JSON。[`String`](/sql-reference/data-types/string)
-* `field_name` — 検索するフィールド名。[`const String`](/sql-reference/data-types/string)
+- `json` — The JSON in which the field is searched for. [`String`](/sql-reference/data-types/string)
+- `field_name` — The name of the field to search for. [`const String`](/sql-reference/data-types/string)
 
-**返される値**
 
-フィールドが存在し、その値が数値であれば、その数値を解析して返し、そうでなければ `0` を返します。[`Float64`](/sql-reference/data-types/float)
+**Returned value**
 
-**例**
+Returns the number parsed from the field if the field exists and contains a number, otherwise `0`. [`Float64`](/sql-reference/data-types/float)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE jsons
@@ -1713,34 +1876,38 @@ SELECT simpleJSONExtractFloat(json, 'foo') FROM jsons ORDER BY json;
 ```
 
 
+
 ## simpleJSONExtractInt {#simpleJSONExtractInt}
 
-導入バージョン: v21.4
+Introduced in: v21.4
 
-`field_name` という名前のフィールドの値から `Int64` をパースします。
-`field_name` が文字列フィールドの場合は、文字列の先頭から数値のパースを試みます。
-フィールドが存在しない場合、または存在していても数値を含まない場合は `0` を返します。
 
-**構文**
+Parses `Int64` from the value of the field named `field_name`.
+If `field_name` is a string field, it tries to parse a number from the beginning of the string.
+If the field does not exist, or it exists but does not contain a number, it returns `0`.
+
+
+**Syntax**
 
 ```sql
 simpleJSONExtractInt(json, field_name)
 ```
 
-**別名**: `visitParamExtractInt`
+**Aliases**: `visitParamExtractInt`
 
-**引数**
+**Arguments**
 
-* `json` — フィールドを検索する対象の JSON。[`String`](/sql-reference/data-types/string)
-* `field_name` — 検索対象のフィールド名。[`const String`](/sql-reference/data-types/string)
+- `json` — The JSON in which the field is searched for. [`String`](/sql-reference/data-types/string)
+- `field_name` — The name of the field to search for. [`const String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-フィールドが存在し、その値が数値であればそのフィールドからパースされた数値を返し、そうでない場合は `0` を返す。[`Int64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the number parsed from the field if the field exists and contains a number, `0` otherwise [`Int64`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE jsons
@@ -1768,32 +1935,36 @@ SELECT simpleJSONExtractInt(json, 'foo') FROM jsons ORDER BY json;
 ```
 
 
+
 ## simpleJSONExtractRaw {#simpleJSONExtractRaw}
 
-導入されたバージョン: v21.4
+Introduced in: v21.4
 
-区切りも含めて、`field_name` という名前のフィールドの値を `String` として返します。
 
-**構文**
+Returns the value of the field named `field_name` as a `String`, including separators.
+
+
+**Syntax**
 
 ```sql
 simpleJSONExtractRaw(json, field_name)
 ```
 
-**別名**: `visitParamExtractRaw`
+**Aliases**: `visitParamExtractRaw`
 
-**引数**
+**Arguments**
 
-* `json` — フィールドを検索する対象の JSON。[`String`](/sql-reference/data-types/string)
-* `field_name` — 検索対象のフィールド名。[`const String`](/sql-reference/data-types/string)
+- `json` — The JSON in which the field is searched for. [`String`](/sql-reference/data-types/string)
+- `field_name` — The name of the field to search for. [`const String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-フィールドが存在する場合は区切り文字を含めたその値を文字列として返し、存在しない場合は空文字列を返します。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**例**
+Returns the value of the field as a string, including separators if the field exists, or an empty string otherwise [`String`](/sql-reference/data-types/string)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE jsons
@@ -1820,36 +1991,40 @@ SELECT simpleJSONExtractRaw(json, 'foo') FROM jsons ORDER BY json;
 ```
 
 
+
 ## simpleJSONExtractString {#simpleJSONExtractString}
 
-導入されたバージョン: v21.4
+Introduced in: v21.4
 
-`field_name` という名前のフィールドの値から、二重引用符で囲まれている `String` を解析します。
 
-**実装詳細**
+Parses `String` in double quotes from the value of the field named `field_name`.
 
-現在、基本多言語面に含まれないコードポイントを `\uXXXX\uYYYY` 形式で表現したものには対応していません（UTF-8 ではなく CESU-8 に変換されます）。
+**Implementation details**
 
-**構文**
+There is currently no support for code points in the format `\uXXXX\uYYYY` that are not from the basic multilingual plane (they are converted to CESU-8 instead of UTF-8).
+
+
+**Syntax**
 
 ```sql
 simpleJSONExtractString(json, field_name)
 ```
 
-**別名**: `visitParamExtractString`
+**Aliases**: `visitParamExtractString`
 
-**引数**
+**Arguments**
 
-* `json` — フィールドを検索する対象の JSON。[`String`](/sql-reference/data-types/string)
-* `field_name` — 検索するフィールド名。[`const String`](/sql-reference/data-types/string)
+- `json` — The JSON in which the field is searched for. [`String`](/sql-reference/data-types/string)
+- `field_name` — The name of the field to search for. [`const String`](/sql-reference/data-types/string)
 
-**返される値**
 
-フィールドのエスケープ解除された値を、区切り文字も含めて文字列として返します。フィールドにダブルクォーテーションで囲まれた文字列が含まれていない場合、エスケープ解除に失敗した場合、またはフィールドが存在しない場合は、空文字列を返します。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**例**
+Returns the unescaped value of a field as a string, including separators. An empty string is returned if the field doesn't contain a double quoted string, if unescaping fails or if the field doesn't exist [`String`](/sql-reference/data-types/string)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE jsons
@@ -1874,34 +2049,38 @@ SELECT simpleJSONExtractString(json, 'foo') FROM jsons ORDER BY json;
 ```
 
 
+
 ## simpleJSONExtractUInt {#simpleJSONExtractUInt}
 
-導入バージョン: v21.4
+Introduced in: v21.4
 
-`field_name` という名前のフィールドの値から `UInt64` を抽出します。
-`field_name` が文字列フィールドの場合、文字列の先頭から数値としての解釈を試みます。
-フィールドが存在しない場合、または存在しても数値を含まない場合は `0` を返します。
 
-**構文**
+Parses `UInt64` from the value of the field named `field_name`.
+If `field_name` is a string field, it tries to parse a number from the beginning of the string.
+If the field does not exist, or it exists but does not contain a number, it returns `0`.
+
+
+**Syntax**
 
 ```sql
 simpleJSONExtractUInt(json, field_name)
 ```
 
-**エイリアス**: `visitParamExtractUInt`
+**Aliases**: `visitParamExtractUInt`
 
-**引数**
+**Arguments**
 
-* `json` — フィールドを検索する対象の JSON。[`String`](/sql-reference/data-types/string)
-* `field_name` — 検索対象のフィールド名。[`const String`](/sql-reference/data-types/string)
+- `json` — The JSON in which the field is searched for. [`String`](/sql-reference/data-types/string)
+- `field_name` — The name of the field to search for. [`const String`](/sql-reference/data-types/string)
 
-**返される値**
 
-フィールドが存在し、その内容が数値である場合は、そのフィールドからパースされた数値を返し、そうでない場合は `0` を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the number parsed from the field if the field exists and contains a number, `0` otherwise [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE jsons
@@ -1929,32 +2108,36 @@ SELECT simpleJSONExtractUInt(json, 'foo') FROM jsons ORDER BY json;
 ```
 
 
+
 ## simpleJSONHas {#simpleJSONHas}
 
-導入バージョン: v21.4
+Introduced in: v21.4
 
-`field_name` という名前のフィールドが存在するかどうかを判定します。
 
-**構文**
+Checks whether there is a field named `field_name`.
+
+
+**Syntax**
 
 ```sql
 simpleJSONHas(json, field_name)
 ```
 
-**別名**: `visitParamHas`
+**Aliases**: `visitParamHas`
 
-**引数**
+**Arguments**
 
-* `json` — フィールドを検索する JSON。[`String`](/sql-reference/data-types/string)
-* `field_name` — 検索するフィールド名。[`const String`](/sql-reference/data-types/string)
+- `json` — The JSON in which the field is searched for. [`String`](/sql-reference/data-types/string)
+- `field_name` — The name of the field to search for. [`const String`](/sql-reference/data-types/string)
 
-**返される値**
 
-フィールドが存在する場合は `1`、存在しない場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns `1` if the field exists, `0` otherwise [`UInt8`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE jsons
@@ -1976,37 +2159,40 @@ SELECT simpleJSONHas(json, 'bar') FROM jsons;
 ```
 
 
+
 ## toJSONString {#toJSONString}
 
-導入バージョン: v21.7
+Introduced in: v21.7
 
-値をその JSON 表現にシリアライズします。さまざまなデータ型およびネストした構造をサポートします。
-64-bit の[整数](../data-types/int-uint.md)以上（`UInt64` や `Int128` など）は、デフォルトでは引用符で囲まれます。[output&#95;format&#95;json&#95;quote&#95;64bit&#95;integers](/operations/settings/formats#output_format_json_quote_64bit_integers) によってこの動作を制御できます。
-特別な値 `NaN` および `inf` は `null` に置き換えられます。[output&#95;format&#95;json&#95;quote&#95;denormals](/operations/settings/formats#output_format_json_quote_denormals) 設定を有効にすると、それらを表示できます。
-[Enum](../data-types/enum.md) の値をシリアライズする場合、この関数はその名前を出力します。
 
-関連項目:
+Serializes a value to its JSON representation. Various data types and nested structures are supported.
+64-bit [integers](../data-types/int-uint.md) or bigger (like `UInt64` or `Int128`) are enclosed in quotes by default. [output_format_json_quote_64bit_integers](/operations/settings/formats#output_format_json_quote_64bit_integers) controls this behavior.
+Special values `NaN` and `inf` are replaced with `null`. Enable [output_format_json_quote_denormals](/operations/settings/formats#output_format_json_quote_denormals) setting to show them.
+When serializing an [Enum](../data-types/enum.md) value, the function outputs its name.
 
-* [output&#95;format&#95;json&#95;quote&#95;64bit&#95;integers](/operations/settings/formats#output_format_json_quote_64bit_integers)
-* [output&#95;format&#95;json&#95;quote&#95;denormals](/operations/settings/formats#output_format_json_quote_denormals)
+See also:
+- [output_format_json_quote_64bit_integers](/operations/settings/formats#output_format_json_quote_64bit_integers)
+- [output_format_json_quote_denormals](/operations/settings/formats#output_format_json_quote_denormals)
+    
 
-**構文**
+**Syntax**
 
 ```sql
 toJSONString(value)
 ```
 
-**引数**
+**Arguments**
 
-* `value` — シリアル化する値。任意のデータ型の値を指定できます。[`Any`](/sql-reference/data-types)
+- `value` — Value to serialize. Value may be of any data type. [`Any`](/sql-reference/data-types)
 
-**戻り値**
 
-値の JSON 表現を返します。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**例**
+Returns the JSON representation of the value. [`String`](/sql-reference/data-types/string)
 
-**Map のシリアル化**
+**Examples**
+
+**Map serialization**
 
 ```sql title=Query
 SELECT toJSONString(map('key1', 1, 'key2', 2));
@@ -2018,7 +2204,7 @@ SELECT toJSONString(map('key1', 1, 'key2', 2));
 └─────────────────────────────────────────┘
 ```
 
-**特殊値**
+**Special values**
 
 ```sql title=Query
 SELECT toJSONString(tuple(1.25, NULL, NaN, +inf, -inf, [])) SETTINGS output_format_json_quote_denormals = 1;

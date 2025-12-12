@@ -158,7 +158,7 @@ doc_type: 'guide'
     "away_team": "Swindon Town",
     "home_team_goals": 0,
     "away_team_goals": 3
-}
+} 
 ```
 
 插入数据：
@@ -315,7 +315,7 @@ FORMAT PrettyJSONEachRow
     "away_team": "Swindon Town",
     "home_team_goals": 0,
     "away_team_goals": 3
-}
+}  
 ```
 
 

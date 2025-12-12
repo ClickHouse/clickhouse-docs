@@ -243,7 +243,7 @@ ALTER TABLE my_table
 6. Проверьте, что ваши данные переместились на нужные диски, используя таблицу `system.parts`:
 
 ```sql
-С помощью таблицы system.parts определите, на каких дисках расположены части таблицы crypto_prices:
+Using the system.parts table, view which disks the parts are on for the crypto_prices table:
 
 SELECT
     name,

@@ -69,15 +69,15 @@ ClickHouse：
 
 ```xml
 <clickhouse>
-    <comment>可选元素,可包含任意内容。ClickHouse 服务器将忽略此元素。</comment>
+    <comment>An optional element with any content. Ignored by the ClickHouse server.</comment>
 
-    <!--可选元素。包含替换变量的文件名-->
+    <!--Optional element. File name with substitutions-->
     <include_from>/etc/metrika.xml</include_from>
 
 
     <dictionary>
-        <!-- 字典配置。 -->
-        <!-- 配置文件中可以包含任意数量的字典配置段。 -->
+        <!-- Dictionary configuration. -->
+        <!-- There can be any number of dictionary sections in a configuration file. -->
     </dictionary>
 
 </clickhouse>
@@ -100,19 +100,19 @@ ClickHouse：
     <name>dict_name</name>
 
     <structure>
-      <!-- 复合键配置 -->
+      <!-- Complex key configuration -->
     </structure>
 
     <source>
-      <!-- 数据源配置 -->
+      <!-- Source configuration -->
     </source>
 
     <layout>
-      <!-- 内存布局配置 -->
+      <!-- Memory layout configuration -->
     </layout>
 
     <lifetime>
-      <!-- 字典内存生命周期 -->
+      <!-- Lifetime of dictionary in memory -->
     </lifetime>
 </dictionary>
 ```
@@ -122,12 +122,12 @@ ClickHouse：
 ```sql
 CREATE DICTIONARY dict_name
 (
-    ... -- 属性
+    ... -- attributes
 )
-PRIMARY KEY ... -- 复合主键或单主键配置
-SOURCE(...) -- 数据源配置
-LAYOUT(...) -- 内存布局配置
-LIFETIME(...) -- 字典在内存中的存活时间
+PRIMARY KEY ... -- complex or single key configuration
+SOURCE(...) -- Source configuration
+LAYOUT(...) -- Memory layout configuration
+LIFETIME(...) -- Lifetime of dictionary in memory
 ```
 
 ## 在内存中存储字典 {#storing-dictionaries-in-memory}
@@ -160,7 +160,7 @@ ClickHouse 会针对与字典相关的错误抛出异常。例如：
         ...
         <layout>
             <layout_type>
-                <!-- 布局设置 -->
+                <!-- layout settings -->
             </layout_type>
         </layout>
         ...
@@ -173,7 +173,7 @@ ClickHouse 会针对与字典相关的错误抛出异常。例如：
 ```sql
 CREATE DICTIONARY (...)
 ...
-LAYOUT(LAYOUT_TYPE(param value)) -- 布局设置
+LAYOUT(LAYOUT_TYPE(param value)) -- layout settings
 ...
 ```
 
@@ -283,24 +283,27 @@ LAYOUT(HASHED())
 ```xml
 <layout>
   <hashed>
-    <!-- 如果分片数大于 1(默认为 `1`),字典将并行加载数据,
-         适用于单个字典包含大量元素的场景。 -->
+    <!-- If shards greater then 1 (default is `1`) the dictionary will load
+         data in parallel, useful if you have huge amount of elements in one
+         dictionary. -->
     <shards>10</shards>
 
-    <!-- 并行队列中块的积压队列大小。
+    <!-- Size of the backlog for blocks in parallel queue.
 
-         由于并行加载的瓶颈在于重新哈希,为避免线程执行重新哈希时发生阻塞,
-         需要设置一定的积压队列。
+         Since the bottleneck in parallel loading is rehash, and so to avoid
+         stalling because of thread is doing rehash, you need to have some
+         backlog.
 
-         10000 是内存占用与速度之间的良好平衡点。
-         即使对于 10e10 个元素,也能处理全部负载而不会出现饥饿现象。 -->
+         10000 is good balance between memory and speed.
+         Even for 10e10 elements and can handle all the load without starvation. -->
     <shard_load_queue_backlog>10000</shard_load_queue_backlog>
 
-    <!-- 哈希表的最大负载因子。值越大,内存利用率越高(浪费的内存越少),
-         但读取性能可能会下降。
+    <!-- Maximum load factor of the hash table, with greater values, the memory
+         is utilized more efficiently (less memory is wasted) but read/performance
+         may deteriorate.
 
-         有效值:[0.5, 0.99]
-         默认值:0.5 -->
+         Valid values: [0.5, 0.99]
+         Default: 0.5 -->
     <max_load_factor>0.5</max_load_factor>
   </hashed>
 </layout>
@@ -450,7 +453,7 @@ LAYOUT(COMPLEX_KEY_HASHED_ARRAY([SHARDS 1]))
 ```xml
 <layout>
     <range_hashed>
-        <!-- 重叠范围的处理策略（min/max）。默认值：min（返回 range_min 到 range_max 值最小的匹配范围） -->
+        <!-- Strategy for overlapping ranges (min/max). Default: min (return a matching range with the min(range_min -> range_max) value) -->
         <range_lookup_strategy>min</range_lookup_strategy>
     </range_hashed>
 </layout>
@@ -599,22 +602,22 @@ RANGE(MIN discount_start_date MAX discount_end_date);
 
 select dictGet('discounts_dict', 'amount', 1, toDate('2015-01-14')) res;
 ┌─res─┐
-│ 0.1 │ -- 仅有一个范围匹配:2015-01-01 - Null
+│ 0.1 │ -- the only one range is matching: 2015-01-01 - Null
 └─────┘
 
 select dictGet('discounts_dict', 'amount', 1, toDate('2015-01-16')) res;
 ┌─res─┐
-│ 0.2 │ -- 两个范围匹配,range_min 2015-01-15 (0.2) 大于 2015-01-01 (0.1)
+│ 0.2 │ -- two ranges are matching, range_min 2015-01-15 (0.2) is bigger than 2015-01-01 (0.1)
 └─────┘
 
 select dictGet('discounts_dict', 'amount', 2, toDate('2015-01-06')) res;
 ┌─res─┐
-│ 0.4 │ -- 两个范围匹配,range_min 2015-01-04 (0.4) 大于 2015-01-01 (0.3)
+│ 0.4 │ -- two ranges are matching, range_min 2015-01-04 (0.4) is bigger than 2015-01-01 (0.3)
 └─────┘
 
 select dictGet('discounts_dict', 'amount', 3, toDate('2015-01-01')) res;
 ┌─res─┐
-│ 0.5 │ -- 两个范围匹配,range_min 相等,range_max 2015-01-15 (0.5) 大于 2015-01-10 (0.6)
+│ 0.5 │ -- two ranges are matching, range_min are equal, 2015-01-15 (0.5) is bigger than 2015-01-10 (0.6)
 └─────┘
 
 DROP DICTIONARY discounts_dict;
@@ -636,22 +639,22 @@ RANGE(MIN discount_start_date MAX discount_end_date);
 
 select dictGet('discounts_dict', 'amount', 1, toDate('2015-01-14')) res;
 ┌─res─┐
-│ 0.1 │ -- 仅有一个范围匹配:2015-01-01 - Null
+│ 0.1 │ -- the only one range is matching: 2015-01-01 - Null
 └─────┘
 
 select dictGet('discounts_dict', 'amount', 1, toDate('2015-01-16')) res;
 ┌─res─┐
-│ 0.1 │ -- 两个范围匹配,range_min 2015-01-01 (0.1) 小于 2015-01-15 (0.2)
+│ 0.1 │ -- two ranges are matching, range_min 2015-01-01 (0.1) is less than 2015-01-15 (0.2)
 └─────┘
 
 select dictGet('discounts_dict', 'amount', 2, toDate('2015-01-06')) res;
 ┌─res─┐
-│ 0.3 │ -- 两个范围匹配,range_min 2015-01-01 (0.3) 小于 2015-01-04 (0.4)
+│ 0.3 │ -- two ranges are matching, range_min 2015-01-01 (0.3) is less than 2015-01-04 (0.4)
 └─────┘
 
 select dictGet('discounts_dict', 'amount', 3, toDate('2015-01-01')) res;
 ┌─res─┐
-│ 0.6 │ -- 两个范围匹配,range_min 相等,range_max 2015-01-10 (0.6) 小于 2015-01-15 (0.5)
+│ 0.6 │ -- two ranges are matching, range_min are equal, 2015-01-10 (0.6) is less than 2015-01-15 (0.5)
 └─────┘
 ```
 
@@ -702,17 +705,17 @@ RANGE(MIN StartDate MAX EndDate);
 ```xml
 <layout>
     <cache>
-        <!-- 缓存大小,以单元格数量计。向上取整为2的幂。 -->
+        <!-- The size of the cache, in number of cells. Rounded up to a power of two. -->
         <size_in_cells>1000000000</size_in_cells>
-        <!-- 允许读取已过期的键。 -->
+        <!-- Allows to read expired keys. -->
         <allow_read_expired_keys>0</allow_read_expired_keys>
-        <!-- 更新队列的最大长度。 -->
+        <!-- Max size of update queue. -->
         <max_update_queue_size>100000</max_update_queue_size>
-        <!-- 将更新任务推入队列的最大超时时间(毫秒)。 -->
+        <!-- Max timeout in milliseconds for push update task into queue. -->
         <update_queue_push_timeout_milliseconds>10</update_queue_push_timeout_milliseconds>
-        <!-- 等待更新任务完成的最大超时时间(毫秒)。 -->
+        <!-- Max wait timeout in milliseconds for update task to complete. -->
         <query_wait_timeout_milliseconds>60000</query_wait_timeout_milliseconds>
-        <!-- 缓存字典更新的最大线程数。 -->
+        <!-- Max threads for cache dictionary update. -->
         <max_threads_for_updates>4</max_threads_for_updates>
     </cache>
 </layout>
@@ -748,15 +751,15 @@ LAYOUT(CACHE(SIZE_IN_CELLS 1000000000))
 ```xml
 <layout>
     <ssd_cache>
-        <!-- 基本读取块的大小(以字节为单位)。建议设置为与 SSD 页大小相等。 -->
+        <!-- Size of elementary read block in bytes. Recommended to be equal to SSD's page size. -->
         <block_size>4096</block_size>
-        <!-- 缓存文件的最大大小(以字节为单位)。 -->
+        <!-- Max cache file size in bytes. -->
         <file_size>16777216</file_size>
-        <!-- 用于从 SSD 读取元素的 RAM 缓冲区大小(以字节为单位)。 -->
+        <!-- Size of RAM buffer in bytes for reading elements from SSD. -->
         <read_buffer_size>131072</read_buffer_size>
-        <!-- 用于在刷新到 SSD 之前聚合元素的 RAM 缓冲区大小(以字节为单位)。 -->
+        <!-- Size of RAM buffer in bytes for aggregating elements before flushing to SSD. -->
         <write_buffer_size>1048576</write_buffer_size>
-        <!-- 缓存文件的存储路径。 -->
+        <!-- Path where cache file will be stored. -->
         <path>/var/lib/clickhouse/user_files/test_dict</path>
     </ssd_cache>
 </layout>
@@ -852,8 +855,8 @@ INSERT INTO my_ip_addresses VALUES
 </structure>
 <layout>
     <ip_trie>
-        <!-- 可通过 dictGetString 检索键属性 `prefix`。 -->
-        <!-- 此选项将增加内存使用量。 -->
+        <!-- Key attribute `prefix` can be retrieved via dictGetString. -->
+        <!-- This option increases memory usage. -->
         <access_to_key_from_attributes>true</access_to_key_from_attributes>
     </ip_trie>
 </layout>
@@ -1353,7 +1356,7 @@ $ sudo apt-get install -y unixodbc odbcinst odbc-postgresql
     Driver = myconnection
 
     [myconnection]
-    Description         = 连接到 my_db 的 PostgreSQL 连接
+    Description         = PostgreSQL connection to my_db
     Driver              = PostgreSQL Unicode
     Database            = my_db
     Servername          = 127.0.0.1
@@ -1375,7 +1378,7 @@ ClickHouse 中字典的配置：
         <name>table_name</name>
         <source>
             <odbc>
-                <!-- 可在 connection_string 中指定以下参数: -->
+                <!-- You can specify the following parameters in connection_string: -->
                 <!-- DSN=myconnection;UID=username;PWD=password;HOST=127.0.0.1;PORT=5432;DATABASE=my_db -->
                 <connection_string>DSN=myconnection</connection_string>
                 <table>postgresql_table</table>
@@ -1439,7 +1442,7 @@ $ sudo apt-get install tdsodbc freetds-bin sqsh
     tds version = 7.0
     client charset = UTF-8
 
-    # 测试 TDS 连接
+    # test TDS connection
     $ sqsh -S MSSQL -D database -U user -P password
 
 
@@ -1453,7 +1456,7 @@ $ sudo apt-get install tdsodbc freetds-bin sqsh
     UsageCount      = 5
 
     $ cat /etc/odbc.ini
-    # $ cat ~/.odbc.ini # 如果以运行 ClickHouse 的用户身份登录
+    # $ cat ~/.odbc.ini # if you signed in under a user that runs ClickHouse
 
     [MSSQL]
     Description     = FreeTDS
@@ -1465,7 +1468,7 @@ $ sudo apt-get install tdsodbc freetds-bin sqsh
     Port            = 1433
 
 
-    # (可选)测试 ODBC 连接(使用 isql 工具需安装 [unixodbc](https://packages.debian.org/sid/unixodbc) 包)
+    # (optional) test ODBC connection (to use isql-tool install the [unixodbc](https://packages.debian.org/sid/unixodbc)-package)
     $ isql -v MSSQL "user" "password"
 ```
 
@@ -1970,7 +1973,7 @@ XML 描述：
         </id>
 
         <attribute>
-            <!-- 属性参数 -->
+            <!-- Attribute parameters -->
         </attribute>
 
         ...
@@ -1989,7 +1992,7 @@ DDL 查询：
 ```sql
 CREATE DICTIONARY dict_name (
     Id UInt64,
-    -- 属性
+    -- attributes
 )
 PRIMARY KEY Id
 ...
@@ -2021,7 +2024,7 @@ ClickHouse 支持以下类型的键：
 
 ```xml
 <id>
-    <name>ID</name>
+    <name>Id</name>
 </id>
 ```
 
@@ -2128,17 +2131,17 @@ ClickHouse 支持使用[数值键](#numeric-key)的层次字典。
 请看下面的层次结构：
 
 ```text
-0 (公共父节点)
+0 (Common parent)
 │
-├── 1 (俄罗斯)
+├── 1 (Russia)
 │   │
-│   └── 2 (莫斯科)
+│   └── 2 (Moscow)
 │       │
-│       └── 3 (中心区)
+│       └── 3 (Center)
 │
-└── 4 (英国)
+└── 4 (Great Britain)
     │
-    └── 5 (伦敦)
+    └── 5 (London)
 ```
 
 这种层级可以用如下字典表来表示。
@@ -2410,19 +2413,19 @@ LIFETIME(0)
 ```
 
 ```yaml
-# /var/lib/clickhouse/user_files/regexp_tree.yaml {#varlibclickhouseuser_filesregexp_treeyaml}
+# /var/lib/clickhouse/user_files/regexp_tree.yaml
 - regexp: 'clickhouse\.com'
   tag: 'ClickHouse'
   topological_index: 1
   paths:
     - regexp: 'clickhouse\.com/docs(.*)'
-      tag: 'ClickHouse 文档'
+      tag: 'ClickHouse Documentation'
       topological_index: 0
       captured: '\1'
       parent: 'ClickHouse'
 
 - regexp: '/docs(/|$)'
-  tag: '文档'
+  tag: 'Documentation'
   topological_index: 2
 
 - regexp: 'github.com'

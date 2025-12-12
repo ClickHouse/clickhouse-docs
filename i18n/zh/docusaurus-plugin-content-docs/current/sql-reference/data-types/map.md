@@ -97,8 +97,8 @@ SELECT CAST(([1, 2, 3], ['Ready', 'Steady', 'Go']), 'Map(UInt8, String)') AS map
 CREATE TABLE tab (m Map(String, UInt64)) ENGINE = Memory;
 INSERT INTO tab VALUES (map('key1', 1, 'key2', 2, 'key3', 3));
 
-SELECT m.keys FROM tab; --   等同于 mapKeys(m)
-SELECT m.values FROM tab; -- 等同于 mapValues(m)
+SELECT m.keys FROM tab; --   same as mapKeys(m)
+SELECT m.values FROM tab; -- same as mapValues(m)
 ```
 
 结果：

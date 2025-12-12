@@ -32,7 +32,7 @@ make
 Затем сгенерируйте запросы (используйте тот же параметр масштабирования):
 
 ```bash
-./dsqgen -DIRECTORY ../query_templates/ -INPUT ../query_templates/templates.lst  -SCALE 1 # генерирует 99 запросов в файле out/query_0.sql
+./dsqgen -DIRECTORY ../query_templates/ -INPUT ../query_templates/templates.lst  -SCALE 1 # generates 99 queries in out/query_0.sql
 ```
 
 Теперь создайте таблицы в ClickHouse.

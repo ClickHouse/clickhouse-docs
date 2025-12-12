@@ -38,7 +38,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ### エンジンのパラメータ {#engine-parameters}
 
 ```sql
-VersionedCollapsingMergeTree(サイン, バージョン)
+VersionedCollapsingMergeTree(sign, version)
 ```
 
 | パラメータ     | 説明                                              | 型                                                                                                                                                                                                                                                                                              |
@@ -58,13 +58,13 @@ VersionedCollapsingMergeTree(サイン, バージョン)
   :::
 
   ```sql
-  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-  (
-      name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
-      name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
-      ...
-  ) ENGINE [=] VersionedCollapsingMergeTree(date-column [, samp#table_engines_versionedcollapsingmergetreeling_expression], (primary, key), index_granularity, sign, version)
-  ```
+CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+(
+    name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
+    name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
+    ...
+) ENGINE [=] VersionedCollapsingMergeTree(date-column [, samp#table_engines_versionedcollapsingmergetreeling_expression], (primary, key), index_granularity, sign, version)
+```
 
   `sign` と `version` 以外のすべてのパラメータは、`MergeTree` における意味と同じです。
 
@@ -88,7 +88,7 @@ VersionedCollapsingMergeTree(サイン, バージョン)
 たとえば、あるサイトでユーザーが閲覧したページ数と、そのページに滞在した時間を集計したいとします。ある時点で、ユーザーのアクティビティ状態を表す次の行を書き込みます。
 
 ```text
-┌──────────────ユーザーID─┬─ページビュー数─┬─滞在時間─┬─署名─┬─バージョン─┐
+┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┬─Version─┐
 │ 4324182021466249494 │         5 │      146 │    1 │       1 |
 └─────────────────────┴───────────┴──────────┴──────┴─────────┘
 ```
@@ -96,7 +96,7 @@ VersionedCollapsingMergeTree(サイン, バージョン)
 後でユーザーアクティビティの変更を記録し、それを次の 2 行で書き込みます。
 
 ```text
-┌──────────────UserID─┬─ページビュー数─┬─継続時間─┬─符号─┬─バージョン─┐
+┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┬─Version─┐
 │ 4324182021466249494 │         5 │      146 │   -1 │       1 |
 │ 4324182021466249494 │         6 │      185 │    1 │       2 |
 └─────────────────────┴───────────┴──────────┴──────┴─────────┘
@@ -109,7 +109,7 @@ VersionedCollapsingMergeTree(サイン, バージョン)
 ユーザーアクティビティの最後の状態だけが必要なため、これらの行は
 
 ```text
-┌──────────────ユーザーID─┬─ページビュー─┬─継続時間─┬─サイン─┬─バージョン─┐
+┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┬─Version─┐
 │ 4324182021466249494 │         5 │      146 │    1 │       1 |
 │ 4324182021466249494 │         5 │      146 │   -1 │       1 |
 └─────────────────────┴───────────┴──────────┴──────┴─────────┘
@@ -146,7 +146,7 @@ ClickHouse は、同じプライマリキーを持つすべての行が、同じ
 サンプルデータ：
 
 ```text
-┌──────────────ユーザーID─┬─ページビュー─┬─滞在時間─┬─符号─┬─バージョン─┐
+┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┬─Version─┐
 │ 4324182021466249494 │         5 │      146 │    1 │       1 |
 │ 4324182021466249494 │         5 │      146 │   -1 │       1 |
 │ 4324182021466249494 │         6 │      185 │    1 │       2 |
@@ -187,10 +187,10 @@ SELECT * FROM UAct
 ```
 
 ```text
-┌──────────────ユーザーID─┬─ページビュー─┬─滞在時間─┬─符号─┬─バージョン─┐
+┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┬─Version─┐
 │ 4324182021466249494 │         5 │      146 │    1 │       1 │
 └─────────────────────┴───────────┴──────────┴──────┴─────────┘
-┌──────────────ユーザーID─┬─ページビュー─┬─滞在時間─┬─符号─┬─バージョン─┐
+┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┬─Version─┐
 │ 4324182021466249494 │         5 │      146 │   -1 │       1 │
 │ 4324182021466249494 │         6 │      185 │    1 │       2 │
 └─────────────────────┴───────────┴──────────┴──────┴─────────┘
@@ -226,7 +226,7 @@ SELECT * FROM UAct FINAL
 ```
 
 ```text
-┌──────────────ユーザーID─┬─ページビュー─┬─滞在時間─┬─サイン─┬─バージョン─┐
+┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┬─Version─┐
 │ 4324182021466249494 │         6 │      185 │    1 │       2 │
 └─────────────────────┴───────────┴──────────┴──────┴─────────┘
 ```

@@ -86,29 +86,33 @@ SELECT json, JSONAllPaths(json) FROM test;
 ```
 
 
+
 ## JSONAllPathsWithTypes {#JSONAllPathsWithTypes}
 
-Добавлено в версии: v24.8
+Introduced in: v24.8
 
-Возвращает список всех путей и их типов данных, хранящихся в каждой строке JSON-столбца.
 
-**Синтаксис**
+Returns the list of all paths and their data types stored in each row in JSON column.
+        
+
+**Syntax**
 
 ```sql
 JSONAllPathsWithTypes(json)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON-столбец. [`JSON`](/sql-reference/data-types/newjson)
+- `json` — JSON column. [`JSON`](/sql-reference/data-types/newjson)
 
-**Возвращаемое значение**
 
-Возвращает карту всех путей и соответствующих им типов данных в JSON-столбце. [`Map(String, String)`](/sql-reference/data-types/map)
+**Returned value**
 
-**Примеры**
+Returns a map of all paths and their data types in the JSON column. [`Map(String, String)`](/sql-reference/data-types/map)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE test (json JSON(max_dynamic_paths=1)) ENGINE = Memory;
@@ -125,32 +129,36 @@ SELECT json, JSONAllPathsWithTypes(json) FROM test;
 ```
 
 
+
 ## JSONArrayLength {#JSONArrayLength}
 
-Появилась в версии: v23.2
+Introduced in: v23.2
 
-Возвращает количество элементов во внешнем JSON‑массиве.
-Функция возвращает `NULL`, если входная JSON‑строка некорректна.
 
-**Синтаксис**
+Returns the number of elements in the outermost JSON array.
+The function returns `NULL` if input JSON string is invalid.
+    
+
+**Syntax**
 
 ```sql
 JSONArrayLength(json)
 ```
 
-**Псевдонимы**: `JSON_ARRAY_LENGTH`
+**Aliases**: `JSON_ARRAY_LENGTH`
 
-**Аргументы**
+**Arguments**
 
-* `json` — строка с корректным JSON. [`String`](/sql-reference/data-types/string)
+- `json` — String with valid JSON. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает количество элементов массива, если `json` — это корректная строка JSON-массива, в противном случае возвращает `NULL`. [`Nullable(UInt64)`](/sql-reference/data-types/nullable)
+**Returned value**
 
-**Примеры**
+Returns the number of array elements if `json` is a valid JSON array string, otherwise returns `NULL`. [`Nullable(UInt64)`](/sql-reference/data-types/nullable)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT
@@ -165,29 +173,33 @@ SELECT
 ```
 
 
+
 ## JSONDynamicPaths {#JSONDynamicPaths}
 
-Добавлено в: v24.8
+Introduced in: v24.8
 
-Возвращает список динамических путей, которые хранятся в виде отдельных подстолбцов в JSON-столбце.
 
-**Синтаксис**
+Returns the list of dynamic paths that are stored as separate subcolumns in JSON column.
+        
+
+**Syntax**
 
 ```sql
 JSONDynamicPaths(json)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON-столбец. [`JSON`](/sql-reference/data-types/newjson)
+- `json` — JSON column. [`JSON`](/sql-reference/data-types/newjson)
 
-**Возвращаемое значение**
 
-Возвращает массив динамических путей в JSON-столбце. [`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**Примеры**
+Returns an array of dynamic paths in the JSON column. [`Array(String)`](/sql-reference/data-types/array)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE test (json JSON(max_dynamic_paths=1)) ENGINE = Memory;
@@ -204,29 +216,33 @@ SELECT json, JSONDynamicPaths(json) FROM test;
 ```
 
 
+
 ## JSONDynamicPathsWithTypes {#JSONDynamicPathsWithTypes}
 
-Добавлено в: v24.8
+Introduced in: v24.8
 
-Возвращает список динамических путей, которые хранятся как отдельные подстолбцы, и их типов в каждой строке JSON-столбца.
 
-**Синтаксис**
+Returns the list of dynamic paths that are stored as separate subcolumns and their types in each row in JSON column.
+        
+
+**Syntax**
 
 ```sql
 JSONDynamicPathsWithTypes(json)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — столбец JSON. [`JSON`](/sql-reference/data-types/newjson)
+- `json` — JSON column. [`JSON`](/sql-reference/data-types/newjson)
 
-**Возвращаемое значение**
 
-Возвращает словарь динамических путей и их типов данных в столбце JSON. [`Map(String, String)`](/sql-reference/data-types/map)
+**Returned value**
 
-**Примеры**
+Returns a map of dynamic paths and their data types in the JSON column. [`Map(String, String)`](/sql-reference/data-types/map)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE test (json JSON(max_dynamic_paths=1)) ENGINE = Memory;
@@ -243,31 +259,35 @@ SELECT json, JSONDynamicPathsWithTypes(json) FROM test;
 ```
 
 
+
 ## JSONExtract {#JSONExtract}
 
-Добавлена в версии: v19.14
+Introduced in: v19.14
 
-Парсит JSON и извлекает значение заданного типа данных ClickHouse.
 
-**Синтаксис**
+Parses JSON and extracts a value with given ClickHouse data type.
+        
+
+**Syntax**
 
 ```sql
 JSONExtract(json[, indices_or_keys, ...], return_type)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON-строка для разбора. [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — список из нуля и более аргументов, каждый из которых может быть строкой или целым числом. [`String`](/sql-reference/data-types/string) или [`(U)Int*`](/sql-reference/data-types/int-uint)
-* `return_type` — тип данных ClickHouse, который нужно вернуть. [`String`](/sql-reference/data-types/string)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `return_type` — ClickHouse data type to return. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает значение указанного типа данных ClickHouse, если это возможно, в противном случае возвращает значение по умолчанию для этого типа.
+**Returned value**
 
-**Примеры**
+Returns a value of specified ClickHouse data type if possible, otherwise returns the default value for that type.
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtract('{"a": "hello", "b": [-100, 200.0, 300]}', 'Tuple(String, Array(Float64))') AS res;
@@ -280,30 +300,34 @@ SELECT JSONExtract('{"a": "hello", "b": [-100, 200.0, 300]}', 'Tuple(String, Arr
 ```
 
 
+
 ## JSONExtractArrayRaw {#JSONExtractArrayRaw}
 
-Появилась в версии: v20.1
+Introduced in: v20.1
 
-Возвращает массив с элементами JSON-массива, каждый из которых представлен как необработанная строка.
 
-**Синтаксис**
+Returns an array with elements of JSON array, each represented as unparsed string.
+        
+
+**Syntax**
 
 ```sql
 JSONExtractArrayRaw(json[, indices_or_keys, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON-строка для разбора. [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — список из нуля или более аргументов, каждый из которых может быть строкой или целым числом. [`String`](/sql-reference/data-types/string) или [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает массив строк с элементами JSON-массива. Если соответствующее значение не является массивом или не существует, возвращается пустой массив. [`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**Примеры**
+Returns an array of strings with JSON array elements. If the part is not an array or does not exist, an empty array will be returned. [`Array(String)`](/sql-reference/data-types/array)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtractArrayRaw('{"a": "hello", "b": [-100, 200.0, "hello"]}', 'b') AS res;
@@ -316,30 +340,34 @@ SELECT JSONExtractArrayRaw('{"a": "hello", "b": [-100, 200.0, "hello"]}', 'b') A
 ```
 
 
+
 ## JSONExtractArrayRawCaseInsensitive {#JSONExtractArrayRawCaseInsensitive}
 
-Добавлено в: v25.8
+Introduced in: v25.8
 
-Возвращает массив с элементами JSON-массива, каждый из которых представлен в виде неразобранной строки, с использованием сопоставления ключей без учета регистра. Эта функция аналогична [`JSONExtractArrayRaw`](#JSONExtractArrayRaw).
 
-**Синтаксис**
+Returns an array with elements of JSON array, each represented as unparsed string, using case-insensitive key matching. This function is similar to [`JSONExtractArrayRaw`](#JSONExtractArrayRaw).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractArrayRawCaseInsensitive(json [, indices_or_keys]...)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON-строка для разбора [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — Необязательный параметр. Индексы или ключи для перехода к массиву. Ключи сравниваются без учета регистра [`String`](/sql-reference/data-types/string) или [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the array. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает массив сырых JSON-строк. [`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**Примеры**
+Returns an array of raw JSON strings. [`Array(String)`](/sql-reference/data-types/array)
 
-**базовый**
+**Examples**
+
+**basic**
 
 ```sql title=Query
 SELECT JSONExtractArrayRawCaseInsensitive('{"Items": [1, 2, 3]}', 'ITEMS')
@@ -350,30 +378,34 @@ SELECT JSONExtractArrayRawCaseInsensitive('{"Items": [1, 2, 3]}', 'ITEMS')
 ```
 
 
+
 ## JSONExtractBool {#JSONExtractBool}
 
-Добавлена в версии: v20.1
+Introduced in: v20.1
 
-Разбирает JSON и извлекает значение типа Bool.
 
-**Синтаксис**
+Parses JSON and extracts a value of Bool type.
+        
+
+**Syntax**
 
 ```sql
 JSONExtractBool(json[, indices_or_keys, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON-строка для разбора. [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — список из нуля или более аргументов, каждый из которых может быть строкой или целым числом. [`String`](/sql-reference/data-types/string) или [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает значение типа Bool, если оно существует, иначе возвращает `0`. [`Bool`](/sql-reference/data-types/boolean)
+**Returned value**
 
-**Примеры**
+Returns a Bool value if it exists, otherwise returns `0`. [`Bool`](/sql-reference/data-types/boolean)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtractBool('{"passed": true}', 'passed') AS res;
@@ -386,30 +418,34 @@ SELECT JSONExtractBool('{"passed": true}', 'passed') AS res;
 ```
 
 
+
 ## JSONExtractBoolCaseInsensitive {#JSONExtractBoolCaseInsensitive}
 
-Добавлена в версии: v25.8
+Introduced in: v25.8
 
-Парсит JSON и извлекает логическое значение, используя регистронезависимый поиск по ключу. Эта функция аналогична [`JSONExtractBool`](#JSONExtractBool).
 
-**Синтаксис**
+Parses JSON and extracts a boolean value using case-insensitive key matching. This function is similar to [`JSONExtractBool`](#JSONExtractBool).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractBoolCaseInsensitive(json [, indices_or_keys]...)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON-строка для разбора [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — необязательный аргумент. Индексы или ключи для перехода к полю. Ключи сопоставляются без учета регистра [`String`](/sql-reference/data-types/string) или [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the field. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает извлечённое логическое значение (1 для true, 0 для false), либо 0, если значение не найдено. [`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the extracted boolean value (1 for true, 0 for false), 0 if not found. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Базовый пример**
+**Examples**
+
+**basic**
 
 ```sql title=Query
 SELECT JSONExtractBoolCaseInsensitive('{"IsActive": true}', 'isactive')
@@ -420,31 +456,35 @@ SELECT JSONExtractBoolCaseInsensitive('{"IsActive": true}', 'isactive')
 ```
 
 
+
 ## JSONExtractCaseInsensitive {#JSONExtractCaseInsensitive}
 
-Добавлена в: v25.8
+Introduced in: v25.8
 
-Разбирает JSON и извлекает значение указанного типа данных ClickHouse, используя регистронезависимое сопоставление ключей. Эта функция аналогична [`JSONExtract`](#JSONExtract).
 
-**Синтаксис**
+Parses JSON and extracts a value of the given ClickHouse data type using case-insensitive key matching. This function is similar to [`JSONExtract`](#JSONExtract).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractCaseInsensitive(json [, indices_or_keys...], return_type)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON-строка для разбора [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — Необязательный параметр. Индексы или ключи для перехода к полю. Ключи сравниваются без учёта регистра [`String`](/sql-reference/data-types/string) или [`(U)Int*`](/sql-reference/data-types/int-uint)
-* `return_type` — Тип данных ClickHouse, в котором нужно вернуть значение [`String`](/sql-reference/data-types/string)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the field. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `return_type` — The ClickHouse data type to extract [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает извлечённое значение в указанном типе данных. [`Any`](/sql-reference/data-types)
+**Returned value**
 
-**Примеры**
+Returns the extracted value in the specified data type. [`Any`](/sql-reference/data-types)
 
-**int&#95;type**
+**Examples**
+
+**int_type**
 
 ```sql title=Query
 SELECT JSONExtractCaseInsensitive('{"Number": 123}', 'number', 'Int32')
@@ -454,7 +494,7 @@ SELECT JSONExtractCaseInsensitive('{"Number": 123}', 'number', 'Int32')
 123
 ```
 
-**array&#95;type**
+**array_type**
 
 ```sql title=Query
 SELECT JSONExtractCaseInsensitive('{"List": [1, 2, 3]}', 'list', 'Array(Int32)')
@@ -465,30 +505,34 @@ SELECT JSONExtractCaseInsensitive('{"List": [1, 2, 3]}', 'list', 'Array(Int32)')
 ```
 
 
+
 ## JSONExtractFloat {#JSONExtractFloat}
 
-Появилась в версии: v20.1
+Introduced in: v20.1
 
-Разбирает JSON и извлекает значение типа Float.
 
-**Синтаксис**
+Parses JSON and extracts a value of Float type.
+        
+
+**Syntax**
 
 ```sql
 JSONExtractFloat(json[, indices_or_keys, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON-строка для разбора. [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — список из нуля или более аргументов, каждый из которых может быть строкой или целым числом. [`String`](/sql-reference/data-types/string) или [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает значение типа Float, если оно найдено, в противном случае возвращает `0`. [`Float64`](/sql-reference/data-types/float)
+**Returned value**
 
-**Примеры**
+Returns a Float value if it exists, otherwise returns `0`. [`Float64`](/sql-reference/data-types/float)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtractFloat('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 2) AS res;
@@ -501,30 +545,34 @@ SELECT JSONExtractFloat('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 2) AS re
 ```
 
 
+
 ## JSONExtractFloatCaseInsensitive {#JSONExtractFloatCaseInsensitive}
 
-Впервые представлена в: v25.8
+Introduced in: v25.8
 
-Разбирает JSON и извлекает значение типа Float, используя регистронезависимое сопоставление ключей. Эта функция аналогична [`JSONExtractFloat`](#JSONExtractFloat).
 
-**Синтаксис**
+Parses JSON and extracts a value of Float type using case-insensitive key matching. This function is similar to [`JSONExtractFloat`](#JSONExtractFloat).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractFloatCaseInsensitive(json [, indices_or_keys]...)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON-строка для разбора [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — Необязательный параметр. Индексы или ключи для перехода к полю. Ключи сопоставляются без учета регистра [`String`](/sql-reference/data-types/string) или [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the field. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает извлеченное значение с плавающей запятой, 0 — если поле не найдено или значение не может быть преобразовано. [`Float64`](/sql-reference/data-types/float)
+**Returned value**
 
-**Примеры**
+Returns the extracted Float value, 0 if not found or cannot be converted. [`Float64`](/sql-reference/data-types/float)
 
-**базовый пример**
+**Examples**
+
+**basic**
 
 ```sql title=Query
 SELECT JSONExtractFloatCaseInsensitive('{"Price": 12.34}', 'PRICE')
@@ -535,30 +583,34 @@ SELECT JSONExtractFloatCaseInsensitive('{"Price": 12.34}', 'PRICE')
 ```
 
 
+
 ## JSONExtractInt {#JSONExtractInt}
 
-Добавлено в версии: v20.1
+Introduced in: v20.1
 
-Разбирает JSON и извлекает значение типа Int.
 
-**Синтаксис**
+Parses JSON and extracts a value of Int type.
+        
+
+**Syntax**
 
 ```sql
 JSONExtractInt(json[, indices_or_keys, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON-строка для парсинга. [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — список из нуля или более аргументов, каждый из которых может быть строкой или целым числом. [`String`](/sql-reference/data-types/string) или [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает значение типа Int, если оно существует, в противном случае возвращает `0`. [`Int64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns an Int value if it exists, otherwise returns `0`. [`Int64`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtractInt('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 1) AS res;
@@ -571,30 +623,34 @@ SELECT JSONExtractInt('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 1) AS res;
 ```
 
 
+
 ## JSONExtractIntCaseInsensitive {#JSONExtractIntCaseInsensitive}
 
-Добавлена в: v25.8
+Introduced in: v25.8
 
-Разбирает JSON и извлекает значение типа Int, используя регистронезависимое сопоставление ключей. Эта функция аналогична [`JSONExtractInt`](#JSONExtractInt).
 
-**Синтаксис**
+Parses JSON and extracts a value of Int type using case-insensitive key matching. This function is similar to [`JSONExtractInt`](#JSONExtractInt).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractIntCaseInsensitive(json [, indices_or_keys]...)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON-строка для разбора [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — Необязательный параметр. Индексы или ключи для перехода к полю. Ключи сопоставляются без учета регистра [`String`](/sql-reference/data-types/string) или [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the field. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает извлечённое значение типа Int, 0 — если значение не найдено или не может быть преобразовано. [`Int64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the extracted Int value, 0 if not found or cannot be converted. [`Int64`](/sql-reference/data-types/int-uint)
 
-**Базовый пример**
+**Examples**
+
+**basic**
 
 ```sql title=Query
 SELECT JSONExtractIntCaseInsensitive('{"Value": 123}', 'value')
@@ -604,7 +660,7 @@ SELECT JSONExtractIntCaseInsensitive('{"Value": 123}', 'value')
 123
 ```
 
-**вложенный**
+**nested**
 
 ```sql title=Query
 SELECT JSONExtractIntCaseInsensitive('{"DATA": {"COUNT": 42}}', 'data', 'Count')
@@ -615,30 +671,34 @@ SELECT JSONExtractIntCaseInsensitive('{"DATA": {"COUNT": 42}}', 'data', 'Count')
 ```
 
 
+
 ## JSONExtractKeys {#JSONExtractKeys}
 
-Добавлена в версии: v21.11
+Introduced in: v21.11
 
-Разбирает строку в формате JSON и извлекает ключи.
 
-**Синтаксис**
+Parses a JSON string and extracts the keys.
+        
+
+**Syntax**
 
 ```sql
 JSONExtractKeys(json[, indices_or_keys, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON-строка для разбора. [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — список из нуля или более аргументов, каждый из которых может быть строкой или целым числом. [`String`](/sql-reference/data-types/string) или [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает массив с ключами JSON-объекта. [`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**Примеры**
+Returns an array with the keys of the JSON object. [`Array(String)`](/sql-reference/data-types/array)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtractKeys('{"a": "hello", "b": [-100, 200.0, 300]}') AS res;
@@ -651,31 +711,35 @@ SELECT JSONExtractKeys('{"a": "hello", "b": [-100, 200.0, 300]}') AS res;
 ```
 
 
+
 ## JSONExtractKeysAndValues {#JSONExtractKeysAndValues}
 
-Появилось в версии: v20.1
+Introduced in: v20.1
 
-Разбирает пары ключ-значение из JSON-документа, в котором значения имеют заданный тип данных ClickHouse.
 
-**Синтаксис**
+Parses key-value pairs from a JSON where the values are of the given ClickHouse data type.
+        
+
+**Syntax**
 
 ```sql
 JSONExtractKeysAndValues(json[, indices_or_keys, ...], value_type)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON-строка для разбора. [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — список из нуля или более аргументов, каждый из которых может быть строкой или целым числом. [`String`](/sql-reference/data-types/string) или [`(U)Int*`](/sql-reference/data-types/int-uint)
-* `value_type` — тип данных ClickHouse для значений. [`String`](/sql-reference/data-types/string)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `value_type` — ClickHouse data type of the values. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает массив кортежей с разобранными парами ключ–значение. [`Array(Tuple(String, value_type))`](/sql-reference/data-types/array)
+**Returned value**
 
-**Примеры**
+Returns an array of tuples with the parsed key-value pairs. [`Array(Tuple(String, value_type))`](/sql-reference/data-types/array)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtractKeysAndValues('{"x": {"a": 5, "b": 7, "c": 11}}', 'Int8', 'x') AS res;
@@ -688,31 +752,35 @@ SELECT JSONExtractKeysAndValues('{"x": {"a": 5, "b": 7, "c": 11}}', 'Int8', 'x')
 ```
 
 
+
 ## JSONExtractKeysAndValuesCaseInsensitive {#JSONExtractKeysAndValuesCaseInsensitive}
 
-Добавлена в: v25.8
+Introduced in: v25.8
 
-Извлекает пары ключ–значение из JSON с регистронезависимым сопоставлением ключей. Эта функция аналогична функции [`JSONExtractKeysAndValues`](#JSONExtractKeysAndValues).
 
-**Синтаксис**
+Parses key-value pairs from JSON using case-insensitive key matching. This function is similar to [`JSONExtractKeysAndValues`](#JSONExtractKeysAndValues).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractKeysAndValuesCaseInsensitive(json [, indices_or_keys...], value_type)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON-строка для разбора [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — Необязательный параметр. Индексы или ключи для перехода к объекту. Ключи сопоставляются без учета регистра [`String`](/sql-reference/data-types/string) или [`(U)Int*`](/sql-reference/data-types/int-uint)
-* `value_type` — тип данных ClickHouse для значений [`String`](/sql-reference/data-types/string)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the object. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `value_type` — The ClickHouse data type of the values [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает массив кортежей, содержащих пары ключ-значение. [`Array(Tuple(String, T))`](/sql-reference/data-types/array)
+**Returned value**
 
-**Примеры**
+Returns an array of tuples containing key-value pairs. [`Array(Tuple(String, T))`](/sql-reference/data-types/array)
 
-**простой пример**
+**Examples**
+
+**basic**
 
 ```sql title=Query
 SELECT JSONExtractKeysAndValuesCaseInsensitive('{"Name": "Alice", "AGE": 30}', 'String')
@@ -723,30 +791,34 @@ SELECT JSONExtractKeysAndValuesCaseInsensitive('{"Name": "Alice", "AGE": 30}', '
 ```
 
 
+
 ## JSONExtractKeysAndValuesRaw {#JSONExtractKeysAndValuesRaw}
 
-Добавлена в версии: v20.4
+Introduced in: v20.4
 
-Возвращает массив кортежей с ключами и значениями из объекта JSON. Все значения представлены в виде необработанных строк.
 
-**Синтаксис**
+Returns an array of tuples with keys and values from a JSON object. All values are represented as unparsed strings.
+        
+
+**Syntax**
 
 ```sql
 JSONExtractKeysAndValuesRaw(json[, indices_or_keys, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON-строка для разбора. [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — список из нуля или более аргументов, каждый из которых может быть либо строкой, либо целым числом. [`String`](/sql-reference/data-types/string) или [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает массив кортежей с разобранными парами ключ–значение, где значения представляют собой неразобранные строки. [`Array(Tuple(String, String))`](/sql-reference/data-types/array)
+**Returned value**
 
-**Примеры**
+Returns an array of tuples with parsed key-value pairs where values are unparsed strings. [`Array(Tuple(String, String))`](/sql-reference/data-types/array)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b": "hello"}') AS res;
@@ -759,30 +831,34 @@ SELECT JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b": "hello"}') AS res;
 ```
 
 
+
 ## JSONExtractKeysAndValuesRawCaseInsensitive {#JSONExtractKeysAndValuesRawCaseInsensitive}
 
-Добавлена в версии: v25.8
+Introduced in: v25.8
 
-Извлекает необработанные пары ключ-значение из JSON, сопоставляя ключи без учета регистра. Эта функция похожа на [`JSONExtractKeysAndValuesRaw`](#JSONExtractKeysAndValuesRaw).
 
-**Синтаксис**
+Extracts raw key-value pairs from JSON using case-insensitive key matching. This function is similar to [`JSONExtractKeysAndValuesRaw`](#JSONExtractKeysAndValuesRaw).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractKeysAndValuesRawCaseInsensitive(json [, indices_or_keys]...)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON-строка для разбора [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — Необязательный параметр. Индексы или ключи для перехода к объекту. Ключи сопоставляются без учета регистра [`String`](/sql-reference/data-types/string) или [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the object. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает массив кортежей, содержащих пары ключ-значение в виде исходных строк. [`Array(Tuple(String, String))`](/sql-reference/data-types/array)
+**Returned value**
 
-**Примеры**
+Returns an array of tuples containing key-value pairs as raw strings. [`Array(Tuple(String, String))`](/sql-reference/data-types/array)
 
-**простой пример**
+**Examples**
+
+**basic**
 
 ```sql title=Query
 SELECT JSONExtractKeysAndValuesRawCaseInsensitive('{"Name": "Alice", "AGE": 30}')
@@ -793,30 +869,34 @@ SELECT JSONExtractKeysAndValuesRawCaseInsensitive('{"Name": "Alice", "AGE": 30}'
 ```
 
 
+
 ## JSONExtractKeysCaseInsensitive {#JSONExtractKeysCaseInsensitive}
 
-Добавлено в: v25.8
+Introduced in: v25.8
 
-Разбирает строку JSON и извлекает ключи, используя регистронезависимое сравнение ключей для перехода к вложенным объектам. Эта функция аналогична [`JSONExtractKeys`](#JSONExtractKeys).
 
-**Синтаксис**
+Parses a JSON string and extracts the keys using case-insensitive key matching to navigate to nested objects. This function is similar to [`JSONExtractKeys`](#JSONExtractKeys).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractKeysCaseInsensitive(json [, indices_or_keys]...)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON-строка для разбора [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — Необязательный параметр. Индексы или ключи для перехода к объекту. Ключи сравниваются без учета регистра [`String`](/sql-reference/data-types/string) или [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the object. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает массив ключей JSON-объекта. [`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**Примеры**
+Returns an array of keys from the JSON object. [`Array(String)`](/sql-reference/data-types/array)
 
-**базовый**
+**Examples**
+
+**basic**
 
 ```sql title=Query
 SELECT JSONExtractKeysCaseInsensitive('{"Name": "Alice", "AGE": 30}')
@@ -826,7 +906,7 @@ SELECT JSONExtractKeysCaseInsensitive('{"Name": "Alice", "AGE": 30}')
 ['Name','AGE']
 ```
 
-**вложенный**
+**nested**
 
 ```sql title=Query
 SELECT JSONExtractKeysCaseInsensitive('{"User": {"name": "John", "AGE": 25}}', 'user')
@@ -837,30 +917,34 @@ SELECT JSONExtractKeysCaseInsensitive('{"User": {"name": "John", "AGE": 25}}', '
 ```
 
 
+
 ## JSONExtractRaw {#JSONExtractRaw}
 
-Добавлен в версии: v20.1
+Introduced in: v20.1
 
-Возвращает часть JSON в виде строки без парсинга.
 
-**Синтаксис**
+Returns a part of JSON as unparsed string.
+        
+
+**Syntax**
 
 ```sql
 JSONExtractRaw(json[, indices_or_keys, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON-строка для парсинга. [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — список из нуля или более аргументов, каждый из которых может быть строкой или целым числом. [`String`](/sql-reference/data-types/string) или [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает фрагмент JSON в виде неразобранной строки. Если фрагмент не существует или имеет неверный тип, возвращается пустая строка. [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**Примеры**
+Returns the part of JSON as an unparsed string. If the part does not exist or has a wrong type, an empty string will be returned. [`String`](/sql-reference/data-types/string)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtractRaw('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') AS res;
@@ -873,28 +957,32 @@ SELECT JSONExtractRaw('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') AS res;
 ```
 
 
+
 ## JSONExtractRawCaseInsensitive {#JSONExtractRawCaseInsensitive}
 
-Добавлено в: v25.8
+Introduced in: v25.8
 
-Возвращает часть JSON в виде необработанной строки, используя регистронезависимое сопоставление ключей. Эта функция аналогична [`JSONExtractRaw`](#JSONExtractRaw).
 
-**Синтаксис**
+Returns part of the JSON as an unparsed string using case-insensitive key matching. This function is similar to [`JSONExtractRaw`](#JSONExtractRaw).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractRawCaseInsensitive(json [, indices_or_keys]...)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON-строка для разбора [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — Необязательный аргумент. Индексы или ключи для перехода к полю. Сопоставление ключей выполняется без учета регистра [`String`](/sql-reference/data-types/string) или [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the field. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает необработанную JSON-строку извлеченного элемента. [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**Примеры**
+Returns the raw JSON string of the extracted element. [`String`](/sql-reference/data-types/string)
+
+**Examples**
 
 **object**
 
@@ -907,30 +995,34 @@ SELECT JSONExtractRawCaseInsensitive('{"Object": {"key": "value"}}', 'OBJECT')
 ```
 
 
+
 ## JSONExtractString {#JSONExtractString}
 
-Добавлена в версии v20.1
+Introduced in: v20.1
 
-Разбирает JSON и извлекает значение типа String.
 
-**Синтаксис**
+Parses JSON and extracts a value of String type.
+        
+
+**Syntax**
 
 ```sql
 JSONExtractString(json[, indices_or_keys, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON-строка для разбора. [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — список из нуля или более аргументов, каждый из которых может быть строкой или целым числом. [`String`](/sql-reference/data-types/string) или [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает значение типа String, если оно существует, в противном случае возвращает пустую строку. [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**Примеры**
+Returns a String value if it exists, otherwise returns an empty string. [`String`](/sql-reference/data-types/string)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtractString('{"a": "hello", "b": [-100, 200.0, 300]}', 'a') AS res;
@@ -943,30 +1035,34 @@ SELECT JSONExtractString('{"a": "hello", "b": [-100, 200.0, 300]}', 'a') AS res;
 ```
 
 
+
 ## JSONExtractStringCaseInsensitive {#JSONExtractStringCaseInsensitive}
 
-Появилась в версии v25.8
+Introduced in: v25.8
 
-Разбирает JSON и извлекает строку, используя регистронезависимое сопоставление ключей. Эта функция аналогична [`JSONExtractString`](#JSONExtractString).
 
-**Синтаксис**
+Parses JSON and extracts a string using case-insensitive key matching. This function is similar to [`JSONExtractString`](#JSONExtractString).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractStringCaseInsensitive(json [, indices_or_keys]...)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON-строка для разбора [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — Необязательный параметр. Индексы или ключи для перехода к полю. Ключи сопоставляются без учёта регистра [`String`](/sql-reference/data-types/string) или [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the field. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает извлечённое строковое значение, пустую строку, если значение не найдено. [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**Примеры**
+Returns the extracted string value, empty string if not found. [`String`](/sql-reference/data-types/string)
 
-**Базовый пример**
+**Examples**
+
+**basic**
 
 ```sql title=Query
 SELECT JSONExtractStringCaseInsensitive('{"ABC": "def"}', 'abc')
@@ -976,7 +1072,7 @@ SELECT JSONExtractStringCaseInsensitive('{"ABC": "def"}', 'abc')
 def
 ```
 
-**вложенный**
+**nested**
 
 ```sql title=Query
 SELECT JSONExtractStringCaseInsensitive('{"User": {"Name": "John"}}', 'user', 'name')
@@ -987,30 +1083,34 @@ John
 ```
 
 
+
 ## JSONExtractUInt {#JSONExtractUInt}
 
-Появился в версии: v20.1
+Introduced in: v20.1
 
-Анализирует JSON и извлекает значение типа UInt.
 
-**Синтаксис**
+Parses JSON and extracts a value of UInt type.
+        
+
+**Syntax**
 
 ```sql
 JSONExtractUInt(json [, indices_or_keys, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON-строка для разбора. [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — список из нуля или более аргументов, каждый из которых может быть строкой или целым числом. [`String`](/sql-reference/data-types/string) или [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse. [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — A list of zero or more arguments each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает значение типа UInt, если такое значение существует, в противном случае возвращает `0`. [`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns a UInt value if it exists, otherwise returns `0`. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONExtractUInt('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', -1) AS res;
@@ -1023,30 +1123,34 @@ SELECT JSONExtractUInt('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', -1) AS re
 ```
 
 
+
 ## JSONExtractUIntCaseInsensitive {#JSONExtractUIntCaseInsensitive}
 
-Появилась в версии v25.8
+Introduced in: v25.8
 
-Разбирает JSON и извлекает значение типа UInt, используя регистронезависимое сравнение ключей. Эта функция аналогична [`JSONExtractUInt`](#JSONExtractUInt).
 
-**Синтаксис**
+Parses JSON and extracts a value of UInt type using case-insensitive key matching. This function is similar to [`JSONExtractUInt`](#JSONExtractUInt).
+        
+
+**Syntax**
 
 ```sql
 JSONExtractUIntCaseInsensitive(json [, indices_or_keys]...)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON-строка для разбора [`String`](/sql-reference/data-types/string)
-* `indices_or_keys` — необязательный параметр. Индексы или ключи для перехода к полю. Ключи сопоставляются без учёта регистра [`String`](/sql-reference/data-types/string) или [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `indices_or_keys` — Optional. Indices or keys to navigate to the field. Keys use case-insensitive matching [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает извлечённое значение типа UInt, 0 — если значение не найдено или не может быть преобразовано. [`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the extracted UInt value, 0 if not found or cannot be converted. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Базовый пример**
+**Examples**
+
+**basic**
 
 ```sql title=Query
 SELECT JSONExtractUIntCaseInsensitive('{"COUNT": 789}', 'count')
@@ -1057,30 +1161,34 @@ SELECT JSONExtractUIntCaseInsensitive('{"COUNT": 789}', 'count')
 ```
 
 
+
 ## JSONHas {#JSONHas}
 
-Появилось в версии: v20.1
+Introduced in: v20.1
 
-Проверяет наличие указанного значения (значений) в JSON-документе.
 
-**Синтаксис**
+Checks for the existence of the provided value(s) in the JSON document.
+        
+
+**Syntax**
 
 ```sql
 JSONHas(json[ ,indices_or_keys, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON-строка для разбора [`String`](/sql-reference/data-types/string)
-* `[ ,indices_or_keys, ...]` — список, содержащий ноль или более аргументов. [`String`](/sql-reference/data-types/string) или [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `[ ,indices_or_keys, ...]` — A list of zero or more arguments. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает `1`, если значение присутствует в `json`, иначе `0` [`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns `1` if the value exists in `json`, otherwise `0` [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') = 1;
@@ -1093,31 +1201,35 @@ SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 4) = 0;
 ```
 
 
+
 ## JSONLength {#JSONLength}
 
-Добавлена в версии: v20.1
+Introduced in: v20.1
 
-Возвращает длину JSON-массива или JSON-объекта.
-Если значение не существует или имеет неверный тип, будет возвращено `0`.
 
-**Синтаксис**
+Return the length of a JSON array or a JSON object.
+If the value does not exist or has the wrong type, `0` will be returned.
+        
+
+**Syntax**
 
 ```sql
 JSONLength(json [, indices_or_keys, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON-строка для разбора [`String`](/sql-reference/data-types/string)
-* `[, indices_or_keys, ...]` — Необязательный список из нуля или более аргументов. [`String`](/sql-reference/data-types/string) или [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `[, indices_or_keys, ...]` — Optional. A list of zero or more arguments. [`String`](/sql-reference/data-types/string) or [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает длину JSON-массива или JSON-объекта, иначе возвращает `0`, если значение не существует или имеет неподходящий тип. [`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the length of the JSON array or JSON object, otherwise returns `0` if the value does not exist or has the wrong type. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONLength('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') = 3;
@@ -1130,31 +1242,35 @@ SELECT JSONLength('{"a": "hello", "b": [-100, 200.0, 300]}') = 2;
 ```
 
 
+
 ## JSONMergePatch {#JSONMergePatch}
 
-Добавлено в версии: v23.10
+Introduced in: v23.10
 
-Возвращает строку JSON-объекта, полученного слиянием нескольких JSON-объектов.
 
-**Синтаксис**
+Returns the merged JSON object string which is formed by merging multiple JSON objects.
+    
+
+**Syntax**
 
 ```sql
 jsonMergePatch(json1[, json2, ...])
 ```
 
-**Псевдонимы**: `jsonMergePatch`
+**Aliases**: `jsonMergePatch`
 
-**Аргументы**
+**Arguments**
 
-* `json1[, json2, ...]` — Одна или несколько строк с валидным JSON. [`String`](/sql-reference/data-types/string)
+- `json1[, json2, ...]` — One or more strings with valid JSON. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает строку объединённого JSON-объекта, если строки JSON-объектов валидны. [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**Примеры**
+Returns the merged JSON object string, if the JSON object strings are valid. [`String`](/sql-reference/data-types/string)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT jsonMergePatch('{"a":1}', '{"name": "joey"}', '{"name": "tom"}', '{"name": "zoey"}') AS res;
@@ -1167,29 +1283,33 @@ SELECT jsonMergePatch('{"a":1}', '{"name": "joey"}', '{"name": "tom"}', '{"name"
 ```
 
 
+
 ## JSONSharedDataPaths {#JSONSharedDataPaths}
 
-Введено в: v24.8
+Introduced in: v24.8
 
-Возвращает список путей, которые хранятся в общей структуре данных JSON-столбца.
 
-**Синтаксис**
+Returns the list of paths that are stored in shared data structure in JSON column.
+        
+
+**Syntax**
 
 ```sql
 JSONSharedDataPaths(json)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — столбец JSON. [`JSON`](/sql-reference/data-types/newjson)
+- `json` — JSON column. [`JSON`](/sql-reference/data-types/newjson)
 
-**Возвращаемое значение**
 
-Возвращает массив путей, сохранённых в разделяемой структуре данных в столбце JSON. [`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**Примеры**
+Returns an array of paths stored in shared data structure in the JSON column. [`Array(String)`](/sql-reference/data-types/array)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE test (json JSON(max_dynamic_paths=1)) ENGINE = Memory;
@@ -1206,29 +1326,33 @@ SELECT json, JSONSharedDataPaths(json) FROM test;
 ```
 
 
+
 ## JSONSharedDataPathsWithTypes {#JSONSharedDataPathsWithTypes}
 
-Появилось в: v24.8
+Introduced in: v24.8
 
-Возвращает список путей, которые хранятся в общей структуре данных, и соответствующих типов для каждой строки в JSON-столбце.
 
-**Синтаксис**
+Returns the list of paths that are stored in shared data structure and their types in each row in JSON column.
+        
+
+**Syntax**
 
 ```sql
 JSONSharedDataPathsWithTypes(json)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON-столбец. [`JSON`](/sql-reference/data-types/newjson)
+- `json` — JSON column. [`JSON`](/sql-reference/data-types/newjson)
 
-**Возвращаемое значение**
 
-Возвращает отображение путей, хранящихся в разделяемой структуре данных, и их типов данных в JSON-столбце. [`Map(String, String)`](/sql-reference/data-types/map)
+**Returned value**
 
-**Примеры**
+Returns a map of paths stored in shared data structure and their data types in the JSON column. [`Map(String, String)`](/sql-reference/data-types/map)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE test (json JSON(max_dynamic_paths=1)) ENGINE = Memory;
@@ -1245,30 +1369,34 @@ SELECT json, JSONSharedDataPathsWithTypes(json) FROM test;
 ```
 
 
+
 ## JSONType {#JSONType}
 
-Введена в версии: v20.1
+Introduced in: v20.1
 
-Возвращает тип JSON-значения. Если значение отсутствует, будет возвращено `Null=0`.
 
-**Синтаксис**
+Return the type of a JSON value. If the value does not exist, `Null=0` will be returned.
+        
+
+**Syntax**
 
 ```sql
 JSONType(json[, indices_or_keys, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON-строка для разбора [`String`](/sql-reference/data-types/string)
-* `json[, indices_or_keys, ...]` — список из нуля или более аргументов, каждый из которых может быть строкой или целым числом. [`String`](/sql-reference/data-types/string) или [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+- `json` — JSON string to parse [`String`](/sql-reference/data-types/string)
+- `json[, indices_or_keys, ...]` — A list of zero or more arguments, each of which can be either string or integer. [`String`](/sql-reference/data-types/string) or [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает тип JSON-значения в виде строки, а если значение не существует — возвращает `Null=0` [`Enum`](/sql-reference/data-types/enum)
+**Returned value**
 
-**Примеры**
+Returns the type of a JSON value as a string, otherwise if the value doesn't exist it returns `Null=0` [`Enum`](/sql-reference/data-types/enum)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSONType('{"a": "hello", "b": [-100, 200.0, 300]}') = 'Object';
@@ -1283,31 +1411,35 @@ SELECT JSONType('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') = 'Array';
 ```
 
 
-## JSON&#95;EXISTS {#JSON_EXISTS}
 
-Появилась в версии v21.8.
+## JSON_EXISTS {#JSON_EXISTS}
 
-Если значение существует в JSON-документе, будет возвращено `1`.
-Если значение не существует, будет возвращено `0`.
+Introduced in: v21.8
 
-**Синтаксис**
+
+If the value exists in the JSON document, `1` will be returned.
+If the value does not exist, `0` will be returned.
+        
+
+**Syntax**
 
 ```sql
 JSON_EXISTS(json, path)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — Строка с валидным JSON. [`String`](/sql-reference/data-types/string)
-* `path` — Строка, представляющая путь. [`String`](/sql-reference/data-types/string)
+- `json` — A string with valid JSON. [`String`](/sql-reference/data-types/string)
+- `path` — A string representing the path. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает `1`, если значение присутствует в JSON-документе, в противном случае — `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns `1` if the value exists in the JSON document, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSON_EXISTS('{"hello":1}', '$.hello');
@@ -1332,31 +1464,35 @@ SELECT JSON_EXISTS('{"hello":["world"]}', '$.hello[0]');
 ```
 
 
-## JSON&#95;QUERY {#JSON_QUERY}
 
-Появилось в: v21.8
+## JSON_QUERY {#JSON_QUERY}
 
-Разбирает JSON и извлекает значение в виде JSON-массива или JSON-объекта.
-Если значение отсутствует, будет возвращена пустая строка.
+Introduced in: v21.8
 
-**Синтаксис**
+
+Parses a JSON and extract a value as a JSON array or JSON object.
+If the value does not exist, an empty string will be returned.
+        
+
+**Syntax**
 
 ```sql
 JSON_QUERY(json, path)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — Строка с валидным JSON. [`String`](/sql-reference/data-types/string)
-* `path` — Строка, задающая путь. [`String`](/sql-reference/data-types/string)
+- `json` — A string with valid JSON. [`String`](/sql-reference/data-types/string)
+- `path` — A string representing the path. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает извлечённый JSON‑массив или JSON‑объект в виде строки, либо пустую строку, если значение отсутствует. [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**Примеры**
+Returns the extracted JSON array or JSON object as a string, or an empty string if the value does not exist. [`String`](/sql-reference/data-types/string)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSON_QUERY('{"hello":"world"}', '$.hello');
@@ -1373,35 +1509,38 @@ String
 ```
 
 
-## JSON&#95;VALUE {#JSON_VALUE}
 
-Введена в версии: v21.11
+## JSON_VALUE {#JSON_VALUE}
 
-Разбирает JSON и извлекает значение в виде скалярного значения JSON. Если значение отсутствует, по умолчанию будет возвращена пустая строка.
+Introduced in: v21.11
 
-Поведение функции настраивается следующими параметрами:
 
-* при SET `function_json_value_return_type_allow_nullable` = `true` будет возвращён `NULL`. Если значение имеет сложный тип (например, struct, array, map), по умолчанию будет возвращена пустая строка.
-* при SET `function_json_value_return_type_allow_complex` = `true` будет возвращено сложное значение.
+Parses a JSON and extract a value as a JSON scalar. If the value does not exist, an empty string will be returned by default.
 
-**Синтаксис**
+This function is controlled by the following settings:
+- by SET `function_json_value_return_type_allow_nullable` = `true`, `NULL` will be returned. If the value is complex type (such as: struct, array, map), an empty string will be returned by default.
+- by SET `function_json_value_return_type_allow_complex` = `true`, the complex value will be returned.
+        
+
+**Syntax**
 
 ```sql
 JSON_VALUE(json, path)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — Строка с валидным JSON. [`String`](/sql-reference/data-types/string)
-* `path` — Строка, представляющая путь. [`String`](/sql-reference/data-types/string)
+- `json` — A string with valid JSON. [`String`](/sql-reference/data-types/string)
+- `path` — A string representing the path. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает извлечённый JSON‑скаляр как строку или пустую строку, если значение не существует. [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**Примеры**
+Returns the extracted JSON scalar as a string, or an empty string if the value does not exist. [`String`](/sql-reference/data-types/string)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT JSON_VALUE('{"hello":"world"}', '$.hello');
@@ -1418,34 +1557,37 @@ world
 ```
 
 
+
 ## dynamicElement {#dynamicElement}
 
-Впервые появился в: v24.1
+Introduced in: v24.1
 
-Извлекает столбец с указанным типом из столбца `Dynamic`.
 
-Эта функция позволяет извлекать значения определённого типа из столбца `Dynamic`. Если строка содержит значение
-запрошенного типа, возвращается это значение. Если строка содержит значение другого типа или NULL, возвращается NULL
-для скалярных типов или пустой массив для типов массивов.
+Extracts a column with specified type from a `Dynamic` column.
 
-**Синтаксис**
+This function allows you to extract values of a specific type from a Dynamic column. If a row contains a value
+of the requested type, it returns that value. If the row contains a different type or NULL, it returns NULL
+for scalar types or an empty array for array types.
+    
+
+**Syntax**
 
 ```sql
 dynamicElement(dynamic, type_name)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dynamic` — динамический столбец, из которого выполняется извлечение. [`Dynamic`](/sql-reference/data-types/dynamic)
-* `type_name` — имя варианта типа, который нужно извлечь (например, &#39;String&#39;, &#39;Int64&#39;, &#39;Array(Int64)&#39;).
+- `dynamic` — Dynamic column to extract from. [`Dynamic`](/sql-reference/data-types/dynamic)
+- `type_name` — The name of the variant type to extract (e.g., 'String', 'Int64', 'Array(Int64)'). 
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает значения указанного типа из динамического столбца. Возвращает NULL для несовпадающих типов (или пустой массив для типов-массивов). [`Any`](/sql-reference/data-types)
+Returns values of the specified type from the Dynamic column. Returns NULL for non-matching types (or empty array for array types). [`Any`](/sql-reference/data-types)
 
-**Примеры**
+**Examples**
 
-**Извлечение различных типов из динамического столбца**
+**Extracting different types from Dynamic column**
 
 ```sql title=Query
 CREATE TABLE test (d Dynamic) ENGINE = Memory;
@@ -1463,32 +1605,36 @@ SELECT d, dynamicType(d), dynamicElement(d, 'String'), dynamicElement(d, 'Int64'
 ```
 
 
+
 ## dynamicType {#dynamicType}
 
-Появилась в версии v24.1
+Introduced in: v24.1
 
-Возвращает имя варианта типа для каждой строки столбца `Dynamic`.
 
-Для строк, содержащих NULL, функция возвращает &#39;None&#39;. Для всех остальных строк она возвращает фактический тип данных,
-хранящийся в этой строке столбца `Dynamic` (например, &#39;Int64&#39;, &#39;String&#39;, &#39;Array(Int64)&#39;).
+Returns the variant type name for each row of a `Dynamic` column.
 
-**Синтаксис**
+For rows containing NULL, the function returns 'None'. For all other rows, it returns the actual data type
+stored in that row of the Dynamic column (e.g., 'Int64', 'String', 'Array(Int64)').
+
+
+**Syntax**
 
 ```sql
 dynamicType(dynamic)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dynamic` — столбец типа Dynamic для анализа. [`Dynamic`](/sql-reference/data-types/dynamic)
+- `dynamic` — Dynamic column to inspect. [`Dynamic`](/sql-reference/data-types/dynamic)
 
-**Возвращаемое значение**
 
-Возвращает имя типа значения, хранящегося в каждой строке, или «None» для значений NULL. [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**Примеры**
+Returns the type name of the value stored in each row, or 'None' for NULL values. [`String`](/sql-reference/data-types/string)
 
-**Анализ типов в столбце типа Dynamic**
+**Examples**
+
+**Inspecting types in Dynamic column**
 
 ```sql title=Query
 CREATE TABLE test (d Dynamic) ENGINE = Memory;
@@ -1506,32 +1652,36 @@ SELECT d, dynamicType(d) FROM test;
 ```
 
 
+
 ## isDynamicElementInSharedData {#isDynamicElementInSharedData}
 
-Добавлена в версии v24.1
+Introduced in: v24.1
 
-Возвращает true для строк в столбце типа Dynamic, которые хранятся в общем формате варианта (shared variant format), а не как отдельные подстолбцы.
 
-Когда для столбца типа Dynamic задано ограничение `max_types`, значения, превышающие этот лимит, сохраняются в общем двоичном формате,
-вместо того чтобы быть разделёнными на отдельные типизированные подстолбцы. Эта функция определяет, какие строки хранятся в этом общем формате.
+Returns true for rows in a Dynamic column that are stored in shared variant format rather than as separate subcolumns.
 
-**Синтаксис**
+When a Dynamic column has a `max_types` limit, values that exceed this limit are stored in a shared binary format
+instead of being separated into individual typed subcolumns. This function identifies which rows are stored in this shared format.
+    
+
+**Syntax**
 
 ```sql
 isDynamicElementInSharedData(dynamic)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `dynamic` — динамический столбец для проверки. [`Dynamic`](/sql-reference/data-types/dynamic)
+- `dynamic` — Dynamic column to inspect. [`Dynamic`](/sql-reference/data-types/dynamic)
 
-**Возвращаемое значение**
 
-Возвращает true, если значение хранится в формате `shared variant`, и false, если оно хранится как отдельный подстолбец или равно NULL. [`Bool`](/sql-reference/data-types/boolean)
+**Returned value**
 
-**Примеры**
+Returns true if the value is stored in shared variant format, false if stored as a separate subcolumn or is NULL. [`Bool`](/sql-reference/data-types/boolean)
 
-**Проверка формата хранения в динамическом столбце с ограничением max&#95;types**
+**Examples**
+
+**Checking storage format in Dynamic column with max_types limit**
 
 ```sql title=Query
 CREATE TABLE test (d Dynamic(max_types=2)) ENGINE = Memory;
@@ -1549,29 +1699,33 @@ SELECT d, isDynamicElementInSharedData(d) FROM test;
 ```
 
 
+
 ## isValidJSON {#isValidJSON}
 
-Впервые появилась в версии: v20.1
+Introduced in: v20.1
 
-Проверяет, что переданная строка является корректным JSON-документом.
 
-**Синтаксис**
+Checks that the string passed is valid JSON.
+        
+
+**Syntax**
 
 ```sql
 isValidJSON(json)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON-строка для проверки [`String`](/sql-reference/data-types/string)
+- `json` — JSON string to validate [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает `1`, если строка является корректным JSON, иначе `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns `1` if the string is valid JSON, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT isValidJSON('{"a": "hello", "b": [-100, 200.0, 300]}') = 1;
@@ -1583,7 +1737,7 @@ SELECT isValidJSON('not JSON') = 0;
 0
 ```
 
-**Использование целых чисел для доступа к JSON‑массивам и JSON‑объектам**
+**Using integers to access both JSON arrays and JSON objects**
 
 ```sql title=Query
 SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 0);
@@ -1605,37 +1759,40 @@ SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 3);
 ```
 
 
+
 ## simpleJSONExtractBool {#simpleJSONExtractBool}
 
-Добавлено в: v21.4
+Introduced in: v21.4
 
-Извлекает логическое значение `true` или `false` из значения поля с именем `field_name`.
-Результат имеет тип `UInt8`.
 
-**Синтаксис**
+Parses a true/false value from the value of the field named `field_name`.
+The result is `UInt8`.
+
+
+**Syntax**
 
 ```sql
 simpleJSONExtractBool(json, field_name)
 ```
 
-**Псевдонимы**: `visitParamExtractBool`
+**Aliases**: `visitParamExtractBool`
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON, в котором выполняется поиск поля. [`String`](/sql-reference/data-types/string)
-* `field_name` — имя поля, по которому выполняется поиск. [`const String`](/sql-reference/data-types/string)
+- `json` — The JSON in which the field is searched for. [`String`](/sql-reference/data-types/string)
+- `field_name` — The name of the field to search for. [`const String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает `1`, если значение поля равно `true`, иначе `0`. Это означает, что функция вернёт `0` в том числе (но не только) в следующих случаях:
+**Returned value**
 
-* Если поле не существует.
-* Если поле содержит строковое значение `true`, например: `{"field":"true"}`.
-* Если поле содержит `1` как числовое значение. [`UInt8`](/sql-reference/data-types/int-uint)
+Returns `1` if the value of the field is `true`, `0` otherwise. This means this function will return `0` including (and not only) in the following cases:
+- If the field doesn't exists.
+- If the field contains `true` as a string, e.g.: `{"field":"true"}`.
+- If the field contains `1` as a numerical value. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE jsons
@@ -1660,34 +1817,38 @@ SELECT simpleJSONExtractBool(json, 'foo') FROM jsons ORDER BY json;
 ```
 
 
+
 ## simpleJSONExtractFloat {#simpleJSONExtractFloat}
 
-Введена в версии: v21.4
+Introduced in: v21.4
 
-Извлекает значение типа `Float64` из значения поля с именем `field_name`.
-Если `field_name` является строковым полем, функция пытается разобрать число с начала строки.
-Если поле не существует или не содержит числа, возвращается `0`.
 
-**Синтаксис**
+Parses `Float64` from the value of the field named `field_name`.
+If `field_name` is a string field, it tries to parse a number from the beginning of the string.
+If the field does not exist, or it exists but does not contain a number, it returns `0`.
+
+
+**Syntax**
 
 ```sql
 simpleJSONExtractFloat(json, field_name)
 ```
 
-**Псевдонимы**: `visitParamExtractFloat`
+**Aliases**: `visitParamExtractFloat`
 
-**Аргументы**
+**Arguments**
 
-* `json` — объект JSON, в котором выполняется поиск поля. [`String`](/sql-reference/data-types/string)
-* `field_name` — имя поля, которое нужно найти. [`const String`](/sql-reference/data-types/string)
+- `json` — The JSON in which the field is searched for. [`String`](/sql-reference/data-types/string)
+- `field_name` — The name of the field to search for. [`const String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает число, извлечённое из значения поля, если поле существует и содержит число, иначе — `0`. [`Float64`](/sql-reference/data-types/float)
+**Returned value**
 
-**Примеры**
+Returns the number parsed from the field if the field exists and contains a number, otherwise `0`. [`Float64`](/sql-reference/data-types/float)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE jsons
@@ -1715,34 +1876,38 @@ SELECT simpleJSONExtractFloat(json, 'foo') FROM jsons ORDER BY json;
 ```
 
 
+
 ## simpleJSONExtractInt {#simpleJSONExtractInt}
 
-Добавлена в версии v21.4
+Introduced in: v21.4
 
-Извлекает значение типа `Int64` из поля с именем `field_name`.
-Если `field_name` — строковое поле, функция пытается распарсить число с начала строки.
-Если поле отсутствует или не содержит числа, возвращается `0`.
 
-**Синтаксис**
+Parses `Int64` from the value of the field named `field_name`.
+If `field_name` is a string field, it tries to parse a number from the beginning of the string.
+If the field does not exist, or it exists but does not contain a number, it returns `0`.
+
+
+**Syntax**
 
 ```sql
 simpleJSONExtractInt(json, field_name)
 ```
 
-**Псевдонимы**: `visitParamExtractInt`
+**Aliases**: `visitParamExtractInt`
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON, в котором выполняется поиск поля. [`String`](/sql-reference/data-types/string)
-* `field_name` — имя поля, которое нужно найти. [`const String`](/sql-reference/data-types/string)
+- `json` — The JSON in which the field is searched for. [`String`](/sql-reference/data-types/string)
+- `field_name` — The name of the field to search for. [`const String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает число, извлечённое из поля, если поле существует и содержит число, в противном случае — `0`. [`Int64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the number parsed from the field if the field exists and contains a number, `0` otherwise [`Int64`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE jsons
@@ -1770,32 +1935,36 @@ SELECT simpleJSONExtractInt(json, 'foo') FROM jsons ORDER BY json;
 ```
 
 
+
 ## simpleJSONExtractRaw {#simpleJSONExtractRaw}
 
-Появилась в версии: v21.4
+Introduced in: v21.4
 
-Возвращает значение поля с именем `field_name` в виде строки (`String`), включая разделители.
 
-**Синтаксис**
+Returns the value of the field named `field_name` as a `String`, including separators.
+
+
+**Syntax**
 
 ```sql
 simpleJSONExtractRaw(json, field_name)
 ```
 
-**Псевдонимы**: `visitParamExtractRaw`
+**Aliases**: `visitParamExtractRaw`
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON, в котором выполняется поиск поля. [`String`](/sql-reference/data-types/string)
-* `field_name` — имя поля, которое нужно найти. [`const String`](/sql-reference/data-types/string)
+- `json` — The JSON in which the field is searched for. [`String`](/sql-reference/data-types/string)
+- `field_name` — The name of the field to search for. [`const String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает значение поля в виде строки, включая разделители, если поле существует, или, в противном случае, пустую строку. [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**Примеры**
+Returns the value of the field as a string, including separators if the field exists, or an empty string otherwise [`String`](/sql-reference/data-types/string)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE jsons
@@ -1822,36 +1991,40 @@ SELECT simpleJSONExtractRaw(json, 'foo') FROM jsons ORDER BY json;
 ```
 
 
+
 ## simpleJSONExtractString {#simpleJSONExtractString}
 
-Введена в версии: v21.4
+Introduced in: v21.4
 
-Извлекает строку типа `String`, заключённую в двойные кавычки, из значения поля с именем `field_name`.
 
-**Подробности реализации**
+Parses `String` in double quotes from the value of the field named `field_name`.
 
-В настоящее время не поддерживаются кодовые точки Unicode в формате `\uXXXX\uYYYY`, которые не относятся к базовой многоязычной плоскости (они преобразуются в CESU-8 вместо UTF-8).
+**Implementation details**
 
-**Синтаксис**
+There is currently no support for code points in the format `\uXXXX\uYYYY` that are not from the basic multilingual plane (they are converted to CESU-8 instead of UTF-8).
+
+
+**Syntax**
 
 ```sql
 simpleJSONExtractString(json, field_name)
 ```
 
-**Псевдонимы**: `visitParamExtractString`
+**Aliases**: `visitParamExtractString`
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON, в котором выполняется поиск поля. [`String`](/sql-reference/data-types/string)
-* `field_name` — имя поля, по которому выполняется поиск. [`const String`](/sql-reference/data-types/string)
+- `json` — The JSON in which the field is searched for. [`String`](/sql-reference/data-types/string)
+- `field_name` — The name of the field to search for. [`const String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает значение поля со снятым экранированием в виде строки (включая разделители). Пустая строка возвращается, если поле не содержит строку в двойных кавычках, если снять экранирование не удалось или если поле не существует. [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**Примеры**
+Returns the unescaped value of a field as a string, including separators. An empty string is returned if the field doesn't contain a double quoted string, if unescaping fails or if the field doesn't exist [`String`](/sql-reference/data-types/string)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE jsons
@@ -1876,34 +2049,38 @@ SELECT simpleJSONExtractString(json, 'foo') FROM jsons ORDER BY json;
 ```
 
 
+
 ## simpleJSONExtractUInt {#simpleJSONExtractUInt}
 
-Добавлена в версии: v21.4
+Introduced in: v21.4
 
-Извлекает `UInt64` из значения поля с именем `field_name`.
-Если `field_name` — строковое поле, функция пытается разобрать число с начала строки.
-Если поле не существует или существует, но не содержит числа, функция возвращает `0`.
 
-**Синтаксис**
+Parses `UInt64` from the value of the field named `field_name`.
+If `field_name` is a string field, it tries to parse a number from the beginning of the string.
+If the field does not exist, or it exists but does not contain a number, it returns `0`.
+
+
+**Syntax**
 
 ```sql
 simpleJSONExtractUInt(json, field_name)
 ```
 
-**Псевдонимы**: `visitParamExtractUInt`
+**Aliases**: `visitParamExtractUInt`
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON, в котором выполняется поиск поля. [`String`](/sql-reference/data-types/string)
-* `field_name` — имя поля, по которому выполняется поиск. [`const String`](/sql-reference/data-types/string)
+- `json` — The JSON in which the field is searched for. [`String`](/sql-reference/data-types/string)
+- `field_name` — The name of the field to search for. [`const String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает число, извлечённое из поля, если поле существует и содержит число; в противном случае — `0`. [`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the number parsed from the field if the field exists and contains a number, `0` otherwise [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE jsons
@@ -1931,32 +2108,36 @@ SELECT simpleJSONExtractUInt(json, 'foo') FROM jsons ORDER BY json;
 ```
 
 
+
 ## simpleJSONHas {#simpleJSONHas}
 
-Появилась в версии: v21.4
+Introduced in: v21.4
 
-Проверяет, существует ли поле с именем `field_name`.
 
-**Синтаксис**
+Checks whether there is a field named `field_name`.
+
+
+**Syntax**
 
 ```sql
 simpleJSONHas(json, field_name)
 ```
 
-**Псевдонимы**: `visitParamHas`
+**Aliases**: `visitParamHas`
 
-**Аргументы**
+**Arguments**
 
-* `json` — JSON, в котором выполняется поиск поля. [`String`](/sql-reference/data-types/string)
-* `field_name` — имя поля для поиска. [`const String`](/sql-reference/data-types/string)
+- `json` — The JSON in which the field is searched for. [`String`](/sql-reference/data-types/string)
+- `field_name` — The name of the field to search for. [`const String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает `1`, если поле присутствует, и `0` в противном случае. [`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns `1` if the field exists, `0` otherwise [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE jsons
@@ -1978,37 +2159,40 @@ SELECT simpleJSONHas(json, 'bar') FROM jsons;
 ```
 
 
+
 ## toJSONString {#toJSONString}
 
-Введена в версии v21.7
+Introduced in: v21.7
 
-Сериализует значение в его представление в формате JSON. Поддерживаются различные типы данных и вложенные структуры.
-64-битные [целые числа](../data-types/int-uint.md) и более разрядные (такие как `UInt64` или `Int128`) по умолчанию заключаются в кавычки. Поведение контролируется настройкой [output&#95;format&#95;json&#95;quote&#95;64bit&#95;integers](/operations/settings/formats#output_format_json_quote_64bit_integers).
-Специальные значения `NaN` и `inf` заменяются на `null`. Включите настройку [output&#95;format&#95;json&#95;quote&#95;denormals](/operations/settings/formats#output_format_json_quote_denormals), чтобы отображать эти значения.
-При сериализации значения [Enum](../data-types/enum.md) функция выводит его имя.
 
-См. также:
+Serializes a value to its JSON representation. Various data types and nested structures are supported.
+64-bit [integers](../data-types/int-uint.md) or bigger (like `UInt64` or `Int128`) are enclosed in quotes by default. [output_format_json_quote_64bit_integers](/operations/settings/formats#output_format_json_quote_64bit_integers) controls this behavior.
+Special values `NaN` and `inf` are replaced with `null`. Enable [output_format_json_quote_denormals](/operations/settings/formats#output_format_json_quote_denormals) setting to show them.
+When serializing an [Enum](../data-types/enum.md) value, the function outputs its name.
 
-* [output&#95;format&#95;json&#95;quote&#95;64bit&#95;integers](/operations/settings/formats#output_format_json_quote_64bit_integers)
-* [output&#95;format&#95;json&#95;quote&#95;denormals](/operations/settings/formats#output_format_json_quote_denormals)
+See also:
+- [output_format_json_quote_64bit_integers](/operations/settings/formats#output_format_json_quote_64bit_integers)
+- [output_format_json_quote_denormals](/operations/settings/formats#output_format_json_quote_denormals)
+    
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 toJSONString(value)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `value` — значение для сериализации. Значение может быть любого типа данных. [`Any`](/sql-reference/data-types)
+- `value` — Value to serialize. Value may be of any data type. [`Any`](/sql-reference/data-types)
 
-**Возвращаемое значение**
 
-Возвращает JSON-представление значения. [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**Примеры**
+Returns the JSON representation of the value. [`String`](/sql-reference/data-types/string)
 
-**Сериализация Map**
+**Examples**
+
+**Map serialization**
 
 ```sql title=Query
 SELECT toJSONString(map('key1', 1, 'key2', 2));
@@ -2020,7 +2204,7 @@ SELECT toJSONString(map('key1', 1, 'key2', 2));
 └─────────────────────────────────────────┘
 ```
 
-**Специальные значения**
+**Special values**
 
 ```sql title=Query
 SELECT toJSONString(tuple(1.25, NULL, NaN, +inf, -inf, [])) SETTINGS output_format_json_quote_denormals = 1;

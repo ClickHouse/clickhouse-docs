@@ -199,6 +199,43 @@ SELECT
    (count(*) / total_rows) * 100 AS percentage
 FROM session_events
 GROUP BY type
+
+┌─explain────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ Expression ((Projection + Before ORDER BY))                                                                                                │
+│ Actions: INPUT :: 0 -> type String : 0                                                                                                     │
+│          INPUT : 1 -> min(timestamp) DateTime : 1                                                                                          │
+│          INPUT : 2 -> max(timestamp) DateTime : 2                                                                                          │
+│          INPUT : 3 -> count() UInt64 : 3                                                                                                   │
+│          COLUMN Const(Nullable(UInt64)) -> total_rows Nullable(UInt64) : 4                                                                 │
+│          COLUMN Const(UInt8) -> 100 UInt8 : 5                                                                                              │
+│          ALIAS min(timestamp) :: 1 -> minimum_date DateTime : 6                                                                            │
+│          ALIAS max(timestamp) :: 2 -> maximum_date DateTime : 1                                                                            │
+│          FUNCTION divide(count() :: 3, total_rows :: 4) -> divide(count(), total_rows) Nullable(Float64) : 2                               │
+│          FUNCTION multiply(divide(count(), total_rows) :: 2, 100 :: 5) -> multiply(divide(count(), total_rows), 100) Nullable(Float64) : 4 │
+│          ALIAS multiply(divide(count(), total_rows), 100) :: 4 -> percentage Nullable(Float64) : 5                                         │
+│ Positions: 0 6 1 5                                                                                                                         │
+│   Aggregating                                                                                                                              │
+│   Keys: type                                                                                                                               │
+│   Aggregates:                                                                                                                              │
+│       min(timestamp)                                                                                                                       │
+│         Function: min(DateTime) → DateTime                                                                                                 │
+│         Arguments: timestamp                                                                                                               │
+│       max(timestamp)                                                                                                                       │
+│         Function: max(DateTime) → DateTime                                                                                                 │
+│         Arguments: timestamp                                                                                                               │
+│       count()                                                                                                                              │
+│         Function: count() → UInt64                                                                                                         │
+│         Arguments: none                                                                                                                    │
+│   Skip merging: 0                                                                                                                          │
+│     Expression (Before GROUP BY)                                                                                                           │
+│     Actions: INPUT :: 0 -> timestamp DateTime : 0                                                                                          │
+│              INPUT :: 1 -> type String : 1                                                                                                 │
+│     Positions: 0 1                                                                                                                         │
+│       ReadFromMergeTree (default.session_events)                                                                                           │
+│       ReadType: Default                                                                                                                    │
+│       Parts: 1                                                                                                                             │
+│       Granules: 1                                                                                                                          │
+└────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ┌─explain────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -238,15 +275,6 @@ GROUP BY type
 │       グラニュール数: 1                                                                                                                     │
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 
-```
-
-使用されているすべての入力、関数、エイリアス、およびデータ型を確認できるようになりました。プランナーが適用する最適化の一部は[こちら](https://github.com/ClickHouse/ClickHouse/blob/master/src/Processors/QueryPlan/Optimizations/Optimizations.h)で確認できます。
-```
-
-## クエリパイプライン {#query-pipeline}
-
-クエリパイプラインはクエリプランから生成されます。クエリパイプラインはクエリプランと非常によく似ていますが、木構造ではなくグラフ構造である点が異なります。ClickHouse がクエリをどのように実行し、どのリソースを使用するかを示します。クエリパイプラインを分析することで、入力／出力の観点からボトルネックがどこにあるかを把握するのに非常に有用です。先ほどのクエリを使って、クエリパイプラインの実行を見てみましょう。
-
 ```sql
 EXPLAIN PIPELINE
 WITH (
@@ -274,7 +302,9 @@ GROUP BY type;
 └────────────────────────────────────────────────────────────────────────────┘
 ```
 
-括弧内にはクエリプランのステップが、その横にはプロセッサが表示されています。これは非常に有用な情報ですが、グラフになっていることを考えると、その構造をそのまま可視化できると便利です。そこで、`graph` という設定を 1 にし、出力フォーマットとして TSV を指定します。
+## クエリパイプライン {#query-pipeline}
+
+クエリパイプラインはクエリプランから生成されます。クエリパイプラインはクエリプランと非常によく似ていますが、木構造ではなくグラフ構造である点が異なります。ClickHouse がクエリをどのように実行し、どのリソースを使用するかを示します。クエリパイプラインを分析することで、入力／出力の観点からボトルネックがどこにあるかを把握するのに非常に有用です。先ほどのクエリを使って、クエリパイプラインの実行を見てみましょう。
 
 ```sql
 EXPLAIN PIPELINE graph=1 WITH
@@ -284,6 +314,8 @@ EXPLAIN PIPELINE graph=1 WITH
    ) AS total_rows
 SELECT type, min(timestamp) AS minimum_date, max(timestamp) AS maximum_date, count(*) /total_rows * 100 AS percentage FROM session_events GROUP BY type FORMAT TSV;
 ```
+
+括弧内にはクエリプランのステップが、その横にはプロセッサが表示されています。これは非常に有用な情報ですが、グラフになっていることを考えると、その構造をそのまま可視化できると便利です。そこで、`graph` という設定を 1 にし、出力フォーマットとして TSV を指定します。
 
 ```response
 digraph
@@ -335,12 +367,6 @@ digraph
 }
 ```
 
-その後、この出力をコピーして[こちら](https://dreampuf.github.io/GraphvizOnline)に貼り付けると、以下のグラフが生成されます。
-
-<Image img={analyzer3} alt="グラフ出力" size="md" />
-
-白い長方形はパイプラインノードを表し、灰色の長方形はクエリプランのステップを表します。`x` に続く数字は、使用されている入力／出力の数を表します。コンパクト表示にしたくない場合は、`compact=0` を追加してください。
-
 ```sql
 EXPLAIN PIPELINE graph = 1, compact = 0
 WITH (
@@ -356,6 +382,12 @@ FROM session_events
 GROUP BY type
 FORMAT TSV
 ```
+
+その後、この出力をコピーして[こちら](https://dreampuf.github.io/GraphvizOnline)に貼り付けると、以下のグラフが生成されます。
+
+<Image img={analyzer3} alt="グラフ出力" size="md" />
+
+白い長方形はパイプラインノードを表し、灰色の長方形はクエリプランのステップを表します。`x` に続く数字は、使用されている入力／出力の数を表します。コンパクト表示にしたくない場合は、`compact=0` を追加してください。
 
 ```response
 digraph
@@ -377,10 +409,6 @@ digraph
 }
 ```
 
-<Image img={analyzer4} alt="コンパクトなグラフ出力" size="md" />
-
-なぜ ClickHouse はテーブルを複数スレッドで読み込まないのでしょうか？テーブルにさらに多くのデータを追加してみましょう。
-
 ```sql
 INSERT INTO session_events SELECT * FROM generateRandom('clientId UUID,
    sessionId UUID,
@@ -389,7 +417,9 @@ INSERT INTO session_events SELECT * FROM generateRandom('clientId UUID,
    type Enum(\'type1\', \'type2\')', 1, 10, 2) LIMIT 1000000;
 ```
 
-それでは、もう一度 `EXPLAIN` クエリを実行してみましょう：
+<Image img={analyzer4} alt="コンパクトなグラフ出力" size="md" />
+
+なぜ ClickHouse はテーブルを複数スレッドで読み込まないのでしょうか？テーブルにさらに多くのデータを追加してみましょう。
 
 ```sql
 EXPLAIN PIPELINE graph = 1, compact = 0
@@ -405,6 +435,37 @@ SELECT
 FROM session_events
 GROUP BY type
 FORMAT TSV
+```
+
+それでは、もう一度 `EXPLAIN` クエリを実行してみましょう：
+
+```response
+digraph
+{
+  rankdir="LR";
+  { node [shape = rect]
+    n0[label="MergeTreeSelect(pool: PrefetchedReadPool, algorithm: Thread)"];
+    n1[label="MergeTreeSelect(pool: PrefetchedReadPool, algorithm: Thread)"];
+    n2[label="ExpressionTransform"];
+    n3[label="ExpressionTransform"];
+    n4[label="StrictResize"];
+    n5[label="AggregatingTransform"];
+    n6[label="AggregatingTransform"];
+    n7[label="Resize"];
+    n8[label="ExpressionTransform"];
+    n9[label="ExpressionTransform"];
+  }
+  n0 -> n2;
+  n1 -> n3;
+  n2 -> n4;
+  n3 -> n4;
+  n4 -> n5;
+  n4 -> n6;
+  n5 -> n7;
+  n6 -> n7;
+  n7 -> n8;
+  n7 -> n9;
+}
 ```
 
 ```response

@@ -41,8 +41,8 @@ doc_type: 'guide'
 
 ```text
 Priority: Severity 3
-Subject: ClickHouseアカウントの閉鎖をお願いします
-Description: 解約される理由について簡単にお知らせいただけますと幸いです。
+Subject: Please close my ClickHouse account
+Description: We would appreciate it if you would share a brief note about why you are cancelling.
 ```
 
 5. 「新しいケースを作成」をクリックします

@@ -22,44 +22,44 @@ doc_type: 'reference'
 <summary>dictGet&lt;T&gt; および dictGet&lt;T&gt;OrDefault 関数用の例となる辞書</summary>
 
 ```sql
--- 必要なすべてのデータ型を含むテーブルを作成
+-- Create table with all the required data types
 CREATE TABLE all_types_test (
     `id` UInt32,
     
-    -- String 型
+    -- String type
     `String_value` String,
     
-    -- 符号なし整数型
+    -- Unsigned integer types
     `UInt8_value` UInt8,
     `UInt16_value` UInt16,
     `UInt32_value` UInt32,
     `UInt64_value` UInt64,
     
-    -- 符号付き整数型
+    -- Signed integer types
     `Int8_value` Int8,
     `Int16_value` Int16,
     `Int32_value` Int32,
     `Int64_value` Int64,
     
-    -- 浮動小数点型
+    -- Floating point types
     `Float32_value` Float32,
     `Float64_value` Float64,
     
-    -- 日付/時刻型
+    -- Date/time types
     `Date_value` Date,
     `DateTime_value` DateTime,
     
-    -- ネットワーク型
+    -- Network types
     `IPv4_value` IPv4,
     `IPv6_value` IPv6,
     
-    -- UUID 型
+    -- UUID type
     `UUID_value` UUID
 ) ENGINE = MergeTree() 
 ORDER BY id;
 ```
 ```sql
--- テストデータを挿入
+-- Insert test data
 INSERT INTO all_types_test VALUES
 (
     1,                              -- id
@@ -83,7 +83,7 @@ INSERT INTO all_types_test VALUES
 ```
 
 ```sql
--- 辞書を作成
+-- Create dictionary
 CREATE DICTIONARY all_types_dict
 (
     id UInt32,
@@ -163,42 +163,42 @@ LAYOUT(REGEXP_TREE);
   入力テーブルを作成します：
 
   ```sql
-  CREATE TABLE range_key_dictionary_source_table
-  (
-      key UInt64,
-      start_date Date,
-      end_date Date,
-      value String,
-      value_nullable Nullable(String)
-  )
-  ENGINE = TinyLog();
-  ```
+CREATE TABLE range_key_dictionary_source_table
+(
+    key UInt64,
+    start_date Date,
+    end_date Date,
+    value String,
+    value_nullable Nullable(String)
+)
+ENGINE = TinyLog();
+```
 
   データを入力テーブルに挿入します：
 
   ```sql
-  INSERT INTO range_key_dictionary_source_table VALUES(1, toDate('2019-05-20'), toDate('2019-05-20'), 'First', 'First');
-  INSERT INTO range_key_dictionary_source_table VALUES(2, toDate('2019-05-20'), toDate('2019-05-20'), 'Second', NULL);
-  INSERT INTO range_key_dictionary_source_table VALUES(3, toDate('2019-05-20'), toDate('2019-05-20'), 'Third', 'Third');
-  ```
+INSERT INTO range_key_dictionary_source_table VALUES(1, toDate('2019-05-20'), toDate('2019-05-20'), 'First', 'First');
+INSERT INTO range_key_dictionary_source_table VALUES(2, toDate('2019-05-20'), toDate('2019-05-20'), 'Second', NULL);
+INSERT INTO range_key_dictionary_source_table VALUES(3, toDate('2019-05-20'), toDate('2019-05-20'), 'Third', 'Third');
+```
 
   Dictionary を作成します：
 
   ```sql
-  CREATE DICTIONARY range_key_dictionary
-  (
-      key UInt64,
-      start_date Date,
-      end_date Date,
-      value String,
-      value_nullable Nullable(String)
-  )
-  PRIMARY KEY key
-  SOURCE(CLICKHOUSE(HOST 'localhost' PORT tcpPort() TABLE 'range_key_dictionary_source_table'))
-  LIFETIME(MIN 1 MAX 1000)
-  LAYOUT(RANGE_HASHED())
-  RANGE(MIN start_date MAX end_date);
-  ```
+CREATE DICTIONARY range_key_dictionary
+(
+    key UInt64,
+    start_date Date,
+    end_date Date,
+    value String,
+    value_nullable Nullable(String)
+)
+PRIMARY KEY key
+SOURCE(CLICKHOUSE(HOST 'localhost' PORT tcpPort() TABLE 'range_key_dictionary_source_table'))
+LIFETIME(MIN 1 MAX 1000)
+LAYOUT(RANGE_HASHED())
+RANGE(MIN start_date MAX end_date);
+```
 </details>
 
 <details>
@@ -207,37 +207,37 @@ LAYOUT(REGEXP_TREE);
   ソーステーブルを作成します：
 
   ```sql
-  CREATE TABLE dict_mult_source
-  (
-  id UInt32,
-  c1 UInt32,
-  c2 String
-  ) ENGINE = Memory;
-  ```
+CREATE TABLE dict_mult_source
+(
+id UInt32,
+c1 UInt32,
+c2 String
+) ENGINE = Memory;
+```
 
   データをソーステーブルに挿入します：
 
   ```sql
-  INSERT INTO dict_mult_source VALUES
-  (1, 1, '1'),
-  (2, 2, '2'),
-  (3, 3, '3');
-  ```
+INSERT INTO dict_mult_source VALUES
+(1, 1, '1'),
+(2, 2, '2'),
+(3, 3, '3');
+```
 
   Dictionary を作成します：
 
   ```sql
-  CREATE DICTIONARY ext_dict_mult
-  (
-      id UInt32,
-      c1 UInt32,
-      c2 String
-  )
-  PRIMARY KEY id
-  SOURCE(CLICKHOUSE(HOST 'localhost' PORT 9000 USER 'default' TABLE 'dict_mult_source' DB 'default'))
-  LAYOUT(FLAT())
-  LIFETIME(MIN 0 MAX 0);
-  ```
+CREATE DICTIONARY ext_dict_mult
+(
+    id UInt32,
+    c1 UInt32,
+    c2 String
+)
+PRIMARY KEY id
+SOURCE(CLICKHOUSE(HOST 'localhost' PORT 9000 USER 'default' TABLE 'dict_mult_source' DB 'default'))
+LAYOUT(FLAT())
+LIFETIME(MIN 0 MAX 0);
+```
 </details>
 
 <details>
@@ -246,49 +246,49 @@ LAYOUT(REGEXP_TREE);
   ソーステーブルを作成します：
 
   ```sql
-  CREATE TABLE hierarchy_source
-  (
-    id UInt64,
-    parent_id UInt64,
-    name String
-  ) ENGINE = Memory;
-  ```
+CREATE TABLE hierarchy_source
+(
+  id UInt64,
+  parent_id UInt64,
+  name String
+) ENGINE = Memory;
+```
 
   データをソーステーブルに挿入します：
 
   ```sql
-  INSERT INTO hierarchy_source VALUES
-  (0, 0, 'Root'),
-  (1, 0, 'Level 1 - Node 1'),
-  (2, 1, 'Level 2 - Node 2'),
-  (3, 1, 'Level 2 - Node 3'),
-  (4, 2, 'Level 3 - Node 4'),
-  (5, 2, 'Level 3 - Node 5'),
-  (6, 3, 'Level 3 - Node 6');
+INSERT INTO hierarchy_source VALUES
+(0, 0, 'Root'),
+(1, 0, 'Level 1 - Node 1'),
+(2, 1, 'Level 2 - Node 2'),
+(3, 1, 'Level 2 - Node 3'),
+(4, 2, 'Level 3 - Node 4'),
+(5, 2, 'Level 3 - Node 5'),
+(6, 3, 'Level 3 - Node 6');
 
-  -- 0 (Root)
-  -- └── 1 (レベル 1 - ノード 1)
-  --     ├── 2 (レベル 2 - ノード 2)
-  --     │   ├── 4 (レベル 3 - ノード 4)
-  --     │   └── 5 (レベル 3 - ノード 5)
-  --     └── 3 (レベル 2 - ノード 3)
-  --         └── 6 (レベル 3 - ノード 6)
-  ```
+-- 0 (Root)
+-- └── 1 (Level 1 - Node 1)
+--     ├── 2 (Level 2 - Node 2)
+--     │   ├── 4 (Level 3 - Node 4)
+--     │   └── 5 (Level 3 - Node 5)
+--     └── 3 (Level 2 - Node 3)
+--         └── 6 (Level 3 - Node 6)
+```
 
   Dictionary を作成します：
 
   ```sql
-  CREATE DICTIONARY hierarchical_dictionary
-  (
-      id UInt64,
-      parent_id UInt64 HIERARCHICAL,
-      name String
-  )
-  PRIMARY KEY id
-  SOURCE(CLICKHOUSE(HOST 'localhost' PORT 9000 USER 'default' TABLE 'hierarchy_source' DB 'default'))
-  LAYOUT(HASHED())
-  LIFETIME(MIN 300 MAX 600);
-  ```
+CREATE DICTIONARY hierarchical_dictionary
+(
+    id UInt64,
+    parent_id UInt64 HIERARCHICAL,
+    name String
+)
+PRIMARY KEY id
+SOURCE(CLICKHOUSE(HOST 'localhost' PORT 9000 USER 'default' TABLE 'hierarchy_source' DB 'default'))
+LAYOUT(HASHED())
+LIFETIME(MIN 300 MAX 600);
+```
 </details>
 
 {/* 
@@ -334,7 +334,7 @@ SELECT dictGet('ext_dict_test', 'c1', toUInt64(1)) AS val
 1
 ```
 
-**複数の属性**
+**Multiple attributes**
 
 ```sql title=Query
 SELECT
@@ -358,36 +358,39 @@ LIMIT 3;
 └─────────┴────────────────┘
 ```
 
+
+
 ## dictGetAll {#dictGetAll}
 
-導入バージョン: v23.5
+Introduced in: v23.5
 
-Dictionary の設定に関わらず、属性値を `All` データ型に変換します。
+Converts a dictionary attribute value to `All` data type regardless of the dictionary configuration.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetAll(dict_name, attr_name, id_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キー値。Dictionary のキー型の値、またはタプル値を返す式（Dictionary の設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-`id_expr` に対応する Dictionary 属性の値を返します。
-対応するものが存在しない場合は、Dictionary 設定でその属性に対して指定されている `<null_value>` 要素の内容を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-ClickHouse は、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 SELECT
@@ -406,30 +409,35 @@ SELECT
 └────────────────────────────────────────────────────────────────┴─────────────────────────────────────────┴─────────────┘
 ```
 
+
+
 ## dictGetChildren {#dictGetChildren}
 
-導入バージョン: v21.4
+Introduced in: v21.4
 
-第1レベルの子要素をインデックスの配列として返します。これは [dictGetHierarchy](#dictGetHierarchy) に対する逆変換です。
 
-**構文**
+Returns first-level children as an array of indexes. It is the inverse transformation for [dictGetHierarchy](#dictGetHierarchy).
+
+
+**Syntax**
 
 ```sql
 dictGetChildren(dict_name, key)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `key` — チェック対象のキー。[`const String`](/sql-reference/data-types/string)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `key` — Key to be checked. [`const String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-指定したキーの第一階層の子要素（直下の子要素）を返します。[`Array(UInt64)`](/sql-reference/data-types/array)
+**Returned value**
 
-**例**
+Returns the first-level descendants for the key. [`Array(UInt64)`](/sql-reference/data-types/array)
 
-**Dictionary の第一階層の子要素を取得する**
+**Examples**
+
+**Get the first-level children of a dictionary**
 
 ```sql title=Query
 SELECT dictGetChildren('hierarchical_dictionary', 2);
@@ -441,36 +449,39 @@ SELECT dictGetChildren('hierarchical_dictionary', 2);
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetDate {#dictGetDate}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-Dictionary の属性値を、Dictionary の設定に関係なく `Date` データ型に変換します。
+Converts a dictionary attribute value to `Date` data type regardless of the dictionary configuration.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetDate(dict_name, attr_name, id_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キー値。Dictionary のキー型の値、またはタプル値（Dictionary の設定に依存）を返す式。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-`id_expr` に対応する Dictionary 属性の値を返し、
-それ以外の場合は、その属性について Dictionary 設定で指定された `<null_value>` 要素の内容を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-ClickHouse は、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetDate('all_types_dict', 'Date_value', 1)
@@ -482,37 +493,40 @@ SELECT dictGetDate('all_types_dict', 'Date_value', 1)
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetDateOrDefault {#dictGetDateOrDefault}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-Dictionary の設定に関係なく、属性値を `Date` データ型に変換するか、キーが見つからない場合は指定されたデフォルト値を返します。
+Converts a dictionary attribute value to `Date` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetDateOrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary の属性（カラム）の名前。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キー値。Dictionary のキー型の値、またはタプル値を返す式（Dictionary の設定に依存します）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — Dictionary に `id_expr` キーの行が存在しない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-`id_expr` に対応する Dictionary 属性の値を返し、
-存在しない場合は `default_value_expr` パラメータで渡された値を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-ClickHouse は、属性の値をパースできない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 -- 存在するキーの場合
@@ -531,36 +545,39 @@ SELECT dictGetDateOrDefault('all_types_dict', 'Date_value', 999, toDate('1970-01
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetDateTime {#dictGetDateTime}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-Dictionary の設定に依存せず、Dictionary 属性の値を `DateTime` データ型に変換します。
+Converts a dictionary attribute value to `DateTime` data type regardless of the dictionary configuration.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetDateTime(dict_name, attr_name, id_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キー値。Dictionary のキー型の値、またはタプル値を返す式（Dictionary の構成に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-`id_expr` に対応する Dictionary 属性の値を返します。
-それ以外の場合は、Dictionary の構成でその属性に対して指定されている `<null_value>` 要素の内容を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-属性の値を解析できない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外を送出します。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetDateTime('all_types_dict', 'DateTime_value', 1)
@@ -572,37 +589,40 @@ SELECT dictGetDateTime('all_types_dict', 'DateTime_value', 1)
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetDateTimeOrDefault {#dictGetDateTimeOrDefault}
 
-導入: v1.1
+Introduced in: v1.1
 
-Dictionary の属性値を、Dictionary の設定に関係なく `DateTime` データ型に変換します。キーが見つからない場合は、指定されたデフォルト値を返します。
+Converts a dictionary attribute value to `DateTime` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetDateTimeOrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キー値。Dictionary のキー型の値、またはタプル値を返す式（Dictionary の設定に依存します）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — Dictionary に `id_expr` キーの行が存在しない場合に返される値（複数可）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-`id_expr` に対応する Dictionary 属性の値を返し、
-存在しない場合は `default_value_expr` パラメータとして渡された値を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-属性の値をパースできない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外を送出します。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 -- 存在するキーの場合
@@ -621,31 +641,36 @@ SELECT dictGetDateTimeOrDefault('all_types_dict', 'DateTime_value', 999, toDateT
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetDescendants {#dictGetDescendants}
 
-導入バージョン: v21.4
+Introduced in: v21.4
 
-[`dictGetChildren`](#dictGetChildren) 関数を `level` 回再帰的に適用した場合と同様に、すべての子孫を返します。
 
-**構文**
+Returns all descendants as if the [`dictGetChildren`](#dictGetChildren) function were applied `level` times recursively.
+
+
+**Syntax**
 
 ```sql
 dictGetDescendants(dict_name, key, level)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `key` — チェック対象のキー。[`const String`](/sql-reference/data-types/string)
-* `level` — 階層レベル。`level = 0` の場合、末端までのすべての子孫を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `key` — Key to be checked. [`const String`](/sql-reference/data-types/string)
+- `level` — Key to be checked. Hierarchy level. If `level = 0` returns all descendants to the end. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**返り値**
 
-指定されたキーに対する子孫を返します。[`Array(UInt64)`](/sql-reference/data-types/array)
+**Returned value**
 
-**例**
+Returns the descendants for the key. [`Array(UInt64)`](/sql-reference/data-types/array)
 
-**Dictionary の第 1 階層の子要素を取得する**
+**Examples**
+
+**Get the first-level children of a dictionary**
 
 ```sql title=Query
 -- 以下の階層型Dictionaryを考えます:
@@ -666,36 +691,39 @@ SELECT dictGetDescendants('hierarchical_dictionary', 0, 2)
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetFloat32 {#dictGetFloat32}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-Dictionary の属性値を、Dictionary 設定に関係なく `Float32` 型に変換します。
+Converts a dictionary attribute value to `Float32` data type regardless of the dictionary configuration.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetFloat32(dict_name, attr_name, id_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キー値。Dictionary の設定に応じて、Dictionary のキー型の値またはタプル値を返す式。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-`id_expr` に対応する Dictionary 属性の値を返します。
-対応する値が存在しない場合は、Dictionary 設定でその属性に対して指定された `<null_value>` 要素の内容を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-属性の値を解析できない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外をスローします。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetFloat32('all_types_dict', 'Float32_value', 1)
@@ -707,37 +735,40 @@ SELECT dictGetFloat32('all_types_dict', 'Float32_value', 1)
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetFloat32OrDefault {#dictGetFloat32OrDefault}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-Dictionary の属性値を、Dictionary の設定に関係なく `Float32` データ型に変換するか、キーが見つからない場合は指定されたデフォルト値を返します。
+Converts a dictionary attribute value to `Float32` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetFloat32OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キー値。Dictionary で定義されたキー型の値、またはタプル値を返す式（Dictionary の設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — Dictionary に `id_expr` キーの行が存在しない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-`id_expr` に対応する Dictionary 属性の値を返します。
-存在しない場合は、`default_value_expr` パラメータで渡された値を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-ClickHouse は、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 -- 存在するキーの場合
@@ -756,36 +787,39 @@ SELECT dictGetFloat32OrDefault('all_types_dict', 'Float32_value', 999, -1.0);
 └───────────────────────────┘
 ```
 
+
+
 ## dictGetFloat64 {#dictGetFloat64}
 
-導入されたバージョン: v1.1
+Introduced in: v1.1
 
-Dictionary の設定に関係なく、Dictionary の属性値を `Float64` データ型に変換します。
+Converts a dictionary attribute value to `Float64` data type regardless of the dictionary configuration.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetFloat64(dict_name, attr_name, id_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キーの値。Dictionary のキー型の値またはタプル値を返す式（Dictionary の設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**返り値**
 
-`id_expr` に対応する Dictionary 属性の値を返し、
-それ以外の場合は、Dictionary 設定でその属性に対して指定された `<null_value>` 要素の内容を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-属性の値をパースできない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外をスローします。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetFloat64('all_types_dict', 'Float64_value', 1)
@@ -797,37 +831,40 @@ SELECT dictGetFloat64('all_types_dict', 'Float64_value', 1)
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetFloat64OrDefault {#dictGetFloat64OrDefault}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-Dictionary の属性値を、Dictionary の設定に関係なく `Float64` データ型に変換します。キーが見つからない場合は、指定したデフォルト値を返します。
+Converts a dictionary attribute value to `Float64` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetFloat64OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キー値。Dictionary のキー型の値、またはタプル値を返す式（Dictionary の設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — Dictionary に `id_expr` キーを持つ行が存在しない場合に返される値（または複数の値）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-`id_expr` に対応する Dictionary 属性の値を返し、
-存在しない場合は `default_value_expr` パラメータで渡された値を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-ClickHouse は、属性の値をパースできない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 -- キーが存在する場合
@@ -846,30 +883,35 @@ SELECT dictGetFloat64OrDefault('all_types_dict', 'Float64_value', 999, nan);
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetHierarchy {#dictGetHierarchy}
 
-導入されたバージョン: v1.1
+Introduced in: v1.1
 
-[階層型 Dictionary](../../sql-reference/dictionaries/index.md#hierarchical-dictionaries) 内のキーについて、そのすべての親を含む配列を生成します。
 
-**構文**
+Creates an array, containing all the parents of a key in the [hierarchical dictionary](../../sql-reference/dictionaries/index.md#hierarchical-dictionaries).
+
+
+**Syntax**
 
 ```sql
 dictGetHierarchy(dict_name, key)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `key` — キー値。[`const String`](/sql-reference/data-types/string)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `key` — Key value. [`const String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-指定したキーに対応する親を返します。[`Array(UInt64)`](/sql-reference/data-types/array)
+**Returned value**
 
-**例**
+Returns parents for the key. [`Array(UInt64)`](/sql-reference/data-types/array)
 
-**キーに対する階層を取得する**
+**Examples**
+
+**Get hierarchy for a key**
 
 ```sql title=Query
 SELECT dictGetHierarchy('hierarchical_dictionary', 5)
@@ -881,36 +923,39 @@ SELECT dictGetHierarchy('hierarchical_dictionary', 5)
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetIPv4 {#dictGetIPv4}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-Dictionary の設定に関係なく、その属性値を `IPv4` データ型に変換します。
+Converts a dictionary attribute value to `IPv4` data type regardless of the dictionary configuration.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetIPv4(dict_name, attr_name, id_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キーの値。Dictionary のキー型の値、またはタプル値を返す式（Dictionary の設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-`id_expr` に対応する Dictionary 属性の値を返します。
-対応する値がない場合は、Dictionary の設定でその属性に指定された `<null_value>` 要素の内容を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-ClickHouse は、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetIPv4('all_types_dict', 'IPv4_value', 1)
@@ -922,37 +967,40 @@ SELECT dictGetIPv4('all_types_dict', 'IPv4_value', 1)
 └─────────────────────────────────────┘
 ```
 
+
+
 ## dictGetIPv4OrDefault {#dictGetIPv4OrDefault}
 
-導入バージョン: v23.1
+Introduced in: v23.1
 
-Dictionary の設定に関係なく、Dictionary の属性の値を `IPv4` データ型に変換し、キーが見つからない場合は指定されたデフォルト値を返します。
+Converts a dictionary attribute value to `IPv4` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetIPv4OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キーの値。Dictionary のキー型の値、またはタプル値を返す式（Dictionary の設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — Dictionary に `id_expr` キーを持つ行が存在しない場合に返される値（複数可）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-`id_expr` に対応する Dictionary 属性の値を返し、
-存在しない場合は `default_value_expr` パラメータとして渡された値を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-属性の値をパースできない場合、またはその値が属性のデータ型と一致しない場合、ClickHouse は例外をスローします。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 -- 存在するキーの場合
@@ -971,36 +1019,39 @@ SELECT dictGetIPv4OrDefault('all_types_dict', 'IPv4_value', 999, toIPv4('0.0.0.0
 └──────────────────────────────┘
 ```
 
+
+
 ## dictGetIPv6 {#dictGetIPv6}
 
-導入: v23.1
+Introduced in: v23.1
 
-Dictionary の設定にかかわらず、属性値を `IPv6` データ型として取得します。
+Converts a dictionary attribute value to `IPv6` data type regardless of the dictionary configuration.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetIPv6(dict_name, attr_name, id_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キー値。Dictionary のキー型の値、またはタプル値（Dictionary の設定に依存）を返す式。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-`id_expr` に対応する Dictionary の属性値を返します。
-対応する値がない場合は、Dictionary 設定でその属性に対して指定された `<null_value>` 要素の内容を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-属性の値を解析できない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外をスローします。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetIPv6('all_types_dict', 'IPv6_value', 1)
@@ -1012,37 +1063,40 @@ SELECT dictGetIPv6('all_types_dict', 'IPv6_value', 1)
 └─────────────────────────────────────┘
 ```
 
+
+
 ## dictGetIPv6OrDefault {#dictGetIPv6OrDefault}
 
-導入バージョン: v23.1
+Introduced in: v23.1
 
-Dictionary の属性値を、Dictionary の設定に関係なく `IPv6` データ型に変換するか、キーが見つからない場合には指定されたデフォルト値を返します。
+Converts a dictionary attribute value to `IPv6` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetIPv6OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キー値。Dictionary のキー型の値、またはタプル値を返す式（Dictionary の構成に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — Dictionary に `id_expr` キーを持つ行が存在しない場合に返される値（複数可）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-`id_expr` に対応する Dictionary 属性の値を返し、
-それ以外の場合は `default_value_expr` パラメータとして渡された値を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-属性の値をパースできない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外をスローします。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 -- 存在するキーの場合
@@ -1061,36 +1115,39 @@ SELECT dictGetIPv6OrDefault('all_types_dict', 'IPv6_value', 999, '::1'::IPv6);
 └──────────────────────────────┘
 ```
 
+
+
 ## dictGetInt16 {#dictGetInt16}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-Dictionary の属性値を、Dictionary の設定に関係なく `Int16` データ型に変換します。
+Converts a dictionary attribute value to `Int16` data type regardless of the dictionary configuration.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetInt16(dict_name, attr_name, id_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キー値。Dictionary のキー型の値、またはタプル値（Dictionary の設定内容に依存）を返す式。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-`id_expr` に対応する Dictionary 属性の値を返します。
-それ以外の場合は、Dictionary の設定でその属性に対して指定された `<null_value>` 要素の内容を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-属性の値をパースできない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外を発生させます。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetInt16('all_types_dict', 'Int16_value', 1)
@@ -1102,37 +1159,40 @@ SELECT dictGetInt16('all_types_dict', 'Int16_value', 1)
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetInt16OrDefault {#dictGetInt16OrDefault}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-Dictionary の設定にかかわらず属性値を `Int16` 型として取得し、キーが見つからない場合は指定したデフォルト値を返します。
+Converts a dictionary attribute value to `Int16` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetInt16OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キーの値。Dictionary で定義されたキー型の値、またはタプル値を返す式（Dictionary の設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — Dictionary に `id_expr` キーを持つ行が存在しない場合に返される値（複数の場合あり）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-`id_expr` に対応する Dictionary の属性値を返し、
-存在しない場合は `default_value_expr` パラメータで渡された値を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-ClickHouse は、属性値を解析できない場合、またはその値が属性のデータ型と一致しない場合に例外をスローします。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 -- キーが存在する場合
@@ -1151,36 +1211,39 @@ SELECT dictGetInt16OrDefault('all_types_dict', 'Int16_value', 999, -1);
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetInt32 {#dictGetInt32}
 
-導入バージョン：v1.1
+Introduced in: v1.1
 
-Dictionary の設定に関係なく、その属性値を `Int32` データ型に変換します。
+Converts a dictionary attribute value to `Int32` data type regardless of the dictionary configuration.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetInt32(dict_name, attr_name, id_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キーの値。Dictionary のキー型の値、またはタプル値（Dictionary の設定に依存）を返す式。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**返り値**
 
-`id_expr` に対応する Dictionary の属性値を返します。
-対応する値がない場合は、その属性について Dictionary の設定で指定された `<null_value>` 要素の内容を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-属性値を解析できない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外をスローします。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetInt32('all_types_dict', 'Int32_value', 1)
@@ -1192,37 +1255,40 @@ SELECT dictGetInt32('all_types_dict', 'Int32_value', 1)
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetInt32OrDefault {#dictGetInt32OrDefault}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-Dictionary の属性値を、Dictionary の設定に関係なく `Int32` データ型に変換します。キーが見つからない場合は、指定されたデフォルト値を返します。
+Converts a dictionary attribute value to `Int32` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetInt32OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キーの値。Dictionary のキー型の値、またはタプル値を返す式（Dictionary の設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — Dictionary に `id_expr` キーを持つ行が含まれていない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-`id_expr` に対応する Dictionary の属性の値を返します。
-対応する値が存在しない場合は、`default_value_expr` パラメーターとして渡された値を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-属性の値を解析できない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外をスローします。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 -- キーが存在する場合
@@ -1241,36 +1307,39 @@ SELECT dictGetInt32OrDefault('all_types_dict', 'Int32_value', 999, -1);
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetInt64 {#dictGetInt64}
 
-導入: v1.1
+Introduced in: v1.1
 
-Dictionary の設定に関係なく、Dictionary の属性の値を `Int64` データ型に変換します。
+Converts a dictionary attribute value to `Int64` data type regardless of the dictionary configuration.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetInt64(dict_name, attr_name, id_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キー値。Dictionary のキー型の値、または（Dictionary の設定に依存して）値のタプルを返す式。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-`id_expr` に対応する Dictionary 属性の値を返します。
-対応する値が存在しない場合は、Dictionary 設定でその属性に指定された `<null_value>` 要素の内容を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-ClickHouse は、属性の値を解釈できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetInt64('all_types_dict', 'Int64_value', 1)
@@ -1282,37 +1351,40 @@ SELECT dictGetInt64('all_types_dict', 'Int64_value', 1)
 └────────────────────────────┘
 ```
 
+
+
 ## dictGetInt64OrDefault {#dictGetInt64OrDefault}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-Dictionary の属性値を、Dictionary の設定に関係なく `Int64` データ型に変換するか、キーが見つからない場合は指定されたデフォルト値を返します。
+Converts a dictionary attribute value to `Int64` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetInt64OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キー値。Dictionary のキー型の値、またはタプル値を返す式（Dictionary の設定による）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — Dictionary に `id_expr` キーを持つ行が存在しない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-`id_expr` に対応する Dictionary の属性値を返し、
-該当しない場合は `default_value_expr` パラメータで渡された値を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-ClickHouse は、属性値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 -- キーが存在する場合
@@ -1331,36 +1403,39 @@ SELECT dictGetInt64OrDefault('all_types_dict', 'Int64_value', 999, -1);
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetInt8 {#dictGetInt8}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-Dictionary の設定に関係なく、Dictionary の属性値を `Int8` データ型に変換して返します。
+Converts a dictionary attribute value to `Int8` data type regardless of the dictionary configuration.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetInt8(dict_name, attr_name, id_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キーの値。Dictionary のキー型の値、または値のタプルを返す式（Dictionary の設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-`id_expr` に対応する Dictionary 属性の値を返します。
-対応する値が存在しない場合は、Dictionary の設定でその属性に対して指定された `<null_value>` 要素の内容を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-ClickHouse は、属性の値をパースできない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetInt8('all_types_dict', 'Int8_value', 1)
@@ -1372,37 +1447,40 @@ SELECT dictGetInt8('all_types_dict', 'Int8_value', 1)
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetInt8OrDefault {#dictGetInt8OrDefault}
 
-v1.1 で導入
+Introduced in: v1.1
 
-Dictionary の設定に関係なく、Dictionary の属性値を `Int8` データ型に変換し、キーが見つからない場合は指定したデフォルト値を返します。
+Converts a dictionary attribute value to `Int8` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetInt8OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キー値。Dictionary のキー型の値、またはタプル値を返す式（Dictionary の設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — Dictionary に `id_expr` キーを持つ行が存在しない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**返される値**
 
-`id_expr` に対応する Dictionary 属性の値を返し、
-それ以外の場合には `default_value_expr` パラメータとして渡された値を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-属性の値をパースできない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外をスローします。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 -- キーが存在する場合
@@ -1421,36 +1499,41 @@ SELECT dictGetInt8OrDefault('all_types_dict', 'Int8_value', 999, -1);
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetKeys {#dictGetKeys}
 
-導入バージョン: v25.12
+Introduced in: v25.12
 
-指定された値と等しい属性を持つ Dictionary のキーを返します。これは、単一の属性に対する `dictGet` 関数の逆の動作です。
 
-`dictGetKeys` が使用するクエリごとの逆引きキャッシュのサイズ上限を設定するには、`max_reverse_dictionary_lookup_cache_size_bytes` を使用します。
-このキャッシュは、同じクエリ内で Dictionary を再スキャンする必要がないように、各属性値に対応するシリアライズ済みのキーのタプルを保存します。
-このキャッシュはクエリ間で永続化されません。上限に達すると、LRU によってエントリが削除されます。
-入力のカーディナリティが低く、ワーキングセットがキャッシュに収まるような大きな Dictionary に対して最も効果的です。キャッシュを無効にするには `0` を設定します。
+Returns the dictionary key(s) whose attribute equals the specified value. This is the inverse of the function `dictGet` on a single attribute.
 
-**構文**
+Use setting `max_reverse_dictionary_lookup_cache_size_bytes` to cap the size of the per-query reverse-lookup cache used by `dictGetKeys`.
+The cache stores serialized key tuples for each attribute value to avoid re-scanning the dictionary within the same query.
+The cache is not persistent across queries. When the limit is reached, entries are evicted with LRU.
+This is most effective with large dictionaries when the input has low cardinality and the working set fits in the cache. Set to `0` to disable caching.
+    
+
+**Syntax**
 
 ```sql
 dictGetKeys('dict_name', 'attr_name', value_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — 照合する属性名。[`String`](/sql-reference/data-types/string)
-* `value_expr` — 属性と照合する値。[`Expression`](/sql-reference/data-types/special-data-types/expression)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Attribute to match. [`String`](/sql-reference/data-types/string)
+- `value_expr` — Value to match against the attribute. [`Expression`](/sql-reference/data-types/special-data-types/expression)
 
-**戻り値**
 
-単一キーの Dictionary の場合: 属性が `value_expr` と等しいキーの配列。複合キーの Dictionary の場合: 属性が `value_expr` と等しいキーのタプルの配列。Dictionary 内に `value_expr` に対応する属性が存在しない場合は、空の配列が返されます。属性の値を解析できない場合、または値を属性のデータ型に変換できない場合、ClickHouse は例外をスローします。
+**Returned value**
 
-**例**
+For single key dictionaries: an array of keys whose attribute equals `value_expr`. For multi key dictionaries: an array of tuples of keys whose attribute equals `value_expr`. If there is no attribute corresponding to `value_expr` in the dictionary, then an empty array is returned. ClickHouse throws an exception if it cannot parse the value of the attribute or the value cannot be converted to the attribute data type.
 
-**使用例**
+**Examples**
+
+**Sample usage**
 
 ```sql title=Query
 SELECT dictGetKeys('task_id_to_priority_dictionary', 'priority_level', 'high') AS ids;
@@ -1462,33 +1545,35 @@ SELECT dictGetKeys('task_id_to_priority_dictionary', 'priority_level', 'high') A
 └───────┘
 ```
 
+
+
 ## dictGetOrDefault {#dictGetOrDefault}
 
-導入バージョン: v18.16
+Introduced in: v18.16
 
-Dictionary から値を取得し、キーが見つからない場合はデフォルト値を返します。
+Retrieves values from a dictionary, with a default value if the key is not found.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetOrDefault('dict_name', attr_names, id_expr, default_value)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_names` — Dictionary のカラム名、またはカラム名のタプル。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キーの値。UInt64 または Tuple(T) を返す式です。[`UInt64`](/sql-reference/data-types/int-uint) または [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value` — キーが見つからない場合に返すデフォルト値。型は属性のデータ型と一致している必要があります。
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_names` — Name of the column of the dictionary, or tuple of column names. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning UInt64/Tuple(T). [`UInt64`](/sql-reference/data-types/int-uint) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value` — Default value to return if the key is not found. Type must match the attribute's data type. 
 
-**戻り値**
+**Returned value**
 
-キーが見つかった場合、`id_expr` に対応する Dictionary 属性の値を返します。
-キーが見つからない場合は、指定された `default_value` を返します。
+Returns the value of the dictionary attribute that corresponds to `id_expr` if the key is found.
+If the key is not found, returns the `default_value` provided.
 
-**例**
+**Examples**
 
-**デフォルト値付きで値を取得**
+**Get value with default**
 
 ```sql title=Query
 SELECT dictGetOrDefault('ext_dict_mult', 'c1', toUInt64(999), 0) AS val
@@ -1498,30 +1583,32 @@ SELECT dictGetOrDefault('ext_dict_mult', 'c1', toUInt64(999), 0) AS val
 0
 ```
 
+
+
 ## dictGetOrNull {#dictGetOrNull}
 
-導入バージョン: v21.4
+Introduced in: v21.4
 
-Dictionary から値を取得し、キーが見つからない場合は NULL を返します。
+Retrieves values from a dictionary, returning NULL if the key is not found.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetOrNull('dict_name', 'attr_name', id_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。文字列リテラル。 - `attr_name` — 取得するカラム名。文字列リテラル。 - `id_expr` — キー値。Dictionary のキー型の値を返す式。
+- `dict_name` — Name of the dictionary. String literal. - `attr_name` — Name of the column to retrieve. String literal. - `id_expr` — Key value. Expression returning dictionary key-type value. 
 
-**戻り値**
+**Returned value**
 
-キーが見つかった場合は、`id_expr` に対応する Dictionary 属性値を返します。
-キーが見つからない場合は、`NULL` を返します。
+Returns the value of the dictionary attribute that corresponds to `id_expr` if the key is found.
+If the key is not found, returns `NULL`.
 
-**例**
+**Examples**
 
-**レンジキーを使用する Dictionary の例**
+**Example using the range key dictionary**
 
 ```sql title=Query
 SELECT
@@ -1538,36 +1625,39 @@ FROM system.numbers LIMIT 5 FORMAT TabSeparated;
 (4,'2019-05-20')  \N
 ```
 
+
+
 ## dictGetString {#dictGetString}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-Dictionary の属性値を、Dictionary の設定にかかわらず `String` データ型に変換します。
+Converts a dictionary attribute value to `String` data type regardless of the dictionary configuration.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetString(dict_name, attr_name, id_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キー値。Dictionary のキー型の値またはタプル値（Dictionary の設定に依存）を返す式。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-`id_expr` に対応する Dictionary 属性の値を返します。
-対応する値が存在しない場合は、Dictionary の設定でその属性に対して指定された `<null_value>` 要素の内容を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-属性の値をパースできない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外を発生させます。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetString('all_types_dict', 'String_value', 1)
@@ -1579,37 +1669,40 @@ SELECT dictGetString('all_types_dict', 'String_value', 1)
 └────────────────────────────┘
 ```
 
+
+
 ## dictGetStringOrDefault {#dictGetStringOrDefault}
 
-導入: v1.1
+Introduced in: v1.1
 
-Dictionary の属性値を、Dictionary の設定に関係なく `String` 型に変換します。キーが見つからない場合は、指定されたデフォルト値を返します。
+Converts a dictionary attribute value to `String` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetStringOrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キー値。Dictionary のキー型の値、またはタプル値を返す式（Dictionary の設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — Dictionary に `id_expr` キーを持つ行が存在しない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-`id_expr` に対応する Dictionary 属性の値を返し、
-それ以外の場合は `default_value_expr` パラメータとして渡された値を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-属性の値を解析できない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外をスローします。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 -- キーが存在する場合
@@ -1628,36 +1721,39 @@ SELECT dictGetStringOrDefault('all_types_dict', 'String_value', 999, 'default');
 └─────────────────────────────────┘
 ```
 
+
+
 ## dictGetUInt16 {#dictGetUInt16}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-Dictionary の属性値を、Dictionary の設定内容に関係なく `UInt16` 型に変換します。
+Converts a dictionary attribute value to `UInt16` data type regardless of the dictionary configuration.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetUInt16(dict_name, attr_name, id_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キー値。Dictionary のキー型の値、またはタプル値（Dictionary の設定に依存）を返す式。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-`id_expr` に対応する Dictionary 属性の値を返します。
-対応する値が存在しない場合は、Dictionary 設定でその属性に対して指定された `<null_value>` 要素の内容を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-属性の値を解析できない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外をスローします。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetUInt16('all_types_dict', 'UInt16_value', 1)
@@ -1669,37 +1765,40 @@ SELECT dictGetUInt16('all_types_dict', 'UInt16_value', 1)
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetUInt16OrDefault {#dictGetUInt16OrDefault}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-Dictionary の設定に関係なく、Dictionary の属性値を `UInt16` データ型に変換し、キーが見つからない場合は指定されたデフォルト値を返します。
+Converts a dictionary attribute value to `UInt16` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetUInt16OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キーの値。Dictionary のキー型の値、またはタプル値（Dictionary の設定に依存）を返す式。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — Dictionary に `id_expr` キーを持つ行が存在しない場合に返される値（複数可）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-`id_expr` に対応する Dictionary 属性の値を返し、
-存在しない場合は `default_value_expr` パラメータで渡された値を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-属性の値を解析できない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外を送出します。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 -- 存在するキーの場合
@@ -1718,36 +1817,39 @@ SELECT dictGetUInt16OrDefault('all_types_dict', 'UInt16_value', 999, 0);
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetUInt32 {#dictGetUInt32}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-Dictionary の属性値を、Dictionary の設定に関係なく `UInt32` データ型に変換します。
+Converts a dictionary attribute value to `UInt32` data type regardless of the dictionary configuration.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetUInt32(dict_name, attr_name, id_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キー値。Dictionary のキー型の値、またはタプル値（Dictionary の設定に依存）を返す式。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-`id_expr` に対応する Dictionary 属性の値を返し、
-それ以外の場合には、Dictionary の設定でその属性に対して指定された `<null_value>` 要素の内容を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-属性の値をパースできない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外を送出します。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetUInt32('all_types_dict', 'UInt32_value', 1)
@@ -1759,37 +1861,40 @@ SELECT dictGetUInt32('all_types_dict', 'UInt32_value', 1)
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetUInt32OrDefault {#dictGetUInt32OrDefault}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-Dictionary の属性値を、Dictionary の設定内容に関係なく `UInt32` 型に変換し、キーが見つからない場合には指定されたデフォルト値を返します。
+Converts a dictionary attribute value to `UInt32` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetUInt32OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キー値。Dictionary のキー型の値、またはタプル値を返す式（Dictionary の設定による）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — Dictionary に `id_expr` キーを持つ行が存在しない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-`id_expr` に対応する Dictionary の属性値を返し、
-存在しない場合は `default_value_expr` パラメータで渡された値を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-属性値を解釈できない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外をスローします。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 -- 存在するキーの場合
@@ -1808,36 +1913,39 @@ SELECT dictGetUInt32OrDefault('all_types_dict', 'UInt32_value', 999, 0);
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetUInt64 {#dictGetUInt64}
 
-導入: v1.1
+Introduced in: v1.1
 
-Dictionary の属性の値を、Dictionary の設定に関係なく `UInt64` データ型に変換します。
+Converts a dictionary attribute value to `UInt64` data type regardless of the dictionary configuration.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetUInt64(dict_name, attr_name, id_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キーの値。Dictionary のキー型の値、またはタプル値（Dictionary の構成に依存）を返す式。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-`id_expr` に対応する Dictionary 属性の値を返します。
-対応する値が存在しない場合は、Dictionary の構成でその属性に対して指定されている `<null_value>` 要素の内容を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-ClickHouse は、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetUInt64('all_types_dict', 'UInt64_value', 1)
@@ -1849,37 +1957,40 @@ SELECT dictGetUInt64('all_types_dict', 'UInt64_value', 1)
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetUInt64OrDefault {#dictGetUInt64OrDefault}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-Dictionary の設定に関係なく Dictionary の属性値を `UInt64` 型に変換し、キーが見つからない場合は指定されたデフォルト値を返します。
+Converts a dictionary attribute value to `UInt64` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetUInt64OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キーの値。Dictionary のキー型の値またはタプル値を返す式（Dictionary の設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — Dictionary に `id_expr` キーを持つ行が存在しない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-`id_expr` に対応する Dictionary 属性の値を返し、
-それ以外の場合は `default_value_expr` パラメータで渡された値を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-ClickHouse は、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 -- キーが存在する場合
@@ -1898,36 +2009,39 @@ SELECT dictGetUInt64OrDefault('all_types_dict', 'UInt64_value', 999, 0);
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetUInt8 {#dictGetUInt8}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-Dictionary の属性値を、Dictionary の設定内容に関係なく `UInt8` データ型に変換します。
+Converts a dictionary attribute value to `UInt8` data type regardless of the dictionary configuration.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetUInt8(dict_name, attr_name, id_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キー値。Dictionary のキー型の値、またはタプル値（Dictionary の設定に依存）を返す式。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-`id_expr` に対応する Dictionary 属性の値を返し、
-それ以外の場合には、Dictionary の設定で当該属性に対して指定された `<null_value>` 要素の内容を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-ClickHouse は、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合には例外を送出します。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetUInt8('all_types_dict', 'UInt8_value', 1)
@@ -1939,37 +2053,40 @@ SELECT dictGetUInt8('all_types_dict', 'UInt8_value', 1)
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetUInt8OrDefault {#dictGetUInt8OrDefault}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-Dictionary の属性値を、Dictionary の設定に関係なく `UInt8` データ型に変換するか、キーが見つからない場合は指定したデフォルト値を返します。
+Converts a dictionary attribute value to `UInt8` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetUInt8OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キーとなる値。Dictionary のキー型の値、またはタプル値を返す式（Dictionary の設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — Dictionary に `id_expr` キーを持つ行が存在しない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-`id_expr` に対応する Dictionary 属性の値を返し、
-それ以外の場合には `default_value_expr` パラメータとして渡された値を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-ClickHouse は、属性の値をパースできない場合、または値が属性のデータ型と一致しない場合に例外を送出します。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 -- 存在するキーの場合
@@ -1988,36 +2105,39 @@ SELECT dictGetUInt8OrDefault('all_types_dict', 'UInt8_value', 999, 0);
 └──────────────────────────┘
 ```
 
+
+
 ## dictGetUUID {#dictGetUUID}
 
-v1.1 で導入
+Introduced in: v1.1
 
-Dictionary の設定に関係なく、Dictionary の属性値を `UUID` データ型に変換します。
+Converts a dictionary attribute value to `UUID` data type regardless of the dictionary configuration.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetUUID(dict_name, attr_name, id_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キーの値。Dictionary のキー型の値、またはタプル値（Dictionary の設定に依存）を返す式。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. An expression returning a dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-`id_expr` に対応する Dictionary 属性の値を返します。
-対応する値が存在しない場合は、Dictionary の設定でその属性に対して指定された `<null_value>` 要素の内容を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the content of the `<null_value>` element specified for the attribute in the dictionary configuration.
 
 :::note
-ClickHouse は、属性の値をパースできない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 SELECT dictGetUUID('all_types_dict', 'UUID_value', 1)
@@ -2029,37 +2149,40 @@ SELECT dictGetUUID('all_types_dict', 'UUID_value', 1)
 └──────────────────────────────────────┘
 ```
 
+
+
 ## dictGetUUIDOrDefault {#dictGetUUIDOrDefault}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-Dictionary の設定に関係なく、Dictionary の属性の値を `UUID` データ型に変換します。キーが見つからない場合は、指定されたデフォルト値を返します。
+Converts a dictionary attribute value to `UUID` data type regardless of the dictionary configuration, or returns the provided default value if the key is not found.
 
-**構文**
+**Syntax**
 
 ```sql
 dictGetUUIDOrDefault(dict_name, attr_name, id_expr, default_value_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `attr_name` — Dictionary のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — キー値。Dictionary のキー型の値、またはタプル値を返す式（Dictionary の設定に依存します）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `default_value_expr` — Dictionary に `id_expr` キーを持つ行が存在しない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `attr_name` — Name of the column of the dictionary. [`String`](/sql-reference/data-types/string) or [`Tuple(String)`](/sql-reference/data-types/tuple)
+- `id_expr` — Key value. Expression returning dictionary key-type value or tuple value (dictionary configuration dependent). [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+- `default_value_expr` — Value(s) returned if the dictionary does not contain a row with the `id_expr` key. [`Expression`](/sql-reference/data-types/special-data-types/expression) or [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-`id_expr` に対応する Dictionary 属性の値を返し、
-対応する値が存在しない場合は `default_value_expr` パラメータで指定された値を返します。
+**Returned value**
+
+Returns the value of the dictionary attribute that corresponds to `id_expr`,
+otherwise returns the value passed as the `default_value_expr` parameter.
 
 :::note
-属性の値を解釈できない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外をスローします。
+ClickHouse throws an exception if it cannot parse the value of the attribute or the value does not match the attribute data type.
 :::
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 -- キーが存在する場合
@@ -2078,30 +2201,33 @@ SELECT dictGetUUIDOrDefault('all_types_dict', 'UUID_value', 999, '00000000-0000-
 └────────────────────────────────────────┘
 ```
 
+
+
 ## dictHas {#dictHas}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-Dictionary にキーが存在するかどうかを確認します。
+Checks whether a key is present in a dictionary.
 
-**構文**
+**Syntax**
 
 ```sql
 dictHas('dict_name', id_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `id_expr` — キー値。[`const String`](/sql-reference/data-types/string)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `id_expr` — Key value [`const String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-キーが存在する場合は `1`、存在しない場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns `1` if the key exists, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Dictionary 内でキーの存在を確認する**
+**Examples**
+
+**Check for the existence of a key in a dictionary**
 
 ```sql title=Query
 -- 以下の階層型Dictionaryを考えます:
@@ -2126,31 +2252,36 @@ SELECT dictHas('hierarchical_dictionary', 7);
 └──────────────────────────┘
 ```
 
+
+
 ## dictIsIn {#dictIsIn}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-Dictionary 内の階層チェーン全体を対象に、キーの先祖をチェックします。
 
-**構文**
+Checks the ancestor of a key through the whole hierarchical chain in the dictionary.
+
+
+**Syntax**
 
 ```sql
 dictIsIn(dict_name, child_id_expr, ancestor_id_expr)
 ```
 
-**引数**
+**Arguments**
 
-* `dict_name` — Dictionary の名前。[`String`](/sql-reference/data-types/string)
-* `child_id_expr` — チェック対象のキー。[`String`](/sql-reference/data-types/string)
-* `ancestor_id_expr` — キー `child_id_expr` の想定される祖先キー。[`const String`](/sql-reference/data-types/string)
+- `dict_name` — Name of the dictionary. [`String`](/sql-reference/data-types/string)
+- `child_id_expr` — Key to be checked. [`String`](/sql-reference/data-types/string)
+- `ancestor_id_expr` — Alleged ancestor of the `child_id_expr` key. [`const String`](/sql-reference/data-types/string)
 
-**返り値**
 
-`child_id_expr` が `ancestor_id_expr` の子でない場合は `0` を返し、`child_id_expr` が `ancestor_id_expr` の子である場合、または `child_id_expr` が `ancestor_id_expr` と等しい場合は `1` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns `0` if `child_id_expr` is not a child of `ancestor_id_expr`, `1` if `child_id_expr` is a child of `ancestor_id_expr` or if `child_id_expr` is an `ancestor_id_expr`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**階層関係の確認**
+**Examples**
+
+**Check hierarchical relationship**
 
 ```sql title=Query
 -- 有効な階層

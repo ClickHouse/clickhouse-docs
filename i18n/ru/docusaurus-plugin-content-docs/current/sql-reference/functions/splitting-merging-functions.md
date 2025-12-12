@@ -59,30 +59,35 @@ SELECT alphaTokens('abca1abc');
 └─────────────────────────┘
 ```
 
+
+
 ## arrayStringConcat {#arrayStringConcat}
 
-Добавлено в: v1.1
+Introduced in: v1.1
 
-Объединяет строковые представления значений, перечисленных в массиве, с указанным разделителем. Разделитель является необязательным параметром, по умолчанию — пустая строка.
 
-**Синтаксис**
+Concatenates string representations of values listed in the array with the provided separator, which is an optional parameter set to an empty string by default.
+
+
+**Syntax**
 
 ```sql
 arrayStringConcat(arr[, separator])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `arr` — Массив для конкатенации. [`Array(T)`](/sql-reference/data-types/array)
-* `separator` — Необязательный параметр. Строка-разделитель. По умолчанию — пустая строка. [`const String`](/sql-reference/data-types/string)
+- `arr` — The array to concatenate. [`Array(T)`](/sql-reference/data-types/array)
+- `separator` — Optional. Separator string. By default an empty string. [`const String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает конкатенированную строку. [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**Примеры**
+Returns the concatenated string. [`String`](/sql-reference/data-types/string)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT arrayStringConcat(['12/05/2021', '12:50:00'], ' ') AS DateString;
@@ -94,32 +99,37 @@ SELECT arrayStringConcat(['12/05/2021', '12:50:00'], ' ') AS DateString;
 └─────────────────────┘
 ```
 
+
+
 ## extractAllGroupsVertical {#extractAllGroupsVertical}
 
-Впервые появилась в: v20.5
+Introduced in: v20.5
 
-Находит все группы в строке с использованием регулярного выражения и возвращает массив массивов, где каждый внутренний массив содержит фрагменты, соответствующие каждой группе, упорядоченные по их появлению во входной строке.
 
-**Синтаксис**
+Matches all groups of a string using a regular expression and returns an array of arrays, where each array includes matching fragments from every group, grouped in order of appearance in the input string.
+
+
+**Syntax**
 
 ```sql
 extractAllGroupsVertical(s, regexp)
 ```
 
-**Псевдонимы**: `extractAllGroups`
+**Aliases**: `extractAllGroups`
 
-**Аргументы**
+**Arguments**
 
-* `s` — Входная строка, из которой выполняется извлечение. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
-* `regexp` — Регулярное выражение для сопоставления. [`const String`](/sql-reference/data-types/string) или [`const FixedString`](/sql-reference/data-types/fixedstring)
+- `s` — Input string to extract from. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+- `regexp` — Regular expression to match by. [`const String`](/sql-reference/data-types/string) or [`const FixedString`](/sql-reference/data-types/fixedstring)
 
-**Возвращаемое значение**
 
-Возвращает массив массивов, где каждый внутренний массив содержит группы захвата для одного совпадения. Каждое совпадение возвращает массив с элементами, соответствующими группам захвата в регулярном выражении (группа 1, группа 2 и т. д.). Если совпадения не найдены, возвращается пустой массив. [`Array(Array(String))`](/sql-reference/data-types/array)
+**Returned value**
 
-**Примеры**
+Returns an array of arrays, where each inner array contains the captured groups from one match. Each match produces an array with elements corresponding to the capturing groups in the regular expression (group 1, group 2, etc.). If no matches are found, returns an empty array. [`Array(Array(String))`](/sql-reference/data-types/array)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 WITH '< Server: nginx
@@ -134,30 +144,35 @@ SELECT extractAllGroupsVertical(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 [['Server','nginx'],['Date','Tue, 22 Jan 2019 00:26:14 GMT'],['Content-Type','text/html; charset=UTF-8'],['Connection','keep-alive']]
 ```
 
+
+
 ## ngrams {#ngrams}
 
-Появилась в версии v21.11
+Introduced in: v21.11
 
-Разбивает строку в кодировке UTF-8 на n-граммы длиной `N`.
 
-**Синтаксис**
+Splits a UTF-8 string into n-grams of length `N`.
+
+
+**Syntax**
 
 ```sql
 ngrams(s, N)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `s` — входная строка. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
-* `N` — длина n-граммы. [`const UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+- `s` — Input string. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+- `N` — The n-gram length. [`const UInt8/16/32/64`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает массив n-грамм. [`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**Примеры**
+Returns an array with n-grams. [`Array(String)`](/sql-reference/data-types/array)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT ngrams('ClickHouse', 3);
@@ -167,42 +182,46 @@ SELECT ngrams('ClickHouse', 3);
 ['Cli','lic','ick','ckH','kHo','Hou','ous','use']
 ```
 
+
+
 ## splitByChar {#splitByChar}
 
-Введена в версии v1.1
+Introduced in: v1.1
 
-Разбивает строку на массив подстрок по указанному константному разделителю `separator`, который должен состоять ровно из одного символа.
-Пустые подстроки могут присутствовать, если разделитель встречается в начале или конце строки или если есть несколько последовательных разделителей.
+
+Splits a string separated by a specified constant string `separator` of exactly one character into an array of substrings.
+Empty substrings may be selected if the separator occurs at the beginning or end of the string, or if there are multiple consecutive separators.
 
 :::note
-Параметр [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string) (по умолчанию: `0`) определяет, будет ли оставшаяся часть строки включена в последний элемент результирующего массива, когда аргумент `max_substrings > 0`.
+Setting [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string) (default: `0`) controls if the remaining string is included in the last element of the result array when argument `max_substrings > 0`.
 :::
 
-Пустые подстроки могут присутствовать, когда:
+Empty substrings may be selected when:
+- A separator occurs at the beginning or end of the string
+- There are multiple consecutive separators
+- The original string `s` is empty
 
-* Разделитель встречается в начале или конце строки
-* Есть несколько последовательных разделителей
-* Исходная строка `s` пуста
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 splitByChar(separator, s[, max_substrings])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `separator` — Разделитель должен быть однобайтовым символом. [`String`](/sql-reference/data-types/string)
-* `s` — Строка, которую нужно разбить. [`String`](/sql-reference/data-types/string)
-* `max_substrings` — Необязательный аргумент. Если `max_substrings > 0`, возвращаемый массив будет содержать не более `max_substrings` подстрок, в противном случае функция вернёт максимально возможное количество подстрок. Значение по умолчанию — `0`. [`Int64`](/sql-reference/data-types/int-uint)
+- `separator` — The separator must be a single-byte character. [`String`](/sql-reference/data-types/string)
+- `s` — The string to split. [`String`](/sql-reference/data-types/string)
+- `max_substrings` — Optional. If `max_substrings > 0`, the returned array will contain at most `max_substrings` substrings, otherwise the function will return as many substrings as possible. The default value is `0`.  [`Int64`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает массив полученных подстрок. [`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**Примеры**
+Returns an array of selected substrings. [`Array(String)`](/sql-reference/data-types/array)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT splitByChar(',', '1,2,3,abcde');
@@ -214,34 +233,39 @@ SELECT splitByChar(',', '1,2,3,abcde');
 └──────────────────────────┘
 ```
 
+
+
 ## splitByNonAlpha {#splitByNonAlpha}
 
-Введена в версии v21.9
+Introduced in: v21.9
 
-Разбивает строку, разделённую пробельными символами и знаками пунктуации, на массив подстрок.
+
+Splits a string separated by whitespace and punctuation characters into an array of substrings.
 
 :::note
-Настройка [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string) (по умолчанию: `0`) определяет, включается ли оставшаяся часть строки в последний элемент результирующего массива, когда аргумент `max_substrings > 0`.
+Setting [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string) (default: `0`) controls if the remaining string is included in the last element of the result array when argument `max_substrings > 0`.
 :::
 
-**Синтаксис**
+
+**Syntax**
 
 ```sql
 splitByNonAlpha(s[, max_substrings])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `s` — строка для разбиения. [`String`](/sql-reference/data-types/string)
-* `max_substrings` — необязательный параметр. Если `max_substrings > 0`, количество возвращаемых подстрок не будет превышать `max_substrings`, в противном случае функция вернёт максимально возможное количество подстрок. Значение по умолчанию: `0`. [`Int64`](/sql-reference/data-types/int-uint)
+- `s` — The string to split. [`String`](/sql-reference/data-types/string)
+- `max_substrings` — Optional. When `max_substrings > 0`, the returned substrings will be no more than `max_substrings`, otherwise the function will return as many substrings as possible. Default value: `0`. [`Int64`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает массив выбранных подстрок строки `s`. [`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**Примеры**
+Returns an array of selected substrings of `s`. [`Array(String)`](/sql-reference/data-types/array)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT splitByNonAlpha('user@domain.com');
@@ -251,43 +275,47 @@ SELECT splitByNonAlpha('user@domain.com');
 ['user','domain','com']
 ```
 
+
+
 ## splitByRegexp {#splitByRegexp}
 
-Добавлена в версии v21.6
+Introduced in: v21.6
 
-Разбивает строку, разделённую с помощью заданного регулярного выражения, на массив подстрок.
-Если заданное регулярное выражение пустое, строка будет разбита на массив отдельных символов.
-Если соответствий регулярному выражению не найдено, строка не будет разбита.
 
-Пустые подстроки могут появляться в следующих случаях:
+Splits a string which is separated by the provided regular expression into an array of substrings.
+If the provided regular expression is empty, it will split the string into an array of single characters.
+If no match is found for the regular expression, the string won't be split.
 
-* в начале или в конце строки найдено непустое соответствие регулярному выражению
-* найдено несколько последовательных непустых соответствий регулярному выражению
-* исходная строка пуста, а регулярное выражение не пустое.
+Empty substrings may be selected when:
+- a non-empty regular expression match occurs at the beginning or end of the string
+- there are multiple consecutive non-empty regular expression matches
+- the original string string is empty while the regular expression is not empty.
 
 :::note
-Параметр [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string) (по умолчанию: `0`) определяет, будет ли оставшаяся строка включена в последний элемент результирующего массива, когда аргумент `max_substrings > 0`.
+Setting [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string) (default: `0`) controls if the remaining string is included in the last element of the result array when argument `max_substrings > 0`.
 :::
 
-**Синтаксис**
+
+**Syntax**
 
 ```sql
 splitByRegexp(regexp, s[, max_substrings])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `regexp` — регулярное выражение. Константа. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
-* `s` — строка для разбиения. [`String`](/sql-reference/data-types/string)
-* `max_substrings` — необязательный параметр. Если `max_substrings > 0`, количество возвращаемых подстрок не превышает `max_substrings`, в противном случае функция вернёт как можно больше подстрок. Значение по умолчанию: `0`. [`Int64`](/sql-reference/data-types/int-uint)
+- `regexp` — Regular expression. Constant. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+- `s` — The string to split. [`String`](/sql-reference/data-types/string)
+- `max_substrings` — Optional. When `max_substrings > 0`, the returned substrings will be no more than `max_substrings`, otherwise the function will return as many substrings as possible. Default value: `0`. [`Int64`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает массив выбранных подстрок строки `s`. [`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**Примеры**
+Returns an array of the selected substrings of `s`. [`Array(String)`](/sql-reference/data-types/array)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT splitByRegexp('\\d+', 'a12bc23de345f');
@@ -299,7 +327,7 @@ SELECT splitByRegexp('\\d+', 'a12bc23de345f');
 └──────────────────────────┘
 ```
 
-**Пустое регулярное выражение**
+**Empty regexp**
 
 ```sql title=Query
 SELECT splitByRegexp('', 'abcde');
@@ -311,42 +339,46 @@ SELECT splitByRegexp('', 'abcde');
 └────────────────────────────┘
 ```
 
+
+
 ## splitByString {#splitByString}
 
-Введена в версии v1.1
+Introduced in: v1.1
 
-Разбивает строку с константным разделителем `separator`, состоящим из нескольких символов, на массив подстрок.
-Если строка `separator` пуста, строка `s` будет разбита на массив отдельных символов.
 
-Пустые подстроки могут появляться, когда:
+Splits a string with a constant `separator` consisting of multiple characters into an array of substrings.
+If the string `separator` is empty, it will split the string `s` into an array of single characters.
 
-* Непустой разделитель находится в начале или в конце строки
-* Есть несколько подряд идущих непустых разделителей
-* Исходная строка `s` пуста, а разделитель непустой
+Empty substrings may be selected when:
+- A non-empty separator occurs at the beginning or end of the string
+- There are multiple consecutive non-empty separators
+- The original string `s` is empty while the separator is not empty
 
 :::note
-Параметр [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string) (по умолчанию: `0`) определяет, включается ли оставшаяся часть строки в последний элемент результирующего массива, когда аргумент `max_substrings > 0`.
+Setting [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string) (default: `0`) controls if the remaining string is included in the last element of the result array when argument `max_substrings > 0`.
 :::
 
-**Синтаксис**
+
+**Syntax**
 
 ```sql
 splitByString(separator, s[, max_substrings])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `separator` — разделитель. [`String`](/sql-reference/data-types/string)
-* `s` — строка для разбиения. [`String`](/sql-reference/data-types/string)
-* `max_substrings` — необязательный аргумент. Если `max_substrings > 0`, количество возвращаемых подстрок не превышает `max_substrings`, в противном случае функция вернёт максимально возможное количество подстрок. Значение по умолчанию: `0`. [`Int64`](/sql-reference/data-types/int-uint)
+- `separator` — The separator. [`String`](/sql-reference/data-types/string)
+- `s` — The string to split. [`String`](/sql-reference/data-types/string)
+- `max_substrings` — Optional. When `max_substrings > 0`, the returned substrings will be no more than `max_substrings`, otherwise the function will return as many substrings as possible. Default value: `0`. [`Int64`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает массив выбранных подстрок строки `s` [`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**Примеры**
+Returns an array of selected substrings of `s` [`Array(String)`](/sql-reference/data-types/array)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT splitByString(', ', '1, 2 3, 4,5, abcde');
@@ -358,7 +390,7 @@ SELECT splitByString(', ', '1, 2 3, 4,5, abcde');
 └───────────────────────────┘
 ```
 
-**Пустой разделитель**
+**Empty separator**
 
 ```sql title=Query
 SELECT splitByString('', 'abcde');
@@ -370,34 +402,39 @@ SELECT splitByString('', 'abcde');
 └────────────────────────────┘
 ```
 
+
+
 ## splitByWhitespace {#splitByWhitespace}
 
-Добавлено в: v21.9
+Introduced in: v21.9
 
-Разбивает строку, разделённую пробельными символами, на массив подстрок.
+
+Splits a string which is separated by whitespace characters into an array of substrings.
 
 :::note
-Настройка [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string) (по умолчанию: `0`) определяет, должна ли оставшаяся часть строки включаться в последний элемент результирующего массива, когда `max_substrings > 0`.
+Setting [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string) (default: `0`) controls if the remaining string is included in the last element of the result array when argument `max_substrings > 0`.
 :::
 
-**Синтаксис**
+
+**Syntax**
 
 ```sql
 splitByWhitespace(s[, max_substrings])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `s` — Строка для разделения. [`String`](/sql-reference/data-types/string)
-* `max_substrings` — Необязательный аргумент. Когда `max_substrings > 0`, количество возвращаемых подстрок не превышает `max_substrings`, в противном случае функция вернёт максимально возможное количество подстрок. Значение по умолчанию: `0`. [`Int64`](/sql-reference/data-types/int-uint)
+- `s` — The string to split. [`String`](/sql-reference/data-types/string)
+- `max_substrings` — Optional. When `max_substrings > 0`, the returned substrings will be no more than `max_substrings`, otherwise the function will return as many substrings as possible. Default value: `0`. [`Int64`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает массив полученных подстрок `s`. [`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**Примеры**
+Returns an array of the selected substrings of `s`. [`Array(String)`](/sql-reference/data-types/array)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT splitByWhitespace('  1!  a,  b.  ');
@@ -407,37 +444,42 @@ SELECT splitByWhitespace('  1!  a,  b.  ');
 ['1!','a,','b.']
 ```
 
+
+
 ## tokens {#tokens}
 
-Впервые появилась в версии: v21.11
+Introduced in: v21.11
 
-Разбивает строку на токены с использованием заданного токенайзера.
-Токенайзер по умолчанию использует небуквенно-цифровые ASCII-символы в качестве разделителей.
 
-В случае токенайзера `split`, если токены не образуют [префиксный код](https://en.wikipedia.org/wiki/Prefix_code), вам, вероятно, нужно, чтобы при выборе разделителей приоритет отдавался более длинным.
-Для этого задавайте разделители в порядке убывания их длины.
-Например, при separators = `['%21', '%']` строка `%21abc` будет разбита на токены как `['abc']`, тогда как при separators = `['%', '%21']` она будет разбита на токены как `['21ac']` (что, скорее всего, не то, что вам нужно).
+Splits a string into tokens using the given tokenizer.
+The default tokenizer uses non-alphanumeric ASCII characters as separators.
 
-**Синтаксис**
+In case of the `split` tokenizer, if the tokens do not form a [prefix code](https://en.wikipedia.org/wiki/Prefix_code), you likely want that the matching prefers longer separators first.
+To do so, pass the separators in order of descending length.
+For example, with separators = `['%21', '%']` string `%21abc` would be tokenized as `['abc']`, whereas separators = `['%', '%21']` would tokenize to `['21ac']` (which is likely not what you wanted).
+
+
+**Syntax**
 
 ```sql
 tokens(value[, tokenizer[, ngrams[, separators]]])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `value` — Входная строка. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
-* `tokenizer` — Токенизатор, который будет использоваться. Допустимые значения: `splitByNonAlpha`, `ngrams`, `splitByString`, `array` и `sparseGrams`. Необязательный параметр, по умолчанию (если явно не задан) используется `splitByNonAlpha`. [`const String`](/sql-reference/data-types/string)
-* `ngrams` — Имеет значение только если аргумент `tokenizer` равен `ngrams`: необязательный параметр, определяющий длину n-грамм. Должен быть в диапазоне от 1 до 8. Если явно не задан, по умолчанию равен `3`. [`const UInt8`](/sql-reference/data-types/int-uint)
-* `separators` — Имеет значение только если аргумент `tokenizer` равен `split`: необязательный параметр, определяющий строки-разделители. Если явно не задан, по умолчанию используется `[' ']`. [`const Array(String)`](/sql-reference/data-types/array)
+- `value` — The input string. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+- `tokenizer` — The tokenizer to use. Valid arguments are `splitByNonAlpha`, `ngrams`, `splitByString`, `array`, and `sparseGrams`. Optional, if not set explicitly, defaults to `splitByNonAlpha`. [`const String`](/sql-reference/data-types/string)
+- `ngrams` — Only relevant if argument `tokenizer` is `ngrams`: An optional parameter which defines the length of the ngrams. Must be between 1 and 8. If not set explicitly, defaults to `3`. [`const UInt8`](/sql-reference/data-types/int-uint)
+- `separators` — Only relevant if argument `tokenizer` is `split`: An optional parameter which defines the separator strings. If not set explicitly, defaults to `[' ']`. [`const Array(String)`](/sql-reference/data-types/array)
 
-**Возвращаемое значение**
 
-Возвращает массив токенов, полученных из входной строки. [`Array`](/sql-reference/data-types/array)
+**Returned value**
 
-**Примеры**
+Returns the resulting array of tokens from input string. [`Array`](/sql-reference/data-types/array)
 
-**Токенизатор по умолчанию**
+**Examples**
+
+**Default tokenizer**
 
 ```sql title=Query
 SELECT tokens('test1,;\\\\ test2,;\\\\ test3,;\\\\   test4') AS tokens;
@@ -447,7 +489,7 @@ SELECT tokens('test1,;\\\\ test2,;\\\\ test3,;\\\\   test4') AS tokens;
 ['test1','test2','test3','test4']
 ```
 
-**Токенизатор n-грамм**
+**Ngram tokenizer**
 
 ```sql title=Query
 SELECT tokens('abc def', 'ngrams', 3) AS tokens;

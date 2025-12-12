@@ -72,31 +72,36 @@ SELECT UTCTimestamp()
 └─────────────────────┘
 ```
 
+
+
 ## YYYYMMDDToDate {#YYYYMMDDToDate}
 
-導入バージョン: v23.9
+Introduced in: v23.9
 
-年・月・日を表す数値を `Date` に変換します。
-この関数は、[`toYYYYMMDD()`](/sql-reference/functions/date-time-functions#toYYYYMMDD) 関数とは逆の動作を行います。
-入力が有効な `Date` 値を表していない場合、出力は未定義です。
 
-**構文**
+Converts a number containing the year, month and day number to a `Date`.
+This function is the opposite of function [`toYYYYMMDD()`](/sql-reference/functions/date-time-functions#toYYYYMMDD).
+The output is undefined if the input does not encode a valid Date value.
+    
+
+**Syntax**
 
 ```sql
 YYYYMMDDToDate(YYYYMMDD)
 ```
 
-**引数**
+**Arguments**
 
-* `YYYYMMDD` — 年・月・日を表す数値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
+- `YYYYMMDD` — Number containing the year, month and day. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
 
-**戻り値**
 
-指定された引数から `Date` 型の値を返します。[`Date`](/sql-reference/data-types/date)
+**Returned value**
 
-**使用例**
+Returns a `Date` value from the provided arguments [`Date`](/sql-reference/data-types/date)
 
-**例**
+**Examples**
+
+**Example**
 
 ```sql title=Query
 SELECT YYYYMMDDToDate(20230911);
@@ -108,31 +113,36 @@ SELECT YYYYMMDDToDate(20230911);
 └──────────────────────┘
 ```
 
+
+
 ## YYYYMMDDToDate32 {#YYYYMMDDToDate32}
 
-導入バージョン: v23.9
+Introduced in: v23.9
 
-年・月・日を表す数値を `Date32` に変換します。
-この関数は、[`toYYYYMMDD()`](/sql-reference/functions/date-time-functions#toYYYYMMDD) 関数の逆です。
-入力値が有効な `Date32` 値を表していない場合、出力は未定義です。
 
-**構文**
+Converts a number containing the year, month and day number to a `Date32`.
+This function is the opposite of function [`toYYYYMMDD()`](/sql-reference/functions/date-time-functions#toYYYYMMDD).
+The output is undefined if the input does not encode a valid `Date32` value.
+    
+
+**Syntax**
 
 ```sql
 YYYYMMDDToDate32(YYYYMMDD)
 ```
 
-**引数**
+**Arguments**
 
-* `YYYYMMDD` — 年・月・日を含む数値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
+- `YYYYMMDD` — Number containing the year, month and day. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
 
-**戻り値**
 
-指定された引数から `Date32` 値を返します。[`Date32`](/sql-reference/data-types/date32)
+**Returned value**
 
-**使用例**
+Returns a `Date32` value from the provided arguments [`Date32`](/sql-reference/data-types/date32)
 
-**例**
+**Examples**
+
+**Example**
 
 ```sql title=Query
 SELECT YYYYMMDDToDate32(20000507);
@@ -144,32 +154,37 @@ SELECT YYYYMMDDToDate32(20000507);
 └────────────────────────────┘
 ```
 
+
+
 ## YYYYMMDDhhmmssToDateTime {#YYYYMMDDhhmmssToDateTime}
 
-導入: v23.9
+Introduced in: v23.9
 
-年・月・日・時・分・秒を含む数値を `DateTime` に変換します。
-この関数は、関数 [`toYYYYMMDDhhmmss()`](/sql-reference/functions/date-time-functions#toYYYYMMDDhhmmss) の逆です。
-入力が有効な `DateTime` 値を表していない場合、出力結果は未定義です。
 
-**構文**
+Converts a number containing the year, month, day, hour, minute, and second to a `DateTime`.
+This function is the opposite of function [`toYYYYMMDDhhmmss()`](/sql-reference/functions/date-time-functions#toYYYYMMDDhhmmss).
+The output is undefined if the input does not encode a valid `DateTime` value.
+    
+
+**Syntax**
 
 ```sql
 YYYYMMDDhhmmssToDateTime(YYYYMMDDhhmmss[, timezone])
 ```
 
-**引数**
+**Arguments**
 
-* `YYYYMMDDhhmmss` — 年、月、日、時、分、秒を表す数値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
-* `timezone` — タイムゾーン名を示す文字列。[`String`](/sql-reference/data-types/string)
+- `YYYYMMDDhhmmss` — Number containing the year, month, day, hour, minute, and second. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `timezone` — Timezone name. [`String`](/sql-reference/data-types/string)
 
-**返される値**
 
-指定された引数から `DateTime` 型の値を返します。[`DateTime`](/sql-reference/data-types/datetime)
+**Returned value**
 
-**使用例**
+Returns a `DateTime` value from the provided arguments [`DateTime`](/sql-reference/data-types/datetime)
 
-**例**
+**Examples**
+
+**Example**
 
 ```sql title=Query
 SELECT YYYYMMDDToDateTime(20230911131415);
@@ -181,33 +196,38 @@ SELECT YYYYMMDDToDateTime(20230911131415);
 └───────────────────────────────────────────────┘
 ```
 
+
+
 ## YYYYMMDDhhmmssToDateTime64 {#YYYYMMDDhhmmssToDateTime64}
 
-導入バージョン: v23.9
+Introduced in: v23.9
 
-年、月、日、時、分、秒を含む数値を `DateTime64` に変換します。
-この関数は、関数 [`toYYYYMMDDhhmmss()`](/sql-reference/functions/date-time-functions#toYYYYMMDDhhmmss) の逆です。
-入力が有効な `DateTime64` 値をエンコードしていない場合、出力は未定義です。
 
-**構文**
+Converts a number containing the year, month, day, hour, minute, and second to a `DateTime64`.
+This function is the opposite of function [`toYYYYMMDDhhmmss()`](/sql-reference/functions/date-time-functions#toYYYYMMDDhhmmss).
+The output is undefined if the input does not encode a valid `DateTime64` value.
+    
+
+**Syntax**
 
 ```sql
 YYYYMMDDhhmmssToDateTime64(YYYYMMDDhhmmss[, precision[, timezone]])
 ```
 
-**引数**
+**Arguments**
 
-* `YYYYMMDDhhmmss` — 年・月・日・時・分・秒を含む数値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
-* `precision` — 小数部の精度（0〜9）。[`UInt8`](/sql-reference/data-types/int-uint)
-* `timezone` — タイムゾーン名。[`String`](/sql-reference/data-types/string)
+- `YYYYMMDDhhmmss` — Number containing the year, month, day, hour, minute, and second. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `precision` — Precision for the fractional part (0-9). [`UInt8`](/sql-reference/data-types/int-uint)
+- `timezone` — Timezone name. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-指定された引数から `DateTime64` 型の値を生成して返します。[`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**例**
+Returns a `DateTime64` value from the provided arguments [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**例**
+**Examples**
+
+**Example**
 
 ```sql title=Query
 SELECT YYYYMMDDhhmmssToDateTime64(20230911131415, 3, 'Asia/Istanbul');
@@ -219,31 +239,36 @@ SELECT YYYYMMDDhhmmssToDateTime64(20230911131415, 3, 'Asia/Istanbul');
 └──────────────────────────┘
 ```
 
+
+
 ## addDate {#addDate}
 
-導入バージョン: v23.9
+Introduced in: v23.9
 
-指定された日付、日時、または日付／日時を表す文字列に、時間間隔を加算します。
-加算の結果がデータ型の範囲外になる場合、結果は未定義です。
 
-**構文**
+Adds the time interval to the provided date, date with time or string-encoded date or date with time.
+If the addition results in a value outside the bounds of the data type, the result is undefined.
+    
+
+**Syntax**
 
 ```sql
 addDate(datetime, interval)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — `interval` を加算する対象となる日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) または [`String`](/sql-reference/data-types/string)
-* `interval` — 加算するインターバル。[`Interval`](/sql-reference/data-types/int-uint)
+- `datetime` — The date or date with time to which `interval` is added. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `interval` — Interval to add. [`Interval`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-`datetime` に `interval` を加算して得られる日付または日時を返します。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**使用例**
+Returns date or date with time obtained by adding `interval` to `datetime`. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**日付へのインターバルの加算**
+**Examples**
+
+**Add interval to date**
 
 ```sql title=Query
 SELECT addDate(toDate('2018-01-01'), INTERVAL 3 YEAR)
@@ -255,30 +280,35 @@ SELECT addDate(toDate('2018-01-01'), INTERVAL 3 YEAR)
 └──────────────────────────┘
 ```
 
+
+
 ## addDays {#addDays}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-指定した日数を、日付、日時、または文字列表現の日付／日時に加算します。
 
-**構文**
+Adds a specified number of days to a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 addDays(datetime, num)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 指定した日数を加算する対象の日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) または [`String`](/sql-reference/data-types/string)
-* `num` — 加算する日数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to add specified number of days to. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of days to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**戻り値**
 
-`datetime` に `num` 日を加算した値を返します。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**例**
+Returns `datetime` plus `num` days. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**さまざまな日付型に日数を加算する**
+**Examples**
+
+**Add days to different date types**
 
 ```sql title=Query
 WITH
@@ -297,7 +327,7 @@ SELECT
 └────────────────────┴─────────────────────────┴────────────────────────────────┘
 ```
 
-**代替の INTERVAL 構文を使用する**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 day)
@@ -309,30 +339,35 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 day)
 └──────────────────────────┘
 ```
 
+
+
 ## addHours {#addHours}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-指定した時間数を、日付型、日時型、または文字列としてエンコードされた日付・日時に加算します。
 
-**構文**
+Adds a specified number of hours to a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 addHours(datetime, num)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 指定した時間数を加算する対象となる日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) または [`String`](/sql-reference/data-types/string)
-* `num` — 加算する時間数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to add specified number of hours to. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of hours to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**戻り値**
 
-`datetime` に `num` 時間を加算した値を返します。型は [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64(3)`](/sql-reference/data-types/datetime64) です。
+**Returned value**
 
-**例**
+Returns `datetime` plus `num` hours [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64(3)`](/sql-reference/data-types/datetime64)
 
-**異なる日付型に時間を加算する**
+**Examples**
+
+**Add hours to different date types**
 
 ```sql title=Query
 WITH
@@ -351,7 +386,7 @@ SELECT
 └─────────────────────┴──────────────────────────┴─────────────────────────────────┘
 ```
 
-**代替の INTERVAL 構文を使用する**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 hour)
@@ -363,34 +398,39 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 hour)
 └──────────────────────────┘
 ```
 
+
+
 ## addInterval {#addInterval}
 
-導入バージョン: v22.11
+Introduced in: v22.11
 
-ある interval または interval のタプルに、別の interval を加算します。
+
+Adds an interval to another interval or tuple of intervals.
 
 :::note
-同じ型の interval は 1 つの interval に集約されます。たとえば `toIntervalDay(1)` と `toIntervalDay(2)` を渡した場合、結果は `(1,1)` ではなく `(3)` になります。
+Intervals of the same type will be combined into a single interval. For instance if `toIntervalDay(1)` and `toIntervalDay(2)` are passed then the result will be `(3)` rather than `(1,1)`.
 :::
+    
 
-**構文**
+**Syntax**
 
 ```sql
 addInterval(interval_1, interval_2)
 ```
 
-**引数**
+**Arguments**
 
-* `interval_1` — 最初の Interval または Interval のタプル。[`Interval`](/sql-reference/data-types/int-uint) または [`Tuple(Interval)`](/sql-reference/data-types/tuple)
-* `interval_2` — 加算する 2 つ目の Interval。[`Interval`](/sql-reference/data-types/int-uint)
+- `interval_1` — First interval or tuple of intervals. [`Interval`](/sql-reference/data-types/int-uint) or [`Tuple(Interval)`](/sql-reference/data-types/tuple)
+- `interval_2` — Second interval to be added. [`Interval`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-Interval のタプル [`Tuple(Interval)`](/sql-reference/data-types/tuple) を返します
+**Returned value**
 
-**例**
+Returns a tuple of intervals [`Tuple(Interval)`](/sql-reference/data-types/tuple)
 
-**Interval を加算する**
+**Examples**
+
+**Add intervals**
 
 ```sql title=Query
 SELECT addInterval(INTERVAL 1 DAY, INTERVAL 1 MONTH);
@@ -410,30 +450,35 @@ SELECT addInterval(INTERVAL 2 DAY, INTERVAL 1 DAY)
 └─────────────────────────────────────────────────┘
 ```
 
+
+
 ## addMicroseconds {#addMicroseconds}
 
-導入バージョン: v22.6
+Introduced in: v22.6
 
-時刻付き日付、または文字列表現の時刻付き日付に、指定したマイクロ秒数を加算します。
 
-**構文**
+Adds a specified number of microseconds to a date with time or a string-encoded date with time.
+    
+
+**Syntax**
 
 ```sql
 addMicroseconds(datetime, num)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 指定したマイクロ秒数を加算する日付と時刻。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) または [`String`](/sql-reference/data-types/string)
-* `num` — 加算するマイクロ秒数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date with time to add specified number of microseconds to. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of microseconds to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**返される値**
 
-`date_time` に `num` マイクロ秒を加算した値を返します。型は [`DateTime64`](/sql-reference/data-types/datetime64) です。
+**Returned value**
 
-**例**
+Returns `date_time` plus `num` microseconds [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**異なる日付時刻型にマイクロ秒を加算する**
+**Examples**
+
+**Add microseconds to different date time types**
 
 ```sql title=Query
 WITH
@@ -450,7 +495,7 @@ SELECT
 └─────────────────────────────────┴────────────────────────────────────────┘
 ```
 
-**別の INTERVAL 構文を使用する**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::DateTime, INTERVAL 10 microsecond)
@@ -462,30 +507,35 @@ SELECT dateAdd('1998-06-16'::DateTime, INTERVAL 10 microsecond)
 └────────────────────────────┘
 ```
 
+
+
 ## addMilliseconds {#addMilliseconds}
 
-導入バージョン: v22.6
+Introduced in: v22.6
 
-指定したミリ秒数を、日時型または日時を表す文字列に加算します。
 
-**構文**
+Adds a specified number of milliseconds to a date with time or a string-encoded date with time.
+    
+
+**Syntax**
 
 ```sql
 addMilliseconds(datetime, num)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 指定したミリ秒数を加算する対象の日時。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) または [`String`](/sql-reference/data-types/string)
-* `num` — 加算するミリ秒数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date with time to add specified number of milliseconds to. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of milliseconds to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**戻り値**
 
-`datetime` に `num` ミリ秒を加算した値を返します。型は [`DateTime64`](/sql-reference/data-types/datetime64) です。
+**Returned value**
 
-**使用例**
+Returns `datetime` plus `num` milliseconds [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**異なる日時型にミリ秒を加算する**
+**Examples**
+
+**Add milliseconds to different date time types**
 
 ```sql title=Query
 WITH
@@ -502,7 +552,7 @@ SELECT
 └─────────────────────────────────┴────────────────────────────────────────┘
 ```
 
-**INTERVAL の別構文を使用する**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::DateTime, INTERVAL 10 millisecond)
@@ -514,30 +564,35 @@ SELECT dateAdd('1998-06-16'::DateTime, INTERVAL 10 millisecond)
 └──────────────────────────┘
 ```
 
+
+
 ## addMinutes {#addMinutes}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-日付、日時、または文字列表現の日付／日時に、指定した分数を加算します。
 
-**構文**
+Adds a specified number of minutes to a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 addMinutes(datetime, num)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 指定した分の値を加算する対象の日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) または [`String`](/sql-reference/data-types/string)
-* `num` — 加算する分の値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to add specified number of minutes to. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of minutes to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**戻り値**
 
-`datetime` に `num` 分を加算した値を返す。型は [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64(3)`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**使用例**
+Returns `datetime` plus `num` minutes [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64(3)`](/sql-reference/data-types/datetime64)
 
-**異なる日付型に分を加算する**
+**Examples**
+
+**Add minutes to different date types**
 
 ```sql title=Query
 WITH
@@ -556,7 +611,7 @@ SELECT
 └───────────────────────┴────────────────────────────┴───────────────────────────────────┘
 ```
 
-**代替の INTERVAL 構文を使用する**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 minute)
@@ -568,30 +623,35 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 minute)
 └──────────────────────────┘
 ```
 
+
+
 ## addMonths {#addMonths}
 
-導入: v1.1
+Introduced in: v1.1
 
-日付、日時、または文字列表現の日付・日時に対して、指定した月数を加算します。
 
-**構文**
+Adds a specified number of months to a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 addMonths(datetime, num)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 指定した月数を加算する対象の日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) または [`String`](/sql-reference/data-types/string)
-* `num` — 加算する月数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to add specified number of months to. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of months to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**戻り値**
 
-`datetime` に `num` か月を加算した結果を返します。型は [`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**使用例**
+Returns `datetime` plus `num` months [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**さまざまな日付型に対して月を加算する**
+**Examples**
+
+**Add months to different date types**
 
 ```sql title=Query
 WITH
@@ -610,7 +670,7 @@ SELECT
 └──────────────────────┴───────────────────────────┴──────────────────────────────────┘
 ```
 
-**別の INTERVAL 構文の利用**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 month)
@@ -622,30 +682,35 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 month)
 └──────────────────────────┘
 ```
 
+
+
 ## addNanoseconds {#addNanoseconds}
 
-導入バージョン: v22.6
+Introduced in: v22.6
 
-日時または文字列表現の日時に、指定したナノ秒を加算します。
 
-**構文**
+Adds a specified number of nanoseconds to a date with time or a string-encoded date with time.
+    
+
+**Syntax**
 
 ```sql
 addNanoseconds(datetime, num)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 指定したナノ秒を加算する日時。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) または [`String`](/sql-reference/data-types/string)
-* `num` — 加算するナノ秒数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date with time to add specified number of nanoseconds to. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of nanoseconds to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**戻り値**
 
-`datetime` に `num` ナノ秒を加算した値を返します。型は [`DateTime64`](/sql-reference/data-types/datetime64) です。
+**Returned value**
 
-**例**
+Returns `datetime` plus `num` nanoseconds [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**異なる日時型にナノ秒を加算する**
+**Examples**
+
+**Add nanoseconds to different date time types**
 
 ```sql title=Query
 WITH
@@ -662,7 +727,7 @@ SELECT
 └────────────────────────────────┴───────────────────────────────────────┘
 ```
 
-**別の INTERVAL 構文の使用**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::DateTime, INTERVAL 1000 nanosecond)
@@ -674,30 +739,35 @@ SELECT dateAdd('1998-06-16'::DateTime, INTERVAL 1000 nanosecond)
 └───────────────────────────────┘
 ```
 
+
+
 ## addQuarters {#addQuarters}
 
-導入バージョン: v20.1
+Introduced in: v20.1
 
-日付、日付と時刻、または文字列表現の日付／日付と時刻に対して、指定した数の四半期を加算します。
 
-**構文**
+Adds a specified number of quarters to a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 addQuarters(datetime, num)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 指定した四半期数を加算する対象の日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) または [`String`](/sql-reference/data-types/string)
-* `num` — 加算する四半期の数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to add specified number of quarters to. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of quarters to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**戻り値**
 
-`datetime` に `num` 四半期を加算した値を返します。型は [`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) です。
+**Returned value**
 
-**例**
+Returns `datetime` plus `num` quarters [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**異なる日付型に四半期を加算する**
+**Examples**
+
+**Add quarters to different date types**
 
 ```sql title=Query
 WITH
@@ -716,7 +786,7 @@ SELECT
 └────────────────────────┴─────────────────────────────┴────────────────────────────────────┘
 ```
 
-**INTERVAL の別構文を使用する**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 quarter)
@@ -728,30 +798,35 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 quarter)
 └──────────────────────────┘
 ```
 
+
+
 ## addSeconds {#addSeconds}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-指定した秒数を、`Date` 型、日時型、またはそれらを文字列としてエンコードした値に加算します。
 
-**構文**
+Adds a specified number of seconds to a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 addSeconds(datetime, num)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 指定した秒数を加算する対象となる日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) または [`String`](/sql-reference/data-types/string)
-* `num` — 加算する秒数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to add specified number of seconds to. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of seconds to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**返り値**
 
-`datetime` に `num` 秒を加算した値を返します。型は [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64(3)`](/sql-reference/data-types/datetime64) です。
+**Returned value**
 
-**使用例**
+Returns `datetime` plus `num` seconds [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64(3)`](/sql-reference/data-types/datetime64)
 
-**異なる日付型に秒数を加算**
+**Examples**
+
+**Add seconds to different date types**
 
 ```sql title=Query
 WITH
@@ -770,7 +845,7 @@ SELECT
 └───────────────────────┴────────────────────────────┴───────────────────────────────────┘
 ```
 
-**代替の INTERVAL 構文を使用する**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 second)
@@ -782,30 +857,35 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 second)
 └─────────────────────────────────────────────────┘
 ```
 
+
+
 ## addTupleOfIntervals {#addTupleOfIntervals}
 
-導入バージョン: v22.11
+Introduced in: v22.11
 
-日付または日時に対して、間隔タプルを順に加算します。
 
-**構文**
+Consecutively adds a tuple of intervals to a date or a date with time.
+    
+
+**Syntax**
 
 ```sql
 addTupleOfIntervals(datetime, intervals)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 加算対象となる日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `intervals` — `datetime` に加算するインターバルのタプル。[`Tuple(Interval)`](/sql-reference/data-types/tuple)
+- `datetime` — Date or date with time to add intervals to. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `intervals` — Tuple of intervals to add to `datetime`. [`Tuple(Interval)`](/sql-reference/data-types/tuple)
 
-**返り値**
 
-`intervals` を加算した `date` を返します。型は [`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**例**
+Returns `date` with added `intervals` [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**日付にインターバルのタプルを加算する**
+**Examples**
+
+**Add tuple of intervals to date**
 
 ```sql title=Query
 WITH toDate('2018-01-01') AS date
@@ -818,30 +898,35 @@ SELECT addTupleOfIntervals(date, (INTERVAL 1 DAY, INTERVAL 1 MONTH, INTERVAL 1 Y
 └──────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## addWeeks {#addWeeks}
 
-v1.1 で導入
+Introduced in: v1.1
 
-指定した数の週を、`date`、日時付きの `date`、またはそれらを文字列としてエンコードした値に加算します。
 
-**構文**
+Adds a specified number of weeks to a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 addWeeks(datetime, num)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 指定した週数を加算する対象の日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) または [`String`](/sql-reference/data-types/string)
-* `num` — 加算する週数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to add specified number of weeks to. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of weeks to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**戻り値**
 
-`datetime` に `num` 週を加算した値を返します。型は [`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) です。
+**Returned value**
 
-**例**
+Returns `datetime` plus `num` weeks [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**異なる日付型に週を加算する**
+**Examples**
+
+**Add weeks to different date types**
 
 ```sql title=Query
 WITH
@@ -860,7 +945,7 @@ SELECT
 └─────────────────────┴──────────────────────────┴─────────────────────────────────┘
 ```
 
-**別の INTERVAL 構文の利用**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 week)
@@ -872,30 +957,35 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 week)
 └──────────────────────────┘
 ```
 
+
+
 ## addYears {#addYears}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-指定した年数を、日付、日時、または文字列表現の日付もしくは日時に加算します。
 
-**構文**
+Adds a specified number of years to a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 addYears(datetime, num)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 指定した年数を加算する対象の日付または日時。[`Date`](/sql-reference/data-types/date)、[`Date32`](/sql-reference/data-types/date32)、[`DateTime`](/sql-reference/data-types/datetime)、[`DateTime64`](/sql-reference/data-types/datetime64)、[`String`](/sql-reference/data-types/string) のいずれか。
-* `num` — 加算する年数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to add specified number of years to. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of years to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**戻り値**
 
-`datetime` に `num` 年を加算した値を返します。型は [`Date`](/sql-reference/data-types/date)、[`Date32`](/sql-reference/data-types/date32)、[`DateTime`](/sql-reference/data-types/datetime)、[`DateTime64`](/sql-reference/data-types/datetime64) のいずれか。
+**Returned value**
 
-**例**
+Returns `datetime` plus `num` years [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**異なる日付型に年数を加算する**
+**Examples**
+
+**Add years to different date types**
 
 ```sql title=Query
 WITH
@@ -914,7 +1004,7 @@ SELECT
 └─────────────────────┴──────────────────────────┴─────────────────────────────────┘
 ```
 
-**代替の INTERVAL 構文を使用する**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 year)
@@ -926,30 +1016,34 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 year)
 └──────────────────────────┘
 ```
 
+
+
 ## age {#age}
 
-導入バージョン: v23.1
+Introduced in: v23.1
 
-`startdate` と `enddate` の差分のうち、指定した単位の値を返します。
-差分は 1 ナノ秒の精度で計算されます。
 
-たとえば、2021-12-29 と 2022-01-01 の差分は、日単位では 3 日、
-月単位では 0 か月、年単位では 0 年です。
+Returns the unit component of the difference between `startdate` and `enddate`.
+The difference is calculated using a precision of 1 nanosecond.
 
-`age` の代替としては、[`dateDiff`](#dateDiff) 関数を参照してください。
+For example, the difference between 2021-12-29 and 2022-01-01 is 3 days for the day unit,
+0 months for the month unit, and 0 years for the year unit.
 
-**構文**
+For an alternative to age, see function [`dateDiff`](#dateDiff).
+    
+
+**Syntax**
 
 ```sql
 age('unit', startdate, enddate[, timezone])
 ```
 
-**引数**
+**Arguments**
 
-* `unit` — 結果を表す時間間隔の単位。
+- `unit` — The type of interval for result.
 
-| Unit        | 取りうる値                                    |
-| ----------- | ---------------------------------------- |
+| Unit        | Possible values                          |
+|-------------|------------------------------------------|
 | nanosecond  | `nanosecond`, `nanoseconds`, `ns`        |
 | microsecond | `microsecond`, `microseconds`, `us`, `u` |
 | millisecond | `millisecond`, `milliseconds`, `ms`      |
@@ -961,18 +1055,18 @@ age('unit', startdate, enddate[, timezone])
 | month       | `month`, `months`, `mm`, `m`             |
 | quarter     | `quarter`, `quarters`, `qq`, `q`         |
 | year        | `year`, `years`, `yyyy`, `yy`            |
+ - `startdate` — The first time value to subtract (the subtrahend). [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `enddate` — The second time value to subtract from (the minuend). [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `timezone` — Optional. Timezone name. If specified, it is applied to both startdate and enddate. If not specified, timezones of startdate and enddate are used. If they are not the same, the result is unspecified. [`String`](/sql-reference/data-types/string)
 
-* `startdate` — 減算される側の最初の時刻値（減数）。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `enddate` — 減算する側の 2 番目の時刻値（被減数）。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `timezone` — 省略可能。タイムゾーン名。指定された場合、`startdate` と `enddate` の両方に適用されます。指定されていない場合、`startdate` と `enddate` にそれぞれ設定されているタイムゾーンが使用されます。両者が同じでない場合、結果は未定義となります。[`String`](/sql-reference/data-types/string)
 
-**戻り値**
+**Returned value**
 
-`enddate` から `startdate` を引いた差を、`unit` で表した値を返します。[`Int32`](/sql-reference/data-types/int-uint)
+Returns the difference between enddate and startdate expressed in unit. [`Int32`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
 
-**時間単位で年齢を計算する**
+**Calculate age in hours**
 
 ```sql title=Query
 SELECT age('hour', toDateTime('2018-01-01 22:30:00'), toDateTime('2018-01-02 23:00:00'))
@@ -984,7 +1078,7 @@ SELECT age('hour', toDateTime('2018-01-01 22:30:00'), toDateTime('2018-01-02 23:
 └───────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**異なる単位で年齢を計算する**
+**Calculate age in different units**
 
 ```sql title=Query
 SELECT
@@ -1001,30 +1095,33 @@ SELECT
 └────────────┴────────────┴─────────┴───────────┴──────────┘
 ```
 
+
+
 ## changeDay {#changeDay}
 
-導入バージョン: v24.7
+Introduced in: v24.7
 
-日付または日時の「日」要素を変更します。
+Changes the day component of a date or date time.
 
-**構文**
+**Syntax**
 
 ```sql
 changeDay(date_or_datetime, value)
 ```
 
-**引数**
+**Arguments**
 
-* `date_or_datetime` — 変更対象の値。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `value` — 新しい値。[`(U)Int*`](/sql-reference/data-types/int-uint)
+- `date_or_datetime` — The value to change. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `value` — The new value. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返り値**
 
-`date_or_datetime` と同じ型で、日を変更した値を返します。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**例**
+Returns a value of the same type as `date_or_datetime` with modified day component. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT changeDay('2024-01-31'::DateTime, 15)
@@ -1034,30 +1131,33 @@ SELECT changeDay('2024-01-31'::DateTime, 15)
 2024-01-15 00:00:00
 ```
 
+
+
 ## changeHour {#changeHour}
 
-導入バージョン: v24.7
+Introduced in: v24.7
 
-日付または日時の「時」部分を変更します。
+Changes the hour component of a date or date time.
 
-**構文**
+**Syntax**
 
 ```sql
 changeHour(date_or_datetime, value)
 ```
 
-**引数**
+**Arguments**
 
-* `date_or_datetime` — 変更する値。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `value` — 新しい値。[`(U)Int*`](/sql-reference/data-types/int-uint)
+- `date_or_datetime` — The value to change. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `value` — The new value. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返り値**
 
-`date_or_datetime` と同じ型で、時の部分が変更された値を返します。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**例**
+Returns a value of the same type as `date_or_datetime` with modified hour component. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT changeHour('2024-01-01 12:00:00'::DateTime, 5)
@@ -1067,30 +1167,33 @@ SELECT changeHour('2024-01-01 12:00:00'::DateTime, 5)
 2024-01-01 05:00:00
 ```
 
+
+
 ## changeMinute {#changeMinute}
 
-導入バージョン: v24.7
+Introduced in: v24.7
 
-日付または日時の「分」要素を変更します。
+Changes the minute component of a `date or date time`.
 
-**構文**
+**Syntax**
 
 ```sql
 changeMinute(date_or_datetime, value)
 ```
 
-**引数**
+**Arguments**
 
-* `date_or_datetime` — 変更する値。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `value` — 新しい値。[`(U)Int*`](/sql-reference/data-types/int-uint)
+- `date_or_datetime` — The value to change. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `value` — The new value. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-`date_or_datetime` と同じ型で、分の値を変更したものを返します。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**例**
+Returns a value of the same type as `date_or_datetime` with modified minute component. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT changeMinute('2024-01-01 12:30:00'::DateTime, 45)
@@ -1100,30 +1203,33 @@ SELECT changeMinute('2024-01-01 12:30:00'::DateTime, 45)
 2024-01-01 12:45:00
 ```
 
+
+
 ## changeMonth {#changeMonth}
 
-導入バージョン: v24.7
+Introduced in: v24.7
 
-日付または日時の月の部分を変更します。
+Changes the month component of a date or date time.
 
-**構文**
+**Syntax**
 
 ```sql
 changeMonth(date_or_datetime, value)
 ```
 
-**引数**
+**Arguments**
 
-* `date_or_datetime` — 変更対象の値。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `value` — 新しい値。[`(U)Int*`](/sql-reference/data-types/int-uint)
+- `date_or_datetime` — The value to change. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `value` — The new value. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-`date_or_datetime` と同じ型で、月の部分が変更された値を返します。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**例**
+Returns a value of the same type as `date_or_datetime` with modified month component. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT changeMonth('2024-01-01'::DateTime, 12)
@@ -1133,30 +1239,33 @@ SELECT changeMonth('2024-01-01'::DateTime, 12)
 2024-12-01 00:00:00
 ```
 
+
+
 ## changeSecond {#changeSecond}
 
-導入バージョン: v24.7
+Introduced in: v24.7
 
-日付または日時の秒の部分を変更します。
+Changes the second component of a date or date time.
 
-**構文**
+**Syntax**
 
 ```sql
 changeSecond(date_or_datetime, value)
 ```
 
-**引数**
+**Arguments**
 
-* `date_or_datetime` — 変更する値。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `value` — 設定する新しい値。[`(U)Int*`](/sql-reference/data-types/int-uint)
+- `date_or_datetime` — The value to change. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `value` — The new value. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返される値**
 
-`date_or_datetime` と同じ型で、秒の部分が変更された値を返します。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**例**
+Returns a value of the same type as `date_or_datetime` with modified seconds component. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT changeSecond('2024-01-01 12:30:45'::DateTime, 15)
@@ -1166,30 +1275,33 @@ SELECT changeSecond('2024-01-01 12:30:45'::DateTime, 15)
 2024-01-01 12:30:15
 ```
 
+
+
 ## changeYear {#changeYear}
 
-導入バージョン: v24.7
+Introduced in: v24.7
 
-日付または日時の年の部分を変更します。
+Changes the year component of a date or date time.
 
-**構文**
+**Syntax**
 
 ```sql
 changeYear(date_or_datetime, value)
 ```
 
-**引数**
+**Arguments**
 
-* `date_or_datetime` — 変更対象の値。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `value` — 設定する新しい値。[`(U)Int*`](/sql-reference/data-types/int-uint)
+- `date_or_datetime` — The value to change. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `value` — The new value. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-`date_or_datetime` と同じ型で、年の値が変更された値を返します。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**例**
+Returns a value of the same type as `date_or_datetime` with modified year component. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT changeYear('2024-01-01'::DateTime, 2023)
@@ -1199,55 +1311,61 @@ SELECT changeYear('2024-01-01'::DateTime, 2023)
 2023-01-01 00:00:00
 ```
 
+
+
 ## dateDiff {#dateDiff}
 
-導入バージョン: v23.4
+Introduced in: v23.4
 
-指定した `unit` について、`startdate` と `enddate` の間で跨いだ境界の数を返します。
-差分は相対単位を使って計算されます。例えば、2021-12-29 と 2022-01-01 の差分は、`day` 単位では 3 日（[`toRelativeDayNum`](#toRelativeDayNum) を参照）、`month` 単位では 1 か月（[`toRelativeMonthNum`](#toRelativeMonthNum) を参照）、`year` 単位では 1 年（[`toRelativeYearNum`](#toRelativeYearNum) を参照）です。
 
-`week` 単位が指定された場合、`dateDiff` は週の開始日を月曜日として扱います。
-この動作は、デフォルトで週の開始日を日曜日とする関数 `toWeek()` とは異なることに注意してください。
+Returns the count of the specified `unit` boundaries crossed between the `startdate` and the `enddate`.
+The difference is calculated using relative units. For example, the difference between 2021-12-29 and 2022-01-01 is 3 days for unit day
+(see [`toRelativeDayNum`](#toRelativeDayNum)), 1 month for unit month (see [`toRelativeMonthNum`](#toRelativeMonthNum)) and 1 year for unit year
+(see [`toRelativeYearNum`](#toRelativeYearNum)).
 
-`dateDiff` の代替としては、関数 [`age`](#age) を参照してください。
+If the unit `week` was specified, then `dateDiff` assumes that weeks start on Monday.
+Note that this behavior is different from that of function `toWeek()` in which weeks start by default on Sunday.
 
-**構文**
+For an alternative to `dateDiff`, see function [`age`](#age).
+    
+
+**Syntax**
 
 ```sql
 dateDiff(unit, startdate, enddate[, timezone])
 ```
 
-**別名**: `timestampDiff`, `date_diff`, `TIMESTAMP_DIFF`, `DATE_DIFF`, `timestamp_diff`
+**Aliases**: `timestampDiff`, `date_diff`, `TIMESTAMP_DIFF`, `DATE_DIFF`, `timestamp_diff`
 
-**引数**
+**Arguments**
 
-* `unit` — 結果の間隔を表す単位。
+- `unit` — The type of interval for result.
 
-| Unit        | 取りうる値                                    |
-| ----------- | ---------------------------------------- |
-| nanosecond  | `nanosecond`, `nanoseconds`, `ns`        |
-| microsecond | `microsecond`, `microseconds`, `us`, `u` |
-| millisecond | `millisecond`, `milliseconds`, `ms`      |
-| second      | `second`, `seconds`, `ss`, `s`           |
-| minute      | `minute`, `minutes`, `mi`, `n`           |
-| hour        | `hour`, `hours`, `hh`, `h`               |
-| day         | `day`, `days`, `dd`, `d`                 |
-| week        | `week`, `weeks`, `wk`, `ww`              |
-| month       | `month`, `months`, `mm`, `m`             |
-| quarter     | `quarter`, `quarters`, `qq`, `q`         |
-| year        | `year`, `years`, `yyyy`, `yy`            |
+| Unit        | Possible values                           |
+|-------------|-------------------------------------------|
+| nanosecond  | `nanosecond`, `nanoseconds`, `ns`         |
+| microsecond | `microsecond`, `microseconds`, `us`, `u`  |
+| millisecond | `millisecond`, `milliseconds`, `ms`       |
+| second      | `second`, `seconds`, `ss`, `s`            |
+| minute      | `minute`, `minutes`, `mi`, `n`            |
+| hour        | `hour`, `hours`, `hh`, `h`                |
+| day         | `day`, `days`, `dd`, `d`                  |
+| week        | `week`, `weeks`, `wk`, `ww`               |
+| month       | `month`, `months`, `mm`, `m`              |
+| quarter     | `quarter`, `quarters`, `qq`, `q`          |
+| year        | `year`, `years`, `yyyy`, `yy`             |
+ - `startdate` — The first time value to subtract (the subtrahend). [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `enddate` — The second time value to subtract from (the minuend). [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `timezone` — Optional. Timezone name. If specified, it is applied to both `startdate` and `enddate`. If not specified, timezones of `startdate` and `enddate` are used. If they are not the same, the result is unspecified. [`String`](/sql-reference/data-types/string)
 
-* `startdate` — 減算される最初の時刻値（減数）。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `enddate` — 減算の基準となる 2 番目の時刻値（被減数）。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `timezone` — オプション。タイムゾーン名。指定された場合は `startdate` と `enddate` の両方に適用されます。指定しない場合は、それぞれの `startdate` と `enddate` に設定されているタイムゾーンが使用されます。それらが同一でない場合、結果は未定義です。[`String`](/sql-reference/data-types/string)
 
-**戻り値**
+**Returned value**
 
-`enddate` から `startdate` を引いた差を、`unit` で表した値を返します。[`Int64`](/sql-reference/data-types/int-uint)
+Returns the difference between `enddate` and `startdate` expressed in `unit`. [`Int64`](/sql-reference/data-types/int-uint)
 
-**例**
+**Examples**
 
-**日付の差を時間単位で計算する**
+**Calculate date difference in hours**
 
 ```sql title=Query
 SELECT dateDiff('hour', toDateTime('2018-01-01 22:00:00'), toDateTime('2018-01-02 23:00:00')) AS res
@@ -1259,7 +1377,7 @@ SELECT dateDiff('hour', toDateTime('2018-01-01 22:00:00'), toDateTime('2018-01-0
 └─────┘
 ```
 
-**日付の差をさまざまな単位で計算する**
+**Calculate date difference in different units**
 
 ```sql title=Query
 SELECT
@@ -1276,44 +1394,48 @@ SELECT
 └────────────┴────────────┴──────────┴────────────┴───────────┘
 ```
 
+
+
 ## dateName {#dateName}
 
-導入: v21.7
+Introduced in: v21.7
 
-日付の指定された部分を返します。
 
-指定可能な値:
+Returns the specified part of the date.
 
-* &#39;year&#39;
-* &#39;quarter&#39;
-* &#39;month&#39;
-* &#39;week&#39;
-* &#39;dayofyear&#39;
-* &#39;day&#39;
-* &#39;weekday&#39;
-* &#39;hour&#39;
-* &#39;minute&#39;
-* &#39;second&#39;
+Possible values:
+- 'year'
+- 'quarter'
+- 'month'
+- 'week'
+- 'dayofyear'
+- 'day'
+- 'weekday'
+- 'hour'
+- 'minute'
+- 'second'
+    
 
-**構文**
+**Syntax**
 
 ```sql
 dateName(date_part, date[, timezone])
 ```
 
-**引数**
+**Arguments**
 
-* `date_part` — 抽出したい日付要素。[`String`](/sql-reference/data-types/string)
-* `datetime` — 日付、または日付と時刻の値。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `timezone` — 省略可能。タイムゾーン。[`String`](/sql-reference/data-types/string)
+- `date_part` — The part of the date that you want to extract. [`String`](/sql-reference/data-types/string)
+- `datetime` — A date or date with time value. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `timezone` — Optional. Timezone. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-指定した日付要素を返します。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**例**
+Returns the specified part of date. [`String`](/sql-reference/data-types/string)
 
-**さまざまな日付要素の抽出**
+**Examples**
+
+**Extract different date parts**
 
 ```sql title=Query
 WITH toDateTime('2021-04-14 11:22:33') AS date_value
@@ -1329,55 +1451,60 @@ SELECT
 └──────────────────────────────┴───────────────────────────────┴─────────────────────────────┘
 ```
 
+
+
 ## dateTrunc {#dateTrunc}
 
-導入バージョン: v20.8
+Introduced in: v20.8
 
-日付時刻の値を、指定した日付部分まで切り捨てます。
 
-**構文**
+Truncates a date and time value to the specified part of the date.
+    
+
+**Syntax**
 
 ```sql
 dateTrunc(unit, datetime[, timezone])
 ```
 
-**別名**: `DATE_TRUNC`
+**Aliases**: `DATE_TRUNC`
 
-**引数**
+**Arguments**
 
-* `unit` —
-  結果をどの時間単位で切り捨てるかを指定します。`unit` 引数は大文字と小文字を区別しません。
-  | Unit                                         | Compatibility    |
-  | -------------------------------------------- | ---------------- |
-  | `nanosecond`                                 | DateTime64 にのみ対応 |
-  | `microsecond`                                | DateTime64 にのみ対応 |
-  | `millisecond`                                | DateTime64 にのみ対応 |
-  | `second`                                     |                  |
-  | `minute`                                     |                  |
-  | `hour`                                       |                  |
-  | `day`                                        |                  |
-  | `week`                                       |                  |
-  | `month`                                      |                  |
-  | `quarter`                                    |                  |
-  | `year`                                       |                  |
-  | [`String`](/sql-reference/data-types/string) |                  |
-* `datetime` — 日付と時刻。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `timezone` — 省略可能。返される datetime のタイムゾーン名を指定します。指定されていない場合、関数は `datetime` パラメータのタイムゾーンを使用します。[`String`](/sql-reference/data-types/string)
+- `unit` — 
+The type of interval to truncate the result. `unit` argument is case-insensitive.
+| Unit         | Compatibility                   |
+|--------------|---------------------------------|
+| `nanosecond` | Compatible only with DateTime64 |
+| `microsecond`| Compatible only with DateTime64 |
+| `millisecond`| Compatible only with DateTime64 |
+| `second`     |                                 |
+| `minute`     |                                 |
+| `hour`       |                                 |
+| `day`        |                                 |
+| `week`       |                                 |
+| `month`      |                                 |
+| `quarter`    |                                 |
+| `year`       |                                 |
+ [`String`](/sql-reference/data-types/string)
+- `datetime` — Date and time. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `timezone` — Optional. Timezone name for the returned datetime. If not specified, the function uses the timezone of the `datetime` parameter. [`String`](/sql-reference/data-types/string)
 
-**返される値**
 
-切り捨て後の日付と時刻の値を返します。
+**Returned value**
 
-| Unit Argument              | `datetime` Argument                              | Return Type                                                                            |
-| -------------------------- | ------------------------------------------------ | -------------------------------------------------------------------------------------- |
-| Year, Quarter, Month, Week | `Date32` or `DateTime64` or `Date` or `DateTime` | [`Date32`](../data-types/date32.md) or [`Date`](../data-types/date.md)                 |
-| Day, Hour, Minute, Second  | `Date32`, `DateTime64`, `Date`, or `DateTime`    | [`DateTime64`](../data-types/datetime64.md) or [`DateTime`](../data-types/datetime.md) |
-| Millisecond, Microsecond,  | Any                                              | [`DateTime64`](../data-types/datetime64.md)                                            |
-| Nanosecond                 |                                                  | スケール 3、6、または 9                                                                         |
+Returns the truncated date and time value.
 
-**例**
+| Unit Argument               | `datetime` Argument                   | Return Type                                                                            |
+|-----------------------------|---------------------------------------|----------------------------------------------------------------------------------------|
+| Year, Quarter, Month, Week  | `Date32` or `DateTime64` or `Date` or `DateTime` | [`Date32`](../data-types/date32.md) or [`Date`](../data-types/date.md)                 |
+| Day, Hour, Minute, Second   | `Date32`, `DateTime64`, `Date`, or `DateTime` | [`DateTime64`](../data-types/datetime64.md) or [`DateTime`](../data-types/datetime.md) |
+| Millisecond, Microsecond,   | Any                                   | [`DateTime64`](../data-types/datetime64.md)                                            |
+| Nanosecond                  |                                       | with scale 3, 6, or 9                                                                  |
 
-**タイムゾーンを指定せずに切り捨て**
+**Examples**
+
+**Truncate without timezone**
 
 ```sql title=Query
 SELECT now(), dateTrunc('hour', now());
@@ -1389,7 +1516,7 @@ SELECT now(), dateTrunc('hour', now());
 └─────────────────────┴───────────────────────────┘
 ```
 
-**指定タイムゾーンでの切り捨て**
+**Truncate with specified timezone**
 
 ```sql title=Query
 SELECT now(), dateTrunc('hour', now(), 'Asia/Istanbul');
@@ -1401,86 +1528,91 @@ SELECT now(), dateTrunc('hour', now(), 'Asia/Istanbul');
 └─────────────────────┴────────────────────────────────────────────┘
 ```
 
+
+
 ## formatDateTime {#formatDateTime}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-指定されたフォーマット文字列に従って、日付または日時をフォーマットします。`format` は定数式であるため、1つの結果カラムに対して複数のフォーマットを指定することはできません。
 
-`formatDateTime` は MySQL の datetime フォーマットスタイルを使用します。[mysql docs](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format) を参照してください。
+Formats a date or date with time according to the given format string. `format` is a constant expression, so you cannot have multiple formats for a single result column.
 
-この関数の逆操作は [`parseDateTime`](/sql-reference/functions/type-conversion-functions#parsedatetime) です。
+`formatDateTime` uses MySQL datetime format style, refer to the [mysql docs](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format).
 
-置換フィールドを使用して、結果文字列のパターンを定義できます。
-以下の表の「例」カラムは、`2018-01-02 22:33:44` をフォーマットした結果を示します。
+The opposite operation of this function is [`parseDateTime`](/sql-reference/functions/type-conversion-functions#parsedatetime).
 
-**置換フィールド:**
+Using replacement fields, you can define a pattern for the resulting string.
+The example column in the table below shows formatting result for `2018-01-02 22:33:44`.
 
-| Placeholder | 説明                                    | 例          |
-| ----------- | ------------------------------------- | ---------- |
-| %a          | 曜日の省略名 (Mon-Sun)                      | Mon        |
-| %b          | 月の省略名 (Jan-Dec)                       | Jan        |
-| %c          | 月を整数 (01-12) で表現                      | 01         |
-| %C          | 西暦年を 100 で割り、整数に切り捨てた値 (00-99)        | 20         |
-| %d          | 日 (ゼロ詰め) (01-31)                      | 02         |
-| %D          | 短い MM/DD/YY 日付形式。%m/%d/%y と同等         | 01/02/18   |
-| %e          | 日 (スペース詰め) (1-31)                     | 2          |
-| %f          | 小数部の秒                                 | 123456     |
-| %F          | 短い YYYY-MM-DD 日付形式。%Y-%m-%d と同等       | 2018-01-02 |
-| %g          | ISO 8601 に合わせた 2 桁の年                  | 18         |
-| %G          | ISO 週番号に対応する 4 桁の年                    | 2018       |
-| %h          | 12 時間制の時 (01-12)                      | 09         |
-| %H          | 24 時間制の時 (00-23)                      | 22         |
-| %i          | 分 (00-59)                             | 33         |
-| %I          | 12 時間制の時 (01-12)                      | 10         |
-| %j          | 年内通算日 (001-366)                       | 002        |
-| %k          | 24 時間制の時 (00-23)                      | 14         |
-| %l          | 12 時間制の時 (01-12)                      | 09         |
-| %m          | 月を整数 (01-12) で表現                      | 01         |
-| %M          | 月名 (January-December)                 | January    |
-| %n          | 改行文字                                  |            |
-| %p          | AM か PM の区別                           | PM         |
-| %Q          | 四半期 (1-4)                             | 1          |
-| %r          | 12 時間制 HH:MM AM/PM 形式。%h:%i %p と同等    | 10:30 PM   |
-| %R          | 24 時間制 HH:MM 形式。%H:%i と同等             | 22:33      |
-| %s          | 秒 (00-59)                             | 44         |
-| %S          | 秒 (00-59)                             | 44         |
-| %t          | 水平タブ文字                                |            |
-| %T          | ISO 8601 時刻形式 (HH:MM:SS)。%H:%i:%S と同等 | 22:33:44   |
-| %u          | ISO 8601 の曜日番号 (月曜を 1 とする 1-7)        | 2          |
-| %V          | ISO 8601 の週番号 (01-53)                 | 01         |
-| %w          | 曜日を整数で表現 (日曜を 0 とする 0-6)              | 2          |
-| %W          | 曜日の完全名 (Monday-Sunday)                | Monday     |
-| %y          | 西暦年の下 2 桁 (00-99)                     | 18         |
-| %Y          | 西暦年                                   | 2018       |
-| %z          | UTC からの時差 (+HHMM または -HHMM)           | -0500      |
-| %%          | % 記号                                  | %          |
+**Replacement fields:**
 
-* ClickHouse v23.4 より前のバージョンでは、フォーマット対象が Date、Date32、DateTime (いずれも秒の小数部を持たない) または精度 0 の DateTime64 の場合、`%f` は単一のゼロ (0) を出力します。
-* ClickHouse v25.1 より前のバージョンでは、`%f` は固定の 6 桁ではなく、DateTime64 のスケールで指定された桁数を出力します。
-* ClickHouse v23.4 より前のバージョンでは、`%M` は月名 (January-December) ではなく分 (00-59) を出力します。
+| Placeholder | Description | Example |
+|-------------|-------------|---------|
+| %a | abbreviated weekday name (Mon-Sun) | Mon |
+| %b | abbreviated month name (Jan-Dec) | Jan |
+| %c | month as an integer number (01-12) | 01 |
+| %C | year divided by 100 and truncated to integer (00-99) | 20 |
+| %d | day of the month, zero-padded (01-31) | 02 |
+| %D | Short MM/DD/YY date, equivalent to %m/%d/%y | 01/02/18 |
+| %e | day of the month, space-padded (1-31) | 2 |
+| %f | fractional second | 123456 |
+| %F | short YYYY-MM-DD date, equivalent to %Y-%m-%d | 2018-01-02 |
+| %g | two-digit year format, aligned to ISO 8601 | 18 |
+| %G | four-digit year format for ISO week number | 2018 |
+| %h | hour in 12h format (01-12) | 09 |
+| %H | hour in 24h format (00-23) | 22 |
+| %i | minute (00-59) | 33 |
+| %I | hour in 12h format (01-12) | 10 |
+| %j | day of the year (001-366) | 002 |
+| %k | hour in 24h format (00-23) | 14 |
+| %l | hour in 12h format (01-12) | 09 |
+| %m | month as an integer number (01-12) | 01 |
+| %M | full month name (January-December) | January |
+| %n | new-line character | |
+| %p | AM or PM designation | PM |
+| %Q | Quarter (1-4) | 1 |
+| %r | 12-hour HH:MM AM/PM time, equivalent to %h:%i %p | 10:30 PM |
+| %R | 24-hour HH:MM time, equivalent to %H:%i | 22:33 |
+| %s | second (00-59) | 44 |
+| %S | second (00-59) | 44 |
+| %t | horizontal-tab character | |
+| %T | ISO 8601 time format (HH:MM:SS), equivalent to %H:%i:%S | 22:33:44 |
+| %u | ISO 8601 weekday as number with Monday as 1 (1-7) | 2 |
+| %V | ISO 8601 week number (01-53) | 01 |
+| %w | weekday as a integer number with Sunday as 0 (0-6) | 2 |
+| %W | full weekday name (Monday-Sunday) | Monday |
+| %y | Year, last two digits (00-99) | 18 |
+| %Y | Year | 2018 |
+| %z | Time offset from UTC as +HHMM or -HHMM | -0500 |
+| %% | a % sign | % |
 
-**構文**
+- In ClickHouse versions earlier than v23.4, `%f` prints a single zero (0) if the formatted value is a Date, Date32 or DateTime (which have no fractional seconds) or a DateTime64 with a precision of 0.
+- In ClickHouse versions earlier than v25.1, `%f` prints as many digits as specified by the scale of the DateTime64 instead of fixed 6 digits.
+- In ClickHouse versions earlier than v23.4, `%M` prints the minute (00-59) instead of the full month name (January-December).
+    
+
+**Syntax**
 
 ```sql
 formatDateTime(datetime, format[, timezone])
 ```
 
-**別名**: `DATE_FORMAT`
+**Aliases**: `DATE_FORMAT`
 
-**引数**
+**Arguments**
 
-* `datetime` — 書式設定する日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `format` — 置換フィールドを含む書式文字列。[`String`](/sql-reference/data-types/string)
-* `timezone` — 省略可能。書式化された時刻に使用するタイムゾーン名。[`String`](/sql-reference/data-types/string)
+- `datetime` — A date or date time to format. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `format` — Format string with replacement fields. [`String`](/sql-reference/data-types/string)
+- `timezone` — Optional. Timezone name for the formatted time. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-指定された書式に従った日時の値を返します。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**例**
+Returns time and date values according to the determined format. [`String`](/sql-reference/data-types/string)
 
-**年のプレースホルダーを使って日付をフォーマットする**
+**Examples**
+
+**Format date with year placeholder**
 
 ```sql title=Query
 SELECT formatDateTime(toDate('2010-01-04'), '%g')
@@ -1492,7 +1624,7 @@ SELECT formatDateTime(toDate('2010-01-04'), '%g')
 └────────────────────────────────────────────┘
 ```
 
-**小数秒を含めて DateTime64 をフォーマットする**
+**Format DateTime64 with fractional seconds**
 
 ```sql title=Query
 SELECT formatDateTime(toDateTime64('2010-01-04 12:34:56.123456', 7), '%f')
@@ -1504,7 +1636,7 @@ SELECT formatDateTime(toDateTime64('2010-01-04 12:34:56.123456', 7), '%f')
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-**タイムゾーン付きでのフォーマット**
+**Format with timezone**
 
 ```sql title=Query
 SELECT
@@ -1531,63 +1663,68 @@ LIMIT 10
 └─────────────────────┴───────────────────┴─────────────┘
 ```
 
+
+
 ## formatDateTimeInJodaSyntax {#formatDateTimeInJodaSyntax}
 
-導入バージョン: v20.1
+Introduced in: v20.1
 
-`formatDateTime` と似ていますが、MySQL スタイルではなく Joda スタイルで日時をフォーマットします。[Joda Time ドキュメント](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html)を参照してください。
 
-この関数の逆の操作は [`parseDateTimeInJodaSyntax`](/sql-reference/functions/type-conversion-functions#parsedatetimeinjodasyntax) です。
+Similar to `formatDateTime`, except that it formats datetime in Joda style instead of MySQL style. Refer to [Joda Time documentation](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html).
 
-置換フィールドを使用して、結果の文字列のパターンを定義できます。
+The opposite operation of this function is [`parseDateTimeInJodaSyntax`](/sql-reference/functions/type-conversion-functions#parsedatetimeinjodasyntax).
 
-**置換フィールド:**
+Using replacement fields, you can define a pattern for the resulting string.
 
-| Placeholder | 説明                   | 表示形式 | 例                          |
-| ----------- | -------------------- | ---- | -------------------------- |
-| G           | 紀元                   | テキスト | AD                         |
-| C           | 紀元の世紀 (&gt;=0)       | 数値   | 20                         |
-| Y           | 紀元の年 (&gt;=0)        | 年    | 1996                       |
-| x           | weekyear (未サポート)     | 年    | 1996                       |
-| w           | weekyear 内の週 (未サポート) | 数値   | 27                         |
-| e           | 曜日                   | 数値   | 2                          |
-| E           | 曜日                   | テキスト | Tuesday; Tue               |
-| y           | 年                    | 年    | 1996                       |
-| D           | 年内通算日                | 数値   | 189                        |
-| M           | 月                    | 月    | July; Jul; 07              |
-| d           | 日 (月内通算日)            | 数値   | 10                         |
-| a           | 午前/午後                | テキスト | PM                         |
-| K           | 午前/午後内の時 (0〜11)      | 数値   | 0                          |
-| h           | 午前/午後の時刻 (1〜12)      | 数値   | 12                         |
-| H           | 一日の時 (0〜23)          | 数値   | 0                          |
-| k           | 一日の時刻 (1〜24)         | 数値   | 24                         |
-| m           | 分                    | 数値   | 30                         |
-| s           | 秒                    | 数値   | 55                         |
-| S           | 秒の小数部                | 数値   | 978                        |
-| z           | タイムゾーン               | テキスト | Eastern Standard Time; EST |
-| Z           | タイムゾーンオフセット          | ゾーン  | -0800; -0812               |
-| &#39;       | テキストのエスケープ           | デリミタ |                            |
-| &#39;&#39;  | シングルクォート             | リテラル | &#39;                      |
+**Replacement fields:**
 
-**構文**
+| Placeholder | Description | Presentation | Examples |
+|-------------|-------------|-------------|----------|
+| G | era | text | AD |
+| C | century of era (>=0) | number | 20 |
+| Y | year of era (>=0) | year | 1996 |
+| x | weekyear (not supported yet) | year | 1996 |
+| w | week of weekyear (not supported yet) | number | 27 |
+| e | day of week | number | 2 |
+| E | day of week | text | Tuesday; Tue |
+| y | year | year | 1996 |
+| D | day of year | number | 189 |
+| M | month of year | month | July; Jul; 07 |
+| d | day of month | number | 10 |
+| a | halfday of day | text | PM |
+| K | hour of halfday (0~11) | number | 0 |
+| h | clockhour of halfday (1~12) | number | 12 |
+| H | hour of day (0~23) | number | 0 |
+| k | clockhour of day (1~24) | number | 24 |
+| m | minute of hour | number | 30 |
+| s | second of minute | number | 55 |
+| S | fraction of second | number | 978 |
+| z | time zone | text | Eastern Standard Time; EST |
+| Z | time zone offset | zone | -0800; -0812 |
+| ' | escape for text | delimiter | |
+| '' | single quote | literal | ' |
+    
+
+**Syntax**
 
 ```sql
 formatDateTimeInJodaSyntax(datetime, format[, timezone])
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — フォーマットする日付または日時。[`DateTime`](/sql-reference/data-types/datetime) または [`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `format` — Joda スタイルの置換フィールドを含むフォーマット文字列。[`String`](/sql-reference/data-types/string)
-* `timezone` — 省略可。フォーマット時に使用するタイムゾーン名。[`String`](/sql-reference/data-types/string)
+- `datetime` — A date or date time to format. [`DateTime`](/sql-reference/data-types/datetime) or [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `format` — Format string with Joda-style replacement fields. [`String`](/sql-reference/data-types/string)
+- `timezone` — Optional. Timezone name for the formatted time. [`String`](/sql-reference/data-types/string)
 
-**返される値**
 
-指定されたフォーマットに従って日付と時刻の値を返します。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**例**
+Returns time and date values according to the determined format. [`String`](/sql-reference/data-types/string)
 
-**Joda 構文を使用して datetime をフォーマットする**
+**Examples**
+
+**Format datetime using Joda syntax**
 
 ```sql title=Query
 SELECT formatDateTimeInJodaSyntax(toDateTime('2010-01-04 12:34:56'), 'yyyy-MM-dd HH:mm:ss')
@@ -1599,33 +1736,38 @@ SELECT formatDateTimeInJodaSyntax(toDateTime('2010-01-04 12:34:56'), 'yyyy-MM-dd
 └─────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## fromDaysSinceYearZero {#fromDaysSinceYearZero}
 
-導入バージョン: v23.11
+Introduced in: v23.11
 
-[西暦 0000 年 1 月 1 日](https://en.wikipedia.org/wiki/Year_zero) からの経過日数を指定すると、[ISO 8601 で定義されるプロレプティック・グレゴリオ暦](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar)に対応する日付を返します。
 
-計算方法は MySQL の `FROM_DAYS()` 関数と同じです。結果が [Date](../data-types/date.md) 型の範囲内で表現できない場合、結果は未定義です。
+For a given number of days elapsed since [1 January 0000](https://en.wikipedia.org/wiki/Year_zero), returns the corresponding date in the [proleptic Gregorian calendar defined by ISO 8601](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar).
 
-**構文**
+The calculation is the same as in MySQL's `FROM_DAYS()` function. The result is undefined if it cannot be represented within the bounds of the [Date](../data-types/date.md) type.
+    
+
+**Syntax**
 
 ```sql
 fromDaysSinceYearZero(days)
 ```
 
-**エイリアス**: `FROM_DAYS`
+**Aliases**: `FROM_DAYS`
 
-**引数**
+**Arguments**
 
-* `days` — 西暦0年から経過した日数。[`UInt32`](/sql-reference/data-types/int-uint)
+- `days` — The number of days passed since year zero. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-西暦0年からの経過日数に対応する日付を返します。[`Date`](/sql-reference/data-types/date)
+**Returned value**
 
-**例**
+Returns the date corresponding to the number of days passed since year zero. [`Date`](/sql-reference/data-types/date)
 
-**西暦0年からの経過日数を日付に変換する**
+**Examples**
+
+**Convert days since year zero to dates**
 
 ```sql title=Query
 SELECT
@@ -1639,30 +1781,35 @@ fromDaysSinceYearZero(toDaysSinceYearZero(toDate('2023-09-08'))) AS date2
 └────────────┴────────────┘
 ```
 
+
+
 ## fromDaysSinceYearZero32 {#fromDaysSinceYearZero32}
 
-導入バージョン: v23.11
+Introduced in: v23.11
 
-[0000年1月1日](https://en.wikipedia.org/wiki/Year_zero)からの経過日数を指定すると、[ISO 8601 で定義されるプロレプティック・グレゴリオ暦](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar)における対応する日付を返します。
-計算方法は MySQL の `FROM_DAYS()` 関数と同じです。結果が [`Date32`](../data-types/date32.md) 型の範囲内で表現できない場合、結果は未定義です。
 
-**構文**
+For a given number of days elapsed since [1 January 0000](https://en.wikipedia.org/wiki/Year_zero), returns the corresponding date in the [proleptic Gregorian calendar defined by ISO 8601](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar).
+The calculation is the same as in MySQL's `FROM_DAYS()` function. The result is undefined if it cannot be represented within the bounds of the [`Date32`](../data-types/date32.md) type.
+    
+
+**Syntax**
 
 ```sql
 fromDaysSinceYearZero32(days)
 ```
 
-**引数**
+**Arguments**
 
-* `days` — 紀元年（year zero）から経過した日数。[`UInt32`](/sql-reference/data-types/int-uint)
+- `days` — The number of days passed since year zero. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**返される値**
 
-紀元年（year zero）からの経過日数に対応する日付を返します。[`Date32`](/sql-reference/data-types/date32)
+**Returned value**
 
-**例**
+Returns the date corresponding to the number of days passed since year zero. [`Date32`](/sql-reference/data-types/date32)
 
-**紀元年（year zero）からの経過日数を日付に変換する**
+**Examples**
+
+**Convert days since year zero to dates**
 
 ```sql title=Query
 SELECT
@@ -1676,29 +1823,34 @@ fromDaysSinceYearZero32(toDaysSinceYearZero(toDate('2023-09-08'))) AS date2
 └────────────┴────────────┘
 ```
 
+
+
 ## fromModifiedJulianDay {#fromModifiedJulianDay}
 
-導入バージョン: v21.1
+Introduced in: v21.1
 
-[修正ユリウス日](https://en.wikipedia.org/wiki/Julian_day#Variants)の数値を、テキスト形式 `YYYY-MM-DD` の[プロレプティック・グレゴリオ暦](https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar)の日付に変換します。この関数は、`-678941` から `2973483` までの日番号をサポートします（それぞれ 0000-01-01 および 9999-12-31 を表します）。サポート範囲外の値が指定された場合は例外をスローします。
 
-**構文**
+Converts a [Modified Julian Day](https://en.wikipedia.org/wiki/Julian_day#Variants) number to a [Proleptic Gregorian calendar](https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar) date in text form `YYYY-MM-DD`. This function supports day number from `-678941` to `2973483` (which represent 0000-01-01 and 9999-12-31 respectively). It raises an exception if the day number is outside of the supported range.
+    
+
+**Syntax**
 
 ```sql
 fromModifiedJulianDay(day)
 ```
 
-**引数**
+**Arguments**
 
-* `day` — 修正ユリウス日番号。[`(U)Int*`](/sql-reference/data-types/int-uint)
+- `day` — Modified Julian Day number. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-テキスト形式の日付を返します。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**例**
+Returns date in text form. [`String`](/sql-reference/data-types/string)
 
-**修正ユリウス日を日付に変換する**
+**Examples**
+
+**Convert Modified Julian Day to date**
 
 ```sql title=Query
 SELECT fromModifiedJulianDay(58849)
@@ -1710,29 +1862,34 @@ SELECT fromModifiedJulianDay(58849)
 └──────────────────────────────┘
 ```
 
+
+
 ## fromModifiedJulianDayOrNull {#fromModifiedJulianDayOrNull}
 
-導入バージョン: v21.1
+Introduced in: v21.1
 
-[`fromModifiedJulianDay()`](#fromModifiedJulianDay) と同様ですが、例外をスローする代わりに `NULL` を返します。
 
-**構文**
+Similar to [`fromModifiedJulianDay()`](#fromModifiedJulianDay), but instead of raising exceptions it returns `NULL`.
+    
+
+**Syntax**
 
 ```sql
 fromModifiedJulianDayOrNull(day)
 ```
 
-**引数**
+**Arguments**
 
-* `day` — 修正ユリウス日番号。[`(U)Int*`](/sql-reference/data-types/int-uint)
+- `day` — Modified Julian Day number. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-有効な `day` 引数に対しては文字列形式の日付を返し、引数が無効な場合は `null` を返します。[`Nullable(String)`](/sql-reference/data-types/nullable)
+**Returned value**
 
-**使用例**
+Returns date in text form for valid `day` argument, otherwise `null`. [`Nullable(String)`](/sql-reference/data-types/nullable)
 
-**修正ユリウス日を null 処理を考慮して日付に変換する**
+**Examples**
+
+**Convert Modified Julian Day to date with null handling**
 
 ```sql title=Query
 SELECT fromModifiedJulianDayOrNull(58849);
@@ -1748,32 +1905,37 @@ SELECT fromModifiedJulianDayOrNull(60000000); -- 無効な引数、NULLを返す
 └──────────────────────────┘
 ```
 
+
+
 ## fromUTCTimestamp {#fromUTCTimestamp}
 
-導入バージョン: v22.1
+Introduced in: v22.1
 
-日付または日時の値を、UTC タイムゾーンから指定したタイムゾーンの日付または日時の値に変換します。この関数は主に、Apache Spark や類似のフレームワークとの互換性を保つために提供されています。
 
-**構文**
+Converts a date or date with time value from UTC timezone to a date or date with time value with the specified time zone. This function is mainly included for compatibility with Apache Spark and similar frameworks.
+    
+
+**Syntax**
 
 ```sql
 fromUTCTimestamp(datetime, time_zone)
 ```
 
-**別名**: `from_utc_timestamp`
+**Aliases**: `from_utc_timestamp`
 
-**引数**
+**Arguments**
 
-* `datetime` — 日付、または時刻付き日付の定数値、もしくは式。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `time_zone` — タイムゾーンを表す String 型の定数値、もしくは式。[`String`](/sql-reference/data-types/string)
+- `datetime` — A date or date with time const value or an expression. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `time_zone` — A String type const value or an expression representing the time zone. [`String`](/sql-reference/data-types/string)
 
-**返される値**
 
-指定されたタイムゾーンの DateTime/DateTime64 値を返します。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**例**
+Returns DateTime/DateTime64 in the specified timezone. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**UTC タイムゾーンを指定したタイムゾーンに変換する**
+**Examples**
+
+**Convert UTC timezone to specified timezone**
 
 ```sql title=Query
 SELECT fromUTCTimestamp(toDateTime64('2023-03-16 10:00:00', 3), 'Asia/Shanghai')
@@ -1785,40 +1947,45 @@ SELECT fromUTCTimestamp(toDateTime64('2023-03-16 10:00:00', 3), 'Asia/Shanghai')
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## fromUnixTimestamp {#fromUnixTimestamp}
 
-導入バージョン: v20.8
+Introduced in: v20.8
 
-この関数は Unix タイムスタンプを日付および一日の時刻に変換します。
 
-2 通りの呼び出し方があります。
+This function converts a Unix timestamp to a calendar date and a time of a day.
 
-* 単一の引数として型 [`Integer`](../data-types/int-uint.md) を取る場合、型 [`DateTime`](../data-types/datetime.md) の値を返します。つまり、[`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#todatetime) と同様に動作します。
-* 2 つまたは 3 つの引数を取り、1 番目の引数が型 [`Integer`](../data-types/int-uint.md)、[`Date`](../data-types/date.md)、[`Date32`](../data-types/date32.md)、[`DateTime`](../data-types/datetime.md) または [`DateTime64`](../data-types/datetime64.md) の値であり、2 番目の引数が定数のフォーマット文字列、3 番目の引数が省略可能な定数のタイムゾーン文字列である場合、この関数は型 [`String`](../data-types/string.md) の値を返します。つまり、[`formatDateTime`](#formatDateTime) と同様に動作します。
-  この場合、[MySQL の datetime フォーマット形式](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format) が使用されます。
+It can be called in two ways:
 
-**構文**
+- When given a single argument of type [`Integer`](../data-types/int-uint.md), it returns a value of type [`DateTime`](../data-types/datetime.md), i.e. behaves like [`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#toDateTime).
+- When given two or three arguments where the first argument is a value of type [`Integer`](../data-types/int-uint.md), [`Date`](../data-types/date.md), [`Date32`](../data-types/date32.md), [`DateTime`](../data-types/datetime.md) or [`DateTime64`](../data-types/datetime64.md), the second argument is a constant format string and the third argument is an optional constant time zone string, the function returns a value of type [`String`](../data-types/string.md), i.e. it behaves like [`formatDateTime`](#formatDateTime).
+  In this case, [MySQL's datetime format style](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format) is used.
+    
+
+**Syntax**
 
 ```sql
 fromUnixTimestamp(timestamp)
 fromUnixTimestamp(timestamp[, format[, timezone]])
 ```
 
-**別名**: `FROM_UNIXTIME`
+**Aliases**: `FROM_UNIXTIME`
 
-**引数**
+**Arguments**
 
-* `timestamp` — Unix タイムスタンプ、または日付／日時を表す値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `format` — 省略可能。出力用の定数フォーマット文字列。[`String`](/sql-reference/data-types/string)
-* `timezone` — 省略可能。タイムゾーンを表す定数文字列。[`String`](/sql-reference/data-types/string)
+- `timestamp` — Unix timestamp or date/date with time value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `format` — Optional. Constant format string for output formatting. [`String`](/sql-reference/data-types/string)
+- `timezone` — Optional. Constant time zone string. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-引数が 1 つの場合は、そのタイムスタンプに対応する `DateTime` を返し、引数が 2 つまたは 3 つの場合は String を返します。[`DateTime`](/sql-reference/data-types/datetime) または [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**例**
+Returns `DateTime` of the timestamp when called with one argument, or a String  when called with two or three arguments. [`DateTime`](/sql-reference/data-types/datetime) or [`String`](/sql-reference/data-types/string)
 
-**Unix タイムスタンプを DateTime に変換する**
+**Examples**
+
+**Convert Unix timestamp to DateTime**
 
 ```sql title=Query
 SELECT fromUnixTimestamp(423543535)
@@ -1830,7 +1997,7 @@ SELECT fromUnixTimestamp(423543535)
 └──────────────────────────────┘
 ```
 
-**Unix タイムスタンプを指定フォーマットに変換**
+**Convert Unix timestamp with format**
 
 ```sql title=Query
 SELECT fromUnixTimestamp(1234334543, '%Y-%m-%d %R:%S') AS DateTime
@@ -1842,38 +2009,43 @@ SELECT fromUnixTimestamp(1234334543, '%Y-%m-%d %R:%S') AS DateTime
 └─────────────────────┘
 ```
 
+
+
 ## fromUnixTimestampInJodaSyntax {#fromUnixTimestampInJodaSyntax}
 
-導入バージョン: v23.1
+Introduced in: v23.1
 
-この関数は Unix タイムスタンプをカレンダー日付および時刻に変換します。
 
-呼び出し方法は 2 通りあります。
+This function converts a Unix timestamp to a calendar date and a time of a day.
 
-単一の引数として [`Integer`](../data-types/int-uint.md) 型を渡した場合、[`DateTime`](../data-types/datetime.md) 型の値を返します。つまり、[`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#todatetime) と同様に動作します。
+It can be called in two ways:
 
-1 番目の引数が [`Integer`](../data-types/int-uint.md)、[`Date`](../data-types/date.md)、[`Date32`](../data-types/date32.md)、[`DateTime`](../data-types/datetime.md) あるいは [`DateTime64`](../data-types/datetime64.md) 型の値であり、2 番目の引数に定数のフォーマット文字列、3 番目の引数に省略可能な定数のタイムゾーン文字列を指定した 2 つまたは 3 つの引数で呼び出した場合、関数は [`String`](../data-types/string.md) 型の値を返します。つまり、[`formatDateTimeInJodaSyntax`](#formatDateTimeInJodaSyntax) と同様に動作します。この場合、[Joda の日時フォーマットスタイル](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html) が使用されます。
+When given a single argument of type [`Integer`](../data-types/int-uint.md), it returns a value of type [`DateTime`](../data-types/datetime.md), i.e. behaves like [`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#toDateTime).
 
-**構文**
+When given two or three arguments where the first argument is a value of type [`Integer`](../data-types/int-uint.md), [`Date`](../data-types/date.md), [`Date32`](../data-types/date32.md), [`DateTime`](../data-types/datetime.md) or [`DateTime64`](../data-types/datetime64.md), the second argument is a constant format string and the third argument is an optional constant time zone string, the function returns a value of type [`String`](../data-types/string.md), i.e. it behaves like [`formatDateTimeInJodaSyntax`](#formatDateTimeInJodaSyntax). In this case, [Joda datetime format style](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html) is used.
+    
+
+**Syntax**
 
 ```sql
 fromUnixTimestampInJodaSyntax(timestamp)
 fromUnixTimestampInJodaSyntax(timestamp, format[, timezone])
 ```
 
-**引数**
+**Arguments**
 
-* `timestamp` — Unix タイムスタンプまたは日付/時刻の値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `format` — 省略可能。出力の書式指定に Joda 構文を使用する定数のフォーマット文字列。[`String`](/sql-reference/data-types/string)
-* `timezone` — 省略可能。タイムゾーンを表す定数文字列。[`String`](/sql-reference/data-types/string)
+- `timestamp` — Unix timestamp or date/time value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `format` — Optional. Constant format string using Joda syntax for output formatting. [`String`](/sql-reference/data-types/string)
+- `timezone` — Optional. Constant time zone string. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-1 つの引数で呼び出された場合は日時を、2 または 3 つの引数で呼び出された場合は文字列を返します。[`DateTime`](/sql-reference/data-types/datetime) または [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**例**
+Returns a date with time when called with one argument, or a String when called with two or three arguments.} [`DateTime`](/sql-reference/data-types/datetime) or [`String`](/sql-reference/data-types/string)
 
-**Unix タイムスタンプを Joda フォーマットで変換する**
+**Examples**
+
+**Convert Unix timestamp with Joda format**
 
 ```sql title=Query
 SELECT fromUnixTimestampInJodaSyntax(1234334543, 'yyyy-MM-dd HH:mm:ss', 'UTC') AS DateTime
@@ -1885,36 +2057,40 @@ SELECT fromUnixTimestampInJodaSyntax(1234334543, 'yyyy-MM-dd HH:mm:ss', 'UTC') A
 └─────────────────────┘
 ```
 
+
+
 ## makeDate {#makeDate}
 
-導入バージョン: v22.6
+Introduced in: v22.6
 
-次のいずれかから `Date` を生成します：
 
-* 年・月・日
-* 年・年内通算日
+Creates a `Date` from either:
+- a year, month and day
+- a year and day of year
+    
 
-**構文**
+**Syntax**
 
 ```sql
 makeDate(year, month, day)
 makeDate(year, day_of_year)
 ```
 
-**引数**
+**Arguments**
 
-* `year` — 年を表す数値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
-* `month` — 月を表す数値 (1-12)。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
-* `day` — 日を表す数値 (1-31)。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
-* `day_of_year` — 年初からの通算日 (1-365)。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
+- `year` — Year number. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `month` — Month number (1-12). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `day` — Day of the month (1-31). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `day_of_year` — Day of the year (1-365). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
 
-**戻り値**
 
-指定した引数から構築された `Date` 型の値を返します。[`Date`](/sql-reference/data-types/date)
+**Returned value**
 
-**使用例**
+Returns a `Date` value constructed from the provided arguments [`Date`](/sql-reference/data-types/date)
 
-**年・月・日から `Date` 値を作成する**
+**Examples**
+
+**Date from a year, month, day**
 
 ```sql title=Query
 SELECT makeDate(2023, 2, 28) AS date;
@@ -1926,7 +2102,7 @@ SELECT makeDate(2023, 2, 28) AS date;
 └────────────┘
 ```
 
-**年と年内通算日から日付を生成**
+**Date from year and day of year**
 
 ```sql title=Query
 SELECT makeDate(2023, 42) AS date;
@@ -1938,36 +2114,40 @@ SELECT makeDate(2023, 42) AS date;
 └────────────┘
 ```
 
+
+
 ## makeDate32 {#makeDate32}
 
-導入バージョン: v22.6
+Introduced in: v22.6
 
-次のいずれかから `Date32` を生成します:
 
-* 年・月・日
-* 年と年内通算日（通し日）
+Creates a `Date32` from either:
+- a year, month and day
+- a year and day of year
+    
 
-**構文**
+**Syntax**
 
 ```sql
 makeDate32(year, month, day)
 makeDate32(year, day_of_year)
 ```
 
-**引数**
+**Arguments**
 
-* `year` — 年を表す数値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
-* `month` — 月を表す数値 (1-12)。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
-* `day` — 月の日 (1-31)。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
-* `day_of_year` — 年内通算日 (1-365)。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
+- `year` — Year number. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `month` — Month number (1-12). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `day` — Day of the month (1-31). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `day_of_year` — Day of the year (1-365). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
 
-**戻り値**
 
-指定した引数から構築された [`Date32`](/sql-reference/data-types/date32) 型の値を返します。
+**Returned value**
 
-**例**
+Returns a `Date32` value constructed from the provided arguments [`Date32`](/sql-reference/data-types/date32)
 
-**year, month, day から Date32 を生成**
+**Examples**
+
+**Date32 from a year, month, day**
 
 ```sql title=Query
 SELECT makeDate(2023, 2, 28) AS date;
@@ -1979,7 +2159,7 @@ SELECT makeDate(2023, 2, 28) AS date;
 └────────────┘
 ```
 
-**年と年内通算日からの Date32**
+**Date32 from year and day of year**
 
 ```sql title=Query
 SELECT makeDate(2023, 42) AS date;
@@ -1991,35 +2171,40 @@ SELECT makeDate(2023, 42) AS date;
 └────────────┘
 ```
 
+
+
 ## makeDateTime {#makeDateTime}
 
-導入バージョン: v22.6
+Introduced in: v22.6
 
-年、月、日、時、分、秒から `DateTime` を生成し、タイムゾーンを任意指定できます。
 
-**構文**
+Creates a `DateTime` from year, month, day, hour, minute, and second, with optional timezone.
+    
+
+**Syntax**
 
 ```sql
 makeDateTime(year, month, day, hour, minute, second[, timezone])
 ```
 
-**引数**
+**Arguments**
 
-* `year` — 年を表す数値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
-* `month` — 月を表す数値 (1-12)。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
-* `day` — 月内の日付 (1-31)。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
-* `hour` — 時 (0-23)。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
-* `minute` — 分 (0-59)。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
-* `second` — 秒 (0-59)。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
-* `timezone` — タイムゾーン名。[`String`](/sql-reference/data-types/string)
+- `year` — Year number. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `month` — Month number (1-12). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `day` — Day of the month (1-31). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `hour` — Hour (0-23). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `minute` — Minute (0-59). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `second` — Second (0-59). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `timezone` — Timezone name. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-指定した引数から構築される `DateTime` 値を返します。[`DateTime`](/sql-reference/data-types/datetime)
+**Returned value**
 
-**例**
+Returns a `DateTime` value constructed from the provided arguments [`DateTime`](/sql-reference/data-types/datetime)
 
-**year, month, day, hour, minute, second から DateTime を構築**
+**Examples**
+
+**DateTime from year, month, day, hour, minute, second**
 
 ```sql title=Query
 SELECT makeDateTime(2023, 2, 28, 17, 12, 33) AS DateTime;
@@ -2031,37 +2216,42 @@ SELECT makeDateTime(2023, 2, 28, 17, 12, 33) AS DateTime;
 └─────────────────────┘
 ```
 
+
+
 ## makeDateTime64 {#makeDateTime64}
 
-導入バージョン: v22.6
+Introduced in: v22.6
 
-年、月、日、時、分、秒に、オプションの小数部、精度、タイムゾーンを指定して、`DateTime64` を生成します。
 
-**構文**
+Creates a `DateTime64` from year, month, day, hour, minute, second, with optional fraction, precision, and timezone.
+    
+
+**Syntax**
 
 ```sql
 makeDateTime64(year, month, day, hour, minute, second[, fraction[, precision[, timezone]]])
 ```
 
-**引数**
+**Arguments**
 
-* `year` — 年を表す数値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
-* `month` — 月の番号 (1-12)。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
-* `day` — 月の日付 (1-31)。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
-* `hour` — 時 (0-23)。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
-* `minute` — 分 (0-59)。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
-* `second` — 秒 (0-59)。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
-* `fraction` — 秒の小数部分。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
-* `precision` — 小数部分の精度 (0-9)。[`UInt8`](/sql-reference/data-types/int-uint)
-* `timezone` — タイムゾーン名。[`String`](/sql-reference/data-types/string)
+- `year` — Year number. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `month` — Month number (1-12). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `day` — Day of the month (1-31). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `hour` — Hour (0-23). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `minute` — Minute (0-59). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `second` — Second (0-59). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `fraction` — Fractional part of the second. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `precision` — Precision for the fractional part (0-9). [`UInt8`](/sql-reference/data-types/int-uint)
+- `timezone` — Timezone name. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-指定された引数から構築された `DateTime64` 型の値を返します。[`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**例**
+Returns a `DateTime64` value constructed from the provided arguments [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**year, month, day, hour, minute, second から DateTime64 を生成**
+**Examples**
+
+**DateTime64 from year, month, day, hour, minute, second**
 
 ```sql title=Query
 SELECT makeDateTime64(2023, 5, 15, 10, 30, 45, 779, 5);
@@ -2073,29 +2263,34 @@ SELECT makeDateTime64(2023, 5, 15, 10, 30, 45, 779, 5);
 └─────────────────────────────────────────────────┘
 ```
 
+
+
 ## monthName {#monthName}
 
-導入バージョン: v22.1
+Introduced in: v22.1
 
-日付または日時の値から、月名を文字列として返します。
 
-**構文**
+Returns the name of the month as a string from a date or date with time value.
+    
+
+**Syntax**
 
 ```sql
 monthName(datetime)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 日付または日時。[`Date`](/sql-reference/data-types/date)、[`Date32`](/sql-reference/data-types/date32)、[`DateTime`](/sql-reference/data-types/datetime)、[`DateTime64`](/sql-reference/data-types/datetime64) のいずれか。
+- `datetime` — Date or date with time. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**戻り値**
 
-月の名前を返します。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**使用例**
+Returns the name of the month. [`String`](/sql-reference/data-types/string)
 
-**日付から月名を取得する**
+**Examples**
+
+**Get month name from date**
 
 ```sql title=Query
 WITH toDateTime('2021-04-14 11:22:33') AS date_value
@@ -2108,31 +2303,36 @@ SELECT monthName(date_value)
 └───────────────────────┘
 ```
 
+
+
 ## now {#now}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-クエリ解析時の現在の日時を返します。この関数は定数式です。
 
-**構文**
+Returns the current date and time at the moment of query analysis. The function is a constant expression.
+    
+
+**Syntax**
 
 ```sql
 now([timezone])
 ```
 
-**別名**: `current_timestamp`
+**Aliases**: `current_timestamp`
 
-**引数**
+**Arguments**
 
-* `timezone` — 省略可能。返される値のタイムゾーン名。[`String`](/sql-reference/data-types/string)
+- `timezone` — Optional. Timezone name for the returned value. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-現在の日付と時刻を返します。[`DateTime`](/sql-reference/data-types/datetime)
+**Returned value**
 
-**例**
+Returns the current date and time. [`DateTime`](/sql-reference/data-types/datetime)
 
-**タイムゾーンを指定しないクエリ**
+**Examples**
+
+**Query without timezone**
 
 ```sql title=Query
 SELECT now()
@@ -2144,7 +2344,7 @@ SELECT now()
 └─────────────────────┘
 ```
 
-**タイムゾーンを指定したクエリ**
+**Query with specified timezone**
 
 ```sql title=Query
 SELECT now('Asia/Istanbul')
@@ -2156,30 +2356,35 @@ SELECT now('Asia/Istanbul')
 └──────────────────────┘
 ```
 
+
+
 ## now64 {#now64}
 
-導入バージョン: v20.1
+Introduced in: v20.1
 
-クエリ解析時の現在の日時をサブ秒精度で返します。この関数は定数式です。
 
-**構文**
+Returns the current date and time with sub-second precision at the moment of query analysis. The function is a constant expression.
+    
+
+**Syntax**
 
 ```sql
 now64([scale[, timezone]])
 ```
 
-**引数**
+**Arguments**
 
-* `scale` — 任意。ティックサイズ（精度）：10^-scale 秒。許容範囲: [0 : 9]。一般的には 3（デフォルト）（ミリ秒）、6（マイクロ秒）、9（ナノ秒）が使用されます。[`UInt8`](/sql-reference/data-types/int-uint)
-* `timezone` — 任意。返される値のタイムゾーン名。[`String`](/sql-reference/data-types/string)
+- `scale` — Optional. Tick size (precision): 10^-precision seconds. Valid range: [0 : 9]. Typically, are used - 3 (default) (milliseconds), 6 (microseconds), 9 (nanoseconds). [`UInt8`](/sql-reference/data-types/int-uint)
+- `timezone` — Optional. Timezone name for the returned value. [`String`](/sql-reference/data-types/string)
 
-**返される値**
 
-サブ秒精度で現在の日時を返します。[`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**例**
+Returns current date and time with sub-second precision. [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**デフォルト精度およびカスタム精度でのクエリ**
+**Examples**
+
+**Query with default and custom precision**
 
 ```sql title=Query
 SELECT now64(), now64(9, 'Asia/Istanbul')
@@ -2191,31 +2396,36 @@ SELECT now64(), now64(9, 'Asia/Istanbul')
 └─────────────────────────┴───────────────────────────────┘
 ```
 
+
+
 ## nowInBlock {#nowInBlock}
 
-導入バージョン: v22.8
+Introduced in: v22.8
 
-各データブロックの処理時点における現在の日時を返します。関数 [`now`](#now) と異なり、これは定数式ではなく、長時間実行されるクエリではブロックごとに異なる値が返されます。
 
-長時間実行される `INSERT SELECT` クエリで現在時刻を生成する用途に適しています。
+Returns the current date and time at the moment of processing of each block of data. In contrast to the function [`now`](#now), it is not a constant expression, and the returned value will be different in different blocks for long-running queries.
 
-**構文**
+It makes sense to use this function to generate the current time in long-running `INSERT SELECT` queries.
+    
+
+**Syntax**
 
 ```sql
 nowInBlock([timezone])
 ```
 
-**引数**
+**Arguments**
 
-* `timezone` — 省略可能。返される値のタイムゾーン名です。[`String`](/sql-reference/data-types/string)
+- `timezone` — Optional. Timezone name for the returned value. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-各データブロックを処理している時点の現在の日付と時刻を返します。[`DateTime`](/sql-reference/data-types/datetime)
+**Returned value**
 
-**例**
+Returns the current date and time at the moment of processing of each block of data. [`DateTime`](/sql-reference/data-types/datetime)
 
-**now() 関数との違い**
+**Examples**
+
+**Difference with the now() function**
 
 ```sql title=Query
 SELECT
@@ -2235,32 +2445,37 @@ FORMAT PrettyCompactMonoBlock
 └─────────────────────┴─────────────────────┴──────────┘
 ```
 
+
+
 ## nowInBlock64 {#nowInBlock64}
 
-導入バージョン: v25.8
+Introduced in: v25.8
 
-各データブロックを処理する時点の現在の日時をミリ秒単位で返します。関数 [now64](#now64) と異なり、これは定数式ではなく、長時間実行されるクエリではブロックごとに異なる値が返されます。
 
-長時間実行される INSERT SELECT クエリで現在時刻を生成する場合に、この関数を使用するのが有効です。
+Returns the current date and time at the moment of processing of each block of data in milliseconds. In contrast to the function [now64](#now64), it is not a constant expression, and the returned value will be different in different blocks for long-running queries.
 
-**構文**
+It makes sense to use this function to generate the current time in long-running INSERT SELECT queries.
+    
+
+**Syntax**
 
 ```sql
 nowInBlock([scale[, timezone]])
 ```
 
-**引数**
+**Arguments**
 
-* `scale` — 省略可。ティックサイズ（精度）。単位は 10^-precision 秒。有効範囲: [0 : 9]。一般的な値は 3（デフォルト、ミリ秒）、6（マイクロ秒）、9（ナノ秒）です。[`UInt8`](/sql-reference/data-types/int-uint)
-* `timezone` — 省略可。戻り値のタイムゾーン名。[`String`](/sql-reference/data-types/string)
+- `scale` — Optional. Tick size (precision): 10^-precision seconds. Valid range: [0 : 9]. Typically, are used - 3 (default) (milliseconds), 6 (microseconds), 9 (nanoseconds). [`UInt8`](/sql-reference/data-types/int-uint)
+- `timezone` — Optional. Timezone name for the returned value. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-各データブロックを処理する時点の現在日時を、サブ秒精度で返します。[`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**例**
+Returns the current date and time at the moment of processing of each block of data with sub-second precision. [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**now64() 関数との違い**
+**Examples**
+
+**Difference with the now64() function**
 
 ```sql title=Query
 SELECT
@@ -2280,32 +2495,36 @@ FORMAT PrettyCompactMonoBlock
 └─────────────────────────┴─────────────────────────┴──────────┘
 ```
 
+
+
 ## serverTimezone {#serverTimezone}
 
-導入バージョン: v23.6
+Introduced in: v23.6
 
-サーバーのタイムゾーン、つまり [`timezone`](/operations/server-configuration-parameters/settings#timezone) 設定の値を返します。
-関数が分散テーブルのコンテキストで実行される場合は、各分片に対応する値を持つ通常のカラムを返します。そうでない場合は定数値を返します。
 
-**構文**
+Returns the timezone of the server, i.e. the value of the [`timezone`](/operations/server-configuration-parameters/settings#timezone) setting.
+If the function is executed in the context of a distributed table, then it generates a normal column with values relevant to each shard. Otherwise, it produces a constant value.
+    
+
+**Syntax**
 
 ```sql
 serverTimeZone()
 ```
 
-**別名**: `serverTimeZone`
+**Aliases**: `serverTimeZone`
 
-**引数**
+**Arguments**
 
-* なし。
+- None.
 
-**戻り値**
+**Returned value**
 
-サーバーのタイムゾーンを [`String`](/sql-reference/data-types/string) 型として返します。
+Returns the server timezone as a [`String`](/sql-reference/data-types/string)
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 SELECT serverTimeZone()
@@ -2317,31 +2536,36 @@ SELECT serverTimeZone()
 └──────────────────┘
 ```
 
+
+
 ## subDate {#subDate}
 
-導入バージョン: v23.9
+Introduced in: v23.9
 
-指定された日付、日時、または文字列エンコードされた日付または日時から時間間隔を減算します。
-減算の結果がデータ型の範囲外となる場合、結果は未定義です。
 
-**構文**
+Subtracts the time interval from the provided date, date with time or string-encoded date or date with time.
+If the subtraction results in a value outside the bounds of the data type, the result is undefined.
+    
+
+**Syntax**
 
 ```sql
 subDate(datetime, interval)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — `interval` を差し引く元となる日付または日付時刻。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `interval` — 減算する間隔値。[`Interval`](/sql-reference/data-types/int-uint)
+- `datetime` — The date or date with time from which `interval` is subtracted. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `interval` — Interval to subtract. [`Interval`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-`datetime` から `interval` を減算して得られた日付または日付時刻を返します。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**例**
+Returns date or date with time obtained by subtracting `interval` from `datetime`. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**日付から interval を減算する**
+**Examples**
+
+**Subtract interval from date**
 
 ```sql title=Query
 SELECT subDate(toDate('2018-01-01'), INTERVAL 3 YEAR)
@@ -2353,30 +2577,35 @@ SELECT subDate(toDate('2018-01-01'), INTERVAL 3 YEAR)
 └──────────────────────────────────────────────────┘
 ```
 
+
+
 ## subtractDays {#subtractDays}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-日付、日時、または文字列で表現された日付/日時から、指定した日数を減算します。
 
-**構文**
+Subtracts a specified number of days from a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 subtractDays(datetime, num)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 指定した日数を減算する対象の日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) または [`String`](/sql-reference/data-types/string)
-* `num` — 減算する日数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to subtract specified number of days from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of days to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**戻り値**
 
-`datetime` から `num` 日を減算した値を返します。型は [`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) のいずれかです。
+**Returned value**
 
-**例**
+Returns `datetime` minus `num` days [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**異なる日付型から日数を減算する**
+**Examples**
+
+**Subtract days from different date types**
 
 ```sql title=Query
 WITH
@@ -2395,7 +2624,7 @@ SELECT
 └─────────────────────────┴──────────────────────────────┴─────────────────────────────────────┘
 ```
 
-**代替の INTERVAL 構文を使用する**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::Date, INTERVAL 10 day)
@@ -2407,30 +2636,35 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 day)
 └──────────────────────────┘
 ```
 
+
+
 ## subtractHours {#subtractHours}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-日付、日時、または文字列でエンコードされた日付もしくは日時から、指定した時間数だけ差し引きます。
 
-**構文**
+Subtracts a specified number of hours from a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 subtractHours(datetime, num)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 指定した時間を減算する対象の日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) または [`String`](/sql-reference/data-types/string)
-* `num` — 減算する時間数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to subtract specified number of hours from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of hours to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**戻り値**
 
-`datetime` から `num` 時間を引いた結果を返す。型は [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64(3)`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**使用例**
+Returns `datetime` minus `num` hours [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64(3)`](/sql-reference/data-types/datetime64)
 
-**異なる日付型から時間を減算する**
+**Examples**
+
+**Subtract hours from different date types**
 
 ```sql title=Query
 WITH
@@ -2449,7 +2683,7 @@ SELECT
 └──────────────────────────┴───────────────────────────────┴──────────────────────────────────────┘
 ```
 
-**別の INTERVAL 構文を使用する**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::Date, INTERVAL 10 hour)
@@ -2461,32 +2695,38 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 hour)
 └──────────────────────────┘
 ```
 
+
+
 ## subtractInterval {#subtractInterval}
 
-導入バージョン: v22.11
+Introduced in: v22.11
 
-符号を反転させたインターバルを、別のインターバルまたはインターバルのタプルに加算します。
 
-注意: 同じ型のインターバルは 1 つのインターバルに結合されます。例えば `toIntervalDay(2)` と `toIntervalDay(1)` が渡された場合、結果は `(2,1)` ではなく `(1)` になります。
+Adds a negated interval to another interval or tuple of intervals.
 
-**構文**
+Note: Intervals of the same type will be combined into a single interval. For instance if `toIntervalDay(2)` and `toIntervalDay(1)` are
+passed then the result will be `(1)` rather than `(2,1)`.
+    
+
+**Syntax**
 
 ```sql
 subtractInterval(interval_1, interval_2)
 ```
 
-**引数**
+**Arguments**
 
-* `interval_1` — 1 つ目の interval、または interval のタプル。[`Interval`](/sql-reference/data-types/int-uint) または [`Tuple(Interval)`](/sql-reference/data-types/tuple)
-* `interval_2` — 符号反転される 2 つ目の interval。[`Interval`](/sql-reference/data-types/int-uint)
+- `interval_1` — First interval or interval of tuples. [`Interval`](/sql-reference/data-types/int-uint) or [`Tuple(Interval)`](/sql-reference/data-types/tuple)
+- `interval_2` — Second interval to be negated. [`Interval`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-interval のタプル [`Tuple(T)`](/sql-reference/data-types/tuple) を返します。
+**Returned value**
 
-**例**
+Returns a tuple of intervals [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**interval の減算**
+**Examples**
+
+**Subtract intervals**
 
 ```sql title=Query
 SELECT subtractInterval(INTERVAL 1 DAY, INTERVAL 1 MONTH);
@@ -2506,30 +2746,35 @@ SELECT subtractInterval(INTERVAL 2 DAY, INTERVAL 1 DAY);
 └──────────────────────────────────────────────────────┘
 ```
 
+
+
 ## subtractMicroseconds {#subtractMicroseconds}
 
-導入バージョン: v22.6
+Introduced in: v22.6
 
-指定されたマイクロ秒数を、日時または文字列表現の日時から減算します。
 
-**構文**
+Subtracts a specified number of microseconds from a date with time or a string-encoded date with time.
+    
+
+**Syntax**
 
 ```sql
 subtractMicroseconds(datetime, num)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 指定されたマイクロ秒数を減算する対象の日時。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) または [`String`](/sql-reference/data-types/string)
-* `num` — 減算するマイクロ秒数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date with time to subtract specified number of microseconds from. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of microseconds to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**返り値**
 
-`datetime` から `num` マイクロ秒を引いた値を返します。型は [`DateTime64`](/sql-reference/data-types/datetime64) です。
+**Returned value**
 
-**例**
+Returns `datetime` minus `num` microseconds [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**異なる日時データ型からマイクロ秒を減算する**
+**Examples**
+
+**Subtract microseconds from different date time types**
 
 ```sql title=Query
 WITH
@@ -2546,7 +2791,7 @@ SELECT
 └──────────────────────────────────────┴─────────────────────────────────────────────┘
 ```
 
-**別の INTERVAL 構文を使用する**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::DateTime, INTERVAL 10 microsecond)
@@ -2558,30 +2803,35 @@ SELECT dateSub('1998-06-16'::DateTime, INTERVAL 10 microsecond)
 └────────────────────────────┘
 ```
 
+
+
 ## subtractMilliseconds {#subtractMilliseconds}
 
-導入バージョン: v22.6
+Introduced in: v22.6
 
-日時、または文字列表現の日時から、指定したミリ秒数を減算します。
 
-**構文**
+Subtracts a specified number of milliseconds from a date with time or a string-encoded date with time.
+    
+
+**Syntax**
 
 ```sql
 subtractMilliseconds(datetime, num)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 指定したミリ秒数を減算する対象の日時。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) または [`String`](/sql-reference/data-types/string)
-* `num` — 減算するミリ秒数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date with time to subtract specified number of milliseconds from. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of milliseconds to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**戻り値**
 
-`datetime` から `num` ミリ秒を引いた値を返します。型は [`DateTime64`](/sql-reference/data-types/datetime64) です。
+**Returned value**
 
-**使用例**
+Returns `datetime` minus `num` milliseconds [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**異なる日時型に対してミリ秒を減算する**
+**Examples**
+
+**Subtract milliseconds from different date time types**
 
 ```sql title=Query
 WITH
@@ -2598,7 +2848,7 @@ SELECT
 └──────────────────────────────────────┴─────────────────────────────────────────────┘
 ```
 
-**代替の INTERVAL 構文を使用する**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::DateTime, INTERVAL 10 millisecond)
@@ -2610,30 +2860,35 @@ SELECT dateSub('1998-06-16'::DateTime, INTERVAL 10 millisecond)
 └──────────────────────────┘
 ```
 
+
+
 ## subtractMinutes {#subtractMinutes}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-指定した分数を、日付、日時、または文字列表現の日付／日時から減算します。
 
-**構文**
+Subtracts a specified number of minutes from a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 subtractMinutes(datetime, num)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 指定した分数（分の数）を減算する対象の日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) または [`String`](/sql-reference/data-types/string)
-* `num` — 減算する分数（分の数）。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to subtract specified number of minutes from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of minutes to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**戻り値**
 
-`datetime` から `num` 分を減算した値を返します。型は [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64(3)`](/sql-reference/data-types/datetime64) です。
+**Returned value**
 
-**使用例**
+Returns `datetime` minus `num` minutes [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64(3)`](/sql-reference/data-types/datetime64)
 
-**異なる日付型から分を減算する**
+**Examples**
+
+**Subtract minutes from different date types**
 
 ```sql title=Query
 WITH
@@ -2652,7 +2907,7 @@ SELECT
 └────────────────────────────┴─────────────────────────────────┴────────────────────────────────────────┘
 ```
 
-**代替の INTERVAL 構文を使用する**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::Date, INTERVAL 10 minute)
@@ -2664,30 +2919,35 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 minute)
 └──────────────────────────┘
 ```
 
+
+
 ## subtractMonths {#subtractMonths}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-指定した月数を、日付、日時、またはそれらを文字列として表現した値から減算します。
 
-**構文**
+Subtracts a specified number of months from a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 subtractMonths(datetime, num)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 指定した月数を減算する基準となる日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) または [`String`](/sql-reference/data-types/string)
-* `num` — 減算する月数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to subtract specified number of months from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of months to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**戻り値**
 
-`datetime` から `num` か月分を減算した値を返します。型は [`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**使用例**
+Returns `datetime` minus `num` months [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**異なる日付型から月を減算する**
+**Examples**
+
+**Subtract months from different date types**
 
 ```sql title=Query
 WITH
@@ -2706,7 +2966,7 @@ SELECT
 └───────────────────────────┴────────────────────────────────┴───────────────────────────────────────┘
 ```
 
-**別の INTERVAL 構文を使用する**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::Date, INTERVAL 10 month)
@@ -2718,30 +2978,35 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 month)
 └──────────────────────────┘
 ```
 
+
+
 ## subtractNanoseconds {#subtractNanoseconds}
 
-導入バージョン: v20.1
+Introduced in: v20.1
 
-日時型の値、または文字列表現の日時から、指定したナノ秒数を減算します。
 
-**構文**
+Subtracts a specified number of nanoseconds from a date with time or a string-encoded date with time.
+    
+
+**Syntax**
 
 ```sql
 subtractNanoseconds(datetime, num)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 指定したナノ秒数を減算する対象の日時。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) または [`String`](/sql-reference/data-types/string)
-* `num` — 減算するナノ秒数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date with time to subtract specified number of nanoseconds from. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of nanoseconds to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**戻り値**
 
-`datetime` から `num` ナノ秒を引いた値を返します。戻り値の型は [`DateTime64`](/sql-reference/data-types/datetime64) です。
+**Returned value**
 
-**使用例**
+Returns `datetime` minus `num` nanoseconds [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**異なる日時型からナノ秒を減算する**
+**Examples**
+
+**Subtract nanoseconds from different date time types**
 
 ```sql title=Query
 WITH
@@ -2758,7 +3023,7 @@ SELECT
 └─────────────────────────────────────┴────────────────────────────────────────────┘
 ```
 
-**代替の INTERVAL 構文を使用する**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::DateTime, INTERVAL 10 nanosecond)
@@ -2770,30 +3035,35 @@ SELECT dateSub('1998-06-16'::DateTime, INTERVAL 10 nanosecond)
 └───────────────────────────────┘
 ```
 
+
+
 ## subtractQuarters {#subtractQuarters}
 
-導入バージョン: v20.1
+Introduced in: v20.1
 
-日付、日時、または文字列形式の日付・日時から、指定した数の四半期を減算します。
 
-**構文**
+Subtracts a specified number of quarters from a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 subtractQuarters(datetime, num)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 指定した四半期数を減算する対象の日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) または [`String`](/sql-reference/data-types/string)
-* `num` — 減算する四半期数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to subtract specified number of quarters from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of quarters to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**戻り値**
 
-`datetime` から `num` 四半期を減算した値を返す。型は [`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) のいずれか。
+**Returned value**
 
-**使用例**
+Returns `datetime` minus `num` quarters [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**異なる日付型に対して四半期を減算する**
+**Examples**
+
+**Subtract quarters from different date types**
 
 ```sql title=Query
 WITH
@@ -2812,7 +3082,7 @@ SELECT
 └─────────────────────────────┴──────────────────────────────────┴─────────────────────────────────────────┘
 ```
 
-**INTERVAL の別構文を使用する**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::Date, INTERVAL 10 quarter)
@@ -2824,30 +3094,35 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 quarter)
 └───────────────────────────┘
 ```
 
+
+
 ## subtractSeconds {#subtractSeconds}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-指定した秒数を、日付、日時、または文字列表現の日時/日付から減算します。
 
-**構文**
+Subtracts a specified number of seconds from a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 subtractSeconds(datetime, num)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 指定した秒数を減算する対象の日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) または [`String`](/sql-reference/data-types/string)
-* `num` — 減算する秒数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to subtract specified number of seconds from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of seconds to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**戻り値**
 
-`datetime` から `num` 秒を減算した値を返す。型は [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64(3)`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**使用例**
+Returns `datetime` minus `num` seconds [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64(3)`](/sql-reference/data-types/datetime64)
 
-**異なる日付型に対して秒数を減算する**
+**Examples**
+
+**Subtract seconds from different date types**
 
 ```sql title=Query
 WITH
@@ -2866,7 +3141,7 @@ SELECT
 └────────────────────────────┴─────────────────────────────────┴────────────────────────────────────────┘
 ```
 
-**代替の INTERVAL 構文を使用する**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::Date, INTERVAL 10 second)
@@ -2878,30 +3153,35 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 second)
 └──────────────────────────┘
 ```
 
+
+
 ## subtractTupleOfIntervals {#subtractTupleOfIntervals}
 
 Introduced in: v22.11
 
-日付または日時から、タプルで指定された複数の時間間隔を連続して差し引きます。
 
-**構文**
+Consecutively subtracts a tuple of intervals from a date or a date with time.
+    
+
+**Syntax**
 
 ```sql
 subtractTupleOfIntervals(datetime, intervals)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — インターバルを減算する対象となる日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `intervals` — `datetime` から減算するインターバルのタプル。[`Tuple(Interval)`](/sql-reference/data-types/tuple)
+- `datetime` — Date or date with time to subtract intervals from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `intervals` — Tuple of intervals to subtract from `datetime`. [`Tuple(Interval)`](/sql-reference/data-types/tuple)
 
-**返り値**
 
-`intervals` を減算した `date` を返します。型は [`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**例**
+Returns `date` with subtracted `intervals` [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**日付からインターバルのタプルを減算する**
+**Examples**
+
+**Subtract tuple of intervals from date**
 
 ```sql title=Query
 WITH toDate('2018-01-01') AS date SELECT subtractTupleOfIntervals(date, (INTERVAL 1 DAY, INTERVAL 1 YEAR))
@@ -2913,30 +3193,35 @@ WITH toDate('2018-01-01') AS date SELECT subtractTupleOfIntervals(date, (INTERVA
 └──────────────────────────┘
 ```
 
+
+
 ## subtractWeeks {#subtractWeeks}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-指定した週数を、日付、日時、またはそれらを表す文字列から減算します。
 
-**構文**
+Subtracts a specified number of weeks from a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 subtractWeeks(datetime, num)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 指定した週数を減算する基準となる日付または日時。 [`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) または [`String`](/sql-reference/data-types/string)
-* `num` — 減算する週数。 [`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to subtract specified number of weeks from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of weeks to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**戻り値**
 
-`datetime` から `num` 週を引いた値を返します。 [`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**例**
+Returns `datetime` minus `num` weeks [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**異なる日付型から週を減算する**
+**Examples**
+
+**Subtract weeks from different date types**
 
 ```sql title=Query
 WITH
@@ -2955,7 +3240,7 @@ SELECT
 └──────────────────────────┴───────────────────────────────┴──────────────────────────────────────┘
 ```
 
-**別の INTERVAL 構文を使用する**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::Date, INTERVAL 10 week)
@@ -2967,30 +3252,35 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 week)
 └──────────────────────────┘
 ```
 
+
+
 ## subtractYears {#subtractYears}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-日付、日時、または文字列形式の日付／日時から、指定した年数を減算します。
 
-**構文**
+Subtracts a specified number of years from a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 subtractYears(datetime, num)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 指定した年数を減算する対象の日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) または [`String`](/sql-reference/data-types/string)
-* `num` — 減算する年数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to subtract specified number of years from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of years to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**戻り値**
 
-`datetime` から `num` 年を減算した結果を返します。型は [`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) です。
+**Returned value**
 
-**使用例**
+Returns `datetime` minus `num` years [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**さまざまな日付型から年数を減算する**
+**Examples**
+
+**Subtract years from different date types**
 
 ```sql title=Query
 WITH
@@ -3009,7 +3299,7 @@ SELECT
 └──────────────────────────┴───────────────────────────────┴──────────────────────────────────────┘
 ```
 
-**INTERVAL の代替構文を使用する**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::Date, INTERVAL 10 year)
@@ -3021,35 +3311,40 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 year)
 └──────────────────────────┘
 ```
 
+
+
 ## timeDiff {#timeDiff}
 
-導入バージョン: v23.4
+Introduced in: v23.4
 
-2 つの日付、または時刻情報を含む日付（日時）の差を秒単位で返します。
-差分は `enddate` - `startdate` として計算されます。
 
-この関数は `dateDiff('second', startdate, enddate)` と同等です。
+Returns the difference between two dates or dates with time values in seconds.
+The difference is calculated as `enddate` - `startdate`.
 
-他の単位（時間、日、月など）で時間差を計算する場合は、代わりに [`dateDiff`](#dateDiff) 関数を使用してください。
+This function is equivalent to `dateDiff('second', startdate, enddate)`.
 
-**構文**
+For calculating time differences in other units (hours, days, months, etc.), use the [`dateDiff`](#dateDiff) function instead.
+    
+
+**Syntax**
 
 ```sql
 timeDiff(startdate, enddate)
 ```
 
-**引数**
+**Arguments**
 
-* `startdate` — 減算の対象となる最初の時刻値（減数）。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `enddate` — そこから減算する 2 番目の時刻値（被減数）。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+- `startdate` — The first time value to subtract (the subtrahend). [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `enddate` — The second time value to subtract from (the minuend). [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**返り値**
 
-`enddate` と `startdate` の差分を秒単位で返します。[`Int64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the difference between `enddate` and `startdate` expressed in seconds. [`Int64`](/sql-reference/data-types/int-uint)
 
-**時間差を秒単位で計算する**
+**Examples**
+
+**Calculate time difference in seconds**
 
 ```sql title=Query
 SELECT timeDiff(toDateTime('2018-01-01 22:00:00'), toDateTime('2018-01-02 23:00:00')) AS res
@@ -3061,7 +3356,7 @@ SELECT timeDiff(toDateTime('2018-01-01 22:00:00'), toDateTime('2018-01-02 23:00:
 └───────┘
 ```
 
-**時間差を計算して時間数に変換する**
+**Calculate time difference and convert to hours**
 
 ```sql title=Query
 SELECT timeDiff(toDateTime('2018-01-01 22:00:00'), toDateTime('2018-01-02 23:00:00')) / 3600 AS hours
@@ -3073,7 +3368,7 @@ SELECT timeDiff(toDateTime('2018-01-01 22:00:00'), toDateTime('2018-01-02 23:00:
 └───────┘
 ```
 
-**秒を単位とする `dateDiff` と同等**
+**Equivalent to dateDiff with seconds**
 
 ```sql title=Query
 SELECT
@@ -3087,35 +3382,40 @@ SELECT
 └──────────────────┴──────────────────┘
 ```
 
+
+
 ## timeSlot {#timeSlot}
 
-導入: v1.1
+Introduced in: v1.1
 
-時刻を30分間隔の開始時刻に丸めます。
+
+Round the time to the start of a half-an-hour length interval.
 
 :::note
-この関数は拡張型の `Date32` および `DateTime64` の値を引数として受け取ることができますが、
-通常の範囲（`Date` では 1970 年から 2149 年まで / `DateTime` では 2106 年まで）を超える時刻を渡すと誤った結果を返します。
+Although this function can take values of the extended types `Date32` and `DateTime64` as an argument,
+passing it a time outside the normal range (year 1970 to 2149 for `Date` / 2106 for `DateTime`) will produce wrong results.
 :::
+    
 
-**構文**
+**Syntax**
 
 ```sql
 timeSlot(time[, time_zone])
 ```
 
-**引数**
+**Arguments**
 
-* `time` — 30 分単位の区間の開始時刻に丸める対象の時刻。[`DateTime`](/sql-reference/data-types/datetime) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `time_zone` — 省略可能。タイムゾーンを表す String 型の定数値または式。[`String`](/sql-reference/data-types/string)
+- `time` — Time to round to the start of a half-an-hour length interval. [`DateTime`](/sql-reference/data-types/datetime) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `time_zone` — Optional. A String type const value or an expression representing the time zone. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-30 分単位の区間の開始時刻に丸められた時刻を返します。[`DateTime`](/sql-reference/data-types/datetime)
+**Returned value**
 
-**使用例**
+Returns the time rounded to the start of a half-an-hour length interval. [`DateTime`](/sql-reference/data-types/datetime)
 
-**時刻を 30 分単位に丸める**
+**Examples**
+
+**Round time to half-hour interval**
 
 ```sql title=Query
 SELECT timeSlot(toDateTime('2000-01-02 03:04:05', 'UTC'))
@@ -3127,35 +3427,40 @@ SELECT timeSlot(toDateTime('2000-01-02 03:04:05', 'UTC'))
 └────────────────────────────────────────────────────┘
 ```
 
+
+
 ## timeSlots {#timeSlots}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-`StartTime` から始まり `Duration` 秒間続く時間間隔について、その区間内の時刻を配列で返します。配列に含まれる各時刻は、この区間内の時刻を秒数で `Size` 単位に切り捨てたものです。`Size` はオプションのパラメータで、デフォルトは 1800（30 分）です。
 
-これは、例えば対応するセッション内でページビューを検索する場合などに必要となります。
+For a time interval starting at `StartTime` and continuing for `Duration` seconds, it returns an array of moments in time, consisting of points from this interval rounded down to the `Size` in seconds. `Size` is an optional parameter set to 1800 (30 minutes) by default.
 
-`DateTime64` の場合、戻り値のスケールは `StartTime` のスケールと異なることがあります。指定されたすべての引数の中で、最も高いスケールが採用されます。
+This is necessary, for example, when searching for pageviews in the corresponding session.
 
-**構文**
+For `DateTime64`, the return value's scale can differ from the scale of `StartTime`. The highest scale among all given arguments is taken.
+    
+
+**Syntax**
 
 ```sql
 timeSlots(StartTime, Duration[, Size])
 ```
 
-**引数**
+**Arguments**
 
-* `StartTime` — インターバルの開始時刻。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `Duration` — インターバルの継続時間（秒）。[`UInt32`](/sql-reference/data-types/int-uint) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `Size` — 省略可能。タイムスロットのサイズ（秒）。デフォルトは 1800（30 分）。[`UInt32`](/sql-reference/data-types/int-uint) または [`DateTime64`](/sql-reference/data-types/datetime64)
+- `StartTime` — Starting time for the interval. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `Duration` — Duration of the interval in seconds. [`UInt32`](/sql-reference/data-types/int-uint) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `Size` — Optional. Size of time slots in seconds. Default is 1800 (30 minutes). [`UInt32`](/sql-reference/data-types/int-uint) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**戻り値**
 
-DateTime/DateTime64 の配列を返します（戻り値の型は `StartTime` の型と一致します）。DateTime64 の場合、戻り値のスケールは `StartTime` のスケールと異なる場合があります。渡されたすべての引数のうち、最大のスケールが使用されます。[`Array(DateTime)`](/sql-reference/data-types/array) または [`Array(DateTime64)`](/sql-reference/data-types/array)
+**Returned value**
 
-**例**
+Returns an array of DateTime/DateTime64 (return type matches the type of `StartTime`). For DateTime64, the return value's scale can differ from the scale of `StartTime` - the highest scale among all given arguments is taken. [`Array(DateTime)`](/sql-reference/data-types/array) or [`Array(DateTime64)`](/sql-reference/data-types/array)
 
-**インターバルのタイムスロットを生成する**
+**Examples**
+
+**Generate time slots for an interval**
 
 ```sql title=Query
 SELECT timeSlots(toDateTime('2012-01-01 12:20:00'), toUInt32(600));
@@ -3175,31 +3480,36 @@ SELECT timeSlots(toDateTime64('1980-12-12 21:01:02.1234', 4, 'UTC'), toDecimal64
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## timestamp {#timestamp}
 
-導入バージョン: v23.9
+Introduced in: v23.9
 
-最初の引数 `expr` を型 [`DateTime64(6)`](/sql-reference/data-types/datetime64) に変換します。
-2番目の引数 `expr_time` が指定されている場合、指定された時間を変換後の値に加算します。
 
-**構文**
+Converts the first argument `expr` to type [`DateTime64(6)`](/sql-reference/data-types/datetime64).
+If a second argument `expr_time` is provided, it adds the specified time to the converted value.
+    
+
+**Syntax**
 
 ```sql
 timestamp(expr[, expr_time])
 ```
 
-**引数**
+**Arguments**
 
-* `expr` — 日付または日時。[`String`](/sql-reference/data-types/string)
-* `expr_time` — 省略可。変換後の値に加算する時刻。[`String`](/sql-reference/data-types/string)
+- `expr` — Date or date with time. [`String`](/sql-reference/data-types/string)
+- `expr_time` — Optional. Time to add to the converted value. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-`expr` を変換した値、または時刻を加算した `expr` を返します。型は [`DateTime64(6)`](/sql-reference/data-types/datetime64) です。
+**Returned value**
 
-**使用例**
+Returns the converted value of `expr`, or `expr` with added time [`DateTime64(6)`](/sql-reference/data-types/datetime64)
 
-**日付文字列を DateTime64(6) に変換する**
+**Examples**
+
+**Convert date string to DateTime64(6)**
 
 ```sql title=Query
 SELECT timestamp('2023-12-31') AS ts;
@@ -3211,7 +3521,7 @@ SELECT timestamp('2023-12-31') AS ts;
 └────────────────────────────┘
 ```
 
-**日付文字列に時刻を追加**
+**Add time to date string**
 
 ```sql title=Query
 SELECT timestamp('2023-12-31 12:00:00', '12:00:00.11') AS ts;
@@ -3223,32 +3533,36 @@ SELECT timestamp('2023-12-31 12:00:00', '12:00:00.11') AS ts;
 └────────────────────────────┘
 ```
 
+
+
 ## timezone {#timezone}
 
-導入バージョン: v21.4
+Introduced in: v21.4
 
-現在のセッションのタイムゾーン名を返すか、タイムゾーンの
-オフセットまたは名前を正準的なタイムゾーン名に変換します。
 
-**構文**
+Returns the time zone name of the current session or converts a time zone
+offset or name to a canonical time zone name.
+    
+
+**Syntax**
 
 ```sql
 timezone()
 ```
 
-**別名**: `timeZone`
+**Aliases**: `timeZone`
 
-**引数**
+**Arguments**
 
-* なし。
+- None.
 
-**戻り値**
+**Returned value**
 
-正規のタイムゾーン名を [`String`](/sql-reference/data-types/string) として返します。
+Returns the canonical time zone name as a [`String`](/sql-reference/data-types/string)
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 SELECT timezone()
@@ -3260,32 +3574,37 @@ SELECT timezone()
 └──────────────────┘
 ```
 
+
+
 ## timezoneOf {#timezoneOf}
 
-導入バージョン: v21.4
+Introduced in: v21.4
 
-[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) の値のタイムゾーン名を返します。
 
-**構文**
+Returns the timezone name of a [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) value.
+    
+
+**Syntax**
 
 ```sql
 timeZoneOf(datetime)
 ```
 
-**別名**: `timeZoneOf`
+**Aliases**: `timeZoneOf`
 
-**引数**
+**Arguments**
 
-* `datetime` — 型 [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) の値。
-* `timezone` — 省略可能。`datetime` 値のタイムゾーンを変換する先のタイムゾーン名。型は [`String`](/sql-reference/data-types/string)。
+- `datetime` — A value of type. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `timezone` — Optional. Timezone name to convert the `datetime` value's timezone to. [`String`](/sql-reference/data-types/string)
 
-**返される値**
 
-`datetime` のタイムゾーン名を返します。型は [`String`](/sql-reference/data-types/string)。
+**Returned value**
 
-**例**
+Returns the timezone name for `datetime` [`String`](/sql-reference/data-types/string)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT timezoneOf(now());
@@ -3297,32 +3616,37 @@ SELECT timezoneOf(now());
 └───────────────────┘
 ```
 
+
+
 ## timezoneOffset {#timezoneOffset}
 
-導入バージョン: v21.6
+Introduced in: v21.6
 
-[UTC](https://en.wikipedia.org/wiki/Coordinated_Universal_Time) からのタイムゾーンオフセットを秒単位で返します。
-この関数は、指定された日時における夏時間および歴史的なタイムゾーンの変更を考慮します。
 
-**構文**
+Returns the timezone offset in seconds from [UTC](https://en.wikipedia.org/wiki/Coordinated_Universal_Time).
+The function takes daylight saving time and historical timezone changes at the specified date and time into account.
+    
+
+**Syntax**
 
 ```sql
 timeZoneOffset(datetime)
 ```
 
-**別名**: `timeZoneOffset`
+**Aliases**: `timeZoneOffset`
 
-**引数**
+**Arguments**
 
-* `datetime` — タイムゾーンオフセットを取得する対象の `DateTime` 値。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — `DateTime` value to get the timezone offset for. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**返り値**
 
-UTC からのオフセットを秒単位で返す。型は [`Int32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the offset from UTC in seconds [`Int32`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT toDateTime('2021-04-21 10:20:30', 'America/New_York') AS Time,
@@ -3337,31 +3661,36 @@ timeZoneOffset(Time) AS Offset_in_seconds,
 └─────────────────────┴──────────────────────────────┴───────────────────┴─────────────────┘
 ```
 
+
+
 ## toDayOfMonth {#toDayOfMonth}
 
-導入されたバージョン: v1.1
+Introduced in: v1.1
 
-`Date` または `DateTime` の月の日付 (1〜31) を返します。
 
-**構文**
+Returns the day of the month (1-31) of a `Date` or `DateTime`.
+        
+
+**Syntax**
 
 ```sql
 toDayOfMonth(datetime)
 ```
 
-**エイリアス**: `DAY`, `DAYOFMONTH`
+**Aliases**: `DAY`, `DAYOFMONTH`
 
-**引数**
+**Arguments**
 
-* `datetime` — 日（day of month）を取得する対象となる日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — Date or date with time to get the day of month from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**返される値**
 
-指定された日付/時刻の月内の日（day of month）を [`UInt8`](/sql-reference/data-types/int-uint) 型で返します。
+**Returned value**
 
-**例**
+Returns the day of the month of the given date/time [`UInt8`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT toDayOfMonth(toDateTime('2023-04-21 10:20:30'))
@@ -3373,42 +3702,48 @@ SELECT toDayOfMonth(toDateTime('2023-04-21 10:20:30'))
 └─────────────────────────────────────────────────┘
 ```
 
+
+
 ## toDayOfWeek {#toDayOfWeek}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-`Date` または `DateTime` 値について、その週の曜日を表す番号を返します。
 
-`toDayOfWeek()` の 2 つの引数を取る形式では、週の開始曜日を Monday または Sunday から指定でき、さらに戻り値の範囲を 0〜6 にするか 1〜7 にするかを指定できます。
+Returns the number of the day within the week of a `Date` or `DateTime` value.
+
+The two-argument form of `toDayOfWeek()` enables you to specify whether the week starts on Monday or Sunday,
+and whether the return value should be in the range from 0 to 6 or 1 to 7.
 
 | Mode | First day of week | Range                                          |
-| ---- | ----------------- | ---------------------------------------------- |
+|------|-------------------|------------------------------------------------|
 | 0    | Monday            | 1-7: Monday = 1, Tuesday = 2, ..., Sunday = 7  |
 | 1    | Monday            | 0-6: Monday = 0, Tuesday = 1, ..., Sunday = 6  |
 | 2    | Sunday            | 0-6: Sunday = 0, Monday = 1, ..., Saturday = 6 |
 | 3    | Sunday            | 1-7: Sunday = 1, Monday = 2, ..., Saturday = 7 |
+        
 
-**構文**
+**Syntax**
 
 ```sql
 toDayOfWeek(datetime[, mode[, timezone]])
 ```
 
-**エイリアス**: `DAYOFWEEK`
+**Aliases**: `DAYOFWEEK`
 
-**引数**
+**Arguments**
 
-* `datetime` — 曜日を取得する対象の日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `mode` — 省略可能。週モードを指定する整数 (0-3)。省略時のデフォルトは 0。[`UInt8`](/sql-reference/data-types/int-uint)
-* `timezone` — 省略可能。変換に使用するタイムゾーン。[`String`](/sql-reference/data-types/string)
+- `datetime` — Date or date with time to get the day of week from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `mode` — Optional. Integer specifying the week mode (0-3). Defaults to 0 if omitted. [`UInt8`](/sql-reference/data-types/int-uint)
+- `timezone` — Optional. Timezone to use for the conversion. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-指定された `Date` または `DateTime` の曜日を表す値を返す。戻り値の型は [`UInt8`](/sql-reference/data-types/int-uint)。
+**Returned value**
 
-**例**
+Returns the day of the week for the given `Date` or `DateTime` [`UInt8`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 -- 以下の日付は2023年4月21日で、金曜日です:
@@ -3423,31 +3758,36 @@ SELECT
 └───────────────────────────────────────┴──────────────────────────────────────────┘
 ```
 
+
+
 ## toDayOfYear {#toDayOfYear}
 
-導入バージョン: v18.4
+Introduced in: v18.4
 
-`Date` または `DateTime` 値について、その年の通算日 (1〜366) を返します。
 
-**構文**
+Returns the number of the day within the year (1-366) of a `Date` or `DateTime` value.
+        
+
+**Syntax**
 
 ```sql
 toDayOfYear(datetime)
 ```
 
-**別名**: `DAYOFYEAR`
+**Aliases**: `DAYOFYEAR`
 
-**引数**
+**Arguments**
 
-* `datetime` — 年内通算日を取得する対象の日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — Date or date with time to get the day of year from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**戻り値**
 
-指定された Date または DateTime の年内通算日を、型 [`UInt16`](/sql-reference/data-types/int-uint) で返します。
+**Returned value**
 
-**例**
+Returns the day of the year of the given Date or DateTime [`UInt16`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT toDayOfYear(toDateTime('2023-04-21 10:20:30'))
@@ -3459,35 +3799,40 @@ SELECT toDayOfYear(toDateTime('2023-04-21 10:20:30'))
 └────────────────────────────────────────────────┘
 ```
 
+
+
 ## toDaysSinceYearZero {#toDaysSinceYearZero}
 
-導入バージョン: v23.9
+Introduced in: v23.9
 
-指定された日付について、[ISO 8601 で定義されているプロレプティック・グレゴリオ暦 (proleptic Gregorian calendar)](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar) における
-[紀元 0000 年 1 月 1 日](https://en.wikipedia.org/wiki/Year_zero) から経過した日数を返します。
 
-計算方法は MySQL の [`TO_DAYS`](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_to-days) 関数と同じです。
+For a given date, returns the number of days which have passed since [1 January 0000](https://en.wikipedia.org/wiki/Year_zero) in the
+[proleptic Gregorian calendar defined by ISO 8601](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar).
 
-**構文**
+The calculation is the same as in MySQL's [`TO_DAYS`](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_to-days) function.
+    
+
+**Syntax**
 
 ```sql
 toDaysSinceYearZero(date[, time_zone])
 ```
 
-**別名**: `TO_DAYS`
+**Aliases**: `TO_DAYS`
 
-**引数**
+**Arguments**
 
-* `date` — 基準日（年 0 年）からの経過日数を計算する対象の日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `time_zone` — タイムゾーン。[`String`](/sql-reference/data-types/string)
+- `date` — The date or date with time for which to calculate the number of days since year zero from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `time_zone` — Time zone. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-日付 `0000-01-01` から経過した日数を返します。[`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**使用例**
+Returns the number of days passed since date `0000-01-01`. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**年 0 年からの経過日数を計算**
+**Examples**
+
+**Calculate days since year zero**
 
 ```sql title=Query
 SELECT toDaysSinceYearZero(toDate('2023-09-08'))
@@ -3499,31 +3844,36 @@ SELECT toDaysSinceYearZero(toDate('2023-09-08'))
 └────────────────────────────────────────────┘
 ```
 
+
+
 ## toHour {#toHour}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-`DateTime` または `DateTime64` 型の値から、時（0〜23）の部分を返します。
 
-**構文**
+Returns the hour component (0-23) of a `DateTime` or `DateTime64` value.
+    
+
+**Syntax**
 
 ```sql
 toHour(datetime)
 ```
 
-**エイリアス**: `HOUR`
+**Aliases**: `HOUR`
 
-**引数**
+**Arguments**
 
-* `datetime` — 時間を取得する対象の日時。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — Date with time to get the hour from. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**返り値**
 
-`datetime` の時間 (0-23) を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the hour (0-23) of `datetime`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT toHour(toDateTime('2023-04-21 10:20:30'))
@@ -3535,29 +3885,34 @@ SELECT toHour(toDateTime('2023-04-21 10:20:30'))
 └───────────────────────────────────────────┘
 ```
 
+
+
 ## toISOYear {#toISOYear}
 
-導入バージョン: v18.4
+Introduced in: v18.4
 
-日付または日時を ISO 年の番号に変換します。
 
-**構文**
+Converts a date or date with time to the ISO year number.
+    
+
+**Syntax**
 
 ```sql
 toISOYear(datetime)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 日付、または日時を表す値。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — The value with date or date with time. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**返り値**
 
-入力値を ISO 年の番号に変換して返します。[`UInt16`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**使用例**
+Returns the input value converted to an ISO year number. [`UInt16`](/sql-reference/data-types/int-uint)
 
-**日付値から ISO 年を取得する**
+**Examples**
+
+**Get ISO year from date values**
 
 ```sql title=Query
 SELECT
@@ -3571,35 +3926,40 @@ toISOYear(toDateTime('2024-10-02 01:30:00')) as year2
 └───────┴───────┘
 ```
 
+
+
 ## toLastDayOfMonth {#toLastDayOfMonth}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-日付または日時を、その月の最終日に切り上げます。
+
+Rounds up a date or date with time to the last day of the month.
 
 :::note
-戻り値の型は、[`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) を設定することで変更できます。
+The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
 :::
+    
 
-**構文**
+**Syntax**
 
 ```sql
 toLastDayOfMonth(value)
 ```
 
-**別名**: `LAST_DAY`
+**Aliases**: `LAST_DAY`
 
-**引数**
+**Arguments**
 
-* `value` — 月の最終日に切り上げる対象となる日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+- `value` — The date or date with time to round up to the last day of the month. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**戻り値**
 
-指定された日付または日時について、その月の最終日の日付を返します。[`Date`](/sql-reference/data-types/date)
+**Returned value**
 
-**使用例**
+Returns the date of the last day of the month for the given date or date with time. [`Date`](/sql-reference/data-types/date)
 
-**月の最終日への切り上げ**
+**Examples**
+
+**Round up to the last day of the month**
 
 ```sql title=Query
 SELECT toLastDayOfMonth(toDateTime('2023-04-21 10:20:30'))
@@ -3611,35 +3971,40 @@ SELECT toLastDayOfMonth(toDateTime('2023-04-21 10:20:30'))
 └─────────────────────────────────────────────────────┘
 ```
 
+
+
 ## toLastDayOfWeek {#toLastDayOfWeek}
 
-導入バージョン: v23.5
+Introduced in: v23.5
 
-日付または日時を、直近の土曜日または日曜日に丸めます。
+
+Rounds a date or date with time up to the nearest Saturday or Sunday.
 
 :::note
-戻り値の型は、[`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) を設定することで変更できます。
+The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
 :::
+    
 
-**構文**
+**Syntax**
 
 ```sql
 toLastDayOfWeek(datetime[, mode[, timezone]])
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 変換対象の日付または日時。[`Date`](/sql-reference/data-types/date) または [`DateTime`](/sql-reference/data-types/datetime) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `mode` — `toWeek()` 関数で説明されているように、週の開始曜日を指定します。デフォルトは `0`。[`UInt8`](/sql-reference/data-types/int-uint)
-* `timezone` — 省略可能。変換に使用するタイムゾーン。指定しない場合はサーバーのタイムゾーンが使用されます。[`String`](/sql-reference/data-types/string)
+- `datetime` — A date or date with time to convert. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `mode` — Determines the first day of the week as described in the `toWeek()` function. Default `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `timezone` — Optional. The timezone to use for the conversion. If not specified, the server's timezone is used. [`String`](/sql-reference/data-types/string)
 
-**返り値**
 
-指定された日付（当日を含む）以降で、mode の値に応じて最も近い土曜日または日曜日の日付を返します。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**例**
+Returns the date of the nearest Saturday or Sunday, on or after the given date, depending on the mode [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**最も近い土曜日または日曜日への切り上げ**
+**Examples**
+
+**Round up to the nearest Saturday or Sunday**
 
 ```sql title=Query
 SELECT
@@ -3659,31 +4024,36 @@ toLastDayOfWeek(toDate('2023-04-23')):                   2023-04-23
 toLastDayOfWeek(toDate('2023-04-23'), 1):                2023-04-23
 ```
 
+
+
 ## toMillisecond {#toMillisecond}
 
-導入バージョン: v24.2
+Introduced in: v24.2
 
-`DateTime` または `DateTime64` の値から、ミリ秒部分（0〜999）を返します。
 
-**構文**
+Returns the millisecond component (0-999) of a `DateTime` or `DateTime64` value.
+    
+
+**Syntax**
 
 ```sql
 toMillisecond(datetime)
 ```
 
-**別名**: `MILLISECOND`
+**Aliases**: `MILLISECOND`
 
-**引数**
+**Arguments**
 
-* `datetime` — ミリ秒を取得する対象とする日時。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — Date with time to get the millisecond from. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**戻り値**
 
-`datetime` の分内におけるミリ秒 (0 - 59) を返します。[`UInt16`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the millisecond in the minute (0 - 59) of `datetime`. [`UInt16`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT toMillisecond(toDateTime64('2023-04-21 10:20:30.456', 3));
@@ -3695,31 +4065,36 @@ SELECT toMillisecond(toDateTime64('2023-04-21 10:20:30.456', 3));
 └────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## toMinute {#toMinute}
 
-導入: v1.1
+Introduced in: v1.1
 
-`Date` または `DateTime` 型の値から分（0〜59）を返します。
 
-**構文**
+Returns the minute component (0-59) of a `Date` or `DateTime` value.
+    
+
+**Syntax**
 
 ```sql
 toMinute(datetime)
 ```
 
-**別名**: `MINUTE`
+**Aliases**: `MINUTE`
 
-**引数**
+**Arguments**
 
-* `datetime` — 分を取得する対象の日時。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — Date with time to get the minute from. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**戻り値**
 
-`datetime` の時の分 (0 - 59) を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the minute of the hour (0 - 59) of `datetime`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT toMinute(toDateTime('2023-04-21 10:20:30'))
@@ -3731,29 +4106,34 @@ SELECT toMinute(toDateTime('2023-04-21 10:20:30'))
 └─────────────────────────────────────────────┘
 ```
 
+
+
 ## toModifiedJulianDay {#toModifiedJulianDay}
 
-導入バージョン: v21.1
+Introduced in: v21.1
 
-[プロレプティック・グレゴリオ暦](https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar)の日付文字列 `YYYY-MM-DD` を、`Int32` 型の[修正ユリウス日 (Modified Julian Day)](https://en.wikipedia.org/wiki/Julian_day#Variants)番号に変換します。この関数は `0000-01-01` から `9999-12-31` までの日付をサポートします。引数が日付としてパースできない場合、または日付が不正な場合は例外を送出します。
 
-**構文**
+Converts a [Proleptic Gregorian calendar](https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar) date in text form `YYYY-MM-DD` to a [Modified Julian Day](https://en.wikipedia.org/wiki/Julian_day#Variants) number in `Int32`. This function supports date from `0000-01-01` to `9999-12-31`. It raises an exception if the argument cannot be parsed as a date, or the date is invalid.
+    
+
+**Syntax**
 
 ```sql
 toModifiedJulianDay(date)
 ```
 
-**引数**
+**Arguments**
 
-* `date` — 文字列表現の日付。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
+- `date` — The date in String form. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
 
-**戻り値**
 
-修正ユリウス日番号を返します。[`Int32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns Modified Julian Day number. [`Int32`](/sql-reference/data-types/int-uint)
 
-**日付を修正ユリウス日番号に変換する**
+**Examples**
+
+**Convert date to Modified Julian Day**
 
 ```sql title=Query
 SELECT toModifiedJulianDay('2020-01-01')
@@ -3765,29 +4145,34 @@ SELECT toModifiedJulianDay('2020-01-01')
 └───────────────────────────────────┘
 ```
 
+
+
 ## toModifiedJulianDayOrNull {#toModifiedJulianDayOrNull}
 
-導入バージョン: v21.1
+Introduced in: v21.1
 
-[`toModifiedJulianDay()`](#toModifiedJulianDay) と同様ですが、例外をスローする代わりに `NULL` を返します。
 
-**構文**
+Similar to [`toModifiedJulianDay()`](#toModifiedJulianDay), but instead of raising exceptions it returns `NULL`.
+    
+
+**Syntax**
 
 ```sql
 toModifiedJulianDayOrNull(date)
 ```
 
-**引数**
+**Arguments**
 
-* `date` — 文字列表現の日付。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
+- `date` — Date in text form. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
 
-**戻り値**
 
-有効な `date` の場合は修正ユリウス日番号を、それ以外の場合は `null` を返します。[`Nullable(Int32)`](/sql-reference/data-types/nullable)
+**Returned value**
 
-**使用例**
+Returns the modified Julian day number for valid `date`, otherwise `null`. [`Nullable(Int32)`](/sql-reference/data-types/nullable)
 
-**null を考慮した日付から修正ユリウス日への変換**
+**Examples**
+
+**Convert date to Modified Julian Day with null handling**
 
 ```sql title=Query
 SELECT toModifiedJulianDayOrNull('2020-01-01');
@@ -3803,33 +4188,38 @@ SELECT toModifiedJulianDayOrNull('0000-00-00'); -- 無効な日付、NULLを返�
 └──────────────────────────┘
 ```
 
+
+
 ## toMonday {#toMonday}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-日付または日時を同じ週の月曜日に切り下げます。日付を返します。
+
+Rounds down a date or date with time to the Monday of the same week. Returns the date.
 
 :::note
-戻り値の型は、[`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) を設定することで変更できます。
+The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
 :::
+    
 
-**構文**
+**Syntax**
 
 ```sql
 toMonday(value)
 ```
 
-**引数**
+**Arguments**
 
-* `value` — 週の月曜日に切り下げる対象の日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+- `value` — Date or date with time to round down to the Monday of the week. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**戻り値**
 
-指定された日付または日時について、同じ週の月曜日の日付を返します。[`Date`](/sql-reference/data-types/date)
+**Returned value**
 
-**例**
+Returns the date of the Monday of the same week for the given date or date with time. [`Date`](/sql-reference/data-types/date)
 
-**週の月曜日への切り下げ**
+**Examples**
+
+**Round down to the Monday of the week**
 
 ```sql title=Query
 SELECT
@@ -3843,31 +4233,36 @@ toMonday(toDate('2023-04-24'));              -- 既に月曜日
 └─────────────────────────────────────────────┴────────────────────────────────┘
 ```
 
+
+
 ## toMonth {#toMonth}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-`Date` または `DateTime` 値の月の値（1〜12）を返します。
 
-**構文**
+Returns the month component (1-12) of a `Date` or `DateTime` value.
+    
+
+**Syntax**
 
 ```sql
 toMonth(datetime)
 ```
 
-**別名**: `MONTH`
+**Aliases**: `MONTH`
 
-**引数**
+**Arguments**
 
-* `datetime` — 月を取得する対象の日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — Date or date with time to get the month from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**返り値**
 
-指定された日付/時刻の月を返します。型は [`UInt8`](/sql-reference/data-types/int-uint) です。
+**Returned value**
 
-**例**
+Returns the month of the given date/time [`UInt8`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT toMonth(toDateTime('2023-04-21 10:20:30'))
@@ -3879,29 +4274,32 @@ SELECT toMonth(toDateTime('2023-04-21 10:20:30'))
 └────────────────────────────────────────────┘
 ```
 
+
+
 ## toMonthNumSinceEpoch {#toMonthNumSinceEpoch}
 
-導入バージョン: v25.3
+Introduced in: v25.3
 
-1970年から現在までに経過した月数を返します。
+Returns amount of months passed from year 1970
 
-**構文**
+**Syntax**
 
 ```sql
 toMonthNumSinceEpoch(date)
 ```
 
-**引数**
+**Arguments**
 
-* `date` — 日付、または日時。[`Date`](/sql-reference/data-types/date)、[`DateTime`](/sql-reference/data-types/datetime)、[`DateTime64`](/sql-reference/data-types/datetime64) のいずれか。
+- `date` — A date or date with time. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**戻り値**
 
-正の整数値
+**Returned value**
 
-**例**
+Positive integer
 
-**例**
+**Examples**
+
+**Example**
 
 ```sql title=Query
 SELECT toMonthNumSinceEpoch(toDate('2024-10-01'))
@@ -3911,31 +4309,36 @@ SELECT toMonthNumSinceEpoch(toDate('2024-10-01'))
 657
 ```
 
+
+
 ## toQuarter {#toQuarter}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-指定した `Date` または `DateTime` の値について、その年の四半期 (1〜4) を返します。
 
-**構文**
+Returns the quarter of the year (1-4) for a given `Date` or `DateTime` value.
+    
+
+**Syntax**
 
 ```sql
 toQuarter(datetime)
 ```
 
-**別名**: `QUARTER`
+**Aliases**: `QUARTER`
 
-**引数**
+**Arguments**
 
-* `datetime` — 年の四半期を取得する対象の日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — Date or date with time to get the quarter of the year from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**返り値**
 
-指定された日付・時刻の年内の四半期を [`UInt8`](/sql-reference/data-types/int-uint) 型で返します。
+**Returned value**
 
-**例**
+Returns the quarter of the year for the given date/time [`UInt8`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT toQuarter(toDateTime('2023-04-21 10:20:30'))
@@ -3947,31 +4350,36 @@ SELECT toQuarter(toDateTime('2023-04-21 10:20:30'))
 └──────────────────────────────────────────────┘
 ```
 
+
+
 ## toRelativeDayNum {#toRelativeDayNum}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-日付または日時を、過去のある固定された時点からの経過日数に変換します。
-その正確な時点は実装上の詳細であり、そのためこの関数をそれ自体で利用することは想定されていません。
-この関数の主な目的は、2 つの日付または日時間の日数差を計算することであり、例えば `toRelativeDayNum(dt1) - toRelativeDayNum(dt2)` のように使用します。
 
-**構文**
+Converts a date or date with time to the number of days elapsed since a certain fixed point in the past.
+The exact point in time is an implementation detail, and therefore this function is not intended to be used standalone.
+The main purpose of the function is to calculate the difference in days between two dates or dates with time, e.g., `toRelativeDayNum(dt1) - toRelativeDayNum(dt2)`.
+    
+
+**Syntax**
 
 ```sql
 toRelativeDayNum(date)
 ```
 
-**引数**
+**Arguments**
 
-* `date` — 日付、または日時。[`Date`](/sql-reference/data-types/date) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+- `date` — Date or date with time. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**戻り値**
 
-過去の固定基準点からの経過日数を返します。[`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**使用例**
+Returns the number of days from a fixed reference point in the past. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**相対日番号を取得する**
+**Examples**
+
+**Get relative day numbers**
 
 ```sql title=Query
 SELECT toRelativeDayNum(toDate('2023-04-01')) - toRelativeDayNum(toDate('2023-01-01'))
@@ -3983,31 +4391,36 @@ SELECT toRelativeDayNum(toDate('2023-04-01')) - toRelativeDayNum(toDate('2023-01
 └──────────────────────────┘
 ```
 
+
+
 ## toRelativeHourNum {#toRelativeHourNum}
 
-導入: v1.1
+Introduced in: v1.1
 
-日付または日時を、過去のある固定時点からの経過時間（時間数）に変換します。
-その固定時点がいつかは実装の詳細であり、この関数を単体で使用することは想定されていません。
-この関数の主な用途は、2つの日付または日時の差を時間数で計算することです。例: `toRelativeHourNum(dt1) - toRelativeHourNum(dt2)`。
 
-**構文**
+Converts a date or date with time to the number of hours elapsed since a certain fixed point in the past.
+The exact point in time is an implementation detail, and therefore this function is not intended to be used standalone.
+The main purpose of the function is to calculate the difference in hours between two dates or dates with time, e.g., `toRelativeHourNum(dt1) - toRelativeHourNum(dt2)`.
+    
+
+**Syntax**
 
 ```sql
 toRelativeHourNum(date)
 ```
 
-**引数**
+**Arguments**
 
-* `date` — 日付または日時。[`Date`](/sql-reference/data-types/date) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+- `date` — Date or date with time. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**戻り値**
 
-過去の固定された基準時刻からの経過時間を、時間数として返します。[`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the number of hours from a fixed reference point in the past. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**相対的な時刻（時間番号）を取得する**
+**Examples**
+
+**Get relative hour numbers**
 
 ```sql title=Query
 SELECT toRelativeHourNum(toDateTime('2023-01-01 12:00:00')) - toRelativeHourNum(toDateTime('2023-01-01 00:00:00')) AS hours_difference
@@ -4019,31 +4432,36 @@ SELECT toRelativeHourNum(toDateTime('2023-01-01 12:00:00')) - toRelativeHourNum(
 └──────────────────┘
 ```
 
+
+
 ## toRelativeMinuteNum {#toRelativeMinuteNum}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-日付または日時を、過去のある固定時点からの経過分数に変換します。
-その正確な時点は実装の詳細であり、そのためこの関数を単独で使用することは想定されていません。
-この関数の主な目的は、2つの日付または日時の間の分単位の差分を計算することであり、例えば `toRelativeMinuteNum(dt1) - toRelativeMinuteNum(dt2)` のように使用します。
 
-**構文**
+Converts a date or date with time to the number of minutes elapsed since a certain fixed point in the past.
+The exact point in time is an implementation detail, and therefore this function is not intended to be used standalone.
+The main purpose of the function is to calculate the difference in minutes between two dates or dates with time, e.g., `toRelativeMinuteNum(dt1) - toRelativeMinuteNum(dt2)`.
+    
+
+**Syntax**
 
 ```sql
 toRelativeMinuteNum(date)
 ```
 
-**引数**
+**Arguments**
 
-* `date` — 日付または日時。[`Date`](/sql-reference/data-types/date) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+- `date` — Date or date with time. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**返り値**
 
-固定された過去の基準時点からの経過分数を返します。[`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**使用例**
+Returns the number of minutes from a fixed reference point in the past. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**相対的な分の値を取得する**
+**Examples**
+
+**Get relative minute numbers**
 
 ```sql title=Query
 SELECT toRelativeMinuteNum(toDateTime('2023-01-01 00:30:00')) - toRelativeMinuteNum(toDateTime('2023-01-01 00:00:00')) AS minutes_difference
@@ -4055,31 +4473,36 @@ SELECT toRelativeMinuteNum(toDateTime('2023-01-01 00:30:00')) - toRelativeMinute
 └────────────────────┘
 ```
 
+
+
 ## toRelativeMonthNum {#toRelativeMonthNum}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-日付または日時を、過去のある固定時点からの経過月数に変換します。
-その固定時点は実装上の詳細に過ぎないため、この関数を単体で使用することは想定されていません。
-この関数の主な用途は、2 つの日付または日時の間の月数差を計算することです（例: `toRelativeMonthNum(dt1) - toRelativeMonthNum(dt2)`）。
 
-**構文**
+Converts a date or date with time to the number of months elapsed since a certain fixed point in the past.
+The exact point in time is an implementation detail, and therefore this function is not intended to be used standalone.
+The main purpose of the function is to calculate the difference in months between two dates or dates with time, e.g., `toRelativeMonthNum(dt1) - toRelativeMonthNum(dt2)`.
+    
+
+**Syntax**
 
 ```sql
 toRelativeMonthNum(date)
 ```
 
-**引数**
+**Arguments**
 
-* `date` — 日付または日時。[`Date`](/sql-reference/data-types/date) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+- `date` — Date or date with time. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**戻り値**
 
-過去の固定基準点からの経過月数を返します。[`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**使用例**
+Returns the number of months from a fixed reference point in the past. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**相対月番号を取得する**
+**Examples**
+
+**Get relative month numbers**
 
 ```sql title=Query
 SELECT toRelativeMonthNum(toDate('2023-04-01')) - toRelativeMonthNum(toDate('2023-01-01')) AS months_difference
@@ -4091,31 +4514,36 @@ SELECT toRelativeMonthNum(toDate('2023-04-01')) - toRelativeMonthNum(toDate('202
 └───────────────────┘
 ```
 
+
+
 ## toRelativeQuarterNum {#toRelativeQuarterNum}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-日付または日時を、過去のある固定時点から経過した四半期数に変換します。
-その正確な時点は実装上の詳細であり、そのためこの関数を単体で使用することは想定されていません。
-この関数の主な目的は、2つの日付または日時の間の四半期数の差を計算することであり、たとえば `toRelativeQuarterNum(dt1) - toRelativeQuarterNum(dt2)` のように使用します。
 
-**構文**
+Converts a date or date with time to the number of quarters elapsed since a certain fixed point in the past.
+The exact point in time is an implementation detail, and therefore this function is not intended to be used standalone.
+The main purpose of the function is to calculate the difference in quarters between two dates or dates with time, e.g., `toRelativeQuarterNum(dt1) - toRelativeQuarterNum(dt2)`.
+    
+
+**Syntax**
 
 ```sql
 toRelativeQuarterNum(date)
 ```
 
-**引数**
+**Arguments**
 
-* `date` — 日付または日時。[`Date`](/sql-reference/data-types/date)、[`DateTime`](/sql-reference/data-types/datetime)、[`DateTime64`](/sql-reference/data-types/datetime64) のいずれか。
+- `date` — Date or date with time. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**戻り値**
 
-過去の固定された基準時点からの四半期数を返します。[`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the number of quarters from a fixed reference point in the past. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**相対的な四半期番号を取得する**
+**Examples**
+
+**Get relative quarter numbers**
 
 ```sql title=Query
 SELECT toRelativeQuarterNum(toDate('2023-04-01')) - toRelativeQuarterNum(toDate('2023-01-01')) AS quarters_difference
@@ -4127,31 +4555,36 @@ SELECT toRelativeQuarterNum(toDate('2023-04-01')) - toRelativeQuarterNum(toDate(
 └─────────────────────┘
 ```
 
+
+
 ## toRelativeSecondNum {#toRelativeSecondNum}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-日付または日時を、過去のある固定時点から経過した秒数に変換します。
-その基準となる正確な時刻は実装依存であり、この関数を単体で使用することは想定されていません。
-この関数の主な目的は、2つの日付または日時の差を秒単位で計算することであり、例えば `toRelativeSecondNum(dt1) - toRelativeSecondNum(dt2)` のように使用します。
 
-**構文**
+Converts a date or date with time to the number of seconds elapsed since a certain fixed point in the past.
+The exact point in time is an implementation detail, and therefore this function is not intended to be used standalone.
+The main purpose of the function is to calculate the difference in seconds between two dates or dates with time, e.g., `toRelativeSecondNum(dt1) - toRelativeSecondNum(dt2)`.
+    
+
+**Syntax**
 
 ```sql
 toRelativeSecondNum(date)
 ```
 
-**引数**
+**Arguments**
 
-* `date` — 日付または日時。[`Date`](/sql-reference/data-types/date) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+- `date` — Date or date with time. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**戻り値**
 
-過去の固定基準時刻からの秒数を返します。[`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the number of seconds from a fixed reference point in the past. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**相対秒数を取得する**
+**Examples**
+
+**Get relative second numbers**
 
 ```sql title=Query
 SELECT toRelativeSecondNum(toDateTime('2023-01-01 00:01:00')) - toRelativeSecondNum(toDateTime('2023-01-01 00:00:00')) AS seconds_difference
@@ -4163,31 +4596,36 @@ SELECT toRelativeSecondNum(toDateTime('2023-01-01 00:01:00')) - toRelativeSecond
 └────────────────────┘
 ```
 
+
+
 ## toRelativeWeekNum {#toRelativeWeekNum}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-日付または日時を、過去のある固定された基準時点から経過した週数に変換します。
-その正確な時点は実装上の詳細であり、そのためこの関数は単体で使用することを意図していません。
-この関数の主な目的は、2つの日付または日時の週単位での差分を計算することであり、例えば `toRelativeWeekNum(dt1) - toRelativeWeekNum(dt2)` のように使用します。
 
-**構文**
+Converts a date or date with time to the number of weeks elapsed since a certain fixed point in the past.
+The exact point in time is an implementation detail, and therefore this function is not intended to be used standalone.
+The main purpose of the function is to calculate the difference in weeks between two dates or dates with time, e.g., `toRelativeWeekNum(dt1) - toRelativeWeekNum(dt2)`.
+    
+
+**Syntax**
 
 ```sql
 toRelativeWeekNum(date)
 ```
 
-**引数**
+**Arguments**
 
-* `date` — 日付または日時。[`Date`](/sql-reference/data-types/date) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+- `date` — Date or date with time. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**戻り値**
 
-過去の固定参照点からの経過週数を返します。[`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the number of weeks from a fixed reference point in the past. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**相対週番号を取得する**
+**Examples**
+
+**Get relative week numbers**
 
 ```sql title=Query
 SELECT toRelativeWeekNum(toDate('2023-01-08')) - toRelativeWeekNum(toDate('2023-01-01')) AS weeks_difference
@@ -4199,31 +4637,36 @@ SELECT toRelativeWeekNum(toDate('2023-01-08')) - toRelativeWeekNum(toDate('2023-
 └──────────────────┘
 ```
 
+
+
 ## toRelativeYearNum {#toRelativeYearNum}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-日付または日付時刻を、過去のある固定時点からの経過年数に変換します。
-その正確な時点は実装上の詳細であり、したがってこの関数は単体での使用を意図していません。
-この関数の主な用途は、2 つの日付または日付時刻の間の年数差を計算することであり、例えば `toRelativeYearNum(dt1) - toRelativeYearNum(dt2)` のように使用します。
 
-**構文**
+Converts a date or date with time to the number of years elapsed since a certain fixed point in the past.
+The exact point in time is an implementation detail, and therefore this function is not intended to be used
+standalone. The main purpose of the function is to calculate the difference in years between two dates or dates with time, e.g., `toRelativeYearNum(dt1) - toRelativeYearNum(dt2)`.
+    
+
+**Syntax**
 
 ```sql
 toRelativeYearNum(date)
 ```
 
-**引数**
+**Arguments**
 
-* `date` — 日付または日時。[`Date`](/sql-reference/data-types/date)、[`DateTime`](/sql-reference/data-types/datetime)、または [`DateTime64`](/sql-reference/data-types/datetime64)
+- `date` — Date or date with time. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**戻り値**
 
-過去の固定された基準点からの年数を返します。[`UInt16`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**使用例**
+Returns the number of years from a fixed reference point in the past. [`UInt16`](/sql-reference/data-types/int-uint)
 
-**相対的な年数を取得する**
+**Examples**
+
+**Get relative year numbers**
 
 ```sql title=Query
 SELECT toRelativeYearNum('2010-10-01'::DateTime) - toRelativeYearNum('2000-01-01'::DateTime)
@@ -4235,31 +4678,36 @@ SELECT toRelativeYearNum('2010-10-01'::DateTime) - toRelativeYearNum('2000-01-01
 └──────────────────────────┘
 ```
 
+
+
 ## toSecond {#toSecond}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-`DateTime` または `DateTime64` 値の秒の部分 (0-59) を返します。
 
-**構文**
+Returns the second component (0-59) of a `DateTime` or `DateTime64` value.
+        
+
+**Syntax**
 
 ```sql
 toSecond(datetime)
 ```
 
-**別名**: `SECOND`
+**Aliases**: `SECOND`
 
-**引数**
+**Arguments**
 
-* `datetime` — 秒を取得する対象の日時。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — Date with time to get the second from. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**戻り値**
 
-`datetime` の分内の秒 (0 - 59) を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the second in the minute (0 - 59) of `datetime`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT toSecond(toDateTime('2023-04-21 10:20:30'))
@@ -4271,33 +4719,38 @@ SELECT toSecond(toDateTime('2023-04-21 10:20:30'))
 └─────────────────────────────────────────────┘
 ```
 
+
+
 ## toStartOfDay {#toStartOfDay}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-日付時刻を、その日の開始時刻に切り捨てます。
+
+Rounds down a date with time to the start of the day.
 
 :::note
-戻り値の型は、[`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) を設定することで変更できます。
+The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
 :::
+    
 
-**構文**
+**Syntax**
 
 ```sql
 toStartOfDay(datetime)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 丸める対象の日付または日時。[`Date`](/sql-reference/data-types/date) または [`DateTime`](/sql-reference/data-types/datetime)
+- `datetime` — A date or date with time to round. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime)
 
-**返される値**
 
-日付と時刻を、その日の開始時刻（00:00）まで切り捨てた値を返します。[`Date`](/sql-reference/data-types/date) または [`DateTime`](/sql-reference/data-types/datetime) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**例**
+Returns the date with time rounded down to the start of the day. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**その日の開始時刻への切り捨て**
+**Examples**
+
+**Round down to the start of the day**
 
 ```sql title=Query
 SELECT toStartOfDay(toDateTime('2023-04-21 10:20:30'))
@@ -4309,33 +4762,38 @@ SELECT toStartOfDay(toDateTime('2023-04-21 10:20:30'))
 └─────────────────────────────────────────────────┘
 ```
 
+
+
 ## toStartOfFifteenMinutes {#toStartOfFifteenMinutes}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-日時を直前の 15 分間隔の開始時刻に切り捨てます。
+
+Rounds down the date with time to the start of the fifteen-minute interval.
 
 :::note
-戻り値の型は、[`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) を設定することで制御できます。
+The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
 :::
+    
 
-**構文**
+**Syntax**
 
 ```sql
 toStartOfFifteenMinutes(datetime)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 丸めの対象となる日付または日時。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — A date or date with time to round. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**返される値**
 
-最も近い 15 分間隔の開始時刻に丸められた日時を返します。型は [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) です。
+**Returned value**
 
-**使用例**
+Returns the date with time rounded to the start of the nearest fifteen-minute interval [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**例**
+**Examples**
+
+**Example**
 
 ```sql title=Query
 SELECT
@@ -4353,35 +4811,40 @@ toStartOfFifteenMinutes(toDateTime('2023-04-21 10:20:00')): 2023-04-21 10:15:00
 toStartOfFifteenMinutes(toDateTime('2023-04-21 10:23:00')): 2023-04-21 10:15:00
 ```
 
+
+
 ## toStartOfFiveMinutes {#toStartOfFiveMinutes}
 
-導入されたバージョン: v22.6
+Introduced in: v22.6
 
-日時を直前の5分間隔の開始時刻に切り下げます。
+
+Rounds down a date with time to the start of the nearest five-minute interval.
 
 :::note
-戻り値の型は、[`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) を設定することで変更できます。
+The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
 :::
+    
 
-**構文**
+**Syntax**
 
 ```sql
 toStartOfFiveMinutes(datetime)
 ```
 
-**別名**: `toStartOfFiveMinute`
+**Aliases**: `toStartOfFiveMinute`
 
-**引数**
+**Arguments**
 
-* `datetime` — 丸め対象の日付と時刻。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — A date with time to round. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**返される値**
 
-最も近い5分間隔の開始時刻に丸めた日付と時刻を返します。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**使用例**
+Returns the date with time rounded to the start of the nearest five-minute interval [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**例**
+**Examples**
+
+**Example**
 
 ```sql title=Query
 SELECT
@@ -4399,33 +4862,38 @@ toStartOfFiveMinutes(toDateTime('2023-04-21 10:20:00')): 2023-04-21 10:20:00
 toStartOfFiveMinutes(toDateTime('2023-04-21 10:23:00')): 2023-04-21 10:20:00
 ```
 
+
+
 ## toStartOfHour {#toStartOfHour}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-日時を、その時刻が属する時間の先頭（ちょうどの時刻）に切り下げます。
+
+Rounds down a date with time to the start of the hour.
 
 :::note
-戻り値の型は、[`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) を設定することで変更できます。
+The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
 :::
+    
 
-**構文**
+**Syntax**
 
 ```sql
 toStartOfHour(datetime)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 丸め対象の日時。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — A date with time to round. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**返される値**
 
-時刻を切り捨てて、その時間の先頭（00 分 00 秒）に丸めた日時を返します。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**使用例**
+Returns the date with time rounded down to the start of the hour. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**時間の先頭への切り捨て**
+**Examples**
+
+**Round down to the start of the hour**
 
 ```sql title=Query
 SELECT
@@ -4438,33 +4906,38 @@ SELECT
 └─────────────────────┴─────────────────┘
 ```
 
+
+
 ## toStartOfISOYear {#toStartOfISOYear}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-日付または日時を ISO 年の最初の日まで切り捨てます。ISO 年は通常の暦年と異なる場合があります。[ISO week date](https://en.wikipedia.org/wiki/ISO_week_date) を参照してください。
+
+Rounds down a date or date with time to the first day of the ISO year, which can be different than a regular year. See [ISO week date](https://en.wikipedia.org/wiki/ISO_week_date).
 
 :::note
-戻り値の型は、[`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) を設定することで変更できます。
+The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
 :::
+    
 
-**構文**
+**Syntax**
 
 ```sql
 toStartOfISOYear(value)
 ```
 
-**引数**
+**Arguments**
 
-* `value` — ISO 年の最初の日付へ切り捨てる対象となる日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+- `value` — The date or date with time to round down to the first day of the ISO year. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**返り値**
 
-指定した日付または日時に対応する ISO 年の最初の日付を返します。[`Date`](/sql-reference/data-types/date)
+**Returned value**
 
-**使用例**
+Returns the first day of the ISO year for the given date or date with time. [`Date`](/sql-reference/data-types/date)
 
-**ISO 年の最初の日付への切り捨て**
+**Examples**
+
+**Round down to the first day of the ISO year**
 
 ```sql title=Query
 SELECT toStartOfISOYear(toDateTime('2023-04-21 10:20:30'))
@@ -4476,62 +4949,65 @@ SELECT toStartOfISOYear(toDateTime('2023-04-21 10:20:30'))
 └─────────────────────────────────────────────────────┘
 ```
 
+
+
 ## toStartOfInterval {#toStartOfInterval}
 
-導入バージョン: v20.1
+Introduced in: v20.1
 
-この関数は、`toStartOfInterval(date_or_date_with_time, INTERVAL x unit [, time_zone])` 構文で、他の `toStartOf*()` 関数を一般化したものです。
 
-例えば、
+This function generalizes other `toStartOf*()` functions with `toStartOfInterval(date_or_date_with_time, INTERVAL x unit [, time_zone])` syntax.
 
-* `toStartOfInterval(t, INTERVAL 1 YEAR)` は `toStartOfYear(t)` と同じ値を返します。
-* `toStartOfInterval(t, INTERVAL 1 MONTH)` は `toStartOfMonth(t)` と同じ値を返します。
-* `toStartOfInterval(t, INTERVAL 1 DAY)` は `toStartOfDay(t)` と同じ値を返します。
-* `toStartOfInterval(t, INTERVAL 15 MINUTE)` は `toStartOfFifteenMinutes(t)` と同じ値を返します。
+For example,
+- `toStartOfInterval(t, INTERVAL 1 YEAR)` returns the same as `toStartOfYear(t)`,
+- `toStartOfInterval(t, INTERVAL 1 MONTH)` returns the same as `toStartOfMonth(t)`,
+- `toStartOfInterval(t, INTERVAL 1 DAY)` returns the same as `toStartOfDay(t)`,
+- `toStartOfInterval(t, INTERVAL 15 MINUTE)` returns the same as `toStartOfFifteenMinutes(t)`.
 
-計算は特定の基準時点に対して行われます:
+The calculation is performed relative to specific points in time:
 
-| Interval                                                | Start               |
-| ------------------------------------------------------- | ------------------- |
-| YEAR                                                    | 年 0                 |
-| QUARTER                                                 | 1900 Q1             |
-| MONTH                                                   | 1900年1月             |
-| WEEK                                                    | 1970年 第1週 (01-05)   |
-| DAY                                                     | 1970-01-01          |
-| HOUR                                                    | (*)                 |
-| MINUTE                                                  | 1970-01-01 00:00:00 |
-| SECOND                                                  | 1970-01-01 00:00:00 |
-| MILLISECOND                                             | 1970-01-01 00:00:00 |
-| MICROSECOND                                             | 1970-01-01 00:00:00 |
-| NANOSECOND                                              | 1970-01-01 00:00:00 |
-| (*) 時間間隔 (HOUR) は特別で、計算は常に当日の 00:00:00（真夜中）を基準として行われます。 |                     |
-| その結果、1 から 23 までの時間の値のみが有用です。                            |                     |
+| Interval    | Start                  |
+|-------------|------------------------|
+| YEAR        | year 0                 |
+| QUARTER     | 1900 Q1                |
+| MONTH       | 1900 January           |
+| WEEK        | 1970, 1st week (01-05) |
+| DAY         | 1970-01-01             |
+| HOUR        | (*)                    |
+| MINUTE      | 1970-01-01 00:00:00    |
+| SECOND      | 1970-01-01 00:00:00    |
+| MILLISECOND | 1970-01-01 00:00:00    |
+| MICROSECOND | 1970-01-01 00:00:00    |
+| NANOSECOND  | 1970-01-01 00:00:00    |
+(*) hour intervals are special: the calculation is always performed relative to 00:00:00 (midnight) of the current day. As a result, only
+hour values between 1 and 23 are useful.
 
-単位として `WEEK` が指定された場合、`toStartOfInterval` は週の開始を月曜日とみなします。この挙動は、デフォルトでは週の開始が日曜日である `toStartOfWeek` 関数とは異なる点に注意してください。
+If unit `WEEK` was specified, `toStartOfInterval` assumes that weeks start on Monday. Note that this behavior is different from that of function `toStartOfWeek` in which weeks start by default on Sunday.
 
-2 つ目のオーバーロードは、TimescaleDB の `time_bucket()` 関数および PostgreSQL の `date_bin()` 関数をエミュレートします。
+The second overload emulates TimescaleDB's `time_bucket()` function, respectively PostgreSQL's `date_bin()` function.
+        
 
-**構文**
+**Syntax**
 
 ```sql
 toStartOfInterval(value, INTERVAL x unit[, time_zone])
 toStartOfInterval(value, INTERVAL x unit[, origin[, time_zone]])
 ```
 
-**別名**: `time_bucket`, `date_bin`
+**Aliases**: `time_bucket`, `date_bin`
 
-**引数**
+**Arguments**
 
-* `value` — 切り捨て対象の日付または日時の値。[`Date`](/sql-reference/data-types/date) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `x` — 区間の長さを表す数値。 - `unit` — 区間の単位: YEAR, QUARTER, MONTH, WEEK, DAY, HOUR, MINUTE, SECOND, MILLISECOND, MICROSECOND, NANOSECOND。 - `time_zone` — 省略可。タイムゾーン名を表す文字列。 - `origin` — 省略可。計算の基準点（第 2 のオーバーロードのみ）。
+- `value` — Date or date with time value to round down. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `x` — Interval length number. - `unit` — Interval unit: YEAR, QUARTER, MONTH, WEEK, DAY, HOUR, MINUTE, SECOND, MILLISECOND, MICROSECOND, NANOSECOND. - `time_zone` — Optional. Time zone name as a string. - `origin` — Optional. Origin point for calculation (second overload only). 
 
-**返される値**
+**Returned value**
 
-入力値を含む区間の開始時刻を返します。[`DateTime`](/sql-reference/data-types/datetime)
+Returns the start of the interval containing the input value. [`DateTime`](/sql-reference/data-types/datetime)
 
-**例**
+**Examples**
 
-**基本的な区間への丸め**
+**Basic interval rounding**
 
 ```sql title=Query
 SELECT toStartOfInterval(toDateTime('2023-01-15 14:30:00'), INTERVAL 1 MONTH)
@@ -4543,7 +5019,7 @@ SELECT toStartOfInterval(toDateTime('2023-01-15 14:30:00'), INTERVAL 1 MONTH)
 └──────────────────────────┘
 ```
 
-**起点を使用する**
+**Using origin point**
 
 ```sql title=Query
 SELECT toStartOfInterval(toDateTime('2023-01-01 14:45:00'), INTERVAL 1 MINUTE, toDateTime('2023-01-01 14:35:30'))
@@ -4555,30 +5031,35 @@ SELECT toStartOfInterval(toDateTime('2023-01-01 14:45:00'), INTERVAL 1 MINUTE, t
 └──────────────────────────┘
 ```
 
+
+
 ## toStartOfMicrosecond {#toStartOfMicrosecond}
 
-導入バージョン: v22.6
+Introduced in: v22.6
 
-日時をマイクロ秒の開始まで切り捨てます。
 
-**構文**
+Rounds down a date with time to the start of the microseconds.
+    
+
+**Syntax**
 
 ```sql
 toStartOfMicrosecond(datetime[, timezone])
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 日時。[`DateTime64`](/sql-reference/data-types/datetime64)
-* `timezone` — 省略可。返される値のタイムゾーン。指定しない場合は `value` パラメータのタイムゾーンが使用されます。[`String`](/sql-reference/data-types/string)
+- `datetime` — Date and time. [`DateTime64`](/sql-reference/data-types/datetime64)
+- `timezone` — Optional. Timezone for the returned value. If not specified, the function uses the timezone of the `value` parameter. [`String`](/sql-reference/data-types/string)
 
-**返される値**
 
-サブマイクロ秒精度を持つ入力値 [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**例**
+Input value with sub-microseconds [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**タイムゾーンなしのクエリ**
+**Examples**
+
+**Query without timezone**
 
 ```sql title=Query
 WITH toDateTime64('2020-01-01 10:20:30.999999999', 9) AS dt64
@@ -4591,7 +5072,7 @@ SELECT toStartOfMicrosecond(dt64);
 └───────────────────────────────┘
 ```
 
-**タイムゾーンを指定したクエリ**
+**Query with timezone**
 
 ```sql title=Query
 WITH toDateTime64('2020-01-01 10:20:30.999999999', 9) AS dt64
@@ -4604,30 +5085,35 @@ SELECT toStartOfMicrosecond(dt64, 'Asia/Istanbul');
 └─────────────────────────────────────────────┘
 ```
 
+
+
 ## toStartOfMillisecond {#toStartOfMillisecond}
 
-導入バージョン: v22.6
+Introduced in: v22.6
 
-日時をミリ秒単位で切り捨てます。
 
-**構文**
+Rounds down a date with time to the start of the milliseconds.
+    
+
+**Syntax**
 
 ```sql
 toStartOfMillisecond(datetime[, timezone])
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 日付と時刻。[`DateTime64`](/sql-reference/data-types/datetime64)
-* `timezone` — 省略可能。返される値のタイムゾーンを指定します。指定しない場合、この関数は `value` パラメータのタイムゾーンを使用します。[`String`](/sql-reference/data-types/string)
+- `datetime` — Date and time. [`DateTime64`](/sql-reference/data-types/datetime64)
+- `timezone` — Optional. Timezone for the returned value. If not specified, the function uses the timezone of the `value` parameter. [`String`](/sql-reference/data-types/string)
 
-**返り値**
 
-サブミリ秒精度を持つ入力値。[`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**例**
+Input value with sub-milliseconds. [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**タイムゾーンを指定しないクエリ**
+**Examples**
+
+**Query without timezone**
 
 ```sql title=Query
 WITH toDateTime64('2020-01-01 10:20:30.999999999', 9) AS dt64
@@ -4640,7 +5126,7 @@ SELECT toStartOfMillisecond(dt64);
 └───────────────────────────────┘
 ```
 
-**タイムゾーン付きクエリ**
+**Query with timezone**
 
 ```sql title=Query
 WITH toDateTime64('2020-01-01 10:20:30.999999999', 9) AS dt64
@@ -4653,33 +5139,38 @@ SELECT toStartOfMillisecond(dt64, 'Asia/Istanbul');
 └─────────────────────────────────────────────┘
 ```
 
+
+
 ## toStartOfMinute {#toStartOfMinute}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-日付と時刻を、その分の開始時刻に切り捨てます。
+
+Rounds down a date with time to the start of the minute.
 
 :::note
-戻り値の型は、[`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) を設定することで変更できます。
+The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
 :::
+    
 
-**構文**
+**Syntax**
 
 ```sql
 toStartOfMinute(datetime)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 丸め対象の日時。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — A date with time to round. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**戻り値**
 
-分の開始時刻に切り捨てた日時を返します。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**例**
+Returns the date with time rounded down to the start of the minute. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**分の開始時刻への切り捨て**
+**Examples**
+
+**Round down to the start of the minute**
 
 ```sql title=Query
 SELECT
@@ -4695,33 +5186,38 @@ toStartOfMinute(toDateTime('2023-04-21 10:20:30')):           2023-04-21 10:20:0
 toStartOfMinute(toDateTime64('2023-04-21 10:20:30.5300', 8)): 2023-04-21 10:20:00
 ```
 
+
+
 ## toStartOfMonth {#toStartOfMonth}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-日付または日時を、その月の1日（月初日）に切り捨てます。
+
+Rounds down a date or date with time to the first day of the month.
 
 :::note
-戻り値の型は、[`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) を設定することで変更できます。
+The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
 :::
+    
 
-**構文**
+**Syntax**
 
 ```sql
 toStartOfMonth(value)
 ```
 
-**引数**
+**Arguments**
 
-* `value` — 切り捨ててその月の初日に丸める対象となる日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+- `value` — The date or date with time to round down to the first day of the month. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**戻り値**
 
-指定された日付または日時について、その月の初日を返します。[`Date`](/sql-reference/data-types/date)
+**Returned value**
 
-**例**
+Returns the first day of the month for the given date or date with time. [`Date`](/sql-reference/data-types/date)
 
-**月の初日への丸め（切り捨て）**
+**Examples**
+
+**Round down to the first day of the month**
 
 ```sql title=Query
 SELECT toStartOfMonth(toDateTime('2023-04-21 10:20:30'))
@@ -4733,30 +5229,35 @@ SELECT toStartOfMonth(toDateTime('2023-04-21 10:20:30'))
 └───────────────────────────────────────────────────┘
 ```
 
+
+
 ## toStartOfNanosecond {#toStartOfNanosecond}
 
-導入バージョン: v22.6
+Introduced in: v22.6
 
-日付と時刻をナノ秒の開始時点に切り捨てます。
 
-**構文**
+Rounds down a date with time to the start of the nanoseconds.
+        
+
+**Syntax**
 
 ```sql
 toStartOfNanosecond(datetime[, timezone])
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 日付と時刻。[`DateTime64`](/sql-reference/data-types/datetime64)
-* `timezone` — 省略可能。戻り値のタイムゾーン。指定されていない場合、関数は `value` パラメータのタイムゾーンを使用します。[`String`](/sql-reference/data-types/string)
+- `datetime` — Date and time. [`DateTime64`](/sql-reference/data-types/datetime64)
+- `timezone` — Optional. Timezone for the returned value. If not specified, the function uses the timezone of the `value` parameter. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-ナノ秒精度を持つ入力値。[`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**例**
+Input value with nanoseconds. [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**タイムゾーンを指定しないクエリ**
+**Examples**
+
+**Query without timezone**
 
 ```sql title=Query
 WITH toDateTime64('2020-01-01 10:20:30.999999999', 9) AS dt64
@@ -4769,7 +5270,7 @@ SELECT toStartOfNanosecond(dt64);
 └───────────────────────────────┘
 ```
 
-**タイムゾーンを指定したクエリ**
+**Query with timezone**
 
 ```sql title=Query
 WITH toDateTime64('2020-01-01 10:20:30.999999999', 9) AS dt64
@@ -4782,33 +5283,38 @@ SELECT toStartOfNanosecond(dt64, 'Asia/Istanbul');
 └────────────────────────────────────────────┘
 ```
 
+
+
 ## toStartOfQuarter {#toStartOfQuarter}
 
-導入: v1.1
+Introduced in: v1.1
 
-日付または日時を、その四半期の最初の日に切り捨てます。四半期の最初の日は、1月1日、4月1日、7月1日、または10月1日のいずれかです。
+
+Rounds down a date or date with time to the first day of the quarter. The first day of the quarter is either 1 January, 1 April, 1 July, or 1 October.
 
 :::note
-戻り値の型は、[`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) を設定することで変更できます。
+The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
 :::
+    
 
-**構文**
+**Syntax**
 
 ```sql
 toStartOfQuarter(value)
 ```
 
-**引数**
+**Arguments**
 
-* `value` — 四半期の初日に切り下げる対象となる日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+- `value` — The date or date with time to round down to the first day of the quarter. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**戻り値**
 
-指定された日付または日時が属する四半期の初日を返します。[`Date`](/sql-reference/data-types/date)
+**Returned value**
 
-**例**
+Returns the first day of the quarter for the given date or date with time. [`Date`](/sql-reference/data-types/date)
 
-**四半期の初日への切り下げ**
+**Examples**
+
+**Round down to the first day of the quarter**
 
 ```sql title=Query
 SELECT toStartOfQuarter(toDateTime('2023-04-21 10:20:30'))
@@ -4820,30 +5326,35 @@ SELECT toStartOfQuarter(toDateTime('2023-04-21 10:20:30'))
 └─────────────────────────────────────────────────────┘
 ```
 
+
+
 ## toStartOfSecond {#toStartOfSecond}
 
-導入バージョン: v20.5
+Introduced in: v20.5
 
-日時を秒の開始時点に切り捨てます。
 
-**構文**
+Rounds down a date with time to the start of the seconds.
+    
+
+**Syntax**
 
 ```sql
 toStartOfSecond(datetime[, timezone])
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — サブ秒部分を切り捨てる対象の日時。[`DateTime64`](/sql-reference/data-types/datetime64)
-* `timezone` — 省略可能。返される値のタイムゾーン。指定しない場合、この関数は `value` パラメータのタイムゾーンを使用します。[`String`](/sql-reference/data-types/string)
+- `datetime` — Date and time to truncate sub-seconds from. [`DateTime64`](/sql-reference/data-types/datetime64)
+- `timezone` — Optional. Timezone for the returned value. If not specified, the function uses the timezone of the `value` parameter. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-サブ秒部分を除いた入力値を返します。[`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**使用例**
+Returns the input value without sub-seconds. [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**タイムゾーン指定なしのクエリ**
+**Examples**
+
+**Query without timezone**
 
 ```sql title=Query
 WITH toDateTime64('2020-01-01 10:20:30.999', 3) AS dt64
@@ -4856,7 +5367,7 @@ SELECT toStartOfSecond(dt64);
 └─────────────────────────┘
 ```
 
-**タイムゾーンを指定したクエリ**
+**Query with timezone**
 
 ```sql title=Query
 WITH toDateTime64('2020-01-01 10:20:30.999', 3) AS dt64
@@ -4869,33 +5380,38 @@ SELECT toStartOfSecond(dt64, 'Asia/Istanbul');
 └────────────────────────────────────────┘
 ```
 
+
+
 ## toStartOfTenMinutes {#toStartOfTenMinutes}
 
-導入バージョン: v20.1
+Introduced in: v20.1
 
-日時を直前の10分単位の区切り時刻に切り捨てます。
+
+Rounds down a date with time to the start of the nearest ten-minute interval.
 
 :::note
-戻り値の型は、[`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) を設定することで変更できます。
+The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
 :::
+    
 
-**構文**
+**Syntax**
 
 ```sql
 toStartOfTenMinutes(datetime)
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 日時。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — A date with time. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**返される値**
 
-最も近い 10 分間隔の開始時刻に丸めた日時を返します。返り値の型は [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) です。
+**Returned value**
 
-**例**
+Returns the date with time rounded to the start of the nearest ten-minute interval [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**例**
+**Examples**
+
+**Example**
 
 ```sql title=Query
 SELECT
@@ -4913,35 +5429,40 @@ toStartOfTenMinutes(toDateTime('2023-04-21 10:20:00')): 2023-04-21 10:20:00
 toStartOfTenMinutes(toDateTime('2023-04-21 10:23:00')): 2023-04-21 10:20:00
 ```
 
+
+
 ## toStartOfWeek {#toStartOfWeek}
 
-導入バージョン: v20.1
+Introduced in: v20.1
 
-日付または日時を、最も近い日曜日または月曜日まで切り捨てます。
+
+Rounds a date or date with time down to the nearest Sunday or Monday.
 
 :::note
-戻り値の型は、[`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) を設定することで変更できます。
+The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
 :::
+    
 
-**構文**
+**Syntax**
 
 ```sql
 toStartOfWeek(datetime[, mode[, timezone]])
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 変換する日付または日時。[`Date`](/sql-reference/data-types/date) または [`DateTime`](/sql-reference/data-types/datetime) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `mode` — `toWeek()` 関数で説明されているように、週の始まりとなる曜日を決定します。デフォルトは `0`。[`UInt8`](/sql-reference/data-types/int-uint)
-* `timezone` — 変換に使用するタイムゾーン。指定されていない場合は、サーバーのタイムゾーンが使用されます。[`String`](/sql-reference/data-types/string)
+- `datetime` — A date or date with time to convert. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `mode` — Determines the first day of the week as described in the `toWeek()` function. Default `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `timezone` — The timezone to use for the conversion. If not specified, the server's timezone is used. [`String`](/sql-reference/data-types/string)
 
-**返される値**
 
-`mode` に応じて、指定した日付と同日またはそれ以前で、最も近い日曜日または月曜日の日付を返します。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**例**
+Returns the date of the nearest Sunday or Monday on, or prior to, the given date, depending on the mode [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**最も近い日曜日または月曜日への切り下げ**
+**Examples**
+
+**Round down to the nearest Sunday or Monday**
 
 ```sql title=Query
 SELECT
@@ -4961,33 +5482,38 @@ SELECT
     toStartOfWeek(toDate('2023-04-24'), 1):                2023-04-24
 ```
 
+
+
 ## toStartOfYear {#toStartOfYear}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-日付または日時を、その年の初日に切り捨てます。結果は `Date` オブジェクトとして返されます。
+
+Rounds down a date or date with time to the first day of the year. Returns the date as a `Date` object.
 
 :::note
-戻り値の型は、[`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) の設定によって変更できます。
+The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
 :::
+    
 
-**構文**
+**Syntax**
 
 ```sql
 toStartOfYear(value)
 ```
 
-**引数**
+**Arguments**
 
-* `value` — 丸め対象となる日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+- `value` — The date or date with time to round down. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**戻り値**
 
-指定された日付または日時が属する年の最初の日を返します。戻り値の型は [`Date`](/sql-reference/data-types/date) です。
+**Returned value**
 
-**例**
+Returns the first day of the year for the given date/time [`Date`](/sql-reference/data-types/date)
 
-**年の初日に切り捨てる**
+**Examples**
+
+**Round down to the first day of the year**
 
 ```sql title=Query
 SELECT toStartOfYear(toDateTime('2023-04-21 10:20:30'))
@@ -4999,35 +5525,40 @@ SELECT toStartOfYear(toDateTime('2023-04-21 10:20:30'))
 └──────────────────────────────────────────────────┘
 ```
 
+
+
 ## toTimeWithFixedDate {#toTimeWithFixedDate}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-日付または日時から時刻コンポーネントを抽出します。
-返される結果は、現在は `1970-01-02` に固定された時点からのオフセット値ですが、
-その正確な時点は実装の詳細であり、将来変更される可能性があります。
 
-したがって、`toTime` を単独で使用することは想定されていません。
-この関数の主な目的は、2 つの日付または日時の間の時刻差を計算することです（例: `toTime(dt1) - toTime(dt2)`）。
+Extracts the time component of a date or date with time.
+The returned result is an offset to a fixed point in time, currently `1970-01-02`,
+but the exact point in time is an implementation detail which may change in future.
 
-**構文**
+`toTime` should therefore not be used standalone.
+The main purpose of the function is to calculate the time difference between two dates or dates with time, e.g., `toTime(dt1) - toTime(dt2)`.
+    
+
+**Syntax**
 
 ```sql
 toTime(date[, timezone])
 ```
 
-**引数**
+**Arguments**
 
-* `date` — 時刻に変換する日付。[`Date`](/sql-reference/data-types/date) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `timezone` — 省略可。返される値のタイムゾーン。[`String`](/sql-reference/data-types/string)
+- `date` — Date to convert to a time. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `timezone` — Optional. Timezone for the returned value. [`String`](/sql-reference/data-types/string)
 
-**返される値**
 
-日付または日時から、その時刻成分を、固定された時点（現在は 1970-01-02）からのオフセットとして返します。[`DateTime`](/sql-reference/data-types/datetime)
+**Returned value**
 
-**使用例**
+Returns the time component of a date or date with time in the form of an offset to a fixed point in time (selected as 1970-01-02, currently). [`DateTime`](/sql-reference/data-types/datetime)
 
-**2 つの日付間の時刻差を計算する**
+**Examples**
+
+**Calculate the time difference between two dates**
 
 ```sql title=Query
 SELECT toTime('2025-06-15 12:00:00'::DateTime) - toTime('2024-05-10 11:00:00'::DateTime) AS result, toTypeName(result)
@@ -5039,34 +5570,39 @@ SELECT toTime('2025-06-15 12:00:00'::DateTime) - toTime('2024-05-10 11:00:00'::D
 └────────┴────────────────────┘
 ```
 
+
+
 ## toTimezone {#toTimezone}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-`DateTime` または `DateTime64` を指定したタイムゾーンに変換します。
-データの内部値（UNIX 時間の秒数）は変更されません。
-変更されるのは、値のタイムゾーン属性と値の文字列表現のみです。
 
-**構文**
+Converts a `DateTime` or `DateTime64` to the specified time zone.
+The internal value (number of unix seconds) of the data doesn't change.
+Only the value's time zone attribute and the value's string representation changes.
+        
+
+**Syntax**
 
 ```sql
 toTimeZone(datetime, timezone)
 ```
 
-**エイリアス**: `toTimeZone`
+**Aliases**: `toTimeZone`
 
-**引数**
+**Arguments**
 
-* `date` — 変換する値。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `timezone` — 変換先のタイムゾーン名。[`String`](/sql-reference/data-types/string)
+- `date` — The value to convert. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `timezone` — The target time zone name. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-入力と同じタイムスタンプで、指定されたタイムゾーンを持つ [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) を返します。
+**Returned value**
 
-**例**
+Returns the same timestamp as the input, but with the specified time zone [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT toDateTime('2019-01-01 00:00:00', 'UTC') AS time_utc,
@@ -5095,32 +5631,37 @@ type_samoa: DateTime('US/Samoa')
 int32samoa: 1546300800
 ```
 
+
+
 ## toUTCTimestamp {#toUTCTimestamp}
 
-導入: v23.8
+Introduced in: v23.8
 
-日付または日時の値を、あるタイムゾーンから UTC タイムゾーンのタイムスタンプに変換します。この関数は主に Apache Spark や同様のフレームワークとの互換性のために用意されています。
 
-**構文**
+Converts a date or date with time value from one time zone to UTC timezone timestamp. This function is mainly included for compatibility with Apache Spark and similar frameworks.
+    
+
+**Syntax**
 
 ```sql
 toUTCTimestamp(datetime, time_zone)
 ```
 
-**別名**: `to_utc_timestamp`
+**Aliases**: `to_utc_timestamp`
 
-**引数**
+**Arguments**
 
-* `datetime` — 日付、または日時型の定数値または式。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `time_zone` — タイムゾーンを表す String 型の定数値または式。[`String`](/sql-reference/data-types/string)
+- `datetime` — A date or date with time type const value or an expression. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `time_zone` — A String type const value or an expression representing the time zone. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-UTC タイムゾーンでの日付または日時を返します。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**使用例**
+Returns a date or date with time in UTC timezone. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**タイムゾーンを UTC に変換する**
+**Examples**
+
+**Convert timezone to UTC**
 
 ```sql title=Query
 SELECT toUTCTimestamp(toDateTime('2023-03-16'), 'Asia/Shanghai')
@@ -5132,30 +5673,35 @@ SELECT toUTCTimestamp(toDateTime('2023-03-16'), 'Asia/Shanghai')
 └─────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## toUnixTimestamp {#toUnixTimestamp}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-`String`、`Date`、または `DateTime` を、Unix タイムスタンプ（`1970-01-01 00:00:00 UTC` からの経過秒数）を表す `UInt32` に変換します。
 
-**構文**
+Converts a `String`, `Date`, or `DateTime` to a Unix timestamp (seconds since `1970-01-01 00:00:00 UTC`) as `UInt32`.
+    
+
+**Syntax**
 
 ```sql
 toUnixTimestamp(date[, timezone])
 ```
 
-**引数**
+**Arguments**
 
-* `date` — 変換する値。[`Date`](/sql-reference/data-types/date)、[`Date32`](/sql-reference/data-types/date32)、[`DateTime`](/sql-reference/data-types/datetime)、[`DateTime64`](/sql-reference/data-types/datetime64)、[`String`](/sql-reference/data-types/string) のいずれか。
-* `timezone` — 省略可能。変換に使用するタイムゾーン。指定しない場合はサーバーのタイムゾーンが使用されます。[`String`](/sql-reference/data-types/string)
+- `date` — Value to convert. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `timezone` — Optional. Timezone to use for conversion. If not specified, the server's timezone is used. [`String`](/sql-reference/data-types/string)
 
-**返り値**
 
-Unix タイムスタンプを返します。[`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the Unix timestamp. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT
@@ -5181,61 +5727,66 @@ from_date:       1509840000
 from_date32:     1509840000
 ```
 
+
+
 ## toWeek {#toWeek}
 
-導入バージョン: v20.1
+Introduced in: v20.1
 
-この関数は、日付または日時に対して週番号を返します。`toWeek()` の 2 引数形式では、週の開始曜日を日曜日または月曜日から選択できるほか、戻り値の範囲を `0`〜`53` にするか `1`〜`53` にするかを指定できます。
 
-[`toISOWeek()`](#toWeek) は、`toWeek(date,3)` と等価な互換性用の関数です。
+This function returns the week number for date or datetime. The two-argument form of `toWeek()` enables you to specify whether the week starts
+on Sunday or Monday and whether the return value should be in the range from `0` to `53` or from `1` to `53`.
 
-次の表は、mode 引数の動作を説明したものです。
+[`toISOWeek()`](#toWeek) is a compatibility function that is equivalent to `toWeek(date,3)`.
 
-| Mode | 週の最初の曜日 | 範囲   | 第 1 週は、次を満たす最初の週 ... |
-| ---- | ------- | ---- | -------------------- |
-| 0    | Sunday  | 0-53 | この年に属する Sunday を含む   |
-| 1    | Monday  | 0-53 | この年に属する日が 4 日以上ある    |
-| 2    | Sunday  | 1-53 | この年に属する Sunday を含む   |
-| 3    | Monday  | 1-53 | この年に属する日が 4 日以上ある    |
-| 4    | Sunday  | 0-53 | この年に属する日が 4 日以上ある    |
-| 5    | Monday  | 0-53 | この年に属する Monday を含む   |
-| 6    | Sunday  | 1-53 | この年に属する日が 4 日以上ある    |
-| 7    | Monday  | 1-53 | この年に属する Monday を含む   |
-| 8    | Sunday  | 1-53 | 1 月 1 日を含む           |
-| 9    | Monday  | 1-53 | 1 月 1 日を含む           |
+The following table describes how the mode argument works.
 
-意味が「with 4 or more days this year」の mode 値の場合、週番号は ISO 8601:1988 に従って付けられます。
+| Mode | First day of week | Range | Week 1 is the first week ...    |
+|------|-------------------|-------|---------------------------------|
+| 0    | Sunday            | 0-53  | with a Sunday in this year      |
+| 1    | Monday            | 0-53  | with 4 or more days this year   |
+| 2    | Sunday            | 1-53  | with a Sunday in this year      |
+| 3    | Monday            | 1-53  | with 4 or more days this year   |
+| 4    | Sunday            | 0-53  | with 4 or more days this year   |
+| 5    | Monday            | 0-53  | with a Monday in this year      |
+| 6    | Sunday            | 1-53  | with 4 or more days this year   |
+| 7    | Monday            | 1-53  | with a Monday in this year      |
+| 8    | Sunday            | 1-53  | contains January 1              |
+| 9    | Monday            | 1-53  | contains January 1              |
 
-* 1 月 1 日を含む週に、その年に属する日が 4 日以上含まれている場合、その週は第 1 週になります。
-* それ以外の場合、その週は前年の最終週となり、その次の週が第 1 週になります。
+For mode values with a meaning of "with 4 or more days this year," weeks are numbered according to ISO 8601:1988:
 
-意味が「contains January 1」の mode 値の場合、1 月 1 日を含む週が第 1 週になります。
-その週が新しい年に属する日を何日含むかは関係なく、1 日しか含まない場合でも同様です。
-すなわち、12 月の最終週に翌年の 1 月 1 日が含まれる場合、その週は翌年の第 1 週となります。
+- If the week containing January 1 has 4 or more days in the new year, it is week 1.
+- Otherwise, it is the last week of the previous year, and the next week is week 1.
 
-第 1 引数は、[`parseDateTime64BestEffort()`](type-conversion-functions.md#parsedatetime64besteffort) でサポートされる形式の [`String`](../data-types/string.md) として指定することもできます。文字列引数のサポートは、一部のサードパーティツールが想定している MySQL との互換性のためにのみ存在します。将来的には、文字列引数のサポートが新しい MySQL 互換性用 SETTING に依存するよう変更される可能性があること、および一般に文字列のパースは低速であることから、文字列引数の使用は推奨されません。
+For mode values with a meaning of "contains January 1", the week contains January 1 is week 1.
+It does not matter how many days in the new year the week contained, even if it contained only one day.
+I.e. if the last week of December contains January 1 of the next year, it will be week 1 of the next year.
 
-**構文**
+The first argument can also be specified as [`String`](../data-types/string.md) in a format supported by [`parseDateTime64BestEffort()`](type-conversion-functions.md#parsedatetime64besteffort). Support for string arguments exists only for reasons of compatibility with MySQL which is expected by certain 3rd party tools. As string argument support may in future be made dependent on new MySQL-compatibility settings and because string parsing is generally slow, it is recommended to not use it.
+    
+
+**Syntax**
 
 ```sql
 toWeek(datetime[, mode[, time_zone]])
 ```
 
-**エイリアス**: `week`
+**Aliases**: `week`
 
-**引数**
+**Arguments**
 
-* `datetime` — 週番号を取得する対象の日付、または日時。[`Date`](/sql-reference/data-types/date) または [`DateTime`](/sql-reference/data-types/datetime)
-* `mode` — 省略可能。`0` から `9` のモード値で、週の開始日と週番号の範囲を決定します。デフォルトは `0`。
-* `time_zone` — 省略可能。タイムゾーン。[`String`](/sql-reference/data-types/string)
+- `datetime` — Date or date with time to get the week number from. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime)
+- `mode` — Optional. A mode `0` to `9` determines the first day of the week and the range of the week number. Default `0`. - `time_zone` — Optional. Time zone. [`String`](/sql-reference/data-types/string)
 
-**返される値**
 
-指定したモードに応じた週番号を返します。[`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the week number according to the specified mode. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**異なるモードで週番号を取得する**
+**Examples**
+
+**Get week numbers with different modes**
 
 ```sql title=Query
 SELECT toDate('2016-12-27') AS date, toWeek(date) AS week0, toWeek(date,1) AS week1, toWeek(date,9) AS week9
@@ -5247,33 +5798,38 @@ SELECT toDate('2016-12-27') AS date, toWeek(date) AS week0, toWeek(date,1) AS we
 └────────────┴───────┴───────┴───────┘
 ```
 
+
+
 ## toYYYYMM {#toYYYYMM}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-日付または日時を、年と月の数値 (YYYY * 100 + MM) を含む `UInt32` 型の数値に変換します。
-第 2 引数としてオプションのタイムゾーン引数を受け取ります。指定する場合、その値は文字列定数でなければなりません。
 
-この関数は、関数 `YYYYMMDDToDate()` の逆に相当します。
+Converts a date or date with time to a `UInt32` number containing the year and month number (YYYY * 100 + MM).
+Accepts a second optional timezone argument. If provided, the timezone must be a string constant.
 
-**構文**
+This function is the opposite of function `YYYYMMDDToDate()`.
+    
+
+**Syntax**
 
 ```sql
 toYYYYMM(datetime[, timezone])
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 変換対象の日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `timezone` — オプション。変換に使用するタイムゾーン。指定する場合、タイムゾーンは文字列定数である必要があります。[`String`](/sql-reference/data-types/string)
+- `datetime` — A date or date with time to convert. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `timezone` — Optional. Timezone for the conversion. If provided, the timezone must be a string constant. [`String`](/sql-reference/data-types/string)
 
-**返される値**
 
-年と月の番号 (YYYY * 100 + MM) を表す UInt32 の数値を返します。[`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns a UInt32 number containing the year and month number (YYYY * 100 + MM). [`UInt32`](/sql-reference/data-types/int-uint)
 
-**現在の日付を YYYYMM 形式に変換する**
+**Examples**
+
+**Convert current date to YYYYMM format**
 
 ```sql title=Query
 SELECT toYYYYMM(now(), 'US/Eastern')
@@ -5285,30 +5841,35 @@ SELECT toYYYYMM(now(), 'US/Eastern')
 └───────────────────────────────┘
 ```
 
+
+
 ## toYYYYMMDD {#toYYYYMMDD}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-日付または日時を、年・月・日を含む `UInt32` 型の数値 (YYYY * 10000 + MM * 100 + DD) に変換します。2 番目の省略可能なタイムゾーン引数を受け取ります。指定する場合、タイムゾーンは文字列定数でなければなりません。
 
-**構文**
+Converts a date or date with time to a `UInt32` number containing the year and month number (YYYY * 10000 + MM * 100 + DD). Accepts a second optional timezone argument. If provided, the timezone must be a string constant.
+    
+
+**Syntax**
 
 ```sql
 toYYYYMMDD(datetime[, timezone])
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 変換対象の日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `timezone` — 省略可能。変換に使用するタイムゾーン。指定する場合は、タイムゾーンは文字列リテラルである必要があります。[`String`](/sql-reference/data-types/string)
+- `datetime` — A date or date with time to convert. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `timezone` — Optional. Timezone for the conversion. If provided, the timezone must be a string constant. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-年・月・日を表す `UInt32` 型の数値を返します (YYYY * 10000 + MM * 100 + DD)。[`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns a `UInt32` number containing the year, month and day (YYYY * 10000 + MM * 100 + DD). [`UInt32`](/sql-reference/data-types/int-uint)
 
-**現在の日付を YYYYMMDD 形式に変換**
+**Examples**
+
+**Convert current date to YYYYMMDD format**
 
 ```sql title=Query
 SELECT toYYYYMMDD(now(), 'US/Eastern')
@@ -5320,31 +5881,36 @@ SELECT toYYYYMMDD(now(), 'US/Eastern')
 └─────────────────────────────────┘
 ```
 
+
+
 ## toYYYYMMDDhhmmss {#toYYYYMMDDhhmmss}
 
-導入: v1.1
+Introduced in: v1.1
 
-日付または日時を、年・月・日・時・分・秒を含む `UInt64` 型の数値に変換します。数値の形式は (YYYY * 10000000000 + MM * 100000000 + DD * 1000000 + hh * 10000 + mm * 100 + ss) です。
-2 つ目の省略可能なタイムゾーン引数を受け取ります。指定する場合、タイムゾーンは文字列定数である必要があります。
 
-**構文**
+Converts a date or date with time to a `UInt64` number containing the year and month number (YYYY * 10000000000 + MM * 100000000 + DD * 1000000 + hh * 10000 + mm * 100 + ss).
+Accepts a second optional timezone argument. If provided, the timezone must be a string constant.
+    
+
+**Syntax**
 
 ```sql
 toYYYYMMDDhhmmss(datetime[, timezone])
 ```
 
-**引数**
+**Arguments**
 
-* `datetime` — 変換対象の日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `timezone` — 省略可。変換に使用するタイムゾーン。指定する場合、タイムゾーンは文字列定数でなければなりません。[`String`](/sql-reference/data-types/string)
+- `datetime` — Date or date with time to convert. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `timezone` — Optional. Timezone for the conversion. If provided, the timezone must be a string constant. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-年・月・日・時・分・秒を含む `UInt64` 型の数値を返します (YYYY * 10000000000 + MM * 100000000 + DD * 1000000 + hh * 10000 + mm * 100 + ss)。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns a `UInt64` number containing the year, month, day, hour, minute and second (YYYY * 10000000000 + MM * 100000000 + DD * 1000000 + hh * 10000 + mm * 100 + ss). [`UInt64`](/sql-reference/data-types/int-uint)
 
-**現在の日付と時刻を YYYYMMDDhhmmss 形式に変換**
+**Examples**
+
+**Convert current date and time to YYYYMMDDhhmmss format**
 
 ```sql title=Query
 SELECT toYYYYMMDDhhmmss(now(), 'US/Eastern')
@@ -5356,31 +5922,36 @@ SELECT toYYYYMMDDhhmmss(now(), 'US/Eastern')
 └───────────────────────────────────────┘
 ```
 
+
+
 ## toYear {#toYear}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-`Date` または `DateTime` の値から西暦の年の部分を返します。
 
-**構文**
+Returns the year component (AD) of a `Date` or `DateTime` value.
+    
+
+**Syntax**
 
 ```sql
 toYear(datetime)
 ```
 
-**エイリアス**: `YEAR`
+**Aliases**: `YEAR`
 
-**引数**
+**Arguments**
 
-* `datetime` — 年を取得する対象とする日付または日時。[`Date`](/sql-reference/data-types/date)、[`Date32`](/sql-reference/data-types/date32)、[`DateTime`](/sql-reference/data-types/datetime)、[`DateTime64`](/sql-reference/data-types/datetime64) のいずれか。
+- `datetime` — Date or date with time to get the year from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**返り値**
 
-指定された Date または DateTime の年を返します。型は [`UInt16`](/sql-reference/data-types/int-uint) です。
+**Returned value**
 
-**例**
+Returns the year of the given Date or DateTime [`UInt16`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT toYear(toDateTime('2023-04-21 10:20:30'))
@@ -5392,29 +5963,32 @@ SELECT toYear(toDateTime('2023-04-21 10:20:30'))
 └───────────────────────────────────────────┘
 ```
 
+
+
 ## toYearNumSinceEpoch {#toYearNumSinceEpoch}
 
-導入バージョン: v25.3
+Introduced in: v25.3
 
-1970年からの経過年数を返します。
+Returns amount of years passed from year 1970
 
-**構文**
+**Syntax**
 
 ```sql
 toYearNumSinceEpoch(date)
 ```
 
-**引数**
+**Arguments**
 
-* `date` — 変換対象の日付または日時。[`Date`](/sql-reference/data-types/date) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)。
+- `date` — A date or date with time to convert. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**戻り値**
 
-正の整数値。
+**Returned value**
 
-**使用例**
+Positive integer
 
-**例**
+**Examples**
+
+**Example**
 
 ```sql title=Query
 SELECT toYearNumSinceEpoch(toDate('2024-10-01'))
@@ -5424,39 +5998,43 @@ SELECT toYearNumSinceEpoch(toDate('2024-10-01'))
 54
 ```
 
+
+
 ## toYearWeek {#toYearWeek}
 
-導入バージョン: v20.1
+Introduced in: v20.1
 
-日付に対して、その年と週番号を返します。結果に含まれる年は、年の最初および最後の週については、引数で指定した日付の年と異なる場合があります。
 
-`mode` 引数は、[`toWeek()`](/sql-reference/functions/date-time-functions#toWeek) の `mode` 引数と同様に動作します。
+Returns the year and week for a date. The year in the result may be different from the year in the date argument for the first and the last week of the year.
 
-警告: `toYearWeek()` が返す週番号は、`toWeek()` が返すものと異なる場合があります。`toWeek()` は常に与えられた年のコンテキストで週番号を返し、`toWeek()` が `0` を返す場合、`toYearWeek()` は前年の最終週に対応する値を返します。下記の例にある `prev_yearWeek` を参照してください。
+The mode argument works like the mode argument of [`toWeek()`](/sql-reference/functions/date-time-functions#toWeek).
 
-最初の引数は、[`parseDateTime64BestEffort()`](type-conversion-functions.md#parsedatetime64besteffort) がサポートする形式の [`String`](../data-types/string.md) として指定することもできます。文字列引数のサポートは、一部のサードパーティーツールが期待する MySQL との互換性のためにのみ存在します。将来的には、文字列引数のサポートが新しい MySQL 互換性 SETTING に依存するようになる可能性があり、また一般に文字列のパースは低速であるため、使用しないことを推奨します。
+Warning: The week number returned by `toYearWeek()` can be different from what the `toWeek()` returns. `toWeek()` always returns week number in the context of the given year, and in case `toWeek()` returns `0`, `toYearWeek()` returns the value corresponding to the last week of previous year. See `prev_yearWeek` in example below.
 
-**構文**
+The first argument can also be specified as [`String`](../data-types/string.md) in a format supported by [`parseDateTime64BestEffort()`](type-conversion-functions.md#parsedatetime64besteffort). Support for string arguments exists only for reasons of compatibility with MySQL which is expected by certain 3rd party tools. As string argument support may in future be made dependent on new MySQL-compatibility settings and because string parsing is generally slow, it is recommended to not use it.
+    
+
+**Syntax**
 
 ```sql
 toYearWeek(datetime[, mode[, timezone]])
 ```
 
-**別名**: `yearweek`
+**Aliases**: `yearweek`
 
-**引数**
+**Arguments**
 
-* `datetime` — 年と週番号を取得する対象の日付または日時。[`Date`](/sql-reference/data-types/date) または [`DateTime`](/sql-reference/data-types/datetime)
-* `mode` — 省略可。`0` から `9` のモードにより、週の最初の曜日と週番号の範囲を決定します。デフォルトは `0`。
-* `timezone` — 省略可。タイムゾーン。[`String`](/sql-reference/data-types/string)
+- `datetime` — Date or date with time to get the year and week of. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime)
+- `mode` — Optional. A mode `0` to `9` determines the first day of the week and the range of the week number. Default `0`. - `timezone` — Optional. Time zone. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-年と週番号を結合した単一の整数値を返します。[`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns year and week number as a combined integer value. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**異なるモードで year-week の組み合わせを取得する**
+**Examples**
+
+**Get year-week combinations with different modes**
 
 ```sql title=Query
 SELECT toDate('2016-12-27') AS date, toYearWeek(date) AS yearWeek0, toYearWeek(date,1) AS yearWeek1, toYearWeek(date,9) AS yearWeek9, toYearWeek(toDate('2022-01-01')) AS prev_yearWeek
@@ -5468,31 +6046,33 @@ SELECT toDate('2016-12-27') AS date, toYearWeek(date) AS yearWeek0, toYearWeek(d
 └────────────┴───────────┴───────────┴───────────┴───────────────┘
 ```
 
+
+
 ## today {#today}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-クエリ解析時の現在の日付を返します。`toDate(now())` と同じです。
+Returns the current date at moment of query analysis. Same as `toDate(now())`.
 
-**構文**
+**Syntax**
 
 ```sql
 today()
 ```
 
-**別名**: `curdate`, `current_date`
+**Aliases**: `curdate`, `current_date`
 
-**引数**
+**Arguments**
 
-* なし。
+- None.
 
-**戻り値**
+**Returned value**
 
-現在の日付 [`Date`](/sql-reference/data-types/date) を返します。
+Returns the current date [`Date`](/sql-reference/data-types/date)
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 SELECT today() AS today, curdate() AS curdate, current_date() AS current_date FORMAT Pretty
@@ -5506,29 +6086,33 @@ SELECT today() AS today, curdate() AS curdate, current_date() AS current_date FO
 └────────────┴────────────┴──────────────┘
 ```
 
+
+
 ## yesterday {#yesterday}
 
-導入: v1.1
+Introduced in: v1.1
 
-引数を受け取らず、クエリの解析時点のいずれかにおける「昨日」の日付を返します。
 
-**構文**
+Accepts zero arguments and returns yesterday's date at one of the moments of query analysis.
+    
+
+**Syntax**
 
 ```sql
 yesterday()
 ```
 
-**引数**
+**Arguments**
 
-* なし。
+- None.
 
-**戻り値**
+**Returned value**
 
-昨日の日付を返します。[`Date`](/sql-reference/data-types/date)
+Returns yesterday's date. [`Date`](/sql-reference/data-types/date)
 
-**例**
+**Examples**
 
-**昨日の日付を取得する**
+**Get yesterday's date**
 
 ```sql title=Query
 SELECT yesterday();

@@ -57,14 +57,14 @@ ENGINE = CollapsingMergeTree(Sign)
   :::
 
   ```sql
-  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-  (
-      name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
-      name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
-      ...
-  ) 
-  ENGINE [=] CollapsingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, Sign)
-  ```
+CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+(
+    name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
+    name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
+    ...
+) 
+ENGINE [=] CollapsingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, Sign)
+```
 
   `Sign` — 分配给某列的名称，该列用于表示行的类型，其中 `1` 表示“state”行，`-1` 表示“cancel”行。[Int8](/sql-reference/data-types/int-uint)。
 </details>
@@ -90,7 +90,7 @@ ENGINE = CollapsingMergeTree(Sign)
 在某个给定时间点，我们写入如下记录用户活动状态的一行数据：
 
 ```text
-┌──────────────UserID─┬─页面浏览量─┬─持续时长─┬─Sign─┐
+┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┐
 │ 4324182021466249494 │         5 │      146 │    1 │
 └─────────────────────┴───────────┴──────────┴──────┘
 ```
@@ -98,7 +98,7 @@ ENGINE = CollapsingMergeTree(Sign)
 随后，当我们检测到用户活动发生变化时，会使用以下两行将其写入表中：
 
 ```text
-┌──────────────用户ID─┬─页面浏览数─┬─时长─┬─符号─┐
+┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┐
 │ 4324182021466249494 │         5 │      146 │   -1 │
 │ 4324182021466249494 │         6 │      185 │    1 │
 └─────────────────────┴───────────┴──────────┴──────┘
@@ -113,9 +113,9 @@ ENGINE = CollapsingMergeTree(Sign)
 
 ```text
 ┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┐
-│ 4324182021466249494 │         5 │      146 │    1 │ -- 旧的 "state" 行可以删除
-│ 4324182021466249494 │         5 │      146 │   -1 │ -- "cancel" 行可以删除
-│ 4324182021466249494 │         6 │      185 │    1 │ -- 新的 "state" 行会保留
+│ 4324182021466249494 │         5 │      146 │    1 │ -- old "state" row can be deleted
+│ 4324182021466249494 │         5 │      146 │   -1 │ -- "cancel" row can be deleted
+│ 4324182021466249494 │         6 │      185 │    1 │ -- new "state" row remains
 └─────────────────────┴───────────┴──────────┴──────┘
 ```
 
@@ -255,7 +255,7 @@ HAVING sum(Sign) > 0
 ```
 
 ```text
-┌──────────────UserID─┬─页面浏览量─┬─停留时长─┐
+┌──────────────UserID─┬─PageViews─┬─Duration─┐
 │ 4324182021466249494 │         6 │      185 │
 └─────────────────────┴───────────┴──────────┘
 ```
@@ -320,7 +320,7 @@ SELECT * FROM UAct FINAL;
 ```
 
 ```text
-┌──────────────UserID─┬─页面浏览次数─┬─持续时间─┬─符号─┐
+┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┐
 │ 4324182021466249494 │         6 │      185 │    1 │
 └─────────────────────┴───────────┴──────────┴──────┘
 ```

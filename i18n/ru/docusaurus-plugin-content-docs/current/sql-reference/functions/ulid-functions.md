@@ -55,29 +55,34 @@ SELECT ULIDStringToDateTime('01GNB2S2FGN2P93QPXDNB4EN2R')
 └────────────────────────────────────────────────────┘
 ```
 
+
+
 ## generateULID {#generateULID}
 
-Введена в версии v23.2
+Introduced in: v23.2
 
-Генерирует [универсальный уникальный лексикографически сортируемый идентификатор (ULID)](https://github.com/ulid/spec).
 
-**Синтаксис**
+Generates a [Universally Unique Lexicographically Sortable Identifier (ULID)](https://github.com/ulid/spec).
+    
+
+**Syntax**
 
 ```sql
 generateULID([x])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `x` — Необязательный аргумент. Выражение, дающее на выходе значение любого из поддерживаемых типов данных. Полученное значение отбрасывается, но само выражение используется для обхода [устранения общих подвыражений](/sql-reference/functions/overview#common-subexpression-elimination), если функция вызывается несколько раз в одном запросе. [`Any`](/sql-reference/data-types)
+- `x` — Optional. An expression resulting in any of the supported data types. The resulting value is discarded, but the expression itself if used for bypassing [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) if the function is called multiple times in one query. [`Any`](/sql-reference/data-types)
 
-**Возвращаемое значение**
 
-Возвращает ULID. [`FixedString(26)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**Примеры**
+Returns a ULID. [`FixedString(26)`](/sql-reference/data-types/fixedstring)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT generateULID()
@@ -89,7 +94,7 @@ SELECT generateULID()
 └────────────────────────────┘
 ```
 
-**Пример использования при необходимости сгенерировать несколько значений в одной строке**
+**Usage example if it is needed to generate multiple values in one row**
 
 ```sql title=Query
 SELECT generateULID(1), generateULID(2)

@@ -145,9 +145,9 @@ $ echo '1' | curl 'http://localhost:8123/?query=SELECT' --data-binary @-
 
 ```bash
 $ echo 'ECT 1' | curl 'http://localhost:8123/?query=SEL' --data-binary @-
-Code: 59, e.displayText() = DB::Exception: 構文エラー: 位置0で失敗: SEL
+Code: 59, e.displayText() = DB::Exception: Syntax error: failed at position 0: SEL
 ECT 1
-, 期待される値: SHOW TABLES, SHOW DATABASES, SELECT, INSERT, CREATE, ATTACH, RENAME, DROP, DETACH, USE, SET, OPTIMIZE., e.what() = DB::Exception
+, expected One of: SHOW TABLES, SHOW DATABASES, SELECT, INSERT, CREATE, ATTACH, RENAME, DROP, DETACH, USE, SET, OPTIMIZE., e.what() = DB::Exception
 ```
 
 デフォルトでは、データは [`TabSeparated`](/interfaces/formats/TabSeparated) 形式で返されます。
@@ -504,7 +504,7 @@ curl -sS "http://localhost:8123" --data-binary "SET ROLE my_role;SELECT * FROM m
 上記のコマンドを実行すると、エラーが発生します。
 
 ```sql
-コード: 62. DB::Exception: 構文エラー (複数のステートメントは許可されていません)
+Code: 62. DB::Exception: Syntax error (Multi-statements are not allowed)
 ```
 
 この制限を回避するには、代わりに `role` クエリパラメータを使用してください。
@@ -535,7 +535,7 @@ curl -v -Ss "http://localhost:8123/?max_block_size=1&query=select+sleepEachRow(0
 ...
 < HTTP/1.1 200 OK
 ...
-Code: 395. DB::Exception: 'throwIf' 関数に渡された値が非ゼロです: 'FUNCTION throwIf(equals(number, 2) :: 1) -> throwIf(equals(number, 2))' の実行中
+Code: 395. DB::Exception: Value passed to 'throwIf' function is non-zero: while executing 'FUNCTION throwIf(equals(number, 2) :: 1) -> throwIf(equals(number, 2))
 ```
 
 この動作が発生する理由は、HTTP プロトコルの性質によるものです。まず HTTP ヘッダーが HTTP ステータスコード 200 とともに送信され、その後に HTTP ボディが続き、そのボディの中にエラーがプレーンテキストとして差し込まれます。
@@ -606,6 +606,12 @@ $ curl -v -Ss "http://localhost:8123/?max_block_size=1&query=select+sleepEachRow
 <
 0,0
 0,0
+
+__exception__
+rumfyutuqkncbgau
+Code: 395. DB::Exception: Value passed to 'throwIf' function is non-zero: while executing 'FUNCTION throwIf(equals(__table1.number, 2_UInt8) :: 1) -> throwIf(equals(__table1.number, 2_UInt8)) UInt8 : 0'. (FUNCTION_THROW_IF_VALUE_IS_NON_ZERO) (version 25.11.1.1)
+262 rumfyutuqkncbgau
+__exception__
 ```
 
 **例外**
@@ -614,7 +620,8 @@ Code: 395. DB::Exception: `throwIf` 関数に渡された値がゼロ以外で�
 262 rumfyutuqkncbgau
 **例外**
 
-```
+```bash
+$ curl -sS "<address>?param_id=2&param_phrase=test" -d "SELECT * FROM table WHERE int_column = {id:UInt8} and string_column = {phrase:String}"
 ```
 
 ## パラメーター付きクエリ {#cli-queries-with-parameters}
@@ -624,51 +631,41 @@ Code: 395. DB::Exception: `throwIf` 関数に渡された値がゼロ以外で�
 ### 例 {#example-3}
 
 ```bash
-$ curl -sS "<address>?param_id=2&param_phrase=test" -d "SELECT * FROM table WHERE int_column = {id:UInt8} and string_column = {phrase:String}"
+curl -sS "http://localhost:8123" -d "SELECT splitByChar('\t', 'abc      123')"
 ```
 
 ### URL パラメータ内のタブ文字 {#tabs-in-url-parameters}
 
 クエリパラメータは「エスケープ」形式から解析されます。これには、`\N` を null としてあいまいさなく解析できるといった利点があります。これは、タブ文字は `\t`（または `\` とタブ文字）としてエンコードする必要があることを意味します。たとえば、次の例では `abc` と `123` の間に実際のタブ文字が含まれており、入力文字列は 2 つの値に分割されます。
 
-```bash
-curl -sS "http://localhost:8123" -d "SELECT splitByChar('\t', 'abc      123')"
-```
-
 ```response
 ['abc','123']
+```
+
+```bash
+curl -sS "http://localhost:8123?param_arg1=abc%09123" -d "SELECT splitByChar('\t', {arg1:String})"
+Code: 457. DB::Exception: Value abc    123 cannot be parsed as String for query parameter 'arg1' because it isn't parsed completely: only 3 of 7 bytes was parsed: abc. (BAD_QUERY_PARAMETER) (version 23.4.1.869 (official build))
 ```
 
 しかし、URL パラメータで実際のタブ文字を `%09` としてエンコードしても、正しく解釈されません。
 
 ```bash
-curl -sS "http://localhost:8123?param_arg1=abc%09123" -d "SELECT splitByChar('\t', {arg1:String})"
-Code: 457. DB::Exception: クエリパラメータ 'arg1' の値 abc    123 を String として解析できません。完全に解析されていないため: 7バイト中3バイトのみ解析されました: abc。(BAD_QUERY_PARAMETER) (version 23.4.1.869 (official build))
+curl -sS "http://localhost:8123?param_arg1=abc%5C%09123" -d "SELECT splitByChar('\t', {arg1:String})"
 ```
 
 URL パラメータを使用する場合は、`\t` を `%5C%09` にエンコードする必要があります。例：
-
-```bash
-curl -sS "http://localhost:8123?param_arg1=abc%5C%09123" -d "SELECT splitByChar('\t', {arg1:String})"
-```
 
 ```response
 ['abc','123']
 ```
 
-## あらかじめ定義された HTTP インターフェイス {#predefined_http_interface}
-
-ClickHouse は、HTTP インターフェイス経由で特定のクエリをサポートしています。たとえば、次のようにテーブルにデータを書き込むことができます。
-
 ```bash
 $ echo '(4),(5),(6)' | curl 'http://localhost:8123/?query=INSERT%20INTO%20t%20VALUES' --data-binary @-
 ```
 
-ClickHouse は、[Prometheus exporter](https://github.com/ClickHouse/clickhouse_exporter) のようなサードパーティツールとの連携を容易にする Predefined HTTP Interface もサポートしています。例を見てみましょう。
+## あらかじめ定義された HTTP インターフェイス {#predefined_http_interface}
 
-まず、このセクションをサーバー設定ファイルに追加します。
-
-`http_handlers` には複数の `rule` を含めるように設定します。ClickHouse は受信した HTTP リクエストを `rule` で定義されたタイプと照合し、最初にマッチした `rule` のハンドラーが実行されます。その後、マッチに成功すると、ClickHouse は対応する事前定義クエリを実行します。
+ClickHouse は、HTTP インターフェイス経由で特定のクエリをサポートしています。たとえば、次のようにテーブルにデータを書き込むことができます。
 
 ```yaml title="config.xml"
 <http_handlers>
@@ -685,7 +682,11 @@ ClickHouse は、[Prometheus exporter](https://github.com/ClickHouse/clickhouse_
 </http_handlers>
 ```
 
-これで、Prometheus 形式のデータを取得するための URL を直接リクエストできます。
+ClickHouse は、[Prometheus exporter](https://github.com/ClickHouse/clickhouse_exporter) のようなサードパーティツールとの連携を容易にする Predefined HTTP Interface もサポートしています。例を見てみましょう。
+
+まず、このセクションをサーバー設定ファイルに追加します。
+
+`http_handlers` には複数の `rule` を含めるように設定します。ClickHouse は受信した HTTP リクエストを `rule` で定義されたタイプと照合し、最初にマッチした `rule` のハンドラーが実行されます。その後、マッチに成功すると、ClickHouse は対応する事前定義クエリを実行します。
 
 ```bash
 $ curl -v 'http://localhost:8123/predefined_query'
@@ -708,9 +709,52 @@ $ curl -v 'http://localhost:8123/predefined_query'
 < Keep-Alive: timeout=10
 < X-ClickHouse-Summary: {"read_rows":"0","read_bytes":"0","written_rows":"0","written_bytes":"0","total_rows_to_read":"0","elapsed_ns":"662334","memory_usage":"8451671"}
 <
-# HELP "Query" "Number of executing queries" {#help-query-number-of-executing-queries}
-# TYPE "Query" counter {#type-query-counter}
+# HELP "Query" "Number of executing queries"
+# TYPE "Query" counter
 "Query" 1
+
+# HELP "Merge" "Number of executing background merges"
+# TYPE "Merge" counter
+"Merge" 0
+
+# HELP "PartMutation" "Number of mutations (ALTER DELETE/UPDATE)"
+# TYPE "PartMutation" counter
+"PartMutation" 0
+
+# HELP "ReplicatedFetch" "Number of data parts being fetched from replica"
+# TYPE "ReplicatedFetch" counter
+"ReplicatedFetch" 0
+
+# HELP "ReplicatedSend" "Number of data parts being sent to replicas"
+# TYPE "ReplicatedSend" counter
+"ReplicatedSend" 0
+
+* Connection #0 to host localhost left intact
+
+* Connection #0 to host localhost left intact
+```
+
+これで、Prometheus 形式のデータを取得するための URL を直接リクエストできます。
+
+```yaml
+<http_handlers>
+    <rule>
+        <url><![CDATA[regex:/query_param_with_url/(?P<name_1>[^/]+)]]></url>
+        <methods>GET</methods>
+        <headers>
+            <XXX>TEST_HEADER_VALUE</XXX>
+            <PARAMS_XXX><![CDATA[regex:(?P<name_2>[^/]+)]]></PARAMS_XXX>
+        </headers>
+        <handler>
+            <type>predefined_query_handler</type>
+            <query>
+                SELECT name, value FROM system.settings
+                WHERE name IN ({name_1:String}, {name_2:String})
+            </query>
+        </handler>
+    </rule>
+    <defaults/>
+</http_handlers>
 ```
 
 # HELP "Merge" "実行中のバックグラウンドマージ数" {#help-merge-number-of-executing-background-merges}
@@ -735,108 +779,11 @@ $ curl -v 'http://localhost:8123/predefined_query'
 
 * ホスト localhost への接続 #0 はそのまま維持されています
 
-```
-
-`http_handlers`の設定オプションは以下のように動作します。
-
-`rule`では以下のパラメータを設定できます:
-- `method`
-- `headers`
-- `url`
-- `full_url`
-- `handler`
-
-各パラメータについて以下で説明します:
-
-- `method`はHTTPリクエストのメソッド部分のマッチングを担当します。`method`はHTTPプロトコルにおける[`method`]    
-  (https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)の定義に完全に準拠しています。これはオプションの設定です。設定ファイルで定義されていない場合、HTTPリクエストのメソッド部分とはマッチングしません。
-
-- `url`はHTTPリクエストのURL部分(パスとクエリ文字列)のマッチングを担当します。
-  `url`に`regex:`のプレフィックスが付いている場合、[RE2](https://github.com/google/re2)の正規表現を使用します。
-  これはオプションの設定です。設定ファイルで定義されていない場合、HTTPリクエストのURL部分とはマッチングしません。
-
-- `full_url`は`url`と同様ですが、完全なURL、すなわち`schema://host:port/path?query_string`を含みます。
-  注意: ClickHouseは「仮想ホスト」をサポートしていないため、`host`はIPアドレスです(`Host`ヘッダーの値ではありません)。
-
-- `empty_query_string` - リクエストにクエリ文字列(`?query_string`)が存在しないことを保証します
-
-- `headers`はHTTPリクエストのヘッダー部分のマッチングを担当します。RE2の正規表現と互換性があります。これはオプションの設定です。設定ファイルで定義されていない場合、HTTPリクエストのヘッダー部分とはマッチングしません。
-
-- `handler`はメイン処理部分を含みます。
-
-  以下の`type`を指定できます:
-  - [`predefined_query_handler`](#predefined_query_handler)
-  - [`dynamic_query_handler`](#dynamic_query_handler)
-  - [`static`](#static)
-  - [`redirect`](#redirect)
-
-  また、以下のパラメータを指定できます:
-  - `query` — `predefined_query_handler`タイプで使用し、ハンドラーが呼び出されたときにクエリを実行します。
-  - `query_param_name` — `dynamic_query_handler`タイプで使用し、HTTPリクエストパラメータ内の`query_param_name`値に対応する値を抽出して実行します。
-  - `status` — `static`タイプで使用し、レスポンスステータスコードを指定します。
-  - `content_type` — 任意のタイプで使用し、レスポンスの[content-type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type)を指定します。
-  - `http_response_headers` — 任意のタイプで使用し、レスポンスヘッダーマップを指定します。コンテンツタイプの設定にも使用できます。
-  - `response_content` — `static`タイプで使用し、クライアントに送信されるレスポンスコンテンツを指定します。プレフィックス'file://'または'config://'を使用する場合、ファイルまたは設定からコンテンツを取得してクライアントに送信します。
-  - `user` - クエリを実行するユーザー(デフォルトユーザーは`default`)。
-    **注意**: このユーザーのパスワードを指定する必要はありません。
-
-異なる`type`の設定方法について次に説明します。
-
-### predefined_query_handler {#predefined_query_handler}
-
-`predefined_query_handler`は`Settings`と`query_params`の値の設定をサポートします。`predefined_query_handler`タイプで`query`を設定できます。
-
-`query`値は`predefined_query_handler`の事前定義されたクエリであり、HTTPリクエストがマッチしたときにClickHouseによって実行され、クエリの結果が返されます。これは必須の設定です。
-
-以下の例では、[`max_threads`](../operations/settings/settings.md#max_threads)と[`max_final_threads`](/operations/settings/settings#max_final_threads)設定の値を定義し、その後システムテーブルをクエリしてこれらの設定が正常に設定されたかを確認します。
-
-:::note
-`query`、`play`、`ping`などのデフォルトの`handlers`を保持するには、`<defaults/>`ルールを追加してください。
-:::
-
-例:
-```
-
-```yaml
-<http_handlers>
-    <rule>
-        <url><![CDATA[regex:/query_param_with_url/(?P<name_1>[^/]+)]]></url>
-        <methods>GET</methods>
-        <headers>
-            <XXX>TEST_HEADER_VALUE</XXX>
-            <PARAMS_XXX><![CDATA[regex:(?P<name_2>[^/]+)]]></PARAMS_XXX>
-        </headers>
-        <handler>
-            <type>predefined_query_handler</type>
-            <query>
-                SELECT name, value FROM system.settings
-                WHERE name IN ({name_1:String}, {name_2:String})
-            </query>
-        </handler>
-    </rule>
-    <defaults/>
-</http_handlers>
-```
-
 ```bash
 curl -H 'XXX:TEST_HEADER_VALUE' -H 'PARAMS_XXX:max_final_threads' 'http://localhost:8123/query_param_with_url/max_threads?max_threads=1&max_final_threads=2'
 max_final_threads    2
 max_threads    1
 ```
-
-:::note
-1つの `predefined_query_handler` では、1つの `query` のみがサポートされます。
-:::
-
-### dynamic&#95;query&#95;handler {#dynamic_query_handler}
-
-`dynamic_query_handler` では、クエリは HTTP リクエストのパラメータとして記述されます。`predefined_query_handler` との違いは、後者ではクエリが設定ファイル内に記述される点です。`query_param_name` は `dynamic_query_handler` 内で設定できます。
-
-ClickHouse は、HTTP リクエストの URL 内で `query_param_name` に対応する値を抽出して実行します。`query_param_name` のデフォルト値は `/query` です。これは省略可能な設定項目です。設定ファイル内に定義がない場合は、パラメータは渡されません。
-
-この機能を試すために、次の例では [`max_threads`](../operations/settings/settings.md#max_threads) と `max_final_threads` の値を定義し、さらに設定が正しく反映されたかどうかを確認する `query` を実行します。
-
-例:
 
 ```yaml
 <http_handlers>
@@ -858,11 +805,19 @@ max_threads 1
 max_final_threads   2
 ```
 
-### static {#static}
+:::note
+1つの `predefined_query_handler` では、1つの `query` のみがサポートされます。
+:::
 
-`static` は [`content_type`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type)、[status](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)、および `response_content` を返すことができます。`response_content` で指定したコンテンツを返せます。
+### dynamic&#95;query&#95;handler {#dynamic_query_handler}
 
-たとえば、&quot;Say Hi!&quot; というメッセージを返すには次のようにします。
+`dynamic_query_handler` では、クエリは HTTP リクエストのパラメータとして記述されます。`predefined_query_handler` との違いは、後者ではクエリが設定ファイル内に記述される点です。`query_param_name` は `dynamic_query_handler` 内で設定できます。
+
+ClickHouse は、HTTP リクエストの URL 内で `query_param_name` に対応する値を抽出して実行します。`query_param_name` のデフォルト値は `/query` です。これは省略可能な設定項目です。設定ファイル内に定義がない場合は、パラメータは渡されません。
+
+この機能を試すために、次の例では [`max_threads`](../operations/settings/settings.md#max_threads) と `max_final_threads` の値を定義し、さらに設定が正しく反映されたかどうかを確認する `query` を実行します。
+
+例:
 
 ```yaml
 <http_handlers>
@@ -886,8 +841,6 @@ max_final_threads   2
 </http_handlers>
 ```
 
-`content_type` の代わりに `http_response_headers` を使用して Content-Type を設定できます。
-
 ```yaml
 <http_handlers>
         <rule>
@@ -904,12 +857,18 @@ max_final_threads   2
                     <X-My-Custom-Header>43</X-My-Custom-Header>
                 </http_response_headers>
                 #end-highlight
-                <response_content>こんにちは！</response_content>
+                <response_content>Say Hi!</response_content>
             </handler>
         </rule>
         <defaults/>
 </http_handlers>
 ```
+
+### static {#static}
+
+`static` は [`content_type`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type)、[status](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)、および `response_content` を返すことができます。`response_content` で指定したコンテンツを返せます。
+
+たとえば、&quot;Say Hi!&quot; というメッセージを返すには次のようにします。
 
 ```bash
 curl -vv  -H 'XXX:xxx' 'http://localhost:8123/hi'
@@ -933,7 +892,7 @@ curl -vv  -H 'XXX:xxx' 'http://localhost:8123/hi'
 Say Hi!%
 ```
 
-クライアントに送信される設定内容を特定します。
+`content_type` の代わりに `http_response_headers` を使用して Content-Type を設定できます。
 
 ```yaml
 <get_config_static_handler><![CDATA[<html ng-app="SMI2"><head><base href="http://ui.tabix.io/"></head><body><div ui-view="" class="content-ui"></div><script src="http://loader.tabix.io/master.js"></script></body></html>]]></get_config_static_handler>
@@ -973,7 +932,7 @@ $ curl -v  -H 'XXX:xxx' 'http://localhost:8123/get_config_static_handler'
 <html ng-app="SMI2"><head><base href="http://ui.tabix.io/"></head><body><div ui-view="" class="content-ui"></div><script src="http://loader.tabix.io/master.js"></script></body></html>%
 ```
 
-クライアントに送信したファイル内の内容を確認するには、次のようにします。
+クライアントに送信される設定内容を特定します。
 
 ```yaml
 <http_handlers>
@@ -1008,8 +967,8 @@ $ curl -v  -H 'XXX:xxx' 'http://localhost:8123/get_config_static_handler'
 
 ```bash
 $ user_files_path='/var/lib/clickhouse/user_files'
-$ sudo echo "<html><body>相対パスファイル</body></html>" > $user_files_path/relative_path_file.html
-$ sudo echo "<html><body>絶対パスファイル</body></html>" > $user_files_path/absolute_path_file.html
+$ sudo echo "<html><body>Relative Path File</body></html>" > $user_files_path/relative_path_file.html
+$ sudo echo "<html><body>Absolute Path File</body></html>" > $user_files_path/absolute_path_file.html
 $ curl -vv -H 'XXX:xxx' 'http://localhost:8123/get_absolute_path_static_handler'
 *   Trying ::1...
 * Connected to localhost (::1) port 8123 (#0)
@@ -1027,7 +986,7 @@ $ curl -vv -H 'XXX:xxx' 'http://localhost:8123/get_absolute_path_static_handler'
 < Keep-Alive: timeout=10
 < X-ClickHouse-Summary: {"read_rows":"0","read_bytes":"0","written_rows":"0","written_bytes":"0","total_rows_to_read":"0","elapsed_ns":"662334","memory_usage":"8451671"}
 <
-<html><body>絶対パスファイル</body></html>
+<html><body>Absolute Path File</body></html>
 * Connection #0 to host localhost left intact
 $ curl -vv -H 'XXX:xxx' 'http://localhost:8123/get_relative_path_static_handler'
 *   Trying ::1...
@@ -1046,15 +1005,11 @@ $ curl -vv -H 'XXX:xxx' 'http://localhost:8123/get_relative_path_static_handler'
 < Keep-Alive: timeout=10
 < X-ClickHouse-Summary: {"read_rows":"0","read_bytes":"0","written_rows":"0","written_bytes":"0","total_rows_to_read":"0","elapsed_ns":"662334","memory_usage":"8451671"}
 <
-<html><body>相対パスファイル</body></html>
+<html><body>Relative Path File</body></html>
 * Connection #0 to host localhost left intact
 ```
 
-### redirect {#redirect}
-
-`redirect` は `location` へ `302` リダイレクトを行います。
-
-例えば、ClickHouse play でユーザーを自動的に `play` に設定するには次のようにします。
+クライアントに送信したファイル内の内容を確認するには、次のようにします。
 
 ```xml
 <clickhouse>
@@ -1069,6 +1024,69 @@ $ curl -vv -H 'XXX:xxx' 'http://localhost:8123/get_relative_path_static_handler'
         </rule>
     </http_handlers>
 </clickhouse>
+```
+
+```xml
+<clickhouse>
+    <http_handlers>
+        <common_http_response_headers>
+            <X-My-Common-Header>Common header</X-My-Common-Header>
+        </common_http_response_headers>
+        <rule>
+            <methods>GET</methods>
+            <url>/ping</url>
+            <handler>
+                <type>ping</type>
+                <http_response_headers>
+                    <X-My-Custom-Header>Custom indeed</X-My-Custom-Header>
+                </http_response_headers>
+            </handler>
+        </rule>
+    </http_handlers>
+</clickhouse>
+```
+
+### redirect {#redirect}
+
+`redirect` は `location` へ `302` リダイレクトを行います。
+
+例えば、ClickHouse play でユーザーを自動的に `play` に設定するには次のようにします。
+
+```bash
+$ curl 'http://localhost:8123/?query=SELECT+number,+throwIf(number>3)+from+system.numbers+format+JSON+settings+max_block_size=1&http_write_exception_in_output_format=1'
+{
+    "meta":
+    [
+        {
+            "name": "number",
+            "type": "UInt64"
+        },
+        {
+            "name": "throwIf(greater(number, 2))",
+            "type": "UInt8"
+        }
+    ],
+
+    "data":
+    [
+        {
+            "number": "0",
+            "throwIf(greater(number, 2))": 0
+        },
+        {
+            "number": "1",
+            "throwIf(greater(number, 2))": 0
+        },
+        {
+            "number": "2",
+            "throwIf(greater(number, 2))": 0
+        }
+    ],
+
+    "rows": 3,
+
+    "exception": "Code: 395. DB::Exception: Value passed to 'throwIf' function is non-zero: while executing 'FUNCTION throwIf(greater(number, 2) :: 2) -> throwIf(greater(number, 2)) UInt8 : 1'. (FUNCTION_THROW_IF_VALUE_IS_NON_ZERO) (version 23.8.1.1)"
+}
 ```
 
 ## HTTP レスポンスヘッダー {#http-response-headers}
@@ -1087,24 +1105,39 @@ ClickHouse では、設定可能なあらゆる種類のハンドラーに適用
 
 以下の例では、すべてのサーバーレスポンスに `X-My-Common-Header` と `X-My-Custom-Header` という 2 つのカスタムヘッダーが含まれます。
 
-```xml
-<clickhouse>
-    <http_handlers>
-        <common_http_response_headers>
-            <X-My-Common-Header>共通ヘッダー</X-My-Common-Header>
-        </common_http_response_headers>
-        <rule>
-            <methods>GET</methods>
-            <url>/ping</url>
-            <handler>
-                <type>ping</type>
-                <http_response_headers>
-                    <X-My-Custom-Header>カスタムヘッダー</X-My-Custom-Header>
-                </http_response_headers>
-            </handler>
-        </rule>
-    </http_handlers>
-</clickhouse>
+```bash
+$ curl 'http://localhost:8123/?query=SELECT+number,+throwIf(number>2)+from+system.numbers+format+XML+settings+max_block_size=1&http_write_exception_in_output_format=1'
+<?xml version='1.0' encoding='UTF-8' ?>
+<result>
+    <meta>
+        <columns>
+            <column>
+                <name>number</name>
+                <type>UInt64</type>
+            </column>
+            <column>
+                <name>throwIf(greater(number, 2))</name>
+                <type>UInt8</type>
+            </column>
+        </columns>
+    </meta>
+    <data>
+        <row>
+            <number>0</number>
+            <field>0</field>
+        </row>
+        <row>
+            <number>1</number>
+            <field>0</field>
+        </row>
+        <row>
+            <number>2</number>
+            <field>0</field>
+        </row>
+    </data>
+    <rows>3</rows>
+    <exception>Code: 395. DB::Exception: Value passed to 'throwIf' function is non-zero: while executing 'FUNCTION throwIf(greater(number, 2) :: 2) -> throwIf(greater(number, 2)) UInt8 : 1'. (FUNCTION_THROW_IF_VALUE_IS_NON_ZERO) (version 23.8.1.1)</exception>
+</result>
 ```
 
 ## HTTP ストリーミング中の例外発生時における有効な JSON/XML レスポンス {#valid-output-on-exception-http-streaming}

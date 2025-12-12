@@ -37,7 +37,7 @@ $$
 **语法**
 
 ```sql
-financialInternalRateOfReturn(现金流[, 估计值])
+financialInternalRateOfReturn(cashflows[, guess])
 ```
 
 **参数**
@@ -61,7 +61,7 @@ SELECT financialInternalRateOfReturn([-100, 39, 59, 55, 20])
 0.2809484211599611
 ```
 
-**simple&#95;example&#95;with&#95;guess**
+**simple_example_with_guess**
 
 ```sql title=Query
 SELECT financialInternalRateOfReturn([-100, 39, 59, 55, 20], 0.1)
@@ -71,44 +71,49 @@ SELECT financialInternalRateOfReturn([-100, 39, 59, 55, 20], 0.1)
 0.2809484211599611
 ```
 
+
+
 ## financialInternalRateOfReturnExtended {#financialInternalRateOfReturnExtended}
 
-引入版本：v25.7
+Introduced in: v25.7
 
-计算不规则时间间隔发生的一系列现金流的扩展内部收益率（XIRR）。XIRR 是使所有现金流的净现值（NPV）等于零的贴现率。
 
-XIRR 尝试求解以下方程（以 `ACT_365F` 为例）：
+Calculates the Extended Internal Rate of Return (XIRR) for a series of cash flows occurring at irregular intervals. XIRR is the discount rate at which the net present value (NPV) of all cash flows equals zero.
+
+XIRR attempts to solve the following equation (example for `ACT_365F`):
 
 $$
 \sum_{i=0}^n \frac{cashflow_i}{(1 + rate)^{(date_i - date_0)/365}} = 0
 $$
 
-数组应按日期升序排序。日期必须唯一。
+Arrays should be sorted by date in ascending order. Dates need to be unique.
+    
 
-**语法**
+**Syntax**
 
 ```sql
 financialInternalRateOfReturnExtended(cashflow, date [, guess, daycount])
 ```
 
-**参数**
+**Arguments**
 
-- `cashflow` — 与第二个参数中的日期相对应的现金流数组。[`Array(Int8/16/32/64)`](/sql-reference/data-types/array) 或 [`Array(Float*)`](/sql-reference/data-types/array)
-- `date` — 与现金流相对应的唯一日期的有序数组。[`Array(Date)`](/sql-reference/data-types/array) 或 [`Array(Date32)`](/sql-reference/data-types/array)
-- `[, guess]` — 可选。XIRR 计算的初始猜测值（常量值）。[`Float*`](/sql-reference/data-types/float)
-- `[, daycount]` —
-  可选的日计数惯例（默认为 'ACT_365F'）。支持的值：
-- 'ACT_365F' - 实际天数/365 固定：使用日期之间的实际天数除以 365
-- 'ACT_365_25' - 实际天数/365.25：使用日期之间的实际天数除以 365.25
-  [`String`](/sql-reference/data-types/string)
+- `cashflow` — An array of cash flows corresponding to the dates in second param. [`Array(Int8/16/32/64)`](/sql-reference/data-types/array) or [`Array(Float*)`](/sql-reference/data-types/array)
+- `date` — A sorted array of unique dates corresponding to the cash flows. [`Array(Date)`](/sql-reference/data-types/array) or [`Array(Date32)`](/sql-reference/data-types/array)
+- `[, guess]` — Optional. Initial guess (constant value) for the XIRR calculation. [`Float*`](/sql-reference/data-types/float)
+- `[, daycount]` — 
+Optional day count convention (default 'ACT_365F'). Supported values:
+- 'ACT_365F' - Actual/365 Fixed: Uses actual number of days between dates divided by 365
+- 'ACT_365_25' - Actual/365.25: Uses actual number of days between dates divided by 365.25
+             [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回 XIRR 值。如果无法执行计算，则返回 NaN。[`Float64`](/sql-reference/data-types/float)
+**Returned value**
 
-**示例**
+Returns the XIRR value. If the calculation cannot be performed, it returns NaN. [`Float64`](/sql-reference/data-types/float)
 
-**简单示例**
+**Examples**
+
+**simple_example**
 
 ```sql title=查询
 SELECT financialInternalRateOfReturnExtended([-10000, 5750, 4250, 3250], [toDate('2020-01-01'), toDate('2020-03-01'), toDate('2020-10-30'), toDate('2021-02-15')])
@@ -118,7 +123,7 @@ SELECT financialInternalRateOfReturnExtended([-10000, 5750, 4250, 3250], [toDate
 0.6342972615260243
 ```
 
-**带猜测值的简单示例**
+**simple_example_with_guess**
 
 ```sql title=查询
 SELECT financialInternalRateOfReturnExtended([-10000, 5750, 4250, 3250], [toDate('2020-01-01'), toDate('2020-03-01'), toDate('2020-10-30'), toDate('2021-02-15')], 0.5)
@@ -128,7 +133,7 @@ SELECT financialInternalRateOfReturnExtended([-10000, 5750, 4250, 3250], [toDate
 0.6342972615260243
 ```
 
-**日计数简单示例**
+**simple_example_daycount**
 
 ```sql title=查询
 SELECT round(financialInternalRateOfReturnExtended([100000, -110000], [toDate('2020-01-01'), toDate('2021-01-01')], 0.1, 'ACT_365_25'), 6) AS xirr_365_25
@@ -138,43 +143,48 @@ SELECT round(financialInternalRateOfReturnExtended([100000, -110000], [toDate('2
 0.099785
 ```
 
+
+
 ## financialNetPresentValue {#financialNetPresentValue}
 
-引入于：v25.7
+Introduced in: v25.7
 
-在假设各期现金流之间时间间隔相等的前提下，计算一系列现金流的净现值（NPV）。
 
-默认变体（`start_from_zero` = true）：
+Calculates the Net Present Value (NPV) of a series of cash flows assuming equal time intervals between each cash flow.
 
-$$
-\sum&#95;{i=0}^{N-1} \frac{values_i}{(1 + rate)^i}
-$$
-
-与 Excel 兼容的变体（`start_from_zero` = false）：
+Default variant (`start_from_zero` = true):
 
 $$
-\sum&#95;{i=1}^{N} \frac{values_i}{(1 + rate)^i}
+\sum_{i=0}^{N-1} \frac{values_i}{(1 + rate)^i}
 $$
 
-**语法**
+Excel-compatible variant (`start_from_zero` = false):
+
+$$
+\sum_{i=1}^{N} \frac{values_i}{(1 + rate)^i}
+$$
+    
+
+**Syntax**
 
 ```sql
 financialNetPresentValue(rate, cashflows[, start_from_zero])
 ```
 
-**参数**
+**Arguments**
 
-* `rate` — 要应用的折现率。[`Float*`](/sql-reference/data-types/float)
-* `cashflows` — 现金流数组。每个值表示一笔支出（负值）或收入（正值）。[`Array(Int8/16/32/64)`](/sql-reference/data-types/array) 或 [`Array(Float*)`](/sql-reference/data-types/array)
-* `[, start_from_zero]` — 可选的布尔参数，指示净现值（NPV）计算从第 `0` 期（true）还是第 `1` 期（false，与 Excel 兼容）开始。默认值：true。[`Bool`](/sql-reference/data-types/boolean)
+- `rate` — The discount rate to apply. [`Float*`](/sql-reference/data-types/float)
+- `cashflows` — Array of cash flows. Each value represents a payment (negative value) or income (positive value). [`Array(Int8/16/32/64)`](/sql-reference/data-types/array) or [`Array(Float*)`](/sql-reference/data-types/array)
+- `[, start_from_zero]` — Optional boolean parameter indicating whether to start the NPV calculation from period `0` (true) or period `1` (false, Excel-compatible). Default: true. [`Bool`](/sql-reference/data-types/boolean)
 
-**返回值**
 
-返回一个 Float64 类型的净现值。[`Float64`](/sql-reference/data-types/float)
+**Returned value**
 
-**示例**
+Returns the net present value as a Float64 value. [`Float64`](/sql-reference/data-types/float)
 
-**default&#95;calculation**
+**Examples**
+
+**default_calculation**
 
 ```sql title=Query
 SELECT financialNetPresentValue(0.08, [-40000., 5000., 8000., 12000., 30000.])
@@ -184,7 +194,7 @@ SELECT financialNetPresentValue(0.08, [-40000., 5000., 8000., 12000., 30000.])
 3065.2226681795255
 ```
 
-**excel&#95;compatible&#95;calculation**
+**excel_compatible_calculation**
 
 ```sql title=Query
 SELECT financialNetPresentValue(0.08, [-40000., 5000., 8000., 12000., 30000.], false)
@@ -194,40 +204,45 @@ SELECT financialNetPresentValue(0.08, [-40000., 5000., 8000., 12000., 30000.], f
 2838.1691372032656
 ```
 
+
+
 ## financialNetPresentValueExtended {#financialNetPresentValueExtended}
 
-引入版本:v25.7
+Introduced in: v25.7
 
-计算在不规则时间间隔发生的一系列现金流的扩展净现值(XNPV)。XNPV 在计算现值时会考虑每笔现金流的具体时间点。
 
-`ACT_365F` 的 XNPV 公式:
+Calculates the Extended Net Present Value (XNPV) for a series of cash flows occurring at irregular intervals. XNPV considers the specific timing of each cash flow when calculating present value.
+
+XNPV equation for `ACT_365F`:
 
 $$
 XNPV=\sum_{i=1}^n \frac{cashflow_i}{(1 + rate)^{(date_i - date_0)/365}}
 $$
 
-数组应按日期升序排序。日期必须唯一。
+Arrays should be sorted by date in ascending order. Dates need to be unique.
+    
 
-**语法**
+**Syntax**
 
 ```sql
 financialNetPresentValueExtended(rate, cashflows, dates[, daycount])
 ```
 
-**参数**
+**Arguments**
 
-- `rate` — 应用的贴现率。[`Float*`](/sql-reference/data-types/float)
-- `cashflows` — 现金流数组。每个值表示一笔支付(负值)或收入(正值)。必须至少包含一个正值和一个负值。[`Array(Int8/16/32/64)`](/sql-reference/data-types/array) 或 [`Array(Float*)`](/sql-reference/data-types/array)
-- `dates` — 与每笔现金流对应的日期数组。必须与 cashflows 数组大小相同。[`Array(Date)`](/sql-reference/data-types/array) 或 [`Array(Date32)`](/sql-reference/data-types/array)
-- `[, daycount]` — 可选的日计数惯例。支持的值:`'ACT_365F'`(默认)— 实际天数/365 固定法,`'ACT_365_25'` — 实际天数/365.25。[`String`](/sql-reference/data-types/string)
+- `rate` — The discount rate to apply. [`Float*`](/sql-reference/data-types/float)
+- `cashflows` — Array of cash flows. Each value represents a payment (negative value) or income (positive value). Must contain at least one positive and one negative value. [`Array(Int8/16/32/64)`](/sql-reference/data-types/array) or [`Array(Float*)`](/sql-reference/data-types/array)
+- `dates` — Array of dates corresponding to each cash flow. Must have the same size as cashflows array. [`Array(Date)`](/sql-reference/data-types/array) or [`Array(Date32)`](/sql-reference/data-types/array)
+- `[, daycount]` — Optional day count convention. Supported values: `'ACT_365F'` (default) — Actual/365 Fixed, `'ACT_365_25'` — Actual/365.25. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回 Float64 类型的净现值。[`Float64`](/sql-reference/data-types/float)
+**Returned value**
 
-**示例**
+Returns the net present value as a Float64 value. [`Float64`](/sql-reference/data-types/float)
 
-**基本用法**
+**Examples**
+
+**Basic usage**
 
 ```sql title=查询
 SELECT financialNetPresentValueExtended(0.1, [-10000., 5750., 4250., 3250.], [toDate('2020-01-01'), toDate('2020-03-01'), toDate('2020-10-30'), toDate('2021-02-15')])
@@ -237,7 +252,7 @@ SELECT financialNetPresentValueExtended(0.1, [-10000., 5750., 4250., 3250.], [to
 2506.579458169746
 ```
 
-**使用不同的日计数惯例**
+**Using different day count convention**
 
 ```sql title=查询
 SELECT financialNetPresentValueExtended(0.1, [-10000., 5750., 4250., 3250.], [toDate('2020-01-01'), toDate('2020-03-01'), toDate('2020-10-30'), toDate('2021-02-15')], 'ACT_365_25')

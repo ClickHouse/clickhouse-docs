@@ -21,13 +21,27 @@ CREATE TABLE IF NOT EXISTS float_vs_decimal
 )
 ENGINE=MergeTree
 ORDER BY tuple();
+
+# Generate 1 000 000 random numbers with 2 decimal places and store them as a float and as a decimal
+INSERT INTO float_vs_decimal SELECT round(randCanonical(), 3) AS res, res FROM system.numbers LIMIT 1000000;
 ```
 
 # Сгенерировать 1 000 000 случайных чисел с 2 знаками после запятой и сохранить их в форматах float и decimal {#generate-1-000-000-random-numbers-with-2-decimal-places-and-store-them-as-a-float-and-as-a-decimal}
 
 INSERT INTO float&#95;vs&#95;decimal SELECT round(randCanonical(), 3) AS res, res FROM system.numbers LIMIT 1000000;
 
-````
+````sql
+SELECT sum(my_float), sum(my_decimal) FROM float_vs_decimal;
+
+┌──────sum(my_float)─┬─sum(my_decimal)─┐
+│ 499693.60500000004 │      499693.605 │
+└────────────────────┴─────────────────┘
+
+SELECT sumKahan(my_float), sumKahan(my_decimal) FROM float_vs_decimal;
+
+┌─sumKahan(my_float)─┬─sumKahan(my_decimal)─┐
+│         499693.605 │           499693.605 │
+└────────────────────┴──────────────────────┘
 ```sql
 SELECT sum(my_float), sum(my_decimal) FROM float_vs_decimal;
 
@@ -40,72 +54,48 @@ SELECT sumKahan(my_float), sumKahan(my_decimal) FROM float_vs_decimal;
 ┌─sumKahan(my_float)─┬─sumKahan(my_decimal)─┐
 │         499693.605 │           499693.605 │
 └────────────────────┴──────────────────────┘
-````
+````sql
+SELECT 1 - 0.9
 
-:::
-
-Эквивалентные типы в ClickHouse и в C приведены ниже:
-
-* `Float32` — `float`.
-* `Float64` — `double`.
-
-Типы с плавающей точкой в ClickHouse имеют следующие синонимы:
-
-* `Float32` — `FLOAT`, `REAL`, `SINGLE`.
-* `Float64` — `DOUBLE`, `DOUBLE PRECISION`.
-
-При создании таблиц можно указывать числовые параметры для чисел с плавающей точкой (например, `FLOAT(12)`, `FLOAT(15, 22)`, `DOUBLE(12)`, `DOUBLE(4, 18)`), но ClickHouse их игнорирует.
-
-## Использование чисел с плавающей запятой {#using-floating-point-numbers}
-
-* Вычисления с числами с плавающей запятой могут приводить к ошибке округления.
-
-{/* */ }
-
+┌───────minus(1, 0.9)─┐
+│ 0.09999999999999998 │
+└─────────────────────┘
 ```sql
 SELECT 1 - 0.9
 
 ┌───────minus(1, 0.9)─┐
 │ 0.09999999999999998 │
 └─────────────────────┘
-```
-
-* Результат вычислений зависит от способа их выполнения (типа процессора и архитектуры компьютерной системы).
-* Вычисления с плавающей запятой могут приводить к значениям, таким как бесконечность (`Inf`) и «не число» (`NaN`). Это следует учитывать при обработке результатов вычислений.
-* При разборе (парсинге) чисел с плавающей запятой из текста результат может отличаться от ближайшего машинно представимого числа.
-
-## NaN и Inf {#nan-and-inf}
-
-В отличие от стандартного SQL, ClickHouse поддерживает следующие категории чисел с плавающей запятой:
-
-* `Inf` – бесконечность.
-
-{/* */ }
-
 ```sql
 SELECT 0.5 / 0
 
 ┌─divide(0.5, 0)─┐
 │            inf │
 └────────────────┘
-```
+```sql
+SELECT 0.5 / 0
 
-* `-Inf` — отрицательная бесконечность.
-
-{/* */ }
-
+┌─divide(0.5, 0)─┐
+│            inf │
+└────────────────┘
 ```sql
 SELECT -0.5 / 0
 
 ┌─divide(-0.5, 0)─┐
 │            -inf │
 └─────────────────┘
-```
+```sql
+SELECT -0.5 / 0
 
-* `NaN` — не число (Not a Number).
+┌─divide(-0.5, 0)─┐
+│            -inf │
+└─────────────────┘
+```sql
+SELECT 0 / 0
 
-{/* */ }
-
+┌─divide(0, 0)─┐
+│          nan │
+└──────────────┘
 ```sql
 SELECT 0 / 0
 

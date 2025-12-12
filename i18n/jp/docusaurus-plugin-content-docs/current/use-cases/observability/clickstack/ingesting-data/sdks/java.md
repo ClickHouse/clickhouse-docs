@@ -45,10 +45,10 @@ curl -L -O https://github.com/open-telemetry/opentelemetry-java-instrumentation/
 ```shell
 export JAVA_TOOL_OPTIONS="-javaagent:PATH/TO/opentelemetry-javaagent.jar" \
 OTEL_EXPORTER_OTLP_ENDPOINT=https://localhost:4318 \
-OTEL_EXPORTER_OTLP_HEADERS='authorization=<インジェストAPIキー>' \
+OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>' \
 OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
 OTEL_LOGS_EXPORTER=otlp \
-OTEL_SERVICE_NAME='<アプリまたはサービスの名前>'
+OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>'
 ```
 
 *`OTEL_SERVICE_NAME` 環境変数は、HyperDX アプリ内でサービスを識別するために使用されます。任意の名前を指定できます。*

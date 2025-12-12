@@ -91,30 +91,30 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 Добавьте пользователя с доступом только на чтение, который может читать исходную таблицу (в этом примере `db.table`):
 
 ```sql
-CREATE USER exporter
-IDENTIFIED WITH SHA256_PASSWORD BY 'здесь-ваш-пароль'
-SETTINGS readonly = 1;
-```
+  CREATE USER exporter
+  IDENTIFIED WITH SHA256_PASSWORD BY 'password-here'
+  SETTINGS readonly = 1;
+  ```
 
 ```sql
-GRANT SELECT ON db.table TO exporter;
-```
+  GRANT SELECT ON db.table TO exporter;
+  ```
 
 Скопируйте определение таблицы:
 
 ```sql
-SELECT create_table_query
-FROM system.tables
-WHERE database = 'db' AND table = 'table'
-```
+  SELECT create_table_query
+  FROM system.tables
+  WHERE database = 'db' AND table = 'table'
+  ```
 
 **На целевой системе ClickHouse Cloud (той, на которой находилась повреждённая таблица):**
 
 Создайте целевую базу данных:
 
 ```sql
-CREATE DATABASE db
-```
+  CREATE DATABASE db
+  ```
 
 Используя оператор `CREATE TABLE` из исходной таблицы, создайте таблицу в целевой базе:
 
@@ -123,18 +123,18 @@ CREATE DATABASE db
 :::
 
 ```sql
-CREATE TABLE db.table ...
-ENGINE = ReplicatedMergeTree
-ORDER BY ...
-```
+  CREATE TABLE db.table ...
+  ENGINE = ReplicatedMergeTree
+  ORDER BY ...
+  ```
 
 Используйте функцию `remoteSecure`, чтобы получить данные из только что восстановленного сервиса ClickHouse Cloud в исходный сервис:
 
 ```sql
-INSERT INTO db.table
-SELECT *
-FROM remoteSecure('source-hostname', db, table, 'exporter', 'password-here')
-```
+  INSERT INTO db.table
+  SELECT *
+  FROM remoteSecure('source-hostname', db, table, 'exporter', 'password-here')
+  ```
 
 После успешной записи данных в исходный сервис обязательно проверьте их в этом сервисе. После проверки данных удалите новый сервис.
 
@@ -150,7 +150,7 @@ FROM remoteSecure('source-hostname', db, table, 'exporter', 'password-here')
 
 ```sql
 DROP TABLE IF EXISTS table_to_drop
-SYNC SETTINGS max_table_size_to_drop=2000000000000 -- увеличивает ограничение до 2 ТБ
+SYNC SETTINGS max_table_size_to_drop=2000000000000 -- increases the limit to 2TB
 ```
 
 :::

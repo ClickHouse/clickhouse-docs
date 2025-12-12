@@ -149,12 +149,12 @@ ClickHouse は Iceberg テーブルに対するタイムトラベルをサポー
 ```sql
  SELECT * FROM example_table ORDER BY 1 
  SETTINGS iceberg_timestamp_ms = 1714636800000
-```
+ ```
 
 ```sql
  SELECT * FROM example_table ORDER BY 1 
  SETTINGS iceberg_snapshot_id = 3547395809148285433
-```
+ ```
 
 注記: 同じクエリ内で `iceberg_timestamp_ms` パラメータと `iceberg_snapshot_id` パラメータを同時に指定することはできません。
 
@@ -176,7 +176,7 @@ CH はまだ Iceberg テーブルへの書き込みをサポートしていな�
 次の一連の操作を考えてみます。
 
 ```sql
- -- 2つのカラムを持つテーブルを作成
+ -- Create a table with two columns
   CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example (
   order_number bigint, 
   product_code string
@@ -184,23 +184,23 @@ CH はまだ Iceberg テーブルへの書き込みをサポートしていな�
   USING iceberg 
   OPTIONS ('format-version'='2')
 
-- - テーブルにデータを挿入
+- - Insert data into the table
   INSERT INTO spark_catalog.db.time_travel_example VALUES 
     (1, 'Mars')
 
-  ts1 = now() // 疑似コードの一部
+  ts1 = now() // A piece of pseudo code
 
-- - 新しいカラムを追加するためにテーブルを変更
+- - Alter table to add a new column
   ALTER TABLE spark_catalog.db.time_travel_example ADD COLUMN (price double)
  
   ts2 = now()
 
-- - テーブルにデータを挿入
+- - Insert data into the table
   INSERT INTO spark_catalog.db.time_travel_example VALUES (2, 'Venus', 100)
 
    ts3 = now()
 
-- - 各タイムスタンプでテーブルをクエリ
+- - Query the table at each timestamp
   SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts1;
 
 +------------+------------+
@@ -237,7 +237,7 @@ CH はまだ Iceberg テーブルへの書き込みをサポートしていな�
 現在時点でタイムトラベルクエリを実行すると、テーブルの現在のスキーマとは異なるスキーマが表示される場合があります。
 
 ```sql
--- テーブルを作成する
+-- Create a table
   CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example_2 (
   order_number bigint, 
   product_code string
@@ -245,15 +245,15 @@ CH はまだ Iceberg テーブルへの書き込みをサポートしていな�
   USING iceberg 
   OPTIONS ('format-version'='2')
 
--- テーブルに初期データを挿入する
+-- Insert initial data into the table
   INSERT INTO spark_catalog.db.time_travel_example_2 VALUES (2, 'Venus');
 
--- 新しいカラムを追加するためにテーブルを変更する
+-- Alter table to add a new column
   ALTER TABLE spark_catalog.db.time_travel_example_2 ADD COLUMN (price double);
 
   ts = now();
 
--- タイムスタンプ構文を使用して現在の時点でテーブルをクエリする
+-- Query the table at a current moment but using timestamp syntax
 
   SELECT * FROM spark_catalog.db.time_travel_example_2 TIMESTAMP AS OF ts;
 
@@ -263,7 +263,7 @@ CH はまだ Iceberg テーブルへの書き込みをサポートしていな�
     |           2|       Venus|
     +------------+------------+
 
--- 現在の時点でテーブルをクエリする
+-- Query the table at a current moment
   SELECT * FROM spark_catalog.db.time_travel_example_2;
     +------------+------------+-----+
     |order_number|product_code|price|
@@ -280,7 +280,7 @@ CH はまだ Iceberg テーブルへの書き込みをサポートしていな�
 2つ目の制約は、タイムトラベルを行う際、テーブルに一切データが書き込まれる前の状態は取得できないという点です。
 
 ```sql
--- テーブルを作成
+-- Create a table
   CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example_3 (
   order_number bigint, 
   product_code string
@@ -290,8 +290,8 @@ CH はまだ Iceberg テーブルへの書き込みをサポートしていな�
 
   ts = now();
 
--- 特定のタイムスタンプでテーブルをクエリする
-  SELECT * FROM spark_catalog.db.time_travel_example_3 TIMESTAMP AS OF ts; -- エラーで終了：ts より古いスナップショットが見つかりません。
+-- Query the table at a specific timestamp
+  SELECT * FROM spark_catalog.db.time_travel_example_3 TIMESTAMP AS OF ts; -- Finises with error: Cannot find a snapshot older than ts.
 ```
 
 ClickHouse における挙動は Spark と同様です。頭の中で Spark の SELECT クエリを ClickHouse の SELECT クエリに置き換えて考えれば、同じように動作します。
@@ -400,12 +400,12 @@ SELECT *
 FROM iceberg_writes_example
 FORMAT VERTICAL;
 
-行 1:
+Row 1:
 ──────
 x: Pavel
 y: 777
 
-行 2:
+Row 2:
 ──────
 x: Ivanov
 y: 993
@@ -430,7 +430,7 @@ SELECT *
 FROM iceberg_writes_example
 FORMAT VERTICAL;
 
-行 1:
+Row 1:
 ──────
 x: Ivanov
 y: 993
@@ -473,7 +473,7 @@ SELECT *
 FROM iceberg_writes_example
 FORMAT VERTICAL;
 
-行 1:
+Row 1:
 ──────
 x: Ivanov
 y: 993
@@ -494,7 +494,7 @@ SELECT *
 FROM iceberg_writes_example
 FORMAT VERTICAL;
 
-行 1:
+Row 1:
 ──────
 x: Ivanov
 y: 993
@@ -516,7 +516,7 @@ SELECT *
 FROM iceberg_writes_example
 FORMAT VERTICAL;
 
-行 1:
+Row 1:
 ──────
 x: Ivanov
 y: 993

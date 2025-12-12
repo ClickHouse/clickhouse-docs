@@ -19,7 +19,7 @@ DELETE FROM [db.]table [ON CLUSTER cluster] [IN PARTITION partition_expr] WHERE 
 ## 示例 {#examples}
 
 ```sql
--- 删除 `hits` 表中所有 `Title` 列包含文本 `hello` 的行
+-- Deletes all rows from the `hits` table where the `Title` column contains the text `hello`
 DELETE FROM hits WHERE Title LIKE '%hello%';
 ```
 
@@ -61,7 +61,7 @@ DELETE FROM hits WHERE Title LIKE '%hello%';
 `DELETE` 语句需要具有 `ALTER DELETE` 权限。要为指定用户在特定表上启用 `DELETE` 语句，请运行以下命令：
 
 ```sql
-授予 ALTER DELETE 权限 于 db.table 给 username;
+GRANT ALTER DELETE ON db.table to username;
 ```
 
 ## ClickHouse 内部是如何实现轻量级 DELETE 的 {#how-lightweight-deletes-work-internally-in-clickhouse}

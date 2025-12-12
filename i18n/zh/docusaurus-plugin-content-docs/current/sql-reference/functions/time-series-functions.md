@@ -71,32 +71,37 @@ SELECT seriesDecomposeSTL([10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## seriesOutliersDetectTukey {#seriesOutliersDetectTukey}
 
-首次引入于：v24.2
+Introduced in: v24.2
 
-使用 [Tukey Fences 方法](https://en.wikipedia.org/wiki/Outlier#Tukey%27s_fences) 检测时间序列数据中的异常值。
 
-**语法**
+Detects outliers in series data using [Tukey Fences](https://en.wikipedia.org/wiki/Outlier#Tukey%27s_fences).
+    
+
+**Syntax**
 
 ```sql
 seriesOutliersDetectTukey(series[, min_percentile, max_percentile, K])
 ```
 
-**参数**
+**Arguments**
 
-* `series` — 数值数组。[`Array((UInt8/16/32/64))`](/sql-reference/data-types/array) 或 [`Array(Float*)`](/sql-reference/data-types/array)
-* `min_percentile` — 可选。用于计算四分位距 [(IQR)](https://en.wikipedia.org/wiki/Interquartile_range) 的最小分位数。取值范围必须在 [0.02,0.98]。默认值为 0.25。[`Float*`](/sql-reference/data-types/float)
-* `max_percentile` — 可选。用于计算四分位距 (IQR) 的最大分位数。取值范围必须在 [0.02,0.98]。默认值为 0.75。[`Float*`](/sql-reference/data-types/float)
-* `K` — 可选。用于检测轻微或较强离群值的非负常数。默认值为 1.5。[`Float*`](/sql-reference/data-types/float)
+- `series` — An array of numeric values. [`Array((UInt8/16/32/64))`](/sql-reference/data-types/array) or [`Array(Float*)`](/sql-reference/data-types/array)
+- `min_percentile` — Optional. The minimum percentile to be used to calculate inter-quantile range [(IQR)](https://en.wikipedia.org/wiki/Interquartile_range). The value must be in range [0.02,0.98]. The default is 0.25. [`Float*`](/sql-reference/data-types/float)
+- `max_percentile` — Optional. The maximum percentile to be used to calculate inter-quantile range (IQR). The value must be in range [0.02,0.98]. The default is 0.75. [`Float*`](/sql-reference/data-types/float)
+- `K` — Optional. Non-negative constant value to detect mild or stronger outliers. The default value is 1.5. [`Float*`](/sql-reference/data-types/float)
 
-**返回值**
 
-返回与输入数组长度相同的数组，其中每个值表示该序列中相应元素的潜在异常评分。非零评分表示可能存在异常。[`Array(Float32)`](/sql-reference/data-types/array)
+**Returned value**
 
-**示例**
+Returns an array of the same length as the input array where each value represents score of possible anomaly of corresponding element in the series. A non-zero score indicates a possible anomaly. [`Array(Float32)`](/sql-reference/data-types/array)
 
-**基础离群值检测**
+**Examples**
+
+**Basic outlier detection**
 
 ```sql title=Query
 SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4, 5, 12, 45, 12, 3, 3, 4, 5, 6]) AS print_0
@@ -108,7 +113,7 @@ SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4, 5, 12, 45, 12, 3, 3, 4,
 └───────────────────────────────────┘
 ```
 
-**自定义参数的离群点检测**
+**Custom parameters outlier detection**
 
 ```sql title=Query
 SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4.50, 5, 12, 45, 12, 3.40, 3, 4, 5, 6], 0.2, 0.8, 1.5) AS print_0
@@ -120,29 +125,34 @@ SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4.50, 5, 12, 45, 12, 3.40,
 └──────────────────────────────────────┘
 ```
 
+
+
 ## seriesPeriodDetectFFT {#seriesPeriodDetectFFT}
 
-自 v23.12 引入
+Introduced in: v23.12
 
-使用 FFT（[快速傅里叶变换](https://en.wikipedia.org/wiki/Fast_Fourier_transform)）检测给定序列数据的周期。
 
-**语法**
+Finds the period of the given series data using FFT - [Fast Fourier transform](https://en.wikipedia.org/wiki/Fast_Fourier_transform)
+    
+
+**Syntax**
 
 ```sql
 seriesPeriodDetectFFT(series)
 ```
 
-**参数**
+**Arguments**
 
-* `series` — 数值数组。[`Array((U)Int8/16/32/64)`](/sql-reference/data-types/array) 或 [`Array(Float*)`](/sql-reference/data-types/array)
+- `series` — An array of numeric values. [`Array((U)Int8/16/32/64)`](/sql-reference/data-types/array) or [`Array(Float*)`](/sql-reference/data-types/array)
 
-**返回值**
 
-返回一个实数，表示序列数据的周期。当数据点数量少于四个时，返回 NaN。[`Float64`](/sql-reference/data-types/float)
+**Returned value**
 
-**示例**
+Returns a real value equal to the period of series data. NaN when number of data points are less than four. [`Float64`](/sql-reference/data-types/float)
 
-**使用简单模式进行周期检测**
+**Examples**
+
+**Period detection with simple pattern**
 
 ```sql title=Query
 SELECT seriesPeriodDetectFFT([1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6]) AS print_0
@@ -154,7 +164,7 @@ SELECT seriesPeriodDetectFFT([1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4,
 └────────────────────────┘
 ```
 
-**复杂模式的周期检测**
+**Period detection with complex pattern**
 
 ```sql title=Query
 SELECT seriesPeriodDetectFFT(arrayMap(x -> abs((x % 6) - 3), range(1000))) AS print_0
@@ -166,39 +176,44 @@ SELECT seriesPeriodDetectFFT(arrayMap(x -> abs((x % 6) - 3), range(1000))) AS pr
 └─────────┘
 ```
 
+
+
 ## timeSeriesFromGrid {#timeSeriesFromGrid}
 
-引入自：v25.8
+Introduced in: v25.8
 
-将值数组 `[x1, x2, x3, ...]` 转换为元组数组
-`[(start_timestamp, x1), (start_timestamp + step, x2), (start_timestamp + 2 * step, x3), ...]`。
 
-当前时间戳会按 `step` 递增，直到大于 `end_timestamp`。
-如果值的数量与时间戳的数量不匹配，函数会抛出异常。
+Converts an array of values `[x1, x2, x3, ...]` to an array of tuples
+`[(start_timestamp, x1), (start_timestamp + step, x2), (start_timestamp + 2 * step, x3), ...]`.
 
-`[x1, x2, x3, ...]` 中的 NULL 值会被跳过，但当前时间戳仍然会递增。
-例如，对于 `[value1, NULL, x2]`，函数返回 `[(start_timestamp, x1), (start_timestamp + 2 * step, x2)]`。
+The current timestamp is increased by `step` until it becomes greater than `end_timestamp`
+If the number of the values doesn't match the number of the timestamps, the function throws an exception.
 
-**语法**
+NULL values in `[x1, x2, x3, ...]` are skipped but the current timestamp is still incremented.
+For example, for `[value1, NULL, x2]` the function returns `[(start_timestamp, x1), (start_timestamp + 2 * step, x2)]`.
+    
+
+**Syntax**
 
 ```sql
 timeSeriesFromGrid(start_timestamp, end_timestamp, step, values)
 ```
 
-**参数**
+**Arguments**
 
-* `start_timestamp` — 时间网格的起始时间。[`DateTime64`](/sql-reference/data-types/datetime64) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`UInt32`](/sql-reference/data-types/int-uint)
-* `end_timestamp` — 时间网格的结束时间。[`DateTime64`](/sql-reference/data-types/datetime64) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`UInt32`](/sql-reference/data-types/int-uint)
-* `step` — 时间网格的步长（以秒为单位）。[`Decimal64`](/sql-reference/data-types/decimal) 或 [`Decimal32`](/sql-reference/data-types/decimal) 或 [`UInt32/64`](/sql-reference/data-types/int-uint)
-* `values` — 值数组。[`Array(Float*)`](/sql-reference/data-types/array) 或 [`Array(Nullable(Float*))`](/sql-reference/data-types/array)
+- `start_timestamp` — Start of the grid. [`DateTime64`](/sql-reference/data-types/datetime64) or [`DateTime`](/sql-reference/data-types/datetime) or [`UInt32`](/sql-reference/data-types/int-uint)
+- `end_timestamp` — End of the grid. [`DateTime64`](/sql-reference/data-types/datetime64) or [`DateTime`](/sql-reference/data-types/datetime) or [`UInt32`](/sql-reference/data-types/int-uint)
+- `step` — Step of the grid in seconds [`Decimal64`](/sql-reference/data-types/decimal) or [`Decimal32`](/sql-reference/data-types/decimal) or [`UInt32/64`](/sql-reference/data-types/int-uint)
+- `values` — Array of values [`Array(Float*)`](/sql-reference/data-types/array) or [`Array(Nullable(Float*))`](/sql-reference/data-types/array)
 
-**返回值**
 
-返回在由 `start_timestamp` 和 `step` 定义的等间隔时间网格上，将时间戳与源值数组中的值组合后的结果。[`Array(Tuple(DateTime64, Float64))`](/sql-reference/data-types/array)
+**Returned value**
 
-**示例**
+Returns values from the source array of values combined with timestamps on a regular time grid described by `start_timestamp` and `step`. [`Array(Tuple(DateTime64, Float64))`](/sql-reference/data-types/array)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT timeSeriesFromGrid('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:01:30.000'::DateTime64(3), 30, [10, 20, NULL, 30]) AS result;
@@ -210,29 +225,32 @@ SELECT timeSeriesFromGrid('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:0
 └────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## timeSeriesIdToTags {#timeSeriesIdToTags}
 
-引入于：v25.8
+Introduced in: v25.8
 
-查找与指定时间序列标识符关联的标签。
+Finds tags associated with the specified identifier of a time series.
 
-**语法**
+**Syntax**
 
 ```sql
 timeSeriesIdToTags(id)
 ```
 
-**参数**
+**Arguments**
 
-* `id` — 时间序列的标识符。[`UInt64`](/sql-reference/data-types/int-uint) 或 [`UInt128`](/sql-reference/data-types/int-uint) 或 [`UUID`](/sql-reference/data-types/uuid) 或 [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+- `id` — Identifier of a time series. [`UInt64`](/sql-reference/data-types/int-uint) or [`UInt128`](/sql-reference/data-types/int-uint) or [`UUID`](/sql-reference/data-types/uuid) or [`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-**返回值**
 
-返回由若干对 (tag&#95;name, tag&#95;value) 组成的数组。[`Array(Tuple(String, String))`](/sql-reference/data-types/array)
+**Returned value**
 
-**示例**
+Returns an array of pairs (tag_name, tag_value). [`Array(Tuple(String, String))`](/sql-reference/data-types/array)
 
-**示例**
+**Examples**
+
+**Example**
 
 ```sql title=Query
 SELECT timeSeriesStoreTags(8374283493092, [('region', 'eu'), ('env', 'dev')], '__name__', 'http_requests_count') AS id, timeSeriesIdToTags(id)
@@ -242,29 +260,32 @@ SELECT timeSeriesStoreTags(8374283493092, [('region', 'eu'), ('env', 'dev')], '_
 8374283493092    [('__name__', ''http_requests_count''), ('env', 'dev'), ('region', 'eu')]
 ```
 
+
+
 ## timeSeriesIdToTagsGroup {#timeSeriesIdToTagsGroup}
 
-引入于：v25.8
+Introduced in: v25.8
 
-将指定的时间序列标识符转换为其组索引。组索引是数字 0、1、2、3，在当前执行的查询上下文中与每种唯一的标签组合一一对应。
+Converts the specified identifier of a time series to its group index. Group indices are numbers 0, 1, 2, 3 associated with each unique set of tags in the context of the currently executed query.
 
-**语法**
+**Syntax**
 
 ```sql
 timeSeriesIdToTagsGroup(id)
 ```
 
-**参数**
+**Arguments**
 
-* `id` — 时间序列的标识符。[`UInt64`](/sql-reference/data-types/int-uint) 或 [`UInt128`](/sql-reference/data-types/int-uint) 或 [`UUID`](/sql-reference/data-types/uuid) 或 [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+- `id` — Identifier of a time series. [`UInt64`](/sql-reference/data-types/int-uint) or [`UInt128`](/sql-reference/data-types/int-uint) or [`UUID`](/sql-reference/data-types/uuid) or [`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-**返回值**
 
-返回与此标签集关联的组索引。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns a group index associated with this set of tags. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**示例**
+**Examples**
+
+**Example**
 
 ```sql title=Query
 SELECT timeSeriesStoreTags(8374283493092, [('region', 'eu'), ('env', 'dev')], '__name__', 'http_requests_count') AS id, timeSeriesIdToTagsGroup(id)
@@ -274,35 +295,40 @@ SELECT timeSeriesStoreTags(8374283493092, [('region', 'eu'), ('env', 'dev')], '_
 8374283493092    0
 ```
 
+
+
 ## timeSeriesRange {#timeSeriesRange}
 
-自 v25.8 版本引入。
+Introduced in: v25.8
 
-生成一个时间戳范围 `[start_timestamp, start_timestamp + step, start_timestamp + 2 * step, ..., end_timestamp]`。
 
-如果 `start_timestamp` 等于 `end_timestamp`，函数将返回一个仅包含 `[start_timestamp]` 的单元素数组。
+Generates a range of timestamps [start_timestamp, start_timestamp + step, start_timestamp + 2 * step, ..., end_timestamp].
 
-`timeSeriesRange()` 函数类似于 [range](../functions/array-functions.md#range) 函数。
+If `start_timestamp` is equal to `end_timestamp`, the function returns a 1-element array containing `[start_timestamp]`.
 
-**语法**
+Function `timeSeriesRange()` is similar to function [range](../functions/array-functions.md#range).
+
+
+**Syntax**
 
 ```sql
 timeSeriesRange(start_timestamp, end_timestamp, step)
 ```
 
-**参数**
+**Arguments**
 
-* `start_timestamp` — 区间起始时间。[`DateTime64`](/sql-reference/data-types/datetime64) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`UInt32`](/sql-reference/data-types/int-uint)
-* `end_timestamp` — 区间结束时间。[`DateTime64`](/sql-reference/data-types/datetime64) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`UInt32`](/sql-reference/data-types/int-uint)
-* `step` — 区间步长（以秒为单位）。[`UInt32/64`](/sql-reference/data-types/int-uint) 或 [`Decimal32/64`](/sql-reference/data-types/decimal)
+- `start_timestamp` — Start of the range. [`DateTime64`](/sql-reference/data-types/datetime64) or [`DateTime`](/sql-reference/data-types/datetime) or [`UInt32`](/sql-reference/data-types/int-uint)
+- `end_timestamp` — End of the range. [`DateTime64`](/sql-reference/data-types/datetime64) or [`DateTime`](/sql-reference/data-types/datetime) or [`UInt32`](/sql-reference/data-types/int-uint)
+- `step` — Step of the range in seconds [`UInt32/64`](/sql-reference/data-types/int-uint) or [`Decimal32/64`](/sql-reference/data-types/decimal)
 
-**返回值**
 
-返回一组时间戳。[`Array(DateTime64)`](/sql-reference/data-types/array)
+**Returned value**
 
-**示例**
+Returns a range of timestamps. [`Array(DateTime64)`](/sql-reference/data-types/array)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT timeSeriesRange('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:01:00'::DateTime64(3), 30)
@@ -314,32 +340,35 @@ SELECT timeSeriesRange('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:01:0
 └───────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## timeSeriesStoreTags {#timeSeriesStoreTags}
 
-自 v25.8 起引入
+Introduced in: v25.8
 
-在查询上下文中存储时间序列标识符与其标签（tags）之间的映射，以便函数 timeSeriesIdToTags() 稍后可以提取这些标签。
+Stores mapping between the identifier of a time series and its tags in the query context, so that function timeSeriesIdToTags() can extract these tags later.
 
-**语法**
+**Syntax**
 
 ```sql
 timeSeriesStoreTags(id, tags_array, separate_tag_name_1, separate_tag_value_1, ...)
 ```
 
-**参数**
+**Arguments**
 
-* `id` — 时间序列的标识符。[`UInt64`](/sql-reference/data-types/int-uint) 或 [`UInt128`](/sql-reference/data-types/int-uint) 或 [`UUID`](/sql-reference/data-types/uuid) 或 [`FixedString(16)`](/sql-reference/data-types/fixedstring)
-* `tags_array` — 由 (tag&#95;name, tag&#95;value) 键值对组成的数组。[`Array(Tuple(String, String))`](/sql-reference/data-types/array) 或 [`NULL`](/sql-reference/syntax#null)
-* `separate_tag_name_i` — 标签名称。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
-* `separate_tag_value_i` — 标签值。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring) 或 [`Nullable(String)`](/sql-reference/data-types/nullable)
+- `id` — Identifier of a time series. [`UInt64`](/sql-reference/data-types/int-uint) or [`UInt128`](/sql-reference/data-types/int-uint) or [`UUID`](/sql-reference/data-types/uuid) or [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+- `tags_array` — Array of pairs (tag_name, tag_value). [`Array(Tuple(String, String))`](/sql-reference/data-types/array) or [`NULL`](/sql-reference/syntax#null)
+- `separate_tag_name_i` — The name of a tag. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+- `separate_tag_value_i` — The value of a tag. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring) or [`Nullable(String)`](/sql-reference/data-types/nullable)
 
-**返回值**
 
-返回第一个参数，即时间序列的标识符。
+**Returned value**
 
-**示例**
+Returns the first argument, i.e. the identifier of a time series.
 
-**示例**
+**Examples**
+
+**Example**
 
 ```sql title=Query
 SELECT timeSeriesStoreTags(8374283493092, [('region', 'eu'), ('env', 'dev')], '__name__', 'http_requests_count')
@@ -349,29 +378,32 @@ SELECT timeSeriesStoreTags(8374283493092, [('region', 'eu'), ('env', 'dev')], '_
 8374283493092
 ```
 
+
+
 ## timeSeriesTagsGroupToTags {#timeSeriesTagsGroupToTags}
 
-自 v25.8 引入
+Introduced in: v25.8
 
-查找与某个组索引关联的标签。组索引是在当前正在执行的查询上下文中，与每个唯一标签集合关联的编号 0、1、2、3。
+Finds tags associated with a group index. Group indices are numbers 0, 1, 2, 3 associated with each unique set of tags in the context of the currently executed query.
 
-**语法**
+**Syntax**
 
 ```sql
 timeSeriesTagsGroupToTags(group)
 ```
 
-**参数**
+**Arguments**
 
-* `group` — 与时间序列关联的分组索引。[`UInt64`](/sql-reference/data-types/int-uint)
+- `group` — Group index associated with a time series. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-由二元组 (tag&#95;name, tag&#95;value) 组成的数组。[`Array(Tuple(String, String))`](/sql-reference/data-types/array)
+**Returned value**
 
-**示例**
+Array of pairs (tag_name, tag_value). [`Array(Tuple(String, String))`](/sql-reference/data-types/array)
 
-**示例**
+**Examples**
+
+**Example**
 
 ```sql title=Query
 SELECT timeSeriesStoreTags(8374283493092, [('region', 'eu'), ('env', 'dev')], '__name__', 'http_requests_count') AS id, timeSeriesIdToTagsGroup(id) AS group, timeSeriesTagsGroupToTags(group)

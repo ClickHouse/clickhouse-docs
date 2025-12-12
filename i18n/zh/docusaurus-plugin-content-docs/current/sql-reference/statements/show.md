@@ -426,7 +426,7 @@ SHOW CREATE [SETTINGS] PROFILE name1 [, name2 ...]
 ### 语法 {#syntax-13}
 
 ```sql title="Syntax"
-显示用户
+SHOW USERS
 ```
 
 ## SHOW ROLES {#show-roles}
@@ -471,7 +471,7 @@ SHOW [ROW] POLICIES [ON [db.]table]
 ### 语法 {#syntax-17}
 
 ```sql title="Syntax"
-显示配额
+SHOW QUOTAS
 ```
 
 ## SHOW QUOTA {#show-quota}
@@ -507,8 +507,8 @@ SHOW ACCESS
 ### 语法 {#syntax-20}
 
 ```sql title="Syntax"
-SHOW CLUSTER '<集群名称>'
-SHOW CLUSTERS [[NOT] LIKE|ILIKE '<匹配模式>'] [LIMIT <N>]
+SHOW CLUSTER '<name>'
+SHOW CLUSTERS [[NOT] LIKE|ILIKE '<pattern>'] [LIMIT <N>]
 ```
 
 ### 示例 {#examples-5}
@@ -543,7 +543,7 @@ SHOW CLUSTER 'test_shard_localhost' FORMAT Vertical;
 ```
 
 ```text title="Response"
-第 1 行:
+Row 1:
 ──────
 cluster:                 test_shard_localhost
 shard_num:               1
@@ -561,7 +561,7 @@ port:                    9000
 ### 语法 {#syntax-21}
 
 ```sql title="Syntax"
-SHOW [CHANGED] SETTINGS LIKE|ILIKE <名称>
+SHOW [CHANGED] SETTINGS LIKE|ILIKE <name>
 ```
 
 ### 子句 {#clauses}
@@ -592,9 +592,9 @@ SHOW SETTINGS ILIKE '%CONNECT_timeout%'
 
 ```text title="Response"
 ┌─name────────────────────────────────────┬─type─────────┬─value─┐
-│ connect_timeout                         │ 秒           │ 10    │
-│ connect_timeout_with_failover_ms        │ 毫秒         │ 50    │
-│ connect_timeout_with_failover_secure_ms │ 毫秒         │ 100   │
+│ connect_timeout                         │ Seconds      │ 10    │
+│ connect_timeout_with_failover_ms        │ Milliseconds │ 50    │
+│ connect_timeout_with_failover_secure_ms │ Milliseconds │ 100   │
 └─────────────────────────────────────────┴──────────────┴───────┘
 ```
 
@@ -617,7 +617,7 @@ SHOW CHANGED SETTINGS ILIKE '%MEMORY%'
 ### 语法 {#syntax-22}
 
 ```sql title="Syntax"
-SHOW SETTING <名称>
+SHOW SETTING <name>
 ```
 
 ### 另请参阅 {#see-also-4}
@@ -629,11 +629,11 @@ SHOW SETTING <名称>
 ### 示例 {#examples-7}
 
 ```sql title="Query"
-显示文件系统缓存
+SHOW FILESYSTEM CACHES
 ```
 
 ```text title="Response"
-┌─缓存────┐
+┌─Caches────┐
 │ s3_cache  │
 └───────────┘
 ```

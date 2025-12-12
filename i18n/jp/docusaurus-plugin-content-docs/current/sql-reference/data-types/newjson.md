@@ -26,11 +26,11 @@ ClickHouse オープンソース版では、バージョン 25.3 で JSON デー
 `JSON` 型の列を宣言するには、次の構文を使用できます。
 
 ```sql
-<カラム名> JSON
+<column_name> JSON
 (
     max_dynamic_paths=N, 
     max_dynamic_types=M, 
-    some.path 型名, 
+    some.path TypeName, 
     SKIP path.to.skip, 
     SKIP REGEXP 'paths_regexp'
 )
@@ -61,7 +61,7 @@ SELECT json FROM test;
 ```text title="Response (Example 1)"
 ┌─json────────────────────────────────────────┐
 │ {"a":{"b":"42"},"c":["1","2","3"]}          │
-│ {"f":"こんにちは、世界！"}                       │
+│ {"f":"Hello, World!"}                       │
 │ {"a":{"b":"43","e":"10"},"c":["4","5","6"]} │
 └─────────────────────────────────────────────┘
 ```
@@ -75,7 +75,7 @@ SELECT json FROM test;
 ```text title="Response (Example 2)"
 ┌─json──────────────────────────────┐
 │ {"a":{"b":42},"c":["1","2","3"]}  │
-│ {"a":{"b":0},"f":"こんにちは、世界！"} │
+│ {"a":{"b":0},"f":"Hello, World!"} │
 │ {"a":{"b":43},"c":["4","5","6"]}  │
 └───────────────────────────────────┘
 ```
@@ -92,7 +92,7 @@ SELECT '{"a" : {"b" : 42},"c" : [1, 2, 3], "d" : "Hello, World!"}'::JSON AS json
 
 ```text title="Response"
 ┌─json───────────────────────────────────────────────────┐
-│ {"a":{"b":"42"},"c":["1","2","3"],"d":"こんにちは、世界！"} │
+│ {"a":{"b":"42"},"c":["1","2","3"],"d":"Hello, World!"} │
 └────────────────────────────────────────────────────────┘
 ```
 
@@ -105,7 +105,7 @@ SELECT (tuple(42 AS b) AS a, [1, 2, 3] AS c, 'Hello, World!' AS d)::JSON AS json
 
 ```text title="Response"
 ┌─json───────────────────────────────────────────────────┐
-│ {"a":{"b":"42"},"c":["1","2","3"],"d":"こんにちは、世界！"} │
+│ {"a":{"b":"42"},"c":["1","2","3"],"d":"Hello, World!"} │
 └────────────────────────────────────────────────────────┘
 ```
 
@@ -118,7 +118,7 @@ SELECT map('a', map('b', 42), 'c', [1,2,3], 'd', 'Hello, World!')::JSON AS json;
 
 ```text title="Response"
 ┌─json───────────────────────────────────────────────────┐
-│ {"a":{"b":"42"},"c":["1","2","3"],"d":"こんにちは、世界！"} │
+│ {"a":{"b":"42"},"c":["1","2","3"],"d":"Hello, World!"} │
 └────────────────────────────────────────────────────────┘
 ```
 
@@ -270,11 +270,11 @@ FROM test;
 ```
 
 ```text title="Response"
-サーバーから例外を受信しました:
+Received exception from server:
 Code: 48. DB::Exception: Received from localhost:9000. DB::Exception: 
-数値型とUUID間の変換はサポートされていません。
-渡されたUUIDが引用符で囲まれていない可能性があります: 
-'FUNCTION CAST(__table1.json.a.g :: 2, 'UUID'_String :: 1) -> CAST(__table1.json.a.g, 'UUID'_String) UUID : 0'の実行中。
+Conversion between numeric types and UUID is not supported. 
+Probably the passed UUID is unquoted: 
+while executing 'FUNCTION CAST(__table1.json.a.g :: 2, 'UUID'_String :: 1) -> CAST(__table1.json.a.g, 'UUID'_String) UUID : 0'. 
 (NOT_IMPLEMENTED)
 ```
 
@@ -336,7 +336,7 @@ SELECT json.^a.b, json.^d.e.f FROM test;
 いくつかの例を見てみましょう。
 
 ```sql title="Query"
-SELECT JSONAllPathsWithTypes('{"a" : "2020-01-01", "b" : "2020-01-01 10:00:00"}'::JSON) AS paths_with_types SETTINGS input_format_try_infer_dates=1, input_format_try_infer_datetimes=1;
+SELECT JSONAllPathsWithTypes('{"a" : "2020-01-01", "b" : "2020-01-01 10:00:00"}'::JSON) AS paths_with_types settings input_format_try_infer_dates=1, input_format_try_infer_datetimes=1;
 ```
 
 ```text title="Response"
@@ -346,7 +346,7 @@ SELECT JSONAllPathsWithTypes('{"a" : "2020-01-01", "b" : "2020-01-01 10:00:00"}'
 ```
 
 ```sql title="Query"
-SELECT JSONAllPathsWithTypes('{"a" : "2020-01-01", "b" : "2020-01-01 10:00:00"}'::JSON) AS paths_with_types SETTINGS input_format_try_infer_dates=0, input_format_try_infer_datetimes=0;
+SELECT JSONAllPathsWithTypes('{"a" : "2020-01-01", "b" : "2020-01-01 10:00:00"}'::JSON) AS paths_with_types settings input_format_try_infer_dates=0, input_format_try_infer_datetimes=0;
 ```
 
 ```text title="Response"
@@ -391,9 +391,9 @@ SELECT json FROM test;
 
 ```text title="Response"
 ┌─json────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ {"a":{"b":[{"c":"42","d":"こんにちは","f":[[{"g":42.42}]],"k":{"j":"1000"}},{"c":"43"},{"d":"私の","e":["1","2","3"],"f":[[{"g":43.43,"h":"2020-01-01"}]],"k":{"j":"2000"}}]}} │
+│ {"a":{"b":[{"c":"42","d":"Hello","f":[[{"g":42.42}]],"k":{"j":"1000"}},{"c":"43"},{"d":"My","e":["1","2","3"],"f":[[{"g":43.43,"h":"2020-01-01"}]],"k":{"j":"2000"}}]}} │
 │ {"a":{"b":["1","2","3"]}}                                                                                                                                               │
-│ {"a":{"b":[{"c":"44","f":[[{"h":"2020-01-02"}]]},{"d":"世界","e":["4","5","6"],"f":[[{"g":44.44}]],"k":{"j":"3000"}}]}}                                                │
+│ {"a":{"b":[{"c":"44","f":[[{"h":"2020-01-02"}]]},{"d":"World","e":["4","5","6"],"f":[[{"g":44.44}]],"k":{"j":"3000"}}]}}                                                │
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -532,7 +532,7 @@ SELECT '{"a.b" : 42, "a" : {"b" : "Hello World!"}}'::JSON AS json;
 ```
 
 ```text title="Response"
-コード: 117. DB::Exception: JSONカラムへのデータ挿入ができません: JSONオブジェクトの解析中に重複パスが検出されました: a.b。挿入時に重複パスをスキップするには、type_json_skip_duplicated_paths 設定を有効にしてください: スコープ SELECT CAST('{"a.b" : 42, "a" : {"b" : "Hello, World"}}', 'JSON') AS json 内。(INCORRECT_DATA)
+Code: 117. DB::Exception: Cannot insert data into JSON column: Duplicate path found during parsing JSON object: a.b. You can enable setting type_json_skip_duplicated_paths to skip duplicated paths during insert: In scope SELECT CAST('{"a.b" : 42, "a" : {"b" : "Hello, World"}}', 'JSON') AS json. (INCORRECT_DATA)
 ```
 
 ドットを含むキーをそのまま保持し、それらをネストされたオブジェクトとして解釈させたくない場合は、`25.8` バージョン以降で利用可能な設定 [json&#95;type&#95;escape&#95;dots&#95;in&#95;keys](/operations/settings/formats#json_type_escape_dots_in_keys) を有効にしてください。この場合、パース時に JSON キー内のすべてのドットは `%2E` にエスケープされ、フォーマット時に元に戻されます。
@@ -605,7 +605,7 @@ SELECT '{"a.b" : 42, "a" : {"b" : "Hello World!"}}'::JSON(SKIP `a%2Eb`) as json,
 
 ```text title="Response"
 ┌─json───────────────────────┬─json.a%2Eb─┐
-│ {"a":{"b":"こんにちは世界！"}} │ ᴺᵁᴸᴸ       │
+│ {"a":{"b":"Hello World!"}} │ ᴺᵁᴸᴸ       │
 └────────────────────────────┴────────────┘
 ```
 
@@ -634,7 +634,7 @@ SELECT json FROM format(JSONEachRow, 'json JSON(a.b.c UInt32, SKIP a.b.d, SKIP d
 ┌─json──────────────────────────────────────────────────────────┐
 │ {"a":{"b":{"c":1}},"c":"42","d":{"i":["1","2","3"]}}          │
 │ {"a":{"b":{"c":2}},"d":{"i":["4","5","6"]}}                   │
-│ {"a":{"b":{"c":3}},"e":"こんにちは、世界！"}                       │
+│ {"a":{"b":{"c":3}},"e":"Hello, World!"}                       │
 │ {"a":{"b":{"c":4}},"c":"43"}                                  │
 │ {"a":{"b":{"c":5}},"d":{"h":"2020-02-02 10:00:00.000000000"}} │
 └───────────────────────────────────────────────────────────────┘
@@ -655,7 +655,7 @@ SELECT json FROM format(TSV, 'json JSON(a.b.c UInt32, SKIP a.b.d, SKIP REGEXP \'
 ┌─json──────────────────────────────────────────────────────────┐
 │ {"a":{"b":{"c":1}},"c":"42","d":{"i":["1","2","3"]}}          │
 │ {"a":{"b":{"c":2}},"d":{"i":["4","5","6"]}}                   │
-│ {"a":{"b":{"c":3}},"e":"こんにちは、世界！"}                       │
+│ {"a":{"b":{"c":3}},"e":"Hello, World!"}                       │
 │ {"a":{"b":{"c":4}},"c":"43"}                                  │
 │ {"a":{"b":{"c":5}},"d":{"h":"2020-02-02 10:00:00.000000000"}} │
 └───────────────────────────────────────────────────────────────┘

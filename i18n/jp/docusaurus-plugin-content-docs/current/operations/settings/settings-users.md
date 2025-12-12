@@ -19,10 +19,10 @@ ClickHouse は、ユーザー管理のための [SQL 駆動のワークフロー
 
 ```xml
 <users>
-    <!-- ユーザー名が指定されていない場合は `default` ユーザーが使用されます。 -->
+    <!-- If user name was not specified, 'default' user is used. -->
     <user_name>
         <password></password>
-        <!-- または -->
+        <!-- Or -->
         <password_sha256_hex></password_sha256_hex>
 
         <ssh_keys>
@@ -52,7 +52,7 @@ ClickHouse は、ユーザー管理のための [SQL 駆動のワークフロー
         <databases>
             <database_name>
                 <table_name>
-                    <filter>expression（式）</filter>
+                    <filter>expression</filter>
                 </table_name>
             </database_name>
         </databases>
@@ -61,7 +61,7 @@ ClickHouse は、ユーザー管理のための [SQL 駆動のワークフロー
             <query>GRANT SELECT ON system.*</query>
         </grants>
     </user_name>
-    <!-- その他のユーザー設定 -->
+    <!-- Other users settings -->
 </users>
 ```
 
@@ -82,8 +82,8 @@ ClickHouse は、ユーザー管理のための [SQL 駆動のワークフロー
 シェルでパスワードを生成する例:
 
 ```bash
-PASSWORD=$(base64 < /dev/urandom | head -c8); echo "$PASSWORD"; echo -n "$PASSWORD" | sha256sum | tr -d '-'
-```
+    PASSWORD=$(base64 < /dev/urandom | head -c8); echo "$PASSWORD"; echo -n "$PASSWORD" | sha256sum | tr -d '-'
+    ```
 
 結果の1行目はパスワードです。2行目は対応する SHA256 ハッシュです。
 
@@ -96,8 +96,8 @@ PASSWORD=$(base64 < /dev/urandom | head -c8); echo "$PASSWORD"; echo -n "$PASSWO
   シェルでパスワードを生成する例:
 
   ```bash
-  PASSWORD=$(base64 < /dev/urandom | head -c8); echo "$PASSWORD"; echo -n "$PASSWORD" | sha1sum | tr -d '-' | xxd -r -p | sha1sum | tr -d '-'
-  ```
+    PASSWORD=$(base64 < /dev/urandom | head -c8); echo "$PASSWORD"; echo -n "$PASSWORD" | sha1sum | tr -d '-' | xxd -r -p | sha1sum | tr -d '-'
+    ```
 
   結果の1行目がパスワードです。2行目が対応するダブル SHA1 ハッシュです。
 

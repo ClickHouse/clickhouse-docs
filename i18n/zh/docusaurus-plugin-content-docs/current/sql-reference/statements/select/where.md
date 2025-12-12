@@ -93,16 +93,21 @@ PREWHERE 是一种用于更高效执行过滤的优化手段。
 你可以在复杂条件中混合使用字面量、列和子查询：
 
 ```sql
--- 字面值 + 列
+-- Literal + Column
 WHERE price > 100 AND category = 'Electronics'
 
--- 列 + 子查询
+-- Column + Subquery
 WHERE price > (SELECT AVG(price) FROM products) AND in_stock = true
 
--- 字面值 + 列 + 子查询
+-- Literal + Column + Subquery
 WHERE category = 'Electronics' 
   AND price < 500
   AND id IN (SELECT product_id FROM bestsellers)
+
+-- All three with logical operators
+WHERE (price > 100 OR category IN (SELECT category FROM featured))
+  AND in_stock = true
+  AND name LIKE '%Special%'
 ```
 
 -- 使用逻辑运算符组合三个条件
@@ -110,21 +115,25 @@ WHERE (price &gt; 100 OR category IN (SELECT category FROM featured))
 AND in&#95;stock = true
 AND name LIKE &#39;%Special%&#39;
 
-````
-## 示例             {#examples}
+````sql
+CREATE TABLE t_null(x Int8, y Nullable(Int8)) ENGINE=MergeTree() ORDER BY x;
+INSERT INTO t_null VALUES (1, NULL), (2, 3);
 
-### 测试 `NULL` 值                              {#examples-testing-for-null}
-
-包含 `NULL` 值的查询：
-
+SELECT * FROM t_null WHERE y IS NULL;
+SELECT * FROM t_null WHERE y != 0;
 ```sql
 CREATE TABLE t_null(x Int8, y Nullable(Int8)) ENGINE=MergeTree() ORDER BY x;
 INSERT INTO t_null VALUES (1, NULL), (2, 3);
 
 SELECT * FROM t_null WHERE y IS NULL;
 SELECT * FROM t_null WHERE y != 0;
-````
-
+````response
+┌─x─┬────y─┐
+│ 1 │ ᴺᵁᴸᴸ │
+└───┴──────┘
+┌─x─┬─y─┐
+│ 2 │ 3 │
+└───┴───┘
 ```response
 ┌─x─┬────y─┐
 │ 1 │ ᴺᵁᴸᴸ │
@@ -132,12 +141,6 @@ SELECT * FROM t_null WHERE y != 0;
 ┌─x─┬─y─┐
 │ 2 │ 3 │
 └───┴───┘
-```
-
-### 使用逻辑运算符筛选数据 {#example-filtering-with-logical-operators}
-
-给定下表及其数据：
-
 ```sql
 CREATE TABLE products (
     id UInt32,
@@ -155,29 +158,52 @@ INSERT INTO products VALUES
 (4, 'Chair', 150.00, 'Furniture', true),
 (5, 'Monitor', 350.00, 'Electronics', true),
 (6, 'Lamp', 45.00, 'Furniture', false);
-```
+```sql
+CREATE TABLE products (
+    id UInt32,
+    name String,
+    price Float32,
+    category String,
+    in_stock Bool
+) ENGINE = MergeTree()
+ORDER BY id;
 
-**1. `AND` - 两个条件都必须为 true：**
-
+INSERT INTO products VALUES
+(1, 'Laptop', 999.99, 'Electronics', true),
+(2, 'Mouse', 25.50, 'Electronics', true),
+(3, 'Desk', 299.00, 'Furniture', false),
+(4, 'Chair', 150.00, 'Furniture', true),
+(5, 'Monitor', 350.00, 'Electronics', true),
+(6, 'Lamp', 45.00, 'Furniture', false);
 ```sql
 SELECT * FROM products
 WHERE category = 'Electronics' AND price < 500;
-```
-
+```sql
+SELECT * FROM products
+WHERE category = 'Electronics' AND price < 500;
+```response
+   ┌─id─┬─name────┬─price─┬─category────┬─in_stock─┐
+1. │  2 │ Mouse   │  25.5 │ Electronics │ true     │
+2. │  5 │ Monitor │   350 │ Electronics │ true     │
+   └────┴─────────┴───────┴─────────────┴──────────┘
 ```response
    ┌─id─┬─name────┬─price─┬─category────┬─in_stock─┐
 1. │  2 │ 鼠标    │  25.5 │ 电子产品    │ true     │
 2. │  5 │ 显示器  │   350 │ 电子产品    │ true     │
    └────┴─────────┴───────┴─────────────┴──────────┘
-```
-
-**2. `OR` - 至少有一个条件为真：**
-
 ```sql
 SELECT * FROM products
 WHERE category = 'Furniture' OR price > 500;
-```
-
+```sql
+SELECT * FROM products
+WHERE category = 'Furniture' OR price > 500;
+```response
+   ┌─id─┬─name───┬──price─┬─category────┬─in_stock─┐
+1. │  1 │ Laptop │ 999.99 │ Electronics │ true     │
+2. │  3 │ Desk   │    299 │ Furniture   │ false    │
+3. │  4 │ Chair  │    150 │ Furniture   │ true     │
+4. │  6 │ Lamp   │     45 │ Furniture   │ false    │
+   └────┴────────┴────────┴─────────────┴──────────┘
 ```response
    ┌─id─┬─name───┬──price─┬─category────┬─in_stock─┐
 1. │  1 │ 笔记本电脑 │ 999.99 │ 电子产品 │ true     │
@@ -185,61 +211,75 @@ WHERE category = 'Furniture' OR price > 500;
 3. │  4 │ 椅子  │    150 │ 家具   │ true     │
 4. │  6 │ 灯   │     45 │ 家具   │ false    │
    └────┴────────┴────────┴─────────────┴──────────┘
-```
-
-**3. `NOT` - 对条件取反：**
-
 ```sql
 SELECT * FROM products
 WHERE NOT in_stock;
-```
-
+```sql
+SELECT * FROM products
+WHERE NOT in_stock;
+```response
+   ┌─id─┬─name─┬─price─┬─category──┬─in_stock─┐
+1. │  3 │ Desk │   299 │ Furniture │ false    │
+2. │  6 │ Lamp │    45 │ Furniture │ false    │
+   └────┴──────┴───────┴───────────┴──────────┘
 ```response
    ┌─id─┬─name─┬─price─┬─category──┬─in_stock─┐
 1. │  3 │ 桌子 │   299 │ 家具      │ false    │
 2. │  6 │ 台灯 │    45 │ 家具      │ false    │
    └────┴──────┴───────┴───────────┴──────────┘
-```
-
-**4. `XOR` - 且只能有一个条件为真（不能同时为真）：**
-
 ```sql
 SELECT *
 FROM products
 WHERE xor(price > 200, category = 'Electronics')
-```
-
+```sql
+SELECT *
+FROM products
+WHERE xor(price > 200, category = 'Electronics')
+```response
+   ┌─id─┬─name──┬─price─┬─category────┬─in_stock─┐
+1. │  2 │ Mouse │  25.5 │ Electronics │ true     │
+2. │  3 │ Desk  │   299 │ Furniture   │ false    │
+   └────┴───────┴───────┴─────────────┴──────────┘
 ```response
    ┌─id─┬─name──┬─price─┬─category────┬─in_stock─┐
 1. │  2 │ 鼠标 │  25.5 │ 电子产品 │ true     │
 2. │  3 │ 桌子  │   299 │ 家具   │ false    │
    └────┴───────┴───────┴─────────────┴──────────┘
-```
-
-**5. 组合使用多个运算符：**
-
 ```sql
 SELECT * FROM products
 WHERE (category = 'Electronics' OR category = 'Furniture')
   AND in_stock = true
   AND price < 400;
-```
-
+```sql
+SELECT * FROM products
+WHERE (category = 'Electronics' OR category = 'Furniture')
+  AND in_stock = true
+  AND price < 400;
+```response
+   ┌─id─┬─name────┬─price─┬─category────┬─in_stock─┐
+1. │  2 │ Mouse   │  25.5 │ Electronics │ true     │
+2. │  4 │ Chair   │   150 │ Furniture   │ true     │
+3. │  5 │ Monitor │   350 │ Electronics │ true     │
+   └────┴─────────┴───────┴─────────────┴──────────┘
 ```response
    ┌─id─┬─name────┬─price─┬─category────┬─in_stock─┐
 1. │  2 │ 鼠标   │  25.5 │ 电子产品 │ true     │
 2. │  4 │ 椅子   │   150 │ 家具   │ true     │
 3. │  5 │ 显示器 │   350 │ 电子产品 │ true     │
    └────┴─────────┴───────┴─────────────┴──────────┘
-```
-
-**6. 使用函数语法：**
-
 ```sql
 SELECT * FROM products
 WHERE and(or(category = 'Electronics', price > 100), in_stock);
-```
-
+```sql
+SELECT * FROM products
+WHERE and(or(category = 'Electronics', price > 100), in_stock);
+```response
+   ┌─id─┬─name────┬──price─┬─category────┬─in_stock─┐
+1. │  1 │ Laptop  │ 999.99 │ Electronics │ true     │
+2. │  2 │ Mouse   │   25.5 │ Electronics │ true     │
+3. │  4 │ Chair   │    150 │ Furniture   │ true     │
+4. │  5 │ Monitor │    350 │ Electronics │ true     │
+   └────┴─────────┴────────┴─────────────┴──────────┘
 ```response
    ┌─id─┬─name────┬──price─┬─category────┬─in_stock─┐
 1. │  1 │ 笔记本电脑  │ 999.99 │ 电子产品 │ true     │
@@ -247,19 +287,19 @@ WHERE and(or(category = 'Electronics', price > 100), in_stock);
 3. │  4 │ 椅子   │    150 │ 家具   │ true     │
 4. │  5 │ 显示器 │    350 │ 电子产品 │ true     │
    └────┴─────────┴────────┴─────────────┴──────────┘
-```
-
-SQL 关键字语法（`AND`、`OR`、`NOT`、`XOR`）通常更易读，但在处理复杂表达式或构建动态查询时，函数形式的语法会很有用。
-
-### 将 UInt8 列用作条件 {#example-uint8-column-as-condition}
-
-沿用[前面示例](#example-filtering-with-logical-operators)中的表，你可以直接使用列名作为条件：
-
 ```sql
 SELECT * FROM products
 WHERE in_stock
-```
-
+```sql
+SELECT * FROM products
+WHERE in_stock
+```response
+   ┌─id─┬─name────┬──price─┬─category────┬─in_stock─┐
+1. │  1 │ Laptop  │ 999.99 │ Electronics │ true     │
+2. │  2 │ Mouse   │   25.5 │ Electronics │ true     │
+3. │  4 │ Chair   │    150 │ Furniture   │ true     │
+4. │  5 │ Monitor │    350 │ Electronics │ true     │
+   └────┴─────────┴────────┴─────────────┴──────────┘
 ```response
    ┌─id─┬─name────┬──price─┬─category────┬─in_stock─┐
 1. │  1 │ 笔记本电脑  │ 999.99 │ 电子产品 │ true     │
@@ -267,89 +307,84 @@ WHERE in_stock
 3. │  4 │ 椅子   │    150 │ 家具   │ true     │
 4. │  5 │ 显示器 │    350 │ 电子产品 │ true     │
    └────┴─────────┴────────┴─────────────┴──────────┘
-```
-
-### 使用比较运算符 {#example-using-comparison-operators}
-
-下面的示例使用前文[示例](#example-filtering-with-logical-operators)中的表和数据。为简洁起见，省略结果。
-
-**1. 使用显式与 true 比较（`= 1` 或 `= true`）：**
-
+```sql
+SELECT * FROM products
+WHERE in_stock = true;
+-- or
+WHERE in_stock = 1;
 ```sql
 SELECT * FROM products
 WHERE in_stock = true;
 -- 或者
 WHERE in_stock = 1;
-```
-
-**2. 显式与 false 比较（`= 0` 或 `= false`）：**
-
+```sql
+SELECT * FROM products
+WHERE in_stock = false;
+-- or
+WHERE in_stock = 0;
 ```sql
 SELECT * FROM products
 WHERE in_stock = false;
 -- 或
 WHERE in_stock = 0;
-```
-
-**3. 不等判断（`!= 0` 或 `!= false`）：**
-
+```sql
+SELECT * FROM products
+WHERE in_stock != false;
+-- or
+WHERE in_stock != 0;
 ```sql
 SELECT * FROM products
 WHERE in_stock != false;
 -- 或
 WHERE in_stock != 0;
-```
-
-**4. 大于 (&gt;):**
-
 ```sql
 SELECT * FROM products
 WHERE in_stock > 0;
-```
-
-**5. 小于等于：**
-
+```sql
+SELECT * FROM products
+WHERE in_stock > 0;
 ```sql
 SELECT * FROM products
 WHERE in_stock <= 0;
-```
-
-**6. 与其他条件结合：**
-
+```sql
+SELECT * FROM products
+WHERE in_stock <= 0;
 ```sql
 SELECT * FROM products
 WHERE in_stock AND price < 400;
-```
-
-**7. 使用 `IN` 运算符：**
-
-在下面的示例中，`(1, true)` 是一个[元组](/sql-reference/data-types/tuple)。
-
+```sql
+SELECT * FROM products
+WHERE in_stock AND price < 400;
 ```sql
 SELECT * FROM products
 WHERE in_stock IN (1, true);
-```
-
-你也可以使用 [array](/sql-reference/data-types/array) 来完成此操作：
-
+```sql
+SELECT * FROM products
+WHERE in_stock IN (1, true);
 ```sql
 SELECT * FROM products
 WHERE in_stock IN [1, true];
-```
-
-**8. 比较风格混用：**
-
+```sql
+SELECT * FROM products
+WHERE in_stock IN [1, true];
 ```sql
 SELECT * FROM products
 WHERE category = 'Electronics' AND in_stock = true;
-```
+```sql
+SELECT * FROM products
+WHERE category = 'Electronics' AND in_stock = true;
+```sql
+-- Find products with 'o' in the name
+SELECT * FROM products WHERE name LIKE '%o%';
+-- Result: Laptop, Monitor
 
-### 模式匹配和条件表达式 {#examples-pattern-matching-and-conditional-expressions}
+-- Find products starting with 'L'
+SELECT * FROM products WHERE name LIKE 'L%';
+-- Result: Laptop, Lamp
 
-下面的示例使用上文[示例](#example-filtering-with-logical-operators)中的表和数据。为简洁起见，不展示结果。
-
-#### LIKE 示例 {#like-examples}
-
+-- Find products with exactly 4 characters
+SELECT * FROM products WHERE name LIKE '____';
+-- Result: Desk, Lamp
 ```sql
 -- 查找名称中包含 'o' 的产品
 SELECT * FROM products WHERE name LIKE '%o%';
@@ -362,10 +397,14 @@ SELECT * FROM products WHERE name LIKE 'L%';
 -- 查找名称恰好为 4 个字符的产品
 SELECT * FROM products WHERE name LIKE '____';
 -- 结果：Desk, Lamp
-```
+```sql
+-- Case-insensitive search for 'LAPTOP'
+SELECT * FROM products WHERE name ILIKE '%laptop%';
+-- Result: Laptop
 
-#### ILIKE 示例 {#ilike-examples}
-
+-- Case-insensitive prefix match
+SELECT * FROM products WHERE name ILIKE 'l%';
+-- Result: Laptop, Lamp
 ```sql
 -- 不区分大小写地搜索 'LAPTOP'
 SELECT * FROM products WHERE name ILIKE '%laptop%';
@@ -374,10 +413,18 @@ SELECT * FROM products WHERE name ILIKE '%laptop%';
 -- 不区分大小写的前缀匹配
 SELECT * FROM products WHERE name ILIKE 'l%';
 -- 结果：Laptop, Lamp
-```
+```sql
+-- Different price thresholds by category
+SELECT * FROM products
+WHERE if(category = 'Electronics', price < 500, price < 200);
+-- Result: Mouse, Chair, Monitor
+-- (Electronics under $500 OR Furniture under $200)
 
-#### IF 示例 {#if-examples}
-
+-- Filter based on stock status
+SELECT * FROM products
+WHERE if(in_stock, price > 100, true);
+-- Result: Laptop, Chair, Monitor, Desk, Lamp
+-- (In stock items over $100 OR all out-of-stock items)
 ```sql
 -- 按类别设置不同的价格阈值
 SELECT * FROM products
@@ -390,10 +437,25 @@ SELECT * FROM products
 WHERE if(in_stock, price > 100, true);
 -- 结果：Laptop, Chair, Monitor, Desk, Lamp
 -- (价格超过 $100 的库存商品或所有缺货商品)
-```
+```sql
+-- Multiple category-based conditions
+SELECT * FROM products
+WHERE multiIf(
+    category = 'Electronics', price < 600,
+    category = 'Furniture', in_stock = true,
+    false
+);
+-- Result: Mouse, Monitor, Chair
+-- (Electronics < $600 OR in-stock Furniture)
 
-#### multiIf 示例 {#multiif-examples}
-
+-- Tiered filtering
+SELECT * FROM products
+WHERE multiIf(
+    price > 500, category = 'Electronics',
+    price > 100, in_stock = true,
+    true
+);
+-- Result: Laptop, Chair, Monitor, Lamp
 ```sql
 -- 基于多类别的条件
 SELECT * FROM products
@@ -413,12 +475,15 @@ WHERE multiIf(
     true
 );
 -- 结果：Laptop、Chair、Monitor、Lamp
-```
-
-#### CASE 示例 {#case-examples}
-
-**简单 CASE：**
-
+```sql
+-- Different rules per category
+SELECT * FROM products
+WHERE CASE category
+    WHEN 'Electronics' THEN price < 400
+    WHEN 'Furniture' THEN in_stock = true
+    ELSE false
+END;
+-- Result: Mouse, Monitor, Chair
 ```sql
 -- 按类别应用不同规则
 SELECT * FROM products
@@ -428,10 +493,15 @@ WHERE CASE category
     ELSE false
 END;
 -- 结果：Mouse、Monitor、Chair
-```
-
-**已搜索的 CASE：**
-
+```sql
+-- Price-based tiered logic
+SELECT * FROM products
+WHERE CASE
+    WHEN price > 500 THEN in_stock = true
+    WHEN price > 100 THEN category = 'Electronics'
+    ELSE true
+END;
+-- Result: Laptop, Monitor, Mouse, Lamp
 ```sql
 -- 基于价格的分层逻辑
 SELECT * FROM products

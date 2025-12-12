@@ -74,30 +74,30 @@ ClickHouse は MySQL ワイヤープロトコルをサポートしています�
 1. （任意）カスタムユーザーに適用する [settings profile](/sql-reference/statements/create/settings-profile) を作成します。たとえば、後で作成するユーザーで接続した際にデフォルトで適用される追加設定を持つ `my_custom_profile` を作成します:
 
    ```sql
-   CREATE SETTINGS PROFILE my_custom_profile SETTINGS prefer_column_name_to_alias=1;
-   ```
+    CREATE SETTINGS PROFILE my_custom_profile SETTINGS prefer_column_name_to_alias=1;
+    ```
 
    `prefer_column_name_to_alias` はあくまで例であり、ここには他の設定を指定できます。
 
 2. 次の形式で [ユーザーを作成](/sql-reference/statements/create/user) します: `mysql4<subdomain>_<username>`（[前述](#creating-multiple-mysql-users-in-clickhouse-cloud) 参照）。パスワードは double SHA1 形式である必要があります。例:
 
    ```sql
-   CREATE USER mysql4foobar_team1 IDENTIFIED WITH double_sha1_password BY 'YourPassword42$';
-   ```
+    CREATE USER mysql4foobar_team1 IDENTIFIED WITH double_sha1_password BY 'YourPassword42$';
+    ```
 
    または、このユーザーに対してカスタムプロファイルを使用したい場合:
 
    ```sql
-   CREATE USER mysql4foobar_team1 IDENTIFIED WITH double_sha1_password BY 'YourPassword42$' SETTINGS PROFILE 'my_custom_profile';
-   ```
+    CREATE USER mysql4foobar_team1 IDENTIFIED WITH double_sha1_password BY 'YourPassword42$' SETTINGS PROFILE 'my_custom_profile';
+    ```
 
    ここで、`my_custom_profile` は先ほど作成したプロファイル名です。
 
 3. 新しいユーザーに対して、対象とするテーブルやデータベースとやり取りするために必要な権限を [付与](/sql-reference/statements/grant) します。たとえば、`system.query_log` のみにアクセス権を与えたい場合:
 
    ```sql
-   GRANT SELECT ON system.query_log TO mysql4foobar_team1;
-   ```
+    GRANT SELECT ON system.query_log TO mysql4foobar_team1;
+    ```
 
 4. 作成したユーザーを使用して、MySQL インターフェイス経由で ClickHouse Cloud サービスに接続します。
 
@@ -106,7 +106,7 @@ ClickHouse は MySQL ワイヤープロトコルをサポートしています�
 新しい MySQL ユーザーを作成し、MySQL CLI クライアント経由で接続する際に次のエラーが表示される場合があります:
 
 ```sql
-ERROR 2013 (HY000): MySQLサーバーへの接続が切断されました at 'reading authorization packet', system error: 54
+ERROR 2013 (HY000): Lost connection to MySQL server at 'reading authorization packet', system error: 54
 ```
 
 この場合は、ユーザー名が `mysql4&lt;subdomain&gt;_&lt;username&gt;` という形式（[上記](#creating-multiple-mysql-users-in-clickhouse-cloud)で説明したとおり）になっていることを確認してください。
@@ -124,7 +124,7 @@ ERROR 2013 (HY000): MySQLサーバーへの接続が切断されました at 're
 ClickHouse サーバーを起動し、`Listening for MySQL compatibility protocol` というメッセージを含む、次のようなログメッセージを探します。
 
 ```bash
-{} <Information> Application: MySQL互換プロトコルでリッスン中: 127.0.0.1:9004
+{} <Information> Application: Listening for MySQL compatibility protocol: 127.0.0.1:9004
 ```
 
 ## MySQL を ClickHouse に接続する {#connect-mysql-to-clickhouse}
@@ -144,16 +144,17 @@ $ mysql --protocol tcp -h 127.0.0.1 -u default -P 9004 default
 接続に成功した場合の出力:
 
 ```text
-MySQLモニターへようこそ。コマンドは ; または \g で終了します。
-MySQL接続IDは 4 です
-サーババージョン: 20.2.1.1-ClickHouse
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 4
+Server version: 20.2.1.1-ClickHouse
 
 Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
 
-Oracleは、Oracle Corporationおよび/またはその関連会社の登録商標です。
-その他の名称は、それぞれの所有者の商標である可能性があります。
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
 
-ヘルプを表示するには 'help;' または '\h' と入力してください。現在の入力文をクリアするには '\c' と入力してください。
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
 mysql>
 ```

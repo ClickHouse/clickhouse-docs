@@ -141,7 +141,7 @@ SELECT radio, count() AS c FROM cell_towers GROUP BY radio ORDER BY c DESC
 │ NR    │      867 │
 └───────┴──────────┘
 
-5 строк в наборе. Затрачено: 0.011 сек. Обработано 43.28 млн строк, 43.28 МБ (3.83 млрд строк/сек., 3.83 ГБ/сек.)
+5 rows in set. Elapsed: 0.011 sec. Processed 43.28 million rows, 43.28 MB (3.83 billion rows/s., 3.83 GB/s.)
 ```
 
 2. Базовые станции сотовой связи по [мобильному коду страны (MCC)](https://en.wikipedia.org/wiki/Mobile_country_code):
@@ -262,7 +262,7 @@ WHERE pointInPolygon((lon, lat), (SELECT * FROM moscow))
 │  310463 │
 └─────────┘
 
-Получено 1 строк. Затрачено: 0.067 сек. Обработано 43.28 млн строк, 692.42 МБ (645.83 млн строк/сек., 10.33 ГБ/сек.)
+1 rows in set. Elapsed: 0.067 sec. Processed 43.28 million rows, 692.42 MB (645.83 million rows/s., 10.33 GB/s.)
 ```
 
 ## Обзор схемы {#review-of-the-schema}

@@ -150,7 +150,7 @@ SELECT * FROM analytics.hourly_data
 ```response
 Ok.
 
-Получено строк: 0. Время выполнения: 0.002 сек.
+0 rows in set. Elapsed: 0.002 sec.
 ```
 
 Мы использовали небольшой набор данных, чтобы убедиться, что можем отслеживать и сравнивать результаты с ожидаемыми. Когда ваш конвейер корректно работает с небольшим набором данных, вы можете перейти к большому объёму данных.
@@ -173,7 +173,7 @@ SELECT sumCountViews FROM analytics.monthly_aggregated_data
 │               │
 └───────────────┘
 
-Получено 3 строки. Прошло: 0.003 сек.
+3 rows in set. Elapsed: 0.003 sec.
 ```
 
 Вместо этого попробуем использовать суффикс `Merge`, чтобы получить значение `sumCountViews`:
@@ -249,7 +249,7 @@ GROUP BY
 │ 2020 │ clickhouse.com │                  6 │
 └──────┴────────────────┴────────────────────┘
 
-2 строки в наборе. Затрачено: 0.004 сек.
+2 rows in set. Elapsed: 0.004 sec.
 ```
 
 ## Объединение нескольких исходных таблиц в одну целевую таблицу {#combining-multiple-source-tables-to-single-target-table}
@@ -296,7 +296,7 @@ SELECT
     toDate(event_time) AS on_date,
     domain_name,
     count() AS impressions,
-    0 clicks         ---<<<--- если это опустить, результат будет тот же — 0
+    0 clicks         ---<<<--- if you omit this, it will be the same 0
 FROM
     analytics.impressions
 GROUP BY
@@ -311,7 +311,7 @@ SELECT
     toDate(event_time) AS on_date,
     domain_name,
     count() AS clicks,
-    0 impressions    ---<<<--- если это опустить, результат будет тот же — 0
+    0 impressions    ---<<<--- if you omit this, it will be the same 0
 FROM
     analytics.clicks
 GROUP BY
@@ -362,5 +362,5 @@ GROUP BY
 │ 2019-02-01 │ clickhouse.com │           1 │      0 │
 └────────────┴────────────────┴─────────────┴────────┘
 
-Выбрано 3 строки. Затрачено: 0.018 сек.
+3 rows in set. Elapsed: 0.018 sec.
 ```

@@ -161,13 +161,13 @@ SELECT extractKeyValuePairs('name:neymar, age:31 team:psg,nationality:brazil') A
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-使用单引号 `'` 作为引号：
+With a single quote `'` as quoting character:
 
 ```sql
 SELECT extractKeyValuePairs('name:\'neymar\';\'age\':31;team:psg;nationality:brazil,last_key:last_value', ':', ';,', '\'') AS kv
 ```
 
-结果：
+Result:
 
 ```text
 ┌─kv───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -175,9 +175,9 @@ SELECT extractKeyValuePairs('name:\'neymar\';\'age\':31;team:psg;nationality:bra
 └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-unexpected&#95;quoting&#95;character&#95;strategy 示例:
+unexpected_quoting_character_strategy examples:
 
-unexpected&#95;quoting&#95;character&#95;strategy=invalid
+unexpected_quoting_character_strategy=invalid
 
 ```sql
 SELECT extractKeyValuePairs('name"abc:5', ':', ' ,;', '\"', 'INVALID') AS kv;
@@ -199,7 +199,7 @@ SELECT extractKeyValuePairs('name"abc":5', ':', ' ,;', '\"', 'INVALID') AS kv;
 └─────┘
 ```
 
-unexpected&#95;quoting&#95;character&#95;strategy=accept
+unexpected_quoting_character_strategy=accept
 
 ```sql
 SELECT extractKeyValuePairs('name"abc:5', ':', ' ,;', '\"', 'ACCEPT') AS kv;
@@ -221,7 +221,7 @@ SELECT extractKeyValuePairs('name"abc":5', ':', ' ,;', '\"', 'ACCEPT') AS kv;
 └────────────────────┘
 ```
 
-unexpected&#95;quoting&#95;character&#95;strategy=promote
+unexpected_quoting_character_strategy=promote
 
 ```sql
 SELECT extractKeyValuePairs('name"abc:5', ':', ' ,;', '\"', 'PROMOTE') AS kv;
@@ -243,13 +243,13 @@ SELECT extractKeyValuePairs('name"abc":5', ':', ' ,;', '\"', 'PROMOTE') AS kv;
 └──────────────┘
 ```
 
-在不支持转义序列的环境中的转义序列：
+Escape sequences without escape sequences support:
 
 ```sql
 SELECT extractKeyValuePairs('age:a\\x0A\\n\\0') AS kv
 ```
 
-结果：
+Result:
 
 ```text
 ┌─kv─────────────────────┐
@@ -257,7 +257,7 @@ SELECT extractKeyValuePairs('age:a\\x0A\\n\\0') AS kv
 └────────────────────────┘
 ```
 
-要还原使用 `toString` 序列化的、以字符串为键的 map 键值对：
+To restore a map string key-value pairs serialized with `toString`:
 
 ```sql
 SELECT
@@ -267,7 +267,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-结果：
+Result:
 
 ```response
 第 1 行:
@@ -279,28 +279,28 @@ map_restored:   {'John':'33','Paula':'31'}
 
 ## extractKeyValuePairsWithEscaping {#extractkeyvaluepairswithescaping}
 
-与 `extractKeyValuePairs` 相同，但支持转义。
+Same as `extractKeyValuePairs` but supports escaping.
 
-支持的转义序列：`\x`、`\N`、`\a`、`\b`、`\e`、`\f`、`\n`、`\r`、`\t`、`\v` 和 `\0`。
-非标准转义序列会原样返回（包括反斜杠），除非它们是下列之一：
-`\\`、`'`、`"`、`backtick`、`/`、`=` 或 ASCII 控制字符（c &lt;= 31）。
+Supported escape sequences: `\x`, `\N`, `\a`, `\b`, `\e`, `\f`, `\n`, `\r`, `\t`, `\v` and `\0`.
+Non standard escape sequences are returned as it is (including the backslash) unless they are one of the following:
+`\\`, `'`, `"`, `backtick`, `/`, `=` or ASCII control characters (c &lt;= 31).
 
-当预转义和后转义都不适用时，可以使用此函数。例如，考虑如下输入字符串：`a: "aaaa\"bbb"`。期望输出为：`a: aaaa\"bbbb`。
+This function will satisfy the use case where pre-escaping and post-escaping are not suitable. For instance, consider the following
+input string: `a: "aaaa\"bbb"`. The expected output is: `a: aaaa\"bbbb`.
+- Pre-escaping: Pre-escaping it will output: `a: "aaaa"bbb"` and `extractKeyValuePairs` will then output: `a: aaaa`
+- Post-escaping: `extractKeyValuePairs` will output `a: aaaa\` and post-escaping will keep it as it is.
 
-* 预转义：预转义之后的输出为：`a: "aaaa"bbb"`，然后 `extractKeyValuePairs` 会输出：`a: aaaa`
-* 后转义：`extractKeyValuePairs` 会输出 `a: aaaa\`，而后转义会保持其不变。
+Leading escape sequences will be skipped in keys and will be considered invalid for values.
 
-在 key 中，前导转义序列会被忽略；在 value 中，它们将被视为无效。
+**Examples**
 
-**示例**
-
-启用转义序列支持时的转义序列示例：
+Escape sequences with escape sequence support turned on:
 
 ```sql
 SELECT extractKeyValuePairsWithEscaping('age:a\\x0A\\n\\0') AS kv
 ```
 
-结果：
+Result:
 
 ```response
 ┌─kv────────────────┐
@@ -310,31 +310,31 @@ SELECT extractKeyValuePairsWithEscaping('age:a\\x0A\\n\\0') AS kv
 
 ## mapAdd {#mapadd}
 
-收集所有键并对其对应的值求和。
+Collect all the keys and sum corresponding values.
 
-**语法**
+**Syntax**
 
 ```sql
 mapAdd(arg1, arg2 [, ...])
 ```
 
-**参数**
+**Arguments**
 
-参数是由两个[数组](/sql-reference/data-types/array)组成的[map](../data-types/map.md)或[tuple](/sql-reference/data-types/tuple)，其中第一个数组中的元素表示键，第二个数组中包含每个键对应的值。所有键数组的类型必须相同，且所有值数组应包含可以统一提升为同一类型（[Int64](/sql-reference/data-types/int-uint#integer-ranges)、[UInt64](/sql-reference/data-types/int-uint#integer-ranges) 或 [Float64](/sql-reference/data-types/float)）的元素。该统一提升后的类型将作为结果数组的元素类型。
+Arguments are [maps](../data-types/map.md) or [tuples](/sql-reference/data-types/tuple) of two [arrays](/sql-reference/data-types/array), where items in the first array represent keys, and the second array contains values for the each key. All key arrays should have same type, and all value arrays should contain items which are promoted to the one type ([Int64](/sql-reference/data-types/int-uint#integer-ranges), [UInt64](/sql-reference/data-types/int-uint#integer-ranges) or [Float64](/sql-reference/data-types/float)). The common promoted type is used as a type for the result array.
 
-**返回值**
+**Returned value**
 
-* 根据参数返回一个[map](../data-types/map.md)或[tuple](/sql-reference/data-types/tuple)，其中第一个数组包含排序后的键，第二个数组包含对应的值。
+- Depending on the arguments returns one [map](../data-types/map.md) or [tuple](/sql-reference/data-types/tuple), where the first array contains the sorted keys and the second array contains values.
 
-**示例**
+**Example**
 
-使用 `Map` 类型的查询：
+Query with `Map` type:
 
 ```sql
 SELECT mapAdd(map(1,1), map(1,1));
 ```
 
-结果：
+Result:
 
 ```text
 ┌─mapAdd(map(1, 1), map(1, 1))─┐
@@ -342,13 +342,13 @@ SELECT mapAdd(map(1,1), map(1,1));
 └──────────────────────────────┘
 ```
 
-使用元组的查询：
+Query with a tuple:
 
 ```sql
 SELECT mapAdd(([toUInt8(1), 2], [1, 1]), ([toUInt8(1), 2], [1, 1])) AS res, toTypeName(res) AS type;
 ```
 
-结果：
+Result:
 
 ```text
 ┌─res───────────┬─type───────────────────────────────┐
@@ -358,31 +358,31 @@ SELECT mapAdd(([toUInt8(1), 2], [1, 1]), ([toUInt8(1), 2], [1, 1])) AS res, toTy
 
 ## mapSubtract {#mapsubtract}
 
-收集所有键并将对应的值相减。
+Collect all the keys and subtract corresponding values.
 
-**语法**
+**Syntax**
 
 ```sql
 mapSubtract(Tuple(Array, Array), Tuple(Array, Array) [, ...])
 ```
 
-**参数**
+**Arguments**
 
-参数为由两个[数组](/sql-reference/data-types/array)组成的[map](../data-types/map.md)或[tuple](/sql-reference/data-types/tuple)，第一个数组中的元素表示键，第二个数组中包含每个键对应的值。所有键数组必须具有相同的类型，所有值数组中的元素必须都能提升为同一种类型（[Int64](/sql-reference/data-types/int-uint#integer-ranges)、[UInt64](/sql-reference/data-types/int-uint#integer-ranges) 或 [Float64](/sql-reference/data-types/float)）。该统一提升后的类型将作为结果数组的类型。
+Arguments are [maps](../data-types/map.md) or [tuples](/sql-reference/data-types/tuple) of two [arrays](/sql-reference/data-types/array), where items in the first array represent keys, and the second array contains values for the each key. All key arrays should have same type, and all value arrays should contain items which are promote to the one type ([Int64](/sql-reference/data-types/int-uint#integer-ranges), [UInt64](/sql-reference/data-types/int-uint#integer-ranges) or [Float64](/sql-reference/data-types/float)). The common promoted type is used as a type for the result array.
 
-**返回值**
+**Returned value**
 
-* 根据参数返回一个[map](../data-types/map.md)或[tuple](/sql-reference/data-types/tuple)，其中第一个数组包含排序后的键，第二个数组包含对应的值。
+- Depending on the arguments returns one [map](../data-types/map.md) or [tuple](/sql-reference/data-types/tuple), where the first array contains the sorted keys and the second array contains values.
 
-**示例**
+**Example**
 
-使用 `Map` 类型的查询：
+Query with `Map` type:
 
 ```sql
 SELECT mapSubtract(map(1,1), map(1,1));
 ```
 
-结果：
+Result:
 
 ```text
 ┌─mapSubtract(map(1, 1), map(1, 1))─┐
@@ -390,13 +390,13 @@ SELECT mapSubtract(map(1,1), map(1,1));
 └───────────────────────────────────┘
 ```
 
-包含元组映射的查询：
+Query with a tuple map:
 
 ```sql
 SELECT mapSubtract(([toUInt8(1), 2], [toInt32(1), 1]), ([toUInt8(1), 2], [toInt32(2), 1])) AS res, toTypeName(res) AS type;
 ```
 
-结果：
+Result:
 
 ```text
 ┌─res────────────┬─type──────────────────────────────┐
@@ -406,11 +406,11 @@ SELECT mapSubtract(([toUInt8(1), 2], [toInt32(1), 1]), ([toUInt8(1), 2], [toInt3
 
 ## mapPopulateSeries {#mappopulateseries}
 
-使用整数键为 `map` 中缺失的键值对填充数据。
-为了支持将键扩展到当前最大值之外的范围，可以指定一个最大键。
-更具体地说，该函数返回一个 `map`，其中键从最小键到最大键（或指定的 `max` 参数）构成步长为 1 的序列，并带有相应的值。
-如果某个键没有指定值，则使用默认值作为对应的值。
-如果键有重复，只会将第一个值（按照出现顺序）与该键关联。
+Fills missing key-value pairs in a map with integer keys.
+To support extending the keys beyond the largest value, a maximum key can be specified.
+More specifically, the function returns a map in which the the keys form a series from the smallest to the largest key (or `max` argument if it specified) with step size of 1, and corresponding values.
+If no value is specified for a key, a default value is used as value.
+In case keys repeat, only the first value (in order of appearance) is associated with the key.
 
 **Syntax**
 
@@ -419,35 +419,35 @@ mapPopulateSeries(map[, max])
 mapPopulateSeries(keys, values[, max])
 ```
 
-对于数组参数，`keys` 和 `values` 中的元素数量在每一行中必须相同。
+For array arguments the number of elements in `keys` and `values` must be the same for each row.
 
-**参数**
+**Arguments**
 
-参数可以是 [Map](../data-types/map.md) 或两个 [Array](/sql-reference/data-types/array)，其中第一个数组为键，第二个数组为对应的值。
+Arguments are [Maps](../data-types/map.md) or two [Arrays](/sql-reference/data-types/array), where the first and second array contains keys and values for the each key.
 
-映射数组：
+Mapped arrays:
 
-* `map` — 具有整数键的 Map。[Map](../data-types/map.md)。
+- `map` — Map with integer keys. [Map](../data-types/map.md).
 
-或者
+or
 
-* `keys` — 键的数组。[Array](/sql-reference/data-types/array)([Int](/sql-reference/data-types/int-uint#integer-ranges))。
-* `values` — 值的数组。[Array](/sql-reference/data-types/array)([Int](/sql-reference/data-types/int-uint#integer-ranges))。
-* `max` — 最大键值。可选。[Int8, Int16, Int32, Int64, Int128, Int256](/sql-reference/data-types/int-uint#integer-ranges)。
+- `keys` — Array of keys. [Array](/sql-reference/data-types/array)([Int](/sql-reference/data-types/int-uint#integer-ranges)).
+- `values` — Array of values. [Array](/sql-reference/data-types/array)([Int](/sql-reference/data-types/int-uint#integer-ranges)).
+- `max` — Maximum key value. Optional. [Int8, Int16, Int32, Int64, Int128, Int256](/sql-reference/data-types/int-uint#integer-ranges).
 
-**返回值**
+**Returned value**
 
-* 根据传入的参数，返回一个 [Map](../data-types/map.md) 或一个由两个 [Array](/sql-reference/data-types/array) 组成的 [Tuple](/sql-reference/data-types/tuple)：按排序顺序排列的键，以及与这些键对应的值。
+- Depending on the arguments a [Map](../data-types/map.md) or a [Tuple](/sql-reference/data-types/tuple) of two [Arrays](/sql-reference/data-types/array): keys in sorted order, and values the corresponding keys.
 
-**示例**
+**Example**
 
-使用 `Map` 类型的查询：
+Query with `Map` type:
 
 ```sql
 SELECT mapPopulateSeries(map(1, 10, 5, 20), 6);
 ```
 
-结果：
+Result:
 
 ```text
 ┌─mapPopulateSeries(map(1, 10, 5, 20), 6)─┐
@@ -455,13 +455,13 @@ SELECT mapPopulateSeries(map(1, 10, 5, 20), 6);
 └─────────────────────────────────────────┘
 ```
 
-对映射数组的查询：
+Query with mapped arrays:
 
 ```sql
 SELECT mapPopulateSeries([1,2,4], [11,22,44], 5) AS res, toTypeName(res) AS type;
 ```
 
-结果：
+Result:
 
 ```text
 ┌─res──────────────────────────┬─type──────────────────────────────┐
@@ -471,29 +471,29 @@ SELECT mapPopulateSeries([1,2,4], [11,22,44], 5) AS res, toTypeName(res) AS type
 
 ## mapKeys {#mapkeys}
 
-返回给定 map 的所有键。
+Returns the keys of a given map.
 
-通过启用 [optimize&#95;functions&#95;to&#95;subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns) 这一设置，可以对该函数进行优化。
-启用该设置后，函数只会读取 [keys](/sql-reference/data-types/map#reading-subcolumns-of-map) 子列，而不是整个 map。
-查询 `SELECT mapKeys(m) FROM table` 会被重写为 `SELECT m.keys FROM table`。
+This function can be optimized by enabling setting [optimize_functions_to_subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns).
+With enabled setting, the function only reads the [keys](/sql-reference/data-types/map#reading-subcolumns-of-map) subcolumn instead the whole map.
+The query `SELECT mapKeys(m) FROM table` is transformed to `SELECT m.keys FROM table`.
 
-**语法**
+**Syntax**
 
 ```sql
 mapKeys(map)
 ```
 
-**参数**
+**Arguments**
 
-* `map` — Map 类型。[Map](../data-types/map.md)。
+- `map` — Map. [Map](../data-types/map.md).
 
-**返回值**
+**Returned value**
 
-* 包含 `map` 中所有键的数组。[Array](../data-types/array.md)。
+- Array containing all keys from the `map`. [Array](../data-types/array.md).
 
-**示例**
+**Example**
 
-查询：
+Query:
 
 ```sql
 CREATE TABLE tab (a Map(String, String)) ENGINE = Memory;
@@ -503,7 +503,7 @@ INSERT INTO tab VALUES ({'name':'eleven','age':'11'}), ({'number':'twelve','posi
 SELECT mapKeys(a) FROM tab;
 ```
 
-结果：
+Result:
 
 ```text
 ┌─mapKeys(a)────────────┐
@@ -514,9 +514,9 @@ SELECT mapKeys(a) FROM tab;
 
 ## mapContains {#mapcontains}
 
-返回一个布尔值，用于表示给定的 `map` 中是否包含指定的键。
+Returns if a given key is contained in a given map.
 
-**语法**
+**Syntax**
 
 ```sql
 mapContains(map, key)
@@ -524,18 +524,18 @@ mapContains(map, key)
 
 Alias: `mapContainsKey(map, key)`
 
-**参数**
+**Arguments**
 
-* `map` — Map 映射类型。参见 [Map](../data-types/map.md)。
-* `key` — 键。类型必须与 `map` 的键类型匹配。
+- `map` — Map. [Map](../data-types/map.md).
+- `key` — Key. Type must match the key type of `map`.
 
-**返回值**
+**Returned value**
 
-* 如果 `map` 中包含 `key`，则返回 `1`，否则返回 `0`。参见 [UInt8](../data-types/int-uint.md)。
+- `1` if `map` contains `key`, `0` if not. [UInt8](../data-types/int-uint.md).
 
-**示例**
+**Example**
 
-查询：
+Query:
 
 ```sql
 CREATE TABLE tab (a Map(String, String)) ENGINE = Memory;
@@ -546,7 +546,7 @@ SELECT mapContains(a, 'name') FROM tab;
 
 ```
 
-结果：
+Result:
 
 ```text
 ┌─mapContains(a, 'name')─┐
@@ -557,24 +557,23 @@ SELECT mapContains(a, 'name') FROM tab;
 
 ## mapContainsKeyLike {#mapcontainskeylike}
 
-**语法**
+**Syntax**
 
 ```sql
 mapContainsKeyLike(map, pattern)
 ```
 
-**参数**
+**Arguments**
+- `map` — Map. [Map](../data-types/map.md).
+- `pattern`  - String pattern to match.
 
-* `map` — Map 类型。[Map](../data-types/map.md)。
-* `pattern`  - 要匹配的字符串模式。
+**Returned value**
 
-**返回值**
+- `1` if `map` contains `key` like specified pattern, `0` if not.
 
-* 如果 `map` 中包含符合指定模式的键，则返回 `1`，否则返回 `0`。
+**Example**
 
-**示例**
-
-查询：
+Query:
 
 ```sql
 CREATE TABLE tab (a Map(String, String)) ENGINE = Memory;
@@ -584,7 +583,7 @@ INSERT INTO tab VALUES ({'abc':'abc','def':'def'}), ({'hij':'hij','klm':'klm'});
 SELECT mapContainsKeyLike(a, 'a%') FROM tab;
 ```
 
-结果：
+Result:
 
 ```text
 ┌─mapContainsKeyLike(a, 'a%')─┐
@@ -595,26 +594,26 @@ SELECT mapContainsKeyLike(a, 'a%') FROM tab;
 
 ## mapExtractKeyLike {#mapextractkeylike}
 
-给定一个具有字符串键的 `map` 以及一个 LIKE 模式，此函数返回一个仅包含其键匹配该模式元素的 `map`。
+Give a map with string keys and a LIKE pattern, this function returns a map with elements where the key matches the pattern.
 
-**语法**
+**Syntax**
 
 ```sql
 mapExtractKeyLike(map, pattern)
 ```
 
-**参数**
+**Arguments**
 
-* `map` — Map。[Map](../data-types/map.md)。
-* `pattern`  - 要匹配的字符串模式。
+- `map` — Map. [Map](../data-types/map.md).
+- `pattern`  - String pattern to match.
 
-**返回值**
+**Returned value**
 
-* 一个 Map，包含键与指定模式匹配的元素。如果没有元素匹配该模式，则返回空 Map。
+- A map containing elements the key matching the specified pattern. If no elements match the pattern, an empty map is returned.
 
-**示例**
+**Example**
 
-查询：
+Query:
 
 ```sql
 CREATE TABLE tab (a Map(String, String)) ENGINE = Memory;
@@ -624,7 +623,7 @@ INSERT INTO tab VALUES ({'abc':'abc','def':'def'}), ({'hij':'hij','klm':'klm'});
 SELECT mapExtractKeyLike(a, 'a%') FROM tab;
 ```
 
-结果：
+Result:
 
 ```text
 ┌─mapExtractKeyLike(a, 'a%')─┐
@@ -635,29 +634,29 @@ SELECT mapExtractKeyLike(a, 'a%') FROM tab;
 
 ## mapValues {#mapvalues}
 
-返回给定 map 的所有值。
+Returns the values of a given map.
 
-通过启用 [optimize&#95;functions&#95;to&#95;subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns) 设置，可以对该函数进行优化。
-启用该设置后，函数只会读取 [values](/sql-reference/data-types/map#reading-subcolumns-of-map) 子列，而不是整个 map。
-查询 `SELECT mapValues(m) FROM table` 会被转换为 `SELECT m.values FROM table`。
+This function can be optimized by enabling setting [optimize_functions_to_subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns).
+With enabled setting, the function only reads the [values](/sql-reference/data-types/map#reading-subcolumns-of-map) subcolumn instead the whole map.
+The query `SELECT mapValues(m) FROM table` is transformed to `SELECT m.values FROM table`.
 
-**语法**
+**Syntax**
 
 ```sql
 mapValues(map)
 ```
 
-**参数**
+**Arguments**
 
-* `map` — Map 类型。[Map](../data-types/map.md)。
+- `map` — Map. [Map](../data-types/map.md).
 
-**返回值**
+**Returned value**
 
-* 包含 `map` 中所有值的数组。[Array](../data-types/array.md)。
+- Array containing all the values from `map`. [Array](../data-types/array.md).
 
-**示例**
+**Example**
 
-查询：
+Query:
 
 ```sql
 CREATE TABLE tab (a Map(String, String)) ENGINE = Memory;
@@ -667,7 +666,7 @@ INSERT INTO tab VALUES ({'name':'eleven','age':'11'}), ({'number':'twelve','posi
 SELECT mapValues(a) FROM tab;
 ```
 
-结果：
+Result:
 
 ```text
 ┌─mapValues(a)─────┐
@@ -678,28 +677,28 @@ SELECT mapValues(a) FROM tab;
 
 ## mapContainsValue {#mapcontainsvalue}
 
-返回给定的 `key` 是否存在于给定的 `map` 中。
+Returns if a given key is contained in a given map.
 
-**语法**
+**Syntax**
 
 ```sql
 mapContainsValue(map, value)
 ```
 
-别名：`mapContainsValue(map, value)`
+Alias: `mapContainsValue(map, value)`
 
-**参数**
+**Arguments**
 
-* `map` — Map。[Map](../data-types/map.md)。
-* `value` — 值。类型必须与 `map` 的值类型相匹配。
+- `map` — Map. [Map](../data-types/map.md).
+- `value` — Value. Type must match the value type of `map`.
 
-**返回值**
+**Returned value**
 
-* 若 `map` 包含 `value`，则为 `1`，否则为 `0`。[UInt8](../data-types/int-uint.md)。
+- `1` if `map` contains `value`, `0` if not. [UInt8](../data-types/int-uint.md).
 
-**示例**
+**Example**
 
-查询：
+Query:
 
 ```sql
 CREATE TABLE tab (a Map(String, String)) ENGINE = Memory;
@@ -710,7 +709,7 @@ SELECT mapContainsValue(a, '11') FROM tab;
 
 ```
 
-结果：
+Result:
 
 ```text
 ┌─mapContainsValue(a, '11')─┐
@@ -721,24 +720,23 @@ SELECT mapContainsValue(a, '11') FROM tab;
 
 ## mapContainsValueLike {#mapcontainsvaluelike}
 
-**语法**
+**Syntax**
 
 ```sql
 mapContainsValueLike(map, pattern)
 ```
 
-**参数**
+**Arguments**
+- `map` — Map. [Map](../data-types/map.md).
+- `pattern`  - String pattern to match.
 
-* `map` — Map。[Map](../data-types/map.md)。
-* `pattern`  - 用于匹配的字符串模式。
+**Returned value**
 
-**返回值**
+- `1` if `map` contains `value` like specified pattern, `0` if not.
 
-* 如果 `map` 中包含符合指定模式的 `value`，则返回 `1`，否则返回 `0`。
+**Example**
 
-**示例**
-
-查询：
+Query:
 
 ```sql
 CREATE TABLE tab (a Map(String, String)) ENGINE = Memory;
@@ -748,7 +746,7 @@ INSERT INTO tab VALUES ({'abc':'abc','def':'def'}), ({'hij':'hij','klm':'klm'});
 SELECT mapContainsValueLike(a, 'a%') FROM tab;
 ```
 
-结果：
+Result:
 
 ```text
 ┌─mapContainsV⋯ke(a, 'a%')─┐
@@ -759,26 +757,26 @@ SELECT mapContainsValueLike(a, 'a%') FROM tab;
 
 ## mapExtractValueLike {#mapextractvaluelike}
 
-给定一个值为字符串的 map 和一个 LIKE 模式，该函数返回一个仅包含其值匹配该模式的元素的 map。
+Give a map with string values and a LIKE pattern, this function returns a map with elements where the value matches the pattern.
 
-**语法**
+**Syntax**
 
 ```sql
 mapExtractValueLike(map, pattern)
 ```
 
-**参数**
+**Arguments**
 
-* `map` — Map 类型。[Map](../data-types/map.md)。
-* `pattern`  - 要匹配的字符串模式。
+- `map` — Map. [Map](../data-types/map.md).
+- `pattern`  - String pattern to match.
 
-**返回值**
+**Returned value**
 
-* 一个包含其值匹配指定模式的元素的 Map。如果没有元素匹配该模式，则返回空 Map。
+- A map containing elements the value matching the specified pattern. If no elements match the pattern, an empty map is returned.
 
-**示例**
+**Example**
 
-查询：
+Query:
 
 ```sql
 CREATE TABLE tab (a Map(String, String)) ENGINE = Memory;
@@ -788,7 +786,7 @@ INSERT INTO tab VALUES ({'abc':'abc','def':'def'}), ({'hij':'hij','klm':'klm'});
 SELECT mapExtractValueLike(a, 'a%') FROM tab;
 ```
 
-结果：
+Result:
 
 ```text
 ┌─mapExtractValueLike(a, 'a%')─┐
@@ -799,26 +797,26 @@ SELECT mapExtractValueLike(a, 'a%') FROM tab;
 
 ## mapApply {#mapapply}
 
-将一个函数应用于 `map` 的每个元素。
+Applies a function to each element of a map.
 
-**语法**
+**Syntax**
 
 ```sql
 mapApply(func, map)
 ```
 
-**参数**
+**Arguments**
 
-* `func` — [Lambda 函数](/sql-reference/functions/overview#higher-order-functions)。
-* `map` — [Map](../data-types/map.md)。
+- `func` — [Lambda function](/sql-reference/functions/overview#higher-order-functions).
+- `map` — [Map](../data-types/map.md).
 
-**返回值**
+**Returned value**
 
-* 返回一个 `map`，通过对原始 `map` 中每个元素应用 `func(map1[i], ..., mapN[i])` 得到。
+- Returns a map obtained from the original map by application of `func(map1[i], ..., mapN[i])` for each element.
 
-**示例**
+**Example**
 
-查询：
+Query:
 
 ```sql
 SELECT mapApply((k, v) -> (k, v * 10), _map) AS r
@@ -829,7 +827,7 @@ FROM
 )
 ```
 
-结果：
+Result:
 
 ```text
 ┌─r─────────────────────┐
@@ -841,26 +839,26 @@ FROM
 
 ## mapFilter {#mapfilter}
 
-通过对 map 中的每个元素应用函数来过滤 map。
+Filters a map by applying a function to each map element.
 
-**语法**
+**Syntax**
 
 ```sql
 mapFilter(func, map)
 ```
 
-**参数**
+**Arguments**
 
-* `func`  - [Lambda 函数](/sql-reference/functions/overview#higher-order-functions)。
-* `map` — [Map](../data-types/map.md)。
+- `func`  - [Lambda function](/sql-reference/functions/overview#higher-order-functions).
+- `map` — [Map](../data-types/map.md).
 
-**返回值**
+**Returned value**
 
-* 返回一个 map，其中仅包含 `map` 中那些使 `func(map1[i], ..., mapN[i])` 返回非 0 值的元素。
+- Returns a map containing only the elements in `map` for which `func(map1[i], ..., mapN[i])` returns something other than 0.
 
-**示例**
+**Example**
 
-查询：
+Query:
 
 ```sql
 SELECT mapFilter((k, v) -> ((v % 2) = 0), _map) AS r
@@ -871,7 +869,7 @@ FROM
 )
 ```
 
-结果：
+Result:
 
 ```text
 ┌─r───────────────────┐
@@ -883,30 +881,30 @@ FROM
 
 ## mapUpdate {#mapupdate}
 
-**语法**
+**Syntax**
 
 ```sql
 mapUpdate(map1, map2)
 ```
 
-**参数**
+**Arguments**
 
-* `map1` [Map](../data-types/map.md)。
-* `map2` [Map](../data-types/map.md)。
+- `map1` [Map](../data-types/map.md).
+- `map2` [Map](../data-types/map.md).
 
-**返回值**
+**Returned value**
 
-* 返回 `map1`，其值根据 `map2` 中对应键的值进行了更新。
+- Returns a map1 with values updated of values for the corresponding keys in map2.
 
-**示例**
+**Example**
 
-查询：
+Query:
 
 ```sql
 SELECT mapUpdate(map('key1', 0, 'key3', 0), map('key1', 10, 'key2', 10)) AS map;
 ```
 
-结果：
+Result:
 
 ```text
 ┌─map────────────────────────────┐
@@ -916,8 +914,8 @@ SELECT mapUpdate(map('key1', 0, 'key3', 0), map('key1', 10, 'key2', 10)) AS map;
 
 ## mapConcat {#mapconcat}
 
-根据键是否相同来合并多个 `map`。
-如果在多个输入 `map` 中存在具有相同键的元素，则所有元素都会被添加到结果 `map` 中，但通过操作符 `[]` 只能访问第一个元素。
+Concatenates multiple maps based on the equality of their keys.
+If elements with the same key exist in more than one input map, all elements are added to the result map, but only the first one is accessible via operator `[]`
 
 **Syntax**
 
@@ -925,23 +923,23 @@ SELECT mapUpdate(map('key1', 0, 'key3', 0), map('key1', 10, 'key2', 10)) AS map;
 mapConcat(maps)
 ```
 
-**参数**
+**Arguments**
 
-* `maps` – 任意数量的 [Maps](../data-types/map.md)。
+-   `maps` – Arbitrarily many [Maps](../data-types/map.md).
 
-**返回值**
+**Returned value**
 
-* 返回一个 map，它是对作为参数传入的多个 map 进行连接得到的结果。
+- Returns a map with concatenated maps passed as arguments.
 
-**示例**
+**Examples**
 
-查询：
+Query:
 
 ```sql
 SELECT mapConcat(map('key1', 1, 'key3', 3), map('key2', 2)) AS map;
 ```
 
-结果：
+Result:
 
 ```text
 ┌─map──────────────────────────┐
@@ -949,13 +947,13 @@ SELECT mapConcat(map('key1', 1, 'key3', 3), map('key2', 2)) AS map;
 └──────────────────────────────┘
 ```
 
-查询：
+Query:
 
 ```sql
 SELECT mapConcat(map('key1', 1, 'key2', 2), map('key1', 3)) AS map, map['key1'];
 ```
 
-结果：
+Result:
 
 ```text
 ┌─map──────────────────────────┬─elem─┐
@@ -963,24 +961,24 @@ SELECT mapConcat(map('key1', 1, 'key2', 2), map('key1', 3)) AS map, map['key1'];
 └──────────────────────────────┴──────┘
 ```
 
-## mapExists([func,], map) {#mapexistsfunc-map}
+## mapExists(\[func,\], map) {#mapexistsfunc-map}
 
-如果在 `map` 中存在至少一组键值对，使得 `func(key, value)` 的返回值不为 0，则返回 1，否则返回 0。
+Returns 1 if at least one key-value pair in `map` exists for which `func(key, value)` returns something other than 0. Otherwise, it returns 0.
 
 :::note
-`mapExists` 是一个[高阶函数](/sql-reference/functions/overview#higher-order-functions)。
-可以将一个 lambda 函数作为第一个参数传入。
+`mapExists` is a [higher-order function](/sql-reference/functions/overview#higher-order-functions).
+You can pass a lambda function to it as the first argument.
 :::
 
-**示例**
+**Example**
 
-查询：
+Query:
 
 ```sql
 SELECT mapExists((k, v) -> (v = 1), map('k1', 1, 'k2', 2)) AS res
 ```
 
-结果：
+Result:
 
 ```response
 ┌─res─┐
@@ -988,24 +986,24 @@ SELECT mapExists((k, v) -> (v = 1), map('k1', 1, 'k2', 2)) AS res
 └─────┘
 ```
 
-## mapAll([func,] map) {#mapallfunc-map}
+## mapAll(\[func,\] map) {#mapallfunc-map}
 
-如果对 `map` 中所有键值对调用 `func(key, value)` 的结果都不为 0，则返回 1，否则返回 0。
+Returns 1 if `func(key, value)` returns something other than 0 for all key-value pairs in `map`. Otherwise, it returns 0.
 
 :::note
-请注意，`mapAll` 是一个[高阶函数](/sql-reference/functions/overview#higher-order-functions)。
-可以将一个 lambda 函数作为第一个参数传递给它。
+Note that the `mapAll` is a [higher-order function](/sql-reference/functions/overview#higher-order-functions).
+You can pass a lambda function to it as the first argument.
 :::
 
-**示例**
+**Example**
 
-查询：
+Query:
 
 ```sql
 SELECT mapAll((k, v) -> (v = 1), map('k1', 1, 'k2', 2)) AS res
 ```
 
-结果：
+Result:
 
 ```response
 ┌─res─┐
@@ -1013,12 +1011,12 @@ SELECT mapAll((k, v) -> (v = 1), map('k1', 1, 'k2', 2)) AS res
 └─────┘
 ```
 
-## mapSort([func,], map) {#mapsortfunc-map}
+## mapSort(\[func,\], map) {#mapsortfunc-map}
 
-将 map 中的元素按升序排序。
-如果指定了 `func` 函数，则排序顺序由 `func` 应用于 map 的键和值后得到的结果来决定。
+Sorts the elements of a map in ascending order.
+If the `func` function is specified, the sorting order is determined by the result of the `func` function applied to the keys and values of the map.
 
-**示例**
+**Examples**
 
 ```sql
 SELECT mapSort(map('key2', 2, 'key3', 1, 'key1', 3)) AS map;
@@ -1040,30 +1038,29 @@ SELECT mapSort((k, v) -> v, map('key2', 2, 'key3', 1, 'key1', 3)) AS map;
 └──────────────────────────────┘
 ```
 
-更多详情请参阅 [`arraySort` 函数的参考文档](/sql-reference/functions/array-functions#arraySort)。
+For more details see the [reference](/sql-reference/functions/array-functions#arraySort) for `arraySort` function. 
 
 ## mapPartialSort {#mappartialsort}
 
-按升序对 map 的元素进行排序，并通过额外的 `limit` 参数实现部分排序。
-如果指定了 `func` 函数，则排序顺序由将 `func` 函数应用于 map 的键和值所得结果来决定。
+Sorts the elements of a map in ascending order with additional `limit` argument allowing partial sorting. 
+If the `func` function is specified, the sorting order is determined by the result of the `func` function applied to the keys and values of the map.
 
-**语法**
+**Syntax**
 
 ```sql
 mapPartialSort([func,] limit, map)
 ```
+**Arguments**
 
-**参数**
+- `func` – Optional function to apply to the keys and values of the map. [Lambda function](/sql-reference/functions/overview#higher-order-functions).
+- `limit` – Elements in range [1..limit] are sorted. [(U)Int](../data-types/int-uint.md).
+- `map` – Map to sort. [Map](../data-types/map.md).
 
-* `func` – 可选函数，应用于 map 的键和值。[Lambda function](/sql-reference/functions/overview#higher-order-functions)。
-* `limit` – 区间 [1..limit] 内的元素会被排序。[(U)Int](../data-types/int-uint.md)。
-* `map` – 要排序的 map。[Map](../data-types/map.md)。
+**Returned value**
 
-**返回值**
+- Partially sorted map. [Map](../data-types/map.md).
 
-* 部分排序后的 map。[Map](../data-types/map.md)。
-
-**示例**
+**Example**
 
 ```sql
 SELECT mapPartialSort((k, v) -> v, 2, map('k1', 3, 'k2', 1, 'k3', 2));
@@ -1075,12 +1072,12 @@ SELECT mapPartialSort((k, v) -> v, 2, map('k1', 3, 'k2', 1, 'k3', 2));
 └───────────────────────────────────────────────────────────────────────────┘
 ```
 
-## mapReverseSort([func,], map) {#mapreversesortfunc-map}
+## mapReverseSort(\[func,\], map) {#mapreversesortfunc-map}
 
-按降序对 map 中的元素进行排序。
-如果指定了 `func` 函数，则根据将 `func` 函数应用到 map 的键和值后得到的结果来确定排序顺序。
+Sorts the elements of a map in descending order.
+If the `func` function is specified, the sorting order is determined by the result of the `func` function applied to the keys and values of the map.
 
-**示例**
+**Examples**
 
 ```sql
 SELECT mapReverseSort(map('key2', 2, 'key3', 1, 'key1', 3)) AS map;
@@ -1102,30 +1099,29 @@ SELECT mapReverseSort((k, v) -> v, map('key2', 2, 'key3', 1, 'key1', 3)) AS map;
 └──────────────────────────────┘
 ```
 
-更多详细信息请参阅 [arrayReverseSort](/sql-reference/functions/array-functions#arrayReverseSort) 函数。
+For more details see function [arrayReverseSort](/sql-reference/functions/array-functions#arrayReverseSort).
 
 ## mapPartialReverseSort {#mappartialreversesort}
 
-对 map 中的元素按降序排序，并带有额外的 `limit` 参数，用于执行部分排序。
-如果指定了 `func` 函数，排序顺序根据将 `func` 函数应用到 map 的键和值所得的结果来确定。
+Sorts the elements of a map in descending order with additional `limit` argument allowing partial sorting.
+If the `func` function is specified, the sorting order is determined by the result of the `func` function applied to the keys and values of the map.
 
-**语法**
+**Syntax**
 
 ```sql
 mapPartialReverseSort([func,] limit, map)
 ```
+**Arguments**
 
-**参数**
+- `func` – Optional function to apply to the keys and values of the map. [Lambda function](/sql-reference/functions/overview#higher-order-functions).
+- `limit` – Elements in range [1..limit] are sorted. [(U)Int](../data-types/int-uint.md).
+- `map` – Map to sort. [Map](../data-types/map.md).
 
-* `func` – 可选，用于作用于 map 的键和值的函数。[Lambda function](/sql-reference/functions/overview#higher-order-functions)。
-* `limit` – 范围为 [1..limit] 的元素会被排序。[(U)Int](../data-types/int-uint.md)。
-* `map` – 要排序的 Map。[Map](../data-types/map.md)。
+**Returned value**
 
-**返回值**
+- Partially sorted map. [Map](../data-types/map.md).
 
-* 部分排序的 Map。[Map](../data-types/map.md)。
-
-**示例**
+**Example**
 
 ```sql
 SELECT mapPartialReverseSort((k, v) -> v, 2, map('k1', 3, 'k2', 1, 'k3', 2));
@@ -1137,49 +1133,44 @@ SELECT mapPartialReverseSort((k, v) -> v, 2, map('k1', 3, 'k2', 1, 'k3', 2));
 └──────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-{/* 
-  以下标签内的内容会在文档框架构建期间被替换为
-  由 system.functions 生成的文档。请不要修改或删除这些标签。
-  参见：https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
-  */ }
+<!-- 
+The inner content of the tags below are replaced at doc framework build time with 
+docs generated from system.functions. Please do not modify or remove the tags.
+See: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
+-->
 
-{/*AUTOGENERATED_START*/ }
-
+<!--AUTOGENERATED_START-->
 ## extractKeyValuePairs {#extractKeyValuePairs}
 
-引入版本：v
+Introduced in: v
 
-从任意字符串中提取键值对。该字符串不需要完全符合键值对格式。
+Extracts key-value pairs from any string. The string does not need to be 100% structured in a key value pair format;
 
-它可以包含噪声（例如日志文件）。需要通过函数参数指定要解析的键值对格式。
+            It can contain noise (e.g. log files). The key-value pair format to be interpreted should be specified via function arguments.
 
-一个键值对由键、紧随其后的 `key_value_delimiter` 以及一个值组成。也支持带引号的键和值。键值对之间必须由键值对分隔符分隔。
+            A key-value pair consists of a key followed by a `key_value_delimiter` and a value. Quoted keys and values are also supported. Key value pairs must be separated by pair delimiters.
 
-**语法**
-
-```sql
+            **Syntax**
+            ```sql
             extractKeyValuePairs(data, [key_value_delimiter], [pair_delimiter], [quoting_character])
 ```
 
-**参数**
+            **Arguments**
+            - `data` - String to extract key-value pairs from. [String](../../sql-reference/data-types/string.md) or [FixedString](../../sql-reference/data-types/fixedstring.md).
+            - `key_value_delimiter` - Character to be used as delimiter between the key and the value. Defaults to `:`. [String](../../sql-reference/data-types/string.md) or [FixedString](../../sql-reference/data-types/fixedstring.md).
+            - `pair_delimiters` - Set of character to be used as delimiters between pairs. Defaults to `\space`, `,` and `;`. [String](../../sql-reference/data-types/string.md) or [FixedString](../../sql-reference/data-types/fixedstring.md).
+            - `quoting_character` - Character to be used as quoting character. Defaults to `"`. [String](../../sql-reference/data-types/string.md) or [FixedString](../../sql-reference/data-types/fixedstring.md).
+            - `unexpected_quoting_character_strategy` - Strategy to handle quoting characters in unexpected places during `read_key` and `read_value` phase. Possible values: `invalid`, `accept` and `promote`. Invalid will discard key/value and transition back to `WAITING_KEY` state. Accept will treat it as a normal character. Promote will transition to `READ_QUOTED_{KEY/VALUE}` state and start from next character. The default value is `INVALID`
 
-* `data` - 要从中提取键值对的字符串。[String](../../sql-reference/data-types/string.md) 或 [FixedString](../../sql-reference/data-types/fixedstring.md)。
-  * `key_value_delimiter` - 用作键与值之间分隔符的字符。默认值为 `:`。[String](../../sql-reference/data-types/string.md) 或 [FixedString](../../sql-reference/data-types/fixedstring.md)。
-  * `pair_delimiters` - 用作各键值对之间分隔符的字符集合。默认值为 `\space`、`,` 和 `;`。[String](../../sql-reference/data-types/string.md) 或 [FixedString](../../sql-reference/data-types/fixedstring.md)。
-  * `quoting_character` - 用作引用符号的字符。默认值为 `&quot;。[String](../../sql-reference/data-types/string.md) 或 [FixedString](../../sql-reference/data-types/fixedstring.md)。
-  * `unexpected_quoting_character_strategy` - 在 `read_key` 和 `read_value` 阶段处理出现在非预期位置的引用符号的策略。可选值：`invalid`、`accept` 和 `promote`。`invalid` 会丢弃键/值并切换回 `WAITING_KEY` 状态；`accept` 会将其视为普通字符；`promote` 会切换到 `READ_QUOTED_{KEY/VALUE}` 状态并从下一个字符开始。默认值为 `INVALID`。
+            **Returned values**
+            - The extracted key-value pairs in a Map(String, String).
 
-**返回值**
+            **Examples**
 
-* 以 Map(String, String) 形式返回提取出的键值对。
+            Query:
 
-**示例**
-
-查询：
-
-**简单示例**
-
-```sql
+            **Simple case**
+            ```sql
             arthur :) select extractKeyValuePairs('name:neymar, age:31 team:psg,nationality:brazil') as kv
 
             SELECT extractKeyValuePairs('name:neymar, age:31 team:psg,nationality:brazil') as kv
@@ -1191,9 +1182,8 @@ SELECT mapPartialReverseSort((k, v) -> v, 2, map('k1', 3, 'k2', 1, 'k3', 2));
             └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-**将单引号用作引号字符**
-
-```sql
+            **Single quote as quoting character**
+            ```sql
             arthur :) select extractKeyValuePairs('name:\'neymar\';\'age\':31;team:psg;nationality:brazil,last_key:last_value', ':', ';,', '\'') as kv
 
             SELECT extractKeyValuePairs('name:\'neymar\';\'age\':31;team:psg;nationality:brazil,last_key:last_value', ':', ';,', '\'') as kv
@@ -1205,77 +1195,76 @@ SELECT mapPartialReverseSort((k, v) -> v, 2, map('k1', 3, 'k2', 1, 'k3', 2));
             └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-unexpected&#95;quoting&#95;character&#95;strategy 示例:
+            unexpected_quoting_character_strategy examples:
 
-unexpected&#95;quoting&#95;character&#95;strategy=invalid
+            unexpected_quoting_character_strategy=invalid
 
-```sql
+            ```sql
             SELECT extractKeyValuePairs('name"abc:5', ':', ' ,;', '\"', 'INVALID') as kv;
 ```
 
-```text
+            ```text
             ┌─kv────────────────┐
             │ {'abc':'5'}  │
             └───────────────────┘
 ```
 
-```sql
+            ```sql
             SELECT extractKeyValuePairs('name"abc":5', ':', ' ,;', '\"', 'INVALID') as kv;
 ```
 
-```text
+            ```text
             ┌─kv──┐
             │ {}  │
             └─────┘
 ```
 
-unexpected&#95;quoting&#95;character&#95;strategy=accept
+            unexpected_quoting_character_strategy=accept
 
-```sql
+            ```sql
             SELECT extractKeyValuePairs('name"abc:5', ':', ' ,;', '\"', 'ACCEPT') as kv;
 ```
 
-```text
+            ```text
             ┌─kv────────────────┐
             │ {'name"abc':'5'}  │
             └───────────────────┘
 ```
 
-```sql
+            ```sql
             SELECT extractKeyValuePairs('name"abc":5', ':', ' ,;', '\"', 'ACCEPT') as kv;
 ```
 
-```text
+            ```text
             ┌─kv─────────────────┐
             │ {'name"abc"':'5'}  │
             └────────────────────┘
 ```
 
-unexpected&#95;quoting&#95;character&#95;strategy=promote
+            unexpected_quoting_character_strategy=promote
 
-```sql
+            ```sql
             SELECT extractKeyValuePairs('name"abc:5', ':', ' ,;', '\"', 'PROMOTE') as kv;
 ```
 
-```text
+            ```text
             ┌─kv──┐
             │ {}  │
             └─────┘
 ```
 
-```sql
+            ```sql
             SELECT extractKeyValuePairs('name"abc":5', ':', ' ,;', '\"', 'PROMOTE') as kv;
 ```
 
-```text
+            ```text
             ┌─kv───────────┐
             │ {'abc':'5'}  │
             └──────────────┘
 ```
 
-**不支持转义序列时的转义序列**
-
-```sql
+            **Escape sequences without escape sequences support**
+            ```sql
             arthur :) select extractKeyValuePairs('age:a\\x0A\\n\\0') as kv
 
             SELECT extractKeyValuePairs('age:a\\x0A\\n\\0') AS kv
@@ -1287,41 +1276,44 @@ unexpected&#95;quoting&#95;character&#95;strategy=promote
             └───────────────────────┘
 ```
 
-**语法**
+**Syntax**
 
 ```sql
 ```
 
-**别名**: `str_to_map`, `mapFromString`
+**Aliases**: `str_to_map`, `mapFromString`
 
-**参数**
+**Arguments**
 
-* 无。
+- None.
 
-**返回值**
+**Returned value**
 
-**示例**
+
+
+**Examples**
+
+
 
 ## extractKeyValuePairsWithEscaping {#extractKeyValuePairsWithEscaping}
 
-引入版本: v
+Introduced in: v
 
-与 `extractKeyValuePairs` 相同,但支持转义。
+Same as `extractKeyValuePairs` but with escaping support.
 
-支持的转义序列:`\x`、`\N`、`\a`、`\b`、`\e`、`\f`、`\n`、`\r`、`\t`、`\v` 和 `\0`。
-非标准转义序列将按原样返回(包括反斜杠),除非它们是以下字符之一:
-`\\`、`'`、`"`、`backtick`、`/`、`=` 或 ASCII 控制字符(`c <= 31`)。
+            Escape sequences supported: `\x`, `\N`, `\a`, `\b`, `\e`, `\f`, `\n`, `\r`, `\t`, `\v` and `\0`.
+            Non standard escape sequences are returned as it is (including the backslash) unless they are one of the following:
+            `\\`, `'`, `"`, `backtick`, `/`, `=` or ASCII control characters (`c <= 31`).
 
-此函数适用于预转义和后转义都不适用的场景。例如,考虑以下输入字符串:`a: "aaaa\"bbb"`。预期输出为:`a: aaaa\"bbbb`。
+            This function will satisfy the use case where pre-escaping and post-escaping are not suitable. For instance, consider the following
+            input string: `a: "aaaa\"bbb"`. The expected output is: `a: aaaa\"bbbb`.
+            - Pre-escaping: Pre-escaping it will output: `a: "aaaa"bbb"` and `extractKeyValuePairs` will then output: `a: aaaa`
+            - Post-escaping: `extractKeyValuePairs` will output `a: aaaa\` and post-escaping will keep it as it is.
 
-* 预转义:预转义后将输出:`a: "aaaa"bbb"`,然后 `extractKeyValuePairs` 将输出:`a: aaaa`
-  * 后转义:`extractKeyValuePairs` 将输出 `a: aaaa\`,后转义将保持不变。
+            Leading escape sequences will be skipped in keys and will be considered invalid for values.
 
-键中的前导转义序列将被跳过,值中的前导转义序列将被视为无效。
-
-**启用转义序列支持的转义序列**
-
-```sql
+            **Escape sequences with escape sequence support turned on**
+            ```sql
             arthur :) select extractKeyValuePairsWithEscaping('age:a\\x0A\\n\\0') as kv
 
             SELECT extractKeyValuePairsWithEscaping('age:a\\x0A\\n\\0') AS kv
@@ -1333,43 +1325,50 @@ unexpected&#95;quoting&#95;character&#95;strategy=promote
             └──────────────────┘
 ```
 
-**语法**
+**Syntax**
 
 ```sql
 ```
 
-**参数**
+**Arguments**
 
-* 无
+- None.
 
-**返回值**
+**Returned value**
 
-**示例**
+
+
+**Examples**
+
+
 
 ## map {#map}
 
-引入版本：v21.1
+Introduced in: v21.1
 
-从键值对创建一个类型为 `Map(key, value)` 的值。
 
-**语法**
+Creates a value of type `Map(key, value)` from key-value pairs.
+
+
+**Syntax**
 
 ```sql
 map(key1, value1[, key2, value2, ...])
 ```
 
-**参数**
+**Arguments**
 
-* `key_n` — Map 条目的键。[`Any`](/sql-reference/data-types)
-* `value_n` — Map 条目的值。[`Any`](/sql-reference/data-types)
+- `key_n` — The keys of the map entries. [`Any`](/sql-reference/data-types)
+- `value_n` — The values of the map entries. [`Any`](/sql-reference/data-types)
 
-**返回值**
 
-返回一个包含键值对的 Map。[`Map(Any, Any)`](/sql-reference/data-types/map)
+**Returned value**
 
-**示例**
+Returns a map containing key:value pairs. [`Map(Any, Any)`](/sql-reference/data-types/map)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT map('key1', number, 'key2', number * 2) FROM numbers(3)
@@ -1381,29 +1380,34 @@ SELECT map('key1', number, 'key2', number * 2) FROM numbers(3)
 {'key1':2,'key2':4}
 ```
 
+
+
 ## mapAdd {#mapAdd}
 
-在 v20.7 中引入
+Introduced in: v20.7
 
-收集所有键并对相应的值求和。
 
-**语法**
+Collect all the keys and sum corresponding values.
+
+
+**Syntax**
 
 ```sql
 mapAdd(arg1[, arg2, ...])
 ```
 
-**参数**
+**Arguments**
 
-* `arg1[, arg2, ...]` — `Map` 类型或由两个数组组成的元组，其中第一个数组中的元素表示键，第二个数组包含每个键对应的值。[`Map(K, V)`](/sql-reference/data-types/map) 或 [`Tuple(Array(T), Array(T))`](/sql-reference/data-types/tuple)
+- `arg1[, arg2, ...]` — Maps or tuples of two arrays in which items in the first array represent keys, and the second array contains values for each key. [`Map(K, V)`](/sql-reference/data-types/map) or [`Tuple(Array(T), Array(T))`](/sql-reference/data-types/tuple)
 
-**返回值**
 
-返回一个 `Map` 或元组，其中第一个数组包含已排序的键，第二个数组包含对应的值。[`Map(K, V)`](/sql-reference/data-types/map) 或 [`Tuple(Array(T), Array(T))`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**示例**
+Returns a map or returns a tuple, where the first array contains the sorted keys and the second array contains values. [`Map(K, V)`](/sql-reference/data-types/map) or [`Tuple(Array(T), Array(T))`](/sql-reference/data-types/tuple)
 
-**使用 Map 类型**
+**Examples**
+
+**With Map type**
 
 ```sql title=Query
 SELECT mapAdd(map(1, 1), map(1, 1))
@@ -1413,7 +1417,7 @@ SELECT mapAdd(map(1, 1), map(1, 1))
 {1:2}
 ```
 
-**使用元组**
+**With tuple**
 
 ```sql title=Query
 SELECT mapAdd(([toUInt8(1), 2], [1, 1]), ([toUInt8(1), 2], [1, 1]))
@@ -1423,32 +1427,37 @@ SELECT mapAdd(([toUInt8(1), 2], [1, 1]), ([toUInt8(1), 2], [1, 1]))
 ([1, 2], [2, 2])
 ```
 
+
+
 ## mapAll {#mapAll}
 
-引入版本：v23.4
+Introduced in: v23.4
 
-判断某个条件是否对 map 中的所有键值对都成立。
-`mapAll` 是一个高阶函数。
-你可以将一个 lambda 函数作为第一个参数传递给它。
 
-**语法**
+Tests whether a condition holds for all key-value pairs in a map.
+`mapAll` is a higher-order function.
+You can pass a lambda function to it as the first argument.
+
+
+**Syntax**
 
 ```sql
 mapAll([func,] map)
 ```
 
-**参数**
+**Arguments**
 
-* `func` — Lambda 函数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-* `map` — 要检查的映射（Map）。[`Map(K, V)`](/sql-reference/data-types/map)
+- `func` — Lambda function. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+- `map` — Map to check. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**返回值**
 
-如果所有键值对都满足条件，则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns `1` if all key-value pairs satisfy the condition, `0` otherwise. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT mapAll((k, v) -> v = 1, map('k1', 1, 'k2', 2))
@@ -1458,30 +1467,35 @@ SELECT mapAll((k, v) -> v = 1, map('k1', 1, 'k2', 2))
 0
 ```
 
+
+
 ## mapApply {#mapApply}
 
-引入于：v22.3 版本
+Introduced in: v22.3
 
-将一个函数应用于 map 中的每个元素。
 
-**语法**
+Applies a function to each element of a map.
+
+
+**Syntax**
 
 ```sql
 mapApply(func, map)
 ```
 
-**参数**
+**Arguments**
 
-* `func` — Lambda 函数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-* `map` — 要应用函数的 Map。[`Map(K, V)`](/sql-reference/data-types/map)
+- `func` — Lambda function. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+- `map` — Map to apply function to. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**返回值**
 
-返回一个新的 Map，通过对原始 Map 的每个元素应用 `func` 得到。[`Map(K, V)`](/sql-reference/data-types/map)
+**Returned value**
 
-**示例**
+Returns a new map obtained from the original map by application of `func` for each element. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT mapApply((k, v) -> (k, v * 2), map('k1', 1, 'k2', 2))
@@ -1491,30 +1505,35 @@ SELECT mapApply((k, v) -> (k, v * 2), map('k1', 1, 'k2', 2))
 {'k1':2,'k2':4}
 ```
 
+
+
 ## mapConcat {#mapConcat}
 
-首次引入版本：v23.4
+Introduced in: v23.4
 
-根据键是否相等来连接多个 map。
-如果多个输入 map 中存在相同键的元素，所有这些元素都会被添加到结果 map 中，但通过 `[]` 运算符只能访问到第一个元素。
 
-**语法**
+Concatenates multiple maps based on the equality of their keys.
+If elements with the same key exist in more than one input map, all elements are added to the result map, but only the first one is accessible via operator [].
+
+
+**Syntax**
 
 ```sql
 mapConcat(maps)
 ```
 
-**参数**
+**Arguments**
 
-* `maps` — 任意数量的 `Map`。[`Map`](/sql-reference/data-types/map)
+- `maps` — Arbitrarily many maps. [`Map`](/sql-reference/data-types/map)
 
-**返回值**
 
-返回一个 `Map`，其中包含作为参数传入的所有 `Map` 的合并结果。[`Map`](/sql-reference/data-types/map)
+**Returned value**
 
-**示例**
+Returns a map with concatenated maps passed as arguments. [`Map`](/sql-reference/data-types/map)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT mapConcat(map('k1', 'v1'), map('k2', 'v2'))
@@ -1524,32 +1543,37 @@ SELECT mapConcat(map('k1', 'v1'), map('k2', 'v2'))
 {'k1':'v1','k2':'v2'}
 ```
 
+
+
 ## mapContainsKey {#mapContainsKey}
 
-引入版本：v21.2
+Introduced in: v21.2
 
-判断 `map` 中是否包含某个键。
 
-**语法**
+Determines if a key is contained in a map.
+
+
+**Syntax**
 
 ```sql
 mapContains(map, key)
 ```
 
-**别名**：`mapContains`
+**Aliases**: `mapContains`
 
-**参数**
+**Arguments**
 
-* `map` — 要搜索的 Map。[`Map(K, V)`](/sql-reference/data-types/map)
-* `key` — 要搜索的键。类型必须与该 Map 的键类型匹配。[`Any`](/sql-reference/data-types)
+- `map` — Map to search in. [`Map(K, V)`](/sql-reference/data-types/map)
+- `key` — Key to search for. Type must match the key type of the map. [`Any`](/sql-reference/data-types)
 
-**返回值**
 
-如果 Map 中包含该键，则返回 1，否则返回 0。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns 1 if map contains key, 0 if not. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT mapContainsKey(map('k1', 'v1', 'k2', 'v2'), 'k1')
@@ -1559,30 +1583,35 @@ SELECT mapContainsKey(map('k1', 'v1', 'k2', 'v2'), 'k1')
 1
 ```
 
+
+
 ## mapContainsKeyLike {#mapContainsKeyLike}
 
-引入版本：v23.4
+Introduced in: v23.4
 
-检查 `map` 中是否存在与指定模式通过 `LIKE` 匹配的键。
 
-**语法**
+Checks whether map contains key `LIKE` specified pattern.
+
+
+**Syntax**
 
 ```sql
 mapContainsKeyLike(map, pattern)
 ```
 
-**参数**
+**Arguments**
 
-* `map` — 要搜索的映射。[`Map(K, V)`](/sql-reference/data-types/map)
-* `pattern` — 用于匹配键的模式。[`const String`](/sql-reference/data-types/string)
+- `map` — Map to search in. [`Map(K, V)`](/sql-reference/data-types/map)
+- `pattern` — Pattern to match keys against. [`const String`](/sql-reference/data-types/string)
 
-**返回值**
 
-如果 `map` 中包含与 `pattern` 匹配的键，则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns `1` if `map` contains a key matching `pattern`, `0` otherwise. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE tab (a Map(String, String))
@@ -1601,30 +1630,35 @@ SELECT mapContainsKeyLike(a, 'a%') FROM tab;
 └─────────────────────────────┘
 ```
 
+
+
 ## mapContainsValue {#mapContainsValue}
 
-引入版本：v25.6
+Introduced in: v25.6
 
-用于判断某个值是否存在于 map 中。
 
-**语法**
+Determines if a value is contained in a map.
+
+
+**Syntax**
 
 ```sql
 mapContainsValue(map, value)
 ```
 
-**参数**
+**Arguments**
 
-* `map` — 要在其中查找的 Map。[`Map(K, V)`](/sql-reference/data-types/map)
-* `value` — 要查找的值。其类型必须与 map 的值类型匹配。[`Any`](/sql-reference/data-types)
+- `map` — Map to search in. [`Map(K, V)`](/sql-reference/data-types/map)
+- `value` — Value to search for. Type must match the value type of map. [`Any`](/sql-reference/data-types)
 
-**返回值**
 
-如果 map 中包含该值则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns `1` if the map contains the value, `0` if not. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT mapContainsValue(map('k1', 'v1', 'k2', 'v2'), 'v1')
@@ -1634,30 +1668,35 @@ SELECT mapContainsValue(map('k1', 'v1', 'k2', 'v2'), 'v1')
 1
 ```
 
+
+
 ## mapContainsValueLike {#mapContainsValueLike}
 
-自 v25.5 引入
+Introduced in: v25.5
 
-检查 map 中是否存在符合指定 `LIKE` 模式的值。
 
-**语法**
+Checks whether a map contains a value `LIKE` the specified pattern.
+
+
+**Syntax**
 
 ```sql
 mapContainsValueLike(map, pattern)
 ```
 
-**参数**
+**Arguments**
 
-* `map` — 要搜索的 Map。[`Map(K, V)`](/sql-reference/data-types/map)
-* `pattern` — 用于匹配 `map` 中值的模式。[`const String`](/sql-reference/data-types/string)
+- `map` — Map to search in. [`Map(K, V)`](/sql-reference/data-types/map)
+- `pattern` — Pattern to match values against. [`const String`](/sql-reference/data-types/string)
 
-**返回值**
 
-如果 `map` 中包含与 `pattern` 匹配的值，则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns `1` if `map` contains a value matching `pattern`, `0` otherwise. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE tab (a Map(String, String))
@@ -1676,32 +1715,37 @@ SELECT mapContainsValueLike(a, 'a%') FROM tab;
 └──────────────────────────┘
 ```
 
+
+
 ## mapExists {#mapExists}
 
-引入版本：v23.4
+Introduced in: v23.4
 
-用于判断在一个 map 中是否存在至少一对键值对满足指定条件。
-`mapExists` 是一个高阶函数。
-你可以将一个 lambda 函数作为第一个参数传递给它。
 
-**语法**
+Tests whether a condition holds for at least one key-value pair in a map.
+`mapExists` is a higher-order function.
+You can pass a lambda function to it as the first argument.
+
+
+**Syntax**
 
 ```sql
 mapExists([func,] map)
 ```
 
-**参数**
+**Arguments**
 
-* `func` — 可选。Lambda 函数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-* `map` — 要检查的 Map 类型值。[`Map(K, V)`](/sql-reference/data-types/map)
+- `func` — Optional. Lambda function. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+- `map` — Map to check. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**返回值**
 
-如果至少有一个键值对满足条件，则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns `1` if at least one key-value pair satisfies the condition, `0` otherwise. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT mapExists((k, v) -> v = 1, map('k1', 1, 'k2', 2))
@@ -1711,30 +1755,35 @@ SELECT mapExists((k, v) -> v = 1, map('k1', 1, 'k2', 2))
 1
 ```
 
+
+
 ## mapExtractKeyLike {#mapExtractKeyLike}
 
-引入版本：v23.4
+Introduced in: v23.4
 
-给定一个键为字符串的 map 和一个 `LIKE` 模式，此函数返回一个仅包含键与该模式匹配元素的 map。
 
-**语法**
+Give a map with string keys and a `LIKE` pattern, this function returns a map with elements where the key matches the pattern.
+
+
+**Syntax**
 
 ```sql
 mapExtractKeyLike(map, pattern)
 ```
 
-**参数**
+**Arguments**
 
-* `map` — 要从中提取数据的 Map。[`Map(K, V)`](/sql-reference/data-types/map)
-* `pattern` — 用于匹配键的模式字符串。[`const String`](/sql-reference/data-types/string)
+- `map` — Map to extract from. [`Map(K, V)`](/sql-reference/data-types/map)
+- `pattern` — Pattern to match keys against. [`const String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回一个 map，其中包含键与指定模式匹配的元素。如果没有元素匹配该模式，则返回一个空 map。[`Map(K, V)`](/sql-reference/data-types/map)
+**Returned value**
 
-**示例**
+Returns a map containing elements the key matching the specified pattern. If no elements match the pattern, an empty map is returned. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE tab (a Map(String, String))
@@ -1753,30 +1802,35 @@ SELECT mapExtractKeyLike(a, 'a%') FROM tab;
 └────────────────────────────┘
 ```
 
+
+
 ## mapExtractValueLike {#mapExtractValueLike}
 
-引入版本：v25.5
+Introduced in: v25.5
 
-给定一个值为字符串的 map 和一个 `LIKE` 模式，此函数返回一个 map，其中只包含值与该模式匹配的元素。
 
-**语法**
+Given a map with string values and a `LIKE` pattern, this function returns a map with elements where the value matches the pattern.
+
+
+**Syntax**
 
 ```sql
 mapExtractValueLike(map, pattern)
 ```
 
-**参数**
+**Arguments**
 
-* `map` — 要从中提取元素的 Map。[`Map(K, V)`](/sql-reference/data-types/map)
-* `pattern` — 用于匹配值的模式。[`const String`](/sql-reference/data-types/string)
+- `map` — Map to extract from. [`Map(K, V)`](/sql-reference/data-types/map)
+- `pattern` — Pattern to match values against. [`const String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回一个 Map，其中仅包含值与指定模式匹配的元素。如果没有元素匹配该模式，则返回空 Map。[`Map(K, V)`](/sql-reference/data-types/map)
+**Returned value**
 
-**示例**
+Returns a map containing elements the value matching the specified pattern. If no elements match the pattern, an empty map is returned. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE tab (a Map(String, String))
@@ -1795,30 +1849,35 @@ SELECT mapExtractValueLike(a, 'a%') FROM tab;
 └──────────────────────────────┘
 ```
 
+
+
 ## mapFilter {#mapFilter}
 
-在 v22.3 中引入
+Introduced in: v22.3
 
-通过对每个 map 元素应用函数来过滤该 map。
 
-**语法**
+Filters a map by applying a function to each map element.
+
+
+**Syntax**
 
 ```sql
 mapFilter(func, map)
 ```
 
-**参数**
+**Arguments**
 
-* `func` — Lambda 函数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-* `map` — 要筛选的 Map。[`Map(K, V)`](/sql-reference/data-types/map)
+- `func` — Lambda function. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+- `map` — Map to filter. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**返回值**
 
-返回一个 map，仅包含那些使 `func` 返回非 `0` 值的元素。[`Map(K, V)`](/sql-reference/data-types/map)
+**Returned value**
 
-**示例**
+Returns a map containing only the elements in the map for which `func` returns something other than `0`. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT mapFilter((k, v) -> v > 1, map('k1', 1, 'k2', 2))
@@ -1828,33 +1887,38 @@ SELECT mapFilter((k, v) -> v > 1, map('k1', 1, 'k2', 2))
 {'k2':2}
 ```
 
+
+
 ## mapFromArrays {#mapFromArrays}
 
-引入版本：v23.3
+Introduced in: v23.3
 
-从键的数组或 Map 与值的数组或 Map 创建一个 Map。
-该函数是语法 `CAST([...], 'Map(key_type, value_type)')` 的一种更便捷的替代写法。
 
-**语法**
+Creates a map from an array or map of keys and an array or map of values.
+The function is a convenient alternative to syntax `CAST([...], 'Map(key_type, value_type)')`.
+
+
+**Syntax**
 
 ```sql
 mapFromArrays(keys, values)
 ```
 
-**别名**：`MAP_FROM_ARRAYS`
+**Aliases**: `MAP_FROM_ARRAYS`
 
-**参数**
+**Arguments**
 
-* `keys` — 用于创建映射的键的数组或 `Map` 类型。[`Array`](/sql-reference/data-types/array) 或 [`Map`](/sql-reference/data-types/map)
-* `values` — 用于创建映射的值的数组或 `Map` 类型。[`Array`](/sql-reference/data-types/array) 或 [`Map`](/sql-reference/data-types/map)
+- `keys` — Array or map of keys to create the map from. [`Array`](/sql-reference/data-types/array) or [`Map`](/sql-reference/data-types/map)
+- `values` — Array or map of values to create the map from. [`Array`](/sql-reference/data-types/array) or [`Map`](/sql-reference/data-types/map)
 
-**返回值**
 
-返回一个 `Map`，其键和值由键数组和值数组/`Map` 构造而成。[`Map`](/sql-reference/data-types/map)
+**Returned value**
 
-**示例**
+Returns a map with keys and values constructed from the key array and value array/map. [`Map`](/sql-reference/data-types/map)
 
-**基本用法**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT mapFromArrays(['a', 'b', 'c'], [1, 2, 3])
@@ -1864,7 +1928,7 @@ SELECT mapFromArrays(['a', 'b', 'c'], [1, 2, 3])
 {'a':1,'b':2,'c':3}
 ```
 
-**使用 map 作为输入**
+**With map inputs**
 
 ```sql title=Query
 SELECT mapFromArrays([1, 2, 3], map('a', 1, 'b', 2, 'c', 3))
@@ -1874,32 +1938,37 @@ SELECT mapFromArrays([1, 2, 3], map('a', 1, 'b', 2, 'c', 3))
 {1:('a', 1), 2:('b', 2), 3:('c', 3)}
 ```
 
+
+
 ## mapKeys {#mapKeys}
 
-引入版本：v21.2
+Introduced in: v21.2
 
-返回给定 map 的键。
-通过启用设置 [`optimize_functions_to_subcolumns`](/operations/settings/settings#optimize_functions_to_subcolumns)，可以对该函数进行优化。
-启用该设置后，函数只会读取 `keys` 子列，而不是整个 map。
-查询 `SELECT mapKeys(m) FROM table` 会被转换为 `SELECT m.keys FROM table`。
 
-**语法**
+Returns the keys of a given map.
+This function can be optimized by enabling setting [`optimize_functions_to_subcolumns`](/operations/settings/settings#optimize_functions_to_subcolumns).
+With the setting enabled, the function only reads the `keys` subcolumn instead of the entire map.
+The query `SELECT mapKeys(m) FROM table` is transformed to `SELECT m.keys FROM table`.
+
+
+**Syntax**
 
 ```sql
 mapKeys(map)
 ```
 
-**参数**
+**Arguments**
 
-* `map` — 要从中提取键的 Map。[`Map(K, V)`](/sql-reference/data-types/map)
+- `map` — Map to extract keys from. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**返回值**
 
-返回一个包含该 map 所有键的数组。[`Array(T)`](/sql-reference/data-types/array)
+**Returned value**
 
-**示例**
+Returns array containing all keys from the map. [`Array(T)`](/sql-reference/data-types/array)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT mapKeys(map('k1', 'v1', 'k2', 'v2'))
@@ -1909,32 +1978,37 @@ SELECT mapKeys(map('k1', 'v1', 'k2', 'v2'))
 ['k1','k2']
 ```
 
+
+
 ## mapPartialReverseSort {#mapPartialReverseSort}
 
-自 v23.4 引入
+Introduced in: v23.4
 
-对 map 的元素按降序排序，并带有一个额外的 limit 参数，用于进行部分排序。
-如果指定了 func 函数，则根据将 func 函数应用于 map 的键和值所得到的结果来确定排序顺序。
 
-**语法**
+Sorts the elements of a map in descending order with additional limit argument allowing partial sorting.
+If the func function is specified, the sorting order is determined by the result of the func function applied to the keys and values of the map.
+
+
+**Syntax**
 
 ```sql
 mapPartialReverseSort([func,] limit, map)
 ```
 
-**参数**
+**Arguments**
 
-* `func` — 可选。Lambda 函数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-* `limit` — 对范围 `[1..limit]` 内的元素进行排序。[`(U)Int*`](/sql-reference/data-types/int-uint)
-* `map` — 要排序的 Map。[`Map(K, V)`](/sql-reference/data-types/map)
+- `func` — Optional. Lambda function. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+- `limit` — Elements in the range `[1..limit]` are sorted. [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `map` — Map to sort. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**返回值**
 
-返回一个按降序部分排序后的 map。[`Map(K, V)`](/sql-reference/data-types/map)
+**Returned value**
 
-**示例**
+Returns a partially sorted map in descending order. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT mapPartialReverseSort((k, v) -> v, 2, map('k1', 3, 'k2', 1, 'k3', 2))
@@ -1944,32 +2018,37 @@ SELECT mapPartialReverseSort((k, v) -> v, 2, map('k1', 3, 'k2', 1, 'k3', 2))
 {'k1':3,'k3':2,'k2':1}
 ```
 
+
+
 ## mapPartialSort {#mapPartialSort}
 
-自 v23.4 版本引入
+Introduced in: v23.4
 
-对 map 的元素按升序排序，并接受一个额外的 limit 参数，用于执行部分排序。
-如果指定了函数 func，则排序顺序由函数 func 作用于 map 的键和值后得到的结果来决定。
 
-**语法**
+Sorts the elements of a map in ascending order with additional limit argument allowing partial sorting.
+If the func function is specified, the sorting order is determined by the result of the func function applied to the keys and values of the map.
+
+
+**Syntax**
 
 ```sql
 mapPartialSort([func,] limit, map)
 ```
 
-**参数**
+**Arguments**
 
-* `func` — 可选。Lambda 函数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-* `limit` — 范围 `[1..limit]` 内的元素将被排序。[`(U)Int*`](/sql-reference/data-types/int-uint)
-* `map` — 要排序的 Map。[`Map(K, V)`](/sql-reference/data-types/map)
+- `func` — Optional. Lambda function. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+- `limit` — Elements in the range `[1..limit]` are sorted. [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `map` — Map to sort. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**返回值**
 
-返回一个部分有序的 Map。[`Map(K, V)`](/sql-reference/data-types/map)
+**Returned value**
 
-**示例**
+Returns a partially sorted map. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT mapPartialSort((k, v) -> v, 2, map('k1', 3, 'k2', 1, 'k3', 2))
@@ -1979,36 +2058,41 @@ SELECT mapPartialSort((k, v) -> v, 2, map('k1', 3, 'k2', 1, 'k3', 2))
 {'k2':1,'k3':2,'k1':3}
 ```
 
+
+
 ## mapPopulateSeries {#mapPopulateSeries}
 
-引入版本：v20.10
+Introduced in: v20.10
 
-在具有整数键的 map 中填充缺失的键值对。
-为了支持将键扩展到当前最大值之外，可以指定一个最大键。
-更具体地说，该函数返回一个 map，其键从最小键到最大键（或指定的 max 参数）构成步长为 1 的序列，并具有对应的值。
-如果某个键未指定值，则使用默认值作为该键的值。
-如果键出现重复，则只将第一个值（按出现顺序）与该键关联。
 
-**语法**
+Fills missing key-value pairs in a map with integer keys.
+To support extending the keys beyond the largest value, a maximum key can be specified.
+More specifically, the function returns a map in which the keys form a series from the smallest to the largest key (or max argument if specified) with step size of 1, and corresponding values.
+If no value is specified for a key, a default value is used as value.
+In case keys repeat, only the first value (in order of appearance) is associated with the key.
+
+
+**Syntax**
 
 ```sql
 mapPopulateSeries(map[, max]) | mapPopulateSeries(keys, values[, max])
 ```
 
-**参数**
+**Arguments**
 
-* `map` — 具有整数键的 Map。[`Map((U)Int*, V)`](/sql-reference/data-types/map)
-* `keys` — 键数组。[`Array(T)`](/sql-reference/data-types/array)
-* `values` — 值数组。[`Array(T)`](/sql-reference/data-types/array)
-* `max` — 可选。键的最大值。[`Int8`](/sql-reference/data-types/int-uint) 或 [`Int16`](/sql-reference/data-types/int-uint) 或 [`Int32`](/sql-reference/data-types/int-uint) 或 [`Int64`](/sql-reference/data-types/int-uint) 或 [`Int128`](/sql-reference/data-types/int-uint) 或 [`Int256`](/sql-reference/data-types/int-uint)
+- `map` — Map with integer keys. [`Map((U)Int*, V)`](/sql-reference/data-types/map)
+- `keys` — Array of keys. [`Array(T)`](/sql-reference/data-types/array)
+- `values` — Array of values. [`Array(T)`](/sql-reference/data-types/array)
+- `max` — Optional. Maximum key value. [`Int8`](/sql-reference/data-types/int-uint) or [`Int16`](/sql-reference/data-types/int-uint) or [`Int32`](/sql-reference/data-types/int-uint) or [`Int64`](/sql-reference/data-types/int-uint) or [`Int128`](/sql-reference/data-types/int-uint) or [`Int256`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回一个 Map，或由两个数组组成的元组：第一个数组包含按排序后顺序排列的键，第二个数组包含对应键的值。[`Map(K, V)`](/sql-reference/data-types/map) 或 [`Tuple(Array(UInt*), Array(Any))`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**示例**
+Returns a map or a tuple of two arrays where the first has keys in sorted order, and the second values for the corresponding keys. [`Map(K, V)`](/sql-reference/data-types/map) or [`Tuple(Array(UInt*), Array(Any))`](/sql-reference/data-types/tuple)
 
-**使用 Map 类型**
+**Examples**
+
+**With Map type**
 
 ```sql title=Query
 SELECT mapPopulateSeries(map(1, 10, 5, 20), 6)
@@ -2018,7 +2102,7 @@ SELECT mapPopulateSeries(map(1, 10, 5, 20), 6)
 {1:10, 2:0, 3:0, 4:0, 5:20, 6:0}
 ```
 
-**使用映射数组**
+**With mapped arrays**
 
 ```sql title=Query
 SELECT mapPopulateSeries([1, 2, 4], [11, 22, 44], 5)
@@ -2028,31 +2112,36 @@ SELECT mapPopulateSeries([1, 2, 4], [11, 22, 44], 5)
 ([1, 2, 3, 4, 5], [11, 22, 0, 44, 0])
 ```
 
+
+
 ## mapReverseSort {#mapReverseSort}
 
-引入版本：v23.4
+Introduced in: v23.4
 
-对 map 中的元素进行降序排序。
-如果指定了函数 func，则排序顺序由函数 func 作用于 map 的键和值所产生的结果来决定。
 
-**语法**
+Sorts the elements of a map in descending order.
+If the func function is specified, the sorting order is determined by the result of the func function applied to the keys and values of the map.
+
+
+**Syntax**
 
 ```sql
 mapReverseSort([func,] map)
 ```
 
-**参数**
+**Arguments**
 
-* `func` — 可选。Lambda 函数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-* `map` — 要排序的 Map。[`Map(K, V)`](/sql-reference/data-types/map)
+- `func` — Optional. Lambda function. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+- `map` — Map to sort. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**返回值**
 
-返回按降序排序后的 Map。[`Map(K, V)`](/sql-reference/data-types/map)
+**Returned value**
 
-**示例**
+Returns a map sorted in descending order. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT mapReverseSort((k, v) -> v, map('k1', 3, 'k2', 1, 'k3', 2))
@@ -2062,31 +2151,36 @@ SELECT mapReverseSort((k, v) -> v, map('k1', 3, 'k2', 1, 'k3', 2))
 {'k1':3,'k3':2,'k2':1}
 ```
 
+
+
 ## mapSort {#mapSort}
 
-引入于：v23.4
+Introduced in: v23.4
 
-按升序对 map 的元素进行排序。
-如果指定了函数 func，则排序顺序由将 func 函数应用于 map 的键和值后得到的结果决定。
 
-**语法**
+Sorts the elements of a map in ascending order.
+If the func function is specified, the sorting order is determined by the result of the func function applied to the keys and values of the map.
+
+
+**Syntax**
 
 ```sql
 mapSort([func,] map)
 ```
 
-**参数**
+**Arguments**
 
-* `func` — 可选。Lambda 函数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-* `map` — 要排序的 Map。[`Map(K, V)`](/sql-reference/data-types/map)
+- `func` — Optional. Lambda function. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+- `map` — Map to sort. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**返回值**
 
-返回按升序排序的 Map。[`Map(K, V)`](/sql-reference/data-types/map)
+**Returned value**
 
-**示例**
+Returns a map sorted in ascending order. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT mapSort((k, v) -> v, map('k1', 3, 'k2', 1, 'k3', 2))
@@ -2096,29 +2190,34 @@ SELECT mapSort((k, v) -> v, map('k1', 3, 'k2', 1, 'k3', 2))
 {'k2':1,'k3':2,'k1':3}
 ```
 
+
+
 ## mapSubtract {#mapSubtract}
 
-自 v20.7 版本引入。
+Introduced in: v20.7
 
-收集所有键并对相应的值进行相减运算。
 
-**语法**
+Collect all the keys and subtract corresponding values.
+
+
+**Syntax**
 
 ```sql
 mapSubtract(arg1[, arg2, ...])
 ```
 
-**参数**
+**Arguments**
 
-* `arg1[, arg2, ...]` — 类型为 `Map` 或由两个数组组成的 `Tuple`，其中第一个数组的元素表示键，第二个数组包含每个键对应的值。[`Map(K, V)`](/sql-reference/data-types/map) 或 [`Tuple(Array(T), Array(T))`](/sql-reference/data-types/tuple)
+- `arg1[, arg2, ...]` — Maps or tuples of two arrays in which items in the first array represent keys, and the second array contains values for each key. [`Map(K, V)`](/sql-reference/data-types/map) or [`Tuple(Array(T), Array(T))`](/sql-reference/data-types/tuple)
 
-**返回值**
 
-返回一个 `Map` 或 `Tuple`，其中第一个数组包含排序后的键，第二个数组包含对应的值。[`Map(K, V)`](/sql-reference/data-types/map) 或 [`Tuple(Array(T), Array(T))`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**示例**
+Returns one map or tuple, where the first array contains the sorted keys and the second array contains values. [`Map(K, V)`](/sql-reference/data-types/map) or [`Tuple(Array(T), Array(T))`](/sql-reference/data-types/tuple)
 
-**使用 Map 类型**
+**Examples**
+
+**With Map type**
 
 ```sql title=Query
 SELECT mapSubtract(map(1, 1), map(1, 1))
@@ -2128,7 +2227,7 @@ SELECT mapSubtract(map(1, 1), map(1, 1))
 {1:0}
 ```
 
-**使用 tuple map 时**
+**With tuple map**
 
 ```sql title=Query
 SELECT mapSubtract(([toUInt8(1), 2], [toInt32(1), 1]), ([toUInt8(1), 2], [toInt32(2), 1]))
@@ -2138,30 +2237,35 @@ SELECT mapSubtract(([toUInt8(1), 2], [toInt32(1), 1]), ([toUInt8(1), 2], [toInt3
 ([1, 2], [-1, 0])
 ```
 
+
+
 ## mapUpdate {#mapUpdate}
 
-引入版本：v22.3
+Introduced in: v22.3
 
-对于两个 `map`，返回在第一个 `map` 的基础上，用第二个 `map` 中对应键的值更新后的结果。
 
-**语法**
+For two maps, returns the first map with values updated on the values for the corresponding keys in the second map.
+
+
+**Syntax**
 
 ```sql
 mapUpdate(map1, map2)
 ```
 
-**参数**
+**Arguments**
 
-* `map1` — 要更新的映射。[`Map(K, V)`](/sql-reference/data-types/map)
-* `map2` — 用于更新的映射。[`Map(K, V)`](/sql-reference/data-types/map)
+- `map1` — The map to update. [`Map(K, V)`](/sql-reference/data-types/map)
+- `map2` — The map to use for updating. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**返回值**
 
-返回按 `map2` 中对应键的值更新后的 `map1`。[`Map(K, V)`](/sql-reference/data-types/map)
+**Returned value**
 
-**示例**
+Returns `map1` with values updated from values for the corresponding keys in `map2`. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**基本用法**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT mapUpdate(map('key1', 0, 'key3', 0), map('key1', 10, 'key2', 10))
@@ -2171,32 +2275,37 @@ SELECT mapUpdate(map('key1', 0, 'key3', 0), map('key1', 10, 'key2', 10))
 {'key3':0,'key1':10,'key2':10}
 ```
 
+
+
 ## mapValues {#mapValues}
 
-首次引入于：v21.2
+Introduced in: v21.2
 
-返回给定 map 中所有的值。
-通过启用 [`optimize_functions_to_subcolumns`](/operations/settings/settings#optimize_functions_to_subcolumns) 这个设置，可以对该函数进行优化。
-启用该设置后，函数只会读取 `values` 子列，而不是整个 map。
-查询 `SELECT mapValues(m) FROM table` 会被重写为 `SELECT m.values FROM table`。
 
-**语法**
+Returns the values of a given map.
+This function can be optimized by enabling setting [`optimize_functions_to_subcolumns`](/operations/settings/settings#optimize_functions_to_subcolumns).
+With the setting enabled, the function only reads the `values` subcolumn instead of the entire map.
+The query `SELECT mapValues(m) FROM table` is transformed to `SELECT m.values FROM table`.
+
+
+**Syntax**
 
 ```sql
 mapValues(map)
 ```
 
-**参数**
+**Arguments**
 
-* `map` — 要从中提取值的 Map。[`Map(K, V)`](/sql-reference/data-types/map)
+- `map` — Map to extract values from. [`Map(K, V)`](/sql-reference/data-types/map)
 
-**返回值**
 
-返回一个数组，包含该 Map 中的所有值。[`Array(T)`](/sql-reference/data-types/array)
+**Returned value**
 
-**示例**
+Returns an array containing all the values from the map. [`Array(T)`](/sql-reference/data-types/array)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT mapValues(map('k1', 'v1', 'k2', 'v2'))

@@ -198,7 +198,7 @@ SELECT length(doc.items) AS item_count FROM t1;
 
 ```sql
 SELECT sum(doc.shipping.cost) AS shipping_cost FROM t1;
--- DB::Exception: Недопустимый тип Dynamic аргумента агрегатной функции sum. (ILLEGAL_TYPE_OF_ARGUMENT)
+-- DB::Exception: Illegal type Dynamic of argument for aggregate function sum. (ILLEGAL_TYPE_OF_ARGUMENT)
 ```
 
 Чтобы использовать агрегатные функции, приведите поле к соответствующему типу с помощью функции `CAST` или синтаксиса `::`:

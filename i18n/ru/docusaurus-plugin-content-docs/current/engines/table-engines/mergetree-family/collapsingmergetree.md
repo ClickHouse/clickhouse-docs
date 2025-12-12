@@ -58,14 +58,14 @@ ENGINE = CollapsingMergeTree(Sign)
   :::
 
   ```sql
-  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-  (
-      name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
-      name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
-      ...
-  ) 
-  ENGINE [=] CollapsingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, Sign)
-  ```
+CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+(
+    name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
+    name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
+    ...
+) 
+ENGINE [=] CollapsingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, Sign)
+```
 
   `Sign` — имя столбца типа [Int8](/sql-reference/data-types/int-uint), в котором значение `1` обозначает строку состояния, а `-1` — строку отмены.
 </details>
@@ -114,9 +114,9 @@ ENGINE = CollapsingMergeTree(Sign)
 
 ```text
 ┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┐
-│ 4324182021466249494 │         5 │      146 │    1 │ -- старая строка состояния может быть удалена
-│ 4324182021466249494 │         5 │      146 │   -1 │ -- строка отмены может быть удалена
-│ 4324182021466249494 │         6 │      185 │    1 │ -- новая строка состояния остаётся
+│ 4324182021466249494 │         5 │      146 │    1 │ -- old "state" row can be deleted
+│ 4324182021466249494 │         5 │      146 │   -1 │ -- "cancel" row can be deleted
+│ 4324182021466249494 │         6 │      185 │    1 │ -- new "state" row remains
 └─────────────────────┴───────────┴──────────┴──────┘
 ```
 

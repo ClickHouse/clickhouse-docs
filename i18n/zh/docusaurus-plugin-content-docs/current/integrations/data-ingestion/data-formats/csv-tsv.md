@@ -131,8 +131,8 @@ SELECT * FROM file('nulls.csv')
 ```response
 ┌─c1──────┬─c2──────┐
 │ Donald  │ 90      │
-│ Joe     │ 无 │
-│ 无 │ 70      │
+│ Joe     │ Nothing │
+│ Nothing │ 70      │
 └─────────┴─────────┘
 ```
 
@@ -219,7 +219,7 @@ FORMAT CSVWithNames
 ```
 
 ```response
-返回 36838935 行。用时:1.304 秒。已处理 3684 万行,1.42 GB(2824 万行/秒,1.09 GB/秒)
+36838935 rows in set. Elapsed: 1.304 sec. Processed 36.84 million rows, 1.42 GB (28.24 million rows/s., 1.09 GB/s.)
 ```
 
 请注意，ClickHouse 将 3600 万行保存到一个 CSV 文件中只花了大约 **1** 秒。
@@ -309,10 +309,10 @@ DESCRIBE file('data_csv_types.csv', CSVWithNamesAndTypes)
 ```
 
 ```response
-┌─名称──┬─类型───┬─默认类型─┬─默认表达式─┬─注释─┬─编解码器表达式─┬─TTL表达式─┐
-│ 路径  │ String │              │                    │         │                  │                │
-│ 月份 │ Date   │              │                    │         │                  │                │
-│ 点击数  │ UInt32 │              │                    │         │                  │                │
+┌─name──┬─type───┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
+│ path  │ String │              │                    │         │                  │                │
+│ month │ Date   │              │                    │         │                  │                │
+│ hits  │ UInt32 │              │                    │         │                  │                │
 └───────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 

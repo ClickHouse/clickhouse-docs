@@ -101,7 +101,7 @@ USE mgbench;
 ```
 
 ```sql
--- Q1.1: 深夜0時以降の各Webサーバーの CPU/ネットワーク使用率は?
+-- Q1.1: What is the CPU/network utilization for each web server since midnight?
 
 SELECT machine_name,
        MIN(cpu) AS cpu_min,
@@ -126,7 +126,7 @@ GROUP BY machine_name;
 ```
 
 ```sql
--- Q1.2: 過去1日間でオフラインだったコンピュータラボのマシンはどれか?
+-- Q1.2: Which computer lab machines have been offline in the past day?
 
 SELECT machine_name,
        log_time
@@ -140,36 +140,7 @@ ORDER BY machine_name,
 ```
 
 ```sql
--- Q1.3: 特定のワークステーションにおける過去10日間の時間別平均メトリクスを取得する
-
-SELECT dt,
-       hr,
-       AVG(load_fifteen) AS load_fifteen_avg,
-       AVG(load_five) AS load_five_avg,
-       AVG(load_one) AS load_one_avg,
-       AVG(mem_free) AS mem_free_avg,
-       AVG(swap_free) AS swap_free_avg
-FROM (
-  SELECT CAST(log_time AS DATE) AS dt,
-         EXTRACT(HOUR FROM log_time) AS hr,
-         load_fifteen,
-         load_five,
-         load_one,
-         mem_free,
-         swap_free
-  FROM logs1
-  WHERE machine_name = 'babbage'
-    AND load_fifteen IS NOT NULL
-    AND load_five IS NOT NULL
-    AND load_one IS NOT NULL
-    AND mem_free IS NOT NULL
-    AND swap_free IS NOT NULL
-    AND log_time >= TIMESTAMP '2017-01-01 00:00:00'
-) AS r
-GROUP BY dt,
-         hr
-ORDER BY dt,
-         hr;
+-- Q1.3: What are the hourly average metrics during the past 10 days for a specific workstation?
 
 SELECT dt,
        hr,
@@ -202,7 +173,7 @@ ORDER BY dt,
 ```
 
 ```sql
--- Q1.4: 1か月間で、各サーバーがディスクI/Oでブロックされた頻度は?
+-- Q1.4: Over 1 month, how often was each server blocked on disk I/O?
 
 SELECT machine_name,
        COUNT(*) AS spikes
@@ -217,7 +188,7 @@ LIMIT 10;
 ```
 
 ```sql
--- Q1.5: 外部からアクセス可能なVMのうち、メモリ不足が発生したものはどれか?
+-- Q1.5: Which externally reachable VMs have run low on memory?
 
 SELECT machine_name,
        dt,
@@ -238,7 +209,7 @@ ORDER BY machine_name,
 ```
 
 ```sql
--- Q1.6: すべてのファイルサーバーにおける1時間あたりの総ネットワークトラフィック量は？
+-- Q1.6: What is the total hourly network traffic across all file servers?
 
 SELECT dt,
        hr,
@@ -264,7 +235,7 @@ LIMIT 10;
 ```
 
 ```sql
--- Q2.1: 過去2週間でサーバーエラーを引き起こしたリクエストはどれですか？
+-- Q2.1: Which requests have caused server errors within the past 2 weeks?
 
 SELECT *
 FROM logs2
@@ -274,7 +245,7 @@ ORDER BY log_time;
 ```
 
 ```sql
--- Q2.2: 特定の2週間の期間中、ユーザーパスワードファイルの漏洩は発生したか?
+-- Q2.2: During a specific 2-week period, was the user password file leaked?
 
 SELECT *
 FROM logs2
@@ -286,7 +257,7 @@ WHERE status_code >= 200
 ```
 
 ```sql
--- Q2.3: 過去1か月間のトップレベルリクエストの平均パス深度は？
+-- Q2.3: What was the average path depth for top-level requests in the past month?
 
 SELECT top_level,
        AVG(LENGTH(request) - LENGTH(REPLACE(request, '/', ''))) AS depth_avg
@@ -311,7 +282,7 @@ ORDER BY top_level;
 ```
 
 ```sql
--- Q2.4: 過去3ヶ月間で、過度なリクエスト数を行ったクライアントはどれか？
+-- Q2.4: During the last 3 months, which clients have made an excessive number of requests?
 
 SELECT client_ip,
        COUNT(*) AS num_requests
@@ -323,7 +294,7 @@ ORDER BY num_requests DESC;
 ```
 
 ```sql
--- Q2.5: 日別のユニークビジター数は？
+-- Q2.5: What are the daily unique visitors?
 
 SELECT dt,
        COUNT(DISTINCT client_ip)
@@ -337,7 +308,7 @@ ORDER BY dt;
 ```
 
 ```sql
--- Q2.6: 平均および最大データ転送速度(Gbps)はいくつか?
+-- Q2.6: What are the average and maximum data transfer rates (Gbps)?
 
 SELECT AVG(transfer) / 125000000.0 AS transfer_avg,
        MAX(transfer) / 125000000.0 AS transfer_max
@@ -350,7 +321,7 @@ FROM (
 ```
 
 ```sql
--- Q3.1: 週末に室内温度が氷点下に達したか？
+-- Q3.1: Did the indoor temperature reach freezing over the weekend?
 
 SELECT *
 FROM logs3
@@ -360,7 +331,7 @@ WHERE event_type = 'temperature'
 ```
 
 ```sql
--- Q3.4: 過去6か月間で、各ドアが開かれた頻度は?
+-- Q3.4: Over the past 6 months, how frequently were each door opened?
 
 SELECT device_name,
        device_floor,
@@ -380,7 +351,7 @@ SET union_default_mode = 'DISTINCT'
 ```
 
 ```sql
--- Q3.5: 建物内で冬季と夏季に大きな温度変動が発生する場所はどこか?
+-- Q3.5: Where in the building do large temperature variations occur in winter and summer?
 
 WITH temperature AS (
   SELECT dt,
@@ -419,7 +390,7 @@ WITH temperature AS (
 SELECT DISTINCT device_name,
        device_type,
        device_floor,
-       '冬季'
+       'WINTER'
 FROM temperature
 WHERE dt >= DATE '2018-12-01'
   AND dt < DATE '2019-03-01'
@@ -427,14 +398,14 @@ UNION
 SELECT DISTINCT device_name,
        device_type,
        device_floor,
-       '夏季'
+       'SUMMER'
 FROM temperature
 WHERE dt >= DATE '2019-06-01'
   AND dt < DATE '2019-09-01';
 ```
 
 ```sql
--- Q3.6: 各デバイスカテゴリの月次電力消費量メトリクスは?
+-- Q3.6: For each device category, what are the monthly power consumption metrics?
 
 SELECT yr,
        mo,

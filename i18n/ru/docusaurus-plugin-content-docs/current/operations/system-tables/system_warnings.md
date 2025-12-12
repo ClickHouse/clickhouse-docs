@@ -47,11 +47,11 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 ```text
 Row 1:
 ──────
-message:               Количество активных частей больше 10.
-message_format_string: Количество активных частей больше {}.
+message:               The number of active parts is more than 10.
+message_format_string: The number of active parts is more than {}.
 
 Row 2:
 ──────
-message:               Количество подключенных баз данных больше 2.
-message_format_string: Количество подключенных баз данных больше {}.
+message:               The number of attached databases is more than 2.
+message_format_string: The number of attached databases is more than {}.
 ```

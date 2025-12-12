@@ -61,20 +61,20 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   `postgresql.conf`でこれらの設定を追加または変更してください：
 
   ```conf
-  # CSV ログ記録に必須
-  logging_collector = on
-  log_destination = 'csvlog'
+# Required for CSV logging
+logging_collector = on
+log_destination = 'csvlog'
 
-  # 推奨: 接続ログ記録
-  log_connections = on
-  log_disconnections = on
+# Recommended: Connection logging
+log_connections = on
+log_disconnections = on
 
-  # オプション: 監視ニーズに応じて調整
-  #log_min_duration_statement = 1000  # 1秒以上かかるクエリをログ記録
-  #log_statement = 'ddl'               # DDL文(CREATE、ALTER、DROP)をログ記録
-  #log_checkpoints = on                # チェックポイントアクティビティをログ記録
-  #log_lock_waits = on                 # ロック競合をログ記録
-  ```
+# Optional: Tune based on your monitoring needs
+#log_min_duration_statement = 1000  # Log queries taking more than 1 second
+#log_statement = 'ddl'               # Log DDL statements (CREATE, ALTER, DROP)
+#log_checkpoints = on                # Log checkpoint activity
+#log_lock_waits = on                 # Log lock contention
+```
 
   :::note
   本ガイドでは、信頼性の高い構造化解析を実現するため、PostgreSQLの`csvlog`形式を使用しています。`stderr`または`jsonlog`形式を使用している場合は、OpenTelemetryコレクターの設定を適宜調整してください。
@@ -83,22 +83,22 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   これらの変更を行った後、PostgreSQLを再起動します：
 
   ```bash
-  # systemd の場合
-  sudo systemctl restart postgresql
+# For systemd
+sudo systemctl restart postgresql
 
-  # Docker の場合
-  docker restart
-  ```
+# For Docker
+docker restart 
+```
 
   ログが書き込まれていることを確認する:
 
   ```bash
-  # Linuxでのデフォルトログ保存場所
-  tail -f /var/lib/postgresql/{version}/main/log/postgresql-*.log
+# Default log location on Linux
+tail -f /var/lib/postgresql/{version}/main/log/postgresql-*.log
 
-  # macOS Homebrew
-  tail -f /usr/local/var/postgres/log/postgresql-*.log
-  ```
+# macOS Homebrew
+tail -f /usr/local/var/postgres/log/postgresql-*.log
+```
 
   #### カスタムOTel collector設定を作成する
 
@@ -107,43 +107,43 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   以下の設定で `postgres-logs-monitoring.yaml` という名前のファイルを作成します：
 
   ```yaml
-  receivers:
-    filelog/postgres:
-      include:
-        - /var/lib/postgresql/*/main/log/postgresql-*.csv # PostgreSQLのインストール環境に合わせて調整してください
-      start_at: end
-      multiline:
-        line_start_pattern: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
-      operators:
-        - type: csv_parser
-          parse_from: body
-          parse_to: attributes
-          header: 'log_time,user_name,database_name,process_id,connection_from,session_id,session_line_num,command_tag,session_start_time,virtual_transaction_id,transaction_id,error_severity,sql_state_code,message,detail,hint,internal_query,internal_query_pos,context,query,query_pos,location,application_name,backend_type,leader_pid,query_id'
-          lazy_quotes: true
-          
-        - type: time_parser
-          parse_from: attributes.log_time
-          layout: '%Y-%m-%d %H:%M:%S.%L %Z'
+receivers:
+  filelog/postgres:
+    include:
+      - /var/lib/postgresql/*/main/log/postgresql-*.csv # Adjust to match your PostgreSQL installation
+    start_at: end
+    multiline:
+      line_start_pattern: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+    operators:
+      - type: csv_parser
+        parse_from: body
+        parse_to: attributes
+        header: 'log_time,user_name,database_name,process_id,connection_from,session_id,session_line_num,command_tag,session_start_time,virtual_transaction_id,transaction_id,error_severity,sql_state_code,message,detail,hint,internal_query,internal_query_pos,context,query,query_pos,location,application_name,backend_type,leader_pid,query_id'
+        lazy_quotes: true
         
-        - type: add
-          field: attributes.source
-          value: "postgresql"
-        
-        - type: add
-          field: resource["service.name"]
-          value: "postgresql-production"
+      - type: time_parser
+        parse_from: attributes.log_time
+        layout: '%Y-%m-%d %H:%M:%S.%L %Z'
+      
+      - type: add
+        field: attributes.source
+        value: "postgresql"
+      
+      - type: add
+        field: resource["service.name"]
+        value: "postgresql-production"
 
-  service:
-    pipelines:
-      logs/postgres:
-        receivers: [filelog/postgres]
-        processors:
-          - memory_limiter
-          - transform
-          - batch
-        exporters:
-          - clickhouse
-  ```
+service:
+  pipelines:
+    logs/postgres:
+      receivers: [filelog/postgres]
+      processors:
+        - memory_limiter
+        - transform
+        - batch
+      exporters:
+        - clickhouse
+```
 
   この設定では:
 
@@ -176,30 +176,30 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   ClickStackのデプロイメント設定を更新します：
 
   ```yaml
-  services:
-    clickstack:
-      # ... 既存の設定 ...
-      environment:
-        - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
-        # ... その他の環境変数 ...
-      volumes:
-        - ./postgres-logs-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
-        - /var/lib/postgresql:/var/lib/postgresql:ro
-        # ... その他のボリューム ...
-  ```
+services:
+  clickstack:
+    # ... existing configuration ...
+    environment:
+      - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
+      # ... other environment variables ...
+    volumes:
+      - ./postgres-logs-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
+      - /var/lib/postgresql:/var/lib/postgresql:ro
+      # ... other volumes ...
+```
 
   ##### オプション2：Docker Run（オールインワンイメージ）
 
   `docker run`でオールインワンイメージを使用している場合:
 
   ```bash
-  docker run --name clickstack \
-    -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-    -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
-    -v "$(pwd)/postgres-logs-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-    -v /var/lib/postgresql:/var/lib/postgresql:ro \
-    clickhouse/clickstack-all-in-one:latest
-  ```
+docker run --name clickstack \
+  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+  -v "$(pwd)/postgres-logs-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+  -v /var/lib/postgresql:/var/lib/postgresql:ro \
+  clickhouse/clickstack-all-in-one:latest
+```
 
   :::note
   ClickStackコレクターがPostgreSQLログファイルを読み取るための適切な権限を持っていることを確認してください。本番環境では、読み取り専用マウント(`:ro`)を使用し、最小権限の原則に従ってください。
@@ -243,7 +243,7 @@ receivers:
   filelog/postgres:
     include:
       - /tmp/postgres-demo/postgresql.log
-    start_at: beginning  # デモデータのため先頭から読み込む
+    start_at: beginning  # Read from beginning for demo data
     multiline:
       line_start_pattern: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
     operators:
@@ -347,7 +347,7 @@ ClickStack を使って PostgreSQL の監視を始めやすくするために、
 環境変数が設定されていることを確認してください：
 
 ```bash
-docker exec <コンテナ名> printenv CUSTOM_OTELCOL_CONFIG_FILE
+docker exec <container-name> printenv CUSTOM_OTELCOL_CONFIG_FILE
 ```
 
 カスタム設定ファイルがマウントされ、読み取り可能であることを確認してください：

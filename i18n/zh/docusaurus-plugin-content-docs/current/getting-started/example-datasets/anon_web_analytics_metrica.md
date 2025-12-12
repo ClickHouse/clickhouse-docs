@@ -19,9 +19,9 @@ doc_type: 'guide'
 
 ```bash
 curl https://datasets.clickhouse.com/hits/tsv/hits_v1.tsv.xz | unxz --threads=`nproc` > hits_v1.tsv
-# 验证校验和 {#validate-the-checksum}
+# Validate the checksum
 md5sum hits_v1.tsv
-# 校验和应为：f3631b6295bf06989c1437491f7592cb {#checksum-should-be-equal-to-f3631b6295bf06989c1437491f7592cb}
+# Checksum should be equal to: f3631b6295bf06989c1437491f7592cb
 ```
 
 ### 创建数据库和表 {#create-the-database-and-table}
@@ -62,9 +62,9 @@ clickhouse-client --query "SELECT COUNT(*) FROM datasets.hits_v1"
 
 ```bash
 curl https://datasets.clickhouse.com/visits/tsv/visits_v1.tsv.xz | unxz --threads=`nproc` > visits_v1.tsv
-# 验证校验和 {#validate-the-checksum}
+# Validate the checksum
 md5sum visits_v1.tsv
-# 校验和应为：6dafe1a0f24e59e3fc2d0fed85601de6 {#checksum-should-be-equal-to-6dafe1a0f24e59e3fc2d0fed85601de6}
+# Checksum should be equal to: 6dafe1a0f24e59e3fc2d0fed85601de6
 ```
 
 ### 创建 visits 表 {#create-the-visits-table}

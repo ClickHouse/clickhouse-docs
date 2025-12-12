@@ -195,99 +195,99 @@ NATS JetStream とともに NATS エンジンを使用する前に、NATS スト
   <summary>ストリームの作成</summary>
 
   ```bash
-  $ nats stream add
-  ? Stream Name stream_name
-  ? Subjects stream_subject
-  ? Storage file
-  ? Replication 1
-  ? Retention Policy Limits
-  ? Discard Policy Old
-  ? Stream Messages Limit -1
-  ? Per Subject Messages Limit -1
-  ? Total Stream Size -1
-  ? Message TTL -1
-  ? Max Message Size -1
-  ? Duplicate tracking time window 2m0s
-  ? Allow message Roll-ups No
-  ? Allow message deletion Yes
-  ? Allow purging subjects or the entire stream Yes
-  Stream stream_name was created
+$ nats stream add
+? Stream Name stream_name
+? Subjects stream_subject
+? Storage file
+? Replication 1
+? Retention Policy Limits
+? Discard Policy Old
+? Stream Messages Limit -1
+? Per Subject Messages Limit -1
+? Total Stream Size -1
+? Message TTL -1
+? Max Message Size -1
+? Duplicate tracking time window 2m0s
+? Allow message Roll-ups No
+? Allow message deletion Yes
+? Allow purging subjects or the entire stream Yes
+Stream stream_name was created
 
-  Information for Stream stream_name created 2025-10-03 14:12:51
+Information for Stream stream_name created 2025-10-03 14:12:51
 
-                  Subjects: stream_subject
-                  Replicas: 1
-                   Storage: File
+                Subjects: stream_subject
+                Replicas: 1
+                 Storage: File
 
-  Options:
+Options:
 
-                 Retention: Limits
-           Acknowledgments: true
-            Discard Policy: Old
-          Duplicate Window: 2m0s
-                Direct Get: true
-         Allows Msg Delete: true
-              Allows Purge: true
-    Allows Per-Message TTL: false
-            Allows Rollups: false
+               Retention: Limits
+         Acknowledgments: true
+          Discard Policy: Old
+        Duplicate Window: 2m0s
+              Direct Get: true
+       Allows Msg Delete: true
+            Allows Purge: true
+  Allows Per-Message TTL: false
+          Allows Rollups: false
 
-  Limits:
+Limits:
 
-          Maximum Messages: unlimited
-       Maximum Per Subject: unlimited
-             Maximum Bytes: unlimited
-               Maximum Age: unlimited
-      Maximum Message Size: unlimited
-         Maximum Consumers: unlimited
+        Maximum Messages: unlimited
+     Maximum Per Subject: unlimited
+           Maximum Bytes: unlimited
+             Maximum Age: unlimited
+    Maximum Message Size: unlimited
+       Maximum Consumers: unlimited
 
-  State:
+State:
 
-                  Messages: 0
-                     Bytes: 0 B
-            First Sequence: 0
-             Last Sequence: 0
-          Active Consumers: 0
-  ```
+                Messages: 0
+                   Bytes: 0 B
+          First Sequence: 0
+           Last Sequence: 0
+        Active Consumers: 0
+```
 </details>
 
 <details>
   <summary>永続プルコンシューマの作成</summary>
 
   ```bash
-  $ nats consumer add
-  ? Select a Stream stream_name
-  ? Consumer name consumer_name
-  ? Delivery target (empty for Pull Consumers) 
-  ? Start policy (all, new, last, subject, 1h, msg sequence) all
-  ? Acknowledgment policy explicit
-  ? Replay policy instant
-  ? Filter Stream by subjects (blank for all) 
-  ? Maximum Allowed Deliveries -1
-  ? Maximum Acknowledgments Pending 0
-  ? Deliver headers only without bodies No
-  ? Add a Retry Backoff Policy No
-  Information for Consumer stream_name > consumer_name created 2025-10-03T14:13:51+03:00
+$ nats consumer add
+? Select a Stream stream_name
+? Consumer name consumer_name
+? Delivery target (empty for Pull Consumers) 
+? Start policy (all, new, last, subject, 1h, msg sequence) all
+? Acknowledgment policy explicit
+? Replay policy instant
+? Filter Stream by subjects (blank for all) 
+? Maximum Allowed Deliveries -1
+? Maximum Acknowledgments Pending 0
+? Deliver headers only without bodies No
+? Add a Retry Backoff Policy No
+Information for Consumer stream_name > consumer_name created 2025-10-03T14:13:51+03:00
 
-  Configuration:
+Configuration:
 
-                      Name: consumer_name
-                 Pull Mode: true
-            Deliver Policy: All
-                Ack Policy: Explicit
-                  Ack Wait: 30.00s
-             Replay Policy: Instant
-           Max Ack Pending: 1,000
-         Max Waiting Pulls: 512
+                    Name: consumer_name
+               Pull Mode: true
+          Deliver Policy: All
+              Ack Policy: Explicit
+                Ack Wait: 30.00s
+           Replay Policy: Instant
+         Max Ack Pending: 1,000
+       Max Waiting Pulls: 512
 
-  State:
+State:
 
-    Last Delivered Message: Consumer sequence: 0 Stream sequence: 0
-      Acknowledgment Floor: Consumer sequence: 0 Stream sequence: 0
-          Outstanding Acks: 0 out of maximum 1,000
-      Redelivered Messages: 0
-      Unprocessed Messages: 0
-             Waiting Pulls: 0 of maximum 512
-  ```
+  Last Delivered Message: Consumer sequence: 0 Stream sequence: 0
+    Acknowledgment Floor: Consumer sequence: 0 Stream sequence: 0
+        Outstanding Acks: 0 out of maximum 1,000
+    Redelivered Messages: 0
+    Unprocessed Messages: 0
+           Waiting Pulls: 0 of maximum 512
+```
 </details>
 
 ストリームと永続プルコンシューマを作成したら、NATS エンジンを使用してテーブルを作成できます。このためには、`nats_stream`、`nats_consumer_name`、`nats_subjects` を初期化する必要があります。

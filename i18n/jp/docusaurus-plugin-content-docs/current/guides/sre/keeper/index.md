@@ -205,38 +205,38 @@ zk_synced_followers     0
 * `srvr`: サーバーに関するすべての詳細を表示します。
 
 ```response
-ClickHouse Keeperバージョン: v21.11.1.1-prestable-7a4a0b0edef0ad6e0aa662cd3b90c3f4acf796e7
-レイテンシ 最小/平均/最大: 0/0/0
-受信: 2
-送信: 2
-接続数: 1
-未処理: 0
+ClickHouse Keeper version: v21.11.1.1-prestable-7a4a0b0edef0ad6e0aa662cd3b90c3f4acf796e7
+Latency min/avg/max: 0/0/0
+Received: 2
+Sent : 2
+Connections: 1
+Outstanding: 0
 Zxid: 34
-モード: leader
-ノード数: 4
+Mode: leader
+Node count: 4
 ```
 
 * `stat`: サーバーおよび接続中のクライアントに関する概要情報を一覧表示します。
 
 ```response
-ClickHouse Keeperバージョン: v21.11.1.1-prestable-7a4a0b0edef0ad6e0aa662cd3b90c3f4acf796e7
-クライアント:
+ClickHouse Keeper version: v21.11.1.1-prestable-7a4a0b0edef0ad6e0aa662cd3b90c3f4acf796e7
+Clients:
  192.168.1.1:52852(recved=0,sent=0)
  192.168.1.1:52042(recved=24,sent=48)
-レイテンシ min/avg/max: 0/0/0
-受信数: 4
-送信数: 4
-接続数: 1
-未処理: 0
+Latency min/avg/max: 0/0/0
+Received: 4
+Sent : 4
+Connections: 1
+Outstanding: 0
 Zxid: 36
-モード: leader
-ノード数: 4
+Mode: leader
+Node count: 4
 ```
 
 * `srst`: サーバーの統計情報をリセットします。このコマンドは `srvr`、`mntr`、`stat` の結果に影響を与えます。
 
 ```response
-サーバー統計をリセットしました。
+Server stats reset.
 ```
 
 * `conf`: サービング設定の詳細を表示します。
@@ -282,7 +282,7 @@ configuration_change_tries_count=20
 * `crst`: すべての接続について、接続／セッションの統計情報をリセットします。
 
 ```response
-接続統計をリセットしました。
+Connection stats reset.
 ```
 
 * `envi`: 実行環境の詳細を表示
@@ -317,8 +317,8 @@ rw
 * `wchs`: サーバー上のウォッチの概要情報を一覧表示します。
 
 ```response
-1接続が1パスを監視中
-合計監視数:1
+1 connections watching 1 paths
+Total watches:1
 ```
 
 * `wchc`: サーバー上のウォッチ情報をセッションごとに詳細表示します。これにより、各セッション（接続）と、それに紐づくウォッチ対象（パス）の一覧が出力されます。ウォッチの数によっては、この操作は高コストになり（サーバーのパフォーマンスに影響を与える可能性がある）ため、慎重に使用してください。
@@ -338,10 +338,10 @@ rw
 * `dump`: 未処理のセッションおよびエフェメラルノードを一覧表示します。これはリーダーノードでのみ有効です。
 
 ```response
-セッションのダンプ (2):
+Sessions dump (2):
 0x0000000000000001
 0x0000000000000002
-エフェメラル付きのセッション (1):
+Sessions with Ephemerals (1):
 0x0000000000000001
  /clickhouse/task_queue/ddl
 ```
@@ -368,7 +368,7 @@ last_snapshot_idx   50
 * `rqld`: 自ノードを新しいリーダーにするよう要求します。要求が送信された場合は `Sent leadership request to leader.` を返し、要求が送信されなかった場合は `Failed to send leadership request to leader.` を返します。ノードがすでにリーダーである場合でも、結果は要求が送信された場合と同じになります。
 
 ```response
-リーダーにリーダー権限のリクエストを送信しました。
+Sent leadership request to leader.
 ```
 
 * `ftfl`: すべてのフィーチャーフラグと、それぞれが Keeper インスタンスで有効かどうかを一覧表示します。
@@ -382,29 +382,29 @@ check_not_exists    0
 * `ydld`: リーダー権限を放棄してフォロワーになるよう要求します。リクエストを受け取ったサーバーがリーダーの場合、まず書き込み操作を一時停止し、後継ノード（現在のリーダーが後継になることはありません）が最新ログのキャッチアップを完了するまで待機してから辞任します。後継ノードは自動的に選出されます。リクエストの送信に成功した場合は `Sent yield leadership request to leader.` を返し、送信に失敗した場合は `Failed to send yield leadership request to leader.` を返します。ノードがすでにフォロワーである場合も、リクエストが送信された場合と同じ結果になります。
 
 ```response
-リーダーへリーダーシップ譲渡リクエストを送信しました。
+Sent yield leadership request to leader.
 ```
 
 * `pfev`: 収集されたすべてのイベントの値を返します。各イベントごとに、イベント名、イベント値、およびイベントの説明を返します。
 
 ```response
-FileOpen        62      オープンされたファイルの数。
-Seek    4       'lseek'関数が呼び出された回数。
-ReadBufferFromFileDescriptorRead        126     ファイルディスクリプタからの読み取り(read/pread)回数。ソケットは含まれません。
-ReadBufferFromFileDescriptorReadFailed  0       ファイルディスクリプタからの読み取り(read/pread)が失敗した回数。
-ReadBufferFromFileDescriptorReadBytes   178846  ファイルディスクリプタから読み取られたバイト数。ファイルが圧縮されている場合は、圧縮データサイズが表示されます。
-WriteBufferFromFileDescriptorWrite      7       ファイルディスクリプタへの書き込み(write/pwrite)回数。ソケットは含まれません。
-WriteBufferFromFileDescriptorWriteFailed        0       ファイルディスクリプタへの書き込み(write/pwrite)が失敗した回数。
-WriteBufferFromFileDescriptorWriteBytes 153     ファイルディスクリプタに書き込まれたバイト数。ファイルが圧縮されている場合は、圧縮データサイズが表示されます。
-FileSync        2       ファイルに対してF_FULLFSYNC/fsync/fdatasync関数が呼び出された回数。
-DirectorySync   0       ディレクトリに対してF_FULLFSYNC/fsync/fdatasync関数が呼び出された回数。
-FileSyncElapsedMicroseconds     12756   ファイルに対するF_FULLFSYNC/fsync/fdatasyncシステムコールの待機に費やされた合計時間。
-DirectorySyncElapsedMicroseconds        0       ディレクトリに対するF_FULLFSYNC/fsync/fdatasyncシステムコールの待機に費やされた合計時間。
-ReadCompressedBytes     0       圧縮ソース(ファイル、ネットワーク)から読み取られたバイト数(展開前のバイト数)。
-CompressedReadBufferBlocks      0       圧縮ソース(ファイル、ネットワーク)から読み取られた圧縮ブロック数(互いに独立して圧縮されたデータブロック)。
-CompressedReadBufferBytes       0       圧縮ソース(ファイル、ネットワーク)から読み取られた非圧縮バイト数(展開後のバイト数)。
-AIOWrite        0       LinuxまたはFreeBSD AIOインターフェースによる書き込み回数
-AIOWriteBytes   0       LinuxまたはFreeBSD AIOインターフェースで書き込まれたバイト数
+FileOpen        62      Number of files opened.
+Seek    4       Number of times the 'lseek' function was called.
+ReadBufferFromFileDescriptorRead        126     Number of reads (read/pread) from a file descriptor. Does not include sockets.
+ReadBufferFromFileDescriptorReadFailed  0       Number of times the read (read/pread) from a file descriptor have failed.
+ReadBufferFromFileDescriptorReadBytes   178846  Number of bytes read from file descriptors. If the file is compressed, this will show the compressed data size.
+WriteBufferFromFileDescriptorWrite      7       Number of writes (write/pwrite) to a file descriptor. Does not include sockets.
+WriteBufferFromFileDescriptorWriteFailed        0       Number of times the write (write/pwrite) to a file descriptor have failed.
+WriteBufferFromFileDescriptorWriteBytes 153     Number of bytes written to file descriptors. If the file is compressed, this will show compressed data size.
+FileSync        2       Number of times the F_FULLFSYNC/fsync/fdatasync function was called for files.
+DirectorySync   0       Number of times the F_FULLFSYNC/fsync/fdatasync function was called for directories.
+FileSyncElapsedMicroseconds     12756   Total time spent waiting for F_FULLFSYNC/fsync/fdatasync syscall for files.
+DirectorySyncElapsedMicroseconds        0       Total time spent waiting for F_FULLFSYNC/fsync/fdatasync syscall for directories.
+ReadCompressedBytes     0       Number of bytes (the number of bytes before decompression) read from compressed sources (files, network).
+CompressedReadBufferBlocks      0       Number of compressed blocks (the blocks of data that are compressed independent of each other) read from compressed sources (files, network).
+CompressedReadBufferBytes       0       Number of uncompressed bytes (the number of bytes after decompression) read from compressed sources (files, network).
+AIOWrite        0       Number of writes with Linux or FreeBSD AIO interface
+AIOWriteBytes   0       Number of bytes written with Linux or FreeBSD AIO interface
 ...
 ```
 
@@ -655,28 +655,27 @@ Keeper は [Prometheus](https://prometheus.io) によるスクレイプ用のメ
 
 **例**
 
-```xml
-<clickhouse>
-    <listen_host>0.0.0.0</listen_host>
-    <http_port>8123</http_port>
-    <tcp_port>9000</tcp_port>
-    <!-- highlight-start -->
-    <prometheus>
-        <endpoint>/metrics</endpoint>
-        <port>9363</port>
-        <metrics>true</metrics>
-        <events>true</events>
-        <asynchronous_metrics>true</asynchronous_metrics>
-    </prometheus>
-    <!-- highlight-end -->
-</clickhouse>
+```
+
+Check (replace `127.0.0.1` with the IP addr or hostname of your ClickHouse server):
 ```
 
 確認します（`127.0.0.1` を ClickHouse サーバーの IP アドレスまたはホスト名に置き換えてください）:
 
-```bash
-curl 127.0.0.1:9363/metrics
 ```
+
+Please also see the ClickHouse Cloud [Prometheus integration](/integrations/prometheus).
+
+## ClickHouse Keeper user guide {#clickhouse-keeper-user-guide}
+
+This guide provides simple and minimal settings to configure ClickHouse Keeper with an example on how to test distributed operations. This example is performed using 3 nodes on Linux.
+
+### 1. Configure nodes with Keeper settings {#1-configure-nodes-with-keeper-settings}
+
+1. Install 3 ClickHouse instances on 3 hosts (`chnode1`, `chnode2`, `chnode3`). (View the [Quick Start](/getting-started/install/install.mdx) for details on installing ClickHouse.)
+
+2. On each node, add the following entry to allow external communication through the network interface.
+    ```
 
 ClickHouse Cloud における [Prometheus 連携](/integrations/prometheus) も参照してください。
 
@@ -689,42 +688,28 @@ ClickHouse Cloud における [Prometheus 連携](/integrations/prometheus) も�
 1. 3 つのホスト（`chnode1`、`chnode2`、`chnode3`）に 3 つの ClickHouse インスタンスをインストールします。（ClickHouse のインストール方法の詳細は、[クイックスタート](/getting-started/install/install.mdx) を参照してください。）
 
 2. 各ノードで、ネットワークインターフェイス経由の外部通信を許可するために、次のエントリを追加します。
-    ```xml
-    <listen_host>0.0.0.0</listen_host>
+    ```
+
+3. Add the following ClickHouse Keeper configuration to all three servers updating the `<server_id>` setting for each server; for `chnode1` would be `1`, `chnode2` would be `2`, etc.
     ```
 
 3. 次の ClickHouse Keeper 設定を 3 台すべてのサーバーに追加し、各サーバーに対して `<server_id>` 設定を更新します。`chnode1` は `1`、`chnode2` は `2`、というように設定します。
-    ```xml
-    <keeper_server>
-        <tcp_port>9181</tcp_port>
-        <server_id>1</server_id>
-        <log_storage_path>/var/lib/clickhouse/coordination/log</log_storage_path>
-        <snapshot_storage_path>/var/lib/clickhouse/coordination/snapshots</snapshot_storage_path>
+    ```
 
-        <coordination_settings>
-            <operation_timeout_ms>10000</operation_timeout_ms>
-            <session_timeout_ms>30000</session_timeout_ms>
-            <raft_logs_level>warning</raft_logs_level>
-        </coordination_settings>
+    These are the basic settings used above:
 
-        <raft_configuration>
-            <server>
-                <id>1</id>
-                <hostname>chnode1.domain.com</hostname>
-                <port>9234</port>
-            </server>
-            <server>
-                <id>2</id>
-                <hostname>chnode2.domain.com</hostname>
-                <port>9234</port>
-            </server>
-            <server>
-                <id>3</id>
-                <hostname>chnode3.domain.com</hostname>
-                <port>9234</port>
-            </server>
-        </raft_configuration>
-    </keeper_server>
+    |Parameter |Description                   |Example              |
+    |----------|------------------------------|---------------------|
+    |tcp_port   |port to be used by clients of keeper|9181 default equivalent of 2181 as in zookeeper|
+    |server_id| identifier for each ClickHouse Keeper server used in raft configuration| 1|
+    |coordination_settings| section to parameters such as timeouts| timeouts: 10000, log level: trace|
+    |server    |definition of server participating|list of each server definition|
+    |raft_configuration| settings for each server in the keeper cluster| server and settings for each|
+    |id      |numeric id of the server for keeper services|1|
+    |hostname   |hostname, IP or FQDN of each server in the keeper cluster|`chnode1.domain.com`|
+    |port|port to listen on for interserver keeper connections|9234|
+
+4.  Enable the Zookeeper component. It will use the ClickHouse Keeper engine:
     ```
 
     上で使用した基本的な設定は次のとおりです。
@@ -741,21 +726,17 @@ ClickHouse Cloud における [Prometheus 連携](/integrations/prometheus) も�
     |port|サーバー間 Keeper 接続用のリッスンポート|9234|
 
 4. Zookeeper コンポーネントを有効化します。これは ClickHouse Keeper エンジンを使用します。
-    ```xml
-        <zookeeper>
-            <node>
-                <host>chnode1.domain.com</host>
-                <port>9181</port>
-            </node>
-            <node>
-                <host>chnode2.domain.com</host>
-                <port>9181</port>
-            </node>
-            <node>
-                <host>chnode3.domain.com</host>
-                <port>9181</port>
-            </node>
-        </zookeeper>
+    ```
+
+    These are the basic settings used above:
+
+    |Parameter |Description                   |Example              |
+    |----------|------------------------------|---------------------|
+    |node   |list of nodes for ClickHouse Keeper connections|settings entry for each server|
+    |host|hostname, IP or FQDN of each ClickHouse keeper node| `chnode1.domain.com`|
+    |port|ClickHouse Keeper client port| 9181|
+
+5. Restart ClickHouse and verify that each Keeper instance is running. Execute the following command on each server. The `ruok` command returns `imok` if Keeper is running and healthy:
     ```
 
     上で使用した基本的な設定は次のとおりです。
@@ -767,54 +748,43 @@ ClickHouse Cloud における [Prometheus 連携](/integrations/prometheus) も�
     |port|ClickHouse Keeper のクライアント用ポート| 9181|
 
 5. ClickHouse を再起動し、各 Keeper インスタンスが稼働していることを確認します。各サーバー上で次のコマンドを実行します。`ruok` コマンドは、Keeper が稼働して健全な状態であれば `imok` を返します。
-    ```bash
-    # echo ruok | nc localhost 9181; echo
-    imok
+    ```
+
+6. The `system` database has a table named `zookeeper` that contains the details of your ClickHouse Keeper instances. Let's view the table:
     ```
 
 6. `system` データベースには、ClickHouse Keeper インスタンスの詳細が含まれる `zookeeper` という名前のテーブルがあります。次のようにテーブルを参照します。
-    ```sql
-    SELECT *
-    FROM system.zookeeper
-    WHERE path IN ('/', '/clickhouse')
+    ```
+
+    The table looks like:
     ```
 
 テーブルは次のとおりです。
 
-```response
-┌─name───────┬─value─┬─czxid─┬─mzxid─┬───────────────ctime─┬───────────────mtime─┬─version─┬─cversion─┬─aversion─┬─ephemeralOwner─┬─dataLength─┬─numChildren─┬─pzxid─┬─path────────┐
-│ clickhouse │       │   124 │   124 │ 2022-03-07 00:49:34 │ 2022-03-07 00:49:34 │       0 │        2 │        0 │              0 │          0 │           2 │  5693 │ /           │
-│ task_queue │       │   125 │   125 │ 2022-03-07 00:49:34 │ 2022-03-07 00:49:34 │       0 │        1 │        0 │              0 │          0 │           1 │   126 │ /clickhouse │
-│ tables     │       │  5693 │  5693 │ 2022-03-07 00:49:34 │ 2022-03-07 00:49:34 │       0 │        3 │        0 │              0 │          0 │           3 │  6461 │ /clickhouse │
-└────────────┴───────┴───────┴───────┴─────────────────────┴─────────────────────┴─────────┴──────────┴──────────┴────────────────┴────────────┴─────────────┴───────┴─────────────┘
 ```
+
+### 2.  Configure a cluster in ClickHouse {#2--configure-a-cluster-in-clickhouse}
+
+1. Let's configure a simple cluster with 2 shards and only one replica on 2 of the nodes. The third node will be used to achieve a quorum for the requirement in ClickHouse Keeper. Update the configuration on `chnode1` and `chnode2`. The following cluster defines 1 shard on each node for a total of 2 shards with no replication. In this example, some of the data will be on node and some will be on the other node:
+    ```
 
 ### 2.  ClickHouse でクラスタを構成する {#2--configure-a-cluster-in-clickhouse}
 
 1. 2 つのノード上に、2 シャード・各 1 レプリカというシンプルなクラスタを構成します。3 台目のノードは、ClickHouse Keeper の要件であるクォーラムを満たすために使用します。`chnode1` と `chnode2` の設定を更新します。次のクラスタ定義では、各ノードに 1 つずつシャードを配置し、合計 2 シャードとし、レプリケーションは行いません。この例では、データの一部は一方のノードに、残りはもう一方のノードに配置されます。
 
-   ```xml
-       <remote_servers>
-           <cluster_2S_1R>
-               <shard>
-                   <replica>
-                       <host>chnode1.domain.com</host>
-                       <port>9000</port>
-                       <user>default</user>
-                       <password>ClickHouse123!</password>
-                   </replica>
-               </shard>
-               <shard>
-                   <replica>
-                       <host>chnode2.domain.com</host>
-                       <port>9000</port>
-                       <user>default</user>
-                       <password>ClickHouse123!</password>
-                   </replica>
-               </shard>
-           </cluster_2S_1R>
-       </remote_servers>
    ```
+
+    |Parameter |Description                   |Example              |
+    |----------|------------------------------|---------------------|
+    |shard   |list of replicas on the cluster definition|list of replicas for each shard|
+    |replica|list of settings for each replica|settings entries for each replica|
+    |host|hostname, IP or FQDN of server that will host a replica shard|`chnode1.domain.com`|
+    |port|port used to communicate using the native tcp protocol|9000|
+    |user|username that will be used to authenticate to the cluster instances|default|
+    |password|password for the user define to allow connections to cluster instances|`ClickHouse123!`|
+
+2. Restart ClickHouse and verify the cluster was created:
+    ```
 
    | Parameter | Description                           | Example              |
    | --------- | ------------------------------------- | -------------------- |
@@ -827,116 +797,112 @@ ClickHouse Cloud における [Prometheus 連携](/integrations/prometheus) も�
 
 2. ClickHouse を再起動し、クラスタが作成されたことを確認します。
 
-   ```bash
-   SHOW clusters;
    ```
+
+    You should see your cluster:
+    ```
 
    次のようにクラスタが表示されます。
 
-   ```response
-   ┌─cluster───────┐
-   │ cluster_2S_1R │
-   └───────────────┘
    ```
+
+### 3. Create and test distributed table {#3-create-and-test-distributed-table}
+
+1.  Create a new database on the new cluster using ClickHouse client on `chnode1`. The `ON CLUSTER` clause automatically creates the database on both nodes.
+    ```
 
 ### 3. 分散テーブルを作成してテストする {#3-create-and-test-distributed-table}
 
 1. `chnode1` 上の ClickHouse クライアントを使用して、新しいクラスタ上に新しいデータベースを作成します。`ON CLUSTER` 句により、データベースは自動的に両方のノード上に作成されます。
-   ```sql
-   CREATE DATABASE db1 ON CLUSTER 'cluster_2S_1R';
    ```
 
+2. Create a new table on the `db1` database. Once again, `ON CLUSTER` creates the table on both nodes.
+    ```
+
 2. `db1` データベース上に新しいテーブルを作成します。ここでも、`ON CLUSTER` 句によって両方のノード上にテーブルが作成されます。
-    ```sql
-    CREATE TABLE db1.table1 on cluster 'cluster_2S_1R'
-    (
-        `id` UInt64,
-        `column1` String
-    )
-    ENGINE = MergeTree
-    ORDER BY column1
+    ```
+
+3. On the `chnode1` node, add a couple of rows:
     ```
 
 3. `chnode1` ノードで、いくつかの行を追加します:
-    ```sql
-    INSERT INTO db1.table1
-        (id, column1)
-    VALUES
-        (1, 'abc'),
-        (2, 'def')
+    ```
+
+4. Add a couple of rows on the `chnode2` node:
     ```
 
 4. `chnode2` ノードでも、いくつかの行を追加します:
-    ```sql
-    INSERT INTO db1.table1
-        (id, column1)
-    VALUES
-        (3, 'ghi'),
-        (4, 'jkl')
+    ```
+
+5. Notice that running a `SELECT` statement on each node only shows the data on that node. For example, on `chnode1`:
     ```
 
 5. 各ノードで `SELECT` 文を実行しても、そのノード上のデータしか表示されないことが分かります。たとえば、`chnode1` では:
-    ```sql
-    SELECT *
-    FROM db1.table1
     ```
 
-    ```response
-    Query id: 7ef1edbc-df25-462b-a9d4-3fe6f9cb0b6d
+    ```
 
-    ┌─id─┬─column1─┐
-    │  1 │ abc     │
-    │  2 │ def     │
-    └────┴─────────┘
+    ```
 
-    2 rows in set. Elapsed: 0.006 sec.
+    On `chnode2`:
+6.
     ```
 
     `chnode2` では:
 6.
-    ```sql
-    SELECT *
-    FROM db1.table1
     ```
 
-    ```response
-    Query id: c43763cc-c69c-4bcc-afbe-50e764adfcbf
+    ```
 
-    ┌─id─┬─column1─┐
-    │  3 │ ghi     │
-    │  4 │ jkl     │
-    └────┴─────────┘
+    ```
+
+6. You can create a `Distributed` table to represent the data on the two shards. Tables with the `Distributed` table engine do not store any data of their own, but allow distributed query processing on multiple servers. Reads hit all the shards, and writes can be distributed across the shards. Run the following query on `chnode1`:
     ```
 
 6. 2 つのシャード上のデータを表現するために `Distributed` テーブルを作成できます。`Distributed` テーブルエンジンを使用するテーブル自体はデータを保持しませんが、複数サーバーにまたがる分散クエリ処理を可能にします。読み取りはすべてのシャードに対して行われ、書き込みはシャード間に分散できます。`chnode1` で次のクエリを実行します:
-    ```sql
-    CREATE TABLE db1.dist_table (
-        id UInt64,
-        column1 String
-    )
-    ENGINE = Distributed(cluster_2S_1R,db1,table1)
+    ```
+
+7. Notice querying `dist_table` returns all four rows of data from the two shards:
     ```
 
 7. `dist_table` に対してクエリを実行すると、2 つのシャードから 4 行すべてのデータが返されることが分かります:
-    ```sql
-    SELECT *
-    FROM db1.dist_table
     ```
 
-    ```response
-    Query id: 495bffa0-f849-4a0c-aeea-d7115a54747a
-
-    ┌─id─┬─column1─┐
-    │  1 │ abc     │
-    │  2 │ def     │
-    └────┴─────────┘
-    ┌─id─┬─column1─┐
-    │  3 │ ghi     │
-    │  4 │ jkl     │
-    └────┴─────────┘
-
-    4 rows in set. Elapsed: 0.018 sec.
     ```
+
+    ```
+
+### Summary {#summary}
+
+This guide demonstrated how to set up a cluster using ClickHouse Keeper. With ClickHouse Keeper, you can configure clusters and define distributed tables that can be replicated across shards.
+
+## Configuring ClickHouse Keeper with unique paths {#configuring-clickhouse-keeper-with-unique-paths}
+
+<SelfManaged />
+
+### Description {#description}
+
+This article describes how to use the built-in `{uuid}` macro setting
+to create unique entries in ClickHouse Keeper or ZooKeeper. Unique
+paths help when creating and dropping tables frequently because
+this avoids having to wait several minutes for Keeper garbage collection
+to remove path entries as each time a path is created a new `uuid` is used
+in that path; paths are never reused.
+
+### Example environment {#example-environment}
+A three node cluster that will be configured to have ClickHouse Keeper
+on all three nodes, and ClickHouse on two of the nodes. This provides
+ClickHouse Keeper with three nodes (including a tiebreaker node), and
+a single ClickHouse shard made up of two replicas.
+
+|node|description|
+|-----|-----|
+|`chnode1.marsnet.local`|data node - cluster `cluster_1S_2R`|
+|`chnode2.marsnet.local`|data node - cluster `cluster_1S_2R`|
+|`chnode3.marsnet.local`| ClickHouse Keeper tie breaker node|
+
+Example config for cluster:
+```
 
 ### まとめ {#summary}
 
@@ -969,27 +935,12 @@ ClickHouse Keeper 用に 3 ノード (タイブレーカーノードを含む) �
 
 クラスタの設定例:
 
-```xml
-    <remote_servers>
-        <cluster_1S_2R>
-            <shard>
-                <replica>
-                    <host>chnode1.marsnet.local</host>
-                    <port>9440</port>
-                    <user>default</user>
-                    <password>ClickHouse123!</password>
-                    <secure>1</secure>
-                </replica>
-                <replica>
-                    <host>chnode2.marsnet.local</host>
-                    <port>9440</port>
-                    <user>default</user>
-                    <password>ClickHouse123!</password>
-                    <secure>1</secure>
-                </replica>
-            </shard>
-        </cluster_1S_2R>
-    </remote_servers>
+```
+
+### Procedures to set up tables to use `{uuid}` {#procedures-to-set-up-tables-to-use-uuid}
+
+1. Configure Macros on each server
+example for server 1:
 ```
 
 ### `{uuid}` を使用するためのテーブル設定手順 {#procedures-to-set-up-tables-to-use-uuid}
@@ -997,11 +948,13 @@ ClickHouse Keeper 用に 3 ノード (タイブレーカーノードを含む) �
 1. 各サーバーでマクロを設定します
    サーバー 1 の例:
 
-```xml
-    <macros>
-        <shard>1</shard>
-        <replica>replica_1</replica>
-    </macros>
+```
+:::note
+Notice that we define macros for `shard` and `replica`, but that `{uuid}` is not defined here, it is built-in and there is no need to define.
+:::
+
+2. Create a Database
+
 ```
 
 :::note
@@ -1010,46 +963,26 @@ ClickHouse Keeper 用に 3 ノード (タイブレーカーノードを含む) �
 
 2. データベースを作成する
 
-```sql
-CREATE DATABASE db_uuid
-      ON CLUSTER 'cluster_1S_2R'
-      ENGINE Atomic;
 ```
 
-```response
-CREATE DATABASE db_uuid ON CLUSTER cluster_1S_2R
-ENGINE = Atomic
+```
 
-Query id: 07fb7e65-beb4-4c30-b3ef-bd303e5c42b5
+```
 
-┌─host──────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
-│ chnode2.marsnet.local │ 9440 │      0 │       │                   1 │                0 │
-│ chnode1.marsnet.local │ 9440 │      0 │       │                   0 │                0 │
-└───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
+3. Create a table on the cluster using the macros and `{uuid}`
+
 ```
 
 3. マクロと`{uuid}`を使用してクラスター上にテーブルを作成する
 
-```sql
-CREATE TABLE db_uuid.uuid_table1 ON CLUSTER 'cluster_1S_2R'
-   (
-     id UInt64,
-     column1 String
-   )
-   ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/db_uuid/{uuid}', '{replica}' )
-   ORDER BY (id);
 ```
 
-```response
-CREATE TABLE db_uuid.uuid_table1 ON CLUSTER cluster_1S_2R
-(
-    `id` UInt64,
-    `column1` String
-)
-ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/db_uuid/{uuid}', '{replica}')
-ORDER BY id
+```
 
-Query id: 8f542664-4548-4a02-bd2a-6f2c973d0dc4
+```
+
+4.  Create a distributed table
+
 ```
 
 ┌─host──────────────────┬─port─┬─status─┬─error─┬─num&#95;hosts&#95;remaining─┬─num&#95;hosts&#95;active─┐
@@ -1058,8 +991,6 @@ Query id: 8f542664-4548-4a02-bd2a-6f2c973d0dc4
 └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
 
 ````
-
-4.  分散テーブルを作成する
 
 ```sql
 CREATE TABLE db_uuid.dist_uuid_table1 ON CLUSTER 'cluster_1S_2R'
@@ -1070,6 +1001,8 @@ CREATE TABLE db_uuid.dist_uuid_table1 ON CLUSTER 'cluster_1S_2R'
    ENGINE = Distributed('cluster_1S_2R', 'db_uuid', 'uuid_table1' );
 ````
 
+### Testing {#testing}
+1.  Insert data into first node (e.g `chnode1`)
 ```response
 CREATE TABLE db_uuid.dist_uuid_table1 ON CLUSTER cluster_1S_2R
 (
@@ -1086,10 +1019,6 @@ Query id: 3bc7f339-ab74-4c7d-a752-1ffe54219c0e
 └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
 ```
 
-### テスト {#testing}
-
-1. 最初のノード（例: `chnode1`）にデータを挿入します
-
 ```sql
 INSERT INTO db_uuid.uuid_table1
    ( id, column1)
@@ -1097,6 +1026,7 @@ INSERT INTO db_uuid.uuid_table1
    ( 1, 'abc');
 ```
 
+2. Insert data into second node (e.g., `chnode2`)
 ```response
 INSERT INTO db_uuid.uuid_table1 (id, column1) FORMAT Values
 
@@ -1107,8 +1037,6 @@ Ok.
 1 row in set. Elapsed: 0.033 sec.
 ```
 
-2. 2番目のノード（例: `chnode2`）にデータを挿入する
-
 ```sql
 INSERT INTO db_uuid.uuid_table1
    ( id, column1)
@@ -1116,6 +1044,7 @@ INSERT INTO db_uuid.uuid_table1
    ( 2, 'def');
 ```
 
+3. View records using distributed table
 ```response
 INSERT INTO db_uuid.uuid_table1 (id, column1) FORMAT Values
 
@@ -1126,12 +1055,14 @@ Ok.
 1 row in set. Elapsed: 0.529 sec.
 ```
 
-3. 分散テーブルでレコードを表示する
-
 ```sql
 SELECT * FROM db_uuid.dist_uuid_table1;
 ```
 
+### Alternatives {#alternatives}
+The default replication path can be defined beforehand by macros and using also `{uuid}`
+
+1. Set default for tables on each node
 ```response
 SELECT *
 FROM db_uuid.dist_uuid_table1
@@ -1147,23 +1078,15 @@ Query id: 6cbab449-9e7f-40fe-b8c2-62d46ba9f5c8
 
 2行が設定されました。経過時間: 0.007秒。
 ```
+:::tip
+You can also define a macro `{database}` on each node if nodes are used for certain databases.
+:::
 
-### 代替案 {#alternatives}
-
-デフォルトのレプリケーションパスは、マクロおよび `{uuid}` を使用して事前に定義できます。
-
-1. 各ノードでテーブル用のデフォルトを設定する
-
+2. Create table without explicit parameters:
 ```xml
 <default_replica_path>/clickhouse/tables/{shard}/db_uuid/{uuid}</default_replica_path>
 <default_replica_name>{replica}</default_replica_name>
 ```
-
-:::tip
-各ノードが特定のデータベース向けに使用される場合は、ノードごとにマクロ `{database}` を定義することもできます。
-:::
-
-2. 明示的なパラメーターを指定せずにテーブルを作成します:
 
 ```sql
 CREATE TABLE db_uuid.uuid_table1 ON CLUSTER 'cluster_1S_2R'
@@ -1175,6 +1098,7 @@ CREATE TABLE db_uuid.uuid_table1 ON CLUSTER 'cluster_1S_2R'
    ORDER BY (id);
 ```
 
+3. Verify it used the settings used in default config
 ```response
 CREATE TABLE db_uuid.uuid_table1 ON CLUSTER cluster_1S_2R
 (
@@ -1185,50 +1109,42 @@ ENGINE = ReplicatedMergeTree
 ORDER BY id
 ```
 
-クエリ ID: ab68cda9-ae41-4d6d-8d3b-20d8255774ee
-
-┌─host──────────────────┬─port─┬─status─┬─error─┬─num&#95;hosts&#95;remaining─┬─num&#95;hosts&#95;active─┐
-│ chnode2.marsnet.local │ 9440 │      0 │       │                   1 │                0 │
-│ chnode1.marsnet.local │ 9440 │      0 │       │                   0 │                0 │
-└───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
-
-2 行が返されました。経過時間: 1.175 秒。
-
 ````
 
 3. デフォルト設定が使用されていることを確認します
-```sql
-SHOW CREATE TABLE db_uuid.uuid_table1;
+```
+
+### Troubleshooting {#troubleshooting}
+
+Example command to get table information and UUID:
 ````
 
-```response
-SHOW CREATE TABLE db_uuid.uuid_table1
+```
 
-CREATE TABLE db_uuid.uuid_table1
-(
-    `id` UInt64,
-    `column1` String
-)
-ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/db_uuid/{uuid}', '{replica}')
-ORDER BY id
-
-1 行のセット。経過時間: 0.003 秒。
+Example command to get information about the table in zookeeper with UUID for the table above
 ```
 
 ### トラブルシューティング {#troubleshooting}
 
 テーブル情報とUUIDを取得するためのコマンド例:
 
-```sql
-SELECT * FROM system.tables
-WHERE database = 'db_uuid' AND name = 'uuid_table1';
+```
+
+:::note
+Database must be `Atomic`, if upgrading from a previous version, the
+`default` database is likely of `Ordinary` type.
+:::
+
+To check:
+
+For example,
+
 ```
 
 上記のテーブルに対応する UUID テーブルの情報を ZooKeeper から取得するためのコマンド例
 
-```sql
-SELECT * FROM system.zookeeper
-WHERE path = '/clickhouse/tables/1/db_uuid/9e8a3cc2-0dec-4438-81a7-c3e63ce2a1cf/replicas';
+```
+
 ```
 
 :::note
@@ -1240,24 +1156,36 @@ WHERE path = '/clickhouse/tables/1/db_uuid/9e8a3cc2-0dec-4438-81a7-c3e63ce2a1cf/
 
 例えば、
 
-```sql
-SELECT name, engine FROM system.databases WHERE name = 'db_uuid';
 ```
 
-```response
-SELECT
-    name,
-    engine
-FROM system.databases
-WHERE name = 'db_uuid'
+## ClickHouse Keeper dynamic reconfiguration {#reconfiguration}
 
-Query id: b047d459-a1d2-4016-bcf9-3e97e30e49c2
+<SelfManaged />
 
-┌─name────┬─engine─┐
-│ db_uuid │ Atomic │
-└─────────┴────────┘
+### Description {#description-1}
 
-1 row in set. Elapsed: 0.004 sec.
+ClickHouse Keeper partially supports ZooKeeper [`reconfig`](https://zookeeper.apache.org/doc/r3.5.3-beta/zookeeperReconfig.html#sc_reconfig_modifying)
+command for dynamic cluster reconfiguration if `keeper_server.enable_reconfiguration` is turned on.
+
+:::note
+If this setting is turned off, you may reconfigure the cluster by altering the replica's `raft_configuration`
+section manually. Make sure you the edit files on all replicas as only the leader will apply changes.
+Alternatively, you can send a `reconfig` query through any ZooKeeper-compatible client.
+:::
+
+A virtual node `/keeper/config` contains last committed cluster configuration in the following format:
+
+```
+
+```
+
+- Each server entry is delimited by a newline.
+- `server_type` is either `participant` or `learner` ([learner](https://github.com/eBay/NuRaft/blob/master/docs/readonly_member.md) does not participate in leader elections).
+- `server_priority` is a non-negative integer telling [which nodes should be prioritised on leader elections](https://github.com/eBay/NuRaft/blob/master/docs/leader_election_priority.md).
+  Priority of 0 means server will never be a leader.
+
+Example:
+
 ```
 
 ## ClickHouse Keeper の動的再構成 {#reconfiguration}
@@ -1277,10 +1205,11 @@ ClickHouse Keeper は、`keeper_server.enable_reconfiguration` が有効にな�
 
 仮想ノード `/keeper/config` には、次の形式で直近にコミットされたクラスタ構成が格納されています。
 
-```text
-server.id = server_host:server_port[;server_type][;server_priority]
-server.id2 = ...
-...
+```
+
+You can use `reconfig` command to add new servers, remove existing ones, and change existing servers'
+priorities, here are examples (using `clickhouse-keeper-client`):
+
 ```
 
 * 各サーバーエントリは改行で区切られます。
@@ -1290,11 +1219,10 @@ server.id2 = ...
 
 例：
 
-```sql
-:) get /keeper/config
-server.1=zoo1:9234;participant;1
-server.2=zoo2:9234;participant;1
-server.3=zoo3:9234;participant;1
+```
+
+And here are examples for `kazoo`:
+
 ```
 
 `reconfig` コマンドを使用すると、新しいサーバーの追加、既存サーバーの削除、および既存サーバーの優先順位の変更が行えます。次に、`clickhouse-keeper-client` を使用した例を示します:

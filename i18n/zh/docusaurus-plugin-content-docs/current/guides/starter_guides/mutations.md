@@ -32,26 +32,26 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
 1. 如下所示的 mutation 语句允许通过字典查找将 `visitor_ids` 更新为新值：
 
    ```sql
-   ALTER TABLE website.clicks
-   UPDATE visitor_id = getDict('visitors', 'new_visitor_id', visitor_id)
-   WHERE visit_date < '2022-01-01'
-   ```
+     ALTER TABLE website.clicks
+     UPDATE visitor_id = getDict('visitors', 'new_visitor_id', visitor_id)
+     WHERE visit_date < '2022-01-01'
+     ```
 
 2. 在一个命令中修改多个值，相比多次执行命令可能更加高效：
 
    ```sql
-   ALTER TABLE website.clicks
-   UPDATE url = substring(url, position(url, '://') + 3), visitor_id = new_visit_id
-   WHERE visit_date < '2022-01-01'
-   ```
+     ALTER TABLE website.clicks
+     UPDATE url = substring(url, position(url, '://') + 3), visitor_id = new_visit_id
+     WHERE visit_date < '2022-01-01'
+     ```
 
 3. 对于分片表，可以使用 `ON CLUSTER` 执行 mutation：
 
    ```sql
-   ALTER TABLE clicks ON CLUSTER main_cluster
-   UPDATE click_count = click_count / 2
-   WHERE visitor_id ILIKE '%robot%'
-   ```
+     ALTER TABLE clicks ON CLUSTER main_cluster
+     UPDATE click_count = click_count / 2
+     WHERE visitor_id ILIKE '%robot%'
+     ```
 
 :::note
 无法更新属于主键或排序键的列。
@@ -71,13 +71,13 @@ ALTER TABLE [<database>.]<table> DELETE WHERE <filter_expr>
 
 1. 删除所有某列的值在给定数组中的记录：
    ```sql
-   ALTER TABLE website.clicks DELETE WHERE visitor_id in (253, 1002, 4277)
-   ```
+    ALTER TABLE website.clicks DELETE WHERE visitor_id in (253, 1002, 4277)
+    ```
 
 2. 这个查询会删除哪些数据？
    ```sql
-   ALTER TABLE clicks ON CLUSTER main_cluster DELETE WHERE visit_date < '2022-01-02 15:00:00' AND page_id = '573'
-   ```
+    ALTER TABLE clicks ON CLUSTER main_cluster DELETE WHERE visit_date < '2022-01-02 15:00:00' AND page_id = '573'
+    ```
 
 :::note
 要删除表中的全部数据，使用 `TRUNCATE TABLE [<database].]<table>` 命令会更加高效。该命令同样可以配合 `ON CLUSTER` 一起执行。
@@ -89,8 +89,10 @@ ALTER TABLE [<database>.]<table> DELETE WHERE <filter_expr>
 
 另一种删除行的方式是使用 `DELETE FROM` 命令，这被称为**轻量级删除**。被删除的行会立即被标记为已删除，并会在之后的所有查询中自动被过滤掉，因此无需等待数据分片合并，也不需要使用 `FINAL` 关键字。数据清理会在后台以异步方式进行。
 
-```sql
-DELETE FROM [db.]table [ON CLUSTER cluster] [WHERE expr]
+```
+
+For example, the following query deletes all rows from the `hits` table where the `Title` column contains the text `hello`:
+
 ```
 
 例如，下面的查询会删除 `hits` 表中所有 `Title` 列的内容包含文本 `hello` 的行：

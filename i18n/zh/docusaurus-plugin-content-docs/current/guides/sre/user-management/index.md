@@ -212,7 +212,7 @@ ClickHouse 访问控制实体：
 1. 使用管理员用户创建一个示例用户
 
 ```sql
-创建用户 my_user，密码为 'password';
+CREATE USER my_user IDENTIFIED BY 'password';
 ```
 
 2. 创建示例数据库
@@ -238,8 +238,8 @@ CREATE USER my_alter_admin IDENTIFIED BY 'password';
 例如：
 
 ```sql
-授予 ALTER 权限 于 my_db.* 并允许转授
-```
+  GRANT ALTER ON my_db.* WITH GRANT OPTION
+  ```
 
 要执行 `GRANT` 或 `REVOKE` 操作来授予或收回权限，用户自身必须先拥有这些权限。
 :::
@@ -249,7 +249,7 @@ CREATE USER my_alter_admin IDENTIFIED BY 'password';
 `ALTER` 的层级结构：
 
 ```response
-├── ALTER (仅适用于表和视图)/
+├── ALTER (only for table and view)/
 │   ├── ALTER TABLE/
 │   │   ├── ALTER UPDATE
 │   │   ├── ALTER DELETE
@@ -306,7 +306,7 @@ SHOW GRANTS FOR  my_user;
 ```response
 SHOW GRANTS FOR my_user
 
-查询 ID: 706befbc-525e-4ec1-a1a2-ba2508cc09e3
+Query id: 706befbc-525e-4ec1-a1a2-ba2508cc09e3
 
 ┌─GRANTS FOR my_user───────────────────────────────────────────┐
 │ GRANT ALTER TABLE, ALTER VIEW ON my_db.my_table TO my_user   │
@@ -320,7 +320,7 @@ SHOW GRANTS FOR my_user
 例如：
 
 ```sql
-授予 my_user 在 my_db.my_table 上修改列的权限;
+GRANT ALTER COLUMN ON my_db.my_table TO my_user;
 ```
 
 权限将配置为：
@@ -338,7 +338,7 @@ Query id: 47b3d03f-46ac-4385-91ec-41119010e4e2
 │ GRANT ALTER COLUMN ON default.my_table TO my_user │
 └───────────────────────────────────────────────────┘
 
-1 行结果，耗时 0.004 秒。
+1 row in set. Elapsed: 0.004 sec.
 ```
 
 这还包括以下子权限：
@@ -361,7 +361,7 @@ ALTER RENAME COLUMN
 例如，如果该用户被授予了 `ALTER ADD COLUMN`
 
 ```sql
-授予 my_user 在 my_db.my_table 上执行 ALTER ADD COLUMN 的权限;
+GRANT ALTER ADD COLUMN ON my_db.my_table TO my_user;
 ```
 
 ```response
@@ -375,23 +375,23 @@ Ok.
 ```
 
 ```sql
-显示 my_user 的授权；
+SHOW GRANTS FOR my_user;
 ```
 
 ```response
-显示 my_user 的权限
+SHOW GRANTS FOR my_user
 
-查询 ID：27791226-a18f-46c8-b2b4-a9e64baeb683
+Query id: 27791226-a18f-46c8-b2b4-a9e64baeb683
 
-┌─my_user 的权限──────────────────────────────────────┐
-│ 授予 my_user 在 my_db.my_table 上的 ALTER ADD COLUMN 权限 │
+┌─GRANTS FOR my_user──────────────────────────────────┐
+│ GRANT ALTER ADD COLUMN ON my_db.my_table TO my_user │
 └─────────────────────────────────────────────────────┘
 ```
 
 可以单独撤销某项权限：
 
 ```sql
-撤销 my_user 在 my_db.my_table 上的 ALTER 和 ADD COLUMN 权限；
+REVOKE ALTER ADD COLUMN ON my_db.my_table FROM my_user;
 ```
 
 也可以在任意上层级别撤销（撤销该 COLUMN 的所有子权限）：
@@ -405,9 +405,9 @@ REVOKE ALTER COLUMN ON my_db.my_table FROM my_user
 
 Query id: b882ba1b-90fb-45b9-b10f-3cda251e2ccc
 
-完成。
+Ok.
 
-0 行。耗时：0.002 秒。
+0 rows in set. Elapsed: 0.002 sec.
 ```
 
 ```sql
@@ -417,11 +417,11 @@ SHOW GRANTS FOR my_user;
 ```response
 SHOW GRANTS FOR my_user
 
-查询 ID: e7d341de-de65-490b-852c-fa8bb8991174
+Query id: e7d341de-de65-490b-852c-fa8bb8991174
 
-完成。
+Ok.
 
-结果集中有 0 行。耗时：0.003 秒。
+0 rows in set. Elapsed: 0.003 sec.
 ```
 
 **补充说明**
@@ -432,7 +432,7 @@ SHOW GRANTS FOR my_user
    下面是一个示例：
 
 ```sql
-授予 my_alter_admin 在 my_db.my_table 上的 SELECT 和 ALTER COLUMN 权限，并具有授权选项；
+GRANT SELECT, ALTER COLUMN ON my_db.my_table TO my_alter_admin WITH GRANT OPTION;
 ```
 
 现在用户可以授予或撤销 `ALTER COLUMN` 及其所有子权限。
@@ -442,7 +442,7 @@ SHOW GRANTS FOR my_user
 1. 授予 `SELECT` 权限
 
 ```sql
- 授予 my_user 在 my_db.my_table 上的 SELECT 权限；
+ GRANT SELECT ON my_db.my_table TO my_user;
 ```
 
 2. 为该用户授予 ADD COLUMN 权限
@@ -454,7 +454,7 @@ GRANT ADD COLUMN ON my_db.my_table TO my_user;
 3. 使用受限权限用户登录
 
 ```bash
-clickhouse-client --user my_user --password password --port 9000 --host <你的 ClickHouse 主机地址>
+clickhouse-client --user my_user --password password --port 9000 --host <your_clickhouse_host>
 ```
 
 4. 测试添加一列
@@ -481,7 +481,13 @@ DESCRIBE my_db.my_table;
 ```response
 DESCRIBE TABLE my_db.my_table
 
-查询 ID: ab9cb2d0-5b1a-42e1-bc9c-c7ff351cb272
+Query id: ab9cb2d0-5b1a-42e1-bc9c-c7ff351cb272
+
+┌─name────┬─type───┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
+│ id      │ UInt64 │              │                    │         │                  │                │
+│ column1 │ String │              │                    │         │                  │                │
+│ column2 │ String │              │                    │         │                  │                │
+└─────────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
 ┌─名称────┬─类型───┬─默认&#95;类型─┬─默认&#95;表达式─┬─注释─┬─编解码&#95;表达式─┬─TTL&#95;表达式─┐
@@ -490,13 +496,20 @@ DESCRIBE TABLE my_db.my_table
 │ column2 │ String │              │                    │         │                  │                │
 └─────────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 
-````
-
-4. 测试删除列
+````sql
+ALTER TABLE my_db.my_table DROP COLUMN column2;
 ```sql
 ALTER TABLE my_db.my_table DROP COLUMN column2;
-````
+````response
+ALTER TABLE my_db.my_table
+    DROP COLUMN column2
 
+Query id: 50ad5f6b-f64b-4c96-8f5f-ace87cea6c47
+
+0 rows in set. Elapsed: 0.004 sec.
+
+Received exception from server (version 22.5.1):
+Code: 497. DB::Exception: Received from chnode1.marsnet.local:9440. DB::Exception: my_user: Not enough privileges. To execute this query it's necessary to have grant ALTER DROP COLUMN(column2) ON my_db.my_table. (ACCESS_DENIED)
 ```response
 ALTER TABLE my_db.my_table
     DROP COLUMN column2
@@ -507,40 +520,43 @@ Query id: 50ad5f6b-f64b-4c96-8f5f-ace87cea6c47
 
 从服务器收到异常 (version 22.5.1):
 Code: 497. DB::Exception: Received from chnode1.marsnet.local:9440. DB::Exception: my_user: 权限不足。执行此查询需要授予 ALTER DROP COLUMN(column2) ON my_db.my_table 权限。(ACCESS_DENIED)
-```
-
-5. 通过授予权限测试 ALTER ADMIN
-
 ```sql
 GRANT SELECT, ALTER COLUMN ON my_db.my_table TO my_alter_admin WITH GRANT OPTION;
-```
-
-6. 使用 alter admin 用户登录
-
+```sql
+GRANT SELECT, ALTER COLUMN ON my_db.my_table TO my_alter_admin WITH GRANT OPTION;
 ```bash
 clickhouse-client --user my_alter_admin --password password --port 9000 --host <my_clickhouse_host>
-```
-
-7. 授予子权限
-
+```bash
+clickhouse-client --user my_alter_admin --password password --port 9000 --host <my_clickhouse_host>
+```sql
+GRANT ALTER ADD COLUMN ON my_db.my_table TO my_user;
 ```sql
 授予 my_user 在 my_db.my_table 上的 ALTER 和 ADD COLUMN 权限；
-```
-
 ```response
 GRANT ALTER ADD COLUMN ON my_db.my_table TO my_user
 
 Query id: 1c7622fa-9df1-4c54-9fc3-f984c716aeba
 
 Ok.
-```
+```response
+GRANT ALTER ADD COLUMN ON my_db.my_table TO my_user
 
-8. 测试尝试为 alter 管理员用户授予一个其自身不具备、且并非该管理员用户现有授权子权限的权限。
+Query id: 1c7622fa-9df1-4c54-9fc3-f984c716aeba
 
+Ok.
 ```sql
 GRANT ALTER UPDATE ON my_db.my_table TO my_user;
-```
+```sql
+GRANT ALTER UPDATE ON my_db.my_table TO my_user;
+```response
+GRANT ALTER UPDATE ON my_db.my_table TO my_user
 
+Query id: 191690dc-55a6-4625-8fee-abc3d14a5545
+
+0 rows in set. Elapsed: 0.004 sec.
+
+Received exception from server (version 22.5.1):
+Code: 497. DB::Exception: Received from chnode1.marsnet.local:9440. DB::Exception: my_alter_admin: Not enough privileges. To execute this query it's necessary to have grant ALTER UPDATE ON my_db.my_table WITH GRANT OPTION. (ACCESS_DENIED)
 ```response
 GRANT ALTER UPDATE ON my_db.my_table TO my_user
 

@@ -58,25 +58,25 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   このログフォーマット定義を `http` ブロックに追加します：
 
   ```nginx
-  http {
-      log_format json_combined escape=json
-      '{'
-        '"time_local":"$time_local",'
-        '"remote_addr":"$remote_addr",'
-        '"request_method":"$request_method",'
-        '"request_uri":"$request_uri",'
-        '"status":$status,'
-        '"body_bytes_sent":$body_bytes_sent,'
-        '"request_time":$request_time,'
-        '"upstream_response_time":"$upstream_response_time",'
-        '"http_referer":"$http_referer",'
-        '"http_user_agent":"$http_user_agent"'
-      '}';
+http {
+    log_format json_combined escape=json
+    '{'
+      '"time_local":"$time_local",'
+      '"remote_addr":"$remote_addr",'
+      '"request_method":"$request_method",'
+      '"request_uri":"$request_uri",'
+      '"status":$status,'
+      '"body_bytes_sent":$body_bytes_sent,'
+      '"request_time":$request_time,'
+      '"upstream_response_time":"$upstream_response_time",'
+      '"http_referer":"$http_referer",'
+      '"http_user_agent":"$http_user_agent"'
+    '}';
 
-      access_log /var/log/nginx/access.log json_combined;
-      error_log /var/log/nginx/error.log warn;
-  }
-  ```
+    access_log /var/log/nginx/access.log json_combined;
+    error_log /var/log/nginx/error.log warn;
+}
+```
 
   この変更を行った後、Nginxをリロードしてください。
 
@@ -87,34 +87,34 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   以下の設定で nginx-monitoring.yaml という名前のファイルを作成します：
 
   ```yaml
-  receivers:
-    filelog:
-      include:
-        - /var/log/nginx/access.log
-        - /var/log/nginx/error.log
-      start_at: end 
-      operators:
-        - type: json_parser
-          parse_from: body
-          parse_to: attributes
-        - type: time_parser
-          parse_from: attributes.time_local
-          layout: '%d/%b/%Y:%H:%M:%S %z'
-        - type: add
-          field: attributes.source
-          value: "nginx"
+receivers:
+  filelog:
+    include:
+      - /var/log/nginx/access.log
+      - /var/log/nginx/error.log
+    start_at: end 
+    operators:
+      - type: json_parser
+        parse_from: body
+        parse_to: attributes
+      - type: time_parser
+        parse_from: attributes.time_local
+        layout: '%d/%b/%Y:%H:%M:%S %z'
+      - type: add
+        field: attributes.source
+        value: "nginx"
 
-  service:
-    pipelines:
-      logs/nginx:
-        receivers: [filelog]
-        processors:
-          - memory_limiter
-          - transform
-          - batch
-        exporters:
-          - clickhouse
-  ```
+service:
+  pipelines:
+    logs/nginx:
+      receivers: [filelog]
+      processors:
+        - memory_limiter
+        - transform
+        - batch
+      exporters:
+        - clickhouse
+```
 
   この設定では:
 
@@ -144,30 +144,30 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   ClickStackのデプロイメント設定を更新します：
 
   ```yaml
-  services:
-    clickstack:
-      # ... existing configuration ...
-      environment:
-        - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
-        # ... other environment variables ...
-      volumes:
-        - ./nginx-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
-        - /var/log/nginx:/var/log/nginx:ro
-        # ... other volumes ...
-  ```
+services:
+  clickstack:
+    # ... existing configuration ...
+    environment:
+      - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
+      # ... other environment variables ...
+    volumes:
+      - ./nginx-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
+      - /var/log/nginx:/var/log/nginx:ro
+      # ... other volumes ...
+```
 
   ##### オプション2：Docker Run（オールインワンイメージ）
 
   docker runでオールインワンイメージを使用する場合：
 
   ```bash
-  docker run --name clickstack \
-    -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-    -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
-    -v "$(pwd)/nginx-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-    -v /var/log/nginx:/var/log/nginx:ro \
-    clickhouse/clickstack-all-in-one:latest
-  ```
+docker run --name clickstack \
+  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+  -v "$(pwd)/nginx-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+  -v /var/log/nginx:/var/log/nginx:ro \
+  clickhouse/clickstack-all-in-one:latest
+```
 
   :::note
   ClickStackコレクターがnginxログファイルを読み取るための適切な権限を持っていることを確認してください。本番環境では、読み取り専用マウント（:ro）を使用し、最小権限の原則に従ってください。
@@ -196,7 +196,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 #### サンプルデータセットのダウンロード {#download-sample}
 
 ```bash
-# ログをダウンロード
+# Download the logs
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/access.log
 ```
 
@@ -216,7 +216,7 @@ receivers:
   filelog:
     include:
       - /tmp/nginx-demo/access.log
-    start_at: beginning  # デモデータでは先頭から読み取る
+    start_at: beginning  # Read from beginning for demo data
     operators:
       - type: json_parser
         parse_from: body
@@ -309,7 +309,7 @@ ClickStack で nginx の監視を始めやすくするために、Nginx Logs 用
 * 環境変数 CUSTOM&#95;OTELCOL&#95;CONFIG&#95;FILE が正しく設定されているか確認する
 
 ```bash
-docker exec <コンテナ名> printenv CUSTOM_OTELCOL_CONFIG_FILE
+docker exec <container-name> printenv CUSTOM_OTELCOL_CONFIG_FILE
 ```
 
 * カスタム設定ファイルが /etc/otelcol-contrib/custom.config.yaml にマウントされていることを確認する

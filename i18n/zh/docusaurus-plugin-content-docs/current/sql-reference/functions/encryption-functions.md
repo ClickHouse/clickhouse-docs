@@ -122,7 +122,7 @@ SELECT hex(HMAC('sha256', 'The quick brown fox jumps over the lazy dog', 'secret
 └──────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**不同哈希算法**
+**Different hash algorithms**
 
 ```sql title=Query
 SELECT
@@ -137,7 +137,7 @@ SELECT
 └──────────────────────────────────┴──────────────────────────────────────────┴──────────────────────────────────────────────────────────────────┘
 ```
 
-**大小写不敏感模式**
+**Case-insensitive mode**
 
 ```sql title=Query
 SELECT
@@ -151,42 +151,47 @@ SELECT
 └─────────────┴───────────┘
 ```
 
-## aes&#95;decrypt&#95;mysql {#aes&#95;decrypt&#95;mysql}
 
-引入自：v20.12
 
-解密由 MySQL 的 [`AES_ENCRYPT`](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_aes-encrypt) 函数加密的数据。
+## aes_decrypt_mysql {#aes_decrypt_mysql}
 
-对于相同的输入，会生成与 [`decrypt`](#decrypt) 相同的明文。
-当 `key` 或 `iv` 长于正常长度时，`aes_decrypt_mysql` 的行为与 MySQL 的 `aes_decrypt` 一致，即对 `key` 进行“折叠”处理，并忽略 `iv` 超出的位。
+Introduced in: v20.12
 
-支持以下解密模式：
 
-* aes-128-ecb, aes-192-ecb, aes-256-ecb
-* aes-128-cbc, aes-192-cbc, aes-256-cbc
-* aes-128-cfb128
-* aes-128-ofb, aes-192-ofb, aes-256-ofb
+Decrypts data encrypted by MySQL's [`AES_ENCRYPT`](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_aes-encrypt) function.
 
-**语法**
+Produces the same plaintext as [`decrypt`](#decrypt) for the same inputs.
+When `key` or `iv` are longer than they should normally be, `aes_decrypt_mysql` will stick to what MySQL's `aes_decrypt` does which is to 'fold' `key` and ignore the excess bits of `IV`.
+
+Supports the following decryption modes:
+
+- aes-128-ecb, aes-192-ecb, aes-256-ecb
+- aes-128-cbc, aes-192-cbc, aes-256-cbc
+- aes-128-cfb128
+- aes-128-ofb, aes-192-ofb, aes-256-ofb
+        
+
+**Syntax**
 
 ```sql
 aes_decrypt_mysql(mode, ciphertext, key[, iv])
 ```
 
-**参数**
+**Arguments**
 
-* `mode` — 解密模式。[`String`](/sql-reference/data-types/string)
-* `ciphertext` — 待解密的密文。[`String`](/sql-reference/data-types/string)
-* `key` — 解密密钥。[`String`](/sql-reference/data-types/string)
-* `iv` — 可选。初始化向量。[`String`](/sql-reference/data-types/string)
+- `mode` — Decryption mode. [`String`](/sql-reference/data-types/string)
+- `ciphertext` — Encrypted text that needs to be decrypted. [`String`](/sql-reference/data-types/string)
+- `key` — Decryption key. [`String`](/sql-reference/data-types/string)
+- `iv` — Optional. Initialization vector. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回解密后的字符串。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns the decrypted String. [`String`](/sql-reference/data-types/string)
 
-**解密 MySQL 数据**
+**Examples**
+
+**Decrypt MySQL data**
 
 ```sql title=Query
 -- 让我们解密之前用 MySQL 加密的数据：
@@ -210,41 +215,46 @@ SELECT aes_decrypt_mysql('aes-256-ofb', unhex('24E9E4966469'), '1234567891012131
 └───────────┘
 ```
 
-## aes&#95;encrypt&#95;mysql {#aes&#95;encrypt&#95;mysql}
 
-引入版本：v20.12
 
-以与 MySQL 的 `AES_ENCRYPT` 函数相同的方式加密文本。
-生成的密文可以使用 MySQL 的 `AES_DECRYPT` 函数解密。
-对相同输入，生成的密文与 `encrypt` 函数相同。
-当 `key` 或 `iv` 的长度超过通常的限制时，`aes_encrypt_mysql` 会遵循 MySQL `aes_encrypt` 的行为，即“折叠”`key` 并忽略 `iv` 的多余位。
+## aes_encrypt_mysql {#aes_encrypt_mysql}
 
-支持的加密模式为：
+Introduced in: v20.12
 
-* aes-128-ecb, aes-192-ecb, aes-256-ecb
-* aes-128-cbc, aes-192-cbc, aes-256-cbc
-* aes-128-ofb, aes-192-ofb, aes-256-ofb
 
-**语法**
+Encrypts text the same way as MySQL's `AES_ENCRYPT` function does.
+The resulting ciphertext can be decrypted with MySQL's `AES_DECRYPT` function.
+Produces the same ciphertext as the `encrypt` function for the same inputs.
+When `key` or `iv` are longer than they should normally be, `aes_encrypt_mysql` will stick to what MySQL's `aes_encrypt` does which is to 'fold' `key` and ignore the excess bits of `iv`.
+
+The supported encryption modes are:
+
+- aes-128-ecb, aes-192-ecb, aes-256-ecb
+- aes-128-cbc, aes-192-cbc, aes-256-cbc
+- aes-128-ofb, aes-192-ofb, aes-256-ofb
+        
+
+**Syntax**
 
 ```sql
 aes_encrypt_mysql(mode, plaintext, key[, iv])
 ```
 
-**参数**
+**Arguments**
 
-* `mode` — 加密模式。[`String`](/sql-reference/data-types/string)
-* `plaintext` — 需要加密的文本。[`String`](/sql-reference/data-types/string)
-* `key` — 加密密钥。如果密钥长度大于 `mode` 所需长度，将执行 MySQL 特有的密钥折叠规则。[`String`](/sql-reference/data-types/string)
-* `iv` — 可选。初始化向量。仅前 16 个字节生效。[`String`](/sql-reference/data-types/string)
+- `mode` — Encryption mode. [`String`](/sql-reference/data-types/string)
+- `plaintext` — Text that should be encrypted. [`String`](/sql-reference/data-types/string)
+- `key` — Encryption key. If the key is longer than required by `mode`, MySQL-specific key folding is performed. [`String`](/sql-reference/data-types/string)
+- `iv` — Optional. Initialization vector. Only the first 16 bytes are taken into account. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-密文（二进制字符串）。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Ciphertext binary string. [`String`](/sql-reference/data-types/string)
 
-**相同输入比较**
+**Examples**
+
+**Equal input comparison**
 
 ```sql title=Query
 -- 给定相同的输入，encrypt 和 aes_encrypt_mysql 生成相同的密文：
@@ -257,7 +267,7 @@ SELECT encrypt('aes-256-ofb', 'Secret', '12345678910121314151617181920212', 'ivi
 └───────────────────┘
 ```
 
-**密钥过长导致加密失败**
+**Encrypt fails with long key**
 
 ```sql title=Query
 -- 但当密钥或初始化向量长度超过预期时,encrypt 会失败:
@@ -269,7 +279,7 @@ SELECT encrypt('aes-256-ofb', 'Secret', '123456789101213141516171819202122', 'iv
 代码：36. DB::Exception: 从 localhost:9000 收到。DB::Exception: 密钥大小无效：期望 32，实际 33：处理 encrypt('aes-256-ofb', 'Secret', '123456789101213141516171819202122', 'iviviviviviviviv123') 时。
 ```
 
-**MySQL 兼容性**
+**MySQL compatibility**
 
 ```sql title=Query
 -- aes_encrypt_mysql 生成与 MySQL 兼容的输出：
@@ -282,7 +292,7 @@ SELECT hex(aes_encrypt_mysql('aes-256-ofb', 'Secret', '1234567891012131415161718
 └──────────────┘
 ```
 
-**使用更长的 IV 会得到相同的结果**
+**Longer IV produces the same result**
 
 ```sql title=Query
 -- 注意，即使提供更长的 IV 也会产生相同的结果
@@ -295,40 +305,45 @@ SELECT hex(aes_encrypt_mysql('aes-256-ofb', 'Secret', '1234567891012131415161718
 └──────────────┘
 ```
 
+
+
 ## decrypt {#decrypt}
 
-自 v20.12 引入
+Introduced in: v20.12
 
-此函数使用以下模式，对经 AES 加密的二进制字符串进行解密：
 
-* aes-128-ecb, aes-192-ecb, aes-256-ecb
-* aes-128-cbc, aes-192-cbc, aes-256-cbc
-* aes-128-ofb, aes-192-ofb, aes-256-ofb
-* aes-128-gcm, aes-192-gcm, aes-256-gcm
-* aes-128-ctr, aes-192-ctr, aes-256-ctr
-* aes-128-cfb, aes-128-cfb1, aes-128-cfb8
+This function decrypts an AES-encrypted binary string using the following modes:
 
-**语法**
+- aes-128-ecb, aes-192-ecb, aes-256-ecb
+- aes-128-cbc, aes-192-cbc, aes-256-cbc
+- aes-128-ofb, aes-192-ofb, aes-256-ofb
+- aes-128-gcm, aes-192-gcm, aes-256-gcm
+- aes-128-ctr, aes-192-ctr, aes-256-ctr
+- aes-128-cfb, aes-128-cfb1, aes-128-cfb8
+        
+
+**Syntax**
 
 ```sql
 decrypt(mode, ciphertext, key[, iv, aad])
 ```
 
-**参数**
+**Arguments**
 
-* `mode` — 解密模式。[`String`](/sql-reference/data-types/string)
-* `ciphertext` — 需要解密的密文。[`String`](/sql-reference/data-types/string)
-* `key` — 解密密钥。[`String`](/sql-reference/data-types/string)
-* `iv` — 初始化向量。对于 `-gcm` 模式为必需，其他模式可选。[`String`](/sql-reference/data-types/string)
-* `aad` — 附加认证数据。如果该值不正确，将无法解密。仅在 `-gcm` 模式下有效，其他模式会抛出异常。[`String`](/sql-reference/data-types/string)
+- `mode` — Decryption mode. [`String`](/sql-reference/data-types/string)
+- `ciphertext` — Encrypted text that should be decrypted. [`String`](/sql-reference/data-types/string)
+- `key` — Decryption key. [`String`](/sql-reference/data-types/string)
+- `iv` — Initialization vector. Required for `-gcm` modes, optional for others. [`String`](/sql-reference/data-types/string)
+- `aad` — Additional authenticated data. Won't decrypt if this value is incorrect. Works only in `-gcm` modes, for others throws an exception. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回解密后的明文。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns decrypted plaintext. [`String`](/sql-reference/data-types/string)
 
-**正确解密已加密的数据**
+**Examples**
+
+**Correctly decrypting encrypted data**
 
 ```sql title=Query
 -- 重用 encrypt 函数示例中的表
@@ -348,7 +363,7 @@ SELECT comment, hex(secret) FROM encryption_test;
 └──────────────────────────────────┴──────────────────────────────────┘
 ```
 
-**错误解密加密数据**
+**Incorrectly decrypting encrypted data**
 
 ```sql title=Query
 SELECT comment, decrypt('aes-256-cfb128', secret, '12345678910121314151617181920212') AS plaintext FROM encryption_test
@@ -371,40 +386,45 @@ SELECT comment, decrypt('aes-256-cfb128', secret, '12345678910121314151617181920
 └──────────────────────────────────┴───────────┘
 ```
 
+
+
 ## encrypt {#encrypt}
 
-自 v20.12 引入
+Introduced in: v20.12
 
-使用 AES 按下列任一模式将明文加密为密文：
 
-* aes-128-ecb, aes-192-ecb, aes-256-ecb
-* aes-128-cbc, aes-192-cbc, aes-256-cbc
-* aes-128-ofb, aes-192-ofb, aes-256-ofb
-* aes-128-gcm, aes-192-gcm, aes-256-gcm
-* aes-128-ctr, aes-192-ctr, aes-256-ctr
-* aes-128-cfb, aes-128-cfb1, aes-128-cfb8
+Encrypts plaintext into ciphertext using AES in one of the following modes:
 
-**语法**
+- aes-128-ecb, aes-192-ecb, aes-256-ecb
+- aes-128-cbc, aes-192-cbc, aes-256-cbc
+- aes-128-ofb, aes-192-ofb, aes-256-ofb
+- aes-128-gcm, aes-192-gcm, aes-256-gcm
+- aes-128-ctr, aes-192-ctr, aes-256-ctr
+- aes-128-cfb, aes-128-cfb1, aes-128-cfb8
+        
+
+**Syntax**
 
 ```sql
 encrypt(mode, plaintext, key[, iv, aad])
 ```
 
-**参数**
+**Arguments**
 
-* `mode` — 加密模式。[`String`](/sql-reference/data-types/string)
-* `plaintext` — 需要加密的文本。[`String`](/sql-reference/data-types/string)
-* `key` — 加密密钥。[`String`](/sql-reference/data-types/string)
-* `iv` — 初始化向量。在 `-gcm` 模式下必需，在其他模式下可选。[`String`](/sql-reference/data-types/string)
-* `aad` — 附加认证数据。它本身不会被加密，但会影响解密。仅在 `-gcm` 模式下生效，在其他模式下会抛出异常。[`String`](/sql-reference/data-types/string)
+- `mode` — Encryption mode. [`String`](/sql-reference/data-types/string)
+- `plaintext` — Text that should be encrypted. [`String`](/sql-reference/data-types/string)
+- `key` — Encryption key. [`String`](/sql-reference/data-types/string)
+- `iv` — Initialization vector. Required for `-gcm` modes, optional for others. [`String`](/sql-reference/data-types/string)
+- `aad` — Additional authenticated data. It isn't encrypted, but it affects decryption. Works only in `-gcm` modes, for others it throws an exception. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回二进制字符串形式的密文。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns binary string ciphertext. [`String`](/sql-reference/data-types/string)
 
-**加密示例**
+**Examples**
+
+**Example encryption**
 
 ```sql title=Query
 CREATE TABLE encryption_test
@@ -432,7 +452,7 @@ SELECT comment, hex(secret) FROM encryption_test;
 └──────────────────────────────────┴──────────────────────────────────┘
 ```
 
-**GCM 模式示例**
+**Example with GCM mode**
 
 ```sql title=Query
 INSERT INTO encryption_test VALUES
@@ -450,33 +470,38 @@ SELECT comment, hex(secret) FROM encryption_test WHERE comment LIKE '%gcm%';
 └──────────────────────┴──────────────────────────────────────────────┘
 ```
 
+
+
 ## tryDecrypt {#tryDecrypt}
 
-自 v22.10 起引入
+Introduced in: v22.10
 
-类似于 `decrypt` 函数，但在因使用错误密钥而解密失败时返回 `NULL`。
 
-**语法**
+Similar to the `decrypt` function, but returns `NULL` if decryption fails when using the wrong key.
+        
+
+**Syntax**
 
 ```sql
 tryDecrypt(mode, ciphertext, key[, iv, aad])
 ```
 
-**参数**
+**Arguments**
 
-* `mode` — 解密模式。[`String`](/sql-reference/data-types/string)
-* `ciphertext` — 需要解密的密文。[`String`](/sql-reference/data-types/string)
-* `key` — 解密密钥。[`String`](/sql-reference/data-types/string)
-* `iv` — 可选。初始化向量。在 `-gcm` 模式下是必需的，在其他模式下可选。[`String`](/sql-reference/data-types/string)
-* `aad` — 可选。附加认证数据。如果该值不正确，则无法解密。仅适用于 `-gcm` 模式，在其他模式下会抛出异常。[`String`](/sql-reference/data-types/string)
+- `mode` — Decryption mode. [`String`](/sql-reference/data-types/string)
+- `ciphertext` — Encrypted text that should be decrypted. [`String`](/sql-reference/data-types/string)
+- `key` — Decryption key. [`String`](/sql-reference/data-types/string)
+- `iv` — Optional. Initialization vector. Required for `-gcm` modes, optional for other modes. [`String`](/sql-reference/data-types/string)
+- `aad` — Optional. Additional authenticated data. Won't decrypt if this value is incorrect. Works only in `-gcm` modes, for other modes throws an exception. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回解密后的 String，如果解密失败则返回 `NULL`。[`Nullable(String)`](/sql-reference/data-types/nullable)
+**Returned value**
 
-**示例**
+Returns the decrypted String, or `NULL` if decryption fails. [`Nullable(String)`](/sql-reference/data-types/nullable)
 
-**创建表并插入数据**
+**Examples**
+
+**Create table and insert data**
 
 ```sql title=Query
 -- 创建一个表，其中 user_id 是唯一用户标识符，encrypted 是加密字符串字段，iv 是解密/加密的初始向量。

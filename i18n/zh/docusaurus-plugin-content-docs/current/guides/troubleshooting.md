@@ -36,18 +36,18 @@ sudo apt-get install gnupg
 完整的警告消息可能如下所示之一：
 
 ```shell
-N: 跳过获取已配置的文件 'main/binary-i386/Packages',因为软件源 'https://packages.clickhouse.com/deb stable InRelease' 不支持 'i386' 架构
+N: Skipping acquire of configured file 'main/binary-i386/Packages' as repository 'https://packages.clickhouse.com/deb stable InRelease' doesn't support architecture 'i386'
 ```
 
 ```shell
-E: 无法获取 https://packages.clickhouse.com/deb/dists/stable/main/binary-amd64/Packages.gz  文件大小不符合预期 (30451 != 28154)。镜像同步正在进行中？
+E: Failed to fetch https://packages.clickhouse.com/deb/dists/stable/main/binary-amd64/Packages.gz  File has unexpected size (30451 != 28154). Mirror sync in progress?
 ```
 
 ```shell
-E: 软件源 'https://packages.clickhouse.com/deb stable InRelease' 的 'Origin' 值已从 'Artifactory' 变更为 'ClickHouse'
-E: 软件源 'https://packages.clickhouse.com/deb stable InRelease' 的 'Label' 值已从 'Artifactory' 变更为 'ClickHouse'
-N: 软件源 'https://packages.clickhouse.com/deb stable InRelease' 的 'Suite' 值已从 'stable' 变更为 ''
-N: 必须明确接受此变更后才能应用该软件源的更新。详情请参阅 apt-secure(8) 手册页。
+E: Repository 'https://packages.clickhouse.com/deb stable InRelease' changed its 'Origin' value from 'Artifactory' to 'ClickHouse'
+E: Repository 'https://packages.clickhouse.com/deb stable InRelease' changed its 'Label' value from 'Artifactory' to 'ClickHouse'
+N: Repository 'https://packages.clickhouse.com/deb stable InRelease' changed its 'Suite' value from 'stable' to ''
+N: This must be accepted explicitly before updates for this repository can be applied. See apt-secure(8) manpage for details.
 ```
 
 ```shell
@@ -109,29 +109,29 @@ sudo service clickhouse-server start
 如果 `clickhouse-server` 因配置错误导致启动失败，你应当会看到带有错误描述的 `<Error>` 日志行。例如：
 
 ```plaintext
-2019.01.11 15:23:25.549505 [ 45 ] {} <Error> ExternalDictionaries: 重新加载外部字典 'event2id' 失败：Poco::Exception. Code: 1000, e.code() = 111, e.displayText() = Connection refused, e.what() = Connection refused
+2019.01.11 15:23:25.549505 [ 45 ] {} <Error> ExternalDictionaries: Failed reloading 'event2id' external dictionary: Poco::Exception. Code: 1000, e.code() = 111, e.displayText() = Connection refused, e.what() = Connection refused
 ```
 
 如果你在文件末尾没有看到错误，请从该字符串开始检查整个文件：
 
 ```plaintext
-<Information> Application: 正在启动。
+<Information> Application: starting up.
 ```
 
 如果您在该服务器上尝试启动第二个 `clickhouse-server` 实例，会看到如下日志：
 
 ```plaintext
-2019.01.11 15:25:11.151730 [ 1 ] {} <Information> : 正在启动 ClickHouse 19.1.0,修订版 54413
-2019.01.11 15:25:11.154578 [ 1 ] {} <Information> Application: 正在启动
-2019.01.11 15:25:11.156361 [ 1 ] {} <Information> StatusFile: 状态文件 ./status 已存在 - 非正常重启。内容:
+2019.01.11 15:25:11.151730 [ 1 ] {} <Information> : Starting ClickHouse 19.1.0 with revision 54413
+2019.01.11 15:25:11.154578 [ 1 ] {} <Information> Application: starting up
+2019.01.11 15:25:11.156361 [ 1 ] {} <Information> StatusFile: Status file ./status already exists - unclean restart. Contents:
 PID: 8510
-启动于: 2019-01-11 15:24:23
-修订版: 54413
+Started at: 2019-01-11 15:24:23
+Revision: 54413
 
-2019.01.11 15:25:11.156673 [ 1 ] {} <Error> Application: DB::Exception: 无法锁定文件 ./status。同一目录中已有另一个服务器实例正在运行。
-2019.01.11 15:25:11.156682 [ 1 ] {} <Information> Application: 正在关闭
-2019.01.11 15:25:11.156686 [ 1 ] {} <Debug> Application: 正在取消初始化子系统: 日志子系统
-2019.01.11 15:25:11.156716 [ 2 ] {} <Information> BaseDaemon: 停止 SignalListener 线程
+2019.01.11 15:25:11.156673 [ 1 ] {} <Error> Application: DB::Exception: Cannot lock file ./status. Another server instance in same directory is already running.
+2019.01.11 15:25:11.156682 [ 1 ] {} <Information> Application: shutting down
+2019.01.11 15:25:11.156686 [ 1 ] {} <Debug> Application: Uninitializing subsystem: Logging Subsystem
+2019.01.11 15:25:11.156716 [ 2 ] {} <Information> BaseDaemon: Stop SignalListener thread
 ```
 
 #### 查看 system.d 日志 {#see-systemd-logs}

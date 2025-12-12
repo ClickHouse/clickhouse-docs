@@ -16,7 +16,7 @@ doc_type: 'reference'
 ## Синтаксис {#syntax}
 
 ```sql
-ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Комментарий'
+ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 ```
 
 ## Примеры {#examples}
@@ -30,14 +30,14 @@ CREATE TABLE table_with_comment
     `s` String
 )
 ENGINE = Memory()
-COMMENT 'Временная таблица';
+COMMENT 'The temporary table';
 ```
 
 Чтобы изменить комментарий к таблице:
 
 ```sql
 ALTER TABLE table_with_comment 
-MODIFY COMMENT 'новый комментарий к таблице';
+MODIFY COMMENT 'new comment on a table';
 ```
 
 Чтобы просмотреть обновлённый комментарий:
@@ -50,7 +50,7 @@ WHERE database = currentDatabase() AND name = 'table_with_comment';
 
 ```text title="Response"
 ┌─comment────────────────┐
-│ новый комментарий к таблице │
+│ new comment on a table │
 └────────────────────────┘
 ```
 

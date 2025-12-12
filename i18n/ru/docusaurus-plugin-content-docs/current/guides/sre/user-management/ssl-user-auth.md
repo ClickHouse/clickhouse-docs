@@ -85,7 +85,7 @@ import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_s
             </networks>
             <profile>default</profile>
             <access_management>1</access_management>
-            <!-- дополнительные параметры-->
+            <!-- additional options-->
         </cert_user>
     </users>
     ```

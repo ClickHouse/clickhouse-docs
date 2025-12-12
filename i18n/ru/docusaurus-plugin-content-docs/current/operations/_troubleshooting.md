@@ -24,23 +24,23 @@
 * Полные тексты предупреждений могут быть следующими:
 
 ```bash
-N: Пропущено получение настроенного файла 'main/binary-i386/Packages', так как репозиторий 'https://packages.clickhouse.com/deb stable InRelease' не поддерживает архитектуру 'i386'
+N: Skipping acquire of configured file 'main/binary-i386/Packages' as repository 'https://packages.clickhouse.com/deb stable InRelease' doesn't support architecture 'i386'
 ```
 
 ```bash
-E: Не удалось получить https://packages.clickhouse.com/deb/dists/stable/main/binary-amd64/Packages.gz  Файл имеет неожиданный размер (30451 != 28154). Идёт синхронизация зеркала?
+E: Failed to fetch https://packages.clickhouse.com/deb/dists/stable/main/binary-amd64/Packages.gz  File has unexpected size (30451 != 28154). Mirror sync in progress?
 ```
 
 ```text
-E: Репозиторий 'https://packages.clickhouse.com/deb stable InRelease' изменил значение параметра 'Origin' с 'Artifactory' на 'ClickHouse'
-E: Репозиторий 'https://packages.clickhouse.com/deb stable InRelease' изменил значение параметра 'Label' с 'Artifactory' на 'ClickHouse'
-N: Репозиторий 'https://packages.clickhouse.com/deb stable InRelease' изменил значение параметра 'Suite' с 'stable' на ''
-N: Это изменение должно быть явно подтверждено, прежде чем можно будет применять обновления для этого репозитория. Подробности см. в руководстве apt-secure(8).
+E: Repository 'https://packages.clickhouse.com/deb stable InRelease' changed its 'Origin' value from 'Artifactory' to 'ClickHouse'
+E: Repository 'https://packages.clickhouse.com/deb stable InRelease' changed its 'Label' value from 'Artifactory' to 'ClickHouse'
+N: Repository 'https://packages.clickhouse.com/deb stable InRelease' changed its 'Suite' value from 'stable' to ''
+N: This must be accepted explicitly before updates for this repository can be applied. See apt-secure(8) manpage for details.
 ```
 
 ```bash
 Err:11 https://packages.clickhouse.com/deb stable InRelease
-  400  Некорректный запрос [IP: 172.66.40.249 443]
+  400  Bad Request [IP: 172.66.40.249 443]
 ```
 
 Чтобы устранить описанную выше проблему, используйте следующий скрипт:
@@ -71,7 +71,22 @@ sudo rm -f /etc/yum.repos.d/clickhouse.repo
 ```bash
 $ docker run -it clickhouse/clickhouse-server
 ........
-Poco::Exception. Code: 1000, e.code() = 0, системное исключение: невозможно создать поток, трассировка стека (при копировании этого сообщения всегда включайте строки, приведённые ниже):
+Poco::Exception. Code: 1000, e.code() = 0, System exception: cannot start thread, Stack trace (when copying this message, always include the lines below):
+
+0. Poco::ThreadImpl::startImpl(Poco::SharedPtr<Poco::Runnable, Poco::ReferenceCounter, Poco::ReleasePolicy<Poco::Runnable>>) @ 0x00000000157c7b34
+1. Poco::Thread::start(Poco::Runnable&) @ 0x00000000157c8a0e
+2. BaseDaemon::initializeTerminationAndSignalProcessing() @ 0x000000000d267a14
+3. BaseDaemon::initialize(Poco::Util::Application&) @ 0x000000000d2652cb
+4. DB::Server::initialize(Poco::Util::Application&) @ 0x000000000d128b38
+5. Poco::Util::Application::run() @ 0x000000001581cfda
+6. DB::Server::run() @ 0x000000000d1288f0
+7. Poco::Util::ServerApplication::run(int, char**) @ 0x0000000015825e27
+8. mainEntryClickHouseServer(int, char**) @ 0x000000000d125b38
+9. main @ 0x0000000007ea4eee
+10. ? @ 0x00007f67ff946d90
+11. ? @ 0x00007f67ff946e40
+12. _start @ 0x00000000062e802e
+ (version 24.10.1.2812 (official build))
 ```
 
 0. Poco::ThreadImpl::startImpl(Poco::SharedPtr<Poco::Runnable, Poco::ReferenceCounter, Poco::ReleasePolicy<Poco::Runnable>>) @ 0x00000000157c7b34
@@ -89,10 +104,8 @@ Poco::Exception. Code: 1000, e.code() = 0, системное исключени
 12. \_start @ 0x00000000062e802e
     (version 24.10.1.2812 (official build))
 
-```
-
-Причина — устаревший демон Docker версии ниже `20.10.10`. Исправить это можно либо обновив Docker, либо запустив `docker run [--privileged | --security-opt seccomp=unconfined]`. Второй вариант несет риски для безопасности.
-
+```bash
+$ sudo service clickhouse-server status
 ```
 
 ## Подключение к серверу {#troubleshooting-accepts-no-connections}
@@ -109,13 +122,13 @@ Poco::Exception. Code: 1000, e.code() = 0, системное исключени
 Команда:
 
 ```bash
-$ sudo service clickhouse-server status
+$ sudo service clickhouse-server start
 ```
 
 Если сервер не запущен, запустите его командой:
 
-```bash
-$ sudo service clickhouse-server start
+```text
+2019.01.11 15:23:25.549505 [ 45 ] {} <Error> ExternalDictionaries: Failed reloading 'event2id' external dictionary: Poco::Exception. Code: 1000, e.code() = 111, e.displayText() = Connection refused, e.what() = Connection refused
 ```
 
 **Проверьте логи**
@@ -130,29 +143,29 @@ $ sudo service clickhouse-server start
 Если запуск `clickhouse-server` завершился ошибкой конфигурации, вы увидите строку `<Error>` с описанием ошибки. Например:
 
 ```text
-2019.01.11 15:23:25.549505 [ 45 ] {} <Error> ExternalDictionaries: Не удалось перезагрузить внешний словарь 'event2id': Poco::Exception. Code: 1000, e.code() = 111, e.displayText() = Соединение отклонено, e.what() = Соединение отклонено
+<Information> Application: starting up.
 ```
 
 Если в конце файла нет сообщения об ошибке, просмотрите весь файл, начиная со строки:
 
 ```text
-<Information> Приложение: запускается.
+2019.01.11 15:25:11.151730 [ 1 ] {} <Information> : Starting ClickHouse 19.1.0 with revision 54413
+2019.01.11 15:25:11.154578 [ 1 ] {} <Information> Application: starting up
+2019.01.11 15:25:11.156361 [ 1 ] {} <Information> StatusFile: Status file ./status already exists - unclean restart. Contents:
+PID: 8510
+Started at: 2019-01-11 15:24:23
+Revision: 54413
+
+2019.01.11 15:25:11.156673 [ 1 ] {} <Error> Application: DB::Exception: Cannot lock file ./status. Another server instance in same directory is already running.
+2019.01.11 15:25:11.156682 [ 1 ] {} <Information> Application: shutting down
+2019.01.11 15:25:11.156686 [ 1 ] {} <Debug> Application: Uninitializing subsystem: Logging Subsystem
+2019.01.11 15:25:11.156716 [ 2 ] {} <Information> BaseDaemon: Stop SignalListener thread
 ```
 
 Если вы попытаетесь запустить второй экземпляр `clickhouse-server` на сервере, вы увидите в логе следующее:
 
-```text
-2019.01.11 15:25:11.151730 [ 1 ] {} <Information> : Запуск ClickHouse 19.1.0, ревизия 54413
-2019.01.11 15:25:11.154578 [ 1 ] {} <Information> Приложение: запускается
-2019.01.11 15:25:11.156361 [ 1 ] {} <Information> StatusFile: файл состояния ./status уже существует — некорректный перезапуск. Содержимое:
-PID: 8510
-Запущен: 2019-01-11 15:24:23
-Ревизия: 54413
-
-2019.01.11 15:25:11.156673 [ 1 ] {} <Error> Приложение: DB::Exception: невозможно заблокировать файл ./status. Другой экземпляр сервера в этом же каталоге уже запущен.
-2019.01.11 15:25:11.156682 [ 1 ] {} <Information> Приложение: завершает работу
-2019.01.11 15:25:11.156686 [ 1 ] {} <Debug> Приложение: деинициализация подсистемы: подсистема журналирования
-2019.01.11 15:25:11.156716 [ 2 ] {} <Information> BaseDaemon: остановка потока SignalListener
+```bash
+$ sudo journalctl -u clickhouse-server
 ```
 
 **Просмотр логов systemd**
@@ -160,13 +173,14 @@ PID: 8510
 Если в логах `clickhouse-server` нет полезной информации или они отсутствуют вовсе, вы можете просмотреть логи `systemd` с помощью команды:
 
 ```bash
-$ sudo journalctl -u clickhouse-server
+$ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-server/config.xml
 ```
 
 **Запустите clickhouse-server в интерактивном режиме**
 
 ```bash
-$ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-server/config.xml
+$ curl 'http://localhost:8123/' --data-binary "SELECT a"
+Code: 47, e.displayText() = DB::Exception: Unknown identifier: a. Note that there are no tables (FROM clause) in your query, context: required_names: 'a' source_tables: table_aliases: private_aliases: column_aliases: public_columns: 'a' masked_columns: array_join_columns: source_columns: , e.what() = DB::Exception
 ```
 
 Эта команда запускает сервер как интерактивное приложение со стандартными параметрами скрипта автозапуска. В этом режиме `clickhouse-server` выводит все сообщения о событиях в консоль.

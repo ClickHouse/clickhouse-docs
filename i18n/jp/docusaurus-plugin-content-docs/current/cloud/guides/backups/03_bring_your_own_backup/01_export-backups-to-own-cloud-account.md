@@ -30,13 +30,13 @@ ClickHouse Cloud では、お客様のクラウドサービスプロバイダ (C
 
 ```text
   s3://<bucket_name>.s3.amazonaws.com/<directory>
-```
+  ```
 
 例：
 
 ```text
   s3://testchbackups.s3.amazonaws.com/backups/
-```
+  ```
 
 Where:
 

@@ -26,14 +26,14 @@ ClickHouse は JSON データの構造を自動的に推論できます。これ
   "id": "2101.11408",
   "submitter": "Daniel Lemire",
   "authors": "Daniel Lemire",
-  "title": "毎秒1ギガバイトでの数値のパース",
-  "comments": "ソフトウェアは https://github.com/fastfloat/fast_float および\n https://github.com/lemire/simple_fastfloat_benchmark/ で公開されています。",
+  "title": "Number Parsing at a Gigabyte per Second",
+  "comments": "Software at https://github.com/fastfloat/fast_float and\n https://github.com/lemire/simple_fastfloat_benchmark/",
   "journal-ref": "Software: Practice and Experience 51 (8), 2021",
   "doi": "10.1002/spe.2984",
   "report-no": null,
   "categories": "cs.DS cs.MS",
   "license": "http://creativecommons.org/licenses/by/4.0/",
-  "abstract": "ディスクやネットワークが毎秒ギガバイト単位のスループットを提供するなかで ....\n",
+  "abstract": "With disks and networks providing gigabytes per second ....\n",
   "versions": [
     {
       "created": "Mon, 11 Jan 2021 20:31:27 GMT",
@@ -142,7 +142,7 @@ LIMIT 1 BY year
 │ 2024 │ ATLAS Collaboration                        │ 120 │
 └──────┴────────────────────────────────────────────┴─────┘
 
-18行のセット。経過時間: 20.172秒。処理済み: 252万行、1.39 GB (12万4720行/秒、68.76 MB/秒)
+18 rows in set. Elapsed: 20.172 sec. Processed 2.52 million rows, 1.39 GB (124.72 thousand rows/s., 68.76 MB/s.)
 ```
 
 スキーマ推論を使用すると、スキーマを明示的に定義せずに JSON ファイルをクエリできるため、アドホックなデータ分析タスクを高速化できます。
@@ -232,7 +232,7 @@ INSERT INTO arxiv SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/arxiv/arxiv.json.gz')
 
 0 rows in set. Elapsed: 38.498 sec. Processed 2.52 million rows, 1.39 GB (65.35 thousand rows/s., 36.03 MB/s.)
-ピークメモリ使用量: 870.67 MiB.
+Peak memory usage: 870.67 MiB.
 ```
 
 他のデータソース（例: ファイル）からデータをロードする例については、[こちら](/sql-reference/statements/insert-into)を参照してください。
@@ -250,13 +250,13 @@ FORMAT PrettyJSONEachRow
   "submitter": "David Callan",
   "authors": "David Callan",
   "title": "A determinant of Stirling cycle numbers counts unlabeled acyclic",
-  "comments": "11ページ",
+  "comments": "11 pages",
   "journal-ref": "",
   "doi": "",
   "report-no": "",
   "categories": "math.CO",
   "license": "",
-  "abstract": "  Stirlingサイクル数の行列式が、ラベルなし非巡回単一ソースオートマトンを数えることを示す。",
+  "abstract": "  We show that a determinant of Stirling cycle numbers counts unlabeled acyclic\nsingle-source automata.",
   "versions": [
     {
       "created": "Sat, 31 Mar 2007 03:16:14 GMT",
@@ -272,7 +272,7 @@ FORMAT PrettyJSONEachRow
   ]
 }
 
-1行のセット。経過時間: 0.009秒。
+1 row in set. Elapsed: 0.009 sec.
 ```
 
 ## エラーの処理 {#handling-errors}
@@ -311,7 +311,7 @@ JSON が非常に動的で、固有のキーが多数存在し、同じキーに
 ```sql
 DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi_with_tags/sample_rows.json.gz')
 
--- 結果は簡潔さのため省略
+-- result omitted for brevity
 
 9 rows in set. Elapsed: 127.066 sec.
 ```
@@ -350,7 +350,7 @@ SETTINGS describe_compact_output = 1
 │ a    │ Nullable(String) │
 └──────┴──────────────────┘
 
-1 行が結果セットに含まれています。経過時間: 0.081 秒。
+1 row in set. Elapsed: 0.081 sec.
 ```
 
 :::note 型変換
@@ -370,16 +370,25 @@ SETTINGS describe_compact_output = 1
 DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/conflict_sample.json')
 
 Elapsed: 0.755 sec.
+
+Received exception from server (version 24.12.1):
+Code: 636. DB::Exception: Received from sql-clickhouse.clickhouse.com:9440. DB::Exception: The table structure cannot be extracted from a JSON format file. Error:
+Code: 53. DB::Exception: Automatically defined type Tuple(b Int64) for column 'a' in row 1 differs from type defined by previous rows: Int64. You can specify the type for this column using setting schema_inference_hints.
 ```
 
 サーバー（バージョン 24.12.1）から例外を受信しました:
 コード: 636. DB::Exception: sql-clickhouse.clickhouse.com:9440 から受信。DB::Exception: JSON 形式のファイルからテーブル構造を抽出できません。エラー:
 コード: 53. DB::Exception: 行 1 のカラム &#39;a&#39; に対して自動的に定義された型 Tuple(b Int64) が、前の行で定義されている型 Int64 と異なります。このカラムの型は、schema&#95;inference&#95;hints 設定を使用して指定できます。
 
-````
+````sql
+DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/conflict_sample.json', JSONAsObject)
+SETTINGS enable_json_type = 1, describe_compact_output = 1
 
-この場合、`JSONAsObject` は各行を 1 つの [`JSON`](/sql-reference/data-types/newjson) 型（同じカラムに複数の型が存在することを許容する型）として扱います。これは重要です:
+┌─name─┬─type─┐
+│ json │ JSON │
+└──────┴──────┘
 
+1 row in set. Elapsed: 0.010 sec.
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/conflict_sample.json', JSONAsObject)
 SETTINGS enable_json_type = 1, describe_compact_output = 1

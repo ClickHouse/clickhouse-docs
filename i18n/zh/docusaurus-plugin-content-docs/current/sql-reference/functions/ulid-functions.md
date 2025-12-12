@@ -55,29 +55,34 @@ SELECT ULIDStringToDateTime('01GNB2S2FGN2P93QPXDNB4EN2R')
 └────────────────────────────────────────────────────┘
 ```
 
+
+
 ## generateULID {#generateULID}
 
-自 v23.2 起引入。
+Introduced in: v23.2
 
-生成一个[通用唯一按字典序可排序标识符（ULID）](https://github.com/ulid/spec)。
 
-**语法**
+Generates a [Universally Unique Lexicographically Sortable Identifier (ULID)](https://github.com/ulid/spec).
+    
+
+**Syntax**
 
 ```sql
 generateULID([x])
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 可选。一个其结果为任意受支持数据类型的表达式。其结果值会被丢弃，但表达式本身可用于在一次查询中多次调用该函数时绕过[公共子表达式消除](/sql-reference/functions/overview#common-subexpression-elimination)。[`Any`](/sql-reference/data-types)
+- `x` — Optional. An expression resulting in any of the supported data types. The resulting value is discarded, but the expression itself if used for bypassing [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) if the function is called multiple times in one query. [`Any`](/sql-reference/data-types)
 
-**返回值**
 
-返回一个 ULID。[`FixedString(26)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**示例**
+Returns a ULID. [`FixedString(26)`](/sql-reference/data-types/fixedstring)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT generateULID()
@@ -89,7 +94,7 @@ SELECT generateULID()
 └────────────────────────────┘
 ```
 
-**在需要在同一行生成多个值时的用法示例**
+**Usage example if it is needed to generate multiple values in one row**
 
 ```sql title=Query
 SELECT generateULID(1), generateULID(2)

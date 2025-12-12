@@ -94,12 +94,12 @@ doc_type: 'reference'
 ```xml
 <protocols>
 
-  <!-- модуль http -->
+  <!-- http module -->
   <plain_http>
     <type>http</type>
   </plain_http>
 
-  <!-- модуль https, настроенный как TLS-слой поверх модуля plain_http -->
+  <!-- https module configured as a tls layer on top of plain_http module -->
   <https>
     <type>tls</type>
     <impl>plain_http</impl>

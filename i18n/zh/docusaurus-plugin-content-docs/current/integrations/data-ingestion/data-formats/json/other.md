@@ -40,10 +40,10 @@ ENGINE = MergeTree
 ORDER BY username
 
 INSERT INTO people FORMAT JSONEachRow
-{"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"面向分析的实时数据仓库","labels":{"type":"数据库系统","founded":"2021"}},"dob":"2007-03-31","tags":{"hobby":"数据库","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
+{"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021"}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
 
-完成。
-1 行记录。耗时：0.002 秒。
+Ok.
+1 row in set. Elapsed: 0.002 sec.
 ```
 
 我们可以查询 `tags` 列，可以看到 JSON 已作为字符串被插入：
@@ -56,7 +56,7 @@ FROM people
 │ {"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}} │
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 
-返回 1 行。用时:0.001 秒。
+1 row in set. Elapsed: 0.001 sec.
 ```
 
 [`JSONExtract`](/sql-reference/functions/json-functions#jsonextract-functions) 函数可用于从该 JSON 数据中提取值。请看下面这个简单示例：
@@ -68,7 +68,7 @@ SELECT JSONExtractString(tags, 'holidays') AS holidays FROM people
 │ [{"year":2024,"location":"Azores, Portugal"}] │
 └───────────────────────────────────────────────┘
 
-返回 1 行。用时：0.002 秒。
+1 row in set. Elapsed: 0.002 sec.
 ```
 
 请注意，这些函数既需要对 `String` 列 `tags` 的引用，也需要指定要从 JSON 中提取的路径。对于嵌套路径，需要将函数嵌套使用，例如 `JSONExtractUInt(JSONExtractString(tags, 'car'), 'year')`，它会提取列 `tags.car.year` 的值。通过函数 [`JSON_QUERY`](/sql-reference/functions/json-functions#JSON_QUERY) 和 [`JSON_VALUE`](/sql-reference/functions/json-functions#JSON_VALUE) 可以简化对嵌套路径的提取。
@@ -94,7 +94,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/arxiv/arxiv.j
 假设我们希望按年份统计论文发表数量。对比如下两条查询语句：一条仅使用字符串，另一条使用该模式的[结构化版本](/integrations/data-formats/json/inference#creating-tables)：
 
 ```sql
--- 使用结构化架构
+-- using structured schema
 SELECT
     toYear(parseDateTimeBestEffort(versions.created[1])) AS published_year,
     count() AS c
@@ -116,9 +116,9 @@ LIMIT 10
 │           1996 │ 15872 │
 └────────────────┴───────┘
 
-返回 10 行。用时:0.264 秒。已处理 231 万行,153.57 MB(875 万行/秒,582.58 MB/秒)。
+10 rows in set. Elapsed: 0.264 sec. Processed 2.31 million rows, 153.57 MB (8.75 million rows/s., 582.58 MB/s.)
 
--- 使用非结构化字符串
+-- using unstructured String
 
 SELECT
     toYear(parseDateTimeBestEffort(JSON_VALUE(body, '$.versions[0].created'))) AS published_year,
@@ -141,8 +141,8 @@ LIMIT 10
 │           1996 │ 15872 │
 └────────────────┴───────┘
 
-返回 10 行。用时:1.281 秒。已处理 249 万行,4.22 GB(194 万行/秒,3.29 GB/秒)。
-峰值内存使用量:205.98 MiB。
+10 rows in set. Elapsed: 1.281 sec. Processed 2.49 million rows, 4.22 GB (1.94 million rows/s., 3.29 GB/s.)
+Peak memory usage: 205.98 MiB.
 ```
 
 请注意，这里使用了一个 XPath 表达式来按 method 字段过滤 JSON，即 `JSON_VALUE(body, '$.versions[0].created')`。
@@ -163,9 +163,9 @@ LIMIT 10
 * 字符串字面量之外不能出现特殊字符，包括空格。下面的示例是无效的，无法被解析。
 
   ```json
-  {"@timestamp": 893964617, "clientip": "40.135.0.0", "request": {"method": "GET",
-  "path": "/images/hm_bg.jpg", "version": "HTTP/1.0"}, "status": 200, "size": 24736}
-  ```
+    {"@timestamp": 893964617, "clientip": "40.135.0.0", "request": {"method": "GET",
+    "path": "/images/hm_bg.jpg", "version": "HTTP/1.0"}, "status": 200, "size": 24736}
+    ```
 
 而下面的示例将会被正确解析：
 
@@ -173,7 +173,7 @@ LIMIT 10
 {"@timestamp":893964617,"clientip":"40.135.0.0","request":{"method":"GET",
     "path":"/images/hm_bg.jpg","version":"HTTP/1.0"},"status":200,"size":24736}
 
-在某些情况下,如果性能至关重要且您的 JSON 满足上述要求,则可以使用这些函数。以下示例展示了使用 `simpleJSON*` 函数重写的早期查询:
+In some circumstances, where performance is critical and your JSON meets the above requirements, these may be appropriate. An example of the earlier query, re-written to use `simpleJSON*` functions, is shown below:
 
 ```sql
 SELECT
@@ -201,27 +201,27 @@ LIMIT 10
 峰值内存使用:211.49 MiB。
 ````
 
-上述查询使用 `simpleJSONExtractString` 来提取 `created` 键，利用了我们在发布日期上只需要第一个值这一点。在这种情况下，为了获得性能提升，可以接受 `simpleJSON*` 函数带来的局限性。
+The above query uses the `simpleJSONExtractString` to extract the `created` key, exploiting the fact we want the first value only for the published date. In this case, the limitations of the `simpleJSON*` functions are acceptable for the gain in performance.
 
-## 使用 Map 类型 {#using-map}
+## Using the Map type {#using-map}
 
-如果对象用于存储任意键，并且这些键大多为同一类型，可以考虑使用 `Map` 类型。理想情况下，唯一键的数量不应超过数百个。对于包含子对象的对象，在这些子对象的类型足够统一的前提下，也可以考虑使用 `Map` 类型。一般来说，我们推荐使用 `Map` 类型来存储标签和标记（labels / tags），例如日志数据中的 Kubernetes pod（容器组）标签。
+If the object is used to store arbitrary keys, mostly of one type, consider using the `Map` type. Ideally, the number of unique keys should not exceed several hundred. The `Map` type can also be considered for objects with sub-objects, provided the latter have uniformity in their types. Generally, we recommend the `Map` type be used for labels and tags, e.g. Kubernetes pod labels in log data.
 
-尽管 `Map` 提供了一种简单的方式来表示嵌套结构，但它也有一些显著的限制：
+Although `Map`s give a simple way to represent nested structures, they have some notable limitations:
 
-* 所有字段必须是相同的类型。
-* 由于字段本身并不存在为列，因此访问子列需要使用特殊的 map 语法。整个对象本身*就是*一列。
-* 访问某个子列会加载整个 `Map` 值，即所有同级字段及其对应的值。对于较大的 map，这可能会带来显著的性能损失。
+- The fields must all be of the same type.
+- Accessing sub-columns requires a special map syntax since the fields don't exist as columns. The entire object _is_ a column.
+- Accessing a subcolumn loads the entire `Map` value i.e. all siblings and their respective values. For larger maps, this can result in a significant performance penalty.
 
 :::note String keys
-在将对象建模为 `Map` 时，使用 `String` 键来存储 JSON 键名。因此 map 始终是 `Map(String, T)`，其中 `T` 取决于数据。
+When modelling objects as `Map`s, a `String` key is used to store the JSON key name. The map will therefore always be `Map(String, T)`, where `T` depends on the data.
 :::
 
-#### 原始类型值 {#primitive-values}
+#### Primitive values {#primitive-values}
 
-`Map` 最简单的用法是对象将同一种原始类型作为值。在大多数情况下，这意味着对值 `T` 使用 `String` 类型。
+The simplest application of a `Map` is when the object contains the same primitive type as values. In most cases, this involves using the `String` type for the value `T`.
 
-回顾我们[前面的人物 JSON](/integrations/data-formats/json/schema#static-vs-dynamic-json)，其中 `company.labels` 对象被判定为动态。需要强调的是，我们只期望向该对象添加 String 类型的键值对。因此我们可以将其声明为 `Map(String, String)`：
+Consider our [earlier person JSON](/integrations/data-formats/json/schema#static-vs-dynamic-json) where the `company.labels` object was determined to be dynamic. Importantly, we only expect key-value pairs of type String to be added to this object. We can thus declare this as `Map(String, String)`:
 
 ```sql
 CREATE TABLE people
@@ -241,7 +241,7 @@ ENGINE = MergeTree
 ORDER BY username
 ```
 
-我们可以插入原始完整的 JSON 对象：
+We can insert our original complete JSON object:
 
 ```sql
 INSERT INTO people FORMAT JSONEachRow
@@ -252,7 +252,7 @@ Ok.
 已插入 1 行。耗时：0.002 秒。
 ```
 
-在请求对象中查询这些字段时，需要使用映射（map）语法，例如：
+Querying these fields within the request object requires a map syntax e.g.:
 
 ```sql
 SELECT company.labels FROM people
@@ -272,13 +272,13 @@ SELECT company.labels['type'] AS type FROM people
 返回 1 行。用时：0.001 秒。
 ```
 
-完整的 `Map` 函数集可用于对其进行查询，相关说明见[此处](/sql-reference/functions/tuple-map-functions.md)。如果你的数据类型不一致，可以使用相应函数执行[必要的类型强制转换](/sql-reference/functions/type-conversion-functions)。
+A full set of `Map` functions is available to query this time, described [here](/sql-reference/functions/tuple-map-functions.md). If your data is not of a consistent type, functions exist to perform the [necessary type coercion](/sql-reference/functions/type-conversion-functions).
 
-#### 对象值 {#object-values}
+#### Object values {#object-values}
 
-对于具有子对象的对象，只要其子对象的类型保持一致，也可以考虑使用 `Map` 类型。
+The `Map` type can also be considered for objects which have sub-objects, provided the latter have consistency in their types.
 
-假设我们的 `persons` 对象中的 `tags` 键需要一个结构一致的子对象，其中每个 `tag` 的子对象都包含 `name` 和 `time` 列。此类 JSON 文档的简化示例如下所示：
+Suppose the `tags` key for our `persons` object requires a consistent structure, where the sub-object for each `tag` has a `name` and `time` column. A simplified example of such a JSON document might look like the following:
 
 ```json
 {
@@ -299,7 +299,7 @@ SELECT company.labels['type'] AS type FROM people
 }
 ```
 
-这可以使用 `Map(String, Tuple(name String, time DateTime))` 进行建模，如下所示：
+This can be modelled with a `Map(String, Tuple(name String, time DateTime))` as shown below:
 
 ```sql
 CREATE TABLE people
@@ -329,7 +329,7 @@ FORMAT JSONEachRow
 1 行数据。用时:0.001 秒。
 ```
 
-在这种场景下使用 Map 比较少见，这表明应当重新设计数据模型，使具有动态键名的对象不再包含子对象。比如，可以将上述结构重新建模为如下形式，从而使用 `Array(Tuple(key String, name String, time DateTime))`。
+The application of maps in this case is typically rare, and suggests that the data should be remodelled such that dynamic key names do not have sub-objects. For example, the above could be remodelled as follows allowing the use of `Array(Tuple(key String, name String, time DateTime))`.
 
 ```json
 {
@@ -352,11 +352,11 @@ FORMAT JSONEachRow
 }
 ```
 
-## 使用 Nested 类型 {#using-nested}
+## Using the Nested type {#using-nested}
 
-[Nested 类型](/sql-reference/data-types/nested-data-structures/nested) 可用于表示很少发生变化的静态对象，可作为 `Tuple` 和 `Array(Tuple)` 的一种替代方案。我们通常建议避免在处理 JSON 时使用此类型，因为它的行为往往令人困惑。`Nested` 的主要优势在于其子列可以用于排序键。
+The [Nested type](/sql-reference/data-types/nested-data-structures/nested) can be used to model static objects which are rarely subject to change, offering an alternative to `Tuple` and `Array(Tuple)`. We generally recommend avoiding using this type for JSON as its behavior is often confusing. The primary benefit of `Nested` is that sub-columns can be used in ordering keys.
 
-下面我们给出一个使用 Nested 类型来表示静态对象的示例。考虑如下这个简单的 JSON 日志条目：
+Below, we provide an example of using the Nested type to model a static object. Consider the following simple log entry in JSON:
 
 ```json
 {
@@ -372,7 +372,7 @@ FORMAT JSONEachRow
 }
 ```
 
-我们可以将 `request` 字段声明为 `Nested`。与 `Tuple` 类似，我们需要指定其中的子列。
+We can declare the `request` key as `Nested`. Similar to `Tuple`, we are required to specify the sub columns.
 
 ```sql
 -- 默认
@@ -387,13 +387,13 @@ CREATE table http
 ) ENGINE = MergeTree() ORDER BY (status, timestamp);
 ```
 
-### flatten&#95;nested {#flatten&#95;nested}
+### flatten_nested {#flatten_nested}
 
-`flatten_nested` 设置用于控制 `Nested` 类型的行为。
+The setting `flatten_nested` controls the behavior of nested.
 
-#### flatten&#95;nested=1 {#flatten&#95;nested1}
+#### flatten_nested=1 {#flatten_nested1}
 
-当值为 `1`（默认）时，不支持任意深度的嵌套。在该设置下，最简单的理解方式是：将嵌套数据结构视为多个长度相同的 [Array](/sql-reference/data-types/array) 列。字段 `method`、`path` 和 `version` 实际上分别是独立的 `Array(Type)` 列，但有一个关键约束：**`method`、`path` 和 `version` 字段的长度必须相同。** 如果使用 `SHOW CREATE TABLE`，就可以看到这一点：
+A value of `1` (the default) does not support an arbitrary level of nesting. With this value, it is easiest to think of a nested data structure as multiple  [Array](/sql-reference/data-types/array) columns of the same length. The fields `method`, `path`, and `version` are all separate `Array(Type)` columns in effect with one critical constraint: **the length of the `method`, `path`, and `version` fields must be the same.** If we use `SHOW CREATE TABLE`, this is illustrated:
 
 ```sql
 SHOW CREATE TABLE http
@@ -412,7 +412,7 @@ ENGINE = MergeTree
 ORDER BY (status, timestamp)
 ```
 
-接下来，我们向该表插入：
+Below, we insert into this table:
 
 ```sql
 SET input_format_import_nested_json = 1;
@@ -421,15 +421,15 @@ FORMAT JSONEachRow
 {"timestamp":897819077,"clientip":"45.212.12.0","request":[{"method":"GET","path":"/french/images/hm_nav_bar.gif","version":"HTTP/1.0"}],"status":200,"size":3305}
 ```
 
-这里有几点需要特别注意：
+A few important points to note here:
 
-* 我们需要启用配置项 `input_format_import_nested_json` 才能将 JSON 作为嵌套结构插入。否则，就必须先将 JSON 展平，例如：
+* We need to use the setting `input_format_import_nested_json` to insert the JSON as a nested structure. Without this, we are required to flatten the JSON i.e.
 
-  ```sql
+    ```sql
   INSERT INTO http FORMAT JSONEachRow
   {"timestamp":897819077,"clientip":"45.212.12.0","request":{"method":["GET"],"path":["/french/images/hm_nav_bar.gif"],"version":["HTTP/1.0"]},"status":200,"size":3305}
   ```
-* 嵌套字段 `method`、`path` 和 `version` 需要以 JSON 数组的形式传入，例如：
+* The nested fields `method`, `path`, and `version` need to be passed as JSON arrays i.e.
 
   ```json
   {
@@ -451,7 +451,7 @@ FORMAT JSONEachRow
   }
   ```
 
-列可以使用点号表示法进行查询：
+Columns can be queried using a dot notation:
 
 ```sql
 SELECT clientip, status, size, `request.method` FROM http WHERE has(request.method, 'GET');
@@ -462,15 +462,15 @@ SELECT clientip, status, size, `request.method` FROM http WHERE has(request.meth
 结果集包含 1 行。执行耗时：0.002 秒。
 ```
 
-请注意，对子列使用 `Array` 意味着可以充分利用完整的 [Array 函数](/sql-reference/functions/array-functions) 功能集，包括 [`ARRAY JOIN`](/sql-reference/statements/select/array-join) 子句——在列中包含多个值时非常有用。
+Note the use of `Array` for the sub-columns means the full breath [Array functions](/sql-reference/functions/array-functions) can potentially be exploited, including the [`ARRAY JOIN`](/sql-reference/statements/select/array-join) clause - useful if your columns have multiple values.
 
-#### flatten&#95;nested=0 {#flatten&#95;nested0}
+#### flatten_nested=0 {#flatten_nested0}
 
-这允许任意级别的嵌套，并意味着嵌套列会保持为一个由 `Tuple` 组成的单个数组——实质上它们与 `Array(Tuple)` 相同。
+This allows an arbitrary level of nesting and means nested columns stay as a single array of `Tuple`s - effectively they become the same as `Array(Tuple)`.
 
-**这是在配合 `Nested` 使用 JSON 时的首选方式，并且通常是最简单的方式。正如下文所示，它只要求所有对象以列表的形式组织起来。**
+**This represents the preferred way, and often the simplest way, to use JSON with `Nested`. As we show below, it only requires all objects to be a list.**
 
-在下面的示例中，我们重新创建表并重新插入一行数据：
+Below, we re-create our table and re-insert a row:
 
 ```sql
 CREATE TABLE http
@@ -503,11 +503,11 @@ FORMAT JSONEachRow
 {"timestamp":897819077,"clientip":"45.212.12.0","request":[{"method":"GET","path":"/french/images/hm_nav_bar.gif","version":"HTTP/1.0"}],"status":200,"size":3305}
 ```
 
-这里有几点重要说明：
+A few important points to note here:
 
-* 在插入数据时，不需要设置 `input_format_import_nested_json`。
-* `Nested` 类型会在 `SHOW CREATE TABLE` 中保留不变。在底层，这一列实际上是一个 `Array(Tuple(Nested(method LowCardinality(String), path String, version LowCardinality(String))))`
-* 因此，我们必须将 `request` 作为数组插入，例如：
+* `input_format_import_nested_json` is not required to insert.
+* The `Nested` type is preserved in `SHOW CREATE TABLE`. Underneath this column is effectively a `Array(Tuple(Nested(method LowCardinality(String), path String, version LowCardinality(String))))`
+* As a result, we are required to insert `request` as an array i.e.
 
   ```json
   {
@@ -525,7 +525,7 @@ FORMAT JSONEachRow
   }
   ```
 
-可以同样使用点号表示法来查询这些列：
+Columns can again be queried using a dot notation:
 
 ```sql
 SELECT clientip, status, size, `request.method` FROM http WHERE has(request.method, 'GET');
@@ -536,9 +536,9 @@ SELECT clientip, status, size, `request.method` FROM http WHERE has(request.meth
 结果集包含 1 行。执行耗时：0.002 秒。
 ```
 
-### 示例 {#example}
+### Example {#example}
 
-上述数据的更大规模示例可在 S3 的公共存储桶中获取，路径为：`s3://datasets-documentation/http/`。
+A larger example of the above data is available in a public bucket in s3 at: `s3://datasets-documentation/http/`.
 
 ```sql
 SELECT *
@@ -561,9 +561,9 @@ FORMAT PrettyJSONEachRow
 返回 1 行。用时：0.312 秒。
 ```
 
-鉴于 JSON 的约束条件和输入格式，我们使用如下查询插入此示例数据集。在这里，我们将 `flatten_nested` 设置为 0。
+Given the constraints and input format for the JSON, we insert this sample dataset using the following query. Here, we set `flatten_nested=0`.
 
-下面的语句会插入 1000 万行，因此执行可能需要几分钟时间。如有需要，请添加 `LIMIT`：
+The following statement inserts 10 million rows, so this may take a few minutes to execute. Apply a `LIMIT` if required:
 
 ```sql
 INSERT INTO http
@@ -572,7 +572,7 @@ size FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/doc
 'JSONEachRow');
 ```
 
-要查询这些数据，我们需要以数组形式访问请求字段。下面，我们将在固定时间段内汇总错误和 HTTP 方法。
+Querying this data requires us to access the request fields as arrays. Below, we summarize the errors and http methods over a fixed time period.
 
 ```sql
 SELECT status, request.method[1] AS method, count() AS c
@@ -593,11 +593,11 @@ ORDER BY c DESC LIMIT 5;
 5 rows in set. Elapsed: 0.007 sec.
 ```
 
-### 使用成对数组 {#using-pairwise-arrays}
+### Using pairwise arrays {#using-pairwise-arrays}
 
-成对数组在将 JSON 表示为 `String` 的灵活性与更结构化方案的性能之间提供了一种折中。该模式比较灵活，因为可以在根级别添加任意新的字段。不过，这也需要明显更复杂的查询语法，并且与嵌套结构不兼容。
+Pairwise arrays provide a balance between the flexibility of representing JSON as Strings and the performance of a more structured approach. The schema is flexible in that any new fields can be potentially added to the root. This, however, requires a significantly more complex query syntax and isn't compatible with nested structures.
 
-例如，考虑下列表：
+As an example, consider the following table:
 
 ```sql
 CREATE TABLE http_with_arrays (
@@ -607,7 +607,7 @@ CREATE TABLE http_with_arrays (
 ENGINE = MergeTree  ORDER BY tuple();
 ```
 
-要向此表中插入数据，我们需要将 JSON 结构化为键和值的列表。下面的查询演示了如何使用 `JSONExtractKeysAndValues` 来实现这一点：
+To insert into this table, we need to structure the JSON as a list of keys and values. The following query illustrates the use of the `JSONExtractKeysAndValues` to achieve this:
 
 ```sql
 SELECT
@@ -625,7 +625,7 @@ values: ['893964617','40.135.0.0','{"method":"GET","path":"/images/hm_bg.jpg","v
 返回 1 行。耗时: 0.416 秒。
 ```
 
-请注意，`request` 列仍然是以字符串形式表示的嵌套结构。我们可以在根对象上插入任意新的键，JSON 本身也可以存在任意差异。要插入到本地表中，请执行以下操作：
+Note how the request column remains a nested structure represented as a string. We can insert any new keys to the root. We can also have arbitrary differences in the JSON itself. To insert into our local table, execute the following:
 
 ```sql
 INSERT INTO http_with_arrays
@@ -637,7 +637,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/document
 0 rows in set. Elapsed: 12.121 sec. Processed 10.00 million rows, 107.30 MB (825.01 thousand rows/s., 8.85 MB/s.)
 ```
 
-要对这种结构进行查询，需要使用 [`indexOf`](/sql-reference/functions/array-functions#indexOf) 函数来确定所需键的索引（该索引应当与对应值的顺序保持一致）。然后即可用它来访问 values 数组列，即 `values[indexOf(keys, 'status')]`。我们仍然需要一种对 request 列进行 JSON 解析的方法——在这里使用的是 `simpleJSONExtractString`。
+Querying this structure requires using the [`indexOf`](/sql-reference/functions/array-functions#indexOf) function to identify the index of the required key (which should be consistent with the order of the values). This can be used to access the values array column i.e. `values[indexOf(keys, 'status')]`. We still require a JSON parsing method for the request column - in this case, `simpleJSONExtractString`.
 
 ```sql
 SELECT toUInt16(values[indexOf(keys, 'status')])                           AS status,

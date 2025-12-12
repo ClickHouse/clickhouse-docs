@@ -79,8 +79,8 @@ AWS CloudWatch — это сервис мониторинга ресурсов �
   Сохраните это значение в переменной окружения:
 
   ```bash
-  export CLICKSTACK_API_KEY="your-api-key-here"
-  ```
+export CLICKSTACK_API_KEY="your-api-key-here"
+```
 
   #### Настройте учетные данные AWS
 
@@ -89,49 +89,49 @@ AWS CloudWatch — это сервис мониторинга ресурсов �
   **Для пользователей AWS SSO (рекомендуется для большинства организаций):**
 
   ```bash
-  # Login to SSO
-  aws sso login --profile YOUR_PROFILE_NAME
+# Login to SSO
+aws sso login --profile YOUR_PROFILE_NAME
 
-  # Export credentials to environment variables
-  eval $(aws configure export-credentials --profile YOUR_PROFILE_NAME --format env)
+# Export credentials to environment variables
+eval $(aws configure export-credentials --profile YOUR_PROFILE_NAME --format env)
 
-  # Verify credentials work
-  aws sts get-caller-identity
-  ```
+# Verify credentials work
+aws sts get-caller-identity
+```
 
   Замените `YOUR_PROFILE_NAME` на название вашего профиля AWS SSO (например, `AccountAdministrators-123456789`).
 
   **Для пользователей IAM с долгосрочными учётными данными:**
 
   ```bash
-  export AWS_ACCESS_KEY_ID="your-access-key-id"
-  export AWS_SECRET_ACCESS_KEY="your-secret-access-key"
-  export AWS_REGION="us-east-1"
+export AWS_ACCESS_KEY_ID="your-access-key-id"
+export AWS_SECRET_ACCESS_KEY="your-secret-access-key"
+export AWS_REGION="us-east-1"
 
-  # Verify credentials work
-  aws sts get-caller-identity
-  ```
+# Verify credentials work
+aws sts get-caller-identity
+```
 
   **Требуемые разрешения IAM:**
 
   Для учетной записи AWS, связанной с этими учетными данными, необходима следующая политика IAM для чтения логов CloudWatch:
 
   ```json
-  {
-    "Version": "2012-10-17",
-    "Statement": [
-      {
-        "Sid": "CloudWatchLogsRead",
-        "Effect": "Allow",
-        "Action": [
-          "logs:DescribeLogGroups",
-          "logs:FilterLogEvents"
-        ],
-        "Resource": "arn:aws:logs:*:YOUR_ACCOUNT_ID:log-group:*"
-      }
-    ]
-  }
-  ```
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudWatchLogsRead",
+      "Effect": "Allow",
+      "Action": [
+        "logs:DescribeLogGroups",
+        "logs:FilterLogEvents"
+      ],
+      "Resource": "arn:aws:logs:*:YOUR_ACCOUNT_ID:log-group:*"
+    }
+  ]
+}
+```
 
   Замените `YOUR_ACCOUNT_ID` на идентификатор вашей учетной записи AWS.
 
@@ -144,69 +144,69 @@ AWS CloudWatch — это сервис мониторинга ресурсов �
   Данная конфигурация собирает логи из конкретных именованных групп логов:
 
   ```yaml
-  receivers:
-    awscloudwatch:
-      region: us-east-1
-      logs:
-        poll_interval: 1m
-        max_events_per_request: 100
-        groups:
-          named:
-            /aws/lambda/my-function:
-            /aws/ecs/my-service:
-            /aws/eks/my-cluster/cluster:
+receivers:
+  awscloudwatch:
+    region: us-east-1
+    logs:
+      poll_interval: 1m
+      max_events_per_request: 100
+      groups:
+        named:
+          /aws/lambda/my-function:
+          /aws/ecs/my-service:
+          /aws/eks/my-cluster/cluster:
 
-  processors:
-    batch:
-      timeout: 10s
+processors:
+  batch:
+    timeout: 10s
 
-  exporters:
-    otlphttp:
-      endpoint: http://localhost:4318
-      headers:
-        authorization: ${CLICKSTACK_API_KEY}
+exporters:
+  otlphttp:
+    endpoint: http://localhost:4318
+    headers:
+      authorization: ${CLICKSTACK_API_KEY}
 
-  service:
-    pipelines:
-      logs:
-        receivers: [awscloudwatch]
-        processors: [batch]
-        exporters: [otlphttp]
-  ```
+service:
+  pipelines:
+    logs:
+      receivers: [awscloudwatch]
+      processors: [batch]
+      exporters: [otlphttp]
+```
 
   **Пример 2: Автообнаружение групп логов с префиксом**
 
   Данная конфигурация автоматически обнаруживает и собирает логи из максимум 100 групп логов, начинающихся с префикса `/aws/lambda`:
 
   ```yaml
-  receivers:
-    awscloudwatch:
-      region: us-east-1
-      logs:
-        poll_interval: 1m
-        max_events_per_request: 100
-        groups:
-          autodiscover:
-            limit: 100
-            prefix: /aws/lambda
+receivers:
+  awscloudwatch:
+    region: us-east-1
+    logs:
+      poll_interval: 1m
+      max_events_per_request: 100
+      groups:
+        autodiscover:
+          limit: 100
+          prefix: /aws/lambda
 
-  processors:
-    batch:
-      timeout: 10s
+processors:
+  batch:
+    timeout: 10s
 
-  exporters:
-    otlphttp:
-      endpoint: http://localhost:4318
-      headers:
-        authorization: ${CLICKSTACK_API_KEY}
+exporters:
+  otlphttp:
+    endpoint: http://localhost:4318
+    headers:
+      authorization: ${CLICKSTACK_API_KEY}
 
-  service:
-    pipelines:
-      logs:
-        receivers: [awscloudwatch]
-        processors: [batch]
-        exporters: [otlphttp]
-  ```
+service:
+  pipelines:
+    logs:
+      receivers: [awscloudwatch]
+      processors: [batch]
+      exporters: [otlphttp]
+```
 
   **Параметры конфигурации:**
 
@@ -235,34 +235,34 @@ AWS CloudWatch — это сервис мониторинга ресурсов �
   Создайте файл `docker-compose.yaml`:
 
   ```yaml
-  services:
-    otel-collector:
-      image: otel/opentelemetry-collector-contrib:latest
-      command: ["--config=/etc/otel-config.yaml"]
-      volumes:
-        - ./otel-collector-config.yaml:/etc/otel-config.yaml
-      environment:
-        - AWS_ACCESS_KEY_ID
-        - AWS_SECRET_ACCESS_KEY
-        - AWS_SESSION_TOKEN
-        - AWS_REGION
-        - CLICKSTACK_API_KEY
-      restart: unless-stopped
-      extra_hosts:
-        - "host.docker.internal:host-gateway"
-  ```
+services:
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    command: ["--config=/etc/otel-config.yaml"]
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otel-config.yaml
+    environment:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_SESSION_TOKEN
+      - AWS_REGION
+      - CLICKSTACK_API_KEY
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+```
 
   Затем запустите коллектор:
 
   ```bash
-  docker compose up -d
-  ```
+docker compose up -d
+```
 
   Просмотр логов коллектора:
 
   ```bash
-  docker compose logs -f otel-collector
-  ```
+docker compose logs -f otel-collector
+```
 
   #### Проверьте логи в HyperDX
 

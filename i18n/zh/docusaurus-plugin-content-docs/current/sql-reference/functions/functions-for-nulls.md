@@ -66,29 +66,34 @@ SELECT toTypeName(assumeNotNull(y)) FROM t_null;
 └──────────────────────────────┘
 ```
 
+
+
 ## coalesce {#coalesce}
 
-引入版本：v1.1
+Introduced in: v1.1
 
-返回从左到右第一个非 `NULL` 的参数。
 
-**语法**
+Returns the leftmost non-`NULL` argument.
+    
+
+**Syntax**
 
 ```sql
 coalesce(x[, y, ...])
 ```
 
-**参数**
+**Arguments**
 
-* `x[, y, ...]` — 任意数量的非复合类型参数。所有参数的数据类型必须彼此兼容。[`Any`](/sql-reference/data-types)
+- `x[, y, ...]` — Any number of parameters of non-compound type. All parameters must be of mutually compatible data types. [`Any`](/sql-reference/data-types)
 
-**返回值**
 
-返回第一个非 `NULL` 的参数；如果所有参数均为 `NULL`，则返回 `NULL`。[`Any`](/sql-reference/data-types) 或 [`NULL`](/sql-reference/syntax#null)
+**Returned value**
 
-**示例**
+Returns the first non-`NULL` argument, otherwise `NULL`, if all arguments are `NULL`. [`Any`](/sql-reference/data-types) or [`NULL`](/sql-reference/syntax#null)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 -- 假设有一个联系人列表,其中可能包含联系客户的多种方式。
@@ -119,28 +124,30 @@ SELECT name, coalesce(mail, phone, CAST(telegram,'Nullable(String)')) FROM aBook
 └──────────┴───────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## firstNonDefault {#firstNonDefault}
 
-自 v25.9 起引入
+Introduced in: v25.9
 
-从一组参数中返回第一个非默认值
+Returns the first non-default value from a set of arguments
 
-**语法**
+**Syntax**
 
 ```sql
 ```
 
-**参数**
+**Arguments**
 
-* `arg1` — 要检查的第一个参数 - `arg2` — 要检查的第二个参数 - `...` — 要检查的其他参数
+- `arg1` — The first argument to check - `arg2` — The second argument to check - `...` — Additional arguments to check 
 
-**返回值**
+**Returned value**
 
-返回类型为所有参数的公共超类型
+Result type is the supertype of all arguments
 
-**示例**
+**Examples**
 
-**整数**
+**integers**
 
 ```sql title=Query
 SELECT firstNonDefault(0, 1, 2)
@@ -150,7 +157,7 @@ SELECT firstNonDefault(0, 1, 2)
 1
 ```
 
-**字符串**
+**strings**
 
 ```sql title=Query
 SELECT firstNonDefault('', 'hello', 'world')
@@ -160,7 +167,7 @@ SELECT firstNonDefault('', 'hello', 'world')
 '你好'
 ```
 
-**空值**
+**nulls**
 
 ```sql title=Query
 SELECT firstNonDefault(NULL, 0 :: UInt8, 1 :: UInt8)
@@ -170,7 +177,7 @@ SELECT firstNonDefault(NULL, 0 :: UInt8, 1 :: UInt8)
 1
 ```
 
-**可为空的零**
+**nullable zero**
 
 ```sql title=Query
 SELECT firstNonDefault(NULL, 0 :: Nullable(UInt8), 1 :: Nullable(UInt8))
@@ -180,30 +187,35 @@ SELECT firstNonDefault(NULL, 0 :: Nullable(UInt8), 1 :: Nullable(UInt8))
 0
 ```
 
+
+
 ## ifNull {#ifNull}
 
-自 v1.1 起引入。
+Introduced in: v1.1
 
-当第一个参数为 `NULL` 时，返回一个替代值。
 
-**语法**
+Returns an alternative value if the first argument is `NULL`.
+    
+
+**Syntax**
 
 ```sql
 ifNull(x, alt)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 要检查是否为 `NULL` 的值。[`Any`](/sql-reference/data-types)
-* `alt` — 当 `x` 为 `NULL` 时函数返回的值。[`Any`](/sql-reference/data-types)
+- `x` — The value to check for `NULL`. [`Any`](/sql-reference/data-types)
+- `alt` — The value that the function returns if `x` is `NULL`. [`Any`](/sql-reference/data-types)
 
-**返回值**
 
-如果 `x` 不为 `NULL`，则返回 `x` 的值，否则返回 `alt`。[`Any`](/sql-reference/data-types)
+**Returned value**
 
-**示例**
+Returns the value of `x` if it is not `NULL`, otherwise `alt`. [`Any`](/sql-reference/data-types)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT ifNull('a', 'b'), ifNull(NULL, 'b');
@@ -215,31 +227,36 @@ SELECT ifNull('a', 'b'), ifNull(NULL, 'b');
 └──────────────────┴───────────────────┘
 ```
 
+
+
 ## isNotNull {#isNotNull}
 
-自 v1.1 版本引入
+Introduced in: v1.1
 
-检查参数是否为非 `NULL`。
 
-另请参阅：运算符 [`IS NOT NULL`](/sql-reference/operators#is_not_null)。
+Checks if the argument is not `NULL`.
 
-**语法**
+Also see: operator [`IS NOT NULL`](/sql-reference/operators#is_not_null).
+    
+
+**Syntax**
 
 ```sql
 isNotNull(x)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 非复合数据类型的值。[`Any`](/sql-reference/data-types)
+- `x` — A value of non-compound data type. [`Any`](/sql-reference/data-types)
 
-**返回值**
 
-如果 `x` 不为 `NULL`，则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns `1` if `x` is not `NULL`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE t_null
@@ -261,31 +278,36 @@ SELECT x FROM t_null WHERE isNotNull(y);
 └───┘
 ```
 
+
+
 ## isNull {#isNull}
 
-自 v1.1 版本引入
+Introduced in: v1.1
 
-检查参数是否为 `NULL`。
 
-另请参阅：运算符 [`IS NULL`](/sql-reference/operators#is_null)。
+Checks if the argument is `NULL`.
 
-**语法**
+Also see: operator [`IS NULL`](/sql-reference/operators#is_null).
+    
+
+**Syntax**
 
 ```sql
 isNull(x)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 一个非复合类型的值。[`Any`](/sql-reference/data-types)
+- `x` — A value of non-compound data type. [`Any`](/sql-reference/data-types)
 
-**返回值**
 
-当 `x` 为 `NULL` 时返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns `1` if `x` is `NULL`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE t_null
@@ -307,29 +329,34 @@ SELECT x FROM t_null WHERE isNull(y);
 └───┘
 ```
 
+
+
 ## isNullable {#isNullable}
 
-自 v22.7 起引入
+Introduced in: v22.7
 
-检查参数的数据类型是否为 `Nullable`（即是否允许 `NULL` 值）。
 
-**语法**
+Checks whether the argument's data type is `Nullable` (i.e it allows `NULL` values).
+    
+
+**Syntax**
 
 ```sql
 isNullable(x)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 任意数据类型的值。[`Any`](/sql-reference/data-types)
+- `x` — A value of any data type. [`Any`](/sql-reference/data-types)
 
-**返回值**
 
-当 `x` 是 `Nullable` 数据类型时返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns `1` if `x` is of a `Nullable` data type, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE tab (
@@ -350,29 +377,34 @@ SELECT isNullable(ordinary_col), isNullable(nullable_col) FROM tab;
 └─────────────────────────────┴─────────────────────────────┘
 ```
 
+
+
 ## isZeroOrNull {#isZeroOrNull}
 
-自 v20.3 版本引入
+Introduced in: v20.3
 
-检查参数是否为零（`0`）或 `NULL`。
 
-**语法**
+Checks if the argument is either zero (`0`) or `NULL`.
+    
+
+**Syntax**
 
 ```sql
 isZeroOrNull(x)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 数值。[`UInt`](/sql-reference/data-types/int-uint)
+- `x` — A numeric value. [`UInt`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-如果 `x` 为 `NULL` 或等于零，则返回 `1`，否则返回 `0`。[`UInt8/16/32/64`](/sql-reference/data-types/int-uint) 或 [`Float32/Float64`](/sql-reference/data-types/float)
+**Returned value**
 
-**示例**
+Returns `1` if `x` is `NULL` or equal to zero, otherwise `0`. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float32/Float64`](/sql-reference/data-types/float)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE t_null
@@ -395,30 +427,35 @@ SELECT x FROM t_null WHERE isZeroOrNull(y);
 └───┘
 ```
 
+
+
 ## nullIf {#nullIf}
 
-自 v1.1 版本引入
+Introduced in: v1.1
 
-如果两个参数相等，则返回 `NULL`。
 
-**语法**
+Returns `NULL` if both arguments are equal.
+    
+
+**Syntax**
 
 ```sql
 nullIf(x, y)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 第一个值。[`Any`](/sql-reference/data-types)
-* `y` — 第二个值。[`Any`](/sql-reference/data-types)
+- `x` — The first value. [`Any`](/sql-reference/data-types)
+- `y` — The second value. [`Any`](/sql-reference/data-types)
 
-**返回值**
 
-如果两个参数相等，则返回 `NULL`，否则返回第一个参数。[`NULL`](/sql-reference/syntax#null) 或 [`Nullable(x)`](/sql-reference/data-types/nullable)
+**Returned value**
 
-**示例**
+Returns `NULL` if both arguments are equal, otherwise returns the first argument. [`NULL`](/sql-reference/syntax#null) or [`Nullable(x)`](/sql-reference/data-types/nullable)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT nullIf(1, 1), nullIf(1, 2);
@@ -430,29 +467,34 @@ SELECT nullIf(1, 1), nullIf(1, 2);
 └──────────────┴──────────────┘
 ```
 
+
+
 ## toNullable {#toNullable}
 
-自 v1.1 起引入
+Introduced in: v1.1
 
-将传入参数的类型转换为 `Nullable` 类型。
 
-**语法**
+Converts the provided argument type to `Nullable`.
+    
+
+**Syntax**
 
 ```sql
 toNullable(x)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 任意非复合数据类型的值。[`Any`](/sql-reference/data-types)
+- `x` — A value of any non-compound type. [`Any`](/sql-reference/data-types)
 
-**返回值**
 
-返回与输入值相同的值，但其类型为 `Nullable`。[`Nullable(Any)`](/sql-reference/data-types/nullable)
+**Returned value**
 
-**示例**
+Returns the input value but of `Nullable` type. [`Nullable(Any)`](/sql-reference/data-types/nullable)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT toTypeName(10), toTypeName(toNullable(10));

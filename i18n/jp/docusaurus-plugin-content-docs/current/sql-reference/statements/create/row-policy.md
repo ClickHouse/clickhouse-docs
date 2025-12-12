@@ -66,8 +66,8 @@ CREATE ROW POLICY pol2 ON mydb.table1 USING c=2 TO peter, antonio
 一般的な式は次のとおりです。
 
 ```text
-row_is_visible = (1つ以上の許可ポリシーの条件が非ゼロである) AND
-                 (すべての制限ポリシーの条件が非ゼロである)
+row_is_visible = (one or more of the permissive policies' conditions are non-zero) AND
+                 (all of the restrictive policies's conditions are non-zero)
 ```
 
 例として、次のようなポリシーが挙げられます。

@@ -85,11 +85,10 @@ SETTINGS send_logs_level='trace';
 
 We can see that
 
-* ① ClickHouse は 3 つのデータ範囲にまたがって、トレースログ中では mark として表示される granule を 3,609 個読み取る必要があります。
-* ② CPU コアが 59 個あるため、この処理は 59 本の並列処理ストリーム（各レーンにつき 1 本）に分散されます。
+* ① ClickHouse needs to read 3,609 granules (indicated as marks in the trace logs) across 3 data ranges.
+* ② With 59 CPU cores, it distributes this work across 59 parallel processing streams—one per lane.
 
-別の方法として、[EXPLAIN](/sql-reference/statements/explain#explain-pipeline) 句を使用して、集約クエリに対する [physical operator plan](/academic_overview#4-2-multi-core-parallelization)（「query pipeline」とも呼ばれる）を確認することもできます。
-
+Alternatively, we can use the [EXPLAIN](/sql-reference/statements/explain#explain-pipeline) clause to inspect the [physical operator plan](/academic_overview#4-2-multi-core-parallelization)—also known as the "query pipeline"—for the aggregation query:
 ```sql runnable=false
 EXPLAIN PIPELINE
 SELECT
@@ -113,22 +112,21 @@ FROM
     └───────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-Note: 上記のオペレーター・プランは下から上へ読んでください。各行は物理実行プランのステージを表しており、下部のストレージからデータを読み込むところから始まり、上部の最終処理ステップで終わります。`× 59` とマークされたオペレーターは、59 本の並列処理レーン全体で互いに重複しないデータ領域に対して同時に実行されます。これは `max_threads` の値を反映しており、クエリの各ステージがどのように CPU コア間で並列化されるかを示しています。
+Note: Read the operator plan above from bottom to top. Each line represents a stage in the physical execution plan, starting with reading data from storage at the bottom and ending with the final processing steps at the top. Operators marked with `× 59` are executed concurrently on non-overlapping data regions across 59 parallel processing lanes. This reflects the value of `max_threads` and illustrates how each stage of the query is parallelized across CPU cores.
 
-ClickHouse の [組み込み Web UI](/interfaces/http)（`/play` エンドポイントで利用可能）は、上記の物理プランをグラフィカルに可視化して表示できます。この例では、可視化をコンパクトに保つために `max_threads` を `4` に設定し、4 本の並列処理レーンのみを表示しています。
+ClickHouse's [embedded web UI](/interfaces/http) (available at the `/play` endpoint) can render the physical plan from above as a graphical visualization. In this example, we set `max_threads` to `4` to keep the visualization compact, showing just 4 parallel processing lanes:
 
-<Image img={visual05} alt="クエリパイプライン" />
+<Image img={visual05} alt="Query pipeline"/>
 
-Note: 可視化は左から右へ読んでください。各行は、データをブロック単位でストリーミングし、フィルタリング、集約、最終処理ステージなどの変換を適用する並列処理レーンを表します。この例では、`max_threads = 4` の設定に対応する 4 本の並列レーンが確認できます。
+Note: Read the visualization from left to right. Each row represents a parallel processing lane that streams data block by block, applying transformations such as filtering, aggregation, and final processing stages. In this example, you can see four parallel lanes corresponding to the `max_threads = 4` setting.
 
-### 処理レーン間での負荷分散 {#load-balancing-across-processing-lanes}
+### Load balancing across processing lanes {#load-balancing-across-processing-lanes}
 
-上記の物理プラン内の `Resize` オペレーターは、処理レーン間でデータブロックストリームを[再パーティションおよび再分配](/academic_overview#4-2-multi-core-parallelization)することで、各レーンの利用率を均等に保っている点に注意してください。この再バランシングは、データ範囲ごとにクエリ述語にマッチする行数が異なる場合に特に重要です。そうしないと、一部のレーンだけが過負荷になり、他のレーンがアイドル状態になる可能性があります。作業を再分配することで、速いレーンが遅いレーンを実質的に助ける形となり、クエリ全体の実行時間を最適化できます。
+Note that the `Resize` operators in the physical plan above [repartition and redistribute](/academic_overview#4-2-multi-core-parallelization) data block streams across processing lanes to keep them evenly utilized. This rebalancing is especially important when data ranges vary in how many rows match the query predicates, otherwise, some lanes may become overloaded while others sit idle. By redistributing the work, faster lanes effectively help out slower ones, optimizing overall query runtime.
 
-## なぜ max&#95;threads が常にそのとおりには動作しないのか {#why-max-threads-isnt-always-respected}
+## Why max_threads isn't always respected {#why-max-threads-isnt-always-respected}
 
-前述のとおり、並列処理レーンの数 `n` は `max_threads` 設定によって制御されます。デフォルトでは、この設定値はサーバー上で ClickHouse が利用可能な CPU コア数と同じになります。
-
+As mentioned above, the number of `n` parallel processing lanes is controlled by the `max_threads` setting, which by default matches the number of CPU cores available to ClickHouse on the server:
 ```sql runnable=false
 SELECT getSetting('max_threads');
 ```
@@ -139,8 +137,7 @@ SELECT getSetting('max_threads');
    └───────────────────────────┘
 ```
 
-ただし、処理対象として選択されたデータ量によっては、`max_threads` の値が無視される場合があります。
-
+However, the `max_threads` value may be ignored depending on the amount of data selected for processing:
 ```sql runnable=false
 EXPLAIN PIPELINE
 SELECT
@@ -156,10 +153,9 @@ WHERE town = 'LONDON';
 MergeTreeSelect(pool: PrefetchedReadPool, algorithm: Thread) × 30
 ```
 
-上のオペレータープランの抜粋に示されているように、`max_threads` が `59` に設定されていても、ClickHouse はデータをスキャンするために **30** 本の同時実行ストリームしか使用しません。
+As shown in the operator plan extract above, even though `max_threads` is set to `59`, ClickHouse uses only **30** concurrent streams to scan the data.
 
-では、クエリを実行してみましょう。
-
+Now let's run the query:
 ```sql runnable=false
 SELECT
    max(price)
@@ -177,7 +173,7 @@ WHERE town = 'LONDON';
 ピークメモリ使用量: 27.24 MiB。   
 ```
 
-上の出力に示されているように、このクエリは231万行を処理し、13.66MBのデータを読み取りました。これはインデックス解析フェーズにおいて、ClickHouseが処理対象として**282個のグラニュール**を選択し、それぞれに8,192行が含まれているためで、合計で約231万行になります。
+As shown in the output above, the query processed 2.31 million rows and read 13.66MB of data. This is because, during the index analysis phase, ClickHouse selected **282 granules** for processing, each containing 8,192 rows, totaling approximately 2.31 million rows:
 
 ```sql runnable=false
 EXPLAIN indexes = 1
@@ -205,30 +201,26 @@ WHERE town = 'LONDON';
     └───────────────────────────────────────────────────────┘  
 ```
 
-設定された `max_threads` の値に関係なく、ClickHouse が追加の並列処理レーンを確保するのは、それを正当化できるだけの十分なデータがある場合に限られます。`max_threads` の「max」は上限値を指しており、実際に使用されるスレッド数がその数になることを保証するものではありません。
+Regardless of the configured `max_threads` value, ClickHouse only allocates additional parallel processing lanes when there's enough data to justify them. The "max" in `max_threads` refers to an upper limit, not a guaranteed number of threads used.
 
-「十分なデータ」が何を意味するかは主に 2 つの設定によって決まり、それぞれの処理レーンが処理すべき最小行数（デフォルトで 163,840）と最小バイト数（デフォルトで 2,097,152）を定義します。
+What "enough data" means is primarily determined by two settings, which define the minimum number of rows (163,840 by default) and the minimum number of bytes (2,097,152 by default) that each processing lane should handle:
 
-共有ナッシングクラスターの場合:
+For shared-nothing clusters:
+* [merge_tree_min_rows_for_concurrent_read](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_rows_for_concurrent_read)
+* [merge_tree_min_bytes_for_concurrent_read](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_bytes_for_concurrent_read)
 
-* [merge&#95;tree&#95;min&#95;rows&#95;for&#95;concurrent&#95;read](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_rows_for_concurrent_read)
-* [merge&#95;tree&#95;min&#95;bytes&#95;for&#95;concurrent&#95;read](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_bytes_for_concurrent_read)
+For clusters with shared storage (e.g. ClickHouse Cloud):
+* [merge_tree_min_rows_for_concurrent_read_for_remote_filesystem](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_rows_for_concurrent_read_for_remote_filesystem)
+* [merge_tree_min_bytes_for_concurrent_read_for_remote_filesystem](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_bytes_for_concurrent_read_for_remote_filesystem)
 
-共有ストレージを利用するクラスター（例: ClickHouse Cloud）の場合:
+Additionally, there's a hard lower limit for read task size, controlled by:
+* [Merge_tree_min_read_task_size](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_read_task_size) + [merge_tree_min_bytes_per_task_for_remote_reading](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_bytes_per_task_for_remote_reading)
 
-* [merge&#95;tree&#95;min&#95;rows&#95;for&#95;concurrent&#95;read&#95;for&#95;remote&#95;filesystem](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_rows_for_concurrent_read_for_remote_filesystem)
-* [merge&#95;tree&#95;min&#95;bytes&#95;for&#95;concurrent&#95;read&#95;for&#95;remote&#95;filesystem](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_bytes_for_concurrent_read_for_remote_filesystem)
-
-さらに、読み取りタスクサイズには、次の設定で制御される厳格な下限値があります:
-
-* [Merge&#95;tree&#95;min&#95;read&#95;task&#95;size](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_read_task_size) + [merge&#95;tree&#95;min&#95;bytes&#95;per&#95;task&#95;for&#95;remote&#95;reading](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_bytes_per_task_for_remote_reading)
-
-:::warning これらの設定を変更しないでください
-本番環境でこれらの設定を変更することは推奨しません。ここでは、`max_threads` が必ずしも実際の並列度を決定しない理由を示すためだけに掲載しています。
+:::warning Don't modify these settings
+We don't recommend modifying these settings in production. They're shown here solely to illustrate why `max_threads` doesn't always determine the actual level of parallelism.
 :::
 
-デモンストレーションのために、これらの設定を一時的に上書きして並列度を最大まで引き上げた状態で、物理プランを確認してみましょう。
-
+For demonstration purposes, let's inspect the physical plan with these settings overridden to force maximum concurrency:
 ```sql runnable=false
 EXPLAIN PIPELINE
 SELECT

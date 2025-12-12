@@ -69,11 +69,11 @@ thread_id:               564917
 level:                   Information
 query_id:
 logger_name:             DNSCacheUpdater
-message:                 更新周期 15 秒
+message:                 Update period 15 seconds
 revision:                54440
 source_file:             /ClickHouse/src/Interpreters/DNSCacheUpdater.cpp; void DB::DNSCacheUpdater::start()
 source_line:             45
-message_format_string:   更新周期 {} 秒
+message_format_string:   Update period {} seconds
 value1:                  15
 value2:                  
 value3:                  

@@ -333,7 +333,7 @@ Postgres のパッチバージョン 17.5/16.9/15.13/14.18/13.21 で導入され
 はい、可能です。Postgres の ClickPipe を作成する前に、DELETE 操作を含まない publication を作成してください。例：
 
 ```sql
-CREATE PUBLICATION <パブリケーション名> FOR TABLES IN SCHEMA <スキーマ名> WITH (publish = 'insert,update');
+CREATE PUBLICATION <pub_name> FOR TABLES IN SCHEMA <schema_name> WITH (publish = 'insert,update');
 ```
 
 その後、Postgres 用 ClickPipe を[セットアップ](https://clickhouse.com/docs/integrations/clickpipes/postgres#configuring-the-replication-settings)する際に、このパブリケーション名が選択されていることを必ず確認してください。

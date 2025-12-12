@@ -47,16 +47,16 @@ C0X100,2016-01-01 04:00:00,1021.2,15.8,74,1.7,8.0,,,,,,,,,,,,,,,,,,,,,,,
 ```bash
 wget https://storage.googleapis.com/taiwan-weather-observaiton-datasets/preprocessed_weather_daily_1896_2023.tar.gz
 
-# 可选:验证校验和 {#option-validate-the-checksum}
+# Option: Validate the checksum
 md5sum preprocessed_weather_daily_1896_2023.tar.gz
-# 校验和应为:11b484f5bd9ddafec5cfb131eb2dd008 {#checksum-should-be-equal-to-11b484f5bd9ddafec5cfb131eb2dd008}
+# Checksum should be equal to: 11b484f5bd9ddafec5cfb131eb2dd008
 
 tar -xzvf preprocessed_weather_daily_1896_2023.tar.gz
 daily_weather_preprocessed_1896_2023.csv
 
-# 可选:验证校验和 {#option-validate-the-checksum}
+# Option: Validate the checksum
 md5sum daily_weather_preprocessed_1896_2023.csv
-# 校验和应为:1132248c78195c43d93f843753881754 {#checksum-should-be-equal-to-1132248c78195c43d93f843753881754}
+# Checksum should be equal to: 1132248c78195c43d93f843753881754
 ```
 
 ### 原始数据 {#original-raw-data}
@@ -72,9 +72,9 @@ mkdir tw_raw_weather_data && cd tw_raw_weather_data
 
 wget https://storage.googleapis.com/taiwan-weather-observaiton-datasets/raw_data_weather_daily_1896_2023.tar.gz
 
-# 可选:验证校验和 {#option-validate-the-checksum}
+# Option: Validate the checksum
 md5sum raw_data_weather_daily_1896_2023.tar.gz
-# 校验和应为:b66b9f137217454d655e3004d7d1b51a {#checksum-should-be-equal-to-b66b9f137217454d655e3004d7d1b51a}
+# Checksum should be equal to: b66b9f137217454d655e3004d7d1b51a
 
 tar -xzvf raw_data_weather_daily_1896_2023.tar.gz
 466920_1928.csv
@@ -83,9 +83,9 @@ tar -xzvf raw_data_weather_daily_1896_2023.tar.gz
 466920_1931.csv
 ...
 
-# 可选:验证校验和 {#option-validate-the-checksum}
+# Option: Validate the checksum
 cat *.csv | md5sum
-# 校验和应为:b26db404bf84d4063fac42e576464ce1 {#checksum-should-be-equal-to-b26db404bf84d4063fac42e576464ce1}
+# Checksum should be equal to: b26db404bf84d4063fac42e576464ce1
 ```
 
 #### 获取台湾地区气象站列表 {#retrieve-the-taiwan-weather-stations}
@@ -93,7 +93,7 @@ cat *.csv | md5sum
 ```bash
 wget -O weather_sta_list.csv https://github.com/Raingel/weather_station_list/raw/main/data/weather_sta_list.csv
 
-# 可选:将 UTF-8-BOM 转换为 UTF-8 编码 {#option-convert-the-utf-8-bom-to-utf-8-encoding}
+# Option: Convert the UTF-8-BOM to UTF-8 encoding
 sed -i '1s/^\xEF\xBB\xBF//' weather_sta_list.csv
 ```
 
@@ -153,11 +153,11 @@ INSERT INTO tw_weather_data FROM INFILE '/path/to/daily_weather_preprocessed_189
 向 ClickHouse 插入数据后，示例响应如下：
 
 ```response
-查询 ID: 90e4b524-6e14-4855-817c-7e6f98fbeabb
+Query id: 90e4b524-6e14-4855-817c-7e6f98fbeabb
 
-完成。
-结果集包含 131985329 行。耗时:71.770 秒。已处理 1.3199 亿行,10.06 GB(184 万行/秒,140.14 MB/秒)。
-峰值内存使用量:583.23 MiB。
+Ok.
+131985329 rows in set. Elapsed: 71.770 sec. Processed 131.99 million rows, 10.06 GB (1.84 million rows/s., 140.14 MB/s.)
+Peak memory usage: 583.23 MiB.
 ```
 
 ### 从 URL 插入数据 {#inserting-from-url}
@@ -181,7 +181,7 @@ FROM tw_weather_data;
 
 ```response
 ┌─formatReadableQuantity(count())─┐
-│ 1.3199亿                        │
+│ 131.99 million                  │
 └─────────────────────────────────┘
 ```
 
@@ -246,7 +246,7 @@ GROUP BY StationId
 │ 466900    │      1 │
 └───────────┴────────┘
 
-返回 30 行。用时:0.045 秒。已处理 641 万行,187.33 MB(1.4392 亿行/秒,4.21 GB/秒)。
+30 rows in set. Elapsed: 0.045 sec. Processed 6.41 million rows, 187.33 MB (143.92 million rows/s., 4.21 GB/s.)
 ```
 
 ### Q2: 在特定时间范围内按字段和气象站获取原始数据 {#q2-raw-data-fetching-with-the-specific-duration-time-range-fields-and-weather-station}
@@ -284,7 +284,7 @@ LIMIT 10
 │  1028.3 │    ᴺᵁᴸᴸ │ 13.6 │ ᴺᵁᴸᴸ │ 91 │ 1.2 │ 273 │    4.4 │    256 │ -99.8 │     -99.8 │
 └─────────┴─────────┴──────┴──────┴────┴─────┴─────┴────────┴────────┴───────┴───────────┘
 
-返回 10 行。用时:0.009 秒。已处理 9.17 万行,2.33 MB(967 万行/秒,245.31 MB/秒)。
+10 rows in set. Elapsed: 0.009 sec. Processed 91.70 thousand rows, 2.33 MB (9.67 million rows/s., 245.31 MB/s.)
 ```
 
 ## 致谢 {#credits}

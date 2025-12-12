@@ -37,10 +37,10 @@ keywords: ['clickpipes', 'postgresql', 'cdc', '数据摄取', '实时同步']
 在执行任何命令之前，先设置以下环境变量：
 
 ```bash
-ORG_ID=<您的 ClickHouse 组织 ID>
-SERVICE_ID=<您的 ClickHouse 服务 ID>
-KEY_ID=<您的 ClickHouse 密钥 ID>
-KEY_SECRET=<您的 ClickHouse 密钥密钥>
+ORG_ID=<Your ClickHouse organization ID>
+SERVICE_ID=<Your ClickHouse service ID>
+KEY_ID=<Your ClickHouse key ID>
+KEY_SECRET=<Your ClickHouse key secret>
 ```
 
 获取当前扩缩容配置（可选）：
@@ -50,7 +50,7 @@ curl --silent --user $KEY_ID:$KEY_SECRET \
 https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/clickpipesCdcScaling \
 | jq
 
-# 示例结果： {#example-result}
+# example result:
 {
   "result": {
     "replicaCpuMillicores": 2000,
@@ -84,7 +84,7 @@ curl --silent --user $KEY_ID:$KEY_SECRET \
 https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/clickpipesCdcScaling \
 | jq
 
-# 示例结果： {#example-result}
+# example result:
 {
   "result": {
     "replicaCpuMillicores": 24000,

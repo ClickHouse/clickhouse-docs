@@ -22,16 +22,16 @@ CREATE DATABASE IF NOT EXISTS helloworld
 下面名为 `my_first_table` 的表创建在 `helloworld` 数据库中：
 
 ```sql
-CREATE TABLE helloworld.my_first_table
-(
-    user_id UInt32,
-    message String,
-    timestamp DateTime,
-    metric Float32
-)
-ENGINE = MergeTree()
-PRIMARY KEY (user_id, timestamp)
-```
+  CREATE TABLE helloworld.my_first_table
+  (
+      user_id UInt32,
+      message String,
+      timestamp DateTime,
+      metric Float32
+  )
+  ENGINE = MergeTree()
+  PRIMARY KEY (user_id, timestamp)
+  ```
 
 在上面的示例中，`my_first_table` 是一个包含四列的 `MergeTree` 表：
 

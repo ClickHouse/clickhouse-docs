@@ -269,8 +269,8 @@ SYSTEM INSTRUMENT ADD FUNCTION HANDLER [PARAMETERS]
 関数の`ENTRY`または`EXIT`のタイミングで、引数として指定されたテキストとスタックトレースを出力します。
 
 ```sql
-SYSTEM INSTRUMENT ADD `QueryMetricLog::startQuery` LOG ENTRY 'エントリ時に出力されるログ'
-SYSTEM INSTRUMENT ADD `QueryMetricLog::startQuery` LOG EXIT '終了時に出力されるログ'
+SYSTEM INSTRUMENT ADD `QueryMetricLog::startQuery` LOG ENTRY 'this is a log printed at entry'
+SYSTEM INSTRUMENT ADD `QueryMetricLog::startQuery` LOG EXIT 'this is a log printed at exit'
 ```
 
 
@@ -638,7 +638,7 @@ CREATE TABLE repl_db.test_table (n UInt32)
 ENGINE = ReplicatedMergeTree
 ORDER BY n PARTITION BY n % 10;
 
--- zookeeper_delete_path("/clickhouse/repl_db", recursive=True) <- ルートの喪失。
+-- zookeeper_delete_path("/clickhouse/repl_db", recursive=True) <- root loss.
 
 SYSTEM RESTORE DATABASE REPLICA repl_db;
 ```
@@ -666,7 +666,7 @@ ORDER BY n PARTITION BY n % 10;
 
 INSERT INTO test SELECT * FROM numbers(1000);
 
--- zookeeper_delete_path("/clickhouse/tables/test", recursive=True) <- ルートの喪失。
+-- zookeeper_delete_path("/clickhouse/tables/test", recursive=True) <- root loss.
 
 SYSTEM RESTART REPLICA test;
 SYSTEM RESTORE REPLICA test;

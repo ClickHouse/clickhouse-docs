@@ -72,7 +72,7 @@ SELECT flipCoordinates([[(10, 20), (30, 40)], [(50, 60), (70, 80)]]) AS flipped_
 #### Пример 4: Отражение мультиполигона {#example-4}
 
 ```sql
-SELECT flipCoordinates([[[10, 20], [30, 40]], [[50, 60], [70, 80]]]) AS перевернутый_мультиполигон
+SELECT flipCoordinates([[[10, 20], [30, 40]], [[50, 60], [70, 80]]]) AS flipped_multipolygon
 ```
 
 ```text

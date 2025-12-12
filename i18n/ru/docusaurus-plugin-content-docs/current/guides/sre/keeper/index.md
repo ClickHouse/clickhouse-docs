@@ -157,7 +157,7 @@ clickhouse-keeper --config /etc/your_path_to_config/config.xml
 Если у вас нет символической ссылки (`clickhouse-keeper`), вы можете создать её или указать `keeper` в качестве аргумента для `clickhouse`:
 
 ```bash
-clickhouse keeper --config /etc/путь_к_вашему_конфигу/config.xml
+clickhouse keeper --config /etc/your_path_to_config/config.xml
 ```
 
 ### Команды из четырёх букв {#four-letter-word-commands}
@@ -205,38 +205,38 @@ zk_synced_followers     0
 * `srvr`: Отображает полную информацию о сервере.
 
 ```response
-Версия ClickHouse Keeper: v21.11.1.1-prestable-7a4a0b0edef0ad6e0aa662cd3b90c3f4acf796e7
-Задержка мин/сред/макс: 0/0/0
-Получено: 2
-Отправлено: 2
-Подключений: 1
-Необработанных: 0
+ClickHouse Keeper version: v21.11.1.1-prestable-7a4a0b0edef0ad6e0aa662cd3b90c3f4acf796e7
+Latency min/avg/max: 0/0/0
+Received: 2
+Sent : 2
+Connections: 1
+Outstanding: 0
 Zxid: 34
-Режим: leader
-Количество узлов: 4
+Mode: leader
+Node count: 4
 ```
 
 * `stat`: Выводит краткую информацию о сервере и подключенных клиентах.
 
 ```response
-Версия ClickHouse Keeper: v21.11.1.1-prestable-7a4a0b0edef0ad6e0aa662cd3b90c3f4acf796e7
-Клиенты:
+ClickHouse Keeper version: v21.11.1.1-prestable-7a4a0b0edef0ad6e0aa662cd3b90c3f4acf796e7
+Clients:
  192.168.1.1:52852(recved=0,sent=0)
  192.168.1.1:52042(recved=24,sent=48)
-Задержка мин/сред/макс: 0/0/0
-Получено: 4
-Отправлено: 4
-Подключений: 1
-Необработанных: 0
+Latency min/avg/max: 0/0/0
+Received: 4
+Sent : 4
+Connections: 1
+Outstanding: 0
 Zxid: 36
-Режим: leader
-Количество узлов: 4
+Mode: leader
+Node count: 4
 ```
 
 * `srst`: Сбрасывает статистику сервера. Команда повлияет на результаты `srvr`, `mntr` и `stat`.
 
 ```response
-Статистика сервера сброшена.
+Server stats reset.
 ```
 
 * `conf`: Вывести подробные сведения о конфигурации сервиса.
@@ -282,7 +282,7 @@ configuration_change_tries_count=20
 * `crst`: Сбросить статистику соединений/сеансов для всех подключений.
 
 ```response
-Статистика подключений сброшена.
+Connection stats reset.
 ```
 
 * `envi`: Вывести сведения о рабочем окружении сервиса
@@ -317,8 +317,8 @@ rw
 * `wchs`: Выводит краткую сводную информацию о наблюдениях на сервере.
 
 ```response
-1 соединение отслеживает 1 путь
-Всего отслеживаемых объектов: 1
+1 connections watching 1 paths
+Total watches:1
 ```
 
 * `wchc`: Выводит подробную информацию о наблюдениях (watches) на сервере, сгруппированную по сессиям. Возвращает список сессий (подключений) с соответствующими наблюдениями (путями). Обратите внимание: в зависимости от количества наблюдений эта операция может быть ресурсоёмкой (влиять на производительность сервера), поэтому используйте её с осторожностью.
@@ -338,10 +338,10 @@ rw
 * `dump`: Выводит список незавершённых сессий и эфемерных узлов. Работает только на лидере.
 
 ```response
-Дамп сессий (2):
+Sessions dump (2):
 0x0000000000000001
 0x0000000000000002
-Сессии с эфемерными узлами (1):
+Sessions with Ephemerals (1):
 0x0000000000000001
  /clickhouse/task_queue/ddl
 ```
@@ -368,7 +368,7 @@ last_snapshot_idx   50
 * `rqld`: Запрос на избрание новым лидером. Возвращает `Sent leadership request to leader.` если запрос отправлен, или `Failed to send leadership request to leader.` если запрос не отправлен. Обратите внимание, что если узел уже является лидером, результат будет таким же, как и при успешной отправке запроса.
 
 ```response
-Запрос на лидерство отправлен лидеру.
+Sent leadership request to leader.
 ```
 
 * `ftfl`: Отображает список всех feature-флагов и показывает, включены ли они для экземпляра Keeper.
@@ -382,29 +382,29 @@ check_not_exists    0
 * `ydld`: Запрос на передачу лидерства и переход в состояние последователя. Если сервер, получающий запрос, является лидером, он сначала приостановит операции записи, затем дождётся, пока преемник (текущий лидер никогда не может быть преемником) не завершит догон по последним записям журнала, и после этого откажется от лидерства. Преемник будет выбран автоматически. Будет возвращено `Sent yield leadership request to leader.` если запрос отправлен, или `Failed to send yield leadership request to leader.` если запрос не был отправлен. Обратите внимание, что если узел уже является последователем, результат будет таким же, как если бы запрос был отправлен.
 
 ```response
-Отправлен запрос на передачу лидерства лидеру.
+Sent yield leadership request to leader.
 ```
 
 * `pfev`: Возвращает значения для всех собранных событий. Для каждого события возвращает его имя, значение и описание.
 
 ```response
-FileOpen        62      Количество открытых файлов.
-Seek    4       Количество вызовов функции 'lseek'.
-ReadBufferFromFileDescriptorRead        126     Количество операций чтения (read/pread) из файлового дескриптора. Не включает сокеты.
-ReadBufferFromFileDescriptorReadFailed  0       Количество неудачных попыток чтения (read/pread) из файлового дескриптора.
-ReadBufferFromFileDescriptorReadBytes   178846  Количество байтов, прочитанных из файловых дескрипторов. Если файл сжат, отображается размер сжатых данных.
-WriteBufferFromFileDescriptorWrite      7       Количество операций записи (write/pwrite) в файловый дескриптор. Не включает сокеты.
-WriteBufferFromFileDescriptorWriteFailed        0       Количество неудачных попыток записи (write/pwrite) в файловый дескриптор.
-WriteBufferFromFileDescriptorWriteBytes 153     Количество байтов, записанных в файловые дескрипторы. Если файл сжат, отображается размер сжатых данных.
-FileSync        2       Количество вызовов функции F_FULLFSYNC/fsync/fdatasync для файлов.
-DirectorySync   0       Количество вызовов функции F_FULLFSYNC/fsync/fdatasync для каталогов.
-FileSyncElapsedMicroseconds     12756   Общее время ожидания системного вызова F_FULLFSYNC/fsync/fdatasync для файлов.
-DirectorySyncElapsedMicroseconds        0       Общее время ожидания системного вызова F_FULLFSYNC/fsync/fdatasync для каталогов.
-ReadCompressedBytes     0       Количество байтов (до декомпрессии), прочитанных из сжатых источников (файлы, сеть).
-CompressedReadBufferBlocks      0       Количество сжатых блоков (блоков данных, сжатых независимо друг от друга), прочитанных из сжатых источников (файлы, сеть).
-CompressedReadBufferBytes       0       Количество несжатых байтов (после декомпрессии), прочитанных из сжатых источников (файлы, сеть).
-AIOWrite        0       Количество операций записи через интерфейс AIO в Linux или FreeBSD
-AIOWriteBytes   0       Количество байтов, записанных через интерфейс AIO в Linux или FreeBSD
+FileOpen        62      Number of files opened.
+Seek    4       Number of times the 'lseek' function was called.
+ReadBufferFromFileDescriptorRead        126     Number of reads (read/pread) from a file descriptor. Does not include sockets.
+ReadBufferFromFileDescriptorReadFailed  0       Number of times the read (read/pread) from a file descriptor have failed.
+ReadBufferFromFileDescriptorReadBytes   178846  Number of bytes read from file descriptors. If the file is compressed, this will show the compressed data size.
+WriteBufferFromFileDescriptorWrite      7       Number of writes (write/pwrite) to a file descriptor. Does not include sockets.
+WriteBufferFromFileDescriptorWriteFailed        0       Number of times the write (write/pwrite) to a file descriptor have failed.
+WriteBufferFromFileDescriptorWriteBytes 153     Number of bytes written to file descriptors. If the file is compressed, this will show compressed data size.
+FileSync        2       Number of times the F_FULLFSYNC/fsync/fdatasync function was called for files.
+DirectorySync   0       Number of times the F_FULLFSYNC/fsync/fdatasync function was called for directories.
+FileSyncElapsedMicroseconds     12756   Total time spent waiting for F_FULLFSYNC/fsync/fdatasync syscall for files.
+DirectorySyncElapsedMicroseconds        0       Total time spent waiting for F_FULLFSYNC/fsync/fdatasync syscall for directories.
+ReadCompressedBytes     0       Number of bytes (the number of bytes before decompression) read from compressed sources (files, network).
+CompressedReadBufferBlocks      0       Number of compressed blocks (the blocks of data that are compressed independent of each other) read from compressed sources (files, network).
+CompressedReadBufferBytes       0       Number of uncompressed bytes (the number of bytes after decompression) read from compressed sources (files, network).
+AIOWrite        0       Number of writes with Linux or FreeBSD AIO interface
+AIOWriteBytes   0       Number of bytes written with Linux or FreeBSD AIO interface
 ...
 ```
 
@@ -654,28 +654,27 @@ Keeper может предоставлять метрики для сбора с
 
 **Пример**
 
-```xml
-<clickhouse>
-    <listen_host>0.0.0.0</listen_host>
-    <http_port>8123</http_port>
-    <tcp_port>9000</tcp_port>
-    <!-- highlight-start -->
-    <prometheus>
-        <endpoint>/metrics</endpoint>
-        <port>9363</port>
-        <metrics>true</metrics>
-        <events>true</events>
-        <asynchronous_metrics>true</asynchronous_metrics>
-    </prometheus>
-    <!-- highlight-end -->
-</clickhouse>
+```
+
+Check (replace `127.0.0.1` with the IP addr or hostname of your ClickHouse server):
 ```
 
 Проверьте (замените `127.0.0.1` на IP-адрес или имя хоста сервера ClickHouse):
 
-```bash
-curl 127.0.0.1:9363/metrics
 ```
+
+Please also see the ClickHouse Cloud [Prometheus integration](/integrations/prometheus).
+
+## ClickHouse Keeper user guide {#clickhouse-keeper-user-guide}
+
+This guide provides simple and minimal settings to configure ClickHouse Keeper with an example on how to test distributed operations. This example is performed using 3 nodes on Linux.
+
+### 1. Configure nodes with Keeper settings {#1-configure-nodes-with-keeper-settings}
+
+1. Install 3 ClickHouse instances on 3 hosts (`chnode1`, `chnode2`, `chnode3`). (View the [Quick Start](/getting-started/install/install.mdx) for details on installing ClickHouse.)
+
+2. On each node, add the following entry to allow external communication through the network interface.
+    ```
 
 См. также раздел ClickHouse Cloud [Интеграция с Prometheus](/integrations/prometheus).
 
@@ -688,42 +687,28 @@ curl 127.0.0.1:9363/metrics
 1. Установите 3 экземпляра ClickHouse на 3 хоста (`chnode1`, `chnode2`, `chnode3`). (См. раздел [Быстрый старт](/getting-started/install/install.mdx) для получения подробной информации по установке ClickHouse.)
 
 2. На каждом узле добавьте следующую запись, чтобы разрешить внешние подключения через сетевой интерфейс.
-    ```xml
-    <listen_host>0.0.0.0</listen_host>
+    ```
+
+3. Add the following ClickHouse Keeper configuration to all three servers updating the `<server_id>` setting for each server; for `chnode1` would be `1`, `chnode2` would be `2`, etc.
     ```
 
 3. Добавьте следующую конфигурацию ClickHouse Keeper на все три сервера, обновив параметр `<server_id>` для каждого сервера; для `chnode1` он будет `1`, для `chnode2` — `2` и т. д.
-    ```xml
-    <keeper_server>
-        <tcp_port>9181</tcp_port>
-        <server_id>1</server_id>
-        <log_storage_path>/var/lib/clickhouse/coordination/log</log_storage_path>
-        <snapshot_storage_path>/var/lib/clickhouse/coordination/snapshots</snapshot_storage_path>
+    ```
 
-        <coordination_settings>
-            <operation_timeout_ms>10000</operation_timeout_ms>
-            <session_timeout_ms>30000</session_timeout_ms>
-            <raft_logs_level>warning</raft_logs_level>
-        </coordination_settings>
+    These are the basic settings used above:
 
-        <raft_configuration>
-            <server>
-                <id>1</id>
-                <hostname>chnode1.domain.com</hostname>
-                <port>9234</port>
-            </server>
-            <server>
-                <id>2</id>
-                <hostname>chnode2.domain.com</hostname>
-                <port>9234</port>
-            </server>
-            <server>
-                <id>3</id>
-                <hostname>chnode3.domain.com</hostname>
-                <port>9234</port>
-            </server>
-        </raft_configuration>
-    </keeper_server>
+    |Parameter |Description                   |Example              |
+    |----------|------------------------------|---------------------|
+    |tcp_port   |port to be used by clients of keeper|9181 default equivalent of 2181 as in zookeeper|
+    |server_id| identifier for each ClickHouse Keeper server used in raft configuration| 1|
+    |coordination_settings| section to parameters such as timeouts| timeouts: 10000, log level: trace|
+    |server    |definition of server participating|list of each server definition|
+    |raft_configuration| settings for each server in the keeper cluster| server and settings for each|
+    |id      |numeric id of the server for keeper services|1|
+    |hostname   |hostname, IP or FQDN of each server in the keeper cluster|`chnode1.domain.com`|
+    |port|port to listen on for interserver keeper connections|9234|
+
+4.  Enable the Zookeeper component. It will use the ClickHouse Keeper engine:
     ```
 
     Ниже приведены базовые настройки, использованные выше:
@@ -740,21 +725,17 @@ curl 127.0.0.1:9363/metrics
     |port|порт для прослушивания межсерверных подключений Keeper|9234|
 
 4.  Включите компонент Zookeeper. Он будет использовать движок ClickHouse Keeper:
-    ```xml
-        <zookeeper>
-            <node>
-                <host>chnode1.domain.com</host>
-                <port>9181</port>
-            </node>
-            <node>
-                <host>chnode2.domain.com</host>
-                <port>9181</port>
-            </node>
-            <node>
-                <host>chnode3.domain.com</host>
-                <port>9181</port>
-            </node>
-        </zookeeper>
+    ```
+
+    These are the basic settings used above:
+
+    |Parameter |Description                   |Example              |
+    |----------|------------------------------|---------------------|
+    |node   |list of nodes for ClickHouse Keeper connections|settings entry for each server|
+    |host|hostname, IP or FQDN of each ClickHouse keeper node| `chnode1.domain.com`|
+    |port|ClickHouse Keeper client port| 9181|
+
+5. Restart ClickHouse and verify that each Keeper instance is running. Execute the following command on each server. The `ruok` command returns `imok` if Keeper is running and healthy:
     ```
 
     Ниже приведены базовые настройки, использованные выше:
@@ -766,54 +747,43 @@ curl 127.0.0.1:9363/metrics
     |port|клиентский порт ClickHouse Keeper| 9181|
 
 5. Перезапустите ClickHouse и убедитесь, что каждый экземпляр Keeper запущен. Выполните следующую команду на каждом сервере. Команда `ruok` возвращает `imok`, если Keeper запущен и находится в исправном состоянии:
-    ```bash
-    # echo ruok | nc localhost 9181; echo
-    imok
+    ```
+
+6. The `system` database has a table named `zookeeper` that contains the details of your ClickHouse Keeper instances. Let's view the table:
     ```
 
 6. В базе данных `system` есть таблица с именем `zookeeper`, которая содержит сведения о ваших экземплярах ClickHouse Keeper. Посмотрим содержимое таблицы:
-    ```sql
-    SELECT *
-    FROM system.zookeeper
-    WHERE path IN ('/', '/clickhouse')
+    ```
+
+    The table looks like:
     ```
 
 Таблица выглядит так:
 
-```response
-┌─name───────┬─value─┬─czxid─┬─mzxid─┬───────────────ctime─┬───────────────mtime─┬─version─┬─cversion─┬─aversion─┬─ephemeralOwner─┬─dataLength─┬─numChildren─┬─pzxid─┬─path────────┐
-│ clickhouse │       │   124 │   124 │ 2022-03-07 00:49:34 │ 2022-03-07 00:49:34 │       0 │        2 │        0 │              0 │          0 │           2 │  5693 │ /           │
-│ task_queue │       │   125 │   125 │ 2022-03-07 00:49:34 │ 2022-03-07 00:49:34 │       0 │        1 │        0 │              0 │          0 │           1 │   126 │ /clickhouse │
-│ tables     │       │  5693 │  5693 │ 2022-03-07 00:49:34 │ 2022-03-07 00:49:34 │       0 │        3 │        0 │              0 │          0 │           3 │  6461 │ /clickhouse │
-└────────────┴───────┴───────┴───────┴─────────────────────┴─────────────────────┴─────────┴──────────┴──────────┴────────────────┴────────────┴─────────────┴───────┴─────────────┘
 ```
+
+### 2.  Configure a cluster in ClickHouse {#2--configure-a-cluster-in-clickhouse}
+
+1. Let's configure a simple cluster with 2 shards and only one replica on 2 of the nodes. The third node will be used to achieve a quorum for the requirement in ClickHouse Keeper. Update the configuration on `chnode1` and `chnode2`. The following cluster defines 1 shard on each node for a total of 2 shards with no replication. In this example, some of the data will be on node and some will be on the other node:
+    ```
 
 ### 2.  Настройте кластер в ClickHouse {#2--configure-a-cluster-in-clickhouse}
 
 1. Настроим простой кластер с 2 шардами и только одной репликой на 2 из узлов. Третий узел будет использоваться для достижения кворума, требуемого в ClickHouse Keeper. Обновите конфигурацию на `chnode1` и `chnode2`. Следующий кластер определяет по 1 шарду на каждом узле, всего 2 шарда без репликации. В этом примере часть данных будет находиться на одном узле, а часть — на другом:
 
-   ```xml
-       <remote_servers>
-           <cluster_2S_1R>
-               <shard>
-                   <replica>
-                       <host>chnode1.domain.com</host>
-                       <port>9000</port>
-                       <user>default</user>
-                       <password>ClickHouse123!</password>
-                   </replica>
-               </shard>
-               <shard>
-                   <replica>
-                       <host>chnode2.domain.com</host>
-                       <port>9000</port>
-                       <user>default</user>
-                       <password>ClickHouse123!</password>
-                   </replica>
-               </shard>
-           </cluster_2S_1R>
-       </remote_servers>
    ```
+
+    |Parameter |Description                   |Example              |
+    |----------|------------------------------|---------------------|
+    |shard   |list of replicas on the cluster definition|list of replicas for each shard|
+    |replica|list of settings for each replica|settings entries for each replica|
+    |host|hostname, IP or FQDN of server that will host a replica shard|`chnode1.domain.com`|
+    |port|port used to communicate using the native tcp protocol|9000|
+    |user|username that will be used to authenticate to the cluster instances|default|
+    |password|password for the user define to allow connections to cluster instances|`ClickHouse123!`|
+
+2. Restart ClickHouse and verify the cluster was created:
+    ```
 
    | Parameter | Description                                                                              | Example                            |
    | --------- | ---------------------------------------------------------------------------------------- | ---------------------------------- |
@@ -826,116 +796,112 @@ curl 127.0.0.1:9363/metrics
 
 2. Перезапустите ClickHouse и убедитесь, что кластер был создан:
 
-   ```bash
-   SHOW clusters;
    ```
+
+    You should see your cluster:
+    ```
 
    Вы должны увидеть свой кластер:
 
-   ```response
-   ┌─cluster───────┐
-   │ cluster_2S_1R │
-   └───────────────┘
    ```
+
+### 3. Create and test distributed table {#3-create-and-test-distributed-table}
+
+1.  Create a new database on the new cluster using ClickHouse client on `chnode1`. The `ON CLUSTER` clause automatically creates the database on both nodes.
+    ```
 
 ### 3. Создайте и протестируйте распределённую таблицу {#3-create-and-test-distributed-table}
 
 1. Создайте новую базу данных на новом кластере, используя ClickHouse client на `chnode1`. Оператор `ON CLUSTER` автоматически создаёт базу данных на обоих узлах.
-   ```sql
-   CREATE DATABASE db1 ON CLUSTER 'cluster_2S_1R';
    ```
 
+2. Create a new table on the `db1` database. Once again, `ON CLUSTER` creates the table on both nodes.
+    ```
+
 2. Создайте новую таблицу в базе данных `db1`. Как и раньше, `ON CLUSTER` создаёт таблицу на обоих узлах.
-    ```sql
-    CREATE TABLE db1.table1 on cluster 'cluster_2S_1R'
-    (
-        `id` UInt64,
-        `column1` String
-    )
-    ENGINE = MergeTree
-    ORDER BY column1
+    ```
+
+3. On the `chnode1` node, add a couple of rows:
     ```
 
 3. На узле `chnode1` добавьте пару строк:
-    ```sql
-    INSERT INTO db1.table1
-        (id, column1)
-    VALUES
-        (1, 'abc'),
-        (2, 'def')
+    ```
+
+4. Add a couple of rows on the `chnode2` node:
     ```
 
 4. Добавьте пару строк на узле `chnode2`:
-    ```sql
-    INSERT INTO db1.table1
-        (id, column1)
-    VALUES
-        (3, 'ghi'),
-        (4, 'jkl')
+    ```
+
+5. Notice that running a `SELECT` statement on each node only shows the data on that node. For example, on `chnode1`:
     ```
 
 5. Обратите внимание, что выполнение запроса `SELECT` на каждом узле показывает только данные, находящиеся на этом узле. Например, на `chnode1`:
-    ```sql
-    SELECT *
-    FROM db1.table1
     ```
 
-    ```response
-    Query id: 7ef1edbc-df25-462b-a9d4-3fe6f9cb0b6d
+    ```
 
-    ┌─id─┬─column1─┐
-    │  1 │ abc     │
-    │  2 │ def     │
-    └────┴─────────┘
+    ```
 
-    2 rows in set. Elapsed: 0.006 sec.
+    On `chnode2`:
+6.
     ```
 
     На `chnode2`:
 6.
-    ```sql
-    SELECT *
-    FROM db1.table1
     ```
 
-    ```response
-    Query id: c43763cc-c69c-4bcc-afbe-50e764adfcbf
+    ```
 
-    ┌─id─┬─column1─┐
-    │  3 │ ghi     │
-    │  4 │ jkl     │
-    └────┴─────────┘
+    ```
+
+6. You can create a `Distributed` table to represent the data on the two shards. Tables with the `Distributed` table engine do not store any data of their own, but allow distributed query processing on multiple servers. Reads hit all the shards, and writes can be distributed across the shards. Run the following query on `chnode1`:
     ```
 
 6. Вы можете создать таблицу `Distributed`, которая будет представлять данные на двух шардах. Таблицы с движком `Distributed` не хранят собственные данные, но обеспечивают распределённую обработку запросов по нескольким серверам. Чтения выполняются по всем шардам, а записи могут распределяться между шардами. Выполните следующий запрос на `chnode1`:
-    ```sql
-    CREATE TABLE db1.dist_table (
-        id UInt64,
-        column1 String
-    )
-    ENGINE = Distributed(cluster_2S_1R,db1,table1)
+    ```
+
+7. Notice querying `dist_table` returns all four rows of data from the two shards:
     ```
 
 7. Обратите внимание, что запрос к `dist_table` возвращает все четыре строки данных с двух шардов:
-    ```sql
-    SELECT *
-    FROM db1.dist_table
     ```
 
-    ```response
-    Query id: 495bffa0-f849-4a0c-aeea-d7115a54747a
-
-    ┌─id─┬─column1─┐
-    │  1 │ abc     │
-    │  2 │ def     │
-    └────┴─────────┘
-    ┌─id─┬─column1─┐
-    │  3 │ ghi     │
-    │  4 │ jkl     │
-    └────┴─────────┘
-
-    4 rows in set. Elapsed: 0.018 sec.
     ```
+
+    ```
+
+### Summary {#summary}
+
+This guide demonstrated how to set up a cluster using ClickHouse Keeper. With ClickHouse Keeper, you can configure clusters and define distributed tables that can be replicated across shards.
+
+## Configuring ClickHouse Keeper with unique paths {#configuring-clickhouse-keeper-with-unique-paths}
+
+<SelfManaged />
+
+### Description {#description}
+
+This article describes how to use the built-in `{uuid}` macro setting
+to create unique entries in ClickHouse Keeper or ZooKeeper. Unique
+paths help when creating and dropping tables frequently because
+this avoids having to wait several minutes for Keeper garbage collection
+to remove path entries as each time a path is created a new `uuid` is used
+in that path; paths are never reused.
+
+### Example environment {#example-environment}
+A three node cluster that will be configured to have ClickHouse Keeper
+on all three nodes, and ClickHouse on two of the nodes. This provides
+ClickHouse Keeper with three nodes (including a tiebreaker node), and
+a single ClickHouse shard made up of two replicas.
+
+|node|description|
+|-----|-----|
+|`chnode1.marsnet.local`|data node - cluster `cluster_1S_2R`|
+|`chnode2.marsnet.local`|data node - cluster `cluster_1S_2R`|
+|`chnode3.marsnet.local`| ClickHouse Keeper tie breaker node|
+
+Example config for cluster:
+```
 
 ### Итоги {#summary}
 
@@ -969,27 +935,12 @@ ClickHouse, состоящий из двух реплик.
 
 Пример конфигурации для кластера:
 
-```xml
-    <remote_servers>
-        <cluster_1S_2R>
-            <shard>
-                <replica>
-                    <host>chnode1.marsnet.local</host>
-                    <port>9440</port>
-                    <user>default</user>
-                    <password>ClickHouse123!</password>
-                    <secure>1</secure>
-                </replica>
-                <replica>
-                    <host>chnode2.marsnet.local</host>
-                    <port>9440</port>
-                    <user>default</user>
-                    <password>ClickHouse123!</password>
-                    <secure>1</secure>
-                </replica>
-            </shard>
-        </cluster_1S_2R>
-    </remote_servers>
+```
+
+### Procedures to set up tables to use `{uuid}` {#procedures-to-set-up-tables-to-use-uuid}
+
+1. Configure Macros on each server
+example for server 1:
 ```
 
 ### Процедуры по настройке таблиц для использования `{uuid}` {#procedures-to-set-up-tables-to-use-uuid}
@@ -997,11 +948,13 @@ ClickHouse, состоящий из двух реплик.
 1. Настройте макросы на каждом сервере\
    пример для сервера 1:
 
-```xml
-    <macros>
-        <shard>1</shard>
-        <replica>replica_1</replica>
-    </macros>
+```
+:::note
+Notice that we define macros for `shard` and `replica`, but that `{uuid}` is not defined here, it is built-in and there is no need to define.
+:::
+
+2. Create a Database
+
 ```
 
 :::note
@@ -1010,46 +963,26 @@ ClickHouse, состоящий из двух реплик.
 
 2. Создайте базу данных
 
-```sql
-CREATE DATABASE db_uuid
-      ON CLUSTER 'cluster_1S_2R'
-      ENGINE Atomic;
 ```
 
-```response
-CREATE DATABASE db_uuid ON CLUSTER cluster_1S_2R
-ENGINE = Atomic
+```
 
-ID запроса: 07fb7e65-beb4-4c30-b3ef-bd303e5c42b5
+```
 
-┌─host──────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
-│ chnode2.marsnet.local │ 9440 │      0 │       │                   1 │                0 │
-│ chnode1.marsnet.local │ 9440 │      0 │       │                   0 │                0 │
-└───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
+3. Create a table on the cluster using the macros and `{uuid}`
+
 ```
 
 3. Создайте таблицу на кластере, используя макросы и `{uuid}`
 
-```sql
-CREATE TABLE db_uuid.uuid_table1 ON CLUSTER 'cluster_1S_2R'
-   (
-     id UInt64,
-     column1 String
-   )
-   ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/db_uuid/{uuid}', '{replica}' )
-   ORDER BY (id);
 ```
 
-```response
-CREATE TABLE db_uuid.uuid_table1 ON CLUSTER cluster_1S_2R
-(
-    `id` UInt64,
-    `column1` String
-)
-ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/db_uuid/{uuid}', '{replica}')
-ORDER BY id
+```
 
-Query id: 8f542664-4548-4a02-bd2a-6f2c973d0dc4
+```
+
+4.  Create a distributed table
+
 ```
 
 ┌─host──────────────────┬─port─┬─status─┬─error─┬─num&#95;hosts&#95;remaining─┬─num&#95;hosts&#95;active─┐
@@ -1058,8 +991,6 @@ Query id: 8f542664-4548-4a02-bd2a-6f2c973d0dc4
 └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
 
 ````
-
-4.  Создайте распределённую таблицу
 
 ```sql
 CREATE TABLE db_uuid.dist_uuid_table1 ON CLUSTER 'cluster_1S_2R'
@@ -1070,6 +1001,8 @@ CREATE TABLE db_uuid.dist_uuid_table1 ON CLUSTER 'cluster_1S_2R'
    ENGINE = Distributed('cluster_1S_2R', 'db_uuid', 'uuid_table1' );
 ````
 
+### Testing {#testing}
+1.  Insert data into first node (e.g `chnode1`)
 ```response
 CREATE TABLE db_uuid.dist_uuid_table1 ON CLUSTER cluster_1S_2R
 (
@@ -1086,10 +1019,6 @@ Query id: 3bc7f339-ab74-4c7d-a752-1ffe54219c0e
 └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
 ```
 
-### Тестирование {#testing}
-
-1. Добавьте данные на первый узел (например, `chnode1`)
-
 ```sql
 INSERT INTO db_uuid.uuid_table1
    ( id, column1)
@@ -1097,6 +1026,7 @@ INSERT INTO db_uuid.uuid_table1
    ( 1, 'abc');
 ```
 
+2. Insert data into second node (e.g., `chnode2`)
 ```response
 INSERT INTO db_uuid.uuid_table1 (id, column1) FORMAT Values
 
@@ -1107,8 +1037,6 @@ INSERT INTO db_uuid.uuid_table1 (id, column1) FORMAT Values
 Обработана 1 строка. Время выполнения: 0.033 сек.
 ```
 
-2. Запишите данные на второй узел (например, `chnode2`)
-
 ```sql
 INSERT INTO db_uuid.uuid_table1
    ( id, column1)
@@ -1116,6 +1044,7 @@ INSERT INTO db_uuid.uuid_table1
    ( 2, 'def');
 ```
 
+3. View records using distributed table
 ```response
 INSERT INTO db_uuid.uuid_table1 (id, column1) FORMAT Values
 
@@ -1126,12 +1055,14 @@ Ok.
 Обработана 1 строка. Затрачено: 0.529 сек.
 ```
 
-3. Просмотр записей через распределённую таблицу
-
 ```sql
 SELECT * FROM db_uuid.dist_uuid_table1;
 ```
 
+### Alternatives {#alternatives}
+The default replication path can be defined beforehand by macros and using also `{uuid}`
+
+1. Set default for tables on each node
 ```response
 SELECT *
 FROM db_uuid.dist_uuid_table1
@@ -1147,23 +1078,15 @@ Query id: 6cbab449-9e7f-40fe-b8c2-62d46ba9f5c8
 
 2 строки в наборе. Затрачено: 0.007 сек.
 ```
+:::tip
+You can also define a macro `{database}` on each node if nodes are used for certain databases.
+:::
 
-### Альтернативы {#alternatives}
-
-Путь репликации по умолчанию можно заранее задать с помощью макросов, включая `{uuid}`.
-
-1. Задать значение по умолчанию для таблиц на каждом узле
-
+2. Create table without explicit parameters:
 ```xml
 <default_replica_path>/clickhouse/tables/{shard}/db_uuid/{uuid}</default_replica_path>
 <default_replica_name>{replica}</default_replica_name>
 ```
-
-:::tip
-Вы также можете задать макрос `{database}` на каждом узле, если отдельные узлы используются для конкретных баз данных.
-:::
-
-2. Создайте таблицу без явных параметров:
 
 ```sql
 CREATE TABLE db_uuid.uuid_table1 ON CLUSTER 'cluster_1S_2R'
@@ -1175,6 +1098,7 @@ CREATE TABLE db_uuid.uuid_table1 ON CLUSTER 'cluster_1S_2R'
    ORDER BY (id);
 ```
 
+3. Verify it used the settings used in default config
 ```response
 CREATE TABLE db_uuid.uuid_table1 ON CLUSTER cluster_1S_2R
 (
@@ -1185,50 +1109,42 @@ ENGINE = ReplicatedMergeTree
 ORDER BY id
 ```
 
-ID запроса: ab68cda9-ae41-4d6d-8d3b-20d8255774ee
-
-┌─хост──────────────────┬─порт─┬─статус─┬─ошибка─┬─число&#95;оставшихся&#95;хостов─┬─число&#95;активных&#95;хостов─┐
-│ chnode2.marsnet.local │ 9440 │      0 │        │                             1 │                            0 │
-│ chnode1.marsnet.local │ 9440 │      0 │        │                             0 │                            0 │
-└───────────────────────┴──────┴────────┴────────┴───────────────────────────────┴──────────────────────────────┘
-
-2 строки в наборе. Время выполнения: 1.175 сек.
-
 ````
 
 3. Убедитесь, что использованы настройки из конфигурации по умолчанию
-```sql
-SHOW CREATE TABLE db_uuid.uuid_table1;
+```
+
+### Troubleshooting {#troubleshooting}
+
+Example command to get table information and UUID:
 ````
 
-```response
-SHOW CREATE TABLE db_uuid.uuid_table1
+```
 
-CREATE TABLE db_uuid.uuid_table1
-(
-    `id` UInt64,
-    `column1` String
-)
-ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/db_uuid/{uuid}', '{replica}')
-ORDER BY id
-
-Получена 1 строка. Прошло: 0.003 сек.
+Example command to get information about the table in zookeeper with UUID for the table above
 ```
 
 ### Устранение неполадок {#troubleshooting}
 
 Пример команды для получения информации о таблице и UUID:
 
-```sql
-SELECT * FROM system.tables
-WHERE database = 'db_uuid' AND name = 'uuid_table1';
+```
+
+:::note
+Database must be `Atomic`, if upgrading from a previous version, the
+`default` database is likely of `Ordinary` type.
+:::
+
+To check:
+
+For example,
+
 ```
 
 Пример команды для получения информации о таблице в ZooKeeper, содержащей UUID таблицы, указанной выше
 
-```sql
-SELECT * FROM system.zookeeper
-WHERE path = '/clickhouse/tables/1/db_uuid/9e8a3cc2-0dec-4438-81a7-c3e63ce2a1cf/replicas';
+```
+
 ```
 
 :::note
@@ -1240,24 +1156,36 @@ WHERE path = '/clickhouse/tables/1/db_uuid/9e8a3cc2-0dec-4438-81a7-c3e63ce2a1cf/
 
 Например,
 
-```sql
-SELECT name, engine FROM system.databases WHERE name = 'db_uuid';
 ```
 
-```response
-SELECT
-    name,
-    engine
-FROM system.databases
-WHERE name = 'db_uuid'
+## ClickHouse Keeper dynamic reconfiguration {#reconfiguration}
 
-Query id: b047d459-a1d2-4016-bcf9-3e97e30e49c2
+<SelfManaged />
 
-┌─name────┬─engine─┐
-│ db_uuid │ Atomic │
-└─────────┴────────┘
+### Description {#description-1}
 
-Результат: 1 строка. Затрачено: 0.004 сек.
+ClickHouse Keeper partially supports ZooKeeper [`reconfig`](https://zookeeper.apache.org/doc/r3.5.3-beta/zookeeperReconfig.html#sc_reconfig_modifying)
+command for dynamic cluster reconfiguration if `keeper_server.enable_reconfiguration` is turned on.
+
+:::note
+If this setting is turned off, you may reconfigure the cluster by altering the replica's `raft_configuration`
+section manually. Make sure you the edit files on all replicas as only the leader will apply changes.
+Alternatively, you can send a `reconfig` query through any ZooKeeper-compatible client.
+:::
+
+A virtual node `/keeper/config` contains last committed cluster configuration in the following format:
+
+```
+
+```
+
+- Each server entry is delimited by a newline.
+- `server_type` is either `participant` or `learner` ([learner](https://github.com/eBay/NuRaft/blob/master/docs/readonly_member.md) does not participate in leader elections).
+- `server_priority` is a non-negative integer telling [which nodes should be prioritised on leader elections](https://github.com/eBay/NuRaft/blob/master/docs/leader_election_priority.md).
+  Priority of 0 means server will never be a leader.
+
+Example:
+
 ```
 
 ## Динамическая переконфигурация ClickHouse Keeper {#reconfiguration}
@@ -1277,10 +1205,11 @@ ClickHouse Keeper частично поддерживает команду ZooKe
 
 Виртуальный узел `/keeper/config` содержит последнюю зафиксированную конфигурацию кластера в следующем формате:
 
-```text
-server.id = server_host:server_port[;server_type][;server_priority]
-server.id2 = ...
-...
+```
+
+You can use `reconfig` command to add new servers, remove existing ones, and change existing servers'
+priorities, here are examples (using `clickhouse-keeper-client`):
+
 ```
 
 * Каждая запись о сервере располагается на отдельной строке.
@@ -1290,11 +1219,10 @@ server.id2 = ...
 
 Пример:
 
-```sql
-:) get /keeper/config
-server.1=zoo1:9234;participant;1
-server.2=zoo2:9234;participant;1
-server.3=zoo3:9234;participant;1
+```
+
+And here are examples for `kazoo`:
+
 ```
 
 Вы можете использовать команду `reconfig`, чтобы добавлять новые серверы, удалять существующие и изменять их приоритеты. Ниже приведены примеры (с использованием `clickhouse-keeper-client`):

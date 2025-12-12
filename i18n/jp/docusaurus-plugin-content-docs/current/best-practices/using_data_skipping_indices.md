@@ -181,7 +181,7 @@ CREATE TABLE stackoverflow.posts
   `ParentId` String,
   `CommunityOwnedDate` DateTime64(3, 'UTC'),
   `ClosedDate` DateTime64(3, 'UTC'),
-  INDEX view_count_idx ViewCount TYPE minmax GRANULARITY 1 --インデックスはここ
+  INDEX view_count_idx ViewCount TYPE minmax GRANULARITY 1 --index here
 )
 ENGINE = MergeTree
 PARTITION BY toYear(CreationDate)
@@ -203,7 +203,7 @@ WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
 │     5   │
 └─────────┘
 
-1行が結果セットに含まれています。経過時間: 0.012秒。処理された行数: 39.11千行、321.39 KB (3.40百万行/秒、27.93 MB/秒)
+1 row in set. Elapsed: 0.012 sec. Processed 39.11 thousand rows, 321.39 KB (3.40 million rows/s., 27.93 MB/s.)
 ```
 
 `EXPLAIN indexes = 1` により、インデックスが利用されていることを確認できます。
@@ -213,6 +213,40 @@ EXPLAIN indexes = 1
 SELECT count()
 FROM stackoverflow.posts
 WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
+
+┌─explain────────────────────────────────────────────────────────────┐
+│ Expression ((Project names + Projection))                          │
+│   Aggregating                                                      │
+│     Expression (Before GROUP BY)                                   │
+│       Expression                                                   │
+│         ReadFromMergeTree (stackoverflow.posts)                    │
+│         Indexes:                                                   │
+│           MinMax                                                   │
+│             Keys:                                                  │
+│               CreationDate                                         │
+│             Condition: (CreationDate in ('1230768000', +Inf))      │
+│             Parts: 123/128                                         │
+│             Granules: 8513/8545                                    │
+│           Partition                                                │
+│             Keys:                                                  │
+│               toYear(CreationDate)                                 │
+│             Condition: (toYear(CreationDate) in [2009, +Inf))      │
+│             Parts: 123/123                                         │
+│             Granules: 8513/8513                                    │
+│           PrimaryKey                                               │
+│             Keys:                                                  │
+│               toDate(CreationDate)                                 │
+│             Condition: (toDate(CreationDate) in [14245, +Inf))     │
+│             Parts: 123/123                                         │
+│             Granules: 8513/8513                                    │
+│           Skip                                                     │
+│             Name: view_count_idx                                   │
+│             Description: minmax GRANULARITY 1                      │
+│             Parts: 5/123                                           │
+│             Granules: 23/8513                                      │
+└────────────────────────────────────────────────────────────────────┘
+
+29 rows in set. Elapsed: 0.211 sec.
 ```
 
 ┌─explain────────────────────────────────────────────────────────────┐

@@ -67,8 +67,8 @@ ENGINE = TinyLog
 データの挿入:
 
 ```sql
-INSERT INTO tiny_log_table VALUES (now(),'REGULAR','最初の通常メッセージ')
-INSERT INTO tiny_log_table VALUES (now(),'REGULAR','2番目の通常メッセージ'),(now(),'WARNING','最初の警告メッセージ')
+INSERT INTO tiny_log_table VALUES (now(),'REGULAR','The first regular message')
+INSERT INTO tiny_log_table VALUES (now(),'REGULAR','The second regular message'),(now(),'WARNING','The first warning message')
 ```
 
 2 つの `INSERT` クエリを使用して、`<column>.bin` ファイル内に 2 つのデータブロックを作成しました。
@@ -81,8 +81,8 @@ SELECT * FROM tiny_log_table
 
 ```text
 ┌───────────timestamp─┬─message_type─┬─message────────────────────┐
-│ 2024-12-10 13:11:58 │ REGULAR      │ 1件目の通常メッセージ      │
-│ 2024-12-10 13:12:12 │ REGULAR      │ 2件目の通常メッセージ      │
-│ 2024-12-10 13:12:12 │ WARNING      │ 1件目の警告メッセージ      │
+│ 2024-12-10 13:11:58 │ REGULAR      │ The first regular message  │
+│ 2024-12-10 13:12:12 │ REGULAR      │ The second regular message │
+│ 2024-12-10 13:12:12 │ WARNING      │ The first warning message  │
 └─────────────────────┴──────────────┴────────────────────────────┘
 ```

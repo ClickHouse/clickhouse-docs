@@ -108,24 +108,24 @@ buildType:
   choices:
     debug:
       short: Debug
-      long: Включить отладочную информацию
+      long: Emit debug information
       buildType: Debug
     release:
       short: Release
-      long: Оптимизировать генерируемый код
+      long: Optimize generated code
       buildType: Release
     relwithdebinfo:
       short: RelWithDebInfo
-      long: Релизная сборка с отладочной информацией
+      long: Release with Debug Info
       buildType: RelWithDebInfo
     tsan:
       short: MinSizeRel
-      long: Релизная сборка минимального размера
+      long: Minimum Size Release
       buildType: MinSizeRel
 
 toolchain:
   default: default
-  description: Выберите набор инструментов
+  description: Select toolchain
   choices:
     default:
       short: x86_64
@@ -146,10 +146,10 @@ toolchain:
         {
             "type": "lldb",
             "request": "custom",
-            "name": "(lldb) Запуск s390x с qemu",
+            "name": "(lldb) Launch s390x with qemu",
             "targetCreateCommands": ["target create ${command:cmake.launchTargetPath}"],
             "processCreateCommands": ["gdb-remote 2159"],
-            "preLaunchTask": "Запуск ClickHouse"
+            "preLaunchTask": "Run ClickHouse"
         }
     ]
 }
@@ -170,7 +170,7 @@ toolchain:
 
 ```sh
 #! /bin/sh
-echo 'Запуск сеанса отладчика'
+echo 'Starting debugger session'
 cd $1
 qemu-s390x-static -g 2159 -L /usr/s390x-linux-gnu $2 $3 $4
 ```
@@ -184,7 +184,7 @@ qemu-s390x-static -g 2159 -L /usr/s390x-linux-gnu $2 $3 $4
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Запустить ClickHouse",
+            "label": "Run ClickHouse",
             "type": "shell",
             "isBackground": true,
             "command": "${workspaceFolder}/.vscode/run-debug.sh",
@@ -206,7 +206,7 @@ qemu-s390x-static -g 2159 -L /usr/s390x-linux-gnu $2 $3 $4
                     ],
                     "background": {
                         "activeOnStart": true,
-                        "beginsPattern": "^Начало сеанса отладки",
+                        "beginsPattern": "^Starting debugger session",
                         "endsPattern": ".*"
                     }
                 }

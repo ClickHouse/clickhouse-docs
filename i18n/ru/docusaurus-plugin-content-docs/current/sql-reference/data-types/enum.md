@@ -61,8 +61,8 @@ ENGINE = TinyLog
 ```
 
 ```text
-Исключение на сервере:
-Код: 69. DB::Exception: Значение -129 для элемента 'hello' выходит за пределы диапазона Enum8.
+Exception on server:
+Code: 69. DB::Exception: Value -129 for element 'hello' exceeds range of Enum8.
 ```
 
 Столбец `x` может хранить только значения, перечисленные в определении типа: `'hello'` или `'world'`. Если вы попытаетесь сохранить любое другое значение, ClickHouse выдаст исключение. Размер 8 бит для этого типа `Enum` выбирается автоматически.
@@ -80,7 +80,7 @@ INSERT INTO t_enum VALUES('a')
 ```
 
 ```text
-Исключение на клиенте:
+Exception on client:
 Code: 49. DB::Exception: Unknown element 'a' for type Enum('hello' = 1, 'world' = 2)
 ```
 

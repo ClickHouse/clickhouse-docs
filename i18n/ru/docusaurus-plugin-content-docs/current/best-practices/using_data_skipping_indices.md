@@ -96,7 +96,7 @@ WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
 │     5   │
 └─────────┘
 
-Получена 1 строка. Затрачено: 0.720 сек. Обработано 59.55 млн строк, 230.23 МБ (82.66 млн строк/сек., 319.56 МБ/сек.)
+1 row in set. Elapsed: 0.720 sec. Processed 59.55 million rows, 230.23 MB (82.66 million rows/s., 319.56 MB/s.)
 ```
 
 Этот запрос может исключить часть строк (и гранул), используя первичный индекс. Однако основную часть строк всё равно необходимо прочитать, как видно из приведённого выше вывода и следующего результата команды `EXPLAIN indexes = 1`:
@@ -136,7 +136,7 @@ LIMIT 1
 │               Granules: 8513/8513                                │
 └──────────────────────────────────────────────────────────────────┘
 
-25 строк в наборе. Затрачено: 0.070 сек.
+25 rows in set. Elapsed: 0.070 sec.
 ```
 
 Простой анализ показывает, что `ViewCount` коррелирует с `CreationDate` (первичным ключом), как и следовало ожидать — чем дольше существует пост, тем больше времени есть, чтобы его просмотреть.
@@ -181,7 +181,7 @@ CREATE TABLE stackoverflow.posts
   `ParentId` String,
   `CommunityOwnedDate` DateTime64(3, 'UTC'),
   `ClosedDate` DateTime64(3, 'UTC'),
-  INDEX view_count_idx ViewCount TYPE minmax GRANULARITY 1 --индекс здесь
+  INDEX view_count_idx ViewCount TYPE minmax GRANULARITY 1 --index here
 )
 ENGINE = MergeTree
 PARTITION BY toYear(CreationDate)
@@ -203,7 +203,7 @@ WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
 │     5   │
 └─────────┘
 
-Получена 1 строка. Затрачено: 0.012 сек. Обработано 39.11 тыс. строк, 321.39 КБ (3.40 млн строк/сек., 27.93 МБ/сек.)
+1 row in set. Elapsed: 0.012 sec. Processed 39.11 thousand rows, 321.39 KB (3.40 million rows/s., 27.93 MB/s.)
 ```
 
 Запрос `EXPLAIN indexes = 1` подтверждает, что используется индекс.
@@ -213,6 +213,40 @@ EXPLAIN indexes = 1
 SELECT count()
 FROM stackoverflow.posts
 WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
+
+┌─explain────────────────────────────────────────────────────────────┐
+│ Expression ((Project names + Projection))                          │
+│   Aggregating                                                      │
+│     Expression (Before GROUP BY)                                   │
+│       Expression                                                   │
+│         ReadFromMergeTree (stackoverflow.posts)                    │
+│         Indexes:                                                   │
+│           MinMax                                                   │
+│             Keys:                                                  │
+│               CreationDate                                         │
+│             Condition: (CreationDate in ('1230768000', +Inf))      │
+│             Parts: 123/128                                         │
+│             Granules: 8513/8545                                    │
+│           Partition                                                │
+│             Keys:                                                  │
+│               toYear(CreationDate)                                 │
+│             Condition: (toYear(CreationDate) in [2009, +Inf))      │
+│             Parts: 123/123                                         │
+│             Granules: 8513/8513                                    │
+│           PrimaryKey                                               │
+│             Keys:                                                  │
+│               toDate(CreationDate)                                 │
+│             Condition: (toDate(CreationDate) in [14245, +Inf))     │
+│             Parts: 123/123                                         │
+│             Granules: 8513/8513                                    │
+│           Skip                                                     │
+│             Name: view_count_idx                                   │
+│             Description: minmax GRANULARITY 1                      │
+│             Parts: 5/123                                           │
+│             Granules: 23/8513                                      │
+└────────────────────────────────────────────────────────────────────┘
+
+29 rows in set. Elapsed: 0.211 sec.
 ```
 
 ┌─explain────────────────────────────────────────────────────────────┐

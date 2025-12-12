@@ -92,6 +92,14 @@ LIMIT 5
 11. │ type        │ String                                                                   │ NO   │     │ ᴺᵁᴸᴸ    │       │
 12. │ value       │ String                                                                   │ NO   │     │ ᴺᵁᴸᴸ    │       │
     └─────────────┴──────────────────────────────────────────────────────────────────────────┴──────┴─────┴─────────┴───────┘
+
+   ┌─name────────────────────┬─value──────┬─changed─┬─min──┬─max──┬─type────┬─is_obsolete─┬─tier───────┐
+1. │ dialect                 │ clickhouse │       0 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ Dialect │           0 │ Production │
+2. │ min_compress_block_size │ 65536      │       0 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ UInt64  │           0 │ Production │
+3. │ max_compress_block_size │ 1048576    │       0 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ UInt64  │           0 │ Production │
+4. │ max_block_size          │ 65409      │       0 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ UInt64  │           0 │ Production │
+5. │ max_insert_block_size   │ 1048449    │       0 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ UInt64  │           0 │ Production │
+   └─────────────────────────┴────────────┴─────────┴──────┴──────┴─────────┴─────────────┴────────────┘
 ```
 
 ┌─名称────────────────────┬─值──────────┬─是否修改─┬─最小值─┬─最大值─┬─类型────┬─是否废弃───┬─级别─────────┐
@@ -103,13 +111,30 @@ LIMIT 5
 5. │ max&#95;insert&#95;block&#95;size   │ 1048449    │         0 │ ᴺᵁᴸᴸ  │ ᴺᵁᴸᴸ  │ UInt64  │           0 │ 生产级       │
    └─────────────────────────┴────────────┴──────────┴───────┴───────┴─────────┴────────────┴────────────┘
 
-````
+````sql title="Query"
+CREATE TABLE crypto_prices
+(
+    trade_date Date,
+    crypto_name String,
+    volume Float32,
+    price Float32,
+    market_cap Float32,
+    change_1_day Float32
+)
+ENGINE = MergeTree
+PRIMARY KEY (crypto_name, trade_date);
 
-### 使用 `EXCEPT` 和 `INTERSECT` 处理加密货币数据 {#using-except-and-intersect-with-cryptocurrency-data}
+INSERT INTO crypto_prices
+   SELECT *
+   FROM s3(
+    'https://learn-clickhouse.s3.us-east-2.amazonaws.com/crypto_prices.csv',
+    'CSVWithNames'
+);
 
-`EXCEPT` 和 `INTERSECT` 通常可以通过不同的布尔逻辑互换使用，当您有两个共享公共列的表时，这两个操作符都非常有用。
-例如，假设我们有几百万行历史加密货币数据，包含交易价格和交易量：
-
+SELECT * FROM crypto_prices
+WHERE crypto_name = 'Bitcoin'
+ORDER BY trade_date DESC
+LIMIT 10;
 ```sql title="查询"
 CREATE TABLE crypto_prices
 (
@@ -134,8 +159,19 @@ SELECT * FROM crypto_prices
 WHERE crypto_name = 'Bitcoin'
 ORDER BY trade_date DESC
 LIMIT 10;
-````
-
+````response title="Response"
+┌─trade_date─┬─crypto_name─┬──────volume─┬────price─┬───market_cap─┬──change_1_day─┐
+│ 2020-11-02 │ Bitcoin     │ 30771456000 │ 13550.49 │ 251119860000 │  -0.013585099 │
+│ 2020-11-01 │ Bitcoin     │ 24453857000 │ 13737.11 │ 254569760000 │ -0.0031840964 │
+│ 2020-10-31 │ Bitcoin     │ 30306464000 │ 13780.99 │ 255372070000 │   0.017308505 │
+│ 2020-10-30 │ Bitcoin     │ 30581486000 │ 13546.52 │ 251018150000 │   0.008084608 │
+│ 2020-10-29 │ Bitcoin     │ 56499500000 │ 13437.88 │ 248995320000 │   0.012552661 │
+│ 2020-10-28 │ Bitcoin     │ 35867320000 │ 13271.29 │ 245899820000 │   -0.02804481 │
+│ 2020-10-27 │ Bitcoin     │ 33749879000 │ 13654.22 │ 252985950000 │    0.04427984 │
+│ 2020-10-26 │ Bitcoin     │ 29461459000 │ 13075.25 │ 242251000000 │  0.0033826586 │
+│ 2020-10-25 │ Bitcoin     │ 24406921000 │ 13031.17 │ 241425220000 │ -0.0058658565 │
+│ 2020-10-24 │ Bitcoin     │ 24542319000 │ 13108.06 │ 242839880000 │   0.013650347 │
+└────────────┴─────────────┴─────────────┴──────────┴──────────────┴───────────────┘
 ```response title="Response"
 ┌─trade_date─┬─crypto_name─┬──────volume─┬────price─┬───market_cap─┬──change_1_day─┐
 │ 2020-11-02 │ Bitcoin     │ 30771456000 │ 13550.49 │ 251119860000 │  -0.013585099 │
@@ -149,10 +185,6 @@ LIMIT 10;
 │ 2020-10-25 │ Bitcoin     │ 24406921000 │ 13031.17 │ 241425220000 │ -0.0058658565 │
 │ 2020-10-24 │ Bitcoin     │ 24542319000 │ 13108.06 │ 242839880000 │   0.013650347 │
 └────────────┴─────────────┴─────────────┴──────────┴──────────────┴───────────────┘
-```
-
-现在假设我们有一个名为 `holdings` 的表，其中存储了我们持有的各类加密货币及其对应的数量：
-
 ```sql
 CREATE TABLE holdings
 (
@@ -169,37 +201,56 @@ INSERT INTO holdings VALUES
    ('Ethereum', 5000),
    ('DOGEFI', 10),
    ('Bitcoin Diamond', 5000);
-```
+```sql
+CREATE TABLE holdings
+(
+    crypto_name String,
+    quantity UInt64
+)
+ENGINE = MergeTree
+PRIMARY KEY (crypto_name);
 
-我们可以使用 `EXCEPT` 来回答这样的问题：**“我们持有的哪些代币从未跌破 10 美元？”**：
-
+INSERT INTO holdings VALUES
+   ('Bitcoin', 1000),
+   ('Bitcoin', 200),
+   ('Ethereum', 250),
+   ('Ethereum', 5000),
+   ('DOGEFI', 10),
+   ('Bitcoin Diamond', 5000);
 ```sql title="Query"
 SELECT crypto_name FROM holdings
 EXCEPT
 SELECT crypto_name FROM crypto_prices
 WHERE price < 10;
-```
-
+```sql title="Query"
+SELECT crypto_name FROM holdings
+EXCEPT
+SELECT crypto_name FROM crypto_prices
+WHERE price < 10;
 ```response title="Response"
 ┌─crypto_name─┐
 │ Bitcoin     │
 │ Bitcoin     │
 └─────────────┘
-```
-
-这意味着在我们持有的四种加密货币中，只有比特币从未跌破 10 美元（基于本示例中我们所拥有的有限数据）。
-
-### 使用 `EXCEPT DISTINCT` {#using-except-and-intersect-with-cryptocurrency-data}
-
-请注意，在前一个查询的结果中，我们看到了多条比特币持仓记录。你可以在 `EXCEPT` 中添加 `DISTINCT`，以从结果中去除重复的行：
-
+```response title="Response"
+┌─crypto_name─┐
+│ Bitcoin     │
+│ Bitcoin     │
+└─────────────┘
 ```sql title="Query"
 SELECT crypto_name FROM holdings
 EXCEPT DISTINCT
 SELECT crypto_name FROM crypto_prices
 WHERE price < 10;
-```
-
+```sql title="Query"
+SELECT crypto_name FROM holdings
+EXCEPT DISTINCT
+SELECT crypto_name FROM crypto_prices
+WHERE price < 10;
+```response title="Response"
+┌─crypto_name─┐
+│ Bitcoin     │
+└─────────────┘
 ```response title="Response"
 ┌─crypto_name─┐
 │ Bitcoin     │

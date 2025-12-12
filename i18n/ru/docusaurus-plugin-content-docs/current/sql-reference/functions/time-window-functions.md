@@ -64,34 +64,39 @@ SELECT hop(now(), INTERVAL '1' DAY, INTERVAL '2' DAY)
 ('2024-07-03 00:00:00','2024-07-05 00:00:00')
 ```
 
+
+
 ## hopEnd {#hopEnd}
 
-Добавлена в версии: v22.1
+Introduced in: v22.1
 
-Возвращает верхнюю исключающую границу соответствующего скользящего окна.
 
-Поскольку одна запись может быть назначена нескольким hop-окнам, функция возвращает границу только первого окна, если функция hop используется без `WINDOW VIEW`.
+Returns the exclusive upper bound of the corresponding hopping window.
 
-**Синтаксис**
+Since one record can be assigned to multiple hop windows, the function only returns the bound of the first window when hop function is used without `WINDOW VIEW`.
+    
+
+**Syntax**
 
 ```sql
 hopEnd(time_attr, hop_interval, window_interval[, timezone])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `time_attr` — Дата и время. [`DateTime`](/sql-reference/data-types/datetime)
-* `hop_interval` — Положительный интервал шага (hop). [`Interval`](/sql-reference/data-types/int-uint)
-* `window_interval` — Положительный интервал окна (window). [`Interval`](/sql-reference/data-types/int-uint)
-* `timezone` — Необязательный параметр. Название часового пояса. [`String`](/sql-reference/data-types/string)
+- `time_attr` — Date and time. [`DateTime`](/sql-reference/data-types/datetime)
+- `hop_interval` — Positive Hop interval. [`Interval`](/sql-reference/data-types/int-uint)
+- `window_interval` — Positive Window interval. [`Interval`](/sql-reference/data-types/int-uint)
+- `timezone` — Optional. Timezone name. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает верхнюю границу (исключая её) соответствующего hopping-окна. [`DateTime`](/sql-reference/data-types/datetime)
+**Returned value**
 
-**Примеры**
+Returns the exclusive upper bound of the corresponding hopping window. [`DateTime`](/sql-reference/data-types/datetime)
 
-**Конец hopping-окна**
+**Examples**
+
+**Hopping window end**
 
 ```sql title=Query
 SELECT hopEnd(now(), INTERVAL '1' DAY, INTERVAL '2' DAY)
@@ -101,34 +106,39 @@ SELECT hopEnd(now(), INTERVAL '1' DAY, INTERVAL '2' DAY)
 2024-07-05 00:00:00
 ```
 
+
+
 ## hopStart {#hopStart}
 
-Впервые появилась в: v22.1
+Introduced in: v22.1
 
-Возвращает включающую нижнюю границу соответствующего скользящего окна.
 
-Поскольку одна запись может относиться к нескольким скользящим окнам, при использовании функции hop без `WINDOW VIEW` возвращается граница только первого окна.
+Returns the inclusive lower bound of the corresponding hopping window.
 
-**Синтаксис**
+Since one record can be assigned to multiple hop windows, the function only returns the bound of the first window when hop function is used without `WINDOW VIEW`.
+    
+
+**Syntax**
 
 ```sql
 hopStart(time_attr, hop_interval, window_interval[, timezone])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `time_attr` — Дата и время. [`DateTime`](/sql-reference/data-types/datetime)
-* `hop_interval` — Положительный интервал сдвига окна. [`Interval`](/sql-reference/data-types/int-uint)
-* `window_interval` — Положительный интервал окна. [`Interval`](/sql-reference/data-types/int-uint)
-* `timezone` — Необязательный параметр. Название часового пояса. [`String`](/sql-reference/data-types/string)
+- `time_attr` — Date and time. [`DateTime`](/sql-reference/data-types/datetime)
+- `hop_interval` — Positive Hop interval. [`Interval`](/sql-reference/data-types/int-uint)
+- `window_interval` — Positive Window interval. [`Interval`](/sql-reference/data-types/int-uint)
+- `timezone` — Optional. Timezone name. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает включительную нижнюю границу соответствующего окна сдвига (hopping-окна). [`DateTime`](/sql-reference/data-types/datetime)
+**Returned value**
 
-**Примеры**
+Returns the inclusive lower bound of the corresponding hopping window. [`DateTime`](/sql-reference/data-types/datetime)
 
-**Начало окна сдвига (hopping-окна)**
+**Examples**
+
+**Hopping window start**
 
 ```sql title=Query
 SELECT hopStart(now(), INTERVAL '1' DAY, INTERVAL '2' DAY)
@@ -138,31 +148,36 @@ SELECT hopStart(now(), INTERVAL '1' DAY, INTERVAL '2' DAY)
 2024-07-03 00:00:00
 ```
 
+
+
 ## tumble {#tumble}
 
-Добавлено в: v21.12
+Introduced in: v21.12
 
-Функция `tumble` разбивает записи на неперекрывающиеся, последовательные временные окна фиксированной продолжительности (`interval`).
 
-**Синтаксис**
+A tumbling time window assigns records to non-overlapping, continuous windows with a fixed duration (`interval`).
+    
+
+**Syntax**
 
 ```sql
 tumble(time_attr, interval[, timezone])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `time_attr` — Дата и время. [`DateTime`](/sql-reference/data-types/datetime)
-* `interval` — Интервал окна, тип Interval. [`Interval`](/sql-reference/data-types/int-uint)
-* `timezone` — Необязательный параметр. Название часового пояса. [`String`](/sql-reference/data-types/string)
+- `time_attr` — Date and time. [`DateTime`](/sql-reference/data-types/datetime)
+- `interval` — Window interval in Interval. [`Interval`](/sql-reference/data-types/int-uint)
+- `timezone` — Optional. Timezone name. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает нижнюю границу (включительно) и верхнюю границу (не включительно) соответствующего tumbling-окна. [`Tuple(DateTime, DateTime)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**Примеры**
+Returns the inclusive lower and exclusive upper bound of the corresponding tumbling window. [`Tuple(DateTime, DateTime)`](/sql-reference/data-types/tuple)
 
-**Tumbling-окно**
+**Examples**
+
+**Tumbling window**
 
 ```sql title=Query
 SELECT tumble(now(), toIntervalDay('1'))
@@ -172,31 +187,36 @@ SELECT tumble(now(), toIntervalDay('1'))
 ('2024-07-04 00:00:00','2024-07-05 00:00:00')
 ```
 
+
+
 ## tumbleEnd {#tumbleEnd}
 
-Добавлена в версии: v22.1
+Introduced in: v22.1
 
-Возвращает невключительную верхнюю границу соответствующего tumbling-окна.
 
-**Синтаксис**
+Returns the exclusive upper bound of the corresponding tumbling window.
+    
+
+**Syntax**
 
 ```sql
 tumbleEnd(time_attr, interval[, timezone])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `time_attr` — Дата и время. [`DateTime`](/sql-reference/data-types/datetime)
-* `interval` — Интервал окна с типом `Interval`. [`Interval`](/sql-reference/data-types/int-uint)
-* `timezone` — Необязательный параметр. Название часового пояса. [`String`](/sql-reference/data-types/string)
+- `time_attr` — Date and time. [`DateTime`](/sql-reference/data-types/datetime)
+- `interval` — Window interval in Interval. [`Interval`](/sql-reference/data-types/int-uint)
+- `timezone` — Optional. Timezone name. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает верхнюю границу (не включительно) соответствующего окна типа tumbling. [`DateTime`](/sql-reference/data-types/datetime)
+**Returned value**
 
-**Примеры**
+Returns the exclusive upper bound of the corresponding tumbling window. [`DateTime`](/sql-reference/data-types/datetime)
 
-**Конец окна типа tumbling**
+**Examples**
+
+**Tumbling window end**
 
 ```sql title=Query
 SELECT tumbleEnd(now(), toIntervalDay('1'))
@@ -206,31 +226,36 @@ SELECT tumbleEnd(now(), toIntervalDay('1'))
 2024-07-05 00:00:00
 ```
 
+
+
 ## tumbleStart {#tumbleStart}
 
-Появилась в версии v22.1
+Introduced in: v22.1
 
-Возвращает включающую нижнюю границу соответствующего фиксированного окна.
 
-**Синтаксис**
+Returns the inclusive lower bound of the corresponding tumbling window.
+    
+
+**Syntax**
 
 ```sql
 tumbleStart(time_attr, interval[, timezone])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `time_attr` — Дата и время. [`DateTime`](/sql-reference/data-types/datetime)
-* `interval` — Интервал временного окна в типе `Interval`. [`Interval`](/sql-reference/data-types/int-uint)
-* `timezone` — Необязательный параметр. Имя часового пояса. [`String`](/sql-reference/data-types/string)
+- `time_attr` — Date and time. [`DateTime`](/sql-reference/data-types/datetime)
+- `interval` — Window interval in Interval. [`Interval`](/sql-reference/data-types/int-uint)
+- `timezone` — Optional. Timezone name. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает включающую нижнюю границу соответствующего фиксированного окна. [`DateTime`](/sql-reference/data-types/datetime)
+**Returned value**
 
-**Примеры**
+Returns the inclusive lower bound of the corresponding tumbling window. [`DateTime`](/sql-reference/data-types/datetime)
 
-**Начало фиксированного окна**
+**Examples**
+
+**Tumbling window start**
 
 ```sql title=Query
 SELECT tumbleStart(now(), toIntervalDay('1'))

@@ -43,13 +43,13 @@ EXCHANGE TABLES [db0.]table_A AND [db1.]table_B [ON CLUSTER cluster]
 **例**
 
 ```sql title="Query"
--- テーブルを作成
+-- Create tables
 CREATE TABLE a (a UInt8) ENGINE=Memory;
 CREATE TABLE b (b UInt8) ENGINE=Memory;
 CREATE TABLE c (c UInt8) ENGINE=Memory;
 CREATE TABLE d (d UInt8) ENGINE=Memory;
 
--- 1つのクエリで2組のテーブルを交換
+-- Exchange two pairs of tables in one query
 EXCHANGE TABLES a AND b, c AND d;
 
 SHOW TABLE a;
@@ -59,7 +59,7 @@ SHOW TABLE d;
 ```
 
 ```sql title="Response"
--- テーブル 'a' はテーブル 'b' の構造を持ち、テーブル 'b' はテーブル 'a' の構造を持つ
+-- Now table 'a' has the structure of 'b', and table 'b' has the structure of 'a'
 ┌─statement──────────────┐
 │ CREATE TABLE default.a↴│
 │↳(                     ↴│
@@ -75,7 +75,7 @@ SHOW TABLE d;
 │↳ENGINE = Memory        │
 └────────────────────────┘
 
--- テーブル 'c' はテーブル 'd' の構造を持ち、テーブル 'd' はテーブル 'c' の構造を持つ
+-- Now table 'c' has the structure of 'd', and table 'd' has the structure of 'c'
 ┌─statement──────────────┐
 │ CREATE TABLE default.c↴│
 │↳(                     ↴│

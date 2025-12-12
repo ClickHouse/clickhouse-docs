@@ -53,7 +53,7 @@ SELECT tup.1 AS hrp, hex(tup.2) AS data FROM (SELECT bech32Decode('bc1w508d6qejx
 bc   751E76E8199196D454941C45D1B3A323F1433BD6
 ```
 
-**Адрес тестовой сети**
+**Testnet address**
 
 ```sql title=Query
 SELECT tup.1 AS hrp, hex(tup.2) AS data FROM (SELECT bech32Decode('tb1w508d6qejxtdg4y5r3zarvary0c5xw7kzp034v') AS tup)
@@ -63,38 +63,43 @@ SELECT tup.1 AS hrp, hex(tup.2) AS data FROM (SELECT bech32Decode('tb1w508d6qejx
 tb   751E76E8199196D454941C45D1B3A323F1433BD6
 ```
 
+
+
 ## bech32Encode {#bech32Encode}
 
-Добавлена в: v25.6
+Introduced in: v25.6
 
-Кодирует бинарную строку данных вместе с человеко-читаемой частью (HRP), используя алгоритмы [Bech32 или Bech32m](https://en.bitcoin.it/wiki/Bech32).
+
+Encodes a binary data string, along with a human-readable part (HRP), using the [Bech32 or Bech32m](https://en.bitcoin.it/wiki/Bech32) algorithms.
 
 :::note
-При использовании типа данных [`FixedString`](../data-types/fixedstring.md), если значение не полностью заполняет строку, оно дополняется нулевыми символами.
-Функция `bech32Encode` обрабатывает это автоматически для аргумента `hrp`, но для аргумента `data` значения не должны быть дополнены.
-По этой причине не рекомендуется использовать тип данных [`FixedString`](../data-types/fixedstring.md) для ваших данных, если только вы не
-уверены, что все значения имеют одинаковую длину, и не обеспечите, что столбец `FixedString` также имеет эту длину.
+When using the [`FixedString`](../data-types/fixedstring.md) data type, if a value does not fully fill the row it is padded with null characters.
+While the `bech32Encode` function will handle this automatically for the hrp argument, for the data argument the values must not be padded.
+For this reason it is not recommended to use the [`FixedString`](../data-types/fixedstring.md) data type for your data values unless you are
+certain that they are all the same length and ensure that your `FixedString` column is set to that length as well.
 :::
+    
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 bech32Encode(hrp, data[, witver])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `hrp` — Строка из `1 - 83` символов в нижнем регистре, задающая &quot;human-readable part&quot; (читаемую человеком часть) кода. Обычно &#39;bc&#39; или &#39;tb&#39;. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
-* `data` — Строка двоичных данных для кодирования. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
-* `witver` — Необязательный параметр. Версия witness (по умолчанию = 1). `UInt*`, задающий версию алгоритма. `0` для Bech32 и `1` или больше для Bech32m. [`UInt*`](/sql-reference/data-types/int-uint)
+- `hrp` — A String of `1 - 83` lowercase characters specifying the "human-readable part" of the code. Usually 'bc' or 'tb'. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+- `data` — A String of binary data to encode. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+- `witver` — Optional. The witness version (default = 1). An `UInt*` specifying the version of the algorithm to run. `0` for Bech32 and `1` or greater for Bech32m. [`UInt*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает строку адреса Bech32, состоящую из human-readable части, разделительного символа, который всегда равен &#39;1&#39;, и части данных. Длина строки никогда не превышает 90 символов. Если алгоритм не может сгенерировать корректный адрес из входных данных, возвращается пустая строка. [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**Примеры**
+Returns a Bech32 address string, consisting of the human-readable part, a separator character which is always '1', and a data part. The length of the string will never exceed 90 characters. If the algorithm cannot generate a valid address from the input, it will return an empty string. [`String`](/sql-reference/data-types/string)
 
-**Bech32m по умолчанию**
+**Examples**
+
+**Default Bech32m**
 
 ```sql title=Query
 -- Если версия witness не указана, по умолчанию используется версия 1 — обновлённый алгоритм Bech32m.
@@ -105,7 +110,7 @@ SELECT bech32Encode('bc', unhex('751e76e8199196d454941c45d1b3a323f1433bd6'))
 bc1w508d6qejxtdg4y5r3zarvary0c5xw7k8zcwmq
 ```
 
-**Алгоритм Bech32**
+**Bech32 algorithm**
 
 ```sql title=Query
 -- Версия witness со значением 0 приведёт к другой строке адреса.
@@ -116,7 +121,7 @@ SELECT bech32Encode('bc', unhex('751e76e8199196d454941c45d1b3a323f1433bd6'), 0)
 bc1w508d6qejxtdg4y5r3zarvary0c5xw7kj7gz7z
 ```
 
-**Пользовательский HRP**
+**Custom HRP**
 
 ```sql title=Query
 -- Хотя 'bc' (Mainnet) и 'tb' (Testnet) являются единственными допустимыми значениями hrp для
@@ -128,38 +133,43 @@ SELECT bech32Encode('abcdefg', unhex('751e76e8199196d454941c45d1b3a323f1433bd6')
 abcdefg1w508d6qejxtdg4y5r3zarvary0c5xw7k9rp8r4
 ```
 
+
+
 ## bin {#bin}
 
-Введена в: v21.8
+Introduced in: v21.8
 
-Возвращает строку, содержащую двоичное представление аргумента
-в соответствии со следующей логикой для разных типов:
 
-| Type                       | Description                                                                                                                                                                                                                                                                   |
-| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `(U)Int*`                  | Выводит двоичные разряды от старшего к младшему (порядок big-endian или «читаемый человеком»). Начинает с первого (самого старшего) ненулевого байта (ведущие нулевые байты опускаются), но всегда выводит восемь разрядов для каждого байта, если старший разряд равен нулю. |
-| `Date` and `DateTime`      | Форматируются как соответствующие целые числа (количество дней с начала эпохи Unix для Date и значение UNIX timestamp для DateTime).                                                                                                                                          |
-| `String` and `FixedString` | Все байты просто кодируются как восемь двоичных разрядов. Нулевые байты не опускаются.                                                                                                                                                                                        |
-| `Float*` and `Decimal`     | Кодируются в соответствии с их представлением в памяти. Так как поддерживается архитектура little-endian, они кодируются в формате little-endian. Ведущие и замыкающие нулевые байты не опускаются.                                                                           |
-| `UUID`                     | Кодируется как строка в порядке big-endian.                                                                                                                                                                                                                                   |
+Returns a string containing the argument's binary representation according
+to the following logic for different types:
 
-**Синтаксис**
+| Type                       | Description                                                                                                                                                                                                                                                           |
+|----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `(U)Int*`                  | Prints bin digits from the most significant to least significant (big-endian or "human-readable" order). It starts with the most significant non-zero byte (leading zero bytes are omitted) but always prints eight digits of every byte if the leading digit is zero.|
+| `Date` and `DateTime`      | Formatted as corresponding integers (the number of days since epoch for Date and the value of unix timestamp for DateTime).                                                                                                                                           |
+| `String` and `FixedString` | All bytes are simply encoded as eight binary numbers. Zero bytes are not omitted.                                                                                                                                                                                     |
+| `Float*` and `Decimal`     | Encoded as their representation in memory. As we support little-endian architecture, they are encoded in little-endian. Zero leading/trailing bytes are not omitted.                                                                                                  |
+| `UUID`                     | Encoded as big-endian order string.                                                                                                                                                                                                                                   |
+    
+
+**Syntax**
 
 ```sql
 bin(arg)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `arg` — Значение для преобразования в двоичное представление. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring) или [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal) или [`Date`](/sql-reference/data-types/date) или [`DateTime`](/sql-reference/data-types/datetime)
+- `arg` — A value to convert to binary. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring) or [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal) or [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime)
 
-**Возвращаемое значение**
 
-Возвращает строку, содержащую двоичное представление аргумента. [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**Примеры**
+Returns a string with the binary representation of the argument. [`String`](/sql-reference/data-types/string)
 
-**Простое целое число**
+**Examples**
+
+**Simple integer**
 
 ```sql title=Query
 SELECT bin(14)
@@ -171,7 +181,7 @@ SELECT bin(14)
 └──────────┘
 ```
 
-**Числа типа Float32**
+**Float32 numbers**
 
 ```sql title=Query
 SELECT bin(toFloat32(number)) AS bin_presentation FROM numbers(15, 2)
@@ -184,7 +194,7 @@ SELECT bin(toFloat32(number)) AS bin_presentation FROM numbers(15, 2)
 └──────────────────────────────────┘
 ```
 
-**Числа с плавающей запятой Float64**
+**Float64 numbers**
 
 ```sql title=Query
 SELECT bin(toFloat64(number)) AS bin_presentation FROM numbers(15, 2)
@@ -197,7 +207,7 @@ SELECT bin(toFloat64(number)) AS bin_presentation FROM numbers(15, 2)
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-**Конвертация UUID**
+**UUID conversion**
 
 ```sql title=Query
 SELECT bin(toUUID('61f0c404-5cb3-11e7-907b-a6006ad3dba0')) AS bin_uuid
@@ -209,30 +219,35 @@ SELECT bin(toUUID('61f0c404-5cb3-11e7-907b-a6006ad3dba0')) AS bin_uuid
 └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## bitPositionsToArray {#bitPositionsToArray}
 
-Введена в версии: v21.7
+Introduced in: v21.7
 
-Эта функция возвращает позиции (в порядке возрастания) битов со значением 1 в двоичном представлении беззнакового целого числа.
-Знаковые целые числа во входных данных сначала приводятся к беззнаковому целому числу.
 
-**Синтаксис**
+This function returns the positions (in ascending order) of the 1 bits in the binary representation of an unsigned integer.
+Signed input integers are first casted to an unsigned integer.
+    
+
+**Syntax**
 
 ```sql
 bitPositionsToArray(arg)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `arg` — целое число. [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `arg` — An integer value. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает массив с позициями единичных битов в двоичном представлении входного значения, упорядоченными по возрастанию. [`Array(UInt64)`](/sql-reference/data-types/array)
+**Returned value**
 
-**Примеры**
+Returns an array with the ascendingly ordered positions of 1 bits in the binary representation of the input. [`Array(UInt64)`](/sql-reference/data-types/array)
 
-**Установлен один бит**
+**Examples**
+
+**Single bit set**
 
 ```sql title=Query
 SELECT bitPositionsToArray(toInt8(1)) AS bit_positions
@@ -244,7 +259,7 @@ SELECT bitPositionsToArray(toInt8(1)) AS bit_positions
 └───────────────┘
 ```
 
-**Все биты установлены**
+**All bits set**
 
 ```sql title=Query
 SELECT bitPositionsToArray(toInt8(-1)) AS bit_positions
@@ -256,30 +271,35 @@ SELECT bitPositionsToArray(toInt8(-1)) AS bit_positions
 └───────────────────────────┘
 ```
 
+
+
 ## bitmaskToArray {#bitmaskToArray}
 
-Добавлена в версии: v1.1
+Introduced in: v1.1
 
-Эта функция разлагает целое число на сумму степеней двойки.
-Степени двойки возвращаются в виде массива, отсортированного по возрастанию.
 
-**Синтаксис**
+This function decomposes an integer into a sum of powers of two.
+The powers of two are returned as an ascendingly ordered array.
+    
+
+**Syntax**
 
 ```sql
 bitmaskToArray(num)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `num` — целое число. [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `num` — An integer value. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает массив степеней двойки, отсортированных по возрастанию, которые в сумме дают исходное число. [`Array(UInt64)`](/sql-reference/data-types/array)
+**Returned value**
 
-**Примеры**
+Returns an array with the ascendingly ordered powers of two which sum up to the input number. [`Array(UInt64)`](/sql-reference/data-types/array)
 
-**Базовый пример**
+**Examples**
+
+**Basic example**
 
 ```sql title=Query
 SELECT bitmaskToArray(50) AS powers_of_two
@@ -291,7 +311,7 @@ SELECT bitmaskToArray(50) AS powers_of_two
 └─────────────────┘
 ```
 
-**Степень двойки**
+**Single power of two**
 
 ```sql title=Query
 SELECT bitmaskToArray(8) AS powers_of_two
@@ -303,29 +323,34 @@ SELECT bitmaskToArray(8) AS powers_of_two
 └───────────────┘
 ```
 
+
+
 ## bitmaskToList {#bitmaskToList}
 
-Появилась в версии: v1.1
+Introduced in: v1.1
 
-Аналогична bitmaskToArray, но возвращает степени двойки в виде строки со значениями, разделёнными запятыми.
 
-**Синтаксис**
+Like bitmaskToArray but returns the powers of two as a comma-separated string.
+    
+
+**Syntax**
 
 ```sql
 bitmaskToList(num)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `num` — целое число. [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `num` — An integer value. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает строку, содержащую степени двойки, разделённые запятыми. [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**Примеры**
+Returns a string containing comma-separated powers of two. [`String`](/sql-reference/data-types/string)
 
-**Базовый пример**
+**Examples**
+
+**Basic example**
 
 ```sql title=Query
 SELECT bitmaskToList(50) AS powers_list
@@ -337,33 +362,38 @@ SELECT bitmaskToList(50) AS powers_list
 └───────────────┘
 ```
 
+
+
 ## char {#char}
 
-Введена в версии v20.1
+Introduced in: v20.1
 
-Возвращает строку длиной, равной количеству переданных аргументов, где каждый байт
-имеет значение соответствующего аргумента. Принимает несколько аргументов числовых типов.
 
-Если значение аргумента выходит за пределы диапазона типа данных `UInt8`, то оно приводится
-к `UInt8` с возможным округлением и переполнением.
+Returns a string with length equal to the number of arguments passed where each byte
+has the value of the corresponding argument. Accepts multiple arguments of numeric types.
 
-**Синтаксис**
+If the value of the argument is out of range of the `UInt8` data type, then it is converted
+to `UInt8` with potential rounding and overflow.
+        
+
+**Syntax**
 
 ```sql
 char(num1[, num2[, ...]])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `num1[, num2[, num3 ...]]` — числовые аргументы, интерпретируемые как целые числа. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+- `num1[, num2[, num3 ...]]` — Numerical arguments interpreted as integers. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**Возвращаемое значение**
 
-Возвращает строку из указанных байтов. [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**Примеры**
+Returns a string of the given bytes. [`String`](/sql-reference/data-types/string)
 
-**Базовый пример**
+**Examples**
+
+**Basic example**
 
 ```sql title=Query
 SELECT char(104.1, 101, 108.9, 108.9, 111) AS hello;
@@ -375,7 +405,7 @@ SELECT char(104.1, 101, 108.9, 108.9, 111) AS hello;
 └───────┘
 ```
 
-**Создание произвольных кодировок**
+**Constructing arbitrary encodings**
 
 ```sql title=Query
 -- Можно создать строку с произвольной кодировкой, передав соответствующие байты.
@@ -389,40 +419,45 @@ SELECT char(0xD0, 0xBF, 0xD1, 0x80, 0xD0, 0xB8, 0xD0, 0xB2, 0xD0, 0xB5, 0xD1, 0x
 └────────┘
 ```
 
+
+
 ## hex {#hex}
 
-Добавлена в версии: v1.1
+Introduced in: v1.1
 
-Возвращает строку, содержащую шестнадцатеричное представление аргумента в соответствии
-со следующей логикой для разных типов:
 
-| Тип                      | Описание                                                                                                                                                                                                                                                                                              |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `(U)Int*`                | Выводит шестнадцатеричные цифры («полубайты», nibbles) от старшего к младшему разряду (порядок big-endian или «читаемый человеком» порядок). Начинает со старшего ненулевого байта (ведущие нулевые байты опускаются), но всегда выводит обе цифры каждого байта, даже если старшая цифра равна нулю. |
-| `Date` и `DateTime`      | Форматируются как соответствующие целые числа (количество дней, прошедших с начала эпохи, для Date и значение метки времени Unix для DateTime).                                                                                                                                                       |
-| `String` и `FixedString` | Все байты просто кодируются как две шестнадцатеричные цифры. Нулевые байты не опускаются.                                                                                                                                                                                                             |
-| `Float*` и `Decimal`     | Кодируются в виде их представления в памяти. ClickHouse хранит значения во внутреннем представлении всегда в формате little-endian, поэтому они кодируются именно так. Ведущие и завершающие нулевые байты не опускаются.                                                                             |
-| `UUID`                   | Кодируется как строка в порядке big-endian.                                                                                                                                                                                                                                                           |
+Returns a string containing the argument's hexadecimal representation according
+to the following logic for different types:
 
-Функция использует заглавные буквы `A-F` и не использует никаких префиксов (например, `0x`) или суффиксов (например, `h`).
+| Type                       | Description                                                                                                                                                                                                                                                                            |
+|----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `(U)Int*`                  | Prints hex digits ("nibbles") from the most significant to least significant (big-endian or "human-readable" order). It starts with the most significant non-zero byte (leading zero bytes are omitted) but always prints both digits of every byte even if the leading digit is zero. |
+| `Date` and `DateTime`      | Formatted as corresponding integers (the number of days since epoch for Date and the value of unix timestamp for DateTime).                                                                                                                                                            |
+| `String` and `FixedString` | All bytes are simply encoded as two hexadecimal numbers. Zero bytes are not omitted.                                                                                                                                                                                                   |
+| `Float*` and `Decimal`     | Encoded as their representation in memory. ClickHouse represents the values internally always as little endian, therefore they are encoded as such. Zero leading/trailing bytes are not omitted.                                                                                                                   |
+| `UUID`                     | Encoded as big-endian order string.                                                                                                                                                                                                                                                    |
 
-**Синтаксис**
+The function uses uppercase letters `A-F` and not using any prefixes (like `0x`) or suffixes (like `h`).
+    
+
+**Syntax**
 
 ```sql
 hex(arg)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `arg` — значение, которое нужно преобразовать в шестнадцатеричное представление. [`String`](/sql-reference/data-types/string) или [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal) или [`Date`](/sql-reference/data-types/date) или [`DateTime`](/sql-reference/data-types/datetime)
+- `arg` — A value to convert to hexadecimal. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal) or [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime)
 
-**Возвращаемое значение**
 
-Возвращает строку с шестнадцатеричным представлением аргумента. [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**Примеры**
+Returns a string with the hexadecimal representation of the argument. [`String`](/sql-reference/data-types/string)
 
-**Простое целое число**
+**Examples**
+
+**Simple integer**
 
 ```sql title=Query
 SELECT hex(1)
@@ -432,7 +467,7 @@ SELECT hex(1)
 01
 ```
 
-**Числа типа Float32**
+**Float32 numbers**
 
 ```sql title=Query
 SELECT hex(toFloat32(number)) AS hex_presentation FROM numbers(15, 2)
@@ -445,7 +480,7 @@ SELECT hex(toFloat32(number)) AS hex_presentation FROM numbers(15, 2)
 └──────────────────┘
 ```
 
-**Числа типа Float64**
+**Float64 numbers**
 
 ```sql title=Query
 SELECT hex(toFloat64(number)) AS hex_presentation FROM numbers(15, 2)
@@ -458,7 +493,7 @@ SELECT hex(toFloat64(number)) AS hex_presentation FROM numbers(15, 2)
 └──────────────────┘
 ```
 
-**Преобразование UUID**
+**UUID conversion**
 
 ```sql title=Query
 SELECT lower(hex(toUUID('61f0c404-5cb3-11e7-907b-a6006ad3dba0'))) AS uuid_hex
@@ -470,50 +505,55 @@ SELECT lower(hex(toUUID('61f0c404-5cb3-11e7-907b-a6006ad3dba0'))) AS uuid_hex
 └──────────────────────────────────┘
 ```
 
+
+
 ## hilbertDecode {#hilbertDecode}
 
-Введена в: v24.6
+Introduced in: v24.6
 
-Декодирует индекс кривой Гильберта обратно в кортеж беззнаковых целых чисел, представляющих координаты в многомерном пространстве.
 
-Как и функция `hilbertEncode`, эта функция имеет два режима работы:
+Decodes a Hilbert curve index back into a tuple of unsigned integers, representing coordinates in multi-dimensional space.
 
-* **Простой**
-* **Расширенный**
+As with the `hilbertEncode` function, this function has two modes of operation:
+- **Simple**
+- **Expanded**
 
-**Простой режим**
+**Simple mode**
 
-Принимает до двух беззнаковых целых чисел в качестве аргументов и возвращает код типа `UInt64`.
+Accepts up to 2 unsigned integers as arguments and produces a `UInt64` code.
 
-**Расширенный режим**
+**Expanded mode**
 
-Принимает маску диапазона (кортеж) в качестве первого аргумента и до двух беззнаковых целых чисел в
-качестве остальных аргументов. Каждое число в маске задаёт количество бит, на которое
-соответствующий аргумент будет сдвинут влево, фактически масштабируя аргумент
-внутри его диапазона.
+Accepts a range mask (tuple) as a first argument and up to 2 unsigned integers as
+other arguments. Each number in the mask configures the number of bits by which
+the corresponding argument will be shifted left, effectively scaling the argument
+within its range.
 
-Расширение диапазона может быть полезно, когда требуется получить схожее распределение для
-аргументов с сильно различающимися диапазонами (или кардинальностями). Например: «IP-адрес» `(0...FFFFFFFF)`
-и «код страны» `(0...FF)`. Как и при кодировании, количество чисел ограничено максимум 8.
+Range expansion can be beneficial when you need a similar distribution for
+arguments with wildly different ranges (or cardinality) For example: 'IP Address' `(0...FFFFFFFF)`
+and 'Country code' `(0...FF)`. As with the encode function, this is limited to 8
+numbers at most.
+    
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 hilbertDecode(tuple_size, code)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `tuple_size` — целое число не более `2`. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint) или [`Tuple(UInt8/16/32/64)`](/sql-reference/data-types/tuple)
-* `code` — код типа `UInt64`. [`UInt64`](/sql-reference/data-types/int-uint)
+- `tuple_size` — Integer value of no more than `2`. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint) or [`Tuple(UInt8/16/32/64)`](/sql-reference/data-types/tuple)
+- `code` — `UInt64` code. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает кортеж указанного размера. [`Tuple(UInt64)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**Примеры**
+Returns a tuple of the specified size. [`Tuple(UInt64)`](/sql-reference/data-types/tuple)
 
-**Простой режим**
+**Examples**
+
+**Simple mode**
 
 ```sql title=Query
 SELECT hilbertDecode(2, 31)
@@ -523,7 +563,7 @@ SELECT hilbertDecode(2, 31)
 ["3", "4"]
 ```
 
-**Один аргумент**
+**Single argument**
 
 ```sql title=Query
 -- Код Гильберта для одного аргумента всегда совпадает с самим аргументом (в виде кортежа).
@@ -534,7 +574,7 @@ SELECT hilbertDecode(1, 1)
 ["1"]
 ```
 
-**Расширенный режим**
+**Expanded mode**
 
 ```sql title=Query
 -- Единственный аргумент с кортежем, задающим битовые сдвиги, будет соответственно сдвинут вправо.
@@ -545,7 +585,7 @@ SELECT hilbertDecode(tuple(2), 32768)
 ["128"]
 ```
 
-**Использование столбцов**
+**Column usage**
 
 ```sql title=Query
 -- Сначала создайте таблицу и вставьте некоторые данные
@@ -565,31 +605,34 @@ SELECT untuple(hilbertDecode(2, hilbertEncode(n1, n2))) FROM hilbert_numbers;
 1    2
 ```
 
+
+
 ## hilbertEncode {#hilbertEncode}
 
-Добавлена в версии: v24.6
+Introduced in: v24.6
 
-Вычисляет код кривой Гильберта для списка беззнаковых целых чисел.
 
-Функция имеет два режима работы:
+Calculates code for Hilbert Curve for a list of unsigned integers.
 
-* **Простой**
-* **Расширенный**
+The function has two modes of operation:
+- **Simple**
+- **Expanded**
 
-**Простой режим**
+**Simple mode**
 
-Принимает до двух беззнаковых целых чисел в качестве аргументов и возвращает код типа UInt64.
+Accepts up to 2 unsigned integers as arguments and produces a UInt64 code.
 
-**Расширенный режим**
+**Expanded mode**
 
-Принимает маску диапазона ([Tuple](../../sql-reference/data-types/tuple.md)) в качестве
-первого аргумента и до двух [беззнаковых целых чисел](../../sql-reference/data-types/int-uint.md)
-в качестве остальных аргументов.
+Accepts a range mask ([Tuple](../../sql-reference/data-types/tuple.md)) as the
+first argument and up to 2 [unsigned integers](../../sql-reference/data-types/int-uint.md)
+as other arguments.
 
-Каждое число в маске задаёт количество бит, на которое соответствующий аргумент
-будет сдвинут влево, эффективно масштабируя аргумент внутри его диапазона.
+Each number in the mask configures the number of bits by which the corresponding
+argument will be shifted left, effectively scaling the argument within its range.
+    
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 -- Упрощённый режим
@@ -599,18 +642,19 @@ hilbertEncode(args)
 hilbertEncode(range_mask, args)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `args` — До двух значений типа `UInt` или столбцов типа `UInt`. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
-* `range_mask` — Для расширенного режима — до двух значений типа `UInt` или столбцов типа `UInt`. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+- `args` — Up to two `UInt` values or columns of type `UInt`. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+- `range_mask` — For the expanded mode, up to two `UInt` values or columns of type `UInt`. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает код типа `UInt64`. [`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns a `UInt64` code. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Простой режим**
+**Examples**
+
+**Simple mode**
 
 ```sql title=Query
 SELECT hilbertEncode(3, 4)
@@ -620,7 +664,7 @@ SELECT hilbertEncode(3, 4)
 31
 ```
 
-**Расширенный режим**
+**Expanded mode**
 
 ```sql title=Query
 -- Расширение диапазона может быть полезно, когда требуется схожее распределение для
@@ -634,7 +678,7 @@ SELECT hilbertEncode((10, 6), 1024, 16)
 4031541586602
 ```
 
-**Один аргумент**
+**Single argument**
 
 ```sql title=Query
 -- Для одного аргумента без кортежа функция возвращает сам аргумент
@@ -646,7 +690,7 @@ SELECT hilbertEncode(1)
 1
 ```
 
-**Расширенная форма с одним аргументом**
+**Expanded single argument**
 
 ```sql title=Query
 -- Если передан один аргумент с кортежем, задающим битовые сдвиги, функция
@@ -658,7 +702,7 @@ SELECT hilbertEncode(tuple(2), 128)
 512
 ```
 
-**Использование столбцов**
+**Column usage**
 
 ```sql title=Query
 -- Сначала создайте таблицу и вставьте некоторые данные
@@ -678,38 +722,41 @@ SELECT hilbertEncode(n1, n2) FROM hilbert_numbers;
 13
 ```
 
+
+
 ## mortonDecode {#mortonDecode}
 
-Введена в: v24.6
+Introduced in: v24.6
 
-Декодирует кодировку Morton (ZCurve) в соответствующий кортеж беззнаковых целых чисел.
 
-Как и функция `mortonEncode`, эта функция имеет два режима работы:
+Decodes a Morton encoding (ZCurve) into the corresponding unsigned integer tuple.
 
-* **Простой**
-* **Расширенный**
+As with the `mortonEncode` function, this function has two modes of operation:
+- **Simple**
+- **Expanded**
 
-**Простой режим**
+**Simple mode**
 
-Принимает размер результирующего кортежа в качестве первого аргумента и код — в качестве второго аргумента.
+Accepts a resulting tuple size as the first argument and the code as the second argument.
 
-**Расширенный режим**
+**Expanded mode**
 
-Принимает маску диапазона (кортеж) в качестве первого аргумента и код — в качестве второго аргумента.
-Каждое число в маске задаёт степень сжатия диапазона:
+Accepts a range mask (tuple) as the first argument and the code as the second argument.
+Each number in the mask configures the amount of range shrink:
 
-* `1` — без сжатия
-* `2` — сжатие в 2 раза
-* `3` — сжатие в 3 раза
-  ⋮
-* До 8-кратного сжатия.
+* `1` - no shrink
+* `2` - 2x shrink
+* `3` - 3x shrink
+⋮
+* Up to 8x shrink.
 
-Расширение диапазона может быть полезно, когда требуется схожее распределение
-для аргументов с сильно различающимися диапазонами (или кардинальностью). Например: &#39;IP Address&#39; `(0...FFFFFFFF)`
-и &#39;Country code&#39; `(0...FF)`. Как и для функции кодирования, это ограничено не более чем
-8 числами.
+Range expansion can be beneficial when you need a similar distribution for
+arguments with wildly different ranges (or cardinality). For example: 'IP Address' `(0...FFFFFFFF)`
+and 'Country code' `(0...FF)`. As with the encode function, this is limited to
+8 numbers at most.
+    
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 -- Простой режим
@@ -719,19 +766,20 @@ mortonDecode(tuple_size, code)
 mortonDecode(range_mask, code)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `tuple_size` — целое число не более 8. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
-* `range_mask` — в расширенном режиме маска для каждого аргумента. Маска — это кортеж беззнаковых целых чисел. Каждое число в маске задаёт степень уменьшения диапазона. [`Tuple(UInt8/16/32/64)`](/sql-reference/data-types/tuple)
-* `code` — код UInt64. [`UInt64`](/sql-reference/data-types/int-uint)
+- `tuple_size` — Integer value no more than 8. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+- `range_mask` — For the expanded mode, the mask for each argument. The mask is a tuple of unsigned integers. Each number in the mask configures the amount of range shrink. [`Tuple(UInt8/16/32/64)`](/sql-reference/data-types/tuple)
+- `code` — UInt64 code. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает кортеж заданного размера. [`Tuple(UInt64)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**Примеры**
+Returns a tuple of the specified size. [`Tuple(UInt64)`](/sql-reference/data-types/tuple)
 
-**Простой режим**
+**Examples**
+
+**Simple mode**
 
 ```sql title=Query
 SELECT mortonDecode(3, 53)
@@ -741,7 +789,7 @@ SELECT mortonDecode(3, 53)
 ["1", "2", "3"]
 ```
 
-**Единственный аргумент**
+**Single argument**
 
 ```sql title=Query
 SELECT mortonDecode(1, 1)
@@ -751,7 +799,7 @@ SELECT mortonDecode(1, 1)
 ["1"]
 ```
 
-**Расширенный режим, сокращение одного аргумента**
+**Expanded mode, shrinking one argument**
 
 ```sql title=Query
 SELECT mortonDecode(tuple(2), 32768)
@@ -761,7 +809,7 @@ SELECT mortonDecode(tuple(2), 32768)
 ["128"]
 ```
 
-**Использование столбцов**
+**Column usage**
 
 ```sql title=Query
 -- Сначала создадим таблицу и вставим данные
@@ -787,35 +835,37 @@ SELECT untuple(mortonDecode(8, mortonEncode(n1, n2, n3, n4, n5, n6, n7, n8))) FR
 1 2 3 4 5 6 7 8
 ```
 
+
+
 ## mortonEncode {#mortonEncode}
 
-Впервые появилась в: v24.6
+Introduced in: v24.6
 
-Вычисляет кодирование Мортон (Z-curve) для списка беззнаковых целых чисел.
 
-Функция работает в двух режимах:
+Calculates the Morton encoding (ZCurve) for a list of unsigned integers.
 
-* **Простой**
-* *Расширенный**
+The function has two modes of operation:
+- **Simple**
+- *Expanded**
 
-**Простой режим**
+**Simple mode**
 
-Принимает до 8 беззнаковых целых чисел в качестве аргументов и возвращает значение типа `UInt64`.
+Accepts up to 8 unsigned integers as arguments and produces a `UInt64` code.
 
-**Расширенный режим**
+**Expanded mode**
 
-Принимает маску диапазона ([Tuple](../data-types/tuple.md)) в качестве первого аргумента и
-до 8 [беззнаковых целых чисел](../data-types/int-uint.md) в качестве остальных аргументов.
+Accepts a range mask ([Tuple](../data-types/tuple.md)) as the first argument and
+up to 8 [unsigned integers](../data-types/int-uint.md) as other arguments.
 
-Каждое число в маске задаёт степень расширения диапазона:
+Each number in the mask configures the amount of range expansion:
+* 1 - no expansion
+* 2 - 2x expansion
+* 3 - 3x expansion
+⋮
+* Up to 8x expansion.
+    
 
-* 1 — без расширения
-* 2 — расширение в 2 раза
-* 3 — расширение в 3 раза
-  ⋮
-* До 8-кратного расширения.
-
-**Синтаксис**
+**Syntax**
 
 ```sql
 -- Упрощённый режим
@@ -825,18 +875,19 @@ mortonEncode(args)
 mortonEncode(range_mask, args)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `args` — до 8 беззнаковых целых чисел или столбцов указанного выше типа. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
-* `range_mask` — для расширенного режима — маска для каждого аргумента. Маска — это кортеж беззнаковых целых чисел от `1` до `8`. Каждое число в маске задаёт величину сжатия диапазона. [`Tuple(UInt8/16/32/64)`](/sql-reference/data-types/tuple)
+- `args` — Up to 8 unsigned integers or columns of the aforementioned type. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+- `range_mask` — For the expanded mode, the mask for each argument. The mask is a tuple of unsigned integers from `1` - `8`. Each number in the mask configures the amount of range shrink. [`Tuple(UInt8/16/32/64)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает код типа `UInt64`. [`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns a `UInt64` code. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Простой режим**
+**Examples**
+
+**Simple mode**
 
 ```sql title=Query
 SELECT mortonEncode(1, 2, 3)
@@ -846,7 +897,7 @@ SELECT mortonEncode(1, 2, 3)
 53
 ```
 
-**Расширенный режим**
+**Expanded mode**
 
 ```sql title=Query
 -- Расширение диапазона может быть полезно, когда требуется схожее распределение для
@@ -860,7 +911,7 @@ SELECT mortonEncode((1,2), 1024, 16)
 1572864
 ```
 
-**Один аргумент**
+**Single argument**
 
 ```sql title=Query
 -- Кодирование Мортона для одного аргумента всегда возвращает сам аргумент
@@ -871,7 +922,7 @@ SELECT mortonEncode(1)
 1
 ```
 
-**Развёрнутый одиночный аргумент**
+**Expanded single argument**
 
 ```sql title=Query
 SELECT mortonEncode(tuple(2), 128)
@@ -881,7 +932,7 @@ SELECT mortonEncode(tuple(2), 128)
 32768
 ```
 
-**Использование столбцов**
+**Column usage**
 
 ```sql title=Query
 -- Сначала создадим таблицу и вставим данные
@@ -907,29 +958,34 @@ SELECT mortonEncode(n1, n2, n3, n4, n5, n6, n7, n8) FROM morton_numbers;
 2155374165
 ```
 
+
+
 ## sqidDecode {#sqidDecode}
 
-Добавлена в версии v24.1
+Introduced in: v24.1
 
-Преобразует [sqid](https://sqids.org/) обратно в массив чисел.
 
-**Синтаксис**
+Transforms a [sqid](https://sqids.org/) back into an array of numbers.
+    
+
+**Syntax**
 
 ```sql
 sqidDecode(sqid)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `sqid` — значение `sqid`, которое нужно декодировать. [`String`](/sql-reference/data-types/string)
+- `sqid` — The sqid to decode. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает массив чисел, полученных из `sqid`. [`Array(UInt64)`](/sql-reference/data-types/array)
+**Returned value**
 
-**Примеры**
+Returns an array of numbers from `sqid`. [`Array(UInt64)`](/sql-reference/data-types/array)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT sqidDecode('gXHfJ1C6dN');
@@ -941,31 +997,36 @@ SELECT sqidDecode('gXHfJ1C6dN');
 └──────────────────────────────┘
 ```
 
+
+
 ## sqidEncode {#sqidEncode}
 
-Добавлена в: v24.1
+Introduced in: v24.1
 
-Преобразует числа в [sqid](https://sqids.org/) — строковый идентификатор в стиле YouTube.
 
-**Синтаксис**
+Transforms numbers into a [sqid](https://sqids.org/), a Youtube-like ID string.
+    
+
+**Syntax**
 
 ```sql
 sqidEncode(n1[, n2, ...])
 ```
 
-**Псевдонимы**: `sqid`
+**Aliases**: `sqid`
 
-**Аргументы**
+**Arguments**
 
-* `n1[, n2, ...]` — Произвольное количество чисел. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+- `n1[, n2, ...]` — Arbitrarily many numbers. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает хеш-идентификатор [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**Примеры**
+Returns a hash ID [`String`](/sql-reference/data-types/string)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT sqidEncode(1, 2, 3, 4, 5);
@@ -977,38 +1038,43 @@ SELECT sqidEncode(1, 2, 3, 4, 5);
 └───────────────────────────┘
 ```
 
+
+
 ## unbin {#unbin}
 
-Введена в: v21.8
+Introduced in: v21.8
 
-Интерпретирует каждую пару двоичных разрядов (в аргументе) как число и преобразует её в байт, представленный этим числом. Функция выполняет операцию, противоположную `bin`.
 
-Для числового аргумента `unbin()` не возвращает значение, обратное `bin()`. Если вы хотите преобразовать результат в число, вы можете использовать функции `reverse` и `reinterpretAs<Type>`.
+Interprets each pair of binary digits (in the argument) as a number and converts it to the byte represented by the number. The functions performs the opposite operation to bin.
+
+For a numeric argument `unbin()` does not return the inverse of `bin()`. If you want to convert the result to a number, you can use the reverse and `reinterpretAs<Type>` functions.
 
 :::note
-Если `unbin` вызывается из `clickhouse-client`, двоичные строки отображаются в кодировке UTF-8.
+If `unbin` is invoked from within the `clickhouse-client`, binary strings are displayed using UTF-8.
 :::
 
-Поддерживает двоичные цифры `0` и `1`. Количество двоичных разрядов не обязано быть кратным восьми. Если строка-аргумент содержит что-либо, кроме двоичных цифр,
-результат не определён (исключение не генерируется).
+Supports binary digits `0` and `1`. The number of binary digits does not have to be multiples of eight. If the argument string contains anything other than binary digits,
+the result is undefined (no exception is thrown).
+    
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 unbin(arg)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `arg` — строка, содержащая любое количество двоичных цифр. [`String`](/sql-reference/data-types/string)
+- `arg` — A string containing any number of binary digits. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает двоичную строку (BLOB). [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**Примеры**
+Returns a binary string (BLOB). [`String`](/sql-reference/data-types/string)
 
-**Базовое использование**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT UNBIN('001100000011000100110010'), UNBIN('0100110101111001010100110101000101001100')
@@ -1020,7 +1086,7 @@ SELECT UNBIN('001100000011000100110010'), UNBIN('0100110101111001010100110101000
 └───────────────────────────────────┴───────────────────────────────────────────────────┘
 ```
 
-**Преобразовать в число**
+**Convert to number**
 
 ```sql title=Query
 SELECT reinterpretAsUInt64(reverse(unbin('1110'))) AS num
@@ -1032,43 +1098,48 @@ SELECT reinterpretAsUInt64(reverse(unbin('1110'))) AS num
 └─────┘
 ```
 
+
+
 ## unhex {#unhex}
 
-Добавлена в: v1.1
+Introduced in: v1.1
 
-Выполняет операцию, противоположную [`hex`](#hex). Интерпретирует каждую пару шестнадцатеричных цифр (в аргументе) как число и преобразует
-его в байт, представленный этим числом. Возвращаемое значение — бинарная строка (BLOB).
 
-Если нужно преобразовать результат в число, можно использовать функции `reverse` и `reinterpretAs<Type>`.
+Performs the opposite operation of [`hex`](#hex). It interprets each pair of hexadecimal digits (in the argument) as a number and converts
+it to the byte represented by the number. The returned value is a binary string (BLOB).
+
+If you want to convert the result to a number, you can use the `reverse` and `reinterpretAs<Type>` functions.
 
 :::note
-`clickhouse-client` интерпретирует строки как UTF-8.
-Это может приводить к неожиданному отображению значений, возвращаемых `hex`.
+`clickhouse-client` interprets strings as UTF-8.
+This may cause that values returned by `hex` to be displayed surprisingly.
 :::
 
-Поддерживаются как заглавные, так и строчные буквы `A-F`.
-Количество шестнадцатеричных цифр не обязательно должно быть чётным.
-Если оно нечётно, последняя цифра интерпретируется как наименее значимая половина байта `00-0F`.
-Если строковый аргумент содержит что-либо, кроме шестнадцатеричных цифр, возвращается зависящий от реализации результат (исключение не выбрасывается).
-Для числового аргумента обратная операция к `hex(N)` функцией `unhex()` не выполняется.
+Supports both uppercase and lowercase letters `A-F`.
+The number of hexadecimal digits does not have to be even.
+If it is odd, the last digit is interpreted as the least significant half of the `00-0F` byte.
+If the argument string contains anything other than hexadecimal digits, some implementation-defined result is returned (an exception isn't thrown).
+For a numeric argument the inverse of hex(N) is not performed by unhex().
 
-**Синтаксис**
+
+**Syntax**
 
 ```sql
 unhex(arg)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `arg` — Строка с любым количеством шестнадцатеричных цифр. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
+- `arg` — A string containing any number of hexadecimal digits. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
 
-**Возвращаемое значение**
 
-Возвращает двоичную строку (BLOB). [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**Примеры**
+Returns a binary string (BLOB). [`String`](/sql-reference/data-types/string)
 
-**Базовое использование**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT unhex('303132'), UNHEX('4D7953514C')
@@ -1080,7 +1151,7 @@ SELECT unhex('303132'), UNHEX('4D7953514C')
 └─────────────────┴─────────────────────┘
 ```
 
-**Преобразовать в число**
+**Convert to number**
 
 ```sql title=Query
 SELECT reinterpretAsUInt64(reverse(unhex('FFF'))) AS num

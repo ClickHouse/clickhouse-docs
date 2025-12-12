@@ -141,9 +141,9 @@ Output:
 └──────────────┴───────────┴──────────────────────────────────────────┘
 ````
 
-如果缺少 `checksums.txt` 文件，可以恢复该文件。它会在针对特定分区执行 `CHECK TABLE` 命令时被重新计算并写回磁盘，且状态仍将报告为 `is_passed = 1`。
+If the checksums.txt file is missing, it can be restored. It will be recalculated and rewritten during the execution of the CHECK TABLE command for the specific partition, and the status will still be reported as 'is_passed = 1'.
 
-可以通过使用 `CHECK ALL TABLES` 查询一次性检查所有现有的 `(Replicated)MergeTree` 表。
+You can check all existing `(Replicated)MergeTree` tables at once by using the `CHECK ALL TABLES` query.
 
 ```sql
 CHECK ALL TABLES

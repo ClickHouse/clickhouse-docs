@@ -88,10 +88,10 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 </clickhouse>
 ```
 
-#### 启用 ClickHouse Keeper 的单个 ClickHouse 服务器节点的基本配置 {#basic-configuration-for-a-single-clickhouse-server-node-with-clickhouse-keeper-enabled}
+#### Basic configuration for a single ClickHouse server node with ClickHouse Keeper enabled {#basic-configuration-for-a-single-clickhouse-server-node-with-clickhouse-keeper-enabled}
 
 :::note
-有关部署 ClickHouse 服务器以及配置合适数量的 ClickHouse Keeper 节点以形成法定节点数的详细信息，请参阅 [deployment](/deployment-guides/terminology.md) 文档。此处展示的配置仅供实验使用。
+See the [deployment](/deployment-guides/terminology.md) documentation for details on deploying ClickHouse server and a proper quorum of ClickHouse Keeper nodes.  The configuration shown here is for experimental purposes.
 :::
 
 ```xml title=/etc/clickhouse-server/config.d/config.xml
@@ -134,22 +134,21 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 </clickhouse>
 ```
 
-### 示例 {#example}
+### Example {#example}
 
-#### 验证实验性事务是否已启用 {#verify-that-experimental-transactions-are-enabled}
+#### Verify that experimental transactions are enabled {#verify-that-experimental-transactions-are-enabled}
 
-执行一次 `BEGIN TRANSACTION` 或 `START TRANSACTION`，随后执行 `ROLLBACK`，以验证实验性事务是否已启用，并确认 ClickHouse Keeper 已启用，因为它用于跟踪事务。
+Issue a `BEGIN TRANSACTION` or `START TRANSACTION` followed by a `ROLLBACK` to verify that experimental transactions are enabled, and that ClickHouse Keeper is enabled as it is used to track transactions. 
 
 ```sql
 开始事务
 ```
-
 ```response
 确认。
 ```
 
 :::tip
-如果遇到以下错误，请检查配置文件，确保将 `allow_experimental_transactions` 设置为 `1`（或任何不等于 `0` 或 `false` 的值）。
+If you see the following error, then check your configuration file to make sure that `allow_experimental_transactions` is set to `1` (or any value other than `0` or `false`).
 
 ```response
 代码:48. DB::Exception:从 localhost:9000 接收。
@@ -157,13 +156,14 @@ DB::Exception:不支持事务。
 (NOT_IMPLEMENTED)
 ```
 
-你还可以通过执行以下命令检查 ClickHouse Keeper：
+You can also check ClickHouse Keeper by issuing
 
 ```bash
 echo ruok | nc localhost 9181
 ```
 
-ClickHouse Keeper 应返回 `imok`。
+ClickHouse Keeper should respond with `imok`.
+:::
 
 ```sql
 ROLLBACK
@@ -173,10 +173,10 @@ ROLLBACK
 确认。
 ```
 
-#### 创建用于测试的表 {#create-a-table-for-testing}
+#### Create a table for testing {#create-a-table-for-testing}
 
 :::tip
-建表操作不具备事务性。请在事务之外执行此 DDL 语句。
+Creation of tables is not transactional.  Run this DDL query outside of a transaction.
 :::
 
 ```sql
@@ -192,7 +192,7 @@ ORDER BY n
 确认。
 ```
 
-#### 开始一个事务并插入一行数据 {#begin-a-transaction-and-insert-a-row}
+#### Begin a transaction and insert a row {#begin-a-transaction-and-insert-a-row}
 
 ```sql
 BEGIN TRANSACTION
@@ -222,12 +222,12 @@ FROM mergetree_table
 ```
 
 :::note
-你可以在事务内部查询该表，会发现该行已经被插入，即使该事务尚未提交。
+You can query the table from within a transaction and see that the row was inserted even though it has not yet been committed.
 :::
 
-#### 回滚事务，然后再次查询该表 {#rollback-the-transaction-and-query-the-table-again}
+#### Rollback the transaction, and query the table again {#rollback-the-transaction-and-query-the-table-again}
 
-确认事务已被回滚：
+Verify that the transaction is rolled back:
 
 ```sql
 ROLLBACK
@@ -241,19 +241,17 @@ ROLLBACK
 SELECT *
 FROM mergetree_table
 ```
-
 ```response
 Ok.
 
 结果集包含 0 行。耗时：0.002 秒。
 ```
 
-#### 完成事务并再次查询该表 {#complete-a-transaction-and-query-the-table-again}
+#### Complete a transaction and query the table again {#complete-a-transaction-and-query-the-table-again}
 
 ```sql
 BEGIN TRANSACTION
 ```
-
 ```response
 确认。
 ```
@@ -285,9 +283,10 @@ FROM mergetree_table
 └────┘
 ```
 
-### 事务查看 {#transactions-introspection}
+### Transactions introspection {#transactions-introspection}
 
-你可以通过查询 `system.transactions` 表来检查事务，但请注意，处于事务中的会话无法查询该表。请另开一个 `clickhouse client` 会话来查询该表。
+You can inspect transactions by querying the `system.transactions` table, but note that you cannot query that
+table from a session that is in a transaction. Open a second `clickhouse client` session to query that table.
 
 ```sql
 SELECT *

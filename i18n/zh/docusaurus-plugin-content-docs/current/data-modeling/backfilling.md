@@ -28,11 +28,11 @@ SELECT count()
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/*.parquet')
 
 ┌────count()─┐
-│ 2039988137 │ -- 20.4 亿
+│ 2039988137 │ -- 2.04 billion
 └────────────┘
 
-返回 1 行。用时:32.726 秒。已处理 20.4 亿行,170.05 KB(6234 万行/秒,5.20 KB/秒)。
-峰值内存使用量:239.50 MiB。
+1 row in set. Elapsed: 32.726 sec. Processed 2.04 billion rows, 170.05 KB (62.34 million rows/s., 5.20 KB/s.)
+Peak memory usage: 239.50 MiB.
 ```
 
 该 bucket 的完整数据集包含超过 320 GB 的 Parquet 文件。在下面的示例中，我们有意使用 glob 模式来选取数据子集。
@@ -128,7 +128,7 @@ Peak memory usage: 977.49 MiB.
 SELECT count() FROM pypi
 
 ┌──count()─┐
-│ 20612750 │ -- 2061 万
+│ 20612750 │ -- 20.61 million
 └──────────┘
 
 1 row in set. Elapsed: 0.004 sec.
@@ -137,7 +137,7 @@ SELECT sum(count)
 FROM pypi_downloads
 
 ┌─sum(count)─┐
-│   20612750 │ -- 2061 万
+│   20612750 │ -- 20.61 million
 └────────────┘
 
 1 row in set. Elapsed: 0.006 sec. Processed 96.15 thousand rows, 769.23 KB (16.53 million rows/s., 132.26 MB/s.)
@@ -169,17 +169,17 @@ GROUP BY project
 INSERT INTO pypi_v2 SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/1734393600-000000000{101..200}.parquet')
 
-结果集包含 0 行。用时:17.545 秒。处理了 4080 万行,3.90 GB(233 万行/秒,222.29 MB/秒)。
-内存峰值:991.50 MiB。
+0 rows in set. Elapsed: 17.545 sec. Processed 40.80 million rows, 3.90 GB (2.33 million rows/s., 222.29 MB/s.)
+Peak memory usage: 991.50 MiB.
 
 SELECT count()
 FROM pypi_v2
 
 ┌──count()─┐
-│ 20400020 │ -- 2040 万
+│ 20400020 │ -- 20.40 million
 └──────────┘
 
-结果集包含 1 行。用时:0.004 秒。
+1 row in set. Elapsed: 0.004 sec.
 
 SELECT sum(count)
 FROM pypi_downloads_v2
@@ -188,8 +188,8 @@ FROM pypi_downloads_v2
 │   20400020 │ -- 20.40 million
 └────────────┘
 
-结果集包含 1 行。用时:0.006 秒。处理了 9.549 万行,763.90 KB(1481 万行/秒,118.45 MB/秒)。
-内存峰值:688.77 KiB。
+1 row in set. Elapsed: 0.006 sec. Processed 95.49 thousand rows, 763.90 KB (14.81 million rows/s., 118.45 MB/s.)
+Peak memory usage: 688.77 KiB.
 ```
 
 如果我们在第二次加载的任意阶段遇到失败，可以直接[截断](/managing-data/truncate)我们的 `pypi_v2` 和 `pypi_downloads_v2`，然后重新执行数据加载。
@@ -199,11 +199,11 @@ FROM pypi_downloads_v2
 ```sql
 ALTER TABLE pypi_v2 MOVE PARTITION () TO pypi
 
-0 行受影响。用时:1.401 秒。
+0 rows in set. Elapsed: 1.401 sec.
 
 ALTER TABLE pypi_downloads_v2 MOVE PARTITION () TO pypi_downloads
 
-0 行受影响。用时:0.389 秒。
+0 rows in set. Elapsed: 0.389 sec.
 ```
 
 :::note 分区名称
@@ -217,19 +217,19 @@ SELECT count()
 FROM pypi
 
 ┌──count()─┐
-│ 41012770 │ -- 4101万
+│ 41012770 │ -- 41.01 million
 └──────────┘
 
-返回 1 行。用时:0.003 秒。
+1 row in set. Elapsed: 0.003 sec.
 
 SELECT sum(count)
 FROM pypi_downloads
 
 ┌─sum(count)─┐
-│   41012770 │ -- 4101万
+│   41012770 │ -- 41.01 million
 └────────────┘
 
-返回 1 行。用时:0.007 秒。已处理 19.164 万行,1.53 MB(2734 万行/秒,218.74 MB/秒)。
+1 row in set. Elapsed: 0.007 sec. Processed 191.64 thousand rows, 1.53 MB (27.34 million rows/s., 218.74 MB/s.)
 
 SELECT count()
 FROM pypi_v2
@@ -250,7 +250,7 @@ INSERT INTO pypi_v2 SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/1734393600-000000000{201..300}.parquet')
 INSERT INTO pypi_v2 SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/1734393600-000000000{301..400}.parquet')
---继续直到所有文件加载完成或执行 MOVE PARTITION 调用
+--continued to all files loaded OR MOVE PARTITION call is performed
 ```
 
 :::note
@@ -279,8 +279,8 @@ FROM pypi
 │ 2024-12-17 09:00:00 │
 └─────────────────────┘
 
-返回 1 行。用时:0.163 秒。已处理 13.4 亿行,5.37 GB(82.4 亿行/秒,32.96 GB/秒)。
-内存峰值:227.84 MiB。
+1 row in set. Elapsed: 0.163 sec. Processed 1.34 billion rows, 5.37 GB (8.24 billion rows/s., 32.96 GB/s.)
+Peak memory usage: 227.84 MiB.
 ```
 
 从上述内容可以知道，我们需要加载早于 `2024-12-17 09:00:00` 的数据。使用前面介绍的流程，我们新建一套相同的表和视图，并通过在时间戳上添加过滤条件来加载这部分数据子集。
@@ -299,7 +299,7 @@ INSERT INTO pypi_v2 SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/1734393600-*.parquet')
 WHERE timestamp < '2024-12-17 09:00:00'
 
-返回 0 行。用时:500.152 秒。处理了 27.4 亿行,364.40 GB(每秒 547 万行,728.59 MB/秒)。
+0 rows in set. Elapsed: 500.152 sec. Processed 2.74 billion rows, 364.40 GB (5.47 million rows/s., 728.59 MB/s.)
 ```
 
 :::note
@@ -391,7 +391,7 @@ GROUP BY
 Ok.
 
 0 rows in set. Elapsed: 2.830 sec. Processed 798.89 million rows, 17.40 GB (282.28 million rows/s., 6.15 GB/s.)
-峰值内存使用量:543.71 MiB。
+Peak memory usage: 543.71 MiB.
 ```
 
 :::note
@@ -536,30 +536,30 @@ Peak memory usage: 218.64 MiB.
 SELECT count() FROM pypi
 
 ┌────count()─┐
-│ 2039988137 │ -- 20.4 亿
+│ 2039988137 │ -- 2.04 billion
 └────────────┘
 
-1 行结果。耗时 0.003 秒。
+1 row in set. Elapsed: 0.003 sec.
 
--- (1) 暂停插入
--- (2) 创建目标表的副本
+-- (1) Pause inserts
+-- (2) Create a duplicate of our target table
 
 CREATE TABLE pypi_v2 AS pypi
 
 SELECT count() FROM pypi_v2
 
 ┌────count()─┐
-│ 2039988137 │ -- 20.4 亿
+│ 2039988137 │ -- 2.04 billion
 └────────────┘
 
-1 行结果。耗时 0.004 秒。
+1 row in set. Elapsed: 0.004 sec.
 
--- (3) 将原始目标表的分区附加到副本。
+-- (3) Attach partitions from the original target table to the duplicate.
 
 ALTER TABLE pypi_v2
  (ATTACH PARTITION tuple() FROM pypi)
 
--- (4) 创建新的物化视图
+-- (4) Create our new materialized views
 
 CREATE TABLE pypi_downloads_per_day
 (
@@ -580,7 +580,7 @@ GROUP BY
     hour,
  project
 
--- (4) 重新开始插入。这里通过插入一行来进行演示。
+-- (4) Restart inserts. We replicate here by inserting a single row.
 
 INSERT INTO pypi SELECT *
 FROM pypi
@@ -592,16 +592,16 @@ SELECT count() FROM pypi
 │ 2039988138 │ -- 2.04 billion
 └────────────┘
 
-1 行结果。耗时 0.003 秒。
+1 row in set. Elapsed: 0.003 sec.
 
--- 注意 pypi_v2 中的行数仍与之前相同
+-- notice how pypi_v2 contains same number of rows as before
 
 SELECT count() FROM pypi_v2
 ┌────count()─┐
-│ 2039988137 │ -- 20.4 亿
+│ 2039988137 │ -- 2.04 billion
 └────────────┘
 
--- (5) 使用备份表 pypi_v2 对视图进行回填
+-- (5) Backfill the view using the backup pypi_v2
 
 INSERT INTO pypi_downloads_per_day SELECT
  toStartOfHour(timestamp) as hour,
@@ -612,7 +612,9 @@ GROUP BY
     hour,
  project
 
-0 行结果。耗时 3.719 秒。已处理 20.4 亿行，47.15 GB（548.57 百万行/秒，12.68 GB/秒）。
+0 rows in set. Elapsed: 3.719 sec. Processed 2.04 billion rows, 47.15 GB (548.57 million rows/s., 12.68 GB/s.)
+
+DROP TABLE pypi_v2;
 ```
 
 DROP TABLE pypi&#95;v2;

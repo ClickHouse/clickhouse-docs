@@ -27,14 +27,14 @@ LIMIT 3
 Строки имеют следующий вид:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 review_date:       16462
 marketplace:       US
-customer_id:       25444946 -- 25,44 миллиона
+customer_id:       25444946 -- 25.44 million
 review_id:         R146L9MMZYG0WA
 product_id:        B00NV85102
-product_parent:    908181913 -- 908,18 миллиона
+product_parent:    908181913 -- 908.18 million
 product_title:     XIKEZAN iPhone 6 Plus 5.5 inch Waterproof Case, Shockproof Dirtproof Snowproof Full Body Skin Case Protective Cover with Hand Strap & Headphone Adapter & Kickstand
 product_category:  Wireless
 star_rating:       4
@@ -42,17 +42,17 @@ helpful_votes:     0
 total_votes:       0
 vine:              false
 verified_purchase: true
-review_headline:   чехол прочный и защищает как надо
-review_body:       Не буду рассчитывать на водонепроницаемость (снял резиновые уплотнители снизу, потому что они действовали на нервы). Но чехол прочный и защищает как надо.
+review_headline:   case is sturdy and protects as I want
+review_body:       I won't count on the waterproof part (I took off the rubber seals at the bottom because the got on my nerves). But the case is sturdy and protects as I want.
 
-Строка 2:
+Row 2:
 ──────
 review_date:       16462
 marketplace:       US
-customer_id:       1974568 -- 1,97 миллиона
+customer_id:       1974568 -- 1.97 million
 review_id:         R2LXDXT293LG1T
 product_id:        B00OTFZ23M
-product_parent:    951208259 -- 951,21 миллиона
+product_parent:    951208259 -- 951.21 million
 product_title:     Season.C Chicago Bulls Marilyn Monroe No.1 Hard Back Case Cover for Samsung Galaxy S5 i9600
 product_category:  Wireless
 star_rating:       1
@@ -60,17 +60,17 @@ helpful_votes:     0
 total_votes:       0
 vine:              false
 verified_purchase: true
-review_headline:   Одна звезда
-review_body:       Не могу использовать чехол, потому что он велик для телефона. Выброшенные деньги!
+review_headline:   One Star
+review_body:       Cant use the case because its big for the phone. Waist of money!
 
-Строка 3:
+Row 3:
 ──────
 review_date:       16462
 marketplace:       US
-customer_id:       24803564 -- 24,80 миллиона
+customer_id:       24803564 -- 24.80 million
 review_id:         R7K9U5OEIRJWR
 product_id:        B00LB8C4U4
-product_parent:    524588109 -- 524,59 миллиона
+product_parent:    524588109 -- 524.59 million
 product_title:     iPhone 5s Case, BUDDIBOX [Shield] Slim Dual Layer Protective Case with Kickstand for Apple iPhone 5 and 5s
 product_category:  Wireless
 star_rating:       4
@@ -78,8 +78,8 @@ helpful_votes:     0
 total_votes:       0
 vine:              false
 verified_purchase: true
-review_headline:   но в целом этот чехол достаточно прочный и обеспечивает хорошую защиту телефона
-review_body:       Переднюю часть поначалу было немного сложно закрепить на телефоне, но в целом этот чехол достаточно прочный и обеспечивает хорошую защиту телефона, что мне и нужно. Купил бы этот чехол снова.
+review_headline:   but overall this case is pretty sturdy and provides good protection for the phone
+review_body:       The front piece was a little difficult to secure to the phone at first, but overall this case is pretty sturdy and provides good protection for the phone, which is what I need. I would buy this case again.
 ```
 
 2. Давайте создадим новую таблицу типа `MergeTree` с именем `amazon_reviews` для хранения этих данных в ClickHouse:
@@ -133,7 +133,7 @@ SELECT formatReadableQuantity(count())
 FROM amazon.amazon_reviews
 ```
 
-6. Давайте посмотрим, сколько места занимают наши данные:
+6. Let's see how much space our data is using:
 
 ```sql runnable
 SELECT
@@ -149,11 +149,11 @@ GROUP BY disk_name
 ORDER BY size DESC
 ```
 
-Объём исходных данных составлял около 70 ГБ, но после сжатия в ClickHouse они занимают около 30 ГБ.
+The original data was about 70G, but compressed in ClickHouse it takes up about 30G.
 
-## Примеры запросов {#example-queries}
+## Example queries {#example-queries}
 
-7. Давайте выполним несколько запросов. Ниже приведены 10 наиболее полезных отзывов в этом наборе данных:
+7. Let's run some queries. Here are the top 10 most-helpful reviews in the dataset:
 
 ```sql runnable
 SELECT
@@ -165,10 +165,10 @@ LIMIT 10
 ```
 
 :::note
-Этот запрос использует [проекцию](/data-modeling/projections) для повышения производительности.
+This query is using a [projection](/data-modeling/projections) to speed up performance.
 :::
 
-8. Вот топ‑10 товаров на Amazon по количеству отзывов:
+8. Here are the top 10 products in Amazon with the most reviews:
 
 ```sql runnable
 SELECT
@@ -180,7 +180,7 @@ ORDER BY 2 DESC
 LIMIT 10;
 ```
 
-9. Вот средние рейтинги отзывов по месяцам для каждого товара (реальный [вопрос на собеседовании в Amazon](https://datalemur.com/questions/sql-avg-review-ratings)!):
+9. Here are the average review ratings per month for each product (an actual [Amazon job interview question](https://datalemur.com/questions/sql-avg-review-ratings)!):
 
 ```sql runnable
 SELECT
@@ -197,7 +197,7 @@ ORDER BY
 LIMIT 20;
 ```
 
-10. Вот общее число голосов по категориям товаров. Этот запрос выполняется быстро, потому что `product_category` входит в первичный ключ:
+10. Here are the total number of votes per product category. This query is fast because `product_category` is in the primary key:
 
 ```sql runnable
 SELECT
@@ -208,7 +208,7 @@ GROUP BY product_category
 ORDER BY 1 DESC
 ```
 
-11. Найдём товары, в отзывах на которые слово **«awful»** встречается чаще всего. Это большая задача — нужно разобрать более 151 млн строк в поисках одного слова:
+11. Let's find the products with the word **"awful"** occurring most frequently in the review. This is a big task - over 151M strings have to be parsed looking for a single word:
 
 ```sql runnable settings={'enable_parallel_replicas':1}
 SELECT
@@ -223,9 +223,9 @@ ORDER BY count DESC
 LIMIT 50;
 ```
 
-Обратите внимание на время выполнения запроса для такого большого объёма данных. Результаты тоже любопытно почитать!
+Notice the query time for such a large amount of data. The results are also a fun read!
 
-12. Мы можем выполнить тот же запрос ещё раз, только на этот раз будем искать **awesome** в отзывах:
+12. We can run the same query again, except this time we search for **awesome** in the reviews:
 
 ```sql runnable settings={'enable_parallel_replicas':1}
 SELECT 

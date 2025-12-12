@@ -24,7 +24,9 @@ doc_type: 'reference'
 SELECT EventTime, IsMobile FROM metrica.hits ORDER BY rand() LIMIT 10
 ```
 
-我们将使用 `sumForEach` 聚合组合器函数来分析一天中各个小时桌面端与移动端流量的变化情况。点击下方播放按钮以交互方式运行查询：
+We'll use the `sumForEach` aggregate combinator function to analyze how 
+desktop versus mobile traffic varies by hour of the day. Click the play button 
+below to run the query interactively:
 
 ```sql runnable
 SELECT

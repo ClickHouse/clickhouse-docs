@@ -60,30 +60,35 @@ SELECT fqdn()
 └─────────────────────────────────┘
 ```
 
+
+
 ## MACNumToString {#MACNumToString}
 
-自 v1.1 起提供
+Introduced in: v1.1
 
-将一个 [`UInt64`](/sql-reference/data-types/int-uint) 数字按大端格式解释为 MAC 地址。
-以字符串形式返回对应的 MAC 地址，格式为 `AA:BB:CC:DD:EE:FF`（用冒号分隔的十六进制数字）。
 
-**语法**
+Interprets a [`UInt64`](/sql-reference/data-types/int-uint) number as a MAC address in big endian format.
+Returns the corresponding MAC address in format `AA:BB:CC:DD:EE:FF` (colon-separated numbers in hexadecimal form) as string.
+    
+
+**Syntax**
 
 ```sql
 MACNumToString(num)
 ```
 
-**参数**
+**Arguments**
 
-* `num` — UInt64 类型的数值。[`UInt64`](/sql-reference/data-types/int-uint)
+- `num` — UInt64 number. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回格式为 AA:BB:CC:DD:EE:FF 的 MAC 地址字符串。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns a MAC address in format AA:BB:CC:DD:EE:FF. [`String`](/sql-reference/data-types/string)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT MACNumToString(149809441867716) AS mac_address;
@@ -95,29 +100,34 @@ SELECT MACNumToString(149809441867716) AS mac_address;
 └───────────────────┘
 ```
 
+
+
 ## MACStringToNum {#MACStringToNum}
 
-自 v1.1 版本引入
+Introduced in: v1.1
 
-MACNumToString 的逆函数。如果 MAC 地址格式无效，则返回 0。
 
-**语法**
+The inverse function of MACNumToString. If the MAC address has an invalid format, it returns 0.
+
+
+**Syntax**
 
 ```sql
 MACStringToNum(s)
 ```
 
-**参数**
+**Arguments**
 
-* `s` — MAC 地址字符串。[`String`](/sql-reference/data-types/string)
+- `s` — MAC address string. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回一个 UInt64 整数值。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns a UInt64 number. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT MACStringToNum('01:02:03:04:05:06') AS mac_numeric;
@@ -127,29 +137,34 @@ SELECT MACStringToNum('01:02:03:04:05:06') AS mac_numeric;
 1108152157446
 ```
 
+
+
 ## MACStringToOUI {#MACStringToOUI}
 
-引入版本：v1.1
+Introduced in: v1.1
 
-给定一个格式为 AA:BB:CC:DD:EE:FF（以冒号分隔的十六进制数）的 MAC 地址，返回其前三个字节，作为一个 UInt64 值。如果 MAC 地址格式无效，则返回 0。
 
-**语法**
+Given a MAC address in format AA:BB:CC:DD:EE:FF (colon-separated numbers in hexadecimal form), returns the first three octets as a UInt64 number. If the MAC address has an invalid format, it returns 0.
+    
+
+**Syntax**
 
 ```sql
 MACStringToOUI(s)
 ```
 
-**参数**
+**Arguments**
 
-* `s` — MAC 地址字符串。[`String`](/sql-reference/data-types/string)
+- `s` — MAC address string. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-以 `UInt64` 数值返回前三个八位字节。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+First three octets as UInt64 number. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT MACStringToOUI('00:50:56:12:34:56') AS oui;
@@ -159,30 +174,32 @@ SELECT MACStringToOUI('00:50:56:12:34:56') AS oui;
 20566
 ```
 
-## &#95;&#95;applyFilter {#&#95;&#95;applyFilter}
 
-引入于：v25.10
 
-用于 JOIN 运行时过滤的特殊函数。
+## __applyFilter {#__applyFilter}
 
-**语法**
+Introduced in: v25.10
+
+Special function for JOIN runtime filtering.
+
+**Syntax**
 
 ```sql
 __applyFilter(filter_name, key)
 ```
 
-**参数**
+**Arguments**
 
-* `filter_name` — 运行时过滤器的内部名称，由 BuildRuntimeFilterStep 构建。[`String`](/sql-reference/data-types/string)
-* `key` — 任意类型的值，用于检查其是否存在于过滤器中
+- `filter_name` — Internal name of runtime filter. It is built by BuildRuntimeFilterStep. [`String`](/sql-reference/data-types/string)
+- `key` — Value of any type that is checked to be present in the filter 
 
-**返回值**
+**Returned value**
 
-如果应当过滤该 key，则返回 False [`Bool`](/sql-reference/data-types/boolean)
+False if the key should be filtered [`Bool`](/sql-reference/data-types/boolean)
 
-**示例**
+**Examples**
 
-**示例**
+**Example**
 
 ```sql title=Query
 此函数不应在用户查询中使用。在优化过程中,它可能会被添加到查询计划中。
@@ -191,51 +208,61 @@ __applyFilter(filter_name, key)
 ```response title=Response
 ```
 
-## &#95;&#95;patchPartitionID {#&#95;&#95;patchPartitionID}
 
-引入版本：v25.5
 
-内部函数。接受一个 part 的名称以及 patch part 的列名哈希值，返回该 patch part 的分区名称。参数必须是合法的 part 名称，否则行为未定义。
+## __patchPartitionID {#__patchPartitionID}
 
-**语法**
+Introduced in: v25.5
+
+
+Internal function. Receives the name of a part and a hash of patch part's column names. Returns the name of partition of patch part. The argument must be a correct name of part, the behaviour is undefined otherwise.
+        
+
+**Syntax**
 
 ```sql
 ```
 
-**参数**
+**Arguments**
 
-* 无。
+- None.
 
-**返回值**
+**Returned value**
 
-**示例**
+
+
+**Examples**
+
+
 
 ## authenticatedUser {#authenticatedUser}
 
-引入版本：v25.11
+Introduced in: v25.11
 
-如果使用 EXECUTE AS 命令切换了会话用户，此函数返回用于身份验证并创建会话的原始用户的名称。
-别名：authUser()
 
-**语法**
+If the session user has been switched using the EXECUTE AS command, this function returns the name of the original user that was used for authentication and creating the session.
+Alias: authUser()
+        
+
+**Syntax**
 
 ```sql
 authenticatedUser()
 ```
 
-**别名**：`authUser`
+**Aliases**: `authUser`
 
-**参数**
+**Arguments**
 
-* 无。
+- None.
 
-**返回值**
+**Returned value**
 
-已认证用户的名称。[`String`](/sql-reference/data-types/string)
+The name of the authenticated user. [`String`](/sql-reference/data-types/string)
 
-**示例**
+**Examples**
 
-**使用示例**
+**Usage example**
 
 ```sql title=Query
 EXECUTE as u1;
@@ -248,34 +275,39 @@ EXECUTE as u1;
 └───────────────┴─────────────────────┘
 ```
 
+
+
 ## bar {#bar}
 
-引入版本：v1.1
+Introduced in: v1.1
 
-构建一个柱状图。
-绘制一条条带，其宽度与 (x - min) 成正比，当 x = max 时其宽度等于 `width` 个字符。
-该条带的绘制精度可细化到单个符号的八分之一。
 
-**语法**
+Builds a bar chart.
+Draws a band with width proportional to (x - min) and equal to width characters when x = max.
+The band is drawn with accuracy to one eighth of a symbol.
+
+
+**Syntax**
 
 ```sql
 bar(x, min, max[, width])
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 要显示的数值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
-* `min` — 最小值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
-* `max` — 最大值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
-* `width` — 可选。条形的字符宽度。默认值为 `80`。[`const (U)Int*`](/sql-reference/data-types/int-uint) 或 [`const Float*`](/sql-reference/data-types/float) 或 [`const Decimal`](/sql-reference/data-types/decimal)
+- `x` — Size to display. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `min` — The minimum value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `max` — The maximum value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `width` — Optional. The width of the bar in characters. The default is `80`. [`const (U)Int*`](/sql-reference/data-types/int-uint) or [`const Float*`](/sql-reference/data-types/float) or [`const Decimal`](/sql-reference/data-types/decimal)
 
-**返回值**
 
-返回一个基于 Unicode 的条形字符串。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns a unicode-art bar string. [`String`](/sql-reference/data-types/string)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT
@@ -316,30 +348,34 @@ ORDER BY h ASC
 └────┴────────┴────────────────────┘
 ```
 
+
+
 ## blockNumber {#blockNumber}
 
-引入自：v1.1
+Introduced in: v1.1
 
-返回包含该行的[块](../../development/architecture.md#block)的单调递增序列号。
-返回的块号基于尽力保证原则进行更新，因此可能并不完全精确。
 
-**语法**
+Returns a monotonically increasing sequence number of the [block](../../development/architecture.md#block) containing the row.
+The returned block number is updated on a best-effort basis, i.e. it may not be fully accurate.
+    
+
+**Syntax**
 
 ```sql
 blockNumber()
 ```
 
-**参数**
+**Arguments**
 
-* 无。
+- None.
 
-**返回值**
+**Returned value**
 
-该行所在数据块的序列号。[`UInt64`](/sql-reference/data-types/int-uint)
+Sequence number of the data block where the row is located. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**示例**
+**Examples**
 
-**基本用法**
+**Basic usage**
 
 ```sql title=Query
 SELECT blockNumber()
@@ -374,29 +410,34 @@ FROM
 └───────────────┘
 ```
 
+
+
 ## blockSerializedSize {#blockSerializedSize}
 
-引入版本：v20.3
+Introduced in: v20.3
 
-返回磁盘上一个值块未压缩时的大小（字节）。
 
-**语法**
+Returns the uncompressed size in bytes of a block of values on disk.
+
+
+**Syntax**
 
 ```sql
 blockSerializedSize(x1[, x2[, ...]])
 ```
 
-**参数**
+**Arguments**
 
-* `x1[, x2, ...]` — 任意数量的参数值，用于获取其所在数据块在未压缩时的大小。[`Any`](/sql-reference/data-types)
+- `x1[, x2, ...]` — Any number of values for which to get the uncompressed size of the block. [`Any`](/sql-reference/data-types)
 
-**返回值**
 
-返回在不进行压缩时，包含这些值的数据块写入磁盘的字节数。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns the number of bytes that will be written to disk for a block of values without compression. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT blockSerializedSize(maxState(1)) AS x;
@@ -408,30 +449,34 @@ SELECT blockSerializedSize(maxState(1)) AS x;
 └───┘
 ```
 
+
+
 ## blockSize {#blockSize}
 
-引入于：v1.1
+Introduced in: v1.1
 
-在 ClickHouse 中，查询是按[块](/development/architecture#block)（block）进行处理的。
-此函数返回调用该函数所在块的大小（行数）。
 
-**语法**
+In ClickHouse, queries are processed in [blocks](/development/architecture#block) (chunks).
+This function returns the size (row count) of the block the function is called on.
+    
+
+**Syntax**
 
 ```sql
 blockSize()
 ```
 
-**参数**
+**Arguments**
 
-* 无。
+- None.
 
-**返回值**
+**Returned value**
 
-返回当前块中的行数。[`UInt64`](/sql-reference/data-types/int-uint)
+Returns the number of rows in the current block. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**示例**
+**Examples**
 
-**用法示例**
+**Usage example**
 
 ```sql title=Query
 SELECT blockSize()
@@ -448,31 +493,36 @@ FROM system.numbers LIMIT 5
 └─────────────┘
 ```
 
-## buildId {#buildId}
 
-引入版本：v20.5
 
-返回编译器为当前运行的 ClickHouse 服务器二进制文件生成的构建 ID。
-如果在分布式表的上下文中执行，该函数会生成一个普通列，包含每个分片对应的值。
-否则，它会返回一个常量值。
+## byteSize {#byteSize}
 
-**语法**
+Introduced in: v21.1
+
+
+Returns an estimation of the uncompressed byte size of its arguments in memory.
+For `String` arguments, the function returns the string length + 8 (length).
+If the function has multiple arguments, the function accumulates their byte sizes.
+    
+
+**Syntax**
 
 ```sql
 buildId()
 ```
 
-**参数**
+**Arguments**
 
-* 无。
+- `arg1[, arg2, ...]` — Values of any data type for which to estimate the uncompressed byte size. [`Any`](/sql-reference/data-types)
 
-**返回值**
 
-返回构建 ID。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns an estimation of the byte size of the arguments in memory. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT buildId()
@@ -484,35 +534,33 @@ SELECT buildId()
 └──────────────────────────────────────────┘
 ```
 
-## byteSize {#byteSize}
-
-引入版本：v21.1
-
-返回其参数在内存中未压缩字节大小的估计值。
-对于 `String` 参数，该函数返回字符串长度 + 8（长度）。
-如果函数有多个参数，则会累加它们的字节大小。
-
-**语法**
+**Multiple arguments**
 
 ```sql
 byteSize(arg1[, arg2, ...])
 ```
 
-**参数**
-
-* `arg1[, arg2, ...]` — 需要估算未压缩字节大小的任意数据类型的值。[`Any`](/sql-reference/data-types)
-
-**返回值**
-
-返回参数在内存中字节大小的估算值。[`UInt64`](/sql-reference/data-types/int-uint)
-
-**示例**
-
-**使用示例**
-
 ```sql title=Query
 SELECT byteSize('string')
 ```
+
+
+
+## catboostEvaluate {#catboostEvaluate}
+
+Introduced in: v22.9
+
+
+Evaluate an external catboost model. [CatBoost](https://catboost.ai) is an open-source gradient boosting library developed by Yandex for machine learning.
+Accepts a path to a catboost model and model arguments (features).
+
+**Prerequisites**
+
+1. Build the catboost evaluation library
+
+Before evaluating catboost models, the `libcatboostmodel.<so|dylib>` library must be made available. See [CatBoost documentation](https://catboost.ai/docs/concepts/c-plus-plus-api_dynamic-c-pluplus-wrapper.html) how to compile it.
+
+Next, specify the path to `libcatboostmodel.<so|dylib>` in the clickhouse configuration:
 
 ```response title=Response
 ┌─byteSize('string')─┐
@@ -520,11 +568,21 @@ SELECT byteSize('string')
 └────────────────────┘
 ```
 
-**多个参数**
+For security and isolation reasons, the model evaluation does not run in the server process but in the clickhouse-library-bridge process.
+At the first execution of `catboostEvaluate()`, the server starts the library bridge process if it is not running already. Both processes
+communicate using a HTTP interface. By default, port `9012` is used. A different port can be specified as follows - this is useful if port
+`9012` is already assigned to a different service.
 
 ```sql title=Query
 SELECT byteSize(NULL, 1, 0.3, '')
 ```
+
+2. Train a catboost model using libcatboost
+
+See [Training and applying models](https://catboost.ai/docs/features/training.html#training) for how to train catboost models from a training data set.
+
+
+**Syntax**
 
 ```response title=Response
 ┌─byteSize(NULL, 1, 0.3, '')─┐
@@ -532,20 +590,19 @@ SELECT byteSize(NULL, 1, 0.3, '')
 └────────────────────────────┘
 ```
 
-## catboostEvaluate {#catboostEvaluate}
+**Arguments**
 
-引入于：v22.9
+- `path_to_model` — Path to catboost model. [`const String`](/sql-reference/data-types/string)
+- `feature` — One or more model features/arguments. [`Float*`](/sql-reference/data-types/float)
 
-评估外部 catboost 模型。[CatBoost](https://catboost.ai) 是由 Yandex 开发的开源梯度提升机器学习库。
-接受 catboost 模型文件路径以及模型参数（特征）作为输入。
 
-**前置条件**
+**Returned value**
 
-1. 构建 catboost 评估库
+Returns the model evaluation result. [`Float64`](/sql-reference/data-types/float)
 
-在评估 catboost 模型之前，必须先准备好 `libcatboostmodel.<so|dylib>` 库。关于如何编译该库，请参阅 [CatBoost 文档](https://catboost.ai/docs/concepts/c-plus-plus-api_dynamic-c-pluplus-wrapper.html)。
+**Examples**
 
-接下来，在 ClickHouse 配置中指定 `libcatboostmodel.<so|dylib>` 的路径：
+**catboostEvaluate**
 
 ```xml
 <clickhouse>
@@ -555,37 +612,59 @@ SELECT byteSize(NULL, 1, 0.3, '')
 </clickhouse>
 ```
 
-出于安全和隔离方面的考虑，模型评估不会在服务器进程中运行，而是在 clickhouse-library-bridge 进程中运行。
-在首次执行 `catboostEvaluate()` 时，如果该库桥接进程尚未运行，服务器会启动该进程。两个进程通过 HTTP 接口进行通信。默认使用端口 `9012`。如果端口 `9012` 已被其他服务占用，可以按如下方式指定其他端口。
-
 ```xml
 <library_bridge>
     <port>9019</port>
 </library_bridge>
 ```
 
-2. 使用 libcatboost 训练 CatBoost 模型
 
-有关如何使用训练数据集来训练 CatBoost 模型，请参见 [Training and applying models](https://catboost.ai/docs/features/training.html#training)。
 
-**语法**
+## colorOKLCHToSRGB {#colorOKLCHToSRGB}
+
+Introduced in: v25.7
+
+
+Converts a colour from the **OKLCH** perceptual colour space to the familiar **sRGB** colour space.
+
+If `L` is outside the range `[0...1]`, `C` is negative, or `H` is outside the range `[0...360]`, the result is implementation-defined.
+
+:::note
+**OKLCH** is a cylindrical version of the OKLab colour space.
+It's three coordinates are `L` (the lightness in the range `[0...1]`), `C` (chroma `>= 0`) and `H` (hue in degrees  from `[0...360]`)**.
+OKLab/OKLCH is designed to be perceptually uniform while remaining cheap to compute.
+:::
+
+The conversion is the inverse of [`colorSRGBToOKLCH`](#colorSRGBToOKLCH):
+
+1) OKLCH to OKLab.
+2) OKLab to Linear sRGB
+3) Linear sRGB to sRGB
+
+The second argument gamma is used at the last stage.
+
+For references of colors in OKLCH space, and how they correspond to sRGB colors please see [https://oklch.com/](https://oklch.com/).
+    
+
+**Syntax**
 
 ```sql
 catboostEvaluate(path_to_model, feature_1[, feature_2, ..., feature_n])
 ```
 
-**参数**
+**Arguments**
 
-* `path_to_model` — CatBoost 模型的路径。[`const String`](/sql-reference/data-types/string)
-* `feature` — 一个或多个模型特征/参数。[`Float*`](/sql-reference/data-types/float)
+- `tuple` — A tuple of three numeric values `L`, `C`, `H`, where `L` is in the range `[0...1]`, `C >= 0` and `H` is in the range `[0...360]`. [`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+- `gamma` — Optional. The exponent that is used to transform linear sRGB back to sRGB by applying `(x ^ (1 / gamma)) * 255` for each channel `x`. Defaults to `2.2`. [`Float64`](/sql-reference/data-types/float)
 
-**返回值**
 
-返回模型评估结果。[`Float64`](/sql-reference/data-types/float)
+**Returned value**
 
-**示例**
+Returns a tuple (R, G, B) representing sRGB color values. [`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
 
-**catboostEvaluate**
+**Examples**
+
+**Convert OKLCH to sRGB**
 
 ```sql title=Query
 SELECT catboostEvaluate('/root/occupy.bin', Temperature, Humidity, Light, CO2, HumidityRatio) AS prediction FROM occupancy LIMIT 1
@@ -595,48 +674,51 @@ SELECT catboostEvaluate('/root/occupy.bin', Temperature, Humidity, Light, CO2, H
 4.695691092573497
 ```
 
-## colorOKLCHToSRGB {#colorOKLCHToSRGB}
 
-引入于：v25.7
 
-将 **OKLCH** 感知颜色空间中的颜色转换为常见的 **sRGB** 颜色空间。
+## colorSRGBToOKLCH {#colorSRGBToOKLCH}
 
-如果 `L` 超出 `[0...1]` 范围、`C` 为负数，或 `H` 超出 `[0...360]` 范围，则结果由具体实现定义。
+Introduced in: v25.7
+
+
+Converts a colour encoded in the **sRGB** colour space to the perceptually uniform **OKLCH** colour space.
+
+If any input channel is outside `[0...255]` or the gamma value is non-positive, the behaviour is implementation-defined.
 
 :::note
-**OKLCH** 是 OKLab 颜色空间的圆柱坐标版本。
-它的三个坐标分别是 `L`（亮度，范围为 `[0...1]`）、`C`（色度 `>= 0`）以及 `H`（色相，以度为单位，范围为 `[0...360]`）。
-OKLab/OKLCH 的设计目标是在计算成本较低的前提下实现感知上的均匀性。
+**OKLCH** is a cylindrical version of the OKLab colour space.
+It's three coordinates are `L` (the lightness in the range `[0...1]`), `C` (chroma `>= 0`) and `H` (the hue in degrees from `[0...360]`).
+OKLab/OKLCH is designed to be perceptually uniform while remaining cheap to compute.
 :::
 
-该转换是 [`colorSRGBToOKLCH`](#colorSRGBToOKLCH) 的逆运算：
+The conversion consists of three stages:
+1) sRGB to Linear sRGB
+2) Linear sRGB to OKLab
+3) OKLab to OKLCH.
 
-1. OKLCH 到 OKLab。
-2. OKLab 到线性 sRGB。
-3. 线性 sRGB 到 sRGB。
 
-第二个参数 gamma 会在最后一个阶段使用。
+For references of colors in the OKLCH space, and how they correspond to sRGB colors, please see [https://OKLCH.com/](https://OKLCH.com/).
+    
 
-关于 OKLCH 空间中的颜色参考，以及它们与 sRGB 颜色的对应关系，请参见 [https://oklch.com/](https://oklch.com/)。
-
-**语法**
+**Syntax**
 
 ```sql
 colorOKLCHToSRGB(tuple [, gamma])
 ```
 
-**参数**
+**Arguments**
 
-* `tuple` — 一个包含三个数值 `L`、`C`、`H` 的元组，其中 `L` 的取值范围为 `[0...1]`，`C >= 0`，`H` 的取值范围为 `[0...360]`。[`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
-* `gamma` — 可选。用于将线性 sRGB 转换回 sRGB 的指数，对每个通道 `x` 应用 `(x ^ (1 / gamma)) * 255`。默认值为 `2.2`。[`Float64`](/sql-reference/data-types/float)
+- `tuple` — Tuple of three values R, G, B in the range `[0...255]`. [`Tuple(UInt8, UInt8, UInt8)`](/sql-reference/data-types/tuple)
+- `gamma` — Optional. Exponent that is used to linearize sRGB by applying `(x / 255)^gamma` to each channel `x`. Defaults to `2.2`. [`Float64`](/sql-reference/data-types/float)
 
-**返回值**
 
-返回一个表示 sRGB 颜色值的元组 (R, G, B)。[`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**示例**
+Returns a tuple (L, C, H) representing the OKLCH color space values. [`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
 
-**将 OKLCH 转换为 sRGB**
+**Examples**
+
+**Convert sRGB to OKLCH**
 
 ```sql title=Query
 SELECT colorOKLCHToSRGB((0.4466, 0.0991, 45.44), 2.2) AS rgb
@@ -652,46 +734,36 @@ WITH colorOKLCHToSRGB((0.7, 0.1, 54)) as t SELECT tuple(toUInt8(t.1), toUInt8(t.
 └──────────────┘
 ```
 
-## colorSRGBToOKLCH {#colorSRGBToOKLCH}
 
-引入版本：v25.7
 
-将编码在 **sRGB** 颜色空间中的颜色转换为感知均匀的 **OKLCH** 颜色空间。
+## connectionId {#connectionId}
 
-如果任一输入通道超出 `[0...255]` 范围，或 gamma 值为非正数，其行为由具体实现定义。
+Introduced in: v21.3
 
-:::note
-**OKLCH** 是 OKLab 颜色空间的圆柱坐标版本。
-它的三个坐标分别是 `L`（亮度，范围为 `[0...1]`）、`C`（色度，`>= 0`）和 `H`（色相，单位为度，范围为 `[0...360]`）。
-OKLab/OKLCH 被设计为在保持计算开销较低的同时尽可能做到感知均匀。
-:::
 
-转换包括三个阶段：
+Returns the connection ID of the client that submitted the current query.
+This function is most useful in debugging scenarios.
+It was created for compatibility with MySQL's `CONNECTION_ID` function.
+It is not typically used in production queries.
 
-1. sRGB 到线性 sRGB
-2. 线性 sRGB 到 OKLab
-3. OKLab 到 OKLCH。
 
-关于 OKLCH 空间中的颜色参考，以及它们与 sRGB 颜色之间的对应关系，请参见 [https://OKLCH.com/](https://OKLCH.com/)。
-
-**语法**
+**Syntax**
 
 ```sql
 colorSRGBToOKLCH(tuple[, gamma])
 ```
 
-**参数**
+**Arguments**
 
-* `tuple` — 一个由 R、G、B 三个通道值组成的元组，每个通道取值范围为 `[0...255]`。[`Tuple(UInt8, UInt8, UInt8)`](/sql-reference/data-types/tuple)
-* `gamma` — 可选。用于将 sRGB 线性化的指数，通过对每个通道 `x` 应用 `(x / 255)^gamma` 实现。默认值为 `2.2`。[`Float64`](/sql-reference/data-types/float)
+- None.
 
-**返回值**
+**Returned value**
 
-返回一个表示 OKLCH 颜色空间值的元组 (L, C, H)。[`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+Returns the connection ID of the current client. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**示例**
+**Examples**
 
-**将 sRGB 转换为 OKLCH**
+**Usage example**
 
 ```sql title=Query
 SELECT colorSRGBToOKLCH((128, 64, 32), 2.2) AS lch
@@ -703,32 +775,48 @@ SELECT colorSRGBToOKLCH((128, 64, 32), 2.2) AS lch
 └─────────────────────────────────────────────────────────────┘
 ```
 
-## connectionId {#connectionId}
 
-引入版本：v21.3
 
-返回提交当前查询的客户端的连接 ID。
-此函数在调试场景中最有用。
-它是为与 MySQL 的 `CONNECTION_ID` 函数兼容而创建的。
-它通常不会在生产环境中的查询中使用。
+## countDigits {#countDigits}
 
-**语法**
+Introduced in: v20.8
+
+
+Returns the number of decimal digits needed to represent a value.
+
+:::note
+This function takes into account the scales of decimal values i.e., it calculates the result over the underlying integer type which is `(value * scale)`.
+
+For example:
+- `countDigits(42) = 2`
+- `countDigits(42.000) = 5`
+- `countDigits(0.04200) = 4`
+:::
+
+:::tip
+You can check decimal overflow for `Decimal64` with `countDigits(x) > 18`,
+although it is slower than [`isDecimalOverflow`](#isDecimalOverflow).
+:::
+
+
+**Syntax**
 
 ```sql
 connectionId()
 ```
 
-**参数**
+**Arguments**
 
-* 无。
+- `x` — An integer or decimal value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Decimal`](/sql-reference/data-types/decimal)
 
-**返回值**
 
-返回当前客户端的连接 ID。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns the number of digits needed to represent `x`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT connectionId();
@@ -740,44 +828,38 @@ SELECT connectionId();
 └────────────────┘
 ```
 
-## countDigits {#countDigits}
 
-引入版本：v20.8
 
-返回表示一个值所需的十进制数字个数。
+## currentDatabase {#currentDatabase}
 
-:::note
-该函数会考虑十进制数值的 scale，也就是说，它是在底层整数类型（即 `(value * scale)`）上计算结果的。
+Introduced in: v1.1
 
-例如：
 
-* `countDigits(42) = 2`
-* `countDigits(42.000) = 5`
-* `countDigits(0.04200) = 4`
-  :::
+Returns the name of the current database.
+Useful in table engine parameters of `CREATE TABLE` queries where you need to specify the database.
 
-:::tip
-你可以使用 `countDigits(x) > 18` 来检查 `Decimal64` 是否溢出，
-尽管这比 [`isDecimalOverflow`](#isDecimalOverflow) 要慢。
-:::
+Also see the [`SET` statement](/sql-reference/statements/use).
+    
 
-**语法**
+**Syntax**
 
 ```sql
 countDigits(x)
 ```
 
-**参数**
+**Aliases**: `current_database`, `SCHEMA`, `DATABASE`
 
-* `x` — 一个整数或小数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Decimal`](/sql-reference/data-types/decimal)
+**Arguments**
 
-**返回值**
+- None.
 
-返回表示 `x` 所需的位数。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns the current database name. [`String`](/sql-reference/data-types/string)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT countDigits(toDecimal32(1, 9)), countDigits(toDecimal32(-1, 9)),
@@ -791,34 +873,33 @@ SELECT countDigits(toDecimal32(1, 9)), countDigits(toDecimal32(-1, 9)),
 └────────────────────────────────┴─────────────────────────────────┴─────────────────────────────────┴──────────────────────────────────┴──────────────────────────────────┴───────────────────────────────────┘
 ```
 
-## currentDatabase {#currentDatabase}
 
-自 v1.1 引入
 
-返回当前数据库的名称。
-在需要在 `CREATE TABLE` 查询的表引擎参数中指定数据库时非常有用。
+## currentProfiles {#currentProfiles}
 
-另请参阅 [`SET` 语句](/sql-reference/statements/use)。
+Introduced in: v21.9
 
-**语法**
+
+Returns an array of the setting profiles for the current user.
+
+
+**Syntax**
 
 ```sql
 currentDatabase()
 ```
 
-**别名**: `current_database`, `SCHEMA`, `DATABASE`
+**Arguments**
 
-**参数**
+- None.
 
-* 无。
+**Returned value**
 
-**返回值**
+Returns an array of setting profiles for the current user. [`Array(String)`](/sql-reference/data-types/array)
 
-返回当前数据库的名称。[`String`](/sql-reference/data-types/string)
+**Examples**
 
-**示例**
-
-**使用示例**
+**Usage example**
 
 ```sql title=Query
 SELECT currentDatabase()
@@ -830,29 +911,35 @@ SELECT currentDatabase()
 └───────────────────┘
 ```
 
-## currentProfiles {#currentProfiles}
 
-引入版本：v21.9
 
-返回一个数组，包含当前用户的设置配置集。
+## currentQueryID {#currentQueryID}
 
-**语法**
+Introduced in: v
+
+
+Returns current Query id.
+
+
+**Syntax**
 
 ```sql
 currentProfiles()
 ```
 
-**参数**
+**Aliases**: `current_query_id`
 
-* 无。
+**Arguments**
 
-**返回值**
+- None.
 
-返回当前用户的设置配置文件数组。[`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**示例**
 
-**使用示例**
+
+**Examples**
+
+**Example**
 
 ```sql title=Query
 SELECT currentProfiles();
@@ -864,29 +951,33 @@ SELECT currentProfiles();
 └───────────────────────────────────────────────┘
 ```
 
-## currentQueryID {#currentQueryID}
 
-自 v 版本起引入。
 
-返回当前查询 ID。
+## currentRoles {#currentRoles}
 
-**语法**
+Introduced in: v21.9
+
+
+Returns an array of the roles which are assigned to the current user.
+    
+
+**Syntax**
 
 ```sql
 currentQueryID()
 ```
 
-**别名**: `current_query_id`
+**Arguments**
 
-**参数**
+- None.
 
-* 无。
+**Returned value**
 
-**返回值**
+Returns an array of the roles which are assigned to the current user. [`Array(String)`](/sql-reference/data-types/array)
 
-**示例**
+**Examples**
 
-**示例**
+**Usage example**
 
 ```sql title=Query
 SELECT currentQueryID();
@@ -898,29 +989,43 @@ SELECT currentQueryID();
 └──────────────────────────────────────┘
 ```
 
-## currentRoles {#currentRoles}
 
-自 v21.9 起引入
 
-返回一个数组，包含当前用户被授予的所有角色。
+## currentSchemas {#currentSchemas}
 
-**语法**
+Introduced in: v23.7
+
+
+Same as function [`currentDatabase`](#currentDatabase) but
+- accepts a boolean argument which is ignored
+- returns the database name as an array with a single value.
+
+Function `currentSchemas` only exists for compatibility with PostgreSQL.
+Please use `currentDatabase` instead.
+
+Also see the [`SET` statement](/sql-reference/statements/use).
+    
+
+**Syntax**
 
 ```sql
 currentRoles()
 ```
 
-**参数**
+**Aliases**: `current_schemas`
 
-* 无。
+**Arguments**
 
-**返回值**
+- `bool` — A boolean value, which is ignored. [`Bool`](/sql-reference/data-types/boolean)
 
-返回一个 `Array(String)` 类型的数组，其中包含分配给当前用户的所有角色。[`Array(String)`](/sql-reference/data-types/array)
 
-**示例**
+**Returned value**
 
-**使用示例**
+Returns a single-element array with the name of the current database. [`Array(String)`](/sql-reference/data-types/array)
+
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT currentRoles();
@@ -932,39 +1037,36 @@ SELECT currentRoles();
 └────────────────────────────────────────────────┘
 ```
 
-## currentSchemas {#currentSchemas}
 
-自 v23.7 引入
 
-与函数 [`currentDatabase`](#currentDatabase) 相同，但是
+## currentUser {#currentUser}
 
-* 接受一个会被忽略的布尔参数
-* 以只包含一个值的数组形式返回数据库名称。
+Introduced in: v20.1
 
-函数 `currentSchemas` 仅为与 PostgreSQL 兼容而存在。
-请改用 `currentDatabase`。
 
-另请参阅 [`SET` 语句](/sql-reference/statements/use)。
+Returns the name of the current user.
+In case of a distributed query, the name of the user who initiated the query is returned.
+    
 
-**语法**
+**Syntax**
 
 ```sql
 currentSchemas(bool)
 ```
 
-**别名**：`current_schemas`
+**Aliases**: `current_user`, `user`
 
-**参数**
+**Arguments**
 
-* `bool` — 一个布尔值，会被忽略。[`Bool`](/sql-reference/data-types/boolean)
+- None.
 
-**返回值**
+**Returned value**
 
-返回一个仅包含当前数据库名称的、只含一个元素的数组。[`Array(String)`](/sql-reference/data-types/array)
+Returns the name of the current user, otherwise the login of the user who initiated the query. [`String`](/sql-reference/data-types/string)
 
-**示例**
+**Examples**
 
-**用法示例**
+**Usage example**
 
 ```sql title=Query
 SELECT currentSchemas(true)
@@ -976,32 +1078,33 @@ SELECT currentSchemas(true)
 └──────────────────────┘
 ```
 
-## currentUser {#currentUser}
 
-自 v20.1 引入
 
-返回当前用户的名称。\
-在分布式查询中，返回发起该查询的用户的名称。
+## defaultProfiles {#defaultProfiles}
 
-**语法**
+Introduced in: v21.9
+
+
+Returns an array of default setting profile names for the current user.
+
+
+**Syntax**
 
 ```sql
 currentUser()
 ```
 
-**别名**: `current_user`, `user`
+**Arguments**
 
-**参数**
+- None.
 
-* 无。
+**Returned value**
 
-**返回值**
+Returns an array of default setting profile names for the current user. [`Array(String)`](/sql-reference/data-types/array)
 
-返回当前用户的名称；否则返回发起该查询的用户的登录名。[`String`](/sql-reference/data-types/string)
+**Examples**
 
-**示例**
-
-**用法示例**
+**Usage example**
 
 ```sql title=Query
 SELECT currentUser()
@@ -1013,29 +1116,33 @@ SELECT currentUser()
 └───────────────┘
 ```
 
-## defaultProfiles {#defaultProfiles}
 
-引入版本：v21.9
 
-返回当前用户默认设置配置文件名称的数组。
+## defaultRoles {#defaultRoles}
 
-**语法**
+Introduced in: v21.9
+
+
+Returns an array of default roles for the current user.
+    
+
+**Syntax**
 
 ```sql
 defaultProfiles()
 ```
 
-**参数**
+**Arguments**
 
-* 无。
+- None.
 
-**返回值**
+**Returned value**
 
-返回当前用户的默认设置配置文件名数组。[`Array(String)`](/sql-reference/data-types/array)
+Returns an array of default roles for the current user. [`Array(String)`](/sql-reference/data-types/array)
 
-**示例**
+**Examples**
 
-**用法示例**
+**Usage example**
 
 ```sql title=Query
 SELECT defaultProfiles();
@@ -1047,29 +1154,35 @@ SELECT defaultProfiles();
 └───────────────────┘
 ```
 
-## defaultRoles {#defaultRoles}
 
-于 v21.9 引入
 
-返回当前用户的默认角色数组。
+## defaultValueOfArgumentType {#defaultValueOfArgumentType}
 
-**语法**
+Introduced in: v1.1
+
+
+Returns the default value for a given data type.
+Does not include default values for custom columns set by the user.
+
+
+**Syntax**
 
 ```sql
 defaultRoles()
 ```
 
-**参数**
+**Arguments**
 
-* 无。
+- `expression` — Arbitrary type of value or an expression that results in a value of an arbitrary type. [`Any`](/sql-reference/data-types)
 
-**返回值**
 
-返回当前用户的默认角色构成的数组。[`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**示例**
+Returns `0` for numbers, an empty string for strings or `NULL` for Nullable types. [`UInt8`](/sql-reference/data-types/int-uint) or [`String`](/sql-reference/data-types/string) or [`NULL`](/sql-reference/syntax#null)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT defaultRoles();
@@ -1081,34 +1194,27 @@ SELECT defaultRoles();
 └────────────────────────────────────────────────┘
 ```
 
-## defaultValueOfArgumentType {#defaultValueOfArgumentType}
-
-自 v1.1 起提供
-
-返回指定数据类型的默认值。
-不包括用户为自定义列设置的默认值。
-
-**语法**
+**Nullable example**
 
 ```sql
 defaultValueOfArgumentType(expression)
 ```
 
-**参数**
-
-* `expression` — 任意类型的值，或计算结果为任意类型的表达式。[`Any`](/sql-reference/data-types)
-
-**返回值**
-
-对于数值返回 `0`，对于字符串返回空字符串，对于 Nullable 类型返回 `NULL`。返回类型为 [`UInt8`](/sql-reference/data-types/int-uint) 或 [`String`](/sql-reference/data-types/string) 或 [`NULL`](/sql-reference/syntax#null)
-
-**示例**
-
-**使用示例**
-
 ```sql title=Query
 SELECT defaultValueOfArgumentType(CAST(1 AS Int8));
 ```
+
+
+
+## defaultValueOfTypeName {#defaultValueOfTypeName}
+
+Introduced in: v1.1
+
+
+Returns the default value for the given type name.
+    
+
+**Syntax**
 
 ```response title=Response
 ┌─defaultValueOfArgumentType(CAST(1, 'Int8'))─┐
@@ -1116,7 +1222,18 @@ SELECT defaultValueOfArgumentType(CAST(1 AS Int8));
 └─────────────────────────────────────────────┘
 ```
 
-**Nullable 示例**
+**Arguments**
+
+- `type` — A string representing a type name. [`String`](/sql-reference/data-types/string)
+
+
+**Returned value**
+
+Returns the default value for the given type name: `0` for numbers, an empty string for strings, or `NULL` for Nullable [`UInt8`](/sql-reference/data-types/int-uint) or [`String`](/sql-reference/data-types/string) or [`NULL`](/sql-reference/syntax#null)
+
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT defaultValueOfArgumentType(CAST(1 AS Nullable(Int8)));
@@ -1128,33 +1245,27 @@ SELECT defaultValueOfArgumentType(CAST(1 AS Nullable(Int8)));
 └───────────────────────────────────────────────────────┘
 ```
 
-## defaultValueOfTypeName {#defaultValueOfTypeName}
-
-自 v1.1 起引入
-
-返回指定类型名称的默认值。
-
-**语法**
+**Nullable example**
 
 ```sql
 defaultValueOfTypeName(type)
 ```
 
-**参数**
-
-* `type` — 表示类型名的字符串。[`String`](/sql-reference/data-types/string)
-
-**返回值**
-
-返回给定类型名的默认值：数字类型为 `0`，字符串类型为空字符串，而 Nullable [`UInt8`](/sql-reference/data-types/int-uint)、[`String`](/sql-reference/data-types/string) 或 [`NULL`](/sql-reference/syntax#null) 的值为 `NULL`。
-
-**示例**
-
-**用法示例**
-
 ```sql title=Query
 SELECT defaultValueOfTypeName('Int8');
 ```
+
+
+
+## displayName {#displayName}
+
+Introduced in: v22.11
+
+
+Returns the value of `display_name` from [config](/operations/configuration-files) or the server's Fully Qualified Domain Name (FQDN) if not set.
+
+
+**Syntax**
 
 ```response title=Response
 ┌─defaultValueOfTypeName('Int8')─┐
@@ -1162,7 +1273,17 @@ SELECT defaultValueOfTypeName('Int8');
 └────────────────────────────────┘
 ```
 
-**Nullable 示例**
+**Arguments**
+
+- None.
+
+**Returned value**
+
+Returns the value of `display_name` from config or server FQDN if not set. [`String`](/sql-reference/data-types/string)
+
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT defaultValueOfTypeName('Nullable(Int8)');
@@ -1174,29 +1295,34 @@ SELECT defaultValueOfTypeName('Nullable(Int8)');
 └──────────────────────────────────────────┘
 ```
 
-## displayName {#displayName}
 
-引入于：v22.11
 
-返回 [config](/operations/configuration-files) 中 `display_name` 的值；如果未设置该参数，则返回服务器的完全限定域名（FQDN）。
+## dumpColumnStructure {#dumpColumnStructure}
 
-**语法**
+Introduced in: v1.1
+
+
+Outputs a detailed description of the internal structure of a column and its data type.
+
+
+**Syntax**
 
 ```sql
 displayName()
 ```
 
-**参数**
+**Arguments**
 
-* 无。
+- `x` — Value for which to get the description of. [`Any`](/sql-reference/data-types)
 
-**返回值**
 
-返回配置中的 `display_name` 值，如果未设置则返回服务器的 FQDN（完全限定域名）。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns a description of the column structure used for representing the value. [`String`](/sql-reference/data-types/string)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT displayName();
@@ -1208,29 +1334,33 @@ SELECT displayName();
 └───────────────┘
 ```
 
-## dumpColumnStructure {#dumpColumnStructure}
 
-自 v1.1 起引入
 
-输出列及其数据类型内部结构的详细说明。
+## enabledProfiles {#enabledProfiles}
 
-**语法**
+Introduced in: v21.9
+
+
+Returns an array of setting profile names which are enabled for the current user.
+
+
+**Syntax**
 
 ```sql
 dumpColumnStructure(x)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 需要获取其描述的值。[`Any`](/sql-reference/data-types)
+- None.
 
-**返回值**
+**Returned value**
 
-返回用于表示该值的列结构的描述。[`String`](/sql-reference/data-types/string)
+Returns an array of setting profile names which are enabled for the current user. [`Array(String)`](/sql-reference/data-types/array)
 
-**示例**
+**Examples**
 
-**用法示例**
+**Usage example**
 
 ```sql title=Query
 SELECT dumpColumnStructure(CAST('2018-01-01 01:02:03', 'DateTime'));
@@ -1242,29 +1372,33 @@ SELECT dumpColumnStructure(CAST('2018-01-01 01:02:03', 'DateTime'));
 └──────────────────────────────────────────────────────────────┘
 ```
 
-## enabledProfiles {#enabledProfiles}
 
-引入版本：v21.9
 
-返回一个包含当前用户已启用的设置配置文件名称的数组。
+## enabledRoles {#enabledRoles}
 
-**语法**
+Introduced in: v21.9
+
+
+Returns an array of the roles which are enabled for the current user.
+    
+
+**Syntax**
 
 ```sql
 enabledProfiles()
 ```
 
-**参数**
+**Arguments**
 
-* 无。
+- None.
 
-**返回值**
+**Returned value**
 
-返回一个数组，包含为当前用户启用的设置配置文件（setting profile）的名称。[`Array(String)`](/sql-reference/data-types/array)
+Returns an array of role names which are enabled for the current user. [`Array(String)`](/sql-reference/data-types/array)
 
-**示例**
+**Examples**
 
-**使用示例**
+**Usage example**
 
 ```sql title=Query
 SELECT enabledProfiles();
@@ -1276,29 +1410,35 @@ SELECT enabledProfiles();
 └───────────────────────────────────────────────────────────────────┘
 ```
 
-## enabledRoles {#enabledRoles}
 
-自 v21.9 引入
 
-返回一个数组，包含当前用户已启用的角色。
+## errorCodeToName {#errorCodeToName}
 
-**语法**
+Introduced in: v20.12
+
+
+Returns the textual name of a numeric ClickHouse error code.
+The mapping from numeric error codes to error names is available [here](https://github.com/ClickHouse/ClickHouse/blob/master/src/Common/ErrorCodes.cpp).
+
+
+**Syntax**
 
 ```sql
 enabledRoles()
 ```
 
-**参数**
+**Arguments**
 
-* 无。
+- `error_code` — ClickHouse error code. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
 
-**返回值**
 
-返回由当前用户已启用的角色名称组成的数组。[`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**示例**
+Returns the textual name of `error_code`. [`String`](/sql-reference/data-types/string)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT enabledRoles();
@@ -1310,30 +1450,38 @@ SELECT enabledRoles();
 └────────────────────────────────────────────────────────────────┘
 ```
 
-## errorCodeToName {#errorCodeToName}
 
-引入版本：v20.12
 
-返回 ClickHouse 数值错误码对应的文本名称。\
-数值错误码到错误名称的映射可在 [此处](https://github.com/ClickHouse/ClickHouse/blob/master/src/Common/ErrorCodes.cpp) 查看。
+## file {#file}
 
-**语法**
+Introduced in: v21.3
+
+
+Reads a file as a string and loads the data into the specified column.
+The file content is not interpreted.
+
+Also see the [`file`](../table-functions/file.md) table function.
+        
+
+**Syntax**
 
 ```sql
 errorCodeToName(error_code)
 ```
 
-**参数**
+**Arguments**
 
-* `error_code` — ClickHouse 错误代码。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+- `path` — The path of the file relative to the `user_files_path`. Supports wildcards `*`, `**`, `?`, `{abc,def}` and `{N..M}` where `N`, `M` are numbers and `'abc', 'def'` are strings. [`String`](/sql-reference/data-types/string)
+- `default` — The value returned if the file does not exist or cannot be accessed. [`String`](/sql-reference/data-types/string) or [`NULL`](/sql-reference/syntax#null)
 
-**返回值**
 
-返回 `error_code` 的文本名称。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns the file content as a string. [`String`](/sql-reference/data-types/string)
 
-**用法示例**
+**Examples**
+
+**Insert files into a table**
 
 ```sql title=Query
 SELECT errorCodeToName(252);
@@ -1345,33 +1493,35 @@ SELECT errorCodeToName(252);
 └──────────────────────┘
 ```
 
-## file {#file}
 
-自 v21.3 版本引入
 
-以字符串形式读取文件内容，并将数据加载到指定的列中。
-文件内容不会被解释。
+## filesystemAvailable {#filesystemAvailable}
 
-另请参阅 [`file`](../table-functions/file.md) 表函数。
+Introduced in: v20.1
 
-**语法**
+
+Returns the amount of free space in the filesystem hosting the database persistence.
+The returned value is always smaller than the total free space ([`filesystemUnreserved`](../../sql-reference/functions/other-functions.md#filesystemUnreserved)) because some space is reserved for the operating system.
+    
+
+**Syntax**
 
 ```sql
 file(path[, default])
 ```
 
-**参数**
+**Arguments**
 
-* `path` — 文件在 `user_files_path` 下的相对路径。支持通配符 `*`、`**`、`?`、`{abc,def}` 和 `{N..M}`，其中 `N`、`M` 为数字，`'abc'、'def'` 为字符串。[`String`](/sql-reference/data-types/string)
-* `default` — 当文件不存在或无法访问时返回的值。[`String`](/sql-reference/data-types/string) 或 [`NULL`](/sql-reference/syntax#null)
+- `disk_name` — Optional. The disk name to find the amount of free space for. If omitted, uses the default disk. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
 
-**返回值**
 
-以字符串形式返回文件内容。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns the amount of remaining space available in bytes. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**将文件内容插入表中**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 INSERT INTO table SELECT file('a.txt'), file('b.txt');
@@ -1380,30 +1530,35 @@ INSERT INTO table SELECT file('a.txt'), file('b.txt');
 ```response title=Response
 ```
 
-## filesystemAvailable {#filesystemAvailable}
 
-引入版本：v20.1
 
-返回用于持久化数据库数据的文件系统中可用的空闲空间大小。
-返回值始终小于文件系统的总可用空间（[`filesystemUnreserved`](../../sql-reference/functions/other-functions.md#filesystemUnreserved)），因为一部分空间被预留给操作系统。
+## filesystemCapacity {#filesystemCapacity}
 
-**语法**
+Introduced in: v20.1
+
+
+Returns the capacity of the filesystem in bytes.
+Needs the [path](../../operations/server-configuration-parameters/settings.md#path) to the data directory to be configured.
+
+
+**Syntax**
 
 ```sql
 filesystemAvailable([disk_name])
 ```
 
-**参数**
+**Arguments**
 
-* `disk_name` — 可选。要查询可用空间的磁盘名称。如果省略，则使用默认磁盘。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
+- `disk_name` — Optional. The disk name to get the capacity for. If omitted, uses the default disk. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
 
-**返回值**
 
-返回剩余可用空间的字节数。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns the capacity of the filesystem in bytes. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT formatReadableSize(filesystemAvailable()) AS "可用空间";
@@ -1415,30 +1570,35 @@ SELECT formatReadableSize(filesystemAvailable()) AS "可用空间";
 └─────────────────┘
 ```
 
-## filesystemCapacity {#filesystemCapacity}
 
-自 v20.1 引入
 
-以字节为单位返回文件系统的容量。\
-需要配置数据目录的 [path](../../operations/server-configuration-parameters/settings.md#path)。
+## filesystemUnreserved {#filesystemUnreserved}
 
-**语法**
+Introduced in: v22.12
+
+
+Returns the total amount of free space on the filesystem hosting the database persistence (previously `filesystemFree`).
+See also [`filesystemAvailable`](#filesystemAvailable).
+
+
+**Syntax**
 
 ```sql
 filesystemCapacity([disk_name])
 ```
 
-**参数**
+**Arguments**
 
-* `disk_name` — 可选。要查询容量的磁盘名称。如果省略，则使用默认磁盘。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
+- `disk_name` — Optional. The disk name for which to find the total amount of free space. If omitted, uses the default disk. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
 
-**返回值**
 
-返回文件系统的容量（以字节为单位）。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns the amount of free space in bytes. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT formatReadableSize(filesystemCapacity()) AS "Capacity";
@@ -1450,30 +1610,34 @@ SELECT formatReadableSize(filesystemCapacity()) AS "Capacity";
 └───────────┘
 ```
 
-## filesystemUnreserved {#filesystemUnreserved}
 
-引入自：v22.12
 
-返回承载数据库持久化数据的文件系统上的总空闲空间（之前为 `filesystemFree`）。
-另请参阅 [`filesystemAvailable`](#filesystemAvailable)。
+## finalizeAggregation {#finalizeAggregation}
 
-**语法**
+Introduced in: v1.1
+
+
+Given an aggregation state, this function returns the result of aggregation (or the finalized state when using a [-State](../../sql-reference/aggregate-functions/combinators.md#-state) combinator).
+
+
+**Syntax**
 
 ```sql
 filesystemUnreserved([disk_name])
 ```
 
-**参数**
+**Arguments**
 
-* `disk_name` — 可选。要查询其可用空间总量的磁盘名称。若省略，则使用默认磁盘。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
+- `state` — State of aggregation. [`AggregateFunction`](/sql-reference/data-types/aggregatefunction)
 
-**返回值**
 
-返回以字节为单位的可用空间大小。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns the finalized result of aggregation. [`Any`](/sql-reference/data-types)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT formatReadableSize(filesystemUnreserved()) AS "可用空间";
@@ -1485,33 +1649,25 @@ SELECT formatReadableSize(filesystemUnreserved()) AS "可用空间";
 └──────────┘
 ```
 
-## finalizeAggregation {#finalizeAggregation}
-
-引入于：v1.1
-
-给定一个聚合状态时，此函数返回聚合结果（在使用 [-State](../../sql-reference/aggregate-functions/combinators.md#-state) 组合器时则返回最终状态）。
-
-**语法**
+**Combined with initializeAggregation**
 
 ```sql
 finalizeAggregation(state)
 ```
 
-**参数**
-
-* `state` — 聚合状态。[`AggregateFunction`](/sql-reference/data-types/aggregatefunction)
-
-**返回值**
-
-返回聚合的最终结果。[`Any`](/sql-reference/data-types)
-
-**示例**
-
-**使用示例**
-
 ```sql title=Query
 SELECT finalizeAggregation(arrayReduce('maxState', [1, 2, 3]));
 ```
+
+
+
+## flipCoordinates {#flipCoordinates}
+
+Introduced in: v25.10
+
+Flips the coordinates of a Point, Ring, Polygon, or MultiPolygon. For a Point, it swaps the coordinates. For arrays, it recursively applies the same transformation for each coordinate pair.
+
+**Syntax**
 
 ```response title=Response
 ┌─finalizeAggregation(arrayReduce('maxState', [1, 2, 3]))─┐
@@ -1519,7 +1675,17 @@ SELECT finalizeAggregation(arrayReduce('maxState', [1, 2, 3]));
 └─────────────────────────────────────────────────────────┘
 ```
 
-**与 initializeAggregation 一起使用**
+**Arguments**
+
+- `geometry` — The geometry to transform. Supported types: Point (Tuple(Float64, Float64)), Ring (Array(Point)), Polygon (Array(Ring)), MultiPolygon (Array(Polygon)). 
+
+**Returned value**
+
+The geometry with flipped coordinates. The type is the same as the input. [`Point`](/sql-reference/data-types/geo#point) or [`Ring`](/sql-reference/data-types/geo#ring) or [`Polygon`](/sql-reference/data-types/geo#polygon) or [`MultiPolygon`](/sql-reference/data-types/geo#multipolygon)
+
+**Examples**
+
+**basic_point**
 
 ```sql title=Query
 WITH initializeAggregation('sumState', number) AS one_row_sum_state
@@ -1540,49 +1706,52 @@ FROM numbers(5);
 └────────┴─────────────┴────────────────┘
 ```
 
-## flipCoordinates {#flipCoordinates}
-
-自 v25.10 版本引入
-
-对 Point、Ring、Polygon 或 MultiPolygon 的坐标进行翻转。对于 Point，会交换其坐标值。对于数组，会对每个坐标对递归应用相同的变换。
-
-**语法**
+**ring**
 
 ```sql
 flipCoordinates(geometry)
 ```
 
-**参数**
-
-* `geometry` — 要转换的几何对象。支持的类型：Point (Tuple(Float64, Float64))、Ring (Array(Point))、Polygon (Array(Ring))、MultiPolygon (Array(Polygon))。
-
-**返回值**
-
-坐标被翻转后的几何对象。类型与输入相同。[`Point`](/sql-reference/data-types/geo#point) 或 [`Ring`](/sql-reference/data-types/geo#ring) 或 [`Polygon`](/sql-reference/data-types/geo#polygon) 或 [`MultiPolygon`](/sql-reference/data-types/geo#multipolygon)
-
-**示例**
-
-**basic&#95;point**
-
 ```sql title=Query
 SELECT flipCoordinates((1.0, 2.0));
 ```
+
+**polygon**
 
 ```response title=Response
 (2.0, 1.0)
 ```
 
-**ring（环）**
-
 ```sql title=Query
 SELECT flipCoordinates([(1.0, 2.0), (3.0, 4.0)]);
 ```
+
+
+
+## formatQuery {#formatQuery}
+
+Introduced in: v
+
+Returns a formatted, possibly multi-line, version of the given SQL query. Throws in case of a parsing error.
+[example:multiline]
+
+**Syntax**
 
 ```response title=Response
 [(2.0, 1.0), (4.0, 3.0)]
 ```
 
-**多边形**
+**Arguments**
+
+- `query` — The SQL query to be formatted. [String](../../sql-reference/data-types/string.md) 
+
+**Returned value**
+
+The formatted query [`String`](/sql-reference/data-types/string)
+
+**Examples**
+
+**multiline**
 
 ```sql title=Query
 SELECT flipCoordinates([[(1.0, 2.0), (3.0, 4.0)], [(5.0, 6.0), (7.0, 8.0)]]);
@@ -1592,28 +1761,30 @@ SELECT flipCoordinates([[(1.0, 2.0), (3.0, 4.0)], [(5.0, 6.0), (7.0, 8.0)]]);
 [[(2.0, 1.0), (4.0, 3.0)], [(6.0, 5.0), (8.0, 7.0)]]
 ```
 
-## formatQuery {#formatQuery}
 
-引入版本：v
 
-返回给定 SQL 查询的格式化结果，可能为多行。若发生解析错误则抛出异常。
+## formatQueryOrNull {#formatQueryOrNull}
+
+Introduced in: v
+
+Returns a formatted, possibly multi-line, version of the given SQL query. Returns NULL in case of a parsing error.
 [example:multiline]
 
-**语法**
+**Syntax**
 
 ```sql
 formatQuery(query)
 ```
 
-**参数**
+**Arguments**
 
-* `query` — 要格式化的 SQL 查询。[String](../../sql-reference/data-types/string.md)
+- `query` — The SQL query to be formatted. [String](../../sql-reference/data-types/string.md) 
 
-**返回值**
+**Returned value**
 
-格式化后的查询 [`String`](/sql-reference/data-types/string)
+The formatted query [`String`](/sql-reference/data-types/string)
 
-**示例**
+**Examples**
 
 **multiline**
 
@@ -1629,30 +1800,32 @@ FROM tab
 WHERE (a > 3) AND (b < 3)
 ```
 
-## formatQueryOrNull {#formatQueryOrNull}
 
-引入于：v
 
-返回给定 SQL 查询的格式化版本，可能为多行格式。若解析出错，则返回 NULL。
+## formatQuerySingleLine {#formatQuerySingleLine}
+
+Introduced in: v
+
+Like formatQuery() but the returned formatted string contains no line breaks. Throws in case of a parsing error.
 [example:multiline]
 
-**语法**
+**Syntax**
 
 ```sql
 formatQueryOrNull(query)
 ```
 
-**参数**
+**Arguments**
 
-* `query` — 要格式化的 SQL 查询。[String](../../sql-reference/data-types/string.md)
+- `query` — The SQL query to be formatted. [String](../../sql-reference/data-types/string.md) 
 
-**返回值**
+**Returned value**
 
-格式化后的 SQL 查询 [`String`](/sql-reference/data-types/string)
+The formatted query [`String`](/sql-reference/data-types/string)
 
-**示例**
+**Examples**
 
-**多行**
+**multiline**
 
 ```sql title=Query
 SELECT formatQuery('select a,    b FRom tab WHERE a > 3 and  b < 3');
@@ -1666,28 +1839,31 @@ FROM tab
 WHERE (a > 3) AND (b < 3)
 ```
 
-## formatQuerySingleLine {#formatQuerySingleLine}
 
-引入版本：v
 
-与 formatQuery() 类似，但返回的格式化字符串不包含换行符。解析出错时将抛出异常。
+## formatQuerySingleLineOrNull {#formatQuerySingleLineOrNull}
+
+Introduced in: v
+
+Like formatQuery() but the returned formatted string contains no line breaks. Returns NULL in case of a parsing error.
 [example:multiline]
 
-**语法**
+**Syntax**
 
 ```sql
 formatQuerySingleLine(query)
 ```
 
-**参数**
+**Arguments**
 
-* `query` — 要格式化的 SQL 查询。[String](../../sql-reference/data-types/string.md)
+- `query` — The SQL query to be formatted. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-格式化后的查询 [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+The formatted query [`String`](/sql-reference/data-types/string)
+
+**Examples**
 
 **multiline**
 
@@ -1699,30 +1875,36 @@ SELECT formatQuerySingleLine('select a,    b FRom tab WHERE a > 3 and  b < 3');
 SELECT a, b FROM tab WHERE (a > 3) AND (b < 3)
 ```
 
-## formatQuerySingleLineOrNull {#formatQuerySingleLineOrNull}
 
-引入版本：v
 
-与 formatQuery() 类似，但返回的格式化字符串不包含换行符。在发生解析错误时返回 NULL。
-[example:multiline]
+## formatReadableDecimalSize {#formatReadableDecimalSize}
 
-**语法**
+Introduced in: v22.11
+
+
+Given a size (number of bytes), this function returns a readable, rounded size with suffix (KB, MB, etc.) as a string.
+
+The opposite operations of this function are [`parseReadableSize`](#parseReadableSize).
+    
+
+**Syntax**
 
 ```sql
 formatQuerySingleLineOrNull(query)
 ```
 
-**参数**
+**Arguments**
 
-* `query` — 要进行格式化的 SQL 查询。[`String`](/sql-reference/data-types/string)
+- `x` — Size in bytes. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-格式化后的查询字符串 [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns a readable, rounded size with suffix as a string. [`String`](/sql-reference/data-types/string)
 
-**多行**
+**Examples**
+
+**Format file sizes**
 
 ```sql title=Query
 SELECT formatQuerySingleLine('select a,    b FRom tab WHERE a > 3 and  b < 3');
@@ -1732,31 +1914,37 @@ SELECT formatQuerySingleLine('select a,    b FRom tab WHERE a > 3 and  b < 3');
 SELECT a, b FROM tab WHERE (a > 3) AND (b < 3)
 ```
 
-## formatReadableDecimalSize {#formatReadableDecimalSize}
 
-引入版本：v22.11
 
-给定一个大小（以字节数表示），此函数返回一个带有后缀（KB、MB 等）的可读性更好的、四舍五入后的大小字符串。
+## formatReadableQuantity {#formatReadableQuantity}
 
-此函数的反向操作为 [`parseReadableSize`](#parseReadableSize)。
+Introduced in: v20.10
 
-**语法**
+
+Given a number, this function returns a rounded number with suffix (thousand, million, billion, etc.) as a string.
+
+This function accepts any numeric type as input, but internally it casts them to `Float64`.
+Results might be suboptimal with large values.
+    
+
+**Syntax**
 
 ```sql
 formatReadableDecimalSize(x)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 以字节为单位的大小。[`UInt64`](/sql-reference/data-types/int-uint)
+- `x` — A number to format. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回经过四舍五入、带有后缀的人类可读大小字符串。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns a rounded number with suffix as a string. [`String`](/sql-reference/data-types/string)
 
-**格式化文件大小**
+**Examples**
+
+**Format numbers with suffixes**
 
 ```sql title=Query
 SELECT
@@ -1773,32 +1961,39 @@ SELECT
 └────────────────┴────────────┘
 ```
 
-## formatReadableQuantity {#formatReadableQuantity}
 
-引入版本：v20.10
 
-给定一个数字，此函数返回一个经过四舍五入并带有后缀（千、百万、十亿等）的字符串。
+## formatReadableSize {#formatReadableSize}
 
-该函数接受任意数值类型作为输入，但在内部会将其转换为 `Float64`。
-对于非常大的数值，结果可能不够理想。
+Introduced in: v1.1
 
-**语法**
+
+Given a size (number of bytes), this function returns a readable, rounded size with suffix (KiB, MiB, etc.) as string.
+
+The opposite operations of this function are [`parseReadableSize`](#parseReadableSize), [`parseReadableSizeOrZero`](#parseReadableSizeOrZero), and [`parseReadableSizeOrNull`](#parseReadableSizeOrNull).
+This function accepts any numeric type as input, but internally it casts them to `Float64`. Results might be suboptimal with large values.
+    
+
+**Syntax**
 
 ```sql
 formatReadableQuantity(x)
 ```
 
-**参数**
+**Aliases**: `FORMAT_BYTES`
 
-* `x` — 要格式化的数字。[`UInt64`](/sql-reference/data-types/int-uint)
+**Arguments**
 
-**返回值**
+- `x` — Size in bytes. [`UInt64`](/sql-reference/data-types/int-uint)
 
-返回一个带有后缀的四舍五入数字，类型为字符串。[`String`](/sql-reference/data-types/string)
 
-**示例**
+**Returned value**
 
-**将数字格式化为带后缀的形式**
+Returns a readable, rounded size with suffix as a string. [`String`](/sql-reference/data-types/string)
+
+**Examples**
+
+**Format file sizes**
 
 ```sql title=Query
 SELECT
@@ -1815,34 +2010,38 @@ SELECT
 └────────────────┴───────────────────┘
 ```
 
-## formatReadableSize {#formatReadableSize}
 
-引入于：v1.1
 
-给定一个表示大小的值（字节数），此函数返回带有后缀（KiB、MiB 等）的可读、四舍五入后的大小字符串。
+## formatReadableTimeDelta {#formatReadableTimeDelta}
 
-执行与之相反操作的函数为 [`parseReadableSize`](#parseReadableSize)、[`parseReadableSizeOrZero`](#parseReadableSizeOrZero) 和 [`parseReadableSizeOrNull`](#parseReadableSizeOrNull)。
-该函数接受任意数值类型作为输入，但在内部会将其转换为 `Float64`。对于非常大的数值，结果可能不够理想。
+Introduced in: v20.12
 
-**语法**
+
+Given a time interval (delta) in seconds, this function returns a time delta with year/month/day/hour/minute/second/millisecond/microsecond/nanosecond as a string.
+
+This function accepts any numeric type as input, but internally it casts them to `Float64`. Results might be suboptimal with large values.
+    
+
+**Syntax**
 
 ```sql
 formatReadableSize(x)
 ```
 
-**别名**：`FORMAT_BYTES`
+**Arguments**
 
-**参数**
+- `column` — A column with a numeric time delta. [`Float64`](/sql-reference/data-types/float)
+- `maximum_unit` — Optional. Maximum unit to show. Acceptable values: `nanoseconds`, `microseconds`, `milliseconds`, `seconds`, `minutes`, `hours`, `days`, `months`, `years`. Default value: `years`. [`const String`](/sql-reference/data-types/string)
+- `minimum_unit` — Optional. Minimum unit to show. All smaller units are truncated. Acceptable values: `nanoseconds`, `microseconds`, `milliseconds`, `seconds`, `minutes`, `hours`, `days`, `months`, `years`. If explicitly specified value is bigger than `maximum_unit`, an exception will be thrown. Default value: `seconds` if `maximum_unit` is `seconds` or bigger, `nanoseconds` otherwise. [`const String`](/sql-reference/data-types/string)
 
-* `x` — 以字节为单位的大小。[`UInt64`](/sql-reference/data-types/int-uint)
 
-**返回值**
+**Returned value**
 
-返回带有后缀的人类可读、四舍五入后的大小字符串。[`String`](/sql-reference/data-types/string)
+Returns a time delta as a string. [`String`](/sql-reference/data-types/string)
 
-**示例**
+**Examples**
 
-**格式化文件大小**
+**Usage example**
 
 ```sql title=Query
 SELECT
@@ -1859,39 +2058,29 @@ SELECT
 └────────────────┴────────────┘
 ```
 
-## formatReadableTimeDelta {#formatReadableTimeDelta}
-
-引入版本：v20.12
-
-给定一个以秒为单位的时间间隔（delta），此函数返回一个包含年/月/日/时/分/秒/毫秒/微秒/纳秒的可读时间间隔字符串。
-
-该函数接受任意数值类型作为输入，但在内部会将其转换为 `Float64`。对于非常大的数值，结果可能不是最优的。
-
-**语法**
+**With maximum unit**
 
 ```sql
 formatReadableTimeDelta(column[, maximum_unit, minimum_unit])
 ```
-
-**参数**
-
-* `column` — 包含数值时间差的列。[`Float64`](/sql-reference/data-types/float)
-* `maximum_unit` — 可选。要显示的最大时间单位。可接受的取值：`nanoseconds`、`microseconds`、`milliseconds`、`seconds`、`minutes`、`hours`、`days`、`months`、`years`。默认值：`years`。[`const String`](/sql-reference/data-types/string)
-* `minimum_unit` — 可选。要显示的最小时间单位。所有更小的单位都会被截断。可接受的取值：`nanoseconds`、`microseconds`、`milliseconds`、`seconds`、`minutes`、`hours`、`days`、`months`、`years`。如果显式指定的值大于 `maximum_unit`，将抛出异常。默认值：如果 `maximum_unit` 为 `seconds` 或更大，则为 `seconds`，否则为 `nanoseconds`。[`const String`](/sql-reference/data-types/string)
-
-**返回值**
-
-以字符串形式返回时间差。[`String`](/sql-reference/data-types/string)
-
-**示例**
-
-**用法示例**
 
 ```sql title=Query
 SELECT
     arrayJoin([100, 12345, 432546534]) AS elapsed,
     formatReadableTimeDelta(elapsed) AS time_delta
 ```
+
+
+
+## generateRandomStructure {#generateRandomStructure}
+
+Introduced in: v23.5
+
+
+Generates random table structure in the format `column1_name column1_type, column2_name column2_type, ...`.
+
+
+**Syntax**
 
 ```response title=Response
 ┌────elapsed─┬─time_delta─────────────────────────────────────────────────────┐
@@ -1901,7 +2090,19 @@ SELECT
 └────────────┴────────────────────────────────────────────────────────────────┘
 ```
 
-**采用最大单位**
+**Arguments**
+
+- `number_of_columns` — The desired number of columns in the resultant table structure. If set to 0 or `Null`, the number of columns will be random from 1 to 128. Default value: `Null`. [`UInt64`](/sql-reference/data-types/int-uint)
+- `seed` — Random seed to produce stable results. If seed is not specified or set to `Null`, it is randomly generated. [`UInt64`](/sql-reference/data-types/int-uint)
+
+
+**Returned value**
+
+Randomly generated table structure. [`String`](/sql-reference/data-types/string)
+
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT
@@ -1917,50 +2118,58 @@ SELECT
 └────────────┴─────────────────────────────────────────────────────────────────┘
 ```
 
-## generateRandomStructure {#generateRandomStructure}
-
-引入版本：v23.5
-
-生成格式为 `column1_name column1_type, column2_name column2_type, ...` 的随机表结构。
-
-**语法**
+**with specified number of columns**
 
 ```sql
 generateRandomStructure([number_of_columns, seed])
 ```
 
-**参数**
-
-* `number_of_columns` — 结果表结构中期望的列数。如果设置为 0 或 `Null`，则列数将在 1 到 128 之间随机选择。默认值：`Null`。[`UInt64`](/sql-reference/data-types/int-uint)
-* `seed` — 用于生成稳定结果的随机种子。如果未指定 `seed` 或将其设置为 `Null`，则会随机生成该值。[`UInt64`](/sql-reference/data-types/int-uint)
-
-**返回值**
-
-随机生成的表结构。[`String`](/sql-reference/data-types/string)
-
-**示例**
-
-**用法示例**
-
 ```sql title=Query
 SELECT generateRandomStructure()
 ```
+
+**with specified seed**
 
 ```response title=Response
 c1 Decimal32(5), c2 Date, c3 Tuple(LowCardinality(String), Int128, UInt64, UInt16, UInt8, IPv6), c4 Array(UInt128), c5 UInt32, c6 IPv4, c7 Decimal256(64), c8 Decimal128(3), c9 UInt256, c10 UInt64, c11 DateTime
 ```
 
-**具有指定列数**
-
 ```sql title=Query
 SELECT generateRandomStructure(1)
 ```
+
+
+
+## generateSerialID {#generateSerialID}
+
+Introduced in: v25.1
+
+
+Generates and returns sequential numbers starting from the previous counter value.
+This function takes a string argument - a series identifier, and an optional starting value.
+The server should be configured with Keeper.
+The series are stored in Keeper nodes under the path, which can be configured in [`series_keeper_path`](/operations/server-configuration-parameters/settings#series_keeper_path) in the server configuration.
+    
+
+**Syntax**
 
 ```response title=Response
 c1 Map(UInt256, UInt16)
 ```
 
-**使用指定的随机种子**
+**Arguments**
+
+- `series_identifier` — Series identifier [`const String`](/sql-reference/data-types/string)
+- `start_value` — Optional. Starting value for the counter. Defaults to 0. Note: this value is only used when creating a new series and is ignored if the series already exists [`UInt*`](/sql-reference/data-types/int-uint)
+
+
+**Returned value**
+
+Returns sequential numbers starting from the previous counter value. [`UInt64`](/sql-reference/data-types/int-uint)
+
+**Examples**
+
+**first call**
 
 ```sql title=Query
 SELECT generateRandomStructure(NULL, 33)
@@ -1970,37 +2179,17 @@ SELECT generateRandomStructure(NULL, 33)
 c1 DateTime, c2 Enum8('c2V0' = 0, 'c2V1' = 1, 'c2V2' = 2, 'c2V3' = 3), c3 LowCardinality(Nullable(FixedString(30))), c4 Int16, c5 Enum8('c5V0' = 0, 'c5V1' = 1, 'c5V2' = 2, 'c5V3' = 3), c6 Nullable(UInt8), c7 String, c8 Nested(e1 IPv4, e2 UInt8, e3 UInt16, e4 UInt16, e5 Int32, e6 Map(Date, Decimal256(70)))
 ```
 
-## generateSerialID {#generateSerialID}
-
-引入版本：v25.1
-
-生成并返回从前一个计数器值开始的连续数字。
-该函数接受一个字符串参数——序列标识符，以及一个可选的起始值。
-服务器需要配置 Keeper。
-序列存储在 Keeper 节点下的路径中，该路径可以在服务器配置中的 [`series_keeper_path`](/operations/server-configuration-parameters/settings#series_keeper_path) 进行配置。
-
-**语法**
+**second call**
 
 ```sql
 generateSerialID(series_identifier[, start_value])
 ```
 
-**参数**
-
-* `series_identifier` — 序列标识符 [`const String`](/sql-reference/data-types/string)
-* `start_value` — 可选。计数器的起始值。默认为 0。注意：该值仅在创建新序列时生效，如果序列已存在则会被忽略 [`UInt*`](/sql-reference/data-types/int-uint)
-
-**返回值**
-
-返回从计数器上一次取值开始递增的数字序列。[`UInt64`](/sql-reference/data-types/int-uint)
-
-**示例**
-
-**首次调用**
-
 ```sql title=Query
 SELECT generateSerialID('id1')
 ```
+
+**column call**
 
 ```response title=Response
 ┌─generateSerialID('id1')──┐
@@ -2008,11 +2197,11 @@ SELECT generateSerialID('id1')
 └──────────────────────────┘
 ```
 
-**第二次调用**
-
 ```sql title=Query
 SELECT generateSerialID('id1')
 ```
+
+**with start value**
 
 ```response title=Response
 ┌─generateSerialID('id1')──┐
@@ -2020,11 +2209,11 @@ SELECT generateSerialID('id1')
 └──────────────────────────┘
 ```
 
-**列调用**
-
 ```sql title=Query
 SELECT *, generateSerialID('id1') FROM test_table
 ```
+
+**with start value second call**
 
 ```response title=Response
 ┌─CounterID─┬─UserID─┬─ver─┬─generateSerialID('id1')──┐
@@ -2036,11 +2225,31 @@ SELECT *, generateSerialID('id1') FROM test_table
 └───────────┴────────┴─────┴──────────────────────────┘
 ```
 
-**包含起始值**
-
 ```sql title=Query
 SELECT generateSerialID('id2', 100)
 ```
+
+
+
+## getClientHTTPHeader {#getClientHTTPHeader}
+
+Introduced in: v24.5
+
+
+Gets the value of an HTTP header.
+If there is no such header or the current request is not performed via the HTTP interface, the function returns an empty string.
+Certain HTTP headers (e.g., `Authentication` and `X-ClickHouse-*`) are restricted.
+
+:::note Setting `allow_get_client_http_header` is required
+The function requires the setting `allow_get_client_http_header` to be enabled.
+The setting is not enabled by default for security reasons, because some headers, such as `Cookie`, could contain sensitive info.
+:::
+
+HTTP headers are case sensitive for this function.
+If the function is used in the context of a distributed query, it returns non-empty result only on the initiator node.
+
+
+**Syntax**
 
 ```response title=Response
 ┌─generateSerialID('id2', 100)──┐
@@ -2048,7 +2257,18 @@ SELECT generateSerialID('id2', 100)
 └───────────────────────────────┘
 ```
 
-**带有 start 值的第二次调用**
+**Arguments**
+
+- `name` — The HTTP header name. [`String`](/sql-reference/data-types/string)
+
+
+**Returned value**
+
+Returns the value of the header. [`String`](/sql-reference/data-types/string)
+
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT generateSerialID('id2', 100)
@@ -2060,39 +2280,36 @@ SELECT generateSerialID('id2', 100)
 └───────────────────────────────┘
 ```
 
-## getClientHTTPHeader {#getClientHTTPHeader}
 
-引入于：v24.5
 
-获取指定 HTTP 头部的值。
-如果该头部不存在，或者当前请求不是通过 HTTP 接口执行的，函数会返回空字符串。
-某些 HTTP 头部（例如 `Authentication` 和 `X-ClickHouse-*`）是受限制的。
+## getMacro {#getMacro}
 
-:::note 必须设置 `allow_get_client_http_header`
-该函数要求启用 `allow_get_client_http_header` 设置。
-出于安全原因，该设置默认未启用，因为某些头部（例如 `Cookie`）可能包含敏感信息。
-:::
+Introduced in: v20.1
 
-对于该函数，HTTP 头部是区分大小写的。
-如果在分布式查询上下文中使用该函数，它只会在发起查询的节点返回非空结果。
 
-**语法**
+Returns the value of a macro from the server configuration file.
+Macros are defined in the [`<macros>`](/operations/server-configuration-parameters/settings#macros) section of the configuration file and can be used to distinguish servers by convenient names even if they have complicated hostnames.
+If the function is executed in the context of a distributed table, it generates a normal column with values relevant to each shard.
+
+
+**Syntax**
 
 ```sql
 getClientHTTPHeader(name)
 ```
 
-**参数**
+**Arguments**
 
-* `name` — HTTP 头部名称。[`String`](/sql-reference/data-types/string)
+- `name` — The name of the macro to retrieve. [`const String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回该头部的值。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns the value of the specified macro. [`String`](/sql-reference/data-types/string)
 
-**使用示例**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT getClientHTTPHeader('Content-Type');
@@ -2104,31 +2321,32 @@ SELECT getClientHTTPHeader('Content-Type');
 └─────────────────────────────────────┘
 ```
 
-## getMacro {#getMacro}
 
-引入版本：v20.1
 
-返回服务器配置文件中某个宏的值。
-宏在配置文件的 [`<macros>`](/operations/server-configuration-parameters/settings#macros) 部分中定义，即使主机名很复杂，也可以用更便捷的名称来区分不同服务器。
-如果在分布式表的上下文中执行该函数，则会生成一个普通列，其中的值对应于各个分片。
+## getMaxTableNameLengthForDatabase {#getMaxTableNameLengthForDatabase}
 
-**语法**
+Introduced in: v
+
+Returns the maximum table name length in a specified database.
+
+**Syntax**
 
 ```sql
 getMacro(name)
 ```
 
-**参数**
+**Arguments**
 
-* `name` — 要获取的宏名称。[`const String`](/sql-reference/data-types/string)
+- `database_name` — The name of the specified database. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回指定宏的值。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns the length of the maximum table name, an Integer
 
-**基本用法**
+**Examples**
+
+**typical**
 
 ```sql title=Query
 SELECT getMacro('test');
@@ -2140,29 +2358,34 @@ SELECT getMacro('test');
 └──────────────────┘
 ```
 
-## getMaxTableNameLengthForDatabase {#getMaxTableNameLengthForDatabase}
 
-引入版本：v
 
-返回指定数据库中表名允许的最大长度。
+## getMergeTreeSetting {#getMergeTreeSetting}
 
-**语法**
+Introduced in: v25.6
+
+
+Returns the current value of a MergeTree setting.
+
+
+**Syntax**
 
 ```sql
 getMaxTableNameLengthForDatabase(database_name)
 ```
 
-**参数**
+**Arguments**
 
-* `database_name` — 指定数据库的名称。[`String`](/sql-reference/data-types/string)
+- `setting_name` — The setting name. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回表名允许的最大长度，类型为 Integer。
+**Returned value**
 
-**示例**
+Returns the merge tree setting's current value.
 
-**典型示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT getMaxTableNameLengthForDatabase('default');
@@ -2174,29 +2397,33 @@ SELECT getMaxTableNameLengthForDatabase('default');
             └─────────────────────────────────────────────┘
 ```
 
-## getMergeTreeSetting {#getMergeTreeSetting}
 
-引入版本：v25.6
 
-返回当前 MergeTree 设置的值。
+## getOSKernelVersion {#getOSKernelVersion}
 
-**语法**
+Introduced in: v21.11
+
+
+Returns a string with the OS kernel version.
+
+
+**Syntax**
 
 ```sql
 getMergeTreeSetting(setting_name)
 ```
 
-**参数**
+**Arguments**
 
-* `setting_name` — 设置名称。[`String`](/sql-reference/data-types/string)
+- None.
 
-**返回值**
+**Returned value**
 
-返回 MergeTree 设置的当前值。
+Returns the current OS kernel version. [`String`](/sql-reference/data-types/string)
 
-**示例**
+**Examples**
 
-**使用示例**
+**Usage example**
 
 ```sql title=Query
 SELECT getMergeTreeSetting('index_granularity');
@@ -2208,29 +2435,34 @@ SELECT getMergeTreeSetting('index_granularity');
 └──────────────────────────────────────────┘
 ```
 
-## getOSKernelVersion {#getOSKernelVersion}
 
-自 v21.11 起引入
 
-返回表示 OS 内核版本的字符串。
+## getServerPort {#getServerPort}
 
-**语法**
+Introduced in: v21.10
+
+
+Returns the server's port number for a given protocol.
+    
+
+**Syntax**
 
 ```sql
 getOSKernelVersion()
 ```
 
-**参数**
+**Arguments**
 
-* 无。
+- `port_name` — The name of the port. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回当前操作系统的内核版本。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns the server port number. [`UInt16`](/sql-reference/data-types/int-uint)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT getOSKernelVersion();
@@ -2242,29 +2474,34 @@ SELECT getOSKernelVersion();
 └─────────────────────────┘
 ```
 
-## getServerPort {#getServerPort}
 
-引入于：v21.10
 
-返回指定协议的服务器端口号。
+## getServerSetting {#getServerSetting}
 
-**语法**
+Introduced in: v25.6
+
+
+Returns the currently set value, given a server setting name.
+    
+
+**Syntax**
 
 ```sql
 getServerPort(port_name)
 ```
 
-**参数**
+**Arguments**
 
-* `port_name` — 端口名。[`String`](/sql-reference/data-types/string)
+- `setting_name` — The server setting name. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回服务器端口号。[`UInt16`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns the server setting's current value. [`Any`](/sql-reference/data-types)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT getServerPort('tcp_port');
@@ -2276,29 +2513,34 @@ SELECT getServerPort('tcp_port');
 └───────────────────────────┘
 ```
 
-## getServerSetting {#getServerSetting}
 
-引入于：v25.6
 
-根据给定的服务器 SETTING 名称返回当前已设置的值。
+## getSetting {#getSetting}
 
-**语法**
+Introduced in: v20.7
+
+
+Returns the current value of a setting.
+
+
+**Syntax**
 
 ```sql
 getServerSetting(setting_name')
 ```
 
-**参数**
+**Arguments**
 
-* `setting_name` — 服务器设置的名称。[`String`](/sql-reference/data-types/string)
+- `setting_Name` — The setting name. [`const String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回该服务器设置的当前值。[`Any`](/sql-reference/data-types)
+**Returned value**
 
-**示例**
+Returns the setting's current value. [`Any`](/sql-reference/data-types)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT getServerSetting('allow_use_jemalloc_memory');
@@ -2310,29 +2552,34 @@ SELECT getServerSetting('allow_use_jemalloc_memory');
 └───────────────────────────────────────────────┘
 ```
 
-## getSetting {#getSetting}
 
-引入版本：v20.7
 
-返回指定设置的当前值。
+## getSettingOrDefault {#getSettingOrDefault}
 
-**语法**
+Introduced in: v24.10
+
+
+Returns the current value of a setting or returns the default value specified in the second argument if the setting is not set in the current profile.
+
+
+**Syntax**
 
 ```sql
 getSetting(setting_name)
 ```
 
-**参数**
+**Arguments**
 
-* `setting_Name` — 设置名称。[`const String`](/sql-reference/data-types/string)
+- `setting_name` — The setting name. [`String`](/sql-reference/data-types/string)
+- `default_value` — Value to return if custom_setting is not set. Value may be of any data type or Null. 
 
-**返回值**
+**Returned value**
 
-返回该设置的当前值。[`Any`](/sql-reference/data-types)
+Returns the current value of the specified setting or `default_value` if the setting is not set.
 
-**示例**
+**Examples**
 
-**用法示例**
+**Usage example**
 
 ```sql title=Query
 SELECT getSetting('enable_analyzer');
@@ -2349,30 +2596,34 @@ SELECT getSetting('enable_analyzer');
 └──────────────────────────┘
 ```
 
-## getSettingOrDefault {#getSettingOrDefault}
 
-引入版本：v24.10
 
-返回当前 `setting` 的值；如果在当前 profile 中未配置该 `setting`，则返回第二个参数中指定的默认值。
+## getSizeOfEnumType {#getSizeOfEnumType}
 
-**语法**
+Introduced in: v1.1
+
+
+Returns the number of fields in the given [`Enum`](../../sql-reference/data-types/enum.md).
+
+
+**Syntax**
 
 ```sql
 getSettingOrDefault(setting_name, default_value)
 ```
 
-**参数**
+**Arguments**
 
-* `setting_name` — 设置名称。[`String`](/sql-reference/data-types/string)
-* `default_value` — 当未设置 `custom_setting` 时要返回的值。该值可以是任意数据类型或 Null。
+- `x` — Value of type `Enum`. [`Enum`](/sql-reference/data-types/enum)
 
-**返回值**
 
-返回指定设置的当前值；如果该设置未设置，则返回 `default_value`。
+**Returned value**
 
-**示例**
+Returns the number of fields with `Enum` input values. [`UInt8/16`](/sql-reference/data-types/int-uint)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT getSettingOrDefault('custom_undef1', 'my_value');
@@ -2386,29 +2637,35 @@ my_value
 NULL
 ```
 
-## getSizeOfEnumType {#getSizeOfEnumType}
 
-自 v1.1 引入
 
-返回给定 [`Enum`](../../sql-reference/data-types/enum.md) 类型中枚举成员的数量。
+## getSubcolumn {#getSubcolumn}
 
-**语法**
+Introduced in: v
+
+
+Receives the expression or identifier and constant string with the name of subcolumn.
+
+Returns requested subcolumn extracted from the expression.
+
+
+**Syntax**
 
 ```sql
 getSizeOfEnumType(x)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — `Enum` 类型的值。[`Enum`](/sql-reference/data-types/enum)
+- None.
 
-**返回值**
+**Returned value**
 
-返回 `Enum` 类型输入值的字段数量。[`UInt8/16`](/sql-reference/data-types/int-uint)
 
-**示例**
 
-**使用示例**
+**Examples**
+
+**getSubcolumn**
 
 ```sql title=Query
 SELECT getSizeOfEnumType(CAST('a' AS Enum8('a' = 1, 'b' = 2))) AS x;
@@ -2420,28 +2677,34 @@ SELECT getSizeOfEnumType(CAST('a' AS Enum8('a' = 1, 'b' = 2))) AS x;
 └───┘
 ```
 
-## getSubcolumn {#getSubcolumn}
 
-引入于：v
 
-接收一个表达式或标识符，以及一个包含子列名的常量字符串。
+## getTypeSerializationStreams {#getTypeSerializationStreams}
 
-返回从该表达式中提取出的所请求子列。
+Introduced in: v22.6
 
-**语法**
+
+Enumerates stream paths of a data type.
+This function is intended for developmental use.
+    
+
+**Syntax**
 
 ```sql
 ```
 
-**参数**
+**Arguments**
 
-* 无。
+- `col` — Column or string representation of a data-type from which the data type will be detected. [`Any`](/sql-reference/data-types)
 
-**返回值**
 
-**示例**
+**Returned value**
 
-**getSubcolumn**
+Returns an array with all the serialization sub-stream paths. [`Array(String)`](/sql-reference/data-types/array)
+
+**Examples**
+
+**tuple**
 
 ```sql title=Query
 SELECT getSubcolumn(array_col, 'size0'), getSubcolumn(tuple_col, 'elem_name')
@@ -2450,40 +2713,44 @@ SELECT getSubcolumn(array_col, 'size0'), getSubcolumn(tuple_col, 'elem_name')
 ```response title=Response
 ```
 
-## getTypeSerializationStreams {#getTypeSerializationStreams}
-
-引入于：v22.6
-
-列出某个数据类型的序列化流路径。
-此函数仅供开发用途。
-
-**语法**
+**map**
 
 ```sql
 getTypeSerializationStreams(col)
 ```
 
-**参数**
-
-* `col` — 将从中检测数据类型的列，或表示该数据类型的字符串。[`Any`](/sql-reference/data-types)
-
-**返回值**
-
-返回一个包含所有序列化子流路径的数组。[`Array(String)`](/sql-reference/data-types/array)
-
-**示例**
-
-**tuple**
-
 ```sql title=Query
 SELECT getTypeSerializationStreams(tuple('a', 1, 'b', 2))
 ```
+
+
+
+## globalVariable {#globalVariable}
+
+Introduced in: v20.5
+
+
+Takes a constant string argument and returns the value of the global variable with that name. This function is intended for compatibility with MySQL and not needed or useful for normal operation of ClickHouse. Only few dummy global variables are defined.
+    
+
+**Syntax**
 
 ```response title=Response
 ['{TupleElement(1), Regular}','{TupleElement(2), Regular}','{TupleElement(3), Regular}','{TupleElement(4), Regular}']
 ```
 
-**映射**
+**Arguments**
+
+- `name` — Global variable name. [`String`](/sql-reference/data-types/string)
+
+
+**Returned value**
+
+Returns the value of variable `name`. [`Any`](/sql-reference/data-types)
+
+**Examples**
+
+**globalVariable**
 
 ```sql title=Query
 SELECT getTypeSerializationStreams('Map(String, Int64)')
@@ -2493,29 +2760,41 @@ SELECT getTypeSerializationStreams('Map(String, Int64)')
 ['{ArraySizes}','{ArrayElements, TupleElement(keys), Regular}','{ArrayElements, TupleElement(values), Regular}']
 ```
 
-## globalVariable {#globalVariable}
 
-自 v20.5 引入
 
-接受一个常量字符串参数，并返回具有该名称的全局变量的值。此函数主要用于兼容 MySQL，在 ClickHouse 的正常运行中既非必需，也无实际用途。仅定义了少量虚拟的全局变量。
+## hasColumnInTable {#hasColumnInTable}
 
-**语法**
+Introduced in: v1.1
+
+
+Checks if a specific column exists in a database table.
+For elements in a nested data structure, the function checks for the existence of a column.
+For the nested data structure itself, the function returns `0`.
+    
+
+**Syntax**
 
 ```sql
 globalVariable(name)
 ```
 
-**参数**
+**Arguments**
 
-* `name` — 全局变量的名称。[`String`](/sql-reference/data-types/string)
+- `database` — Name of the database. [`const String`](/sql-reference/data-types/string)
+- `table` — Name of the table. [`const String`](/sql-reference/data-types/string)
+- `column` — Name of the column. [`const String`](/sql-reference/data-types/string)
+- `hostname` — Optional. Remote server name to perform the check on. [`const String`](/sql-reference/data-types/string)
+- `username` — Optional. Username for remote server. [`const String`](/sql-reference/data-types/string)
+- `password` — Optional. Password for remote server. [`const String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回名为 `name` 的变量值。[`Any`](/sql-reference/data-types)
+**Returned value**
 
-**示例**
+Returns `1` if the given column exists, `0` otherwise. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**globalVariable**
+**Examples**
+
+**Check an existing column**
 
 ```sql title=Query
 SELECT globalVariable('max_allowed_packet')
@@ -2525,46 +2804,44 @@ SELECT globalVariable('max_allowed_packet')
 67108864
 ```
 
-## hasColumnInTable {#hasColumnInTable}
-
-自 v1.1 起提供
-
-检查数据库表中是否存在指定列。
-对于嵌套数据结构中的元素，该函数会检查对应列是否存在。
-对于嵌套数据结构本身，该函数返回 `0`。
-
-**语法**
+**Check a non-existing column**
 
 ```sql
 hasColumnInTable([hostname[, username[, password]],]database, table, column)
 ```
 
-**参数**
-
-* `database` — 数据库名称。[`const String`](/sql-reference/data-types/string)
-* `table` — 表名。[`const String`](/sql-reference/data-types/string)
-* `column` — 列名。[`const String`](/sql-reference/data-types/string)
-* `hostname` — 可选。用于执行检查的远程服务器名称。[`const String`](/sql-reference/data-types/string)
-* `username` — 可选。远程服务器的用户名。[`const String`](/sql-reference/data-types/string)
-* `password` — 可选。远程服务器的密码。[`const String`](/sql-reference/data-types/string)
-
-**返回值**
-
-如果指定的列存在，则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
-
-**示例**
-
-**检查已存在的列**
-
 ```sql title=Query
 SELECT hasColumnInTable('system','metrics','metric')
 ```
+
+
+
+## hasThreadFuzzer {#hasThreadFuzzer}
+
+Introduced in: v20.6
+
+
+Returns whether the thread fuzzer is enabled.
+THis function is only useful for testing and debugging.
+    
+
+**Syntax**
 
 ```response title=Response
 1
 ```
 
-**检查不存在的列**
+**Arguments**
+
+- None.
+
+**Returned value**
+
+Returns whether Thread Fuzzer is effective. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**Examples**
+
+**Check Thread Fuzzer status**
 
 ```sql title=Query
 SELECT hasColumnInTable('system','metrics','non-existing_column')
@@ -2574,30 +2851,38 @@ SELECT hasColumnInTable('system','metrics','non-existing_column')
 0
 ```
 
-## hasThreadFuzzer {#hasThreadFuzzer}
 
-引入版本：v20.6
 
-返回线程 fuzzer 当前是否已启用。
-此函数仅在测试和调试时有用。
+## hostName {#hostName}
 
-**语法**
+Introduced in: v20.5
+
+
+Returns the name of the host on which this function was executed.
+If the function executes on a remote server (distributed processing), the remote server name is returned.
+If the function executes in the context of a distributed table, it generates a normal column with values relevant to each shard.
+Otherwise it produces a constant value.
+    
+
+**Syntax**
 
 ```sql
 hasThreadFuzzer()
 ```
 
-**参数**
+**Aliases**: `hostname`
 
-* 无。
+**Arguments**
 
-**返回值**
+- None.
 
-返回 Thread Fuzzer 是否启用。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns the host name. [`String`](/sql-reference/data-types/string)
 
-**检查 Thread Fuzzer 状态**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT hasThreadFuzzer()
@@ -2609,34 +2894,33 @@ SELECT hasThreadFuzzer()
 └───────────────────┘
 ```
 
-## hostName {#hostName}
 
-自 v20.5 起引入
 
-返回执行此函数的主机名。
-如果函数在远程服务器上执行（分布式处理），则返回远程服务器的名称。
-如果函数在分布式表的上下文中执行，则会生成一个普通列，其中的值对应各个分片。
-否则，它会生成一个常量值。
+## icebergBucket {#icebergBucket}
 
-**语法**
+Introduced in: v25.5
+
+Implements logic for the [iceberg bucket transform](https://iceberg.apache.org/spec/#bucket-transform-details.)
+
+**Syntax**
 
 ```sql
 hostName()
 ```
 
-**别名**: `hostname`
+**Arguments**
 
-**参数**
+- `N` — The number of buckets, modulo. [`const (U)Int*`](/sql-reference/data-types/int-uint)
+- `value` — The source value to transform. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Bool`](/sql-reference/data-types/boolean) or [`Decimal`](/sql-reference/data-types/decimal) or [`Float*`](/sql-reference/data-types/float) or [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring) or [`UUID`](/sql-reference/data-types/uuid) or [`Date`](/sql-reference/data-types/date) or [`Time`](/sql-reference/data-types/time) or [`DateTime`](/sql-reference/data-types/datetime)
 
-* 无。
 
-**返回值**
+**Returned value**
 
-返回主机名。[`String`](/sql-reference/data-types/string)
+Returns a 32-bit hash of the source value. [`Int32`](/sql-reference/data-types/int-uint)
 
-**示例**
+**Examples**
 
-**用法示例**
+**Example**
 
 ```sql title=Query
 SELECT hostName()
@@ -2648,30 +2932,32 @@ SELECT hostName()
 └────────────┘
 ```
 
-## icebergBucket {#icebergBucket}
 
-自 v25.5 引入
 
-实现了 [Iceberg bucket transform](https://iceberg.apache.org/spec/#bucket-transform-details.) 的逻辑。
+## icebergTruncate {#icebergTruncate}
 
-**语法**
+Introduced in: v25.3
+
+Implements logic of iceberg truncate transform: https://iceberg.apache.org/spec/#truncate-transform-details.
+
+**Syntax**
 
 ```sql
 icebergBucket(N, value)
 ```
 
-**参数**
+**Arguments**
 
-* `N` — 桶的数量，即取模基数。[`const (U)Int*`](/sql-reference/data-types/int-uint)
-* `value` — 要转换的源值。类型可以是 [`(U)Int*`](/sql-reference/data-types/int-uint)、[`Bool`](/sql-reference/data-types/boolean)、[`Decimal`](/sql-reference/data-types/decimal)、[`Float*`](/sql-reference/data-types/float)、[`String`](/sql-reference/data-types/string)、[`FixedString`](/sql-reference/data-types/fixedstring)、[`UUID`](/sql-reference/data-types/uuid)、[`Date`](/sql-reference/data-types/date)、[`Time`](/sql-reference/data-types/time) 或 [`DateTime`](/sql-reference/data-types/datetime)
+- `value` — The value to transform. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Decimal`](/sql-reference/data-types/decimal)
 
-**返回值**
 
-返回源值的 32 位哈希值。[`Int32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+The same type as the argument
 
-**示例**
+**Examples**
+
+**Example**
 
 ```sql title=Query
 SELECT icebergBucket(5, 1.0 :: Float32)
@@ -2681,29 +2967,34 @@ SELECT icebergBucket(5, 1.0 :: Float32)
 4
 ```
 
-## icebergTruncate {#icebergTruncate}
 
-引入于：v25.3
 
-实现 Iceberg 截断转换（truncate transform）的逻辑：[https://iceberg.apache.org/spec/#truncate-transform-details](https://iceberg.apache.org/spec/#truncate-transform-details)。
+## identity {#identity}
 
-**语法**
+Introduced in: v1.1
+
+
+This function returns the argument you pass to it, which is useful for debugging and testing. It lets you bypass index usage to see full scan performance instead. The query analyzer ignores anything inside identity functions when looking for indexes to use, and it also disables constant folding.
+
+
+**Syntax**
 
 ```sql
 icebergTruncate(N, value)
 ```
 
-**参数**
+**Arguments**
 
-* `value` — 要转换的值。[`String`](/sql-reference/data-types/string) 或 [`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Decimal`](/sql-reference/data-types/decimal)
+- `x` — Input value. [`Any`](/sql-reference/data-types)
 
-**返回值**
 
-与参数类型相同
+**Returned value**
 
-**示例**
+Returns the input value unchanged. [`Any`](/sql-reference/data-types)
 
-**示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT icebergTruncate(3, 'iceberg')
@@ -2713,29 +3004,34 @@ SELECT icebergTruncate(3, 'iceberg')
 ice
 ```
 
-## identity {#identity}
 
-引入版本：v1.1
 
-此函数返回传入的参数，本身对调试和测试非常有用。它允许你绕过索引的使用，从而观察全表扫描的性能。查询分析器在查找可用索引时，会忽略 `identity` 函数内部的任何内容，并且还会禁用常量折叠。
+## ignore {#ignore}
 
-**语法**
+Introduced in: v1.1
+
+
+Accepts arbitrary arguments and unconditionally returns `0`.
+    
+
+**Syntax**
 
 ```sql
 identity(x)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 输入值。[`Any`](/sql-reference/data-types)
+- `x` — An input value which is unused and passed only so as to avoid a syntax error. [`Any`](/sql-reference/data-types)
 
-**返回值**
 
-返回原始输入值。[`Any`](/sql-reference/data-types)
+**Returned value**
 
-**示例**
+Always returns `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT identity(42)
@@ -2745,29 +3041,40 @@ SELECT identity(42)
 42
 ```
 
-## ignore {#ignore}
 
-自 v1.1 版本引入
 
-接受任意参数并无条件返回 `0`。
+## indexHint {#indexHint}
 
-**语法**
+Introduced in: v1.1
+
+
+This function is intended for debugging and introspection.
+It ignores its argument and always returns 1.
+The arguments are not evaluated.
+
+But during index analysis, the argument of this function is assumed to be not wrapped in `indexHint`.
+This allows to select data in index ranges by the corresponding condition but without further filtering by this condition.
+The index in ClickHouse is sparse and using `indexHint` will yield more data than specifying the same condition directly.
+    
+
+**Syntax**
 
 ```sql
 ignore(x)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 仅用于避免语法错误而传入的输入值，本身不会被使用。[`Any`](/sql-reference/data-types)
+- `expression` — Any expression for index range selection. [`Expression`](/sql-reference/data-types/special-data-types/expression)
 
-**返回值**
 
-始终返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns `1` in all cases. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**用法示例**
+**Examples**
+
+**Usage example with date filtering**
 
 ```sql title=Query
 SELECT ignore(0, 'ClickHouse', NULL)
@@ -2779,35 +3086,38 @@ SELECT ignore(0, 'ClickHouse', NULL)
 └───────────────────────────────┘
 ```
 
-## indexHint {#indexHint}
 
-引入版本：v1.1
 
-此函数用于调试和内部分析。
-它会忽略其参数并始终返回 1。
-这些参数不会被求值。
+## initialQueryID {#initialQueryID}
 
-但在进行索引分析时，假定该函数的参数没有被 `indexHint` 包裹。
-这允许根据相应条件在索引范围内选取数据，但不会再基于该条件执行后续过滤。
-ClickHouse 中的索引是稀疏的，使用 `indexHint` 会比直接指定相同条件返回更多数据。
+Introduced in: v1.1
 
-**语法**
+
+Returns the ID of the initial current query.
+Other parameters of a query can be extracted from field `initial_query_id` in [`system.query_log`](../../operations/system-tables/query_log.md).
+
+In contrast to [`queryID`](/sql-reference/functions/other-functions#queryID) function, `initialQueryID` returns the same results on different shards.
+
+
+**Syntax**
 
 ```sql
 indexHint(expression)
 ```
 
-**参数**
+**Aliases**: `initial_query_id`
 
-* `expression` — 用于索引范围选择的任意表达式。[`Expression`](/sql-reference/data-types/special-data-types/expression)
+**Arguments**
 
-**返回值**
+- None.
 
-在所有情况下返回 `1`。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns the ID of the initial current query. [`String`](/sql-reference/data-types/string)
 
-**带日期过滤的示例用法**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT FlightDate AS k, count() FROM ontime WHERE indexHint(k = '2025-09-15') GROUP BY k ORDER BY k ASC;
@@ -2822,34 +3132,36 @@ SELECT FlightDate AS k, count() FROM ontime WHERE indexHint(k = '2025-09-15') GR
 └────────────┴─────────┘
 ```
 
-## initialQueryID {#initialQueryID}
 
-引入版本：v1.1
 
-返回当前初始查询的 ID。
-查询的其他参数可以从 [`system.query_log`](../../operations/system-tables/query_log.md) 中的 `initial_query_id` 字段中提取。
+## initialQueryStartTime {#initialQueryStartTime}
 
-与 [`queryID`](/sql-reference/functions/other-functions#queryID) 函数不同，`initialQueryID` 在不同分片上返回相同的结果。
+Introduced in: v25.4
 
-**语法**
+
+Returns the start time of the initial current query.
+`initialQueryStartTime` returns the same results on different shards.
+
+
+**Syntax**
 
 ```sql
 initialQueryID()
 ```
 
-**别名**: `initial_query_id`
+**Aliases**: `initial_query_start_time`
 
-**参数**
+**Arguments**
 
-* 无。
+- None.
 
-**返回值**
+**Returned value**
 
-返回当前会话初始查询的 ID。[`String`](/sql-reference/data-types/string)
+Returns the start time of the initial current query. [`DateTime`](/sql-reference/data-types/datetime)
 
-**示例**
+**Examples**
 
-**用法示例**
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE tmp (str String) ENGINE = Log;
@@ -2863,32 +3175,37 @@ SELECT count(DISTINCT t) FROM (SELECT initialQueryID() AS t FROM remote('127.0.0
 └───────────────────┘
 ```
 
-## initialQueryStartTime {#initialQueryStartTime}
 
-自 v25.4 版本引入
 
-返回初始查询的开始时间。
-`initialQueryStartTime` 在不同分片上返回相同结果。
+## initializeAggregation {#initializeAggregation}
 
-**语法**
+Introduced in: v20.6
+
+
+Calculates the result of an aggregate function based on a single value.
+This function can be used to initialize aggregate functions with combinator [-State](../../sql-reference/aggregate-functions/combinators.md#-state).
+You can create states of aggregate functions and insert them to columns of type [`AggregateFunction`](../../sql-reference/data-types/aggregatefunction.md) or use initialized aggregates as default values.
+    
+
+**Syntax**
 
 ```sql
 initialQueryStartTime()
 ```
 
-**别名**: `initial_query_start_time`
+**Arguments**
 
-**参数**
+- `aggregate_function` — Name of the aggregation function to initialize. [`String`](/sql-reference/data-types/string)
+- `arg1[, arg2, ...]` — Arguments of the aggregate function. [`Any`](/sql-reference/data-types)
 
-* 无。
 
-**返回值**
+**Returned value**
 
-返回当前初始查询的开始时间。[`DateTime`](/sql-reference/data-types/datetime)
+Returns the result of aggregation for every row passed to the function. The return type is the same as the return type of the function that `initializeAggregation` takes as a first argument. [`Any`](/sql-reference/data-types)
 
-**示例**
+**Examples**
 
-**使用示例**
+**Basic usage with uniqState**
 
 ```sql title=Query
 CREATE TABLE tmp (str String) ENGINE = Log;
@@ -2902,36 +3219,30 @@ SELECT count(DISTINCT t) FROM (SELECT initialQueryStartTime() AS t FROM remote('
 └───────────────────┘
 ```
 
-## initializeAggregation {#initializeAggregation}
-
-引入于：v20.6
-
-基于单个值计算聚合函数的结果。
-此函数可用于初始化带有组合器 [-State](../../sql-reference/aggregate-functions/combinators.md#-state) 的聚合函数。
-可以创建聚合函数的状态并将其插入到类型为 [`AggregateFunction`](../../sql-reference/data-types/aggregatefunction.md) 的列中，或者将已初始化的聚合结果用作默认值。
-
-**语法**
+**Usage with sumState and finalizeAggregation**
 
 ```sql
 initializeAggregation(aggregate_function, arg1[, arg2, ...])
 ```
 
-**参数**
-
-* `aggregate_function` — 要初始化的聚合函数名称。[`String`](/sql-reference/data-types/string)
-* `arg1[, arg2, ...]` — 聚合函数的参数。[`Any`](/sql-reference/data-types)
-
-**返回值**
-
-对传递给函数的每一行返回其聚合结果。返回类型与作为第一个参数传给 `initializeAggregation` 的函数的返回类型相同。[`Any`](/sql-reference/data-types)
-
-**示例**
-
-**使用 uniqState 的基本用法**
-
 ```sql title=Query
 SELECT uniqMerge(state) FROM (SELECT initializeAggregation('uniqState', number % 3) AS state FROM numbers(10000));
 ```
+
+
+
+## isConstant {#isConstant}
+
+Introduced in: v20.3
+
+
+Returns whether the argument is a constant expression.
+A constant expression is an expression whose result is known during query analysis, i.e. before execution.
+For example, expressions over [literals](/sql-reference/syntax#literals) are constant expressions.
+This function is mostly intended for development, debugging and demonstration.
+    
+
+**Syntax**
 
 ```response title=Response
 ┌─uniqMerge(state)─┐
@@ -2939,7 +3250,18 @@ SELECT uniqMerge(state) FROM (SELECT initializeAggregation('uniqState', number %
 └──────────────────┘
 ```
 
-**与 sumState 和 finalizeAggregation 搭配使用**
+**Arguments**
+
+- `x` — An expression to check. [`Any`](/sql-reference/data-types)
+
+
+**Returned value**
+
+Returns `1` if `x` is constant, `0` if `x` is non-constant. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**Examples**
+
+**Constant expression**
 
 ```sql title=Query
 SELECT finalizeAggregation(state), toTypeName(state) FROM (SELECT initializeAggregation('sumState', number % 3) AS state FROM numbers(5));
@@ -2955,37 +3277,18 @@ SELECT finalizeAggregation(state), toTypeName(state) FROM (SELECT initializeAggr
 └────────────────────────────┴───────────────────────────────┘
 ```
 
-## isConstant {#isConstant}
-
-引入于：v20.3
-
-返回其参数是否为常量表达式。
-常量表达式是在查询分析阶段（即执行之前）其结果就已知的表达式。
-例如，基于[字面量](/sql-reference/syntax#literals)的表达式就是常量表达式。
-此函数主要用于开发、调试和演示。
-
-**语法**
+**Constant with function**
 
 ```sql
 isConstant(x)
 ```
 
-**参数**
-
-* `x` — 待检查的表达式。[`Any`](/sql-reference/data-types)
-
-**返回值**
-
-如果 `x` 是常量则返回 `1`，如果 `x` 不是常量则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
-
-**示例**
-
-**常量表达式**
-
 ```sql title=Query
 SELECT isConstant(x + 1)
 FROM (SELECT 43 AS x)
 ```
+
+**Non-constant expression**
 
 ```response title=Response
 ┌─isConstant(plus(x, 1))─┐
@@ -2993,12 +3296,12 @@ FROM (SELECT 43 AS x)
 └────────────────────────┘
 ```
 
-**带函数的常量**
-
 ```sql title=Query
 WITH 3.14 AS pi
 SELECT isConstant(cos(pi))
 ```
+
+**Behavior of the now() function**
 
 ```response title=Response
 ┌─isConstant(cos(pi))─┐
@@ -3006,12 +3309,22 @@ SELECT isConstant(cos(pi))
 └─────────────────────┘
 ```
 
-**非常量表达式**
-
 ```sql title=Query
 SELECT isConstant(number)
 FROM numbers(1)
 ```
+
+
+
+## isDecimalOverflow {#isDecimalOverflow}
+
+Introduced in: v20.8
+
+
+Checks if a decimal number has too many digits to fit properly in a Decimal data type with given precision.
+    
+
+**Syntax**
 
 ```response title=Response
 ┌─isConstant(number)─┐
@@ -3019,7 +3332,19 @@ FROM numbers(1)
 └────────────────────┘
 ```
 
-**now() 函数的行为**
+**Arguments**
+
+- `value` — Decimal value to check. [`Decimal`](/sql-reference/data-types/decimal)
+- `precision` — Optional. The precision of the Decimal type. If omitted, the initial precision of the first argument is used. [`UInt8`](/sql-reference/data-types/int-uint)
+
+
+**Returned value**
+
+Returns `1` if the decimal value has more digits than allowed by its precision, `0` if the decimal value satisfies the specified precision. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT isConstant(now())
@@ -3031,30 +3356,41 @@ SELECT isConstant(now())
 └───────────────────┘
 ```
 
-## isDecimalOverflow {#isDecimalOverflow}
 
-引入版本：v20.8
 
-检查某个十进制数的位数是否超出限制，从而无法在指定精度的 `Decimal` 数据类型中正确存储。
+## joinGet {#joinGet}
 
-**语法**
+Introduced in: v18.16
+
+
+Allows you to extract data from a table the same way as from a dictionary.
+Gets data from Join tables using the specified join key.
+
+:::note
+Only supports tables created with the `ENGINE = Join(ANY, LEFT, <join_keys>)` [statement](/engines/table-engines/special/join).
+:::
+
+
+**Syntax**
 
 ```sql
 isDecimalOverflow(value[, precision])
 ```
 
-**参数**
+**Arguments**
 
-* `value` — 要检查的 Decimal 值。[`Decimal`](/sql-reference/data-types/decimal)
-* `precision` — 可选。Decimal 类型的精度。如果省略，则使用第一个参数的初始精度。[`UInt8`](/sql-reference/data-types/int-uint)
+- `join_storage_table_name` — An identifier which indicates where to perform the search. The identifier is searched in the default database (see parameter `default_database` in the config file). To override the default database, use the `USE database_name` query or specify the database and the table through a dot, like `database_name.table_name`. [`String`](/sql-reference/data-types/string)
+- `value_column` — The name of the column of the table that contains required data. [`const String`](/sql-reference/data-types/string)
+- `join_keys` — A list of join keys. [`Any`](/sql-reference/data-types)
 
-**返回值**
 
-如果 Decimal 值的位数超过其精度允许的位数，则返回 `1`；如果 Decimal 值满足指定的精度，则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns list of values corresponded to list of keys. [`Any`](/sql-reference/data-types)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT isDecimalOverflow(toDecimal32(1000000000, 0), 9),
@@ -3069,36 +3405,11 @@ SELECT isDecimalOverflow(toDecimal32(1000000000, 0), 9),
 └──────────────────────────────────────────────────┴───────────────────────────────────────────────┴───────────────────────────────────────────────────┴────────────────────────────────────────────────┘
 ```
 
-## joinGet {#joinGet}
-
-自 v18.16 版本引入
-
-允许你以与字典相同的方式从表中提取数据。
-使用指定的 join 键从 Join 表中获取数据。
-
-:::note
-仅支持使用 `ENGINE = Join(ANY, LEFT, <join_keys>)` [语句](/engines/table-engines/special/join) 创建的表。
-:::
-
-**语法**
+**Usage with table from current database**
 
 ```sql
 joinGet(join_storage_table_name, value_column, join_keys)
 ```
-
-**参数**
-
-* `join_storage_table_name` — 指示在何处执行查找的标识符。该标识符会在默认数据库中进行查找（参见配置文件中的 `default_database` 参数）。要更改默认数据库，请使用 `USE database_name` 查询，或者通过点号指定数据库和表，例如 `database_name.table_name`。[`String`](/sql-reference/data-types/string)
-* `value_column` — 表中包含所需数据的列名。[`const String`](/sql-reference/data-types/string)
-* `join_keys` — 连接键的列表。[`Any`](/sql-reference/data-types)
-
-**返回值**
-
-返回与键列表一一对应的值列表。[`Any`](/sql-reference/data-types)
-
-**示例**
-
-**用法示例**
 
 ```sql title=Query
 CREATE TABLE db_test.id_val(`id` UInt32, `val` UInt32) ENGINE = Join(ANY, LEFT, id);
@@ -3107,18 +3418,36 @@ INSERT INTO db_test.id_val VALUES (1,11)(2,12)(4,13);
 SELECT joinGet(db_test.id_val, 'val', toUInt32(1));
 ```
 
+**Using arrays as join keys**
+
 ```response title=Response
 ┌─joinGet(db_test.id_val, 'val', toUInt32(1))─┐
 │                                          11 │
 └─────────────────────────────────────────────┘
 ```
 
-**在当前数据库中的表上使用**
-
 ```sql title=Query
 USE db_test;
 SELECT joinGet(id_val, 'val', toUInt32(2));
 ```
+
+
+
+## joinGetOrNull {#joinGetOrNull}
+
+Introduced in: v20.4
+
+
+Allows you to extract data from a table the same way as from a dictionary.
+Gets data from Join tables using the specified join key.
+Unlike [`joinGet`](#joinGet) it returns `NULL` when the key is missing.
+
+:::note
+Only supports tables created with the `ENGINE = Join(ANY, LEFT, <join_keys>)` [statement](/engines/table-engines/special/join).
+:::
+
+
+**Syntax**
 
 ```response title=Response
 ┌─joinGet(id_val, 'val', toUInt32(2))─┐
@@ -3126,7 +3455,20 @@ SELECT joinGet(id_val, 'val', toUInt32(2));
 └─────────────────────────────────────┘
 ```
 
-**使用数组作为 JOIN 键**
+**Arguments**
+
+- `join_storage_table_name` — An identifier which indicates where to perform the search. The identifier is searched in the default database (see parameter default_database in the config file). To override the default database, use the `USE database_name` query or specify the database and the table through a dot, like `database_name.table_name`. [`String`](/sql-reference/data-types/string)
+- `value_column` — The name of the column of the table that contains required data. [`const String`](/sql-reference/data-types/string)
+- `join_keys` — A list of join keys. [`Any`](/sql-reference/data-types)
+
+
+**Returned value**
+
+Returns a list of values corresponding to the list of keys, or `NULL` if a key is not found. [`Any`](/sql-reference/data-types)
+
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE some_table (id1 UInt32, id2 UInt32, name String) ENGINE = Join(ANY, LEFT, id1, id2);
@@ -3141,37 +3483,34 @@ SELECT joinGet(some_table, 'name', 1, 11);
 └────────────────────────────────────┘
 ```
 
-## joinGetOrNull {#joinGetOrNull}
 
-引入版本：v20.4
 
-允许以与从字典中提取数据相同的方式，从表中提取数据。
-使用指定的 join 键从 Join 引擎表中获取数据。
-与 [`joinGet`](#joinGet) 不同，当键不存在时返回 `NULL`。
+## lowCardinalityIndices {#lowCardinalityIndices}
 
-:::note
-仅支持通过 `ENGINE = Join(ANY, LEFT, <join_keys>)` [语句](/engines/table-engines/special/join) 创建的表。
-:::
+Introduced in: v18.12
 
-**语法**
+
+Returns the position of a value in the dictionary of a [LowCardinality](../data-types/lowcardinality.md) column. Positions start at 1. Since LowCardinality have per-part dictionaries, this function may return different positions for the same value in different parts.
+    
+
+**Syntax**
 
 ```sql
 joinGetOrNull(join_storage_table_name, value_column, join_keys)
 ```
 
-**参数**
+**Arguments**
 
-* `join_storage_table_name` — 指示在哪个位置执行查找的标识符。该标识符会在默认数据库中进行查找（参见配置文件中的参数 `default_database`）。要覆盖默认数据库设置，请使用 `USE database_name` 查询，或者通过点号指定数据库和表，例如 `database_name.table_name`。[`String`](/sql-reference/data-types/string)
-* `value_column` — 表中包含所需数据的列名。[`const String`](/sql-reference/data-types/string)
-* `join_keys` — join 键的列表。[`Any`](/sql-reference/data-types)
+- `col` — A low cardinality column. [`LowCardinality`](/sql-reference/data-types/lowcardinality)
 
-**返回值**
 
-返回与键列表对应的值列表，如果找不到某个键，则返回 `NULL`。[`Any`](/sql-reference/data-types)
+**Returned value**
 
-**示例**
+The position of the value in the dictionary of the current part. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**用法示例**
+**Examples**
+
+**Usage examples**
 
 ```sql title=Query
 CREATE TABLE db_test.id_val(`id` UInt32, `val` UInt32) ENGINE = Join(ANY, LEFT, id);
@@ -3186,29 +3525,36 @@ SELECT joinGetOrNull(db_test.id_val, 'val', toUInt32(1)), joinGetOrNull(db_test.
 └───────────────────────────────────────────────────┴─────────────────────────────────────────────────────┘
 ```
 
-## lowCardinalityIndices {#lowCardinalityIndices}
 
-引入版本：v18.12
 
-返回 [LowCardinality](../data-types/lowcardinality.md) 列中某个值在字典中的位置。位置从 1 开始。由于 LowCardinality 列在每个分区片段上都有各自的字典，此函数在不同分区片段中对相同值可能返回不同的位置。
+## lowCardinalityKeys {#lowCardinalityKeys}
 
-**语法**
+Introduced in: v18.12
+
+
+Returns the dictionary values of a [LowCardinality](../data-types/lowcardinality.md) column.
+If the block is smaller or larger than the dictionary size, the result will be truncated or extended with default values.
+Since LowCardinality have per-part dictionaries, this function may return different dictionary values in different parts.
+    
+
+**Syntax**
 
 ```sql
 lowCardinalityIndices(col)
 ```
 
-**参数**
+**Arguments**
 
-* `col` — 低基数列。[`LowCardinality`](/sql-reference/data-types/lowcardinality)
+- `col` — A low cardinality column. [`LowCardinality`](/sql-reference/data-types/lowcardinality)
 
-**返回值**
 
-当前 part 的字典中该值的位置。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns the dictionary keys. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用示例**
+**Examples**
+
+**lowCardinalityKeys**
 
 ```sql title=Query
 DROP TABLE IF EXISTS test;
@@ -3239,31 +3585,37 @@ SELECT s, lowCardinalityIndices(s) FROM test;
 └────┴──────────────────────────┘
 ```
 
-## lowCardinalityKeys {#lowCardinalityKeys}
 
-引入自：v18.12
 
-返回 [LowCardinality](../data-types/lowcardinality.md) 列的字典值。
-如果数据块的大小小于或大于字典大小，结果将分别被截断或使用默认值进行扩展。
-由于 LowCardinality 为每个分区片段维护独立字典，此函数在不同分区片段中可能返回不同的字典值。
+## materialize {#materialize}
 
-**语法**
+Introduced in: v1.1
+
+
+Turns a constant into a full column containing a single value.
+Full columns and constants are represented differently in memory.
+Functions usually execute different code for normal and constant arguments, although the result should typically be the same.
+This function can be used to debug this behavior.
+
+
+**Syntax**
 
 ```sql
 lowCardinalityKeys(col)
 ```
 
-**参数**
+**Arguments**
 
-* `col` — 一个低基数列。[`LowCardinality`](/sql-reference/data-types/lowcardinality)
+- `x` — A constant. [`Any`](/sql-reference/data-types)
 
-**返回值**
 
-返回字典键。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns a full column containing the constant value. [`Any`](/sql-reference/data-types)
 
-**lowCardinalityKeys**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 DROP TABLE IF EXISTS test;
@@ -3294,32 +3646,45 @@ SELECT s, lowCardinalityKeys(s) FROM test;
 └────┴───────────────────────┘
 ```
 
-## materialize {#materialize}
 
-首次在 v1.1 中引入
 
-将常量转换为包含单个值的完整列。
-完整列和常量在内存中的表示方式不同。
-函数通常会针对普通参数和常量参数执行不同的代码，尽管结果通常应当相同。
-此函数可用于调试这种行为。
+## minSampleSizeContinuous {#minSampleSizeContinuous}
 
-**语法**
+Introduced in: v23.10
+
+
+Calculates the minimum required sample size for an A/B test comparing means of a continuous metric in two samples.
+
+Uses the formula described in [this article](https://towardsdatascience.com/required-sample-size-for-a-b-testing-6f6608dd330a).
+Assumes equal sizes of treatment and control groups.
+Returns the required sample size for one group (i.e. the sample size required for the whole experiment is twice the returned value).
+Also assumes equal variance of the test metric in treatment and control groups.
+
+
+**Syntax**
 
 ```sql
 materialize(x)
 ```
 
-**参数**
+**Aliases**: `minSampleSizeContinous`
 
-* `x` — 常量。[`Any`](/sql-reference/data-types)
+**Arguments**
 
-**返回值**
+- `baseline` — Baseline value of a metric. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+- `sigma` — Baseline standard deviation of a metric. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+- `mde` — Minimum detectable effect (MDE) as percentage of the baseline value (e.g. for a baseline value 112.25 the MDE 0.03 means an expected change to 112.25 ± 112.25*0.03). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+- `power` — Required statistical power of a test (1 - probability of Type II error). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+- `alpha` — Required significance level of a test (probability of Type I error). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-返回一个由该常量值填充的整列。[`Any`](/sql-reference/data-types)
 
-**示例**
+**Returned value**
 
-**使用示例**
+Returns a named Tuple with 3 elements: `minimum_sample_size`, `detect_range_lower` and  `detect_range_upper`. These are respectively: the required sample size, the lower bound of the range of values not detectable with the returned required sample size, calculated as `baseline * (1 - mde)`, and the upper bound of the range of values not detectable with the returned required sample size, calculated as `baseline * (1 + mde)` (Float64). [`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+
+**Examples**
+
+**minSampleSizeContinuous**
 
 ```sql title=Query
 -- 在下面的示例中,`countMatches` 函数要求第二个参数为常量。
@@ -3335,40 +3700,39 @@ SELECT countMatches('foobarfoo', materialize('foo'));
 Code: 44. DB::Exception: Received from localhost:9000. DB::Exception: Illegal type of argument #2 'pattern' of function countMatches, expected constant String, got String
 ```
 
-## minSampleSizeContinuous {#minSampleSizeContinuous}
 
-引入于：v23.10
 
-用于计算在两个样本之间比较某个连续型指标的均值时，进行 A/B 测试所需的最小样本量。
+## minSampleSizeConversion {#minSampleSizeConversion}
 
-使用[这篇文章](https://towardsdatascience.com/required-sample-size-for-a-b-testing-6f6608dd330a)中描述的公式。
-假设实验组和对照组的样本量相等。
-返回的是单个分组所需的样本量（即整个实验所需的总样本量是返回值的两倍）。
-同时假设实验组和对照组中该测试指标的方差相等。
+Introduced in: v22.6
 
-**语法**
+
+Calculates minimum required sample size for an A/B test comparing conversions (proportions) in two samples.
+
+Uses the formula described in [this article](https://towardsdatascience.com/required-sample-size-for-a-b-testing-6f6608dd330a). Assumes equal sizes of treatment and control groups. Returns the sample size required for one group (i.e. the sample size required for the whole experiment is twice the returned value).
+
+
+**Syntax**
 
 ```sql
 minSampleSizeContinuous(baseline, sigma, mde, power, alpha)
 ```
 
-**别名**：`minSampleSizeContinous`
+**Arguments**
 
-**参数**
+- `baseline` — Baseline conversion. [`Float*`](/sql-reference/data-types/float)
+- `mde` — Minimum detectable effect (MDE) as percentage points (e.g. for a baseline conversion 0.25 the MDE 0.03 means an expected change to 0.25 ± 0.03). [`Float*`](/sql-reference/data-types/float)
+- `power` — Required statistical power of a test (1 - probability of Type II error). [`Float*`](/sql-reference/data-types/float)
+- `alpha` — Required significance level of a test (probability of Type I error). [`Float*`](/sql-reference/data-types/float)
 
-* `baseline` — 指标的基线值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
-* `sigma` — 指标的基线标准差。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
-* `mde` — 以基线值百分比表示的最小可检测效应（MDE）（例如，对于基线值 112.25，MDE 为 0.03 表示预期变动为 112.25 ± 112.25*0.03）。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
-* `power` — 检验所需的统计功效（1 - 第二类错误的概率）。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
-* `alpha` — 检验所需的显著性水平（第一类错误的概率）。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
-**返回值**
+**Returned value**
 
-返回一个包含 3 个元素的具名 Tuple：`minimum_sample_size`、`detect_range_lower` 和 `detect_range_upper`。它们分别表示：所需样本量；在该样本量下无法检测到的取值范围下界，计算方式为 `baseline * (1 - mde)`；以及在该样本量下无法检测到的取值范围上界，计算方式为 `baseline * (1 + mde)`（Float64）。[`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+Returns a named Tuple with 3 elements: `minimum_sample_size`, `detect_range_lower`, `detect_range_upper`. These are, respectively: the required sample size, the lower bound of the range of values not detectable with the returned required sample size, calculated as `baseline - mde`, the upper bound of the range of values not detectable with the returned required sample size, calculated as `baseline + mde`. [`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
 
-**示例**
+**Examples**
 
-**minSampleSizeContinuous**
+**minSampleSizeConversion**
 
 ```sql title=Query
 SELECT minSampleSizeContinuous(112.25, 21.1, 0.03, 0.80, 0.05) AS sample_size
@@ -3378,34 +3742,40 @@ SELECT minSampleSizeContinuous(112.25, 21.1, 0.03, 0.80, 0.05) AS sample_size
 (616.2931945826209,108.8825,115.6175)
 ```
 
-## minSampleSizeConversion {#minSampleSizeConversion}
 
-引入于：v22.6
 
-用于 A/B 测试中，计算在两个样本间比较转化率（比例）所需的最小样本量。
+## neighbor {#neighbor}
 
-使用[这篇文章](https://towardsdatascience.com/required-sample-size-for-a-b-testing-6f6608dd330a)中描述的公式。假设试验组与对照组样本量相等。返回的是单个分组所需的样本量（即整个实验所需的总样本量是返回值的两倍）。
+Introduced in: v20.1
 
-**语法**
+
+Returns a value from a column at a specified offset from the current row.
+This function is deprecated and error-prone because it operates on the physical order of data blocks which may not correspond to the logical order expected by users.
+Consider using proper window functions instead.
+
+The function can be enabled by setting `allow_deprecated_error_prone_window_functions = 1`.
+
+
+**Syntax**
 
 ```sql
 minSampleSizeConversion(baseline, mde, power, alpha)
 ```
 
-**参数**
+**Arguments**
 
-* `baseline` — 基准转化率。[`Float*`](/sql-reference/data-types/float)
-* `mde` — 最小可检测效应（MDE），以百分点表示（例如，对于基准转化率 0.25，`mde` 为 0.03 表示期望变化为 0.25 ± 0.03）。[`Float*`](/sql-reference/data-types/float)
-* `power` — 检验所需的统计检验功效（1 - Ⅱ类错误的概率）。[`Float*`](/sql-reference/data-types/float)
-* `alpha` — 检验所需的显著性水平（Ⅰ类错误的概率）。[`Float*`](/sql-reference/data-types/float)
+- `column` — The source column. [`Any`](/sql-reference/data-types)
+- `offset` — The offset from the current row. Positive values look forward, negative values look backward. [`Integer`](/sql-reference/data-types/int-uint)
+- `default_value` — Optional. The value to return if the offset goes beyond the data bounds. If not specified, uses the default value for the column type. [`Any`](/sql-reference/data-types)
 
-**返回值**
 
-返回一个包含 3 个元素的具名 Tuple：`minimum_sample_size`、`detect_range_lower`、`detect_range_upper`。它们分别表示：所需的样本量；在该样本量下无法检测到的取值范围的下界，计算为 `baseline - mde`；在该样本量下无法检测到的取值范围的上界，计算为 `baseline + mde`。[`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**示例**
+Returns a value from the specified offset, or default if out of bounds. [`Any`](/sql-reference/data-types)
 
-**minSampleSizeConversion**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT minSampleSizeConversion(0.25, 0.03, 0.80, 0.05) AS sample_size
@@ -3415,39 +3785,32 @@ SELECT minSampleSizeConversion(0.25, 0.03, 0.80, 0.05) AS sample_size
 (3396.077603219163,0.22,0.28)
 ```
 
-## neighbor {#neighbor}
-
-Introduced in: v20.1
-
-返回距离当前行指定偏移量处的列值。
-由于该函数基于数据块的物理顺序进行操作，而这可能与用户期望的逻辑顺序不一致，因此它已被弃用且容易出错。
-建议改用合适的窗口函数。
-
-可以通过设置 `allow_deprecated_error_prone_window_functions = 1` 来启用该函数。
-
-**Syntax**
+**With default value**
 
 ```sql
 neighbor(column, offset[, default_value])
 ```
 
-**参数**
-
-* `column` — 源列。[`Any`](/sql-reference/data-types)
-* `offset` — 相对于当前行的偏移量。正值向后查找，负值向前查找。[`Integer`](/sql-reference/data-types/int-uint)
-* `default_value` — 可选。当偏移超出数据范围时返回的值。若未指定，则使用该列类型的默认值。[`Any`](/sql-reference/data-types)
-
-**返回值**
-
-返回指定偏移处的值，若越界则返回默认值。[`Any`](/sql-reference/data-types)
-
-**示例**
-
-**使用示例**
-
 ```sql title=Query
 SELECT number, neighbor(number, 2) FROM system.numbers LIMIT 10;
 ```
+
+
+
+## nested {#nested}
+
+Introduced in: v
+
+
+This is a function used internally by the ClickHouse engine and not meant to be used directly.
+
+Returns the array of tuples from multiple arrays.
+
+The first argument must be a constant array of Strings determining the names of the resulting Tuple.
+The other arguments must be arrays of the same size.
+
+
+**Syntax**
 
 ```response title=Response
 ┌─number─┬─neighbor(number, 2)─┐
@@ -3464,7 +3827,17 @@ SELECT number, neighbor(number, 2) FROM system.numbers LIMIT 10;
 └────────┴─────────────────────┘
 ```
 
-**使用默认值**
+**Arguments**
+
+- None.
+
+**Returned value**
+
+
+
+**Examples**
+
+**nested**
 
 ```sql title=Query
 SELECT number, neighbor(number, 2, 999) FROM system.numbers LIMIT 10;
@@ -3485,31 +3858,33 @@ SELECT number, neighbor(number, 2, 999) FROM system.numbers LIMIT 10;
 └────────┴──────────────────────────┘
 ```
 
-## 嵌套 {#nested}
 
-引入版本：v
 
-这是 ClickHouse 引擎内部使用的一个函数，并非用于直接调用。
+## normalizeQuery {#normalizeQuery}
 
-从多个数组返回一个由元组组成的数组。
+Introduced in: v20.8
 
-第一个参数必须是一个由 String 类型构成的常量数组，用于指定结果 Tuple 的名称。
-其余参数必须是大小相同的数组。
 
-**语法**
+Replaces literals, sequences of literals and complex aliases (containing whitespace, more than two digits or at least 36 bytes long such as UUIDs) with placeholder `?`.
+    
+
+**Syntax**
 
 ```sql
 ```
 
-**参数**
+**Arguments**
 
-* 无。
+- `x` — Sequence of characters. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-**示例**
+**Returned value**
 
-**嵌套**
+Returns the given sequence of characters with placeholders. [`String`](/sql-reference/data-types/string)
+
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT nested(['keys', 'values'], ['key_1', 'key_2'], ['value_1','value_2'])
@@ -3518,29 +3893,35 @@ SELECT nested(['keys', 'values'], ['key_1', 'key_2'], ['value_1','value_2'])
 ```response title=Response
 ```
 
-## normalizeQuery {#normalizeQuery}
 
-自 v20.8 引入
 
-将字面量、字面量序列以及复杂别名（包含空白字符、超过两位数字，或长度至少为 36 字节的值，如 UUID）替换为占位符 `?`。
+## normalizeQueryKeepNames {#normalizeQueryKeepNames}
 
-**语法**
+Introduced in: v21.2
+
+
+Replaces literals and sequences of literals with placeholder `?` but does not replace complex aliases (containing whitespace, more than two digits or at least 36 bytes long such as UUIDs).
+This helps better analyze complex query logs.
+    
+
+**Syntax**
 
 ```sql
 normalizeQuery(x)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 字符序列。[`String`](/sql-reference/data-types/string)
+- `x` — Sequence of characters. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回包含占位符的指定字符序列。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns the given sequence of characters with placeholders. [`String`](/sql-reference/data-types/string)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT normalizeQuery('[1, 2, 3, x]') AS query
@@ -3552,30 +3933,35 @@ SELECT normalizeQuery('[1, 2, 3, x]') AS query
 └──────────┘
 ```
 
-## normalizeQueryKeepNames {#normalizeQueryKeepNames}
 
-自 v21.2 引入
 
-将字面量和字面量序列替换为占位符 `?`，但不会替换复杂别名（包含空白字符、超过两位数字或长度至少为 36 字节的值，例如 UUID）。
-这有助于更好地分析复杂的查询日志。
+## normalizedQueryHash {#normalizedQueryHash}
 
-**语法**
+Introduced in: v20.8
+
+
+Returns identical 64 bit hash values without the values of literals for similar queries.
+Can be helpful in analyzing query logs.
+    
+
+**Syntax**
 
 ```sql
 normalizeQueryKeepNames(x)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 字符串。[`String`](/sql-reference/data-types/string)
+- `x` — Sequence of characters. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回带有占位符的给定字符串。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns a 64 bit hash value. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT normalizeQuery('SELECT 1 AS aComplexName123'), normalizeQueryKeepNames('SELECT 1 AS aComplexName123')
@@ -3587,30 +3973,35 @@ SELECT normalizeQuery('SELECT 1 AS aComplexName123'), normalizeQueryKeepNames('S
 └───────────────────────────────────────────────┴────────────────────────────────────────────────────────┘
 ```
 
-## normalizedQueryHash {#normalizedQueryHash}
 
-引入自：v20.8
 
-对于相似的查询，在不考虑字面量值的情况下，返回相同的 64 位哈希值。
-这在分析查询日志时非常有用。
+## normalizedQueryHashKeepNames {#normalizedQueryHashKeepNames}
 
-**语法**
+Introduced in: v21.2
+
+
+Like [`normalizedQueryHash`](#normalizedQueryHash) it returns identical 64 bit hash values without the values of literals for similar queries, but it does not replace complex aliases (containing whitespace, more than two digits or at least 36 bytes long such as UUIDs) with a placeholder before hashing.
+Can be helpful in analyzing query logs.
+    
+
+**Syntax**
 
 ```sql
 normalizedQueryHash(x)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 字符序列。[`String`](/sql-reference/data-types/string)
+- `x` — Sequence of characters. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回一个 64 位哈希值。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns a 64 bit hash value. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT normalizedQueryHash('SELECT 1 AS `xyz`') != normalizedQueryHash('SELECT 1 AS `abc`') AS res
@@ -3622,30 +4013,37 @@ SELECT normalizedQueryHash('SELECT 1 AS `xyz`') != normalizedQueryHash('SELECT 1
 └─────┘
 ```
 
-## normalizedQueryHashKeepNames {#normalizedQueryHashKeepNames}
 
-引入版本：v21.2
 
-与 [`normalizedQueryHash`](#normalizedQueryHash) 类似，它在对相似查询计算哈希时，会返回相同的 64 位哈希值，并忽略字面量的取值，但在计算哈希之前不会将复杂别名（包含空白字符、超过两位数字，或长度至少为 36 字节（例如 UUID））替换为占位符。
-在分析查询日志时可能会有帮助。
+## parseReadableSize {#parseReadableSize}
 
-**语法**
+Introduced in: v24.6
+
+
+Given a string containing a byte size and `B`, `KiB`, `KB`, `MiB`, `MB`, etc. as a unit (i.e. [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) or decimal byte unit), this function returns the corresponding number of bytes.
+If the function is unable to parse the input value, it throws an exception.
+
+The inverse operations of this function are [`formatReadableSize`](#formatReadableSize) and [`formatReadableDecimalSize`](#formatReadableDecimalSize).
+
+
+**Syntax**
 
 ```sql
 normalizedQueryHashKeepNames(x)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 字符序列。[`String`](/sql-reference/data-types/string)
+- `x` — Readable size with ISO/IEC 80000-13 or decimal byte unit. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回一个 64 位哈希值。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns the number of bytes, rounded up to the nearest integer. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT normalizedQueryHash('SELECT 1 AS `xyz123`') != normalizedQueryHash('SELECT 1 AS `abc123`') AS normalizedQueryHash;
@@ -3661,32 +4059,37 @@ SELECT normalizedQueryHashKeepNames('SELECT 1 AS `xyz123`') != normalizedQueryHa
 └──────────────────────────────┘
 ```
 
-## parseReadableSize {#parseReadableSize}
 
-引入版本：v24.6
 
-给定一个以 `B`、`KiB`、`KB`、`MiB`、`MB` 等作为单位来表示字节大小的字符串（即 [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) 或十进制字节单位），此函数返回对应的字节数。
-如果函数无法解析输入值，则会抛出异常。
+## parseReadableSizeOrNull {#parseReadableSizeOrNull}
 
-此函数的逆操作是 [`formatReadableSize`](#formatReadableSize) 和 [`formatReadableDecimalSize`](#formatReadableDecimalSize)。
+Introduced in: v24.6
 
-**语法**
+
+Given a string containing a byte size and `B`, `KiB`, `KB`, `MiB`, `MB`, etc. as a unit (i.e. [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) or decimal byte unit), this function returns the corresponding number of bytes.
+If the function is unable to parse the input value, it returns `NULL`.
+
+The inverse operations of this function are [`formatReadableSize`](#formatReadableSize) and [`formatReadableDecimalSize`](#formatReadableDecimalSize).
+
+
+**Syntax**
 
 ```sql
 parseReadableSize(x)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 使用 ISO/IEC 80000-13 或十进制字节单位表示的可读大小值。[`String`](/sql-reference/data-types/string)
+- `x` — Readable size with ISO/IEC 80000-13 or decimal byte unit. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回以字节为单位的数值，并向上取整为最接近的整数值。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns the number of bytes, rounded up to the nearest integer, or `NULL` if unable to parse the input [`Nullable(UInt64)`](/sql-reference/data-types/nullable)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT arrayJoin(['1 B', '1 KiB', '3 MB', '5.314 KiB']) AS readable_sizes, parseReadableSize(readable_sizes) AS sizes;
@@ -3701,32 +4104,37 @@ SELECT arrayJoin(['1 B', '1 KiB', '3 MB', '5.314 KiB']) AS readable_sizes, parse
 └────────────────┴─────────┘
 ```
 
-## parseReadableSizeOrNull {#parseReadableSizeOrNull}
 
-自 v24.6 引入
 
-给定一个包含字节大小以及 `B`、`KiB`、`KB`、`MiB`、`MB` 等作为单位的字符串（即 [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) 或十进制字节单位），该函数返回对应的字节数。
-如果函数无法解析输入值，则返回 `NULL`。
+## parseReadableSizeOrZero {#parseReadableSizeOrZero}
 
-该函数的逆操作是 [`formatReadableSize`](#formatReadableSize) 和 [`formatReadableDecimalSize`](#formatReadableDecimalSize)。
+Introduced in: v24.6
 
-**语法**
+
+Given a string containing a byte size and `B`, `KiB`, `KB`, `MiB`, `MB`, etc. as a unit (i.e. [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) or decimal byte unit), this function returns the corresponding number of bytes.
+If the function is unable to parse the input value, it returns `0`.
+
+The inverse operations of this function are [`formatReadableSize`](#formatReadableSize) and [`formatReadableDecimalSize`](#formatReadableDecimalSize).
+
+
+**Syntax**
 
 ```sql
 parseReadableSizeOrNull(x)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 使用 ISO/IEC 80000-13 或十进制字节单位表示的人类可读大小。[`String`](/sql-reference/data-types/string)
+- `x` — Readable size with ISO/IEC 80000-13 or decimal byte unit. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回向上取整到最接近整数的字节数；如果无法解析输入，则返回 `NULL`。[`Nullable(UInt64)`](/sql-reference/data-types/nullable)
+**Returned value**
 
-**示例**
+Returns the number of bytes, rounded up to the nearest integer, or `0` if unable to parse the input. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT arrayJoin(['1 B', '1 KiB', '3 MB', '5.314 KiB', 'invalid']) AS readable_sizes, parseReadableSizeOrNull(readable_sizes) AS sizes;
@@ -3742,32 +4150,50 @@ SELECT arrayJoin(['1 B', '1 KiB', '3 MB', '5.314 KiB', 'invalid']) AS readable_s
 └────────────────┴─────────┘
 ```
 
-## parseReadableSizeOrZero {#parseReadableSizeOrZero}
 
-引入于：v24.6
 
-给定一个包含字节大小及其单位（如 `B`、`KiB`、`KB`、`MiB`、`MB` 等）的字符串（即 [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) 或十进制字节单位），该函数返回对应的字节数。
-如果函数无法解析输入值，则返回 `0`。
+## parseTimeDelta {#parseTimeDelta}
 
-该函数的逆操作是 [`formatReadableSize`](#formatReadableSize) 和 [`formatReadableDecimalSize`](#formatReadableDecimalSize)。
+Introduced in: v22.7
 
-**语法**
+
+Parse a sequence of numbers followed by something resembling a time unit.
+
+The time delta string uses these time unit specifications:
+- `years`, `year`, `yr`, `y`
+- `months`, `month`, `mo`
+- `weeks`, `week`, `w`
+- `days`, `day`, `d`
+- `hours`, `hour`, `hr`, `h`
+- `minutes`, `minute`, `min`, `m`
+- `seconds`, `second`, `sec`, `s`
+- `milliseconds`, `millisecond`, `millisec`, `ms`
+- `microseconds`, `microsecond`, `microsec`, `μs`, `µs`, `us`
+- `nanoseconds`, `nanosecond`, `nanosec`, `ns`
+
+Multiple time units can be combined with separators (space, `;`, `-`, `+`, `,`, `:`).
+
+The length of years and months are approximations: year is 365 days, month is 30.5 days.
+    
+
+**Syntax**
 
 ```sql
 parseReadableSizeOrZero(x)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 使用 ISO/IEC 80000-13 或十进制字节单位表示的可读大小。[`String`](/sql-reference/data-types/string)
+- `timestr` — A sequence of numbers followed by something resembling a time unit. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回字节数，向上取整为最接近的整数；如果无法解析输入，则返回 `0`。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+The number of seconds. [`Float64`](/sql-reference/data-types/float)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT arrayJoin(['1 B', '1 KiB', '3 MB', '5.314 KiB', 'invalid']) AS readable_sizes, parseReadableSizeOrZero(readable_sizes) AS sizes;
@@ -3783,50 +4209,31 @@ SELECT arrayJoin(['1 B', '1 KiB', '3 MB', '5.314 KiB', 'invalid']) AS readable_s
 └────────────────┴─────────┘
 ```
 
-## parseTimeDelta {#parseTimeDelta}
-
-自 v22.7 引入
-
-解析由一串数字加上类似时间单位的内容所组成的字符串。
-
-时间间隔字符串使用以下时间单位说明：
-
-* `years`, `year`, `yr`, `y`
-* `months`, `month`, `mo`
-* `weeks`, `week`, `w`
-* `days`, `day`, `d`
-* `hours`, `hour`, `hr`, `h`
-* `minutes`, `minute`, `min`, `m`
-* `seconds`, `second`, `sec`, `s`
-* `milliseconds`, `millisecond`, `millisec`, `ms`
-* `microseconds`, `microsecond`, `microsec`, `μs`, `µs`, `us`
-* `nanoseconds`, `nanosecond`, `nanosec`, `ns`
-
-可以使用分隔符（空格、`;`、`-`、`+`、`,`、`:`）组合多个时间单位。
-
-年份和月份的时长是近似值：year 为 365 天，month 为 30.5 天。
-
-**语法**
+**Complex time units**
 
 ```sql
 parseTimeDelta(timestr)
 ```
 
-**参数**
-
-* `timestr` — 由一串数字组成，后面跟着类似时间单位的标记。[`String`](/sql-reference/data-types/string)
-
-**返回值**
-
-以秒为单位的数值。[`Float64`](/sql-reference/data-types/float)
-
-**示例**
-
-**用法示例**
-
 ```sql title=Query
 SELECT parseTimeDelta('11s+22min')
 ```
+
+
+
+## partitionId {#partitionId}
+
+Introduced in: v21.4
+
+
+Computes the [partition ID](../../engines/table-engines/mergetree-family/custom-partitioning-key.md).
+
+:::note
+This function is slow and should not be called for large numbers of rows.
+:::
+
+
+**Syntax**
 
 ```response title=Response
 ┌─parseTimeDelta('11s+22min')─┐
@@ -3834,7 +4241,19 @@ SELECT parseTimeDelta('11s+22min')
 └─────────────────────────────┘
 ```
 
-**复合时间单位**
+**Aliases**: `partitionID`
+
+**Arguments**
+
+- `column1, column2, ...` — Column for which to return the partition ID. 
+
+**Returned value**
+
+Returns the partition ID that the row belongs to. [`String`](/sql-reference/data-types/string)
+
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT parseTimeDelta('1yr2mo')
@@ -3846,35 +4265,38 @@ SELECT parseTimeDelta('1yr2mo')
 └──────────────────────────┘
 ```
 
-## partitionId {#partitionId}
 
-自 v21.4 引入
 
-计算[分区 ID](../../engines/table-engines/mergetree-family/custom-partitioning-key.md)。
+## queryID {#queryID}
 
-:::note
-此函数较慢，不应对大量行进行调用。
-:::
+Introduced in: v21.9
 
-**语法**
+
+Returns the ID of the current query.
+Other parameters of a query can be extracted from field `query_id` in the [`system.query_log`](../../operations/system-tables/query_log.md) table.
+
+In contrast to [`initialQueryID`](#initialQueryID) function, `queryID` can return different results on different shards.
+
+
+**Syntax**
 
 ```sql
 partitionId(column1[, column2, ...])
 ```
 
-**别名**：`partitionID`
+**Aliases**: `query_id`
 
-**参数**
+**Arguments**
 
-* `column1, column2, ...` — 要返回其分区 ID 的列。
+- None.
 
-**返回值**
+**Returned value**
 
-返回该行所属的分区 ID。[`String`](/sql-reference/data-types/string)
+Returns the ID of the current query. [`String`](/sql-reference/data-types/string)
 
-**示例**
+**Examples**
 
-**使用示例**
+**Usage example**
 
 ```sql title=Query
 DROP TABLE IF EXISTS tab;
@@ -3904,34 +4326,33 @@ SELECT i, j, partitionId(i), _partition_id FROM tab ORDER BY i, j;
 └───┴───┴────────────────┴───────────────┘
 ```
 
-## queryID {#queryID}
 
-自 v21.9 版本引入
 
-返回当前查询的 ID。
-查询的其他参数可以从 [`system.query_log`](../../operations/system-tables/query_log.md) 表中的 `query_id` 字段中获取。
+## revision {#revision}
 
-与 [`initialQueryID`](#initialQueryID) 函数不同，`queryID` 在不同分片上可能返回不同的结果。
+Introduced in: v22.7
 
-**语法**
+
+Returns the current ClickHouse server revision.
+    
+
+**Syntax**
 
 ```sql
 queryID()
 ```
 
-**别名**：`query_id`
+**Arguments**
 
-**参数**
+- None.
 
-* 无。
+**Returned value**
 
-**返回值**
+Returns the current ClickHouse server revision. [`UInt32`](/sql-reference/data-types/int-uint)
 
-返回当前查询的 ID，类型为 [`String`](/sql-reference/data-types/string)。
+**Examples**
 
-**示例**
-
-**使用示例**
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE tmp (str String) ENGINE = Log;
@@ -3945,29 +4366,33 @@ SELECT count(DISTINCT t) FROM (SELECT queryID() AS t FROM remote('127.0.0.{1..3}
 └───────────────────┘
 ```
 
-## revision {#revision}
 
-引入版本：v22.7
 
-返回当前 ClickHouse 服务器的修订版本号。
+## rowNumberInAllBlocks {#rowNumberInAllBlocks}
 
-**语法**
+Introduced in: v1.1
+
+
+Returns a unique row number for each row processed.
+    
+
+**Syntax**
 
 ```sql
 revision()
 ```
 
-**参数**
+**Arguments**
 
-* 无。
+- None.
 
-**返回值**
+**Returned value**
 
-返回当前 ClickHouse 服务器的修订号。[`UInt32`](/sql-reference/data-types/int-uint)
+Returns the ordinal number of the row in the data block starting from `0`. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**示例**
+**Examples**
 
-**使用示例**
+**Usage example**
 
 ```sql title=Query
 SELECT revision()
@@ -3979,29 +4404,35 @@ SELECT revision()
 └────────────┘
 ```
 
-## rowNumberInAllBlocks {#rowNumberInAllBlocks}
 
-引入于：v1.1
 
-为处理的每一行返回一个唯一的行号。
+## rowNumberInBlock {#rowNumberInBlock}
 
-**语法**
+Introduced in: v1.1
+
+
+For each [block](../../development/architecture.md#block) processed by `rowNumberInBlock`, returns the number of the current row.
+
+The returned number starts from 0 for each block.
+    
+
+**Syntax**
 
 ```sql
 rowNumberInAllBlocks()
 ```
 
-**参数**
+**Arguments**
 
-* 无。
+- None.
 
-**返回值**
+**Returned value**
 
-返回数据块中行的序号，从 `0` 开始计数。[`UInt64`](/sql-reference/data-types/int-uint)
+Returns the ordinal number of the row in the data block starting from `0`. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**示例**
+**Examples**
 
-**使用示例**
+**Usage example**
 
 ```sql title=Query
 SELECT rowNumberInAllBlocks()
@@ -4037,31 +4468,41 @@ SETTINGS max_block_size = 2
 └────────────────────────┘
 ```
 
-## rowNumberInBlock {#rowNumberInBlock}
 
-引入版本：v1.1
 
-对于每个由 `rowNumberInBlock` 处理的[块](../../development/architecture.md#block)，返回当前行的行号。
+## runningAccumulate {#runningAccumulate}
 
-在每个块内，返回的行号从 0 开始计数。
+Introduced in: v1.1
 
-**语法**
+
+Accumulates the states of an aggregate function for each row of a data block.
+
+:::warning Deprecated
+The state is reset for each new block of data.
+Due to this error-prone behavior the function has been deprecated, and you are advised to use [window functions](/sql-reference/window-functions) instead.
+You can use setting [`allow_deprecated_error_prone_window_functions`](/operations/settings/settings#allow_deprecated_error_prone_window_functions) to allow usage of this function.
+:::
+
+
+**Syntax**
 
 ```sql
 rowNumberInBlock()
 ```
 
-**参数**
+**Arguments**
 
-* 无。
+- `agg_state` — State of the aggregate function. [`AggregateFunction`](/sql-reference/data-types/aggregatefunction)
+- `grouping` — Optional. Grouping key. The state of the function is reset if the `grouping` value is changed. It can be any of the supported data types for which the equality operator is defined. [`Any`](/sql-reference/data-types)
 
-**返回值**
 
-返回数据块中行的序号，从 `0` 开始。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns the accumulated result for each row. [`Any`](/sql-reference/data-types)
 
-**用法示例**
+**Examples**
+
+**Usage example with initializeAggregation**
 
 ```sql title=Query
 SELECT rowNumberInBlock()
@@ -4096,36 +4537,50 @@ FROM
 └────────────────────┘
 ```
 
-## runningAccumulate {#runningAccumulate}
 
-在 v1.1 中引入
 
-对数据块中每一行累积该聚合函数的状态。
+## runningConcurrency {#runningConcurrency}
 
-:::warning 已弃用
-对于每个新的数据块，状态都会被重置。
-由于这种容易出错的行为，该函数已被弃用，建议改用[窗口函数](/sql-reference/window-functions)。
-您可以使用 setting [`allow_deprecated_error_prone_window_functions`](/operations/settings/settings#allow_deprecated_error_prone_window_functions) 来允许继续使用此函数。
+Introduced in: v21.3
+
+
+Calculates the number of concurrent events.
+Each event has a start time and an end time.
+The start time is included in the event, while the end time is excluded.
+Columns with a start time and an end time must be of the same data type.
+The function calculates the total number of active (concurrent) events for each event start time.
+
+:::tip Requirements
+Events must be ordered by the start time in ascending order.
+If this requirement is violated the function raises an exception.
+Every data block is processed separately.
+If events from different data blocks overlap then they can not be processed correctly.
 :::
 
-**语法**
+:::warning Deprecated
+It is advised to use [window functions](/sql-reference/window-functions) instead.
+:::
+
+
+**Syntax**
 
 ```sql
 runningAccumulate(agg_state[, grouping])
 ```
 
-**参数**
+**Arguments**
 
-* `agg_state` — 聚合函数的状态。[`AggregateFunction`](/sql-reference/data-types/aggregatefunction)
-* `grouping` — 可选。分组键。当 `grouping` 的值发生变化时，函数状态会被重置。它可以是任意支持等值运算符的数据类型。[`Any`](/sql-reference/data-types)
+- `start` — A column with the start time of events. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `end` — A column with the end time of events. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**返回值**
 
-为每一行返回累计结果。[`Any`](/sql-reference/data-types)
+**Returned value**
 
-**示例**
+Returns the number of concurrent events at each event start time. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**结合 initializeAggregation 的用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 WITH initializeAggregation('sumState', number) AS one_row_sum_state
@@ -4146,45 +4601,49 @@ FROM numbers(5);
 └────────┴─────────────┴────────────────┘
 ```
 
-## runningConcurrency {#runningConcurrency}
 
-引入于：v21.3
 
-计算并发事件的数量。
-每个事件都有开始时间和结束时间。
-开始时间包含在事件内，而结束时间被排除在外。
-包含开始时间和结束时间的列必须使用相同的数据类型。
-该函数会针对每个事件的开始时间计算处于活动状态（并发）的事件总数。
+## runningDifference {#runningDifference}
 
-:::tip 要求
-事件必须按照开始时间升序排序。
-如果不满足此要求，函数将抛出异常。
-每个数据块会被单独处理。
-如果来自不同数据块的事件发生重叠，则无法被正确处理。
+Introduced in: v1.1
+
+
+Calculates the difference between two consecutive row values in the data block.
+Returns `0` for the first row, and for subsequent rows the difference to the previous row.
+
+:::warning Deprecated
+Only returns differences inside the currently processed data block.
+Because of this error-prone behavior, the function is deprecated.
+It is advised to use [window functions](/sql-reference/window-functions) instead.
+
+You can use setting [`allow_deprecated_error_prone_window_functions`](/operations/settings/settings#allow_deprecated_error_prone_window_functions) to allow usage of this function.
 :::
 
-:::warning 已弃用
-建议改用 [窗口函数](/sql-reference/window-functions)。
-:::
+The result of the function depends on the affected data blocks and the order of data in the block.
+The order of rows during calculation of `runningDifference()` can differ from the order of rows returned to the user.
+To prevent that you can create a subquery with [`ORDER BY`](../../sql-reference/statements/select/order-by.md) and call the function from outside the subquery.
+Please note that the block size affects the result.
+The internal state of `runningDifference` state is reset for each new block.
 
-**语法**
+
+**Syntax**
 
 ```sql
 runningConcurrency(start, end)
 ```
 
-**参数**
+**Arguments**
 
-* `start` — 包含事件开始时间的列。[`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
-* `end` — 包含事件结束时间的列。[`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+- `x` — Column for which to calculate the running difference. [`Any`](/sql-reference/data-types)
 
-**返回值**
 
-返回在每个事件开始时间的并发事件数量。[`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns the difference between consecutive values, with 0 for the first row.
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT start, runningConcurrency(start, end) FROM example_table;
@@ -4199,44 +4658,11 @@ SELECT start, runningConcurrency(start, end) FROM example_table;
 └────────────┴────────────────────────────────┘
 ```
 
-## runningDifference {#runningDifference}
-
-自 v1.1 起提供
-
-计算数据块中相邻两行数值之间的差值。
-对于第一行返回 `0`，对于后续各行返回其与前一行的差值。
-
-:::warning Deprecated
-只会计算当前正在处理的数据块内的差值。
-由于这种易出错的行为，该函数已被弃用。
-建议改用 [窗口函数](/sql-reference/window-functions)。
-
-你可以通过设置 [`allow_deprecated_error_prone_window_functions`](/operations/settings/settings#allow_deprecated_error_prone_window_functions) 来允许使用此函数。
-:::
-
-函数结果依赖于参与计算的数据块以及块内数据的顺序。
-在计算 `runningDifference()` 时，行的顺序可能与返回给用户的行顺序不同。
-为避免这一点，你可以先创建带有 [`ORDER BY`](../../sql-reference/statements/select/order-by.md) 的子查询，然后在子查询外部调用该函数。
-请注意，块大小会影响结果。
-`runningDifference` 的内部状态会在每个新块时重置。
-
-**语法**
+**Block size impact example**
 
 ```sql
 runningDifference(x)
 ```
-
-**参数**
-
-* `x` — 要计算逐行差值的列。[`Any`](/sql-reference/data-types)
-
-**返回值**
-
-返回相邻值之间的差值，首行返回 0。
-
-**示例**
-
-**用法示例**
 
 ```sql title=Query
 SELECT
@@ -4255,6 +4681,26 @@ FROM
 );
 ```
 
+
+
+## runningDifferenceStartingWithFirstValue {#runningDifferenceStartingWithFirstValue}
+
+Introduced in: v1.1
+
+
+Calculates the difference between consecutive row values in a data block, but unlike [`runningDifference`](#runningDifference), it returns the actual value of the first row instead of `0`.
+
+:::warning Deprecated
+Only returns differences inside the currently processed data block.
+Because of this error-prone behavior, the function is deprecated.
+It is advised to use [window functions](/sql-reference/window-functions) instead.
+
+You can use setting `allow_deprecated_error_prone_window_functions` to allow usage of this function.
+:::
+
+
+**Syntax**
+
 ```response title=Response
 ┌─EventID─┬───────────EventTime─┬─delta─┐
 │    1106 │ 2025-11-24 00:00:04 │     0 │
@@ -4265,7 +4711,18 @@ FROM
 └─────────┴─────────────────────┴───────┘
 ```
 
-**块大小影响的示例**
+**Arguments**
+
+- `x` — Column for which to calculate the running difference. [`Any`](/sql-reference/data-types)
+
+
+**Returned value**
+
+Returns the difference between consecutive values, with the first row's value for the first row. [`Any`](/sql-reference/data-types)
+
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT
@@ -4284,37 +4741,34 @@ WHERE diff != 1;
 └────────┴──────┘
 ```
 
-## runningDifferenceStartingWithFirstValue {#runningDifferenceStartingWithFirstValue}
 
-引入版本：v1.1
 
-计算数据块中相邻行值之间的差值，但与 [`runningDifference`](#runningDifference) 不同，它返回第一行的实际值，而不是 `0`。
+## serverUUID {#serverUUID}
 
-:::warning 已弃用
-仅返回当前正在处理的数据块内部的差值。
-由于这种容易出错的特性，该函数已被弃用。
-建议改用 [窗口函数](/sql-reference/window-functions)。
+Introduced in: v20.1
 
-你可以通过设置 `allow_deprecated_error_prone_window_functions` 来允许使用此函数。
-:::
 
-**语法**
+Returns the random and unique UUID (v4) generated when the server is first started.
+The UUID is persisted, i.e. the second, third, etc. server start return the same UUID.
+    
+
+**Syntax**
 
 ```sql
 runningDifferenceStartingWithFirstValue(x)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 要计算逐行差值的列。[`Any`](/sql-reference/data-types)
+- None.
 
-**返回值**
+**Returned value**
 
-返回相邻行值之间的差，对于第一行返回该行自身的值。[`Any`](/sql-reference/data-types)
+Returns the random UUID of the server. [`UUID`](/sql-reference/data-types/uuid)
 
-**示例**
+**Examples**
 
-**用法示例**
+**Usage example**
 
 ```sql title=Query
 SELECT
@@ -4333,30 +4787,34 @@ FROM numbers(5);
 └────────┴──────┘
 ```
 
-## serverUUID {#serverUUID}
 
-自 v20.1 版本引入
 
-返回在服务器首次启动时生成的随机且唯一的 UUID（v4）。
-该 UUID 会被持久化，因此在第二次、第三次等后续服务器启动时会返回相同的 UUID。
+## shardCount {#shardCount}
 
-**语法**
+Introduced in: v21.9
+
+
+Returns the total number of shards for a distributed query.
+If a query is not distributed then constant value `0` is returned.
+
+
+**Syntax**
 
 ```sql
 serverUUID()
 ```
 
-**参数**
+**Arguments**
 
-* 无。
+- None.
 
-**返回值**
+**Returned value**
 
-返回服务器的随机 UUID 值。[`UUID`](/sql-reference/data-types/uuid)
+Returns the total number of shards or `0`. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**示例**
+**Examples**
 
-**用法示例**
+**Usage example**
 
 ```sql title=Query
 SELECT serverUUID();
@@ -4368,30 +4826,35 @@ SELECT serverUUID();
 └──────────────────────────────────────────┘
 ```
 
-## shardCount {#shardCount}
 
-自 v21.9 引入
 
-返回分布式查询的分片总数。
-如果查询不是分布式的，则返回常量值 `0`。
+## shardNum {#shardNum}
 
-**语法**
+Introduced in: v21.9
+
+
+Returns the index of a shard which processes a part of data in a distributed query.
+Indices begin from `1`.
+If a query is not distributed then a constant value `0` is returned.
+
+
+**Syntax**
 
 ```sql
 shardCount()
 ```
 
-**参数**
+**Arguments**
 
-* 无。
+- None.
 
-**返回值**
+**Returned value**
 
-返回分片的总数或 `0`。[`UInt32`](/sql-reference/data-types/int-uint)
+Returns the shard index or a constant `0`. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**示例**
+**Examples**
 
-**用法示例**
+**Usage example**
 
 ```sql title=Query
 -- 参见上文 shardNum() 示例,其中同时演示了 shardCount()
@@ -4407,31 +4870,34 @@ SELECT shardCount() FROM shard_count_example;
 └──────────────┘
 ```
 
-## shardNum {#shardNum}
 
-自 v21.9 起引入
 
-返回在分布式查询中处理部分数据的分片的索引。
-索引从 `1` 开始。
-如果查询不是分布式查询，则返回常量值 `0`。
+## showCertificate {#showCertificate}
 
-**语法**
+Introduced in: v22.6
+
+
+Shows information about the current server's Secure Sockets Layer (SSL) certificate if it has been configured.
+See [Configuring SSL-TLS](/guides/sre/configuring-ssl) for more information on how to configure ClickHouse to use OpenSSL certificates to validate connections.
+    
+
+**Syntax**
 
 ```sql
 shardNum()
 ```
 
-**参数**
+**Arguments**
 
-* 无。
+- None.
 
-**返回值**
+**Returned value**
 
-返回分片索引或常量 `0`，类型为 [`UInt32`](/sql-reference/data-types/int-uint)。
+Returns map of key-value pairs relating to the configured SSL certificate. [`Map(String, String)`](/sql-reference/data-types/map)
 
-**示例**
+**Examples**
 
-**用法示例**
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE shard_num_example (dummy UInt8)
@@ -4446,30 +4912,48 @@ SELECT dummy, shardNum(), shardCount() FROM shard_num_example;
 └───────┴────────────┴──────────────┘
 ```
 
-## showCertificate {#showCertificate}
 
-自 v22.6 引入
 
-如果当前服务器已配置安全套接字层 (SSL) 证书，则显示该证书的信息。
-有关如何配置 ClickHouse 使用 OpenSSL 证书来验证连接的详细信息，请参阅[配置 SSL-TLS](/guides/sre/configuring-ssl)。
+## sleep {#sleep}
 
-**语法**
+Introduced in: v1.1
+
+
+Pauses the execution of a query by the specified number of seconds.
+The function is primarily used for testing and debugging purposes.
+
+The `sleep()` function should generally not be used in production environments, as it can negatively impact query performance and system responsiveness.
+However, it can be useful in the following scenarios:
+
+1. **Testing**: When testing or benchmarking ClickHouse, you may want to simulate delays or introduce pauses to observe how the system behaves under certain conditions.
+2. **Debugging**: If you need to examine the state of the system or the execution of a query at a specific point in time, you can use `sleep()` to introduce a pause, allowing you to inspect or collect relevant information.
+3. **Simulation**: In some cases, you may want to simulate real-world scenarios where delays or pauses occur, such as network latency or external system dependencies.
+
+:::warning
+It's important to use the `sleep()` function judiciously and only when necessary, as it can potentially impact the overall performance and responsiveness of your ClickHouse system.
+:::
+
+For security reasons, the function can only be executed in the default user profile (with `allow_sleep` enabled).
+
+
+**Syntax**
 
 ```sql
 showCertificate()
 ```
 
-**参数**
+**Arguments**
 
-* 无。
+- `seconds` — The number of seconds to pause the query execution to a maximum of 3 seconds. It can be a floating-point value to specify fractional seconds. [`const UInt*`](/sql-reference/data-types/int-uint) or [`const Float*`](/sql-reference/data-types/float)
 
-**返回值**
 
-返回一个与已配置 SSL 证书相关的键值对映射。[`Map(String, String)`](/sql-reference/data-types/map)
+**Returned value**
 
-**示例**
+Returns `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT showCertificate() FORMAT LineAsString;
@@ -4479,43 +4963,45 @@ SELECT showCertificate() FORMAT LineAsString;
 {'version':'1','serial_number':'2D9071D64530052D48308473922C7ADAFA85D6C5','signature_algo':'sha256WithRSAEncryption','issuer':'/CN=marsnet.local CA','not_before':'May  7 17:01:21 2024 GMT','not_after':'May  7 17:01:21 2025 GMT','subject':'/CN=chnode1','pkey_algo':'rsaEncryption'}
 ```
 
-## sleep {#sleep}
 
-引入于：v1.1
 
-按指定的秒数暂停查询的执行。
-该函数主要用于测试和调试。
+## sleepEachRow {#sleepEachRow}
 
-在生产环境中通常不应使用 `sleep()` 函数，因为它可能会对查询性能和系统响应性产生负面影响。
-不过，在以下场景中它可能会很有用：
+Introduced in: v1.1
 
-1. **测试**：在测试或基准测试 ClickHouse 时，你可能希望模拟延迟或引入暂停，以观察系统在特定条件下的行为。
-2. **调试**：如果你需要在某个特定时间点检查系统状态或查询的执行情况，可以使用 `sleep()` 引入暂停，从而检查或收集相关信息。
-3. **模拟**：在某些情况下，你可能希望模拟现实场景中出现的延迟或暂停，例如网络延迟或对外部系统的依赖。
+
+Pauses the execution of a query for a specified number of seconds for each row in the result set.
+
+The `sleepEachRow()` function is primarily used for testing and debugging purposes, similar to the [`sleep()`](#sleep) function.
+It allows you to simulate delays or introduce pauses in the processing of each row, which can be useful in scenarios such as:
+
+1. **Testing**: When testing or benchmarking ClickHouse's performance under specific conditions, you can use `sleepEachRow()` to simulate delays or introduce pauses for each row processed.
+2. **Debugging**: If you need to examine the state of the system or the execution of a query for each row processed, you can use `sleepEachRow()` to introduce pauses, allowing you to inspect or collect relevant information.
+3. **Simulation**: In some cases, you may want to simulate real-world scenarios where delays or pauses occur for each row processed, such as when dealing with external systems or network latencies.
 
 :::warning
-务必谨慎且仅在必要时使用 `sleep()` 函数，因为它可能会影响 ClickHouse 系统的整体性能和响应性。
+Like the `sleep()` function, it's important to use `sleepEachRow()` judiciously and only when necessary, as it can significantly impact the overall performance and responsiveness of your ClickHouse system, especially when dealing with large result sets.
 :::
 
-出于安全原因，该函数只能在默认用户配置中执行（且需启用 `allow_sleep`）。
 
-**语法**
+**Syntax**
 
 ```sql
 sleep(seconds)
 ```
 
-**参数**
+**Arguments**
 
-* `seconds` — 暂停查询执行的时间（秒），上限为 3 秒。可以为浮点数，以指定小数秒数。[`const UInt*`](/sql-reference/data-types/int-uint) 或 [`const Float*`](/sql-reference/data-types/float)
+- `seconds` — The number of seconds to pause the query execution for each row in the result set to a maximum of 3 seconds. It can be a floating-point value to specify fractional seconds. [`const UInt*`](/sql-reference/data-types/int-uint) or [`const Float*`](/sql-reference/data-types/float)
 
-**返回值**
 
-返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns `0` for each row. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 -- 此查询将在完成前暂停 2 秒。
@@ -4530,40 +5016,33 @@ SELECT sleep(2);
 返回 1 行。用时：2.012 秒。
 ```
 
-## sleepEachRow {#sleepEachRow}
 
-引入于：v1.1
 
-对结果集中的每一行，将查询执行暂停指定的秒数。
+## structureToCapnProtoSchema {#structureToCapnProtoSchema}
 
-`sleepEachRow()` 函数主要用于测试和调试，类似于 [`sleep()`](#sleep) 函数。
-它允许在处理每一行时模拟延迟或引入暂停，在以下场景中十分有用：
+Introduced in: v
 
-1. **测试**：在特定条件下测试或基准评估 ClickHouse 性能时，可以使用 `sleepEachRow()` 来模拟延迟或为每一行的处理引入暂停。
-2. **调试**：如果需要在每一行被处理时检查系统状态或查询执行情况，可以使用 `sleepEachRow()` 引入暂停，从而检查或收集相关信息。
-3. **模拟**：在某些情况下，可能希望模拟真实场景中每处理一行都会发生延迟或暂停的情况，例如与外部系统交互或存在网络延迟时。
 
-:::warning
-与 `sleep()` 函数类似，务必要谨慎并仅在必要时使用 `sleepEachRow()`，因为它可能会显著影响 ClickHouse 系统的整体性能和响应能力，尤其是在处理大型结果集时。
-:::
+Function that converts ClickHouse table structure to CapnProto format schema
 
-**语法**
+
+**Syntax**
 
 ```sql
 sleepEachRow(seconds)
 ```
 
-**参数**
+**Arguments**
 
-* `seconds` — 在结果集中的每一行暂停执行查询的秒数，最大为 3 秒。可以是浮点数以指定小数秒。[`const UInt*`](/sql-reference/data-types/int-uint) 或 [`const Float*`](/sql-reference/data-types/float)
+- None.
 
-**返回值**
+**Returned value**
 
-针对每一行返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
 
-**示例**
 
-**用法示例**
+**Examples**
+
+**random**
 
 ```sql title=Query
 -- 输出将被延迟，每行之间暂停 0.5 秒。
@@ -4580,26 +5059,38 @@ SELECT number, sleepEachRow(0.5) FROM system.numbers LIMIT 5;
 └────────┴───────────────────┘
 ```
 
-## structureToCapnProtoSchema {#structureToCapnProtoSchema}
 
-引入于：v
 
-将 ClickHouse 表结构转换为 CapnProto 格式 schema 的函数
+## structureToProtobufSchema {#structureToProtobufSchema}
 
-**语法**
+Introduced in: v23.8
+
+
+Converts a ClickHouse table structure to Protobuf format schema.
+
+This function takes a ClickHouse table structure definition and converts it into a Protocol Buffers (Protobuf)
+schema definition in proto3 syntax. This is useful for generating Protobuf schemas that match your ClickHouse
+table structures for data interchange.
+    
+
+**Syntax**
 
 ```sql
 ```
 
-**参数**
+**Arguments**
 
-* 无。
+- `structure` — ClickHouse table structure definition as a string (e.g., 'column1 Type1, column2 Type2'). [`String`](/sql-reference/data-types/string)
+- `message_name` — Name for the Protobuf message type in the generated schema. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-**示例**
+**Returned value**
 
-**random**
+Returns a Protobuf schema definition in proto3 syntax that corresponds to the input ClickHouse structure. [`String`](/sql-reference/data-types/string)
+
+**Examples**
+
+**Converting ClickHouse structure to Protobuf schema**
 
 ```sql title=Query
 SELECT structureToCapnProtoSchema('s String, x UInt32', 'MessageName') format TSVRaw
@@ -4613,33 +5104,35 @@ struct MessageName
 }
 ```
 
-## structureToProtobufSchema {#structureToProtobufSchema}
 
-引入版本：v23.8
 
-将 ClickHouse 表结构转换为 Protobuf 格式的 schema 定义。
+## tcpPort {#tcpPort}
 
-该函数接受一个 ClickHouse 表结构定义，并将其转换为采用 proto3 语法的 Protocol Buffers（Protobuf）
-schema 定义。这对于生成与 ClickHouse 表结构相匹配、用于数据交换的 Protobuf schema 非常有用。
+Introduced in: v20.12
 
-**语法**
+
+Returns the [native interface](../../interfaces/tcp.md) TCP port number listened to by the server.
+If executed in the context of a distributed table, this function generates a normal column with values relevant to each shard.
+Otherwise it produces a constant value.
+    
+
+**Syntax**
 
 ```sql
 structureToProtobufSchema(structure, message_name)
 ```
 
-**参数**
+**Arguments**
 
-* `structure` — 以字符串形式表示的 ClickHouse 表结构定义（例如，&#39;column1 Type1, column2 Type2&#39;）。[`String`](/sql-reference/data-types/string)
-* `message_name` — 生成的 schema 中 Protobuf 消息类型的名称。[`String`](/sql-reference/data-types/string)
+- None.
 
-**返回值**
+**Returned value**
 
-返回一个与输入 ClickHouse 表结构相对应、使用 proto3 语法的 Protobuf schema 定义。[`String`](/sql-reference/data-types/string)
+Returns the TCP port number. [`UInt16`](/sql-reference/data-types/int-uint)
 
-**示例**
+**Examples**
 
-**将 ClickHouse 结构转换为 Protobuf schema**
+**Usage example**
 
 ```sql title=Query
 SELECT structureToProtobufSchema('s String, x UInt32', 'MessageName') FORMAT TSVRaw;
@@ -4655,31 +5148,37 @@ message MessageName
 }
 ```
 
-## tcpPort {#tcpPort}
 
-引入版本：v20.12
 
-返回服务器监听的 [原生接口](../../interfaces/tcp.md) TCP 端口号。
-如果在分布式表的上下文中执行，该函数会生成一个普通列，其中的值对应各个分片。
-否则将返回一个常量。
+## throwIf {#throwIf}
 
-**语法**
+Introduced in: v1.1
+
+
+Throw an exception if argument x is true.
+To use the `error_code` argument, configuration parameter `allow_custom_error_code_in_throw` must be enabled.
+
+
+**Syntax**
 
 ```sql
 tcpPort()
 ```
 
-**参数**
+**Arguments**
 
-* 无。
+- `x` — The condition to check. [`Any`](/sql-reference/data-types)
+- `message` — Optional. Custom error message. [`const String`](/sql-reference/data-types/string)
+- `error_code` — Optional. Custom error code. [`const Int8/16/32`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回 TCP 端口号。[`UInt16`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns `0` if the condition is false, throws an exception if the condition is true. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT tcpPort()
@@ -4691,32 +5190,35 @@ SELECT tcpPort()
 └───────────┘
 ```
 
-## throwIf {#throwIf}
 
-自 v1.1 起提供
 
-当参数 x 为 true 时抛出异常。
-要使用 `error_code` 参数，必须启用配置参数 `allow_custom_error_code_in_throw`。
+## toColumnTypeName {#toColumnTypeName}
 
-**语法**
+Introduced in: v1.1
+
+
+Returns the internal name of the data type of the given value.
+Unlike function [`toTypeName`](#toTypeName), the returned data type potentially includes internal wrapper columns like `Const` and `LowCardinality`.
+
+
+**Syntax**
 
 ```sql
 throwIf(x[, message[, error_code]])
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 要检查的条件。[`Any`](/sql-reference/data-types)
-* `message` — 可选。自定义错误信息。[`const String`](/sql-reference/data-types/string)
-* `error_code` — 可选。自定义错误代码。[`const Int8/16/32`](/sql-reference/data-types/int-uint)
+- `value` — Value for which to return the internal data type. [`Any`](/sql-reference/data-types)
 
-**返回值**
 
-如果条件为假，则返回 `0`；如果条件为真，则抛出异常。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns the internal data type used to represent the value. [`String`](/sql-reference/data-types/string)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT throwIf(number = 3, '太多了') FROM numbers(10);
@@ -4727,30 +5229,35 @@ SELECT throwIf(number = 3, '太多了') FROM numbers(10);
 代码：395. DB::Exception: 从 localhost:9000 接收。DB::Exception: 太多。
 ```
 
-## toColumnTypeName {#toColumnTypeName}
 
-引入于：v1.1
 
-返回给定值的数据类型的内部名称。
-与函数 [`toTypeName`](#toTypeName) 不同，返回的数据类型可能包含诸如 `Const` 和 `LowCardinality` 等内部封装列。
+## toTypeName {#toTypeName}
 
-**语法**
+Introduced in: v1.1
+
+
+Returns the type name of the passed argument.
+If `NULL` is passed, the function returns type `Nullable(Nothing)`, which corresponds to ClickHouse's internal `NULL` representation.
+    
+
+**Syntax**
 
 ```sql
 toColumnTypeName(value)
 ```
 
-**参数**
+**Arguments**
 
-* `value` — 要获取其内部数据类型的值。[`Any`](/sql-reference/data-types)
+- `x` — A value of arbitrary type. [`Any`](/sql-reference/data-types)
 
-**返回值**
 
-返回用于表示该值的内部数据类型名称。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns the data type name of the input value. [`String`](/sql-reference/data-types/string)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT toColumnTypeName(CAST('2025-01-01 01:02:03' AS DateTime));
@@ -4762,34 +5269,51 @@ SELECT toColumnTypeName(CAST('2025-01-01 01:02:03' AS DateTime));
 └───────────────────────────────────────────────────────────┘
 ```
 
-## toTypeName {#toTypeName}
 
-自 v1.1 引入
 
-返回传入参数的类型名称。
-如果传入 `NULL`，函数返回类型 `Nullable(Nothing)`，它对应于 ClickHouse 内部的 `NULL` 表示形式。
+## transactionID {#transactionID}
 
-**语法**
+Introduced in: v22.6
+
+
+<ExperimentalBadge/>
+<CloudNotSupportedBadge/>
+
+Returns the ID of a transaction.
+
+:::note
+This function is part of an experimental feature set.
+Enable experimental transaction support by adding this setting to your [configuration](/operations/configuration-files):
 
 ```sql
 toTypeName(x)
 ```
 
-**参数**
+For more information see the page [Transactional (ACID) support](/guides/developer/transactional#transactions-commit-and-rollback).
+:::
+    
 
-* `x` — 任意数据类型的值。[`Any`](/sql-reference/data-types)
-
-**返回值**
-
-返回输入值所属的数据类型名称。[`String`](/sql-reference/data-types/string)
-
-**示例**
-
-**用法示例**
+**Syntax**
 
 ```sql title=Query
 SELECT toTypeName(123)
 ```
+
+**Arguments**
+
+- None.
+
+**Returned value**
+
+Returns a tuple consisting of `start_csn`, `local_tid` and `host_id`.
+- `start_csn`: Global sequential number, the newest commit timestamp that was seen when this transaction began.
+- `local_tid`: Local sequential number that is unique for each transaction started by this host within a specific start_csn.
+- `host_id`: UUID of the host that has started this transaction.
+     [`Tuple(UInt64, UInt64, UUID)`](/sql-reference/data-types/tuple)
+
+**Examples**
+
+**Usage example**
 
 ```response title=Response
 ┌─toTypeName(123)─┐
@@ -4797,51 +5321,36 @@ SELECT toTypeName(123)
 └─────────────────┘
 ```
 
-## transactionID {#transactionID}
-
-自 v22.6 引入
-
-<ExperimentalBadge />
-
-<CloudNotSupportedBadge />
-
-返回事务的 ID。
-
-:::note
-此函数属于一组实验性特性。
-通过在您的[配置](/operations/configuration-files)中添加以下设置来启用实验性事务支持：
-
 ```xml
 <clickhouse>
     <allow_experimental_transactions>1</allow_experimental_transactions>
 </clickhouse>
 ```
 
-有关更多信息，请参阅[事务（ACID）支持](/guides/developer/transactional#transactions-commit-and-rollback)页面。
-:::
 
-**语法**
+
+## transactionLatestSnapshot {#transactionLatestSnapshot}
+
+Introduced in: v22.6
+
+
+<ExperimentalBadge/>
+<CloudNotSupportedBadge/>
+
+Returns the newest snapshot (Commit Sequence Number) of a [transaction](/guides/developer/transactional#transactions-commit-and-rollback) that is available for reading.
+
+:::note
+This function is part of an experimental feature set. Enable experimental transaction support by adding this setting to your configuration:
 
 ```sql
 transactionID()
 ```
 
-**参数**
+For more information see the page [Transactional (ACID) support](/guides/developer/transactional#transactions-commit-and-rollback).
+:::
+    
 
-* 无。
-
-**返回值**
-
-返回一个由 `start_csn`、`local_tid` 和 `host_id` 组成的元组。
-
-* `start_csn`：全局顺序号，即在该事务开始时所见到的最新提交时间戳。
-* `local_tid`：本地主机内的顺序号，在给定 `start_csn` 下由该主机启动的每个事务都唯一。
-* `host_id`：启动该事务的主机的 UUID。
-  [`Tuple(UInt64, UInt64, UUID)`](/sql-reference/data-types/tuple)
-
-**示例**
-
-**使用示例**
+**Syntax**
 
 ```sql title=Query
 BEGIN TRANSACTION;
@@ -4849,24 +5358,23 @@ SELECT transactionID();
 ROLLBACK;
 ```
 
+**Arguments**
+
+- None.
+
+**Returned value**
+
+Returns the latest snapshot (CSN) of a transaction. [`UInt64`](/sql-reference/data-types/int-uint)
+
+**Examples**
+
+**Usage example**
+
 ```response title=Response
 ┌─transactionID()────────────────────────────────┐
 │ (32,34,'0ee8b069-f2bb-4748-9eae-069c85b5252b') │
 └────────────────────────────────────────────────┘
 ```
-
-## transactionLatestSnapshot {#transactionLatestSnapshot}
-
-自 v22.6 引入
-
-<ExperimentalBadge />
-
-<CloudNotSupportedBadge />
-
-返回可供读取的某个[事务](/guides/developer/transactional#transactions-commit-and-rollback)的最新快照（提交序列号 Commit Sequence Number）。
-
-:::note
-此函数属于一组实验性功能。可通过在配置中添加以下 SETTING 启用实验性事务支持：
 
 ```xml
 <clickhouse>
@@ -4874,26 +5382,30 @@ ROLLBACK;
 </clickhouse>
 ```
 
-有关更多信息，请参阅[事务（ACID）支持](/guides/developer/transactional#transactions-commit-and-rollback)页面。
-:::
 
-**语法**
+
+## transactionOldestSnapshot {#transactionOldestSnapshot}
+
+Introduced in: v22.6
+
+
+<ExperimentalBadge/>
+<CloudNotSupportedBadge/>
+
+Returns the oldest snapshot (Commit Sequence Number) that is visible for some running [transaction](/guides/developer/transactional#transactions-commit-and-rollback).
+
+:::note
+This function is part of an experimental feature set. Enable experimental transaction support by adding this setting to your configuration:
 
 ```sql
 transactionLatestSnapshot()
 ```
 
-**参数**
+For more information see the page [Transactional (ACID) support](/guides/developer/transactional#transactions-commit-and-rollback).
+:::
 
-* 无。
 
-**返回值**
-
-返回事务的最新快照（CSN）。[`UInt64`](/sql-reference/data-types/int-uint)
-
-**示例**
-
-**使用示例**
+**Syntax**
 
 ```sql title=Query
 BEGIN TRANSACTION;
@@ -4901,24 +5413,23 @@ SELECT transactionLatestSnapshot();
 ROLLBACK;
 ```
 
+**Arguments**
+
+- None.
+
+**Returned value**
+
+Returns the oldest snapshot (CSN) of a transaction. [`UInt64`](/sql-reference/data-types/int-uint)
+
+**Examples**
+
+**Usage example**
+
 ```response title=Response
 ┌─transactionLatestSnapshot()─┐
 │                          32 │
 └─────────────────────────────┘
 ```
-
-## transactionOldestSnapshot {#transactionOldestSnapshot}
-
-自 v22.6 引入
-
-<ExperimentalBadge />
-
-<CloudNotSupportedBadge />
-
-返回对某个正在运行的[事务](/guides/developer/transactional#transactions-commit-and-rollback)可见的最早快照（提交序列号，Commit Sequence Number）。
-
-:::note
-此函数属于一组实验性功能。通过在配置中添加以下设置项来启用事务的实验性支持：
 
 ```xml
 <clickhouse>
@@ -4926,26 +5437,50 @@ ROLLBACK;
 </clickhouse>
 ```
 
-更多信息请参见[事务（ACID）支持](/guides/developer/transactional#transactions-commit-and-rollback)页面。
-:::
 
-**语法**
+
+## transform {#transform}
+
+Introduced in: v1.1
+
+
+Transforms a value according to the explicitly defined mapping of some elements to other elements.
+
+There are two variations of this function:
+- `transform(x, array_from, array_to, default)` - transforms `x` using mapping arrays with a default value for unmatched elements
+- `transform(x, array_from, array_to)` - same transformation but returns the original `x` if no match is found
+
+The function searches for `x` in `array_from` and returns the corresponding element from `array_to` at the same index.
+If `x` is not found in `array_from`, it returns either the `default` value (4-parameter version) or the original `x` (3-parameter version).
+If multiple matching elements exist in `array_from`, it returns the element corresponding to the first match.
+
+Requirements:
+- `array_from` and `array_to` must have the same number of elements
+- For 4-parameter version: `transform(T, Array(T), Array(U), U) -> U` where `T` and `U` can be different compatible types
+- For 3-parameter version: `transform(T, Array(T), Array(T)) -> T` where all types must be the same
+
+
+**Syntax**
 
 ```sql
 transactionOldestSnapshot()
 ```
 
-**参数**
+**Arguments**
 
-* 无。
+- `x` — Value to transform. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Decimal`](/sql-reference/data-types/decimal) or [`Float*`](/sql-reference/data-types/float) or [`String`](/sql-reference/data-types/string) or [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime)
+- `array_from` — Constant array of values to search for matches. [`Array((U)Int*)`](/sql-reference/data-types/array) or [`Array(Decimal)`](/sql-reference/data-types/array) or [`Array(Float*)`](/sql-reference/data-types/array) or [`Array(String)`](/sql-reference/data-types/array) or [`Array(Date)`](/sql-reference/data-types/array) or [`Array(DateTime)`](/sql-reference/data-types/array)
+- `array_to` — Constant array of values to return for corresponding matches in `array_from`. [`Array((U)Int*)`](/sql-reference/data-types/array) or [`Array(Decimal)`](/sql-reference/data-types/array) or [`Array(Float*)`](/sql-reference/data-types/array) or [`Array(String)`](/sql-reference/data-types/array) or [`Array(Date)`](/sql-reference/data-types/array) or [`Array(DateTime)`](/sql-reference/data-types/array)
+- `default` — Optional. Value to return if `x` is not found in `array_from`. If omitted, returns x unchanged. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Decimal`](/sql-reference/data-types/decimal) or [`Float*`](/sql-reference/data-types/float) or [`String`](/sql-reference/data-types/string) or [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime)
 
-**返回值**
 
-返回事务的最早快照（CSN）。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns the corresponding value from `array_to` if x matches an element in `array_from`, otherwise returns default (if provided) or x (if default not provided). [`Any`](/sql-reference/data-types)
 
-**用法示例**
+**Examples**
+
+**transform(T, Array(T), Array(U), U) -> U**
 
 ```sql title=Query
 BEGIN TRANSACTION;
@@ -4959,47 +5494,11 @@ ROLLBACK;
 └─────────────────────────────┘
 ```
 
-## transform {#transform}
-
-引入版本：v1.1
-
-根据显式定义的若干元素到其他元素的映射来转换一个值。
-
-此函数有两种变体：
-
-* `transform(x, array_from, array_to, default)` - 使用映射数组转换 `x`，对未匹配的元素使用默认值
-* `transform(x, array_from, array_to)` - 执行相同转换，但在未找到匹配时返回原始的 `x`
-
-该函数在 `array_from` 中查找 `x`，并返回 `array_to` 中相同索引位置的对应元素。
-如果在 `array_from` 中未找到 `x`，则返回 `default` 值（4 参数版本）或原始的 `x`（3 参数版本）。
-如果 `array_from` 中存在多个匹配元素，则返回第一个匹配对应的元素。
-
-要求：
-
-* `array_from` 和 `array_to` 必须具有相同数量的元素
-* 对于 4 参数版本：`transform(T, Array(T), Array(U), U) -> U`，其中 `T` 和 `U` 可以是不同但兼容的类型
-* 对于 3 参数版本：`transform(T, Array(T), Array(T)) -> T`，其中所有类型必须相同
-
-**语法**
+**transform(T, Array(T), Array(T)) -> T**
 
 ```sql
 transform(x, array_from, array_to[, default])
 ```
-
-**参数**
-
-* `x` — 要转换的值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Decimal`](/sql-reference/data-types/decimal) 或 [`Float*`](/sql-reference/data-types/float) 或 [`String`](/sql-reference/data-types/string) 或 [`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime)
-* `array_from` — 用于匹配查找的常量数组。[`Array((U)Int*)`](/sql-reference/data-types/array) 或 [`Array(Decimal)`](/sql-reference/data-types/array) 或 [`Array(Float*)`](/sql-reference/data-types/array) 或 [`Array(String)`](/sql-reference/data-types/array) 或 [`Array(Date)`](/sql-reference/data-types/array) 或 [`Array(DateTime)`](/sql-reference/data-types/array)
-* `array_to` — 当在 `array_from` 中找到匹配项时要返回的对应值的常量数组。[`Array((U)Int*)`](/sql-reference/data-types/array) 或 [`Array(Decimal)`](/sql-reference/data-types/array) 或 [`Array(Float*)`](/sql-reference/data-types/array) 或 [`Array(String)`](/sql-reference/data-types/array) 或 [`Array(Date)`](/sql-reference/data-types/array) 或 [`Array(DateTime)`](/sql-reference/data-types/array)
-* `default` — 可选。当在 `array_from` 中找不到 `x` 时要返回的值。如果省略，则返回未改变的 `x`。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Decimal`](/sql-reference/data-types/decimal) 或 [`Float*`](/sql-reference/data-types/float) 或 [`String`](/sql-reference/data-types/string) 或 [`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime)
-
-**返回值**
-
-如果 `x` 与 `array_from` 中的某个元素匹配，则返回 `array_to` 中对应的值；否则返回 `default`（如果提供）或 `x`（如果未提供 `default`）。返回类型为 [`Any`](/sql-reference/data-types)
-
-**示例**
-
-**transform(T, Array(T), Array(U), U) -&gt; U**
 
 ```sql title=Query
 SELECT
@@ -5011,6 +5510,18 @@ GROUP BY title
 ORDER BY c DESC
 ```
 
+
+
+## uniqThetaIntersect {#uniqThetaIntersect}
+
+Introduced in: v22.9
+
+
+Two uniqThetaSketch objects to do intersect calculation(set operation ∩), the result is a new uniqThetaSketch.
+    
+
+**Syntax**
+
 ```response title=Response
 ┌─title─────┬──────c─┐
 │ Yandex    │ 498635 │
@@ -5019,7 +5530,18 @@ ORDER BY c DESC
 └───────────┴────────┘
 ```
 
-**transform(T, Array(T), Array(T)) -&gt; T**
+**Arguments**
+
+- `uniqThetaSketch` — uniqThetaSketch object. [`Tuple`](/sql-reference/data-types/tuple) or [`Array`](/sql-reference/data-types/array) or [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+
+
+**Returned value**
+
+A new uniqThetaSketch containing the intersect result. [`UInt64`](/sql-reference/data-types/int-uint)
+
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT
@@ -5044,29 +5566,34 @@ LIMIT 10
 └────────────────┴─────────┘
 ```
 
-## uniqThetaIntersect {#uniqThetaIntersect}
 
-在 v22.9 中引入
 
-对两个 uniqThetaSketch 对象执行交集运算（集合运算 ∩），结果是一个新的 uniqThetaSketch。
+## uniqThetaNot {#uniqThetaNot}
 
-**语法**
+Introduced in: v22.9
+
+
+Two uniqThetaSketch objects to do a_not_b calculation(set operation ×), the result is a new uniqThetaSketch.
+    
+
+**Syntax**
 
 ```sql
 uniqThetaIntersect(uniqThetaSketch,uniqThetaSketch)
 ```
 
-**参数**
+**Arguments**
 
-* `uniqThetaSketch` — uniqThetaSketch 对象。[`Tuple`](/sql-reference/data-types/tuple) 或 [`Array`](/sql-reference/data-types/array) 或 [`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`String`](/sql-reference/data-types/string) 或 [`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+- `uniqThetaSketch` — uniqThetaSketch object. [`Tuple`](/sql-reference/data-types/tuple) or [`Array`](/sql-reference/data-types/array) or [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
 
-**返回值**
 
-一个新的 uniqThetaSketch 对象，包含交集结果。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns a new uniqThetaSketch containing the a_not_b result. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT finalizeAggregation(uniqThetaIntersect(a, b)) AS a_intersect_b, finalizeAggregation(a) AS a_cardinality, finalizeAggregation(b) AS b_cardinality
@@ -5080,29 +5607,34 @@ FROM
 └───────────────┴───────────────┴───────────────┘
 ```
 
-## uniqThetaNot {#uniqThetaNot}
 
-引入版本：v22.9
 
-对两个 uniqThetaSketch 对象执行 a&#95;not&#95;b 计算（集合运算 ×），返回一个新的 uniqThetaSketch。
+## uniqThetaUnion {#uniqThetaUnion}
 
-**语法**
+Introduced in: v22.9
+
+
+Two uniqThetaSketch objects to do union calculation(set operation ∪), the result is a new uniqThetaSketch.
+    
+
+**Syntax**
 
 ```sql
 uniqThetaNot(uniqThetaSketch,uniqThetaSketch)
 ```
 
-**参数**
+**Arguments**
 
-* `uniqThetaSketch` — uniqThetaSketch 对象。[`Tuple`](/sql-reference/data-types/tuple) 或 [`Array`](/sql-reference/data-types/array) 或 [`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`String`](/sql-reference/data-types/string) 或 [`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+- `uniqThetaSketch` — uniqThetaSketch object. [`Tuple`](/sql-reference/data-types/tuple) or [`Array`](/sql-reference/data-types/array) or [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
 
-**返回值**
 
-返回一个新的 uniqThetaSketch 对象，其中包含 a&#95;not&#95;b 结果。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns a new uniqThetaSketch containing the union result. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT finalizeAggregation(uniqThetaNot(a, b)) AS a_not_b, finalizeAggregation(a) AS a_cardinality, finalizeAggregation(b) AS b_cardinality
@@ -5116,29 +5648,35 @@ FROM
 └─────────┴───────────────┴───────────────┘
 ```
 
-## uniqThetaUnion {#uniqThetaUnion}
 
-自 v22.9 版本引入
 
-对两个 uniqThetaSketch 对象进行并集计算（集合运算 ∪），结果是一个新的 uniqThetaSketch。
+## uptime {#uptime}
 
-**语法**
+Introduced in: v1.1
+
+
+Returns the server's uptime in seconds.
+If executed in the context of a distributed table, this function generates a normal column with values relevant to each shard.
+Otherwise it produces a constant value.
+    
+
+**Syntax**
 
 ```sql
 uniqThetaUnion(uniqThetaSketch,uniqThetaSketch)
 ```
 
-**参数**
+**Arguments**
 
-* `uniqThetaSketch` — uniqThetaSketch 对象。[`Tuple`](/sql-reference/data-types/tuple) 或 [`Array`](/sql-reference/data-types/array) 或 [`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`String`](/sql-reference/data-types/string) 或 [`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+- None.
 
-**返回值**
+**Returned value**
 
-返回一个新的 uniqThetaSketch，其中包含并集结果。[`UInt64`](/sql-reference/data-types/int-uint)
+Returns the server uptime in seconds. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**示例**
+**Examples**
 
-**使用示例**
+**Usage example**
 
 ```sql title=Query
 SELECT finalizeAggregation(uniqThetaUnion(a, b)) AS a_union_b, finalizeAggregation(a) AS a_cardinality, finalizeAggregation(b) AS b_cardinality
@@ -5152,31 +5690,36 @@ FROM
 └───────────┴───────────────┴───────────────┘
 ```
 
-## uptime {#uptime}
 
-引入版本：v1.1
 
-返回服务器的运行时间（以秒为单位）。
-如果在分布式表的上下文中执行，此函数会生成一个普通列，其值对应各个分片。
-否则，它会返回一个常量值。
+## variantElement {#variantElement}
 
-**语法**
+Introduced in: v25.2
+
+
+Extracts a column with specified type from a `Variant` column.
+
+
+**Syntax**
 
 ```sql
 uptime()
 ```
 
-**参数**
+**Arguments**
 
-* 无。
+- `variant` — Variant column. [`Variant`](/sql-reference/data-types/variant)
+- `type_name` — The name of the variant type to extract. [`String`](/sql-reference/data-types/string)
+- `default_value` — The default value that will be used if variant doesn't have variant with specified type. Can be any type. Optional. [`Any`](/sql-reference/data-types)
 
-**返回值**
 
-返回服务器的运行时间（以秒为单位）。[`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns a column with the specified variant type extracted from the Variant column. [`Any`](/sql-reference/data-types)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT uptime() AS Uptime
@@ -5188,31 +5731,34 @@ SELECT uptime() AS Uptime
 └────────┘
 ```
 
-## variantElement {#variantElement}
 
-自 v25.2 起引入
 
-从 `Variant` 列中提取具有指定类型的列。
+## variantType {#variantType}
 
-**语法**
+Introduced in: v24.2
+
+
+Returns the variant type name for each row of `Variant` column. If row contains NULL, it returns 'None' for it.
+
+
+**Syntax**
 
 ```sql
 variantElement(variant, type_name[, default_value])
 ```
 
-**参数**
+**Arguments**
 
-* `variant` — Variant 列。[`Variant`](/sql-reference/data-types/variant)
-* `type_name` — 要提取的 Variant 类型名称。[`String`](/sql-reference/data-types/string)
-* `default_value` — 当 Variant 中不存在指定类型的值时所使用的默认值。可以为任意类型。可选。[`Any`](/sql-reference/data-types)
+- `variant` — Variant column. [`Variant`](/sql-reference/data-types/variant)
 
-**返回值**
 
-返回一个从 Variant 列中提取出指定 Variant 类型值的列。[`Any`](/sql-reference/data-types)
+**Returned value**
 
-**示例**
+Returns an Enum column with variant type name for each row. [`Enum`](/sql-reference/data-types/enum)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE test (v Variant(UInt64, String, Array(UInt64))) ENGINE = Memory;
@@ -5229,29 +5775,35 @@ SELECT v, variantElement(v, 'String'), variantElement(v, 'UInt64'), variantEleme
 └───────────────┴─────────────────────────────┴─────────────────────────────┴────────────────────────────────────┘
 ```
 
-## variantType {#variantType}
 
-引入版本：v24.2
 
-对 `Variant` 列的每一行，返回其变体类型名称。如果该行包含 NULL，则返回 &#39;None&#39;。
+## version {#version}
 
-**语法**
+Introduced in: v1.1
+
+
+Returns the current version of ClickHouse as a string in the form: `major_version.minor_version.patch_version.number_of_commits_since_the_previous_stable_release`.
+If executed in the context of a distributed table, this function generates a normal column with values relevant to each shard.
+Otherwise, it produces a constant value.
+    
+
+**Syntax**
 
 ```sql
 variantType(variant)
 ```
 
-**参数**
+**Arguments**
 
-* `variant` — Variant 列。[`Variant`](/sql-reference/data-types/variant)
+- None.
 
-**返回值**
+**Returned value**
 
-返回一个 Enum 列，其中每一行的值为对应的 Variant 类型名称。[`Enum`](/sql-reference/data-types/enum)
+Returns the current version of ClickHouse. [`String`](/sql-reference/data-types/string)
 
-**示例**
+**Examples**
 
-**用法示例**
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE test (v Variant(UInt64, String, Array(UInt64))) ENGINE = Memory;
@@ -5268,31 +5820,36 @@ SELECT variantType(v) FROM test;
 └────────────────┘
 ```
 
-## version {#version}
 
-引入于：v1.1
 
-以字符串形式返回当前 ClickHouse 的版本：`major_version.minor_version.patch_version.number_of_commits_since_the_previous_stable_release`。
-如果在分布式表的上下文中执行，则该函数会生成一个普通列，其中的值对应各个分片。
-否则，它会生成一个常量值。
+## visibleWidth {#visibleWidth}
 
-**语法**
+Introduced in: v1.1
+
+
+Calculates the approximate width when outputting values to the console in text format (tab-separated).
+This function is used by the system to implement Pretty formats.
+`NULL` is represented as a string corresponding to `NULL` in Pretty formats.
+    
+
+**Syntax**
 
 ```sql
 version()
 ```
 
-**参数**
+**Arguments**
 
-* 无。
+- `x` — A value of any data type. [`Any`](/sql-reference/data-types)
 
-**返回值**
 
-返回当前 ClickHouse 版本号。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns the approximate width of the value when displayed in text format. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**用法示例**
+**Examples**
+
+**Calculate visible width of NULL**
 
 ```sql title=Query
 SELECT version()
@@ -5304,31 +5861,33 @@ SELECT version()
 └───────────┘
 ```
 
-## visibleWidth {#visibleWidth}
 
-引入版本：v1.1
 
-计算以文本格式（制表符分隔）将值输出到控制台时的大致宽度。
-系统使用此函数来实现 Pretty 系列输出格式。
-在 Pretty 格式中，`NULL` 使用与 `NULL` 对应的字符串表示。
+## zookeeperSessionUptime {#zookeeperSessionUptime}
 
-**语法**
+Introduced in: v21.11
+
+
+Returns the uptime of the current ZooKeeper session in seconds.
+
+
+**Syntax**
 
 ```sql
 visibleWidth(x)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 任意数据类型的值。[`Any`](/sql-reference/data-types)
+- None.
 
-**返回值**
+**Returned value**
 
-返回该值在以文本格式显示时的近似宽度。[`UInt64`](/sql-reference/data-types/int-uint)
+Returns the uptime of the current ZooKeeper session in seconds. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**示例**
+**Examples**
 
-**计算 NULL 的可见宽度**
+**Usage example**
 
 ```sql title=Query
 SELECT visibleWidth(NULL)

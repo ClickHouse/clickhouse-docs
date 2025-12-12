@@ -144,9 +144,9 @@ $ echo '1' | curl 'http://localhost:8123/?query=SELECT' --data-binary @-
 
 ```bash
 $ echo 'ECT 1' | curl 'http://localhost:8123/?query=SEL' --data-binary @-
-Code: 59, e.displayText() = DB::Exception: Синтаксическая ошибка: ошибка в позиции 0: SEL
+Code: 59, e.displayText() = DB::Exception: Syntax error: failed at position 0: SEL
 ECT 1
-, ожидалось одно из: SHOW TABLES, SHOW DATABASES, SELECT, INSERT, CREATE, ATTACH, RENAME, DROP, DETACH, USE, SET, OPTIMIZE., e.what() = DB::Exception
+, expected One of: SHOW TABLES, SHOW DATABASES, SELECT, INSERT, CREATE, ATTACH, RENAME, DROP, DETACH, USE, SET, OPTIMIZE., e.what() = DB::Exception
 ```
 
 По умолчанию данные возвращаются в формате [`TabSeparated`](/interfaces/formats/TabSeparated).
@@ -502,7 +502,7 @@ curl -sS "http://localhost:8123" --data-binary "SET ROLE my_role;SELECT * FROM m
 Приведённая выше команда вызывает ошибку:
 
 ```sql
-Код: 62. DB::Exception: Синтаксическая ошибка (Выполнение нескольких операторов не разрешено)
+Code: 62. DB::Exception: Syntax error (Multi-statements are not allowed)
 ```
 
 Чтобы обойти это ограничение, используйте параметр запроса `role`:
@@ -529,11 +529,11 @@ curl -sS "http://localhost:8123?role=my_role&role=my_other_role" --data-binary "
 
 ```bash
 curl -v -Ss "http://localhost:8123/?max_block_size=1&query=select+sleepEachRow(0.001),throwIf(number=2)from+numbers(5)"
-*   Попытка подключения 127.0.0.1:8123...
+*   Trying 127.0.0.1:8123...
 ...
 < HTTP/1.1 200 OK
 ...
-Код: 395. DB::Exception: Значение, переданное в функцию 'throwIf', не равно нулю: при выполнении 'FUNCTION throwIf(equals(number, 2) :: 1) -> throwIf(equals(number, 2))
+Code: 395. DB::Exception: Value passed to 'throwIf' function is non-zero: while executing 'FUNCTION throwIf(equals(number, 2) :: 1) -> throwIf(equals(number, 2))
 ```
 
 Причина такого поведения связана с природой протокола HTTP. Сначала отправляется HTTP‑заголовок с кодом 200, затем тело HTTP‑ответа, и уже после этого ошибка внедряется в это тело в виде обычного текста.
@@ -552,8 +552,8 @@ curl -v -Ss "http://localhost:8123/?max_block_size=1&query=select+sleepEachRow(0
 \r\n
 __exception__\r\n
 <TAG>\r\n
-<сообщение_об_ошибке>\r\n
-<длина_сообщения> <TAG>\r\n
+<error message>\r\n
+<message_length> <TAG>\r\n
 __exception__\r\n
 
 ```
@@ -604,6 +604,12 @@ $ curl -v -Ss "http://localhost:8123/?max_block_size=1&query=select+sleepEachRow
 <
 0,0
 0,0
+
+__exception__
+rumfyutuqkncbgau
+Code: 395. DB::Exception: Value passed to 'throwIf' function is non-zero: while executing 'FUNCTION throwIf(equals(__table1.number, 2_UInt8) :: 1) -> throwIf(equals(__table1.number, 2_UInt8)) UInt8 : 0'. (FUNCTION_THROW_IF_VALUE_IS_NON_ZERO) (version 25.11.1.1)
+262 rumfyutuqkncbgau
+__exception__
 ```
 
 **исключение**
@@ -612,7 +618,8 @@ rumfyutuqkncbgau
 262 rumfyutuqkncbgau
 **исключение**
 
-```
+```bash
+$ curl -sS "<address>?param_id=2&param_phrase=test" -d "SELECT * FROM table WHERE int_column = {id:UInt8} and string_column = {phrase:String}"
 ```
 
 ## Запросы с параметрами {#cli-queries-with-parameters}
@@ -622,51 +629,41 @@ rumfyutuqkncbgau
 ### Пример {#example-3}
 
 ```bash
-$ curl -sS "<address>?param_id=2&param_phrase=test" -d "SELECT * FROM table WHERE int_column = {id:UInt8} and string_column = {phrase:String}"
+curl -sS "http://localhost:8123" -d "SELECT splitByChar('\t', 'abc      123')"
 ```
 
 ### Табуляции в параметрах URL {#tabs-in-url-parameters}
 
 Параметры запроса разбираются из «экранированного» формата. У этого есть некоторые преимущества, например возможность однозначно интерпретировать значения `NULL` как `\N`. Это означает, что символ табуляции должен быть закодирован как `\t` (или как `\` и табуляция). Например, в следующем примере между `abc` и `123` содержится реальный символ табуляции, и входная строка разбивается на два значения:
 
-```bash
-curl -sS "http://localhost:8123" -d "SELECT splitByChar('\t', 'abc      123')"
-```
-
 ```response
 ['abc','123']
+```
+
+```bash
+curl -sS "http://localhost:8123?param_arg1=abc%09123" -d "SELECT splitByChar('\t', {arg1:String})"
+Code: 457. DB::Exception: Value abc    123 cannot be parsed as String for query parameter 'arg1' because it isn't parsed completely: only 3 of 7 bytes was parsed: abc. (BAD_QUERY_PARAMETER) (version 23.4.1.869 (official build))
 ```
 
 Однако если вы попытаетесь закодировать символ табуляции, используя `%09` в параметре URL, он не будет корректно обработан:
 
 ```bash
-curl -sS "http://localhost:8123?param_arg1=abc%09123" -d "SELECT splitByChar('\t', {arg1:String})"
-Код: 457. DB::Exception: Значение abc    123 не может быть разобрано как String для параметра запроса 'arg1', так как оно разобрано не полностью: разобрано только 3 из 7 байтов: abc. (BAD_QUERY_PARAMETER) (версия 23.4.1.869 (официальная сборка))
+curl -sS "http://localhost:8123?param_arg1=abc%5C%09123" -d "SELECT splitByChar('\t', {arg1:String})"
 ```
 
 Если вы используете параметры URL, вам необходимо закодировать `\t` как `%5C%09`. Например:
-
-```bash
-curl -sS "http://localhost:8123?param_arg1=abc%5C%09123" -d "SELECT splitByChar('\t', {arg1:String})"
-```
 
 ```response
 ['abc','123']
 ```
 
-## Предопределённый HTTP-интерфейс {#predefined_http_interface}
-
-ClickHouse поддерживает выполнение специальных запросов через HTTP-интерфейс. Например, вы можете записать данные в таблицу следующим образом:
-
 ```bash
 $ echo '(4),(5),(6)' | curl 'http://localhost:8123/?query=INSERT%20INTO%20t%20VALUES' --data-binary @-
 ```
 
-ClickHouse также поддерживает предопределённый HTTP‑интерфейс, который упрощает интеграцию со сторонними инструментами, такими как [Prometheus exporter](https://github.com/ClickHouse/clickhouse_exporter). Рассмотрим пример.
+## Предопределённый HTTP-интерфейс {#predefined_http_interface}
 
-Прежде всего добавьте этот раздел в файл конфигурации сервера.
-
-`http_handlers` настроен так, чтобы содержать несколько правил `rule`. ClickHouse будет сопоставлять входящие HTTP‑запросы с предопределённым типом, указанным в `rule`, и обработчик будет запущен для первого совпавшего правила. Затем ClickHouse выполнит соответствующий предопределённый запрос, если сопоставление прошло успешно.
+ClickHouse поддерживает выполнение специальных запросов через HTTP-интерфейс. Например, вы можете записать данные в таблицу следующим образом:
 
 ```yaml title="config.xml"
 <http_handlers>
@@ -683,7 +680,11 @@ ClickHouse также поддерживает предопределённый 
 </http_handlers>
 ```
 
-Теперь вы можете получать данные в формате Prometheus, обращаясь непосредственно по URL:
+ClickHouse также поддерживает предопределённый HTTP‑интерфейс, который упрощает интеграцию со сторонними инструментами, такими как [Prometheus exporter](https://github.com/ClickHouse/clickhouse_exporter). Рассмотрим пример.
+
+Прежде всего добавьте этот раздел в файл конфигурации сервера.
+
+`http_handlers` настроен так, чтобы содержать несколько правил `rule`. ClickHouse будет сопоставлять входящие HTTP‑запросы с предопределённым типом, указанным в `rule`, и обработчик будет запущен для первого совпавшего правила. Затем ClickHouse выполнит соответствующий предопределённый запрос, если сопоставление прошло успешно.
 
 ```bash
 $ curl -v 'http://localhost:8123/predefined_query'
@@ -706,9 +707,52 @@ $ curl -v 'http://localhost:8123/predefined_query'
 < Keep-Alive: timeout=10
 < X-ClickHouse-Summary: {"read_rows":"0","read_bytes":"0","written_rows":"0","written_bytes":"0","total_rows_to_read":"0","elapsed_ns":"662334","memory_usage":"8451671"}
 <
-# HELP "Query" "Number of executing queries" {#help-query-number-of-executing-queries}
-# TYPE "Query" counter {#type-query-counter}
+# HELP "Query" "Number of executing queries"
+# TYPE "Query" counter
 "Query" 1
+
+# HELP "Merge" "Number of executing background merges"
+# TYPE "Merge" counter
+"Merge" 0
+
+# HELP "PartMutation" "Number of mutations (ALTER DELETE/UPDATE)"
+# TYPE "PartMutation" counter
+"PartMutation" 0
+
+# HELP "ReplicatedFetch" "Number of data parts being fetched from replica"
+# TYPE "ReplicatedFetch" counter
+"ReplicatedFetch" 0
+
+# HELP "ReplicatedSend" "Number of data parts being sent to replicas"
+# TYPE "ReplicatedSend" counter
+"ReplicatedSend" 0
+
+* Connection #0 to host localhost left intact
+
+* Connection #0 to host localhost left intact
+```
+
+Теперь вы можете получать данные в формате Prometheus, обращаясь непосредственно по URL:
+
+```yaml
+<http_handlers>
+    <rule>
+        <url><![CDATA[regex:/query_param_with_url/(?P<name_1>[^/]+)]]></url>
+        <methods>GET</methods>
+        <headers>
+            <XXX>TEST_HEADER_VALUE</XXX>
+            <PARAMS_XXX><![CDATA[regex:(?P<name_2>[^/]+)]]></PARAMS_XXX>
+        </headers>
+        <handler>
+            <type>predefined_query_handler</type>
+            <query>
+                SELECT name, value FROM system.settings
+                WHERE name IN ({name_1:String}, {name_2:String})
+            </query>
+        </handler>
+    </rule>
+    <defaults/>
+</http_handlers>
 ```
 
 # HELP "Merge" "Количество выполняемых фоновых слияний" {#help-merge-number-of-executing-background-merges}
@@ -733,112 +777,11 @@ $ curl -v 'http://localhost:8123/predefined_query'
 
 * Соединение №0 с хостом localhost оставлено открытым
 
-```
-
-Параметры конфигурации `http_handlers` работают следующим образом.
-
-`rule` может настраивать следующие параметры:
-- `method`
-- `headers`
-- `url`
-- `full_url`
-- `handler`
-
-Каждый из них описан ниже:
-
-- `method` отвечает за сопоставление метода HTTP-запроса. `method` полностью соответствует определению [`method`]    
-  (https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) в протоколе HTTP. Это необязательный параметр. Если он не определён в   
-  конфигурационном файле, сопоставление метода HTTP-запроса не выполняется.
-
-- `url` отвечает за сопоставление части URL (пути и строки запроса) HTTP-запроса.
-  Если `url` имеет префикс `regex:`, ожидаются регулярные выражения [RE2](https://github.com/google/re2).
-  Это необязательный параметр. Если он не определён в конфигурационном файле, сопоставление части URL HTTP-запроса не выполняется.
-
-- `full_url` аналогичен `url`, но включает полный URL, т. е. `schema://host:port/path?query_string`.
-  Обратите внимание, что ClickHouse не поддерживает «виртуальные хосты», поэтому `host` является IP-адресом (а не значением заголовка `Host`).
-
-- `empty_query_string` — гарантирует отсутствие строки запроса (`?query_string`) в запросе
-
-- `headers` отвечает за сопоставление заголовков HTTP-запроса. Совместим с регулярными выражениями RE2. Это необязательный 
-  параметр. Если он не определён в конфигурационном файле, сопоставление заголовков HTTP-запроса не выполняется.
-
-- `handler` содержит основную часть обработки.
-
-  Может иметь следующие значения `type`:
-  - [`predefined_query_handler`](#predefined_query_handler)
-  - [`dynamic_query_handler`](#dynamic_query_handler)
-  - [`static`](#static)
-  - [`redirect`](#redirect)
-
-  И следующие параметры:
-  - `query` — используется с типом `predefined_query_handler`, выполняет запрос при вызове обработчика.
-  - `query_param_name` — используется с типом `dynamic_query_handler`, извлекает и выполняет значение, соответствующее `query_param_name` в 
-       параметрах HTTP-запроса.
-  - `status` — используется с типом `static`, код состояния ответа.
-  - `content_type` — используется с любым типом, [content-type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type) ответа.
-  - `http_response_headers` — используется с любым типом, карта заголовков ответа. Может также использоваться для установки типа содержимого.
-  - `response_content` — используется с типом `static`, содержимое ответа, отправляемое клиенту; при использовании префикса 'file://' или 'config://' содержимое 
-    извлекается из файла или конфигурации и отправляется клиенту.
-  - `user` — пользователь, от имени которого выполняется запрос (пользователь по умолчанию — `default`).
-    **Примечание**: не требуется указывать пароль для этого пользователя.
-
-Методы конфигурации для различных значений `type` описаны далее.
-
-### predefined_query_handler {#predefined_query_handler}
-
-`predefined_query_handler` поддерживает установку значений `Settings` и `query_params`. Вы можете настроить `query` в типе `predefined_query_handler`.
-
-Значение `query` представляет собой предопределённый запрос `predefined_query_handler`, который выполняется ClickHouse при совпадении HTTP-запроса, и возвращается результат запроса. Это обязательный параметр.
-
-Следующий пример определяет значения настроек [`max_threads`](../operations/settings/settings.md#max_threads) и [`max_final_threads`](/operations/settings/settings#max_final_threads), затем выполняет запрос к системной таблице для проверки успешной установки этих настроек.
-
-:::note
-Чтобы сохранить обработчики по умолчанию, такие как `query`, `play`, `ping`, добавьте правило `<defaults/>`.
-:::
-
-Например:
-```
-
-```yaml
-<http_handlers>
-    <rule>
-        <url><![CDATA[regex:/query_param_with_url/(?P<name_1>[^/]+)]]></url>
-        <methods>GET</methods>
-        <headers>
-            <XXX>TEST_HEADER_VALUE</XXX>
-            <PARAMS_XXX><![CDATA[regex:(?P<name_2>[^/]+)]]></PARAMS_XXX>
-        </headers>
-        <handler>
-            <type>predefined_query_handler</type>
-            <query>
-                SELECT name, value FROM system.settings
-                WHERE name IN ({name_1:String}, {name_2:String})
-            </query>
-        </handler>
-    </rule>
-    <defaults/>
-</http_handlers>
-```
-
 ```bash
 curl -H 'XXX:TEST_HEADER_VALUE' -H 'PARAMS_XXX:max_final_threads' 'http://localhost:8123/query_param_with_url/max_threads?max_threads=1&max_final_threads=2'
 max_final_threads    2
 max_threads    1
 ```
-
-:::note
-В одном `predefined_query_handler` поддерживается только один `query`.
-:::
-
-### dynamic&#95;query&#95;handler {#dynamic_query_handler}
-
-В `dynamic_query_handler` запрос передаётся в виде параметра HTTP‑запроса. В отличие от него, в `predefined_query_handler` запрос задаётся в конфигурационном файле. Параметр `query_param_name` может быть настроен в `dynamic_query_handler`.
-
-ClickHouse извлекает и выполняет значение, соответствующее `query_param_name`, из URL HTTP‑запроса. Значение `query_param_name` по умолчанию — `/query`. Это необязательная настройка. Если параметр не определён в конфигурационном файле, он не передаётся.
-
-Чтобы поэкспериментировать с этой функциональностью, в следующем примере задаются значения [`max_threads`](../operations/settings/settings.md#max_threads) и `max_final_threads`, а также выполняются запросы, чтобы проверить, были ли настройки успешно применены.
-
-Пример:
 
 ```yaml
 <http_handlers>
@@ -860,11 +803,19 @@ max_threads 1
 max_final_threads   2
 ```
 
-### static {#static}
+:::note
+В одном `predefined_query_handler` поддерживается только один `query`.
+:::
 
-`static` может возвращать [`content_type`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type), [status](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status) и `response_content`. `response_content` задаёт возвращаемое содержимое.
+### dynamic&#95;query&#95;handler {#dynamic_query_handler}
 
-Например, чтобы вернуть сообщение «Say Hi!»:
+В `dynamic_query_handler` запрос передаётся в виде параметра HTTP‑запроса. В отличие от него, в `predefined_query_handler` запрос задаётся в конфигурационном файле. Параметр `query_param_name` может быть настроен в `dynamic_query_handler`.
+
+ClickHouse извлекает и выполняет значение, соответствующее `query_param_name`, из URL HTTP‑запроса. Значение `query_param_name` по умолчанию — `/query`. Это необязательная настройка. Если параметр не определён в конфигурационном файле, он не передаётся.
+
+Чтобы поэкспериментировать с этой функциональностью, в следующем примере задаются значения [`max_threads`](../operations/settings/settings.md#max_threads) и `max_final_threads`, а также выполняются запросы, чтобы проверить, были ли настройки успешно применены.
+
+Пример:
 
 ```yaml
 <http_handlers>
@@ -888,8 +839,6 @@ max_final_threads   2
 </http_handlers>
 ```
 
-`http_response_headers` можно использовать для указания типа контента вместо `content_type`.
-
 ```yaml
 <http_handlers>
         <rule>
@@ -906,12 +855,18 @@ max_final_threads   2
                     <X-My-Custom-Header>43</X-My-Custom-Header>
                 </http_response_headers>
                 #end-highlight
-                <response_content>Привет!</response_content>
+                <response_content>Say Hi!</response_content>
             </handler>
         </rule>
         <defaults/>
 </http_handlers>
 ```
+
+### static {#static}
+
+`static` может возвращать [`content_type`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type), [status](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status) и `response_content`. `response_content` задаёт возвращаемое содержимое.
+
+Например, чтобы вернуть сообщение «Say Hi!»:
 
 ```bash
 curl -vv  -H 'XXX:xxx' 'http://localhost:8123/hi'
@@ -935,7 +890,7 @@ curl -vv  -H 'XXX:xxx' 'http://localhost:8123/hi'
 Say Hi!%
 ```
 
-Найдите содержимое конфигурации, отправленной клиенту.
+`http_response_headers` можно использовать для указания типа контента вместо `content_type`.
 
 ```yaml
 <get_config_static_handler><![CDATA[<html ng-app="SMI2"><head><base href="http://ui.tabix.io/"></head><body><div ui-view="" class="content-ui"></div><script src="http://loader.tabix.io/master.js"></script></body></html>]]></get_config_static_handler>
@@ -975,7 +930,7 @@ $ curl -v  -H 'XXX:xxx' 'http://localhost:8123/get_config_static_handler'
 <html ng-app="SMI2"><head><base href="http://ui.tabix.io/"></head><body><div ui-view="" class="content-ui"></div><script src="http://loader.tabix.io/master.js"></script></body></html>%
 ```
 
-Чтобы найти содержимое файла, отправленного клиенту:
+Найдите содержимое конфигурации, отправленной клиенту.
 
 ```yaml
 <http_handlers>
@@ -1010,8 +965,8 @@ $ curl -v  -H 'XXX:xxx' 'http://localhost:8123/get_config_static_handler'
 
 ```bash
 $ user_files_path='/var/lib/clickhouse/user_files'
-$ sudo echo "<html><body>Файл с относительным путем</body></html>" > $user_files_path/relative_path_file.html
-$ sudo echo "<html><body>Файл с абсолютным путем</body></html>" > $user_files_path/absolute_path_file.html
+$ sudo echo "<html><body>Relative Path File</body></html>" > $user_files_path/relative_path_file.html
+$ sudo echo "<html><body>Absolute Path File</body></html>" > $user_files_path/absolute_path_file.html
 $ curl -vv -H 'XXX:xxx' 'http://localhost:8123/get_absolute_path_static_handler'
 *   Trying ::1...
 * Connected to localhost (::1) port 8123 (#0)
@@ -1029,7 +984,7 @@ $ curl -vv -H 'XXX:xxx' 'http://localhost:8123/get_absolute_path_static_handler'
 < Keep-Alive: timeout=10
 < X-ClickHouse-Summary: {"read_rows":"0","read_bytes":"0","written_rows":"0","written_bytes":"0","total_rows_to_read":"0","elapsed_ns":"662334","memory_usage":"8451671"}
 <
-<html><body>Файл с абсолютным путем</body></html>
+<html><body>Absolute Path File</body></html>
 * Connection #0 to host localhost left intact
 $ curl -vv -H 'XXX:xxx' 'http://localhost:8123/get_relative_path_static_handler'
 *   Trying ::1...
@@ -1048,15 +1003,11 @@ $ curl -vv -H 'XXX:xxx' 'http://localhost:8123/get_relative_path_static_handler'
 < Keep-Alive: timeout=10
 < X-ClickHouse-Summary: {"read_rows":"0","read_bytes":"0","written_rows":"0","written_bytes":"0","total_rows_to_read":"0","elapsed_ns":"662334","memory_usage":"8451671"}
 <
-<html><body>Файл с относительным путем</body></html>
+<html><body>Relative Path File</body></html>
 * Connection #0 to host localhost left intact
 ```
 
-### redirect {#redirect}
-
-`redirect` выполнит перенаправление `302` на `location`
-
-Например, так вы можете автоматически добавить параметр `set user` в `play` для ClickHouse Play:
+Чтобы найти содержимое файла, отправленного клиенту:
 
 ```xml
 <clickhouse>
@@ -1071,6 +1022,69 @@ $ curl -vv -H 'XXX:xxx' 'http://localhost:8123/get_relative_path_static_handler'
         </rule>
     </http_handlers>
 </clickhouse>
+```
+
+```xml
+<clickhouse>
+    <http_handlers>
+        <common_http_response_headers>
+            <X-My-Common-Header>Common header</X-My-Common-Header>
+        </common_http_response_headers>
+        <rule>
+            <methods>GET</methods>
+            <url>/ping</url>
+            <handler>
+                <type>ping</type>
+                <http_response_headers>
+                    <X-My-Custom-Header>Custom indeed</X-My-Custom-Header>
+                </http_response_headers>
+            </handler>
+        </rule>
+    </http_handlers>
+</clickhouse>
+```
+
+### redirect {#redirect}
+
+`redirect` выполнит перенаправление `302` на `location`
+
+Например, так вы можете автоматически добавить параметр `set user` в `play` для ClickHouse Play:
+
+```bash
+$ curl 'http://localhost:8123/?query=SELECT+number,+throwIf(number>3)+from+system.numbers+format+JSON+settings+max_block_size=1&http_write_exception_in_output_format=1'
+{
+    "meta":
+    [
+        {
+            "name": "number",
+            "type": "UInt64"
+        },
+        {
+            "name": "throwIf(greater(number, 2))",
+            "type": "UInt8"
+        }
+    ],
+
+    "data":
+    [
+        {
+            "number": "0",
+            "throwIf(greater(number, 2))": 0
+        },
+        {
+            "number": "1",
+            "throwIf(greater(number, 2))": 0
+        },
+        {
+            "number": "2",
+            "throwIf(greater(number, 2))": 0
+        }
+    ],
+
+    "rows": 3,
+
+    "exception": "Code: 395. DB::Exception: Value passed to 'throwIf' function is non-zero: while executing 'FUNCTION throwIf(greater(number, 2) :: 2) -> throwIf(greater(number, 2)) UInt8 : 1'. (FUNCTION_THROW_IF_VALUE_IS_NON_ZERO) (version 23.8.1.1)"
+}
 ```
 
 ## HTTP заголовки ответа {#http-response-headers}
@@ -1089,24 +1103,39 @@ ClickHouse позволяет настраивать пользовательс�
 
 В примере ниже каждый ответ сервера будет содержать два пользовательских заголовка: `X-My-Common-Header` и `X-My-Custom-Header`.
 
-```xml
-<clickhouse>
-    <http_handlers>
-        <common_http_response_headers>
-            <X-My-Common-Header>Общий заголовок</X-My-Common-Header>
-        </common_http_response_headers>
-        <rule>
-            <methods>GET</methods>
-            <url>/ping</url>
-            <handler>
-                <type>ping</type>
-                <http_response_headers>
-                    <X-My-Custom-Header>Пользовательский заголовок</X-My-Custom-Header>
-                </http_response_headers>
-            </handler>
-        </rule>
-    </http_handlers>
-</clickhouse>
+```bash
+$ curl 'http://localhost:8123/?query=SELECT+number,+throwIf(number>2)+from+system.numbers+format+XML+settings+max_block_size=1&http_write_exception_in_output_format=1'
+<?xml version='1.0' encoding='UTF-8' ?>
+<result>
+    <meta>
+        <columns>
+            <column>
+                <name>number</name>
+                <type>UInt64</type>
+            </column>
+            <column>
+                <name>throwIf(greater(number, 2))</name>
+                <type>UInt8</type>
+            </column>
+        </columns>
+    </meta>
+    <data>
+        <row>
+            <number>0</number>
+            <field>0</field>
+        </row>
+        <row>
+            <number>1</number>
+            <field>0</field>
+        </row>
+        <row>
+            <number>2</number>
+            <field>0</field>
+        </row>
+    </data>
+    <rows>3</rows>
+    <exception>Code: 395. DB::Exception: Value passed to 'throwIf' function is non-zero: while executing 'FUNCTION throwIf(greater(number, 2) :: 2) -> throwIf(greater(number, 2)) UInt8 : 1'. (FUNCTION_THROW_IF_VALUE_IS_NON_ZERO) (version 23.8.1.1)</exception>
+</result>
 ```
 
 ## Корректный JSON/XML-ответ при исключении во время HTTP‑стриминга {#valid-output-on-exception-http-streaming}

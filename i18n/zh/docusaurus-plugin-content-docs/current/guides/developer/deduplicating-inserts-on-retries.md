@@ -204,18 +204,29 @@ SELECT
     _part
 FROM dst
 ORDER BY all;
+
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
+│ from dst   │   0 │ A     │ all_0_0_0 │
+└────────────┴─────┴───────┴───────────┘
 ```
 
 ┌─&#39;from dst&#39;─┬─key─┬─value─┬─&#95;part─────┐
 │ from dst   │   0 │ A     │ all&#95;0&#95;0&#95;0 │
 └────────────┴─────┴───────┴───────────┘
 
-````
+````sql
+CREATE TABLE dst
+(
+    `key` Int64,
+    `value` String
+)
+ENGINE = MergeTree
+ORDER BY tuple()
+SETTINGS non_replicated_deduplication_window=1000;
 
-使用上述设置，select 会产生两个数据块——因此应该有两个数据块插入到表 `dst` 中。然而，我们看到只有一个数据块被插入到表 `dst` 中。这是因为第二个数据块已被去重。它具有相同的数据和去重键 `block_id`，该键是根据插入数据的哈希值计算得出的。这种行为不符合预期。此类情况很少发生，但理论上是可能的。为了正确处理此类情况，用户必须提供 `insert_deduplication_token`。让我们通过以下示例来解决这个问题：
-
-### 使用 `insert_deduplication_token` 插入相同数据块                                                                  {#identical-blocks-in-insertion-with-insert_deduplication_token}
-
+SET max_block_size=1;
+SET min_insert_block_size_rows=0;
+SET min_insert_block_size_bytes=0;
 ```sql
 CREATE TABLE dst
 (
@@ -229,10 +240,24 @@ SETTINGS non_replicated_deduplication_window=1000;
 SET max_block_size=1;
 SET min_insert_block_size_rows=0;
 SET min_insert_block_size_bytes=0;
-````
+````sql
+INSERT INTO dst SELECT
+    0 AS key,
+    'A' AS value
+FROM numbers(2)
+SETTINGS insert_deduplication_token='some_user_token';
 
-插入：
+SELECT
+    'from dst',
+    *,
+    _part
+FROM dst
+ORDER BY all;
 
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
+│ from dst   │   0 │ A     │ all_2_2_0 │
+│ from dst   │   0 │ A     │ all_3_3_0 │
+└────────────┴─────┴───────┴───────────┘
 ```sql
 INSERT INTO dst SELECT
     0 AS key,
@@ -251,10 +276,26 @@ ORDER BY all;
 │ from dst   │   0 │ A     │ all_2_2_0 │
 │ from dst   │   0 │ A     │ all_3_3_0 │
 └────────────┴─────┴───────┴───────────┘
-```
+```sql
+SELECT 'second attempt';
 
-两个相同的块已按预期插入。
+INSERT INTO dst SELECT
+    0 AS key,
+    'A' AS value
+FROM numbers(2)
+SETTINGS insert_deduplication_token='some_user_token';
 
+SELECT
+    'from dst',
+    *,
+    _part
+FROM dst
+ORDER BY all;
+
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
+│ from dst   │   0 │ A     │ all_2_2_0 │
+│ from dst   │   0 │ A     │ all_3_3_0 │
+└────────────┴─────┴───────┴───────────┘
 ```sql
 SELECT '第二次尝试';
 
@@ -275,10 +316,26 @@ ORDER BY all;
 │ from dst   │   0 │ A     │ all_2_2_0 │
 │ from dst   │   0 │ A     │ all_3_3_0 │
 └────────────┴─────┴───────┴───────────┘
-```
+```sql
+SELECT 'third attempt';
 
-重试的写入会按预期被去重。
+INSERT INTO dst SELECT
+    1 AS key,
+    'b' AS value
+FROM numbers(2)
+SETTINGS insert_deduplication_token='some_user_token';
 
+SELECT
+    'from dst',
+    *,
+    _part
+FROM dst
+ORDER BY all;
+
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
+│ from dst   │   0 │ A     │ all_2_2_0 │
+│ from dst   │   0 │ A     │ all_3_3_0 │
+└────────────┴─────┴───────┴───────────┘
 ```sql
 SELECT '第三次尝试';
 
@@ -299,12 +356,6 @@ ORDER BY all;
 │ from dst   │   0 │ A     │ all_2_2_0 │
 │ from dst   │   0 │ A     │ all_3_3_0 │
 └────────────┴─────┴───────┴───────────┘
-```
-
-即使该次插入的数据内容不同，也会被去重。请注意，`insert_deduplication_token` 具有更高优先级：当提供 `insert_deduplication_token` 时，ClickHouse 不会使用数据的哈希总和。
-
-### 不同的插入操作在物化视图的底层表中经过转换后生成相同的数据 {#different-insert-operations-generate-the-same-data-after-transformation-in-the-underlying-table-of-the-materialized-view}
-
 ```sql
 CREATE TABLE dst
 (
@@ -327,70 +378,84 @@ AS SELECT
     0 AS key,
     value AS value
 FROM dst;
-```
 
-SET deduplicate&#95;blocks&#95;in&#95;dependent&#95;materialized&#95;views=1;
+SET deduplicate_blocks_in_dependent_materialized_views=1;
 
-select &#39;first attempt&#39;;
+select 'first attempt';
 
-INSERT INTO dst VALUES (1, &#39;A&#39;);
+INSERT INTO dst VALUES (1, 'A');
 
 SELECT
-&#39;from dst&#39;,
-*,
-&#95;part
+    'from dst',
+    *,
+    _part
 FROM dst
 ORDER by all;
 
-┌─&#39;from dst&#39;─┬─key─┬─value─┬─&#95;part─────┐
-│ from dst   │   1 │ A     │ all&#95;0&#95;0&#95;0 │
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
+│ from dst   │   1 │ A     │ all_0_0_0 │
 └────────────┴─────┴───────┴───────────┘
 
 SELECT
-&#39;from mv&#95;dst&#39;,
-*,
-&#95;part
-FROM mv&#95;dst
+    'from mv_dst',
+    *,
+    _part
+FROM mv_dst
 ORDER by all;
 
-┌─&#39;from mv&#95;dst&#39;─┬─key─┬─value─┬─&#95;part─────┐
-│ from mv&#95;dst   │   0 │ A     │ all&#95;0&#95;0&#95;0 │
+┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
+│ from mv_dst   │   0 │ A     │ all_0_0_0 │
 └───────────────┴─────┴───────┴───────────┘
 
-select &#39;second attempt&#39;;
+select 'second attempt';
 
-INSERT INTO dst VALUES (2, &#39;A&#39;);
+INSERT INTO dst VALUES (2, 'A');
 
 SELECT
-&#39;from dst&#39;,
-*,
-&#95;part
+    'from dst',
+    *,
+    _part
 FROM dst
 ORDER by all;
 
-┌─&#39;from dst&#39;─┬─key─┬─value─┬─&#95;part─────┐
-│ from dst   │   1 │ A     │ all&#95;0&#95;0&#95;0 │
-│ from dst   │   2 │ A     │ all&#95;1&#95;1&#95;0 │
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
+│ from dst   │   1 │ A     │ all_0_0_0 │
+│ from dst   │   2 │ A     │ all_1_1_0 │
 └────────────┴─────┴───────┴───────────┘
 
 SELECT
-&#39;from mv&#95;dst&#39;,
-*,
-&#95;part
-FROM mv&#95;dst
+    'from mv_dst',
+    *,
+    _part
+FROM mv_dst
 ORDER by all;
 
-┌─&#39;from mv&#95;dst&#39;─┬─key─┬─value─┬─&#95;part─────┐
-│ from mv&#95;dst   │   0 │ A     │ all&#95;0&#95;0&#95;0 │
-│ from mv&#95;dst   │   0 │ A     │ all&#95;1&#95;1&#95;0 │
+┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
+│ from mv_dst   │   0 │ A     │ all_0_0_0 │
+│ from mv_dst   │   0 │ A     │ all_1_1_0 │
 └───────────────┴─────┴───────┴───────────┘
+```sql
+CREATE TABLE dst
+(
+    `key` Int64,
+    `value` String
+)
+ENGINE = MergeTree
+ORDER BY tuple()
+SETTINGS non_replicated_deduplication_window=1000;
 
-````
-
-我们每次插入不同的数据。然而,相同的数据被插入到 `mv_dst` 表中。由于源数据不同,数据未被去重。
-
-### 不同物化视图向同一底层表插入等效数据 {#different-materialized-view-inserts-into-one-underlying-table-with-equivalent-data}
-
+CREATE MATERIALIZED VIEW mv_dst
+(
+    `key` Int64,
+    `value` String
+)
+ENGINE = MergeTree
+ORDER BY tuple()
+SETTINGS non_replicated_deduplication_window=1000
+AS SELECT
+    0 AS key,
+    value AS value
+FROM dst;
 ```sql
 CREATE TABLE dst
 (
@@ -426,29 +491,62 @@ FROM dst;
 
 SET deduplicate_blocks_in_dependent_materialized_views=1;
 
-select '第一次尝试';
+select 'first attempt';
 
 INSERT INTO dst VALUES (1, 'A');
 
 SELECT
-    '来自 dst',
+    'from dst',
     *,
     _part
 FROM dst
 ORDER by all;
 
-┌─'来自 dst'─┬─key─┬─value─┬─_part─────┐
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   1 │ A     │ all_0_0_0 │
 └────────────┴─────┴───────┴───────────┘
 
 SELECT
-    '来自 mv_dst',
+    'from mv_dst',
     *,
     _part
 FROM mv_dst
 ORDER by all;
 
-┌─'来自 mv_dst'─┬─key─┬─value─┬─_part─────┐
+┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
+│ from mv_dst   │   0 │ A     │ all_0_0_0 │
+│ from mv_dst   │   0 │ A     │ all_1_1_0 │
+└───────────────┴─────┴───────┴───────────┘
+````
+
+我们每次插入不同的数据。然而,相同的数据被插入到 `mv_dst` 表中。由于源数据不同,数据未被去重。
+
+### 不同物化视图向同一底层表插入等效数据 {#different-materialized-view-inserts-into-one-underlying-table-with-equivalent-data}
+
+```sql
+SELECT 'second attempt';
+
+INSERT INTO dst VALUES (1, 'A');
+
+SELECT
+    'from dst',
+    *,
+    _part
+FROM dst
+ORDER BY all;
+
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
+│ from dst   │   1 │ A     │ all_0_0_0 │
+└────────────┴─────┴───────┴───────────┘
+
+SELECT
+    'from mv_dst',
+    *,
+    _part
+FROM mv_dst
+ORDER by all;
+
+┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
 │ from mv_dst   │   0 │ A     │ all_0_0_0 │
 │ from mv_dst   │   0 │ A     │ all_1_1_0 │
 └───────────────┴─────┴───────┴───────────┘

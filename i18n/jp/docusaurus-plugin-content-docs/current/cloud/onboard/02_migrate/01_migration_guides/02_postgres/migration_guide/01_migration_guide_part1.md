@@ -28,10 +28,40 @@ Postgres から ClickHouse への典型的なマイグレーション例を示�
 マイグレーション手順を検証する目的で、このデータセットを PostgreSQL インスタンスに読み込みたいユーザー向けに、DDL とともにダウンロード可能な `pg_dump` 形式のデータを用意しています。続いて、データロード用コマンドを以下に示します。
 
 ```bash
-# ユーザー {#users}
+# users
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/users.sql.gz
 gzip -d users.sql.gz
 psql < users.sql
+
+# posts
+wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/posts.sql.gz
+gzip -d posts.sql.gz
+psql < posts.sql
+
+# posthistory
+wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/posthistory.sql.gz
+gzip -d posthistory.sql.gz
+psql < posthistory.sql
+
+# comments
+wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/comments.sql.gz
+gzip -d comments.sql.gz
+psql < comments.sql
+
+# votes
+wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/votes.sql.gz
+gzip -d votes.sql.gz
+psql < votes.sql
+
+# badges
+wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/badges.sql.gz
+gzip -d badges.sql.gz
+psql < badges.sql
+
+# postlinks
+wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/postlinks.sql.gz
+gzip -d postlinks.sql.gz
+psql < postlinks.sql
 ```
 
 # posts {#posts}
@@ -65,25 +95,6 @@ wget [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pd
 gzip -d postlinks.sql.gz
 psql &lt; postlinks.sql
 
-```
-
-ClickHouseにとっては小規模ですが、このデータセットはPostgresにとっては大規模です。上記は2024年の最初の3か月分のサブセットです。
-
-> この例ではPostgresとClickHouseのパフォーマンス差を示すために完全なデータセットを使用していますが、以下に記載されているすべての手順は、小規模なサブセットでも同様に機能します。完全なデータセットをPostgresにロードする場合は[こちら](https://pastila.nl/?00d47a08/1c5224c0b61beb480539f15ac375619d#XNj5vX3a7ZjkdiX7In8wqA==)を参照してください。上記のスキーマで定義された外部キー制約により、PostgreSQL用の完全なデータセットには参照整合性を満たす行のみが含まれています。このような制約のない[Parquetバージョン](/getting-started/example-datasets/stackoverflow)は、必要に応じてClickHouseに直接ロードできます。
-```
-
-## データの移行 {#migrating-data}
-
-### リアルタイムレプリケーション（CDC） {#real-time-replication-or-cdc}
-
-PostgreSQL 用の ClickPipes をセットアップするには、この[ガイド](/integrations/clickpipes/postgres)を参照してください。このガイドでは、さまざまな種類のソースとなる Postgres インスタンスを扱っています。
-
-ClickPipes または PeerDB を用いた CDC アプローチでは、PostgreSQL データベース内のすべてのテーブルが ClickHouse に自動的にレプリケートされます。
-
-更新と削除をほぼリアルタイムで処理するために、ClickPipes は Postgres のテーブルを、更新や削除の処理に特化した [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) エンジンを使って ClickHouse のテーブルに対応付けます。ClickPipes を使用してデータがどのように ClickHouse にレプリケートされるかについての詳細は[こちら](/integrations/clickpipes/postgres/deduplication#how-does-data-get-replicated)を参照してください。CDC を用いたレプリケーションでは、更新または削除操作をレプリケートする際に、ClickHouse 内に重複した行が作成される点に注意することが重要です。ClickHouse でそれらを処理するための、[FINAL](https://clickhouse.com/docs/sql-reference/statements/select/from#final-modifier) 修飾子を使用した[手法](/integrations/clickpipes/postgres/deduplication#deduplicate-using-final-keyword)を参照してください。
-
-ClickPipes を使用して ClickHouse に `users` テーブルがどのように作成されるかを見ていきましょう。
-
 ```sql
 CREATE TABLE users
 (
@@ -108,6 +119,23 @@ PRIMARY KEY id
 ORDER BY id;
 ```
 
+## データの移行 {#migrating-data}
+
+### リアルタイムレプリケーション（CDC） {#real-time-replication-or-cdc}
+
+PostgreSQL 用の ClickPipes をセットアップするには、この[ガイド](/integrations/clickpipes/postgres)を参照してください。このガイドでは、さまざまな種類のソースとなる Postgres インスタンスを扱っています。
+
+ClickPipes または PeerDB を用いた CDC アプローチでは、PostgreSQL データベース内のすべてのテーブルが ClickHouse に自動的にレプリケートされます。
+
+更新と削除をほぼリアルタイムで処理するために、ClickPipes は Postgres のテーブルを、更新や削除の処理に特化した [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) エンジンを使って ClickHouse のテーブルに対応付けます。ClickPipes を使用してデータがどのように ClickHouse にレプリケートされるかについての詳細は[こちら](/integrations/clickpipes/postgres/deduplication#how-does-data-get-replicated)を参照してください。CDC を用いたレプリケーションでは、更新または削除操作をレプリケートする際に、ClickHouse 内に重複した行が作成される点に注意することが重要です。ClickHouse でそれらを処理するための、[FINAL](https://clickhouse.com/docs/sql-reference/statements/select/from#final-modifier) 修飾子を使用した[手法](/integrations/clickpipes/postgres/deduplication#deduplicate-using-final-keyword)を参照してください。
+
+ClickPipes を使用して ClickHouse に `users` テーブルがどのように作成されるかを見ていきましょう。
+
+```sql title="Query"
+DESCRIBE TABLE postgresql('<host>:<port>', 'postgres', 'posts', '<username>', '<password>')
+SETTINGS describe_compact_output = 1
+```
+
 セットアップが完了すると、ClickPipes は PostgreSQL から ClickHouse へのすべてのデータ移行を開始します。ネットワークやデプロイメントの規模によって所要時間は異なりますが、Stack Overflow データセットであれば数分程度で完了するはずです。
 
 ### 手動による一括ロードと定期更新 {#initial-bulk-load-with-periodic-updates}
@@ -120,15 +148,6 @@ ORDER BY id;
 PostgreSQL から手動でデータをロードする場合は、まず ClickHouse 上にテーブルを作成する必要があります。ClickHouse におけるテーブルスキーマの最適化については、Stack Overflow データセットを用いた例も含む [データモデリングのドキュメント](/data-modeling/schema-design#establish-initial-schema) を参照してください。
 
 PostgreSQL と ClickHouse の間ではデータ型が異なる場合があります。各テーブルのカラムに対応する同等の型を確認するために、[Postgres テーブル関数](/sql-reference/table-functions/postgresql) と併せて `DESCRIBE` コマンドを使用できます。次のコマンドは PostgreSQL の `posts` テーブルを `DESCRIBE` する例です。自身の環境に合わせて修正して利用してください。
-
-```sql title="Query"
-DESCRIBE TABLE postgresql('<host>:<port>', 'postgres', 'posts', '<username>', '<password>')
-SETTINGS describe_compact_output = 1
-```
-
-PostgreSQL と ClickHouse 間のデータ型マッピングの概要については、[付録ドキュメント](/migrations/postgresql/appendix#data-type-mappings)を参照してください。
-
-このスキーマに対して型を最適化する手順は、データが他のソース（例：S3 上の Parquet）からロードされている場合と同じです。[Parquet を使用する別のガイド](/data-modeling/schema-design)で説明されている手順を適用すると、次のスキーマになります。
 
 ```sql title="Query"
 CREATE TABLE stackoverflow.posts
@@ -158,14 +177,25 @@ CREATE TABLE stackoverflow.posts
 )
 ENGINE = MergeTree
 ORDER BY tuple()
-COMMENT '最適化された型'
+COMMENT 'Optimized types'
 ```
 
-PostgreSQL からデータを読み込み、ClickHouse に挿入する単純な `INSERT INTO SELECT` 文で、これを埋めることができます。
+PostgreSQL と ClickHouse 間のデータ型マッピングの概要については、[付録ドキュメント](/migrations/postgresql/appendix#data-type-mappings)を参照してください。
+
+このスキーマに対して型を最適化する手順は、データが他のソース（例：S3 上の Parquet）からロードされている場合と同じです。[Parquet を使用する別のガイド](/data-modeling/schema-design)で説明されている手順を適用すると、次のスキーマになります。
 
 ```sql title="Query"
 INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>:<port>', 'postgres', 'posts', '<username>', '<password>')
 0 rows in set. Elapsed: 146.471 sec. Processed 59.82 million rows, 83.82 GB (408.40 thousand rows/s., 572.25 MB/s.)
+```
+
+PostgreSQL からデータを読み込み、ClickHouse に挿入する単純な `INSERT INTO SELECT` 文で、これを埋めることができます。
+
+```sql
+-- initial load
+INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>', 'postgres', 'posts', 'postgres', '<password')
+
+INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>', 'postgres', 'posts', 'postgres', '<password') WHERE CreationDate > ( SELECT (max(CreationDate) FROM stackoverflow.posts)
 ```
 
 増分ロードはスケジュール実行することもできます。Postgres テーブルが挿入のみを受け付け、単調増加する id もしくはタイムスタンプが存在する場合、ユーザーは上記のテーブル関数アプローチを用いて増分分のみをロードできます。すなわち、`SELECT` に `WHERE` 句を適用できます。このアプローチは、同じカラムが更新されることが保証されている場合には更新の取り込みにも利用できます。一方で、削除をサポートするには完全な再ロードが必要となりますが、テーブルが大きくなると、これを実現するのは難しくなる可能性があります。

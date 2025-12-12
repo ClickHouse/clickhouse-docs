@@ -99,7 +99,7 @@ WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 │         ReadFromMergeTree (stackoverflow.posts_unordered) │
 └───────────────────────────────────────────────────────────┘
 
-返回 5 行。耗时：0.003 秒。
+5 rows in set. Elapsed: 0.003 sec.
 ```
 
 假设有一个名为 `posts_ordered` 的表，包含相同的数据，其在定义中使用的 `ORDER BY` 子句为 `(PostTypeId, toDate(CreationDate))`，即：
@@ -128,6 +128,12 @@ ORDER BY (PostTypeId, toDate(CreationDate))
 SELECT count()
 FROM stackoverflow.posts_ordered
 WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
+
+┌─count()─┐
+│  192611 │
+└─────────┘
+--highlight-next-line
+1 row in set. Elapsed: 0.013 sec. Processed 196.53 thousand rows, 1.77 MB (14.64 million rows/s., 131.78 MB/s.)
 ```
 
 ┌─count()─┐
@@ -136,12 +142,29 @@ WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 --highlight-next-line
 1 行结果。耗时 0.013 秒。处理了 196.53 千行，1.77 MB（14.64 百万行/秒，131.78 MB/秒）。
 
-````
+````sql
+EXPLAIN indexes = 1
+SELECT count()
+FROM stackoverflow.posts_ordered
+WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 
-此查询现在利用稀疏索引，显著减少了读取的数据量，并将执行时间提升了 4 倍——请注意读取的行数和字节数的减少。 
+┌─explain─────────────────────────────────────────────────────────────────────────────────────┐
+│ Expression ((Project names + Projection))                                                   │
+│   Aggregating                                                                               │
+│     Expression (Before GROUP BY)                                                            │
+│       Expression                                                                            │
+│         ReadFromMergeTree (stackoverflow.posts_ordered)                                     │
+│         Indexes:                                                                            │
+│           PrimaryKey                                                                        │
+│             Keys:                                                                           │
+│               PostTypeId                                                                    │
+│               toDate(CreationDate)                                                          │
+│             Condition: and((PostTypeId in [1, 1]), (toDate(CreationDate) in [19723, +Inf))) │
+│             Parts: 14/14                                                                    │
+│             Granules: 39/7578                                                               │
+└─────────────────────────────────────────────────────────────────────────────────────────────┘
 
-可以通过执行 `EXPLAIN indexes=1` 来确认是否使用了该索引。
-
+13 rows in set. Elapsed: 0.004 sec.
 ```sql
 EXPLAIN indexes = 1
 SELECT count()

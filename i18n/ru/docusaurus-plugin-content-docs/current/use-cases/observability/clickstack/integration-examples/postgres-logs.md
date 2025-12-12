@@ -61,20 +61,20 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   Добавьте или измените эти настройки в `postgresql.conf`:
 
   ```conf
-  # Требуется для логирования в формате CSV
-  logging_collector = on
-  log_destination = 'csvlog'
+# Required for CSV logging
+logging_collector = on
+log_destination = 'csvlog'
 
-  # Рекомендуется: логирование подключений
-  log_connections = on
-  log_disconnections = on
+# Recommended: Connection logging
+log_connections = on
+log_disconnections = on
 
-  # Опционально: настройте в соответствии с требованиями мониторинга
-  #log_min_duration_statement = 1000  # Логировать запросы длительностью более 1 секунды
-  #log_statement = 'ddl'               # Логировать DDL-команды (CREATE, ALTER, DROP)
-  #log_checkpoints = on                # Логировать активность контрольных точек
-  #log_lock_waits = on                 # Логировать ожидание блокировок
-  ```
+# Optional: Tune based on your monitoring needs
+#log_min_duration_statement = 1000  # Log queries taking more than 1 second
+#log_statement = 'ddl'               # Log DDL statements (CREATE, ALTER, DROP)
+#log_checkpoints = on                # Log checkpoint activity
+#log_lock_waits = on                 # Log lock contention
+```
 
   :::note
   В данном руководстве используется формат `csvlog` PostgreSQL для надёжного структурированного парсинга. Если вы используете форматы `stderr` или `jsonlog`, необходимо соответствующим образом скорректировать конфигурацию коллектора OpenTelemetry.
@@ -83,22 +83,22 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   После внесения этих изменений перезапустите PostgreSQL:
 
   ```bash
-  # Для systemd
-  sudo systemctl restart postgresql
+# For systemd
+sudo systemctl restart postgresql
 
-  # Для Docker
-  docker restart
-  ```
+# For Docker
+docker restart 
+```
 
   Проверьте, что логи записываются:
 
   ```bash
-  # Расположение логов по умолчанию в Linux
-  tail -f /var/lib/postgresql/{version}/main/log/postgresql-*.log
+# Default log location on Linux
+tail -f /var/lib/postgresql/{version}/main/log/postgresql-*.log
 
-  # macOS Homebrew
-  tail -f /usr/local/var/postgres/log/postgresql-*.log
-  ```
+# macOS Homebrew
+tail -f /usr/local/var/postgres/log/postgresql-*.log
+```
 
   #### Создайте пользовательскую конфигурацию OTel collector
 
@@ -107,43 +107,43 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   Создайте файл `postgres-logs-monitoring.yaml` со следующей конфигурацией:
 
   ```yaml
-  receivers:
-    filelog/postgres:
-      include:
-        - /var/lib/postgresql/*/main/log/postgresql-*.csv # Укажите путь в соответствии с вашей установкой PostgreSQL
-      start_at: end
-      multiline:
-        line_start_pattern: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
-      operators:
-        - type: csv_parser
-          parse_from: body
-          parse_to: attributes
-          header: 'log_time,user_name,database_name,process_id,connection_from,session_id,session_line_num,command_tag,session_start_time,virtual_transaction_id,transaction_id,error_severity,sql_state_code,message,detail,hint,internal_query,internal_query_pos,context,query,query_pos,location,application_name,backend_type,leader_pid,query_id'
-          lazy_quotes: true
-          
-        - type: time_parser
-          parse_from: attributes.log_time
-          layout: '%Y-%m-%d %H:%M:%S.%L %Z'
+receivers:
+  filelog/postgres:
+    include:
+      - /var/lib/postgresql/*/main/log/postgresql-*.csv # Adjust to match your PostgreSQL installation
+    start_at: end
+    multiline:
+      line_start_pattern: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+    operators:
+      - type: csv_parser
+        parse_from: body
+        parse_to: attributes
+        header: 'log_time,user_name,database_name,process_id,connection_from,session_id,session_line_num,command_tag,session_start_time,virtual_transaction_id,transaction_id,error_severity,sql_state_code,message,detail,hint,internal_query,internal_query_pos,context,query,query_pos,location,application_name,backend_type,leader_pid,query_id'
+        lazy_quotes: true
         
-        - type: add
-          field: attributes.source
-          value: "postgresql"
-        
-        - type: add
-          field: resource["service.name"]
-          value: "postgresql-production"
+      - type: time_parser
+        parse_from: attributes.log_time
+        layout: '%Y-%m-%d %H:%M:%S.%L %Z'
+      
+      - type: add
+        field: attributes.source
+        value: "postgresql"
+      
+      - type: add
+        field: resource["service.name"]
+        value: "postgresql-production"
 
-  service:
-    pipelines:
-      logs/postgres:
-        receivers: [filelog/postgres]
-        processors:
-          - memory_limiter
-          - transform
-          - batch
-        exporters:
-          - clickhouse
-  ```
+service:
+  pipelines:
+    logs/postgres:
+      receivers: [filelog/postgres]
+      processors:
+        - memory_limiter
+        - transform
+        - batch
+      exporters:
+        - clickhouse
+```
 
   Данная конфигурация:
 
@@ -176,30 +176,30 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   Обновите конфигурацию развертывания ClickStack:
 
   ```yaml
-  services:
-    clickstack:
-      # ... существующая конфигурация ...
-      environment:
-        - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
-        # ... другие переменные окружения ...
-      volumes:
-        - ./postgres-logs-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
-        - /var/lib/postgresql:/var/lib/postgresql:ro
-        # ... другие тома ...
-  ```
+services:
+  clickstack:
+    # ... existing configuration ...
+    environment:
+      - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
+      # ... other environment variables ...
+    volumes:
+      - ./postgres-logs-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
+      - /var/lib/postgresql:/var/lib/postgresql:ro
+      # ... other volumes ...
+```
 
   ##### Вариант 2: Docker Run (образ «всё в одном»)
 
   Если вы используете универсальный образ с `docker run`:
 
   ```bash
-  docker run --name clickstack \
-    -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-    -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
-    -v "$(pwd)/postgres-logs-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-    -v /var/lib/postgresql:/var/lib/postgresql:ro \
-    clickhouse/clickstack-all-in-one:latest
-  ```
+docker run --name clickstack \
+  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+  -v "$(pwd)/postgres-logs-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+  -v /var/lib/postgresql:/var/lib/postgresql:ro \
+  clickhouse/clickstack-all-in-one:latest
+```
 
   :::note
   Убедитесь, что коллектор ClickStack имеет необходимые права для чтения файлов журналов PostgreSQL. В production-среде используйте монтирование только для чтения (`:ro`) и следуйте принципу наименьших привилегий.
@@ -347,13 +347,13 @@ HyperDX отображает временные метки в локальном
 Убедитесь, что задана переменная окружения:
 
 ```bash
-docker exec <имя-контейнера> printenv CUSTOM_OTELCOL_CONFIG_FILE
+docker exec <container-name> printenv CUSTOM_OTELCOL_CONFIG_FILE
 ```
 
 Убедитесь, что пользовательский конфигурационный файл смонтирован и доступен для чтения:
 
 ```bash
-docker exec <имя-контейнера> cat /etc/otelcol-contrib/custom.config.yaml | head -10
+docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml | head -10
 ```
 
 
@@ -362,7 +362,7 @@ docker exec <имя-контейнера> cat /etc/otelcol-contrib/custom.config
 Проверьте, что в итоговую конфигурацию включён ваш приёмник `filelog`:
 
 ```bash
-docker exec <контейнер> cat /etc/otel/supervisor-data/effective.yaml | grep -A 10 filelog
+docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 10 filelog
 ```
 
 Проверьте наличие ошибок в логах коллектора:

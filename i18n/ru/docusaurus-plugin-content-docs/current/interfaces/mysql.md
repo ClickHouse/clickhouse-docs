@@ -75,30 +75,30 @@ ClickHouse поддерживает сетевой протокол MySQL (MySQL
 1. Необязательный шаг — создайте [профиль настроек](/sql-reference/statements/create/settings-profile), который будет применяться к вашему кастомному пользователю. Например, `my_custom_profile` с дополнительной настройкой, которая будет применяться по умолчанию при подключении с использованием пользователя, которого мы создадим позже:
 
    ```sql
-   CREATE SETTINGS PROFILE my_custom_profile SETTINGS prefer_column_name_to_alias=1;
-   ```
+    CREATE SETTINGS PROFILE my_custom_profile SETTINGS prefer_column_name_to_alias=1;
+    ```
 
    `prefer_column_name_to_alias` используется здесь только в качестве примера, вы можете использовать другие настройки.
 
 2. [Создайте пользователя](/sql-reference/statements/create/user), используя следующий формат: `mysql4<subdomain>_<username>` ([см. выше](#creating-multiple-mysql-users-in-clickhouse-cloud)). Пароль должен быть в формате double SHA1. Например:
 
    ```sql
-   CREATE USER mysql4foobar_team1 IDENTIFIED WITH double_sha1_password BY 'YourPassword42$';
-   ```
+    CREATE USER mysql4foobar_team1 IDENTIFIED WITH double_sha1_password BY 'YourPassword42$';
+    ```
 
    или, если вы хотите использовать пользовательский профиль для этого пользователя:
 
    ```sql
-   CREATE USER mysql4foobar_team1 IDENTIFIED WITH double_sha1_password BY 'YourPassword42$' SETTINGS PROFILE 'my_custom_profile';
-   ```
+    CREATE USER mysql4foobar_team1 IDENTIFIED WITH double_sha1_password BY 'YourPassword42$' SETTINGS PROFILE 'my_custom_profile';
+    ```
 
    где `my_custom_profile` — это имя профиля, созданного ранее.
 
 3. С помощью [GRANT](/sql-reference/statements/grant) выдайте новому пользователю необходимые разрешения для работы с нужными таблицами или базами данных. Например, если вы хотите предоставить доступ только к `system.query_log`:
 
    ```sql
-   GRANT SELECT ON system.query_log TO mysql4foobar_team1;
-   ```
+    GRANT SELECT ON system.query_log TO mysql4foobar_team1;
+    ```
 
 4. Используйте созданного пользователя для подключения к вашему сервису ClickHouse Cloud через интерфейс MySQL.
 
@@ -107,7 +107,7 @@ ClickHouse поддерживает сетевой протокол MySQL (MySQL
 Если вы создали нового пользователя MySQL и видите следующую ошибку при подключении через консольный клиент MySQL (CLI):
 
 ```sql
-ERROR 2013 (HY000): Потеряно соединение с сервером MySQL при 'чтении пакета авторизации', системная ошибка: 54
+ERROR 2013 (HY000): Lost connection to MySQL server at 'reading authorization packet', system error: 54
 ```
 
 В этом случае убедитесь, что имя пользователя имеет формат `mysql4<subdomain>_<username>`, как описано ([выше](#creating-multiple-mysql-users-in-clickhouse-cloud)).
@@ -125,7 +125,7 @@ ERROR 2013 (HY000): Потеряно соединение с сервером My
 Запустите сервер ClickHouse и найдите в журнале сообщение, похожее на следующее, в котором упоминается «Listening for MySQL compatibility protocol»:
 
 ```bash
-{} <Information> Application: Прослушивается протокол совместимости MySQL: 127.0.0.1:9004
+{} <Information> Application: Listening for MySQL compatibility protocol: 127.0.0.1:9004
 ```
 
 ## Подключение MySQL к ClickHouse {#connect-mysql-to-clickhouse}
@@ -145,17 +145,17 @@ $ mysql --protocol tcp -h 127.0.0.1 -u default -P 9004 default
 Вывод в случае успешного подключения:
 
 ```text
-Добро пожаловать в монитор MySQL. Команды завершаются символом ; или \g.
-Идентификатор вашего MySQL-подключения: 4
-Версия сервера: 20.2.1.1-ClickHouse
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 4
+Server version: 20.2.1.1-ClickHouse
 
-Copyright (c) 2000, 2019, Oracle и/или аффилированные лица. Все права защищены.
+Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
 
-Oracle является зарегистрированным товарным знаком Oracle Corporation и/или
-аффилированных лиц. Другие названия могут являться товарными знаками
-соответствующих владельцев.
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
 
-Введите 'help;' или '\h' для получения справки. Введите '\c' для очистки текущей команды.
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
 mysql>
 ```

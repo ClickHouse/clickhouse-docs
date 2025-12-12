@@ -19,7 +19,7 @@ DELETE FROM [db.]table [ON CLUSTER cluster] [IN PARTITION partition_expr] WHERE 
 ## 例 {#examples}
 
 ```sql
--- `Title` 列に `hello` という文字列を含むすべての行を `hits` テーブルから削除します
+-- Deletes all rows from the `hits` table where the `Title` column contains the text `hello`
 DELETE FROM hits WHERE Title LIKE '%hello%';
 ```
 
@@ -61,7 +61,7 @@ mutation は削除済みとマークされた行を物理的には削除せず�
 `DELETE` には `ALTER DELETE` 権限が必要です。特定のユーザーに対して特定のテーブルで `DELETE` 文を有効化するには、次のコマンドを実行します。
 
 ```sql
-GRANT ALTER DELETE ON db.table TO username;
+GRANT ALTER DELETE ON db.table to username;
 ```
 
 ## ClickHouse における軽量な DELETE の内部動作 {#how-lightweight-deletes-work-internally-in-clickhouse}

@@ -58,25 +58,25 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   Добавьте это определение формата журнала в блок `http`:
 
   ```nginx
-  http {
-      log_format json_combined escape=json
-      '{'
-        '"time_local":"$time_local",'
-        '"remote_addr":"$remote_addr",'
-        '"request_method":"$request_method",'
-        '"request_uri":"$request_uri",'
-        '"status":$status,'
-        '"body_bytes_sent":$body_bytes_sent,'
-        '"request_time":$request_time,'
-        '"upstream_response_time":"$upstream_response_time",'
-        '"http_referer":"$http_referer",'
-        '"http_user_agent":"$http_user_agent"'
-      '}';
+http {
+    log_format json_combined escape=json
+    '{'
+      '"time_local":"$time_local",'
+      '"remote_addr":"$remote_addr",'
+      '"request_method":"$request_method",'
+      '"request_uri":"$request_uri",'
+      '"status":$status,'
+      '"body_bytes_sent":$body_bytes_sent,'
+      '"request_time":$request_time,'
+      '"upstream_response_time":"$upstream_response_time",'
+      '"http_referer":"$http_referer",'
+      '"http_user_agent":"$http_user_agent"'
+    '}';
 
-      access_log /var/log/nginx/access.log json_combined;
-      error_log /var/log/nginx/error.log warn;
-  }
-  ```
+    access_log /var/log/nginx/access.log json_combined;
+    error_log /var/log/nginx/error.log warn;
+}
+```
 
   После внесения этого изменения перезапустите Nginx.
 
@@ -87,34 +87,34 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   Создайте файл nginx-monitoring.yaml со следующей конфигурацией:
 
   ```yaml
-  receivers:
-    filelog:
-      include:
-        - /var/log/nginx/access.log
-        - /var/log/nginx/error.log
-      start_at: end 
-      operators:
-        - type: json_parser
-          parse_from: body
-          parse_to: attributes
-        - type: time_parser
-          parse_from: attributes.time_local
-          layout: '%d/%b/%Y:%H:%M:%S %z'
-        - type: add
-          field: attributes.source
-          value: "nginx"
+receivers:
+  filelog:
+    include:
+      - /var/log/nginx/access.log
+      - /var/log/nginx/error.log
+    start_at: end 
+    operators:
+      - type: json_parser
+        parse_from: body
+        parse_to: attributes
+      - type: time_parser
+        parse_from: attributes.time_local
+        layout: '%d/%b/%Y:%H:%M:%S %z'
+      - type: add
+        field: attributes.source
+        value: "nginx"
 
-  service:
-    pipelines:
-      logs/nginx:
-        receivers: [filelog]
-        processors:
-          - memory_limiter
-          - transform
-          - batch
-        exporters:
-          - clickhouse
-  ```
+service:
+  pipelines:
+    logs/nginx:
+      receivers: [filelog]
+      processors:
+        - memory_limiter
+        - transform
+        - batch
+      exporters:
+        - clickhouse
+```
 
   Данная конфигурация:
 
@@ -145,30 +145,30 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   Обновите конфигурацию развертывания ClickStack:
 
   ```yaml
-  services:
-    clickstack:
-      # ... существующая конфигурация ...
-      environment:
-        - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
-        # ... другие переменные окружения ...
-      volumes:
-        - ./nginx-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
-        - /var/log/nginx:/var/log/nginx:ro
-        # ... другие тома ...
-  ```
+services:
+  clickstack:
+    # ... existing configuration ...
+    environment:
+      - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
+      # ... other environment variables ...
+    volumes:
+      - ./nginx-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
+      - /var/log/nginx:/var/log/nginx:ro
+      # ... other volumes ...
+```
 
   ##### Вариант 2: Docker Run (образ «всё в одном»)
 
   При использовании универсального образа с docker run:
 
   ```bash
-  docker run --name clickstack \
-    -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-    -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
-    -v "$(pwd)/nginx-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-    -v /var/log/nginx:/var/log/nginx:ro \
-    clickhouse/clickstack-all-in-one:latest
-  ```
+docker run --name clickstack \
+  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+  -v "$(pwd)/nginx-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+  -v /var/log/nginx:/var/log/nginx:ro \
+  clickhouse/clickstack-all-in-one:latest
+```
 
   :::note
   Убедитесь, что коллектор ClickStack имеет необходимые права для чтения файлов журналов nginx. В продакшене используйте монтирование только для чтения (:ro) и следуйте принципу минимальных привилегий.
@@ -197,7 +197,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 #### Загрузка демонстрационного датасета {#download-sample}
 
 ```bash
-# Скачать логи
+# Download the logs
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/access.log
 ```
 
@@ -310,13 +310,13 @@ HyperDX отображает временные метки в локальном
 * Убедитесь, что переменная окружения CUSTOM&#95;OTELCOL&#95;CONFIG&#95;FILE установлена корректно
 
 ```bash
-docker exec <имя-контейнера> printenv CUSTOM_OTELCOL_CONFIG_FILE
+docker exec <container-name> printenv CUSTOM_OTELCOL_CONFIG_FILE
 ```
 
 * Проверьте, что пользовательский конфигурационный файл смонтирован по пути /etc/otelcol-contrib/custom.config.yaml
 
 ```bash
-docker exec <имя-контейнера> ls -lh /etc/otelcol-contrib/custom.config.yaml
+docker exec <container-name> ls -lh /etc/otelcol-contrib/custom.config.yaml
 ```
 
 * Просмотрите содержимое пользовательской конфигурации, чтобы убедиться, что его можно прочитать
@@ -337,7 +337,7 @@ tail -f /var/log/nginx/access.log
 * Убедитесь, что коллектор может читать логи
 
 ```bash
-docker exec `<контейнер>` cat /var/log/nginx/access.log
+docker exec `<container>` cat /var/log/nginx/access.log
 ```
 
 * Убедитесь, что в фактической конфигурации присутствует ваш приёмник `filelog`

@@ -14,7 +14,7 @@ doc_type: 'guide'
 要声明一个 `Dynamic` 类型的列，请使用以下语法：
 
 ```sql
-<列名> Dynamic(max_types=N)
+<column_name> Dynamic(max_types=N)
 ```
 
 其中 `N` 是一个可选参数，取值范围为 `0` 到 `254`，用于指示在一个单独存储的数据块内（例如 MergeTree 表的单个数据分片中），类型为 `Dynamic` 的列中可以作为独立子列存储的不同数据类型的数量上限。如果超过此限制，所有具有新类型的值将以二进制形式一起存储在一个特殊的共享数据结构中。`max_types` 的默认值为 `32`。
@@ -114,9 +114,9 @@ SELECT d, dynamicType(d), dynamicElement(d, 'String'), dynamicElement(d, 'Int64'
 └───────────────┴────────────────┴─────────────────────────────┴────────────────────────────┴───────────────────────────────────┴───────────────────────────┴────────────────────────────────────┘
 ```
 
-要了解每一行中存储的是哪种变体类型，可以使用函数 `dynamicType(dynamic_column)`。它会返回一个 `String`，表示每一行的值类型名称（如果该行为 `NULL`，则返回 `'None'`）。
+To know what variant is stored in each row function `dynamicType(dynamic_column)` can be used. It returns `String` with value type name for each row (or `'None'` if row is `NULL`).
 
-示例：
+Example:
 
 ```sql
 CREATE TABLE test (d Dynamic) ENGINE = Memory;
@@ -133,11 +133,11 @@ SELECT dynamicType(d) FROM test;
 └────────────────┘
 ```
 
-## Dynamic 列与其他列之间的转换 {#conversion-between-dynamic-column-and-other-columns}
+## Conversion between Dynamic column and other columns {#conversion-between-dynamic-column-and-other-columns}
 
-`Dynamic` 列支持 4 种转换方式。
+There are 4 possible conversions that can be performed with `Dynamic` column.
 
-### 将普通列转换为 Dynamic 列 {#converting-an-ordinary-column-to-a-dynamic-column}
+### Converting an ordinary column to a Dynamic column {#converting-an-ordinary-column-to-a-dynamic-column}
 
 ```sql
 SELECT 'Hello, World!'::Dynamic AS d, dynamicType(d);
@@ -149,9 +149,9 @@ SELECT 'Hello, World!'::Dynamic AS d, dynamicType(d);
 └───────────────┴────────────────┘
 ```
 
-### 通过解析将 String 列转换为 Dynamic 列 {#converting-a-string-column-to-a-dynamic-column-through-parsing}
+### Converting a String column to a Dynamic column through parsing {#converting-a-string-column-to-a-dynamic-column-through-parsing}
 
-要从 `String` 列中解析出 `Dynamic` 类型的值，可以开启 `cast_string_to_dynamic_use_inference` 设置：
+To parse `Dynamic` type values from a `String` column you can enable setting `cast_string_to_dynamic_use_inference`:
 
 ```sql
 SET cast_string_to_dynamic_use_inference = 1;
@@ -164,9 +164,9 @@ SELECT CAST(materialize(map('key1', '42', 'key2', 'true', 'key3', '2020-01-01'))
 └─────────────────────────────────────────────┴──────────────────────────────────────────────┘
 ```
 
-### 将 `Dynamic` 列转换为普通列 {#converting-a-dynamic-column-to-an-ordinary-column}
+### Converting a Dynamic column to an ordinary column {#converting-a-dynamic-column-to-an-ordinary-column}
 
-可以将 `Dynamic` 列转换为普通列。此时，所有嵌套类型都会被转换为目标类型：
+It is possible to convert a `Dynamic` column to an ordinary column. In this case all nested types will be converted to a destination type:
 
 ```sql
 CREATE TABLE test (d Dynamic) ENGINE = Memory;
@@ -184,7 +184,7 @@ SELECT d::Nullable(Float64) FROM test;
 └──────────────────────────────┘
 ```
 
-### 将 Variant 列转换为 Dynamic 列 {#converting-a-variant-column-to-dynamic-column}
+### Converting a Variant column to Dynamic column {#converting-a-variant-column-to-dynamic-column}
 
 ```sql
 CREATE TABLE test (v Variant(UInt64, String, Array(UInt64))) ENGINE = Memory;
@@ -201,9 +201,9 @@ SELECT v::Dynamic AS d, dynamicType(d) FROM test;
 └─────────┴────────────────┘
 ```
 
-### 将 Dynamic(max&#95;types=N) 列转换为另一列 Dynamic(max&#95;types=K) {#converting-a-dynamicmax&#95;typesn-column-to-another-dynamicmax&#95;typesk}
+### Converting a Dynamic(max_types=N) column to another Dynamic(max_types=K) {#converting-a-dynamicmax_typesn-column-to-another-dynamicmax_typesk}
 
-如果 `K >= N`，则在转换过程中数据不会被更改：
+If `K >= N` than during conversion the data doesn't change:
 
 ```sql
 CREATE TABLE test (d Dynamic(max_types=3)) ENGINE = Memory;
@@ -221,8 +221,7 @@ SELECT d::Dynamic(max_types=5) as d2, dynamicType(d2) FROM test;
 └───────┴────────────────┘
 ```
 
-如果 `K < N`，则具有最罕见类型的值将被插入到一个特殊子列中，但这些值仍然是可访问的：
-
+If `K < N`, then the values with the rarest types will be inserted into a single special subcolumn, but still will be accessible:
 ```text
 CREATE TABLE test (d Dynamic(max_types=4)) ENGINE = Memory;
 INSERT INTO test VALUES (NULL), (42), (43), ('42.42'), (true), ([1, 2, 3]);
@@ -240,9 +239,9 @@ SELECT d, dynamicType(d), d::Dynamic(max_types=2) as d2, dynamicType(d2), isDyna
 └─────────┴────────────────┴─────────┴─────────────────┴──────────────────────────────────┘
 ```
 
-函数 `isDynamicElementInSharedData` 对存储在 `Dynamic` 内部特殊共享数据结构中的行返回 `true`，并且如我们所见，结果列中只包含 2 种未存储在该共享数据结构中的类型。
+Functions `isDynamicElementInSharedData` returns `true` for rows that are stored in a special shared data structure inside `Dynamic` and as we can see, resulting column contains only 2 types that are not stored in shared data structure.
 
-如果 `K=0`，所有类型都会被插入到单个特殊子列中：
+If `K=0`, all types will be inserted into single special subcolumn:
 
 ```text
 CREATE TABLE test (d Dynamic(max_types=4)) ENGINE = Memory;
@@ -261,11 +260,11 @@ SELECT d, dynamicType(d), d::Dynamic(max_types=0) as d2, dynamicType(d2), isDyna
 └─────────┴────────────────┴─────────┴─────────────────┴──────────────────────────────────┘
 ```
 
-## 从数据中读取 Dynamic 类型 {#reading-dynamic-type-from-the-data}
+## Reading Dynamic type from the data {#reading-dynamic-type-from-the-data}
 
-所有文本格式（TSV、CSV、CustomSeparated、Values、JSONEachRow 等）都支持读取 `Dynamic` 类型。在解析数据时，ClickHouse 会尝试推断每个值的类型，并在向 `Dynamic` 列插入数据时使用该类型。
+All text formats (TSV, CSV, CustomSeparated, Values, JSONEachRow, etc) supports reading `Dynamic` type. During data parsing ClickHouse tries to infer the type of each value and use it during insertion to `Dynamic` column. 
 
-示例：
+Example:
 
 ```sql
 SELECT
@@ -295,12 +294,12 @@ $$)
 └───────────────┴────────────────┴───────────────┴──────┴───────┴────────────┴─────────┘
 ```
 
-## 在函数中使用 Dynamic 类型 {#using-dynamic-type-in-functions}
+## Using Dynamic type in functions {#using-dynamic-type-in-functions}
 
-大多数函数都支持类型为 `Dynamic` 的参数。在这种情况下，函数会分别在 `Dynamic` 列中存储的每种内部数据类型上执行。
-当函数的结果类型依赖于参数类型时，使用 `Dynamic` 参数执行此类函数的结果类型将是 `Dynamic`。当函数的结果类型不依赖于参数类型时，结果类型将是 `Nullable(T)`，其中 `T` 是该函数在普通（非 Dynamic）情况下的结果类型。
+Most of the functions support arguments with type `Dynamic`. In this case the function is executed separately on each internal data type stored inside `Dynamic` column.
+When the result type of the function depends on the arguments types, the result of such function executed with `Dynamic` arguments will be `Dynamic`. When the result type of the function doesn't depend on the arguments types - the result will be `Nullable(T)` where `T` the usual result type of this function.
 
-示例：
+Examples:
 
 ```sql
 CREATE TABLE test (d Dynamic) ENGINE=Memory;
@@ -441,7 +440,7 @@ SELECT d, d[1] AS res, toTypeName(res), dynamicType(res) FROM test;
 └───────┴──────┴─────────────────┴──────────────────┘
 ```
 
-如果某个函数无法对 `Dynamic` 列中的某种类型执行，就会抛出异常：
+If function cannot be executed on some type inside `Dynamic` column, the exception will be thrown:
 
 ```sql
 INSERT INTO test VALUES (42), (43), ('str_1');
@@ -470,7 +469,7 @@ SELECT d, d + 1 AS res, toTypeName(res), dynamicType(d) FROM test;
 Code: 43. DB::Exception: 函数 plus 的参数类型不合法:Array(Int64) 和 UInt8,执行 'FUNCTION plus(__table1.d : 3, 1_UInt8 :: 1) -> plus(__table1.d, 1_UInt8) Dynamic : 0' 时。(ILLEGAL_TYPE_OF_ARGUMENT)
 ```
 
-我们可以过滤掉不需要的类型：
+We can filter out unneeded types:
 
 ```sql
 SELECT d, d + 1 AS res, toTypeName(res), dynamicType(res) FROM test WHERE dynamicType(d) NOT IN ('String', 'Array(Int64)', 'None')
@@ -483,7 +482,7 @@ SELECT d, d + 1 AS res, toTypeName(res), dynamicType(res) FROM test WHERE dynami
 └────┴─────┴─────────────────┴──────────────────┘
 ```
 
-或者将所需的类型提取到子列中：
+Or extract required type as subcolumn:
 
 ```sql
 SELECT d, d.Int64 + 1 AS res, toTypeName(res) FROM test;
@@ -502,18 +501,16 @@ SELECT d, d.Int64 + 1 AS res, toTypeName(res) FROM test;
 └───────┴──────┴─────────────────┘
 ```
 
-## 在 ORDER BY 和 GROUP BY 中使用 Dynamic 类型 {#using-dynamic-type-in-order-by-and-group-by}
+## Using Dynamic type in ORDER BY and GROUP BY {#using-dynamic-type-in-order-by-and-group-by}
 
-在执行 `ORDER BY` 和 `GROUP BY` 时，`Dynamic` 类型的值会以类似于 `Variant` 类型的方式进行比较：
-对于类型为 `Dynamic` 的值 `d1`（其底层类型为 `T1`）和 `d2`（其底层类型为 `T2`），运算符 `<` 的结果定义如下：
+During `ORDER BY` and `GROUP BY` values of `Dynamic` types are compared similar to values of `Variant` type:
+The result of operator `<` for values `d1` with underlying type `T1` and `d2` with underlying type `T2`  of a type `Dynamic` is defined as follows:
+- If `T1 = T2 = T`, the result will be `d1.T < d2.T` (underlying values will be compared).
+- If `T1 != T2`, the result will be `T1 < T2` (type names will be compared).
 
-* 如果 `T1 = T2 = T`，则结果为 `d1.T < d2.T`（比较底层值）。
-* 如果 `T1 != T2`，则结果为 `T1 < T2`（比较类型名称）。
+By default `Dynamic` type is not allowed in `GROUP BY`/`ORDER BY` keys, if you want to use it consider its special comparison rule and enable `allow_suspicious_types_in_group_by`/`allow_suspicious_types_in_order_by` settings.
 
-默认情况下，在 `GROUP BY`/`ORDER BY` 键中不允许使用 `Dynamic` 类型；如果确有需要，请结合其上述特殊比较规则，并启用 `allow_suspicious_types_in_group_by`/`allow_suspicious_types_in_order_by` 设置。
-
-示例：
-
+Examples:
 ```sql
 CREATE TABLE test (d Dynamic) ENGINE=Memory;
 INSERT INTO test VALUES (42), (43), ('abc'), ('abd'), ([1, 2, 3]), ([]), (NULL);
@@ -551,9 +548,9 @@ SELECT d, dynamicType(d) FROM test ORDER BY d SETTINGS allow_suspicious_types_in
 └─────────┴────────────────┘
 ```
 
-**注意：** dynamic 类型中具有不同数值类型的值会被视为不同的值，彼此之间不会进行比较，而是仅比较它们的类型名称。
+**Note:** values of dynamic types with different numeric types are considered as different values and not compared between each other, their type names are compared instead.
 
-示例：
+Example:
 
 ```sql
 CREATE TABLE test (d Dynamic) ENGINE=Memory;
@@ -583,18 +580,18 @@ SELECT d, dynamicType(d) FROM test GROUP BY d SETTINGS allow_suspicious_types_in
 └─────┴────────────────┘
 ```
 
-**注意：** 由于对 `Dynamic` 类型的函数有[特殊处理](#using-dynamic-type-in-functions)，此处描述的比较规则在执行 `<`/`>`/`=` 等比较函数时不会生效。
+**Note:** the described comparison rule is not applied during execution of comparison functions like `<`/`>`/`=` and others because of [special work](#using-dynamic-type-in-functions) of functions with `Dynamic` type
 
-## 在 Dynamic 中存储的不同数据类型数量达到上限 {#reaching-the-limit-in-number-of-different-data-types-stored-inside-dynamic}
+## Reaching the limit in number of different data types stored inside Dynamic {#reaching-the-limit-in-number-of-different-data-types-stored-inside-dynamic}
 
-`Dynamic` 数据类型只能将有限数量的不同数据类型作为单独的子列进行存储。默认情况下，该上限为 32，但你可以在类型声明中使用语法 `Dynamic(max_types=N)` 进行修改，其中 N 的取值范围是 0 到 254（由于实现细节的限制，`Dynamic` 中作为单独子列存储的不同数据类型数量不可能超过 254）。
-当达到该上限时，插入到 `Dynamic` 列中的所有新的数据类型的值将被写入到单一的共享数据结构中，该结构以二进制形式存储具有不同数据类型的值。
+`Dynamic` data type can store only limited number of different data types as separate subcolumns. By default, this limit is 32, but you can change it in type declaration using syntax `Dynamic(max_types=N)` where N is between 0 and 254 (due to implementation details, it's impossible to have more than 254 different data types that can be stored as separate subcolumns inside Dynamic).
+When the limit is reached, all new data types inserted to `Dynamic` column will be inserted into a single shared data structure that stores values with different data types in binary form.
 
-下面看看在不同场景下达到上限时会发生什么。
+Let's see what happens when the limit is reached in different scenarios.
 
-### 在数据解析过程中达到上限 {#reaching-the-limit-during-data-parsing}
+### Reaching the limit during data parsing {#reaching-the-limit-during-data-parsing}
 
-在从数据中解析 `Dynamic` 值的过程中，当当前数据块中的类型数量达到上限时，所有新的值都会被插入到共享数据结构中：
+During parsing of `Dynamic` values from the data, when the limit is reached for current block of data, all new values will be inserted into shared data structure:
 
 ```sql
 SELECT d, dynamicType(d), isDynamicElementInSharedData(d) FROM format(JSONEachRow, 'd Dynamic(max_types=3)', '
@@ -618,14 +615,14 @@ SELECT d, dynamicType(d), isDynamicElementInSharedData(d) FROM format(JSONEachRo
 └────────────────────────┴────────────────────────────────┴─────────────────────────────────┘
 ```
 
-可以看到，在插入 3 种不同的数据类型 `Int64`、`Array(Int64)` 和 `String` 之后，所有新类型都被插入到了特殊的共享数据结构中。
+As we can see, after inserting 3 different data types `Int64`, `Array(Int64)` and `String` all new types were inserted into special shared data structure.
 
-### 在 MergeTree 表引擎中合并数据片段时 {#during-merges-of-data-parts-in-mergetree-table-engines}
+### During merges of data parts in MergeTree table engines {#during-merges-of-data-parts-in-mergetree-table-engines}
 
-在 MergeTree 表中合并多个数据片段时，结果数据片段中的 `Dynamic` 列可能会达到其内部可存储为独立子列的不同数据类型数量上限，从而无法再将所有类型都作为来自源数据片段的子列进行存储。
-在这种情况下，ClickHouse 会选择在合并后哪些类型继续作为独立子列保留，哪些类型需要被插入到共享数据结构中。在大多数情况下，ClickHouse 会尝试保留最常见的类型，并将最罕见的类型存入共享数据结构，但这取决于具体实现。
+During merge of several data parts in MergeTree table the `Dynamic` column in the resulting data part can reach the limit of different data types that can be stored in separate subcolumns inside and won't be able to store all types as subcolumns from source parts.
+In this case ClickHouse chooses what types will remain as separate subcolumns after merge and what types will be inserted into shared data structure. In most cases ClickHouse tries to keep the most frequent types and store the rarest types in shared data structure, but it depends on the implementation.
 
-下面来看一个这样的合并示例。首先，创建一个包含 `Dynamic` 列的表，将不同数据类型数量的上限设置为 `3`，并插入包含 `5` 种不同类型的值：
+Let's see an example of such merge. First, let's create a table with `Dynamic` column, set the limit of different data types to `3` and insert values with `5` different types:
 
 ```sql
 CREATE TABLE test (id UInt64, d Dynamic(max_types=3)) ENGINE=MergeTree ORDER BY id;
@@ -637,8 +634,7 @@ INSERT INTO test SELECT number, map(number, number) FROM numbers(2);
 INSERT INTO test SELECT number, 'str_' || toString(number) FROM numbers(1);
 ```
 
-每次插入都会创建一个单独的数据片段，其中 `Dynamic` 列只包含一种类型：
-
+Each insert will create a separate data pert with `Dynamic` column containing single type:
 ```sql
 SELECT count(), dynamicType(d), isDynamicElementInSharedData(d), _part FROM test GROUP BY _part, dynamicType(d), isDynamicElementInSharedData(d) ORDER BY _part, count();
 ```
@@ -653,7 +649,7 @@ SELECT count(), dynamicType(d), isDynamicElementInSharedData(d), _part FROM test
 └─────────┴─────────────────────┴─────────────────────────────────┴───────────┘
 ```
 
-现在，我们把所有部分合在一起，看看会发生什么：
+Now, let's merge all parts into one and see what will happen:
 
 ```sql
 SYSTEM START MERGES test;
@@ -671,11 +667,11 @@ SELECT count(), dynamicType(d), isDynamicElementInSharedData(d), _part FROM test
 └─────────┴─────────────────────┴─────────────────────────────────┴───────────┘
 ```
 
-正如我们所见，ClickHouse 将最常见的类型 `UInt64` 和 `Array(UInt64)` 保留为子列，并将所有其他类型写入共享数据区。
+As we can see, ClickHouse kept the most frequent types `UInt64` and `Array(UInt64)` as subcolumns and inserted all other types into shared data.
 
-## 支持 Dynamic 类型的 JSONExtract 函数 {#jsonextract-functions-with-dynamic}
+## JSONExtract functions with Dynamic {#jsonextract-functions-with-dynamic}
 
-所有 `JSONExtract*` 函数都支持 `Dynamic` 类型：
+All `JSONExtract*` functions support `Dynamic` type:
 
 ```sql
 SELECT JSONExtract('{"a" : [1, 2, 3]}', 'a', 'Dynamic') AS dynamic, dynamicType(dynamic) AS dynamic_type;

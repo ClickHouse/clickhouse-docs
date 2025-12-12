@@ -59,115 +59,115 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   5. Задайте её как переменную окружения:
 
   ```bash
-  export CLICKSTACK_API_KEY=your-api-key-here
-  ```
+export CLICKSTACK_API_KEY=your-api-key-here
+```
 
   #### Загрузите OpenTelemetry JMX Metric Gatherer
 
   Скачайте JAR-файл JMX Metric Gatherer:
 
   ```bash
-  curl -L -o opentelemetry-jmx-metrics.jar \
-    https://github.com/open-telemetry/opentelemetry-java-contrib/releases/download/v1.32.0/opentelemetry-jmx-metrics.jar
-  ```
+curl -L -o opentelemetry-jmx-metrics.jar \
+  https://github.com/open-telemetry/opentelemetry-java-contrib/releases/download/v1.32.0/opentelemetry-jmx-metrics.jar
+```
 
   #### Проверьте, что JMX включен для Kafka
 
   Убедитесь, что JMX включен на брокерах Kafka. Для развертываний Docker:
 
   ```yaml
-  services:
-    kafka:
-      image: confluentinc/cp-kafka:latest
-      environment:
-        JMX_PORT: 9999
-        KAFKA_JMX_HOSTNAME: kafka
-        # ... другие настройки Kafka
-      ports:
-        - "9092:9092"
-        - "9999:9999"
-  ```
+services:
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    environment:
+      JMX_PORT: 9999
+      KAFKA_JMX_HOSTNAME: kafka
+      # ... other Kafka configuration
+    ports:
+      - "9092:9092"
+      - "9999:9999"
+```
 
   Для развертываний без Docker задайте эти параметры при запуске Kafka:
 
   ```bash
-  export JMX_PORT=9999
-  ```
+export JMX_PORT=9999
+```
 
   Проверьте доступность JMX:
 
   ```bash
-  netstat -an | grep 9999
-  ```
+netstat -an | grep 9999
+```
 
   #### Развертывание JMX Metric Gatherer с помощью Docker Compose
 
   Данный пример демонстрирует полную конфигурацию с Kafka, JMX Metric Gatherer и ClickStack. Укажите имена сервисов и конечные точки в соответствии с вашим развертыванием:
 
   ```yaml
-  services:
-    clickstack:
-      image: clickhouse/clickstack-all-in-one:latest
-      ports:
-        - "8080:8080"
-        - "4317:4317"
-        - "4318:4318"
-      networks:
-        - monitoring
+services:
+  clickstack:
+    image: clickhouse/clickstack-all-in-one:latest
+    ports:
+      - "8080:8080"
+      - "4317:4317"
+      - "4318:4318"
+    networks:
+      - monitoring
 
-    kafka:
-      image: confluentinc/cp-kafka:latest
-      hostname: kafka
-      container_name: kafka
-      environment:
-        KAFKA_NODE_ID: 1
-        KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT'
-        KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka:9092'
-        KAFKA_PROCESS_ROLES: 'broker,controller'
-        KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka:29093'
-        KAFKA_LISTENERS: 'PLAINTEXT://kafka:9092,CONTROLLER://kafka:29093'
-        KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
-        KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
-        KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-        KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-        KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-        CLUSTER_ID: 'MkU3OEVBNTcwNTJENDM2Qk'
-        JMX_PORT: 9999
-        KAFKA_JMX_HOSTNAME: kafka
-        KAFKA_JMX_OPTS: '-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=kafka -Dcom.sun.management.jmxremote.rmi.port=9999'
-      ports:
-        - "9092:9092"
-        - "9999:9999"
-      networks:
-        - monitoring
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    hostname: kafka
+    container_name: kafka
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka:9092'
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka:29093'
+      KAFKA_LISTENERS: 'PLAINTEXT://kafka:9092,CONTROLLER://kafka:29093'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      CLUSTER_ID: 'MkU3OEVBNTcwNTJENDM2Qk'
+      JMX_PORT: 9999
+      KAFKA_JMX_HOSTNAME: kafka
+      KAFKA_JMX_OPTS: '-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=kafka -Dcom.sun.management.jmxremote.rmi.port=9999'
+    ports:
+      - "9092:9092"
+      - "9999:9999"
+    networks:
+      - monitoring
 
-    kafka-jmx-exporter:
-      image: eclipse-temurin:11-jre
-      depends_on:
-        - kafka
-        - clickstack
-      environment:
-        - CLICKSTACK_API_KEY=${CLICKSTACK_API_KEY}
-      volumes:
-        - ./opentelemetry-jmx-metrics.jar:/app/opentelemetry-jmx-metrics.jar
-      command: >
-        sh -c "java
-        -Dotel.jmx.service.url=service:jmx:rmi:///jndi/rmi://kafka:9999/jmxrmi
-        -Dotel.jmx.target.system=kafka
-        -Dotel.metrics.exporter=otlp
-        -Dotel.exporter.otlp.protocol=http/protobuf
-        -Dotel.exporter.otlp.endpoint=http://clickstack:4318
-        -Dotel.exporter.otlp.headers=authorization=\${CLICKSTACK_API_KEY}
-        -Dotel.resource.attributes=service.name=kafka,kafka.broker.id=broker-0
-        -Dotel.jmx.interval.milliseconds=10000
-        -jar /app/opentelemetry-jmx-metrics.jar"
-      networks:
-        - monitoring
+  kafka-jmx-exporter:
+    image: eclipse-temurin:11-jre
+    depends_on:
+      - kafka
+      - clickstack
+    environment:
+      - CLICKSTACK_API_KEY=${CLICKSTACK_API_KEY}
+    volumes:
+      - ./opentelemetry-jmx-metrics.jar:/app/opentelemetry-jmx-metrics.jar
+    command: >
+      sh -c "java
+      -Dotel.jmx.service.url=service:jmx:rmi:///jndi/rmi://kafka:9999/jmxrmi
+      -Dotel.jmx.target.system=kafka
+      -Dotel.metrics.exporter=otlp
+      -Dotel.exporter.otlp.protocol=http/protobuf
+      -Dotel.exporter.otlp.endpoint=http://clickstack:4318
+      -Dotel.exporter.otlp.headers=authorization=\${CLICKSTACK_API_KEY}
+      -Dotel.resource.attributes=service.name=kafka,kafka.broker.id=broker-0
+      -Dotel.jmx.interval.milliseconds=10000
+      -jar /app/opentelemetry-jmx-metrics.jar"
+    networks:
+      - monitoring
 
-  networks:
-    monitoring:
-      driver: bridge
-  ```
+networks:
+  monitoring:
+    driver: bridge
+```
 
   **Ключевые параметры конфигурации:**
 
@@ -197,12 +197,12 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   Чтобы сгенерировать активность и получить больше метрик:
 
   ```bash
-  # Создайте тестовый топик
-  docker exec kafka bash -c "unset JMX_PORT && kafka-topics --create --topic test-topic --bootstrap-server kafka:9092 --partitions 3 --replication-factor 1"
+# Create a test topic
+docker exec kafka bash -c "unset JMX_PORT && kafka-topics --create --topic test-topic --bootstrap-server kafka:9092 --partitions 3 --replication-factor 1"
 
-  # Отправьте тестовые сообщения
-  echo -e "Message 1\nMessage 2\nMessage 3" | docker exec -i kafka bash -c "unset JMX_PORT && kafka-console-producer --topic test-topic --bootstrap-server kafka:9092"
-  ```
+# Send test messages
+echo -e "Message 1\nMessage 2\nMessage 3" | docker exec -i kafka bash -c "unset JMX_PORT && kafka-console-producer --topic test-topic --bootstrap-server kafka:9092"
+```
 
   :::note
   При запуске клиентских команд Kafka (kafka-topics, kafka-console-producer и т. д.) внутри контейнера Kafka используйте префикс `unset JMX_PORT &&` для предотвращения конфликтов портов JMX.
@@ -219,10 +219,10 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 Скачайте заранее сгенерированные файлы метрик (29 часов метрик Kafka с реалистичными шаблонами):
 ```bash
-# Загрузить gauge‑метрики (количество партиций, размеры очередей, задержки, лаг потребителей)
+# Download gauge metrics (partition counts, queue sizes, latencies, consumer lag)
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/kafka/kafka-metrics-gauge.csv
 
-# Загрузить sum‑метрики (скорости сообщений, пропускная способность по байтам, количество запросов)
+# Download sum metrics (message rates, byte rates, request counts)
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/kafka/kafka-metrics-sum.csv
 ```
 
@@ -248,11 +248,11 @@ docker run -d --name clickstack-demo \
 
 Загрузите метрики напрямую в ClickHouse:
 ```bash
-# Загрузить gauge‑метрики (количество партиций, размеры очередей, задержки, лаг потребителей)
+# Load gauge metrics (partition counts, queue sizes, latencies, consumer lag)
 cat kafka-metrics-gauge.csv | docker exec -i clickstack-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_gauge FORMAT CSVWithNames"
 
-# Загрузить sum‑метрики (скорости сообщений, пропускная способность по байтам, количество запросов)
+# Load sum metrics (message rates, byte rates, request counts)
 cat kafka-metrics-sum.csv | docker exec -i clickstack-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_sum FORMAT CSVWithNames"
 ```
@@ -307,17 +307,17 @@ HyperDX отображает временные метки в локальном
 **Убедитесь, что API-ключ задан и передаётся в контейнер:**
 
 ```bash
-# Проверка переменной окружения
+# Check environment variable
 echo $CLICKSTACK_API_KEY
 
-# Проверка наличия переменной в контейнере
+# Verify it's in the container
 docker exec <jmx-exporter-container> env | grep CLICKSTACK_API_KEY
 ```
 
 Если параметр не задан, задайте его и перезапустите:
 
 ```bash
-export CLICKSTACK_API_KEY=ваш-api-ключ
+export CLICKSTACK_API_KEY=your-api-key-here
 docker compose up -d kafka-jmx-exporter
 ```
 
@@ -341,10 +341,10 @@ docker compose logs kafka-jmx-exporter | grep -i "error\|connection" | tail -10
 **Сгенерируйте активность в Kafka, чтобы заполнить метрики:**
 
 ```bash
-# Создание тестового топика
+# Create a test topic
 docker exec kafka bash -c "unset JMX_PORT && kafka-topics --create --topic test-topic --bootstrap-server kafka:9092 --partitions 3 --replication-factor 1"
 
-# Отправка тестовых сообщений
+# Send test messages
 echo -e "Message 1\nMessage 2\nMessage 3" | docker exec -i kafka bash -c "unset JMX_PORT && kafka-console-producer --topic test-topic --bootstrap-server kafka:9092"
 ```
 
@@ -356,7 +356,7 @@ echo -e "Message 1\nMessage 2\nMessage 3" | docker exec -i kafka bash -c "unset 
 2. Повторно выполните экспорт и перезапустите:
 
 ```bash
-export CLICKSTACK_API_KEY=ваш-корректный-api-ключ
+export CLICKSTACK_API_KEY=your-correct-api-key
 docker compose down
 docker compose up -d
 ```
@@ -366,7 +366,7 @@ docker compose up -d
 При выполнении команд клиента Kafka внутри контейнера Kafka вы можете увидеть:
 
 ```bash
-Ошибка: порт уже используется: 9999
+Error: Port already in use: 9999
 ```
 
 Добавьте к каждой команде префикс `unset JMX_PORT &&`:
@@ -383,13 +383,13 @@ docker exec kafka bash -c "unset JMX_PORT && kafka-topics --list --bootstrap-ser
 
 ```bash
 docker compose ps
-docker network inspect <имя-сети>
+docker network inspect <network-name>
 ```
 
 Проверка подключения:
 
 ```bash
-# Из JMX-экспортера в ClickStack {#check-environment-variable}
+# From JMX exporter to ClickStack
 docker exec <jmx-exporter-container> sh -c "timeout 2 bash -c 'cat < /dev/null > /dev/tcp/clickstack/4318' && echo 'Connected' || echo 'Failed'"
 ```
 

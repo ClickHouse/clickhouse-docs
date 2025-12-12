@@ -66,120 +66,120 @@ Glue 连接器中使用的 JAR 是为 `Spark 3.3`、`Scala 2` 和 `Python 3` 构
 <Tabs>
   <TabItem value="Scala" label="Scala" default>
     ```java
-    import com.amazonaws.services.glue.GlueContext
-    import com.amazonaws.services.glue.util.GlueArgParser
-    import com.amazonaws.services.glue.util.Job
-    import com.clickhouseScala.Native.NativeSparkRead.spark
-    import org.apache.spark.sql.SparkSession
+import com.amazonaws.services.glue.GlueContext
+import com.amazonaws.services.glue.util.GlueArgParser
+import com.amazonaws.services.glue.util.Job
+import com.clickhouseScala.Native.NativeSparkRead.spark
+import org.apache.spark.sql.SparkSession
 
-    import scala.collection.JavaConverters._
-    import org.apache.spark.sql.types._
-    import org.apache.spark.sql.functions._
+import scala.collection.JavaConverters._
+import org.apache.spark.sql.types._
+import org.apache.spark.sql.functions._
 
-    object ClickHouseGlueExample {
-      def main(sysArgs: Array[String]) {
-        val args = GlueArgParser.getResolvedOptions(sysArgs, Seq("JOB_NAME").toArray)
+object ClickHouseGlueExample {
+  def main(sysArgs: Array[String]) {
+    val args = GlueArgParser.getResolvedOptions(sysArgs, Seq("JOB_NAME").toArray)
 
-        val sparkSession: SparkSession = SparkSession.builder
-          .config("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
-          .config("spark.sql.catalog.clickhouse.host", "<your-clickhouse-host>")
-          .config("spark.sql.catalog.clickhouse.protocol", "https")
-          .config("spark.sql.catalog.clickhouse.http_port", "<your-clickhouse-port>")
-          .config("spark.sql.catalog.clickhouse.user", "default")
-          .config("spark.sql.catalog.clickhouse.password", "<your-password>")
-          .config("spark.sql.catalog.clickhouse.database", "default")
-          // 适用于 ClickHouse Cloud
-          .config("spark.sql.catalog.clickhouse.option.ssl", "true")
-          .config("spark.sql.catalog.clickhouse.option.ssl_mode", "NONE")
-          .getOrCreate
+    val sparkSession: SparkSession = SparkSession.builder
+      .config("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
+      .config("spark.sql.catalog.clickhouse.host", "<your-clickhouse-host>")
+      .config("spark.sql.catalog.clickhouse.protocol", "https")
+      .config("spark.sql.catalog.clickhouse.http_port", "<your-clickhouse-port>")
+      .config("spark.sql.catalog.clickhouse.user", "default")
+      .config("spark.sql.catalog.clickhouse.password", "<your-password>")
+      .config("spark.sql.catalog.clickhouse.database", "default")
+      // for ClickHouse cloud
+      .config("spark.sql.catalog.clickhouse.option.ssl", "true")
+      .config("spark.sql.catalog.clickhouse.option.ssl_mode", "NONE")
+      .getOrCreate
 
-        val glueContext = new GlueContext(sparkSession.sparkContext)
-        Job.init(args("JOB_NAME"), glueContext, args.asJava)
-        import sparkSession.implicits._
+    val glueContext = new GlueContext(sparkSession.sparkContext)
+    Job.init(args("JOB_NAME"), glueContext, args.asJava)
+    import sparkSession.implicits._
 
-        val url = "s3://{path_to_cell_tower_data}/cell_towers.csv.gz"
+    val url = "s3://{path_to_cell_tower_data}/cell_towers.csv.gz"
 
-        val schema = StructType(Seq(
-          StructField("radio", StringType, nullable = false),
-          StructField("mcc", IntegerType, nullable = false),
-          StructField("net", IntegerType, nullable = false),
-          StructField("area", IntegerType, nullable = false),
-          StructField("cell", LongType, nullable = false),
-          StructField("unit", IntegerType, nullable = false),
-          StructField("lon", DoubleType, nullable = false),
-          StructField("lat", DoubleType, nullable = false),
-          StructField("range", IntegerType, nullable = false),
-          StructField("samples", IntegerType, nullable = false),
-          StructField("changeable", IntegerType, nullable = false),
-          StructField("created", TimestampType, nullable = false),
-          StructField("updated", TimestampType, nullable = false),
-          StructField("averageSignal", IntegerType, nullable = false)
-        ))
+    val schema = StructType(Seq(
+      StructField("radio", StringType, nullable = false),
+      StructField("mcc", IntegerType, nullable = false),
+      StructField("net", IntegerType, nullable = false),
+      StructField("area", IntegerType, nullable = false),
+      StructField("cell", LongType, nullable = false),
+      StructField("unit", IntegerType, nullable = false),
+      StructField("lon", DoubleType, nullable = false),
+      StructField("lat", DoubleType, nullable = false),
+      StructField("range", IntegerType, nullable = false),
+      StructField("samples", IntegerType, nullable = false),
+      StructField("changeable", IntegerType, nullable = false),
+      StructField("created", TimestampType, nullable = false),
+      StructField("updated", TimestampType, nullable = false),
+      StructField("averageSignal", IntegerType, nullable = false)
+    ))
 
-        val df = sparkSession.read
-          .option("header", "true")
-          .schema(schema)
-          .csv(url)
+    val df = sparkSession.read
+      .option("header", "true")
+      .schema(schema)
+      .csv(url)
 
-        // 写入 ClickHouse
-        df.writeTo("clickhouse.default.cell_towers").append()
+    // Write to ClickHouse
+    df.writeTo("clickhouse.default.cell_towers").append()
 
 
-        // 从 ClickHouse 读取
-        val dfRead = spark.sql("select * from clickhouse.default.cell_towers")
-        Job.commit()
-      }
-    }
-    ```
+    // Read from ClickHouse
+    val dfRead = spark.sql("select * from clickhouse.default.cell_towers")
+    Job.commit()
+  }
+}
+```
   </TabItem>
 
   <TabItem value="Python" label="Python">
     ```python
-    import sys
-    from awsglue.transforms import *
-    from awsglue.utils import getResolvedOptions
-    from pyspark.context import SparkContext
-    from awsglue.context import GlueContext
-    from awsglue.job import Job
-    from pyspark.sql import Row
+import sys
+from awsglue.transforms import *
+from awsglue.utils import getResolvedOptions
+from pyspark.context import SparkContext
+from awsglue.context import GlueContext
+from awsglue.job import Job
+from pyspark.sql import Row
 
 
-    ## @params: [JOB_NAME]
-    args = getResolvedOptions(sys.argv, ['JOB_NAME'])
+## @params: [JOB_NAME]
+args = getResolvedOptions(sys.argv, ['JOB_NAME'])
 
-    sc = SparkContext()
-    glueContext = GlueContext(sc)
-    logger = glueContext.get_logger()
-    spark = glueContext.spark_session
-    job = Job(glueContext)
-    job.init(args['JOB_NAME'], args)
+sc = SparkContext()
+glueContext = GlueContext(sc)
+logger = glueContext.get_logger()
+spark = glueContext.spark_session
+job = Job(glueContext)
+job.init(args['JOB_NAME'], args)
 
-    spark.conf.set("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
-    spark.conf.set("spark.sql.catalog.clickhouse.host", "<your-clickhouse-host>")
-    spark.conf.set("spark.sql.catalog.clickhouse.protocol", "https")
-    spark.conf.set("spark.sql.catalog.clickhouse.http_port", "<your-clickhouse-port>")
-    spark.conf.set("spark.sql.catalog.clickhouse.user", "default")
-    spark.conf.set("spark.sql.catalog.clickhouse.password", "<your-password>")
-    spark.conf.set("spark.sql.catalog.clickhouse.database", "default")
-    spark.conf.set("spark.clickhouse.write.format", "json")
-    spark.conf.set("spark.clickhouse.read.format", "arrow")
-    # 适用于 ClickHouse Cloud
-    spark.conf.set("spark.sql.catalog.clickhouse.option.ssl", "true")
-    spark.conf.set("spark.sql.catalog.clickhouse.option.ssl_mode", "NONE")
+spark.conf.set("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
+spark.conf.set("spark.sql.catalog.clickhouse.host", "<your-clickhouse-host>")
+spark.conf.set("spark.sql.catalog.clickhouse.protocol", "https")
+spark.conf.set("spark.sql.catalog.clickhouse.http_port", "<your-clickhouse-port>")
+spark.conf.set("spark.sql.catalog.clickhouse.user", "default")
+spark.conf.set("spark.sql.catalog.clickhouse.password", "<your-password>")
+spark.conf.set("spark.sql.catalog.clickhouse.database", "default")
+spark.conf.set("spark.clickhouse.write.format", "json")
+spark.conf.set("spark.clickhouse.read.format", "arrow")
+# for ClickHouse cloud
+spark.conf.set("spark.sql.catalog.clickhouse.option.ssl", "true")
+spark.conf.set("spark.sql.catalog.clickhouse.option.ssl_mode", "NONE")
 
-    # 创建 DataFrame
-    data = [Row(id=11, name="John"), Row(id=12, name="Doe")]
-    df = spark.createDataFrame(data)
+# Create DataFrame
+data = [Row(id=11, name="John"), Row(id=12, name="Doe")]
+df = spark.createDataFrame(data)
 
-    # 将 DataFrame 写入 ClickHouse
-    df.writeTo("clickhouse.default.example_table").append()
+# Write DataFrame to ClickHouse
+df.writeTo("clickhouse.default.example_table").append()
 
-    # 从 ClickHouse 读取 DataFrame
-    df_read = spark.sql("select * from clickhouse.default.example_table")
-    logger.info(str(df.take(10)))
+# Read DataFrame from ClickHouse
+df_read = spark.sql("select * from clickhouse.default.example_table")
+logger.info(str(df.take(10)))
 
-    job.commit()
-    ```
+job.commit()
+```
   </TabItem>
 </Tabs>
 

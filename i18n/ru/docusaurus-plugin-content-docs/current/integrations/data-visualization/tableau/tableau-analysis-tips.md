@@ -22,22 +22,22 @@ ClickHouse предоставляет обширный набор функций
 * **[`-If` Aggregation Combinator](/sql-reference/aggregate-functions/combinators/#-if)** *(добавлено в v0.2.3)* — позволяет использовать фильтры на уровне строк непосредственно в агрегатных вычислениях. Добавлены функции `SUM_IF(), AVG_IF(), COUNT_IF(), MIN_IF() & MAX_IF()`.
 * **`BAR([my_int], [min_val_int], [max_val_int], [bar_string_length_int])`** *(добавлено в v0.2.1)* — Забудьте о скучных столбчатых диаграммах! Вместо этого используйте функцию `BAR()` (эквивалент [`bar()`](/sql-reference/functions/other-functions#bar) в ClickHouse). Например, это вычисляемое поле возвращает наглядные столбики в виде строки (String):
   ```text
-  BAR([my_int], [min_val_int], [max_val_int], [bar_string_length_int]) + "  " + FORMAT_READABLE_QUANTITY([my_int])
-  ```
+    BAR([my_int], [min_val_int], [max_val_int], [bar_string_length_int]) + "  " + FORMAT_READABLE_QUANTITY([my_int])
+    ```
   ```text
-  == BAR() ==
-  ██████████████████▊  327,06 млн
-  █████  88,02 млн
-  ███████████████  259,37 млн
-  ```
+    == BAR() ==
+    ██████████████████▊  327.06 million
+    █████  88.02 million
+    ███████████████  259.37 million
+    ```
 * **`COUNTD_UNIQ([my_field])`** *(добавлена в v0.2.0)* — Вычисляет приблизительное число различных значений аргумента. Эквивалент функции [uniq()](/sql-reference/aggregate-functions/reference/uniq/). Гораздо быстрее, чем `COUNTD()`.
 * **`DATE_BIN('day', 10, [my_datetime_or_date])`** *(добавлена в v0.2.1)* — эквивалент функции [`toStartOfInterval()`](/sql-reference/functions/date-time-functions#toStartOfInterval) в ClickHouse. Округляет дату или дату и время в меньшую сторону до указанного интервала, например:
   ```text
-   == my_datetime_or_date == | == DATE_BIN('day', 10, [my_datetime_or_date]) ==
-      28.07.2004 06:54:50    |              21.07.2004 00:00:00
-      17.07.2004 14:01:56    |              11.07.2004 00:00:00
-      14.07.2004 07:43:00    |              11.07.2004 00:00:00
-  ```
+     == my_datetime_or_date == | == DATE_BIN('day', 10, [my_datetime_or_date]) ==
+        28.07.2004 06:54:50    |              21.07.2004 00:00:00
+        17.07.2004 14:01:56    |              11.07.2004 00:00:00
+        14.07.2004 07:43:00    |              11.07.2004 00:00:00
+    ```
 * **`FORMAT_READABLE_QUANTITY([my_integer])`** *(добавлена в v0.2.1)* — Возвращает округлённое число с суффиксом (тысяча, миллион, миллиард и т. д.) в виде строки. Полезна для удобства чтения больших чисел. Эквивалент [`formatReadableQuantity()`](/sql-reference/functions/other-functions#formatReadableQuantity).
 * **`FORMAT_READABLE_TIMEDELTA([my_integer_timedelta_sec], [optional_max_unit])`** *(добавлено в v0.2.1)* — Принимает временной интервал в секундах. Возвращает интервал в виде строки с единицами (год, месяц, день, час, минута, секунда). `optional_max_unit` — максимальная единица, которую нужно отобразить. Допустимые значения: `seconds`, `minutes`, `hours`, `days`, `months`, `years`. Эквивалент [`formatReadableTimeDelta()`](/sql-reference/functions/other-functions/#formatReadableTimeDelta).
 * **`GET_SETTING([my_setting_name])`** *(добавлено в v0.2.1)* — Возвращает текущее значение пользовательской настройки. Эквивалент функции [`getSetting()`](/sql-reference/functions/other-functions#getSetting).
@@ -49,11 +49,11 @@ ClickHouse предоставляет обширный набор функций
 * **`PERCENTILE_EXACT([my_number], [level_float])`** *(добавлено в v0.1.3)* — Точно вычисляет значение процентиля для числовой последовательности данных. Рекомендуемый диапазон параметра уровня — [0.01, 0.99]. Эквивалент функции [`quantileExact()()`](/sql-reference/aggregate-functions/reference/quantileexact/#quantileexact).
 * **`PROPER([my_string])`** *(добавлено в v0.2.5)* — Преобразует текстовую строку таким образом, что первая буква каждого слова становится заглавной, а остальные буквы — строчными. Пробелы и небуквенно-цифровые символы, например знаки препинания, также считаются разделителями. Например:
   ```text
-  PROPER("PRODUCT name") => "Product Name"
-  ```
+    PROPER("PRODUCT name") => "Product Name"
+    ```
   ```text
-  PROPER("darcy-mae") => "Darcy-Mae"
-  ```
+    PROPER("darcy-mae") => "Darcy-Mae"
+    ```
 * **`RAND()`** *(добавлено в v0.2.1)* — возвращает целое число (UInt32), например `3446222955`. Эквивалент функции [`rand()`](/sql-reference/functions/random-functions/#rand).
 * **`RANDOM()`** *(добавлена в v0.2.1)* — неофициальная функция Tableau [`RANDOM()`](https://kb.tableau.com/articles/issue/random-function-produces-inconsistent-results), которая возвращает вещественное число от 0 до 1.
 * **`RAND_CONSTANT([optional_field])`** *(добавлено в v0.2.1)* — создает константный столбец со случайным значением. Что-то вроде `{RAND()}` Fixed LOD, но быстрее. Эквивалент функции [`randConstant()`](/sql-reference/functions/random-functions/#randConstant).

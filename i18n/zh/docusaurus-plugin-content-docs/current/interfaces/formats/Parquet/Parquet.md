@@ -75,7 +75,7 @@ ClickHouse 表列的数据类型可以与插入的 Parquet 数据中对应字段
 使用一个包含以下数据的 Parquet 文件，文件名为 `football.parquet`：
 
 ```text
-    ┌───────日期─┬─赛季───┬─主队─────────────────┬─客队───────────────┬─主队进球数───────┬─客队进球数───────┐
+    ┌───────date─┬─season─┬─home_team─────────────┬─away_team───────────┬─home_team_goals─┬─away_team_goals─┐
  1. │ 2022-04-30 │   2021 │ Sutton United         │ Bradford City       │               1 │               4 │
  2. │ 2022-04-30 │   2021 │ Swindon Town          │ Barrow              │               2 │               1 │
  3. │ 2022-04-30 │   2021 │ Tranmere Rovers       │ Oldham Athletic     │               2 │               0 │

@@ -133,7 +133,7 @@ CREATE TABLE stackoverflow.posts
 )
 ENGINE = MergeTree
 ORDER BY tuple()
-COMMENT 'Оптимизированные типы'
+COMMENT 'Optimized types'
 ```
 
 Мы можем заполнить эту таблицу с помощью простого оператора [`INSERT INTO SELECT`](/sql-reference/statements/insert-into), считывая экспортированные данные из gcs с помощью табличной функции [`gcs`](/sql-reference/table-functions/gcs). Обратите внимание, что в ClickHouse Cloud вы также можете использовать совместимую с gcs табличную функцию [`s3Cluster`](/sql-reference/table-functions/s3Cluster) для распараллеливания загрузки между несколькими узлами:
@@ -226,14 +226,14 @@ WHERE `table` = 'posts'
 │ 2024      │
 └───────────┘
 
-17 строк в результате. Прошло: 0.002 сек.
+17 rows in set. Elapsed: 0.002 sec.
 
 ALTER TABLE posts
 (DROP PARTITION '2008')
 
 Ok.
 
-0 строк в результате. Прошло: 0.103 сек.
+0 rows in set. Elapsed: 0.103 sec.
 ```
 
 - **Оптимизация запросов** - Хотя партиционирование может способствовать повышению производительности запросов, это сильно зависит от паттернов доступа. Если запросы обращаются только к нескольким партициям (идеально — к одной), производительность может потенциально улучшиться. Это обычно полезно только в том случае, если ключ партиционирования не входит в первичный ключ и вы фильтруете по нему. Однако запросы, которым необходимо охватить множество партиций, могут работать хуже, чем без партиционирования (так как в результате партиционирования может образоваться больше частей данных). Преимущество обращения только к одной партиции будет менее выраженным вплоть до полного отсутствия, если ключ партиционирования уже является одним из первых столбцов первичного ключа. Партиционирование также может использоваться для [оптимизации запросов с `GROUP BY`](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key), если значения в каждой партиции уникальны. Однако, в целом, пользователям следует в первую очередь убедиться, что первичный ключ оптимизирован, и рассматривать партиционирование как технику оптимизации запросов только в исключительных случаях, когда паттерны доступа охватывают конкретное предсказуемое подмножество суток, например, партиционирование по дню при большинстве запросов за последний день.
@@ -267,8 +267,8 @@ WHERE UserId = 8592047
    │ 0.18181818181818182 │
    └─────────────────────┘
 --highlight-next-line
-Получена 1 строка. Затрачено: 0.040 сек. Обработано 90.38 млн строк, 361.59 МБ (2.25 млрд строк/сек., 9.01 ГБ/сек.)
-Пик использования памяти: 201.93 МиБ.
+1 row in set. Elapsed: 0.040 sec. Processed 90.38 million rows, 361.59 MB (2.25 billion rows/s., 9.01 GB/s.)
+Peak memory usage: 201.93 MiB.
 ```
 
 Этот запрос требует сканирования всех 90 млн строк (пусть и быстро), так как `UserId`
@@ -342,8 +342,8 @@ WHERE UserId = 8592047
 1. │ 0.18181818181818182 │
    └─────────────────────┘
 --highlight-next-line
-Получена 1 строка. Время выполнения: 0.008 сек. Обработано 16.36 тыс. строк, 98.17 КБ (2.15 млн строк/сек., 12.92 МБ/сек.)
-Пиковое потребление памяти: 4.06 МиБ.
+1 row in set. Elapsed: 0.008 sec. Processed 16.36 thousand rows, 98.17 KB (2.15 million rows/s., 12.92 MB/s.)
+Peak memory usage: 4.06 MiB.
 ```
 
 С помощью команды [`EXPLAIN`](/sql-reference/statements/explain) мы также можем убедиться, что проекция была использована для обработки этого запроса:
@@ -353,6 +353,22 @@ EXPLAIN indexes = 1
 SELECT avg(Score)
 FROM comments
 WHERE UserId = 8592047
+
+    ┌─explain─────────────────────────────────────────────┐
+ 1. │ Expression ((Projection + Before ORDER BY))         │
+ 2. │   Aggregating                                       │
+ 3. │   Filter                                            │
+ 4. │           ReadFromMergeTree (comments_user_id)      │
+ 5. │           Indexes:                                  │
+ 6. │           PrimaryKey                                │
+ 7. │           Keys:                                     │
+ 8. │           UserId                                    │
+ 9. │           Condition: (UserId in [8592047, 8592047]) │
+10. │           Parts: 2/2                                │
+11. │           Granules: 2/11360                         │
+    └─────────────────────────────────────────────────────┘
+
+11 rows in set. Elapsed: 0.004 sec.
 ```
 
 ┌─explain─────────────────────────────────────────────┐
@@ -371,44 +387,6 @@ WHERE UserId = 8592047
     └─────────────────────────────────────────────────────┘
 
 11 строк в наборе. Затрачено: 0.004 сек.
-
-```
-
-### Когда использовать проекции {#when-to-use-projections}
-
-Проекции являются привлекательной функцией для новых пользователей, поскольку они автоматически 
-поддерживаются при вставке данных. Кроме того, запросы можно отправлять в одну 
-таблицу, где проекции используются по возможности для ускорения времени 
-отклика.
-
-<Image img={bigquery_7} size="md" alt="Проекции"/>
-
-В отличие от материализованных представлений, где пользователь должен выбрать 
-соответствующую оптимизированную целевую таблицу или переписать запрос в зависимости от фильтров.
-Это создаёт дополнительную нагрузку на пользовательские приложения и увеличивает сложность 
-на стороне клиента.
-
-Несмотря на эти преимущества, проекции имеют некоторые присущие им ограничения, о которых 
-пользователи должны знать, поэтому их следует использовать с осторожностью. Для получения дополнительной 
-информации см. [«материализованные представления и проекции»](/managing-data/materialized-views-versus-projections)
-
-Мы рекомендуем использовать проекции в следующих случаях:
-
-- Требуется полная переупорядочка данных. Хотя выражение в проекции теоретически может использовать `GROUP BY`, материализованные представления более эффективны для поддержания агрегатов. Оптимизатор запросов также с большей вероятностью использует проекции с простой переупорядочкой, т. е. `SELECT * ORDER BY x`. Пользователи могут выбрать подмножество столбцов в этом выражении для уменьшения объёма хранилища.
-- Пользователи готовы к связанному с этим увеличению объёма хранилища и накладным расходам на двойную запись данных. Проверьте влияние на скорость вставки и [оцените накладные расходы на хранение](/data-compression/compression-in-clickhouse).
-```
-
-## Переписывание запросов BigQuery на ClickHouse {#rewriting-bigquery-queries-in-clickhouse}
-
-Ниже приведены примеры запросов для сравнения BigQuery и ClickHouse. Этот список призван показать, как использовать возможности ClickHouse для значительного упрощения запросов. В примерах используется полный набор данных Stack Overflow (до апреля 2024 года включительно).
-
-**Пользователи (с более чем 10 вопросами), которые набирают больше всего просмотров:**
-
-*BigQuery*
-
-<Image img={bigquery_8} size="sm" alt="Переписывание запросов BigQuery" border />
-
-*ClickHouse*
 
 ```sql
 SELECT
@@ -429,17 +407,19 @@ LIMIT 5
 5. │ John             │    17638812 │
    └──────────────────┴─────────────┘
 
-Получено 5 строк. Время выполнения: 0.076 сек. Обработано 24.35 млн строк, 140.21 МБ (320.82 млн строк/с., 1.85 ГБ/с.)
-Пиковое потребление памяти: 323.37 МиБ.
+5 rows in set. Elapsed: 0.076 sec. Processed 24.35 million rows, 140.21 MB (320.82 million rows/s., 1.85 GB/s.)
+Peak memory usage: 323.37 MiB.
 ```
 
-**Какие теги набирают больше всего просмотров:**
+## Переписывание запросов BigQuery на ClickHouse {#rewriting-bigquery-queries-in-clickhouse}
+
+Ниже приведены примеры запросов для сравнения BigQuery и ClickHouse. Этот список призван показать, как использовать возможности ClickHouse для значительного упрощения запросов. В примерах используется полный набор данных Stack Overflow (до апреля 2024 года включительно).
+
+**Пользователи (с более чем 10 вопросами), которые набирают больше всего просмотров:**
 
 *BigQuery*
 
-<br />
-
-<Image img={bigquery_9} size="sm" alt="BigQuery 1" border />
+<Image img={bigquery_8} size="sm" alt="Переписывание запросов BigQuery" border />
 
 *ClickHouse*
 
@@ -461,19 +441,17 @@ LIMIT 5
 5. │ android    │ 4258320338 │
    └────────────┴────────────┘
 
-Выбрано 5 строк. Прошло: 0,318 сек. Обработано 59,82 млн строк, 1,45 ГБ (188,01 млн строк/сек., 4,54 ГБ/сек.)
-Пиковое использование памяти: 567,41 МиБ.
+5 rows in set. Elapsed: 0.318 sec. Processed 59.82 million rows, 1.45 GB (188.01 million rows/s., 4.54 GB/s.)
+Peak memory usage: 567.41 MiB.
 ```
 
-## Агрегатные функции {#aggregate-functions}
-
-Где это возможно, пользователям следует использовать агрегатные функции ClickHouse. Ниже показано использование [функции `argMax`](/sql-reference/aggregate-functions/reference/argmax) для вычисления самого просматриваемого вопроса за каждый год.
+**Какие теги набирают больше всего просмотров:**
 
 *BigQuery*
 
-<Image img={bigquery_10} border size="sm" alt="Агрегатные функции 1" />
+<br />
 
-<Image img={bigquery_11} border size="sm" alt="Агрегатные функции 2" />
+<Image img={bigquery_9} size="sm" alt="BigQuery 1" border />
 
 *ClickHouse*
 
@@ -492,13 +470,13 @@ FORMAT Vertical
 Row 1:
 ──────
 Year:                    2008
-MostViewedQuestionTitle: Как найти индекс элемента в списке?
+MostViewedQuestionTitle: How to find the index for a given item in a list?
 MaxViewCount:            6316987
 
 Row 2:
 ──────
 Year:                    2009
-MostViewedQuestionTitle: Как отменить последние локальные коммиты в Git?
+MostViewedQuestionTitle: How do I undo the most recent local commits in Git?
 MaxViewCount:            13962748
 
 ...
@@ -506,17 +484,54 @@ MaxViewCount:            13962748
 Row 16:
 ───────
 Year:                    2023
-MostViewedQuestionTitle: Как исправить ошибку "error: externally-managed-environment" при использовании pip 3?
+MostViewedQuestionTitle: How do I solve "error: externally-managed-environment" every time I use pip 3?
 MaxViewCount:            506822
 
 Row 17:
 ───────
 Year:                    2024
-MostViewedQuestionTitle: Предупреждение "Third-party cookie will be blocked. Learn more in the Issues tab"
+MostViewedQuestionTitle: Warning "Third-party cookie will be blocked. Learn more in the Issues tab"
 MaxViewCount:            66975
 
 17 rows in set. Elapsed: 0.225 sec. Processed 24.35 million rows, 1.86 GB (107.99 million rows/s., 8.26 GB/s.)
 Peak memory usage: 377.26 MiB.
+```
+
+## Агрегатные функции {#aggregate-functions}
+
+Где это возможно, пользователям следует использовать агрегатные функции ClickHouse. Ниже показано использование [функции `argMax`](/sql-reference/aggregate-functions/reference/argmax) для вычисления самого просматриваемого вопроса за каждый год.
+
+*BigQuery*
+
+<Image img={bigquery_10} border size="sm" alt="Агрегатные функции 1" />
+
+<Image img={bigquery_11} border size="sm" alt="Агрегатные функции 2" />
+
+*ClickHouse*
+
+```sql
+SELECT
+    arrayJoin(arrayFilter(t -> (t != ''), splitByChar('|', Tags))) AS tag,
+    countIf(toYear(CreationDate) = 2023) AS count_2023,
+    countIf(toYear(CreationDate) = 2022) AS count_2022,
+    ((count_2023 - count_2022) / count_2022) * 100 AS percent_change
+FROM stackoverflow.posts
+WHERE toYear(CreationDate) IN (2022, 2023)
+GROUP BY tag
+HAVING (count_2022 > 10000) AND (count_2023 > 10000)
+ORDER BY percent_change DESC
+LIMIT 5
+
+┌─tag─────────┬─count_2023─┬─count_2022─┬──────percent_change─┐
+│ next.js     │      13788 │      10520 │   31.06463878326996 │
+│ spring-boot │      16573 │      17721 │  -6.478189718413183 │
+│ .net        │      11458 │      12968 │ -11.644046884639112 │
+│ azure       │      11996 │      14049 │ -14.613139725247349 │
+│ docker      │      13885 │      16877 │  -17.72826924216389 │
+└─────────────┴────────────┴────────────┴─────────────────────┘
+
+5 rows in set. Elapsed: 0.096 sec. Processed 5.08 million rows, 155.73 MB (53.10 million rows/s., 1.63 GB/s.)
+Peak memory usage: 410.37 MiB.
 ```
 
 ## Условные выражения и массивы {#conditionals-and-arrays}

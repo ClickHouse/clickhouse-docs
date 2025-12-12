@@ -23,7 +23,7 @@ LIMIT m
 **另一种 TOP 语法（兼容 MS SQL Server）：**
 
 ```sql
--- SELECT TOP 数字|百分比 列名 FROM 表名
+-- SELECT TOP number|percent column_name(s) FROM table_name
 SELECT TOP 10 * FROM numbers(100);
 SELECT TOP 0.1 * FROM numbers(100);
 ```
@@ -34,7 +34,7 @@ SELECT TOP 0.1 * FROM numbers(100);
 
 ```sql
 LIMIT m OFFSET n
--- 或等同于：
+-- or equivalently:
 LIMIT n, m
 ```
 
@@ -76,8 +76,8 @@ LIMIT n, m
 你可以将标准整数与小数或负数偏移量组合使用：
 
 ```sql
-LIMIT 10 OFFSET 0.5    -- 从中点开始的 10 行
-LIMIT 10 OFFSET -20    -- 跳过最后 20 行后的 10 行
+LIMIT 10 OFFSET 0.5    -- 10 rows starting from the halfway point
+LIMIT 10 OFFSET -20    -- 10 rows after skipping the last 20
 ```
 
 ## LIMIT ... WITH TIES {#limit--with-ties-modifier}

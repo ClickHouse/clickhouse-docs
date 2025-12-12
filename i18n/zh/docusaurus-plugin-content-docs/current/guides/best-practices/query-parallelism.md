@@ -83,13 +83,12 @@ SETTINGS send_logs_level='trace';
 ② <Debug> ...: 使用 59 个流读取约 29564928 行数据
 ```
 
-我们可以看到：
+We can see that
 
-* ① ClickHouse 需要在 3 个数据范围中读取 3,609 个 granule（在 trace 日志中以 mark 表示）。
-* ② 在具有 59 个 CPU 核心的情况下，它会将这项工作分配到 59 个并行处理流中——每条“通道”一个。
+* ① ClickHouse needs to read 3,609 granules (indicated as marks in the trace logs) across 3 data ranges.
+* ② With 59 CPU cores, it distributes this work across 59 parallel processing streams—one per lane.
 
-或者，我们可以使用 [EXPLAIN](/sql-reference/statements/explain#explain-pipeline) 子句来检查该聚合查询的 [physical operator plan](/academic_overview#4-2-multi-core-parallelization)，也称为“query pipeline”：
-
+Alternatively, we can use the [EXPLAIN](/sql-reference/statements/explain#explain-pipeline) clause to inspect the [physical operator plan](/academic_overview#4-2-multi-core-parallelization)—also known as the "query pipeline"—for the aggregation query:
 ```sql runnable=false
 EXPLAIN PIPELINE
 SELECT
@@ -113,22 +112,21 @@ FROM
     └───────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-注意：请自下而上阅读上面的算子计划。每一行代表物理执行计划中的一个阶段，从最底部的从存储读取数据开始，到最顶部的最终处理步骤结束。标记为 `× 59` 的算子会在 59 条并行处理通道上，并发地作用于互不重叠的数据区域。这反映了 `max_threads` 的取值，并展示了查询的每个阶段是如何在 CPU 核心之间并行化的。
+Note: Read the operator plan above from bottom to top. Each line represents a stage in the physical execution plan, starting with reading data from storage at the bottom and ending with the final processing steps at the top. Operators marked with `× 59` are executed concurrently on non-overlapping data regions across 59 parallel processing lanes. This reflects the value of `max_threads` and illustrates how each stage of the query is parallelized across CPU cores.
 
-ClickHouse 的[内嵌 Web UI](/interfaces/http)（在 `/play` 端点可用）可以将上面的物理计划渲染为图形化展示。在本例中，我们将 `max_threads` 设置为 `4` 以保持可视化紧凑，只展示 4 条并行处理通道：
+ClickHouse's [embedded web UI](/interfaces/http) (available at the `/play` endpoint) can render the physical plan from above as a graphical visualization. In this example, we set `max_threads` to `4` to keep the visualization compact, showing just 4 parallel processing lanes:
 
-<Image img={visual05} alt="Query pipeline" />
+<Image img={visual05} alt="Query pipeline"/>
 
-注意：请从左到右阅读该可视化。每一行代表一条并行处理通道，它以数据块为单位进行流式处理，并应用过滤、聚合以及最终处理阶段等转换。在本例中，你可以看到与 `max_threads = 4` 设置对应的四条并行通道。
+Note: Read the visualization from left to right. Each row represents a parallel processing lane that streams data block by block, applying transformations such as filtering, aggregation, and final processing stages. In this example, you can see four parallel lanes corresponding to the `max_threads = 4` setting.
 
-### 在处理通道之间进行负载均衡 {#load-balancing-across-processing-lanes}
+### Load balancing across processing lanes {#load-balancing-across-processing-lanes}
 
-请注意，物理计划中的 `Resize` 算子会[重新分区并重新分发](/academic_overview#4-2-multi-core-parallelization)数据块流到各个处理通道，以保持它们的利用率均衡。当不同数据范围中满足查询谓词的行数相差较大时，这种再平衡尤为重要，否则某些通道可能会过载，而其他通道则处于空闲状态。通过重新分配工作量，较快的通道可以有效帮助较慢的通道，从而优化整体查询执行时间。
+Note that the `Resize` operators in the physical plan above [repartition and redistribute](/academic_overview#4-2-multi-core-parallelization) data block streams across processing lanes to keep them evenly utilized. This rebalancing is especially important when data ranges vary in how many rows match the query predicates, otherwise, some lanes may become overloaded while others sit idle. By redistributing the work, faster lanes effectively help out slower ones, optimizing overall query runtime.
 
-## 为什么 max&#95;threads 并不总是被严格遵守 {#why-max-threads-isnt-always-respected}
+## Why max_threads isn't always respected {#why-max-threads-isnt-always-respected}
 
-如上所述，`n` 条并行处理通道的数量由 `max_threads` 参数控制，其默认值等于 ClickHouse 在该服务器上可用的 CPU 内核数量：
-
+As mentioned above, the number of `n` parallel processing lanes is controlled by the `max_threads` setting, which by default matches the number of CPU cores available to ClickHouse on the server:
 ```sql runnable=false
 SELECT getSetting('max_threads');
 ```
@@ -139,8 +137,7 @@ SELECT getSetting('max_threads');
    └───────────────────────────┘
 ```
 
-然而，视所选处理的数据量不同，`max_threads` 的设置值可能会被忽略：
-
+However, the `max_threads` value may be ignored depending on the amount of data selected for processing:
 ```sql runnable=false
 EXPLAIN PIPELINE
 SELECT
@@ -156,10 +153,9 @@ WHERE town = 'LONDON';
 MergeTreeSelect(pool: PrefetchedReadPool, algorithm: Thread) × 30
 ```
 
-如上方执行计划片段所示，即使将 `max_threads` 设置为 `59`，ClickHouse 也只使用 **30** 条并发流来扫描数据。
+As shown in the operator plan extract above, even though `max_threads` is set to `59`, ClickHouse uses only **30** concurrent streams to scan the data.
 
-现在我们来运行这个查询：
-
+Now let's run the query:
 ```sql runnable=false
 SELECT
    max(price)
@@ -177,7 +173,7 @@ WHERE town = 'LONDON';
 峰值内存使用量：27.24 MiB。   
 ```
 
-如上面的输出所示，该查询处理了约 231 万行数据并读取了 13.66 MB 的数据。原因是在索引分析阶段，ClickHouse 选择了 **282 个 granule（粒度单元）** 进行处理，每个 granule 包含 8,192 行，总计约 231 万行：
+As shown in the output above, the query processed 2.31 million rows and read 13.66MB of data. This is because, during the index analysis phase, ClickHouse selected **282 granules** for processing, each containing 8,192 rows, totaling approximately 2.31 million rows:
 
 ```sql runnable=false
 EXPLAIN indexes = 1
@@ -205,30 +201,26 @@ WHERE town = 'LONDON';
     └───────────────────────────────────────────────────────┘  
 ```
 
-无论将 `max_threads` 配置为多少值，ClickHouse 只会在确实有足够数据值得这么做时，才分配额外的并行处理通道。`max_threads` 中的 “max” 表示的是上限，而不是实际一定会使用的线程数量。
+Regardless of the configured `max_threads` value, ClickHouse only allocates additional parallel processing lanes when there's enough data to justify them. The "max" in `max_threads` refers to an upper limit, not a guaranteed number of threads used.
 
-这里的 “足够数据” 主要由两个设置决定，它们定义了每个处理通道应处理的最少行数（默认 163,840）和最少字节数（默认 2,097,152）：
+What "enough data" means is primarily determined by two settings, which define the minimum number of rows (163,840 by default) and the minimum number of bytes (2,097,152 by default) that each processing lane should handle:
 
-对于 shared-nothing 集群：
+For shared-nothing clusters:
+* [merge_tree_min_rows_for_concurrent_read](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_rows_for_concurrent_read)
+* [merge_tree_min_bytes_for_concurrent_read](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_bytes_for_concurrent_read)
 
-* [merge&#95;tree&#95;min&#95;rows&#95;for&#95;concurrent&#95;read](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_rows_for_concurrent_read)
-* [merge&#95;tree&#95;min&#95;bytes&#95;for&#95;concurrent&#95;read](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_bytes_for_concurrent_read)
+For clusters with shared storage (e.g. ClickHouse Cloud):
+* [merge_tree_min_rows_for_concurrent_read_for_remote_filesystem](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_rows_for_concurrent_read_for_remote_filesystem)
+* [merge_tree_min_bytes_for_concurrent_read_for_remote_filesystem](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_bytes_for_concurrent_read_for_remote_filesystem)
 
-对于具有共享存储的集群（例如 ClickHouse Cloud）：
+Additionally, there's a hard lower limit for read task size, controlled by:
+* [Merge_tree_min_read_task_size](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_read_task_size) + [merge_tree_min_bytes_per_task_for_remote_reading](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_bytes_per_task_for_remote_reading)
 
-* [merge&#95;tree&#95;min&#95;rows&#95;for&#95;concurrent&#95;read&#95;for&#95;remote&#95;filesystem](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_rows_for_concurrent_read_for_remote_filesystem)
-* [merge&#95;tree&#95;min&#95;bytes&#95;for&#95;concurrent&#95;read&#95;for&#95;remote&#95;filesystem](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_bytes_for_concurrent_read_for_remote_filesystem)
-
-此外，还存在一个由以下设置控制的读取任务大小的硬性下限：
-
-* [Merge&#95;tree&#95;min&#95;read&#95;task&#95;size](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_read_task_size) + [merge&#95;tree&#95;min&#95;bytes&#95;per&#95;task&#95;for&#95;remote&#95;reading](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_bytes_per_task_for_remote_reading)
-
-:::warning 不要修改这些设置
-我们不建议在生产环境中修改这些设置。这里只是为了说明为什么 `max_threads` 并不总是决定实际的并行度。
+:::warning Don't modify these settings
+We don't recommend modifying these settings in production. They're shown here solely to illustrate why `max_threads` doesn't always determine the actual level of parallelism.
 :::
 
-出于演示目的，我们来查看在重写这些设置以强制使用最大并发时的物理计划：
-
+For demonstration purposes, let's inspect the physical plan with these settings overridden to force maximum concurrency:
 ```sql runnable=false
 EXPLAIN PIPELINE
 SELECT

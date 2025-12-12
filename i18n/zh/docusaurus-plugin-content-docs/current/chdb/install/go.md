@@ -42,8 +42,14 @@ go get github.com/chdb-io/chdb-go
 chDB-go 包含一个用于快速查询的命令行界面（CLI）：
 
 ```bash
-# 简单查询 {#simple-query}
+# Simple query
 ./chdb-go "SELECT 123"
+
+# Interactive mode
+./chdb-go
+
+# Interactive mode with persistent storage
+./chdb-go --path /tmp/chdb
 ```
 
 # 交互式模式 {#interactive-mode}
@@ -53,14 +59,22 @@ chDB-go 包含一个用于快速查询的命令行界面（CLI）：
 
 ./chdb-go --path /tmp/chdb
 
-````
+````go
+package main
 
-### Go 库 - 快速开始                {#quick-start}
+import (
+    "fmt"
+    "github.com/chdb-io/chdb-go"
+)
 
-#### 无状态查询                      {#stateless-queries}
-
-对于简单的一次性查询：
-
+func main() {
+    // Execute a simple query
+    result, err := chdb.Query("SELECT version()", "CSV")
+    if err != nil {
+        panic(err)
+    }
+    fmt.Println(result)
+}
 ```go
 package main
 
@@ -77,12 +91,53 @@ func main() {
     }
     fmt.Println(result)
 }
-````
+````go
+package main
 
-#### 基于会话的有状态查询 {#stateful-queries}
+import (
+    "fmt"
+    "github.com/chdb-io/chdb-go"
+)
 
-适用于需要持久状态的复杂查询：
+func main() {
+    // Create a session with persistent storage
+    session, err := chdb.NewSession("/tmp/chdb-data")
+    if err != nil {
+        panic(err)
+    }
+    defer session.Cleanup()
 
+    // Create database and table
+    _, err = session.Query(`
+        CREATE DATABASE IF NOT EXISTS testdb;
+        CREATE TABLE IF NOT EXISTS testdb.test_table (
+            id UInt32,
+            name String
+        ) ENGINE = MergeTree() ORDER BY id
+    `, "")
+    
+    if err != nil {
+        panic(err)
+    }
+
+    // Insert data
+    _, err = session.Query(`
+        INSERT INTO testdb.test_table VALUES 
+        (1, 'Alice'), (2, 'Bob'), (3, 'Charlie')
+    `, "")
+    
+    if err != nil {
+        panic(err)
+    }
+
+    // Query data
+    result, err := session.Query("SELECT * FROM testdb.test_table ORDER BY id", "Pretty")
+    if err != nil {
+        panic(err)
+    }
+    
+    fmt.Println(result)
+}
 ```go
 package main
 
@@ -130,12 +185,39 @@ func main() {
     
     fmt.Println(result)
 }
-```
+```go
+package main
 
-#### SQL 驱动接口 {#sql-driver}
+import (
+    "database/sql"
+    "fmt"
+    _ "github.com/chdb-io/chdb-go/driver"
+)
 
-chDB-go 实现了 Go 的 `database/sql` 接口：
+func main() {
+    // Open database connection
+    db, err := sql.Open("chdb", "")
+    if err != nil {
+        panic(err)
+    }
+    defer db.Close()
 
+    // Query with standard database/sql interface
+    rows, err := db.Query("SELECT COUNT(*) FROM url('https://datasets.clickhouse.com/hits/hits.parquet')")
+    if err != nil {
+        panic(err)
+    }
+    defer rows.Close()
+
+    for rows.Next() {
+        var count int
+        err := rows.Scan(&count)
+        if err != nil {
+            panic(err)
+        }
+        fmt.Printf("Count: %d\n", count)
+    }
+}
 ```go
 package main
 
@@ -169,12 +251,61 @@ func main() {
         fmt.Printf("数量: %d\n", count)
     }
 }
-```
+```go
+package main
 
-#### 针对大型数据集的流式查询 {#query-streaming}
+import (
+    "fmt"
+    "log"
+    "github.com/chdb-io/chdb-go/chdb"
+)
 
-对于无法全部放入内存的大型数据集，请使用流式查询：
+func main() {
+    // Create a session for streaming queries
+    session, err := chdb.NewSession("/tmp/chdb-stream")
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer session.Cleanup()
 
+    // Execute a streaming query for large dataset
+    streamResult, err := session.QueryStreaming(
+        "SELECT number, number * 2 as double FROM system.numbers LIMIT 1000000", 
+        "CSV",
+    )
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer streamResult.Free()
+
+    rowCount := 0
+    
+    // Process data in chunks
+    for {
+        chunk := streamResult.GetNext()
+        if chunk == nil {
+            // No more data
+            break
+        }
+        
+        // Check for streaming errors
+        if err := streamResult.Error(); err != nil {
+            log.Printf("Streaming error: %v", err)
+            break
+        }
+        
+        rowsRead := chunk.RowsRead()
+        // You can process the chunk data here
+        // For example, write to file, send over network, etc.
+        fmt.Printf("Processed chunk with %d rows\n", rowsRead)
+        rowCount += int(rowsRead)
+        if rowCount%100000 == 0 {
+            fmt.Printf("Processed %d rows so far...\n", rowCount)
+        }
+    }
+    
+    fmt.Printf("Total rows processed: %d\n", rowCount)
+}
 ```go
 package main
 

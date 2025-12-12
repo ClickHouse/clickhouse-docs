@@ -8,7 +8,7 @@ import Image from '@theme/IdealImage';
   * **GCS file path**: GCS ClickPipe は相互運用性のために Cloud Storage の [XML API](https://docs.cloud.google.com/storage/docs/interoperability) を使用しており、`storage.googleapis.com` エンドポイントが必要です。
 
     ```bash
-    https://storage.googleapis.com/bucket-name/key-name
-    ```
+        https://storage.googleapis.com/bucket-name/key-name
+        ```
 
     複数のファイルやプレフィックスに一致させるために POSIX ワイルドカードを使用できます。サポートされているパターンについては、[リファレンスドキュメント](/integrations/clickpipes/object-storage/overview/#file-pattern-matching) を参照してください。

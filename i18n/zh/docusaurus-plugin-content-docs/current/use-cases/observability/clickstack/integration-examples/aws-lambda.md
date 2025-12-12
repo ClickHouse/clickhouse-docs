@@ -74,29 +74,29 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
   4. 选择 **指定 ARN**
   5. 请输入 Rotel 层的 ARN：
      ```text
-     arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}-alpha:{version}
-     ```
+   arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}-alpha:{version}
+   ```
   6. 点击 **Add**
 
   ##### 选项 2：AWS CLI
 
   ```bash
-  aws lambda update-function-configuration \
-    --function-name my-function \
-    --layers arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}-alpha:{version}
-  ```
+aws lambda update-function-configuration \
+  --function-name my-function \
+  --layers arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}-alpha:{version}
+```
 
   ##### 选项 3：AWS SAM
 
   ```yaml
-  Resources:
-    MyFunction:
-      Type: AWS::Serverless::Function
-      Properties:
-        # ... other configuration ...
-        Layers:
-          - arn:aws:lambda:{version}:418653438961:layer:rotel-extension-{arch}-alpha:{version}
-  ```
+Resources:
+  MyFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      # ... other configuration ...
+      Layers:
+        - arn:aws:lambda:{version}:418653438961:layer:rotel-extension-{arch}-alpha:{version}
+```
 
   #### 配置扩展以导出至 ClickStack
 
@@ -107,15 +107,15 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
   将以下环境变量添加到您的 Lambda 函数:
 
   ```bash
-  # Required: ClickStack OTLP endpoint
-  ROTEL_OTLP_EXPORTER_ENDPOINT=https://clickstack.example.com:4317
+# Required: ClickStack OTLP endpoint
+ROTEL_OTLP_EXPORTER_ENDPOINT=https://clickstack.example.com:4317
 
-  # Optional: Authentication headers
-  ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=<YOUR_INGESTION_API_KEY>"
+# Optional: Authentication headers
+ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=<YOUR_INGESTION_API_KEY>"
 
-  # Optional: Service name (defaults to Lambda function name)
-  ROTEL_OTEL_RESOURCE_ATTRIBUTES="service.name=my-lambda-api,service.version=1.0.0"
-  ```
+# Optional: Service name (defaults to Lambda function name)
+ROTEL_OTEL_RESOURCE_ATTRIBUTES="service.name=my-lambda-api,service.version=1.0.0"
+```
 
   ##### 高级配置（使用 .env 文件）
 
@@ -124,16 +124,16 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
   **rotel.env:**
 
   ```bash
-  ROTEL_OTLP_EXPORTER_ENDPOINT=https://clickstack.example.com:4317
-  ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=<YOUR_INGESTION_API_KEY>"
-  ROTEL_OTEL_RESOURCE_ATTRIBUTES="service.name=my-lambda-api,deployment.environment=production"
-  ```
+ROTEL_OTLP_EXPORTER_ENDPOINT=https://clickstack.example.com:4317
+ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=<YOUR_INGESTION_API_KEY>"
+ROTEL_OTEL_RESOURCE_ATTRIBUTES="service.name=my-lambda-api,deployment.environment=production"
+```
 
   然后设置环境变量指向该文件：
 
   ```bash
-  ROTEL_ENV_FILE=/var/task/rotel.env
-  ```
+ROTEL_ENV_FILE=/var/task/rotel.env
+```
 
   ##### 使用 AWS Secrets Manager 或 Parameter Store
 
@@ -142,16 +142,16 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
   **AWS Secrets Manager 示例：**
 
   ```bash
-  ROTEL_OTLP_EXPORTER_ENDPOINT=https://clickstack.example.com:4317
-  ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=${arn:aws:secretsmanager:us-east-1:123456789012:secret:clickstack-api-key-abc123}"
-  ```
+ROTEL_OTLP_EXPORTER_ENDPOINT=https://clickstack.example.com:4317
+ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=${arn:aws:secretsmanager:us-east-1:123456789012:secret:clickstack-api-key-abc123}"
+```
 
   **AWS Parameter Store 示例：**
 
   ```bash
-  ROTEL_OTLP_EXPORTER_ENDPOINT=https://clickstack.example.com:4317
-  ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=${arn:aws:ssm:us-east-1:123456789012:parameter/clickstack-api-key}"
-  ```
+ROTEL_OTLP_EXPORTER_ENDPOINT=https://clickstack.example.com:4317
+ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=${arn:aws:ssm:us-east-1:123456789012:parameter/clickstack-api-key}"
+```
 
   **所需 IAM 权限：**
 
@@ -160,37 +160,37 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
   对于 Secrets Manager：
 
   ```json
-  {
-    "Version": "2012-10-17",
-    "Statement": [
-      {
-        "Effect": "Allow",
-        "Action": [
-          "secretsmanager:GetSecretValue",
-          "secretsmanager:BatchGetSecretValue"
-        ],
-        "Resource": "arn:aws:secretsmanager:us-east-1:123456789012:secret:clickstack-api-key-*"
-      }
-    ]
-  }
-  ```
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "secretsmanager:GetSecretValue",
+        "secretsmanager:BatchGetSecretValue"
+      ],
+      "Resource": "arn:aws:secretsmanager:us-east-1:123456789012:secret:clickstack-api-key-*"
+    }
+  ]
+}
+```
 
   对于 Parameter Store：
 
   ```json
-  {
-    "Version": "2012-10-17",
-    "Statement": [
-      {
-        "Effect": "Allow",
-        "Action": [
-          "ssm:GetParameters"
-        ],
-        "Resource": "arn:aws:ssm:us-east-1:123456789012:parameter/clickstack-api-key"
-      }
-    ]
-  }
-  ```
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ssm:GetParameters"
+      ],
+      "Resource": "arn:aws:ssm:us-east-1:123456789012:parameter/clickstack-api-key"
+    }
+  ]
+}
+```
 
   :::note
   AWS API 调用检索密钥会增加 100-150 毫秒的冷启动延迟。密钥以批量方式检索（最多 10 个），且仅在初始化时检索，因此后续调用不受影响。
@@ -201,17 +201,17 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
   调用您的 Lambda 函数以验证日志是否已发送到 ClickStack:
 
   ```bash
-  aws lambda invoke \
-    --function-name my-function \
-    --payload '{"test": "data"}' \
-    response.json
-  ```
+aws lambda invoke \
+  --function-name my-function \
+  --payload '{"test": "data"}' \
+  response.json
+```
 
   检查 Lambda 日志是否存在错误：
 
   ```bash
-  aws logs tail /aws/lambda/my-function --follow
-  ```
+aws logs tail /aws/lambda/my-function --follow
+```
 
   #### 在 HyperDX 中验证日志
 
@@ -254,7 +254,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 2. 日志仍然会出现在 ClickStack/HyperDX 中
 
 ```bash
-# 在策略变更后，这里不应显示新的日志流
+# This should show no new log streams after the policy change
 aws logs describe-log-streams \
   --log-group-name /aws/lambda/my-function \
   --order-by LastEventTime \

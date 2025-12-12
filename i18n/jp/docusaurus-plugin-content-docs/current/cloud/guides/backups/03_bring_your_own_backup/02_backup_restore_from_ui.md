@@ -62,7 +62,7 @@ AWSはロールベース認証を使用するため、ClickHouse Cloudサービ�
       "Sid": "backup service",
       "Effect": "Allow",
       "Principal": {
-        "AWS": "arn:aws:iam::463754717262:role/CH-S3-bordeaux-ar-90-ue2-29-Role"
+        "AWS":  "arn:aws:iam::463754717262:role/CH-S3-bordeaux-ar-90-ue2-29-Role"
       },
       "Action": "sts:AssumeRole"
     }
@@ -80,18 +80,33 @@ ClickHouse CloudサービスがS3バケットに書き込めるように、こ�
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Action": ["s3:GetBucketLocation", "s3:ListBucket"],
-      "Resource": ["arn:aws:s3:::byob-ui"],
+      "Action": [
+        "s3:GetBucketLocation",
+        "s3:ListBucket"
+      ],
+      "Resource": [
+        "arn:aws:s3:::byob-ui"
+      ],
       "Effect": "Allow"
     },
     {
-      "Action": ["s3:Get*", "s3:List*", "s3:PutObject"],
-      "Resource": ["arn:aws:s3:::byob-ui/*"],
+      "Action": [
+        "s3:Get*",
+        "s3:List*",
+        "s3:PutObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::byob-ui/*"
+      ],
       "Effect": "Allow"
     },
     {
-      "Action": ["s3:DeleteObject"],
-      "Resource": ["arn:aws:s3:::byob-ui/*/.lock"],
+      "Action": [
+        "s3:DeleteObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::byob-ui/*/.lock"
+      ],
       "Effect": "Allow"
     }
   ]

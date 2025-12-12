@@ -31,7 +31,7 @@ UPDATE [db.]table [ON CLUSTER cluster] SET column1 = expr1 [, ...] [IN PARTITION
 ## Примеры {#examples}
 
 ```sql
-UPDATE hits SET Title = 'Новый заголовок' WHERE EventDate = today();
+UPDATE hits SET Title = 'Updated Title' WHERE EventDate = today();
 
 UPDATE wikistat SET hits = hits + 1, time = now() WHERE path = 'ClickHouse';
 ```

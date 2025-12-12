@@ -20,13 +20,27 @@ CREATE TABLE IF NOT EXISTS float_vs_decimal
 )
 ENGINE=MergeTree
 ORDER BY tuple();
+
+# Generate 1 000 000 random numbers with 2 decimal places and store them as a float and as a decimal
+INSERT INTO float_vs_decimal SELECT round(randCanonical(), 3) AS res, res FROM system.numbers LIMIT 1000000;
 ```
 
 # 小数点以下2桁の乱数を 1 000 000 個生成し、float 型および decimal 型として保存する {#generate-1-000-000-random-numbers-with-2-decimal-places-and-store-them-as-a-float-and-as-a-decimal}
 
 INSERT INTO float&#95;vs&#95;decimal SELECT round(randCanonical(), 3) AS res, res FROM system.numbers LIMIT 1000000;
 
-````
+````sql
+SELECT sum(my_float), sum(my_decimal) FROM float_vs_decimal;
+
+┌──────sum(my_float)─┬─sum(my_decimal)─┐
+│ 499693.60500000004 │      499693.605 │
+└────────────────────┴─────────────────┘
+
+SELECT sumKahan(my_float), sumKahan(my_decimal) FROM float_vs_decimal;
+
+┌─sumKahan(my_float)─┬─sumKahan(my_decimal)─┐
+│         499693.605 │           499693.605 │
+└────────────────────┴──────────────────────┘
 ```sql
 SELECT sum(my_float), sum(my_decimal) FROM float_vs_decimal;
 
@@ -39,72 +53,48 @@ SELECT sumKahan(my_float), sumKahan(my_decimal) FROM float_vs_decimal;
 ┌─sumKahan(my_float)─┬─sumKahan(my_decimal)─┐
 │         499693.605 │           499693.605 │
 └────────────────────┴──────────────────────┘
-````
+````sql
+SELECT 1 - 0.9
 
-:::
-
-ClickHouse と C における対応する型は次のとおりです。
-
-* `Float32` — `float`
-* `Float64` — `double`
-
-ClickHouse における浮動小数点数型には次のエイリアスがあります。
-
-* `Float32` — `FLOAT`、`REAL`、`SINGLE`
-* `Float64` — `DOUBLE`、`DOUBLE PRECISION`
-
-テーブルを作成する際、浮動小数点数に対して数値パラメータを指定できます（例: `FLOAT(12)`、`FLOAT(15, 22)`、`DOUBLE(12)`、`DOUBLE(4, 18)`）が、ClickHouse はこれらを無視します。
-
-## 浮動小数点数を使用する {#using-floating-point-numbers}
-
-* 浮動小数点数での計算では、丸め誤差が発生することがあります。
-
-{/* */ }
-
+┌───────minus(1, 0.9)─┐
+│ 0.09999999999999998 │
+└─────────────────────┘
 ```sql
 SELECT 1 - 0.9
 
 ┌───────minus(1, 0.9)─┐
 │ 0.09999999999999998 │
 └─────────────────────┘
-```
-
-* 計算結果は、計算方法（コンピュータシステムのプロセッサの種類およびアーキテクチャ）によって異なります。
-* 浮動小数点計算では、無限大（`Inf`）や &quot;not-a-number&quot;（`NaN`）といった値が結果として得られる場合があります。計算結果を処理する際には、この点を考慮する必要があります。
-* 文字列から浮動小数点数を解析する場合、結果が最も近い機械表現可能な数値にならないことがあります。
-
-## NaN と Inf {#nan-and-inf}
-
-標準的な SQL とは異なり、ClickHouse は次のカテゴリの浮動小数点数をサポートしています。
-
-* `Inf` – 無限大。
-
-{/* */ }
-
 ```sql
 SELECT 0.5 / 0
 
 ┌─divide(0.5, 0)─┐
 │            inf │
 └────────────────┘
-```
+```sql
+SELECT 0.5 / 0
 
-* `-Inf` — 負の無限大。
-
-{/* */ }
-
+┌─divide(0.5, 0)─┐
+│            inf │
+└────────────────┘
 ```sql
 SELECT -0.5 / 0
 
 ┌─divide(-0.5, 0)─┐
 │            -inf │
 └─────────────────┘
-```
+```sql
+SELECT -0.5 / 0
 
-* `NaN` — 「Not a Number」（数値ではないことを示す値）。
+┌─divide(-0.5, 0)─┐
+│            -inf │
+└─────────────────┘
+```sql
+SELECT 0 / 0
 
-{/* */ }
-
+┌─divide(0, 0)─┐
+│          nan │
+└──────────────┘
 ```sql
 SELECT 0 / 0
 

@@ -333,7 +333,7 @@ WITH (publish_via_partition_root = true);
 可以！在创建 Postgres ClickPipe 之前，先创建一个不包含 DELETE 操作的 publication。例如：
 
 ```sql
-CREATE PUBLICATION <发布名> FOR TABLES IN SCHEMA <模式名> WITH (publish = 'insert,update');
+CREATE PUBLICATION <pub_name> FOR TABLES IN SCHEMA <schema_name> WITH (publish = 'insert,update');
 ```
 
 然后在[设置](https://clickhouse.com/docs/integrations/clickpipes/postgres#configuring-the-replication-settings) Postgres ClickPipe 时，确保选择该 publication 名称。

@@ -35,7 +35,7 @@ ALTER [TEMPORARY] TABLE [db].name [ON CLUSTER cluster] ADD|DROP|RENAME|CLEAR|COM
 ## ADD COLUMN {#add-column}
 
 ```sql
-ADD COLUMN [IF NOT EXISTS] 列名 [类型] [默认表达式] [编解码器] [AFTER 目标列名 | FIRST]
+ADD COLUMN [IF NOT EXISTS] name [type] [default_expr] [codec] [AFTER name_after | FIRST]
 ```
 
 向表中添加一个具有指定 `name`、`type`、[`codec`](../create/table.md/#column_compression_codec) 和 `default_expr` 的新列（参见 [默认表达式](/sql-reference/statements/create/table#default_values) 章节）。
@@ -91,7 +91,7 @@ ALTER TABLE visits DROP COLUMN browser
 ## 重命名列 {#rename-column}
 
 ```sql
-重命名列 [如果存在] name 为 new_name
+RENAME COLUMN [IF EXISTS] name to new_name
 ```
 
 将列 `name` 重命名为 `new_name`。如果指定了 `IF EXISTS` 子句，当列不存在时查询不会返回错误。由于重命名不涉及底层数据，查询几乎可以立即完成。
@@ -123,7 +123,7 @@ ALTER TABLE visits CLEAR COLUMN browser IN PARTITION tuple()
 ## 备注列 {#comment-column}
 
 ```sql
-COMMENT COLUMN [IF EXISTS] name '文本注释'
+COMMENT COLUMN [IF EXISTS] name 'Text comment'
 ```
 
 向列添加注释。如果指定了 `IF EXISTS` 子句，当列不存在时查询不会返回错误。
@@ -135,7 +135,7 @@ COMMENT COLUMN [IF EXISTS] name '文本注释'
 示例：
 
 ```sql
-ALTER TABLE visits COMMENT COLUMN browser '此列显示访问站点所使用的浏览器。'
+ALTER TABLE visits COMMENT COLUMN browser 'This column shows the browser used for accessing the site.'
 ```
 
 ## 修改列 {#modify-column}
@@ -224,7 +224,7 @@ DESCRIBE users;
 语法：
 
 ```sql
-ALTER TABLE 表名 MODIFY COLUMN 列名 REMOVE 属性;
+ALTER TABLE table_name MODIFY COLUMN column_name REMOVE property;
 ```
 
 **示例**
@@ -264,7 +264,7 @@ ALTER TABLE table_name MODIFY COLUMN column_name MODIFY SETTING max_compress_blo
 语法：
 
 ```sql
-ALTER TABLE 表名 MODIFY COLUMN 列名 RESET SETTING 名称,...;
+ALTER TABLE table_name MODIFY COLUMN column_name RESET SETTING name,...;
 ```
 
 **示例**
@@ -272,7 +272,7 @@ ALTER TABLE 表名 MODIFY COLUMN 列名 RESET SETTING 名称,...;
 将列设置项 `max_compress_block_size` 重置为默认值：
 
 ```sql
-ALTER TABLE 表名 MODIFY COLUMN 列名 RESET SETTING max_compress_block_size;
+ALTER TABLE table_name MODIFY COLUMN column_name RESET SETTING max_compress_block_size;
 ```
 
 ## MATERIALIZE COLUMN {#materialize-column}

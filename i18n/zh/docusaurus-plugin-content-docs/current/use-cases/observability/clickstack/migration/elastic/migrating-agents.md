@@ -78,18 +78,18 @@ Beats 代理使用 [Elastic Common Schema (ECS)](https://www.elastic.co/docs/ref
   需将 Vector 配置为通过 Lumberjack 协议接收事件,以模拟 Logstash 实例。可通过为 Vector 配置 [`logstash` 源](https://vector.dev/docs/reference/configuration/sources/logstash/)来实现:
 
   ```yaml
-  sources:
-    beats:
-      type: logstash
-      address: 0.0.0.0:5044
-      tls:
-        enabled: false  # 如果使用 TLS,请设置为 true
-        # 以下文件根据 https://www.elastic.co/docs/reference/fleet/secure-logstash-connections#generate-logstash-certs 中的步骤生成
-        # crt_file: logstash.crt
-        # key_file: logstash.key
-        # ca_file: ca.crt
-        # verify_certificate: true
-  ```
+sources:
+  beats:
+    type: logstash
+    address: 0.0.0.0:5044
+    tls:
+      enabled: false  # Set to true if you're using TLS
+      # The files below are generated from the steps at https://www.elastic.co/docs/reference/fleet/secure-logstash-connections#generate-logstash-certs
+      # crt_file: logstash.crt
+      # key_file: logstash.key
+      # ca_file: ca.crt
+      # verify_certificate: true
+```
 
   :::note TLS 配置
   如需使用双向 TLS，请参考 Elastic 指南 [&quot;Configure SSL/TLS for the Logstash output&quot;](https://www.elastic.co/docs/reference/fleet/secure-logstash-connections#use-ls-output) 生成证书和密钥。生成后，可按上述方式在配置中指定这些证书和密钥。
@@ -98,12 +98,12 @@ Beats 代理使用 [Elastic Common Schema (ECS)](https://www.elastic.co/docs/ref
   事件将以 ECS 格式接收。可使用 Vector Remap Language (VRL) 转换器将其转换为 OpenTelemetry 模式。该转换器的配置十分简单——只需将脚本文件单独存放：
 
   ```yaml
-  transforms:
-    remap_filebeat:
-      inputs: ["beats"]
-      type: "remap"
-      file: 'beat_to_otel.vrl'
-  ```
+transforms:
+  remap_filebeat:
+    inputs: ["beats"]
+    type: "remap"
+    file: 'beat_to_otel.vrl'
+```
 
   注意,它从上述 `beats` 源接收事件。重映射脚本如下所示。该脚本仅针对日志事件进行了测试,但可作为其他格式的基础。
 
@@ -111,142 +111,142 @@ Beats 代理使用 [Elastic Common Schema (ECS)](https://www.elastic.co/docs/ref
     <summary>VRL - 从 ECS 到 OTel</summary>
 
     ```javascript
-    # 定义根级别需忽略的键
-    ignored_keys = ["@metadata"]
+# Define keys to ignore at root level
+ignored_keys = ["@metadata"]
 
-    # 定义资源键前缀
-    resource_keys = ["host", "cloud", "agent", "service"]
+# Define resource key prefixes
+resource_keys = ["host", "cloud", "agent", "service"]
 
-    # 为资源和日志记录字段创建独立对象
-    resource_obj = {}
-    log_record_obj = {}
+# Create separate objects for resource and log record fields
+resource_obj = {}
+log_record_obj = {}
 
-    # 将所有未忽略的根键复制到对应对象
-    root_keys = keys(.)
-    for_each(root_keys) -> |_index, key| {
-        if !includes(ignored_keys, key) {
-            val, err = get(., [key])
-            if err == null {
-                # 检查是否为资源字段
-                is_resource = false
-                if includes(resource_keys, key) {
-                    is_resource = true
-                }
+# Copy all non-ignored root keys to appropriate objects
+root_keys = keys(.)
+for_each(root_keys) -> |_index, key| {
+    if !includes(ignored_keys, key) {
+        val, err = get(., [key])
+        if err == null {
+            # Check if this is a resource field
+            is_resource = false
+            if includes(resource_keys, key) {
+                is_resource = true
+            }
 
-                # 添加到对应对象
-                if is_resource {
-                    resource_obj = set(resource_obj, [key], val) ?? resource_obj
-                } else {
-                    log_record_obj = set(log_record_obj, [key], val) ?? log_record_obj
-                }
+            # Add to appropriate object
+            if is_resource {
+                resource_obj = set(resource_obj, [key], val) ?? resource_obj
+            } else {
+                log_record_obj = set(log_record_obj, [key], val) ?? log_record_obj
             }
         }
     }
+}
 
-    # 分别展平两个对象
-    flattened_resources = flatten(resource_obj, separator: ".")
-    flattened_logs = flatten(log_record_obj, separator: ".")
+# Flatten both objects separately
+flattened_resources = flatten(resource_obj, separator: ".")
+flattened_logs = flatten(log_record_obj, separator: ".")
 
-    # 处理资源属性
-    resource_attributes = []
-    resource_keys_list = keys(flattened_resources)
-    for_each(resource_keys_list) -> |_index, field_key| {
-        field_value, err = get(flattened_resources, [field_key])
-        if err == null && field_value != null {
-            attribute, err = {
-                "key": field_key,
-                "value": {
-                    "stringValue": to_string(field_value)
-                }
-            }
-            if (err == null) {
-                resource_attributes = push(resource_attributes, attribute)
+# Process resource attributes
+resource_attributes = []
+resource_keys_list = keys(flattened_resources)
+for_each(resource_keys_list) -> |_index, field_key| {
+    field_value, err = get(flattened_resources, [field_key])
+    if err == null && field_value != null {
+        attribute, err = {
+            "key": field_key,
+            "value": {
+                "stringValue": to_string(field_value)
             }
         }
-    }
-
-    # 处理日志记录属性
-    log_attributes = []
-    log_keys_list = keys(flattened_logs)
-    for_each(log_keys_list) -> |_index, field_key| {
-        field_value, err = get(flattened_logs, [field_key])
-        if err == null && field_value != null {
-            attribute, err = {
-                "key": field_key,
-                "value": {
-                    "stringValue": to_string(field_value)
-                }
-            }
-            if (err == null) {
-                log_attributes = push(log_attributes, attribute)
-            }
+        if (err == null) {
+            resource_attributes = push(resource_attributes, attribute)
         }
     }
+}
 
-    # 获取 timeUnixNano 时间戳(转换为纳秒)
-    timestamp_nano = if exists(.@timestamp) {
-        to_unix_timestamp!(parse_timestamp!(.@timestamp, format: "%Y-%m-%dT%H:%M:%S%.3fZ"), unit: "nanoseconds")
-    } else {
-        to_unix_timestamp(now(), unit: "nanoseconds")
-    }
-
-    # 获取消息/正文字段
-    body_value = if exists(.message) {
-        to_string!(.message)
-    } else if exists(.body) {
-        to_string!(.body)
-    } else {
-        ""
-    }
-
-    # 创建 OpenTelemetry 结构
-    . = {
-        "resourceLogs": [
-            {
-                "resource": {
-                    "attributes": resource_attributes
-                },
-                "scopeLogs": [
-                    {
-                        "scope": {},
-                        "logRecords": [
-                            {
-                                "timeUnixNano": to_string(timestamp_nano),
-                                "severityNumber": 9,
-                                "severityText": "info",
-                                "body": {
-                                    "stringValue": body_value
-                                },
-                                "attributes": log_attributes
-                            }
-                        ]
-                    }
-                ]
+# Process log record attributes
+log_attributes = []
+log_keys_list = keys(flattened_logs)
+for_each(log_keys_list) -> |_index, field_key| {
+    field_value, err = get(flattened_logs, [field_key])
+    if err == null && field_value != null {
+        attribute, err = {
+            "key": field_key,
+            "value": {
+                "stringValue": to_string(field_value)
             }
-        ]
+        }
+        if (err == null) {
+            log_attributes = push(log_attributes, attribute)
+        }
     }
-    ```
+}
+
+# Get timestamp for timeUnixNano (convert to nanoseconds)
+timestamp_nano = if exists(.@timestamp) {
+    to_unix_timestamp!(parse_timestamp!(.@timestamp, format: "%Y-%m-%dT%H:%M:%S%.3fZ"), unit: "nanoseconds")
+} else {
+    to_unix_timestamp(now(), unit: "nanoseconds")
+}
+
+# Get message/body field
+body_value = if exists(.message) {
+    to_string!(.message)
+} else if exists(.body) {
+    to_string!(.body)
+} else {
+    ""
+}
+
+# Create the OpenTelemetry structure
+. = {
+    "resourceLogs": [
+        {
+            "resource": {
+                "attributes": resource_attributes
+            },
+            "scopeLogs": [
+                {
+                    "scope": {},
+                    "logRecords": [
+                        {
+                            "timeUnixNano": to_string(timestamp_nano),
+                            "severityNumber": 9,
+                            "severityText": "info",
+                            "body": {
+                                "stringValue": body_value
+                            },
+                            "attributes": log_attributes
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+```
   </details>
 
   最后,转换后的事件可以通过 OpenTelemetry 采集器使用 OTLP 协议发送到 ClickStack。这需要在 Vector 中配置一个 OTLP sink,该 sink 将 `remap_filebeat` 转换的事件作为输入:
 
   ```yaml
-  sinks:
-    otlp:
-      type: opentelemetry
-      inputs: [remap_filebeat] # 从 remap 转换接收事件 - 见下文
-      protocol:
-        type: http  # 端口 4317 使用 "grpc"
-        uri: http://localhost:4318/v1/logs # OTel collector 的日志端点 
-        method: post
-        encoding:
-          codec: json
-        framing:
-          method: newline_delimited
-        headers:
-          content-type: application/json
-          authorization: ${YOUR_INGESTION_API_KEY}
-  ```
+sinks:
+  otlp:
+    type: opentelemetry
+    inputs: [remap_filebeat] # receives events from a remap transform - see below
+    protocol:
+      type: http  # Use "grpc" for port 4317
+      uri: http://localhost:4318/v1/logs # logs endpoint for the OTel collector 
+      method: post
+      encoding:
+        codec: json
+      framing:
+        method: newline_delimited
+      headers:
+        content-type: application/json
+        authorization: ${YOUR_INGESTION_API_KEY}
+```
 
   此处的 `YOUR_INGESTION_API_KEY` 由 ClickStack 生成。您可以在 HyperDX 应用的 `Team Settings → API Keys` 中找到该密钥。
 
@@ -255,59 +255,59 @@ Beats 代理使用 [Elastic Common Schema (ECS)](https://www.elastic.co/docs/ref
   最终的完整配置如下所示：
 
   ```yaml
-  sources:
-    beats:
-      type: logstash
-      address: 0.0.0.0:5044
-      tls:
-        enabled: false  # 如果使用 TLS，设置为 true
-          #crt_file: /data/elasticsearch-9.0.1/logstash/logstash.crt
-          #key_file: /data/elasticsearch-9.0.1/logstash/logstash.key
-          #ca_file: /data/elasticsearch-9.0.1/ca/ca.crt
-          #verify_certificate: true
+sources:
+  beats:
+    type: logstash
+    address: 0.0.0.0:5044
+    tls:
+      enabled: false  # Set to true if you're using TLS
+        #crt_file: /data/elasticsearch-9.0.1/logstash/logstash.crt
+        #key_file: /data/elasticsearch-9.0.1/logstash/logstash.key
+        #ca_file: /data/elasticsearch-9.0.1/ca/ca.crt
+        #verify_certificate: true
 
-  transforms:
-    remap_filebeat:
-      inputs: ["beats"]
-      type: "remap"
-      file: 'beat_to_otel.vrl'
+transforms:
+  remap_filebeat:
+    inputs: ["beats"]
+    type: "remap"
+    file: 'beat_to_otel.vrl'
 
-  sinks:
-    otlp:
-      type: opentelemetry
-      inputs: [remap_filebeat]
-      protocol:
-        type: http  # 端口 4317 使用 "grpc"
-        uri: http://localhost:4318/v1/logs
-        method: post
-        encoding:
-          codec: json
-        framing:
-          method: newline_delimited
-        headers:
-          content-type: application/json
-  ```
+sinks:
+  otlp:
+    type: opentelemetry
+    inputs: [remap_filebeat]
+    protocol:
+      type: http  # Use "grpc" for port 4317
+      uri: http://localhost:4318/v1/logs
+      method: post
+      encoding:
+        codec: json
+      framing:
+        method: newline_delimited
+      headers:
+        content-type: application/json
+```
 
   ### 配置 Filebeat
 
   现有的 Filebeat 安装只需修改配置即可将事件发送到 Vector。这需要配置 Logstash 输出——同样,TLS 可选配置:
 
   ```yaml
-  # ------------------------------ Logstash 输出 -------------------------------
-  output.logstash:
-    # Logstash 主机地址
-    hosts: ["localhost:5044"]
+# ------------------------------ Logstash Output -------------------------------
+output.logstash:
+  # The Logstash hosts
+  hosts: ["localhost:5044"]
 
-    # 可选 SSL 配置，默认关闭
-    # 用于 HTTPS 服务器验证的根证书列表
-    #ssl.certificate_authorities: ["/etc/pki/root/ca.pem"]
+  # Optional SSL. By default is off.
+  # List of root certificates for HTTPS server verifications
+  #ssl.certificate_authorities: ["/etc/pki/root/ca.pem"]
 
-    # SSL 客户端身份验证证书
-    #ssl.certificate: "/etc/pki/client/cert.pem"
+  # Certificate for SSL client authentication
+  #ssl.certificate: "/etc/pki/client/cert.pem"
 
-    # 客户端证书私钥
-    #ssl.key: "/etc/pki/client/cert.key"
-  ```
+  # Client Certificate Key
+  #ssl.key: "/etc/pki/client/cert.key"
+```
 </VerticalStepper>
 
 ## 从 Elastic Agent 迁移 {#migrating-from-elastic-agent}
@@ -351,8 +351,8 @@ sources:
     type: logstash
     address: 0.0.0.0:5044
     tls:
-      enabled: true  # 如果你在使用 TLS，请设置为 true。 
-      # 下列文件是通过 https://www.elastic.co/docs/reference/fleet/secure-logstash-connections#generate-logstash-certs 中的步骤生成的
+      enabled: true  # Set to true if you're using TLS. 
+      # The files below are generated from the steps at https://www.elastic.co/docs/reference/fleet/secure-logstash-connections#generate-logstash-certs
       crt_file: logstash.crt
       key_file: logstash.key
       ca_file: ca.crt
@@ -373,7 +373,7 @@ Elastic Agent 包含一个内置的 EDOT Collector，使你可以一次性为应
 
 ```yaml
 exporters:
-  # 用于将日志和指标发送到 Elasticsearch 托管 OTLP 输入的导出器
+  # Exporter to send logs and metrics to Elasticsearch Managed OTLP Input
   otlp:
     endpoint: localhost:4317
     headers:
@@ -390,7 +390,7 @@ exporters:
 
 ```yaml
 exporters:
-  # 导出器，用于将日志和指标发送到 Elasticsearch 托管 OTLP 输入
+  # Exporter to send logs and metrics to Elasticsearch Managed OTLP Input
   otlp:
     endpoint: localhost:4317
     headers:

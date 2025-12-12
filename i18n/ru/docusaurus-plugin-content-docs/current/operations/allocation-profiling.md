@@ -185,16 +185,16 @@ ORDER BY per_trace_sum ASC
 <Tabs groupId="binary">
   <TabItem value="clickhouse" label="ClickHouse">
     ```sql
-    SYSTEM JEMALLOC FLUSH PROFILE
-    ```
+SYSTEM JEMALLOC FLUSH PROFILE
+```
 
     Команда вернёт путь к сброшенному профилю.
   </TabItem>
 
   <TabItem value="keeper" label="Keeper">
     ```sh
-    echo jmfp | nc localhost 9181
-    ```
+echo jmfp | nc localhost 9181
+```
   </TabItem>
 </Tabs>
 

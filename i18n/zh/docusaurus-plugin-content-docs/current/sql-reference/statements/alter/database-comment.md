@@ -14,52 +14,56 @@ doc_type: 'reference'
 
 ## 语法 {#syntax}
 
-```sql
-ALTER DATABASE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
+```
+
+## Examples {#examples}
+
+To create a `DATABASE` with a comment:
+
 ```
 
 ## 示例 {#examples}
 
 要创建带注释的 `DATABASE`：
 
-```sql
-CREATE DATABASE database_with_comment ENGINE = Memory COMMENT '临时数据库';
+```
+
+To modify the comment:
+
 ```
 
 如需修改注释：
 
-```sql
-ALTER DATABASE database_with_comment 
-MODIFY COMMENT 'new comment on a database';
+```
+
+To view the modified comment:
+
 ```
 
 要查看修改后的注释：
 
-```sql
-SELECT comment 
-FROM system.databases 
-WHERE name = 'database_with_comment';
 ```
 
-```text
-┌─comment─────────────────┐
-│ 数据库上的新注释 │
-└─────────────────────────┘
+```
+
+```
+
+To remove the database comment:
+
 ```
 
 要移除数据库注释：
 
-```sql
-ALTER DATABASE database_with_comment 
-MODIFY COMMENT '';
+```
+
+To verify that the comment was removed:
+
 ```
 
 要确认注释已被移除：
 
-```sql title="Query"
-SELECT comment 
-FROM system.databases 
-WHERE  name = 'database_with_comment';
+```
+
 ```
 
 ```text title="Response"

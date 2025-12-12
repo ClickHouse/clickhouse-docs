@@ -42,12 +42,12 @@ SELECT * FROM t_null
 Строки не экранируются ни в одном из форматов семейства `Pretty`. Следующий пример показан для формата [`PrettyCompact`](./PrettyCompact.md):
 
 ```sql title="Query"
-SELECT 'Строка с \'кавычками\' и символом табуляции \t' AS Escaping_test
+SELECT 'String with \'quotes\' and \t character' AS Escaping_test
 ```
 
 ```response title="Response"
 ┌─Escaping_test────────────────────────┐
-│ Строка с 'кавычками' и      символом │
+│ String with 'quotes' and      character │
 └──────────────────────────────────────┘
 ```
 
@@ -82,12 +82,12 @@ FORMAT PrettyCompact
 │ 2014-03-23 │ 1046491 │
 └────────────┴─────────┘
 
-Итого:
+Totals:
 ┌──EventDate─┬───────c─┐
 │ 1970-01-01 │ 8873898 │
 └────────────┴─────────┘
 
-Минимальные и максимальные значения:
+Extremes:
 ┌──EventDate─┬───────c─┐
 │ 2014-03-17 │ 1031592 │
 │ 2014-03-23 │ 1406958 │

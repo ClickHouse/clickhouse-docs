@@ -295,19 +295,19 @@ SELECT $heredoc$SHOW CREATE VIEW my_view$heredoc$;
   Например, следующий SQL задаёт параметры с именами `a`, `b`, `c` и `d`, каждый со своим типом данных:
 
   ```sql
-  SET param_a = 13;
-  SET param_b = 'str';
-  SET param_c = '2022-08-04 18:30:53';
-  SET param_d = {'10': [11, 12], '13': [14, 15]};
+SET param_a = 13;
+SET param_b = 'str';
+SET param_c = '2022-08-04 18:30:53';
+SET param_d = {'10': [11, 12], '13': [14, 15]};
 
-  SELECT
-     {a: UInt32},
-     {b: String},
-     {c: DateTime},
-     {d: Map(String, Array(UInt8))};
+SELECT
+   {a: UInt32},
+   {b: String},
+   {c: DateTime},
+   {d: Map(String, Array(UInt8))};
 
-  13    str    2022-08-04 18:30:53    {'10':[11,12],'13':[14,15]}
-  ```
+13    str    2022-08-04 18:30:53    {'10':[11,12],'13':[14,15]}
+```
 </details>
 
 <details>
@@ -316,17 +316,17 @@ SELECT $heredoc$SHOW CREATE VIEW my_view$heredoc$;
   Если вы используете `clickhouse-client`, параметры указываются как `--param_name=value`. Например, следующий параметр имеет имя `message`, и он интерпретируется как значение типа `String`:
 
   ```bash
-  clickhouse-client --param_message='hello' --query="SELECT {message: String}"
+clickhouse-client --param_message='hello' --query="SELECT {message: String}"
 
-  hello
-  ```
+hello
+```
 
   Если параметр запроса представляет имя базы данных, таблицы, функции или другого идентификатора, используйте тип `Identifier`. Например, следующий запрос возвращает строки из таблицы с именем `uk_price_paid`:
 
   ```sql
-  SET param_mytablename = "uk_price_paid";
-  SELECT * FROM {mytablename:Identifier};
-  ```
+SET param_mytablename = "uk_price_paid";
+SELECT * FROM {mytablename:Identifier};
+```
 </details>
 
 :::note
@@ -460,8 +460,8 @@ SELECT
     sum(b) AS b
 FROM t;
 
-Получено исключение от сервера (версия 18.14.17):
-Code: 184. DB::Exception: Received from localhost:9000, 127.0.0.1. DB::Exception: Агрегатная функция sum(b) обнаружена внутри другой агрегатной функции в запросе.
+Received exception from server (version 18.14.17):
+Code: 184. DB::Exception: Received from localhost:9000, 127.0.0.1. DB::Exception: Aggregate function sum(b) is found inside another aggregate function in query.
 ```
 
 В предыдущем примере мы объявили таблицу `t` со столбцом `b`.

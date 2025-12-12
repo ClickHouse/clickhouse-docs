@@ -102,8 +102,8 @@ CREATE TABLE sample_oid
     another_oid_column String
 ) ENGINE = MongoDB('mongodb://user:pass@host/db', 'sample_oid');
 
-SELECT count() FROM sample_oid WHERE _id = '67bf6cc44ebc466d33d42fb2'; --1を出力します。
-SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea41b1'; --0を出力します。
+SELECT count() FROM sample_oid WHERE _id = '67bf6cc44ebc466d33d42fb2'; --will output 1.
+SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea41b1'; --will output 0
 ```
 
 この場合、出力は `0` になります。ClickHouse は `another_oid_column` が `oid` 型であることを認識していないためです。では、次のように修正しましょう：
@@ -115,7 +115,7 @@ CREATE TABLE sample_oid
     another_oid_column String
 ) ENGINE = MongoDB('mongodb://user:pass@host/db', 'sample_oid', '_id,another_oid_column');
 
--- または
+-- or
 
 CREATE TABLE sample_oid
 (
@@ -123,7 +123,7 @@ CREATE TABLE sample_oid
     another_oid_column String
 ) ENGINE = MongoDB('host', 'db', 'sample_oid', 'user', 'pass', '', '_id,another_oid_column');
 
-SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea41b1'; -- 1が出力されます
+SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea41b1'; -- will output 1 now
 ```
 
 ## サポートされている句 {#supported-clauses}
@@ -185,10 +185,10 @@ SELECT count() FROM sample_mflix_table
 ```
 
 ```sql
--- JSONExtractStringはMongoDBにプッシュダウンできません
+-- JSONExtractString cannot be pushed down to MongoDB
 SET mongodb_throw_on_unsupported_query = 0;
 
--- 評価が7.5より大きい「バック・トゥ・ザ・フューチャー」の続編をすべて検索
+-- Find all 'Back to the Future' sequels with rating > 7.5
 SELECT title, plot, genres, directors, released FROM sample_mflix_table
 WHERE title IN ('Back to the Future', 'Back to the Future Part II', 'Back to the Future Part III')
     AND toFloat32(JSONExtractString(imdb, 'rating')) > 7.5
@@ -200,7 +200,7 @@ FORMAT Vertical;
 Row 1:
 ──────
 title:     Back to the Future
-plot:      若い男性が友人のエメット・ブラウン博士が発明したタイムトラベル可能なデロリアンで誤って30年前の過去に送られ、自分の存在を守るために高校生時代の両親を結びつけなければならない。
+plot:      A young man is accidentally sent 30 years into the past in a time-traveling DeLorean invented by his friend, Dr. Emmett Brown, and must make sure his high-school-age parents unite in order to save his own existence.
 genres:    ['Adventure','Comedy','Sci-Fi']
 directors: ['Robert Zemeckis']
 released:  1985-07-03
@@ -208,14 +208,14 @@ released:  1985-07-03
 Row 2:
 ──────
 title:     Back to the Future Part II
-plot:      2015年を訪れた後、マーティ・マクフライは1985年への壊滅的な変化を防ぐために、最初の旅行に干渉することなく1955年を再訪しなければならない。
+plot:      After visiting 2015, Marty McFly must repeat his visit to 1955 to prevent disastrous changes to 1985... without interfering with his first trip.
 genres:    ['Action','Adventure','Comedy']
 directors: ['Robert Zemeckis']
 released:  1989-11-22
 ```
 
 ```sql
--- Cormac McCarthyの著書を原作とする映画の上位3作品を検索
+-- Find top 3 movies based on Cormac McCarthy's books
 SELECT title, toFloat32(JSONExtractString(imdb, 'rating')) AS rating
 FROM sample_mflix_table
 WHERE arrayExists(x -> x LIKE 'Cormac McCarthy%', writers)
@@ -224,10 +224,10 @@ LIMIT 3;
 ```
 
 ```text
-   ┌─タイトル───────────────┬─評価───┐
-1. │ ノーカントリー         │    8.1 │
-2. │ サンセット・リミテッド │    7.4 │
-3. │ ザ・ロード             │    7.3 │
+   ┌─title──────────────────┬─rating─┐
+1. │ No Country for Old Men │    8.1 │
+2. │ The Sunset Limited     │    7.4 │
+3. │ The Road               │    7.3 │
    └────────────────────────┴────────┘
 ```
 

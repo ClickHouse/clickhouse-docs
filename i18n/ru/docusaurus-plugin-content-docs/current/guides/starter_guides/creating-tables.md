@@ -22,16 +22,16 @@ CREATE DATABASE IF NOT EXISTS helloworld
 Следующая таблица `my_first_table` создаётся в базе данных `helloworld`:
 
 ```sql
-CREATE TABLE helloworld.my_first_table
-(
-    user_id UInt32,
-    message String,
-    timestamp DateTime,
-    metric Float32
-)
-ENGINE = MergeTree()
-PRIMARY KEY (user_id, timestamp)
-```
+  CREATE TABLE helloworld.my_first_table
+  (
+      user_id UInt32,
+      message String,
+      timestamp DateTime,
+      metric Float32
+  )
+  ENGINE = MergeTree()
+  PRIMARY KEY (user_id, timestamp)
+  ```
 
 В приведённом выше примере `my_first_table` — это таблица `MergeTree` с четырьмя столбцами:
 

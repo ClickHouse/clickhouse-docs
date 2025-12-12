@@ -34,15 +34,62 @@ curl -sL https://lib.chdb.io | bash
 Скомпилируйте и скомпонуйте ваше приложение с chDB:
 
 ```bash
-# Компиляция на C {#c-compilation}
+# C compilation
 gcc -o myapp myapp.c -lchdb
+
+# C++ compilation  
+g++ -o myapp myapp.cpp -lchdb
 ```
 
 # Компиляция на C++ {#c-compilation}
 
 g++ -o myapp myapp.cpp -lchdb
 
-```
+```c
+#include <stdio.h>
+#include <chdb.h>
+
+int main() {
+    // Create connection arguments
+    char* args[] = {"chdb", "--path", "/tmp/chdb-data"};
+    int argc = 3;
+    
+    // Connect to chDB
+    chdb_connection* conn = chdb_connect(argc, args);
+    if (!conn) {
+        printf("Failed to connect to chDB\n");
+        return 1;
+    }
+    
+    // Execute a query
+    chdb_result* result = chdb_query(*conn, "SELECT version()", "CSV");
+    if (!result) {
+        printf("Query execution failed\n");
+        chdb_close_conn(conn);
+        return 1;
+    }
+    
+    // Check for errors
+    const char* error = chdb_result_error(result);
+    if (error) {
+        printf("Query error: %s\n", error);
+    } else {
+        // Get result data
+        char* data = chdb_result_buffer(result);
+        size_t length = chdb_result_length(result);
+        double elapsed = chdb_result_elapsed(result);
+        uint64_t rows = chdb_result_rows_read(result);
+        
+        printf("Result: %.*s\n", (int)length, data);
+        printf("Elapsed: %.3f seconds\n", elapsed);
+        printf("Rows: %llu\n", rows);
+    }
+    
+    // Cleanup
+    chdb_destroy_query_result(result);
+    chdb_close_conn(conn);
+    return 0;
+}
 ```
 
 ## Примеры на C {#c-examples}
@@ -54,43 +101,58 @@ g++ -o myapp myapp.cpp -lchdb
 #include <chdb.h>
 
 int main() {
-    // Создать параметры подключения
-    char* args[] = {"chdb", "--path", "/tmp/chdb-data"};
-    int argc = 3;
+    char* args[] = {"chdb", "--path", "/tmp/chdb-stream"};
+    chdb_connection* conn = chdb_connect(3, args);
     
-    // Подключиться к chDB
-    chdb_connection* conn = chdb_connect(argc, args);
     if (!conn) {
-        printf("Не удалось подключиться к chDB\n");
+        printf("Failed to connect\n");
         return 1;
     }
     
-    // Выполнить запрос
-    chdb_result* result = chdb_query(*conn, "SELECT version()", "CSV");
-    if (!result) {
-        printf("Не удалось выполнить запрос\n");
+    // Start streaming query
+    chdb_result* stream_result = chdb_stream_query(*conn, 
+        "SELECT number FROM system.numbers LIMIT 1000000", "CSV");
+    
+    if (!stream_result) {
+        printf("Failed to start streaming query\n");
         chdb_close_conn(conn);
         return 1;
     }
     
-    // Проверить наличие ошибок
-    const char* error = chdb_result_error(result);
-    if (error) {
-        printf("Ошибка запроса: %s\n", error);
-    } else {
-        // Получить данные результата запроса
-        char* data = chdb_result_buffer(result);
-        size_t length = chdb_result_length(result);
-        double elapsed = chdb_result_elapsed(result);
-        uint64_t rows = chdb_result_rows_read(result);
+    uint64_t total_rows = 0;
+    
+    // Process chunks
+    while (true) {
+        chdb_result* chunk = chdb_stream_fetch_result(*conn, stream_result);
+        if (!chunk) break;
         
-        printf("Результат: %.*s\n", (int)length, data);
-        printf("Время выполнения: %.3f секунд\n", elapsed);
-        printf("Строк: %llu\n", rows);
+        // Check if we have data in this chunk
+        size_t chunk_length = chdb_result_length(chunk);
+        if (chunk_length == 0) {
+            chdb_destroy_query_result(chunk);
+            break; // End of stream
+        }
+        
+        uint64_t chunk_rows = chdb_result_rows_read(chunk);
+        total_rows += chunk_rows;
+        
+        printf("Processed chunk: %llu rows, %zu bytes\n", chunk_rows, chunk_length);
+        
+        // Process the chunk data here
+        // char* data = chdb_result_buffer(chunk);
+        
+        chdb_destroy_query_result(chunk);
+        
+        // Progress reporting
+        if (total_rows % 100000 == 0) {
+            printf("Progress: %llu rows processed\n", total_rows);
+        }
     }
     
-    // Освобождение ресурсов
-    chdb_destroy_query_result(result);
+    printf("Streaming complete. Total rows: %llu\n", total_rows);
+    
+    // Cleanup streaming query
+    chdb_destroy_query_result(stream_result);
     chdb_close_conn(conn);
     return 0;
 }
@@ -103,58 +165,32 @@ int main() {
 #include <chdb.h>
 
 int main() {
-    char* args[] = {"chdb", "--path", "/tmp/chdb-stream"};
-    chdb_connection* conn = chdb_connect(3, args);
+    char* args[] = {"chdb"};
+    chdb_connection* conn = chdb_connect(1, args);
     
-    if (!conn) {
-        printf("Не удалось установить соединение\n");
-        return 1;
-    }
+    const char* query = "SELECT number, toString(number) as str FROM system.numbers LIMIT 3";
     
-    // Запуск потокового запроса
-    chdb_result* stream_result = chdb_stream_query(*conn, 
-        "SELECT number FROM system.numbers LIMIT 1000000", "CSV");
+    // CSV format
+    chdb_result* csv_result = chdb_query(*conn, query, "CSV");
+    printf("CSV Result:\n%.*s\n\n", 
+           (int)chdb_result_length(csv_result), 
+           chdb_result_buffer(csv_result));
+    chdb_destroy_query_result(csv_result);
     
-    if (!stream_result) {
-        printf("Не удалось запустить потоковый запрос\n");
-        chdb_close_conn(conn);
-        return 1;
-    }
+    // JSON format
+    chdb_result* json_result = chdb_query(*conn, query, "JSON");
+    printf("JSON Result:\n%.*s\n\n", 
+           (int)chdb_result_length(json_result), 
+           chdb_result_buffer(json_result));
+    chdb_destroy_query_result(json_result);
     
-    uint64_t total_rows = 0;
+    // Pretty format
+    chdb_result* pretty_result = chdb_query(*conn, query, "Pretty");
+    printf("Pretty Result:\n%.*s\n\n", 
+           (int)chdb_result_length(pretty_result), 
+           chdb_result_buffer(pretty_result));
+    chdb_destroy_query_result(pretty_result);
     
-    // Обработка блоков
-    while (true) {
-        chdb_result* chunk = chdb_stream_fetch_result(*conn, stream_result);
-        if (!chunk) break;
-        
-        // Проверка наличия данных в этом блоке
-        size_t chunk_length = chdb_result_length(chunk);
-        if (chunk_length == 0) {
-            chdb_destroy_query_result(chunk);
-            break; // End of stream
-        }
-        
-        uint64_t chunk_rows = chdb_result_rows_read(chunk);
-        total_rows += chunk_rows;
-        
-        printf("Обработан блок: %llu строк, %zu байт\n", chunk_rows, chunk_length);
-        
-        // Здесь можно обрабатывать данные блока
-        // char* data = chdb_result_buffer(chunk);
-        
-        chdb_destroy_query_result(chunk);
-        
-        // Отчет о ходе выполнения
-        if (total_rows % 100000 == 0) {
-            printf("Ход выполнения: обработано %llu строк\n", total_rows);
-        }
-    }
-    
-    printf("Потоковый запрос завершен. Всего строк: %llu\n", total_rows);
-    
-    // Освобождение ресурсов потокового запроса
-    chdb_destroy_query_result(stream_result);
     chdb_close_conn(conn);
     return 0;
 }
@@ -162,29 +198,85 @@ int main() {
 
 ### Работа с разными форматами данных {#data-formats}
 
-```c
-#include <stdio.h>
+```cpp
+#include <iostream>
+#include <string>
+#include <vector>
 #include <chdb.h>
 
+class ChDBConnection {
+private:
+    chdb_connection* conn;
+    
+public:
+    ChDBConnection(const std::vector<std::string>& args) {
+        // Convert string vector to char* array
+        std::vector<char*> argv;
+        for (const auto& arg : args) {
+            argv.push_back(const_cast<char*>(arg.c_str()));
+        }
+        
+        conn = chdb_connect(argv.size(), argv.data());
+        if (!conn) {
+            throw std::runtime_error("Failed to connect to chDB");
+        }
+    }
+    
+    ~ChDBConnection() {
+        if (conn) {
+            chdb_close_conn(conn);
+        }
+    }
+    
+    std::string query(const std::string& sql, const std::string& format = "CSV") {
+        chdb_result* result = chdb_query(*conn, sql.c_str(), format.c_str());
+        if (!result) {
+            throw std::runtime_error("Query execution failed");
+        }
+        
+        const char* error = chdb_result_error(result);
+        if (error) {
+            std::string error_msg(error);
+            chdb_destroy_query_result(result);
+            throw std::runtime_error("Query error: " + error_msg);
+        }
+        
+        std::string data(chdb_result_buffer(result), chdb_result_length(result));
+        
+        // Get query statistics
+        std::cout << "Query statistics:\n";
+        std::cout << "  Elapsed: " << chdb_result_elapsed(result) << " seconds\n";
+        std::cout << "  Rows read: " << chdb_result_rows_read(result) << "\n";
+        std::cout << "  Bytes read: " << chdb_result_bytes_read(result) << "\n";
+        
+        chdb_destroy_query_result(result);
+        return data;
+    }
+};
+
 int main() {
-    char* args[] = {"chdb"};
-    chdb_connection* conn = chdb_connect(1, args);
+    try {
+        // Create connection
+        ChDBConnection db({{"chdb", "--path", "/tmp/chdb-cpp"}});
+        
+        // Create and populate table
+        db.query("CREATE TABLE test (id UInt32, value String) ENGINE = MergeTree() ORDER BY id");
+        db.query("INSERT INTO test VALUES (1, 'hello'), (2, 'world'), (3, 'chdb')");
+        
+        // Query with different formats
+        std::cout << "CSV Results:\n" << db.query("SELECT * FROM test", "CSV") << "\n";
+        std::cout << "JSON Results:\n" << db.query("SELECT * FROM test", "JSON") << "\n";
+        
+        // Aggregation query
+        std::cout << "Count: " << db.query("SELECT COUNT(*) FROM test") << "\n";
+        
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+        return 1;
+    }
     
-    const char* query = "SELECT number, toString(number) as str FROM system.numbers LIMIT 3";
-    
-    // Формат CSV
-    chdb_result* csv_result = chdb_query(*conn, query, "CSV");
-    printf("Результат в формате CSV:\n%.*s\n\n", 
-           (int)chdb_result_length(csv_result), 
-           chdb_result_buffer(csv_result));
-    chdb_destroy_query_result(csv_result);
-    
-    // Формат JSON
-    chdb_result* json_result = chdb_query(*conn, query, "JSON");
-    printf("Результат в формате JSON:\n%.*s\n\n", 
-           (int)chdb_result_length(json_result), 
-           chdb_result_buffer(json_result));
-    chdb_destroy_query_result(json_result);
+    return 0;
+}
 ```
 
 // Форматированный вывод
@@ -198,7 +290,49 @@ chdb&#95;close&#95;conn(conn);
 return 0;
 &#125;
 
-```
+```c
+#include <stdio.h>
+#include <chdb.h>
+
+int safe_query_example() {
+    chdb_connection* conn = NULL;
+    chdb_result* result = NULL;
+    int return_code = 0;
+    
+    // Create connection
+    char* args[] = {"chdb"};
+    conn = chdb_connect(1, args);
+    if (!conn) {
+        printf("Failed to create connection\n");
+        return 1;
+    }
+    
+    // Execute query
+    result = chdb_query(*conn, "SELECT invalid_syntax", "CSV");
+    if (!result) {
+        printf("Query execution failed\n");
+        return_code = 1;
+        goto cleanup;
+    }
+    
+    // Check for query errors
+    const char* error = chdb_result_error(result);
+    if (error) {
+        printf("Query error: %s\n", error);
+        return_code = 1;
+        goto cleanup;
+    }
+    
+    // Process successful result
+    printf("Result: %.*s\n", 
+           (int)chdb_result_length(result), 
+           chdb_result_buffer(result));
+    
+cleanup:
+    if (result) chdb_destroy_query_result(result);
+    if (conn) chdb_close_conn(conn);
+    return return_code;
+}
 ```
 
 ## Пример на C++ {#cpp-example}

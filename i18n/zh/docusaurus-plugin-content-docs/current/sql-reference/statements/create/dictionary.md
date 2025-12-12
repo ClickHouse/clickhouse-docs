@@ -24,7 +24,7 @@ SOURCE(SOURCE_NAME([param1 value1 ... paramN valueN]))
 LAYOUT(LAYOUT_NAME([param_name param_value]))
 LIFETIME({MIN min_val MAX max_val | max_val})
 SETTINGS(setting_name = setting_value, setting_name = setting_value, ...)
-COMMENT '注释'
+COMMENT 'Comment'
 ```
 
 字典结构由属性组成。字典属性的定义方式与表列类似。唯一必须显式指定的属性是类型，其余属性都可以使用默认值。

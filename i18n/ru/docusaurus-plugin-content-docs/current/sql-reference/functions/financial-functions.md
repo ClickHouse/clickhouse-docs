@@ -61,7 +61,7 @@ SELECT financialInternalRateOfReturn([-100, 39, 59, 55, 20])
 0.2809484211599611
 ```
 
-**simple&#95;example&#95;with&#95;guess**
+**simple_example_with_guess**
 
 ```sql title=Query
 SELECT financialInternalRateOfReturn([-100, 39, 59, 55, 20], 0.1)
@@ -71,42 +71,47 @@ SELECT financialInternalRateOfReturn([-100, 39, 59, 55, 20], 0.1)
 0.2809484211599611
 ```
 
+
+
 ## financialInternalRateOfReturnExtended {#financialInternalRateOfReturnExtended}
 
-Введена в версии: v25.7
+Introduced in: v25.7
 
-Вычисляет расширенную внутреннюю норму доходности (XIRR) для серии денежных потоков с нерегулярными интервалами. XIRR — это ставка дисконтирования, при которой чистая приведённая стоимость (NPV) всех денежных потоков равна нулю.
 
-XIRR решает следующее уравнение (пример для `ACT_365F`):
+Calculates the Extended Internal Rate of Return (XIRR) for a series of cash flows occurring at irregular intervals. XIRR is the discount rate at which the net present value (NPV) of all cash flows equals zero.
+
+XIRR attempts to solve the following equation (example for `ACT_365F`):
 
 $$
 \sum_{i=0}^n \frac{cashflow_i}{(1 + rate)^{(date_i - date_0)/365}} = 0
 $$
 
-Массивы должны быть отсортированы по датам в порядке возрастания. Даты должны быть уникальными.
+Arrays should be sorted by date in ascending order. Dates need to be unique.
+    
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 financialInternalRateOfReturnExtended(cashflow, date [, guess, daycount])
 ```
 
-**Аргументы**
+**Arguments**
 
-- `cashflow` — Массив денежных потоков, соответствующих датам во втором параметре. [`Array(Int8/16/32/64)`](/sql-reference/data-types/array) или [`Array(Float*)`](/sql-reference/data-types/array)
-- `date` — Отсортированный массив уникальных дат, соответствующих денежным потокам. [`Array(Date)`](/sql-reference/data-types/array) или [`Array(Date32)`](/sql-reference/data-types/array)
-- `[, guess]` — Необязательный параметр. Начальное приближение (константа) для вычисления XIRR. [`Float*`](/sql-reference/data-types/float)
-- `[, daycount]` —
-  Необязательный параметр. Соглашение о подсчёте дней (по умолчанию 'ACT_365F'). Поддерживаемые значения:
-- 'ACT_365F' - Actual/365 Fixed: использует фактическое количество дней между датами, делённое на 365
-- 'ACT_365_25' - Actual/365.25: использует фактическое количество дней между датами, делённое на 365.25
-  [`String`](/sql-reference/data-types/string)
+- `cashflow` — An array of cash flows corresponding to the dates in second param. [`Array(Int8/16/32/64)`](/sql-reference/data-types/array) or [`Array(Float*)`](/sql-reference/data-types/array)
+- `date` — A sorted array of unique dates corresponding to the cash flows. [`Array(Date)`](/sql-reference/data-types/array) or [`Array(Date32)`](/sql-reference/data-types/array)
+- `[, guess]` — Optional. Initial guess (constant value) for the XIRR calculation. [`Float*`](/sql-reference/data-types/float)
+- `[, daycount]` — 
+Optional day count convention (default 'ACT_365F'). Supported values:
+- 'ACT_365F' - Actual/365 Fixed: Uses actual number of days between dates divided by 365
+- 'ACT_365_25' - Actual/365.25: Uses actual number of days between dates divided by 365.25
+             [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает значение XIRR. Если вычисление невозможно, возвращает NaN. [`Float64`](/sql-reference/data-types/float)
+**Returned value**
 
-**Примеры**
+Returns the XIRR value. If the calculation cannot be performed, it returns NaN. [`Float64`](/sql-reference/data-types/float)
+
+**Examples**
 
 **simple_example**
 
@@ -138,43 +143,48 @@ SELECT round(financialInternalRateOfReturnExtended([100000, -110000], [toDate('2
 0.099785
 ```
 
+
+
 ## financialNetPresentValue {#financialNetPresentValue}
 
-Появилась в версии: v25.7
+Introduced in: v25.7
 
-Вычисляет чистую приведённую стоимость (Net Present Value, NPV) ряда денежных потоков при условии равных временных интервалов между каждым денежным потоком.
 
-Вариант по умолчанию (`start_from_zero` = true):
+Calculates the Net Present Value (NPV) of a series of cash flows assuming equal time intervals between each cash flow.
 
-$$
-\sum&#95;{i=0}^{N-1} \frac{values_i}{(1 + rate)^i}
-$$
-
-Вариант, совместимый с Excel (`start_from_zero` = false):
+Default variant (`start_from_zero` = true):
 
 $$
-\sum&#95;{i=1}^{N} \frac{values_i}{(1 + rate)^i}
+\sum_{i=0}^{N-1} \frac{values_i}{(1 + rate)^i}
 $$
 
-**Синтаксис**
+Excel-compatible variant (`start_from_zero` = false):
+
+$$
+\sum_{i=1}^{N} \frac{values_i}{(1 + rate)^i}
+$$
+    
+
+**Syntax**
 
 ```sql
 financialNetPresentValue(rate, cashflows[, start_from_zero])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `rate` — Ставка дисконтирования, которая будет применена. [`Float*`](/sql-reference/data-types/float)
-* `cashflows` — Массив денежных потоков. Каждое значение представляет собой платеж (отрицательное значение) или доход (положительное значение). [`Array(Int8/16/32/64)`](/sql-reference/data-types/array) или [`Array(Float*)`](/sql-reference/data-types/array)
-* `[, start_from_zero]` — Необязательный логический параметр, определяющий, начинать ли расчет NPV с периода `0` (true) или с периода `1` (false, как в Excel). Значение по умолчанию: true. [`Bool`](/sql-reference/data-types/boolean)
+- `rate` — The discount rate to apply. [`Float*`](/sql-reference/data-types/float)
+- `cashflows` — Array of cash flows. Each value represents a payment (negative value) or income (positive value). [`Array(Int8/16/32/64)`](/sql-reference/data-types/array) or [`Array(Float*)`](/sql-reference/data-types/array)
+- `[, start_from_zero]` — Optional boolean parameter indicating whether to start the NPV calculation from period `0` (true) or period `1` (false, Excel-compatible). Default: true. [`Bool`](/sql-reference/data-types/boolean)
 
-**Возвращаемое значение**
 
-Возвращает чистую приведенную стоимость в виде значения типа Float64. [`Float64`](/sql-reference/data-types/float)
+**Returned value**
 
-**Примеры**
+Returns the net present value as a Float64 value. [`Float64`](/sql-reference/data-types/float)
 
-**default&#95;calculation**
+**Examples**
+
+**default_calculation**
 
 ```sql title=Query
 SELECT financialNetPresentValue(0.08, [-40000., 5000., 8000., 12000., 30000.])
@@ -184,7 +194,7 @@ SELECT financialNetPresentValue(0.08, [-40000., 5000., 8000., 12000., 30000.])
 3065.2226681795255
 ```
 
-**excel&#95;compatible&#95;calculation**
+**excel_compatible_calculation**
 
 ```sql title=Query
 SELECT financialNetPresentValue(0.08, [-40000., 5000., 8000., 12000., 30000.], false)
@@ -194,40 +204,45 @@ SELECT financialNetPresentValue(0.08, [-40000., 5000., 8000., 12000., 30000.], f
 2838.1691372032656
 ```
 
+
+
 ## financialNetPresentValueExtended {#financialNetPresentValueExtended}
 
-Введена в версии: v25.7
+Introduced in: v25.7
 
-Вычисляет расширенную чистую приведённую стоимость (XNPV) для серии денежных потоков, происходящих через нерегулярные интервалы. XNPV учитывает конкретное время каждого денежного потока при расчёте приведённой стоимости.
 
-Уравнение XNPV для `ACT_365F`:
+Calculates the Extended Net Present Value (XNPV) for a series of cash flows occurring at irregular intervals. XNPV considers the specific timing of each cash flow when calculating present value.
+
+XNPV equation for `ACT_365F`:
 
 $$
 XNPV=\sum_{i=1}^n \frac{cashflow_i}{(1 + rate)^{(date_i - date_0)/365}}
 $$
 
-Массивы должны быть отсортированы по дате в порядке возрастания. Даты должны быть уникальными.
+Arrays should be sorted by date in ascending order. Dates need to be unique.
+    
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 financialNetPresentValueExtended(rate, cashflows, dates[, daycount])
 ```
 
-**Аргументы**
+**Arguments**
 
-- `rate` — Применяемая ставка дисконтирования. [`Float*`](/sql-reference/data-types/float)
-- `cashflows` — Массив денежных потоков. Каждое значение представляет платёж (отрицательное значение) или доход (положительное значение). Должен содержать как минимум одно положительное и одно отрицательное значение. [`Array(Int8/16/32/64)`](/sql-reference/data-types/array) или [`Array(Float*)`](/sql-reference/data-types/array)
-- `dates` — Массив дат, соответствующих каждому денежному потоку. Должен иметь тот же размер, что и массив cashflows. [`Array(Date)`](/sql-reference/data-types/array) или [`Array(Date32)`](/sql-reference/data-types/array)
-- `[, daycount]` — Необязательное соглашение о подсчёте дней. Поддерживаемые значения: `'ACT_365F'` (по умолчанию) — Actual/365 Fixed, `'ACT_365_25'` — Actual/365.25. [`String`](/sql-reference/data-types/string)
+- `rate` — The discount rate to apply. [`Float*`](/sql-reference/data-types/float)
+- `cashflows` — Array of cash flows. Each value represents a payment (negative value) or income (positive value). Must contain at least one positive and one negative value. [`Array(Int8/16/32/64)`](/sql-reference/data-types/array) or [`Array(Float*)`](/sql-reference/data-types/array)
+- `dates` — Array of dates corresponding to each cash flow. Must have the same size as cashflows array. [`Array(Date)`](/sql-reference/data-types/array) or [`Array(Date32)`](/sql-reference/data-types/array)
+- `[, daycount]` — Optional day count convention. Supported values: `'ACT_365F'` (default) — Actual/365 Fixed, `'ACT_365_25'` — Actual/365.25. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает чистую приведённую стоимость в виде значения Float64. [`Float64`](/sql-reference/data-types/float)
+**Returned value**
 
-**Примеры**
+Returns the net present value as a Float64 value. [`Float64`](/sql-reference/data-types/float)
 
-**Базовое использование**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Запрос
 SELECT financialNetPresentValueExtended(0.1, [-10000., 5750., 4250., 3250.], [toDate('2020-01-01'), toDate('2020-03-01'), toDate('2020-10-30'), toDate('2021-02-15')])
@@ -237,7 +252,7 @@ SELECT financialNetPresentValueExtended(0.1, [-10000., 5750., 4250., 3250.], [to
 2506.579458169746
 ```
 
-**Использование другого соглашения о подсчёте дней**
+**Using different day count convention**
 
 ```sql title=Запрос
 SELECT financialNetPresentValueExtended(0.1, [-10000., 5750., 4250., 3250.], [toDate('2020-01-01'), toDate('2020-03-01'), toDate('2020-10-30'), toDate('2021-02-15')], 'ACT_365_25')

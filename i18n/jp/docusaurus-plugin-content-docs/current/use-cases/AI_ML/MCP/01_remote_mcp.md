@@ -38,7 +38,7 @@ import img7 from '@site/static/images/use-cases/AI_ML/MCP/7usage_mcp.png';
 
 2. 「Connect」ビューから、または以下に表示されている ClickHouse Cloud MCP Server の URL をコピーします
 
-```bash
+```bash 
 https://mcp.clickhouse.cloud/mcp
 ```
 

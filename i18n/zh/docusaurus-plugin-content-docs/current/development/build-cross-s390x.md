@@ -108,24 +108,24 @@ buildType:
   choices:
     debug:
       short: Debug
-      long: 输出调试信息
+      long: Emit debug information
       buildType: Debug
     release:
       short: Release
-      long: 优化生成代码
+      long: Optimize generated code
       buildType: Release
     relwithdebinfo:
       short: RelWithDebInfo
-      long: 发布版本（含调试信息）
+      long: Release with Debug Info
       buildType: RelWithDebInfo
     tsan:
       short: MinSizeRel
-      long: 最小体积发布版本
+      long: Minimum Size Release
       buildType: MinSizeRel
 
 toolchain:
   default: default
-  description: 选择工具链
+  description: Select toolchain
   choices:
     default:
       short: x86_64
@@ -146,10 +146,10 @@ toolchain:
         {
             "type": "lldb",
             "request": "custom",
-            "name": "(lldb) 使用 qemu 启动 s390x",
+            "name": "(lldb) Launch s390x with qemu",
             "targetCreateCommands": ["target create ${command:cmake.launchTargetPath}"],
             "processCreateCommands": ["gdb-remote 2159"],
-            "preLaunchTask": "运行 ClickHouse"
+            "preLaunchTask": "Run ClickHouse"
         }
     ]
 }
@@ -170,7 +170,7 @@ toolchain:
 
 ```sh
 #! /bin/sh
-echo '正在启动调试器会话'
+echo 'Starting debugger session'
 cd $1
 qemu-s390x-static -g 2159 -L /usr/s390x-linux-gnu $2 $3 $4
 ```
@@ -184,7 +184,7 @@ qemu-s390x-static -g 2159 -L /usr/s390x-linux-gnu $2 $3 $4
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "运行 ClickHouse",
+            "label": "Run ClickHouse",
             "type": "shell",
             "isBackground": true,
             "command": "${workspaceFolder}/.vscode/run-debug.sh",
@@ -206,7 +206,7 @@ qemu-s390x-static -g 2159 -L /usr/s390x-linux-gnu $2 $3 $4
                     ],
                     "background": {
                         "activeOnStart": true,
-                        "beginsPattern": "^启动调试器会话",
+                        "beginsPattern": "^Starting debugger session",
                         "endsPattern": ".*"
                     }
                 }

@@ -58,25 +58,25 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   将此日志格式定义添加到 `http` 块中：
 
   ```nginx
-  http {
-      log_format json_combined escape=json
-      '{'
-        '"time_local":"$time_local",'
-        '"remote_addr":"$remote_addr",'
-        '"request_method":"$request_method",'
-        '"request_uri":"$request_uri",'
-        '"status":$status,'
-        '"body_bytes_sent":$body_bytes_sent,'
-        '"request_time":$request_time,'
-        '"upstream_response_time":"$upstream_response_time",'
-        '"http_referer":"$http_referer",'
-        '"http_user_agent":"$http_user_agent"'
-      '}';
+http {
+    log_format json_combined escape=json
+    '{'
+      '"time_local":"$time_local",'
+      '"remote_addr":"$remote_addr",'
+      '"request_method":"$request_method",'
+      '"request_uri":"$request_uri",'
+      '"status":$status,'
+      '"body_bytes_sent":$body_bytes_sent,'
+      '"request_time":$request_time,'
+      '"upstream_response_time":"$upstream_response_time",'
+      '"http_referer":"$http_referer",'
+      '"http_user_agent":"$http_user_agent"'
+    '}';
 
-      access_log /var/log/nginx/access.log json_combined;
-      error_log /var/log/nginx/error.log warn;
-  }
-  ```
+    access_log /var/log/nginx/access.log json_combined;
+    error_log /var/log/nginx/error.log warn;
+}
+```
 
   完成此更改后,请重新加载 Nginx。
 
@@ -87,34 +87,34 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   创建名为 nginx-monitoring.yaml 的文件，包含以下配置：
 
   ```yaml
-  receivers:
-    filelog:
-      include:
-        - /var/log/nginx/access.log
-        - /var/log/nginx/error.log
-      start_at: end 
-      operators:
-        - type: json_parser
-          parse_from: body
-          parse_to: attributes
-        - type: time_parser
-          parse_from: attributes.time_local
-          layout: '%d/%b/%Y:%H:%M:%S %z'
-        - type: add
-          field: attributes.source
-          value: "nginx"
+receivers:
+  filelog:
+    include:
+      - /var/log/nginx/access.log
+      - /var/log/nginx/error.log
+    start_at: end 
+    operators:
+      - type: json_parser
+        parse_from: body
+        parse_to: attributes
+      - type: time_parser
+        parse_from: attributes.time_local
+        layout: '%d/%b/%Y:%H:%M:%S %z'
+      - type: add
+        field: attributes.source
+        value: "nginx"
 
-  service:
-    pipelines:
-      logs/nginx:
-        receivers: [filelog]
-        processors:
-          - memory_limiter
-          - transform
-          - batch
-        exporters:
-          - clickhouse
-  ```
+service:
+  pipelines:
+    logs/nginx:
+      receivers: [filelog]
+      processors:
+        - memory_limiter
+        - transform
+        - batch
+      exporters:
+        - clickhouse
+```
 
   此配置：
 
@@ -145,30 +145,30 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   更新您的 ClickStack 部署配置：
 
   ```yaml
-  services:
-    clickstack:
-      # ... 现有配置 ...
-      environment:
-        - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
-        # ... 其他环境变量 ...
-      volumes:
-        - ./nginx-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
-        - /var/log/nginx:/var/log/nginx:ro
-        # ... 其他卷 ...
-  ```
+services:
+  clickstack:
+    # ... existing configuration ...
+    environment:
+      - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
+      # ... other environment variables ...
+    volumes:
+      - ./nginx-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
+      - /var/log/nginx:/var/log/nginx:ro
+      # ... other volumes ...
+```
 
   ##### 选项 2:Docker Run(一体化镜像)
 
   如果使用 docker run 运行一体化镜像：
 
   ```bash
-  docker run --name clickstack \
-    -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-    -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
-    -v "$(pwd)/nginx-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-    -v /var/log/nginx:/var/log/nginx:ro \
-    clickhouse/clickstack-all-in-one:latest
-  ```
+docker run --name clickstack \
+  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+  -v "$(pwd)/nginx-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+  -v /var/log/nginx:/var/log/nginx:ro \
+  clickhouse/clickstack-all-in-one:latest
+```
 
   :::note
   确保 ClickStack 采集器具有读取 nginx 日志文件的相应权限。在生产环境中,使用只读挂载(:ro)并遵循最小权限原则。
@@ -197,7 +197,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 #### 下载示例数据集 {#download-sample}
 
 ```bash
-# 下载日志
+# Download the logs
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/access.log
 ```
 
@@ -217,7 +217,7 @@ receivers:
   filelog:
     include:
       - /tmp/nginx-demo/access.log
-    start_at: beginning  # 为演示数据从开头开始读取
+    start_at: beginning  # Read from beginning for demo data
     operators:
       - type: json_parser
         parse_from: body
@@ -310,13 +310,13 @@ HyperDX 使用浏览器的本地时区显示时间戳。演示数据覆盖的时
 * 检查环境变量 CUSTOM&#95;OTELCOL&#95;CONFIG&#95;FILE 是否设置正确
 
 ```bash
-docker exec <容器名称> printenv CUSTOM_OTELCOL_CONFIG_FILE
+docker exec <container-name> printenv CUSTOM_OTELCOL_CONFIG_FILE
 ```
 
 * 检查自定义配置文件是否已挂载到 /etc/otelcol-contrib/custom.config.yaml
 
 ```bash
-docker exec <容器名称> ls -lh /etc/otelcol-contrib/custom.config.yaml
+docker exec <container-name> ls -lh /etc/otelcol-contrib/custom.config.yaml
 ```
 
 * 查看自定义配置内容，确认其内容可读

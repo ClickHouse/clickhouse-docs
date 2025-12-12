@@ -23,7 +23,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 WITH [...] AS reference_vector
 SELECT [...]
 FROM table
-WHERE [...] -- условие WHERE необязательно
+WHERE [...] -- a WHERE clause is optional
 ORDER BY <DistanceFunction>(vectors, reference_vector)
 LIMIT <N>
 ```
@@ -160,13 +160,13 @@ ORDER BY [...]
 Потребление хранилища векторным столбцом в таблице (без сжатия):
 
 ```text
-Потребление хранилища = Количество векторов × Размерность × Размер типа данных столбца
+Storage consumption = Number of vectors * Dimension * Size of column data type
 ```
 
 Пример для [датасета DBpedia](https://huggingface.co/datasets/KShivendu/dbpedia-entities-openai-1M):
 
 ```text
-Потребление хранилища = 1 миллион * 1536 * 4 (для Float32) = 6,1 ГБ
+Storage consumption = 1 million * 1536 * 4 (for Float32) = 6.1 GB
 ```
 
 Индекс сходства векторов должен быть полностью загружен с диска в основную память для выполнения поиска.
@@ -175,19 +175,19 @@ ORDER BY [...]
 Объём памяти, необходимый для загрузки векторного индекса:
 
 ```text
-Память для векторов в индексе (mv) = Количество векторов * Размерность * Размер квантованного типа данных
-Память для графа в оперативной памяти (mg) = Количество векторов * hnsw_max_connections_per_layer * Байт_на_идентификатор_узла (= 4) * Коэффициент_повторения_узлов_по_слоям (= 2)
+Memory for vectors in the index (mv) = Number of vectors * Dimension * Size of quantized data type
+Memory for in-memory graph (mg) = Number of vectors * hnsw_max_connections_per_layer * Bytes_per_node_id (= 4) * Layer_node_repetition_factor (= 2)
 
-Потребление памяти: mv + mg
+Memory consumption: mv + mg
 ```
 
 Пример для [набора данных DBpedia](https://huggingface.co/datasets/KShivendu/dbpedia-entities-openai-1M):
 
 ```text
-Память для векторов в индексе (mv) = 1 млн * 1536 * 2 (для BFloat16) = 3072 МБ
-Память для графа в памяти (mg) = 1 млн * 64 * 2 * 4 = 512 МБ
+Memory for vectors in the index (mv) = 1 million * 1536 * 2 (for BFloat16) = 3072 MB
+Memory for in-memory graph (mg) = 1 million * 64 * 2 * 4 = 512 MB
 
-Потребление памяти = 3072 + 512 = 3584 МБ
+Memory consumption = 3072 + 512 = 3584 MB
 ```
 
 Приведенная выше формула не учитывает дополнительную память, необходимую индексам векторного сходства для выделения структур данных, используемых во время выполнения, таких как заранее выделенные буферы и кэши.
@@ -204,7 +204,7 @@ ORDER BY [...]
 WITH [...] AS reference_vector
 SELECT [...]
 FROM table
-WHERE [...] -- предложение WHERE необязательно
+WHERE [...] -- a WHERE clause is optional
 ORDER BY <DistanceFunction>(vectors, reference_vector)
 LIMIT <N>
 ```
@@ -237,21 +237,21 @@ LIMIT 10;
 
 ```result
     ┌─explain─────────────────────────────────────────────────────────────────────────────────────────┐
- 1. │ Expression (Проекция имён)                                                                      │
- 2. │   Limit (предварительный LIMIT (без OFFSET))                                                    │
- 3. │     Sorting (Сортировка для ORDER BY)                                                              │
- 4. │       Expression ((Перед ORDER BY + (Проекция + Преобразование имён столбцов в идентификаторы))) │
+ 1. │ Expression (Project names)                                                                      │
+ 2. │   Limit (preliminary LIMIT (without OFFSET))                                                    │
+ 3. │     Sorting (Sorting for ORDER BY)                                                              │
+ 4. │       Expression ((Before ORDER BY + (Projection + Change column names to column identifiers))) │
  5. │         ReadFromMergeTree (default.tab)                                                         │
- 6. │         Индексы:                                                                                │
+ 6. │         Indexes:                                                                                │
  7. │           PrimaryKey                                                                            │
- 8. │             Условие: true                                                                     │
- 9. │             Части: 1/1                                                                          │
-10. │             Гранулы: 575/575                                                                   │
+ 8. │             Condition: true                                                                     │
+ 9. │             Parts: 1/1                                                                          │
+10. │             Granules: 575/575                                                                   │
 11. │           Skip                                                                                  │
-12. │             Имя: idx                                                                           │
-13. │             Описание: vector_similarity GRANULARITY 100000000                                │
-14. │             Части: 1/1                                                                          │
-15. │             Гранулы: 10/575                                                                    │
+12. │             Name: idx                                                                           │
+13. │             Description: vector_similarity GRANULARITY 100000000                                │
+14. │             Parts: 1/1                                                                          │
+15. │             Granules: 10/575                                                                    │
     └─────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -327,7 +327,7 @@ ClickHouse отбросит все партиции, кроме партиции
 SELECT bookid, author, title
 FROM books
 WHERE price < 2.00
-ORDER BY cosineDistance(book_vector, getEmbedding('Книги о древних азиатских империях'))
+ORDER BY cosineDistance(book_vector, getEmbedding('Books on ancient Asian empires'))
 LIMIT 10
 ```
 
@@ -378,15 +378,15 @@ SETTINGS vector_search_with_rescoring = 0
 Query id: a2a9d0c8-a525-45c1-96ca-c5a11fa66f47
 
     ┌─explain─────────────────────────────────────────────────────────────────────────────────────────────────┐
- 1. │ Expression (Проекция имён)                                                                              │
+ 1. │ Expression (Project names)                                                                              │
  2. │ Header: id Int32                                                                                        │
- 3. │   Limit (предварительный LIMIT (без OFFSET))                                                           │
+ 3. │   Limit (preliminary LIMIT (without OFFSET))                                                            │
  4. │   Header: L2Distance(__table1.vec, _CAST([0., 2.]_Array(Float64), 'Array(Float64)'_String)) Float64     │
  5. │           __table1.id Int32                                                                             │
- 6. │     Sorting (Сортировка для ORDER BY)                                                                   │
+ 6. │     Sorting (Sorting for ORDER BY)                                                                      │
  7. │     Header: L2Distance(__table1.vec, _CAST([0., 2.]_Array(Float64), 'Array(Float64)'_String)) Float64   │
  8. │             __table1.id Int32                                                                           │
- 9. │       Expression ((До ORDER BY + (Проекция + Замена имён столбцов на идентификаторы столбцов)))        │
+ 9. │       Expression ((Before ORDER BY + (Projection + Change column names to column identifiers)))         │
 10. │       Header: L2Distance(__table1.vec, _CAST([0., 2.]_Array(Float64), 'Array(Float64)'_String)) Float64 │
 11. │               __table1.id Int32                                                                         │
 12. │         ReadFromMergeTree (default.tab)                                                                 │
@@ -518,13 +518,13 @@ result = chclient.query(
 Поэтому мы рекомендуем Python‑приложениям привязывать параметр опорного вектора в бинарной форме, используя следующий стиль:
 
 ```python
-search_v = openai_client.embeddings.create(input = "[Хорошие книги]", model='text-embedding-3-large', dimensions=1536).data[0].embedding
+search_v = openai_client.embeddings.create(input = "[Good Books]", model='text-embedding-3-large', dimensions=1536).data[0].embedding
 
 params = {'$search_v_binary$': np.array(search_v, dtype=np.float32).tobytes()}
 result = chclient.query(
    "SELECT id FROM items
     ORDER BY cosineDistance(vector, (SELECT reinterpret($search_v_binary$, 'Array(Float32)')))
-    LIMIT 10",
+    LIMIT 10"
     parameters = params)
 ```
 

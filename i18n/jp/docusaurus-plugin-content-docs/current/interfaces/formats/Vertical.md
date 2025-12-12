@@ -28,7 +28,7 @@ SELECT * FROM t_null FORMAT Vertical
 ```
 
 ```response
-行 1:
+Row 1:
 ──────
 x: 1
 y: ᴺᵁᴸᴸ
@@ -41,10 +41,10 @@ SELECT 'string with \'quotes\' and \t with some special \n characters' AS test F
 ```
 
 ```response
-行 1:
+Row 1:
 ──────
-test: 'quotes' を含む文字列と      いくつかの特殊
- 文字
+test: string with 'quotes' and      with some special
+ characters
 ```
 
 この形式はクエリ結果の出力にのみ適しており、パース（テーブルへの挿入用にデータを取得する処理）には適していません。

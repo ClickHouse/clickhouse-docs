@@ -68,7 +68,7 @@ receivers:
     password: ${env:POSTGRES_PASSWORD}
     databases:
       - postgres
-      - your_application_db # 実際のデータベース名に置き換えてください
+      - your_application_db # Replace with your actual database names
     collection_interval: 30s
     tls:
       insecure: true
@@ -142,10 +142,10 @@ docker run -d \
 あらかじめ生成されたメトリクスファイル（実運用に近いパターンを持つ 24 時間分の PostgreSQL メトリクス）をダウンロードします:
 
 ```bash
-# ゲージメトリクス（接続数、データベースサイズ）をダウンロード
+# Download gauge metrics (connections, database size)
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/postgres/postgres-metrics-gauge.csv
 
-# 積算メトリクス（コミット、ロールバック、各種操作）をダウンロード
+# Download sum metrics (commits, rollbacks, operations)
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/postgres/postgres-metrics-sum.csv
 ```
 
@@ -172,11 +172,11 @@ ClickStack が完全に起動するまで、約 30 秒待機してください�
 メトリクスを ClickHouse に直接読み込みます:
 
 ```bash
-# ゲージメトリクスをロード
+# Load gauge metrics
 cat postgres-metrics-gauge.csv | docker exec -i clickstack-postgres-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_gauge FORMAT CSVWithNames"
 
-# 積算メトリクスをロード
+# Load sum metrics
 cat postgres-metrics-sum.csv | docker exec -i clickstack-postgres-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_sum FORMAT CSVWithNames"
 ```
@@ -231,13 +231,13 @@ ClickStack で PostgreSQL の監視を開始するにあたって、PostgreSQL �
 環境変数が設定されていることを確認してください：
 
 ```bash
-docker exec <コンテナ名> printenv CUSTOM_OTELCOL_CONFIG_FILE
+docker exec <container-name> printenv CUSTOM_OTELCOL_CONFIG_FILE
 ```
 
 カスタム設定ファイルがマウントされていることを確認してください：
 
 ```bash
-docker exec <コンテナ名> cat /etc/otelcol-contrib/custom.config.yaml
+docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml
 ```
 
 ### HyperDX にメトリクスが表示されない場合 {#no-metrics}

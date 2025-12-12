@@ -71,18 +71,18 @@ Cluster Discovery を使用すると、各ノードを明示的に定義する�
         <discovery>
             <path>/clickhouse/discovery/cluster_name</path>
 
-            <!-- # オプションの設定パラメータ: -->
+            <!-- # Optional configuration parameters: -->
 
-            <!-- ## クラスタ内の他のすべてのノードにアクセスするための認証情報: -->
+            <!-- ## Authentication credentials to access all other nodes in cluster: -->
             <!-- <user>user1</user> -->
             <!-- <password>pass123</password> -->
-            <!-- ### パスワードの代わりに、サーバー間シークレットを使用することもできます: -->
+            <!-- ### Alternatively to password, interserver secret may be used: -->
             <!-- <secret>secret123</secret> -->
 
-            <!-- ## 現在のノードのシャード（以下を参照）: -->
+            <!-- ## Shard for current node (see below): -->
             <!-- <shard>1</shard> -->
 
-            <!-- ## オブザーバーモード（以下を参照）: -->
+            <!-- ## Observer mode (see below): -->
             <!-- <observer/> -->
         </discovery>
     </cluster_name>
@@ -215,6 +215,12 @@ INSERT INTO event_table ...
 
 ```sql
 SELECT hostname(), database, table FROM clusterAllReplicas(default, system.tables) WHERE table = 'event_table' FORMAT PrettyCompactMonoBlock
+
+┌─hostname()───┬─database─┬─table───────┐
+│ a6a68731c21b │ default  │ event_table │
+│ 92d3c04025e8 │ default  │ event_table │
+│ 8e62b9cb17a1 │ default  │ event_table │
+└──────────────┴──────────┴─────────────┘
 ```
 
 ┌─hostname()───┬─database─┬─table───────┐

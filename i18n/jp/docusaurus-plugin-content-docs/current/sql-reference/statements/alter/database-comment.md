@@ -14,52 +14,56 @@ doc_type: 'reference'
 
 ## 構文 {#syntax}
 
-```sql
-ALTER DATABASE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
+```
+
+## Examples {#examples}
+
+To create a `DATABASE` with a comment:
+
 ```
 
 ## 例 {#examples}
 
 コメント付きの `DATABASE` を作成するには：
 
-```sql
-CREATE DATABASE database_with_comment ENGINE = Memory COMMENT '一時データベース';
+```
+
+To modify the comment:
+
 ```
 
 コメントを編集するには:
 
-```sql
-ALTER DATABASE database_with_comment 
-MODIFY COMMENT 'データベースに関する新しいコメント';
+```
+
+To view the modified comment:
+
 ```
 
 変更後のコメントを表示するには：
 
-```sql
-SELECT comment 
-FROM system.databases 
-WHERE name = 'database_with_comment';
 ```
 
-```text
-┌─comment─────────────────┐
-│ データベースに関する新しいコメント │
-└─────────────────────────┘
+```
+
+```
+
+To remove the database comment:
+
 ```
 
 データベースのコメントを削除するには：
 
-```sql
-ALTER DATABASE database_with_comment 
-MODIFY COMMENT '';
+```
+
+To verify that the comment was removed:
+
 ```
 
 コメントが削除されたことを確認するには：
 
-```sql title="Query"
-SELECT comment 
-FROM system.databases 
-WHERE  name = 'database_with_comment';
+```
+
 ```
 
 ```text title="Response"

@@ -119,18 +119,18 @@ SELECT * FROM remote_table;
   SELECT create_table_query
   FROM system.tables
   WHERE database = 'imdb' AND table = 'actors'
-```
+  ```
 
 レスポンス
 
 ```sql
-CREATE TABLE imdb.actors (`id` UInt32,
-                          `first_name` String,
-                          `last_name` String,
-                          `gender` FixedString(1))
-                ENGINE = MergeTree
-                ORDER BY (id, first_name, last_name, gender);
-```
+  CREATE TABLE imdb.actors (`id` UInt32,
+                            `first_name` String,
+                            `last_name` String,
+                            `gender` FixedString(1))
+                  ENGINE = MergeTree
+                  ORDER BY (id, first_name, last_name, gender);
+  ```
 
 #### 宛先側 ClickHouse システム上で {#on-the-destination-clickhouse-system}
 

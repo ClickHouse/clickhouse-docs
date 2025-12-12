@@ -238,8 +238,8 @@ CREATE USER my_alter_admin IDENTIFIED BY 'password';
 Например:
 
 ```sql
-GRANT ALTER ON my_db.* WITH GRANT OPTION
-```
+  GRANT ALTER ON my_db.* WITH GRANT OPTION
+  ```
 
 Чтобы выполнить `GRANT` или `REVOKE` привилегий, пользователь должен сначала сам обладать этими привилегиями.
 :::
@@ -249,7 +249,7 @@ GRANT ALTER ON my_db.* WITH GRANT OPTION
 Иерархия `ALTER`:
 
 ```response
-├── ALTER (только для таблиц и представлений)/
+├── ALTER (only for table and view)/
 │   ├── ALTER TABLE/
 │   │   ├── ALTER UPDATE
 │   │   ├── ALTER DELETE
@@ -332,13 +332,13 @@ SHOW GRANTS FOR my_user;
 ```response
 SHOW GRANTS FOR my_user
 
-ID запроса: 47b3d03f-46ac-4385-91ec-41119010e4e2
+Query id: 47b3d03f-46ac-4385-91ec-41119010e4e2
 
 ┌─GRANTS FOR my_user────────────────────────────────┐
 │ GRANT ALTER COLUMN ON default.my_table TO my_user │
 └───────────────────────────────────────────────────┘
 
-Получена 1 строка. Время выполнения: 0.004 сек.
+1 row in set. Elapsed: 0.004 sec.
 ```
 
 Это также предоставляет следующие подпривилегии:
@@ -371,7 +371,7 @@ Query id: 61fe0fdc-1442-4cd6-b2f3-e8f2a853c739
 
 Ok.
 
-Получено 0 строк. Время выполнения: 0.002 сек.
+0 rows in set. Elapsed: 0.002 sec.
 ```
 
 ```sql
@@ -407,7 +407,7 @@ Query id: b882ba1b-90fb-45b9-b10f-3cda251e2ccc
 
 Ok.
 
-0 строк в наборе. Затрачено: 0.002 сек.
+0 rows in set. Elapsed: 0.002 sec.
 ```
 
 ```sql
@@ -482,6 +482,12 @@ DESCRIBE my_db.my_table;
 DESCRIBE TABLE my_db.my_table
 
 Query id: ab9cb2d0-5b1a-42e1-bc9c-c7ff351cb272
+
+┌─name────┬─type───┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
+│ id      │ UInt64 │              │                    │         │                  │                │
+│ column1 │ String │              │                    │         │                  │                │
+│ column2 │ String │              │                    │         │                  │                │
+└─────────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
 ┌─имя─────┬─тип────┬─тип&#95;по&#95;умолчанию─┬─выражение&#95;по&#95;умолчанию─┬─комментарий─┬─выражение&#95;кодека─┬─выражение&#95;TTL─┐
@@ -490,13 +496,20 @@ Query id: ab9cb2d0-5b1a-42e1-bc9c-c7ff351cb272
 │ column2 │ String │              │                    │             │                  │                  │
 └─────────┴────────┴─────────────────────┴────────────────────────────┴─────────────┴──────────────────┴──────────────────┘
 
-````
-
-4. Тестирование удаления столбца
+````sql
+ALTER TABLE my_db.my_table DROP COLUMN column2;
 ```sql
 ALTER TABLE my_db.my_table DROP COLUMN column2;
-````
+````response
+ALTER TABLE my_db.my_table
+    DROP COLUMN column2
 
+Query id: 50ad5f6b-f64b-4c96-8f5f-ace87cea6c47
+
+0 rows in set. Elapsed: 0.004 sec.
+
+Received exception from server (version 22.5.1):
+Code: 497. DB::Exception: Received from chnode1.marsnet.local:9440. DB::Exception: my_user: Not enough privileges. To execute this query it's necessary to have grant ALTER DROP COLUMN(column2) ON my_db.my_table. (ACCESS_DENIED)
 ```response
 ALTER TABLE my_db.my_table
     DROP COLUMN column2
@@ -507,40 +520,43 @@ Query id: 50ad5f6b-f64b-4c96-8f5f-ace87cea6c47
 
 Получено исключение от сервера (версия 22.5.1):
 Code: 497. DB::Exception: Received from chnode1.marsnet.local:9440. DB::Exception: my_user: Недостаточно прав. Для выполнения этого запроса необходима привилегия ALTER DROP COLUMN(column2) ON my_db.my_table. (ACCESS_DENIED)
-```
-
-5. Проверка привилегии `ALTER ADMIN` путём выдачи соответствующих прав
-
 ```sql
 GRANT SELECT, ALTER COLUMN ON my_db.my_table TO my_alter_admin WITH GRANT OPTION;
-```
-
-6. Войдите в систему под пользователем alter admin
-
+```sql
+GRANT SELECT, ALTER COLUMN ON my_db.my_table TO my_alter_admin WITH GRANT OPTION;
 ```bash
 clickhouse-client --user my_alter_admin --password password --port 9000 --host <my_clickhouse_host>
-```
-
-7. Предоставить подпривилегию
-
+```bash
+clickhouse-client --user my_alter_admin --password password --port 9000 --host <my_clickhouse_host>
 ```sql
 GRANT ALTER ADD COLUMN ON my_db.my_table TO my_user;
-```
-
+```sql
+GRANT ALTER ADD COLUMN ON my_db.my_table TO my_user;
 ```response
 GRANT ALTER ADD COLUMN ON my_db.my_table TO my_user
 
 Query id: 1c7622fa-9df1-4c54-9fc3-f984c716aeba
 
 Ok.
-```
+```response
+GRANT ALTER ADD COLUMN ON my_db.my_table TO my_user
 
-8. Проверьте, что выдаваемая привилегия, которой у пользователя alter admin нет, не рассматривается как подпривилегия уже выданных этому администратору привилегий.
+Query id: 1c7622fa-9df1-4c54-9fc3-f984c716aeba
 
+Ok.
 ```sql
 GRANT ALTER UPDATE ON my_db.my_table TO my_user;
-```
+```sql
+GRANT ALTER UPDATE ON my_db.my_table TO my_user;
+```response
+GRANT ALTER UPDATE ON my_db.my_table TO my_user
 
+Query id: 191690dc-55a6-4625-8fee-abc3d14a5545
+
+0 rows in set. Elapsed: 0.004 sec.
+
+Received exception from server (version 22.5.1):
+Code: 497. DB::Exception: Received from chnode1.marsnet.local:9440. DB::Exception: my_alter_admin: Not enough privileges. To execute this query it's necessary to have grant ALTER UPDATE ON my_db.my_table WITH GRANT OPTION. (ACCESS_DENIED)
 ```response
 GRANT ALTER UPDATE ON my_db.my_table TO my_user
 

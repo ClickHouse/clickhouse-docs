@@ -88,10 +88,10 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 </clickhouse>
 ```
 
-#### ClickHouse Keeper を有効にした単一の ClickHouse サーバーノード向け基本構成 {#basic-configuration-for-a-single-clickhouse-server-node-with-clickhouse-keeper-enabled}
+#### Basic configuration for a single ClickHouse server node with ClickHouse Keeper enabled {#basic-configuration-for-a-single-clickhouse-server-node-with-clickhouse-keeper-enabled}
 
 :::note
-ClickHouse サーバーおよび適切な ClickHouse Keeper ノードのクォーラムのデプロイ方法についての詳細は、[deployment](/deployment-guides/terminology.md) に関するドキュメントを参照してください。ここで示す構成は実験・検証目的のものです。
+See the [deployment](/deployment-guides/terminology.md) documentation for details on deploying ClickHouse server and a proper quorum of ClickHouse Keeper nodes.  The configuration shown here is for experimental purposes.
 :::
 
 ```xml title=/etc/clickhouse-server/config.d/config.xml
@@ -134,22 +134,21 @@ ClickHouse サーバーおよび適切な ClickHouse Keeper ノードのクォ�
 </clickhouse>
 ```
 
-### 例 {#example}
+### Example {#example}
 
-#### 実験的トランザクション機能が有効になっていることを確認する {#verify-that-experimental-transactions-are-enabled}
+#### Verify that experimental transactions are enabled {#verify-that-experimental-transactions-are-enabled}
 
-`BEGIN TRANSACTION` または `START TRANSACTION` を発行し、続けて `ROLLBACK` を実行して、実験的トランザクション機能が有効であること、およびトランザクションの追跡に使用される ClickHouse Keeper が有効であることを確認します。
+Issue a `BEGIN TRANSACTION` or `START TRANSACTION` followed by a `ROLLBACK` to verify that experimental transactions are enabled, and that ClickHouse Keeper is enabled as it is used to track transactions. 
 
 ```sql
 BEGIN TRANSACTION
 ```
-
 ```response
 OK
 ```
 
 :::tip
-次のエラーが表示された場合は、設定ファイルを確認し、`allow_experimental_transactions` が `1`（または `0` や `false` 以外の値）に設定されていることを確認してください。
+If you see the following error, then check your configuration file to make sure that `allow_experimental_transactions` is set to `1` (or any value other than `0` or `false`).
 
 ```response
 Code: 48. DB::Exception: Received from localhost:9000.
@@ -157,13 +156,13 @@ DB::Exception: トランザクションはサポートされていません。
 (NOT_IMPLEMENTED)
 ```
 
-次のコマンドを実行して ClickHouse Keeper の状態を確認することもできます。
+You can also check ClickHouse Keeper by issuing
 
 ```bash
 echo ruok | nc localhost 9181
 ```
 
-ClickHouse Keeper は `imok` と応答するはずです。
+ClickHouse Keeper should respond with `imok`.
 :::
 
 ```sql
@@ -174,10 +173,10 @@ ROLLBACK
 OK
 ```
 
-#### テスト用のテーブルを作成する {#create-a-table-for-testing}
+#### Create a table for testing {#create-a-table-for-testing}
 
 :::tip
-テーブルの作成はトランザクションとして実行されません。DDL クエリはトランザクションの外で実行してください。
+Creation of tables is not transactional.  Run this DDL query outside of a transaction.
 :::
 
 ```sql
@@ -193,7 +192,7 @@ ORDER BY n
 Ok.
 ```
 
-#### トランザクションを開始して 1 行を挿入する {#begin-a-transaction-and-insert-a-row}
+#### Begin a transaction and insert a row {#begin-a-transaction-and-insert-a-row}
 
 ```sql
 トランザクション開始
@@ -223,12 +222,12 @@ FROM mergetree_table
 ```
 
 :::note
-トランザクション内でテーブルに対してクエリを実行すると、まだコミットされていないにもかかわらず行が挿入されていることを確認できます。
+You can query the table from within a transaction and see that the row was inserted even though it has not yet been committed.
 :::
 
-#### トランザクションをロールバックし、再度テーブルをクエリする {#rollback-the-transaction-and-query-the-table-again}
+#### Rollback the transaction, and query the table again {#rollback-the-transaction-and-query-the-table-again}
 
-トランザクションがロールバックされていることを確認します。
+Verify that the transaction is rolled back:
 
 ```sql
 ロールバック
@@ -242,19 +241,17 @@ Ok.
 SELECT *
 FROM mergetree_table
 ```
-
 ```response
 Ok.
 
 0 rows in set. Elapsed: 0.002 sec.
 ```
 
-#### トランザクションを完了してからテーブルを再度クエリする {#complete-a-transaction-and-query-the-table-again}
+#### Complete a transaction and query the table again {#complete-a-transaction-and-query-the-table-again}
 
 ```sql
 BEGIN TRANSACTION
 ```
-
 ```response
 Ok.
 ```
@@ -286,9 +283,10 @@ FROM mergetree_table
 └────┘
 ```
 
-### トランザクションの調査 {#transactions-introspection}
+### Transactions introspection {#transactions-introspection}
 
-`system.transactions` テーブルをクエリしてトランザクションを確認できます。ただし、そのテーブルはトランザクション中のセッションからはクエリできない点に注意してください。そのテーブルをクエリするには、別の `clickhouse client` セッションを開いてください。
+You can inspect transactions by querying the `system.transactions` table, but note that you cannot query that
+table from a session that is in a transaction. Open a second `clickhouse client` session to query that table.
 
 ```sql
 SELECT *

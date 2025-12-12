@@ -55,7 +55,7 @@ Nginx にトレース機能を追加する最も簡単な方法は、OpenTelemet
 現在使用している Nginx イメージを、OpenTelemetry 対応バージョンに置き換えます:
 
 ```yaml
-# docker-compose.yml または Dockerfile 内 {#in-your-docker-composeyml-or-dockerfile}
+# In your docker-compose.yml or Dockerfile
 image: nginx:1.27-otel
 ```
 
@@ -85,32 +85,32 @@ events {
 }
 
 http {
-    # OpenTelemetry エクスポーターの設定
+    # OpenTelemetry exporter configuration
     otel_exporter {
         endpoint <clickstack-host>:4317;
         header authorization ${CLICKSTACK_API_KEY};
     }
     
-    # この nginx インスタンスを識別するためのサービス名
+    # Service name for identifying this nginx instance
     otel_service_name "nginx-proxy";
     
-    # トレースを有効化
+    # Enable tracing
     otel_trace on;
     
     server {
         listen 80;
         
         location / {
-            # この location でトレースを有効化
+            # Enable tracing for this location
             otel_trace_context propagate;
             otel_span_name "$request_method $uri";
             
-            # リクエストの詳細をトレースに追加
+            # Add request details to traces
             otel_span_attr http.status_code $status;
             otel_span_attr http.request.method $request_method;
             otel_span_attr http.route $uri;
             
-            # 既存のプロキシまたはアプリケーション設定
+            # Your existing proxy or application configuration
             proxy_pass http://your-backend;
         }
     }
@@ -156,10 +156,10 @@ nginx -t
 
 テストに成功したら、Nginx をリロードします:
 ```bash
-# Docker の場合 {#for-docker}
+# For Docker
 docker-compose restart nginx
 
-# systemd の場合 {#for-systemd}
+# For systemd
 sudo systemctl reload nginx
 ```
 
@@ -198,7 +198,7 @@ docker run --name clickstack-demo \
 サンプルトレースファイルをダウンロードし、タイムスタンプを現在時刻に更新します:
 
 ```bash
-# トレースをダウンロード
+# Download the traces
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/nginx-traces-sample.json
 ```
 
@@ -312,10 +312,10 @@ echo $CLICKSTACK_API_KEY
 **nginx のエラーログを確認する:**
 
 ```bash
-# Docker の場合 {#for-docker}
+# For Docker
 docker logs <nginx-container> 2>&1 | grep -i otel
 
-# systemd の場合 {#for-systemd}
+# For systemd
 sudo tail -f /var/log/nginx/error.log | grep -i otel
 ```
 
@@ -324,7 +324,7 @@ OpenTelemetry 関連のエラーが発生していないか確認します。
 **nginx がリクエストを受信していることを確認する：**
 
 ```bash
-# アクセスログを確認してトラフィックを検証する {#check-access-logs-to-confirm-traffic}
+# Check access logs to confirm traffic
 tail -f /var/log/nginx/access.log
 ```
 

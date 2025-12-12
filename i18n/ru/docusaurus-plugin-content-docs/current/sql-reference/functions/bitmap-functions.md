@@ -53,30 +53,31 @@ SELECT bitmapToArray(bitmapAnd(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5]))) 
 └─────┘
 ```
 
+
+
 ## bitmapAndCardinality {#bitmapAndCardinality}
 
-Добавлена в версии: v20.1
+Introduced in: v20.1
 
-Возвращает кардинальность логической конъюнкции (AND) двух битмапов.
+Returns the cardinality of the logical conjunction (AND) of two bitmaps.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 bitmapAndCardinality(bitmap1, bitmap2)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `bitmap1` — первый объект битмапа. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction).
-* `bitmap2` — второй объект битмапа. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction).
+- `bitmap1` — First bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — Second bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает количество установленных битов в пересечении двух битмапов [`UInt64`](/sql-reference/data-types/int-uint)
+Returns the number of set bits in the intersection of the two bitmaps [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapAndCardinality(bitmapBuild([1,2,3]), bitmapBuild([3,4,5])) AS res;
@@ -88,30 +89,31 @@ SELECT bitmapAndCardinality(bitmapBuild([1,2,3]), bitmapBuild([3,4,5])) AS res;
 └─────┘
 ```
 
+
+
 ## bitmapAndnot {#bitmapAndnot}
 
-Добавлена в версии: v20.1
+Introduced in: v20.1
 
-Вычисляет разность множеств A AND-NOT B между двумя битмапами.
+Computes the set difference A AND-NOT B of two bitmaps.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 bitmapAndnot(bitmap1, bitmap2)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `bitmap1` — первый объект bitmap. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction).
-* `bitmap2` — второй объект bitmap. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction).
+- `bitmap1` — First bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — Second bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает bitmap, содержащий биты, установленные в первом bitmap, но отсутствующие во втором. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
+Returns a bitmap containing set bits present in the first bitmap but not in the second [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapToArray(bitmapAndnot(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5]))) AS res;
@@ -123,30 +125,31 @@ SELECT bitmapToArray(bitmapAndnot(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5])
 └────────┘
 ```
 
+
+
 ## bitmapAndnotCardinality {#bitmapAndnotCardinality}
 
-Введена в версии v20.1
+Introduced in: v20.1
 
-Возвращает мощность результата операции AND-NOT над двумя битовыми картами.
+Returns the cardinality of the AND-NOT operation of two bitmaps.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 bitmapAndnotCardinality(bitmap1, bitmap2)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `bitmap1` — первый объект bitmap. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction).
-* `bitmap2` — второй объект bitmap. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction).
+- `bitmap1` — First bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — Second bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает количество установленных битов в результате `bitmap1 AND-NOT bitmap2` [`UInt64`](/sql-reference/data-types/int-uint)
+Returns the number of set bits in the result of `bitmap1 AND-NOT bitmap2` [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapAndnotCardinality(bitmapBuild([1,2,3]), bitmapBuild([3,4,5])) AS res;
@@ -158,29 +161,32 @@ SELECT bitmapAndnotCardinality(bitmapBuild([1,2,3]), bitmapBuild([3,4,5])) AS re
 └─────┘
 ```
 
+
+
 ## bitmapBuild {#bitmapBuild}
 
-Добавлена в версии v20.1.
+Introduced in: v20.1
 
-Создает битмап из массива беззнаковых целых чисел. Является противоположностью функции [`bitmapToArray`](/sql-reference/functions/bitmap-functions#bitmapToArray).
+Builds a bitmap from an unsigned integer array. It is the opposite of function [`bitmapToArray`](/sql-reference/functions/bitmap-functions#bitmapToArray).
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 bitmapBuild(array)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `array` — массив беззнаковых целых чисел. [`Array(UInt*)`](/sql-reference/data-types/array)
+- `array` — Unsigned integer array. [`Array(UInt*)`](/sql-reference/data-types/array)
 
-**Возвращаемое значение**
 
-Возвращает битмап, построенный на основе переданного массива [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
+**Returned value**
 
-**Примеры**
+Returns a bitmap from the provided array [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapBuild([1, 2, 3, 4, 5]) AS res, toTypeName(res);
@@ -192,29 +198,31 @@ SELECT bitmapBuild([1, 2, 3, 4, 5]) AS res, toTypeName(res);
 └─────┴──────────────────────────────────────────────┘
 ```
 
+
+
 ## bitmapCardinality {#bitmapCardinality}
 
-Появилась в версии: v20.1
+Introduced in: v20.1
 
-Возвращает количество установленных битов (кардинальность) в битовой карте.
+Returns the number of bits set (the cardinality) in the bitmap.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 bitmapCardinality(bitmap)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `bitmap` — объект типа Bitmap. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction).
+- `bitmap` — Bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает количество установленных битов в `bitmap`, тип результата — [`UInt64`](/sql-reference/data-types/int-uint).
+Returns the number of bits set in the bitmap [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapCardinality(bitmapBuild([1, 3, 3, 5, 7, 7])) AS res
@@ -226,29 +234,31 @@ SELECT bitmapCardinality(bitmapBuild([1, 3, 3, 5, 7, 7])) AS res
 └─────┘
 ```
 
+
+
 ## bitmapContains {#bitmapContains}
 
-Впервые появилась в: v20.1
+Introduced in: v20.1
 
-Проверяет, содержит ли битмап заданный элемент.
+Checks if the bitmap contains a specific element.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 bitmapContains(bitmap, value)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `bitmap` — объект типа Bitmap. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `value` — элемент, для которого выполняется проверка. [(U)Int8/16/32/64](/sql-reference/data-types/int-uint/)
+- `bitmap` — Bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `value` — Element to check for. [(U)Int8/16/32/64](/sql-reference/data-types/int-uint/) 
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает `1`, если `bitmap` содержит указанное значение, иначе `0` [`UInt8`](/sql-reference/data-types/int-uint)
+Returns `1` if the bitmap contains the specified value, otherwise `0` [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapContains(bitmapBuild([1, 2, 3]), 2) AS res;
@@ -260,29 +270,31 @@ SELECT bitmapContains(bitmapBuild([1, 2, 3]), 2) AS res;
 └─────┘
 ```
 
+
+
 ## bitmapHasAll {#bitmapHasAll}
 
-Добавлена в версии: v20.1
+Introduced in: v20.1
 
-Проверяет, содержит ли первый битмап все установленные биты второго битмапа.
+Checks if the first bitmap contains all set bits of the second bitmap.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 bitmapHasAll(bitmap1, bitmap2)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `bitmap1` — первый объект bitmap. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — второй объект bitmap. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction).
+- `bitmap1` — First bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — Second bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает `1`, если все установленные биты второго bitmap присутствуют в первом bitmap, в противном случае — `0` [`UInt8`](/sql-reference/data-types/int-uint).
+Returns `1` if all set bits of the second bitmap are present in the first bitmap, otherwise `0` [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapHasAll(bitmapBuild([1, 2, 3]), bitmapBuild([2, 3])) AS res;
@@ -294,30 +306,31 @@ SELECT bitmapHasAll(bitmapBuild([1, 2, 3]), bitmapBuild([2, 3])) AS res;
 └─────┘
 ```
 
+
+
 ## bitmapHasAny {#bitmapHasAny}
 
-Впервые появилось в: v20.1
+Introduced in: v20.1
 
-Проверяет, содержит ли первый битмап какие-либо биты, установленные во втором битмапе.
+Checks if the first bitmap contains any set bits of the second bitmap.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 bitmapHasAny(bitmap1, bitmap2)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `bitmap1` — первый объект bitmap. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction).
-* `bitmap2` — второй объект bitmap. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction).
+- `bitmap1` — First bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — Second bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает `1`, если какие-либо биты второго bitmap присутствуют в первом bitmap, иначе `0` [`UInt8`](/sql-reference/data-types/int-uint)
+Returns `1` if any bits of the second bitmap are present in the first bitmap, otherwise `0` [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapHasAny(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5])) AS res;
@@ -329,29 +342,31 @@ SELECT bitmapHasAny(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5])) AS res;
 └─────┘
 ```
 
+
+
 ## bitmapMax {#bitmapMax}
 
-Появилась в версии: v20.1
+Introduced in: v20.1
 
-Возвращает позицию старшего установленного бита в битмапе или `0`, если битмап пуст.
+Returns the position of the greatest bit set in a bitmap, or `0` if the bitmap is empty.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 bitmapMax(bitmap)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `bitmap` — объект Bitmap. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction).
+- `bitmap` — Bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает позицию старшего установленного бита в `bitmap`, иначе `0` типа [`UInt64`](/sql-reference/data-types/int-uint).
+Returns the position of the greatest bit set in the bitmap, otherwise `0` [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapMax(bitmapBuild([1, 2, 3, 4, 5])) AS res;
@@ -363,29 +378,31 @@ SELECT bitmapMax(bitmapBuild([1, 2, 3, 4, 5])) AS res;
 └─────┘
 ```
 
+
+
 ## bitmapMin {#bitmapMin}
 
-Впервые представлена в версии v20.1
+Introduced in: v20.1
 
-Возвращает позицию наименьшего установленного бита в битовой карте. Если все биты сброшены — `UINT32_MAX` (`UINT64_MAX`, если битовая карта содержит более чем `2^64` бит).
+Returns the position of the smallest bit set in a bitmap. If all bits are unset, or `UINT32_MAX` (`UINT64_MAX` if the bitmap contains more than `2^64` bits).
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 bitmapMin(bitmap)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `bitmap` — объект Bitmap. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction).
+- `bitmap` — Bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает позицию младшего установленного бита в объекте `bitmap` или `UINT32_MAX`/`UINT64_MAX` [`UInt64`](/sql-reference/data-types/int-uint).
+Returns the position of the smallest bit set in the bitmap, or `UINT32_MAX`/`UINT64_MAX` [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapMin(bitmapBuild([3, 5, 2, 6])) AS res;
@@ -397,29 +414,31 @@ SELECT bitmapMin(bitmapBuild([3, 5, 2, 6])) AS res;
 └─────┘
 ```
 
+
+
 ## bitmapOr {#bitmapOr}
 
-Впервые появилась в: v20.1
+Introduced in: v20.1
 
-Вычисляет логическую дизъюнкцию (OR) двух битовых карт.
+Computes the logical disjunction (OR) of two bitmaps.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 bitmapOr(bitmap1, bitmap2)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `bitmap1` — первый объект bitmap. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — второй объект bitmap. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction).
+- `bitmap1` — First bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — Second bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает bitmap, содержащий установленные биты, присутствующие хотя бы в одном из входных bitmap-объектов [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
+Returns a bitmap containing set bits present in either input bitmap [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapToArray(bitmapOr(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5]))) AS res;
@@ -431,29 +450,31 @@ SELECT bitmapToArray(bitmapOr(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5]))) A
 └─────────────────┘
 ```
 
+
+
 ## bitmapOrCardinality {#bitmapOrCardinality}
 
-Введена в версии: v20.1
+Introduced in: v20.1
 
-Возвращает мощность логической дизъюнкции (OR) двух битовых карт.
+Returns the cardinality of the logical disjunction (OR) of two bitmaps.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 bitmapOrCardinality(bitmap1, bitmap2)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `bitmap1` — первый bitmap-объект. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — второй bitmap-объект. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction).
+- `bitmap1` — First bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — Second bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает количество установленных битов в объединении двух bitmap-объектов [`UInt64`](/sql-reference/data-types/int-uint).
+Returns the number of set bits in the union of the two bitmaps [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapOrCardinality(bitmapBuild([1,2,3]), bitmapBuild([3,4,5])) AS res;
@@ -465,29 +486,31 @@ SELECT bitmapOrCardinality(bitmapBuild([1,2,3]), bitmapBuild([3,4,5])) AS res;
 └─────┘
 ```
 
+
+
 ## bitmapSubsetInRange {#bitmapSubsetInRange}
 
-Впервые появился в версии v20.1
+Introduced in: v20.1
 
-Возвращает подмножество битовой карты, содержащее только установленные биты в указанном диапазоне [start, end). Используется индексация с единицы.
+Returns a subset of the bitmap, containing only the set bits in the specified range [start, end). Uses 1-based indexing.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 bitmapSubsetInRange(bitmap, start, end)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `bitmap` — битовая карта, из которой извлекается поднабор. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `start` — начало диапазона (включительно). [`UInt*`](/sql-reference/data-types/int-uint) - `end` — конец диапазона (не включая). [`UInt*`](/sql-reference/data-types/int-uint)
+- `bitmap` — Bitmap to extract the subset from. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `start` — Start of the range (inclusive). [`UInt*`](/sql-reference/data-types/int-uint) - `end` — End of the range (exclusive). [`UInt*`](/sql-reference/data-types/int-uint) 
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает битовую карту, содержащую только биты, установленные в указанном диапазоне. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
+Returns a bitmap containing only the set bits in the specified range [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapToArray(bitmapSubsetInRange(bitmapBuild([1, 2, 3, 4, 5]), 2, 5)) AS res;
@@ -499,29 +522,31 @@ SELECT bitmapToArray(bitmapSubsetInRange(bitmapBuild([1, 2, 3, 4, 5]), 2, 5)) AS
 └───────────┘
 ```
 
+
+
 ## bitmapSubsetLimit {#bitmapSubsetLimit}
 
-Добавлена в версии v20.1
+Introduced in: v20.1
 
-Возвращает подмножество битовой карты, начиная с позиции `range_start`, содержащее не более `cardinality_limit` установленных битов. Использует индексацию, начинающуюся с 1.
+Returns a subset of a bitmap from position `range_start` with at most `cardinality_limit` set bits. Uses 1-based indexing.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 bitmapSubsetLimit(bitmap, range_start, cardinality_limit)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `bitmap` — объект bitmap. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `range_start` — начало диапазона (включительно). [`UInt32`](/sql-reference/data-types/int-uint) - `cardinality_limit` — максимальное количество установленных битов в подмножестве. [`UInt32`](/sql-reference/data-types/int-uint)
+- `bitmap` — Bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `range_start` — Start of the range (inclusive). [`UInt32`](/sql-reference/data-types/int-uint) - `cardinality_limit` — Maximum cardinality of the subset. [`UInt32`](/sql-reference/data-types/int-uint) 
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает bitmap, содержащий не более `cardinality_limit` установленных битов, начиная с `range_start`, типа [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
+Returns a bitmap containing at most `cardinality_limit` set bits, starting from `range_start` [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapToArray(bitmapSubsetLimit(bitmapBuild([1, 5, 3, 2, 8]), 3, 2)) AS res;
@@ -533,29 +558,31 @@ SELECT bitmapToArray(bitmapSubsetLimit(bitmapBuild([1, 5, 3, 2, 8]), 3, 2)) AS r
 └────────┘
 ```
 
+
+
 ## bitmapToArray {#bitmapToArray}
 
-Впервые появилась в версии: v20.1
+Introduced in: v20.1
 
-Преобразует битовую карту в массив беззнаковых целых чисел. Является противоположностью функции [`bitmapBuild`](/sql-reference/functions/bitmap-functions#bitmapBuild).
+Converts a bitmap to an array of unsigned integers. It is the opposite of function [`bitmapBuild`](/sql-reference/functions/bitmap-functions#bitmapBuild).
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 bitmapToArray(bitmap)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `bitmap` — битовая карта для преобразования. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction).
+- `bitmap` — Bitmap to convert. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает массив беззнаковых целых чисел, содержащихся в битовой карте [`Array(UInt*)`](/sql-reference/data-types/array)
+Returns an array of unsigned integers contained in the bitmap [`Array(UInt*)`](/sql-reference/data-types/array)
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapToArray(bitmapBuild([1, 2, 3, 4, 5])) AS res;
@@ -567,29 +594,33 @@ SELECT bitmapToArray(bitmapBuild([1, 2, 3, 4, 5])) AS res;
 └─────────────────┘
 ```
 
+
+
 ## bitmapTransform {#bitmapTransform}
 
-Впервые появилась в: v20.1
+Introduced in: v20.1
 
-Изменяет до N бит в битовой карте, заменяя определённые значения битов из `from_array` на соответствующие значения из `to_array`.
 
-**Синтаксис**
+Changes up to N bits in a bitmap by swapping specific bit values in `from_array` with corresponding ones in `to_array`.
+    
+
+**Syntax**
 
 ```sql
 bitmapTransform(bitmap, from_array, to_array)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `bitmap` — объект Bitmap. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `from_array` — массив исходных установленных бит, которые необходимо заменить. [`Array(T)`](/sql-reference/data-types/array). - `to_array` — массив новых установленных бит, на которые производится замена. [`Array(T)`](/sql-reference/data-types/array).
+- `bitmap` — Bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `from_array` — Array of original set bits to be replaced. [`Array(T)`](/sql-reference/data-types/array). - `to_array` — Array of new set bits to replace with. [`Array(T)`](/sql-reference/data-types/array). 
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает bitmap с элементами, преобразованными в соответствии с указанным отображением. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
+Returns a bitmap with elements transformed according to the given mapping [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapToArray(bitmapTransform(bitmapBuild([1, 2, 3, 4, 5]), [2, 4], [20, 40])) AS res;
@@ -601,30 +632,31 @@ SELECT bitmapToArray(bitmapTransform(bitmapBuild([1, 2, 3, 4, 5]), [2, 4], [20, 
 └───────────────────┘
 ```
 
+
+
 ## bitmapXor {#bitmapXor}
 
-Введена в версии v20.1
+Introduced in: v20.1
 
-Вычисляет симметрическую разность (XOR) двух битмапов.
+Computes the symmetric difference (XOR) of two bitmaps.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 bitmapXor(bitmap1, bitmap2)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `bitmap1` — первый объект bitmap. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction).
-* `bitmap2` — второй объект bitmap. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction).
+- `bitmap1` — First bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — Second bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает bitmap, содержащий биты, установленные в одном из входных bitmap-объектов, но не в обоих. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
+Returns a bitmap containing set bits present in either input bitmap, but not in both [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapToArray(bitmapXor(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5]))) AS res;
@@ -636,29 +668,31 @@ SELECT bitmapToArray(bitmapXor(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5]))) 
 └──────────────┘
 ```
 
+
+
 ## bitmapXorCardinality {#bitmapXorCardinality}
 
-Добавлена в версии: v20.1
+Introduced in: v20.1
 
-Возвращает мощность результата XOR (симметрической разности) двух битмапов.
+Returns the cardinality of the XOR (symmetric difference) of two bitmaps.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 bitmapXorCardinality(bitmap1, bitmap2)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `bitmap1` — первый объект bitmap. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — второй объект bitmap. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction).
+- `bitmap1` — First bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — Second bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает количество установленных битов в симметрической разности двух объектов bitmap [`UInt64`](/sql-reference/data-types/int-uint)
+Returns the number of set bits in the symmetric difference of the two bitmaps [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapXorCardinality(bitmapBuild([1,2,3]), bitmapBuild([3,4,5])) AS res;
@@ -670,29 +704,31 @@ SELECT bitmapXorCardinality(bitmapBuild([1,2,3]), bitmapBuild([3,4,5])) AS res;
 └─────┘
 ```
 
+
+
 ## subBitmap {#subBitmap}
 
-Введена в версии: v21.9
+Introduced in: v21.9
 
-Возвращает подмножество битовой карты, начиная с позиции `offset`. Максимальная кардинальность возвращаемой битовой карты — `cardinality_limit`.
+Returns a subset of the bitmap, starting from position `offset`. The maximum cardinality of the returned bitmap is `cardinality_limit`.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 subBitmap(bitmap, offset, cardinality_limit)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `bitmap` — объект Bitmap. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `offset` — количество установленных (единичных) битов, которые нужно пропустить от начала (нумерация с нуля). [`UInt32`](/sql-reference/data-types/int-uint) - `cardinality_limit` — максимальное количество установленных (единичных) битов, включаемых в подмножество. [`UInt32`](/sql-reference/data-types/int-uint)
+- `bitmap` — Bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `offset` — Number of set bits to skip from the beginning (zero-based). [`UInt32`](/sql-reference/data-types/int-uint) - `cardinality_limit` — Maximum number of set bits to include in the subset. [`UInt32`](/sql-reference/data-types/int-uint) 
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает bitmap, содержащий не более `limit` установленных битов, начиная после пропуска `offset` установленных битов в порядке возрастания. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
+Returns a bitmap containing at most `limit` set bits, starting after skipping `offset` set bits in ascending order [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT bitmapToArray(subBitmap(bitmapBuild([1, 2, 3, 4, 5]), 2, 2)) AS res;

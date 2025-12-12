@@ -204,18 +204,29 @@ SELECT
     _part
 FROM dst
 ORDER BY all;
+
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
+│ from dst   │   0 │ A     │ all_0_0_0 │
+└────────────┴─────┴───────┴───────────┘
 ```
 
 ┌─&#39;from dst&#39;─┬─key─┬─value─┬─&#95;part─────┐
 │ from dst   │   0 │ A     │ all&#95;0&#95;0&#95;0 │
 └────────────┴─────┴───────┴───────────┘
 
-````
+````sql
+CREATE TABLE dst
+(
+    `key` Int64,
+    `value` String
+)
+ENGINE = MergeTree
+ORDER BY tuple()
+SETTINGS non_replicated_deduplication_window=1000;
 
-При указанных выше настройках запрос select возвращает два блока — следовательно, в таблицу `dst` должны быть вставлены два блока. Однако мы видим, что в таблицу `dst` был вставлен только один блок. Это произошло из-за дедупликации второго блока. Он содержит те же данные и ключ дедупликации `block_id`, который вычисляется как хеш от вставляемых данных. Такое поведение не соответствует ожидаемому. Подобные случаи встречаются редко, но теоретически возможны. Для корректной обработки таких ситуаций необходимо указать `insert_deduplication_token`. Рассмотрим исправление на следующих примерах:
-
-### Идентичные блоки при вставке с `insert_deduplication_token`                                                                  {#identical-blocks-in-insertion-with-insert_deduplication_token}
-
+SET max_block_size=1;
+SET min_insert_block_size_rows=0;
+SET min_insert_block_size_bytes=0;
 ```sql
 CREATE TABLE dst
 (
@@ -229,10 +240,24 @@ SETTINGS non_replicated_deduplication_window=1000;
 SET max_block_size=1;
 SET min_insert_block_size_rows=0;
 SET min_insert_block_size_bytes=0;
-````
+````sql
+INSERT INTO dst SELECT
+    0 AS key,
+    'A' AS value
+FROM numbers(2)
+SETTINGS insert_deduplication_token='some_user_token';
 
-Вставка:
+SELECT
+    'from dst',
+    *,
+    _part
+FROM dst
+ORDER BY all;
 
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
+│ from dst   │   0 │ A     │ all_2_2_0 │
+│ from dst   │   0 │ A     │ all_3_3_0 │
+└────────────┴─────┴───────┴───────────┘
 ```sql
 INSERT INTO dst SELECT
     0 AS key,
@@ -251,10 +276,26 @@ ORDER BY all;
 │ из dst     │   0 │ A     │ all_2_2_0 │
 │ из dst     │   0 │ A     │ all_3_3_0 │
 └────────────┴─────┴───────┴───────────┘
-```
+```sql
+SELECT 'second attempt';
 
-Два идентичных блока вставлены, как и ожидалось.
+INSERT INTO dst SELECT
+    0 AS key,
+    'A' AS value
+FROM numbers(2)
+SETTINGS insert_deduplication_token='some_user_token';
 
+SELECT
+    'from dst',
+    *,
+    _part
+FROM dst
+ORDER BY all;
+
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
+│ from dst   │   0 │ A     │ all_2_2_0 │
+│ from dst   │   0 │ A     │ all_3_3_0 │
+└────────────┴─────┴───────┴───────────┘
 ```sql
 SELECT 'вторая попытка';
 
@@ -275,10 +316,26 @@ ORDER BY all;
 │ from dst   │   0 │ A     │ all_2_2_0 │
 │ from dst   │   0 │ A     │ all_3_3_0 │
 └────────────┴─────┴───────┴───────────┘
-```
+```sql
+SELECT 'third attempt';
 
-Повторная вставка корректно дедуплицируется.
+INSERT INTO dst SELECT
+    1 AS key,
+    'b' AS value
+FROM numbers(2)
+SETTINGS insert_deduplication_token='some_user_token';
 
+SELECT
+    'from dst',
+    *,
+    _part
+FROM dst
+ORDER BY all;
+
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
+│ from dst   │   0 │ A     │ all_2_2_0 │
+│ from dst   │   0 │ A     │ all_3_3_0 │
+└────────────┴─────┴───────┴───────────┘
 ```sql
 SELECT 'третья попытка';
 
@@ -299,12 +356,6 @@ ORDER BY all;
 │ из dst     │   0 │ A     │ all_2_2_0 │
 │ из dst     │   0 │ A     │ all_3_3_0 │
 └────────────┴─────┴───────┴───────────┘
-```
-
-Эта вставка также будет дедуплицирована, даже если она содержит другие вставленные данные. Обратите внимание, что `insert_deduplication_token` имеет более высокий приоритет: ClickHouse не использует хэш-сумму данных, когда указан `insert_deduplication_token`.
-
-### Разные операции вставки генерируют одинаковые данные после трансформации в базовой таблице материализованного представления {#different-insert-operations-generate-the-same-data-after-transformation-in-the-underlying-table-of-the-materialized-view}
-
 ```sql
 CREATE TABLE dst
 (
@@ -327,70 +378,84 @@ AS SELECT
     0 AS key,
     value AS value
 FROM dst;
-```
 
-SET deduplicate&#95;blocks&#95;in&#95;dependent&#95;materialized&#95;views=1;
+SET deduplicate_blocks_in_dependent_materialized_views=1;
 
-select &#39;first attempt&#39;;
+select 'first attempt';
 
-INSERT INTO dst VALUES (1, &#39;A&#39;);
+INSERT INTO dst VALUES (1, 'A');
 
 SELECT
-&#39;from dst&#39;,
-*,
-&#95;part
+    'from dst',
+    *,
+    _part
 FROM dst
 ORDER by all;
 
-┌─&#39;from dst&#39;─┬─key─┬─value─┬─&#95;part─────┐
-│ from dst   │   1 │ A     │ all&#95;0&#95;0&#95;0 │
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
+│ from dst   │   1 │ A     │ all_0_0_0 │
 └────────────┴─────┴───────┴───────────┘
 
 SELECT
-&#39;from mv&#95;dst&#39;,
-*,
-&#95;part
-FROM mv&#95;dst
+    'from mv_dst',
+    *,
+    _part
+FROM mv_dst
 ORDER by all;
 
-┌─&#39;from mv&#95;dst&#39;─┬─key─┬─value─┬─&#95;part─────┐
-│ from mv&#95;dst   │   0 │ A     │ all&#95;0&#95;0&#95;0 │
+┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
+│ from mv_dst   │   0 │ A     │ all_0_0_0 │
 └───────────────┴─────┴───────┴───────────┘
 
-select &#39;second attempt&#39;;
+select 'second attempt';
 
-INSERT INTO dst VALUES (2, &#39;A&#39;);
+INSERT INTO dst VALUES (2, 'A');
 
 SELECT
-&#39;from dst&#39;,
-*,
-&#95;part
+    'from dst',
+    *,
+    _part
 FROM dst
 ORDER by all;
 
-┌─&#39;from dst&#39;─┬─key─┬─value─┬─&#95;part─────┐
-│ from dst   │   1 │ A     │ all&#95;0&#95;0&#95;0 │
-│ from dst   │   2 │ A     │ all&#95;1&#95;1&#95;0 │
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
+│ from dst   │   1 │ A     │ all_0_0_0 │
+│ from dst   │   2 │ A     │ all_1_1_0 │
 └────────────┴─────┴───────┴───────────┘
 
 SELECT
-&#39;from mv&#95;dst&#39;,
-*,
-&#95;part
-FROM mv&#95;dst
+    'from mv_dst',
+    *,
+    _part
+FROM mv_dst
 ORDER by all;
 
-┌─&#39;from mv&#95;dst&#39;─┬─key─┬─value─┬─&#95;part─────┐
-│ from mv&#95;dst   │   0 │ A     │ all&#95;0&#95;0&#95;0 │
-│ from mv&#95;dst   │   0 │ A     │ all&#95;1&#95;1&#95;0 │
+┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
+│ from mv_dst   │   0 │ A     │ all_0_0_0 │
+│ from mv_dst   │   0 │ A     │ all_1_1_0 │
 └───────────────┴─────┴───────┴───────────┘
+```sql
+CREATE TABLE dst
+(
+    `key` Int64,
+    `value` String
+)
+ENGINE = MergeTree
+ORDER BY tuple()
+SETTINGS non_replicated_deduplication_window=1000;
 
-````
-
-Каждый раз мы вставляем разные данные. Однако в таблицу `mv_dst` вставляются одинаковые данные. Дедупликация не выполняется, так как исходные данные различались.
-
-### Вставки из разных материализованных представлений в одну целевую таблицу с эквивалентными данными {#different-materialized-view-inserts-into-one-underlying-table-with-equivalent-data}
-
+CREATE MATERIALIZED VIEW mv_dst
+(
+    `key` Int64,
+    `value` String
+)
+ENGINE = MergeTree
+ORDER BY tuple()
+SETTINGS non_replicated_deduplication_window=1000
+AS SELECT
+    0 AS key,
+    value AS value
+FROM dst;
 ```sql
 CREATE TABLE dst
 (
@@ -436,6 +501,39 @@ SELECT
     _part
 FROM dst
 ORDER by all;
+
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
+│ from dst   │   1 │ A     │ all_0_0_0 │
+└────────────┴─────┴───────┴───────────┘
+
+SELECT
+    'from mv_dst',
+    *,
+    _part
+FROM mv_dst
+ORDER by all;
+
+┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
+│ from mv_dst   │   0 │ A     │ all_0_0_0 │
+│ from mv_dst   │   0 │ A     │ all_1_1_0 │
+└───────────────┴─────┴───────┴───────────┘
+````
+
+Каждый раз мы вставляем разные данные. Однако в таблицу `mv_dst` вставляются одинаковые данные. Дедупликация не выполняется, так как исходные данные различались.
+
+### Вставки из разных материализованных представлений в одну целевую таблицу с эквивалентными данными {#different-materialized-view-inserts-into-one-underlying-table-with-equivalent-data}
+
+```sql
+SELECT 'second attempt';
+
+INSERT INTO dst VALUES (1, 'A');
+
+SELECT
+    'from dst',
+    *,
+    _part
+FROM dst
+ORDER BY all;
 
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   1 │ A     │ all_0_0_0 │

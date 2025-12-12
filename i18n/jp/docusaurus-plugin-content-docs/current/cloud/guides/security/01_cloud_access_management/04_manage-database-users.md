@@ -104,9 +104,9 @@ SQL の [GRANT](/sql-reference/statements/grant) ステートメントを使用�
 ユーザーによる操作がそのユーザー ID に紐づいて識別できるようにし、`default` アカウントをいわゆるブレークグラス用途（緊急時のみの利用）のために確保しておくために、個人に紐づく新しいユーザーアカウントを作成し、そのユーザーに default&#95;role を付与することを推奨します。
 
 ```sql
-CREATE USER userID IDENTIFIED WITH sha256_hash by 'hashed_password';
-GRANT default_role to userID;
-```
+  CREATE USER userID IDENTIFIED WITH sha256_hash by 'hashed_password';
+  GRANT default_role to userID;
+  ```
 
 ユーザーは、SHA256 ハッシュジェネレーターや Python の `hashlib` のような関数を使用して、適切な複雑さを備えた 12 文字以上のパスワードを SHA256 文字列に変換し、その文字列をパスワードとしてシステム管理者に渡すことができます。これにより、管理者が平文パスワードを閲覧・取り扱う必要がなくなります。
 
@@ -120,26 +120,26 @@ GRANT default_role to userID;
   データベース内のすべての権限の一覧を取得するには、次のクエリを実行します。
 
   ```sql
-  SELECT grants.user_name,
-  grants.role_name,
-  users.name AS role_member,
-  grants.access_type,
-  grants.database,
-  grants.table
-  FROM system.grants LEFT OUTER JOIN system.role_grants ON grants.role_name = role_grants.granted_role_name
-  LEFT OUTER JOIN system.users ON role_grants.user_name = users.name
+SELECT grants.user_name,
+grants.role_name,
+users.name AS role_member,
+grants.access_type,
+grants.database,
+grants.table
+FROM system.grants LEFT OUTER JOIN system.role_grants ON grants.role_name = role_grants.granted_role_name
+LEFT OUTER JOIN system.users ON role_grants.user_name = users.name
 
-  UNION ALL
+UNION ALL
 
-  SELECT grants.user_name,
-  grants.role_name,
-  role_grants.role_name AS role_member,
-  grants.access_type,
-  grants.database,
-  grants.table
-  FROM system.role_grants LEFT OUTER JOIN system.grants ON role_grants.granted_role_name = grants.role_name
-  WHERE role_grants.user_name is null;
-  ```
+SELECT grants.user_name,
+grants.role_name,
+role_grants.role_name AS role_member,
+grants.access_type,
+grants.database,
+grants.table
+FROM system.role_grants LEFT OUTER JOIN system.grants ON role_grants.granted_role_name = grants.role_name
+WHERE role_grants.user_name is null;
+```
 
   #### SQL コンソールにアクセスできる Console ユーザーに権限一覧を関連付ける
 

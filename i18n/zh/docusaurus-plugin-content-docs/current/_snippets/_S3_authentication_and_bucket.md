@@ -212,31 +212,34 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
 
 ```json
 {
-  "Version": "2012-10-17",
-  "Id": "Policy123456",
-  "Statement": [
+  "Version" : "2012-10-17",
+  "Id" : "Policy123456",
+  "Statement" : [
     {
-      "Sid": "abc123",
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "arn:aws:iam::921234567898:user/mars-s3-user"
+      "Sid" : "abc123",
+      "Effect" : "Allow",
+      "Principal" : {
+        "AWS" : "arn:aws:iam::921234567898:user/mars-s3-user"
       },
-      "Action": "s3:*",
-      "Resource": ["arn:aws:s3:::mars-doc-test", "arn:aws:s3:::mars-doc-test/*"]
+      "Action" : "s3:*",
+      "Resource" : [
+        "arn:aws:s3:::mars-doc-test",
+        "arn:aws:s3:::mars-doc-test/*"
+      ]
     }
   ]
 }
 ```
 
 ```response
-|参数 | 描述 | 示例值 |
+|Parameter | Description | Example Value |
 |----------|-------------|----------------|
-|Version | 策略解释器版本,保持不变 | 2012-10-17 |
-|Sid | 用户定义的策略 ID | abc123 |
-|Effect | 用户请求是被允许还是被拒绝 | Allow |
-|Principal | 将被授予权限的账户或用户 | arn:aws:iam::921234567898:user/mars-s3-user |
-|Action | 存储桶上允许执行的操作| s3:*|
-|Resource | 存储桶中允许执行操作的资源 | "arn:aws:s3:::mars-doc-test", "arn:aws:s3:::mars-doc-test/*" |
+|Version | Version of the policy interpreter, leave as-is | 2012-10-17 |
+|Sid | User-defined policy id | abc123 |
+|Effect | Whether user requests will be allowed or denied | Allow |
+|Principal | The accounts or user that will be allowed | arn:aws:iam::921234567898:user/mars-s3-user |
+|Action | What operations are allowed on the bucket| s3:*|
+|Resource | Which resources in the bucket will operations be allowed in | "arn:aws:s3:::mars-doc-test", "arn:aws:s3:::mars-doc-test/*" |
 ```
 
 :::note

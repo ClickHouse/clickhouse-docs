@@ -62,35 +62,35 @@ FROM github.github_events
 WHERE created_at >= '2024-01-01';
 ```
 
-## Сосредоточьтесь на отдельных запросах, а не на средних значениях {#focus-on-individual-queries-not-averages}
+## Focus on individual queries, not averages {#focus-on-individual-queries-not-averages}
 
-При отладке производительности ClickHouse не полагайтесь на среднее время выполнения запросов или общесистемные метрики. Вместо этого выясняйте, почему конкретные запросы выполняются медленно. Система может демонстрировать хорошую среднюю производительность, в то время как отдельные запросы страдают от нехватки памяти, неэффективной фильтрации или операций с высокой кардинальностью.
+When debugging ClickHouse performance, don't rely on average query times or overall system metrics. Instead, identify why specific queries are slow. A system can have good average performance while individual queries suffer from memory exhaustion, poor filtering, or high cardinality operations.
 
-По словам Алексея, CTO ClickHouse: *«Правильный подход — спросить себя, почему именно этот запрос был обработан за пять секунд... Меня не волнует, если медианное значение и другие запросы обрабатываются быстро. Меня волнует только мой запрос»*
+According to Alexey, CTO of ClickHouse: *"The right way is to ask yourself why this particular query was processed in five seconds... I don't care if median and other queries process quickly. I only care about my query"*
 
-Когда запрос выполняется медленно, не ограничивайтесь анализом средних значений. Спросите себя: «Почему ИМЕННО этот запрос был медленным?» и изучите фактический характер использования ресурсов.
+When a query is slow, don't just look at averages. Ask "Why was THIS specific query slow?" and examine the actual resource usage patterns.
 
-## Работа с памятью и сканированием строк {#memory-and-row-scanning}
+## Memory and row scanning {#memory-and-row-scanning}
 
-Sentry — это ориентированная на разработчиков платформа отслеживания ошибок, ежедневно обрабатывающая миллиарды событий от более чем 4 млн разработчиков. Их ключевое наблюдение: *«Именно кардинальность ключа группировки в этой ситуации определяет потребление памяти»* — агрегации с высокой кардинальностью уничтожают производительность из‑за исчерпания памяти, а не из‑за объёма сканируемых строк.
+Sentry is a developer-first error tracking platform processing billions of events daily from 4+ million developers. Their key insight: *"The cardinality of the grouping key that's going to drive memory in this particular situation"* - High cardinality aggregations kill performance through memory exhaustion, not row scanning.
 
-Когда запросы завершаются с ошибкой, определите, является ли это проблемой памяти (слишком много групп) или проблемой сканирования (слишком много строк).
+When queries fail, determine if it's a memory problem (too many groups) or scanning problem (too many rows).
 
-Запрос вроде `GROUP BY user_id, error_message, url_path` создаёт отдельное состояние в памяти для каждой уникальной комбинации всех трёх значений вместе. При большом количестве пользователей, типов ошибок и URL‑путей вы легко можете получить миллионы состояний агрегации, которые нужно одновременно удерживать в памяти.
+A query like `GROUP BY user_id, error_message, url_path` creates a separate memory state for every unique combination of all three values together. With a higher load of users, error types, and URL paths, you could easily generate millions of aggregation states that must be held in memory simultaneously.
 
-В экстремальных случаях Sentry использует детерминистическое семплирование. Выборка 10% снижает использование памяти на 90%, при этом обеспечивая точность порядка 5% для большинства агрегатов:
+For extreme cases, Sentry uses deterministic sampling. A 10% sample reduces memory usage by 90% while maintaining roughly 5% accuracy for most aggregations:
 
 ```sql
 WHERE cityHash64(user_id) % 10 = 0  -- Всегда одни и те же 10% пользователей
 ```
 
-Это гарантирует, что одни и те же пользователи появляются в каждом запросе, обеспечивая сопоставимые результаты для разных периодов времени. Ключевая идея: `cityHash64()` выдаёт стабильные хэш-значения для одного и того же ввода, поэтому `user_id = 12345` всегда будет хэшироваться в одно и то же значение, гарантируя, что этот пользователь либо всегда будет присутствовать в вашей 10% выборке, либо никогда — без мерцания результатов между запросами.
+This ensures the same users appear in every query, providing consistent results across time periods. The key insight: `cityHash64()` produces consistent hash values for the same input, so `user_id = 12345` will always hash to the same value, ensuring that user either always appears in your 10% sample or never does - no flickering between queries.
 
-## Оптимизация битовых масок в Sentry {#bit-mask-optimization}
+## Sentry's bit mask optimization {#bit-mask-optimization}
 
-При агрегации по высококардинальным столбцам (например, URL) каждое уникальное значение создаёт отдельное состояние агрегации в памяти, что может привести к её исчерпанию. Решение Sentry: вместо группировки по фактическим строкам URL выполнять группировку по логическим выражениям, которые сворачиваются в битовые маски.
+When aggregating by high-cardinality columns (like URLs), each unique value creates a separate aggregation state in memory, leading to memory exhaustion. Sentry's solution: instead of grouping by the actual URL strings, group by boolean expressions that collapse into bit masks.
 
-Вот запрос, который вы можете выполнить на своих таблицах, если эта ситуация актуальна для вас:
+Here is a query that you can try on your own tables if this situation applies to you:
 
 ```sql
 -- Паттерн эффективной агрегации по памяти: каждое условие = одно целое число на группу

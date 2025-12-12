@@ -72,31 +72,36 @@ SELECT UTCTimestamp()
 └─────────────────────┘
 ```
 
+
+
 ## YYYYMMDDToDate {#YYYYMMDDToDate}
 
-Добавлена в: v23.9
+Introduced in: v23.9
 
-Преобразует число, содержащее год, месяц и день, в тип `Date`.
-Эта функция является противоположностью функции [`toYYYYMMDD()`](/sql-reference/functions/date-time-functions#toYYYYMMDD).
-Результат не определён, если на вход подано значение, не кодирующее корректную дату.
 
-**Синтаксис**
+Converts a number containing the year, month and day number to a `Date`.
+This function is the opposite of function [`toYYYYMMDD()`](/sql-reference/functions/date-time-functions#toYYYYMMDD).
+The output is undefined if the input does not encode a valid Date value.
+    
+
+**Syntax**
 
 ```sql
 YYYYMMDDToDate(YYYYMMDD)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `YYYYMMDD` — Числовое значение, содержащее год, месяц и день. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
+- `YYYYMMDD` — Number containing the year, month and day. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
 
-**Возвращаемое значение**
 
-Возвращает значение типа `Date` из переданного аргумента [`Date`](/sql-reference/data-types/date)
+**Returned value**
 
-**Примеры**
+Returns a `Date` value from the provided arguments [`Date`](/sql-reference/data-types/date)
 
-**Пример**
+**Examples**
+
+**Example**
 
 ```sql title=Query
 SELECT YYYYMMDDToDate(20230911);
@@ -108,31 +113,36 @@ SELECT YYYYMMDDToDate(20230911);
 └──────────────────────┘
 ```
 
+
+
 ## YYYYMMDDToDate32 {#YYYYMMDDToDate32}
 
-Появилась в версии v23.9
+Introduced in: v23.9
 
-Преобразует число, содержащее год, месяц и день, в `Date32`.
-Эта функция является противоположностью функции [`toYYYYMMDD()`](/sql-reference/functions/date-time-functions#toYYYYMMDD).
-Результат не определён, если входное значение не кодирует допустимое значение `Date32`.
 
-**Синтаксис**
+Converts a number containing the year, month and day number to a `Date32`.
+This function is the opposite of function [`toYYYYMMDD()`](/sql-reference/functions/date-time-functions#toYYYYMMDD).
+The output is undefined if the input does not encode a valid `Date32` value.
+    
+
+**Syntax**
 
 ```sql
 YYYYMMDDToDate32(YYYYMMDD)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `YYYYMMDD` — число, задающее год, месяц и день. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
+- `YYYYMMDD` — Number containing the year, month and day. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
 
-**Возвращаемое значение**
 
-Возвращает значение типа `Date32` на основе переданного аргумента [`Date32`](/sql-reference/data-types/date32)
+**Returned value**
 
-**Примеры**
+Returns a `Date32` value from the provided arguments [`Date32`](/sql-reference/data-types/date32)
 
-**Пример**
+**Examples**
+
+**Example**
 
 ```sql title=Query
 SELECT YYYYMMDDToDate32(20000507);
@@ -144,32 +154,37 @@ SELECT YYYYMMDDToDate32(20000507);
 └────────────────────────────┘
 ```
 
+
+
 ## YYYYMMDDhhmmssToDateTime {#YYYYMMDDhhmmssToDateTime}
 
-Введена в версии: v23.9
+Introduced in: v23.9
 
-Преобразует число, содержащее год, месяц, день, час, минуту и секунду, в `DateTime`.
-Эта функция является противоположностью функции [`toYYYYMMDDhhmmss()`](/sql-reference/functions/date-time-functions#toYYYYMMDDhhmmss).
-Результат не определён, если входное значение не представляет допустимое значение `DateTime`.
 
-**Синтаксис**
+Converts a number containing the year, month, day, hour, minute, and second to a `DateTime`.
+This function is the opposite of function [`toYYYYMMDDhhmmss()`](/sql-reference/functions/date-time-functions#toYYYYMMDDhhmmss).
+The output is undefined if the input does not encode a valid `DateTime` value.
+    
+
+**Syntax**
 
 ```sql
 YYYYMMDDhhmmssToDateTime(YYYYMMDDhhmmss[, timezone])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `YYYYMMDDhhmmss` — число, содержащее год, месяц, день, час, минуту и секунду. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
-* `timezone` — название часового пояса. [`String`](/sql-reference/data-types/string)
+- `YYYYMMDDhhmmss` — Number containing the year, month, day, hour, minute, and second. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `timezone` — Timezone name. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает значение типа `DateTime` на основе переданных аргументов. [`DateTime`](/sql-reference/data-types/datetime)
+**Returned value**
 
-**Примеры**
+Returns a `DateTime` value from the provided arguments [`DateTime`](/sql-reference/data-types/datetime)
 
-**Пример**
+**Examples**
+
+**Example**
 
 ```sql title=Query
 SELECT YYYYMMDDToDateTime(20230911131415);
@@ -181,33 +196,38 @@ SELECT YYYYMMDDToDateTime(20230911131415);
 └───────────────────────────────────────────────┘
 ```
 
+
+
 ## YYYYMMDDhhmmssToDateTime64 {#YYYYMMDDhhmmssToDateTime64}
 
-Появилась в: v23.9
+Introduced in: v23.9
 
-Преобразует число, содержащее год, месяц, день, час, минуту и секунду, в `DateTime64`.
-Эта функция является противоположностью функции [`toYYYYMMDDhhmmss()`](/sql-reference/functions/date-time-functions#toYYYYMMDDhhmmss).
-Результат не определён, если входное значение не представляет корректное значение `DateTime64`.
 
-**Синтаксис**
+Converts a number containing the year, month, day, hour, minute, and second to a `DateTime64`.
+This function is the opposite of function [`toYYYYMMDDhhmmss()`](/sql-reference/functions/date-time-functions#toYYYYMMDDhhmmss).
+The output is undefined if the input does not encode a valid `DateTime64` value.
+    
+
+**Syntax**
 
 ```sql
 YYYYMMDDhhmmssToDateTime64(YYYYMMDDhhmmss[, precision[, timezone]])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `YYYYMMDDhhmmss` — число, содержащее год, месяц, день, час, минуту и секунду. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
-* `precision` — точность дробной части (0–9). [`UInt8`](/sql-reference/data-types/int-uint)
-* `timezone` — название часового пояса. [`String`](/sql-reference/data-types/string)
+- `YYYYMMDDhhmmss` — Number containing the year, month, day, hour, minute, and second. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `precision` — Precision for the fractional part (0-9). [`UInt8`](/sql-reference/data-types/int-uint)
+- `timezone` — Timezone name. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает значение типа [`DateTime64`](/sql-reference/data-types/datetime64) на основе указанных аргументов.
+**Returned value**
 
-**Примеры**
+Returns a `DateTime64` value from the provided arguments [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Пример**
+**Examples**
+
+**Example**
 
 ```sql title=Query
 SELECT YYYYMMDDhhmmssToDateTime64(20230911131415, 3, 'Asia/Istanbul');
@@ -219,31 +239,36 @@ SELECT YYYYMMDDhhmmssToDateTime64(20230911131415, 3, 'Asia/Istanbul');
 └──────────────────────────┘
 ```
 
+
+
 ## addDate {#addDate}
 
-Добавлено в версии: v23.9
+Introduced in: v23.9
 
-Добавляет временной интервал к переданной дате, дате со временем или строковому представлению даты/даты со временем.
-Если результат сложения выходит за пределы диапазона типа данных, результат неопределён.
 
-**Синтаксис**
+Adds the time interval to the provided date, date with time or string-encoded date or date with time.
+If the addition results in a value outside the bounds of the data type, the result is undefined.
+    
+
+**Syntax**
 
 ```sql
 addDate(datetime, interval)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — Дата или дата со временем, к которой добавляется `interval`. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64) или [`String`](/sql-reference/data-types/string)
-* `interval` — Интервал, который нужно добавить. [`Interval`](/sql-reference/data-types/int-uint)
+- `datetime` — The date or date with time to which `interval` is added. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `interval` — Interval to add. [`Interval`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает дату или дату со временем, полученную при добавлении `interval` к `datetime`. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns date or date with time obtained by adding `interval` to `datetime`. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Добавление интервала к дате**
+**Examples**
+
+**Add interval to date**
 
 ```sql title=Query
 SELECT addDate(toDate('2018-01-01'), INTERVAL 3 YEAR)
@@ -255,30 +280,35 @@ SELECT addDate(toDate('2018-01-01'), INTERVAL 3 YEAR)
 └──────────────────────────┘
 ```
 
+
+
 ## addDays {#addDays}
 
-Появилась в версии: v1.1
+Introduced in: v1.1
 
-Добавляет указанное количество дней к дате, дате со временем или к их строковому представлению.
 
-**Синтаксис**
+Adds a specified number of days to a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 addDays(datetime, num)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата или дата и время, к которой нужно добавить указанное количество дней. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64) или [`String`](/sql-reference/data-types/string)
-* `num` — количество добавляемых дней. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to add specified number of days to. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of days to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**Возвращаемое значение**
 
-Возвращает значение `datetime`, увеличенное на `num` дней. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns `datetime` plus `num` days. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Добавление дней к различным типам дат**
+**Examples**
+
+**Add days to different date types**
 
 ```sql title=Query
 WITH
@@ -297,7 +327,7 @@ SELECT
 └────────────────────┴─────────────────────────┴────────────────────────────────┘
 ```
 
-**Использование альтернативного синтаксиса INTERVAL**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 day)
@@ -309,30 +339,35 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 day)
 └──────────────────────────┘
 ```
 
+
+
 ## addHours {#addHours}
 
-Введена в версии: v1.1
+Introduced in: v1.1
 
-Добавляет указанное количество часов к дате, дате и времени или их строковому представлению.
 
-**Синтаксис**
+Adds a specified number of hours to a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 addHours(datetime, num)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата или дата со временем, к которой нужно прибавить указанное количество часов. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64) или [`String`](/sql-reference/data-types/string)
-* `num` — количество часов, которое нужно прибавить. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to add specified number of hours to. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of hours to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**Возвращаемое значение**
 
-Возвращает `datetime` плюс `num` часов, результат имеет тип [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64(3)`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns `datetime` plus `num` hours [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64(3)`](/sql-reference/data-types/datetime64)
 
-**Добавление часов к разным типам дат**
+**Examples**
+
+**Add hours to different date types**
 
 ```sql title=Query
 WITH
@@ -351,7 +386,7 @@ SELECT
 └─────────────────────┴──────────────────────────┴─────────────────────────────────┘
 ```
 
-**Использование альтернативного синтаксиса INTERVAL**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 hour)
@@ -363,34 +398,39 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 hour)
 └──────────────────────────┘
 ```
 
+
+
 ## addInterval {#addInterval}
 
-Добавлена в версии: v22.11
+Introduced in: v22.11
 
-Добавляет интервал к другому интервалу или к кортежу интервалов.
+
+Adds an interval to another interval or tuple of intervals.
 
 :::note
-Интервалы одного и того же типа будут объединены в один интервал. Например, если переданы `toIntervalDay(1)` и `toIntervalDay(2)`, то результатом будет `(3)`, а не `(1,1)`.
+Intervals of the same type will be combined into a single interval. For instance if `toIntervalDay(1)` and `toIntervalDay(2)` are passed then the result will be `(3)` rather than `(1,1)`.
 :::
+    
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 addInterval(interval_1, interval_2)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `interval_1` — первый интервал или кортеж интервалов. [`Interval`](/sql-reference/data-types/int-uint) или [`Tuple(Interval)`](/sql-reference/data-types/tuple)
-* `interval_2` — второй интервал, который добавляется. [`Interval`](/sql-reference/data-types/int-uint)
+- `interval_1` — First interval or tuple of intervals. [`Interval`](/sql-reference/data-types/int-uint) or [`Tuple(Interval)`](/sql-reference/data-types/tuple)
+- `interval_2` — Second interval to be added. [`Interval`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает кортеж интервалов [`Tuple(Interval)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**Примеры**
+Returns a tuple of intervals [`Tuple(Interval)`](/sql-reference/data-types/tuple)
 
-**Сложение интервалов**
+**Examples**
+
+**Add intervals**
 
 ```sql title=Query
 SELECT addInterval(INTERVAL 1 DAY, INTERVAL 1 MONTH);
@@ -410,30 +450,35 @@ SELECT addInterval(INTERVAL 2 DAY, INTERVAL 1 DAY)
 └─────────────────────────────────────────────────┘
 ```
 
+
+
 ## addMicroseconds {#addMicroseconds}
 
-Добавлена в версии: v22.6
+Introduced in: v22.6
 
-Добавляет указанное количество микросекунд к дате и времени или к строковому представлению даты и времени.
 
-**Синтаксис**
+Adds a specified number of microseconds to a date with time or a string-encoded date with time.
+    
+
+**Syntax**
 
 ```sql
 addMicroseconds(datetime, num)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — Дата и время, к которым нужно прибавить заданное количество микросекунд. [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64) или [`String`](/sql-reference/data-types/string)
-* `num` — Количество микросекунд, которое нужно добавить. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date with time to add specified number of microseconds to. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of microseconds to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**Возвращаемое значение**
 
-Возвращает `date_time`, увеличенное на `num` микросекунд, типа [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns `date_time` plus `num` microseconds [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Добавление микросекунд к различным типам даты и времени**
+**Examples**
+
+**Add microseconds to different date time types**
 
 ```sql title=Query
 WITH
@@ -450,7 +495,7 @@ SELECT
 └─────────────────────────────────┴────────────────────────────────────────┘
 ```
 
-**Использование альтернативного синтаксиса INTERVAL**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::DateTime, INTERVAL 10 microsecond)
@@ -462,30 +507,35 @@ SELECT dateAdd('1998-06-16'::DateTime, INTERVAL 10 microsecond)
 └────────────────────────────┘
 ```
 
+
+
 ## addMilliseconds {#addMilliseconds}
 
-Добавлена в версии: v22.6
+Introduced in: v22.6
 
-Добавляет заданное количество миллисекунд к значению даты и времени или к строковому представлению даты и времени.
 
-**Синтаксис**
+Adds a specified number of milliseconds to a date with time or a string-encoded date with time.
+    
+
+**Syntax**
 
 ```sql
 addMilliseconds(datetime, num)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата и время, к которым нужно добавить указанное количество миллисекунд. [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64) или [`String`](/sql-reference/data-types/string)
-* `num` — количество миллисекунд, которое нужно добавить. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date with time to add specified number of milliseconds to. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of milliseconds to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**Возвращаемое значение**
 
-Возвращает `datetime`, увеличенное на `num` миллисекунд. Тип результата — [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns `datetime` plus `num` milliseconds [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Добавление миллисекунд к различным типам даты и времени**
+**Examples**
+
+**Add milliseconds to different date time types**
 
 ```sql title=Query
 WITH
@@ -502,7 +552,7 @@ SELECT
 └─────────────────────────────────┴────────────────────────────────────────┘
 ```
 
-**Использование альтернативного синтаксиса для INTERVAL**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::DateTime, INTERVAL 10 millisecond)
@@ -514,30 +564,35 @@ SELECT dateAdd('1998-06-16'::DateTime, INTERVAL 10 millisecond)
 └──────────────────────────┘
 ```
 
+
+
 ## addMinutes {#addMinutes}
 
-Добавлена в версии: v1.1
+Introduced in: v1.1
 
-Добавляет заданное количество минут к дате, дате и времени или их строковому представлению.
 
-**Синтаксис**
+Adds a specified number of minutes to a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 addMinutes(datetime, num)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — Дата или дата и время, к которой нужно добавить указанное количество минут. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64) или [`String`](/sql-reference/data-types/string)
-* `num` — Количество минут, которое нужно добавить. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to add specified number of minutes to. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of minutes to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**Возвращаемое значение**
 
-Возвращает `datetime`, увеличенное на `num` минут, типа [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64(3)`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns `datetime` plus `num` minutes [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64(3)`](/sql-reference/data-types/datetime64)
 
-**Добавление минут к различным типам дат**
+**Examples**
+
+**Add minutes to different date types**
 
 ```sql title=Query
 WITH
@@ -556,7 +611,7 @@ SELECT
 └───────────────────────┴────────────────────────────┴───────────────────────────────────┘
 ```
 
-**Использование альтернативного синтаксиса для INTERVAL**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 minute)
@@ -568,30 +623,35 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 minute)
 └──────────────────────────┘
 ```
 
+
+
 ## addMonths {#addMonths}
 
-Добавлена в версии: v1.1
+Introduced in: v1.1
 
-Добавляет заданное количество месяцев к дате, дате и времени или их строковому представлению.
 
-**Синтаксис**
+Adds a specified number of months to a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 addMonths(datetime, num)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата или дата со временем, к которой нужно прибавить указанное число месяцев. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64) или [`String`](/sql-reference/data-types/string)
-* `num` — число месяцев, которое нужно прибавить. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to add specified number of months to. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of months to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**Возвращаемое значение**
 
-Возвращает значение `datetime`, увеличенное на `num` месяцев, типа [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns `datetime` plus `num` months [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Добавление месяцев к различным типам дат**
+**Examples**
+
+**Add months to different date types**
 
 ```sql title=Query
 WITH
@@ -610,7 +670,7 @@ SELECT
 └──────────────────────┴───────────────────────────┴──────────────────────────────────┘
 ```
 
-**Использование альтернативного синтаксиса INTERVAL**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 month)
@@ -622,30 +682,35 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 month)
 └──────────────────────────┘
 ```
 
+
+
 ## addNanoseconds {#addNanoseconds}
 
-Добавлена в: v22.6
+Introduced in: v22.6
 
-Добавляет указанное количество наносекунд к дате со временем или к строковому представлению даты со временем.
 
-**Синтаксис**
+Adds a specified number of nanoseconds to a date with time or a string-encoded date with time.
+    
+
+**Syntax**
 
 ```sql
 addNanoseconds(datetime, num)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата и время, к которым нужно добавить указанное количество наносекунд. [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64) или [`String`](/sql-reference/data-types/string)
-* `num` — количество наносекунд, которое нужно добавить. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date with time to add specified number of nanoseconds to. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of nanoseconds to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**Возвращаемое значение**
 
-Возвращает `datetime`, увеличенное на `num` наносекунд. Тип результата — [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns `datetime` plus `num` nanoseconds [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Добавление наносекунд к значениям разных типов даты и времени**
+**Examples**
+
+**Add nanoseconds to different date time types**
 
 ```sql title=Query
 WITH
@@ -662,7 +727,7 @@ SELECT
 └────────────────────────────────┴───────────────────────────────────────┘
 ```
 
-**Использование альтернативного синтаксиса INTERVAL**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::DateTime, INTERVAL 1000 nanosecond)
@@ -674,30 +739,35 @@ SELECT dateAdd('1998-06-16'::DateTime, INTERVAL 1000 nanosecond)
 └───────────────────────────────┘
 ```
 
+
+
 ## addQuarters {#addQuarters}
 
-Была добавлена в версии: v20.1
+Introduced in: v20.1
 
-Добавляет указанное количество кварталов к дате, дате и времени или к их строковому представлению.
 
-**Синтаксис**
+Adds a specified number of quarters to a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 addQuarters(datetime, num)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата или дата со временем, к которой нужно прибавить заданное количество кварталов. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64) или [`String`](/sql-reference/data-types/string)
-* `num` — количество кварталов, которое нужно прибавить. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to add specified number of quarters to. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of quarters to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**Возвращаемое значение**
 
-Возвращает значение `datetime`, увеличенное на `num` кварталов, типа [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64).
+**Returned value**
 
-**Примеры**
+Returns `datetime` plus `num` quarters [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Добавление кварталов к различным типам дат**
+**Examples**
+
+**Add quarters to different date types**
 
 ```sql title=Query
 WITH
@@ -716,7 +786,7 @@ SELECT
 └────────────────────────┴─────────────────────────────┴────────────────────────────────────┘
 ```
 
-**Использование альтернативного синтаксиса INTERVAL**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 quarter)
@@ -728,30 +798,35 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 quarter)
 └──────────────────────────┘
 ```
 
+
+
 ## addSeconds {#addSeconds}
 
-Добавлена в: v1.1
+Introduced in: v1.1
 
-Добавляет указанное количество секунд к дате, дате и времени или строковому представлению даты или даты и времени.
 
-**Синтаксис**
+Adds a specified number of seconds to a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 addSeconds(datetime, num)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата или дата со временем, к которой нужно добавить указанное количество секунд. [`Date`](/sql-reference/data-types/date), [`Date32`](/sql-reference/data-types/date32), [`DateTime`](/sql-reference/data-types/datetime), [`DateTime64`](/sql-reference/data-types/datetime64) или [`String`](/sql-reference/data-types/string)
-* `num` — количество секунд, которое нужно добавить. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to add specified number of seconds to. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of seconds to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**Возвращаемое значение**
 
-Возвращает значение `datetime`, увеличенное на `num` секунд, типа [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64(3)`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns `datetime` plus `num` seconds [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64(3)`](/sql-reference/data-types/datetime64)
 
-**Добавление секунд к различным типам даты и времени**
+**Examples**
+
+**Add seconds to different date types**
 
 ```sql title=Query
 WITH
@@ -770,7 +845,7 @@ SELECT
 └───────────────────────┴────────────────────────────┴───────────────────────────────────┘
 ```
 
-**Использование альтернативного синтаксиса INTERVAL**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 second)
@@ -782,30 +857,35 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 second)
 └─────────────────────────────────────────────────┘
 ```
 
+
+
 ## addTupleOfIntervals {#addTupleOfIntervals}
 
-Введена в версии: v22.11
+Introduced in: v22.11
 
-Последовательно добавляет кортеж интервалов к дате или дате со временем.
 
-**Синтаксис**
+Consecutively adds a tuple of intervals to a date or a date with time.
+    
+
+**Syntax**
 
 ```sql
 addTupleOfIntervals(datetime, intervals)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата или дата со временем, к которой добавляются интервалы. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `intervals` — кортеж интервалов, которые добавляются к `datetime`. [`Tuple(Interval)`](/sql-reference/data-types/tuple)
+- `datetime` — Date or date with time to add intervals to. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `intervals` — Tuple of intervals to add to `datetime`. [`Tuple(Interval)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает `date` с добавленными `intervals` — [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns `date` with added `intervals` [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Добавление кортежа интервалов к дате**
+**Examples**
+
+**Add tuple of intervals to date**
 
 ```sql title=Query
 WITH toDate('2018-01-01') AS date
@@ -818,30 +898,35 @@ SELECT addTupleOfIntervals(date, (INTERVAL 1 DAY, INTERVAL 1 MONTH, INTERVAL 1 Y
 └──────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## addWeeks {#addWeeks}
 
-Добавлена в версии v1.1
+Introduced in: v1.1
 
-Добавляет указанное количество недель к дате, дате и времени или их строковому представлению.
 
-**Синтаксис**
+Adds a specified number of weeks to a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 addWeeks(datetime, num)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата или дата со временем, к которой нужно добавить указанное количество недель. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64) или [`String`](/sql-reference/data-types/string)
-* `num` — количество недель для добавления. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to add specified number of weeks to. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of weeks to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**Возвращаемое значение**
 
-Возвращает значение `datetime`, увеличенное на `num` недель. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns `datetime` plus `num` weeks [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Добавление недель к различным типам дат**
+**Examples**
+
+**Add weeks to different date types**
 
 ```sql title=Query
 WITH
@@ -860,7 +945,7 @@ SELECT
 └─────────────────────┴──────────────────────────┴─────────────────────────────────┘
 ```
 
-**Использование альтернативного синтаксиса INTERVAL**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 week)
@@ -872,30 +957,35 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 week)
 └──────────────────────────┘
 ```
 
+
+
 ## addYears {#addYears}
 
-Добавлена в версии v1.1
+Introduced in: v1.1
 
-Добавляет указанное количество лет к дате, дате со временем или строке, содержащей дату или дату со временем.
 
-**Синтаксис**
+Adds a specified number of years to a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 addYears(datetime, num)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата или дата со временем, к которой нужно прибавить указанное количество лет. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64) или [`String`](/sql-reference/data-types/string)
-* `num` — количество лет, которое нужно добавить. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to add specified number of years to. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of years to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**Возвращаемое значение**
 
-Возвращает значение `datetime`, увеличенное на `num` лет, типа [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns `datetime` plus `num` years [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Добавление лет к различным типам дат**
+**Examples**
+
+**Add years to different date types**
 
 ```sql title=Query
 WITH
@@ -914,7 +1004,7 @@ SELECT
 └─────────────────────┴──────────────────────────┴─────────────────────────────────┘
 ```
 
-**Использование альтернативного синтаксиса INTERVAL**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 year)
@@ -926,30 +1016,34 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 year)
 └──────────────────────────┘
 ```
 
+
+
 ## age {#age}
 
-Введена в версии v23.1
+Introduced in: v23.1
 
-Возвращает компонент разности между `startdate` и `enddate` в соответствующей единице измерения.
-Разность вычисляется с точностью до 1 наносекунды.
 
-Например, разность между 2021-12-29 и 2022-01-01 составляет 3 дня для единицы «день»,
-0 месяцев для единицы «месяц» и 0 лет для единицы «год».
+Returns the unit component of the difference between `startdate` and `enddate`.
+The difference is calculated using a precision of 1 nanosecond.
 
-В качестве альтернативы age смотрите функцию [`dateDiff`](#dateDiff).
+For example, the difference between 2021-12-29 and 2022-01-01 is 3 days for the day unit,
+0 months for the month unit, and 0 years for the year unit.
 
-**Синтаксис**
+For an alternative to age, see function [`dateDiff`](#dateDiff).
+    
+
+**Syntax**
 
 ```sql
 age('unit', startdate, enddate[, timezone])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `unit` — Тип единицы измерения результата.
+- `unit` — The type of interval for result.
 
 | Unit        | Possible values                          |
-| ----------- | ---------------------------------------- |
+|-------------|------------------------------------------|
 | nanosecond  | `nanosecond`, `nanoseconds`, `ns`        |
 | microsecond | `microsecond`, `microseconds`, `us`, `u` |
 | millisecond | `millisecond`, `milliseconds`, `ms`      |
@@ -961,18 +1055,18 @@ age('unit', startdate, enddate[, timezone])
 | month       | `month`, `months`, `mm`, `m`             |
 | quarter     | `quarter`, `quarters`, `qq`, `q`         |
 | year        | `year`, `years`, `yyyy`, `yy`            |
+ - `startdate` — The first time value to subtract (the subtrahend). [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `enddate` — The second time value to subtract from (the minuend). [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `timezone` — Optional. Timezone name. If specified, it is applied to both startdate and enddate. If not specified, timezones of startdate and enddate are used. If they are not the same, the result is unspecified. [`String`](/sql-reference/data-types/string)
 
-* `startdate` — Первое значение времени, которое вычитается (вычитаемое). [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `enddate` — Второе значение времени, из которого производится вычитание (уменьшаемое). [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `timezone` — Необязательный параметр. Название часового пояса. Если задан, он применяется как к `startdate`, так и к `enddate`. Если не задан, используются часовые пояса `startdate` и `enddate`. Если они различаются, результат не определён. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает разницу между `enddate` и `startdate`, выраженную в `unit`. [`Int32`](/sql-reference/data-types/int-uint)
+Returns the difference between enddate and startdate expressed in unit. [`Int32`](/sql-reference/data-types/int-uint)
 
-**Примеры**
+**Examples**
 
-**Вычисление возраста в часах**
+**Calculate age in hours**
 
 ```sql title=Query
 SELECT age('hour', toDateTime('2018-01-01 22:30:00'), toDateTime('2018-01-02 23:00:00'))
@@ -984,7 +1078,7 @@ SELECT age('hour', toDateTime('2018-01-01 22:30:00'), toDateTime('2018-01-02 23:
 └───────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**Рассчитать возраст в разных единицах**
+**Calculate age in different units**
 
 ```sql title=Query
 SELECT
@@ -1001,30 +1095,33 @@ SELECT
 └────────────┴────────────┴─────────┴───────────┴──────────┘
 ```
 
+
+
 ## changeDay {#changeDay}
 
-Введена в версии v24.7
+Introduced in: v24.7
 
-Изменяет компонент дня в значении типа Date или DateTime.
+Changes the day component of a date or date time.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 changeDay(date_or_datetime, value)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `date_or_datetime` — значение, которое нужно изменить. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `value` — новое значение. [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `date_or_datetime` — The value to change. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `value` — The new value. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает значение того же типа, что и `date_or_datetime`, с изменённым компонентом дня. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns a value of the same type as `date_or_datetime` with modified day component. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT changeDay('2024-01-31'::DateTime, 15)
@@ -1034,30 +1131,33 @@ SELECT changeDay('2024-01-31'::DateTime, 15)
 2024-01-15 00:00:00
 ```
 
+
+
 ## changeHour {#changeHour}
 
-Впервые появилась в версии v24.7
+Introduced in: v24.7
 
-Изменяет часовую часть значения типа Date или DateTime.
+Changes the hour component of a date or date time.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 changeHour(date_or_datetime, value)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `date_or_datetime` — Значение для изменения. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `value` — Новое значение. [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `date_or_datetime` — The value to change. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `value` — The new value. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает значение того же типа, что и `date_or_datetime`, но с изменённым значением часа. [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns a value of the same type as `date_or_datetime` with modified hour component. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT changeHour('2024-01-01 12:00:00'::DateTime, 5)
@@ -1067,30 +1167,33 @@ SELECT changeHour('2024-01-01 12:00:00'::DateTime, 5)
 2024-01-01 05:00:00
 ```
 
+
+
 ## changeMinute {#changeMinute}
 
-Добавлена в версии: v24.7
+Introduced in: v24.7
 
-Изменяет компонент минуты у значения типа `date` или `date time`.
+Changes the minute component of a `date or date time`.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 changeMinute(date_or_datetime, value)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `date_or_datetime` — значение, которое нужно изменить. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `value` — новое значение. [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `date_or_datetime` — The value to change. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `value` — The new value. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает значение того же типа, что и `date_or_datetime`, с изменённой минутной компонентой. [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns a value of the same type as `date_or_datetime` with modified minute component. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT changeMinute('2024-01-01 12:30:00'::DateTime, 45)
@@ -1100,30 +1203,33 @@ SELECT changeMinute('2024-01-01 12:30:00'::DateTime, 45)
 2024-01-01 12:45:00
 ```
 
+
+
 ## changeMonth {#changeMonth}
 
-Добавлена в версии v24.7
+Introduced in: v24.7
 
-Изменяет компонент месяца в дате или дате-времени.
+Changes the month component of a date or date time.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 changeMonth(date_or_datetime, value)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `date_or_datetime` — значение, которое нужно изменить. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `value` — новое значение. [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `date_or_datetime` — The value to change. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `value` — The new value. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает значение того же типа, что и `date_or_datetime`, с изменённым компонентом месяца. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns a value of the same type as `date_or_datetime` with modified month component. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT changeMonth('2024-01-01'::DateTime, 12)
@@ -1133,30 +1239,33 @@ SELECT changeMonth('2024-01-01'::DateTime, 12)
 2024-12-01 00:00:00
 ```
 
+
+
 ## changeSecond {#changeSecond}
 
-Добавлена в: v24.7
+Introduced in: v24.7
 
-Изменяет секундную часть даты или даты-времени.
+Changes the second component of a date or date time.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 changeSecond(date_or_datetime, value)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `date_or_datetime` — значение, которое нужно изменить. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `value` — новое значение. [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `date_or_datetime` — The value to change. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `value` — The new value. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает значение того же типа, что и `date_or_datetime`, с изменённой компонентой секунд. [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns a value of the same type as `date_or_datetime` with modified seconds component. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT changeSecond('2024-01-01 12:30:45'::DateTime, 15)
@@ -1166,30 +1275,33 @@ SELECT changeSecond('2024-01-01 12:30:45'::DateTime, 15)
 2024-01-01 12:30:15
 ```
 
+
+
 ## changeYear {#changeYear}
 
-Добавлена в версии: v24.7
+Introduced in: v24.7
 
-Изменяет компонент года в значении даты или даты и времени.
+Changes the year component of a date or date time.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 changeYear(date_or_datetime, value)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `date_or_datetime` — значение для изменения. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `value` — новое значение. [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `date_or_datetime` — The value to change. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `value` — The new value. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает значение того же типа, что и `date_or_datetime`, с изменённым компонентом года. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns a value of the same type as `date_or_datetime` with modified year component. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT changeYear('2024-01-01'::DateTime, 2023)
@@ -1199,57 +1311,61 @@ SELECT changeYear('2024-01-01'::DateTime, 2023)
 2023-01-01 00:00:00
 ```
 
+
+
 ## dateDiff {#dateDiff}
 
-Введена в: v23.4
+Introduced in: v23.4
 
-Возвращает количество границ указанной единицы времени `unit`, пересеченных между `startdate` и `enddate`.
-Разница вычисляется в относительных единицах. Например, разница между 2021-12-29 и 2022-01-01 составляет 3 дня для единицы day
-(см. [`toRelativeDayNum`](#toRelativeDayNum)), 1 месяц для единицы month (см. [`toRelativeMonthNum`](#toRelativeMonthNum)) и 1 год для единицы year
-(см. [`toRelativeYearNum`](#toRelativeYearNum)).
 
-Если указана единица `week`, то `dateDiff` предполагает, что неделя начинается в понедельник.
-Обратите внимание, что это поведение отличается от функции `toWeek()`, в которой недели по умолчанию начинаются в воскресенье.
+Returns the count of the specified `unit` boundaries crossed between the `startdate` and the `enddate`.
+The difference is calculated using relative units. For example, the difference between 2021-12-29 and 2022-01-01 is 3 days for unit day
+(see [`toRelativeDayNum`](#toRelativeDayNum)), 1 month for unit month (see [`toRelativeMonthNum`](#toRelativeMonthNum)) and 1 year for unit year
+(see [`toRelativeYearNum`](#toRelativeYearNum)).
 
-В качестве альтернативы `dateDiff` см. функцию [`age`](#age).
+If the unit `week` was specified, then `dateDiff` assumes that weeks start on Monday.
+Note that this behavior is different from that of function `toWeek()` in which weeks start by default on Sunday.
 
-**Синтаксис**
+For an alternative to `dateDiff`, see function [`age`](#age).
+    
+
+**Syntax**
 
 ```sql
 dateDiff(unit, startdate, enddate[, timezone])
 ```
 
-**Псевдонимы**: `timestampDiff`, `date_diff`, `TIMESTAMP_DIFF`, `DATE_DIFF`, `timestamp_diff`
+**Aliases**: `timestampDiff`, `date_diff`, `TIMESTAMP_DIFF`, `DATE_DIFF`, `timestamp_diff`
 
-**Аргументы**
+**Arguments**
 
-* `unit` — Тип интервала для результата.
+- `unit` — The type of interval for result.
 
-| Единица     | Допустимые значения                      |
-| ----------- | ---------------------------------------- |
-| nanosecond  | `nanosecond`, `nanoseconds`, `ns`        |
-| microsecond | `microsecond`, `microseconds`, `us`, `u` |
-| millisecond | `millisecond`, `milliseconds`, `ms`      |
-| second      | `second`, `seconds`, `ss`, `s`           |
-| minute      | `minute`, `minutes`, `mi`, `n`           |
-| hour        | `hour`, `hours`, `hh`, `h`               |
-| day         | `day`, `days`, `dd`, `d`                 |
-| week        | `week`, `weeks`, `wk`, `ww`              |
-| month       | `month`, `months`, `mm`, `m`             |
-| quarter     | `quarter`, `quarters`, `qq`, `q`         |
-| year        | `year`, `years`, `yyyy`, `yy`            |
+| Unit        | Possible values                           |
+|-------------|-------------------------------------------|
+| nanosecond  | `nanosecond`, `nanoseconds`, `ns`         |
+| microsecond | `microsecond`, `microseconds`, `us`, `u`  |
+| millisecond | `millisecond`, `milliseconds`, `ms`       |
+| second      | `second`, `seconds`, `ss`, `s`            |
+| minute      | `minute`, `minutes`, `mi`, `n`            |
+| hour        | `hour`, `hours`, `hh`, `h`                |
+| day         | `day`, `days`, `dd`, `d`                  |
+| week        | `week`, `weeks`, `wk`, `ww`               |
+| month       | `month`, `months`, `mm`, `m`              |
+| quarter     | `quarter`, `quarters`, `qq`, `q`          |
+| year        | `year`, `years`, `yyyy`, `yy`             |
+ - `startdate` — The first time value to subtract (the subtrahend). [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `enddate` — The second time value to subtract from (the minuend). [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `timezone` — Optional. Timezone name. If specified, it is applied to both `startdate` and `enddate`. If not specified, timezones of `startdate` and `enddate` are used. If they are not the same, the result is unspecified. [`String`](/sql-reference/data-types/string)
 
-* `startdate` — Первое значение времени (вычитаемое). [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `enddate` — Второе значение времени, из которого выполняется вычитание (уменьшаемое). [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `timezone` — Необязательный параметр. Название часового пояса. Если указано, применяется к `startdate` и `enddate`. Если не указано, используются часовые пояса `startdate` и `enddate`. Если они не совпадают, результат не определён. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает разницу между `enddate` и `startdate`, выраженную в `unit`. [`Int64`](/sql-reference/data-types/int-uint)
+Returns the difference between `enddate` and `startdate` expressed in `unit`. [`Int64`](/sql-reference/data-types/int-uint)
 
-**Примеры**
+**Examples**
 
-**Вычисление разницы между датами в часах**
+**Calculate date difference in hours**
 
 ```sql title=Query
 SELECT dateDiff('hour', toDateTime('2018-01-01 22:00:00'), toDateTime('2018-01-02 23:00:00')) AS res
@@ -1261,7 +1377,7 @@ SELECT dateDiff('hour', toDateTime('2018-01-01 22:00:00'), toDateTime('2018-01-0
 └─────┘
 ```
 
-**Вычисление разницы между датами в разных единицах измерения**
+**Calculate date difference in different units**
 
 ```sql title=Query
 SELECT
@@ -1278,44 +1394,48 @@ SELECT
 └────────────┴────────────┴──────────┴────────────┴───────────┘
 ```
 
+
+
 ## dateName {#dateName}
 
-Появилась в версии: v21.7
+Introduced in: v21.7
 
-Возвращает указанную часть даты.
 
-Возможные значения:
+Returns the specified part of the date.
 
-* &#39;year&#39;
-* &#39;quarter&#39;
-* &#39;month&#39;
-* &#39;week&#39;
-* &#39;dayofyear&#39;
-* &#39;day&#39;
-* &#39;weekday&#39;
-* &#39;hour&#39;
-* &#39;minute&#39;
-* &#39;second&#39;
+Possible values:
+- 'year'
+- 'quarter'
+- 'month'
+- 'week'
+- 'dayofyear'
+- 'day'
+- 'weekday'
+- 'hour'
+- 'minute'
+- 'second'
+    
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 dateName(date_part, date[, timezone])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `date_part` — часть даты, которую нужно извлечь. [`String`](/sql-reference/data-types/string)
-* `datetime` — значение даты или даты со временем. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `timezone` — необязательный. Часовой пояс. [`String`](/sql-reference/data-types/string)
+- `date_part` — The part of the date that you want to extract. [`String`](/sql-reference/data-types/string)
+- `datetime` — A date or date with time value. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `timezone` — Optional. Timezone. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает указанную часть даты. [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**Примеры**
+Returns the specified part of date. [`String`](/sql-reference/data-types/string)
 
-**Извлечение различных частей даты**
+**Examples**
+
+**Extract different date parts**
 
 ```sql title=Query
 WITH toDateTime('2021-04-14 11:22:33') AS date_value
@@ -1331,55 +1451,60 @@ SELECT
 └──────────────────────────────┴───────────────────────────────┴─────────────────────────────┘
 ```
 
+
+
 ## dateTrunc {#dateTrunc}
 
-Добавлена в версии: v20.8
+Introduced in: v20.8
 
-Усекает значение даты и времени до указанной части.
 
-**Синтаксис**
+Truncates a date and time value to the specified part of the date.
+    
+
+**Syntax**
 
 ```sql
 dateTrunc(unit, datetime[, timezone])
 ```
 
-**Псевдонимы**: `DATE_TRUNC`
+**Aliases**: `DATE_TRUNC`
 
-**Аргументы**
+**Arguments**
 
-* `unit` —
-  Тип интервала, до которого будет усечён результат. Аргумент `unit` нечувствителен к регистру.
-  | Unit                                         | Совместимость                 |
-  | -------------------------------------------- | ----------------------------- |
-  | `nanosecond`                                 | Совместим только с DateTime64 |
-  | `microsecond`                                | Совместим только с DateTime64 |
-  | `millisecond`                                | Совместим только с DateTime64 |
-  | `second`                                     |                               |
-  | `minute`                                     |                               |
-  | `hour`                                       |                               |
-  | `day`                                        |                               |
-  | `week`                                       |                               |
-  | `month`                                      |                               |
-  | `quarter`                                    |                               |
-  | `year`                                       |                               |
-  | [`String`](/sql-reference/data-types/string) |                               |
-* `datetime` — Дата и время. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `timezone` — Необязательный параметр. Имя часового пояса для возвращаемого значения datetime. Если не указано, функция использует часовой пояс параметра `datetime`. [`String`](/sql-reference/data-types/string)
+- `unit` — 
+The type of interval to truncate the result. `unit` argument is case-insensitive.
+| Unit         | Compatibility                   |
+|--------------|---------------------------------|
+| `nanosecond` | Compatible only with DateTime64 |
+| `microsecond`| Compatible only with DateTime64 |
+| `millisecond`| Compatible only with DateTime64 |
+| `second`     |                                 |
+| `minute`     |                                 |
+| `hour`       |                                 |
+| `day`        |                                 |
+| `week`       |                                 |
+| `month`      |                                 |
+| `quarter`    |                                 |
+| `year`       |                                 |
+ [`String`](/sql-reference/data-types/string)
+- `datetime` — Date and time. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `timezone` — Optional. Timezone name for the returned datetime. If not specified, the function uses the timezone of the `datetime` parameter. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает усечённое значение даты и времени.
+**Returned value**
 
-| Аргумент Unit              | Аргумент `datetime`                                 | Возвращаемый тип                                                                        |
-| -------------------------- | --------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| Year, Quarter, Month, Week | `Date32` или `DateTime64` или `Date` или `DateTime` | [`Date32`](../data-types/date32.md) или [`Date`](../data-types/date.md)                 |
-| Day, Hour, Minute, Second  | `Date32`, `DateTime64`, `Date` или `DateTime`       | [`DateTime64`](../data-types/datetime64.md) или [`DateTime`](../data-types/datetime.md) |
-| Millisecond, Microsecond,  | Любой                                               | [`DateTime64`](../data-types/datetime64.md)                                             |
-| Nanosecond                 |                                                     | с масштабом 3, 6 или 9                                                                  |
+Returns the truncated date and time value.
 
-**Примеры**
+| Unit Argument               | `datetime` Argument                   | Return Type                                                                            |
+|-----------------------------|---------------------------------------|----------------------------------------------------------------------------------------|
+| Year, Quarter, Month, Week  | `Date32` or `DateTime64` or `Date` or `DateTime` | [`Date32`](../data-types/date32.md) or [`Date`](../data-types/date.md)                 |
+| Day, Hour, Minute, Second   | `Date32`, `DateTime64`, `Date`, or `DateTime` | [`DateTime64`](../data-types/datetime64.md) or [`DateTime`](../data-types/datetime.md) |
+| Millisecond, Microsecond,   | Any                                   | [`DateTime64`](../data-types/datetime64.md)                                            |
+| Nanosecond                  |                                       | with scale 3, 6, or 9                                                                  |
 
-**Усечение без указания часового пояса**
+**Examples**
+
+**Truncate without timezone**
 
 ```sql title=Query
 SELECT now(), dateTrunc('hour', now());
@@ -1391,7 +1516,7 @@ SELECT now(), dateTrunc('hour', now());
 └─────────────────────┴───────────────────────────┘
 ```
 
-**Усечение с указанным часовым поясом**
+**Truncate with specified timezone**
 
 ```sql title=Query
 SELECT now(), dateTrunc('hour', now(), 'Asia/Istanbul');
@@ -1403,86 +1528,91 @@ SELECT now(), dateTrunc('hour', now(), 'Asia/Istanbul');
 └─────────────────────┴────────────────────────────────────────────┘
 ```
 
+
+
 ## formatDateTime {#formatDateTime}
 
-Введена в версии v1.1
+Introduced in: v1.1
 
-Форматирует дату или дату со временем в соответствии с заданной строкой формата. `format` — это константное выражение, поэтому вы не можете использовать несколько форматов для одного результирующего столбца.
 
-`formatDateTime` использует стиль формата datetime MySQL, см. [документацию MySQL](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format).
+Formats a date or date with time according to the given format string. `format` is a constant expression, so you cannot have multiple formats for a single result column.
 
-Обратной операцией для этой функции является [`parseDateTime`](/sql-reference/functions/type-conversion-functions#parsedatetime).
+`formatDateTime` uses MySQL datetime format style, refer to the [mysql docs](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format).
 
-Используя подстановочные поля, вы можете задать шаблон для результирующей строки.
-Пример столбца в таблице ниже показывает результат форматирования для `2018-01-02 22:33:44`.
+The opposite operation of this function is [`parseDateTime`](/sql-reference/functions/type-conversion-functions#parsedatetime).
 
-**Подстановочные поля:**
+Using replacement fields, you can define a pattern for the resulting string.
+The example column in the table below shows formatting result for `2018-01-02 22:33:44`.
 
-| Placeholder | Описание                                                     | Пример     |
-| ----------- | ------------------------------------------------------------ | ---------- |
-| %a          | сокращённое название дня недели (Mon-Sun)                    | Mon        |
-| %b          | сокращённое название месяца (Jan-Dec)                        | Jan        |
-| %c          | месяц в виде целого числа (01-12)                            | 01         |
-| %C          | год, делённый на 100 и усечённый до целого (00-99)           | 20         |
-| %d          | день месяца с ведущим нулём (01-31)                          | 02         |
-| %D          | короткий формат даты MM/DD/YY, эквивалентен %m/%d/%y         | 01/02/18   |
-| %e          | день месяца с ведущим пробелом (1-31)                        | 2          |
-| %f          | дробная часть секунды                                        | 123456     |
-| %F          | короткий формат даты YYYY-MM-DD, эквивалентен %Y-%m-%d       | 2018-01-02 |
-| %g          | двухзначный формат года, выровненный по ISO 8601             | 18         |
-| %G          | четырёхзначный формат года для номера недели ISO             | 2018       |
-| %h          | час в 12-часовом формате (01-12)                             | 09         |
-| %H          | час в 24-часовом формате (00-23)                             | 22         |
-| %i          | минута (00-59)                                               | 33         |
-| %I          | час в 12-часовом формате (01-12)                             | 10         |
-| %j          | день года (001-366)                                          | 002        |
-| %k          | час в 24-часовом формате (00-23)                             | 14         |
-| %l          | час в 12-часовом формате (01-12)                             | 09         |
-| %m          | месяц в виде целого числа (01-12)                            | 01         |
-| %M          | полное название месяца (January-December)                    | January    |
-| %n          | символ новой строки                                          |            |
-| %p          | обозначение AM или PM                                        | PM         |
-| %Q          | квартал (1-4)                                                | 1          |
-| %r          | 12-часовой формат времени HH:MM AM/PM, эквивалентен %h:%i %p | 10:30 PM   |
-| %R          | 24-часовой формат времени HH:MM, эквивалентен %H:%i          | 22:33      |
-| %s          | секунда (00-59)                                              | 44         |
-| %S          | секунда (00-59)                                              | 44         |
-| %t          | символ горизонтальной табуляции                              |            |
-| %T          | формат времени ISO 8601 (HH:MM:SS), эквивалентен %H:%i:%S    | 22:33:44   |
-| %u          | день недели ISO 8601 как число, где понедельник = 1 (1-7)    | 2          |
-| %V          | номер недели ISO 8601 (01-53)                                | 01         |
-| %w          | день недели как целое число, где воскресенье = 0 (0-6)       | 2          |
-| %W          | полное название дня недели (Monday-Sunday)                   | Monday     |
-| %y          | год, две последние цифры (00-99)                             | 18         |
-| %Y          | год                                                          | 2018       |
-| %z          | смещение времени от UTC в формате +HHMM или -HHMM            | -0500      |
-| %%          | знак %                                                       | %          |
+**Replacement fields:**
 
-* В версиях ClickHouse ранее v23.4 `%f` выводит один ноль (0), если форматируемое значение имеет тип Date, Date32 или DateTime (у которых нет дробных секунд), или DateTime64 с точностью 0.
-* В версиях ClickHouse ранее v25.1 `%f` выводит столько цифр, сколько задано масштабом DateTime64, вместо фиксированных 6 цифр.
-* В версиях ClickHouse ранее v23.4 `%M` выводит минуту (00-59) вместо полного названия месяца (January-December).
+| Placeholder | Description | Example |
+|-------------|-------------|---------|
+| %a | abbreviated weekday name (Mon-Sun) | Mon |
+| %b | abbreviated month name (Jan-Dec) | Jan |
+| %c | month as an integer number (01-12) | 01 |
+| %C | year divided by 100 and truncated to integer (00-99) | 20 |
+| %d | day of the month, zero-padded (01-31) | 02 |
+| %D | Short MM/DD/YY date, equivalent to %m/%d/%y | 01/02/18 |
+| %e | day of the month, space-padded (1-31) | 2 |
+| %f | fractional second | 123456 |
+| %F | short YYYY-MM-DD date, equivalent to %Y-%m-%d | 2018-01-02 |
+| %g | two-digit year format, aligned to ISO 8601 | 18 |
+| %G | four-digit year format for ISO week number | 2018 |
+| %h | hour in 12h format (01-12) | 09 |
+| %H | hour in 24h format (00-23) | 22 |
+| %i | minute (00-59) | 33 |
+| %I | hour in 12h format (01-12) | 10 |
+| %j | day of the year (001-366) | 002 |
+| %k | hour in 24h format (00-23) | 14 |
+| %l | hour in 12h format (01-12) | 09 |
+| %m | month as an integer number (01-12) | 01 |
+| %M | full month name (January-December) | January |
+| %n | new-line character | |
+| %p | AM or PM designation | PM |
+| %Q | Quarter (1-4) | 1 |
+| %r | 12-hour HH:MM AM/PM time, equivalent to %h:%i %p | 10:30 PM |
+| %R | 24-hour HH:MM time, equivalent to %H:%i | 22:33 |
+| %s | second (00-59) | 44 |
+| %S | second (00-59) | 44 |
+| %t | horizontal-tab character | |
+| %T | ISO 8601 time format (HH:MM:SS), equivalent to %H:%i:%S | 22:33:44 |
+| %u | ISO 8601 weekday as number with Monday as 1 (1-7) | 2 |
+| %V | ISO 8601 week number (01-53) | 01 |
+| %w | weekday as a integer number with Sunday as 0 (0-6) | 2 |
+| %W | full weekday name (Monday-Sunday) | Monday |
+| %y | Year, last two digits (00-99) | 18 |
+| %Y | Year | 2018 |
+| %z | Time offset from UTC as +HHMM or -HHMM | -0500 |
+| %% | a % sign | % |
 
-**Синтаксис**
+- In ClickHouse versions earlier than v23.4, `%f` prints a single zero (0) if the formatted value is a Date, Date32 or DateTime (which have no fractional seconds) or a DateTime64 with a precision of 0.
+- In ClickHouse versions earlier than v25.1, `%f` prints as many digits as specified by the scale of the DateTime64 instead of fixed 6 digits.
+- In ClickHouse versions earlier than v23.4, `%M` prints the minute (00-59) instead of the full month name (January-December).
+    
+
+**Syntax**
 
 ```sql
 formatDateTime(datetime, format[, timezone])
 ```
 
-**Синонимы**: `DATE_FORMAT`
+**Aliases**: `DATE_FORMAT`
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — Дата или дата и время для форматирования. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `format` — Строка формата со строками подстановки. [`String`](/sql-reference/data-types/string)
-* `timezone` — Необязательный параметр. Название часового пояса для форматируемого времени. [`String`](/sql-reference/data-types/string)
+- `datetime` — A date or date time to format. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `format` — Format string with replacement fields. [`String`](/sql-reference/data-types/string)
+- `timezone` — Optional. Timezone name for the formatted time. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает значения даты и времени в соответствии с заданным форматом. [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**Примеры**
+Returns time and date values according to the determined format. [`String`](/sql-reference/data-types/string)
 
-**Форматирование даты со спецификатором года**
+**Examples**
+
+**Format date with year placeholder**
 
 ```sql title=Query
 SELECT formatDateTime(toDate('2010-01-04'), '%g')
@@ -1494,7 +1624,7 @@ SELECT formatDateTime(toDate('2010-01-04'), '%g')
 └────────────────────────────────────────────┘
 ```
 
-**Форматирование DateTime64 с дробной частью секунды**
+**Format DateTime64 with fractional seconds**
 
 ```sql title=Query
 SELECT formatDateTime(toDateTime64('2010-01-04 12:34:56.123456', 7), '%f')
@@ -1506,7 +1636,7 @@ SELECT formatDateTime(toDateTime64('2010-01-04 12:34:56.123456', 7), '%f')
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-**Формат с часовым поясом**
+**Format with timezone**
 
 ```sql title=Query
 SELECT
@@ -1533,63 +1663,68 @@ LIMIT 10
 └─────────────────────┴───────────────────┴─────────────┘
 ```
 
+
+
 ## formatDateTimeInJodaSyntax {#formatDateTimeInJodaSyntax}
 
-Введена в версии v20.1
+Introduced in: v20.1
 
-Аналогична `formatDateTime`, за исключением того, что форматирует дату и время в стиле Joda вместо стиля MySQL. См. [документацию Joda Time](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html).
 
-Обратная операция для этой функции — [`parseDateTimeInJodaSyntax`](/sql-reference/functions/type-conversion-functions#parsedatetimeinjodasyntax).
+Similar to `formatDateTime`, except that it formats datetime in Joda style instead of MySQL style. Refer to [Joda Time documentation](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html).
 
-Используя поля подстановки, вы можете задать шаблон для результирующей строки.
+The opposite operation of this function is [`parseDateTimeInJodaSyntax`](/sql-reference/functions/type-conversion-functions#parsedatetimeinjodasyntax).
 
-**Поля подстановки:**
+Using replacement fields, you can define a pattern for the resulting string.
 
-| Placeholder | Описание                                                   | Представление | Примеры                    |
-| ----------- | ---------------------------------------------------------- | ------------- | -------------------------- |
-| G           | эра                                                        | текст         | AD                         |
-| C           | столетие эпохи (&gt;=0)                                    | число         | 20                         |
-| Y           | год эпохи (&gt;=0)                                         | год           | 1996                       |
-| x           | год для недельного счёта (пока не поддерживается)          | год           | 1996                       |
-| w           | неделя в году по недельному счёту (пока не поддерживается) | число         | 27                         |
-| e           | день недели                                                | число         | 2                          |
-| E           | день недели                                                | текст         | Tuesday; Tue               |
-| y           | год                                                        | год           | 1996                       |
-| D           | день года                                                  | число         | 189                        |
-| M           | месяц года                                                 | месяц         | July; Jul; 07              |
-| d           | день месяца                                                | число         | 10                         |
-| a           | половина суток                                             | текст         | PM                         |
-| K           | час половины суток (0~11)                                  | число         | 0                          |
-| h           | час половины суток (1~12)                                  | число         | 12                         |
-| H           | час дня (0~23)                                             | число         | 0                          |
-| k           | час дня (1~24)                                             | число         | 24                         |
-| m           | минута часа                                                | число         | 30                         |
-| s           | секунда минуты                                             | число         | 55                         |
-| S           | доля секунды                                               | число         | 978                        |
-| z           | часовой пояс                                               | текст         | Eastern Standard Time; EST |
-| Z           | смещение часового пояса                                    | зона          | -0800; -0812               |
-| &#39;       | экранирование текста                                       | разделитель   |                            |
-| &#39;&#39;  | одинарная кавычка                                          | литерал       | &#39;                      |
+**Replacement fields:**
 
-**Синтаксис**
+| Placeholder | Description | Presentation | Examples |
+|-------------|-------------|-------------|----------|
+| G | era | text | AD |
+| C | century of era (>=0) | number | 20 |
+| Y | year of era (>=0) | year | 1996 |
+| x | weekyear (not supported yet) | year | 1996 |
+| w | week of weekyear (not supported yet) | number | 27 |
+| e | day of week | number | 2 |
+| E | day of week | text | Tuesday; Tue |
+| y | year | year | 1996 |
+| D | day of year | number | 189 |
+| M | month of year | month | July; Jul; 07 |
+| d | day of month | number | 10 |
+| a | halfday of day | text | PM |
+| K | hour of halfday (0~11) | number | 0 |
+| h | clockhour of halfday (1~12) | number | 12 |
+| H | hour of day (0~23) | number | 0 |
+| k | clockhour of day (1~24) | number | 24 |
+| m | minute of hour | number | 30 |
+| s | second of minute | number | 55 |
+| S | fraction of second | number | 978 |
+| z | time zone | text | Eastern Standard Time; EST |
+| Z | time zone offset | zone | -0800; -0812 |
+| ' | escape for text | delimiter | |
+| '' | single quote | literal | ' |
+    
+
+**Syntax**
 
 ```sql
 formatDateTimeInJodaSyntax(datetime, format[, timezone])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата или дата-время для форматирования. [`DateTime`](/sql-reference/data-types/datetime) или [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `format` — строка формата с полями подстановки в стиле Joda. [`String`](/sql-reference/data-types/string)
-* `timezone` — необязательный параметр. Название часового пояса, используемого при форматировании времени. [`String`](/sql-reference/data-types/string)
+- `datetime` — A date or date time to format. [`DateTime`](/sql-reference/data-types/datetime) or [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `format` — Format string with Joda-style replacement fields. [`String`](/sql-reference/data-types/string)
+- `timezone` — Optional. Timezone name for the formatted time. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает значения даты и времени в соответствии с заданным форматом. [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**Примеры**
+Returns time and date values according to the determined format. [`String`](/sql-reference/data-types/string)
 
-**Форматирование datetime с использованием синтаксиса Joda**
+**Examples**
+
+**Format datetime using Joda syntax**
 
 ```sql title=Query
 SELECT formatDateTimeInJodaSyntax(toDateTime('2010-01-04 12:34:56'), 'yyyy-MM-dd HH:mm:ss')
@@ -1601,33 +1736,38 @@ SELECT formatDateTimeInJodaSyntax(toDateTime('2010-01-04 12:34:56'), 'yyyy-MM-dd
 └─────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## fromDaysSinceYearZero {#fromDaysSinceYearZero}
 
-Добавлена в: v23.11
+Introduced in: v23.11
 
-Для заданного количества дней, прошедших с [1 января 0000 года](https://en.wikipedia.org/wiki/Year_zero), возвращает соответствующую дату в [пролептическом григорианском календаре, определённом стандартом ISO 8601](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar).
 
-Вычисление выполняется так же, как в функции MySQL `FROM_DAYS()`. Результат не определён, если его невозможно представить в пределах типа [Date](../data-types/date.md).
+For a given number of days elapsed since [1 January 0000](https://en.wikipedia.org/wiki/Year_zero), returns the corresponding date in the [proleptic Gregorian calendar defined by ISO 8601](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar).
 
-**Синтаксис**
+The calculation is the same as in MySQL's `FROM_DAYS()` function. The result is undefined if it cannot be represented within the bounds of the [Date](../data-types/date.md) type.
+    
+
+**Syntax**
 
 ```sql
 fromDaysSinceYearZero(days)
 ```
 
-**Псевдонимы**: `FROM_DAYS`
+**Aliases**: `FROM_DAYS`
 
-**Аргументы**
+**Arguments**
 
-* `days` — количество дней, прошедших с нулевого года. [`UInt32`](/sql-reference/data-types/int-uint)
+- `days` — The number of days passed since year zero. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает дату, соответствующую количеству дней, прошедших с нулевого года. [`Date`](/sql-reference/data-types/date)
+**Returned value**
 
-**Примеры**
+Returns the date corresponding to the number of days passed since year zero. [`Date`](/sql-reference/data-types/date)
 
-**Преобразование количества дней с нулевого года в даты**
+**Examples**
+
+**Convert days since year zero to dates**
 
 ```sql title=Query
 SELECT
@@ -1641,30 +1781,35 @@ fromDaysSinceYearZero(toDaysSinceYearZero(toDate('2023-09-08'))) AS date2
 └────────────┴────────────┘
 ```
 
+
+
 ## fromDaysSinceYearZero32 {#fromDaysSinceYearZero32}
 
-Появилась в версии: v23.11
+Introduced in: v23.11
 
-Для заданного количества дней, прошедших с [1 января 0000 года](https://en.wikipedia.org/wiki/Year_zero), возвращает соответствующую дату в [пролептическом григорианском календаре, определённом стандартом ISO 8601](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar).
-Вычисление выполняется так же, как в функции MySQL `FROM_DAYS()`. Результат не определён, если его невозможно представить в пределах типа [`Date32`](../data-types/date32.md).
 
-**Синтаксис**
+For a given number of days elapsed since [1 January 0000](https://en.wikipedia.org/wiki/Year_zero), returns the corresponding date in the [proleptic Gregorian calendar defined by ISO 8601](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar).
+The calculation is the same as in MySQL's `FROM_DAYS()` function. The result is undefined if it cannot be represented within the bounds of the [`Date32`](../data-types/date32.md) type.
+    
+
+**Syntax**
 
 ```sql
 fromDaysSinceYearZero32(days)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `days` — количество дней, прошедших с нулевого года. [`UInt32`](/sql-reference/data-types/int-uint)
+- `days` — The number of days passed since year zero. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает дату, соответствующую количеству дней, прошедших с нулевого года. [`Date32`](/sql-reference/data-types/date32)
+**Returned value**
 
-**Примеры**
+Returns the date corresponding to the number of days passed since year zero. [`Date32`](/sql-reference/data-types/date32)
 
-**Преобразование количества дней, прошедших с нулевого года, в даты**
+**Examples**
+
+**Convert days since year zero to dates**
 
 ```sql title=Query
 SELECT
@@ -1678,29 +1823,34 @@ fromDaysSinceYearZero32(toDaysSinceYearZero(toDate('2023-09-08'))) AS date2
 └────────────┴────────────┘
 ```
 
+
+
 ## fromModifiedJulianDay {#fromModifiedJulianDay}
 
-Впервые представлена в: v21.1
+Introduced in: v21.1
 
-Преобразует число [модифицированного юлианского дня](https://en.wikipedia.org/wiki/Julian_day#Variants) в дату в [пролептическом григорианском календаре](https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar) в текстовом формате `YYYY-MM-DD`. Эта функция поддерживает значения дней от `-678941` до `2973483` (которые соответствуют 0000-01-01 и 9999-12-31 соответственно). Она вызывает исключение, если номер дня выходит за пределы поддерживаемого диапазона.
 
-**Синтаксис**
+Converts a [Modified Julian Day](https://en.wikipedia.org/wiki/Julian_day#Variants) number to a [Proleptic Gregorian calendar](https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar) date in text form `YYYY-MM-DD`. This function supports day number from `-678941` to `2973483` (which represent 0000-01-01 and 9999-12-31 respectively). It raises an exception if the day number is outside of the supported range.
+    
+
+**Syntax**
 
 ```sql
 fromModifiedJulianDay(day)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `day` — номер модифицированного юлианского дня. [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `day` — Modified Julian Day number. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает дату в текстовом формате. [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**Примеры**
+Returns date in text form. [`String`](/sql-reference/data-types/string)
 
-**Преобразование модифицированного юлианского дня в дату**
+**Examples**
+
+**Convert Modified Julian Day to date**
 
 ```sql title=Query
 SELECT fromModifiedJulianDay(58849)
@@ -1712,29 +1862,34 @@ SELECT fromModifiedJulianDay(58849)
 └──────────────────────────────┘
 ```
 
+
+
 ## fromModifiedJulianDayOrNull {#fromModifiedJulianDayOrNull}
 
-Добавлена в: v21.1
+Introduced in: v21.1
 
-Аналогична [`fromModifiedJulianDay()`](#fromModifiedJulianDay), но вместо выброса исключений возвращает `NULL`.
 
-**Синтаксис**
+Similar to [`fromModifiedJulianDay()`](#fromModifiedJulianDay), but instead of raising exceptions it returns `NULL`.
+    
+
+**Syntax**
 
 ```sql
 fromModifiedJulianDayOrNull(day)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `day` — номер модифицированного юлианского дня (Modified Julian Day). [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `day` — Modified Julian Day number. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает дату в текстовом формате для допустимого аргумента `day`, в противном случае — `null`. [`Nullable(String)`](/sql-reference/data-types/nullable)
+**Returned value**
 
-**Примеры**
+Returns date in text form for valid `day` argument, otherwise `null`. [`Nullable(String)`](/sql-reference/data-types/nullable)
 
-**Преобразование Modified Julian Day в дату с обработкой null**
+**Examples**
+
+**Convert Modified Julian Day to date with null handling**
 
 ```sql title=Query
 SELECT fromModifiedJulianDayOrNull(58849);
@@ -1750,32 +1905,37 @@ SELECT fromModifiedJulianDayOrNull(60000000); -- некорректный арг
 └──────────────────────────┘
 ```
 
+
+
 ## fromUTCTimestamp {#fromUTCTimestamp}
 
-Добавлена в версии: v22.1
+Introduced in: v22.1
 
-Преобразует значение типа дата или дата со временем из часового пояса UTC в значение типа дата или дата со временем в указанном часовом поясе. Эта функция в основном добавлена для совместимости с Apache Spark и аналогичными фреймворками.
 
-**Синтаксис**
+Converts a date or date with time value from UTC timezone to a date or date with time value with the specified time zone. This function is mainly included for compatibility with Apache Spark and similar frameworks.
+    
+
+**Syntax**
 
 ```sql
 fromUTCTimestamp(datetime, time_zone)
 ```
 
-**Псевдонимы**: `from_utc_timestamp`
+**Aliases**: `from_utc_timestamp`
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — константное значение даты или даты и времени либо выражение. [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `time_zone` — константное строковое значение или выражение, задающее часовой пояс. [`String`](/sql-reference/data-types/string)
+- `datetime` — A date or date with time const value or an expression. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `time_zone` — A String type const value or an expression representing the time zone. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает DateTime/DateTime64 в указанном часовом поясе. [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns DateTime/DateTime64 in the specified timezone. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Преобразование часового пояса UTC в указанный часовой пояс**
+**Examples**
+
+**Convert UTC timezone to specified timezone**
 
 ```sql title=Query
 SELECT fromUTCTimestamp(toDateTime64('2023-03-16 10:00:00', 3), 'Asia/Shanghai')
@@ -1787,40 +1947,45 @@ SELECT fromUTCTimestamp(toDateTime64('2023-03-16 10:00:00', 3), 'Asia/Shanghai')
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## fromUnixTimestamp {#fromUnixTimestamp}
 
-Введена в версии: v20.8
+Introduced in: v20.8
 
-Эта функция преобразует Unix-временную метку в календарную дату и время суток.
 
-Её можно вызывать двумя способами:
+This function converts a Unix timestamp to a calendar date and a time of a day.
 
-* Если передан один аргумент типа [`Integer`](../data-types/int-uint.md), функция возвращает значение типа [`DateTime`](../data-types/datetime.md), т.е. ведёт себя так же, как [`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#todatetime).
-* Если переданы два или три аргумента, где первый аргумент — значение типа [`Integer`](../data-types/int-uint.md), [`Date`](../data-types/date.md), [`Date32`](../data-types/date32.md), [`DateTime`](../data-types/datetime.md) или [`DateTime64`](../data-types/datetime64.md), второй аргумент — строка формата-константа, а третий аргумент — необязательная строка часового пояса-константа, функция возвращает значение типа [`String`](../data-types/string.md), т.е. ведёт себя так же, как [`formatDateTime`](#formatDateTime).
-  В этом случае используется [стиль форматирования даты и времени MySQL](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format).
+It can be called in two ways:
 
-**Синтаксис**
+- When given a single argument of type [`Integer`](../data-types/int-uint.md), it returns a value of type [`DateTime`](../data-types/datetime.md), i.e. behaves like [`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#toDateTime).
+- When given two or three arguments where the first argument is a value of type [`Integer`](../data-types/int-uint.md), [`Date`](../data-types/date.md), [`Date32`](../data-types/date32.md), [`DateTime`](../data-types/datetime.md) or [`DateTime64`](../data-types/datetime64.md), the second argument is a constant format string and the third argument is an optional constant time zone string, the function returns a value of type [`String`](../data-types/string.md), i.e. it behaves like [`formatDateTime`](#formatDateTime).
+  In this case, [MySQL's datetime format style](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format) is used.
+    
+
+**Syntax**
 
 ```sql
 fromUnixTimestamp(timestamp)
 fromUnixTimestamp(timestamp[, format[, timezone]])
 ```
 
-**Псевдонимы**: `FROM_UNIXTIME`
+**Aliases**: `FROM_UNIXTIME`
 
-**Аргументы**
+**Arguments**
 
-* `timestamp` — Unix-метка времени или значение типа дата/дата и время. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `format` — Необязательный параметр. Константная строка формата вывода. [`String`](/sql-reference/data-types/string)
-* `timezone` — Необязательный параметр. Константная строка часового пояса. [`String`](/sql-reference/data-types/string)
+- `timestamp` — Unix timestamp or date/date with time value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `format` — Optional. Constant format string for output formatting. [`String`](/sql-reference/data-types/string)
+- `timezone` — Optional. Constant time zone string. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает `DateTime` для метки времени при вызове с одним аргументом или `String` при вызове с двумя или тремя аргументами. [`DateTime`](/sql-reference/data-types/datetime) или [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**Примеры**
+Returns `DateTime` of the timestamp when called with one argument, or a String  when called with two or three arguments. [`DateTime`](/sql-reference/data-types/datetime) or [`String`](/sql-reference/data-types/string)
 
-**Преобразование Unix-метки времени в DateTime**
+**Examples**
+
+**Convert Unix timestamp to DateTime**
 
 ```sql title=Query
 SELECT fromUnixTimestamp(423543535)
@@ -1832,7 +1997,7 @@ SELECT fromUnixTimestamp(423543535)
 └──────────────────────────────┘
 ```
 
-**Преобразование Unix‑метки времени с форматированием**
+**Convert Unix timestamp with format**
 
 ```sql title=Query
 SELECT fromUnixTimestamp(1234334543, '%Y-%m-%d %R:%S') AS DateTime
@@ -1844,38 +2009,43 @@ SELECT fromUnixTimestamp(1234334543, '%Y-%m-%d %R:%S') AS DateTime
 └─────────────────────┘
 ```
 
+
+
 ## fromUnixTimestampInJodaSyntax {#fromUnixTimestampInJodaSyntax}
 
-Введена в версии v23.1
+Introduced in: v23.1
 
-Эта функция преобразует Unix-временную метку в календарную дату и время суток.
 
-Функцию можно вызывать двумя способами:
+This function converts a Unix timestamp to a calendar date and a time of a day.
 
-Если передан один аргумент типа [`Integer`](../data-types/int-uint.md), возвращается значение типа [`DateTime`](../data-types/datetime.md), т.е. функция ведёт себя как [`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#todatetime).
+It can be called in two ways:
 
-Если переданы два или три аргумента, где первый аргумент — значение типа [`Integer`](../data-types/int-uint.md), [`Date`](../data-types/date.md), [`Date32`](../data-types/date32.md), [`DateTime`](../data-types/datetime.md) или [`DateTime64`](../data-types/datetime64.md), второй аргумент — константная строка формата, а третий аргумент — необязательная константная строка часового пояса, функция возвращает значение типа [`String`](../data-types/string.md), т.е. ведёт себя как [`formatDateTimeInJodaSyntax`](#formatDateTimeInJodaSyntax). В этом случае используется [стиль формата даты и времени Joda](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html).
+When given a single argument of type [`Integer`](../data-types/int-uint.md), it returns a value of type [`DateTime`](../data-types/datetime.md), i.e. behaves like [`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#toDateTime).
 
-**Синтаксис**
+When given two or three arguments where the first argument is a value of type [`Integer`](../data-types/int-uint.md), [`Date`](../data-types/date.md), [`Date32`](../data-types/date32.md), [`DateTime`](../data-types/datetime.md) or [`DateTime64`](../data-types/datetime64.md), the second argument is a constant format string and the third argument is an optional constant time zone string, the function returns a value of type [`String`](../data-types/string.md), i.e. it behaves like [`formatDateTimeInJodaSyntax`](#formatDateTimeInJodaSyntax). In this case, [Joda datetime format style](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html) is used.
+    
+
+**Syntax**
 
 ```sql
 fromUnixTimestampInJodaSyntax(timestamp)
 fromUnixTimestampInJodaSyntax(timestamp, format[, timezone])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `timestamp` — Unix-метка времени или значение даты/времени. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `format` — Необязательный параметр. Константная строка формата, использующая синтаксис Joda для форматирования вывода. [`String`](/sql-reference/data-types/string)
-* `timezone` — Необязательный параметр. Константная строка часового пояса. [`String`](/sql-reference/data-types/string)
+- `timestamp` — Unix timestamp or date/time value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `format` — Optional. Constant format string using Joda syntax for output formatting. [`String`](/sql-reference/data-types/string)
+- `timezone` — Optional. Constant time zone string. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает дату и время при вызове с одним аргументом или строку при вызове с двумя или тремя аргументами. [`DateTime`](/sql-reference/data-types/datetime) или [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**Примеры**
+Returns a date with time when called with one argument, or a String when called with two or three arguments.} [`DateTime`](/sql-reference/data-types/datetime) or [`String`](/sql-reference/data-types/string)
 
-**Преобразование Unix-метки времени с использованием формата Joda**
+**Examples**
+
+**Convert Unix timestamp with Joda format**
 
 ```sql title=Query
 SELECT fromUnixTimestampInJodaSyntax(1234334543, 'yyyy-MM-dd HH:mm:ss', 'UTC') AS DateTime
@@ -1887,36 +2057,40 @@ SELECT fromUnixTimestampInJodaSyntax(1234334543, 'yyyy-MM-dd HH:mm:ss', 'UTC') A
 └─────────────────────┘
 ```
 
+
+
 ## makeDate {#makeDate}
 
-Впервые представлена в версии v22.6
+Introduced in: v22.6
 
-Создаёт значение типа `Date` из одного из следующих наборов аргументов:
 
-* год, месяц и день
-* год и порядковый номер дня в году
+Creates a `Date` from either:
+- a year, month and day
+- a year and day of year
+    
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 makeDate(year, month, day)
 makeDate(year, day_of_year)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `year` — Год. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
-* `month` — Месяц (1–12). [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
-* `day` — День месяца (1–31). [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
-* `day_of_year` — Порядковый номер дня в году (1–365). [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
+- `year` — Year number. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `month` — Month number (1-12). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `day` — Day of the month (1-31). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `day_of_year` — Day of the year (1-365). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
 
-**Возвращаемое значение**
 
-Возвращает значение типа [`Date`](/sql-reference/data-types/date), построенное из переданных аргументов.
+**Returned value**
 
-**Примеры**
+Returns a `Date` value constructed from the provided arguments [`Date`](/sql-reference/data-types/date)
 
-**Дата из года, месяца и дня**
+**Examples**
+
+**Date from a year, month, day**
 
 ```sql title=Query
 SELECT makeDate(2023, 2, 28) AS date;
@@ -1928,7 +2102,7 @@ SELECT makeDate(2023, 2, 28) AS date;
 └────────────┘
 ```
 
-**Дата по году и номеру дня в году**
+**Date from year and day of year**
 
 ```sql title=Query
 SELECT makeDate(2023, 42) AS date;
@@ -1940,36 +2114,40 @@ SELECT makeDate(2023, 42) AS date;
 └────────────┘
 ```
 
+
+
 ## makeDate32 {#makeDate32}
 
-Появилась в версии: v22.6
+Introduced in: v22.6
 
-Создаёт значение типа `Date32` на основе одного из вариантов:
 
-* год, месяц и день
-* год и порядковый номер дня в году
+Creates a `Date32` from either:
+- a year, month and day
+- a year and day of year
+    
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 makeDate32(year, month, day)
 makeDate32(year, day_of_year)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `year` — Год. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
-* `month` — Месяц (1–12). [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
-* `day` — День месяца (1–31). [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
-* `day_of_year` — День года (1–365). [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
+- `year` — Year number. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `month` — Month number (1-12). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `day` — Day of the month (1-31). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `day_of_year` — Day of the year (1-365). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
 
-**Возвращаемое значение**
 
-Возвращает значение `Date32`, построенное из переданных аргументов [`Date32`](/sql-reference/data-types/date32)
+**Returned value**
 
-**Примеры**
+Returns a `Date32` value constructed from the provided arguments [`Date32`](/sql-reference/data-types/date32)
 
-**Date32 из года, месяца, дня**
+**Examples**
+
+**Date32 from a year, month, day**
 
 ```sql title=Query
 SELECT makeDate(2023, 2, 28) AS date;
@@ -1981,7 +2159,7 @@ SELECT makeDate(2023, 2, 28) AS date;
 └────────────┘
 ```
 
-**Date32 из года и номера дня в году**
+**Date32 from year and day of year**
 
 ```sql title=Query
 SELECT makeDate(2023, 42) AS date;
@@ -1993,35 +2171,40 @@ SELECT makeDate(2023, 42) AS date;
 └────────────┘
 ```
 
+
+
 ## makeDateTime {#makeDateTime}
 
-Добавлена в версии: v22.6
+Introduced in: v22.6
 
-Создаёт значение типа `DateTime` из года, месяца, дня, часа, минуты и секунды с необязательным часовым поясом.
 
-**Синтаксис**
+Creates a `DateTime` from year, month, day, hour, minute, and second, with optional timezone.
+    
+
+**Syntax**
 
 ```sql
 makeDateTime(year, month, day, hour, minute, second[, timezone])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `year` — Год. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
-* `month` — Месяц (1-12). [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
-* `day` — День месяца (1-31). [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
-* `hour` — Час (0-23). [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
-* `minute` — Минута (0-59). [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
-* `second` — Секунда (0-59). [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
-* `timezone` — Имя часового пояса. [`String`](/sql-reference/data-types/string)
+- `year` — Year number. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `month` — Month number (1-12). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `day` — Day of the month (1-31). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `hour` — Hour (0-23). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `minute` — Minute (0-59). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `second` — Second (0-59). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `timezone` — Timezone name. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает значение [`DateTime`](/sql-reference/data-types/datetime), сконструированное из переданных аргументов.
+**Returned value**
 
-**Примеры**
+Returns a `DateTime` value constructed from the provided arguments [`DateTime`](/sql-reference/data-types/datetime)
 
-**DateTime из года, месяца, дня, часа, минуты и секунды**
+**Examples**
+
+**DateTime from year, month, day, hour, minute, second**
 
 ```sql title=Query
 SELECT makeDateTime(2023, 2, 28, 17, 12, 33) AS DateTime;
@@ -2033,37 +2216,42 @@ SELECT makeDateTime(2023, 2, 28, 17, 12, 33) AS DateTime;
 └─────────────────────┘
 ```
 
+
+
 ## makeDateTime64 {#makeDateTime64}
 
-Добавлено в: v22.6
+Introduced in: v22.6
 
-Создаёт значение типа `DateTime64` из года, месяца, дня, часа, минуты, секунды с необязательной долей секунды, точностью и часовым поясом.
 
-**Синтаксис**
+Creates a `DateTime64` from year, month, day, hour, minute, second, with optional fraction, precision, and timezone.
+    
+
+**Syntax**
 
 ```sql
 makeDateTime64(year, month, day, hour, minute, second[, fraction[, precision[, timezone]]])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `year` — Год. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
-* `month` — Месяц (1–12). [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
-* `day` — День месяца (1–31). [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
-* `hour` — Час (0–23). [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
-* `minute` — Минута (0–59). [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
-* `second` — Секунда (0–59). [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
-* `fraction` — Дробная часть секунды. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
-* `precision` — Точность дробной части (0–9). [`UInt8`](/sql-reference/data-types/int-uint)
-* `timezone` — Имя часового пояса. [`String`](/sql-reference/data-types/string)
+- `year` — Year number. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `month` — Month number (1-12). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `day` — Day of the month (1-31). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `hour` — Hour (0-23). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `minute` — Minute (0-59). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `second` — Second (0-59). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `fraction` — Fractional part of the second. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `precision` — Precision for the fractional part (0-9). [`UInt8`](/sql-reference/data-types/int-uint)
+- `timezone` — Timezone name. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает значение `DateTime64`, сформированное из переданных аргументов. [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns a `DateTime64` value constructed from the provided arguments [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**DateTime64 из года, месяца, дня, часа, минуты и секунды**
+**Examples**
+
+**DateTime64 from year, month, day, hour, minute, second**
 
 ```sql title=Query
 SELECT makeDateTime64(2023, 5, 15, 10, 30, 45, 779, 5);
@@ -2075,29 +2263,34 @@ SELECT makeDateTime64(2023, 5, 15, 10, 30, 45, 779, 5);
 └─────────────────────────────────────────────────┘
 ```
 
+
+
 ## monthName {#monthName}
 
-Впервые представлена в версии: v22.1
+Introduced in: v22.1
 
-Возвращает название месяца в виде строки из значения типа дата или дата и время.
 
-**Синтаксис**
+Returns the name of the month as a string from a date or date with time value.
+    
+
+**Syntax**
 
 ```sql
 monthName(datetime)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата или дата со временем. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — Date or date with time. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает название месяца. [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**Примеры**
+Returns the name of the month. [`String`](/sql-reference/data-types/string)
 
-**Получение названия месяца из даты**
+**Examples**
+
+**Get month name from date**
 
 ```sql title=Query
 WITH toDateTime('2021-04-14 11:22:33') AS date_value
@@ -2110,31 +2303,36 @@ SELECT monthName(date_value)
 └───────────────────────┘
 ```
 
+
+
 ## now {#now}
 
-Введена в версии v1.1
+Introduced in: v1.1
 
-Возвращает текущие дату и время на момент анализа запроса. Функция является константным выражением.
 
-**Синтаксис**
+Returns the current date and time at the moment of query analysis. The function is a constant expression.
+    
+
+**Syntax**
 
 ```sql
 now([timezone])
 ```
 
-**Псевдонимы**: `current_timestamp`
+**Aliases**: `current_timestamp`
 
-**Аргументы**
+**Arguments**
 
-* `timezone` — Необязательный параметр. Название часового пояса для возвращаемого значения. [`String`](/sql-reference/data-types/string)
+- `timezone` — Optional. Timezone name for the returned value. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает текущие дату и время. [`DateTime`](/sql-reference/data-types/datetime)
+**Returned value**
 
-**Примеры**
+Returns the current date and time. [`DateTime`](/sql-reference/data-types/datetime)
 
-**Запрос без часового пояса**
+**Examples**
+
+**Query without timezone**
 
 ```sql title=Query
 SELECT now()
@@ -2146,7 +2344,7 @@ SELECT now()
 └─────────────────────┘
 ```
 
-**Запрос с заданным часовым поясом**
+**Query with specified timezone**
 
 ```sql title=Query
 SELECT now('Asia/Istanbul')
@@ -2158,30 +2356,35 @@ SELECT now('Asia/Istanbul')
 └──────────────────────┘
 ```
 
+
+
 ## now64 {#now64}
 
-Добавлена в версии: v20.1
+Introduced in: v20.1
 
-Возвращает текущие дату и время с точностью до долей секунды на момент анализа запроса. Функция является константным выражением.
 
-**Синтаксис**
+Returns the current date and time with sub-second precision at the moment of query analysis. The function is a constant expression.
+    
+
+**Syntax**
 
 ```sql
 now64([scale[, timezone]])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `scale` — Необязательный аргумент. Шаг дискретизации (точность): 10^-precision секунд. Допустимый диапазон: [0 : 9]. Как правило, используются значения 3 (по умолчанию) (миллисекунды), 6 (микросекунды), 9 (наносекунды). [`UInt8`](/sql-reference/data-types/int-uint)
-* `timezone` — Необязательный аргумент. Имя часового пояса для возвращаемого значения. [`String`](/sql-reference/data-types/string)
+- `scale` — Optional. Tick size (precision): 10^-precision seconds. Valid range: [0 : 9]. Typically, are used - 3 (default) (milliseconds), 6 (microseconds), 9 (nanoseconds). [`UInt8`](/sql-reference/data-types/int-uint)
+- `timezone` — Optional. Timezone name for the returned value. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает текущие дату и время с точностью до долей секунды. [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns current date and time with sub-second precision. [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Запрос с точностью по умолчанию и пользовательской точностью**
+**Examples**
+
+**Query with default and custom precision**
 
 ```sql title=Query
 SELECT now64(), now64(9, 'Asia/Istanbul')
@@ -2193,31 +2396,36 @@ SELECT now64(), now64(9, 'Asia/Istanbul')
 └─────────────────────────┴───────────────────────────────┘
 ```
 
+
+
 ## nowInBlock {#nowInBlock}
 
-Появилась в версии: v22.8
+Introduced in: v22.8
 
-Возвращает текущие дату и время на момент обработки каждого блока данных. В отличие от функции [`now`](#now), не является константным выражением, и для длительных запросов возвращаемое значение будет различаться в разных блоках.
 
-Эту функцию имеет смысл использовать для генерации текущего времени в длительных запросах `INSERT SELECT`.
+Returns the current date and time at the moment of processing of each block of data. In contrast to the function [`now`](#now), it is not a constant expression, and the returned value will be different in different blocks for long-running queries.
 
-**Синтаксис**
+It makes sense to use this function to generate the current time in long-running `INSERT SELECT` queries.
+    
+
+**Syntax**
 
 ```sql
 nowInBlock([timezone])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `timezone` — Необязательный параметр. Имя часового пояса для возвращаемого значения. [`String`](/sql-reference/data-types/string)
+- `timezone` — Optional. Timezone name for the returned value. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает текущие дату и время на момент обработки каждого блока данных. [`DateTime`](/sql-reference/data-types/datetime)
+**Returned value**
 
-**Примеры**
+Returns the current date and time at the moment of processing of each block of data. [`DateTime`](/sql-reference/data-types/datetime)
 
-**Отличие от функции now()**
+**Examples**
+
+**Difference with the now() function**
 
 ```sql title=Query
 SELECT
@@ -2237,32 +2445,37 @@ FORMAT PrettyCompactMonoBlock
 └─────────────────────┴─────────────────────┴──────────┘
 ```
 
+
+
 ## nowInBlock64 {#nowInBlock64}
 
-Добавлено в: v25.8
+Introduced in: v25.8
 
-Возвращает текущие дату и время на момент обработки каждого блока данных, в миллисекундах. В отличие от функции [now64](#now64), это выражение не является константным, и возвращаемое значение будет различаться в разных блоках для длительных запросов.
 
-Эту функцию имеет смысл использовать для генерации текущего времени в длительно выполняющихся запросах INSERT SELECT.
+Returns the current date and time at the moment of processing of each block of data in milliseconds. In contrast to the function [now64](#now64), it is not a constant expression, and the returned value will be different in different blocks for long-running queries.
 
-**Синтаксис**
+It makes sense to use this function to generate the current time in long-running INSERT SELECT queries.
+    
+
+**Syntax**
 
 ```sql
 nowInBlock([scale[, timezone]])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `scale` — Необязательный параметр. Размер тика (точность): 10^-scale секунд. Допустимый диапазон: [0 : 9]. Обычно используются значения: 3 (по умолчанию, миллисекунды), 6 (микросекунды), 9 (наносекунды). [`UInt8`](/sql-reference/data-types/int-uint)
-* `timezone` — Необязательный параметр. Название часового пояса для возвращаемого значения. [`String`](/sql-reference/data-types/string)
+- `scale` — Optional. Tick size (precision): 10^-precision seconds. Valid range: [0 : 9]. Typically, are used - 3 (default) (milliseconds), 6 (microseconds), 9 (nanoseconds). [`UInt8`](/sql-reference/data-types/int-uint)
+- `timezone` — Optional. Timezone name for the returned value. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает текущие дату и время в момент обработки каждого блока данных с субсекундной точностью. [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns the current date and time at the moment of processing of each block of data with sub-second precision. [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Отличие от функции now64()**
+**Examples**
+
+**Difference with the now64() function**
 
 ```sql title=Query
 SELECT
@@ -2282,32 +2495,36 @@ FORMAT PrettyCompactMonoBlock
 └─────────────────────────┴─────────────────────────┴──────────┘
 ```
 
+
+
 ## serverTimezone {#serverTimezone}
 
-Добавлено в: v23.6
+Introduced in: v23.6
 
-Возвращает часовой пояс сервера, т. е. значение настройки [`timezone`](/operations/server-configuration-parameters/settings#timezone).
-Если функция выполняется в контексте distributed таблицы, она возвращает обычный столбец со значениями, соответствующими каждому сегменту. В противном случае возвращается константное значение.
 
-**Синтаксис**
+Returns the timezone of the server, i.e. the value of the [`timezone`](/operations/server-configuration-parameters/settings#timezone) setting.
+If the function is executed in the context of a distributed table, then it generates a normal column with values relevant to each shard. Otherwise, it produces a constant value.
+    
+
+**Syntax**
 
 ```sql
 serverTimeZone()
 ```
 
-**Псевдонимы**: `serverTimeZone`
+**Aliases**: `serverTimeZone`
 
-**Аргументы**
+**Arguments**
 
-* Нет.
+- None.
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает часовой пояс сервера в виде [`String`](/sql-reference/data-types/string).
+Returns the server timezone as a [`String`](/sql-reference/data-types/string)
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT serverTimeZone()
@@ -2319,31 +2536,36 @@ SELECT serverTimeZone()
 └──────────────────┘
 ```
 
+
+
 ## subDate {#subDate}
 
-Появилась в версии: v23.9
+Introduced in: v23.9
 
-Функция вычитает временной интервал из переданной даты, даты со временем или их строкового представления.
-Если в результате вычитания значение выходит за допустимые пределы типа данных, результат не определён.
 
-**Синтаксис**
+Subtracts the time interval from the provided date, date with time or string-encoded date or date with time.
+If the subtraction results in a value outside the bounds of the data type, the result is undefined.
+    
+
+**Syntax**
 
 ```sql
 subDate(datetime, interval)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата или дата со временем, из которой вычитается `interval`. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `interval` — интервал, который вычитается. [`Interval`](/sql-reference/data-types/int-uint)
+- `datetime` — The date or date with time from which `interval` is subtracted. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `interval` — Interval to subtract. [`Interval`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает дату или дату со временем, полученную вычитанием `interval` из `datetime`. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns date or date with time obtained by subtracting `interval` from `datetime`. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Вычесть интервал из даты**
+**Examples**
+
+**Subtract interval from date**
 
 ```sql title=Query
 SELECT subDate(toDate('2018-01-01'), INTERVAL 3 YEAR)
@@ -2355,30 +2577,35 @@ SELECT subDate(toDate('2018-01-01'), INTERVAL 3 YEAR)
 └──────────────────────────────────────────────────┘
 ```
 
+
+
 ## subtractDays {#subtractDays}
 
-Введена в: v1.1
+Introduced in: v1.1
 
-Вычитает указанное количество дней из даты, даты и времени или строкового представления даты или даты и времени.
 
-**Синтаксис**
+Subtracts a specified number of days from a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 subtractDays(datetime, num)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата или дата со временем, от которой вычитается указанное количество дней. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64) или [`String`](/sql-reference/data-types/string)
-* `num` — количество дней, на которое нужно уменьшить дату. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to subtract specified number of days from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of days to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**Возвращаемое значение**
 
-Возвращает `datetime` минус `num` дней — значение типа [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns `datetime` minus `num` days [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Вычитание дней из различных типов дат**
+**Examples**
+
+**Subtract days from different date types**
 
 ```sql title=Query
 WITH
@@ -2397,7 +2624,7 @@ SELECT
 └─────────────────────────┴──────────────────────────────┴─────────────────────────────────────┘
 ```
 
-**Использование альтернативного синтаксиса INTERVAL**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::Date, INTERVAL 10 day)
@@ -2409,30 +2636,35 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 day)
 └──────────────────────────┘
 ```
 
+
+
 ## subtractHours {#subtractHours}
 
-Добавлено в: v1.1
+Introduced in: v1.1
 
-Вычитает указанное количество часов из даты, даты и времени или даты/даты и времени, представленных в виде строки.
 
-**Синтаксис**
+Subtracts a specified number of hours from a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 subtractHours(datetime, num)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата или дата со временем, из которой нужно вычесть указанное количество часов. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64) или [`String`](/sql-reference/data-types/string)
-* `num` — количество часов, которое нужно вычесть. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to subtract specified number of hours from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of hours to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**Возвращаемое значение**
 
-Возвращает значение `datetime` за вычетом `num` часов — [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64(3)`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns `datetime` minus `num` hours [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64(3)`](/sql-reference/data-types/datetime64)
 
-**Вычитание часов из значений разных типов даты**
+**Examples**
+
+**Subtract hours from different date types**
 
 ```sql title=Query
 WITH
@@ -2451,7 +2683,7 @@ SELECT
 └──────────────────────────┴───────────────────────────────┴──────────────────────────────────────┘
 ```
 
-**Использование альтернативного синтаксиса INTERVAL**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::Date, INTERVAL 10 hour)
@@ -2463,33 +2695,38 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 hour)
 └──────────────────────────┘
 ```
 
+
+
 ## subtractInterval {#subtractInterval}
 
-Введена в версии: v22.11
+Introduced in: v22.11
 
-Добавляет отрицательный интервал к другому интервалу или к кортежу интервалов.
 
-Примечание: интервалы одного и того же типа будут объединены в один интервал. Например, если переданы `toIntervalDay(2)` и `toIntervalDay(1)`,
-то результатом будет `(1)`, а не `(2,1)`.
+Adds a negated interval to another interval or tuple of intervals.
 
-**Синтаксис**
+Note: Intervals of the same type will be combined into a single interval. For instance if `toIntervalDay(2)` and `toIntervalDay(1)` are
+passed then the result will be `(1)` rather than `(2,1)`.
+    
+
+**Syntax**
 
 ```sql
 subtractInterval(interval_1, interval_2)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `interval_1` — Первый интервал или кортеж интервалов. [`Interval`](/sql-reference/data-types/int-uint) или [`Tuple(Interval)`](/sql-reference/data-types/tuple)
-* `interval_2` — Второй интервал, который нужно обратить по знаку. [`Interval`](/sql-reference/data-types/int-uint)
+- `interval_1` — First interval or interval of tuples. [`Interval`](/sql-reference/data-types/int-uint) or [`Tuple(Interval)`](/sql-reference/data-types/tuple)
+- `interval_2` — Second interval to be negated. [`Interval`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает кортеж интервалов [`Tuple(T)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**Примеры**
+Returns a tuple of intervals [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**Вычитание интервалов**
+**Examples**
+
+**Subtract intervals**
 
 ```sql title=Query
 SELECT subtractInterval(INTERVAL 1 DAY, INTERVAL 1 MONTH);
@@ -2509,30 +2746,35 @@ SELECT subtractInterval(INTERVAL 2 DAY, INTERVAL 1 DAY);
 └──────────────────────────────────────────────────────┘
 ```
 
+
+
 ## subtractMicroseconds {#subtractMicroseconds}
 
-Появилась в версии: v22.6
+Introduced in: v22.6
 
-Вычитает указанное количество микросекунд из даты и времени или строкового представления даты и времени.
 
-**Синтаксис**
+Subtracts a specified number of microseconds from a date with time or a string-encoded date with time.
+    
+
+**Syntax**
 
 ```sql
 subtractMicroseconds(datetime, num)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата и время, из которых нужно вычесть указанное количество микросекунд. [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64) или [`String`](/sql-reference/data-types/string)
-* `num` — количество микросекунд, которое нужно вычесть. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date with time to subtract specified number of microseconds from. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of microseconds to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**Возвращаемое значение**
 
-Возвращает `datetime` минус `num` микросекунд, результат типа [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns `datetime` minus `num` microseconds [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Вычитание микросекунд из значений различных типов даты и времени**
+**Examples**
+
+**Subtract microseconds from different date time types**
 
 ```sql title=Query
 WITH
@@ -2549,7 +2791,7 @@ SELECT
 └──────────────────────────────────────┴─────────────────────────────────────────────┘
 ```
 
-**Использование альтернативного синтаксиса INTERVAL**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::DateTime, INTERVAL 10 microsecond)
@@ -2561,30 +2803,35 @@ SELECT dateSub('1998-06-16'::DateTime, INTERVAL 10 microsecond)
 └────────────────────────────┘
 ```
 
+
+
 ## subtractMilliseconds {#subtractMilliseconds}
 
-Добавлена в версии: v22.6
+Introduced in: v22.6
 
-Вычитает указанное количество миллисекунд из даты и времени или строкового представления даты и времени.
 
-**Синтаксис**
+Subtracts a specified number of milliseconds from a date with time or a string-encoded date with time.
+    
+
+**Syntax**
 
 ```sql
 subtractMilliseconds(datetime, num)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата и время, из которых нужно вычесть указанное количество миллисекунд. [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64) или [`String`](/sql-reference/data-types/string)
-* `num` — количество миллисекунд, на которое нужно уменьшить значение. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date with time to subtract specified number of milliseconds from. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of milliseconds to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**Возвращаемое значение**
 
-Возвращает значение `datetime` минус `num` миллисекунд типа [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns `datetime` minus `num` milliseconds [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Вычитание миллисекунд из различных типов даты и времени**
+**Examples**
+
+**Subtract milliseconds from different date time types**
 
 ```sql title=Query
 WITH
@@ -2601,7 +2848,7 @@ SELECT
 └──────────────────────────────────────┴─────────────────────────────────────────────┘
 ```
 
-**Использование альтернативного синтаксиса INTERVAL**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::DateTime, INTERVAL 10 millisecond)
@@ -2613,30 +2860,35 @@ SELECT dateSub('1998-06-16'::DateTime, INTERVAL 10 millisecond)
 └──────────────────────────┘
 ```
 
+
+
 ## subtractMinutes {#subtractMinutes}
 
-Добавлена в версии: v1.1
+Introduced in: v1.1
 
-Вычитает указанное количество минут из даты, даты и времени или их строкового представления.
 
-**Синтаксис**
+Subtracts a specified number of minutes from a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 subtractMinutes(datetime, num)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата или дата со временем, из которой нужно вычесть указанное количество минут. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64) или [`String`](/sql-reference/data-types/string)
-* `num` — количество минут, которое нужно вычесть. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to subtract specified number of minutes from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of minutes to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**Возвращаемое значение**
 
-Возвращает `datetime` за вычетом `num` минут типа [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64(3)`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns `datetime` minus `num` minutes [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64(3)`](/sql-reference/data-types/datetime64)
 
-**Вычитание минут из значений разных типов даты**
+**Examples**
+
+**Subtract minutes from different date types**
 
 ```sql title=Query
 WITH
@@ -2655,7 +2907,7 @@ SELECT
 └────────────────────────────┴─────────────────────────────────┴────────────────────────────────────────┘
 ```
 
-**Использование альтернативного синтаксиса для INTERVAL**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::Date, INTERVAL 10 minute)
@@ -2667,30 +2919,35 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 minute)
 └──────────────────────────┘
 ```
 
+
+
 ## subtractMonths {#subtractMonths}
 
-Введена в версии v1.1
+Introduced in: v1.1
 
-Вычитает заданное количество месяцев из даты, даты и времени или их строкового представления.
 
-**Синтаксис**
+Subtracts a specified number of months from a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 subtractMonths(datetime, num)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата или дата со временем, из которой нужно вычесть указанное количество месяцев. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64) или [`String`](/sql-reference/data-types/string)
-* `num` — количество месяцев, на которое уменьшается значение `datetime`. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to subtract specified number of months from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of months to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**Возвращаемое значение**
 
-Возвращает значение `datetime`, уменьшенное на `num` месяцев. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns `datetime` minus `num` months [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Вычитание месяцев для разных типов дат**
+**Examples**
+
+**Subtract months from different date types**
 
 ```sql title=Query
 WITH
@@ -2709,7 +2966,7 @@ SELECT
 └───────────────────────────┴────────────────────────────────┴───────────────────────────────────────┘
 ```
 
-**Использование альтернативного синтаксиса INTERVAL**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::Date, INTERVAL 10 month)
@@ -2721,30 +2978,35 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 month)
 └──────────────────────────┘
 ```
 
+
+
 ## subtractNanoseconds {#subtractNanoseconds}
 
-Появилась в версии: v20.1
+Introduced in: v20.1
 
-Вычитает заданное количество наносекунд из значения даты и времени или из его строкового представления.
 
-**Синтаксис**
+Subtracts a specified number of nanoseconds from a date with time or a string-encoded date with time.
+    
+
+**Syntax**
 
 ```sql
 subtractNanoseconds(datetime, num)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата и время, из которых нужно вычесть заданное количество наносекунд. [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64) или [`String`](/sql-reference/data-types/string)
-* `num` — количество наносекунд, которые нужно вычесть. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date with time to subtract specified number of nanoseconds from. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of nanoseconds to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**Возвращаемое значение**
 
-Возвращает `datetime` минус `num` наносекунд в формате [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns `datetime` minus `num` nanoseconds [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Вычитание наносекунд из значений разных типов даты и времени**
+**Examples**
+
+**Subtract nanoseconds from different date time types**
 
 ```sql title=Query
 WITH
@@ -2761,7 +3023,7 @@ SELECT
 └─────────────────────────────────────┴────────────────────────────────────────────┘
 ```
 
-**Использование альтернативного синтаксиса INTERVAL**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::DateTime, INTERVAL 10 nanosecond)
@@ -2773,30 +3035,35 @@ SELECT dateSub('1998-06-16'::DateTime, INTERVAL 10 nanosecond)
 └───────────────────────────────┘
 ```
 
+
+
 ## subtractQuarters {#subtractQuarters}
 
-Добавлена в: v20.1
+Introduced in: v20.1
 
-Вычитает заданное количество кварталов из даты, даты со временем или их строкового представления.
 
-**Синтаксис**
+Subtracts a specified number of quarters from a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 subtractQuarters(datetime, num)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата или дата со временем, из которой вычитается указанное количество кварталов. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64) или [`String`](/sql-reference/data-types/string)
-* `num` — количество кварталов, которое нужно вычесть. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to subtract specified number of quarters from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of quarters to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**Возвращаемое значение**
 
-Возвращает значение `datetime`, уменьшенное на `num` кварталов. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns `datetime` minus `num` quarters [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Вычитание кварталов из значений разных типов дат**
+**Examples**
+
+**Subtract quarters from different date types**
 
 ```sql title=Query
 WITH
@@ -2815,7 +3082,7 @@ SELECT
 └─────────────────────────────┴──────────────────────────────────┴─────────────────────────────────────────┘
 ```
 
-**Использование альтернативного синтаксиса INTERVAL**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::Date, INTERVAL 10 quarter)
@@ -2827,30 +3094,35 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 quarter)
 └───────────────────────────┘
 ```
 
+
+
 ## subtractSeconds {#subtractSeconds}
 
-Введена в версии: v1.1
+Introduced in: v1.1
 
-Вычитает указанное количество секунд из даты, даты со временем или их строкового представления.
 
-**Синтаксис**
+Subtracts a specified number of seconds from a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 subtractSeconds(datetime, num)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата или дата со временем, из которой вычитается указанное количество секунд. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64) или [`String`](/sql-reference/data-types/string)
-* `num` — количество секунд, на которое нужно уменьшить значение `datetime`. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to subtract specified number of seconds from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of seconds to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**Возвращаемое значение**
 
-Возвращает `datetime`, уменьшенное на `num` секунд, типа [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64(3)`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns `datetime` minus `num` seconds [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64(3)`](/sql-reference/data-types/datetime64)
 
-**Вычитание секунд из разных типов дат**
+**Examples**
+
+**Subtract seconds from different date types**
 
 ```sql title=Query
 WITH
@@ -2869,7 +3141,7 @@ SELECT
 └────────────────────────────┴─────────────────────────────────┴────────────────────────────────────────┘
 ```
 
-**Использование альтернативного синтаксиса для INTERVAL**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::Date, INTERVAL 10 second)
@@ -2881,30 +3153,35 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 second)
 └──────────────────────────┘
 ```
 
+
+
 ## subtractTupleOfIntervals {#subtractTupleOfIntervals}
 
-Появилась в версии: v22.11
+Introduced in: v22.11
 
-Последовательно вычитает кортеж интервалов из даты или даты со временем.
 
-**Синтаксис**
+Consecutively subtracts a tuple of intervals from a date or a date with time.
+    
+
+**Syntax**
 
 ```sql
 subtractTupleOfIntervals(datetime, intervals)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата или дата со временем, из которой нужно вычесть интервалы. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `intervals` — кортеж интервалов, которые нужно вычесть из `datetime`. [`Tuple(Interval)`](/sql-reference/data-types/tuple)
+- `datetime` — Date or date with time to subtract intervals from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `intervals` — Tuple of intervals to subtract from `datetime`. [`Tuple(Interval)`](/sql-reference/data-types/tuple)
 
-**Возвращаемое значение**
 
-Возвращает `date` с вычтенными `intervals`. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns `date` with subtracted `intervals` [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Вычитание кортежа интервалов из даты**
+**Examples**
+
+**Subtract tuple of intervals from date**
 
 ```sql title=Query
 WITH toDate('2018-01-01') AS date SELECT subtractTupleOfIntervals(date, (INTERVAL 1 DAY, INTERVAL 1 YEAR))
@@ -2916,30 +3193,35 @@ WITH toDate('2018-01-01') AS date SELECT subtractTupleOfIntervals(date, (INTERVA
 └──────────────────────────┘
 ```
 
+
+
 ## subtractWeeks {#subtractWeeks}
 
-Появилась в версии: v1.1
+Introduced in: v1.1
 
-Вычитает указанное количество недель из даты, даты и времени или их строкового представления.
 
-**Синтаксис**
+Subtracts a specified number of weeks from a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 subtractWeeks(datetime, num)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — Дата или дата со временем, из которой вычитается заданное количество недель. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64) или [`String`](/sql-reference/data-types/string)
-* `num` — Количество недель, на которое нужно уменьшить значение `datetime`. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to subtract specified number of weeks from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of weeks to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**Возвращаемое значение**
 
-Возвращает значение `datetime`, уменьшенное на `num` недель. Тип результата: [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns `datetime` minus `num` weeks [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Вычитание недель из значений разных типов даты**
+**Examples**
+
+**Subtract weeks from different date types**
 
 ```sql title=Query
 WITH
@@ -2958,7 +3240,7 @@ SELECT
 └──────────────────────────┴───────────────────────────────┴──────────────────────────────────────┘
 ```
 
-**Использование альтернативного синтаксиса INTERVAL**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::Date, INTERVAL 10 week)
@@ -2970,30 +3252,35 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 week)
 └──────────────────────────┘
 ```
 
+
+
 ## subtractYears {#subtractYears}
 
-Добавлена в: v1.1
+Introduced in: v1.1
 
-Вычитает указанное количество лет из даты, даты и времени или их строкового представления.
 
-**Синтаксис**
+Subtracts a specified number of years from a date, a date with time or a string-encoded date or date with time.
+    
+
+**Syntax**
 
 ```sql
 subtractYears(datetime, num)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата или дата со временем, из которой вычитается заданное количество лет. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64) или [`String`](/sql-reference/data-types/string)
-* `num` — количество лет, которое нужно вычесть. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+- `datetime` — Date or date with time to subtract specified number of years from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `num` — Number of years to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**Возвращаемое значение**
 
-Возвращает `datetime` минус `num` лет — значение типа [`Date`](/sql-reference/data-types/date), [`Date32`](/sql-reference/data-types/date32), [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64).
+**Returned value**
 
-**Примеры**
+Returns `datetime` minus `num` years [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Вычитание лет из значений разных типов даты**
+**Examples**
+
+**Subtract years from different date types**
 
 ```sql title=Query
 WITH
@@ -3012,7 +3299,7 @@ SELECT
 └──────────────────────────┴───────────────────────────────┴──────────────────────────────────────┘
 ```
 
-**Использование альтернативного синтаксиса INTERVAL**
+**Using alternative INTERVAL syntax**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::Date, INTERVAL 10 year)
@@ -3024,35 +3311,40 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 year)
 └──────────────────────────┘
 ```
 
+
+
 ## timeDiff {#timeDiff}
 
-Добавлена в версии: v23.4
+Introduced in: v23.4
 
-Возвращает разницу в секундах между двумя датами или датами со значениями времени.
-Разница вычисляется как `enddate` - `startdate`.
 
-Эта функция эквивалентна `dateDiff('second', startdate, enddate)`.
+Returns the difference between two dates or dates with time values in seconds.
+The difference is calculated as `enddate` - `startdate`.
 
-Для вычисления разницы во времени в других единицах (часах, днях, месяцах и т. д.) используйте функцию [`dateDiff`](#dateDiff).
+This function is equivalent to `dateDiff('second', startdate, enddate)`.
 
-**Синтаксис**
+For calculating time differences in other units (hours, days, months, etc.), use the [`dateDiff`](#dateDiff) function instead.
+    
+
+**Syntax**
 
 ```sql
 timeDiff(startdate, enddate)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `startdate` — Первое значение времени, вычитаемое из второго (вычитаемое). [`Date`](/sql-reference/data-types/date), [`Date32`](/sql-reference/data-types/date32), [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `enddate` — Второе значение времени, из которого выполняется вычитание (уменьшаемое). [`Date`](/sql-reference/data-types/date), [`Date32`](/sql-reference/data-types/date32), [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `startdate` — The first time value to subtract (the subtrahend). [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `enddate` — The second time value to subtract from (the minuend). [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает разницу между `enddate` и `startdate`, выраженную в секундах. [`Int64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the difference between `enddate` and `startdate` expressed in seconds. [`Int64`](/sql-reference/data-types/int-uint)
 
-**Вычисление разницы во времени в секундах**
+**Examples**
+
+**Calculate time difference in seconds**
 
 ```sql title=Query
 SELECT timeDiff(toDateTime('2018-01-01 22:00:00'), toDateTime('2018-01-02 23:00:00')) AS res
@@ -3064,7 +3356,7 @@ SELECT timeDiff(toDateTime('2018-01-01 22:00:00'), toDateTime('2018-01-02 23:00:
 └───────┘
 ```
 
-**Вычислить разницу во времени и перевести её в часы**
+**Calculate time difference and convert to hours**
 
 ```sql title=Query
 SELECT timeDiff(toDateTime('2018-01-01 22:00:00'), toDateTime('2018-01-02 23:00:00')) / 3600 AS hours
@@ -3076,7 +3368,7 @@ SELECT timeDiff(toDateTime('2018-01-01 22:00:00'), toDateTime('2018-01-02 23:00:
 └───────┘
 ```
 
-**Эквивалент dateDiff в секундах**
+**Equivalent to dateDiff with seconds**
 
 ```sql title=Query
 SELECT
@@ -3090,35 +3382,40 @@ SELECT
 └──────────────────┴──────────────────┘
 ```
 
+
+
 ## timeSlot {#timeSlot}
 
-Добавлено в: v1.1
+Introduced in: v1.1
 
-Округляет время до начала получасового интервала.
+
+Round the time to the start of a half-an-hour length interval.
 
 :::note
-Хотя эта функция может принимать значения расширенных типов `Date32` и `DateTime64` в качестве аргумента,
-передача времени вне нормального диапазона (с 1970 по 2149 год для `Date` / 2106 для `DateTime`) приведёт к некорректным результатам.
+Although this function can take values of the extended types `Date32` and `DateTime64` as an argument,
+passing it a time outside the normal range (year 1970 to 2149 for `Date` / 2106 for `DateTime`) will produce wrong results.
 :::
+    
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 timeSlot(time[, time_zone])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `time` — Время, которое нужно округлить до начала интервала длительностью полчаса. [`DateTime`](/sql-reference/data-types/datetime) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `time_zone` — Необязательный аргумент. Константное значение типа String или выражение, задающее часовой пояс. [`String`](/sql-reference/data-types/string)
+- `time` — Time to round to the start of a half-an-hour length interval. [`DateTime`](/sql-reference/data-types/datetime) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `time_zone` — Optional. A String type const value or an expression representing the time zone. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает время, округлённое до начала интервала длительностью полчаса. [`DateTime`](/sql-reference/data-types/datetime)
+**Returned value**
 
-**Примеры**
+Returns the time rounded to the start of a half-an-hour length interval. [`DateTime`](/sql-reference/data-types/datetime)
 
-**Округление времени до получасового интервала**
+**Examples**
+
+**Round time to half-hour interval**
 
 ```sql title=Query
 SELECT timeSlot(toDateTime('2000-01-02 03:04:05', 'UTC'))
@@ -3130,35 +3427,40 @@ SELECT timeSlot(toDateTime('2000-01-02 03:04:05', 'UTC'))
 └────────────────────────────────────────────────────┘
 ```
 
+
+
 ## timeSlots {#timeSlots}
 
-Появилась в версии v1.1
+Introduced in: v1.1
 
-Для временного интервала, начинающегося в `StartTime` и продолжающегося `Duration` секунд, функция возвращает массив моментов времени — точки внутри этого интервала, округлённые вниз до шага `Size` в секундах. Параметр `Size` является необязательным и по умолчанию равен 1800 (30 минут).
 
-Это нужно, например, при поиске просмотров страниц в соответствующей сессии.
+For a time interval starting at `StartTime` and continuing for `Duration` seconds, it returns an array of moments in time, consisting of points from this interval rounded down to the `Size` in seconds. `Size` is an optional parameter set to 1800 (30 minutes) by default.
 
-Для `DateTime64` масштаб (scale) возвращаемого значения может отличаться от масштаба `StartTime`. Берётся наибольший масштаб среди всех переданных аргументов.
+This is necessary, for example, when searching for pageviews in the corresponding session.
 
-**Синтаксис**
+For `DateTime64`, the return value's scale can differ from the scale of `StartTime`. The highest scale among all given arguments is taken.
+    
+
+**Syntax**
 
 ```sql
 timeSlots(StartTime, Duration[, Size])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `StartTime` — начальное время интервала. [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `Duration` — длительность интервала в секундах. [`UInt32`](/sql-reference/data-types/int-uint) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `Size` — необязательный параметр. Размер временных слотов в секундах. Значение по умолчанию — 1800 (30 минут). [`UInt32`](/sql-reference/data-types/int-uint) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `StartTime` — Starting time for the interval. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `Duration` — Duration of the interval in seconds. [`UInt32`](/sql-reference/data-types/int-uint) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `Size` — Optional. Size of time slots in seconds. Default is 1800 (30 minutes). [`UInt32`](/sql-reference/data-types/int-uint) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает массив DateTime/DateTime64 (тип возвращаемого значения соответствует типу `StartTime`). Для DateTime64 масштаб возвращаемого значения может отличаться от масштаба `StartTime` — берётся максимальный масштаб среди всех переданных аргументов. [`Array(DateTime)`](/sql-reference/data-types/array) или [`Array(DateTime64)`](/sql-reference/data-types/array)
+**Returned value**
 
-**Примеры**
+Returns an array of DateTime/DateTime64 (return type matches the type of `StartTime`). For DateTime64, the return value's scale can differ from the scale of `StartTime` - the highest scale among all given arguments is taken. [`Array(DateTime)`](/sql-reference/data-types/array) or [`Array(DateTime64)`](/sql-reference/data-types/array)
 
-**Создание временных слотов для интервала**
+**Examples**
+
+**Generate time slots for an interval**
 
 ```sql title=Query
 SELECT timeSlots(toDateTime('2012-01-01 12:20:00'), toUInt32(600));
@@ -3178,31 +3480,36 @@ SELECT timeSlots(toDateTime64('1980-12-12 21:01:02.1234', 4, 'UTC'), toDecimal64
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## timestamp {#timestamp}
 
-Введена в версии: v23.9
+Introduced in: v23.9
 
-Преобразует первый аргумент `expr` в тип [`DateTime64(6)`](/sql-reference/data-types/datetime64).
-Если указан второй аргумент `expr_time`, добавляет заданное время к преобразованному значению.
 
-**Синтаксис**
+Converts the first argument `expr` to type [`DateTime64(6)`](/sql-reference/data-types/datetime64).
+If a second argument `expr_time` is provided, it adds the specified time to the converted value.
+    
+
+**Syntax**
 
 ```sql
 timestamp(expr[, expr_time])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `expr` — дата или дата и время. [`String`](/sql-reference/data-types/string)
-* `expr_time` — необязательный параметр. Время, добавляемое к приведённому значению. [`String`](/sql-reference/data-types/string)
+- `expr` — Date or date with time. [`String`](/sql-reference/data-types/string)
+- `expr_time` — Optional. Time to add to the converted value. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает приведённое значение `expr` или `expr` с добавленным временем типа [`DateTime64(6)`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns the converted value of `expr`, or `expr` with added time [`DateTime64(6)`](/sql-reference/data-types/datetime64)
 
-**Преобразование строкового значения даты в DateTime64(6)**
+**Examples**
+
+**Convert date string to DateTime64(6)**
 
 ```sql title=Query
 SELECT timestamp('2023-12-31') AS ts;
@@ -3214,7 +3521,7 @@ SELECT timestamp('2023-12-31') AS ts;
 └────────────────────────────┘
 ```
 
-**Добавить время к строке даты**
+**Add time to date string**
 
 ```sql title=Query
 SELECT timestamp('2023-12-31 12:00:00', '12:00:00.11') AS ts;
@@ -3226,32 +3533,36 @@ SELECT timestamp('2023-12-31 12:00:00', '12:00:00.11') AS ts;
 └────────────────────────────┘
 ```
 
+
+
 ## timezone {#timezone}
 
-Добавлено в версии: v21.4
+Introduced in: v21.4
 
-Возвращает имя часового пояса текущей сессии или преобразует смещение часового пояса
-или имя часового пояса в каноническое имя часового пояса.
 
-**Синтаксис**
+Returns the time zone name of the current session or converts a time zone
+offset or name to a canonical time zone name.
+    
+
+**Syntax**
 
 ```sql
 timezone()
 ```
 
-**Псевдонимы**: `timeZone`
+**Aliases**: `timeZone`
 
-**Аргументы**
+**Arguments**
 
-* Отсутствуют.
+- None.
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает каноническое имя часового пояса в виде типа [`String`](/sql-reference/data-types/string)
+Returns the canonical time zone name as a [`String`](/sql-reference/data-types/string)
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT timezone()
@@ -3263,32 +3574,37 @@ SELECT timezone()
 └──────────────────┘
 ```
 
+
+
 ## timezoneOf {#timezoneOf}
 
-Впервые появилась в: v21.4
+Introduced in: v21.4
 
-Возвращает название часового пояса для значения [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64).
 
-**Синтаксис**
+Returns the timezone name of a [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) value.
+    
+
+**Syntax**
 
 ```sql
 timeZoneOf(datetime)
 ```
 
-**Псевдонимы**: `timeZoneOf`
+**Aliases**: `timeZoneOf`
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — значение типа [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `timezone` — необязательный параметр. Имя часового пояса, в который нужно преобразовать часовой пояс значения `datetime`. [`String`](/sql-reference/data-types/string)
+- `datetime` — A value of type. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `timezone` — Optional. Timezone name to convert the `datetime` value's timezone to. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает имя часового пояса для `datetime` в формате [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**Примеры**
+Returns the timezone name for `datetime` [`String`](/sql-reference/data-types/string)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT timezoneOf(now());
@@ -3300,32 +3616,37 @@ SELECT timezoneOf(now());
 └───────────────────┘
 ```
 
+
+
 ## timezoneOffset {#timezoneOffset}
 
-Введена в версии v21.6
+Introduced in: v21.6
 
-Возвращает смещение часового пояса в секундах от [UTC](https://en.wikipedia.org/wiki/Coordinated_Universal_Time).
-Функция учитывает переход на летнее время и исторические изменения часовых поясов для указанной даты и времени.
 
-**Синтаксис**
+Returns the timezone offset in seconds from [UTC](https://en.wikipedia.org/wiki/Coordinated_Universal_Time).
+The function takes daylight saving time and historical timezone changes at the specified date and time into account.
+    
+
+**Syntax**
 
 ```sql
 timeZoneOffset(datetime)
 ```
 
-**Псевдонимы**: `timeZoneOffset`
+**Aliases**: `timeZoneOffset`
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — значение типа `DateTime`, для которого нужно получить смещение часового пояса: [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — `DateTime` value to get the timezone offset for. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает смещение относительно UTC в секундах [`Int32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the offset from UTC in seconds [`Int32`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT toDateTime('2021-04-21 10:20:30', 'America/New_York') AS Time,
@@ -3340,31 +3661,36 @@ timeZoneOffset(Time) AS Offset_in_seconds,
 └─────────────────────┴──────────────────────────────┴───────────────────┴─────────────────┘
 ```
 
+
+
 ## toDayOfMonth {#toDayOfMonth}
 
-Появилась в версии v1.1
+Introduced in: v1.1
 
-Возвращает день месяца (1–31) для значения типа `Date` или `DateTime`.
 
-**Синтаксис**
+Returns the day of the month (1-31) of a `Date` or `DateTime`.
+        
+
+**Syntax**
 
 ```sql
 toDayOfMonth(datetime)
 ```
 
-**Псевдонимы**: `DAY`, `DAYOFMONTH`
+**Aliases**: `DAY`, `DAYOFMONTH`
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата или дата и время, из которых нужно получить день месяца. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — Date or date with time to get the day of month from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает номер дня месяца для заданной даты/времени [`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the day of the month of the given date/time [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT toDayOfMonth(toDateTime('2023-04-21 10:20:30'))
@@ -3376,43 +3702,48 @@ SELECT toDayOfMonth(toDateTime('2023-04-21 10:20:30'))
 └─────────────────────────────────────────────────┘
 ```
 
+
+
 ## toDayOfWeek {#toDayOfWeek}
 
-Впервые появилась в: v1.1
+Introduced in: v1.1
 
-Возвращает номер дня недели для значения типа `Date` или `DateTime`.
 
-Двухаргументная форма функции `toDayOfWeek()` позволяет указать, начинается ли неделя с понедельника или воскресенья,
-а также должно ли возвращаемое значение находиться в диапазоне от 0 до 6 или от 1 до 7.
+Returns the number of the day within the week of a `Date` or `DateTime` value.
 
-| Mode | Первый день недели | Диапазон                                       |
-| ---- | ------------------ | ---------------------------------------------- |
-| 0    | Monday             | 1-7: Monday = 1, Tuesday = 2, ..., Sunday = 7  |
-| 1    | Monday             | 0-6: Monday = 0, Tuesday = 1, ..., Sunday = 6  |
-| 2    | Sunday             | 0-6: Sunday = 0, Monday = 1, ..., Saturday = 6 |
-| 3    | Sunday             | 1-7: Sunday = 1, Monday = 2, ..., Saturday = 7 |
+The two-argument form of `toDayOfWeek()` enables you to specify whether the week starts on Monday or Sunday,
+and whether the return value should be in the range from 0 to 6 or 1 to 7.
 
-**Синтаксис**
+| Mode | First day of week | Range                                          |
+|------|-------------------|------------------------------------------------|
+| 0    | Monday            | 1-7: Monday = 1, Tuesday = 2, ..., Sunday = 7  |
+| 1    | Monday            | 0-6: Monday = 0, Tuesday = 1, ..., Sunday = 6  |
+| 2    | Sunday            | 0-6: Sunday = 0, Monday = 1, ..., Saturday = 6 |
+| 3    | Sunday            | 1-7: Sunday = 1, Monday = 2, ..., Saturday = 7 |
+        
+
+**Syntax**
 
 ```sql
 toDayOfWeek(datetime[, mode[, timezone]])
 ```
 
-**Псевдонимы**: `DAYOFWEEK`
+**Aliases**: `DAYOFWEEK`
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата или дата со временем, для которой нужно получить день недели. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `mode` — необязательный параметр. Целое число, задающее режим недели (0–3). По умолчанию — 0, если параметр не указан. [`UInt8`](/sql-reference/data-types/int-uint)
-* `timezone` — необязательный параметр. Часовой пояс, используемый для преобразования. [`String`](/sql-reference/data-types/string)
+- `datetime` — Date or date with time to get the day of week from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `mode` — Optional. Integer specifying the week mode (0-3). Defaults to 0 if omitted. [`UInt8`](/sql-reference/data-types/int-uint)
+- `timezone` — Optional. Timezone to use for the conversion. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает день недели для заданных `Date` или `DateTime` в виде значения типа [`UInt8`](/sql-reference/data-types/int-uint).
+**Returned value**
 
-**Примеры**
+Returns the day of the week for the given `Date` or `DateTime` [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 -- Следующая дата — 21 апреля 2023 года, это была пятница:
@@ -3427,31 +3758,36 @@ SELECT
 └───────────────────────────────────────┴──────────────────────────────────────────┘
 ```
 
+
+
 ## toDayOfYear {#toDayOfYear}
 
-Появилась в версии: v18.4
+Introduced in: v18.4
 
-Возвращает порядковый номер дня в году (1–366) для значения типа `Date` или `DateTime`.
 
-**Синтаксис**
+Returns the number of the day within the year (1-366) of a `Date` or `DateTime` value.
+        
+
+**Syntax**
 
 ```sql
 toDayOfYear(datetime)
 ```
 
-**Псевдонимы**: `DAYOFYEAR`
+**Aliases**: `DAYOFYEAR`
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата или дата и время, для которой требуется получить порядковый номер дня года. [`Date`](/sql-reference/data-types/date), [`Date32`](/sql-reference/data-types/date32), [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — Date or date with time to get the day of year from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает порядковый номер дня года для заданного значения типа Date или DateTime в виде [`UInt16`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the day of the year of the given Date or DateTime [`UInt16`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT toDayOfYear(toDateTime('2023-04-21 10:20:30'))
@@ -3463,35 +3799,40 @@ SELECT toDayOfYear(toDateTime('2023-04-21 10:20:30'))
 └────────────────────────────────────────────────┘
 ```
 
+
+
 ## toDaysSinceYearZero {#toDaysSinceYearZero}
 
-Добавлено в версии: v23.9
+Introduced in: v23.9
 
-Для заданной даты возвращает количество дней, прошедших с [1 января 0000](https://en.wikipedia.org/wiki/Year_zero) в
-[пролептическом григорианском календаре, определённом стандартом ISO 8601](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar).
 
-Вычисление совпадает с функцией [`TO_DAYS`](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_to-days) в MySQL.
+For a given date, returns the number of days which have passed since [1 January 0000](https://en.wikipedia.org/wiki/Year_zero) in the
+[proleptic Gregorian calendar defined by ISO 8601](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar).
 
-**Синтаксис**
+The calculation is the same as in MySQL's [`TO_DAYS`](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_to-days) function.
+    
+
+**Syntax**
 
 ```sql
 toDaysSinceYearZero(date[, time_zone])
 ```
 
-**Псевдонимы**: `TO_DAYS`
+**Aliases**: `TO_DAYS`
 
-**Аргументы**
+**Arguments**
 
-* `date` — Дата или дата со временем, для которой нужно вычислить количество дней, прошедших с нулевого года. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `time_zone` — Часовой пояс. [`String`](/sql-reference/data-types/string)
+- `date` — The date or date with time for which to calculate the number of days since year zero from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `time_zone` — Time zone. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает количество дней, прошедших с даты `0000-01-01`. [`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the number of days passed since date `0000-01-01`. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**Вычисление количества дней с нулевого года**
+**Examples**
+
+**Calculate days since year zero**
 
 ```sql title=Query
 SELECT toDaysSinceYearZero(toDate('2023-09-08'))
@@ -3503,31 +3844,36 @@ SELECT toDaysSinceYearZero(toDate('2023-09-08'))
 └────────────────────────────────────────────┘
 ```
 
+
+
 ## toHour {#toHour}
 
-Добавлена в версии: v1.1
+Introduced in: v1.1
 
-Возвращает часовую часть (0–23) значения `DateTime` или `DateTime64`.
 
-**Синтаксис**
+Returns the hour component (0-23) of a `DateTime` or `DateTime64` value.
+    
+
+**Syntax**
 
 ```sql
 toHour(datetime)
 ```
 
-**Псевдонимы**: `HOUR`
+**Aliases**: `HOUR`
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — Дата и время, из которых нужно получить час. [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — Date with time to get the hour from. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает час (0–23) из `datetime`. [`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the hour (0-23) of `datetime`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT toHour(toDateTime('2023-04-21 10:20:30'))
@@ -3539,29 +3885,34 @@ SELECT toHour(toDateTime('2023-04-21 10:20:30'))
 └───────────────────────────────────────────┘
 ```
 
+
+
 ## toISOYear {#toISOYear}
 
-Введена в версии: v18.4
+Introduced in: v18.4
 
-Преобразует дату или дату со временем в номер года по стандарту ISO.
 
-**Синтаксис**
+Converts a date or date with time to the ISO year number.
+    
+
+**Syntax**
 
 ```sql
 toISOYear(datetime)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — Значение с датой или датой и временем. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — The value with date or date with time. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает исходное значение, преобразованное в номер года по ISO. [`UInt16`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the input value converted to an ISO year number. [`UInt16`](/sql-reference/data-types/int-uint)
 
-**Получение номера года по ISO из значений даты**
+**Examples**
+
+**Get ISO year from date values**
 
 ```sql title=Query
 SELECT
@@ -3575,35 +3926,40 @@ toISOYear(toDateTime('2024-10-02 01:30:00')) as year2
 └───────┴───────┘
 ```
 
+
+
 ## toLastDayOfMonth {#toLastDayOfMonth}
 
-Впервые представлена в: v1.1
+Introduced in: v1.1
 
-Округляет дату или дату со временем до последнего дня месяца.
+
+Rounds up a date or date with time to the last day of the month.
 
 :::note
-Тип возвращаемого значения можно настроить с помощью параметра [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
+The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
 :::
+    
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 toLastDayOfMonth(value)
 ```
 
-**Псевдонимы**: `LAST_DAY`
+**Aliases**: `LAST_DAY`
 
-**Аргументы**
+**Arguments**
 
-* `value` — дата или дата со временем, которую необходимо округлить вверх до последнего дня месяца. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `value` — The date or date with time to round up to the last day of the month. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает дату последнего дня месяца для заданной даты или даты со временем. [`Date`](/sql-reference/data-types/date)
+**Returned value**
 
-**Примеры**
+Returns the date of the last day of the month for the given date or date with time. [`Date`](/sql-reference/data-types/date)
 
-**Округление до последнего дня месяца**
+**Examples**
+
+**Round up to the last day of the month**
 
 ```sql title=Query
 SELECT toLastDayOfMonth(toDateTime('2023-04-21 10:20:30'))
@@ -3615,35 +3971,40 @@ SELECT toLastDayOfMonth(toDateTime('2023-04-21 10:20:30'))
 └─────────────────────────────────────────────────────┘
 ```
 
+
+
 ## toLastDayOfWeek {#toLastDayOfWeek}
 
-Введена в версии: v23.5
+Introduced in: v23.5
 
-Округляет дату или дату со временем до ближайшей субботы или воскресенья.
+
+Rounds a date or date with time up to the nearest Saturday or Sunday.
 
 :::note
-Тип возвращаемого значения можно настроить с помощью параметра [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
+The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
 :::
+    
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 toLastDayOfWeek(datetime[, mode[, timezone]])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата или дата со временем для преобразования. [`Date`](/sql-reference/data-types/date) или [`DateTime`](/sql-reference/data-types/datetime) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `mode` — определяет первый день недели, как описано в функции `toWeek()`. По умолчанию `0`. [`UInt8`](/sql-reference/data-types/int-uint)
-* `timezone` — необязательный параметр. Часовой пояс, используемый для преобразования. Если не указан, используется часовой пояс сервера. [`String`](/sql-reference/data-types/string)
+- `datetime` — A date or date with time to convert. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `mode` — Determines the first day of the week as described in the `toWeek()` function. Default `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `timezone` — Optional. The timezone to use for the conversion. If not specified, the server's timezone is used. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает дату ближайшей субботы или воскресенья, начиная с указанной даты (включительно), в зависимости от режима. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns the date of the nearest Saturday or Sunday, on or after the given date, depending on the mode [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Округление вверх до ближайшей субботы или воскресенья**
+**Examples**
+
+**Round up to the nearest Saturday or Sunday**
 
 ```sql title=Query
 SELECT
@@ -3663,31 +4024,36 @@ toLastDayOfWeek(toDate('2023-04-23')):                   2023-04-23
 toLastDayOfWeek(toDate('2023-04-23'), 1):                2023-04-23
 ```
 
+
+
 ## toMillisecond {#toMillisecond}
 
-Добавлена в: v24.2
+Introduced in: v24.2
 
-Возвращает миллисекундную часть (0-999) значения типа `DateTime` или `DateTime64`.
 
-**Синтаксис**
+Returns the millisecond component (0-999) of a `DateTime` or `DateTime64` value.
+    
+
+**Syntax**
 
 ```sql
 toMillisecond(datetime)
 ```
 
-**Псевдонимы**: `MILLISECOND`
+**Aliases**: `MILLISECOND`
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата и время, из которых нужно получить миллисекунду. [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — Date with time to get the millisecond from. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает миллисекунду в минуте (0–59) из `datetime`. [`UInt16`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the millisecond in the minute (0 - 59) of `datetime`. [`UInt16`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT toMillisecond(toDateTime64('2023-04-21 10:20:30.456', 3));
@@ -3699,31 +4065,36 @@ SELECT toMillisecond(toDateTime64('2023-04-21 10:20:30.456', 3));
 └────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## toMinute {#toMinute}
 
-Впервые представлен в: v1.1
+Introduced in: v1.1
 
-Возвращает минутную часть (0–59) значения `Date` или `DateTime`.
 
-**Синтаксис**
+Returns the minute component (0-59) of a `Date` or `DateTime` value.
+    
+
+**Syntax**
 
 ```sql
 toMinute(datetime)
 ```
 
-**Псевдонимы**: `MINUTE`
+**Aliases**: `MINUTE`
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — значение даты и времени, из которого нужно получить минуту. [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — Date with time to get the minute from. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает минуту часа (0–59) из `datetime`. [`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the minute of the hour (0 - 59) of `datetime`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT toMinute(toDateTime('2023-04-21 10:20:30'))
@@ -3735,29 +4106,34 @@ SELECT toMinute(toDateTime('2023-04-21 10:20:30'))
 └─────────────────────────────────────────────┘
 ```
 
+
+
 ## toModifiedJulianDay {#toModifiedJulianDay}
 
-Появилась в версии v21.1
+Introduced in: v21.1
 
-Преобразует дату в пролептическом григорианском календаре ([Proleptic Gregorian calendar](https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar)) в текстовом формате `YYYY-MM-DD` в число [Modified Julian Day](https://en.wikipedia.org/wiki/Julian_day#Variants) типа `Int32`. Эта функция поддерживает даты от `0000-01-01` до `9999-12-31`. Выбрасывает исключение, если аргумент не удаётся интерпретировать как дату или дата недопустима.
 
-**Синтаксис**
+Converts a [Proleptic Gregorian calendar](https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar) date in text form `YYYY-MM-DD` to a [Modified Julian Day](https://en.wikipedia.org/wiki/Julian_day#Variants) number in `Int32`. This function supports date from `0000-01-01` to `9999-12-31`. It raises an exception if the argument cannot be parsed as a date, or the date is invalid.
+    
+
+**Syntax**
 
 ```sql
 toModifiedJulianDay(date)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `date` — Дата в виде строки. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
+- `date` — The date in String form. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
 
-**Возвращаемое значение**
 
-Возвращает число модифицированного юлианского дня. [`Int32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns Modified Julian Day number. [`Int32`](/sql-reference/data-types/int-uint)
 
-**Преобразование даты в число модифицированного юлианского дня**
+**Examples**
+
+**Convert date to Modified Julian Day**
 
 ```sql title=Query
 SELECT toModifiedJulianDay('2020-01-01')
@@ -3769,29 +4145,34 @@ SELECT toModifiedJulianDay('2020-01-01')
 └───────────────────────────────────┘
 ```
 
+
+
 ## toModifiedJulianDayOrNull {#toModifiedJulianDayOrNull}
 
-Введена в: v21.1
+Introduced in: v21.1
 
-Аналогична [`toModifiedJulianDay()`](#toModifiedJulianDay), но вместо выброса исключений возвращает `NULL`.
 
-**Синтаксис**
+Similar to [`toModifiedJulianDay()`](#toModifiedJulianDay), but instead of raising exceptions it returns `NULL`.
+    
+
+**Syntax**
 
 ```sql
 toModifiedJulianDayOrNull(date)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `date` — Дата в текстовом формате. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
+- `date` — Date in text form. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
 
-**Возвращаемое значение**
 
-Возвращает номер модифицированного юлианского дня для корректной даты `date`, в противном случае — `null`. [`Nullable(Int32)`](/sql-reference/data-types/nullable)
+**Returned value**
 
-**Примеры**
+Returns the modified Julian day number for valid `date`, otherwise `null`. [`Nullable(Int32)`](/sql-reference/data-types/nullable)
 
-**Преобразование даты в модифицированный юлианский день с обработкой значений null**
+**Examples**
+
+**Convert date to Modified Julian Day with null handling**
 
 ```sql title=Query
 SELECT toModifiedJulianDayOrNull('2020-01-01');
@@ -3807,33 +4188,38 @@ SELECT toModifiedJulianDayOrNull('0000-00-00'); -- недопустимая да
 └──────────────────────────┘
 ```
 
+
+
 ## toMonday {#toMonday}
 
-Добавлена в: v1.1
+Introduced in: v1.1
 
-Округляет дату или дату и время вниз до понедельника той же недели. Возвращает дату.
+
+Rounds down a date or date with time to the Monday of the same week. Returns the date.
 
 :::note
-Тип возвращаемого значения можно настроить с помощью параметра [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
+The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
 :::
+    
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 toMonday(value)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `value` — Дата или дата со временем, которую нужно округлить в меньшую сторону до понедельника недели. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `value` — Date or date with time to round down to the Monday of the week. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает дату понедельника той же недели для указанной даты или даты со временем. [`Date`](/sql-reference/data-types/date)
+**Returned value**
 
-**Примеры**
+Returns the date of the Monday of the same week for the given date or date with time. [`Date`](/sql-reference/data-types/date)
 
-**Округление даты в меньшую сторону до понедельника недели**
+**Examples**
+
+**Round down to the Monday of the week**
 
 ```sql title=Query
 SELECT
@@ -3847,31 +4233,36 @@ toMonday(toDate('2023-04-24'));              -- Уже понедельник
 └─────────────────────────────────────────────┴────────────────────────────────┘
 ```
 
+
+
 ## toMonth {#toMonth}
 
-Добавлена в версии: v1.1
+Introduced in: v1.1
 
-Возвращает номер месяца (1–12) из значения типа `Date` или `DateTime`.
 
-**Синтаксис**
+Returns the month component (1-12) of a `Date` or `DateTime` value.
+    
+
+**Syntax**
 
 ```sql
 toMonth(datetime)
 ```
 
-**Псевдонимы**: `MONTH`
+**Aliases**: `MONTH`
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — Дата или дата и время, из которой нужно получить месяц. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — Date or date with time to get the month from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает месяц из указанной даты/времени в виде значения типа [`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the month of the given date/time [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT toMonth(toDateTime('2023-04-21 10:20:30'))
@@ -3883,29 +4274,32 @@ SELECT toMonth(toDateTime('2023-04-21 10:20:30'))
 └────────────────────────────────────────────┘
 ```
 
+
+
 ## toMonthNumSinceEpoch {#toMonthNumSinceEpoch}
 
-Добавлено в: v25.3
+Introduced in: v25.3
 
-Возвращает количество месяцев, прошедших с 1970 года.
+Returns amount of months passed from year 1970
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 toMonthNumSinceEpoch(date)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `date` — дата или дата и время. [`Date`](/sql-reference/data-types/date) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `date` — A date or date with time. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Положительное целое число
+**Returned value**
 
-**Примеры**
+Positive integer
 
-**Пример**
+**Examples**
+
+**Example**
 
 ```sql title=Query
 SELECT toMonthNumSinceEpoch(toDate('2024-10-01'))
@@ -3915,31 +4309,36 @@ SELECT toMonthNumSinceEpoch(toDate('2024-10-01'))
 657
 ```
 
+
+
 ## toQuarter {#toQuarter}
 
-Появилась в версии: v1.1
+Introduced in: v1.1
 
-Возвращает квартал года (1–4) для заданного значения `Date` или `DateTime`.
 
-**Синтаксис**
+Returns the quarter of the year (1-4) for a given `Date` or `DateTime` value.
+    
+
+**Syntax**
 
 ```sql
 toQuarter(datetime)
 ```
 
-**Синонимы**: `QUARTER`
+**Aliases**: `QUARTER`
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата или дата и время, для которой определяется квартал года. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — Date or date with time to get the quarter of the year from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает квартал года для указанной даты/времени в виде значения типа [`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the quarter of the year for the given date/time [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT toQuarter(toDateTime('2023-04-21 10:20:30'))
@@ -3951,31 +4350,36 @@ SELECT toQuarter(toDateTime('2023-04-21 10:20:30'))
 └──────────────────────────────────────────────┘
 ```
 
+
+
 ## toRelativeDayNum {#toRelativeDayNum}
 
-Появилась в: v1.1
+Introduced in: v1.1
 
-Преобразует дату или дату со временем в количество дней, прошедших с некоторого фиксированного момента в прошлом.
-Точная точка отсчёта является деталью реализации, поэтому эта функция не предназначена для самостоятельного использования.
-Основное назначение функции — вычисление разницы в днях между двумя датами или датами со временем, например, `toRelativeDayNum(dt1) - toRelativeDayNum(dt2)`.
 
-**Синтаксис**
+Converts a date or date with time to the number of days elapsed since a certain fixed point in the past.
+The exact point in time is an implementation detail, and therefore this function is not intended to be used standalone.
+The main purpose of the function is to calculate the difference in days between two dates or dates with time, e.g., `toRelativeDayNum(dt1) - toRelativeDayNum(dt2)`.
+    
+
+**Syntax**
 
 ```sql
 toRelativeDayNum(date)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `date` — дата или дата со временем. [`Date`](/sql-reference/data-types/date) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `date` — Date or date with time. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает количество дней от фиксированной точки отсчёта в прошлом. [`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the number of days from a fixed reference point in the past. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**Получение относительных номеров дней**
+**Examples**
+
+**Get relative day numbers**
 
 ```sql title=Query
 SELECT toRelativeDayNum(toDate('2023-04-01')) - toRelativeDayNum(toDate('2023-01-01'))
@@ -3987,31 +4391,36 @@ SELECT toRelativeDayNum(toDate('2023-04-01')) - toRelativeDayNum(toDate('2023-01
 └──────────────────────────┘
 ```
 
+
+
 ## toRelativeHourNum {#toRelativeHourNum}
 
-Введена в версии v1.1
+Introduced in: v1.1
 
-Преобразует дату или дату со временем в количество часов, прошедших с некоторого фиксированного момента в прошлом.
-Точная точка во времени является деталью реализации, поэтому эту функцию не предполагается использовать самостоятельно.
-Основное назначение функции — вычислять разницу в часах между двумя датами или датами со временем, например, `toRelativeHourNum(dt1) - toRelativeHourNum(dt2)`.
 
-**Синтаксис**
+Converts a date or date with time to the number of hours elapsed since a certain fixed point in the past.
+The exact point in time is an implementation detail, and therefore this function is not intended to be used standalone.
+The main purpose of the function is to calculate the difference in hours between two dates or dates with time, e.g., `toRelativeHourNum(dt1) - toRelativeHourNum(dt2)`.
+    
+
+**Syntax**
 
 ```sql
 toRelativeHourNum(date)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `date` — Дата или дата и время. [`Date`](/sql-reference/data-types/date) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `date` — Date or date with time. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает количество часов, прошедших с фиксированной точки в прошлом. [`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the number of hours from a fixed reference point in the past. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**Получение относительных значений часа**
+**Examples**
+
+**Get relative hour numbers**
 
 ```sql title=Query
 SELECT toRelativeHourNum(toDateTime('2023-01-01 12:00:00')) - toRelativeHourNum(toDateTime('2023-01-01 00:00:00')) AS hours_difference
@@ -4023,31 +4432,36 @@ SELECT toRelativeHourNum(toDateTime('2023-01-01 12:00:00')) - toRelativeHourNum(
 └──────────────────┘
 ```
 
+
+
 ## toRelativeMinuteNum {#toRelativeMinuteNum}
 
-Введена в версии: v1.1
+Introduced in: v1.1
 
-Преобразует дату или дату со временем в количество минут, прошедших с некоторого фиксированного момента в прошлом.
-Точный момент времени является деталью реализации, поэтому эту функцию не предполагается использовать самостоятельно, в отрыве от других.
-Основное назначение функции — вычисление разницы в минутах между двумя датами или датами со временем, например, `toRelativeMinuteNum(dt1) - toRelativeMinuteNum(dt2)`.
 
-**Синтаксис**
+Converts a date or date with time to the number of minutes elapsed since a certain fixed point in the past.
+The exact point in time is an implementation detail, and therefore this function is not intended to be used standalone.
+The main purpose of the function is to calculate the difference in minutes between two dates or dates with time, e.g., `toRelativeMinuteNum(dt1) - toRelativeMinuteNum(dt2)`.
+    
+
+**Syntax**
 
 ```sql
 toRelativeMinuteNum(date)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `date` — дата или дата со временем. [`Date`](/sql-reference/data-types/date) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `date` — Date or date with time. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает количество минут, прошедших с фиксированной точки отсчёта в прошлом. [`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the number of minutes from a fixed reference point in the past. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**Получение относительных номеров минут**
+**Examples**
+
+**Get relative minute numbers**
 
 ```sql title=Query
 SELECT toRelativeMinuteNum(toDateTime('2023-01-01 00:30:00')) - toRelativeMinuteNum(toDateTime('2023-01-01 00:00:00')) AS minutes_difference
@@ -4059,31 +4473,36 @@ SELECT toRelativeMinuteNum(toDateTime('2023-01-01 00:30:00')) - toRelativeMinute
 └────────────────────┘
 ```
 
+
+
 ## toRelativeMonthNum {#toRelativeMonthNum}
 
-Появилась в версии: v1.1
+Introduced in: v1.1
 
-Преобразует дату или дату со временем в количество месяцев, прошедших с некоторого фиксированного момента в прошлом.
-Точный момент времени является деталью реализации, поэтому эта функция не предназначена для самостоятельного использования.
-Основное назначение функции — вычислять разницу в месяцах между двумя датами или датами со временем, например, `toRelativeMonthNum(dt1) - toRelativeMonthNum(dt2)`.
 
-**Синтаксис**
+Converts a date or date with time to the number of months elapsed since a certain fixed point in the past.
+The exact point in time is an implementation detail, and therefore this function is not intended to be used standalone.
+The main purpose of the function is to calculate the difference in months between two dates or dates with time, e.g., `toRelativeMonthNum(dt1) - toRelativeMonthNum(dt2)`.
+    
+
+**Syntax**
 
 ```sql
 toRelativeMonthNum(date)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `date` — дата или дата со временем. [`Date`](/sql-reference/data-types/date) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `date` — Date or date with time. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает количество месяцев от фиксированной точки отсчёта в прошлом. [`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the number of months from a fixed reference point in the past. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**Получение относительных номеров месяцев**
+**Examples**
+
+**Get relative month numbers**
 
 ```sql title=Query
 SELECT toRelativeMonthNum(toDate('2023-04-01')) - toRelativeMonthNum(toDate('2023-01-01')) AS months_difference
@@ -4095,31 +4514,36 @@ SELECT toRelativeMonthNum(toDate('2023-04-01')) - toRelativeMonthNum(toDate('202
 └───────────────────┘
 ```
 
+
+
 ## toRelativeQuarterNum {#toRelativeQuarterNum}
 
-Введена в: v1.1
+Introduced in: v1.1
 
-Преобразует дату или дату со временем в количество кварталов, прошедших с некоторого фиксированного момента в прошлом.
-Точная точка во времени является деталью реализации, поэтому эта функция не предназначена для использования сама по себе.
-Основное назначение функции — вычислять разницу в кварталах между двумя датами или датами со временем, например, `toRelativeQuarterNum(dt1) - toRelativeQuarterNum(dt2)`.
 
-**Синтаксис**
+Converts a date or date with time to the number of quarters elapsed since a certain fixed point in the past.
+The exact point in time is an implementation detail, and therefore this function is not intended to be used standalone.
+The main purpose of the function is to calculate the difference in quarters between two dates or dates with time, e.g., `toRelativeQuarterNum(dt1) - toRelativeQuarterNum(dt2)`.
+    
+
+**Syntax**
 
 ```sql
 toRelativeQuarterNum(date)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `date` — дата или дата со временем. [`Date`](/sql-reference/data-types/date) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `date` — Date or date with time. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает число кварталов, прошедших с фиксированной точки отсчёта в прошлом. [`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the number of quarters from a fixed reference point in the past. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**Получение относительных номеров кварталов**
+**Examples**
+
+**Get relative quarter numbers**
 
 ```sql title=Query
 SELECT toRelativeQuarterNum(toDate('2023-04-01')) - toRelativeQuarterNum(toDate('2023-01-01')) AS quarters_difference
@@ -4131,31 +4555,36 @@ SELECT toRelativeQuarterNum(toDate('2023-04-01')) - toRelativeQuarterNum(toDate(
 └─────────────────────┘
 ```
 
+
+
 ## toRelativeSecondNum {#toRelativeSecondNum}
 
-Добавлена в версии v1.1
+Introduced in: v1.1
 
-Преобразует дату или дату со временем в количество секунд, прошедших с некоторого фиксированного момента в прошлом.
-Точная точка во времени является деталью реализации, поэтому эта функция не предназначена для самостоятельного использования.
-Основное назначение функции — вычислять разницу в секундах между двумя датами или датами со временем, например, `toRelativeSecondNum(dt1) - toRelativeSecondNum(dt2)`.
 
-**Синтаксис**
+Converts a date or date with time to the number of seconds elapsed since a certain fixed point in the past.
+The exact point in time is an implementation detail, and therefore this function is not intended to be used standalone.
+The main purpose of the function is to calculate the difference in seconds between two dates or dates with time, e.g., `toRelativeSecondNum(dt1) - toRelativeSecondNum(dt2)`.
+    
+
+**Syntax**
 
 ```sql
 toRelativeSecondNum(date)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `date` — дата или дата со временем. [`Date`](/sql-reference/data-types/date) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `date` — Date or date with time. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает количество секунд, прошедших от фиксированной точки отсчёта в прошлом. [`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the number of seconds from a fixed reference point in the past. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**Получение относительных значений секунд**
+**Examples**
+
+**Get relative second numbers**
 
 ```sql title=Query
 SELECT toRelativeSecondNum(toDateTime('2023-01-01 00:01:00')) - toRelativeSecondNum(toDateTime('2023-01-01 00:00:00')) AS seconds_difference
@@ -4167,31 +4596,36 @@ SELECT toRelativeSecondNum(toDateTime('2023-01-01 00:01:00')) - toRelativeSecond
 └────────────────────┘
 ```
 
+
+
 ## toRelativeWeekNum {#toRelativeWeekNum}
 
-Добавлена в: v1.1
+Introduced in: v1.1
 
-Преобразует дату или дату со временем в количество недель, прошедших с некоторого фиксированного момента в прошлом.
-Точный момент времени относится к деталям реализации, поэтому эта функция не предназначена для самостоятельного применения.
-Основное назначение функции — вычислять разницу в неделях между двумя датами или датами со временем, например, `toRelativeWeekNum(dt1) - toRelativeWeekNum(dt2)`.
 
-**Синтаксис**
+Converts a date or date with time to the number of weeks elapsed since a certain fixed point in the past.
+The exact point in time is an implementation detail, and therefore this function is not intended to be used standalone.
+The main purpose of the function is to calculate the difference in weeks between two dates or dates with time, e.g., `toRelativeWeekNum(dt1) - toRelativeWeekNum(dt2)`.
+    
+
+**Syntax**
 
 ```sql
 toRelativeWeekNum(date)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `date` — дата или дата со временем. [`Date`](/sql-reference/data-types/date) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `date` — Date or date with time. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает количество недель, прошедших с фиксированной точки отсчёта в прошлом. [`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the number of weeks from a fixed reference point in the past. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**Получение относительных номеров недель**
+**Examples**
+
+**Get relative week numbers**
 
 ```sql title=Query
 SELECT toRelativeWeekNum(toDate('2023-01-08')) - toRelativeWeekNum(toDate('2023-01-01')) AS weeks_difference
@@ -4203,31 +4637,36 @@ SELECT toRelativeWeekNum(toDate('2023-01-08')) - toRelativeWeekNum(toDate('2023-
 └──────────────────┘
 ```
 
+
+
 ## toRelativeYearNum {#toRelativeYearNum}
 
-Введена в версии: v1.1
+Introduced in: v1.1
 
-Преобразует дату или дату со временем в количество лет, прошедших с некоторого фиксированного момента в прошлом.
-Точный момент времени является деталью реализации, поэтому эту функцию не следует использовать
-самостоятельно. Основное назначение функции — вычисление разницы в годах между двумя датами или датами со временем, например: `toRelativeYearNum(dt1) - toRelativeYearNum(dt2)`.
 
-**Синтаксис**
+Converts a date or date with time to the number of years elapsed since a certain fixed point in the past.
+The exact point in time is an implementation detail, and therefore this function is not intended to be used
+standalone. The main purpose of the function is to calculate the difference in years between two dates or dates with time, e.g., `toRelativeYearNum(dt1) - toRelativeYearNum(dt2)`.
+    
+
+**Syntax**
 
 ```sql
 toRelativeYearNum(date)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `date` — Дата или дата и время. [`Date`](/sql-reference/data-types/date) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `date` — Date or date with time. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает число лет, прошедших с фиксированной точки отсчёта в прошлом. [`UInt16`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the number of years from a fixed reference point in the past. [`UInt16`](/sql-reference/data-types/int-uint)
 
-**Получение относительного номера года**
+**Examples**
+
+**Get relative year numbers**
 
 ```sql title=Query
 SELECT toRelativeYearNum('2010-10-01'::DateTime) - toRelativeYearNum('2000-01-01'::DateTime)
@@ -4239,31 +4678,36 @@ SELECT toRelativeYearNum('2010-10-01'::DateTime) - toRelativeYearNum('2000-01-01
 └──────────────────────────┘
 ```
 
+
+
 ## toSecond {#toSecond}
 
-Появилась в версии: v1.1
+Introduced in: v1.1
 
-Возвращает компонент секунд (0–59) значения типа `DateTime` или `DateTime64`.
 
-**Синтаксис**
+Returns the second component (0-59) of a `DateTime` or `DateTime64` value.
+        
+
+**Syntax**
 
 ```sql
 toSecond(datetime)
 ```
 
-**Псевдонимы**: `SECOND`
+**Aliases**: `SECOND`
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата и время, из которых нужно получить секунду. [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — Date with time to get the second from. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает секунду в минуте (0–59) из `datetime`. [`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the second in the minute (0 - 59) of `datetime`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT toSecond(toDateTime('2023-04-21 10:20:30'))
@@ -4275,33 +4719,38 @@ SELECT toSecond(toDateTime('2023-04-21 10:20:30'))
 └─────────────────────────────────────────────┘
 ```
 
+
+
 ## toStartOfDay {#toStartOfDay}
 
-Добавлена в версии v1.1
+Introduced in: v1.1
 
-Округляет дату со временем до начала дня.
+
+Rounds down a date with time to the start of the day.
 
 :::note
-Тип возвращаемого значения можно настроить с помощью параметра [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
+The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
 :::
+    
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 toStartOfDay(datetime)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата или дата со временем, которую нужно округлить. [`Date`](/sql-reference/data-types/date) или [`DateTime`](/sql-reference/data-types/datetime)
+- `datetime` — A date or date with time to round. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime)
 
-**Возвращаемое значение**
 
-Возвращает дату со временем, округлённую вниз до начала дня. [`Date`](/sql-reference/data-types/date) или [`DateTime`](/sql-reference/data-types/datetime) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns the date with time rounded down to the start of the day. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Округление вниз до начала дня**
+**Examples**
+
+**Round down to the start of the day**
 
 ```sql title=Query
 SELECT toStartOfDay(toDateTime('2023-04-21 10:20:30'))
@@ -4313,33 +4762,38 @@ SELECT toStartOfDay(toDateTime('2023-04-21 10:20:30'))
 └─────────────────────────────────────────────────┘
 ```
 
+
+
 ## toStartOfFifteenMinutes {#toStartOfFifteenMinutes}
 
-Добавлена в версии v1.1
+Introduced in: v1.1
 
-Округляет дату и время вниз до начала пятнадцатиминутного интервала.
+
+Rounds down the date with time to the start of the fifteen-minute interval.
 
 :::note
-Тип возвращаемого значения можно настроить с помощью параметра [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
+The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
 :::
+    
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 toStartOfFifteenMinutes(datetime)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата или дата со временем для округления. [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — A date or date with time to round. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает дату со временем, округлённую до начала ближайшего пятнадцатиминутного интервала [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns the date with time rounded to the start of the nearest fifteen-minute interval [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Пример**
+**Examples**
+
+**Example**
 
 ```sql title=Query
 SELECT
@@ -4357,35 +4811,40 @@ toStartOfFifteenMinutes(toDateTime('2023-04-21 10:20:00')): 2023-04-21 10:15:00
 toStartOfFifteenMinutes(toDateTime('2023-04-21 10:23:00')): 2023-04-21 10:15:00
 ```
 
+
+
 ## toStartOfFiveMinutes {#toStartOfFiveMinutes}
 
-Функция появилась в версии: v22.6
+Introduced in: v22.6
 
-Округляет дату и время вниз до начала ближайшего пятиминутного интервала.
+
+Rounds down a date with time to the start of the nearest five-minute interval.
 
 :::note
-Тип возвращаемого значения можно настроить с помощью настройки [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
+The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
 :::
+    
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 toStartOfFiveMinutes(datetime)
 ```
 
-**Псевдонимы**: `toStartOfFiveMinute`
+**Aliases**: `toStartOfFiveMinute`
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата и время, которые нужно округлить. [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — A date with time to round. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает дату и время, округлённые до начала ближайшего пятиминутного интервала — [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns the date with time rounded to the start of the nearest five-minute interval [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Пример**
+**Examples**
+
+**Example**
 
 ```sql title=Query
 SELECT
@@ -4403,33 +4862,38 @@ toStartOfFiveMinutes(toDateTime('2023-04-21 10:20:00')): 2023-04-21 10:20:00
 toStartOfFiveMinutes(toDateTime('2023-04-21 10:23:00')): 2023-04-21 10:20:00
 ```
 
+
+
 ## toStartOfHour {#toStartOfHour}
 
-Добавлена в: v1.1
+Introduced in: v1.1
 
-Округляет дату и время вниз до начала часа.
+
+Rounds down a date with time to the start of the hour.
 
 :::note
-Тип возвращаемого значения можно настроить с помощью параметра [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
+The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
 :::
+    
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 toStartOfHour(datetime)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — Дата и время для округления. [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — A date with time to round. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает дату и время, округлённые в меньшую сторону до начала часа. [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns the date with time rounded down to the start of the hour. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Округление в меньшую сторону до начала часа**
+**Examples**
+
+**Round down to the start of the hour**
 
 ```sql title=Query
 SELECT
@@ -4442,33 +4906,38 @@ SELECT
 └─────────────────────┴─────────────────┘
 ```
 
+
+
 ## toStartOfISOYear {#toStartOfISOYear}
 
-Впервые представлена в: v1.1
+Introduced in: v1.1
 
-Округляет дату или дату со временем вниз до первого дня ISO-года, который может отличаться от календарного года. См. [ISO week date](https://en.wikipedia.org/wiki/ISO_week_date).
+
+Rounds down a date or date with time to the first day of the ISO year, which can be different than a regular year. See [ISO week date](https://en.wikipedia.org/wiki/ISO_week_date).
 
 :::note
-Тип возвращаемого значения можно настроить с помощью параметра [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
+The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
 :::
+    
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 toStartOfISOYear(value)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `value` — дата или дата и время, которые нужно округлить вниз до первого дня ISO‑года. [`Date`](/sql-reference/data-types/date), [`Date32`](/sql-reference/data-types/date32), [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `value` — The date or date with time to round down to the first day of the ISO year. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает первый день ISO‑года для указанной даты или даты и времени. [`Date`](/sql-reference/data-types/date)
+**Returned value**
 
-**Примеры**
+Returns the first day of the ISO year for the given date or date with time. [`Date`](/sql-reference/data-types/date)
 
-**Округление вниз до первого дня ISO‑года**
+**Examples**
+
+**Round down to the first day of the ISO year**
 
 ```sql title=Query
 SELECT toStartOfISOYear(toDateTime('2023-04-21 10:20:30'))
@@ -4480,62 +4949,65 @@ SELECT toStartOfISOYear(toDateTime('2023-04-21 10:20:30'))
 └─────────────────────────────────────────────────────┘
 ```
 
+
+
 ## toStartOfInterval {#toStartOfInterval}
 
-Введена в версии: v20.1
+Introduced in: v20.1
 
-Эта функция обобщает другие функции семейства `toStartOf*()` с синтаксисом `toStartOfInterval(date_or_date_with_time, INTERVAL x unit [, time_zone])`.
 
-Например,
+This function generalizes other `toStartOf*()` functions with `toStartOfInterval(date_or_date_with_time, INTERVAL x unit [, time_zone])` syntax.
 
-* `toStartOfInterval(t, INTERVAL 1 YEAR)` возвращает то же самое, что и `toStartOfYear(t)`,
-* `toStartOfInterval(t, INTERVAL 1 MONTH)` возвращает то же самое, что и `toStartOfMonth(t)`,
-* `toStartOfInterval(t, INTERVAL 1 DAY)` возвращает то же самое, что и `toStartOfDay(t)`,
-* `toStartOfInterval(t, INTERVAL 15 MINUTE)` возвращает то же самое, что и `toStartOfFifteenMinutes(t)`.
+For example,
+- `toStartOfInterval(t, INTERVAL 1 YEAR)` returns the same as `toStartOfYear(t)`,
+- `toStartOfInterval(t, INTERVAL 1 MONTH)` returns the same as `toStartOfMonth(t)`,
+- `toStartOfInterval(t, INTERVAL 1 DAY)` returns the same as `toStartOfDay(t)`,
+- `toStartOfInterval(t, INTERVAL 15 MINUTE)` returns the same as `toStartOfFifteenMinutes(t)`.
 
-Вычисление выполняется относительно определённых опорных моментов времени:
+The calculation is performed relative to specific points in time:
 
-| Interval                                                                                                                                             | Start                  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
-| YEAR                                                                                                                                                 | year 0                 |
-| QUARTER                                                                                                                                              | 1900 Q1                |
-| MONTH                                                                                                                                                | 1900 January           |
-| WEEK                                                                                                                                                 | 1970, 1st week (01-05) |
-| DAY                                                                                                                                                  | 1970-01-01             |
-| HOUR                                                                                                                                                 | (*)                    |
-| MINUTE                                                                                                                                               | 1970-01-01 00:00:00    |
-| SECOND                                                                                                                                               | 1970-01-01 00:00:00    |
-| MILLISECOND                                                                                                                                          | 1970-01-01 00:00:00    |
-| MICROSECOND                                                                                                                                          | 1970-01-01 00:00:00    |
-| NANOSECOND                                                                                                                                           | 1970-01-01 00:00:00    |
-| (*) интервалы по часам являются особым случаем: вычисление всегда выполняется относительно 00:00:00 (полуночи) текущих суток. Поэтому полезны только |                        |
-| значения часов в диапазоне от 1 до 23.                                                                                                               |                        |
+| Interval    | Start                  |
+|-------------|------------------------|
+| YEAR        | year 0                 |
+| QUARTER     | 1900 Q1                |
+| MONTH       | 1900 January           |
+| WEEK        | 1970, 1st week (01-05) |
+| DAY         | 1970-01-01             |
+| HOUR        | (*)                    |
+| MINUTE      | 1970-01-01 00:00:00    |
+| SECOND      | 1970-01-01 00:00:00    |
+| MILLISECOND | 1970-01-01 00:00:00    |
+| MICROSECOND | 1970-01-01 00:00:00    |
+| NANOSECOND  | 1970-01-01 00:00:00    |
+(*) hour intervals are special: the calculation is always performed relative to 00:00:00 (midnight) of the current day. As a result, only
+hour values between 1 and 23 are useful.
 
-Если указана единица `WEEK`, `toStartOfInterval` предполагает, что недели начинаются с понедельника. Обратите внимание, что такое поведение отличается от поведения функции `toStartOfWeek`, в которой недели по умолчанию начинаются с воскресенья.
+If unit `WEEK` was specified, `toStartOfInterval` assumes that weeks start on Monday. Note that this behavior is different from that of function `toStartOfWeek` in which weeks start by default on Sunday.
 
-Вторая перегрузка эмулирует функцию TimescaleDB `time_bucket()`, а также функцию PostgreSQL `date_bin()`.
+The second overload emulates TimescaleDB's `time_bucket()` function, respectively PostgreSQL's `date_bin()` function.
+        
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 toStartOfInterval(value, INTERVAL x unit[, time_zone])
 toStartOfInterval(value, INTERVAL x unit[, origin[, time_zone]])
 ```
 
-**Псевдонимы**: `time_bucket`, `date_bin`
+**Aliases**: `time_bucket`, `date_bin`
 
-**Аргументы**
+**Arguments**
 
-* `value` — Значение даты или даты и времени для округления вниз. [`Date`](/sql-reference/data-types/date) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `x` — Числовое значение длины интервала. - `unit` — Единица интервала: YEAR, QUARTER, MONTH, WEEK, DAY, HOUR, MINUTE, SECOND, MILLISECOND, MICROSECOND, NANOSECOND. - `time_zone` — Необязательный параметр. Название часового пояса в виде строки. - `origin` — Необязательный параметр. Начальная точка отсчёта для вычисления (только для второй перегрузки).
+- `value` — Date or date with time value to round down. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `x` — Interval length number. - `unit` — Interval unit: YEAR, QUARTER, MONTH, WEEK, DAY, HOUR, MINUTE, SECOND, MILLISECOND, MICROSECOND, NANOSECOND. - `time_zone` — Optional. Time zone name as a string. - `origin` — Optional. Origin point for calculation (second overload only). 
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает начало интервала, содержащего исходное значение. [`DateTime`](/sql-reference/data-types/datetime)
+Returns the start of the interval containing the input value. [`DateTime`](/sql-reference/data-types/datetime)
 
-**Примеры**
+**Examples**
 
-**Базовое округление по интервалам**
+**Basic interval rounding**
 
 ```sql title=Query
 SELECT toStartOfInterval(toDateTime('2023-01-15 14:30:00'), INTERVAL 1 MONTH)
@@ -4547,7 +5019,7 @@ SELECT toStartOfInterval(toDateTime('2023-01-15 14:30:00'), INTERVAL 1 MONTH)
 └──────────────────────────┘
 ```
 
-**Использование отправной точки**
+**Using origin point**
 
 ```sql title=Query
 SELECT toStartOfInterval(toDateTime('2023-01-01 14:45:00'), INTERVAL 1 MINUTE, toDateTime('2023-01-01 14:35:30'))
@@ -4559,30 +5031,35 @@ SELECT toStartOfInterval(toDateTime('2023-01-01 14:45:00'), INTERVAL 1 MINUTE, t
 └──────────────────────────┘
 ```
 
+
+
 ## toStartOfMicrosecond {#toStartOfMicrosecond}
 
-Появилась в версии: v22.6
+Introduced in: v22.6
 
-Округляет дату и время вниз до начала микросекунды.
 
-**Синтаксис**
+Rounds down a date with time to the start of the microseconds.
+    
+
+**Syntax**
 
 ```sql
 toStartOfMicrosecond(datetime[, timezone])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата и время. [`DateTime64`](/sql-reference/data-types/datetime64)
-* `timezone` — необязательный. Часовой пояс для возвращаемого значения. Если не указан, функция использует часовой пояс параметра `value`. [`String`](/sql-reference/data-types/string)
+- `datetime` — Date and time. [`DateTime64`](/sql-reference/data-types/datetime64)
+- `timezone` — Optional. Timezone for the returned value. If not specified, the function uses the timezone of the `value` parameter. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Исходное значение в формате [`DateTime64`](/sql-reference/data-types/datetime64) с точностью до субмикросекунд
+**Returned value**
 
-**Примеры**
+Input value with sub-microseconds [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Запрос без указания часового пояса**
+**Examples**
+
+**Query without timezone**
 
 ```sql title=Query
 WITH toDateTime64('2020-01-01 10:20:30.999999999', 9) AS dt64
@@ -4595,7 +5072,7 @@ SELECT toStartOfMicrosecond(dt64);
 └───────────────────────────────┘
 ```
 
-**Запрос с указанием часового пояса**
+**Query with timezone**
 
 ```sql title=Query
 WITH toDateTime64('2020-01-01 10:20:30.999999999', 9) AS dt64
@@ -4608,30 +5085,35 @@ SELECT toStartOfMicrosecond(dt64, 'Asia/Istanbul');
 └─────────────────────────────────────────────┘
 ```
 
+
+
 ## toStartOfMillisecond {#toStartOfMillisecond}
 
-Введена в версии: v22.6
+Introduced in: v22.6
 
-Округляет дату и время вниз до начала миллисекунды.
 
-**Синтаксис**
+Rounds down a date with time to the start of the milliseconds.
+    
+
+**Syntax**
 
 ```sql
 toStartOfMillisecond(datetime[, timezone])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — Дата и время. [`DateTime64`](/sql-reference/data-types/datetime64)
-* `timezone` — Необязательный параметр. Часовой пояс для возвращаемого значения. Если не указан, функция использует часовой пояс параметра `value`. [`String`](/sql-reference/data-types/string)
+- `datetime` — Date and time. [`DateTime64`](/sql-reference/data-types/datetime64)
+- `timezone` — Optional. Timezone for the returned value. If not specified, the function uses the timezone of the `value` parameter. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Исходное значение с субмиллисекундной точностью. [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Input value with sub-milliseconds. [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Запрос без часового пояса**
+**Examples**
+
+**Query without timezone**
 
 ```sql title=Query
 WITH toDateTime64('2020-01-01 10:20:30.999999999', 9) AS dt64
@@ -4644,7 +5126,7 @@ SELECT toStartOfMillisecond(dt64);
 └───────────────────────────────┘
 ```
 
-**Запрос с учётом часового пояса**
+**Query with timezone**
 
 ```sql title=Query
 WITH toDateTime64('2020-01-01 10:20:30.999999999', 9) AS dt64
@@ -4657,33 +5139,38 @@ SELECT toStartOfMillisecond(dt64, 'Asia/Istanbul');
 └─────────────────────────────────────────────┘
 ```
 
+
+
 ## toStartOfMinute {#toStartOfMinute}
 
-Добавлена в версии: v1.1
+Introduced in: v1.1
 
-Округляет дату и время вниз до начала минуты.
+
+Rounds down a date with time to the start of the minute.
 
 :::note
-Тип возвращаемого значения можно настроить с помощью настройки [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
+The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
 :::
+    
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 toStartOfMinute(datetime)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — Дата и время, которые нужно округлить. [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — A date with time to round. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает дату и время, округлённые вниз до начала минуты. [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns the date with time rounded down to the start of the minute. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Округление вниз до начала минуты**
+**Examples**
+
+**Round down to the start of the minute**
 
 ```sql title=Query
 SELECT
@@ -4699,33 +5186,38 @@ toStartOfMinute(toDateTime('2023-04-21 10:20:30')):           2023-04-21 10:20:0
 toStartOfMinute(toDateTime64('2023-04-21 10:20:30.5300', 8)): 2023-04-21 10:20:00
 ```
 
+
+
 ## toStartOfMonth {#toStartOfMonth}
 
-Впервые представлена в: v1.1
+Introduced in: v1.1
 
-Округляет дату или дату‑время вниз до первого дня месяца.
+
+Rounds down a date or date with time to the first day of the month.
 
 :::note
-Тип возвращаемого значения можно настроить с помощью параметра [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
+The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
 :::
+    
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 toStartOfMonth(value)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `value` — дата или дата со временем, которую нужно округлить вниз до первого дня месяца. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `value` — The date or date with time to round down to the first day of the month. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает первый день месяца для указанной даты или даты со временем. [`Date`](/sql-reference/data-types/date)
+**Returned value**
 
-**Примеры**
+Returns the first day of the month for the given date or date with time. [`Date`](/sql-reference/data-types/date)
 
-**Округление вниз до первого дня месяца**
+**Examples**
+
+**Round down to the first day of the month**
 
 ```sql title=Query
 SELECT toStartOfMonth(toDateTime('2023-04-21 10:20:30'))
@@ -4737,30 +5229,35 @@ SELECT toStartOfMonth(toDateTime('2023-04-21 10:20:30'))
 └───────────────────────────────────────────────────┘
 ```
 
+
+
 ## toStartOfNanosecond {#toStartOfNanosecond}
 
-Впервые представлена в версии v22.6
+Introduced in: v22.6
 
-Округляет дату и время вниз до начала наносекунды.
 
-**Синтаксис**
+Rounds down a date with time to the start of the nanoseconds.
+        
+
+**Syntax**
 
 ```sql
 toStartOfNanosecond(datetime[, timezone])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — Дата и время. [`DateTime64`](/sql-reference/data-types/datetime64)
-* `timezone` — Необязательный параметр. Часовой пояс для возвращаемого значения. Если не указан, функция использует часовой пояс параметра `value`. [`String`](/sql-reference/data-types/string)
+- `datetime` — Date and time. [`DateTime64`](/sql-reference/data-types/datetime64)
+- `timezone` — Optional. Timezone for the returned value. If not specified, the function uses the timezone of the `value` parameter. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Входное значение с наносекундной точностью. [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Input value with nanoseconds. [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Запрос без часового пояса**
+**Examples**
+
+**Query without timezone**
 
 ```sql title=Query
 WITH toDateTime64('2020-01-01 10:20:30.999999999', 9) AS dt64
@@ -4773,7 +5270,7 @@ SELECT toStartOfNanosecond(dt64);
 └───────────────────────────────┘
 ```
 
-**Запрос с учётом часового пояса**
+**Query with timezone**
 
 ```sql title=Query
 WITH toDateTime64('2020-01-01 10:20:30.999999999', 9) AS dt64
@@ -4786,33 +5283,38 @@ SELECT toStartOfNanosecond(dt64, 'Asia/Istanbul');
 └────────────────────────────────────────────┘
 ```
 
+
+
 ## toStartOfQuarter {#toStartOfQuarter}
 
-Добавлено в: v1.1
+Introduced in: v1.1
 
-Округляет дату или дату со временем вниз до первого дня квартала. Первым днём квартала является 1 января, 1 апреля, 1 июля или 1 октября.
+
+Rounds down a date or date with time to the first day of the quarter. The first day of the quarter is either 1 January, 1 April, 1 July, or 1 October.
 
 :::note
-Тип возвращаемого значения можно настроить установкой параметра [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
+The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
 :::
+    
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 toStartOfQuarter(value)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `value` — Дата или дата со временем, которую нужно округлить вниз до первого дня квартала. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `value` — The date or date with time to round down to the first day of the quarter. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает первый день квартала для заданной даты или даты со временем. [`Date`](/sql-reference/data-types/date)
+**Returned value**
 
-**Примеры**
+Returns the first day of the quarter for the given date or date with time. [`Date`](/sql-reference/data-types/date)
 
-**Округление вниз до первого дня квартала**
+**Examples**
+
+**Round down to the first day of the quarter**
 
 ```sql title=Query
 SELECT toStartOfQuarter(toDateTime('2023-04-21 10:20:30'))
@@ -4824,30 +5326,35 @@ SELECT toStartOfQuarter(toDateTime('2023-04-21 10:20:30'))
 └─────────────────────────────────────────────────────┘
 ```
 
+
+
 ## toStartOfSecond {#toStartOfSecond}
 
-Функция введена в версии: v20.5
+Introduced in: v20.5
 
-Округляет значение даты и времени до начала секунды.
 
-**Синтаксис**
+Rounds down a date with time to the start of the seconds.
+    
+
+**Syntax**
 
 ```sql
 toStartOfSecond(datetime[, timezone])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — Дата и время, из которых нужно отбросить доли секунды. [`DateTime64`](/sql-reference/data-types/datetime64)
-* `timezone` — Необязательный параметр. Часовой пояс для возвращаемого значения. Если не указан, функция использует часовой пояс, указанный в параметре `value`. [`String`](/sql-reference/data-types/string)
+- `datetime` — Date and time to truncate sub-seconds from. [`DateTime64`](/sql-reference/data-types/datetime64)
+- `timezone` — Optional. Timezone for the returned value. If not specified, the function uses the timezone of the `value` parameter. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает исходное значение без долей секунды. [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns the input value without sub-seconds. [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Запрос без часового пояса**
+**Examples**
+
+**Query without timezone**
 
 ```sql title=Query
 WITH toDateTime64('2020-01-01 10:20:30.999', 3) AS dt64
@@ -4860,7 +5367,7 @@ SELECT toStartOfSecond(dt64);
 └─────────────────────────┘
 ```
 
-**Запрос с учётом часового пояса**
+**Query with timezone**
 
 ```sql title=Query
 WITH toDateTime64('2020-01-01 10:20:30.999', 3) AS dt64
@@ -4873,33 +5380,38 @@ SELECT toStartOfSecond(dt64, 'Asia/Istanbul');
 └────────────────────────────────────────┘
 ```
 
+
+
 ## toStartOfTenMinutes {#toStartOfTenMinutes}
 
-Появилась в версии: v20.1
+Introduced in: v20.1
 
-Округляет значение даты и времени вниз до начала ближайшего десятиминутного интервала.
+
+Rounds down a date with time to the start of the nearest ten-minute interval.
 
 :::note
-Тип возвращаемого значения можно настроить с помощью параметра [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
+The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
 :::
+    
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 toStartOfTenMinutes(datetime)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата и время, значение типа [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — A date with time. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает дату и время, округлённые до начала ближайшего десятиминутного интервала, в виде значения типа [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns the date with time rounded to the start of the nearest ten-minute interval [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Пример**
+**Examples**
+
+**Example**
 
 ```sql title=Query
 SELECT
@@ -4917,35 +5429,40 @@ toStartOfTenMinutes(toDateTime('2023-04-21 10:20:00')): 2023-04-21 10:20:00
 toStartOfTenMinutes(toDateTime('2023-04-21 10:23:00')): 2023-04-21 10:20:00
 ```
 
+
+
 ## toStartOfWeek {#toStartOfWeek}
 
-Добавлена в версии v20.1
+Introduced in: v20.1
 
-Округляет дату или дату со временем вниз до ближайшего воскресенья или понедельника.
+
+Rounds a date or date with time down to the nearest Sunday or Monday.
 
 :::note
-Тип возвращаемого значения можно настроить с помощью параметра [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
+The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
 :::
+    
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 toStartOfWeek(datetime[, mode[, timezone]])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — Дата или дата со временем для преобразования. [`Date`](/sql-reference/data-types/date) или [`DateTime`](/sql-reference/data-types/datetime) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `mode` — Определяет первый день недели, как описано в функции `toWeek()`. По умолчанию — `0`. [`UInt8`](/sql-reference/data-types/int-uint)
-* `timezone` — Часовой пояс, используемый для преобразования. Если не указан, используется часовой пояс сервера. [`String`](/sql-reference/data-types/string)
+- `datetime` — A date or date with time to convert. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `mode` — Determines the first day of the week as described in the `toWeek()` function. Default `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `timezone` — The timezone to use for the conversion. If not specified, the server's timezone is used. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает дату ближайшего воскресенья или понедельника, приходящуюся на указанную дату или предшествующую ей, в зависимости от режима [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns the date of the nearest Sunday or Monday on, or prior to, the given date, depending on the mode [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Округление вниз до ближайшего воскресенья или понедельника**
+**Examples**
+
+**Round down to the nearest Sunday or Monday**
 
 ```sql title=Query
 SELECT
@@ -4965,33 +5482,38 @@ SELECT
     toStartOfWeek(toDate('2023-04-24'), 1):                2023-04-24
 ```
 
+
+
 ## toStartOfYear {#toStartOfYear}
 
-Добавлена в: v1.1
+Introduced in: v1.1
 
-Округляет дату или дату со временем вниз до первого дня года. Возвращает дату как объект типа `Date`.
+
+Rounds down a date or date with time to the first day of the year. Returns the date as a `Date` object.
 
 :::note
-Тип возвращаемого значения можно настроить с помощью параметра [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
+The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
 :::
+    
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 toStartOfYear(value)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `value` — Дата или дата со временем, которую нужно округлить вниз. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `value` — The date or date with time to round down. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает первый день года для заданной даты/времени в формате [`Date`](/sql-reference/data-types/date)
+**Returned value**
 
-**Примеры**
+Returns the first day of the year for the given date/time [`Date`](/sql-reference/data-types/date)
 
-**Округление вниз до первого дня года**
+**Examples**
+
+**Round down to the first day of the year**
 
 ```sql title=Query
 SELECT toStartOfYear(toDateTime('2023-04-21 10:20:30'))
@@ -5003,35 +5525,40 @@ SELECT toStartOfYear(toDateTime('2023-04-21 10:20:30'))
 └──────────────────────────────────────────────────┘
 ```
 
+
+
 ## toTimeWithFixedDate {#toTimeWithFixedDate}
 
-Введена в версии: v1.1
+Introduced in: v1.1
 
-Извлекает временную компоненту из даты или даты со временем.
-Возвращаемый результат представляет собой смещение от фиксированной точки во времени, в данный момент `1970-01-02`,
-но конкретная точка во времени является деталью реализации и может измениться в будущем.
 
-Поэтому `toTime` не следует использовать самостоятельно.
-Основное назначение функции — вычислять разницу во времени между двумя датами или датами со временем, например, `toTime(dt1) - toTime(dt2)`.
+Extracts the time component of a date or date with time.
+The returned result is an offset to a fixed point in time, currently `1970-01-02`,
+but the exact point in time is an implementation detail which may change in future.
 
-**Синтаксис**
+`toTime` should therefore not be used standalone.
+The main purpose of the function is to calculate the time difference between two dates or dates with time, e.g., `toTime(dt1) - toTime(dt2)`.
+    
+
+**Syntax**
 
 ```sql
 toTime(date[, timezone])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `date` — Дата, которую нужно преобразовать во время. [`Date`](/sql-reference/data-types/date) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `timezone` — Необязательный аргумент. Часовой пояс для возвращаемого значения. [`String`](/sql-reference/data-types/string)
+- `date` — Date to convert to a time. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `timezone` — Optional. Timezone for the returned value. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает временную составляющую даты или даты со временем в виде смещения от фиксированной точки во времени (на данный момент выбрана 1970-01-02). [`DateTime`](/sql-reference/data-types/datetime)
+**Returned value**
 
-**Примеры**
+Returns the time component of a date or date with time in the form of an offset to a fixed point in time (selected as 1970-01-02, currently). [`DateTime`](/sql-reference/data-types/datetime)
 
-**Вычисление разницы во времени между двумя датами**
+**Examples**
+
+**Calculate the time difference between two dates**
 
 ```sql title=Query
 SELECT toTime('2025-06-15 12:00:00'::DateTime) - toTime('2024-05-10 11:00:00'::DateTime) AS result, toTypeName(result)
@@ -5043,34 +5570,39 @@ SELECT toTime('2025-06-15 12:00:00'::DateTime) - toTime('2024-05-10 11:00:00'::D
 └────────┴────────────────────┘
 ```
 
+
+
 ## toTimezone {#toTimezone}
 
-Добавлена в: v1.1
+Introduced in: v1.1
 
-Преобразует `DateTime` или `DateTime64` в указанную часовую зону.
-Внутреннее значение данных (количество секунд Unix) не изменяется.
-Изменяются только атрибут часовой зоны значения и его строковое представление.
 
-**Синтаксис**
+Converts a `DateTime` or `DateTime64` to the specified time zone.
+The internal value (number of unix seconds) of the data doesn't change.
+Only the value's time zone attribute and the value's string representation changes.
+        
+
+**Syntax**
 
 ```sql
 toTimeZone(datetime, timezone)
 ```
 
-**Псевдонимы**: `toTimeZone`
+**Aliases**: `toTimeZone`
 
-**Аргументы**
+**Arguments**
 
-* `date` — значение для преобразования. [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `timezone` — имя целевого часового пояса. [`String`](/sql-reference/data-types/string)
+- `date` — The value to convert. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `timezone` — The target time zone name. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает ту же временную метку, что и на входе, но с указанным часовым поясом. [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns the same timestamp as the input, but with the specified time zone [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT toDateTime('2019-01-01 00:00:00', 'UTC') AS time_utc,
@@ -5099,32 +5631,37 @@ type_samoa: DateTime('US/Samoa')
 int32samoa: 1546300800
 ```
 
+
+
 ## toUTCTimestamp {#toUTCTimestamp}
 
-Добавлена в: v23.8
+Introduced in: v23.8
 
-Преобразует значение даты или даты и времени из одного часового пояса во временную метку в часовом поясе UTC. Эта функция в основном включена для совместимости с Apache Spark и аналогичными фреймворками.
 
-**Синтаксис**
+Converts a date or date with time value from one time zone to UTC timezone timestamp. This function is mainly included for compatibility with Apache Spark and similar frameworks.
+    
+
+**Syntax**
 
 ```sql
 toUTCTimestamp(datetime, time_zone)
 ```
 
-**Псевдонимы**: `to_utc_timestamp`
+**Aliases**: `to_utc_timestamp`
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — Константное значение или выражение типа дата или дата и время. [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `time_zone` — Константное значение или выражение строкового типа, представляющее часовой пояс. [`String`](/sql-reference/data-types/string)
+- `datetime` — A date or date with time type const value or an expression. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `time_zone` — A String type const value or an expression representing the time zone. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает дату или дату и время в часовом поясе UTC. [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+**Returned value**
 
-**Примеры**
+Returns a date or date with time in UTC timezone. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Преобразование часового пояса в UTC**
+**Examples**
+
+**Convert timezone to UTC**
 
 ```sql title=Query
 SELECT toUTCTimestamp(toDateTime('2023-03-16'), 'Asia/Shanghai')
@@ -5136,30 +5673,35 @@ SELECT toUTCTimestamp(toDateTime('2023-03-16'), 'Asia/Shanghai')
 └─────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## toUnixTimestamp {#toUnixTimestamp}
 
-Добавлено в версии: v1.1
+Introduced in: v1.1
 
-Преобразует `String`, `Date` или `DateTime` в метку времени Unix (количество секунд с `1970-01-01 00:00:00 UTC`) типа `UInt32`.
 
-**Синтаксис**
+Converts a `String`, `Date`, or `DateTime` to a Unix timestamp (seconds since `1970-01-01 00:00:00 UTC`) as `UInt32`.
+    
+
+**Syntax**
 
 ```sql
 toUnixTimestamp(date[, timezone])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `date` — значение для преобразования. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64) или [`String`](/sql-reference/data-types/string)
-* `timezone` — необязательный параметр. Часовой пояс, используемый для преобразования. Если не указан, используется часовой пояс сервера. [`String`](/sql-reference/data-types/string)
+- `date` — Value to convert. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
+- `timezone` — Optional. Timezone to use for conversion. If not specified, the server's timezone is used. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает метку времени Unix. [`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the Unix timestamp. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT
@@ -5185,62 +5727,66 @@ from_date:       1509840000
 from_date32:     1509840000
 ```
 
+
+
 ## toWeek {#toWeek}
 
-Добавлена в версии: v20.1
+Introduced in: v20.1
 
-Эта функция возвращает номер недели для значения типа `date` или `datetime`. Двухаргументная форма `toWeek()` позволяет указать, начинается ли неделя
-в воскресенье или в понедельник, а также должен ли возвращаемый результат находиться в диапазоне от `0` до `53` или от `1` до `53`.
 
-Функция совместимости [`toISOWeek()`](#toWeek) эквивалентна вызову `toWeek(date,3)`.
+This function returns the week number for date or datetime. The two-argument form of `toWeek()` enables you to specify whether the week starts
+on Sunday or Monday and whether the return value should be in the range from `0` to `53` or from `1` to `53`.
 
-В следующей таблице описано, как работает аргумент `mode`.
+[`toISOWeek()`](#toWeek) is a compatibility function that is equivalent to `toWeek(date,3)`.
 
-| Mode | Первый день недели | Диапазон | Неделя 1 — это первая неделя ... |
-| ---- | ------------------ | -------- | -------------------------------- |
-| 0    | Sunday             | 0-53     | с воскресеньем в этом году       |
-| 1    | Monday             | 0-53     | с 4 или более днями в этом году  |
-| 2    | Sunday             | 1-53     | с воскресеньем в этом году       |
-| 3    | Monday             | 1-53     | с 4 или более днями в этом году  |
-| 4    | Sunday             | 0-53     | с 4 или более днями в этом году  |
-| 5    | Monday             | 0-53     | с понедельником в этом году      |
-| 6    | Sunday             | 1-53     | с 4 или более днями в этом году  |
-| 7    | Monday             | 1-53     | с понедельником в этом году      |
-| 8    | Sunday             | 1-53     | содержащая 1 января              |
-| 9    | Monday             | 1-53     | содержащая 1 января              |
+The following table describes how the mode argument works.
 
-Для значений `mode` со смыслом «с 4 или более днями в этом году» недели нумеруются в соответствии с ISO 8601:1988:
+| Mode | First day of week | Range | Week 1 is the first week ...    |
+|------|-------------------|-------|---------------------------------|
+| 0    | Sunday            | 0-53  | with a Sunday in this year      |
+| 1    | Monday            | 0-53  | with 4 or more days this year   |
+| 2    | Sunday            | 1-53  | with a Sunday in this year      |
+| 3    | Monday            | 1-53  | with 4 or more days this year   |
+| 4    | Sunday            | 0-53  | with 4 or more days this year   |
+| 5    | Monday            | 0-53  | with a Monday in this year      |
+| 6    | Sunday            | 1-53  | with 4 or more days this year   |
+| 7    | Monday            | 1-53  | with a Monday in this year      |
+| 8    | Sunday            | 1-53  | contains January 1              |
+| 9    | Monday            | 1-53  | contains January 1              |
 
-* Если неделя, содержащая 1 января, имеет 4 или более дней в новом году, это неделя 1.
-* В противном случае это последняя неделя предыдущего года, а следующая неделя — неделя 1.
+For mode values with a meaning of "with 4 or more days this year," weeks are numbered according to ISO 8601:1988:
 
-Для значений `mode` со смыслом «содержит 1 января» неделя, содержащая 1 января, является неделей 1.
-Не имеет значения, сколько дней нового года приходится на эту неделю, даже если это был всего один день.
-Т. е. если последняя неделя декабря содержит 1 января следующего года, она будет неделей 1 следующего года.
+- If the week containing January 1 has 4 or more days in the new year, it is week 1.
+- Otherwise, it is the last week of the previous year, and the next week is week 1.
 
-Первый аргумент также может быть задан как [`String`](../data-types/string.md) в формате, поддерживаемом функцией [`parseDateTime64BestEffort()`](type-conversion-functions.md#parsedatetime64besteffort). Поддержка строковых аргументов существует только по причинам совместимости с MySQL, на которую рассчитывают некоторые сторонние инструменты. Поскольку в будущем поддержка строковых аргументов может быть сделана зависимой от новых настроек совместимости с MySQL и так как разбор строк в целом является медленной операцией, рекомендуется не использовать его.
+For mode values with a meaning of "contains January 1", the week contains January 1 is week 1.
+It does not matter how many days in the new year the week contained, even if it contained only one day.
+I.e. if the last week of December contains January 1 of the next year, it will be week 1 of the next year.
 
-**Синтаксис**
+The first argument can also be specified as [`String`](../data-types/string.md) in a format supported by [`parseDateTime64BestEffort()`](type-conversion-functions.md#parsedatetime64besteffort). Support for string arguments exists only for reasons of compatibility with MySQL which is expected by certain 3rd party tools. As string argument support may in future be made dependent on new MySQL-compatibility settings and because string parsing is generally slow, it is recommended to not use it.
+    
+
+**Syntax**
 
 ```sql
 toWeek(datetime[, mode[, time_zone]])
 ```
 
-**Псевдонимы**: `week`
+**Aliases**: `week`
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата или дата со временем, из которой нужно получить номер недели. [`Date`](/sql-reference/data-types/date) или [`DateTime`](/sql-reference/data-types/datetime)
-* `mode` — необязательный параметр. Режим `0`–`9` определяет первый день недели и диапазон номера недели. Значение по умолчанию — `0`.
-* `time_zone` — необязательный параметр. Часовой пояс. [`String`](/sql-reference/data-types/string)
+- `datetime` — Date or date with time to get the week number from. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime)
+- `mode` — Optional. A mode `0` to `9` determines the first day of the week and the range of the week number. Default `0`. - `time_zone` — Optional. Time zone. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает номер недели в соответствии с указанным режимом. [`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the week number according to the specified mode. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**Получение номеров недель с разными режимами**
+**Examples**
+
+**Get week numbers with different modes**
 
 ```sql title=Query
 SELECT toDate('2016-12-27') AS date, toWeek(date) AS week0, toWeek(date,1) AS week1, toWeek(date,9) AS week9
@@ -5252,33 +5798,38 @@ SELECT toDate('2016-12-27') AS date, toWeek(date) AS week0, toWeek(date,1) AS we
 └────────────┴───────┴───────┴───────┘
 ```
 
+
+
 ## toYYYYMM {#toYYYYMM}
 
-Добавлено в: v1.1
+Introduced in: v1.1
 
-Преобразует дату или дату со временем в число типа `UInt32`, содержащее год и номер месяца (YYYY * 100 + MM).
-Принимает второй необязательный аргумент — часовой пояс. Если он указан, часовой пояс должен быть строковой константой.
 
-Эта функция является обратной к функции `YYYYMMDDToDate()`.
+Converts a date or date with time to a `UInt32` number containing the year and month number (YYYY * 100 + MM).
+Accepts a second optional timezone argument. If provided, the timezone must be a string constant.
 
-**Синтаксис**
+This function is the opposite of function `YYYYMMDDToDate()`.
+    
+
+**Syntax**
 
 ```sql
 toYYYYMM(datetime[, timezone])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата или дата со временем для преобразования. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `timezone` — необязательный аргумент. Часовой пояс для преобразования. Если указан, часовой пояс должен быть строковой константой. [`String`](/sql-reference/data-types/string)
+- `datetime` — A date or date with time to convert. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `timezone` — Optional. Timezone for the conversion. If provided, the timezone must be a string constant. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает число типа UInt32, содержащее год и номер месяца (YYYY * 100 + MM). [`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns a UInt32 number containing the year and month number (YYYY * 100 + MM). [`UInt32`](/sql-reference/data-types/int-uint)
 
-**Преобразование текущей даты в формат YYYYMM**
+**Examples**
+
+**Convert current date to YYYYMM format**
 
 ```sql title=Query
 SELECT toYYYYMM(now(), 'US/Eastern')
@@ -5290,30 +5841,35 @@ SELECT toYYYYMM(now(), 'US/Eastern')
 └───────────────────────────────┘
 ```
 
+
+
 ## toYYYYMMDD {#toYYYYMMDD}
 
-Добавлена в версии: v1.1
+Introduced in: v1.1
 
-Преобразует дату или дату со временем в число типа `UInt32`, содержащее год, месяц и день (YYYY * 10000 + MM * 100 + DD). Принимает второй необязательный аргумент — часовой пояс. Если он указан, часовой пояс должен быть строковой константой.
 
-**Синтаксис**
+Converts a date or date with time to a `UInt32` number containing the year and month number (YYYY * 10000 + MM * 100 + DD). Accepts a second optional timezone argument. If provided, the timezone must be a string constant.
+    
+
+**Syntax**
 
 ```sql
 toYYYYMMDD(datetime[, timezone])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — Дата или дата со временем для преобразования. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `timezone` — Необязательный параметр. Часовой пояс, используемый для преобразования. Если указан, часовой пояс должен быть строковой константой. [`String`](/sql-reference/data-types/string)
+- `datetime` — A date or date with time to convert. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `timezone` — Optional. Timezone for the conversion. If provided, the timezone must be a string constant. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает число типа `UInt32`, содержащее год, месяц и день (YYYY * 10000 + MM * 100 + DD). [`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns a `UInt32` number containing the year, month and day (YYYY * 10000 + MM * 100 + DD). [`UInt32`](/sql-reference/data-types/int-uint)
 
-**Преобразование текущей даты в формат YYYYMMDD**
+**Examples**
+
+**Convert current date to YYYYMMDD format**
 
 ```sql title=Query
 SELECT toYYYYMMDD(now(), 'US/Eastern')
@@ -5325,31 +5881,36 @@ SELECT toYYYYMMDD(now(), 'US/Eastern')
 └─────────────────────────────────┘
 ```
 
+
+
 ## toYYYYMMDDhhmmss {#toYYYYMMDDhhmmss}
 
-Введена в: v1.1
+Introduced in: v1.1
 
-Преобразует дату или дату со временем в число типа `UInt64`, содержащее год и номер месяца (YYYY * 10000000000 + MM * 100000000 + DD * 1000000 + hh * 10000 + mm * 100 + ss).
-Принимает второй необязательный аргумент — часовой пояс. Если он указан, часовой пояс должен быть строковой константой.
 
-**Синтаксис**
+Converts a date or date with time to a `UInt64` number containing the year and month number (YYYY * 10000000000 + MM * 100000000 + DD * 1000000 + hh * 10000 + mm * 100 + ss).
+Accepts a second optional timezone argument. If provided, the timezone must be a string constant.
+    
+
+**Syntax**
 
 ```sql
 toYYYYMMDDhhmmss(datetime[, timezone])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата или дата со временем для преобразования. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `timezone` — необязательный параметр. Часовой пояс, используемый при преобразовании. Если он указан, часовой пояс должен быть строковой константой. [`String`](/sql-reference/data-types/string)
+- `datetime` — Date or date with time to convert. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+- `timezone` — Optional. Timezone for the conversion. If provided, the timezone must be a string constant. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает число типа `UInt64`, содержащее год, месяц, день, час, минуту и секунду (YYYY * 10000000000 + MM * 100000000 + DD * 1000000 + hh * 10000 + mm * 100 + ss). [`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns a `UInt64` number containing the year, month, day, hour, minute and second (YYYY * 10000000000 + MM * 100000000 + DD * 1000000 + hh * 10000 + mm * 100 + ss). [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Преобразование текущей даты и времени в формат YYYYMMDDhhmmss**
+**Examples**
+
+**Convert current date and time to YYYYMMDDhhmmss format**
 
 ```sql title=Query
 SELECT toYYYYMMDDhhmmss(now(), 'US/Eastern')
@@ -5361,31 +5922,36 @@ SELECT toYYYYMMDDhhmmss(now(), 'US/Eastern')
 └───────────────────────────────────────┘
 ```
 
+
+
 ## toYear {#toYear}
 
-Добавлена в версии v1.1
+Introduced in: v1.1
 
-Возвращает компонент года (н. э.) значения типа `Date` или `DateTime`.
 
-**Синтаксис**
+Returns the year component (AD) of a `Date` or `DateTime` value.
+    
+
+**Syntax**
 
 ```sql
 toYear(datetime)
 ```
 
-**Псевдонимы**: `YEAR`
+**Aliases**: `YEAR`
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата или дата и время, из которых нужно получить год. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32), или [`DateTime`](/sql-reference/data-types/datetime), или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `datetime` — Date or date with time to get the year from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Возвращает год для заданного значения типов Date или DateTime в виде [`UInt16`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the year of the given Date or DateTime [`UInt16`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT toYear(toDateTime('2023-04-21 10:20:30'))
@@ -5397,29 +5963,32 @@ SELECT toYear(toDateTime('2023-04-21 10:20:30'))
 └───────────────────────────────────────────┘
 ```
 
+
+
 ## toYearNumSinceEpoch {#toYearNumSinceEpoch}
 
-Добавлена в версии: v25.3
+Introduced in: v25.3
 
-Возвращает количество лет, прошедших с 1970 года.
+Returns amount of years passed from year 1970
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 toYearNumSinceEpoch(date)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `date` — Дата или дата и время для преобразования. [`Date`](/sql-reference/data-types/date) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+- `date` — A date or date with time to convert. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**Возвращаемое значение**
 
-Целое положительное число
+**Returned value**
 
-**Примеры**
+Positive integer
 
-**Пример**
+**Examples**
+
+**Example**
 
 ```sql title=Query
 SELECT toYearNumSinceEpoch(toDate('2024-10-01'))
@@ -5429,39 +5998,43 @@ SELECT toYearNumSinceEpoch(toDate('2024-10-01'))
 54
 ```
 
+
+
 ## toYearWeek {#toYearWeek}
 
-Введена в: v20.1
+Introduced in: v20.1
 
-Возвращает год и номер недели для даты. Год в результате может отличаться от года в аргументе даты для первой и последней недели года.
 
-Аргумент `mode` работает так же, как аргумент `mode` у функции [`toWeek()`](/sql-reference/functions/date-time-functions#toWeek).
+Returns the year and week for a date. The year in the result may be different from the year in the date argument for the first and the last week of the year.
 
-Предупреждение: номер недели, возвращаемый `toYearWeek()`, может отличаться от номера, который возвращает `toWeek()`. Функция `toWeek()` всегда возвращает номер недели в контексте указанного года, и если `toWeek()` возвращает `0`, `toYearWeek()` возвращает значение, соответствующее последней неделе предыдущего года. См. `prev_yearWeek` в примере ниже.
+The mode argument works like the mode argument of [`toWeek()`](/sql-reference/functions/date-time-functions#toWeek).
 
-Первый аргумент также может быть передан как [`String`](../data-types/string.md) в формате, поддерживаемом [`parseDateTime64BestEffort()`](type-conversion-functions.md#parsedatetime64besteffort). Поддержка строковых аргументов существует только по причинам совместимости с MySQL, которой ожидают некоторые сторонние инструменты. Поскольку в будущем поддержка строковых аргументов может быть сделана зависящей от новых настроек совместимости с MySQL, а разбор строк в целом является медленным, рекомендуется не использовать его.
+Warning: The week number returned by `toYearWeek()` can be different from what the `toWeek()` returns. `toWeek()` always returns week number in the context of the given year, and in case `toWeek()` returns `0`, `toYearWeek()` returns the value corresponding to the last week of previous year. See `prev_yearWeek` in example below.
 
-**Синтаксис**
+The first argument can also be specified as [`String`](../data-types/string.md) in a format supported by [`parseDateTime64BestEffort()`](type-conversion-functions.md#parsedatetime64besteffort). Support for string arguments exists only for reasons of compatibility with MySQL which is expected by certain 3rd party tools. As string argument support may in future be made dependent on new MySQL-compatibility settings and because string parsing is generally slow, it is recommended to not use it.
+    
+
+**Syntax**
 
 ```sql
 toYearWeek(datetime[, mode[, timezone]])
 ```
 
-**Псевдонимы**: `yearweek`
+**Aliases**: `yearweek`
 
-**Аргументы**
+**Arguments**
 
-* `datetime` — дата или дата и время, для которой нужно получить год и номер недели. [`Date`](/sql-reference/data-types/date) или [`DateTime`](/sql-reference/data-types/datetime)
-* `mode` — необязательный параметр. Режим `0`–`9` определяет первый день недели и диапазон номеров недель. По умолчанию `0`.
-* `timezone` — необязательный параметр. Часовой пояс. [`String`](/sql-reference/data-types/string)
+- `datetime` — Date or date with time to get the year and week of. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime)
+- `mode` — Optional. A mode `0` to `9` determines the first day of the week and the range of the week number. Default `0`. - `timezone` — Optional. Time zone. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает год и номер недели в виде одного целочисленного значения. [`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns year and week number as a combined integer value. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**Получение комбинаций год-неделя с различными режимами**
+**Examples**
+
+**Get year-week combinations with different modes**
 
 ```sql title=Query
 SELECT toDate('2016-12-27') AS date, toYearWeek(date) AS yearWeek0, toYearWeek(date,1) AS yearWeek1, toYearWeek(date,9) AS yearWeek9, toYearWeek(toDate('2022-01-01')) AS prev_yearWeek
@@ -5473,31 +6046,33 @@ SELECT toDate('2016-12-27') AS date, toYearWeek(date) AS yearWeek0, toYearWeek(d
 └────────────┴───────────┴───────────┴───────────┴───────────────┘
 ```
 
+
+
 ## today {#today}
 
-Добавлена в v1.1
+Introduced in: v1.1
 
-Возвращает текущую дату на момент анализа запроса. То же, что `toDate(now())`.
+Returns the current date at moment of query analysis. Same as `toDate(now())`.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 today()
 ```
 
-**Псевдонимы**: `curdate`, `current_date`
+**Aliases**: `curdate`, `current_date`
 
-**Аргументы**
+**Arguments**
 
-* Отсутствуют.
+- None.
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает текущую дату [`Date`](/sql-reference/data-types/date)
+Returns the current date [`Date`](/sql-reference/data-types/date)
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT today() AS today, curdate() AS curdate, current_date() AS current_date FORMAT Pretty
@@ -5511,29 +6086,33 @@ SELECT today() AS today, curdate() AS curdate, current_date() AS current_date FO
 └────────────┴────────────┴──────────────┘
 ```
 
+
+
 ## yesterday {#yesterday}
 
-Введена в: v1.1
+Introduced in: v1.1
 
-Не принимает аргументов и возвращает вчерашнюю дату на одном из этапов анализа запроса.
 
-**Синтаксис**
+Accepts zero arguments and returns yesterday's date at one of the moments of query analysis.
+    
+
+**Syntax**
 
 ```sql
 yesterday()
 ```
 
-**Аргументы**
+**Arguments**
 
-* Нет.
+- None.
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает дату за вчерашний день. [`Date`](/sql-reference/data-types/date)
+Returns yesterday's date. [`Date`](/sql-reference/data-types/date)
 
-**Примеры**
+**Examples**
 
-**Получение вчерашней даты**
+**Get yesterday's date**
 
 ```sql title=Query
 SELECT yesterday();

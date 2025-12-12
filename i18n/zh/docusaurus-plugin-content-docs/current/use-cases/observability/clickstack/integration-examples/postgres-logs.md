@@ -61,20 +61,20 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   在 `postgresql.conf` 中添加或修改以下设置：
 
   ```conf
-  # CSV 日志记录所需配置
-  logging_collector = on
-  log_destination = 'csvlog'
+# Required for CSV logging
+logging_collector = on
+log_destination = 'csvlog'
 
-  # 推荐:连接日志记录
-  log_connections = on
-  log_disconnections = on
+# Recommended: Connection logging
+log_connections = on
+log_disconnections = on
 
-  # 可选:根据监控需求进行调整
-  #log_min_duration_statement = 1000  # 记录执行时间超过 1 秒的查询
-  #log_statement = 'ddl'               # 记录 DDL 语句(CREATE、ALTER、DROP)
-  #log_checkpoints = on                # 记录检查点活动
-  #log_lock_waits = on                 # 记录锁争用
-  ```
+# Optional: Tune based on your monitoring needs
+#log_min_duration_statement = 1000  # Log queries taking more than 1 second
+#log_statement = 'ddl'               # Log DDL statements (CREATE, ALTER, DROP)
+#log_checkpoints = on                # Log checkpoint activity
+#log_lock_waits = on                 # Log lock contention
+```
 
   :::note
   本指南使用 PostgreSQL 的 `csvlog` 格式以实现可靠的结构化解析。如果您使用 `stderr` 或 `jsonlog` 格式,需要相应调整 OpenTelemetry 采集器配置。
@@ -83,22 +83,22 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   完成这些更改后,请重启 PostgreSQL:
 
   ```bash
-  # 使用 systemd
-  sudo systemctl restart postgresql
+# For systemd
+sudo systemctl restart postgresql
 
-  # 使用 Docker
-  docker restart
-  ```
+# For Docker
+docker restart 
+```
 
   验证日志是否正在写入：
 
   ```bash
-  # Linux 上的默认日志位置
-  tail -f /var/lib/postgresql/{version}/main/log/postgresql-*.log
+# Default log location on Linux
+tail -f /var/lib/postgresql/{version}/main/log/postgresql-*.log
 
-  # macOS Homebrew
-  tail -f /usr/local/var/postgres/log/postgresql-*.log
-  ```
+# macOS Homebrew
+tail -f /usr/local/var/postgres/log/postgresql-*.log
+```
 
   #### 创建自定义 OTel collector 配置
 
@@ -107,43 +107,43 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   创建名为 `postgres-logs-monitoring.yaml` 的文件,并添加以下配置:
 
   ```yaml
-  receivers:
-    filelog/postgres:
-      include:
-        - /var/lib/postgresql/*/main/log/postgresql-*.csv # 根据您的 PostgreSQL 安装路径进行调整
-      start_at: end
-      multiline:
-        line_start_pattern: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
-      operators:
-        - type: csv_parser
-          parse_from: body
-          parse_to: attributes
-          header: 'log_time,user_name,database_name,process_id,connection_from,session_id,session_line_num,command_tag,session_start_time,virtual_transaction_id,transaction_id,error_severity,sql_state_code,message,detail,hint,internal_query,internal_query_pos,context,query,query_pos,location,application_name,backend_type,leader_pid,query_id'
-          lazy_quotes: true
-          
-        - type: time_parser
-          parse_from: attributes.log_time
-          layout: '%Y-%m-%d %H:%M:%S.%L %Z'
+receivers:
+  filelog/postgres:
+    include:
+      - /var/lib/postgresql/*/main/log/postgresql-*.csv # Adjust to match your PostgreSQL installation
+    start_at: end
+    multiline:
+      line_start_pattern: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+    operators:
+      - type: csv_parser
+        parse_from: body
+        parse_to: attributes
+        header: 'log_time,user_name,database_name,process_id,connection_from,session_id,session_line_num,command_tag,session_start_time,virtual_transaction_id,transaction_id,error_severity,sql_state_code,message,detail,hint,internal_query,internal_query_pos,context,query,query_pos,location,application_name,backend_type,leader_pid,query_id'
+        lazy_quotes: true
         
-        - type: add
-          field: attributes.source
-          value: "postgresql"
-        
-        - type: add
-          field: resource["service.name"]
-          value: "postgresql-production"
+      - type: time_parser
+        parse_from: attributes.log_time
+        layout: '%Y-%m-%d %H:%M:%S.%L %Z'
+      
+      - type: add
+        field: attributes.source
+        value: "postgresql"
+      
+      - type: add
+        field: resource["service.name"]
+        value: "postgresql-production"
 
-  service:
-    pipelines:
-      logs/postgres:
-        receivers: [filelog/postgres]
-        processors:
-          - memory_limiter
-          - transform
-          - batch
-        exporters:
-          - clickhouse
-  ```
+service:
+  pipelines:
+    logs/postgres:
+      receivers: [filelog/postgres]
+      processors:
+        - memory_limiter
+        - transform
+        - batch
+      exporters:
+        - clickhouse
+```
 
   此配置：
 
@@ -176,30 +176,30 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   更新您的 ClickStack 部署配置：
 
   ```yaml
-  services:
-    clickstack:
-      # ... 现有配置 ...
-      environment:
-        - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
-        # ... 其他环境变量 ...
-      volumes:
-        - ./postgres-logs-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
-        - /var/lib/postgresql:/var/lib/postgresql:ro
-        # ... 其他卷 ...
-  ```
+services:
+  clickstack:
+    # ... existing configuration ...
+    environment:
+      - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
+      # ... other environment variables ...
+    volumes:
+      - ./postgres-logs-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
+      - /var/lib/postgresql:/var/lib/postgresql:ro
+      # ... other volumes ...
+```
 
   ##### 选项 2:Docker Run(一体化镜像)
 
   如果您使用 docker run 运行一体化镜像：
 
   ```bash
-  docker run --name clickstack \
-    -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-    -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
-    -v "$(pwd)/postgres-logs-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-    -v /var/lib/postgresql:/var/lib/postgresql:ro \
-    clickhouse/clickstack-all-in-one:latest
-  ```
+docker run --name clickstack \
+  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+  -v "$(pwd)/postgres-logs-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+  -v /var/lib/postgresql:/var/lib/postgresql:ro \
+  clickhouse/clickstack-all-in-one:latest
+```
 
   :::note
   确保 ClickStack 采集器具有读取 PostgreSQL 日志文件的相应权限。在生产环境中,使用只读挂载(`:ro`)并遵循最小权限原则。
@@ -243,7 +243,7 @@ receivers:
   filelog/postgres:
     include:
       - /tmp/postgres-demo/postgresql.log
-    start_at: beginning  # 为演示数据从开头开始读取
+    start_at: beginning  # Read from beginning for demo data
     multiline:
       line_start_pattern: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
     operators:
@@ -347,13 +347,13 @@ HyperDX 会以浏览器的本地时区显示时间戳。该演示数据覆盖的
 确认已设置环境变量：
 
 ```bash
-docker exec <容器名称> printenv CUSTOM_OTELCOL_CONFIG_FILE
+docker exec <container-name> printenv CUSTOM_OTELCOL_CONFIG_FILE
 ```
 
 检查自定义配置文件是否已挂载并可读：
 
 ```bash
-docker exec <容器名称> cat /etc/otelcol-contrib/custom.config.yaml | head -10
+docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml | head -10
 ```
 
 
@@ -362,13 +362,13 @@ docker exec <容器名称> cat /etc/otelcol-contrib/custom.config.yaml | head -1
 检查生效的配置中是否包含你的 `filelog` 接收器：
 
 ```bash
-docker exec <容器> cat /etc/otel/supervisor-data/effective.yaml | grep -A 10 filelog
+docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 10 filelog
 ```
 
 检查收集器日志中是否有错误：
 
 ```bash
-docker exec <容器> cat /etc/otel/supervisor-data/agent.log | grep -i postgres
+docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i postgres
 ```
 
 如果使用演示数据集，请确认日志文件可访问：

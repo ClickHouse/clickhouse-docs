@@ -42,8 +42,14 @@ go get github.com/chdb-io/chdb-go
 chDB-go には、簡単なクエリをすばやく実行するための CLI が含まれています。
 
 ```bash
-# シンプルなクエリ {#simple-query}
+# Simple query
 ./chdb-go "SELECT 123"
+
+# Interactive mode
+./chdb-go
+
+# Interactive mode with persistent storage
+./chdb-go --path /tmp/chdb
 ```
 
 # インタラクティブモード {#interactive-mode}
@@ -53,14 +59,22 @@ chDB-go には、簡単なクエリをすばやく実行するための CLI が�
 
 ./chdb-go --path /tmp/chdb
 
-````
+````go
+package main
 
-### Goライブラリ - クイックスタート                {#quick-start}
+import (
+    "fmt"
+    "github.com/chdb-io/chdb-go"
+)
 
-#### ステートレスクエリ                      {#stateless-queries}
-
-シンプルな1回限りのクエリの場合:
-
+func main() {
+    // Execute a simple query
+    result, err := chdb.Query("SELECT version()", "CSV")
+    if err != nil {
+        panic(err)
+    }
+    fmt.Println(result)
+}
 ```go
 package main
 
@@ -77,12 +91,53 @@ func main() {
     }
     fmt.Println(result)
 }
-````
+````go
+package main
 
-#### セッションを利用したステートフルなクエリ {#stateful-queries}
+import (
+    "fmt"
+    "github.com/chdb-io/chdb-go"
+)
 
-状態を永続化する必要がある複雑なクエリ向け:
+func main() {
+    // Create a session with persistent storage
+    session, err := chdb.NewSession("/tmp/chdb-data")
+    if err != nil {
+        panic(err)
+    }
+    defer session.Cleanup()
 
+    // Create database and table
+    _, err = session.Query(`
+        CREATE DATABASE IF NOT EXISTS testdb;
+        CREATE TABLE IF NOT EXISTS testdb.test_table (
+            id UInt32,
+            name String
+        ) ENGINE = MergeTree() ORDER BY id
+    `, "")
+    
+    if err != nil {
+        panic(err)
+    }
+
+    // Insert data
+    _, err = session.Query(`
+        INSERT INTO testdb.test_table VALUES 
+        (1, 'Alice'), (2, 'Bob'), (3, 'Charlie')
+    `, "")
+    
+    if err != nil {
+        panic(err)
+    }
+
+    // Query data
+    result, err := session.Query("SELECT * FROM testdb.test_table ORDER BY id", "Pretty")
+    if err != nil {
+        panic(err)
+    }
+    
+    fmt.Println(result)
+}
 ```go
 package main
 
@@ -130,12 +185,39 @@ func main() {
     
     fmt.Println(result)
 }
-```
+```go
+package main
 
-#### SQL ドライバーインターフェース {#sql-driver}
+import (
+    "database/sql"
+    "fmt"
+    _ "github.com/chdb-io/chdb-go/driver"
+)
 
-chDB-go は、Go の `database/sql` インターフェースを実装しています：
+func main() {
+    // Open database connection
+    db, err := sql.Open("chdb", "")
+    if err != nil {
+        panic(err)
+    }
+    defer db.Close()
 
+    // Query with standard database/sql interface
+    rows, err := db.Query("SELECT COUNT(*) FROM url('https://datasets.clickhouse.com/hits/hits.parquet')")
+    if err != nil {
+        panic(err)
+    }
+    defer rows.Close()
+
+    for rows.Next() {
+        var count int
+        err := rows.Scan(&count)
+        if err != nil {
+            panic(err)
+        }
+        fmt.Printf("Count: %d\n", count)
+    }
+}
 ```go
 package main
 
@@ -169,12 +251,61 @@ func main() {
         fmt.Printf("Count: %d\n", count)
     }
 }
-```
+```go
+package main
 
-#### 大規模データセット向けストリーミングクエリ {#query-streaming}
+import (
+    "fmt"
+    "log"
+    "github.com/chdb-io/chdb-go/chdb"
+)
 
-メモリに収まりきらない大規模なデータセットを処理するには、ストリーミングクエリを使用します。
+func main() {
+    // Create a session for streaming queries
+    session, err := chdb.NewSession("/tmp/chdb-stream")
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer session.Cleanup()
 
+    // Execute a streaming query for large dataset
+    streamResult, err := session.QueryStreaming(
+        "SELECT number, number * 2 as double FROM system.numbers LIMIT 1000000", 
+        "CSV",
+    )
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer streamResult.Free()
+
+    rowCount := 0
+    
+    // Process data in chunks
+    for {
+        chunk := streamResult.GetNext()
+        if chunk == nil {
+            // No more data
+            break
+        }
+        
+        // Check for streaming errors
+        if err := streamResult.Error(); err != nil {
+            log.Printf("Streaming error: %v", err)
+            break
+        }
+        
+        rowsRead := chunk.RowsRead()
+        // You can process the chunk data here
+        // For example, write to file, send over network, etc.
+        fmt.Printf("Processed chunk with %d rows\n", rowsRead)
+        rowCount += int(rowsRead)
+        if rowCount%100000 == 0 {
+            fmt.Printf("Processed %d rows so far...\n", rowCount)
+        }
+    }
+    
+    fmt.Printf("Total rows processed: %d\n", rowCount)
+}
 ```go
 package main
 

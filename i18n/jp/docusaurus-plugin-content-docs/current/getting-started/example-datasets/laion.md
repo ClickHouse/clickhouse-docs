@@ -21,10 +21,10 @@ number=${1}
 if [[ $number == '' ]]; then
     number=1
 fi;
-wget --tries=100 https://deploy.laion.ai/8f83b608504d46bb81708ec86e912220/embeddings/img_emb/img_emb_${number}.npy          # 画像埋め込みをダウンロード
-wget --tries=100 https://deploy.laion.ai/8f83b608504d46bb81708ec86e912220/embeddings/text_emb/text_emb_${number}.npy        # テキスト埋め込みをダウンロード
-wget --tries=100 https://deploy.laion.ai/8f83b608504d46bb81708ec86e912220/embeddings/metadata/metadata_${number}.parquet    # メタデータをダウンロード
-python3 process.py $number # ファイルを結合しCSVに変換
+wget --tries=100 https://deploy.laion.ai/8f83b608504d46bb81708ec86e912220/embeddings/img_emb/img_emb_${number}.npy          # download image embedding
+wget --tries=100 https://deploy.laion.ai/8f83b608504d46bb81708ec86e912220/embeddings/text_emb/text_emb_${number}.npy        # download text embedding
+wget --tries=100 https://deploy.laion.ai/8f83b608504d46bb81708ec86e912220/embeddings/metadata/metadata_${number}.parquet    # download metadata
+python3 process.py $number # merge files and convert to CSV
 ```
 
 `process.py` スクリプトは次のように定義されています。
@@ -40,28 +40,28 @@ npy_file = "img_emb_" + str_i + '.npy'
 metadata_file = "metadata_" + str_i + '.parquet'
 text_npy =  "text_emb_" + str_i + '.npy'
 
-# 全ファイルを読み込み {#load-all-files}
+# load all files
 im_emb = np.load(npy_file)
 text_emb = np.load(text_npy) 
 data = pd.read_parquet(metadata_file)
 
-# ファイルを結合 {#combine-files}
+# combine files
 data = pd.concat([data, pd.DataFrame({"image_embedding" : [*im_emb]}), pd.DataFrame({"text_embedding" : [*text_emb]})], axis=1, copy=False)
 
-# ClickHouseへインポートする列 {#columns-to-be-imported-into-clickhouse}
+# columns to be imported into ClickHouse
 data = data[['url', 'caption', 'NSFW', 'similarity', "image_embedding", "text_embedding"]]
 
-# np.arraysをリストへ変換 {#transform-nparrays-to-lists}
+# transform np.arrays to lists
 data['image_embedding'] = data['image_embedding'].apply(lambda x: x.tolist())
 data['text_embedding'] = data['text_embedding'].apply(lambda x: x.tolist())
 
-# captionに様々な引用符が含まれる場合があるため、この回避策が必要 {#this-small-hack-is-needed-because-caption-sometimes-contains-all-kind-of-quotes}
+# this small hack is needed because caption sometimes contains all kind of quotes
 data['caption'] = data['caption'].apply(lambda x: x.replace("'", " ").replace('"', " "))
 
-# データをCSVファイルとしてエクスポート {#export-data-as-csv-file}
+# export data as CSV file
 data.to_csv(str_i + '.csv', header=False)
 
-# 生データファイルを削除 {#removed-raw-data-files}
+# removed raw data files
 os.system(f"rm {npy_file} {metadata_file} {text_npy}")
 ```
 
@@ -131,7 +131,7 @@ SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:
 10. │ http://www.ibrickcity.com/wp-content/gallery/41057/thumbs/thumbs_lego-41057-heartlake-horse-show-friends-3.jpg                                                                                │ lego-41057-heartlake-horse-show-friends-3                                        │
     └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────┘
 
-10行のセット。経過時間: 4.605秒。処理済み: 1億0038万行、309.98 GB (2180万行/秒、67.31 GB/秒)
+10 rows in set. Elapsed: 4.605 sec. Processed 100.38 million rows, 309.98 GB (21.80 million rows/s., 67.31 GB/s.)
 ```
 
 ## ベクトル類似度インデックスを使って近似ベクトル類似検索を実行する {#run-an-approximate-vector-similarity-search-with-a-vector-similarity-index}
@@ -178,7 +178,7 @@ SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:
 10. │ http://www.ibrickcity.com/wp-content/gallery/41057/thumbs/thumbs_lego-41057-heartlake-horse-show-friends-3.jpg                                                                                │ lego-41057-heartlake-horse-show-friends-3                                        │
     └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────┘
 
-10行のセット。経過時間: 0.019秒。処理済み: 137.27千行、24.42 MB (7.38百万行/秒、1.31 GB/秒)
+10 rows in set. Elapsed: 0.019 sec. Processed 137.27 thousand rows, 24.42 MB (7.38 million rows/s., 1.31 GB/s.)
 ```
 
 ベクトルインデックスを使用して最近傍を取得したため、クエリレイテンシが大幅に短縮されました。
@@ -197,7 +197,7 @@ HNSW インデックスは、HNSW パラメータを慎重に選定し、イン�
 
 ```python
 #!/usr/bin/python3
-#!注意: 仮想環境を使用する場合は、上記のpython3実行ファイルのパスを変更してください。
+#!Note: Change the above python3 executable location if a virtual env is being used.
 import clip
 import torch
 import numpy as np
@@ -258,7 +258,7 @@ LIMIT 10
 
 ```python
 #!/usr/bin/python3
-#!注意: 仮想環境を使用する場合は、上記のpython3実行ファイルのパスを変更してください。
+#!Note: Change the above python3 executable location if a virtual env is being used.
 import clip
 import torch
 import numpy as np
@@ -298,7 +298,7 @@ if __name__ == '__main__':
 検索用のサンプル画像を取得：
 
 ```shell
-# LEGOセットのランダムな画像を取得 {#get-a-random-image-of-a-lego-set}
+# get a random image of a LEGO set
 $ wget http://cdn.firstcry.com/brainbees/images/products/thumb/191325a.jpg
 ```
 

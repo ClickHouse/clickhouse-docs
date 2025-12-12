@@ -128,6 +128,12 @@ ORDER BY (PostTypeId, toDate(CreationDate))
 SELECT count()
 FROM stackoverflow.posts_ordered
 WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
+
+┌─count()─┐
+│  192611 │
+└─────────┘
+--highlight-next-line
+1 row in set. Elapsed: 0.013 sec. Processed 196.53 thousand rows, 1.77 MB (14.64 million rows/s., 131.78 MB/s.)
 ```
 
 ┌─count()─┐
@@ -136,12 +142,29 @@ WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 --highlight-next-line
 1 строка в наборе. Прошло: 0.013 сек. Обработано 196.53 тыс. строк, 1.77 МБ (14.64 млн строк/с., 131.78 МБ/с.)
 
-````
+````sql
+EXPLAIN indexes = 1
+SELECT count()
+FROM stackoverflow.posts_ordered
+WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 
-Теперь этот запрос использует разреженную индексацию, что значительно сокращает объём считываемых данных и ускоряет выполнение в 4 раза — обратите внимание на уменьшение количества прочитанных строк и байтов. 
+┌─explain─────────────────────────────────────────────────────────────────────────────────────┐
+│ Expression ((Project names + Projection))                                                   │
+│   Aggregating                                                                               │
+│     Expression (Before GROUP BY)                                                            │
+│       Expression                                                                            │
+│         ReadFromMergeTree (stackoverflow.posts_ordered)                                     │
+│         Indexes:                                                                            │
+│           PrimaryKey                                                                        │
+│             Keys:                                                                           │
+│               PostTypeId                                                                    │
+│               toDate(CreationDate)                                                          │
+│             Condition: and((PostTypeId in [1, 1]), (toDate(CreationDate) in [19723, +Inf))) │
+│             Parts: 14/14                                                                    │
+│             Granules: 39/7578                                                               │
+└─────────────────────────────────────────────────────────────────────────────────────────────┘
 
-Использование индекса можно проверить с помощью `EXPLAIN indexes=1`.
-
+13 rows in set. Elapsed: 0.004 sec.
 ```sql
 EXPLAIN indexes = 1
 SELECT count()

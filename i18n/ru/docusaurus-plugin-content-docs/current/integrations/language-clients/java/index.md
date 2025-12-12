@@ -162,14 +162,14 @@ JDBC-драйвер наследует те же возможности, что 
 
 ```xml title="logback.xml"
 <configuration>
-    <!-- Аппендер для консоли -->
+    <!-- Console Appender -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>[%d{yyyy-MM-dd HH:mm:ss}] [%level] [%thread] %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <!-- Аппендер для файла -->
+    <!-- File Appender -->
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <file>logs/app.log</file>
         <append>true</append>
@@ -178,13 +178,13 @@ JDBC-драйвер наследует те же возможности, что 
         </encoder>
     </appender>
 
-    <!-- Корневой логгер -->
+    <!-- Root Logger -->
     <root level="info">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
     </root>
 
-    <!-- Настраиваемые уровни логирования для отдельных пакетов -->
+    <!-- Custom Log Levels for Specific Packages -->
     <logger name="com.clickhouse" level="info" />
 </configuration>
 ```

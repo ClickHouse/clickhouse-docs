@@ -3318,7 +3318,7 @@ CREATE TABLE TAB(C1 Int, C2 Int, ALL Int) ENGINE=Memory();
 
 INSERT INTO TAB VALUES (10, 20, 30), (20, 20, 10), (30, 10, 20);
 
-SELECT * FROM TAB ORDER BY ALL; -- 返回错误，提示 ALL 存在歧义
+SELECT * FROM TAB ORDER BY ALL; -- returns an error that ALL is ambiguous
 
 SELECT * FROM TAB ORDER BY ALL SETTINGS enable_order_by_all = 0;
 ```
@@ -3625,17 +3625,17 @@ CREATE TABLE tab
 )
 ENGINE = MergeTree ORDER BY tuple();
 
-SET exclude_materialize_skip_indexes_on_insert='idx_a'; -- idx_a 在插入时不会更新
---SET exclude_materialize_skip_indexes_on_insert='idx_a, idx_b'; -- 两个索引在插入时都不会更新
+SET exclude_materialize_skip_indexes_on_insert='idx_a'; -- idx_a will be not be updated upon insert
+--SET exclude_materialize_skip_indexes_on_insert='idx_a, idx_b'; -- neither index would be updated on insert
 
-INSERT INTO tab SELECT number, number / 50 FROM numbers(100); -- 仅更新 idx_b
+INSERT INTO tab SELECT number, number / 50 FROM numbers(100); -- only idx_b is updated
 
--- 由于这是会话级设置,可以在单个查询级别进行设置
+-- since it is a session setting it can be set on a per-query level
 INSERT INTO tab SELECT number, number / 50 FROM numbers(100, 100) SETTINGS exclude_materialize_skip_indexes_on_insert='idx_b';
 
-ALTER TABLE tab MATERIALIZE INDEX idx_a; -- 此查询可用于显式物化该索引
+ALTER TABLE tab MATERIALIZE INDEX idx_a; -- this query can be used to explicitly materialize the index
 
-SET exclude_materialize_skip_indexes_on_insert = DEFAULT; -- 将设置重置为默认值
+SET exclude_materialize_skip_indexes_on_insert = DEFAULT; -- reset setting to default
 ```
 
 
@@ -3968,12 +3968,12 @@ Engine=MergeTree()
 ORDER BY key;
 
 SELECT * FROM data_01515;
-SELECT * FROM data_01515 SETTINGS force_data_skipping_indices=''; -- 查询将产生 CANNOT_PARSE_TEXT 错误。
-SELECT * FROM data_01515 SETTINGS force_data_skipping_indices='d1_idx'; -- 查询将产生 INDEX_NOT_USED 错误。
-SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='d1_idx'; -- 正常。
-SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='`d1_idx`'; -- 正常(完整功能解析器示例)。
-SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='`d1_idx`, d1_null_idx'; -- 查询将产生 INDEX_NOT_USED 错误,因为 d1_null_idx 未被使用。
-SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS force_data_skipping_indices='`d1_idx`, d1_null_idx'; -- 正常。
+SELECT * FROM data_01515 SETTINGS force_data_skipping_indices=''; -- query will produce CANNOT_PARSE_TEXT error.
+SELECT * FROM data_01515 SETTINGS force_data_skipping_indices='d1_idx'; -- query will produce INDEX_NOT_USED error.
+SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='d1_idx'; -- Ok.
+SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='`d1_idx`'; -- Ok (example of full featured parser).
+SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='`d1_idx`, d1_null_idx'; -- query will produce INDEX_NOT_USED error, since d1_null_idx is not used.
+SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS force_data_skipping_indices='`d1_idx`, d1_null_idx'; -- Ok.
 ```
 
 
@@ -4130,7 +4130,7 @@ SELECT JSON_VALUE('{"hello":{"world":"!"}}', '$.hello') settings function_json_v
 │ {"world":"!"}                                    │
 └──────────────────────────────────────────────────┘
 
-返回了 1 行。耗时: 0.001 秒。
+1 row in set. Elapsed: 0.001 sec.
 ```
 
 可能的取值：
@@ -4152,7 +4152,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 │ ᴺᵁᴸᴸ                                   │
 └────────────────────────────────────────┘
 
-返回了 1 行，耗时 0.001 秒。
+1 row in set. Elapsed: 0.001 sec.
 ```
 
 可能的取值为：
@@ -4682,11 +4682,11 @@ ORDER BY key;
 INSERT INTO data VALUES (1, 2, 3);
 
 SELECT * FROM data;
-SELECT * FROM data SETTINGS ignore_data_skipping_indices=''; -- 查询会产生 CANNOT_PARSE_TEXT 错误。
-SELECT * FROM data SETTINGS ignore_data_skipping_indices='x_idx'; -- 正常。
-SELECT * FROM data SETTINGS ignore_data_skipping_indices='na_idx'; -- 正常。
+SELECT * FROM data SETTINGS ignore_data_skipping_indices=''; -- query will produce CANNOT_PARSE_TEXT error.
+SELECT * FROM data SETTINGS ignore_data_skipping_indices='x_idx'; -- Ok.
+SELECT * FROM data SETTINGS ignore_data_skipping_indices='na_idx'; -- Ok.
 
-SELECT * FROM data WHERE x = 1 AND y = 1 SETTINGS ignore_data_skipping_indices='xy_idx',force_data_skipping_indices='xy_idx' ; -- 查询会产生 INDEX_NOT_USED 错误,因为 xy_idx 被显式忽略。
+SELECT * FROM data WHERE x = 1 AND y = 1 SETTINGS ignore_data_skipping_indices='xy_idx',force_data_skipping_indices='xy_idx' ; -- query will produce INDEX_NOT_USED error, since xy_idx is explicitly ignored.
 SELECT * FROM data WHERE x = 1 AND y = 2 SETTINGS ignore_data_skipping_indices='xy_idx';
 ```
 
@@ -4891,11 +4891,11 @@ SETTINGS non_replicated_deduplication_window = 100;
 
 INSERT INTO test_table SETTINGS insert_deduplication_token = 'test' VALUES (1);
 
--- 下一次插入不会去重,因为 insert_deduplication_token 不同
+-- the next insert won't be deduplicated because insert_deduplication_token is different
 INSERT INTO test_table SETTINGS insert_deduplication_token = 'test1' VALUES (1);
 
--- 下一次插入会去重,因为 insert_deduplication_token
--- 与之前的某次相同
+-- the next insert will be deduplicated because insert_deduplication_token
+-- is the same as one of the previous
 INSERT INTO test_table SETTINGS insert_deduplication_token = 'test' VALUES (2);
 
 SELECT * FROM test_table
@@ -6291,7 +6291,7 @@ SELECT multiMatchAny('abcd', ['ab','bcd','c','d']) SETTINGS max_hyperscan_regexp
 结果：
 
 ```text
-异常：正则表达式长度过大。
+Exception: Regexp length too large.
 ```
 
 **另请参阅**
@@ -6335,7 +6335,7 @@ SELECT multiMatchAny('abcd', ['ab','bc','c','d']) SETTINGS max_hyperscan_regexp_
 结果：
 
 ```text
-异常：正则表达式总长度过大。
+Exception: Total regexp lengths too large.
 ```
 
 **另请参阅**
@@ -6874,15 +6874,15 @@ Cloud 默认值：`0`。
     </unlimited_sessions_profile>
 </profiles>
 <users>
-    <!-- 用户 Alice 同一时间最多只能连接 ClickHouse 服务器一次。 -->
+    <!-- User Alice can connect to a ClickHouse server no more than once at a time. -->
     <Alice>
         <profile>single_session_user</profile>
     </Alice>
-    <!-- 用户 Bob 可以同时使用 2 个会话。 -->
+    <!-- User Bob can use 2 simultaneous sessions. -->
     <Bob>
         <profile>two_sessions_profile</profile>
     </Bob>
-    <!-- 用户 Charles 可以同时使用任意数量的会话。 -->
+    <!-- User Charles can use arbitrarily many of simultaneous sessions. -->
     <Charles>
         <profile>unlimited_sessions_profile</profile>
     </Charles>
@@ -9953,7 +9953,7 @@ FORMAT Null;
 ```
 
 ```text title="Result"
-6666 行数据。...
+6666 rows in set. ...
 ```
 
 
@@ -10428,7 +10428,7 @@ SELECT toDateTime64(toDateTime64('1999-12-12 23:23:23.123', 3), 3, 'Europe/Zuric
 CREATE TABLE test_tz (`d` DateTime('UTC')) ENGINE = Memory AS SELECT toDateTime('2000-01-01 00:00:00', 'UTC');
 
 SELECT *, timeZone() FROM test_tz WHERE d = toDateTime('2000-01-01 00:00:00') SETTINGS session_timezone = 'Asia/Novosibirsk'
-返回 0 行。
+0 rows in set.
 
 SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS session_timezone = 'Asia/Novosibirsk'
 ┌───────────────────d─┬─timeZone()───────┐
@@ -10752,7 +10752,7 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 
 ```text
 ┌─event────────────────────┬─value─┬─description───────────────────────────────────────────┐
-│ QueryMemoryLimitExceeded │     0 │ 查询超出内存限制的次数。 │
+│ QueryMemoryLimitExceeded │     0 │ Number of times when memory limit exceeded for query. │
 └──────────────────────────┴───────┴───────────────────────────────────────────────────────┘
 ```
 

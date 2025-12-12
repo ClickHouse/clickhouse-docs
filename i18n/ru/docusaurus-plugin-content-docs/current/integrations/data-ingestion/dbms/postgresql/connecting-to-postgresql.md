@@ -32,58 +32,58 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 1. В `postgresql.conf` добавьте следующую запись, чтобы разрешить PostgreSQL прослушивать сетевые интерфейсы:
 
 ```text
-listen_addresses = '*'
-```
+  listen_addresses = '*'
+  ```
 
 2. Создайте пользователя для подключения из ClickHouse. Для демонстрации в этом примере ему назначаются полные права суперпользователя.
 
 ```sql
-CREATE ROLE clickhouse_user SUPERUSER LOGIN PASSWORD 'ClickHouse_123';
-```
+  CREATE ROLE clickhouse_user SUPERUSER LOGIN PASSWORD 'ClickHouse_123';
+  ```
 
 3. Создайте новую базу данных в PostgreSQL:
 
 ```sql
-CREATE DATABASE db_in_psg;
-```
+  CREATE DATABASE db_in_psg;
+  ```
 
 4. Создайте новую таблицу:
 
 ```sql
-CREATE TABLE table1 (
-    id         integer primary key,
-    column1    varchar(10)
-);
-```
+  CREATE TABLE table1 (
+      id         integer primary key,
+      column1    varchar(10)
+  );
+  ```
 
 5. Добавим несколько строк для тестирования:
 
 ```sql
-INSERT INTO table1
-  (id, column1)
-VALUES
-  (1, 'abc'),
-  (2, 'def');
-```
+  INSERT INTO table1
+    (id, column1)
+  VALUES
+    (1, 'abc'),
+    (2, 'def');
+  ```
 
 6. Чтобы настроить PostgreSQL на разрешение подключений к новой базе данных от нового пользователя для репликации, добавьте следующую запись в файл `pg_hba.conf`. Обновите строку с адресом, указав подсеть или IP-адрес вашего сервера PostgreSQL:
 
 ```text
-# TYPE  DATABASE        USER            ADDRESS                 METHOD
-host    db_in_psg             clickhouse_user 192.168.1.0/24          password
-```
+  # TYPE  DATABASE        USER            ADDRESS                 METHOD
+  host    db_in_psg             clickhouse_user 192.168.1.0/24          password
+  ```
 
 7. Перезагрузите конфигурацию `pg_hba.conf` (скорректируйте эту команду в соответствии с используемой версией PostgreSQL):
 
 ```text
-/usr/pgsql-12/bin/pg_ctl reload
-```
+  /usr/pgsql-12/bin/pg_ctl reload
+  ```
 
 8. Убедитесь, что новый пользователь `clickhouse_user` может подключиться:
 
 ```text
-psql -U clickhouse_user -W -d db_in_psg -h <ваш_хост_postgresql>
-```
+  psql -U clickhouse_user -W -d db_in_psg -h <your_postgresql_host>
+  ```
 
 :::note
 Если вы используете эту возможность в ClickHouse Cloud, возможно, вам потребуется разрешить IP-адресам ClickHouse Cloud доступ к вашему экземпляру PostgreSQL.
@@ -95,25 +95,25 @@ psql -U clickhouse_user -W -d db_in_psg -h <ваш_хост_postgresql>
 1. Подключитесь к `clickhouse-client`:
 
 ```bash
-clickhouse-client --user default --password ClickHouse123!
-```
+  clickhouse-client --user default --password ClickHouse123!
+  ```
 
 2. Создайте новую базу данных:
 
 ```sql
-CREATE DATABASE db_in_ch;
-```
+  CREATE DATABASE db_in_ch;
+  ```
 
 3. Создайте таблицу, использующую `PostgreSQL`:
 
 ```sql
-CREATE TABLE db_in_ch.table1
-(
-    id UInt64,
-    column1 String
-)
-ENGINE = PostgreSQL('postgres-host.domain.com:5432', 'db_in_psg', 'table1', 'clickhouse_user', 'ClickHouse_123');
-```
+  CREATE TABLE db_in_ch.table1
+  (
+      id UInt64,
+      column1 String
+  )
+  ENGINE = PostgreSQL('postgres-host.domain.com:5432', 'db_in_psg', 'table1', 'clickhouse_user', 'ClickHouse_123');
+  ```
 
 Минимально необходимые параметры:
 
@@ -133,73 +133,73 @@ ENGINE = PostgreSQL('postgres-host.domain.com:5432', 'db_in_psg', 'table1', 'cli
 1. В ClickHouse просмотрите несколько первых строк:
 
 ```sql
-SELECT * FROM db_in_ch.table1
-```
+  SELECT * FROM db_in_ch.table1
+  ```
 
 Таблица ClickHouse должна автоматически заполниться двумя строками, которые уже существовали в таблице PostgreSQL:
 
 ```response
-ID запроса: 34193d31-fe21-44ac-a182-36aaefbd78bf
+  Query id: 34193d31-fe21-44ac-a182-36aaefbd78bf
 
-┌─id─┬─column1─┐
-│  1 │ abc     │
-│  2 │ def     │
-└────┴─────────┘
-```
+  ┌─id─┬─column1─┐
+  │  1 │ abc     │
+  │  2 │ def     │
+  └────┴─────────┘
+  ```
 
 2. Вернитесь в PostgreSQL и добавьте несколько записей в таблицу:
 
 ```sql
-INSERT INTO table1
-  (id, column1)
-VALUES
-  (3, 'ghi'),
-  (4, 'jkl');
-```
+  INSERT INTO table1
+    (id, column1)
+  VALUES
+    (3, 'ghi'),
+    (4, 'jkl');
+  ```
 
 4. Эти две новые строки должны появиться в вашей таблице ClickHouse:
 
 ```sql
-SELECT * FROM db_in_ch.table1
-```
+  SELECT * FROM db_in_ch.table1
+  ```
 
 Ответ должен выглядеть следующим образом:
 
 ```response
-Query id: 86fa2c62-d320-4e47-b564-47ebf3d5d27b
+  Query id: 86fa2c62-d320-4e47-b564-47ebf3d5d27b
 
-┌─id─┬─column1─┐
-│  1 │ abc     │
-│  2 │ def     │
-│  3 │ ghi     │
-│  4 │ jkl     │
-└────┴─────────┘
-```
+  ┌─id─┬─column1─┐
+  │  1 │ abc     │
+  │  2 │ def     │
+  │  3 │ ghi     │
+  │  4 │ jkl     │
+  └────┴─────────┘
+  ```
 
 5. Давайте посмотрим, что произойдёт при добавлении строк в таблицу ClickHouse:
 
 ```sql
-INSERT INTO db_in_ch.table1
-  (id, column1)
-VALUES
-  (5, 'mno'),
-  (6, 'pqr');
-```
+  INSERT INTO db_in_ch.table1
+    (id, column1)
+  VALUES
+    (5, 'mno'),
+    (6, 'pqr');
+  ```
 
 6. Строки, добавленные в ClickHouse, должны появиться в таблице PostgreSQL:
 
 ```sql
-db_in_psg=# SELECT * FROM table1;
-id | column1
-----+---------
-  1 | abc
-  2 | def
-  3 | ghi
-  4 | jkl
-  5 | mno
-  6 | pqr
-(6 rows)
-```
+  db_in_psg=# SELECT * FROM table1;
+  id | column1
+  ----+---------
+    1 | abc
+    2 | def
+    3 | ghi
+    4 | jkl
+    5 | mno
+    6 | pqr
+  (6 rows)
+  ```
 
 В этом примере была продемонстрирована базовая интеграция между PostgreSQL и ClickHouse с использованием движка таблицы `PostrgeSQL`.
 Ознакомьтесь с [документацией по движку таблицы PostgreSQL](/engines/table-engines/integrations/postgresql), чтобы узнать о дополнительных возможностях, таких как указание схем, возврат только подмножества столбцов и подключение к нескольким репликам. Также рекомендуем ознакомиться с записью в блоге [ClickHouse and PostgreSQL - a match made in data heaven - part 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres).
@@ -286,7 +286,7 @@ host    db1             clickhouse_user 192.168.1.0/24          password
 9. Проверьте вход под новым пользователем `clickhouse_user`:
 
 ```text
- psql -U clickhouse_user -W -d db1 -h <ваш_хост_postgresql>
+ psql -U clickhouse_user -W -d db1 -h <your_postgresql_host>
 ```
 
 ### 2. В ClickHouse {#2-in-clickhouse}

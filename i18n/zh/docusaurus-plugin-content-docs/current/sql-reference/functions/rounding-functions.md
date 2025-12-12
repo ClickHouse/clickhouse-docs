@@ -58,7 +58,7 @@ SELECT ceiling(123.45, 1) AS rounded
 └─────────┘
 ```
 
-**负精度**
+**Negative precision**
 
 ```sql title=Query
 SELECT ceiling(123.45, -1)
@@ -70,35 +70,40 @@ SELECT ceiling(123.45, -1)
 └─────────────────────┘
 ```
 
+
+
 ## floor {#floor}
 
-引入于：v1.1
+Introduced in: v1.1
 
-返回小于或等于 `x` 的最大舍入值，其中该值是 `1 / 10 * N` 的倍数；如果 `1 / 10 * N` 不是精确值，则返回该数据类型中与其最接近的数值。
 
-当 `N` 为负数时，整数参数也会被舍入。
-当 `N` 为非负数时，函数返回 `x` 本身。
+Returns the largest rounded number less than or equal to `x`, where the rounded number is a multiple of `1 / 10 * N`, or the nearest number of the appropriate data type if `1 / 10 * N` isn't exact.
 
-如果舍入导致溢出（例如，`floor(-128, -1)`），结果未定义。
+Integer arguments may be rounded with a negative `N` argument.
+With non-negative `N` the function returns `x`.
 
-**语法**
+If rounding causes an overflow (for example, `floor(-128, -1)`), the result is undefined.
+
+
+**Syntax**
 
 ```sql
 floor(x[, N])
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 要进行取整的值。[`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal) 或 [`(U)Int*`](/sql-reference/data-types/int-uint)
-* `N` — 可选。要舍入到的小数位数。默认为 0，即舍入为整数。可以为负数。[`(U)Int*`](/sql-reference/data-types/int-uint)
+- `x` — The value to round. [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal) or [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `N` — Optional. The number of decimal places to round to. Defaults to zero, which means rounding to an integer. Can be negative. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回与 `x` 类型相同的舍入后的数值。[`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal) 或 [`(U)Int*`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns a rounded number of the same type as `x`. [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT floor(123.45, 1) AS rounded
@@ -110,7 +115,7 @@ SELECT floor(123.45, 1) AS rounded
 └─────────┘
 ```
 
-**负精度**
+**Negative precision**
 
 ```sql title=Query
 SELECT floor(123.45, -1)
@@ -122,39 +127,44 @@ SELECT floor(123.45, -1)
 └───────────────────┘
 ```
 
+
+
 ## round {#round}
 
-引入自：v1.1
+Introduced in: v1.1
 
-将一个值四舍五入到指定的小数位数 `N`。
 
-* 如果 `N > 0`，函数在小数点右侧进行舍入。
-* 如果 `N < 0`，函数在小数点左侧进行舍入。
-* 如果 `N = 0`，函数舍入到最接近的整数。
+Rounds a value to a specified number of decimal places `N`.
 
-该函数返回在指定数量级上最接近的数。
-如果输入值与两个相邻数的距离相等，对于 `Float*` 输入，函数使用银行家舍入法，对于其他数值类型（`Decimal*`）则采用远离零方向的舍入方式。
+- If `N > 0`, the function rounds to the right of the decimal point.
+- If `N < 0`, the function rounds to the left of the decimal point.
+- If `N = 0`, the function rounds to the next integer.
 
-如果舍入导致溢出（例如 `round(255, -1)`），结果未定义。
+The function returns the nearest number of the specified order.
+If the input value has equal distance to two neighboring numbers, the function uses banker's rounding for `Float*` inputs and rounds away from zero for the other number types (`Decimal*`).
 
-**语法**
+If rounding causes an overflow (for example, `round(255, -1)`), the result is undefined.
+
+
+**Syntax**
 
 ```sql
 round(x[, N])
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 要进行舍入的数值。[`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal) 或 [`(U)Int*`](/sql-reference/data-types/int-uint)
-* `N` — 可选。要舍入到的小数位数，默认为 `0`。[`(U)Int*`](/sql-reference/data-types/int-uint)
+- `x` — A number to round. [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal) or [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `N` — Optional. The number of decimal places to round to. Defaults to `0`. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回一个与 `x` 类型相同的舍入后数值。[`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal) 或 [`(U)Int*`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns a rounded number of the same type as `x`. [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**浮点类型输入**
+**Examples**
+
+**Float inputs**
 
 ```sql title=Query
 SELECT number / 2 AS x, round(x) FROM system.numbers LIMIT 3;
@@ -168,7 +178,7 @@ SELECT number / 2 AS x, round(x) FROM system.numbers LIMIT 3;
 └─────┴──────────┘
 ```
 
-**十进制输入**
+**Decimal inputs**
 
 ```sql title=Query
 SELECT cast(number / 2 AS  Decimal(10,4)) AS x, round(x) FROM system.numbers LIMIT 3;
@@ -182,37 +192,42 @@ SELECT cast(number / 2 AS  Decimal(10,4)) AS x, round(x) FROM system.numbers LIM
 └─────┴──────────┘
 ```
 
+
+
 ## roundAge {#roundAge}
 
-引入版本：v1.1
+Introduced in: v1.1
 
-接收一个表示人的年龄的数字，将其与标准年龄区间进行比较，并返回该数字所在区间的最小值或最大值。
 
-* 当 `age < 1` 时，返回 `0`。
-* 当 `1 ≤ age ≤ 17` 时，返回 `17`。
-* 当 `18 ≤ age ≤ 24` 时，返回 `18`。
-* 当 `25 ≤ age ≤ 34` 时，返回 `25`。
-* 当 `35 ≤ age ≤ 44` 时，返回 `35`。
-* 当 `45 ≤ age ≤ 54` 时，返回 `45`。
-* 当 `age ≥ 55` 时，返回 `55`。
+Takes a number representing a human age, compares it to standard age ranges, and returns either the highest or lowest value of the range the number falls within.
 
-**语法**
+- Returns `0`, for `age < 1`.
+- Returns `17`, for `1 ≤ age ≤ 17`.
+- Returns `18`, for `18 ≤ age ≤ 24`.
+- Returns `25`, for `25 ≤ age ≤ 34`.
+- Returns `35`, for `35 ≤ age ≤ 44`.
+- Returns `45`, for `45 ≤ age ≤ 54`.
+- Returns `55`, for `age ≥ 55`.
+
+
+**Syntax**
 
 ```sql
 roundAge(num)
 ```
 
-**参数**
+**Arguments**
 
-* `age` — 以年为单位的年龄值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
+- `age` — A number representing an age in years. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**返回值**
 
-返回 `age` 所在区间的上限或下限年龄值。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns either the highest or lowest age of the range `age` falls within. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT *, roundAge(*) FROM system.numbers WHERE number IN (0, 5, 20, 31, 37, 54, 72);
@@ -230,54 +245,57 @@ SELECT *, roundAge(*) FROM system.numbers WHERE number IN (0, 5, 20, 31, 37, 54,
 └────────┴──────────────────┘
 ```
 
+
+
 ## roundBankers {#roundBankers}
 
-引入版本：v20.1
+Introduced in: v20.1
 
-将一个数舍入到指定的小数位数 `N`。
-如果要舍入的数正好位于两个数的中间，则函数使用一种称为银行家舍入（banker&#39;s rounding）的方法，这是 IEEE 754 中为浮点数规定的默认舍入方式。
 
-* 如果 `N > 0`，函数会在小数点右侧进行舍入
-* 如果 `N < 0`，函数会在小数点左侧进行舍入
-* 如果 `N = 0`，函数会舍入到最接近的整数
+Rounds a number to a specified decimal position `N`.
+If the rounding number is halfway between two numbers, the function uses a method of rounding called banker's rounding, which is the default rounding method for floating point numbers defined in IEEE 754.
+
+- If `N > 0`, the function rounds to the right of the decimal point
+- If `N < 0`, the function rounds to the left of the decimal point
+- If `N = 0`, the function rounds to the next integer
 
 :::info Notes
+- When the rounding number is halfway between two numbers, it's rounded to the nearest even digit at the specified decimal position.
+For example: `3.5` rounds up to `4`, `2.5` rounds down to `2`.
+- The `round` function performs the same rounding for floating point numbers.
+- The `roundBankers` function also rounds integers the same way, for example, `roundBankers(45, -1) = 40`.
+- In other cases, the function rounds numbers to the nearest integer.
+:::
 
-* 当要舍入的数正好位于两个数的中间时，会在指定的小数位舍入到最近的偶数字。
-  例如：`3.5` 舍入为 `4`，`2.5` 舍入为 `2`。
-* `round` 函数对浮点数执行相同的舍入方式。
-* `roundBankers` 函数对整数也采用相同的舍入方式，例如，`roundBankers(45, -1) = 40`。
-* 在其他情况下，函数将数字舍入到最近的整数。
-  :::
+:::tip Use banker's rounding for summation or subtraction of numbers
+Using banker's rounding, you can reduce the effect that rounding numbers has on the results of summing or subtracting these numbers.
 
-:::tip Use banker&#39;s rounding for summation or subtraction of numbers
-使用银行家舍入可以减小对这些数字进行舍入时对求和或求差结果的影响。
+For example, sum numbers `1.5, 2.5, 3.5, 4.5` with different rounding:
+- No rounding: `1.5 + 2.5 + 3.5 + 4.5 = 12`.
+- Banker's rounding: `2 + 2 + 4 + 4 = 12`.
+- Rounding to the nearest integer: `2 + 3 + 4 + 5 = 14`.
+:::
 
-例如，对数字 `1.5, 2.5, 3.5, 4.5` 使用不同的舍入方式求和：
 
-* 不舍入：`1.5 + 2.5 + 3.5 + 4.5 = 12`。
-* 银行家舍入：`2 + 2 + 4 + 4 = 12`。
-* 舍入到最近整数：`2 + 3 + 4 + 5 = 14`。
-  :::
-
-**语法**
+**Syntax**
 
 ```sql
 roundBankers(x[, N])
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 要进行舍入的数值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Decimal*`](/sql-reference/data-types/decimal) 或 [`Float*`](/sql-reference/data-types/float)
-* `[, N]` — 可选。要舍入到的小数位数，默认为 `0`。[`(U)Int*`](/sql-reference/data-types/int-uint)
+- `x` — A number to round. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Decimal*`](/sql-reference/data-types/decimal) or [`Float*`](/sql-reference/data-types/float)
+- `[, N]` — Optional. The number of decimal places to round to. Defaults to `0`. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回按银行家舍入法得到的舍入结果。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Decimal*`](/sql-reference/data-types/decimal) 或 [`Float*`](/sql-reference/data-types/float)
+**Returned value**
 
-**示例**
+Returns a value rounded by the banker's rounding method. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Decimal*`](/sql-reference/data-types/decimal) or [`Float*`](/sql-reference/data-types/float)
 
-**基本用法**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT number / 2 AS x, roundBankers(x, 0) AS b FROM system.numbers LIMIT 10
@@ -298,31 +316,36 @@ SELECT number / 2 AS x, roundBankers(x, 0) AS b FROM system.numbers LIMIT 10
 └─────┴───┘
 ```
 
+
+
 ## roundDown {#roundDown}
 
-自 v20.1 引入
+Introduced in: v20.1
 
-将数字向下取整到指定数组中的某个元素。
-如果该值小于下限，则返回下限。
 
-**语法**
+Rounds a number down to an element in the specified array.
+If the value is less than the lower bound, the lower bound is returned.
+
+
+**Syntax**
 
 ```sql
 roundDown(num, arr)
 ```
 
-**参数**
+**Arguments**
 
-* `num` — 要向下取整的数字。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Decimal*`](/sql-reference/data-types/decimal) 或 [`Float*`](/sql-reference/data-types/float)
-* `arr` — 用于将 `num` 向下取整到其中某个值的元素数组。[`Array((U)Int*)`](/sql-reference/data-types/array) 或 [`Array(Float*)`](/sql-reference/data-types/array)
+- `num` — A number to round down. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Decimal*`](/sql-reference/data-types/decimal) or [`Float*`](/sql-reference/data-types/float)
+- `arr` — Array of elements to round `num` down to. [`Array((U)Int*)`](/sql-reference/data-types/array) or [`Array(Float*)`](/sql-reference/data-types/array)
 
-**返回值**
 
-返回向下取整后与 `arr` 中某个元素对齐的数值。如果该值小于最小边界，则返回最小边界值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
+**Returned value**
 
-**示例**
+Returns a number rounded down to an element in `arr`. If the value is less than the lowest bound, the lowest bound is returned. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT *, roundDown(*, [3, 4, 5]) FROM system.numbers WHERE number IN (0, 1, 2, 3, 4, 5)
@@ -339,30 +362,35 @@ SELECT *, roundDown(*, [3, 4, 5]) FROM system.numbers WHERE number IN (0, 1, 2, 
 └────────┴──────────────────────────────┘
 ```
 
+
+
 ## roundDuration {#roundDuration}
 
-自 v1.1 起引入
+Introduced in: v1.1
 
-将一个数字向下取整为下列常用时长中最接近的值：`1, 10, 30, 60, 120, 180, 240, 300, 600, 1200, 1800, 3600, 7200, 18000, 36000`。
-如果数字小于 1，则返回 `0`。
 
-**语法**
+Rounds a number down to the closest from a set of commonly used durations: `1, 10, 30, 60, 120, 180, 240, 300, 600, 1200, 1800, 3600, 7200, 18000, 36000`.
+If the number is less than one, it returns `0`.
+
+
+**Syntax**
 
 ```sql
 roundDuration(num)
 ```
 
-**参数**
+**Arguments**
 
-* `num` — 要舍入到常用持续时间集合中某个值的数值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
+- `num` — A number to round to one of the numbers in the set of common durations. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**返回值**
 
-当 `num` &lt; 1 时返回 `0`。否则返回下列值之一：`1, 10, 30, 60, 120, 180, 240, 300, 600, 1200, 1800, 3600, 7200, 18000, 36000`。[`UInt16`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns `0`, for `num` < 1. Otherwise, one of: `1, 10, 30, 60, 120, 180, 240, 300, 600, 1200, 1800, 3600, 7200, 18000, 36000`. [`UInt16`](/sql-reference/data-types/int-uint)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT *, roundDuration(*) FROM system.numbers WHERE number IN (0, 9, 19, 47, 101, 149, 205, 271, 421, 789, 1423, 2345, 4567, 9876, 24680, 42573)
@@ -389,30 +417,35 @@ SELECT *, roundDuration(*) FROM system.numbers WHERE number IN (0, 9, 19, 47, 10
 └────────┴───────────────────────┘
 ```
 
+
+
 ## roundToExp2 {#roundToExp2}
 
-引入于：v1.1
+Introduced in: v1.1
 
-将数字向下舍入到最近的（非负整数）2 的整数次幂。
-如果数字小于 1，则返回 `0`。
 
-**语法**
+Rounds a number down to the nearest (whole non-negative) power of two.
+If the number is less than one, it returns `0`.
+
+
+**Syntax**
 
 ```sql
 roundToExp2(num)
 ```
 
-**参数**
+**Arguments**
 
-* `num` — 要取整的数字。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
+- `num` — A number to round. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**返回值**
 
-返回将 `num` 向下取为距离它最近的（非负的）2 的整数次幂；对于 `num < 1`，返回 `0`。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
+**Returned value**
 
-**示例**
+Returns `num` rounded down to the nearest (whole non-negative) power of two, otherwise `0` for `num < 1`. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT *, roundToExp2(*) FROM system.numbers WHERE number IN (0, 2, 5, 10, 19, 50)
@@ -429,32 +462,37 @@ SELECT *, roundToExp2(*) FROM system.numbers WHERE number IN (0, 2, 5, 10, 19, 5
 └────────┴─────────────────────┘
 ```
 
+
+
 ## trunc {#trunc}
 
-引入版本：v1.1
+Introduced in: v1.1
 
-类似于 [`floor`](#floor)，但返回的是绝对值不大于 `x` 的绝对值、且绝对值最大的取整值。
 
-**语法**
+Like [`floor`](#floor) but returns the rounded number with the largest absolute value less than or equal to that of `x`.
+
+
+**Syntax**
 
 ```sql
 truncate(x[, N])
 ```
 
-**别名**: `truncate`
+**Aliases**: `truncate`
 
-**参数**
+**Arguments**
 
-* `x` — 要进行舍入的数值。[`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal) 或 [`(U)Int*`](/sql-reference/data-types/int-uint)
-* `N` — 可选。要舍入到的小数位数。默认值为 0，表示舍入为整数。[`(U)Int*`](/sql-reference/data-types/int-uint)
+- `x` — The value to round. [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal) or [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `N` — Optional. The number of decimal places to round to. Defaults to zero, which means rounding to an integer. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回一个与 `x` 类型相同的舍入后数值。[`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal) 或 [`(U)Int*`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns a rounded number of the same type as `x`. [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal) or [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**基本用法**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT truncate(123.499, 1) AS res;

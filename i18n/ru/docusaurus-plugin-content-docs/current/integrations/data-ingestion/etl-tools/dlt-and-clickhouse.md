@@ -71,16 +71,16 @@ GRANT CREATE TEMPORARY TABLE, S3 ON *.* TO dlt;
 
 ```bash
 [destination.clickhouse.credentials]
-database = "dlt"                         # Имя созданной базы данных
-username = "dlt"                         # Имя пользователя ClickHouse, по умолчанию обычно "default"
-password = "Dlt*12345789234567"          # Пароль ClickHouse, если установлен
-host = "localhost"                       # Хост сервера ClickHouse
-port = 9000                              # Порт ClickHouse, по умолчанию 9000
-http_port = 8443                         # Порт HTTP для подключения к HTTP-интерфейсу сервера ClickHouse. По умолчанию 8443.
-secure = 1                               # Установите 1 при использовании HTTPS, иначе 0.
+database = "dlt"                         # The database name you created
+username = "dlt"                         # ClickHouse username, default is usually "default"
+password = "Dlt*12345789234567"          # ClickHouse password if any
+host = "localhost"                       # ClickHouse server host
+port = 9000                              # ClickHouse HTTP port, default is 9000
+http_port = 8443                         # HTTP Port to connect to ClickHouse server's HTTP interface. Defaults to 8443.
+secure = 1                               # Set to 1 if using HTTPS, else 0.
 
 [destination.clickhouse]
-dataset_table_separator = "___"          # Разделитель для имён таблиц набора данных.
+dataset_table_separator = "___"          # Separator for dataset table names from dataset.
 ```
 
 :::note HTTP_PORT
@@ -94,7 +94,7 @@ dataset_table_separator = "___"          # Разделитель для имё�
 Вы можете передать строку подключения к базе данных, аналогичную той, что используется библиотекой `clickhouse-driver`. Приведённые выше учётные данные будут выглядеть следующим образом:
 
 ```bash
-# разместите это в начале вашего toml-файла, перед началом любых секций. {#keep-it-at-the-top-of-your-toml-file-before-any-section-starts}
+# keep it at the top of your toml file, before any section starts.
 destination.clickhouse.credentials="clickhouse://dlt:Dlt*12345789234567@localhost:9000/dlt?secure=1"
 ```
 

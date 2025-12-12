@@ -16,8 +16,10 @@ ClickHouse は、[入出力用のさまざまなデータ形式](/interfaces/for
 
 [HTTP インターフェース](../../interfaces/http.md)を使用する場合：
 
-```bash
-$ echo '{"foo":"bar"}' | curl 'http://localhost:8123/?query=INSERT%20INTO%20test%20FORMAT%20JSONEachRow' --data-binary @-
+```
+
+Using [CLI interface](../../interfaces/cli.md):
+
 ```
 
 [CLI インターフェース](../../interfaces/cli.md)を使用する:

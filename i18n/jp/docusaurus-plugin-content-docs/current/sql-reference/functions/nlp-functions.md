@@ -60,32 +60,37 @@ SELECT detectCharset('Ich bleibe für ein paar Tage.')
 WINDOWS-1252
 ```
 
+
+
 ## detectLanguage {#detectLanguage}
 
-導入バージョン: v22.2
+Introduced in: v22.2
 
-UTF-8 でエンコードされた入力文字列の言語を検出します。
-この関数は検出に [CLD2 ライブラリ](https://github.com/CLD2Owners/cld2) を使用し、2文字の ISO 言語コードを返します。
 
-入力が長いほど、言語検出の精度は高くなります。
+Detects the language of the UTF8-encoded input string.
+The function uses the [CLD2 library](https://github.com/CLD2Owners/cld2) for detection and returns the 2-letter ISO language code.
 
-**構文**
+The longer the input, the more precise the language detection will be.
+
+
+**Syntax**
 
 ```sql
 言語を検出する（s）
 ```
 
-**引数**
+**Arguments**
 
-* `text_to_be_analyzed` — 解析するテキスト。[`String`](/sql-reference/data-types/string)
+- `text_to_be_analyzed` — The text to analyze. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-検出された言語の2文字のISOコードを返します。その他の結果: `un` = 不明（いずれの言語も検出できない場合）、`other` = 検出された言語に対応する2文字コードが存在しない場合。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**例**
+Returns the 2-letter ISO code of the detected language. Other possible results: `un` = unknown, can not detect any language, `other` = the detected language does not have 2 letter code. [`String`](/sql-reference/data-types/string)
 
-**複数言語が混在したテキスト**
+**Examples**
+
+**Mixed language text**
 
 ```sql title=Query
 SELECT detectLanguage('自分は決してネイティブのようにフランス語を話せるようにはならないと思う。意志あるところに道は開ける。')
@@ -95,29 +100,34 @@ SELECT detectLanguage('自分は決してネイティブのようにフランス
 fr
 ```
 
+
+
 ## detectLanguageMixed {#detectLanguageMixed}
 
-導入バージョン: v22.2
+Introduced in: v22.2
 
-[`detectLanguage`](#detectLanguage) 関数と類似していますが、`detectLanguageMixed` はテキスト内に含まれる各言語の占める割合を値とし、2 文字の言語コードをキーとする `Map` を返します。
 
-**構文**
+Similar to the [`detectLanguage`](#detectLanguage) function, but `detectLanguageMixed` returns a `Map` of 2-letter language codes that are mapped to the percentage of the certain language in the text.
+
+
+**Syntax**
 
 ```sql
 detectLanguageMixed(s)
 ```
 
-**引数**
+**Arguments**
 
-* `s` — 解析するテキスト [`String`](/sql-reference/data-types/string)
+- `s` — The text to analyze [`String`](/sql-reference/data-types/string)
 
-**返される値**
 
-2文字のISOコードをキー、その言語で検出されたテキストの割合（パーセンテージ）を値とするマップを返します [`Map(String, Float32)`](/sql-reference/data-types/map)
+**Returned value**
 
-**例**
+Returns a map with keys which are 2-letter ISO codes and corresponding values which are a percentage of the text found for that language [`Map(String, Float32)`](/sql-reference/data-types/map)
 
-**複数言語の混在**
+**Examples**
+
+**Mixed languages**
 
 ```sql title=Query
 SELECT detectLanguageMixed('二兎を追う者は一兎をも得ず二兎を追う者は一兎をも得ず 危険なくして勝つ者に栄光なし。')
@@ -127,30 +137,35 @@ SELECT detectLanguageMixed('二兎を追う者は一兎をも得ず二兎を追�
 {'ja':0.62,'fr':0.36}
 ```
 
+
+
 ## detectLanguageUnknown {#detectLanguageUnknown}
 
-導入バージョン: v22.2
+Introduced in: v22.2
 
-[`detectLanguage`](#detectLanguage) 関数と似ていますが、detectLanguageUnknown 関数は UTF-8 以外でエンコードされた文字列も扱うことができます。
-文字セットが UTF-16 または UTF-32 の場合は、このバージョンを優先して使用してください。
 
-**構文**
+Similar to the [`detectLanguage`](#detectLanguage) function, except the detectLanguageUnknown function works with non-UTF8-encoded strings.
+Prefer this version when your character set is UTF-16 or UTF-32.
+
+
+**Syntax**
 
 ```sql
 detectLanguageUnknown('s')
 ```
 
-**引数**
+**Arguments**
 
-* `s` — 解析するテキスト。[`String`](/sql-reference/data-types/string)
+- `s` — The text to analyze. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-検出された言語の2文字のISOコードを返します。返されるその他の値: `un` = 不明（いずれの言語も検出できない場合）、`other` = 検出された言語に2文字コードが存在しない場合。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**例**
+Returns the 2-letter ISO code of the detected language. Other possible results: `un` = unknown, can not detect any language, `other` = the detected language does not have 2 letter code. [`String`](/sql-reference/data-types/string)
 
-**基本的な使用例**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT detectLanguageUnknown('Ich bleibe für ein paar Tage.')
@@ -160,29 +175,34 @@ SELECT detectLanguageUnknown('Ich bleibe für ein paar Tage.')
 de
 ```
 
+
+
 ## detectProgrammingLanguage {#detectProgrammingLanguage}
 
-導入されたバージョン: v22.2
+Introduced in: v22.2
 
-与えられたソースコードスニペットからプログラミング言語を判定します。
 
-**構文**
+Determines the programming language from a given source code snippet.
+
+
+**Syntax**
 
 ```sql
 detectProgrammingLanguage('source_code')
 ```
 
-**引数**
+**Arguments**
 
-* `source_code` — 解析対象のソースコードを表す文字列。[`String`](/sql-reference/data-types/string)
+- `source_code` — String representation of the source code to analyze. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-プログラミング言語名を表す [`String`](/sql-reference/data-types/string) を返します。
+**Returned value**
 
-**例**
+Returns programming language [`String`](/sql-reference/data-types/string)
 
-**C++ コードの検出**
+**Examples**
+
+**C++ code detection**
 
 ```sql title=Query
 SELECT detectProgrammingLanguage('#include <iostream>')
@@ -192,33 +212,38 @@ SELECT detectProgrammingLanguage('#include <iostream>')
 C++
 ```
 
+
+
 ## detectTonality {#detectTonality}
 
-導入バージョン: v22.2
+Introduced in: v22.2
 
-指定されたテキストデータの感情を判定します。
 
-:::note 制限事項
-この関数は組み込みの感情辞書を利用するため、現状はロシア語にのみ対応しています。
+Determines the sentiment of the provided text data.
+
+:::note Limitation
+This function is limited in its current form in that it makes use of the embedded emotional dictionary and only works for the Russian language.
 :::
 
-**構文**
+
+**Syntax**
 
 ```sql
 detectTonality(s)
 ```
 
-**引数**
+**Arguments**
 
-* `s` — 解析するテキスト。[`String`](/sql-reference/data-types/string)
+- `s` — The text to be analyzed. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-テキスト内の単語の平均センチメント値を返します。[`Float32`](/sql-reference/data-types/float)
+**Returned value**
 
-**例**
+Returns the average sentiment value of the words in text [`Float32`](/sql-reference/data-types/float)
 
-**ロシア語のセンチメント分析**
+**Examples**
+
+**Russian sentiment analysis**
 
 ```sql title=Query
 SELECT
@@ -231,31 +256,36 @@ SELECT
 0.44445, 0, -0.3
 ```
 
+
+
 ## lemmatize {#lemmatize}
 
-導入バージョン: v21.9
+Introduced in: v21.9
 
-指定された単語に対してレンマ化（基本形への変換）を行います。
-この関数を利用するには辞書が必要で、[GitHub](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models) から取得できます。ローカルファイルから辞書を読み込む方法の詳細については [&quot;Defining Dictionaries&quot;](/sql-reference/dictionaries#local-file) のページを参照してください。
 
-**構文**
+Performs lemmatization on a given word.
+This function needs dictionaries to operate, which can be obtained from [github](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models). For more details on loading a dictionary from a local file see page ["Defining Dictionaries"](/sql-reference/dictionaries#local-file).
+
+
+**Syntax**
 
 ```sql
 lemmatize(lang, word)
 ```
 
-**引数**
+**Arguments**
 
-* `lang` — 規則を適用する言語。[`String`](/sql-reference/data-types/string)
-* `word` — レンマ化対象の小文字の単語。[`String`](/sql-reference/data-types/string)
+- `lang` — Language which rules will be applied. [`String`](/sql-reference/data-types/string)
+- `word` — Lowercase word that needs to be lemmatized. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-単語のレンマ化された形を返します。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**使用例**
+Returns the lemmatized form of the word [`String`](/sql-reference/data-types/string)
 
-**英語でのレンマ化**
+**Examples**
+
+**English lemmatization**
 
 ```sql title=Query
 SELECT lemmatize('en', 'wolves')
@@ -265,30 +295,35 @@ SELECT lemmatize('en', 'wolves')
 狼
 ```
 
+
+
 ## stem {#stem}
 
-導入: v21.9
+Introduced in: v21.9
 
-与えられた単語に対してステミングを行います。
 
-**構文**
+Performs stemming on a given word.
+
+
+**Syntax**
 
 ```sql
 stem(lang, word)
 ```
 
-**引数**
+**Arguments**
 
-* `lang` — 適用するルールの言語。2文字の ISO 639-1 コードを使用します。[`String`](/sql-reference/data-types/string)
-* `word` — ステミングの対象となる小文字の単語。[`String`](/sql-reference/data-types/string)
+- `lang` — Language which rules will be applied. Use the two letter ISO 639-1 code. [`String`](/sql-reference/data-types/string)
+- `word` — Lowercase word that needs to be stemmed. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-指定した単語のステミング後の形を返します。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**例**
+Returns the stemmed form of the word [`String`](/sql-reference/data-types/string)
 
-**英語のステミング**
+**Examples**
+
+**English stemming**
 
 ```sql title=Query
 SELECT arrayMap(x -> stem('en', x),
@@ -299,22 +334,25 @@ SELECT arrayMap(x -> stem('en', x),
 ['私は','それは','（災い転じて）','祝福だと','思います']
 ```
 
+
+
 ## synonyms {#synonyms}
 
 Introduced in: v21.9
 
-指定した語の類義語を検索します。
 
-類義語拡張には 2 種類あります：
+Finds synonyms of a given word.
 
-* `plain`
-* `wordnet`
+There are two types of synonym extensions:
+- `plain`
+- `wordnet`
 
-`plain` 拡張タイプでは、各行が 1 つの類義語セットに対応するシンプルなテキストファイルへのパスを指定する必要があります。
-この行内の単語は、スペースまたはタブ文字で区切られていなければなりません。
+With the `plain` extension type you need to provide a path to a simple text file, where each line corresponds to a certain synonym set.
+Words in this line must be separated with space or tab characters.
 
-`wordnet` 拡張タイプでは、WordNet シソーラスを含むディレクトリへのパスを指定する必要があります。
-このシソーラスには、WordNet の sense index が含まれていなければなりません。
+With the `wordnet` extension type you need to provide a path to a directory with the WordNet thesaurus in it.
+The thesaurus must contain a WordNet sense index.
+
 
 **Syntax**
 
@@ -322,18 +360,19 @@ Introduced in: v21.9
 synonyms(ext_name, word)
 ```
 
-**引数**
+**Arguments**
 
-* `ext_name` — 検索を実行する拡張機能の名前。[`String`](/sql-reference/data-types/string)
-* `word` — 拡張機能内で検索する単語。[`String`](/sql-reference/data-types/string)
+- `ext_name` — Name of the extension in which search will be performed. [`String`](/sql-reference/data-types/string)
+- `word` — Word that will be searched in extension. [`String`](/sql-reference/data-types/string)
 
-**返される値**
 
-指定した単語の類義語を格納した配列を返します。[`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**例**
+Returns array of synonyms for the given word. [`Array(String)`](/sql-reference/data-types/array)
 
-**類義語を検索する**
+**Examples**
+
+**Find synonyms**
 
 ```sql title=Query
 SELECT synonyms('list', 'important')

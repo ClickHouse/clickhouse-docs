@@ -226,7 +226,7 @@ SELECT CAST(map('key1', '42', 'key2', 'true', 'key3', '2020-01-01'), 'Map(String
 └─────────────────────────────────────────────┴───────────────────────────────────────────────┘
 ```
 
-`String` から `Variant` への変換時のパースを無効にするには、設定項目 `cast_string_to_dynamic_use_inference` を無効にします。
+To disable parsing during conversion from `String` to `Variant` you can disable setting `cast_string_to_dynamic_use_inference`:
 
 ```sql
 SET cast_string_to_variant_use_inference = 0;
@@ -239,9 +239,9 @@ SELECT '[1, 2, 3]'::Variant(String, Array(UInt64)) as variant, variantType(varia
 └───────────┴──────────────┘
 ```
 
-### 通常のカラムを Variant カラムに変換する {#converting-an-ordinary-column-to-a-variant-column}
+### Converting an ordinary column to a Variant column {#converting-an-ordinary-column-to-a-variant-column}
 
-型 `T` を持つ通常のカラムを、その型を含む `Variant` カラムに変換できます。
+It is possible to convert an ordinary column with type `T` to a `Variant` column containing this type:
 
 ```sql
 SELECT toTypeName(variant) AS type_name, [1,2,3]::Array(UInt64)::Variant(UInt64, String, Array(UInt64)) as variant, variantType(variant) as variant_name
@@ -253,8 +253,7 @@ SELECT toTypeName(variant) AS type_name, [1,2,3]::Array(UInt64)::Variant(UInt64,
 └────────────────────────────────────────┴─────────┴───────────────┘
 ```
 
-注意: `String` 型からの変換は常にパースを通じて行われます。パースを行わずに `String` 列を `Variant` の `String` バリアントに変換する必要がある場合は、次のようにします:
-
+Note: converting from `String` type is always performed through parsing, if you need to convert `String` column to `String` variant of a `Variant` without parsing, you can do the following:
 ```sql
 SELECT '[1, 2, 3]'::Variant(String)::Variant(String, Array(UInt64), UInt64) as variant, variantType(variant) as variant_type
 ```
@@ -265,9 +264,9 @@ SELECT '[1, 2, 3]'::Variant(String)::Variant(String, Array(UInt64), UInt64) as v
 └───────────┴──────────────┘
 ```
 
-### Variant列を通常の列に変換する {#converting-a-variant-column-to-an-ordinary-column}
+### Converting a Variant column to an ordinary column {#converting-a-variant-column-to-an-ordinary-column}
 
-`Variant` 列を通常の列に変換できます。この場合、すべてのネストされた Variant は指定した変換先の型に変換されます。
+It is possible to convert a `Variant` column to an ordinary column. In this case all nested variants will be converted to a destination type:
 
 ```sql
 CREATE TABLE test (v Variant(UInt64, String)) ENGINE = Memory;
@@ -283,9 +282,9 @@ SELECT v::Nullable(Float64) FROM test;
 └──────────────────────────────┘
 ```
 
-### ある Variant を別の Variant に変換する {#converting-a-variant-to-another-variant}
+### Converting a Variant to another Variant {#converting-a-variant-to-another-variant}
 
-`Variant` 列を別の `Variant` 列に変換することも可能ですが、変換先の `Variant` 列が元の `Variant` 列に含まれるすべてのネストされた型を含んでいる場合に限られます。
+It is possible to convert a `Variant` column to another `Variant` column, but only if the destination `Variant` column contains all nested types from the original `Variant`:
 
 ```sql
 CREATE TABLE test (v Variant(UInt64, String)) ENGINE = Memory;
@@ -301,11 +300,11 @@ SELECT v::Variant(UInt64, String, Array(UInt64)) FROM test;
 └───────────────────────────────────────────────────┘
 ```
 
-## データからの Variant 型の読み取り {#reading-variant-type-from-the-data}
+## Reading Variant type from the data {#reading-variant-type-from-the-data}
 
-すべてのテキスト形式 (TSV、CSV、CustomSeparated、Values、JSONEachRow など) は `Variant` 型での読み取りをサポートしています。データの解析時に、ClickHouse は値を最も適切な Variant 型の要素に挿入しようとします。
+All text formats (TSV, CSV, CustomSeparated, Values, JSONEachRow, etc) supports reading `Variant` type. During data parsing ClickHouse tries to insert value into most appropriate variant type.
 
-例:
+Example:
 
 ```sql
 SELECT
@@ -334,17 +333,15 @@ $$)
 └─────────────────────┴───────────────┴──────┴───────┴─────────────────────┴─────────┘
 ```
 
-## Variant 型の値の比較 {#comparing-values-of-variant-data}
+## Comparing values of Variant type {#comparing-values-of-variant-data}
 
-`Variant` 型の値は、同じ `Variant` 型の値とのみ比較できます。
+Values of a `Variant` type can be compared only with values with the same `Variant` type.
 
-型 `Variant(..., T1, ... T2, ...)` に属し、それぞれの基底型が `T1` と `T2` である値 `v1` と `v2` に対する演算子 `<` の結果は、次のように定義されます。
+The result of operator `<` for values `v1` with underlying type `T1` and `v2` with underlying type `T2`  of a type `Variant(..., T1, ... T2, ...)` is defined as follows:
+- If `T1 = T2 = T`, the result will be `v1.T < v2.T` (underlying values will be compared).
+- If `T1 != T2`, the result will be `T1 < T2` (type names will be compared).
 
-* `T1 = T2 = T` の場合、結果は `v1.T < v2.T` になります（基底値どうしが比較されます）。
-* `T1 != T2` の場合、結果は `T1 < T2` になります（型名どうしが比較されます）。
-
-例：
-
+Examples:
 ```sql
 CREATE TABLE test (v1 Variant(String, UInt64, Array(UInt32)), v2 Variant(String, UInt64, Array(UInt32))) ENGINE=Memory;
 INSERT INTO test VALUES (42, 42), (42, 43), (42, 'abc'), (42, [1, 2, 3]), (42, []), (42, NULL);
@@ -381,9 +378,9 @@ SELECT v1, variantType(v1) AS v1_type, v2, variantType(v2) AS v2_type, v1 = v2, 
 
 ```
 
-特定の `Variant` 値を持つ行を見つける必要がある場合、次のいずれかの方法を使用できます。
+If you need to find the row with specific `Variant` value, you can do one of the following:
 
-* 値を対応する `Variant` 型にキャストする：
+- Cast value to the corresponding `Variant` type:
 
 ```sql
 SELECT * FROM test WHERE v2 == [1,2,3]::Array(UInt32)::Variant(String, UInt64, Array(UInt32));
@@ -395,7 +392,7 @@ SELECT * FROM test WHERE v2 == [1,2,3]::Array(UInt32)::Variant(String, UInt64, A
 └────┴─────────┘
 ```
 
-* `Variant` サブカラムを必要な型と比較します。
+- Compare `Variant` subcolumn with required type:
 
 ```sql
 SELECT * FROM test WHERE v2.`Array(UInt32)` == [1,2,3] -- もしくは variantElement(v2, 'Array(UInt32)') を使用
@@ -407,7 +404,7 @@ SELECT * FROM test WHERE v2.`Array(UInt32)` == [1,2,3] -- もしくは variantEl
 └────┴─────────┘
 ```
 
-`Array/Map/Tuple` のような複合型を持つサブカラムは `Nullable` の中に含めることができず、異なる型を持つ行では `NULL` ではなくデフォルト値になるため、Variant 型に対して追加のチェックを行っておくと便利な場合があります。
+Sometimes it can be useful to make additional check on variant type as subcolumns with complex types like `Array/Map/Tuple` cannot be inside `Nullable` and will have default values instead of `NULL` on rows with different types:
 
 ```sql
 SELECT v2, v2.`Array(UInt32)`, variantType(v2) FROM test WHERE v2.`Array(UInt32)` == [];
@@ -433,9 +430,9 @@ SELECT v2, v2.`Array(UInt32)`, variantType(v2) FROM test WHERE variantType(v2) =
 └────┴──────────────────┴─────────────────┘
 ```
 
-**注:** 数値型が異なる `Variant` の値は、別の `Variant` とみなされ、値同士は比較されません。代わりに、その型名同士が比較されます。
+**Note:** values of variants with different numeric types are considered as different variants and not compared between each other, their type names are compared instead.
 
-例:
+Example:
 
 ```sql
 SET allow_suspicious_variant_types = 1;
@@ -453,11 +450,11 @@ SELECT v, variantType(v) FROM test ORDER by v;
 └─────┴────────────────┘
 ```
 
-**注記** デフォルトでは `Variant` 型は `GROUP BY`/`ORDER BY` のキーとしては許可されていません。使用したい場合は、その特殊な比較ルールを考慮した上で、`allow_suspicious_types_in_group_by`/`allow_suspicious_types_in_order_by` 設定を有効にしてください。
+**Note** by default `Variant` type is not allowed in `GROUP BY`/`ORDER BY` keys, if you want to use it consider its special comparison rule and enable `allow_suspicious_types_in_group_by`/`allow_suspicious_types_in_order_by` settings.
 
-## Variant における JSONExtract 関数 {#jsonextract-functions-with-variant}
+## JSONExtract functions with Variant {#jsonextract-functions-with-variant}
 
-すべての `JSONExtract*` 関数は `Variant` 型をサポートします。
+All `JSONExtract*` functions support `Variant` type:
 
 ```sql
 SELECT JSONExtract('{"a" : [1, 2, 3]}', 'a', 'Variant(UInt32, String, Array(UInt32))') AS variant, variantType(variant) AS variant_type;

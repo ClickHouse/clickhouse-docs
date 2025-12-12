@@ -70,15 +70,24 @@ WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.
 ┌─upvotes─┐
 │  261915 │
 └─────────┘
+
+1 row in set. Elapsed: 56.642 sec. Processed 252.30 million rows, 1.62 GB (4.45 million rows/s., 28.60 MB/s.)
 ```
 
 
 1 行の結果。経過時間: 56.642秒。252.30 百万行、1.62 GBを処理しました (4.45 百万行/秒、28.60 MB/秒)。
 
-````
+````sql
+SELECT countIf(VoteTypeId = 2) AS upvotes
+FROM stackoverflow.votes AS v
+INNER JOIN stackoverflow.posts AS p ON v.PostId = p.Id
+WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.CreationDate >= '2020-01-01')
 
-この結合の順序を変更することで、パフォーマンスが1.5秒まで劇的に改善されます:
+┌─upvotes─┐
+│  261915 │
+└─────────┘
 
+1 row in set. Elapsed: 1.519 sec. Processed 252.30 million rows, 1.62 GB (166.06 million rows/s., 1.07 GB/s.)
 ```sql
 SELECT countIf(VoteTypeId = 2) AS upvotes
 FROM stackoverflow.votes AS v
@@ -90,10 +99,18 @@ WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.
 └─────────┘
 
 1 row in set. Elapsed: 1.519 sec. Processed 252.30 million rows, 1.62 GB (166.06 million rows/s., 1.07 GB/s.)
-````
+````sql
+SELECT countIf(VoteTypeId = 2) AS upvotes
+FROM stackoverflow.votes AS v
+INNER JOIN stackoverflow.posts AS p ON v.PostId = p.Id
+WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.CreationDate >= '2020-01-01') AND (v.CreationDate >= '2020-01-01')
 
-左側のテーブルにフィルターを追加すると、処理時間はさらに短縮され、0.5秒になります。
+┌─upvotes─┐
+│  261915 │
+└─────────┘
 
+1 row in set. Elapsed: 0.597 sec. Processed 81.14 million rows, 1.31 GB (135.82 million rows/s., 2.19 GB/s.)
+Peak memory usage: 249.42 MiB.
 ```sql
 SELECT countIf(VoteTypeId = 2) AS upvotes
 FROM stackoverflow.votes AS v
@@ -106,10 +123,21 @@ WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.
 
 1 row in set. Elapsed: 0.597 sec. Processed 81.14 million rows, 1.31 GB (135.82 million rows/s., 2.19 GB/s.)
 ピークメモリ使用量: 249.42 MiB.
-```
+```sql
+SELECT count() AS upvotes
+FROM stackoverflow.votes
+WHERE (VoteTypeId = 2) AND (PostId IN (
+        SELECT Id
+        FROM stackoverflow.posts
+        WHERE (CreationDate >= '2020-01-01') AND has(arrayFilter(t -> (t != ''), splitByChar('|', Tags)), 'java')
+))
 
-前述のとおり、`INNER JOIN` をサブクエリに移動し、外側と内側の両方のクエリでフィルタを保持することで、このクエリをさらに改善できます。
+┌─upvotes─┐
+│  261915 │
+└─────────┘
 
+1 row in set. Elapsed: 0.383 sec. Processed 99.64 million rows, 804.55 MB (259.85 million rows/s., 2.10 GB/s.)
+Peak memory usage: 250.66 MiB.
 ```sql
 SELECT count() AS upvotes
 FROM stackoverflow.votes

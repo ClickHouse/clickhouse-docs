@@ -73,14 +73,14 @@ import Image from '@theme/IdealImage';
 Для приведённого выше примера данных из DynamoDB таблицы в ClickHouse будут выглядеть следующим образом:
 
 ```sql
-/* Таблица снимков */
+/* Snapshot table */
 CREATE TABLE IF NOT EXISTS "default"."snapshot"
 (
     `item` String
 )
 ORDER BY tuple();
 
-/* Таблица для финальных денормализованных данных */
+/* Table for final flattened data */
 CREATE MATERIALIZED VIEW IF NOT EXISTS "default"."snapshot_mv" TO "default"."destination" AS
 SELECT
     JSONExtractString(item, 'id', 'S') AS id,
@@ -88,7 +88,7 @@ SELECT
     JSONExtractString(item, 'first_name', 'S') AS first_name
 FROM "default"."snapshot";
 
-/* Таблица для финальных денормализованных данных */
+/* Table for final flattened data */
 CREATE TABLE IF NOT EXISTS "default"."destination" (
     "id" String,
     "first_name" String,

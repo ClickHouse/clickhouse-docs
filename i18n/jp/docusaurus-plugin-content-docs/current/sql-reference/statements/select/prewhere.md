@@ -53,13 +53,13 @@ WHERE (B = 0) AND (C = 'x');
 
 1 row in set. Elapsed: 0.074 sec. Processed 10.00 million rows, 168.89 MB (134.98 million rows/s., 2.28 GB/s.)
 
--- トレースを有効にして、どの述語がPREWHEREに移動されるかを確認しましょう
+-- let's enable tracing to see which predicate are moved to PREWHERE
 set send_logs_level='debug';
 
 MergeTreeWhereOptimizer: condition "B = 0" moved to PREWHERE  
--- ClickHouseは自動的に `B = 0` をPREWHEREに移動しますが、Bは常に0であるため意味がありません。
+-- Clickhouse moves automatically `B = 0` to PREWHERE, but it has no sense because B is always 0.
 
--- 他の述語 `C = 'x'` を移動しましょう 
+-- Let's move other predicate `C = 'x'` 
 
 SELECT count()
 FROM mydata
@@ -68,5 +68,5 @@ WHERE B = 0;
 
 1 row in set. Elapsed: 0.069 sec. Processed 10.00 million rows, 158.89 MB (144.90 million rows/s., 2.30 GB/s.)
 
--- 手動で `PREWHERE` を指定したこのクエリは、わずかに少ないデータを処理します: 158.89 MB 対 168.89 MB
+-- This query with manual `PREWHERE` processes slightly less data: 158.89 MB VS 168.89 MB
 ```

@@ -55,13 +55,13 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
   :::
 
   ```sql
-  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-  (
-      name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
-      name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
-      ...
-  ) ENGINE [=] AggregatingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity)
-  ```
+CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+(
+    name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
+    name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
+    ...
+) ENGINE [=] AggregatingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity)
+```
 
   すべてのパラメータの意味は `MergeTree` と同じです。
 </details>
@@ -157,7 +157,7 @@ INSERT INTO test.visits (StartDate, CounterID, Sign, UserID)
 `SELECT` クエリを再度実行すると、次のような出力が返されます。
 
 ```text
-┌───────────────開始日─┬─訪問数─┬─ユーザー数─┐
+┌───────────────StartDate─┬─Visits─┬─Users─┐
 │ 2022-11-03 03:27:11.000 │     16 │     3 │
 │ 2022-11-26 07:00:31.000 │      5 │     1 │
 └─────────────────────────┴────────┴───────┘

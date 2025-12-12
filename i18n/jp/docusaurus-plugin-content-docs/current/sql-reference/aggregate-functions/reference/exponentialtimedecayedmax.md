@@ -52,7 +52,7 @@ FROM
 結果：
 
 ```response
-┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar────────┐
+    ┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar────────┐
  1. │     1 │    0 │                    1 │ ██████████ │
  2. │     0 │    1 │                0.905 │ █████████  │
  3. │     0 │    2 │                0.819 │ ████████▏  │

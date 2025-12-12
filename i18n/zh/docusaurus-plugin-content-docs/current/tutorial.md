@@ -159,18 +159,18 @@ doc_type: 'guide'
 - 计算平均小费金额：
 
   ```sql
-  SELECT round(avg(tip_amount), 2) FROM trips
-  ```
+    SELECT round(avg(tip_amount), 2) FROM trips
+    ```
 
     <details>
   <summary>预期输出</summary>
   <p>
   
   ```response
-  ┌─round(avg(tip_amount), 2)─┐
-  │                      1.68 │
-  └───────────────────────────┘
-  ```
+    ┌─round(avg(tip_amount), 2)─┐
+    │                      1.68 │
+    └───────────────────────────┘
+    ```
 
     </p>
   </details>
@@ -178,12 +178,12 @@ doc_type: 'guide'
 - 根据乘客数量计算平均费用：
 
   ```sql
-  SELECT
-      passenger_count,
-      ceil(avg(total_amount),2) AS average_total_amount
-  FROM trips
-  GROUP BY passenger_count
-  ```
+    SELECT
+        passenger_count,
+        ceil(avg(total_amount),2) AS average_total_amount
+    FROM trips
+    GROUP BY passenger_count
+    ```
 
     <details>
   <summary>预期输出</summary>
@@ -192,19 +192,19 @@ doc_type: 'guide'
   `passenger_count` 的范围为 0 到 9：
 
   ```response
-  ┌─passenger_count─┬─average_total_amount─┐
-  │               0 │                22.69 │
-  │               1 │                15.97 │
-  │               2 │                17.15 │
-  │               3 │                16.76 │
-  │               4 │                17.33 │
-  │               5 │                16.35 │
-  │               6 │                16.04 │
-  │               7 │                 59.8 │
-  │               8 │                36.41 │
-  │               9 │                 9.81 │
-  └─────────────────┴──────────────────────┘
-  ```
+    ┌─passenger_count─┬─average_total_amount─┐
+    │               0 │                22.69 │
+    │               1 │                15.97 │
+    │               2 │                17.15 │
+    │               3 │                16.76 │
+    │               4 │                17.33 │
+    │               5 │                16.35 │
+    │               6 │                16.04 │
+    │               7 │                 59.8 │
+    │               8 │                36.41 │
+    │               9 │                 9.81 │
+    └─────────────────┴──────────────────────┘
+    ```
 
     </p>
   </details>
@@ -212,48 +212,48 @@ doc_type: 'guide'
 - 计算每个街区的每日接客次数：
 
   ```sql
-  SELECT
-      pickup_date,
-      pickup_ntaname,
-      SUM(1) AS number_of_trips
-  FROM trips
-  GROUP BY pickup_date, pickup_ntaname
-  ORDER BY pickup_date ASC
-  ```
+    SELECT
+        pickup_date,
+        pickup_ntaname,
+        SUM(1) AS number_of_trips
+    FROM trips
+    GROUP BY pickup_date, pickup_ntaname
+    ORDER BY pickup_date ASC
+    ```
 
     <details>
   <summary>预期输出</summary>
   <p>
 
   ```response
-  ┌─pickup_date─┬─pickup_ntaname───────────────────────────────────────────┬─number_of_trips─┐
-  │  2015-07-01 │ Brooklyn Heights-Cobble Hill                             │              13 │
-  │  2015-07-01 │ Old Astoria                                              │               5 │
-  │  2015-07-01 │ Flushing                                                 │               1 │
-  │  2015-07-01 │ Yorkville                                                │             378 │
-  │  2015-07-01 │ Gramercy                                                 │             344 │
-  │  2015-07-01 │ Fordham South                                            │               2 │
-  │  2015-07-01 │ SoHo-TriBeCa-Civic Center-Little Italy                   │             621 │
-  │  2015-07-01 │ Park Slope-Gowanus                                       │              29 │
-  │  2015-07-01 │ Bushwick South                                           │               5 │
-  ```
+    ┌─pickup_date─┬─pickup_ntaname───────────────────────────────────────────┬─number_of_trips─┐
+    │  2015-07-01 │ Brooklyn Heights-Cobble Hill                             │              13 │
+    │  2015-07-01 │ Old Astoria                                              │               5 │
+    │  2015-07-01 │ Flushing                                                 │               1 │
+    │  2015-07-01 │ Yorkville                                                │             378 │
+    │  2015-07-01 │ Gramercy                                                 │             344 │
+    │  2015-07-01 │ Fordham South                                            │               2 │
+    │  2015-07-01 │ SoHo-TriBeCa-Civic Center-Little Italy                   │             621 │
+    │  2015-07-01 │ Park Slope-Gowanus                                       │              29 │
+    │  2015-07-01 │ Bushwick South                                           │               5 │
+    ```
 
     </p>
   </details>
 
 - 计算每次行程的时长（以分钟为单位），然后按行程时长对结果进行分组：
   ```sql
-  SELECT
-      avg(tip_amount) AS avg_tip,
-      avg(fare_amount) AS avg_fare,
-      avg(passenger_count) AS avg_passenger,
-      count() AS count,
-      truncate(date_diff('second', pickup_datetime, dropoff_datetime)/60) as trip_minutes
-  FROM trips
-  WHERE trip_minutes > 0
-  GROUP BY trip_minutes
-  ORDER BY trip_minutes DESC
-  ```
+    SELECT
+        avg(tip_amount) AS avg_tip,
+        avg(fare_amount) AS avg_fare,
+        avg(passenger_count) AS avg_passenger,
+        count() AS count,
+        truncate(date_diff('second', pickup_datetime, dropoff_datetime)/60) as trip_minutes
+    FROM trips
+    WHERE trip_minutes > 0
+    GROUP BY trip_minutes
+    ORDER BY trip_minutes DESC
+    ```
     <details>
   <summary>预期输出</summary>
   <p>
@@ -274,57 +274,57 @@ doc_type: 'guide'
 - 显示每个社区按小时统计的接客次数：
 
   ```sql
-  SELECT
-      pickup_ntaname,
-      toHour(pickup_datetime) as pickup_hour,
-      SUM(1) AS pickups
-  FROM trips
-  WHERE pickup_ntaname != ''
-  GROUP BY pickup_ntaname, pickup_hour
-  ORDER BY pickup_ntaname, pickup_hour
-  ```
+    SELECT
+        pickup_ntaname,
+        toHour(pickup_datetime) as pickup_hour,
+        SUM(1) AS pickups
+    FROM trips
+    WHERE pickup_ntaname != ''
+    GROUP BY pickup_ntaname, pickup_hour
+    ORDER BY pickup_ntaname, pickup_hour
+    ```
 
     <details>
   <summary>预期输出</summary>
   <p>
 
   ```response
-  ┌─pickup_ntaname───────────────────────────────────────────┬─pickup_hour─┬─pickups─┐
-  │ Airport                                                  │           0 │    3509 │
-  │ Airport                                                  │           1 │    1184 │
-  │ Airport                                                  │           2 │     401 │
-  │ Airport                                                  │           3 │     152 │
-  │ Airport                                                  │           4 │     213 │
-  │ Airport                                                  │           5 │     955 │
-  │ Airport                                                  │           6 │    2161 │
-  │ Airport                                                  │           7 │    3013 │
-  │ Airport                                                  │           8 │    3601 │
-  │ Airport                                                  │           9 │    3792 │
-  │ Airport                                                  │          10 │    4546 │
-  │ Airport                                                  │          11 │    4659 │
-  │ Airport                                                  │          12 │    4621 │
-  │ Airport                                                  │          13 │    5348 │
-  │ Airport                                                  │          14 │    5889 │
-  │ Airport                                                  │          15 │    6505 │
-  │ Airport                                                  │          16 │    6119 │
-  │ Airport                                                  │          17 │    6341 │
-  │ Airport                                                  │          18 │    6173 │
-  │ Airport                                                  │          19 │    6329 │
-  │ Airport                                                  │          20 │    6271 │
-  │ Airport                                                  │          21 │    6649 │
-  │ Airport                                                  │          22 │    6356 │
-  │ Airport                                                  │          23 │    6016 │
-  │ Allerton-Pelham Gardens                                  │           4 │       1 │
-  │ Allerton-Pelham Gardens                                  │           6 │       1 │
-  │ Allerton-Pelham Gardens                                  │           7 │       1 │
-  │ Allerton-Pelham Gardens                                  │           9 │       5 │
-  │ Allerton-Pelham Gardens                                  │          10 │       3 │
-  │ Allerton-Pelham Gardens                                  │          15 │       1 │
-  │ Allerton-Pelham Gardens                                  │          20 │       2 │
-  │ Allerton-Pelham Gardens                                  │          23 │       1 │
-  │ Annadale-Huguenot-Prince's Bay-Eltingville               │          23 │       1 │
-  │ Arden Heights                                            │          11 │       1 │
-  ```
+    ┌─pickup_ntaname───────────────────────────────────────────┬─pickup_hour─┬─pickups─┐
+    │ Airport                                                  │           0 │    3509 │
+    │ Airport                                                  │           1 │    1184 │
+    │ Airport                                                  │           2 │     401 │
+    │ Airport                                                  │           3 │     152 │
+    │ Airport                                                  │           4 │     213 │
+    │ Airport                                                  │           5 │     955 │
+    │ Airport                                                  │           6 │    2161 │
+    │ Airport                                                  │           7 │    3013 │
+    │ Airport                                                  │           8 │    3601 │
+    │ Airport                                                  │           9 │    3792 │
+    │ Airport                                                  │          10 │    4546 │
+    │ Airport                                                  │          11 │    4659 │
+    │ Airport                                                  │          12 │    4621 │
+    │ Airport                                                  │          13 │    5348 │
+    │ Airport                                                  │          14 │    5889 │
+    │ Airport                                                  │          15 │    6505 │
+    │ Airport                                                  │          16 │    6119 │
+    │ Airport                                                  │          17 │    6341 │
+    │ Airport                                                  │          18 │    6173 │
+    │ Airport                                                  │          19 │    6329 │
+    │ Airport                                                  │          20 │    6271 │
+    │ Airport                                                  │          21 │    6649 │
+    │ Airport                                                  │          22 │    6356 │
+    │ Airport                                                  │          23 │    6016 │
+    │ Allerton-Pelham Gardens                                  │           4 │       1 │
+    │ Allerton-Pelham Gardens                                  │           6 │       1 │
+    │ Allerton-Pelham Gardens                                  │           7 │       1 │
+    │ Allerton-Pelham Gardens                                  │           9 │       5 │
+    │ Allerton-Pelham Gardens                                  │          10 │       3 │
+    │ Allerton-Pelham Gardens                                  │          15 │       1 │
+    │ Allerton-Pelham Gardens                                  │          20 │       2 │
+    │ Allerton-Pelham Gardens                                  │          23 │       1 │
+    │ Annadale-Huguenot-Prince's Bay-Eltingville               │          23 │       1 │
+    │ Arden Heights                                            │          11 │       1 │
+    ```
 
     </p>
   </details>
@@ -391,18 +391,18 @@ doc_type: 'guide'
 1. 运行以下 SQL 命令，创建一个名为 `taxi_zone_dictionary` 的字典，并从存储在 S3 中的 CSV 文件填充该字典。文件的 URL 为 `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv`。
 
 ```sql
-CREATE DICTIONARY taxi_zone_dictionary
-(
-  `LocationID` UInt16 DEFAULT 0,
-  `Borough` String,
-  `Zone` String,
-  `service_zone` String
-)
-PRIMARY KEY LocationID
-SOURCE(HTTP(URL 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv' FORMAT 'CSVWithNames'))
-LIFETIME(MIN 0 MAX 0)
-LAYOUT(HASHED_ARRAY())
-```
+  CREATE DICTIONARY taxi_zone_dictionary
+  (
+    `LocationID` UInt16 DEFAULT 0,
+    `Borough` String,
+    `Zone` String,
+    `service_zone` String
+  )
+  PRIMARY KEY LocationID
+  SOURCE(HTTP(URL 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv' FORMAT 'CSVWithNames'))
+  LIFETIME(MIN 0 MAX 0)
+  LAYOUT(HASHED_ARRAY())
+  ```
 
 :::note
 将 `LIFETIME` 设置为 0 会禁用自动更新，从而避免对我们的 S3 存储桶产生不必要的流量。在其他情况下，您可以根据需要进行不同配置。详情请参阅 [Refreshing dictionary data using LIFETIME](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime)。
@@ -410,63 +410,63 @@ LAYOUT(HASHED_ARRAY())
 
 3. 验证其是否生效。下面的查询应返回 265 行，即每个 neighborhood 一行：
    ```sql
-   SELECT * FROM taxi_zone_dictionary
-   ```
+    SELECT * FROM taxi_zone_dictionary
+    ```
 
 4. 使用 `dictGet` 函数（[或其变体](./sql-reference/functions/ext-dict-functions.md)）从字典中检索值。您需要传入字典名称、要获取的字段以及键（在本示例中为 `taxi_zone_dictionary` 表中的 `LocationID` 列）。
 
    例如，下面的查询会返回 `LocationID` 为 132 的 `Borough`，该值对应于 JFK 机场：
 
    ```sql
-   SELECT dictGet('taxi_zone_dictionary', 'Borough', 132)
-   ```
+    SELECT dictGet('taxi_zone_dictionary', 'Borough', 132)
+    ```
 
    JFK 位于 Queens。注意检索该值所耗时间基本为 0：
 
    ```response
-   ┌─dictGet('taxi_zone_dictionary', 'Borough', 132)─┐
-   │ Queens                                          │
-   └─────────────────────────────────────────────────┘
+    ┌─dictGet('taxi_zone_dictionary', 'Borough', 132)─┐
+    │ Queens                                          │
+    └─────────────────────────────────────────────────┘
 
-   1 rows in set. Elapsed: 0.004 sec.
-   ```
+    1 rows in set. Elapsed: 0.004 sec.
+    ```
 
 5. 使用 `dictHas` 函数检查字典中是否存在某个键。例如，下面的查询返回 `1`（在 ClickHouse 中表示 “true”）：
    ```sql
-   SELECT dictHas('taxi_zone_dictionary', 132)
-   ```
+    SELECT dictHas('taxi_zone_dictionary', 132)
+    ```
 
 6. 下面的查询返回 0，因为 4567 不是字典中 `LocationID` 的取值：
    ```sql
-   SELECT dictHas('taxi_zone_dictionary', 4567)
-   ```
+    SELECT dictHas('taxi_zone_dictionary', 4567)
+    ```
 
 7. 使用 `dictGet` 函数在查询中检索 borough 的名称。例如：
    ```sql
-   SELECT
-       count(1) AS total,
-       dictGetOrDefault('taxi_zone_dictionary','Borough', toUInt64(pickup_nyct2010_gid), 'Unknown') AS borough_name
-   FROM trips
-   WHERE dropoff_nyct2010_gid = 132 OR dropoff_nyct2010_gid = 138
-   GROUP BY borough_name
-   ORDER BY total DESC
-   ```
+    SELECT
+        count(1) AS total,
+        dictGetOrDefault('taxi_zone_dictionary','Borough', toUInt64(pickup_nyct2010_gid), 'Unknown') AS borough_name
+    FROM trips
+    WHERE dropoff_nyct2010_gid = 132 OR dropoff_nyct2010_gid = 138
+    GROUP BY borough_name
+    ORDER BY total DESC
+    ```
 
 此查询汇总了各行政区在拉瓜迪亚机场或 JFK 机场结束的出租车行程次数。结果如下所示，可以注意到有相当多行程的上车区域是未知的：
 
 ```response
-┌─total─┬─borough_name──┐
-│ 23683 │ Unknown       │
-│  7053 │ Manhattan     │
-│  6828 │ Brooklyn      │
-│  4458 │ Queens        │
-│  2670 │ Bronx         │
-│   554 │ Staten Island │
-│    53 │ EWR           │
-└───────┴───────────────┘
+    ┌─total─┬─borough_name──┐
+    │ 23683 │ Unknown       │
+    │  7053 │ Manhattan     │
+    │  6828 │ Brooklyn      │
+    │  4458 │ Queens        │
+    │  2670 │ Bronx         │
+    │   554 │ Staten Island │
+    │    53 │ EWR           │
+    └───────┴───────────────┘
 
-7 行数据。耗时：0.019 秒。处理了 2.00 百万行，4.00 MB（105.70 百万行/秒，211.40 MB/秒）。
-```
+    7 rows in set. Elapsed: 0.019 sec. Processed 2.00 million rows, 4.00 MB (105.70 million rows/s., 211.40 MB/s.)
+    ```
 
 ## 执行连接查询 {#perform-a-join}
 

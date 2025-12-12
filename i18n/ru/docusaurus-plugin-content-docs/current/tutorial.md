@@ -159,18 +159,18 @@ doc_type: 'guide'
 - Вычислите средний размер чаевых:
 
   ```sql
-  SELECT round(avg(tip_amount), 2) FROM trips
-  ```
+    SELECT round(avg(tip_amount), 2) FROM trips
+    ```
 
     <details>
   <summary>Ожидаемый результат</summary>
   <p>
   
   ```response
-  ┌─round(avg(tip_amount), 2)─┐
-  │                      1.68 │
-  └───────────────────────────┘
-  ```
+    ┌─round(avg(tip_amount), 2)─┐
+    │                      1.68 │
+    └───────────────────────────┘
+    ```
 
     </p>
   </details>
@@ -178,12 +178,12 @@ doc_type: 'guide'
 - Вычислите среднюю стоимость в зависимости от количества пассажиров:
 
   ```sql
-  SELECT
-      passenger_count,
-      ceil(avg(total_amount),2) AS average_total_amount
-  FROM trips
-  GROUP BY passenger_count
-  ```
+    SELECT
+        passenger_count,
+        ceil(avg(total_amount),2) AS average_total_amount
+    FROM trips
+    GROUP BY passenger_count
+    ```
 
     <details>
   <summary>Ожидаемый результат</summary>
@@ -192,19 +192,19 @@ doc_type: 'guide'
   Значение `passenger_count` варьируется от 0 до 9:
 
   ```response
-  ┌─passenger_count─┬─average_total_amount─┐
-  │               0 │                22.69 │
-  │               1 │                15.97 │
-  │               2 │                17.15 │
-  │               3 │                16.76 │
-  │               4 │                17.33 │
-  │               5 │                16.35 │
-  │               6 │                16.04 │
-  │               7 │                 59.8 │
-  │               8 │                36.41 │
-  │               9 │                 9.81 │
-  └─────────────────┴──────────────────────┘
-  ```
+    ┌─passenger_count─┬─average_total_amount─┐
+    │               0 │                22.69 │
+    │               1 │                15.97 │
+    │               2 │                17.15 │
+    │               3 │                16.76 │
+    │               4 │                17.33 │
+    │               5 │                16.35 │
+    │               6 │                16.04 │
+    │               7 │                 59.8 │
+    │               8 │                36.41 │
+    │               9 │                 9.81 │
+    └─────────────────┴──────────────────────┘
+    ```
 
     </p>
   </details>
@@ -212,48 +212,48 @@ doc_type: 'guide'
 - Вычислите ежедневное количество поездок по районам:
 
   ```sql
-  SELECT
-      pickup_date,
-      pickup_ntaname,
-      SUM(1) AS number_of_trips
-  FROM trips
-  GROUP BY pickup_date, pickup_ntaname
-  ORDER BY pickup_date ASC
-  ```
+    SELECT
+        pickup_date,
+        pickup_ntaname,
+        SUM(1) AS number_of_trips
+    FROM trips
+    GROUP BY pickup_date, pickup_ntaname
+    ORDER BY pickup_date ASC
+    ```
 
     <details>
   <summary>Ожидаемый результат</summary>
   <p>
 
   ```response
-  ┌─pickup_date─┬─pickup_ntaname───────────────────────────────────────────┬─number_of_trips─┐
-  │  2015-07-01 │ Brooklyn Heights-Cobble Hill                             │              13 │
-  │  2015-07-01 │ Old Astoria                                              │               5 │
-  │  2015-07-01 │ Flushing                                                 │               1 │
-  │  2015-07-01 │ Yorkville                                                │             378 │
-  │  2015-07-01 │ Gramercy                                                 │             344 │
-  │  2015-07-01 │ Fordham South                                            │               2 │
-  │  2015-07-01 │ SoHo-TriBeCa-Civic Center-Little Italy                   │             621 │
-  │  2015-07-01 │ Park Slope-Gowanus                                       │              29 │
-  │  2015-07-01 │ Bushwick South                                           │               5 │
-  ```
+    ┌─pickup_date─┬─pickup_ntaname───────────────────────────────────────────┬─number_of_trips─┐
+    │  2015-07-01 │ Brooklyn Heights-Cobble Hill                             │              13 │
+    │  2015-07-01 │ Old Astoria                                              │               5 │
+    │  2015-07-01 │ Flushing                                                 │               1 │
+    │  2015-07-01 │ Yorkville                                                │             378 │
+    │  2015-07-01 │ Gramercy                                                 │             344 │
+    │  2015-07-01 │ Fordham South                                            │               2 │
+    │  2015-07-01 │ SoHo-TriBeCa-Civic Center-Little Italy                   │             621 │
+    │  2015-07-01 │ Park Slope-Gowanus                                       │              29 │
+    │  2015-07-01 │ Bushwick South                                           │               5 │
+    ```
 
     </p>
   </details>
 
 - Вычислите продолжительность каждой поездки в минутах, затем сгруппируйте результаты по продолжительности поездки:
   ```sql
-  SELECT
-      avg(tip_amount) AS avg_tip,
-      avg(fare_amount) AS avg_fare,
-      avg(passenger_count) AS avg_passenger,
-      count() AS count,
-      truncate(date_diff('second', pickup_datetime, dropoff_datetime)/60) as trip_minutes
-  FROM trips
-  WHERE trip_minutes > 0
-  GROUP BY trip_minutes
-  ORDER BY trip_minutes DESC
-  ```
+    SELECT
+        avg(tip_amount) AS avg_tip,
+        avg(fare_amount) AS avg_fare,
+        avg(passenger_count) AS avg_passenger,
+        count() AS count,
+        truncate(date_diff('second', pickup_datetime, dropoff_datetime)/60) as trip_minutes
+    FROM trips
+    WHERE trip_minutes > 0
+    GROUP BY trip_minutes
+    ORDER BY trip_minutes DESC
+    ```
     <details>
   <summary>Ожидаемый результат</summary>
   <p>
@@ -274,57 +274,57 @@ doc_type: 'guide'
 - Показать количество посадок в каждом районе с разбивкой по часам дня:
 
   ```sql
-  SELECT
-      pickup_ntaname,
-      toHour(pickup_datetime) as pickup_hour,
-      SUM(1) AS pickups
-  FROM trips
-  WHERE pickup_ntaname != ''
-  GROUP BY pickup_ntaname, pickup_hour
-  ORDER BY pickup_ntaname, pickup_hour
-  ```
+    SELECT
+        pickup_ntaname,
+        toHour(pickup_datetime) as pickup_hour,
+        SUM(1) AS pickups
+    FROM trips
+    WHERE pickup_ntaname != ''
+    GROUP BY pickup_ntaname, pickup_hour
+    ORDER BY pickup_ntaname, pickup_hour
+    ```
 
     <details>
   <summary>Ожидаемый результат</summary>
   <p>
 
   ```response
-  ┌─pickup_ntaname───────────────────────────────────────────┬─pickup_hour─┬─pickups─┐
-  │ Airport                                                  │           0 │    3509 │
-  │ Airport                                                  │           1 │    1184 │
-  │ Airport                                                  │           2 │     401 │
-  │ Airport                                                  │           3 │     152 │
-  │ Airport                                                  │           4 │     213 │
-  │ Airport                                                  │           5 │     955 │
-  │ Airport                                                  │           6 │    2161 │
-  │ Airport                                                  │           7 │    3013 │
-  │ Airport                                                  │           8 │    3601 │
-  │ Airport                                                  │           9 │    3792 │
-  │ Airport                                                  │          10 │    4546 │
-  │ Airport                                                  │          11 │    4659 │
-  │ Airport                                                  │          12 │    4621 │
-  │ Airport                                                  │          13 │    5348 │
-  │ Airport                                                  │          14 │    5889 │
-  │ Airport                                                  │          15 │    6505 │
-  │ Airport                                                  │          16 │    6119 │
-  │ Airport                                                  │          17 │    6341 │
-  │ Airport                                                  │          18 │    6173 │
-  │ Airport                                                  │          19 │    6329 │
-  │ Airport                                                  │          20 │    6271 │
-  │ Airport                                                  │          21 │    6649 │
-  │ Airport                                                  │          22 │    6356 │
-  │ Airport                                                  │          23 │    6016 │
-  │ Allerton-Pelham Gardens                                  │           4 │       1 │
-  │ Allerton-Pelham Gardens                                  │           6 │       1 │
-  │ Allerton-Pelham Gardens                                  │           7 │       1 │
-  │ Allerton-Pelham Gardens                                  │           9 │       5 │
-  │ Allerton-Pelham Gardens                                  │          10 │       3 │
-  │ Allerton-Pelham Gardens                                  │          15 │       1 │
-  │ Allerton-Pelham Gardens                                  │          20 │       2 │
-  │ Allerton-Pelham Gardens                                  │          23 │       1 │
-  │ Annadale-Huguenot-Prince's Bay-Eltingville               │          23 │       1 │
-  │ Arden Heights                                            │          11 │       1 │
-  ```
+    ┌─pickup_ntaname───────────────────────────────────────────┬─pickup_hour─┬─pickups─┐
+    │ Airport                                                  │           0 │    3509 │
+    │ Airport                                                  │           1 │    1184 │
+    │ Airport                                                  │           2 │     401 │
+    │ Airport                                                  │           3 │     152 │
+    │ Airport                                                  │           4 │     213 │
+    │ Airport                                                  │           5 │     955 │
+    │ Airport                                                  │           6 │    2161 │
+    │ Airport                                                  │           7 │    3013 │
+    │ Airport                                                  │           8 │    3601 │
+    │ Airport                                                  │           9 │    3792 │
+    │ Airport                                                  │          10 │    4546 │
+    │ Airport                                                  │          11 │    4659 │
+    │ Airport                                                  │          12 │    4621 │
+    │ Airport                                                  │          13 │    5348 │
+    │ Airport                                                  │          14 │    5889 │
+    │ Airport                                                  │          15 │    6505 │
+    │ Airport                                                  │          16 │    6119 │
+    │ Airport                                                  │          17 │    6341 │
+    │ Airport                                                  │          18 │    6173 │
+    │ Airport                                                  │          19 │    6329 │
+    │ Airport                                                  │          20 │    6271 │
+    │ Airport                                                  │          21 │    6649 │
+    │ Airport                                                  │          22 │    6356 │
+    │ Airport                                                  │          23 │    6016 │
+    │ Allerton-Pelham Gardens                                  │           4 │       1 │
+    │ Allerton-Pelham Gardens                                  │           6 │       1 │
+    │ Allerton-Pelham Gardens                                  │           7 │       1 │
+    │ Allerton-Pelham Gardens                                  │           9 │       5 │
+    │ Allerton-Pelham Gardens                                  │          10 │       3 │
+    │ Allerton-Pelham Gardens                                  │          15 │       1 │
+    │ Allerton-Pelham Gardens                                  │          20 │       2 │
+    │ Allerton-Pelham Gardens                                  │          23 │       1 │
+    │ Annadale-Huguenot-Prince's Bay-Eltingville               │          23 │       1 │
+    │ Arden Heights                                            │          11 │       1 │
+    ```
 
     </p>
   </details>
@@ -391,18 +391,18 @@ doc_type: 'guide'
 1. Выполните следующую SQL‑команду, которая создаёт словарь с именем `taxi_zone_dictionary` и заполняет его из CSV‑файла в S3. URL‑адрес файла: `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv`.
 
 ```sql
-CREATE DICTIONARY taxi_zone_dictionary
-(
-  `LocationID` UInt16 DEFAULT 0,
-  `Borough` String,
-  `Zone` String,
-  `service_zone` String
-)
-PRIMARY KEY LocationID
-SOURCE(HTTP(URL 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv' FORMAT 'CSVWithNames'))
-LIFETIME(MIN 0 MAX 0)
-LAYOUT(HASHED_ARRAY())
-```
+  CREATE DICTIONARY taxi_zone_dictionary
+  (
+    `LocationID` UInt16 DEFAULT 0,
+    `Borough` String,
+    `Zone` String,
+    `service_zone` String
+  )
+  PRIMARY KEY LocationID
+  SOURCE(HTTP(URL 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv' FORMAT 'CSVWithNames'))
+  LIFETIME(MIN 0 MAX 0)
+  LAYOUT(HASHED_ARRAY())
+  ```
 
 :::note
 Установка `LIFETIME` в значение 0 отключает автоматические обновления, чтобы избежать лишнего трафика в наш S3‑бакет. В других случаях вы можете настроить это по‑другому. Подробности см. в разделе [Refreshing dictionary data using LIFETIME](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime).
@@ -410,63 +410,63 @@ LAYOUT(HASHED_ARRAY())
 
 3. Проверьте, что всё сработало. Следующий запрос должен вернуть 265 строк, по одной строке для каждого района:
    ```sql
-   SELECT * FROM taxi_zone_dictionary
-   ```
+    SELECT * FROM taxi_zone_dictionary
+    ```
 
 4. Используйте функцию `dictGet` ([или её вариации](./sql-reference/functions/ext-dict-functions.md)) для получения значения из словаря. Вы передаёте имя словаря, имя атрибута (значения, которое хотите получить) и ключ (в нашем примере это столбец `LocationID` таблицы `taxi_zone_dictionary`).
 
    Например, следующий запрос возвращает `Borough`, чей `LocationID` равен 132 и соответствует аэропорту JFK:
 
    ```sql
-   SELECT dictGet('taxi_zone_dictionary', 'Borough', 132)
-   ```
+    SELECT dictGet('taxi_zone_dictionary', 'Borough', 132)
+    ```
 
    JFK находится в Куинсе. Обратите внимание, что время получения значения практически равно 0:
 
    ```response
-   ┌─dictGet('taxi_zone_dictionary', 'Borough', 132)─┐
-   │ Queens                                          │
-   └─────────────────────────────────────────────────┘
+    ┌─dictGet('taxi_zone_dictionary', 'Borough', 132)─┐
+    │ Queens                                          │
+    └─────────────────────────────────────────────────┘
 
-   1 строка в наборе. Затрачено: 0.004 сек.
-   ```
+    1 rows in set. Elapsed: 0.004 sec.
+    ```
 
 5. Используйте функцию `dictHas`, чтобы проверить, присутствует ли ключ в словаре. Например, следующий запрос возвращает `1` (что в ClickHouse означает «true»):
    ```sql
-   SELECT dictHas('taxi_zone_dictionary', 132)
-   ```
+    SELECT dictHas('taxi_zone_dictionary', 132)
+    ```
 
 6. Следующий запрос возвращает 0, потому что 4567 не является значением `LocationID` в словаре:
    ```sql
-   SELECT dictHas('taxi_zone_dictionary', 4567)
-   ```
+    SELECT dictHas('taxi_zone_dictionary', 4567)
+    ```
 
 7. Используйте функцию `dictGet` для получения названия боро в запросе. Например:
    ```sql
-   SELECT
-       count(1) AS total,
-       dictGetOrDefault('taxi_zone_dictionary','Borough', toUInt64(pickup_nyct2010_gid), 'Unknown') AS borough_name
-   FROM trips
-   WHERE dropoff_nyct2010_gid = 132 OR dropoff_nyct2010_gid = 138
-   GROUP BY borough_name
-   ORDER BY total DESC
-   ```
+    SELECT
+        count(1) AS total,
+        dictGetOrDefault('taxi_zone_dictionary','Borough', toUInt64(pickup_nyct2010_gid), 'Unknown') AS borough_name
+    FROM trips
+    WHERE dropoff_nyct2010_gid = 132 OR dropoff_nyct2010_gid = 138
+    GROUP BY borough_name
+    ORDER BY total DESC
+    ```
 
 Этот запрос подсчитывает количество поездок на такси по районам, которые заканчиваются либо в аэропорту LaGuardia, либо в аэропорту JFK. Результат выглядит следующим образом: обратите внимание, что есть довольно много поездок, для которых район посадки неизвестен:
 
 ```response
-┌─total─┬─borough_name──┐
-│ 23683 │ Unknown       │
-│  7053 │ Manhattan     │
-│  6828 │ Brooklyn      │
-│  4458 │ Queens        │
-│  2670 │ Bronx         │
-│   554 │ Staten Island │
-│    53 │ EWR           │
-└───────┴───────────────┘
+    ┌─total─┬─borough_name──┐
+    │ 23683 │ Unknown       │
+    │  7053 │ Manhattan     │
+    │  6828 │ Brooklyn      │
+    │  4458 │ Queens        │
+    │  2670 │ Bronx         │
+    │   554 │ Staten Island │
+    │    53 │ EWR           │
+    └───────┴───────────────┘
 
-7 строк в наборе. Затрачено: 0.019 сек. Обработано 2.00 млн строк, 4.00 МБ (105.70 млн строк/сек., 211.40 МБ/сек.)
-```
+    7 rows in set. Elapsed: 0.019 sec. Processed 2.00 million rows, 4.00 MB (105.70 million rows/s., 211.40 MB/s.)
+    ```
 
 ## Выполнение соединения {#perform-a-join}
 

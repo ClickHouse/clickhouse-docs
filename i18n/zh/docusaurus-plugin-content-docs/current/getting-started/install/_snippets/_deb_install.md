@@ -12,19 +12,19 @@ import TabItem from '@theme/TabItem';
 要安装 ClickHouse，请运行以下命令：
 
 ```bash
-# 安装先决条件软件包 {#install-prerequisite-packages}
+# Install prerequisite packages
 sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
 
-# 下载 ClickHouse 的 GPG 密钥并将其存储到密钥环中 {#download-the-clickhouse-gpg-key-and-store-it-in-the-keyring}
+# Download the ClickHouse GPG key and store it in the keyring
 curl -fsSL 'https://packages.clickhouse.com/rpm/lts/repodata/repomd.xml.key' | sudo gpg --dearmor -o /usr/share/keyrings/clickhouse-keyring.gpg
 
-# 获取系统架构 {#get-the-system-architecture}
+# Get the system architecture
 ARCH=$(dpkg --print-architecture)
 
-# 将 ClickHouse 仓库添加到 APT 软件源列表 {#add-the-clickhouse-repository-to-apt-sources}
+# Add the ClickHouse repository to apt sources
 echo "deb [signed-by=/usr/share/keyrings/clickhouse-keyring.gpg arch=${ARCH}] https://packages.clickhouse.com/deb stable main" | sudo tee /etc/apt/sources.list.d/clickhouse.list
 
-# 更新 apt 软件包列表 {#update-apt-package-lists}
+# Update apt package lists
 sudo apt-get update
 ```
 
@@ -35,27 +35,27 @@ sudo apt-get update
 <summary>用于安装 deb 软件包的旧分发方式</summary>
 
 ```bash
-# 安装前置依赖包 {#install-prerequisite-packages}
+# Install prerequisite packages
 sudo apt-get install apt-transport-https ca-certificates dirmngr
 
-# 添加 ClickHouse GPG 密钥用于验证软件包 {#add-the-clickhouse-gpg-key-to-authenticate-packages}
+# Add the ClickHouse GPG key to authenticate packages
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 8919F6BD2B48D754
 
-# 将 ClickHouse 软件仓库添加到 apt 源列表 {#add-the-clickhouse-repository-to-apt-sources}
+# Add the ClickHouse repository to apt sources
 echo "deb https://packages.clickhouse.com/deb stable main" | sudo tee \
     /etc/apt/sources.list.d/clickhouse.list
-
-# 更新 apt 软件包列表 {#update-apt-package-lists}
+    
+# Update apt package lists
 sudo apt-get update
 
-# 安装 ClickHouse 服务端和客户端软件包 {#install-clickhouse-server-and-client-packages}
+# Install ClickHouse server and client packages
 sudo apt-get install -y clickhouse-server clickhouse-client
 
-# 启动 ClickHouse 服务 {#start-the-clickhouse-server-service}
+# Start the ClickHouse server service
 sudo service clickhouse-server start
 
-# 启动 ClickHouse 命令行客户端 {#launch-the-clickhouse-command-line-client}
-clickhouse-client # 如果已设置密码,请使用 "clickhouse-client --password"。
+# Launch the ClickHouse command line client
+clickhouse-client # or "clickhouse-client --password" if you set up a password.
 ```
 
 </details>

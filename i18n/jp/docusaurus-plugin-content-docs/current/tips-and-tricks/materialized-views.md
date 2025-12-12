@@ -44,7 +44,7 @@ description: 'マテリアライズドビューの実例と、発生しうる問
 * **ストレージ倍率** = MV のサイズがどれだけ増減するか
 
 ```sql
--- 実際のテーブル名とカラム名に置き換えてください
+-- Replace with your actual table and columns
 SELECT 
     count() as total_rows,
     uniq(your_group_by_columns) as unique_combinations,
@@ -52,8 +52,8 @@ SELECT
 FROM your_table
 WHERE your_filter_conditions;
 
--- aggregation_ratioが70%を超える場合、マテリアライズドビューの設計を再検討してください
--- aggregation_ratioが10%未満の場合、良好な圧縮率が得られます
+-- If aggregation_ratio > 70%, reconsider your MV design
+-- If aggregation_ratio < 10%, you'll get good compression
 ```
 
 ## マテリアライズドビューが問題になるとき {#mv-problems}

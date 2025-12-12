@@ -89,28 +89,28 @@ SHOW CREATE TABLE posts
 
 CREATE TABLE posts
 (
-`Id` Nullable(Int64),
-`PostTypeId` Nullable(Int64),
-`AcceptedAnswerId` Nullable(Int64),
-`CreationDate` Nullable(DateTime64(3, 'UTC')),
-`Score` Nullable(Int64),
-`ViewCount` Nullable(Int64),
-`Body` Nullable(String),
-`OwnerUserId` Nullable(Int64),
-`OwnerDisplayName` Nullable(String),
-`LastEditorUserId` Nullable(Int64),
-`LastEditorDisplayName` Nullable(String),
-`LastEditDate` Nullable(DateTime64(3, 'UTC')),
-`LastActivityDate` Nullable(DateTime64(3, 'UTC')),
-`Title` Nullable(String),
-`Tags` Nullable(String),
-`AnswerCount` Nullable(Int64),
-`CommentCount` Nullable(Int64),
-`FavoriteCount` Nullable(Int64),
-`ContentLicense` Nullable(String),
-`ParentId` Nullable(String),
-`CommunityOwnedDate` Nullable(DateTime64(3, 'UTC')),
-`ClosedDate` Nullable(DateTime64(3, 'UTC'))
+        `Id` Nullable(Int64),
+        `PostTypeId` Nullable(Int64),
+        `AcceptedAnswerId` Nullable(Int64),
+        `CreationDate` Nullable(DateTime64(3, 'UTC')),
+        `Score` Nullable(Int64),
+        `ViewCount` Nullable(Int64),
+        `Body` Nullable(String),
+        `OwnerUserId` Nullable(Int64),
+        `OwnerDisplayName` Nullable(String),
+        `LastEditorUserId` Nullable(Int64),
+        `LastEditorDisplayName` Nullable(String),
+        `LastEditDate` Nullable(DateTime64(3, 'UTC')),
+        `LastActivityDate` Nullable(DateTime64(3, 'UTC')),
+        `Title` Nullable(String),
+        `Tags` Nullable(String),
+        `AnswerCount` Nullable(Int64),
+        `CommentCount` Nullable(Int64),
+        `FavoriteCount` Nullable(Int64),
+        `ContentLicense` Nullable(String),
+        `ParentId` Nullable(String),
+        `CommunityOwnedDate` Nullable(DateTime64(3, 'UTC')),
+        `ClosedDate` Nullable(DateTime64(3, 'UTC'))
 )
 ENGINE = MergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
 ORDER BY tuple()
@@ -206,7 +206,7 @@ CREATE TABLE posts_v2
 )
 ENGINE = MergeTree
 ORDER BY tuple()
-COMMENT '已优化类型'
+COMMENT 'Optimized types'
 ```
 
 我们可以使用一条简单的 `INSERT INTO SELECT` 语句来向该表填充数据，从之前的表中读取数据并插入到这里：
@@ -264,8 +264,8 @@ LIMIT 3
 │ 77900279 │ Speed Test for Buffer Alignment: IBM's PowerPC results vs. my CPU │        49 │
 └──────────┴───────────────────────────────────────────────────────────────────┴──────────────
 
-返回 10 行。用时:0.070 秒。已处理 5982 万行,569.21 MB(852.55 百万行/秒,8.11 GB/秒)。
-峰值内存用量:429.38 MiB。
+10 rows in set. Elapsed: 0.070 sec. Processed 59.82 million rows, 569.21 MB (852.55 million rows/s., 8.11 GB/s.)
+Peak memory usage: 429.38 MiB.
 ```
 
 > 即使对全部 6000 万行做了线性扫描，这里的查询依然非常快——ClickHouse 就是这么快 :) 在 TB 和 PB 级别的数据规模下，请相信我们：合理选择排序键是非常值得的！
@@ -302,16 +302,16 @@ CREATE TABLE posts_v3
 )
 ENGINE = MergeTree
 ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
-COMMENT '排序键'
+COMMENT 'Ordering Key'
 
---从现有表填充表
+--populate table from existing table
 
 INSERT INTO posts_v3 SELECT * FROM posts_v2
 
-返回 0 行。用时:158.074 秒。已处理 5982 万行,76.21 GB(每秒 37.842 万行,482.14 MB/s)。
-峰值内存使用量:6.41 GiB。
+0 rows in set. Elapsed: 158.074 sec. Processed 59.82 million rows, 76.21 GB (378.42 thousand rows/s., 482.14 MB/s.)
+Peak memory usage: 6.41 GiB.
 
-之前的查询将查询响应时间提升了 3 倍以上:
+Our previous query improves the query response time by over 3x:
 
 SELECT
     Id,
@@ -322,7 +322,7 @@ WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 ORDER BY CommentCount DESC
 LIMIT 3
 
-返回 10 行。用时:0.020 秒。已处理 29.009 万行,21.03 MB(每秒 1465 万行,1.06 GB/s)。
+10 rows in set. Elapsed: 0.020 sec. Processed 290.09 thousand rows, 21.03 MB (14.65 million rows/s., 1.06 GB/s.)
 ```
 
 对于希望通过使用特定数据类型和合理排序键来提升压缩效果的用户，请参阅 [Compression in ClickHouse](/data-compression/compression-in-clickhouse)。如果需要进一步提高压缩率，我们还推荐参考其中的 [Choosing the right column compression codec](/data-compression/compression-in-clickhouse#choosing-the-right-column-compression-codec) 部分。

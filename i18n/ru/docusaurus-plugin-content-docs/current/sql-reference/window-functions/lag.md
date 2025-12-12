@@ -41,11 +41,11 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 CREATE TABLE stock_prices
 (
     `date`   Date,
-    `open`   Float32, -- цена открытия
-    `high`   Float32, -- максимальная цена за день
-    `low`    Float32, -- минимальная цена за день
-    `close`  Float32, -- цена закрытия
-    `volume` UInt32   -- объем торгов
+    `open`   Float32, -- opening price
+    `high`   Float32, -- daily high
+    `low`    Float32, -- daily low
+    `close`  Float32, -- closing price
+    `volume` UInt32   -- trade volume
 )
 Engine = Memory;
 

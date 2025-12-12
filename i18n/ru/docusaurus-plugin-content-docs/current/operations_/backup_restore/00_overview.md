@@ -216,7 +216,7 @@ BACKUP TABLE helloworld.my_first_table TO Disk('backups', '1.zip') ASYNC
 │ 7678b0b3-f519-4e6e-811f-5a0781a4eb52 │ CREATING_BACKUP │
 └──────────────────────────────────────┴─────────────────┘
 
-1 строка в наборе. Затрачено: 0.001 сек.
+1 row in set. Elapsed: 0.001 sec.
 ```
 
 ```sql
@@ -238,11 +238,11 @@ num_files:         0
 uncompressed_size: 0
 compressed_size:   0
 #highlight-next-line
-error:             Код: 598. DB::Exception: Резервная копия Disk('backups', '1.zip') уже существует. (BACKUP_ALREADY_EXISTS) (версия 22.8.2.11 (официальная сборка))
+error:             Code: 598. DB::Exception: Backup Disk('backups', '1.zip') already exists. (BACKUP_ALREADY_EXISTS) (version 22.8.2.11 (official build))
 start_time:        2022-08-30 09:21:46
 end_time:          2022-08-30 09:21:46
 
-Получена 1 строка. Затрачено: 0.002 сек.
+1 row in set. Elapsed: 0.002 sec.
 ```
 
 Помимо таблицы [`system.backups`](/operations/system-tables/backups) все операции резервного копирования и восстановления также протоколируются в системной таблице журнала
@@ -257,7 +257,7 @@ FORMAT Vertical
 ```
 
 ```response
-Строка 1:
+Row 1:
 ──────
 event_date:              2023-08-18
 event_time_microseconds: 2023-08-18 11:13:43.097414
@@ -275,7 +275,7 @@ compressed_size:         0
 files_read:              0
 bytes_read:              0
 
-Строка 2:
+Row 2:
 ──────
 event_date:              2023-08-18
 event_time_microseconds: 2023-08-18 11:13:43.174782
@@ -294,5 +294,5 @@ compressed_size:         0
 files_read:              0
 bytes_read:              0
 
-Получено 2 строки. Затрачено: 0.075 сек.
+2 rows in set. Elapsed: 0.075 sec.
 ```

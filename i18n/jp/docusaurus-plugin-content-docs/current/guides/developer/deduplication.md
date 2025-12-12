@@ -79,12 +79,12 @@ FROM hackernews_rmt
 
 ```response
 ┌─id─┬─author──┬─comment─────────┬─views─┐
-│  2 │ ch_fan  │ これは投稿 #2 です │     0 │
-│  1 │ ricardo │ これは投稿 #1 です │     0 │
+│  2 │ ch_fan  │ This is post #2 │     0 │
+│  1 │ ricardo │ This is post #1 │     0 │
 └────┴─────────┴─────────────────┴───────┘
 ┌─id─┬─author──┬─comment─────────┬─views─┐
-│  2 │ ch_fan  │ これは投稿 #2 です │   200 │
-│  1 │ ricardo │ これは投稿 #1 です │   100 │
+│  2 │ ch_fan  │ This is post #2 │   200 │
+│  1 │ ricardo │ This is post #1 │   100 │
 └────┴─────────┴─────────────────┴───────┘
 ```
 
@@ -98,8 +98,8 @@ FINAL
 
 ```response
 ┌─id─┬─author──┬─comment─────────┬─views─┐
-│  2 │ ch_fan  │ 投稿 #2 │   200 │
-│  1 │ ricardo │ 投稿 #1 │   100 │
+│  2 │ ch_fan  │ This is post #2 │   200 │
+│  1 │ ricardo │ This is post #1 │   100 │
 └────┴─────────┴─────────────────┴───────┘
 ```
 
@@ -157,8 +157,8 @@ GROUP BY (id, author, comment)
 
 ```response
 ┌─id─┬─author──┬─comment─────────┬─max(views)─┐
-│  2 │ ch_fan  │ これは投稿 #2 です │        250 │
-│  1 │ ricardo │ これは投稿 #1 です │        150 │
+│  2 │ ch_fan  │ This is post #2 │        250 │
+│  1 │ ricardo │ This is post #1 │        150 │
 └────┴─────────┴─────────────────┴────────────┘
 ```
 

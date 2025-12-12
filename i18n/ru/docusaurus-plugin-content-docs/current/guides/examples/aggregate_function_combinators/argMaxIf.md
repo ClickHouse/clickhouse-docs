@@ -48,8 +48,8 @@ FROM product_sales;
 среди популярных товаров.
 
 ```response title="Response"
-   ┌─самый_дорого⋯й_продукт────┐
-1. │ Ноутбук                  │
+   ┌─most_expensi⋯lar_product─┐
+1. │ Laptop                   │
    └──────────────────────────┘
 ```
 

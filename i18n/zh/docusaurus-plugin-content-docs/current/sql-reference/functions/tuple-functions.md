@@ -56,31 +56,37 @@ SELECT flattenTuple(t) FROM tab;
 └────────────────┘
 ```
 
+
+
 ## tuple {#tuple}
 
-引入版本：v
+Introduced in: v
 
-通过对输入参数进行分组来返回一个 tuple。
 
-对于类型分别为 T1、T2、... 的列 C1、C2、...，如果这些列名是唯一的并且可以视为未带引号的标识符，则返回一个命名的 `Tuple(C1 T1, C2 T2, ...)` 类型的 tuple，包含这些列；否则返回 `Tuple(T1, T2, ...)`。执行该函数没有额外开销。
-tuple 通常用作 IN 运算符参数的中间值，或用于创建 lambda 函数的形式参数列表。tuple 不能写入表中。
+Returns a tuple by grouping input arguments.
 
-该函数实现了运算符 `(x, y, ...)`。
+For columns C1, C2, ... with the types T1, T2, ..., it returns a named Tuple(C1 T1, C2 T2, ...) type tuple containing these columns if their names are unique and can be treated as unquoted identifiers, otherwise a Tuple(T1, T2, ...) is returned. There is no cost to execute the function.
+Tuples are normally used as intermediate values for an argument of IN operators, or for creating a list of formal parameters of lambda functions. Tuples can't be written to a table.
 
-**语法**
+The function implements the operator `(x, y, ...)`.
+
+
+**Syntax**
 
 ```sql
 ```
 
-**参数**
+**Arguments**
 
-* 无。
+- None.
 
-**返回值**
+**Returned value**
 
-**示例**
 
-**典型示例**
+
+**Examples**
+
+**typical**
 
 ```sql title=Query
 SELECT tuple(1, 2)
@@ -90,29 +96,34 @@ SELECT tuple(1, 2)
 (1,2)
 ```
 
+
+
 ## tupleConcat {#tupleConcat}
 
-自 v23.8 起引入
+Introduced in: v23.8
 
-将作为参数传入的 `tuple` 合并为一个元组。
 
-**语法**
+Combines tuples passed as arguments.
+
+
+**Syntax**
 
 ```sql
 tupleConcat(tuple1[, tuple2, [...]])
 ```
 
-**参数**
+**Arguments**
 
-* `tupleN` — 任意数量的 `Tuple` 类型参数。[`Tuple(T)`](/sql-reference/data-types/tuple)
+- `tupleN` — Arbitrary number of arguments of Tuple type. [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**返回值**
 
-返回一个元组，包含所有输入元组中的所有元素。[`Tuple(T)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**示例**
+Returns a tuple containing all elements from the input tuples. [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT tupleConcat((1, 2), ('a',), (true, false))
@@ -122,34 +133,39 @@ SELECT tupleConcat((1, 2), ('a',), (true, false))
 (1, 2, 'a', true, false)
 ```
 
+
+
 ## tupleDivide {#tupleDivide}
 
-引入版本：v21.11
+Introduced in: v21.11
 
-计算两个相同长度元组（tuple）中对应元素的商。
+
+Calculates the division of corresponding elements of two tuples of the same size.
 
 :::note
-当除数为零时，将返回 `inf`。
+Division by zero will return `inf`.
 :::
 
-**语法**
+
+**Syntax**
 
 ```sql
 tupleDivide(t1, t2)
 ```
 
-**参数**
+**Arguments**
 
-* `t1` — 第一个元组。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `t2` — 第二个元组。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `t1` — First tuple. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `t2` — Second tuple. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**返回值**
 
-返回一个包含除法结果的元组。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**示例**
+Returns tuple with the result of division. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**基本用法**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT tupleDivide((1, 2), (2, 3))
@@ -159,34 +175,39 @@ SELECT tupleDivide((1, 2), (2, 3))
 (0.5, 0.6666666666666666)
 ```
 
+
+
 ## tupleDivideByNumber {#tupleDivideByNumber}
 
-自 v21.11 引入
+Introduced in: v21.11
 
-返回一个元组，其中所有元素都除以指定的数。
+
+Returns a tuple with all elements divided by a number.
 
 :::note
-除以零将返回 `inf`。
+Division by zero will return `inf`.
 :::
 
-**语法**
+
+**Syntax**
 
 ```sql
 tupleDivideByNumber(tuple, number)
 ```
 
-**参数**
+**Arguments**
 
-* `tuple` — 要进行除法运算的元组。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `number` — 除数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+- `tuple` — Tuple to divide. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `number` — Divider. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
 
-**返回值**
 
-返回一个其各元素均已被给定除数除以后的元组。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**示例**
+Returns a tuple with divided elements. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**基本用法**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT tupleDivideByNumber((1, 2), 0.5)
@@ -196,40 +217,45 @@ SELECT tupleDivideByNumber((1, 2), 0.5)
 (2, 4)
 ```
 
+
+
 ## tupleElement {#tupleElement}
 
-引入版本：v1.1
+Introduced in: v1.1
 
-按索引或名称从元组中提取元素。
 
-按索引访问时，索引从 1 开始计数。
-按名称访问时，可以将元素名称以字符串形式提供（仅适用于具名元组）。
+Extracts an element from a tuple by index or name.
 
-可选的第三个参数用于指定一个默认值，当访问的元素不存在时，将返回该默认值而不是抛出异常。
-所有参数必须是常量。
+For access by index, an 1-based numeric index is expected.
+For access by name, the element name can be provided as a string (works only for named tuples).
 
-该函数在运行时没有任何开销，并实现了运算符 `x.index` 和 `x.name`。
+An optional third argument specifies a default value which is returned instead of throwing an exception when the accessed element does not exist.
+All arguments must be constants.
 
-**语法**
+This function has zero runtime cost and implements the operators `x.index` and `x.name`.
+
+
+**Syntax**
 
 ```sql
 tupleElement(tuple, index|name[, default_value])
 ```
 
-**参数**
+**Arguments**
 
-* `tuple` — 一个元组或元组数组。[`Tuple(T)`](/sql-reference/data-types/tuple) 或 [`Array(Tuple(T))`](/sql-reference/data-types/array)
-* `index` — 列索引，从 1 开始计数。[`const UInt8/16/32/64`](/sql-reference/data-types/int-uint)
-* `name` — 元素名称。[`const String`](/sql-reference/data-types/string)
-* `default_value` — 当索引越界或元素不存在时返回的默认值。[`Any`](/sql-reference/data-types)
+- `tuple` — A tuple or array of tuples. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(Tuple(T))`](/sql-reference/data-types/array)
+- `index` — Column index, starting from 1. [`const UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+- `name` — Name of the element. [`const String`](/sql-reference/data-types/string)
+- `default_value` — Default value returned when index is out of bounds or element doesn't exist. [`Any`](/sql-reference/data-types)
 
-**返回值**
 
-返回指定索引或名称对应的元素。[`Any`](/sql-reference/data-types)
+**Returned value**
 
-**示例**
+Returns the element at the specified index or name. [`Any`](/sql-reference/data-types)
 
-**按索引访问**
+**Examples**
+
+**Index access**
 
 ```sql title=Query
 SELECT tupleElement((1, 'hello'), 2)
@@ -239,7 +265,7 @@ SELECT tupleElement((1, 'hello'), 2)
 你好
 ```
 
-**包含表的命名元组**
+**Named tuple with table**
 
 ```sql title=Query
 CREATE TABLE example (values Tuple(name String, age UInt32)) ENGINE = Memory;
@@ -251,7 +277,7 @@ SELECT tupleElement(values, 'name') FROM example;
 Alice
 ```
 
-**使用默认值**
+**With default value**
 
 ```sql title=Query
 SELECT tupleElement((1, 2), 5, 'not_found')
@@ -261,7 +287,7 @@ SELECT tupleElement((1, 2), 5, 'not_found')
 not_found
 ```
 
-**运算符语法**
+**Operator syntax**
 
 ```sql title=Query
 SELECT (1, 'hello').2
@@ -271,14 +297,17 @@ SELECT (1, 'hello').2
 你好
 ```
 
+
+
 ## tupleHammingDistance {#tupleHammingDistance}
 
-引入于：v21.1
+Introduced in: v21.1
 
-返回两个长度相同的元组之间的[汉明距离](https://en.wikipedia.org/wiki/Hamming_distance)。
+
+Returns the [Hamming Distance](https://en.wikipedia.org/wiki/Hamming_distance) between two tuples of the same size.
 
 :::note
-结果类型的确定方式与[算术函数](../../sql-reference/functions/arithmetic-functions.md)相同，取决于输入元组中的元素数量。
+The result type is determined the same way it is for [Arithmetic functions](../../sql-reference/functions/arithmetic-functions.md), based on the number of elements in the input tuples.
 
 ```sql
 SELECT
@@ -294,27 +323,28 @@ SELECT
 │ UInt8 │ UInt16 │ UInt32 │ UInt64 │ UInt64 │
 └───────┴────────┴────────┴────────┴────────┘
 ```
-
 :::
 
-**语法**
+
+**Syntax**
 
 ```sql
 tupleHammingDistance(t1, t2)
 ```
 
-**参数**
+**Arguments**
 
-* `t1` — 第一个元组。[`Tuple(*)`](/sql-reference/data-types/tuple)
-* `t2` — 第二个元组。[`Tuple(*)`](/sql-reference/data-types/tuple)
+- `t1` — First tuple. [`Tuple(*)`](/sql-reference/data-types/tuple)
+- `t2` — Second tuple. [`Tuple(*)`](/sql-reference/data-types/tuple)
 
-**返回值**
 
-返回汉明距离。[`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns the Hamming distance. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT tupleHammingDistance((1, 2, 3), (3, 2, 1))
@@ -324,7 +354,7 @@ SELECT tupleHammingDistance((1, 2, 3), (3, 2, 1))
 2
 ```
 
-**使用 MinHash 检测近似重复字符串**
+**With MinHash to detect semi-duplicate strings**
 
 ```sql title=Query
 SELECT tupleHammingDistance(wordShingleMinHash(string), wordShingleMinHashCaseInsensitive(string)) FROM (SELECT 'ClickHouse 是一个列式数据库管理系统,用于在线分析处理查询。' AS string)
@@ -334,32 +364,37 @@ SELECT tupleHammingDistance(wordShingleMinHash(string), wordShingleMinHashCaseIn
 2
 ```
 
+
+
 ## tupleIntDiv {#tupleIntDiv}
 
-引入版本：v23.8
+Introduced in: v23.8
 
-对一个分子元组和一个分母元组执行整数除法。返回商的元组。
-如果任一元组包含非整数元素，则会先将每个非整数分子或除数四舍五入到最接近的整数，再计算结果。
-以 0 为除数会抛出错误。
 
-**语法**
+Performs an integer division with a tuple of numerators and a tuple of denominators. Returns a tuple of quotients.
+If either tuple contains non-integer elements then the result is calculated by rounding to the nearest integer for each non-integer numerator or divisor.
+Division by 0 causes an error to be thrown.
+
+
+**Syntax**
 
 ```sql
 tupleIntDiv(tuple_num, tuple_div)
 ```
 
-**参数**
+**Arguments**
 
-* `tuple_num` — 分子值的元组。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `tuple_div` — 分母值的元组。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `tuple_num` — Tuple of numerator values. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `tuple_div` — Tuple of divisor values. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**返回值**
 
-返回一个包含商的元组。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**示例**
+Returns a tuple of the quotients. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**基本用法**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT tupleIntDiv((15, 10, 5), (5, 5, 5))
@@ -369,7 +404,7 @@ SELECT tupleIntDiv((15, 10, 5), (5, 5, 5))
 (3, 2, 1)
 ```
 
-**含小数**
+**With decimals**
 
 ```sql title=Query
 SELECT tupleIntDiv((15, 10, 5), (5.5, 5.5, 5.5))
@@ -379,32 +414,37 @@ SELECT tupleIntDiv((15, 10, 5), (5.5, 5.5, 5.5))
 (2, 1, 0)
 ```
 
+
+
 ## tupleIntDivByNumber {#tupleIntDivByNumber}
 
-引入版本：v23.8
+Introduced in: v23.8
 
-对一个由分子组成的 `tuple` 按给定的分母执行整数除法，并返回由商组成的 `tuple`。
-如果任一输入参数中包含非整数元素，则会先将每个非整数分子或分母四舍五入到最接近的整数，再计算结果。
-当除数为 0 时会抛出错误。
 
-**语法**
+Performs integer division of a tuple of numerators by a given denominator, and returns a tuple of the quotients.
+If either of the input parameters contain non-integer elements then the result is calculated by rounding to the nearest integer for each non-integer numerator or divisor.
+An error will be thrown for division by 0.
+
+
+**Syntax**
 
 ```sql
 tupleIntDivByNumber(tuple_num, div)
 ```
 
-**参数**
+**Arguments**
 
-* `tuple_num` — 分子值的元组。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `div` — 除数值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+- `tuple_num` — Tuple of numerator values. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `div` — The divisor value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
 
-**返回值**
 
-返回商的元组。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**示例**
+Returns a tuple of the quotients. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**基本用法**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT tupleIntDivByNumber((15, 10, 5), 5)
@@ -414,7 +454,7 @@ SELECT tupleIntDivByNumber((15, 10, 5), 5)
 (3, 2, 1)
 ```
 
-**包含小数位**
+**With decimals**
 
 ```sql title=Query
 SELECT tupleIntDivByNumber((15.2, 10.7, 5.5), 5.8)
@@ -424,32 +464,37 @@ SELECT tupleIntDivByNumber((15.2, 10.7, 5.5), 5.8)
 (2, 1, 0)
 ```
 
+
+
 ## tupleIntDivOrZero {#tupleIntDivOrZero}
 
-引入版本：v23.8
+Introduced in: v23.8
 
-与 [`tupleIntDiv`](#tupleIntDiv) 类似，对一个分子元组和一个分母元组执行整数除法，并返回商的元组。
-当除数为 0 时，会将对应的商返回为 0，而不是抛出异常。
-如果任一元组包含非整数元素，则会先将每个非整数分子或除数四舍五入到最接近的整数，然后再计算结果。
 
-**语法**
+Like [`tupleIntDiv`](#tupleIntDiv) performs integer division of a tuple of numerators and a tuple of denominators, and returns a tuple of the quotients.
+In case of division by 0, returns the quotient as 0 instead of throwing an exception.
+If either tuple contains non-integer elements then the result is calculated by rounding to the nearest integer for each non-integer numerator or divisor.
+
+
+**Syntax**
 
 ```sql
 tupleIntDivOrZero(tuple_num, tuple_div)
 ```
 
-**参数**
+**Arguments**
 
-* `tuple_num` — 分子值的元组。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `tuple_div` — 除数的元组。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `tuple_num` — Tuple of numerator values. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `tuple_div` — Tuple of divisor values. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**返回值**
 
-返回商的元组。对于除数为 0 的情况返回商 0。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**示例**
+Returns tuple of the quotients. Returns 0 for quotients where the divisor is 0. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**包含零除数的情况**
+**Examples**
+
+**With zero divisors**
 
 ```sql title=Query
 SELECT tupleIntDivOrZero((5, 10, 15), (0, 0, 0))
@@ -459,32 +504,37 @@ SELECT tupleIntDivOrZero((5, 10, 15), (0, 0, 0))
 (0, 0, 0)
 ```
 
+
+
 ## tupleIntDivOrZeroByNumber {#tupleIntDivOrZeroByNumber}
 
-首次引入于：v23.8
+Introduced in: v23.8
 
-与 [`tupleIntDivByNumber`](#tupleIntDivByNumber) 类似，该函数对一个由被除数组成的 `tuple` 与给定除数执行整数除法，并返回由商组成的 `tuple`。
-它不会因除数为零而抛出错误，而是将对应位置的商返回为零。
-如果 `tuple` 或除数中包含非整数元素，则会先将每个非整数的被除数或除数四舍五入到最接近的整数，再计算结果。
 
-**语法**
+Like [`tupleIntDivByNumber`](#tupleIntDivByNumber) it does integer division of a tuple of numerators by a given denominator, and returns a tuple of the quotients.
+It does not throw an error for zero divisors, but rather returns the quotient as zero.
+If either the tuple or div contain non-integer elements then the result is calculated by rounding to the nearest integer for each non-integer numerator or divisor.
+
+
+**Syntax**
 
 ```sql
 tupleIntDivOrZeroByNumber(tuple_num, div)
 ```
 
-**参数**
+**Arguments**
 
-* `tuple_num` — 分子值的元组。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `div` — 除数的值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+- `tuple_num` — Tuple of numerator values. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `div` — The divisor value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
 
-**返回值**
 
-返回一个由各个商组成的元组，对于除数为 `0` 的位置，其商为 `0`。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**示例**
+Returns a tuple of the quotients with `0` for quotients where the divisor is `0`. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**基本用法**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT tupleIntDivOrZeroByNumber((15, 10, 5), 5)
@@ -494,7 +544,7 @@ SELECT tupleIntDivOrZeroByNumber((15, 10, 5), 5)
 (3, 2, 1)
 ```
 
-**除数为零时**
+**With zero divisor**
 
 ```sql title=Query
 SELECT tupleIntDivOrZeroByNumber((15, 10, 5), 0)
@@ -504,32 +554,37 @@ SELECT tupleIntDivOrZeroByNumber((15, 10, 5), 0)
 (0, 0, 0)
 ```
 
+
+
 ## tupleMinus {#tupleMinus}
 
-自 v21.11 版本引入
+Introduced in: v21.11
 
-计算两个大小相同的元组中对应元素的差值。
 
-**语法**
+Calculates the difference between corresponding elements of two tuples of the same size.
+
+
+**Syntax**
 
 ```sql
 tupleMinus(t1, t2)
 ```
 
-**别名**: `vectorDifference`
+**Aliases**: `vectorDifference`
 
-**参数**
+**Arguments**
 
-* `t1` — 第一个元组。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `t2` — 第二个元组。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `t1` — First tuple. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `t2` — Second tuple. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**返回值**
 
-返回一个包含各项差值结果的元组。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**示例**
+Returns a tuple containing the results  of the subtractions. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**基本用法**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT tupleMinus((1, 2), (2, 3))
@@ -539,30 +594,35 @@ SELECT tupleMinus((1, 2), (2, 3))
 (-1, -1)
 ```
 
+
+
 ## tupleModulo {#tupleModulo}
 
-引入自：v23.8
+Introduced in: v23.8
 
-返回一个元组，其中包含两个元组对应元素相除所得的余数（模）。
 
-**语法**
+Returns a tuple of the remainders (moduli) of division operations of two tuples.
+
+
+**Syntax**
 
 ```sql
 tupleModulo(tuple_num, tuple_mod)
 ```
 
-**参数**
+**Arguments**
 
-* `tuple_num` — 分子值的元组。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `tuple_mod` — 模数值的元组。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `tuple_num` — Tuple of numerator values. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `tuple_mod` — Tuple of modulus values. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**返回值**
 
-返回一个包含各次除法余数的元组。除以零会抛出错误。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**示例**
+Returns tuple of the remainders of division. An error is thrown for division by zero. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**基本用法**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT tupleModulo((15, 10, 5), (5, 3, 2))
@@ -572,30 +632,35 @@ SELECT tupleModulo((15, 10, 5), (5, 3, 2))
 (0, 1, 1)
 ```
 
+
+
 ## tupleModuloByNumber {#tupleModuloByNumber}
 
-自 v23.8 起引入
+Introduced in: v23.8
 
-返回一个元组，其中包含将输入元组各元素分别对给定除数取模（求余）得到的结果。
 
-**语法**
+Returns a tuple of the moduli (remainders) of division operations of a tuple and a given divisor.
+
+
+**Syntax**
 
 ```sql
 tupleModuloByNumber(tuple_num, div)
 ```
 
-**参数**
+**Arguments**
 
-* `tuple_num` — 被除数元素构成的元组。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `div` — 除数的数值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+- `tuple_num` — Tuple of numerator elements. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `div` — The divisor value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
 
-**返回值**
 
-返回由各元素除法余数构成的元组。当除数为零时会抛出错误。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**示例**
+Returns tuple of the remainders of division. An error is thrown for division by zero. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**基本用法**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT tupleModuloByNumber((15, 10, 5), 2)
@@ -605,30 +670,35 @@ SELECT tupleModuloByNumber((15, 10, 5), 2)
 (1, 0, 1)
 ```
 
+
+
 ## tupleMultiply {#tupleMultiply}
 
-自 v21.11 引入
+Introduced in: v21.11
 
-计算两个长度相同的元组中对应元素的乘积。
 
-**语法**
+Calculates the multiplication of corresponding elements of two tuples of the same size.
+
+
+**Syntax**
 
 ```sql
 tupleMultiply(t1, t2)
 ```
 
-**参数**
+**Arguments**
 
-* `t1` — 第一个元组。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `t2` — 第二个元组。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `t1` — First tuple. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `t2` — Second tuple. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**返回值**
 
-返回包含乘积结果的元组。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**示例**
+Returns a tuple with the results of the multiplications. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**基本用法**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT tupleMultiply((1, 2), (2, 3))
@@ -638,30 +708,35 @@ SELECT tupleMultiply((1, 2), (2, 3))
 (2, 6)
 ```
 
+
+
 ## tupleMultiplyByNumber {#tupleMultiplyByNumber}
 
-自 v21.11 起提供
+Introduced in: v21.11
 
-返回一个 tuple，其中所有元素都乘以指定数字。
 
-**语法**
+Returns a tuple with all elements multiplied by a number.
+
+
+**Syntax**
 
 ```sql
 tupleMultiplyByNumber(tuple, number)
 ```
 
-**参数**
+**Arguments**
 
-* `tuple` — 要进行乘法运算的元组。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `number` — 乘数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+- `tuple` — Tuple to multiply. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `number` — Multiplier. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
 
-**返回值**
 
-返回一个其各元素均已相乘的元组。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**示例**
+Returns a tuple with multiplied elements. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**基本用法**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT tupleMultiplyByNumber((1, 2), -2.1)
@@ -671,26 +746,32 @@ SELECT tupleMultiplyByNumber((1, 2), -2.1)
 (-2.1, -4.2)
 ```
 
+
+
 ## tupleNames {#tupleNames}
 
-引入版本：v
+Introduced in: v
 
-将 tuple 转换为列名数组。对于形如 `Tuple(a T, b T, ...)` 的 tuple，它返回一个字符串数组，表示该 tuple 中具名列的名称。如果 tuple 元素没有显式名称，则会使用它们的索引作为列名。
 
-**语法**
+Converts a tuple into an array of column names. For a tuple in the form `Tuple(a T, b T, ...)`, it returns an array of strings representing the named columns of the tuple. If the tuple elements do not have explicit names, their indices will be used as the column names instead.
+
+
+**Syntax**
 
 ```sql
 ```
 
-**参数**
+**Arguments**
 
-* 无。
+- None.
 
-**返回值**
+**Returned value**
 
-**示例**
 
-**典型示例**
+
+**Examples**
+
+**typical**
 
 ```sql title=Query
 SELECT tupleNames(tuple(1 as a, 2 as b))
@@ -700,29 +781,34 @@ SELECT tupleNames(tuple(1 as a, 2 as b))
 ['a','b']
 ```
 
+
+
 ## tupleNegate {#tupleNegate}
 
-引入版本：v21.11
+Introduced in: v21.11
 
-计算元组中各元素的相反数。
 
-**语法**
+Calculates the negation of the tuple elements.
+
+
+**Syntax**
 
 ```sql
 tupleNegate(t)
 ```
 
-**参数**
+**Arguments**
 
-* `t` — 要取负的元组。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `t` — Tuple to negate. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**返回值**
 
-返回一个取负结果的元组。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**示例**
+Returns a tuple with the result of negation. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**基本用法**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT tupleNegate((1, 2))
@@ -732,32 +818,37 @@ SELECT tupleNegate((1, 2))
 (-1, -2)
 ```
 
+
+
 ## tuplePlus {#tuplePlus}
 
-自 v21.11 引入
+Introduced in: v21.11
 
-计算两个相同长度元组中对应元素之和。
 
-**语法**
+Calculates the sum of corresponding elements of two tuples of the same size.
+
+
+**Syntax**
 
 ```sql
 tuplePlus(t1, t2)
 ```
 
-**别名**: `vectorSum`
+**Aliases**: `vectorSum`
 
-**参数**
+**Arguments**
 
-* `t1` — 第一个元组。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `t2` — 第二个元组。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `t1` — First tuple. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `t2` — Second tuple. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**返回值**
 
-返回一个元组，包含各输入元组对应元素之和。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**示例**
+Returns a tuple containing the sums of corresponding input tuple arguments. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**基本用法**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT tuplePlus((1, 2), (2, 3))
@@ -767,31 +858,36 @@ SELECT tuplePlus((1, 2), (2, 3))
 (3, 5)
 ```
 
+
+
 ## tupleToNameValuePairs {#tupleToNameValuePairs}
 
-引入于：v21.9
+Introduced in: v21.9
 
-将一个 tuple 转换为由 `(name, value)` 对组成的数组。
-例如，tuple `Tuple(n1 T1, n2 T2, ...)` 会被转换为 `Array(Tuple('n1', T1), Tuple('n2', T2), ...)`。
-tuple 中的所有值必须是相同类型。
 
-**语法**
+Converts a tuple to an array of `(name, value)` pairs.
+For example, tuple `Tuple(n1 T1, n2 T2, ...)` is converted to `Array(Tuple('n1', T1), Tuple('n2', T2), ...)`.
+All values in the tuple must be of the same type.
+
+
+**Syntax**
 
 ```sql
 tupleToNameValuePairs(tuple)
 ```
 
-**参数**
+**Arguments**
 
-* `tuple` — 具有任意类型的值的命名元组。[`Tuple(n1 T1[, n2 T2, ...])`](/sql-reference/data-types/tuple)
+- `tuple` — Named tuple with any types of values. [`Tuple(n1 T1[, n2 T2, ...])`](/sql-reference/data-types/tuple)
 
-**返回值**
 
-返回包含 `(name, value)` 对的数组。[`Array(Tuple(String, T))`](/sql-reference/data-types/array)
+**Returned value**
 
-**示例**
+Returns an array with `(name, value)` pairs. [`Array(Tuple(String, T))`](/sql-reference/data-types/array)
 
-**命名元组**
+**Examples**
+
+**Named tuple**
 
 ```sql title=Query
 SELECT tupleToNameValuePairs(tuple(1593 AS user_ID, 2502 AS session_ID))
@@ -801,7 +897,7 @@ SELECT tupleToNameValuePairs(tuple(1593 AS user_ID, 2502 AS session_ID))
 [('1', 1593), ('2', 2502)]
 ```
 
-**未命名元组**
+**Unnamed tuple**
 
 ```sql title=Query
 SELECT tupleToNameValuePairs(tuple(3, 2, 1))
@@ -811,33 +907,35 @@ SELECT tupleToNameValuePairs(tuple(3, 2, 1))
 [('1', 3), ('2', 2), ('3', 1)]
 ```
 
-{/*AUTOGENERATED_END*/ }
+
+
+<!--AUTOGENERATED_END-->
 
 ## untuple {#untuple}
 
-在调用处对 [tuple](/sql-reference/data-types/tuple) 元素执行语法替换。
+Performs syntactic substitution of [tuple](/sql-reference/data-types/tuple) elements in the call location.
 
-结果列的名称取决于具体实现，可能会发生变化。请不要对 `untuple` 的结果列名做任何假设。
+The names of the result columns are implementation-specific and subject to change. Do not assume specific column names after `untuple`.
 
-**语法**
+**Syntax**
 
 ```sql
 untuple(x)
 ```
 
-您可以使用 `EXCEPT` 表达式在查询结果中排除某些列。
+You can use the `EXCEPT` expression to skip columns as a result of the query.
 
-**参数**
+**Arguments**
 
-* `x` — 一个 `tuple` 函数、列，或由元素组成的元组。参见 [Tuple](../data-types/tuple.md)。
+- `x` — A `tuple` function, column, or tuple of elements. [Tuple](../data-types/tuple.md).
 
-**返回值**
+**Returned value**
 
-* 无。
+- None.
 
-**示例**
+**Examples**
 
-输入表：
+Input table:
 
 ```text
 ┌─key─┬─v1─┬─v2─┬─v3─┬─v4─┬─v5─┬─v6────────┐
@@ -849,15 +947,15 @@ untuple(x)
 └─────┴────┴────┴────┴────┴────┴───────────┘
 ```
 
-使用 `Tuple` 类型列作为 `untuple` 函数参数的示例：
+Example of using a `Tuple`-type column as the `untuple` function parameter:
 
-查询：
+Query:
 
 ```sql
 SELECT untuple(v6) FROM kv;
 ```
 
-结果：
+Result:
 
 ```text
 ┌─_ut_1─┬─_ut_2─┐
@@ -869,15 +967,15 @@ SELECT untuple(v6) FROM kv;
 └───────┴───────┘
 ```
 
-`EXCEPT` 表达式使用示例：
+Example of using an `EXCEPT` expression:
 
-查询：
+Query:
 
 ```sql
 SELECT untuple((* EXCEPT (v2, v3),)) FROM kv;
 ```
 
-结果：
+Result:
 
 ```text
 ┌─key─┬─v1─┬─v4─┬─v5─┬─v6────────┐

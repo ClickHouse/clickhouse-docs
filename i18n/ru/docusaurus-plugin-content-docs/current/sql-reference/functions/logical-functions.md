@@ -36,7 +36,7 @@ doc_type: 'reference'
 **Синтаксис**
 
 ```sql
-and(знач1, знач2[, ...])
+and(val1, val2[, ...])
 ```
 
 **Аргументы**
@@ -64,7 +64,7 @@ SELECT and(0, 1, -2);
 0
 ```
 
-**С NULL**
+**With NULL**
 
 ```sql title=Query
 SELECT and(NULL, 1, 10, -2);
@@ -74,35 +74,39 @@ SELECT and(NULL, 1, 10, -2);
 ᴺᵁᴸᴸ
 ```
 
+
+
 ## not {#not}
 
-Добавлено в версии: v1.1
+Introduced in: v1.1
 
-Вычисляет логическое отрицание значения.
-Ноль в качестве аргумента рассматривается как `false`, ненулевые значения — как `true`.
 
-**Синтаксис**
+Calculates the logical negation of a value.
+Zero as an argument is considered `false`, non-zero values are considered `true`.
+
+
+**Syntax**
 
 ```sql
 not(val)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `val` — значение. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+- `val` — The value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**Возвращаемое значение**
 
-Возвращает:
+**Returned value**
 
-* `1`, если `val` интерпретируется как `false`
-* `0`, если `val` интерпретируется как `true`
-* `NULL`, если `val` равно `NULL`.
-  [`Nullable(UInt8)`](/sql-reference/data-types/nullable)
+Returns:
+- `1`, if `val` evaluates to `false`
+- `0`, if `val` evaluates to `true`
+- `NULL`, if `val` is `NULL`.
+         [`Nullable(UInt8)`](/sql-reference/data-types/nullable)
 
-**Примеры**
+**Examples**
 
-**Базовое использование**
+**Basic usage**
 
 ```sql title=Query
 SELECT NOT(1);
@@ -112,40 +116,44 @@ SELECT NOT(1);
 0
 ```
 
+
+
 ## or {#or}
 
-Введено в: v1.1
+Introduced in: v1.1
 
-Вычисляет логическую дизъюнкцию двух или более значений.
 
-Настройка [`short_circuit_function_evaluation`](https://clickhouse.com/docs/operations/settings/settings#short_circuit_function_evaluation) управляет использованием укороченного вычисления.
-Если настройка включена, `val_i` вычисляется только в том случае, если `((NOT val_1) AND (NOT val_2) AND ... AND (NOT val_{i-1}))` имеет значение `true`.
+Calculates the logical disjunction of two or more values.
 
-Например, при использовании укороченного вычисления исключение «деление на ноль» не возникает при выполнении запроса `SELECT or(number = 0, intDiv(1, number) != 0) FROM numbers(5)`.
-Ноль в качестве аргумента считается `false`, ненулевые значения считаются `true`.
+Setting [`short_circuit_function_evaluation`](https://clickhouse.com/docs/operations/settings/settings#short_circuit_function_evaluation) controls whether short-circuit evaluation is used.
+If enabled, `val_i` is evaluated only if `((NOT val_1) AND (NOT val_2) AND ... AND (NOT val_{i-1}))` is `true`.
 
-**Синтаксис**
+For example, with short-circuit evaluation, no division-by-zero exception is thrown when executing the query `SELECT or(number = 0, intDiv(1, number) != 0) FROM numbers(5)`.
+Zero as an argument is considered `false`, non-zero values are considered `true`.
+
+
+**Syntax**
 
 ```sql
 or(знач1, знач2[, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `val1, val2[, ...]` — список как минимум из двух значений. [`Nullable((U)Int*)`](/sql-reference/data-types/nullable) или [`Nullable(Float*)`](/sql-reference/data-types/nullable)
+- `val1, val2[, ...]` — List of at least two values. [`Nullable((U)Int*)`](/sql-reference/data-types/nullable) or [`Nullable(Float*)`](/sql-reference/data-types/nullable)
 
-**Возвращаемое значение**
 
-Возвращает:
+**Returned value**
 
-* `1`, если хотя бы один аргумент имеет значение `true`
-* `0`, если все аргументы имеют значение `false`
-* `NULL`, если все аргументы имеют значение `false` и хотя бы один аргумент равен `NULL`
-  [`Nullable(UInt8)`](/sql-reference/data-types/nullable)
+Returns:
+- `1`, if at least one argument evaluates to `true`
+- `0`, if all arguments evaluate to `false`
+- `NULL`, if all arguments evaluate to `false` and at least one argument is `NULL`
+         [`Nullable(UInt8)`](/sql-reference/data-types/nullable)
 
-**Примеры**
+**Examples**
 
-**Базовое использование**
+**Basic usage**
 
 ```sql title=Query
 SELECT or(1, 0, 0, 2, NULL);
@@ -155,7 +163,7 @@ SELECT or(1, 0, 0, 2, NULL);
 1
 ```
 
-**С NULL-значением**
+**With NULL**
 
 ```sql title=Query
 SELECT or(0, NULL);
@@ -165,36 +173,40 @@ SELECT or(0, NULL);
 ᴺᵁᴸᴸ
 ```
 
+
+
 ## xor {#xor}
 
-Добавлена в: v1.1
+Introduced in: v1.1
 
-Вычисляет логическое исключающее «или» (исключающую дизъюнкцию) для двух или более значений.
-При более чем двух входных значениях функция сначала применяет xor к первым двум значениям, затем — к результату и третьему значению и т.д.
-Ноль в качестве аргумента интерпретируется как `false`, ненулевые значения — как `true`.
 
-**Синтаксис**
+Calculates the logical exclusive disjunction of two or more values.
+For more than two input values, the function first xor-s the first two values, then xor-s the result with the third value etc.
+Zero as an argument is considered `false`, non-zero values are considered `true`.
+
+
+**Syntax**
 
 ```sql
 xor(val1, val2[, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `val1, val2[, ...]` — список из как минимум двух значений. [`Nullable((U)Int*)`](/sql-reference/data-types/nullable) или [`Nullable(Float*)`](/sql-reference/data-types/nullable)
+- `val1, val2[, ...]` — List of at least two values. [`Nullable((U)Int*)`](/sql-reference/data-types/nullable) or [`Nullable(Float*)`](/sql-reference/data-types/nullable)
 
-**Возвращаемое значение**
 
-Возвращает:
+**Returned value**
 
-* `1` для двух значений, если одно из значений интерпретируется как `false`, а другое — нет
-* `0` для двух значений, если оба значения интерпретируются как `false` или оба как `true`
-* `NULL`, если хотя бы один из аргументов имеет значение `NULL`.
-  [`Nullable(UInt8)`](/sql-reference/data-types/nullable)
+Returns:
+- `1`, for two values: if one of the values evaluates to `false` and other does not
+- `0`, for two values: if both values evaluate to `false` or to both `true`
+- `NULL`, if at least one of the inputs is `NULL`.
+         [`Nullable(UInt8)`](/sql-reference/data-types/nullable)
 
-**Примеры**
+**Examples**
 
-**Базовое использование**
+**Basic usage**
 
 ```sql title=Query
 SELECT xor(0, 1, 1);

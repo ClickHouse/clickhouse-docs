@@ -52,11 +52,11 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
     <password_complexity>
         <rule>
             <pattern>.{12}</pattern>
-            <message>12文字以上であること</message>
+            <message>be at least 12 characters long</message>
         </rule>
         <rule>
             <pattern>\p{N}</pattern>
-            <message>数字を1文字以上含むこと</message>
+            <message>contain at least 1 numeric character</message>
         </rule>
     </password_complexity>
 </clickhouse>
@@ -198,56 +198,54 @@ ClickHouse は `user_name@'address'` 全体を 1 つのユーザー名として�
 - ```CREATE USER name1 VALID UNTIL '2025-01-01 12:00:00 `Asia/Tokyo`'```
 - `CREATE USER name1 IDENTIFIED WITH plaintext_password BY 'no_expiration', bcrypt_password BY 'expiration_set' VALID UNTIL '2025-01-01''`
 
-## GRANTEES 句 {#grantees-clause}
+## GRANTEES Clause {#grantees-clause}
 
-このユーザーが、`GRANT OPTION` 付きで必要なすべてのアクセス権を付与されていることを条件に、このユーザーから [権限](../../../sql-reference/statements/grant.md#privileges) を付与されることが許可されているユーザーまたはロールを指定します。`GRANTEES` 句のオプションは次のとおりです。
+Specifies users or roles which are allowed to receive [privileges](../../../sql-reference/statements/grant.md#privileges) from this user on the condition this user has also all required access granted with [GRANT OPTION](../../../sql-reference/statements/grant.md#granting-privilege-syntax). Options of the `GRANTEES` clause:
 
-- `user` — このユーザーが権限を付与できるユーザーを指定します。
-- `role` — このユーザーが権限を付与できるロールを指定します。
-- `ANY` — このユーザーは任意のユーザーに権限を付与できます。これがデフォルト設定です。
-- `NONE` — このユーザーは誰にも権限を付与できません。
+- `user` — Specifies a user this user can grant privileges to.
+- `role` — Specifies a role this user can grant privileges to.
+- `ANY` — This user can grant privileges to anyone. It's the default setting.
+- `NONE` — This user can grant privileges to none.
 
-`EXCEPT` 式を使用して任意のユーザーやロールを除外できます。たとえば、`CREATE USER user1 GRANTEES ANY EXCEPT user2` のように指定します。これは、`user1` が `GRANT OPTION` 付きでいくつかの権限を付与されている場合、それらの権限を `user2` を除く全員に付与できることを意味します。
+You can exclude any user or role by using the `EXCEPT` expression. For example, `CREATE USER user1 GRANTEES ANY EXCEPT user2`. It means if `user1` has some privileges granted with `GRANT OPTION` it will be able to grant those privileges to anyone except `user2`.
 
-さらに詳しくは [GRANT ステートメントの権限に関する項目](../../../sql-reference/statements/grant.md#privileges) と [GRANT OPTION の説明](../../../sql-reference/statements/grant.md#granting-privilege-syntax) を参照してください。
+## Examples {#examples-1}
 
-## 例 {#examples-1}
-
-パスワード `qwerty` で保護されたユーザーアカウント `mira` を作成します：
+Create the user account `mira` protected by the password `qwerty`:
 
 ```sql
 CREATE USER mira HOST IP '127.0.0.1' IDENTIFIED WITH sha256_password BY 'qwerty';
 ```
 
-`mira` は、ClickHouse サーバーが稼働しているホスト上でクライアントアプリケーションを起動する必要があります。
+`mira` should start client app at the host where the ClickHouse server runs.
 
-ユーザーアカウント `john` を作成し、そのアカウントにロールを割り当て、これらのロールをデフォルトとして設定します。
+Create the user account `john`, assign roles to it and make this roles default:
 
 ```sql
 CREATE USER john DEFAULT ROLE role1, role2;
 ```
 
-ユーザーアカウント `john` を作成し、その後付与するすべてのロールをデフォルトロールとして設定します：
+Create the user account `john` and make all his future roles default:
 
 ```sql
 CREATE USER john DEFAULT ROLE ALL;
 ```
 
-将来 `john` にロールを割り当てると、それらは自動的にデフォルトロールになります。
+When some role is assigned to `john` in the future, it will become default automatically.
 
-ユーザーアカウント `john` を作成し、将来割り当てられるロールのうち `role1` と `role2` 以外はすべて自動的にデフォルトロールになるように設定します:
+Create the user account `john` and make all his future roles default excepting `role1` and `role2`:
 
 ```sql
 CREATE USER john DEFAULT ROLE ALL EXCEPT role1, role2;
 ```
 
-ユーザーアカウント `john` を作成し、`john` が自分の権限を `jack` アカウントのユーザーに付与できるようにします：
+Create the user account `john` and allow him to grant his privileges to the user with `jack` account:
 
 ```sql
 CREATE USER john GRANTEES jack;
 ```
 
-クエリパラメータを使用してユーザーアカウント `john` を作成します。
+Use a query parameter to create the user account `john`:
 
 ```sql
 SET param_user=john;

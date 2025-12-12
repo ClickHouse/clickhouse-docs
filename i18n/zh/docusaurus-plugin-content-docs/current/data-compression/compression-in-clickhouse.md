@@ -72,19 +72,19 @@ GROUP BY name
 
 演示如下:
 
-```sql title="查询"
--- 创建一个具有 compact 分区的表
+```sql title="Query"
+-- Create a table with compact parts
 CREATE TABLE compact (
   number UInt32
 )
 ENGINE = MergeTree()
-ORDER BY number
-AS SELECT * FROM numbers(100000); -- 数据量不足以超过 min_bytes_for_wide_part 的默认值 10485760
+ORDER BY number 
+AS SELECT * FROM numbers(100000); -- Not big enough to exceed default of min_bytes_for_wide_part = 10485760
 
--- 检查分区的类型
+-- Check the type of the parts
 SELECT table, name, part_type from system.parts where table = 'compact';
 
--- 获取 compact 表的压缩和未压缩列大小
+-- Get the compressed and uncompressed column sizes for the compact table
 SELECT name,
    formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
    formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
@@ -93,7 +93,7 @@ FROM system.columns
 WHERE table = 'compact'
 GROUP BY name;
 
--- 创建一个具有 wide 分区的表
+-- Create a table with wide parts 
 CREATE TABLE wide (
   number UInt32
 )
@@ -102,10 +102,10 @@ ORDER BY number
 SETTINGS min_bytes_for_wide_part=0
 AS SELECT * FROM numbers(100000);
 
--- 检查分区的类型
+-- Check the type of the parts
 SELECT table, name, part_type from system.parts where table = 'wide';
 
--- 获取 wide 表的压缩和未压缩大小
+-- Get the compressed and uncompressed sizes for the wide table
 SELECT name,
    formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
    formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
@@ -115,7 +115,7 @@ WHERE table = 'wide'
 GROUP BY name;
 ```
 
-```response title="响应"
+```response title="Response"
    ┌─table───┬─name──────┬─part_type─┐
 1. │ compact │ all_1_1_0 │ Compact   │
    └─────────┴───────────┴───────────┘
@@ -139,13 +139,13 @@ GROUP BY name;
 要汇总表的总大小,我们可以简化上述查询:
 
 ```sql
-SELECT formatReadableSize(sum(data_compressed_bytes)) AS 压缩后大小,
-    formatReadableSize(sum(data_uncompressed_bytes)) AS 未压缩大小,
-    round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS 压缩比
+SELECT formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
+    formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
+    round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
 FROM system.columns
 WHERE table = 'posts'
 
-┌─压缩后大小─┬─未压缩大小─┬─压缩比─┐
+┌─compressed_size─┬─uncompressed_size─┬─ratio─┐
 │ 50.16 GiB       │ 143.47 GiB        │  2.86 │
 └─────────────────┴───────────────────┴───────┘
 ```
@@ -176,6 +176,31 @@ SELECT
 FROM system.columns
 WHERE `table` = 'posts_v3'
 GROUP BY name
+
+┌─name──────────────────┬─compressed_size─┬─uncompressed_size─┬───ratio─┐
+│ Body                  │ 23.10 GiB       │ 63.63 GiB         │    2.75 │
+│ Title                 │ 614.65 MiB      │ 1.28 GiB          │    2.14 │
+│ Score                 │ 40.28 MiB       │ 227.38 MiB        │    5.65 │
+│ Tags                  │ 234.05 MiB      │ 688.49 MiB        │    2.94 │
+│ ParentId              │ 107.78 MiB      │ 321.33 MiB        │    2.98 │
+│ Id                    │ 159.70 MiB      │ 227.38 MiB        │    1.42 │
+│ AcceptedAnswerId      │ 40.34 MiB       │ 227.38 MiB        │    5.64 │
+│ ClosedDate            │ 5.93 MiB        │ 9.49 MiB          │     1.6 │
+│ LastActivityDate      │ 246.55 MiB      │ 454.76 MiB        │    1.84 │
+│ CommentCount          │ 635.78 KiB      │ 56.84 MiB         │   91.55 │
+│ OwnerUserId           │ 183.86 MiB      │ 227.38 MiB        │    1.24 │
+│ AnswerCount           │ 9.67 MiB        │ 113.69 MiB        │   11.76 │
+│ FavoriteCount         │ 19.77 KiB       │ 147.32 KiB        │    7.45 │
+│ ViewCount             │ 45.04 MiB       │ 227.38 MiB        │    5.05 │
+│ LastEditorUserId      │ 86.25 MiB       │ 227.38 MiB        │    2.64 │
+│ ContentLicense        │ 2.17 MiB        │ 57.10 MiB         │   26.37 │
+│ OwnerDisplayName      │ 5.95 MiB        │ 16.19 MiB         │    2.72 │
+│ PostTypeId            │ 39.49 KiB       │ 56.84 MiB         │ 1474.01 │
+│ CreationDate          │ 181.23 MiB      │ 454.76 MiB        │    2.51 │
+│ LastEditDate          │ 134.07 MiB      │ 454.76 MiB        │    3.39 │
+│ LastEditorDisplayName │ 2.15 MiB        │ 6.25 MiB          │    2.91 │
+│ CommunityOwnedDate    │ 824.60 KiB      │ 1.34 MiB          │    1.66 │
+└───────────────────────┴─────────────────┴───────────────────┴─────────┘
 ```
 
 ┌─列名──────────────────┬─压缩&#95;大小───────┬─未压缩&#95;大小───────┬───压缩比─┐
@@ -202,33 +227,6 @@ GROUP BY name
 │ 最后编辑者显示名      │ 2.15 MiB        │ 6.25 MiB          │    2.91 │
 │ 社区所有权日期        │ 824.60 KiB      │ 1.34 MiB          │    1.66 │
 └───────────────────────┴─────────────────┴───────────────────┴─────────┘
-
-```
-```
-
-## 选择合适的列压缩编解码器（codec） {#choosing-the-right-column-compression-codec}
-
-通过列压缩编解码器，我们可以更改用于对每一列进行编码和压缩的算法（及其设置）。
-
-编码和压缩的工作方式略有不同，但目标相同：减小数据体积。编码会对数据应用一种映射，利用数据类型的特性基于某个函数来转换数值。相对地，压缩则使用通用算法在字节层面压缩数据。
-
-通常，会先应用编码，然后再进行压缩。由于不同的编码和压缩算法在不同的值分布上效果不同，我们必须了解自己的数据。
-
-ClickHouse 支持多种编码和压缩算法。下面是一些按重要性排序的建议：
-
-| 建议                             | 说明                                                                                                                                                                               |
-| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **优先使用 `ZSTD`**                | `ZSTD` 压缩提供最佳压缩率。对大多数常见类型，`ZSTD(1)` 应作为默认选项。可以通过调整数值来尝试更高压缩率。但我们很少在大于 3 的取值上看到足以抵消更高压缩成本（写入更慢）的收益。                                                                               |
-| **对日期和整数序列使用 `Delta`**         | 只要存在单调序列或相邻值之间差值较小，基于 `Delta` 的编解码器就会表现良好。更具体地说，只要差分后的结果仍然是较小的数值，Delta codec 就能很好工作。如果不是，值得尝试 `DoubleDelta`（如果 `Delta` 的一阶差分已经非常小，通常收益有限）。对于单调递增且增量固定的序列，例如 DateTime 字段，压缩效果会更好。 |
-| **`Delta` 能提升 `ZSTD` 的效果**     | `ZSTD` 对差分数据是非常有效的编解码器——反过来说，Delta 编码可以提升 `ZSTD` 的压缩效果。在使用 `ZSTD` 的情况下，其他编解码器很少还能带来进一步改进。                                                                                        |
-| **如有可能优先选 `LZ4` 而非 `ZSTD`**    | 如果在 `LZ4` 和 `ZSTD` 之间能获得相近的压缩率，应优先选择前者，因为它解压更快且占用更少 CPU。不过在大多数场景下，`ZSTD` 的表现会比 `LZ4` 明显更好。在与 `LZ4` 组合使用时，部分编解码器可能运行更快，同时在压缩率上接近不带编解码器的 `ZSTD`。但这高度依赖具体数据，必须通过测试验证。               |
-| **对稀疏或小范围数据使用 `T64`**          | `T64` 在稀疏数据上，或在一个块中的取值范围较小时，可能会很有效。避免在随机数上使用 `T64`。                                                                                                                              |
-| **对未知模式尝试 `Gorilla` 和 `T64`？** | 如果数据模式未知，可能值得尝试 `Gorilla` 和 `T64`。                                                                                                                                               |
-| **对 gauge 数据使用 `Gorilla`**     | `Gorilla` 对浮点数据可能很有效，特别是表示 gauge 读数（例如随机尖峰）的数据。                                                                                                                                  |
-
-更多选项参见[此处](/sql-reference/statements/create/table#column_compression_codec)。
-
-下面我们为 `Id`、`ViewCount` 和 `AnswerCount` 指定 `Delta` 编解码器，假设它们与排序键近似线性相关，因此应该能从 Delta 编码中获益。
 
 ```sql
 CREATE TABLE posts_v4
@@ -258,6 +256,58 @@ CREATE TABLE posts_v4
 )
 ENGINE = MergeTree
 ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
+```
+
+## 选择合适的列压缩编解码器（codec） {#choosing-the-right-column-compression-codec}
+
+通过列压缩编解码器，我们可以更改用于对每一列进行编码和压缩的算法（及其设置）。
+
+编码和压缩的工作方式略有不同，但目标相同：减小数据体积。编码会对数据应用一种映射，利用数据类型的特性基于某个函数来转换数值。相对地，压缩则使用通用算法在字节层面压缩数据。
+
+通常，会先应用编码，然后再进行压缩。由于不同的编码和压缩算法在不同的值分布上效果不同，我们必须了解自己的数据。
+
+ClickHouse 支持多种编码和压缩算法。下面是一些按重要性排序的建议：
+
+| 建议                             | 说明                                                                                                                                                                               |
+| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **优先使用 `ZSTD`**                | `ZSTD` 压缩提供最佳压缩率。对大多数常见类型，`ZSTD(1)` 应作为默认选项。可以通过调整数值来尝试更高压缩率。但我们很少在大于 3 的取值上看到足以抵消更高压缩成本（写入更慢）的收益。                                                                               |
+| **对日期和整数序列使用 `Delta`**         | 只要存在单调序列或相邻值之间差值较小，基于 `Delta` 的编解码器就会表现良好。更具体地说，只要差分后的结果仍然是较小的数值，Delta codec 就能很好工作。如果不是，值得尝试 `DoubleDelta`（如果 `Delta` 的一阶差分已经非常小，通常收益有限）。对于单调递增且增量固定的序列，例如 DateTime 字段，压缩效果会更好。 |
+| **`Delta` 能提升 `ZSTD` 的效果**     | `ZSTD` 对差分数据是非常有效的编解码器——反过来说，Delta 编码可以提升 `ZSTD` 的压缩效果。在使用 `ZSTD` 的情况下，其他编解码器很少还能带来进一步改进。                                                                                        |
+| **如有可能优先选 `LZ4` 而非 `ZSTD`**    | 如果在 `LZ4` 和 `ZSTD` 之间能获得相近的压缩率，应优先选择前者，因为它解压更快且占用更少 CPU。不过在大多数场景下，`ZSTD` 的表现会比 `LZ4` 明显更好。在与 `LZ4` 组合使用时，部分编解码器可能运行更快，同时在压缩率上接近不带编解码器的 `ZSTD`。但这高度依赖具体数据，必须通过测试验证。               |
+| **对稀疏或小范围数据使用 `T64`**          | `T64` 在稀疏数据上，或在一个块中的取值范围较小时，可能会很有效。避免在随机数上使用 `T64`。                                                                                                                              |
+| **对未知模式尝试 `Gorilla` 和 `T64`？** | 如果数据模式未知，可能值得尝试 `Gorilla` 和 `T64`。                                                                                                                                               |
+| **对 gauge 数据使用 `Gorilla`**     | `Gorilla` 对浮点数据可能很有效，特别是表示 gauge 读数（例如随机尖峰）的数据。                                                                                                                                  |
+
+更多选项参见[此处](/sql-reference/statements/create/table#column_compression_codec)。
+
+下面我们为 `Id`、`ViewCount` 和 `AnswerCount` 指定 `Delta` 编解码器，假设它们与排序键近似线性相关，因此应该能从 Delta 编码中获益。
+
+```sql
+SELECT
+    `table`,
+    name,
+    formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
+    formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
+    round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
+FROM system.columns
+WHERE (name IN ('Id', 'ViewCount', 'AnswerCount')) AND (`table` IN ('posts_v3', 'posts_v4'))
+GROUP BY
+    `table`,
+    name
+ORDER BY
+    name ASC,
+    `table` ASC
+
+┌─table────┬─name────────┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
+│ posts_v3 │ AnswerCount │ 9.67 MiB        │ 113.69 MiB        │ 11.76 │
+│ posts_v4 │ AnswerCount │ 10.39 MiB       │ 111.31 MiB        │ 10.71 │
+│ posts_v3 │ Id          │ 159.70 MiB      │ 227.38 MiB        │  1.42 │
+│ posts_v4 │ Id          │ 64.91 MiB       │ 222.63 MiB        │  3.43 │
+│ posts_v3 │ ViewCount   │ 45.04 MiB       │ 227.38 MiB        │  5.05 │
+│ posts_v4 │ ViewCount   │ 52.72 MiB       │ 222.63 MiB        │  4.22 │
+└──────────┴─────────────┴─────────────────┴───────────────────┴───────┘
+
+6 rows in set. Elapsed: 0.008 sec
 ```
 
 这些列的压缩效果提升如下：

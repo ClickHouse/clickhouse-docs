@@ -24,7 +24,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 После создания [пользователя базы данных, аутентифицируемого с помощью SSH-ключа](/knowledgebase/how-to-connect-to-ch-cloud-using-ssh-keys):
 
 ```sql
-CREATE USER abcuser IDENTIFIED WITH ssh_key BY KEY '<СКРЫТО>' TYPE 'ssh-ed25519';
+CREATE USER abcuser IDENTIFIED WITH ssh_key BY KEY '<REDACTED>' TYPE 'ssh-ed25519';
 ```
 
 Вы можете использовать этот ключ для подключения к серверу ClickHouse. При этом будет открыт псевдотерминал (PTY) с интерактивной сессией clickhouse-client.
@@ -60,19 +60,19 @@ Query id: cdd91b7f-215b-4537-b7df-86d19bf63f64
 ```xml
 <tcp_ssh_port>9022</tcp_ssh_port>
 <ssh_server>
-   <host_rsa_key>путь-к-ключу</host_rsa_key>
-   <!--host_ecdsa_key>путь-к-ключу</host_ecdsa_key-->
-   <!--host_ed25519_key>путь-к-ключу</host_ed25519_key-->
+   <host_rsa_key>path-to-the-key</host_rsa_key>
+   <!--host_ecdsa_key>path-to-the-key</host_ecdsa_key-->
+   <!--host_ed25519_key>path-to-the-key</host_ed25519_key-->
 </ssh_server>
 ```
 
 Ключ хоста является неотъемлемой частью протокола SSH. Его открытая часть хранится в файле `~/.ssh/known_hosts` на стороне клиента и, как правило, используется для предотвращения атак типа «man-in-the-middle». При первом подключении к серверу вы увидите сообщение, приведённое ниже:
 
 ```shell
-Подлинность хоста '[localhost]:9022 ([127.0.0.1]:9022)' не может быть установлена.
-Отпечаток RSA-ключа: SHA256:3qxVlJKMr/PEKw/hfeg06HAK451Tt0eenhwqQvh58Do.
-Этот ключ не известен под другими именами
-Вы уверены, что хотите продолжить подключение (yes/no/[fingerprint])?
+The authenticity of host '[localhost]:9022 ([127.0.0.1]:9022)' can't be established.
+RSA key fingerprint is SHA256:3qxVlJKMr/PEKw/hfeg06HAK451Tt0eenhwqQvh58Do.
+This key is not known by any other names
+Are you sure you want to continue connecting (yes/no/[fingerprint])?
 ```
 
 Это по сути означает: «Вы хотите сохранить открытый ключ этого хоста и продолжить подключение?».

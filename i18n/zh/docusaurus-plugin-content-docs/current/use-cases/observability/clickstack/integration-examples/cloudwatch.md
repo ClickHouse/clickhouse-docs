@@ -79,8 +79,8 @@ AWS CloudWatch 是一项用于监控 AWS 资源和应用程序的服务。虽然
   将此值保存为环境变量:
 
   ```bash
-  export CLICKSTACK_API_KEY="your-api-key-here"
-  ```
+export CLICKSTACK_API_KEY="your-api-key-here"
+```
 
   #### 配置 AWS 凭证
 
@@ -89,49 +89,49 @@ AWS CloudWatch 是一项用于监控 AWS 资源和应用程序的服务。虽然
   **对于 AWS SSO 用户(推荐大多数组织使用):**
 
   ```bash
-  # Login to SSO
-  aws sso login --profile YOUR_PROFILE_NAME
+# Login to SSO
+aws sso login --profile YOUR_PROFILE_NAME
 
-  # Export credentials to environment variables
-  eval $(aws configure export-credentials --profile YOUR_PROFILE_NAME --format env)
+# Export credentials to environment variables
+eval $(aws configure export-credentials --profile YOUR_PROFILE_NAME --format env)
 
-  # Verify credentials work
-  aws sts get-caller-identity
-  ```
+# Verify credentials work
+aws sts get-caller-identity
+```
 
   将 `YOUR_PROFILE_NAME` 替换为您的 AWS SSO 配置文件名称(例如 `AccountAdministrators-123456789`)。
 
   **对于具有长期凭证的 IAM 用户：**
 
   ```bash
-  export AWS_ACCESS_KEY_ID="your-access-key-id"
-  export AWS_SECRET_ACCESS_KEY="your-secret-access-key"
-  export AWS_REGION="us-east-1"
+export AWS_ACCESS_KEY_ID="your-access-key-id"
+export AWS_SECRET_ACCESS_KEY="your-secret-access-key"
+export AWS_REGION="us-east-1"
 
-  # Verify credentials work
-  aws sts get-caller-identity
-  ```
+# Verify credentials work
+aws sts get-caller-identity
+```
 
   **所需 IAM 权限：**
 
   与这些凭证关联的 AWS 账户需要以下 IAM 策略以读取 CloudWatch 日志:
 
   ```json
-  {
-    "Version": "2012-10-17",
-    "Statement": [
-      {
-        "Sid": "CloudWatchLogsRead",
-        "Effect": "Allow",
-        "Action": [
-          "logs:DescribeLogGroups",
-          "logs:FilterLogEvents"
-        ],
-        "Resource": "arn:aws:logs:*:YOUR_ACCOUNT_ID:log-group:*"
-      }
-    ]
-  }
-  ```
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudWatchLogsRead",
+      "Effect": "Allow",
+      "Action": [
+        "logs:DescribeLogGroups",
+        "logs:FilterLogEvents"
+      ],
+      "Resource": "arn:aws:logs:*:YOUR_ACCOUNT_ID:log-group:*"
+    }
+  ]
+}
+```
 
   将 `YOUR_ACCOUNT_ID` 替换为您的 AWS 账户 ID。
 
@@ -144,69 +144,69 @@ AWS CloudWatch 是一项用于监控 AWS 资源和应用程序的服务。虽然
   此配置从特定的命名日志组中收集日志：
 
   ```yaml
-  receivers:
-    awscloudwatch:
-      region: us-east-1
-      logs:
-        poll_interval: 1m
-        max_events_per_request: 100
-        groups:
-          named:
-            /aws/lambda/my-function:
-            /aws/ecs/my-service:
-            /aws/eks/my-cluster/cluster:
+receivers:
+  awscloudwatch:
+    region: us-east-1
+    logs:
+      poll_interval: 1m
+      max_events_per_request: 100
+      groups:
+        named:
+          /aws/lambda/my-function:
+          /aws/ecs/my-service:
+          /aws/eks/my-cluster/cluster:
 
-  processors:
-    batch:
-      timeout: 10s
+processors:
+  batch:
+    timeout: 10s
 
-  exporters:
-    otlphttp:
-      endpoint: http://localhost:4318
-      headers:
-        authorization: ${CLICKSTACK_API_KEY}
+exporters:
+  otlphttp:
+    endpoint: http://localhost:4318
+    headers:
+      authorization: ${CLICKSTACK_API_KEY}
 
-  service:
-    pipelines:
-      logs:
-        receivers: [awscloudwatch]
-        processors: [batch]
-        exporters: [otlphttp]
-  ```
+service:
+  pipelines:
+    logs:
+      receivers: [awscloudwatch]
+      processors: [batch]
+      exporters: [otlphttp]
+```
 
   **示例 2：使用前缀自动发现日志组**
 
   此配置自动发现并收集最多 100 个以 `/aws/lambda` 为前缀的日志组的日志：
 
   ```yaml
-  receivers:
-    awscloudwatch:
-      region: us-east-1
-      logs:
-        poll_interval: 1m
-        max_events_per_request: 100
-        groups:
-          autodiscover:
-            limit: 100
-            prefix: /aws/lambda
+receivers:
+  awscloudwatch:
+    region: us-east-1
+    logs:
+      poll_interval: 1m
+      max_events_per_request: 100
+      groups:
+        autodiscover:
+          limit: 100
+          prefix: /aws/lambda
 
-  processors:
-    batch:
-      timeout: 10s
+processors:
+  batch:
+    timeout: 10s
 
-  exporters:
-    otlphttp:
-      endpoint: http://localhost:4318
-      headers:
-        authorization: ${CLICKSTACK_API_KEY}
+exporters:
+  otlphttp:
+    endpoint: http://localhost:4318
+    headers:
+      authorization: ${CLICKSTACK_API_KEY}
 
-  service:
-    pipelines:
-      logs:
-        receivers: [awscloudwatch]
-        processors: [batch]
-        exporters: [otlphttp]
-  ```
+service:
+  pipelines:
+    logs:
+      receivers: [awscloudwatch]
+      processors: [batch]
+      exporters: [otlphttp]
+```
 
   **配置参数：**
 
@@ -235,34 +235,34 @@ AWS CloudWatch 是一项用于监控 AWS 资源和应用程序的服务。虽然
   创建 `docker-compose.yaml` 文件：
 
   ```yaml
-  services:
-    otel-collector:
-      image: otel/opentelemetry-collector-contrib:latest
-      command: ["--config=/etc/otel-config.yaml"]
-      volumes:
-        - ./otel-collector-config.yaml:/etc/otel-config.yaml
-      environment:
-        - AWS_ACCESS_KEY_ID
-        - AWS_SECRET_ACCESS_KEY
-        - AWS_SESSION_TOKEN
-        - AWS_REGION
-        - CLICKSTACK_API_KEY
-      restart: unless-stopped
-      extra_hosts:
-        - "host.docker.internal:host-gateway"
-  ```
+services:
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    command: ["--config=/etc/otel-config.yaml"]
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otel-config.yaml
+    environment:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_SESSION_TOKEN
+      - AWS_REGION
+      - CLICKSTACK_API_KEY
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+```
 
   然后启动收集器：
 
   ```bash
-  docker compose up -d
-  ```
+docker compose up -d
+```
 
   查看收集器日志：
 
   ```bash
-  docker compose logs -f otel-collector
-  ```
+docker compose logs -f otel-collector
+```
 
   #### 在 HyperDX 中验证日志
 

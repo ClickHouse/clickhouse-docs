@@ -169,7 +169,7 @@ FORMAT Vertical;
 ```
 
 ```text
-第 1 行:
+Row 1:
 ──────
 current_time:             2025-03-12 12:35:01
 toTypeName(current_time): DateTime

@@ -72,29 +72,34 @@ SELECT hex(BLAKE3('ABC'))
 └──────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## MD4 {#MD4}
 
-Добавлено в: v21.11
+Introduced in: v21.11
 
-Вычисляет хеш MD4 для заданной строки.
 
-**Синтаксис**
+Calculates the MD4 hash of the given string.
+    
+
+**Syntax**
 
 ```sql
 MD4(s)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `s` — входная строка для хеширования. [`String`](/sql-reference/data-types/string)
+- `s` — The input string to hash. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает хеш MD4 для заданной входной строки в виде строки фиксированной длины. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**Примеры**
+Returns the MD4 hash of the given input string as a fixed-length string. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT HEX(MD4('abc'));
@@ -106,29 +111,34 @@ SELECT HEX(MD4('abc'));
 └──────────────────────────────────┘
 ```
 
+
+
 ## MD5 {#MD5}
 
-Появилось в версии: v1.1
+Introduced in: v1.1
 
-Вычисляет хэш MD5 для заданной строки.
 
-**Синтаксис**
+Calculates the MD5 hash of the given string.
+    
+
+**Syntax**
 
 ```sql
 MD5(s)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `s` — входная строка для хеширования. [`String`](/sql-reference/data-types/string)
+- `s` — The input string to hash. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает MD5-хеш заданной входной строки в виде строки фиксированной длины. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**Примеры**
+Returns the MD5 hash of the given input string as a fixed-length string. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT HEX(MD5('abc'));
@@ -140,29 +150,32 @@ SELECT HEX(MD5('abc'));
 └──────────────────────────────────┘
 ```
 
+
+
 ## RIPEMD160 {#RIPEMD160}
 
-Появилась в версии: v24.10
+Introduced in: v24.10
 
-Вычисляет хэш RIPEMD-160 для заданной строки.
+Calculates the RIPEMD-160 hash of the given string.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 RIPEMD160(s)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `s` — Входная строка для хеширования. [`String`](/sql-reference/data-types/string)
+- `s` — The input string to hash. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает хеш RIPEMD160 для заданной строки в виде строки фиксированной длины. [`FixedString(20)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**Примеры**
+Returns the RIPEMD160 hash of the given input string as a fixed-length string. [`FixedString(20)`](/sql-reference/data-types/fixedstring)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT HEX(RIPEMD160('Быстрая коричневая лиса перепрыгивает через ленивую собаку'));
@@ -174,29 +187,34 @@ SELECT HEX(RIPEMD160('Быстрая коричневая лиса перепр�
 └───────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## SHA1 {#SHA1}
 
-Появилось в версии v1.1
+Introduced in: v1.1
 
-Вычисляет хэш SHA1 для заданной строки.
 
-**Синтаксис**
+Calculates the SHA1 hash of the given string.
+    
+
+**Syntax**
 
 ```sql
 SHA1(s)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `s` — входная строка для хеширования [`String`](/sql-reference/data-types/string)
+- `s` — The input string to hash [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает SHA1-хеш заданной входной строки в виде строки фиксированной длины. [`FixedString(20)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**Примеры**
+Returns the SHA1 hash of the given input string as a fixed-length string. [`FixedString(20)`](/sql-reference/data-types/fixedstring)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT HEX(SHA1('abc'));
@@ -208,29 +226,34 @@ SELECT HEX(SHA1('abc'));
 └──────────────────────────────────────────┘
 ```
 
+
+
 ## SHA224 {#SHA224}
 
-Добавлена в версии: v1.1
+Introduced in: v1.1
 
-Вычисляет хэш SHA224 для указанной строки.
 
-**Синтаксис**
+Calculates the SHA224 hash of the given string.
+    
+
+**Syntax**
 
 ```sql
 SHA224(s)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `s` — Входное значение для хеширования. [`String`](/sql-reference/data-types/string)
+- `s` — The input value to hash. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает хеш SHA224 для указанной входной строки в виде строки фиксированной длины. [`FixedString(28)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**Примеры**
+Returns the SHA224 hash of the given input string as a fixed-length string. [`FixedString(28)`](/sql-reference/data-types/fixedstring)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT HEX(SHA224('abc'));
@@ -242,29 +265,34 @@ SELECT HEX(SHA224('abc'));
 └──────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## SHA256 {#SHA256}
 
-Добавлено в версии: v1.1
+Introduced in: v1.1
 
-Вычисляет хеш SHA256 для заданной строки.
 
-**Синтаксис**
+Calculates the SHA256 hash of the given string.
+    
+
+**Syntax**
 
 ```sql
 SHA256(s)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `s` — входная строка для хеширования. [`String`](/sql-reference/data-types/string)
+- `s` — The input string to hash. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает SHA256-хеш заданной входной строки в виде строки фиксированной длины. [`FixedString(32)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**Примеры**
+Returns the SHA256 hash of the given input string as a fixed-length string. [`FixedString(32)`](/sql-reference/data-types/fixedstring)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT HEX(SHA256('abc'));
@@ -276,29 +304,34 @@ SELECT HEX(SHA256('abc'));
 └──────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## SHA384 {#SHA384}
 
-Добавлено в версии: v1.1
+Introduced in: v1.1
 
-Вычисляет хеш SHA384 для указанной строки.
 
-**Синтаксис**
+Calculates the SHA384 hash of the given string.
+    
+
+**Syntax**
 
 ```sql
 SHA384(s)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `s` — входная строка для хеширования. [`String`](/sql-reference/data-types/string)
+- `s` — The input string to hash. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает хеш SHA384 для заданной входной строки в виде строки фиксированной длины. [`FixedString(48)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**Примеры**
+Returns the SHA384 hash of the given input string as a fixed-length string. [`FixedString(48)`](/sql-reference/data-types/fixedstring)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT HEX(SHA384('abc'));
@@ -310,29 +343,34 @@ SELECT HEX(SHA384('abc'));
 └──────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## SHA512 {#SHA512}
 
-Добавлено в версии v1.1
+Introduced in: v1.1
 
-Вычисляет хеш SHA512 для указанной строки.
 
-**Синтаксис**
+Calculates the SHA512 hash of the given string.
+    
+
+**Syntax**
 
 ```sql
 SHA512(s)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `s` — входная строка для хеширования [`String`](/sql-reference/data-types/string)
+- `s` — The input string to hash [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает SHA512-хеш переданной входной строки в виде строки фиксированной длины [`FixedString(64)`](/sql-reference/data-types/fixedstring).
+**Returned value**
 
-**Примеры**
+Returns the SHA512 hash of the given input string as a fixed-length string. [`FixedString(64)`](/sql-reference/data-types/fixedstring)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT HEX(SHA512('abc'));
@@ -344,29 +382,34 @@ SELECT HEX(SHA512('abc'));
 └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-## SHA512&#95;256 {#SHA512&#95;256}
 
-Появилось в версии: v1.1
 
-Вычисляет хэш SHA512&#95;256 для заданной строки.
+## SHA512_256 {#SHA512_256}
 
-**Синтаксис**
+Introduced in: v1.1
+
+
+Calculates the SHA512_256 hash of the given string.
+    
+
+**Syntax**
 
 ```sql
 SHA512_256(s)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `s` — входная строка для хеширования. [`String`](/sql-reference/data-types/string)
+- `s` — The input string to hash. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает хеш-значение SHA512&#95;256 для указанной входной строки в виде строки фиксированной длины. [`FixedString(32)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**Примеры**
+Returns the SHA512_256 hash of the given input string as a fixed-length string. [`FixedString(32)`](/sql-reference/data-types/fixedstring)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT HEX(SHA512_256('abc'));
@@ -378,37 +421,42 @@ SELECT HEX(SHA512_256('abc'));
 └──────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## URLHash {#URLHash}
 
-Введена в: v1.1
+Introduced in: v1.1
 
-Быстрая, достаточно качественная некриптографическая хеш‑функция для строки, полученной из URL с использованием некоторого вида нормализации.
 
-Эта хеш‑функция имеет два режима:
+A fast, decent-quality non-cryptographic hash function for a string obtained from a URL using some type of normalization.
 
-| Mode              | Description                                                                                                                                                                                |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `URLHash(url)`    | Вычисляет хеш из строки без одного из завершающих символов `/`, `?` или `#` в конце, если такой символ присутствует.                                                                       |
-| `URLHash(url, N)` | Вычисляет хеш из строки до N‑го уровня в иерархии URL, без одного из завершающих символов `/`, `?` или `#` в конце, если такой символ присутствует. Уровни такие же, как в `URLHierarchy`. |
+This hash function has two modes:
 
-**Синтаксис**
+| Mode             | Description                                                                                                                                                                                 |
+|------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|`URLHash(url)`    | Calculates a hash from a string without one of the trailing symbols `/`,`?` or `#` at the end, if present.                                                                                  |
+|`URLHash(url, N)` | Calculates a hash from a string up to the N level in the URL hierarchy, without one of the trailing symbols `/`,`?` or `#` at the end, if present. Levels are the same as in `URLHierarchy`.|
+
+
+**Syntax**
 
 ```sql
 URLHash(url[, N])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `url` — строка URL для хеширования. [`String`](/sql-reference/data-types/string)
-* `N` — Необязательный. Уровень в иерархии URL. [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `url` — URL string to hash. [`String`](/sql-reference/data-types/string)
+- `N` — Optional. Level in the URL hierarchy. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает вычисленное хеш-значение `url`. [`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the computed hash value of `url`. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT URLHash('https://www.clickhouse.com')
@@ -420,7 +468,7 @@ SELECT URLHash('https://www.clickhouse.com')
 └──────────────────────────┘
 ```
 
-**Хэш URL с заданным уровнем**
+**Hash of url with specified level**
 
 ```sql title=Query
 SELECT URLHash('https://www.clickhouse.com/docs', 0);
@@ -438,44 +486,49 @@ SELECT URLHash('https://www.clickhouse.com/docs', 1);
 └──────────────────────────┘
 ```
 
+
+
 ## cityHash64 {#cityHash64}
 
-Добавлено в: v1.1
+Introduced in: v1.1
 
-Возвращает 64-битное хеш-значение [CityHash](https://github.com/google/cityhash).
 
-Это быстрая некриптографическая хеш-функция.
-Она использует алгоритм CityHash для строковых параметров и зависящую от реализации некриптографическую хеш-функцию для параметров с другими типами данных.
-Функция использует комбинатор CityHash для получения итогового результата.
+Produces a 64-bit [CityHash](https://github.com/google/cityhash) hash value.
+
+This is a fast non-cryptographic hash function.
+It uses the CityHash algorithm for string parameters and implementation-specific fast non-cryptographic hash function for parameters with other data types.
+The function uses the CityHash combinator to get the final results.
 
 :::info
-Google изменил алгоритм CityHash после того, как он был добавлен в ClickHouse.
-Другими словами, cityHash64 в ClickHouse и исходный CityHash от Google теперь выдают разные результаты.
-cityHash64 в ClickHouse соответствует CityHash v1.0.2.
+Google changed the algorithm of CityHash after it was added to ClickHouse.
+In other words, ClickHouse's cityHash64 and Google's upstream CityHash now produce different results.
+ClickHouse cityHash64 corresponds to CityHash v1.0.2.
 :::
 
 :::note
-Вычисленные хеш-значения могут совпадать для одинаковых входных значений аргументов разных типов.
-Это затрагивает, например, целочисленные типы разного размера, именованный и безымянный `Tuple` с одинаковыми данными, `Map` и соответствующий тип `Array(Tuple(key, value))` с одинаковыми данными.
+The calculated hash values may be equal for the same input values of different argument types.
+This affects for example integer types of different size, named and unnamed `Tuple` with the same data, `Map` and the corresponding `Array(Tuple(key, value))` type with the same data.
 :::
 
-**Синтаксис**
+
+**Syntax**
 
 ```sql
 cityHash64(arg1[, arg2, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `arg1[, arg2, ...]` — Переменное количество входных аргументов, для которых вычисляется хэш. [`Any`](/sql-reference/data-types)
+- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**Возвращаемое значение**
 
-Возвращает вычисленный хэш входных аргументов. [`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the computed hash of the input arguments. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Пример вызова**
+**Examples**
+
+**Call example**
 
 ```sql title=Query
 SELECT cityHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00')) AS CityHash, toTypeName(CityHash) AS type;
@@ -487,7 +540,7 @@ SELECT cityHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:0
 └──────────────────────┴────────┘
 ```
 
-**Вычисление контрольной суммы всей таблицы с учетом порядка строк**
+**Computing the checksum of the entire table with accuracy up to the row order**
 
 ```sql title=Query
 CREATE TABLE users (
@@ -513,38 +566,43 @@ SELECT groupBitXor(cityHash64(*)) FROM users;
 └──────────────────────────┘
 ```
 
+
+
 ## farmFingerprint64 {#farmFingerprint64}
 
-Добавлена в версии: v20.12
+Introduced in: v20.12
 
-Возвращает 64-битное значение [FarmHash](https://github.com/google/farmhash) с использованием метода `Fingerprint64`.
+
+Produces a 64-bit [FarmHash](https://github.com/google/farmhash) value using the `Fingerprint64` method.
 
 :::tip
-Для получения стабильного и переносимого значения рекомендуется использовать `farmFingerprint64` вместо [`farmHash64`](#farmHash64).
+`farmFingerprint64` is preferred for a stable and portable value over [`farmHash64`](#farmHash64).
 :::
 
 :::note
-Получаемые значения хеша могут совпадать для одинаковых входных значений разных типов аргументов.
-Это касается, например, целочисленных типов разного размера, именованных и неименованных `Tuple` с одинаковыми данными, `Map` и соответствующего типа `Array(Tuple(key, value))` с одинаковыми данными.
+The calculated hash values may be equal for the same input values of different argument types.
+This affects for example integer types of different size, named and unnamed `Tuple` with the same data, `Map` and the corresponding `Array(Tuple(key, value))` type with the same data.
 :::
 
-**Синтаксис**
+
+**Syntax**
 
 ```sql
 farmFingerprint64(arg1[, arg2, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `arg1[, arg2, ...]` — Переменное число входных аргументов, для которых вычисляется хеш. [`Any`](/sql-reference/data-types)
+- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**Возвращаемое значение**
 
-Возвращает вычисленное значение хеша входных аргументов. [`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the computed hash value of the input arguments. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT farmFingerprint64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00')) AS FarmFingerprint, toTypeName(FarmFingerprint) AS type;
@@ -556,38 +614,43 @@ SELECT farmFingerprint64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 
 └─────────────────────┴────────┘
 ```
 
+
+
 ## farmHash64 {#farmHash64}
 
-Появилось в версии v1.1
+Introduced in: v1.1
 
-Вычисляет 64-битный [FarmHash](https://github.com/google/farmhash) с использованием метода `Hash64`.
+
+Produces a 64-bit [FarmHash](https://github.com/google/farmhash) using the `Hash64` method.
 
 :::tip
-Для получения стабильного и переносимого значения предпочтительно использовать [`farmFingerprint64`](#farmFingerprint64).
+[`farmFingerprint64`](#farmFingerprint64) is preferred for a stable and portable value.
 :::
 
 :::note
-Вычисленные хеш-значения могут совпадать для одинаковых входных значений при разных типах аргументов.
-Это касается, например, целочисленных типов разного размера, именованного и неименованного `Tuple` с одинаковыми данными, `Map` и соответствующего типа `Array(Tuple(key, value))` с одинаковыми данными.
+The calculated hash values may be equal for the same input values of different argument types.
+This affects for example integer types of different size, named and unnamed `Tuple` with the same data, `Map` and the corresponding `Array(Tuple(key, value))` type with the same data.
 :::
 
-**Синтаксис**
+
+**Syntax**
 
 ```sql
 farmHash64(arg1[, arg2, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `arg1[, arg2, ...]` — Произвольное количество входных аргументов, для которых вычисляется хеш. [`Any`](/sql-reference/data-types)
+- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**Возвращаемое значение**
 
-Возвращает вычисленное значение хеша входных аргументов. [`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the computed hash value of the input arguments. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT farmHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00')) AS FarmHash, toTypeName(FarmHash) AS type;
@@ -599,31 +662,36 @@ SELECT farmHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:0
 └──────────────────────┴────────┘
 ```
 
+
+
 ## gccMurmurHash {#gccMurmurHash}
 
-Добавлена в версии v20.1.
+Introduced in: v20.1
 
-Вычисляет 64-битный хэш [MurmurHash2](https://github.com/aappleby/smhasher) для входного значения, используя то же начальное значение (seed), что и в [GCC](https://github.com/gcc-mirror/gcc/blob/41d6b10e96a1de98e90a7c0378437c3255814b16/libstdc%2B%2B-v3/include/bits/functional_hash.h#L191).
 
-Переносима между сборками Clang и GCC.
+Computes the 64-bit [MurmurHash2](https://github.com/aappleby/smhasher) hash of the input value using the same seed as used by [GCC](https://github.com/gcc-mirror/gcc/blob/41d6b10e96a1de98e90a7c0378437c3255814b16/libstdc%2B%2B-v3/include/bits/functional_hash.h#L191).
 
-**Синтаксис**
+It is portable between Clang and GCC builds.
+
+
+**Syntax**
 
 ```sql
 gccMurmurHash(arg1[, arg2, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `arg1[, arg2, ...]` — Произвольное количество аргументов, для которых вычисляется хеш. [`Any`](/sql-reference/data-types)
+- `arg1[, arg2, ...]` — A variable number of arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**Возвращаемое значение**
 
-Возвращает вычисленное значение хеша входных аргументов. [`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the calculated hash value of the input arguments. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT
@@ -637,38 +705,43 @@ SELECT
 └──────────────────────┴─────────────────────┘
 ```
 
+
+
 ## halfMD5 {#halfMD5}
 
-Введена в версии v1.1
+Introduced in: v1.1
 
-[Интерпретирует](/sql-reference/functions/type-conversion-functions#reinterpretasstring) все входные
-параметры как строки и вычисляет MD5-хэш для каждого из них. Затем объединяет хэши, берёт первые 8 байт хэша
-полученной строки и интерпретирует их как [UInt64](/sql-reference/data-types/int-uint) в порядке байтов big-endian. Функция
-работает относительно медленно (5 миллионов коротких строк в секунду на одно ядро процессора).
 
-Рекомендуется рассмотреть использование функции [`sipHash64`](#sipHash64).
+[Interprets](/sql-reference/functions/type-conversion-functions#reinterpretasstring) all the input
+parameters as strings and calculates the MD5 hash value for each of them. Then combines hashes, takes the first 8 bytes of the hash of the
+resulting string, and interprets them as [UInt64](/sql-reference/data-types/int-uint) in big-endian byte order. The function is
+relatively slow (5 million short strings per second per processor core).
 
-Функция принимает переменное количество входных параметров.
-Аргументы могут иметь любой из поддерживаемых типов данных.
-Для некоторых типов данных вычисленное значение хэш-функции может совпадать для одинаковых значений, даже если типы аргументов различаются (например, целые числа разного размера, именованный и неименованный Tuple с одинаковыми данными, Map и соответствующий тип Array(Tuple(key, value)) с одинаковыми данными).
+Consider using the [`sipHash64`](#sipHash64) function instead.
 
-**Синтаксис**
+The function takes a variable number of input parameters.
+Arguments can be any of the supported data types.
+For some data types calculated value of hash function may be the same for the same values even if types of arguments differ (integers of different size, named and unnamed Tuple with the same data, Map and the corresponding Array(Tuple(key, value)) type with the same data).
+    
+
+**Syntax**
 
 ```sql
 halfMD5(arg1[, arg2, ..., argN])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `arg1[, arg2, ..., argN]` — Переменное число аргументов, для которых вычисляется хеш. [`Any`](/sql-reference/data-types)
+- `arg1[, arg2, ..., argN]` — Variable number of arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**Возвращаемое значение**
 
-Возвращает вычисленную половину MD5-хеша переданных входных параметров, представленную как `UInt64` в порядке байтов big-endian. [`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the computed half MD5 hash of the given input params returned as a `UInt64` in big-endian byte order. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT HEX(halfMD5('abc', 'cde', 'fgh'));
@@ -680,36 +753,41 @@ SELECT HEX(halfMD5('abc', 'cde', 'fgh'));
 └───────────────────────────────────┘
 ```
 
+
+
 ## hiveHash {#hiveHash}
 
-Впервые появилась в: v20.1
+Introduced in: v20.1
 
-Вычисляет «HiveHash» для строки.
-Это просто [`JavaHash`](#javaHash) с обнулёнными битами знака.
-Эта функция используется в [Apache Hive](https://en.wikipedia.org/wiki/Apache_Hive) в версиях до 3.0.
+
+Calculates a "HiveHash" from a string.
+This is just [`JavaHash`](#javaHash) with zeroed out sign bits.
+This function is used in [Apache Hive](https://en.wikipedia.org/wiki/Apache_Hive) for versions before 3.0.
 
 :::caution
-Эта хэш-функция малопроизводительна.
-Используйте её только в том случае, если этот алгоритм уже применяется в другой системе и вам нужно получить тот же результат.
+This hash function is unperformant.
+Use it only when this algorithm is already used in another system and you need to calculate the same result.
 :::
 
-**Синтаксис**
+
+**Syntax**
 
 ```sql
 hiveHash(arg)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `arg` — входная строка для хеширования. [`String`](/sql-reference/data-types/string)
+- `arg` — Input string to hash. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает вычисленное значение «hive hash» для входной строки. [`Int32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the computed "hive hash" of the input string. [`Int32`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT hiveHash('Hello, world!');
@@ -721,29 +799,32 @@ SELECT hiveHash('Hello, world!');
 └───────────────────────────┘
 ```
 
+
+
 ## icebergHash {#icebergHash}
 
-Впервые представлена в: v25.5
+Introduced in: v25.5
 
-Реализует логику [хеш‑преобразования](https://iceberg.apache.org/spec/#appendix-b-32-bit-hash-requirements) Iceberg
+Implements the logic of the iceberg [hashing transform](https://iceberg.apache.org/spec/#appendix-b-32-bit-hash-requirements)
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 icebergHash(value)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `value` — исходное значение, для которого вычисляется хеш: [`Integer`](/sql-reference/data-types/int-uint), [`Bool`](/sql-reference/data-types/boolean), [`Decimal`](/sql-reference/data-types/decimal), [`Float*`](/sql-reference/data-types/float), [`String`](/sql-reference/data-types/string), [`FixedString`](/sql-reference/data-types/fixedstring), [`UUID`](/sql-reference/data-types/uuid), [`Date`](/sql-reference/data-types/date), [`Time`](/sql-reference/data-types/time) или [`DateTime`](/sql-reference/data-types/datetime)
+- `value` — Source value to take the hash of [`Integer`](/sql-reference/data-types/int-uint) or [`Bool`](/sql-reference/data-types/boolean) or [`Decimal`](/sql-reference/data-types/decimal) or [`Float*`](/sql-reference/data-types/float) or [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring) or [`UUID`](/sql-reference/data-types/uuid) or [`Date`](/sql-reference/data-types/date) or [`Time`](/sql-reference/data-types/time) or [`DateTime`](/sql-reference/data-types/datetime)
 
-**Возвращаемое значение**
 
-Возвращает 32-битный хеш Murmur3, вариант x86, с начальным значением (seed) 0 типа [`Int32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns a 32-bit Murmur3 hash, x86 variant, seeded with 0 [`Int32`](/sql-reference/data-types/int-uint)
 
-**Пример**
+**Examples**
+
+**Example**
 
 ```sql title=Query
 SELECT icebergHash(1.0 :: Float32)
@@ -753,31 +834,36 @@ SELECT icebergHash(1.0 :: Float32)
 -142385009
 ```
 
+
+
 ## intHash32 {#intHash32}
 
-Появилась в версии: v1.1
+Introduced in: v1.1
 
-Вычисляет 32-битный хеш целого числа.
 
-Функция хеширования относительно быстрая, но не является криптографической хеш-функцией.
+Calculates a 32-bit hash of an integer.
 
-**Синтаксис**
+The hash function is relatively fast but not cryptographic hash function.
+
+
+**Syntax**
 
 ```sql
 intHash32(arg)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `arg` — целое число, которое нужно хешировать. [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `arg` — Integer to hash. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает вычисленный 32-битный хеш-код входного целого числа типа [`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the computed 32-bit hash code of the input integer [`UInt32`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT intHash32(42);
@@ -789,31 +875,36 @@ SELECT intHash32(42);
 └───────────────┘
 ```
 
+
+
 ## intHash64 {#intHash64}
 
-Введена в версии: v1.1
+Introduced in: v1.1
 
-Вычисляет 64-битный хеш целого числа.
 
-Функция хеширования достаточно быстрая (даже быстрее, чем [`intHash32`](#intHash32)), но не является криптографической хеш-функцией.
+Calculates a 64-bit hash of an integer.
 
-**Синтаксис**
+The hash function is relatively fast (even faster than [`intHash32`](#intHash32)) but not a cryptographic hash function.
+
+
+**Syntax**
 
 ```sql
 intHash64(int)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `int` — целое число для хеширования. [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `int` — Integer to hash. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-64-битный хеш-код. [`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+64-bit hash code. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT intHash64(42);
@@ -825,45 +916,49 @@ SELECT intHash64(42);
 └──────────────────────┘
 ```
 
+
+
 ## javaHash {#javaHash}
 
-Впервые появилась в: v20.1
+Introduced in: v20.1
 
-Вычисляет JavaHash для:
 
-* [string](http://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/String.java#l1452),
-* [Byte](https://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/Byte.java#l405),
-* [Short](https://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/Short.java#l410),
-* [Integer](https://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/Integer.java#l959),
-* [Long](https://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/Long.java#l1060).
+Calculates JavaHash from:
+- [string](http://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/String.java#l1452),
+- [Byte](https://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/Byte.java#l405),
+- [Short](https://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/Short.java#l410),
+- [Integer](https://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/Integer.java#l959),
+- [Long](https://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/Long.java#l1060).
 
 :::caution
-Эта хеш-функция обладает низкой производительностью.
-Используйте её только в том случае, если этот алгоритм уже применяется в другой системе и вам нужно получить тот же результат.
+This hash function is unperformant.
+Use it only when this algorithm is already in use in another system and you need to calculate the same result.
 :::
 
 :::note
-Java поддерживает вычисление хеша только для знаковых целых чисел,
-поэтому, если вы хотите вычислить хеш беззнаковых целых чисел, вы должны привести их к соответствующим знаковым типам ClickHouse.
+Java only supports calculating the hash of signed integers,
+so if you want to calculate a hash of unsigned integers you must cast them to the proper signed ClickHouse types.
 :::
 
-**Синтаксис**
+
+**Syntax**
 
 ```sql
 javaHash(arg)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `arg` — входное значение для хеширования. [`Any`](/sql-reference/data-types)
+- `arg` — Input value to hash. [`Any`](/sql-reference/data-types)
 
-**Возвращаемое значение**
 
-Возвращает вычисленный хеш значения `arg`. [`Int32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the computed hash of `arg` [`Int32`](/sql-reference/data-types/int-uint)
 
-**Пример использования 1**
+**Examples**
+
+**Usage example 1**
 
 ```sql title=Query
 SELECT javaHash(toInt32(123));
@@ -875,7 +970,7 @@ SELECT javaHash(toInt32(123));
 └────────────────────────┘
 ```
 
-**Пример использования 2**
+**Usage example 2**
 
 ```sql title=Query
 SELECT javaHash('Hello, world!');
@@ -887,29 +982,34 @@ SELECT javaHash('Hello, world!');
 └───────────────────────────┘
 ```
 
+
+
 ## javaHashUTF16LE {#javaHashUTF16LE}
 
-Добавлено в версии v20.1
+Introduced in: v20.1
 
-Вычисляет [JavaHash](http://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/String.java#l1452) для строки, предполагая, что она содержит байты, представляющие строку в кодировке UTF-16LE.
 
-**Синтаксис**
+Calculates [JavaHash](http://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/String.java#l1452) from a string, assuming it contains bytes representing a string in UTF-16LE encoding.
+
+
+**Syntax**
 
 ```sql
 javaHashUTF16LE(arg)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `arg` — строка в кодировке UTF-16LE. [`String`](/sql-reference/data-types/string)
+- `arg` — A string in UTF-16LE encoding. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает вычисленное хеш-значение строки в кодировке UTF-16LE. [`Int32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the computed hash of the UTF-16LE encoded string. [`Int32`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT javaHashUTF16LE(convertCharset('test', 'utf-8', 'utf-16le'));
@@ -921,30 +1021,35 @@ SELECT javaHashUTF16LE(convertCharset('test', 'utf-8', 'utf-16le'));
 └──────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## jumpConsistentHash {#jumpConsistentHash}
 
-Появилась в версии: v1.1
+Introduced in: v1.1
 
-Вычисляет [jump consistent hash](https://arxiv.org/pdf/1406.2294.pdf) для целого числа.
 
-**Синтаксис**
+Calculates the [jump consistent hash](https://arxiv.org/pdf/1406.2294.pdf) for an integer.
+
+
+**Syntax**
 
 ```sql
 jumpConsistentHash(key, buckets)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `key` — входной ключ. [`UInt64`](/sql-reference/data-types/int-uint)
-* `buckets` — количество бакетов. [`Int32`](/sql-reference/data-types/int-uint)
+- `key` — The input key. [`UInt64`](/sql-reference/data-types/int-uint)
+- `buckets` — The number of buckets. [`Int32`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает вычисленное значение хеша. [`Int32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the computed hash value. [`Int32`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT jumpConsistentHash(256, 4)
@@ -956,29 +1061,34 @@ SELECT jumpConsistentHash(256, 4)
 └────────────────────────────┘
 ```
 
+
+
 ## kafkaMurmurHash {#kafkaMurmurHash}
 
-Добавлена в версии: v23.4
+Introduced in: v23.4
 
-Вычисляет 32-битный хеш [MurmurHash2](https://github.com/aappleby/smhasher) входного значения, используя тот же seed, что и в [Kafka](https://github.com/apache/kafka/blob/461c5cfe056db0951d9b74f5adc45973670404d7/clients/src/main/java/org/apache/kafka/common/utils/Utils.java#L482), и без старшего бита для совместимости с [Default Partitioner](https://github.com/apache/kafka/blob/139f7709bd3f5926901a21e55043388728ccca78/clients/src/main/java/org/apache/kafka/clients/producer/internals/BuiltInPartitioner.java#L328).
 
-**Синтаксис**
+Calculates the 32-bit [MurmurHash2](https://github.com/aappleby/smhasher) hash of the input value using the same seed as used by [Kafka](https://github.com/apache/kafka/blob/461c5cfe056db0951d9b74f5adc45973670404d7/clients/src/main/java/org/apache/kafka/common/utils/Utils.java#L482) and without the highest bit to be compatible with [Default Partitioner](https://github.com/apache/kafka/blob/139f7709bd3f5926901a21e55043388728ccca78/clients/src/main/java/org/apache/kafka/clients/producer/internals/BuiltInPartitioner.java#L328).
+
+
+**Syntax**
 
 ```sql
 kafkaMurmurHash(arg1[, arg2, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `arg1[, arg2, ...]` — Произвольное число аргументов, для которых вычисляется хеш. [`Any`](/sql-reference/data-types)
+- `arg1[, arg2, ...]` — A variable number of parameters for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**Возвращаемое значение**
 
-Возвращает вычисленное хеш-значение входных аргументов. [`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the calculated hash value of the input arguments. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT
@@ -992,30 +1102,35 @@ SELECT
 └────────────┴──────────┘
 ```
 
+
+
 ## keccak256 {#keccak256}
 
-Введена в: v25.4
+Introduced in: v25.4
 
-Вычисляет криптографический хэш Keccak-256 для указанной строки.
-Эта хеш-функция широко используется в блокчейн-приложениях, в частности в Ethereum.
 
-**Синтаксис**
+Calculates the Keccak-256 cryptographic hash of the given string.
+This hash function is widely used in blockchain applications, particularly Ethereum.
+    
+
+**Syntax**
 
 ```sql
 keccak256(message)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `message` — входная строка для хеширования. [`String`](/sql-reference/data-types/string)
+- `message` — The input string to hash. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает 32-байтовый хэш Keccak-256 от входной строки в виде строки фиксированной длины. [`FixedString(32)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**Примеры**
+Returns the 32-byte Keccak-256 hash of the input string as a fixed-length string. [`FixedString(32)`](/sql-reference/data-types/fixedstring)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT hex(keccak256('hello'))
@@ -1027,33 +1142,38 @@ SELECT hex(keccak256('hello'))
 └──────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## kostikConsistentHash {#kostikConsistentHash}
 
-Появился в версии: v22.6
+Introduced in: v22.6
 
-Алгоритм согласованного хеширования с постоянной временной и пространственной сложностью O(1), разработанный Konstantin «Kostik» Oblakov.
-Эффективен только при `n <= 32768`.
 
-**Синтаксис**
+An O(1) time and space consistent hash algorithm by Konstantin 'Kostik' Oblakov.
+Only efficient with `n <= 32768`.
+
+
+**Syntax**
 
 ```sql
 kostikConsistentHash(input, n)
 ```
 
-**Псевдонимы**: `yandexConsistentHash`
+**Aliases**: `yandexConsistentHash`
 
-**Аргументы**
+**Arguments**
 
-* `input` — целочисленный ключ. [`UInt64`](/sql-reference/data-types/int-uint)
-* `n` — количество бакетов. [`UInt16`](/sql-reference/data-types/int-uint)
+- `input` — An integer key. [`UInt64`](/sql-reference/data-types/int-uint)
+- `n` — The number of buckets. [`UInt16`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает вычисленное значение хеша. [`UInt16`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the computed hash value. [`UInt16`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT kostikConsistentHash(16045690984833335023, 2);
@@ -1065,34 +1185,39 @@ SELECT kostikConsistentHash(16045690984833335023, 2);
 └───────────────────────────────────────────────┘
 ```
 
+
+
 ## metroHash64 {#metroHash64}
 
-Добавлено в версии: v1.1
+Introduced in: v1.1
 
-Возвращает 64-битное хеш-значение [MetroHash](http://www.jandrewrogers.com/2015/05/27/metrohash/).
+
+Produces a 64-bit [MetroHash](http://www.jandrewrogers.com/2015/05/27/metrohash/) hash value.
 
 :::note
-Вычисленные хеш-значения могут совпадать для одинаковых входных значений аргументов разных типов.
-Это касается, например, целочисленных типов разного размера, именованных и неименованных `Tuple` с одинаковыми данными, `Map` и соответствующего типа `Array(Tuple(key, value))` с одинаковыми данными.
+The calculated hash values may be equal for the same input values of different argument types.
+This affects for example integer types of different size, named and unnamed `Tuple` with the same data, `Map` and the corresponding `Array(Tuple(key, value))` type with the same data.
 :::
 
-**Синтаксис**
+
+**Syntax**
 
 ```sql
 metroHash64(arg1[, arg2, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `arg1[, arg2, ...]` — Произвольное число входных аргументов, для которых вычисляется хэш. [`Any`](/sql-reference/data-types)
+- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**Возвращаемое значение**
 
-Возвращает вычисленный хэш от входных аргументов. [`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the computed hash of the input arguments. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT metroHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00')) AS MetroHash, toTypeName(MetroHash) AS type;
@@ -1104,34 +1229,39 @@ SELECT metroHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:
 └──────────────────────┴────────┘
 ```
 
-## murmurHash2&#95;32 {#murmurHash2&#95;32}
 
-Впервые представлена в: v18.5
 
-Вычисляет хеш [MurmurHash2](https://github.com/aappleby/smhasher) для входного значения.
+## murmurHash2_32 {#murmurHash2_32}
+
+Introduced in: v18.5
+
+
+Computes the [MurmurHash2](https://github.com/aappleby/smhasher) hash of the input value.
 
 :::note
-Вычисленные хеш-значения могут совпадать для одинаковых входных значений разных типов аргументов.
-Это касается, например, целочисленных типов разного размера, именованных и неименованных `Tuple` с одинаковыми данными, `Map` и соответствующего типа `Array(Tuple(key, value))` с одинаковыми данными.
+The calculated hash values may be equal for the same input values of different argument types.
+This affects for example integer types of different size, named and unnamed `Tuple` with the same data, `Map` and the corresponding `Array(Tuple(key, value))` type with the same data.
 :::
 
-**Синтаксис**
+
+**Syntax**
 
 ```sql
 murmurHash2_32(arg1[, arg2, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `arg1[, arg2, ...]` — Произвольное количество входных аргументов, для которых вычисляется хеш. [`Any`](/sql-reference/data-types)
+- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**Возвращаемое значение**
 
-Возвращает вычисленное значение хеша входных аргументов. [`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the computed hash value of the input arguments. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT murmurHash2_32(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00')) AS MurmurHash2, toTypeName(MurmurHash2) AS type;
@@ -1143,34 +1273,39 @@ SELECT murmurHash2_32(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:
 └─────────────┴────────┘
 ```
 
-## murmurHash2&#95;64 {#murmurHash2&#95;64}
 
-Введено в версии: v18.10
 
-Вычисляет хеш [MurmurHash2](https://github.com/aappleby/smhasher) для входного значения.
+## murmurHash2_64 {#murmurHash2_64}
+
+Introduced in: v18.10
+
+
+Computes the [MurmurHash2](https://github.com/aappleby/smhasher) hash of the input value.
 
 :::note
-Вычисленные хеш-значения могут совпадать для одинаковых входных значений разных типов аргументов.
-Это относится, например, к целочисленным типам разной разрядности, именованным и неименованным `Tuple` с одинаковыми данными, а также к `Map` и соответствующему типу `Array(Tuple(key, value))` с одинаковыми данными.
+The calculated hash values may be equal for the same input values of different argument types.
+This affects for example integer types of different size, named and unnamed `Tuple` with the same data, `Map` and the corresponding `Array(Tuple(key, value))` type with the same data.
 :::
 
-**Синтаксис**
+
+**Syntax**
 
 ```sql
 murmurHash2_64(arg1[, arg2, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `arg1[, arg2, ...]` — Произвольное число входных аргументов, для которых вычисляется хеш. [`Any`](/sql-reference/data-types)
+- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**Возвращаемое значение**
 
-Возвращает вычисленный хеш входных аргументов. [`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the computed hash of the input arguments. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT murmurHash2_64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00')) AS MurmurHash2, toTypeName(MurmurHash2) AS type;
@@ -1182,29 +1317,34 @@ SELECT murmurHash2_64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:
 └──────────────────────┴────────┘
 ```
 
-## murmurHash3&#95;128 {#murmurHash3&#95;128}
 
-Появилась в версии: v18.10
 
-Вычисляет 128-битный хэш [MurmurHash3](https://github.com/aappleby/smhasher) от входного значения.
+## murmurHash3_128 {#murmurHash3_128}
 
-**Синтаксис**
+Introduced in: v18.10
+
+
+Computes the 128-bit [MurmurHash3](https://github.com/aappleby/smhasher) hash of the input value.
+
+
+**Syntax**
 
 ```sql
 murmurHash3_128(arg1[, arg2, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `arg1[, arg2, ...]` — Переменное количество входных аргументов, для которых вычисляется хеш. [`Any`](/sql-reference/data-types)
+- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**Возвращаемое значение**
 
-Возвращает 128-битный хеш `MurmurHash3`, вычисленный по входным аргументам. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**Примеры**
+Returns the computed 128-bit `MurmurHash3` hash value of the input arguments. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT hex(murmurHash3_128('foo', 'foo', 'foo'));
@@ -1216,34 +1356,39 @@ SELECT hex(murmurHash3_128('foo', 'foo', 'foo'));
 └───────────────────────────────────────────┘
 ```
 
-## murmurHash3&#95;32 {#murmurHash3&#95;32}
 
-Введена в версии: v18.10
 
-Возвращает хэш-значение [MurmurHash3](https://github.com/aappleby/smhasher).
+## murmurHash3_32 {#murmurHash3_32}
+
+Introduced in: v18.10
+
+
+Produces a [MurmurHash3](https://github.com/aappleby/smhasher) hash value.
 
 :::note
-Вычисленные хэш-значения могут совпадать для одинаковых входных значений аргументов разных типов.
-Это, например, относится к целочисленным типам разного размера, именованному и неименованному `Tuple` с одинаковыми данными, `Map` и соответствующему типу `Array(Tuple(key, value))` с одинаковыми данными.
+The calculated hash values may be equal for the same input values of different argument types.
+This affects for example integer types of different size, named and unnamed `Tuple` with the same data, `Map` and the corresponding `Array(Tuple(key, value))` type with the same data.
 :::
 
-**Синтаксис**
+
+**Syntax**
 
 ```sql
 murmurHash3_32(arg1[, arg2, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `arg1[, arg2, ...]` — Переменное число входных аргументов, для которых вычисляется хеш. [`Any`](/sql-reference/data-types)
+- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**Возвращаемое значение**
 
-Возвращает вычисленное значение хеша входных аргументов. [`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the computed hash value of the input arguments. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT murmurHash3_32(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00')) AS MurmurHash3, toTypeName(MurmurHash3) AS type;
@@ -1255,34 +1400,39 @@ SELECT murmurHash3_32(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:
 └─────────────┴────────┘
 ```
 
-## murmurHash3&#95;64 {#murmurHash3&#95;64}
 
-Введена в версии v18.10
 
-Вычисляет хеш [MurmurHash3](https://github.com/aappleby/smhasher) для входного значения.
+## murmurHash3_64 {#murmurHash3_64}
+
+Introduced in: v18.10
+
+
+Computes the [MurmurHash3](https://github.com/aappleby/smhasher) hash of the input value.
 
 :::note
-Вычисленные хеш-значения могут совпадать для одинаковых входных значений аргументов разных типов.
-Это касается, например, целочисленных типов разного размера, именованных и неименованных `Tuple` с одинаковыми данными, `Map` и соответствующего типа `Array(Tuple(key, value))` с одинаковыми данными.
+The calculated hash values may be equal for the same input values of different argument types.
+This affects for example integer types of different size, named and unnamed `Tuple` with the same data, `Map` and the corresponding `Array(Tuple(key, value))` type with the same data.
 :::
 
-**Синтаксис**
+
+**Syntax**
 
 ```sql
 murmurHash3_64(arg1[, arg2, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `arg1[, arg2, ...]` — Переменное число входных аргументов, для которых вычисляется хеш. [`Any`](/sql-reference/data-types)
+- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**Возвращаемое значение**
 
-Возвращает вычисленное значение хеша входных аргументов. [`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the computed hash value of the input arguments. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT murmurHash3_64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00')) AS MurmurHash3, toTypeName(MurmurHash3) AS type;
@@ -1294,36 +1444,41 @@ SELECT murmurHash3_64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:
 └──────────────────────┴────────┘
 ```
 
+
+
 ## ngramMinHash {#ngramMinHash}
 
-Появилась в версии: v21.1
+Introduced in: v21.1
 
-Разбивает ASCII-строку на n-граммы длиной `ngramsize` символов, вычисляет хэш-значение для каждой n-граммы и возвращает кортеж с этими хэшами.
-Использует `hashnum` минимальных хэшей для вычисления минимального хэша и `hashnum` максимальных хэшей для вычисления максимального хэша.
-Функция чувствительна к регистру.
 
-Может использоваться для обнаружения почти дублирующихся строк с помощью [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
-Для двух строк, если возвращаемые хэши совпадают для обеих строк, то эти строки считаются одинаковыми.
+Splits a ASCII string into n-grams of `ngramsize` symbols and calculates hash values for each n-gram and returns a tuple with these hashes.
+Uses `hashnum` minimum hashes to calculate the minimum hash and `hashnum` maximum hashes to calculate the maximum hash.
+It is case sensitive.
 
-**Синтаксис**
+Can be used to detect semi-duplicate strings with [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
+For two strings, if the returned hashes are the same for both strings, then those strings are the same.
+
+
+**Syntax**
 
 ```sql
 ngramMinHash(string[, ngramsize, hashnum])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `string` — Строка, для которой вычисляется хэш. [`String`](/sql-reference/data-types/string)
-* `ngramsize` — Необязательный параметр. Размер n-граммы, любое число от `1` до `25`. Значение по умолчанию — `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-* `hashnum` — Необязательный параметр. Количество хэшей минимума и максимума, используемых для вычисления результата, любое число от `1` до `25`. Значение по умолчанию — `6`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает кортеж из двух хэшей — минимального и максимального. [`Tuple`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**Примеры**
+Returns a tuple with two hashes — the minimum and the maximum. [`Tuple`](/sql-reference/data-types/tuple)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT ngramMinHash('ClickHouse') AS Tuple;
@@ -1335,32 +1490,37 @@ SELECT ngramMinHash('ClickHouse') AS Tuple;
 └────────────────────────────────────────────┘
 ```
 
+
+
 ## ngramMinHashArg {#ngramMinHashArg}
 
-Появилась в версии v21.1
+Introduced in: v21.1
 
-Разбивает ASCII-строку на n-граммы из `ngramsize` символов и возвращает n-граммы с минимальным и максимальным хешами, вычисленными функцией [`ngramMinHash`](#ngramMinHash) для того же входного значения.
-Чувствительна к регистру.
 
-**Синтаксис**
+Splits a ASCII string into n-grams of `ngramsize` symbols and returns the n-grams with minimum and maximum hashes, calculated by the [`ngramMinHash`](#ngramMinHash) function with the same input.
+It is case sensitive.
+
+
+**Syntax**
 
 ```sql
 ngramMinHashArg(строка[, размер_нграммы, число_хешей])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `string` — Строка, для которой вычисляется хэш. [`String`](/sql-reference/data-types/string)
-* `ngramsize` — Необязательный параметр. Размер n-граммы, число от `1` до `25`. Значение по умолчанию — `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-* `hashnum` — Необязательный параметр. Количество минимальных и максимальных хэшей, используемых для вычисления результата, число от `1` до `25`. Значение по умолчанию — `6`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает кортеж из двух кортежей, каждый содержащий `hashnum` n-грамм. [`Tuple(String)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**Примеры**
+Returns a tuple with two tuples with `hashnum` n-grams each. [`Tuple(String)`](/sql-reference/data-types/tuple)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT ngramMinHashArg('ClickHouse') AS Tuple;
@@ -1372,32 +1532,37 @@ SELECT ngramMinHashArg('ClickHouse') AS Tuple;
 └───────────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## ngramMinHashArgCaseInsensitive {#ngramMinHashArgCaseInsensitive}
 
-Впервые добавлена в: v21.1
+Introduced in: v21.1
 
-Разбивает ASCII-строку на n-граммы по `ngramsize` символов и возвращает n-граммы с минимальным и максимальным хэшами, вычисленными функцией [`ngramMinHashCaseInsensitive`](#ngramMinHashCaseInsensitive) с теми же входными данными.
-Функция нечувствительна к регистру.
 
-**Синтаксис**
+Splits a ASCII string into n-grams of `ngramsize` symbols and returns the n-grams with minimum and maximum hashes, calculated by the [`ngramMinHashCaseInsensitive`](#ngramMinHashCaseInsensitive) function with the same input.
+It is case insensitive.
+
+
+**Syntax**
 
 ```sql
 ngramMinHashArgCaseInsensitive(string[, ngramsize, hashnum])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `string` — Строка, для которой вычисляется хеш. [`String`](/sql-reference/data-types/string)
-* `ngramsize` — Необязательный параметр. Размер n-граммы, любое целое число от `1` до `25`. Значение по умолчанию — `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-* `hashnum` — Необязательный параметр. Количество минимальных и максимальных хешей, используемых для вычисления результата, любое целое число от `1` до `25`. Значение по умолчанию — `6`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает кортеж из двух кортежей, с `hashnum` n-граммами в каждом. [`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**Примеры**
+Returns a tuple with two tuples with `hashnum` n-grams each. [`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT ngramMinHashArgCaseInsensitive('ClickHouse') AS Tuple;
@@ -1409,32 +1574,37 @@ SELECT ngramMinHashArgCaseInsensitive('ClickHouse') AS Tuple;
 └───────────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## ngramMinHashArgCaseInsensitiveUTF8 {#ngramMinHashArgCaseInsensitiveUTF8}
 
-Добавлено в версии: v21.1
+Introduced in: v21.1
 
-Разбивает строку в кодировке UTF-8 на n-граммы длиной `ngramsize` символов и возвращает n-граммы с минимальным и максимальным хешами, вычисленными функцией ngramMinHashCaseInsensitiveUTF8 с теми же входными данными.
-Функция нечувствительна к регистру.
 
-**Синтаксис**
+Splits a UTF-8 string into n-grams of `ngramsize` symbols and returns the n-grams with minimum and maximum hashes, calculated by the ngramMinHashCaseInsensitiveUTF8 function with the same input.
+It is case insensitive.
+
+
+**Syntax**
 
 ```sql
 ngramMinHashArgCaseInsensitiveUTF8(string[, ngramsize, hashnum])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `string` — Строка, для которой вычисляется хэш. [`String`](/sql-reference/data-types/string)
-* `ngramsize` — Необязательный параметр. Размер n-граммы, любое число от `1` до `25`. Значение по умолчанию — `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-* `hashnum` — Необязательный параметр. Количество минимальных и максимальных хэшей, используемых для вычисления результата, любое число от `1` до `25`. Значение по умолчанию — `6`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает кортеж из двух кортежей с `hashnum` n-граммами в каждом. [`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**Примеры**
+Returns a tuple with two tuples with `hashnum` n-grams each. [`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT ngramMinHashArgCaseInsensitiveUTF8('ClickHouse') AS Tuple;
@@ -1446,32 +1616,37 @@ SELECT ngramMinHashArgCaseInsensitiveUTF8('ClickHouse') AS Tuple;
 └───────────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## ngramMinHashArgUTF8 {#ngramMinHashArgUTF8}
 
-Впервые появилась в версии: v21.1
+Introduced in: v21.1
 
-Разбивает строку в кодировке UTF-8 на n-граммы длиной `ngramsize` символов и возвращает n-граммы с минимальным и максимальным хэшами, вычисленными функцией `ngramMinHashUTF8` с теми же входными данными.
-Функция чувствительна к регистру.
 
-**Синтаксис**
+Splits a UTF-8 string into n-grams of `ngramsize` symbols and returns the n-grams with minimum and maximum hashes, calculated by the `ngramMinHashUTF8` function with the same input.
+It is case sensitive.
+
+
+**Syntax**
 
 ```sql
 ngramMinHashArgUTF8(string[, ngramsize, hashnum])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `string` — Строка, для которой вычисляется хеш. [`String`](/sql-reference/data-types/string)
-* `ngramsize` — Необязательный параметр. Размер n-граммы, любое число от `1` до `25`. Значение по умолчанию — `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-* `hashnum` — Необязательный параметр. Количество минимальных и максимальных хешей, используемых для вычисления результата, любое число от `1` до `25`. Значение по умолчанию — `6`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает кортеж из двух кортежей, каждый с `hashnum` n-граммами. [`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**Примеры**
+Returns a tuple with two tuples with `hashnum` n-grams each. [`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT ngramMinHashArgUTF8('ClickHouse') AS Tuple;
@@ -1483,34 +1658,38 @@ SELECT ngramMinHashArgUTF8('ClickHouse') AS Tuple;
 └───────────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## ngramMinHashCaseInsensitive {#ngramMinHashCaseInsensitive}
 
-Введена в версии v21.1
+Introduced in: v21.1
 
-Разбивает ASCII-строку на n-граммы из `ngramsize` символов, вычисляет хэш-значения для каждой n-граммы и возвращает кортеж с этими хэшами.
-Использует `hashnum` наименьших хэшей для вычисления минимального хэша и `hashnum` наибольших хэшей для вычисления максимального хэша.
-Не чувствительна к регистру.
 
-Может использоваться для обнаружения почти дублирующихся строк с помощью [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
-Для двух строк, если возвращаемые хэши совпадают для обеих строк, то эти строки считаются одинаковыми.
+Splits a ASCII string into n-grams of `ngramsize` symbols and calculates hash values for each n-gram and returns a tuple with these hashes
+Uses `hashnum` minimum hashes to calculate the minimum hash and `hashnum` maximum hashes to calculate the maximum hash.
+It is case insensitive.
 
-**Синтаксис**
+Can be used to detect semi-duplicate strings with [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
+For two strings, if the returned hashes are the same for both strings, then those strings are the same.
+
+
+**Syntax**
 
 ```sql
 ngramMinHashCaseInsensitive(string[, ngramsize, hashnum])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `string` — Строка. [String](../data-types/string.md). - `ngramsize` — Размер n-граммы. Необязательный параметр. Возможные значения: любое число от `1` до `25`. Значение по умолчанию: `3`. [UInt8](../data-types/int-uint.md). - `hashnum` — Количество минимальных и максимальных хешей, используемых для вычисления результата. Необязательный параметр. Возможные значения: любое число от `1` до `25`. Значение по умолчанию: `6`. [UInt8](../data-types/int-uint.md).
+- `string` — String. [String](../data-types/string.md). - `ngramsize` — The size of an n-gram. Optional. Possible values: any number from `1` to `25`. Default value: `3`. [UInt8](../data-types/int-uint.md). - `hashnum` — The number of minimum and maximum hashes used to calculate the result. Optional. Possible values: any number from `1` to `25`. Default value: `6`. [UInt8](../data-types/int-uint.md). 
 
-**Возвращаемое значение**
+**Returned value**
 
-Кортеж из двух хешей — минимального и максимального. [Tuple](../data-types/tuple.md)([UInt64](../data-types/int-uint.md), [UInt64](../data-types/int-uint.md)). [`Tuple`](/sql-reference/data-types/tuple)
+Tuple with two hashes — the minimum and the maximum. [Tuple](../data-types/tuple.md)([UInt64](../data-types/int-uint.md), [UInt64](../data-types/int-uint.md)). [`Tuple`](/sql-reference/data-types/tuple)
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT ngramMinHashCaseInsensitive('ClickHouse') AS Tuple;
@@ -1522,36 +1701,41 @@ SELECT ngramMinHashCaseInsensitive('ClickHouse') AS Tuple;
 └────────────────────────────────────────────┘
 ```
 
+
+
 ## ngramMinHashCaseInsensitiveUTF8 {#ngramMinHashCaseInsensitiveUTF8}
 
-Впервые появилась в версии v21.1
+Introduced in: v21.1
 
-Разбивает строку в кодировке UTF-8 на n-граммы из `ngramsize` символов, вычисляет хеш-значение для каждой n-граммы и возвращает кортеж с этими хешами.
-Использует `hashnum` минимальных хешей для вычисления минимального хеша и `hashnum` максимальных хешей для вычисления максимального хеша.
-Функция нечувствительна к регистру.
 
-Может использоваться для обнаружения частично дублирующихся строк с помощью [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
-Для двух строк, если возвращаемые хеши совпадают, то эти строки идентичны.
+Splits a UTF-8 string into n-grams of `ngramsize` symbols and calculates hash values for each n-gram and returns a tuple with these hashes..
+Uses `hashnum` minimum hashes to calculate the minimum hash and `hashnum` maximum hashes to calculate the maximum hash.
+It is case insensitive.
 
-**Синтаксис**
+Can be used to detect semi-duplicate strings with [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
+For two strings, if the returned hashes are the same for both strings, then those strings are the same.
+
+
+**Syntax**
 
 ```sql
 ngramMinHashCaseInsensitiveUTF8(string [, ngramsize, hashnum])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `string` — Строка, для которой вычисляется хеш. [`String`](/sql-reference/data-types/string)
-* `ngramsize` — Необязательный параметр. Размер n-граммы, любое число от `1` до `25`. Значение по умолчанию — `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-* `hashnum` — Необязательный параметр. Количество хешей (минимальных и максимальных), используемых для вычисления результата, любое число от `1` до `25`. Значение по умолчанию — `6`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает кортеж из двух хешей — минимального и максимального. [`Tuple`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**Примеры**
+Returns a tuple with two hashes — the minimum and the maximum. [`Tuple`](/sql-reference/data-types/tuple)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT ngramMinHashCaseInsensitiveUTF8('ClickHouse') AS Tuple;
@@ -1563,36 +1747,41 @@ SELECT ngramMinHashCaseInsensitiveUTF8('ClickHouse') AS Tuple;
 └─────────────────────────────────────────────┘
 ```
 
+
+
 ## ngramMinHashUTF8 {#ngramMinHashUTF8}
 
-Введена в версии: v21.1
+Introduced in: v21.1
 
-Разбивает строку в кодировке UTF-8 на n-граммы из `ngramsize` символов, вычисляет значения хэшей для каждой n-граммы и возвращает кортеж с этими хэшами.
-Использует `hashnum` минимальных хэшей для вычисления минимального хэша и `hashnum` максимальных хэшей для вычисления максимального хэша.
-Функция чувствительна к регистру.
 
-Может использоваться для обнаружения частично дублирующихся строк с помощью [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
-Если для двух строк возвращаются одинаковые хэши, то эти строки совпадают.
+Splits a UTF-8 string into n-grams of `ngramsize` symbols and calculates hash values for each n-gram and returns a tuple with these hashes.
+Uses `hashnum` minimum hashes to calculate the minimum hash and `hashnum` maximum hashes to calculate the maximum hash.
+It is case sensitive.
 
-**Синтаксис**
+Can be used to detect semi-duplicate strings with [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
+For two strings, if the returned hashes are the same for both strings, then those strings are the same.
+
+
+**Syntax**
 
 ```sql
 ngramMinHashUTF8(string[, ngramsize, hashnum])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `string` — Строка, для которой вычисляется хэш. [`String`](/sql-reference/data-types/string)
-* `ngramsize` — Необязательный параметр. Размер n-граммы, целое число от `1` до `25`. Значение по умолчанию — `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-* `hashnum` — Необязательный параметр. Количество минимальных и максимальных хэшей, используемых при вычислении результата, целое число от `1` до `25`. Значение по умолчанию — `6`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает кортеж из двух хэшей — минимального и максимального. [`Tuple`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**Примеры**
+Returns a tuple with two hashes — the minimum and the maximum. [`Tuple`](/sql-reference/data-types/tuple)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT ngramMinHashUTF8('ClickHouse') AS Tuple;
@@ -1604,33 +1793,38 @@ SELECT ngramMinHashUTF8('ClickHouse') AS Tuple;
 └────────────────────────────────────────────┘
 ```
 
+
+
 ## ngramSimHash {#ngramSimHash}
 
-Введена в версии v21.1
+Introduced in: v21.1
 
-Разбивает ASCII-строку на n-граммы из `ngramsize` символов и возвращает `simhash` этих n-грамм.
 
-Может использоваться для обнаружения частично дублирующихся строк с помощью [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance).
-Чем меньше [расстояние Хэмминга](https://en.wikipedia.org/wiki/Hamming_distance) между вычисленными `simhash` двух строк, тем выше вероятность, что эти строки совпадают.
+Splits a ASCII string into n-grams of `ngramsize` symbols and returns the n-gram `simhash`.
 
-**Синтаксис**
+Can be used for detection of semi-duplicate strings with [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance).
+The smaller the [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) of the calculated `simhashes` of two strings, the more likely these strings are the same.
+
+
+**Syntax**
 
 ```sql
 ngramSimHash(string[, ngramsize])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `string` — Строка, для которой вычисляется регистрозависимый хэш `simhash`. [`String`](/sql-reference/data-types/string)
-* `ngramsize` — Необязательный параметр. Размер n-граммы, любое число от `1` до `25`. Значение по умолчанию — `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the case sensitive `simhash`. [`String`](/sql-reference/data-types/string)
+- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is`3`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает вычисленный хэш входной строки. [`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the computed hash of the input string. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT ngramSimHash('ClickHouse') AS Hash;
@@ -1642,34 +1836,39 @@ SELECT ngramSimHash('ClickHouse') AS Hash;
 └────────────┘
 ```
 
+
+
 ## ngramSimHashCaseInsensitive {#ngramSimHashCaseInsensitive}
 
-Добавлено в версии: v21.1
+Introduced in: v21.1
 
-Разбивает ASCII-строку на n-граммы длиной `ngramsize` символов и возвращает `simhash` для этих n-грамм.
-Функция нечувствительна к регистру.
 
-Может использоваться для обнаружения частично совпадающих строк с помощью [`bitHammingDistance`](/sql-reference/functions/bit-functions#bitHammingDistance).
-Чем меньше [расстояние Хэмминга](https://en.wikipedia.org/wiki/Hamming_distance) между вычисленными `simhash` двух строк, тем выше вероятность, что эти строки совпадают.
+Splits a ASCII string into n-grams of `ngramsize` symbols and returns the n-gram `simhash`.
+It is case insensitive.
 
-**Синтаксис**
+Can be used for detection of semi-duplicate strings with [`bitHammingDistance`](/sql-reference/functions/bit-functions#bitHammingDistance).
+The smaller the [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) of the calculated `simhashes` of two strings, the more likely these strings are the same.
+
+
+**Syntax**
 
 ```sql
 ngramSimHashCaseInsensitive(строка[, размер_н-граммы])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `string` — Строка, для которой нужно вычислить регистронезависимый `simhash`. [`String`](/sql-reference/data-types/string)
-* `ngramsize` — Необязательный параметр. Размер n-граммы, любое число от `1` до `25`. Значение по умолчанию — `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the case insensitive `simhash`. [`String`](/sql-reference/data-types/string)
+- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Хеш-значение. [UInt64](../data-types/int-uint.md). [`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Hash value. [UInt64](../data-types/int-uint.md). [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT ngramSimHashCaseInsensitive('ClickHouse') AS Hash;
@@ -1681,33 +1880,38 @@ SELECT ngramSimHashCaseInsensitive('ClickHouse') AS Hash;
 └───────────┘
 ```
 
+
+
 ## ngramSimHashCaseInsensitiveUTF8 {#ngramSimHashCaseInsensitiveUTF8}
 
-Появилась в версии: v21.1
+Introduced in: v21.1
 
-Разбивает строку в кодировке UTF-8 на n-граммы из `ngramsize` символов и возвращает `simhash` этих n-грамм.
-Функция нечувствительна к регистру.
 
-Может использоваться для обнаружения почти совпадающих строк совместно с [bitHammingDistance](../functions/bit-functions.md/#bitHammingDistance). Чем меньше [расстояние Хэмминга](https://en.wikipedia.org/wiki/Hamming_distance) между вычисленными значениями `simhash` двух строк, тем выше вероятность, что эти строки совпадают.
+Splits a UTF-8 string into n-grams of `ngramsize` symbols and returns the n-gram `simhash`.
+It is case insensitive.
 
-**Синтаксис**
+Can be used for detection of semi-duplicate strings with [bitHammingDistance](../functions/bit-functions.md/#bitHammingDistance). The smaller is the [Hamming Distance](https://en.wikipedia.org/wiki/Hamming_distance) of the calculated `simhashes` of two strings, the more likely these strings are the same.
+
+
+**Syntax**
 
 ```sql
 ngramSimHashCaseInsensitiveUTF8(string[, ngramsize])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `string` — Строка, для которой нужно вычислить хеш. [`String`](/sql-reference/data-types/string)
-* `ngramsize` — Необязательный параметр. Размер n-граммы — число от `1` до `25`. Значение по умолчанию — `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает вычисленное значение хеша. [`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the computed hash value. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT ngramSimHashCaseInsensitiveUTF8('ClickHouse') AS Hash;
@@ -1719,34 +1923,39 @@ SELECT ngramSimHashCaseInsensitiveUTF8('ClickHouse') AS Hash;
 └────────────┘
 ```
 
+
+
 ## ngramSimHashUTF8 {#ngramSimHashUTF8}
 
-Добавлена в: v21.1
+Introduced in: v21.1
 
-Разбивает строку в кодировке UTF-8 на n-граммы из `ngramsize` символов и возвращает `simhash` этих n-грамм.
-Функция чувствительна к регистру.
 
-Может использоваться для обнаружения частично дублирующихся строк совместно с [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance).
-Чем меньше [расстояние Хэмминга](https://en.wikipedia.org/wiki/Hamming_distance) между вычисленными значениями `simhash` двух строк, тем выше вероятность, что эти строки совпадают.
+Splits a UTF-8 encoded string into n-grams of `ngramsize` symbols and returns the n-gram `simhash`.
+It is case sensitive.
 
-**Синтаксис**
+Can be used for detection of semi-duplicate strings with [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance).
+The smaller the [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) of the calculated `simhashes` of two strings, the more likely these strings are the same.
+
+
+**Syntax**
 
 ```sql
 ngramSimHashUTF8(string[, ngramsize])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `string` — Строка, для которой нужно вычислить хеш. [`String`](/sql-reference/data-types/string)
-* `ngramsize` — Необязательный параметр. Размер n-граммы, любое число от `1` до `25`. Значение по умолчанию — `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает вычисленное хеш-значение. [`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the computed hash value. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT ngramSimHashUTF8('ClickHouse') AS Хэш;
@@ -1758,35 +1967,40 @@ SELECT ngramSimHashUTF8('ClickHouse') AS Хэш;
 └────────────┘
 ```
 
+
+
 ## sipHash128 {#sipHash128}
 
-Добавлена в версии: v1.1
+Introduced in: v1.1
 
-Аналог [`sipHash64`](#sipHash64), но возвращает 128-битное хеш-значение, то есть финальная xor-свёртка состояния выполняется до 128 бит.
 
-:::tip Используйте sipHash128Reference для новых проектов
-Этот 128-битный вариант отличается от эталонной реализации и является более слабым.
-Эта версия существует потому, что на момент её создания не было официального 128-битного расширения для SipHash.
-Для новых проектов рекомендуется использовать [`sipHash128Reference`](#sipHash128Reference).
+Like [`sipHash64`](#sipHash64) but produces a 128-bit hash value, i.e. the final xor-folding state is done up to 128 bits.
+
+:::tip use sipHash128Reference for new projects
+This 128-bit variant differs from the reference implementation and is weaker.
+This version exists because, when it was written, there was no official 128-bit extension for SipHash.
+New projects are advised to use [`sipHash128Reference`](#sipHash128Reference).
 :::
 
-**Синтаксис**
+
+**Syntax**
 
 ```sql
 sipHash128(arg1[, arg2, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `arg1[, arg2, ...]` — переменное количество входных аргументов, для которых вычисляется хеш. [`Any`](/sql-reference/data-types)
+- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**Возвращаемое значение**
 
-Возвращает 128-битное хеш-значение `SipHash`. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**Примеры**
+Returns a 128-bit `SipHash` hash value. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT hex(sipHash128('foo', '\x01', 3));
@@ -1798,36 +2012,41 @@ SELECT hex(sipHash128('foo', '\x01', 3));
 └──────────────────────────────────┘
 ```
 
+
+
 ## sipHash128Keyed {#sipHash128Keyed}
 
-Добавлена в версии v23.2
+Introduced in: v23.2
 
-То же, что и [`sipHash128`](#sipHash128), но дополнительно принимает явный аргумент ключа вместо использования фиксированного ключа.
 
-:::tip используйте sipHash128ReferenceKeyed для новых проектов
-Этот 128-битный вариант отличается от эталонной реализации и является более слабым.
-Эта версия существует потому что на момент её разработки не было официального 128-битного расширения для SipHash.
-Для новых проектов, вероятно, следует использовать [`sipHash128ReferenceKeyed`](#sipHash128ReferenceKeyed).
+Same as [`sipHash128`](#sipHash128) but additionally takes an explicit key argument instead of using a fixed key.
+
+:::tip use sipHash128ReferenceKeyed for new projects
+This 128-bit variant differs from the reference implementation and it's weaker.
+This version exists because, when it was written, there was no official 128-bit extension for SipHash.
+New projects should probably use [`sipHash128ReferenceKeyed`](#sipHash128ReferenceKeyed).
 :::
 
-**Синтаксис**
+
+**Syntax**
 
 ```sql
 sipHash128Keyed((k0, k1), [arg1, arg2, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `(k0, k1)` — кортеж из двух значений типа UInt64, представляющих ключ. [`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
-* `arg1[, arg2, ...]` — переменное количество входных аргументов, для которых нужно вычислить хеш. [`Any`](/sql-reference/data-types)
+- `(k0, k1)` — A tuple of two UInt64 values representing the key. [`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
+- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**Возвращаемое значение**
 
-128-битное значение хеша `SipHash` типа [FixedString(16)](../data-types/fixedstring.md). [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**Примеры**
+A 128-bit `SipHash` hash value of type [FixedString(16)](../data-types/fixedstring.md). [`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT hex(sipHash128Keyed((506097522914230528, 1084818905618843912),'foo', '\x01', 3));
@@ -1839,29 +2058,34 @@ SELECT hex(sipHash128Keyed((506097522914230528, 1084818905618843912),'foo', '\x0
 └───────────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## sipHash128Reference {#sipHash128Reference}
 
-Добавлено в: v23.2
+Introduced in: v23.2
 
-Аналог функции [`sipHash128`](/sql-reference/functions/hash-functions#sipHash128), но реализует 128-битный алгоритм, предложенный авторами SipHash.
 
-**Синтаксис**
+Like [`sipHash128`](/sql-reference/functions/hash-functions#sipHash128) but implements the 128-bit algorithm from the original authors of SipHash.
+    
+
+**Syntax**
 
 ```sql
 sipHash128Reference(arg1[, arg2, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `arg1[, arg2, ...]` — Переменное количество входных аргументов, для которых вычисляется хеш. [`Any`](/sql-reference/data-types)
+- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**Возвращаемое значение**
 
-Возвращает вычисленное 128-битное значение хеша `SipHash` входных аргументов. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**Примеры**
+Returns the computed 128-bit `SipHash` hash value of the input arguments. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT hex(sipHash128Reference('foo', '', 3));
@@ -1873,30 +2097,35 @@ SELECT hex(sipHash128Reference('foo', '', 3));
 └────────────────────────────────────────┘
 ```
 
+
+
 ## sipHash128ReferenceKeyed {#sipHash128ReferenceKeyed}
 
-Впервые появилась в: v23.2
+Introduced in: v23.2
 
-Аналог функции [`sipHash128Reference`](#sipHash128Reference), но дополнительно принимает явный параметр ключа вместо использования фиксированного ключа.
 
-**Синтаксис**
+Same as [`sipHash128Reference`](#sipHash128Reference) but additionally takes an explicit key argument instead of using a fixed key.
+    
+
+**Syntax**
 
 ```sql
 sipHash128ReferenceKeyed((k0, k1), arg1[, arg2, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `(k0, k1)` — кортеж из двух значений, задающий ключ [`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
-* `arg1[, arg2, ...]` — произвольное количество входных аргументов, для которых вычисляется хэш. [`Any`](/sql-reference/data-types)
+- `(k0, k1)` — Tuple of two values representing the key [`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
+- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**Возвращаемое значение**
 
-Возвращает вычисленное 128-битное значение хэша `SipHash` для входных аргументов. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**Примеры**
+Returns the computed 128-bit `SipHash` hash value of the input arguments. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT hex(sipHash128Reference('foo', '', 3));
@@ -1908,43 +2137,48 @@ SELECT hex(sipHash128Reference('foo', '', 3));
 └────────────────────────────────────────┘
 ```
 
+
+
 ## sipHash64 {#sipHash64}
 
-Впервые появилась в: v1.1
+Introduced in: v1.1
 
-Возвращает 64-битное хеш-значение [SipHash](https://en.wikipedia.org/wiki/SipHash).
 
-Это криптографическая хеш-функция. Работает как минимум в три раза быстрее, чем хеш-функция [`MD5`](#MD5).
+Produces a 64-bit [SipHash](https://en.wikipedia.org/wiki/SipHash) hash value.
 
-Функция [интерпретирует](/sql-reference/functions/type-conversion-functions#reinterpretasstring) все входные параметры как строки и вычисляет хеш-значение для каждого из них.
-Затем она комбинирует хеши по следующему алгоритму:
+This is a cryptographic hash function. It works at least three times faster than the [`MD5`](#MD5) hash function.
 
-1. Первое и второе хеш-значения объединяются в массив, который затем хешируется.
-2. Ранее вычисленное хеш-значение и хеш третьего входного параметра хешируются аналогичным образом.
-3. Это вычисление повторяется для всех оставшихся хеш-значений исходных аргументов.
+The function [interprets](/sql-reference/functions/type-conversion-functions#reinterpretasstring) all the input parameters as strings and calculates the hash value for each of them.
+It then combines the hashes using the following algorithm:
+
+1. The first and the second hash value are concatenated to an array which is hashed.
+2. The previously calculated hash value and the hash of the third input parameter are hashed in a similar way.
+3. This calculation is repeated for all remaining hash values of the original input.
 
 :::note
-Вычисленные хеш-значения могут совпадать для одинаковых входных значений аргументов разных типов.
-Это, например, относится к целочисленным типам разного размера, именованным и неименованным `Tuple` с одинаковыми данными, а также к `Map` и соответствующему типу `Array(Tuple(key, value))` с одинаковыми данными.
+the calculated hash values may be equal for the same input values of different argument types.
+This affects for example integer types of different size, named and unnamed `Tuple` with the same data, `Map` and the corresponding `Array(Tuple(key, value))` type with the same data.
 :::
 
-**Синтаксис**
+
+**Syntax**
 
 ```sql
 sipHash64(arg1[, arg2, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `arg1[, arg2, ...]` — Переменное количество входных аргументов. [`Any`](/sql-reference/data-types)
+- `arg1[, arg2, ...]` — A variable number of input arguments. [`Any`](/sql-reference/data-types)
 
-**Возвращаемое значение**
 
-Возвращает вычисленное хэш-значение входных аргументов. [`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns a computed hash value of the input arguments. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT sipHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00')) AS SipHash, toTypeName(SipHash) AS type;
@@ -1956,30 +2190,35 @@ SELECT sipHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00
 └──────────────────────┴────────┘
 ```
 
+
+
 ## sipHash64Keyed {#sipHash64Keyed}
 
-Добавлена в версии v23.2
+Introduced in: v23.2
 
-Аналогична [`sipHash64`](#sipHash64), но вместо фиксированного ключа принимает явный ключ в качестве аргумента.
 
-**Синтаксис**
+Like [`sipHash64`](#sipHash64) but additionally takes an explicit key argument instead of using a fixed key.
+
+
+**Syntax**
 
 ```sql
 sipHash64Keyed((k0, k1), arg1[,arg2, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `(k0, k1)` — кортеж из двух значений, представляющих ключ. [`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
-* `arg1[,arg2, ...]` — произвольное количество входных аргументов. [`Any`](/sql-reference/data-types)
+- `(k0, k1)` — A tuple of two values representing the key. [`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
+- `arg1[,arg2, ...]` — A variable number of input arguments. [`Any`](/sql-reference/data-types)
 
-**Возвращаемое значение**
 
-Возвращает вычисленное хеш-значение входных данных. [`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the computed hash of the input values. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT sipHash64Keyed((506097522914230528, 1084818905618843912), array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00')) AS SipHash, toTypeName(SipHash) AS type;
@@ -1991,36 +2230,41 @@ SELECT sipHash64Keyed((506097522914230528, 1084818905618843912), array('e','x','
 └─────────────────────┴────────┘
 ```
 
+
+
 ## wordShingleMinHash {#wordShingleMinHash}
 
-Впервые появилась в версии: v21.1
+Introduced in: v21.1
 
-Разбивает ASCII-строку на части (шинглы) по `shinglesize` слов, вычисляет хэш-значения для каждого шингла слов и возвращает кортеж с этими хэшами.
-Использует `hashnum` минимальных хэшей для вычисления минимального хэша и `hashnum` максимальных хэшей для вычисления максимального хэша.
-Функция чувствительна к регистру.
 
-Может использоваться для обнаружения частично совпадающих строк с помощью [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
-Для двух строк, если возвращаемые хэши совпадают для обеих строк, то эти строки одинаковы.
+Splits a ASCII string into parts (shingles) of `shinglesize` words, calculates hash values for each word shingle and returns a tuple with these hashes.
+Uses `hashnum` minimum hashes to calculate the minimum hash and `hashnum` maximum hashes to calculate the maximum hash.
+It is case sensitive.
 
-**Синтаксис**
+Can be used to detect semi-duplicate strings with [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
+For two strings, if the returned hashes are the same for both strings, then those strings are the same.
+
+
+**Syntax**
 
 ```sql
 wordShingleMinHash(string[, размер_шингла, число_хешей])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `string` — Строка, для которой вычисляется хэш. [`String`](/sql-reference/data-types/string)
-* `shinglesize` — Необязательный аргумент. Размер шингла (последовательности слов), любое число от `1` до `25`. Значение по умолчанию — `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-* `hashnum` — Необязательный аргумент. Количество минимальных и максимальных хэшей, используемых для вычисления результата, любое число от `1` до `25`. Значение по умолчанию — `6`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает кортеж из двух хэшей — минимального и максимального. [`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**Примеры**
+Returns a tuple with two hashes — the minimum and the maximum. [`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT wordShingleMinHash('ClickHouse® — колоночная система управления базами данных (СУБД) для онлайн-аналитической обработки запросов (OLAP).') AS Tuple;
@@ -2032,32 +2276,37 @@ SELECT wordShingleMinHash('ClickHouse® — колоночная система 
 └────────────────────────────────────────────┘
 ```
 
+
+
 ## wordShingleMinHashArg {#wordShingleMinHashArg}
 
-Появилась в версии v1.1
+Introduced in: v1.1
 
-Разбивает ASCII-строку на части (шинглы), каждая из которых содержит по `shinglesize` слов, и возвращает шинглы с минимальным и максимальным хешами слов, вычисленными функцией wordShingleMinHash с теми же входными данными.
-Функция чувствительна к регистру.
 
-**Синтаксис**
+Splits a ASCII string into parts (shingles) of `shinglesize` words each and returns the shingles with minimum and maximum word hashes, calculated by the wordShingleMinHash function with the same input.
+It is case sensitive.
+
+
+**Syntax**
 
 ```sql
 wordShingleMinHashArg(строка[, размершингла, числохешей])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `string` — Строка, для которой вычисляется хеш. [`String`](/sql-reference/data-types/string)
-* `shinglesize` — Необязательный параметр. Размер шингла по словам, любое число от `1` до `25`. Значение по умолчанию — `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-* `hashnum` — Необязательный параметр. Количество минимальных и максимальных хешей, используемых для вычисления результата, любое число от `1` до `25`. Значение по умолчанию — `6`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает кортеж из двух кортежей, каждый содержащий по `hashnum` словесных шинглов. [`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**Примеры**
+Returns a tuple with two tuples with `hashnum` word shingles each. [`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT wordShingleMinHashArg('ClickHouse® — колоночная система управления базами данных (СУБД) для онлайн-аналитической обработки запросов (OLAP).', 1, 3) AS Tuple;
@@ -2069,32 +2318,37 @@ SELECT wordShingleMinHashArg('ClickHouse® — колоночная систем
 └───────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## wordShingleMinHashArgCaseInsensitive {#wordShingleMinHashArgCaseInsensitive}
 
-Добавлена в: v21.1
+Introduced in: v21.1
 
-Разбивает ASCII-строку на части (шинглы) размером `shinglesize` слов каждый и возвращает шинглы с минимальным и максимальным хешами слов, вычисленными функцией [`wordShingleMinHashCaseInsensitive`](#wordShingleMinHashCaseInsensitive) с теми же входными данными.
-Функция нечувствительна к регистру.
 
-**Синтаксис**
+Splits a ASCII string into parts (shingles) of `shinglesize` words each and returns the shingles with minimum and maximum word hashes, calculated by the [`wordShingleMinHashCaseInsensitive`](#wordShingleMinHashCaseInsensitive) function with the same input.
+It is case insensitive.
+
+
+**Syntax**
 
 ```sql
 wordShingleMinHashArgCaseInsensitive(строка[, размер_шингла, количество_хешей])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `string` — Строка, для которой нужно вычислить хеш. [`String`](/sql-reference/data-types/string)
-* `shinglesize` — Необязательный параметр. Размер шингла слов, любое число от `1` до `25`. Значение по умолчанию — `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-* `hashnum` — Необязательный параметр. Количество минимальных и максимальных хешей, используемых при вычислении результата, любое число от `1` до `25`. Значение по умолчанию — `6`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает кортеж из двух кортежей, каждый с `hashnum` шинглами слов. [`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**Примеры**
+Returns a tuple with two tuples with `hashnum` word shingles each. [`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT wordShingleMinHashArgCaseInsensitive('ClickHouse® — колоночная система управления базами данных (СУБД) для онлайн-аналитической обработки запросов (OLAP).', 1, 3) AS Tuple;
@@ -2106,32 +2360,37 @@ SELECT wordShingleMinHashArgCaseInsensitive('ClickHouse® — колоночна
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## wordShingleMinHashArgCaseInsensitiveUTF8 {#wordShingleMinHashArgCaseInsensitiveUTF8}
 
-Добавлена в: v21.1
+Introduced in: v21.1
 
-Разбивает строку в кодировке UTF-8 на части (шинглы) по `shinglesize` слов каждая и возвращает шинглы с минимальными и максимальными хешами слов, вычисленными функцией [`wordShingleMinHashCaseInsensitiveUTF8`](#wordShingleMinHashCaseInsensitiveUTF8) с тем же вводом.
-Функция регистронезависима.
 
-**Синтаксис**
+Splits a UTF-8 string into parts (shingles) of `shinglesize` words each and returns the shingles with minimum and maximum word hashes, calculated by the [`wordShingleMinHashCaseInsensitiveUTF8`](#wordShingleMinHashCaseInsensitiveUTF8) function with the same input.
+It is case insensitive.
+
+
+**Syntax**
 
 ```sql
 wordShingleMinHashArgCaseInsensitiveUTF8(string[, shinglesize, hashnum])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `string` — Строка, для которой вычисляется хеш. [`String`](/sql-reference/data-types/string)
-* `shinglesize` — Необязательный параметр. Размер шингла слов, любое число от `1` до `25`. Значение по умолчанию — `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-* `hashnum` — Необязательный параметр. Количество минимальных и максимальных хешей, используемых для вычисления результата, любое число от `1` до `25`. Значение по умолчанию — `6`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает кортеж из двух кортежей, каждый из которых содержит по `hashnum` шинглов слов. [`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**Примеры**
+Returns a tuple with two tuples with `hashnum` word shingles each. [`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT wordShingleMinHashArgCaseInsensitiveUTF8('ClickHouse® — колонкоориентированная система управления базами данных (СУБД) для онлайн-аналитической обработки запросов (OLAP).', 1, 3) AS Tuple;
@@ -2143,32 +2402,37 @@ SELECT wordShingleMinHashArgCaseInsensitiveUTF8('ClickHouse® — колонко
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## wordShingleMinHashArgUTF8 {#wordShingleMinHashArgUTF8}
 
-Введена в версии: v21.1
+Introduced in: v21.1
 
-Разбивает строку в кодировке UTF-8 на части (shingles), каждая содержит по `shinglesize` слов, и возвращает shingles с минимальными и максимальными хешами слов, вычисленными функцией [`wordShingleMinHashUTF8`](#wordShingleMinHashUTF8) для того же ввода.
-Регистрозависима.
 
-**Синтаксис**
+Splits a UTF-8 string into parts (shingles) of `shinglesize` words each and returns the shingles with minimum and maximum word hashes, calculated by the [`wordShingleMinHashUTF8`](#wordShingleMinHashUTF8) function with the same input.
+It is case sensitive.
+
+
+**Syntax**
 
 ```sql
 wordShingleMinHashArgUTF8(string[, shinglesize, hashnum])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `string` — Строка, для которой вычисляется хэш. [`String`](/sql-reference/data-types/string)
-* `shinglesize` — Необязательный параметр. Размер словесного шингла, любое число от `1` до `25`. Значение по умолчанию — `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-* `hashnum` — Необязательный параметр. Количество минимальных и максимальных хэшей, используемых для вычисления результата, любое число от `1` до `25`. Значение по умолчанию — `6`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает кортеж из двух кортежей, каждый из которых содержит по `hashnum` словесных шинглов. [`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**Примеры**
+Returns a tuple with two tuples with `hashnum` word shingles each. [`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT wordShingleMinHashArgUTF8('ClickHouse® — колоночная система управления базами данных (СУБД) для онлайн-аналитической обработки запросов (OLAP).', 1, 3) AS Tuple;
@@ -2180,36 +2444,41 @@ SELECT wordShingleMinHashArgUTF8('ClickHouse® — колоночная сист
 └───────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## wordShingleMinHashCaseInsensitive {#wordShingleMinHashCaseInsensitive}
 
-Впервые появилась в: v21.1
+Introduced in: v21.1
 
-Разбивает ASCII-строку на части (шинглы) по `shinglesize` слов, вычисляет хеш-значения для каждого шингла и возвращает кортеж с этими хешами.
-Использует `hashnum` минимальных хешей для вычисления минимального значения хеша и `hashnum` максимальных хешей для вычисления максимального значения хеша.
-Нечувствительна к регистру.
 
-Может использоваться для обнаружения почти дублирующихся строк с помощью [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
-Для двух строк, если возвращаемые хеши одинаковы для обеих строк, то эти строки считаются одинаковыми.
+Splits a ASCII string into parts (shingles) of `shinglesize` words, calculates hash values for each word shingle and returns a tuple with these hashes.
+Uses `hashnum` minimum hashes to calculate the minimum hash and `hashnum` maximum hashes to calculate the maximum hash.
+It is case insensitive.
 
-**Синтаксис**
+Can be used to detect semi-duplicate strings with [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
+For two strings, if the returned hashes are the same for both strings, then those strings are the same.
+
+
+**Syntax**
 
 ```sql
 wordShingleMinHashCaseInsensitive(строка[, размершингла, количествохешей])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `string` — Строка, для которой вычисляется хеш. [`String`](/sql-reference/data-types/string)
-* `shinglesize` — Необязательный параметр. Размер шингла (последовательности слов), любое значение от `1` до `25`. Значение по умолчанию — `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-* `hashnum` — Необязательный параметр. Количество минимальных и максимальных хешей, используемых для вычисления результата, любое значение от `1` до `25`. Значение по умолчанию — `6`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает кортеж из двух хешей — минимального и максимального. [`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**Примеры**
+Returns a tuple with two hashes — the minimum and the maximum. [`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT wordShingleMinHashCaseInsensitive('ClickHouse® — колоночная система управления базами данных (СУБД), предназначенная для онлайн-аналитической обработки запросов (OLAP).') AS Tuple;
@@ -2221,36 +2490,41 @@ SELECT wordShingleMinHashCaseInsensitive('ClickHouse® — колоночная 
 └───────────────────────────────────────────┘
 ```
 
+
+
 ## wordShingleMinHashCaseInsensitiveUTF8 {#wordShingleMinHashCaseInsensitiveUTF8}
 
-Введена в версии: v21.1
+Introduced in: v21.1
 
-Разбивает строку в кодировке UTF-8 на части (шинглы) по `shinglesize` слов, вычисляет хеш‑значения для каждого шингла и возвращает кортеж с этими хешами.
-Использует `hashnum` минимальных значений хеша для вычисления минимального хеша и `hashnum` максимальных значений хеша для вычисления максимального хеша.
-Функция регистронезависимая.
 
-Может использоваться для обнаружения почти дублирующихся строк с помощью [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
-Для двух строк, если возвращаемые хеши совпадают для обеих строк, эти строки считаются одинаковыми.
+Splits a UTF-8 string into parts (shingles) of `shinglesize` words, calculates hash values for each word shingle and returns a tuple with these hashes.
+Uses `hashnum` minimum hashes to calculate the minimum hash and `hashnum` maximum hashes to calculate the maximum hash.
+It is case insensitive.
 
-**Синтаксис**
+Can be used to detect semi-duplicate strings with [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
+For two strings, if the returned hashes are the same for both strings, then those strings are the same.
+
+
+**Syntax**
 
 ```sql
 wordShingleMinHashCaseInsensitiveUTF8(string[, shinglesize, hashnum])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `string` — Строка, для которой вычисляется хеш. [`String`](/sql-reference/data-types/string)
-* `shinglesize` — Необязательный параметр. Размер шингла (последовательности слов), любое число от `1` до `25`. Значение по умолчанию — `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-* `hashnum` — Необязательный параметр. Количество минимальных и максимальных хешей, используемых для вычисления результата, любое число от `1` до `25`. Значение по умолчанию — `6`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает кортеж из двух хешей — минимального и максимального. [`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**Примеры**
+Returns a tuple with two hashes — the minimum and the maximum. [`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT wordShingleMinHashCaseInsensitiveUTF8('ClickHouse® — это колоночная СУБД (DBMS) для онлайн-аналитической обработки запросов (OLAP).') AS Tuple;
@@ -2262,36 +2536,41 @@ SELECT wordShingleMinHashCaseInsensitiveUTF8('ClickHouse® — это колон
 └───────────────────────────────────────────┘
 ```
 
+
+
 ## wordShingleMinHashUTF8 {#wordShingleMinHashUTF8}
 
-Введена в: v21.1
+Introduced in: v21.1
 
-Разбивает строку в кодировке UTF-8 на части (шинглы) по `shinglesize` слов, вычисляет хеш-значения для каждого шингла и возвращает кортеж с этими хешами.
-Использует `hashnum` минимальных значений хеша для вычисления минимального хеша и `hashnum` максимальных значений хеша для вычисления максимального хеша.
-Функция чувствительна к регистру.
 
-Может использоваться для обнаружения почти дублирующихся строк с помощью [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
-Для двух строк, если возвращаемые хеши одинаковы для обеих строк, то эти строки считаются одинаковыми.
+Splits a UTF-8 string into parts (shingles) of `shinglesize` words, calculates hash values for each word shingle and returns a tuple with these hashes.
+Uses `hashnum` minimum hashes to calculate the minimum hash and `hashnum` maximum hashes to calculate the maximum hash.
+It is case sensitive.
 
-**Синтаксис**
+Can be used to detect semi-duplicate strings with [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
+For two strings, if the returned hashes are the same for both strings, then those strings are the same.
+
+
+**Syntax**
 
 ```sql
 wordShingleMinHashUTF8(строка[, размер_шингла, количество_хешей])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `string` — Строка, для которой вычисляется хеш. [`String`](/sql-reference/data-types/string)
-* `shinglesize` — Необязательный параметр. Размер шингла по словам, любое число от `1` до `25`. Значение по умолчанию — `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-* `hashnum` — Необязательный параметр. Количество минимальных и максимальных хешей, используемых для вычисления результата, любое число от `1` до `25`. Значение по умолчанию — `6`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает кортеж из двух хешей — минимального и максимального. [`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**Примеры**
+Returns a tuple with two hashes — the minimum and the maximum. [`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT wordShingleMinHashUTF8('ClickHouse® — колонко-ориентированная система управления базами данных (СУБД) для онлайн-аналитической обработки запросов (OLAP).') AS Tuple;
@@ -2303,34 +2582,39 @@ SELECT wordShingleMinHashUTF8('ClickHouse® — колонко-ориентир�
 └────────────────────────────────────────────┘
 ```
 
+
+
 ## wordShingleSimHash {#wordShingleSimHash}
 
-Введена в версии: v21.1
+Introduced in: v21.1
 
-Разбивает ASCII-строку на части (шинглы) из `shinglesize` слов и возвращает значение `simhash` для словесного шингла.
-Функция чувствительна к регистру.
 
-Может использоваться для обнаружения частично дублирующихся строк совместно с [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance).
-Чем меньше [расстояние Хэмминга](https://en.wikipedia.org/wiki/Hamming_distance) между вычисленными `simhash` двух строк, тем выше вероятность, что эти строки одинаковы.
+Splits a ASCII string into parts (shingles) of `shinglesize` words and returns the word shingle `simhash`.
+Is is case sensitive.
 
-**Синтаксис**
+Can be used for detection of semi-duplicate strings with [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance).
+The smaller the [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) of the calculated `simhashes` of two strings, the more likely these strings are the same.
+
+
+**Syntax**
 
 ```sql
 wordShingleSimHash(строка[, размер_шингла])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `string` — Строка, для которой нужно вычислить хеш. [`String`](/sql-reference/data-types/string)
-* `shinglesize` — Необязательный параметр. Размер шингла по словам, любое число от `1` до `25`. Значение по умолчанию — `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает вычисленное значение хеша. [`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the computed hash value. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT wordShingleSimHash('ClickHouse® — это колоночная система управления базами данных (СУБД) для онлайн-аналитической обработки запросов (OLAP).') AS Hash;
@@ -2342,34 +2626,39 @@ SELECT wordShingleSimHash('ClickHouse® — это колоночная сист
 └────────────┘
 ```
 
+
+
 ## wordShingleSimHashCaseInsensitive {#wordShingleSimHashCaseInsensitive}
 
-Добавлена в версии: v21.1
+Introduced in: v21.1
 
-Разбивает ASCII-строку на части (шинглы) по `shinglesize` слов и возвращает `simhash` этих шинглов.
-Функция регистронезависима.
 
-Может использоваться для обнаружения частично дублирующихся строк с помощью [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance).
-Чем меньше [расстояние Хэмминга](https://en.wikipedia.org/wiki/Hamming_distance) вычисленных `simhashes` для двух строк, тем более вероятно, что эти строки совпадают.
+Splits a ASCII string into parts (shingles) of `shinglesize` words and returns the word shingle `simhash`.
+It is case insensitive.
 
-**Синтаксис**
+Can be used for detection of semi-duplicate strings with [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance).
+The smaller the [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) of the calculated `simhashes` of two strings, the more likely these strings are the same.
+
+
+**Syntax**
 
 ```sql
 wordShingleSimHashCaseInsensitive(string[, shinglesize])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `string` — Строка, для которой нужно вычислить хэш. [`String`](/sql-reference/data-types/string)
-* `shinglesize` — Необязательный параметр. Размер шингла (последовательности слов), любое число от `1` до `25`. Значение по умолчанию — `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает вычисленное значение хеша. [`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the computed hash value. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT wordShingleSimHashCaseInsensitive('ClickHouse® — колоночная система управления базами данных (СУБД) для онлайн-аналитической обработки запросов (OLAP).') AS Hash;
@@ -2381,34 +2670,39 @@ SELECT wordShingleSimHashCaseInsensitive('ClickHouse® — колоночная 
 └────────────┘
 ```
 
+
+
 ## wordShingleSimHashCaseInsensitiveUTF8 {#wordShingleSimHashCaseInsensitiveUTF8}
 
-Введено в версии: v1.1
+Introduced in: v1.1
 
-Разбивает строку в кодировке UTF-8 на части (шинглы) по `shinglesize` слов и возвращает `simhash` для словесного шингла.
-Функция регистронезависима.
 
-Может использоваться для обнаружения частичных дубликатов строк с помощью [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance).
-Чем меньше [расстояние Хэмминга](https://en.wikipedia.org/wiki/Hamming_distance) вычисленных `simhash`‑значений двух строк, тем выше вероятность, что эти строки совпадают.
+Splits a UTF-8 encoded string into parts (shingles) of `shinglesize` words and returns the word shingle `simhash`.
+It is case insensitive.
 
-**Синтаксис**
+Can be used for detection of semi-duplicate strings with [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance).
+The smaller the [Hamming Distance](https://en.wikipedia.org/wiki/Hamming_distance) of the calculated `simhashes` of two strings, the more likely these strings are the same.
+
+
+**Syntax**
 
 ```sql
 wordShingleSimHashCaseInsensitiveUTF8(string[, shinglesize])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `string` — Строка, для которой нужно вычислить хеш. [`String`](/sql-reference/data-types/string)
-* `shinglesize` — Необязательный параметр. Размер шингла по словам, любое число от `1` до `25`. Значение по умолчанию — `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает вычисленный хеш. [`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the computed hash value. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT wordShingleSimHashCaseInsensitiveUTF8('ClickHouse® — это колоночная система управления базами данных (СУБД) для онлайн-аналитической обработки запросов (OLAP).') AS Hash;
@@ -2420,34 +2714,39 @@ SELECT wordShingleSimHashCaseInsensitiveUTF8('ClickHouse® — это колон
 └────────────┘
 ```
 
+
+
 ## wordShingleSimHashUTF8 {#wordShingleSimHashUTF8}
 
-Добавлена в версии: v21.1
+Introduced in: v21.1
 
-Разбивает строку в кодировке UTF-8 на части (шинглы) из `shinglesize` слов и возвращает `simhash` по шинглам слов.
-Функция чувствительна к регистру.
 
-Может использоваться для обнаружения почти дублирующихся строк с помощью [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance).
-Чем меньше [расстояние Хэмминга](https://en.wikipedia.org/wiki/Hamming_distance) между вычисленными значениями `simhash` двух строк, тем выше вероятность, что эти строки совпадают.
+Splits a UTF-8 string into parts (shingles) of `shinglesize` words and returns the word shingle `simhash`.
+It is case sensitive.
 
-**Синтаксис**
+Can be used for detection of semi-duplicate strings with [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance).
+The smaller the [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) of the calculated `simhashes` of two strings, the more likely these strings are the same.
+
+
+**Syntax**
 
 ```sql
 wordShingleSimHashUTF8(string[, shinglesize])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `string` — Строка, для которой нужно вычислить хеш. [`String`](/sql-reference/data-types/string)
-* `shinglesize` — Необязательный параметр. Размер словесного шингла, любое число от `1` до `25`. Значение по умолчанию — `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает вычисленное хеш-значение. [`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the computed hash value. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT wordShingleSimHashUTF8('ClickHouse® — это колоночная система управления базами данных (СУБД) для онлайн-аналитической обработки запросов (OLAP).') AS Hash;
@@ -2459,29 +2758,32 @@ SELECT wordShingleSimHashUTF8('ClickHouse® — это колоночная си
 └────────────┘
 ```
 
+
+
 ## wyHash64 {#wyHash64}
 
-Впервые представлен в версии: v22.7
+Introduced in: v22.7
 
-Вычисляет 64-битное хеш-значение [wyHash64](https://github.com/wangyi-fudan/wyhash).
+Computes a 64-bit [wyHash64](https://github.com/wangyi-fudan/wyhash) hash value.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 wyHash64(arg)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `arg` — строковый аргумент, для которого нужно вычислить хеш. [`String`](/sql-reference/data-types/string)
+- `arg` — String argument for which to compute the hash. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает вычисленное 64-битное значение хеша [`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the computed 64-bit hash value [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT wyHash64('ClickHouse') AS Hash;
@@ -2491,31 +2793,36 @@ SELECT wyHash64('ClickHouse') AS Hash;
 12336419557878201794
 ```
 
+
+
 ## xxHash32 {#xxHash32}
 
-Введено в: v20.1
+Introduced in: v20.1
 
-Вычисляет [xxHash](http://cyan4973.github.io/xxHash/) для строки.
 
-Для 64-битной версии см. [`xxHash64`](#xxHash64)
+Calculates a [xxHash](http://cyan4973.github.io/xxHash/) from a string.
 
-**Синтаксис**
+For the 64-bit version see [`xxHash64`](#xxHash64)
+
+
+**Syntax**
 
 ```sql
 xxHash32(arg)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `arg` — входная строка для хеширования. [`String`](/sql-reference/data-types/string)
+- `arg` — Input string to hash. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает вычисленный 32-битный хеш входной строки. [`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the computed 32-bit hash of the input string. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT xxHash32('Hello, world!');
@@ -2527,31 +2834,36 @@ SELECT xxHash32('Hello, world!');
 └───────────────────────────┘
 ```
 
+
+
 ## xxHash64 {#xxHash64}
 
-Появилась в версии: v20.1
+Introduced in: v20.1
 
-Вычисляет хэш [xxHash](http://cyan4973.github.io/xxHash/) для строки.
 
-Для 32-битной версии см. [`xxHash32`](#xxHash32)
+Calculates a [xxHash](http://cyan4973.github.io/xxHash/) from a string.
 
-**Синтаксис**
+For the 32-bit version see [`xxHash32`](#xxHash32)
+
+
+**Syntax**
 
 ```sql
 xxHash64(arg)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `arg` — Входная строка для хэширования. [`String`](/sql-reference/data-types/string)
+- `arg` — Input string to hash. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает 64-битный хэш входной строки. [`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the computed 64-bit hash of the input string. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT xxHash64('Привет, мир!');
@@ -2563,29 +2875,32 @@ SELECT xxHash64('Привет, мир!');
 └───────────────────────────┘
 ```
 
+
+
 ## xxh3 {#xxh3}
 
-Появилась в версии: v22.12
+Introduced in: v22.12
 
-Вычисляет 64-битное хеш-значение [XXH3](https://github.com/Cyan4973/xxHash).
+Computes a [XXH3](https://github.com/Cyan4973/xxHash) 64-bit hash value.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 xxh3(expr)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `expr` — список выражений любого типа данных. [`Any`](/sql-reference/data-types)
+- `expr` — A list of expressions of any data type. [`Any`](/sql-reference/data-types)
 
-**Возвращаемое значение**
 
-Возвращает вычисленное 64-битное значение хеша `xxh3` типа [`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the computed 64-bit `xxh3` hash value [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT xxh3('ClickHouse')

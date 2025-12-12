@@ -47,7 +47,7 @@ naiveBayesClassifier(model_name, input_text);
 Классификация текста с помощью модели определения языка:
 
 ```sql
-SELECT naiveBayesClassifier('language', 'Как дела?');
+SELECT naiveBayesClassifier('language', 'How are you?');
 ```
 
 ```response

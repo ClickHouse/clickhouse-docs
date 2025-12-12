@@ -45,9 +45,9 @@ GCS バケットをディスクとして利用するには、まず `conf.d` 配
             <!--highlight-start-->
                 <support_batch_delete>false</support_batch_delete>
                 <type>s3</type>
-                <endpoint>https://storage.googleapis.com/バケット名/フォルダ名/</endpoint>
-                <access_key_id>サービスアカウントのHMACキー</access_key_id>
-                <secret_access_key>サービスアカウントのHMACシークレット</secret_access_key>
+                <endpoint>https://storage.googleapis.com/BUCKET NAME/FOLDER NAME/</endpoint>
+                <access_key_id>SERVICE ACCOUNT HMAC KEY</access_key_id>
+                <secret_access_key>SERVICE ACCOUNT HMAC SECRET</secret_access_key>
                 <metadata_path>/var/lib/clickhouse/disks/gcs/</metadata_path>
             <!--highlight-end-->
             </gcs>
@@ -114,9 +114,9 @@ GCS バケットをディスクとして利用するには、まず `conf.d` 配
             <gcs>
                 <support_batch_delete>false</support_batch_delete>
                 <type>s3</type>
-                <endpoint>https://storage.googleapis.com/バケット名/フォルダ名/</endpoint>
-                <access_key_id>サービスアカウントHMACキー</access_key_id>
-                <secret_access_key>サービスアカウントHMACシークレット</secret_access_key>
+                <endpoint>https://storage.googleapis.com/BUCKET NAME/FOLDER NAME/</endpoint>
+                <access_key_id>SERVICE ACCOUNT HMAC KEY</access_key_id>
+                <secret_access_key>SERVICE ACCOUNT HMAC SECRET</secret_access_key>
                 <metadata_path>/var/lib/clickhouse/disks/gcs/</metadata_path>
             </gcs>
         </disks>
@@ -298,15 +298,14 @@ ClickHouse Keeper ノードでデプロイメント手順を実行する際は�
 </clickhouse>
 ```
 
-### ClickHouse サーバーを構成する {#configure-clickhouse-server}
+### Configure ClickHouse server {#configure-clickhouse-server}
 
 :::note best practice
-このガイドのいくつかの手順では、設定ファイルを `/etc/clickhouse-server/config.d/` に配置するように求められます。これは、Linux システムにおける設定オーバーライド用ファイルのデフォルトの配置場所です。このディレクトリにファイルを配置すると、ClickHouse はその内容をデフォルト設定とマージします。`config.d` ディレクトリにこれらのファイルを置くことで、アップグレード時に設定が失われるのを防ぐことができます。
+Some of the steps in this guide will ask you to place a configuration file in `/etc/clickhouse-server/config.d/`.  This is the default location on Linux systems for configuration override files.  When you put these files into that directory ClickHouse will merge the content with the default configuration.  By placing these files in the `config.d` directory you will avoid losing your configuration during an upgrade.
 :::
 
-#### ネットワーキング {#networking}
-
-デフォルトでは、ClickHouse はループバックインターフェイスで待ち受けますが、レプリケーション構成ではマシン間のネットワーク接続が必要です。すべてのインターフェイスで待ち受けるには、次のように設定します。
+#### Networking {#networking}
+By default, ClickHouse listens on the loopback interface, in a replicated setup networking between machines is necessary.  Listen on all interfaces:
 
 ```xml title=/etc/clickhouse-server/config.d/network.xml
 <clickhouse>
@@ -314,11 +313,11 @@ ClickHouse Keeper ノードでデプロイメント手順を実行する際は�
 </clickhouse>
 ```
 
-#### リモート ClickHouse Keeper サーバー {#remote-clickhouse-keeper-servers}
+#### Remote ClickHouse Keeper servers {#remote-clickhouse-keeper-servers}
 
-レプリケーションは ClickHouse Keeper によって制御されます。この設定ファイルでは、ClickHouse Keeper ノードをホスト名とポート番号で識別します。
+Replication is coordinated by ClickHouse Keeper.  This configuration file identifies the ClickHouse Keeper nodes by hostname and port number.
 
-* Keeper ホストに合わせてホスト名を編集してください
+- Edit the hostnames to match your Keeper hosts
 
 ```xml title=/etc/clickhouse-server/config.d/use-keeper.xml
 <clickhouse>
@@ -339,11 +338,11 @@ ClickHouse Keeper ノードでデプロイメント手順を実行する際は�
 </clickhouse>
 ```
 
-#### リモート ClickHouse サーバー {#remote-clickhouse-servers}
+#### Remote ClickHouse servers {#remote-clickhouse-servers}
 
-このファイルでは、クラスタ内の各 ClickHouse サーバーのホスト名とポートを設定します。デフォルトの設定ファイルにはサンプルのクラスタ定義が含まれています。完全に構成されたクラスタのみを使用するために、この設定がデフォルト設定とマージされた際に `remote_servers` セクションへ追加されるのではなく、その内容を置き換えるよう、`remote_servers` エントリにはタグ `replace="true"` が追加されています。
+This file configures the hostname and port of each ClickHouse server in the cluster.  The default configuration file contains sample cluster definitions, in order to show only the clusters that are completely configured the tag `replace="true"` is added to the `remote_servers` entry so that when this configuration is merged with the default it replaces the `remote_servers` section instead of adding to it.
 
-* ファイルを編集してホスト名を設定し、それらが ClickHouse サーバーノードから名前解決できることを確認してください
+- Edit the file with your hostnames, and make sure that they resolve from the ClickHouse server nodes
 
 ```xml title=/etc/clickhouse-server/config.d/remote-servers.xml
 <clickhouse>
@@ -364,9 +363,9 @@ ClickHouse Keeper ノードでデプロイメント手順を実行する際は�
 </clickhouse>
 ```
 
-#### レプリカの識別 {#replica-identification}
+#### Replica identification {#replica-identification}
 
-このファイルでは、ClickHouse Keeper 上のパスに関連する設定を行います。具体的には、データがどのレプリカに属しているかを識別するためのマクロを設定します。1 台目のサーバーではレプリカを `replica_1`、もう一方のサーバーでは `replica_2` と指定します。名前は変更しても構いません。たとえば、1 つのレプリカをサウスカロライナ、もう 1 つをノーザンバージニアに配置する例に基づくと、値は `carolina` と `virginia` のようにしてもかまいません。ただし、各マシンで異なる値になるようにしてください。
+This file configures settings related to the ClickHouse Keeper path.  Specifically the macros used to identify which replica the data is part of.  On one server the replica should be specified as `replica_1`, and on the other server `replica_2`.  The names can be changed, based on our example of one replica being stored in South Carolina and the other in Northern Virginia the values could be `carolina` and `virginia`; just make sure that they are different on each machine.
 
 ```xml title=/etc/clickhouse-server/config.d/macros.xml
 <clickhouse>
@@ -382,21 +381,19 @@ ClickHouse Keeper ノードでデプロイメント手順を実行する際は�
 </clickhouse>
 ```
 
-#### GCS でのストレージ {#storage-in-gcs}
+#### Storage in GCS {#storage-in-gcs}
 
-ClickHouse のストレージ構成には `disks` と `policies` が含まれます。以下で構成しているディスク名は `gcs` で、`type` は `s3` です。`type` が s3 になっているのは、ClickHouse が GCS バケットに対して、AWS S3 バケットと同様の方法でアクセスするためです。この構成は 2 部用意し、ClickHouse サーバーノードごとに 1 つずつ使用します。
+ClickHouse storage configuration includes `disks` and `policies`. The disk being configured below is named `gcs`, and is of `type` `s3`.  The type is s3 because ClickHouse accesses the GCS bucket as if it was an AWS S3 bucket.  Two copies of this configuration will be needed, one for each of the ClickHouse server nodes.
 
-以下の構成内で、次の箇所を置き換えてください。
+These substitutions should be made in the configuration below.
 
-次の置換内容は、2 つの ClickHouse サーバーノード間で異なります。
+These substitutions differ between the two ClickHouse server nodes:
+- `REPLICA 1 BUCKET` should be set to the name of the bucket in the same region as the server
+- `REPLICA 1 FOLDER` should be changed to `replica_1` on one of the servers, and `replica_2` on the other
 
-* `REPLICA 1 BUCKET` は、サーバーと同じリージョンにあるバケット名に設定してください
-* `REPLICA 1 FOLDER` は、一方のサーバーでは `replica_1` に、もう一方のサーバーでは `replica_2` に変更してください
-
-次の置換内容は、2 つのノード間で共通です。
-
-* `access_key_id` は、前の手順で生成した HMAC Key に設定してください
-* `secret_access_key` は、前の手順で生成した HMAC Secret に設定してください
+These substitutions are common across the two nodes:
+- The `access_key_id` should be set to the HMAC Key generated earlier
+- The `secret_access_key` should be set to HMAC Secret generated earlier
 
 ```xml title=/etc/clickhouse-server/config.d/storage.xml
 <clickhouse>
@@ -430,9 +427,9 @@ ClickHouse のストレージ構成には `disks` と `policies` が含まれま
 </clickhouse>
 ```
 
-### ClickHouse Keeper を起動する {#start-clickhouse-keeper}
+### Start ClickHouse Keeper {#start-clickhouse-keeper}
 
-お使いのオペレーティングシステム向けのコマンドを使用してください。たとえば、次のとおりです。
+Use the commands for your operating system, for example:
 
 ```bash
 sudo systemctl enable clickhouse-keeper
@@ -440,14 +437,13 @@ sudo systemctl start clickhouse-keeper
 sudo systemctl status clickhouse-keeper
 ```
 
-#### ClickHouse Keeper のステータスを確認する {#check-clickhouse-keeper-status}
+#### Check ClickHouse Keeper status {#check-clickhouse-keeper-status}
 
-`netcat` を使って ClickHouse Keeper にコマンドを送信します。たとえば、`mntr` は ClickHouse Keeper クラスターの状態を返します。各 Keeper ノードでこのコマンドを実行すると、1 つがリーダーで、残りの 2 つがフォロワーであることがわかります。
+Send commands to the ClickHouse Keeper with `netcat`.  For example, `mntr` returns the state of the ClickHouse Keeper cluster.  If you run the command on each of the Keeper nodes you will see that one is a leader, and the other two are followers:
 
 ```bash
 echo mntr | nc localhost 9181
 ```
-
 ```response
 zk_version      v22.7.2.15-stable-f843089624e8dd3ff7927b8a125cf3a7a769c069
 zk_avg_latency  0
@@ -474,34 +470,31 @@ zk_synced_followers     2
 # highlight-end {#highlight-end}
 ```
 
-### ClickHouse サーバーを起動する {#start-clickhouse-server}
+### Start ClickHouse server {#start-clickhouse-server}
 
-`chnode1` と `chnode` で以下を実行します。
+On `chnode1` and `chnode` run:
 
 ```bash
 sudo service clickhouse-server start
 ```
-
 ```bash
 sudo service clickhouse-server status
 ```
 
-### 検証 {#verification}
+### Verification {#verification}
 
-#### ディスク構成の検証 {#verify-disk-configuration}
+#### Verify disk configuration {#verify-disk-configuration}
 
-`system.disks` には、各ディスクのレコードが含まれている必要があります：
-
-* default
-* gcs
-* cache
+`system.disks` should contain records for each disk:
+- default
+- gcs
+- cache
 
 ```sql
 SELECT *
 FROM system.disks
 FORMAT Vertical
 ```
-
 ```response
 Row 1:
 ──────
@@ -551,78 +544,28 @@ is_remote:        1
 is_broken:        0
 cache_path:
 ```
-
-3 行が結果セットに含まれています。経過時間: 0.002 秒。
-
+#### Verify that tables created on the cluster are created on both nodes {#verify-that-tables-created-on-the-cluster-are-created-on-both-nodes}
 ````
 #### クラスタ上で作成されたテーブルが両ノードに作成されていることを確認する                                                                        {#verify-that-tables-created-on-the-cluster-are-created-on-both-nodes}
-```sql
--- highlight-next-line
-create table trips on cluster 'cluster_1S_2R' (
- `trip_id` UInt32,
- `pickup_date` Date,
- `pickup_datetime` DateTime,
- `dropoff_datetime` DateTime,
- `pickup_longitude` Float64,
- `pickup_latitude` Float64,
- `dropoff_longitude` Float64,
- `dropoff_latitude` Float64,
- `passenger_count` UInt8,
- `trip_distance` Float64,
- `tip_amount` Float32,
- `total_amount` Float32,
- `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4))
-ENGINE = ReplicatedMergeTree
-PARTITION BY toYYYYMM(pickup_date)
-ORDER BY pickup_datetime
--- highlight-next-line
-SETTINGS storage_policy='gcs_main'
+```
 ````
 
-```response
-┌─host───────────────────────────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
-│ chnode2.us-east4-c.c.gcsqa-375100.internal │ 9000 │      0 │       │                   1 │                1 │
-└────────────────────────────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
-┌─host───────────────────────────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
-│ chnode1.us-east1-b.c.gcsqa-375100.internal │ 9000 │      0 │       │                   0 │                0 │
-└────────────────────────────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
+```
 
-2行のデータセット。経過時間: 0.641秒
+#### Verify that data can be inserted {#verify-that-data-can-be-inserted}
+
 ```
 
 #### データを挿入できることを確認する {#verify-that-data-can-be-inserted}
 
-```sql
-INSERT INTO trips SELECT
-    trip_id,
-    pickup_date,
-    pickup_datetime,
-    dropoff_datetime,
-    pickup_longitude,
-    pickup_latitude,
-    dropoff_longitude,
-    dropoff_latitude,
-    passenger_count,
-    trip_distance,
-    tip_amount,
-    total_amount,
-    payment_type
-FROM s3('https://ch-nyc-taxi.s3.eu-west-3.amazonaws.com/tsv/trips_{0..9}.tsv.gz', 'TabSeparatedWithNames')
-LIMIT 1000000
+```
+
+#### Verify that the storage policy `gcs_main` is used for the table. {#verify-that-the-storage-policy-gcs_main-is-used-for-the-table}
 ```
 
 #### テーブルでストレージポリシー `gcs_main` が使用されていることを確認します。 {#verify-that-the-storage-policy-gcs_main-is-used-for-the-table}
 
-```sql
-SELECT
-    engine,
-    data_paths,
-    metadata_path,
-    storage_policy,
-    formatReadableSize(total_bytes)
-FROM system.tables
-WHERE name = 'trips'
-FORMAT Vertical
+```
 ```
 
 ```response

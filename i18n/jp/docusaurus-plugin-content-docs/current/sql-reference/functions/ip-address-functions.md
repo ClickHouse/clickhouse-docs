@@ -52,32 +52,37 @@ SELECT IPv4CIDRToRange(toIPv4('192.168.5.2'), 16);
 └────────────────────────────────────────────┘
 ```
 
+
+
 ## IPv4NumToString {#IPv4NumToString}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-32ビット整数を、ドット区切りの10進数表記（A.B.C.D 形式）の IPv4 アドレス文字列表現に変換します。
-入力はビッグエンディアンのバイトオーダーとして解釈されます。
 
-**構文**
+Converts a 32-bit integer to its IPv4 address string representation in dotted decimal notation (A.B.C.D format).
+Interprets the input using big-endian byte ordering.
+    
+
+**Syntax**
 
 ```sql
 IPv4NumToString(num)
 ```
 
-**別名**: `INET_NTOA`
+**Aliases**: `INET_NTOA`
 
-**引数**
+**Arguments**
 
-* `num` — UInt32 型の数値として表される IPv4 アドレス。[`UInt32`](/sql-reference/data-types/int-uint)
+- `num` — IPv4 address as UInt32 number. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-MAC アドレスを表す数値、または形式が無効な場合は `0` を返します。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**例**
+Returns a number representing the MAC address, or `0` if the format is invalid. [`String`](/sql-reference/data-types/string)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 IPv4NumToString(3232235521)
@@ -87,30 +92,35 @@ IPv4NumToString(3232235521)
 192.168.0.1
 ```
 
+
+
 ## IPv4NumToStringClassC {#IPv4NumToStringClassC}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-32ビット整数を、ドット区切り10進表記（A.B.C.D形式）のIPv4アドレス文字列表現に変換します。
-[`IPv4NumToString`](#IPv4NumToString) と同様ですが、最後のオクテットの代わりに `xxx` を使用します。
 
-**構文**
+Converts a 32-bit integer to its IPv4 address string representation in dotted decimal notation (A.B.C.D format),
+similar to [`IPv4NumToString`](#IPv4NumToString) but using `xxx` instead of the last octet.
+    
+
+**Syntax**
 
 ```sql
 IPv4NumToStringClassC(num)
 ```
 
-**引数**
+**Arguments**
 
-* `num` — UInt32 値として表される IPv4 アドレス。[`UInt32`](/sql-reference/data-types/int-uint)
+- `num` — IPv4 address as UInt32 number. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**返される値**
 
-最後のオクテットを xxx に置き換えた IPv4 アドレスを表す文字列を返します。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**例**
+Returns the IPv4 address string with xxx replacing the last octet. [`String`](/sql-reference/data-types/string)
 
-**集計を伴う基本的な例**
+**Examples**
+
+**Basic example with aggregation**
 
 ```sql title=Query
 SELECT
@@ -137,32 +147,37 @@ LIMIT 10
 └────────────────┴───────┘
 ```
 
+
+
 ## IPv4StringToNum {#IPv4StringToNum}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-ドット区切りの 10 進表記（A.B.C.D 形式）の IPv4 アドレス文字列を、対応する 32ビット整数表現に変換します（[`IPv4NumToString`](#IPv4NumToString) の逆の処理です）。\
-IPv4 アドレス文字列の形式が無効な場合は、例外がスローされます。
 
-**構文**
+Converts an IPv4 address string in dotted decimal notation (A.B.C.D format) to its corresponding 32-bit integer representation. (The reverse of [`IPv4NumToString`](#IPv4NumToString)).
+If the IPv4 address has an invalid format, an exception is thrown.
+    
+
+**Syntax**
 
 ```sql
 IPv4StringToNum(string)
 ```
 
-**別名**: `INET_ATON`
+**Aliases**: `INET_ATON`
 
-**引数**
+**Arguments**
 
-* `string` — IPv4 アドレス文字列。[`String`](/sql-reference/data-types/string)
+- `string` — IPv4 address string. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-IPv4 アドレスを返します。[`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns theIPv4 address. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 IPv4StringToNum('192.168.0.1')
@@ -172,29 +187,34 @@ IPv4StringToNum('192.168.0.1')
 3232235521
 ```
 
+
+
 ## IPv4StringToNumOrDefault {#IPv4StringToNumOrDefault}
 
-導入: v22.3
+Introduced in: v22.3
 
-ドット区切り10進表記（A.B.C.D 形式）の IPv4 アドレス文字列を対応する 32 ビット整数表現に変換します。IPv4 アドレスの形式が不正な場合は `0` を返します。
 
-**構文**
+Converts an IPv4 address string in dotted decimal notation (A.B.C.D format) to its corresponding 32-bit integer representation but if the IPv4 address has an invalid format, it returns `0`.
+    
+
+**Syntax**
 
 ```sql
 IPv4StringToNumOrDefault(string)
 ```
 
-**引数**
+**Arguments**
 
-* `string` — IPv4 アドレス文字列。[`String`](/sql-reference/data-types/string)
+- `string` — IPv4 address string. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-IPv4 アドレスを返します。無効な場合は `0` を返します。[`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the IPv4 address, or `0` if invalid. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**無効なアドレスの例**
+**Examples**
+
+**Example with an invalid address**
 
 ```sql title=Query
 SELECT
@@ -208,29 +228,34 @@ SELECT
 └────────────┴─────────┘
 ```
 
+
+
 ## IPv4StringToNumOrNull {#IPv4StringToNumOrNull}
 
-導入バージョン: v22.3
+Introduced in: v22.3
 
-32ビット整数を IPv4 アドレスの文字列表現（A.B.C.D 形式のドット区切りの 10 進表記）に変換します。ただし、IPv4 アドレスの形式が不正な場合は `NULL` を返します。
 
-**構文**
+Converts a 32-bit integer to its IPv4 address string representation in dotted decimal notation (A.B.C.D format) but if the IPv4 address has an invalid format, it returns `NULL`.
+    
+
+**Syntax**
 
 ```sql
 IPv4StringToNumOrNull(string)
 ```
 
-**引数**
+**Arguments**
 
-* `string` — IPv4 アドレス文字列。[`String`](/sql-reference/data-types/string)
+- `string` — IPv4 address string. [`String`](/sql-reference/data-types/string)
 
-**返される値**
 
-IPv4 アドレスを返し、無効な場合は `NULL` を返します。[`Nullable(UInt32)`](/sql-reference/data-types/nullable)
+**Returned value**
 
-**例**
+Returns the IPv4 address, or `NULL` if invalid. [`Nullable(UInt32)`](/sql-reference/data-types/nullable)
 
-**無効なアドレスの例**
+**Examples**
+
+**Example with an invalid address**
 
 ```sql title=Query
 SELECT
@@ -244,29 +269,34 @@ IPv4StringToNumOrNull('invalid') AS invalid;
 └────────────┴─────────┘
 ```
 
+
+
 ## IPv4ToIPv6 {#IPv4ToIPv6}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-(ビッグエンディアンの) 32 ビット整数値を IPv4 アドレスとして解釈し、それを対応する IPv6 アドレスの `FixedString(16)` 表現に変換します。
 
-**構文**
+Interprets a (big endian) 32-bit number as an IPv4 address, which is then interpreted as the corresponding IPv6 address in `FixedString(16)` format.
+    
+
+**Syntax**
 
 ```sql
 IPv4ToIPv6(x)
 ```
 
-**引数**
+**Arguments**
 
-* `x` — IPv4アドレス。[`UInt32` 型](/sql-reference/data-types/int-uint)
+- `x` — IPv4 address. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-バイナリ形式の IPv6アドレスを返します。[`FixedString(16)` 型](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**例**
+Returns an IPv6 address in binary format. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT IPv6NumToString(IPv4ToIPv6(IPv4StringToNum('192.168.0.1'))) AS addr;
@@ -278,31 +308,36 @@ SELECT IPv6NumToString(IPv4ToIPv6(IPv4StringToNum('192.168.0.1'))) AS addr;
 └────────────────────┘
 ```
 
+
+
 ## IPv6CIDRToRange {#IPv6CIDRToRange}
 
-導入バージョン: v20.1
+Introduced in: v20.1
 
-クラスレスドメイン間ルーティング (CIDR) のプレフィックス長付き IPv6 アドレスを受け取り、そのサブネットのアドレス範囲を、最小アドレスと最大アドレスの 2 つの IPv6 値からなるタプルとして返します。
-IPv4 版については [`IPv4CIDRToRange`](#IPv4CIDRToRange) を参照してください。
 
-**構文**
+Takes an IPv6 address with its Classless Inter-Domain Routing (CIDR) prefix length and returns the subnet's address range as a tuple of two IPv6 values: the lowest and highest addresses in that subnet.
+For the IPv4 version see [`IPv4CIDRToRange`](#IPv4CIDRToRange).
+    
+
+**Syntax**
 
 ```sql
 IPv6CIDRToRange(ipv6, cidr)
 ```
 
-**引数**
+**Arguments**
 
-* `ipv6` — IPv6 アドレス。[`IPv6`](/sql-reference/data-types/ipv6) または [`String`](/sql-reference/data-types/string)
-* `cidr` — CIDR 値。[`UInt8`](/sql-reference/data-types/int-uint)
+- `ipv6` — IPv6 address. [`IPv6`](/sql-reference/data-types/ipv6) or [`String`](/sql-reference/data-types/string)
+- `cidr` — CIDR value. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**返される値**
 
-サブネット範囲を表す 2 つの IPv6 アドレスからなるタプルを返します。[`Tuple(IPv6, IPv6)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns a tuple with two IPv6 addresses representing the subnet range. [`Tuple(IPv6, IPv6)`](/sql-reference/data-types/tuple)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT IPv6CIDRToRange(toIPv6('2001:0db8:0000:85a3:0000:0000:ac1f:8001'), 32);
@@ -314,32 +349,37 @@ SELECT IPv6CIDRToRange(toIPv6('2001:0db8:0000:85a3:0000:0000:ac1f:8001'), 32);
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## IPv6NumToString {#IPv6NumToString}
 
-導入: v1.1
+Introduced in: v1.1
 
-IPv6 アドレスをバイナリ形式 (FixedString(16)) から標準的なテキスト表現に変換します。
-IPv4 にマップされた IPv6 アドレスは、`::ffff:111.222.33.44` の形式で表示されます。
 
-**構文**
+Converts an IPv6 address from binary format (FixedString(16)) to its standard text representation.
+IPv4-mapped IPv6 addresses are displayed in the format `::ffff:111.222.33.44`.
+    
+
+**Syntax**
 
 ```sql
 IPv6NumToString(x)
 ```
 
-**別名**: `INET6_NTOA`
+**Aliases**: `INET6_NTOA`
 
-**引数**
+**Arguments**
 
-* `x` — バイナリ形式の IPv6 アドレス。[`FixedString(16)`](/sql-reference/data-types/fixedstring) または [`IPv6`](/sql-reference/data-types/ipv6)
+- `x` — IPv6 address in binary format. [`FixedString(16)`](/sql-reference/data-types/fixedstring) or [`IPv6`](/sql-reference/data-types/ipv6)
 
-**戻り値**
 
-テキスト形式の IPv6 アドレス文字列を返します。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**例**
+Returns the IPv6 address string in text format. [`String`](/sql-reference/data-types/string)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT IPv6NumToString(toFixedString(unhex('2A0206B8000000000000000000000011'), 16)) AS addr;
@@ -351,7 +391,7 @@ SELECT IPv6NumToString(toFixedString(unhex('2A0206B8000000000000000000000011'), 
 └──────────────┘
 ```
 
-**IPv6 を用いたヒット分析**
+**IPv6 with hits analysis**
 
 ```sql title=Query
 SELECT
@@ -379,7 +419,7 @@ LIMIT 10
 └─────────────────────────────────────────┴───────┘
 ```
 
-**IPv6 マップド IPv4 アドレス**
+**IPv6 mapped IPv4 addresses**
 
 ```sql title=Query
 SELECT
@@ -407,36 +447,41 @@ LIMIT 10
 └────────────────────────────┴────────┘
 ```
 
+
+
 ## IPv6StringToNum {#IPv6StringToNum}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-IPv6 アドレスを、その標準テキスト表現からバイナリ形式（`FixedString(16)`）に変換します。
-`::ffff:111.222.33.44.` 形式の IPv4 マップド IPv6 アドレスを受け付けます。
-IPv6 アドレスの形式が不正な場合は、例外がスローされます。
 
-入力文字列に有効な IPv4 アドレスが含まれている場合は、対応する IPv6 アドレスを返します。
-16 進数表記は大文字・小文字のいずれでもかまいません。
+Converts an IPv6 address from its standard text representation to binary format (`FixedString(16)`).
+Accepts IPv4-mapped IPv6 addresses in the format `::ffff:111.222.33.44.`.
+If the IPv6 address has an invalid format, an exception is thrown.
 
-**構文**
+If the input string contains a valid IPv4 address, returns its IPv6 equivalent.
+HEX can be uppercase or lowercase.
+    
+
+**Syntax**
 
 ```sql
 IPv6StringToNum(string)
 ```
 
-**エイリアス**: `INET6_ATON`
+**Aliases**: `INET6_ATON`
 
-**引数**
+**Arguments**
 
-* `string` — IPv6 アドレス文字列。[`String`](/sql-reference/data-types/string)
+- `string` — IPv6 address string. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-IPv6 アドレスをバイナリ形式で返します。[`FixedString(16)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**例**
+Returns theIPv6 address in binary format. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-**基本例**
+**Examples**
+
+**Basic example**
 
 ```sql title=Query
 SELECT addr, cutIPv6(IPv6StringToNum(addr), 0, 0) FROM (SELECT ['notaddress', '127.0.0.1', '1111::ffff'] AS addr) ARRAY JOIN addr;
@@ -450,31 +495,36 @@ SELECT addr, cutIPv6(IPv6StringToNum(addr), 0, 0) FROM (SELECT ['notaddress', '1
 └────────────┴──────────────────────────────────────┘
 ```
 
+
+
 ## IPv6StringToNumOrDefault {#IPv6StringToNumOrDefault}
 
-導入バージョン: v22.3
+Introduced in: v22.3
 
-IPv6 アドレスを標準的な文字列表現からバイナリ形式（`FixedString(16)`）に変換します。
-`::ffff:111.222.33.44.` 形式の IPv4 マップド IPv6 アドレスを受け付けます。
-IPv6 アドレスの形式が無効な場合は、デフォルト値の `::` を返します。
 
-**構文**
+Converts an IPv6 address from its standard text representation to binary format (`FixedString(16)`).
+Accepts IPv4-mapped IPv6 addresses in the format `::ffff:111.222.33.44.`.
+If the IPv6 address has an invalid format, it returns the default value `::`.
+    
+
+**Syntax**
 
 ```sql
 IPv6StringToNumOrDefault(string)
 ```
 
-**引数**
+**Arguments**
 
-* `string` — IPv6 アドレス文字列。[`String`](/sql-reference/data-types/string)
+- `string` — IPv6 address string. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-バイナリ形式の IPv6 アドレス、または無効な場合はゼロ埋めされた FixedString(16)。[`FixedString(16)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**例**
+IPv6 address in binary format, or zero-filled FixedString(16) if invalid. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-**無効なアドレスを使用した基本的な例**
+**Examples**
+
+**Basic example with invalid address**
 
 ```sql title=Query
 SELECT
@@ -488,31 +538,36 @@ SELECT
 └─────────────┴─────────┘
 ```
 
+
+
 ## IPv6StringToNumOrNull {#IPv6StringToNumOrNull}
 
-導入バージョン: v22.3
+Introduced in: v22.3
 
-IPv6 アドレスを標準的なテキスト表現からバイナリ形式（`FixedString(16)`）に変換します。
-`::ffff:111.222.33.44.` 形式の IPv4 マップド IPv6 アドレスを受け付けます。
-IPv6 アドレスの形式が不正な場合は、`NULL` を返します。
 
-**構文**
+Converts an IPv6 address from its standard text representation to binary format (`FixedString(16)`).
+Accepts IPv4-mapped IPv6 addresses in the format `::ffff:111.222.33.44.`.
+If the IPv6 address has an invalid format, it returns `NULL`.
+    
+
+**Syntax**
 
 ```sql
 IPv6StringToNumOrNull(string)
 ```
 
-**引数**
+**Arguments**
 
-* `string` — IPv6 アドレス文字列。[`String`](/sql-reference/data-types/string)
+- `string` — IPv6 address string. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-IPv6 アドレスをバイナリ形式で返し、無効な場合は `NULL` を返します。[`Nullable(FixedString(16))`](/sql-reference/data-types/nullable)
+**Returned value**
 
-**例**
+Returns IPv6 address in binary format, or `NULL` if invalid. [`Nullable(FixedString(16))`](/sql-reference/data-types/nullable)
 
-**無効なアドレスを使用した基本的な例**
+**Examples**
+
+**Basic example with invalid address**
 
 ```sql title=Query
 SELECT
@@ -526,32 +581,37 @@ SELECT
 └─────────────┴─────────┘
 ```
 
+
+
 ## cutIPv6 {#cutIPv6}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-バイナリ形式の IPv6 アドレスを格納した `FixedString(16)` 型の値を受け取ります。
-指定したバイト数を削除したアドレスをテキスト形式で返します。
 
-**構文**
+Accepts a `FixedString(16)` value containing the IPv6 address in binary format.
+Returns a string containing the address of the specified number of bytes removed in text format.
+    
+
+**Syntax**
 
 ```sql
 cutIPv6(x, bytesToCutForIPv6, bytesToCutForIPv4)
 ```
 
-**引数**
+**Arguments**
 
-* `x` — バイナリ形式の IPv6 アドレス。[`FixedString(16)`](/sql-reference/data-types/fixedstring) または [`IPv6`](/sql-reference/data-types/ipv6)
-* `bytesToCutForIPv6` — IPv6 から削除するバイト数。[`UInt8`](/sql-reference/data-types/int-uint)
-* `bytesToCutForIPv4` — IPv4 から削除するバイト数。[`UInt8`](/sql-reference/data-types/int-uint)
+- `x` — IPv6 address in binary format. [`FixedString(16)`](/sql-reference/data-types/fixedstring) or [`IPv6`](/sql-reference/data-types/ipv6)
+- `bytesToCutForIPv6` — Number of bytes to cut for IPv6. [`UInt8`](/sql-reference/data-types/int-uint)
+- `bytesToCutForIPv4` — Number of bytes to cut for IPv4. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-指定したバイト数を削除した IPv6 アドレスをテキスト形式で含む文字列を返します。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**例**
+Returns a string containing the IPv6 address in text format with specified bytes removed. [`String`](/sql-reference/data-types/string)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 WITH
@@ -568,32 +628,37 @@ SELECT
 └─────────────────────────────────────┴─────────────────────┘
 ```
 
+
+
 ## isIPAddressInRange {#isIPAddressInRange}
 
-導入: v21.4
+Introduced in: v21.4
 
-IPアドレスが [Classless Inter-Domain Routing (CIDR)](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing) 表記で表されるネットワーク内に含まれているかどうかを判定します。
 
-この関数は、文字列として表現された IPv4 および IPv6 のアドレス（およびネットワーク）の両方を受け付けます。アドレスと CIDR の IP バージョンが一致しない場合は `0` を返します。
+Determines if an IP address is contained in a network represented in the [Classless Inter-Domain Routing (CIDR)](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing) notation.
 
-**構文**
+This function accepts both IPv4 and IPv6 addresses (and networks) represented as strings. It returns `0` if the IP version of the address and the CIDR don't match.
+        
+
+**Syntax**
 
 ```sql
 isIPAddressInRange(address, prefix)
 ```
 
-**引数**
+**Arguments**
 
-* `address` — IPv4 または IPv6 アドレス。[`String`](/sql-reference/data-types/string)
-* `prefix` — CIDR 表記の IPv4 または IPv6 ネットワークプレフィックス。[`String`](/sql-reference/data-types/string)
+- `address` — An IPv4 or IPv6 address. [`String`](/sql-reference/data-types/string)
+- `prefix` — An IPv4 or IPv6 network prefix in CIDR. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-アドレスと CIDR の IP バージョンが一致する場合は `1`、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns `1` if the IP version of the address and the CIDR match, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**範囲内の IPv4 アドレス**
+**Examples**
+
+**IPv4 address in range**
 
 ```sql title=Query
 SELECT isIPAddressInRange('127.0.0.1', '127.0.0.0/8')
@@ -603,7 +668,7 @@ SELECT isIPAddressInRange('127.0.0.1', '127.0.0.0/8')
 1
 ```
 
-**IPv4 アドレスが有効な範囲内にありません**
+**IPv4 address not in range**
 
 ```sql title=Query
 SELECT isIPAddressInRange('127.0.0.1', 'ffff::/16')
@@ -613,7 +678,7 @@ SELECT isIPAddressInRange('127.0.0.1', 'ffff::/16')
 0
 ```
 
-**IPv6 アドレスが範囲外です**
+**IPv6 address not in range**
 
 ```sql title=Query
 SELECT isIPAddressInRange('::ffff:192.168.0.1', '::ffff:192.168.0.4/128')
@@ -623,30 +688,35 @@ SELECT isIPAddressInRange('::ffff:192.168.0.1', '::ffff:192.168.0.4/128')
 0
 ```
 
+
+
 ## isIPv4String {#isIPv4String}
 
-導入バージョン: v21.1
+Introduced in: v21.1
 
-入力文字列が IPv4 アドレスかどうかを判定します。
-IPv6 版については [`isIPv6String`](#isIPv6String) を参照してください。
 
-**構文**
+Determines whether the input string is an IPv4 address or not.
+For the IPv6 version see [`isIPv6String`](#isIPv6String).
+    
+
+**Syntax**
 
 ```sql
 isIPv4String(string)
 ```
 
-**引数**
+**Arguments**
 
-* `string` — 判定対象の IP アドレス文字列。[`String`](/sql-reference/data-types/string)
+- `string` — IP address string to check. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-`string` が IPv4 アドレスであれば `1`、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns `1` if `string` is IPv4 address, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT addr, isIPv4String(addr)
@@ -664,30 +734,35 @@ ARRAY JOIN addr;
 └──────────────────┴────────────────────┘
 ```
 
+
+
 ## isIPv6String {#isIPv6String}
 
-導入バージョン: v21.1
+Introduced in: v21.1
 
-入力文字列が IPv6 アドレスかどうかを判定します。
-IPv4 版については [`isIPv4String`](#isIPv4String) を参照してください。
 
-**構文**
+Determines whether the input string is an IPv6 address or not.
+For the IPv4 version see [`isIPv4String`](#isIPv4String).
+    
+
+**Syntax**
 
 ```sql
 isIPv6String(string)
 ```
 
-**引数**
+**Arguments**
 
-* `string` — チェック対象の IP アドレス文字列。[`String`](/sql-reference/data-types/string)
+- `string` — IP address string to check. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-`string` が IPv6 アドレスの場合は `1` を、そうでない場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns `1` if `string` is IPv6 address, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT addr, isIPv6String(addr)
@@ -704,30 +779,35 @@ ARRAY JOIN addr;
 └──────────────────┴────────────────────┘
 ```
 
+
+
 ## toIPv4 {#toIPv4}
 
-導入バージョン: v20.1
+Introduced in: v20.1
 
-IPv4 アドレスの文字列または UInt32 形式を IPv4 型に変換します。
-[`IPv4StringToNum`](/sql-reference/functions/ip-address-functions#IPv4StringToNum) 関数および [`IPv4NumToString`](/sql-reference/functions/ip-address-functions#IPv4NumToString) 関数に類似していますが、入力引数として文字列型と符号なし整数型の両方を受け付けます。
 
-**構文**
+Converts a string or a UInt32 form of IPv4 address to type IPv4.
+It is similar to [`IPv4StringToNum`](/sql-reference/functions/ip-address-functions#IPv4StringToNum) and [`IPv4NumToString`](/sql-reference/functions/ip-address-functions#IPv4NumToString) functions but it supports both string and unsigned integer data types as input arguments.
+
+
+**Syntax**
 
 ```sql
 toIPv4(x)
 ```
 
-**引数**
+**Arguments**
 
-* `x` — IPv4 アドレスを表す [`String`](/sql-reference/data-types/string) または [`UInt8/16/32`](/sql-reference/data-types/int-uint)
+- `x` — An IPv4 address [`String`](/sql-reference/data-types/string) or [`UInt8/16/32`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-IPv4 アドレス（[`IPv4`](/sql-reference/data-types/ipv4)）を返します。
+**Returned value**
 
-**例**
+Returns an IPv4 address. [`IPv4`](/sql-reference/data-types/ipv4)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT toIPv4('171.225.130.45');
@@ -739,7 +819,7 @@ SELECT toIPv4('171.225.130.45');
 └──────────────────────────┘
 ```
 
-**IPv4StringToNum 関数および IPv4NumToString 関数との比較**
+**Comparison with IPv4StringToNum and IPv4NumToString functions.**
 
 ```sql title=Query
 WITH
@@ -755,7 +835,7 @@ SELECT
 └───────────────────────────────────┴──────────────────────────┘
 ```
 
-**整数値からの変換**
+**Conversion from an integer**
 
 ```sql title=Query
 SELECT toIPv4(2130706433);
@@ -767,31 +847,36 @@ SELECT toIPv4(2130706433);
 └────────────────────┘
 ```
 
+
+
 ## toIPv4OrDefault {#toIPv4OrDefault}
 
-導入バージョン: v22.3
+Introduced in: v22.3
 
-文字列または UInt32 形式の IPv4 アドレスを [`IPv4`](../data-types/ipv4.md) 型に変換します。
-IPv4 アドレスの形式が無効な場合は、`0.0.0.0`（IPv4 の 0 アドレス）、または指定されたデフォルトの IPv4 を返します。
 
-**構文**
+Converts a string or a UInt32 form of an IPv4 address to [`IPv4`](../data-types/ipv4.md) type.
+If the IPv4 address has an invalid format, it returns `0.0.0.0` (0 IPv4), or the provided IPv4 default.
+    
+
+**Syntax**
 
 ```sql
 toIPv4OrDefault(文字列[, デフォルト])
 ```
 
-**引数**
+**Arguments**
 
-* `string` — 変換対象の IP アドレス文字列。[`String`](/sql-reference/data-types/string)
-* `default` — 省略可能。`string` が無効な IPv4 アドレスの場合に返す値。[`IPv4`](/sql-reference/data-types/ipv4)
+- `string` — IP address string to convert. [`String`](/sql-reference/data-types/string)
+- `default` — Optional. The value to return if string is an invalid IPv4 address. [`IPv4`](/sql-reference/data-types/ipv4)
 
-**戻り値**
 
-文字列を IPv4 アドレスに変換した値、または変換に失敗した場合はデフォルト値を返します。[`IPv4`](/sql-reference/data-types/ipv4)
+**Returned value**
 
-**例**
+Returns a string converted to the current IPv4 address, or the default value if conversion fails. [`IPv4`](/sql-reference/data-types/ipv4)
 
-**有効および無効な IPv4 文字列**
+**Examples**
+
+**Valid and invalid IPv4 strings**
 
 ```sql title=Query
 WITH
@@ -810,42 +895,45 @@ SELECT
 └───────────────┴───────────────┴──────────────────┘
 ```
 
+
+
 ## toIPv4OrNull {#toIPv4OrNull}
 
-導入バージョン: v22.3
+Introduced in: v22.3
 
-入力値を型 `IPv4` の値に変換しますが、エラーが発生した場合は `NULL` を返します。
-[`toIPv4`](#toIPv4) と同様ですが、変換エラー時に例外をスローする代わりに `NULL` を返します。
 
-サポートされる引数:
+Converts an input value to a value of type `IPv4` but returns `NULL` in case of an error.
+Like [`toIPv4`](#toIPv4) but returns `NULL` instead of throwing an exception on conversion errors.
 
-* ドット区切りの 10 進表記による IPv4 アドレスの文字列表現。
-* IPv4 アドレスの整数表現。
+Supported arguments:
+- String representations of IPv4 addresses in dotted decimal notation.
+- Integer representations of IPv4 addresses.
 
-サポートされない引数（`NULL` を返します）:
+Unsupported arguments (return `NULL`):
+- Invalid IP address formats.
+- IPv6 addresses.
+- Out-of-range values.
+- Malformed addresses.
+    
 
-* 無効な IP アドレス形式。
-* IPv6 アドレス。
-* 範囲外の値。
-* 不正な形式のアドレス。
-
-**構文**
+**Syntax**
 
 ```sql
 toIPv4OrNull(x)
 ```
 
-**引数**
+**Arguments**
 
-* `x` — IPv4 アドレスの文字列または整数による表現。[`String`](/sql-reference/data-types/string) または [`Integer`](/sql-reference/data-types/int-uint)
+- `x` — A string or integer representation of an IPv4 address. [`String`](/sql-reference/data-types/string) or [`Integer`](/sql-reference/data-types/int-uint)
 
-**返される値**
 
-成功時は IPv4 アドレスを返し、それ以外は `NULL` を返します。[`IPv4`](/sql-reference/data-types/ipv4) または [`NULL`](/sql-reference/syntax#null)
+**Returned value**
 
-**例**
+Returns an IPv4 address if successful, otherwise `NULL`. [`IPv4`](/sql-reference/data-types/ipv4) or [`NULL`](/sql-reference/syntax#null)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT
@@ -859,41 +947,44 @@ SELECT
 └─────────────┴────────────┘
 ```
 
+
+
 ## toIPv4OrZero {#toIPv4OrZero}
 
-導入バージョン: v23.1
+Introduced in: v23.1
 
-入力値を [IPv4](../data-types/ipv4.md) 型の値に変換しますが、エラーが発生した場合はゼロ値の IPv4 アドレスを返します。
-[`toIPv4`](#toIPv4) と同様ですが、変換エラー時に例外を送出する代わりに、ゼロ値の IPv4 アドレス (`0.0.0.0`) を返します。
 
-サポートされる引数:
+Converts an input value to a value of type [IPv4](../data-types/ipv4.md) but returns zero IPv4 address in case of an error.
+Like [`toIPv4`](#toIPv4) but returns zero IPv4 address (`0.0.0.0`) instead of throwing an exception on conversion errors.
 
-* ドット区切り 10 進数表記の IPv4 アドレス文字列表現。
-* IPv4 アドレスの整数表現。
+Supported arguments:
+- String representations of IPv4 addresses in dotted decimal notation.
+- Integer representations of IPv4 addresses.
 
-サポートされない引数（ゼロ値の IPv4 アドレスを返す）:
+Unsupported arguments (return zero IPv4):
+- Invalid IP address formats.
+- IPv6 addresses.
+- Out-of-range values.
+    
 
-* 無効な IP アドレス形式。
-* IPv6 アドレス。
-* 範囲外の値。
-
-**構文**
+**Syntax**
 
 ```sql
 toIPv4OrZero(x)
 ```
 
-**引数**
+**Arguments**
 
-* `x` — IPv4 アドレスの文字列または整数による表現。[`String`](/sql-reference/data-types/string) または [`Integer`](/sql-reference/data-types/int-uint)
+- `x` — A string or integer representation of an IPv4 address. [`String`](/sql-reference/data-types/string) or [`Integer`](/sql-reference/data-types/int-uint)
 
-**返される値**
 
-成功した場合は IPv4 アドレスを返し、失敗した場合はゼロの IPv4 アドレス (`0.0.0.0`) を返します。[`IPv4`](/sql-reference/data-types/ipv4)
+**Returned value**
 
-**例**
+Returns an IPv4 address if successful, otherwise zero IPv4 address (`0.0.0.0`). [`IPv4`](/sql-reference/data-types/ipv4)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT
@@ -907,33 +998,38 @@ SELECT
 └─────────────┴────────────┘
 ```
 
+
+
 ## toIPv6 {#toIPv6}
 
-導入バージョン: v20.1
+Introduced in: v20.1
 
-IPv6 アドレスの文字列または `UInt128` 表現を [`IPv6`](../data-types/ipv6.md) 型に変換します。
-文字列の場合、IPv6 アドレスの形式が無効なときは空の値を返します。
-IPv6 アドレスをバイナリ形式（`FixedString(16)`）に変換したり、その逆を行う [`IPv6StringToNum`](/sql-reference/functions/ip-address-functions#IPv6StringToNum) 関数および [`IPv6NumToString`](/sql-reference/functions/ip-address-functions#IPv6NumToString) 関数と類似しています。
 
-入力文字列に有効な IPv4 アドレスが含まれている場合、その IPv4 アドレスに対応する IPv6 アドレスが返されます。
+onverts a string or a `UInt128` form of IPv6 address to [`IPv6`](../data-types/ipv6.md) type.
+For strings, if the IPv6 address has an invalid format, returns an empty value.
+Similar to [`IPv6StringToNum`](/sql-reference/functions/ip-address-functions#IPv6StringToNum) and [`IPv6NumToString`](/sql-reference/functions/ip-address-functions#IPv6NumToString) functions, which convert IPv6 address to and from binary format (i.e. `FixedString(16)`).
 
-**構文**
+If the input string contains a valid IPv4 address, then the IPv6 equivalent of the IPv4 address is returned.
+
+
+**Syntax**
 
 ```sql
 toIPv6(x)
 ```
 
-**引数**
+**Arguments**
 
-* `x` — IP アドレス。[`String`](/sql-reference/data-types/string) または [`UInt128`](/sql-reference/data-types/int-uint)
+- `x` — An IP address. [`String`](/sql-reference/data-types/string) or [`UInt128`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-IPv6 アドレスを返します。[`IPv6`](/sql-reference/data-types/ipv6)
+**Returned value**
 
-**例**
+Returns an IPv6 address. [`IPv6`](/sql-reference/data-types/ipv6)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 WITH '2001:438:ffff::407d:1bc1' AS IPv6_string
@@ -948,7 +1044,7 @@ SELECT
 └───────────────────────────────────┴──────────────────────────────────┘
 ```
 
-**IPv4 から IPv6 へのマッピング**
+**IPv4-to-IPv6 mapping**
 
 ```sql title=Query
 SELECT toIPv6('127.0.0.1');
@@ -960,31 +1056,34 @@ SELECT toIPv6('127.0.0.1');
 └─────────────────────┘
 ```
 
+
+
 ## toIPv6OrDefault {#toIPv6OrDefault}
 
-導入: v22.3
+Introduced in: v22.3
 
-文字列または IPv6 アドレスの UInt128 形式を [`IPv6`](../data-types/ipv6.md) 型に変換します。
-IPv6 アドレスの形式が不正な場合は、`::` (0 IPv6) または指定されたデフォルトの IPv6 アドレスを返します。
 
-**構文**
+Converts a string or a UInt128 form of IPv6 address to [`IPv6`](../data-types/ipv6.md) type.
+If the IPv6 address has an invalid format, it returns `::` (0 IPv6) or the provided IPv6 default.
+    
+
+**Syntax**
 
 ```sql
 toIPv6OrDefault(string[, default])
 ```
 
-**引数**
+**Arguments**
 
-* `string` — 変換する IP アドレス文字列。
-* `default` — 省略可能。`string` の形式が無効な場合に返す値。
+- `string` — IP address string to convert. - `default` — Optional. The value to return if string has an invalid format. 
 
-**返り値**
+**Returned value**
 
-IPv6 アドレスを返します。`string` 引数の形式が無効な場合は `::` を返すか、指定されている場合は `default` の値を返します。[`IPv6`](/sql-reference/data-types/ipv6)
+Returns the IPv6 address, otherwise `::` or the provided optional default if argument `string` has an invalid format. [`IPv6`](/sql-reference/data-types/ipv6)
 
-**例**
+**Examples**
 
-**有効および無効な IPv6 文字列**
+**Valid and invalid IPv6 strings**
 
 ```sql title=Query
 WITH
@@ -1003,43 +1102,46 @@ SELECT
 └────────────────────────────────────────┴───────────────┴──────────────────┘
 ```
 
+
+
 ## toIPv6OrNull {#toIPv6OrNull}
 
-導入バージョン: v22.3
+Introduced in: v22.3
 
-入力値を `IPv6` 型の値に変換しますが、エラーが発生した場合は `NULL` を返します。
-[`toIPv6`](#toIPv6) と同様ですが、変換エラー時に例外をスローする代わりに `NULL` を返します。
 
-サポートされる引数:
+Converts an input value to a value of type `IPv6` but returns `NULL` in case of an error.
+Like [`toIPv6`](#toIPv6) but returns `NULL` instead of throwing an exception on conversion errors.
 
-* 標準表記による IPv6 アドレスの文字列表現。
-* IPv4 マップド IPv6 アドレスに変換される、IPv4 アドレスの文字列表現。
-* IPv6 アドレスのバイナリ表現。
+Supported arguments:
+- String representations of IPv6 addresses in standard notation.
+- String representations of IPv4 addresses (converted to IPv4-mapped IPv6).
+- Binary representations of IPv6 addresses.
 
-サポートされていない引数（`NULL` を返す）:
+Unsupported arguments (return `NULL`):
+- Invalid IP address formats.
+- Malformed IPv6 addresses.
+- Out-of-range values.
+- Invalid notation.
+    
 
-* 無効な IP アドレス形式。
-* 不正な形式の IPv6 アドレス。
-* 範囲外の値。
-* 無効な表記。
-
-**構文**
+**Syntax**
 
 ```sql
 toIPv6OrNull(x)
 ```
 
-**引数**
+**Arguments**
 
-* `x` — IPv6 または IPv4 アドレスの文字列表現。[`String`](/sql-reference/data-types/string)
+- `x` — A string representation of an IPv6 or IPv4 address. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-成功した場合は IPv6 アドレスを、失敗した場合は `NULL` を返します。[`IPv6`](/sql-reference/data-types/ipv6) または [`NULL`](/sql-reference/syntax#null)
+**Returned value**
 
-**例**
+Returns an IPv6 address if successful, otherwise `NULL`. [`IPv6`](/sql-reference/data-types/ipv6) or [`NULL`](/sql-reference/syntax#null)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT
@@ -1053,42 +1155,45 @@ SELECT
 └─────────────────────────────────────┴──────────────┘
 ```
 
+
+
 ## toIPv6OrZero {#toIPv6OrZero}
 
-導入バージョン: v23.1
+Introduced in: v23.1
 
-入力値を[IPv6](../data-types/ipv6.md)型の値に変換しますが、エラー時にはゼロの IPv6 アドレスを返します。
-[`toIPv6`](#toIPv6) と同様に動作しますが、変換エラー時に例外をスローする代わりにゼロの IPv6 アドレス（`::`）を返します。
 
-サポートされる引数:
+Converts an input value to a value of type [IPv6](../data-types/ipv6.md) but returns zero IPv6 address in case of an error.
+Like [`toIPv6`](#toIPv6) but returns zero IPv6 address (`::`) instead of throwing an exception on conversion errors.
 
-* 標準表記による IPv6 アドレスの文字列表現。
-* IPv4 マップド IPv6 アドレスに変換される IPv4 アドレスの文字列表現。
-* IPv6 アドレスのバイナリ表現。
+Supported arguments:
+- String representations of IPv6 addresses in standard notation.
+- String representations of IPv4 addresses (converted to IPv4-mapped IPv6).
+- Binary representations of IPv6 addresses.
 
-サポートされない引数（ゼロの IPv6 アドレスを返す）:
+Unsupported arguments (return zero IPv6):
+- Invalid IP address formats.
+- Malformed IPv6 addresses.
+- Out-of-range values.
+    
 
-* 無効な IP アドレス形式。
-* 不正形式の IPv6 アドレス。
-* 範囲外の値。
-
-**構文**
+**Syntax**
 
 ```sql
 toIPv6OrZero(x)
 ```
 
-**引数**
+**Arguments**
 
-* `x` — IPv6 または IPv4 アドレスの文字列表現。[`String`](/sql-reference/data-types/string)
+- `x` — A string representation of an IPv6 or IPv4 address. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-成功した場合は IPv6 アドレスを返し、失敗した場合はゼロの IPv6 アドレス (`::`) を返します。[`IPv6`](/sql-reference/data-types/ipv6)
+**Returned value**
 
-**例**
+Returns an IPv6 address if successful, otherwise zero IPv6 address (`::`).  [`IPv6`](/sql-reference/data-types/ipv6)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT

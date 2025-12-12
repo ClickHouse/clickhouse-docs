@@ -188,8 +188,8 @@ ClickHouse Connect Sink читает сообщения из топиков Kafk
     "ssl": "true",
     "jdbcConnectionProperties": "?ssl=true&sslmode=strict",
     "username": "default",
-    "password": "<ПАРОЛЬ>",
-    "topics": "<ИМЯ_ТОПИКА>",
+    "password": "<PASSWORD>",
+    "topics": "<TOPIC_NAME>",
     "value.converter": "org.apache.kafka.connect.json.JsonConverter",
     "value.converter.schemas.enable": "false",
     "clickhouseSettings": ""
@@ -460,8 +460,17 @@ Kafka Connect (фреймворк) выбирает сообщения из то
 Для оптимальной работы с ClickHouse ориентируйтесь на более крупные пакеты:
 
 ```properties
-# Увеличить количество записей за один опрос {#increase-the-number-of-records-per-poll}
+# Increase the number of records per poll
 consumer.max.poll.records=5000
+
+# Increase the partition fetch size (5 MB)
+consumer.max.partition.fetch.bytes=5242880
+
+# Optional: Increase minimum fetch size to wait for more data (1 MB)
+consumer.fetch.min.bytes=1048576
+
+# Optional: Reduce wait time if latency is critical
+consumer.fetch.max.wait.ms=300
 ```
 
 # Увеличить размер выборки раздела до 5 МБ {#increase-the-partition-fetch-size-5-mb}
@@ -474,56 +483,15 @@ consumer.fetch.min.bytes=1048576
 
 consumer.fetch.max.wait.ms=300
 
-````
-
-**Важно**: Настройки выборки Kafka Connect относятся к сжатым данным, тогда как ClickHouse получает несжатые данные. Балансируйте эти настройки с учётом коэффициента сжатия.
-
-**Компромиссы**:
-- **Большие пакеты** = Лучшая производительность приёма данных в ClickHouse, меньше частей, меньше накладных расходов
-- **Большие пакеты** = Более высокое потребление памяти, потенциальное увеличение сквозной задержки
-- **Слишком большие пакеты** = Риск таймаутов, ошибок OutOfMemory или превышения `max.poll.interval.ms`
-
-Подробнее: [Документация Confluent](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration) | [Документация Kafka](https://kafka.apache.org/documentation/#consumerconfigs)
-
-#### Асинхронные вставки                         {#asynchronous-inserts}
-
-Асинхронные вставки — это мощная функция, когда коннектор отправляет относительно небольшие пакеты или когда вы хотите дополнительно оптимизировать приём данных, передав ответственность за пакетирование ClickHouse.
-
-##### Когда использовать асинхронные вставки                              {#when-to-use-async-inserts}
-
-Рассмотрите возможность включения асинхронных вставок, когда:
-
-- **Много небольших пакетов**: Ваш коннектор отправляет частые небольшие пакеты (< 1000 строк на пакет)
-- **Высокая конкурентность**: Несколько задач коннектора записывают данные в одну и ту же таблицу
-- **Распределённое развёртывание**: Запуск множества экземпляров коннектора на разных хостах
-- **Накладные расходы на создание частей**: Вы сталкиваетесь с ошибками «слишком много частей»
-- **Смешанная нагрузка**: Сочетание приёма данных в реальном времени с запросами
-
-**НЕ** используйте асинхронные вставки, когда:
-
-- Вы уже отправляете большие пакеты (> 10 000 строк на пакет) с контролируемой частотой
-- Вам требуется немедленная видимость данных (запросы должны видеть данные мгновенно)
-- Семантика exactly-once с `wait_for_async_insert=0` конфликтует с вашими требованиями
-- Ваш сценарий использования может выиграть от улучшений пакетирования на стороне клиента
-
-##### Как работают асинхронные вставки                           {#how-async-inserts-work}
-
-При включённых асинхронных вставках ClickHouse:
-
-1. Получает запрос на вставку от коннектора
-2. Записывает данные в буфер в памяти (вместо немедленной записи на диск)
-3. Возвращает успешный результат коннектору (если `wait_for_async_insert=0`)
-4. Сбрасывает буфер на диск при выполнении одного из следующих условий:
-   - Буфер достигает `async_insert_max_data_size` (по умолчанию: 10 МБ)
-   - Прошло `async_insert_busy_timeout_ms` миллисекунд с момента первой вставки (по умолчанию: 1000 мс)
-   - Накоплено максимальное количество запросов (`async_insert_max_query_number`, по умолчанию: 100)
-
-Это значительно сокращает количество создаваемых частей и улучшает общую пропускную способность.
-
-##### Включение асинхронных вставок                           {#enabling-async-inserts}
-
-Добавьте настройки асинхронных вставок в параметр конфигурации `clickhouseSettings`:
-
+````json
+{
+  "name": "clickhouse-connect",
+  "config": {
+    "connector.class": "com.clickhouse.kafka.connect.ClickHouseSinkConnector",
+    ...
+    "clickhouseSettings": "async_insert=1,wait_for_async_insert=1"
+  }
+}
 ```json
 {
   "name": "clickhouse-connect",
@@ -533,39 +501,10 @@ consumer.fetch.max.wait.ms=300
     "clickhouseSettings": "async_insert=1,wait_for_async_insert=1"
   }
 }
-````
-
-**Ключевые настройки**:
-
-* **`async_insert=1`**: Включить асинхронные вставки
-* **`wait_for_async_insert=1`** (рекомендуется): Коннектор ждёт, пока данные не будут сброшены в хранилище ClickHouse, прежде чем подтвердить приём данных. Обеспечивает гарантии доставки.
-* **`wait_for_async_insert=0`**: Коннектор подтверждает приём сразу после буферизации. Более высокая производительность, но данные могут быть потеряны при сбое сервера до выполнения сброса.
-
-##### Настройка поведения асинхронных вставок {#tuning-async-inserts}
-
-Вы можете тонко настроить поведение сброса при асинхронных вставках:
-
+````json
+"clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=10485760,async_insert_busy_timeout_ms=1000"
 ```json
 "clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=10485760,async_insert_busy_timeout_ms=1000"
-```
-
-Общие параметры настройки:
-
-* **`async_insert_max_data_size`** (по умолчанию: 10485760 / 10 MB): Максимальный размер буфера перед сбросом
-* **`async_insert_busy_timeout_ms`** (по умолчанию: 1000): Максимальное время (мс) до сброса
-* **`async_insert_stale_timeout_ms`** (по умолчанию: 0): Время (мс) с момента последней вставки до сброса
-* **`async_insert_max_query_number`** (по умолчанию: 100): Максимальное количество запросов до сброса
-
-**Компромиссы**:
-
-* **Преимущества**: Меньше частей, лучшая производительность слияний, меньшая нагрузка на CPU, улучшенная пропускная способность при высокой конкурентности
-* **Особенности**: Данные не сразу доступны для запросов, немного увеличенная сквозная задержка
-* **Риски**: Потеря данных при сбое сервера, если `wait_for_async_insert=0`, повышенная нагрузка на память при больших буферах
-
-##### Асинхронные вставки с семантикой exactly-once {#async-inserts-with-exactly-once}
-
-При использовании `exactlyOnce=true` с асинхронными вставками:
-
 ```json
 {
   "config": {
@@ -573,58 +512,30 @@ consumer.fetch.max.wait.ms=300
     "clickhouseSettings": "async_insert=1,wait_for_async_insert=1"
   }
 }
-```
-
-**Важно**: Всегда используйте `wait_for_async_insert=1` с режимом «exactly-once», чтобы фиксация смещений выполнялась только после сохранения данных.
-
-Дополнительную информацию об асинхронных вставках см. в [документации ClickHouse по асинхронным вставкам](/best-practices/selecting-an-insert-strategy#asynchronous-inserts).
-
-#### Параллелизм коннектора {#connector-parallelism}
-
-Увеличьте параллелизм, чтобы повысить пропускную способность:
-
-##### Задачи на коннектор {#tasks-per-connector}
-
+```json
+{
+  "config": {
+    "exactlyOnce": "true",
+    "clickhouseSettings": "async_insert=1,wait_for_async_insert=1"
+  }
+}
 ```json
 "tasks.max": "4"
-```
-
-Каждая задача обрабатывает подмножество разделов топика. Больше задач = выше уровень параллелизма, но:
-
-* Максимально эффективное число задач = количество разделов топика
-* Каждая задача поддерживает собственное соединение с ClickHouse
-* Больше задач = большие накладные расходы и потенциальная конкуренция за ресурсы
-
-**Рекомендация**: Начните с значения `tasks.max`, равного количеству разделов топика, затем корректируйте его на основе метрик по CPU и пропускной способности.
-
-##### Игнорирование разделов при пакетировании {#ignoring-partitions}
-
-По умолчанию коннектор формирует пакеты сообщений по разделам. Для более высокой пропускной способности можно пакетировать сообщения по нескольким разделам:
-
+```json
+"tasks.max": "4"
 ```json
 "ignorePartitionsWhenBatching": "true"
-```
-
-**Предупреждение**: Используйте только при `exactlyOnce=false`. Этот параметр может повысить пропускную способность за счёт формирования более крупных пакетов, но при этом теряются гарантии порядка внутри раздела (partition).
-
-#### Несколько топиков с высокой пропускной способностью {#multiple-high-throughput-topics}
-
-Если ваш коннектор настроен на подписку на несколько топиков, вы используете `topic2TableMap` для отображения топиков в таблицы и сталкиваетесь с узким местом при вставке, приводящим к отставанию консьюмера, рассмотрите возможность создания отдельного коннектора для каждого топика.
-
-Основная причина этого в том, что в текущей реализации пакеты вставляются в каждую таблицу [последовательно](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/578ac07e8be1a920aaa3b26e49183595c3edd04b/src/main/java/com/clickhouse/kafka/connect/sink/ProxySinkTask.java#L95-L100).
-
-**Рекомендация**: Для нескольких высоконагруженных топиков разверните по одному экземпляру коннектора на каждый топик, чтобы максимизировать параллельную скорость вставки.
-
-#### Особенности выбора движка таблиц ClickHouse {#table-engine-considerations}
-
-Выберите подходящий движок таблиц ClickHouse для вашего сценария использования:
-
-* **`MergeTree`**: Оптимален для большинства сценариев, обеспечивает баланс между производительностью запросов и вставок
-* **`ReplicatedMergeTree`**: Необходим для высокой доступности, но добавляет накладные расходы на репликацию
-* **`*MergeTree` с корректным `ORDER BY`**: Оптимизируйте под ваши шаблоны запросов
-
-**Параметры, которые стоит рассмотреть**:
-
+```json
+"ignorePartitionsWhenBatching": "true"
+```sql
+CREATE TABLE my_table (...)
+ENGINE = MergeTree()
+ORDER BY (timestamp, id)
+SETTINGS 
+    -- Increase max insert threads for parallel part writing
+    max_insert_threads = 4,
+    -- Allow inserts with quorum for reliability (ReplicatedMergeTree)
+    insert_quorum = 2
 ```sql
 CREATE TABLE my_table (...)
 ENGINE = MergeTree()
@@ -634,65 +545,14 @@ SETTINGS
     max_insert_threads = 4,
     -- Разрешение вставок с кворумом для обеспечения надёжности (ReplicatedMergeTree)
     insert_quorum = 2
-```
-
-Параметры вставки на уровне коннектора:
-
 ```json
 "clickhouseSettings": "insert_quorum=2,insert_quorum_timeout=60000"
-```
-
-#### Пул подключений и тайм-ауты {#connection-pooling}
-
-Коннектор поддерживает HTTP‑подключения к ClickHouse. Настройте тайм-ауты для сетей с высокой задержкой:
-
+```json
+"clickhouseSettings": "insert_quorum=2,insert_quorum_timeout=60000"
 ```json
 "clickhouseSettings": "socket_timeout=300000,connection_timeout=30000"
-```
-
-* **`socket_timeout`** (по умолчанию: 30000 мс): Максимальное время ожидания операций чтения
-* **`connection_timeout`** (по умолчанию: 10000 мс): Максимальное время ожидания установления соединения
-
-Увеличьте эти значения, если вы сталкиваетесь с ошибками тайм-аута при работе с крупными пакетами данных.
-
-#### Мониторинг и устранение неполадок, связанных с производительностью {#monitoring-performance}
-
-Отслеживайте следующие ключевые метрики:
-
-1. **Задержка потребителя (consumer lag)**: Используйте инструменты мониторинга Kafka для отслеживания задержки по разделам (partition)
-2. **Метрики коннектора**: Отслеживайте `receivedRecords`, `recordProcessingTime`, `taskProcessingTime` через JMX (см. [Monitoring](#monitoring))
-3. **Метрики ClickHouse**:
-   * `system.asynchronous_inserts`: Отслеживайте использование буфера асинхронных вставок
-   * `system.parts`: Отслеживайте количество частей (parts) для выявления проблем со слияниями
-   * `system.merges`: Отслеживайте активные слияния
-   * `system.events`: Отслеживайте `InsertedRows`, `InsertedBytes`, `FailedInsertQuery`
-
-**Распространённые проблемы с производительностью**:
-
-| Симптом                           | Возможная причина                    | Решение                                                            |
-| --------------------------------- | ------------------------------------ | ------------------------------------------------------------------ |
-| Большое отставание consumer&#39;а | Слишком маленькие батчи              | Увеличьте `max.poll.records`, включите async inserts               |
-| Ошибки &quot;Too many parts&quot; | Частые мелкие вставки                | Включите async inserts, увеличьте размер батча                     |
-| Ошибки тайм-аута                  | Большой размер батча, медленная сеть | Уменьшите размер батча, увеличьте `socket_timeout`, проверьте сеть |
-| Высокая загрузка CPU              | Слишком много мелких частей          | Включите async inserts, увеличьте настройки merge                  |
-| Ошибки OutOfMemory                | Слишком большой размер батча         | Уменьшите `max.poll.records`, `max.partition.fetch.bytes`          |
-| Неравномерная нагрузка на задачи  | Неравномерное распределение партиций | Перебалансируйте партиции или скорректируйте `tasks.max`           |
-
-#### Краткое резюме передовых практик {#performance-best-practices}
-
-1. **Начните со значений по умолчанию**, затем измеряйте и настраивайте на основе фактической производительности
-2. **Предпочитайте более крупные батчи**: по возможности нацеливайтесь на 10 000–100 000 строк на вставку
-3. **Используйте async inserts**, когда отправляете много мелких батчей или при высокой конкурентности
-4. **Всегда используйте `wait_for_async_insert=1`** при необходимости строгой семантики exactly-once
-5. **Масштабируйтесь горизонтально**: увеличивайте `tasks.max` вплоть до количества партиций
-6. **По одному коннектору на топик с высоким трафиком** для максимальной пропускной способности
-7. **Непрерывно отслеживайте**: мониторьте отставание consumer&#39;а, количество частей и активность операций merge
-8. **Тщательно тестируйте**: всегда проверяйте изменения конфигурации под реалистичной нагрузкой перед промышленным развертыванием
-
-#### Пример: конфигурация для высокой пропускной способности {#example-high-throughput}
-
-Ниже приведён полный пример, оптимизированный для высокой пропускной способности:
-
+```json
+"clickhouseSettings": "socket_timeout=300000,connection_timeout=30000"
 ```json
 {
   "name": "clickhouse-high-throughput",
@@ -722,67 +582,47 @@ SETTINGS
     "clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=16777216,async_insert_busy_timeout_ms=1000,socket_timeout=300000"
   }
 }
-```
-
-**Эта конфигурация**:
-
-* Обрабатывает до 10 000 записей за один опрос
-* Формирует батчи по нескольким партициям для более крупных вставок
-* Использует асинхронные вставки с буфером 16 MB
-* Запускает 8 параллельных задач (подберите значение под количество партиций)
-* Оптимизирована на максимальную пропускную способность, а не на строгий порядок
-
-### Устранение неполадок {#troubleshooting}
-
-#### &quot;State mismatch for topic `[someTopic]` partition `[0]`&quot; {#state-mismatch-for-topic-sometopic-partition-0}
-
-Это происходит, когда смещение, хранящееся в KeeperMap, отличается от смещения, хранящегося в Kafka, обычно когда топик был удалён
-или смещение было изменено вручную.
-Чтобы исправить это, необходимо удалить старые значения, сохранённые для данного топика и партиции.
-
-**ПРИМЕЧАНИЕ: Это изменение может повлиять на семантику exactly-once.**
-
-#### &quot;What errors will the connector retry?&quot; {#what-errors-will-the-connector-retry}
-
-Сейчас внимание сосредоточено на определении ошибок, которые являются временными и могут быть повторно выполнены, включая:
-
-* `ClickHouseException` — это общее исключение, которое может быть выброшено ClickHouse.
-  Обычно оно выбрасывается, когда сервер перегружен, и следующие коды ошибок считаются особенно подходящими для повторной попытки:
-  * 3 - UNEXPECTED&#95;END&#95;OF&#95;FILE
-  * 159 - TIMEOUT&#95;EXCEEDED
-  * 164 - READONLY
-  * 202 - TOO&#95;MANY&#95;SIMULTANEOUS&#95;QUERIES
-  * 203 - NO&#95;FREE&#95;CONNECTION
-  * 209 - SOCKET&#95;TIMEOUT
-  * 210 - NETWORK&#95;ERROR
-  * 242 - TABLE&#95;IS&#95;READ&#95;ONLY
-  * 252 - TOO&#95;MANY&#95;PARTS
-  * 285 - TOO&#95;FEW&#95;LIVE&#95;REPLICAS
-  * 319 - UNKNOWN&#95;STATUS&#95;OF&#95;INSERT
-  * 425 - SYSTEM&#95;ERROR
-  * 999 - KEEPER&#95;EXCEPTION
-  * 1002 - UNKNOWN&#95;EXCEPTION
-* `SocketTimeoutException` — выбрасывается, когда соединение по сокету превышает таймаут.
-* `UnknownHostException` — выбрасывается, когда не удаётся разрешить имя хоста.
-* `IOException` — выбрасывается, когда возникает проблема с сетью.
-
-#### &quot;Все мои данные пустые/нули&quot; {#all-my-data-is-blankzeroes}
-
-Скорее всего, поля в ваших данных не соответствуют полям в таблице — это особенно часто встречается с CDC (фиксацией изменений данных) и форматом Debezium.
-Один из распространённых способов решения — добавить преобразование `flatten` в конфигурацию вашего коннектора:
-
+```json
+{
+  "name": "clickhouse-high-throughput",
+  "config": {
+    "connector.class": "com.clickhouse.kafka.connect.ClickHouseSinkConnector",
+    "tasks.max": "8",
+    
+    "topics": "high_volume_topic",
+    "hostname": "my-clickhouse-host.cloud",
+    "port": "8443",
+    "database": "default",
+    "username": "default",
+    "password": "<PASSWORD>",
+    "ssl": "true",
+    
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "false",
+    
+    "exactlyOnce": "false",
+    "ignorePartitionsWhenBatching": "true",
+    
+    "consumer.max.poll.records": "10000",
+    "consumer.max.partition.fetch.bytes": "5242880",
+    "consumer.fetch.min.bytes": "1048576",
+    "consumer.fetch.max.wait.ms": "500",
+    
+    "clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=16777216,async_insert_busy_timeout_ms=1000,socket_timeout=300000"
+  }
+}
 ```properties
 transforms=flatten
 transforms.flatten.type=org.apache.kafka.connect.transforms.Flatten$Value
 transforms.flatten.delimiter=_
-```
-
-Это преобразует данные из вложенного JSON в плоский JSON (используя `_` в качестве разделителя). Поля в таблице затем будут иметь формат &quot;field1&#95;field2&#95;field3&quot; (например, &quot;before&#95;id&quot;, &quot;after&#95;id&quot; и т. д.).
-
-#### &quot;Я хочу использовать свои Kafka-ключи в ClickHouse&quot; {#i-want-to-use-my-kafka-keys-in-clickhouse}
-
-Ключи Kafka по умолчанию не хранятся в поле value, но вы можете использовать преобразование `KeyToValue`, чтобы переместить ключ в поле value (под новым именем поля `_key`):
-
+```properties
+transforms=flatten
+transforms.flatten.type=org.apache.kafka.connect.transforms.Flatten$Value
+transforms.flatten.delimiter=_
+```properties
+transforms=keyToValue
+transforms.keyToValue.type=com.clickhouse.kafka.connect.transforms.KeyToValue
+transforms.keyToValue.field=_key
 ```properties
 transforms=keyToValue
 transforms.keyToValue.type=com.clickhouse.kafka.connect.transforms.KeyToValue

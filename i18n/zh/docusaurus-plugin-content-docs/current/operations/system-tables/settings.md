@@ -48,12 +48,12 @@ Row 1:
 name:        min_insert_block_size_rows
 value:       1048449
 changed:     0
-description: 设置通过 `INSERT` 查询插入表中的数据块的最小行数。较小的数据块将被合并成较大的数据块。
+description: Sets the minimum number of rows in the block that can be inserted into a table by an `INSERT` query. Smaller-sized blocks are squashed into bigger ones.
 
-可能的值:
+Possible values:
 
-- 正整数。
-- 0 — 禁用合并。
+- Positive integer.
+- 0 — Squashing disabled.
 min:         ᴺᵁᴸᴸ
 max:         ᴺᵁᴸᴸ
 readonly:    0
@@ -61,19 +61,19 @@ type:        UInt64
 default:     1048449
 alias_for:   
 is_obsolete: 0
-tier:        生产环境
+tier:        Production
 
 Row 2:
 ──────
 name:        min_insert_block_size_bytes
 value:       268402944
 changed:     0
-description: 设置通过 `INSERT` 查询插入表中的数据块的最小字节数。较小的数据块将被合并成较大的数据块。
+description: Sets the minimum number of bytes in the block which can be inserted into a table by an `INSERT` query. Smaller-sized blocks are squashed into bigger ones.
 
-可能的值:
+Possible values:
 
-- 正整数。
-- 0 — 禁用合并。
+- Positive integer.
+- 0 — Squashing disabled.
 min:         ᴺᵁᴸᴸ
 max:         ᴺᵁᴸᴸ
 readonly:    0
@@ -81,8 +81,56 @@ type:        UInt64
 default:     268402944
 alias_for:   
 is_obsolete: 0
-tier:        生产环境
-```
+tier:        Production
+
+Row 3:
+──────
+name:        min_insert_block_size_rows_for_materialized_views
+value:       0
+changed:     0
+description: Sets the minimum number of rows in the block which can be inserted into a table by an `INSERT` query. Smaller-sized blocks are squashed into bigger ones. This setting is applied only for blocks inserted into [materialized view](../../sql-reference/statements/create/view.md). By adjusting this setting, you control blocks squashing while pushing to materialized view and avoid excessive memory usage.
+
+Possible values:
+
+- Any positive integer.
+- 0 — Squashing disabled.
+
+**See Also**
+
+- [min_insert_block_size_rows](/operations/settings/settings#min_insert_block_size_rows)
+min:         ᴺᵁᴸᴸ
+max:         ᴺᵁᴸᴸ
+readonly:    0
+type:        UInt64
+default:     0
+alias_for:   
+is_obsolete: 0
+tier:        Production
+
+Row 4:
+──────
+name:        min_insert_block_size_bytes_for_materialized_views
+value:       0
+changed:     0
+description: Sets the minimum number of bytes in the block which can be inserted into a table by an `INSERT` query. Smaller-sized blocks are squashed into bigger ones. This setting is applied only for blocks inserted into [materialized view](../../sql-reference/statements/create/view.md). By adjusting this setting, you control blocks squashing while pushing to materialized view and avoid excessive memory usage.
+
+Possible values:
+
+- Any positive integer.
+- 0 — Squashing disabled.
+
+**See also**
+
+- [min_insert_block_size_bytes](/operations/settings/settings#min_insert_block_size_bytes)
+min:         ᴺᵁᴸᴸ
+max:         ᴺᵁᴸᴸ
+readonly:    0
+type:        UInt64
+default:     0
+alias_for:   
+is_obsolete: 0
+tier:        Production
+ ```
 
 Row 3:
 ──────
@@ -132,15 +180,8 @@ Possible values:
   is&#95;obsolete: 0
   tier:        Production
 
-````
-
-使用 `WHERE changed` 在以下场景中很有用,例如需要检查:
-
-- 配置文件中的设置是否已正确加载并生效。
-- 当前会话中已变更的设置。
-
-<!-- -->
-
+````sql
+SELECT * FROM system.settings WHERE changed AND name='load_balancing'
 ```sql
 SELECT * FROM system.settings WHERE changed AND name='load_balancing'
 ````

@@ -204,18 +204,29 @@ SELECT
     _part
 FROM dst
 ORDER BY all;
+
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
+│ from dst   │   0 │ A     │ all_0_0_0 │
+└────────────┴─────┴───────┴───────────┘
 ```
 
 ┌─&#39;from dst&#39;─┬─key─┬─value─┬─&#95;part─────┐
 │ from dst   │   0 │ A     │ all&#95;0&#95;0&#95;0 │
 └────────────┴─────┴───────┴───────────┘
 
-````
+````sql
+CREATE TABLE dst
+(
+    `key` Int64,
+    `value` String
+)
+ENGINE = MergeTree
+ORDER BY tuple()
+SETTINGS non_replicated_deduplication_window=1000;
 
-上記の設定では、selectから2つのブロックが生成されます。その結果、テーブル`dst`への挿入には2つのブロックが存在するはずです。しかし、実際にはテーブル`dst`には1つのブロックのみが挿入されています。これは、2番目のブロックが重複排除されたために発生しました。このブロックは同じデータを持ち、挿入データのハッシュとして計算される重複排除キー`block_id`も同一です。この動作は想定されたものではありません。このようなケースは稀ですが、理論上は発生する可能性があります。このようなケースを正しく処理するには、`insert_deduplication_token`を指定する必要があります。以下の例でこの問題を修正します:
-
-### `insert_deduplication_token`を使用した挿入における同一ブロック                                                                  {#identical-blocks-in-insertion-with-insert_deduplication_token}
-
+SET max_block_size=1;
+SET min_insert_block_size_rows=0;
+SET min_insert_block_size_bytes=0;
 ```sql
 CREATE TABLE dst
 (
@@ -229,10 +240,24 @@ SETTINGS non_replicated_deduplication_window=1000;
 SET max_block_size=1;
 SET min_insert_block_size_rows=0;
 SET min_insert_block_size_bytes=0;
-````
+````sql
+INSERT INTO dst SELECT
+    0 AS key,
+    'A' AS value
+FROM numbers(2)
+SETTINGS insert_deduplication_token='some_user_token';
 
-挿入:
+SELECT
+    'from dst',
+    *,
+    _part
+FROM dst
+ORDER BY all;
 
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
+│ from dst   │   0 │ A     │ all_2_2_0 │
+│ from dst   │   0 │ A     │ all_3_3_0 │
+└────────────┴─────┴───────┴───────────┘
 ```sql
 INSERT INTO dst SELECT
     0 AS key,
@@ -251,10 +276,26 @@ ORDER BY all;
 │ from dst   │   0 │ A     │ all_2_2_0 │
 │ from dst   │   0 │ A     │ all_3_3_0 │
 └────────────┴─────┴───────┴───────────┘
-```
+```sql
+SELECT 'second attempt';
 
-同一のブロックが2つ、想定どおりに挿入されました。
+INSERT INTO dst SELECT
+    0 AS key,
+    'A' AS value
+FROM numbers(2)
+SETTINGS insert_deduplication_token='some_user_token';
 
+SELECT
+    'from dst',
+    *,
+    _part
+FROM dst
+ORDER BY all;
+
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
+│ from dst   │   0 │ A     │ all_2_2_0 │
+│ from dst   │   0 │ A     │ all_3_3_0 │
+└────────────┴─────┴───────┴───────────┘
 ```sql
 SELECT '2回目の試行';
 
@@ -275,10 +316,6 @@ ORDER BY all;
 │ from dst   │   0 │ A     │ all_2_2_0 │
 │ from dst   │   0 │ A     │ all_3_3_0 │
 └────────────┴─────┴───────┴───────────┘
-```
-
-再試行された挿入は期待どおりに重複排除されます。
-
 ```sql
 SELECT 'third attempt';
 
@@ -299,12 +336,26 @@ ORDER BY all;
 │ from dst   │   0 │ A     │ all_2_2_0 │
 │ from dst   │   0 │ A     │ all_3_3_0 │
 └────────────┴─────┴───────┴───────────┘
-```
+```sql
+SELECT 'third attempt';
 
-その挿入は、挿入されたデータが異なっていても同様に重複排除されます。`insert_deduplication_token` の方が優先される点に注意してください。`insert_deduplication_token` が指定されている場合、ClickHouse はデータのハッシュ値を使用しません。
+INSERT INTO dst SELECT
+    1 AS key,
+    'b' AS value
+FROM numbers(2)
+SETTINGS insert_deduplication_token='some_user_token';
 
-### 異なる挿入操作によっても、マテリアライズドビューの基になるテーブルでの変換後のデータが同一になる場合 {#different-insert-operations-generate-the-same-data-after-transformation-in-the-underlying-table-of-the-materialized-view}
+SELECT
+    'from dst',
+    *,
+    _part
+FROM dst
+ORDER BY all;
 
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
+│ from dst   │   0 │ A     │ all_2_2_0 │
+│ from dst   │   0 │ A     │ all_3_3_0 │
+└────────────┴─────┴───────┴───────────┘
 ```sql
 CREATE TABLE dst
 (
@@ -327,70 +378,84 @@ AS SELECT
     0 AS key,
     value AS value
 FROM dst;
-```
 
-SET deduplicate&#95;blocks&#95;in&#95;dependent&#95;materialized&#95;views=1;
+SET deduplicate_blocks_in_dependent_materialized_views=1;
 
-select &#39;first attempt&#39;;
+select 'first attempt';
 
-INSERT INTO dst VALUES (1, &#39;A&#39;);
+INSERT INTO dst VALUES (1, 'A');
 
 SELECT
-&#39;from dst&#39;,
-*,
-&#95;part
+    'from dst',
+    *,
+    _part
 FROM dst
 ORDER by all;
 
-┌─&#39;from dst&#39;─┬─key─┬─value─┬─&#95;part─────┐
-│ from dst   │   1 │ A     │ all&#95;0&#95;0&#95;0 │
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
+│ from dst   │   1 │ A     │ all_0_0_0 │
 └────────────┴─────┴───────┴───────────┘
 
 SELECT
-&#39;from mv&#95;dst&#39;,
-*,
-&#95;part
-FROM mv&#95;dst
+    'from mv_dst',
+    *,
+    _part
+FROM mv_dst
 ORDER by all;
 
-┌─&#39;from mv&#95;dst&#39;─┬─key─┬─value─┬─&#95;part─────┐
-│ from mv&#95;dst   │   0 │ A     │ all&#95;0&#95;0&#95;0 │
+┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
+│ from mv_dst   │   0 │ A     │ all_0_0_0 │
 └───────────────┴─────┴───────┴───────────┘
 
-select &#39;second attempt&#39;;
+select 'second attempt';
 
-INSERT INTO dst VALUES (2, &#39;A&#39;);
+INSERT INTO dst VALUES (2, 'A');
 
 SELECT
-&#39;from dst&#39;,
-*,
-&#95;part
+    'from dst',
+    *,
+    _part
 FROM dst
 ORDER by all;
 
-┌─&#39;from dst&#39;─┬─key─┬─value─┬─&#95;part─────┐
-│ from dst   │   1 │ A     │ all&#95;0&#95;0&#95;0 │
-│ from dst   │   2 │ A     │ all&#95;1&#95;1&#95;0 │
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
+│ from dst   │   1 │ A     │ all_0_0_0 │
+│ from dst   │   2 │ A     │ all_1_1_0 │
 └────────────┴─────┴───────┴───────────┘
 
 SELECT
-&#39;from mv&#95;dst&#39;,
-*,
-&#95;part
-FROM mv&#95;dst
+    'from mv_dst',
+    *,
+    _part
+FROM mv_dst
 ORDER by all;
 
-┌─&#39;from mv&#95;dst&#39;─┬─key─┬─value─┬─&#95;part─────┐
-│ from mv&#95;dst   │   0 │ A     │ all&#95;0&#95;0&#95;0 │
-│ from mv&#95;dst   │   0 │ A     │ all&#95;1&#95;1&#95;0 │
+┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
+│ from mv_dst   │   0 │ A     │ all_0_0_0 │
+│ from mv_dst   │   0 │ A     │ all_1_1_0 │
 └───────────────┴─────┴───────┴───────────┘
+```sql
+CREATE TABLE dst
+(
+    `key` Int64,
+    `value` String
+)
+ENGINE = MergeTree
+ORDER BY tuple()
+SETTINGS non_replicated_deduplication_window=1000;
 
-````
-
-毎回異なるデータを挿入しています。しかし、`mv_dst`テーブルには同じデータが挿入されます。ソースデータが異なるため、データの重複排除は行われません。
-
-### 異なるマテリアライズドビューが同等のデータを1つの基盤テーブルに挿入する場合 {#different-materialized-view-inserts-into-one-underlying-table-with-equivalent-data}
-
+CREATE MATERIALIZED VIEW mv_dst
+(
+    `key` Int64,
+    `value` String
+)
+ENGINE = MergeTree
+ORDER BY tuple()
+SETTINGS non_replicated_deduplication_window=1000
+AS SELECT
+    0 AS key,
+    value AS value
+FROM dst;
 ```sql
 CREATE TABLE dst
 (
@@ -426,32 +491,65 @@ FROM dst;
 
 SET deduplicate_blocks_in_dependent_materialized_views=1;
 
-select '1回目の試行';
+select 'first attempt';
 
 INSERT INTO dst VALUES (1, 'A');
 
 SELECT
-    'dstテーブルから',
+    'from dst',
     *,
     _part
 FROM dst
 ORDER by all;
 
-┌─'dstテーブルから'─┬─key─┬─value─┬─_part─────┐
-│ dstテーブルから   │   1 │ A     │ all_0_0_0 │
-└──────────────────┴─────┴───────┴───────────┘
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
+│ from dst   │   1 │ A     │ all_0_0_0 │
+└────────────┴─────┴───────┴───────────┘
 
 SELECT
-    'mv_dstテーブルから',
+    'from mv_dst',
     *,
     _part
 FROM mv_dst
 ORDER by all;
 
-┌─'mv_dstテーブルから'─┬─key─┬─value─┬─_part─────┐
-│ mv_dstテーブルから   │   0 │ A     │ all_0_0_0 │
-│ mv_dstテーブルから   │   0 │ A     │ all_1_1_0 │
-└─────────────────────┴─────┴───────┴───────────┘
+┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
+│ from mv_dst   │   0 │ A     │ all_0_0_0 │
+│ from mv_dst   │   0 │ A     │ all_1_1_0 │
+└───────────────┴─────┴───────┴───────────┘
+````
+
+毎回異なるデータを挿入しています。しかし、`mv_dst`テーブルには同じデータが挿入されます。ソースデータが異なるため、データの重複排除は行われません。
+
+### 異なるマテリアライズドビューが同等のデータを1つの基盤テーブルに挿入する場合 {#different-materialized-view-inserts-into-one-underlying-table-with-equivalent-data}
+
+```sql
+SELECT 'second attempt';
+
+INSERT INTO dst VALUES (1, 'A');
+
+SELECT
+    'from dst',
+    *,
+    _part
+FROM dst
+ORDER BY all;
+
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
+│ from dst   │   1 │ A     │ all_0_0_0 │
+└────────────┴─────┴───────┴───────────┘
+
+SELECT
+    'from mv_dst',
+    *,
+    _part
+FROM mv_dst
+ORDER by all;
+
+┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
+│ from mv_dst   │   0 │ A     │ all_0_0_0 │
+│ from mv_dst   │   0 │ A     │ all_1_1_0 │
+└───────────────┴─────┴───────┴───────────┘
 ````
 
 テーブル `mv_dst` に、同一のブロックが 2 つ挿入されました（想定どおりです）。

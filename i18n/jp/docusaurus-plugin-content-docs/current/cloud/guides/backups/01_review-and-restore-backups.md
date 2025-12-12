@@ -91,30 +91,30 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 ソーステーブル（この例では `db.table`）を読み取ることができる読み取り専用ユーザーを追加します。
 
 ```sql
-CREATE USER exporter
-IDENTIFIED WITH SHA256_PASSWORD BY 'ここにパスワードを入力'
-SETTINGS readonly = 1;
-```
+  CREATE USER exporter
+  IDENTIFIED WITH SHA256_PASSWORD BY 'password-here'
+  SETTINGS readonly = 1;
+  ```
 
 ```sql
-GRANT SELECT ON db.table TO exporter;
-```
+  GRANT SELECT ON db.table TO exporter;
+  ```
 
 テーブル定義をコピーしてください。
 
 ```sql
-SELECT create_table_query
-FROM system.tables
-WHERE database = 'db' AND table = 'table'
-```
+  SELECT create_table_query
+  FROM system.tables
+  WHERE database = 'db' AND table = 'table'
+  ```
 
 **宛先側の ClickHouse Cloud システム（破損したテーブルがあった方）で:**
 
 宛先のデータベースを作成します。
 
 ```sql
-CREATE DATABASE db
-```
+  CREATE DATABASE db
+  ```
 
 ソースの `CREATE TABLE` 文を使用して、復元先にテーブルを作成します。
 
@@ -123,18 +123,18 @@ CREATE DATABASE db
 :::
 
 ```sql
-CREATE TABLE db.table ...
-ENGINE = ReplicatedMergeTree
-ORDER BY ...
-```
+  CREATE TABLE db.table ...
+  ENGINE = ReplicatedMergeTree
+  ORDER BY ...
+  ```
 
 `remoteSecure` 関数を使用して、新しく復元した ClickHouse Cloud サービスから元のサービスにデータを取り込みます。
 
 ```sql
-INSERT INTO db.table
-SELECT *
-FROM remoteSecure('source-hostname', db, table, 'exporter', 'password-here')
-```
+  INSERT INTO db.table
+  SELECT *
+  FROM remoteSecure('source-hostname', db, table, 'exporter', 'password-here')
+  ```
 
 元のサービスへのデータ挿入が正常に完了したら、そのサービス上でデータを必ず検証してください。データの検証が完了したら、新しいサービスは削除してください。
 
@@ -150,7 +150,7 @@ FROM remoteSecure('source-hostname', db, table, 'exporter', 'password-here')
 
 ```sql
 DROP TABLE IF EXISTS table_to_drop
-SYNC SETTINGS max_table_size_to_drop=2000000000000 -- 制限を2TBに増やします
+SYNC SETTINGS max_table_size_to_drop=2000000000000 -- increases the limit to 2TB
 ```
 
 :::

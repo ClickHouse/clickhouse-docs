@@ -43,10 +43,10 @@ ENGINE = TinyLog;
 ```
 
 ```sql
--- Разбор DateTime
--- - из целого числа, интерпретируемого как количество микросекунд (из-за точности 3) с 1970-01-01,
--- - из десятичного числа, интерпретируемого как количество секунд до десятичной точки, с учётом точности после десятичной точки,
--- - из строки.
+-- Parse DateTime
+-- - from integer interpreted as number of microseconds (because of precision 3) since 1970-01-01,
+-- - from decimal interpreted as number of seconds before the decimal part, and based on the precision after the decimal point,
+-- - from string.
 INSERT INTO dt64 VALUES (1546300800123, 1), (1546300800.123, 2), ('2019-01-01 00:00:00', 3);
 
 SELECT * FROM dt64;

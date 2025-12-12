@@ -238,8 +238,8 @@ CREATE USER my_alter_admin IDENTIFIED BY 'password';
 例えば、次のようになります。
 
 ```sql
-GRANT ALTER ON my_db.* WITH GRANT OPTION
-```
+  GRANT ALTER ON my_db.* WITH GRANT OPTION
+  ```
 
 `GRANT` または `REVOKE` で権限を付与・取り消しするには、そのユーザー自身が事前にその権限を保持している必要があります。
 :::
@@ -249,7 +249,7 @@ GRANT ALTER ON my_db.* WITH GRANT OPTION
 `ALTER` の階層:
 
 ```response
-├── ALTER (テーブルおよびビューのみ)/
+├── ALTER (only for table and view)/
 │   ├── ALTER TABLE/
 │   │   ├── ALTER UPDATE
 │   │   ├── ALTER DELETE
@@ -306,9 +306,9 @@ SHOW GRANTS FOR  my_user;
 ```response
 SHOW GRANTS FOR my_user
 
-クエリID: 706befbc-525e-4ec1-a1a2-ba2508cc09e3
+Query id: 706befbc-525e-4ec1-a1a2-ba2508cc09e3
 
-┌─my_userへの権限──────────────────────────────────────────────┐
+┌─GRANTS FOR my_user───────────────────────────────────────────┐
 │ GRANT ALTER TABLE, ALTER VIEW ON my_db.my_table TO my_user   │
 └──────────────────────────────────────────────────────────────┘
 ```
@@ -482,6 +482,12 @@ DESCRIBE my_db.my_table;
 DESCRIBE TABLE my_db.my_table
 
 Query id: ab9cb2d0-5b1a-42e1-bc9c-c7ff351cb272
+
+┌─name────┬─type───┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
+│ id      │ UInt64 │              │                    │         │                  │                │
+│ column1 │ String │              │                    │         │                  │                │
+│ column2 │ String │              │                    │         │                  │                │
+└─────────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
 ┌─name────┬─type───┬─default&#95;type─┬─default&#95;expression─┬─comment─┬─codec&#95;expression─┬─ttl&#95;expression─┐
@@ -490,13 +496,20 @@ Query id: ab9cb2d0-5b1a-42e1-bc9c-c7ff351cb272
 │ column2 │ String │              │                    │         │                  │                │
 └─────────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 
-````
-
-4. カラムの削除をテストする
+````sql
+ALTER TABLE my_db.my_table DROP COLUMN column2;
 ```sql
 ALTER TABLE my_db.my_table DROP COLUMN column2;
-````
+````response
+ALTER TABLE my_db.my_table
+    DROP COLUMN column2
 
+Query id: 50ad5f6b-f64b-4c96-8f5f-ace87cea6c47
+
+0 rows in set. Elapsed: 0.004 sec.
+
+Received exception from server (version 22.5.1):
+Code: 497. DB::Exception: Received from chnode1.marsnet.local:9440. DB::Exception: my_user: Not enough privileges. To execute this query it's necessary to have grant ALTER DROP COLUMN(column2) ON my_db.my_table. (ACCESS_DENIED)
 ```response
 ALTER TABLE my_db.my_table
     DROP COLUMN column2
@@ -507,40 +520,43 @@ Query id: 50ad5f6b-f64b-4c96-8f5f-ace87cea6c47
 
 サーバーから例外を受信しました (version 22.5.1):
 Code: 497. DB::Exception: Received from chnode1.marsnet.local:9440. DB::Exception: my_user: 権限が不足しています。このクエリを実行するには、my_db.my_table に対する ALTER DROP COLUMN(column2) 権限の付与が必要です。(ACCESS_DENIED)
-```
-
-5. 権限を付与し、ALTER ADMIN ロールをテストする
-
 ```sql
 GRANT SELECT, ALTER COLUMN ON my_db.my_table TO my_alter_admin WITH GRANT OPTION;
-```
-
-6. alter admin ユーザーとしてログインします
-
+```sql
+GRANT SELECT, ALTER COLUMN ON my_db.my_table TO my_alter_admin WITH GRANT OPTION;
 ```bash
 clickhouse-client --user my_alter_admin --password password --port 9000 --host <my_clickhouse_host>
-```
-
-7. 下位権限を付与する
-
+```bash
+clickhouse-client --user my_alter_admin --password password --port 9000 --host <my_clickhouse_host>
 ```sql
 GRANT ALTER ADD COLUMN ON my_db.my_table TO my_user;
-```
-
+```sql
+GRANT ALTER ADD COLUMN ON my_db.my_table TO my_user;
 ```response
 GRANT ALTER ADD COLUMN ON my_db.my_table TO my_user
 
 Query id: 1c7622fa-9df1-4c54-9fc3-f984c716aeba
 
 Ok.
-```
+```response
+GRANT ALTER ADD COLUMN ON my_db.my_table TO my_user
 
-8. alter 管理ユーザーが保持していない権限を付与しようとした場合、それが admin ユーザーに付与されている権限のサブ権限ではないため付与できないことをテストします。
+Query id: 1c7622fa-9df1-4c54-9fc3-f984c716aeba
 
+Ok.
 ```sql
 GRANT ALTER UPDATE ON my_db.my_table TO my_user;
-```
+```sql
+GRANT ALTER UPDATE ON my_db.my_table TO my_user;
+```response
+GRANT ALTER UPDATE ON my_db.my_table TO my_user
 
+Query id: 191690dc-55a6-4625-8fee-abc3d14a5545
+
+0 rows in set. Elapsed: 0.004 sec.
+
+Received exception from server (version 22.5.1):
+Code: 497. DB::Exception: Received from chnode1.marsnet.local:9440. DB::Exception: my_alter_admin: Not enough privileges. To execute this query it's necessary to have grant ALTER UPDATE ON my_db.my_table WITH GRANT OPTION. (ACCESS_DENIED)
 ```response
 GRANT ALTER UPDATE ON my_db.my_table TO my_user
 

@@ -48,12 +48,12 @@ Row 1:
 name:        min_insert_block_size_rows
 value:       1048449
 changed:     0
-description: `INSERT`クエリでテーブルに挿入可能なブロック内の最小行数を設定します。小さいブロックは大きなブロックに統合されます。
+description: Sets the minimum number of rows in the block that can be inserted into a table by an `INSERT` query. Smaller-sized blocks are squashed into bigger ones.
 
-設定可能な値:
+Possible values:
 
-- 正の整数。
-- 0 — 統合無効。
+- Positive integer.
+- 0 — Squashing disabled.
 min:         ᴺᵁᴸᴸ
 max:         ᴺᵁᴸᴸ
 readonly:    0
@@ -68,12 +68,12 @@ Row 2:
 name:        min_insert_block_size_bytes
 value:       268402944
 changed:     0
-description: `INSERT`クエリでテーブルに挿入可能なブロック内の最小バイト数を設定します。小さいブロックは大きなブロックに統合されます。
+description: Sets the minimum number of bytes in the block which can be inserted into a table by an `INSERT` query. Smaller-sized blocks are squashed into bigger ones.
 
-設定可能な値:
+Possible values:
 
-- 正の整数。
-- 0 — 統合無効。
+- Positive integer.
+- 0 — Squashing disabled.
 min:         ᴺᵁᴸᴸ
 max:         ᴺᵁᴸᴸ
 readonly:    0
@@ -82,7 +82,55 @@ default:     268402944
 alias_for:   
 is_obsolete: 0
 tier:        Production
-```
+
+Row 3:
+──────
+name:        min_insert_block_size_rows_for_materialized_views
+value:       0
+changed:     0
+description: Sets the minimum number of rows in the block which can be inserted into a table by an `INSERT` query. Smaller-sized blocks are squashed into bigger ones. This setting is applied only for blocks inserted into [materialized view](../../sql-reference/statements/create/view.md). By adjusting this setting, you control blocks squashing while pushing to materialized view and avoid excessive memory usage.
+
+Possible values:
+
+- Any positive integer.
+- 0 — Squashing disabled.
+
+**See Also**
+
+- [min_insert_block_size_rows](/operations/settings/settings#min_insert_block_size_rows)
+min:         ᴺᵁᴸᴸ
+max:         ᴺᵁᴸᴸ
+readonly:    0
+type:        UInt64
+default:     0
+alias_for:   
+is_obsolete: 0
+tier:        Production
+
+Row 4:
+──────
+name:        min_insert_block_size_bytes_for_materialized_views
+value:       0
+changed:     0
+description: Sets the minimum number of bytes in the block which can be inserted into a table by an `INSERT` query. Smaller-sized blocks are squashed into bigger ones. This setting is applied only for blocks inserted into [materialized view](../../sql-reference/statements/create/view.md). By adjusting this setting, you control blocks squashing while pushing to materialized view and avoid excessive memory usage.
+
+Possible values:
+
+- Any positive integer.
+- 0 — Squashing disabled.
+
+**See also**
+
+- [min_insert_block_size_bytes](/operations/settings/settings#min_insert_block_size_bytes)
+min:         ᴺᵁᴸᴸ
+max:         ᴺᵁᴸᴸ
+readonly:    0
+type:        UInt64
+default:     0
+alias_for:   
+is_obsolete: 0
+tier:        Production
+ ```
 
 Row 3:
 ──────
@@ -132,15 +180,8 @@ Possible values:
   is&#95;obsolete: 0
   tier:        Production
 
-````
-
-`WHERE changed` は、例えば以下を確認する際に有用です：
-
-- 設定ファイルの設定が正しく読み込まれ、使用されているか
-- 現在のセッションで変更された設定
-
-<!-- -->
-
+````sql
+SELECT * FROM system.settings WHERE changed AND name='load_balancing'
 ```sql
 SELECT * FROM system.settings WHERE changed AND name='load_balancing'
 ````

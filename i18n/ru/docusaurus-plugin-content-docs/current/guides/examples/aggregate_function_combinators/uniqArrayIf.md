@@ -45,14 +45,14 @@ INSERT INTO user_shopping_sessions VALUES
     ('2024-01-02', 'new_customer', ['tablet_a', 'keyboard_c', 'tablet_a'], 15),
     ('2024-01-02', 'premium', ['smartphone_x', 'smartwatch_b', 'headphones_y'], 22);
 
--- Подсчёт уникальных просмотренных продуктов по типу сегмента и уровню вовлечённости
+-- Count unique products viewed by segment type and engagement level
 SELECT 
     session_date,
-    -- Подсчёт уникальных продуктов, просмотренных новыми клиентами в длительных сессиях
+    -- Count unique products viewed in long sessions by new customers
     uniqArrayIf(viewed_products, user_segment = 'new_customer' AND session_duration_minutes > 10) AS new_customer_engaged_products,
-    -- Подсчёт уникальных продуктов, просмотренных возвращающимися клиентами
+    -- Count unique products viewed by returning customers
     uniqArrayIf(viewed_products, user_segment = 'returning') AS returning_customer_products,
-    -- Подсчёт уникальных продуктов, просмотренных во всех сессиях
+    -- Count unique products viewed across all sessions
     uniqArray(viewed_products) AS total_unique_products
 FROM user_shopping_sessions
 GROUP BY session_date
@@ -61,14 +61,14 @@ FORMAT Vertical;
 ```
 
 ```response title="Response"
-Строка 1:
+Row 1:
 ──────
 session_date:                2024-01-01
 new_customer⋯ed_products:    2
 returning_customer_products: 3
 total_unique_products:       6
 
-Строка 2:
+Row 2:
 ──────
 session_date:                2024-01-02
 new_customer⋯ed_products:    2

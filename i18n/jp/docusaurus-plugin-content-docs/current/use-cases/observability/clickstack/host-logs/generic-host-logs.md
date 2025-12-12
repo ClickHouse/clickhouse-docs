@@ -53,15 +53,15 @@ import TabItem from '@theme/TabItem';
   まず、システムがsyslogファイルを書き込んでいることを確認します:
 
   ```bash
-  # syslogファイルの存在を確認（Linux）
-  ls -la /var/log/syslog /var/log/messages
+# Check if syslog files exist (Linux)
+ls -la /var/log/syslog /var/log/messages
 
-  # macOSの場合
-  ls -la /var/log/system.log
+# Or on macOS
+ls -la /var/log/system.log
 
-  # 最近のエントリを表示
-  tail -20 /var/log/syslog
-  ```
+# View recent entries
+tail -20 /var/log/syslog
+```
 
   一般的なsyslogの配置場所:
 
@@ -78,121 +78,121 @@ import TabItem from '@theme/TabItem';
   <Tabs groupId="os-type">
     <TabItem value="modern-linux" label="最新 Linux（Ubuntu 24.04 以降）" default>
       ```yaml
-      receivers:
-        filelog/syslog:
-          include:
-            - /var/log/syslog
-            - /var/log/**/*.log
-          start_at: end
-          operators:
-            - type: regex_parser
-              regex: '^(?P<timestamp>\S+) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
-              parse_from: body
-              parse_to: attributes
-            
-            - type: time_parser
-              parse_from: attributes.timestamp
-              layout_type: gotime
-              layout: '2006-01-02T15:04:05.999999-07:00'
-            
-            - type: add
-              field: attributes.source
-              value: "host-logs"
-            
-            - type: add
-              field: resource["service.name"]
-              value: "host-production"
+receivers:
+  filelog/syslog:
+    include:
+      - /var/log/syslog
+      - /var/log/**/*.log
+    start_at: end
+    operators:
+      - type: regex_parser
+        regex: '^(?P<timestamp>\S+) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
+        parse_from: body
+        parse_to: attributes
+      
+      - type: time_parser
+        parse_from: attributes.timestamp
+        layout_type: gotime
+        layout: '2006-01-02T15:04:05.999999-07:00'
+      
+      - type: add
+        field: attributes.source
+        value: "host-logs"
+      
+      - type: add
+        field: resource["service.name"]
+        value: "host-production"
 
-      service:
-        pipelines:
-          logs/host:
-            receivers: [filelog/syslog]
-            processors:
-              - memory_limiter
-              - transform
-              - batch
-            exporters:
-              - clickhouse
-      ```
+service:
+  pipelines:
+    logs/host:
+      receivers: [filelog/syslog]
+      processors:
+        - memory_limiter
+        - transform
+        - batch
+      exporters:
+        - clickhouse
+```
     </TabItem>
 
     <TabItem value="legacy-linux" label="レガシー Linux（Ubuntu 20.04、RHEL、CentOS）">
       ```yaml
-      receivers:
-        filelog/syslog:
-          include:
-            - /var/log/syslog
-            - /var/log/messages
-            - /var/log/**/*.log
-          start_at: end
-          operators:
-            - type: regex_parser
-              regex: '^(?P<timestamp>\w+ \d+ \d{2}:\d{2}:\d{2}) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
-              parse_from: body
-              parse_to: attributes
-            
-            - type: time_parser
-              parse_from: attributes.timestamp
-              layout: '%b %d %H:%M:%S'
-            
-            - type: add
-              field: attributes.source
-              value: "host-logs"
-            
-            - type: add
-              field: resource["service.name"]
-              value: "host-production"
+receivers:
+  filelog/syslog:
+    include:
+      - /var/log/syslog
+      - /var/log/messages
+      - /var/log/**/*.log
+    start_at: end
+    operators:
+      - type: regex_parser
+        regex: '^(?P<timestamp>\w+ \d+ \d{2}:\d{2}:\d{2}) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
+        parse_from: body
+        parse_to: attributes
+      
+      - type: time_parser
+        parse_from: attributes.timestamp
+        layout: '%b %d %H:%M:%S'
+      
+      - type: add
+        field: attributes.source
+        value: "host-logs"
+      
+      - type: add
+        field: resource["service.name"]
+        value: "host-production"
 
-      service:
-        pipelines:
-          logs/host:
-            receivers: [filelog/syslog]
-            processors:
-              - memory_limiter
-              - transform
-              - batch
-            exporters:
-              - clickhouse
-      ```
+service:
+  pipelines:
+    logs/host:
+      receivers: [filelog/syslog]
+      processors:
+        - memory_limiter
+        - transform
+        - batch
+      exporters:
+        - clickhouse
+```
     </TabItem>
 
     <TabItem value="macos" label="macOS">
       ```yaml
-      receivers:
-        filelog/syslog:
-          include:
-            - /var/log/system.log
-            - /host/private/var/log/*.log
-          start_at: end
-          operators:
-            - type: regex_parser
-              regex: '^(?P<timestamp>\w+ \d+ \d{2}:\d{2}:\d{2}) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
-              parse_from: body
-              parse_to: attributes
-            
-            - type: time_parser
-              parse_from: attributes.timestamp
-              layout: '%b %d %H:%M:%S'
-            
-            - type: add
-              field: attributes.source
-              value: "host-logs"
-            
-            - type: add
-              field: resource["service.name"]
-              value: "host-production"
+receivers:
+  filelog/syslog:
+    include:
+      - /var/log/system.log
+      - /host/private/var/log/*.log
+    start_at: end
+    operators:
+      - type: regex_parser
+        regex: '^(?P<timestamp>\w+ \d+ \d{2}:\d{2}:\d{2}) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
+        parse_from: body
+        parse_to: attributes
+      
+      - type: time_parser
+        parse_from: attributes.timestamp
+        layout: '%b %d %H:%M:%S'
+      
+      - type: add
+        field: attributes.source
+        value: "host-logs"
+      
+      - type: add
+        field: resource["service.name"]
+        value: "host-production"
 
-      service:
-        pipelines:
-          logs/host:
-            receivers: [filelog/syslog]
-            processors:
-              - memory_limiter
-              - transform
-              - batch
-            exporters:
-              - clickhouse
-      ```
+service:
+  pipelines:
+    logs/host:
+      receivers: [filelog/syslog]
+      processors:
+        - memory_limiter
+        - transform
+        - batch
+      exporters:
+        - clickhouse
+```
     </TabItem>
   </Tabs>
 
@@ -227,30 +227,30 @@ import TabItem from '@theme/TabItem';
   ClickStackのデプロイメント設定を更新します：
 
   ```yaml
-  services:
-    clickstack:
-      # ... 既存の設定 ...
-      environment:
-        - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
-        # ... その他の環境変数 ...
-      volumes:
-        - ./host-logs-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
-        - /var/log:/var/log:ro
-        # ... その他のボリューム ...
-  ```
+services:
+  clickstack:
+    # ... existing configuration ...
+    environment:
+      - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
+      # ... other environment variables ...
+    volumes:
+      - ./host-logs-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
+      - /var/log:/var/log:ro
+      # ... other volumes ...
+```
 
   ##### オプション2: Docker Run（オールインワンイメージ）
 
   `docker run`でオールインワンイメージを使用している場合:
 
   ```bash
-  docker run --name clickstack \
-    -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-    -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
-    -v "$(pwd)/host-logs-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-    -v /var/log:/var/log:ro \
-    clickhouse/clickstack-all-in-one:latest
-  ```
+docker run --name clickstack \
+  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+  -v "$(pwd)/host-logs-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+  -v /var/log:/var/log:ro \
+  clickhouse/clickstack-all-in-one:latest
+```
 
   :::note
   ClickStackコレクターがsyslogファイルを読み取るための適切な権限を持っていることを確認してください。本番環境では、読み取り専用マウント(`:ro`)を使用し、最小権限の原則に従ってください。
@@ -415,7 +415,7 @@ ClickStack を使ってホストログのモニタリングを始められるよ
 環境変数が設定されていることを確認してください：
 
 ```bash
-docker exec <コンテナ名> printenv CUSTOM_OTELCOL_CONFIG_FILE
+docker exec <container-name> printenv CUSTOM_OTELCOL_CONFIG_FILE
 ```
 
 カスタム設定ファイルがマウントされており、読み取り可能であることを確認します：
@@ -430,10 +430,10 @@ docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml | head 
 **syslog ファイルが存在し、書き込みが行われていることを確認する：**
 
 ```bash
-# syslogの存在を確認
+# Check if syslog exists
 ls -la /var/log/syslog /var/log/messages
 
-# ログが書き込まれているか確認
+# Verify logs are being written
 tail -f /var/log/syslog
 ```
 
@@ -469,16 +469,16 @@ docker exec <container> cat /tmp/host-demo/journal.log | wc -l
 モダンな Linux（Ubuntu 24.04 以降）の場合:
 
 ```bash
-# ISO8601形式で表示されます: 2025-11-17T20:55:44.826796+00:00
+# Should show ISO8601 format: 2025-11-17T20:55:44.826796+00:00
 tail -5 /var/log/syslog
 ```
 
 レガシーLinux または macOS の場合:
 
 ```bash
-# 従来の形式で表示されます: Nov 17 14:16:16
+# Should show traditional format: Nov 17 14:16:16
 tail -5 /var/log/syslog
-# または
+# or
 tail -5 /var/log/system.log
 ```
 

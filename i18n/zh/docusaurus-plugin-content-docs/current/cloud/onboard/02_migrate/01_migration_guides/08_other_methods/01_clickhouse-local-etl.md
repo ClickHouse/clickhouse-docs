@@ -96,13 +96,13 @@ ClickHouse 为 [MySQL](/engines/table-engines/integrations/mysql/)、[PostgreSQL
 
 ```sql
   CREATE DATABASE db
-```
+  ```
 
 #### 创建一个与 MySQL 表具有相同 schema 的目标表： {#create-a-destination-table-that-has-a-schema-equivalent-to-the-mysql-table}
 
 ```sql
   CREATE TABLE db.table ...
-```
+  ```
 
 :::note
 ClickHouse Cloud 目标表与源 MySQL 表的表结构必须保持一致（列名及顺序必须相同，且列的数据类型必须兼容）。
@@ -117,7 +117,7 @@ ClickHouse Cloud 目标表与源 MySQL 表的表结构必须保持一致（列�
 INSERT INTO FUNCTION
 remoteSecure('HOSTNAME.clickhouse.cloud:9440', 'db.table', 'default', 'PASS')
 SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password');"
-```
+  ```
 
 :::note
 在 `clickhouse-local` 主机本地不会存储任何数据。相反，数据会从源 MySQL 表中读取，然后立即写入 ClickHouse Cloud 服务上的目标表。
@@ -136,4 +136,4 @@ SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password');"
 
 ```sql
   CREATE DATABASE db
-```
+  ```

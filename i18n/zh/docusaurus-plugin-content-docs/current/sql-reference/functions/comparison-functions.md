@@ -72,31 +72,32 @@ SELECT 1 = 1, 1 = 2;
 └──────────────┴──────────────┘
 ```
 
+
+
 ## greater {#greater}
 
-自 v1.1 起引入
+Introduced in: v1.1
 
-用于比较两个值是否满足大于关系。
+Compares two values for greater-than relation.
 
-**语法**
+**Syntax**
 
 ```sql
 greater(a, b)
     -- a > b
 ```
 
-**参数**
+**Arguments**
 
-* `a` — 第一个值。<sup>[*](#comparison-rules)</sup>
-* `b` — 第二个值。<sup>[*](#comparison-rules)</sup>
+- `a` — First value.<sup>[*](#comparison-rules)</sup> - `b` — Second value.<sup>[*](#comparison-rules)</sup> 
 
-**返回值**
+**Returned value**
 
-如果 `a` 大于 `b`，则返回 `1`，否则返回 `0`，类型为 [`UInt8`](/sql-reference/data-types/int-uint)
+Returns `1` if `a` is greater than `b`, otherwise `0` [`UInt8`](/sql-reference/data-types/int-uint)
 
-**示例**
+**Examples**
 
-**用法示例**
+**Usage example**
 
 ```sql title=Query
 SELECT 2 > 1, 1 > 2;
@@ -108,30 +109,32 @@ SELECT 2 > 1, 1 > 2;
 └───────────────┴───────────────┘
 ```
 
+
+
 ## greaterOrEquals {#greaterOrEquals}
 
-引入版本：v1.1
+Introduced in: v1.1
 
-用于比较两个值是否具有大于或等于的关系。
+Compares two values for greater-than-or-equal-to relation.
 
-**语法**
+**Syntax**
 
 ```sql
 greaterOrEquals(a, b)
     -- a >= b
 ```
 
-**参数**
+**Arguments**
 
-* `a` — 第一个值。<sup>[*](#comparison-rules)</sup> - `b` — 第二个值。<sup>[*](#comparison-rules)</sup>
+- `a` — First value.<sup>[*](#comparison-rules)</sup> - `b` — Second value.<sup>[*](#comparison-rules)</sup> 
 
-**返回值**
+**Returned value**
 
-如果 `a` 大于或等于 `b`，则返回 `1`，否则返回 `0`，返回类型为 [`UInt8`](/sql-reference/data-types/int-uint)
+Returns `1` if `a` is greater than or equal to `b`, otherwise `0` [`UInt8`](/sql-reference/data-types/int-uint)
 
-**示例**
+**Examples**
 
-**使用示例**
+**Usage example**
 
 ```sql title=Query
 SELECT 2 >= 1, 2 >= 2, 1 >= 2;
@@ -143,36 +146,40 @@ SELECT 2 >= 1, 2 >= 2, 1 >= 2;
 └───────────────────────┴───────────────────────┴───────────────────────┘
 ```
 
+
+
 ## isDistinctFrom {#isDistinctFrom}
 
-引入版本：v25.11
+Introduced in: v25.11
 
-对两个值执行 NULL 安全的“不等于”比较。
-如果两个值彼此不同（不相等），则返回 `true`，包括当一个值为 NULL 而另一个不为 NULL 的情况。
-如果两个值相等，或两者均为 NULL，则返回 `false`。
 
-**语法**
+        Performs a null-safe "not equals" comparison between two values.
+        Returns `true` if the values are distinct (not equal), including when one value is NULL and the other is not.
+        Returns `false` if the values are equal, or if both are NULL.
+    
+
+**Syntax**
 
 ```sql
 isDistinctFrom(x, y)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 要比较的第一个值。可以是任意 ClickHouse 数据类型。[`Any`](/sql-reference/data-types)
-* `y` — 要比较的第二个值。可以是任意 ClickHouse 数据类型。[`Any`](/sql-reference/data-types)
+- `x` — First value to compare. Can be any ClickHouse data type. [`Any`](/sql-reference/data-types)
+- `y` — Second value to compare. Can be any ClickHouse data type. [`Any`](/sql-reference/data-types)
 
-**返回值**
 
-如果两个值不相同，则返回 `true`，并将 NULL 当作可比较的值处理：
+**Returned value**
 
-* 如果 x != y，则返回 `true`。
-  * 如果 x 或 y 中恰有一个为 NULL，则返回 `true`。
-  * 如果 x = y，或者 x 和 y 都为 NULL，则返回 `false`。[`Bool`](/sql-reference/data-types/boolean)
+Returns `true` if the two values are different, treating NULLs as comparable:
+  - Returns `true` if x != y.
+  - Returns `true` if exactly one of x or y is NULL.
+  - Returns `false` if x = y, or both x and y are NULL. [`Bool`](/sql-reference/data-types/boolean)
 
-**示例**
+**Examples**
 
-**包含数字和 NULL 的基本用法**
+**Basic usage with numbers and NULLs**
 
 ```sql title=Query
 SELECT
@@ -188,36 +195,40 @@ SELECT
 └──────────┴──────────┴──────────┴──────────┘
 ```
 
+
+
 ## isNotDistinctFrom {#isNotDistinctFrom}
 
-引入于：v25.10
+Introduced in: v25.10
 
-对两个值执行空值安全的“相等”比较。
-如果两个值相等，则返回 `true`，包括两者都为 NULL 的情况。
-如果两个值不同，或者仅有一个为 NULL，则返回 `false`。
 
-**语法**
+        Performs a null-safe "equals" comparison between two values.
+        Returns `true` if the values are equal, including when both are NULL.
+        Returns `false` if the values are different, or if exactly one of them is NULL.
+    
+
+**Syntax**
 
 ```sql
 isNotDistinctFrom(x, y)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 要比较的第一个值。可以是任意 ClickHouse 数据类型。[`Any`](/sql-reference/data-types)
-* `y` — 要比较的第二个值。可以是任意 ClickHouse 数据类型。[`Any`](/sql-reference/data-types)
+- `x` — First value to compare. Can be any ClickHouse data type. [`Any`](/sql-reference/data-types)
+- `y` — Second value to compare. Can be any ClickHouse data type. [`Any`](/sql-reference/data-types)
 
-**返回值**
 
-在将 NULL 视为可比较值的情况下，如果两个值相等，则返回 `true`：
+**Returned value**
 
-* 如果 x = y，则返回 `true`。
-  * 如果 x 和 y 都为 NULL，则返回 `true`。
-  * 如果 x != y，或者 x 和 y 中恰好有一个为 NULL，则返回 `false`。[`Bool`](/sql-reference/data-types/boolean)
+Returns `true` if the two values are equal, treating NULLs as comparable:
+  - Returns `true` if x = y.
+  - Returns `true` if both x and y are NULL.
+  - Returns `false` if x != y, or exactly one of x or y is NULL. [`Bool`](/sql-reference/data-types/boolean)
 
-**示例**
+**Examples**
 
-**针对数字和 NULL 的基本用法**
+**Basic usage with numbers and NULLs**
 
 ```sql title=Query
 SELECT
@@ -233,30 +244,32 @@ SELECT
 └──────────┴──────────┴──────────┴──────────┘
 ```
 
+
+
 ## less {#less}
 
-在 v1.1 中引入
+Introduced in: v1.1
 
-比较两个值是否满足“小于”关系。
+Compares two values for less-than relation.
 
-**语法**
+**Syntax**
 
 ```sql
 less(a, b)
     -- a < b
 ```
 
-**参数**
+**Arguments**
 
-* `a` — 第一个值。<sup>[*](#comparison-rules)</sup> - `b` — 第二个值。<sup>[*](#comparison-rules)</sup>
+- `a` — First value.<sup>[*](#comparison-rules)</sup> - `b` — Second value.<sup>[*](#comparison-rules)</sup> 
 
-**返回值**
+**Returned value**
 
-如果 `a` 小于 `b`，则返回 `1`，否则返回 `0`，类型为 [`UInt8`](/sql-reference/data-types/int-uint)
+Returns `1` if `a` is less than `b`, otherwise `0` [`UInt8`](/sql-reference/data-types/int-uint)
 
-**示例**
+**Examples**
 
-**使用示例**
+**Usage example**
 
 ```sql title=Query
 SELECT 1 < 2, 2 < 1;
@@ -268,30 +281,32 @@ SELECT 1 < 2, 2 < 1;
 └────────────┴────────────┘
 ```
 
+
+
 ## lessOrEquals {#lessOrEquals}
 
-自 v1.1 引入
+Introduced in: v1.1
 
-判断两个值之间是否满足小于等于关系。
+Compares two values for less-than-or-equal-to relation.
 
-**语法**
+**Syntax**
 
 ```sql
 lessOrEquals(a, b)
 -- a <= b
 ```
 
-**参数**
+**Arguments**
 
-* `a` — 第一个值。<sup>[*](#comparison-rules)</sup> - `b` — 第二个值。<sup>[*](#comparison-rules)</sup>
+- `a` — First value.<sup>[*](#comparison-rules)</sup> - `b` — Second value.<sup>[*](#comparison-rules)</sup> 
 
-**返回值**
+**Returned value**
 
-如果 `a` 小于或等于 `b`，则返回 `1`，否则返回 `0`，类型为 [`UInt8`](/sql-reference/data-types/int-uint)
+Returns `1` if `a` is less than or equal to `b`, otherwise `0` [`UInt8`](/sql-reference/data-types/int-uint)
 
-**示例**
+**Examples**
 
-**使用示例**
+**Usage example**
 
 ```sql title=Query
 SELECT 1 <= 2, 2 <= 2, 3 <= 2;
@@ -303,13 +318,15 @@ SELECT 1 <= 2, 2 <= 2, 3 <= 2;
 └────────────────────┴────────────────────┴────────────────────┘
 ```
 
+
+
 ## notEquals {#notEquals}
 
-自 v1.1 起引入
+Introduced in: v1.1
 
-用于比较两个值是否不相等。
+Compares two values for inequality.
 
-**语法**
+**Syntax**
 
 ```sql
 notEquals(a, b)
@@ -317,17 +334,17 @@ notEquals(a, b)
     -- a <> b
 ```
 
-**参数**
+**Arguments**
 
-* `a` — 第一个值。<sup>[*](#comparison-rules)</sup> - `b` — 第二个值。<sup>[*](#comparison-rules)</sup>
+- `a` — First value.<sup>[*](#comparison-rules)</sup> - `b` — Second value.<sup>[*](#comparison-rules)</sup> 
 
-**返回值**
+**Returned value**
 
-如果 `a` 不等于 `b`，返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+Returns `1` if `a` is not equal to `b`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**示例**
+**Examples**
 
-**用法示例**
+**Usage example**
 
 ```sql title=Query
 SELECT 1 != 2, 1 != 1;

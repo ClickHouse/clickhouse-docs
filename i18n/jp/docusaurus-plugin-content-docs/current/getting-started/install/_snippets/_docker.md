@@ -46,7 +46,7 @@ docker run -d --name some-clickhouse-server --ulimit nofile=262144:262144 clickh
 
 ```bash
 docker run -it --rm --network=container:some-clickhouse-server --entrypoint clickhouse-client clickhouse/clickhouse-server
-# または {#or}
+# OR
 docker exec -it some-clickhouse-server clickhouse-client
 ```
 
@@ -55,7 +55,7 @@ ClickHouse クライアントの詳細については、[ClickHouse client](/int
 ### curl で接続する {#connect-to-it-using-curl}
 
 ```bash
-echo "SELECT 'こんにちは、ClickHouse!'" | docker run -i --rm --network=container:some-clickhouse-server buildpack-deps:curl curl 'http://localhost:8123/?query=' -s --data-binary @-
+echo "SELECT 'Hello, ClickHouse!'" | docker run -i --rm --network=container:some-clickhouse-server buildpack-deps:curl curl 'http://localhost:8123/?query=' -s --data-binary @-
 ```
 
 HTTP インターフェイスの詳細については、[ClickHouse HTTP Interface](/interfaces/http) を参照してください。
@@ -142,7 +142,7 @@ docker run -d --name some-clickhouse-server --ulimit nofile=262144:262144 -v /pa
 ### 任意のユーザーとしてサーバーを起動する {#start-server-custom-user}
 
 ```bash
-# $PWD/data/clickhouse が存在し、現在のユーザーが所有者である必要があります {#pwddataclickhouse-should-exist-and-be-owned-by-current-user}
+# $PWD/data/clickhouse should exist and be owned by current user
 docker run --rm --user "${UID}:${GID}" --name some-clickhouse-server --ulimit nofile=262144:262144 -v "$PWD/logs/clickhouse:/var/log/clickhouse-server" -v "$PWD/data/clickhouse:/var/lib/clickhouse" clickhouse/clickhouse-server
 ```
 

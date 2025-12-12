@@ -79,8 +79,8 @@ LIMIT 3
 │ ./src/AggregateFunctions/AggregateFunctionUniqCombined.cpp │ 22649 │
 └────────────────────────────────────────────────────────────┴───────┘
 
-3 строки в наборе. Затрачено: 1.487 сек. Обработано 139.76 млн строк, 1.12 ГБ (93.97 млн строк/с., 752.77 МБ/с.)
-Пиковое использование памяти: 271.92 МиБ.
+3 rows in set. Elapsed: 1.487 sec. Processed 139.76 million rows, 1.12 GB (93.97 million rows/s., 752.77 MB/s.)
+Peak memory usage: 271.92 MiB.
 ```
 
 ## Параметры формата {#format-settings}

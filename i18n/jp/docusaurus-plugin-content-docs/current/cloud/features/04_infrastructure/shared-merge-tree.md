@@ -88,8 +88,8 @@ ORDER BY key;
 
 特定のテーブルについて、`SHOW CREATE TABLE` を実行して `CREATE TABLE` ステートメントを確認することで、どのテーブルエンジンが使用されているかを確認できます。
 
-```sql
-SHOW CREATE TABLE myFirstReplacingMT;
+```
+
 ```
 
 ```sql

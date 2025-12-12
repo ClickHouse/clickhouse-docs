@@ -66,29 +66,34 @@ SELECT toTypeName(assumeNotNull(y)) FROM t_null;
 └──────────────────────────────┘
 ```
 
+
+
 ## coalesce {#coalesce}
 
-Добавлено в: v1.1
+Introduced in: v1.1
 
-Возвращает левый аргумент, не равный `NULL`.
 
-**Синтаксис**
+Returns the leftmost non-`NULL` argument.
+    
+
+**Syntax**
 
 ```sql
 coalesce(x[, y, ...])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `x[, y, ...]` — Произвольное количество параметров простого (несоставного) типа. Все параметры должны иметь взаимно совместимые между собой типы данных. [`Any`](/sql-reference/data-types)
+- `x[, y, ...]` — Any number of parameters of non-compound type. All parameters must be of mutually compatible data types. [`Any`](/sql-reference/data-types)
 
-**Возвращаемое значение**
 
-Возвращает первый аргумент, не равный `NULL`, иначе `NULL`, если все аргументы равны `NULL`. [`Any`](/sql-reference/data-types) или [`NULL`](/sql-reference/syntax#null)
+**Returned value**
 
-**Примеры**
+Returns the first non-`NULL` argument, otherwise `NULL`, if all arguments are `NULL`. [`Any`](/sql-reference/data-types) or [`NULL`](/sql-reference/syntax#null)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 -- Рассмотрим список контактов, в котором может быть указано несколько способов связи с клиентом.
@@ -119,28 +124,30 @@ SELECT name, coalesce(mail, phone, CAST(telegram,'Nullable(String)')) FROM aBook
 └──────────┴───────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## firstNonDefault {#firstNonDefault}
 
-Появилась в версии: v25.9
+Introduced in: v25.9
 
-Возвращает первое значение из набора аргументов, не равное значению по умолчанию
+Returns the first non-default value from a set of arguments
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 ```
 
-**Аргументы**
+**Arguments**
 
-* `arg1` — первый аргумент для проверки - `arg2` — второй аргумент для проверки - `...` — дополнительные аргументы для проверки
+- `arg1` — The first argument to check - `arg2` — The second argument to check - `...` — Additional arguments to check 
 
-**Возвращаемое значение**
+**Returned value**
 
-Тип результата — супертип всех аргументов
+Result type is the supertype of all arguments
 
-**Примеры**
+**Examples**
 
-**целые числа**
+**integers**
 
 ```sql title=Query
 SELECT firstNonDefault(0, 1, 2)
@@ -150,7 +157,7 @@ SELECT firstNonDefault(0, 1, 2)
 1
 ```
 
-**строки**
+**strings**
 
 ```sql title=Query
 SELECT firstNonDefault('', 'hello', 'world')
@@ -160,7 +167,7 @@ SELECT firstNonDefault('', 'hello', 'world')
 'привет'
 ```
 
-**Значения NULL**
+**nulls**
 
 ```sql title=Query
 SELECT firstNonDefault(NULL, 0 :: UInt8, 1 :: UInt8)
@@ -170,7 +177,7 @@ SELECT firstNonDefault(NULL, 0 :: UInt8, 1 :: UInt8)
 1
 ```
 
-**нулевое значение для Nullable**
+**nullable zero**
 
 ```sql title=Query
 SELECT firstNonDefault(NULL, 0 :: Nullable(UInt8), 1 :: Nullable(UInt8))
@@ -180,30 +187,35 @@ SELECT firstNonDefault(NULL, 0 :: Nullable(UInt8), 1 :: Nullable(UInt8))
 0
 ```
 
+
+
 ## ifNull {#ifNull}
 
-Появилось в версии v1.1
+Introduced in: v1.1
 
-Возвращает альтернативное значение, если первый аргумент равен `NULL`.
 
-**Синтаксис**
+Returns an alternative value if the first argument is `NULL`.
+    
+
+**Syntax**
 
 ```sql
 ifNull(x, alt)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `x` — Значение, проверяемое на `NULL`. [`Any`](/sql-reference/data-types)
-* `alt` — Значение, которое функция возвращает, если `x` равно `NULL`. [`Any`](/sql-reference/data-types)
+- `x` — The value to check for `NULL`. [`Any`](/sql-reference/data-types)
+- `alt` — The value that the function returns if `x` is `NULL`. [`Any`](/sql-reference/data-types)
 
-**Возвращаемое значение**
 
-Возвращает значение `x`, если оно не равно `NULL`, в противном случае — `alt`. [`Any`](/sql-reference/data-types)
+**Returned value**
 
-**Примеры**
+Returns the value of `x` if it is not `NULL`, otherwise `alt`. [`Any`](/sql-reference/data-types)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT ifNull('a', 'b'), ifNull(NULL, 'b');
@@ -215,31 +227,36 @@ SELECT ifNull('a', 'b'), ifNull(NULL, 'b');
 └──────────────────┴───────────────────┘
 ```
 
+
+
 ## isNotNull {#isNotNull}
 
-Впервые появилась в версии: v1.1
+Introduced in: v1.1
 
-Проверяет, что аргумент не является `NULL`.
 
-См. также: оператор [`IS NOT NULL`](/sql-reference/operators#is_not_null).
+Checks if the argument is not `NULL`.
 
-**Синтаксис**
+Also see: operator [`IS NOT NULL`](/sql-reference/operators#is_not_null).
+    
+
+**Syntax**
 
 ```sql
 isNotNull(x)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `x` — Значение несоставного типа данных. [`Any`](/sql-reference/data-types)
+- `x` — A value of non-compound data type. [`Any`](/sql-reference/data-types)
 
-**Возвращаемое значение**
 
-Возвращает `1`, если `x` не `NULL`, иначе `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns `1` if `x` is not `NULL`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE t_null
@@ -261,31 +278,36 @@ SELECT x FROM t_null WHERE isNotNull(y);
 └───┘
 ```
 
+
+
 ## isNull {#isNull}
 
-Добавлена в: v1.1
+Introduced in: v1.1
 
-Проверяет, является ли аргумент `NULL`.
 
-См. также: оператор [`IS NULL`](/sql-reference/operators#is_null).
+Checks if the argument is `NULL`.
 
-**Синтаксис**
+Also see: operator [`IS NULL`](/sql-reference/operators#is_null).
+    
+
+**Syntax**
 
 ```sql
 isNull(x)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `x` — значение простого (несоставного) типа данных. [`Any`](/sql-reference/data-types)
+- `x` — A value of non-compound data type. [`Any`](/sql-reference/data-types)
 
-**Возвращаемое значение**
 
-Возвращает `1`, если `x` равно `NULL`, в противном случае — `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns `1` if `x` is `NULL`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE t_null
@@ -307,29 +329,34 @@ SELECT x FROM t_null WHERE isNull(y);
 └───┘
 ```
 
+
+
 ## isNullable {#isNullable}
 
-Введена в версии v22.7
+Introduced in: v22.7
 
-Проверяет, является ли тип данных аргумента `Nullable` (то есть допускает значения `NULL`).
 
-**Синтаксис**
+Checks whether the argument's data type is `Nullable` (i.e it allows `NULL` values).
+    
+
+**Syntax**
 
 ```sql
 isNullable(x)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `x` — значение любого типа данных. [`Any`](/sql-reference/data-types)
+- `x` — A value of any data type. [`Any`](/sql-reference/data-types)
 
-**Возвращаемое значение**
 
-Возвращает `1`, если `x` имеет тип данных `Nullable`, иначе `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns `1` if `x` is of a `Nullable` data type, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE tab (
@@ -350,29 +377,34 @@ SELECT isNullable(ordinary_col), isNullable(nullable_col) FROM tab;
 └─────────────────────────────┴─────────────────────────────┘
 ```
 
+
+
 ## isZeroOrNull {#isZeroOrNull}
 
-Добавлена в: v20.3
+Introduced in: v20.3
 
-Проверяет, равен ли аргумент нулю (`0`) или имеет значение `NULL`.
 
-**Синтаксис**
+Checks if the argument is either zero (`0`) or `NULL`.
+    
+
+**Syntax**
 
 ```sql
 isZeroOrNull(x)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `x` — числовое значение. [`UInt`](/sql-reference/data-types/int-uint)
+- `x` — A numeric value. [`UInt`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает `1`, если `x` равно `NULL` или нулю, в противном случае — `0`. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint) или [`Float32/Float64`](/sql-reference/data-types/float)
+**Returned value**
 
-**Примеры**
+Returns `1` if `x` is `NULL` or equal to zero, otherwise `0`. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float32/Float64`](/sql-reference/data-types/float)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE t_null
@@ -395,30 +427,35 @@ SELECT x FROM t_null WHERE isZeroOrNull(y);
 └───┘
 ```
 
+
+
 ## nullIf {#nullIf}
 
-Впервые появилась в версии v1.1
+Introduced in: v1.1
 
-Возвращает `NULL`, если оба аргумента равны.
 
-**Синтаксис**
+Returns `NULL` if both arguments are equal.
+    
+
+**Syntax**
 
 ```sql
 nullIf(x, y)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `x` — первое значение. [`Any`](/sql-reference/data-types)
-* `y` — второе значение. [`Any`](/sql-reference/data-types)
+- `x` — The first value. [`Any`](/sql-reference/data-types)
+- `y` — The second value. [`Any`](/sql-reference/data-types)
 
-**Возвращаемое значение**
 
-Возвращает `NULL`, если оба аргумента равны, в противном случае — первый аргумент. [`NULL`](/sql-reference/syntax#null) или [`Nullable(x)`](/sql-reference/data-types/nullable)
+**Returned value**
 
-**Примеры**
+Returns `NULL` if both arguments are equal, otherwise returns the first argument. [`NULL`](/sql-reference/syntax#null) or [`Nullable(x)`](/sql-reference/data-types/nullable)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT nullIf(1, 1), nullIf(1, 2);
@@ -430,29 +467,34 @@ SELECT nullIf(1, 1), nullIf(1, 2);
 └──────────────┴──────────────┘
 ```
 
+
+
 ## toNullable {#toNullable}
 
-Введён в версии v1.1
+Introduced in: v1.1
 
-Преобразует тип переданного аргумента в `Nullable`.
 
-**Синтаксис**
+Converts the provided argument type to `Nullable`.
+    
+
+**Syntax**
 
 ```sql
 toNullable(x)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `x` — значение любого несоставного типа. [`Any`](/sql-reference/data-types)
+- `x` — A value of any non-compound type. [`Any`](/sql-reference/data-types)
 
-**Возвращаемое значение**
 
-Возвращает входное значение, но типа `Nullable`. [`Nullable(Any)`](/sql-reference/data-types/nullable)
+**Returned value**
 
-**Примеры**
+Returns the input value but of `Nullable` type. [`Nullable(Any)`](/sql-reference/data-types/nullable)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT toTypeName(10), toTypeName(toNullable(10));

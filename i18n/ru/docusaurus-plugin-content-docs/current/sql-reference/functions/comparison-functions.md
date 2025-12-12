@@ -73,30 +73,32 @@ SELECT 1 = 1, 1 = 2;
 └──────────────┴──────────────┘
 ```
 
+
+
 ## greater {#greater}
 
-Добавлена в версии v1.1
+Introduced in: v1.1
 
-Проверяет, является ли одно значение больше другого.
+Compares two values for greater-than relation.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 greater(a, b)
     -- a > b
 ```
 
-**Аргументы**
+**Arguments**
 
-* `a` — Первое значение.<sup>[*](#comparison-rules)</sup> - `b` — Второе значение.<sup>[*](#comparison-rules)</sup>
+- `a` — First value.<sup>[*](#comparison-rules)</sup> - `b` — Second value.<sup>[*](#comparison-rules)</sup> 
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает `1`, если `a` больше `b`, иначе `0` типа [`UInt8`](/sql-reference/data-types/int-uint)
+Returns `1` if `a` is greater than `b`, otherwise `0` [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT 2 > 1, 1 > 2;
@@ -108,30 +110,32 @@ SELECT 2 > 1, 1 > 2;
 └───────────────┴───────────────┘
 ```
 
+
+
 ## greaterOrEquals {#greaterOrEquals}
 
-Появилась в версии: v1.1
+Introduced in: v1.1
 
-Сравнивает два значения, проверяя, выполняется ли отношение «больше или равно».
+Compares two values for greater-than-or-equal-to relation.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 greaterOrEquals(a, b)
     -- a >= b
 ```
 
-**Аргументы**
+**Arguments**
 
-* `a` — первое значение.<sup>[*](#comparison-rules)</sup> - `b` — второе значение.<sup>[*](#comparison-rules)</sup>
+- `a` — First value.<sup>[*](#comparison-rules)</sup> - `b` — Second value.<sup>[*](#comparison-rules)</sup> 
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает `1`, если `a` больше либо равно `b`, в противном случае — `0` типа [`UInt8`](/sql-reference/data-types/int-uint).
+Returns `1` if `a` is greater than or equal to `b`, otherwise `0` [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT 2 >= 1, 2 >= 2, 1 >= 2;
@@ -143,36 +147,40 @@ SELECT 2 >= 1, 2 >= 2, 1 >= 2;
 └───────────────────────┴───────────────────────┴───────────────────────┘
 ```
 
+
+
 ## isDistinctFrom {#isDistinctFrom}
 
-Введена в версии: v25.11
+Introduced in: v25.11
 
-Выполняет NULL-безопасное сравнение «не равно» между двумя значениями.
-Возвращает `true`, если значения различаются (не равны), включая случай, когда одно значение равно NULL, а другое — нет.
-Возвращает `false`, если значения равны или если оба равны NULL.
 
-**Синтаксис**
+        Performs a null-safe "not equals" comparison between two values.
+        Returns `true` if the values are distinct (not equal), including when one value is NULL and the other is not.
+        Returns `false` if the values are equal, or if both are NULL.
+    
+
+**Syntax**
 
 ```sql
 isDistinctFrom(x, y)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `x` — первое значение для сравнения. Может иметь любой тип данных ClickHouse. [`Any`](/sql-reference/data-types)
-* `y` — второе значение для сравнения. Может иметь любой тип данных ClickHouse. [`Any`](/sql-reference/data-types)
+- `x` — First value to compare. Can be any ClickHouse data type. [`Any`](/sql-reference/data-types)
+- `y` — Second value to compare. Can be any ClickHouse data type. [`Any`](/sql-reference/data-types)
 
-**Возвращаемое значение**
 
-Возвращает `true`, если два значения различаются, при этом NULL считаются сравнимыми значениями:
+**Returned value**
 
-* Возвращает `true`, если x != y.
-  * Возвращает `true`, если ровно одно из x или y равно NULL.
-  * Возвращает `false`, если x = y или оба x и y равны NULL. [`Bool`](/sql-reference/data-types/boolean)
+Returns `true` if the two values are different, treating NULLs as comparable:
+  - Returns `true` if x != y.
+  - Returns `true` if exactly one of x or y is NULL.
+  - Returns `false` if x = y, or both x and y are NULL. [`Bool`](/sql-reference/data-types/boolean)
 
-**Примеры**
+**Examples**
 
-**Базовое использование с числами и NULL**
+**Basic usage with numbers and NULLs**
 
 ```sql title=Query
 SELECT
@@ -188,36 +196,40 @@ SELECT
 └──────────┴──────────┴──────────┴──────────┘
 ```
 
+
+
 ## isNotDistinctFrom {#isNotDistinctFrom}
 
-Добавлена в версии: v25.10
+Introduced in: v25.10
 
-Выполняет безопасное в отношении NULL сравнение на равенство между двумя значениями.
-Возвращает `true`, если значения равны, включая случай, когда оба равны NULL.
-Возвращает `false`, если значения различаются или если ровно одно из них равно NULL.
 
-**Синтаксис**
+        Performs a null-safe "equals" comparison between two values.
+        Returns `true` if the values are equal, including when both are NULL.
+        Returns `false` if the values are different, or if exactly one of them is NULL.
+    
+
+**Syntax**
 
 ```sql
 isNotDistinctFrom(x, y)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `x` — первое значение для сравнения. Может быть любого типа данных ClickHouse. [`Any`](/sql-reference/data-types)
-* `y` — второе значение для сравнения. Может быть любого типа данных ClickHouse. [`Any`](/sql-reference/data-types)
+- `x` — First value to compare. Can be any ClickHouse data type. [`Any`](/sql-reference/data-types)
+- `y` — Second value to compare. Can be any ClickHouse data type. [`Any`](/sql-reference/data-types)
 
-**Возвращаемое значение**
 
-Возвращает `true`, если два значения равны, считая значения NULL сравнимыми:
+**Returned value**
 
-* Возвращает `true`, если x = y.
-  * Возвращает `true`, если и x, и y равны NULL.
-  * Возвращает `false`, если x != y или только одно из x или y равно NULL. [`Bool`](/sql-reference/data-types/boolean)
+Returns `true` if the two values are equal, treating NULLs as comparable:
+  - Returns `true` if x = y.
+  - Returns `true` if both x and y are NULL.
+  - Returns `false` if x != y, or exactly one of x or y is NULL. [`Bool`](/sql-reference/data-types/boolean)
 
-**Примеры**
+**Examples**
 
-**Базовое использование с числами и NULL**
+**Basic usage with numbers and NULLs**
 
 ```sql title=Query
 SELECT
@@ -233,30 +245,32 @@ SELECT
 └──────────┴──────────┴──────────┴──────────┘
 ```
 
+
+
 ## less {#less}
 
-Впервые появилась в версии: v1.1
+Introduced in: v1.1
 
-Сравнивает два значения на предмет отношения «меньше чем».
+Compares two values for less-than relation.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 less(a, b)
     -- a < b
 ```
 
-**Аргументы**
+**Arguments**
 
-* `a` — первое значение.<sup>[*](#comparison-rules)</sup> - `b` — второе значение.<sup>[*](#comparison-rules)</sup>
+- `a` — First value.<sup>[*](#comparison-rules)</sup> - `b` — Second value.<sup>[*](#comparison-rules)</sup> 
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает `1`, если `a` меньше `b`, в противном случае — `0` [`UInt8`](/sql-reference/data-types/int-uint).
+Returns `1` if `a` is less than `b`, otherwise `0` [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT 1 < 2, 2 < 1;
@@ -268,30 +282,32 @@ SELECT 1 < 2, 2 < 1;
 └────────────┴────────────┘
 ```
 
+
+
 ## lessOrEquals {#lessOrEquals}
 
-Добавлена в версии: v1.1
+Introduced in: v1.1
 
-Сравнивает два значения на предмет отношения «меньше или равно».
+Compares two values for less-than-or-equal-to relation.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 lessOrEquals(a, b)
 -- a <= b
 ```
 
-**Аргументы**
+**Arguments**
 
-* `a` — первое значение.<sup>[*](#comparison-rules)</sup> - `b` — второе значение.<sup>[*](#comparison-rules)</sup>
+- `a` — First value.<sup>[*](#comparison-rules)</sup> - `b` — Second value.<sup>[*](#comparison-rules)</sup> 
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает `1`, если `a` меньше или равно `b`, иначе — `0` (типа [`UInt8`](/sql-reference/data-types/int-uint)).
+Returns `1` if `a` is less than or equal to `b`, otherwise `0` [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT 1 <= 2, 2 <= 2, 3 <= 2;
@@ -303,13 +319,15 @@ SELECT 1 <= 2, 2 <= 2, 3 <= 2;
 └────────────────────┴────────────────────┴────────────────────┘
 ```
 
+
+
 ## notEquals {#notEquals}
 
-Появилась в версии: v1.1
+Introduced in: v1.1
 
-Сравнивает два значения на неравенство.
+Compares two values for inequality.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 notEquals(a, b)
@@ -317,17 +335,17 @@ notEquals(a, b)
     -- a <> b
 ```
 
-**Аргументы**
+**Arguments**
 
-* `a` — первое значение.<sup>[*](#comparison-rules)</sup> - `b` — второе значение.<sup>[*](#comparison-rules)</sup>
+- `a` — First value.<sup>[*](#comparison-rules)</sup> - `b` — Second value.<sup>[*](#comparison-rules)</sup> 
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает `1`, если `a` не равно `b`, в противном случае — `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+Returns `1` if `a` is not equal to `b`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT 1 != 2, 1 != 1;

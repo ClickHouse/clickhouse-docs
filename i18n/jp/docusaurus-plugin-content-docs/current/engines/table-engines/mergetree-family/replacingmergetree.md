@@ -56,7 +56,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 Example:
 
 ```sql
--- ver なし - 最後に挿入されたものが '勝つ'
+-- without ver - the last inserted 'wins'
 CREATE TABLE myFirstReplacingMT
 (
     `key` Int64,
@@ -76,7 +76,7 @@ SELECT * FROM myFirstReplacingMT FINAL;
 └─────┴─────────┴─────────────────────┘
 
 
--- ver あり - 最大の ver を持つ行が '勝つ'
+-- with ver - the row with the biggest ver 'wins'
 CREATE TABLE mySecondReplacingMT
 (
     `key` Int64,
@@ -120,7 +120,7 @@ SELECT * FROM mySecondReplacingMT FINAL;
 Example:
 
 ```sql
--- ver と is_deleted を使用
+-- with ver and is_deleted
 CREATE OR REPLACE TABLE myThirdReplacingMT
 (
     `key` Int64,
@@ -134,6 +134,21 @@ SETTINGS allow_experimental_replacing_merge_with_cleanup = 1;
 
 INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 01:01:01', 0);
 INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 01:01:01', 1);
+
+select * from myThirdReplacingMT final;
+
+0 rows in set. Elapsed: 0.003 sec.
+
+-- delete rows with is_deleted
+OPTIMIZE TABLE myThirdReplacingMT FINAL CLEANUP;
+
+INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 00:00:00', 0);
+
+select * from myThirdReplacingMT final;
+
+┌─key─┬─someCol─┬───────────eventTime─┬─is_deleted─┐
+│   1 │ first   │ 2020-01-01 00:00:00 │          0 │
+└─────┴─────────┴─────────────────────┴────────────┘
 ```
 
 select * from myThirdReplacingMT final;
@@ -151,7 +166,13 @@ select * from myThirdReplacingMT final;
 │   1 │ first   │ 2020-01-01 00:00:00 │          0 │
 └─────┴─────────┴─────────────────────┴────────────┘
 
-```
+```sql
+CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+(
+    name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
+    name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
+    ...
+) ENGINE [=] ReplacingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [ver])
 ```
 
 ## クエリ句 {#query-clauses}
@@ -167,12 +188,17 @@ select * from myThirdReplacingMT final;
 :::
 
 ```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+CREATE TABLE rmt_example
 (
-    name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
-    name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
-    ...
-) ENGINE [=] ReplacingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [ver])
+    `number` UInt16
+)
+ENGINE = ReplacingMergeTree
+ORDER BY number
+
+INSERT INTO rmt_example SELECT floor(randUniform(0, 100)) AS number
+FROM numbers(1000000000)
+
+0 rows in set. Elapsed: 19.958 sec. Processed 1.00 billion rows, 8.00 GB (50.11 million rows/s., 400.84 MB/s.)
 ```
 
 `ver` を除くすべてのパラメータは、`MergeTree` の場合と同じ意味を持ちます。
@@ -188,17 +214,14 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 正しい結果を得るためには、バックグラウンドでのマージ処理に加えて、クエリ時の重複排除および削除済み行の除去を行う必要があります。これは `FINAL` 演算子を使用することで実現できます。例えば、次の例を考えてみます。
 
 ```sql
-CREATE TABLE rmt_example
-(
-    `number` UInt16
-)
-ENGINE = ReplacingMergeTree
-ORDER BY number
+SELECT count()
+FROM rmt_example
 
-INSERT INTO rmt_example SELECT floor(randUniform(0, 100)) AS number
-FROM numbers(1000000000)
+┌─count()─┐
+│     200 │
+└─────────┘
 
-0 rows in set. Elapsed: 19.958 sec. Processed 1.00 billion rows, 8.00 GB (50.11 million rows/s., 400.84 MB/s.)
+1 row in set. Elapsed: 0.002 sec.
 ```
 
 `FINAL` を指定せずにクエリすると、不正確なカウント結果になります（具体的な値はマージ状況によって変動します）。
@@ -206,9 +229,10 @@ FROM numbers(1000000000)
 ```sql
 SELECT count()
 FROM rmt_example
+FINAL
 
 ┌─count()─┐
-│     200 │
+│     100 │
 └─────────┘
 
 1 row in set. Elapsed: 0.002 sec.

@@ -109,8 +109,8 @@ SELECT name, text FROM table_1 LEFT OUTER JOIN table_2
 
 ```response
 ┌─name─┬─text───┐
-│ A    │ テキスト A │
-│ B    │ テキスト B │
+│ A    │ Text A │
+│ B    │ Text B │
 │ C    │        │
 └──────┴────────┘
 ```
@@ -297,10 +297,10 @@ SELECT A.name, B.score FROM A LEFT JOIN B ON isNotDistinctFrom(A.id, B.id)
 構文 `ASOF JOIN ... ON`:
 
 ```sql
-SELECT 式リスト
+SELECT expressions_list
 FROM table_1
 ASOF LEFT JOIN table_2
-ON 等価条件 AND 最近接マッチ条件
+ON equi_cond AND closest_match_cond
 ```
 
 任意の数の等価条件と、最も近い一致条件を1つだけ使用できます。たとえば、`SELECT count() FROM table_1 ASOF LEFT JOIN table_2 ON table_1.a == table_2.b AND table_2.t <= table_1.t` のようになります。
@@ -310,7 +310,7 @@ ON 等価条件 AND 最近接マッチ条件
 構文 `ASOF JOIN ... USING`:
 
 ```sql
-SELECT 式リスト
+SELECT expressions_list
 FROM table_1
 ASOF JOIN table_2
 USING (equi_column1, ... equi_columnN, asof_column)

@@ -16,7 +16,7 @@ doc_type: 'reference'
 ## 创建表 {#creating-a-table}
 
 ```sql
-CREATE TABLE ... 引擎=Merge(db_name, tables_regexp)
+CREATE TABLE ... Engine=Merge(db_name, tables_regexp)
 ```
 
 ## 引擎参数 {#engine-parameters}

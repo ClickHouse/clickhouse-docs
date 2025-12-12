@@ -11,7 +11,7 @@ doc_type: 'reference'
 使用[大圆距离公式](https://en.wikipedia.org/wiki/Great-circle_distance)计算地球表面上两点之间的距离。
 
 ```sql
-大圆距离(lon1Deg, lat1Deg, lon2Deg, lat2Deg)
+greatCircleDistance(lon1Deg, lat1Deg, lon2Deg, lat2Deg)
 ```
 
 **输入参数**

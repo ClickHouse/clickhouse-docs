@@ -87,8 +87,8 @@ SELECT tuple(1, NULL) AS x, toTypeName(x)
 CREATE TABLE named_tuples (`a` Tuple(s String, i Int64)) ENGINE = Memory;
 INSERT INTO named_tuples VALUES (('y', 10)), (('x',-10));
 
-SELECT a.s FROM named_tuples; -- 名前による参照
-SELECT a.2 FROM named_tuples; -- インデックスによる参照
+SELECT a.s FROM named_tuples; -- by name
+SELECT a.2 FROM named_tuples; -- by index
 ```
 
 結果:
@@ -167,7 +167,7 @@ SELECT * FROM test;
 │   2 │        2 │     0 │
 └─────┴──────────┴───────┘
 
--- 各キーについて最大のdurationを持つvalueを検索します。durationが同じ場合は最大のvalueを選択します
+-- Let's find a value for each key with the biggest duration, if durations are equal, select the biggest value
 
 SELECT
     key,

@@ -13,7 +13,7 @@ doc_type: 'reference'
 **Синтаксис**
 
 ```sql
-оценитьКоэффициентСжатия(codec, block_size_bytes)(column)
+estimateCompressionRatio(codec, block_size_bytes)(column)
 ```
 
 **Аргументы**

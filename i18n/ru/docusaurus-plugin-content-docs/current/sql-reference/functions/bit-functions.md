@@ -71,34 +71,37 @@ FROM bits
 └───┴───┴──────────────┘
 ```
 
+
+
 ## bitCount {#bitCount}
 
-Добавлена в: v20.3
+Introduced in: v20.3
 
-Вычисляет количество битов, установленных в 1, в двоичном представлении числа.
+Calculates the number of bits set to one in the binary representation of a number.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 bitCount(x)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `x` — Целочисленное или вещественное значение. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+- `x` — An integer or float value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**Возвращаемое значение**
 
-Возвращает количество битов, равных единице, в `x`. [`UInt8`](../data-types/int-uint.md).
+**Returned value**
+
+Returns the number of bits set to one in `x`. [`UInt8`](../data-types/int-uint.md).
 
 :::note
-Функция не преобразует входное значение к типу с большей разрядностью ([расширение знака](https://en.wikipedia.org/wiki/Sign_extension)).
-Например: `bitCount(toUInt8(-1)) = 8`.
+The function does not convert the input value to a larger type ([sign extension](https://en.wikipedia.org/wiki/Sign_extension)).
+For example: `bitCount(toUInt8(-1)) = 8`.
 :::
 
-**Примеры**
+**Examples**
 
-**Пример использования**
+**Usage example**
 
 ```sql title=Query
 SELECT bin(333), bitCount(333);
@@ -110,32 +113,37 @@ SELECT bin(333), bitCount(333);
 └──────────────────┴───────────────┘
 ```
 
+
+
 ## bitHammingDistance {#bitHammingDistance}
 
-Добавлено в: v21.1
+Introduced in: v21.1
 
-Возвращает [расстояние Хэмминга](https://en.wikipedia.org/wiki/Hamming_distance) между битовыми представлениями двух чисел.
-Может использоваться с функциями [`SimHash`](../../sql-reference/functions/hash-functions.md#ngramSimHash) для обнаружения частично дублирующихся строк.
-Чем меньше расстояние, тем более похожи строки.
 
-**Синтаксис**
+Returns the [Hamming Distance](https://en.wikipedia.org/wiki/Hamming_distance) between the bit representations of two numbers.
+Can be used with [`SimHash`](../../sql-reference/functions/hash-functions.md#ngramSimHash) functions for detection of semi-duplicate strings.
+The smaller the distance, the more similar the strings are.
+
+
+**Syntax**
 
 ```sql
 bitHammingDistance(x, y)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `x` — первое число для вычисления расстояния Хэмминга. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
-* `y` — второе число для вычисления расстояния Хэмминга. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+- `x` — First number for Hamming distance calculation. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+- `y` — Second number for Hamming distance calculation. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**Возвращаемое значение**
 
-Возвращает расстояние Хэмминга между `x` и `y` типа [`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the hamming distance between `x` and `y` [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT bitHammingDistance(111, 121);
@@ -147,29 +155,32 @@ SELECT bitHammingDistance(111, 121);
 └──────────────────────────────┘
 ```
 
+
+
 ## bitNot {#bitNot}
 
-Добавлена в версии: v1.1
+Introduced in: v1.1
 
-Выполняет побитовую операцию NOT.
+Performs the bitwise NOT operation.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 bitNot(a)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `a` — Значение, к которому применяется побитовое отрицание (NOT). [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`String`](/sql-reference/data-types/string)
+- `a` — Value for which to apply bitwise NOT operation. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает результат `~a`, то есть `a` с инвертированными битами.
+**Returned value**
 
-**Примеры**
+Returns the result of `~a` i.e `a` with bits flipped.
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT
@@ -185,30 +196,33 @@ SELECT
 └──────────┴─────────────────┴────────┴───────────────┘
 ```
 
+
+
 ## bitOr {#bitOr}
 
-Добавлено в: v1.1
+Introduced in: v1.1
 
-Выполняет побитовое операция OR между двумя значениями.
+Performs bitwise OR operation between two values.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 bitOr(a, b)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `a` — первое значение. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
-* `b` — второе значение. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+- `a` — First value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+- `b` — Second value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**Возвращаемое значение**
 
-Возвращает результат побитовой операции `a OR b`
+**Returned value**
 
-**Примеры**
+Returns the result of bitwise operation `a OR b`
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE bits
@@ -236,30 +250,33 @@ FROM bits;
 └───┴───┴─────────────┘
 ```
 
+
+
 ## bitRotateLeft {#bitRotateLeft}
 
-Добавлена в версии: v1.1
+Introduced in: v1.1
 
-Выполняет циклический сдвиг битов влево на указанное количество позиций. Биты, вышедшие за левую границу, циклически переносятся вправо.
+Rotate bits left by a certain number of positions. Bits that fall off wrap around to the right.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 bitRotateLeft(a, N)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `a` — значение для циклического сдвига. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
-* `N` — число позиций циклического сдвига влево. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+- `a` — A value to rotate. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+- `N` — The number of positions to rotate left. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает результат циклического сдвига того же типа, что и `a`. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the rotated value with type equal to that of `a`. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT 99 AS a, bin(a), bitRotateLeft(a, 2) AS a_rotated, bin(a_rotated);
@@ -271,30 +288,33 @@ SELECT 99 AS a, bin(a), bitRotateLeft(a, 2) AS a_rotated, bin(a_rotated);
 └────┴──────────┴───────────┴────────────────┘
 ```
 
+
+
 ## bitRotateRight {#bitRotateRight}
 
-Добавлена в: v1.1
+Introduced in: v1.1
 
-Циклически сдвигает биты вправо на заданное число позиций. Биты, которые выходят за пределы, появляются слева.
+Rotate bits right by a certain number of positions. Bits that fall off wrap around to the left.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 bitRotateRight(a, N)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `a` — значение для циклического сдвига. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
-* `N` — количество позиций, на которое выполняется циклический сдвиг вправо. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+- `a` — A value to rotate. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+- `N` — The number of positions to rotate right. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает значение после циклического сдвига того же типа, что и `a`. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the rotated value with type equal to that of `a`. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT 99 AS a, bin(a), bitRotateRight(a, 2) AS a_rotated, bin(a_rotated);
@@ -306,35 +326,40 @@ SELECT 99 AS a, bin(a), bitRotateRight(a, 2) AS a_rotated, bin(a_rotated);
 └────┴──────────┴───────────┴────────────────┘
 ```
 
+
+
 ## bitShiftLeft {#bitShiftLeft}
 
-Впервые появился в: v1.1
+Introduced in: v1.1
 
-Выполняет сдвиг двоичного представления значения влево на заданное число битовых позиций.
 
-`FixedString` или `String` рассматриваются как одно многобайтное значение.
+Shifts the binary representation of a value to the left by a specified number of bit positions.
 
-Биты значения типа `FixedString` теряются по мере их выхода за пределы при сдвиге.
-Напротив, значение типа `String` расширяется дополнительными байтами, поэтому биты не теряются.
+A `FixedString` or a `String` is treated as a single multibyte value.
 
-**Синтаксис**
+Bits of a `FixedString` value are lost as they are shifted out.
+On the contrary, a `String` value is extended with additional bytes, so no bits are lost.
+
+
+**Syntax**
 
 ```sql
 bitShiftLeft(a, N)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `a` — Значение для сдвига. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
-* `N` — Количество позиций сдвига. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+- `a` — A value to shift. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+- `N` — The number of positions to shift. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает сдвинутое значение с типом, совпадающим с типом `a`.
+**Returned value**
 
-**Примеры**
+Returns the shifted value with type equal to that of `a`.
 
-**Пример использования с двоичным кодированием**
+**Examples**
+
+**Usage example with binary encoding**
 
 ```sql title=Query
 SELECT 99 AS a, bin(a), bitShiftLeft(a, 2) AS a_shifted, bin(a_shifted);
@@ -346,7 +371,7 @@ SELECT 99 AS a, bin(a), bitShiftLeft(a, 2) AS a_shifted, bin(a_shifted);
 └────┴──────────┴───────────┴──────────────────────────┘
 ```
 
-**Пример использования в шестнадцатеричном формате**
+**Usage example with hexadecimal encoding**
 
 ```sql title=Query
 SELECT 'abc' AS a, hex(a), bitShiftLeft(a, 4) AS a_shifted, hex(a_shifted);
@@ -358,7 +383,7 @@ SELECT 'abc' AS a, hex(a), bitShiftLeft(a, 4) AS a_shifted, hex(a_shifted);
 └─────┴────────────┴───────────┴─────────────────────────────┘
 ```
 
-**Пример использования с кодировкой FixedString**
+**Usage example with Fixed String encoding**
 
 ```sql title=Query
 SELECT toFixedString('abc', 3) AS a, hex(a), bitShiftLeft(a, 4) AS a_shifted, hex(a_shifted);
@@ -370,35 +395,40 @@ SELECT toFixedString('abc', 3) AS a, hex(a), bitShiftLeft(a, 4) AS a_shifted, he
 └─────┴──────────────────────────────┴───────────┴───────────────────────────────────────────────┘
 ```
 
+
+
 ## bitShiftRight {#bitShiftRight}
 
-Введено в: v1.1
+Introduced in: v1.1
 
-Сдвигает двоичное представление значения на указанное число бит вправо.
 
-`FixedString` или `String` рассматривается как одно многобайтное значение.
+Shifts the binary representation of a value to the right by a specified number of bit positions.
 
-Биты значения типа `FixedString` теряются по мере их смещения за пределы разрядной сетки.
-Напротив, значение типа `String` дополняется дополнительными байтами, поэтому биты не теряются.
+A `FixedString` or a `String` is treated as a single multibyte value.
 
-**Синтаксис**
+Bits of a `FixedString` value are lost as they are shifted out.
+On the contrary, a `String` value is extended with additional bytes, so no bits are lost.
+
+
+**Syntax**
 
 ```sql
 bitShiftRight(a, N)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `a` — Значение для сдвига. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
-* `N` — Количество позиций для сдвига. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+- `a` — A value to shift. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+- `N` — The number of positions to shift. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает сдвинутое значение с тем же типом, что и у `a`.
+**Returned value**
 
-**Примеры**
+Returns the shifted value with type equal to that of `a`.
 
-**Пример использования с двоичным кодированием**
+**Examples**
+
+**Usage example with binary encoding**
 
 ```sql title=Query
 SELECT 101 AS a, bin(a), bitShiftRight(a, 2) AS a_shifted, bin(a_shifted);
@@ -410,7 +440,7 @@ SELECT 101 AS a, bin(a), bitShiftRight(a, 2) AS a_shifted, bin(a_shifted);
 └─────┴──────────┴───────────┴────────────────────────────┘
 ```
 
-**Пример использования шестнадцатеричного кодирования**
+**Usage example with hexadecimal encoding**
 
 ```sql title=Query
 SELECT 'abc' AS a, hex(a), bitShiftLeft(a, 4) AS a_shifted, hex(a_shifted);
@@ -422,7 +452,7 @@ SELECT 'abc' AS a, hex(a), bitShiftLeft(a, 4) AS a_shifted, hex(a_shifted);
 └─────┴────────────┴───────────┴───────────────────────────────┘
 ```
 
-**Пример использования с кодировкой FixedString**
+**Usage example with Fixed String encoding**
 
 ```sql title=Query
 SELECT toFixedString('abc', 3) AS a, hex(a), bitShiftRight(a, 12) AS a_shifted, hex(a_shifted);
@@ -434,42 +464,45 @@ SELECT toFixedString('abc', 3) AS a, hex(a), bitShiftRight(a, 12) AS a_shifted, 
 └─────┴──────────────────────────────┴───────────┴─────────────────────────────────────────────────┘
 ```
 
+
+
 ## bitSlice {#bitSlice}
 
-Добавлено в: v22.2
+Introduced in: v22.2
 
-Возвращает подстроку бит длиной &#39;length&#39; бит, начиная с бита с индексом &#39;offset&#39;.
+Returns a substring starting with the bit from the 'offset' index that is 'length' bits long.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 bitSlice(s, offset[, length])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `s` — Строка или фиксированная строка, из которой выполняется извлечение. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
-* `offset` —
-  Начальная позиция бита (индексация с 1).
-* Положительные значения: отсчет от начала строки.
-* Отрицательные значения: отсчет от конца строки.
+- `s` — The String or Fixed String to slice. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+- `offset` — 
+Returns the starting bit position (1-based indexing).
+- Positive values: count from the beginning of the string.
+- Negative values: count from the end of the string.
 
-  [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
-* `length` —
-  Необязательный параметр. Количество бит для извлечения.
-* Положительные значения: извлекается `length` бит.
-* Отрицательные значения: извлечение от смещения до `(string_length - |length|)`.
-* Если параметр опущен: извлечение от смещения до конца строки.
-* Если длина не делится на 8, результат дополняется нулями справа.
-  [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+         [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+- `length` — 
+Optional. The number of bits to extract.
+- Positive values: extract `length` bits.
+- Negative values: extract from the offset to `(string_length - |length|)`.
+- Omitted: extract from offset to end of string.
+- If length is not a multiple of 8, the result is padded with zeros on the right.
+         [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**Возвращаемое значение**
 
-Возвращает строку, содержащую извлеченные биты, представленные в виде бинарной последовательности. Результат всегда дополняется до границ байта (кратности 8 бит). [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**Примеры**
+Returns a string containing the extracted bits, represented as a binary sequence. The result is always padded to byte boundaries (multiples of 8 bits) [`String`](/sql-reference/data-types/string)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT bin('Hello'), bin(bitSlice('Hello', 1, 8));
@@ -493,30 +526,33 @@ SELECT bin('Hello'), bin(bitSlice('Hello', -4, 8));
 └──────────────────────────────────────────┴───────────────────────────────┘
 ```
 
+
+
 ## bitTest {#bitTest}
 
-Добавлено в версии: v1.1
+Introduced in: v1.1
 
-Принимает число и преобразует его в [двоичную форму](https://en.wikipedia.org/wiki/Binary_number), затем возвращает значение бита на заданной позиции. Подсчёт битов ведётся справа налево, начиная с 0.
+Takes any number and converts it into [binary form](https://en.wikipedia.org/wiki/Binary_number), then returns the value of the bit at a specified position. Counting is done right-to-left, starting at 0.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 bitTest(a, i)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `a` — число для преобразования. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
-* `i` — позиция бита, который нужно вернуть. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+- `a` — Number to convert. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+- `i` — Position of the bit to return. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**Возвращаемое значение**
 
-Возвращает значение бита на позиции `i` в двоичном представлении числа `a` типа [`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the value of the bit at position `i` in the binary representation of `a` [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT bin(2), bitTest(2, 1);
@@ -528,33 +564,38 @@ SELECT bin(2), bitTest(2, 1);
 └──────────┴───────────────┘
 ```
 
+
+
 ## bitTestAll {#bitTestAll}
 
-Впервые добавлена в: v1.1
+Introduced in: v1.1
 
-Возвращает результат [логического И](https://en.wikipedia.org/wiki/Logical_conjunction) (оператор AND) всех битов в указанных позициях.
-Подсчёт ведётся справа налево, начиная с 0.
 
-Логическое И между двумя битами истинно тогда и только тогда, когда оба входных бита истинны.
+Returns result of the [logical conjunction](https://en.wikipedia.org/wiki/Logical_conjunction) (AND operator) of all bits at the given positions.
+Counts right-to-left, starting at 0.
 
-**Синтаксис**
+The logical AND between two bits is true if and only if both input bits are true.
+    
+
+**Syntax**
 
 ```sql
 bitTestAll(a, index1[, index2, ... , indexN])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `a` — Целочисленное значение. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
-* `index1, ...` — Одна или несколько позиций битов. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+- `a` — An integer value. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+- `index1, ...` — One or multiple positions of bits. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает результат логической конъюнкции типа [`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the result of the logical conjunction [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Пример использования 1**
+**Examples**
+
+**Usage example 1**
 
 ```sql title=Query
 SELECT bitTestAll(43, 0, 1, 3, 5);
@@ -566,7 +607,7 @@ SELECT bitTestAll(43, 0, 1, 3, 5);
 └──────────┴────────────────────────────┘
 ```
 
-**Пример использования № 2**
+**Usage example 2**
 
 ```sql title=Query
 SELECT bitTestAll(43, 0, 1, 3, 5, 2);
@@ -578,33 +619,38 @@ SELECT bitTestAll(43, 0, 1, 3, 5, 2);
 └──────────┴──────────────────────────┘
 ```
 
+
+
 ## bitTestAny {#bitTestAny}
 
-Впервые появилась в версии v1.1
+Introduced in: v1.1
 
-Возвращает результат [логического сложения](https://en.wikipedia.org/wiki/Logical_disjunction) (оператора ИЛИ) всех битов на заданных позициях в числе.
-Подсчёт ведётся справа налево, начиная с 0.
 
-Логическое ИЛИ между двумя битами истинно, если хотя бы один из входных битов истинен.
+Returns result of the [logical disjunction](https://en.wikipedia.org/wiki/Logical_disjunction) (OR operator) of all bits at the given positions in a number.
+Counts right-to-left, starting at 0.
 
-**Синтаксис**
+The logical OR between two bits is true if at least one of the input bits is true.
+    
+
+**Syntax**
 
 ```sql
 bitTestAny(a, index1[, index2, ... , indexN])
 ```
 
-**Аргументы**
+**Arguments**
 
-* `a` — Целое число. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
-* `index1, ...` — Одна или несколько позиций бит. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+- `a` — An integer value. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+- `index1, ...` — One or multiple positions of bits. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
 
-Возвращает результат операции логического «ИЛИ» [`UInt8`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**Примеры**
+Returns the result of the logical disjunction [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Пример использования 1**
+**Examples**
+
+**Usage example 1**
 
 ```sql title=Query
 SELECT bitTestAny(43, 0, 2);
@@ -616,7 +662,7 @@ SELECT bitTestAny(43, 0, 2);
 └──────────┴──────────────────────┘
 ```
 
-**Пример использования 2**
+**Usage example 2**
 
 ```sql title=Query
 SELECT bitTestAny(43, 4, 2);
@@ -628,30 +674,33 @@ SELECT bitTestAny(43, 4, 2);
 └──────────┴──────────────────────┘
 ```
 
+
+
 ## bitXor {#bitXor}
 
-Добавлена в версии v1.1
+Introduced in: v1.1
 
-Выполняет побитовую операцию исключающего ИЛИ (XOR) между двумя значениями.
+Performs bitwise exclusive or (XOR) operation between two values.
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 bitXor(a, b)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `a` — первое значение. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
-* `b` — второе значение. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+- `a` — First value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+- `b` — Second value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**Возвращаемое значение**
 
-Возвращает результат побитовой операции `a XOR b`.
+**Returned value**
 
-**Примеры**
+Returns the result of bitwise operation `a XOR b`
 
-**Пример использования**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 CREATE TABLE bits

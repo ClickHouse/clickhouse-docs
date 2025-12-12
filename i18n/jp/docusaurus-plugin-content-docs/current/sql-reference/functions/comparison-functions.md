@@ -74,30 +74,32 @@ SELECT 1 = 1, 1 = 2;
 └──────────────┴──────────────┘
 ```
 
+
+
 ## greater {#greater}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-2つの値を比較して、「より大きい」関係かどうかを判定します。
+Compares two values for greater-than relation.
 
-**構文**
+**Syntax**
 
 ```sql
 greater(a, b)
     -- a > b
 ```
 
-**引数**
+**Arguments**
 
-* `a` — 1つ目の値。<sup>[*](#comparison-rules)</sup> - `b` — 2つ目の値。<sup>[*](#comparison-rules)</sup>
+- `a` — First value.<sup>[*](#comparison-rules)</sup> - `b` — Second value.<sup>[*](#comparison-rules)</sup> 
 
-**戻り値**
+**Returned value**
 
-`a` が `b` より大きい場合は `1` を返し、それ以外の場合は `0` を返します。戻り値の型は [`UInt8`](/sql-reference/data-types/int-uint) です。
+Returns `1` if `a` is greater than `b`, otherwise `0` [`UInt8`](/sql-reference/data-types/int-uint)
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 SELECT 2 > 1, 1 > 2;
@@ -109,30 +111,32 @@ SELECT 2 > 1, 1 > 2;
 └───────────────┴───────────────┘
 ```
 
+
+
 ## greaterOrEquals {#greaterOrEquals}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-2 つの値を比較して、「以上」の関係にあるかどうかを判定します。
+Compares two values for greater-than-or-equal-to relation.
 
-**構文**
+**Syntax**
 
 ```sql
 greaterOrEquals(a, b)
     -- a >= b
 ```
 
-**引数**
+**Arguments**
 
-* `a` — 1つ目の値。<sup>[*](#comparison-rules)</sup> - `b` — 2つ目の値。<sup>[*](#comparison-rules)</sup>
+- `a` — First value.<sup>[*](#comparison-rules)</sup> - `b` — Second value.<sup>[*](#comparison-rules)</sup> 
 
-**戻り値**
+**Returned value**
 
-`a` が `b` 以上のときは `1`、それ以外の場合は `0` を返します。戻り値の型は [`UInt8`](/sql-reference/data-types/int-uint) です。
+Returns `1` if `a` is greater than or equal to `b`, otherwise `0` [`UInt8`](/sql-reference/data-types/int-uint)
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 SELECT 2 >= 1, 2 >= 2, 1 >= 2;
@@ -144,36 +148,40 @@ SELECT 2 >= 1, 2 >= 2, 1 >= 2;
 └───────────────────────┴───────────────────────┴───────────────────────┘
 ```
 
+
+
 ## isDistinctFrom {#isDistinctFrom}
 
-導入バージョン: v25.11
+Introduced in: v25.11
 
-2 つの値に対して NULL セーフな「等値でない」比較を行います。
-一方の値が NULL で他方が NULL ではない場合を含め、値が異なる（等しくない）場合は `true` を返します。
-値が等しい場合、または両方が NULL の場合は `false` を返します。
 
-**構文**
+        Performs a null-safe "not equals" comparison between two values.
+        Returns `true` if the values are distinct (not equal), including when one value is NULL and the other is not.
+        Returns `false` if the values are equal, or if both are NULL.
+    
+
+**Syntax**
 
 ```sql
 isDistinctFrom(x, y)
 ```
 
-**引数**
+**Arguments**
 
-* `x` — 比較する1つ目の値。任意の ClickHouse データ型を指定できます。[`Any`](/sql-reference/data-types)
-* `y` — 比較する2つ目の値。任意の ClickHouse データ型を指定できます。[`Any`](/sql-reference/data-types)
+- `x` — First value to compare. Can be any ClickHouse data type. [`Any`](/sql-reference/data-types)
+- `y` — Second value to compare. Can be any ClickHouse data type. [`Any`](/sql-reference/data-types)
 
-**戻り値**
 
-2つの値が異なる場合に `true` を返し、NULL を比較可能なものとして扱います。
+**Returned value**
 
-* `x != y` の場合に `true` を返します。
-  * `x` と `y` の一方だけが NULL の場合に `true` を返します。
-  * `x = y` の場合、または `x` と `y` の両方が NULL の場合は `false` を返します。[`Bool`](/sql-reference/data-types/boolean)
+Returns `true` if the two values are different, treating NULLs as comparable:
+  - Returns `true` if x != y.
+  - Returns `true` if exactly one of x or y is NULL.
+  - Returns `false` if x = y, or both x and y are NULL. [`Bool`](/sql-reference/data-types/boolean)
 
-**例**
+**Examples**
 
-**数値と NULL を用いた基本的な使用例**
+**Basic usage with numbers and NULLs**
 
 ```sql title=Query
 SELECT
@@ -189,36 +197,40 @@ SELECT
 └──────────┴──────────┴──────────┴──────────┘
 ```
 
+
+
 ## isNotDistinctFrom {#isNotDistinctFrom}
 
-導入バージョン: v25.10
+Introduced in: v25.10
 
-2 つの値の間で、NULL セーフな「等価」比較を実行します。
-両方の値が等しい場合、両方が NULL の場合も含めて `true` を返します。
-値が異なる場合、または一方のみが NULL の場合は `false` を返します。
 
-**構文**
+        Performs a null-safe "equals" comparison between two values.
+        Returns `true` if the values are equal, including when both are NULL.
+        Returns `false` if the values are different, or if exactly one of them is NULL.
+    
+
+**Syntax**
 
 ```sql
 isNotDistinctFrom(x, y)
 ```
 
-**引数**
+**Arguments**
 
-* `x` — 比較する 1 つ目の値。任意の ClickHouse データ型を指定できます。[`Any`](/sql-reference/data-types)
-* `y` — 比較する 2 つ目の値。任意の ClickHouse データ型を指定できます。[`Any`](/sql-reference/data-types)
+- `x` — First value to compare. Can be any ClickHouse data type. [`Any`](/sql-reference/data-types)
+- `y` — Second value to compare. Can be any ClickHouse data type. [`Any`](/sql-reference/data-types)
 
-**戻り値**
 
-2 つの値が等しい場合に `true` を返します。NULL も比較可能な値として扱います。
+**Returned value**
 
-* x = y の場合は `true` を返します。
-  * x と y が両方とも NULL の場合は `true` を返します。
-  * x != y の場合、または x と y の一方だけが NULL の場合は `false` を返します。[`Bool`](/sql-reference/data-types/boolean)
+Returns `true` if the two values are equal, treating NULLs as comparable:
+  - Returns `true` if x = y.
+  - Returns `true` if both x and y are NULL.
+  - Returns `false` if x != y, or exactly one of x or y is NULL. [`Bool`](/sql-reference/data-types/boolean)
 
-**例**
+**Examples**
 
-**数値と NULL を使った基本的な使用例**
+**Basic usage with numbers and NULLs**
 
 ```sql title=Query
 SELECT
@@ -234,30 +246,32 @@ SELECT
 └──────────┴──────────┴──────────┴──────────┘
 ```
 
+
+
 ## less {#less}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-2 つの値を比較し、一方が他方より小さいかどうかを判定します。
+Compares two values for less-than relation.
 
-**構文**
+**Syntax**
 
 ```sql
 less(a, b)
     -- a < b
 ```
 
-**引数**
+**Arguments**
 
-* `a` — 1 つ目の値。<sup>[*](#comparison-rules)</sup> - `b` — 2 つ目の値。<sup>[*](#comparison-rules)</sup>
+- `a` — First value.<sup>[*](#comparison-rules)</sup> - `b` — Second value.<sup>[*](#comparison-rules)</sup> 
 
-**戻り値**
+**Returned value**
 
-`a` が `b` より小さい場合は `1`、それ以外の場合は `0` を返します（[`UInt8`](/sql-reference/data-types/int-uint)）。
+Returns `1` if `a` is less than `b`, otherwise `0` [`UInt8`](/sql-reference/data-types/int-uint)
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 SELECT 1 < 2, 2 < 1;
@@ -269,30 +283,32 @@ SELECT 1 < 2, 2 < 1;
 └────────────┴────────────┘
 ```
 
+
+
 ## lessOrEquals {#lessOrEquals}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-2 つの値を比較し、「以下（less-than-or-equal-to）」の関係かどうかを判定します。
+Compares two values for less-than-or-equal-to relation.
 
-**構文**
+**Syntax**
 
 ```sql
 lessOrEquals(a, b)
 -- a <= b
 ```
 
-**引数**
+**Arguments**
 
-* `a` — 1つ目の値。<sup>[*](#comparison-rules)</sup> - `b` — 2つ目の値。<sup>[*](#comparison-rules)</sup>
+- `a` — First value.<sup>[*](#comparison-rules)</sup> - `b` — Second value.<sup>[*](#comparison-rules)</sup> 
 
-**戻り値**
+**Returned value**
 
-`a` が `b` 以下の場合は `1` を返し、それ以外の場合は `0` を返します。戻り値の型は [`UInt8`](/sql-reference/data-types/int-uint) です。
+Returns `1` if `a` is less than or equal to `b`, otherwise `0` [`UInt8`](/sql-reference/data-types/int-uint)
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 SELECT 1 <= 2, 2 <= 2, 3 <= 2;
@@ -304,13 +320,15 @@ SELECT 1 <= 2, 2 <= 2, 3 <= 2;
 └────────────────────┴────────────────────┴────────────────────┘
 ```
 
+
+
 ## notEquals {#notEquals}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-2 つの値が等しくないかどうかを判定します。
+Compares two values for inequality.
 
-**構文**
+**Syntax**
 
 ```sql
 notEquals(a, b)
@@ -318,17 +336,17 @@ notEquals(a, b)
     -- a <> b
 ```
 
-**引数**
+**Arguments**
 
-* `a` — 最初の値。<sup>[*](#comparison-rules)</sup> - `b` — 2 番目の値。<sup>[*](#comparison-rules)</sup>
+- `a` — First value.<sup>[*](#comparison-rules)</sup> - `b` — Second value.<sup>[*](#comparison-rules)</sup> 
 
-**戻り値**
+**Returned value**
 
-`a` が `b` と等しくない場合は `1` を返し、それ以外の場合は `0` を返します（[`UInt8`](/sql-reference/data-types/int-uint)）。
+Returns `1` if `a` is not equal to `b`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 SELECT 1 != 2, 1 != 1;

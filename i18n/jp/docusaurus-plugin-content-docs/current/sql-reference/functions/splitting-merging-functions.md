@@ -59,30 +59,35 @@ SELECT alphaTokens('abca1abc');
 └─────────────────────────┘
 ```
 
+
+
 ## arrayStringConcat {#arrayStringConcat}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-配列内に列挙された値の文字列表現を、指定されたセパレーターで連結します。セパレーターは省略可能な引数で、省略時の既定値は空文字列です。
 
-**構文**
+Concatenates string representations of values listed in the array with the provided separator, which is an optional parameter set to an empty string by default.
+
+
+**Syntax**
 
 ```sql
 arrayStringConcat(arr[, separator])
 ```
 
-**引数**
+**Arguments**
 
-* `arr` — 連結する配列。[`Array(T)`](/sql-reference/data-types/array)
-* `separator` — 省略可。区切り文字列。デフォルトは空文字列。[`const String`](/sql-reference/data-types/string)
+- `arr` — The array to concatenate. [`Array(T)`](/sql-reference/data-types/array)
+- `separator` — Optional. Separator string. By default an empty string. [`const String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-連結結果の文字列を返します。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**例**
+Returns the concatenated string. [`String`](/sql-reference/data-types/string)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT arrayStringConcat(['12/05/2021', '12:50:00'], ' ') AS DateString;
@@ -94,32 +99,37 @@ SELECT arrayStringConcat(['12/05/2021', '12:50:00'], ' ') AS DateString;
 └─────────────────────┘
 ```
 
+
+
 ## extractAllGroupsVertical {#extractAllGroupsVertical}
 
-導入バージョン: v20.5
+Introduced in: v20.5
 
-正規表現を使用して文字列内のすべてのグループにマッチさせ、配列の配列を返します。各配列には、入力文字列に現れる順序で、各グループからマッチした部分文字列が含まれます。
 
-**構文**
+Matches all groups of a string using a regular expression and returns an array of arrays, where each array includes matching fragments from every group, grouped in order of appearance in the input string.
+
+
+**Syntax**
 
 ```sql
 extractAllGroupsVertical(s, regexp)
 ```
 
-**別名**: `extractAllGroups`
+**Aliases**: `extractAllGroups`
 
-**引数**
+**Arguments**
 
-* `s` — 抽出元の入力文字列。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
-* `regexp` — マッチに使用する正規表現。[`const String`](/sql-reference/data-types/string) または [`const FixedString`](/sql-reference/data-types/fixedstring)
+- `s` — Input string to extract from. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+- `regexp` — Regular expression to match by. [`const String`](/sql-reference/data-types/string) or [`const FixedString`](/sql-reference/data-types/fixedstring)
 
-**戻り値**
 
-配列の配列を返します。各内側の配列には、1 回のマッチで取得されたキャプチャグループが含まれます。各マッチは、正規表現内のキャプチャグループ（グループ 1、グループ 2 など）に対応する要素を持つ配列を生成します。マッチが見つからない場合は空配列を返します。[`Array(Array(String))`](/sql-reference/data-types/array)
+**Returned value**
 
-**例**
+Returns an array of arrays, where each inner array contains the captured groups from one match. Each match produces an array with elements corresponding to the capturing groups in the regular expression (group 1, group 2, etc.). If no matches are found, returns an empty array. [`Array(Array(String))`](/sql-reference/data-types/array)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 WITH '< Server: nginx
@@ -134,30 +144,35 @@ SELECT extractAllGroupsVertical(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 [['Server','nginx'],['Date','Tue, 22 Jan 2019 00:26:14 GMT'],['Content-Type','text/html; charset=UTF-8'],['Connection','keep-alive']]
 ```
 
+
+
 ## ngrams {#ngrams}
 
-導入バージョン: v21.11
+Introduced in: v21.11
 
-UTF-8 エンコードされた文字列を、長さ `N` の n-gram に分割します。
 
-**構文**
+Splits a UTF-8 string into n-grams of length `N`.
+
+
+**Syntax**
 
 ```sql
 ngrams(s, N)
 ```
 
-**引数**
+**Arguments**
 
-* `s` — 入力文字列。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
-* `N` — N-gram の長さ。[`const UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+- `s` — Input string. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+- `N` — The n-gram length. [`const UInt8/16/32/64`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-N-gram の配列を返します。[`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**例**
+Returns an array with n-grams. [`Array(String)`](/sql-reference/data-types/array)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT ngrams('ClickHouse', 3);
@@ -167,42 +182,46 @@ SELECT ngrams('ClickHouse', 3);
 ['Cli','lic','ick','ckH','kHo','Hou','ous','use']
 ```
 
+
+
 ## splitByChar {#splitByChar}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-指定された、長さがちょうど 1 文字の定数文字列 `separator` で区切られた文字列を分割し、部分文字列の配列を返します。
-セパレーターが文字列の先頭または末尾に現れる場合、または連続して複数のセパレーターが現れる場合には、空の部分文字列が生成されることがあります。
+
+Splits a string separated by a specified constant string `separator` of exactly one character into an array of substrings.
+Empty substrings may be selected if the separator occurs at the beginning or end of the string, or if there are multiple consecutive separators.
 
 :::note
-[`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string)（デフォルト: `0`）は、引数 `max_substrings > 0` のときに、残りの文字列を結果配列の最後の要素に含めるかどうかを制御します。
+Setting [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string) (default: `0`) controls if the remaining string is included in the last element of the result array when argument `max_substrings > 0`.
 :::
 
-空の部分文字列が生成される場合:
+Empty substrings may be selected when:
+- A separator occurs at the beginning or end of the string
+- There are multiple consecutive separators
+- The original string `s` is empty
 
-* 文字列の先頭または末尾にセパレーターが現れる場合
-* 複数のセパレーターが連続して現れる場合
-* 元の文字列 `s` が空である場合
 
-**構文**
+**Syntax**
 
 ```sql
 splitByChar(separator, s[, max_substrings])
 ```
 
-**引数**
+**Arguments**
 
-* `separator` — セパレータは 1 バイトの文字である必要があります。 [`String`](/sql-reference/data-types/string)
-* `s` — 分割対象の文字列。 [`String`](/sql-reference/data-types/string)
-* `max_substrings` — 省略可能。`max_substrings > 0` の場合、返される配列には最大で `max_substrings` 個の部分文字列が含まれます。0 以下の場合は、可能な限り多くの部分文字列を返します。デフォルト値は `0` です。  [`Int64`](/sql-reference/data-types/int-uint)
+- `separator` — The separator must be a single-byte character. [`String`](/sql-reference/data-types/string)
+- `s` — The string to split. [`String`](/sql-reference/data-types/string)
+- `max_substrings` — Optional. If `max_substrings > 0`, the returned array will contain at most `max_substrings` substrings, otherwise the function will return as many substrings as possible. The default value is `0`.  [`Int64`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-抽出された部分文字列の配列を返します。 [`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**例**
+Returns an array of selected substrings. [`Array(String)`](/sql-reference/data-types/array)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT splitByChar(',', '1,2,3,abcde');
@@ -214,34 +233,39 @@ SELECT splitByChar(',', '1,2,3,abcde');
 └──────────────────────────┘
 ```
 
+
+
 ## splitByNonAlpha {#splitByNonAlpha}
 
-導入バージョン: v21.9
+Introduced in: v21.9
 
-空白文字や句読点文字で区切られた文字列を、部分文字列の配列に分割します。
+
+Splits a string separated by whitespace and punctuation characters into an array of substrings.
 
 :::note
-[`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string)（デフォルト: `0`）設定は、引数 `max_substrings > 0` の場合に、残りの文字列を結果配列の最後の要素に含めるかどうかを制御します。
+Setting [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string) (default: `0`) controls if the remaining string is included in the last element of the result array when argument `max_substrings > 0`.
 :::
 
-**構文**
+
+**Syntax**
 
 ```sql
 splitByNonAlpha(s[, max_substrings])
 ```
 
-**引数**
+**Arguments**
 
-* `s` — 分割対象の文字列。[`String`](/sql-reference/data-types/string)
-* `max_substrings` — 省略可能。`max_substrings > 0` の場合、返される部分文字列の数は最大 `max_substrings` 個となり、それ以外の場合は可能な限り多くの部分文字列を返します。デフォルト値: `0`。[`Int64`](/sql-reference/data-types/int-uint)
+- `s` — The string to split. [`String`](/sql-reference/data-types/string)
+- `max_substrings` — Optional. When `max_substrings > 0`, the returned substrings will be no more than `max_substrings`, otherwise the function will return as many substrings as possible. Default value: `0`. [`Int64`](/sql-reference/data-types/int-uint)
 
-**返される値**
 
-`s` を分割して得られる部分文字列の配列を返します。[`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**例**
+Returns an array of selected substrings of `s`. [`Array(String)`](/sql-reference/data-types/array)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT splitByNonAlpha('user@domain.com');
@@ -251,43 +275,47 @@ SELECT splitByNonAlpha('user@domain.com');
 ['user','domain','com']
 ```
 
+
+
 ## splitByRegexp {#splitByRegexp}
 
-導入バージョン: v21.6
+Introduced in: v21.6
 
-指定した正規表現で文字列を分割し、部分文字列の配列を返します。
-指定した正規表現が空文字列の場合、元の文字列は 1 文字ごとの配列に分割されます。
-正規表現に 1 つもマッチしない場合、文字列は分割されません。
 
-空の部分文字列が返される場合:
+Splits a string which is separated by the provided regular expression into an array of substrings.
+If the provided regular expression is empty, it will split the string into an array of single characters.
+If no match is found for the regular expression, the string won't be split.
 
-* 非空の正規表現が文字列の先頭または末尾にマッチした場合
-* 非空の正規表現のマッチが連続して複数存在する場合
-* 正規表現が空でなく、元の文字列が空文字列である場合。
+Empty substrings may be selected when:
+- a non-empty regular expression match occurs at the beginning or end of the string
+- there are multiple consecutive non-empty regular expression matches
+- the original string string is empty while the regular expression is not empty.
 
 :::note
-[`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string)（デフォルト値: `0`）は、引数 `max_substrings > 0` の場合に、残りの文字列を結果配列の最後の要素に含めるかどうかを制御します。
+Setting [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string) (default: `0`) controls if the remaining string is included in the last element of the result array when argument `max_substrings > 0`.
 :::
 
-**構文**
+
+**Syntax**
 
 ```sql
 splitByRegexp(regexp, s[, max_substrings])
 ```
 
-**引数**
+**Arguments**
 
-* `regexp` — 正規表現。定数値。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
-* `s` — 分割対象の文字列。[`String`](/sql-reference/data-types/string)
-* `max_substrings` — 省略可能。`max_substrings > 0` の場合、返される部分文字列の数は最大で `max_substrings` 個となり、それ以外の場合は可能な限り多くの部分文字列を返します。デフォルト値: `0`。[`Int64`](/sql-reference/data-types/int-uint)
+- `regexp` — Regular expression. Constant. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+- `s` — The string to split. [`String`](/sql-reference/data-types/string)
+- `max_substrings` — Optional. When `max_substrings > 0`, the returned substrings will be no more than `max_substrings`, otherwise the function will return as many substrings as possible. Default value: `0`. [`Int64`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-`s` から抽出された部分文字列の配列を返します。[`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**例**
+Returns an array of the selected substrings of `s`. [`Array(String)`](/sql-reference/data-types/array)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT splitByRegexp('\\d+', 'a12bc23de345f');
@@ -299,7 +327,7 @@ SELECT splitByRegexp('\\d+', 'a12bc23de345f');
 └──────────────────────────┘
 ```
 
-**空の正規表現**
+**Empty regexp**
 
 ```sql title=Query
 SELECT splitByRegexp('', 'abcde');
@@ -311,42 +339,46 @@ SELECT splitByRegexp('', 'abcde');
 └────────────────────────────┘
 ```
 
+
+
 ## splitByString {#splitByString}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-複数文字からなる定数の `separator` で文字列を分割し、部分文字列の配列を返します。
-文字列 `separator` が空の場合、文字列 `s` を 1 文字ごとの配列に分割します。
 
-次の場合、空の部分文字列が生成されることがあります:
+Splits a string with a constant `separator` consisting of multiple characters into an array of substrings.
+If the string `separator` is empty, it will split the string `s` into an array of single characters.
 
-* 空ではないセパレーターが文字列の先頭または末尾に現れる場合
-* 空ではないセパレーターが連続して複数現れる場合
-* 元の文字列 `s` が空で、セパレーターは空でない場合
+Empty substrings may be selected when:
+- A non-empty separator occurs at the beginning or end of the string
+- There are multiple consecutive non-empty separators
+- The original string `s` is empty while the separator is not empty
 
 :::note
-[`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string)（デフォルト: `0`）は、引数 `max_substrings > 0` のときに、残りの文字列を結果配列の最後の要素に含めるかどうかを制御します。
+Setting [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string) (default: `0`) controls if the remaining string is included in the last element of the result array when argument `max_substrings > 0`.
 :::
 
-**構文**
+
+**Syntax**
 
 ```sql
 splitByString(separator, s[, max_substrings])
 ```
 
-**引数**
+**Arguments**
 
-* `separator` — 区切り文字列。[`String`](/sql-reference/data-types/string)
-* `s` — 分割する文字列。[`String`](/sql-reference/data-types/string)
-* `max_substrings` — 省略可能。`max_substrings > 0` の場合、返される部分文字列の数は `max_substrings` を超えません。それ以外の場合は、可能な限り多くの部分文字列を返します。デフォルト値: `0`。[`Int64`](/sql-reference/data-types/int-uint)
+- `separator` — The separator. [`String`](/sql-reference/data-types/string)
+- `s` — The string to split. [`String`](/sql-reference/data-types/string)
+- `max_substrings` — Optional. When `max_substrings > 0`, the returned substrings will be no more than `max_substrings`, otherwise the function will return as many substrings as possible. Default value: `0`. [`Int64`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-`s` から抽出された部分文字列の配列を返します。[`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**例**
+Returns an array of selected substrings of `s` [`Array(String)`](/sql-reference/data-types/array)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT splitByString(', ', '1, 2 3, 4,5, abcde');
@@ -358,7 +390,7 @@ SELECT splitByString(', ', '1, 2 3, 4,5, abcde');
 └───────────────────────────┘
 ```
 
-**空のセパレーター**
+**Empty separator**
 
 ```sql title=Query
 SELECT splitByString('', 'abcde');
@@ -370,34 +402,39 @@ SELECT splitByString('', 'abcde');
 └────────────────────────────┘
 ```
 
+
+
 ## splitByWhitespace {#splitByWhitespace}
 
-導入バージョン: v21.9
+Introduced in: v21.9
 
-空白文字で区切られた文字列を、部分文字列の配列に分割します。
+
+Splits a string which is separated by whitespace characters into an array of substrings.
 
 :::note
-設定 [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string)（デフォルト値: `0`）は、引数 `max_substrings > 0` のときに、残りの文字列を結果配列の最後の要素に含めるかどうかを制御します。
+Setting [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string) (default: `0`) controls if the remaining string is included in the last element of the result array when argument `max_substrings > 0`.
 :::
 
-**構文**
+
+**Syntax**
 
 ```sql
 splitByWhitespace(s[, max_substrings])
 ```
 
-**引数**
+**Arguments**
 
-* `s` — 分割する文字列。[`String`](/sql-reference/data-types/string)
-* `max_substrings` — 省略可能。`max_substrings > 0` の場合、返される部分文字列の数は `max_substrings` を超えません。`max_substrings <= 0` の場合は、可能な限り多くの部分文字列を返します。デフォルト値: `0`。[`Int64`](/sql-reference/data-types/int-uint)
+- `s` — The string to split. [`String`](/sql-reference/data-types/string)
+- `max_substrings` — Optional. When `max_substrings > 0`, the returned substrings will be no more than `max_substrings`, otherwise the function will return as many substrings as possible. Default value: `0`. [`Int64`](/sql-reference/data-types/int-uint)
 
-**返される値**
 
-`s` を分割して得られた部分文字列の配列を返します。[`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**例**
+Returns an array of the selected substrings of `s`. [`Array(String)`](/sql-reference/data-types/array)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT splitByWhitespace('  1!  a,  b.  ');
@@ -407,37 +444,42 @@ SELECT splitByWhitespace('  1!  a,  b.  ');
 ['1!','a,','b.']
 ```
 
+
+
 ## tokens {#tokens}
 
-導入バージョン: v21.11
+Introduced in: v21.11
 
-指定したトークナイザを使って文字列をトークンに分割します。
-デフォルトのトークナイザは、英数字以外の ASCII 文字を区切り文字として使用します。
 
-`split` トークナイザの場合、トークンが[接頭辞符号](https://en.wikipedia.org/wiki/Prefix_code)を構成しないときは、より長い区切り文字を優先してマッチさせたいことが多いでしょう。
-その場合は、区切り文字を長いものから短いものの順（降順）に並べて渡してください。
-例えば、separators = `['%21', '%']` の場合、文字列 `%21abc` は `['abc']` とトークン化されますが、separators = `['%', '%21']` の場合は `['21ac']` にトークン化されます（これはおそらく意図した結果ではありません）。
+Splits a string into tokens using the given tokenizer.
+The default tokenizer uses non-alphanumeric ASCII characters as separators.
 
-**構文**
+In case of the `split` tokenizer, if the tokens do not form a [prefix code](https://en.wikipedia.org/wiki/Prefix_code), you likely want that the matching prefers longer separators first.
+To do so, pass the separators in order of descending length.
+For example, with separators = `['%21', '%']` string `%21abc` would be tokenized as `['abc']`, whereas separators = `['%', '%21']` would tokenize to `['21ac']` (which is likely not what you wanted).
+
+
+**Syntax**
 
 ```sql
 tokens(value[, tokenizer[, ngrams[, separators]]])
 ```
 
-**引数**
+**Arguments**
 
-* `value` — 入力文字列。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
-* `tokenizer` — 使用するトークナイザー。指定可能な値は `splitByNonAlpha`、`ngrams`、`splitByString`、`array`、`sparseGrams`。省略可能で、明示的に指定しない場合は `splitByNonAlpha` がデフォルト。[`const String`](/sql-reference/data-types/string)
-* `ngrams` — 引数 `tokenizer` が `ngrams` の場合にのみ有効: n-gram の長さを指定するオプションのパラメータ。1 から 8 の間である必要があります。明示的に指定しない場合、デフォルトは `3`。[`const UInt8`](/sql-reference/data-types/int-uint)
-* `separators` — 引数 `tokenizer` が `split` の場合にのみ有効: セパレーターとなる文字列を指定するオプションのパラメータ。明示的に指定しない場合、デフォルトは `[' ']`。[`const Array(String)`](/sql-reference/data-types/array)
+- `value` — The input string. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+- `tokenizer` — The tokenizer to use. Valid arguments are `splitByNonAlpha`, `ngrams`, `splitByString`, `array`, and `sparseGrams`. Optional, if not set explicitly, defaults to `splitByNonAlpha`. [`const String`](/sql-reference/data-types/string)
+- `ngrams` — Only relevant if argument `tokenizer` is `ngrams`: An optional parameter which defines the length of the ngrams. Must be between 1 and 8. If not set explicitly, defaults to `3`. [`const UInt8`](/sql-reference/data-types/int-uint)
+- `separators` — Only relevant if argument `tokenizer` is `split`: An optional parameter which defines the separator strings. If not set explicitly, defaults to `[' ']`. [`const Array(String)`](/sql-reference/data-types/array)
 
-**戻り値**
 
-入力文字列から得られるトークンの配列を返します。[`Array`](/sql-reference/data-types/array)
+**Returned value**
 
-**使用例**
+Returns the resulting array of tokens from input string. [`Array`](/sql-reference/data-types/array)
 
-**デフォルトのトークナイザー**
+**Examples**
+
+**Default tokenizer**
 
 ```sql title=Query
 SELECT tokens('test1,;\\\\ test2,;\\\\ test3,;\\\\   test4') AS tokens;
@@ -447,7 +489,7 @@ SELECT tokens('test1,;\\\\ test2,;\\\\ test3,;\\\\   test4') AS tokens;
 ['test1','test2','test3','test4']
 ```
 
-**N-gram トークナイザ**
+**Ngram tokenizer**
 
 ```sql title=Query
 SELECT tokens('abc def', 'ngrams', 3) AS tokens;

@@ -29,14 +29,14 @@ MALLOC_CONF=background_thread:true,prof:true
 <Tabs groupId="binary">
   <TabItem value="clickhouse" label="ClickHouse">
     ```sql
-    SYSTEM JEMALLOC FLUSH PROFILE
-    ```
+SYSTEM JEMALLOC FLUSH PROFILE
+```
   </TabItem>
 
   <TabItem value="keeper" label="Keeper">
     ```sh
-    echo jmfp | nc localhost 9181
-    ```
+echo jmfp | nc localhost 9181
+```
   </TabItem>
 </Tabs>
 
@@ -132,14 +132,14 @@ ClickHouse/Keeper をプロファイラを有効にした状態で起動した�
 <Tabs groupId="binary">
   <TabItem value="clickhouse" label="ClickHouse">
     ```sql
-    SYSTEM JEMALLOC DISABLE PROFILE
-    ```
+SYSTEM JEMALLOC DISABLE PROFILE
+```
   </TabItem>
 
   <TabItem value="keeper" label="Keeper">
     ```sh
-    echo jmdp | nc localhost 9181
-    ```
+echo jmdp | nc localhost 9181
+```
   </TabItem>
 </Tabs>
 
@@ -148,14 +148,14 @@ ClickHouse/Keeper をプロファイラを有効にした状態で起動した�
 <Tabs groupId="binary">
   <TabItem value="clickhouse" label="ClickHouse">
     ```sql
-    SYSTEM JEMALLOC ENABLE PROFILE
-    ```
+SYSTEM JEMALLOC ENABLE PROFILE
+```
   </TabItem>
 
   <TabItem value="keeper" label="Keeper">
     ```sh
-    echo jmep | nc localhost 9181
-    ```
+echo jmep | nc localhost 9181
+```
   </TabItem>
 </Tabs>
 

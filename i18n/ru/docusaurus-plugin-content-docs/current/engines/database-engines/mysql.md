@@ -85,16 +85,16 @@ SELECT @@version;
 
 ```text
 mysql> USE test;
-База данных изменена
+Database changed
 
 mysql> CREATE TABLE `mysql_table` (
     ->   `int_id` INT NOT NULL AUTO_INCREMENT,
     ->   `float` FLOAT NOT NULL,
     ->   PRIMARY KEY (`int_id`));
-Запрос выполнен, затронуто строк: 0 (0,09 сек.)
+Query OK, 0 rows affected (0,09 sec)
 
 mysql> insert into mysql_table (`int_id`, `float`) VALUES (1,2);
-Запрос выполнен, затронута 1 строка (0,00 сек.)
+Query OK, 1 row affected (0,00 sec)
 
 mysql> select * from mysql_table;
 +------+-----+
@@ -102,7 +102,7 @@ mysql> select * from mysql_table;
 +------+-----+
 |      1 |     2 |
 +------+-----+
-Строк в результате: 1 (0,00 сек.)
+1 row in set (0,00 sec)
 ```
 
 База данных ClickHouse, обменивающаяся данными с сервером MySQL:

@@ -132,34 +132,222 @@ ClickHouse использует [TTL-выражения](/use-cases/observabilit
     <summary>Маппинг Elasticsearch</summary>
 
     ```javascripton
-    GET .ds-logs-system.syslog-default-2025.06.03-000001/_mapping
-    {
-      ".ds-logs-system.syslog-default-2025.06.03-000001": {
-        "mappings": {
-          "_meta": {
-            "managed_by": "fleet",
-            "managed": true,
-            "package": {
-              "name": "system"
-            }
-          },
-          "_data_stream_timestamp": {
-            "enabled": true
-          },
-          "dynamic_templates": [],
-          "date_detection": false,
+GET .ds-logs-system.syslog-default-2025.06.03-000001/_mapping
+{
+  ".ds-logs-system.syslog-default-2025.06.03-000001": {
+    "mappings": {
+      "_meta": {
+        "managed_by": "fleet",
+        "managed": true,
+        "package": {
+          "name": "system"
+        }
+      },
+      "_data_stream_timestamp": {
+        "enabled": true
+      },
+      "dynamic_templates": [],
+      "date_detection": false,
+      "properties": {
+        "@timestamp": {
+          "type": "date",
+          "ignore_malformed": false
+        },
+        "agent": {
           "properties": {
-            "@timestamp": {
+            "ephemeral_id": {
+              "type": "keyword",
+              "ignore_above": 1024
+            },
+            "id": {
+              "type": "keyword",
+              "ignore_above": 1024
+            },
+            "name": {
+              "type": "keyword",
+              "fields": {
+                "text": {
+                  "type": "match_only_text"
+                }
+              }
+            },
+            "type": {
+              "type": "keyword",
+              "ignore_above": 1024
+            },
+            "version": {
+              "type": "keyword",
+              "ignore_above": 1024
+            }
+          }
+        },
+        "cloud": {
+          "properties": {
+            "account": {
+              "properties": {
+                "id": {
+                  "type": "keyword",
+                  "ignore_above": 1024
+                }
+              }
+            },
+            "availability_zone": {
+              "type": "keyword",
+              "ignore_above": 1024
+            },
+            "image": {
+              "properties": {
+                "id": {
+                  "type": "keyword",
+                  "ignore_above": 1024
+                }
+              }
+            },
+            "instance": {
+              "properties": {
+                "id": {
+                  "type": "keyword",
+                  "ignore_above": 1024
+                }
+              }
+            },
+            "machine": {
+              "properties": {
+                "type": {
+                  "type": "keyword",
+                  "ignore_above": 1024
+                }
+              }
+            },
+            "provider": {
+              "type": "keyword",
+              "ignore_above": 1024
+            },
+            "region": {
+              "type": "keyword",
+              "ignore_above": 1024
+            },
+            "service": {
+              "properties": {
+                "name": {
+                  "type": "keyword",
+                  "fields": {
+                    "text": {
+                      "type": "match_only_text"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "data_stream": {
+          "properties": {
+            "dataset": {
+              "type": "constant_keyword",
+              "value": "system.syslog"
+            },
+            "namespace": {
+              "type": "constant_keyword",
+              "value": "default"
+            },
+            "type": {
+              "type": "constant_keyword",
+              "value": "logs"
+            }
+          }
+        },
+        "ecs": {
+          "properties": {
+            "version": {
+              "type": "keyword",
+              "ignore_above": 1024
+            }
+          }
+        },
+        "elastic_agent": {
+          "properties": {
+            "id": {
+              "type": "keyword",
+              "ignore_above": 1024
+            },
+            "snapshot": {
+              "type": "boolean"
+            },
+            "version": {
+              "type": "keyword",
+              "ignore_above": 1024
+            }
+          }
+        },
+        "event": {
+          "properties": {
+            "agent_id_status": {
+              "type": "keyword",
+              "ignore_above": 1024
+            },
+            "dataset": {
+              "type": "constant_keyword",
+              "value": "system.syslog"
+            },
+            "ingested": {
               "type": "date",
+              "format": "strict_date_time_no_millis||strict_date_optional_time||epoch_millis",
               "ignore_malformed": false
             },
-            "agent": {
+            "module": {
+              "type": "constant_keyword",
+              "value": "system"
+            },
+            "timezone": {
+              "type": "keyword",
+              "ignore_above": 1024
+            }
+          }
+        },
+        "host": {
+          "properties": {
+            "architecture": {
+              "type": "keyword",
+              "ignore_above": 1024
+            },
+            "containerized": {
+              "type": "boolean"
+            },
+            "hostname": {
+              "type": "keyword",
+              "ignore_above": 1024
+            },
+            "id": {
+              "type": "keyword",
+              "ignore_above": 1024
+            },
+            "ip": {
+              "type": "ip"
+            },
+            "mac": {
+              "type": "keyword",
+              "ignore_above": 1024
+            },
+            "name": {
+              "type": "keyword",
+              "ignore_above": 1024
+            },
+            "os": {
               "properties": {
-                "ephemeral_id": {
+                "build": {
                   "type": "keyword",
                   "ignore_above": 1024
                 },
-                "id": {
+                "codename": {
+                  "type": "keyword",
+                  "ignore_above": 1024
+                },
+                "family": {
+                  "type": "keyword",
+                  "ignore_above": 1024
+                },
+                "kernel": {
                   "type": "keyword",
                   "ignore_above": 1024
                 },
@@ -171,6 +359,10 @@ ClickHouse использует [TTL-выражения](/use-cases/observabilit
                     }
                   }
                 },
+                "platform": {
+                  "type": "keyword",
+                  "ignore_above": 1024
+                },
                 "type": {
                   "type": "keyword",
                   "ignore_above": 1024
@@ -180,258 +372,66 @@ ClickHouse использует [TTL-выражения](/use-cases/observabilit
                   "ignore_above": 1024
                 }
               }
-            },
-            "cloud": {
+            }
+          }
+        },
+        "input": {
+          "properties": {
+            "type": {
+              "type": "keyword",
+              "ignore_above": 1024
+            }
+          }
+        },
+        "log": {
+          "properties": {
+            "file": {
               "properties": {
-                "account": {
-                  "properties": {
-                    "id": {
-                      "type": "keyword",
-                      "ignore_above": 1024
-                    }
-                  }
-                },
-                "availability_zone": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                },
-                "image": {
-                  "properties": {
-                    "id": {
-                      "type": "keyword",
-                      "ignore_above": 1024
-                    }
-                  }
-                },
-                "instance": {
-                  "properties": {
-                    "id": {
-                      "type": "keyword",
-                      "ignore_above": 1024
-                    }
-                  }
-                },
-                "machine": {
-                  "properties": {
-                    "type": {
-                      "type": "keyword",
-                      "ignore_above": 1024
-                    }
-                  }
-                },
-                "provider": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                },
-                "region": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                },
-                "service": {
-                  "properties": {
-                    "name": {
-                      "type": "keyword",
-                      "fields": {
-                        "text": {
-                          "type": "match_only_text"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "data_stream": {
-              "properties": {
-                "dataset": {
-                  "type": "constant_keyword",
-                  "value": "system.syslog"
-                },
-                "namespace": {
-                  "type": "constant_keyword",
-                  "value": "default"
-                },
-                "type": {
-                  "type": "constant_keyword",
-                  "value": "logs"
-                }
-              }
-            },
-            "ecs": {
-              "properties": {
-                "version": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "elastic_agent": {
-              "properties": {
-                "id": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                },
-                "snapshot": {
-                  "type": "boolean"
-                },
-                "version": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "event": {
-              "properties": {
-                "agent_id_status": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                },
-                "dataset": {
-                  "type": "constant_keyword",
-                  "value": "system.syslog"
-                },
-                "ingested": {
-                  "type": "date",
-                  "format": "strict_date_time_no_millis||strict_date_optional_time||epoch_millis",
-                  "ignore_malformed": false
-                },
-                "module": {
-                  "type": "constant_keyword",
-                  "value": "system"
-                },
-                "timezone": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "host": {
-              "properties": {
-                "architecture": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                },
-                "containerized": {
-                  "type": "boolean"
-                },
-                "hostname": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                },
-                "id": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                },
-                "ip": {
-                  "type": "ip"
-                },
-                "mac": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                },
-                "name": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                },
-                "os": {
-                  "properties": {
-                    "build": {
-                      "type": "keyword",
-                      "ignore_above": 1024
-                    },
-                    "codename": {
-                      "type": "keyword",
-                      "ignore_above": 1024
-                    },
-                    "family": {
-                      "type": "keyword",
-                      "ignore_above": 1024
-                    },
-                    "kernel": {
-                      "type": "keyword",
-                      "ignore_above": 1024
-                    },
-                    "name": {
-                      "type": "keyword",
-                      "fields": {
-                        "text": {
-                          "type": "match_only_text"
-                        }
-                      }
-                    },
-                    "platform": {
-                      "type": "keyword",
-                      "ignore_above": 1024
-                    },
-                    "type": {
-                      "type": "keyword",
-                      "ignore_above": 1024
-                    },
-                    "version": {
-                      "type": "keyword",
-                      "ignore_above": 1024
-                    }
-                  }
-                }
-              }
-            },
-            "input": {
-              "properties": {
-                "type": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "log": {
-              "properties": {
-                "file": {
-                  "properties": {
-                    "path": {
-                      "type": "keyword",
-                      "fields": {
-                        "text": {
-                          "type": "match_only_text"
-                        }
-                      }
-                    }
-                  }
-                },
-                "offset": {
-                  "type": "long"
-                }
-              }
-            },
-            "message": {
-              "type": "match_only_text"
-            },
-            "process": {
-              "properties": {
-                "name": {
+                "path": {
                   "type": "keyword",
                   "fields": {
                     "text": {
                       "type": "match_only_text"
                     }
                   }
-                },
-                "pid": {
-                  "type": "long"
                 }
               }
             },
-            "system": {
-              "properties": {
-                "syslog": {
-                  "type": "object"
+            "offset": {
+              "type": "long"
+            }
+          }
+        },
+        "message": {
+          "type": "match_only_text"
+        },
+        "process": {
+          "properties": {
+            "name": {
+              "type": "keyword",
+              "fields": {
+                "text": {
+                  "type": "match_only_text"
                 }
               }
+            },
+            "pid": {
+              "type": "long"
+            }
+          }
+        },
+        "system": {
+          "properties": {
+            "syslog": {
+              "type": "object"
             }
           }
         }
       }
     }
-    ```
+  }
+}
+```
   </details>
 
   Соответствующая схема таблицы ClickHouse:
@@ -440,80 +440,80 @@ ClickHouse использует [TTL-выражения](/use-cases/observabilit
     <summary>Схема ClickHouse</summary>
 
     ```sql
-    SET enable_json_type = 1;
+SET enable_json_type = 1;
 
-    CREATE TABLE logs_system_syslog
-    (
-        `@timestamp` DateTime,
-        `agent` Tuple(
-            ephemeral_id String,
-            id String,
+CREATE TABLE logs_system_syslog
+(
+    `@timestamp` DateTime,
+    `agent` Tuple(
+        ephemeral_id String,
+        id String,
+        name String,
+        type String,
+        version String),
+    `cloud` Tuple(
+        account Tuple(
+            id String),
+        availability_zone String,
+        image Tuple(
+            id String),
+        instance Tuple(
+            id String),
+        machine Tuple(
+            type String),
+        provider String,
+        region String,
+        service Tuple(
+            name String)),
+    `data_stream` Tuple(
+        dataset String,
+        namespace String,
+        type String),
+    `ecs` Tuple(
+        version String),
+    `elastic_agent` Tuple(
+        id String,
+        snapshot UInt8,
+        version String),
+    `event` Tuple(
+        agent_id_status String,
+        dataset String,
+        ingested DateTime,
+        module String,
+        timezone String),
+    `host` Tuple(
+        architecture String,
+        containerized UInt8,
+        hostname String,
+        id String,
+        ip Array(Variant(IPv4, IPv6)),
+        mac Array(String),
+        name String,
+        os Tuple(
+            build String,
+            codename String,
+            family String,
+            kernel String,
             name String,
+            platform String,
             type String,
-            version String),
-        `cloud` Tuple(
-            account Tuple(
-                id String),
-            availability_zone String,
-            image Tuple(
-                id String),
-            instance Tuple(
-                id String),
-            machine Tuple(
-                type String),
-            provider String,
-            region String,
-            service Tuple(
-                name String)),
-        `data_stream` Tuple(
-            dataset String,
-            namespace String,
-            type String),
-        `ecs` Tuple(
-            version String),
-        `elastic_agent` Tuple(
-            id String,
-            snapshot UInt8,
-            version String),
-        `event` Tuple(
-            agent_id_status String,
-            dataset String,
-            ingested DateTime,
-            module String,
-            timezone String),
-        `host` Tuple(
-            architecture String,
-            containerized UInt8,
-            hostname String,
-            id String,
-            ip Array(Variant(IPv4, IPv6)),
-            mac Array(String),
-            name String,
-            os Tuple(
-                build String,
-                codename String,
-                family String,
-                kernel String,
-                name String,
-                platform String,
-                type String,
-                version String)),
-        `input` Tuple(
-            type String),
-        `log` Tuple(
-            file Tuple(
-                path String),
-            offset Int64),
-        `message` String,
-        `process` Tuple(
-            name String,
-            pid Int64),
-        `system` Tuple(
-            syslog JSON)
-    )
-    ENGINE = MergeTree
-    ORDER BY (`host.name`, `@timestamp`)
-    ```
+            version String)),
+    `input` Tuple(
+        type String),
+    `log` Tuple(
+        file Tuple(
+            path String),
+        offset Int64),
+    `message` String,
+    `process` Tuple(
+        name String,
+        pid Int64),
+    `system` Tuple(
+        syslog JSON)
+)
+ENGINE = MergeTree
+ORDER BY (`host.name`, `@timestamp`)
+```
   </details>
 
   Обратите внимание:
@@ -543,15 +543,15 @@ ClickHouse использует [TTL-выражения](/use-cases/observabilit
   В качестве альтернативы можно просто создать таблицу с одним столбцом типа `JSON`.
 
   ```sql
-  SET enable_json_type = 1;
+SET enable_json_type = 1;
 
-  CREATE TABLE syslog_json
-  (
-   `json` JSON(`host.name` String, `@timestamp` DateTime)
-  )
-  ENGINE = MergeTree
-  ORDER BY (`json.host.name`, `json.@timestamp`)
-  ```
+CREATE TABLE syslog_json
+(
+ `json` JSON(`host.name` String, `@timestamp` DateTime)
+)
+ENGINE = MergeTree
+ORDER BY (`json.host.name`, `json.@timestamp`)
+```
 
   :::note
   Мы указываем тип для столбцов `host.name` и `timestamp` в определении JSON, так как используем их в ключе сортировки/первичном ключе. Это позволяет ClickHouse определить, что столбец не будет содержать значения null, и гарантирует корректный выбор подстолбцов (для каждого типа может существовать несколько вариантов, что иначе приводит к неоднозначности).
@@ -566,8 +566,8 @@ ClickHouse использует [TTL-выражения](/use-cases/observabilit
   Мы рекомендуем использовать [`elasticdump`](https://github.com/elasticsearch-dump/elasticsearch-dump) для экспорта данных из Elasticsearch. Этот инструмент требует `node` и должен быть установлен на машине с сетевым доступом как к Elasticsearch, так и к ClickHouse. Для большинства экспортов рекомендуется выделенный сервер с минимум 4 ядрами и 16 ГБ оперативной памяти.
 
   ```shell
-  npm install elasticdump -g
-  ```
+npm install elasticdump -g
+```
 
   `elasticdump` предлагает ряд преимуществ для миграции данных:
 
@@ -586,20 +586,20 @@ ClickHouse использует [TTL-выражения](/use-cases/observabilit
   Для потоковой передачи данных между Elasticsearch и ClickHouse используйте команду `elasticdump`, направляя вывод напрямую в клиент ClickHouse. Следующая команда вставляет данные в хорошо структурированную таблицу `logs_system_syslog`.
 
   ```shell
-  # экспорт URL и учетных данных
-  export ELASTICSEARCH_INDEX=.ds-logs-system.syslog-default-2025.06.03-000001
-  export ELASTICSEARCH_URL=
-  export ELASTICDUMP_INPUT_USERNAME=
-  export ELASTICDUMP_INPUT_PASSWORD=
-  export CLICKHOUSE_HOST=
-  export CLICKHOUSE_PASSWORD=
-  export CLICKHOUSE_USER=default
+# export url and credentials
+export ELASTICSEARCH_INDEX=.ds-logs-system.syslog-default-2025.06.03-000001
+export ELASTICSEARCH_URL=
+export ELASTICDUMP_INPUT_USERNAME=
+export ELASTICDUMP_INPUT_PASSWORD=
+export CLICKHOUSE_HOST=
+export CLICKHOUSE_PASSWORD=
+export CLICKHOUSE_USER=default
 
-  # команда для запуска — при необходимости измените параметры
-  elasticdump --input=${ELASTICSEARCH_URL} --type=data --input-index ${ELASTICSEARCH_INDEX} --output=$ --sourceOnly --searchAfter --pit=true | 
-  clickhouse-client --host ${CLICKHOUSE_HOST} --secure --password ${CLICKHOUSE_PASSWORD} --user ${CLICKHOUSE_USER} --max_insert_block_size=1000 \
-  --min_insert_block_size_bytes=0 --min_insert_block_size_rows=1000 --query="INSERT INTO test.logs_system_syslog FORMAT JSONEachRow"
-  ```
+# command to run - modify as required
+elasticdump --input=${ELASTICSEARCH_URL} --type=data --input-index ${ELASTICSEARCH_INDEX} --output=$ --sourceOnly --searchAfter --pit=true | 
+clickhouse-client --host ${CLICKHOUSE_HOST} --secure --password ${CLICKHOUSE_PASSWORD} --user ${CLICKHOUSE_USER} --max_insert_block_size=1000 \
+--min_insert_block_size_bytes=0 --min_insert_block_size_rows=1000 --query="INSERT INTO test.logs_system_syslog FORMAT JSONEachRow"
+```
 
   Обратите внимание на следующие флаги для `elasticdump`:
 
@@ -627,10 +627,10 @@ ClickHouse использует [TTL-выражения](/use-cases/observabilit
   При вставке данных в одну колонку JSON (см. схему `syslog_json` выше) можно использовать ту же команду вставки. Однако пользователи должны указать `JSONAsObject` в качестве формата вместо `JSONEachRow`, например:
 
   ```shell
-  elasticdump --input=${ELASTICSEARCH_URL} --type=data --input-index ${ELASTICSEARCH_INDEX} --output=$ --sourceOnly --searchAfter --pit=true | 
-  clickhouse-client --host ${CLICKHOUSE_HOST} --secure --password ${CLICKHOUSE_PASSWORD} --user ${CLICKHOUSE_USER} --max_insert_block_size=1000 \
-  --min_insert_block_size_bytes=0 --min_insert_block_size_rows=1000 --query="INSERT INTO test.logs_system_syslog FORMAT JSONAsObject"
-  ```
+elasticdump --input=${ELASTICSEARCH_URL} --type=data --input-index ${ELASTICSEARCH_INDEX} --output=$ --sourceOnly --searchAfter --pit=true | 
+clickhouse-client --host ${CLICKHOUSE_HOST} --secure --password ${CLICKHOUSE_PASSWORD} --user ${CLICKHOUSE_USER} --max_insert_block_size=1000 \
+--min_insert_block_size_bytes=0 --min_insert_block_size_rows=1000 --query="INSERT INTO test.logs_system_syslog FORMAT JSONAsObject"
+```
 
   Подробнее см. [&quot;Чтение JSON как объекта&quot;](/integrations/data-formats/json/other-formats#reading-json-as-an-object).
   :::
@@ -644,22 +644,22 @@ ClickHouse использует [TTL-выражения](/use-cases/observabilit
   Предположим, что нам нужно сохранить только поля `timestamp` и `hostname` из наших данных. Схема ClickHouse:
 
   ```sql
-  CREATE TABLE logs_system_syslog_v2
-  (
-      `timestamp` DateTime,
-      `hostname` String
-  )
-  ENGINE = MergeTree
-  ORDER BY (hostname, timestamp)
-  ```
+CREATE TABLE logs_system_syslog_v2
+(
+    `timestamp` DateTime,
+    `hostname` String
+)
+ENGINE = MergeTree
+ORDER BY (hostname, timestamp)
+```
 
   Для вставки данных из `elasticdump` в эту таблицу достаточно использовать табличную функцию `input` с типом JSON для автоматического определения и выбора необходимых столбцов. Обратите внимание, что в данный запрос `SELECT` при необходимости можно добавить фильтр.
 
   ```shell
-  elasticdump --input=${ELASTICSEARCH_URL} --type=data --input-index ${ELASTICSEARCH_INDEX} --output=$ --sourceOnly --searchAfter --pit=true |
-  clickhouse-client --host ${CLICKHOUSE_HOST} --secure --password ${CLICKHOUSE_PASSWORD} --user ${CLICKHOUSE_USER} --max_insert_block_size=1000 \
-  --min_insert_block_size_bytes=0 --min_insert_block_size_rows=1000 --query="INSERT INTO test.logs_system_syslog_v2 SELECT json.\`@timestamp\` as timestamp, json.host.hostname as hostname FROM input('json JSON') FORMAT JSONAsObject"
-  ```
+elasticdump --input=${ELASTICSEARCH_URL} --type=data --input-index ${ELASTICSEARCH_INDEX} --output=$ --sourceOnly --searchAfter --pit=true |
+clickhouse-client --host ${CLICKHOUSE_HOST} --secure --password ${CLICKHOUSE_PASSWORD} --user ${CLICKHOUSE_USER} --max_insert_block_size=1000 \
+--min_insert_block_size_bytes=0 --min_insert_block_size_rows=1000 --query="INSERT INTO test.logs_system_syslog_v2 SELECT json.\`@timestamp\` as timestamp, json.host.hostname as hostname FROM input('json JSON') FORMAT JSONAsObject"
+```
 
   Обратите внимание на необходимость экранирования имени поля `@timestamp` и использования формата ввода `JSONAsObject`.
 </VerticalStepper>

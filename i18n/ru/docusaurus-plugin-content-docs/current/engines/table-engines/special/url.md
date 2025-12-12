@@ -85,8 +85,8 @@ SELECT * FROM url_engine_table
 
 ```text
 ┌─word──┬─value─┐
-│ Привет │     1 │
-│ Мир │     2 │
+│ Hello │     1 │
+│ World │     2 │
 └───────┴───────┘
 ```
 

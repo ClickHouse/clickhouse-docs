@@ -24,7 +24,7 @@ doc_type: 'reference'
 ## 语法 {#syntax}
 
 ```sql
-SimpleAggregateFunction(聚合函数名, 参数类型...)
+SimpleAggregateFunction(aggregate_function_name, types_of_arguments...)
 ```
 
 **参数**

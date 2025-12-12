@@ -40,14 +40,14 @@ log.setup({
   },
 });
 
-log.getLogger('my-otel-logger').info('Привет из Deno!');
+log.getLogger('my-otel-logger').info('Hello from Deno!');
 ```
 
 ### Запуск приложения {#run-the-application}
 
 ```shell
-OTEL_EXPORTER_OTLP_HEADERS="authorization=<ВАШ_API_КЛЮЧ_ИНГЕСТИИ>" \
+OTEL_EXPORTER_OTLP_HEADERS="authorization=<YOUR_INGESTION_API_KEY>" \
 OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 \
-OTEL_SERVICE_NAME="<НАЗВАНИЕ_ВАШЕГО_ПРИЛОЖЕНИЯ_ИЛИ_СЕРВИСА>" \
+OTEL_SERVICE_NAME="<NAME_OF_YOUR_APP_OR_SERVICE>" \
 deno run --allow-net --allow-env --allow-read --allow-sys --allow-run app.ts
 ```

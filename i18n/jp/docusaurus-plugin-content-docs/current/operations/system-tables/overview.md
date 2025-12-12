@@ -141,7 +141,7 @@ SHOW TABLES FROM system LIKE 'query_log%'
 │ query_log_9  │
 └──────────────┘
 
-11行が返されました。経過時間: 0.004秒。
+11 rows in set. Elapsed: 0.004 sec.
 ```
 
 ### 複数バージョンにまたがるクエリ {#querying-multiple-versions}
@@ -169,31 +169,42 @@ ORDER BY most_recent DESC
 │ query_log_10 │ 2025-03-18 14:01:33 │
 │ query_log_9  │ 2025-03-18 14:01:32 │
 └──────────────┴─────────────────────┘
+
+11 rows in set. Elapsed: 0.373 sec. Processed 6.44 million rows, 25.77 MB (17.29 million rows/s., 69.17 MB/s.)
+Peak memory usage: 28.45 MiB.
 ```
 
 11 行が返されました。経過時間: 0.373 秒。処理行数: 644 万行、25.77 MB（毎秒 1,729 万行、69.17 MB）。
 ピークメモリ使用量: 28.45 MiB。
 
-````
+````sql
+SELECT
+    hostname() AS host,
+    count()
+FROM system.query_log
+WHERE (event_time >= '2025-04-01 00:00:00') AND (event_time <= '2025-04-12 00:00:00')
+GROUP BY host
 
-:::note 順序付けに数値接尾辞を使用しないでください
-テーブルの数値接尾辞はデータの順序を示唆する場合がありますが、これに依存すべきではありません。このため、特定の日付範囲を対象とする場合は、必ず日付フィルタと組み合わせてmergeテーブル関数を使用してください。
-:::
+┌─host──────────────────────────┬─count()─┐
+│ c-ecru-qn-34-server-s5bnysl-0 │  650543 │
+└───────────────────────────────┴─────────┘
 
-重要な点として、これらのテーブルは依然として**各ノードにローカル**です。
+1 row in set. Elapsed: 0.010 sec. Processed 17.87 thousand rows, 71.51 KB (1.75 million rows/s., 7.01 MB/s.)
 
-### ノード間でのクエリ実行                          {#querying-across-nodes}
+SELECT
+    hostname() AS host,
+    count()
+FROM clusterAllReplicas('default', system.query_log)
+WHERE (event_time >= '2025-04-01 00:00:00') AND (event_time <= '2025-04-12 00:00:00')
+GROUP BY host SETTINGS skip_unavailable_shards = 1
 
-クラスタ全体を包括的に表示するには、[`clusterAllReplicas`](/sql-reference/table-functions/cluster)関数を`merge`関数と組み合わせて使用できます。`clusterAllReplicas`関数は、「default」クラスタ内のすべてのレプリカにわたってシステムテーブルをクエリし、ノード固有のデータを統合された結果に集約します。`merge`関数と組み合わせることで、クラスタ内の特定のテーブルのすべてのシステムデータを対象とすることができます。 
+┌─host──────────────────────────┬─count()─┐
+│ c-ecru-qn-34-server-s5bnysl-0 │  650543 │
+│ c-ecru-qn-34-server-6em4y4t-0 │  656029 │
+│ c-ecru-qn-34-server-iejrkg0-0 │  641155 │
+└───────────────────────────────┴─────────┘
 
-このアプローチは、クラスタ全体の操作の監視とデバッグに特に有用であり、ユーザーがClickHouse Cloudデプロイメントの健全性とパフォーマンスを効果的に分析できるようにします。
-
-:::note
-ClickHouse Cloudは、冗長性とフェイルオーバーのために複数のレプリカのクラスタを提供します。これにより、動的な自動スケーリングやゼロダウンタイムアップグレードなどの機能が実現されます。特定の時点で、新しいノードがクラスタに追加される過程にあるか、クラスタから削除される過程にある可能性があります。これらのノードをスキップするには、以下に示すように`clusterAllReplicas`を使用するクエリに`SETTINGS skip_unavailable_shards = 1`を追加してください。
-:::
-
-例えば、分析に不可欠な`query_log`テーブルをクエリする際の違いを考えてみましょう。
-
+3 rows in set. Elapsed: 0.026 sec. Processed 1.97 million rows, 7.88 MB (75.51 million rows/s., 302.05 MB/s.)
 ```sql
 SELECT
     hostname() AS host,
@@ -222,12 +233,21 @@ GROUP BY host SETTINGS skip_unavailable_shards = 1
 └───────────────────────────────┴─────────┘
 
 3 rows in set. Elapsed: 0.026 sec. Processed 1.97 million rows, 7.88 MB (75.51 million rows/s., 302.05 MB/s.)
-````
+````sql
+SELECT
+    hostname() AS host,
+    count()
+FROM clusterAllReplicas('default', merge('system', '^query_log'))
+WHERE (event_time >= '2025-04-01 00:00:00') AND (event_time <= '2025-04-12 00:00:00')
+GROUP BY host SETTINGS skip_unavailable_shards = 1
 
-### ノードおよびバージョンをまたいだクエリ実行 {#querying-across-nodes-and-versions}
+┌─host──────────────────────────┬─count()─┐
+│ c-ecru-qn-34-server-s5bnysl-0 │ 3008000 │
+│ c-ecru-qn-34-server-6em4y4t-0 │ 3659443 │
+│ c-ecru-qn-34-server-iejrkg0-0 │ 1078287 │
+└───────────────────────────────┴─────────┘
 
-system テーブルのバージョニングにより、これだけではクラスタ全体のデータをすべて表しているわけではありません。上記に `merge` 関数を組み合わせることで、指定した日付範囲について正確な結果を得ることができます。
-
+3 rows in set. Elapsed: 0.462 sec. Processed 7.94 million rows, 31.75 MB (17.17 million rows/s., 68.67 MB/s.)
 ```sql
 SELECT
     hostname() AS host,

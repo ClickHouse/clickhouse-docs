@@ -212,7 +212,7 @@ FORMAT Vertical;
 結果:
 
 ```response
-行 1:
+Row 1:
 ──────
 toInt8(-8):   -8
 toInt8(-8.8): -8
@@ -275,7 +275,7 @@ FORMAT Vertical;
 結果:
 
 ```response
-行 1:
+Row 1:
 ──────
 toInt8OrZero('-8'):  -8
 toInt8OrZero('abc'): 0
@@ -469,7 +469,7 @@ FORMAT Vertical;
 結果:
 
 ```response
-行 1:
+Row 1:
 ──────
 toInt16(-16):    -16
 toInt16(-16.16): -16
@@ -594,7 +594,7 @@ FORMAT Vertical;
 結果：
 
 ```response
-行 1:
+Row 1:
 ──────
 toInt16OrNull('-16'): -16
 toInt16OrNull('abc'): ᴺᵁᴸᴸ
@@ -726,7 +726,7 @@ FORMAT Vertical;
 結果：
 
 ```response
-行 1:
+Row 1:
 ──────
 toInt32(-32):    -32
 toInt32(-32.32): -32
@@ -789,7 +789,7 @@ FORMAT Vertical;
 結果:
 
 ```response
-行 1:
+Row 1:
 ──────
 toInt32OrZero('-32'): -32
 toInt32OrZero('abc'): 0
@@ -851,7 +851,7 @@ FORMAT Vertical;
 結果：
 
 ```response
-行 1:
+Row 1:
 ──────
 toInt32OrNull('-32'): -32
 toInt32OrNull('abc'): ᴺᵁᴸᴸ
@@ -983,7 +983,7 @@ FORMAT Vertical;
 結果：
 
 ```response
-行 1:
+Row 1:
 ──────
 toInt64(-64):    -64
 toInt64(-64.64): -64
@@ -1108,7 +1108,7 @@ FORMAT Vertical;
 結果：
 
 ```response
-行 1:
+Row 1:
 ──────
 toInt64OrNull('-64'): -64
 toInt64OrNull('abc'): ᴺᵁᴸᴸ
@@ -1239,7 +1239,7 @@ FORMAT Vertical;
 結果:
 
 ```response
-行 1:
+Row 1:
 ──────
 toInt128(-128):   -128
 toInt128(-128.8): -128
@@ -1364,7 +1364,7 @@ FORMAT Vertical;
 結果:
 
 ```response
-行 1:
+Row 1:
 ──────
 toInt128OrNull('-128'): -128
 toInt128OrNull('abc'):  ᴺᵁᴸᴸ
@@ -1496,7 +1496,7 @@ FORMAT Vertical;
 結果:
 
 ```response
-行 1:
+Row 1:
 ──────
 toInt256(-256):     -256
 toInt256(-256.256): -256
@@ -1621,7 +1621,7 @@ FORMAT Vertical;
 結果：
 
 ```response
-行 1:
+Row 1:
 ──────
 toInt256OrNull('-256'): -256
 toInt256OrNull('abc'):  ᴺᵁᴸᴸ
@@ -1753,7 +1753,7 @@ FORMAT Vertical;
 結果:
 
 ```response
-行 1:
+Row 1:
 ──────
 toUInt8(8):   8
 toUInt8(8.8): 8
@@ -1816,7 +1816,7 @@ FORMAT Vertical;
 結果:
 
 ```response
-行 1:
+Row 1:
 ──────
 toUInt8OrZero('-8'):  0
 toUInt8OrZero('abc'): 0
@@ -1878,7 +1878,7 @@ FORMAT Vertical;
 結果：
 
 ```response
-行 1:
+Row 1:
 ──────
 toUInt8OrNull('8'):   8
 toUInt8OrNull('abc'): ᴺᵁᴸᴸ
@@ -2010,7 +2010,7 @@ FORMAT Vertical;
 結果：
 
 ```response
-行 1:
+Row 1:
 ──────
 toUInt16(16):    16
 toUInt16(16.16): 16
@@ -2073,7 +2073,7 @@ FORMAT Vertical;
 結果：
 
 ```response
-行 1:
+Row 1:
 ──────
 toUInt16OrZero('16'):  16
 toUInt16OrZero('abc'): 0
@@ -2135,7 +2135,7 @@ FORMAT Vertical;
 結果:
 
 ```response
-行 1:
+Row 1:
 ──────
 toUInt16OrNull('16'):  16
 toUInt16OrNull('abc'): ᴺᵁᴸᴸ
@@ -2267,7 +2267,7 @@ FORMAT Vertical;
 結果：
 
 ```response
-行 1:
+Row 1:
 ──────
 toUInt32(32):    32
 toUInt32(32.32): 32
@@ -2331,7 +2331,7 @@ FORMAT Vertical;
 結果:
 
 ```response
-行 1:
+Row 1:
 ──────
 toUInt32OrZero('32'):  32
 toUInt32OrZero('abc'): 0
@@ -2461,7 +2461,7 @@ FORMAT Vertical;
 結果：
 
 ```response
-行 1:
+Row 1:
 ──────
 toUInt32OrDefault('32', CAST('0', 'UInt32')):  32
 toUInt32OrDefault('abc', CAST('0', 'UInt32')): 0
@@ -2526,7 +2526,7 @@ FORMAT Vertical;
 結果:
 
 ```response
-行 1:
+Row 1:
 ──────
 toUInt64(64):    64
 toUInt64(64.64): 64
@@ -2589,7 +2589,7 @@ FORMAT Vertical;
 結果：
 
 ```response
-行 1:
+Row 1:
 ──────
 toUInt64OrZero('64'):  64
 toUInt64OrZero('abc'): 0
@@ -2651,7 +2651,7 @@ FORMAT Vertical;
 結果：
 
 ```response
-行 1:
+Row 1:
 ──────
 toUInt64OrNull('64'):  64
 toUInt64OrNull('abc'): ᴺᵁᴸᴸ
@@ -2782,7 +2782,7 @@ FORMAT Vertical;
 結果:
 
 ```response
-行 1:
+Row 1:
 ──────
 toUInt128(128):   128
 toUInt128(128.8): 128
@@ -2845,7 +2845,7 @@ FORMAT Vertical;
 結果：
 
 ```response
-行 1:
+Row 1:
 ──────
 toUInt128OrZero('128'): 128
 toUInt128OrZero('abc'): 0
@@ -2907,7 +2907,7 @@ FORMAT Vertical;
 結果：
 
 ```response
-行 1:
+Row 1:
 ──────
 toUInt128OrNull('128'): 128
 toUInt128OrNull('abc'): ᴺᵁᴸᴸ
@@ -2975,7 +2975,7 @@ FORMAT Vertical;
 結果：
 
 ```response
-行 1:
+Row 1:
 ──────
 toUInt128OrDefault('128', CAST('0', 'UInt128')): 128
 toUInt128OrDefault('abc', CAST('0', 'UInt128')): 0
@@ -3039,7 +3039,7 @@ FORMAT Vertical;
 結果：
 
 ```response
-行 1:
+Row 1:
 ──────
 toUInt256(256):     256
 toUInt256(256.256): 256
@@ -3102,7 +3102,7 @@ FORMAT Vertical;
 結果：
 
 ```response
-行 1:
+Row 1:
 ──────
 toUInt256OrZero('256'): 256
 toUInt256OrZero('abc'): 0
@@ -3287,7 +3287,7 @@ FORMAT Vertical;
 結果:
 
 ```response
-行 1:
+Row 1:
 ──────
 toFloat32(42.7):   42.7
 toFloat32('42.7'): 42.7
@@ -3340,7 +3340,7 @@ FORMAT Vertical;
 結果：
 
 ```response
-行 1:
+Row 1:
 ──────
 toFloat32OrZero('42.7'): 42.7
 toFloat32OrZero('abc'):  0
@@ -3392,7 +3392,7 @@ FORMAT Vertical;
 結果:
 
 ```response
-行 1:
+Row 1:
 ──────
 toFloat32OrNull('42.7'): 42.7
 toFloat32OrNull('abc'):  ᴺᵁᴸᴸ
@@ -3449,7 +3449,7 @@ FORMAT Vertical;
 結果:
 
 ```response
-行 1:
+Row 1:
 ──────
 toFloat32OrDefault('8', CAST('0', 'Float32')):   8
 toFloat32OrDefault('abc', CAST('0', 'Float32')): 0
@@ -3505,7 +3505,7 @@ FORMAT Vertical;
 結果：
 
 ```response
-行 1:
+Row 1:
 ──────
 toFloat64(42.7):   42.7
 toFloat64('42.7'): 42.7
@@ -3558,7 +3558,7 @@ FORMAT Vertical;
 結果：
 
 ```response
-行 1:
+Row 1:
 ──────
 toFloat64OrZero('42.7'): 42.7
 toFloat64OrZero('abc'):  0
@@ -3610,7 +3610,7 @@ FORMAT Vertical;
 結果：
 
 ```response
-行 1:
+Row 1:
 ──────
 toFloat64OrNull('42.7'): 42.7
 toFloat64OrNull('abc'):  ᴺᵁᴸᴸ
@@ -3667,7 +3667,7 @@ FORMAT Vertical;
 結果:
 
 ```response
-行 1:
+Row 1:
 ──────
 toFloat64OrDefault('8', CAST('0', 'Float64')):   8
 toFloat64OrDefault('abc', CAST('0', 'Float64')): 0
@@ -3761,17 +3761,17 @@ toBFloat16OrZero(x)
 **例**
 
 ```sql
-SELECT toBFloat16OrZero('0x5E'); -- サポートされていない引数
+SELECT toBFloat16OrZero('0x5E'); -- unsupported arguments
 
 0
 
-SELECT toBFloat16OrZero('12.3'); -- 典型的な使用例
+SELECT toBFloat16OrZero('12.3'); -- typical use
 
 12.25
 
 SELECT toBFloat16OrZero('12.3456789');
 
-12.3125 -- 精度の暗黙的な損失
+12.3125 -- silent loss of precision
 ```
 
 **関連項目**
@@ -3814,17 +3814,17 @@ toBFloat16OrNull(x)
 **例**
 
 ```sql
-SELECT toBFloat16OrNull('0x5E'); -- サポートされていない引数
+SELECT toBFloat16OrNull('0x5E'); -- unsupported arguments
 
 \N
 
-SELECT toBFloat16OrNull('12.3'); -- 典型的な使用例
+SELECT toBFloat16OrNull('12.3'); -- typical use
 
 12.25
 
 SELECT toBFloat16OrNull('12.3456789');
 
-12.3125 -- 精度の暗黙的な損失
+12.3125 -- silent loss of precision
 ```
 
 **関連項目**
@@ -3863,7 +3863,7 @@ SELECT
 │ 2022-12-30 │ Date                             │
 └────────────┴──────────────────────────────────┘
 
-1行のデータセット。経過時間: 0.001秒。
+1 row in set. Elapsed: 0.001 sec.
 ```
 
 ```sql
@@ -3893,7 +3893,7 @@ SELECT
 ```
 
 ```response
-行 1:
+Row 1:
 ──────
 current_time:     2022-12-30 13:51:54
 ts:               1672404714
@@ -4773,7 +4773,7 @@ FORMAT Vertical;
 結果:
 
 ```response
-行 1:
+Row 1:
 ──────
 a:      2
 type_a: Decimal(18, 1)
@@ -4840,7 +4840,7 @@ FORMAT Vertical;
 結果：
 
 ```response
-行 1:
+Row 1:
 ──────
 a:             0.0001
 toTypeName(a): Decimal(18, 18)
@@ -5114,7 +5114,7 @@ FORMAT Vertical;
 結果:
 
 ```response
-行 1:
+Row 1:
 ──────
 a:             0.0001
 toTypeName(a): Decimal(38, 38)
@@ -5251,7 +5251,7 @@ FORMAT Vertical;
 結果：
 
 ```response
-行 1:
+Row 1:
 ──────
 a:             0.023809523809523808
 toTypeName(a): Decimal(38, 18)
@@ -5388,7 +5388,7 @@ FORMAT Vertical;
 結果：
 
 ```response
-行 1:
+Row 1:
 ──────
 a:             0.0001
 toTypeName(a): Decimal(76, 76)
@@ -6620,7 +6620,7 @@ SELECT accurateCast(-1, 'UInt8') AS uint8;
 結果:
 
 ```response
-コード: 70. DB::Exception: localhost:9000 から受信。DB::Exception: Int8 列の値を UInt8 型に安全に変換できません: accurateCast(-1, 'UInt8') AS uint8 の処理中。
+Code: 70. DB::Exception: Received from localhost:9000. DB::Exception: Value in column Int8 cannot be safely converted into type UInt8: While processing accurateCast(-1, 'UInt8') AS uint8.
 ```
 
 ## accurateCastOrNull(x, T) {#accuratecastornullx-t}
@@ -6738,7 +6738,7 @@ SELECT
 **構文**
 
 ```sql
-toInterval(値, 単位)
+toInterval(value, unit)
 ```
 
 **引数**

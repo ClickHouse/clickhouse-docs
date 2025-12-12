@@ -25,15 +25,15 @@ SET apply_mutations_on_fly = 1;
 CREATE TABLE test_on_fly_mutations (id UInt64, v String)
 ENGINE = MergeTree ORDER BY id;
 
--- オンザフライミューテーションが無効な場合の
--- デフォルト動作を示すため、バックグラウンドでのミューテーションの実体化を無効化
+-- Disable background materialization of mutations to showcase
+-- default behavior when on-the-fly mutations are not enabled
 SYSTEM STOP MERGES test_on_fly_mutations;
 SET mutations_sync = 0;
 
--- 新しいテーブルに行を挿入
+-- Insert some rows in our new table
 INSERT INTO test_on_fly_mutations VALUES (1, 'a'), (2, 'b'), (3, 'c');
 
--- 行の値を更新
+-- Update the values of the rows
 ALTER TABLE test_on_fly_mutations UPDATE v = 'd' WHERE id = 1;
 ALTER TABLE test_on_fly_mutations DELETE WHERE v = 'd';
 ALTER TABLE test_on_fly_mutations UPDATE v = 'e' WHERE id = 2;
@@ -43,7 +43,7 @@ ALTER TABLE test_on_fly_mutations DELETE WHERE v = 'e';
 `SELECT` クエリを使って、更新の結果を確認してみましょう。
 
 ```sql
--- オンザフライミューテーションを明示的に無効化
+-- Explicitly disable on-the-fly-mutations
 SET apply_mutations_on_fly = 0;
 
 SELECT id, v FROM test_on_fly_mutations ORDER BY id;
@@ -62,7 +62,7 @@ SELECT id, v FROM test_on_fly_mutations ORDER BY id;
 それでは、オンザフライミューテーションを有効にするとどうなるか見てみましょう。
 
 ```sql
--- オンザフライミューテーションを有効化
+-- Enable on-the-fly mutations
 SET apply_mutations_on_fly = 1;
 
 SELECT id, v FROM test_on_fly_mutations ORDER BY id;

@@ -78,7 +78,7 @@ WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 │  192611 │
 └─────────┘
 --highlight-next-line
-1 row in set. Elapsed: 0.055 sec. Processed 59.82 million rows, 361.34 MB (10.9億行/秒、6.61 GB/秒)
+1 row in set. Elapsed: 0.055 sec. Processed 59.82 million rows, 361.34 MB (1.09 billion rows/s., 6.61 GB/s.)
 ```
 
 このクエリで読み込まれた行数とバイト数に注目してください。プライマリキーがない場合、クエリはデータセット全体をスキャンする必要があります。
@@ -128,6 +128,12 @@ ORDER BY (PostTypeId, toDate(CreationDate))
 SELECT count()
 FROM stackoverflow.posts_ordered
 WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
+
+┌─count()─┐
+│  192611 │
+└─────────┘
+--highlight-next-line
+1 row in set. Elapsed: 0.013 sec. Processed 196.53 thousand rows, 1.77 MB (14.64 million rows/s., 131.78 MB/s.)
 ```
 
 ┌─count()─┐
@@ -136,12 +142,29 @@ WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 --highlight-next-line
 1 行が結果セットに含まれます。経過時間: 0.013 秒。処理件数: 196.53 千行、1.77 MB（14.64 百万行/秒、131.78 MB/秒）。
 
-````
+````sql
+EXPLAIN indexes = 1
+SELECT count()
+FROM stackoverflow.posts_ordered
+WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 
-このクエリはスパースインデックスを活用し、読み取るデータ量を大幅に削減することで、実行時間を4倍高速化します。読み取る行数とバイト数の削減に注目してください。 
+┌─explain─────────────────────────────────────────────────────────────────────────────────────┐
+│ Expression ((Project names + Projection))                                                   │
+│   Aggregating                                                                               │
+│     Expression (Before GROUP BY)                                                            │
+│       Expression                                                                            │
+│         ReadFromMergeTree (stackoverflow.posts_ordered)                                     │
+│         Indexes:                                                                            │
+│           PrimaryKey                                                                        │
+│             Keys:                                                                           │
+│               PostTypeId                                                                    │
+│               toDate(CreationDate)                                                          │
+│             Condition: and((PostTypeId in [1, 1]), (toDate(CreationDate) in [19723, +Inf))) │
+│             Parts: 14/14                                                                    │
+│             Granules: 39/7578                                                               │
+└─────────────────────────────────────────────────────────────────────────────────────────────┘
 
-インデックスの使用状況は `EXPLAIN indexes=1` で確認できます。
-
+13 rows in set. Elapsed: 0.004 sec.
 ```sql
 EXPLAIN indexes = 1
 SELECT count()

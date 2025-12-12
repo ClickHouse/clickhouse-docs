@@ -65,18 +65,18 @@ ollama show qwen3
 ```
 
 ```text
-  模型
-    架构                qwen3
-    参数量              8.2B
-    上下文长度          40960
-    嵌入维度            4096
-    量化方式            Q4_K_M
+  Model
+    architecture        qwen3
+    parameters          8.2B
+    context length      40960
+    embedding length    4096
+    quantization        Q4_K_M
 
-  能力
-    补全
-    工具
+  Capabilities
+    completion
+    tools
 
-  参数
+  Parameters
     repeat_penalty    1
     stop              "<|im_start|>"
     stop              "<|im_end|>"
@@ -84,7 +84,7 @@ ollama show qwen3
     top_k             20
     top_p             0.95
 
-  许可证
+  License
     Apache License
     Version 2.0, January 2004
 ```
@@ -164,7 +164,7 @@ mcphost --model ollama:qwen3
 或者,如果您希望使用特定的配置文件:
 
 ```bash
-mcphost --model ollama:qwen3 --config ~/.mcphost.json
+mcphost --model ollama:qwen3 --config ~/.mcphost.json 
 ```
 
 :::warning

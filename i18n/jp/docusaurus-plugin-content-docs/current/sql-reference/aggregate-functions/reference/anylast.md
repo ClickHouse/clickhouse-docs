@@ -21,7 +21,7 @@ doc_type: 'reference'
 **構文**
 
 ```sql
-anyLast(カラム) [RESPECT NULLS]
+anyLast(column) [RESPECT NULLS]
 ```
 
 別名 `anyLast(column)`（`RESPECT NULLS` なし）

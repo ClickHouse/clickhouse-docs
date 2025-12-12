@@ -15,52 +15,56 @@ doc_type: 'reference'
 
 ## Синтаксис {#syntax}
 
-```sql
-ALTER DATABASE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
+```
+
+## Examples {#examples}
+
+To create a `DATABASE` with a comment:
+
 ```
 
 ## Примеры {#examples}
 
 Чтобы создать базу данных (`DATABASE`) с комментарием:
 
-```sql
-CREATE DATABASE database_with_comment ENGINE = Memory COMMENT 'Временная база данных';
+```
+
+To modify the comment:
+
 ```
 
 Чтобы отредактировать комментарий:
 
-```sql
-ALTER DATABASE database_with_comment 
-MODIFY COMMENT 'new comment on a database';
+```
+
+To view the modified comment:
+
 ```
 
 Чтобы просмотреть изменённый комментарий:
 
-```sql
-SELECT comment 
-FROM system.databases 
-WHERE name = 'database_with_comment';
 ```
 
-```text
-┌─comment─────────────────┐
-│ новый комментарий к базе данных │
-└─────────────────────────┘
+```
+
+```
+
+To remove the database comment:
+
 ```
 
 Чтобы удалить комментарий к базе данных:
 
-```sql
-ALTER DATABASE database_with_comment 
-MODIFY COMMENT '';
+```
+
+To verify that the comment was removed:
+
 ```
 
 Чтобы убедиться, что комментарий был удалён:
 
-```sql title="Query"
-SELECT comment 
-FROM system.databases 
-WHERE  name = 'database_with_comment';
+```
+
 ```
 
 ```text title="Response"

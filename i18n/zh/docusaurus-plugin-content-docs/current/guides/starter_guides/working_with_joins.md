@@ -77,16 +77,16 @@ LIMIT 10;
 
 ```response
 ┌─name───────────────────────────────────┬─genre─────┐
-│ 哈利·波特与混血王子 │ 动作    │
-│ 哈利·波特与混血王子 │ 冒险 │
-│ 哈利·波特与混血王子 │ 家庭    │
-│ 哈利·波特与混血王子 │ 奇幻   │
-│ 哈利·波特与混血王子 │ 惊悚  │
-│ 龙珠Z                           │ 动作    │
-│ 龙珠Z                           │ 冒险 │
-│ 龙珠Z                           │ 喜剧    │
-│ 龙珠Z                           │ 奇幻   │
-│ 龙珠Z                           │ 科幻    │
+│ Harry Potter and the Half-Blood Prince │ Action    │
+│ Harry Potter and the Half-Blood Prince │ Adventure │
+│ Harry Potter and the Half-Blood Prince │ Family    │
+│ Harry Potter and the Half-Blood Prince │ Fantasy   │
+│ Harry Potter and the Half-Blood Prince │ Thriller  │
+│ DragonBall Z                           │ Action    │
+│ DragonBall Z                           │ Adventure │
+│ DragonBall Z                           │ Comedy    │
+│ DragonBall Z                           │ Fantasy   │
+│ DragonBall Z                           │ Sci-Fi    │
 └────────────────────────────────────────┴───────────┘
 ```
 
@@ -125,16 +125,16 @@ LIMIT 10;
 
 ```response
 ┌─name──────────────────────────────────────┐
-│ """太平洋战争"""                          │
-│ """都灵2006：第二十届冬季奥运会"""        │
-│ 亚瑟，电影版                              │
-│ 通往特雷比西亚的桥                        │
-│ 火星在白羊座                              │
-│ 时空主宰                                  │
-│ 路易斯·德拉克斯的第九条命                │
-│ 悖论                                      │
-│ 料理鼠王                                  │
-│ """美国老爹"""                            │
+│ """Pacific War, The"""                    │
+│ """Turin 2006: XX Olympic Winter Games""" │
+│ Arthur, the Movie                         │
+│ Bridge to Terabithia                      │
+│ Mars in Aries                             │
+│ Master of Space and Time                  │
+│ Ninth Life of Louis Drax, The             │
+│ Paradox                                   │
+│ Ratatouille                               │
+│ """American Dad"""                        │
 └───────────────────────────────────────────┘
 ```
 
@@ -298,16 +298,16 @@ LIMIT 10;
 
 ```response
 ┌─name──────────────────────────────────────┐
-│ """太平洋战争"""                          │
-│ """都灵2006：第二十届冬季奥运会"""        │
-│ 亚瑟，电影版                              │
-│ 通往特雷比西亚的桥                        │
-│ 火星在白羊座                              │
-│ 时空主宰                                  │
-│ 路易斯·德拉克斯的第九条命                │
-│ 悖论                                      │
-│ 料理鼠王                                  │
-│ """美国老爹"""                            │
+│ """Pacific War, The"""                    │
+│ """Turin 2006: XX Olympic Winter Games""" │
+│ Arthur, the Movie                         │
+│ Bridge to Terabithia                      │
+│ Mars in Aries                             │
+│ Master of Space and Time                  │
+│ Ninth Life of Louis Drax, The             │
+│ Paradox                                   │
+│ Ratatouille                               │
+│ """American Dad"""                        │
 └───────────────────────────────────────────┘
 ```
 
@@ -420,23 +420,23 @@ FORMAT Vertical;
 ```
 
 ```response
-第1行:
+Row 1:
 ──────
-代码:               ABC
-成交量:             200
-交易时间:           2023-02-22 14:09:05
-最近报价时间:       2023-02-22 14:09:00
-报价:               32.11
-最终价格:           6422
+symbol:             ABC
+volume:             200
+trade_time:         2023-02-22 14:09:05
+closest_quote_time: 2023-02-22 14:09:00
+quote_price:        32.11
+final_price:        6422
 
-第2行:
+Row 2:
 ──────
-代码:               ABC
-成交量:             300
-交易时间:           2023-02-22 14:09:28
-最近报价时间:       2023-02-22 14:09:20
-报价:               32.15
-最终价格:           9645
+symbol:             ABC
+volume:             300
+trade_time:         2023-02-22 14:09:28
+closest_quote_time: 2023-02-22 14:09:20
+quote_price:        32.15
+final_price:        9645
 ```
 
 :::note

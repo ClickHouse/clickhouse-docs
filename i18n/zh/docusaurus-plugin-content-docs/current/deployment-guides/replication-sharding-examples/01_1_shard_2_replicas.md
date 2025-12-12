@@ -51,94 +51,94 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   运行以下命令以设置本示例的目录结构:
 
   ```bash
-  mkdir cluster_1S_2R
-  cd cluster_1S_2R
+mkdir cluster_1S_2R
+cd cluster_1S_2R
 
-  # 创建 clickhouse-keeper 目录
-  for i in {01..03}; do
-    mkdir -p fs/volumes/clickhouse-keeper-${i}/etc/clickhouse-keeper
-  done
+# Create clickhouse-keeper directories
+for i in {01..03}; do
+  mkdir -p fs/volumes/clickhouse-keeper-${i}/etc/clickhouse-keeper
+done
 
-  # 创建 clickhouse-server 目录
-  for i in {01..02}; do
-    mkdir -p fs/volumes/clickhouse-${i}/etc/clickhouse-server
-  done
-  ```
+# Create clickhouse-server directories
+for i in {01..02}; do
+  mkdir -p fs/volumes/clickhouse-${i}/etc/clickhouse-server
+done
+```
 
   将以下 `docker-compose.yml` 文件添加到 `cluster_1S_2R` 目录中：
 
   ```yaml title="docker-compose.yml"
-  version: '3.8'
-  services:
-    clickhouse-01:
-      image: "clickhouse/clickhouse-server:latest"
-      user: "101:101"
-      container_name: clickhouse-01
-      hostname: clickhouse-01
-      volumes:
-        - ${PWD}/fs/volumes/clickhouse-01/etc/clickhouse-server/config.d/config.xml:/etc/clickhouse-server/config.d/config.xml
-        - ${PWD}/fs/volumes/clickhouse-01/etc/clickhouse-server/users.d/users.xml:/etc/clickhouse-server/users.d/users.xml
-      ports:
-        - "127.0.0.1:8123:8123"
-        - "127.0.0.1:9000:9000"
-      depends_on:
-        - clickhouse-keeper-01
-        - clickhouse-keeper-02
-        - clickhouse-keeper-03
-    clickhouse-02:
-      image: "clickhouse/clickhouse-server:latest"
-      user: "101:101"
-      container_name: clickhouse-02
-      hostname: clickhouse-02
-      volumes:
-        - ${PWD}/fs/volumes/clickhouse-02/etc/clickhouse-server/config.d/config.xml:/etc/clickhouse-server/config.d/config.xml
-        - ${PWD}/fs/volumes/clickhouse-02/etc/clickhouse-server/users.d/users.xml:/etc/clickhouse-server/users.d/users.xml
-      ports:
-        - "127.0.0.1:8124:8123"
-        - "127.0.0.1:9001:9000"
-      depends_on:
-        - clickhouse-keeper-01
-        - clickhouse-keeper-02
-        - clickhouse-keeper-03
-    clickhouse-keeper-01:
-      image: "clickhouse/clickhouse-keeper:latest-alpine"
-      user: "101:101"
-      container_name: clickhouse-keeper-01
-      hostname: clickhouse-keeper-01
-      volumes:
-       - ${PWD}/fs/volumes/clickhouse-keeper-01/etc/clickhouse-keeper/keeper_config.xml:/etc/clickhouse-keeper/keeper_config.xml
-      ports:
-          - "127.0.0.1:9181:9181"
-    clickhouse-keeper-02:
-      image: "clickhouse/clickhouse-keeper:latest-alpine"
-      user: "101:101"
-      container_name: clickhouse-keeper-02
-      hostname: clickhouse-keeper-02
-      volumes:
-       - ${PWD}/fs/volumes/clickhouse-keeper-02/etc/clickhouse-keeper/keeper_config.xml:/etc/clickhouse-keeper/keeper_config.xml
-      ports:
-          - "127.0.0.1:9182:9181"
-    clickhouse-keeper-03:
-      image: "clickhouse/clickhouse-keeper:latest-alpine"
-      user: "101:101"
-      container_name: clickhouse-keeper-03
-      hostname: clickhouse-keeper-03
-      volumes:
-       - ${PWD}/fs/volumes/clickhouse-keeper-03/etc/clickhouse-keeper/keeper_config.xml:/etc/clickhouse-keeper/keeper_config.xml
-      ports:
-          - "127.0.0.1:9183:9181"
-  ```
+version: '3.8'
+services:
+  clickhouse-01:
+    image: "clickhouse/clickhouse-server:latest"
+    user: "101:101"
+    container_name: clickhouse-01
+    hostname: clickhouse-01
+    volumes:
+      - ${PWD}/fs/volumes/clickhouse-01/etc/clickhouse-server/config.d/config.xml:/etc/clickhouse-server/config.d/config.xml
+      - ${PWD}/fs/volumes/clickhouse-01/etc/clickhouse-server/users.d/users.xml:/etc/clickhouse-server/users.d/users.xml
+    ports:
+      - "127.0.0.1:8123:8123"
+      - "127.0.0.1:9000:9000"
+    depends_on:
+      - clickhouse-keeper-01
+      - clickhouse-keeper-02
+      - clickhouse-keeper-03
+  clickhouse-02:
+    image: "clickhouse/clickhouse-server:latest"
+    user: "101:101"
+    container_name: clickhouse-02
+    hostname: clickhouse-02
+    volumes:
+      - ${PWD}/fs/volumes/clickhouse-02/etc/clickhouse-server/config.d/config.xml:/etc/clickhouse-server/config.d/config.xml
+      - ${PWD}/fs/volumes/clickhouse-02/etc/clickhouse-server/users.d/users.xml:/etc/clickhouse-server/users.d/users.xml
+    ports:
+      - "127.0.0.1:8124:8123"
+      - "127.0.0.1:9001:9000"
+    depends_on:
+      - clickhouse-keeper-01
+      - clickhouse-keeper-02
+      - clickhouse-keeper-03
+  clickhouse-keeper-01:
+    image: "clickhouse/clickhouse-keeper:latest-alpine"
+    user: "101:101"
+    container_name: clickhouse-keeper-01
+    hostname: clickhouse-keeper-01
+    volumes:
+     - ${PWD}/fs/volumes/clickhouse-keeper-01/etc/clickhouse-keeper/keeper_config.xml:/etc/clickhouse-keeper/keeper_config.xml
+    ports:
+        - "127.0.0.1:9181:9181"
+  clickhouse-keeper-02:
+    image: "clickhouse/clickhouse-keeper:latest-alpine"
+    user: "101:101"
+    container_name: clickhouse-keeper-02
+    hostname: clickhouse-keeper-02
+    volumes:
+     - ${PWD}/fs/volumes/clickhouse-keeper-02/etc/clickhouse-keeper/keeper_config.xml:/etc/clickhouse-keeper/keeper_config.xml
+    ports:
+        - "127.0.0.1:9182:9181"
+  clickhouse-keeper-03:
+    image: "clickhouse/clickhouse-keeper:latest-alpine"
+    user: "101:101"
+    container_name: clickhouse-keeper-03
+    hostname: clickhouse-keeper-03
+    volumes:
+     - ${PWD}/fs/volumes/clickhouse-keeper-03/etc/clickhouse-keeper/keeper_config.xml:/etc/clickhouse-keeper/keeper_config.xml
+    ports:
+        - "127.0.0.1:9183:9181"
+```
 
   创建以下子目录和文件：
 
   ```bash
-  for i in {01..02}; do
-    mkdir -p fs/volumes/clickhouse-${i}/etc/clickhouse-server/config.d
-    mkdir -p fs/volumes/clickhouse-${i}/etc/clickhouse-server/users.d
-    touch fs/volumes/clickhouse-${i}/etc/clickhouse-server/config.d/config.xml
-    touch fs/volumes/clickhouse-${i}/etc/clickhouse-server/users.d/users.xml
-  done
-  ```
+for i in {01..02}; do
+  mkdir -p fs/volumes/clickhouse-${i}/etc/clickhouse-server/config.d
+  mkdir -p fs/volumes/clickhouse-${i}/etc/clickhouse-server/users.d
+  touch fs/volumes/clickhouse-${i}/etc/clickhouse-server/config.d/config.xml
+  touch fs/volumes/clickhouse-${i}/etc/clickhouse-server/users.d/users.xml
+done
+```
 
   <ConfigExplanation />
 
@@ -149,68 +149,68 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   现在修改位于 `fs/volumes/clickhouse-{}/etc/clickhouse-server/config.d` 的每个空配置文件 `config.xml`。下面高亮显示的行需要根据每个节点的具体情况进行修改:
 
   ```xml
-  <clickhouse replace="true">
-      <logger>
-          <level>debug</level>
-          <log>/var/log/clickhouse-server/clickhouse-server.log</log>
-          <errorlog>/var/log/clickhouse-server/clickhouse-server.err.log</errorlog>
-          <size>1000M</size>
-          <count>3</count>
-      </logger>
-      <!--highlight-next-line-->
-      <display_name>cluster_1S_2R node 1</display_name>
-      <listen_host>0.0.0.0</listen_host>
-      <http_port>8123</http_port>
-      <tcp_port>9000</tcp_port>
-      <user_directories>
-          <users_xml>
-              <path>users.xml</path>
-          </users_xml>
-          <local_directory>
-              <path>/var/lib/clickhouse/access/</path>
-          </local_directory>
-      </user_directories>
-      <distributed_ddl>
-          <path>/clickhouse/task_queue/ddl</path>
-      </distributed_ddl>
-      <remote_servers>
-          <cluster_1S_2R>
-              <shard>
-                  <internal_replication>true</internal_replication>
-                  <replica>
-                      <host>clickhouse-01</host>
-                      <port>9000</port>
-                  </replica>
-                  <replica>
-                      <host>clickhouse-02</host>
-                      <port>9000</port>
-                  </replica>
-              </shard>
-          </cluster_1S_2R>
-      </remote_servers>
-      <zookeeper>
-          <node>
-              <host>clickhouse-keeper-01</host>
-              <port>9181</port>
-          </node>
-          <node>
-              <host>clickhouse-keeper-02</host>
-              <port>9181</port>
-          </node>
-          <node>
-              <host>clickhouse-keeper-03</host>
-              <port>9181</port>
-          </node>
-      </zookeeper>
-      <!--highlight-start-->
-      <macros>
-          <shard>01</shard>
-          <replica>01</replica>
-          <cluster>cluster_1S_2R</cluster>
-      </macros>
-      <!--highlight-end-->
-  </clickhouse>
-  ```
+<clickhouse replace="true">
+    <logger>
+        <level>debug</level>
+        <log>/var/log/clickhouse-server/clickhouse-server.log</log>
+        <errorlog>/var/log/clickhouse-server/clickhouse-server.err.log</errorlog>
+        <size>1000M</size>
+        <count>3</count>
+    </logger>
+    <!--highlight-next-line-->
+    <display_name>cluster_1S_2R node 1</display_name>
+    <listen_host>0.0.0.0</listen_host>
+    <http_port>8123</http_port>
+    <tcp_port>9000</tcp_port>
+    <user_directories>
+        <users_xml>
+            <path>users.xml</path>
+        </users_xml>
+        <local_directory>
+            <path>/var/lib/clickhouse/access/</path>
+        </local_directory>
+    </user_directories>
+    <distributed_ddl>
+        <path>/clickhouse/task_queue/ddl</path>
+    </distributed_ddl>
+    <remote_servers>
+        <cluster_1S_2R>
+            <shard>
+                <internal_replication>true</internal_replication>
+                <replica>
+                    <host>clickhouse-01</host>
+                    <port>9000</port>
+                </replica>
+                <replica>
+                    <host>clickhouse-02</host>
+                    <port>9000</port>
+                </replica>
+            </shard>
+        </cluster_1S_2R>
+    </remote_servers>
+    <zookeeper>
+        <node>
+            <host>clickhouse-keeper-01</host>
+            <port>9181</port>
+        </node>
+        <node>
+            <host>clickhouse-keeper-02</host>
+            <port>9181</port>
+        </node>
+        <node>
+            <host>clickhouse-keeper-03</host>
+            <port>9181</port>
+        </node>
+    </zookeeper>
+    <!--highlight-start-->
+    <macros>
+        <shard>01</shard>
+        <replica>01</replica>
+        <cluster>cluster_1S_2R</cluster>
+    </macros>
+    <!--highlight-end-->
+</clickhouse>
+```
 
   | 目录                                                        | 文件                                                                                                                                                                               |
   | --------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -226,14 +226,14 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   日志记录在 `<logger>` 块中定义。此示例配置提供一个调试日志，该日志将在达到 1000M 时滚动三次：
 
   ```xml
-  <logger>
-      <level>debug</level>
-      <log>/var/log/clickhouse-server/clickhouse-server.log</log>
-      <errorlog>/var/log/clickhouse-server/clickhouse-server.err.log</errorlog>
-      <size>1000M</size>
-      <count>3</count>
-  </logger>
-  ```
+<logger>
+    <level>debug</level>
+    <log>/var/log/clickhouse-server/clickhouse-server.log</log>
+    <errorlog>/var/log/clickhouse-server/clickhouse-server.err.log</errorlog>
+    <size>1000M</size>
+    <count>3</count>
+</logger>
+```
 
   有关日志配置的更多信息,请参阅默认 ClickHouse [配置文件](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml)中的注释说明。
 
@@ -251,25 +251,25 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   `internal_replication` 设置为 true,使数据仅写入一个副本。
 
   ```xml
-  <remote_servers>
-      <!-- 集群名称(不应包含点) -->
-      <cluster_1S_2R>
-          <!-- <allow_distributed_ddl_queries>false</allow_distributed_ddl_queries> -->
-          <shard>
-              <!-- 可选。是否仅向一个副本写入数据。默认值:false(向所有副本写入数据)。 -->
-              <internal_replication>true</internal_replication>
-              <replica>
-                  <host>clickhouse-01</host>
-                  <port>9000</port>
-              </replica>
-              <replica>
-                  <host>clickhouse-02</host>
-                  <port>9000</port>
-              </replica>
-          </shard>
-      </cluster_1S_2R>
-  </remote_servers>
-  ```
+<remote_servers>
+    <!-- cluster name (should not contain dots) -->
+    <cluster_1S_2R>
+        <!-- <allow_distributed_ddl_queries>false</allow_distributed_ddl_queries> -->
+        <shard>
+            <!-- Optional. Whether to write data to just one of the replicas. Default: false (write data to all replicas). -->
+            <internal_replication>true</internal_replication>
+            <replica>
+                <host>clickhouse-01</host>
+                <port>9000</port>
+            </replica>
+            <replica>
+                <host>clickhouse-02</host>
+                <port>9000</port>
+            </replica>
+        </shard>
+    </cluster_1S_2R>
+</remote_servers>
+```
 
   <ServerParameterTable />
 
@@ -282,21 +282,21 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   ClickHouse Keeper 的设置将在教程的下一步骤中进行说明。
 
   ```xml
-  <zookeeper>
-      <node>
-          <host>clickhouse-keeper-01</host>
-          <port>9181</port>
-      </node>
-      <node>
-          <host>clickhouse-keeper-02</host>
-          <port>9181</port>
-      </node>
-      <node>
-          <host>clickhouse-keeper-03</host>
-          <port>9181</port>
-      </node>
-  </zookeeper>
-  ```
+<zookeeper>
+    <node>
+        <host>clickhouse-keeper-01</host>
+        <port>9181</port>
+    </node>
+    <node>
+        <host>clickhouse-keeper-02</host>
+        <port>9181</port>
+    </node>
+    <node>
+        <host>clickhouse-keeper-03</host>
+        <port>9181</port>
+    </node>
+</zookeeper>
+```
 
   :::note
   尽管可以在与 ClickHouse Server 相同的服务器上运行 ClickHouse Keeper,但在生产环境中,我们强烈建议将 ClickHouse Keeper 部署在专用主机上。
@@ -307,12 +307,12 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   此外，`<macros>` 配置段用于定义复制表的参数替换。这些宏参数列在 `system.macros` 表中，允许在查询中使用 `{shard}` 和 `{replica}` 等替换变量。
 
   ```xml
-  <macros>
-      <shard>01</shard>
-      <replica>01</replica>
-      <cluster>cluster_1S_2R</cluster>
-  </macros>
-  ```
+<macros>
+    <shard>01</shard>
+    <replica>01</replica>
+    <cluster>cluster_1S_2R</cluster>
+</macros>
+```
 
   :::note
   这些配置需要根据集群的实际布局进行相应定义。
@@ -323,44 +323,44 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   现在修改位于 `fs/volumes/clickhouse-{}/etc/clickhouse-server/users.d` 路径下的每个空配置文件 `users.xml`,添加以下内容:
 
   ```xml title="/users.d/users.xml"
-  <?xml version="1.0"?>
-  <clickhouse replace="true">
-      <profiles>
-          <default>
-              <max_memory_usage>10000000000</max_memory_usage>
-              <use_uncompressed_cache>0</use_uncompressed_cache>
-              <load_balancing>in_order</load_balancing>
-              <log_queries>1</log_queries>
-          </default>
-      </profiles>
-      <users>
-          <default>
-              <access_management>1</access_management>
-              <profile>default</profile>
-              <networks>
-                  <ip>::/0</ip>
-              </networks>
-              <quota>default</quota>
-              <access_management>1</access_management>
-              <named_collection_control>1</named_collection_control>
-              <show_named_collections>1</show_named_collections>
-              <show_named_collections_secrets>1</show_named_collections_secrets>
-          </default>
-      </users>
-      <quotas>
-          <default>
-              <interval>
-                  <duration>3600</duration>
-                  <queries>0</queries>
-                  <errors>0</errors>
-                  <result_rows>0</result_rows>
-                  <read_rows>0</read_rows>
-                  <execution_time>0</execution_time>
-              </interval>
-          </default>
-      </quotas>
-  </clickhouse>
-  ```
+<?xml version="1.0"?>
+<clickhouse replace="true">
+    <profiles>
+        <default>
+            <max_memory_usage>10000000000</max_memory_usage>
+            <use_uncompressed_cache>0</use_uncompressed_cache>
+            <load_balancing>in_order</load_balancing>
+            <log_queries>1</log_queries>
+        </default>
+    </profiles>
+    <users>
+        <default>
+            <access_management>1</access_management>
+            <profile>default</profile>
+            <networks>
+                <ip>::/0</ip>
+            </networks>
+            <quota>default</quota>
+            <access_management>1</access_management>
+            <named_collection_control>1</named_collection_control>
+            <show_named_collections>1</show_named_collections>
+            <show_named_collections_secrets>1</show_named_collections_secrets>
+        </default>
+    </users>
+    <quotas>
+        <default>
+            <interval>
+                <duration>3600</duration>
+                <queries>0</queries>
+                <errors>0</errors>
+                <result_rows>0</result_rows>
+                <read_rows>0</read_rows>
+                <execution_time>0</execution_time>
+            </interval>
+        </default>
+    </quotas>
+</clickhouse>
+```
 
   | 目录                                                       | 文件                                                                                                                                                                            |
   | -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -396,71 +396,71 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   在 `cluster_1S_2R` 目录的根目录下使用 `docker-compose up` 命令启动集群:
 
   ```bash
-  docker-compose up -d
-  ```
+docker-compose up -d
+```
 
   您应该会看到 Docker 开始拉取 ClickHouse 和 Keeper 镜像,
   然后启动容器:
 
   ```bash
-  [+] Running 6/6
-   ✔ Network cluster_1s_2r_default   已创建
-   ✔ Container clickhouse-keeper-03  已启动
-   ✔ Container clickhouse-keeper-02  已启动
-   ✔ Container clickhouse-keeper-01  已启动
-   ✔ Container clickhouse-01         已启动
-   ✔ Container clickhouse-02         已启动
-  ```
+[+] Running 6/6
+ ✔ Network cluster_1s_2r_default   Created
+ ✔ Container clickhouse-keeper-03  Started
+ ✔ Container clickhouse-keeper-02  Started
+ ✔ Container clickhouse-keeper-01  Started
+ ✔ Container clickhouse-01         Started
+ ✔ Container clickhouse-02         Started
+```
 
   要验证集群是否正在运行,请连接到 `clickhouse-01` 或 `clickhouse-02` 并运行以下查询。连接到第一个节点的命令如下所示:
 
   ```bash
-  # 连接到任意节点
-  docker exec -it clickhouse-01 clickhouse-client
-  ```
+# Connect to any node
+docker exec -it clickhouse-01 clickhouse-client
+```
 
   如果成功，您将看到 ClickHouse 客户端提示符：
 
   ```response
-  cluster_1S_2R node 1 :)
-  ```
+cluster_1S_2R node 1 :)
+```
 
   运行以下查询以检查各主机定义的集群拓扑:
 
   ```sql title="Query"
-  SELECT 
-      cluster,
-      shard_num,
-      replica_num,
-      host_name,
-      port
-  FROM system.clusters;
-  ```
+SELECT 
+    cluster,
+    shard_num,
+    replica_num,
+    host_name,
+    port
+FROM system.clusters;
+```
 
   ```response title="Response"
-  ┌─cluster───────┬─shard_num─┬─replica_num─┬─host_name─────┬─port─┐
-  1. │ cluster_1S_2R │         1 │           1 │ clickhouse-01 │ 9000 │
-  2. │ cluster_1S_2R │         1 │           2 │ clickhouse-02 │ 9000 │
-  3. │ default       │         1 │           1 │ localhost     │ 9000 │
-     └───────────────┴───────────┴─────────────┴───────────────┴──────┘
-  ```
+   ┌─cluster───────┬─shard_num─┬─replica_num─┬─host_name─────┬─port─┐
+1. │ cluster_1S_2R │         1 │           1 │ clickhouse-01 │ 9000 │
+2. │ cluster_1S_2R │         1 │           2 │ clickhouse-02 │ 9000 │
+3. │ default       │         1 │           1 │ localhost     │ 9000 │
+   └───────────────┴───────────┴─────────────┴───────────────┴──────┘
+```
 
   运行以下查询以检查 ClickHouse Keeper 集群的状态：
 
   ```sql title="Query"
-  SELECT *
-  FROM system.zookeeper
-  WHERE path IN ('/', '/clickhouse')
-  ```
+SELECT *
+FROM system.zookeeper
+WHERE path IN ('/', '/clickhouse')
+```
 
   ```response title="Response"
-  ┌─name───────┬─value─┬─path────────┐
-  1. │ sessions   │       │ /clickhouse │
-  2. │ task_queue │       │ /clickhouse │
-  3. │ keeper     │       │ /           │
-  4. │ clickhouse │       │ /           │
-     └────────────┴───────┴─────────────┘
-  ```
+   ┌─name───────┬─value─┬─path────────┐
+1. │ sessions   │       │ /clickhouse │
+2. │ task_queue │       │ /clickhouse │
+3. │ keeper     │       │ /           │
+4. │ clickhouse │       │ /           │
+   └────────────┴───────┴─────────────┘
+```
 
   <VerifyKeeperStatus />
 
@@ -474,51 +474,51 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   通过在不同的终端标签页或窗口中分别运行以下各命令,连接到每个主机的客户端:
 
   ```bash
-  docker exec -it clickhouse-01 clickhouse-client
-  docker exec -it clickhouse-02 clickhouse-client
-  ```
+docker exec -it clickhouse-01 clickhouse-client
+docker exec -it clickhouse-02 clickhouse-client
+```
 
   您可以在每个主机的 clickhouse-client 中运行以下查询，确认除默认数据库外尚未创建其他数据库：
 
   ```sql title="Query"
-  SHOW DATABASES;
-  ```
+SHOW DATABASES;
+```
 
   ```response title="Response"
-  ┌─name───────────────┐
-  1. │ INFORMATION_SCHEMA │
-  2. │ default            │
-  3. │ information_schema │
-  4. │ system             │
-     └────────────────────┘
-  ```
+   ┌─name───────────────┐
+1. │ INFORMATION_SCHEMA │
+2. │ default            │
+3. │ information_schema │
+4. │ system             │
+   └────────────────────┘
+```
 
   从 `clickhouse-01` 客户端执行以下**分布式** DDL 查询,使用 `ON CLUSTER` 子句创建名为 `uk` 的新数据库:
 
   ```sql
-  CREATE DATABASE IF NOT EXISTS uk 
-  -- highlight-next-line
-  ON CLUSTER cluster_1S_2R;
-  ```
+CREATE DATABASE IF NOT EXISTS uk 
+-- highlight-next-line
+ON CLUSTER cluster_1S_2R;
+```
 
   您可以再次从每个主机的客户端运行相同的查询，
   以确认数据库已在整个集群中创建，
   即使查询仅在 `clickhouse-01` 上执行：
 
   ```sql
-  SHOW DATABASES;
-  ```
+SHOW DATABASES;
+```
 
   ```response
-  ┌─name───────────────┐
-  1. │ INFORMATION_SCHEMA │
-  2. │ default            │
-  3. │ information_schema │
-  4. │ system             │
-  #highlight-next-line
-  5. │ uk                 │
-     └────────────────────┘
-  ```
+   ┌─name───────────────┐
+1. │ INFORMATION_SCHEMA │
+2. │ default            │
+3. │ information_schema │
+4. │ system             │
+#highlight-next-line
+5. │ uk                 │
+   └────────────────────┘
+```
 
   ## 在集群上创建表
 
@@ -526,29 +526,29 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   从任意主机客户端执行以下查询:
 
   ```sql
-  CREATE TABLE IF NOT EXISTS uk.uk_price_paid_local
-  --highlight-next-line
-  ON CLUSTER cluster_1S_2R
-  (
-      price UInt32,
-      date Date,
-      postcode1 LowCardinality(String),
-      postcode2 LowCardinality(String),
-      type Enum8('terraced' = 1, 'semi-detached' = 2, 'detached' = 3, 'flat' = 4, 'other' = 0),
-      is_new UInt8,
-      duration Enum8('freehold' = 1, 'leasehold' = 2, 'unknown' = 0),
-      addr1 String,
-      addr2 String,
-      street LowCardinality(String),
-      locality LowCardinality(String),
-      town LowCardinality(String),
-      district LowCardinality(String),
-      county LowCardinality(String)
-  )
-  --highlight-next-line
-  ENGINE = ReplicatedMergeTree
-  ORDER BY (postcode1, postcode2, addr1, addr2);
-  ```
+CREATE TABLE IF NOT EXISTS uk.uk_price_paid_local
+--highlight-next-line
+ON CLUSTER cluster_1S_2R
+(
+    price UInt32,
+    date Date,
+    postcode1 LowCardinality(String),
+    postcode2 LowCardinality(String),
+    type Enum8('terraced' = 1, 'semi-detached' = 2, 'detached' = 3, 'flat' = 4, 'other' = 0),
+    is_new UInt8,
+    duration Enum8('freehold' = 1, 'leasehold' = 2, 'unknown' = 0),
+    addr1 String,
+    addr2 String,
+    street LowCardinality(String),
+    locality LowCardinality(String),
+    town LowCardinality(String),
+    district LowCardinality(String),
+    county LowCardinality(String)
+)
+--highlight-next-line
+ENGINE = ReplicatedMergeTree
+ORDER BY (postcode1, postcode2, addr1, addr2);
+```
 
   请注意,该查询与[英国房产价格](/getting-started/example-datasets/uk-price-paid)示例数据集教程中原始 `CREATE` 语句使用的查询完全相同,区别仅在于添加了 `ON CLUSTER` 子句并使用了 `ReplicatedMergeTree` 引擎。
 
@@ -560,14 +560,14 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   以确认该表已在集群中创建：
 
   ```sql title="Query"
-  SHOW TABLES IN uk;
-  ```
+SHOW TABLES IN uk;
+```
 
   ```response title="Response"
-  ┌─name────────────────┐
-  1. │ uk_price_paid.      │
-     └─────────────────────┘
-  ```
+   ┌─name────────────────┐
+1. │ uk_price_paid.      │
+   └─────────────────────┘
+```
 
   ## 插入数据
 
@@ -576,190 +576,190 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   从 `clickhouse-01` 使用以下查询插入数据子集:
 
   ```sql
-  INSERT INTO uk.uk_price_paid_local
-  SELECT
-      toUInt32(price_string) AS price,
-      parseDateTimeBestEffortUS(time) AS date,
-      splitByChar(' ', postcode)[1] AS postcode1,
-      splitByChar(' ', postcode)[2] AS postcode2,
-      transform(a, ['T', 'S', 'D', 'F', 'O'], ['terraced', 'semi-detached', 'detached', 'flat', 'other']) AS type,
-      b = 'Y' AS is_new,
-      transform(c, ['F', 'L', 'U'], ['freehold', 'leasehold', 'unknown']) AS duration,
-      addr1,
-      addr2,
-      street,
-      locality,
-      town,
-      district,
-      county
-  FROM url(
-      'http://prod1.publicdata.landregistry.gov.uk.s3-website-eu-west-1.amazonaws.com/pp-complete.csv',
-      'CSV',
-      'uuid_string String,
-      price_string String,
-      time String,
-      postcode String,
-      a String,
-      b String,
-      c String,
-      addr1 String,
-      addr2 String,
-      street String,
-      locality String,
-      town String,
-      district String,
-      county String,
-      d String,
-      e String'
-  ) LIMIT 10000
-  SETTINGS max_http_get_redirects=10;
-  ```
+INSERT INTO uk.uk_price_paid_local
+SELECT
+    toUInt32(price_string) AS price,
+    parseDateTimeBestEffortUS(time) AS date,
+    splitByChar(' ', postcode)[1] AS postcode1,
+    splitByChar(' ', postcode)[2] AS postcode2,
+    transform(a, ['T', 'S', 'D', 'F', 'O'], ['terraced', 'semi-detached', 'detached', 'flat', 'other']) AS type,
+    b = 'Y' AS is_new,
+    transform(c, ['F', 'L', 'U'], ['freehold', 'leasehold', 'unknown']) AS duration,
+    addr1,
+    addr2,
+    street,
+    locality,
+    town,
+    district,
+    county
+FROM url(
+    'http://prod1.publicdata.landregistry.gov.uk.s3-website-eu-west-1.amazonaws.com/pp-complete.csv',
+    'CSV',
+    'uuid_string String,
+    price_string String,
+    time String,
+    postcode String,
+    a String,
+    b String,
+    c String,
+    addr1 String,
+    addr2 String,
+    street String,
+    locality String,
+    town String,
+    district String,
+    county String,
+    d String,
+    e String'
+) LIMIT 10000
+SETTINGS max_http_get_redirects=10;
+```
 
   请注意，数据在每个主机上都完全复制：
 
   ```sql
-  -- clickhouse-01
-  SELECT count(*)
-  FROM uk.uk_price_paid_local
+-- clickhouse-01
+SELECT count(*)
+FROM uk.uk_price_paid_local
 
-  --   ┌─count()─┐
-  -- 1.│   10000 │
-  --   └─────────┘
+--   ┌─count()─┐
+-- 1.│   10000 │
+--   └─────────┘
 
-  -- clickhouse-02
-  SELECT count(*)
-  FROM uk.uk_price_paid_local
+-- clickhouse-02
+SELECT count(*)
+FROM uk.uk_price_paid_local
 
-  --   ┌─count()─┐
-  -- 1.│   10000 │
-  --   └─────────┘
-  ```
+--   ┌─count()─┐
+-- 1.│   10000 │
+--   └─────────┘
+```
 
   为了演示当其中一台主机发生故障时的情况,请从任一主机创建一个简单的测试数据库和测试表:
 
   ```sql
-  CREATE DATABASE IF NOT EXISTS test ON CLUSTER cluster_1S_2R;
-  CREATE TABLE test.test_table ON CLUSTER cluster_1S_2R
-  (
-      `id` UInt64,
-      `name` String
-  )
-  ENGINE = ReplicatedMergeTree
-  ORDER BY id;
-  ```
+CREATE DATABASE IF NOT EXISTS test ON CLUSTER cluster_1S_2R;
+CREATE TABLE test.test_table ON CLUSTER cluster_1S_2R
+(
+    `id` UInt64,
+    `name` String
+)
+ENGINE = ReplicatedMergeTree
+ORDER BY id;
+```
 
   与 `uk_price_paid` 表类似,可以从任一主机插入数据:
 
   ```sql
-  INSERT INTO test.test_table (id, name) VALUES (1, 'Clicky McClickface');
-  ```
+INSERT INTO test.test_table (id, name) VALUES (1, 'Clicky McClickface');
+```
 
   但如果其中一台主机宕机会发生什么？要模拟这种情况，请运行以下命令停止 `clickhouse-01`：
 
   ```bash
-  docker stop clickhouse-01
-  ```
+docker stop clickhouse-01
+```
 
   运行以下命令检查主机是否已停止运行:
 
   ```bash
-  docker-compose ps
-  ```
+docker-compose ps
+```
 
   ```response title="Response"
-  NAME                   IMAGE                                        COMMAND            SERVICE                CREATED          STATUS          PORTS
-  clickhouse-02          clickhouse/clickhouse-server:latest          "/entrypoint.sh"   clickhouse-02          X minutes ago    Up X minutes    127.0.0.1:8124->8123/tcp, 127.0.0.1:9001->9000/tcp
-  clickhouse-keeper-01   clickhouse/clickhouse-keeper:latest-alpine   "/entrypoint.sh"   clickhouse-keeper-01   X minutes ago    Up X minutes    127.0.0.1:9181->9181/tcp
-  clickhouse-keeper-02   clickhouse/clickhouse-keeper:latest-alpine   "/entrypoint.sh"   clickhouse-keeper-02   X minutes ago    Up X minutes    127.0.0.1:9182->9181/tcp
-  clickhouse-keeper-03   clickhouse/clickhouse-keeper:latest-alpine   "/entrypoint.sh"   clickhouse-keeper-03   X minutes ago    Up X minutes    127.0.0.1:9183->9181/tcp
-  ```
+NAME                   IMAGE                                        COMMAND            SERVICE                CREATED          STATUS          PORTS
+clickhouse-02          clickhouse/clickhouse-server:latest          "/entrypoint.sh"   clickhouse-02          X minutes ago    Up X minutes    127.0.0.1:8124->8123/tcp, 127.0.0.1:9001->9000/tcp
+clickhouse-keeper-01   clickhouse/clickhouse-keeper:latest-alpine   "/entrypoint.sh"   clickhouse-keeper-01   X minutes ago    Up X minutes    127.0.0.1:9181->9181/tcp
+clickhouse-keeper-02   clickhouse/clickhouse-keeper:latest-alpine   "/entrypoint.sh"   clickhouse-keeper-02   X minutes ago    Up X minutes    127.0.0.1:9182->9181/tcp
+clickhouse-keeper-03   clickhouse/clickhouse-keeper:latest-alpine   "/entrypoint.sh"   clickhouse-keeper-03   X minutes ago    Up X minutes    127.0.0.1:9183->9181/tcp
+```
 
   在 `clickhouse-01` 已停止运行后,向测试表插入另一行数据并查询该表:
 
   ```sql
-  INSERT INTO test.test_table (id, name) VALUES (2, 'Alexey Milovidov');
-  SELECT * FROM test.test_table;
-  ```
+INSERT INTO test.test_table (id, name) VALUES (2, 'Alexey Milovidov');
+SELECT * FROM test.test_table;
+```
 
   ```response title="Response"
-  ┌─id─┬─name───────────────┐
-  1. │  1 │ Clicky McClickface │
-  2. │  2 │ Alexey Milovidov   │
-     └────┴────────────────────┘
-  ```
+   ┌─id─┬─name───────────────┐
+1. │  1 │ Clicky McClickface │
+2. │  2 │ Alexey Milovidov   │
+   └────┴────────────────────┘
+```
 
   现在使用以下命令重启 `clickhouse-01`(您可以在之后再次运行 `docker-compose ps` 来确认):
 
   ```sql
-  docker start clickhouse-01
-  ```
+docker start clickhouse-01
+```
 
   运行 `docker exec -it clickhouse-01 clickhouse-client` 后,在 `clickhouse-01` 中再次查询测试表:
 
   ```sql title="Query"
-  SELECT * FROM test.test_table
-  ```
+SELECT * FROM test.test_table
+```
 
   ```response title="Response"
-  ┌─id─┬─name───────────────┐
-  1. │  1 │ Clicky McClickface │
-  2. │  2 │ Alexey Milovidov   │
-     └────┴────────────────────┘
-  ```
+   ┌─id─┬─name───────────────┐
+1. │  1 │ Clicky McClickface │
+2. │  2 │ Alexey Milovidov   │
+   └────┴────────────────────┘
+```
 
   如果在此阶段您希望摄取完整的英国房产价格数据集进行试验,可以运行以下查询:
 
   ```sql
-  TRUNCATE TABLE uk.uk_price_paid_local ON CLUSTER cluster_1S_2R;
-  INSERT INTO uk.uk_price_paid_local
-  SELECT
-      toUInt32(price_string) AS price,
-      parseDateTimeBestEffortUS(time) AS date,
-      splitByChar(' ', postcode)[1] AS postcode1,
-      splitByChar(' ', postcode)[2] AS postcode2,
-      transform(a, ['T', 'S', 'D', 'F', 'O'], ['terraced', 'semi-detached', 'detached', 'flat', 'other']) AS type,
-      b = 'Y' AS is_new,
-      transform(c, ['F', 'L', 'U'], ['freehold', 'leasehold', 'unknown']) AS duration,
-      addr1,
-      addr2,
-      street,
-      locality,
-      town,
-      district,
-      county
-  FROM url(
-      'http://prod1.publicdata.landregistry.gov.uk.s3-website-eu-west-1.amazonaws.com/pp-complete.csv',
-      'CSV',
-      'uuid_string String,
-      price_string String,
-      time String,
-      postcode String,
-      a String,
-      b String,
-      c String,
-      addr1 String,
-      addr2 String,
-      street String,
-      locality String,
-      town String,
-      district String,
-      county String,
-      d String,
-      e String'
-      ) SETTINGS max_http_get_redirects=10;
-  ```
+TRUNCATE TABLE uk.uk_price_paid_local ON CLUSTER cluster_1S_2R;
+INSERT INTO uk.uk_price_paid_local
+SELECT
+    toUInt32(price_string) AS price,
+    parseDateTimeBestEffortUS(time) AS date,
+    splitByChar(' ', postcode)[1] AS postcode1,
+    splitByChar(' ', postcode)[2] AS postcode2,
+    transform(a, ['T', 'S', 'D', 'F', 'O'], ['terraced', 'semi-detached', 'detached', 'flat', 'other']) AS type,
+    b = 'Y' AS is_new,
+    transform(c, ['F', 'L', 'U'], ['freehold', 'leasehold', 'unknown']) AS duration,
+    addr1,
+    addr2,
+    street,
+    locality,
+    town,
+    district,
+    county
+FROM url(
+    'http://prod1.publicdata.landregistry.gov.uk.s3-website-eu-west-1.amazonaws.com/pp-complete.csv',
+    'CSV',
+    'uuid_string String,
+    price_string String,
+    time String,
+    postcode String,
+    a String,
+    b String,
+    c String,
+    addr1 String,
+    addr2 String,
+    street String,
+    locality String,
+    town String,
+    district String,
+    county String,
+    d String,
+    e String'
+    ) SETTINGS max_http_get_redirects=10;
+```
 
   从 `clickhouse-02` 或 `clickhouse-01` 查询表：
 
   ```sql title="Query"
-  SELECT count(*) FROM uk.uk_price_paid_local;
-  ```
+SELECT count(*) FROM uk.uk_price_paid_local;
+```
 
   ```response title="Response"
-  ┌──count()─┐
-  1. │ 30212555 │ -- 3021.26万
-     └──────────┘
-  ```
+   ┌──count()─┐
+1. │ 30212555 │ -- 30.21 million
+   └──────────┘
+```
 </VerticalStepper>
 
 ## 总结 {#conclusion}

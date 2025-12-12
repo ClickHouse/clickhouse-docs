@@ -13,7 +13,7 @@ doc_type: 'reference'
 **语法**
 
 ```sql
-指数时间衰减计数(x)(t)
+exponentialTimeDecayedCount(x)(t)
 ```
 
 **参数**
@@ -51,7 +51,7 @@ FROM
 结果：
 
 ```response
-┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar────────────────────────┐
+    ┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar────────────────────────┐
  1. │     1 │    0 │                    1 │ ██▌                        │
  2. │     0 │    1 │                1.905 │ ████▊                      │
  3. │     0 │    2 │                2.724 │ ██████▊                    │

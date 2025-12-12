@@ -35,26 +35,26 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
 1. 次のようなミューテーションにより、ディクショナリルックアップを使って `visitor_ids` を新しいものに更新できます。
 
    ```sql
-   ALTER TABLE website.clicks
-   UPDATE visitor_id = getDict('visitors', 'new_visitor_id', visitor_id)
-   WHERE visit_date < '2022-01-01'
-   ```
+     ALTER TABLE website.clicks
+     UPDATE visitor_id = getDict('visitors', 'new_visitor_id', visitor_id)
+     WHERE visit_date < '2022-01-01'
+     ```
 
 2. 1 回のコマンドで複数の値を変更する方が、複数回のコマンド実行より効率的な場合があります。
 
    ```sql
-   ALTER TABLE website.clicks
-   UPDATE url = substring(url, position(url, '://') + 3), visitor_id = new_visit_id
-   WHERE visit_date < '2022-01-01'
-   ```
+     ALTER TABLE website.clicks
+     UPDATE url = substring(url, position(url, '://') + 3), visitor_id = new_visit_id
+     WHERE visit_date < '2022-01-01'
+     ```
 
 3. シャーディングされたテーブルに対しては、ミューテーションを `ON CLUSTER` で実行できます。
 
    ```sql
-   ALTER TABLE clicks ON CLUSTER main_cluster
-   UPDATE click_count = click_count / 2
-   WHERE visitor_id ILIKE '%robot%'
-   ```
+     ALTER TABLE clicks ON CLUSTER main_cluster
+     UPDATE click_count = click_count / 2
+     WHERE visitor_id ILIKE '%robot%'
+     ```
 
 :::note
 主キーまたはソートキーの一部になっている列を更新することはできません。
@@ -65,7 +65,7 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
 `ALTER TABLE` コマンドを使用して行を削除します。
 
 ```sql
-ALTER TABLE [<データベース>.]<テーブル> DELETE WHERE <フィルタ式>
+ALTER TABLE [<database>.]<table> DELETE WHERE <filter_expr>
 ```
 
 `<filter_expr>` は、各行のデータに対して UInt8 型の値を返す必要があります。
@@ -74,13 +74,13 @@ ALTER TABLE [<データベース>.]<テーブル> DELETE WHERE <フィルタ式>
 
 1. 列が特定の値の配列に含まれている行を削除する:
    ```sql
-   ALTER TABLE website.clicks DELETE WHERE visitor_id IN (253, 1002, 4277)
-   ```
+    ALTER TABLE website.clicks DELETE WHERE visitor_id in (253, 1002, 4277)
+    ```
 
 2. このクエリでどのデータが削除されるか:
    ```sql
-   ALTER TABLE clicks ON CLUSTER main_cluster DELETE WHERE visit_date &lt; '2022-01-02 15:00:00' AND page_id = '573'
-   ```
+    ALTER TABLE clicks ON CLUSTER main_cluster DELETE WHERE visit_date < '2022-01-02 15:00:00' AND page_id = '573'
+    ```
 
 :::note
 テーブル内のすべてのデータを削除するには、`TRUNCATE TABLE [<database].]<table>` コマンドを使用する方が効率的です。このコマンドは `ON CLUSTER` とともに実行することもできます。
@@ -92,8 +92,10 @@ ALTER TABLE [<データベース>.]<テーブル> DELETE WHERE <フィルタ式>
 
 行を削除するもう 1 つの方法は、**軽量削除** と呼ばれる `DELETE FROM` 文を使用することです。削除された行には即座に削除フラグが付き、その後のすべてのクエリから自動的にフィルタリングされるため、パーツのマージ処理を待ったり `FINAL` キーワードを使用したりする必要はありません。データのクリーンアップはバックグラウンドで非同期的に行われます。
 
-```sql
-DELETE FROM [db.]table [ON CLUSTER cluster] [WHERE expr]
+```
+
+For example, the following query deletes all rows from the `hits` table where the `Title` column contains the text `hello`:
+
 ```
 
 たとえば、次のクエリは、`Title` 列に `hello` という文字列が含まれている `hits` テーブルのすべての行を削除します。

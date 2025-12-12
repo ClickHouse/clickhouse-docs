@@ -63,7 +63,7 @@ SELECT * FROM skip_table WHERE my_value IN (125, 700)
 │    ... |      ... |
 └────────┴──────────┘
 
-結果セットに 8192 行が含まれます。経過時間: 0.079 秒。処理行数: 100.00 百万行、800.10 MB（1.26 十億行/秒、10.10 GB/秒）。
+8192 rows in set. Elapsed: 0.079 sec. Processed 100.00 million rows, 800.10 MB (1.26 billion rows/s., 10.10 GB/s.
 ```
 
 では、ごく基本的なスキップインデックスを追加します：
@@ -91,7 +91,7 @@ SELECT * FROM skip_table WHERE my_value IN (125, 700)
 │    ... |      ... |
 └────────┴──────────┘
 
-結果セットは 8192 行。経過時間: 0.051 秒。32.77 千行、360.45 KB を処理しました (643.75 千行/秒、7.08 MB/秒)。
+8192 rows in set. Elapsed: 0.051 sec. Processed 32.77 thousand rows, 360.45 KB (643.75 thousand rows/s., 7.08 MB/s.)
 ```
 
 800メガバイトの1億行を処理する代わりに、ClickHouse は360キロバイトの32,768行だけを読み取り・解析しました
@@ -113,7 +113,7 @@ SET send_logs_level='trace';
 例では、デバッグログから、スキップインデックスによって 2 つのグラニュールを除くすべてがスキップされたことが分かります。
 
 ```sql
-<Debug> default.skip_table (933d4b2c-8cea-4bf9-8c93-c56e900eefd1) (SelectExecutor): インデックス `vix` により、6104 個のグラニュールのうち 6102 個が除外されました。
+<Debug> default.skip_table (933d4b2c-8cea-4bf9-8c93-c56e900eefd1) (SelectExecutor): Index `vix` has dropped 6102/6104 granules.
 ```
 
 ## スキップインデックスのタイプ {#skip-index-types}

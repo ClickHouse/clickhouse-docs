@@ -91,7 +91,7 @@ postgresql> SELECT * FROM test;
   int_id | int_nullable | float | str  | float_nullable
  --------+--------------+-------+------+----------------
        1 |              |     2 | test |
-（1行）
+(1 row)
 ```
 
 通常の引数を使って ClickHouse からデータを取得する：

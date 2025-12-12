@@ -88,8 +88,8 @@ ORDER BY key;
 
 Для конкретной таблицы вы можете проверить, какой движок таблицы был использован в операторе `CREATE TABLE`, выполнив команду `SHOW CREATE TABLE`:
 
-```sql
-SHOW CREATE TABLE myFirstReplacingMT;
+```
+
 ```
 
 ```sql

@@ -185,16 +185,16 @@ Keeper のデフォルトファイルは `/tmp/jemalloc_keeper._pid_._seqnum_.he
 <Tabs groupId="binary">
   <TabItem value="clickhouse" label="ClickHouse">
     ```sql
-    SYSTEM JEMALLOC FLUSH PROFILE
-    ```
+SYSTEM JEMALLOC FLUSH PROFILE
+```
 
     フラッシュされたプロファイルの保存先パスが返されます。
   </TabItem>
 
   <TabItem value="keeper" label="Keeper">
     ```sh
-    echo jmfp | nc localhost 9181
-    ```
+echo jmfp | nc localhost 9181
+```
   </TabItem>
 </Tabs>
 
@@ -274,7 +274,7 @@ jeprof path/to/binary path/to/heap/profile --collapsed > result.collapsed
 最も広く使われているのは [FlameGraph](https://github.com/brendangregg/FlameGraph) で、`flamegraph.pl` というスクリプトが含まれています。
 
 ```sh
-cat result.collapsed | /path/to/FlameGraph/flamegraph.pl --color=mem --title="メモリ割り当てフレームグラフ" --width 2400 > result.svg
+cat result.collapsed | /path/to/FlameGraph/flamegraph.pl --color=mem --title="Allocation Flame Graph" --width 2400 > result.svg
 ```
 
 もう 1 つ便利なツールに [speedscope](https://www.speedscope.app/) があり、収集したスタックをよりインタラクティブに分析できます。

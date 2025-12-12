@@ -24,7 +24,7 @@ ClickHouse записывает события базы данных, связа
 Пример запроса, показывающего неудачные попытки входа
 
 ```sql
-SELECT event_time
+select event_time
     ,type
     ,user
     ,auth_type

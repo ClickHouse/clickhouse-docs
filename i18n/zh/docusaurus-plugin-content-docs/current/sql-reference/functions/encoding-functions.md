@@ -53,7 +53,7 @@ SELECT tup.1 AS hrp, hex(tup.2) AS data FROM (SELECT bech32Decode('bc1w508d6qejx
 bc   751E76E8199196D454941C45D1B3A323F1433BD6
 ```
 
-**测试网地址**
+**Testnet address**
 
 ```sql title=Query
 SELECT tup.1 AS hrp, hex(tup.2) AS data FROM (SELECT bech32Decode('tb1w508d6qejxtdg4y5r3zarvary0c5xw7kzp034v') AS tup)
@@ -63,37 +63,43 @@ SELECT tup.1 AS hrp, hex(tup.2) AS data FROM (SELECT bech32Decode('tb1w508d6qejx
 tb   751E76E8199196D454941C45D1B3A323F1433BD6
 ```
 
+
+
 ## bech32Encode {#bech32Encode}
 
-自 v25.6 起引入
+Introduced in: v25.6
 
-使用 [Bech32 或 Bech32m](https://en.bitcoin.it/wiki/Bech32) 算法对二进制数据字符串及其人类可读部分（HRP）进行编码。
+
+Encodes a binary data string, along with a human-readable part (HRP), using the [Bech32 or Bech32m](https://en.bitcoin.it/wiki/Bech32) algorithms.
 
 :::note
-在使用 [`FixedString`](../data-types/fixedstring.md) 数据类型时，如果某个值没有完全填满其定义的长度，将会用空字符（null 字符）进行填充。
-对于 `hrp` 参数，`bech32Encode` 函数会自动处理这种情况，但对于 `data` 参数，值不能包含这些填充字符。
-因此，不建议对数据值使用 [`FixedString`](../data-types/fixedstring.md) 数据类型，除非能够确保它们的长度完全相同，并相应地将 `FixedString` 列的长度设置为该值。
+When using the [`FixedString`](../data-types/fixedstring.md) data type, if a value does not fully fill the row it is padded with null characters.
+While the `bech32Encode` function will handle this automatically for the hrp argument, for the data argument the values must not be padded.
+For this reason it is not recommended to use the [`FixedString`](../data-types/fixedstring.md) data type for your data values unless you are
+certain that they are all the same length and ensure that your `FixedString` column is set to that length as well.
 :::
+    
 
-**语法**
+**Syntax**
 
 ```sql
 bech32Encode(hrp, data[, witver])
 ```
 
-**参数**
+**Arguments**
 
-* `hrp` — 一个由 `1 - 83` 个小写字符组成的字符串，用于指定代码的“human-readable part（人类可读部分）”。通常为 &#39;bc&#39; 或 &#39;tb&#39;。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
-* `data` — 要编码的二进制数据字符串。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
-* `witver` — 可选。见证版本（默认 = 1）。一个 `UInt*`，用于指定要运行的算法版本。`0` 对应 Bech32，`1` 或更大对应 Bech32m。[`UInt*`](/sql-reference/data-types/int-uint)
+- `hrp` — A String of `1 - 83` lowercase characters specifying the "human-readable part" of the code. Usually 'bc' or 'tb'. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+- `data` — A String of binary data to encode. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+- `witver` — Optional. The witness version (default = 1). An `UInt*` specifying the version of the algorithm to run. `0` for Bech32 and `1` or greater for Bech32m. [`UInt*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回一个 Bech32 地址字符串，由 human-readable part、一个始终为 &#39;1&#39; 的分隔符字符，以及数据部分组成。该字符串的长度不会超过 90 个字符。如果算法无法从输入中生成有效地址，则返回空字符串。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns a Bech32 address string, consisting of the human-readable part, a separator character which is always '1', and a data part. The length of the string will never exceed 90 characters. If the algorithm cannot generate a valid address from the input, it will return an empty string. [`String`](/sql-reference/data-types/string)
 
-**默认 Bech32m**
+**Examples**
+
+**Default Bech32m**
 
 ```sql title=Query
 -- 当未提供见证版本时，默认为 1，即更新后的 Bech32m 算法。
@@ -104,7 +110,7 @@ SELECT bech32Encode('bc', unhex('751e76e8199196d454941c45d1b3a323f1433bd6'))
 bc1w508d6qejxtdg4y5r3zarvary0c5xw7k8zcwmq
 ```
 
-**Bech32 算法**
+**Bech32 algorithm**
 
 ```sql title=Query
 -- 见证版本为 0 将生成不同的地址字符串。
@@ -115,7 +121,7 @@ SELECT bech32Encode('bc', unhex('751e76e8199196d454941c45d1b3a323f1433bd6'), 0)
 bc1w508d6qejxtdg4y5r3zarvary0c5xw7kj7gz7z
 ```
 
-**自定义 HRP**
+**Custom HRP**
 
 ```sql title=Query
 -- 虽然在 SegWit 地址格式中，只有 'bc'（主网）和 'tb'（测试网）是允许的 hrp 值，
@@ -127,37 +133,43 @@ SELECT bech32Encode('abcdefg', unhex('751e76e8199196d454941c45d1b3a323f1433bd6')
 abcdefg1w508d6qejxtdg4y5r3zarvary0c5xw7k9rp8r4
 ```
 
+
+
 ## bin {#bin}
 
-引入于：v21.8
+Introduced in: v21.8
 
-根据不同类型，按照以下逻辑返回一个包含参数二进制表示形式的字符串：
 
-| Type                       | Description                                                                                   |
-| -------------------------- | --------------------------------------------------------------------------------------------- |
-| `(U)Int*`                  | 以从最高有效位到最低有效位（大端序或“人类可读”顺序）输出二进制位。输出时从最高有效的非零字节开始（省略前导零字节），但如果该字节的最高位为零，仍然为该字节输出完整的 8 位二进制数字。 |
-| `Date` and `DateTime`      | 格式化为对应的整数（`Date` 为自纪元（epoch）起的天数，`DateTime` 为 Unix 时间戳的值）。                                    |
-| `String` and `FixedString` | 所有字节都直接编码为 8 位二进制数字。零字节不会被省略。                                                                 |
-| `Float*` and `Decimal`     | 按其在内存中的表示进行编码。由于我们使用的是小端序架构，因此按小端序进行编码。前导或尾随的零字节不会被省略。                                        |
-| `UUID`                     | 按大端序顺序编码为字符串。                                                                                 |
+Returns a string containing the argument's binary representation according
+to the following logic for different types:
 
-**语法**
+| Type                       | Description                                                                                                                                                                                                                                                           |
+|----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `(U)Int*`                  | Prints bin digits from the most significant to least significant (big-endian or "human-readable" order). It starts with the most significant non-zero byte (leading zero bytes are omitted) but always prints eight digits of every byte if the leading digit is zero.|
+| `Date` and `DateTime`      | Formatted as corresponding integers (the number of days since epoch for Date and the value of unix timestamp for DateTime).                                                                                                                                           |
+| `String` and `FixedString` | All bytes are simply encoded as eight binary numbers. Zero bytes are not omitted.                                                                                                                                                                                     |
+| `Float*` and `Decimal`     | Encoded as their representation in memory. As we support little-endian architecture, they are encoded in little-endian. Zero leading/trailing bytes are not omitted.                                                                                                  |
+| `UUID`                     | Encoded as big-endian order string.                                                                                                                                                                                                                                   |
+    
+
+**Syntax**
 
 ```sql
 bin(arg)
 ```
 
-**参数**
+**Arguments**
 
-* `arg` — 要转换为二进制的值。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring) 或 [`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal) 或 [`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime)
+- `arg` — A value to convert to binary. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring) or [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal) or [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime)
 
-**返回值**
 
-返回参数二进制表示形式的字符串。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns a string with the binary representation of the argument. [`String`](/sql-reference/data-types/string)
 
-**简单的整数**
+**Examples**
+
+**Simple integer**
 
 ```sql title=Query
 SELECT bin(14)
@@ -169,7 +181,7 @@ SELECT bin(14)
 └──────────┘
 ```
 
-**Float32 浮点数**
+**Float32 numbers**
 
 ```sql title=Query
 SELECT bin(toFloat32(number)) AS bin_presentation FROM numbers(15, 2)
@@ -182,7 +194,7 @@ SELECT bin(toFloat32(number)) AS bin_presentation FROM numbers(15, 2)
 └──────────────────────────────────┘
 ```
 
-**Float64 浮点数**
+**Float64 numbers**
 
 ```sql title=Query
 SELECT bin(toFloat64(number)) AS bin_presentation FROM numbers(15, 2)
@@ -195,7 +207,7 @@ SELECT bin(toFloat64(number)) AS bin_presentation FROM numbers(15, 2)
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-**UUID 转换**
+**UUID conversion**
 
 ```sql title=Query
 SELECT bin(toUUID('61f0c404-5cb3-11e7-907b-a6006ad3dba0')) AS bin_uuid
@@ -207,30 +219,35 @@ SELECT bin(toUUID('61f0c404-5cb3-11e7-907b-a6006ad3dba0')) AS bin_uuid
 └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## bitPositionsToArray {#bitPositionsToArray}
 
-自 v21.7 引入
+Introduced in: v21.7
 
-该函数返回无符号整数二进制表示中所有值为 1 的位的位置（按升序排列）。
-带符号的输入整数会先被转换为无符号整数。
 
-**语法**
+This function returns the positions (in ascending order) of the 1 bits in the binary representation of an unsigned integer.
+Signed input integers are first casted to an unsigned integer.
+    
+
+**Syntax**
 
 ```sql
 bitPositionsToArray(arg)
 ```
 
-**参数**
+**Arguments**
 
-* `arg` — 一个整数值。[`(U)Int*`](/sql-reference/data-types/int-uint)
+- `arg` — An integer value. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回一个数组，数组元素为输入值二进制表示中所有为 1 的位的位置，按升序排列。[`Array(UInt64)`](/sql-reference/data-types/array)
+**Returned value**
 
-**示例**
+Returns an array with the ascendingly ordered positions of 1 bits in the binary representation of the input. [`Array(UInt64)`](/sql-reference/data-types/array)
 
-**单个位被设置为 1**
+**Examples**
+
+**Single bit set**
 
 ```sql title=Query
 SELECT bitPositionsToArray(toInt8(1)) AS bit_positions
@@ -242,7 +259,7 @@ SELECT bitPositionsToArray(toInt8(1)) AS bit_positions
 └───────────────┘
 ```
 
-**所有比特位已置 1**
+**All bits set**
 
 ```sql title=Query
 SELECT bitPositionsToArray(toInt8(-1)) AS bit_positions
@@ -254,30 +271,35 @@ SELECT bitPositionsToArray(toInt8(-1)) AS bit_positions
 └───────────────────────────┘
 ```
 
+
+
 ## bitmaskToArray {#bitmaskToArray}
 
-引入版本：v1.1
+Introduced in: v1.1
 
-此函数将一个整数分解为若干个 2 的幂之和。
-这些 2 的幂以升序排列的数组形式返回。
 
-**语法**
+This function decomposes an integer into a sum of powers of two.
+The powers of two are returned as an ascendingly ordered array.
+    
+
+**Syntax**
 
 ```sql
 bitmaskToArray(数字)
 ```
 
-**参数**
+**Arguments**
 
-* `num` — 一个整数值。[`(U)Int*`](/sql-reference/data-types/int-uint)
+- `num` — An integer value. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回一个数组，其中包含按升序排列的 2 的幂，其和等于输入值。[`Array(UInt64)`](/sql-reference/data-types/array)
+**Returned value**
 
-**示例**
+Returns an array with the ascendingly ordered powers of two which sum up to the input number. [`Array(UInt64)`](/sql-reference/data-types/array)
 
-**基础示例**
+**Examples**
+
+**Basic example**
 
 ```sql title=Query
 SELECT bitmaskToArray(50) AS powers_of_two
@@ -289,7 +311,7 @@ SELECT bitmaskToArray(50) AS powers_of_two
 └─────────────────┘
 ```
 
-**单一 2 的幂值**
+**Single power of two**
 
 ```sql title=Query
 SELECT bitmaskToArray(8) AS powers_of_two
@@ -301,29 +323,34 @@ SELECT bitmaskToArray(8) AS powers_of_two
 └───────────────┘
 ```
 
+
+
 ## bitmaskToList {#bitmaskToList}
 
-引入版本：v1.1
+Introduced in: v1.1
 
-类似 bitmaskToArray，但返回的是由 2 的幂值组成、以逗号分隔的字符串。
 
-**语法**
+Like bitmaskToArray but returns the powers of two as a comma-separated string.
+    
+
+**Syntax**
 
 ```sql
 bitmaskToList(数字)
 ```
 
-**参数**
+**Arguments**
 
-* `num` — 整数。[`(U)Int*`](/sql-reference/data-types/int-uint)
+- `num` — An integer value. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回一个包含用逗号分隔的 2 的幂的字符串。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns a string containing comma-separated powers of two. [`String`](/sql-reference/data-types/string)
 
-**基本示例**
+**Examples**
+
+**Basic example**
 
 ```sql title=Query
 SELECT bitmaskToList(50) AS powers_list
@@ -335,31 +362,38 @@ SELECT bitmaskToList(50) AS powers_list
 └───────────────┘
 ```
 
+
+
 ## char {#char}
 
-引入版本：v20.1
+Introduced in: v20.1
 
-返回一个长度等于传入参数个数的字符串，其中每个字节的值等于对应参数的值。接受多个数值类型的参数。
 
-如果参数的值超出了 `UInt8` 数据类型的范围，则会被转换为 `UInt8`，在此过程中可能发生舍入和溢出。
+Returns a string with length equal to the number of arguments passed where each byte
+has the value of the corresponding argument. Accepts multiple arguments of numeric types.
 
-**语法**
+If the value of the argument is out of range of the `UInt8` data type, then it is converted
+to `UInt8` with potential rounding and overflow.
+        
+
+**Syntax**
 
 ```sql
 char(num1[, num2[, ...]])
 ```
 
-**参数**
+**Arguments**
 
-* `num1[, num2[, num3 ...]]` — 按整数处理的数值参数。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
+- `num1[, num2[, num3 ...]]` — Numerical arguments interpreted as integers. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**返回值**
 
-返回由给定字节组成的字符串。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns a string of the given bytes. [`String`](/sql-reference/data-types/string)
 
-**基本示例**
+**Examples**
+
+**Basic example**
 
 ```sql title=Query
 SELECT char(104.1, 101, 108.9, 108.9, 111) AS hello;
@@ -371,7 +405,7 @@ SELECT char(104.1, 101, 108.9, 108.9, 111) AS hello;
 └───────┘
 ```
 
-**构建任意编码**
+**Constructing arbitrary encodings**
 
 ```sql title=Query
 -- 您可以通过传递相应的字节来构造任意编码的字符串。
@@ -385,39 +419,45 @@ SELECT char(0xD0, 0xBF, 0xD1, 0x80, 0xD0, 0xB8, 0xD0, 0xB2, 0xD0, 0xB5, 0xD1, 0x
 └────────┘
 ```
 
+
+
 ## hex {#hex}
 
-引入于：v1.1
+Introduced in: v1.1
 
-根据不同类型，按以下逻辑返回一个包含参数十六进制表示形式的字符串：
 
-| Type                       | Description                                                                                            |
-| -------------------------- | ------------------------------------------------------------------------------------------------------ |
-| `(U)Int*`                  | 按从最高有效位到最低有效位的顺序（大端或“人类可读”顺序）输出十六进制数字（“半字节 / nibbles”）。从最高有效的非零字节开始（会省略前导零字节），但始终输出每个字节的两个数字，即使高位数字为零。 |
-| `Date` and `DateTime`      | 格式化为对应的整数（对于 `Date`，是自纪元起的天数；对于 `DateTime`，是 Unix 时间戳的值）。                                              |
-| `String` and `FixedString` | 所有字节都直接编码为两个十六进制数字。零字节不会被省略。                                                                           |
-| `Float*` and `Decimal`     | 按其在内存中的表示进行编码。ClickHouse 在内部始终以小端格式表示这些值，因此也按小端方式进行编码。前导或尾随的零字节不会被省略。                                  |
-| `UUID`                     | 按大端顺序编码为字符串。                                                                                           |
+Returns a string containing the argument's hexadecimal representation according
+to the following logic for different types:
 
-该函数使用大写字母 `A-F`，且不使用任何前缀（如 `0x`）或后缀（如 `h`）。
+| Type                       | Description                                                                                                                                                                                                                                                                            |
+|----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `(U)Int*`                  | Prints hex digits ("nibbles") from the most significant to least significant (big-endian or "human-readable" order). It starts with the most significant non-zero byte (leading zero bytes are omitted) but always prints both digits of every byte even if the leading digit is zero. |
+| `Date` and `DateTime`      | Formatted as corresponding integers (the number of days since epoch for Date and the value of unix timestamp for DateTime).                                                                                                                                                            |
+| `String` and `FixedString` | All bytes are simply encoded as two hexadecimal numbers. Zero bytes are not omitted.                                                                                                                                                                                                   |
+| `Float*` and `Decimal`     | Encoded as their representation in memory. ClickHouse represents the values internally always as little endian, therefore they are encoded as such. Zero leading/trailing bytes are not omitted.                                                                                                                   |
+| `UUID`                     | Encoded as big-endian order string.                                                                                                                                                                                                                                                    |
 
-**语法**
+The function uses uppercase letters `A-F` and not using any prefixes (like `0x`) or suffixes (like `h`).
+    
+
+**Syntax**
 
 ```sql
 hex(arg)
 ```
 
-**参数**
+**Arguments**
 
-* `arg` — 要转换为十六进制的值。[`String`](/sql-reference/data-types/string) 或 [`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal) 或 [`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime)
+- `arg` — A value to convert to hexadecimal. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal) or [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime)
 
-**返回值**
 
-返回一个以十六进制表示该参数的字符串。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns a string with the hexadecimal representation of the argument. [`String`](/sql-reference/data-types/string)
 
-**简单整数**
+**Examples**
+
+**Simple integer**
 
 ```sql title=Query
 SELECT hex(1)
@@ -427,7 +467,7 @@ SELECT hex(1)
 01
 ```
 
-**Float32 浮点数**
+**Float32 numbers**
 
 ```sql title=Query
 SELECT hex(toFloat32(number)) AS hex_presentation FROM numbers(15, 2)
@@ -440,7 +480,7 @@ SELECT hex(toFloat32(number)) AS hex_presentation FROM numbers(15, 2)
 └──────────────────┘
 ```
 
-**Float64 浮点数**
+**Float64 numbers**
 
 ```sql title=Query
 SELECT hex(toFloat64(number)) AS hex_presentation FROM numbers(15, 2)
@@ -453,7 +493,7 @@ SELECT hex(toFloat64(number)) AS hex_presentation FROM numbers(15, 2)
 └──────────────────┘
 ```
 
-**UUID 转换**
+**UUID conversion**
 
 ```sql title=Query
 SELECT lower(hex(toUUID('61f0c404-5cb3-11e7-907b-a6006ad3dba0'))) AS uuid_hex
@@ -465,49 +505,55 @@ SELECT lower(hex(toUUID('61f0c404-5cb3-11e7-907b-a6006ad3dba0'))) AS uuid_hex
 └──────────────────────────────────┘
 ```
 
+
+
 ## hilbertDecode {#hilbertDecode}
 
-引入版本：v24.6
+Introduced in: v24.6
 
-将 Hilbert 曲线索引解码回由无符号整数组成的元组，表示多维空间中的坐标。
 
-与 `hilbertEncode` 函数一样，此函数有两种运行模式：
+Decodes a Hilbert curve index back into a tuple of unsigned integers, representing coordinates in multi-dimensional space.
 
-* **简单**
-* **扩展**
+As with the `hilbertEncode` function, this function has two modes of operation:
+- **Simple**
+- **Expanded**
 
-**简单模式**
+**Simple mode**
 
-接受最多 2 个无符号整数作为参数，并生成一个 `UInt64` 代码。
+Accepts up to 2 unsigned integers as arguments and produces a `UInt64` code.
 
-**扩展模式**
+**Expanded mode**
 
-接受一个范围掩码（元组）作为第一个参数，以及最多 2 个无符号整数作为
-其他参数。掩码中的每个数字用于配置对应参数左移的位数，从而在其范围内对参数进行
-有效缩放。
+Accepts a range mask (tuple) as a first argument and up to 2 unsigned integers as
+other arguments. Each number in the mask configures the number of bits by which
+the corresponding argument will be shifted left, effectively scaling the argument
+within its range.
 
-当你需要对范围（或基数）差异巨大的参数获得相似分布时，范围扩展会很有用。
-例如：&#39;IP Address&#39; `(0...FFFFFFFF)` 和 &#39;Country code&#39; `(0...FF)`。
-与编码函数相同，此模式最多支持 8 个数字。
+Range expansion can be beneficial when you need a similar distribution for
+arguments with wildly different ranges (or cardinality) For example: 'IP Address' `(0...FFFFFFFF)`
+and 'Country code' `(0...FF)`. As with the encode function, this is limited to 8
+numbers at most.
+    
 
-**语法**
+**Syntax**
 
 ```sql
 hilbertDecode(tuple_size, code)
 ```
 
-**参数**
+**Arguments**
 
-* `tuple_size` — 不大于 `2` 的整数值。[`UInt8/16/32/64`](/sql-reference/data-types/int-uint) 或 [`Tuple(UInt8/16/32/64)`](/sql-reference/data-types/tuple)
-* `code` — `UInt64` 类型的编码值。[`UInt64`](/sql-reference/data-types/int-uint)
+- `tuple_size` — Integer value of no more than `2`. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint) or [`Tuple(UInt8/16/32/64)`](/sql-reference/data-types/tuple)
+- `code` — `UInt64` code. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回一个指定大小的元组。[`Tuple(UInt64)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**示例**
+Returns a tuple of the specified size. [`Tuple(UInt64)`](/sql-reference/data-types/tuple)
 
-**简单模式**
+**Examples**
+
+**Simple mode**
 
 ```sql title=Query
 SELECT hilbertDecode(2, 31)
@@ -517,7 +563,7 @@ SELECT hilbertDecode(2, 31)
 ["3", "4"]
 ```
 
-**单一参数**
+**Single argument**
 
 ```sql title=Query
 -- 当只有一个参数时，其 Hilbert 编码始终就是该参数本身（作为元组）。
@@ -528,7 +574,7 @@ SELECT hilbertDecode(1, 1)
 ["1"]
 ```
 
-**展开模式**
+**Expanded mode**
 
 ```sql title=Query
 -- 当以单个参数传入一个指定位移位数的元组时，将按该元组指定的位数进行右移。
@@ -539,7 +585,7 @@ SELECT hilbertDecode(tuple(2), 32768)
 ["128"]
 ```
 
-**列使用情况**
+**Column usage**
 
 ```sql title=Query
 -- 首先创建表并插入数据
@@ -559,30 +605,34 @@ SELECT untuple(hilbertDecode(2, hilbertEncode(n1, n2))) FROM hilbert_numbers;
 1    2
 ```
 
+
+
 ## hilbertEncode {#hilbertEncode}
 
-引入版本：v24.6
+Introduced in: v24.6
 
-为一组无符号整数计算 Hilbert 曲线编码。
 
-该函数有两种工作模式：
+Calculates code for Hilbert Curve for a list of unsigned integers.
 
-* **简单模式**
-* **扩展模式**
+The function has two modes of operation:
+- **Simple**
+- **Expanded**
 
-**简单模式**
+**Simple mode**
 
-接受最多 2 个无符号整数作为参数，并生成一个 UInt64 编码。
+Accepts up to 2 unsigned integers as arguments and produces a UInt64 code.
 
-**扩展模式**
+**Expanded mode**
 
-接受一个范围掩码（[Tuple](../../sql-reference/data-types/tuple.md)）作为
-第一个参数，并将最多 2 个[无符号整数](../../sql-reference/data-types/int-uint.md)
-作为其余参数。
+Accepts a range mask ([Tuple](../../sql-reference/data-types/tuple.md)) as the
+first argument and up to 2 [unsigned integers](../../sql-reference/data-types/int-uint.md)
+as other arguments.
 
-掩码中的每个数字用于配置对应参数左移的位数，从而在其范围内按比例缩放该参数。
+Each number in the mask configures the number of bits by which the corresponding
+argument will be shifted left, effectively scaling the argument within its range.
+    
 
-**语法**
+**Syntax**
 
 ```sql
 -- 简化模式
@@ -592,18 +642,19 @@ hilbertEncode(args)
 hilbertEncode(range_mask, args)
 ```
 
-**参数**
+**Arguments**
 
-* `args` — 至多两个 `UInt` 值或 `UInt` 类型的列。[`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
-* `range_mask` — 在扩展模式下，至多两个 `UInt` 值或 `UInt` 类型的列。[`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+- `args` — Up to two `UInt` values or columns of type `UInt`. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+- `range_mask` — For the expanded mode, up to two `UInt` values or columns of type `UInt`. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回一个 `UInt64` 值。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns a `UInt64` code. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**简单模式**
+**Examples**
+
+**Simple mode**
 
 ```sql title=Query
 SELECT hilbertEncode(3, 4)
@@ -613,7 +664,7 @@ SELECT hilbertEncode(3, 4)
 31
 ```
 
-**展开模式**
+**Expanded mode**
 
 ```sql title=Query
 -- 当需要为范围（或基数）差异极大的参数实现相似的分布时，范围扩展会很有用。
@@ -626,7 +677,7 @@ SELECT hilbertEncode((10, 6), 1024, 16)
 4031541586602
 ```
 
-**单个参数**
+**Single argument**
 
 ```sql title=Query
 -- 当仅传入一个非元组的单个参数时，函数会将该参数本身作为 Hilbert 索引返回，
@@ -638,7 +689,7 @@ SELECT hilbertEncode(1)
 1
 ```
 
-**展开的单参数形式**
+**Expanded single argument**
 
 ```sql title=Query
 -- 如果只提供一个参数，并使用元组指定位移位数，函数会
@@ -650,7 +701,7 @@ SELECT hilbertEncode(tuple(2), 128)
 512
 ```
 
-**列用法**
+**Column usage**
 
 ```sql title=Query
 -- 首先创建表并插入一些数据
@@ -670,37 +721,41 @@ SELECT hilbertEncode(n1, n2) FROM hilbert_numbers;
 13
 ```
 
+
+
 ## mortonDecode {#mortonDecode}
 
-引入于：v24.6
+Introduced in: v24.6
 
-将 Morton 编码（Z 曲线）解码为对应的无符号整数元组。
 
-与 `mortonEncode` 函数一样，此函数有两种运行模式：
+Decodes a Morton encoding (ZCurve) into the corresponding unsigned integer tuple.
 
-* **简单**
-* **扩展**
+As with the `mortonEncode` function, this function has two modes of operation:
+- **Simple**
+- **Expanded**
 
-**简单模式**
+**Simple mode**
 
-第一个参数为结果元组的大小，第二个参数为编码值。
+Accepts a resulting tuple size as the first argument and the code as the second argument.
 
-**扩展模式**
+**Expanded mode**
 
-第一个参数为范围掩码（元组），第二个参数为编码值。
-掩码中的每个数字用于配置范围收缩的倍数：
+Accepts a range mask (tuple) as the first argument and the code as the second argument.
+Each number in the mask configures the amount of range shrink:
 
-* `1` - 不收缩
-* `2` - 2 倍收缩
-* `3` - 3 倍收缩
-  ⋮
-* 最多到 8 倍收缩。
+* `1` - no shrink
+* `2` - 2x shrink
+* `3` - 3x shrink
+⋮
+* Up to 8x shrink.
 
-当参数的取值范围（或基数）差异很大，但仍希望它们具有相近的分布时，范围扩展会很有用。
-例如：“IP Address” `(0...FFFFFFFF)` 和 “Country code” `(0...FF)`。
-与编码函数一样，此功能最多只能处理 8 个数字。
+Range expansion can be beneficial when you need a similar distribution for
+arguments with wildly different ranges (or cardinality). For example: 'IP Address' `(0...FFFFFFFF)`
+and 'Country code' `(0...FF)`. As with the encode function, this is limited to
+8 numbers at most.
+    
 
-**语法**
+**Syntax**
 
 ```sql
 -- 简单模式
@@ -710,19 +765,20 @@ mortonDecode(tuple_size, code)
 mortonDecode(range_mask, code)
 ```
 
-**参数**
+**Arguments**
 
-* `tuple_size` — 不大于 8 的整数值。[`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
-* `range_mask` — 在扩展模式下，用于配置每个参数的掩码。该掩码是一个无符号整数的元组。掩码中的每个数值用于配置区间收缩的程度。[`Tuple(UInt8/16/32/64)`](/sql-reference/data-types/tuple)
-* `code` — UInt64 代码值。[`UInt64`](/sql-reference/data-types/int-uint)
+- `tuple_size` — Integer value no more than 8. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+- `range_mask` — For the expanded mode, the mask for each argument. The mask is a tuple of unsigned integers. Each number in the mask configures the amount of range shrink. [`Tuple(UInt8/16/32/64)`](/sql-reference/data-types/tuple)
+- `code` — UInt64 code. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回一个指定大小的元组。[`Tuple(UInt64)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**示例**
+Returns a tuple of the specified size. [`Tuple(UInt64)`](/sql-reference/data-types/tuple)
 
-**简单模式**
+**Examples**
+
+**Simple mode**
 
 ```sql title=Query
 SELECT mortonDecode(3, 53)
@@ -732,7 +788,7 @@ SELECT mortonDecode(3, 53)
 ["1", "2", "3"]
 ```
 
-**单个参数**
+**Single argument**
 
 ```sql title=Query
 SELECT mortonDecode(1, 1)
@@ -742,7 +798,7 @@ SELECT mortonDecode(1, 1)
 ["1"]
 ```
 
-**扩展模式：缩减一个参数**
+**Expanded mode, shrinking one argument**
 
 ```sql title=Query
 SELECT mortonDecode(tuple(2), 32768)
@@ -752,7 +808,7 @@ SELECT mortonDecode(tuple(2), 32768)
 ["128"]
 ```
 
-**列使用情况**
+**Column usage**
 
 ```sql title=Query
 -- 首先创建表并写入一些数据
@@ -778,34 +834,37 @@ SELECT untuple(mortonDecode(8, mortonEncode(n1, n2, n3, n4, n5, n6, n7, n8))) FR
 1 2 3 4 5 6 7 8
 ```
 
+
+
 ## mortonEncode {#mortonEncode}
 
-引入于：v24.6
+Introduced in: v24.6
 
-为一组无符号整数计算 Morton 编码（Z 曲线，ZCurve）。
 
-该函数有两种运行模式：
+Calculates the Morton encoding (ZCurve) for a list of unsigned integers.
 
-* **简单模式**
-* *扩展模式**
+The function has two modes of operation:
+- **Simple**
+- *Expanded**
 
-**简单模式**
+**Simple mode**
 
-最多接受 8 个无符号整数作为参数，并生成一个 `UInt64` 编码。
+Accepts up to 8 unsigned integers as arguments and produces a `UInt64` code.
 
-**扩展模式**
+**Expanded mode**
 
-接受一个范围掩码（[Tuple](../data-types/tuple.md)）作为第一个参数，以及最多 8 个[无符号整数](../data-types/int-uint.md)作为其余参数。
+Accepts a range mask ([Tuple](../data-types/tuple.md)) as the first argument and
+up to 8 [unsigned integers](../data-types/int-uint.md) as other arguments.
 
-掩码中的每个数字用于配置对应维度的范围扩展倍数：
+Each number in the mask configures the amount of range expansion:
+* 1 - no expansion
+* 2 - 2x expansion
+* 3 - 3x expansion
+⋮
+* Up to 8x expansion.
+    
 
-* 1 - 不扩展
-* 2 - 2 倍扩展
-* 3 - 3 倍扩展
-  ⋮
-* 最多 8 倍扩展。
-
-**语法**
+**Syntax**
 
 ```sql
 -- 简化模式
@@ -815,18 +874,19 @@ mortonEncode(args)
 mortonEncode(range_mask, args)
 ```
 
-**参数**
+**Arguments**
 
-* `args` — 最多包含 8 个无符号整数或上述类型的列。[`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
-* `range_mask` — 在扩展模式下，用于指定每个参数的掩码。该掩码是由 `1` - `8` 的无符号整数组成的元组。掩码中的每个数字用于配置区间收缩的程度。[`Tuple(UInt8/16/32/64)`](/sql-reference/data-types/tuple)
+- `args` — Up to 8 unsigned integers or columns of the aforementioned type. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+- `range_mask` — For the expanded mode, the mask for each argument. The mask is a tuple of unsigned integers from `1` - `8`. Each number in the mask configures the amount of range shrink. [`Tuple(UInt8/16/32/64)`](/sql-reference/data-types/tuple)
 
-**返回值**
 
-返回一个 `UInt64` 编码值。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns a `UInt64` code. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**简单模式**
+**Examples**
+
+**Simple mode**
 
 ```sql title=Query
 SELECT mortonEncode(1, 2, 3)
@@ -836,7 +896,7 @@ SELECT mortonEncode(1, 2, 3)
 53
 ```
 
-**展开模式**
+**Expanded mode**
 
 ```sql title=Query
 -- 当你需要让取值范围（或基数）差异巨大的参数获得相似分布时，范围扩展会很有帮助
@@ -849,7 +909,7 @@ SELECT mortonEncode((1,2), 1024, 16)
 1572864
 ```
 
-**单个参数**
+**Single argument**
 
 ```sql title=Query
 -- 单个参数的 Morton 编码始终是参数本身
@@ -860,7 +920,7 @@ SELECT mortonEncode(1)
 1
 ```
 
-**单参数扩展形式**
+**Expanded single argument**
 
 ```sql title=Query
 SELECT mortonEncode(tuple(2), 128)
@@ -870,7 +930,7 @@ SELECT mortonEncode(tuple(2), 128)
 32768
 ```
 
-**列使用情况**
+**Column usage**
 
 ```sql title=Query
 -- 首先创建表并插入一些数据
@@ -896,29 +956,34 @@ SELECT mortonEncode(n1, n2, n3, n4, n5, n6, n7, n8) FROM morton_numbers;
 2155374165
 ```
 
+
+
 ## sqidDecode {#sqidDecode}
 
-首次引入于：v24.1
+Introduced in: v24.1
 
-将一个 [sqid](https://sqids.org/) 解码还原为数字数组。
 
-**语法**
+Transforms a [sqid](https://sqids.org/) back into an array of numbers.
+    
+
+**Syntax**
 
 ```sql
 sqidDecode(sqid)
 ```
 
-**参数**
+**Arguments**
 
-* `sqid` — 要解码的 sqid。[`String`](/sql-reference/data-types/string)
+- `sqid` — The sqid to decode. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回由 `sqid` 解码得到的数字数组。[`Array(UInt64)`](/sql-reference/data-types/array)
+**Returned value**
 
-**示例**
+Returns an array of numbers from `sqid`. [`Array(UInt64)`](/sql-reference/data-types/array)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT sqidDecode('gXHfJ1C6dN');
@@ -930,31 +995,36 @@ SELECT sqidDecode('gXHfJ1C6dN');
 └──────────────────────────────┘
 ```
 
+
+
 ## sqidEncode {#sqidEncode}
 
-自 v24.1 起引入
+Introduced in: v24.1
 
-将数字转换为 [sqid](https://sqids.org/)，一种类似 YouTube 的 ID 字符串。
 
-**语法**
+Transforms numbers into a [sqid](https://sqids.org/), a Youtube-like ID string.
+    
+
+**Syntax**
 
 ```sql
 sqidEncode(n1[, n2, ...])
 ```
 
-**别名**：`sqid`
+**Aliases**: `sqid`
 
-**参数**
+**Arguments**
 
-* `n1[, n2, ...]` — 任意数量的数字。[`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+- `n1[, n2, ...]` — Arbitrarily many numbers. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回一个哈希 ID 字符串 [`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns a hash ID [`String`](/sql-reference/data-types/string)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT sqidEncode(1, 2, 3, 4, 5);
@@ -966,37 +1036,43 @@ SELECT sqidEncode(1, 2, 3, 4, 5);
 └───────────────────────────┘
 ```
 
+
+
 ## unbin {#unbin}
 
-引入于：v21.8
+Introduced in: v21.8
 
-将参数中的每一对二进制数字解释为一个数值，并将其转换为该数值所表示的字节。该函数执行与 `bin` 相反的操作。
 
-对于数值型参数，`unbin()` 不会返回 `bin()` 的逆结果。如果你希望将结果转换为数值，可以使用 `reverse` 和 `reinterpretAs<Type>` 函数。
+Interprets each pair of binary digits (in the argument) as a number and converts it to the byte represented by the number. The functions performs the opposite operation to bin.
+
+For a numeric argument `unbin()` does not return the inverse of `bin()`. If you want to convert the result to a number, you can use the reverse and `reinterpretAs<Type>` functions.
 
 :::note
-如果在 `clickhouse-client` 中调用 `unbin`，二进制字符串将以 UTF-8 方式显示。
+If `unbin` is invoked from within the `clickhouse-client`, binary strings are displayed using UTF-8.
 :::
 
-支持二进制数字 `0` 和 `1`。二进制数字的位数不必是 8 的倍数。如果参数字符串包含二进制数字以外的任何内容，其结果未定义（不会抛出异常）。
+Supports binary digits `0` and `1`. The number of binary digits does not have to be multiples of eight. If the argument string contains anything other than binary digits,
+the result is undefined (no exception is thrown).
+    
 
-**语法**
+**Syntax**
 
 ```sql
 unbin(arg)
 ```
 
-**参数**
+**Arguments**
 
-* `arg` — 一个由任意数量二进制位组成的字符串。[`String`](/sql-reference/data-types/string)
+- `arg` — A string containing any number of binary digits. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回一个二进制字符串（BLOB）。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns a binary string (BLOB). [`String`](/sql-reference/data-types/string)
 
-**基本用法**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT UNBIN('001100000011000100110010'), UNBIN('0100110101111001010100110101000101001100')
@@ -1008,7 +1084,7 @@ SELECT UNBIN('001100000011000100110010'), UNBIN('0100110101111001010100110101000
 └───────────────────────────────────┴───────────────────────────────────────────────────┘
 ```
 
-**转换为数值**
+**Convert to number**
 
 ```sql title=Query
 SELECT reinterpretAsUInt64(reverse(unbin('1110'))) AS num
@@ -1020,42 +1096,48 @@ SELECT reinterpretAsUInt64(reverse(unbin('1110'))) AS num
 └─────┘
 ```
 
+
+
 ## unhex {#unhex}
 
-引入版本：v1.1
+Introduced in: v1.1
 
-执行与 [`hex`](#hex) 相反的操作。它将参数中的每一对十六进制数字解释为一个数值，并将其转换为该数值所表示的字节。返回值是一个二进制字符串（BLOB）。
 
-如果你希望将结果转换为数值，可以使用 `reverse` 和 `reinterpretAs<Type>` 函数。
+Performs the opposite operation of [`hex`](#hex). It interprets each pair of hexadecimal digits (in the argument) as a number and converts
+it to the byte represented by the number. The returned value is a binary string (BLOB).
+
+If you want to convert the result to a number, you can use the `reverse` and `reinterpretAs<Type>` functions.
 
 :::note
-`clickhouse-client` 将字符串解释为 UTF-8。
-这可能会导致 `hex` 返回的值在显示时与预期不符。
+`clickhouse-client` interprets strings as UTF-8.
+This may cause that values returned by `hex` to be displayed surprisingly.
 :::
 
-同时支持大写和小写字母 `A-F`。
-十六进制数字的数量不必为偶数。
-如果是奇数，最后一个数字会被解释为 `00-0F` 字节中最低有效的半字节。
-如果参数字符串包含十六进制数字以外的任何内容，将返回某种依赖实现的结果（不会抛出异常）。
-对于数值类型参数，unhex() 不会执行 hex(N) 的逆运算。
+Supports both uppercase and lowercase letters `A-F`.
+The number of hexadecimal digits does not have to be even.
+If it is odd, the last digit is interpreted as the least significant half of the `00-0F` byte.
+If the argument string contains anything other than hexadecimal digits, some implementation-defined result is returned (an exception isn't thrown).
+For a numeric argument the inverse of hex(N) is not performed by unhex().
 
-**语法**
+
+**Syntax**
 
 ```sql
 unhex(arg)
 ```
 
-**参数**
+**Arguments**
 
-* `arg` — 一个包含任意数量的十六进制数字的字符串。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
+- `arg` — A string containing any number of hexadecimal digits. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
 
-**返回值**
 
-返回一个二进制字符串（BLOB）。[`String`](/sql-reference/data-types/string)
+**Returned value**
 
-**示例**
+Returns a binary string (BLOB). [`String`](/sql-reference/data-types/string)
 
-**基本用法**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT unhex('303132'), UNHEX('4D7953514C')
@@ -1067,7 +1149,7 @@ SELECT unhex('303132'), UNHEX('4D7953514C')
 └─────────────────┴─────────────────────┘
 ```
 
-**转换为数值**
+**Convert to number**
 
 ```sql title=Query
 SELECT reinterpretAsUInt64(reverse(unhex('FFF'))) AS num

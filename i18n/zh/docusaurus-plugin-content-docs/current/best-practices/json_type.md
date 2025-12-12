@@ -96,14 +96,14 @@ INSERT INTO pypi FORMAT JSONEachRow
   "id": "2101.11408",
   "submitter": "Daniel Lemire",
   "authors": "Daniel Lemire",
-  "title": "每秒千兆字节级数字解析",
-  "comments": "软件位于 https://github.com/fastfloat/fast_float 和\n  https://github.com/lemire/simple_fastfloat_benchmark/",
+  "title": "Number Parsing at a Gigabyte per Second",
+  "comments": "Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/",
   "journal-ref": "Software: Practice and Experience 51 (8), 2021",
   "doi": "10.1002/spe.2984",
   "report-no": null,
   "categories": "cs.DS cs.MS",
   "license": "http://creativecommons.org/licenses/by/4.0/",
-  "abstract": "随着磁盘和网络提供每秒千兆字节级的吞吐量....\n",
+  "abstract": "With disks and networks providing gigabytes per second ....\n",
   "versions": [
     {
       "created": "Mon, 11 Jan 2021 20:31:27 GMT",
@@ -163,14 +163,14 @@ INSERT INTO arxiv FORMAT JSONEachRow
  "id": "2101.11408",
  "submitter": "Daniel Lemire",
  "authors": "Daniel Lemire",
- "title": "每秒千兆字节的数字解析速度",
- "comments": "软件地址：https://github.com/fastfloat/fast_float 和\n  https://github.com/lemire/simple_fastfloat_benchmark/",
+ "title": "Number Parsing at a Gigabyte per Second",
+ "comments": "Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/",
  "journal-ref": "Software: Practice and Experience 51 (8), 2021",
  "doi": "10.1002/spe.2984",
  "report-no": null,
  "categories": "cs.DS cs.MS",
  "license": "http://creativecommons.org/licenses/by/4.0/",
- "abstract": "随着磁盘和网络提供每秒千兆字节的传输速度....\n",
+ "abstract": "With disks and networks providing gigabytes per second ....\n",
  "versions": [
  {
    "created": "Mon, 11 Jan 2021 20:31:27 GMT",
@@ -191,18 +191,18 @@ INSERT INTO arxiv FORMAT JSONEachRow
  ],
  "tags": {
    "tag_1": {
-     "name": "ClickHouse 用户",
+     "name": "ClickHouse user",
      "score": "A+",
-     "comment": "值得一读，适用于 ClickHouse",
+     "comment": "A good read, applicable to ClickHouse"
    },
    "28_03_2025": {
      "name": "professor X",
      "score": 10,
-     "comment": "收获不大",
+     "comment": "Didn't learn much",
      "updates": [
        {
          "name": "professor X",
-         "comment": "发现金刚狼的内容更有趣"
+         "comment": "Wolverine found more interesting"
        }
      ]
    }
@@ -229,7 +229,7 @@ ORDER BY doc.update_date
 
 ```sql
 INSERT INTO arxiv FORMAT JSONAsObject 
-{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"每秒千兆字节的数字解析","comments":"软件位于 https://github.com/fastfloat/fast_float 和\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"随着磁盘和网络提供每秒千兆字节的速度....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"ClickHouse user","score":"A+","comment":"值得一读,适用于 ClickHouse"},"28_03_2025":{"name":"professor X","score":10,"comment":"收获不大","updates":[{"name":"professor X","comment":"Wolverine 觉得更有趣"}]}}}
+{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"ClickHouse user","score":"A+","comment":"A good read, applicable to ClickHouse"},"28_03_2025":{"name":"professor X","score":10,"comment":"Didn't learn much","updates":[{"name":"professor X","comment":"Wolverine found more interesting"}]}}}
 ```
 
 ```sql
@@ -262,7 +262,7 @@ FORMAT PrettyJSONEachRow
   }
 }
 
-返回 1 行。用时:0.003 秒。
+1 row in set. Elapsed: 0.003 sec.
 ```
 
 或者，我们也可以使用之前的 schema，并通过一个 JSON `tags` 列来建模。通常更推荐这种方式，因为它可以最大程度减少 ClickHouse 所需的推断工作：
@@ -292,7 +292,7 @@ ORDER BY update_date
 
 ```sql
 INSERT INTO arxiv FORMAT JSONEachRow 
-{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"ClickHouse 用户","score":"A+","comment":"值得一读，适用于 ClickHouse"},"28_03_2025":{"name":"professor X","score":10,"comment":"收获不大","updates":[{"name":"professor X","comment":"金刚狼认为更有意思"}]}}}
+{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"ClickHouse user","score":"A+","comment":"A good read, applicable to ClickHouse"},"28_03_2025":{"name":"professor X","score":10,"comment":"Didn't learn much","updates":[{"name":"professor X","comment":"Wolverine found more interesting"}]}}}
 ```
 
 现在我们就可以推断出子列 `tags` 的类型了。

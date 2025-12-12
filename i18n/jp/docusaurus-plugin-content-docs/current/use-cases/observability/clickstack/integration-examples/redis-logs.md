@@ -48,8 +48,8 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   まず、Redisのログ設定を確認します。Redisに接続して、ログファイルの場所を確認してください：
 
   ```bash
-  redis-cli CONFIG GET logfile
-  ```
+redis-cli CONFIG GET logfile
+```
 
   Redisログの一般的な保存場所：
 
@@ -60,22 +60,22 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   Redisが標準出力にログを記録している場合は、`redis.conf`を更新してファイルに書き込むように設定します:
 
   ```bash
-  # stdoutではなくファイルにログを出力
-  logfile /var/log/redis/redis-server.log
+# Log to file instead of stdout
+logfile /var/log/redis/redis-server.log
 
-  # ログレベルを設定（オプション：debug、verbose、notice、warning）
-  loglevel notice
-  ```
+# Set log level (options: debug, verbose, notice, warning)
+loglevel notice
+```
 
   設定を変更した後、Redisを再起動します:
 
   ```bash
-  # systemd の場合
-  sudo systemctl restart redis
+# For systemd
+sudo systemctl restart redis
 
-  # Docker の場合
-  docker restart <redis-container>
-  ```
+# For Docker
+docker restart <redis-container>
+```
 
   #### カスタムOTel collector設定を作成する
 
@@ -84,40 +84,40 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   以下の設定で `redis-monitoring.yaml` という名前のファイルを作成します：
 
   ```yaml
-  receivers:
-    filelog/redis:
-      include:
-        - /var/log/redis/redis-server.log
-      start_at: beginning
-      operators:
-        - type: regex_parser
-          regex: '^(?P\d+):(?P\w+) (?P\d{2} \w+ \d{4} \d{2}:\d{2}:\d{2})\.\d+ (?P[.\-*#]) (?P.*)$'
-          parse_from: body
-          parse_to: attributes
-        
-        - type: time_parser
-          parse_from: attributes.timestamp
-          layout: '%d %b %Y %H:%M:%S'
-        
-        - type: add
-          field: attributes.source
-          value: "redis"
-        
-        - type: add
-          field: resource["service.name"]
-          value: "redis-production"
+receivers:
+  filelog/redis:
+    include:
+      - /var/log/redis/redis-server.log
+    start_at: beginning
+    operators:
+      - type: regex_parser
+        regex: '^(?P\d+):(?P\w+) (?P\d{2} \w+ \d{4} \d{2}:\d{2}:\d{2})\.\d+ (?P[.\-*#]) (?P.*)$'
+        parse_from: body
+        parse_to: attributes
+      
+      - type: time_parser
+        parse_from: attributes.timestamp
+        layout: '%d %b %Y %H:%M:%S'
+      
+      - type: add
+        field: attributes.source
+        value: "redis"
+      
+      - type: add
+        field: resource["service.name"]
+        value: "redis-production"
 
-  service:
-    pipelines:
-      logs/redis:
-        receivers: [filelog/redis]
-        processors:
-          - memory_limiter
-          - transform
-          - batch
-        exporters:
-          - clickhouse
-  ```
+service:
+  pipelines:
+    logs/redis:
+      receivers: [filelog/redis]
+      processors:
+        - memory_limiter
+        - transform
+        - batch
+      exporters:
+        - clickhouse
+```
 
   この設定では:
 
@@ -146,30 +146,30 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   ClickStackのデプロイメント設定を更新してください:
 
   ```yaml
-  services:
-    clickstack:
-      # ... existing configuration ...
-      environment:
-        - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
-        # ... other environment variables ...
-      volumes:
-        - ./redis-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
-        - /var/log/redis:/var/log/redis:ro
-        # ... other volumes ...
-  ```
+services:
+  clickstack:
+    # ... existing configuration ...
+    environment:
+      - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
+      # ... other environment variables ...
+    volumes:
+      - ./redis-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
+      - /var/log/redis:/var/log/redis:ro
+      # ... other volumes ...
+```
 
   ##### オプション2: Docker Run（オールインワンイメージ）
 
   Dockerでオールインワンイメージを使用している場合は、以下を実行します:
 
   ```bash
-  docker run --name clickstack \
-    -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-    -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
-    -v "$(pwd)/redis-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-    -v /var/log/redis:/var/log/redis:ro \
-    clickhouse/clickstack-all-in-one:latest
-  ```
+docker run --name clickstack \
+  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+  -v "$(pwd)/redis-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+  -v /var/log/redis:/var/log/redis:ro \
+  clickhouse/clickstack-all-in-one:latest
+```
 
   :::note
   ClickStackコレクターがRedisログファイルを読み取るための適切な権限を持っていることを確認してください。本番環境では、読み取り専用マウント(`:ro`)を使用し、最小権限の原則に従ってください。
@@ -208,7 +208,7 @@ receivers:
   filelog/redis:
     include:
       - /tmp/redis-demo/redis-server.log
-    start_at: beginning  # デモデータ用に先頭から読み取る
+    start_at: beginning  # Read from beginning for demo data
     operators:
       - type: regex_parser
         regex: '^(?P<pid>\d+):(?P<role>\w+) (?P<timestamp>\d{2} \w+ \d{4} \d{2}:\d{2}:\d{2})\.\d+ (?P<log_level>[.\-*#]) (?P<message>.*)$'
@@ -312,28 +312,28 @@ ClickStack で Redis を監視し始める際に役立つように、Redis Logs 
 
 ```bash
 docker exec <container-name> printenv CUSTOM_OTELCOL_CONFIG_FILE
-# 想定される出力: /etc/otelcol-contrib/custom.config.yaml
+# Expected output: /etc/otelcol-contrib/custom.config.yaml
 ```
 
 **カスタム設定ファイルがマウントされていることを確認する：**
 
 ```bash
 docker exec <container-name> ls -lh /etc/otelcol-contrib/custom.config.yaml
-# 期待される出力: ファイルサイズとパーミッションが表示されるはずです
+# Expected output: Should show file size and permissions
 ```
 
 **カスタム設定の内容を表示する:**
 
 ```bash
 docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml
-# redis-monitoring.yaml の内容が表示されます
+# Should display your redis-monitoring.yaml content
 ```
 
 **実効設定に `filelog` レシーバーが含まれていることを確認します：**
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 10 filelog
-# filelog/Redis レシーバーの設定が表示されるはずです
+# Should show your filelog/redis receiver configuration
 ```
 
 ### HyperDX にログが表示されない
@@ -342,37 +342,37 @@ docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 1
 
 ```bash
 redis-cli CONFIG GET logfile
-# 期待される出力: 空文字列ではなく、ファイルパスが表示されること
-# 例: 1) "logfile" 2) "/var/log/redis/redis-server.log"
+# Expected output: Should show a file path, not empty string
+# Example: 1) "logfile" 2) "/var/log/redis/redis-server.log"
 ```
 
 **Redis が継続的にログを出力していることを確認する:**
 
 ```bash
 tail -f /var/log/redis/redis-server.log
-# Redis形式の最新のログエントリが表示されます
+# Should show recent log entries in Redis format
 ```
 
 **コレクターがログを読み取れることを確認する:**
 
 ```bash
 docker exec <container> cat /var/log/redis/redis-server.log
-# Redisのログエントリが表示されます
+# Should display Redis log entries
 ```
 
 **コレクターのログでエラーを確認する：**
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/agent.log
-# filelogまたはRedisに関連するエラーメッセージを確認する
+# Look for any error messages related to filelog or Redis
 ```
 
 **docker-compose を使用している場合は、共有ボリュームを確認してください：**
 
 ```bash
-# 両方のコンテナが同じボリュームを使用しているか確認する {#expected-output-etcotelcol-contribcustomconfigyaml}
+# Check both containers are using the same volume
 docker volume inspect <volume-name>
-# 両方のコンテナにボリュームがマウントされているか確認する {#expected-output-should-show-file-size-and-permissions}
+# Verify both containers have the volume mounted
 ```
 
 ### ログが正しくパースされない場合
@@ -380,7 +380,7 @@ docker volume inspect <volume-name>
 **Redis のログ形式が期待されるパターンと一致していることを確認する:**
 
 ```bash
-# Redisログは次のような形式になります: {#should-show-your-filelogredis-receiver-configuration}
+# Redis Logs should look like:
 # 12345:M 28 Oct 2024 14:23:45.123 * Server started
 tail -5 /var/log/redis/redis-server.log
 ```

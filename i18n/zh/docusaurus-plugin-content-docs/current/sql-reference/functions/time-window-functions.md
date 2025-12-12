@@ -64,34 +64,39 @@ SELECT hop(now(), INTERVAL '1' DAY, INTERVAL '2' DAY)
 ('2024-07-03 00:00:00','2024-07-05 00:00:00')
 ```
 
+
+
 ## hopEnd {#hopEnd}
 
-引入版本：v22.1
+Introduced in: v22.1
 
-返回相应跳跃窗口的不包含自身的上界。
 
-由于一条记录可以被分配到多个跳跃窗口，当在未使用 `WINDOW VIEW` 的情况下调用 `hop` 函数时，该函数仅返回第一个窗口的上界。
+Returns the exclusive upper bound of the corresponding hopping window.
 
-**语法**
+Since one record can be assigned to multiple hop windows, the function only returns the bound of the first window when hop function is used without `WINDOW VIEW`.
+    
+
+**Syntax**
 
 ```sql
 hopEnd(time_attr, hop_interval, window_interval[, timezone])
 ```
 
-**参数**
+**Arguments**
 
-* `time_attr` — 日期和时间。[`DateTime`](/sql-reference/data-types/datetime)
-* `hop_interval` — 正数 Hop 间隔。[`Interval`](/sql-reference/data-types/int-uint)
-* `window_interval` — 正数窗口间隔。[`Interval`](/sql-reference/data-types/int-uint)
-* `timezone` — 可选。时区名称。[`String`](/sql-reference/data-types/string)
+- `time_attr` — Date and time. [`DateTime`](/sql-reference/data-types/datetime)
+- `hop_interval` — Positive Hop interval. [`Interval`](/sql-reference/data-types/int-uint)
+- `window_interval` — Positive Window interval. [`Interval`](/sql-reference/data-types/int-uint)
+- `timezone` — Optional. Timezone name. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回对应 hopping 窗口的上界（不含）。[`DateTime`](/sql-reference/data-types/datetime)
+**Returned value**
 
-**示例**
+Returns the exclusive upper bound of the corresponding hopping window. [`DateTime`](/sql-reference/data-types/datetime)
 
-**Hopping 窗口结束**
+**Examples**
+
+**Hopping window end**
 
 ```sql title=Query
 SELECT hopEnd(now(), INTERVAL '1' DAY, INTERVAL '2' DAY)
@@ -101,34 +106,39 @@ SELECT hopEnd(now(), INTERVAL '1' DAY, INTERVAL '2' DAY)
 2024-07-05 00:00:00
 ```
 
+
+
 ## hopStart {#hopStart}
 
-引入版本：v22.1
+Introduced in: v22.1
 
-返回对应跳跃窗口的包含下界。
 
-由于一条记录可以被分配到多个跳跃窗口，在未使用 `WINDOW VIEW` 的情况下调用 hop 函数时，该函数只返回第一个窗口的下界。
+Returns the inclusive lower bound of the corresponding hopping window.
 
-**语法**
+Since one record can be assigned to multiple hop windows, the function only returns the bound of the first window when hop function is used without `WINDOW VIEW`.
+    
+
+**Syntax**
 
 ```sql
 hopStart(time_attr, hop_interval, window_interval[, timezone])
 ```
 
-**参数**
+**Arguments**
 
-* `time_attr` — 日期和时间。[`DateTime`](/sql-reference/data-types/datetime)
-* `hop_interval` — 正的 hop 间隔。[`Interval`](/sql-reference/data-types/int-uint)
-* `window_interval` — 正的窗口间隔。[`Interval`](/sql-reference/data-types/int-uint)
-* `timezone` — 可选。时区名称。[`String`](/sql-reference/data-types/string)
+- `time_attr` — Date and time. [`DateTime`](/sql-reference/data-types/datetime)
+- `hop_interval` — Positive Hop interval. [`Interval`](/sql-reference/data-types/int-uint)
+- `window_interval` — Positive Window interval. [`Interval`](/sql-reference/data-types/int-uint)
+- `timezone` — Optional. Timezone name. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回对应跳跃窗口的包含性下界。[`DateTime`](/sql-reference/data-types/datetime)
+**Returned value**
 
-**示例**
+Returns the inclusive lower bound of the corresponding hopping window. [`DateTime`](/sql-reference/data-types/datetime)
 
-**跳跃窗口起始时间**
+**Examples**
+
+**Hopping window start**
 
 ```sql title=Query
 SELECT hopStart(now(), INTERVAL '1' DAY, INTERVAL '2' DAY)
@@ -138,31 +148,36 @@ SELECT hopStart(now(), INTERVAL '1' DAY, INTERVAL '2' DAY)
 2024-07-03 00:00:00
 ```
 
+
+
 ## tumble {#tumble}
 
-引入自：v21.12
+Introduced in: v21.12
 
-tumble 时间窗口会将记录分配到固定持续时间（`interval`）、不重叠且连续的时间窗口中。
 
-**语法**
+A tumbling time window assigns records to non-overlapping, continuous windows with a fixed duration (`interval`).
+    
+
+**Syntax**
 
 ```sql
 tumble(time_attr, interval[, timezone])
 ```
 
-**参数**
+**Arguments**
 
-* `time_attr` — 日期和时间。[`DateTime`](/sql-reference/data-types/datetime)
-* `interval` — `Interval` 类型的窗口间隔。[`Interval`](/sql-reference/data-types/int-uint)
-* `timezone` — 可选。时区名称。[`String`](/sql-reference/data-types/string)
+- `time_attr` — Date and time. [`DateTime`](/sql-reference/data-types/datetime)
+- `interval` — Window interval in Interval. [`Interval`](/sql-reference/data-types/int-uint)
+- `timezone` — Optional. Timezone name. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回对应滚动窗口包含的下界和不包含的上界。[`Tuple(DateTime, DateTime)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**示例**
+Returns the inclusive lower and exclusive upper bound of the corresponding tumbling window. [`Tuple(DateTime, DateTime)`](/sql-reference/data-types/tuple)
 
-**滚动窗口（Tumbling window）**
+**Examples**
+
+**Tumbling window**
 
 ```sql title=Query
 SELECT tumble(now(), toIntervalDay('1'))
@@ -172,31 +187,36 @@ SELECT tumble(now(), toIntervalDay('1'))
 ('2024-07-04 00:00:00','2024-07-05 00:00:00')
 ```
 
+
+
 ## tumbleEnd {#tumbleEnd}
 
-引入于：v22.1
+Introduced in: v22.1
 
-返回相应滚动窗口的右开区间上界值。
 
-**语法**
+Returns the exclusive upper bound of the corresponding tumbling window.
+    
+
+**Syntax**
 
 ```sql
 tumbleEnd(time_attr, interval[, timezone])
 ```
 
-**参数**
+**Arguments**
 
-* `time_attr` — 日期和时间。[`DateTime`](/sql-reference/data-types/datetime)
-* `interval` — 窗口区间，类型为 Interval。[`Interval`](/sql-reference/data-types/int-uint)
-* `timezone` — 可选。时区名称。[`String`](/sql-reference/data-types/string)
+- `time_attr` — Date and time. [`DateTime`](/sql-reference/data-types/datetime)
+- `interval` — Window interval in Interval. [`Interval`](/sql-reference/data-types/int-uint)
+- `timezone` — Optional. Timezone name. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回对应翻转窗口的开区间上界。[`DateTime`](/sql-reference/data-types/datetime)
+**Returned value**
 
-**示例**
+Returns the exclusive upper bound of the corresponding tumbling window. [`DateTime`](/sql-reference/data-types/datetime)
 
-**翻转窗口结束时间**
+**Examples**
+
+**Tumbling window end**
 
 ```sql title=Query
 SELECT tumbleEnd(now(), toIntervalDay('1'))
@@ -206,31 +226,36 @@ SELECT tumbleEnd(now(), toIntervalDay('1'))
 2024-07-05 00:00:00
 ```
 
+
+
 ## tumbleStart {#tumbleStart}
 
-引入于：v22.1
+Introduced in: v22.1
 
-返回对应翻转窗口（tumbling window）的左闭边界。
 
-**语法**
+Returns the inclusive lower bound of the corresponding tumbling window.
+    
+
+**Syntax**
 
 ```sql
 tumbleStart(time_attr, interval[, timezone])
 ```
 
-**参数**
+**Arguments**
 
-* `time_attr` — 日期和时间。[`DateTime`](/sql-reference/data-types/datetime)
-* `interval` — `Interval` 类型的窗口间隔。[`Interval`](/sql-reference/data-types/int-uint)
-* `timezone` — 可选。时区名称。[`String`](/sql-reference/data-types/string)
+- `time_attr` — Date and time. [`DateTime`](/sql-reference/data-types/datetime)
+- `interval` — Window interval in Interval. [`Interval`](/sql-reference/data-types/int-uint)
+- `timezone` — Optional. Timezone name. [`String`](/sql-reference/data-types/string)
 
-**返回值**
 
-返回对应滚动窗口（tumbling window）的包含型下界。[`DateTime`](/sql-reference/data-types/datetime)
+**Returned value**
 
-**示例**
+Returns the inclusive lower bound of the corresponding tumbling window. [`DateTime`](/sql-reference/data-types/datetime)
 
-**滚动窗口起始时间**
+**Examples**
+
+**Tumbling window start**
 
 ```sql title=Query
 SELECT tumbleStart(now(), toIntervalDay('1'))

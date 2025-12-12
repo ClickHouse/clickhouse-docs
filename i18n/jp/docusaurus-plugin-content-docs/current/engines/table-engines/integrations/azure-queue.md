@@ -141,7 +141,7 @@ SELECT * FROM stats ORDER BY key;
     <database>system</database>
     <table>azure_queue_log</table>
   </azure_queue_log>
-```
+  ```
 
 この永続テーブルは、`system.s3queue` と同じ情報を保持しますが、処理済みおよび失敗したファイルに関するものです。
 

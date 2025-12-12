@@ -27,11 +27,11 @@ ClickHouse рекомендует использовать встроенные 
 ## Создание таблицы {#creating-a-table}
 
 ```sql
-CREATE TABLE [IF NOT EXISTS] [db.]имя_таблицы
+CREATE TABLE [IF NOT EXISTS] [db.]table_name
 (
-    список_столбцов...
+    columns list...
 )
-ENGINE = JDBC(источник_данных, внешняя_база_данных, внешняя_таблица)
+ENGINE = JDBC(datasource, external_database, external_table)
 ```
 
 **Параметры движка**

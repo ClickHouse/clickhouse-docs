@@ -24,7 +24,7 @@ SOURCE(SOURCE_NAME([param1 value1 ... paramN valueN]))
 LAYOUT(LAYOUT_NAME([param_name param_value]))
 LIFETIME({MIN min_val MAX max_val | max_val})
 SETTINGS(setting_name = setting_value, setting_name = setting_value, ...)
-COMMENT 'Комментарий'
+COMMENT 'Comment'
 ```
 
 Структура словаря включает атрибуты. Атрибуты словаря задаются так же, как столбцы таблицы. Единственным обязательным свойством атрибута является его тип, все остальные свойства могут иметь значения по умолчанию.
@@ -48,8 +48,8 @@ COMMENT 'Комментарий'
 
 ```text
 ┌─id─┬─value──┐
-│  1 │ Первый  │
-│  2 │ Второй │
+│  1 │ First  │
+│  2 │ Second │
 └────┴────────┘
 ```
 
@@ -120,8 +120,8 @@ LIFETIME(MIN 0 MAX 1000);
 
 ```text
 ┌─id─┬─value──┐
-│  1 │ Первый  │
-│  2 │ Второй │
+│  1 │ First  │
+│  2 │ Second │
 └────┴────────┘
 ```
 

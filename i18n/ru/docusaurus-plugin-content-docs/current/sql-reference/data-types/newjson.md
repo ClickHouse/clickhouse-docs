@@ -62,7 +62,7 @@ SELECT json FROM test;
 ```text title="Response (Example 1)"
 ┌─json────────────────────────────────────────┐
 │ {"a":{"b":"42"},"c":["1","2","3"]}          │
-│ {"f":"Привет, мир!"}                        │
+│ {"f":"Hello, World!"}                       │
 │ {"a":{"b":"43","e":"10"},"c":["4","5","6"]} │
 └─────────────────────────────────────────────┘
 ```
@@ -76,7 +76,7 @@ SELECT json FROM test;
 ```text title="Response (Example 2)"
 ┌─json──────────────────────────────┐
 │ {"a":{"b":42},"c":["1","2","3"]}  │
-│ {"a":{"b":0},"f":"Привет, мир!"} │
+│ {"a":{"b":0},"f":"Hello, World!"} │
 │ {"a":{"b":43},"c":["4","5","6"]}  │
 └───────────────────────────────────┘
 ```
@@ -93,7 +93,7 @@ SELECT '{"a" : {"b" : 42},"c" : [1, 2, 3], "d" : "Hello, World!"}'::JSON AS json
 
 ```text title="Response"
 ┌─json───────────────────────────────────────────────────┐
-│ {"a":{"b":"42"},"c":["1","2","3"],"d":"Привет, мир!"} │
+│ {"a":{"b":"42"},"c":["1","2","3"],"d":"Hello, World!"} │
 └────────────────────────────────────────────────────────┘
 ```
 
@@ -106,7 +106,7 @@ SELECT (tuple(42 AS b) AS a, [1, 2, 3] AS c, 'Hello, World!' AS d)::JSON AS json
 
 ```text title="Response"
 ┌─json───────────────────────────────────────────────────┐
-│ {"a":{"b":"42"},"c":["1","2","3"],"d":"Привет, мир!"} │
+│ {"a":{"b":"42"},"c":["1","2","3"],"d":"Hello, World!"} │
 └────────────────────────────────────────────────────────┘
 ```
 
@@ -119,7 +119,7 @@ SELECT map('a', map('b', 42), 'c', [1,2,3], 'd', 'Hello, World!')::JSON AS json;
 
 ```text title="Response"
 ┌─json───────────────────────────────────────────────────┐
-│ {"a":{"b":"42"},"c":["1","2","3"],"d":"Привет, мир!"} │
+│ {"a":{"b":"42"},"c":["1","2","3"],"d":"Hello, World!"} │
 └────────────────────────────────────────────────────────┘
 ```
 
@@ -271,11 +271,11 @@ FROM test;
 ```
 
 ```text title="Response"
-Получено исключение от сервера:
-Код: 48. DB::Exception: Получено от localhost:9000. DB::Exception: 
-Преобразование между числовыми типами и UUID не поддерживается. 
-Вероятно, переданный UUID не заключен в кавычки: 
-при выполнении 'FUNCTION CAST(__table1.json.a.g :: 2, 'UUID'_String :: 1) -> CAST(__table1.json.a.g, 'UUID'_String) UUID : 0'. 
+Received exception from server:
+Code: 48. DB::Exception: Received from localhost:9000. DB::Exception: 
+Conversion between numeric types and UUID is not supported. 
+Probably the passed UUID is unquoted: 
+while executing 'FUNCTION CAST(__table1.json.a.g :: 2, 'UUID'_String :: 1) -> CAST(__table1.json.a.g, 'UUID'_String) UUID : 0'. 
 (NOT_IMPLEMENTED)
 ```
 
@@ -337,7 +337,7 @@ SELECT json.^a.b, json.^d.e.f FROM test;
 Рассмотрим несколько примеров:
 
 ```sql title="Query"
-SELECT JSONAllPathsWithTypes('{"a" : "2020-01-01", "b" : "2020-01-01 10:00:00"}'::JSON) AS paths_with_types SETTINGS input_format_try_infer_dates=1, input_format_try_infer_datetimes=1;
+SELECT JSONAllPathsWithTypes('{"a" : "2020-01-01", "b" : "2020-01-01 10:00:00"}'::JSON) AS paths_with_types settings input_format_try_infer_dates=1, input_format_try_infer_datetimes=1;
 ```
 
 ```text title="Response"
@@ -347,7 +347,7 @@ SELECT JSONAllPathsWithTypes('{"a" : "2020-01-01", "b" : "2020-01-01 10:00:00"}'
 ```
 
 ```sql title="Query"
-SELECT JSONAllPathsWithTypes('{"a" : "2020-01-01", "b" : "2020-01-01 10:00:00"}'::JSON) AS paths_with_types SETTINGS input_format_try_infer_dates=0, input_format_try_infer_datetimes=0;
+SELECT JSONAllPathsWithTypes('{"a" : "2020-01-01", "b" : "2020-01-01 10:00:00"}'::JSON) AS paths_with_types settings input_format_try_infer_dates=0, input_format_try_infer_datetimes=0;
 ```
 
 ```text title="Response"
@@ -392,9 +392,9 @@ SELECT json FROM test;
 
 ```text title="Response"
 ┌─json────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ {"a":{"b":[{"c":"42","d":"Привет","f":[[{"g":42.42}]],"k":{"j":"1000"}},{"c":"43"},{"d":"Мой","e":["1","2","3"],"f":[[{"g":43.43,"h":"2020-01-01"}]],"k":{"j":"2000"}}]}} │
+│ {"a":{"b":[{"c":"42","d":"Hello","f":[[{"g":42.42}]],"k":{"j":"1000"}},{"c":"43"},{"d":"My","e":["1","2","3"],"f":[[{"g":43.43,"h":"2020-01-01"}]],"k":{"j":"2000"}}]}} │
 │ {"a":{"b":["1","2","3"]}}                                                                                                                                               │
-│ {"a":{"b":[{"c":"44","f":[[{"h":"2020-01-02"}]]},{"d":"Мир","e":["4","5","6"],"f":[[{"g":44.44}]],"k":{"j":"3000"}}]}}                                                │
+│ {"a":{"b":[{"c":"44","f":[[{"h":"2020-01-02"}]]},{"d":"World","e":["4","5","6"],"f":[[{"g":44.44}]],"k":{"j":"3000"}}]}}                                                │
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -529,11 +529,11 @@ SELECT '{"a" : {"b" : 42}}'::JSON AS json1, '{"a.b" : 42}'::JSON AS json2, JSONA
 Это ограничение также приводит к ошибке при разборе корректных JSON-объектов, подобных этому:
 
 ```sql title="Query"
-SELECT '{"a.b" : 42, "a" : {"b" : "Привет, мир!"}}'::JSON AS json;
+SELECT '{"a.b" : 42, "a" : {"b" : "Hello World!"}}'::JSON AS json;
 ```
 
 ```text title="Response"
-Код: 117. DB::Exception: Невозможно вставить данные в JSON-колонку: При разборе JSON-объекта обнаружен дублирующийся путь: a.b. Вы можете включить настройку type_json_skip_duplicated_paths, чтобы пропускать дублирующиеся пути при вставке: В области видимости SELECT CAST('{"a.b" : 42, "a" : {"b" : "Hello, World"}}', 'JSON') AS json. (INCORRECT_DATA)
+Code: 117. DB::Exception: Cannot insert data into JSON column: Duplicate path found during parsing JSON object: a.b. You can enable setting type_json_skip_duplicated_paths to skip duplicated paths during insert: In scope SELECT CAST('{"a.b" : 42, "a" : {"b" : "Hello, World"}}', 'JSON') AS json. (INCORRECT_DATA)
 ```
 
 Если вы хотите сохранить ключи с точками и избежать их интерпретации как вложенные объекты, вы можете включить настройку [json&#95;type&#95;escape&#95;dots&#95;in&#95;keys](/operations/settings/formats#json_type_escape_dots_in_keys) (доступна, начиная с версии `25.8`). В этом случае при разборе JSON все точки в ключах будут экранированы в `%2E` и разэкранированы обратно при форматировании.
@@ -606,7 +606,7 @@ SELECT '{"a.b" : 42, "a" : {"b" : "Hello World!"}}'::JSON(SKIP `a%2Eb`) as json,
 
 ```text title="Response"
 ┌─json───────────────────────┬─json.a%2Eb─┐
-│ {"a":{"b":"Привет, мир!"}} │ ᴺᵁᴸᴸ       │
+│ {"a":{"b":"Hello World!"}} │ ᴺᵁᴸᴸ       │
 └────────────────────────────┴────────────┘
 ```
 

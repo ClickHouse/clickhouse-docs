@@ -56,7 +56,7 @@ name:        min_compress_block_size
 value:       0
 default:     0
 changed:     0
-description: グラニュール書き込み時に、バッファ内の保留中の未圧縮データのサイズが指定された閾値以上の場合、データを圧縮します。この設定が未指定の場合は、対応するグローバル設定が使用されます。
+description: When granule is written, compress the data in buffer if the size of pending uncompressed data is larger or equal than the specified threshold. If this setting is not set, the corresponding global setting is used.
 min:         ᴺᵁᴸᴸ
 max:         ᴺᵁᴸᴸ
 readonly:    0
@@ -70,7 +70,7 @@ name:        max_compress_block_size
 value:       0
 default:     0
 changed:     0
-description: バッファ内の保留中の未圧縮データのサイズが指定された閾値以上の場合、データを圧縮します。現在のグラニュールが未完了の場合でも、データブロックは圧縮されます。この設定が未指定の場合は、対応するグローバル設定が使用されます。
+description: Compress the pending uncompressed data in buffer if its size is larger or equal than the specified threshold. Block of data will be compressed even if the current granule is not finished. If this setting is not set, the corresponding global setting is used.
 min:         ᴺᵁᴸᴸ
 max:         ᴺᵁᴸᴸ
 readonly:    0
@@ -84,7 +84,7 @@ name:        index_granularity
 value:       8192
 default:     8192
 changed:     0
-description: 1つのプライマリキー値に対応する行数。
+description: How many rows correspond to one primary key value.
 min:         ᴺᵁᴸᴸ
 max:         ᴺᵁᴸᴸ
 readonly:    0

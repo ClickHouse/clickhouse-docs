@@ -14,8 +14,41 @@ doc_type: 'reference'
 
 構文:
 
-```sql
-時間
+```
+
+Text representation range: [-999:59:59, 999:59:59].
+
+Resolution: 1 second.
+
+## Implementation details {#implementation-details}
+
+**Representation and Performance**.
+Data type `Time` internally stores a signed 32-bit integer that encodes the seconds.
+Values of type `Time` and `DateTime` have the same byte size and thus comparable performance.
+
+**Normalization**.
+When parsing strings to `Time`, the time components are normalized and not validated.
+For example, `25:70:70` is interpreted as `26:11:10`.
+
+**Negative values**.
+Leading minus signs are supported and preserved.
+Negative values typically arise from arithmetic operations on `Time` values.
+For `Time` type, negative inputs are preserved for both text (e.g., `'-01:02:03'`) and numeric inputs (e.g., `-3723`).
+
+**Saturation**.
+The time-of-day component is capped to the range [-999:59:59, 999:59:59].
+Values with hours beyond 999 (or below -999) are represented and round-tripped via text as `999:59:59` (or `-999:59:59`).
+
+**Time zones**.
+`Time` does not support time zones, i.e. `Time` value are interpreted without regional context.
+Specifying a time zone for `Time` as a type parameter or during value creation throws an error.
+Likewise, attempts to apply or change the time zone on `Time` columns are not supported and result in an error.
+`Time` values are not silently reinterpreted under different time zones.
+
+## Examples {#examples}
+
+**1.** Creating a table with a `Time`-type column and inserting data into it:
+
 ```
 
 テキスト表現可能な範囲: [-999:59:59, 999:59:59]。
@@ -51,61 +84,48 @@ doc_type: 'reference'
 
 **1.** `Time` 型の列を持つテーブルを作成し、そのテーブルにデータを挿入する:
 
-```sql
-CREATE TABLE tab
-(
-    `event_id` UInt8,
-    `time` Time
-)
-ENGINE = TinyLog;
 ```
 
-```sql
--- 時刻を解析
--- - 文字列から
--- - 00:00:00 からの経過秒数と解釈される整数から
-INSERT INTO tab VALUES (1, '14:30:25'), (2, 52225);
-
-SELECT * FROM tab ORDER BY event_id;
 ```
 
-```text
-   ┌─event_id─┬──────time─┐
-1. │        1 │ 14:30:25 │
-2. │        2 │ 14:30:25 │
-   └──────────┴───────────┘
+```
+
+```
+
+```
+
+**2.** Filtering on `Time` values
+
 ```
 
 **2.** `Time` 値によるフィルタリング
 
-```sql
-SELECT * FROM tab WHERE time = toTime('14:30:25')
 ```
 
-```text
-   ┌─event_id─┬──────time─┐
-1. │        1 │ 14:30:25 │
-2. │        2 │ 14:30:25 │
-   └──────────┴───────────┘
+```
+
+```
+
+`Time` column values can be filtered using a string value in `WHERE` predicate. It will be converted to `Time` automatically:
+
 ```
 
 `Time` 列の値は、`WHERE` 述語で文字列値を使ってフィルタできます。文字列値は自動的に `Time` 型に変換されます。
 
-```sql
-SELECT * FROM tab WHERE time = '14:30:25'
 ```
 
-```text
-   ┌─event_id─┬──────time─┐
-1. │        1 │ 14:30:25 │
-2. │        2 │ 14:30:25 │
-   └──────────┴───────────┘
+```
+
+```
+
+**3.** Inspecting the resulting type:
+
 ```
 
 **3.** 結果の型を確認する：
 
-```sql
-SELECT CAST('14:30:25' AS Time) AS column, toTypeName(column) AS type
+```
+
 ```
 
 ```text

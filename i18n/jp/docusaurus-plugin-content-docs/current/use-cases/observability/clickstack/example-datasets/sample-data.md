@@ -64,11 +64,11 @@ import copy_api_key from '@site/static/images/use-cases/observability/copy_api_k
   [サンプルデータ](https://storage.googleapis.com/hyperdx/sample.tar.gz)
 
   ```shell
-  # curl
-  curl -O https://storage.googleapis.com/hyperdx/sample.tar.gz
-  # または
-  # wget https://storage.googleapis.com/hyperdx/sample.tar.gz
-  ```
+# curl
+curl -O https://storage.googleapis.com/hyperdx/sample.tar.gz
+# or
+# wget https://storage.googleapis.com/hyperdx/sample.tar.gz
+```
 
   このファイルには、当社の公開[OpenTelemetry demo](https://github.com/ClickHouse/opentelemetry-demo)（マイクロサービスで構成されたシンプルなeコマースストア）から取得したログ、メトリクス、トレースのサンプルが含まれています。このファイルを任意のディレクトリにコピーしてください。
 
@@ -83,24 +83,24 @@ import copy_api_key from '@site/static/images/use-cases/observability/copy_api_k
   :::
 
   ```shell
-  # API キーをエクスポート
-  export CLICKSTACK_API_KEY=<YOUR_INGESTION_API_KEY>
-  ```
+# export API key
+export CLICKSTACK_API_KEY=<YOUR_INGESTION_API_KEY>
+```
 
   以下のコマンドを実行して、OTel collectorにデータを送信します。
 
   ```shell
-  for filename in $(tar -tf sample.tar.gz); do
-    endpoint="http://localhost:4318/v1/${filename%.json}"
-    echo "${filename%.json} を読み込み中"
-    tar -xOf sample.tar.gz "$filename" | while read -r line; do
-      printf '%s\n' "$line" | curl -s -o /dev/null -X POST "$endpoint" \
-      -H "Content-Type: application/json" \
-      -H "authorization: ${CLICKSTACK_API_KEY}" \
-      --data-binary @-
-    done
+for filename in $(tar -tf sample.tar.gz); do
+  endpoint="http://localhost:4318/v1/${filename%.json}"
+  echo "loading ${filename%.json}"
+  tar -xOf sample.tar.gz "$filename" | while read -r line; do
+    printf '%s\n' "$line" | curl -s -o /dev/null -X POST "$endpoint" \
+    -H "Content-Type: application/json" \
+    -H "authorization: ${CLICKSTACK_API_KEY}" \
+    --data-binary @-
   done
-  ```
+done
+```
 
   これは、OTel collectorにデータを送信するOTLPログ、トレース、およびメトリクスのソースをシミュレートします。本番環境では、これらのソースは言語クライアントや他のOTel collectorになります。
 

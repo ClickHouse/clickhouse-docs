@@ -50,20 +50,20 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   まず、Redisに接続できること、およびINFOコマンドが機能することを確認します：
 
   ```bash
-  # 接続をテスト
-  redis-cli ping
-  # 期待される出力: PONG
+# Test connection
+redis-cli ping
+# Expected output: PONG
 
-  # INFOコマンドをテスト（メトリクスコレクターで使用）
-  redis-cli INFO server
-  # Redisサーバー情報が表示されるはずです
-  ```
+# Test INFO command (used by metrics collector)
+redis-cli INFO server
+# Should display Redis server information
+```
 
   Redisで認証が必要な場合：
 
   ```bash
-  redis-cli -a <your-password> ping
-  ```
+redis-cli -a <your-password> ping
+```
 
   **一般的なRedisエンドポイント:**
 
@@ -78,48 +78,48 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   以下の設定で `redis-metrics.yaml` という名前のファイルを作成します：
 
   ```yaml title="redis-metrics.yaml"
-  receivers:
-    redis:
-      endpoint: "localhost:6379"
-      collection_interval: 10s
-      # Redisで認証が必要な場合はコメントを解除してください
-      # password: ${env:REDIS_PASSWORD}
-      
-      # 収集するメトリクスを設定してください
-      metrics:
-        redis.commands.processed:
-          enabled: true
-        redis.clients.connected:
-          enabled: true
-        redis.memory.used:
-          enabled: true
-        redis.keyspace.hits:
-          enabled: true
-        redis.keyspace.misses:
-          enabled: true
-        redis.keys.evicted:
-          enabled: true
-        redis.keys.expired:
-          enabled: true
+receivers:
+  redis:
+    endpoint: "localhost:6379"
+    collection_interval: 10s
+    # Uncomment if Redis requires authentication
+    # password: ${env:REDIS_PASSWORD}
+    
+    # Configure which metrics to collect
+    metrics:
+      redis.commands.processed:
+        enabled: true
+      redis.clients.connected:
+        enabled: true
+      redis.memory.used:
+        enabled: true
+      redis.keyspace.hits:
+        enabled: true
+      redis.keyspace.misses:
+        enabled: true
+      redis.keys.evicted:
+        enabled: true
+      redis.keys.expired:
+        enabled: true
 
-  processors:
-    resource:
-      attributes:
-        - key: service.name
-          value: "redis"
-          action: upsert
+processors:
+  resource:
+    attributes:
+      - key: service.name
+        value: "redis"
+        action: upsert
 
-  service:
-    pipelines:
-      metrics/redis:
-        receivers: [redis]
-        processors:
-          - resource
-          - memory_limiter
-          - batch
-        exporters:
-          - clickhouse
-  ```
+service:
+  pipelines:
+    metrics/redis:
+      receivers: [redis]
+      processors:
+        - resource
+        - memory_limiter
+        - batch
+      exporters:
+        - clickhouse
+```
 
   この設定では:
 
@@ -165,58 +165,58 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
    ClickStackのデプロイメント設定を更新します:
 
    ```yaml
-   services:
-     clickstack:
-       # ... 既存の設定 ...
-       environment:
-         - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
-         # オプション: Redis で認証が必要な場合
-         # - REDIS_PASSWORD=your-redis-password
-         # ... その他の環境変数 ...
-       volumes:
-         - ./redis-metrics.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
-         # ... その他のボリューム ...
-       # Redis が同じ compose ファイル内にある場合:
-       depends_on:
-         - redis
+services:
+  clickstack:
+    # ... existing configuration ...
+    environment:
+      - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
+      # Optional: If Redis requires authentication
+      # - REDIS_PASSWORD=your-redis-password
+      # ... other environment variables ...
+    volumes:
+      - ./redis-metrics.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
+      # ... other volumes ...
+    # If Redis is in the same compose file:
+    depends_on:
+      - redis
 
-     redis:
-       image: redis:7-alpine
-       ports:
-         - "6379:6379"
-       # オプション: 認証を有効にする
-       # command: redis-server --requirepass your-redis-password
-   ```
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    # Optional: Enable authentication
+    # command: redis-server --requirepass your-redis-password
+```
 
    ##### オプション2：Docker run（オールインワンイメージ）
 
    `docker run`でオールインワンイメージを使用する場合：
 
    ```bash
-   docker run --name clickstack \
-     -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-     -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
-     -v "$(pwd)/redis-metrics.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-     clickhouse/clickstack-all-in-one:latest
-   ```
+docker run --name clickstack \
+  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+  -v "$(pwd)/redis-metrics.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+  clickhouse/clickstack-all-in-one:latest
+```
 
    **重要:** Redisが別のコンテナで実行されている場合は、Dockerネットワーキングを使用してください：
 
    ```bash
-   # ネットワークを作成
-   docker network create monitoring
+# Create a network
+docker network create monitoring
 
-   # ネットワーク上でRedisを実行
-   docker run -d --name redis --network monitoring redis:7-alpine
+# Run Redis on the network
+docker run -d --name redis --network monitoring redis:7-alpine
 
-   # 同じネットワーク上でClickStackを実行（設定ファイル内のエンドポイントを "redis:6379" に更新）
-   docker run --name clickstack \
-     --network monitoring \
-     -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-     -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
-     -v "$(pwd)/redis-metrics.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-     clickhouse/clickstack-all-in-one:latest
-   ```
+# Run ClickStack on the same network (update endpoint to "redis:6379" in config)
+docker run --name clickstack \
+  --network monitoring \
+  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+  -v "$(pwd)/redis-metrics.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+  clickhouse/clickstack-all-in-one:latest
+```
 
    #### HyperDXでメトリクスを確認する
 
@@ -240,10 +240,10 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 あらかじめ生成されたメトリクスファイル（現実的なパターンを含む 24 時間分の Redis Metrics）をダウンロードします:
 ```bash
-# gauge メトリクス（メモリ、断片化率）をダウンロード
+# Download gauge metrics (memory, fragmentation ratio)
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/redis/redis-metrics-gauge.csv
 
-# sum メトリクス（コマンド、接続数、キー空間統計）をダウンロード
+# Download sum metrics (commands, connections, keyspace stats)
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/redis/redis-metrics-sum.csv
 ```
 
@@ -268,11 +268,11 @@ ClickStack が完全に起動するまで、およそ 30 秒待ちます。
 
 メトリクスを直接 ClickHouse に読み込みます:
 ```bash
-# gauge メトリクス（メモリ、断片化）を読み込む
+# Load gauge metrics (memory, fragmentation)
 cat redis-metrics-gauge.csv | docker exec -i clickstack-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_gauge FORMAT CSVWithNames"
 
-# sum メトリクス（コマンド、接続数、キー空間）を読み込む
+# Load sum metrics (commands, connections, keyspace)
 cat redis-metrics-sum.csv | docker exec -i clickstack-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_sum FORMAT CSVWithNames"
 ```
@@ -344,7 +344,7 @@ docker exec <container-name> ls -lh /etc/otelcol-contrib/custom.config.yaml
 カスタム設定の内容を表示して、正しく読み取れることを確認します：
 
 ```bash
-docker exec <コンテナ名> cat /etc/otelcol-contrib/custom.config.yaml
+docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml
 ```
 
 ### HyperDX にメトリクスが表示されない
@@ -352,16 +352,16 @@ docker exec <コンテナ名> cat /etc/otelcol-contrib/custom.config.yaml
 collector から Redis にアクセスできることを確認してください：
 
 ```bash
-# ClickStackコンテナから {#download-sum-metrics-commands-connections-keyspace-stats}
+# From the ClickStack container
 docker exec <clickstack-container> redis-cli -h <redis-host> ping
-# 期待される出力: PONG
+# Expected output: PONG
 ```
 
 Redis の INFO コマンドが正常に動作することを確認します:
 
 ```bash
 docker exec <clickstack-container> redis-cli -h <redis-host> INFO stats
-# Redisの統計情報が表示されるはずです
+# Should display Redis statistics
 ```
 
 有効な設定に Redis レシーバーが含まれていることを確認します。
@@ -374,7 +374,7 @@ docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 1
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i redis
-# 接続エラーまたは認証失敗を確認します {#load-gauge-metrics-memory-fragmentation}
+# Look for connection errors or authentication failures
 ```
 
 ### 認証エラー
@@ -382,13 +382,13 @@ docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i redis
 ログに認証エラーが表示されている場合:
 
 ```bash
-# Redisが認証を要求することを確認する
+# Verify Redis requires authentication
 redis-cli CONFIG GET requirepass
 
-# 認証をテストする
+# Test authentication
 redis-cli -a <password> ping
 
-# ClickStack環境でパスワードが設定されていることを確認する
+# Ensure password is set in ClickStack environment
 docker exec <clickstack-container> printenv REDIS_PASSWORD
 ```
 
@@ -406,10 +406,10 @@ receivers:
 ClickStack が Redis に接続できない場合:
 
 ```bash
-# 両方のコンテナが同じネットワーク上にあるか確認
+# Check if both containers are on the same network
 docker network inspect <network-name>
 
-# 接続性をテスト
+# Test connectivity
 docker exec <clickstack-container> ping redis
 docker exec <clickstack-container> telnet redis 6379
 ```

@@ -63,22 +63,20 @@ url = 'https://connection.url/'
 ```
 
 :::tip
-在上面的示例中，`password_sha256_hex` 的值是该密码的 SHA256 哈希的十六进制表示。针对用户 `default` 的这段配置包含属性 `replace=true`，因为在默认配置中为该用户配置的是明文 `password`，而同一用户不能同时配置明文密码和 SHA256 十六进制密码。
+In the above example the `password_sha256_hex` value is the hexadecimal representation of the SHA256 hash of the password.  This configuration for the user `default` has the attribute `replace=true` as in the default configuration has a plain text `password` set, and it is not possible to have both plain text and sha256 hex passwords set for a user.
 :::
 
+### Storage for named collections {#storage-for-named-collections}
 
-### 命名集合的存储 {#storage-for-named-collections}
+Named collections can either be stored on local disk or in ZooKeeper/Keeper. By default local storage is used.
+They can also be stored using encryption with the same algorithms used for [disk encryption](storing-data#encrypted-virtual-file-system),
+where `aes_128_ctr` is used by default.
 
-命名集合可以存储在本地磁盘或 ZooKeeper/Keeper 中，默认使用本地存储。
-它们也可以使用与 [磁盘加密](storing-data#encrypted-virtual-file-system) 相同的算法进行加密存储，
-其中默认使用 `aes_128_ctr`。
+To configure named collections storage you need to specify a `type`. This can be either `local` or `keeper`/`zookeeper`. For encrypted storage,
+you can use `local_encrypted` or `keeper_encrypted`/`zookeeper_encrypted`.
 
-要配置命名集合存储，需要指定一个 `type`。它可以是 `local` 或 `keeper`/`zookeeper`。对于加密存储，
-可以使用 `local_encrypted` 或 `keeper_encrypted`/`zookeeper_encrypted`。
-
-要使用 ZooKeeper/Keeper，我们还需要在配置文件的 `named_collections_storage` 部分设置一个 `path`（在 ZooKeeper/Keeper 中存储命名集合的路径）。
-下面的示例使用了加密和 ZooKeeper/Keeper：
-
+To use ZooKeeper/Keeper we also need to set up a `path` (path in ZooKeeper/Keeper, where named collections will be stored) to
+`named_collections_storage` section in configuration file. The following example uses encryption and ZooKeeper/Keeper:
 ```xml
 <clickhouse>
   <named_collections_storage>
@@ -91,12 +89,11 @@ url = 'https://connection.url/'
 </clickhouse>
 ```
 
-可选配置参数 `update_timeout_ms` 的默认值为 `5000` 毫秒。
+An optional configuration parameter `update_timeout_ms` by default is equal to `5000`.
 
+## Storing named collections in configuration files {#storing-named-collections-in-configuration-files}
 
-## 在配置文件中存储命名集合 {#storing-named-collections-in-configuration-files}
-
-### XML 示例 {#xml-example}
+### XML example {#xml-example}
 
 ```xml title='/etc/clickhouse-server/config.d/named_collections.xml'
 <clickhouse>
@@ -110,64 +107,56 @@ url = 'https://connection.url/'
 </clickhouse>
 ```
 
-在上述示例中：
+In the above example:
 
-* `key_1` 始终可以被覆盖。
-* `key_2` 不可被覆盖。
-* `url` 是否可以被覆盖取决于 `allow_named_collection_override_by_default` 的值。
+* `key_1` can always be overridden.
+* `key_2` can never be overridden.
+* `url` can be overridden or not depending on the value of `allow_named_collection_override_by_default`.
 
+## Modifying named collections {#modifying-named-collections}
 
-## 修改命名集合 {#modifying-named-collections}
+Named collections that are created with DDL queries can be altered or dropped with DDL. Named collections created with XML files can be managed by editing or deleting the corresponding XML.
 
-使用 DDL 查询创建的命名集合可以通过 DDL 进行修改或删除。使用 XML 文件创建的命名集合可以通过编辑或删除相应的 XML 文件进行管理。
+### Alter a DDL named collection {#alter-a-ddl-named-collection}
 
-### 修改 DDL 创建的命名集合 {#alter-a-ddl-named-collection}
-
-更改或添加集合 `collection2` 的键 `key1` 和 `key3`
-（这不会更改这些键的 `overridable` 标志位的值）：
-
+Change or add the keys `key1` and `key3` of the collection `collection2`
+(this will not change the value of the `overridable` flag for those keys):
 ```sql
 ALTER NAMED COLLECTION collection2 SET key1=4, key3='value3'
 ```
 
-更改或添加键 `key1`，并允许其始终可被覆盖：
-
+Change or add the key `key1` and allow it to be always overridden:
 ```sql
 ALTER NAMED COLLECTION collection2 SET key1=4 OVERRIDABLE
 ```
 
-从 `collection2` 中删除键 `key2`：
-
+Remove the key `key2` from `collection2`:
 ```sql
 ALTER NAMED COLLECTION collection2 DELETE key2
 ```
 
-修改或添加集合 `collection2` 中的键 `key1`，并删除键 `key3`：
-
+Change or add the key `key1` and delete the key `key3` of the collection `collection2`:
 ```sql
 ALTER NAMED COLLECTION collection2 SET key1=4, DELETE key3
 ```
 
-若要强制某个键使用 `overridable` 标志位的默认设置，需要先删除该键，然后再重新添加。
-
+To force a key to use the default settings for the `overridable` flag, you have to
+remove and re-add the key.
 ```sql
 ALTER NAMED COLLECTION collection2 DELETE key1;
 ALTER NAMED COLLECTION collection2 SET key1=4;
 ```
 
-
-### 删除 DDL 命名集合 `collection2`： {#drop-the-ddl-named-collection-collection2}
-
+### Drop the DDL named collection `collection2`: {#drop-the-ddl-named-collection-collection2}
 ```sql
 DROP NAMED COLLECTION collection2
 ```
 
+## Named collections for accessing S3 {#named-collections-for-accessing-s3}
 
-## 用于访问 S3 的命名集合 {#named-collections-for-accessing-s3}
+The description of parameters see [s3 Table Function](../sql-reference/table-functions/s3.md).
 
-有关参数说明，请参阅 [S3 表函数](../sql-reference/table-functions/s3.md)。
-
-### DDL 示例 {#ddl-example-1}
+### DDL example {#ddl-example-1}
 
 ```sql
 CREATE NAMED COLLECTION s3_mydata AS
@@ -177,8 +166,7 @@ format = 'CSV',
 url = 'https://s3.us-east-1.amazonaws.com/yourbucket/mydata/'
 ```
 
-
-### XML 示例 {#xml-example-1}
+### XML example {#xml-example-1}
 
 ```xml
 <clickhouse>
@@ -193,12 +181,11 @@ url = 'https://s3.us-east-1.amazonaws.com/yourbucket/mydata/'
 </clickhouse>
 ```
 
+### s3() function and S3 Table named collection examples {#s3-function-and-s3-table-named-collection-examples}
 
-### s3() 函数和 S3 表命名集合示例 {#s3-function-and-s3-table-named-collection-examples}
+Both of the following examples use the same named collection `s3_mydata`:
 
-以下两个示例都使用同一个命名集合 `s3_mydata`：
-
-#### s3() 函数 {#s3-function}
+#### s3() function {#s3-function}
 
 ```sql
 INSERT INTO FUNCTION s3(s3_mydata, filename = 'test_file.tsv.gz',
@@ -207,11 +194,10 @@ SELECT * FROM numbers(10000);
 ```
 
 :::tip
-上述 `s3()` 函数的第一个参数是命名集合 `s3_mydata` 的名称。如果不使用命名集合，则在每次调用 `s3()` 函数时，都必须传入访问密钥 ID、秘密访问密钥、格式和 URL。
+The first argument to the `s3()` function above is the name of the collection, `s3_mydata`.  Without named collections, the access key ID, secret, format, and URL would all be passed in every call to the `s3()` function.
 :::
 
-
-#### S3 表 {#s3-table}
+#### S3 table {#s3-table}
 
 ```sql
 CREATE TABLE s3_engine_table (number Int64)
@@ -226,12 +212,11 @@ SELECT * FROM s3_engine_table LIMIT 3;
 └────────┘
 ```
 
+## Named collections for accessing MySQL database {#named-collections-for-accessing-mysql-database}
 
-## 用于访问 MySQL 数据库的命名集合 {#named-collections-for-accessing-mysql-database}
+The description of parameters see [mysql](../sql-reference/table-functions/mysql.md).
 
-有关参数的说明，请参见 [mysql](../sql-reference/table-functions/mysql.md)。
-
-### DDL 示例 {#ddl-example-2}
+### DDL example {#ddl-example-2}
 
 ```sql
 CREATE NAMED COLLECTION mymysql AS
@@ -244,8 +229,7 @@ connection_pool_size = 8,
 replace_query = 1
 ```
 
-
-### XML 示例 {#xml-example-2}
+### XML example {#xml-example-2}
 
 ```xml
 <clickhouse>
@@ -263,12 +247,11 @@ replace_query = 1
 </clickhouse>
 ```
 
+### mysql() function, MySQL table, MySQL database, and Dictionary named collection examples {#mysql-function-mysql-table-mysql-database-and-dictionary-named-collection-examples}
 
-### mysql() 函数、MySQL 表、MySQL 数据库和 Dictionary 命名集合示例 {#mysql-function-mysql-table-mysql-database-and-dictionary-named-collection-examples}
+The four following examples use the same named collection `mymysql`:
 
-下面四个示例都使用同一个名为 `mymysql` 的命名集合：
-
-#### mysql() 函数 {#mysql-function}
+#### mysql() function {#mysql-function}
 
 ```sql
 SELECT count() FROM mysql(mymysql, table = 'test');
@@ -277,13 +260,11 @@ SELECT count() FROM mysql(mymysql, table = 'test');
 │       3 │
 └─────────┘
 ```
-
 :::note
-该命名集合未指定 `table` 参数，因此在函数调用时通过 `table = 'test'` 来指定该参数。
+The named collection does not specify the `table` parameter, so it is specified in the function call as `table = 'test'`.
 :::
 
-
-#### MySQL 表 {#mysql-table}
+#### MySQL table {#mysql-table}
 
 ```sql
 CREATE TABLE mytable(A Int64) ENGINE = MySQL(mymysql, table = 'test', connection_pool_size=3, replace_query=0);
@@ -295,11 +276,10 @@ SELECT count() FROM mytable;
 ```
 
 :::note
-该 DDL 会覆盖命名集合中关于 connection&#95;pool&#95;size 的设置。
+The DDL overrides the named collection setting for connection_pool_size.
 :::
 
-
-#### MySQL 数据库 {#mysql-database}
+#### MySQL database {#mysql-database}
 
 ```sql
 CREATE DATABASE mydatabase ENGINE = MySQL(mymysql);
@@ -312,8 +292,7 @@ SHOW TABLES FROM mydatabase;
 └────────┘
 ```
 
-
-#### MySQL 字典 {#mysql-dictionary}
+#### MySQL Dictionary {#mysql-dictionary}
 
 ```sql
 CREATE DICTIONARY dict (A Int64, B String)
@@ -329,15 +308,14 @@ SELECT dictGet('dict', 'B', 2);
 └─────────────────────────┘
 ```
 
+## Named collections for accessing PostgreSQL database {#named-collections-for-accessing-postgresql-database}
 
-## 用于访问 PostgreSQL 数据库的命名集合 {#named-collections-for-accessing-postgresql-database}
+The description of parameters see [postgresql](../sql-reference/table-functions/postgresql.md). Additionally, there are aliases:
 
-参数说明请参见 [postgresql](../sql-reference/table-functions/postgresql.md)。此外，还有以下别名：
+- `username` for `user`
+- `db` for `database`.
 
-* `username` 对应 `user`
-* `db` 对应 `database`。
-
-在命名集合中，使用参数 `addresses_expr` 来替代 `host:port`。该参数是可选的，因为还存在其他可选参数：`host`、`hostname`、`port`。下面的伪代码说明了优先级：
+Parameter `addresses_expr` is used in a collection instead of `host:port`. The parameter is optional, because there are other optional ones: `host`, `hostname`, `port`. The following pseudo code explains the priority:
 
 ```sql
 CASE
@@ -347,8 +325,7 @@ CASE
 END
 ```
 
-创建示例：
-
+Example of creation:
 ```sql
 CREATE NAMED COLLECTION mypg AS
 user = 'pguser',
@@ -359,8 +336,7 @@ database = 'test',
 schema = 'test_schema'
 ```
 
-配置示例：
-
+Example of configuration:
 ```xml
 <clickhouse>
     <named_collections>
@@ -376,8 +352,7 @@ schema = 'test_schema'
 </clickhouse>
 ```
 
-
-### 在 PostgreSQL 函数中使用命名集合的示例 {#example-of-using-named-collections-with-the-postgresql-function}
+### Example of using named collections with the postgresql function {#example-of-using-named-collections-with-the-postgresql-function}
 
 ```sql
 SELECT * FROM postgresql(mypg, table = 'test');
@@ -395,8 +370,7 @@ SELECT * FROM postgresql(mypg, table = 'test', schema = 'public');
 └───┘
 ```
 
-
-### 在 PostgreSQL 引擎数据库中使用命名集合的示例 {#example-of-using-named-collections-with-database-with-engine-postgresql}
+### Example of using named collections with database with engine PostgreSQL {#example-of-using-named-collections-with-database-with-engine-postgresql}
 
 ```sql
 CREATE TABLE mypgtable (a Int64) ENGINE = PostgreSQL(mypg, table = 'test', schema = 'public');
@@ -411,11 +385,10 @@ SELECT * FROM mypgtable;
 ```
 
 :::note
-在创建表时，PostgreSQL 会从命名集合中复制数据。之后对该集合的更改不会影响已存在的表。
+PostgreSQL copies data from the named collection when the table is being created. A change in the collection does not affect the existing tables.
 :::
 
-
-### 在 PostgreSQL 引擎数据库中使用命名集合的示例 {#example-of-using-named-collections-with-database-with-engine-postgresql-1}
+### Example of using named collections with database with engine PostgreSQL {#example-of-using-named-collections-with-database-with-engine-postgresql-1}
 
 ```sql
 CREATE DATABASE mydatabase ENGINE = PostgreSQL(mypg);
@@ -427,8 +400,7 @@ SHOW TABLES FROM mydatabase
 └──────┘
 ```
 
-
-### 在以 PostgreSQL 为源的字典中使用命名集合的示例 {#example-of-using-named-collections-with-a-dictionary-with-source-postgresql}
+### Example of using named collections with a dictionary with source POSTGRESQL {#example-of-using-named-collections-with-a-dictionary-with-source-postgresql}
 
 ```sql
 CREATE DICTIONARY dict (a Int64, b String)
@@ -444,12 +416,11 @@ SELECT dictGet('dict', 'b', 2);
 └─────────────────────────┘
 ```
 
+## Named collections for accessing a remote ClickHouse database {#named-collections-for-accessing-a-remote-clickhouse-database}
 
-## 用于访问远程 ClickHouse 数据库的命名集合 {#named-collections-for-accessing-a-remote-clickhouse-database}
+The description of parameters see [remote](../sql-reference/table-functions/remote.md/#parameters).
 
-有关参数的说明，参见 [remote](../sql-reference/table-functions/remote.md/#parameters)。
-
-配置示例：
+Example of configuration:
 
 ```sql
 CREATE NAMED COLLECTION remote1 AS
@@ -475,11 +446,9 @@ secure = 1
     </named_collections>
 </clickhouse>
 ```
+`secure` is not needed for connection because of `remoteSecure`, but it can be used for dictionaries.
 
-由于已使用 `remoteSecure`，进行连接时无需设置 `secure`，但它仍可用于字典。
-
-
-### 使用命名集合与 `remote`/`remoteSecure` 函数的示例 {#example-of-using-named-collections-with-the-remoteremotesecure-functions}
+### Example of using named collections with the `remote`/`remoteSecure` functions {#example-of-using-named-collections-with-the-remoteremotesecure-functions}
 
 ```sql
 SELECT * FROM remote(remote1, table = one);
@@ -500,8 +469,7 @@ SELECT * FROM remote(remote1, database = default, table = test);
 └───┴───┘
 ```
 
-
-### 在以 ClickHouse 为源的字典中使用命名集合的示例 {#example-of-using-named-collections-with-a-dictionary-with-source-clickhouse}
+### Example of using named collections with a dictionary with source ClickHouse {#example-of-using-named-collections-with-a-dictionary-with-source-clickhouse}
 
 ```sql
 CREATE DICTIONARY dict(a Int64, b String)
@@ -516,12 +484,11 @@ SELECT dictGet('dict', 'b', 1);
 └─────────────────────────┘
 ```
 
+## Named collections for accessing Kafka {#named-collections-for-accessing-kafka}
 
-## 用于访问 Kafka 的命名集合 {#named-collections-for-accessing-kafka}
+The description of parameters see [Kafka](../engines/table-engines/integrations/kafka.md).
 
-参数说明参见 [Kafka](../engines/table-engines/integrations/kafka.md)。
-
-### DDL 示例 {#ddl-example-3}
+### DDL example {#ddl-example-3}
 
 ```sql
 CREATE NAMED COLLECTION my_kafka_cluster AS
@@ -532,9 +499,7 @@ kafka_format = 'JSONEachRow',
 kafka_max_block_size = '1048576';
 
 ```
-
-
-### XML 示例 {#xml-example-3}
+### XML example {#xml-example-3}
 
 ```xml
 <clickhouse>
@@ -550,10 +515,9 @@ kafka_max_block_size = '1048576';
 </clickhouse>
 ```
 
+### Example of using named collections with a Kafka table {#example-of-using-named-collections-with-a-kafka-table}
 
-### 在 Kafka 表中使用命名集合的示例 {#example-of-using-named-collections-with-a-kafka-table}
-
-以下两个示例都使用同一个命名集合 `my_kafka_cluster`：
+Both of the following examples use the same named collection `my_kafka_cluster`:
 
 ```sql
 CREATE TABLE queue
@@ -575,19 +539,17 @@ SETTINGS kafka_num_consumers = 4,
          kafka_thread_per_consumer = 1;
 ```
 
+## Named collections for backups {#named-collections-for-backups}
 
-## 用于备份的命名集合 {#named-collections-for-backups}
+For the description of parameters see [Backup and Restore](/operations/backup/overview).
 
-有关参数说明，请参阅 [备份和恢复](/operations/backup/overview)。
-
-### DDL 示例 {#ddl-example-4}
+### DDL example {#ddl-example-4}
 
 ```sql
 BACKUP TABLE default.test to S3(named_collection_s3_backups, 'directory')
 ```
 
-
-### XML 示例 {#xml-example-4}
+### XML example {#xml-example-4}
 
 ```xml
 <clickhouse>
@@ -601,12 +563,11 @@ BACKUP TABLE default.test to S3(named_collection_s3_backups, 'directory')
 </clickhouse>
 ```
 
+## Named collections for accessing MongoDB Table and Dictionary {#named-collections-for-accessing-mongodb-table-and-dictionary}
 
-## 用于访问 MongoDB 表和字典的命名集合 {#named-collections-for-accessing-mongodb-table-and-dictionary}
+For the description of parameters see [mongodb](../sql-reference/table-functions/mongodb.md).
 
-有关参数的说明，请参阅 [mongodb](../sql-reference/table-functions/mongodb.md)。
-
-### DDL 示例 {#ddl-example-5}
+### DDL example {#ddl-example-5}
 
 ```sql
 CREATE NAMED COLLECTION mymongo AS
@@ -619,8 +580,7 @@ collection = 'my_collection',
 options = 'connectTimeoutMS=10000'
 ```
 
-
-### XML 示例 {#xml-example-5}
+### XML example {#xml-example-5}
 
 ```xml
 <clickhouse>
@@ -638,8 +598,7 @@ options = 'connectTimeoutMS=10000'
 </clickhouse>
 ```
 
-
-#### MongoDB 表 {#mongodb-table}
+#### MongoDB table {#mongodb-table}
 
 ```sql
 CREATE TABLE mytable(log_type VARCHAR, host VARCHAR, command VARCHAR) ENGINE = MongoDB(mymongo, options='connectTimeoutMS=10000&compressors=zstd')
@@ -651,11 +610,10 @@ SELECT count() FROM mytable;
 ```
 
 :::note
-DDL 中的 options 设置会覆盖命名集合中的对应设置。
+The DDL overrides the named collection setting for options.
 :::
 
-
-#### MongoDB 字典 {#mongodb-dictionary}
+#### MongoDB Dictionary {#mongodb-dictionary}
 
 ```sql
 CREATE DICTIONARY dict

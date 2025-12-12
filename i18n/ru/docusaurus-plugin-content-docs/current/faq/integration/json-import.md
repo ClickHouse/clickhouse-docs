@@ -16,8 +16,10 @@ ClickHouse поддерживает широкий спектр [формато�
 
 С помощью [HTTP-интерфейса](../../interfaces/http.md):
 
-```bash
-$ echo '{"foo":"bar"}' | curl 'http://localhost:8123/?query=INSERT%20INTO%20test%20FORMAT%20JSONEachRow' --data-binary @-
+```
+
+Using [CLI interface](../../interfaces/cli.md):
+
 ```
 
 С помощью [интерфейса командной строки (CLI)](../../interfaces/cli.md):

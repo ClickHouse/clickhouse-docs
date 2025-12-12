@@ -133,7 +133,7 @@ CREATE TABLE stackoverflow.posts
 )
 ENGINE = MergeTree
 ORDER BY tuple()
-COMMENT '最適化された型'
+COMMENT 'Optimized types'
 ```
 
 [`INSERT INTO SELECT`](/sql-reference/statements/insert-into) を使って、[`gcs` table function](/sql-reference/table-functions/gcs) により gcs からエクスポートされたデータを読み込み、このテーブルに簡単にデータを投入できます。なお、ClickHouse Cloud では、gcs 互換の [`s3Cluster` table function](/sql-reference/table-functions/s3Cluster) を使用して、複数ノード間でロード処理を並列化することもできます。
@@ -226,14 +226,14 @@ WHERE `table` = 'posts'
 │ 2024      │
 └───────────┘
 
-17 行を取得しました。経過時間: 0.002 秒
+17 rows in set. Elapsed: 0.002 sec.
 
 ALTER TABLE posts
 (DROP PARTITION '2008')
 
-完了しました。
+Ok.
 
-0 行を取得しました。経過時間: 0.103 秒
+0 rows in set. Elapsed: 0.103 sec.
 ```
 
 - **クエリ最適化** - パーティションはクエリパフォーマンスの改善に役立つ場合がありますが、その効果はアクセスパターンに大きく依存します。クエリが少数のパーティション（理想的には 1 つ）のみを対象とする場合、パフォーマンスが向上する可能性があります。これは通常、パーティショニングキーがプライマリキーに含まれておらず、かつそのキーでフィルタリングしている場合にのみ有用です。一方で、多数のパーティションをまたいで読み取る必要があるクエリは、パーティショニングを行わない場合よりもパフォーマンスが低下する可能性があります（パーティショニングの結果として `parts` が増える可能性があるため）。対象を 1 つのパーティションに限定できることによる利点も、パーティショニングキーがすでにプライマリキーの先頭付近にある場合にはほとんど、あるいはまったくと言ってよいほど小さくなります。パーティショニングは、各パーティション内の値が一意である場合に限り、[`GROUP BY` クエリを最適化](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key) するためにも利用できます。ただし、一般的には、まずプライマリキーが最適化されていることを確認し、そのうえで、アクセスパターンが 1 日の中の特定の予測可能なサブセットだけにアクセスするような例外的なケース（例: 1 日単位でパーティションを切り、ほとんどのクエリが直近 1 日のみを対象とする場合）に限って、クエリ最適化手法としてのパーティショニングを検討すべきです。
@@ -263,8 +263,8 @@ WHERE UserId = 8592047
    │ 0.18181818181818182 │
    └─────────────────────┘
 --highlight-next-line
-1 row in set. Elapsed: 0.040 sec. Processed 90.38 million rows, 361.59 MB (22.5億行/秒、9.01 GB/秒)
-ピークメモリ使用量: 201.93 MiB.
+1 row in set. Elapsed: 0.040 sec. Processed 90.38 million rows, 361.59 MB (2.25 billion rows/s., 9.01 GB/s.)
+Peak memory usage: 201.93 MiB.
 ```
 
 このクエリは、`UserId` がソートキーではないため（高速ではあるものの）9,000万行すべてをスキャンする必要があります。以前は、`PostId` のルックアップとして機能するマテリアライズドビューを使って、この問題を解決していました。同じ問題はプロジェクションでも解決できます。
@@ -319,7 +319,7 @@ WHERE (`table` = 'comments') AND (command LIKE '%MATERIALIZE%')
 1. │           1 │       0 │                    │
    └─────────────┴─────────┴────────────────────┘
 
-1 行が返されました。経過時間: 0.003 秒。
+1 row in set. Elapsed: 0.003 sec.
 ```
 
 上記のクエリを再実行すると、追加のストレージを要するものの、パフォーマンスが大幅に向上していることが分かります。
@@ -333,8 +333,8 @@ WHERE UserId = 8592047
 1. │ 0.18181818181818182 │
    └─────────────────────┘
 --highlight-next-line
-結果セット内の行数: 1 行。経過時間: 0.008 秒。処理行数: 16.36 千行、98.17 KB（2.15 百万行/秒、12.92 MB/秒）。
-ピークメモリ使用量: 4.06 MiB。
+1 row in set. Elapsed: 0.008 sec. Processed 16.36 thousand rows, 98.17 KB (2.15 million rows/s., 12.92 MB/s.)
+Peak memory usage: 4.06 MiB.
 ```
 
 [`EXPLAIN` コマンド](/sql-reference/statements/explain) を使用して、このクエリの処理にプロジェクションが利用されたことも確認できます。
@@ -344,6 +344,22 @@ EXPLAIN indexes = 1
 SELECT avg(Score)
 FROM comments
 WHERE UserId = 8592047
+
+    ┌─explain─────────────────────────────────────────────┐
+ 1. │ Expression ((Projection + Before ORDER BY))         │
+ 2. │   Aggregating                                       │
+ 3. │   Filter                                            │
+ 4. │           ReadFromMergeTree (comments_user_id)      │
+ 5. │           Indexes:                                  │
+ 6. │           PrimaryKey                                │
+ 7. │           Keys:                                     │
+ 8. │           UserId                                    │
+ 9. │           Condition: (UserId in [8592047, 8592047]) │
+10. │           Parts: 2/2                                │
+11. │           Granules: 2/11360                         │
+    └─────────────────────────────────────────────────────┘
+
+11 rows in set. Elapsed: 0.004 sec.
 ```
 
 ┌─explain─────────────────────────────────────────────┐
@@ -362,36 +378,6 @@ WHERE UserId = 8592047
     └─────────────────────────────────────────────────────┘
 
 11 行が結果セットに含まれています。経過時間: 0.004 秒。
-
-```
-
-### プロジェクションを使用する場合 {#when-to-use-projections}
-
-プロジェクションは、データ挿入時に自動的にメンテナンスされるため、新規ユーザーにとって魅力的な機能です。さらに、クエリは単一のテーブルに送信するだけで、プロジェクションが可能な限り活用され、応答時間が短縮されます。
-
-<Image img={bigquery_7} size="md" alt="Projections"/>
-
-これは、マテリアライズドビューとは対照的です。マテリアライズドビューでは、フィルタに応じて適切に最適化されたターゲットテーブルを選択するか、クエリを書き直す必要があります。これにより、ユーザーアプリケーションへの負担が大きくなり、クライアント側の複雑性が増加します。
-
-これらの利点にもかかわらず、プロジェクションには固有の制限があるため、ユーザーはそれを認識し、慎重に導入する必要があります。詳細については、["マテリアライズドビュー対プロジェクション"](/managing-data/materialized-views-versus-projections)を参照してください。
-
-以下の場合にプロジェクションの使用を推奨します:
-
-- データの完全な並べ替えが必要な場合。プロジェクション内の式は理論的には `GROUP BY` を使用できますが、マテリアライズドビューは集計の保守においてより効果的です。また、クエリオプティマイザは、単純な並べ替えを使用するプロジェクション(例: `SELECT * ORDER BY x`)を活用する可能性が高くなります。ユーザーはこの式で列のサブセットを選択することで、ストレージ使用量を削減できます。
-- ストレージ使用量の増加とデータを2回書き込むオーバーヘッドを許容できる場合。挿入速度への影響をテストし、[ストレージオーバーヘッドを評価](/data-compression/compression-in-clickhouse)してください。
-```
-
-## ClickHouse 向けの BigQuery クエリの書き換え {#rewriting-bigquery-queries-in-clickhouse}
-
-以下は、BigQuery と ClickHouse のクエリを比較したサンプルクエリです。このリストは、ClickHouse の機能を活用してクエリを大幅に簡素化する方法を示すことを目的としています。ここでの例では、Stack Overflow の全データセット（2024 年 4 月まで）を使用します。
-
-**質問を 10 件超投稿しているユーザーのうち、最も多くビューを獲得しているユーザー:**
-
-*BigQuery*
-
-<Image img={bigquery_8} size="sm" alt="BigQuery クエリの書き換え" border />
-
-*ClickHouse*
 
 ```sql
 SELECT
@@ -416,13 +402,15 @@ LIMIT 5
 Peak memory usage: 323.37 MiB.
 ```
 
-**どのタグの閲覧数が最も多いか:**
+## ClickHouse 向けの BigQuery クエリの書き換え {#rewriting-bigquery-queries-in-clickhouse}
+
+以下は、BigQuery と ClickHouse のクエリを比較したサンプルクエリです。このリストは、ClickHouse の機能を活用してクエリを大幅に簡素化する方法を示すことを目的としています。ここでの例では、Stack Overflow の全データセット（2024 年 4 月まで）を使用します。
+
+**質問を 10 件超投稿しているユーザーのうち、最も多くビューを獲得しているユーザー:**
 
 *BigQuery*
 
-<br />
-
-<Image img={bigquery_9} size="sm" alt="BigQuery 1" border />
+<Image img={bigquery_8} size="sm" alt="BigQuery クエリの書き換え" border />
 
 *ClickHouse*
 
@@ -444,19 +432,17 @@ LIMIT 5
 5. │ android    │ 4258320338 │
    └────────────┴────────────┘
 
-5行が返されました。経過時間: 0.318秒。処理された行数: 5982万行、1.45 GB (1億8801万行/秒、4.54 GB/秒)
-ピークメモリ使用量: 567.41 MiB。
+5 rows in set. Elapsed: 0.318 sec. Processed 59.82 million rows, 1.45 GB (188.01 million rows/s., 4.54 GB/s.)
+Peak memory usage: 567.41 MiB.
 ```
 
-## 集約関数 {#aggregate-functions}
-
-可能な場合は、ClickHouse の集約関数を活用してください。以下では、各年でもっとも閲覧された質問を求めるために、[`argMax` 集約関数](/sql-reference/aggregate-functions/reference/argmax) を使用する例を示します。
+**どのタグの閲覧数が最も多いか:**
 
 *BigQuery*
 
-<Image img={bigquery_10} border size="sm" alt="集約関数 1" />
+<br />
 
-<Image img={bigquery_11} border size="sm" alt="集約関数 2" />
+<Image img={bigquery_9} size="sm" alt="BigQuery 1" border />
 
 *ClickHouse*
 
@@ -475,13 +461,13 @@ FORMAT Vertical
 Row 1:
 ──────
 Year:                    2008
-MostViewedQuestionTitle: リスト内の指定された項目のインデックスを見つける方法は？
+MostViewedQuestionTitle: How to find the index for a given item in a list?
 MaxViewCount:            6316987
 
 Row 2:
 ──────
 Year:                    2009
-MostViewedQuestionTitle: Gitで最新のローカルコミットを取り消す方法は？
+MostViewedQuestionTitle: How do I undo the most recent local commits in Git?
 MaxViewCount:            13962748
 
 ...
@@ -489,17 +475,54 @@ MaxViewCount:            13962748
 Row 16:
 ───────
 Year:                    2023
-MostViewedQuestionTitle: pip 3を使用するたびに「error: externally-managed-environment」を解決する方法は？
+MostViewedQuestionTitle: How do I solve "error: externally-managed-environment" every time I use pip 3?
 MaxViewCount:            506822
 
 Row 17:
 ───────
 Year:                    2024
-MostViewedQuestionTitle: 警告「サードパーティCookieがブロックされます。詳細は問題タブをご覧ください」
+MostViewedQuestionTitle: Warning "Third-party cookie will be blocked. Learn more in the Issues tab"
 MaxViewCount:            66975
 
-17行のセット。経過時間: 0.225秒。処理済み 2,435万行、1.86 GB（1億799万行/秒、8.26 GB/秒）
-ピークメモリ使用量: 377.26 MiB。
+17 rows in set. Elapsed: 0.225 sec. Processed 24.35 million rows, 1.86 GB (107.99 million rows/s., 8.26 GB/s.)
+Peak memory usage: 377.26 MiB.
+```
+
+## 集約関数 {#aggregate-functions}
+
+可能な場合は、ClickHouse の集約関数を活用してください。以下では、各年でもっとも閲覧された質問を求めるために、[`argMax` 集約関数](/sql-reference/aggregate-functions/reference/argmax) を使用する例を示します。
+
+*BigQuery*
+
+<Image img={bigquery_10} border size="sm" alt="集約関数 1" />
+
+<Image img={bigquery_11} border size="sm" alt="集約関数 2" />
+
+*ClickHouse*
+
+```sql
+SELECT
+    arrayJoin(arrayFilter(t -> (t != ''), splitByChar('|', Tags))) AS tag,
+    countIf(toYear(CreationDate) = 2023) AS count_2023,
+    countIf(toYear(CreationDate) = 2022) AS count_2022,
+    ((count_2023 - count_2022) / count_2022) * 100 AS percent_change
+FROM stackoverflow.posts
+WHERE toYear(CreationDate) IN (2022, 2023)
+GROUP BY tag
+HAVING (count_2022 > 10000) AND (count_2023 > 10000)
+ORDER BY percent_change DESC
+LIMIT 5
+
+┌─tag─────────┬─count_2023─┬─count_2022─┬──────percent_change─┐
+│ next.js     │      13788 │      10520 │   31.06463878326996 │
+│ spring-boot │      16573 │      17721 │  -6.478189718413183 │
+│ .net        │      11458 │      12968 │ -11.644046884639112 │
+│ azure       │      11996 │      14049 │ -14.613139725247349 │
+│ docker      │      13885 │      16877 │  -17.72826924216389 │
+└─────────────┴────────────┴────────────┴─────────────────────┘
+
+5 rows in set. Elapsed: 0.096 sec. Processed 5.08 million rows, 155.73 MB (53.10 million rows/s., 1.63 GB/s.)
+Peak memory usage: 410.37 MiB.
 ```
 
 ## 条件式と配列 {#conditionals-and-arrays}

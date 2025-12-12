@@ -12,7 +12,7 @@ import simple_merges from '@site/static/images/bestpractices/simple_merges.png';
 虽然可能会想通过以下方式手动触发这种合并操作：
 
 ```sql
-OPTIMIZE TABLE <表名> FINAL;
+OPTIMIZE TABLE <table> FINAL;
 ```
 
 **在大多数情况下，你应该避免执行 `OPTIMIZE FINAL` 操作**，因为它会触发

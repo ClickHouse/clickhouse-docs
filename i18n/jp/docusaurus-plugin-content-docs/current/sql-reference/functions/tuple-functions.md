@@ -56,31 +56,37 @@ SELECT flattenTuple(t) FROM tab;
 └────────────────┘
 ```
 
+
+
 ## tuple {#tuple}
 
-導入バージョン: v
+Introduced in: v
 
-入力引数をグループ化してタプルを返します。
 
-型が T1, T2, ... である列 C1, C2, ... に対して、これらの列名が一意であり、かつクォートなしの識別子として扱える場合は、それらの列を含む名前付きタプル型 Tuple(C1 T1, C2 T2, ...) を返し、そうでない場合は Tuple(T1, T2, ...) を返します。この関数の実行コストは発生しません。
-タプルは通常、`IN` 演算子の引数用の中間値として、またはラムダ関数の形式引数リストを作成するために使用されます。タプルをテーブルに書き込むことはできません。
+Returns a tuple by grouping input arguments.
 
-この関数は演算子 `(x, y, ...)` を実装しています。
+For columns C1, C2, ... with the types T1, T2, ..., it returns a named Tuple(C1 T1, C2 T2, ...) type tuple containing these columns if their names are unique and can be treated as unquoted identifiers, otherwise a Tuple(T1, T2, ...) is returned. There is no cost to execute the function.
+Tuples are normally used as intermediate values for an argument of IN operators, or for creating a list of formal parameters of lambda functions. Tuples can't be written to a table.
 
-**構文**
+The function implements the operator `(x, y, ...)`.
+
+
+**Syntax**
 
 ```sql
 ```
 
-**引数**
+**Arguments**
 
-* なし
+- None.
 
-**戻り値**
+**Returned value**
 
-**例**
 
-**典型例**
+
+**Examples**
+
+**typical**
 
 ```sql title=Query
 SELECT tuple(1, 2)
@@ -90,29 +96,34 @@ SELECT tuple(1, 2)
 (1,2)
 ```
 
+
+
 ## tupleConcat {#tupleConcat}
 
-導入: v23.8
+Introduced in: v23.8
 
-引数として渡されたタプルを結合します。
 
-**構文**
+Combines tuples passed as arguments.
+
+
+**Syntax**
 
 ```sql
 tupleConcat(tuple1[, tuple2, [...]])
 ```
 
-**引数**
+**Arguments**
 
-* `tupleN` — 任意個数の `Tuple` 型引数。[`Tuple(T)`](/sql-reference/data-types/tuple)
+- `tupleN` — Arbitrary number of arguments of Tuple type. [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**返される値**
 
-すべての入力タプルの要素を含むタプルを返します。[`Tuple(T)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns a tuple containing all elements from the input tuples. [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT tupleConcat((1, 2), ('a',), (true, false))
@@ -122,34 +133,39 @@ SELECT tupleConcat((1, 2), ('a',), (true, false))
 (1, 2, 'a', true, false)
 ```
 
+
+
 ## tupleDivide {#tupleDivide}
 
-導入バージョン: v21.11
+Introduced in: v21.11
 
-同じ長さの 2 つのタプルについて、対応する要素同士の除算を計算します。
+
+Calculates the division of corresponding elements of two tuples of the same size.
 
 :::note
-ゼロ除算の場合は `inf` を返します。
+Division by zero will return `inf`.
 :::
 
-**構文**
+
+**Syntax**
 
 ```sql
 tupleDivide(t1, t2)
 ```
 
-**引数**
+**Arguments**
 
-* `t1` — 1 番目のタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `t2` — 2 番目のタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `t1` — First tuple. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `t2` — Second tuple. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-除算結果のタプルを返します。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns tuple with the result of division. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**基本的な使用方法**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT tupleDivide((1, 2), (2, 3))
@@ -159,34 +175,39 @@ SELECT tupleDivide((1, 2), (2, 3))
 (0.5, 0.6666666666666666)
 ```
 
+
+
 ## tupleDivideByNumber {#tupleDivideByNumber}
 
-導入バージョン: v21.11
+Introduced in: v21.11
 
-すべての要素を指定した数値で割った結果のタプルを返します。
+
+Returns a tuple with all elements divided by a number.
 
 :::note
-0 で割った場合は `inf` を返します。
+Division by zero will return `inf`.
 :::
 
-**構文**
+
+**Syntax**
 
 ```sql
 tupleDivideByNumber(tuple, number)
 ```
 
-**引数**
+**Arguments**
 
-* `tuple` — 除算対象のタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `number` — 除数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
+- `tuple` — Tuple to divide. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `number` — Divider. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
 
-**戻り値**
 
-各要素を除算した結果のタプルを返します。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**使用例**
+Returns a tuple with divided elements. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**基本的な使い方**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT tupleDivideByNumber((1, 2), 0.5)
@@ -196,40 +217,45 @@ SELECT tupleDivideByNumber((1, 2), 0.5)
 (2, 4)
 ```
 
+
+
 ## tupleElement {#tupleElement}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-タプルから要素をインデックスまたは名前で抽出します。
 
-インデックスでアクセスする場合は、1 始まりの数値インデックスを指定します。
-名前でアクセスする場合は、要素名を文字列として指定します（名前付きタプルでのみ有効です）。
+Extracts an element from a tuple by index or name.
 
-省略可能な 3 番目の引数でデフォルト値を指定できます。アクセス対象の要素が存在しない場合、例外をスローする代わりにこの値が返されます。
-すべての引数は定数でなければなりません。
+For access by index, an 1-based numeric index is expected.
+For access by name, the element name can be provided as a string (works only for named tuples).
 
-この関数は実行時コストがゼロであり、演算子 `x.index` および `x.name` を実装します。
+An optional third argument specifies a default value which is returned instead of throwing an exception when the accessed element does not exist.
+All arguments must be constants.
 
-**構文**
+This function has zero runtime cost and implements the operators `x.index` and `x.name`.
+
+
+**Syntax**
 
 ```sql
 tupleElement(tuple, index|name[, default_value])
 ```
 
-**引数**
+**Arguments**
 
-* `tuple` — タプル、またはタプルの配列。[`Tuple(T)`](/sql-reference/data-types/tuple) または [`Array(Tuple(T))`](/sql-reference/data-types/array)
-* `index` — 1 から始まるカラムインデックス。[`const UInt8/16/32/64`](/sql-reference/data-types/int-uint)
-* `name` — 要素の名前。[`const String`](/sql-reference/data-types/string)
-* `default_value` — インデックスが有効範囲外、または要素が存在しない場合に返されるデフォルト値。[`Any`](/sql-reference/data-types)
+- `tuple` — A tuple or array of tuples. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(Tuple(T))`](/sql-reference/data-types/array)
+- `index` — Column index, starting from 1. [`const UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+- `name` — Name of the element. [`const String`](/sql-reference/data-types/string)
+- `default_value` — Default value returned when index is out of bounds or element doesn't exist. [`Any`](/sql-reference/data-types)
 
-**戻り値**
 
-指定されたインデックスまたは名前の要素を返します。[`Any`](/sql-reference/data-types)
+**Returned value**
 
-**例**
+Returns the element at the specified index or name. [`Any`](/sql-reference/data-types)
 
-**インデックスによるアクセス**
+**Examples**
+
+**Index access**
 
 ```sql title=Query
 SELECT tupleElement((1, 'hello'), 2)
@@ -239,7 +265,7 @@ SELECT tupleElement((1, 'hello'), 2)
 hello
 ```
 
-**テーブル付きの名前付きタプル**
+**Named tuple with table**
 
 ```sql title=Query
 CREATE TABLE example (values Tuple(name String, age UInt32)) ENGINE = Memory;
@@ -251,7 +277,7 @@ SELECT tupleElement(values, 'name') FROM example;
 Alice
 ```
 
-**デフォルト値の場合**
+**With default value**
 
 ```sql title=Query
 SELECT tupleElement((1, 2), 5, 'not_found')
@@ -261,7 +287,7 @@ SELECT tupleElement((1, 2), 5, 'not_found')
 not_found
 ```
 
-**演算子の構文**
+**Operator syntax**
 
 ```sql title=Query
 SELECT (1, 'hello').2
@@ -271,14 +297,17 @@ SELECT (1, 'hello').2
 hello
 ```
 
+
+
 ## tupleHammingDistance {#tupleHammingDistance}
 
-導入: v21.1
+Introduced in: v21.1
 
-同じサイズの 2 つのタプル間の[ハミング距離](https://en.wikipedia.org/wiki/Hamming_distance)を返します。
+
+Returns the [Hamming Distance](https://en.wikipedia.org/wiki/Hamming_distance) between two tuples of the same size.
 
 :::note
-結果の型は、入力タプル内の要素数に基づき、[算術関数](../../sql-reference/functions/arithmetic-functions.md)の場合と同じ方法で決定されます。
+The result type is determined the same way it is for [Arithmetic functions](../../sql-reference/functions/arithmetic-functions.md), based on the number of elements in the input tuples.
 
 ```sql
 SELECT
@@ -294,27 +323,28 @@ SELECT
 │ UInt8 │ UInt16 │ UInt32 │ UInt64 │ UInt64 │
 └───────┴────────┴────────┴────────┴────────┘
 ```
-
 :::
 
-**構文**
+
+**Syntax**
 
 ```sql
 tupleHammingDistance(t1, t2)
 ```
 
-**引数**
+**Arguments**
 
-* `t1` — 1 番目のタプル。[`Tuple(*)`](/sql-reference/data-types/tuple)
-* `t2` — 2 番目のタプル。[`Tuple(*)`](/sql-reference/data-types/tuple)
+- `t1` — First tuple. [`Tuple(*)`](/sql-reference/data-types/tuple)
+- `t2` — Second tuple. [`Tuple(*)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-ハミング距離を返します。[`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the Hamming distance. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT tupleHammingDistance((1, 2, 3), (3, 2, 1))
@@ -324,7 +354,7 @@ SELECT tupleHammingDistance((1, 2, 3), (3, 2, 1))
 2
 ```
 
-**MinHash による準重複文字列の検出**
+**With MinHash to detect semi-duplicate strings**
 
 ```sql title=Query
 SELECT tupleHammingDistance(wordShingleMinHash(string), wordShingleMinHashCaseInsensitive(string)) FROM (SELECT 'ClickHouseはクエリのオンライン分析処理のための列指向データベース管理システムです。' AS string)
@@ -334,32 +364,37 @@ SELECT tupleHammingDistance(wordShingleMinHash(string), wordShingleMinHashCaseIn
 2
 ```
 
+
+
 ## tupleIntDiv {#tupleIntDiv}
 
-導入バージョン: v23.8
+Introduced in: v23.8
 
-分子のタプルと分母のタプルを用いて整数除算を実行します。商のタプルを返します。
-どちらかのタプルに整数以外の要素が含まれている場合、整数以外の分子または除数については、最も近い整数に丸めてから結果を計算します。
-0 による除算を行うとエラーがスローされます。
 
-**構文**
+Performs an integer division with a tuple of numerators and a tuple of denominators. Returns a tuple of quotients.
+If either tuple contains non-integer elements then the result is calculated by rounding to the nearest integer for each non-integer numerator or divisor.
+Division by 0 causes an error to be thrown.
+
+
+**Syntax**
 
 ```sql
 tupleIntDiv(tuple_num, tuple_div)
 ```
 
-**引数**
+**Arguments**
 
-* `tuple_num` — 分子の値のタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `tuple_div` — 分母の値のタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `tuple_num` — Tuple of numerator values. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `tuple_div` — Tuple of divisor values. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-商を要素とするタプルを返します。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns a tuple of the quotients. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**基本的な使い方**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT tupleIntDiv((15, 10, 5), (5, 5, 5))
@@ -369,7 +404,7 @@ SELECT tupleIntDiv((15, 10, 5), (5, 5, 5))
 (3, 2, 1)
 ```
 
-**小数を使用する場合**
+**With decimals**
 
 ```sql title=Query
 SELECT tupleIntDiv((15, 10, 5), (5.5, 5.5, 5.5))
@@ -379,32 +414,37 @@ SELECT tupleIntDiv((15, 10, 5), (5.5, 5.5, 5.5))
 (2, 1, 0)
 ```
 
+
+
 ## tupleIntDivByNumber {#tupleIntDivByNumber}
 
-導入バージョン: v23.8
+Introduced in: v23.8
 
-分子のタプルを指定された分母で整数除算し、その商のタプルを返します。
-いずれかの入力パラメータに非整数の要素が含まれる場合、各非整数の分子または除数を最も近い整数に丸めてから結果を計算します。
-0 での除算が行われた場合はエラーがスローされます。
 
-**構文**
+Performs integer division of a tuple of numerators by a given denominator, and returns a tuple of the quotients.
+If either of the input parameters contain non-integer elements then the result is calculated by rounding to the nearest integer for each non-integer numerator or divisor.
+An error will be thrown for division by 0.
+
+
+**Syntax**
 
 ```sql
 tupleIntDivByNumber(tuple_num, div)
 ```
 
-**引数**
+**Arguments**
 
-* `tuple_num` — 分子値のタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `div` — 除数の値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
+- `tuple_num` — Tuple of numerator values. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `div` — The divisor value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
 
-**戻り値**
 
-商のタプルを返します。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns a tuple of the quotients. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**基本的な使い方**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT tupleIntDivByNumber((15, 10, 5), 5)
@@ -414,7 +454,7 @@ SELECT tupleIntDivByNumber((15, 10, 5), 5)
 (3, 2, 1)
 ```
 
-**小数を含む場合**
+**With decimals**
 
 ```sql title=Query
 SELECT tupleIntDivByNumber((15.2, 10.7, 5.5), 5.8)
@@ -424,32 +464,37 @@ SELECT tupleIntDivByNumber((15.2, 10.7, 5.5), 5.8)
 (2, 1, 0)
 ```
 
+
+
 ## tupleIntDivOrZero {#tupleIntDivOrZero}
 
-導入バージョン: v23.8
+Introduced in: v23.8
 
-[`tupleIntDiv`](#tupleIntDiv) と同様に、分子のタプルと分母のタプルに対して整数除算を実行し、商のタプルを返します。
-0 による除算が発生した場合は、例外をスローする代わりに、その商を 0 として返します。
-いずれかのタプルに整数以外の要素が含まれている場合は、各整数以外の分子または除数を最も近い整数に丸めてから結果を計算します。
 
-**構文**
+Like [`tupleIntDiv`](#tupleIntDiv) performs integer division of a tuple of numerators and a tuple of denominators, and returns a tuple of the quotients.
+In case of division by 0, returns the quotient as 0 instead of throwing an exception.
+If either tuple contains non-integer elements then the result is calculated by rounding to the nearest integer for each non-integer numerator or divisor.
+
+
+**Syntax**
 
 ```sql
 tupleIntDivOrZero(tuple_num, tuple_div)
 ```
 
-**引数**
+**Arguments**
 
-* `tuple_num` — 分子の値を含むタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `tuple_div` — 除数の値を含むタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `tuple_num` — Tuple of numerator values. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `tuple_div` — Tuple of divisor values. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-商のタプルを返します。除数が 0 の場合、その商として 0 を返します。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns tuple of the quotients. Returns 0 for quotients where the divisor is 0. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**除数が 0 の場合**
+**Examples**
+
+**With zero divisors**
 
 ```sql title=Query
 SELECT tupleIntDivOrZero((5, 10, 15), (0, 0, 0))
@@ -459,32 +504,37 @@ SELECT tupleIntDivOrZero((5, 10, 15), (0, 0, 0))
 (0, 0, 0)
 ```
 
+
+
 ## tupleIntDivOrZeroByNumber {#tupleIntDivOrZeroByNumber}
 
-導入バージョン: v23.8
+Introduced in: v23.8
 
-[`tupleIntDivByNumber`](#tupleIntDivByNumber) と同様に、指定された分母で分子のタプルに対して整数除算を行い、商のタプルを返します。
-除数がゼロの場合でもエラーはスローされず、商としてゼロを返します。
-タプルまたは除数に整数以外の要素が含まれている場合、それぞれの整数以外の分子または除数を最も近い整数に丸めてから結果を計算します。
 
-**構文**
+Like [`tupleIntDivByNumber`](#tupleIntDivByNumber) it does integer division of a tuple of numerators by a given denominator, and returns a tuple of the quotients.
+It does not throw an error for zero divisors, but rather returns the quotient as zero.
+If either the tuple or div contain non-integer elements then the result is calculated by rounding to the nearest integer for each non-integer numerator or divisor.
+
+
+**Syntax**
 
 ```sql
 tupleIntDivOrZeroByNumber(tuple_num, div)
 ```
 
-**引数**
+**Arguments**
 
-* `tuple_num` — 分子の値を格納したタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `div` — 除数の値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
+- `tuple_num` — Tuple of numerator values. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `div` — The divisor value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
 
-**返される値**
 
-除数が `0` の要素については商を `0` とした商のタプルを返します。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**使用例**
+Returns a tuple of the quotients with `0` for quotients where the divisor is `0`. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**基本的な使用方法**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT tupleIntDivOrZeroByNumber((15, 10, 5), 5)
@@ -494,7 +544,7 @@ SELECT tupleIntDivOrZeroByNumber((15, 10, 5), 5)
 (3, 2, 1)
 ```
 
-**除数が 0 の場合**
+**With zero divisor**
 
 ```sql title=Query
 SELECT tupleIntDivOrZeroByNumber((15, 10, 5), 0)
@@ -504,32 +554,37 @@ SELECT tupleIntDivOrZeroByNumber((15, 10, 5), 0)
 (0, 0, 0)
 ```
 
+
+
 ## tupleMinus {#tupleMinus}
 
-導入バージョン: v21.11
+Introduced in: v21.11
 
-同じ要素数を持つ 2 つのタプルの対応する要素同士の差を計算します。
 
-**構文**
+Calculates the difference between corresponding elements of two tuples of the same size.
+
+
+**Syntax**
 
 ```sql
 tupleMinus(t1, t2)
 ```
 
-**エイリアス**: `vectorDifference`
+**Aliases**: `vectorDifference`
 
-**引数**
+**Arguments**
 
-* `t1` — 1 番目のタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `t2` — 2 番目のタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `t1` — First tuple. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `t2` — Second tuple. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-減算した結果を含むタプルを返します。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns a tuple containing the results  of the subtractions. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**基本的な使用例**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT tupleMinus((1, 2), (2, 3))
@@ -539,30 +594,35 @@ SELECT tupleMinus((1, 2), (2, 3))
 (-1, -1)
 ```
 
+
+
 ## tupleModulo {#tupleModulo}
 
-導入バージョン: v23.8
+Introduced in: v23.8
 
-2 つのタプルの要素同士を除算した際の余り（剰余）を要素とするタプルを返します。
 
-**構文**
+Returns a tuple of the remainders (moduli) of division operations of two tuples.
+
+
+**Syntax**
 
 ```sql
 tupleModulo(tuple_num, tuple_mod)
 ```
 
-**引数**
+**Arguments**
 
-* `tuple_num` — 分子の値のタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `tuple_mod` — 法 (modulus) の値のタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `tuple_num` — Tuple of numerator values. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `tuple_mod` — Tuple of modulus values. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-除算の余りを要素とするタプルを返します。ゼロでの除算はエラーになります。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns tuple of the remainders of division. An error is thrown for division by zero. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**基本的な使用方法**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT tupleModulo((15, 10, 5), (5, 3, 2))
@@ -572,30 +632,35 @@ SELECT tupleModulo((15, 10, 5), (5, 3, 2))
 (0, 1, 1)
 ```
 
+
+
 ## tupleModuloByNumber {#tupleModuloByNumber}
 
-導入バージョン: v23.8
+Introduced in: v23.8
 
-タプルの各要素を指定された除数で割ったときの剰余（余り）からなるタプルを返します。
 
-**構文**
+Returns a tuple of the moduli (remainders) of division operations of a tuple and a given divisor.
+
+
+**Syntax**
 
 ```sql
 tupleModuloByNumber(tuple_num, div)
 ```
 
-**引数**
+**Arguments**
 
-* `tuple_num` — 分子となる要素のタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `div` — 除数となる値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
+- `tuple_num` — Tuple of numerator elements. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `div` — The divisor value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
 
-**戻り値**
 
-除算の余りを要素とするタプルを返します。0 で除算を行うとエラーになります。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns tuple of the remainders of division. An error is thrown for division by zero. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**基本的な使用例**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT tupleModuloByNumber((15, 10, 5), 2)
@@ -605,30 +670,35 @@ SELECT tupleModuloByNumber((15, 10, 5), 2)
 (1, 0, 1)
 ```
 
+
+
 ## tupleMultiply {#tupleMultiply}
 
-導入バージョン: v21.11
+Introduced in: v21.11
 
-同じ長さの 2 つのタプルに対して、対応する要素同士の積を計算します。
 
-**構文**
+Calculates the multiplication of corresponding elements of two tuples of the same size.
+
+
+**Syntax**
 
 ```sql
 tupleMultiply(t1, t2)
 ```
 
-**引数**
+**Arguments**
 
-* `t1` — 1 番目のタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `t2` — 2 番目のタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `t1` — First tuple. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `t2` — Second tuple. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-乗算結果を含むタプルを返します。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns a tuple with the results of the multiplications. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**基本的な使用例**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT tupleMultiply((1, 2), (2, 3))
@@ -638,30 +708,35 @@ SELECT tupleMultiply((1, 2), (2, 3))
 (2, 6)
 ```
 
+
+
 ## tupleMultiplyByNumber {#tupleMultiplyByNumber}
 
-導入バージョン: v21.11
+Introduced in: v21.11
 
-すべての要素を指定した数値で乗算したタプルを返します。
 
-**構文**
+Returns a tuple with all elements multiplied by a number.
+
+
+**Syntax**
 
 ```sql
 tupleMultiplyByNumber(tuple, number)
 ```
 
-**引数**
+**Arguments**
 
-* `tuple` — 乗算するタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `number` — 乗数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
+- `tuple` — Tuple to multiply. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `number` — Multiplier. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
 
-**戻り値**
 
-各要素を乗算したタプルを返します。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns a tuple with multiplied elements. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**基本的な使い方**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT tupleMultiplyByNumber((1, 2), -2.1)
@@ -671,26 +746,32 @@ SELECT tupleMultiplyByNumber((1, 2), -2.1)
 (-2.1, -4.2)
 ```
 
+
+
 ## tupleNames {#tupleNames}
 
-導入バージョン: v
+Introduced in: v
 
-タプルを、その列名からなる配列に変換します。`Tuple(a T, b T, ...)` という形式のタプルに対して、そのタプル内の名前付き列を表す文字列の配列を返します。タプル要素に明示的な名前が付いていない場合は、その要素のインデックスが列名として使用されます。
 
-**構文**
+Converts a tuple into an array of column names. For a tuple in the form `Tuple(a T, b T, ...)`, it returns an array of strings representing the named columns of the tuple. If the tuple elements do not have explicit names, their indices will be used as the column names instead.
+
+
+**Syntax**
 
 ```sql
 ```
 
-**引数**
+**Arguments**
 
-* なし。
+- None.
 
-**戻り値**
+**Returned value**
 
-**例**
 
-**典型的な例**
+
+**Examples**
+
+**typical**
 
 ```sql title=Query
 SELECT tupleNames(tuple(1 as a, 2 as b))
@@ -700,29 +781,34 @@ SELECT tupleNames(tuple(1 as a, 2 as b))
 ['a','b']
 ```
 
+
+
 ## tupleNegate {#tupleNegate}
 
-導入バージョン: v21.11
+Introduced in: v21.11
 
-タプルの各要素の符号を反転します。
 
-**構文**
+Calculates the negation of the tuple elements.
+
+
+**Syntax**
 
 ```sql
 tupleNegate(t)
 ```
 
-**引数**
+**Arguments**
 
-* `t` — 符号を反転するタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `t` — Tuple to negate. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-符号反転した結果のタプルを返します。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns a tuple with the result of negation. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**基本的な使い方**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT tupleNegate((1, 2))
@@ -732,32 +818,37 @@ SELECT tupleNegate((1, 2))
 (-1, -2)
 ```
 
+
+
 ## tuplePlus {#tuplePlus}
 
-導入バージョン: v21.11
+Introduced in: v21.11
 
-同じ長さの2つのタプルについて、対応する要素同士を加算します。
 
-**構文**
+Calculates the sum of corresponding elements of two tuples of the same size.
+
+
+**Syntax**
 
 ```sql
 tuplePlus(t1, t2)
 ```
 
-**別名**: `vectorSum`
+**Aliases**: `vectorSum`
 
-**引数**
+**Arguments**
 
-* `t1` — 1 番目のタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `t2` — 2 番目のタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `t1` — First tuple. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+- `t2` — Second tuple. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-対応する各入力タプル要素の和を含むタプルを返します。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns a tuple containing the sums of corresponding input tuple arguments. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) or [`Tuple(Float*)`](/sql-reference/data-types/tuple) or [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**基本的な使い方**
+**Examples**
+
+**Basic usage**
 
 ```sql title=Query
 SELECT tuplePlus((1, 2), (2, 3))
@@ -767,31 +858,36 @@ SELECT tuplePlus((1, 2), (2, 3))
 (3, 5)
 ```
 
+
+
 ## tupleToNameValuePairs {#tupleToNameValuePairs}
 
-導入: v21.9
+Introduced in: v21.9
 
-タプルを `(name, value)` のペアの配列に変換します。
-例えば、タプル `Tuple(n1 T1, n2 T2, ...)` は `Array(Tuple('n1', T1), Tuple('n2', T2), ...)` に変換されます。
-タプル内のすべての値は同じ型である必要があります。
 
-**構文**
+Converts a tuple to an array of `(name, value)` pairs.
+For example, tuple `Tuple(n1 T1, n2 T2, ...)` is converted to `Array(Tuple('n1', T1), Tuple('n2', T2), ...)`.
+All values in the tuple must be of the same type.
+
+
+**Syntax**
 
 ```sql
 tupleToNameValuePairs(tuple)
 ```
 
-**引数**
+**Arguments**
 
-* `tuple` — 任意の型の値を持つ名前付きタプル。[`Tuple(n1 T1[, n2 T2, ...])`](/sql-reference/data-types/tuple)
+- `tuple` — Named tuple with any types of values. [`Tuple(n1 T1[, n2 T2, ...])`](/sql-reference/data-types/tuple)
 
-**戻り値**
 
-`(name, value)` のペアを要素とする配列を返します。[`Array(Tuple(String, T))`](/sql-reference/data-types/array)
+**Returned value**
 
-**例**
+Returns an array with `(name, value)` pairs. [`Array(Tuple(String, T))`](/sql-reference/data-types/array)
 
-**名前付きタプル**
+**Examples**
+
+**Named tuple**
 
 ```sql title=Query
 SELECT tupleToNameValuePairs(tuple(1593 AS user_ID, 2502 AS session_ID))
@@ -801,7 +897,7 @@ SELECT tupleToNameValuePairs(tuple(1593 AS user_ID, 2502 AS session_ID))
 [('1', 1593), ('2', 2502)]
 ```
 
-**無名タプル**
+**Unnamed tuple**
 
 ```sql title=Query
 SELECT tupleToNameValuePairs(tuple(3, 2, 1))
@@ -811,33 +907,35 @@ SELECT tupleToNameValuePairs(tuple(3, 2, 1))
 [('1', 3), ('2', 2), ('3', 1)]
 ```
 
-{/*AUTOGENERATED_END*/ }
+
+
+<!--AUTOGENERATED_END-->
 
 ## untuple {#untuple}
 
-呼び出し箇所で [tuple](/sql-reference/data-types/tuple) 要素の構文的な置換を行います。
+Performs syntactic substitution of [tuple](/sql-reference/data-types/tuple) elements in the call location.
 
-結果列の名前は実装依存であり、将来変更される可能性があります。`untuple` 実行後の特定の列名に依存しないでください。
+The names of the result columns are implementation-specific and subject to change. Do not assume specific column names after `untuple`.
 
-**構文**
+**Syntax**
 
 ```sql
 untuple(x)
 ```
 
-クエリ結果から特定の列を除外するために `EXCEPT` 式を使用できます。
+You can use the `EXCEPT` expression to skip columns as a result of the query.
 
-**引数**
+**Arguments**
 
-* `x` — `tuple` 関数、列、または要素のタプル。[Tuple](../data-types/tuple.md)。
+- `x` — A `tuple` function, column, or tuple of elements. [Tuple](../data-types/tuple.md).
 
-**返される値**
+**Returned value**
 
-* なし。
+- None.
 
-**例**
+**Examples**
 
-入力テーブル：
+Input table:
 
 ```text
 ┌─key─┬─v1─┬─v2─┬─v3─┬─v4─┬─v5─┬─v6────────┐
@@ -849,15 +947,15 @@ untuple(x)
 └─────┴────┴────┴────┴────┴────┴───────────┘
 ```
 
-`untuple` 関数のパラメータとして `Tuple` 型の列を使用する例:
+Example of using a `Tuple`-type column as the `untuple` function parameter:
 
-クエリ:
+Query:
 
 ```sql
 SELECT untuple(v6) FROM kv;
 ```
 
-結果:
+Result:
 
 ```text
 ┌─_ut_1─┬─_ut_2─┐
@@ -869,15 +967,15 @@ SELECT untuple(v6) FROM kv;
 └───────┴───────┘
 ```
 
-`EXCEPT` 式の使用例:
+Example of using an `EXCEPT` expression:
 
-クエリ:
+Query:
 
 ```sql
 SELECT untuple((* EXCEPT (v2, v3),)) FROM kv;
 ```
 
-結果:
+Result:
 
 ```text
 ┌─key─┬─v1─┬─v4─┬─v5─┬─v6────────┐

@@ -69,9 +69,9 @@ ClickStack のコンテナイメージは現在 `clickhouse/clickstack-*`（以�
 コンテナ再起動後もデータと設定を保持するには、上記の docker コマンドを変更して `/data/db`、`/var/lib/clickhouse`、`/var/log/clickhouse-server` のパスをマウントするようにします。例えば次のようにします:
 
 ```shell
-# ディレクトリの存在を確認 {#ensure-directories-exist}
+# ensure directories exist
 mkdir -p .volumes/db .volumes/ch_data .volumes/ch_logs
-# パスをマウントするためにコマンドを変更 {#modify-command-to-mount-paths}
+# modify command to mount paths
 docker run \
   -p 8080:8080 \
   -p 4317:4317 \

@@ -73,29 +73,34 @@ SELECT hex(BLAKE3('ABC'))
 └──────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## MD4 {#MD4}
 
-導入バージョン: v21.11
+Introduced in: v21.11
 
-指定した文字列の MD4 ハッシュ値を計算します。
 
-**構文**
+Calculates the MD4 hash of the given string.
+    
+
+**Syntax**
 
 ```sql
 MD4(s)
 ```
 
-**引数**
+**Arguments**
 
-* `s` — ハッシュ化する入力文字列。[`String`](/sql-reference/data-types/string)
+- `s` — The input string to hash. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-指定された入力文字列の MD4 ハッシュ値を固定長の文字列として返します。[`FixedString(16)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**例**
+Returns the MD4 hash of the given input string as a fixed-length string. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT HEX(MD4('abc'));
@@ -107,29 +112,34 @@ SELECT HEX(MD4('abc'));
 └──────────────────────────────────┘
 ```
 
+
+
 ## MD5 {#MD5}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-指定された文字列の MD5 ハッシュ値を計算します。
 
-**構文**
+Calculates the MD5 hash of the given string.
+    
+
+**Syntax**
 
 ```sql
 MD5(s)
 ```
 
-**引数**
+**Arguments**
 
-* `s` — ハッシュ化する入力文字列。[`String`](/sql-reference/data-types/string)
+- `s` — The input string to hash. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-指定された入力文字列の MD5 ハッシュ値を固定長の文字列として返します。[`FixedString(16)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**例**
+Returns the MD5 hash of the given input string as a fixed-length string. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT HEX(MD5('abc'));
@@ -141,29 +151,32 @@ SELECT HEX(MD5('abc'));
 └──────────────────────────────────┘
 ```
 
+
+
 ## RIPEMD160 {#RIPEMD160}
 
-導入バージョン: v24.10
+Introduced in: v24.10
 
-指定された文字列の RIPEMD-160 ハッシュ値を計算します。
+Calculates the RIPEMD-160 hash of the given string.
 
-**構文**
+**Syntax**
 
 ```sql
 RIPEMD160(s)
 ```
 
-**引数**
+**Arguments**
 
-* `s` — ハッシュ化する入力文字列。[`String`](/sql-reference/data-types/string)
+- `s` — The input string to hash. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-指定された入力文字列の RIPEMD160 ハッシュを固定長文字列として返します。[`FixedString(20)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**例**
+Returns the RIPEMD160 hash of the given input string as a fixed-length string. [`FixedString(20)`](/sql-reference/data-types/fixedstring)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT HEX(RIPEMD160('素早い茶色の狐が怠惰な犬を飛び越える'));
@@ -175,29 +188,34 @@ SELECT HEX(RIPEMD160('素早い茶色の狐が怠惰な犬を飛び越える'));
 └───────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## SHA1 {#SHA1}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-指定された文字列の SHA1 ハッシュ値を計算します。
 
-**構文**
+Calculates the SHA1 hash of the given string.
+    
+
+**Syntax**
 
 ```sql
 SHA1(s)
 ```
 
-**引数**
+**Arguments**
 
-* `s` — ハッシュ化する入力文字列 [`String`](/sql-reference/data-types/string)
+- `s` — The input string to hash [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-指定された入力文字列のSHA1ハッシュ値を固定長の文字列として返します。[`FixedString(20)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**例**
+Returns the SHA1 hash of the given input string as a fixed-length string. [`FixedString(20)`](/sql-reference/data-types/fixedstring)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT HEX(SHA1('abc'));
@@ -209,29 +227,34 @@ SELECT HEX(SHA1('abc'));
 └──────────────────────────────────────────┘
 ```
 
+
+
 ## SHA224 {#SHA224}
 
-導入バージョン：v1.1
+Introduced in: v1.1
 
-指定した文字列の SHA224 ハッシュ値を計算します。
 
-**構文**
+Calculates the SHA224 hash of the given string.
+    
+
+**Syntax**
 
 ```sql
 SHA224(s)
 ```
 
-**引数**
+**Arguments**
 
-* `s` — ハッシュ化する入力文字列。[`String`](/sql-reference/data-types/string)
+- `s` — The input value to hash. [`String`](/sql-reference/data-types/string)
 
-**返される値**
 
-指定した入力文字列の SHA224 ハッシュ値を固定長の文字列として返します。[`FixedString(28)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**例**
+Returns the SHA224 hash of the given input string as a fixed-length string. [`FixedString(28)`](/sql-reference/data-types/fixedstring)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT HEX(SHA224('abc'));
@@ -243,29 +266,34 @@ SELECT HEX(SHA224('abc'));
 └──────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## SHA256 {#SHA256}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-指定した文字列の SHA256 ハッシュを計算します。
 
-**構文**
+Calculates the SHA256 hash of the given string.
+    
+
+**Syntax**
 
 ```sql
 SHA256(s)
 ```
 
-**引数**
+**Arguments**
 
-* `s` — ハッシュ化する入力文字列。[`String`](/sql-reference/data-types/string)
+- `s` — The input string to hash. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-指定された入力文字列の SHA256 ハッシュ値を固定長文字列として返します。[`FixedString(32)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**例**
+Returns the SHA256 hash of the given input string as a fixed-length string. [`FixedString(32)`](/sql-reference/data-types/fixedstring)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT HEX(SHA256('abc'));
@@ -277,29 +305,34 @@ SELECT HEX(SHA256('abc'));
 └──────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## SHA384 {#SHA384}
 
-導入バージョン：v1.1
+Introduced in: v1.1
 
-指定した文字列の SHA384 ハッシュ値を計算します。
 
-**構文**
+Calculates the SHA384 hash of the given string.
+    
+
+**Syntax**
 
 ```sql
 SHA384(s)
 ```
 
-**引数**
+**Arguments**
 
-* `s` — ハッシュ化する入力文字列。[`String`](/sql-reference/data-types/string)
+- `s` — The input string to hash. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-指定された入力文字列の SHA384 ハッシュ値を固定長の文字列として返します。[`FixedString(48)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**例**
+Returns the SHA384 hash of the given input string as a fixed-length string. [`FixedString(48)`](/sql-reference/data-types/fixedstring)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT HEX(SHA384('abc'));
@@ -311,29 +344,34 @@ SELECT HEX(SHA384('abc'));
 └──────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## SHA512 {#SHA512}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-与えられた文字列の SHA512 ハッシュ値を計算します。
 
-**構文**
+Calculates the SHA512 hash of the given string.
+    
+
+**Syntax**
 
 ```sql
 SHA512(s)
 ```
 
-**引数**
+**Arguments**
 
-* `s` — ハッシュ化する入力文字列 [`String`](/sql-reference/data-types/string)
+- `s` — The input string to hash [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-与えられた入力文字列の SHA512 ハッシュ値を固定長文字列として返します。[`FixedString(64)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**例**
+Returns the SHA512 hash of the given input string as a fixed-length string. [`FixedString(64)`](/sql-reference/data-types/fixedstring)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT HEX(SHA512('abc'));
@@ -345,29 +383,34 @@ SELECT HEX(SHA512('abc'));
 └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-## SHA512&#95;256 {#SHA512&#95;256}
 
-導入バージョン: v1.1
 
-指定された文字列の SHA512&#95;256 ハッシュ値を計算します。
+## SHA512_256 {#SHA512_256}
 
-**構文**
+Introduced in: v1.1
+
+
+Calculates the SHA512_256 hash of the given string.
+    
+
+**Syntax**
 
 ```sql
 SHA512_256(s)
 ```
 
-**引数**
+**Arguments**
 
-* `s` — ハッシュ化する入力文字列。[`String`](/sql-reference/data-types/string)
+- `s` — The input string to hash. [`String`](/sql-reference/data-types/string)
 
-**返される値**
 
-指定された入力文字列の SHA512&#95;256 ハッシュを固定長文字列として返します。[`FixedString(32)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**例**
+Returns the SHA512_256 hash of the given input string as a fixed-length string. [`FixedString(32)`](/sql-reference/data-types/fixedstring)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT HEX(SHA512_256('abc'));
@@ -379,37 +422,42 @@ SELECT HEX(SHA512_256('abc'));
 └──────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## URLHash {#URLHash}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-URL から取得した文字列に対して、何らかの正規化処理を行ったうえで適用する、高速かつ十分な品質を備えた非暗号学的ハッシュ関数です。
 
-このハッシュ関数には 2 つのモードがあります:
+A fast, decent-quality non-cryptographic hash function for a string obtained from a URL using some type of normalization.
 
-| Mode              | Description                                                                                                   |
-| ----------------- | ------------------------------------------------------------------------------------------------------------- |
-| `URLHash(url)`    | 末尾に存在する場合は、末尾の `/`、`?`、`#` のいずれか 1 文字を取り除いた文字列からハッシュを計算します。                                                   |
-| `URLHash(url, N)` | 末尾に存在する場合は、末尾の `/`、`?`、`#` のいずれか 1 文字を取り除いたうえで、URL 階層の N レベル目までの文字列からハッシュを計算します。レベルの定義は `URLHierarchy` と同じです。 |
+This hash function has two modes:
 
-**構文**
+| Mode             | Description                                                                                                                                                                                 |
+|------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|`URLHash(url)`    | Calculates a hash from a string without one of the trailing symbols `/`,`?` or `#` at the end, if present.                                                                                  |
+|`URLHash(url, N)` | Calculates a hash from a string up to the N level in the URL hierarchy, without one of the trailing symbols `/`,`?` or `#` at the end, if present. Levels are the same as in `URLHierarchy`.|
+
+
+**Syntax**
 
 ```sql
 URLHash(url[, N])
 ```
 
-**引数**
+**Arguments**
 
-* `url` — ハッシュ化する URL 文字列。[`String`](/sql-reference/data-types/string)
-* `N` — 省略可能。URL 階層内のレベル。[`(U)Int*`](/sql-reference/data-types/int-uint)
+- `url` — URL string to hash. [`String`](/sql-reference/data-types/string)
+- `N` — Optional. Level in the URL hierarchy. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-`url` の算出されたハッシュ値を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the computed hash value of `url`. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT URLHash('https://www.clickhouse.com')
@@ -421,7 +469,7 @@ SELECT URLHash('https://www.clickhouse.com')
 └──────────────────────────┘
 ```
 
-**指定レベルでの URL のハッシュ**
+**Hash of url with specified level**
 
 ```sql title=Query
 SELECT URLHash('https://www.clickhouse.com/docs', 0);
@@ -439,44 +487,49 @@ SELECT URLHash('https://www.clickhouse.com/docs', 1);
 └──────────────────────────┘
 ```
 
+
+
 ## cityHash64 {#cityHash64}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-64 ビットの [CityHash](https://github.com/google/cityhash) ハッシュ値を生成します。
 
-これは高速な非暗号学的ハッシュ関数です。
-文字列型の引数には CityHash アルゴリズムを使用し、それ以外のデータ型の引数には実装依存の高速な非暗号学的ハッシュ関数を使用します。
-この関数は、最終結果を得るために CityHash のコンビネーターを使用します。
+Produces a 64-bit [CityHash](https://github.com/google/cityhash) hash value.
+
+This is a fast non-cryptographic hash function.
+It uses the CityHash algorithm for string parameters and implementation-specific fast non-cryptographic hash function for parameters with other data types.
+The function uses the CityHash combinator to get the final results.
 
 :::info
-Google は、CityHash が ClickHouse に追加された後に CityHash のアルゴリズムを変更しました。
-つまり、ClickHouse の cityHash64 と Google のアップストリーム CityHash は現在異なる結果を生成します。
-ClickHouse の cityHash64 は CityHash v1.0.2 に対応しています。
+Google changed the algorithm of CityHash after it was added to ClickHouse.
+In other words, ClickHouse's cityHash64 and Google's upstream CityHash now produce different results.
+ClickHouse cityHash64 corresponds to CityHash v1.0.2.
 :::
 
 :::note
-異なる引数型であっても、同じ入力値に対して計算されるハッシュ値が等しくなる場合があります。
-これは例えば、サイズの異なる整数型、同じデータを持つ名前付き・名前なしの `Tuple`、および同じデータを持つ `Map` とそれに対応する `Array(Tuple(key, value))` 型などに影響します。
+The calculated hash values may be equal for the same input values of different argument types.
+This affects for example integer types of different size, named and unnamed `Tuple` with the same data, `Map` and the corresponding `Array(Tuple(key, value))` type with the same data.
 :::
 
-**構文**
+
+**Syntax**
 
 ```sql
 cityHash64(arg1[, arg2, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `arg1[, arg2, ...]` — ハッシュ値を計算する対象となる可変個数の入力引数。[`Any`](/sql-reference/data-types)
+- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**戻り値**
 
-入力引数に対して計算されたハッシュ値を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the computed hash of the input arguments. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**呼び出し例**
+**Examples**
+
+**Call example**
 
 ```sql title=Query
 SELECT cityHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00')) AS CityHash, toTypeName(CityHash) AS type;
@@ -488,7 +541,7 @@ SELECT cityHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:0
 └──────────────────────┴────────┘
 ```
 
-**行の順序も含めてテーブル全体のチェックサムを計算する**
+**Computing the checksum of the entire table with accuracy up to the row order**
 
 ```sql title=Query
 CREATE TABLE users (
@@ -514,38 +567,43 @@ SELECT groupBitXor(cityHash64(*)) FROM users;
 └──────────────────────────┘
 ```
 
+
+
 ## farmFingerprint64 {#farmFingerprint64}
 
-導入バージョン: v20.12
+Introduced in: v20.12
 
-`Fingerprint64` メソッドを使用して 64 ビットの [FarmHash](https://github.com/google/farmhash) 値を生成します。
+
+Produces a 64-bit [FarmHash](https://github.com/google/farmhash) value using the `Fingerprint64` method.
 
 :::tip
-[`farmHash64`](#farmHash64) よりも安定かつ移植性の高い値が必要な場合は、`farmFingerprint64` の使用を推奨します。
+`farmFingerprint64` is preferred for a stable and portable value over [`farmHash64`](#farmHash64).
 :::
 
 :::note
-計算されるハッシュ値は、引数の型が異なっていても、同じ入力値に対して等しくなる場合があります。
-これは、たとえばサイズの異なる整数型、同じデータを持つ名前付きおよび名前なしの `Tuple`、同じデータを持つ `Map` と、それに対応する `Array(Tuple(key, value))` 型などが該当します。
+The calculated hash values may be equal for the same input values of different argument types.
+This affects for example integer types of different size, named and unnamed `Tuple` with the same data, `Map` and the corresponding `Array(Tuple(key, value))` type with the same data.
 :::
 
-**構文**
+
+**Syntax**
 
 ```sql
 farmFingerprint64(arg1[, arg2, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `arg1[, arg2, ...]` — ハッシュを計算する可変長の入力引数。[`Any`](/sql-reference/data-types)
+- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**戻り値**
 
-入力引数から計算されたハッシュ値を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the computed hash value of the input arguments. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT farmFingerprint64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00')) AS FarmFingerprint, toTypeName(FarmFingerprint) AS type;
@@ -557,38 +615,43 @@ SELECT farmFingerprint64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 
 └─────────────────────┴────────┘
 ```
 
+
+
 ## farmHash64 {#farmHash64}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-`Hash64` メソッドを使用して 64 ビットの [FarmHash](https://github.com/google/farmhash) を生成します。
+
+Produces a 64-bit [FarmHash](https://github.com/google/farmhash) using the `Hash64` method.
 
 :::tip
-安定かつ移植性の高い値が必要な場合は [`farmFingerprint64`](#farmFingerprint64) の使用を推奨します。
+[`farmFingerprint64`](#farmFingerprint64) is preferred for a stable and portable value.
 :::
 
 :::note
-計算されるハッシュ値は、異なる引数型であっても、同じ入力値に対して同一になる場合があります。
-これは、たとえばサイズの異なる整数型、同一データを持つ名前付きおよび名前なしの `Tuple`、同一データを持つ `Map` と、それに対応する `Array(Tuple(key, value))` 型などに影響します。
+The calculated hash values may be equal for the same input values of different argument types.
+This affects for example integer types of different size, named and unnamed `Tuple` with the same data, `Map` and the corresponding `Array(Tuple(key, value))` type with the same data.
 :::
 
-**構文**
+
+**Syntax**
 
 ```sql
 farmHash64(arg1[, arg2, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `arg1[, arg2, ...]` — ハッシュ値を計算する任意個の入力引数。[`Any`](/sql-reference/data-types)
+- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**戻り値**
 
-入力引数のハッシュ値を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the computed hash value of the input arguments. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT farmHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00')) AS FarmHash, toTypeName(FarmHash) AS type;
@@ -600,31 +663,36 @@ SELECT farmHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:0
 └──────────────────────┴────────┘
 ```
 
+
+
 ## gccMurmurHash {#gccMurmurHash}
 
-導入バージョン: v20.1
+Introduced in: v20.1
 
-入力値に対して、[GCC](https://github.com/gcc-mirror/gcc/blob/41d6b10e96a1de98e90a7c0378437c3255814b16/libstdc%2B%2B-v3/include/bits/functional_hash.h#L191) で使用されているものと同じシードを用いて、64ビットの [MurmurHash2](https://github.com/aappleby/smhasher) ハッシュを計算します。
 
-Clang と GCC のビルド間で同じ結果が得られます。
+Computes the 64-bit [MurmurHash2](https://github.com/aappleby/smhasher) hash of the input value using the same seed as used by [GCC](https://github.com/gcc-mirror/gcc/blob/41d6b10e96a1de98e90a7c0378437c3255814b16/libstdc%2B%2B-v3/include/bits/functional_hash.h#L191).
 
-**構文**
+It is portable between Clang and GCC builds.
+
+
+**Syntax**
 
 ```sql
 gccMurmurHash(arg1[, arg2, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `arg1[, arg2, ...]` — ハッシュを計算する任意個の引数。[`Any`](/sql-reference/data-types)
+- `arg1[, arg2, ...]` — A variable number of arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**戻り値**
 
-入力引数に対して計算されたハッシュ値を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the calculated hash value of the input arguments. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT
@@ -638,35 +706,43 @@ SELECT
 └──────────────────────┴─────────────────────┘
 ```
 
+
+
 ## halfMD5 {#halfMD5}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-すべての入力パラメータを文字列として[解釈し](/sql-reference/functions/type-conversion-functions#reinterpretasstring)、それぞれに対して MD5 ハッシュ値を計算します。次に、それらのハッシュ値を連結し、得られた文字列のハッシュの先頭 8 バイトを取り出し、それをビッグエンディアンのバイト順で [UInt64](/sql-reference/data-types/int-uint) として解釈します。この関数は比較的低速です（1 プロセッサコアあたり 1 秒間に 500 万件の短い文字列）。
 
-代わりに [`sipHash64`](#sipHash64) 関数の使用を検討してください。
+[Interprets](/sql-reference/functions/type-conversion-functions#reinterpretasstring) all the input
+parameters as strings and calculates the MD5 hash value for each of them. Then combines hashes, takes the first 8 bytes of the hash of the
+resulting string, and interprets them as [UInt64](/sql-reference/data-types/int-uint) in big-endian byte order. The function is
+relatively slow (5 million short strings per second per processor core).
 
-この関数は可変数の入力パラメータを取ります。
-引数には、サポートされている任意のデータ型を指定できます。
-一部のデータ型では、引数の型が異なっていても（サイズの異なる整数、同一データを持つ名前付きおよび名前なしの Tuple、同一データを持つ Map と、同一データを持つ対応する Array(Tuple(key, value)) 型など）、同じ値に対してはハッシュ関数の計算結果が同じになる場合があります。
+Consider using the [`sipHash64`](#sipHash64) function instead.
 
-**構文**
+The function takes a variable number of input parameters.
+Arguments can be any of the supported data types.
+For some data types calculated value of hash function may be the same for the same values even if types of arguments differ (integers of different size, named and unnamed Tuple with the same data, Map and the corresponding Array(Tuple(key, value)) type with the same data).
+    
+
+**Syntax**
 
 ```sql
 halfMD5(arg1[, arg2, ..., argN])
 ```
 
-**引数**
+**Arguments**
 
-* `arg1[, arg2, ..., argN]` — ハッシュを計算する可変個数の引数。[`Any`](/sql-reference/data-types)
+- `arg1[, arg2, ..., argN]` — Variable number of arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**戻り値**
 
-指定した入力引数の half MD5 ハッシュ値を計算し、ビッグエンディアンのバイト順序で `UInt64` として返します。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the computed half MD5 hash of the given input params returned as a `UInt64` in big-endian byte order. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT HEX(halfMD5('abc', 'cde', 'fgh'));
@@ -678,36 +754,41 @@ SELECT HEX(halfMD5('abc', 'cde', 'fgh'));
 └───────────────────────────────────┘
 ```
 
+
+
 ## hiveHash {#hiveHash}
 
-導入バージョン: v20.1
+Introduced in: v20.1
 
-文字列から「HiveHash」を計算します。
-これは符号ビットをゼロクリアした [`JavaHash`](#javaHash) と同じです。
-この関数は、バージョン 3.0 より前の [Apache Hive](https://en.wikipedia.org/wiki/Apache_Hive) で使用されています。
+
+Calculates a "HiveHash" from a string.
+This is just [`JavaHash`](#javaHash) with zeroed out sign bits.
+This function is used in [Apache Hive](https://en.wikipedia.org/wiki/Apache_Hive) for versions before 3.0.
 
 :::caution
-このハッシュ関数は性能が高くありません。
-すでに別のシステムでこのアルゴリズムが使われており、同じ結果を計算する必要がある場合にのみ使用してください。
+This hash function is unperformant.
+Use it only when this algorithm is already used in another system and you need to calculate the same result.
 :::
 
-**構文**
+
+**Syntax**
 
 ```sql
 hiveHash(arg)
 ```
 
-**引数**
+**Arguments**
 
-* `arg` — ハッシュ化する入力文字列。[`String`](/sql-reference/data-types/string)
+- `arg` — Input string to hash. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-入力文字列に対して計算された「hive hash」の値を返します。[`Int32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the computed "hive hash" of the input string. [`Int32`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT hiveHash('Hello, world!');
@@ -719,29 +800,32 @@ SELECT hiveHash('Hello, world!');
 └───────────────────────────┘
 ```
 
+
+
 ## icebergHash {#icebergHash}
 
-導入バージョン: v25.5
+Introduced in: v25.5
 
-Iceberg の [ハッシュ変換](https://iceberg.apache.org/spec/#appendix-b-32-bit-hash-requirements)ロジックを実装します。
+Implements the logic of the iceberg [hashing transform](https://iceberg.apache.org/spec/#appendix-b-32-bit-hash-requirements)
 
-**構文**
+**Syntax**
 
 ```sql
 icebergHash(value)
 ```
 
-**引数**
+**Arguments**
 
-* `value` — ハッシュ値を計算する入力値。[`Integer`](/sql-reference/data-types/int-uint)、[`Bool`](/sql-reference/data-types/boolean)、[`Decimal`](/sql-reference/data-types/decimal)、[`Float*`](/sql-reference/data-types/float)、[`String`](/sql-reference/data-types/string)、[`FixedString`](/sql-reference/data-types/fixedstring)、[`UUID`](/sql-reference/data-types/uuid)、[`Date`](/sql-reference/data-types/date)、[`Time`](/sql-reference/data-types/time)、[`DateTime`](/sql-reference/data-types/datetime) のいずれか。
+- `value` — Source value to take the hash of [`Integer`](/sql-reference/data-types/int-uint) or [`Bool`](/sql-reference/data-types/boolean) or [`Decimal`](/sql-reference/data-types/decimal) or [`Float*`](/sql-reference/data-types/float) or [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring) or [`UUID`](/sql-reference/data-types/uuid) or [`Date`](/sql-reference/data-types/date) or [`Time`](/sql-reference/data-types/time) or [`DateTime`](/sql-reference/data-types/datetime)
 
-**返される値**
 
-32 ビットの Murmur3 ハッシュ（x86 バリアント、シード値 0）を表す [`Int32`](/sql-reference/data-types/int-uint) 型の値を返します。
+**Returned value**
 
-**例**
+Returns a 32-bit Murmur3 hash, x86 variant, seeded with 0 [`Int32`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Example**
 
 ```sql title=Query
 SELECT icebergHash(1.0 :: Float32)
@@ -751,31 +835,36 @@ SELECT icebergHash(1.0 :: Float32)
 -142385009
 ```
 
+
+
 ## intHash32 {#intHash32}
 
-導入: v1.1
+Introduced in: v1.1
 
-整数の 32 ビットハッシュ値を計算します。
 
-このハッシュ関数は比較的高速ですが、暗号学的ハッシュ関数ではありません。
+Calculates a 32-bit hash of an integer.
 
-**構文**
+The hash function is relatively fast but not cryptographic hash function.
+
+
+**Syntax**
 
 ```sql
 intHash32(arg)
 ```
 
-**引数**
+**Arguments**
 
-* `arg` — ハッシュ化する整数。[`(U)Int*`](/sql-reference/data-types/int-uint)
+- `arg` — Integer to hash. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-入力整数の32ビットハッシュ値（[`UInt32`](/sql-reference/data-types/int-uint)）を返します。
+**Returned value**
 
-**例**
+Returns the computed 32-bit hash code of the input integer [`UInt32`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT intHash32(42);
@@ -787,31 +876,36 @@ SELECT intHash32(42);
 └───────────────┘
 ```
 
+
+
 ## intHash64 {#intHash64}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-整数の 64 ビットハッシュ値を計算します。
 
-このハッシュ関数は比較的高速で（[`intHash32`](#intHash32) よりも高速ですが）、暗号学的ハッシュ関数ではありません。
+Calculates a 64-bit hash of an integer.
 
-**構文**
+The hash function is relatively fast (even faster than [`intHash32`](#intHash32)) but not a cryptographic hash function.
+
+
+**Syntax**
 
 ```sql
 intHash64(int)
 ```
 
-**引数**
+**Arguments**
 
-* `int` — ハッシュ化する整数値。[`(U)Int*`](/sql-reference/data-types/int-uint)
+- `int` — Integer to hash. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-64ビットのハッシュコード。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+64-bit hash code. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT intHash64(42);
@@ -823,45 +917,49 @@ SELECT intHash64(42);
 └──────────────────────┘
 ```
 
+
+
 ## javaHash {#javaHash}
 
-導入バージョン: v20.1
+Introduced in: v20.1
 
-次の値から JavaHash を計算します:
 
-* [string](http://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/String.java#l1452),
-* [Byte](https://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/Byte.java#l405),
-* [Short](https://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/Short.java#l410),
-* [Integer](https://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/Integer.java#l959),
-* [Long](https://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/Long.java#l1060).
+Calculates JavaHash from:
+- [string](http://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/String.java#l1452),
+- [Byte](https://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/Byte.java#l405),
+- [Short](https://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/Short.java#l410),
+- [Integer](https://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/Integer.java#l959),
+- [Long](https://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/Long.java#l1060).
 
 :::caution
-このハッシュ関数は効率が良くありません。
-すでに別のシステムでこのアルゴリズムが使われており、同じ結果を計算する必要がある場合にのみ使用してください。
+This hash function is unperformant.
+Use it only when this algorithm is already in use in another system and you need to calculate the same result.
 :::
 
 :::note
-Java は符号付き整数に対するハッシュの計算のみをサポートしています。
-符号なし整数のハッシュを計算したい場合は、適切な符号付きの ClickHouse 型にキャストする必要があります。
+Java only supports calculating the hash of signed integers,
+so if you want to calculate a hash of unsigned integers you must cast them to the proper signed ClickHouse types.
 :::
 
-**構文**
+
+**Syntax**
 
 ```sql
 javaHash(arg)
 ```
 
-**引数**
+**Arguments**
 
-* `arg` — ハッシュ計算の対象となる入力値。[`Any`](/sql-reference/data-types)
+- `arg` — Input value to hash. [`Any`](/sql-reference/data-types)
 
-**戻り値**
 
-`arg` のハッシュ値を計算して返します。[`Int32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the computed hash of `arg` [`Int32`](/sql-reference/data-types/int-uint)
 
-**使用例 1**
+**Examples**
+
+**Usage example 1**
 
 ```sql title=Query
 SELECT javaHash(toInt32(123));
@@ -873,7 +971,7 @@ SELECT javaHash(toInt32(123));
 └────────────────────────┘
 ```
 
-**使用例2**
+**Usage example 2**
 
 ```sql title=Query
 SELECT javaHash('Hello, world!');
@@ -885,29 +983,34 @@ SELECT javaHash('Hello, world!');
 └───────────────────────────┘
 ```
 
+
+
 ## javaHashUTF16LE {#javaHashUTF16LE}
 
-導入バージョン: v20.1
+Introduced in: v20.1
 
-UTF-16LE でエンコードされた文字列を表すバイト列が含まれていると仮定して、その文字列から [JavaHash](http://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/String.java#l1452) を計算します。
 
-**構文**
+Calculates [JavaHash](http://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/String.java#l1452) from a string, assuming it contains bytes representing a string in UTF-16LE encoding.
+
+
+**Syntax**
 
 ```sql
 javaHashUTF16LE(arg)
 ```
 
-**引数**
+**Arguments**
 
-* `arg` — UTF-16LE でエンコードされた文字列。[`String`](/sql-reference/data-types/string)
+- `arg` — A string in UTF-16LE encoding. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-UTF-16LE でエンコードされた文字列のハッシュ値を返します。[`Int32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the computed hash of the UTF-16LE encoded string. [`Int32`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT javaHashUTF16LE(convertCharset('test', 'utf-8', 'utf-16le'));
@@ -919,30 +1022,35 @@ SELECT javaHashUTF16LE(convertCharset('test', 'utf-8', 'utf-16le'));
 └──────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## jumpConsistentHash {#jumpConsistentHash}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-整数に対して[jump consistent hash](https://arxiv.org/pdf/1406.2294.pdf)を計算します。
 
-**構文**
+Calculates the [jump consistent hash](https://arxiv.org/pdf/1406.2294.pdf) for an integer.
+
+
+**Syntax**
 
 ```sql
 jumpConsistentHash(key, buckets)
 ```
 
-**引数**
+**Arguments**
 
-* `key` — 入力キー。[`UInt64`](/sql-reference/data-types/int-uint)
-* `buckets` — バケット数。[`Int32`](/sql-reference/data-types/int-uint)
+- `key` — The input key. [`UInt64`](/sql-reference/data-types/int-uint)
+- `buckets` — The number of buckets. [`Int32`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-計算されたハッシュ値を返します。[`Int32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the computed hash value. [`Int32`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT jumpConsistentHash(256, 4)
@@ -954,29 +1062,34 @@ SELECT jumpConsistentHash(256, 4)
 └────────────────────────────┘
 ```
 
+
+
 ## kafkaMurmurHash {#kafkaMurmurHash}
 
-導入: v23.4
+Introduced in: v23.4
 
-入力値の 32 ビット [MurmurHash2](https://github.com/aappleby/smhasher) ハッシュ値を、[Kafka](https://github.com/apache/kafka/blob/461c5cfe056db0951d9b74f5adc45973670404d7/clients/src/main/java/org/apache/kafka/common/utils/Utils.java#L482) で使用されているものと同じシードを用い、かつ最上位ビットを除外することで、[Default Partitioner](https://github.com/apache/kafka/blob/139f7709bd3f5926901a21e55043388728ccca78/clients/src/main/java/org/apache/kafka/clients/producer/internals/BuiltInPartitioner.java#L328) と互換性を持つように計算します。
 
-**構文**
+Calculates the 32-bit [MurmurHash2](https://github.com/aappleby/smhasher) hash of the input value using the same seed as used by [Kafka](https://github.com/apache/kafka/blob/461c5cfe056db0951d9b74f5adc45973670404d7/clients/src/main/java/org/apache/kafka/common/utils/Utils.java#L482) and without the highest bit to be compatible with [Default Partitioner](https://github.com/apache/kafka/blob/139f7709bd3f5926901a21e55043388728ccca78/clients/src/main/java/org/apache/kafka/clients/producer/internals/BuiltInPartitioner.java#L328).
+
+
+**Syntax**
 
 ```sql
 kafkaMurmurHash(arg1[, arg2, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `arg1[, arg2, ...]` — ハッシュ値を計算するための可変個の引数。[`Any`](/sql-reference/data-types)
+- `arg1[, arg2, ...]` — A variable number of parameters for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**戻り値**
 
-入力引数に対して計算されたハッシュ値を返します。[`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the calculated hash value of the input arguments. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT
@@ -990,30 +1103,35 @@ SELECT
 └────────────┴──────────┘
 ```
 
+
+
 ## keccak256 {#keccak256}
 
-導入されたバージョン: v25.4
+Introduced in: v25.4
 
-指定された文字列の Keccak-256 暗号学的ハッシュ値を計算します。
-このハッシュ関数はブロックチェーンアプリケーション、特に Ethereum で広く使用されています。
 
-**構文**
+Calculates the Keccak-256 cryptographic hash of the given string.
+This hash function is widely used in blockchain applications, particularly Ethereum.
+    
+
+**Syntax**
 
 ```sql
 keccak256(message)
 ```
 
-**引数**
+**Arguments**
 
-* `message` — ハッシュ化する入力文字列。[`String`](/sql-reference/data-types/string)
+- `message` — The input string to hash. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-入力文字列の 32 バイトの Keccak-256 ハッシュ値を固定長文字列として返します。[`FixedString(32)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**例**
+Returns the 32-byte Keccak-256 hash of the input string as a fixed-length string. [`FixedString(32)`](/sql-reference/data-types/fixedstring)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT hex(keccak256('hello'))
@@ -1025,33 +1143,38 @@ SELECT hex(keccak256('hello'))
 └──────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## kostikConsistentHash {#kostikConsistentHash}
 
-導入バージョン: v22.6
+Introduced in: v22.6
 
-Konstantin &#39;Kostik&#39; Oblakov による、時間計算量および空間計算量がともに O(1) のコンシステントハッシュアルゴリズム。
-`n <= 32768` の場合にのみ効率的です。
 
-**構文**
+An O(1) time and space consistent hash algorithm by Konstantin 'Kostik' Oblakov.
+Only efficient with `n <= 32768`.
+
+
+**Syntax**
 
 ```sql
 kostikConsistentHash(input, n)
 ```
 
-**別名**: `yandexConsistentHash`
+**Aliases**: `yandexConsistentHash`
 
-**引数**
+**Arguments**
 
-* `input` — 整数のキー。[`UInt64`](/sql-reference/data-types/int-uint)
-* `n` — バケット数。[`UInt16`](/sql-reference/data-types/int-uint)
+- `input` — An integer key. [`UInt64`](/sql-reference/data-types/int-uint)
+- `n` — The number of buckets. [`UInt16`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-計算されたハッシュ値を返します。[`UInt16`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the computed hash value. [`UInt16`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT kostikConsistentHash(16045690984833335023, 2);
@@ -1063,34 +1186,39 @@ SELECT kostikConsistentHash(16045690984833335023, 2);
 └───────────────────────────────────────────────┘
 ```
 
+
+
 ## metroHash64 {#metroHash64}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-64 ビットの [MetroHash](http://www.jandrewrogers.com/2015/05/27/metrohash/) ハッシュ値を生成します。
+
+Produces a 64-bit [MetroHash](http://www.jandrewrogers.com/2015/05/27/metrohash/) hash value.
 
 :::note
-計算されるハッシュ値は、型が異なる引数であっても、同じ入力値に対して同一になる場合があります。
-これは例えば、サイズの異なる整数型や、同一データを持つ名前付きおよび名前なしの `Tuple`、同一データを持つ `Map` と、それに対応する `Array(Tuple(key, value))` 型などに影響します。
+The calculated hash values may be equal for the same input values of different argument types.
+This affects for example integer types of different size, named and unnamed `Tuple` with the same data, `Map` and the corresponding `Array(Tuple(key, value))` type with the same data.
 :::
 
-**構文**
+
+**Syntax**
 
 ```sql
 metroHash64(arg1[, arg2, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `arg1[, arg2, ...]` — ハッシュを計算するための任意個の入力引数。[`Any`](/sql-reference/data-types)
+- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**戻り値**
 
-入力引数に対して計算されたハッシュ値を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the computed hash of the input arguments. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT metroHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00')) AS MetroHash, toTypeName(MetroHash) AS type;
@@ -1102,34 +1230,39 @@ SELECT metroHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:
 └──────────────────────┴────────┘
 ```
 
-## murmurHash2&#95;32 {#murmurHash2&#95;32}
 
-導入バージョン: v18.5
 
-入力値に対して [MurmurHash2](https://github.com/aappleby/smhasher) ハッシュを計算します。
+## murmurHash2_32 {#murmurHash2_32}
+
+Introduced in: v18.5
+
+
+Computes the [MurmurHash2](https://github.com/aappleby/smhasher) hash of the input value.
 
 :::note
-異なる引数型であっても、同じ入力値に対して計算されるハッシュ値が同一になる場合があります。
-このことは、例えばサイズの異なる整数型、同一データを持つ名前付きおよび名前なしの `Tuple`、同一データを持つ `Map` と対応する `Array(Tuple(key, value))` 型などに影響します。
+The calculated hash values may be equal for the same input values of different argument types.
+This affects for example integer types of different size, named and unnamed `Tuple` with the same data, `Map` and the corresponding `Array(Tuple(key, value))` type with the same data.
 :::
 
-**構文**
+
+**Syntax**
 
 ```sql
 murmurHash2_32(arg1[, arg2, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `arg1[, arg2, ...]` — ハッシュ値を計算する可変個の入力引数。[`Any`](/sql-reference/data-types)
+- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**戻り値**
 
-入力引数に対して計算されたハッシュ値を返します。[`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the computed hash value of the input arguments. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT murmurHash2_32(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00')) AS MurmurHash2, toTypeName(MurmurHash2) AS type;
@@ -1141,34 +1274,39 @@ SELECT murmurHash2_32(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:
 └─────────────┴────────┘
 ```
 
-## murmurHash2&#95;64 {#murmurHash2&#95;64}
 
-導入バージョン: v18.10
 
-入力値に対して [MurmurHash2](https://github.com/aappleby/smhasher) ハッシュを計算します。
+## murmurHash2_64 {#murmurHash2_64}
+
+Introduced in: v18.10
+
+
+Computes the [MurmurHash2](https://github.com/aappleby/smhasher) hash of the input value.
 
 :::note
-同じ入力値に対しても、引数の型が異なる場合には、計算されるハッシュ値が同一になることがあります。
-これは、たとえばサイズの異なる整数型、同じデータを持つ名前付きおよび名前なしの `Tuple`、同じデータを持つ `Map` とそれに対応する `Array(Tuple(key, value))` 型などが該当します。
+The calculated hash values may be equal for the same input values of different argument types.
+This affects for example integer types of different size, named and unnamed `Tuple` with the same data, `Map` and the corresponding `Array(Tuple(key, value))` type with the same data.
 :::
 
-**構文**
+
+**Syntax**
 
 ```sql
 murmurHash2_64(arg1[, arg2, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `arg1[, arg2, ...]` — ハッシュを計算する対象となる可変個の入力引数。[`Any`](/sql-reference/data-types)
+- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**戻り値**
 
-入力引数に対して計算されたハッシュ値を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the computed hash of the input arguments. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT murmurHash2_64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00')) AS MurmurHash2, toTypeName(MurmurHash2) AS type;
@@ -1180,29 +1318,34 @@ SELECT murmurHash2_64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:
 └──────────────────────┴────────┘
 ```
 
-## murmurHash3&#95;128 {#murmurHash3&#95;128}
 
-導入バージョン: v18.10
 
-入力値の 128 ビット [MurmurHash3](https://github.com/aappleby/smhasher) ハッシュ値を計算します。
+## murmurHash3_128 {#murmurHash3_128}
 
-**構文**
+Introduced in: v18.10
+
+
+Computes the 128-bit [MurmurHash3](https://github.com/aappleby/smhasher) hash of the input value.
+
+
+**Syntax**
 
 ```sql
 murmurHash3_128(arg1[, arg2, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `arg1[, arg2, ...]` — ハッシュを計算する対象となる可変個数の入力引数。[`Any`](/sql-reference/data-types)
+- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**戻り値**
 
-入力引数の 128 ビット `MurmurHash3` ハッシュ値を返します。[`FixedString(16)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**例**
+Returns the computed 128-bit `MurmurHash3` hash value of the input arguments. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT hex(murmurHash3_128('foo', 'foo', 'foo'));
@@ -1214,34 +1357,39 @@ SELECT hex(murmurHash3_128('foo', 'foo', 'foo'));
 └───────────────────────────────────────────┘
 ```
 
-## murmurHash3&#95;32 {#murmurHash3&#95;32}
 
-導入: v18.10
 
-[MurmurHash3](https://github.com/aappleby/smhasher) のハッシュ値を生成します。
+## murmurHash3_32 {#murmurHash3_32}
+
+Introduced in: v18.10
+
+
+Produces a [MurmurHash3](https://github.com/aappleby/smhasher) hash value.
 
 :::note
-計算されるハッシュ値は、引数の型が異なっていても、同じ入力値に対して同一になる場合があります。
-例えば、サイズの異なる整数型、同一データを持つ名前付きおよび非名前付きの `Tuple`、同一データを持つ `Map` とそれに対応する `Array(Tuple(key, value))` 型などが該当します。
+The calculated hash values may be equal for the same input values of different argument types.
+This affects for example integer types of different size, named and unnamed `Tuple` with the same data, `Map` and the corresponding `Array(Tuple(key, value))` type with the same data.
 :::
 
-**構文**
+
+**Syntax**
 
 ```sql
 murmurHash3_32(arg1[, arg2, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `arg1[, arg2, ...]` — ハッシュ値を計算する対象となる可変個数の入力引数。[`Any`](/sql-reference/data-types)
+- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**戻り値**
 
-入力引数から計算されたハッシュ値を返します。[`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the computed hash value of the input arguments. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT murmurHash3_32(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00')) AS MurmurHash3, toTypeName(MurmurHash3) AS type;
@@ -1253,34 +1401,39 @@ SELECT murmurHash3_32(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:
 └─────────────┴────────┘
 ```
 
-## murmurHash3&#95;64 {#murmurHash3&#95;64}
 
-導入: v18.10
 
-入力値に対して [MurmurHash3](https://github.com/aappleby/smhasher) ハッシュを計算します。
+## murmurHash3_64 {#murmurHash3_64}
+
+Introduced in: v18.10
+
+
+Computes the [MurmurHash3](https://github.com/aappleby/smhasher) hash of the input value.
 
 :::note
-同じ入力値であっても、引数の型が異なる場合に計算されるハッシュ値が同一になることがあります。
-これは、たとえばサイズの異なる整数型、同じデータを持つ名前付き／名前なしの `Tuple`、同じデータを持つ `Map` 型および対応する `Array(Tuple(key, value))` 型などに該当します。
+The calculated hash values may be equal for the same input values of different argument types.
+This affects for example integer types of different size, named and unnamed `Tuple` with the same data, `Map` and the corresponding `Array(Tuple(key, value))` type with the same data.
 :::
 
-**構文**
+
+**Syntax**
 
 ```sql
 murmurHash3_64(arg1[, arg2, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `arg1[, arg2, ...]` — ハッシュ値を計算するための任意個数の入力引数。[`Any`](/sql-reference/data-types)
+- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**戻り値**
 
-入力引数に対して計算されたハッシュ値を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the computed hash value of the input arguments. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT murmurHash3_64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00')) AS MurmurHash3, toTypeName(MurmurHash3) AS type;
@@ -1292,36 +1445,41 @@ SELECT murmurHash3_64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:
 └──────────────────────┴────────┘
 ```
 
+
+
 ## ngramMinHash {#ngramMinHash}
 
-導入バージョン: v21.1
+Introduced in: v21.1
 
-ASCII 文字列を、`ngramsize` 個の文字からなる n-gram に分割し、各 n-gram のハッシュ値を計算して、それらのハッシュ値を要素とするタプルを返します。
-`hashnum` 個の最小ハッシュを用いて最小ハッシュを計算し、`hashnum` 個の最大ハッシュを用いて最大ハッシュを計算します。
-大文字と小文字は区別されます。
 
-[`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance) を使用して、類似した文字列を検出するために利用できます。
-2 つの文字列に対して、返されるハッシュ値が両方の文字列で同じであれば、それらの文字列は同一です。
+Splits a ASCII string into n-grams of `ngramsize` symbols and calculates hash values for each n-gram and returns a tuple with these hashes.
+Uses `hashnum` minimum hashes to calculate the minimum hash and `hashnum` maximum hashes to calculate the maximum hash.
+It is case sensitive.
 
-**構文**
+Can be used to detect semi-duplicate strings with [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
+For two strings, if the returned hashes are the same for both strings, then those strings are the same.
+
+
+**Syntax**
 
 ```sql
 ngramMinHash(string[, ngramsize, hashnum])
 ```
 
-**引数**
+**Arguments**
 
-* `string` — ハッシュ値を計算する対象の文字列。[`String`](/sql-reference/data-types/string)
-* `ngramsize` — 省略可能。n-gram のサイズ。`1` から `25` までの任意の数値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
-* `hashnum` — 省略可能。結果の計算に使用する最小ハッシュおよび最大ハッシュの個数。`1` から `25` までの任意の数値。デフォルト値は `6`。[`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-最小値と最大値、2 つのハッシュ値からなるタプルを返します。[`Tuple`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns a tuple with two hashes — the minimum and the maximum. [`Tuple`](/sql-reference/data-types/tuple)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT ngramMinHash('ClickHouse') AS Tuple;
@@ -1333,32 +1491,37 @@ SELECT ngramMinHash('ClickHouse') AS Tuple;
 └────────────────────────────────────────────┘
 ```
 
+
+
 ## ngramMinHashArg {#ngramMinHashArg}
 
-導入バージョン: v21.1
+Introduced in: v21.1
 
-ASCII 文字列を `ngramsize` 文字からなる N-グラムに分割し、同じ入力に対して [`ngramMinHash`](#ngramMinHash) 関数で計算されるハッシュ値のうち、最小値と最大値を持つ N-グラムを返します。
-大文字と小文字を区別します。
 
-**構文**
+Splits a ASCII string into n-grams of `ngramsize` symbols and returns the n-grams with minimum and maximum hashes, calculated by the [`ngramMinHash`](#ngramMinHash) function with the same input.
+It is case sensitive.
+
+
+**Syntax**
 
 ```sql
 ngramMinHashArg(string[, ngramsize, hashnum])
 ```
 
-**引数**
+**Arguments**
 
-* `string` — ハッシュ値を計算する対象の文字列。[`String`](/sql-reference/data-types/string)
-* `ngramsize` — 省略可。n-gram のサイズ。`1` から `25` までの任意の数値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
-* `hashnum` — 省略可。結果を計算する際に使用される最小ハッシュ数および最大ハッシュ数。`1` から `25` までの任意の数値。デフォルト値は `6`。[`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-`hashnum` 個の n-gram を持つ 2 つのタプルから成るタプルを返します。[`Tuple(String)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns a tuple with two tuples with `hashnum` n-grams each. [`Tuple(String)`](/sql-reference/data-types/tuple)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT ngramMinHashArg('ClickHouse') AS Tuple;
@@ -1370,32 +1533,37 @@ SELECT ngramMinHashArg('ClickHouse') AS Tuple;
 └───────────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## ngramMinHashArgCaseInsensitive {#ngramMinHashArgCaseInsensitive}
 
-導入バージョン: v21.1
+Introduced in: v21.1
 
-ASCII 文字列を `ngramsize` 文字からなる n-gram に分割し、同じ入力に対して [`ngramMinHashCaseInsensitive`](#ngramMinHashCaseInsensitive) 関数で計算される、ハッシュ値が最小の n-gram と最大の n-gram を返します。
-大文字小文字は区別されません。
 
-**構文**
+Splits a ASCII string into n-grams of `ngramsize` symbols and returns the n-grams with minimum and maximum hashes, calculated by the [`ngramMinHashCaseInsensitive`](#ngramMinHashCaseInsensitive) function with the same input.
+It is case insensitive.
+
+
+**Syntax**
 
 ```sql
 ngramMinHashArgCaseInsensitive(string[, ngramsize, hashnum])
 ```
 
-**引数**
+**Arguments**
 
-* `string` — ハッシュを計算する対象の文字列。[`String`](/sql-reference/data-types/string)
-* `ngramsize` — 省略可。n-グラムのサイズ。`1` から `25` までの任意の数値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
-* `hashnum` — 省略可。結果の計算に使用される最小ハッシュおよび最大ハッシュの個数。`1` から `25` までの任意の数値。デフォルト値は `6`。[`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-`hashnum` 個の n-グラムを持つ 2 つのタプルから成るタプルを返します。[`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns a tuple with two tuples with `hashnum` n-grams each. [`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT ngramMinHashArgCaseInsensitive('ClickHouse') AS Tuple;
@@ -1407,32 +1575,37 @@ SELECT ngramMinHashArgCaseInsensitive('ClickHouse') AS Tuple;
 └───────────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## ngramMinHashArgCaseInsensitiveUTF8 {#ngramMinHashArgCaseInsensitiveUTF8}
 
-導入バージョン: v21.1
+Introduced in: v21.1
 
-UTF-8 文字列を、`ngramsize` 文字からなる n-gram に分割し、同じ入力に対して ngramMinHashCaseInsensitiveUTF8 関数で計算されるハッシュ値が最小および最大の n-gram を返します。
-大文字と小文字は区別されません。
 
-**構文**
+Splits a UTF-8 string into n-grams of `ngramsize` symbols and returns the n-grams with minimum and maximum hashes, calculated by the ngramMinHashCaseInsensitiveUTF8 function with the same input.
+It is case insensitive.
+
+
+**Syntax**
 
 ```sql
 ngramMinHashArgCaseInsensitiveUTF8(string[, ngramsize, hashnum])
 ```
 
-**引数**
+**Arguments**
 
-* `string` — ハッシュ値を計算する対象の文字列。[`String`](/sql-reference/data-types/string)
-* `ngramsize` — 省略可。n-gram のサイズ。`1` から `25` までの任意の数値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
-* `hashnum` — 省略可。結果を計算する際に使用する最小ハッシュおよび最大ハッシュの個数。`1` から `25` までの任意の数値。デフォルト値は `6`。[`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-それぞれに `hashnum` 個の n-gram を含む 2 つのタプルから成るタプルを返します。[`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns a tuple with two tuples with `hashnum` n-grams each. [`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT ngramMinHashArgCaseInsensitiveUTF8('ClickHouse') AS Tuple;
@@ -1444,32 +1617,37 @@ SELECT ngramMinHashArgCaseInsensitiveUTF8('ClickHouse') AS Tuple;
 └───────────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## ngramMinHashArgUTF8 {#ngramMinHashArgUTF8}
 
-導入バージョン: v21.1
+Introduced in: v21.1
 
-UTF-8 文字列を `ngramsize` 文字から成る N グラムに分割し、同じ入力に対して `ngramMinHashUTF8` 関数で計算されるハッシュ値が最小および最大となる N グラムを返します。
-大文字と小文字は区別されます。
 
-**構文**
+Splits a UTF-8 string into n-grams of `ngramsize` symbols and returns the n-grams with minimum and maximum hashes, calculated by the `ngramMinHashUTF8` function with the same input.
+It is case sensitive.
+
+
+**Syntax**
 
 ```sql
 ngramMinHashArgUTF8(string[, ngramsize, hashnum])
 ```
 
-**引数**
+**Arguments**
 
-* `string` — ハッシュを計算する対象の文字列。[`String`](/sql-reference/data-types/string)
-* `ngramsize` — 省略可。n-gram のサイズ。`1` から `25` までの任意の数値。デフォルトは `3`。[`UInt8`](/sql-reference/data-types/int-uint)
-* `hashnum` — 省略可。結果の計算に使用される最小および最大ハッシュの数。`1` から `25` までの任意の数値。デフォルトは `6`。[`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-`hashnum` 個の n-gram を持つ 2 つのタプルからなるタプルを返します。[`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns a tuple with two tuples with `hashnum` n-grams each. [`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT ngramMinHashArgUTF8('ClickHouse') AS Tuple;
@@ -1481,34 +1659,38 @@ SELECT ngramMinHashArgUTF8('ClickHouse') AS Tuple;
 └───────────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## ngramMinHashCaseInsensitive {#ngramMinHashCaseInsensitive}
 
-導入バージョン: v21.1
+Introduced in: v21.1
 
-ASCII文字列を `ngramsize` 文字の n-gram に分割し、各 n-gram のハッシュ値を計算して、それらのハッシュを含むタプルを返します。
-`hashnum` 個の最小ハッシュを用いて最小ハッシュを計算し、`hashnum` 個の最大ハッシュを用いて最大ハッシュを計算します。
-大文字小文字は区別しません。
 
-[`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance) を使って、準重複文字列を検出するために利用できます。
-2 つの文字列に対して、返されるハッシュが両方の文字列で同じであれば、それらの文字列は同一とみなせます。
+Splits a ASCII string into n-grams of `ngramsize` symbols and calculates hash values for each n-gram and returns a tuple with these hashes
+Uses `hashnum` minimum hashes to calculate the minimum hash and `hashnum` maximum hashes to calculate the maximum hash.
+It is case insensitive.
 
-**構文**
+Can be used to detect semi-duplicate strings with [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
+For two strings, if the returned hashes are the same for both strings, then those strings are the same.
+
+
+**Syntax**
 
 ```sql
 ngramMinHashCaseInsensitive(string[, ngramsize, hashnum])
 ```
 
-**引数**
+**Arguments**
 
-* `string` — 文字列。[String](../data-types/string.md)。- `ngramsize` — n-gram のサイズ。省略可能。許容値: `1` から `25` までの任意の整数値。デフォルト値: `3`。[UInt8](../data-types/int-uint.md)。- `hashnum` — 結果を計算する際に使用する、最小ハッシュおよび最大ハッシュの数。省略可能。許容値: `1` から `25` までの任意の整数値。デフォルト値: `6`。[UInt8](../data-types/int-uint.md)。
+- `string` — String. [String](../data-types/string.md). - `ngramsize` — The size of an n-gram. Optional. Possible values: any number from `1` to `25`. Default value: `3`. [UInt8](../data-types/int-uint.md). - `hashnum` — The number of minimum and maximum hashes used to calculate the result. Optional. Possible values: any number from `1` to `25`. Default value: `6`. [UInt8](../data-types/int-uint.md). 
 
-**戻り値**
+**Returned value**
 
-2 つのハッシュ（最小値と最大値）を含むタプル。[Tuple](../data-types/tuple.md)([UInt64](../data-types/int-uint.md), [UInt64](../data-types/int-uint.md))。[`Tuple`](/sql-reference/data-types/tuple)
+Tuple with two hashes — the minimum and the maximum. [Tuple](../data-types/tuple.md)([UInt64](../data-types/int-uint.md), [UInt64](../data-types/int-uint.md)). [`Tuple`](/sql-reference/data-types/tuple)
 
-**例**
+**Examples**
 
-**使用例**
+**Usage example**
 
 ```sql title=Query
 SELECT ngramMinHashCaseInsensitive('ClickHouse') AS Tuple;
@@ -1520,36 +1702,41 @@ SELECT ngramMinHashCaseInsensitive('ClickHouse') AS Tuple;
 └────────────────────────────────────────────┘
 ```
 
+
+
 ## ngramMinHashCaseInsensitiveUTF8 {#ngramMinHashCaseInsensitiveUTF8}
 
-導入バージョン: v21.1
+Introduced in: v21.1
 
-UTF-8 文字列を `ngramsize` 個の文字からなる n-gram に分割し、それぞれの n-gram に対してハッシュ値を計算し、それらのハッシュを要素とするタプルを返します。
-`hashnum` 個の最小ハッシュを使って最小ハッシュを計算し、`hashnum` 個の最大ハッシュを使って最大ハッシュを計算します。
-大文字・小文字は区別しません。
 
-[`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance) を用いて、部分的に重複した（セミ重複）文字列を検出するために使用できます。
-2 つの文字列に対して、返されるハッシュが同じであれば、それらの文字列は同一と見なされます。
+Splits a UTF-8 string into n-grams of `ngramsize` symbols and calculates hash values for each n-gram and returns a tuple with these hashes..
+Uses `hashnum` minimum hashes to calculate the minimum hash and `hashnum` maximum hashes to calculate the maximum hash.
+It is case insensitive.
 
-**構文**
+Can be used to detect semi-duplicate strings with [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
+For two strings, if the returned hashes are the same for both strings, then those strings are the same.
+
+
+**Syntax**
 
 ```sql
 ngramMinHashCaseInsensitiveUTF8(文字列 [, nグラムサイズ, ハッシュ数])
 ```
 
-**引数**
+**Arguments**
 
-* `string` — ハッシュを計算する対象の文字列。[`String`](/sql-reference/data-types/string)
-* `ngramsize` — 省略可能。N-gram のサイズ。`1` から `25` までの任意の数値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
-* `hashnum` — 省略可能。結果の計算に使用するハッシュ値の最小個数および最大個数。`1` から `25` までの任意の数値。デフォルト値は `6`。[`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**返される値**
 
-最小値と最大値の 2 つのハッシュを要素として含むタプルを返します。[`Tuple`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns a tuple with two hashes — the minimum and the maximum. [`Tuple`](/sql-reference/data-types/tuple)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT ngramMinHashCaseInsensitiveUTF8('ClickHouse') AS Tuple;
@@ -1561,36 +1748,41 @@ SELECT ngramMinHashCaseInsensitiveUTF8('ClickHouse') AS Tuple;
 └─────────────────────────────────────────────┘
 ```
 
+
+
 ## ngramMinHashUTF8 {#ngramMinHashUTF8}
 
-導入バージョン: v21.1
+Introduced in: v21.1
 
-UTF-8 文字列を `ngramsize` 文字の n-gram に分割し、各 n-gram のハッシュ値を計算して、それらのハッシュからなるタプルを返します。
-`hashnum` 個の最小ハッシュ値を用いて最小ハッシュを計算し、`hashnum` 個の最大ハッシュ値を用いて最大ハッシュを計算します。
-大文字と小文字は区別されます。
 
-[`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance) を使って、部分的に重複した文字列を検出するために使用できます。
-2 つの文字列について、返されるハッシュが両方で同じであれば、それらの文字列は同一です。
+Splits a UTF-8 string into n-grams of `ngramsize` symbols and calculates hash values for each n-gram and returns a tuple with these hashes.
+Uses `hashnum` minimum hashes to calculate the minimum hash and `hashnum` maximum hashes to calculate the maximum hash.
+It is case sensitive.
 
-**構文**
+Can be used to detect semi-duplicate strings with [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
+For two strings, if the returned hashes are the same for both strings, then those strings are the same.
+
+
+**Syntax**
 
 ```sql
 ngramMinHashUTF8(string[, ngramsize, hashnum])
 ```
 
-**引数**
+**Arguments**
 
-* `string` — ハッシュ値を計算する対象の文字列。[`String`](/sql-reference/data-types/string)
-* `ngramsize` — 省略可能。N-gram のサイズ。`1` から `25` の任意の数値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
-* `hashnum` — 省略可能。結果の計算に使用する最小および最大ハッシュの数。`1` から `25` の任意の数値。デフォルト値は `6`。[`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-2 つのハッシュ（最小値と最大値）を要素とするタプルを返します。[`Tuple`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns a tuple with two hashes — the minimum and the maximum. [`Tuple`](/sql-reference/data-types/tuple)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT ngramMinHashUTF8('ClickHouse') AS Tuple;
@@ -1602,33 +1794,38 @@ SELECT ngramMinHashUTF8('ClickHouse') AS Tuple;
 └────────────────────────────────────────────┘
 ```
 
+
+
 ## ngramSimHash {#ngramSimHash}
 
-導入バージョン: v21.1
+Introduced in: v21.1
 
-ASCII 文字列を、長さ `ngramsize` の記号からなる n-gram に分割し、その n-gram の `simhash` を返します。
 
-[`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance) と組み合わせて、部分的に重複した文字列の検出に使用できます。
-2 つの文字列について計算された `simhashes` 間の[ハミング距離](https://en.wikipedia.org/wiki/Hamming_distance)が小さいほど、それらの文字列が同一である可能性が高くなります。
+Splits a ASCII string into n-grams of `ngramsize` symbols and returns the n-gram `simhash`.
 
-**構文**
+Can be used for detection of semi-duplicate strings with [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance).
+The smaller the [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) of the calculated `simhashes` of two strings, the more likely these strings are the same.
+
+
+**Syntax**
 
 ```sql
 ngramSimHash(string[, ngramsize])
 ```
 
-**引数**
+**Arguments**
 
-* `string` — 大文字・小文字を区別して `simhash` を計算する対象の文字列。[`String`](/sql-reference/data-types/string)
-* `ngramsize` — 省略可能。n-gram のサイズで、`1` から `25` までの任意の数値。既定値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the case sensitive `simhash`. [`String`](/sql-reference/data-types/string)
+- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is`3`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-入力文字列のハッシュ値を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the computed hash of the input string. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT ngramSimHash('ClickHouse') AS Hash;
@@ -1640,34 +1837,39 @@ SELECT ngramSimHash('ClickHouse') AS Hash;
 └────────────┘
 ```
 
+
+
 ## ngramSimHashCaseInsensitive {#ngramSimHashCaseInsensitive}
 
-導入バージョン: v21.1
+Introduced in: v21.1
 
-ASCII 文字列を、`ngramsize` 文字からなる n-gram に分割し、n-gram の `simhash` を返します。
-大文字と小文字を区別しません。
 
-[`bitHammingDistance`](/sql-reference/functions/bit-functions#bitHammingDistance) と組み合わせて、重複に近い文字列の検出に使用できます。
-2 つの文字列について計算した `simhash` の[ハミング距離](https://en.wikipedia.org/wiki/Hamming_distance)が小さいほど、それらの文字列が同一である可能性が高くなります。
+Splits a ASCII string into n-grams of `ngramsize` symbols and returns the n-gram `simhash`.
+It is case insensitive.
 
-**構文**
+Can be used for detection of semi-duplicate strings with [`bitHammingDistance`](/sql-reference/functions/bit-functions#bitHammingDistance).
+The smaller the [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) of the calculated `simhashes` of two strings, the more likely these strings are the same.
+
+
+**Syntax**
 
 ```sql
 ngramSimHashCaseInsensitive(string[, ngramsize])
 ```
 
-**引数**
+**Arguments**
 
-* `string` — 大文字小文字を区別せずに `simhash` を計算する対象の文字列。[`String`](/sql-reference/data-types/string)
-* `ngramsize` — 省略可能。n-gram のサイズで、`1` から `25` までの任意の数値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the case insensitive `simhash`. [`String`](/sql-reference/data-types/string)
+- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-ハッシュ値。[UInt64](../data-types/int-uint.md)。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Hash value. [UInt64](../data-types/int-uint.md). [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT ngramSimHashCaseInsensitive('ClickHouse') AS Hash;
@@ -1679,33 +1881,38 @@ SELECT ngramSimHashCaseInsensitive('ClickHouse') AS Hash;
 └───────────┘
 ```
 
+
+
 ## ngramSimHashCaseInsensitiveUTF8 {#ngramSimHashCaseInsensitiveUTF8}
 
-導入バージョン: v21.1
+Introduced in: v21.1
 
-UTF-8 文字列を `ngramsize` 個の文字からなる n-gram に分割し、n-gram の `simhash` を返します。
-大文字と小文字を区別しません。
 
-[bitHammingDistance](../functions/bit-functions.md/#bitHammingDistance) と組み合わせて、重複度の高い文字列の検出に使用できます。2 つの文字列について計算された `simhash` 値同士の [Hamming Distance](https://en.wikipedia.org/wiki/Hamming_distance) が小さいほど、それらの文字列が同一である可能性が高くなります。
+Splits a UTF-8 string into n-grams of `ngramsize` symbols and returns the n-gram `simhash`.
+It is case insensitive.
 
-**構文**
+Can be used for detection of semi-duplicate strings with [bitHammingDistance](../functions/bit-functions.md/#bitHammingDistance). The smaller is the [Hamming Distance](https://en.wikipedia.org/wiki/Hamming_distance) of the calculated `simhashes` of two strings, the more likely these strings are the same.
+
+
+**Syntax**
 
 ```sql
 ngramSimHashCaseInsensitiveUTF8(string[, ngramsize])
 ```
 
-**引数**
+**Arguments**
 
-* `string` — ハッシュを計算する対象の文字列。[`String`](/sql-reference/data-types/string)
-* `ngramsize` — 省略可能。n-gram のサイズ。`1` から `25` までの任意の数値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-計算されたハッシュ値を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the computed hash value. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT ngramSimHashCaseInsensitiveUTF8('ClickHouse') AS Hash;
@@ -1717,34 +1924,39 @@ SELECT ngramSimHashCaseInsensitiveUTF8('ClickHouse') AS Hash;
 └────────────┘
 ```
 
+
+
 ## ngramSimHashUTF8 {#ngramSimHashUTF8}
 
-導入バージョン: v21.1
+Introduced in: v21.1
 
-UTF-8 エンコードされた文字列を `ngramsize` 個の文字からなる n-gram に分割し、その n-gram の `simhash` を返します。
-大文字と小文字を区別します。
 
-[`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance) と組み合わせて、部分的に重複した文字列の検出に使用できます。
-2 つの文字列について計算された `simhashes` の[ハミング距離](https://en.wikipedia.org/wiki/Hamming_distance)が小さいほど、それらの文字列が同一である可能性が高くなります。
+Splits a UTF-8 encoded string into n-grams of `ngramsize` symbols and returns the n-gram `simhash`.
+It is case sensitive.
 
-**構文**
+Can be used for detection of semi-duplicate strings with [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance).
+The smaller the [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) of the calculated `simhashes` of two strings, the more likely these strings are the same.
+
+
+**Syntax**
 
 ```sql
 ngramSimHashUTF8(string[, ngramsize])
 ```
 
-**引数**
+**Arguments**
 
-* `string` — ハッシュを計算する対象の文字列。[`String`](/sql-reference/data-types/string)
-* `ngramsize` — 省略可能。n-gram のサイズで、`1` から `25` までの任意の数値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-計算されたハッシュ値を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the computed hash value. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT ngramSimHashUTF8('ClickHouse') AS Hash;
@@ -1756,35 +1968,40 @@ SELECT ngramSimHashUTF8('ClickHouse') AS Hash;
 └────────────┘
 ```
 
+
+
 ## sipHash128 {#sipHash128}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-[`sipHash64`](#sipHash64) に似ていますが、128 ビットのハッシュ値を生成します。つまり、最終的な XOR フォールディング処理が 128 ビットまで行われます。
 
-:::tip 新規プロジェクトでは sipHash128Reference を使用する
-この 128 ビット版はリファレンス実装と異なり、安全性がより低い実装です。
-このバージョンが存在するのは、作成当時 SipHash の公式な 128 ビット拡張が存在しなかったためです。
-新規プロジェクトでは [`sipHash128Reference`](#sipHash128Reference) の使用を推奨します。
+Like [`sipHash64`](#sipHash64) but produces a 128-bit hash value, i.e. the final xor-folding state is done up to 128 bits.
+
+:::tip use sipHash128Reference for new projects
+This 128-bit variant differs from the reference implementation and is weaker.
+This version exists because, when it was written, there was no official 128-bit extension for SipHash.
+New projects are advised to use [`sipHash128Reference`](#sipHash128Reference).
 :::
 
-**構文**
+
+**Syntax**
 
 ```sql
 sipHash128(arg1[, arg2, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `arg1[, arg2, ...]` — ハッシュを計算する任意個の入力引数。[`Any`](/sql-reference/data-types)
+- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**戻り値**
 
-128ビットの `SipHash` ハッシュ値を返します。[`FixedString(16)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**例**
+Returns a 128-bit `SipHash` hash value. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT hex(sipHash128('foo', '\x01', 3));
@@ -1796,36 +2013,41 @@ SELECT hex(sipHash128('foo', '\x01', 3));
 └──────────────────────────────────┘
 ```
 
+
+
 ## sipHash128Keyed {#sipHash128Keyed}
 
-導入バージョン: v23.2
+Introduced in: v23.2
 
-[`sipHash128`](#sipHash128) と同じですが、固定キーを使う代わりに明示的なキー引数を追加で受け取ります。
 
-:::tip 新しいプロジェクトでは sipHash128ReferenceKeyed を使用してください
-この 128 ビット版はリファレンス実装とは異なり、より弱くなっています。
-このバージョンが存在するのは、これが実装された当時、SipHash には公式な 128 ビット拡張が存在しなかったためです。
-新しいプロジェクトでは [`sipHash128ReferenceKeyed`](#sipHash128ReferenceKeyed) の使用が推奨されます。
+Same as [`sipHash128`](#sipHash128) but additionally takes an explicit key argument instead of using a fixed key.
+
+:::tip use sipHash128ReferenceKeyed for new projects
+This 128-bit variant differs from the reference implementation and it's weaker.
+This version exists because, when it was written, there was no official 128-bit extension for SipHash.
+New projects should probably use [`sipHash128ReferenceKeyed`](#sipHash128ReferenceKeyed).
 :::
 
-**構文**
+
+**Syntax**
 
 ```sql
 sipHash128Keyed((k0, k1), [arg1, arg2, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `(k0, k1)` — キーを表す 2 つの UInt64 値からなるタプル。[`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
-* `arg1[, arg2, ...]` — ハッシュを計算するための任意個数の入力引数。[`Any`](/sql-reference/data-types)
+- `(k0, k1)` — A tuple of two UInt64 values representing the key. [`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
+- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**戻り値**
 
-型 [FixedString(16)](../data-types/fixedstring.md) の 128 ビットの `SipHash` ハッシュ値。[`FixedString(16)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**例**
+A 128-bit `SipHash` hash value of type [FixedString(16)](../data-types/fixedstring.md). [`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT hex(sipHash128Keyed((506097522914230528, 1084818905618843912),'foo', '\x01', 3));
@@ -1837,29 +2059,34 @@ SELECT hex(sipHash128Keyed((506097522914230528, 1084818905618843912),'foo', '\x0
 └───────────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## sipHash128Reference {#sipHash128Reference}
 
-導入バージョン: v23.2
+Introduced in: v23.2
 
-[`sipHash128`](/sql-reference/functions/hash-functions#sipHash128) と同様ですが、SipHash の原著者による 128 ビットアルゴリズムを実装しています。
 
-**構文**
+Like [`sipHash128`](/sql-reference/functions/hash-functions#sipHash128) but implements the 128-bit algorithm from the original authors of SipHash.
+    
+
+**Syntax**
 
 ```sql
 sipHash128Reference(arg1[, arg2, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `arg1[, arg2, ...]` — ハッシュを計算する対象となる可変個の入力引数。[`Any`](/sql-reference/data-types)
+- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**戻り値**
 
-入力引数に対して計算された 128 ビットの `SipHash` ハッシュ値を返します。[`FixedString(16)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**例**
+Returns the computed 128-bit `SipHash` hash value of the input arguments. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT hex(sipHash128Reference('foo', '', 3));
@@ -1871,30 +2098,35 @@ SELECT hex(sipHash128Reference('foo', '', 3));
 └────────────────────────────────────────┘
 ```
 
+
+
 ## sipHash128ReferenceKeyed {#sipHash128ReferenceKeyed}
 
-導入バージョン: v23.2
+Introduced in: v23.2
 
-[`sipHash128Reference`](#sipHash128Reference) と同様ですが、固定キーを使用する代わりに、明示的なキー引数を取ります。
 
-**構文**
+Same as [`sipHash128Reference`](#sipHash128Reference) but additionally takes an explicit key argument instead of using a fixed key.
+    
+
+**Syntax**
 
 ```sql
 sipHash128ReferenceKeyed((k0, k1), arg1[, arg2, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `(k0, k1)` — キーを表す 2 つの値からなるタプル。[`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
-* `arg1[, arg2, ...]` — ハッシュを計算する対象となる可変個数の入力引数。[`Any`](/sql-reference/data-types)
+- `(k0, k1)` — Tuple of two values representing the key [`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
+- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
 
-**戻り値**
 
-入力引数に対して計算された 128 ビットの `SipHash` ハッシュ値を返します。[`FixedString(16)`](/sql-reference/data-types/fixedstring)
+**Returned value**
 
-**例**
+Returns the computed 128-bit `SipHash` hash value of the input arguments. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT hex(sipHash128Reference('foo', '', 3));
@@ -1906,43 +2138,48 @@ SELECT hex(sipHash128Reference('foo', '', 3));
 └────────────────────────────────────────┘
 ```
 
+
+
 ## sipHash64 {#sipHash64}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-64 ビットの [SipHash](https://en.wikipedia.org/wiki/SipHash) ハッシュ値を生成します。
 
-これは暗号学的ハッシュ関数です。[`MD5`](#MD5) ハッシュ関数より少なくとも 3 倍高速で動作します。
+Produces a 64-bit [SipHash](https://en.wikipedia.org/wiki/SipHash) hash value.
 
-この関数は、すべての入力パラメータを文字列として[解釈](/sql-reference/functions/type-conversion-functions#reinterpretasstring)し、それぞれについてハッシュ値を計算します。
-その後、以下のアルゴリズムでそれらのハッシュ値を結合します:
+This is a cryptographic hash function. It works at least three times faster than the [`MD5`](#MD5) hash function.
 
-1. 1 番目と 2 番目のハッシュ値を連結して配列を作成し、それをハッシュします。
-2. 直前に計算したハッシュ値と 3 番目の入力パラメータのハッシュ値を、同様の方法でハッシュします。
-3. この計算を、元の入力に対応する残りすべてのハッシュ値に対して繰り返します。
+The function [interprets](/sql-reference/functions/type-conversion-functions#reinterpretasstring) all the input parameters as strings and calculates the hash value for each of them.
+It then combines the hashes using the following algorithm:
+
+1. The first and the second hash value are concatenated to an array which is hashed.
+2. The previously calculated hash value and the hash of the third input parameter are hashed in a similar way.
+3. This calculation is repeated for all remaining hash values of the original input.
 
 :::note
-同じ入力値でも、引数の型が異なる場合には、計算されるハッシュ値が同一になることがあります。
-これは、たとえばサイズの異なる整数型、同じデータを持つ名前付きおよび名前なしの `Tuple`、同じデータを持つ `Map` と、それに対応する `Array(Tuple(key, value))` 型などに影響します。
+the calculated hash values may be equal for the same input values of different argument types.
+This affects for example integer types of different size, named and unnamed `Tuple` with the same data, `Map` and the corresponding `Array(Tuple(key, value))` type with the same data.
 :::
 
-**構文**
+
+**Syntax**
 
 ```sql
 sipHash64(arg1[, arg2, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `arg1[, arg2, ...]` — 可変個数の入力引数。[`Any`](/sql-reference/data-types)
+- `arg1[, arg2, ...]` — A variable number of input arguments. [`Any`](/sql-reference/data-types)
 
-**戻り値**
 
-入力引数に対して計算されたハッシュ値を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns a computed hash value of the input arguments. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT sipHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00')) AS SipHash, toTypeName(SipHash) AS type;
@@ -1954,30 +2191,35 @@ SELECT sipHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00
 └──────────────────────┴────────┘
 ```
 
+
+
 ## sipHash64Keyed {#sipHash64Keyed}
 
-導入バージョン: v23.2
+Introduced in: v23.2
 
-[`sipHash64`](#sipHash64) と同様ですが、固定キーではなく、明示的に指定したキー引数を取ります。
 
-**構文**
+Like [`sipHash64`](#sipHash64) but additionally takes an explicit key argument instead of using a fixed key.
+
+
+**Syntax**
 
 ```sql
 sipHash64Keyed((k0, k1), arg1[,arg2, ...])
 ```
 
-**引数**
+**Arguments**
 
-* `(k0, k1)` — キーを表す 2 つの値のタプル。[`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
-* `arg1[,arg2, ...]` — 可変個の入力引数。[`Any`](/sql-reference/data-types)
+- `(k0, k1)` — A tuple of two values representing the key. [`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
+- `arg1[,arg2, ...]` — A variable number of input arguments. [`Any`](/sql-reference/data-types)
 
-**返り値**
 
-入力値から計算されたハッシュ値を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the computed hash of the input values. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT sipHash64Keyed((506097522914230528, 1084818905618843912), array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00')) AS SipHash, toTypeName(SipHash) AS type;
@@ -1989,36 +2231,41 @@ SELECT sipHash64Keyed((506097522914230528, 1084818905618843912), array('e','x','
 └─────────────────────┴────────┘
 ```
 
+
+
 ## wordShingleMinHash {#wordShingleMinHash}
 
-導入バージョン: v21.1
+Introduced in: v21.1
 
-ASCII 文字列を `shinglesize` 語からなる部分列（シングル）に分割し、各シングルごとにハッシュ値を計算して、それらのハッシュを要素とするタプルを返します。
-最小ハッシュの計算には `hashnum` 個の最小ハッシュを、最大ハッシュの計算には `hashnum` 個の最大ハッシュを使用します。
-大文字と小文字は区別されます。
 
-[`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance) を使って、準重複文字列を検出するために利用できます。
-2 つの文字列に対して、返されるハッシュが両方の文字列で同じであれば、それらの文字列は同一であるとみなせます。
+Splits a ASCII string into parts (shingles) of `shinglesize` words, calculates hash values for each word shingle and returns a tuple with these hashes.
+Uses `hashnum` minimum hashes to calculate the minimum hash and `hashnum` maximum hashes to calculate the maximum hash.
+It is case sensitive.
 
-**構文**
+Can be used to detect semi-duplicate strings with [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
+For two strings, if the returned hashes are the same for both strings, then those strings are the same.
+
+
+**Syntax**
 
 ```sql
 wordShingleMinHash(string[, shinglesize, hashnum])
 ```
 
-**引数**
+**Arguments**
 
-* `string` — ハッシュ値を計算する対象の文字列。[`String`](/sql-reference/data-types/string)
-* `shinglesize` — 省略可能。ワードシングル（shingle）のサイズ。`1` から `25` の範囲の任意の整数。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
-* `hashnum` — 省略可能。結果の計算に使用される最小ハッシュ値および最大ハッシュ値の数。`1` から `25` の範囲の任意の整数。デフォルト値は `6`。[`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-2 つのハッシュ値（最小値と最大値）を要素とするタプルを返します。[`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns a tuple with two hashes — the minimum and the maximum. [`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT wordShingleMinHash('ClickHouse® is a column-oriented database management system (DBMS) for online analytical processing of queries (OLAP).') AS Tuple;
@@ -2030,32 +2277,37 @@ SELECT wordShingleMinHash('ClickHouse® is a column-oriented database management
 └────────────────────────────────────────────┘
 ```
 
+
+
 ## wordShingleMinHashArg {#wordShingleMinHashArg}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-ASCII 文字列を `shinglesize` 語ごとの部分（シングル）に分割し、同じ入力を用いて wordShingleMinHash 関数で計算される単語ハッシュの最小値および最大値を持つシングルを返します。
-ケースセンシティブです。
 
-**構文**
+Splits a ASCII string into parts (shingles) of `shinglesize` words each and returns the shingles with minimum and maximum word hashes, calculated by the wordShingleMinHash function with the same input.
+It is case sensitive.
+
+
+**Syntax**
 
 ```sql
 wordShingleMinHashArg(string[, shinglesize, hashnum])
 ```
 
-**引数**
+**Arguments**
 
-* `string` — ハッシュを計算する対象の文字列。[`String`](/sql-reference/data-types/string)
-* `shinglesize` — 省略可能。ワードシングル（word shingle）のサイズ。`1` から `25` までの任意の数値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
-* `hashnum` — 省略可能。結果の計算に使用する最小ハッシュと最大ハッシュの個数。`1` から `25` までの任意の数値。デフォルト値は `6`。[`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-`hashnum` 個のワードシングルを含む 2 つのタプルからなるタプルを返します。[`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns a tuple with two tuples with `hashnum` word shingles each. [`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT wordShingleMinHashArg('ClickHouse®は、オンライン分析処理（OLAP）のための列指向データベース管理システム（DBMS）です。', 1, 3) AS Tuple;
@@ -2067,32 +2319,37 @@ SELECT wordShingleMinHashArg('ClickHouse®は、オンライン分析処理（OL
 └───────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## wordShingleMinHashArgCaseInsensitive {#wordShingleMinHashArgCaseInsensitive}
 
-導入バージョン: v21.1
+Introduced in: v21.1
 
-ASCII文字列を、`shinglesize` 個の単語からなる部分（シングル）に分割し、同じ入力に対して [`wordShingleMinHashCaseInsensitive`](#wordShingleMinHashCaseInsensitive) 関数で計算される、単語ハッシュが最小および最大となるシングルを返します。
-大文字と小文字は区別されません。
 
-**構文**
+Splits a ASCII string into parts (shingles) of `shinglesize` words each and returns the shingles with minimum and maximum word hashes, calculated by the [`wordShingleMinHashCaseInsensitive`](#wordShingleMinHashCaseInsensitive) function with the same input.
+It is case insensitive.
+
+
+**Syntax**
 
 ```sql
 wordShingleMinHashArgCaseInsensitive(string[, shinglesize, hashnum])
 ```
 
-**引数**
+**Arguments**
 
-* `string` — ハッシュを計算する対象の文字列。[`String`](/sql-reference/data-types/string)
-* `shinglesize` — 省略可能。ワードシングルのサイズ。`1` から `25` までの任意の数値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
-* `hashnum` — 省略可能。結果の計算に使用される最小ハッシュ値および最大ハッシュ値の個数。`1` から `25` までの任意の数値。デフォルト値は `6`。[`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-`hashnum` 個のワードシングルをそれぞれ含む 2 つのタプルからなるタプルを返します。[`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns a tuple with two tuples with `hashnum` word shingles each. [`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT wordShingleMinHashArgCaseInsensitive('ClickHouse®は、オンライン分析処理（OLAP）のためのカラム指向データベース管理システム（DBMS）です。', 1, 3) AS Tuple;
@@ -2104,32 +2361,37 @@ SELECT wordShingleMinHashArgCaseInsensitive('ClickHouse®は、オンライン�
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## wordShingleMinHashArgCaseInsensitiveUTF8 {#wordShingleMinHashArgCaseInsensitiveUTF8}
 
-導入バージョン: v21.1
+Introduced in: v21.1
 
-UTF-8 文字列を `shinglesize` 語ずつの部分（シングル）に分割し、同じ入力に対して [`wordShingleMinHashCaseInsensitiveUTF8`](#wordShingleMinHashCaseInsensitiveUTF8) 関数で計算される単語ハッシュの最小値および最大値に対応するシングルを返します。
-大文字小文字は区別されません。
 
-**構文**
+Splits a UTF-8 string into parts (shingles) of `shinglesize` words each and returns the shingles with minimum and maximum word hashes, calculated by the [`wordShingleMinHashCaseInsensitiveUTF8`](#wordShingleMinHashCaseInsensitiveUTF8) function with the same input.
+It is case insensitive.
+
+
+**Syntax**
 
 ```sql
 wordShingleMinHashArgCaseInsensitiveUTF8(string[, shinglesize, hashnum])
 ```
 
-**引数**
+**Arguments**
 
-* `string` — ハッシュを計算する対象の文字列。[`String`](/sql-reference/data-types/string)
-* `shinglesize` — 省略可。ワードシングル（shingle）のサイズ。`1` から `25` までの任意の数値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
-* `hashnum` — 省略可。結果の計算に使用される最小および最大ハッシュの個数。`1` から `25` までの任意の数値。デフォルト値は `6`。[`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-それぞれが `hashnum` 個のワードシングルを持つ 2 つのタプルから構成されるタプルを返します。[`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns a tuple with two tuples with `hashnum` word shingles each. [`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT wordShingleMinHashArgCaseInsensitiveUTF8('ClickHouse®は、オンライン分析処理（OLAP）のためのカラム指向データベース管理システム（DBMS）です。', 1, 3) AS Tuple;
@@ -2141,32 +2403,37 @@ SELECT wordShingleMinHashArgCaseInsensitiveUTF8('ClickHouse®は、オンライ�
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## wordShingleMinHashArgUTF8 {#wordShingleMinHashArgUTF8}
 
-導入バージョン: v21.1
+Introduced in: v21.1
 
-UTF-8 文字列を `shinglesize` 語ごとの部分（shingle）に分割し、同じ入力に対して [`wordShingleMinHashUTF8`](#wordShingleMinHashUTF8) 関数で計算される、単語ハッシュ値が最小および最大の shingle を返します。
-大文字と小文字は区別されます。
 
-**構文**
+Splits a UTF-8 string into parts (shingles) of `shinglesize` words each and returns the shingles with minimum and maximum word hashes, calculated by the [`wordShingleMinHashUTF8`](#wordShingleMinHashUTF8) function with the same input.
+It is case sensitive.
+
+
+**Syntax**
 
 ```sql
 wordShingleMinHashArgUTF8(string[, shinglesize, hashnum])
 ```
 
-**引数**
+**Arguments**
 
-* `string` — ハッシュを計算する対象の文字列。[`String`](/sql-reference/data-types/string)
-* `shinglesize` — 省略可。ワードシングル（shingle）のサイズ。`1` から `25` までの任意の値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
-* `hashnum` — 省略可。結果の計算に使用される最小ハッシュおよび最大ハッシュの個数。`1` から `25` までの任意の値。デフォルト値は `6`。[`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-`hashnum` 個のワードシングルをそれぞれ含む 2 つのタプルから成るタプルを返します。[`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns a tuple with two tuples with `hashnum` word shingles each. [`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT wordShingleMinHashArgUTF8('ClickHouse®は、オンライン分析処理(OLAP)のための列指向データベース管理システム(DBMS)です。', 1, 3) AS Tuple;
@@ -2178,36 +2445,41 @@ SELECT wordShingleMinHashArgUTF8('ClickHouse®は、オンライン分析処理(
 └───────────────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## wordShingleMinHashCaseInsensitive {#wordShingleMinHashCaseInsensitive}
 
-導入バージョン: v21.1
+Introduced in: v21.1
 
-ASCII 文字列を `shinglesize` 語からなる部分（シングル）に分割し、各ワードシングルのハッシュ値を計算して、そのハッシュを要素とするタプルを返します。
-`hashnum` 個の最小ハッシュを使用して最小ハッシュを計算し、`hashnum` 個の最大ハッシュを使用して最大ハッシュを計算します。
-大文字小文字は区別されません。
 
-[`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance) と組み合わせて、準重複文字列を検出するために利用できます。
-2つの文字列について、返されるハッシュ値が両方の文字列で同じであれば、それらの文字列は同一であると見なせます。
+Splits a ASCII string into parts (shingles) of `shinglesize` words, calculates hash values for each word shingle and returns a tuple with these hashes.
+Uses `hashnum` minimum hashes to calculate the minimum hash and `hashnum` maximum hashes to calculate the maximum hash.
+It is case insensitive.
 
-**構文**
+Can be used to detect semi-duplicate strings with [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
+For two strings, if the returned hashes are the same for both strings, then those strings are the same.
+
+
+**Syntax**
 
 ```sql
 wordShingleMinHashCaseInsensitive(string[, shinglesize, hashnum])
 ```
 
-**引数**
+**Arguments**
 
-* `string` — ハッシュを計算する対象の文字列。[`String`](/sql-reference/data-types/string)
-* `shinglesize` — オプション。ワードシングル（shingle）のサイズ。`1` から `25` までの任意の値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
-* `hashnum` — オプション。結果を計算するために使用される最小ハッシュと最大ハッシュの数。`1` から `25` までの任意の値。デフォルト値は `6`。[`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**返される値**
 
-2 つのハッシュ（最小値と最大値）を要素に持つタプルを返します。[`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns a tuple with two hashes — the minimum and the maximum. [`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT wordShingleMinHashCaseInsensitive('ClickHouse® is a column-oriented database management system (DBMS) for online analytical processing of queries (OLAP).') AS Tuple;
@@ -2219,36 +2491,41 @@ SELECT wordShingleMinHashCaseInsensitive('ClickHouse® is a column-oriented data
 └───────────────────────────────────────────┘
 ```
 
+
+
 ## wordShingleMinHashCaseInsensitiveUTF8 {#wordShingleMinHashCaseInsensitiveUTF8}
 
-導入バージョン: v21.1
+Introduced in: v21.1
 
-UTF-8 文字列を `shinglesize` 語からなるシングル（shingle）に分割し、各シングルのハッシュ値を計算して、そのハッシュを要素とするタプルを返します。
-最小ハッシュ値を計算するために `hashnum` 個のハッシュを、最大ハッシュ値を計算するために `hashnum` 個のハッシュを使用します。
-大文字小文字は区別しません。
 
-[`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance) を使って、類似した文字列を検出するために使用できます。
-2 つの文字列に対して、返されるハッシュが両方で同じであれば、その文字列は同一であるとみなせます。
+Splits a UTF-8 string into parts (shingles) of `shinglesize` words, calculates hash values for each word shingle and returns a tuple with these hashes.
+Uses `hashnum` minimum hashes to calculate the minimum hash and `hashnum` maximum hashes to calculate the maximum hash.
+It is case insensitive.
 
-**構文**
+Can be used to detect semi-duplicate strings with [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
+For two strings, if the returned hashes are the same for both strings, then those strings are the same.
+
+
+**Syntax**
 
 ```sql
 wordShingleMinHashCaseInsensitiveUTF8(string[, shinglesize, hashnum])
 ```
 
-**引数**
+**Arguments**
 
-* `string` — ハッシュを計算する対象の文字列。[`String`](/sql-reference/data-types/string)
-* `shinglesize` — 省略可。ワードシングル（shingle）のサイズ。`1` から `25` までの任意の整数値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
-* `hashnum` — 省略可。結果を計算するために使用される最小ハッシュおよび最大ハッシュの個数。`1` から `25` までの任意の整数値。デフォルト値は `6`。[`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-最小値と最大値の 2 つのハッシュを要素とするタプルを返します。[`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns a tuple with two hashes — the minimum and the maximum. [`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT wordShingleMinHashCaseInsensitiveUTF8('ClickHouse®は、オンライン分析処理（OLAP）のためのカラム指向データベース管理システム（DBMS）です。') AS Tuple;
@@ -2260,36 +2537,41 @@ SELECT wordShingleMinHashCaseInsensitiveUTF8('ClickHouse®は、オンライン�
 └───────────────────────────────────────────┘
 ```
 
+
+
 ## wordShingleMinHashUTF8 {#wordShingleMinHashUTF8}
 
-導入バージョン: v21.1
+Introduced in: v21.1
 
-UTF-8 文字列を、`shinglesize` 個の単語から成る部分列（シングル, shingle）に分割し、各単語シングルのハッシュ値を計算して、これらのハッシュを要素とするタプルを返します。
-`hashnum` 個の最小ハッシュを使って最小ハッシュを計算し、`hashnum` 個の最大ハッシュを使って最大ハッシュを計算します。
-大文字と小文字は区別されます。
 
-[`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance) を用いて準重複文字列を検出するために利用できます。
-2 つの文字列に対して、返されるハッシュが両方の文字列で同じであれば、それらの文字列は同一とみなされます。
+Splits a UTF-8 string into parts (shingles) of `shinglesize` words, calculates hash values for each word shingle and returns a tuple with these hashes.
+Uses `hashnum` minimum hashes to calculate the minimum hash and `hashnum` maximum hashes to calculate the maximum hash.
+It is case sensitive.
 
-**構文**
+Can be used to detect semi-duplicate strings with [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
+For two strings, if the returned hashes are the same for both strings, then those strings are the same.
+
+
+**Syntax**
 
 ```sql
 wordShingleMinHashUTF8(string[, shinglesize, hashnum])
 ```
 
-**引数**
+**Arguments**
 
-* `string` — ハッシュを計算する対象の文字列。[`String`](/sql-reference/data-types/string)
-* `shinglesize` — 省略可。単語シングル（shingle）のサイズ。`1` から `25` までの任意の数値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
-* `hashnum` — 省略可。結果の計算に使用する最小ハッシュと最大ハッシュの数。`1` から `25` までの任意の数値。デフォルト値は `6`。[`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-2 つのハッシュ（最小値と最大値）を含むタプルを返します。[`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns a tuple with two hashes — the minimum and the maximum. [`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT wordShingleMinHashUTF8('ClickHouse®は、オンライン分析処理(OLAP)のためのカラム指向データベース管理システム(DBMS)です。') AS Tuple;
@@ -2301,34 +2583,39 @@ SELECT wordShingleMinHashUTF8('ClickHouse®は、オンライン分析処理(OLA
 └────────────────────────────────────────────┘
 ```
 
+
+
 ## wordShingleSimHash {#wordShingleSimHash}
 
-導入バージョン: v21.1
+Introduced in: v21.1
 
-ASCII 文字列を `shinglesize` 語から成る部分（ワードシングル）に分割し、そのワードシングルの `simhash` を返します。
-大文字と小文字は区別されます。
 
-[`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance) と組み合わせて、部分的に重複した文字列の検出に使用できます。
-2 つの文字列について計算された `simhashes` の[ハミング距離](https://en.wikipedia.org/wiki/Hamming_distance)が小さいほど、これらの文字列が同一または非常に類似している可能性が高くなります。
+Splits a ASCII string into parts (shingles) of `shinglesize` words and returns the word shingle `simhash`.
+Is is case sensitive.
 
-**構文**
+Can be used for detection of semi-duplicate strings with [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance).
+The smaller the [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) of the calculated `simhashes` of two strings, the more likely these strings are the same.
+
+
+**Syntax**
 
 ```sql
 wordShingleSimHash(string[, shinglesize])
 ```
 
-**引数**
+**Arguments**
 
-* `string` — ハッシュを計算する対象の文字列。[`String`](/sql-reference/data-types/string)
-* `shinglesize` — 省略可。ワードシングル（連続する単語列）のサイズ。`1` から `25` の任意の数値。既定値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-計算されたハッシュ値を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the computed hash value. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT wordShingleSimHash('ClickHouse®は、オンライン分析処理(OLAP)のための列指向データベース管理システム(DBMS)です。') AS Hash;
@@ -2340,34 +2627,39 @@ SELECT wordShingleSimHash('ClickHouse®は、オンライン分析処理(OLAP)�
 └────────────┘
 ```
 
+
+
 ## wordShingleSimHashCaseInsensitive {#wordShingleSimHashCaseInsensitive}
 
-導入バージョン: v21.1
+Introduced in: v21.1
 
-ASCII 文字列を `shinglesize` 語からなる部分文字列（シングル）に分割し、その単語シングルの `simhash` を返します。
-大文字小文字は区別されません。
 
-[`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance) を用いた、ほぼ重複した文字列の検出に使用できます。
-2 つの文字列について計算された `simhash` 同士の[ハミング距離](https://en.wikipedia.org/wiki/Hamming_distance)が小さいほど、それらの文字列が同一である可能性が高くなります。
+Splits a ASCII string into parts (shingles) of `shinglesize` words and returns the word shingle `simhash`.
+It is case insensitive.
 
-**構文**
+Can be used for detection of semi-duplicate strings with [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance).
+The smaller the [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) of the calculated `simhashes` of two strings, the more likely these strings are the same.
+
+
+**Syntax**
 
 ```sql
 wordShingleSimHashCaseInsensitive(string[, shinglesize])
 ```
 
-**引数**
+**Arguments**
 
-* `string` — ハッシュを計算する対象の文字列。[`String`](/sql-reference/data-types/string)
-* `shinglesize` — 省略可能。ワードシングル（shingle）のサイズ。`1` から `25` までの任意の数値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-計算されたハッシュ値を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the computed hash value. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT wordShingleSimHashCaseInsensitive('ClickHouse®は、オンライン分析処理(OLAP)クエリのためのカラム指向データベース管理システム(DBMS)です。') AS Hash;
@@ -2379,34 +2671,39 @@ SELECT wordShingleSimHashCaseInsensitive('ClickHouse®は、オンライン分�
 └────────────┘
 ```
 
+
+
 ## wordShingleSimHashCaseInsensitiveUTF8 {#wordShingleSimHashCaseInsensitiveUTF8}
 
-導入バージョン: v1.1
+Introduced in: v1.1
 
-UTF-8 エンコードされた文字列を、`shinglesize` 語から成るシングル（shingle）に分割し、その単語シングルの `simhash` を返します。
-大文字・小文字は区別されません。
 
-[`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance) を使用して、類似した重複文字列の検出に利用できます。
-2 つの文字列から計算された `simhashes` の [ハミング距離](https://en.wikipedia.org/wiki/Hamming_distance) が小さいほど、それらの文字列が同じである可能性が高くなります。
+Splits a UTF-8 encoded string into parts (shingles) of `shinglesize` words and returns the word shingle `simhash`.
+It is case insensitive.
 
-**構文**
+Can be used for detection of semi-duplicate strings with [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance).
+The smaller the [Hamming Distance](https://en.wikipedia.org/wiki/Hamming_distance) of the calculated `simhashes` of two strings, the more likely these strings are the same.
+
+
+**Syntax**
 
 ```sql
 wordShingleSimHashCaseInsensitiveUTF8(string[, shinglesize])
 ```
 
-**引数**
+**Arguments**
 
-* `string` — ハッシュを計算する対象の文字列。[`String`](/sql-reference/data-types/string)
-* `shinglesize` — 省略可能。ワードシングル（shingle）のサイズ。`1` から `25` までの任意の整数。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**返り値**
 
-計算されたハッシュ値を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the computed hash value. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT wordShingleSimHashCaseInsensitiveUTF8('ClickHouse®は、オンライン分析処理(OLAP)のためのカラム指向データベース管理システム(DBMS)です。') AS Hash;
@@ -2418,34 +2715,39 @@ SELECT wordShingleSimHashCaseInsensitiveUTF8('ClickHouse®は、オンライン�
 └────────────┘
 ```
 
+
+
 ## wordShingleSimHashUTF8 {#wordShingleSimHashUTF8}
 
-導入バージョン: v21.1
+Introduced in: v21.1
 
-UTF-8 文字列を、`shinglesize` 語から成る連続した部分列（シングル、shingle）に分割し、語シングル（word shingle）の `simhash` 値を返します。
-大文字と小文字を区別します。
 
-[`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance) と組み合わせて、近似重複文字列を検出するために使用できます。
-2 つの文字列について計算された `simhash` 値の[ハミング距離](https://en.wikipedia.org/wiki/Hamming_distance)が小さいほど、それらの文字列が同一である可能性が高くなります。
+Splits a UTF-8 string into parts (shingles) of `shinglesize` words and returns the word shingle `simhash`.
+It is case sensitive.
 
-**構文**
+Can be used for detection of semi-duplicate strings with [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance).
+The smaller the [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) of the calculated `simhashes` of two strings, the more likely these strings are the same.
+
+
+**Syntax**
 
 ```sql
 wordShingleSimHashUTF8(string[, shinglesize])
 ```
 
-**引数**
+**Arguments**
 
-* `string` — ハッシュを計算する対象の文字列。[`String`](/sql-reference/data-types/string)
-* `shinglesize` — 省略可能。単語シングル（shingle）のサイズ。`1` から `25` までの任意の数値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
+- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**戻り値**
 
-計算されたハッシュ値を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the computed hash value. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT wordShingleSimHashUTF8('ClickHouse®は、オンライン分析処理(OLAP)のための列指向データベース管理システム(DBMS)です。') AS Hash;
@@ -2457,29 +2759,32 @@ SELECT wordShingleSimHashUTF8('ClickHouse®は、オンライン分析処理(OLA
 └────────────┘
 ```
 
+
+
 ## wyHash64 {#wyHash64}
 
-導入バージョン: v22.7
+Introduced in: v22.7
 
-64ビットの [wyHash64](https://github.com/wangyi-fudan/wyhash) ハッシュ値を計算します。
+Computes a 64-bit [wyHash64](https://github.com/wangyi-fudan/wyhash) hash value.
 
-**構文**
+**Syntax**
 
 ```sql
 wyHash64(arg)
 ```
 
-**引数**
+**Arguments**
 
-* `arg` — ハッシュを計算する対象となる文字列引数。[`String`](/sql-reference/data-types/string)
+- `arg` — String argument for which to compute the hash. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-計算された 64 ビットのハッシュ値を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the computed 64-bit hash value [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT wyHash64('ClickHouse') AS Hash;
@@ -2489,31 +2794,36 @@ SELECT wyHash64('ClickHouse') AS Hash;
 12336419557878201794
 ```
 
+
+
 ## xxHash32 {#xxHash32}
 
-導入バージョン: v20.1
+Introduced in: v20.1
 
-文字列に対する [xxHash](http://cyan4973.github.io/xxHash/) を計算します。
 
-64ビット版については [`xxHash64`](#xxHash64) を参照してください。
+Calculates a [xxHash](http://cyan4973.github.io/xxHash/) from a string.
 
-**構文**
+For the 64-bit version see [`xxHash64`](#xxHash64)
+
+
+**Syntax**
 
 ```sql
 xxHash32(arg)
 ```
 
-**引数**
+**Arguments**
 
-* `arg` — ハッシュ化する対象の入力文字列。[`String`](/sql-reference/data-types/string)
+- `arg` — Input string to hash. [`String`](/sql-reference/data-types/string)
 
-**返り値**
 
-入力文字列の 32 ビットハッシュ値を返します。[`UInt32`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the computed 32-bit hash of the input string. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT xxHash32('Hello, world!');
@@ -2525,31 +2835,36 @@ SELECT xxHash32('Hello, world!');
 └───────────────────────────┘
 ```
 
+
+
 ## xxHash64 {#xxHash64}
 
-導入: v20.1
+Introduced in: v20.1
 
-文字列に対する [xxHash](http://cyan4973.github.io/xxHash/) を計算します。
 
-32 ビット版については [`xxHash32`](#xxHash32) を参照してください。
+Calculates a [xxHash](http://cyan4973.github.io/xxHash/) from a string.
 
-**構文**
+For the 32-bit version see [`xxHash32`](#xxHash32)
+
+
+**Syntax**
 
 ```sql
 xxHash64(arg)
 ```
 
-**引数**
+**Arguments**
 
-* `arg` — ハッシュ化する入力文字列。[`String`](/sql-reference/data-types/string)
+- `arg` — Input string to hash. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-入力文字列に対して計算された 64 ビットのハッシュ値を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the computed 64-bit hash of the input string. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT xxHash64('Hello, world!');
@@ -2561,29 +2876,32 @@ SELECT xxHash64('Hello, world!');
 └───────────────────────────┘
 ```
 
+
+
 ## xxh3 {#xxh3}
 
-導入バージョン: v22.12
+Introduced in: v22.12
 
-[XXH3](https://github.com/Cyan4973/xxHash) の 64 ビットハッシュ値を計算します。
+Computes a [XXH3](https://github.com/Cyan4973/xxHash) 64-bit hash value.
 
-**構文**
+**Syntax**
 
 ```sql
 xxh3(expr)
 ```
 
-**引数**
+**Arguments**
 
-* `expr` — 任意のデータ型の式からなるリスト。[`Any`](/sql-reference/data-types)
+- `expr` — A list of expressions of any data type. [`Any`](/sql-reference/data-types)
 
-**戻り値**
 
-計算された64ビットの `xxh3` ハッシュ値を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**例**
+Returns the computed 64-bit `xxh3` hash value [`UInt64`](/sql-reference/data-types/int-uint)
 
-**使用例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT xxh3('ClickHouse')

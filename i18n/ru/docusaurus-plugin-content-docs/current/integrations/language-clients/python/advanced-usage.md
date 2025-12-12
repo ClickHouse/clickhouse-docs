@@ -101,7 +101,7 @@ async def main():
     client = await clickhouse_connect.get_async_client()
     result = await client.query("SELECT name FROM system.databases LIMIT 1")
     print(result.result_rows)
-    # Результат:
+    # Output:
     # [('INFORMATION_SCHEMA',)]
 
 asyncio.run(main())
@@ -132,7 +132,7 @@ asyncio.run(main())
 from clickhouse_connect import common
 import clickhouse_connect
 
-common.set_setting('autogenerate_session_id', False)  # Необходимо установить перед созданием клиента
+common.set_setting('autogenerate_session_id', False)  # This should always be set before creating a client
 client = clickhouse_connect.get_client(host='somehost.com', user='dbuser', password=1234)
 ```
 

@@ -26,7 +26,7 @@ ClickHouse 支持 PostgreSQL 线协议，这使您可以使用 PostgreSQL 客户
 启动 ClickHouse 服务器，并在日志中查找类似如下的信息，其中包含 **Listening for PostgreSQL compatibility protocol**：
 
 ```response
-{} <Information> 应用程序：监听 PostgreSQL 兼容协议：127.0.0.1:9005
+{} <Information> Application: Listening for PostgreSQL compatibility protocol: 127.0.0.1:9005
 ```
 
 ## 使用 psql 连接到 ClickHouse {#connect-psql-to-clickhouse}
@@ -50,11 +50,11 @@ psql -p 9005 -h 127.0.0.1 -U alice default
 `psql` 客户端会提示输入密码：
 
 ```response
-用户 alice 的密码：
-psql（14.2，服务器 22.3.1.1）
-警告：psql 主版本号为 14，服务器主版本号为 22。
-         某些 psql 功能可能无法使用。
-输入 "help" 获取帮助。
+Password for user alice:
+psql (14.2, server 22.3.1.1)
+WARNING: psql major version 14, server major version 22.
+         Some psql features might not work.
+Type "help" for help.
 
 default=>
 ```

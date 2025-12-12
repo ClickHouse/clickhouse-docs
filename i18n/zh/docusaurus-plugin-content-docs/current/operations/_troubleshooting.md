@@ -24,23 +24,23 @@
 * 完整的警告信息类似于以下几种情况之一：
 
 ```bash
-N: 跳过获取已配置的文件 'main/binary-i386/Packages',因为软件源 'https://packages.clickhouse.com/deb stable InRelease' 不支持 'i386' 架构
+N: Skipping acquire of configured file 'main/binary-i386/Packages' as repository 'https://packages.clickhouse.com/deb stable InRelease' doesn't support architecture 'i386'
 ```
 
 ```bash
-E: 无法获取 https://packages.clickhouse.com/deb/dists/stable/main/binary-amd64/Packages.gz  文件大小不符合预期 (30451 != 28154)。镜像同步正在进行中？
+E: Failed to fetch https://packages.clickhouse.com/deb/dists/stable/main/binary-amd64/Packages.gz  File has unexpected size (30451 != 28154). Mirror sync in progress?
 ```
 
 ```text
-E: 仓库 'https://packages.clickhouse.com/deb stable InRelease' 的 'Origin' 值已从 'Artifactory' 变更为 'ClickHouse'
-E: 仓库 'https://packages.clickhouse.com/deb stable InRelease' 的 'Label' 值已从 'Artifactory' 变更为 'ClickHouse'
-N: 仓库 'https://packages.clickhouse.com/deb stable InRelease' 的 'Suite' 值已从 'stable' 变更为 ''
-N: 在应用此仓库的更新之前,必须明确接受此变更。详情请参阅 apt-secure(8) 手册页。
+E: Repository 'https://packages.clickhouse.com/deb stable InRelease' changed its 'Origin' value from 'Artifactory' to 'ClickHouse'
+E: Repository 'https://packages.clickhouse.com/deb stable InRelease' changed its 'Label' value from 'Artifactory' to 'ClickHouse'
+N: Repository 'https://packages.clickhouse.com/deb stable InRelease' changed its 'Suite' value from 'stable' to ''
+N: This must be accepted explicitly before updates for this repository can be applied. See apt-secure(8) manpage for details.
 ```
 
 ```bash
-错误:11 https://packages.clickhouse.com/deb stable InRelease
-  400  错误请求 [IP: 172.66.40.249 443]
+Err:11 https://packages.clickhouse.com/deb stable InRelease
+  400  Bad Request [IP: 172.66.40.249 443]
 ```
 
 要解决上述问题，请使用以下脚本：
@@ -71,7 +71,22 @@ sudo rm -f /etc/yum.repos.d/clickhouse.repo
 ```bash
 $ docker run -it clickhouse/clickhouse-server
 ........
-Poco::Exception. Code: 1000, e.code() = 0, System exception: cannot start thread, Stack trace (复制此消息时,务必包含以下内容):
+Poco::Exception. Code: 1000, e.code() = 0, System exception: cannot start thread, Stack trace (when copying this message, always include the lines below):
+
+0. Poco::ThreadImpl::startImpl(Poco::SharedPtr<Poco::Runnable, Poco::ReferenceCounter, Poco::ReleasePolicy<Poco::Runnable>>) @ 0x00000000157c7b34
+1. Poco::Thread::start(Poco::Runnable&) @ 0x00000000157c8a0e
+2. BaseDaemon::initializeTerminationAndSignalProcessing() @ 0x000000000d267a14
+3. BaseDaemon::initialize(Poco::Util::Application&) @ 0x000000000d2652cb
+4. DB::Server::initialize(Poco::Util::Application&) @ 0x000000000d128b38
+5. Poco::Util::Application::run() @ 0x000000001581cfda
+6. DB::Server::run() @ 0x000000000d1288f0
+7. Poco::Util::ServerApplication::run(int, char**) @ 0x0000000015825e27
+8. mainEntryClickHouseServer(int, char**) @ 0x000000000d125b38
+9. main @ 0x0000000007ea4eee
+10. ? @ 0x00007f67ff946d90
+11. ? @ 0x00007f67ff946e40
+12. _start @ 0x00000000062e802e
+ (version 24.10.1.2812 (official build))
 ```
 
 0. Poco::ThreadImpl::startImpl(Poco::SharedPtr<Poco::Runnable, Poco::ReferenceCounter, Poco::ReleasePolicy<Poco::Runnable>>) @ 0x00000000157c7b34
@@ -89,10 +104,8 @@ Poco::Exception. Code: 1000, e.code() = 0, System exception: cannot start thread
 12. \_start @ 0x00000000062e802e
     (version 24.10.1.2812 (official build))
 
-```
-
-原因是 Docker 守护进程版本低于 `20.10.10`。解决方法是升级 Docker 守护进程,或运行 `docker run [--privileged | --security-opt seccomp=unconfined]`。后者具有安全风险。
-
+```bash
+$ sudo service clickhouse-server status
 ```
 
 ## 连接到服务器 {#troubleshooting-accepts-no-connections}
@@ -109,13 +122,13 @@ Poco::Exception. Code: 1000, e.code() = 0, System exception: cannot start thread
 命令：
 
 ```bash
-$ sudo service clickhouse-server status
+$ sudo service clickhouse-server start
 ```
 
 如果服务器未运行，请使用以下命令启动：
 
-```bash
-$ sudo service clickhouse-server start
+```text
+2019.01.11 15:23:25.549505 [ 45 ] {} <Error> ExternalDictionaries: Failed reloading 'event2id' external dictionary: Poco::Exception. Code: 1000, e.code() = 111, e.displayText() = Connection refused, e.what() = Connection refused
 ```
 
 **检查日志**
@@ -130,29 +143,29 @@ $ sudo service clickhouse-server start
 如果 `clickhouse-server` 因配置错误而启动失败，你应该会看到带有错误描述的 `<Error>` 日志行。例如：
 
 ```text
-2019.01.11 15:23:25.549505 [ 45 ] {} <Error> ExternalDictionaries: 重新加载外部字典 'event2id' 失败:Poco::Exception. Code: 1000, e.code() = 111, e.displayText() = Connection refused, e.what() = Connection refused
+<Information> Application: starting up.
 ```
 
 如果在文件末尾没有看到错误，请从以下字符串开始检查整个文件：
 
 ```text
-<Information> 应用程序：正在启动。
+2019.01.11 15:25:11.151730 [ 1 ] {} <Information> : Starting ClickHouse 19.1.0 with revision 54413
+2019.01.11 15:25:11.154578 [ 1 ] {} <Information> Application: starting up
+2019.01.11 15:25:11.156361 [ 1 ] {} <Information> StatusFile: Status file ./status already exists - unclean restart. Contents:
+PID: 8510
+Started at: 2019-01-11 15:24:23
+Revision: 54413
+
+2019.01.11 15:25:11.156673 [ 1 ] {} <Error> Application: DB::Exception: Cannot lock file ./status. Another server instance in same directory is already running.
+2019.01.11 15:25:11.156682 [ 1 ] {} <Information> Application: shutting down
+2019.01.11 15:25:11.156686 [ 1 ] {} <Debug> Application: Uninitializing subsystem: Logging Subsystem
+2019.01.11 15:25:11.156716 [ 2 ] {} <Information> BaseDaemon: Stop SignalListener thread
 ```
 
 如果你尝试在同一台服务器上启动第二个 `clickhouse-server` 实例，将会看到如下日志：
 
-```text
-2019.01.11 15:25:11.151730 [ 1 ] {} <Information> : 正在启动 ClickHouse 19.1.0,修订版 54413
-2019.01.11 15:25:11.154578 [ 1 ] {} <Information> Application: 正在启动
-2019.01.11 15:25:11.156361 [ 1 ] {} <Information> StatusFile: 状态文件 ./status 已存在 - 非正常重启。内容:
-PID: 8510
-启动于: 2019-01-11 15:24:23
-修订版: 54413
-
-2019.01.11 15:25:11.156673 [ 1 ] {} <Error> Application: DB::Exception: 无法锁定文件 ./status。同一目录中已有另一个服务器实例正在运行。
-2019.01.11 15:25:11.156682 [ 1 ] {} <Information> Application: 正在关闭
-2019.01.11 15:25:11.156686 [ 1 ] {} <Debug> Application: 正在取消初始化子系统: 日志子系统
-2019.01.11 15:25:11.156716 [ 2 ] {} <Information> BaseDaemon: 停止 SignalListener 线程
+```bash
+$ sudo journalctl -u clickhouse-server
 ```
 
 **查看 system.d 日志**
@@ -160,13 +173,14 @@ PID: 8510
 如果在 `clickhouse-server` 日志中找不到任何有用的信息，或者根本没有日志，可以使用以下命令查看 `system.d` 日志：
 
 ```bash
-$ sudo journalctl -u clickhouse-server
+$ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-server/config.xml
 ```
 
 **以交互式模式启动 clickhouse-server**
 
 ```bash
-$ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-server/config.xml
+$ curl 'http://localhost:8123/' --data-binary "SELECT a"
+Code: 47, e.displayText() = DB::Exception: Unknown identifier: a. Note that there are no tables (FROM clause) in your query, context: required_names: 'a' source_tables: table_aliases: private_aliases: column_aliases: public_columns: 'a' masked_columns: array_join_columns: source_columns: , e.what() = DB::Exception
 ```
 
 此命令会使用自动启动脚本的标准参数，以交互式应用程序的方式启动服务器。在此模式下，`clickhouse-server` 会在控制台输出所有事件消息。

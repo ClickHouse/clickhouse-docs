@@ -59,17 +59,17 @@ import Image from '@theme/IdealImage';
 
 1. 连接到你的 RDS/Aurora 实例，并使用以下命令创建一个新的数据库用户：
    ```sql
-   CREATE USER clickpipes_iam_user; 
-   GRANT rds_iam TO clickpipes_iam_user;
-   ```
+    CREATE USER clickpipes_iam_user; 
+    GRANT rds_iam TO clickpipes_iam_user;
+    ```
 2. 按照 [PostgreSQL source setup guide](postgres/source/rds) 中其余步骤配置你的 RDS 实例以用于 ClickPipes。
 
 ##### MySQL / MariaDB {#setting-up-the-database-user-mysql}
 
 1. 连接到你的 RDS/Aurora 实例，并使用以下命令创建一个新的数据库用户：
    ```sql
-   CREATE USER 'clickpipes_iam_user' IDENTIFIED WITH AWSAuthenticationPlugin AS 'RDS';
-   ```
+    CREATE USER 'clickpipes_iam_user' IDENTIFIED WITH AWSAuthenticationPlugin AS 'RDS';
+    ```
 2. 按照 [MySQL source setup guide](mysql/source/rds) 中其余步骤配置你的 RDS/Aurora 实例以用于 ClickPipes。
 
 ### 设置 IAM 角色 {#setting-up-iam-role}

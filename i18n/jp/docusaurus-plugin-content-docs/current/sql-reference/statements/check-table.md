@@ -141,9 +141,9 @@ Output:
 └──────────────┴───────────┴──────────────────────────────────────────┘
 ````
 
-checksums.txt ファイルが存在しない場合は、復元できます。特定のパーティションに対して `CHECK TABLE` コマンドを実行する際に再計算および再書き込みされ、ステータスは引き続き &#39;is&#95;passed = 1&#39; として報告されます。
+If the checksums.txt file is missing, it can be restored. It will be recalculated and rewritten during the execution of the CHECK TABLE command for the specific partition, and the status will still be reported as 'is_passed = 1'.
 
-`CHECK ALL TABLES` クエリを使用すると、既存の `(Replicated)MergeTree` テーブルをすべて一度にチェックできます。
+You can check all existing `(Replicated)MergeTree` tables at once by using the `CHECK ALL TABLES` query.
 
 ```sql
 CHECK ALL TABLES

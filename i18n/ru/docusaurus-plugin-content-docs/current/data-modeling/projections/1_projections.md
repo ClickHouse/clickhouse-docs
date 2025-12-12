@@ -129,17 +129,18 @@ FROM nyc_taxi.trips WHERE tip_amount > 200 AND trip_duration_min > 0
 ORDER BY tip_amount, trip_id ASC
 ```
 
-Обратите внимание, что из‑за того, что мы фильтруем по `tip_amount`, который не входит в `ORDER BY`, ClickHouse
-приходится выполнять полное сканирование таблицы. Давайте ускорим этот запрос.
+Notice that because we are filtering on `tip_amount` which is not in the `ORDER BY`, ClickHouse 
+had to do a full table scan. Let's speed this query up.
 
-Чтобы сохранить исходную таблицу и результаты, мы создадим новую таблицу и скопируем данные с помощью `INSERT INTO SELECT`:
+So as to preserve the original table and results, we'll create a new table and copy the data using an `INSERT INTO SELECT`:
 
 ```sql
 CREATE TABLE nyc_taxi.trips_with_projection AS nyc_taxi.trips;
 INSERT INTO nyc_taxi.trips_with_projection SELECT * FROM nyc_taxi.trips;
 ```
 
-Чтобы добавить проекцию, используем оператор `ALTER TABLE` вместе с оператором `ADD PROJECTION`:
+To add a projection we use the `ALTER TABLE` statement together with the `ADD PROJECTION`
+statement:
 
 ```sql
 ALTER TABLE nyc_taxi.trips_with_projection
@@ -150,15 +151,15 @@ ADD PROJECTION prj_tip_amount
 )
 ```
 
-После добавления проекции необходимо использовать оператор `MATERIALIZE PROJECTION`,
-чтобы данные в ней были физически отсортированы и перезаписаны в соответствии
-с приведённым выше запросом:
+It is necessary after adding a projection to use the `MATERIALIZE PROJECTION` 
+statement so that the data in it is physically ordered and rewritten according
+to the specified query above:
 
 ```sql
 ALTER TABLE nyc.trips_with_projection MATERIALIZE PROJECTION prj_tip_amount
 ```
 
-Теперь, когда мы добавили проекцию, давайте снова выполним запрос:
+Let's run the query again now that we've added the projection:
 
 ```sql runnable
 SELECT
@@ -169,9 +170,11 @@ FROM nyc_taxi.trips_with_projection WHERE tip_amount > 200 AND trip_duration_min
 ORDER BY tip_amount, trip_id ASC
 ```
 
-Обратите внимание, что нам удалось существенно сократить время выполнения запроса и при этом просканировать меньше строк.
+Notice how we were able to decrease the query time substantially, and needed to scan
+less rows.
 
-Мы можем подтвердить, что наш запрос выше действительно использовал созданную нами проекцию, обратившись к таблице `system.query_log`:
+We can confirm that our query above did indeed use the projection we made by
+querying the `system.query_log` table:
 
 ```sql
 SELECT query, projections 
@@ -189,17 +192,21 @@ WHERE query_id='<query_id>'
    └───────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────┘
 ```
 
-### Использование проекций для ускорения запросов к данным UK price paid {#using-projections-to-speed-up-UK-price-paid}
+### Using projections to speed up UK price paid queries {#using-projections-to-speed-up-UK-price-paid}
 
-Чтобы продемонстрировать, как проекции могут использоваться для ускорения выполнения запросов,
-рассмотрим пример на реальном наборе данных. В этом примере мы будем
-использовать таблицу из руководства [UK Property Price Paid](https://clickhouse.com/docs/getting-started/example-datasets/uk-price-paid),
-содержащую 30,03 миллиона строк. Этот набор данных также доступен в
-среде [sql.clickhouse.com](https://sql.clickhouse.com/?query_id=6IDMHK3OMR1C97J6M9EUQS).
+To demonstrate how projections can be used to speed up query performance, let's
+take a look at an example using a real life dataset. For this example we'll be 
+using the table from our [UK Property Price Paid](https://clickhouse.com/docs/getting-started/example-datasets/uk-price-paid)
+tutorial with 30.03 million rows. This dataset is also available within our 
+[sql.clickhouse.com](https://sql.clickhouse.com/?query_id=6IDMHK3OMR1C97J6M9EUQS)
+environment.
 
-Если вы хотите узнать, как была создана таблица и загружены данные, обратитесь к странице [&quot;Набор данных о ценах на недвижимость в Великобритании&quot;](/getting-started/example-datasets/uk-price-paid).
+If you would like to see how the table was created and data inserted, you can
+refer to ["The UK property prices dataset"](/getting-started/example-datasets/uk-price-paid)
+page.
 
-Мы можем выполнить два простых запроса к этому набору данных. Первый выводит список районов Лондона с наибольшими суммами оплаты, а второй вычисляет среднюю цену по районам:
+We can run two simple queries on this dataset. The first lists the counties in London which
+have the highest prices paid, and the second calculates the average price for the counties:
 
 ```sql runnable
 SELECT
@@ -221,7 +228,9 @@ ORDER BY avg(price) DESC
 LIMIT 3
 ```
 
-Обратите внимание, что несмотря на высокую скорость выполнения, для обоих запросов было выполнено полное сканирование всех 30,03 миллионов строк, так как ни `town`, ни `price` не были включены в ORDER BY при создании таблицы:
+Notice that despite being very fast how a full table scan of all 30.03 million rows occurred for both queries, due 
+to the fact that neither `town` nor `price` were in our `ORDER BY` statement when we
+created the table:
 
 ```sql
 CREATE TABLE uk.uk_price_paid
@@ -233,19 +242,19 @@ ENGINE = MergeTree
 ORDER BY (postcode1, postcode2, addr1, addr2);
 ```
 
-Проверим, можно ли ускорить этот запрос с помощью проекций.
+Let's see if we can speed this query up using projections.
 
-Чтобы сохранить исходную таблицу и результаты, создадим новую таблицу и скопируем данные с помощью `INSERT INTO SELECT`:
+To preserve the original table and results, we'll create a new table and copy the data using an `INSERT INTO SELECT`:
 
 ```sql
 CREATE TABLE uk.uk_price_paid_with_projections AS uk_price_paid;
 INSERT INTO uk.uk_price_paid_with_projections SELECT * FROM uk.uk_price_paid;
 ```
 
-Создаём и заполняем проекцию `prj_oby_town_price`, которая создаёт
-дополнительную (скрытую) таблицу с первичным индексом, упорядоченную по городу и цене, для
-оптимизации запроса, который выводит список округов в указанном городе с максимальными
-ценами:
+We create and populate projection `prj_oby_town_price` which produces an 
+additional (hidden) table with a primary index, ordering by town and price, to 
+optimize the query that lists the counties in a specific town for the highest 
+paid prices:
 
 ```sql
 ALTER TABLE uk.uk_price_paid_with_projections
@@ -264,11 +273,12 @@ ALTER TABLE uk.uk_price_paid_with_projections
 SETTINGS mutations_sync = 1
 ```
 
-Настройка [`mutations_sync`](/operations/settings/settings#mutations_sync) используется для принудительного синхронного выполнения.
+The [`mutations_sync`](/operations/settings/settings#mutations_sync) setting is
+used to force synchronous execution.
 
-Создаём и заполняем проекцию `prj_gby_county` — дополнительную (скрытую) таблицу,
-которая инкрементно предвычисляет агрегированные значения avg(price) для всех существующих
-130 округов Великобритании:
+We create and populate projection `prj_gby_county` – an additional (hidden) table
+that incrementally pre-computes the avg(price) aggregate values for all existing
+130 UK counties:
 
 ```sql
 ALTER TABLE uk.uk_price_paid_with_projections
@@ -280,7 +290,6 @@ ALTER TABLE uk.uk_price_paid_with_projections
     GROUP BY county
   ))
 ```
-
 ```sql
 ALTER TABLE uk.uk_price_paid_with_projections
   (MATERIALIZE PROJECTION prj_gby_county)
@@ -288,18 +297,19 @@ SETTINGS mutations_sync = 1
 ```
 
 :::note
-Если в проекции используется предложение `GROUP BY`, как в проекции `prj_gby_county`
-выше, то базовым движком хранения для (скрытой) таблицы
-становится `AggregatingMergeTree`, и все агрегатные функции преобразуются в
-`AggregateFunction`. Это обеспечивает правильную инкрементную агрегацию данных.
+If there is a `GROUP BY` clause used in a projection like in the `prj_gby_county`
+projection above, then the underlying storage engine for the (hidden) table 
+becomes `AggregatingMergeTree`, and all aggregate functions are converted to 
+`AggregateFunction`. This ensures proper incremental data aggregation.
 :::
 
-На рисунке ниже показана визуализация основной таблицы `uk_price_paid_with_projections`
-и двух её проекций:
+The figure below is a visualization of the main table `uk_price_paid_with_projections`
+and its two projections:
 
-<Image img={projections_2} size="md" alt="Визуализация основной таблицы uk_price_paid_with_projections и двух её проекций" />
+<Image img={projections_2} size="md" alt="Visualization of the main table uk_price_paid_with_projections and its two projections"/>
 
-Если теперь снова выполнить запрос, который выводит районы Лондона с тремя самыми высокими ценами продажи, мы увидим улучшение производительности запроса:
+If we now run the query that lists the counties in London for the three highest 
+paid prices again, we see an improvement in query performance:
 
 ```sql runnable
 SELECT
@@ -311,8 +321,8 @@ ORDER BY price DESC
 LIMIT 3
 ```
 
-Аналогично для запроса, который выводит три округа Великобритании с наибольшими
-средними ценами:
+Likewise, for the query that lists the U.K. counties with the three highest 
+average-paid prices:
 
 ```sql runnable
 SELECT
@@ -324,18 +334,20 @@ ORDER BY avg(price) DESC
 LIMIT 3
 ```
 
-Обратите внимание, что оба запроса обращаются к исходной таблице, и оба запроса привели к полному сканированию таблицы (все 30,03 миллиона строк были считаны с диска) до создания двух проекций.
+Note that both queries target the original table, and that both queries resulted
+in a full table scan (all 30.03 million rows got streamed from disk) before we 
+created the two projections.
 
-Также обратите внимание, что запрос, который выводит графства Лондона с тремя
-наиболее высокими ценами, считывает в потоковом режиме 2,17 миллиона строк. Когда мы использовали вторую таблицу,
-оптимизированную под этот запрос, с диска было прочитано только 81,92 тысячи строк.
+Also, note that the query that lists the counties in London for the three highest
+paid prices is streaming 2.17 million rows. When we directly used a second table
+optimized for this query, only 81.92 thousand rows were streamed from disk.
 
-Причина этой разницы в том, что в настоящее время оптимизация `optimize_read_in_order`,
-упомянутая выше, не поддерживается для проекций.
+The reason for the difference is that currently, the `optimize_read_in_order` 
+optimization mentioned above isn't supported for projections.
 
-Мы анализируем таблицу `system.query_log` и видим, что ClickHouse
-автоматически использовал две проекции для двух приведённых выше запросов (см. столбец
-projections ниже):
+We inspect the `system.query_log` table to see that ClickHouse 
+automatically used the two projections for the two queries above (see the 
+projections column below):
 
 ```sql
 SELECT
@@ -384,20 +396,20 @@ projections:    ['uk.uk_price_paid_with_projections.prj_obj_town_price']
 2 строки. Затрачено: 0.006 сек.
 ```
 
-### Дополнительные примеры {#further-examples}
+### Further examples {#further-examples}
 
-В следующих примерах используется тот же набор данных с ценами в Великобритании, и сравниваются запросы с использованием проекций и без них.
+The following examples use the same UK price dataset, contrasting queries with and without projections.
 
-Чтобы сохранить нашу исходную таблицу (и производительность), мы снова создадим копию таблицы с помощью `CREATE AS` и `INSERT INTO SELECT`.
+In order to preserve our original table (and performance), we again create a copy of the table using `CREATE AS` and `INSERT INTO SELECT`.
 
 ```sql
 CREATE TABLE uk.uk_price_paid_with_projections_v2 AS uk.uk_price_paid;
 INSERT INTO uk.uk_price_paid_with_projections_v2 SELECT * FROM uk.uk_price_paid;
 ```
 
-#### Построим проекцию {#build-projection}
+#### Build a Projection {#build-projection}
 
-Давайте создадим агрегатную проекцию по измерениям `toYear(date)`, `district` и `town`:
+Let's create an aggregate projection by the dimensions `toYear(date)`, `district`, and `town`:
 
 ```sql
 ALTER TABLE uk.uk_price_paid_with_projections_v2
@@ -417,7 +429,7 @@ ALTER TABLE uk.uk_price_paid_with_projections_v2
     )
 ```
 
-Заполните проекцию для существующих данных. (Без материализации проекция будет создаваться только для данных, вставляемых после этого):
+Populate the projection for existing data. (Without materializing it, the projection will be created for only newly inserted data):
 
 ```sql
 ALTER TABLE uk.uk_price_paid_with_projections_v2
@@ -425,9 +437,9 @@ ALTER TABLE uk.uk_price_paid_with_projections_v2
 SETTINGS mutations_sync = 1
 ```
 
-Следующие запросы сравнивают производительность при использовании проекций и без них. Чтобы отключить использование проекций, мы используем настройку [`optimize_use_projections`](/operations/settings/settings#optimize_use_projections), которая включена по умолчанию.
+The following queries contrast performance with and without projections. To disable projection use we use the setting [`optimize_use_projections`](/operations/settings/settings#optimize_use_projections), which is enabled by default.
 
-#### Запрос 1. Средняя годовая цена {#average-price-projections}
+#### Query 1. Average price per year {#average-price-projections}
 
 ```sql runnable
 SELECT
@@ -450,10 +462,9 @@ GROUP BY year
 ORDER BY year ASC
 
 ```
+The results should be the same, but the performance better on the latter example!
 
-Результат должен быть таким же, но производительность во втором примере будет лучше!
-
-#### Запрос 2. Средняя цена по годам в Лондоне {#average-price-london-projections}
+#### Query 2. Average price per year in London {#average-price-london-projections}
 
 ```sql runnable
 SELECT
@@ -478,9 +489,9 @@ GROUP BY year
 ORDER BY year ASC
 ```
 
-#### Запрос 3. Самые дорогие районы {#most-expensive-neighborhoods-projections}
+#### Query 3. The most expensive neighborhoods {#most-expensive-neighborhoods-projections}
 
-Условие (date &gt;= &#39;2020-01-01&#39;) нужно изменить так, чтобы оно соответствовало измерению проекции (`toYear(date) >= 2020)`:
+The condition (date >= '2020-01-01') needs to be modified so that it matches the projection dimension (`toYear(date) >= 2020)`:
 
 ```sql runnable
 SELECT
@@ -517,24 +528,24 @@ ORDER BY price DESC
 LIMIT 100
 ```
 
-Результат по-прежнему тот же, но обратите внимание на улучшение производительности второго запроса.
+Again, the result is the same but notice the improvement in query performance for the 2nd query.
 
-### Комбинирование проекций в одном запросе {#combining-projections}
+### Combining projections in one query {#combining-projections}
 
-Начиная с версии 25.6, на основе поддержки `_part_offset`, добавленной в
-предыдущей версии, ClickHouse теперь может использовать несколько проекций для ускорения
-одного запроса с несколькими фильтрами.
+Starting in version 25.6, building on the `_part_offset` support introduced in 
+the previous version, ClickHouse can now use multiple projections to accelerate 
+a single query with multiple filters.
 
-Важно, что ClickHouse по‑прежнему считывает данные только из одной проекции (или базовой таблицы),
-но может использовать первичные индексы других проекций для отсечения ненужных кусков данных (parts) перед чтением.
-Это особенно полезно для запросов, которые фильтруют по нескольким столбцам, при этом каждый из них
-может соответствовать своей проекции.
+Importantly, ClickHouse still reads data from only one projection (or the base table), 
+but can use other projections' primary indexes to prune unnecessary parts before reading.
+This is especially useful for queries that filter on multiple columns, each 
+potentially matching a different projection.
 
-> В настоящее время этот механизм отсекает только целые части (parts). Отсечение на уровне гранул
-> пока не поддерживается.
+> Currently, this mechanism only prunes entire parts. Granule-level pruning is 
+  not yet supported.
 
-Чтобы продемонстрировать это, мы определим таблицу (с проекциями, использующими столбцы `_part_offset`)
-и вставим пять примерных строк, соответствующих приведённым выше диаграммам.
+To demonstrate this, we define the table (with projections using `_part_offset` columns)
+and insert five example rows matching the diagrams above.
 
 ```sql
 CREATE TABLE page_views
@@ -560,7 +571,7 @@ SETTINGS
   max_bytes_to_merge_at_max_space_in_pool = 1; -- отключить слияние
 ```
 
-Затем вставим данные в таблицу:
+Then we insert data into the table:
 
 ```sql
 INSERT INTO page_views VALUES (
@@ -576,25 +587,24 @@ INSERT INTO page_views VALUES (
 ```
 
 :::note
-Примечание: в таблице для наглядности используются нестандартные настройки, такие как гранулы по одной строке
-и отключённое слияние частей (parts), что не рекомендуется для использования в продакшене.
+Note: The table uses custom settings for illustration, such as one-row granules 
+and disabled part merges, which are not recommended for production use.
 :::
 
-Эта конфигурация даёт следующий результат:
+This setup produces:
+- Five separate parts (one per inserted row)
+- One primary index entry per row (in the base table and each projection)
+- Each part contains exactly one row
 
-* Пять отдельных частей (по одной на каждую вставленную строку)
-* По одной записи первичного индекса на строку (в базовой таблице и в каждой проекции)
-* Каждая часть содержит ровно одну строку
+With this setup, we run a query filtering on both `region` and `user_id`. 
+Since the base table’s primary index is built from `event_date` and `id`, it
+is unhelpful here, ClickHouse therefore uses:
 
-С такой конфигурацией мы выполняем запрос с фильтрацией и по `region`, и по `user_id`.
-Поскольку первичный индекс базовой таблицы построен по `event_date` и `id`, он
-здесь бесполезен, поэтому ClickHouse использует:
+- `region_proj` to prune parts by region
+- `user_id_proj` to further prune by `user_id`
 
-* `region_proj` для отсечения частей по региону
-* `user_id_proj` для дополнительного отсечения по `user_id`
-
-Это поведение видно при использовании `EXPLAIN projections = 1`, который показывает,
-как ClickHouse выбирает и применяет проекции.
+This behavior is visible using `EXPLAIN projections = 1`, which shows how 
+ClickHouse selects and applies projections.
 
 ```sql
 EXPLAIN projections=1

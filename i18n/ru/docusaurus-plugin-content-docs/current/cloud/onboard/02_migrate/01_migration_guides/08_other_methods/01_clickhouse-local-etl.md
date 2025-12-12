@@ -98,13 +98,13 @@ ClickHouse предоставляет интеграционные движки 
 
 ```sql
   CREATE DATABASE db
-```
+  ```
 
 #### Создайте таблицу-назначение с такой же схемой, как у таблицы MySQL: {#create-a-destination-table-that-has-a-schema-equivalent-to-the-mysql-table}
 
 ```sql
   CREATE TABLE db.table ...
-```
+  ```
 
 :::note
 Схемы целевой таблицы ClickHouse Cloud и исходной таблицы MySQL должны соответствовать друг другу (имена и порядок столбцов должны совпадать, а типы данных столбцов — быть совместимыми).
@@ -119,7 +119,7 @@ ClickHouse предоставляет интеграционные движки 
 INSERT INTO FUNCTION
 remoteSecure('HOSTNAME.clickhouse.cloud:9440', 'db.table', 'default', 'PASS')
 SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password');"
-```
+  ```
 
 :::note
 На хосте `clickhouse-local` данные локально не сохраняются. Вместо этого данные считываются из исходной таблицы MySQL
@@ -138,4 +138,4 @@ SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password');"
 
 ```sql
   CREATE DATABASE db
-```
+  ```

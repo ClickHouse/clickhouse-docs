@@ -64,34 +64,39 @@ SELECT hop(now(), INTERVAL '1' DAY, INTERVAL '2' DAY)
 ('2024-07-03 00:00:00','2024-07-05 00:00:00')
 ```
 
+
+
 ## hopEnd {#hopEnd}
 
-導入バージョン: v22.1
+Introduced in: v22.1
 
-対応するホップウィンドウの排他的上限を返します。
 
-1 つのレコードが複数のホップウィンドウに割り当てられる可能性があるため、`WINDOW VIEW` なしで hop 関数を使用する場合、この関数は最初のウィンドウの境界のみを返します。
+Returns the exclusive upper bound of the corresponding hopping window.
 
-**構文**
+Since one record can be assigned to multiple hop windows, the function only returns the bound of the first window when hop function is used without `WINDOW VIEW`.
+    
+
+**Syntax**
 
 ```sql
 hopEnd(time_attr, hop_interval, window_interval[, timezone])
 ```
 
-**引数**
+**Arguments**
 
-* `time_attr` — 日付と時刻。[`DateTime`](/sql-reference/data-types/datetime)
-* `hop_interval` — 正のホップ間隔。[`Interval`](/sql-reference/data-types/int-uint)
-* `window_interval` — 正のウィンドウ間隔。[`Interval`](/sql-reference/data-types/int-uint)
-* `timezone` — 省略可能。タイムゾーン名。[`String`](/sql-reference/data-types/string)
+- `time_attr` — Date and time. [`DateTime`](/sql-reference/data-types/datetime)
+- `hop_interval` — Positive Hop interval. [`Interval`](/sql-reference/data-types/int-uint)
+- `window_interval` — Positive Window interval. [`Interval`](/sql-reference/data-types/int-uint)
+- `timezone` — Optional. Timezone name. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-対応するホッピングウィンドウの排他的上限値を返します。[`DateTime`](/sql-reference/data-types/datetime)
+**Returned value**
 
-**例**
+Returns the exclusive upper bound of the corresponding hopping window. [`DateTime`](/sql-reference/data-types/datetime)
 
-**ホッピングウィンドウの終端**
+**Examples**
+
+**Hopping window end**
 
 ```sql title=Query
 SELECT hopEnd(now(), INTERVAL '1' DAY, INTERVAL '2' DAY)
@@ -101,34 +106,39 @@ SELECT hopEnd(now(), INTERVAL '1' DAY, INTERVAL '2' DAY)
 2024-07-05 00:00:00
 ```
 
+
+
 ## hopStart {#hopStart}
 
-導入バージョン: v22.1
+Introduced in: v22.1
 
-対応するホップウィンドウの包含的な下限値を返します。
 
-1 つのレコードが複数のホップウィンドウに割り当てられる可能性があるため、`WINDOW VIEW` を使用せずに `hop` 関数を使用した場合、この関数は最初のホップウィンドウの下限値のみを返します。
+Returns the inclusive lower bound of the corresponding hopping window.
 
-**構文**
+Since one record can be assigned to multiple hop windows, the function only returns the bound of the first window when hop function is used without `WINDOW VIEW`.
+    
+
+**Syntax**
 
 ```sql
 hopStart(time_attr, hop_interval, window_interval[, timezone])
 ```
 
-**引数**
+**Arguments**
 
-* `time_attr` — 日付と時刻。[`DateTime`](/sql-reference/data-types/datetime)
-* `hop_interval` — 正のホップ間隔。[`Interval`](/sql-reference/data-types/int-uint)
-* `window_interval` — 正のウィンドウ間隔。[`Interval`](/sql-reference/data-types/int-uint)
-* `timezone` — 省略可。タイムゾーン名。[`String`](/sql-reference/data-types/string)
+- `time_attr` — Date and time. [`DateTime`](/sql-reference/data-types/datetime)
+- `hop_interval` — Positive Hop interval. [`Interval`](/sql-reference/data-types/int-uint)
+- `window_interval` — Positive Window interval. [`Interval`](/sql-reference/data-types/int-uint)
+- `timezone` — Optional. Timezone name. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-対応するホッピングウィンドウの下側の（含まれる）境界を返します。[`DateTime`](/sql-reference/data-types/datetime)
+**Returned value**
 
-**例**
+Returns the inclusive lower bound of the corresponding hopping window. [`DateTime`](/sql-reference/data-types/datetime)
 
-**ホッピングウィンドウの開始**
+**Examples**
+
+**Hopping window start**
 
 ```sql title=Query
 SELECT hopStart(now(), INTERVAL '1' DAY, INTERVAL '2' DAY)
@@ -138,31 +148,36 @@ SELECT hopStart(now(), INTERVAL '1' DAY, INTERVAL '2' DAY)
 2024-07-03 00:00:00
 ```
 
+
+
 ## tumble {#tumble}
 
-導入バージョン: v21.12
+Introduced in: v21.12
 
-タンブリングウィンドウは、レコードを固定長（`interval`）の、互いに重ならない連続したウィンドウに割り当てます。
 
-**構文**
+A tumbling time window assigns records to non-overlapping, continuous windows with a fixed duration (`interval`).
+    
+
+**Syntax**
 
 ```sql
 tumble(time_attr, interval[, timezone])
 ```
 
-**引数**
+**Arguments**
 
-* `time_attr` — 日時。[`DateTime`](/sql-reference/data-types/datetime)
-* `interval` — Interval 型で指定するウィンドウ間隔。[`Interval`](/sql-reference/data-types/int-uint)
-* `timezone` — 省略可。タイムゾーン名。[`String`](/sql-reference/data-types/string)
+- `time_attr` — Date and time. [`DateTime`](/sql-reference/data-types/datetime)
+- `interval` — Window interval in Interval. [`Interval`](/sql-reference/data-types/int-uint)
+- `timezone` — Optional. Timezone name. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-対応するタンブリングウィンドウの下限（含む）と上限（含まない）を返します。[`Tuple(DateTime, DateTime)`](/sql-reference/data-types/tuple)
+**Returned value**
 
-**例**
+Returns the inclusive lower and exclusive upper bound of the corresponding tumbling window. [`Tuple(DateTime, DateTime)`](/sql-reference/data-types/tuple)
 
-**タンブリングウィンドウ**
+**Examples**
+
+**Tumbling window**
 
 ```sql title=Query
 SELECT tumble(now(), toIntervalDay('1'))
@@ -172,31 +187,36 @@ SELECT tumble(now(), toIntervalDay('1'))
 ('2024-07-04 00:00:00','2024-07-05 00:00:00')
 ```
 
+
+
 ## tumbleEnd {#tumbleEnd}
 
-導入バージョン: v22.1
+Introduced in: v22.1
 
-対応するタンブリングウィンドウの非包含の上限値を返します。
 
-**構文**
+Returns the exclusive upper bound of the corresponding tumbling window.
+    
+
+**Syntax**
 
 ```sql
 tumbleEnd(time_attr, interval[, timezone])
 ```
 
-**引数**
+**Arguments**
 
-* `time_attr` — 日付と時刻。[`DateTime`](/sql-reference/data-types/datetime)
-* `interval` — `Interval` 型で指定されたウィンドウ間隔。[`Interval`](/sql-reference/data-types/int-uint)
-* `timezone` — 省略可能。タイムゾーン名。[`String`](/sql-reference/data-types/string)
+- `time_attr` — Date and time. [`DateTime`](/sql-reference/data-types/datetime)
+- `interval` — Window interval in Interval. [`Interval`](/sql-reference/data-types/int-uint)
+- `timezone` — Optional. Timezone name. [`String`](/sql-reference/data-types/string)
 
-**戻り値**
 
-対応するタンブリングウィンドウの排他的な上限値を返します。[`DateTime`](/sql-reference/data-types/datetime)
+**Returned value**
 
-**例**
+Returns the exclusive upper bound of the corresponding tumbling window. [`DateTime`](/sql-reference/data-types/datetime)
 
-**タンブリングウィンドウの終了時刻**
+**Examples**
+
+**Tumbling window end**
 
 ```sql title=Query
 SELECT tumbleEnd(now(), toIntervalDay('1'))
@@ -206,31 +226,36 @@ SELECT tumbleEnd(now(), toIntervalDay('1'))
 2024-07-05 00:00:00
 ```
 
+
+
 ## tumbleStart {#tumbleStart}
 
-導入: v22.1
+Introduced in: v22.1
 
-対応するタンブリングウィンドウの包含的な下限を返します。
 
-**構文**
+Returns the inclusive lower bound of the corresponding tumbling window.
+    
+
+**Syntax**
 
 ```sql
 tumbleStart(time_attr, interval[, timezone])
 ```
 
-**引数**
+**Arguments**
 
-* `time_attr` — 日付と時刻。[`DateTime`](/sql-reference/data-types/datetime)
-* `interval` — Interval 型で指定するウィンドウ間隔。[`Interval`](/sql-reference/data-types/int-uint)
-* `timezone` — オプション。タイムゾーン名。[`String`](/sql-reference/data-types/string)
+- `time_attr` — Date and time. [`DateTime`](/sql-reference/data-types/datetime)
+- `interval` — Window interval in Interval. [`Interval`](/sql-reference/data-types/int-uint)
+- `timezone` — Optional. Timezone name. [`String`](/sql-reference/data-types/string)
 
-**返り値**
 
-対応するタンブリングウィンドウの包括的な下限（開始時刻）を返します。[`DateTime`](/sql-reference/data-types/datetime)
+**Returned value**
 
-**例**
+Returns the inclusive lower bound of the corresponding tumbling window. [`DateTime`](/sql-reference/data-types/datetime)
 
-**タンブリングウィンドウの開始**
+**Examples**
+
+**Tumbling window start**
 
 ```sql title=Query
 SELECT tumbleStart(now(), toIntervalDay('1'))

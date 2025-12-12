@@ -201,7 +201,7 @@ CREATE TABLE posts_v2
 )
 ENGINE = MergeTree
 ORDER BY tuple()
-COMMENT 'Оптимизированные типы'
+COMMENT 'Optimized types'
 ```
 
 Мы можем заполнить это простым `INSERT INTO SELECT`, считывая данные из нашей предыдущей таблицы и вставляя их в эту:
@@ -294,16 +294,16 @@ CREATE TABLE posts_v3
 )
 ENGINE = MergeTree
 ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
-COMMENT 'Ключ сортировки'
+COMMENT 'Ordering Key'
 
---заполнение таблицы из существующей таблицы
+--populate table from existing table
 
 INSERT INTO posts_v3 SELECT * FROM posts_v2
 
 0 rows in set. Elapsed: 158.074 sec. Processed 59.82 million rows, 76.21 GB (378.42 thousand rows/s., 482.14 MB/s.)
 Peak memory usage: 6.41 GiB.
 
-Наш предыдущий запрос улучшает время отклика запроса более чем в 3 раза:
+Our previous query improves the query response time by over 3x:
 
 SELECT
     Id,

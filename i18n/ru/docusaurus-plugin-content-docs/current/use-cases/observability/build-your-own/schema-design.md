@@ -69,8 +69,8 @@ LIMIT 5
 │ /site/productAdditives   │ 10866 │
 └──────────────────────────┴───────┘
 
-Получено 5 строк. Затрачено: 0,735 сек. Обработано 10,36 млн строк, 4,65 ГБ (14,10 млн строк/сек., 6,32 ГБ/сек.)
-Пиковое использование памяти: 153,71 МиБ.
+5 rows in set. Elapsed: 0.735 sec. Processed 10.36 million rows, 4.65 GB (14.10 million rows/s., 6.32 GB/s.)
+Peak memory usage: 153.71 MiB.
 ```
 
 Обратите внимание на использование здесь синтаксиса отображения (map), например `LogAttributes['request_path']`, а также функции [`path`](/sql-reference/functions/url-functions#path) для удаления параметров запроса из URL.
@@ -139,7 +139,7 @@ LIMIT 5
 │ /site/productAdditives   │ 10866 │
 └──────────────────────────┴───────┘
 
-Получено 5 строк. Время выполнения: 1.953 сек. Обработано 10.37 млн строк, 3.59 ГБ (5.31 млн строк/с., 1.84 ГБ/с.)
+5 rows in set. Elapsed: 1.953 sec. Processed 10.37 million rows, 3.59 GB (5.31 million rows/s., 1.84 GB/s.)
 ```
 
 Повышенная сложность и ресурсоёмкость запросов для парсинга неструктурированных логов (обратите внимание на разницу в производительности) — причина, по которой мы рекомендуем пользователям по возможности всегда использовать структурированные логи.
@@ -213,8 +213,8 @@ LIMIT 5
 │ /site/productModelImages │ 10866 │
 └──────────────────────────┴───────┘
 
-Получено 5 строк. Затрачено: 0,173 сек. Обработано 10,37 млн строк, 418,03 МБ (60,07 млн строк/с., 2,42 ГБ/с.)
-Пиковое использование памяти: 3,16 МиБ.
+5 rows in set. Elapsed: 0.173 sec. Processed 10.37 million rows, 418.03 MB (60.07 million rows/s., 2.42 GB/s.)
+Peak memory usage: 3.16 MiB.
 ```
 
 :::note
@@ -386,8 +386,8 @@ FROM otel_logs_v2
 LIMIT 1
 FORMAT Vertical
 
-Строка 1:
-─────────
+Row 1:
+──────
 Body:           {"remote_addr":"54.36.149.41","remote_user":"-","run_time":"0","time_local":"2019-01-22 00:26:14.000","request_type":"GET","request_path":"\/filter\/27|13 ,27|  5 ,p53","request_protocol":"HTTP\/1.1","status":"200","size":"30577","referer":"-","user_agent":"Mozilla\/5.0 (compatible; AhrefsBot\/6.1; +http:\/\/ahrefs.com\/robot\/)"}
 Timestamp:      2019-01-22 00:26:14
 ServiceName:
@@ -406,7 +406,7 @@ RequestPage:    /filter/27|13 ,27|  5 ,p53
 SeverityText:   INFO
 SeverityNumber:  9
 
-Получена 1 строка. Прошло: 0.010 сек.
+1 row in set. Elapsed: 0.010 sec.
 ```
 
 Эквивалентное материализованное представление, которое опирается на извлечение столбцов из колонки `Body` с помощью JSON-функций, показано ниже:
@@ -475,12 +475,12 @@ SELECT groupArrayDistinctArray(mapKeys(LogAttributes))
 FROM otel_logs
 FORMAT Vertical
 
-Строка 1:
+Row 1:
 ──────
 groupArrayDistinctArray(mapKeys(LogAttributes)): ['remote_user','run_time','request_type','log.file.name','referer','request_path','status','user_agent','remote_addr','time_local','size','request_protocol']
 
-Получена 1 строка. Затрачено: 1.139 сек. Обработано 5.63 млн строк, 2.53 ГБ (4.94 млн строк/сек., 2.22 ГБ/сек.)
-Пиковое использование памяти: 71.90 МиБ.
+1 row in set. Elapsed: 1.139 sec. Processed 5.63 million rows, 2.53 GB (4.94 million rows/s., 2.22 GB/s.)
+Peak memory usage: 71.90 MiB.
 ```
 
 :::note Избегайте точек
@@ -536,7 +536,7 @@ LIMIT 5
 │ 91.99.72.15   │
 └───────────────┘
 
-Получено 5 строк. Прошло: 0.011 сек.
+5 rows in set. Elapsed: 0.011 sec.
 ```
 
 Кроме того, добавить `ALIAS` очень просто с помощью команды `ALTER TABLE`. Эти столбцы сразу становятся доступными, например:
@@ -557,7 +557,7 @@ LIMIT 5
 │ 41483 │
 └───────┘
 
-Получено 5 строк. Прошло: 0.014 сек.
+5 rows in set. Elapsed: 0.014 sec.
 ```
 
 :::note Псевдонимы по умолчанию исключены
@@ -619,7 +619,7 @@ SELECT *
 FROM url('https://raw.githubusercontent.com/sapics/ip-location-db/master/dbip-city/dbip-city-ipv4.csv.gz', 'CSV', '\n           \tip_range_start IPv4, \n       \tip_range_end IPv4, \n         \tcountry_code Nullable(String), \n     \tstate1 Nullable(String), \n           \tstate2 Nullable(String), \n           \tcity Nullable(String), \n     \tpostcode Nullable(String), \n         \tlatitude Float64, \n          \tlongitude Float64, \n         \ttimezone Nullable(String)\n   \t')
 LIMIT 1
 FORMAT Vertical
-Строка 1:
+Row 1:
 ──────
 ip_range_start: 1.0.0.0
 ip_range_end:   1.0.0.255
@@ -652,7 +652,7 @@ CREATE TABLE geoip_url(
 select count() from geoip_url;
 
 ┌─count()─┐
-│ 3261621 │ -- 3.26 млн
+│ 3261621 │ -- 3.26 million
 └─────────┘
 ```
 
@@ -681,7 +681,7 @@ LIMIT 4;
 │ 1.0.8.0        │ 1.0.15.255   │ 1.0.8.0/21 │
 └────────────────┴──────────────┴────────────┘
 
-Получено 4 строки. Прошло: 0.259 сек.
+4 rows in set. Elapsed: 0.259 sec.
 ```
 
 :::note
@@ -741,7 +741,7 @@ SELECT * FROM ip_trie LIMIT 3
 │ 1.0.4.0/22 │ -38.0267 │   145.301 │ AU           │
 └────────────┴──────────┴───────────┴──────────────┘
 
-Получено 3 строки. Затрачено: 4.662 сек.
+3 rows in set. Elapsed: 4.662 sec.
 ```
 
 :::note Периодическое обновление
@@ -1121,7 +1121,7 @@ LIMIT 5
 │ 2019-01-26 12:00:00 │ 1736840933 │
 └─────────────────────┴────────────┘
 
-Получено 5 строк. Прошло: 0.008 sec.
+5 rows in set. Elapsed: 0.008 sec.
 
 SELECT
         Hour,
@@ -1139,7 +1139,7 @@ LIMIT 5
 │ 2019-01-26 12:00:00 │ 1736840933 │
 └─────────────────────┴────────────┘
 
-Получено 5 строк. Прошло: 0.005 sec.
+5 rows in set. Elapsed: 0.005 sec.
 ```
 
 Это ускорило выполнение нашего запроса с 0,6 с до 0,008 с — более чем в 75 раз!
@@ -1165,7 +1165,7 @@ ORDER BY Hour DESC
 │ 2019-01-22 00:00:00 │     536     │
 └─────────────────────┴─────────────┘
 
-113 строк в наборе. Затрачено: 0.667 сек. Обработано 10.37 млн строк, 4.73 ГБ (15.53 млн строк/с., 7.09 ГБ/с.)
+113 rows in set. Elapsed: 0.667 sec. Processed 10.37 million rows, 4.73 GB (15.53 million rows/s., 7.09 GB/s.)
 ```
 
 Для сохранения счетчика кардинальности при инкрементальном обновлении требуется использование движка AggregatingMergeTree.
@@ -1205,7 +1205,7 @@ FINAL
 │   113   │
 └─────────┘
 
-1 строка. Затрачено: 0,009 сек.
+1 row in set. Elapsed: 0.009 sec.
 ```
 
 В итоговом запросе нужно использовать суффикс Merge для функций (поскольку столбцы хранят состояния частичной агрегации):
@@ -1358,8 +1358,8 @@ FORMAT `Null`
 
 Ok.
 
-0 строк в наборе. Затрачено: 0.177 сек. Обработано 10.37 млн строк, 685.32 МБ (58.66 млн строк/сек., 3.88 ГБ/сек.)
-Пиковое использование памяти: 56.54 МиБ.
+0 rows in set. Elapsed: 0.177 sec. Processed 10.37 million rows, 685.32 MB (58.66 million rows/s., 3.88 GB/s.)
+Peak memory usage: 56.54 MiB.
 ```
 
 :::note Используйте Null для измерения производительности
@@ -1433,8 +1433,8 @@ FROM otel_logs_v2
 WHERE Status = 500
 FORMAT `Null`
 
-0 строк в наборе. Затрачено: 0.031 сек. Обработано 51.42 тысяч строк, 22.85 МБ (1.65 миллионов строк/с., 734.63 МБ/с.)
-Пиковое использование памяти: 27.85 МиБ.
+0 rows in set. Elapsed: 0.031 sec. Processed 51.42 thousand rows, 22.85 MB (1.65 million rows/s., 734.63 MB/s.)
+Peak memory usage: 27.85 MiB.
 ```
 
 В приведённом выше примере мы указываем в проекции столбцы, использованные в предыдущем запросе. Это означает, что только эти столбцы будут храниться на диске как часть проекции и будут упорядочены по Status. Если бы мы вместо этого использовали здесь `SELECT *`, сохранялись бы все столбцы. Хотя это позволило бы большему числу запросов (использующих любые подмножества столбцов) воспользоваться проекцией, потребовалось бы дополнительное дисковое пространство. Для измерения занимаемого дискового пространства и степени сжатия см. [&quot;Measuring table size &amp; compression&quot;](#measuring-table-size--compression).
@@ -1462,7 +1462,7 @@ SELECT tokens('https://www.zanbil.ir/m/filter/b113')
 │ ['https','www','zanbil','ir','m','filter','b113'] │
 └───────────────────────────────────────────────────┘
 
-1 строка в наборе. Затрачено: 0.008 сек.
+1 row in set. Elapsed: 0.008 sec.
 ```
 
 Функция `ngram` предоставляет аналогичные возможности, при этом размер `ngram` можно указать вторым параметром:
@@ -1492,7 +1492,7 @@ WHERE Referer LIKE '%ultra%'
 │  114514 │
 └─────────┘
 
-1 строка в наборе. Затрачено: 0.177 сек. Обработано 10.37 млн строк, 908.49 МБ (58.57 млн строк/с., 5.13 ГБ/с.)
+1 row in set. Elapsed: 0.177 sec. Processed 10.37 million rows, 908.49 MB (58.57 million rows/s., 5.13 GB/s.)
 ```
 
 Здесь необходимо выполнить сопоставление с размером n-граммы, равным 3. Поэтому создаём индекс `ngrambf_v1`.
@@ -1535,8 +1535,8 @@ WHERE Referer LIKE '%ultra%'
 │   182   │
 └─────────┘
 
-1 строка в наборе. Затрачено: 0.077 сек. Обработано 4.22 млн строк, 375.29 МБ (54.81 млн строк/сек., 4.87 ГБ/сек.)
-Пиковое использование памяти: 129.60 КиБ.
+1 row in set. Elapsed: 0.077 sec. Processed 4.22 million rows, 375.29 MB (54.81 million rows/s., 4.87 GB/s.)
+Peak memory usage: 129.60 KiB.
 ```
 
 :::note Только пример

@@ -460,8 +460,17 @@ Connector 从框架的缓冲区轮询消息：
 为了在 ClickHouse 上获得最佳性能，应尽量使用较大的批量：
 
 ```properties
-# 增加每次轮询的记录数量 {#increase-the-number-of-records-per-poll}
+# Increase the number of records per poll
 consumer.max.poll.records=5000
+
+# Increase the partition fetch size (5 MB)
+consumer.max.partition.fetch.bytes=5242880
+
+# Optional: Increase minimum fetch size to wait for more data (1 MB)
+consumer.fetch.min.bytes=1048576
+
+# Optional: Reduce wait time if latency is critical
+consumer.fetch.max.wait.ms=300
 ```
 
 # 增大分区拉取大小上限（5 MB） {#increase-the-partition-fetch-size-5-mb}
@@ -474,56 +483,15 @@ consumer.fetch.min.bytes=1048576
 
 consumer.fetch.max.wait.ms=300
 
-````
-
-**重要提示**:Kafka Connect 的 fetch 设置表示压缩数据,而 ClickHouse 接收的是未压缩数据。请根据压缩比来平衡这些设置。
-
-**权衡取舍**:
-- **更大的批次** = 更好的 ClickHouse 摄取性能、更少的数据分片、更低的开销
-- **更大的批次** = 更高的内存使用量、可能增加端到端延迟
-- **批次过大** = 存在超时、OutOfMemory 错误或超过 `max.poll.interval.ms` 的风险
-
-更多详情:[Confluent 文档](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration) | [Kafka 文档](https://kafka.apache.org/documentation/#consumerconfigs)
-
-#### 异步插入                         {#asynchronous-inserts}
-
-当连接器发送相对较小的批次,或者您希望通过将批处理责任转移到 ClickHouse 来进一步优化摄取时,异步插入是一项强大的功能。
-
-##### 何时使用异步插入                              {#when-to-use-async-inserts}
-
-在以下情况下考虑启用异步插入:
-
-- **大量小批次**:连接器频繁发送小批次(每批次 < 1000 行)
-- **高并发**:多个连接器任务同时写入同一张表
-- **分布式部署**:在不同主机上运行多个连接器实例
-- **数据分片创建开销**:遇到"数据分片过多"错误
-- **混合工作负载**:将实时摄取与查询工作负载相结合
-
-在以下情况下**不要**使用异步插入:
-
-- 已经以受控频率发送大批次(每批次 > 10,000 行)
-- 需要立即的数据可见性(查询必须立即看到数据)
-- 使用 `wait_for_async_insert=0` 的精确一次语义与您的需求冲突
-- 用例可以从客户端批处理改进中获益
-
-##### 异步插入的工作原理                           {#how-async-inserts-work}
-
-启用异步插入后,ClickHouse 将:
-
-1. 从连接器接收插入查询
-2. 将数据写入内存缓冲区(而不是立即写入磁盘)
-3. 向连接器返回成功(如果 `wait_for_async_insert=0`)
-4. 当满足以下条件之一时将缓冲区刷新到磁盘:
-   - 缓冲区达到 `async_insert_max_data_size`(默认值:10 MB)
-   - 自首次插入以来经过 `async_insert_busy_timeout_ms` 毫秒(默认值:1000 毫秒)
-   - 累积的查询数量达到最大值(`async_insert_max_query_number`,默认值:100)
-
-这显著减少了创建的数据分片数量并提高了整体吞吐量。
-
-##### 启用异步插入                           {#enabling-async-inserts}
-
-将异步插入设置添加到 `clickhouseSettings` 配置参数:
-
+````json
+{
+  "name": "clickhouse-connect",
+  "config": {
+    "connector.class": "com.clickhouse.kafka.connect.ClickHouseSinkConnector",
+    ...
+    "clickhouseSettings": "async_insert=1,wait_for_async_insert=1"
+  }
+}
 ```json
 {
   "name": "clickhouse-connect",
@@ -533,39 +501,10 @@ consumer.fetch.max.wait.ms=300
     "clickhouseSettings": "async_insert=1,wait_for_async_insert=1"
   }
 }
-````
-
-**关键设置**：
-
-* **`async_insert=1`**：启用异步插入
-* **`wait_for_async_insert=1`**（推荐）：连接器会在确认之前等待数据刷新到 ClickHouse 存储，以提供投递保证。
-* **`wait_for_async_insert=0`**：连接器在写入缓冲后立即确认。性能更好，但在刷新前如果服务器崩溃，数据可能会丢失。
-
-##### 调优异步插入行为 {#tuning-async-inserts}
-
-可以对异步插入的刷新行为进行精细调优：
-
+````json
+"clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=10485760,async_insert_busy_timeout_ms=1000"
 ```json
 "clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=10485760,async_insert_busy_timeout_ms=1000"
-```
-
-常见调优参数：
-
-* **`async_insert_max_data_size`**（默认值：10485760 / 10 MB）：触发刷新前的最大缓冲区大小
-* **`async_insert_busy_timeout_ms`**（默认值：1000）：触发刷新前的最长等待时间（毫秒）
-* **`async_insert_stale_timeout_ms`**（默认值：0）：自上次插入以来触发刷新前的时间（毫秒）
-* **`async_insert_max_query_number`**（默认值：100）：触发刷新前的最大查询次数
-
-**权衡**：
-
-* **优点**：更少的数据分片，更好的合并性能，更低的 CPU 开销，在高并发下具备更高吞吐量
-* **注意事项**：数据无法被立即查询，端到端延迟略有增加
-* **风险**：如果 `wait_for_async_insert=0`，服务器崩溃时可能发生数据丢失；缓冲区过大时可能导致内存压力
-
-##### 具有 exactly-once 语义的异步插入 {#async-inserts-with-exactly-once}
-
-在使用 `exactlyOnce=true` 进行异步插入时：
-
 ```json
 {
   "config": {
@@ -573,58 +512,30 @@ consumer.fetch.max.wait.ms=300
     "clickhouseSettings": "async_insert=1,wait_for_async_insert=1"
   }
 }
-```
-
-**重要**：在使用 exactly-once 时，始终将 `wait_for_async_insert` 设为 1，以确保只在数据持久化后才提交 offset。
-
-有关异步插入的更多信息，请参阅 [ClickHouse 异步插入（async inserts）文档](/best-practices/selecting-an-insert-strategy#asynchronous-inserts)。
-
-#### 连接器并行度 {#connector-parallelism}
-
-提高并行度以提升吞吐量：
-
-##### 每个连接器的任务数 {#tasks-per-connector}
-
+```json
+{
+  "config": {
+    "exactlyOnce": "true",
+    "clickhouseSettings": "async_insert=1,wait_for_async_insert=1"
+  }
+}
 ```json
 "tasks.max": "4"
-```
-
-每个 task 处理一部分 topic 分区。task 越多，并行度越高，但要注意：
-
-* 最大有效 task 数量 = topic 分区数
-* 每个 task 都维护各自与 ClickHouse 的连接
-* task 越多，开销越大，资源争用的可能性越高
-
-**建议**：将 `tasks.max` 初始设置为 topic 分区数，然后根据 CPU 和吞吐量指标再进行调整。
-
-##### 在批处理时忽略分区 {#ignoring-partitions}
-
-默认情况下，connector 会按分区对消息进行批处理。为提高吞吐量，你可以跨分区进行批处理：
-
+```json
+"tasks.max": "4"
 ```json
 "ignorePartitionsWhenBatching": "true"
-```
-
-**警告**：仅在 `exactlyOnce=false` 时使用。该设置可以通过创建更大的批次来提升吞吐量，但会丢失分区级的顺序保证。
-
-#### 多个高吞吐量主题 {#multiple-high-throughput-topics}
-
-如果你的连接器被配置为订阅多个主题，你使用 `topic2TableMap` 将主题映射到表，并且在插入阶段出现瓶颈导致消费者出现滞后，可以考虑改为为每个主题创建一个单独的连接器。
-
-出现这种情况的主要原因是，目前批次会[串行](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/578ac07e8be1a920aaa3b26e49183595c3edd04b/src/main/java/com/clickhouse/kafka/connect/sink/ProxySinkTask.java#L95-L100)插入到每一个表中。
-
-**建议**：对于多个高吞吐量主题，为每个主题部署一个独立的连接器实例，以最大化并行写入吞吐量。
-
-#### ClickHouse 表引擎注意事项 {#table-engine-considerations}
-
-根据你的使用场景选择合适的 ClickHouse 表引擎：
-
-* **`MergeTree`**：适用于大多数场景，在查询性能和写入性能之间取得平衡
-* **`ReplicatedMergeTree`**：高可用场景必需，但会引入复制开销
-* **带合适 `ORDER BY` 的 `*MergeTree`**：可根据查询模式进行优化
-
-**需要考虑的设置**：
-
+```json
+"ignorePartitionsWhenBatching": "true"
+```sql
+CREATE TABLE my_table (...)
+ENGINE = MergeTree()
+ORDER BY (timestamp, id)
+SETTINGS 
+    -- Increase max insert threads for parallel part writing
+    max_insert_threads = 4,
+    -- Allow inserts with quorum for reliability (ReplicatedMergeTree)
+    insert_quorum = 2
 ```sql
 CREATE TABLE my_table (...)
 ENGINE = MergeTree()
@@ -634,65 +545,14 @@ SETTINGS
     max_insert_threads = 4,
     -- 允许使用仲裁插入以提高可靠性（ReplicatedMergeTree）
     insert_quorum = 2
-```
-
-连接器级插入设置：
-
 ```json
 "clickhouseSettings": "insert_quorum=2,insert_quorum_timeout=60000"
-```
-
-#### 连接池和超时设置 {#connection-pooling}
-
-连接器会维护到 ClickHouse 的 HTTP 连接池。对于高延迟网络环境，请调整超时时间：
-
+```json
+"clickhouseSettings": "insert_quorum=2,insert_quorum_timeout=60000"
 ```json
 "clickhouseSettings": "socket_timeout=300000,connection_timeout=30000"
-```
-
-* **`socket_timeout`**（默认：30000 ms）：读取操作的最长等待时间
-* **`connection_timeout`**（默认：10000 ms）：建立连接的最长等待时间
-
-如果在处理大批量数据时出现超时错误，请适当增大这些数值。
-
-#### 性能监控与故障排查 {#monitoring-performance}
-
-监控以下关键指标：
-
-1. **Consumer lag（消费者延迟）**：使用 Kafka 监控工具跟踪每个分区的延迟情况
-2. **Connector metrics（连接器指标）**：通过 JMX 监控 `receivedRecords`、`recordProcessingTime`、`taskProcessingTime`（参见 [Monitoring](#monitoring)）
-3. **ClickHouse metrics（ClickHouse 指标）**：
-   * `system.asynchronous_inserts`：监控异步写入缓冲区使用情况
-   * `system.parts`：监控数据分片（part）数量以检测合并问题
-   * `system.merges`：监控正在进行的合并操作
-   * `system.events`：跟踪 `InsertedRows`、`InsertedBytes`、`FailedInsertQuery`
-
-**常见性能问题**：
-
-| 症状                  | 可能原因      | 解决方案                                              |
-| ------------------- | --------- | ------------------------------------------------- |
-| 消费者延迟较高             | 批次过小      | 增加 `max.poll.records`，启用异步写入                      |
-| “Too many parts” 错误 | 小批量且频繁的写入 | 启用异步写入，增大批次大小                                     |
-| 超时错误                | 批次过大、网络较慢 | 减小批次大小，增大 `socket_timeout`，检查网络                   |
-| CPU 使用率高            | 过多的小分片    | 启用异步写入，调高合并相关设置                                   |
-| OutOfMemory 错误      | 批次大小过大    | 减小 `max.poll.records`、`max.partition.fetch.bytes` |
-| 任务负载不均              | 分区分布不均    | 重新均衡分区或调整 `tasks.max`                             |
-
-#### 最佳实践总结 {#performance-best-practices}
-
-1. **先使用默认配置**，然后根据实际性能进行度量和调优
-2. **优先使用较大批次**：在可能的情况下，每次写入以 10,000–100,000 行为目标
-3. **在发送大量小批次或高并发场景下时，优先使用异步写入**
-4. **在需要 exactly-once（完全一次）语义时始终使用 `wait_for_async_insert=1`**
-5. **水平扩展**：将 `tasks.max` 增加到与分区数相同
-6. **高流量主题一个主题一个连接器**，以获得最大吞吐量
-7. **持续监控**：跟踪消费者延迟、分片数量以及合并活动
-8. **充分测试**：在生产部署前，始终在真实负载下测试配置变更
-
-#### 示例：高吞吐量配置 {#example-high-throughput}
-
-下面是一个为高吞吐量优化的完整示例：
-
+```json
+"clickhouseSettings": "socket_timeout=300000,connection_timeout=30000"
 ```json
 {
   "name": "clickhouse-high-throughput",
@@ -722,67 +582,47 @@ SETTINGS
     "clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=16777216,async_insert_busy_timeout_ms=1000,socket_timeout=300000"
   }
 }
-```
-
-**此配置**：
-
-* 每次轮询最多处理 10,000 条记录
-* 跨分区进行批处理，以支持更大的批量写入
-* 使用 16 MB 缓冲区的异步插入
-* 运行 8 个并行任务（与分区数量匹配）
-* 针对吞吐量进行了优化，而非严格顺序
-
-### 故障排查 {#troubleshooting}
-
-#### &quot;State mismatch for topic `[someTopic]` partition `[0]`&quot; {#state-mismatch-for-topic-sometopic-partition-0}
-
-当 KeeperMap 中存储的 offset 与 Kafka 中存储的 offset 不一致时，就会出现这种情况，通常发生在某个 topic 被删除
-或 offset 被手动调整之后。
-要修复此问题，需要删除该特定 topic 和分区对应存储的旧值。
-
-**注意：此类调整可能会对 exactly-once 语义产生影响。**
-
-#### &quot;What errors will the connector retry?&quot; {#what-errors-will-the-connector-retry}
-
-目前的重点是识别可以视为短暂且可重试的错误，包括：
-
-* `ClickHouseException` - 这是一个由 ClickHouse 抛出的通用异常。
-  通常在服务器过载时抛出，以下错误码被认为是典型的短暂性错误：
-  * 3 - UNEXPECTED&#95;END&#95;OF&#95;FILE
-  * 159 - TIMEOUT&#95;EXCEEDED
-  * 164 - READONLY
-  * 202 - TOO&#95;MANY&#95;SIMULTANEOUS&#95;QUERIES
-  * 203 - NO&#95;FREE&#95;CONNECTION
-  * 209 - SOCKET&#95;TIMEOUT
-  * 210 - NETWORK&#95;ERROR
-  * 242 - TABLE&#95;IS&#95;READ&#95;ONLY
-  * 252 - TOO&#95;MANY&#95;PARTS
-  * 285 - TOO&#95;FEW&#95;LIVE&#95;REPLICAS
-  * 319 - UNKNOWN&#95;STATUS&#95;OF&#95;INSERT
-  * 425 - SYSTEM&#95;ERROR
-  * 999 - KEEPER&#95;EXCEPTION
-  * 1002 - UNKNOWN&#95;EXCEPTION
-* `SocketTimeoutException` - 在 socket 超时时抛出。
-* `UnknownHostException` - 在无法解析主机名时抛出。
-* `IOException` - 在出现网络问题时抛出。
-
-#### “所有数据都是空值/0” {#all-my-data-is-blankzeroes}
-
-很可能是你数据中的字段与表中的字段不匹配——这在使用 CDC（以及 Debezium 格式）时尤其常见。
-一个常见的解决方案是在连接器配置中添加 `flatten` 转换：
-
+```json
+{
+  "name": "clickhouse-high-throughput",
+  "config": {
+    "connector.class": "com.clickhouse.kafka.connect.ClickHouseSinkConnector",
+    "tasks.max": "8",
+    
+    "topics": "high_volume_topic",
+    "hostname": "my-clickhouse-host.cloud",
+    "port": "8443",
+    "database": "default",
+    "username": "default",
+    "password": "<PASSWORD>",
+    "ssl": "true",
+    
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "false",
+    
+    "exactlyOnce": "false",
+    "ignorePartitionsWhenBatching": "true",
+    
+    "consumer.max.poll.records": "10000",
+    "consumer.max.partition.fetch.bytes": "5242880",
+    "consumer.fetch.min.bytes": "1048576",
+    "consumer.fetch.max.wait.ms": "500",
+    
+    "clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=16777216,async_insert_busy_timeout_ms=1000,socket_timeout=300000"
+  }
+}
 ```properties
 transforms=flatten
 transforms.flatten.type=org.apache.kafka.connect.transforms.Flatten$Value
 transforms.flatten.delimiter=_
-```
-
-这会将你的数据从嵌套 JSON 转换为扁平化 JSON（使用 `_` 作为分隔符）。表中的字段将采用 &quot;field1&#95;field2&#95;field3&quot; 的格式（例如 &quot;before&#95;id&quot;、&quot;after&#95;id&quot; 等）。
-
-#### &quot;我想在 ClickHouse 中使用我的 Kafka 键&quot; {#i-want-to-use-my-kafka-keys-in-clickhouse}
-
-Kafka 键默认不会存储在 value 字段中，但你可以使用 `KeyToValue` 转换将键移动到 value 字段中（存放在名为 `_key` 的新字段下）：
-
+```properties
+transforms=flatten
+transforms.flatten.type=org.apache.kafka.connect.transforms.Flatten$Value
+transforms.flatten.delimiter=_
+```properties
+transforms=keyToValue
+transforms.keyToValue.type=com.clickhouse.kafka.connect.transforms.KeyToValue
+transforms.keyToValue.field=_key
 ```properties
 transforms=keyToValue
 transforms.keyToValue.type=com.clickhouse.kafka.connect.transforms.KeyToValue

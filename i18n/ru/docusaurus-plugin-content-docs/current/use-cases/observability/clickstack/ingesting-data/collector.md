@@ -94,11 +94,11 @@ docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLIC
       CLICKHOUSE_PASSWORD: 'password'
       OPAMP_SERVER_URL: 'http://app:${HYPERDX_OPAMP_PORT}'
     ports:
-      - '13133:13133' # расширение health_check
-      - '24225:24225' # получатель fluentd
-      - '4317:4317' # получатель OTLP gRPC
-      - '4318:4318' # получатель OTLP http
-      - '8888:8888' # расширение metrics
+      - '13133:13133' # health_check extension
+      - '24225:24225' # fluentd receiver
+      - '4317:4317' # OTLP gRPC receiver
+      - '4318:4318' # OTLP http receiver
+      - '8888:8888' # metrics extension
     restart: always
     networks:
       - internal
@@ -120,7 +120,7 @@ docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLIC
 
 ```yaml
 receivers:
-  # Сбор логов из локальных файлов
+  # Collect logs from local files
   filelog:
     include:
       - /var/log/**/*.log
@@ -128,7 +128,7 @@ receivers:
       - /var/log/messages
     start_at: beginning
 
-  # Сбор метрик системы хоста
+  # Collect host system metrics
   hostmetrics:
     collection_interval: 30s
     scrapers:
@@ -149,7 +149,7 @@ receivers:
 
 service:
   pipelines:
-    # Конвейер логов
+    # Logs pipeline
     logs/host:
       receivers: [filelog]
       processors:
@@ -159,7 +159,7 @@ service:
       exporters:
         - clickhouse
     
-    # Конвейер метрик
+    # Metrics pipeline
     metrics/hostmetrics:
       receivers: [hostmetrics]
       processors:
@@ -306,167 +306,166 @@ service:
 
 ```
 
-Обратите внимание на необходимость добавлять [заголовок авторизации с вашим ключом API для приёма данных API key](#securing-the-collector) во все OTLP-запросы.
+Note the need to include an [authorization header containing your ingestion API key](#securing-the-collector) in any OTLP communication.
 
-Для более сложной конфигурации мы рекомендуем обратиться к [документации по OpenTelemetry collector](https://opentelemetry.io/docs/collector/).
+For more advanced configuration, we suggest the [OpenTelemetry collector documentation](https://opentelemetry.io/docs/collector/).
 
-## Оптимизация вставок {#optimizing-inserts}
+## Optimizing inserts {#optimizing-inserts}
 
-Чтобы обеспечить высокую производительность операций вставки при одновременном соблюдении строгих гарантий согласованности, пользователям следует придерживаться нескольких простых правил при вставке данных наблюдаемости в ClickHouse через коллектор ClickStack. При корректной настройке OTel collector следовать этим правилам должно быть несложно. Это также позволяет избежать [распространённых проблем](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse), с которыми пользователи сталкиваются при первом знакомстве с ClickHouse.
+In order to achieve high insert performance while obtaining strong consistency guarantees, users should adhere to simple rules when inserting Observability data into ClickHouse via the ClickStack collector. With the correct configuration of the OTel collector, the following rules should be straightforward to follow. This also avoids [common issues](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse) users encounter when using ClickHouse for the first time.
 
-### Пакетирование {#batching}
+### Batching {#batching}
 
-По умолчанию каждый запрос `INSERT`, отправленный в ClickHouse, приводит к немедленному созданию части данных, содержащей данные из этого `INSERT` вместе с другой метаинформацией, которую нужно сохранять. Поэтому отправка меньшего количества `INSERT`‑запросов, каждый из которых содержит больше данных, по сравнению с отправкой большего количества `INSERT`‑запросов с меньшим объемом данных, уменьшит число необходимых операций записи. Мы рекомендуем вставлять данные достаточно крупными пакетами — как минимум по 1 000 строк за раз. Дополнительные подробности приведены [здесь](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance).
+By default, each insert sent to ClickHouse causes ClickHouse to immediately create a part of storage containing the data from the insert together with other metadata that needs to be stored. Therefore sending a smaller amount of inserts that each contain more data, compared to sending a larger amount of inserts that each contain less data, will reduce the number of writes required. We recommend inserting data in fairly large batches of at least 1,000 rows at a time. Further details [here](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance).
 
-По умолчанию вставки в ClickHouse являются синхронными и идемпотентными, если данные идентичны. Для таблиц семейства движков MergeTree ClickHouse по умолчанию автоматически [дедуплицирует вставки](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#5-deduplication-at-insert-time). Это означает, что вставки устойчивы к сбоям в следующих случаях:
+By default, inserts into ClickHouse are synchronous and idempotent if identical. For tables of the merge tree engine family, ClickHouse will, by default, automatically [deduplicate inserts](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#5-deduplication-at-insert-time). This means inserts are tolerant in cases like the following:
 
-- (1) Если у узла, принимающего данные, возникают проблемы, запрос `INSERT` завершится по таймауту (или выдаст более специфичную ошибку) и не получит подтверждения.
-- (2) Если данные были записаны узлом, но подтверждение не может быть возвращено отправителю запроса из‑за перебоев в сети, отправитель получит либо таймаут, либо сетевую ошибку.
+- (1) If the node receiving the data has issues, the insert query will time out (or get a more specific error) and not receive an acknowledgment.
+- (2) If the data got written by the node, but the acknowledgement can't be returned to the sender of the query because of network interruptions, the sender will either get a timeout or a network error.
 
-С точки зрения коллектора различить (1) и (2) может быть сложно. Однако в обоих случаях неподтвержденную вставку можно просто немедленно повторить. Пока повторный запрос `INSERT` содержит те же данные в том же порядке, ClickHouse автоматически проигнорирует повторную вставку, если исходная (неподтвержденная) вставка уже была успешно выполнена.
+From the collector's perspective, (1) and (2) can be hard to distinguish. However, in both cases, the unacknowledged insert can just be retried immediately. As long as the retried insert query contains the same data in the same order, ClickHouse will automatically ignore the retried insert if the original (unacknowledged) insert succeeded.
 
-По этой причине дистрибутив ClickStack с OTel collector использует [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md). Это гарантирует, что вставки отправляются как согласованные пакеты строк, удовлетворяющие указанным выше требованиям. Если от коллектора ожидается высокая пропускная способность (событий в секунду) и в каждой вставке можно отправлять как минимум 5 000 событий, этого пакетирования обычно достаточно для всего конвейера. В этом случае коллектор будет отправлять пакеты до того, как будет достигнут `timeout` batch processor, обеспечивая низкую сквозную задержку конвейера и стабильный размер пакетов.
+For this reason, the ClickStack distribution of the OTel collector uses the [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md). This ensures inserts are sent as consistent batches of rows satisfying the above requirements. If a collector is expected to have high throughput (events per second), and at least 5000 events can be sent in each insert, this is usually the only batching required in the pipeline. In this case the collector will flush batches before the batch processor's `timeout` is reached, ensuring the end-to-end latency of the pipeline remains low and batches are of a consistent size.
 
-### Используйте асинхронные вставки {#use-asynchronous-inserts}
+### Use asynchronous inserts {#use-asynchronous-inserts}
 
-Обычно пользователи вынуждены отправлять меньшие батчи, когда пропускная способность коллектора низкая, при этом они все равно ожидают доставки данных в ClickHouse с минимальной сквозной задержкой. В этом случае маленькие батчи отправляются при истечении `timeout` у batch processor. Это может вызывать проблемы и в таких сценариях требуются асинхронные вставки. Такая ситуация встречается редко, если пользователи отправляют данные в коллектор ClickStack, работающий в роли Gateway: выступая в качестве агрегатора, он сглаживает эту проблему — см. [Collector roles](#collector-roles).
+Typically, users are forced to send smaller batches when the throughput of a collector is low, and yet they still expect data to reach ClickHouse within a minimum end-to-end latency. In this case, small batches are sent when the `timeout` of the batch processor expires. This can cause problems and is when asynchronous inserts are required. This issue is rare if users are sending data to the ClickStack collector acting as a Gateway - by acting as aggregators, they alleviate this problem - see [Collector roles](#collector-roles).
 
-Если невозможно гарантировать большие батчи, пользователи могут делегировать пакетирование ClickHouse, используя [Asynchronous Inserts](/best-practices/selecting-an-insert-strategy#asynchronous-inserts). При асинхронных вставках данные сначала вставляются в буфер, а затем записываются в хранилище базы данных позже, то есть асинхронно.
+If large batches cannot be guaranteed, users can delegate batching to ClickHouse using [Asynchronous Inserts](/best-practices/selecting-an-insert-strategy#asynchronous-inserts). With asynchronous inserts, data is inserted into a buffer first and then written to the database storage later or asynchronously respectively.
 
-<Image img={observability_6} alt="Асинхронные вставки" size="md"/>
+<Image img={observability_6} alt="Async inserts" size="md"/>
 
-При [включенных асинхронных вставках](/optimize/asynchronous-inserts#enabling-asynchronous-inserts), когда ClickHouse ① получает запрос INSERT, данные запроса ② сразу же записываются сначала во внутренний буфер в памяти. Когда ③ происходит следующий сброс (flush) буфера, данные из буфера [сортируются](/guides/best-practices/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns) и записываются как part в хранилище базы данных. Обратите внимание, что данные недоступны для запросов до тех пор, пока не будут сброшены в хранилище базы данных; параметры сброса буфера [настраиваются](/optimize/asynchronous-inserts).
+With [asynchronous inserts enabled](/optimize/asynchronous-inserts#enabling-asynchronous-inserts), when ClickHouse ① receives an insert query, the query's data is ② immediately written into an in-memory buffer first. When ③ the next buffer flush takes place, the buffer's data is [sorted](/guides/best-practices/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns) and written as a part to the database storage. Note, that the data is not searchable by queries before being flushed to the database storage; the buffer flush is [configurable](/optimize/asynchronous-inserts).
 
-Чтобы включить асинхронные вставки для коллектора, добавьте `async_insert=1` в строку подключения. Мы рекомендуем использовать `wait_for_async_insert=1` (значение по умолчанию), чтобы получить гарантии доставки — см. [здесь](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse) подробности.
+To enable asynchronous inserts for the collector, add `async_insert=1` to the connection string. We recommend users use `wait_for_async_insert=1` (the default) to get delivery guarantees - see [here](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse) for further details.
 
-Данные из асинхронной вставки записываются после того, как буфер ClickHouse будет сброшен. Это происходит либо после превышения [`async_insert_max_data_size`](/operations/settings/settings#async_insert_max_data_size), либо по истечении [`async_insert_busy_timeout_ms`](/operations/settings/settings#async_insert_max_data_size) миллисекунд с момента первого запроса INSERT. Если `async_insert_stale_timeout_ms` установлено в ненулевое значение, данные вставляются по прошествии `async_insert_stale_timeout_ms` миллисекунд с момента последнего запроса. Пользователи могут настраивать эти параметры для управления сквозной задержкой своего конвейера. Дополнительные параметры, которые можно использовать для настройки сброса буфера, задокументированы [здесь](/operations/settings/settings#async_insert). Как правило, значения по умолчанию являются оптимальными.
+Data from an async insert is inserted once the ClickHouse buffer is flushed. This occurs either after the [`async_insert_max_data_size`](/operations/settings/settings#async_insert_max_data_size) is exceeded or after [`async_insert_busy_timeout_ms`](/operations/settings/settings#async_insert_max_data_size) milliseconds since the first INSERT query. If the `async_insert_stale_timeout_ms` is set to a non-zero value, the data is inserted after `async_insert_stale_timeout_ms milliseconds` since the last query. Users can tune these settings to control the end-to-end latency of their pipeline. Further settings that can be used to tune buffer flushing are documented [here](/operations/settings/settings#async_insert). Generally, defaults are appropriate.
 
-:::note Рассмотрите адаптивные асинхронные вставки
-В случаях, когда используется небольшое количество агентов с низкой пропускной способностью, но жесткими требованиями к сквозной задержке, могут быть полезны [адаптивные асинхронные вставки](https://clickhouse.com/blog/clickhouse-release-24-02#adaptive-asynchronous-inserts). Как правило, они неприменимы к высоконагруженным сценариям Observability, характерным для ClickHouse.
+:::note Consider Adaptive Asynchronous Inserts
+In cases where a low number of agents are in use, with low throughput but strict end-to-end latency requirements, [adaptive asynchronous inserts](https://clickhouse.com/blog/clickhouse-release-24-02#adaptive-asynchronous-inserts) may be useful. Generally, these are not applicable to high throughput Observability use cases, as seen with ClickHouse.
 :::
 
-Наконец, прежнее поведение дедупликации, связанное с синхронными вставками в ClickHouse, по умолчанию не включено при использовании асинхронных вставок. При необходимости см. параметр [`async_insert_deduplicate`](/operations/settings/settings#async_insert_deduplicate).
+Finally, the previous deduplication behavior associated with synchronous inserts into ClickHouse is not enabled by default when using asynchronous inserts. If required, see the setting [`async_insert_deduplicate`](/operations/settings/settings#async_insert_deduplicate).
 
-Полные сведения по настройке этой функции можно найти на этой [странице документации](/optimize/asynchronous-inserts#enabling-asynchronous-inserts) или в подробной [публикации в блоге](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse).
+Full details on configuring this feature can be found on this [docs page](/optimize/asynchronous-inserts#enabling-asynchronous-inserts), or with a deep dive [blog post](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse).
 
-## Масштабирование {#scaling}
+## Scaling {#scaling}
 
-OTel collector в составе ClickStack действует как экземпляр шлюза (Gateway) — см. раздел [Collector roles](#collector-roles). Это автономный сервис, как правило, по одному на каждый дата-центр или регион. Такие экземпляры получают события от приложений (или других коллекторов в роли агента) через единый OTLP endpoint. Обычно разворачивается несколько экземпляров коллектора, а стандартный балансировщик нагрузки используется для распределения трафика между ними.
+The ClickStack OTel collector acts a Gateway instance - see [Collector roles](#collector-roles). These provide a standalone service, typically per data center or per region. These receive events from applications (or other collectors in the agent role) via a single OTLP endpoint. Typically a set of collector instances are deployed, with an out-of-the-box load balancer used to distribute the load amongst them.
 
-<Image img={clickstack_with_gateways} alt="Масштабирование с помощью шлюзов" size="lg"/>
+<Image img={clickstack_with_gateways} alt="Scaling with gateways" size="lg"/>
 
-Цель этой архитектуры — разгрузить агентов от вычислительно затратной обработки, тем самым минимизируя их потребление ресурсов. Эти шлюзы ClickStack могут выполнять задачи трансформации, которые в противном случае пришлось бы выполнять агентам. Кроме того, агрегируя события от множества агентов, шлюзы могут отправлять в ClickHouse крупные партии событий, обеспечивая эффективную вставку данных. Эти коллекторы-шлюзы можно легко масштабировать по мере добавления новых агентов и источников SDK и роста пропускной способности событий. 
+The objective of this architecture is to offload computationally intensive processing from the agents, thereby minimizing their resource usage. These ClickStack gateways can perform transformation tasks that would otherwise need to be done by agents. Furthermore, by aggregating events from many agents, the gateways can ensure large batches are sent to ClickHouse - allowing efficient insertion. These gateway collectors can easily be scaled as more agents and SDK sources are added and event throughput increases. 
 
-### Добавление Kafka {#adding-kafka}
+### Adding Kafka {#adding-kafka}
 
-Читатели могут заметить, что приведённые выше архитектуры не используют Kafka в качестве очереди сообщений.
+Readers may notice the above architectures do not use Kafka as a message queue.
 
-Использование очереди Kafka как буфера сообщений — популярный шаблон проектирования, часто встречающийся в архитектурах логирования и получивший широкое распространение благодаря стеку ELK. Он даёт несколько преимуществ: прежде всего, помогает обеспечить более строгие гарантии доставки сообщений и упростить обработку обратного давления. Сообщения отправляются от агентов сбора в Kafka и записываются на диск. Теоретически кластер Kafka должен обеспечивать высокопроизводительный буфер сообщений, поскольку при последовательной записи данных на диск вычислительные затраты ниже, чем при разборе и обработке сообщений. В Elastic, например, токенизация и индексация создают значительные накладные расходы. Перемещая данные от агентов, вы также снижаете риск потери сообщений из‑за ротации логов на источнике. Наконец, Kafka предоставляет возможности повторного считывания сообщений и межрегиональной репликации, что может быть привлекательно для некоторых сценариев использования.
+Using a Kafka queue as a message buffer is a popular design pattern seen in logging architectures and was popularized by the ELK stack. It provides a few benefits: principally, it helps provide stronger message delivery guarantees and helps deal with backpressure. Messages are sent from collection agents to Kafka and written to disk. In theory, a clustered Kafka instance should provide a high throughput message buffer since it incurs less computational overhead to write data linearly to disk than parse and process a message. In Elastic, for example, tokenization and indexing incurs significant overhead. By moving data away from the agents, you also incur less risk of losing messages as a result of log rotation at the source. Finally, it offers some message reply and cross-region replication capabilities, which might be attractive for some use cases.
 
-Однако ClickHouse способен очень быстро вставлять данные — миллионы строк в секунду на умеренном оборудовании. Обратное давление со стороны ClickHouse возникает редко. Часто использование очереди Kafka приводит к росту сложности архитектуры и затрат. Если вы можете исходить из принципа, что логи не нуждаются в тех же гарантиях доставки, что банковские транзакции и другие критически важные данные, мы рекомендуем избегать усложнения архитектуры за счёт Kafka.
+However, ClickHouse can handle inserting data very quickly - millions of rows per second on moderate hardware. Backpressure from ClickHouse is rare. Often, leveraging a Kafka queue means more architectural complexity and cost. If you can embrace the principle that logs do not need the same delivery guarantees as bank transactions and other mission-critical data, we recommend avoiding the complexity of Kafka.
 
-Тем не менее, если вам нужны высокие гарантии доставки или возможность повторного воспроизведения данных (потенциально в несколько приёмников), Kafka может быть полезным архитектурным дополнением.
+However, if you require high delivery guarantees or the ability to replay data (potentially to multiple sources), Kafka can be a useful architectural addition.
 
-<Image img={observability_8} alt="Добавление Kafka" size="lg"/>
+<Image img={observability_8} alt="Adding kafka" size="lg"/>
 
-В этом случае агенты OTel можно настроить на отправку данных в Kafka через [Kafka exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/kafkaexporter/README.md). В свою очередь, инстансы gateway потребляют сообщения с помощью [Kafka receiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/kafkareceiver/README.md). За дополнительными подробностями рекомендуем документацию Confluent и OTel.
+In this case, OTel agents can be configured to send data to Kafka via the [Kafka exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/kafkaexporter/README.md). Gateway instances, in turn, consume messages using the [Kafka receiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/kafkareceiver/README.md). We recommend the Confluent and OTel documentation for further details.
 
-:::note Конфигурация OTel collector
-Дистрибутив ClickStack OpenTelemetry collector можно настроить для работы с Kafka с помощью [кастомной конфигурации коллектора](#extending-collector-config).
+:::note OTel collector configuration
+The ClickStack OpenTelemetry collector distribution can be configured with Kafka using [custom collector configuration](#extending-collector-config).
 :::
 
-## Оценка ресурсов {#estimating-resources}
+## Estimating resources {#estimating-resources}
 
-Требования к ресурсам для OTel collector будут зависеть от пропускной способности событий, размера сообщений и объёма выполняемой обработки. Проект OpenTelemetry ведёт [бенчмарки](https://opentelemetry.io/docs/collector/benchmarks/), которыми пользователи могут воспользоваться для оценки требований к ресурсам.
+Resource requirements for the OTel collector will depend on the event throughput, the size of messages and amount of processing performed. The OpenTelemetry project maintains [benchmarks users](https://opentelemetry.io/docs/collector/benchmarks/) can use to estimate resource requirements.
 
-[Согласно нашему опыту](https://clickhouse.com/blog/building-a-logging-platform-with-clickhouse-and-saving-millions-over-datadog#architectural-overview), экземпляр шлюза ClickStack с 3 ядрами и 12 ГБ ОЗУ может обрабатывать около 60&nbsp;тыс. событий в секунду. Это предполагает минимальный конвейер обработки, отвечающий только за переименование полей, без регулярных выражений.
+[In our experience](https://clickhouse.com/blog/building-a-logging-platform-with-clickhouse-and-saving-millions-over-datadog#architectural-overview), a ClickStack gateway instance with 3 cores and 12GB of RAM can handle around 60k events per second. This assumes a minimal processing pipeline responsible for renaming fields and no regular expressions.
 
-Для экземпляров агентов, отвечающих за отправку событий на шлюз и только устанавливающих временную метку события, мы рекомендуем подбирать ресурсы на основе ожидаемого числа логов в секунду. Ниже приведены примерные значения, которые можно использовать в качестве отправной точки:
+For agent instances responsible for shipping events to a gateway, and only setting the timestamp on the event, we recommend users size based on the anticipated logs per second. The following represent approximate numbers users can use as a starting point:
 
-| Скорость логирования | Ресурсы для агентского коллектора |
+| Logging rate | Resources to collector agent |
 |--------------|------------------------------|
-| 1k/сек       | 0.2 CPU, 0.2 GiB            |
-| 5k/сек       | 0.5 CPU, 0.5 GiB            |
-| 10k/сек      | 1 CPU, 1 GiB                |
+| 1k/second    | 0.2CPU, 0.2GiB              |
+| 5k/second    | 0.5 CPU, 0.5GiB             |
+| 10k/second   | 1 CPU, 1GiB                 |
 
-## Поддержка JSON {#json-support}
+## JSON support {#json-support}
 
 <BetaBadge/>
 
-:::warning Функция в бета-версии
-Поддержка типа JSON в **ClickStack** является **функцией в бета-версии**. Хотя сам тип JSON готов к промышленной эксплуатации в ClickHouse 25.3+, его интеграция в ClickStack все еще активно развивается и может иметь ограничения, изменяться в будущем или содержать ошибки.
+:::warning Beta Feature
+JSON type support in **ClickStack** is a **beta feature**. While the JSON type itself is production-ready in ClickHouse 25.3+, its integration within ClickStack is still under active development and may have limitations, change in the future, or contain bugs
 :::
 
-Начиная с версии `2.0.4`, ClickStack в бета-режиме поддерживает [тип JSON](/interfaces/formats/JSON).
+ClickStack has beta support for the [JSON type](/interfaces/formats/JSON) from version `2.0.4`.
 
-### Преимущества типа JSON {#benefits-json-type}
+### Benefits of the JSON type {#benefits-json-type}
 
-Тип JSON предоставляет пользователям ClickStack следующие преимущества:
+The JSON type offers the following benefits to ClickStack users:
 
-- **Сохранение типов** - Числа остаются числами, логические значения остаются логическими — больше не нужно превращать всё в строки. Это означает меньше приведений типов, более простые запросы и более точные агрегаты.
-- **Столбцы на уровне путей** - Каждый JSON-путь становится отдельным подстолбцом, уменьшая объём операций ввода-вывода. Запросы считывают только нужные поля, обеспечивая существенный прирост производительности по сравнению со старым типом Map, который требовал чтения всего столбца для выборки одного конкретного поля.
-- **Глубокая вложенность «просто работает»** - Естественная обработка сложных, глубоко вложенных структур без ручной развёртки (как это требовалось для типа Map) и последующего использования неудобных функций JSONExtract.
-- **Динамические, эволюционирующие схемы** - Идеально для данных наблюдаемости, где команды со временем добавляют новые теги и атрибуты. JSON автоматически обрабатывает эти изменения без миграций схемы. 
-- **Быстрые запросы, меньший объём памяти** - Типичные агрегаты по атрибутам вроде `LogAttributes` приводят к 5–10-кратному уменьшению объёма читаемых данных и существенному ускорению запросов, сокращая и время выполнения запросов, и пиковое потребление памяти.
-- **Простое управление** - Нет необходимости заранее материализовывать столбцы ради производительности. Каждое поле становится отдельным подстолбцом, обеспечивая ту же скорость, что и нативные столбцы ClickHouse.
+- **Type preservation** - Numbers stay numbers, booleans stay booleans—no more flattening everything into strings. This means fewer casts, simpler queries, and more accurate aggregations.
+- **Path-level columns** - Each JSON path becomes its own sub-column, reducing I/O. Queries only read the fields they need, unlocking major performance gains over the old Map type which required the entire column to be read in order to query a specific field.
+- **Deep nesting just works** - Naturally handle complex, deeply nested structures without manual flattening (as required by the Map type) and subsequent awkward JSONExtract functions.
+- **Dynamic, evolving schemas** - Perfect for observability data where teams add new tags and attributes over time. JSON handles these changes automatically, without schema migrations. 
+- **Faster queries, lower memory** - Typical aggregations over attributes like `LogAttributes` see 5-10x less data read and dramatic speedups, cutting both query time and peak memory usage.
+- **Simple management** - No need to pre-materialize columns for performance. Each field becomes its own sub-column, delivering the same speed as native ClickHouse columns.
 
-### Включение поддержки JSON {#enabling-json-support}
+### Enabling JSON support {#enabling-json-support}
 
-Чтобы включить эту поддержку для коллектора, установите переменную окружения `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'` в любом развертывании, где используется коллектор. Это гарантирует создание схем в ClickHouse с использованием типа JSON.
+To enable this support for the collector, set the environment variable `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'` on any deployment that includes the collector. This ensures the schemas are created in ClickHouse using the JSON type.
 
-:::note Поддержка HyperDX
-Чтобы выполнять запросы к типу JSON, поддержку также необходимо включить на уровне приложения HyperDX с помощью переменной окружения `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true`.
+:::note HyperDX support
+In order to query the JSON type, support must also be enabled in the HyperDX application layer via the environment variable `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true`.
 :::
 
-Например:
+For example:
 
 ```shell
 docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
 ```
 
+### Migrating from map-based schemas to the JSON type {#migrating-from-map-based-schemas-to-json}
 
-### Миграция со схем на основе Map к типу JSON {#migrating-from-map-based-schemas-to-json}
-
-:::important Обратная совместимость
-[Тип JSON](/interfaces/formats/JSON) **не совместим** с существующими схемами на основе Map. Включение этой функции приведёт к созданию новых таблиц с использованием типа `JSON` и требует ручной миграции данных.
+:::important Backwards compatibility
+The [JSON type](/interfaces/formats/JSON) is **not backwards compatible** with existing map-based schemas. Enabling this feature will create new tables using the `JSON` type and requires manual data migration.
 :::
 
-Чтобы выполнить миграцию со схем на основе Map, выполните следующие шаги:
+To migrate from the Map-based schemas, follow these steps:
 
 <VerticalStepper headerLevel="h4">
 
-#### Остановите OTel collector {#stop-the-collector}
+#### Stop the OTel collector {#stop-the-collector}
 
-#### Переименуйте существующие таблицы и обновите источники {#rename-existing-tables-sources}
+#### Rename existing tables and update sources {#rename-existing-tables-sources}
 
-Переименуйте существующие таблицы и обновите источники данных в HyperDX. 
+Rename existing tables and update data sources in HyperDX. 
 
-Например:
+For example:
 
 ```sql
 RENAME TABLE otel_logs TO otel_logs_map;
 RENAME TABLE otel_metrics TO otel_metrics_map;
 ```
 
-#### Разверните OTel collector {#deploy-the-collector}
+#### Deploy the collector  {#deploy-the-collector}
 
-Разверните OTel collector с установленным параметром `OTEL_AGENT_FEATURE_GATE_ARG`.
+Deploy the collector with `OTEL_AGENT_FEATURE_GATE_ARG` set.
 
-#### Перезапустите контейнер HyperDX с поддержкой схемы JSON {#restart-the-hyperdx-container}
+#### Restart the HyperDX container with JSON schema support {#restart-the-hyperdx-container}
 
 ```shell
 export BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true
 ```
 
-#### Создайте новые источники данных {#create-new-data-sources}
+#### Create new data sources {#create-new-data-sources}
 
-Создайте новые источники данных в HyperDX, указывающие на таблицы с типом JSON.
+Create new data sources in HyperDX pointing to the JSON tables.
 
 </VerticalStepper>
 
-#### Перенос существующих данных (необязательно) {#migrating-existing-data}
+#### Migrating existing data (optional) {#migrating-existing-data}
 
-Чтобы перенести старые данные в новые таблицы формата JSON:
+To move old data into the new JSON tables:
 
 ```sql
 INSERT INTO otel_logs SELECT * FROM otel_logs_map;

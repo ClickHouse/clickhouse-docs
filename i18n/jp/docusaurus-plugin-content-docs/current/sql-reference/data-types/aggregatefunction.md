@@ -28,7 +28,7 @@ ClickHouse のすべての [集約関数](/sql-reference/aggregate-functions) �
 ## 構文 {#syntax}
 
 ```sql
-AggregateFunction(集約関数名, 引数の型...)
+AggregateFunction(aggregate_function_name, types_of_arguments...)
 ```
 
 **パラメータ**

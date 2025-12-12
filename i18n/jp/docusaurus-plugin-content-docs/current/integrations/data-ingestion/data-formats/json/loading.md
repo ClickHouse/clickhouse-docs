@@ -75,7 +75,7 @@ LIMIT 1
 │ 2022-11-15 │ CN           │ clickhouse-connect │ bdist_wheel │ bandersnatch │              │        │ 0.2.8 │
 └────────────┴──────────────┴────────────────────┴─────────────┴──────────────┴──────────────┴────────┴─────────┘
 
-1行が返されました。経過時間: 1.232秒。
+1 row in set. Elapsed: 1.232 sec.
 ```
 
 ここではファイル形式を明示的に指定する必要がない点に注目してください。その代わりに、バケット内のすべての `*.json.gz` ファイルを読み取るために glob パターンを使用します。ClickHouse は、ファイル拡張子と内容から、フォーマットが `JSONEachRow`（ndjson）であることを自動的に推論します。ClickHouse が形式を検出できない場合には、パラメータ関数を使ってフォーマットを手動で指定できます。
@@ -97,6 +97,13 @@ Ok.
 0 rows in set. Elapsed: 10.445 sec. Processed 19.49 million rows, 35.71 MB (1.87 million rows/s., 3.42 MB/s.)
 
 SELECT * FROM pypi LIMIT 2
+
+┌───────date─┬─country_code─┬─project────────────┬─type──┬─installer────┬─python_minor─┬─system─┬─version─┐
+│ 2022-05-26 │ CN           │ clickhouse-connect │ sdist │ bandersnatch │              │        │ 0.0.7 │
+│ 2022-05-26 │ CN           │ clickhouse-connect │ sdist │ bandersnatch │              │        │ 0.0.7 │
+└────────────┴──────────────┴────────────────────┴───────┴──────────────┴──────────────┴────────┴─────────┘
+
+2 rows in set. Elapsed: 0.005 sec. Processed 8.19 thousand rows, 908.03 KB (1.63 million rows/s., 180.38 MB/s.)
 ```
 
 ┌───────date─┬─country&#95;code─┬─project────────────┬─type──┬─installer────┬─python&#95;minor─┬─system─┬─version─┐
@@ -106,25 +113,29 @@ SELECT * FROM pypi LIMIT 2
 
 2 行が結果として返されました。経過時間: 0.005 秒。処理件数 8.19 千行、908.03 KB（1.63 百万行/秒、180.38 MB/秒）。
 
-````
-
-[`FORMAT`句](/sql-reference/statements/select/format)を使用して、行をインラインで読み込むこともできます。例：
-
+````sql
+INSERT INTO pypi
+FORMAT JSONEachRow
+{"date":"2022-11-15","country_code":"CN","project":"clickhouse-connect","type":"bdist_wheel","installer":"bandersnatch","python_minor":"","system":"","version":"0.2.8"}
 ```sql
 INSERT INTO pypi
 FORMAT JSONEachRow
 {"date":"2022-11-15","country_code":"CN","project":"clickhouse-connect","type":"bdist_wheel","installer":"bandersnatch","python_minor":"","system":"","version":"0.2.8"}
-````
-
-これらの例では、`JSONEachRow` 形式の使用を想定しています。その他の一般的な JSON 形式もサポートされており、それらを取り込む例は[こちら](/integrations/data-formats/json/other-formats)にあります。
-
-## セミ構造化 JSON の読み込み {#loading-semi-structured-json}
-
-前の例では、キー名と型がよく分かっている静的な JSON を読み込みました。実際にはそうとは限らず、キーが追加されたり、その型が変化したりします。これは Observability データなどのユースケースでよく見られます。
-
-ClickHouse はこのようなケースに専用の [`JSON`](/sql-reference/data-types/newjson) 型で対応します。
-
-上記で扱った [Python PyPI dataset](https://clickpy.clickhouse.com/) の拡張版から、次の例を考えます。ここでは、ランダムなキーと値のペアを持つ任意の `tags` 列を追加しています。
+````json
+{
+  "date": "2022-09-22",
+  "country_code": "IN",
+  "project": "clickhouse-connect",
+  "type": "bdist_wheel",
+  "installer": "bandersnatch",
+  "python_minor": "",
+  "system": "",
+  "version": "0.2.8",
+  "tags": {
+    "5gTux": "f3to*PMvaTYZsz!*rtzX1",
+    "nD8CV": "value"
+  }
+}
 
 ```json
 {
@@ -141,10 +152,6 @@ ClickHouse はこのようなケースに専用の [`JSON`](/sql-reference/data-
     "nD8CV": "value"
   }
 }
-
-```
-
-ここでの tags 列は値が予測できず、そのためモデル化することはできません。このデータを取り込むには、以前と同じスキーマを使用しつつ、型が [`JSON`](/sql-reference/data-types/newjson) の `tags` 列を追加で定義します。
 
 ```sql
 SET enable_json_type = 1;
@@ -163,14 +170,46 @@ CREATE TABLE pypi_with_tags
 )
 ENGINE = MergeTree
 ORDER BY (project, date);
-```
+```sql
+SET enable_json_type = 1;
 
-元のデータセットのときと同じ手順でテーブルにデータを投入します。
-
+CREATE TABLE pypi_with_tags
+(
+    `date` Date,
+    `country_code` String,
+    `project` String,
+    `type` String,
+    `installer` String,
+    `python_minor` String,
+    `system` String,
+    `version` String,
+    `tags` JSON
+)
+ENGINE = MergeTree
+ORDER BY (project, date);
 ```sql
 INSERT INTO pypi_with_tags SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi_with_tags/sample.json.gz')
-```
+```sql
+INSERT INTO pypi_with_tags SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi_with_tags/sample.json.gz')
+```sql
+INSERT INTO pypi_with_tags SELECT *
+FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi_with_tags/sample.json.gz')
 
+Ok.
+
+0 rows in set. Elapsed: 255.679 sec. Processed 1.00 million rows, 29.00 MB (3.91 thousand rows/s., 113.43 KB/s.)
+Peak memory usage: 2.00 GiB.
+
+SELECT *
+FROM pypi_with_tags
+LIMIT 2
+
+┌───────date─┬─country_code─┬─project────────────┬─type──┬─installer────┬─python_minor─┬─system─┬─version─┬─tags─────────────────────────────────────────────────────┐
+│ 2022-05-26 │ CN           │ clickhouse-connect │ sdist │ bandersnatch │              │        │ 0.0.7 │ {"nsBM":"5194603446944555691"}                           │
+│ 2022-05-26 │ CN           │ clickhouse-connect │ sdist │ bandersnatch │              │        │ 0.0.7 │ {"4zD5MYQz4JkP1QqsJIS":"0","name":"8881321089124243208"} │
+└────────────┴──────────────┴────────────────────┴───────┴──────────────┴──────────────┴────────┴─────────┴──────────────────────────────────────────────────────────┘
+
+2 rows in set. Elapsed: 0.149 sec.
 ```sql
 INSERT INTO pypi_with_tags SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi_with_tags/sample.json.gz')

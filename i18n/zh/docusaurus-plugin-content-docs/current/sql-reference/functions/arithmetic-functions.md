@@ -74,30 +74,34 @@ SELECT abs(-0.5)
 0.5
 ```
 
+
+
 ## avg2 {#avg2}
 
-自 v25.11 起引入
+Introduced in: v25.11
 
-计算并返回提供的参数的平均值。
-支持数值类型和时间类型。
 
-**语法**
+Computes and returns the average value of the provided arguments.
+Supports numerical and temporal types.
+    
+
+**Syntax**
 
 ```sql
 avg2(x1, x2])
 ```
 
-**参数**
+**Arguments**
 
-* `x1, x2` — 接受两个用于求平均值的参数。
+- `x1, x2]` — Accepts two values for averaging. 
 
-**返回值**
+**Returned value**
 
-返回所提供参数的平均值，并将结果提升为兼容的最大数据类型。
+Returns the average value of the provided arguments, promoted to the largest compatible type.
 
-**示例**
+**Examples**
 
-**数值类型**
+**Numeric types**
 
 ```sql title=Query
 SELECT avg2(toUInt8(3), 1.0) AS result, toTypeName(result) AS type;
@@ -110,7 +114,7 @@ SELECT avg2(toUInt8(3), 1.0) AS result, toTypeName(result) AS type;
 └────────┴─────────┘
 ```
 
-**Decimal 类型**
+**Decimal types**
 
 ```sql title=Query
 SELECT avg2(toDecimal32(1, 2), 2) AS result, toTypeName(result) AS type;
@@ -122,7 +126,7 @@ SELECT avg2(toDecimal32(1, 2), 2) AS result, toTypeName(result) AS type;
 └────────┴───────────────┘
 ```
 
-**日期类型**
+**Date types**
 
 ```sql title=Query
 SELECT avg2(toDate('2025-01-01'), toDate('2025-01-05')) AS result, toTypeName(result) AS type;
@@ -134,7 +138,7 @@ SELECT avg2(toDate('2025-01-01'), toDate('2025-01-05')) AS result, toTypeName(re
 └────────────┴──────┘
 ```
 
-**DateTime 类型**
+**DateTime types**
 
 ```sql title=Query
 SELECT avg2(toDateTime('2025-01-01 00:00:00'), toDateTime('2025-01-03 12:00:00')) AS result, toTypeName(result) AS type;
@@ -146,7 +150,7 @@ SELECT avg2(toDateTime('2025-01-01 00:00:00'), toDateTime('2025-01-03 12:00:00')
 └─────────────────────┴──────────┘
 ```
 
-**Time64 类型**
+**Time64 types**
 
 ```sql title=Query
 SELECT avg2(toTime64('12:00:00', 0), toTime64('14:00:00', 0)) AS result, toTypeName(result) AS type;
@@ -158,42 +162,47 @@ SELECT avg2(toTime64('12:00:00', 0), toTime64('14:00:00', 0)) AS result, toTypeN
 └──────────┴───────────┘
 ```
 
+
+
 ## byteSwap {#byteSwap}
 
-首次引入于：v23.10
+Introduced in: v23.10
 
-反转整数的字节顺序，即改变其[字节序](https://en.wikipedia.org/wiki/Endianness)。
 
-下面的示例可以按如下方式理解：
+Reverses the bytes of an integer, i.e. changes its [endianness](https://en.wikipedia.org/wiki/Endianness).
 
-1. 将十进制整数转换为其在大端字节序下的十六进制表示，例如：3351772109 -&gt; C7 C7 FB CD（4 个字节）
-2. 反转字节顺序，例如：C7 C7 FB CD -&gt; CD FB C7 C7
-3. 在假定为大端字节序的情况下，将结果转换回整数，例如：CD FB C7 C7 -&gt; 3455829959
-   此函数的一个用例是对 IPv4 地址进行字节反转：
+The below example can be worked out in the following manner:
+
+1. Convert the base-10 integer to its equivalent hexadecimal format in big-endian format, i.e. 3351772109 -> C7 C7 FB CD (4 bytes)
+2. Reverse the bytes, i.e. C7 C7 FB CD -> CD FB C7 C7
+3. Convert the result back to an integer assuming big-endian, i.e. CD FB C7 C7 -> 3455829959
+One use case of this function is reversing IPv4s:
 
 ```result
 ┌─toIPv4(byteSwap(toUInt32(toIPv4('205.251.199.199'))))─┐
 │ 199.199.251.205                                       │
 └───────────────────────────────────────────────────────┘
 ```
+    
 
-**语法**
+**Syntax**
 
 ```sql
 byteSwap(x)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 一个整数值。[`(U)Int*`](/sql-reference/data-types/int-uint)
+- `x` — An integer value. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回字节顺序被反转后的 `x`。[`(U)Int*`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns `x` with bytes reversed. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT byteSwap(3351772109)
@@ -203,7 +212,7 @@ SELECT byteSwap(3351772109)
 3455829959
 ```
 
-**8 位**
+**8-bit**
 
 ```sql title=Query
 SELECT byteSwap(54)
@@ -213,7 +222,7 @@ SELECT byteSwap(54)
 54
 ```
 
-**16 位**
+**16-bit**
 
 ```sql title=Query
 SELECT byteSwap(4135)
@@ -223,7 +232,7 @@ SELECT byteSwap(4135)
 10000
 ```
 
-**32 位**
+**32-bit**
 
 ```sql title=Query
 SELECT byteSwap(3351772109)
@@ -233,7 +242,7 @@ SELECT byteSwap(3351772109)
 3455829959
 ```
 
-**64 位**
+**64-bit**
 
 ```sql title=Query
 SELECT byteSwap(123294967295)
@@ -243,34 +252,38 @@ SELECT byteSwap(123294967295)
 18439412204227788800
 ```
 
+
+
 ## divide {#divide}
 
-自 v1.1 版本引入
+Introduced in: v1.1
 
-计算两个值 `a` 和 `b` 的商。结果类型始终为 [Float64](/sql-reference/data-types/float)。
-整数除法由 `intDiv` 函数实现。
+
+Calculates the quotient of two values `a` and `b`. The result type is always [Float64](/sql-reference/data-types/float).
+Integer division is provided by the `intDiv` function.
 
 :::note
-除以 `0` 会返回 `inf`、`-inf` 或 `nan`。
+Division by `0` returns `inf`, `-inf`, or `nan`.
 :::
+    
 
-**语法**
+**Syntax**
 
 ```sql
 divide(x, y)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 被除数；`y` — 除数
+- `x` — Dividend - `y` — Divisor 
 
-**返回值**
+**Returned value**
 
-x 除以 y 的商
+The quotient of x and y
 
-**示例**
+**Examples**
 
-**两个数相除**
+**Dividing two numbers**
 
 ```sql title=Query
 SELECT divide(25,5) AS quotient, toTypeName(quotient)
@@ -280,7 +293,7 @@ SELECT divide(25,5) AS quotient, toTypeName(quotient)
 5 Float64
 ```
 
-**除以零**
+**Dividing by zero**
 
 ```sql title=Query
 SELECT divide(25,0)
@@ -290,35 +303,39 @@ SELECT divide(25,0)
 inf
 ```
 
+
+
 ## divideDecimal {#divideDecimal}
 
-引入版本：v22.12
+Introduced in: v22.12
 
-对两个 Decimal 数执行除法运算。结果值类型为 [Decimal256](/sql-reference/data-types/decimal)。
-结果小数位数可以通过 `result_scale` 参数显式指定（取值范围为 `[0, 76]` 的常量整型）。如果未指定，则结果的小数位数为给定参数中最⼤的小数位数。
+
+Performs division on two decimals. Result value will be of type [Decimal256](/sql-reference/data-types/decimal).
+Result scale can be explicitly specified by `result_scale` argument (const Integer in range `[0, 76]`). If not specified, the result scale is the max scale of given arguments.
 
 :::note
-该函数的运行速度明显慢于常规的 `divide`。
-如果并不需要精确控制小数位数，或更需要快速计算，请考虑使用 [divide](#divide)。
+These function work significantly slower than usual `divide`.
+In case you don't really need controlled precision and/or need fast computation, consider using [divide](#divide).
 :::
+    
 
-**语法**
+**Syntax**
 
 ```sql
 divideDecimal(x, y[, result_scale])
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 第一个值：[Decimal](/sql-reference/data-types/decimal). - `y` — 第二个值：[Decimal](/sql-reference/data-types/decimal). - `result_scale` — 结果的小数位数。类型为 [Int/UInt](/sql-reference/data-types/int-uint).
+- `x` — First value: [Decimal](/sql-reference/data-types/decimal). - `y` — Second value: [Decimal](/sql-reference/data-types/decimal). - `result_scale` — Scale of result. Type [Int/UInt](/sql-reference/data-types/int-uint). 
 
-**返回值**
+**Returned value**
 
-按指定小数位数进行除法运算的结果。[`Decimal256`](/sql-reference/data-types/decimal)
+The result of division with given scale. [`Decimal256`](/sql-reference/data-types/decimal)
 
-**示例**
+**Examples**
 
-**示例 1**
+**Example 1**
 
 ```sql title=Query
 divideDecimal(toDecimal256(-12, 0), toDecimal32(2.1, 1), 10)
@@ -330,7 +347,7 @@ divideDecimal(toDecimal256(-12, 0), toDecimal32(2.1, 1), 10)
 └──────────────────────────────────────────────────────────────┘
 ```
 
-**示例 2**
+**Example 2**
 
 ```sql title=Query
 SELECT toDecimal64(-12, 1) / toDecimal32(2.1, 1);
@@ -346,29 +363,33 @@ SELECT toDecimal64(-12, 1) as a, toDecimal32(2.1, 1) as b, divideDecimal(a, b, 1
 └─────┴─────┴────────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────────┘
 ```
 
+
+
 ## divideOrNull {#divideOrNull}
 
-引入版本：v25.5
+Introduced in: v25.5
 
-与 `divide` 相同，但在除数为零时返回 NULL。
 
-**语法**
+Same as `divide` but returns NULL when dividing by zero.
+    
+
+**Syntax**
 
 ```sql
 divideOrNull(x, y)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 被除数；`y` — 除数
+- `x` — Dividend - `y` — Divisor 
 
-**返回值**
+**Returned value**
 
-x 除以 y 的商，或 NULL。
+The quotient of x and y, or NULL.
 
-**示例**
+**Examples**
 
-**除以零**
+**Dividing by zero**
 
 ```sql title=Query
 SELECT divideOrNull(25, 0)
@@ -378,31 +399,36 @@ SELECT divideOrNull(25, 0)
 \N
 ```
 
+
+
 ## gcd {#gcd}
 
-自 v1.1 起引入
+Introduced in: v1.1
 
-返回两个值 a 和 b 的最大公约数。
 
-当发生除以零或将最小负数除以负一的情况时会抛出异常。
+    Returns the greatest common divisor of two values a and b.
 
-**语法**
+    An exception is thrown when dividing by zero or when dividing a minimal
+    negative number by minus one.
+    
+
+**Syntax**
 
 ```sql
 gcd(x, y)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 第一个整数；`y` — 第二个整数
+- `x` — First integer - `y` — Second integer 
 
-**返回值**
+**Returned value**
 
-`x` 和 `y` 的最大公约数。
+The greatest common divisor of `x` and `y`.
 
-**示例**
+**Examples**
 
-**使用示例**
+**Usage example**
 
 ```sql title=Query
 SELECT gcd(12, 18)
@@ -412,33 +438,38 @@ SELECT gcd(12, 18)
 6
 ```
 
+
+
 ## ifNotFinite {#ifNotFinite}
 
-引入于：v20.3
+Introduced in: v20.3
 
-用于检查浮点数值是否为有限值。
 
-你也可以使用[三元运算符](/sql-reference/functions/conditional-functions#if)实现类似的结果：`isFinite(x) ? x : y`。
+Checks whether a floating point value is finite.
 
-**语法**
+You can get a similar result by using the [ternary operator](/sql-reference/functions/conditional-functions#if): `isFinite(x) ? x : y`.
+    
+
+**Syntax**
 
 ```sql
 ifNotFinite(x,y)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 用于检查是否为无穷大的值。[`Float*`](/sql-reference/data-types/float)
-* `y` — 备用值。[`Float*`](/sql-reference/data-types/float)
+- `x` — Value to check if infinite. [`Float*`](/sql-reference/data-types/float)
+- `y` — Fallback value. [`Float*`](/sql-reference/data-types/float)
 
-**返回值**
 
-* 当 `x` 为有限值时，返回 `x`。
-* 当 `x` 为非有限值时，返回 `y`。
+**Returned value**
 
-**示例**
+- `x` if `x` is finite.
+- `y` if `x` is not finite.
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT 1/0 AS infimum, ifNotFinite(infimum,42)
@@ -448,33 +479,39 @@ SELECT 1/0 AS infimum, ifNotFinite(infimum,42)
 inf  42
 ```
 
+
+
 ## intDiv {#intDiv}
 
-引入于：v1.1
+Introduced in: v1.1
 
-对两个值 `x` 和 `y` 执行整数除法 `x / y`。换句话说，它计算向下取整到不大于真实结果的最大整数的商。
 
-结果与被除数（第一个参数）具有相同的位宽。
+Performs an integer division of two values `x` by `y`. In other words it
+computes the quotient rounded down to the next smallest integer.
 
-当除数为零、商超出被除数类型的取值范围，或将最小负数除以 -1 时，会抛出异常。
+The result has the same width as the dividend (the first parameter).
 
-**语法**
+An exception is thrown when dividing by zero, when the quotient does not fit
+in the range of the dividend, or when dividing a minimal negative number by minus one.
+    
+
+**Syntax**
 
 ```sql
 intDiv(x, y)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 左操作数。 - `y` — 右操作数。
+- `x` — Left hand operand. - `y` — Right hand operand. 
 
-**返回值**
+**Returned value**
 
-`x` 除以 `y` 的整数除法结果
+Result of integer division of `x` and `y`
 
-**示例**
+**Examples**
 
-**两个浮点数之间的整数除法**
+**Integer division of two floats**
 
 ```sql title=Query
 SELECT intDiv(toFloat64(1), 0.001) AS res, toTypeName(res)
@@ -486,7 +523,7 @@ SELECT intDiv(toFloat64(1), 0.001) AS res, toTypeName(res)
 └──────┴─────────────────────────────────────────┘
 ```
 
-**商超出被除数的取值范围**
+**Quotient does not fit in the range of the dividend**
 
 ```sql title=Query
 SELECT
@@ -502,30 +539,36 @@ toTypeName(res)
 (ILLEGAL_DIVISION)
 ```
 
+
+
 ## intDivOrNull {#intDivOrNull}
 
-引入于：v25.5
+Introduced in: v25.5
 
-与 `intDiv` 相同，但在除数为零或将最小负整数除以负一时返回 NULL。
 
-**语法**
+Same as `intDiv` but returns NULL when dividing by zero or when dividing a
+minimal negative number by minus one.
+    
+
+**Syntax**
 
 ```sql
 intDivOrNull(x, y)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 左侧操作数。[`(U)Int*`](/sql-reference/data-types/int-uint)
-* `y` — 右侧操作数。[`(U)Int*`](/sql-reference/data-types/int-uint)
+- `x` — Left hand operand. [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `y` — Right hand operand. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-`x` 除以 `y` 的整数除法结果，或 NULL。
+**Returned value**
 
-**示例**
+Result of integer division of `x` and `y`, or NULL.
 
-**整数除以零**
+**Examples**
+
+**Integer division by zero**
 
 ```sql title=Query
 SELECT intDivOrNull(1, 0)
@@ -535,7 +578,7 @@ SELECT intDivOrNull(1, 0)
 \N
 ```
 
-**最小负数除以 -1**
+**Dividing a minimal negative number by minus 1**
 
 ```sql title=Query
 SELECT intDivOrNull(-9223372036854775808, -1)
@@ -545,30 +588,36 @@ SELECT intDivOrNull(-9223372036854775808, -1)
 \N
 ```
 
+
+
 ## intDivOrZero {#intDivOrZero}
 
-引入版本：v1.1
+Introduced in: v1.1
 
-与 `intDiv` 相同，但在除数为零或将最小负整数除以负一时返回零。
 
-**语法**
+Same as `intDiv` but returns zero when dividing by zero or when dividing a
+minimal negative number by minus one.
+    
+
+**Syntax**
 
 ```sql
 intDivOrZero(a, b)
 ```
 
-**参数**
+**Arguments**
 
-* `a` — 左侧运算数。[`(U)Int*`](/sql-reference/data-types/int-uint)
-* `b` — 右侧运算数。[`(U)Int*`](/sql-reference/data-types/int-uint)
+- `a` — Left hand operand. [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `b` — Right hand operand. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-`a` 和 `b` 的整数除法结果，或零。
+**Returned value**
 
-**示例**
+Result of integer division of a and b, or zero.
 
-**整数除以零**
+**Examples**
+
+**Integer division by zero**
 
 ```sql title=Query
 SELECT intDivOrZero(1, 0)
@@ -578,7 +627,7 @@ SELECT intDivOrZero(1, 0)
 0
 ```
 
-**将最小负数除以 −1**
+**Dividing a minimal negative number by minus 1**
 
 ```sql title=Query
 SELECT intDivOrZero(0.05, -1)
@@ -588,29 +637,35 @@ SELECT intDivOrZero(0.05, -1)
 0
 ```
 
+
+
 ## isFinite {#isFinite}
 
-自 v1.1 起引入
+Introduced in: v1.1
 
-如果 Float32 或 Float64 参数既不是无穷大也不是 `NaN`，则返回 `1`，否则返回 `0`。
 
-**语法**
+Returns `1` if the Float32 or Float64 argument not infinite and not a `NaN`,
+otherwise this function returns `0`.
+    
+
+**Syntax**
 
 ```sql
 isFinite(x)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 要检查其是否为有限数的数字。[`Float*`](/sql-reference/data-types/float)
+- `x` — Number to check for finiteness. [`Float*`](/sql-reference/data-types/float)
 
-**返回值**
 
-如果 x 既不是无穷大也不是 `NaN`，则返回 `1`，否则返回 `0`。
+**Returned value**
 
-**示例**
+`1` if x is not infinite and not `NaN`, otherwise `0`.
 
-**测试一个数是否为有限数**
+**Examples**
+
+**Test if a number is finite**
 
 ```sql title=Query
 SELECT isFinite(inf)
@@ -620,30 +675,35 @@ SELECT isFinite(inf)
 0
 ```
 
+
+
 ## isInfinite {#isInfinite}
 
-在 v1.1 中引入
+Introduced in: v1.1
 
-如果 Float32 或 Float64 参数为无穷大，则返回 `1`，否则函数返回 `0`。
-请注意，对于 `NaN` 会返回 `0`。
 
-**语法**
+    Returns `1` if the Float32 or Float64 argument is infinite, otherwise this function returns `0`.
+    Note that `0` is returned for a `NaN`.
+    
+
+**Syntax**
 
 ```sql
 isInfinite(x)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 要检查是否为无穷大的数值。[`Float*`](/sql-reference/data-types/float)
+- `x` — Number to check for infiniteness. [`Float*`](/sql-reference/data-types/float)
 
-**返回值**
 
-如果 x 是无穷大则为 `1`，否则为 `0`（包括 `NaN` 在内）。
+**Returned value**
 
-**示例**
+`1` if x is infinite, otherwise `0` (including for `NaN`).
 
-**测试一个数是否为无穷大**
+**Examples**
+
+**Test if a number is infinite**
 
 ```sql title=Query
 SELECT isInfinite(inf), isInfinite(NaN), isInfinite(10))
@@ -653,29 +713,32 @@ SELECT isInfinite(inf), isInfinite(NaN), isInfinite(10))
 1 0 0
 ```
 
+
+
 ## isNaN {#isNaN}
 
-引入版本：v1.1
+Introduced in: v1.1
 
-如果 Float32 或 Float64 类型的参数为 `NaN`，则返回 `1`，否则返回 `0`。
+Returns `1` if the Float32 and Float64 argument is `NaN`, otherwise returns `0`.
 
-**语法**
+**Syntax**
 
 ```sql
 isNaN(x)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 要判断是否为 `NaN` 的参数。[`Float*`](/sql-reference/data-types/float)
+- `x` — Argument to evaluate for if it is `NaN`. [`Float*`](/sql-reference/data-types/float)
 
-**返回值**
 
-若为 `NaN`，则返回 `1`，否则返回 `0`
+**Returned value**
 
-**示例**
+`1` if `NaN`, otherwise `0`
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT isNaN(NaN)
@@ -685,32 +748,37 @@ SELECT isNaN(NaN)
 1
 ```
 
+
+
 ## lcm {#lcm}
 
-引入版本：v1.1
+Introduced in: v1.1
 
-返回两个值 `x` 和 `y` 的最小公倍数。
 
-在发生除以零或将最小负值除以负一时会抛出异常。
+Returns the least common multiple of two values `x` and `y`.
 
-**语法**
+An exception is thrown when dividing by zero or when dividing a minimal negative number by minus one.
+    
+
+**Syntax**
 
 ```sql
 lcm(x, y)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 第一个整数。[`(U)Int*`](/sql-reference/data-types/int-uint)
-* `y` — 第二个整数。[`(U)Int*`](/sql-reference/data-types/int-uint)
+- `x` — First integer. [`(U)Int*`](/sql-reference/data-types/int-uint)
+- `y` — Second integer. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-返回 `x` 和 `y` 的最小公倍数。[`(U)Int*`](/sql-reference/data-types/int-uint)
+**Returned value**
 
-**示例**
+Returns the least common multiple of `x` and `y`. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT lcm(6, 8)
@@ -720,30 +788,35 @@ SELECT lcm(6, 8)
 24
 ```
 
+
+
 ## max2 {#max2}
 
-在 v21.11 版本中引入
+Introduced in: v21.11
 
-返回两个数值 `x` 和 `y` 中较大的一个。
 
-**语法**
+    Returns the bigger of two numeric values `x` and `y`.
+    
+
+**Syntax**
 
 ```sql
 max2(x, y)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 第一个值 [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
-* `y` — 第二个值 [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+- `x` — First value [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `y` — Second value [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
 
-**返回值**
 
-返回 `x` 和 `y` 中较大的值。[`Float64`](/sql-reference/data-types/float)
+**Returned value**
 
-**示例**
+Returns the bigger value of `x` and `y`. [`Float64`](/sql-reference/data-types/float)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT max2(-1, 2)
@@ -753,30 +826,34 @@ SELECT max2(-1, 2)
 2
 ```
 
+
+
 ## midpoint {#midpoint}
 
-引入版本：v25.11
+Introduced in: v25.11
 
-计算并返回所提供参数的平均值。
-支持数值类型和时间类型。
 
-**语法**
+Computes and returns the average value of the provided arguments.
+Supports numerical and temporal types.
+    
+
+**Syntax**
 
 ```sql
 midpoint(x1[, x2, ...])
 ```
 
-**参数**
+**Arguments**
 
-* `x1[, x2, ...]` — 接受一个或多个用于求平均值的值。
+- `x1[, x2, ...]` — Accepts a single value or multiple values for averaging. 
 
-**返回值**
+**Returned value**
 
-返回所提供参数的平均值，并将类型提升为兼容的最高等级类型。
+Returns the average value of the provided arguments, promoted to the largest compatible type.
 
-**示例**
+**Examples**
 
-**数值类型**
+**Numeric types**
 
 ```sql title=Query
 SELECT midpoint(1, toUInt8(3), 0.5) AS result, toTypeName(result) AS type;
@@ -789,7 +866,7 @@ SELECT midpoint(1, toUInt8(3), 0.5) AS result, toTypeName(result) AS type;
 └────────┴─────────┘
 ```
 
-**Decimal 类型**
+**Decimal types**
 
 ```sql title=Query
 SELECT midpoint(toDecimal32(1.5, 2), toDecimal32(1, 1), 2) AS result, toTypeName(result) AS type;
@@ -801,7 +878,7 @@ SELECT midpoint(toDecimal32(1.5, 2), toDecimal32(1, 1), 2) AS result, toTypeName
 └────────┴───────────────┘
 ```
 
-**日期类型**
+**Date types**
 
 ```sql title=Query
 SELECT midpoint(toDate('2025-01-01'), toDate('2025-01-05')) AS result, toTypeName(result) AS type;
@@ -813,7 +890,7 @@ SELECT midpoint(toDate('2025-01-01'), toDate('2025-01-05')) AS result, toTypeNam
 └────────────┴──────┘
 ```
 
-**DateTime 类型**
+**DateTime types**
 
 ```sql title=Query
 SELECT midpoint(toDateTime('2025-01-01 00:00:00'), toDateTime('2025-01-03 12:00:00')) AS result, toTypeName(result) AS type;
@@ -825,7 +902,7 @@ SELECT midpoint(toDateTime('2025-01-01 00:00:00'), toDateTime('2025-01-03 12:00:
 └─────────────────────┴──────────┘
 ```
 
-**Time64 类型**
+**Time64 types**
 
 ```sql title=Query
 SELECT midpoint(toTime64('12:00:00', 0), toTime64('14:00:00', 0)) AS result, toTypeName(result) AS type;
@@ -837,30 +914,35 @@ SELECT midpoint(toTime64('12:00:00', 0), toTime64('14:00:00', 0)) AS result, toT
 └──────────┴───────────┘
 ```
 
+
+
 ## min2 {#min2}
 
-引入于：v21.11
+Introduced in: v21.11
 
-返回两个数值 `x` 和 `y` 中较小的一个。
 
-**语法**
+    Returns the smaller of two numeric values `x` and `y`.
+    
+
+**Syntax**
 
 ```sql
 min2(x, y)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 第一个值 [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
-* `y` — 第二个值 [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+- `x` — First value [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `y` — Second value [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
 
-**返回值**
 
-返回 `x` 和 `y` 中较小的值，类型为 [`Float64`](/sql-reference/data-types/float)。
+**Returned value**
 
-**示例**
+Returns the smaller value of `x` and `y`. [`Float64`](/sql-reference/data-types/float)
 
-**使用示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT min2(-1, 2)
@@ -870,32 +952,35 @@ SELECT min2(-1, 2)
 -1
 ```
 
+
+
 ## minus {#minus}
 
-引入自：v1.1
+Introduced in: v1.1
 
-计算两个值 `a` 和 `b` 的差。结果始终为有符号数。
-与 `plus` 类似，可以从日期或日期时间值中减去一个整数。
-此外，支持日期时间值之间的减法运算，结果为它们之间的时间差。
 
-**语法**
+Calculates the difference of two values `a` and `b`. The result is always signed.
+Similar to plus, it is possible to subtract an integer from a date or date with time.
+Additionally, subtraction between date with time is supported, resulting in the time difference between them.
+    
+
+**Syntax**
 
 ```sql
 minus(x, y)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 被减数。
-* `y` — 减数。
+- `x` — Minuend. - `y` — Subtrahend. 
 
-**返回值**
+**Returned value**
 
-x 减 y
+x minus y
 
-**示例**
+**Examples**
 
-**两数相减**
+**Subtracting two numbers**
 
 ```sql title=Query
 SELECT minus(10, 5)
@@ -905,7 +990,7 @@ SELECT minus(10, 5)
 5
 ```
 
-**整数与日期相减**
+**Subtracting an integer and a date**
 
 ```sql title=Query
 SELECT minus(toDate('2025-01-01'),5)
@@ -915,37 +1000,44 @@ SELECT minus(toDate('2025-01-01'),5)
 2024-12-27
 ```
 
+
+
 ## modulo {#modulo}
 
-引入版本：v1.1
+Introduced in: v1.1
 
-计算两个值 a 被 b 相除所得的余数。
 
-如果两个输入都是整数，结果类型为整数。如果其中一个输入是浮点数，结果类型为 Float64。
+    Calculates the remainder of the division of two values a by b.
 
-余数的计算方式与 C++ 相同。对负数使用截断除法。
+    The result type is an integer if both inputs are integers. If one of the
+    inputs is a floating-point number, the result type is Float64.
 
-当除以零或将最小可表示的负数除以负一时，会抛出异常。
+    The remainder is computed like in C++. Truncated division is used for
+    negative numbers.
 
-**语法**
+    An exception is thrown when dividing by zero or when dividing a minimal
+    negative number by minus one.
+    
+
+**Syntax**
 
 ```sql
 modulo(a, b)
 ```
 
-**别名**: `mod`
+**Aliases**: `mod`
 
-**参数**
+**Arguments**
 
-* `a` — 被除数；`b` — 除数（模数）
+- `a` — The dividend - `b` — The divisor (modulus) 
 
-**返回值**
+**Returned value**
 
-`a % b` 的余数
+The remainder of a % b
 
-**示例**
+**Examples**
 
-**用法示例**
+**Usage example**
 
 ```sql title=Query
 SELECT modulo(5, 2)
@@ -955,32 +1047,38 @@ SELECT modulo(5, 2)
 1
 ```
 
+
+
 ## moduloOrNull {#moduloOrNull}
 
-引入版本：v25.5
+Introduced in: v25.5
 
-计算 `a` 除以 `b` 时的余数。与函数 `modulo` 类似，不同之处在于当右侧参数为 0 时，`moduloOrNull` 将返回 NULL。
 
-**语法**
+Calculates the remainder when dividing `a` by `b`. Similar to function `modulo` except that `moduloOrNull` will return NULL
+if the right argument is 0.
+    
+
+**Syntax**
 
 ```sql
 moduloOrNull(x, y)
 ```
 
-**别名**: `modOrNull`
+**Aliases**: `modOrNull`
 
-**参数**
+**Arguments**
 
-* `x` — 被除数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
-* `y` — 除数（模数）。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
+- `x` — The dividend. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+- `y` — The divisor (modulus). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**返回值**
 
-返回 `x` 除以 `y` 的余数；如果除数为零，则返回 null。
+**Returned value**
 
-**示例**
+Returns the remainder of the division of `x` by `y`, or null when the divisor is zero.
 
-**除数为零时的 moduloOrNull**
+**Examples**
+
+**moduloOrNull by zero**
 
 ```sql title=Query
 SELECT moduloOrNull(5, 0)
@@ -990,30 +1088,36 @@ SELECT moduloOrNull(5, 0)
 \N
 ```
 
+
+
 ## moduloOrZero {#moduloOrZero}
 
-自 v20.3 起引入
+Introduced in: v20.3
 
-与 `modulo` 类似，但当除数为零时返回零，而不是像 `modulo` 函数那样抛出异常。
 
-**语法**
+Like modulo but returns zero when the divisor is zero, as opposed to an
+exception with the modulo function.
+    
+
+**Syntax**
 
 ```sql
 moduloOrZero(a, b)
 ```
 
-**参数**
+**Arguments**
 
-* `a` — 被除数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
-* `b` — 除数（模数）。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
+- `a` — The dividend. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+- `b` — The divisor (modulus). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
 
-**返回值**
 
-返回 a % b 的余数，当除数为 `0` 时返回 `0`。
+**Returned value**
 
-**示例**
+Returns the remainder of a % b, or `0` when the divisor is `0`.
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT moduloOrZero(5, 0)
@@ -1023,30 +1127,33 @@ SELECT moduloOrZero(5, 0)
 0
 ```
 
+
+
 ## multiply {#multiply}
 
-自 v1.1 起提供
+Introduced in: v1.1
 
-计算两个值 `x` 和 `y` 的乘积。
+Calculates the product of two values `x` and `y`.
 
-**语法**
+**Syntax**
 
 ```sql
 multiply(x, y)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 因数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
-* `y` — 因数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+- `x` — factor. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `y` — factor. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
 
-**返回值**
 
-返回 x 和 y 的乘积。
+**Returned value**
 
-**示例**
+Returns the product of x and y
 
-**两个数相乘**
+**Examples**
+
+**Multiplying two numbers**
 
 ```sql title=Query
 SELECT multiply(5,5)
@@ -1056,37 +1163,42 @@ SELECT multiply(5,5)
 25
 ```
 
+
+
 ## multiplyDecimal {#multiplyDecimal}
 
-引入于：v22.12
+Introduced in: v22.12
 
-对两个十进制数执行乘法运算。结果值的类型为 [Decimal256](/sql-reference/data-types/decimal)。
-可以通过 `result_scale` 参数（取值范围为 `[0, 76]` 的常量整数）显式指定结果的小数位（scale）。如果未指定，结果的小数位将采用传入参数中较大的那个小数位。
+
+Performs multiplication on two decimals. Result value will be of type [Decimal256](/sql-reference/data-types/decimal).
+Result scale can be explicitly specified by `result_scale` argument (const Integer in range `[0, 76]`). If not specified, the result scale is the max scale of given arguments.
 
 :::note
-这些函数的运行速度明显慢于常规的 `multiply`。
-如果你并不真正需要严格控制精度且/或需要快速计算，请考虑使用 [multiply](#multiply)
+These functions work significantly slower than usual `multiply`.
+In case you don't really need controlled precision and/or need fast computation, consider using [multiply](#multiply)
 :::
+    
 
-**语法**
+**Syntax**
 
 ```sql
 multiplyDecimal(a, b[, result_scale])
 ```
 
-**参数**
+**Arguments**
 
-* `a` — 第一个值。[`Decimal`](/sql-reference/data-types/decimal)
-* `b` — 第二个值。[`Decimal`](/sql-reference/data-types/decimal)
-* `result_scale` — 结果的小数位数。[`(U)Int*`](/sql-reference/data-types/int-uint)
+- `a` — First value. [`Decimal`](/sql-reference/data-types/decimal)
+- `b` — Second value. [`Decimal`](/sql-reference/data-types/decimal)
+- `result_scale` — Scale of result. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返回值**
 
-按指定小数位数进行乘法运算的结果。类型：[`Decimal256`](/sql-reference/data-types/decimal)
+**Returned value**
 
-**示例**
+The result of multiplication with the given scale. Type: [`Decimal256`](/sql-reference/data-types/decimal)
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT multiplyDecimal(toDecimal256(-12, 0), toDecimal32(-2.1, 1), 1)
@@ -1096,7 +1208,7 @@ SELECT multiplyDecimal(toDecimal256(-12, 0), toDecimal32(-2.1, 1), 1)
 25.2
 ```
 
-**与普通乘法的区别**
+**Difference with regular multiplication**
 
 ```sql title=Query
 SELECT multiplyDecimal(toDecimal256(-12, 0), toDecimal32(-2.1, 1), 1)
@@ -1111,7 +1223,7 @@ SELECT multiplyDecimal(toDecimal256(-12, 0), toDecimal32(-2.1, 1), 1)
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-**Decimal 类型溢出**
+**Decimal overflow**
 
 ```sql title=Query
 SELECT
@@ -1133,29 +1245,31 @@ SELECT
 处理 toDecimal64(-12.647987876, 9) AS a, toDecimal64(123.967645643, 9) AS b, a * b 时发生错误。(DECIMAL_OVERFLOW)
 ```
 
+
+
 ## negate {#negate}
 
-自 v1.1 起引入
+Introduced in: v1.1
 
-对参数 `x` 取相反数。结果始终为带符号数。
+Negates the argument `x`. The result is always signed.
 
-**语法**
+**Syntax**
 
 ```sql
 negate(x)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 要取相反数的值。
+- `x` — The value to negate. 
 
-**返回值**
+**Returned value**
 
-返回 -x
+Returns -x from x
 
-**示例**
+**Examples**
 
-**使用示例**
+**Usage example**
 
 ```sql title=Query
 SELECT negate(10)
@@ -1165,30 +1279,36 @@ SELECT negate(10)
 -10
 ```
 
+
+
 ## plus {#plus}
 
-引入于：v1.1
+Introduced in: v1.1
 
-计算两个值 `x` 和 `y` 的和。别名：`x + y`（运算符）。
-可以将整数与日期或日期时间相加。前一种运算会增加日期中的天数，后一种运算会增加日期时间中的秒数。
 
-**语法**
+Calculates the sum of two values `x` and `y`. Alias: `x + y` (operator).
+It is possible to add an integer and a date or date with time. The former
+operation increments the number of days in the date, the latter operation
+increments the number of seconds in the date with time.
+    
+
+**Syntax**
 
 ```sql
 plus(x, y)
 ```
 
-**参数**
+**Arguments**
 
-* `x` — 左侧操作数。 - `y` — 右侧操作数。
+- `x` — Left hand operand. - `y` — Right hand operand. 
 
-**返回值**
+**Returned value**
 
-返回 x 和 y 相加的结果。
+Returns the sum of x and y
 
-**示例**
+**Examples**
 
-**两数相加**
+**Adding two numbers**
 
 ```sql title=Query
 SELECT plus(5,5)
@@ -1198,7 +1318,7 @@ SELECT plus(5,5)
 10
 ```
 
-**将整数与日期相加**
+**Adding an integer and a date**
 
 ```sql title=Query
 SELECT plus(toDate('2025-01-01'),5)
@@ -1208,32 +1328,39 @@ SELECT plus(toDate('2025-01-01'),5)
 2025-01-06
 ```
 
+
+
 ## positiveModulo {#positiveModulo}
 
-引入版本：v22.11
+Introduced in: v22.11
 
-计算 `x` 除以 `y` 的余数。与函数 `modulo` 类似，但 `positiveModulo` 始终返回非负数。
 
-**语法**
+Calculates the remainder when dividing `x` by `y`. Similar to function
+`modulo` except that `positiveModulo` always return non-negative number.
+    
+
+**Syntax**
 
 ```sql
 positiveModulo(x, y)
 ```
 
-**别名**: `positive_modulo`, `pmod`
+**Aliases**: `positive_modulo`, `pmod`
 
-**参数**
+**Arguments**
 
-* `x` — 被除数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
-* `y` — 除数（模数）。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+- `x` — The dividend. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `y` — The divisor (modulus). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
 
-**返回值**
 
-返回 `x` 与不大于 `x` 且能被 `y` 整除的最近整数之差。
+**Returned value**
 
-**示例**
+Returns the difference between `x` and the nearest integer not greater than
+`x` divisible by `y`.
 
-**用法示例**
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SELECT positiveModulo(-1, 10)
@@ -1243,30 +1370,35 @@ SELECT positiveModulo(-1, 10)
 9
 ```
 
+
+
 ## positiveModuloOrNull {#positiveModuloOrNull}
 
-引入于：v25.5
+Introduced in: v25.5
 
-计算 `a` 除以 `b` 的余数。与函数 `positiveModulo` 类似，但如果右侧参数为 0，`positiveModuloOrNull` 将返回 NULL。
 
-**语法**
+Calculates the remainder when dividing `a` by `b`. Similar to function `positiveModulo` except that `positiveModuloOrNull` will return NULL
+if the right argument is 0.
+    
+
+**Syntax**
 
 ```sql
 positiveModuloOrNull(x, y)
 ```
 
-**别名**: `positive_modulo_or_null`, `pmodOrNull`
+**Aliases**: `positive_modulo_or_null`, `pmodOrNull`
 
-**参数**
+**Arguments**
 
-* `x` — 被除数。[`(U)Int*`](/sql-reference/data-types/int-uint)/[`Float32/64`](/sql-reference/data-types/float)。
-* `y` — 除数（模数）。[`(U)Int*`](/sql-reference/data-types/int-uint)/[`Float32/64`](/sql-reference/data-types/float)。
+- `x` — The dividend. [`(U)Int*`](/sql-reference/data-types/int-uint)/[`Float32/64`](/sql-reference/data-types/float). - `x` — The divisor (modulus). [`(U)Int*`](/sql-reference/data-types/int-uint)/[`Float32/64`](/sql-reference/data-types/float). 
 
-**返回值**
+**Returned value**
 
-返回 `x` 与不大于 `x` 且能被 `y` 整除的最近整数之间的差值；当除数为零时返回 `null`。
+Returns the difference between `x` and the nearest integer not greater than
+`x` divisible by `y`, `null` when the divisor is zero.
 
-**示例**
+**Examples**
 
 **positiveModuloOrNull**
 

@@ -93,7 +93,7 @@ npm i @clickhouse/client-web
 import { createClient } from '@clickhouse/client' // or '@clickhouse/client-web'
 
 const client = createClient({
-  /* 配置 */
+  /* configuration */
 })
 ```
 
@@ -103,7 +103,7 @@ const client = createClient({
 const { createClient } = require('@clickhouse/client');
 
 const client = createClient({
-  /* 配置 */
+  /* configuration */
 })
 ```
 
@@ -235,19 +235,19 @@ const client = createClient({
 
 ```ts
 interface BaseQueryParams {
-  // 可在查询级别应用的 ClickHouse 设置。
+  // ClickHouse settings that can be applied on query level.
   clickhouse_settings?: ClickHouseSettings
-  // 查询绑定参数。
+  // Parameters for query binding.
   query_params?: Record<string, unknown>
-  // 用于取消正在执行的查询的 AbortSignal 实例。
+  // AbortSignal instance to cancel a query in progress.
   abort_signal?: AbortSignal
-  // query_id 覆盖;如果未指定,将自动生成随机标识符。
+  // query_id override; if not specified, a random identifier will be generated automatically.
   query_id?: string
-  // session_id 覆盖;如果未指定,将从客户端配置中获取会话 ID。
+  // session_id override; if not specified, the session id will be taken from the client configuration.
   session_id?: string
-  // 凭据覆盖;如果未指定,将使用客户端的凭据。
+  // credentials override; if not specified, the client's credentials will be used.
   auth?: { username: string, password: string }
-  // 用于此查询的特定角色列表。覆盖客户端配置中设置的角色。
+  // A specific list of roles to use for this query. Overrides the roles set in the client configuration.
   role?: string | Array<string>
 }
 ```
@@ -262,9 +262,9 @@ interface BaseQueryParams {
 
 ```ts
 interface QueryParams extends BaseQueryParams {
-  // 要执行的查询，可能会返回数据。
+  // Query to execute that might return some data.
   query: string
-  // 结果数据集的格式。默认值：JSON。
+  // Format of the resulting dataset. Default: JSON.
   format?: DataFormat
 }
 
@@ -299,30 +299,30 @@ Node.js 中的 `ResultSet` 实现在底层使用 `Stream.Readable`，而 Web 版
 
 ```ts
 interface BaseResultSet<Stream> {
-  // 参见上文"查询 ID"部分
+  // See "Query ID" section above
   query_id: string
 
-  // 读取整个流并以字符串形式获取内容
-  // 可用于任何 DataFormat
-  // 应仅调用一次
+  // Consume the entire stream and get the contents as a string
+  // Can be used with any DataFormat
+  // Should be called only once
   text(): Promise<string>
 
-  // 读取整个流并将内容解析为 JS 对象
-  // 仅可用于 JSON 格式
-  // 应仅调用一次
+  // Consume the entire stream and parse the contents as a JS object
+  // Can be used only with JSON formats
+  // Should be called only once
   json<T>(): Promise<T>
 
-  // 返回可流式传输的响应的可读流
-  // 流的每次迭代提供所选 DataFormat 中的 Row[] 数组
-  // 应仅调用一次
+  // Returns a readable stream for responses that can be streamed
+  // Every iteration over the stream provides an array of Row[] in the selected DataFormat
+  // Should be called only once
   stream(): Stream
 }
 
 interface Row {
-  // 以纯字符串形式获取行内容
+  // Get the content of the row as a plain string
   text: string
 
-  // 将行内容解析为 JS 对象
+  // Parse the content of the row as a JS object
   json<T>(): T
 }
 ```
@@ -335,7 +335,7 @@ const resultSet = await client.query({
   query: 'SELECT * FROM my_table',
   format: 'JSONEachRow',
 })
-const dataset = await resultSet.json() // 或使用 `row.text` 避免解析 JSON
+const dataset = await resultSet.json() // or `row.text` to avoid parsing JSON
 ```
 
 **示例：**（仅限 Node.js）使用经典的 `on('data')` 方式，以 `JSONEachRow` 格式流式读取查询结果。此方式可以与 `for await const` 语法互换使用。[源代码](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_json_each_row.ts)。
@@ -343,17 +343,17 @@ const dataset = await resultSet.json() // 或使用 `row.text` 避免解析 JSON
 ```ts
 const rows = await client.query({
   query: 'SELECT number FROM system.numbers_mt LIMIT 5',
-  format: 'JSONEachRow', // 或 JSONCompactEachRow、JSONStringsEachRow 等
+  format: 'JSONEachRow', // or JSONCompactEachRow, JSONStringsEachRow, etc.
 })
 const stream = rows.stream()
 stream.on('data', (rows: Row[]) => {
   rows.forEach((row: Row) => {
-    console.log(row.json()) // 或使用 `row.text` 避免解析 JSON
+    console.log(row.json()) // or `row.text` to avoid parsing JSON
   })
 })
 await new Promise((resolve, reject) => {
   stream.on('end', () => {
-    console.log('完成!')
+    console.log('Completed!')
     resolve(0)
   })
   stream.on('error', reject)
@@ -366,7 +366,7 @@ await new Promise((resolve, reject) => {
 ```ts
 const resultSet = await client.query({
   query: 'SELECT number FROM system.numbers_mt LIMIT 5',
-  format: 'CSV', // 或 TabSeparated、CustomSeparated 等
+  format: 'CSV', // or TabSeparated, CustomSeparated, etc.
 })
 const stream = resultSet.stream()
 stream.on('data', (rows: Row[]) => {
@@ -376,7 +376,7 @@ stream.on('data', (rows: Row[]) => {
 })
 await new Promise((resolve, reject) => {
   stream.on('end', () => {
-    console.log('完成!')
+    console.log('Completed!')
     resolve(0)
   })
   stream.on('error', reject)
@@ -388,8 +388,8 @@ await new Promise((resolve, reject) => {
 
 ```ts
 const resultSet = await client.query({
-  query: 'SELECT number FROM system.numbers LIMIT 10', // 从 system.numbers 表查询 10 条记录
-  format: 'JSONEachRow', // 或使用 JSONCompactEachRow、JSONStringsEachRow 等格式
+  query: 'SELECT number FROM system.numbers LIMIT 10',
+  format: 'JSONEachRow', // or JSONCompactEachRow, JSONStringsEachRow, etc.
 })
 for await (const rows of resultSet.stream()) {
   rows.forEach(row => {
@@ -407,14 +407,14 @@ for await (const rows of resultSet.stream()) {
 
 ```ts
 const resultSet = await client.query({
-  query: 'SELECT * FROM system.numbers LIMIT 10', // 从 system.numbers 表查询前 10 行
-  format: 'JSONEachRow' // 指定返回格式为 JSONEachRow
+  query: 'SELECT * FROM system.numbers LIMIT 10',
+  format: 'JSONEachRow'
 })
 
 const reader = resultSet.stream().getReader()
 while (true) {
   const { done, value: rows } = await reader.read()
-  if (done) { break } // 读取完成后退出循环
+  if (done) { break }
   rows.forEach(row => {
     console.log(row.json())
   })
@@ -456,17 +456,17 @@ interface ClickHouseClient {
 
 ```ts
 interface InsertParams<T> extends BaseQueryParams {
-  // 插入数据的目标表名
+  // Table name to insert the data into
   table: string
-  // 待插入的数据集
+  // A dataset to insert.
   values: ReadonlyArray<T> | Stream.Readable
-  // 数据集的格式
+  // Format of the dataset to insert.
   format?: DataFormat
-  // 指定数据插入的目标列
-  // - 数组形式如 `['a', 'b']` 将生成:`INSERT INTO table (a, b) FORMAT DataFormat`
-  // - 对象形式如 `{ except: ['a', 'b'] }` 将生成:`INSERT INTO table (* EXCEPT (a, b)) FORMAT DataFormat`
-  // 默认情况下,数据将插入表的所有列,
-  // 生成的语句为:`INSERT INTO table FORMAT DataFormat`
+  // Allows to specify which columns the data will be inserted into.
+  // - An array such as `['a', 'b']` will generate: `INSERT INTO table (a, b) FORMAT DataFormat`
+  // - An object such as `{ except: ['a', 'b'] }` will generate: `INSERT INTO table (* EXCEPT (a, b)) FORMAT DataFormat`
+  // By default, the data is inserted into all columns of the table,
+  // and the generated statement will be: `INSERT INTO table FORMAT DataFormat`.
   columns?: NonEmptyArray<string> | { except: NonEmptyArray<string> }
 }
 ```
@@ -483,7 +483,7 @@ interface InsertParams<T> extends BaseQueryParams {
 ```ts
 await client.insert({
   table: 'my_table',
-  // 结构应与所需格式匹配,此示例中为 JSONEachRow
+  // structure should match the desired format, JSONEachRow in this example
   values: [
     { id: 42, name: 'foo' },
     { id: 42, name: 'bar' },
@@ -517,12 +517,12 @@ ORDER BY (id)
 仅插入指定列：
 
 ```ts
-// 生成的语句：INSERT INTO mytable (message) FORMAT JSONEachRow
+// Generated statement: INSERT INTO mytable (message) FORMAT JSONEachRow
 await client.insert({
   table: 'mytable',
   values: [{ message: 'foo' }],
   format: 'JSONEachRow',
-  // 此行的 `id` 列值将为零（UInt32 的默认值）
+  // `id` column value for this row will be zero (default for UInt32)
   columns: ['message'],
 })
 ```
@@ -530,12 +530,12 @@ await client.insert({
 排除特定列：
 
 ```ts
-// 生成的语句：INSERT INTO mytable (* EXCEPT (message)) FORMAT JSONEachRow
+// Generated statement: INSERT INTO mytable (* EXCEPT (message)) FORMAT JSONEachRow
 await client.insert({
   table: tableName,
   values: [{ id: 144 }],
   format: 'JSONEachRow',
-  // 该行的 `message` 列值将为空字符串
+  // `message` column value for this row will be an empty string
   columns: {
     except: ['message'],
   },
@@ -548,7 +548,7 @@ await client.insert({
 
 ```ts
 await client.insert({
-  table: 'mydb.mytable', // 包含数据库的完全限定名
+  table: 'mydb.mytable', // Fully qualified name including the database
   values: [{ id: 42, message: 'foo' }],
   format: 'JSONEachRow',
 })
@@ -564,17 +564,17 @@ await client.insert({
 
 ```ts
 interface InsertParams<T> extends BaseQueryParams {
-  // 插入数据的目标表名
+  // Table name to insert the data into
   table: string
-  // 待插入的数据集。
+  // A dataset to insert.
   values: ReadonlyArray<T>
-  // 待插入数据集的格式。
+  // Format of the dataset to insert.
   format?: DataFormat
-  // 指定数据将插入到哪些列。
-  // - 数组形式如 `['a', 'b']` 将生成:`INSERT INTO table (a, b) FORMAT DataFormat`
-  // - 对象形式如 `{ except: ['a', 'b'] }` 将生成:`INSERT INTO table (* EXCEPT (a, b)) FORMAT DataFormat`
-  // 默认情况下,数据插入到表的所有列,
-  // 生成的语句为:`INSERT INTO table FORMAT DataFormat`。
+  // Allows to specify which columns the data will be inserted into.
+  // - An array such as `['a', 'b']` will generate: `INSERT INTO table (a, b) FORMAT DataFormat`
+  // - An object such as `{ except: ['a', 'b'] }` will generate: `INSERT INTO table (* EXCEPT (a, b)) FORMAT DataFormat`
+  // By default, the data is inserted into all columns of the table,
+  // and the generated statement will be: `INSERT INTO table FORMAT DataFormat`.
   columns?: NonEmptyArray<string> | { except: NonEmptyArray<string> }
 }
 ```
@@ -591,7 +591,7 @@ interface InsertParams<T> extends BaseQueryParams {
 
 ```ts
 interface CommandParams extends BaseQueryParams {
-  // 要执行的语句
+  // Statement to execute.
   query: string
 }
 
@@ -616,9 +616,9 @@ await client.command({
     (id UInt64, name String)
     ORDER BY (id)
   `,
-  // 建议在集群使用场景中启用此设置,以避免在响应代码发送后才发生查询处理错误、
-  // 而此时 HTTP 头已经发送给客户端的情况。
-  // 参见 https://clickhouse.com/docs/interfaces/http/#response-buffering
+  // Recommended for cluster usage to avoid situations where a query processing error occurred after the response code, 
+  // and HTTP headers were already sent to the client.
+  // See https://clickhouse.com/docs/interfaces/http/#response-buffering
   clickhouse_settings: {
     wait_end_of_query: 1,
   },
@@ -659,7 +659,7 @@ await client.command({
 
 ```ts
 interface ExecParams extends BaseQueryParams {
-  // 要执行的语句。
+  // Statement to execute.
   query: string
 }
 
@@ -701,19 +701,19 @@ type PingResult =
   | { success: true }
   | { success: false; error: Error }
 
-/** 健康检查请求的参数 - 使用内置的 `/ping` 端点。
- *  这是 Node.js 版本的默认行为。 */
+/** Parameters for the health-check request - using the built-in `/ping` endpoint. 
+ *  This is the default behavior for the Node.js version. */
 export type PingParamsWithEndpoint = {
   select: false
-  /** 用于取消进行中请求的 AbortSignal 实例。 */
+  /** AbortSignal instance to cancel a request in progress. */
   abort_signal?: AbortSignal
-  /** 附加到此特定请求的额外 HTTP 头。 */
+  /** Additional HTTP headers to attach to this particular request. */
   http_headers?: Record<string, string>
 }
-/** 健康检查请求的参数 - 使用 SELECT 查询。
- *  这是 Web 版本的默认行为,因为 `/ping` 端点不支持 CORS。
- *  大多数标准 `query` 方法参数(例如 `query_id`、`abort_signal`、`http_headers` 等)都可以使用,
- *  但 `query_params` 除外,在此方法中允许该参数没有意义。 */
+/** Parameters for the health-check request - using a SELECT query.
+ *  This is the default behavior for the Web version, as the `/ping` endpoint does not support CORS.
+ *  Most of the standard `query` method params, e.g., `query_id`, `abort_signal`, `http_headers`, etc. will work, 
+ *  except for `query_params`, which does not make sense to allow in this method. */
 export type PingParamsWithSelectQuery = { select: true } & Omit<
   BaseQueryParams,
   'query_params'
@@ -735,14 +735,14 @@ interface ClickHouseClient {
 ```ts
 const result = await client.ping();
 if (!result.success) {
-  // 处理 result.error
+  // process result.error
 }
 ```
 
 **示例：** 如果你希望在调用 `ping` 方法时同时校验凭证，或者指定诸如 `query_id` 之类的额外参数，可以按如下方式使用：
 
 ```ts
-const result = await client.ping({ select: true, /* query_id、abort_signal、http_headers 或其他任意查询参数 */ });
+const result = await client.ping({ select: true, /* query_id, abort_signal, http_headers, or any other query params */ });
 ```
 
 `ping` 方法可以使用大多数标准的 `query` 方法参数——参见 `PingParamsWithSelectQuery` 类型定义。
@@ -1107,11 +1107,11 @@ Node.js 客户端可选支持基本（仅证书颁发机构）
 
 ```ts
 const client = createClient({
-  url: 'https://<主机名>:<端口>',
-  username: '<用户名>',
-  password: '<密码>', // 如有需要
+  url: 'https://<hostname>:<port>',
+  username: '<username>',
+  password: '<password>', // if required
   tls: {
-    ca_cert: fs.readFileSync('certs/CA.pem'), // 读取 CA 证书
+    ca_cert: fs.readFileSync('certs/CA.pem'),
   },
 })
 ```
@@ -1183,15 +1183,14 @@ curl -v --data-binary "SELECT 1" <clickhouse_url>
 
   ```ts
   const client = createClient({
-    // 这里我们假设会有一些执行时间超过 5 分钟的查询
+    // Here we assume that we will have some queries with more than 5 minutes of execution time
     request_timeout: 400_000,
-    /** 这些设置组合在一起，可以在长时间运行且没有数据进出
-     *  的查询（例如 `INSERT FROM SELECT` 及类似查询）场景下避免 LB 超时问题，
-     *  因为连接可能会被 LB 标记为空闲并被突然关闭。
-     *  在本例中，我们假设 LB 的空闲连接超时时间为 120s，因此将 110s 作为“安全”值。 */
+    /** These settings in combination allow to avoid LB timeout issues in case of long-running queries without data coming in or out,
+     *  such as `INSERT FROM SELECT` and similar ones, as the connection could be marked as idle by the LB and closed abruptly.
+     *  In this case, we assume that the LB has idle connection timeout of 120s, so we set 110s as a "safe" value. */
     clickhouse_settings: {
       send_progress_in_http_headers: 1,
-      http_headers_progress_interval_ms: '110000', // UInt64，应以字符串形式传递
+      http_headers_progress_interval_ms: '110000', // UInt64, should be passed as a string
     },
   })
   ```
@@ -1216,7 +1215,7 @@ curl -v --data-binary "SELECT 1" <clickhouse_url>
 ```ts
 const client = createClient({
   compression: {
-    response: true, // 不适用于 readonly=1 用户
+    response: true, // won't work with a readonly=1 user
   },
 })
 ```
@@ -1289,12 +1288,12 @@ const agent = new https.Agent({
 const client = createClient({
   url: 'https://myserver:8443',
   http_agent: agent,
-  // 使用自定义 HTTPS 代理时,客户端将不使用默认的 HTTPS 连接实现;必须手动提供请求头
+  // With a custom HTTPS agent, the client won't use the default HTTPS connection implementation; the headers should be provided manually
   http_headers: {
     'X-ClickHouse-User': 'username',
     'X-ClickHouse-Key': 'password',
   },
-  // 重要:authorization 请求头与 TLS 请求头冲突;必须禁用。
+  // Important: authorization header conflicts with the TLS headers; disable it.
   set_basic_auth_header: false,
 })
 ```
@@ -1314,13 +1313,13 @@ const agent = new https.Agent({
 const client = createClient({
   url: 'https://myserver:8443',
   http_agent: agent,
-  // 使用自定义 HTTPS 代理时,客户端将不使用默认的 HTTPS 连接实现;请求头需要手动提供
+  // With a custom HTTPS agent, the client won't use the default HTTPS connection implementation; the headers should be provided manually
   http_headers: {
     'X-ClickHouse-User': 'username',
     'X-ClickHouse-Key': 'password',
     'X-ClickHouse-SSL-Certificate-Auth': 'on',
   },
-  // 重要:授权请求头与 TLS 请求头冲突;必须禁用。
+  // Important: authorization header conflicts with the TLS headers; disable it.
   set_basic_auth_header: false,
 })
 ```

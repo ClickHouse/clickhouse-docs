@@ -139,7 +139,7 @@ Query id: 2d0f957c-8f4e-43b2-a66a-cc48cc96237b
 以下では、`INSERT INTO ... SELECT` ステートメントを使用したデータのインポート方法を示します。
 
 ```sql
-# 3 つのカラムを持つテーブルの作成 {#table-creation-with-3-columns}
+# TABLE CREATION with 3 columns
 CREATE TABLE users_imported
 (
    `username` String,

@@ -53,13 +53,13 @@ FROM numbers(1000);
         <disks>
             <backups>
                 <type>local</type>
-                <path>/backups/</path> -- macOS の場合は /Users/backups/ を指定してください
+                <path>/backups/</path> -- for MacOS choose: /Users/backups/
             </backups>
         </disks>
     </storage_configuration>
     <backups>
         <allowed_disk>backups</allowed_disk>
-        <allowed_path>/backups/</allowed_path> -- macOS の場合は /Users/backups/ を指定してください
+        <allowed_path>/backups/</allowed_path> -- for MacOS choose: /Users/backups/
     </backups>
 </clickhouse>
 ```
