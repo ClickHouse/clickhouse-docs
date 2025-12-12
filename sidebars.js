@@ -1451,10 +1451,10 @@ const sidebars = {
           label: "TLS",
           collapsed: true,
           collapsible: true,
-          link: { type: "doc", id: "operations/tls/index" },
+          link: { type: "doc", id: "guides/sre/tls/index" },
           items: [
-            "guides/sre/configuring-tls",
-            "guides/sre/configuring-tls-with-acme",
+            "guides/sre/tls/configuring-tls",
+            "guides/sre/tls/configuring-tls-acme-client",
           ],
         },
         "guides/sre/user-management/index",
