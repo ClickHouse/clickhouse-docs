@@ -132,6 +132,56 @@
       "permanent": true
     },
     {
+      "source": "/docs/integrations/deltalake",
+      "destination": "/docs/sql-reference/table-functions/deltalake",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/hive",
+      "destination": "/docs/engines/table-engines/integrations/hive",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/hudi",
+      "destination": "/docs/engines/table-engines/integrations/hudi",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/iceberg",
+      "destination": "/docs/sql-reference/table-functions/iceberg",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/mongodb",
+      "destination": "/docs/engines/table-engines/integrations/mongodb",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/nats",
+      "destination": "/docs/engines/table-engines/integrations/nats",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/rabbitmq",
+      "destination": "/docs/engines/table-engines/integrations/rabbitmq",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/redis",
+      "destination": "/docs/sql-reference/table-functions/redis",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/rocksdb",
+      "destination": "/docs/engines/table-engines/integrations/embedded-rocksdb",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/sqlite",
+      "destination": "/docs/engines/table-engines/integrations/sqlite",
+      "permanent": true
+    },
+    {
       "source": "/docs/en/integrations/connect-a-client",
       "destination": "/docs/interfaces/cli",
       "permanent": true
