@@ -1446,6 +1446,18 @@ const sidebars = {
       collapsible: false,
       link: { type: "doc", id: "guides/sre/index" },
       items: [
+        {
+          type: "category",
+          label: "TLS",
+          collapsed: true,
+          collapsible: true,
+          link: { type: "doc", id: "guides/sre/tls/index" },
+          items: [
+            "guides/sre/configuring-ssl",
+            "guides/sre/tls/configuring-tls",
+            "guides/sre/tls/configuring-tls-acme-client",
+          ],
+        },
         "guides/sre/user-management/index",
         {
           type: "category",
@@ -1461,7 +1473,6 @@ const sidebars = {
               collapsible: true,
               items: [
                 "guides/sre/user-management/ssl-user-auth",
-                "guides/sre/configuring-ssl",
                 "operations/external-authenticators/ssl-x509",
               ],
             },
