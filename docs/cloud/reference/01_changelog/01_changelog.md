@@ -39,6 +39,17 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
   </a>
 :::
 
+## December 12, 2025 {#december-12-2025}
+
+- **SAML SSO self-serve setup**
+
+  Enterprise customers may now complete SAML setup in the console without a support ticket.
+  Additionally, SAML customers may set a default role that will be assigned to new users added via their identity provider and set custom session timeout settings.
+  For more information, please review our [docs](/cloud/security/saml-setup).
+- **Maximum replica size and scaling limits in Azure**  
+
+  Customers can now set the maximum replica size as 356 GiB in all Azure regions, except `eastus2` where the available maximum replica size is 120 GiB.
+
 ## November 21, 2025 {#november-21-2025}
 
 - ClickHouse Cloud is now available in **AWS Israel (Tel Aviv) — il-central-1**
