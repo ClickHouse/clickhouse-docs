@@ -96,13 +96,13 @@ Mac で `clickhouse-local` を実行するには、`./clickhouse local` を使�
 
 ```sql
   CREATE DATABASE db
-  ```
+```
 
 #### MySQL テーブルと同じスキーマを持つ宛先テーブルを作成します： {#create-a-destination-table-that-has-a-schema-equivalent-to-the-mysql-table}
 
 ```sql
   CREATE TABLE db.table ...
-  ```
+```
 
 :::note
 ClickHouse Cloud の宛先テーブルのスキーマと、元の MySQL テーブルのスキーマは揃っている必要があります（カラム名と順序が同じであり、かつカラムのデータ型が互換性を持っている必要があります）。
@@ -135,4 +135,4 @@ SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password');"
 
 ```sql
   CREATE DATABASE db
-  ```
+```

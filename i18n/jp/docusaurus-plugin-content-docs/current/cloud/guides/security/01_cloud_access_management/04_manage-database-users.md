@@ -103,10 +103,11 @@ SQL の [GRANT](/sql-reference/statements/grant) ステートメントを使用�
 
 ユーザーによる操作がそのユーザー ID に紐づいて識別できるようにし、`default` アカウントをいわゆるブレークグラス用途（緊急時のみの利用）のために確保しておくために、個人に紐づく新しいユーザーアカウントを作成し、そのユーザーに default&#95;role を付与することを推奨します。
 
+
 ```sql
-  CREATE USER userID IDENTIFIED WITH sha256_hash by 'hashed_password';
-  GRANT default_role to userID;
-  ```
+CREATE USER userID IDENTIFIED WITH sha256_hash by 'hashed_password';
+GRANT default_role to userID;
+```
 
 ユーザーは、SHA256 ハッシュジェネレーターや Python の `hashlib` のような関数を使用して、適切な複雑さを備えた 12 文字以上のパスワードを SHA256 文字列に変換し、その文字列をパスワードとしてシステム管理者に渡すことができます。これにより、管理者が平文パスワードを閲覧・取り扱う必要がなくなります。
 

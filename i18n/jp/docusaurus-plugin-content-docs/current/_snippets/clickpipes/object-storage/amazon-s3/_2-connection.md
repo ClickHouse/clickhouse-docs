@@ -8,7 +8,7 @@ import Image from '@theme/IdealImage';
   * **S3 file path**: S3 ClickPipe は、[virtual-hosted-style URI](https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html#virtual-hosted-style-access) を使用することを前提としています。
 
     ```bash
-        https://bucket-name.s3.region-code.amazonaws.com/key-name
-        ```
+    https://bucket-name.s3.region-code.amazonaws.com/key-name
+    ```
 
     複数のファイルやプレフィックスにマッチさせるために POSIX ワイルドカードを使用できます。サポートされているパターンについては、[リファレンスドキュメント](/integrations/clickpipes/object-storage/overview/#file-pattern-matching) を参照してください。

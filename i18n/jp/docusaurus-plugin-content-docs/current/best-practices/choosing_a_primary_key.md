@@ -136,35 +136,10 @@ WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 1 row in set. Elapsed: 0.013 sec. Processed 196.53 thousand rows, 1.77 MB (14.64 million rows/s., 131.78 MB/s.)
 ```
 
-┌─count()─┐
-│  192611 │
-└─────────┘
---highlight-next-line
-1 行が結果セットに含まれます。経過時間: 0.013 秒。処理件数: 196.53 千行、1.77 MB（14.64 百万行/秒、131.78 MB/秒）。
+このクエリは疎インデックスを活用することで、読み取るデータ量を大幅に削減し、実行時間を4倍高速化しています。行数と読み取りバイト数の減少にご注目ください。
 
-````sql
-EXPLAIN indexes = 1
-SELECT count()
-FROM stackoverflow.posts_ordered
-WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
+インデックスの使用状況は `EXPLAIN indexes=1` で確認できます。
 
-┌─explain─────────────────────────────────────────────────────────────────────────────────────┐
-│ Expression ((Project names + Projection))                                                   │
-│   Aggregating                                                                               │
-│     Expression (Before GROUP BY)                                                            │
-│       Expression                                                                            │
-│         ReadFromMergeTree (stackoverflow.posts_ordered)                                     │
-│         Indexes:                                                                            │
-│           PrimaryKey                                                                        │
-│             Keys:                                                                           │
-│               PostTypeId                                                                    │
-│               toDate(CreationDate)                                                          │
-│             Condition: and((PostTypeId in [1, 1]), (toDate(CreationDate) in [19723, +Inf))) │
-│             Parts: 14/14                                                                    │
-│             Granules: 39/7578                                                               │
-└─────────────────────────────────────────────────────────────────────────────────────────────┘
-
-13 rows in set. Elapsed: 0.004 sec.
 ```sql
 EXPLAIN indexes = 1
 SELECT count()
@@ -188,7 +163,7 @@ WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 └─────────────────────────────────────────────────────────────────────────────────────────────┘
 
 13 rows in set. Elapsed: 0.004 sec.
-````
+```
 
 さらに、疎インデックスが、サンプルクエリで一致する可能性のないすべての行ブロックをどのように除外するかを視覚的に示します。
 

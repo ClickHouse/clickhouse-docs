@@ -24,7 +24,7 @@ ClickHouse は、主にセッションログとクエリログに、データベ
 ログイン失敗を表示するサンプルクエリ
 
 ```sql
-select event_time
+SELECT event_time
     ,type
     ,user
     ,auth_type

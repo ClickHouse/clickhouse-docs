@@ -371,22 +371,23 @@ SELECT name, database FROM system.tables WHERE match(name, {tableNameRegex: Stri
 <Tabs>
 <TabItem value="GET" label="GET (cURL)" default>
 
-```bash
+    ```bash
     curl 'https://console-api.clickhouse.cloud/.api/query-endpoints/<endpoint id>/run?format=JSONCompactEachRow&param_tableNameRegex=query.*&param_database=system' \
     --user '<openApiKeyId:openApiKeySecret>' \
     -H 'x-clickhouse-endpoint-version: 2'
     ```
 
-```application/x-ndjson title="レスポンス"
+    ```application/x-ndjson title="レスポンス"
     ["query_cache", "system"]
     ["query_log", "system"]
     ["query_views_log", "system"]
     ```
 
 </TabItem>
+
 <TabItem value="cURL" label="POST (cURL)">
 
-```bash
+    ```bash
     curl -X POST 'https://console-api.clickhouse.cloud/.api/query-endpoints/<endpoint id>/run?format=JSONCompactEachRow' \
     --user '<openApiKeyId:openApiKeySecret>' \
     -H 'Content-Type: application/json' \
@@ -397,7 +398,7 @@ SELECT name, database FROM system.tables WHERE match(name, {tableNameRegex: Stri
 
 <TabItem value="JavaScript" label="JavaScript" default>
 
-```javascript
+    ```javascript
     fetch(
       "https://console-api.clickhouse.cloud/.api/query-endpoints/<endpoint id>/run?format=JSONCompactEachRow",
       {
@@ -420,15 +421,16 @@ SELECT name, database FROM system.tables WHERE match(name, {tableNameRegex: Stri
       .catch((error) => console.error("Error:", error));
     ```
 
-```application/x-ndjson title="レスポンス"
+    ```application/x-ndjson title="レスポンス"
     ["query_cache", "system"]
     ["query_log", "system"]
     ["query_views_log", "system"]
     ```
 </TabItem>
+
 </Tabs>
 
-### Request with array in the query variables that inserts data into a table {#request-with-array-in-the-query-variables-that-inserts-data-into-a-table}
+### クエリ変数に配列を含む、テーブルにデータを挿入するリクエスト {#request-with-array-in-the-query-variables-that-inserts-data-into-a-table}
 
 **Table SQL:**
 
@@ -448,9 +450,9 @@ INSERT INTO default.t_arr VALUES ({arr: Array(Array(Array(UInt32)))});
 ```
 
 <Tabs>
-<TabItem value="cURL" label="cURL" default>
+  <TabItem value="cURL" label="cURL" default>
 
-```bash
+    ```bash
     curl -X POST 'https://console-api.clickhouse.cloud/.api/query-endpoints/&lt;endpoint id&gt;/run' \
     --user '&lt;openApiKeyId:openApiKeySecret&gt;' \
     -H 'Content-Type: application/json' \
@@ -461,11 +463,10 @@ INSERT INTO default.t_arr VALUES ({arr: Array(Array(Array(UInt32)))});
       }
     }'
     ```
+  </TabItem>
+  <TabItem value="JavaScript" label="JavaScript" default>
 
-</TabItem>
-<TabItem value="JavaScript" label="JavaScript" default>
-
-```javascript
+    ```javascript
     fetch(
       "https://console-api.clickhouse.cloud/.api/query-endpoints/&lt;endpoint id&gt;/run",
       {
@@ -487,44 +488,41 @@ INSERT INTO default.t_arr VALUES ({arr: Array(Array(Array(UInt32)))});
       .catch((error) => console.error("Error:", error));
     ```
 
-```text title="レスポンス"
+    ```text title="レスポンス"
     OK
     ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
-### Request with ClickHouse settings `max_threads` set to 8 {#request-with-clickhouse-settings-max_threads-set-to-8}
+### ClickHouse の設定 `max_threads` を 8 にしたリクエスト {#request-with-clickhouse-settings-max_threads-set-to-8}
 
-**Query API Endpoint SQL:**
+**クエリ API エンドポイントの SQL:**
 
 ```sql
 SELECT * FROM system.tables;
 ```
 
 <Tabs>
-<TabItem value="GET" label="GET (cURL)" default>
-
-```bash
+  <TabItem value="GET" label="GET（cURL）" default>
+    ```bash
     curl 'https://console-api.clickhouse.cloud/.api/query-endpoints/&lt;endpoint id&gt;/run?max_threads=8' \
     --user '&lt;openApiKeyId:openApiKeySecret&gt;' \
     -H 'x-clickhouse-endpoint-version: 2'
     ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="cURL" label="POST (cURL)">
-
-```bash
+  <TabItem value="cURL" label="POST（cURL）">
+    ```bash
     curl -X POST 'https://console-api.clickhouse.cloud/.api/query-endpoints/&lt;endpoint id&gt;/run?max_threads=8,' \
     --user '&lt;openApiKeyId:openApiKeySecret&gt;' \
     -H 'Content-Type: application/json' \
     -H 'x-clickhouse-endpoint-version: 2' \
     ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="JavaScript" label="JavaScript">
-
-```javascript
+  <TabItem value="JavaScript" label="JavaScript">
+    ```javascript
     fetch(
       "https://console-api.clickhouse.cloud/.api/query-endpoints/&lt;endpoint id&gt;/run?max_threads=8",
       {
@@ -540,13 +538,12 @@ SELECT * FROM system.tables;
       .then((data) =&gt; console.log(data))
       .catch((error) =&gt; console.error("Error:", error));
     ```
-
-</TabItem>
+  </TabItem>
 </Tabs>
 
-### Request and parse the response as a stream` {#request-and-parse-the-response-as-a-stream}
+### レスポンスをストリームとしてリクエストしてパースする` {#request-and-parse-the-response-as-a-stream}
 
-**Query API Endpoint SQL:**
+**クエリ API エンドポイントの SQL:**
 
 ```sql
 SELECT name, database FROM system.tables;
@@ -605,20 +602,71 @@ SELECT name, database FROM system.tables;
     );
     ```
 
-```shell title="出力"
+<Tabs>
+  <TabItem value="TypeScript" label="TypeScript" default>
+    ```typescript
+    async function fetchAndLogChunks(
+      url: string,
+      openApiKeyId: string,
+      openApiKeySecret: string
+    ) {
+      const auth = Buffer.from(`${openApiKeyId}:${openApiKeySecret}`).toString(
+        "base64"
+      );
+
+      const headers = {
+        Authorization: `Basic ${auth}`,
+        "x-clickhouse-endpoint-version": "2",
+      };
+
+      const response = await fetch(url, {
+        headers,
+        method: "POST",
+        body: JSON.stringify({ format: "JSONEachRow" }),
+      });
+
+      if (!response.ok) {
+        console.error(`HTTP error! Status: ${response.status}`);
+        return;
+      }
+
+      const reader = response.body as unknown as Readable;
+      reader.on("data", (chunk) => {
+        console.log(chunk.toString());
+      });
+
+      reader.on("end", () => {
+        console.log("Stream ended.");
+      });
+
+      reader.on("error", (err) => {
+        console.error("Stream error:", err);
+      });
+    }
+
+    const endpointUrl =
+      "https://console-api.clickhouse.cloud/.api/query-endpoints/<endpoint id>/run?format=JSONEachRow";
+    const openApiKeyId = "<myOpenApiKeyId>";
+    const openApiKeySecret = "<myOpenApiKeySecret>";
+    // 使用例
+    fetchAndLogChunks(endpointUrl, openApiKeyId, openApiKeySecret).catch((err) =>
+      console.error(err)
+    );
+    ```
+
+    ```shell title="出力"
     > npx tsx index.ts
     > {"name":"COLUMNS","database":"INFORMATION_SCHEMA"}
     > {"name":"KEY_COLUMN_USAGE","database":"INFORMATION_SCHEMA"}
     ...
     > Stream ended.
     ```
-
-</TabItem>
+  </TabItem>
 </Tabs>
 
-### Insert a stream from a file into a table {#insert-a-stream-from-a-file-into-a-table}
+### ファイルからテーブルにストリーム挿入する {#insert-a-stream-from-a-file-into-a-table}
 
-Create a file `./samples/my_first_table_2024-07-11.csv` with the following content:
+次の内容でファイル `./samples/my_first_table_2024-07-11.csv` を作成します：
 
 ```csv
 "user_id","json","name"
@@ -638,7 +686,7 @@ create table default.my_first_table
 ORDER BY user_id;
 ```
 
-**Query API Endpoint SQL:**
+**クエリ API エンドポイント用 SQL:**
 
 ```sql
 INSERT INTO default.my_first_table
