@@ -4,7 +4,7 @@ sidebar_label: 'Configuring ACME client'
 sidebar_position: 20
 title: 'Configuring ACME client'
 description: 'This guide provides simple and minimal settings to configure ClickHouse to use OpenSSL certificates to validate connections.'
-keywords: ['ACME configuration', 'TLS setup', 'OpenSSL certificates', 'secure connections', 'SRE guide', "Let's Encrypt"]
+keywords: ['ACME configuration', 'TLS setup', 'OpenSSL certificates', 'secure connections', 'SRE guide', 'Let`s Encrypt']
 doc_type: 'guide'
 ---
 
