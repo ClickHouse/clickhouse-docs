@@ -1795,7 +1795,7 @@ SELECT fromUTCTimestamp(toDateTime64('2023-03-16 10:00:00', 3), 'Asia/Shanghai')
 
 Её можно вызывать двумя способами:
 
-* Если передан один аргумент типа [`Integer`](../data-types/int-uint.md), функция возвращает значение типа [`DateTime`](../data-types/datetime.md), т.е. ведёт себя так же, как [`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#todatetime).
+* Если передан один аргумент типа [`Integer`](../data-types/int-uint.md), функция возвращает значение типа [`DateTime`](../data-types/datetime.md), т.е. ведёт себя так же, как [`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#toDateTime).
 * Если переданы два или три аргумента, где первый аргумент — значение типа [`Integer`](../data-types/int-uint.md), [`Date`](../data-types/date.md), [`Date32`](../data-types/date32.md), [`DateTime`](../data-types/datetime.md) или [`DateTime64`](../data-types/datetime64.md), второй аргумент — строка формата-константа, а третий аргумент — необязательная строка часового пояса-константа, функция возвращает значение типа [`String`](../data-types/string.md), т.е. ведёт себя так же, как [`formatDateTime`](#formatDateTime).
   В этом случае используется [стиль форматирования даты и времени MySQL](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format).
 
@@ -1852,7 +1852,7 @@ SELECT fromUnixTimestamp(1234334543, '%Y-%m-%d %R:%S') AS DateTime
 
 Функцию можно вызывать двумя способами:
 
-Если передан один аргумент типа [`Integer`](../data-types/int-uint.md), возвращается значение типа [`DateTime`](../data-types/datetime.md), т.е. функция ведёт себя как [`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#todatetime).
+Если передан один аргумент типа [`Integer`](../data-types/int-uint.md), возвращается значение типа [`DateTime`](../data-types/datetime.md), т.е. функция ведёт себя как [`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#toDateTime).
 
 Если переданы два или три аргумента, где первый аргумент — значение типа [`Integer`](../data-types/int-uint.md), [`Date`](../data-types/date.md), [`Date32`](../data-types/date32.md), [`DateTime`](../data-types/datetime.md) или [`DateTime64`](../data-types/datetime64.md), второй аргумент — константная строка формата, а третий аргумент — необязательная константная строка часового пояса, функция возвращает значение типа [`String`](../data-types/string.md), т.е. ведёт себя как [`formatDateTimeInJodaSyntax`](#formatDateTimeInJodaSyntax). В этом случае используется [стиль формата даты и времени Joda](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html).
 

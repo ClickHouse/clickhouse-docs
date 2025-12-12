@@ -1793,7 +1793,7 @@ SELECT fromUTCTimestamp(toDateTime64('2023-03-16 10:00:00', 3), 'Asia/Shanghai')
 
 2 通りの呼び出し方があります。
 
-* 単一の引数として型 [`Integer`](../data-types/int-uint.md) を取る場合、型 [`DateTime`](../data-types/datetime.md) の値を返します。つまり、[`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#todatetime) と同様に動作します。
+* 単一の引数として型 [`Integer`](../data-types/int-uint.md) を取る場合、型 [`DateTime`](../data-types/datetime.md) の値を返します。つまり、[`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#toDateTime) と同様に動作します。
 * 2 つまたは 3 つの引数を取り、1 番目の引数が型 [`Integer`](../data-types/int-uint.md)、[`Date`](../data-types/date.md)、[`Date32`](../data-types/date32.md)、[`DateTime`](../data-types/datetime.md) または [`DateTime64`](../data-types/datetime64.md) の値であり、2 番目の引数が定数のフォーマット文字列、3 番目の引数が省略可能な定数のタイムゾーン文字列である場合、この関数は型 [`String`](../data-types/string.md) の値を返します。つまり、[`formatDateTime`](#formatDateTime) と同様に動作します。
   この場合、[MySQL の datetime フォーマット形式](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format) が使用されます。
 
@@ -1850,7 +1850,7 @@ SELECT fromUnixTimestamp(1234334543, '%Y-%m-%d %R:%S') AS DateTime
 
 呼び出し方法は 2 通りあります。
 
-単一の引数として [`Integer`](../data-types/int-uint.md) 型を渡した場合、[`DateTime`](../data-types/datetime.md) 型の値を返します。つまり、[`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#todatetime) と同様に動作します。
+単一の引数として [`Integer`](../data-types/int-uint.md) 型を渡した場合、[`DateTime`](../data-types/datetime.md) 型の値を返します。つまり、[`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#toDateTime) と同様に動作します。
 
 1 番目の引数が [`Integer`](../data-types/int-uint.md)、[`Date`](../data-types/date.md)、[`Date32`](../data-types/date32.md)、[`DateTime`](../data-types/datetime.md) あるいは [`DateTime64`](../data-types/datetime64.md) 型の値であり、2 番目の引数に定数のフォーマット文字列、3 番目の引数に省略可能な定数のタイムゾーン文字列を指定した 2 つまたは 3 つの引数で呼び出した場合、関数は [`String`](../data-types/string.md) 型の値を返します。つまり、[`formatDateTimeInJodaSyntax`](#formatDateTimeInJodaSyntax) と同様に動作します。この場合、[Joda の日時フォーマットスタイル](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html) が使用されます。
 

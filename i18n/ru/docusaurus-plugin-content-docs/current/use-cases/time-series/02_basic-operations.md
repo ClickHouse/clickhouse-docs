@@ -64,7 +64,7 @@ LIMIT 5;
 └────────────┴──────────┘
 ```
 
-Здесь мы использовали функцию [`toDate()`](/sql-reference/functions/type-conversion-functions#todate), которая преобразует указанное время в тип Date. В качестве альтернативы можно формировать часовые батчи и затем фильтровать по конкретной дате:
+Здесь мы использовали функцию [`toDate()`](/sql-reference/functions/type-conversion-functions#toDate), которая преобразует указанное время в тип Date. В качестве альтернативы можно формировать часовые батчи и затем фильтровать по конкретной дате:
 
 ```sql
 SELECT
@@ -108,7 +108,7 @@ ORDER BY interval ASC
 LIMIT 6;
 ```
 
-Или можно использовать функцию [`toIntervalHour()`](/docs/sql-reference/functions/type-conversion-functions#tointervalhour)
+Или можно использовать функцию [`toIntervalHour()`](/docs/sql-reference/functions/type-conversion-functions#toIntervalHour)
 
 ```sql
 SELECT
