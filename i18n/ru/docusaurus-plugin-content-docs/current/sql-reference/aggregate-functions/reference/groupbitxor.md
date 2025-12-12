@@ -1,13 +1,14 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/groupbitxor'
+description: 'Применяет побитовое `XOR` к последовательности чисел.'
 sidebar_position: 153
-description: 'Применяет побитовый `XOR` для серии чисел.'
-title: groupBitXor
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/groupbitxor
+title: 'groupBitXor'
+doc_type: 'reference'
 ---
-# groupBitXor
 
-Применяет побитовую `XOR` для последовательности чисел.
+# groupBitXor {#groupbitxor}
+
+Применяет операцию побитового `XOR` к серии чисел.
 
 ```sql
 groupBitXor(expr)
@@ -15,7 +16,7 @@ groupBitXor(expr)
 
 **Аргументы**
 
-`expr` – Выражение, которое возвращает тип `UInt*` или `Int*`.
+`expr` – выражение, результатом вычисления которого является значение типа `UInt*` или `Int*`.
 
 **Возвращаемое значение**
 
@@ -26,7 +27,7 @@ groupBitXor(expr)
 Тестовые данные:
 
 ```text
-binary     decimal
+двоичное   десятичное
 00101100 = 44
 00011100 = 28
 00001101 = 13
@@ -39,11 +40,11 @@ binary     decimal
 SELECT groupBitXor(num) FROM t
 ```
 
-Где `num` – это колонка с тестовыми данными.
+Где `num` — столбец с тестовыми данными.
 
 Результат:
 
 ```text
-binary     decimal
+двоичное   десятичное
 01101000 = 104
 ```

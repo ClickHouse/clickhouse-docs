@@ -1,19 +1,21 @@
 ---
-slug: '/interfaces/formats/LineAsStringWithNames'
-description: 'Документация для формата LineAsStringWithNames'
-title: LineAsStringWithNames
-keywords: ['LineAsStringWithNames']
-doc_type: reference
+alias: []
+description: 'Документация по формату LineAsStringWithNames'
 input_format: true
+keywords: ['LineAsStringWithNames']
 output_format: true
+slug: /interfaces/formats/LineAsStringWithNames
+title: 'LineAsStringWithNames'
+doc_type: 'reference'
 ---
-| Input | Output | Alias |
-|-------|--------|-------|
-| ✗     | ✔      |       |
+
+| Вход | Выход | Псевдоним |
+|------|-------|-----------|
+| ✗    | ✔     |           |
 
 ## Описание {#description}
 
-Формат `LineAsStringWithNames` похож на формат [`LineAsString`](./LineAsString.md), но выводит строку заголовка с именами колонок.
+Формат `LineAsStringWithNames` похож на формат [`LineAsString`](./LineAsString.md), но выводит строку заголовков с именами столбцов.
 
 ## Пример использования {#example-usage}
 
@@ -36,4 +38,4 @@ Jane    25
 Peter    35
 ```
 
-## Настройки формата {#format-settings}
+## Параметры форматирования {#format-settings}

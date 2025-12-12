@@ -1,136 +1,134 @@
 ---
-'alias': []
-'description': 'Templateフォーマットに関するDocumentation'
-'input_format': true
-'keywords':
-- 'Template'
-'output_format': true
-'slug': '/interfaces/formats/Template'
-'title': 'テンプレート'
-'doc_type': 'guide'
+alias: []
+description: 'Template フォーマットのドキュメント'
+input_format: true
+keywords: ['Template']
+output_format: true
+slug: /interfaces/formats/Template
+title: 'Template'
+doc_type: 'guide'
 ---
 
-| Input | Output | Alias |
+| Input | Output | エイリアス |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## 説明 {#description}
 
-他の標準フォーマットが提供するよりも多くのカスタマイズが必要な場合、 
-`Template`フォーマットは、ユーザーが値のためのプレースホルダーを持つ独自のカスタムフォーマット文字列を指定し、データのエスケープルールを指定できるようにします。
+他の標準フォーマットでは対応できない、より高度なカスタマイズが必要な場合に、  
+`Template` フォーマットを使用すると、値のプレースホルダーを含む独自のカスタムフォーマット文字列と、  
+データに対するエスケープルールをユーザーが指定できます。
 
-以下の設定を使用します：
+このフォーマットでは、次の設定を使用します:
 
-| 設定                                                                                                  | 説明                                                                                                                |
-|----------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
-| [`format_template_row`](#format_template_row)                                                            | 行のフォーマット文字列を含むファイルへのパスを指定します。                                                     |
-| [`format_template_resultset`](#format_template_resultset)                                                | 行のフォーマット文字列を含むファイルへのパスを指定します。                                                      |
-| [`format_template_rows_between_delimiter`](#format_template_rows_between_delimiter)                      | 最後の行を除く各行の後に印刷される（または期待される）デリミタを指定します（デフォルトは`\n`） |
-| `format_template_row_format`                                                                             | 行のためのフォーマット文字列を指定します [インライン](#inline_specification)。                                                      |                                                                           
-| `format_template_resultset_format`                                                                       | 結果セットのフォーマット文字列を指定します [インライン](#inline_specification)。                                                   |
-| 他のフォーマットの一部の設定（例えば、`JSON`エスケープを使用する際の`output_format_json_quote_64bit_integers`） |                                                                                                                            |
+| 設定                                                                                                     | 説明                                                                                                                         |
+|----------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------|
+| [`format_template_row`](#format_template_row)                                                            | 行のフォーマット文字列を含むファイルへのパスを指定します。                                                                   |
+| [`format_template_resultset`](#format_template_resultset)                                                | 結果セットのフォーマット文字列を含むファイルへのパスを指定します。                                                           |
+| [`format_template_rows_between_delimiter`](#format_template_rows_between_delimiter)                      | 行と行の間の区切り文字を指定します。これは最後の行を除く各行の後に出力（または入力として期待）されます（デフォルトは `\n`）。 |
+| `format_template_row_format`                                                                             | 行のフォーマット文字列を[インライン](#inline_specification)で指定します。                                                   |                                                                           
+| `format_template_resultset_format`                                                                       | 結果セットのフォーマット文字列を[インライン](#inline_specification)で指定します。                                           |
+| 他のフォーマットの一部の設定（例: `JSON` エスケープを使用する場合の `output_format_json_quote_64bit_integers` |                                                                                                                              |
 
-## 設定とエスケープルール {#settings-and-escaping-rules}
+## 設定とエスケープ規則 {#settings-and-escaping-rules}
 
-### format_template_row {#format_template_row}
+### format&#95;template&#95;row {#format_template_row}
 
-設定`format_template_row`は、次の構文を持つ行のフォーマット文字列を含むファイルへのパスを指定します：
+`format_template_row` 設定は、次の構文で行用のフォーマット文字列が記述されたファイルへのパスを指定します。
 
 ```text
 delimiter_1${column_1:serializeAs_1}delimiter_2${column_2:serializeAs_2} ... delimiter_N
 ```
 
-ここで：
+Where:
 
-| 構文の部分 | 説明                                                                                                       |
-|------------|-------------------------------------------------------------------------------------------------------------------|
-| `delimiter_i`  | 値の間のデリミタ（`$`記号は`$$`としてエスケープできます）                                                    |
-| `column_i`     | 値を選択または挿入するカラムの名前またはインデックス（空の場合、そのカラムはスキップされます） |
-| `serializeAs_i` | カラム値のためのエスケープルール。                                                                           |
+| Part of syntax  | Description                                     |
+| --------------- | ----------------------------------------------- |
+| `delimiter_i`   | 値同士の区切り文字（`$` 記号は `$$` としてエスケープ可能）              |
+| `column_i`      | 値を選択または挿入する対象となる列の名前またはインデックス（空の場合、その列はスキップされる） |
+| `serializeAs_i` | 列の値に対するエスケープ規則。                                 |
 
-次のエスケープルールがサポートされています：
+サポートされているエスケープ規則は次のとおりです。
 
-| エスケープルール        | 説明                              |
-|----------------------|------------------------------------------|
-| `CSV`, `JSON`, `XML` | 同名のフォーマットに類似 |
-| `Escaped`            | `TSV`に類似                         |
-| `Quoted`             | `Values`に類似                      |
-| `Raw`                | エスケープなし、`TSVRaw`に類似    |   
-| `None`               | エスケープルールなし - 注記を参照        |
+| Escaping Rule        | Description            |
+| -------------------- | ---------------------- |
+| `CSV`, `JSON`, `XML` | 同名のフォーマットと同様           |
+| `Escaped`            | `TSV` と同様              |
+| `Quoted`             | `Values` と同様           |
+| `Raw`                | エスケープなしで、`TSVRaw` と同様  |
+| `None`               | エスケープ規則なし（詳細は下記の注記を参照） |
 
 :::note
-エスケープルールが省略された場合、`None`が使用されます。`XML`は出力のみに適しています。
+エスケープ規則が省略された場合、`None` が使用されます。`XML` は出力にのみ適しています。
 :::
 
-例を見てみましょう。次のフォーマット文字列を与えられた場合：
+例を見てみましょう。次のフォーマット文字列が与えられているとします。
 
 ```text
-Search phrase: ${s:Quoted}, count: ${c:Escaped}, ad price: $$${p:JSON};
+検索フレーズ: ${s:Quoted}、件数: ${c:Escaped}、広告価格: $$${p:JSON};
 ```
 
-次の値が印刷されます（`SELECT`を使用する場合）または期待されます（`INPUT`を使用する場合）、 
-カラム`Search phrase:`, `, count:`, `, ad price: $`および`;`デリミタの間にそれぞれ：
+以下の値は（`SELECT` を使用している場合は）出力され、（`INPUT` を使用している場合は）入力として期待されます。
+それぞれ、カラム `Search phrase:`, `, count:`, `, ad price: $` と `;` の区切り文字の間に対応します。
 
-- `s`（エスケープルール`Quoted`付き）
-- `c`（エスケープルール`Escaped`付き）
-- `p`（エスケープルール`JSON`付き）
+* `s`（エスケープルール `Quoted`）
+* `c`（エスケープルール `Escaped`）
+* `p`（エスケープルール `JSON`）
 
-例えば：
+例:
 
-- `INSERT`する場合、以下の行は期待されるテンプレートと一致し、カラム`Search phrase`, `count`, `ad price`に値`bathroom interior design`, `2166`, `$3`を読み込みます。
-- `SELECT`する場合、以下の行が出力され、値`bathroom interior design`, `2166`, `$3`がすでにカラム`Search phrase`, `count`, `ad price`に格納されていると仮定します。  
+* `INSERT` を行う場合、下記の行は期待されるテンプレートに一致しており、カラム `Search phrase`, `count`, `ad price` にそれぞれ値 `bathroom interior design`, `2166`, `$3` を読み込みます。
+* `SELECT` を行う場合、下記の行は、値 `bathroom interior design`, `2166`, `$3` がすでにテーブル内のカラム `Search phrase`, `count`, `ad price` に保存されていると仮定したときの出力例です。
 
 ```yaml
-Search phrase: 'bathroom interior design', count: 2166, ad price: $3;
+検索フレーズ: 'bathroom interior design'、件数: 2166、広告単価: $3;
 ```
 
-### format_template_rows_between_delimiter {#format_template_rows_between_delimiter}
+### format&#95;template&#95;rows&#95;between&#95;delimiter {#format_template_rows_between_delimiter}
 
-設定`format_template_rows_between_delimiter`は、各行の後（最後の行を除く）に印刷される（または期待される）行間のデリミタを指定します（デフォルトは`\n`）。
+`format_template_rows_between_delimiter` 設定は、行と行の間に出力（または入力として期待）される区切り文字列を指定します。最後の行を除くすべての行の後に出力され、デフォルトは `\n` です。
 
-### format_template_resultset {#format_template_resultset}
+### format&#95;template&#95;resultset {#format_template_resultset}
 
-設定`format_template_resultset`は、結果セットのフォーマット文字列を含むファイルへのパスを指定します。
+`format_template_resultset` 設定は、結果セット用のフォーマット文字列を含むファイルへのパスを指定します。
 
-結果セットのフォーマット文字列は行のフォーマット文字列と同じ構文を持ちます。 
-接頭辞、接尾辞および追加情報の印刷方法を指定でき、以下のプレースホルダーをカラム名の代わりに含みます：
+結果セット用のフォーマット文字列は、行用のフォーマット文字列と同じ構文を持ちます。
+これにより、接頭辞や接尾辞、追加情報の出力方法を指定でき、列名の代わりに次のプレースホルダを使用します。
 
-- `data` は、`format_template_row`フォーマットで分離されたデータのある行を示し、`format_template_rows_between_delimiter`で区切られます。このプレースホルダーは、フォーマット文字列内で最初のプレースホルダーである必要があります。
-- `totals` は、`format_template_row`フォーマットでの合計値を持つ行（WITH TOTALSを使用する場合）。
-- `min` は、`format_template_row`フォーマットでの最小値を持つ行（極値が1に設定されている場合）。
-- `max` は、`format_template_row`フォーマットでの最大値を持つ行（極値が1に設定されている場合）。
-- `rows` は、出力行の合計数です。
-- `rows_before_limit` は、LIMITがない場合にあったはずの最小行数。クエリにLIMITが含まれている場合のみ出力されます。クエリにGROUP BYが含まれている場合、`rows_before_limit_at_least`はLIMITがない場合の正確な行数です。
-- `time` は、リクエストの実行時間（秒単位）です。
-- `rows_read` は、読み取られた行の数です。
-- `bytes_read` は、読み取られたバイト数（非圧縮）です。
+* `data` は、`format_template_row` フォーマットで表現されたデータ行で、`format_template_rows_between_delimiter` で区切られます。このプレースホルダは、フォーマット文字列内の先頭に配置する必要があります。
+* `totals` は、`format_template_row` フォーマットで表現された合計値の行です（WITH TOTALS 使用時）。
+* `min` は、`format_template_row` フォーマットで表現された最小値の行です（extremes が 1 に設定されている場合）。
+* `max` は、`format_template_row` フォーマットで表現された最大値の行です（extremes が 1 に設定されている場合）。
+* `rows` は、出力行の総数です。
+* `rows_before_limit` は、LIMIT がなかった場合に存在していたであろう行数の下限値です。LIMIT を含むクエリでのみ出力されます。クエリに GROUP BY が含まれている場合、rows&#95;before&#95;limit&#95;at&#95;least は LIMIT がなかった場合に存在していた行数の正確な値になります。
+* `time` は、リクエストの実行時間（秒）です。
+* `rows_read` は、読み取られた行数です。
+* `bytes_read` は、読み取られた（非圧縮の）バイト数です。
 
-プレースホルダー`data`, `totals`, `min`および`max`はエスケープルールを指定してはいけません（または`None`を明示的に指定する必要があります）。残りのプレースホルダーには任意のエスケープルールを指定できます。
+`data`、`totals`、`min`、`max` の各プレースホルダには、エスケープ規則を指定してはいけません（または明示的に `None` を指定する必要があります）。残りのプレースホルダには任意のエスケープ規則を指定できます。
 
 :::note
-`format_template_resultset`設定が空の文字列である場合、`${data}`がデフォルトの値として使用されます。
+`format_template_resultset` 設定が空文字列の場合、デフォルト値として `${data}` が使用されます。
 :::
 
-挿入クエリでは、接頭辞または接尾辞がある場合は、一部のカラムやフィールドをスキップすることができます（例を参照）。
+挿入クエリでは、先頭または末尾を省略する場合（例を参照）、一部の列やフィールドをスキップできるフォーマットを利用できます。
 
-### インライン仕様 {#inline_specification}
+### インライン指定 {#inline_specification}
 
-しばしば、フォーマット構成をデプロイすることは困難あるいは不可能ですが、 
-（`format_template_row`, `format_template_resultset`によって設定される）、すべてのノードにクラスタ内のテンプレートフォーマットを指定することです。 
-さらに、フォーマットが非常に単純であるため、ファイル内に置く必要がない場合があります。
+クラスター内のすべてのノード上のディレクトリに、テンプレートフォーマットの設定（`format_template_row`、`format_template_resultset` で設定）をデプロイすることが困難、あるいは不可能な場合がよくあります。  
+さらに、そのフォーマットが非常に単純で、ファイルとして配置する必要がない場合もあります。
 
-この場合、`format_template_row_format`（`format_template_row`用）および`format_template_resultset_format`（`format_template_resultset`用）を使用して、 
-ファイル内のパスではなく、クエリ内で直接テンプレート文字列を設定できます。
+このような場合には、`format_template_row_format`（`format_template_row` 用）および `format_template_resultset_format`（`format_template_resultset` 用）を使用して、ファイルへのパスではなく、テンプレート文字列そのものをクエリ内で直接指定できます。
 
 :::note
-フォーマット文字列およびエスケープシーケンスのルールは次のものと同じです：
-- [`format_template_row`](#format_template_row)を使用する場合の`format_template_row_format`。
-- [`format_template_resultset`](#format_template_resultset)を使用する場合の`format_template_resultset_format`。
+フォーマット文字列およびエスケープシーケンスに関するルールは、次と同じです。
+- `format_template_row_format` を使用する場合は [`format_template_row`](#format_template_row)。
+- `format_template_resultset_format` を使用する場合は [`format_template_resultset`](#format_template_resultset)。
 :::
 
 ## 使用例 {#example-usage}
 
-`Template`フォーマットを使用してデータを選択する例と挿入する例を見てみましょう。
+まずは `Template` 形式の利用例として、データの選択と挿入の 2 つのケースを見ていきます。
 
 ### データの選択 {#selecting-data}
 
@@ -141,16 +139,16 @@ format_template_resultset = '/some/path/resultset.format', format_template_row =
 
 ```text title="/some/path/resultset.format"
 <!DOCTYPE HTML>
-<html> <head> <title>Search phrases</title> </head>
+<html> <head> <title>検索フレーズ</title> </head>
  <body>
-  <table border="1"> <caption>Search phrases</caption>
-    <tr> <th>Search phrase</th> <th>Count</th> </tr>
+  <table border="1"> <caption>検索フレーズ</caption>
+    <tr> <th>検索フレーズ</th> <th>件数</th> </tr>
     ${data}
   </table>
-  <table border="1"> <caption>Max</caption>
+  <table border="1"> <caption>最大値</caption>
     ${max}
   </table>
-  <b>Processed ${rows_read:XML} rows in ${time:XML} sec</b>
+  <b>${rows_read:XML} 行を ${time:XML} 秒で処理しました</b>
  </body>
 </html>
 ```
@@ -163,20 +161,20 @@ format_template_resultset = '/some/path/resultset.format', format_template_row =
 
 ```html
 <!DOCTYPE HTML>
-<html> <head> <title>Search phrases</title> </head>
+<html> <head> <title>検索フレーズ</title> </head>
  <body>
-  <table border="1"> <caption>Search phrases</caption>
-    <tr> <th>Search phrase</th> <th>Count</th> </tr>
+  <table border="1"> <caption>検索フレーズ</caption>
+    <tr> <th>検索フレーズ</th> <th>件数</th> </tr>
     <tr> <td></td> <td>8267016</td> </tr>
     <tr> <td>bathroom interior design</td> <td>2166</td> </tr>
     <tr> <td>clickhouse</td> <td>1655</td> </tr>
     <tr> <td>spring 2014 fashion</td> <td>1549</td> </tr>
     <tr> <td>freeform photos</td> <td>1480</td> </tr>
   </table>
-  <table border="1"> <caption>Max</caption>
+  <table border="1"> <caption>最大値</caption>
     <tr> <td></td> <td>8873898</td> </tr>
   </table>
-  <b>Processed 3095973 rows in 0.1569913 sec</b>
+  <b>3095973行を0.1569913秒で処理しました</b>
  </body>
 </html>
 ```
@@ -184,10 +182,10 @@ format_template_resultset = '/some/path/resultset.format', format_template_row =
 ### データの挿入 {#inserting-data}
 
 ```text
-Some header
-Page views: 5, User id: 4324182021466249494, Useless field: hello, Duration: 146, Sign: -1
-Page views: 6, User id: 4324182021466249494, Useless field: world, Duration: 185, Sign: 1
-Total rows: 2
+ヘッダー
+ページビュー: 5、ユーザーID: 4324182021466249494、不要なフィールド: hello、期間: 146、符号: -1
+ページビュー: 6、ユーザーID: 4324182021466249494、不要なフィールド: world、期間: 185、符号: 1
+合計行数: 2
 ```
 
 ```sql
@@ -197,21 +195,21 @@ FORMAT Template
 ```
 
 ```text title="/some/path/resultset.format"
-Some header\n${data}\nTotal rows: ${:CSV}\n
+ヘッダー\n${data}\n総行数: ${:CSV}\n
 ```
 
 ```text title="/some/path/row.format"
-Page views: ${PageViews:CSV}, User id: ${UserID:CSV}, Useless field: ${:CSV}, Duration: ${Duration:CSV}, Sign: ${Sign:CSV}
+ページビュー: ${PageViews:CSV}, ユーザーID: ${UserID:CSV}, 未使用フィールド: ${:CSV}, 期間: ${Duration:CSV}, 符号: ${Sign:CSV}
 ```
 
-`PageViews`, `UserID`, `Duration`および`Sign`のプレースホルダー内は、テーブル内のカラム名です。 行の`Useless field`の後、および接尾辞の`\nTotal rows:`の後の値は無視されます。
-入力データ内のすべてのデリミタは、指定されたフォーマット文字列内のデリミタと厳密に一致する必要があります。
+プレースホルダー内の `PageViews`、`UserID`、`Duration` および `Sign` は、テーブル内の列名です。行中の `Useless field` 以降の値と、サフィックス中の `\nTotal rows:` 以降の値は無視されます。
+入力データ内のすべての区切り文字は、指定されたフォーマット文字列内の区切り文字と厳密に一致している必要があります。
 
-### インライン仕様 {#in-line-specification}
+### インライン指定 {#in-line-specification}
 
-マークダウンテーブルを手動でフォーマットするのに疲れましたか？ この例では、`Template`フォーマットとインライン仕様設定を使用して、あるシンプルなタスク - `system.formats`テーブルからいくつかのClickHouseフォーマットの名前を`SELECT`し、それらをマークダウンテーブルとしてフォーマットする方法を見てみます。 これは`Template`フォーマットと`format_template_row_format`および`format_template_resultset_format`設定を使って簡単に達成できます。
+Markdown テーブルを手作業で整形するのにうんざりしていませんか？この例では、`Template` フォーマットとインライン指定の設定を使って、簡単なタスクをどのように実現できるかを見ていきます。ここでは、`system.formats` テーブルからいくつかの ClickHouse フォーマット名を `SELECT` し、それらを Markdown テーブルとして整形します。これは、`Template` フォーマットと `format_template_row_format` および `format_template_resultset_format` 設定を使うことで容易に実現できます。
 
-前の例では、結果セットおよび行フォーマット文字列を別々のファイルに指定し、それらのファイルへのパスを`format_template_resultset`および`format_template_row`設定を使用してそれぞれ指定しました。 ここでは、私たちのテンプレートがわずか数個の`|`と`-`から成り、マークダウンテーブルを作成するのが単純なため、インラインでそれを行います。 結果セットのテンプレート文字列を設定`format_template_resultset_format`を使用して指定します。 テーブルヘッダーを作成するために、`${data}`の前に`|ClickHouse Formats|\n|---|\n`を追加しました。 `format_template_row_format`設定を使用して、行のテンプレート文字列`` |`{0:XML}`| ``を指定します。 `Template`フォーマットは、与えられたフォーマットを持つ行をプレースホルダー`${data}`に挿入します。 この例では、カラムは1つだけですが、もっと追加したい場合は、行テンプレート文字列に`{1:XML}`, `{2:XML}`...などを追加して、適切なエスケープルールを選択することができます。この例では、エスケープルール`XML`を選びました。 
+前の例では、結果セットおよび行フォーマットの文字列を別ファイルに記述し、それらファイルへのパスをそれぞれ `format_template_resultset` および `format_template_row` 設定で指定しました。ここではテンプレートがごく単純で、Markdown テーブルを作るためのいくつかの `|` と `-` だけで構成されるため、インラインで指定します。結果セットのテンプレート文字列は、`format_template_resultset_format` 設定を使って指定します。テーブルヘッダを作るために、`${data}` の前に `|ClickHouse Formats|\n|---|\n` を追加しています。行に対しては、`format_template_row_format` 設定を使用し、テンプレート文字列 ``|`{0:XML}`|`` を指定します。`Template` フォーマットは、指定したフォーマットで整形した行をプレースホルダ `${data}` に挿入します。この例ではカラムは 1 つだけですが、もし追加したい場合は、行テンプレート文字列に `{1:XML}`、`{2:XML}` ... のように追記し、適切なエスケープルールを選択すればかまいません。この例ではエスケープルールとして `XML` を使用しています。
 
 ```sql title="Query"
 WITH formats AS
@@ -224,13 +222,13 @@ SELECT * FROM formats
 FORMAT Template
 SETTINGS
  format_template_row_format='|`${0:XML}`|',
- format_template_resultset_format='|ClickHouse Formats|\n|---|\n${data}\n'
+ format_template_resultset_format='|ClickHouse フォーマット|\n|---|\n${data}\n'
 ```
 
-見てください！ 私たちは、マークダウンテーブルを作成するために手動で追加する必要のあるすべての`|`や`-`を追加する手間を省きました：
+ご覧のとおり、あの markdown テーブルを作るために必要な `|` や `-` を、手作業で一つずつ追加していく手間を省くことができました：
 
 ```response title="Response"
-|ClickHouse Formats|
+|ClickHouse フォーマット|
 |---|
 |`BSONEachRow`|
 |`CustomSeparatedWithNames`|

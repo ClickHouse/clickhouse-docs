@@ -1,13 +1,14 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/exponentialMovingAverage'
+description: 'Вычисляет экспоненциальное скользящее среднее значений за заданный промежуток времени.'
 sidebar_position: 132
-description: 'Вычисляет экспоненциальное скользящее среднее значений за установленный'
-title: exponentialMovingAverage
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/exponentialMovingAverage
+title: 'exponentialMovingAverage'
+doc_type: 'reference'
 ---
+
 ## exponentialMovingAverage {#exponentialmovingaverage}
 
-Вычисляет экспоненциальную скользящую среднюю значений за заданный период времени.
+Вычисляет экспоненциальное скользящее среднее значений за заданный интервал времени.
 
 **Синтаксис**
 
@@ -15,20 +16,20 @@ doc_type: reference
 exponentialMovingAverage(x)(value, timeunit)
 ```
 
-Каждое `value` соответствует определённому `timeunit`. Период полураспада `x` — это временная задержка, за которую экспоненциальные веса уменьшаются вдвое. Функция возвращает взвешенную среднюю: чем старше временная точка, тем меньший вес имеет соответствующее значение.
+Каждому `value` соответствует определённый `timeunit`. Период полураспада `x` — это временной интервал, при котором экспоненциальные веса уменьшаются вдвое. Функция возвращает взвешенное среднее: чем старше точка по времени, тем меньший вес получает соответствующее значение.
 
 **Аргументы**
 
-- `value` — Значение. [Целое](../../../sql-reference/data-types/int-uint.md), [Вещественное](../../../sql-reference/data-types/float.md) или [Десятичное](../../../sql-reference/data-types/decimal.md).
-- `timeunit` — Временной интервал. [Целое](../../../sql-reference/data-types/int-uint.md), [Вещественное](../../../sql-reference/data-types/float.md) или [Десятичное](../../../sql-reference/data-types/decimal.md). Временной интервал не является временной меткой (секунды), это — индекс временного интервала. Может быть вычислен с помощью [intDiv](/sql-reference/functions/arithmetic-functions#intDiv).
+* `value` — Значение. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
+* `timeunit` — Временная единица. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md). Временная единица — это не временная метка (секунды), а индекс временного интервала. Может быть вычислена с помощью [intDiv](/sql-reference/functions/arithmetic-functions#intDiv).
 
 **Параметры**
 
-- `x` — Период полураспада. [Целое](../../../sql-reference/data-types/int-uint.md), [Вещественное](../../../sql-reference/data-types/float.md) или [Десятичное](../../../sql-reference/data-types/decimal.md).
+* `x` — Период полураспада. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
 
 **Возвращаемые значения**
 
-- Возвращает [экспоненциально сглаженную скользящую среднюю](https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average) значений за последние `x` временных интервалов на последней временной точке.
+* Возвращает [экспоненциально сглаженное скользящее среднее](https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average) значений за последние `x` единиц времени в самой поздней точке времени.
 
 Тип: [Float64](/sql-reference/data-types/float).
 
@@ -37,7 +38,7 @@ exponentialMovingAverage(x)(value, timeunit)
 Входная таблица:
 
 ```text
-┌──temperature─┬─timestamp──┐
+┌──температура─┬─временная_метка──┐
 │          95  │         1  │
 │          95  │         2  │
 │          95  │         3  │
@@ -157,7 +158,7 @@ SELECT
     10 AS value,
     toDateTime('2020-01-01') + (3600 * number) AS time
 FROM numbers_mt(10);
--- Calculate timeunit using intDiv
+-- Вычисление временной единицы с помощью intDiv
 SELECT
     value,
     time,
@@ -178,7 +179,7 @@ ORDER BY time ASC;
 │    10 │ 2020-01-01 08:00:00 │  9.98046875 │   438296 │
 │    10 │ 2020-01-01 09:00:00 │ 9.990234375 │   438297 │
 └───────┴─────────────────────┴─────────────┴──────────┘
--- Calculate timeunit using toRelativeHourNum
+-- Вычисление временной единицы с помощью toRelativeHourNum
 SELECT
     value,
     time,

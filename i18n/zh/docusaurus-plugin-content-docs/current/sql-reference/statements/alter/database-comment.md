@@ -1,35 +1,32 @@
 ---
-'description': 'ALTER DATABASE ... MODIFY COMMENT 语句的文档，允许添加、修改或删除数据库注释。'
-'slug': '/sql-reference/statements/alter/database-comment'
-'sidebar_position': 51
-'sidebar_label': 'ALTER DATABASE ... MODIFY COMMENT'
-'title': 'ALTER DATABASE ... MODIFY COMMENT 语句'
-'keywords':
-- 'ALTER DATABASE'
-- 'MODIFY COMMENT'
-'doc_type': 'reference'
+description: '关于 ALTER DATABASE ... MODIFY COMMENT 语句的文档，用于添加、修改或删除数据库注释。'
+slug: /sql-reference/statements/alter/database-comment
+sidebar_position: 51
+sidebar_label: 'ALTER DATABASE ... MODIFY COMMENT'
+title: 'ALTER DATABASE ... MODIFY COMMENT 语句'
+keywords: ['ALTER DATABASE', 'MODIFY COMMENT']
+doc_type: 'reference'
 ---
 
+# ALTER DATABASE ... MODIFY COMMENT {#alter-database-modify-comment}
 
-# ALTER DATABASE ... MODIFY COMMENT
+添加、修改或删除数据库注释（无论之前是否已设置）。注释的变更会同时体现在 [`system.databases`](/operations/system-tables/databases.md) 表和 `SHOW CREATE DATABASE` 查询中。
 
-添加、修改或删除数据库注释，无论之前是否设置过。注释更改会反映在 [`system.databases`](/operations/system-tables/databases.md) 和 `SHOW CREATE DATABASE` 查询中。
-
-## Syntax {#syntax}
+## 语法 {#syntax}
 
 ```sql
 ALTER DATABASE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 ```
 
-## Examples {#examples}
+## 示例 {#examples}
 
-要创建带有注释的 `DATABASE`：
+要创建带注释的 `DATABASE`：
 
 ```sql
-CREATE DATABASE database_with_comment ENGINE = Memory COMMENT 'The temporary database';
+CREATE DATABASE database_with_comment ENGINE = Memory COMMENT '临时数据库';
 ```
 
-要修改注释：
+如需修改注释：
 
 ```sql
 ALTER DATABASE database_with_comment 
@@ -46,18 +43,18 @@ WHERE name = 'database_with_comment';
 
 ```text
 ┌─comment─────────────────┐
-│ new comment on database │
+│ 数据库上的新注释 │
 └─────────────────────────┘
 ```
 
-要删除数据库注释：
+要移除数据库注释：
 
 ```sql
 ALTER DATABASE database_with_comment 
 MODIFY COMMENT '';
 ```
 
-要验证注释是否已被删除：
+要确认注释已被移除：
 
 ```sql title="Query"
 SELECT comment 
@@ -66,12 +63,12 @@ WHERE  name = 'database_with_comment';
 ```
 
 ```text title="Response"
-┌─comment─┐
-│         │
-└─────────┘
+┌─注释─┐
+│      │
+└──────┘
 ```
 
-## Related content {#related-content}
+## 相关内容 {#related-content}
 
 - [`COMMENT`](/sql-reference/statements/create/table#comment-clause) 子句
 - [`ALTER TABLE ... MODIFY COMMENT`](./comment.md)

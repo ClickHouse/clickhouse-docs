@@ -1,17 +1,15 @@
-
-
 import Image from '@theme/IdealImage';
 import architecture from '@site/static/images/use-cases/observability/hyperdx-demo/architecture.png';
 
-### Demo Architecture {#demo-architecture}
+### デモのアーキテクチャ {#demo-architecture}
 
-デモは、gRPCおよびHTTPを介して相互に通信する異なるプログラミング言語で書かれたマイクロサービスと、Locustを使用してユーザートラフィックを偽装する負荷発生器で構成されています。このデモの元のソースコードは、[ClickStackの計測](/use-cases/observability/clickstack/sdks)を使用するように変更されています。
+このデモは、gRPC と HTTP を介して相互に通信する異なるプログラミング言語で書かれたマイクロサービス群と、Locust を使用してユーザートラフィックを模倣するロードジェネレータで構成されています。このデモのオリジナルのソースコードは、[ClickStack インストルメンテーション](/use-cases/observability/clickstack/sdks) を使用するように変更されています。
 
-<Image img={architecture} alt="Architecture" size="lg"/>
+<Image img={architecture} alt="アーキテクチャ" size="lg"/>
 
-_クレジット: https://opentelemetry.io/docs/demo/architecture/_
+_出典: https://opentelemetry.io/docs/demo/architecture/_
 
-デモの詳細については以下を参照してください:
+このデモの詳細については、以下を参照してください。
 
-- [OpenTelemetryのドキュメント](https://opentelemetry.io/docs/demo/)
-- [ClickStackが管理するフォーク](https://github.com/ClickHouse/opentelemetry-demo)
+- [OpenTelemetry のドキュメント](https://opentelemetry.io/docs/demo/)
+- [ClickStack が保守しているフォーク](https://github.com/ClickHouse/opentelemetry-demo)

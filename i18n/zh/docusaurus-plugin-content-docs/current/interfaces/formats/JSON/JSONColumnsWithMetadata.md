@@ -1,28 +1,27 @@
 ---
-'alias': []
-'description': 'JSONColumnsWithMetadata 格式的文档'
-'input_format': true
-'keywords':
-- 'JSONColumnsWithMetadata'
-'output_format': true
-'slug': '/interfaces/formats/JSONColumnsWithMetadata'
-'title': 'JSONColumnsWithMetadata'
-'doc_type': 'reference'
+alias: []
+description: 'JSONColumnsWithMetadata 格式说明文档'
+input_format: true
+keywords: ['JSONColumnsWithMetadata']
+output_format: true
+slug: /interfaces/formats/JSONColumnsWithMetadata
+title: 'JSONColumnsWithMetadata'
+doc_type: 'reference'
 ---
 
-| 输入  | 输出   | 别名  |
+| 输入 | 输出 | 别名 |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## 描述 {#description}
 
-与 [`JSONColumns`](./JSONColumns.md) 格式不同的是，它还包含一些元数据和统计信息（类似于 [`JSON`](./JSON.md) 格式）。
+与 [`JSONColumns`](./JSONColumns.md) 格式的区别在于，它还包含一些元数据和统计信息（类似于 [`JSON`](./JSON.md) 格式）。
 
 :::note
-`JSONColumnsWithMetadata` 格式将所有数据缓冲在内存中，然后作为一个块输出，因此可能导致高内存消耗。
+`JSONColumnsWithMetadata` 格式会将所有数据缓存在内存中，然后以单个数据块输出，因此可能会导致较高的内存占用。
 :::
 
-## 示例用法 {#example-usage}
+## 使用示例 {#example-usage}
 
 示例：
 
@@ -65,7 +64,6 @@
 }
 ```
 
-对于 `JSONColumnsWithMetadata` 输入格式，如果设置 [`input_format_json_validate_types_from_metadata`](/operations/settings/settings-formats.md/#input_format_json_validate_types_from_metadata) 为 `1`，
-则输入数据中的元数据类型将与表中相应列的类型进行比较。
+对于 `JSONColumnsWithMetadata` 输入格式，如果将 [`input_format_json_validate_types_from_metadata`](/operations/settings/settings-formats.md/#input_format_json_validate_types_from_metadata) 设置为 `1`，则会将输入数据中元数据中的类型与表中对应列的类型进行比较。
 
 ## 格式设置 {#format-settings}

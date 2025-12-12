@@ -1,28 +1,31 @@
 ---
-'description': 'TinyLogのドキュメント'
-'slug': '/engines/table-engines/log-family/tinylog'
-'toc_priority': 34
-'toc_title': 'TinyLog'
-'title': 'TinyLog'
-'doc_type': 'reference'
+description: 'TinyLog テーブルエンジンのドキュメント'
+slug: /engines/table-engines/log-family/tinylog
+toc_priority: 34
+toc_title: 'TinyLog'
+title: 'TinyLog テーブルエンジン'
+doc_type: 'reference'
 ---
 
+import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# TinyLog
+# TinyLog テーブルエンジン {#tinylog-table-engine}
 
-このエンジンはログエンジンファミリーに属します。ログエンジンやその違いの共通プロパティについては、[Log Engine Family](../../../engines/table-engines/log-family/index.md)を参照してください。
+<CloudNotSupportedBadge/>
 
-このテーブルエンジンは通常、書き込み一回の方法で使用されます：データを一度書き込んだ後、必要なだけ何度も読み取ります。たとえば、`TinyLog`タイプのテーブルを中間データのために使用し、小さなバッチで処理することができます。ただし、多数の小さなテーブルにデータを保存することは非効率です。
+このエンジンは Log エンジンファミリーに属します。Log エンジンに共通する特性とそれぞれの違いについては、[Log Engine Family](../../../engines/table-engines/log-family/index.md) を参照してください。
 
-クエリは単一のストリームで実行されます。言い換えれば、このエンジンは比較的小さなテーブル（約1,000,000行まで）を対象としています。多くの小さなテーブルがある場合、このテーブルエンジンを使用することは理にかなっています。なぜなら、[Log](../../../engines/table-engines/log-family/log.md)エンジンよりも単純であり（オープンする必要のあるファイルが少ないため）、効率的だからです。
+このテーブルエンジンは、通常は一度だけ書き込み、その後は必要な回数だけ読み取るという運用方法で使用されます。例えば、小さなバッチで処理される中間データには `TinyLog` 型のテーブルを使用できます。ただし、多数の小さいテーブルにデータを保存するのは非効率です。
 
-## Characteristics {#characteristics}
+クエリは単一ストリームで実行されます。言い換えると、このエンジンは比較的小さなテーブル（約 1,000,000 行まで）を想定しています。開く必要のあるファイル数が少ないため、[Log](../../../engines/table-engines/log-family/log.md) エンジンよりもシンプルであり、多数の小さなテーブルを扱う場合にはこのテーブルエンジンを使用するのが妥当です。
 
-- **単純な構造**: Logエンジンとは異なり、TinyLogはマークファイルを使用しません。これにより複雑さは減少しますが、大規模データセットに対するパフォーマンスの最適化が制限されます。
-- **単一ストリームクエリ**: TinyLogテーブル上のクエリは単一ストリームで実行されるため、通常1,000,000行までの比較的小さなテーブルに適しています。
-- **小さなテーブルに対して効率的**: TinyLogエンジンのシンプルさは、多くの小さなテーブルを管理する際に有利であり、Logエンジンと比較して必要なファイル操作が少なくて済みます。
+## 特性 {#characteristics}
 
-Logエンジンとは異なり、TinyLogはマークファイルを使用しません。これにより複雑さは減少しますが、大規模データセットに対するパフォーマンスの最適化が制限されます。
+- **よりシンプルな構造**: Log エンジンとは異なり、TinyLog は mark ファイルを使用しません。これにより構造は単純になり複雑さは軽減されますが、大規模なデータセットに対するパフォーマンスの最適化は制限されます。
+- **単一ストリームでのクエリ**: TinyLog テーブルに対するクエリは単一ストリームで実行されるため、比較的小規模なテーブル、通常は最大で約 1,000,000 行までのテーブルに適しています。
+- **小さなテーブルに対して効率的**: TinyLog エンジンのシンプルさにより、多数の小さなテーブルを管理する際に有利であり、Log エンジンと比較して必要なファイル操作が少なくて済みます。
+
+Log エンジンとは異なり、TinyLog は mark ファイルを使用しません。これにより複雑さは軽減されますが、大規模なデータセットに対するパフォーマンスの最適化は制限されます。
 
 ## テーブルの作成 {#table_engines-tinylog-creating-a-table}
 
@@ -35,17 +38,17 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ) ENGINE = TinyLog
 ```
 
-[CREATE TABLE](/sql-reference/statements/create/table)クエリの詳細な説明を参照してください。
+[CREATE TABLE](/sql-reference/statements/create/table) クエリについては、詳細な説明を参照してください。
 
 ## データの書き込み {#table_engines-tinylog-writing-the-data}
 
-`TinyLog`エンジンはすべてのカラムを1つのファイルに保存します。各`INSERT`クエリについて、ClickHouseはテーブルファイルの最後にデータブロックを追加し、カラムを1つずつ書き込みます。
+`TinyLog` エンジンは、すべてのカラムを 1 つのファイルに保存します。各 `INSERT` クエリのたびに、ClickHouse はデータブロックをテーブルファイルの末尾に追記し、カラムを 1 つずつ書き込みます。
 
-各テーブルに対してClickHouseは以下のファイルを記述します：
+ClickHouse は各テーブルに対して次のファイルを作成します。
 
-- `<column>.bin`: 各カラムのデータファイル。シリアライズされ圧縮されたデータが含まれます。
+- `<column>.bin`: 各カラム用のデータファイルで、シリアル化および圧縮されたデータが含まれます。
 
-`TinyLog`エンジンは`ALTER UPDATE`および`ALTER DELETE`操作をサポートしていません。
+`TinyLog` エンジンは、`ALTER UPDATE` および `ALTER DELETE` 操作をサポートしません。
 
 ## 使用例 {#table_engines-tinylog-example-of-use}
 
@@ -61,16 +64,16 @@ CREATE TABLE tiny_log_table
 ENGINE = TinyLog
 ```
 
-データの挿入：
+データの挿入:
 
 ```sql
-INSERT INTO tiny_log_table VALUES (now(),'REGULAR','The first regular message')
-INSERT INTO tiny_log_table VALUES (now(),'REGULAR','The second regular message'),(now(),'WARNING','The first warning message')
+INSERT INTO tiny_log_table VALUES (now(),'REGULAR','最初の通常メッセージ')
+INSERT INTO tiny_log_table VALUES (now(),'REGULAR','2番目の通常メッセージ'),(now(),'WARNING','最初の警告メッセージ')
 ```
 
-私たちは二つの`INSERT`クエリを使用して、`<column>.bin`ファイル内に二つのデータブロックを作成しました。
+2 つの `INSERT` クエリを使用して、`<column>.bin` ファイル内に 2 つのデータブロックを作成しました。
 
-ClickHouseは単一のストリームを使用してデータを選択します。その結果、出力内の行ブロックの順序は、入力内の同じブロックの順序と一致します。たとえば：
+ClickHouse は単一のストリームでデータを読み出します。その結果、出力における行ブロックの順序は、入力における同じブロックの順序と一致します。例えば次のとおりです。
 
 ```sql
 SELECT * FROM tiny_log_table
@@ -78,8 +81,8 @@ SELECT * FROM tiny_log_table
 
 ```text
 ┌───────────timestamp─┬─message_type─┬─message────────────────────┐
-│ 2024-12-10 13:11:58 │ REGULAR      │ The first regular message  │
-│ 2024-12-10 13:12:12 │ REGULAR      │ The second regular message │
-│ 2024-12-10 13:12:12 │ WARNING      │ The first warning message  │
+│ 2024-12-10 13:11:58 │ REGULAR      │ 1件目の通常メッセージ      │
+│ 2024-12-10 13:12:12 │ REGULAR      │ 2件目の通常メッセージ      │
+│ 2024-12-10 13:12:12 │ WARNING      │ 1件目の警告メッセージ      │
 └─────────────────────┴──────────────┴────────────────────────────┘
 ```

@@ -1,9 +1,10 @@
 ---
-'sidebar_label': 'Cloud SQL For MySQL'
-'description': 'ClickPipes のソースとして MySQL 用の Cloud SQL を設定する方法の手順ガイド'
-'slug': '/integrations/clickpipes/mysql/source/gcp'
-'title': 'Cloud SQL for MySQL ソース設定ガイド'
-'doc_type': 'guide'
+sidebar_label: 'Cloud SQL for MySQL'
+description: 'Cloud SQL for MySQL を ClickPipes のソースとして構成するためのステップバイステップガイド'
+slug: /integrations/clickpipes/mysql/source/gcp
+title: 'Cloud SQL for MySQL ソースのセットアップガイド'
+keywords: ['Google Cloud SQL', 'MySQL', 'ClickPipes', 'PITR', 'ルート CA 証明書']
+doc_type: 'guide'
 ---
 
 import gcp_pitr from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/gcp/gcp-mysql-pitr.png';
@@ -14,73 +15,72 @@ import gcp_mysql_cert from '@site/static/images/integrations/data-ingestion/clic
 import rootca from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/gcp/rootca.png';
 import Image from '@theme/IdealImage';
 
+# Cloud SQL for MySQL ソースセットアップガイド {#cloud-sql-for-mysql-source-setup-guide}
 
-# Cloud SQL for MySQL ソースセットアップガイド
+このガイドでは、MySQL ClickPipe を介してデータをレプリケートできるように Cloud SQL for MySQL インスタンスを構成する手順を、順を追って説明します。
 
-これは、MySQL ClickPipeを介してデータをレプリケートするために、Cloud SQL for MySQL インスタンスを設定する手順を示したガイドです。
+## バイナリログの保持を有効化する {#enable-binlog-retention-gcp}
+バイナリログは、MySQL サーバーインスタンスに対して行われたデータ変更に関する情報を含む一連のログファイルであり、レプリケーションにはバイナリログファイルが必要です。
 
-## バイナリログ保持の有効化 {#enable-binlog-retention-gcp}
-バイナリログはMySQLサーバーインスタンスでのデータ変更についての情報を含むログファイルのセットであり、レプリケーションにはバイナリログファイルが必要です。
+### PITR を利用してバイナリログを有効化する {#enable-binlog-logging-gcp}
+PITR 機能は、Google Cloud 上の MySQL でバイナリログを有効にするか無効にするかを制御します。Cloud コンソールで Cloud SQL インスタンスを編集し、下記のセクションまでスクロールすることで設定できます。
 
-### PITRによるバイナリログの有効化 {#enable-binlog-logging-gcp}
-PITR機能により、Google CloudのMySQLに対してバイナリログがオンになっているかオフになっているかが決まります。これはCloudコンソールで設定でき、Cloud SQLインスタンスを編集して以下のセクションにスクロールすることで設定できます。
+<Image img={gcp_pitr} alt="Cloud SQL で PITR を有効化する" size="lg" border/>
 
-<Image img={gcp_pitr} alt="Cloud SQLでのPITRの有効化" size="lg" border/>
+レプリケーションのユースケースに応じて、値を十分に長い期間となるよう設定することを推奨します。
 
-レプリケーションの利用ケースに応じて、妥当な長さの値に設定することが推奨されます。
+まだ設定していない場合は、Cloud SQL を編集し、「データベース フラグ」セクションで次を必ず設定してください：
+1. `binlog_expire_logs_seconds` を `86400`（1 日）以上の値に設定する。
+2. `binlog_row_metadata` を `FULL` に設定する。
+3. `binlog_row_image` を `FULL` に設定する。
 
-まだ設定されていない場合は、Cloud SQLを編集することにより、データベースフラグセクションで以下を設定してください：
-1. `binlog_expire_logs_seconds` を `86400`（1日）以上の値に設定します。
-2. `binlog_row_metadata` を `FULL` に設定します。
-3. `binlog_row_image` を `FULL` に設定します。
+これを行うには、インスタンス概要ページ右上の `Edit` ボタンをクリックします。
+<Image img={gcp_mysql_edit_button} alt="GCP MySQL の Edit ボタン" size="lg" border/>
 
-これを行うには、インスタンスの概要ページの右上隅にある `Edit` ボタンをクリックします。
-<Image img={gcp_mysql_edit_button} alt="GCP MySQLの編集ボタン" size="lg" border/>
+その後、`Flags` セクションまでスクロールし、上記のフラグを追加します。
 
-次に、`Flags` セクションまでスクロールし、上記のフラグを追加します。
-
-<Image img={gcp_mysql_flags} alt="GCPでのbinlogフラグの設定" size="lg" border/>
+<Image img={gcp_mysql_flags} alt="GCP で binlog フラグを設定する" size="lg" border/>
 
 ## データベースユーザーの設定 {#configure-database-user-gcp}
 
-Cloud SQL MySQLインスタンスにrootユーザーとして接続し、以下のコマンドを実行します：
+root ユーザーとして Cloud SQL の MySQL インスタンスに接続し、次のコマンドを実行します。
 
-1. ClickPipes用の専用ユーザーを作成します：
+1. ClickPipes 用の専用ユーザーを作成します。
 
-```sql
-CREATE USER 'clickpipes_user'@'host' IDENTIFIED BY 'some-password';
-```
+    ```sql
+    CREATE USER 'clickpipes_user'@'host' IDENTIFIED BY 'some-password';
+    ```
 
-2. スキーマ権限を付与します。以下の例は `clickpipes` データベースの権限を示しています。レプリケートしたい各データベースとホストについて、このコマンドを繰り返します：
+2. スキーマ権限を付与します。次の例は、`clickpipes` データベースに対する権限を示しています。複製したい各データベースおよびホストごとに、これらのコマンドを繰り返してください。
 
-```sql
-GRANT SELECT ON `clickpipes`.* TO 'clickpipes_user'@'host';
-```
+    ```sql
+    GRANT SELECT ON `clickpipes`.* TO 'clickpipes_user'@'host';
+    ```
 
-3. ユーザーにレプリケーション権限を付与します：
+3. ユーザーにレプリケーション権限を付与します。
 
-```sql
-GRANT REPLICATION CLIENT ON *.* TO 'clickpipes_user'@'%';
-GRANT REPLICATION SLAVE ON *.* TO 'clickpipes_user'@'%';
-```
+    ```sql
+    GRANT REPLICATION CLIENT ON *.* TO 'clickpipes_user'@'%';
+    GRANT REPLICATION SLAVE ON *.* TO 'clickpipes_user'@'%';
+    ```
 
-## ネットワークアクセスの設定 {#configure-network-access-gcp-mysql}
+## ネットワークアクセスを構成する {#configure-network-access-gcp-mysql}
 
-Cloud SQLインスタンスへのトラフィックを制限したい場合、Cloud SQL MySQLインスタンスの許可リストに[文書化された静的NAT IP](../../index.md#list-of-static-ips)を追加してください。
-これはインスタンスを編集するか、Cloudコンソールのサイドバーの `Connections` タブに移動することで行えます。
+Cloud SQL インスタンスへのトラフィックを制限したい場合は、[ドキュメントで説明されている静的 NAT IP](../../index.md#list-of-static-ips) を Cloud SQL MySQL インスタンスの許可リストに追加してください。
+これは、インスタンスを編集するか、Cloud コンソールのサイドバーにある `Connections` タブから実行できます。
 
-<Image img={gcp_mysql_ip} alt="GCP MySQLにおけるIPの許可リスト" size="lg" border/>
+<Image img={gcp_mysql_ip} alt="GCP MySQL における IP 許可リスト設定" size="lg" border/>
 
-## ルートCA証明書のダウンロードと使用 {#download-root-ca-certificate-gcp-mysql}
-Cloud SQLインスタンスに接続するには、ルートCA証明書をダウンロードする必要があります。
+## ルート CA 証明書のダウンロードと使用 {#download-root-ca-certificate-gcp-mysql}
+Cloud SQL インスタンスに接続するには、ルート CA 証明書をダウンロードする必要があります。
 
-1. CloudコンソールでCloud SQLインスタンスに移動します。
-2. サイドバーの `Connections` をクリックします。
+1. Google Cloud コンソールで Cloud SQL インスタンスを開きます。
+2. サイドバーで `Connections` をクリックします。
 3. `Security` タブをクリックします。
-4. `Manage server CA certificates` セクションで、下部にある `DOWNLOAD CERTIFICATES` ボタンをクリックします。
+4. `Manage server CA certificates` セクションで、画面下部にある `DOWNLOAD CERTIFICATES` ボタンをクリックします。
 
-<Image img={gcp_mysql_cert} alt="GCP MySQL証明書のダウンロード" size="lg" border/>
+<Image img={gcp_mysql_cert} alt="GCP MySQL 証明書のダウンロード" size="lg" border/>
 
-5. ClickPipes UIで、新しいMySQL ClickPipeを作成する際にダウンロードした証明書をアップロードします。
+5. ClickPipes の UI で新しい MySQL ClickPipe を作成する際に、ダウンロードした証明書をアップロードします。
 
-<Image img={rootca} alt="GCP MySQL証明書の使用" size="lg" border/>
+<Image img={rootca} alt="GCP MySQL 証明書の使用" size="lg" border/>

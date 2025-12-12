@@ -1,47 +1,50 @@
 ---
-slug: '/integrations/jupysql'
-sidebar_label: 'Jupyter notebooks'
-description: 'JupySQL — это многоплатформенный инструмент базы данных для Jupyter.'
+slug: /integrations/jupysql
+sidebar_label: 'Ноутбуки Jupyter'
+description: 'JupySQL — это кроссплатформенный инструмент работы с базами данных для Jupyter.'
 title: 'Использование JupySQL с ClickHouse'
-doc_type: guide
+keywords: ['JupySQL', 'ноутбук Jupyter', 'Python', 'анализ данных', 'интерактивный SQL']
+doc_type: 'guide'
+integration:
+  - support_level: 'community'
+  - category: 'sql_client'
 ---
+
 import Image from '@theme/IdealImage';
 import jupysql_plot_1 from '@site/static/images/integrations/sql-clients/jupysql-plot-1.png';
 import jupysql_plot_2 from '@site/static/images/integrations/sql-clients/jupysql-plot-2.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+# Использование JupySQL с ClickHouse {#using-jupysql-with-clickhouse}
 
-# Использование JupySQL с ClickHouse
+<CommunityMaintainedBadge />
 
-<CommunityMaintainedBadge/>
+В этом руководстве мы покажем, как интегрировать JupySQL с ClickHouse.
 
-В этом руководстве мы покажем интеграцию с ClickHouse.
+Мы будем использовать JupySQL для выполнения запросов в ClickHouse.
+После загрузки данных мы визуализируем их с помощью построения графиков средствами SQL.
 
-Мы будем использовать JupySQL для выполнения запросов к ClickHouse. После загрузки данных мы визуализируем их с помощью SQL-графиков.
-
-Интеграция между JupySQL и ClickHouse становится возможной благодаря использованию библиотеки clickhouse_sqlalchemy. Эта библиотека позволяет легко взаимодействовать между двумя системами и позволяет пользователям подключаться к ClickHouse и передавать диалект SQL. После подключения пользователи могут выполнять SQL-запросы непосредственно из нативного интерфейса ClickHouse или из самого Jupyter notebook.
+Интеграция между JupySQL и ClickHouse стала возможной благодаря использованию библиотеки clickhouse&#95;sqlalchemy. Эта библиотека обеспечивает удобное взаимодействие между двумя системами и позволяет пользователям подключаться к ClickHouse и указывать используемый SQL-диалект. После подключения пользователи могут выполнять SQL-запросы непосредственно из штатного интерфейса ClickHouse или напрямую из блокнота Jupyter.
 
 ```python
-
-# Install required packages
+# Установите необходимые пакеты
 %pip install --quiet jupysql clickhouse_sqlalchemy
 ```
 
-    Примечание: возможно, вам потребуется перезапустить ядро, чтобы использовать обновленные пакеты.
+Примечание: возможно, вам потребуется перезапустить ядро, чтобы задействовать обновлённые пакеты.
 
 ```python
 import pandas as pd
 from sklearn_evaluation import plot
 
-
-# Import jupysql Jupyter extension to create SQL cells
+# Импортируем расширение jupysql Jupyter для создания SQL-ячеек
 %load_ext sql
 %config SqlMagic.autocommit=False
 ```
 
-**Убедитесь, что ваш ClickHouse доступен для следующих этапов. Вы можете использовать как локальную, так и облачную версию.**
+**Для следующих этапов убедитесь, что ваш ClickHouse запущен и доступен. Вы можете использовать как локальную, так и облачную версию.**
 
-**Примечание:** вам нужно будет настроить строку подключения в зависимости от типа экземпляра, к которому вы пытаетесь подключиться (url, user, password). В приведенном ниже примере мы использовали локальный экземпляр. Чтобы узнать больше об этом, ознакомьтесь с [этим руководством](/get-started/quick-start).
+**Примечание:** вам нужно будет скорректировать строку подключения в зависимости от типа инстанса, к которому вы подключаетесь (URL, пользователь, пароль). В приведённом ниже примере используется локальный инстанс. Чтобы узнать больше, ознакомьтесь с [этим руководством](/get-started/quick-start).
 
 ```python
 %sql clickhouse://default:@localhost:8123/default
@@ -102,12 +105,11 @@ PARTITION BY toYYYYMM(pickup_date)
 ORDER BY pickup_datetime;
 ```
 
-    *  clickhouse://default:***@localhost:8123/default
-    Готово.
+* clickhouse://default:***@localhost:8123/default
+  Готово.
 
 <table>
-    <tr>
-    </tr>
+  <tr />
 </table>
 
 ```sql
@@ -164,72 +166,78 @@ SELECT * FROM s3(
 ") SETTINGS input_format_try_infer_datetimes = 0
 ```
 
-    *  clickhouse://default:***@localhost:8123/default
-    Готово.
+* clickhouse://default:***@localhost:8123/default
+  Готово.
 
 <table>
-    <tr>
-    </tr>
+  <tr />
 </table>
 
 ```python
 %sql SELECT count() FROM trips limit 5;
 ```
 
-    *  clickhouse://default:***@localhost:8123/default
-    Готово.
+* clickhouse://default:***@localhost:8123/default
+  Готово.
 
 <table>
-    <tr>
-        <th>count()</th>
-    </tr>
-    <tr>
-        <td>1999657</td>
-    </tr>
+  <tr>
+    <th>count()</th>
+  </tr>
+
+  <tr>
+    <td>1999657</td>
+  </tr>
 </table>
 
 ```python
 %sql SELECT DISTINCT(pickup_ntaname) FROM trips limit 5;
 ```
 
-    *  clickhouse://default:***@localhost:8123/default
-    Готово.
+* clickhouse://default:***@localhost:8123/default
+  Выполнено.
 
 <table>
-    <tr>
-        <th>pickup_ntaname</th>
-    </tr>
-    <tr>
-        <td>Morningside Heights</td>
-    </tr>
-    <tr>
-        <td>Hudson Yards-Chelsea-Flatiron-Union Square</td>
-    </tr>
-    <tr>
-        <td>Midtown-Midtown South</td>
-    </tr>
-    <tr>
-        <td>SoHo-Tribeca-Civic Center-Little Italy</td>
-    </tr>
-    <tr>
-        <td>Murray Hill-Kips Bay</td>
-    </tr>
+  <tr>
+    <th>pickup&#95;ntaname</th>
+  </tr>
+
+  <tr>
+    <td>Morningside Heights</td>
+  </tr>
+
+  <tr>
+    <td>Hudson Yards-Chelsea-Flatiron-Union Square</td>
+  </tr>
+
+  <tr>
+    <td>Midtown-Midtown South</td>
+  </tr>
+
+  <tr>
+    <td>SoHo-Tribeca-Civic Center-Little Italy</td>
+  </tr>
+
+  <tr>
+    <td>Murray Hill-Kips Bay</td>
+  </tr>
 </table>
 
 ```python
 %sql SELECT round(avg(tip_amount), 2) FROM trips
 ```
 
-    *  clickhouse://default:***@localhost:8123/default
-    Готово.
+* clickhouse://default:***@localhost:8123/default
+  Готово.
 
 <table>
-    <tr>
-        <th>round(avg(tip_amount), 2)</th>
-    </tr>
-    <tr>
-        <td>1.68</td>
-    </tr>
+  <tr>
+    <th>round(avg(tip&#95;amount), 2)</th>
+  </tr>
+
+  <tr>
+    <td>1.68</td>
+  </tr>
 </table>
 
 ```sql
@@ -241,54 +249,64 @@ FROM trips
 GROUP BY passenger_count
 ```
 
-    *  clickhouse://default:***@localhost:8123/default
-    Готово.
+* clickhouse://default:***@localhost:8123/default
+  Готово.
 
 <table>
-    <tr>
-        <th>passenger_count</th>
-        <th>average_total_amount</th>
-    </tr>
-    <tr>
-        <td>0</td>
-        <td>22.69</td>
-    </tr>
-    <tr>
-        <td>1</td>
-        <td>15.97</td>
-    </tr>
-    <tr>
-        <td>2</td>
-        <td>17.15</td>
-    </tr>
-    <tr>
-        <td>3</td>
-        <td>16.76</td>
-    </tr>
-    <tr>
-        <td>4</td>
-        <td>17.33</td>
-    </tr>
-    <tr>
-        <td>5</td>
-        <td>16.35</td>
-    </tr>
-    <tr>
-        <td>6</td>
-        <td>16.04</td>
-    </tr>
-    <tr>
-        <td>7</td>
-        <td>59.8</td>
-    </tr>
-    <tr>
-        <td>8</td>
-        <td>36.41</td>
-    </tr>
-    <tr>
-        <td>9</td>
-        <td>9.81</td>
-    </tr>
+  <tr>
+    <th>passenger&#95;count</th>
+    <th>average&#95;total&#95;amount</th>
+  </tr>
+
+  <tr>
+    <td>0</td>
+    <td>22.69</td>
+  </tr>
+
+  <tr>
+    <td>1</td>
+    <td>15.97</td>
+  </tr>
+
+  <tr>
+    <td>2</td>
+    <td>17.15</td>
+  </tr>
+
+  <tr>
+    <td>3</td>
+    <td>16.76</td>
+  </tr>
+
+  <tr>
+    <td>4</td>
+    <td>17.33</td>
+  </tr>
+
+  <tr>
+    <td>5</td>
+    <td>16.35</td>
+  </tr>
+
+  <tr>
+    <td>6</td>
+    <td>16.04</td>
+  </tr>
+
+  <tr>
+    <td>7</td>
+    <td>59.8</td>
+  </tr>
+
+  <tr>
+    <td>8</td>
+    <td>36.41</td>
+  </tr>
+
+  <tr>
+    <td>9</td>
+    <td>9.81</td>
+  </tr>
 </table>
 
 ```sql
@@ -303,49 +321,52 @@ ORDER BY pickup_date ASC
 limit 5;
 ```
 
-*  clickhouse://default:***@localhost:8123/default
-Готово.
+* clickhouse://default:***@localhost:8123/default
+  Готово.
 
 <table>
-    <tr>
-        <th>pickup_date</th>
-        <th>pickup_ntaname</th>
-        <th>number_of_trips</th>
-    </tr>
-    <tr>
-        <td>2015-07-01</td>
-        <td>Bushwick North</td>
-        <td>2</td>
-    </tr>
-    <tr>
-        <td>2015-07-01</td>
-        <td>Brighton Beach</td>
-        <td>1</td>
-    </tr>
-    <tr>
-        <td>2015-07-01</td>
-        <td>Briarwood-Jamaica Hills</td>
-        <td>3</td>
-    </tr>
-    <tr>
-        <td>2015-07-01</td>
-        <td>Williamsburg</td>
-        <td>1</td>
-    </tr>
-    <tr>
-        <td>2015-07-01</td>
-        <td>Queensbridge-Ravenswood-Long Island City</td>
-        <td>9</td>
-    </tr>
+  <tr>
+    <th>pickup&#95;date</th>
+    <th>pickup&#95;ntaname</th>
+    <th>number&#95;of&#95;trips</th>
+  </tr>
+
+  <tr>
+    <td>2015-07-01</td>
+    <td>Bushwick North</td>
+    <td>2</td>
+  </tr>
+
+  <tr>
+    <td>2015-07-01</td>
+    <td>Brighton Beach</td>
+    <td>1</td>
+  </tr>
+
+  <tr>
+    <td>2015-07-01</td>
+    <td>Briarwood-Jamaica Hills</td>
+    <td>3</td>
+  </tr>
+
+  <tr>
+    <td>2015-07-01</td>
+    <td>Williamsburg</td>
+    <td>1</td>
+  </tr>
+
+  <tr>
+    <td>2015-07-01</td>
+    <td>Queensbridge-Ravenswood-Long Island City</td>
+    <td>9</td>
+  </tr>
 </table>
 
 ```python
-
 # %sql DESCRIBE trips;
 ```
 
 ```python
-
 # %sql SELECT DISTINCT(trip_distance) FROM trips limit 50;
 ```
 
@@ -356,23 +377,24 @@ FROM trips
 WHERE trip_distance < 6.3
 ```
 
-    *  clickhouse://default:***@localhost:8123/default
-    Пропуск выполнения...
+* clickhouse://default:***@localhost:8123/default
+  Пропускаем выполнение...
 
 ```python
 %sqlplot histogram --table short-trips --column trip_distance --bins 10 --with short-trips
 ```
 
 ```response
-<AxesSubplot: title={'center': "'trip_distance' from 'short-trips'"}, xlabel='trip_distance', ylabel='Count'>
+<AxesSubplot: title={'center': "'trip_distance' из 'short-trips'"}, xlabel='trip_distance', ylabel='Количество'>
 ```
-<Image img={jupysql_plot_1} size="md" alt="Гистограмма, показывающая распределение расстояний поездок с 10 корзинами из набора данных коротких поездок" border />
+
+<Image img={jupysql_plot_1} size="md" alt="Гистограмма распределения длины поездок по 10 бинам из набора данных short-trips" border />
 
 ```python
 ax = %sqlplot histogram --table short-trips --column trip_distance --bins 50 --with short-trips
 ax.grid()
-ax.set_title("Trip distance from trips < 6.3")
-_ = ax.set_xlabel("Trip distance")
+ax.set_title("Расстояние поездки из поездок < 6.3")
+_ = ax.set_xlabel("Расстояние поездки")
 ```
 
-<Image img={jupysql_plot_2} size="md" alt="Гистограмма, показывающая распределение расстояний поездок с 50 корзинами и сеткой, с заголовком 'Расстояние поездок из поездок < 6.3'" border />
+<Image img={jupysql_plot_2} size="md" alt="Гистограмма, показывающая распределение длины поездок с 50 столбцами и сеткой, с заголовком «Дистанция поездки для поездок < 6.3»" border />

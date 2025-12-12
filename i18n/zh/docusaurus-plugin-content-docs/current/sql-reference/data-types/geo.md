@@ -1,20 +1,20 @@
 ---
-'description': 'ClickHouse中几何数据类型的文档，用于表示地理对象和位置'
-'sidebar_label': 'Geo'
-'sidebar_position': 54
-'slug': '/sql-reference/data-types/geo'
-'title': '几何'
-'doc_type': 'reference'
+description: 'ClickHouse 中用于表示地理对象和位置的几何数据类型'
+sidebar_label: '地理'
+sidebar_position: 54
+slug: /sql-reference/data-types/geo
+title: '几何数据类型'
+doc_type: 'reference'
 ---
 
-ClickHouse 支持用于表示地理对象的数据类型 — 位置、土地等。
+ClickHouse 支持用于表示地理对象（例如位置、区域等）的数据类型。
 
-**参见**
-- [表示简单地理特征](https://en.wikipedia.org/wiki/GeoJSON)。
+**另请参阅**
+- [简单地理要素的表示](https://en.wikipedia.org/wiki/GeoJSON)。
 
 ## Point {#point}
 
-`Point` 由其 X 和 Y 坐标表示，存储为一个 [Tuple](tuple.md)([Float64](float.md), [Float64](float.md))。
+`Point` 由其 X 和 Y 坐标表示，存储为 [Tuple](tuple.md)([Float64](float.md), [Float64](float.md))。
 
 **示例**
 
@@ -25,6 +25,7 @@ CREATE TABLE geo_point (p Point) ENGINE = Memory();
 INSERT INTO geo_point VALUES((10, 10));
 SELECT p, toTypeName(p) FROM geo_point;
 ```
+
 结果：
 
 ```text
@@ -33,9 +34,9 @@ SELECT p, toTypeName(p) FROM geo_point;
 └─────────┴───────────────┘
 ```
 
-## Ring {#ring}
+## 环 {#ring}
 
-`Ring` 是一个没有孔的简单多边形，存储为点的数组：[Array](array.md)([Point](#point))。
+`Ring` 是一种没有孔洞的简单多边形，表示为点的数组：[Array](array.md)([Point](#point))。
 
 **示例**
 
@@ -46,6 +47,7 @@ CREATE TABLE geo_ring (r Ring) ENGINE = Memory();
 INSERT INTO geo_ring VALUES([(0, 0), (10, 0), (10, 10), (0, 10)]);
 SELECT r, toTypeName(r) FROM geo_ring;
 ```
+
 结果：
 
 ```text
@@ -56,7 +58,7 @@ SELECT r, toTypeName(r) FROM geo_ring;
 
 ## LineString {#linestring}
 
-`LineString` 是一个存储为点数组的线：[Array](array.md)([Point](#point))。
+`LineString` 是以点数组形式存储的一条线：[Array](array.md)([Point](#point))。
 
 **示例**
 
@@ -67,6 +69,7 @@ CREATE TABLE geo_linestring (l LineString) ENGINE = Memory();
 INSERT INTO geo_linestring VALUES([(0, 0), (10, 0), (10, 10), (0, 10)]);
 SELECT l, toTypeName(l) FROM geo_linestring;
 ```
+
 结果：
 
 ```text
@@ -77,7 +80,7 @@ SELECT l, toTypeName(l) FROM geo_linestring;
 
 ## MultiLineString {#multilinestring}
 
-`MultiLineString` 是多个存储为 `LineString` 数组的线：[Array](array.md)([LineString](#linestring))。
+`MultiLineString` 是由多条线构成的 `LineString` 数组：[Array](array.md)([LineString](#linestring))。
 
 **示例**
 
@@ -88,6 +91,7 @@ CREATE TABLE geo_multilinestring (l MultiLineString) ENGINE = Memory();
 INSERT INTO geo_multilinestring VALUES([[(0, 0), (10, 0), (10, 10), (0, 10)], [(1, 1), (2, 2), (3, 3)]]);
 SELECT l, toTypeName(l) FROM geo_multilinestring;
 ```
+
 结果：
 
 ```text
@@ -98,18 +102,19 @@ SELECT l, toTypeName(l) FROM geo_multilinestring;
 
 ## Polygon {#polygon}
 
-`Polygon` 是一个带孔的多边形，存储为环的数组：[Array](array.md)([Ring](#ring))。外部数组的第一个元素是多边形的外形，后面的所有元素是孔。
+`Polygon` 是一种带孔多边形，存储为由环组成的数组：[Array](array.md)([Ring](#ring))。外层数组的第一个元素是多边形的外边界，其后的所有元素表示孔。
 
 **示例**
 
-这是一个有一个孔的多边形：
+这是一个带有一个孔的多边形：
 
 ```sql
 CREATE TABLE geo_polygon (pg Polygon) ENGINE = Memory();
 INSERT INTO geo_polygon VALUES([[(20, 20), (50, 20), (50, 50), (20, 50)], [(30, 30), (50, 50), (50, 30)]]);
 SELECT pg, toTypeName(pg) FROM geo_polygon;
 ```
-结果：
+
+Result：
 
 ```text
 ┌─pg────────────────────────────────────────────────────────────┬─toTypeName(pg)─┐
@@ -119,17 +124,18 @@ SELECT pg, toTypeName(pg) FROM geo_polygon;
 
 ## MultiPolygon {#multipolygon}
 
-`MultiPolygon` 由多个多边形组成，存储为多边形的数组：[Array](array.md)([Polygon](#polygon))。
+`MultiPolygon` 由多个多边形组成，并以多边形数组的形式存储：[Array](array.md)([Polygon](#polygon))。
 
 **示例**
 
-这个多边形由两个独立的多边形组成 — 第一个没有孔，第二个有一个孔：
+此 MultiPolygon 由两个独立的多边形组成——第一个没有空洞，第二个有一个空洞：
 
 ```sql
 CREATE TABLE geo_multipolygon (mpg MultiPolygon) ENGINE = Memory();
 INSERT INTO geo_multipolygon VALUES([[[(0, 0), (10, 0), (10, 10), (0, 10)]], [[(20, 20), (50, 20), (50, 50), (20, 50)],[(30, 30), (50, 50), (50, 30)]]]);
 SELECT mpg, toTypeName(mpg) FROM geo_multipolygon;
 ```
+
 结果：
 
 ```text
@@ -138,6 +144,54 @@ SELECT mpg, toTypeName(mpg) FROM geo_multipolygon;
 └─────────────────────────────────────────────────────────────────────────────────────────────────┴─────────────────┘
 ```
 
+## Geometry {#geometry}
+
+`Geometry` 是上述所有类型的通用类型。它等价于这些类型的 `Variant`。
+
+**示例**
+
+```sql
+CREATE TABLE IF NOT EXISTS geo (geom Geometry) ENGINE = Memory();
+INSERT INTO geo VALUES ((1, 2));
+SELECT * FROM geo;
+```
+
+结果：
+
+```text
+   ┌─geom──┐
+1. │ (1,2) │
+   └───────┘
+```
+
+{/* */ }
+
+```sql
+CREATE TABLE IF NOT EXISTS geo_dst (geom Geometry) ENGINE = Memory();
+
+CREATE TABLE IF NOT EXISTS geo (geom String, id Int) ENGINE = Memory();
+INSERT INTO geo VALUES ('POLYGON((1 0,10 0,10 10,0 10,1 0),(4 4,5 4,5 5,4 5,4 4))', 1);
+INSERT INTO geo VALUES ('POINT(0 0)', 2);
+INSERT INTO geo VALUES ('MULTIPOLYGON(((1 0,10 0,10 10,0 10,1 0),(4 4,5 4,5 5,4 5,4 4)),((-10 -10,-10 -9,-9 10,-10 -10)))', 3);
+INSERT INTO geo VALUES ('LINESTRING(1 0,10 0,10 10,0 10,1 0)', 4);
+INSERT INTO geo VALUES ('MULTILINESTRING((1 0,10 0,10 10,0 10,1 0),(4 4,5 4,5 5,4 5,4 4))', 5);
+INSERT INTO geo_dst SELECT readWkt(geom) FROM geo ORDER BY id;
+
+SELECT * FROM geo_dst;
+```
+
+结果：
+
+```text
+   ┌─geom─────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+1. │ [[(1,0),(10,0),(10,10),(0,10),(1,0)],[(4,4),(5,4),(5,5),(4,5),(4,4)]]                                            │
+2. │ (0,0)                                                                                                            │
+3. │ [[[(1,0),(10,0),(10,10),(0,10),(1,0)],[(4,4),(5,4),(5,5),(4,5),(4,4)]],[[(-10,-10),(-10,-9),(-9,10),(-10,-10)]]] │
+4. │ [(1,0),(10,0),(10,10),(0,10),(1,0)]                                                                              │
+5. │ [[(1,0),(10,0),(10,10),(0,10),(1,0)],[(4,4),(5,4),(5,5),(4,5),(4,4)]]                                            │
+   └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
 ## 相关内容 {#related-content}
 
-- [探索大量真实世界数据集：ClickHouse 中的 100 多年气象记录](https://clickhouse.com/blog/real-world-data-noaa-climate-data)
+- [探索海量真实世界数据集：ClickHouse 中逾 100 年的气象记录](https://clickhouse.com/blog/real-world-data-noaa-climate-data)

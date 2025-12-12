@@ -1,13 +1,16 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/varsampstable'
+description: 'Вычисляет выборочную дисперсию набора данных. В отличие от `varSamp` эта функция использует численно устойчивый алгоритм. Работает медленнее, но даёт меньшую вычислительную погрешность.'
 sidebar_position: 213
-description: 'Вычислить выборочную дисперсию набора данных. В отличие от `varSamp`,'
-title: varSampStable
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/varsampstable
+title: 'varSampStable'
+doc_type: 'reference'
 ---
+
+
+
 ## varSampStable {#varsampstable}
 
-Рассчитайте выборочную дисперсию набора данных. В отличие от [`varSamp`](../reference/varsamp.md), эта функция использует численно стабильный алгоритм. Она работает медленнее, но обеспечивает меньшую вычислительную ошибку.
+Вычисляет выборочную дисперсию набора данных. В отличие от [`varSamp`](../reference/varsamp.md), эта функция использует численно устойчивый алгоритм. Работает медленнее, но обеспечивает меньшую вычислительную погрешность.
 
 **Синтаксис**
 
@@ -19,7 +22,7 @@ varSampStable(x)
 
 **Параметры**
 
-- `x`: Популяция, для которой вы хотите рассчитать выборочную дисперсию. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md).
+- `x`: Набор данных, для которого требуется вычислить выборочную дисперсию. [(U)Int\*](../../data-types/int-uint.md), [Float\*](../../data-types/float.md), [Decimal\*](../../data-types/decimal.md).
 
 **Возвращаемое значение**
 
@@ -27,15 +30,16 @@ varSampStable(x)
 
 **Детали реализации**
 
-Функция `varSampStable` рассчитывает выборочную дисперсию, используя ту же формулу, что и [`varSamp`](../reference/varsamp.md):
+Функция `varSampStable` вычисляет выборочную дисперсию по той же формуле, что и [`varSamp`](../reference/varsamp.md):
 
 $$
 \sum\frac{(x - \text{mean}(x))^2}{(n - 1)}
 $$
 
 Где:
+
 - `x` — каждое отдельное значение в наборе данных.
-- `mean(x)` — арифметическое среднее набора данных.
+- `mean(x)` — среднее арифметическое набора данных.
 - `n` — количество значений в наборе данных.
 
 **Пример**

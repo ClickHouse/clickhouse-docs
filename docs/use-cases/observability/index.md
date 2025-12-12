@@ -34,7 +34,7 @@ For users with **custom requirements** — such as highly specialized ingestion 
 
 | Page                                                        | Description                                                                                                                                                                   |
 |-------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Introduction](/use-cases/observability/introduction)            | This guide is designed for users looking to build their own observability solution using ClickHouse, focusing on logs and traces.                                             |
+| [Introduction](/use-cases/observability/introduction)            | This guide is designed for if you're looking to build your own observability solution using ClickHouse, focusing on logs and traces.                                             |
 | [Schema design](/use-cases/observability/schema-design)          | Learn why users are recommended to create their own schema for logs and traces, along with some best practices for doing so.                                                  |
 | [Managing data](/observability/managing-data)          | Deployments of ClickHouse for observability invariably involve large datasets, which need to be managed. ClickHouse offers features to assist with data management.           |
 | [Integrating OpenTelemetry](/observability/integrating-opentelemetry) | Collecting and exporting logs and traces using OpenTelemetry with ClickHouse.                                                           |

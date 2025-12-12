@@ -1,41 +1,40 @@
 ---
-'description': '指定された `key` 配列のキーに従って、1つ以上の `value` 配列の合計を計算します。結果は、ソートされた順序のキーのタプルと、それに対応するキーの合計値をオーバーフローなしで続きます。'
-'sidebar_position': 198
-'slug': '/sql-reference/aggregate-functions/reference/summap'
-'title': 'sumMap'
-'doc_type': 'reference'
+description: '`key` 配列で指定されたキーに従って、1つ以上の `value` 配列を集計します。キーをソート順に並べた配列と、それぞれのキーに対応する値をオーバーフローなしで合計した配列から成るタプルを返します。'
+sidebar_position: 198
+slug: /sql-reference/aggregate-functions/reference/summap
+title: 'sumMap'
+doc_type: 'reference'
 ---
 
+# sumMap {#summap}
 
-# sumMap
-
-指定された `key` 配列のキーに従って、1つ以上の `value` 配列を合計します。ソートされた順序のキーと、対応するキーに対して合計された値の配列のタプルを返します、オーバーフローなく。
+`key` 配列で指定されたキーに従って、1 つ以上の `value` 配列を合計します。ソート済みのキー配列と、それぞれのキーに対応する値をオーバーフローなしで合計した配列からなるタプルを返します。
 
 **構文**
 
-- `sumMap(key <Array>, value1 <Array>[, value2 <Array>, ...])` [Array type](../../data-types/array.md).
-- `sumMap(Tuple(key <Array>[, value1 <Array>, value2 <Array>, ...]))` [Tuple type](../../data-types/tuple.md).
+* `sumMap(key <Array>, value1 <Array>[, value2 <Array>, ...])` [Array 型](../../data-types/array.md)。
+* `sumMap(Tuple(key <Array>[, value1 <Array>, value2 <Array>, ...]))` [Tuple 型](../../data-types/tuple.md)。
 
-エイリアス: `sumMappedArrays`.
+エイリアス: `sumMappedArrays`。
 
-**引数** 
+**引数**
 
-- `key`: [Array](../../data-types/array.md) 型のキーの配列。
-- `value1`, `value2`, ...: 各キーに対して合計される [Array](../../data-types/array.md) 型の値の配列。
+* `key`: キーの [Array](../../data-types/array.md)。
+* `value1`, `value2`, ...: 各キーごとに合計する値の [Array](../../data-types/array.md)。
 
-キーと値の配列のタプルを渡すことは、キーの配列と値の配列を別々に渡すことの同義語です。
+キー配列と値配列からなるタプルを渡すことは、キー配列と値配列を個別に渡すことと同義です。
 
-:::note 
-合計される各行について、`key` とすべての `value` 配列の要素数は同じでなければなりません。
+:::note
+合計対象となる各行において、`key` とすべての `value` 配列の要素数は同じでなければなりません。
 :::
 
-**返される値** 
+**戻り値**
 
-- タプルの配列を返します: 最初の配列はソートされた順序のキーを含み、その後に対応するキーに対して合計された値を含む配列が続きます。
+* 配列のタプルを返します。最初の配列にはソート済みのキーが含まれ、それに続く配列にはそれぞれ対応するキーごとに合計された値が含まれます。
 
 **例**
 
-まず、`sum_map` という名のテーブルを作成し、いくつかのデータを挿入します。キーと値の配列がそれぞれ [Nested](../../data-types/nested-data-structures/index.md) 型の `statusMap` というカラムに、タプル型の `statusMapTuple` というカラムに一緒に保存され、上記の2つの異なる構文の使用例を示します。
+まず `sum_map` というテーブルを作成し、いくつかのデータを挿入します。キーと値の配列は [Nested](../../data-types/nested-data-structures/index.md) 型の `statusMap` という列として個別に保存されており、上で説明したこの関数の 2 つの異なる構文の利用例を示すために、それらをまとめた [Tuple](../../data-types/tuple.md) 型の `statusMapTuple` という列としても保存されています。
 
 クエリ:
 
@@ -50,6 +49,7 @@ CREATE TABLE sum_map(
     statusMapTuple Tuple(Array(Int32), Array(Int32))
 ) ENGINE = Log;
 ```
+
 ```sql
 INSERT INTO sum_map VALUES
     ('2000-01-01', '2000-01-01 00:00:00', [1, 2, 3], [10, 10, 10], ([1, 2, 3], [10, 10, 10])),
@@ -58,7 +58,7 @@ INSERT INTO sum_map VALUES
     ('2000-01-01', '2000-01-01 00:01:00', [6, 7, 8], [10, 10, 10], ([6, 7, 8], [10, 10, 10]));
 ```
 
-次に、`sumMap` 関数を使用してテーブルをクエリし、配列およびタプル型の構文の両方を利用します:
+次に、`sumMap` 関数を使用してテーブルにクエリを実行し、配列型とタプル型の両方の構文を利用します。
 
 クエリ:
 
@@ -71,7 +71,7 @@ FROM sum_map
 GROUP BY timeslot
 ```
 
-結果:
+結果：
 
 ```text
 ┌────────────timeslot─┬─sumMap(statusMap.status, statusMap.requests)─┬─sumMap(statusMapTuple)─────────┐
@@ -80,10 +80,10 @@ GROUP BY timeslot
 └─────────────────────┴──────────────────────────────────────────────┴────────────────────────────────┘
 ```
 
-**複数の値配列を使用した例**
+**複数の値配列を扱う例**
 
-`sumMap` は複数の値配列を同時に集約することもサポートしています。
-これは、同じキーを共有する関連するメトリックを持っている場合に便利です。
+`sumMap` は、複数の値配列を一度に集約することもできます。
+これは、同じキーを共有する関連するメトリクスがある場合に有用です。
 
 ```sql title="Query"
 CREATE TABLE multi_metrics(
@@ -114,12 +114,13 @@ FROM multi_metrics;
 ```
 
 この例では:
-- 結果のタプルは3つの配列を含んでいます
-- 最初の配列: ソートされた順序のキー（ブラウザ名）
-- 2番目の配列: 各ブラウザの合計インプレッション
-- 3番目の配列: 各ブラウザの合計クリック
 
-**関連情報**
+* 結果のタプルには 3 つの配列が含まれます
+* 1 つ目の配列: ソート済みのキー（ブラウザー名）
+* 2 つ目の配列: 各ブラウザーの合計インプレッション数
+* 3 つ目の配列: 各ブラウザーの合計クリック数
 
-- [Map combinator for Map datatype](../combinators.md#-map)
-- [sumMapWithOverflow](../reference/summapwithoverflow.md)
+**関連項目**
+
+* [Map データ型向けの Map コンビネーター](../combinators.md#-map)
+* [sumMapWithOverflow](../reference/summapwithoverflow.md)

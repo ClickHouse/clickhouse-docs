@@ -1,40 +1,41 @@
 ---
-slug: '/sql-reference/data-types/fixedstring'
-sidebar_label: FixedString(N)
+description: 'Документация по типу данных FixedString(N) в ClickHouse'
+sidebar_label: 'FixedString(N)'
 sidebar_position: 10
-description: 'Документация для типа данных FixedString в ClickHouse'
-title: FixedString(N)
-doc_type: reference
+slug: /sql-reference/data-types/fixedstring
+title: 'FixedString(N)'
+doc_type: 'reference'
 ---
-# FixedString(N)
 
-Строка фиксированной длины `N` байт (не символов и не кодовых точек).
+# FixedString(N) {#fixedstringn}
 
-Чтобы объявить колонку типа `FixedString`, используйте следующий синтаксис:
+Строка фиксированной длины из `N` байт (не в символах и не в кодовых точках).
+
+Чтобы объявить столбец типа `FixedString`, используйте следующий синтаксис:
 
 ```sql
 <column_name> FixedString(N)
 ```
 
-Где `N` - натуральное число.
+Где `N` — натуральное число.
 
-Тип `FixedString` эффективен, когда данные имеют длину ровно `N` байт. В остальных случаях это может привести к снижению эффективности.
+Тип `FixedString` эффективен, когда данные имеют длину ровно `N` байт. Во всех остальных случаях он, скорее всего, снизит эффективность.
 
-Примеры значений, которые можно эффективно хранить в колонках типа `FixedString`:
+Примеры значений, которые могут эффективно храниться в столбцах типа `FixedString`:
 
-- Двоичное представление IP-адресов (`FixedString(16)` для IPv6).
-- Коды языков (ru_RU, en_US ... ).
-- Коды валют (USD, RUB ... ).
-- Двоичное представление хешей (`FixedString(16)` для MD5, `FixedString(32)` для SHA256).
+* Бинарное представление IP-адресов (`FixedString(16)` для IPv6).
+* Коды языков (ru&#95;RU, en&#95;US ... ).
+* Коды валют (USD, RUB ... ).
+* Бинарное представление хешей (`FixedString(16)` для MD5, `FixedString(32)` для SHA256).
 
-Чтобы хранить значения UUID, используйте тип данных [UUID](../../sql-reference/data-types/uuid.md).
+Для хранения значений UUID используйте тип данных [UUID](../../sql-reference/data-types/uuid.md).
 
 При вставке данных ClickHouse:
 
-- Дополняет строку нулевыми байтами, если строка содержит менее `N` байт.
-- Выбрасывает исключение `Too large value for FixedString(N)`, если строка содержит более `N` байт.
+* Дополняет строку нулевыми байтами, если строка содержит меньше, чем `N` байт.
+* Выбрасывает исключение `Too large value for FixedString(N)`, если строка содержит больше, чем `N` байт.
 
-Рассмотрим следующую таблицу с единственной колонкой `FixedString(2)`:
+Рассмотрим следующую таблицу с единственным столбцом типа `FixedString(2)`:
 
 ```sql
 
@@ -59,12 +60,12 @@ FROM FixedStringTable;
 └──────┴──────────────────┴──────────────┴─────────────┘
 ```
 
-Обратите внимание, что длина значения `FixedString(N)` постоянна. Функция [length](/sql-reference/functions/array-functions#length) возвращает `N`, даже если значение `FixedString(N)` заполнено только нулевыми байтами, но функция [empty](../../sql-reference/functions/string-functions.md#empty) возвращает `1` в этом случае.
+Обратите внимание, что длина значения `FixedString(N)` является фиксированной. Функция [length](/sql-reference/functions/array-functions#length) возвращает `N`, даже если значение `FixedString(N)` заполнено только нулевыми байтами, однако функция [empty](/sql-reference/functions/array-functions#empty) в этом случае возвращает `1`.
 
-Выбор данных с условием `WHERE` возвращает различные результаты в зависимости от того, как задано условие:
+Выборка данных с предложением `WHERE` возвращает разные результаты в зависимости от того, как сформулировано условие:
 
-- Если используется оператор равенства `=` или `==` или функция `equals`, ClickHouse _не_ учитывает символ `\0`, т.е. запросы `SELECT * FROM FixedStringTable WHERE name = 'a';` и `SELECT * FROM FixedStringTable WHERE name = 'a\0';` возвращают один и тот же результат.
-- Если используется оператор `LIKE`, ClickHouse _учитывает_ символ `\0`, поэтому может потребоваться явно указать символ `\0` в условии фильтра.
+* Если используется оператор равенства `=` или `==` или функция `equals`, ClickHouse *не* учитывает символ `\0`, т.е. запросы `SELECT * FROM FixedStringTable WHERE name = 'a';` и `SELECT * FROM FixedStringTable WHERE name = 'a\0';` возвращают один и тот же результат.
+* Если используется предложение `LIKE`, ClickHouse *учитывает* символ `\0`, поэтому может потребоваться явно указать символ `\0` в условии фильтрации.
 
 ```sql
 SELECT name
@@ -98,7 +99,7 @@ FROM FixedStringTable
 WHERE name LIKE 'a'
 FORMAT JSONStringsEachRow
 
-0 rows in set.
+0 строк в результате.
 
 
 SELECT name

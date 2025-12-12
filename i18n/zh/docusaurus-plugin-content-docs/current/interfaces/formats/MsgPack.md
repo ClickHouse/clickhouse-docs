@@ -1,13 +1,12 @@
 ---
-'alias': []
-'description': 'MsgPack 格式的文档'
-'input_format': true
-'keywords':
-- 'MsgPack'
-'output_format': true
-'slug': '/interfaces/formats/MsgPack'
-'title': 'MsgPack'
-'doc_type': 'reference'
+alias: []
+description: 'MsgPack 格式文档'
+input_format: true
+keywords: ['MsgPack']
+output_format: true
+slug: /interfaces/formats/MsgPack
+title: 'MsgPack'
+doc_type: 'reference'
 ---
 
 | 输入 | 输出 | 别名 |
@@ -16,9 +15,9 @@
 
 ## 描述 {#description}
 
-ClickHouse 支持读取和写入 [MessagePack](https://msgpack.org/) 数据文件。
+ClickHouse 支持读写 [MessagePack](https://msgpack.org/) 数据文件。
 
-## 数据类型匹配 {#data-types-matching}
+## 数据类型对应关系 {#data-types-matching}
 
 | MessagePack 数据类型（`INSERT`）                                   | ClickHouse 数据类型                                                                                    | MessagePack 数据类型（`SELECT`） |
 |--------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|----------------------------------|
@@ -45,7 +44,7 @@ ClickHouse 支持读取和写入 [MessagePack](https://msgpack.org/) 数据文�
 
 ## 示例用法 {#example-usage}
 
-写入文件 ".msgpk":
+写入“.msgpk”文件：
 
 ```sql
 $ clickhouse-client --query="CREATE TABLE msgpack (array Array(UInt8)) ENGINE = Memory;"
@@ -55,7 +54,7 @@ $ clickhouse-client --query="SELECT * FROM msgpack FORMAT MsgPack" > tmp_msgpack
 
 ## 格式设置 {#format-settings}
 
-| 设置                                                                                                                                    | 描述                                                                                    | 默认 |
+| 设置                                                                                                                                    | 描述                                                                                    | 默认值 |
 |--------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------|---------|
-| [`input_format_msgpack_number_of_columns`](/operations/settings/settings-formats.md/#input_format_msgpack_number_of_columns)       | 插入的 MsgPack 数据中的列数。用于从数据自动推断架构。 | `0`     |
-| [`output_format_msgpack_uuid_representation`](/operations/settings/settings-formats.md/#output_format_msgpack_uuid_representation) | 在 MsgPack 格式中输出 UUID 的方式。                                                  | `EXT`   |
+| [`input_format_msgpack_number_of_columns`](/operations/settings/settings-formats.md/#input_format_msgpack_number_of_columns)       | 插入的 MsgPack 数据中的列数。用于根据数据自动推断表结构。 | `0`     |
+| [`output_format_msgpack_uuid_representation`](/operations/settings/settings-formats.md/#output_format_msgpack_uuid_representation) | UUID 在 MsgPack 格式中的输出表示方式。                                                  | `EXT`   |

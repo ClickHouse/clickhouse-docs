@@ -1,31 +1,32 @@
 ---
-'description': '关于 KILL 的文档'
-'sidebar_label': 'KILL'
-'sidebar_position': 46
-'slug': '/sql-reference/statements/kill'
-'title': 'KILL 语句'
-'doc_type': 'reference'
+description: 'KILL 文档'
+sidebar_label: 'KILL'
+sidebar_position: 46
+slug: /sql-reference/statements/kill
+title: 'KILL 语句'
+doc_type: 'reference'
 ---
 
-有两种类型的终止语句：用于终止查询和用于终止变更
+有两种 KILL 语句：一种用于终止查询，另一种用于终止变更。
 
-## KILL QUERY {#kill-query}
+## KILL QUERY（终止查询） {#kill-query}
 
 ```sql
 KILL QUERY [ON CLUSTER cluster]
-  WHERE <where expression to SELECT FROM system.processes query>
+  WHERE <用于在 system.processes 查询中执行 SELECT 的 WHERE 表达式>
   [SYNC|ASYNC|TEST]
   [FORMAT format]
 ```
 
-尝试强制终止当前正在运行的查询。
-要终止的查询是从 system.processes 表中选择的，使用 `KILL` 查询的 `WHERE` 子句中定义的标准。
+尝试强制终止当前正在执行的查询。
+需要终止的查询是根据 `KILL` 查询中 `WHERE` 子句定义的条件，从 system.processes 表中选取的。
 
 示例：
 
-首先，您需要获取未完成查询的列表。此 SQL 查询根据运行时间最长的查询提供它们：
+首先，需要获取未完成查询的列表。以下 SQL 查询会按运行时间从长到短列出这些查询：
 
-从单个 ClickHouse 节点列表：
+从单个 ClickHouse 节点上列出：
+
 ```sql
 SELECT
   initial_query_id,
@@ -38,7 +39,8 @@ SELECT
   ORDER BY time_delta DESC;
 ```
 
-从 ClickHouse 集群列表：
+ClickHouse 集群中的列表：
+
 ```sql
 SELECT
   initial_query_id,
@@ -51,97 +53,103 @@ SELECT
   ORDER BY time_delta DESC;
 ```
 
-终止查询：
+终止该查询：
+
 ```sql
--- Forcibly terminates all queries with the specified query_id:
+-- 强制终止所有 query_id 为指定值的查询：
 KILL QUERY WHERE query_id='2-857d-4a57-9ee0-327da5d60a90'
 
--- Synchronously terminates all queries run by 'username':
+-- 同步终止由用户名为 'username' 的用户运行的所有查询：
 KILL QUERY WHERE user='username' SYNC
 ```
 
-:::tip 
-如果您在 ClickHouse Cloud 或自管理集群中终止查询，请务必使用 `ON CLUSTER [cluster-name]` 选项，以确保在所有副本上终止该查询。
+:::tip
+如果你要在 ClickHouse Cloud 或自管集群中终止查询，请务必使用 `ON CLUSTER [cluster-name]` 选项，以确保在所有副本上终止该查询。
 :::
 
 只读用户只能停止自己的查询。
 
-默认情况下，使用的是查询的异步版本（`ASYNC`），这不会等待查询停止的确认。
+默认情况下，使用的是查询的异步版本（`ASYNC`），它不会等待查询已停止的确认。
 
 同步版本（`SYNC`）会等待所有查询停止，并在每个进程停止时显示相关信息。
-响应包含 `kill_status` 列，可能取值如下：
+响应中包含 `kill_status` 列，其可能取值如下：
 
-1.  `finished` – 查询成功终止。
-2.  `waiting` – 等待查询结束，在发送终止信号后。
-3.  其他值解释了查询无法停止的原因。
+1. `finished` – 查询已成功终止。
+2. `waiting` – 在向查询发送终止信号后，正在等待该查询结束。
+3. 其他值说明了为什么无法停止该查询。
 
-测试查询（`TEST`）仅检查用户的权限并显示要停止的查询列表。
+测试查询（`TEST`）仅检查用户权限，并显示要停止的查询列表。
 
 ## KILL MUTATION {#kill-mutation}
 
-长时间运行或未完成的变更的存在通常表明 ClickHouse 服务运行不良。变更的异步特性可能导致它们消耗系统中的所有可用资源。您可能需要：
+存在长时间运行或未完成的 mutation 往往表明 ClickHouse 服务运行状况不佳。mutation 的异步特性可能导致其耗尽系统上的所有可用资源。你可能需要：
 
-- 暂停所有新变更、`INSERT` 和 `SELECT` ，并允许变更队列完成。
-- 或者通过发送 `KILL` 命令手动终止其中一些变更。
+* 暂停所有新的 mutation、`INSERT` 和 `SELECT`，并让 mutation 队列执行完成。
+* 或通过发送 `KILL` 命令手动终止其中部分 mutation。
 
 ```sql
 KILL MUTATION
-  WHERE <where expression to SELECT FROM system.mutations query>
+  WHERE <用于 SELECT FROM system.mutations 查询的 WHERE 表达式>
   [TEST]
   [FORMAT format]
 ```
 
-尝试取消和移除当前正在执行的 [变更](/sql-reference/statements/alter#mutations)。要取消的变更是从 [`system.mutations`](/operations/system-tables/mutations) 表中选择的，使用 `KILL` 查询的 `WHERE` 子句中指定的过滤器。
+尝试取消并移除当前正在执行的 [mutation](/sql-reference/statements/alter#mutations)。要取消的 mutation 会通过在 [`system.mutations`](/operations/system-tables/mutations) 表中使用 `KILL` 查询的 `WHERE` 子句指定的过滤条件来选取。
 
-测试查询（`TEST`）仅检查用户的权限并显示要停止的变更列表。
+测试查询（`TEST`）只检查用户权限并显示要停止的 mutation 列表。
 
 示例：
 
-获取未完成变更的 `count()` 数量：
+获取未完成 mutation 的数量（使用 `count()`）：
 
-从单个 ClickHouse 节点的变更计数：
+统计单个 ClickHouse 节点上的 mutation 数量：
+
 ```sql
 SELECT count(*)
 FROM system.mutations
 WHERE is_done = 0;
 ```
 
-从 ClickHouse 副本集群的变更计数：
+ClickHouse 副本集群中的变更操作次数：
+
 ```sql
 SELECT count(*)
 FROM clusterAllReplicas('default', system.mutations)
 WHERE is_done = 0;
 ```
 
-查询未完成变更的列表：
+查询未完成的 mutation 列表：
 
-从单个 ClickHouse 节点的变更列表：
+来自单个 ClickHouse 节点的 mutation 列表：
+
 ```sql
 SELECT mutation_id, *
 FROM system.mutations
 WHERE is_done = 0;
 ```
 
-从 ClickHouse 集群的变更列表：
+ClickHouse 集群中的变更列表：
+
 ```sql
 SELECT mutation_id, *
 FROM clusterAllReplicas('default', system.mutations)
 WHERE is_done = 0;
 ```
 
-根据需要终止变更：
+按需终止这些 mutation：
+
 ```sql
--- Cancel and remove all mutations of the single table:
+-- 取消并删除该单个表的所有变更：
 KILL MUTATION WHERE database = 'default' AND table = 'table'
 
--- Cancel the specific mutation:
+-- 取消指定的变更：
 KILL MUTATION WHERE database = 'default' AND table = 'table' AND mutation_id = 'mutation_3.txt'
 ```
 
-当变更被卡住并无法完成时（例如，如果变更查询中的某些函数对表中包含的数据应用时抛出异常），该查询非常有用。
+当某个 mutation 卡住且无法完成时，此查询会很有用（例如，在对表中数据执行 mutation 查询时，某个函数在应用到数据时抛出了异常）。
 
-变更已经做出的更改不会被回滚。
+mutation 已经做出的更改不会被回滚。
 
-:::note 
-`is_killed=1` 列（仅 ClickHouse Cloud）在 [system.mutations](/operations/system-tables/mutations) 表中不一定意味着变更已完全完成。变更可能保持在 `is_killed=1` 和 `is_done=0` 的状态中，持续一段时间。如果另一个长时间运行的变更阻止了被终止的变更，这种情况是正常的。
+:::note
+在 [system.mutations](/operations/system-tables/mutations) 表中，`is_killed` 列为 `1`（仅适用于 ClickHouse Cloud）并不一定意味着该 mutation 已经完全结束。一个 mutation 可能会在 `is_killed=1` 且 `is_done=0` 的状态下保持较长时间。如果有另一个长时间运行的 mutation 阻塞了已被终止的 mutation，就会出现这种情况。这是一种正常现象。
 :::

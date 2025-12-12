@@ -1,19 +1,18 @@
 ---
-'description': 'Documentation for WATCH Statement'
-'sidebar_label': 'WATCH'
-'sidebar_position': 53
-'slug': '/sql-reference/statements/watch'
-'title': 'WATCH ステートメント'
-'doc_type': 'reference'
+description: 'WATCH ステートメントに関するドキュメント'
+sidebar_label: 'WATCH'
+sidebar_position: 53
+slug: /sql-reference/statements/watch
+title: 'WATCH ステートメント'
+doc_type: 'reference'
 ---
 
 import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
+# WATCH ステートメント {#watch-statement}
 
-# WATCH Statement
+<DeprecatedBadge />
 
-<DeprecatedBadge/>
+この機能は非推奨であり、今後のバージョンで削除される予定です。
 
-この機能は廃止予定であり、将来的には削除されます。
-
-便宜上、古いドキュメントは[こちら](https://pastila.nl/?007cd3ec/47276db1eb25eb10c6ee043a44fdf597#AESDirdloBX4wF5BjPSZSA==)にあります。
+参考のため、古いドキュメントは[こちら](https://pastila.nl/?007cd3ec/47276db1eb25eb10c6ee043a44fdf597#AESDirdloBX4wF5BjPSZSA==)にあります。

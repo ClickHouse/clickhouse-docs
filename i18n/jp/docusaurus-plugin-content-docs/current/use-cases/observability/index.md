@@ -1,49 +1,42 @@
 ---
-'slug': '/use-cases/observability'
-'title': 'Observability'
-'pagination_prev': null
-'pagination_next': null
-'description': 'Observability ユースケースガイドのランディングページ'
-'keywords':
-- 'observability'
-- 'logs'
-- 'traces'
-- 'metrics'
-- 'OpenTelemetry'
-- 'Grafana'
-- 'OTel'
-'doc_type': 'guide'
+slug: /use-cases/observability
+title: 'オブザーバビリティ'
+pagination_prev: null
+pagination_next: null
+description: 'オブザーバビリティ向けユースケースガイドのランディングページ'
+keywords: ['オブザーバビリティ', 'ログ', 'トレース', 'メトリクス', 'OpenTelemetry', 'Grafana', 'OTel']
+doc_type: 'guide'
 ---
 
-ClickHouseは、可視化のために比類のない速度、スケール、およびコスト効率を提供します。このガイドでは、あなたのニーズに応じて2つのパスを提供します。
+ClickHouse は、オブザーバビリティにおいて比類のない速度、スケーラビリティ、およびコスト効率を提供します。このガイドでは、ニーズに応じて選択できる 2 つのパスを紹介します。
 
-## ClickStack - ClickHouseの可視化スタック {#clickstack}
+## ClickStack - ClickHouse オブザーバビリティスタック {#clickstack}
 
-ClickHouseの可視化スタックは、ほとんどのユーザーに対する**推奨アプローチ**です。
+ClickHouse Observability Stack は、ほとんどのユーザーに対する**推奨構成**です。
 
-**ClickStack**は、ClickHouseとOpenTelemetry (OTel)に基づいた生産グレードの可視化プラットフォームで、ログ、トレース、メトリクス、およびセッションを単一の高性能スケーラブルソリューションに統合し、単一ノードのデプロイから**マルチペタバイト**スケールまで機能します。
+**ClickStack** は ClickHouse と OpenTelemetry (OTel) 上に構築された本番運用対応のオブザーバビリティプラットフォームであり、ログ、トレース、メトリクス、セッションを、高性能かつスケーラブルな単一のソリューションに統合し、単一ノードのデプロイメントから **マルチペタバイト** 規模まで対応します。
 
-| セクション | 説明 |
+| Section | Description |
 |---------|-------------|
-| [概要](/use-cases/observability/clickstack/overview) | ClickStackとその主要機能の紹介 |
-| [はじめに](/use-cases/observability/clickstack/getting-started) | クイックスタートガイドと基本的なセットアップ手順 |
-| [サンプルデータセット](/use-cases/observability/clickstack/sample-datasets) | サンプルデータセットとユースケース |
-| [アーキテクチャ](/use-cases/observability/clickstack/architecture) | システムアーキテクチャとコンポーネントの概要 |
-| [デプロイメント](/use-cases/observability/clickstack/deployment) | デプロイメントガイドとオプション |
-| [設定](/use-cases/observability/clickstack/config) | 詳細な設定オプションと設定内容 |
-| [データの取り込み](/use-cases/observability/clickstack/ingesting-data) | ClickStackへのデータ取り込みに関するガイドライン |
-| [検索](/use-cases/observability/clickstack/search) | 可視化データの検索とクエリの方法 |
-| [本番環境](/use-cases/observability/clickstack/production) | 本番デプロイメントのベストプラクティス |
+| [Overview](/use-cases/observability/clickstack/overview) | ClickStack とその主要な機能の概要 |
+| [Getting Started](/use-cases/observability/clickstack/getting-started) | クイックスタートガイドと基本的なセットアップ手順 |
+| [Example Datasets](/use-cases/observability/clickstack/sample-datasets) | サンプルデータセットとユースケース |
+| [Architecture](/use-cases/observability/clickstack/architecture) | システムアーキテクチャとコンポーネントの概要 |
+| [Deployment](/use-cases/observability/clickstack/deployment) | デプロイメントガイドとオプション |
+| [Configuration](/use-cases/observability/clickstack/config) | 詳細な構成オプションと設定 |
+| [Ingesting Data](/use-cases/observability/clickstack/ingesting-data) | データを ClickStack に取り込むためのガイドライン |
+| [Search](/use-cases/observability/clickstack/search) | オブザーバビリティデータを検索・クエリする方法 |
+| [Production](/use-cases/observability/clickstack/production) | 本番運用におけるデプロイメントのベストプラクティス |
 
-## 自分でスタックを構築する {#build-your-own-stack}
+## 独自スタックの構築 {#build-your-own-stack}
 
-**カスタム要件**を持つユーザー（特に特化した取り込みパイプライン、スキーマ設計、または極端なスケーリングニーズなど）には、ClickHouseを中核データベースとして使用したカスタム可視化スタックの構築に関する指針を提供します。
+**カスタム要件**（高度に特化したインジェストパイプライン、スキーマ設計、非常に大規模なスケーリングニーズなど）を持つユーザー向けに、ClickHouse をコアデータベースとして使用した独自のオブザーバビリティスタックを構築するためのガイドラインを提供します。
 
-| ページ                                                        | 説明                                                                                                                                                                       |
-|-------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [導入](/use-cases/observability/introduction)            | このガイドは、ログとトレースを中心にClickHouseを使用して独自の可視化ソリューションを構築することを考えているユーザーを対象としています。                              |
-| [スキーマ設計](/use-cases/observability/schema-design)          | ユーザーがログとトレース用に独自のスキーマを作成することが推奨される理由とそのためのベストプラクティスを学びます。                                                  |
-| [データの管理](/observability/managing-data)          | 可視化のためのClickHouseのデプロイは、大規模なデータセットを伴うことが多く、それを管理する必要があります。ClickHouseはデータ管理をサポートする機能を提供しています。           |
-| [OpenTelemetryの統合](/observability/integrating-opentelemetry) | ClickHouseを使用したOpenTelemetryによるログとトレースの収集およびエクスポートに関する説明。                                                                                |
-| [可視化ツールの使用](/observability/grafana)    | ClickHouseのための可視化ツールの使用方法を学びます。HyperDXやGrafanaを含みます。                                                                                        |
-| [デモアプリケーション](/observability/demo-application)    | ClickHouseでのログとトレースに対応するためにフォークされたOpenTelemetryデモアプリケーションを探ります。                                                                       |
+| Page                                                        | Description                                                                                                                                                                   |
+|-------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Introduction](/use-cases/observability/introduction)            | このガイドは、ClickHouse を用いて独自のオブザーバビリティソリューションを構築しようとしているユーザー向けのものであり、ログとトレースに焦点を当てています。                                             |
+| [Schema design](/use-cases/observability/schema-design)          | なぜログおよびトレース用に独自のスキーマを作成することを推奨しているのか、その理由と、その際に役立つベストプラクティスについて学びます。                                                  |
+| [Managing data](/observability/managing-data)          | オブザーバビリティ用途の ClickHouse デプロイメントでは、必然的に大規模なデータセットを扱うことになり、その管理が必要になります。ClickHouse はデータ管理を支援するさまざまな機能を提供しています。           |
+| [Integrating OpenTelemetry](/observability/integrating-opentelemetry) | ClickHouse と OpenTelemetry を用いてログとトレースを収集し、エクスポートする方法について説明します。                                                           |
+| [Using Visualization Tools](/observability/grafana)    | HyperDX や Grafana を含む、ClickHouse 向けのオブザーバビリティ可視化ツールの使い方を学びます。                                       |
+| [Demo Application](/observability/demo-application)    | ClickHouse のログおよびトレースで動作するようにフォークされた OpenTelemetry Demo Application を紹介します。                                           |

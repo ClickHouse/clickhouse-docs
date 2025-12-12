@@ -1,27 +1,27 @@
 ---
-'description': 'Агрегатная функция для повторной выборки данных временных рядов для
-  расчёта irate и idelta, аналогичных PromQL'
-'sidebar_position': 224
-'slug': '/sql-reference/aggregate-functions/reference/timeSeriesLastTwoSamples'
-'title': 'timeSeriesLastTwoSamples'
-'doc_type': 'reference'
+description: 'Агрегатная функция для ресемплинга временных рядов для вычислений irate и idelta в стиле PromQL'
+sidebar_position: 224
+slug: /sql-reference/aggregate-functions/reference/timeSeriesLastTwoSamples
+title: 'timeSeriesLastTwoSamples'
+doc_type: 'reference'
 ---
-Агрегатная функция, которая принимает данные временных рядов в формате пар временных меток и значений и хранит не более 2 недавних выборок.
+
+Агрегатная функция, которая принимает данные временного ряда в виде пар меток времени и значений и хранит не более чем 2 последних измерений.
 
 Аргументы:
-- `timestamp` - временная метка выборки
-- `value` - значение временного ряда, соответствующее `timestamp`
-Также возможно передать несколько выборок временных меток и значений в виде массивов одинакового размера.
 
-Возвращаемое значение:
-`Tuple(Array(DateTime), Array(Float64))` - пара массивов одинаковой длины от 0 до 2. Первый массив содержит временные метки выборок временных рядов, второй массив содержит соответствующие значения временного ряда.
+* `timestamp` — метка времени измерения
+* `value` — значение временного ряда, соответствующее `timestamp`\
+  Также можно передавать несколько измерений (метки времени и значения) в виде массивов одинакового размера.
 
-Пример:
-Эта агрегатная функция предназначена для использования с материализованным представлением и агрегированной таблицей, которая хранит повторно выборочные данные временных рядов для временных меток, выровненных по сетке.
-Рассмотрим следующую таблицу для сырых данных и таблицу для хранения повторно выборочных данных:
+Возвращаемое значение:\
+`Tuple(Array(DateTime), Array(Float64))` — пара массивов одинаковой длины (от 0 до 2 элементов). Первый массив содержит метки времени выборок временного ряда, второй массив содержит соответствующие значения временного ряда.
+
+Пример:\
+Эта агрегатная функция предназначена для использования с материализованным представлением и агрегированной таблицей, которые хранят ресемплированные данные временных рядов для временных меток, выровненных по сетке (grid-aligned). Рассмотрим следующую таблицу с сырыми данными и таблицу для хранения ресемплированных данных:
 
 ```sql
--- Table for raw data
+-- Таблица для необработанных данных
 CREATE TABLE t_raw_timeseries
 (
     metric_id UInt64,
@@ -31,17 +31,17 @@ CREATE TABLE t_raw_timeseries
 ENGINE = MergeTree()
 ORDER BY (metric_id, timestamp);
 
--- Table with data re-sampled to bigger (15 sec) time steps
+-- Таблица с данными, пересэмплированными с более крупным временным шагом (15 с)
 CREATE TABLE t_resampled_timeseries_15_sec
 (
     metric_id UInt64,
-    grid_timestamp DateTime('UTC') CODEC(DoubleDelta, ZSTD), -- Timestamp aligned to 15 sec
+    grid_timestamp DateTime('UTC') CODEC(DoubleDelta, ZSTD), -- Метка времени, выровненная с шагом 15 секунд
     samples AggregateFunction(timeSeriesLastTwoSamples, DateTime64(3, 'UTC'), Float64)
 )
 ENGINE = AggregatingMergeTree()
 ORDER BY (metric_id, grid_timestamp);
 
--- MV for populating re-sampled table
+-- Материализованное представление (MV) для заполнения пересэмплированной таблицы
 CREATE MATERIALIZED VIEW mv_resampled_timeseries TO t_resampled_timeseries_15_sec
 (
     metric_id UInt64,
@@ -50,23 +50,25 @@ CREATE MATERIALIZED VIEW mv_resampled_timeseries TO t_resampled_timeseries_15_se
 )
 AS SELECT
     metric_id,
-    ceil(toUnixTimestamp(timestamp + interval 999 millisecond) / 15, 0) * 15 AS grid_timestamp,   -- Round timestamp up to the next grid point
+    ceil(toUnixTimestamp(timestamp + interval 999 millisecond) / 15, 0) * 15 AS grid_timestamp,   -- Округлить метку времени до следующей временной точки сетки
     initializeAggregation('timeSeriesLastTwoSamplesState', timestamp, value) AS samples
 FROM t_raw_timeseries
 ORDER BY metric_id, grid_timestamp;
 ```
 
-Вставьте некоторые тестовые данные и считайте данные между '2024-12-12 12:00:12' и '2024-12-12 12:00:30'
+Вставьте немного тестовых данных и прочитайте данные за период между &#39;2024-12-12 12:00:12&#39; и &#39;2024-12-12 12:00:30&#39;
+
 ```sql
--- Insert some data
+-- Вставим немного данных
 INSERT INTO t_raw_timeseries(metric_id, timestamp, value) SELECT number%10 AS metric_id, '2024-12-12 12:00:00'::DateTime64(3, 'UTC') + interval ((number/10)%100)*900 millisecond as timestamp, number%3+number%29 AS value FROM numbers(1000);
 
--- Check raw data
+-- Проверим сырые данные
 SELECT *
 FROM t_raw_timeseries
 WHERE metric_id = 3 AND timestamp BETWEEN '2024-12-12 12:00:12' AND '2024-12-12 12:00:31'
 ORDER BY metric_id, timestamp;
 ```
+
 
 ```response
 3    2024-12-12 12:00:12.870    29
@@ -92,9 +94,10 @@ ORDER BY metric_id, timestamp;
 3    2024-12-12 12:00:30.869    25
 ```
 
-Запросите последние 2 выборки для временных меток '2024-12-12 12:00:15' и '2024-12-12 12:00:30':
+Выполните запрос двух последних записей с метками времени &#39;2024-12-12 12:00:15&#39; и &#39;2024-12-12 12:00:30&#39;:
+
 ```sql
--- Check re-sampled data
+-- Проверьте ресемплированные данные
 SELECT metric_id, grid_timestamp, (finalizeAggregation(samples).1 as timestamp, finalizeAggregation(samples).2 as value) 
 FROM t_resampled_timeseries_15_sec
 WHERE metric_id = 3 AND grid_timestamp BETWEEN '2024-12-12 12:00:15' AND '2024-12-12 12:00:30'
@@ -106,15 +109,15 @@ ORDER BY metric_id, grid_timestamp;
 3    2024-12-12 12:00:30    (['2024-12-12 12:00:29.969','2024-12-12 12:00:29.069'],[14,6])
 ```
 
-Агрегированная таблица хранит только последние 2 значения для каждой временной метки, выровненной по 15 секунд. Это позволяет рассчитывать аналогичные `irate` и `idelta` по запросам PromQL, считывая гораздо меньше данных, чем хранится в сырой таблице.
+Агрегированная таблица хранит только два последних значения для каждой 15‑секундной выровненной отметки времени. Это позволяет вычислять PromQL‑подобные `irate` и `idelta`, считывая значительно меньше данных, чем хранится в сырой таблице.
 
 ```sql
--- Calculate idelta and irate from the raw data
+-- Вычислить idelta и irate по сырым данным
 WITH
-    '2024-12-12 12:00:15'::DateTime64(3,'UTC') AS start_ts,       -- start of timestamp grid
-    start_ts + INTERVAL 60 SECOND AS end_ts,   -- end of timestamp grid
-    15 AS step_seconds,   -- step of timestamp grid
-    45 AS window_seconds  -- "staleness" window
+    '2024-12-12 12:00:15'::DateTime64(3,'UTC') AS start_ts,       -- начало сетки временных меток
+    start_ts + INTERVAL 60 SECOND AS end_ts,   -- конец сетки временных меток
+    15 AS step_seconds,   -- шаг сетки временных меток
+    45 AS window_seconds  -- окно устаревания данных
 SELECT
     metric_id,
     timeSeriesInstantDeltaToGrid(start_ts, end_ts, step_seconds, window_seconds)(timestamp, value),
@@ -128,13 +131,14 @@ GROUP BY metric_id;
 3    [11,8,-18,8,11]    [12.222222222222221,8.88888888888889,1.1111111111111112,8.88888888888889,12.222222222222221]
 ```
 
+
 ```sql
--- Calculate idelta and irate from the re-sampled data
+-- Вычислить idelta и irate из пересемплированных данных
 WITH
-    '2024-12-12 12:00:15'::DateTime64(3,'UTC') AS start_ts,       -- start of timestamp grid
-    start_ts + INTERVAL 60 SECOND AS end_ts,   -- end of timestamp grid
-    15 AS step_seconds,   -- step of timestamp grid
-    45 AS window_seconds  -- "staleness" window
+    '2024-12-12 12:00:15'::DateTime64(3,'UTC') AS start_ts,       -- начало временной сетки
+    start_ts + INTERVAL 60 SECOND AS end_ts,   -- конец временной сетки
+    15 AS step_seconds,   -- шаг временной сетки
+    45 AS window_seconds  -- окно «устаревания» данных
 SELECT
     metric_id,
     timeSeriesInstantDeltaToGrid(start_ts, end_ts, step_seconds, window_seconds)(timestamps, values),
@@ -155,5 +159,5 @@ GROUP BY metric_id;
 ```
 
 :::note
-Эта функция является экспериментальной, активируйте её, установив `allow_experimental_ts_to_grid_aggregate_function=true`.
+Эта функция экспериментальная; включите её, установив `allow_experimental_ts_to_grid_aggregate_function=true`.
 :::

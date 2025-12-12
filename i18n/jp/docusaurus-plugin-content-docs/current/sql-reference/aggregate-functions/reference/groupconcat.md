@@ -1,13 +1,13 @@
 ---
-'description': '文字列のグループから、区切り文字でオプション的に区切られ、要素の最大数でオプション的に制限された連結された文字列を計算します。'
-'sidebar_label': 'groupConcat'
-'sidebar_position': 363
-'slug': '/sql-reference/aggregate-functions/reference/groupconcat'
-'title': 'groupConcat'
-'doc_type': 'reference'
+description: '文字列のグループを連結して 1 つの文字列を生成します。必要に応じて区切り文字を挟み、要素数の上限を指定できます。'
+sidebar_label: 'groupConcat'
+sidebar_position: 363
+slug: /sql-reference/aggregate-functions/reference/groupconcat
+title: 'groupConcat'
+doc_type: 'reference'
 ---
 
-文字列のグループから連結された文字列を計算し、オプションで区切り文字で区切ることができ、オプションで最大要素数によって制限することができます。
+文字列のグループを連結して 1 つの文字列を生成します。必要に応じて区切り文字を挟み、要素数の上限を指定できます。
 
 **構文**
 
@@ -15,27 +15,27 @@
 groupConcat[(delimiter [, limit])](expression);
 ```
 
-エイリアス: `group_concat`
+Alias: `group_concat`
 
 **引数**
 
-- `expression` — 連結する文字列を出力する式またはカラム名。
-- `delimiter` — 連結された値を区切るために使用される[文字列](../../../sql-reference/data-types/string.md)。このパラメータはオプションで、指定されていない場合は空の文字列またはパラメータからの区切り文字がデフォルトとなります。
+* `expression` — 連結する文字列を出力する式または列名。
+* `delimiter` — 連結された値を区切るために使用される[文字列](../../../sql-reference/data-types/string.md)。この引数は省略可能で、指定されていない場合は空文字列、またはパラメータで指定された区切り文字が既定値として使用されます。
 
 **パラメータ**
 
-- `delimiter` — 連結された値を区切るために使用される[文字列](../../../sql-reference/data-types/string.md)。このパラメータはオプションで、指定されていない場合は空の文字列がデフォルトとなります。
-- `limit` — 連結する最大要素数を指定する正の[整数](../../../sql-reference/data-types/int-uint.md)。要素がそれ以上存在する場合は、余分な要素は無視されます。このパラメータはオプションです。
+* `delimiter` — 連結された値を区切るために使用される[文字列](../../../sql-reference/data-types/string.md)。このパラメータは省略可能で、指定されていない場合は空文字列が既定値として使用されます。
+* `limit` — 連結する要素数の最大値を指定する正の[整数](../../../sql-reference/data-types/int-uint.md)。より多くの要素が存在する場合、超過分の要素は無視されます。このパラメータは省略可能です。
 
 :::note
-区切り文字が指定されている場合、制限なしでは最初のパラメータである必要があります。区切り文字と制限が両方指定されている場合は、区切り文字が制限の前に来る必要があります。
+`limit` を指定せずに `delimiter` のみを指定する場合、`delimiter` は最初のパラメータでなければなりません。`delimiter` と `limit` の両方を指定する場合は、`delimiter` を `limit` より前に指定する必要があります。
 
-また、異なる区切り文字がパラメータと引数として指定された場合、引数からの区切り文字のみが使用されます。
+また、パラメータと引数の両方で異なる区切り文字が指定された場合は、引数で指定された区切り文字のみが使用されます。
 :::
 
-**返される値**
+**戻り値**
 
-- カラムまたは式の連結された値から構成される[string](../../../sql-reference/data-types/string.md)を返します。グループに要素がない場合やnull要素のみが含まれている場合、かつ関数がnull値のみの処理を指定していない場合、結果はnull値を持つnullableな文字列になります。
+* 列または式の値を連結した[文字列](../../../sql-reference/data-types/string.md)を返します。グループに要素が存在しない場合、または null 要素のみで構成されており、かつ関数で「null のみの値」の扱いが指定されていない場合、結果は値が null の Nullable 型の文字列になります。
 
 **例**
 
@@ -49,9 +49,9 @@ groupConcat[(delimiter [, limit])](expression);
 └────┴──────┘
 ```
 
-1. 区切り文字なしの基本的な使用法:
+1. 区切り文字なしでの基本的な使用方法：
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT groupConcat(Name) FROM Employees;
@@ -63,9 +63,9 @@ SELECT groupConcat(Name) FROM Employees;
 JohnJaneBob
 ```
 
-これはすべての名前を区切りなしの連続した文字列に連結します。
+これは、すべての name を区切りなしで 1 つの連続した文字列に連結します。
 
-2. カンマを区切り文字として使用:
+2. 区切り文字としてカンマを使用する場合:
 
 クエリ:
 
@@ -79,15 +79,15 @@ SELECT groupConcat(', ')(Name)  FROM Employees;
 SELECT groupConcat(Name, ', ')  FROM Employees;
 ```
 
-結果:
+結果：
 
 ```text
 John, Jane, Bob
 ```
 
-この出力は、カンマとその後にスペースで区切られた名前を示します。
+この出力は、名前がカンマとその後のスペースで区切られていることを示しています。
 
-3. 連結される要素の数を制限
+3. 連結する要素数の制限
 
 クエリ:
 
@@ -101,4 +101,4 @@ SELECT groupConcat(', ', 2)(Name) FROM Employees;
 John, Jane
 ```
 
-このクエリは、テーブルに他の名前があっても最初の2つの名前に出力を制限します。
+このクエリでは、テーブルにさらに多くの名前が存在していても、出力は先頭2件の名前に制限されます。

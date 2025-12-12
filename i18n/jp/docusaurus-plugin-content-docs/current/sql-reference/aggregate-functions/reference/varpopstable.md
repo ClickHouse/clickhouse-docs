@@ -1,14 +1,14 @@
 ---
-'description': '母集団分散を返します。varPopとは異なり、この関数は数値的に安定したアルゴリズムを使用します。遅くなりますが、計算誤差が低くなります。'
-'sidebar_position': 211
-'slug': '/sql-reference/aggregate-functions/reference/varpopstable'
-'title': 'varPopStable'
-'doc_type': 'reference'
+description: '母分散を返します。varPop と異なり、この関数は数値的に安定したアルゴリズムを使用します。処理速度は低下しますが、計算誤差をより小さく抑えられます。'
+sidebar_position: 211
+slug: /sql-reference/aggregate-functions/reference/varpopstable
+title: 'varPopStable'
+doc_type: 'reference'
 ---
 
 ## varPopStable {#varpopstable}
 
-母集団の分散を返します。 [`varPop`](../reference/varpop.md)とは異なり、この関数は[数値的安定性](https://en.wikipedia.org/wiki/Numerical_stability)のあるアルゴリズムを使用します。動作は遅くなりますが、計算誤差が低くなります。
+母分散を返します。[`varPop`](../reference/varpop.md) と異なり、この関数は[数値的に安定な](https://en.wikipedia.org/wiki/Numerical_stability)アルゴリズムを使用します。処理は遅くなりますが、計算誤差を小さく抑えることができます。
 
 **構文**
 
@@ -16,15 +16,15 @@
 varPopStable(x)
 ```
 
-エイリアス: `VAR_POP_STABLE`。
+別名: `VAR_POP_STABLE`.
 
-**パラメータ**
+**パラメーター**
 
-- `x`: 母集団の分散を求めるための値の母集団。 [(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md)。
+* `x`: 分散を計算する対象となる値の母集団。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md)。
 
-**返される値**
+**返り値**
 
-- `x`の母集団の分散を返します。[Float64](../../data-types/float.md)。
+* `x` の母分散を返します。[Float64](../../data-types/float.md)。
 
 **例**
 

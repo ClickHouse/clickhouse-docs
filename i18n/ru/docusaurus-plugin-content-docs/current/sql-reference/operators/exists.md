@@ -1,17 +1,18 @@
 ---
-slug: '/sql-reference/operators/exists'
-description: 'Документация для оператора `EXISTS`'
-title: EXISTS
-doc_type: reference
+description: 'Документация по оператору `EXISTS`'
+slug: /sql-reference/operators/exists
+title: 'EXISTS'
+doc_type: 'reference'
 ---
-# EXISTS
 
-Оператор `EXISTS` проверяет, сколько записей находится в результате подзапроса. Если он пустой, то оператор возвращает `0`. В противном случае он возвращает `1`.
+# EXISTS {#exists}
 
-`EXISTS` также может быть использован в клаузе [WHERE](../../sql-reference/statements/select/where.md).
+Оператор `EXISTS` проверяет количество записей в результате подзапроса. Если результат пуст, оператор возвращает `0`. В противном случае он возвращает `1`.
 
-:::tip    
-Ссылки на таблицы и колонки основного запроса не поддерживаются в подзапросе.
+`EXISTS` также может использоваться в предложении [WHERE](../../sql-reference/statements/select/where.md).
+
+:::tip\
+Ссылки на таблицы и столбцы основного запроса в подзапросе не поддерживаются.
 :::
 
 **Синтаксис**
@@ -22,7 +23,7 @@ EXISTS(subquery)
 
 **Пример**
 
-Запрос для проверки существования значений в подзапросе:
+Запрос, проверяющий существование значений в подзапросе:
 
 ```sql
 SELECT EXISTS(SELECT * FROM numbers(10) WHERE number > 8), EXISTS(SELECT * FROM numbers(10) WHERE number > 11)

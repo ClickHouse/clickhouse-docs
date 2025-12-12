@@ -1,16 +1,16 @@
 ---
-slug: '/sql-reference/statements/create/named-collection'
+description: 'Документация по оператору CREATE NAMED COLLECTION'
 sidebar_label: 'NAMED COLLECTION'
-description: 'Документация для CREATE NAMED COLLECTION'
+slug: /sql-reference/statements/create/named-collection
 title: 'CREATE NAMED COLLECTION'
-doc_type: reference
+doc_type: 'reference'
 ---
+
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge />
 
-
-# CREATE NAMED COLLECTION
+# CREATE NAMED COLLECTION {#create-named-collection}
 
 Создает новую именованную коллекцию.
 
@@ -27,14 +27,14 @@ key_name3 = 'some value' [[NOT] OVERRIDABLE],
 **Пример**
 
 ```sql
-CREATE NAMED COLLECTION foobar AS a = '1', b = '2' OVERRIDABLE;
+CREATE NAMED COLLECTION foobar AS a = '1', b = '2' ДОПУСКАЕТ ПЕРЕОПРЕДЕЛЕНИЕ;
 ```
 
 **Связанные операторы**
 
-- [CREATE NAMED COLLECTION](/sql-reference/statements/alter/named-collection)
-- [DROP NAMED COLLECTION](/sql-reference/statements/drop#drop-function)
+* [CREATE NAMED COLLECTION](/sql-reference/statements/alter/named-collection)
+* [DROP NAMED COLLECTION](/sql-reference/statements/drop#drop-function)
 
 **См. также**
 
-- [Руководство по именованным коллекциям](/operations/named-collections.md)
+* [Руководство по именованным коллекциям](/operations/named-collections.md)

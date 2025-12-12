@@ -1,0 +1,54 @@
+---
+date: 2025-01-10
+title: なぜ ClickHouse のログはデフォルトでこれほど冗長なのか？
+description: "ClickHouse の開発者がデフォルトで冗長なログレベルを設定している理由を説明します。"
+tags: ['設定']
+keywords: ['デフォルトのログレベル']
+---
+
+{frontMatter.description}
+
+{/* 以下省略 */}
+
+## 冗長なログ出力 \{#verbose-logging\}
+
+新しいユーザーがよく戸惑う点のひとつは、負荷が軽い場合でも ClickHouse が非常に多くのログを出力することです。
+
+これは、歴史的な理由によりデフォルトのログレベルが `trace`（他のデータベースであれば通常は `warning`）になっているためです。
+
+ClickHouse の開発者は、`trace` にしておくと、問題が発生した場合に多くの情報が得られると主張しています。
+
+一方で、大量のログ出力により、システムテーブル `system.text_log` がすぐにいっぱいになり、バックグラウンドでマージを行う必要が生じます。
+
+データベースが安定して稼働している場合は、ログレベルを変更できます。その方法については、以下で説明します。
+
+## ログレベルを変更する \{#change-the-log-level\}
+
+利用可能なログレベルは[こちら](https://clickhouse.com/docs/operations/server-configuration-parameters/settings#logger)に記載されています。
+
+ログレベルを変更するには、ClickHouse サーバーの設定ファイル (`/etc/clickhouse-server/config.xml`) を編集する必要があります。
+
+デフォルト値は `trace` ですが、任意のレベルに変更できます。以下のコメントを参照してください。
+
+```
+<clickhouse>
+    <logger>
+        <!-- 設定可能なレベル [1]:
+
+          - none (ログ記録を無効化)
+          - fatal
+          - critical
+          - error
+          - warning
+          - notice
+          - information
+          - debug
+          - trace
+          - test (本番環境では使用不可)
+
+            [1]: https://github.com/pocoproject/poco/blob/poco-1.9.4-release/Foundation/include/Poco/Logger.h#L105-L114
+        -->
+        <level>trace</level>
+... 設定ファイルの残りの部分
+</clickhouse>
+```

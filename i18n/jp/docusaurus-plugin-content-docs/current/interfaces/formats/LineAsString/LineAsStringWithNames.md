@@ -1,22 +1,21 @@
 ---
-'alias': []
-'description': 'LineAsStringWithNamesフォーマットに関するDocumentation'
-'input_format': true
-'keywords':
-- 'LineAsStringWithNames'
-'output_format': true
-'slug': '/interfaces/formats/LineAsStringWithNames'
-'title': 'LineAsStringWithNames'
-'doc_type': 'reference'
+alias: []
+description: 'LineAsStringWithNames 形式に関するドキュメント'
+input_format: true
+keywords: ['LineAsStringWithNames']
+output_format: true
+slug: /interfaces/formats/LineAsStringWithNames
+title: 'LineAsStringWithNames'
+doc_type: 'reference'
 ---
 
-| Input | Output | Alias |
+| 入力 | 出力 | 別名 |
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
 ## 説明 {#description}
 
-`LineAsStringWithNames` フォーマットは [`LineAsString`](./LineAsString.md) フォーマットに似ていますが、カラム名を含むヘッダー行を印刷します。
+`LineAsStringWithNames` フォーマットは、[`LineAsString`](./LineAsString.md) フォーマットに似ていますが、列名を含むヘッダー行を出力します。
 
 ## 使用例 {#example-usage}
 

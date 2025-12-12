@@ -1,16 +1,15 @@
 ---
-'description': 'このテーブル関数は、ClickHouseをRedisと統合することを可能にします。'
-'sidebar_label': 'redis'
-'sidebar_position': 170
-'slug': '/sql-reference/table-functions/redis'
-'title': 'redis'
-'doc_type': 'reference'
+description: 'このテーブル関数により、ClickHouse を Redis と統合できます。'
+sidebar_label: 'redis'
+sidebar_position: 170
+slug: /sql-reference/table-functions/redis
+title: 'redis'
+doc_type: 'reference'
 ---
 
+# redis テーブル関数 {#redis-table-function}
 
-# redis テーブル関数
-
-このテーブル関数は、ClickHouseと [Redis](https://redis.io/) を統合することを可能にします。
+このテーブル関数により、ClickHouse を [Redis](https://redis.io/) と統合できます。
 
 ## 構文 {#syntax}
 
@@ -20,28 +19,28 @@ redis(host:port, key, structure[, db_index[, password[, pool_size]]])
 
 ## 引数 {#arguments}
 
-| 引数        | 説明                                                                                                           |
-|-------------|----------------------------------------------------------------------------------------------------------------|
-| `host:port` | Redis サーバーアドレス。ポートは無視でき、デフォルトの Redis ポート 6379 が使用されます。                             |
-| `key`       | カラムリスト内の任意のカラム名。                                                                                   |
-| `structure` | この関数から返される ClickHouse テーブルのスキーマ。                                                               |
-| `db_index`  | Redis データベースインデックスは 0 から 15 まで。デフォルトは 0。                                                  |
-| `password`  | ユーザーパスワード。デフォルトは空文字列。                                                                       |
-| `pool_size` | Redis の最大接続プールサイズ。デフォルトは 16。                                                                   |
-| `primary`   | 必須で、主キーには1つのカラムのみをサポートします。主キーはバイナリとしてシリアライズされ、Redis キーとして使用されます。 |
+| 引数        | 説明                                                                                                      |
+|-------------|------------------------------------------------------------------------------------------------------------|
+| `host:port` | Redis サーバーのアドレス。`port` を省略した場合は、デフォルトの Redis ポート 6379 が使用されます。              |
+| `key`       | カラムリスト内の任意のカラム名。                                                                           |
+| `structure` | この関数から返される ClickHouse テーブルのスキーマ。                                                       |
+| `db_index`  | Redis の DB インデックス。0〜15 の範囲で指定し、デフォルトは 0。                                           |
+| `password`  | ユーザーのパスワード。デフォルトは空文字列。                                                                |
+| `pool_size` | Redis の最大接続プールサイズ。デフォルトは 16。                                                             |
+| `primary`   | 必須で、プライマリキーとして 1 つのカラムのみをサポートします。プライマリキーは Redis キーとしてバイナリ形式でシリアライズされます。 |
 
-- 主キー以外のカラムは、対応する順序で Redis 値としてバイナリにシリアライズされます。
-- キーが等しいまたはフィルタリングに関与するクエリは、Redis からの複数キーの検索に最適化されます。フィルタリングキーのないクエリでは、フルテーブルスキャンが実行され、これは重い操作となります。
+- プライマリキー以外のカラムは、指定された順序で Redis の値としてバイナリ形式でシリアライズされます。
+- `key` に対する `=` または `IN` でのフィルタ条件を含むクエリは、Redis への複数キーのルックアップとして最適化されます。キーでのフィルタ条件がないクエリでは全表スキャンが行われ、これは高コストな処理になります。
 
-現在、`redis` テーブル関数では [Named collections](/operations/named-collections.md) はサポートされていません。
+現在のところ、`redis` テーブル関数では [Named collections](/operations/named-collections.md) はサポートされていません。
 
-## 戻り値 {#returned_value}
+## 返される値 {#returned_value}
 
-キーが Redis キーで、その他のカラムが一緒にパッケージ化された Redis 値を持つテーブルオブジェクト。
+Redis のキーをキー列とし、その他のカラムをまとめて 1 つの Redis の値として格納するテーブルオブジェクトです。
 
 ## 使用例 {#usage-example}
 
-Redis から読み取る:
+Redis からの読み込み：
 
 ```sql
 SELECT * FROM redis(
@@ -51,7 +50,7 @@ SELECT * FROM redis(
 )
 ```
 
-Redis に挿入する:
+Redis への書き込み:
 
 ```sql
 INSERT INTO TABLE FUNCTION redis(
@@ -60,7 +59,7 @@ INSERT INTO TABLE FUNCTION redis(
     'key String, v1 String, v2 UInt32') values ('1', '1', 1);
 ```
 
-## 関連 {#related}
+## 関連項目 {#related}
 
 - [`Redis` テーブルエンジン](/engines/table-engines/integrations/redis.md)
-- [Redisを辞書ソースとして使用する](/sql-reference/dictionaries/index.md#redis)
+- [辞書のデータソースとして `Redis` を使用する](/sql-reference/dictionaries/index.md#redis)

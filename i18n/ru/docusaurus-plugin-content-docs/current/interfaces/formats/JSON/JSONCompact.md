@@ -1,25 +1,27 @@
 ---
-slug: '/interfaces/formats/JSONCompact'
+alias: []
 description: 'Документация по формату JSONCompact'
-title: JSONCompact
-keywords: ['JSONCompact']
-doc_type: reference
 input_format: true
+keywords: ['JSONCompact']
 output_format: true
+slug: /interfaces/formats/JSONCompact
+title: 'JSONCompact'
+doc_type: 'reference'
 ---
-| Input | Output | Alias |
+
+| Входной | Выходной | Псевдонимы |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## Описание {#description}
 
-Отличается от [JSON](./JSON.md) только тем, что строки данных выводятся как массивы, а не как объекты.
+Отличается от [JSON](./JSON.md) только тем, что строки данных выводятся в виде массивов, а не объектов.
 
 ## Пример использования {#example-usage}
 
 ### Вставка данных {#inserting-data}
 
-Используя файл JSON со следующими данными, названный как `football.json`:
+Используйте JSON-файл со следующими данными в файле с именем `football.json`:
 
 ```json
 {
@@ -81,7 +83,7 @@ INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompact;
 
 ### Чтение данных {#reading-data}
 
-Чтение данных с использованием формата `JSONCompact`:
+Считайте данные в формате `JSONCompact`:
 
 ```sql
 SELECT *
@@ -153,4 +155,4 @@ FORMAT JSONCompact
 }
 ```
 
-## Настройки формата {#format-settings}
+## Параметры форматирования {#format-settings}

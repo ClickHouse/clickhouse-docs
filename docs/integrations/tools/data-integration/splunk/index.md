@@ -28,7 +28,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 [Splunk](https://www.splunk.com/) is a data analytics and monitoring platform.
 
-This add-on allows users to store the [ClickHouse Cloud audit logs](/cloud/security/audit-logging) into Splunk. It uses [ClickHouse Cloud API](/cloud/manage/api/api-overview) to download the audit logs.
+This add-on allows you to store the [ClickHouse Cloud audit logs](/cloud/security/audit-logging) into Splunk. It uses [ClickHouse Cloud API](/cloud/manage/api/api-overview) to download the audit logs.
 
 This add-on contains only a modular input, no additional UI are provided with this add-on.
 

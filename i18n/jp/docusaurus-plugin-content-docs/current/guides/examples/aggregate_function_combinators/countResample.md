@@ -1,33 +1,25 @@
 ---
-'slug': '/examples/aggregate-function-combinators/countResample'
-'title': 'countResample'
-'description': 'countを使用したResampleコンビネータの例'
-'keywords':
-- 'count'
-- 'Resample'
-- 'combinator'
-- 'examples'
-- 'countResample'
-'sidebar_label': 'countResample'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/countResample'
+title: 'countResample'
+description: 'count と Resample コンビネータを併用する例'
+keywords: ['count', 'Resample', 'combinator', 'examples', 'countResample']
+sidebar_label: 'countResample'
+doc_type: 'reference'
 ---
-
 
 # countResample {#countResample}
 
-## Description {#description}
+## 説明 {#description}
 
 [`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
 コンビネータは、[`count`](/sql-reference/aggregate-functions/reference/count)
-集約関数に適用することができ、指定されたキー列の値を 
-固定数の間隔（`N`）でカウントします。
+集約関数に適用して、指定したキー列の値を固定数 (`N`) の区間に分割してカウントできます。
 
-## Example usage {#example-usage}
+## 利用例 {#example-usage}
 
-### Basic example {#basic-example}
+### 基本的な例 {#basic-example}
 
-例を見てみましょう。従業員の`name`、`age`、および
-`wage`を含むテーブルを作成し、データをいくつか挿入します：
+例を見てみましょう。従業員の `name`、`age`、`wage` を格納するテーブルを作成し、いくつかのデータを挿入してみます。
 
 ```sql
 CREATE TABLE employee_data 
@@ -48,10 +40,9 @@ INSERT INTO employee_data (name, age, wage) VALUES
     ('Brian', 60, 16.0);
 ```
 
-年齢が`[30,60)` および `[60,75)` の範囲にあるすべての人をカウントしましょう。
-年齢の整数表現を使用するため、`[30, 59]` および `[60,74]` の
-範囲の年齢が得られます。そのためには、`count`に 
-`Resample`コンビネータを適用します。
+年齢が `[30,60)` および `[60,75)` の範囲に含まれるすべての人を数えましょう。
+年齢は整数で表現しているため、実際には `[30, 59]` および `[60,74]` の範囲の年齢になります。
+これを行うために、`count` に対して `Resample` コンビネータを適用します。
 
 ```sql
 SELECT countResample(30, 75, 30)(name, age) AS amount FROM employee_data
@@ -63,6 +54,6 @@ SELECT countResample(30, 75, 30)(name, age) AS amount FROM employee_data
 └────────┘
 ```
 
-## See also {#see-also}
+## 関連項目 {#see-also}
 - [`count`](/sql-reference/aggregate-functions/reference/count)
-- [`Resample combinator`](/sql-reference/aggregate-functions/combinators#-resample)
+- [`Resample コンビネータ`](/sql-reference/aggregate-functions/combinators#-resample)

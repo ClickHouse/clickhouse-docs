@@ -3,7 +3,7 @@ slug: /integrations/deltalake
 sidebar_label: 'Delta Lake'
 hide_title: true
 title: 'Delta Lake'
-description: 'Page describing how users can integrate with the Delta lake table format via the table function.'
+description: 'Page describing how you can integrate with the Delta lake table format via the table function.'
 doc_type: 'reference'
 keywords: ['delta lake', 'table function', 'data lake format']
 ---

@@ -1,25 +1,27 @@
 ---
-slug: '/interfaces/formats/JSONStrings'
-description: 'Документация для формата JSONStrings'
-title: JSONStrings
-keywords: ['JSONStrings']
-doc_type: reference
+alias: []
+description: 'Документация по формату JSONStrings'
 input_format: true
+keywords: ['JSONStrings']
 output_format: true
+slug: /interfaces/formats/JSONStrings
+title: 'JSONStrings'
+doc_type: 'reference'
 ---
-| Input | Output | Alias |
+
+| Вход | Выход | Псевдоним |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## Описание {#description}
 
-Отличается от формата [JSON](./JSON.md) только тем, что поля данных выводятся как строки, а не как типизированные значения JSON.
+Отличается от формата [JSON](./JSON.md) только тем, что поля данных выводятся в виде строк, а не типизированных значений JSON.
 
 ## Пример использования {#example-usage}
 
 ### Вставка данных {#inserting-data}
 
-Используя файл JSON со следующими данными, названный `football.json`:
+Используем JSON-файл со следующими данными, сохранённый как `football.json`:
 
 ```json
 {
@@ -192,7 +194,7 @@ output_format: true
 }
 ```
 
-Вставьте данные:
+Добавьте данные:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONStrings;
@@ -200,7 +202,7 @@ INSERT INTO football FROM INFILE 'football.json' FORMAT JSONStrings;
 
 ### Чтение данных {#reading-data}
 
-Читать данные, используя формат `JSONStrings`:
+Считайте данные в формате `JSONStrings`:
 
 ```sql
 SELECT *
@@ -391,4 +393,4 @@ FORMAT JSONStrings
 }
 ```
 
-## Настройки формата {#format-settings}
+## Параметры форматирования {#format-settings}

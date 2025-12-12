@@ -1,13 +1,12 @@
 ---
-'alias': []
-'description': 'JSONCompactStrings 格式的文档'
-'input_format': false
-'keywords':
-- 'JSONCompactStrings'
-'output_format': true
-'slug': '/interfaces/formats/JSONCompactStrings'
-'title': 'JSONCompactStrings'
-'doc_type': 'reference'
+alias: []
+description: 'JSONCompactStrings 格式文档'
+input_format: false
+keywords: ['JSONCompactStrings']
+output_format: true
+slug: /interfaces/formats/JSONCompactStrings
+title: 'JSONCompactStrings'
+doc_type: 'reference'
 ---
 
 | 输入 | 输出 | 别名 |
@@ -16,13 +15,13 @@
 
 ## 描述 {#description}
 
-`JSONCompactStrings` 格式与 [JSONStrings](./JSONStrings.md) 的不同之处在于数据行作为数组输出，而不是作为对象。
+`JSONCompactStrings` 格式与 [JSONStrings](./JSONStrings.md) 的唯一区别是数据行以数组形式输出，而不是对象。
 
-## 示例用法 {#example-usage}
+## 使用示例 {#example-usage}
 
 ### 读取数据 {#reading-data}
 
-使用 `JSONCompactStrings` 格式读取数据：
+以 `JSONCompactStrings` 格式读取数据：
 
 ```sql
 SELECT *
@@ -30,7 +29,7 @@ FROM football
 FORMAT JSONCompactStrings
 ```
 
-输出将是 JSON 格式：
+输出将为 JSON 格式：
 
 ```json
 {

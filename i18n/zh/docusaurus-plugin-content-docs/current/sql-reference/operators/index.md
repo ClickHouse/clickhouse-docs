@@ -1,121 +1,172 @@
 ---
-'description': '操作符的文档'
-'displayed_sidebar': 'sqlreference'
-'sidebar_label': '操作符'
-'sidebar_position': 38
-'slug': '/sql-reference/operators/'
-'title': '操作符'
-'doc_type': 'reference'
+description: '运算符文档'
+sidebar_label: '运算符'
+sidebar_position: 38
+slug: /sql-reference/operators/
+title: '运算符'
+doc_type: 'reference'
 ---
 
+# 运算符 {#operators}
 
-# 运算符
-
-ClickHouse 会根据运算符的优先级、等级和结合性，在查询解析阶段将运算符转换为相应的函数。
+在查询解析阶段，ClickHouse 会根据运算符的优先级、先后次序和结合性，将其转换为相应的函数。
 
 ## 访问运算符 {#access-operators}
 
-`a[N]` – 访问数组的元素。相当于 `arrayElement(a, N)` 函数。
+`a[N]` – 访问数组的某个元素。可使用 `arrayElement(a, N)` 函数。
 
-`a.N` – 访问元组元素。相当于 `tupleElement(a, N)` 函数。
+`a.N` – 访问元组的某个元素。可使用 `tupleElement(a, N)` 函数。
 
-## 数值否定运算符 {#numeric-negation-operator}
+## 数值取反运算符 {#numeric-negation-operator}
 
-`-a` – 相当于 `negate(a)` 函数。
+`-a` – 等同于 `negate (a)` 函数。
 
-对于元组否定： [tupleNegate](../../sql-reference/functions/tuple-functions.md#tuplenegate)。
+元组取反请参见：[tupleNegate](../../sql-reference/functions/tuple-functions.md#tupleNegate)。
 
 ## 乘法和除法运算符 {#multiplication-and-division-operators}
 
-`a * b` – 相当于 `multiply(a, b)` 函数。
+`a * b` – `multiply (a, b)` 函数。
 
-对于元组乘以数字：[tupleMultiplyByNumber](../../sql-reference/functions/tuple-functions.md#tuplemultiplybynumber)，对于标量积：[dotProduct](/sql-reference/functions/array-functions#arrayDotProduct)。
+元组乘以数字：[tupleMultiplyByNumber](../../sql-reference/functions/tuple-functions.md#tupleMultiplyByNumber)，标量积：[dotProduct](/sql-reference/functions/array-functions#arrayDotProduct)。
 
-`a / b` – 相当于 `divide(a, b)` 函数。
+`a / b` – `divide (a, b)` 函数。
 
-对于元组除以数字：[tupleDivideByNumber](../../sql-reference/functions/tuple-functions.md#tupledividebynumber)。
+元组除以数字：[tupleDivideByNumber](../../sql-reference/functions/tuple-functions.md#tupleDivideByNumber)。
 
-`a % b` – 相当于 `modulo(a, b)` 函数。
+`a % b` – `modulo (a, b)` 函数。
 
 ## 加法和减法运算符 {#addition-and-subtraction-operators}
 
-`a + b` – 相当于 `plus(a, b)` 函数。
+`a + b` – `plus (a, b)` 函数。
 
-对于元组加法：[tuplePlus](../../sql-reference/functions/tuple-functions.md#tupleplus)。
+元组加法请参见 [tuplePlus](../../sql-reference/functions/tuple-functions.md#tuplePlus)。
 
-`a - b` – 相当于 `minus(a, b)` 函数。
+`a - b` – `minus (a, b)` 函数。
 
-对于元组减法：[tupleMinus](../../sql-reference/functions/tuple-functions.md#tupleminus)。
+元组减法请参见 [tupleMinus](../../sql-reference/functions/tuple-functions.md#tupleMinus)。
 
 ## 比较运算符 {#comparison-operators}
 
-### 等于函数 {#equals-function}
-`a = b` – 相当于 `equals(a, b)` 函数。
+### equals 函数 {#equals-function}
 
-`a == b` – 相当于 `equals(a, b)` 函数。
+`a = b` – 等同于 `equals (a, b)` 函数。
 
-### 不等于函数 {#notequals-function}
-`a != b` – 相当于 `notEquals(a, b)` 函数。
+`a == b` – 等同于 `equals (a, b)` 函数。
 
-`a <> b` – 相当于 `notEquals(a, b)` 函数。
+### notEquals 函数 {#notequals-function}
 
-### 小于或等于函数 {#lessorequals-function}
-`a <= b` – 相当于 `lessOrEquals(a, b)` 函数。
+`a != b` – 等同于 `notEquals (a, b)` 函数。
 
-### 大于或等于函数 {#greaterorequals-function}
-`a >= b` – 相当于 `greaterOrEquals(a, b)` 函数。
+`a <> b` – 等同于 `notEquals (a, b)` 函数。
 
-### 小于函数 {#less-function}
-`a < b` – 相当于 `less(a, b)` 函数。
+### lessOrEquals 函数 {#lessorequals-function}
 
-### 大于函数 {#greater-function}
-`a > b` – 相当于 `greater(a, b)` 函数。
+`a <= b` 等同于 `lessOrEquals (a, b)` 函数。
 
-### LIKE 函数 {#like-function}
-`a LIKE b` – 相当于 `like(a, b)` 函数。
+### greaterOrEquals 函数 {#greaterorequals-function}
 
-### NOT LIKE 函数 {#notlike-function}
-`a NOT LIKE b` – 相当于 `notLike(a, b)` 函数。
+`a >= b` – 等同于 `greaterOrEquals (a, b)` 函数。
 
-### ILIKE 函数 {#ilike-function}
-`a ILIKE b` – 相当于 `ilike(a, b)` 函数。
+### less 函数 {#less-function}
+
+`a < b` – 等同于 `less (a, b)` 函数。
+
+### greater 函数 {#greater-function}
+
+`a > b` 等同于 `greater (a, b)` 函数。
+
+### like 函数 {#like-function}
+
+`a LIKE b` – 等同于 `like (a, b)` 函数。
+
+### notLike 函数 {#notlike-function}
+
+`a NOT LIKE b` – 等同于 `notLike (a, b)` 函数。
+
+### ilike 函数 {#ilike-function}
+
+`a ILIKE b` – 等同于 `ilike (a, b)` 函数。
 
 ### BETWEEN 函数 {#between-function}
-`a BETWEEN b AND c` – 与 `a >= b AND a <= c` 相同。
 
-`a NOT BETWEEN b AND c` – 与 `a < b OR a > c` 相同。
+`a BETWEEN b AND c` – 等同于 `a >= b AND a <= c`。
 
-## 数据集操作运算符 {#operators-for-working-with-data-sets}
+`a NOT BETWEEN b AND c` – 等同于 `a < b OR a > c`。
 
-参见 [IN 运算符](../../sql-reference/operators/in.md) 和 [EXISTS](../../sql-reference/operators/exists.md) 运算符。
+### “is not distinct from” 运算符 (`<=>`) {#is-not-distinct-from}
 
-### in 函数 {#in-function}
-`a IN ...` – 相当于 `in(a, b)` 函数。
+:::note
+自 25.10 起，可以像使用其他运算符一样使用 `<=>`。
+在 25.10 之前，它只能用于 JOIN 表达式中，例如：
+
+```sql
+CREATE TABLE a (x String) ENGINE = Memory;
+INSERT INTO a VALUES ('ClickHouse');
+
+SELECT * FROM a AS a1 JOIN a AS a2 ON a1.x <=> a2.x;
+
+┌─x──────────┬─a2.x───────┐
+│ ClickHouse │ ClickHouse │
+└────────────┴────────────┘
+```
+
+:::
+
+`<=>` 运算符是 `NULL` 安全相等运算符，等同于 `IS NOT DISTINCT FROM`。
+它的行为类似常规相等运算符（`=`），但会将 `NULL` 值视为可参与比较。
+两个 `NULL` 值被视为相等，将 `NULL` 与任意非 `NULL` 值比较时，返回 0（false），而不是 `NULL`。
+
+```sql
+SELECT
+  'ClickHouse' <=> NULL,
+  NULL <=> NULL
+```
+
+```response
+┌─isNotDistinc⋯use', NULL)─┬─isNotDistinc⋯NULL, NULL)─┐
+│                        0 │                        1 │
+└──────────────────────────┴──────────────────────────┘
+```
+
+## 用于处理数据集的运算符 {#operators-for-working-with-data-sets}
+
+请参阅 [IN 运算符](../../sql-reference/operators/in.md) 和 [EXISTS](../../sql-reference/operators/exists.md) 运算符。
+
+### IN 函数 {#in-function}
+
+`a IN ...` – 等同于 `in (a, b)` 函数。
 
 ### notIn 函数 {#notin-function}
-`a NOT IN ...` – 相当于 `notIn(a, b)` 函数。
+
+`a NOT IN ...` – 等同于 `notIn (a, b)` 函数。
 
 ### globalIn 函数 {#globalin-function}
-`a GLOBAL IN ...` – 相当于 `globalIn(a, b)` 函数。
+
+`a GLOBAL IN ...` – 等同于 `globalIn (a, b)` 函数。
 
 ### globalNotIn 函数 {#globalnotin-function}
-`a GLOBAL NOT IN ...` – 相当于 `globalNotIn(a, b)` 函数。
+
+`a GLOBAL NOT IN ...` – `globalNotIn(a, b)` 函数。
 
 ### in 子查询函数 {#in-subquery-function}
-`a = ANY (subquery)` – 相当于 `in(a, subquery)` 函数。  
 
-### notIn 子查询函数 {#notin-subquery-function}
-`a != ANY (subquery)` – 与 `a NOT IN (SELECT singleValueOrNull(*) FROM subquery)` 相同。
+`a = ANY (subquery)` 等同于 `in (a, subquery)` 函数。  
+
+### notIn subquery function {#notin-subquery-function}
+
+`a != ANY (subquery)` – 等同于 `a NOT IN (SELECT singleValueOrNull(*) FROM subquery)`。
 
 ### in 子查询函数 {#in-subquery-function-1}
-`a = ALL (subquery)` – 与 `a IN (SELECT singleValueOrNull(*) FROM subquery)` 相同。
+
+`a = ALL (subquery)` – 等同于 `a IN (SELECT singleValueOrNull(*) FROM subquery)`。
 
 ### notIn 子查询函数 {#notin-subquery-function-1}
-`a != ALL (subquery)` – 相当于 `notIn(a, subquery)` 函数。 
+
+`a != ALL (subquery)` – 等同于 `notIn (a, subquery)` 子查询函数。
 
 **示例**
 
-查询使用 ALL:
+带 ALL 的查询：
 
 ```sql
 SELECT number AS a FROM numbers(10) WHERE a > ALL (SELECT number FROM numbers(3, 3));
@@ -132,7 +183,7 @@ SELECT number AS a FROM numbers(10) WHERE a > ALL (SELECT number FROM numbers(3,
 └───┘
 ```
 
-查询使用 ANY:
+使用 ANY 的查询：
 
 ```sql
 SELECT number AS a FROM numbers(10) WHERE a > ANY (SELECT number FROM numbers(3, 3));
@@ -151,7 +202,7 @@ SELECT number AS a FROM numbers(10) WHERE a > ANY (SELECT number FROM numbers(3,
 └───┘
 ```
 
-## 日期和时间操作运算符 {#operators-for-working-with-dates-and-times}
+## 日期和时间运算符 {#operators-for-working-with-dates-and-times}
 
 ### EXTRACT {#extract}
 
@@ -159,22 +210,22 @@ SELECT number AS a FROM numbers(10) WHERE a > ANY (SELECT number FROM numbers(3,
 EXTRACT(part FROM date);
 ```
 
-从给定日期提取部分值。例如，您可以从给定日期中获取月份，或者从时间中获取秒。
+从给定日期中提取各个组成部分。例如，可以从给定日期中获取月份，或从时间中获取秒数。
 
-`part` 参数指定要检索的日期部分。可用的值如下：
+`part` 参数指定要从日期中提取的部分。可用值如下：
 
-- `DAY` — 月中的天。可能的值：1–31。
-- `MONTH` — 月份的数字。可能的值：1–12。
-- `YEAR` — 年。
-- `SECOND` — 秒。可能的值：0–59。
-- `MINUTE` — 分钟。可能的值：0–59。
-- `HOUR` — 小时。可能的值：0–23。
+* `DAY` — 月份中的天数。可能的取值范围：1–31。
+* `MONTH` — 月份的序号。可能的取值范围：1–12。
+* `YEAR` — 年。
+* `SECOND` — 秒。可能的取值范围：0–59。
+* `MINUTE` — 分钟。可能的取值范围：0–59。
+* `HOUR` — 小时。可能的取值范围：0–23。
 
 `part` 参数不区分大小写。
 
 `date` 参数指定要处理的日期或时间。支持 [Date](../../sql-reference/data-types/date.md) 或 [DateTime](../../sql-reference/data-types/datetime.md) 类型。
 
-示例：
+示例:
 
 ```sql
 SELECT EXTRACT(DAY FROM toDate('2017-06-15'));
@@ -182,7 +233,7 @@ SELECT EXTRACT(MONTH FROM toDate('2017-06-15'));
 SELECT EXTRACT(YEAR FROM toDate('2017-06-15'));
 ```
 
-在以下示例中，我们创建一个表并插入一个具有 `DateTime` 类型的值。
+在以下示例中，我们创建一个表并向其中插入一个 `DateTime` 类型的值。
 
 ```sql
 CREATE TABLE test.Orders
@@ -215,29 +266,30 @@ FROM test.Orders;
 └───────────┴────────────┴──────────┴───────────┴─────────────┴─────────────┘
 ```
 
-您可以在 [tests](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/00619_extract.sql) 中看到更多示例。
+更多示例请参见[测试用例](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/00619_extract.sql)。
 
 ### INTERVAL {#interval}
 
-创建一个 [Interval](../../sql-reference/data-types/special-data-types/interval.md)-类型值，该值应在与 [Date](../../sql-reference/data-types/date.md) 和 [DateTime](../../sql-reference/data-types/datetime.md)-类型值进行算术操作时使用。
+创建一个 [Interval](../../sql-reference/data-types/special-data-types/interval.md) 类型的值，用于与 [Date](../../sql-reference/data-types/date.md) 和 [DateTime](../../sql-reference/data-types/datetime.md) 类型值进行算术运算。
 
-间隔类型：
-- `SECOND`
-- `MINUTE`
-- `HOUR`
-- `DAY`
-- `WEEK`
-- `MONTH`
-- `QUARTER`
-- `YEAR`
+可用的区间类型：
 
-设置 `INTERVAL` 值时，您还可以使用字符串字面量。例如，`INTERVAL 1 HOUR` 与 `INTERVAL '1 hour'` 或 `INTERVAL '1' hour` 是相同的。
+* `SECOND`
+* `MINUTE`
+* `HOUR`
+* `DAY`
+* `WEEK`
+* `MONTH`
+* `QUARTER`
+* `YEAR`
 
-:::tip    
-不同类型的间隔不能结合。您不能使用表达式如 `INTERVAL 4 DAY 1 HOUR`。应在小于或等于间隔的最小单位的单位中指定间隔，例如 `INTERVAL 25 HOUR`。您可以使用连续操作，如下例所示。
+在设置 `INTERVAL` 的值时，也可以使用字符串字面量。例如，`INTERVAL 1 HOUR` 等同于 `INTERVAL '1 hour'` 或 `INTERVAL '1' hour`。
+
+:::tip
+不同类型的区间不能组合使用。不能使用 `INTERVAL 4 DAY 1 HOUR` 这样的表达式。请使用不大于该区间中最小单位的单位来指定区间，例如 `INTERVAL 25 HOUR`。可以像下面的示例一样使用连续运算。
 :::
 
-示例：
+示例:
 
 ```sql
 SELECT now() AS current_date_time, current_date_time + INTERVAL 4 DAY + INTERVAL 3 HOUR;
@@ -269,11 +321,11 @@ SELECT now() AS current_date_time, current_date_time + INTERVAL '4' day + INTERV
 └─────────────────────┴────────────────────────────────────────────────────────────┘
 ```
 
-:::note    
-建议优先使用 `INTERVAL` 语法或 `addDays` 函数。简单的加法或减法（如 `now() + ...` 的语法）不考虑时间设置。例如，夏令时。
+:::note
+始终优先使用 `INTERVAL` 语法或 `addDays` 函数。简单的加减运算（例如 `now() + ...` 这样的语法）不会考虑时间相关设置，例如夏令时。
 :::
 
-示例：
+示例:
 
 ```sql
 SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 60 * 24 AS time_plus_24_hours, time + toIntervalDay(1) AS time_plus_1_day;
@@ -285,30 +337,30 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 └─────────────────────┴─────────────────────┴─────────────────────┘
 ```
 
-**另请参见**
+**另请参阅**
 
-- [Interval](../../sql-reference/data-types/special-data-types/interval.md) 数据类型
-- [toInterval](/sql-reference/functions/type-conversion-functions#tointervalyear) 类型转换函数
+* [Interval](../../sql-reference/data-types/special-data-types/interval.md) 数据类型
+* [toInterval](/sql-reference/functions/type-conversion-functions#tointervalyear) 类型转换函数
 
-## 逻辑与运算符 {#logical-and-operator}
+## 逻辑 AND 运算符 {#logical-and-operator}
 
-语法 `SELECT a AND b` — 计算 `a` 和 `b` 的逻辑合取，使用函数 [and](/sql-reference/functions/logical-functions#and)。
+语法 `SELECT a AND b` — 通过函数 [and](/sql-reference/functions/logical-functions#and) 计算 `a` 与 `b` 的逻辑与结果。
 
-## 逻辑或运算符 {#logical-or-operator}
+## 逻辑 OR 运算符 {#logical-or-operator}
 
-语法 `SELECT a OR b` — 计算 `a` 和 `b` 的逻辑析取，使用函数 [or](/sql-reference/functions/logical-functions#or)。
+语法为 `SELECT a OR b` — 通过函数 [or](/sql-reference/functions/logical-functions#or) 计算 `a` 与 `b` 的逻辑析取。
 
-## 逻辑否定运算符 {#logical-negation-operator}
+## 逻辑非运算符 {#logical-negation-operator}
 
-语法 `SELECT NOT a` — 计算 `a` 的逻辑否定，使用函数 [not](/sql-reference/functions/logical-functions#not)。
+语法 `SELECT NOT a` — 通过函数 [not](/sql-reference/functions/logical-functions#not) 计算 `a` 的逻辑非。
 
 ## 条件运算符 {#conditional-operator}
 
-`a ? b : c` – 相当于 `if(a, b, c)` 函数。
+`a ? b : c` – 等同于 `if (a, b, c)` 函数。
 
 注意：
 
-条件运算符计算 b 和 c 的值，然后检查条件 a 是否满足，随后返回相应的值。如果 `b` 或 `c` 是 [arrayJoin()](/sql-reference/functions/array-join) 函数，则无论 "a" 条件如何，每行都会被复制。
+条件运算符会先计算 b 和 c 的值，然后检查条件 a 是否满足，最后返回相应的值。如果 `b` 或 `c` 是 [arrayJoin ()](/sql-reference/functions/array-join) 函数，则每一行都会被复制，与条件 `a` 是否成立无关。
 
 ## 条件表达式 {#conditional-expression}
 
@@ -320,51 +372,51 @@ CASE [x]
 END
 ```
 
-如果指定了 `x`，则使用 `transform(x, [a, ...], [b, ...], c)` 函数。否则使用 `multiIf(a, b, ..., c)`。
+如果指定了 `x`，则使用 `transform (x, [a, ...], [b, ...], c)` 函数。否则使用 `multiIf (a, b, ..., c)`。
 
 如果表达式中没有 `ELSE c` 子句，则默认值为 `NULL`。
 
-`transform` 函数不适用于 `NULL`。
+`transform` 函数不支持 `NULL`。
 
 ## 连接运算符 {#concatenation-operator}
 
-`s1 || s2` – 相当于 `concat(s1, s2)` 函数。
+`s1 || s2` – 等同于 `concat(s1, s2) function.`
 
 ## Lambda 创建运算符 {#lambda-creation-operator}
 
-`x -> expr` – 相当于 `lambda(x, expr)` 函数。
+`x -> expr` – `lambda(x, expr)` FUNCTION。
 
 以下运算符没有优先级，因为它们是括号：
 
 ## 数组创建运算符 {#array-creation-operator}
 
-`[x1, ...]` – 相当于 `array(x1, ...)` 函数。
+`[x1, ...]` – 等同于 `array(x1, ...)` 函数。
 
 ## 元组创建运算符 {#tuple-creation-operator}
 
-`(x1, x2, ...)` – 相当于 `tuple(x2, x2, ...)` 函数。
+`(x1, x2, ...)` – 等同于 `tuple(x2, x2, ...)` 函数。
 
-## 结合性 {#associativity}
+## 元组创建运算符 {#associativity}
 
-所有二元运算符都是左结合的。例如，`1 + 2 + 3` 转换为 `plus(plus(1, 2), 3)`。
-有时这不按您预期的方式工作。例如，`SELECT 4 > 2 > 3` 的结果将为 0。
+所有二元运算符都具有左结合性。例如，`1 + 2 + 3` 会被转换为 `plus(plus(1, 2), 3)`。
+有时这并不会符合预期。例如，`SELECT 4 > 2 > 3` 的结果为 0。
 
-为了效率，`and` 和 `or` 函数接受任何数量的参数。相应的 `AND` 和 `OR` 运算符的链条会被转换为这些函数的单一调用。
+出于效率考虑，`and` 和 `or` 函数可以接受任意数量的参数。相应的 `AND` 和 `OR` 运算符链会被转换为对这些函数的一次调用。
 
-## 检查 `NULL` {#checking-for-null}
+## 检查 `NULL` 值 {#checking-for-null}
 
 ClickHouse 支持 `IS NULL` 和 `IS NOT NULL` 运算符。
 
 ### IS NULL {#is_null}
 
-- 对于 [Nullable](../../sql-reference/data-types/nullable.md) 类型的值，`IS NULL` 运算符返回：
-  - `1`，如果值为 `NULL`。
-  - 否则返回 `0`。
-- 对于其他值，`IS NULL` 运算符始终返回 `0`。
+* 对于 [Nullable](../../sql-reference/data-types/nullable.md) 类型的值,`IS NULL` 运算符返回:
+  * `1`,如果值为 `NULL`。
+  * `0`,否则。
+* 对于其他值，`IS NULL` 运算符始终返回 `0`。
 
-可以通过启用 [optimize_functions_to_subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns) 设置来优化。使用 `optimize_functions_to_subcolumns = 1` 时，函数只读取 [null](../../sql-reference/data-types/nullable.md#finding-null) 子列，而不是读取和处理整列数据。查询 `SELECT n IS NULL FROM table` 转换为 `SELECT n.null FROM TABLE`。
+通过启用 [optimize&#95;functions&#95;to&#95;subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns) 设置可以来优化。当 `optimize_functions_to_subcolumns = 1` 时，该函数只读取 [null](../../sql-reference/data-types/nullable.md#finding-null) 子列，而不是读取并处理整个列数据。查询 `SELECT n IS NULL FROM table` 会被转换为 `SELECT n.null FROM TABLE`。
 
-<!-- -->
+{/* */ }
 
 ```sql
 SELECT x+100 FROM t_null WHERE y IS NULL
@@ -378,12 +430,12 @@ SELECT x+100 FROM t_null WHERE y IS NULL
 
 ### IS NOT NULL {#is_not_null}
 
-- 对于 [Nullable](../../sql-reference/data-types/nullable.md) 类型的值，`IS NOT NULL` 运算符返回：
-  - `0`，如果值为 `NULL`。
-  - 否则返回 `1`。
-- 对于其他值，`IS NOT NULL` 运算符始终返回 `1`。
+* 对于 [Nullable](../../sql-reference/data-types/nullable.md) 类型的值，`IS NOT NULL` 运算符返回：
+  * 如果值为 `NULL`，则返回 `0`。
+  * 否则返回 `1`。
+* 对于其他类型的值，`IS NOT NULL` 运算符始终返回 `1`。
 
-<!-- -->
+{/* */ }
 
 ```sql
 SELECT * FROM t_null WHERE y IS NOT NULL
@@ -395,4 +447,4 @@ SELECT * FROM t_null WHERE y IS NOT NULL
 └───┴───┘
 ```
 
-可以通过启用 [optimize_functions_to_subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns) 设置来优化。使用 `optimize_functions_to_subcolumns = 1` 时，函数只读取 [null](../../sql-reference/data-types/nullable.md#finding-null) 子列，而不是读取和处理整列数据。查询 `SELECT n IS NOT NULL FROM table` 转换为 `SELECT NOT n.null FROM TABLE`。
+可以通过启用 [optimize&#95;functions&#95;to&#95;subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns) 设置来优化。启用 `optimize_functions_to_subcolumns = 1` 后，函数只会读取 [null](../../sql-reference/data-types/nullable.md#finding-null) 子列，而不是读取并处理整列数据。查询 `SELECT n IS NOT NULL FROM table` 会被转换为 `SELECT NOT n.null FROM TABLE`。

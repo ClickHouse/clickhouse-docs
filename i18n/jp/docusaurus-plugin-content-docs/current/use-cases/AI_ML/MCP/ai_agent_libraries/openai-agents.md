@@ -1,62 +1,59 @@
 ---
-'slug': '/use-cases/AI/MCP/ai-agent-libraries/openai-agents'
-'sidebar_label': 'OpenAI の統合'
-'title': 'ClickHouse MCP サーバーを使用して OpenAI エージェントを構築する方法。'
-'pagination_prev': null
-'pagination_next': null
-'description': 'ClickHouse MCP サーバーと対話できる OpenAI エージェントを構築する方法を学びましょう。'
-'keywords':
-- 'ClickHouse'
-- 'MCP'
-- 'OpenAI'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: /use-cases/AI/MCP/ai-agent-libraries/openai-agents
+sidebar_label: 'OpenAI を統合する'
+title: 'ClickHouse MCP Server を使って OpenAI エージェントを構築する方法'
+pagination_prev: null
+pagination_next: null
+description: 'ClickHouse MCP Server と連携して動作する OpenAI エージェントの構築方法を学びます。'
+keywords: ['ClickHouse', 'MCP', 'OpenAI']
+show_related_blogs: true
+doc_type: 'guide'
 ---
 
+# ClickHouse MCP Server を使用して OpenAI エージェントを構築する方法 {#how-to-build-an-openai-agent-using-clickhouse-mcp-server}
 
-# ClickHouse MCPサーバーを使用してOpenAIエージェントを構築する方法
+このガイドでは、[ClickHouse SQL playground](https://sql.clickhouse.com/) と対話できる [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を利用して [OpenAI](https://github.com/openai/openai-agents-python) エージェントを構築する手順を説明します。
 
-このガイドでは、[ClickHouseのSQLプレイグラウンド](https://sql.clickhouse.com/)と[ClickHouseのMCPサーバー](https://github.com/ClickHouse/mcp-clickhouse)を使用して、[OpenAI](https://github.com/openai/openai-agents-python)エージェントを構築する方法を学びます。
-
-:::note 例のノートブック
-この例は、[examplesリポジトリ](https://github.com/ClickHouse/examples/blob/main/ai/mcp/openai-agents/openai-agents.ipynb)のノートブックとして見つけることができます。
+:::note サンプルノートブック
+この例は、[examples リポジトリ](https://github.com/ClickHouse/examples/blob/main/ai/mcp/openai-agents/openai-agents.ipynb) 内のノートブックとして提供されています。
 :::
 
 ## 前提条件 {#prerequisites}
+
 - システムにPythonがインストールされている必要があります。
 - システムに`pip`がインストールされている必要があります。
 - OpenAI APIキーが必要です。
 
-次の手順は、Python REPLまたはスクリプトから実行できます。
+以下の手順は、Python REPLまたはスクリプトから実行できます。
 
 <VerticalStepper headerLevel="h2">
 
-## ライブラリのインストール {#install-libraries}
+## ライブラリをインストールする {#install-libraries}
 
-必要なライブラリを以下のコマンドを実行してインストールします。
+次のコマンドを実行して、必要なライブラリをインストールします。
 
 ```python
-!pip install -q --upgrade pip
-!pip install -q openai-agents
+pip install -q --upgrade pip
+pip install -q openai-agents
 ```
 
-## 認証情報の設定 {#setup-credentials}
+## 認証情報のセットアップ {#setup-credentials}
 
-次に、OpenAI APIキーを提供する必要があります:
+次に、OpenAI API キーを指定する必要があります。
 
 ```python
 import os, getpass
-os.environ["OPENAI_API_KEY"] = getpass.getpass("Enter OpenAI API Key:")
+os.environ["OPENAI_API_KEY"] = getpass.getpass("OpenAI APIキーを入力:")
 ```
 
 ```response title="Response"
-Enter OpenAI API Key: ········
+OpenAI APIキーを入力: ········
 ```
 
-## MCPサーバーとOpenAIエージェントの初期化 {#initialize-mcp-and-agent}
+## MCP Server と OpenAI エージェントの初期化 {#initialize-mcp-and-agent}
 
-現在、ClickHouse MCPサーバーをClickHouse SQLプレイグラウンドを指すように構成し、
-OpenAIエージェントを初期化して、質問をします:
+ここでは、ClickHouse MCP Server を ClickHouse SQL playground を参照するように設定し、
+OpenAI エージェントを初期化して質問させます。
 
 ```python
 from agents.mcp import MCPServer, MCPServerStdio
@@ -64,9 +61,9 @@ from agents import Agent, Runner, trace
 import json
 
 def simple_render_chunk(chunk):
-    """Simple version that just filters important events"""
+    """重要なイベントのみをフィルタリングするシンプル版"""
 
-    # Tool calls
+    # ツール呼び出し
     if (hasattr(chunk, 'type') and
             chunk.type == 'run_item_stream_event'):
 
@@ -77,13 +74,13 @@ def simple_render_chunk(chunk):
 
         elif chunk.name == 'tool_output':
             try:
-                # Handle both string and already-parsed output
+                # 文字列と解析済み出力の両方に対応
                 if isinstance(chunk.item.output, str):
                     output = json.loads(chunk.item.output)
                 else:
                     output = chunk.item.output
 
-                # Handle both dict and list formats
+                # 辞書形式とリスト形式の両方に対応
                 if isinstance(output, dict):
                     if output.get('type') == 'text':
                         text = output['text']
@@ -92,7 +89,7 @@ def simple_render_chunk(chunk):
                         else:
                             print(f"✅ Result: {text[:100]}...")
                 elif isinstance(output, list) and len(output) > 0:
-                    # Handle list format
+                    # リスト形式に対応
                     first_item = output[0]
                     if isinstance(first_item, dict) and first_item.get('type') == 'text':
                         text = first_item['text']
@@ -101,11 +98,11 @@ def simple_render_chunk(chunk):
                         else:
                             print(f"✅ Result: {text[:100]}...")
                 else:
-                    # Fallback - just print the raw output
+                    # フォールバック - 生の出力を表示
                     print(f"✅ Result: {str(output)[:100]}...")
 
             except (json.JSONDecodeError, AttributeError, KeyError) as e:
-                # Fallback to raw output if parsing fails
+                # 解析失敗時は生の出力にフォールバック
                 print(f"✅ Result: {str(chunk.item.output)[:100]}...")
 
         elif chunk.name == 'message_output_created':
@@ -116,7 +113,7 @@ def simple_render_chunk(chunk):
             except (AttributeError, IndexError):
                 print(f"💬 Response: {str(chunk.item)[:100]}...")
 
-    # Text deltas for streaming
+    # ストリーミング用テキスト差分
     elif (hasattr(chunk, 'type') and
           chunk.type == 'raw_response_event' and
           hasattr(chunk, 'data') and
@@ -125,7 +122,7 @@ def simple_render_chunk(chunk):
         print(chunk.data.delta, end='', flush=True)
 
 async with MCPServerStdio(
-        name="ClickHouse SQL Playground",
+        name="ClickHouse SQLプレイグラウンド",
         params={
             "command": "uv",
             "args": [
@@ -139,13 +136,13 @@ async with MCPServerStdio(
 ) as server:
     agent = Agent(
         name="Assistant",
-        instructions="Use the tools to query ClickHouse and answer questions based on those files.",
+        instructions="ツールを使用してClickHouseにクエリを実行し、それらのファイルに基づいて質問に回答します。",
         mcp_servers=[server],
     )
 
-    message = "What's the biggest GitHub project so far in 2025?"
+    message = "2025年現在で最大のGitHubプロジェクトは何ですか？"
     print(f"\n\nRunning: {message}")
-    with trace("Biggest project workflow"):
+    with trace("最大プロジェクトワークフロー"):
         result = Runner.run_streamed(starting_agent=agent, input=message, max_turns=20)
         async for chunk in result.stream_events():
             simple_render_chunk(chunk)
@@ -186,7 +183,7 @@ log...
   "repo_name": "sindresorhus/awesome",
   "stars": 402893
 }...
-The biggest GitHub project in 2025, based on stars, is "[sindresorhus/awesome](https://github.com/sindresorhus/awesome)" with 402,893 stars.💬 Response: The biggest GitHub project in 2025, based on stars, is "[sindresorhus/awesome](https://github.com/sindresorhus/awesome)" with 402,893 stars.
+2025年最大のGitHubプロジェクトは、スター数に基づくと402,893スターの「[sindresorhus/awesome](https://github.com/sindresorhus/awesome)」です。💬 レスポンス: 2025年最大のGitHubプロジェクトは、スター数に基づくと402,893スターの「[sindresorhus/awesome](https://github.com/sindresorhus/awesome)」です。
 ```
 
 </VerticalStepper>

@@ -1,18 +1,11 @@
 ---
-'sidebar_label': 'Tableau Online'
-'sidebar_position': 2
-'slug': '/integrations/tableau-online'
-'keywords':
-- 'clickhouse'
-- 'tableau'
-- 'online'
-- 'mysql'
-- 'connect'
-- 'integrate'
-- 'ui'
-'description': 'Tableau Online 简化了数据的力量，使人们能够更加快速和自信地做出决策，随时随地。'
-'title': 'Tableau Online'
-'doc_type': 'guide'
+sidebar_label: 'Tableau Online'
+sidebar_position: 2
+slug: /integrations/tableau-online
+keywords: ['clickhouse', 'tableau', 'online', 'mysql', 'connect', 'integrate', 'ui']
+description: 'Tableau Online 让数据的力量触手可及，使人们无论身在何处都能更快速、更自信地做出决策。'
+title: 'Tableau Online'
+doc_type: 'guide'
 ---
 
 import MySQLCloudSetup from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_clickhouse_mysql_cloud_setup.mdx';
@@ -28,81 +21,84 @@ import tableau_desktop_03 from '@site/static/images/integrations/data-visualizat
 import tableau_desktop_04 from '@site/static/images/integrations/data-visualization/tableau_desktop_04.png';
 import tableau_desktop_05 from '@site/static/images/integrations/data-visualization/tableau_desktop_05.png';
 
+# Tableau Online {#tableau-online}
 
-# Tableau Online
+Tableau Online 可以通过官方 MySQL 数据源，使用 MySQL 接口连接到 ClickHouse Cloud 或本地部署的 ClickHouse 环境。
 
-Tableau Online 可以通过官方 MySQL 数据源使用 MySQL 接口连接到 ClickHouse Cloud 或本地 ClickHouse 设置。
-
-## ClickHouse Cloud 设置 {#clickhouse-cloud-setup}
+## ClickHouse Cloud 配置 {#clickhouse-cloud-setup}
 <MySQLCloudSetup />
 
-## 本地 ClickHouse 服务器设置 {#on-premise-clickhouse-server-setup}
+## 本地部署 ClickHouse 服务器安装与配置 {#on-premise-clickhouse-server-setup}
 <MySQLOnPremiseSetup />
 
-## 将 Tableau Online 连接到 ClickHouse（本地，无 SSL） {#connecting-tableau-online-to-clickhouse-on-premise-without-ssl}
+## 将 Tableau Online 连接到 ClickHouse（本地部署且不使用 SSL） {#connecting-tableau-online-to-clickhouse-on-premise-without-ssl}
 
-登录到您的 Tableau Cloud 网站，添加一个新的发布数据源。
+登录您的 Tableau Cloud 站点并添加一个新的 Published Data Source（已发布数据源）。
 
-<Image size="md" img={tableau_online_01} alt="Tableau Online 界面，显示用于创建发布数据源的 '新建' 按钮" border />
+<Image size="md" img={tableau_online_01} alt="Tableau Online 界面显示用于创建已发布数据源的 “New” 按钮" border />
 <br/>
 
-从可用连接器列表中选择 "MySQL"。
+从可用连接器列表中选择 “MySQL”。
 
-<Image size="md" img={tableau_online_02} alt="Tableau Online 连接器选择屏幕，突出显示 MySQL 选项" border />
+<Image size="md" img={tableau_online_02} alt="Tableau Online 连接器选择界面，其中 MySQL 选项被高亮显示" border />
 <br/>
 
-指定您在 ClickHouse 设置过程中收集的连接详细信息。
+填写在 ClickHouse 部署/配置过程中获取的连接信息。
 
-<Image size="md" img={tableau_online_03} alt="Tableau Online MySQL 连接配置屏幕，显示服务器、端口、数据库和凭证字段" border />
+<Image size="md" img={tableau_online_03} alt="Tableau Online MySQL 连接配置界面，包含服务器、端口、数据库和凭证字段" border />
 <br/>
 
-Tableau Online 将自动检查数据库并提供可用表的列表。将所需的表拖动到右侧画布上。此外，您可以单击 "立即更新" 以预览数据，并微调检查到的字段类型或名称。
+Tableau Online 会自动扫描数据库并提供可用表的列表。将所需的表拖动到右侧画布上。此外，您可以点击 “Update Now” 预览数据，并根据需要微调自动识别出的字段类型或名称。
 
-<Image size="md" img={tableau_online_04} alt="Tableau Online 数据源页面，左侧显示数据库表，右侧画布上带有拖放功能" border />
+<Image size="md" img={tableau_online_04} alt="Tableau Online 数据源页面，左侧显示数据库表，右侧是具有拖放功能的画布" border />
 <br/>
 
-之后，您只需在右上角点击 "作为发布"，就可以像往常一样在 Tableau Online 中使用新创建的数据集。
+完成后，只需点击右上角的 “Publish As”，即可像往常一样在 Tableau Online 中使用新创建的数据集。
 
-注意：如果您希望在 Tableau Online 和 Tableau Desktop 之间共享 ClickHouse 数据集，请确保您在 Tableau Desktop 中也使用默认的 MySQL 连接器，并按照在数据源下拉菜单中选择 MySQL 时显示的 [此处](https://www.tableau.com/support/drivers) 的设置指南进行操作。如果您使用的是 M1 Mac，请查看 [此故障排除线程](https://community.tableau.com/s/question/0D58b0000Ar6OhvCQE/unable-to-install-mysql-driver-for-m1-mac) 以获取驱动程序安装解决方案。
+注意：如果您想将 Tableau Online 与 Tableau Desktop 配合使用，并在二者之间共享 ClickHouse 数据集，请确保在 Tableau Desktop 中同样使用默认的 MySQL 连接器，并按照在 Data Source 下拉框中选择 MySQL 时显示的安装指南进行配置，该指南位于[此处](https://www.tableau.com/support/drivers)。如果您使用的是 M1 Mac，请查看[此故障排除帖](https://community.tableau.com/s/question/0D58b0000Ar6OhvCQE/unable-to-install-mysql-driver-for-m1-mac) 以获取驱动安装的替代方案。
 
-## 将 Tableau Online 连接到 ClickHouse（云或本地设置，带 SSL） {#connecting-tableau-online-to-clickhouse-cloud-or-on-premise-setup-with-ssl}
+## 将 Tableau Online 连接到 ClickHouse（云端或本地部署，使用 SSL） {#connecting-tableau-online-to-clickhouse-cloud-or-on-premise-setup-with-ssl}
 
-由于无法通过 Tableau Online MySQL 连接设置向导提供 SSL 证书，唯一的方法是使用 Tableau Desktop 设置连接，然后导出到 Tableau Online。然而，这个过程相对简单。
+由于无法在 Tableau Online 的 MySQL 连接设置向导中提供 SSL 证书，
+唯一的方法是使用 Tableau Desktop 完成连接设置，然后将其发布到 Tableau Online。不过，这一过程其实非常简单。
 
-在 Windows 或 Mac 机器上运行 Tableau Desktop，选择 "连接" -> "到服务器" -> "MySQL"。可能需要先在您的机器上安装 MySQL 驱动程序。您可以通过在数据源下拉菜单中选择 MySQL 时显示的 [此处](https://www.tableau.com/support/drivers) 的设置指南进行操作。如果您使用的是 M1 Mac，请查看 [此故障排除线程](https://community.tableau.com/s/question/0D58b0000Ar6OhvCQE/unable-to-install-mysql-driver-for-m1-mac) 以获取驱动程序安装解决方案。
+在运行 Windows 或 macOS 的机器上启动 Tableau Desktop，然后选择 "Connect" -> "To a Server" -> "MySQL"。
+通常，你需要先在本机安装 MySQL 驱动。
+可以在 Data Source 下拉菜单中选择 MySQL 后，按照[此处](https://www.tableau.com/support/drivers)显示的设置指南进行安装。
+如果你使用的是 M1 Mac，请查看[这个故障排查帖](https://community.tableau.com/s/question/0D58b0000Ar6OhvCQE/unable-to-install-mysql-driver-for-m1-mac)，获取安装驱动的替代方案。
 
-<Image size="md" img={tableau_desktop_01} alt="Tableau Desktop 界面，显示连接菜单，突出显示 MySQL 选项" border />
+<Image size="md" img={tableau_desktop_01} alt="Tableau Desktop 界面，显示 Connect 菜单，其中 MySQL 选项被高亮" border />
 <br/>
 
 :::note
-在 MySQL 连接设置 UI 中，请确保启用 "SSL" 选项。 
-ClickHouse Cloud 的 SSL 证书由 [Let's Encrypt](https://letsencrypt.org/certificates/) 签名。 
-您可以在 [此处](https://letsencrypt.org/certs/isrgrootx1.pem) 下载此根证书。
+在 MySQL 连接设置界面中，请确保启用了 "SSL" 选项。
+ClickHouse Cloud 的 SSL 证书由 [Let's Encrypt](https://letsencrypt.org/certificates/) 签发。
+你可以在[这里](https://letsencrypt.org/certs/isrgrootx1.pem)下载该根证书。
 :::
 
-提供您的 ClickHouse Cloud 实例的 MySQL 用户凭证和下载的根证书的路径。
+填写你的 ClickHouse Cloud 实例的 MySQL 用户凭据，以及刚刚下载的根证书路径。
 
-<Image size="sm" img={tableau_desktop_02} alt="Tableau Desktop MySQL 连接对话框，启用 SSL 选项，显示服务器、用户名、密码和证书字段" border />
+<Image size="sm" img={tableau_desktop_02} alt="Tableau Desktop MySQL 连接对话框，已启用 SSL 选项，并显示 server、username、password 和 certificate 字段" border />
 <br/>
 
-像往常一样选择所需的表（类似于 Tableau Online），
-然后选择 "服务器" -> "发布数据源" -> Tableau Cloud。
+像平常一样选择需要的表（与在 Tableau Online 中类似），
+然后选择 "Server" -> "Publish Data Source" -> Tableau Cloud。
 
-<Image size="md" img={tableau_desktop_03} alt="Tableau Desktop 显示服务器菜单，突出显示发布数据源选项" border />
+<Image size="md" img={tableau_desktop_03} alt="Tableau Desktop 显示 Server 菜单，其中 Publish Data Source 选项被高亮" border />
 <br/>
 
-重要提示：您需要在 "身份验证" 选项中选择 "嵌入密码"。
+重要：你需要在 "Authentication" 选项中选择 "Embedded password"。
 
-<Image size="md" img={tableau_desktop_04} alt="Tableau Desktop 发布对话框，显示身份验证选项，已选择嵌入密码" border />
+<Image size="md" img={tableau_desktop_04} alt="Tableau Desktop 发布对话框，显示 Authentication 选项，其中 Embedded password 已被选中" border />
 <br/>
 
-此外，选择 "更新工作簿以使用发布的数据源"。
+另外，勾选 "Update workbook to use the published data source"。
 
-<Image size="sm" img={tableau_desktop_05} alt="Tableau Desktop 发布对话框，选中 '更新工作簿以使用发布的数据源' 选项" border />
+<Image size="sm" img={tableau_desktop_05} alt="Tableau Desktop 发布对话框，已勾选 'Update workbook to use the published data source' 选项" border />
 <br/>
 
-最后，点击 "发布"，您的数据源将自动在 Tableau Online 中以嵌入凭证的方式打开。
+最后，点击 "Publish"，你嵌入了凭据的数据源会在 Tableau Online 中自动打开。
 
 ## 已知限制（ClickHouse 23.11） {#known-limitations-clickhouse-2311}
 
-在 ClickHouse `23.11` 中修复了所有已知限制。如果您遇到任何其他不兼容问题，请随时 [联系我们](https://clickhouse.com/company/contact) 或创建一个 [新问题](https://github.com/ClickHouse/ClickHouse/issues)。
+所有已知限制均已在 ClickHouse `23.11` 中修复。如果您遇到任何其他不兼容问题，请随时[联系我们](https://clickhouse.com/company/contact)或创建一个[新 issue](https://github.com/ClickHouse/ClickHouse/issues)。

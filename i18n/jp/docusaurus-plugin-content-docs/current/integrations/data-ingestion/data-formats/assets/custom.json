@@ -1,5 +1,16 @@
 [
-  {"name": "Joe", "age": 99, "type": "person"},
-  {"url": "/my.post.MD", "hits": 1263, "type": "post"},
-  {"message": "Warning on disk usage", "type": "log"}
+  {
+    "name": "Joe",
+    "age": 99,
+    "type": "人"
+  },
+  {
+    "url": "/my.post.MD",
+    "hits": 1263,
+    "type": "POST"
+  },
+  {
+    "message": "ディスク使用量の警告",
+    "type": "ログ"
+  }
 ]

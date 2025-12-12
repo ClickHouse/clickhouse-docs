@@ -1,18 +1,17 @@
 ---
-'description': '允许以只读模式即时从备份中附加表/数据库。'
-'sidebar_label': '备份'
-'sidebar_position': 60
-'slug': '/engines/database-engines/backup'
-'title': '备份'
-'doc_type': 'reference'
+description: '允许从备份中立即以只读模式挂载表或数据库。'
+sidebar_label: '备份'
+sidebar_position: 60
+slug: /engines/database-engines/backup
+title: '备份'
+doc_type: '参考'
 ---
 
+# 备份 {#backup}
 
-# 备份
+数据库备份允许从[备份](/operations/backup/overview)中即时附加表或数据库，并以只读模式访问。
 
-数据库备份允许立即以只读模式从 [备份](../../operations/backup) 附加表/数据库。
-
-数据库备份适用于增量备份和非增量备份。
+数据库备份同时支持增量和非增量备份。
 
 ## 创建数据库 {#creating-a-database}
 
@@ -21,9 +20,9 @@ CREATE DATABASE backup_database
 ENGINE = Backup('database_name_inside_backup', 'backup_destination')
 ```
 
-备份目标可以是任何有效的备份 [目标](../../operations/backup#configure-a-backup-destination)，例如 `Disk`、`S3`、`File`。
+备份目标可以是任意有效的[备份目的地](/operations/backup/disk#configure-backup-destinations-for-disk)，例如 `Disk`、`S3` 或 `File`。
 
-使用 `Disk` 备份目标，从备份创建数据库的查询如下所示：
+使用 `Disk` 作为备份目标时，用于从备份创建数据库的查询如下：
 
 ```sql
 CREATE DATABASE backup_database
@@ -32,12 +31,12 @@ ENGINE = Backup('database_name_inside_backup', Disk('disk_name', 'backup_name'))
 
 **引擎参数**
 
-- `database_name_inside_backup` — 备份内数据库的名称。
-- `backup_destination` — 备份目标。
+* `database_name_inside_backup` — 备份中数据库的名称。
+* `backup_destination` — 备份存储位置。
 
 ## 使用示例 {#usage-example}
 
-让我们用一个 `Disk` 备份目标来做一个示例。首先在 `storage.xml` 中设置备份磁盘：
+以 `Disk` 作为备份目标为例。首先在 `storage.xml` 中配置备份磁盘：
 
 ```xml
 <storage_configuration>
@@ -54,7 +53,7 @@ ENGINE = Backup('database_name_inside_backup', Disk('disk_name', 'backup_name'))
 </backups>
 ```
 
-使用示例。我们先创建测试数据库、表，插入一些数据，然后创建一个备份：
+用法示例。先创建测试数据库和表，插入一些数据，然后创建备份：
 
 ```sql
 CREATE DATABASE test_database;
@@ -71,13 +70,13 @@ INSERT INTO test_database.test_table_3 VALUES (0, 'test_database.test_table_3');
 BACKUP DATABASE test_database TO Disk('backups', 'test_database_backup');
 ```
 
-现在我们有了 `test_database_backup` 备份，让我们创建数据库 Backup：
+现在我们已经有了 `test_database_backup` 这个备份，接下来使用 Backup 引擎创建数据库：
 
 ```sql
 CREATE DATABASE test_database_backup ENGINE = Backup('test_database', Disk('backups', 'test_database_backup'));
 ```
 
-现在我们可以查询数据库中的任何表：
+现在我们可以查询这个数据库中的任意表：
 
 ```sql
 SELECT id, value FROM test_database_backup.test_table_1;
@@ -99,7 +98,70 @@ SELECT id, value FROM test_database_backup.test_table_3;
 └────┴────────────────────────────┘
 ```
 
-也可以将这个数据库 Backup 作为任何普通数据库进行操作。例如查询其中的表：
+以 `Disk` 作为备份目标为例。首先在 `storage.xml` 中配置备份磁盘：
+
+<storage_configuration>
+  <disks>
+    <backups>
+      <type>local</type>
+      <path>/home/ubuntu/ClickHouseWorkDir/backups/</path>
+    </backups>
+  </disks>
+</storage_configuration>
+
+<backups>
+  <allowed_disk>backups</allowed_disk>
+  <allowed_path>/home/ubuntu/ClickHouseWorkDir/backups/</allowed_path>
+</backups>
+
+用法示例。先创建测试数据库和表，插入一些数据，然后创建备份：
+
+CREATE DATABASE test&#95;database;
+
+CREATE TABLE test&#95;database.test&#95;table&#95;1 (id UInt64, value String) ENGINE=MergeTree ORDER BY id;
+INSERT INTO test&#95;database.test&#95;table&#95;1 VALUES (0, &#39;test&#95;database.test&#95;table&#95;1&#39;);
+
+CREATE TABLE test&#95;database.test&#95;table&#95;2 (id UInt64, value String) ENGINE=MergeTree ORDER BY id;
+INSERT INTO test&#95;database.test&#95;table&#95;2 VALUES (0, &#39;test&#95;database.test&#95;table&#95;2&#39;);
+
+CREATE TABLE test&#95;database.test&#95;table&#95;3 (id UInt64, value String) ENGINE=MergeTree ORDER BY id;
+INSERT INTO test&#95;database.test&#95;table&#95;3 VALUES (0, &#39;test&#95;database.test&#95;table&#95;3&#39;);
+
+BACKUP DATABASE test&#95;database TO Disk(&#39;backups&#39;, &#39;test&#95;database&#95;backup&#39;);
+
+现在我们已经有了 `test_database_backup` 备份，接下来创建名为 Backup 的数据库：
+
+CREATE DATABASE test&#95;database&#95;backup ENGINE = Backup(&#39;test&#95;database&#39;, Disk(&#39;backups&#39;, &#39;test&#95;database&#95;backup&#39;));
+
+现在我们可以查询数据库中的任意表：
+
+SELECT id, value FROM test&#95;database&#95;backup.test&#95;table&#95;1;
+
+┌─id─┬─value──────────────────────┐
+│  0 │ test&#95;database.test&#95;table&#95;1 │
+└────┴────────────────────────────┘
+
+SELECT id, value FROM test&#95;database&#95;backup.test&#95;table&#95;2;
+
+┌─id─┬─value──────────────────────┐
+│  0 │ test&#95;database.test&#95;table&#95;2 │
+└────┴────────────────────────────┘
+
+SELECT id, value FROM test&#95;database&#95;backup.test&#95;table&#95;3;
+
+┌─id─┬─value──────────────────────┐
+│  0 │ test&#95;database.test&#95;table&#95;3 │
+└────┴────────────────────────────┘
+
+也可以像操作普通数据库一样使用该备份数据库。例如，可以查询其中的表：
+
+SELECT database, name FROM system.tables WHERE database = &#39;test&#95;database&#95;backup&#39;:
+
+┌─database─────────────┬─name─────────┐
+│ test&#95;database&#95;backup │ test&#95;table&#95;1 │
+│ test&#95;database&#95;backup │ test&#95;table&#95;2 │
+│ test&#95;database&#95;backup │ test&#95;table&#95;3 │
+└──────────────────────┴──────────────┘
 
 ```sql
 SELECT database, name FROM system.tables WHERE database = 'test_database_backup':

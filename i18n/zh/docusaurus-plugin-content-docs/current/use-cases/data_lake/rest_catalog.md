@@ -1,56 +1,53 @@
 ---
-'slug': '/use-cases/data-lake/rest-catalog'
-'sidebar_label': 'REST Catalog'
-'title': 'REST Catalog'
-'pagination_prev': null
-'pagination_next': null
-'description': '在本指南中，我们将带您了解如何使用 ClickHouse 和 REST Catalog 查询您的数据。'
-'keywords':
-- 'REST'
-- 'Tabular'
-- 'Data Lake'
-- 'Iceberg'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: /use-cases/data-lake/rest-catalog
+sidebar_label: 'REST 目录'
+title: 'REST 目录'
+pagination_prev: null
+pagination_next: null
+description: '在本指南中，我们将逐步演示如何使用 ClickHouse 和 REST 目录来查询数据。'
+keywords: ['REST', '表格型', '数据湖', 'Iceberg']
+show_related_blogs: true
+doc_type: 'guide'
 ---
 
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
-<ExperimentalBadge/>
+<BetaBadge />
 
 :::note
-与 REST 目录的集成仅适用于 Iceberg 表。
-此集成支持 AWS S3 和其他云存储提供商。
+与 REST Catalog 的集成仅适用于 Iceberg 表。
+本集成同时支持 AWS S3 以及其他云存储提供商。
 :::
 
-ClickHouse 支持与多个目录的集成（Unity、Glue、REST、Polaris 等）。本指南将引导您通过使用 ClickHouse 和 [REST Catalog](https://github.com/apache/iceberg/blob/main/open-api/rest-catalog-open-api.yaml/) 规范查询您的数据。
+ClickHouse 支持与多个 catalog（Unity、Glue、REST、Polaris 等）集成。本指南将介绍如何使用 ClickHouse 和 [REST Catalog](https://github.com/apache/iceberg/blob/main/open-api/rest-catalog-open-api.yaml/) 规范来查询数据。
 
-REST Catalog 是 Iceberg 目录的标准化 API 规范，支持多个平台，包括：
-- **本地开发环境**（使用 docker-compose 设置）
-- **托管服务** 如 Tabular.io
-- **自托管的** REST 目录实现
+REST Catalog 是针对 Iceberg catalog 的标准化 API 规范，已被多种平台所支持，包括：
+
+* **本地开发环境**（使用 docker-compose 部署）
+* **托管服务**，如 Tabular.io
+* **自托管**的 REST Catalog 实现
 
 :::note
-由于此功能处于实验阶段，您需要使用以下命令启用它：
+由于该功能目前为实验特性，需要通过以下命令启用：
 `SET allow_experimental_database_iceberg = 1;`
 :::
 
-## 本地开发设置 {#local-development-setup}
+## 本地开发环境设置 {#local-development-setup}
 
-对于本地开发和测试，您可以使用容器化的 REST 目录设置。这种方法非常适合学习、原型设计和开发环境。
+在本地开发和测试场景中，你可以使用容器化的 REST 目录（REST catalog）来进行部署配置。此方式非常适合用于学习、原型验证和开发环境。
 
-### 先决条件 {#local-prerequisites}
+### 前提条件 {#local-prerequisites}
 
-1. **Docker 和 Docker Compose**：确保 Docker 已安装并正在运行
-2. **示例设置**：您可以使用各种 docker-compose 设置（请参阅下面的替代 Docker 镜像）
+1. **Docker 和 Docker Compose**：确保已安装并正在运行 Docker
+2. **示例配置**：可以使用各种 docker-compose 配置（参见下文“备用 Docker 镜像”）
 
-### 设置本地 REST 目录 {#setting-up-local-rest-catalog}
+### 本地 REST Catalog 配置 {#setting-up-local-rest-catalog}
 
-您可以使用各种容器化的 REST 目录实现，例如 **[Databricks docker-spark-iceberg](https://github.com/databricks/docker-spark-iceberg/blob/main/docker-compose.yml?ref=blog.min.io)**，该实现提供了一个完整的 Spark + Iceberg + REST 目录环境，适合使用 docker-compose 测试 Iceberg 集成。
+你可以使用多种容器化的 REST catalog 实现，例如 **[Databricks docker-spark-iceberg](https://github.com/databricks/docker-spark-iceberg/blob/main/docker-compose.yml?ref=blog.min.io)**。它通过 docker-compose 提供了完整的 Spark + Iceberg + REST catalog 环境，非常适合用于测试 Iceberg 集成。
 
-**步骤 1：** 在运行示例的文件夹中创建一个新文件夹，然后创建一个名为 `docker-compose.yml` 的文件，并使用 [Databricks docker-spark-iceberg](https://github.com/databricks/docker-spark-iceberg/blob/main/docker-compose.yml?ref=blog.min.io) 的配置。
+**步骤 1：** 新建一个用于运行该示例的文件夹，然后创建文件 `docker-compose.yml`，其配置内容来自 [Databricks docker-spark-iceberg](https://github.com/databricks/docker-spark-iceberg/blob/main/docker-compose.yml?ref=blog.min.io)。
 
-**步骤 2：** 接下来，创建一个名为 `docker-compose.override.yml` 的文件，并将以下 ClickHouse 容器配置放入其中：
+**步骤 2：** 接下来，创建文件 `docker-compose.override.yml`，并将以下 ClickHouse 容器配置添加到该文件中：
 
 ```yaml
 version: '3.8'
@@ -59,13 +56,13 @@ services:
   clickhouse:
     image: clickhouse/clickhouse-server:25.5.6
     container_name: clickhouse
-    user: '0:0'  # Ensures root permissions
+    user: '0:0'  # 确保 root 权限
     ports:
       - "8123:8123"
       - "9002:9000"
     volumes:
       - ./clickhouse:/var/lib/clickhouse
-      - ./clickhouse/data_import:/var/lib/clickhouse/data_import  # Mount dataset folder
+      - ./clickhouse/data_import:/var/lib/clickhouse/data_import  # 挂载数据集目录
     networks:
       - iceberg_net
     environment:
@@ -75,31 +72,31 @@ services:
       - CLICKHOUSE_PASSWORD=
 ```
 
-**步骤 3：** 运行以下命令以启动服务：
+**步骤 3：** 运行以下命令启动服务：
 
 ```bash
 docker compose up
 ```
 
-**步骤 4：** 等待所有服务准备好。您可以检查日志：
+**步骤 4：** 等待所有服务就绪。可以通过查看日志进行确认：
 
 ```bash
 docker-compose logs -f
 ```
 
 :::note
-REST 目录设置需要首先加载示例数据到 Iceberg 表中。在尝试通过 ClickHouse 查询它们之前，请确保 Spark 环境已创建并填充了表。表的可用性取决于特定的 docker-compose 设置和示例数据加载脚本。
+REST catalog 的配置要求必须先将示例数据加载到 Iceberg 表中。请确保 Spark 环境已经创建并填充好这些表，然后再通过 ClickHouse 尝试查询它们。表是否可用取决于所使用的具体 docker-compose 配置以及示例数据加载脚本。
 :::
 
-### 连接到本地 REST 目录 {#connecting-to-local-rest-catalog}
+### 连接到本地 REST Catalog {#connecting-to-local-rest-catalog}
 
-连接到您的 ClickHouse 容器：
+连接到 ClickHouse 容器：
 
 ```bash
 docker exec -it clickhouse clickhouse-client
 ```
 
-然后创建到 REST 目录的数据库连接：
+然后为 REST 目录创建数据库连接：
 
 ```sql
 SET allow_experimental_database_iceberg = 1;
@@ -114,7 +111,7 @@ SETTINGS
 
 ## 使用 ClickHouse 查询 REST 目录表 {#querying-rest-catalog-tables-using-clickhouse}
 
-现在连接已建立，您可以开始通过 REST 目录进行查询。例如：
+连接建立完成后，就可以通过 REST 目录开始查询。例如：
 
 ```sql
 USE demo;
@@ -122,7 +119,7 @@ USE demo;
 SHOW TABLES;
 ```
 
-如果您的设置包含示例数据（例如出租车数据集），您应该能够看到如下表格：
+如果你的环境包含示例数据（例如 taxi 数据集），你应该能看到类似如下的表：
 
 ```sql title="Response"
 ┌─name──────────┐
@@ -131,18 +128,21 @@ SHOW TABLES;
 ```
 
 :::note
-如果您未看到任何表，这通常意味着：
+如果你没有看到任何表，通常意味着：
+
 1. Spark 环境尚未创建示例表
 2. REST 目录服务尚未完全初始化
-3. 示例数据加载过程尚未完成
+3. 示例数据加载流程尚未完成
 
-您可以检查 Spark 日志以查看表创建进度：
+你可以查看 Spark 日志以了解建表进度：
+
 ```bash
 docker-compose logs spark
 ```
+
 :::
 
-要查询表（如果可用）：
+要查询某张表（如果存在）：
 
 ```sql
 SELECT count(*) FROM `default.taxis`;
@@ -154,11 +154,11 @@ SELECT count(*) FROM `default.taxis`;
 └─────────┘
 ```
 
-:::note 需要反引号
-需要反引号，因为 ClickHouse 不支持多个命名空间。
+:::note 必须使用反引号
+必须使用反引号，因为 ClickHouse 仅支持单一命名空间。
 :::
 
-要检查表 DDL：
+要查看该表的 DDL：
 
 ```sql
 SHOW CREATE TABLE `default.taxis`;
@@ -192,9 +192,9 @@ SHOW CREATE TABLE `default.taxis`;
 └───────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-## 从数据湖加载数据到 ClickHouse {#loading-data-from-your-data-lake-into-clickhouse}
+## 将数据湖（Data Lake）中的数据加载到 ClickHouse {#loading-data-from-your-data-lake-into-clickhouse}
 
-如果您需要将数据从 REST 目录加载到 ClickHouse，请首先创建一个本地 ClickHouse 表：
+如果需要将 REST 目录中的数据加载到 ClickHouse，请先创建一个本地 ClickHouse 表：
 
 ```sql
 CREATE TABLE taxis
@@ -224,7 +224,7 @@ PARTITION BY toYYYYMM(tpep_pickup_datetime)
 ORDER BY (VendorID, tpep_pickup_datetime, PULocationID, DOLocationID);
 ```
 
-然后通过 `INSERT INTO SELECT` 从您的 REST 目录表加载数据：
+然后通过 `INSERT INTO SELECT` 语句从 REST 目录表中加载数据：
 
 ```sql
 INSERT INTO taxis 

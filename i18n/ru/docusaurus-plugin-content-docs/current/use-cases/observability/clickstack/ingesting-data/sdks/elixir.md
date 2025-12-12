@@ -1,12 +1,14 @@
 ---
-'slug': '/use-cases/observability/clickstack/sdks/elixir'
-'pagination_prev': null
-'pagination_next': null
-'sidebar_position': 1
-'description': 'Elixir SDK для ClickStack - Стек мониторинга ClickHouse'
-'title': 'Elixir'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/sdks/elixir
+pagination_prev: null
+pagination_next: null
+sidebar_position: 1
+description: 'Elixir SDK для ClickStack — стек наблюдаемости ClickHouse'
+title: 'Elixir'
+doc_type: 'guide'
+keywords: ['Elixir ClickStack SDK', 'наблюдаемость Elixir', 'HyperDX Elixir', 'Elixir SDK для логирования', 'интеграция ClickStack с Elixir']
 ---
+
 <table>
   <tbody>
     <tr>
@@ -16,13 +18,14 @@
     </tr>
   </tbody>
 </table>
-_🚧 Инструментация метрик и трейсов OpenTelemetry скоро будет доступна!_
+
+_🚧 Поддержка метрик и трейсов OpenTelemetry появится в ближайшее время!_
 
 ## Начало работы {#getting-started}
 
-### Установите пакет бэкенда логирования ClickStack {#install-hyperdx-logger-backend-package}
+### Установите пакет backend-логгера ClickStack {#install-hyperdx-logger-backend-package}
 
-Пакет можно установить, добавив `hyperdx` в ваш список зависимостей в 
+Пакет можно установить, добавив `hyperdx` в список зависимостей файла
 `mix.exs`:
 
 ```elixir
@@ -35,26 +38,24 @@ end
 
 ### Настройте логгер {#configure-logger}
 
-Добавьте следующее в ваш файл `config.exs`:
+Добавьте следующее в файл `config.exs`:
 
 ```elixir
-
-# config/releases.exs
+# config/releases.exs {#configreleasesexs}
 
 config :logger,
   level: :info,
   backends: [:console, {Hyperdx.Backend, :hyperdx}]
 ```
 
-### Настройте переменные окружения {#configure-environment-variables}
+### Настройка переменных окружения {#configure-environment-variables}
 
-После этого вам нужно будет настроить следующие переменные окружения в вашем 
-shell для отправки телеметрии в ClickStack:
+После этого вам нужно будет настроить следующие переменные окружения в оболочке, чтобы отправлять телеметрию в ClickStack:
 
 ```shell
-export HYPERDX_API_KEY='<YOUR_INGESTION_API_KEY>' \
-OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>'
+export HYPERDX_API_KEY='<ВАШ_API_КЛЮЧ_ДЛЯ_ПРИЕМА_ДАННЫХ>' \
+OTEL_SERVICE_NAME='<НАЗВАНИЕ_ВАШЕГО_ПРИЛОЖЕНИЯ_ИЛИ_СЕРВИСА>'
 ```
 
-_Переменная окружения `OTEL_SERVICE_NAME` используется для идентификации вашего сервиса 
-в приложении HyperDX, она может иметь любое имя, которое вы хотите._
+*Переменная окружения `OTEL_SERVICE_NAME` используется для идентификации вашего сервиса
+в приложении HyperDX; её можно задать любым удобным вам именем.*

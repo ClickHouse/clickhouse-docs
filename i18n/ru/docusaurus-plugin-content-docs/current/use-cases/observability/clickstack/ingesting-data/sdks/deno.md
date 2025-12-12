@@ -1,23 +1,25 @@
 ---
-'slug': '/use-cases/observability/clickstack/sdks/deno'
-'pagination_prev': null
-'pagination_next': null
-'sidebar_position': 6
-'description': 'Deno SDK для ClickStack - Стек мониторинга ClickHouse'
-'title': 'Deno'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/sdks/deno
+pagination_prev: null
+pagination_next: null
+sidebar_position: 6
+description: 'Deno SDK для ClickStack — ClickHouse Observability Stack'
+title: 'Deno'
+doc_type: 'guide'
+keywords: ['Deno ClickStack SDK', 'Deno OpenTelemetry', 'ClickStack Deno integration', 'Deno observability', 'Deno logging SDK']
 ---
-Это руководство включает в себя следующее:
 
-- **Логи**
+В этом руководстве рассматривается интеграция следующих компонентов:
+
+* **Логи**
 
 :::note
-На данный момент поддерживается только логирование OpenTelemetry. Для поддержки трассировки [см. следующее руководство](https://dev.to/grunet/leveraging-opentelemetry-in-deno-45bj#a-minimal-interesting-example).
+В настоящее время поддерживается только логирование OpenTelemetry. О поддержке трассировки [см. следующее руководство](https://dev.to/grunet/leveraging-opentelemetry-in-deno-45bj#a-minimal-interesting-example).
 :::
 
 ## Логирование {#logging}
 
-Логирование поддерживается путем экспорта пользовательского логгера для модуля `std/log`.
+Логирование осуществляется посредством экспорта пользовательского логгера для модуля `std/log`.
 
 **Пример использования:**
 
@@ -38,14 +40,14 @@ log.setup({
   },
 });
 
-log.getLogger('my-otel-logger').info('Hello from Deno!');
+log.getLogger('my-otel-logger').info('Привет из Deno!');
 ```
 
 ### Запуск приложения {#run-the-application}
 
 ```shell
-OTEL_EXPORTER_OTLP_HEADERS="authorization=<YOUR_INGESTION_API_KEY>" \
+OTEL_EXPORTER_OTLP_HEADERS="authorization=<ВАШ_API_КЛЮЧ_ИНГЕСТИИ>" \
 OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 \
-OTEL_SERVICE_NAME="<NAME_OF_YOUR_APP_OR_SERVICE>" \
+OTEL_SERVICE_NAME="<НАЗВАНИЕ_ВАШЕГО_ПРИЛОЖЕНИЯ_ИЛИ_СЕРВИСА>" \
 deno run --allow-net --allow-env --allow-read --allow-sys --allow-run app.ts
 ```

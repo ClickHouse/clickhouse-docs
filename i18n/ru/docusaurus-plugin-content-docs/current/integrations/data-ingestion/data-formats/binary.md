@@ -1,22 +1,23 @@
 ---
-slug: '/integrations/data-formats/binary-native'
-sidebar_label: 'Бинарные и родные форматы'
-description: 'Страница, описывающая, как использовать НАТИВНЫЕ и БИНАРНЫЕ форматы'
-title: 'Использование родных и бинарных форматов в ClickHouse'
-doc_type: guide
+sidebar_label: 'Native и двоичные'
+slug: /integrations/data-formats/binary-native
+title: 'Использование формата Native и двоичных форматов в ClickHouse'
+description: 'Страница, описывающая, как использовать формат Native и двоичные форматы в ClickHouse'
+keywords: ['двоичные форматы', 'формат Native', 'rowbinary', 'rawblob', 'messagepack', 'protobuf', 'capn proto', 'форматы данных', 'производительность', 'сжатие']
+doc_type: 'guide'
 ---
+
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+# Использование формата Native и бинарных форматов в ClickHouse {#using-native-and-binary-formats-in-clickhouse}
 
-# Использование нативных и бинарных форматов в ClickHouse
+ClickHouse поддерживает несколько бинарных форматов, которые обеспечивают более высокую производительность и эффективность использования дискового пространства. Бинарные форматы также безопасны с точки зрения кодировки символов, поскольку данные сохраняются в двоичном виде.
 
-ClickHouse поддерживает несколько бинарных форматов, которые обеспечивают лучшую производительность и эффективность использования пространства. Бинарные форматы также безопасны в кодировке символов, поскольку данные сохраняются в бинарной форме.
+Для демонстрации мы будем использовать [таблицу some_data](assets/some_data.sql) и [данные](assets/some_data.tsv); вы можете воспроизвести это в своём экземпляре ClickHouse.
 
-Мы будем использовать some_data [таблицу](assets/some_data.sql) и [данные](assets/some_data.tsv) для демонстрации, не стесняйтесь воспроизводить это на своей инстансе ClickHouse.
+## Экспорт в нативном формате ClickHouse {#exporting-in-a-native-clickhouse-format}
 
-## Экспорт в нативный формат ClickHouse {#exporting-in-a-native-clickhouse-format}
-
-Наиболее эффективный формат данных для экспорта и импорта данных между узлами ClickHouse — это [Нативный](/interfaces/formats.md/#native) формат. Экспорт выполняется с помощью оператора `INTO OUTFILE`:
+Наиболее эффективный формат данных для экспорта и импорта между узлами ClickHouse — формат [Native](/interfaces/formats/Native). Экспорт выполняется с помощью оператора `INTO OUTFILE`:
 
 ```sql
 SELECT * FROM some_data
@@ -27,11 +28,12 @@ INTO OUTFILE 'data.clickhouse' FORMAT Native
 
 ### Импорт из нативного формата {#importing-from-a-native-format}
 
-Для импорта данных мы можем использовать [file()](/sql-reference/table-functions/file.md) для небольших файлов или исследовательских целей:
+Чтобы импортировать данные, можно использовать [file()](/sql-reference/table-functions/file.md) для небольших файлов или в исследовательских целях:
 
 ```sql
 DESCRIBE file('data.clickhouse', Native);
 ```
+
 ```response
 ┌─name──┬─type───┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ path  │ String │              │                    │         │                  │                │
@@ -41,10 +43,10 @@ DESCRIBE file('data.clickhouse', Native);
 ```
 
 :::tip
-При использовании функции `file()`, с ClickHouse Cloud вам нужно будет выполнять команды в `clickhouse client` на машине, где находится файл. Другой вариант — использовать [`clickhouse-local`](/operations/utilities/clickhouse-local.md) для локального изучения файлов.
+При использовании функции `file()` с ClickHouse Cloud вам нужно запускать команды в `clickhouse client` на машине, где расположен файл. Другой вариант — использовать [`clickhouse-local`](/operations/utilities/clickhouse-local.md) для локальной работы с файлами.
 :::
 
-В производстве мы используем `FROM INFILE` для импорта данных:
+В production-среде мы используем `FROM INFILE` для импорта данных:
 
 ```sql
 INSERT INTO sometable
@@ -52,9 +54,9 @@ FROM INFILE 'data.clickhouse'
 FORMAT Native
 ```
 
-### Сжатие в нативном формате {#native-format-compression}
+### Сжатие в формате Native {#native-format-compression}
 
-Мы также можем включить сжатие при экспорте данных в нативный формат (а также в большинстве других форматов) с помощью оператора `COMPRESSION`:
+Мы также можем включить сжатие при экспорте данных в формат Native, как и для большинства других форматов, с помощью клаузы `COMPRESSION`:
 
 ```sql
 SELECT * FROM some_data
@@ -63,7 +65,7 @@ COMPRESSION 'lz4'
 FORMAT Native
 ```
 
-Мы использовали сжатие LZ4 для экспорта. Нам нужно будет указать его при импорте данных:
+Мы использовали сжатие LZ4 при экспорте. Его нужно будет указать при импорте данных:
 
 ```sql
 INSERT INTO sometable
@@ -74,7 +76,7 @@ FORMAT Native
 
 ## Экспорт в RowBinary {#exporting-to-rowbinary}
 
-Другим поддерживаемым бинарным форматом является [RowBinary](/interfaces/formats.md/#rowbinary), который позволяет импортировать и экспортировать данные в строках в бинарном представлении:
+Ещё один поддерживаемый двоичный формат — [RowBinary](/interfaces/formats/RowBinary), который позволяет импортировать и экспортировать данные в виде строк в двоичном формате:
 
 ```sql
 SELECT * FROM some_data
@@ -84,13 +86,15 @@ INTO OUTFILE 'data.binary' FORMAT RowBinary
 Это создаст файл [data.binary](assets/data.binary) в формате бинарных строк.
 
 ### Исследование файлов RowBinary {#exploring-rowbinary-files}
-Автоматический вывод схемы не поддерживается для этого формата, поэтому, чтобы изучить его перед загрузкой, мы должны явно определить схему:
+
+Автоматическое определение схемы для этого формата не поддерживается, поэтому, чтобы исследовать данные перед загрузкой, необходимо явно задать схему:
 
 ```sql
 SELECT *
 FROM file('data.binary', RowBinary, 'path String, month Date, hits UInt32')
 LIMIT 5
 ```
+
 ```response
 ┌─path───────────────────────────┬──────month─┬─hits─┐
 │ Bangor_City_Forest             │ 2015-07-01 │   34 │
@@ -101,10 +105,11 @@ LIMIT 5
 └────────────────────────────────┴────────────┴──────┘
 ```
 
-Рекомендуется использовать [RowBinaryWithNames](/interfaces/formats.md/#rowbinarywithnames), который также добавляет строку заголовка с списком колонок. [RowBinaryWithNamesAndTypes](/interfaces/formats.md/#rowbinarywithnamesandtypes) также добавит дополнительную строку заголовка с типами колонок.
+Рассмотрите использование [RowBinaryWithNames](/interfaces/formats/RowBinaryWithNames), который также добавляет строку заголовка со списком столбцов. [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes) дополнительно добавит строку заголовка с типами столбцов.
 
 ### Импорт из файлов RowBinary {#importing-from-rowbinary-files}
-Чтобы загрузить данные из файла RowBinary, мы можем использовать оператор `FROM INFILE`:
+
+Чтобы загрузить данные из файла RowBinary, можно использовать конструкцию `FROM INFILE`:
 
 ```sql
 INSERT INTO sometable
@@ -112,35 +117,36 @@ FROM INFILE 'data.binary'
 FORMAT RowBinary
 ```
 
-## Импорт одного бинарного значения с использованием RawBLOB {#importing-single-binary-value-using-rawblob}
+## Импорт одного двоичного значения с помощью RawBLOB {#importing-single-binary-value-using-rawblob}
 
-Предположим, мы хотим прочитать целый бинарный файл и сохранить его в поле в таблице.
-В этом случае можно использовать [RawBLOB формат](/interfaces/formats.md/#rawblob). Этот формат может быть использован только с таблицей, состоящей из одного столбца:
+Предположим, что мы хотим прочитать весь двоичный файл и сохранить его в поле таблицы.
+В таком случае можно использовать [формат RawBLOB](/interfaces/formats/RawBLOB). Этот формат может использоваться только с таблицей с одним столбцом:
 
 ```sql
 CREATE TABLE images(data String) ENGINE = Memory
 ```
 
-Давайте сохраним файл изображения в таблице `images`:
+Сохраним файл с изображением в таблицу `images`:
 
 ```bash
 cat image.jpg | clickhouse-client -q "INSERT INTO images FORMAT RawBLOB"
 ```
 
-Мы можем проверить длину поля `data`, которая будет равна размеру оригинального файла:
+Мы можем проверить длину поля `data` — она будет равна исходному размеру файла:
 
 ```sql
 SELECT length(data) FROM images
 ```
+
 ```response
 ┌─length(data)─┐
 │         6121 │
 └──────────────┘
 ```
 
-### Экспорт данных RawBLOB {#exporting-rawblob-data}
+### Экспорт данных в формате RawBLOB {#exporting-rawblob-data}
 
-Этот формат также может быть использован для экспорта данных с помощью оператора `INTO OUTFILE`:
+Этот формат также можно использовать для экспорта данных с помощью конструкции `INTO OUTFILE`:
 
 ```sql
 SELECT * FROM images LIMIT 1
@@ -148,11 +154,11 @@ INTO OUTFILE 'out.jpg'
 FORMAT RawBLOB
 ```
 
-Обратите внимание, что мы должны были использовать `LIMIT 1`, потому что экспорт более чем одного значения создаст поврежденный файл.
+Обратите внимание, что нам пришлось использовать `LIMIT 1`, так как экспорт более чем одного значения приведёт к повреждению файла.
 
 ## MessagePack {#messagepack}
 
-ClickHouse поддерживает импорт и экспорт в [MessagePack](https://msgpack.org/) с помощью [MsgPack](/interfaces/formats.md/#msgpack). Для экспорта в формат MessagePack:
+ClickHouse поддерживает импорт и экспорт данных в формат [MessagePack](https://msgpack.org/) с использованием формата [MsgPack](/interfaces/formats/MsgPack). Чтобы экспортировать данные в формат MessagePack:
 
 ```sql
 SELECT *
@@ -161,7 +167,7 @@ INTO OUTFILE 'data.msgpk'
 FORMAT MsgPack
 ```
 
-Для импорта данных из [файла MessagePack](assets/data.msgpk):
+Чтобы импортировать данные из [файла в формате MessagePack](assets/data.msgpk):
 
 ```sql
 INSERT INTO sometable
@@ -171,9 +177,9 @@ FORMAT MsgPack
 
 ## Protocol Buffers {#protocol-buffers}
 
-<CloudNotSupportedBadge/>
+<CloudNotSupportedBadge />
 
-Для работы с [Protocol Buffers](/interfaces/formats.md/#protobuf) сначала нужно определить [файл схемы](assets/schema.proto):
+Чтобы работать с [Protocol Buffers](/interfaces/formats/Protobuf), сначала нужно определить [файл схемы](assets/schema.proto):
 
 ```protobuf
 syntax = "proto3";
@@ -185,7 +191,7 @@ message MessageType {
 };
 ```
 
-Путь к этому файлу схемы (`schema.proto` в нашем случае) задается в параметре настроек `format_schema` для формата [Protobuf](/interfaces/formats.md/#protobuf):
+Путь к этому файлу схемы (в нашем случае `schema.proto`) указывается в настройке `format_schema` для формата [Protobuf](/interfaces/formats/Protobuf):
 
 ```sql
 SELECT * FROM some_data
@@ -194,13 +200,13 @@ FORMAT Protobuf
 SETTINGS format_schema = 'schema:MessageType'
 ```
 
-Это сохраняет данные в файл [proto.bin](assets/proto.bin). ClickHouse также поддерживает импорт данных Protobuf, а также вложенных сообщений. Рассмотрите возможность использования [ProtobufSingle](/interfaces/formats.md/#protobufsingle) для работы с одним сообщением Protocol Buffer (в этом случае ограничения по длине будут опущены).
+Это сохраняет данные в файл [proto.bin](assets/proto.bin). ClickHouse также поддерживает импорт данных Protobuf, включая вложенные сообщения. Рассмотрите возможность использования [ProtobufSingle](/interfaces/formats/ProtobufSingle) для работы с одним сообщением Protocol Buffer (в этом случае разделители длины будут опущены).
 
-## Cap'n Proto {#capn-proto}
+## Cap&#39;n Proto {#capn-proto}
 
-<CloudNotSupportedBadge/>
+<CloudNotSupportedBadge />
 
-Другим популярным форматом бинарной сериализации, поддерживаемым ClickHouse, является [Cap'n Proto](https://capnproto.org/). Аналогично формату `Protobuf`, нам нужно определить файл схемы ([`schema.capnp`](assets/schema.capnp)) в нашем примере:
+Еще один популярный бинарный формат сериализации, поддерживаемый ClickHouse, — [Cap&#39;n Proto](https://capnproto.org/). Как и в случае с форматом `Protobuf`, в нашем примере нужно определить файл схемы ([`schema.capnp`](assets/schema.capnp)):
 
 ```response
 @0xec8ff1a10aa10dbe;
@@ -212,7 +218,7 @@ struct PathStats {
 }
 ```
 
-Теперь мы можем импортировать и экспортировать с помощью формата [CapnProto](/interfaces/formats.md/#capnproto) и этой схемы:
+Теперь мы можем импортировать и экспортировать, используя формат [CapnProto](/interfaces/formats/CapnProto) и следующую схему:
 
 ```sql
 SELECT
@@ -225,17 +231,17 @@ FORMAT CapnProto
 SETTINGS format_schema = 'schema:PathStats'
 ```
 
-Обратите внимание, что нам нужно было привести столбец `Date` к типу `UInt32`, чтобы [соответствовать соответствующим типам](/interfaces/formats/CapnProto#data_types-matching-capnproto).
+Обратите внимание, что нам пришлось привести столбец `Date` к типу `UInt32`, чтобы [типы данных совпадали](/interfaces/formats/CapnProto#data_types-matching-capnproto).
 
 ## Другие форматы {#other-formats}
 
-ClickHouse вводит поддержку множества форматов, как текстовых, так и бинарных, чтобы охватить различные сценарии и платформы. Изучите больше форматов и способы работы с ними в следующих статьях:
+ClickHouse поддерживает множество форматов, как текстовых, так и двоичных, чтобы охватывать различные сценарии и платформы. Узнайте больше о форматах и способах работы с ними в следующих статьях:
 
-- [CSV и TSV форматы](csv-tsv.md)
+- [Форматы CSV и TSV](csv-tsv.md)
 - [Parquet](parquet.md)
-- [JSON форматы](/integrations/data-ingestion/data-formats/json/intro.md)
+- [Форматы JSON](/integrations/data-ingestion/data-formats/json/intro.md)
 - [Регулярные выражения и шаблоны](templates-regex.md)
-- **Нативные и бинарные форматы**
-- [SQL форматы](sql.md)
+- **Форматы Native и двоичные**
+- [SQL-форматы](sql.md)
 
-А также проверьте [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) - переносной полнофункциональный инструмент для работы с локальными/удаленными файлами без запуска сервера ClickHouse.
+А также ознакомьтесь с [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) — переносимым полнофункциональным инструментом для работы с локальными и удалёнными файлами без запуска сервера ClickHouse.

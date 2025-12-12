@@ -1,11 +1,12 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/sumcount'
+description: 'Вычисляет сумму чисел и одновременно считает количество строк. Функция используется оптимизатором запросов ClickHouse: если в запросе присутствует несколько функций `sum`, `count` или `avg`, их можно заменить одной функцией `sumCount`, чтобы переиспользовать результаты вычислений. Необходимость явного использования этой функции возникает редко.'
 sidebar_position: 196
-description: 'Вычисляет сумму чисел и одновременно подсчитывает количество строк.'
-title: sumCount
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/sumcount
+title: 'sumCount'
+doc_type: 'reference'
 ---
-Вычисляет сумму чисел и одновременно подсчитывает количество строк. Функция используется оптимизатором запросов ClickHouse: если в запросе есть несколько функций `sum`, `count` или `avg`, их можно заменить на одну функцию `sumCount`, чтобы повторно использовать вычисления. Эта функция редко требуется для явного использования.
+
+Вычисляет сумму чисел и одновременно считает количество строк. Функция используется оптимизатором запросов ClickHouse: если в запросе присутствует несколько функций `sum`, `count` или `avg`, их можно заменить одной функцией `sumCount`, чтобы переиспользовать результаты вычислений. Необходимость явного использования этой функции возникает редко.
 
 **Синтаксис**
 
@@ -15,11 +16,11 @@ sumCount(x)
 
 **Аргументы**
 
-- `x` — Входное значение, должно быть [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
+* `x` — входное значение, должно быть типа [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
 
 **Возвращаемое значение**
 
-- Кортеж `(sum, count)`, где `sum` — это сумма чисел, а `count` — количество строк с ненулевыми значениями.
+* Кортеж `(sum, count)`, где `sum` — сумма чисел, а `count` — количество строк со значениями, отличными от NULL.
 
 Тип: [Tuple](../../../sql-reference/data-types/tuple.md).
 
@@ -44,4 +45,4 @@ SELECT sumCount(x) FROM s_table;
 
 **См. также**
 
-- [optimize_syntax_fuse_functions](../../../operations/settings/settings.md#optimize_syntax_fuse_functions) настройка.
+* Параметр [optimize&#95;syntax&#95;fuse&#95;functions](../../../operations/settings/settings.md#optimize_syntax_fuse_functions).

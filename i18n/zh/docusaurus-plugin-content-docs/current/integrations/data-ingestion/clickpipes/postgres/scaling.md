@@ -1,54 +1,56 @@
 ---
-'title': '通过 OpenAPI 扩展 DB ClickPipes'
-'description': '文档用于通过 OpenAPI 扩展 DB ClickPipes'
-'slug': '/integrations/clickpipes/postgres/scaling'
-'sidebar_label': '扩展'
-'doc_type': 'guide'
+title: '通过 OpenAPI 扩展数据库 ClickPipes'
+description: '通过 OpenAPI 扩展数据库 ClickPipes 的文档'
+slug: /integrations/clickpipes/postgres/scaling
+sidebar_label: '扩展'
+doc_type: 'guide'
+keywords: ['clickpipes', 'postgresql', 'cdc', '数据摄取', '实时同步']
 ---
 
-:::caution 大多数用户不需要此API
-DB ClickPipes的默认配置旨在开箱即用地处理大多数工作负载。如果您认为您的工作负载需要扩展，请打开一个[支持案例](https://clickhouse.com/support/program)，我们将指导您调整适合用例的最佳设置。
+:::caution 大多数用户不需要使用此 API
+数据库 ClickPipes 的默认配置在大多数场景下开箱即用即可处理绝大部分工作负载。如果你认为你的工作负载需要扩展，请提交一个[支持工单](https://clickhouse.com/support/program)，我们会为你的使用场景提供最优配置指导。
 :::
 
-扩展API可能对以下情况有用：
-- 大量初始加载（超过4 TB）
-- 尽可能快速地迁移适量数据
-- 在同一服务下支持超过8个CDC ClickPipes
+扩展 API 适用于以下场景：
 
-在尝试扩展之前，请考虑：
-- 确保源DB有足够的可用容量
-- 在创建ClickPipe时，首先调整[初始负载并行性和分区](/integrations/clickpipes/postgres/parallel_initial_load)
-- 检查源上是否存在[长时间运行的事务](/integrations/clickpipes/postgres/sync_control#transactions)，这些事务可能导致CDC延迟
+- 大规模初始加载（超过 4 TB）
+- 尽可能快速地迁移中等规模的数据
+- 在同一服务下支持超过 8 个 CDC ClickPipes
 
-**增加规模将成比例地增加您的ClickPipes计算成本。** 如果您仅为初始加载进行扩展，则在快照完成后缩小规模以避免意外费用是很重要的。有关定价的更多详细信息，请参见[Postgres CDC定价](/cloud/reference/billing/clickpipes)。
+在尝试扩容之前，请先考虑：
 
-## 该过程的前提条件 {#prerequisites}
+- 确保源数据库具有足够的可用容量
+- 在创建 ClickPipe 时，优先调整[初始加载并行度和分区](/integrations/clickpipes/postgres/parallel_initial_load)
+- 检查源端是否存在可能导致 CDC 延迟的[长时间运行事务](/integrations/clickpipes/postgres/sync_control#transactions)
+
+**提升扩展级别会按比例增加 ClickPipes 的计算成本。** 如果你仅为初始加载而扩容，务必在快照完成后及时缩容，以避免产生意外费用。有关定价的更多信息，请参阅 [Postgres CDC 定价](/cloud/reference/billing/clickpipes)。
+
+## 此流程的先决条件 {#prerequisites}
 
 在开始之前，您需要：
 
-1. 具有目标ClickHouse Cloud服务的管理员权限的[ClickHouse API密钥](/cloud/manage/openapi)。
-2. 在某个时间点在服务中配置的DB ClickPipe（Postgres、MySQL或MongoDB）。CDC基础设施与第一个ClickPipe一起创建，扩展端点从那时起可用。
+1. 在目标 ClickHouse Cloud 服务上具有管理员权限的 [ClickHouse API key](/cloud/manage/openapi)。
+2. 在该服务中已经预配好的一个 DB ClickPipe（Postgres、MySQL 或 MongoDB）。CDC 基础设施会在创建第一个 ClickPipe 时一并创建，从那一刻起扩缩容相关端点即可使用。
 
-## 扩展DB ClickPipes的步骤 {#cdc-scaling-steps}
+## 扩展数据库 ClickPipes 的步骤 {#cdc-scaling-steps}
 
-在运行任何命令之前设置以下环境变量：
+在执行任何命令之前，先设置以下环境变量：
 
 ```bash
-ORG_ID=<Your ClickHouse organization ID>
-SERVICE_ID=<Your ClickHouse service ID>
-KEY_ID=<Your ClickHouse key ID>
-KEY_SECRET=<Your ClickHouse key secret>
+ORG_ID=<您的 ClickHouse 组织 ID>
+SERVICE_ID=<您的 ClickHouse 服务 ID>
+KEY_ID=<您的 ClickHouse 密钥 ID>
+KEY_SECRET=<您的 ClickHouse 密钥密钥>
 ```
 
-获取当前的扩展配置（可选）：
+获取当前扩缩容配置（可选）：
 
 ```bash
 curl --silent --user $KEY_ID:$KEY_SECRET \
 https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/clickpipesCdcScaling \
 | jq
 
-
-# example result:
+# 示例结果： {#example-result}
 {
   "result": {
     "replicaCpuMillicores": 2000,
@@ -59,7 +61,7 @@ https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/click
 }
 ```
 
-设置所需的扩展。支持的配置包括1-24个CPU核心，内存（GB）设置为核心数量的4倍：
+设置所需的伸缩规模。支持的配置包括 1–24 个 CPU 核心，内存（GB）设置为 CPU 核心数的 4 倍：
 
 ```bash
 cat <<EOF | tee cdc_scaling.json
@@ -75,15 +77,14 @@ https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/click
 -d @cdc_scaling.json | jq
 ```
 
-等待配置传播（通常为3-5分钟）。扩展完成后，GET端点将反映新值：
+等待配置生效（通常需要 3-5 分钟）。扩容完成后，GET 端点将显示更新后的数值：
 
 ```bash
 curl --silent --user $KEY_ID:$KEY_SECRET \
 https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/clickpipesCdcScaling \
 | jq
 
-
-# example result:
+# 示例结果： {#example-result}
 {
   "result": {
     "replicaCpuMillicores": 24000,

@@ -1,26 +1,26 @@
 ---
-'title': 'Запрос производительности - Данные временных рядов'
-'sidebar_label': 'Производительность запросов'
-'description': 'Улучшение производительности запросов временных рядов'
-'slug': '/use-cases/time-series/query-performance'
-'keywords':
-- 'time-series'
-'show_related_blogs': true
-'doc_type': 'guide'
+title: 'Производительность запросов для временных рядов'
+sidebar_label: 'Производительность запросов'
+description: 'Улучшение производительности запросов для временных рядов'
+slug: /use-cases/time-series/query-performance
+keywords: ['временные ряды', 'производительность запросов', 'оптимизация', 'индексация', 'партиционирование', 'настройка запросов', 'производительность']
+show_related_blogs: true
+doc_type: 'guide'
 ---
-# Производительность запросов временных рядов
 
-После оптимизации хранения следующим шагом является улучшение производительности запросов. 
-В этом разделе рассматриваются две ключевые техники: оптимизация ключей `ORDER BY` и использование материализованных представлений. 
-Мы увидим, как эти подходы могут сократить время выполнения запросов с секунд до миллисекунд.
+# Производительность запросов по временным рядам {#time-series-query-performance}
 
-## Оптимизация ключей ORDER BY {#time-series-optimize-order-by}
+После оптимизации хранилища следующим шагом является улучшение производительности запросов.
+В этом разделе мы рассмотрим два ключевых подхода: оптимизацию ключей `ORDER BY` и использование материализованных представлений.
+Мы увидим, как эти подходы позволяют сократить время выполнения запросов с секунд до миллисекунд.
 
-Перед тем как пытаться применять другие оптимизации, вы должны оптимизировать ключ сортировки, чтобы убедиться, что ClickHouse выдает максимально быстрые результаты. 
-Выбор ключа в значительной степени зависит от запросов, которые вы собираетесь выполнять. Предположим, что большинство наших запросов фильтрует по колонкам `project` и `subproject`. 
-В этом случае будет разумно добавить их в ключ сортировки — так же как и колонку времени, так как мы также делаем запросы по времени:
+## Оптимизация ключей `ORDER BY` {#time-series-optimize-order-by}
 
-Давайте создадим другую версию таблицы, которая имеет те же типы колонок, что и `wikistat`, но сортируется по `(project, subproject, time)`.
+Прежде чем переходить к другим оптимизациям, следует оптимизировать ключи `ORDER BY`, чтобы ClickHouse выдавал максимально быстрые результаты.
+Выбор правильного ключа во многом зависит от запросов, которые вы планируете выполнять. Предположим, что большинство наших запросов фильтруют данные по столбцам `project` и `subproject`.
+В этом случае имеет смысл добавить их в ключ сортировки, а также столбец `time`, так как мы также выполняем запросы по времени.
+
+Создадим ещё одну версию таблицы с теми же типами столбцов, что и в `wikistat`, но с сортировкой по `(project, subproject, time)`.
 
 ```sql
 CREATE TABLE wikistat_project_subproject
@@ -35,81 +35,86 @@ ENGINE = MergeTree
 ORDER BY (project, subproject, time);
 ```
 
-Теперь давайте сравним несколько запросов, чтобы получить представление о том, насколько важно наше выражение ключа сортировки для производительности. Обратите внимание, что мы не применяли наши предыдущие оптимизации типов данных и кодеков, поэтому любые различия в производительности запросов основаны только на порядке сортировки.
+Теперь давайте сравним несколько запросов, чтобы оценить, насколько выбранное выражение ключа сортировки влияет на производительность. Обратите внимание, что мы не применяли предыдущие оптимизации типов данных и кодеков, поэтому любые различия в производительности запросов обусловлены только порядком сортировки.
 
 <table>
-    <thead>
-        <tr>
-            <th  style={{ width: '36%' }}>Запрос</th>
-            <th style={{ textAlign: 'right', width: '32%' }}>`(time)`</th>
-            <th style={{ textAlign: 'right', width: '32%' }}>`(project, subproject, time)`</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-```sql
-SELECT project, sum(hits) AS h
-FROM wikistat
-GROUP BY project
-ORDER BY h DESC
-LIMIT 10;
-```
-            </td>
-            <td style={{ textAlign: 'right' }}>2.381 сек</td>
-            <td style={{ textAlign: 'right' }}>1.660 сек</td>
-        </tr>
+  <thead>
+    <tr>
+      <th style={{ width: '36%' }}>Запрос</th>
+      <th style={{ textAlign: 'right', width: '32%' }}>`(time)`</th>
+      <th style={{ textAlign: 'right', width: '32%' }}>`(project, subproject, time)`</th>
+    </tr>
+  </thead>
 
-        <tr>
-            <td>
-```sql
-SELECT subproject, sum(hits) AS h
-FROM wikistat
-WHERE project = 'it'
-GROUP BY subproject
-ORDER BY h DESC
-LIMIT 10;
-```
-            </td>
-            <td style={{ textAlign: 'right' }}>2.148 сек</td>
-            <td style={{ textAlign: 'right' }}>0.058 сек</td>
-        </tr>
+  <tbody>
+    <tr>
+      <td>
+        ```sql
+        SELECT project, sum(hits) AS h
+        FROM wikistat
+        GROUP BY project
+        ORDER BY h DESC
+        LIMIT 10;
+        ```
+      </td>
 
-        <tr>
-            <td>
-```sql
-SELECT toStartOfMonth(time) AS m, sum(hits) AS h
-FROM wikistat
-WHERE (project = 'it') AND (subproject = 'zero')
-GROUP BY m
-ORDER BY m DESC
-LIMIT 10;
-```
-            </td>
-            <td style={{ textAlign: 'right' }}>2.192 сек</td>
-            <td style={{ textAlign: 'right' }}>0.012 сек</td>
-        </tr>
+      <td style={{ textAlign: 'right' }}>2.381 с</td>
+      <td style={{ textAlign: 'right' }}>1.660 с</td>
+    </tr>
 
-        <tr>
-            <td>
-```sql
-SELECT path, sum(hits) AS h
-FROM wikistat
-WHERE (project = 'it') AND (subproject = 'zero')
-GROUP BY path
-ORDER BY h DESC
-LIMIT 10;
-```
-            </td>
-            <td style={{ textAlign: 'right' }}>2.968 сек</td>
-            <td style={{ textAlign: 'right' }}>0.010 сек</td>
-        </tr>
-    </tbody>
+    <tr>
+      <td>
+        ```sql
+        SELECT subproject, sum(hits) AS h
+        FROM wikistat
+        WHERE project = 'it'
+        GROUP BY subproject
+        ORDER BY h DESC
+        LIMIT 10;
+        ```
+      </td>
+
+      <td style={{ textAlign: 'right' }}>2.148 с</td>
+      <td style={{ textAlign: 'right' }}>0.058 с</td>
+    </tr>
+
+    <tr>
+      <td>
+        ```sql
+        SELECT toStartOfMonth(time) AS m, sum(hits) AS h
+        FROM wikistat
+        WHERE (project = 'it') AND (subproject = 'zero')
+        GROUP BY m
+        ORDER BY m DESC
+        LIMIT 10;
+        ```
+      </td>
+
+      <td style={{ textAlign: 'right' }}>2.192 с</td>
+      <td style={{ textAlign: 'right' }}>0.012 с</td>
+    </tr>
+
+    <tr>
+      <td>
+        ```sql
+        SELECT path, sum(hits) AS h
+        FROM wikistat
+        WHERE (project = 'it') AND (subproject = 'zero')
+        GROUP BY path
+        ORDER BY h DESC
+        LIMIT 10;
+        ```
+      </td>
+
+      <td style={{ textAlign: 'right' }}>2.968 с</td>
+      <td style={{ textAlign: 'right' }}>0.010 с</td>
+    </tr>
+  </tbody>
 </table>
 
 ## Материализованные представления {#time-series-materialized-views}
 
-Другой вариант — использовать материализованные представления для агрегации и хранения результатов популярных запросов. Эти результаты можно запрашивать вместо исходной таблицы. Предположим, что следующий запрос выполняется довольно часто в нашем случае:
+Другой вариант — использовать материализованные представления для агрегирования и хранения результатов популярных запросов. Эти результаты можно запрашивать вместо исходной таблицы. Предположим, что следующий запрос в нашем случае выполняется довольно часто:
 
 ```sql
 SELECT path, SUM(hits) AS v
@@ -134,8 +139,8 @@ LIMIT 10
 │ 2015_Nepal_earthquake │  1406422 │
 └───────────────────────┴──────────┘
 
-10 rows in set. Elapsed: 2.285 sec. Processed 231.41 million rows, 9.22 GB (101.26 million rows/s., 4.03 GB/s.)
-Peak memory usage: 1.50 GiB.
+10 строк в наборе. Затрачено: 2.285 сек. Обработано 231.41 млн строк, 9.22 ГБ (101.26 млн строк/с., 4.03 ГБ/с.)
+Пиковое использование памяти: 1.50 ГиБ.
 ```
 
 ### Создание материализованного представления {#time-series-create-materialized-view}
@@ -165,11 +170,11 @@ FROM wikistat
 GROUP BY path, month;
 ```
 
-### Заполнение целевой таблицы {#time-series-backfill-destination-table}
+### Заполнение целевой таблицы задним числом {#time-series-backfill-destination-table}
 
-Эта целевая таблица будет заполняться только при вставке новых записей в таблицу `wikistat`, поэтому нам нужно выполнить некоторые действия по [заполнению](/docs/data-modeling/backfilling).
+Эта целевая таблица будет заполняться только при вставке новых записей в таблицу `wikistat`, поэтому нам нужно выполнить [заполнение задним числом](/docs/data-modeling/backfilling).
 
-Самый простой способ сделать это — использовать оператор [`INSERT INTO SELECT`](/docs/sql-reference/statements/insert-into#inserting-the-results-of-select) для непосредственной вставки в целевую таблицу материализованного представления [используя](https://github.com/ClickHouse/examples/tree/main/ClickHouse_vs_ElasticSearch/DataAnalytics#variant-1---directly-inserting-into-the-target-table-by-using-the-materialized-views-transformation-query) запрос SELECT (преобразование) представления:
+Самый простой способ сделать это — использовать оператор [`INSERT INTO SELECT`](/docs/sql-reference/statements/insert-into#inserting-the-results-of-select) для непосредственной вставки данных в целевую таблицу материализованного представления [с использованием](https://github.com/ClickHouse/examples/tree/main/ClickHouse_vs_ElasticSearch/DataAnalytics#variant-1---directly-inserting-into-the-target-table-by-using-the-materialized-views-transformation-query) `SELECT`‑запроса (трансформации) этого представления:
 
 ```sql
 INSERT INTO wikistat_top
@@ -181,14 +186,14 @@ FROM wikistat
 GROUP BY path, month;
 ```
 
-В зависимости от кардинальности исходного набора данных (у нас 1 миллиард строк!) это может быть подходом, требующим большого объема памяти. В качестве альтернативы, вы можете использовать вариант, который требует минимального объема памяти:
+В зависимости от кардинальности исходного набора данных (у нас 1 миллиард строк!), этот подход может быть очень требовательным к памяти. В качестве альтернативы можно использовать вариант, который требует минимального объёма памяти:
 
-* Создание временной таблицы с движком таблицы Null
+* Создание временной таблицы с движком Null
 * Подключение копии обычно используемого материализованного представления к этой временной таблице
-* Использование запроса INSERT INTO SELECT, копируя все данные из исходного набора данных в эту временную таблицу
+* Использование запроса `INSERT INTO SELECT` для копирования всех данных из исходного набора данных во временную таблицу
 * Удаление временной таблицы и временного материализованного представления.
 
-С таким подходом строки из исходного набора данных копируются блоками в временную таблицу (которая не сохраняет ни одну из этих строк), и для каждого блока строк вычисляется частичное состояние, которое записывается в целевую таблицу, где эти состояния поэтапно сливаются в фоновом режиме.
+При таком подходе строки из исходного набора данных копируются блоками во временную таблицу (которая при этом не сохраняет сами строки), и для каждого блока строк вычисляется промежуточное состояние и записывается в целевую таблицу, где эти состояния постепенно объединяются в фоновом режиме.
 
 ```sql
 CREATE TABLE wikistat_backfill
@@ -202,7 +207,7 @@ CREATE TABLE wikistat_backfill
 ENGINE = Null;
 ```
 
-Далее мы создадим материализованное представление для чтения из `wikistat_backfill` и записи в `wikistat_top`:
+Далее мы создадим материализованное представление, которое будет читать из `wikistat_backfill` и записывать в `wikistat_top`
 
 ```sql
 CREATE MATERIALIZED VIEW wikistat_backfill_top_mv 
@@ -216,7 +221,7 @@ FROM wikistat_backfill
 GROUP BY path, month;
 ```
 
-И затем наконец, мы заполним `wikistat_backfill` из первоначальной таблицы `wikistat`:
+И наконец, мы заполним `wikistat_backfill` из исходной таблицы `wikistat`:
 
 ```sql
 INSERT INTO wikistat_backfill
@@ -224,14 +229,14 @@ SELECT *
 FROM wikistat;
 ```
 
-После завершения этого запроса мы можем удалить таблицу заполнения и материализованное представление:
+Когда запрос завершится, мы можем удалить таблицу бэкфилла и материализованное представление:
 
 ```sql
 DROP VIEW wikistat_backfill_top_mv;
 DROP TABLE wikistat_backfill;
 ```
 
-Теперь мы можем запрашивать материализованное представление вместо исходной таблицы:
+Теперь вместо исходной таблицы мы можем выполнять запросы к материализованному представлению:
 
 ```sql
 SELECT path, sum(hits) AS hits
@@ -256,8 +261,8 @@ LIMIT 10;
 │ 2015_Nepal_earthquake │   726327 │
 └───────────────────────┴──────────┘
 
-10 rows in set. Elapsed: 0.004 sec.
+Получено 10 строк. Прошло: 0.004 сек.
 ```
 
-Наше улучшение производительности здесь является значительным. 
-Ранее на вычисление ответа на этот запрос уходило чуть больше 2 секунд, а теперь всего 4 миллисекунды.
+Улучшение производительности здесь колоссальное.
+Раньше на вычисление результата этого запроса уходило чуть больше 2 секунд, а теперь требуется всего 4 миллисекунды.

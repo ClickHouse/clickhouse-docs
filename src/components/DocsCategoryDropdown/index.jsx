@@ -87,24 +87,26 @@ function DocsCategoryDropdown({ dropdownCategory }) {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-      <span
-          className={styles.docsNavDropdownToolbarLink}
-          ref={triggerRef}
-      >
-        <Link
-            className={`${styles.docsNavDropdownToolbarTopLevelLink} ${isSelected ? styles.docsNavSelected : ""
-            }`}
-            href={dropdownCategory.customProps.href}
-        >
-          <Translate
-              id={`sidebar.dropdownCategories.category.${dropdownCategory.label}`}
-              description={`Translation for ${dropdownCategory.label}`}
-          >
-            {dropdownCategory.label}
-          </Translate>
-        </Link>{" "}
-          <DropdownCaret />
-      </span>
+            <span
+                className={styles.docsNavDropdownToolbarLink}
+                ref={triggerRef}
+            >
+                <Link
+                    className={`${styles.docsNavDropdownToolbarTopLevelLink} ${isSelected ? styles.docsNavSelected : ""
+                        }`}
+                    href={dropdownCategory.customProps.href}
+                >
+                    {React.isValidElement(dropdownCategory.label) ? dropdownCategory.label : (
+                        <Translate
+                            id={`sidebar.dropdownCategories.category.${dropdownCategory.label}`}
+                            description={`Translation for ${dropdownCategory.label}`}
+                        >
+                            {dropdownCategory.label}
+                        </Translate>
+                    )}
+                </Link>{" "}
+                <DropdownCaret />
+            </span>
             {isOpen && (
                 <DropdownContent
                     dropdownCategory={dropdownCategory}
@@ -130,13 +132,13 @@ export const DocsCategoryDropdownLinkOnly = ({ title, link }) => {
 };
 
 const DropdownContent = ({
-                             dropdownCategory,
-                             handleMouseEnter,
-                             handleMouseLeave,
-                             dropdownStyles,
-                             dropdownMenuRef,
-                             isVisible,
-                         }) => {
+    dropdownCategory,
+    handleMouseEnter,
+    handleMouseLeave,
+    dropdownStyles,
+    dropdownMenuRef,
+    isVisible,
+}) => {
     const [hovered, setHovered] = useState(null);
 
     return (
@@ -157,20 +159,24 @@ const DropdownContent = ({
                 style={{ textDecoration: 'none', display: 'block' }}
             >
                 <div className={styles.docsNavMenuHeader}>
-                    <Translate
-                        id={`sidebar.dropdownCategories.category.${dropdownCategory.label}`}
-                        description={`Translation for ${dropdownCategory.label}`}
-                    >
-                        {dropdownCategory.label}
-                    </Translate>
+                    {React.isValidElement(dropdownCategory.label) ? dropdownCategory.label : (
+                        <Translate
+                            id={`sidebar.dropdownCategories.category.${dropdownCategory.label}`}
+                            description={`Translation for ${dropdownCategory.label}`}
+                        >
+                            {dropdownCategory.label}
+                        </Translate>
+                    )}
                 </div>
                 <div className={styles.docsNavMenuDescription}>
-                    <Translate
-                        id={`sidebar.dropdownCategories.category.description.${dropdownCategory.label}`}
-                        description={`Translation for ${dropdownCategory.label} description`}
-                    >
-                        {dropdownCategory.description}
-                    </Translate>
+                    {React.isValidElement(dropdownCategory.description) ? dropdownCategory.description : (
+                        <Translate
+                            id={`sidebar.dropdownCategories.category.description.${dropdownCategory.label}`}
+                            description={`Translation for ${dropdownCategory.label} description`}
+                        >
+                            {dropdownCategory.description}
+                        </Translate>
+                    )}
                 </div>
             </Link>
             <hr className={styles.docsNavMenuDivider} />
@@ -186,20 +192,24 @@ const DropdownContent = ({
                         style={{ textDecoration: 'none', display: 'block' }}
                     >
                         <div className={styles.docsNavItemTitle}>
-                            <Translate
-                                id={`sidebar.dropdownCategories.category.${dropdownCategory.label}.${item.label}`}
-                                description={`Translation for ${dropdownCategory.label}.${item.label}`}
-                            >
-                                {item.label}
-                            </Translate>
+                            {React.isValidElement(item.label) ? item.label : (
+                                <Translate
+                                    id={`sidebar.dropdownCategories.category.${dropdownCategory.label}.${item.label}`}
+                                    description={`Translation for ${dropdownCategory.label}.${item.label}`}
+                                >
+                                    {item.label}
+                                </Translate>
+                            )}
                         </div>
                         <div className={styles.docsNavItemDescription}>
-                            <Translate
-                                id={`sidebar.dropdownCategories.category.${dropdownCategory.label}.${item.label}.description`}
-                                description={`Translation for ${dropdownCategory.label}.${item.label} description`}
-                            >
-                                {item.description}
-                            </Translate>
+                            {React.isValidElement(item.description) ? item.description : (
+                                <Translate
+                                    id={`sidebar.dropdownCategories.category.${dropdownCategory.label}.${item.label}.description`}
+                                    description={`Translation for ${dropdownCategory.label}.${item.label} description`}
+                                >
+                                    {item.description}
+                                </Translate>
+                            )}
                         </div>
                     </Link>
                 ))}
@@ -223,22 +233,22 @@ const DropdownCaret = () => {
 
     return (
         <span style={{ marginLeft: "8px" }}>
-      <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="6"
-          height="10"
-          viewBox="0 0 6 10"
-          style={rotatedIconStyle}
-      >
-        <path
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="1.5"
-            d="M1 9L5 5 1 1"
-        />
-      </svg>
-    </span>
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="6"
+                height="10"
+                viewBox="0 0 6 10"
+                style={rotatedIconStyle}
+            >
+                <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="1.5"
+                    d="M1 9L5 5 1 1"
+                />
+            </svg>
+        </span>
     );
 };
 

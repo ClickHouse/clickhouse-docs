@@ -1,30 +1,26 @@
 ---
-'description': 'Kafka テーブルエンジンは Apache Kafka を使用して作品を発行し、データフローに公開または購読し、フォールトトレラントストレージを整理し、ストリームが利用可能になると処理することができます。'
-'sidebar_label': 'Kafka'
-'sidebar_position': 110
-'slug': '/engines/table-engines/integrations/kafka'
-'title': 'Kafka テーブルエンジン'
-'keywords':
-- 'Kafka'
-- 'table engine'
-'doc_type': 'guide'
+description: 'Kafka テーブルエンジンは Apache Kafka と連携して使用でき、データフローへの publish/subscribe、フォールトトレラントなストレージの構成、およびストリームが利用可能になったタイミングでの順次処理を可能にします。'
+sidebar_label: 'Kafka'
+sidebar_position: 110
+slug: /engines/table-engines/integrations/kafka
+title: 'Kafka テーブルエンジン'
+keywords: ['Kafka', 'table engine']
+doc_type: 'guide'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
-import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+# Kafka テーブルエンジン {#kafka-table-engine}
 
-# Kafka テーブルエンジン
-
-:::note
-ClickHouse Cloud を利用している場合は、[ClickPipes](/integrations/clickpipes) の使用をお勧めします。ClickPipes はプライベートネットワーク接続をネイティブにサポートし、独立してインジェストとクラスターリソースをスケーリングし、ClickHouse へのストリーミング Kafka データの包括的なモニタリングを提供します。
+:::tip
+ClickHouse Cloud をご利用の場合は、代わりに [ClickPipes](/integrations/clickpipes) の利用を推奨します。ClickPipes は、プライベートネットワーク接続のネイティブサポート、インジェスト処理とクラスタリソースを独立してスケールさせる機能、そして Kafka のストリーミングデータを ClickHouse に取り込むための包括的なモニタリング機能を提供します。
 :::
 
-- データフローを公開または購読します。
-- フォールトトレラントストレージを構成します。
-- 利用可能になったストリームを処理します。
+- データフローの publish および subscribe。
+- フォールトトレラントなストレージの構成。
+- ストリームを利用可能になり次第処理。
 
-## テーブルの作成 {#creating-a-table}
+## テーブルを作成する {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -51,192 +47,198 @@ SETTINGS
     [kafka_poll_timeout_ms = 0,]
     [kafka_poll_max_batch_size = 0,]
     [kafka_flush_interval_ms = 0,]
+    [kafka_consumer_reschedule_ms = 0,]
     [kafka_thread_per_consumer = 0,]
     [kafka_handle_error_mode = 'default',]
     [kafka_commit_on_select = false,]
-    [kafka_max_rows_per_message = 1];
+    [kafka_max_rows_per_message = 1,]
+    [kafka_compression_codec = '',]
+    [kafka_compression_level = -1];
 ```
 
-必要なパラメータ:
+必須パラメータ：
 
-- `kafka_broker_list` — ブローカーのカンマ区切りリスト（例: `localhost:9092`）。
-- `kafka_topic_list` — Kafka トピックのリスト。
-- `kafka_group_name` — Kafka 消費者のグループ。読み取りマージンは各グループごとに個別に追跡されます。メッセージがクラスター内で重複しないようにするには、どこでも同じグループ名を使用してください。
-- `kafka_format` — メッセージ形式です。`FORMAT` 関数と同じ表記法を使用し、例えば `JSONEachRow` などです。詳細については、[Formats](../../../interfaces/formats.md) セクションを参照してください。
+* `kafka_broker_list` — ブローカーのカンマ区切りリスト（例：`localhost:9092`）。
+* `kafka_topic_list` — Kafka トピックのリスト。
+* `kafka_group_name` — Kafka コンシューマーのグループ。読み取りオフセットはグループごとに個別に追跡されます。クラスター内でメッセージを重複処理させたくない場合は、同じグループ名を一貫して使用してください。
+* `kafka_format` — メッセージ形式。SQL の `FORMAT` 関数と同じ指定方法を使用し、`JSONEachRow` などを指定します。詳細については、[Formats](../../../interfaces/formats.md) セクションを参照してください。
 
-オプションのパラメータ:
+オプションパラメータ：
 
-- `kafka_security_protocol` - ブローカーとの通信に使用されるプロトコル。可能な値: `plaintext`, `ssl`, `sasl_plaintext`, `sasl_ssl`。
-- `kafka_sasl_mechanism` - 認証に使用する SASL メカニズム。可能な値: `GSSAPI`, `PLAIN`, `SCRAM-SHA-256`, `SCRAM-SHA-512`, `OAUTHBEARER`。
+- `kafka_security_protocol` - ブローカーとの通信に使用するプロトコル。指定可能な値: `plaintext`, `ssl`, `sasl_plaintext`, `sasl_ssl`。
+- `kafka_sasl_mechanism` - 認証に使用する SASL メカニズム。指定可能な値: `GSSAPI`, `PLAIN`, `SCRAM-SHA-256`, `SCRAM-SHA-512`, `OAUTHBEARER`。
 - `kafka_sasl_username` - `PLAIN` および `SASL-SCRAM-..` メカニズムで使用する SASL ユーザー名。
 - `kafka_sasl_password` - `PLAIN` および `SASL-SCRAM-..` メカニズムで使用する SASL パスワード。
-- `kafka_schema` — スキーマ定義が必要な形式の場合に使用するパラメータ。例えば、[Cap'n Proto](https://capnproto.org/) はスキーマファイルのパスとルートオブジェクト `schema.capnp:Message` の名前が必要です。
-- `kafka_num_consumers` — テーブルごとの消費者の数。1 つの消費者のスループットが不十分な場合は、より多くの消費者を指定します。消費者の合計数はトピックのパーティション数を超えてはいけません。なぜなら、各パーティションに割り当てられる消費者は 1 つだけであり、ClickHouse がデプロイされているサーバー上の物理コア数を超えてはいけません。デフォルト: `1`。
-- `kafka_max_block_size` — ポーリングの最大バッチサイズ（メッセージ単位）。デフォルト: [max_insert_block_size](../../../operations/settings/settings.md#max_insert_block_size)。
-- `kafka_skip_broken_messages` — 各ブロックでスキーマに互換性のないメッセージに対する Kafka メッセージパーサーの耐性。`kafka_skip_broken_messages = N` の場合、エンジンは解析できない *N* 個の Kafka メッセージをスキップします（メッセージはデータの行に等しい）。デフォルト: `0`。
-- `kafka_commit_every_batch` — 全体のブロックを書き込んだ後の単一コミットの代わりに、扱ったバッチごとにコミットします。デフォルト: `0`。
-- `kafka_client_id` — クライアント識別子。デフォルトは空です。
-- `kafka_poll_timeout_ms` — Kafka からの単一ポーリングのタイムアウト。デフォルト: [stream_poll_timeout_ms](../../../operations/settings/settings.md#stream_poll_timeout_ms)。
-- `kafka_poll_max_batch_size` — 単一 Kafka ポーリングでポーリングされる最大メッセージ数。デフォルト: [max_block_size](/operations/settings/settings#max_block_size)。
-- `kafka_flush_interval_ms` — Kafka からデータをフラッシュするためのタイムアウト。デフォルト: [stream_flush_interval_ms](/operations/settings/settings#stream_flush_interval_ms)。
-- `kafka_thread_per_consumer` — 各消費者に独立したスレッドを提供します。有効にすると、各消費者はデータを独立して、並行してフラッシュします（そうでなければ、複数の消費者からの行が結合されて 1 つのブロックを形成します）。デフォルト: `0`。
-- `kafka_handle_error_mode` — Kafka エンジンのエラー処理方法。可能な値: デフォルト（メッセージの解析に失敗した場合は例外がスローされます）、ストリーム（例外メッセージと生メッセージは仮想カラム `_error` および `_raw_message` に保存されます）、デッドレターキュー（エラーに関するデータが system.dead_letter_queue に保存されます）。
-- `kafka_commit_on_select` — SELECT クエリが作成されたときにメッセージをコミットします。デフォルト: `false`。
-- `kafka_max_rows_per_message` — 行ベースの形式の 1 つの Kafka メッセージに書き込まれる最大行数。デフォルト: `1`。
+- `kafka_schema` — フォーマットがスキーマ定義を必要とする場合に使用しなければならないパラメータ。たとえば [Cap'n Proto](https://capnproto.org/) では、スキーマファイルへのパスと、ルート `schema.capnp:Message` オブジェクトの名前が必要です。
+- `kafka_schema_registry_skip_bytes` — スキーマレジストリでエンベロープヘッダーを使用する際に、各メッセージの先頭からスキップするバイト数 (例: 19 バイトのエンベロープを含む AWS Glue Schema Registry)。範囲: `[0, 255]`。デフォルト: `0`。
+- `kafka_num_consumers` — テーブルごとのコンシューマー数。1 つのコンシューマーのスループットが不十分な場合は、より多くのコンシューマーを指定します。コンシューマーの総数はトピック内のパーティション数を超えてはいけません。各パーティションには 1 つのコンシューマーしか割り当てられず、また ClickHouse がデプロイされているサーバー上の物理コア数を超えてはなりません。デフォルト: `1`。
+- `kafka_max_block_size` — poll 時のバッチサイズ (メッセージ数の上限)。デフォルト: [max_insert_block_size](../../../operations/settings/settings.md#max_insert_block_size)。
+- `kafka_skip_broken_messages` — 1 ブロックあたりのスキーマ非互換メッセージに対する Kafka メッセージパーサーの許容度。`kafka_skip_broken_messages = N` の場合、エンジンはパースできない *N* 個の Kafka メッセージをスキップします (1 メッセージは 1 行のデータに相当)。デフォルト: `0`。
+- `kafka_commit_every_batch` — ブロック全体を書き込んだ後に 1 回だけコミットするのではなく、消費・処理された各バッチごとにコミットします。デフォルト: `0`。
+- `kafka_client_id` — クライアント識別子。デフォルトでは空文字列。
+- `kafka_poll_timeout_ms` — Kafka からの 1 回のポーリングのタイムアウト。デフォルト: [stream_poll_timeout_ms](../../../operations/settings/settings.md#stream_poll_timeout_ms)。
+- `kafka_poll_max_batch_size` — 1 回の Kafka ポーリングで取得されるメッセージ数の上限。デフォルト: [max_block_size](/operations/settings/settings#max_block_size)。
+- `kafka_flush_interval_ms` — Kafka からデータをフラッシュする間隔のタイムアウト。デフォルト: [stream_flush_interval_ms](/operations/settings/settings#stream_flush_interval_ms)。
+- `kafka_consumer_reschedule_ms` — Kafka ストリーム処理が停止している (例: 消費可能なメッセージが存在しない) 場合の再スケジュール間隔。この設定は、コンシューマーがポーリングを再試行するまでの遅延を制御します。`kafka_consumers_pool_ttl_ms` を超えてはなりません。デフォルト: `500` ミリ秒。
+- `kafka_thread_per_consumer` — 各コンシューマーごとに独立したスレッドを割り当てます。有効な場合、各コンシューマーは独立して並列にデータをフラッシュします (無効な場合は、複数コンシューマーからの行をまとめて 1 ブロックを形成)。デフォルト: `0`。
+- `kafka_handle_error_mode` — Kafka エンジンのエラー処理方法。指定可能な値: `default` (メッセージのパースに失敗した場合に例外をスローする)、`stream` (例外メッセージと生のメッセージを仮想カラム `_error` および `_raw_message` に保存する)、`dead_letter_queue` (エラー関連データを `system.dead_letter_queue` に保存する)。
+- `kafka_commit_on_select` — `SELECT` クエリが実行された際にメッセージをコミットします。デフォルト: `false`。
+- `kafka_max_rows_per_message` — 行ベースフォーマットにおいて、1 つの Kafka メッセージに書き込まれる行数の上限。デフォルト: `1`。
+- `kafka_compression_codec` — メッセージ生成に使用される圧縮コーデック。サポートされる値: 空文字列, `none`, `gzip`, `snappy`, `lz4`, `zstd`。空文字列が指定された場合、テーブルによって圧縮コーデックは設定されず、設定ファイルからの値または `librdkafka` のデフォルト値が使用されます。デフォルト: 空文字列。
+- `kafka_compression_level` — `kafka_compression_codec` で選択されたアルゴリズムの圧縮レベル。値を大きくするほど圧縮率は向上しますが、CPU 使用率も増加します。利用可能な範囲はアルゴリズム依存です: `gzip` の場合 `[0-9]`; `lz4` の場合 `[0-12]`; `snappy` は `0` のみ; `zstd` の場合 `[0-12]`; `-1` = コーデック依存のデフォルト圧縮レベル。デフォルト: `-1`。
 
-例:
+Examples:
 
 ```sql
-CREATE TABLE queue (
-  timestamp UInt64,
-  level String,
-  message String
-) ENGINE = Kafka('localhost:9092', 'topic', 'group1', 'JSONEachRow');
+  CREATE TABLE queue (
+    timestamp UInt64,
+    level String,
+    message String
+  ) ENGINE = Kafka('localhost:9092', 'topic', 'group1', 'JSONEachRow');
 
-SELECT * FROM queue LIMIT 5;
+  SELECT * FROM queue LIMIT 5;
 
-CREATE TABLE queue2 (
-  timestamp UInt64,
-  level String,
-  message String
-) ENGINE = Kafka SETTINGS kafka_broker_list = 'localhost:9092',
-                          kafka_topic_list = 'topic',
-                          kafka_group_name = 'group1',
-                          kafka_format = 'JSONEachRow',
-                          kafka_num_consumers = 4;
+  CREATE TABLE queue2 (
+    timestamp UInt64,
+    level String,
+    message String
+  ) ENGINE = Kafka SETTINGS kafka_broker_list = 'localhost:9092',
+                            kafka_topic_list = 'topic',
+                            kafka_group_name = 'group1',
+                            kafka_format = 'JSONEachRow',
+                            kafka_num_consumers = 4;
 
-CREATE TABLE queue3 (
-  timestamp UInt64,
-  level String,
-  message String
-) ENGINE = Kafka('localhost:9092', 'topic', 'group1')
-            SETTINGS kafka_format = 'JSONEachRow',
-                     kafka_num_consumers = 4;
+  CREATE TABLE queue3 (
+    timestamp UInt64,
+    level String,
+    message String
+  ) ENGINE = Kafka('localhost:9092', 'topic', 'group1')
+              SETTINGS kafka_format = 'JSONEachRow',
+                       kafka_num_consumers = 4;
 ```
 
 <details markdown="1">
+  <summary>テーブル作成の非推奨な方法</summary>
 
-<summary>テーブルを作成するための非推奨メソッド</summary>
+  :::note
+  新しいプロジェクトではこの方法を使用しないでください。可能であれば、既存のプロジェクトも上で説明した方法に切り替えてください。
+  :::
 
-:::note
-新しいプロジェクトではこのメソッドを使用しないでください。可能であれば、古いプロジェクトを上記のメソッドに切り替えてください。
-:::
-
-```sql
-Kafka(kafka_broker_list, kafka_topic_list, kafka_group_name, kafka_format
-      [, kafka_row_delimiter, kafka_schema, kafka_num_consumers, kafka_max_block_size,  kafka_skip_broken_messages, kafka_commit_every_batch, kafka_client_id, kafka_poll_timeout_ms, kafka_poll_max_batch_size, kafka_flush_interval_ms, kafka_thread_per_consumer, kafka_handle_error_mode, kafka_commit_on_select, kafka_max_rows_per_message]);
-```
-
+  ```sql
+  Kafka(kafka_broker_list, kafka_topic_list, kafka_group_name, kafka_format
+        [, kafka_row_delimiter, kafka_schema, kafka_num_consumers, kafka_max_block_size,  kafka_skip_broken_messages, kafka_commit_every_batch, kafka_client_id, kafka_poll_timeout_ms, kafka_poll_max_batch_size, kafka_flush_interval_ms, kafka_consumer_reschedule_ms, kafka_thread_per_consumer, kafka_handle_error_mode, kafka_commit_on_select, kafka_max_rows_per_message]);
+  ```
 </details>
 
 :::info
-Kafka テーブルエンジンは [default value](/sql-reference/statements/create/table#default_values) を持つカラムをサポートしていません。デフォルト値を持つカラムが必要な場合は、マテリアライズドビューレベルで追加できます（下記を参照）。
+Kafka テーブルエンジンは、[default value](/sql-reference/statements/create/table#default_values) を持つカラムをサポートしていません。default value を持つカラムが必要な場合は、materialized view 側で追加できます（下記参照）。
 :::
 
 ## 説明 {#description}
 
-配信されたメッセージは自動的に追跡されるため、グループ内の各メッセージは一度だけカウントされます。データを二度取得したい場合は、別のグループ名でテーブルのコピーを作成してください。
+配信されたメッセージは自動的に追跡されるため、グループ内の各メッセージは 1 回だけカウントされます。データを 2 回取得したい場合は、別のグループ名でテーブルのコピーを作成してください。
 
-グループは柔軟でクラスター上で同期されます。たとえば、10 のトピックとクラスター内に 5 つのテーブルのコピーがある場合、各コピーは 2 つのトピックを取得します。コピーの数が変更されると、トピックは自動的にコピー間で再分配されます。これについての詳細は http://kafka.apache.org/intro でお読みください。
+グループは柔軟で、クラスタ内で同期されます。たとえば、クラスタ内に 10 個のトピックと 5 個のテーブルのコピーがある場合、各コピーは 2 個のトピックを受け持ちます。コピー数が変化すると、トピックはコピー間で自動的に再分配されます。詳細については [http://kafka.apache.org/intro](http://kafka.apache.org/intro) を参照してください。
 
-各 Kafka トピックには専用の消費者グループを持つことが推奨されており、特に動的にトピックが作成され、削除される環境（例: テストやステージング）では、トピックとグループの間で独占的なペアリングを確保しています。
+各 Kafka トピックに専用のコンシューマーグループを用意し、トピックとグループの間で排他的な対応関係を維持することを推奨します。特に、テスト環境やステージング環境など、トピックが動的に作成および削除される可能性がある場合は重要です。
 
-`SELECT` はメッセージを読み取るには特に便利ではありません（デバッグを除いて）、なぜなら各メッセージは一度だけ読むことができるからです。リアルタイムスレッドを作成することがより実用的です。これを行うには:
+`SELECT` は、各メッセージが 1 回しか読み取れないため（デバッグ用途を除き）メッセージの読み取りにはあまり有用ではありません。代わりに、マテリアライズドビューを使ってリアルタイム処理フローを構築する方が実用的です。そのためには次のようにします。
 
-1. エンジンを使用して Kafka 消費者を作成し、データストリームとして扱います。
-2. 希望の構造を持つテーブルを作成します。
-3. エンジンからのデータを変換し、既に作成したテーブルに入れるマテリアライズドビューを作成します。
+1. エンジンを使用して Kafka コンシューマーを作成し、それをデータストリームとして扱います。
+2. 必要な構造のテーブルを作成します。
+3. エンジンからのデータを変換し、事前に作成しておいたテーブルに投入するマテリアライズドビューを作成します。
 
-`MATERIALIZED VIEW` がエンジンに接続すると、バックグラウンドでデータの収集が始まります。これにより、Kafka からメッセージを継続的に受信し、`SELECT` を使用して必要な形式に変換することができます。
-1 つの Kafka テーブルには、好きなだけのマテリアライズドビューを持つことができ、それらは Kafka テーブルから直接データを読み取るのではなく、新しいレコード（ブロック単位）を受け取ります。これにより、異なる詳細レベルで複数のテーブルに書き込むことができます（集約を伴うグルーピングありとなしで）。
+`MATERIALIZED VIEW` がエンジンに接続されると、バックグラウンドでデータの収集を開始します。これにより、Kafka から継続的にメッセージを受信し、`SELECT` を使用して必要な形式に変換できます。
+1 つの Kafka テーブルには、任意の数のマテリアライズドビューを関連付けることができます。これらは Kafka テーブルから直接データを読み取るのではなく、新しいレコード（ブロック単位）を受け取ります。この方法により、異なる詳細レベル（グループ化・集約あり／なし）の複数のテーブルに書き込むことができます。
 
 例:
 
 ```sql
-CREATE TABLE queue (
-  timestamp UInt64,
-  level String,
-  message String
-) ENGINE = Kafka('localhost:9092', 'topic', 'group1', 'JSONEachRow');
+  CREATE TABLE queue (
+    timestamp UInt64,
+    level String,
+    message String
+  ) ENGINE = Kafka('localhost:9092', 'topic', 'group1', 'JSONEachRow');
 
-CREATE TABLE daily (
-  day Date,
-  level String,
-  total UInt64
-) ENGINE = SummingMergeTree(day, (day, level), 8192);
+  CREATE TABLE daily (
+    day Date,
+    level String,
+    total UInt64
+  ) ENGINE = SummingMergeTree(day, (day, level), 8192);
 
-CREATE MATERIALIZED VIEW consumer TO daily
-  AS SELECT toDate(toDateTime(timestamp)) AS day, level, count() AS total
-  FROM queue GROUP BY day, level;
+  CREATE MATERIALIZED VIEW consumer TO daily
+    AS SELECT toDate(toDateTime(timestamp)) AS day, level, count() AS total
+    FROM queue GROUP BY day, level;
 
-SELECT level, sum(total) FROM daily GROUP BY level;
+  SELECT level, sum(total) FROM daily GROUP BY level;
 ```
-パフォーマンスを向上させるため、受信したメッセージは [max_insert_block_size](../../../operations/settings/settings.md#max_insert_block_size) のサイズのブロックにグループ化されます。ブロック内に [stream_flush_interval_ms](/operations/settings/settings#stream_flush_interval_ms) ミリ秒の間にブロックが形成されなかった場合、データはブロックの完全性にかかわらずテーブルにフラッシュされます。
 
-トピックデータの受信を停止するか、変換ロジックを変更するには、マテリアライズドビューを切り離します:
+パフォーマンスを向上させるため、受信したメッセージは [max&#95;insert&#95;block&#95;size](../../../operations/settings/settings.md#max_insert_block_size) のサイズのブロックにまとめられます。[stream&#95;flush&#95;interval&#95;ms](/operations/settings/settings#stream_flush_interval_ms) ミリ秒以内にブロックが形成されなかった場合は、ブロックが完全であるかどうかにかかわらず、データはテーブルにフラッシュされます。
+
+トピックデータの受信を停止するか変換ロジックを変更するには、マテリアライズドビューを DETACH します。
 
 ```sql
-DETACH TABLE consumer;
-ATTACH TABLE consumer;
+  DETACH TABLE consumer;
+  ATTACH TABLE consumer;
 ```
 
-`ALTER` を使用してターゲットテーブルを変更したい場合は、ターゲットテーブルとビューからのデータとの不一致を避けるためにマテリアルビューを無効にすることをお勧めします。
+`ALTER` を使用してターゲットテーブルを変更する場合は、ターゲットテーブルとビューからのデータとの不整合を避けるため、マテリアライズドビューを無効化することを推奨します。
 
 ## 設定 {#configuration}
 
-GraphiteMergeTree と同様に、Kafka エンジンは ClickHouse 設定ファイルを使用して拡張設定をサポートします。使用できる設定キーは 2 つあり、グローバル（`<kafka>` 以下）とトピックレベル（`<kafka><kafka_topic>` 以下）です。グローバル設定が最初に適用され、その後にトピックレベルの設定が適用されます（存在する場合）。
+GraphiteMergeTree と同様に、Kafka エンジンは ClickHouse の設定ファイルを用いた詳細な設定をサポートしています。使用できる設定キーは 2 種類あり、グローバル（`<kafka>` の下）とトピックレベル（`<kafka><kafka_topic>` の下）です。まずグローバル設定が適用され、その後にトピックレベルの設定（存在する場合）が適用されます。
 
 ```xml
-<kafka>
-  <!-- Global configuration options for all tables of Kafka engine type -->
-  <debug>cgrp</debug>
-  <statistics_interval_ms>3000</statistics_interval_ms>
+  <kafka>
+    <!-- Kafkaエンジンタイプの全テーブルに対するグローバル設定オプション -->
+    <debug>cgrp</debug>
+    <statistics_interval_ms>3000</statistics_interval_ms>
 
-  <kafka_topic>
-      <name>logs</name>
-      <statistics_interval_ms>4000</statistics_interval_ms>
-  </kafka_topic>
+    <kafka_topic>
+        <name>logs</name>
+        <statistics_interval_ms>4000</statistics_interval_ms>
+    </kafka_topic>
 
-  <!-- Settings for consumer -->
-  <consumer>
-      <auto_offset_reset>smallest</auto_offset_reset>
-      <kafka_topic>
-          <name>logs</name>
-          <fetch_min_bytes>100000</fetch_min_bytes>
-      </kafka_topic>
+    <!-- コンシューマー設定 -->
+    <consumer>
+        <auto_offset_reset>smallest</auto_offset_reset>
+        <kafka_topic>
+            <name>logs</name>
+            <fetch_min_bytes>100000</fetch_min_bytes>
+        </kafka_topic>
 
-      <kafka_topic>
-          <name>stats</name>
-          <fetch_min_bytes>50000</fetch_min_bytes>
-      </kafka_topic>
-  </consumer>
+        <kafka_topic>
+            <name>stats</name>
+            <fetch_min_bytes>50000</fetch_min_bytes>
+        </kafka_topic>
+    </consumer>
 
-  <!-- Settings for producer -->
-  <producer>
-      <kafka_topic>
-          <name>logs</name>
-          <retry_backoff_ms>250</retry_backoff_ms>
-      </kafka_topic>
+    <!-- プロデューサー設定 -->
+    <producer>
+        <kafka_topic>
+            <name>logs</name>
+            <retry_backoff_ms>250</retry_backoff_ms>
+        </kafka_topic>
 
-      <kafka_topic>
-          <name>stats</name>
-          <retry_backoff_ms>400</retry_backoff_ms>
-      </kafka_topic>
-  </producer>
-</kafka>
+        <kafka_topic>
+            <name>stats</name>
+            <retry_backoff_ms>400</retry_backoff_ms>
+        </kafka_topic>
+    </producer>
+  </kafka>
 ```
 
-利用可能な設定オプションのリストについては、[librdkafka 設定リファレンス](https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md)を参照してください。ClickHouse 設定では、ドットの代わりにアンダースコア（`_`）を使用します。例えば、`check.crcs=true` は `<check_crcs>true</check_crcs>` になります。
+利用可能な設定オプションの一覧については、[librdkafka の configuration reference](https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md) を参照してください。ClickHouse の設定では、ドットの代わりにアンダースコア（`_`）を使用します。たとえば、`check.crcs=true` は `<check_crcs>true</check_crcs>` に対応します。
 
 ### Kerberos サポート {#kafka-kerberos-support}
 
-Kerberos 対応の Kafka に対応するには、`sasl_plaintext` の値を持つ `security_protocol` 子要素を追加します。Kerberos チケットグラントチケットが OS 機能によって取得されキャッシュされるだけで十分です。
-ClickHouse は keytab ファイルを使用して Kerberos 資格情報を維持することができます。`sasl_kerberos_service_name`、`sasl_kerberos_keytab`、`sasl_kerberos_principal` の子要素を考慮してください。
+Kerberos 対応の Kafka を扱うには、`security_protocol` の子要素として `sasl_plaintext` を追加します。Kerberos のチケット授与チケット (TGT) が OS の機能によって取得・キャッシュされていれば十分です。
+ClickHouse は keytab ファイルを使用して Kerberos 資格情報を管理できます。`sasl_kerberos_service_name`、`sasl_kerberos_keytab`、`sasl_kerberos_principal` の子要素を指定します。
 
 例:
 
 ```xml
-<!-- Kerberos-aware Kafka -->
+<!-- Kerberos対応Kafka -->
 <kafka>
   <security_protocol>SASL_PLAINTEXT</security_protocol>
   <sasl_kerberos_keytab>/home/kafkauser/kafkauser.keytab</sasl_kerberos_keytab>
@@ -246,39 +248,40 @@ ClickHouse は keytab ファイルを使用して Kerberos 資格情報を維持
 
 ## 仮想カラム {#virtual-columns}
 
-- `_topic` — Kafka トピック。データ型: `LowCardinality(String)`。
+- `_topic` — Kafka のトピック。データ型: `LowCardinality(String)`。
 - `_key` — メッセージのキー。データ型: `String`。
 - `_offset` — メッセージのオフセット。データ型: `UInt64`。
 - `_timestamp` — メッセージのタイムスタンプ。データ型: `Nullable(DateTime)`。
-- `_timestamp_ms` — メッセージのタイムスタンプ（ミリ秒）。データ型: `Nullable(DateTime64(3))`。
+- `_timestamp_ms` — メッセージのミリ秒単位のタイムスタンプ。データ型: `Nullable(DateTime64(3))`。
 - `_partition` — Kafka トピックのパーティション。データ型: `UInt64`。
-- `_headers.name` — メッセージのヘッダーキーの配列。データ型: `Array(String)`。
-- `_headers.value` — メッセージのヘッダー値の配列。データ型: `Array(String)`。
+- `_headers.name` — メッセージヘッダーのキーの配列。データ型: `Array(String)`。
+- `_headers.value` — メッセージヘッダーの値の配列。データ型: `Array(String)`。
 
-`kafka_handle_error_mode='stream'` の場合の追加仮想カラム:
+`kafka_handle_error_mode='stream'` の場合に追加される仮想カラム:
 
-- `_raw_message` - 正しく解析できなかった生メッセージ。データ型: `String`。
-- `_error` - 解析中に発生した例外メッセージ。データ型: `String`。
+- `_raw_message` - 正しくパースできなかった生のメッセージ。データ型: `String`。
+- `_error` - パース失敗時に発生した例外メッセージ。データ型: `String`。
 
-注意: `_raw_message` および `_error` 仮想カラムは、解析中に例外が発生した場合のみ埋め込まれ、メッセージが正常に解析された場合は常に空です。
+注意: `_raw_message` と `_error` の仮想カラムに値が入るのは、パース中に例外が発生した場合のみです。メッセージが正常にパースされた場合は常に空になります。
 
-## データ形式サポート {#data-formats-support}
+## データ形式のサポート {#data-formats-support}
 
-Kafka エンジンは、ClickHouse でサポートされているすべての [formats](../../../interfaces/formats.md) をサポートしています。
-1 つの Kafka メッセージの行数は、フォーマットが行ベースかブロックベースかによって異なります:
+Kafka エンジンは、ClickHouse でサポートされているすべての[フォーマット](../../../interfaces/formats.md)をサポートします。
+1 つの Kafka メッセージ内の行数は、フォーマットが行ベースかブロックベースかによって異なります。
 
-- 行ベースの形式では、1 つの Kafka メッセージに含まれる行数は `kafka_max_rows_per_message` を設定することで制御できます。
-- ブロックベースの形式では、ブロックを小さな部分に分割することはできませんが、1 つのブロック内の行数は一般的な設定 [max_block_size](/operations/settings/settings#max_block_size) で制御できます。
+- 行ベースのフォーマットでは、1 つの Kafka メッセージ内の行数は `kafka_max_rows_per_message` の設定で制御できます。
+- ブロックベースのフォーマットでは、ブロックをより小さな部分に分割することはできませんが、1 ブロック内の行数は共通設定 [max_block_size](/operations/settings/settings#max_block_size) によって制御できます。
 
-## ClickHouse Keeper にコミット済みオフセットを保存するためのエンジン {#engine-to-store-committed-offsets-in-clickhouse-keeper}
+## ClickHouse Keeper にコミット済みオフセットを保存するエンジン {#engine-to-store-committed-offsets-in-clickhouse-keeper}
 
-<ExperimentalBadge/>
+<ExperimentalBadge />
 
-`allow_experimental_kafka_offsets_storage_in_keeper` が有効になっている場合、Kafka テーブルエンジンにさらに 2 つの設定を指定できます:
-- `kafka_keeper_path` は、ClickHouse Keeper 内のテーブルへのパスを指定します。
-- `kafka_replica_name` は、ClickHouse Keeper 内のレプリカ名を指定します。
+`allow_experimental_kafka_offsets_storage_in_keeper` が有効な場合、Kafka テーブルエンジンに対してさらに 2 つの設定を指定できます。
 
-どちらの設定も指定する必要があります。両方の設定が指定された場合、従来の Kafka エンジンとは独立して動作する、新しい実験的な Kafka エンジンが使用されます。この新しいエンジンは、コミット済みオフセットを Kafka に保存することに依存せず、ClickHouse Keeper に保存します。それでもオフセットを Kafka にコミットしようとしますが、テーブルが作成されるときだけそれらのオフセットに依存します。それ以外の場合（テーブルの再起動やエラー後の回復など）には、ClickHouse Keeper に保存されたオフセットがメッセージを消費し続けるために使用されます。コミットされたオフセットの他に、最後のバッチで消費されたメッセージの数も保存されるため、挿入が失敗した場合、同じ数のメッセージが消費され、必要に応じて重複排除が可能になります。
+* `kafka_keeper_path` は ClickHouse Keeper 内のテーブルパスを指定します
+* `kafka_replica_name` は ClickHouse Keeper 内のレプリカ名を指定します
+
+これら 2 つの設定は、両方とも指定するか、どちらも指定しないかのいずれかでなければなりません。両方とも指定された場合、新しい実験的な Kafka エンジンが使用されます。この新しいエンジンは、コミット済みオフセットを Kafka に保存することには依存せず、代わりに ClickHouse Keeper に保存します。引き続き Kafka へのオフセットコミットは試みますが、そのオフセットに依存するのはテーブル作成時のみです。それ以外の状況（テーブルの再起動や、何らかのエラーからの復旧時）では、ClickHouse Keeper に保存されたオフセットが、メッセージの消費を継続するためのオフセットとして使用されます。コミット済みオフセットに加えて、最後のバッチで消費されたメッセージ数も保存するため、挿入に失敗した場合には同じ数のメッセージが再度消費され、必要に応じて重複排除を有効にできます。
 
 例:
 
@@ -291,13 +294,14 @@ SETTINGS
 SETTINGS allow_experimental_kafka_offsets_storage_in_keeper=1;
 ```
 
-### 知られている制限事項 {#known-limitations}
+### 既知の制限事項 {#known-limitations}
 
-新しいエンジンは実験的なため、まだ本番環境では準備が整っていません。実装の既知の制限事項はいくつかあります:
-- 最大の制限は、エンジンが直接読み取りをサポートしていないことです。マテリアライズドビューを使用してエンジンを読み取り、エンジンに書き込むことは機能しますが、直接読み取りは機能しません。その結果、すべての直接 `SELECT` クエリは失敗します。
-- テーブルを急速に削除して再作成するか、同じ ClickHouse Keeper パスを異なるエンジンに指定すると問題が発生する可能性があります。ベストプラクティスとして、衝突を避けるために `kafka_keeper_path` で `{uuid}` を使用することをお勧めします。
-- 再現性のある読み取りを行うためには、メッセージを単一スレッドで複数のパーティションから消費することはできません。一方で、Kafka 消費者は定期的にポーリングを行う必要があります。これら二つの目的を達成するため、`kafka_thread_per_consumer` が有効な場合にのみ複数の消費者が作成できるようにしています。そうでないと、消費者を定期的にポーリングする際の問題を回避することが非常に複雑になります。
-- 新しいストレージエンジンによって作成された消費者は [`system.kafka_consumers`](../../../operations/system-tables/kafka_consumers.md) テーブルに表示されません。
+新しいエンジンは実験的なものであり、まだ本番運用の準備ができていません。実装には、いくつか既知の制限があります。
+
+- 最大の制限は、エンジンが直接読み取りをサポートしていないことです。マテリアライズドビューを使ってエンジンから読み取り、エンジンへ書き込むことはできますが、直接読み取りはできません。その結果、すべての直接的な `SELECT` クエリは失敗します。
+- テーブルを短時間に繰り返し削除および再作成したり、同じ ClickHouse Keeper のパスを異なるエンジンに指定したりすると問題が発生する可能性があります。ベストプラクティスとして、パスの衝突を回避するために `kafka_keeper_path` に `{uuid}` を使用することを推奨します。
+- 再現可能な読み取りを行うためには、1 つのスレッドで複数パーティションからメッセージを消費することはできません。一方で、Kafka コンシューマは生存させるために定期的にポーリングする必要があります。これら 2 つの要件の結果として、`kafka_thread_per_consumer` が有効な場合にのみ複数のコンシューマの作成を許可することにしました。そうでない場合は、コンシューマを定期的にポーリングすることに関する問題を回避するのがあまりにも複雑になるためです。
+- 新しいストレージエンジンによって作成されたコンシューマは、[`system.kafka_consumers`](../../../operations/system-tables/kafka_consumers.md) テーブルには表示されません。
 
 **関連項目**
 

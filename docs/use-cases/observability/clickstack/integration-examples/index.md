@@ -16,11 +16,16 @@ Several of these integration guides use ClickStack's built-in OpenTelemetry Coll
 
 | Section | Description |
 |------|-------------|
-| [Kafka Metrics](/use-cases/observability/clickstack/integrations/kafka-metrics) | Quick start guide for Kafka Metrics |
-| [Kubernetes](/use-cases/observability/clickstack/integrations/kubernetes) | Quick start guide for Kubernetes |
-| [Nginx Logs](/use-cases/observability/clickstack/integrations/nginx) | Quick start guide for Nginx Logs |
-| [Nginx Traces](/use-cases/observability/clickstack/integrations/nginx-traces) | Quick start guide for Nginx Traces |
-| [PostgreSQL Logs](/use-cases/observability/clickstack/integrations/postgresql-logs) | Quick start guide for PostgreSQL Logs |
-| [PostgreSQL Metrics](/use-cases/observability/clickstack/integrations/postgresql-metrics) | Quick start guide for PostgreSQL Metrics |
-| [Redis Logs](/use-cases/observability/clickstack/integrations/redis) | Quick start guide for Redis Logs |
-| [Redis Metrics](/use-cases/observability/clickstack/integrations/redis-metrics) | Quick start guide for Redis Metrics |
+| [Generic Host Logs](/use-cases/observability/clickstack/integrations/host-logs) | Collect host system logs |
+| [EC2 Host Logs](/use-cases/observability/clickstack/integrations/host-logs/ec2) | Monitor EC2 instance logs |
+| [AWS Lambda Logs using Rotel](/use-cases/observability/clickstack/integrations/aws-lambda) | Forward Lambda logs with Rotel |
+| [AWS CloudWatch](/use-cases/observability/clickstack/integrations/aws-cloudwatch-logs) | Forward CloudWatch log groups |
+| [JVM Metrics](/use-cases/observability/clickstack/integrations/jvm-metrics) | Monitor JVM performance |
+| [Kafka Metrics](/use-cases/observability/clickstack/integrations/kafka-metrics) | Monitor Kafka performance |
+| [Kubernetes](/use-cases/observability/clickstack/integrations/kubernetes) | Monitor K8s clusters |
+| [Nginx Logs](/use-cases/observability/clickstack/integrations/nginx) | Collect Nginx access/error logs |
+| [Nginx Traces](/use-cases/observability/clickstack/integrations/nginx-traces) | Trace Nginx HTTP requests |
+| [PostgreSQL Logs](/use-cases/observability/clickstack/integrations/postgresql-logs) | Collect Postgres logs |
+| [PostgreSQL Metrics](/use-cases/observability/clickstack/integrations/postgresql-metrics) | Monitor Postgres performance |
+| [Redis Logs](/use-cases/observability/clickstack/integrations/redis) | Collect Redis server logs |
+| [Redis Metrics](/use-cases/observability/clickstack/integrations/redis-metrics) | Monitor Redis performance |

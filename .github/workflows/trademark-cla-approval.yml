@@ -170,7 +170,7 @@ jobs:
 
       - name: Check out repository
         if: success() && steps.process-comment.outputs.pr_number != ''
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           # For forked PRs, we need to fetch from the fork and checkout the SHA

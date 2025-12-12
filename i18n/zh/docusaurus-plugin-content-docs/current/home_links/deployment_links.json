@@ -1,14 +1,14 @@
 [
-	{
-		"title": "Quick Start",
-		"description": "Get up and running on ClickHouse in minutes, explore some sample data, and build your solution",
-		"url": "/docs/quick-start/",
-		"background": "cloud"
-	},
-	{
-	"title": "Tutorials and Sample Datasets",
-	"description": "From taxi rides to property prices, learn how to get data into ClickHouse and model it for query performance",
-	"url": "/docs/getting-started/example-datasets/",
-	"background": "cloud"
-	}
+  {
+    "title": "快速入门",
+    "description": "在几分钟内即可上手 ClickHouse，探索示例数据并开始构建您的解决方案",
+    "url": "/docs/quick-start/",
+    "background": "云"
+  },
+  {
+    "title": "教程与示例数据集",
+    "description": "从出租车行程到房产价格，了解如何将数据导入 ClickHouse，并进行建模以提升查询性能",
+    "url": "/docs/getting-started/example-datasets/",
+    "background": "云"
+  }
 ]

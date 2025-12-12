@@ -1,9 +1,10 @@
 #!/bin/bash
-# vale-report.sh - Generate Vale report
+# vale-report.sh - Generate Vale report and track progress
 
-vale docs/ \
-  --glob='!docs/whats-new/**/*.md' \
-  --output=JSON > vale-report.json 2>&1
+PROGRESS_FILE="vale-progress.csv"
+
+find docs/ -type f -name "*.md" \
+  -exec vale --output=JSON {} + > vale-report.json 2>&1
 
 # Check if vale-report.json is valid JSON
 if ! jq empty vale-report.json 2>/dev/null; then
@@ -14,16 +15,50 @@ if ! jq empty vale-report.json 2>/dev/null; then
     exit 1
 fi
 
+# Initialize CSV if it doesn't exist
+if [ ! -f "$PROGRESS_FILE" ]; then
+    echo "timestamp,date,errors,warnings,suggestions,total" > "$PROGRESS_FILE"
+fi
+
+# Count issues by severity
+ERRORS=$(jq '[.[] | .[] | select(.Severity == "error")] | length' vale-report.json)
+WARNINGS=$(jq '[.[] | .[] | select(.Severity == "warning")] | length' vale-report.json)
+SUGGESTIONS=$(jq '[.[] | .[] | select(.Severity == "suggestion")] | length' vale-report.json)
+TOTAL=$((ERRORS + WARNINGS + SUGGESTIONS))
+
+TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
+DATE=$(date '+%Y-%m-%d')
+
+# Get the last entry to check if numbers changed
+if [ -f "$PROGRESS_FILE" ]; then
+    LAST_ENTRY=$(tail -n 1 "$PROGRESS_FILE")
+    LAST_ERRORS=$(echo "$LAST_ENTRY" | cut -d',' -f3)
+    LAST_WARNINGS=$(echo "$LAST_ENTRY" | cut -d',' -f4)
+    LAST_SUGGESTIONS=$(echo "$LAST_ENTRY" | cut -d',' -f5)
+    
+    # Only add entry if numbers changed
+    if [ "$ERRORS" != "$LAST_ERRORS" ] || [ "$WARNINGS" != "$LAST_WARNINGS" ] || [ "$SUGGESTIONS" != "$LAST_SUGGESTIONS" ]; then
+        echo "$TIMESTAMP,$DATE,$ERRORS,$WARNINGS,$SUGGESTIONS,$TOTAL" >> "$PROGRESS_FILE"
+        CHANGE_INDICATOR=" (CHANGED - logged to $PROGRESS_FILE)"
+    else
+        CHANGE_INDICATOR=" (no change since last run)"
+    fi
+else
+    # First entry
+    echo "$TIMESTAMP,$DATE,$ERRORS,$WARNINGS,$SUGGESTIONS,$TOTAL" >> "$PROGRESS_FILE"
+    CHANGE_INDICATOR=" (first entry logged)"
+fi
+
 echo "================================================"
-echo "Vale Report - $(date '+%Y-%m-%d')"
+echo "Vale Report - $DATE"
 echo "================================================"
 echo ""
 
-WARNINGS=$(jq '[.[] | .[] | select(.Severity == "warning")] | length' vale-report.json)
-SUGGESTIONS=$(jq '[.[] | .[] | select(.Severity == "suggestion")] | length' vale-report.json)
-
+echo "Errors: $ERRORS"
 echo "Warnings: $WARNINGS"
 echo "Suggestions: $SUGGESTIONS"
+echo "Total: $TOTAL"
+echo "$CHANGE_INDICATOR"
 echo ""
 
 echo "Top Warning Rules:"
@@ -35,6 +70,9 @@ jq -r 'to_entries | map({file: .key, count: [.value[] | select(.Severity == "war
 echo ""
 
 echo "================================================"
+echo "Progress tracking: $PROGRESS_FILE"
+echo "View progress: cat $PROGRESS_FILE"
+echo ""
 echo "To fix a file:"
 echo "   vale docs/path/to/file.md"
 echo "   vim docs/path/to/file.md"

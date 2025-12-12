@@ -18,7 +18,7 @@ lengths, even if variable, ClickHouse removes this restriction and burden
 from the user by storing strings without encoding as bytes. The ClickHouse
 String type thus has no limits or length specification requirements.
 
-Furthermore, users can exploit Arrays, Tuples, and Enums - absent from
+Furthermore, you can exploit Arrays, Tuples, and Enums - absent from
 Redshift as first-class citizens (although Arrays/Structs can be imitated
 with `SUPER`) and a common frustration of users. ClickHouse additionally
 allows the persistence, either at query time or even in a table, of
@@ -86,7 +86,7 @@ performance when a query uses one or more secondary sort columns. ClickHouse
 supports explicit [projections](/data-modeling/projections), which achieve the 
 same end-result with a slightly different setup.
 
-Users should be aware that the “primary key” concept represents different things
+You should be aware that the “primary key” concept represents different things
 in ClickHouse and Redshift. In Redshift, the primary key resembles the traditional
 RDMS concept intended to enforce constraints. However, they are not strictly 
 enforced in Redshift and instead act as hints for the query planner and data 

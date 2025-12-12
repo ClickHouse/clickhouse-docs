@@ -1,6 +1,9 @@
 {
-  "label": "Change logs",
+  "label": "変更履歴",
   "collapsible": true,
   "collapsed": true,
-  "link": { "type": "doc", "id": "cloud/reference/changelog/index" }
+  "link": {
+    "type": "ドキュメント",
+    "id": "cloud/reference/changelog/index"
+  }
 }

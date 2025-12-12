@@ -1,39 +1,39 @@
 ---
-'description': 'ClickHouseでのリソース使用量のクォータの設定と管理に関するガイド'
-'sidebar_label': 'Quotas'
-'sidebar_position': 51
-'slug': '/operations/quotas'
-'title': 'クォータ'
-'doc_type': 'guide'
+description: 'ClickHouse におけるリソース使用クォータの設定と管理ガイド'
+sidebar_label: 'クォータ'
+sidebar_position: 51
+slug: /operations/quotas
+title: 'クォータ'
+doc_type: 'guide'
 ---
 
-:::note ClickHouse Cloudにおけるクォータ
-クォータはClickHouse Cloudでサポートされていますが、[DDL構文](/sql-reference/statements/create/quota)を使用して作成する必要があります。以下に記載されているXML設定アプローチは**サポートされていません**。
+:::note ClickHouse Cloud におけるクォータ
+クォータは ClickHouse Cloud でサポートされていますが、[DDL 構文](/sql-reference/statements/create/quota) を使用して作成する必要があります。以下で説明する XML 設定方式は **サポートされていません**。
 :::
 
-クォータは、一定の期間にわたるリソース使用量を制限したり、リソースの使用状況を追跡したりすることを可能にします。
-クォータは、通常'users.xml'というユーザー設定内に設定されます。
+クォータを使用すると、一定期間におけるリソース使用量を制限したり、リソースの使用状況を追跡したりできます。
+クォータはユーザー設定ファイルで行い、通常は「users.xml」に記述します。
 
-システムには、単一のクエリの複雑性を制限する機能も備わっています。[クエリの複雑性に関する制限](../operations/settings/query-complexity.md)のセクションを参照してください。
+システムには、単一クエリの複雑さを制限するための機能もあります。詳しくは、[クエリの複雑さに関する制限](../operations/settings/query-complexity.md)のセクションを参照してください。
 
-クエリの複雑性制限とは対照的に、クォータは以下の点で異なります：
+クエリ複雑性の制限とは対照的に、クォータには次のような特徴があります。
 
-- 単一のクエリを制限するのではなく、一定の期間内に実行できるクエリのセットに制限を設けます。
-- 分散クエリ処理のために、すべてのリモートサーバーで消費されたリソースを考慮します。
+* 単一クエリを制限するのではなく、一定期間に実行できるクエリの集合に制限をかけます。
+* 分散クエリ処理のために、すべてのリモートサーバーで消費されたリソースを計上します。
 
-クォータを定義する'users.xml'ファイルのセクションを見てみましょう。
+クォータを定義している「users.xml」ファイルの該当セクションを見てみましょう。
 
 ```xml
-<!-- Quotas -->
+<!-- クォータ -->
 <quotas>
-    <!-- Quota name. -->
+    <!-- クォータ名 -->
     <default>
-        <!-- Restrictions for a time period. You can set many intervals with different restrictions. -->
+        <!-- 時間間隔に対する制限。異なる制限を持つ複数の間隔を設定できます。 -->
         <interval>
-            <!-- Length of the interval. -->
+            <!-- 間隔の長さ -->
             <duration>3600</duration>
 
-            <!-- Unlimited. Just collect data for the specified time interval. -->
+            <!-- 無制限。指定された時間間隔のデータを収集するのみ。 -->
             <queries>0</queries>
             <query_selects>0</query_selects>
             <query_inserts>0</query_inserts>
@@ -45,14 +45,14 @@
     </default>
 ```
 
-デフォルトでは、クォータはリソース消費を每時追跡し、使用量に制限を設けません。
-各インターバルで計算されたリソース消費は、各リクエスト後にサーバーログに出力されます。
+デフォルトでは、クォータは各時間ごとのリソース消費量を追跡しますが、使用量を制限はしません。
+各時間間隔で計算されたリソース消費量は、各リクエスト後にサーバーログへ出力されます。
 
 ```xml
 <statbox>
-    <!-- Restrictions for a time period. You can set many intervals with different restrictions. -->
+    <!-- 期間に対する制限。異なる制限を持つ複数の間隔を設定できます。 -->
     <interval>
-        <!-- Length of the interval. -->
+        <!-- 間隔の長さ。 -->
         <duration>3600</duration>
 
         <queries>1000</queries>
@@ -82,59 +82,61 @@
 </statbox>
 ```
 
-'statbox'クォータでは、毎時および毎24時間（86,400秒）に制限が設定されています。時間のインターバルは、実装に定義された固定の時点から数えられます。言い換えれば、24時間のインターバルは必ずしも真夜中から始まるわけではありません。
+&#39;statbox&#39; クォータでは、1時間ごとと 24時間ごと（86,400 秒）に制限が設定されます。時間間隔は、実装依存の固定された時点からの経過時間でカウントされます。つまり、24時間の間隔は必ずしも真夜中から始まるとは限りません。
 
-インターバルが終了すると、収集されたすべての値はクリアされます。次の時間に対して、クォータの計算は最初から始まります。
+間隔が終了すると、収集されたすべての値はクリアされます。次の1時間に対しては、クォータの計算が再びゼロから始まります。
 
-制限可能な量は以下の通りです：
+制限を設定できる項目は次のとおりです。
 
-`queries` – リクエストの総数。
+`queries` – クエリの合計数。
 
-`query_selects` – selectリクエストの総数。
+`query_selects` – `select` クエリの合計数。
 
-`query_inserts` – insertリクエストの総数。
+`query_inserts` – `insert` クエリの合計数。
 
 `errors` – 例外をスローしたクエリの数。
 
-`result_rows` – 結果として与えられる行の総数。
+`result_rows` – 結果として返された行数の合計。
 
-`result_bytes` - 結果として与えられる行の総サイズ。
+`result_bytes` - 結果として返された行の合計サイズ。
 
-`read_rows` – すべてのリモートサーバーでクエリを実行するためにテーブルから読み込まれたソース行の総数。
+`read_rows` – すべてのリモートサーバーでクエリを実行するためにテーブルから読み取られた元データ行数の合計。
 
-`read_bytes` - すべてのリモートサーバーでクエリを実行するためにテーブルから読み込まれたデータの総サイズ。
+`read_bytes` - すべてのリモートサーバーでクエリを実行するためにテーブルから読み取られたデータ量の合計。
 
-`written_bytes` - 書き込み操作の総サイズ。
+`written_bytes` - 書き込み処理で出力されたデータ量の合計。
 
-`execution_time` – クエリの総実行時間（秒、壁時間）。
+`execution_time` – クエリ実行時間の合計（秒、ウォールクロックタイム）。
 
-`failed_sequential_authentications` - 連続した認証エラーの総数。
+`failed_sequential_authentications` - 連続して発生した認証エラーの合計回数。
 
-いずれかの時間インターバルの制限が超えられると、その制限が超えられたこと、そのインターバル、そして新しいインターバルがいつ始まり（クエリを再送信できる時間）、というテキストを持つ例外がスローされます。
 
-クォータは「クォータキー」機能を使用して、複数のキーのリソースを独立して報告することができます。以下はその例です：
+少なくとも 1 つの時間間隔で制限を超過した場合、どの制限がどの間隔で超過されたか、さらに新しい時間間隔（再びクエリを送信できるようになるタイミング）がいつ開始するかについてのメッセージを含む例外がスローされます。
+
+クォータは「quota key」機能を使用して、複数のキーごとにリソースを独立して集計・報告できます。以下はその例です。
 
 ```xml
-<!-- For the global reports designer. -->
+<!-- グローバルレポートデザイナー用 -->
 <web_global>
-    <!-- keyed – The quota_key "key" is passed in the query parameter,
-            and the quota is tracked separately for each key value.
-        For example, you can pass a username as the key,
-            so the quota will be counted separately for each username.
-        Using keys makes sense only if quota_key is transmitted by the program, not by a user.
+    <!-- keyed – quota_key「key」がクエリパラメータで渡され、
+            クォータは各キー値ごとに個別に追跡されます。
+        例えば、キーとしてユーザー名を渡すことで、
+            クォータはユーザー名ごとに個別にカウントされます。
+        キーの使用は、quota_keyがユーザーではなくプログラムによって送信される場合にのみ有効です。
 
-        You can also write <keyed_by_ip />, so the IP address is used as the quota key.
-        (But keep in mind that users can change the IPv6 address fairly easily.)
+        <keyed_by_ip />と記述することもでき、その場合IPアドレスがクォータキーとして使用されます。
+        (ただし、ユーザーはIPv6アドレスを比較的容易に変更できる点に留意してください。)
     -->
     <keyed />
 ```
 
-クォータは、設定の'users'セクションでユーザーに割り当てられます。「アクセス権」のセクションを参照してください。
+クォータは設定ファイルの&#39;users&#39;セクションでユーザーに割り当てられます。&quot;Access rights&quot; のセクションを参照してください。
 
-分散クエリ処理のために、蓄積された量はリクエスターサーバーに保存されます。したがって、ユーザーが別のサーバーに移動した場合、そこのクォータは「最初からやり直し」になります。
+分散クエリ処理では、累積値はリクエスト元サーバーに保存されます。そのため、ユーザーが別のサーバーへ移動した場合、そのサーバーでのクォータはゼロからカウントし直しになります。
 
-サーバーが再起動すると、クォータがリセットされます。
+サーバーを再起動すると、クォータはリセットされます。
+
 
 ## 関連コンテンツ {#related-content}
 
-- ブログ: [ClickHouseを使用したシングルページアプリケーションの構築](https://clickhouse.com/blog/building-single-page-applications-with-clickhouse-and-http)
+- ブログ記事: [ClickHouse でシングルページアプリケーションを構築する](https://clickhouse.com/blog/building-single-page-applications-with-clickhouse-and-http)

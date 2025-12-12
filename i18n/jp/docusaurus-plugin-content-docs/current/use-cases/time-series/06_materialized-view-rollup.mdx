@@ -1,256 +1,248 @@
 ---
-'title': 'マテリアライズドビューを使用して高速な時系列分析のためのロールアップを構築する'
-'slug': '/knowledgebase/materialized-view-rollup-timeseries'
-'description': '生のイベントテーブル、ロールアップテーブル、および低遅延分析のためのマテリアライズドビューを作成するエンドツーエンドの例。'
-'keywords':
-- 'materialized view'
-- 'rollup'
-- 'aggregate'
-- 'timeseries'
-- 'tutorial'
-'doc_type': 'guide'
+title: 'マテリアライズドビューを使ってロールアップを構築し、高速な時系列分析を行う'
+slug: /knowledgebase/materialized-view-rollup-timeseries
+description: '生イベントテーブル、ロールアップテーブル、低レイテンシー分析向けマテリアライズドビューを作成するエンドツーエンドの例。'
+keywords: ['マテリアライズドビュー', 'ロールアップ', '集計', '時系列', 'チュートリアル']
+doc_type: 'guide'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-> このチュートリアルでは、[**マテリアライズドビュー**](/materialized-views)を使用して、高ボリュームのイベントテーブルから事前集計されたロールアップを維持する方法を示します。
-3つのオブジェクトを作成します。生テーブル、ロールアップテーブル、およびロールアップに自動的に書き込むマテリアライズドビューです。
+> このチュートリアルでは、高ボリュームのイベントテーブルから事前集計されたロールアップを、[**マテリアライズドビュー**](/materialized-views) を使って維持する方法を説明します。
+> ここでは、3 つのオブジェクト――生データ用テーブル、ロールアップテーブル、およびロールアップテーブルに自動的に書き込むマテリアライズドビュー――を作成します。
 
-## このパターンを使用するタイミング {#when-to-use}
+## このパターンを使用する状況 \{#when-to-use\}
 
-次の場合にこのパターンを使用します：
-- **追加専用のイベントストリーム**（クリック、ページビュー、IoT、ログ）がある。
-- ほとんどのクエリは、時間範囲の**集計**（分/時間/日単位）である。
-- すべての生行を再スキャンせずに、**一貫したサブ秒の読み取り**が必要。
+次のような場合にこのパターンを使用します:
+
+* **追記専用のイベントストリーム**（クリック、ページビュー、IoT、ログ）を扱っている。
+* ほとんどのクエリが、時間範囲（分/時間/日ごと）に対する**集計処理**である。
+* すべての生データ行を再スキャンすることなく、**常に 1 秒未満の読み取りレイテンシ**を実現したい。
 
 <VerticalStepper headerLevel="h2">
+  ## rawイベントテーブルを作成する \{#create-raw-events-table\}
 
-## 生イベントテーブルの作成 {#create-raw-events-table}
+  ```sql
+  CREATE TABLE events_raw
+  (
+      event_time   DateTime,
+      user_id      UInt64,
+      country      LowCardinality(String),
+      event_type   LowCardinality(String),
+      value        Float64
+  )
+  ENGINE = MergeTree
+  PARTITION BY toYYYYMM(event_time)
+  ORDER BY (event_time, user_id)
+  TTL event_time + INTERVAL 90 DAY DELETE
+  ```
 
-```sql
-CREATE TABLE events_raw
-(
-    event_time   DateTime,
-    user_id      UInt64,
-    country      LowCardinality(String),
-    event_type   LowCardinality(String),
-    value        Float64
-)
-ENGINE = MergeTree
-PARTITION BY toYYYYMM(event_time)
-ORDER BY (event_time, user_id)
-TTL event_time + INTERVAL 90 DAY DELETE
-```
+  **注記**
 
-**ノート**
+  * `PARTITION BY toYYYYMM(event_time)` を指定すると、パーティションを小さく保ち、容易に削除できるようになります。
+  * `ORDER BY (event_time, user_id)` は、時間範囲を指定したクエリおよびセカンダリフィルタをサポートします。
+  * `LowCardinality(String)` は、カテゴリ値を持つディメンションのメモリ消費を抑えます。
+  * `TTL` は 90 日後に生データを自動的に削除します（保持期間の要件に合わせて調整してください）。
 
-- `PARTITION BY toYYYYMM(event_time)`は、パーティションを小さく保ち、削除しやすくします。
-- `ORDER BY (event_time, user_id)`は、時間制限付きクエリと二次フィルタをサポートします。
-- `LowCardinality(String)`は、カテゴリカル次元のメモリを節約します。
-- `TTL`は、90日後に生データをクリーンアップします（保持要件に合わせて調整）。
+  ## ロールアップ（集約）テーブルの設計 \{#design-rollup\}
 
-## ロールアップ（集計）テーブルの設計 {#design-rollup}
+  **時間単位**の粒度で事前集計を行います。
+  最も一般的な分析ウィンドウに合わせて粒度を選択してください。
 
-**時**間粒度に事前集計します。
-最も一般的な分析ウィンドウに一致する粒度を選択してください。
+  ```sql
+  CREATE TABLE events_rollup_1h
+  (
+      bucket_start  DateTime,            -- 1時間の開始時刻
+      country       LowCardinality(String),
+      event_type    LowCardinality(String),
+      users_uniq    AggregateFunction(uniqExact, UInt64),
+      value_sum     AggregateFunction(sum, Float64),
+      value_avg     AggregateFunction(avg, Float64),
+      events_count  AggregateFunction(count)
+  )
+  ENGINE = AggregatingMergeTree
+  PARTITION BY toYYYYMM(bucket_start)
+  ORDER BY (bucket_start, country, event_type)
+  ```
 
-```sql
-CREATE TABLE events_rollup_1h
-(
-    bucket_start  DateTime,            -- start of the hour
-    country       LowCardinality(String),
-    event_type    LowCardinality(String),
-    users_uniq    AggregateFunction(uniqExact, UInt64),
-    value_sum     AggregateFunction(sum, Float64),
-    value_avg     AggregateFunction(avg, Float64),
-    events_count  AggregateFunction(count)
-)
-ENGINE = AggregatingMergeTree
-PARTITION BY toYYYYMM(bucket_start)
-ORDER BY (bucket_start, country, event_type)
-```
+  **集約状態**（例：`AggregateFunction(sum, ...)`）を保存します。これにより部分集約をコンパクトに表現し、後でマージまたは最終化することができます。
 
-**集計状態**（例:`AggregateFunction(sum, ...)`）を保存します。これは部分集計をコンパクトに表現し、後でマージまたは確定できます。
+  ## ロールアップにデータを投入するマテリアライズドビューを作成する \{#create-materialized-view-to-populate-rollup\}
 
-## ロールアップをポピュレートするマテリアライズドビューの作成 {#create-materialized-view-to-populate-rollup}
+  このマテリアライズドビューは `events_raw` へのデータ挿入時に自動的に実行され、**集約状態**をロールアップテーブルに書き込みます。
 
-このマテリアライズドビューは、`events_raw`への挿入時に自動的に発火し、ロールアップに**集計状態**を書き込みます。
+  ```sql
+  CREATE MATERIALIZED VIEW mv_events_rollup_1h
+  TO events_rollup_1h
+  AS
+  SELECT
+      toStartOfHour(event_time) AS bucket_start,
+      country,
+      event_type,
+      uniqExactState(user_id)   AS users_uniq,
+      sumState(value)           AS value_sum,
+      avgState(value)           AS value_avg,
+      countState()              AS events_count
+  FROM events_raw
+  GROUP BY bucket_start, country, event_type;
+  ```
 
-```sql
-CREATE MATERIALIZED VIEW mv_events_rollup_1h
-TO events_rollup_1h
-AS
-SELECT
-    toStartOfHour(event_time) AS bucket_start,
-    country,
-    event_type,
-    uniqExactState(user_id)   AS users_uniq,
-    sumState(value)           AS value_sum,
-    avgState(value)           AS value_avg,
-    countState()              AS events_count
-FROM events_raw
-GROUP BY bucket_start, country, event_type;
-```
+  ## サンプルデータを挿入する \{#insert-some-sample-data\}
 
-## サンプルデータの挿入 {#insert-some-sample-data}
+  サンプルデータを挿入する:
 
-いくつかのサンプルデータを挿入します：
+  ```sql
+  INSERT INTO events_raw VALUES
+      (now() - INTERVAL 4 SECOND, 101, 'US', 'view', 1),
+      (now() - INTERVAL 3 SECOND, 101, 'US', 'click', 1),
+      (now() - INTERVAL 2 SECOND, 202, 'DE', 'view', 1),
+      (now() - INTERVAL 1 SECOND, 101, 'US', 'view', 1);
+  ```
 
-```sql
-INSERT INTO events_raw VALUES
-    (now() - INTERVAL 4 SECOND, 101, 'US', 'view', 1),
-    (now() - INTERVAL 3 SECOND, 101, 'US', 'click', 1),
-    (now() - INTERVAL 2 SECOND, 202, 'DE', 'view', 1),
-    (now() - INTERVAL 1 SECOND, 101, 'US', 'view', 1);
-```
+  ## ロールアップへのクエリ実行 \{#querying-the-rollup\}
 
-## ロールアップのクエリ {#querying-the-rollup}
+  読み取り時に状態を**マージ**するか、**確定**するかを選択できます:
 
-状態を読取り時に**マージ**するか、**確定**することができます：
+  <Tabs groupId="finalize">
+    <TabItem value="merge" label="読み取り時にマージ">
+      ```sql
+      SELECT
+          bucket_start,
+          country,
+          event_type,
+          uniqExactMerge(users_uniq) AS users,
+          sumMerge(value_sum)        AS value_sum,
+          avgMerge(value_avg)        AS value_avg,
+          countMerge(events_count)   AS events
+      FROM events_rollup_1h
+      WHERE bucket_start >= now() - INTERVAL 1 DAY
+      GROUP BY ALL
+      ORDER BY bucket_start, country, event_type;
+      ```
+    </TabItem>
 
-<Tabs groupId="finalize">
-  <TabItem value="merge" label="読み取り時にマージ">
+    <TabItem value="finalize" label="-Final で最終化">
+      ```sql
+      SELECT
+          bucket_start,
+          country,
+          event_type,
+          uniqExactMerge(users_uniq) AS users,
+          sumMerge(value_sum)        AS value_sum,
+          avgMerge(value_avg)        AS value_avg,
+          countMerge(events_count)   AS events
+      FROM events_rollup_1h
+      WHERE bucket_start >= now() - INTERVAL 1 DAY
+      GROUP BY ALL
+      ORDER BY bucket_start, country, event_type
+      SETTINGS final = 1;  -- または SELECT ... FINAL を使用する
+      ```
+    </TabItem>
+  </Tabs>
 
-```sql
-SELECT
-    bucket_start,
-    country,
-    event_type,
-    uniqExactMerge(users_uniq) AS users,
-    sumMerge(value_sum)        AS value_sum,
-    avgMerge(value_avg)        AS value_avg,
-    countMerge(events_count)   AS events
-FROM events_rollup_1h
-WHERE bucket_start >= now() - INTERVAL 1 DAY
-GROUP BY ALL
-ORDER BY bucket_start, country, event_type;
-```
+  <br />
 
-  </TabItem>
-  <TabItem value="finalize" label="-Finalで確定">
+  :::tip
+  読み取りが常にロールアップにヒットすることが想定される場合は、**2つ目のマテリアライズドビュー**を作成して、&#95;確定済み&#95;の数値を同じ1時間粒度の「プレーン」な`MergeTree`テーブルに書き込むことができます。
+  状態を使用すると柔軟性が高まりますが、確定済みの数値を使用すると読み取りがやや簡潔になります。
+  :::
 
-```sql
-SELECT
-    bucket_start,
-    country,
-    event_type,
-    uniqExactMerge(users_uniq) AS users,
-    sumMerge(value_sum)        AS value_sum,
-    avgMerge(value_avg)        AS value_avg,
-    countMerge(events_count)   AS events
-FROM events_rollup_1h
-WHERE bucket_start >= now() - INTERVAL 1 DAY
-GROUP BY ALL
-ORDER BY bucket_start, country, event_type
-SETTINGS final = 1;  -- or use SELECT ... FINAL
-```
+  ## 最適なパフォーマンスのためにプライマリキーのフィールドでフィルタリングする \{#filtering-performance\}
 
-  </TabItem>
-</Tabs>
+  `EXPLAIN`コマンドを使用して、インデックスがデータの刈り込みにどのように使用されているかを確認できます:
 
-<br/>
-:::tip
-読み取りが常にロールアップにヒットすることを期待する場合は、1時間粒度で「プレーン」`MergeTree`テーブルに*確定された*数値を書き込む**2番目のマテリアライズドビュー**を作成できます。
-状態はより柔軟性を提供し、一方で確定された数値はわずかに単純な読み取りを提供します。
-:::
+  ```sql title="Query"
+  EXPLAIN indexes=1
+  SELECT *
+  FROM events_rollup_1h
+  WHERE bucket_start BETWEEN now() - INTERVAL 3 DAY AND now()
+    AND country = 'US';
+  ```
 
-## パフォーマンス向上のために主キーのフィールドでフィルタリング {#filtering-performance}
+  ```response title="Response"
+  ┌─explain────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+      1.  │ Expression ((Project names + Projection))                                                                                          │
+      2.  │   Expression                                                                                                                       │
+      3.  │     ReadFromMergeTree (default.events_rollup_1h)                                                                                   │
+      4.  │     Indexes:                                                                                                                       │
+      5.  │       MinMax                                                                                                                       │
+      6.  │         Keys:                                                                                                                      │
+      7.  │           bucket_start                                                                                                             │
+      8.  │         Condition: and((bucket_start in (-Inf, 1758550242]), (bucket_start in [1758291042, +Inf)))                                 │
+      9.  │         Parts: 1/1                                                                                                                 │
+      10. │         Granules: 1/1                                                                                                              │
+      11. │       Partition                                                                                                                    │
+      12. │         Keys:                                                                                                                      │
+      13. │           toYYYYMM(bucket_start)                                                                                                   │
+      14. │         Condition: and((toYYYYMM(bucket_start) in (-Inf, 202509]), (toYYYYMM(bucket_start) in [202509, +Inf)))                     │
+      15. │         Parts: 1/1                                                                                                                 │
+      16. │         Granules: 1/1                                                                                                              │
+      17. │       PrimaryKey                                                                                                                   │
+      18. │         Keys:                                                                                                                      │
+      19. │           bucket_start                                                                                                             │
+      20. │           country                                                                                                                  │
+      21. │         Condition: and((country in ['US', 'US']), and((bucket_start in (-Inf, 1758550242]), (bucket_start in [1758291042, +Inf)))) │
+      22. │         Parts: 1/1                                                                                                                 │
+      23. │         Granules: 1/1                                                                                                              │
+          └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+  ```
 
-`EXPLAIN`コマンドを使用して、インデックスがデータをプルーニングするためにどのように使用されているかを確認できます：
+  上記のクエリ実行計画では、3種類のインデックスが使用されています：
+  MinMaxインデックス、パーティションインデックス、プライマリキーインデックスです。
+  各インデックスは、プライマリキーで指定されたフィールド `(bucket_start, country, event_type)` を使用します。
+  最適なフィルタリングパフォーマンスを実現するには、クエリがプライマリキーフィールドを使用してデータをプルーニングしていることを確認してください。
 
-```sql title="Query"
-EXPLAIN indexes=1
-SELECT *
-FROM events_rollup_1h
-WHERE bucket_start BETWEEN now() - INTERVAL 3 DAY AND now()
-  AND country = 'US';
-```
+  ## 一般的な構成パターン \{#common-variations\}
 
-```response title="Response"
-    ┌─explain────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-1.  │ Expression ((Project names + Projection))                                                                                          │
-2.  │   Expression                                                                                                                       │
-3.  │     ReadFromMergeTree (default.events_rollup_1h)                                                                                   │
-4.  │     Indexes:                                                                                                                       │
-5.  │       MinMax                                                                                                                       │
-6.  │         Keys:                                                                                                                      │
-7.  │           bucket_start                                                                                                             │
-8.  │         Condition: and((bucket_start in (-Inf, 1758550242]), (bucket_start in [1758291042, +Inf)))                                 │
-9.  │         Parts: 1/1                                                                                                                 │
-10. │         Granules: 1/1                                                                                                              │
-11. │       Partition                                                                                                                    │
-12. │         Keys:                                                                                                                      │
-13. │           toYYYYMM(bucket_start)                                                                                                   │
-14. │         Condition: and((toYYYYMM(bucket_start) in (-Inf, 202509]), (toYYYYMM(bucket_start) in [202509, +Inf)))                     │
-15. │         Parts: 1/1                                                                                                                 │
-16. │         Granules: 1/1                                                                                                              │
-17. │       PrimaryKey                                                                                                                   │
-18. │         Keys:                                                                                                                      │
-19. │           bucket_start                                                                                                             │
-20. │           country                                                                                                                  │
-21. │         Condition: and((country in ['US', 'US']), and((bucket_start in (-Inf, 1758550242]), (bucket_start in [1758291042, +Inf)))) │
-22. │         Parts: 1/1                                                                                                                 │
-23. │         Granules: 1/1                                                                                                              │
-    └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-```
+  * **異なる粒度**: 日次ロールアップを追加：
 
-上記のクエリ実行計画では、以下の3種類のインデックスが使用されていることが示されています：
-MinMaxインデックス、パーティションインデックス、および主キーインデックスです。
-各インデックスは、主キーに指定されたフィールド`(bucket_start, country, event_type)`を利用しています。
-最良のフィルタリング性能を得るためには、クエリが主キーのフィールドを使用してデータをプルーニングしていることを確認してください。
+  ```sql
+  CREATE TABLE events_rollup_1d
+  (
+      bucket_start Date,
+      country      LowCardinality(String),
+      event_type   LowCardinality(String),
+      users_uniq   AggregateFunction(uniqExact, UInt64),
+      value_sum    AggregateFunction(sum, Float64),
+      value_avg    AggregateFunction(avg, Float64),
+      events_count AggregateFunction(count)
+  )
+  ENGINE = AggregatingMergeTree
+  PARTITION BY toYYYYMM(bucket_start)
+  ORDER BY (bucket_start, country, event_type);
+  ```
 
-## 一般的なバリエーション {#common-variations}
+  次に2つ目のマテリアライズドビューを作成します:
 
-- **異なる粒度**：日次ロールアップを追加：
+  ```sql
+  CREATE MATERIALIZED VIEW mv_events_rollup_1d
+  TO events_rollup_1d
+  AS
+  SELECT
+      toDate(event_time) AS bucket_start,
+      country,
+      event_type,
+      uniqExactState(user_id),
+      sumState(value),
+      avgState(value),
+      countState()
+  FROM events_raw
+  GROUP BY ALL;
+  ```
 
-```sql
-CREATE TABLE events_rollup_1d
-(
-    bucket_start Date,
-    country      LowCardinality(String),
-    event_type   LowCardinality(String),
-    users_uniq   AggregateFunction(uniqExact, UInt64),
-    value_sum    AggregateFunction(sum, Float64),
-    value_avg    AggregateFunction(avg, Float64),
-    events_count AggregateFunction(count)
-)
-ENGINE = AggregatingMergeTree
-PARTITION BY toYYYYMM(bucket_start)
-ORDER BY (bucket_start, country, event_type);
-```
+  * **圧縮**: raw テーブルのサイズの大きなカラムにコーデックを適用します（例: `Codec(ZSTD(3))`）。
+  * **コスト制御**：長期保持は生データテーブル側に寄せ、ロールアップは長期間維持する。
+  * **バックフィル**：過去データを読み込む場合は、`events_raw` に挿入し、マテリアライズドビューにロールアップを自動的に作成させます。既存の行については、適切であればマテリアライズドビュー作成時に `POPULATE` を使用するか、`INSERT SELECT` を使用します。
 
-次に、2番目のマテリアライズドビュー：
+  ## クリーンアップとデータ保持 \{#clean-up-and-retention\}
 
-```sql
-CREATE MATERIALIZED VIEW mv_events_rollup_1d
-TO events_rollup_1d
-AS
-SELECT
-    toDate(event_time) AS bucket_start,
-    country,
-    event_type,
-    uniqExactState(user_id),
-    sumState(value),
-    avgState(value),
-    countState()
-FROM events_raw
-GROUP BY ALL;
-```
+  * 生データのTTLは（例: 30/90日）に延長しつつ、ロールアップは（例: 1年）と、さらに長期間保持します。
+  * ティアリングが有効な場合は、古いパーツをより安価なストレージに移動するために **TTL to move** を使用することもできます。
 
-- **圧縮**：生テーブルの大きなカラムにコーデックを適用（例：`Codec(ZSTD(3))`）。
-- **コスト管理**：重い保持を生テーブルにプッシュし、長期間のロールアップを保持。
-- **バックフィル**：履歴データをロードする際は、`events_raw`に挿入し、マテリアライズドビューが自動的にロールアップを構築させます。既存の行については、適切であればマテリアライズドビューの作成時に`POPULATE`を使用するか、`INSERT SELECT`を使用します。
+  ## トラブルシューティング \{#troubleshooting\}
 
-## クリーンアップと保持 {#clean-up-and-retention}
-
-- 生のTTLを増やす（例：30/90日）が、ロールアップをより長く保持する（例：1年）。
-- **TTLを使用して**古いパーツを安価なストレージに移動することもできます（階層化が有効な場合）。
-
-## トラブルシューティング {#troubleshooting}
-
-- マテリアライズドビューが更新されていない？挿入が**events_raw**（ロールアップテーブルではなく）に行われていること、マテリアライズドビューのターゲットが正しいことを確認してください（`TO events_rollup_1h`）。
-- クエリが遅い？ロールアップにヒットしていることを確認し（ロールアップテーブルを直接クエリ）、時間フィルタがロールアップ粒度に一致していることを確認してください。
-- バックフィルの不一致？`SYSTEM FLUSH LOGS`を使用し、挿入とマージを確認するために`system.query_log` / `system.parts`をチェックしてください。
-
+  * マテリアライズドビューが更新されない場合は、データの挿入先がロールアップテーブルではなく **events&#95;raw** になっていること、またマテリアライズドビューの出力先が正しいこと（`TO events_rollup_1h`）を確認してください。
+  * クエリが遅い場合は、ロールアップにヒットしているか（ロールアップテーブルを直接クエリする）、また時間フィルターがロールアップの粒度に合っているかを確認します。
+  * バックフィルで不整合が発生していますか？`SYSTEM FLUSH LOGS` を実行し、`system.query_log` と `system.parts` を確認して、INSERT とマージが正しく行われていることを確認してください。
 </VerticalStepper>

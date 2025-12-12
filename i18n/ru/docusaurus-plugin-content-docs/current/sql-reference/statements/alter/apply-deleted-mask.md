@@ -1,24 +1,25 @@
 ---
-slug: '/sql-reference/statements/alter/apply-deleted-mask'
-sidebar_label: 'APPLY DELETED MASK'
+description: 'Документация по применению маски удалённых строк'
+sidebar_label: 'ПРИМЕНИТЬ МАСКУ УДАЛЁННЫХ СТРОК'
 sidebar_position: 46
-description: 'Документация для Применить маску удаленных строк'
+slug: /sql-reference/statements/alter/apply-deleted-mask
 title: 'Применить маску удалённых строк'
-doc_type: reference
+doc_type: 'reference'
 ---
-# Применить маску удаленных строк
+
+# Применить маску удалённых строк {#apply-mask-of-deleted-rows}
 
 ```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] APPLY DELETED MASK [IN PARTITION partition_id]
 ```
 
-Команда применяет маску, созданную с помощью [легковесного удаления](/sql-reference/statements/delete) и принудительно удаляет строки, помеченные как удаленные, с диска. Эта команда является тяжелой мутацией и семантически эквивалентна запросу ```ALTER TABLE [db].name DELETE WHERE _row_exists = 0```.
+Команда применяет маску, созданную с помощью [легкого удаления](/sql-reference/statements/delete), и принудительно удаляет с диска строки, помеченные как удаленные. Эта команда выполняет тяжелую мутацию и семантически эквивалентна запросу `ALTER TABLE [db].name DELETE WHERE _row_exists = 0`.
 
 :::note
-Она работает только для таблиц из семейства [`MergeTree`](../../../engines/table-engines/mergetree-family/mergetree.md) (включая [реплицированные](../../../engines/table-engines/mergetree-family/replication.md) таблицы).
+Работает только для таблиц семейства [`MergeTree`](../../../engines/table-engines/mergetree-family/mergetree.md) (включая [реплицируемые](../../../engines/table-engines/mergetree-family/replication.md) таблицы).
 :::
 
 **См. также**
 
-- [Легковесные удаления](/sql-reference/statements/delete)
-- [Тяжелые удаления](/sql-reference/statements/alter/delete.md)
+* [Легкие удаления](/sql-reference/statements/delete)
+* [Тяжелые удаления](/sql-reference/statements/alter/delete.md)

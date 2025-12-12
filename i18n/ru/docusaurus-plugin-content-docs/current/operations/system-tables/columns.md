@@ -1,45 +1,53 @@
 ---
-slug: '/operations/system-tables/columns'
-description: 'Системная таблица, содержащая информацию о колонках во всех таблицах'
-title: system.columns
-keywords: ['системная таблица', 'колонки']
-doc_type: reference
+description: 'Системная таблица, содержащая информацию о столбцах во всех таблицах'
+keywords: ['системная таблица', 'столбцы']
+slug: /operations/system-tables/columns
+title: 'system.columns'
+doc_type: 'reference'
 ---
-Содержит информацию о колонках во всех таблицах.
 
-Вы можете использовать эту таблицу для получения информации, аналогичной запросу [DESCRIBE TABLE](../../sql-reference/statements/describe-table.md), но для нескольких таблиц сразу.
+Содержит информацию о столбцах во всех таблицах.
 
-Колонки из [временных таблиц](../../sql-reference/statements/create/table.md#temporary-tables) видны в `system.columns` только в тех сессиях, в которых они были созданы. Они отображаются с пустым полем `database`.
+Вы можете использовать эту таблицу, чтобы получить информацию, аналогичную запросу [DESCRIBE TABLE](../../sql-reference/statements/describe-table.md), но сразу для нескольких таблиц.
 
-Таблица `system.columns` содержит следующие колонки (тип колонки указан в скобках):
+Столбцы из [временных таблиц](../../sql-reference/statements/create/table.md#temporary-tables) видны в `system.columns` только в тех сессиях, где они были созданы. Они отображаются с пустым полем `database`.
 
-- `database` ([String](../../sql-reference/data-types/string.md)) — Название базы данных.
-- `table` ([String](../../sql-reference/data-types/string.md)) — Название таблицы.
-- `name` ([String](../../sql-reference/data-types/string.md)) — Название колонки.
-- `type` ([String](../../sql-reference/data-types/string.md)) — Тип колонки.
-- `position` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Позиция колонки в таблице, начиная с 1.
-- `default_kind` ([String](../../sql-reference/data-types/string.md)) — Тип выражения (`DEFAULT`, `MATERIALIZED`, `ALIAS`) для значения по умолчанию или пустая строка, если не определено.
-- `default_expression` ([String](../../sql-reference/data-types/string.md)) — Выражение для значения по умолчанию или пустая строка, если не определено.
-- `data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Размер сжатых данных в байтах.
-- `data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Размер декомпрессированных данных в байтах.
-- `marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Размер меток в байтах.
-- `comment` ([String](../../sql-reference/data-types/string.md)) — Комментарий к колонке или пустая строка, если не определено.
-- `is_in_partition_key` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Флаг, указывающий, находится ли колонка в выражении партиционирования.
-- `is_in_sorting_key` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Флаг, указывающий, находится ли колонка в выражении ключа сортировки.
-- `is_in_primary_key` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Флаг, указывающий, находится ли колонка в выражении первичного ключа.
-- `is_in_sampling_key` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Флаг, указывающий, находится ли колонка в выражении ключа выборки.
-- `compression_codec` ([String](../../sql-reference/data-types/string.md)) — Название кодека сжатия.
-- `character_octet_length` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Максимальная длина в байтах для двоичных данных, символьных данных или текстовых данных и изображений. В ClickHouse имеет смысл только для типа данных `FixedString`. В противном случае возвращается значение `NULL`.
-- `numeric_precision` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Точность приблизительных числовых данных, точных числовых данных, целых чисел или денежных данных. В ClickHouse это битовая ширина для целочисленных типов и десятичная точность для типов `Decimal`. В противном случае возвращается значение `NULL`.
-- `numeric_precision_radix` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Основание числовой системы, точность приблизительных числовых данных, точных числовых данных, целых чисел или денежных данных. В ClickHouse это 2 для целочисленных типов и 10 для типов `Decimal`. В противном случае возвращается значение `NULL`.
-- `numeric_scale` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Масштаб приблизительных числовых данных, точных числовых данных, целых чисел или денежных данных. В ClickHouse имеет смысл только для типов `Decimal`. В противном случае возвращается значение `NULL`.
-- `datetime_precision` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Десятичная точность типа данных `DateTime64`. Для других типов данных возвращается значение `NULL`.
+Таблица `system.columns` содержит следующие столбцы (тип столбца указан в скобках):
+
+{/*AUTOGENERATED_START*/ }
+
+* `database` ([String](../../sql-reference/data-types/)) — Имя базы данных.
+* `table` ([String](../../sql-reference/data-types/)) — Имя таблицы.
+* `name` ([String](../../sql-reference/data-types/)) — Имя столбца.
+* `type` ([String](../../sql-reference/data-types/)) — Тип столбца.
+* `position` ([UInt64](../../sql-reference/data-types/)) — Порядковый номер столбца в таблице, начиная с 1.
+* `default_kind` ([String](../../sql-reference/data-types/)) — Тип выражения (DEFAULT, MATERIALIZED, ALIAS) для значения по умолчанию или пустая строка, если оно не определено.
+* `default_expression` ([String](../../sql-reference/data-types/)) — Выражение для значения по умолчанию или пустая строка, если оно не определено.
+* `data_compressed_bytes` ([UInt64](../../sql-reference/data-types/)) — Размер сжатых данных в байтах.
+* `data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/)) — Размер несжатых данных в байтах.
+* `marks_bytes` ([UInt64](../../sql-reference/data-types/)) — Размер меток в байтах.
+* `comment` ([String](../../sql-reference/data-types/)) — Комментарий к столбцу или пустая строка, если он не определён.
+* `is_in_partition_key` ([UInt8](../../sql-reference/data-types/)) — Флаг, показывающий, входит ли столбец в выражение партиционирования.
+* `is_in_sorting_key` ([UInt8](../../sql-reference/data-types/)) — Флаг, показывающий, входит ли столбец в выражение ключа сортировки.
+* `is_in_primary_key` ([UInt8](../../sql-reference/data-types/)) — Флаг, показывающий, входит ли столбец в выражение первичного ключа.
+* `is_in_sampling_key` ([UInt8](../../sql-reference/data-types/)) — Флаг, показывающий, входит ли столбец в выражение ключа семплирования.
+* `compression_codec` ([String](../../sql-reference/data-types/)) — Имя кодека сжатия.
+* `character_octet_length` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Максимальная длина в байтах для двоичных, символьных, текстовых данных и изображений. В ClickHouse имеет смысл только для типа данных FixedString. В противном случае возвращается значение NULL.
+* `numeric_precision` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Точность приблизительных числовых данных, точных числовых данных, целочисленных данных или денежных данных. В ClickHouse это разрядность (ширина в битах) для целочисленных типов и десятичная точность для типов Decimal. В противном случае возвращается значение NULL.
+* `numeric_precision_radix` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Основание системы счисления для точности приблизительных числовых данных, точных числовых данных, целочисленных данных или денежных данных. В ClickHouse это 2 для целочисленных типов и 10 для типов Decimal. В противном случае возвращается значение NULL.
+* `numeric_scale` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Масштаб (scale) приблизительных числовых данных, точных числовых данных, целочисленных данных или денежных данных. В ClickHouse имеет смысл только для типов Decimal. В противном случае возвращается значение NULL.
+* `datetime_precision` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Десятичная точность типа данных DateTime64. Для других типов данных возвращается значение NULL.
+* `serialization_hint` ([Nullable(String)](../../sql-reference/data-types/)) — Подсказка для выбора способа сериализации данных столбца при вставках на основе статистики.
+* `statistics` ([String](../../sql-reference/data-types/)) — Типы статистики, созданные для этого столбца.
+
+{/*АВТОСГЕНЕРИРОВАНО_КОНЕЦ*/ }
 
 **Пример**
 
 ```sql
 SELECT * FROM system.columns LIMIT 2 FORMAT Vertical;
 ```
+
 
 ```text
 Row 1:

@@ -11,11 +11,24 @@ pip install -r requirements.txt
 ### Running
 
 ```bash
+# Index English (default)
 python index_pages.py --base_directory /opt/clickhouse-docs --algolia_app_id 7AL1W7YVZK --algolia_api_key <write_key>
+
+# Index Japanese
+python index_pages.py --base_directory /opt/clickhouse-docs --algolia_app_id 7AL1W7YVZK --algolia_api_key <write_key> --locale jp
+
+# Index Chinese
+python index_pages.py --base_directory /opt/clickhouse-docs --algolia_app_id 7AL1W7YVZK --algolia_api_key <write_key> --locale zh
+
+# Index Russian
+python index_pages.py --base_directory /opt/clickhouse-docs --algolia_app_id 7AL1W7YVZK --algolia_api_key <write_key> --locale ru
+
+# Using the shell script
+./run_indexer.sh --locale jp
 ```
 
 ```bash
-usage: index_pages.py [-h] [-d BASE_DIRECTORY] [-x] --algolia_app_id ALGOLIA_APP_ID --algolia_api_key ALGOLIA_API_KEY [--algolia_index_name ALGOLIA_INDEX_NAME]
+usage: index_pages.py [-h] [-d BASE_DIRECTORY] [-x] --algolia_app_id ALGOLIA_APP_ID --algolia_api_key ALGOLIA_API_KEY [--algolia_index_name ALGOLIA_INDEX_NAME] [--locale {en,jp,zh,ru}]
 
 Index search pages.
 
@@ -30,9 +43,16 @@ options:
                         Algolia Admin API Key
   --algolia_index_name ALGOLIA_INDEX_NAME
                         Algolia Index Name
+  --locale {en,jp,zh,ru}
+                        Locale to index (default: en)
 ```
 
-[]()## Search scripts
+Before pushing any changes to the production app, please test on the dev app
+and make a backup of the english search index "clickhouse".
+You can do so from the search tab -> manage index -> duplicate.
+Give the duplicate index a name like "clickhouse-backup-DD-MM-YYYY"
+
+## Search scripts
 
 We use these to evaluate search performance. `results.csv` contains a list of authoritative search results for 200 terms.
 
@@ -50,6 +70,7 @@ pip install -r requirements.txt
 
 You need to comment out either Dev or Prod depending on what you want to test.
 The API key is the public search key, don't worry.
+Find the actual key you need in the Algolia app under settings -> API keys
 
 ```python
 # dev details

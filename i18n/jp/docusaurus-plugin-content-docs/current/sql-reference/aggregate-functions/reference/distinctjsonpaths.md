@@ -1,15 +1,14 @@
 ---
-'description': 'JSON カラムに格納されている異なるパスのリストを計算します。'
-'sidebar_position': 216
-'slug': '/sql-reference/aggregate-functions/reference/distinctjsonpaths'
-'title': 'distinctJSONPaths'
-'doc_type': 'reference'
+description: 'JSON 列に格納された一意なパスの一覧を算出します。'
+sidebar_position: 216
+slug: /sql-reference/aggregate-functions/reference/distinctjsonpaths
+title: 'distinctJSONPaths'
+doc_type: 'reference'
 ---
 
+# distinctJSONPaths {#distinctjsonpaths}
 
-# distinctJSONPaths
-
-[JSON](../../data-types/newjson.md) カラムに格納された一意のパスのリストを計算します。
+[JSON](../../data-types/newjson.md) カラムに保存されているパスのうち、一意なもののリストを返します。
 
 **構文**
 
@@ -19,11 +18,11 @@ distinctJSONPaths(json)
 
 **引数**
 
-- `json` — [JSON](../../data-types/newjson.md) カラム。
+* `json` — [JSON](../../data-types/newjson.md) 列。
 
-**戻り値**
+**返される値**
 
-- パスのソートされたリスト [Array(String)](../../data-types/array.md)。
+* ソート済みのパスのリスト [Array(String)](../../data-types/array.md)。
 
 **例**
 
@@ -32,7 +31,7 @@ distinctJSONPaths(json)
 ```sql
 DROP TABLE IF EXISTS test_json;
 CREATE TABLE test_json(json JSON) ENGINE = Memory;
-INSERT INTO test_json VALUES ('{"a" : 42, "b" : "Hello"}'), ('{"b" : [1, 2, 3], "c" : {"d" : {"e" : "2020-01-01"}}}'), ('{"a" : 43, "c" : {"d" : {"f" : [{"g" : 42}]}}}')
+INSERT INTO test_json VALUES ('{"a" : 42, "b" : "こんにちは"}'), ('{"b" : [1, 2, 3], "c" : {"d" : {"e" : "2020-01-01"}}}'), ('{"a" : 43, "c" : {"d" : {"f" : [{"g" : 42}]}}}')
 ```
 
 ```sql
@@ -47,10 +46,9 @@ SELECT distinctJSONPaths(json) FROM test_json;
 └───────────────────────────┘
 ```
 
+# distinctJSONPathsAndTypes {#distinctjsonpathsandtypes}
 
-# distinctJSONPathsAndTypes
-
-[JSON](../../data-types/newjson.md) カラムに格納された一意のパスとそのタイプのリストを計算します。
+[JSON](../../data-types/newjson.md) 列に保存されている一意なパスとその型の一覧を取得します。
 
 **構文**
 
@@ -60,11 +58,11 @@ distinctJSONPathsAndTypes(json)
 
 **引数**
 
-- `json` — [JSON](../../data-types/newjson.md) カラム。
+* `json` — [JSON](../../data-types/newjson.md) 型の列。
 
 **戻り値**
 
-- パスとタイプのソートされたマップ [Map(String, Array(String))](../../data-types/map.md)。
+* パスと型の対応を表すソート済みマップ [Map(String, Array(String))](../../data-types/map.md)。
 
 **例**
 
@@ -80,7 +78,7 @@ INSERT INTO test_json VALUES ('{"a" : 42, "b" : "Hello"}'), ('{"b" : [1, 2, 3], 
 SELECT distinctJSONPathsAndTypes(json) FROM test_json;
 ```
 
-結果:
+結果：
 
 ```reference
 ┌─distinctJSONPathsAndTypes(json)───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -88,9 +86,9 @@ SELECT distinctJSONPathsAndTypes(json) FROM test_json;
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**注意**
+**注記**
 
-JSON 宣言に特定のタイプを持つパスが含まれている場合、これらのパスは、入力データがこれらのパスに対して値を持っていなくても、`distinctJSONPaths/distinctJSONPathsAndTypes` 関数の結果に常に含まれます。
+JSON 宣言に型が指定されているパスが含まれている場合、入力データにそのパスの値が存在しない場合でも、これらのパスは常に `distinctJSONPaths/distinctJSONPathsAndTypes` 関数の結果に含まれます。
 
 ```sql
 DROP TABLE IF EXISTS test_json;

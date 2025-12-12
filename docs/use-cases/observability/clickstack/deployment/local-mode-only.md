@@ -39,7 +39,7 @@ Similar to the [all-in-one image](/use-cases/observability/clickstack/deployment
 Local mode deploys the HyperDX UI on port 8080.
 
 ```shell
-docker run -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx-local
+docker run -p 8080:8080 clickhouse/clickstack-local:latest
 ```
 
 ### Navigate to the HyperDX UI {#navigate-to-hyperdx-ui}
@@ -63,5 +63,5 @@ Create a source, retain all default values, and complete the `Table` field with 
 For the local mode only image, users only need to set the `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` parameter e.g.
 
 ```shell
-docker run -e BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx-local
+docker run -e BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true -p 8080:8080 clickhouse/clickstack-local:latest
 ```

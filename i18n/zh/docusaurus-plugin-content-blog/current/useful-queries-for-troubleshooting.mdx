@@ -1,0 +1,272 @@
+---
+date: 2023-03-17
+title: 用于故障排查的实用查询
+description: 一组便于 ClickHouse 故障排查的常用查询，用于监控表大小、定位长时间运行的查询以及排查错误。
+tags: ['设置']
+keywords: ['实用查询']
+---
+
+{frontMatter.description}
+
+{/* 截断 */}
+
+## 用于故障排查的一些实用查询 \{#useful-queries-for-troubleshooting\}
+
+以下是一些在排查 ClickHouse 问题、了解系统当前状况时非常有用的查询，顺序不分先后。
+
+我们还有一篇精彩的博文，整理了[用于监控 ClickHouse 的关键查询](https://clickhouse.com/blog/monitoring-troubleshooting-select-queries-clickhouse)。
+
+## 查看哪些设置已被修改为非默认值 \{#view-which-settings-have-been-changed-from-the-default\}
+
+```sql
+SELECT
+    name,
+    value
+FROM system.settings
+WHERE changed
+```
+
+## 获取所有数据表的大小 \{#get-the-size-of-all-your-tables\}
+
+```sql
+SELECT table,
+    formatReadableSize(sum(bytes)) as size
+    FROM system.parts
+    WHERE active
+GROUP BY table
+```
+
+响应类似如下：
+
+```response
+┌─table───────────┬─size──────┐
+│ stat            │ 38.89 MiB │
+│ customers       │ 525.00 B  │
+│ my_sparse_table │ 40.73 MiB │
+│ crypto_prices   │ 32.18 MiB │
+│ hackernews      │ 6.23 GiB  │
+└─────────────────┴───────────┘
+```
+
+## 表的行数和平均每日数据量 \{#row-count-and-average-day-size-of-your-table\}
+
+```sql
+SELECT
+    table,
+    formatReadableSize(size) AS size,
+    rows,
+    days,
+    formatReadableSize(avgDaySize) AS avgDaySize
+FROM
+(
+    SELECT
+        table,
+        sum(bytes) AS size,
+        sum(rows) AS rows,
+        min(min_date) AS min_date,
+        max(max_date) AS max_date,
+        max_date - min_date AS days,
+        size / (max_date - min_date) AS avgDaySize
+    FROM system.parts
+    WHERE active
+    GROUP BY table
+    ORDER BY rows DESC
+)
+```
+
+## 各列压缩率以及主键索引在内存中的大小 \{#compression-columns-percentage-as-well-as-the-size-of-primary-index-in-memory\}
+
+你可以查看每一列的数据压缩情况。此查询还会返回主键索引在内存中的大小——了解这一点很有用，因为主键索引必须能够全部放入内存。
+
+```sql
+SELECT
+    parts.*,
+    columns.compressed_size,
+    columns.uncompressed_size,
+    columns.compression_ratio,
+    columns.compression_percentage
+FROM
+(
+    SELECT
+        table,
+        formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
+        formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
+        round(sum(data_compressed_bytes) / sum(data_uncompressed_bytes), 3) AS compression_ratio,
+        round(100 - ((sum(data_compressed_bytes) * 100) / sum(data_uncompressed_bytes)), 3) AS compression_percentage
+    FROM system.columns
+    GROUP BY table
+) AS columns
+RIGHT JOIN
+(
+    SELECT
+        table,
+        sum(rows) AS rows,
+        max(modification_time) AS latest_modification,
+        formatReadableSize(sum(bytes)) AS disk_size,
+        formatReadableSize(sum(primary_key_bytes_in_memory)) AS primary_keys_size,
+        any(engine) AS engine,
+        sum(bytes) AS bytes_size
+    FROM system.parts
+    WHERE active
+    GROUP BY
+        database,
+        table
+) AS parts ON columns.table = parts.table
+ORDER BY parts.bytes_size DESC
+```
+
+## 最近 10 分钟内客户端发送的查询次数 \{#number-of-queries-sent-by-client-in-the-last-10-minutes\}
+
+你可以根据需要在 `toIntervalMinute(10)` 函数中调整时间间隔（增大或减小）：
+
+```sql
+SELECT
+    client_name,
+    count(),
+    query_kind,
+    toStartOfMinute(event_time) AS event_time_m
+FROM system.query_log
+WHERE (type = 'QueryStart') AND (event_time > (now() - toIntervalMinute(10)))
+GROUP BY
+    event_time_m,
+    client_name,
+    query_kind
+ORDER BY
+    event_time_m DESC,
+    count() ASC
+```
+
+## 每个分区中的 part 数量 \{#number-of-parts-in-each-partition\}
+
+```sql
+SELECT
+    concat(database, '.', table),
+    partition_id,
+    count()
+FROM system.parts
+WHERE active
+GROUP BY
+    database,
+    table,
+    partition_id
+```
+
+## 查找长时间执行的查询 \{#finding-long-running-queries\}
+
+这有助于定位卡住的查询：
+
+```sql
+SELECT
+    elapsed,
+    initial_user,
+    client_name,
+    hostname(),
+    query_id,
+    query
+FROM clusterAllReplicas(default, system.processes)
+ORDER BY elapsed DESC
+```
+
+使用性能最差查询的 query&#95;id，我们可以获取堆栈跟踪，从而帮助进行调试。
+
+```
+SET allow_introspection_functions=1;
+
+SELECT
+    arrayStringConcat(
+        arrayMap(
+            x,
+            y -> concat(x, ': ', y),
+            arrayMap(x -> addressToLine(x), trace),
+            arrayMap(x -> demangle(addressToSymbol(x)), trace)
+        ),
+        '\n'
+    ) as trace
+FROM
+    system.stack_trace
+WHERE
+    query_id = '0bb6e88b-9b9a-4ffc-b612-5746c859e360';
+```
+
+## 查看最近的错误 \{#view-the-most-recent-errors\}
+
+```
+SELECT *
+FROM system.errors
+ORDER BY last_error_time DESC
+```
+
+响应类似如下：
+
+```response
+┌─name──────────────────┬─code─┬─value─┬─────last_error_time─┬─last_error_message──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─last_error_trace─┬─remote─┐
+│ UNKNOWN_TABLE         │   60 │     3 │ 2023-03-14 01:02:35 │ 表 system.stack_trace 不存在                                                                                                                         │ []               │      0 │
+│ BAD_GET               │  170 │     1 │ 2023-03-14 00:58:55 │ 未找到请求的集群 'default'                                                                                                                          │ []               │      0 │
+│ UNKNOWN_IDENTIFIER    │   47 │     1 │ 2023-03-14 00:49:12 │ 缺少列: 'parts.table' 'table',处理查询时: 'table = parts.table',所需列: 'table' 'parts.table' 'table' 'parts.table'                              │ []               │      0 │
+│ NO_ELEMENTS_IN_CONFIG │  139 │     2 │ 2023-03-14 00:42:11 │ 未设置证书文件。                                                                                                                                     │ []               │      0 │
+└───────────────────────┴──────┴───────┴─────────────────────┴─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────┴────────┘
+```
+
+## CPU 和内存占用最高的前 10 条查询 \{#top-10-queries-that-are-using-the-most-cpu-and-memory\}
+
+```sql
+SELECT
+    type,
+    event_time,
+    initial_query_id,
+    formatReadableSize(memory_usage) AS memory,
+    `ProfileEvents.Values`[indexOf(`ProfileEvents.Names`, 'UserTimeMicroseconds')] AS userCPU,
+    `ProfileEvents.Values`[indexOf(`ProfileEvents.Names`, 'SystemTimeMicroseconds')] AS systemCPU,
+    normalizedQueryHash(query) AS normalized_query_hash
+FROM system.query_log
+ORDER BY memory_usage DESC
+LIMIT 10
+```
+
+## 我的投影占用多少磁盘空间？ \{#how-much-disk-space-are-my-projection-using\}
+
+```sql
+SELECT
+    name,
+    parent_name,
+    formatReadableSize(bytes_on_disk) AS bytes,
+    formatReadableSize(parent_bytes_on_disk) AS parent_bytes,
+    bytes_on_disk / parent_bytes_on_disk AS ratio
+FROM system.projection_parts
+```
+
+## 在各数据库中显示磁盘占用、system.parts 中的 parts 数量、行数和 marks 数量 \{#show-disk-storage-number-of-parts-number-of-rows-in-systemparts-and-marks-across-databases\}
+
+```sql
+SELECT
+    database,
+    table,
+    partition,
+    count() AS parts,
+    formatReadableSize(sum(bytes_on_disk)) AS bytes_on_disk,
+    formatReadableQuantity(sum(rows)) AS rows,
+    sum(marks) AS marks
+FROM system.parts
+WHERE (database != 'system') AND active
+GROUP BY
+    database,
+    table,
+    partition
+ORDER BY database ASC
+```
+
+## 列出最近写入的新数据片详情 \{#list-details-of-recently-written-new-parts\}
+
+详细信息包括它们的创建时间、大小、行数等：
+
+```sql
+SELECT
+    modification_time,
+    rows,
+    formatReadableSize(bytes_on_disk),
+    *
+FROM clusterAllReplicas(default, system.parts)
+WHERE (database = 'default') AND active AND (level = 0)
+ORDER BY modification_time DESC
+LIMIT 100
+```

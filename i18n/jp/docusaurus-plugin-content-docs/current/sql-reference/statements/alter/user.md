@@ -1,15 +1,15 @@
 ---
-'description': 'ユーザーのためのドキュメンテーション'
-'sidebar_label': 'USER'
-'sidebar_position': 45
-'slug': '/sql-reference/statements/alter/user'
-'title': 'ALTER USER'
-'doc_type': 'reference'
+description: 'ユーザーのドキュメント'
+sidebar_label: 'USER'
+sidebar_position: 45
+slug: /sql-reference/statements/alter/user
+title: 'ALTER USER'
+doc_type: 'reference'
 ---
 
-Changes ClickHouse user accounts.
+ClickHouse のユーザーアカウントを変更します。
 
-Syntax:
+構文:
 
 ```sql
 ALTER USER [IF EXISTS] name1 [RENAME TO new_name |, name2 [,...]] 
@@ -28,84 +28,89 @@ ALTER USER [IF EXISTS] name1 [RENAME TO new_name |, name2 [,...]]
     [ADD PROFILES 'profile_name' [,...] ]
 ```
 
-`ALTER USER`を使用するには、[ALTER USER](../../../sql-reference/statements/grant.md#access-management)特権が必要です。
+`ALTER USER` を使用するには、[ALTER USER](../../../sql-reference/statements/grant.md#access-management) 権限が必要です。
 
-## GRANTEES Clause {#grantees-clause}
+## GRANTEES 句 {#grantees-clause}
 
-このユーザーからの[特権](../../../sql-reference/statements/grant.md#privileges)を受け取ることができるユーザーまたはロールを指定します。このユーザーが[GRANT OPTION](../../../sql-reference/statements/grant.md#granting-privilege-syntax)によって必要なアクセス権をすべて持っている場合に限ります。`GRANTEES`句のオプション:
+このユーザー自身が `GRANT OPTION` 付きで必要なすべてのアクセス権を付与されていることを条件として、このユーザーから [権限](../../../sql-reference/statements/grant.md#privileges) を受け取ることが許可されているユーザーまたはロールを指定します。`GRANTEES` 句のオプションは次のとおりです:
 
-- `user` — このユーザーが特権を付与できるユーザーを指定します。
-- `role` — このユーザーが特権を付与できるロールを指定します。
-- `ANY` — このユーザーは誰にでも特権を付与できます。これはデフォルトの設定です。
-- `NONE` — このユーザーは特権を付与できません。
+- `user` — このユーザーが権限を付与できるユーザーを指定します。
+- `role` — このユーザーが権限を付与できるロールを指定します。
+- `ANY` — このユーザーは任意のユーザーまたはロールに権限を付与できます。これはデフォルト設定です。
+- `NONE` — このユーザーは誰にも権限を付与できません。
 
-``EXCEPT``式を使用して、任意のユーザーまたはロールを除外できます。たとえば、`ALTER USER user1 GRANTEES ANY EXCEPT user2`。これは、`user1`が`GRANT OPTION`で付与された特権を持つ場合、`user2`を除いて誰にでもその特権を付与できることを意味します。
+`EXCEPT` 式を使用して任意のユーザーまたはロールを除外できます。たとえば、`ALTER USER user1 GRANTEES ANY EXCEPT user2` のように指定します。これは、`user1` が `GRANT OPTION` 付きで何らかの権限を付与されている場合、それらの権限を `user2` を除く誰にでも付与できることを意味します。
 
-## Examples {#examples}
+詳しくは [GRANT の構文](../../../sql-reference/statements/grant.md#granting-privilege-syntax) を参照してください。
 
-割り当てられたロールをデフォルトとして設定:
+## 例 {#examples}
+
+割り当てられたロールをデフォルトに設定する：
 
 ```sql
 ALTER USER user DEFAULT ROLE role1, role2
 ```
 
-ロールがユーザーに事前に割り当てられていない場合、ClickHouseは例外をスローします。
+ユーザーにロールがあらかじめ割り当てられていない場合、ClickHouse は例外を発生させます。
 
-すべての割り当てられたロールをデフォルトとして設定:
+割り当てられているすべてのロールをデフォルトとして設定します。
 
 ```sql
 ALTER USER user DEFAULT ROLE ALL
 ```
 
-将来的にロールがユーザーに割り当てられた場合、それは自動的にデフォルトになります。
+将来そのロールがユーザーに割り当てられた場合、そのロールは自動的にデフォルトになります。
 
-`role1`および`role2`を除いてすべての割り当てられたロールをデフォルトに設定:
+`role1` と `role2` を除く、割り当て済みのすべてのロールをデフォルトに設定します。
 
 ```sql
 ALTER USER user DEFAULT ROLE ALL EXCEPT role1, role2
 ```
 
-`john`アカウントを持つユーザーが`jack`アカウントを持つユーザーに特権を付与できるようにします:
+`john` アカウントを持つユーザーが、自身の権限を `jack` アカウントを持つユーザーに付与できるようにします：
 
 ```sql
 ALTER USER john GRANTEES jack;
 ```
 
-既存の認証方法を保持しながらユーザーに新しい認証方法を追加:
+既存の認証方法を維持したまま、ユーザーに新しい認証方法を追加します。
 
 ```sql
 ALTER USER user1 ADD IDENTIFIED WITH plaintext_password by '1', bcrypt_password by '2', plaintext_password by '3'
 ```
 
-注意:
-1. 古いバージョンのClickHouseでは複数の認証方法の構文がサポートされていない場合があります。そのため、そのようなユーザーが含まれるClickHouseサーバーが、これをサポートしないバージョンにダウングレードされると、そのユーザーは使用できなくなり、一部のユーザー関連の操作が壊れます。適切にダウングレードするためには、ダウングレード前にすべてのユーザーが単一の認証方法を持つように設定する必要があります。あるいは、適切な手順なしにサーバーがダウングレードされた場合、不良ユーザーを削除する必要があります。
-2. `no_password`は、セキュリティ上の理由から他の認証方法と共存できません。そのため、`no_password`認証方法を`ADD`することはできません。以下のクエリはエラーをスローします:
+Notes:
+
+1. 古いバージョンの ClickHouse では、複数の認証方式を指定する構文をサポートしていない場合があります。したがって、ClickHouse サーバーにそのようなユーザーが存在する状態で、その構文をサポートしていないバージョンにダウングレードすると、そのユーザーは使用不能となり、ユーザー関連の一部の操作が正しく動作しなくなります。正常にダウングレードするには、ダウングレードを行う前に、すべてのユーザーが 1 つの認証方式のみを持つように設定しておく必要があります。あるいは、適切な手順を踏まずにサーバーをダウングレードしてしまった場合は、問題のあるユーザーを削除する必要があります。
+2. セキュリティ上の理由から、`no_password` は他の認証方式と共存させることはできません。
+   そのため、`no_password` 認証方式を `ADD` することはできません。以下のクエリはエラーになります:
 
 ```sql
 ALTER USER user1 ADD IDENTIFIED WITH no_password
 ```
 
-ユーザーの認証方法を削除し、`no_password`に依存する場合は、以下の置換形式で指定する必要があります。
+ユーザーの認証方式を削除して `no_password` のみにしたい場合は、以下の置換構文で指定する必要があります。
 
-認証方法をリセットし、クエリで指定されたものを追加します（ADDキーワードなしのIDENTIFIEDの効果）:
+認証方式をリセットし、クエリで指定された方式のみを追加します（先頭に ADD キーワードを付けずに IDENTIFIED を使用した場合と同じ効果）:
 
 ```sql
 ALTER USER user1 IDENTIFIED WITH plaintext_password by '1', bcrypt_password by '2', plaintext_password by '3'
 ```
 
-認証方法をリセットし、最も最近追加されたものを保持します:
+認証方法をリセットし、最後に追加したものだけを保持します：
+
 ```sql
 ALTER USER user1 RESET AUTHENTICATION METHODS TO NEW
 ```
 
-## VALID UNTIL Clause {#valid-until-clause}
+## VALID UNTIL 句 {#valid-until-clause}
 
-認証方法の有効期限を指定でき、その日付と時間をオプションで設定できます。パラメーターとして文字列を受け付けます。日付および時刻には`YYYY-MM-DD [hh:mm:ss] [timezone]`形式を使用することをお勧めします。デフォルトでは、このパラメーターは`'infinity'`に等しいです。
-`VALID UNTIL`句は、認証方法と一緒にのみ指定できますが、クエリで認証方法が指定されていない場合を除きます。このシナリオでは、`VALID UNTIL`句はすべての既存の認証方法に適用されます。
+認証方式に対して、有効期限の日付と（必要に応じて）時刻を指定できます。パラメータとして文字列値を受け取ります。日時には `YYYY-MM-DD [hh:mm:ss] [timezone]` 形式の使用を推奨します。デフォルトでは、このパラメータの値は `'infinity'` です。
+`VALID UNTIL` 句は、クエリ内で認証方式が一切指定されていない場合を除き、必ず認証方式と併せて指定する必要があります。この場合、`VALID UNTIL` 句は既存のすべての認証方式に適用されます。
 
 例:
 
 - `ALTER USER name1 VALID UNTIL '2025-01-01'`
 - `ALTER USER name1 VALID UNTIL '2025-01-01 12:00:00 UTC'`
 - `ALTER USER name1 VALID UNTIL 'infinity'`
-- `ALTER USER name1 IDENTIFIED WITH plaintext_password BY 'no_expiration', bcrypt_password BY 'expiration_set' VALID UNTIL '2025-01-01'`
+- `ALTER USER name1 IDENTIFIED WITH plaintext_password BY 'no_expiration', bcrypt_password BY 'expiration_set' VALID UNTIL'2025-01-01''`

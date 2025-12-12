@@ -1,73 +1,81 @@
 ---
-'description': 'TRUNCATE statements のドキュメント'
-'sidebar_label': 'TRUNCATE'
-'sidebar_position': 52
-'slug': '/sql-reference/statements/truncate'
-'title': 'TRUNCATE Statements'
-'doc_type': 'reference'
+description: 'TRUNCATE 文のリファレンス'
+sidebar_label: 'TRUNCATE'
+sidebar_position: 52
+slug: /sql-reference/statements/truncate
+title: 'TRUNCATE 文'
+doc_type: 'reference'
 ---
 
+# TRUNCATE 文 {#truncate-statements}
 
-# TRUNCATE ステートメント
-
-ClickHouseの `TRUNCATE` ステートメントは、テーブルやデータベースからすべてのデータを迅速に削除し、その構造を保持するために使用されます。
+ClickHouse の `TRUNCATE` 文は、テーブルまたはデータベースからすべてのデータを、構造を保持したまま高速に削除するために使用されます。
 
 ## TRUNCATE TABLE {#truncate-table}
+
 ```sql
 TRUNCATE TABLE [IF EXISTS] [db.]name [ON CLUSTER cluster] [SYNC]
 ```
-<br/>
-| パラメータ           | 説明                                                                                         |
-|---------------------|----------------------------------------------------------------------------------------------|
-| `IF EXISTS`         | テーブルが存在しない場合にエラーを防ぎます。省略した場合、クエリはエラーを返します。            |
-| `db.name`           | オプションのデータベース名。                                                            |
-| `ON CLUSTER cluster`| 指定されたクラスター全体でコマンドを実行します。                                          |
-| `SYNC`              | レプリケートテーブルを使用している場合、レプリカ間でトランケーションを同期的に行います。省略した場合、トランケーションはデフォルトで非同期で行われます。 |
 
-[alter_sync](/operations/settings/settings#alter_sync) 設定を使用して、レプリカでアクションが実行されるのを待つように設定できます。
+<br />
 
-非アクティブなレプリカが `TRUNCATE` クエリを実行するまでの待機時間（秒単位）を指定するには、[replication_wait_for_inactive_replica_timeout](/operations/settings/settings#replication_wait_for_inactive_replica_timeout) 設定を使用します。
+| Parameter            | Description                                                                              |
+| -------------------- | ---------------------------------------------------------------------------------------- |
+| `IF EXISTS`          | テーブルが存在しない場合にエラーが発生するのを防ぎます。省略した場合、クエリはエラーを返します。                                         |
+| `db.name`            | 任意のデータベース名。                                                                              |
+| `ON CLUSTER cluster` | 指定したクラスタ全体でコマンドを実行します。                                                                   |
+| `SYNC`               | レプリケートされたテーブルを使用している場合、レプリカ間での TRUNCATE 処理を同期的に実行します。省略した場合、TRUNCATE 処理はデフォルトで非同期に行われます。 |
 
-:::note    
-`alter_sync` が `2` に設定されていて、一部のレプリカが `replication_wait_for_inactive_replica_timeout` 設定で指定された時間を超えて非アクティブな場合、例外 `UNFINISHED` が発生します。
+[alter&#95;sync](/operations/settings/settings#alter_sync) SETTING を使用して、レプリカ上でアクションが実行されるまで待機するように設定できます。
+
+[replication&#95;wait&#95;for&#95;inactive&#95;replica&#95;timeout](/operations/settings/settings#replication_wait_for_inactive_replica_timeout) SETTING を使用して、非アクティブなレプリカが `TRUNCATE` クエリを実行するまで何秒待機するかを指定できます。
+
+:::note
+`alter_sync` SETTING が `2` に設定されていて、一部のレプリカが `replication_wait_for_inactive_replica_timeout` SETTING で指定された時間より長く非アクティブな場合、`UNFINISHED` という例外がスローされます。
 :::
 
-`TRUNCATE TABLE` クエリは、以下のテーブルエンジンには **サポートされていません**：
+`TRUNCATE TABLE` クエリは、次のテーブルエンジンでは**サポートされていません**:
 
-- [`View`](../../engines/table-engines/special/view.md)
-- [`File`](../../engines/table-engines/special/file.md)
-- [`URL`](../../engines/table-engines/special/url.md)
-- [`Buffer`](../../engines/table-engines/special/buffer.md)
-- [`Null`](../../engines/table-engines/special/null.md)
+* [`View`](../../engines/table-engines/special/view.md)
+* [`File`](../../engines/table-engines/special/file.md)
+* [`URL`](../../engines/table-engines/special/url.md)
+* [`Buffer`](../../engines/table-engines/special/buffer.md)
+* [`Null`](../../engines/table-engines/special/null.md)
 
-## TRUNCATE ALL TABLES {#truncate-all-tables}
+## すべてのテーブルを TRUNCATE する {#truncate-all-tables}
+
 ```sql
 TRUNCATE [ALL] TABLES FROM [IF EXISTS] db [LIKE | ILIKE | NOT LIKE '<pattern>'] [ON CLUSTER cluster]
 ```
-<br/>
-| パラメータ                  | 説明                                             |
-|----------------------------|---------------------------------------------------|
-| `ALL`                      | データベース内のすべてのテーブルからデータを削除します。   |
-| `IF EXISTS`                | データベースが存在しない場合にエラーを防ぎます。             |
-| `db`                       | データベース名。                                    |
-| `LIKE \| ILIKE \| NOT LIKE '<pattern>'` | パターンでテーブルをフィルタリングします。     |
-| `ON CLUSTER cluster`       | クラスター全体でコマンドを実行します。                  |
 
-データベース内のすべてのテーブルからすべてのデータを削除します。
+<br />
+
+| Parameter                               | Description                  |
+| --------------------------------------- | ---------------------------- |
+| `ALL`                                   | データベース内のすべてのテーブルからデータを削除します。 |
+| `IF EXISTS`                             | データベースが存在しない場合でもエラーを発生させません。 |
+| `db`                                    | データベース名。                     |
+| `LIKE \| ILIKE \| NOT LIKE '<pattern>'` | パターンでテーブルをフィルタリングします。        |
+| `ON CLUSTER cluster`                    | クラスター全体に対してコマンドを実行します。       |
+
+データベース内のすべてのテーブルから全データを削除します。
 
 ## TRUNCATE DATABASE {#truncate-database}
+
 ```sql
 TRUNCATE DATABASE [IF EXISTS] db [ON CLUSTER cluster]
 ```
-<br/>
-| パラメータ            | 説明                                         |
-|----------------------|----------------------------------------------|
-| `IF EXISTS`          | データベースが存在しない場合にエラーを防ぎます。 |
-| `db`                 | データベース名。                            |
-| `ON CLUSTER cluster` | 指定されたクラスター全体でコマンドを実行します。  |
 
-データベースからすべてのテーブルを削除しますが、データベース自体は保持します。 `IF EXISTS` 条項を省略した場合、データベースが存在しない場合にエラーを返します。
+<br />
+
+| Parameter            | Description                     |
+| -------------------- | ------------------------------- |
+| `IF EXISTS`          | データベースが存在しない場合にエラーが発生しないようにします。 |
+| `db`                 | データベース名。                        |
+| `ON CLUSTER cluster` | 指定したクラスタ全体でコマンドを実行します。          |
+
+データベース自体は保持したまま、そのデータベース内のすべてのテーブルを削除します。句 `IF EXISTS` を省略すると、データベースが存在しない場合はクエリはエラーとなります。
 
 :::note
-`TRUNCATE DATABASE` は `Replicated` データベースには対応していません。その代わりに、データベースをただ `DROP` して `CREATE` してください。
+`TRUNCATE DATABASE` は `Replicated` データベースではサポートされていません。代わりに、データベースを `DROP` してから `CREATE` してください。
 :::

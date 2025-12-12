@@ -2228,7 +2228,7 @@ CREATE TABLE applied_ai.transaction_canonical_embeddings
 ENGINE = ReplacingMergeTree ORDER BY (business_id, user_transaction_time, id)
 PARTITION BY 
     toYear(user_transaction_time) < 2024 ? toYear(user_transaction_time) : toYYYYMM(user_transaction_time)
-SETTINGS index_granularity = 8192, cache_populated_by_fetch = 1, min_age_to_force_merge_seconds=600
+SETTINGS cache_populated_by_fetch = 1, min_age_to_force_merge_seconds=600
 ```
 
 

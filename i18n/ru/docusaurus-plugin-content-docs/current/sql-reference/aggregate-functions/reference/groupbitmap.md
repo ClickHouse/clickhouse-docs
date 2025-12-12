@@ -1,13 +1,14 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/groupbitmap'
+description: 'Битовые или агрегатные вычисления по беззнаковому целочисленному столбцу. Возвращают мощность множества типа UInt64, а при добавлении суффикса -State — объект bitmap.'
 sidebar_position: 148
-description: 'Битовая карта или агрегатные вычисления из столбца без знака целого'
-title: groupBitmap
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/groupbitmap
+title: 'groupBitmap'
+doc_type: 'reference'
 ---
-# groupBitmap
 
-Битовая карта или агрегатные вычисления из колонки беззнакового целого числа, возвращает кардинальность типа UInt64. Если добавить суффикс -State, то возвращает [объект битовой карты](../../../sql-reference/functions/bitmap-functions.md).
+# groupBitmap {#groupbitmap}
+
+Выполняет Bitmap- или агрегатные вычисления по беззнаковому целочисленному столбцу и возвращает мощность множества (кардинальность) в виде значения типа UInt64. Если добавить суффикс `-State`, функция вернёт [bitmap-объект](../../../sql-reference/functions/bitmap-functions.md).
 
 ```sql
 groupBitmap(expr)
@@ -15,7 +16,7 @@ groupBitmap(expr)
 
 **Аргументы**
 
-`expr` – выражение, которое приводит к типу `UInt*`.
+`expr` – выражение, результатом которого является значение типа `UInt*`.
 
 **Возвращаемое значение**
 

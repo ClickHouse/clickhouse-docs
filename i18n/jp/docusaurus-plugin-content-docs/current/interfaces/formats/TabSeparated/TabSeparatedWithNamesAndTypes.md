@@ -1,30 +1,32 @@
 ---
-'description': 'TabSeparatedWithNamesAndTypes 形式に関する文書'
-'keywords':
-- 'TabSeparatedWithNamesAndTypes'
-'slug': '/interfaces/formats/TabSeparatedWithNamesAndTypes'
-'title': 'TabSeparatedWithNamesAndTypes'
-'doc_type': 'reference'
+description: 'TabSeparatedWithNamesAndTypes 形式に関するドキュメント'
+keywords: ['TabSeparatedWithNamesAndTypes']
+slug: /interfaces/formats/TabSeparatedWithNamesAndTypes
+title: 'TabSeparatedWithNamesAndTypes'
+doc_type: 'reference'
 ---
 
-| Input | Output | Alias                                          |
+| Input | Output | エイリアス                                          |
 |-------|--------|------------------------------------------------|
 |     ✔    |     ✔     | `TSVWithNamesAndTypes`, `RawWithNamesAndTypes` |
 
 ## 説明 {#description}
 
-[`TabSeparated`](./TabSeparated.md) 形式とは異なり、カラム名が最初の行に書き込まれ、カラムの型は二行目に書かれます。
+[`TabSeparated`](./TabSeparated.md) 形式とは異なり、最初の行にはカラム名が、2 行目にはカラム型が書き込まれます。
 
 :::note
-- [`input_format_with_names_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_names_use_header) 設定が `1` に設定されている場合、入力データのカラムはその名前でテーブルのカラムにマッピングされます。未知の名前のカラムは、設定 [`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) が `1` に設定されているとスキップされます。それ以外の場合、最初の行はスキップされます。
-- [`input_format_with_types_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_types_use_header) 設定が `1` に設定されている場合、入力データの型はテーブルの対応するカラムの型と比較されます。それ以外の場合、二行目はスキップされます。
+- [`input_format_with_names_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_names_use_header) 設定が `1` の場合、
+入力データのカラムは名前によってテーブル内のカラムにマッピングされます。さらに [`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 設定が `1` の場合、名前が不明なカラムはスキップされます。
+それ以外の場合、最初の行はスキップされます。
+- [`input_format_with_types_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_types_use_header) 設定が `1` の場合、
+入力データの型はテーブル内の対応するカラムの型と比較されます。それ以外の場合、2 行目はスキップされます。
 :::
 
 ## 使用例 {#example-usage}
 
 ### データの挿入 {#inserting-data}
 
-`football.tsv` という名前の次の tsv ファイルを使用します：
+次の内容の `football.tsv` という tsv ファイルを使用します。
 
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals
@@ -48,15 +50,15 @@ Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
 
-データを挿入します：
+データを挿入する:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedWithNamesAndTypes;
 ```
 
-### データの読み取り {#reading-data}
+### データの読み込み {#reading-data}
 
-`TabSeparatedWithNamesAndTypes` 形式を使用してデータを読み取ります：
+`TabSeparatedWithNamesAndTypes` フォーマットを使用してデータを読み込みます。
 
 ```sql
 SELECT *
@@ -64,7 +66,7 @@ FROM football
 FORMAT TabSeparatedWithNamesAndTypes
 ```
 
-出力は、カラム名と型のための二つのヘッダー行を持つタブ区切り形式になります：
+出力はタブ区切り形式となり、列名と型を表す 2 行のヘッダーが付きます。
 
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals

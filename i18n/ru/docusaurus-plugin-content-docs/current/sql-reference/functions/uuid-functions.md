@@ -1,20 +1,20 @@
 ---
-slug: '/sql-reference/functions/uuid-functions'
-sidebar_label: UUID
-description: 'Документация по функциям для работы с UUID'
-title: 'Функции работы с UUID'
-doc_type: reference
+description: 'Справочная документация по функциям для работы с UUID'
+sidebar_label: 'UUID'
+slug: /sql-reference/functions/uuid-functions
+title: 'Функции для работы с UUID'
+doc_type: 'reference'
 ---
+
 import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
-
-# Функции для работы с UUID
+# Функции для работы с UUID {#functions-for-working-with-uuids}
 
 ## Генерация UUIDv7 {#uuidv7-generation}
 
-Сгенерированный UUID содержит 48-битный временной штамп в миллисекундах Unix, за которым следует версия "7" (4 бита), счетчик (42 бита) для различения UUID в пределах миллисекунды (включая поле варианта "2", 2 бита) и случайное поле (32 бита).
-Для данного временного штампа (`unix_ts_ms`) счетчик начинается с случайного значения и увеличивается на 1 для каждого нового UUID до изменения временного штампа. В случае переполнения счетчика поле временного штампа увеличивается на 1, и счетчик сбрасывается на случайное новое начальное значение.
-Функции генерации UUID гарантируют, что поле счетчика в пределах временного штампа монотонно увеличивается во всех вызовах функций в параллельно работающих потоках и запросах.
+Сгенерированный UUID содержит 48-битный таймстамп в миллисекундах Unix-времени, за которым следуют версия «7» (4 бита), счётчик (42 бита) для различения UUID в пределах одной миллисекунды (включая поле варианта «2» — 2 бита) и случайное поле (32 бита).
+Для любого заданного таймстампа (`unix_ts_ms`) счётчик начинается со случайного значения и увеличивается на 1 для каждого нового UUID до тех пор, пока таймстамп не изменится. В случае переполнения счётчика поле таймстампа увеличивается на 1, а счётчик сбрасывается на новое случайное начальное значение.
+Функции генерации UUID гарантируют, что поле счётчика в пределах одного таймстампа монотонно возрастает во всех вызовах функции в параллельно выполняющихся потоках и запросах.
 
 ```text
  0                   1                   2                   3
@@ -32,10 +32,10 @@ import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
 ## Генерация Snowflake ID {#snowflake-id-generation}
 
-Сгенерированный Snowflake ID содержит текущий временной штамп Unix в миллисекундах (41 + 1 старший нулевой бит), за которым следует id машины (10 бит) и счетчик (12 бит) для различения ID в пределах миллисекунды. Для данного временного штампа (`unix_ts_ms`) счетчик начинается с 0 и увеличивается на 1 для каждого нового Snowflake ID до изменения временного штампа. В случае переполнения счетчика поле временного штампа увеличивается на 1, и счетчик сбрасывается на 0.
+Сгенерированный Snowflake ID содержит текущую Unix-метку времени в миллисекундах (41 бит + 1 старший нулевой бит), за которой следуют идентификатор машины (10 бит) и счётчик (12 бит) для различения идентификаторов в пределах одной миллисекунды. Для любой заданной метки времени (`unix_ts_ms`) счётчик начинается с 0 и увеличивается на 1 для каждого нового Snowflake ID до изменения метки времени. В случае переполнения счётчика поле метки времени увеличивается на 1, а счётчик сбрасывается в 0.
 
 :::note
-Сгенерированные Snowflake ID базируются на эпохе UNIX 1970-01-01. Хотя стандарт или рекомендация для эпохи Snowflake ID не существует, реализации в других системах могут использовать другую эпоху, например, Twitter/X (2010-11-04) или Mastodon (2015-01-01).
+Сгенерированные Snowflake ID основаны на эпохе UNIX 1970-01-01. Хотя не существует стандарта или рекомендаций для эпохи Snowflake ID, реализации в других системах могут использовать другую эпоху, например Twitter/X (2010-11-04) или Mastodon (2015-01-01).
 :::
 
 ```text
@@ -50,7 +50,7 @@ import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
 ## generateUUIDv4 {#generateuuidv4}
 
-Генерирует [версии 4](https://tools.ietf.org/html/rfc4122#section-4.4) [UUID](../data-types/uuid.md).
+Генерирует [UUID](../data-types/uuid.md) [версии 4](https://tools.ietf.org/html/rfc4122#section-4.4).
 
 **Синтаксис**
 
@@ -60,7 +60,7 @@ generateUUIDv4([expr])
 
 **Аргументы**
 
-- `expr` — Произвольное [выражение](/sql-reference/syntax#expressions), используемое для обхода [удаления общих подвыражений](/sql-reference/functions/overview#common-subexpression-elimination), если функция вызывается несколько раз в запросе. Значение выражения не влияет на возвращаемый UUID. Необязательно.
+* `expr` — Произвольное [выражение](/sql-reference/syntax#expressions), используемое для обхода [устранения общих подвыражений](/sql-reference/functions/overview#common-subexpression-elimination) при многократном вызове функции в одном запросе. Значение выражения не влияет на возвращаемый UUID. Необязательный параметр.
 
 **Возвращаемое значение**
 
@@ -68,7 +68,7 @@ generateUUIDv4([expr])
 
 **Пример**
 
-Сначала создайте таблицу с колонкой типа UUID, затем вставьте сгенерированный UUIDv4 в таблицу.
+Сначала создайте таблицу со столбцом типа UUID, затем вставьте сгенерированный UUIDv4 в эту таблицу.
 
 ```sql
 CREATE TABLE tab (uuid UUID) ENGINE = Memory;
@@ -86,7 +86,7 @@ SELECT * FROM tab;
 └──────────────────────────────────────┘
 ```
 
-**Пример с несколькими UUID, сгенерированными на строку**
+**Пример, в котором для каждой строки генерируется несколько UUID**
 
 ```sql
 SELECT generateUUIDv4(1), generateUUIDv4(2);
@@ -98,12 +98,12 @@ SELECT generateUUIDv4(1), generateUUIDv4(2);
 
 ## generateUUIDv7 {#generateUUIDv7}
 
-Генерирует [версии 7](https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04) [UUID](../data-types/uuid.md).
+Генерирует [UUID версии 7](https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04) [(UUID)](../data-types/uuid.md).
 
-Смотрите раздел ["Генерация UUIDv7"](#uuidv7-generation) для получения подробной информации о структуре UUID, управлении счетчиком и гарантиях производительности.
- 
+См. раздел [&quot;Генерация UUIDv7&quot;](#uuidv7-generation) для подробностей о структуре UUID, управлении счётчиком и гарантиях при конкурентном доступе.
+
 :::note
-По состоянию на апрель 2024 года UUID версии 7 находятся в статусе черновика, и их структура может измениться в будущем.
+По состоянию на апрель 2024 года UUID версии 7 имеют статус черновика, и их структура в будущем может измениться.
 :::
 
 **Синтаксис**
@@ -114,7 +114,7 @@ generateUUIDv7([expr])
 
 **Аргументы**
 
-- `expr` — Произвольное [выражение](/sql-reference/syntax#expressions), используемое для обхода [удаления общих подвыражений](/sql-reference/functions/overview#common-subexpression-elimination), если функция вызывается несколько раз в запросе. Значение выражения не влияет на возвращаемый UUID. Необязательно.
+* `expr` — Произвольное [выражение](/sql-reference/syntax#expressions), позволяющее обойти [устранение общих подвыражений](/sql-reference/functions/overview#common-subexpression-elimination), если функция вызывается несколько раз в запросе. Значение выражения не влияет на возвращаемый UUID. Необязательный параметр.
 
 **Возвращаемое значение**
 
@@ -122,7 +122,7 @@ generateUUIDv7([expr])
 
 **Пример**
 
-Сначала создайте таблицу с колонкой типа UUID, затем вставьте сгенерированный UUIDv7 в таблицу.
+Сначала создайте таблицу со столбцом типа UUID, затем вставьте сгенерированный UUIDv7 в таблицу.
 
 ```sql
 CREATE TABLE tab (uuid UUID) ENGINE = Memory;
@@ -140,7 +140,7 @@ SELECT * FROM tab;
 └──────────────────────────────────────┘
 ```
 
-**Пример с несколькими UUID, сгенерированными на строку**
+**Пример с несколькими UUID, генерируемыми для каждой строки**
 
 ```sql
 SELECT generateUUIDv7(1), generateUUIDv7(2);
@@ -152,12 +152,12 @@ SELECT generateUUIDv7(1), generateUUIDv7(2);
 
 ## dateTimeToUUIDv7 {#datetimetouuidv7}
 
-Преобразует значение [DateTime](../data-types/datetime.md) в [UUIDv7](https://en.wikipedia.org/wiki/UUID#Version_7) в указанное время.
+Преобразует значение [DateTime](../data-types/datetime.md) в [UUIDv7](https://en.wikipedia.org/wiki/UUID#Version_7) на заданный момент времени.
 
-Смотрите раздел ["Генерация UUIDv7"](#uuidv7-generation) для получения подробной информации о структуре UUID, управлении счетчиком и гарантиях производительности.
+См. раздел «[UUIDv7 generation](#uuidv7-generation)» для подробностей о структуре UUID, управлении счётчиком и гарантиях корректной работы при конкурентном доступе.
 
 :::note
-По состоянию на апрель 2024 года UUID версии 7 находятся в статусе черновика, и их структура может измениться в будущем.
+По состоянию на апрель 2024 года UUID версии 7 имеют статус черновика, и их структура может измениться в будущем.
 :::
 
 **Синтаксис**
@@ -168,7 +168,7 @@ dateTimeToUUIDv7(value)
 
 **Аргументы**
 
-- `value` — Дата с временем. [DateTime](../data-types/datetime.md).
+* `value` — Дата и время. [DateTime](../data-types/datetime.md).
 
 **Возвращаемое значение**
 
@@ -188,7 +188,7 @@ SELECT dateTimeToUUIDv7(toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai'));
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-**Пример с несколькими UUID для одного и того же временного штампа**
+**Пример с несколькими UUID для одной и той же временной метки**
 
 ```sql
 SELECT dateTimeToUUIDv7(toDateTime('2021-08-15 18:57:56'));
@@ -207,11 +207,11 @@ SELECT dateTimeToUUIDv7(toDateTime('2021-08-15 18:57:56'));
    └──────────────────────────────────────┘
 ```
 
-Функция гарантирует, что несколько вызовов с одним и тем же временным штампом генерируют уникальные, монотонно увеличивающиеся UUID.
+Функция гарантирует, что несколько вызовов с одинаковым значением временной метки генерируют уникальные, монотонно возрастающие UUID.
 
 ## empty {#empty}
 
-Проверяет, пуст ли входной UUID.
+Проверяет, является ли переданный UUID пустым.
 
 **Синтаксис**
 
@@ -219,21 +219,21 @@ SELECT dateTimeToUUIDv7(toDateTime('2021-08-15 18:57:56'));
 empty(UUID)
 ```
 
-UUID считается пустым, если он содержит все нули (нулевой UUID).
+UUID считается пустым, если он состоит полностью из нулей (нулевой UUID).
 
-Функция также работает для [Массивов](/sql-reference/functions/array-functions#empty) и [Строк](string-functions.md#empty).
+Функция также работает для массивов и строк.
 
 **Аргументы**
 
-- `x` — UUID. [UUID](../data-types/uuid.md).
+* `x` — UUID. [UUID](../data-types/uuid.md).
 
 **Возвращаемое значение**
 
-- Возвращает `1` для пустого UUID или `0` для непустого UUID. [UInt8](../data-types/int-uint.md).
+* Возвращает `1` для пустого UUID или `0` для непустого UUID. [UInt8](../data-types/int-uint.md).
 
 **Пример**
 
-Для генерации значения UUID ClickHouse предоставляет функцию [generateUUIDv4](#generateuuidv4).
+Чтобы сгенерировать значение UUID, ClickHouse предоставляет функцию [generateUUIDv4](#generateuuidv4).
 
 Запрос:
 
@@ -251,7 +251,7 @@ SELECT empty(generateUUIDv4());
 
 ## notEmpty {#notempty}
 
-Проверяет, не пуст ли входной UUID.
+Проверяет, что переданный UUID не пустой.
 
 **Синтаксис**
 
@@ -259,21 +259,21 @@ SELECT empty(generateUUIDv4());
 notEmpty(UUID)
 ```
 
-UUID считается пустым, если он содержит все нули (нулевой UUID).
+UUID считается пустым, если он состоит полностью из нулей (нулевой UUID).
 
-Функция также работает для [Массивов](/sql-reference/functions/array-functions#notEmpty) или [Строк](string-functions.md#notempty).
+Функция также работает для массивов и строк.
 
 **Аргументы**
 
-- `x` — UUID. [UUID](../data-types/uuid.md).
+* `x` — UUID. [UUID](../data-types/uuid.md).
 
 **Возвращаемое значение**
 
-- Возвращает `1` для непустого UUID или `0` для пустого UUID. [UInt8](../data-types/int-uint.md).
+* Возвращает `1` для непустого UUID или `0` для пустого UUID. [UInt8](../data-types/int-uint.md).
 
 **Пример**
 
-Для генерации значения UUID ClickHouse предоставляет функцию [generateUUIDv4](#generateuuidv4).
+Для генерации значения UUID в ClickHouse предусмотрена функция [generateUUIDv4](#generateuuidv4).
 
 Запрос:
 
@@ -291,7 +291,7 @@ SELECT notEmpty(generateUUIDv4());
 
 ## toUUID {#touuid}
 
-Преобразует значение типа String в UUID.
+Преобразует значение типа String в значение типа UUID.
 
 ```sql
 toUUID(string)
@@ -319,8 +319,8 @@ SELECT toUUID('61f0c404-5cb3-11e7-907b-a6006ad3dba0') AS uuid
 
 **Аргументы**
 
-- `string` — Строка из 36 символов или FixedString(36). [String](../syntax.md#string).
-- `default` — UUID, который будет использоваться в качестве значения по умолчанию, если первый аргумент не может быть преобразован в тип UUID. [UUID](../data-types/uuid.md).
+* `string` — строка длиной 36 символов или FixedString(36). [String](../syntax.md#string).
+* `default` — UUID, используемый по умолчанию, если первый аргумент не может быть преобразован в тип UUID. [UUID](../data-types/uuid.md).
 
 **Возвращаемое значение**
 
@@ -336,7 +336,7 @@ toUUIDOrDefault(string, default)
 
 **Примеры использования**
 
-В первом примере возвращается аргумент, преобразованный в тип UUID, так как он может быть преобразован:
+В этом первом примере возвращается первый аргумент, преобразованный к типу UUID, так как его можно привести к этому типу:
 
 ```sql
 SELECT toUUIDOrDefault('61f0c404-5cb3-11e7-907b-a6006ad3dba0', cast('59f0c404-5cb3-11e7-907b-a6006ad3dba0' AS UUID));
@@ -350,7 +350,7 @@ SELECT toUUIDOrDefault('61f0c404-5cb3-11e7-907b-a6006ad3dba0', cast('59f0c404-5c
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-Во втором примере возвращается второй аргумент (предоставленный UUID по умолчанию), так как первый аргумент не может быть преобразован в тип UUID:
+Этот второй пример возвращает второй аргумент (указанный UUID по умолчанию), поскольку первый аргумент нельзя привести к типу UUID:
 
 ```sql
 SELECT toUUIDOrDefault('-----61f0c404-5cb3-11e7-907b-a6006ad3dba0', cast('59f0c404-5cb3-11e7-907b-a6006ad3dba0' AS UUID));
@@ -366,7 +366,7 @@ SELECT toUUIDOrDefault('-----61f0c404-5cb3-11e7-907b-a6006ad3dba0', cast('59f0c4
 
 ## toUUIDOrNull {#touuidornull}
 
-Принимает аргумент типа String и пытается разобрать его в UUID. Если это не удалось, возвращает NULL.
+Принимает аргумент типа String и пытается преобразовать его в UUID. Если преобразование не удалось, возвращает NULL.
 
 ```sql
 toUUIDOrNull(string)
@@ -392,7 +392,7 @@ SELECT toUUIDOrNull('61f0c404-5cb3-11e7-907b-a6006ad3dba0T') AS uuid
 
 ## toUUIDOrZero {#touuidorzero}
 
-Принимает аргумент типа String и пытается разобрать его в UUID. Если это не удалось, возвращает нулевой UUID.
+Принимает аргумент типа String и пытается преобразовать его в UUID. Если преобразование не удаётся, возвращает нулевой UUID.
 
 ```sql
 toUUIDOrZero(string)
@@ -418,7 +418,7 @@ SELECT toUUIDOrZero('61f0c404-5cb3-11e7-907b-a6006ad3dba0T') AS uuid
 
 ## UUIDStringToNum {#uuidstringtonum}
 
-Принимает `string`, содержащую 36 символов в формате `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`, и возвращает [FixedString(16)](../data-types/fixedstring.md) в качестве его бинарного представления, с форматом, опционально указанным через `variant` (по умолчанию `Big-endian`).
+Принимает строку типа `string`, содержащую 36 символов в формате `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`, и возвращает [FixedString(16)](../data-types/fixedstring.md) в виде её двоичного представления, формат которого может быть дополнительно задан параметром `variant` (по умолчанию `Big-endian`).
 
 **Синтаксис**
 
@@ -428,8 +428,8 @@ UUIDStringToNum(string[, variant = 1])
 
 **Аргументы**
 
-- `string` — [String](/sql-reference/data-types/string) из 36 символов или [FixedString](/sql-reference/data-types/string)
-- `variant` — Целое число, представляющее вариант, как указано в [RFC4122](https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.1). 1 = `Big-endian` (по умолчанию), 2 = `Microsoft`.
+* `string` — [String](/sql-reference/data-types/string) из 36 символов или [FixedString](/sql-reference/data-types/string)
+* `variant` — целое число, задающее вариант в соответствии с [RFC4122](https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.1). 1 = `Big-endian` (по умолчанию), 2 = `Microsoft`.
 
 **Возвращаемое значение**
 
@@ -467,7 +467,7 @@ SELECT
 
 ## UUIDNumToString {#uuidnumtostring}
 
-Принимает `binary`, содержащий бинарное представление UUID, с форматом, опционально указанным через `variant` (по умолчанию `Big-endian`), и возвращает строку, содержащую 36 символов в текстовом формате.
+Принимает значение типа `binary`, содержащее двоичное представление UUID (его формат можно дополнительно указать параметром `variant`, по умолчанию используется `Big-endian`), и возвращает строку из 36 символов в текстовом формате.
 
 **Синтаксис**
 
@@ -477,12 +477,12 @@ UUIDNumToString(binary[, variant = 1])
 
 **Аргументы**
 
-- `binary` — [FixedString(16)](../data-types/fixedstring.md) в качестве бинарного представления UUID.
-- `variant` — Целое число, представляющее вариант, как указано в [RFC4122](https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.1). 1 = `Big-endian` (по умолчанию), 2 = `Microsoft`.
+* `binary` — [FixedString(16)](../data-types/fixedstring.md) как двоичное представление UUID.
+* `variant` — целое число, представляющее вариант, как указано в [RFC4122](https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.1). 1 = `Big-endian` (по умолчанию), 2 = `Microsoft`.
 
 **Возвращаемое значение**
 
-String.
+Строка.
 
 **Пример использования**
 
@@ -516,7 +516,7 @@ SELECT
 
 ## UUIDToNum {#uuidtonum}
 
-Принимает [UUID](../data-types/uuid.md) и возвращает его бинарное представление в виде [FixedString(16)](../data-types/fixedstring.md), с форматом, опционально указанным через `variant` (по умолчанию `Big-endian`). Эта функция заменяет вызовы двух отдельных функций `UUIDStringToNum(toString(uuid))`, так что промежуточное преобразование из UUID в строку не требуется для извлечения байтов из UUID.
+Принимает [UUID](../data-types/uuid.md) и возвращает его двоичное представление в виде [FixedString(16)](../data-types/fixedstring.md); формат двоичного представления может быть дополнительно указан параметром `variant` (по умолчанию `Big-endian`). Эта функция заменяет вызовы двух отдельных функций вида `UUIDStringToNum(toString(uuid))`, поэтому для извлечения байтов из UUID не требуется промежуточное преобразование UUID в строку.
 
 **Синтаксис**
 
@@ -526,12 +526,12 @@ UUIDToNum(uuid[, variant = 1])
 
 **Аргументы**
 
-- `uuid` — [UUID](../data-types/uuid.md).
-- `variant` — Целое число, представляющее вариант, как указано в [RFC4122](https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.1). 1 = `Big-endian` (по умолчанию), 2 = `Microsoft`.
+* `uuid` — [UUID](../data-types/uuid.md).
+* `variant` — целое число, представляющее вариант, как указано в [RFC4122](https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.1). 1 = `Big-endian` (по умолчанию), 2 = `Microsoft`.
 
 **Возвращаемое значение**
 
-Бинарное представление UUID.
+Двоичное представление UUID.
 
 **Примеры использования**
 
@@ -565,7 +565,7 @@ SELECT
 
 ## UUIDv7ToDateTime {#uuidv7todatetime}
 
-Возвращает компонент временного штампа UUID версии 7.
+Возвращает компонент отметки времени из UUID версии 7.
 
 **Синтаксис**
 
@@ -575,12 +575,12 @@ UUIDv7ToDateTime(uuid[, timezone])
 
 **Аргументы**
 
-- `uuid` — [UUID](../data-types/uuid.md) версии 7.
-- `timezone` — [Имя часового пояса](../../operations/server-configuration-parameters/settings.md#timezone) для возвращаемого значения (необязательно). [String](../data-types/string.md).
+* `uuid` — [UUID](../data-types/uuid.md) версии 7.
+* `timezone` — [название часового пояса](../../operations/server-configuration-parameters/settings.md#timezone) для возвращаемого значения (необязательный параметр). [String](../data-types/string.md).
 
 **Возвращаемое значение**
 
-- Временной штамп с точностью до миллисекунд. Если UUID не является действительным UUID версии 7, возвращает 1970-01-01 00:00:00.000. [DateTime64(3)](../data-types/datetime64.md).
+* Временная метка с точностью до миллисекунд. Если UUID не является корректным UUID версии 7, возвращается 1970-01-01 00:00:00.000. [DateTime64(3)](../data-types/datetime64.md).
 
 **Примеры использования**
 
@@ -610,7 +610,7 @@ SELECT UUIDv7ToDateTime(toUUID('018f05c9-4ab8-7b86-b64e-c9f03fbd45d1'), 'America
 
 ## serverUUID {#serveruuid}
 
-Возвращает случайный UUID, сгенерированный во время первого запуска сервера ClickHouse. UUID хранится в файле `uuid` в директории сервера ClickHouse (например, `/var/lib/clickhouse/`) и сохраняется между перезапусками сервера.
+Возвращает случайный UUID, сгенерированный при первом запуске сервера ClickHouse. UUID хранится в файле `uuid` в каталоге сервера ClickHouse (например, `/var/lib/clickhouse/`) и сохраняется между перезапусками сервера.
 
 **Синтаксис**
 
@@ -620,14 +620,14 @@ serverUUID()
 
 **Возвращаемое значение**
 
-- UUID сервера. [UUID](../data-types/uuid.md).
+* UUID сервера. [UUID](../data-types/uuid.md).
 
 ## generateSnowflakeID {#generatesnowflakeid}
 
 Генерирует [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID).
-Эта функция гарантирует, что поле счетчика в пределах временного штампа монотонно увеличивается во всех вызовах функций в параллельно работающих потоках и запросах.
+Эта функция гарантирует, что поле счётчика внутри метки времени монотонно увеличивается при всех вызовах функции в одновременно выполняющихся потоках и запросах.
 
-Смотрите раздел ["Генерация Snowflake ID"](#snowflake-id-generation) для получения подробной информации о реализации.
+См. раздел [&quot;Генерация Snowflake ID&quot;](#snowflake-id-generation) для подробных сведений о реализации.
 
 **Синтаксис**
 
@@ -637,8 +637,8 @@ generateSnowflakeID([expr, [machine_id]])
 
 **Аргументы**
 
-- `expr` — Произвольное [выражение](/sql-reference/syntax#expressions), используемое для обхода [удаления общих подвыражений](/sql-reference/functions/overview#common-subexpression-elimination), если функция вызывается несколько раз в запросе. Значение выражения не влияет на возвращаемый Snowflake ID. Необязательно.
-- `machine_id` — ID машины, используются 10 младших битов. [Int64](../data-types/int-uint.md). Необязательно.
+* `expr` — Произвольное [выражение](/sql-reference/syntax#expressions), используемое для обхода механизма [устранения общих подвыражений](/sql-reference/functions/overview#common-subexpression-elimination), если функция вызывается несколько раз в одном запросе. Значение выражения не влияет на возвращаемый Snowflake ID. Необязательный параметр.
+* `machine_id` — Идентификатор машины, используются младшие 10 бит. [Int64](../data-types/int-uint.md). Необязательный параметр.
 
 **Возвращаемое значение**
 
@@ -646,7 +646,7 @@ generateSnowflakeID([expr, [machine_id]])
 
 **Пример**
 
-Сначала создайте таблицу с колонкой типа UInt64, затем вставьте сгенерированный Snowflake ID в таблицу.
+Сначала создайте таблицу со столбцом типа UInt64, затем вставьте в неё сгенерированный Snowflake ID.
 
 ```sql
 CREATE TABLE tab (id UInt64) ENGINE = Memory;
@@ -664,7 +664,7 @@ SELECT * FROM tab;
 └─────────────────────┘
 ```
 
-**Пример с несколькими Snowflake ID, сгенерированными на строку**
+**Пример с несколькими Snowflake ID, создаваемыми для каждой строки**
 
 ```sql
 SELECT generateSnowflakeID(1), generateSnowflakeID(2);
@@ -674,7 +674,7 @@ SELECT generateSnowflakeID(1), generateSnowflakeID(2);
 └────────────────────────┴────────────────────────┘
 ```
 
-**Пример с выражением и ID машины**
+**Пример с выражением и идентификатором хоста**
 
 ```sql
 SELECT generateSnowflakeID('expr', 1);
@@ -686,16 +686,16 @@ SELECT generateSnowflakeID('expr', 1);
 
 ## snowflakeToDateTime {#snowflaketodatetime}
 
-<DeprecatedBadge/>
+<DeprecatedBadge />
 
 :::warning
-Эта функция устарела и может быть использована только в том случае, если настройка [allow_deprecated_snowflake_conversion_functions](../../operations/settings/settings.md#allow_deprecated_snowflake_conversion_functions) включена.
+Эта функция устарела и может использоваться только в том случае, если включена настройка [allow&#95;deprecated&#95;snowflake&#95;conversion&#95;functions](../../operations/settings/settings.md#allow_deprecated_snowflake_conversion_functions).
 Функция будет удалена в будущем.
 
-Пожалуйста, используйте функцию [snowflakeIDToDateTime](#snowflakeidtodatetime) вместо этого.
+Вместо неё используйте функцию [snowflakeIDToDateTime](#snowflakeidtodatetime).
 :::
 
-Извлекает компонент временного штампа [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) в формате [DateTime](../data-types/datetime.md).
+Извлекает компонент временной метки из [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) в формате [DateTime](../data-types/datetime.md).
 
 **Синтаксис**
 
@@ -705,12 +705,12 @@ snowflakeToDateTime(value[, time_zone])
 
 **Аргументы**
 
-- `value` — Snowflake ID. [Int64](../data-types/int-uint.md).
-- `time_zone` — [Часовой пояс](/operations/server-configuration-parameters/settings.md#timezone). Функция разбирает `time_string` в соответствии с часовым поясом. Необязательно. [String](../data-types/string.md).
+* `value` — идентификатор Snowflake. [Int64](../data-types/int-uint.md).
+* `time_zone` — [часовой пояс](/operations/server-configuration-parameters/settings.md#timezone). Функция разбирает `time_string` в соответствии с часовым поясом. Необязательный параметр. [String](../data-types/string.md).
 
 **Возвращаемое значение**
 
-- Компонент временного штампа `value` как значение [DateTime](../data-types/datetime.md).
+* Компонент метки времени значения `value` в виде значения [DateTime](../data-types/datetime.md).
 
 **Пример**
 
@@ -731,16 +731,16 @@ SELECT snowflakeToDateTime(CAST('1426860702823350272', 'Int64'), 'UTC');
 
 ## snowflakeToDateTime64 {#snowflaketodatetime64}
 
-<DeprecatedBadge/>
+<DeprecatedBadge />
 
 :::warning
-Эта функция устарела и может быть использована только в том случае, если настройка [allow_deprecated_snowflake_conversion_functions](../../operations/settings/settings.md#allow_deprecated_snowflake_conversion_functions) включена.
+Эта функция устарела и может использоваться только в том случае, если включена настройка [allow&#95;deprecated&#95;snowflake&#95;conversion&#95;functions](../../operations/settings/settings.md#allow_deprecated_snowflake_conversion_functions).
 Функция будет удалена в будущем.
 
-Пожалуйста, используйте функцию [snowflakeIDToDateTime64](#snowflakeidtodatetime64) вместо этого.
+Используйте вместо неё функцию [snowflakeIDToDateTime64](#snowflakeidtodatetime64).
 :::
 
-Извлекает компонент временного штампа [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) в формате [DateTime64](../data-types/datetime64.md).
+Извлекает компонент метки времени из [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) в формате [DateTime64](../data-types/datetime64.md).
 
 **Синтаксис**
 
@@ -750,12 +750,12 @@ snowflakeToDateTime64(value[, time_zone])
 
 **Аргументы**
 
-- `value` — Snowflake ID. [Int64](../data-types/int-uint.md).
-- `time_zone` — [Часовой пояс](/operations/server-configuration-parameters/settings.md#timezone). Функция разбирает `time_string` в соответствии с часовым поясом. Необязательно. [String](../data-types/string.md).
+* `value` — Snowflake ID. [Int64](../data-types/int-uint.md).
+* `time_zone` — [Timezone](/operations/server-configuration-parameters/settings.md#timezone). Функция разбирает `time_string` в соответствии с часовым поясом. Необязательный параметр. [String](../data-types/string.md).
 
 **Возвращаемое значение**
 
-- Компонент временного штампа `value` как значение [DateTime64](../data-types/datetime64.md) с масштабом = 3, т.е. с точностью до миллисекунд.
+* Компонента временной метки `value` в формате [DateTime64](../data-types/datetime64.md) с масштабом = 3, то есть с точностью до миллисекунды.
 
 **Пример**
 
@@ -776,16 +776,16 @@ SELECT snowflakeToDateTime64(CAST('1426860802823350272', 'Int64'), 'UTC');
 
 ## dateTimeToSnowflake {#datetimetosnowflake}
 
-<DeprecatedBadge/>
+<DeprecatedBadge />
 
 :::warning
-Эта функция устарела и может быть использована только в том случае, если настройка [allow_deprecated_snowflake_conversion_functions](../../operations/settings/settings.md#allow_deprecated_snowflake_conversion_functions) включена.
-Функция будет удалена в будущем.
+Эта функция устарела и может использоваться только в том случае, если включён параметр [allow&#95;deprecated&#95;snowflake&#95;conversion&#95;functions](../../operations/settings/settings.md#allow_deprecated_snowflake_conversion_functions).
+Функция будет удалена в какой‑то момент в будущем.
 
-Пожалуйста, используйте функцию [dateTimeToSnowflakeID](#datetimetosnowflakeid) вместо этого.
+Пожалуйста, используйте вместо неё функцию [dateTimeToSnowflakeID](#datetimetosnowflakeid).
 :::
 
-Преобразует значение [DateTime](../data-types/datetime.md) в первый [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) в указанное время.
+Преобразует значение [DateTime](../data-types/datetime.md) в первый [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) в заданный момент времени.
 
 **Синтаксис**
 
@@ -795,11 +795,11 @@ dateTimeToSnowflake(value)
 
 **Аргументы**
 
-- `value` — Дата с временем. [DateTime](../data-types/datetime.md).
+* `value` — дата и время. [DateTime](../data-types/datetime.md).
 
 **Возвращаемое значение**
 
-- Входное значение, преобразованное в тип [Int64](../data-types/int-uint.md) как первый Snowflake ID в это время.
+* Входное значение, преобразованное в тип данных [Int64](../data-types/int-uint.md) как первый идентификатор Snowflake в этот момент времени.
 
 **Пример**
 
@@ -819,16 +819,16 @@ WITH toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai') AS dt SELECT dateTimeToS
 
 ## dateTime64ToSnowflake {#datetime64tosnowflake}
 
-<DeprecatedBadge/>
+<DeprecatedBadge />
 
 :::warning
-Эта функция устарела и может быть использована только в том случае, если настройка [allow_deprecated_snowflake_conversion_functions](../../operations/settings/settings.md#allow_deprecated_snowflake_conversion_functions) включена.
+Эта функция устарела и может использоваться только если включена настройка [allow&#95;deprecated&#95;snowflake&#95;conversion&#95;functions](../../operations/settings/settings.md#allow_deprecated_snowflake_conversion_functions).
 Функция будет удалена в будущем.
 
-Пожалуйста, используйте функцию [dateTime64ToSnowflakeID](#datetime64tosnowflakeid) вместо этого.
+Используйте вместо неё функцию [dateTime64ToSnowflakeID](#datetime64tosnowflakeid).
 :::
 
-Преобразует [DateTime64](../data-types/datetime64.md) в первый [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) в указанное время.
+Преобразует [DateTime64](../data-types/datetime64.md) в первый [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) в указанный момент времени.
 
 **Синтаксис**
 
@@ -838,11 +838,11 @@ dateTime64ToSnowflake(value)
 
 **Аргументы**
 
-- `value` — Дата с временем. [DateTime64](../data-types/datetime64.md).
+* `value` — дата и время. [DateTime64](../data-types/datetime64.md).
 
 **Возвращаемое значение**
 
-- Входное значение, преобразованное в тип [Int64](../data-types/int-uint.md) как первый Snowflake ID в это время.
+* Входное значение, преобразованное к типу данных [Int64](../data-types/int-uint.md) как первый идентификатор Snowflake для этого момента времени.
 
 **Пример**
 
@@ -862,7 +862,7 @@ WITH toDateTime64('2021-08-15 18:57:56.492', 3, 'Asia/Shanghai') AS dt64 SELECT 
 
 ## snowflakeIDToDateTime {#snowflakeidtodatetime}
 
-Возвращает компонент временного штампа [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) как значение типа [DateTime](../data-types/datetime.md).
+Возвращает компонент отметки времени [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) в виде значения типа [DateTime](../data-types/datetime.md).
 
 **Синтаксис**
 
@@ -872,13 +872,13 @@ snowflakeIDToDateTime(value[, epoch[, time_zone]])
 
 **Аргументы**
 
-- `value` — Snowflake ID. [UInt64](../data-types/int-uint.md).
-- `epoch` - Эпоха Snowflake ID в миллисекундах с 1970-01-01. По умолчанию 0 (1970-01-01). Для эпохи Twitter/X (2015-01-01) укажите 1288834974657. Необязательно. [UInt*](../data-types/int-uint.md).
-- `time_zone` — [Часовой пояс](/operations/server-configuration-parameters/settings.md#timezone). Функция разбирает `time_string` в соответствии с часовым поясом. Необязательно. [String](../data-types/string.md).
+* `value` — Snowflake ID. [UInt64](../data-types/int-uint.md).
+* `epoch` — эпоха Snowflake ID в миллисекундах, отсчитанных с 1970-01-01. По умолчанию — 0 (1970-01-01). Для эпохи Twitter/X (2015-01-01) укажите 1288834974657. Необязательный параметр. [UInt*](../data-types/int-uint.md).
+* `time_zone` — [Timezone](/operations/server-configuration-parameters/settings.md#timezone). Функция интерпретирует `time_string` в соответствии с часовым поясом. Необязательный параметр. [String](../data-types/string.md).
 
 **Возвращаемое значение**
 
-- Компонент временного штампа `value` как значение [DateTime](../data-types/datetime.md).
+* Компонент временной метки значения `value` в виде значения [DateTime](../data-types/datetime.md).
 
 **Пример**
 
@@ -898,7 +898,7 @@ SELECT snowflakeIDToDateTime(7204436857747984384) AS res
 
 ## snowflakeIDToDateTime64 {#snowflakeidtodatetime64}
 
-Возвращает компонент временного штампа [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) как значение типа [DateTime64](../data-types/datetime64.md).
+Возвращает компонент временной метки [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) в виде значения типа [DateTime64](../data-types/datetime64.md).
 
 **Синтаксис**
 
@@ -908,13 +908,13 @@ snowflakeIDToDateTime64(value[, epoch[, time_zone]])
 
 **Аргументы**
 
-- `value` — Snowflake ID. [UInt64](../data-types/int-uint.md).
-- `epoch` - Эпоха Snowflake ID в миллисекундах с 1970-01-01. По умолчанию 0 (1970-01-01). Для эпохи Twitter/X (2015-01-01) укажите 1288834974657. Необязательно. [UInt*](../data-types/int-uint.md).
-- `time_zone` — [Часовой пояс](/operations/server-configuration-parameters/settings.md#timezone). Функция разбирает `time_string` в соответствии с часовым поясом. Необязательно. [String](../data-types/string.md).
+* `value` — идентификатор Snowflake. [UInt64](../data-types/int-uint.md).
+* `epoch` — эпоха идентификаторов Snowflake в миллисекундах, прошедших с 1970-01-01. По умолчанию — 0 (1970-01-01). Для эпохи Twitter/X (2015-01-01) укажите 1288834974657. Необязательный параметр. [UInt*](../data-types/int-uint.md).
+* `time_zone` — [Timezone](/operations/server-configuration-parameters/settings.md#timezone). Функция разбирает `time_string` в соответствии с указанным часовым поясом. Необязательный параметр. [String](../data-types/string.md).
 
 **Возвращаемое значение**
 
-- Компонент временного штампа `value` как значение [DateTime64](../data-types/datetime64.md) с масштабом = 3, т.е. с точностью до миллисекунд.
+* Компонент метки времени из `value` в виде [DateTime64](../data-types/datetime64.md) с scale = 3, то есть с точностью до миллисекунд.
 
 **Пример**
 
@@ -934,7 +934,7 @@ SELECT snowflakeIDToDateTime64(7204436857747984384) AS res
 
 ## dateTimeToSnowflakeID {#datetimetosnowflakeid}
 
-Преобразует значение [DateTime](../data-types/datetime.md) в первый [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) в указанное время.
+Преобразует значение [DateTime](../data-types/datetime.md) в первый [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) для заданного момента времени.
 
 **Синтаксис**
 
@@ -944,12 +944,12 @@ dateTimeToSnowflakeID(value[, epoch])
 
 **Аргументы**
 
-- `value` — Дата с временем. [DateTime](../data-types/datetime.md).
-- `epoch` - Эпоха Snowflake ID в миллисекундах с 1970-01-01. По умолчанию 0 (1970-01-01). Для эпохи Twitter/X (2015-01-01) укажите 1288834974657. Необязательно. [UInt*](../data-types/int-uint.md).
+* `value` — дата и время. [DateTime](../data-types/datetime.md).
+* `epoch` — эпоха для Snowflake ID в миллисекундах, прошедших с 1970-01-01. По умолчанию 0 (1970-01-01). Для эпохи Twitter/X (2015-01-01) используйте 1288834974657. Необязательный параметр. [UInt*](../data-types/int-uint.md).
 
 **Возвращаемое значение**
 
-- Входное значение, преобразованное в [UInt64](../data-types/int-uint.md) как первый Snowflake ID в это время.
+* Входное значение, преобразованное в [UInt64](../data-types/int-uint.md) как первый Snowflake ID для этого момента времени.
 
 **Пример**
 
@@ -969,7 +969,7 @@ SELECT toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai') AS dt, dateTimeToSnowf
 
 ## dateTime64ToSnowflakeID {#datetime64tosnowflakeid}
 
-Преобразует [DateTime64](../data-types/datetime64.md) в первый [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) в указанное время.
+Преобразует [DateTime64](../data-types/datetime64.md) в первый [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) в заданный момент времени.
 
 **Синтаксис**
 
@@ -979,12 +979,12 @@ dateTime64ToSnowflakeID(value[, epoch])
 
 **Аргументы**
 
-- `value` — Дата с временем. [DateTime64](../data-types/datetime64.md).
-- `epoch` - Эпоха Snowflake ID в миллисекундах с 1970-01-01. По умолчанию 0 (1970-01-01). Для эпохи Twitter/X (2015-01-01) укажите 1288834974657. Необязательно. [UInt*](../data-types/int-uint.md).
+* `value` — дата и время. [DateTime64](../data-types/datetime64.md).
+* `epoch` — эпоха Snowflake ID в миллисекундах, отсчитываемая от 1970-01-01. По умолчанию — 0 (1970-01-01). Для эпохи Twitter/X (2015-01-01) укажите 1288834974657. Необязательный параметр. [UInt*](../data-types/int-uint.md).
 
 **Возвращаемое значение**
 
-- Входное значение, преобразованное в [UInt64](../data-types/int-uint.md) как первый Snowflake ID в это время.
+* Входное значение, преобразованное в [UInt64](../data-types/int-uint.md) как значение первого Snowflake ID для этого момента времени.
 
 **Пример**
 
@@ -1004,4 +1004,904 @@ SELECT toDateTime('2021-08-15 18:57:56.493', 3, 'Asia/Shanghai') AS dt, dateTime
 
 ## См. также {#see-also}
 
-- [dictGetUUID](/sql-reference/functions/ext-dict-functions#other-functions)
+* [dictGetUUID](/sql-reference/functions/ext-dict-functions#dictGetUUID)
+
+{/*
+  Содержимое приведённых ниже тегов заменяется при сборке фреймворка документации
+  документами, сгенерированными из system.functions. Пожалуйста, не изменяйте и не удаляйте эти теги.
+  См.: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
+  */ }
+
+{/*AUTOGENERATED_START*/ }
+
+## UUIDNumToString {#UUIDNumToString}
+
+Впервые представлена в версии v1.1
+
+Принимает двоичное представление UUID, формат которого может быть дополнительно указан через параметр `variant` (по умолчанию `Big-endian`), и возвращает строку из 36 символов в текстовом представлении.
+
+**Синтаксис**
+
+```sql
+UUIDNumToString(binary[, variant])
+```
+
+**Аргументы**
+
+* `binary` — Двоичное представление UUID. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+* `variant` — Вариант, как указано в [RFC4122](https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.1). 1 = `Big-endian` (по умолчанию), 2 = `Microsoft`. [`(U)Int*`](/sql-reference/data-types/int-uint)
+
+**Возвращаемое значение**
+
+Возвращает UUID в виде строки. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT
+    'a/<@];!~p{jTj={)' AS bytes,
+    UUIDNumToString(toFixedString(bytes, 16)) AS uuid
+```
+
+```response title=Response
+┌─bytes────────────┬─uuid─────────────────────────────────┐
+│ a/<@];!~p{jTj={) │ 612f3c40-5d3b-217e-707b-6a546a3d7b29 │
+└──────────────────┴──────────────────────────────────────┘
+```
+
+**Вариант от Microsoft**
+
+```sql title=Query
+SELECT
+    '@</a;]~!p{jTj={)' AS bytes,
+    UUIDNumToString(toFixedString(bytes, 16), 2) AS uuid
+```
+
+```response title=Response
+┌─bytes────────────┬─uuid─────────────────────────────────┐
+│ @</a;]~!p{jTj={) │ 612f3c40-5d3b-217e-707b-6a546a3d7b29 │
+└──────────────────┴──────────────────────────────────────┘
+```
+
+## UUIDStringToNum {#UUIDStringToNum}
+
+Появилась в: v1.1
+
+Принимает строку длиной 36 символов в формате `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` и возвращает [FixedString(16)](../data-types/fixedstring.md) в виде её бинарного представления, формат которого может быть дополнительно указан параметром `variant` (по умолчанию `Big-endian`).
+
+**Синтаксис**
+
+```sql
+UUIDStringToNum(string[, variant = 1])
+```
+
+**Аргументы**
+
+* `string` — строка или фиксированная строка длиной 36 символов [`String`](/sql-reference/data-types/string) или [`FixedString(36)`](/sql-reference/data-types/fixedstring)
+* `variant` — вариант в соответствии с [RFC4122](https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.1). 1 = `Big-endian` (по умолчанию), 2 = `Microsoft`. [`(U)Int*`](/sql-reference/data-types/int-uint)
+
+**Возвращаемое значение**
+
+Возвращает двоичное представление `string`. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT
+    '612f3c40-5d3b-217e-707b-6a546a3d7b29' AS uuid,
+    UUIDStringToNum(uuid) AS bytes
+```
+
+```response title=Response
+┌─uuid─────────────────────────────────┬─bytes────────────┐
+│ 612f3c40-5d3b-217e-707b-6a546a3d7b29 │ a/<@];!~p{jTj={) │
+└──────────────────────────────────────┴──────────────────┘
+```
+
+**Вариант Microsoft**
+
+```sql title=Query
+SELECT
+    '612f3c40-5d3b-217e-707b-6a546a3d7b29' AS uuid,
+    UUIDStringToNum(uuid, 2) AS bytes
+```
+
+```response title=Response
+┌─uuid─────────────────────────────────┬─bytes────────────┐
+│ 612f3c40-5d3b-217e-707b-6a546a3d7b29 │ @</a;]~!p{jTj={) │
+└──────────────────────────────────────┴──────────────────┘
+```
+
+## UUIDToNum {#UUIDToNum}
+
+Введена в версии v24.5
+
+Принимает [UUID](../data-types/uuid.md) и возвращает его бинарное представление в виде [FixedString(16)](../data-types/fixedstring.md), при этом формат может быть дополнительно задан параметром `variant` (по умолчанию `Big-endian`).
+Эта функция заменяет использование двух отдельных функций `UUIDStringToNum(toString(uuid))`, поэтому для извлечения байтов из UUID не требуется промежуточное преобразование UUID в строку.
+
+**Синтаксис**
+
+```sql
+UUIDToNum(uuid[, variant = 1])
+```
+
+**Аргументы**
+
+* `uuid` — UUID. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
+* `variant` — вариант в соответствии с [RFC4122](https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.1). 1 = `Big-endian` (по умолчанию), 2 = `Microsoft`. [`(U)Int*`](/sql-reference/data-types/int-uint)
+
+**Возвращаемое значение**
+
+Возвращает двоичное представление UUID. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT
+    toUUID('612f3c40-5d3b-217e-707b-6a546a3d7b29') AS uuid,
+    UUIDToNum(uuid) AS bytes
+```
+
+```response title=Response
+┌─uuid─────────────────────────────────┬─bytes────────────┐
+│ 612f3c40-5d3b-217e-707b-6a546a3d7b29 │ a/<@];!~p{jTj={) │
+└──────────────────────────────────────┴──────────────────┘
+```
+
+**Вариант от Microsoft**
+
+```sql title=Query
+SELECT
+    toUUID('612f3c40-5d3b-217e-707b-6a546a3d7b29') AS uuid,
+    UUIDToNum(uuid, 2) AS bytes
+```
+
+```response title=Response
+┌─uuid─────────────────────────────────┬─bytes────────────┐
+│ 612f3c40-5d3b-217e-707b-6a546a3d7b29 │ @</a;]~!p{jTj={) │
+└──────────────────────────────────────┴──────────────────┘
+```
+
+## UUIDv7ToDateTime {#UUIDv7ToDateTime}
+
+Появилась в версии: v24.5
+
+Возвращает временную составляющую (timestamp) UUID версии 7.
+
+**Синтаксис**
+
+```sql
+UUIDv7ToDateTime(uuid[, timezone])
+```
+
+**Аргументы**
+
+* `uuid` — UUID версии 7. [`String`](/sql-reference/data-types/string)
+* `timezone` — Необязательный параметр. [Имя часового пояса](../../operations/server-configuration-parameters/settings.md#timezone) для возвращаемого значения. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает метку времени с точностью до миллисекунд. Если UUID не является корректным UUID версии 7, возвращает `1970-01-01 00:00:00.000`. [`DateTime64(3)`](/sql-reference/data-types/datetime64)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT UUIDv7ToDateTime(toUUID('018f05c9-4ab8-7b86-b64e-c9f03fbd45d1'))
+```
+
+```response title=Response
+┌─UUIDv7ToDateTime(toUUID('018f05c9-4ab8-7b86-b64e-c9f03fbd45d1'))─┐
+│                                          2024-04-22 15:30:29.048 │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+**С часовым поясом**
+
+```sql title=Query
+SELECT UUIDv7ToDateTime(toUUID('018f05c9-4ab8-7b86-b64e-c9f03fbd45d1'), 'America/New_York')
+```
+
+```response title=Response
+┌─UUIDv7ToDateTime(toUUID('018f05c9-4ab8-7b86-b64e-c9f03fbd45d1'), 'America/New_York')─┐
+│                                                             2024-04-22 11:30:29.048 │
+└─────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+## dateTime64ToSnowflake {#dateTime64ToSnowflake}
+
+Добавлена в: v21.10
+
+<DeprecatedBadge />
+
+:::warning
+Эта функция устарела и может быть использована только в том случае, если включена настройка [`allow_deprecated_snowflake_conversion_functions`](../../operations/settings/settings.md#allow_deprecated_snowflake_conversion_functions).
+Функция будет удалена в какой‑то момент в будущем.
+
+Используйте вместо неё функцию [dateTime64ToSnowflakeID](#dateTime64ToSnowflakeID).
+:::
+
+Преобразует [DateTime64](../data-types/datetime64.md) в первый [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) в заданный момент времени.
+
+**Синтаксис**
+
+```sql
+dateTime64ToSnowflake(value)
+```
+
+**Аргументы**
+
+* `value` — дата и время. [`DateTime64`](/sql-reference/data-types/datetime64)
+
+**Возвращаемое значение**
+
+Возвращает входное значение, преобразованное в первый идентификатор Snowflake для этого момента времени. [`Int64`](/sql-reference/data-types/int-uint)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+WITH toDateTime64('2021-08-15 18:57:56.492', 3, 'Asia/Shanghai') AS dt64 SELECT dateTime64ToSnowflake(dt64);
+```
+
+```response title=Response
+┌─dateTime64ToSnowflake(dt64)─┐
+│         1426860704886947840 │
+└─────────────────────────────┘
+```
+
+## dateTime64ToSnowflakeID {#dateTime64ToSnowflakeID}
+
+Добавлена в версии: v24.6
+
+Преобразует [`DateTime64`](../data-types/datetime64.md) в первый [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) для заданного момента времени.
+
+См. раздел [&quot;Генерация идентификаторов Snowflake&quot;](#snowflake-id-generation) для подробностей реализации.
+
+**Синтаксис**
+
+```sql
+dateTime64ToSnowflakeID(value[, epoch])
+```
+
+**Аргументы**
+
+* `value` — Дата и время. [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+* `epoch` — Эпоха Snowflake ID в миллисекундах, прошедших с 1970-01-01. По умолчанию — 0 (1970-01-01). Для эпохи Twitter/X (2015-01-01) укажите 1288834974657. [`UInt*`](/sql-reference/data-types/int-uint)
+
+**Возвращаемое значение**
+
+Возвращает входное значение в виде первого Snowflake ID для этого момента времени. [`UInt64`](/sql-reference/data-types/int-uint)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT toDateTime64('2025-08-15 18:57:56.493', 3, 'Asia/Shanghai') AS dt, dateTime64ToSnowflakeID(dt) AS res;
+```
+
+```response title=Response
+┌──────────────────────dt─┬─────────────────res─┐
+│ 2025-08-15 18:57:56.493 │ 7362075066076495872 │
+└─────────────────────────┴─────────────────────┘
+```
+
+## dateTimeToSnowflake {#dateTimeToSnowflake}
+
+Добавлена в: v21.10
+
+<DeprecatedBadge />
+
+:::warning
+Эта функция объявлена устаревшей и может использоваться только в том случае, если включён параметр [`allow_deprecated_snowflake_conversion_functions`](../../operations/settings/settings.md#allow_deprecated_snowflake_conversion_functions).
+Функция будет удалена в какой-то момент в будущем.
+
+Используйте вместо неё функцию [dateTimeToSnowflakeID](#dateTimeToSnowflakeID).
+:::
+
+Преобразует значение [DateTime](../data-types/datetime.md) в первый [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) в заданный момент времени.
+
+**Синтаксис**
+
+```sql
+dateTimeToSnowflake(value)
+```
+
+**Аргументы**
+
+* `value` — дата и время. [`DateTime`](/sql-reference/data-types/datetime)
+
+**Возвращаемое значение**
+
+Возвращает первый идентификатор Snowflake для этого момента времени. [`Int64`](/sql-reference/data-types/int-uint)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+WITH toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai') AS dt SELECT dateTimeToSnowflake(dt);
+```
+
+```response title=Response
+┌─dateTimeToSnowflake(dt)─┐
+│     1426860702823350272 │
+└─────────────────────────┘
+```
+
+## dateTimeToSnowflakeID {#dateTimeToSnowflakeID}
+
+Добавлена в версии: v24.6
+
+Преобразует значение [DateTime](../data-types/datetime.md) в первый [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) для указанного момента времени.
+
+**Синтаксис**
+
+```sql
+dateTimeToSnowflakeID(value[, epoch])
+```
+
+**Аргументы**
+
+* `value` — дата и время. [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+* `epoch` — необязательный параметр. Эпоха для Snowflake ID в миллисекундах, отсчитываемых с 1970-01-01. Значение по умолчанию — 0 (1970-01-01). Для эпохи Twitter/X (2015-01-01) укажите 1288834974657. [`UInt*`](/sql-reference/data-types/int-uint)
+
+**Возвращаемое значение**
+
+Возвращает первое возможное значение Snowflake ID для указанного момента времени. [`UInt64`](/sql-reference/data-types/int-uint)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai') AS dt, dateTimeToSnowflakeID(dt) AS res;
+```
+
+```response title=Response
+┌──────────────────dt─┬─────────────────res─┐
+│ 2021-08-15 18:57:56 │ 6832626392367104000 │
+└─────────────────────┴─────────────────────┘
+```
+
+## dateTimeToUUIDv7 {#dateTimeToUUIDv7}
+
+Добавлена в версии: v25.9
+
+Преобразует значение [DateTime](../data-types/datetime.md) в [UUIDv7](https://en.wikipedia.org/wiki/UUID#Version_7) в указанное время.
+
+См. раздел [«UUIDv7 generation»](#uuidv7-generation) для подробностей о структуре UUID, управлении счётчиком и гарантиях при параллельном использовании.
+
+:::note
+По состоянию на сентябрь 2025 года UUID версии 7 находятся в статусе черновика, и их структура может измениться в будущем.
+:::
+
+**Синтаксис**
+
+```sql
+dateTimeToUUIDv7(value)
+```
+
+**Аргументы**
+
+* `value` — Дата и время. [`DateTime`](/sql-reference/data-types/datetime)
+
+**Возвращаемое значение**
+
+Возвращает UUIDv7. [`UUID`](/sql-reference/data-types/uuid)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT dateTimeToUUIDv7(toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai'));
+```
+
+```response title=Response
+┌─dateTimeToUUIDv7(toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai'))─┐
+│ 018f05af-f4a8-778f-beee-1bedbc95c93b                                   │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+**несколько UUID для одной и той же метки времени**
+
+```sql title=Query
+SELECT dateTimeToUUIDv7(toDateTime('2021-08-15 18:57:56'));
+SELECT dateTimeToUUIDv7(toDateTime('2021-08-15 18:57:56'));
+```
+
+```response title=Response
+┌─dateTimeToUUIDv7(t⋯08-15 18:57:56'))─┐
+│ 017b4b2d-7720-76ed-ae44-bbcc23a8c550 │
+└──────────────────────────────────────┘
+┌─dateTimeToUUIDv7(t⋯08-15 18:57:56'))─┐
+│ 017b4b2d-7720-76ed-ae44-bbcf71ed0fd3 │
+└──────────────────────────────────────┘
+```
+
+## generateSnowflakeID {#generateSnowflakeID}
+
+Появилась в версии v24.6
+
+Генерирует [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID).
+
+Функция `generateSnowflakeID` гарантирует, что поле счётчика в составе метки времени монотонно увеличивается во всех вызовах функции в параллельно выполняющихся потоках и запросах.
+
+См. раздел [«Генерация Snowflake ID»](#snowflake-id-generation) для получения подробностей реализации.
+
+**Синтаксис**
+
+```sql
+generateSnowflakeID([expr, [machine_id]])
+```
+
+**Аргументы**
+
+* `expr` — Произвольное [выражение](/sql-reference/syntax#expressions), используемое для обхода [устранения общих подвыражений](/sql-reference/functions/overview#common-subexpression-elimination), если функция вызывается несколько раз в запросе. Значение выражения не влияет на возвращаемый Snowflake ID. Необязательный параметр.
+* `machine_id` — Идентификатор машины, используются младшие 10 бит. [Int64](../data-types/int-uint.md). Необязательный параметр.
+
+**Возвращаемое значение**
+
+Возвращает Snowflake ID. [`UInt64`](/sql-reference/data-types/int-uint)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+CREATE TABLE tab (id UInt64)
+ENGINE = MergeTree()
+ORDER BY tuple();
+
+INSERT INTO tab SELECT generateSnowflakeID();
+
+SELECT * FROM tab;
+```
+
+```response title=Response
+┌──────────────────id─┐
+│ 7199081390080409600 │
+└─────────────────────┘
+```
+
+**Несколько идентификаторов Snowflake, генерируемых для одной строки**
+
+```sql title=Query
+SELECT generateSnowflakeID(1), generateSnowflakeID(2);
+```
+
+```response title=Response
+┌─generateSnowflakeID(1)─┬─generateSnowflakeID(2)─┐
+│    7199081609652224000 │    7199081609652224001 │
+└────────────────────────┴────────────────────────┘
+```
+
+**С выражением и идентификатором хоста**
+
+```sql title=Query
+SELECT generateSnowflakeID('expr', 1);
+```
+
+```response title=Response
+┌─generateSnowflakeID('expr', 1)─┐
+│            7201148511606784002 │
+└────────────────────────────────┘
+```
+
+## generateUUIDv4 {#generateUUIDv4}
+
+Впервые появилась в версии v1.1
+
+Генерирует [UUID](../data-types/uuid.md) [версии 4](https://tools.ietf.org/html/rfc4122#section-4.4).
+
+**Синтаксис**
+
+```sql
+generateUUIDv4([expr])
+```
+
+**Аргументы**
+
+* `expr` — Необязательный аргумент. Произвольное выражение, используемое для обхода [устранения общих подвыражений](/sql-reference/functions/overview#common-subexpression-elimination), если функция вызывается несколько раз в запросе. Значение выражения не влияет на возвращаемый UUID.
+
+**Возвращаемое значение**
+
+Возвращает UUIDv4. [`UUID`](/sql-reference/data-types/uuid)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT generateUUIDv4(number) FROM numbers(3);
+```
+
+```response title=Response
+┌─generateUUIDv4(number)───────────────┐
+│ fcf19b77-a610-42c5-b3f5-a13c122f65b6 │
+│ 07700d36-cb6b-4189-af1d-0972f23dc3bc │
+│ 68838947-1583-48b0-b9b7-cf8268dd343d │
+└──────────────────────────────────────┘
+```
+
+**Устранение общих подвыражений**
+
+```sql title=Query
+SELECT generateUUIDv4(1), generateUUIDv4(1);
+```
+
+```response title=Response
+┌─generateUUIDv4(1)────────────────────┬─generateUUIDv4(2)────────────────────┐
+│ 2d49dc6e-ddce-4cd0-afb8-790956df54c1 │ 2d49dc6e-ddce-4cd0-afb8-790956df54c1 │
+└──────────────────────────────────────┴──────────────────────────────────────┘
+```
+
+## generateUUIDv7 {#generateUUIDv7}
+
+Добавлено в: v24.5
+
+Генерирует [идентификатор версии 7](https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04) [UUID](../data-types/uuid.md).
+
+См. раздел «[Генерация UUIDv7](#uuidv7-generation)» для подробностей о структуре UUID, управлении счётчиком и гарантиях при конкурентном доступе.
+
+:::note
+По состоянию на сентябрь 2025 года UUID версии 7 имеют статус черновика, и их структура может измениться в будущем.
+:::
+
+**Синтаксис**
+
+```sql
+generateUUIDv7([expr])
+```
+
+**Аргументы**
+
+* `expr` — необязательное произвольное выражение, используемое для обхода [устранения общих подвыражений](/sql-reference/functions/overview#common-subexpression-elimination), если функция вызывается несколько раз в одном запросе. Значение выражения не влияет на возвращаемый UUID. [`Any`](/sql-reference/data-types)
+
+**Возвращаемое значение**
+
+Возвращает UUIDv7. [`UUID`](/sql-reference/data-types/uuid)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT generateUUIDv7(number) FROM numbers(3);
+```
+
+```response title=Response
+┌─generateUUIDv7(number)───────────────┐
+│ 019947fb-5766-7ed0-b021-d906f8f7cebb │
+│ 019947fb-5766-7ed0-b021-d9072d0d1e07 │
+│ 019947fb-5766-7ed0-b021-d908dca2cf63 │
+└──────────────────────────────────────┘
+```
+
+**Устранение общих подвыражений**
+
+```sql title=Query
+SELECT generateUUIDv7(1), generateUUIDv7(1);
+```
+
+```response title=Response
+┌─generateUUIDv7(1)────────────────────┬─generateUUIDv7(1)────────────────────┐
+│ 019947ff-0f87-7d88-ace0-8b5b3a66e0c1 │ 019947ff-0f87-7d88-ace0-8b5b3a66e0c1 │
+└──────────────────────────────────────┴──────────────────────────────────────┘
+```
+
+## readWKTLineString {#readWKTLineString}
+
+Добавлена в: v
+
+Разбирает представление геометрии LineString в формате Well-Known Text (WKT) и возвращает его во внутреннем формате ClickHouse.
+
+**Синтаксис**
+
+```sql
+readWKTLineString(wkt_string)
+```
+
+**Аргументы**
+
+* `wkt_string` — входная строка WKT, представляющая геометрию типа LineString. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Функция возвращает внутреннее представление геометрии типа LineString в ClickHouse.
+
+**Примеры**
+
+**Первый вызов**
+
+```sql title=Query
+SELECT readWKTLineString('LINESTRING (1 1, 2 2, 3 3, 1 1)');
+```
+
+```response title=Response
+┌─readWKTLineString('LINESTRING (1 1, 2 2, 3 3, 1 1)')─┐
+│ [(1,1),(2,2),(3,3),(1,1)]                            │
+└──────────────────────────────────────────────────────┘
+```
+
+**второй вызов**
+
+```sql title=Query
+SELECT toTypeName(readWKTLineString('LINESTRING (1 1, 2 2, 3 3, 1 1)'));
+```
+
+```response title=Response
+┌─toTypeName(readWKTLineString('LINESTRING (1 1, 2 2, 3 3, 1 1)'))─┐
+│ LineString                                                       │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+## snowflakeIDToDateTime {#snowflakeIDToDateTime}
+
+Появилась в версии: v24.6
+
+Возвращает временную компоненту [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) как значение типа [DateTime](../data-types/datetime.md).
+
+**Синтаксис**
+
+```sql
+snowflakeIDToDateTime(value[, epoch[, time_zone]])
+```
+
+**Аргументы**
+
+* `value` — идентификатор Snowflake. [`UInt64`](/sql-reference/data-types/int-uint)
+* `epoch` — необязательный параметр. Эпоха идентификатора Snowflake в миллисекундах, прошедших с 1970-01-01. По умолчанию — 0 (1970-01-01). Для эпохи Twitter/X (2015-01-01) укажите 1288834974657. [`UInt*`](/sql-reference/data-types/int-uint)
+* `time_zone` — необязательный параметр. [Часовой пояс](/operations/server-configuration-parameters/settings.md#timezone). Функция интерпретирует `time_string` в соответствии с часовым поясом. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает компонент метки времени из `value`. [`DateTime`](/sql-reference/data-types/datetime)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT snowflakeIDToDateTime(7204436857747984384) AS res
+```
+
+```response title=Response
+┌─────────────────res─┐
+│ 2024-06-06 10:59:58 │
+└─────────────────────┘
+```
+
+## snowflakeIDToDateTime64 {#snowflakeIDToDateTime64}
+
+Добавлена в версии: v24.6
+
+Возвращает компонент метки времени [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) в виде значения типа [DateTime64](../data-types/datetime64.md).
+
+**Синтаксис**
+
+```sql
+snowflakeIDToDateTime64(value[, epoch[, time_zone]])
+```
+
+**Аргументы**
+
+* `value` — Snowflake ID. [`UInt64`](/sql-reference/data-types/int-uint)
+* `epoch` — Необязательный аргумент. Эпоха Snowflake ID в миллисекундах, отсчитываемых с 1970-01-01. По умолчанию — 0 (1970-01-01). Для эпохи Twitter/X (2015-01-01) укажите 1288834974657. [`UInt*`](/sql-reference/data-types/int-uint)
+* `time_zone` — Необязательный аргумент. [Часовой пояс](/operations/server-configuration-parameters/settings.md#timezone). Функция интерпретирует `time_string` в соответствии с часовым поясом. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает компонент временной метки из `value` в виде `DateTime64` с масштабом = 3, то есть с точностью до миллисекунд. [`DateTime64`](/sql-reference/data-types/datetime64)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT snowflakeIDToDateTime64(7204436857747984384) AS res
+```
+
+```response title=Response
+┌─────────────────res─┐
+│ 2024-06-06 10:59:58 │
+└─────────────────────┘
+```
+
+## snowflakeToDateTime {#snowflakeToDateTime}
+
+Введена в версии v21.10
+
+<DeprecatedBadge />
+
+:::warning
+Эта функция является устаревшей и может использоваться только в том случае, если включена настройка [`allow_deprecated_snowflake_conversion_functions`](../../operations/settings/settings.md#allow_deprecated_snowflake_conversion_functions).
+Функция будет удалена в одной из будущих версий.
+
+Пожалуйста, используйте вместо неё функцию [`snowflakeIDToDateTime`](#snowflakeIDToDateTime).
+:::
+
+Извлекает компонент метки времени [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) в формате [DateTime](../data-types/datetime.md).
+
+**Синтаксис**
+
+```sql
+snowflakeToDateTime(value[, time_zone])
+```
+
+**Аргументы**
+
+* `value` — идентификатор Snowflake. [`Int64`](/sql-reference/data-types/int-uint)
+* `time_zone` — необязательный параметр. [Timezone](/operations/server-configuration-parameters/settings.md#timezone). Функция интерпретирует `time_string` в соответствии с указанным часовым поясом. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает компонент метки времени из значения `value`. [`DateTime`](/sql-reference/data-types/datetime)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT snowflakeToDateTime(CAST('1426860702823350272', 'Int64'), 'UTC');
+```
+
+```response title=Response
+┌─snowflakeToDateTime(CAST('1426860702823350272', 'Int64'), 'UTC')─┐
+│                                              2021-08-15 10:57:56 │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+## snowflakeToDateTime64 {#snowflakeToDateTime64}
+
+Добавлена в версии: v21.10
+
+<DeprecatedBadge />
+
+:::warning
+Эта функция устарела и может использоваться только в том случае, если настройка [`allow_deprecated_snowflake_conversion_functions`](../../operations/settings/settings.md#allow_deprecated_snowflake_conversion_functions) включена.
+Функция будет удалена в одной из будущих версий.
+
+Используйте вместо неё функцию [`snowflakeIDToDateTime64`](#snowflakeIDToDateTime64).
+:::
+
+Извлекает компонент временной метки [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) в формате [DateTime64](../data-types/datetime64.md).
+
+**Синтаксис**
+
+```sql
+snowflakeToDateTime64(value[, time_zone])
+```
+
+**Аргументы**
+
+* `value` — Snowflake ID. [`Int64`](/sql-reference/data-types/int-uint)
+* `time_zone` — необязательный параметр. [Timezone](/operations/server-configuration-parameters/settings.md#timezone). Функция интерпретирует `time_string` в указанном часовом поясе. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает компонент отметки времени из `value`. [`DateTime64(3)`](/sql-reference/data-types/datetime64)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT snowflakeToDateTime64(CAST('1426860802823350272', 'Int64'), 'UTC');
+```
+
+```response title=Response
+┌─snowflakeToDateTime64(CAST('1426860802823350272', 'Int64'), 'UTC')─┐
+│                                            2021-08-15 10:58:19.841 │
+└────────────────────────────────────────────────────────────────────┘
+```
+
+## toUUIDOrDefault {#toUUIDOrDefault}
+
+Введена в версии: v21.1
+
+Преобразует значение типа String в тип UUID. Если преобразование не удалось, возвращает UUID по умолчанию вместо генерации ошибки.
+
+Функция пытается разобрать строку из 36 символов в стандартном формате UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx).
+Если строку нельзя преобразовать в корректный UUID, функция возвращает указанный UUID по умолчанию.
+
+**Синтаксис**
+
+```sql
+toUUIDOrDefault(string, default)
+```
+
+**Аргументы**
+
+* `string` — строка из 36 символов или FixedString(36), преобразуемая в UUID.
+* `default` — значение UUID, которое будет возвращено, если первый аргумент не удаётся преобразовать к типу UUID.
+
+**Возвращаемое значение**
+
+Возвращает преобразованный UUID при успешном преобразовании или UUID по умолчанию, если преобразование завершается ошибкой. [`UUID`](/sql-reference/data-types/uuid)
+
+**Примеры**
+
+**Успешное преобразование возвращает распарсенный UUID**
+
+```sql title=Query
+SELECT toUUIDOrDefault('61f0c404-5cb3-11e7-907b-a6006ad3dba0', toUUID('59f0c404-5cb3-11e7-907b-a6006ad3dba0'));
+```
+
+```response title=Response
+┌─toUUIDOrDefault('61f0c404-5cb3-11e7-907b-a6006ad3dba0', toUUID('59f0c404-5cb3-11e7-907b-a6006ad3dba0'))─┐
+│ 61f0c404-5cb3-11e7-907b-a6006ad3dba0                                                                     │
+└──────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+**В случае неудачного преобразования возвращается UUID по умолчанию**
+
+```sql title=Query
+SELECT toUUIDOrDefault('-----61f0c404-5cb3-11e7-907b-a6006ad3dba0', toUUID('59f0c404-5cb3-11e7-907b-a6006ad3dba0'));
+```
+
+```response title=Response
+┌─toUUIDOrDefault('-----61f0c404-5cb3-11e7-907b-a6006ad3dba0', toUUID('59f0c404-5cb3-11e7-907b-a6006ad3dba0'))─┐
+│ 59f0c404-5cb3-11e7-907b-a6006ad3dba0                                                                          │
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+## toUUIDOrNull {#toUUIDOrNull}
+
+Введена в версии v20.12
+
+Преобразует входное значение в значение типа `UUID`, но в случае ошибки возвращает `NULL`.
+Аналог функции [`toUUID`](#touuid), но возвращает `NULL` вместо выбрасывания исключения при ошибках преобразования.
+
+Поддерживаемые аргументы:
+
+* Строковые представления UUID в стандартном формате (8-4-4-4-12 шестнадцатеричных цифр).
+* Строковые представления UUID без дефисов (32 шестнадцатеричные цифры).
+
+Неподдерживаемые аргументы (возвращают `NULL`):
+
+* Неверные строковые форматы.
+* Типы, отличные от строк.
+* Некорректные UUID.
+
+**Синтаксис**
+
+```sql
+toUUIDOrNull(x)
+```
+
+**Аргументы**
+
+* `x` — строковое представление UUID. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает значение UUID при успешном преобразовании, в противном случае — `NULL`. [`UUID`](/sql-reference/data-types/uuid) или [`NULL`](/sql-reference/syntax#null)
+
+**Примеры**
+
+**Примеры использования**
+
+```sql title=Query
+SELECT
+    toUUIDOrNull('550e8400-e29b-41d4-a716-446655440000') AS valid_uuid,
+    toUUIDOrNull('invalid-uuid') AS invalid_uuid
+```
+
+```response title=Response
+┌─valid_uuid───────────────────────────┬─invalid_uuid─┐
+│ 550e8400-e29b-41d4-a716-446655440000 │         ᴺᵁᴸᴸ │
+└──────────────────────────────────────┴──────────────┘
+```
+
+{/*AUTOGENERATED_END*/ }

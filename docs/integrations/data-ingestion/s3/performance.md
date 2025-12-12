@@ -191,11 +191,11 @@ When reading from queries, the initial query can often appear slower than if the
 
 ## Using threads for reads {#using-threads-for-reads}
 
-Read performance on S3 will scale linearly with the number of cores, provided you are not limited by network bandwidth or local I/O. Increasing the number of threads also has memory overhead permutations that users should be aware of. The following can be modified to improve read throughput performance potentially:
+Read performance on S3 will scale linearly with the number of cores, provided you are not limited by network bandwidth or local I/O. Increasing the number of threads also has memory overhead permutations that you should be aware of. The following can be modified to improve read throughput performance potentially:
 
 * Usually, the default value of `max_threads` is sufficient, i.e., the number of cores. If the amount of memory used for a query is high, and this needs to be reduced, or the `LIMIT` on results is low, this value can be set lower. Users with plenty of memory may wish to experiment with increasing this value for possible higher read throughput from S3. Typically this is only beneficial on machines with lower core counts, i.e., &lt; 10. The benefit from further parallelization typically diminishes as other resources act as a bottleneck, e.g., network and CPU contention.
 * Versions of ClickHouse before 22.3.1 only parallelized reads across multiple files when using the `s3` function or `S3` table engine. This required the user to ensure files were split into chunks on S3 and read using a glob pattern to achieve optimal read performance. Later versions now parallelize downloads within a file.
-* In low thread count scenarios, users may benefit from setting `remote_filesystem_read_method` to "read" to cause the synchronous reading of files from S3.
+* In low thread count scenarios, you may benefit from setting `remote_filesystem_read_method` to "read" to cause the synchronous reading of files from S3.
 * For the s3 function and table, parallel downloading of an individual file is determined by the values [`max_download_threads`](/operations/settings/settings#max_download_threads) and [`max_download_buffer_size`](/operations/settings/settings#max_download_buffer_size). While [`max_download_threads`](/operations/settings/settings#max_download_threads) controls the number of threads used, files will only be downloaded in parallel if their size is greater than 2 * `max_download_buffer_size`. By default, the `max_download_buffer_size` default is set to 10MiB. In some cases, you can safely increase this buffer size to 50 MB (`max_download_buffer_size=52428800`), with the aim of ensuring smaller files are only downloaded by a single thread. This can reduce the time each thread spends making S3 calls and thus also lower the S3 wait time. See [this blog post](https://clickhouse.com/blog/clickhouse-1-trillion-row-challenge) for an example of this.
 
 Before making any changes to improve performance, ensure you measure appropriately. As S3 API calls are sensitive to latency and may impact client timings, use the query log for performance metrics, i.e., `system.query_log`.
@@ -278,7 +278,7 @@ Scaling with resources and nodes applies to both read and insert queries.
 
 ### Vertical scaling {#vertical-scaling}
 
-All previous tuning and queries have only used a single node in our ClickHouse Cloud cluster. Users will also often have more than one node of ClickHouse available. We recommend users scale vertically initially, improving S3 throughput linearly with the number of cores. If we repeat our earlier insert and read queries on a larger ClickHouse Cloud node to twice the resources (64GiB, 16 vCPUs) with appropriate settings, both execute approximately twice as fast.
+All previous tuning and queries have only used a single node in our ClickHouse Cloud cluster. You will also often have more than one node of ClickHouse available. We recommend users scale vertically initially, improving S3 throughput linearly with the number of cores. If we repeat our earlier insert and read queries on a larger ClickHouse Cloud node to twice the resources (64GiB, 16 vCPUs) with appropriate settings, both execute approximately twice as fast.
 
 ```sql
 INSERT INTO posts SELECT *
@@ -305,7 +305,7 @@ Individual nodes can also be bottlenecked by network and S3 GET requests, preven
 
 ### Horizontal scaling {#horizontal-scaling}
 
-Eventually, horizontal scaling is often necessary due to hardware availability and cost-efficiency. In ClickHouse Cloud, production clusters have at least 3 nodes. Users may also wish to therefore utilize all nodes for an insert.
+Eventually, horizontal scaling is often necessary due to hardware availability and cost-efficiency. In ClickHouse Cloud, production clusters have at least 3 nodes. You may also wish to therefore utilize all nodes for an insert.
 
 Utilizing a cluster for S3 reads requires using the `s3Cluster` function as described in [Utilizing Clusters](/integrations/s3#utilizing-clusters). This allows reads to be distributed across nodes.  
 
@@ -315,7 +315,7 @@ The server that initially receives the insert query first resolves the glob patt
 
 We repeat our earlier read query distributing the workload across 3 nodes, adjusting the query to use `s3Cluster`. This is performed automatically in ClickHouse Cloud, by referring to the `default` cluster.
 
-As noted in [Utilizing Clusters](/integrations/s3#utilizing-clusters) this work is distributed a file level. To benefit from this feature users will require a sufficient number of files i.e. at least > the number of nodes.
+As noted in [Utilizing Clusters](/integrations/s3#utilizing-clusters) this work is distributed a file level. To benefit from this feature you will require a sufficient number of files i.e. at least > the number of nodes.
 
 ```sql
 SELECT

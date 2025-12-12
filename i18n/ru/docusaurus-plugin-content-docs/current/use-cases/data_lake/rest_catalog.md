@@ -1,56 +1,53 @@
 ---
-'slug': '/use-cases/data-lake/rest-catalog'
-'sidebar_label': 'REST Catalog'
-'title': 'REST Catalog'
-'pagination_prev': null
-'pagination_next': null
-'description': 'В этом руководстве мы проведем вас через шаги для выполнения запросов
-  к вашим данным с использованием ClickHouse и REST Catalog.'
-'keywords':
-- 'REST'
-- 'Tabular'
-- 'Data Lake'
-- 'Iceberg'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: /use-cases/data-lake/rest-catalog
+sidebar_label: 'Каталог REST'
+title: 'Каталог REST'
+pagination_prev: null
+pagination_next: null
+description: 'В этом руководстве мы пошагово расскажем, как запрашивать данные с помощью ClickHouse и REST Catalog.'
+keywords: ['REST', 'Табличный', 'Озеро данных', 'Iceberg']
+show_related_blogs: true
+doc_type: 'guide'
 ---
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-<ExperimentalBadge/>
+import BetaBadge from '@theme/badges/BetaBadge';
+
+<BetaBadge />
 
 :::note
 Интеграция с REST Catalog работает только с таблицами Iceberg.
-Эта интеграция поддерживает как AWS S3, так и другие облачные хранилища.
+Эта интеграция поддерживает как AWS S3, так и другие облачные провайдеры хранилища.
 :::
 
-ClickHouse поддерживает интеграцию с несколькими каталогами (Unity, Glue, REST, Polaris и др.). Этот гид проведет вас через шаги запроса ваших данных, используя ClickHouse и спецификацию [REST Catalog](https://github.com/apache/iceberg/blob/main/open-api/rest-catalog-open-api.yaml/).
+ClickHouse поддерживает интеграцию с несколькими каталогами (Unity, Glue, REST, Polaris и т. д.). В этом руководстве описаны шаги по выполнению запросов к вашим данным с помощью ClickHouse и спецификации [REST Catalog](https://github.com/apache/iceberg/blob/main/open-api/rest-catalog-open-api.yaml/).
 
-REST Catalog — это стандартизированная API спецификация для каталогов Iceberg, поддерживаемая различными платформами, включая:
-- **Локальные среды разработки** (с использованием docker-compose)
-- **Управляемые сервисы**, такие как Tabular.io
-- **Самостоятельно размещенные** реализации REST каталога
+REST Catalog — это стандартизированная спецификация API для каталогов Iceberg, поддерживаемая различными платформами, включая:
+
+* **Локальные среды разработки** (с использованием конфигураций docker-compose)
+* **Управляемые сервисы**, такие как Tabular.io
+* **Самостоятельно развернутые** реализации REST Catalog
 
 :::note
-Поскольку эта функция экспериментальная, вам нужно будет активировать её с помощью:
+Поскольку эта функция является экспериментальной, её необходимо включить с помощью:
 `SET allow_experimental_database_iceberg = 1;`
 :::
 
-## Настройка локальной разработки {#local-development-setup}
+## Локальная среда разработки {#local-development-setup}
 
-Для локальной разработки и тестирования вы можете использовать контейнеризированную настройку REST каталога. Этот подход идеален для обучения, прототипирования и рабочих сред.
+Для локальной разработки и тестирования вы можете использовать контейнеризованную установку REST-каталога. Такой подход подходит для обучения, прототипирования и использования в средах разработки.
 
-### Предварительные условия {#local-prerequisites}
+### Предварительные требования {#local-prerequisites}
 
-1. **Docker и Docker Compose**: Убедитесь, что Docker установлен и работает
-2. **Пример настройки**: Вы можете использовать различные настройки docker-compose (см. раздел Альтернативные образы Docker ниже)
+1. **Docker и Docker Compose**: Убедитесь, что Docker установлен и запущен.
+2. **Пример окружения**: Вы можете использовать различные варианты конфигураций docker-compose (см. раздел «Alternative Docker Images» ниже).
 
-### Настройка локального REST каталога {#setting-up-local-rest-catalog}
+### Настройка локального REST-каталога {#setting-up-local-rest-catalog}
 
-Вы можете использовать различные контейнеризированные реализации REST каталога, такие как **[Databricks docker-spark-iceberg](https://github.com/databricks/docker-spark-iceberg/blob/main/docker-compose.yml?ref=blog.min.io)**, которые обеспечивают полноценную среду Spark + Iceberg + REST каталога с помощью docker-compose, что делает её идеальной для тестирования интеграций Iceberg.
+Вы можете использовать различные контейнеризованные реализации REST-каталога, такие как **[Databricks docker-spark-iceberg](https://github.com/databricks/docker-spark-iceberg/blob/main/docker-compose.yml?ref=blog.min.io)**, которая предоставляет полноценную среду Spark + Iceberg + REST-каталог на основе docker-compose, что делает её удобной для тестирования интеграций с Iceberg.
 
-**Шаг 1:** Создайте новую папку, в которой будете запускать пример, затем создайте файл `docker-compose.yml` с конфигурацией из [Databricks docker-spark-iceberg](https://github.com/databricks/docker-spark-iceberg/blob/main/docker-compose.yml?ref=blog.min.io).
+**Шаг 1.** Создайте новую папку, в которой вы будете запускать пример, а затем создайте файл `docker-compose.yml` с конфигурацией из [Databricks docker-spark-iceberg](https://github.com/databricks/docker-spark-iceberg/blob/main/docker-compose.yml?ref=blog.min.io).
 
-**Шаг 2:** Далее создайте файл `docker-compose.override.yml` и поместите в него следующую конфигурацию контейнера ClickHouse:
+**Шаг 2.** Далее создайте файл `docker-compose.override.yml` и поместите в него следующую конфигурацию контейнера ClickHouse:
 
 ```yaml
 version: '3.8'
@@ -59,13 +56,13 @@ services:
   clickhouse:
     image: clickhouse/clickhouse-server:25.5.6
     container_name: clickhouse
-    user: '0:0'  # Ensures root permissions
+    user: '0:0'  # Обеспечивает права root
     ports:
       - "8123:8123"
       - "9002:9000"
     volumes:
       - ./clickhouse:/var/lib/clickhouse
-      - ./clickhouse/data_import:/var/lib/clickhouse/data_import  # Mount dataset folder
+      - ./clickhouse/data_import:/var/lib/clickhouse/data_import  # Монтирование каталога с набором данных
     networks:
       - iceberg_net
     environment:
@@ -75,31 +72,31 @@ services:
       - CLICKHOUSE_PASSWORD=
 ```
 
-**Шаг 3:** Запустите следующую команду для старта сервисов:
+**Шаг 3:** Выполните следующую команду, чтобы запустить службы:
 
 ```bash
 docker compose up
 ```
 
-**Шаг 4:** Подождите, пока все сервисы будут готовы. Вы можете проверить логи:
+**Шаг 4:** Подождите, пока все сервисы не будут готовы. Вы можете проверить логи:
 
 ```bash
 docker-compose logs -f
 ```
 
 :::note
-Настройка REST каталога требует предварительной загрузки примерных данных в таблицы Iceberg. Убедитесь, что среда Spark создала и наполнила таблицы перед тем, как пытаться запрашивать их через ClickHouse. Доступность таблиц зависит от конкретной настройки docker-compose и скриптов загрузки примерных данных.
+Настройка REST-каталога требует, чтобы демонстрационные данные сначала были загружены в таблицы Iceberg. Убедитесь, что в среде Spark таблицы созданы и заполнены, прежде чем пытаться выполнять к ним запросы из ClickHouse. Доступность таблиц зависит от конкретной конфигурации docker-compose и скриптов загрузки демонстрационных данных.
 :::
 
-### Подключение к локальному REST каталогу {#connecting-to-local-rest-catalog}
+### Подключение к локальному REST-каталогу {#connecting-to-local-rest-catalog}
 
-Подключитесь к вашему контейнеру ClickHouse:
+Подключитесь к своему контейнеру с ClickHouse:
 
 ```bash
 docker exec -it clickhouse clickhouse-client
 ```
 
-Затем создайте соединение с базой данных для REST каталога:
+Затем создайте подключение базы данных к каталогу REST:
 
 ```sql
 SET allow_experimental_database_iceberg = 1;
@@ -112,9 +109,9 @@ SETTINGS
     warehouse = 'demo'
 ```
 
-## Запрос таблиц REST каталога с использованием ClickHouse {#querying-rest-catalog-tables-using-clickhouse}
+## Выполнение запросов к таблицам REST‑каталога с помощью ClickHouse {#querying-rest-catalog-tables-using-clickhouse}
 
-Теперь, когда соединение установлено, вы можете начать делать запросы через REST каталог. Например:
+Теперь, когда соединение установлено, вы можете начинать выполнять запросы через REST‑каталог. Например:
 
 ```sql
 USE demo;
@@ -122,7 +119,7 @@ USE demo;
 SHOW TABLES;
 ```
 
-Если ваша настройка включает примерные данные (такие как набор данных такси), вы должны увидеть такие таблицы:
+Если в вашей установке есть демонстрационные данные (например, набор данных taxi), вы должны увидеть следующие таблицы:
 
 ```sql title="Response"
 ┌─name──────────┐
@@ -131,18 +128,21 @@ SHOW TABLES;
 ```
 
 :::note
-Если вы не видите никаких таблиц, это обычно означает:
-1. Среда Spark ещё не создала примерные таблицы
-2. Сервис REST каталога не полностью инициализирован
-3. Процесс загрузки примерных данных не завершён
+Если вы не видите таблиц, это обычно означает:
 
-Вы можете проверить логи Spark, чтобы увидеть прогресс создания таблиц:
+1. Среда Spark ещё не создала тестовые таблицы
+2. Служба REST-каталога ещё не полностью инициализирована
+3. Процесс загрузки тестовых данных ещё не завершён
+
+Вы можете проверить логи Spark, чтобы узнать, как продвигается создание таблиц:
+
 ```bash
 docker-compose logs spark
 ```
+
 :::
 
-Чтобы сделать запрос к таблице (если она доступна):
+Чтобы выполнить запрос к таблице (если она существует):
 
 ```sql
 SELECT count(*) FROM `default.taxis`;
@@ -192,9 +192,9 @@ SHOW CREATE TABLE `default.taxis`;
 └───────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-## Загрузка данных из вашего Data Lake в ClickHouse {#loading-data-from-your-data-lake-into-clickhouse}
+## Загрузка данных из вашего озера данных (Data Lake) в ClickHouse {#loading-data-from-your-data-lake-into-clickhouse}
 
-Если вам нужно загрузить данные из REST каталога в ClickHouse, начните с создания локальной таблицы ClickHouse:
+Если вам нужно загрузить данные из каталога REST в ClickHouse, сначала создайте локальную таблицу ClickHouse:
 
 ```sql
 CREATE TABLE taxis
@@ -224,7 +224,7 @@ PARTITION BY toYYYYMM(tpep_pickup_datetime)
 ORDER BY (VendorID, tpep_pickup_datetime, PULocationID, DOLocationID);
 ```
 
-Затем загрузите данные из вашей таблицы REST каталога через `INSERT INTO SELECT`:
+Затем загрузите данные из таблицы каталога REST с помощью оператора `INSERT INTO SELECT`:
 
 ```sql
 INSERT INTO taxis 

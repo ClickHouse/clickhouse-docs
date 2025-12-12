@@ -19,4 +19,4 @@ Machine Learning and GenAI.
 |----------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
 | [AI chat](/use-cases/AI_ML/AIChat)                                   | This guide explains how to enable and use the AI Chat feature in the ClickHouse Cloud Console.                                                   |
 | [MCP](/use-cases/AI/MCP)                                             | A collection of guides to get you setup using Model Context Protocol (MCP) with ClickHouse                                                       |
-| [AI-powered SQL generation](/use-cases/AI/ai-powered-sql-generation) | This feature allows users to describe their data requirements in plain text, which the system then translates into corresponding SQL statements. |
+| [AI-powered SQL generation](/use-cases/AI/ai-powered-sql-generation) | This feature allows you to describe your data requirements in plain text, which the system then translates into corresponding SQL statements. |

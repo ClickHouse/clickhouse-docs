@@ -1,35 +1,34 @@
 ---
-'alias': []
-'description': 'TSKVフォーマットに関するDocumentation'
-'input_format': true
-'keywords':
-- 'TSKV'
-'output_format': true
-'slug': '/interfaces/formats/TSKV'
-'title': 'TSKV'
-'doc_type': 'reference'
+alias: []
+description: 'TSKV 形式に関するドキュメント'
+input_format: true
+keywords: ['TSKV']
+output_format: true
+slug: /interfaces/formats/TSKV
+title: 'TSKV'
+doc_type: 'reference'
 ---
 
-| Input | Output | Alias |
+| 入力 | 出力 | 別名 |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## 説明 {#description}
 
-[`TabSeparated`](./TabSeparated.md)フォーマットと似ていますが、`name=value`フォーマットで値を出力します。 
-名前は[`TabSeparated`](./TabSeparated.md)フォーマットと同様にエスケープされ、`=`記号もエスケープされます。
+[`TabSeparated`](./TabSeparated.md) フォーマットと似ていますが、値を `name=value` 形式で出力します。
+名前は [`TabSeparated`](./TabSeparated.md) フォーマットの場合と同じ方法でエスケープされ、`=` 記号も同様にエスケープされます。
 
 ```text
 SearchPhrase=   count()=8267016
-SearchPhrase=bathroom interior design    count()=2166
+SearchPhrase=バスルームインテリアデザイン    count()=2166
 SearchPhrase=clickhouse     count()=1655
-SearchPhrase=2014 spring fashion    count()=1549
-SearchPhrase=freeform photos       count()=1480
-SearchPhrase=angelina jolie    count()=1245
-SearchPhrase=omsk       count()=1112
-SearchPhrase=photos of dog breeds    count()=1091
-SearchPhrase=curtain designs        count()=1064
-SearchPhrase=baku       count()=1000
+SearchPhrase=2014年春ファッション    count()=1549
+SearchPhrase=フリーフォーム写真       count()=1480
+SearchPhrase=アンジェリーナ・ジョリー    count()=1245
+SearchPhrase=オムスク       count()=1112
+SearchPhrase=犬種の写真    count()=1091
+SearchPhrase=カーテンデザイン        count()=1064
+SearchPhrase=バクー       count()=1000
 ```
 
 ```sql title="Query"
@@ -41,27 +40,26 @@ x=1    y=\N
 ```
 
 :::note
-小さなカラムが多数ある場合、このフォーマットは非効率的であり、一般的に使用する理由はありません。 
-それにもかかわらず、効率の観点では[`JSONEachRow`](../JSON/JSONEachRow.md)フォーマットと同じくらい劣ってはいません。
+小さなカラムが多数ある場合、このフォーマットは非効率であり、通常これを使用する理由はありません。
+とはいえ、効率の面では [`JSONEachRow`](../JSON/JSONEachRow.md) フォーマットと同等です。
 :::
 
-解析では、異なるカラムの値は任意の順序でサポートされます。 
-いくつかの値が省略されても許可されており、それらはデフォルト値と等しいものとして扱われます。
-この場合、ゼロと空の行がデフォルト値として使用されます。 
-テーブルで指定できる複雑な値はデフォルトとしてサポートされていません。
+パース時には、異なるカラムの値の順序は任意で構いません。
+一部の値を省略しても許容され、省略された値はデフォルト値と等しいものとして扱われます。
+この場合、ゼロおよび空行がデフォルト値として使用されます。
+テーブルで指定可能な複雑な値は、デフォルト値としてはサポートされません。
 
-解析では、等号や値なしで`tskv`という追加フィールドを追加することができます。このフィールドは無視されます。
+パース時には、追加のフィールド `tskv` をイコール記号や値なしで追加しても構いません。このフィールドは無視されます。
 
-インポート中に、未知の名前のカラムはスキップされます。 
-これは、[`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields)が`1`に設定されている場合です。
+インポート時、[`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 設定が `1` に設定されている場合、名前が不明なカラムはスキップされます。
 
-[NULL](/sql-reference/syntax.md)は`\N`としてフォーマットされます。
+[NULL](/sql-reference/syntax.md) は `\N` としてフォーマットされます。
 
-## 使用例 {#example-usage}
+## 利用例 {#example-usage}
 
 ### データの挿入 {#inserting-data}
 
-以下のtskvファイル`football.tskv`を使用します：
+次の tskv ファイル `football.tskv` を使用します。
 
 ```tsv
 date=2022-04-30 season=2021     home_team=Sutton United away_team=Bradford City home_team_goals=1       away_team_goals=4
@@ -89,9 +87,9 @@ date=2022-05-07 season=2021     home_team=Walsall       away_team=Swindon Town  
 INSERT INTO football FROM INFILE 'football.tskv' FORMAT TSKV;
 ```
 
-### データの読み取り {#reading-data}
+### データの読み込み {#reading-data}
 
-`TSKV`フォーマットを使用してデータを読み取ります：
+`TSKV` フォーマットを使用してデータを読み込みます。
 
 ```sql
 SELECT *
@@ -99,7 +97,7 @@ FROM football
 FORMAT TSKV
 ```
 
-出力は、カラムの名前と型のための2つのヘッダー行を持つタブ区切りフォーマットになります：
+出力は、列名と型を示す 2 行のヘッダー付きのタブ区切り形式になります。
 
 ```tsv
 date=2022-04-30 season=2021     home_team=Sutton United away_team=Bradford City home_team_goals=1       away_team_goals=4
@@ -121,4 +119,4 @@ date=2022-05-07 season=2021     home_team=Stevenage Borough     away_team=Salfor
 date=2022-05-07 season=2021     home_team=Walsall       away_team=Swindon Town  home_team_goals=0       away_team_goals=3
 ```
 
-## フォーマット設定 {#format-settings}
+## フォーマットの設定 {#format-settings}

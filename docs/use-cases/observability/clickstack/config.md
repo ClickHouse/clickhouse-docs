@@ -21,7 +21,7 @@ The following configuration options are available for each component of ClickSta
 If using the [All in One](/use-cases/observability/clickstack/deployment/all-in-one), [HyperDX Only](/use-cases/observability/clickstack/deployment/hyperdx-only) or [Local Mode](/use-cases/observability/clickstack/deployment/local-mode-only) simply pass the desired setting via an environment variable e.g.
 
 ```shell
-docker run  -e HYPERDX_LOG_LEVEL='debug' -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
+docker run  -e HYPERDX_LOG_LEVEL='debug' -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-all-in-one:latest
 ```
 
 ### Docker Compose {#docker-compose}
@@ -198,7 +198,7 @@ The following settings are available for each source:
 
 ### Correlated sources {#correlated-sources}
 
-To enable full cross-source correlation in ClickStack, users must configure correlated sources for logs, traces, metrics, and sessions. This allows HyperDX to associate related data and provide rich context when rendering events.
+To enable full cross-source correlation in ClickStack, you must configure correlated sources for logs, traces, metrics, and sessions. This allows HyperDX to associate related data and provide rich context when rendering events.
 
 - `Logs`: Can be correlated with traces and metrics.
 - `Traces`: Can be correlated with logs, sessions, and metrics.
@@ -402,9 +402,9 @@ See ["ClickStack OpenTelemetry Collector"](/use-cases/observability/clickstack/i
 
 ClickStack ships with a default ClickHouse configuration designed for multi-terabyte scale, but users are free to modify and optimize it to suit their workload.
 
-To tune ClickHouse effectively, users should understand key storage concepts such as [parts](/parts), [partitions](/partitions), [shards and replicas](/shards), and how [merges](/merges) occur at insert time. We recommend reviewing the fundamentals of [primary indices](/primary-indexes), [sparse secondary indices](/optimize/skipping-indexes), and data skipping indices, along with techniques for [managing data lifecycle](/observability/managing-data) e.g. using a TTL lifecycle.
+To tune ClickHouse effectively, you should understand key storage concepts such as [parts](/parts), [partitions](/partitions), [shards and replicas](/shards), and how [merges](/merges) occur at insert time. We recommend reviewing the fundamentals of [primary indices](/primary-indexes), [sparse secondary indices](/optimize/skipping-indexes), and data skipping indices, along with techniques for [managing data lifecycle](/observability/managing-data) e.g. using a TTL lifecycle.
 
-ClickStack supports [schema customization](/use-cases/observability/schema-design) - users may modify column types, extract new fields (e.g. from logs), apply codecs and dictionaries, and accelerate queries using projections.
+ClickStack supports [schema customization](/use-cases/observability/schema-design) - you may modify column types, extract new fields (e.g. from logs), apply codecs and dictionaries, and accelerate queries using projections.
 
 Additionally, materialized views can be used to [transform or filter data during ingestion](/use-cases/observability/schema-design#materialized-columns), provided that data is written to the source table of the view and the application reads from the target table.
 
