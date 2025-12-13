@@ -1009,6 +1009,17 @@ const sidebars = {
         "integrations/data-ingestion/etl-tools/fivetran/index",
         "integrations/data-ingestion/etl-tools/nifi-and-clickhouse",
         "integrations/data-ingestion/etl-tools/vector-to-clickhouse",
+        {
+          type: "category",
+          label: "Streamkap",
+          className: "top-nav-item",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            "integrations/data-ingestion/streamkap/streamkap-and-clickhouse",
+            "integrations/data-ingestion/streamkap/sql-server-clickhouse",
+          ],
+        }
       ],
     },
     {
