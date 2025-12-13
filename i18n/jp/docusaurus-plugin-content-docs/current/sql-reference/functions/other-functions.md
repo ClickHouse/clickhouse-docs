@@ -60,35 +60,30 @@ SELECT fqdn()
 └─────────────────────────────────┘
 ```
 
-
-
 ## MACNumToString {#MACNumToString}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+[`UInt64`](/sql-reference/data-types/int-uint) 型の数値をビッグエンディアン形式の MAC アドレスとして解釈します。
+対応する MAC アドレスを、`AA:BB:CC:DD:EE:FF`（16 進数表記の値をコロンで区切った形式）の文字列として返します。
 
-Interprets a [`UInt64`](/sql-reference/data-types/int-uint) number as a MAC address in big endian format.
-Returns the corresponding MAC address in format `AA:BB:CC:DD:EE:FF` (colon-separated numbers in hexadecimal form) as string.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 MACNumToString(num)
 ```
 
-**Arguments**
+**引数**
 
-- `num` — UInt64 number. [`UInt64`](/sql-reference/data-types/int-uint)
+* `num` — UInt64 型の整数値。[`UInt64`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+AA:BB:CC:DD:EE:FF という形式の MAC アドレスを返します。[`String`](/sql-reference/data-types/string)
 
-Returns a MAC address in format AA:BB:CC:DD:EE:FF. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT MACNumToString(149809441867716) AS mac_address;
@@ -100,34 +95,29 @@ SELECT MACNumToString(149809441867716) AS mac_address;
 └───────────────────┘
 ```
 
-
-
 ## MACStringToNum {#MACStringToNum}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+MACNumToString の逆関数です。MAC アドレスの形式が不正な場合は 0 を返します。
 
-The inverse function of MACNumToString. If the MAC address has an invalid format, it returns 0.
-
-
-**Syntax**
+**構文**
 
 ```sql
 MACStringToNum(s)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — MAC address string. [`String`](/sql-reference/data-types/string)
+* `s` — MAC アドレスを表す文字列。[`String`](/sql-reference/data-types/string)
 
+**返り値**
 
-**Returned value**
+UInt64 型の数値を返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns a UInt64 number. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT MACStringToNum('01:02:03:04:05:06') AS mac_numeric;
@@ -137,34 +127,29 @@ SELECT MACStringToNum('01:02:03:04:05:06') AS mac_numeric;
 1108152157446
 ```
 
-
-
 ## MACStringToOUI {#MACStringToOUI}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+AA:BB:CC:DD:EE:FF 形式（16進数表記でコロン区切り）の MAC アドレスを受け取り、先頭の 3 オクテットを UInt64 型の数値として返します。MAC アドレスの形式が不正な場合は 0 を返します。
 
-Given a MAC address in format AA:BB:CC:DD:EE:FF (colon-separated numbers in hexadecimal form), returns the first three octets as a UInt64 number. If the MAC address has an invalid format, it returns 0.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 MACStringToOUI(s)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — MAC address string. [`String`](/sql-reference/data-types/string)
+* `s` — MAC アドレス文字列。[`String`](/sql-reference/data-types/string)
 
+**返される値**
 
-**Returned value**
+先頭 3 オクテットを `UInt64` 型の数値として返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-First three octets as UInt64 number. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT MACStringToOUI('00:50:56:12:34:56') AS oui;
@@ -174,32 +159,30 @@ SELECT MACStringToOUI('00:50:56:12:34:56') AS oui;
 20566
 ```
 
+## &#95;&#95;applyFilter {#&#95;&#95;applyFilter}
 
+導入: v25.10
 
-## __applyFilter {#__applyFilter}
+JOIN の実行時フィルタリング用の専用関数です。
 
-Introduced in: v25.10
-
-Special function for JOIN runtime filtering.
-
-**Syntax**
+**構文**
 
 ```sql
 __applyFilter(filter_name, key)
 ```
 
-**Arguments**
+**引数**
 
-- `filter_name` — Internal name of runtime filter. It is built by BuildRuntimeFilterStep. [`String`](/sql-reference/data-types/string)
-- `key` — Value of any type that is checked to be present in the filter 
+* `filter_name` — ランタイムフィルターの内部名。BuildRuntimeFilterStep によって構築されます。[`String`](/sql-reference/data-types/string)
+* `key` — フィルター内に含まれているかどうかを検査される、任意の型の値
 
-**Returned value**
+**戻り値**
 
-False if the key should be filtered [`Bool`](/sql-reference/data-types/boolean)
+そのキーをフィルタリングすべき場合は False を返します。[`Bool`](/sql-reference/data-types/boolean)
 
-**Examples**
+**例**
 
-**Example**
+**例**
 
 ```sql title=Query
 この関数はユーザークエリでの使用を想定していません。最適化の過程でクエリプランに追加される可能性があります。
@@ -208,61 +191,51 @@ False if the key should be filtered [`Bool`](/sql-reference/data-types/boolean)
 ```response title=Response
 ```
 
+## &#95;&#95;patchPartitionID {#&#95;&#95;patchPartitionID}
 
+導入バージョン: v25.5
 
-## __patchPartitionID {#__patchPartitionID}
+内部関数です。パーツ名と、パッチパーツのカラム名のハッシュ値を受け取り、パッチパーツのパーティション名を返します。引数は正しいパーツ名でなければならず、それ以外の場合の動作は未定義です。
 
-Introduced in: v25.5
-
-
-Internal function. Receives the name of a part and a hash of patch part's column names. Returns the name of partition of patch part. The argument must be a correct name of part, the behaviour is undefined otherwise.
-        
-
-**Syntax**
+**構文**
 
 ```sql
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* なし。
 
-**Returned value**
+**戻り値**
 
-
-
-**Examples**
-
-
+**例**
 
 ## authenticatedUser {#authenticatedUser}
 
-Introduced in: v25.11
+導入バージョン: v25.11
 
+`EXECUTE AS` コマンドを使用してセッションのユーザーが切り替えられている場合、この関数は認証およびセッション作成に使用された元のユーザー名を返します。\
+エイリアス: authUser()
 
-If the session user has been switched using the EXECUTE AS command, this function returns the name of the original user that was used for authentication and creating the session.
-Alias: authUser()
-        
-
-**Syntax**
+**構文**
 
 ```sql
 authenticatedUser()
 ```
 
-**Aliases**: `authUser`
+**別名**: `authUser`
 
-**Arguments**
+**引数**
 
-- None.
+* なし。
 
-**Returned value**
+**戻り値**
 
-The name of the authenticated user. [`String`](/sql-reference/data-types/string)
+認証されたユーザーの名前。[`String`](/sql-reference/data-types/string)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 EXECUTE as u1;
@@ -275,39 +248,34 @@ EXECUTE as u1;
 └───────────────┴─────────────────────┘
 ```
 
-
-
 ## bar {#bar}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+棒グラフを作成します。
+幅が (x - min) に比例し、x = max のとき width 文字分となるバーを描画します。
+バーは 1 文字を 1/8 単位に分割した精度で描画されます。
 
-Builds a bar chart.
-Draws a band with width proportional to (x - min) and equal to width characters when x = max.
-The band is drawn with accuracy to one eighth of a symbol.
-
-
-**Syntax**
+**構文**
 
 ```sql
 bar(x, min, max[, width])
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Size to display. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `min` — The minimum value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `max` — The maximum value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `width` — Optional. The width of the bar in characters. The default is `80`. [`const (U)Int*`](/sql-reference/data-types/int-uint) or [`const Float*`](/sql-reference/data-types/float) or [`const Decimal`](/sql-reference/data-types/decimal)
+* `x` — 表示するサイズ。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
+* `min` — 最小値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
+* `max` — 最大値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
+* `width` — オプション。バーの幅（文字数）。デフォルトは `80`。[`const (U)Int*`](/sql-reference/data-types/int-uint) または [`const Float*`](/sql-reference/data-types/float) または [`const Decimal`](/sql-reference/data-types/decimal)
 
+**戻り値**
 
-**Returned value**
+Unicode アートによるバー文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a unicode-art bar string. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT
@@ -348,34 +316,30 @@ ORDER BY h ASC
 └────┴────────┴────────────────────┘
 ```
 
-
-
 ## blockNumber {#blockNumber}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+行を含む[ブロック](../../development/architecture.md#block)に対して、単調増加するシーケンス番号を返します。
+ブロック番号の更新はベストエフォートで行われるため、完全に正確でない場合があります。
 
-Returns a monotonically increasing sequence number of the [block](../../development/architecture.md#block) containing the row.
-The returned block number is updated on a best-effort basis, i.e. it may not be fully accurate.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 blockNumber()
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* なし。
 
-**Returned value**
+**戻り値**
 
-Sequence number of the data block where the row is located. [`UInt64`](/sql-reference/data-types/int-uint)
+行が含まれているデータブロックのシーケンス番号。 [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Examples**
+**例**
 
-**Basic usage**
+**基本的な使い方**
 
 ```sql title=Query
 SELECT blockNumber()
@@ -410,34 +374,29 @@ FROM
 └───────────────┘
 ```
 
-
-
 ## blockSerializedSize {#blockSerializedSize}
 
-Introduced in: v20.3
+導入バージョン: v20.3
 
+ディスク上にある値ブロックの非圧縮サイズ（バイト単位）を返します。
 
-Returns the uncompressed size in bytes of a block of values on disk.
-
-
-**Syntax**
+**構文**
 
 ```sql
 blockSerializedSize(x1[, x2[, ...]])
 ```
 
-**Arguments**
+**引数**
 
-- `x1[, x2, ...]` — Any number of values for which to get the uncompressed size of the block. [`Any`](/sql-reference/data-types)
+* `x1[, x2, ...]` — 非圧縮サイズを取得する対象となる、任意個の値。[`Any`](/sql-reference/data-types)
 
+**返り値**
 
-**Returned value**
+圧縮なしで値のブロックとしてディスクに書き込まれるバイト数を返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the number of bytes that will be written to disk for a block of values without compression. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT blockSerializedSize(maxState(1)) AS x;
@@ -449,34 +408,30 @@ SELECT blockSerializedSize(maxState(1)) AS x;
 └───┘
 ```
 
-
-
 ## blockSize {#blockSize}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+ClickHouse では、クエリは [blocks](/development/architecture#block)（chunk）単位で処理されます。
+この関数は、この関数が呼び出されるブロックのサイズ（行数）を返します。
 
-In ClickHouse, queries are processed in [blocks](/development/architecture#block) (chunks).
-This function returns the size (row count) of the block the function is called on.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 blockSize()
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* なし。
 
-**Returned value**
+**戻り値**
 
-Returns the number of rows in the current block. [`UInt64`](/sql-reference/data-types/int-uint)
+現在のブロック内の行数を返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT blockSize()
@@ -493,36 +448,31 @@ FROM system.numbers LIMIT 5
 └─────────────┘
 ```
 
+## buildId {#buildId}
 
+導入バージョン: v20.5
 
-## byteSize {#byteSize}
+実行中の ClickHouse サーバー バイナリに対して、コンパイラによって生成されたビルド ID を返します。
+分散テーブルのコンテキストで実行された場合、この関数は各分片に対応する値を持つ通常のカラムを生成します。
+それ以外の場合は、定数値を返します。
 
-Introduced in: v21.1
-
-
-Returns an estimation of the uncompressed byte size of its arguments in memory.
-For `String` arguments, the function returns the string length + 8 (length).
-If the function has multiple arguments, the function accumulates their byte sizes.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 buildId()
 ```
 
-**Arguments**
+**引数**
 
-- `arg1[, arg2, ...]` — Values of any data type for which to estimate the uncompressed byte size. [`Any`](/sql-reference/data-types)
+* なし。
 
+**戻り値**
 
-**Returned value**
+ビルド ID を返します。[`String`](/sql-reference/data-types/string)
 
-Returns an estimation of the byte size of the arguments in memory. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT buildId()
@@ -534,33 +484,35 @@ SELECT buildId()
 └──────────────────────────────────────────┘
 ```
 
-**Multiple arguments**
+## byteSize {#byteSize}
+
+導入バージョン: v21.1
+
+引数のメモリ上での非圧縮バイトサイズの推定値を返します。
+`String` 型の引数に対しては、文字列長 + 8（文字列長）を返します。
+関数が複数の引数を取る場合は、それぞれのバイトサイズを合計します。
+
+**構文**
 
 ```sql
 byteSize(arg1[, arg2, ...])
 ```
 
+**引数**
+
+* `arg1[, arg2, ...]` — 非圧縮時のバイトサイズを見積もる対象となる、任意のデータ型の値。[`Any`](/sql-reference/data-types)
+
+**戻り値**
+
+引数のメモリ上でのバイトサイズの推定値を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**使用例**
+
 ```sql title=Query
 SELECT byteSize('string')
 ```
-
-
-
-## catboostEvaluate {#catboostEvaluate}
-
-Introduced in: v22.9
-
-
-Evaluate an external catboost model. [CatBoost](https://catboost.ai) is an open-source gradient boosting library developed by Yandex for machine learning.
-Accepts a path to a catboost model and model arguments (features).
-
-**Prerequisites**
-
-1. Build the catboost evaluation library
-
-Before evaluating catboost models, the `libcatboostmodel.<so|dylib>` library must be made available. See [CatBoost documentation](https://catboost.ai/docs/concepts/c-plus-plus-api_dynamic-c-pluplus-wrapper.html) how to compile it.
-
-Next, specify the path to `libcatboostmodel.<so|dylib>` in the clickhouse configuration:
 
 ```response title=Response
 ┌─byteSize('string')─┐
@@ -568,21 +520,11 @@ Next, specify the path to `libcatboostmodel.<so|dylib>` in the clickhouse config
 └────────────────────┘
 ```
 
-For security and isolation reasons, the model evaluation does not run in the server process but in the clickhouse-library-bridge process.
-At the first execution of `catboostEvaluate()`, the server starts the library bridge process if it is not running already. Both processes
-communicate using a HTTP interface. By default, port `9012` is used. A different port can be specified as follows - this is useful if port
-`9012` is already assigned to a different service.
+**複数の引数**
 
 ```sql title=Query
 SELECT byteSize(NULL, 1, 0.3, '')
 ```
-
-2. Train a catboost model using libcatboost
-
-See [Training and applying models](https://catboost.ai/docs/features/training.html#training) for how to train catboost models from a training data set.
-
-
-**Syntax**
 
 ```response title=Response
 ┌─byteSize(NULL, 1, 0.3, '')─┐
@@ -590,19 +532,20 @@ See [Training and applying models](https://catboost.ai/docs/features/training.ht
 └────────────────────────────┘
 ```
 
-**Arguments**
+## catboostEvaluate {#catboostEvaluate}
 
-- `path_to_model` — Path to catboost model. [`const String`](/sql-reference/data-types/string)
-- `feature` — One or more model features/arguments. [`Float*`](/sql-reference/data-types/float)
+導入バージョン: v22.9
 
+外部 catboost モデルを評価します。[CatBoost](https://catboost.ai) は、Yandex が機械学習向けに開発したオープンソースの勾配ブースティングライブラリです。
+catboost モデルへのパスと、モデル引数（特徴量）を受け取ります。
 
-**Returned value**
+**前提条件**
 
-Returns the model evaluation result. [`Float64`](/sql-reference/data-types/float)
+1. catboost 評価用ライブラリをビルドする
 
-**Examples**
+catboost モデルを評価する前に、`libcatboostmodel.<so|dylib>` ライブラリを使用可能な状態にしておく必要があります。コンパイル手順については [CatBoost のドキュメント](https://catboost.ai/docs/concepts/c-plus-plus-api_dynamic-c-pluplus-wrapper.html) を参照してください。
 
-**catboostEvaluate**
+次に、ClickHouse の設定で `libcatboostmodel.<so|dylib>` へのパスを指定します。
 
 ```xml
 <clickhouse>
@@ -612,59 +555,39 @@ Returns the model evaluation result. [`Float64`](/sql-reference/data-types/float
 </clickhouse>
 ```
 
+セキュリティおよび分離の観点から、モデルの評価はサーバープロセス内ではなく、clickhouse-library-bridge プロセス内で実行されます。
+`catboostEvaluate()` が最初に実行されたとき、ライブラリブリッジプロセスがまだ起動していなければ、サーバーがそのプロセスを起動します。両プロセスは
+HTTP インターフェイスを介して通信します。デフォルトでは、ポート `9012` が使用されます。別のポートを指定することも可能で、ポート
+`9012` がすでに他のサービスに割り当てられている場合に便利です。
+
 ```xml
 <library_bridge>
     <port>9019</port>
 </library_bridge>
 ```
 
+2. libcatboost を使用して catboost モデルを学習させる
 
+トレーニングデータセットから catboost モデルを学習させる方法については、[モデルの学習と適用](https://catboost.ai/docs/features/training.html#training)を参照してください。
 
-## colorOKLCHToSRGB {#colorOKLCHToSRGB}
-
-Introduced in: v25.7
-
-
-Converts a colour from the **OKLCH** perceptual colour space to the familiar **sRGB** colour space.
-
-If `L` is outside the range `[0...1]`, `C` is negative, or `H` is outside the range `[0...360]`, the result is implementation-defined.
-
-:::note
-**OKLCH** is a cylindrical version of the OKLab colour space.
-It's three coordinates are `L` (the lightness in the range `[0...1]`), `C` (chroma `>= 0`) and `H` (hue in degrees  from `[0...360]`)**.
-OKLab/OKLCH is designed to be perceptually uniform while remaining cheap to compute.
-:::
-
-The conversion is the inverse of [`colorSRGBToOKLCH`](#colorSRGBToOKLCH):
-
-1) OKLCH to OKLab.
-2) OKLab to Linear sRGB
-3) Linear sRGB to sRGB
-
-The second argument gamma is used at the last stage.
-
-For references of colors in OKLCH space, and how they correspond to sRGB colors please see [https://oklch.com/](https://oklch.com/).
-    
-
-**Syntax**
+**構文**
 
 ```sql
 catboostEvaluate(path_to_model, feature_1[, feature_2, ..., feature_n])
 ```
 
-**Arguments**
+**引数**
 
-- `tuple` — A tuple of three numeric values `L`, `C`, `H`, where `L` is in the range `[0...1]`, `C >= 0` and `H` is in the range `[0...360]`. [`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
-- `gamma` — Optional. The exponent that is used to transform linear sRGB back to sRGB by applying `(x ^ (1 / gamma)) * 255` for each channel `x`. Defaults to `2.2`. [`Float64`](/sql-reference/data-types/float)
+* `path_to_model` — CatBoost モデルのパス。[`const String`](/sql-reference/data-types/string)
+* `feature` — 1つ以上のモデル特徴量/引数。[`Float*`](/sql-reference/data-types/float)
 
+**戻り値**
 
-**Returned value**
+モデルの評価結果を返します。[`Float64`](/sql-reference/data-types/float)
 
-Returns a tuple (R, G, B) representing sRGB color values. [`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+**使用例**
 
-**Examples**
-
-**Convert OKLCH to sRGB**
+**catboostEvaluate**
 
 ```sql title=Query
 SELECT catboostEvaluate('/root/occupy.bin', Temperature, Humidity, Light, CO2, HumidityRatio) AS prediction FROM occupancy LIMIT 1
@@ -674,51 +597,48 @@ SELECT catboostEvaluate('/root/occupy.bin', Temperature, Humidity, Light, CO2, H
 4.695691092573497
 ```
 
+## colorOKLCHToSRGB {#colorOKLCHToSRGB}
 
+導入バージョン: v25.7
 
-## colorSRGBToOKLCH {#colorSRGBToOKLCH}
+**OKLCH** 知覚色空間から、一般的な **sRGB** 色空間へ色を変換します。
 
-Introduced in: v25.7
-
-
-Converts a colour encoded in the **sRGB** colour space to the perceptually uniform **OKLCH** colour space.
-
-If any input channel is outside `[0...255]` or the gamma value is non-positive, the behaviour is implementation-defined.
+`L` が `[0...1]` の範囲外、`C` が負、または `H` が `[0...360]` の範囲外の場合、結果は実装依存です。
 
 :::note
-**OKLCH** is a cylindrical version of the OKLab colour space.
-It's three coordinates are `L` (the lightness in the range `[0...1]`), `C` (chroma `>= 0`) and `H` (the hue in degrees from `[0...360]`).
-OKLab/OKLCH is designed to be perceptually uniform while remaining cheap to compute.
+**OKLCH** は OKLab 色空間の円柱座標バージョンです。
+その 3 つの座標は `L`（明度 `[0...1]` の範囲）、`C`（彩度（クロマ） `>= 0`）、`H`（色相、度単位 `[0...360]`）です。
+OKLab/OKLCH は、計算コストを低く抑えつつ知覚的な一様性を実現するよう設計されています。
 :::
 
-The conversion consists of three stages:
-1) sRGB to Linear sRGB
-2) Linear sRGB to OKLab
-3) OKLab to OKLCH.
+この変換は [`colorSRGBToOKLCH`](#colorSRGBToOKLCH) の逆変換です:
 
+1. OKLCH から OKLab への変換
+2. OKLab から Linear sRGB への変換
+3. Linear sRGB から sRGB への変換
 
-For references of colors in the OKLCH space, and how they correspond to sRGB colors, please see [https://OKLCH.com/](https://OKLCH.com/).
-    
+2 番目の引数 `gamma` は、最後の段階で使用されます。
 
-**Syntax**
+OKLCH 空間における色の一覧と、それらが sRGB の色とどのように対応するかについては、[https://oklch.com/](https://oklch.com/) を参照してください。
+
+**構文**
 
 ```sql
 colorOKLCHToSRGB(tuple [, gamma])
 ```
 
-**Arguments**
+**引数**
 
-- `tuple` — Tuple of three values R, G, B in the range `[0...255]`. [`Tuple(UInt8, UInt8, UInt8)`](/sql-reference/data-types/tuple)
-- `gamma` — Optional. Exponent that is used to linearize sRGB by applying `(x / 255)^gamma` to each channel `x`. Defaults to `2.2`. [`Float64`](/sql-reference/data-types/float)
+* `tuple` — 数値 `L`, `C`, `H` の 3 要素からなるタプル。`L` は範囲 `[0...1]`、`C >= 0`、`H` は範囲 `[0...360]`。[`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+* `gamma` — 省略可能。リニア sRGB を、各チャネル `x` に対して `(x ^ (1 / gamma)) * 255` を適用することで sRGB に戻す際に使用される指数。デフォルト値は `2.2`。[`Float64`](/sql-reference/data-types/float)
 
+**戻り値**
 
-**Returned value**
+sRGB の色値を表すタプル (R, G, B) を返します。[`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
 
-Returns a tuple (L, C, H) representing the OKLCH color space values. [`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+**例**
 
-**Examples**
-
-**Convert sRGB to OKLCH**
+**OKLCH を sRGB に変換**
 
 ```sql title=Query
 SELECT colorOKLCHToSRGB((0.4466, 0.0991, 45.44), 2.2) AS rgb
@@ -734,36 +654,46 @@ WITH colorOKLCHToSRGB((0.7, 0.1, 54)) as t SELECT tuple(toUInt8(t.1), toUInt8(t.
 └──────────────┘
 ```
 
+## colorSRGBToOKLCH {#colorSRGBToOKLCH}
 
+導入バージョン: v25.7
 
-## connectionId {#connectionId}
+**sRGB** カラースペースでエンコードされた色を、知覚的に一様な **OKLCH** カラースペースへ変換します。
 
-Introduced in: v21.3
+いずれかの入力チャネルが `[0...255]` の範囲外である場合、またはガンマ値が正でない場合、その挙動は実装依存です。
 
+:::note
+**OKLCH** は OKLab カラースペースの円筒座標版です。
+3 つの座標は、それぞれ `L`（明度で、範囲は `[0...1]`）、`C`（クロマで、`>= 0`）、`H`（色相で、度数法による `[0...360]` の範囲）です。
+OKLab/OKLCH は、計算コストを低く抑えつつ知覚的に一様になるよう設計されています。
+:::
 
-Returns the connection ID of the client that submitted the current query.
-This function is most useful in debugging scenarios.
-It was created for compatibility with MySQL's `CONNECTION_ID` function.
-It is not typically used in production queries.
+変換は次の 3 段階で構成されます:
 
+1. sRGB から Linear sRGB への変換
+2. Linear sRGB から OKLab への変換
+3. OKLab から OKLCH への変換
 
-**Syntax**
+OKLCH 空間における色の例と、それらが sRGB の色にどのように対応するかについては、[https://OKLCH.com/](https://OKLCH.com/) を参照してください。
+
+**構文**
 
 ```sql
 colorSRGBToOKLCH(tuple[, gamma])
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* `tuple` — `[0...255]` の範囲にある R, G, B の 3 つの値からなるタプル。[`Tuple(UInt8, UInt8, UInt8)`](/sql-reference/data-types/tuple)
+* `gamma` — オプション。各チャネル `x` に対して `(x / 255)^gamma` を適用することで sRGB を線形化する際に使用する指数。デフォルト値は `2.2`。[`Float64`](/sql-reference/data-types/float)
 
-**Returned value**
+**返り値**
 
-Returns the connection ID of the current client. [`UInt64`](/sql-reference/data-types/int-uint)
+OKLCH 色空間の値を表すタプル (L, C, H) を返します。[`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
 
-**Examples**
+**使用例**
 
-**Usage example**
+**sRGB を OKLCH に変換する**
 
 ```sql title=Query
 SELECT colorSRGBToOKLCH((128, 64, 32), 2.2) AS lch
@@ -775,48 +705,32 @@ SELECT colorSRGBToOKLCH((128, 64, 32), 2.2) AS lch
 └─────────────────────────────────────────────────────────────┘
 ```
 
+## connectionId {#connectionId}
 
+導入: v21.3
 
-## countDigits {#countDigits}
+現在のクエリを送信したクライアントの接続 ID を返します。
+この関数はデバッグの場面で最も有用です。
+MySQL の `CONNECTION_ID` 関数との互換性のために作成されました。
+本番環境のクエリで使用されることはあまりありません。
 
-Introduced in: v20.8
-
-
-Returns the number of decimal digits needed to represent a value.
-
-:::note
-This function takes into account the scales of decimal values i.e., it calculates the result over the underlying integer type which is `(value * scale)`.
-
-For example:
-- `countDigits(42) = 2`
-- `countDigits(42.000) = 5`
-- `countDigits(0.04200) = 4`
-:::
-
-:::tip
-You can check decimal overflow for `Decimal64` with `countDigits(x) > 18`,
-although it is slower than [`isDecimalOverflow`](#isDecimalOverflow).
-:::
-
-
-**Syntax**
+**構文**
 
 ```sql
 connectionId()
 ```
 
-**Arguments**
+**引数**
 
-- `x` — An integer or decimal value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Decimal`](/sql-reference/data-types/decimal)
+* なし。
 
+**戻り値**
 
-**Returned value**
+現在のクライアントの接続IDを返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the number of digits needed to represent `x`. [`UInt8`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT connectionId();
@@ -828,38 +742,44 @@ SELECT connectionId();
 └────────────────┘
 ```
 
+## countDigits {#countDigits}
 
+導入バージョン: v20.8
 
-## currentDatabase {#currentDatabase}
+値を表現するのに必要な10進数の桁数を返します。
 
-Introduced in: v1.1
+:::note
+この関数は10進数値のスケールを考慮します。つまり、内部の整数型（`(value * scale)`）に対して桁数を計算します。
 
+たとえば:
 
-Returns the name of the current database.
-Useful in table engine parameters of `CREATE TABLE` queries where you need to specify the database.
+* `countDigits(42) = 2`
+* `countDigits(42.000) = 5`
+* `countDigits(0.04200) = 4`
+  :::
 
-Also see the [`SET` statement](/sql-reference/statements/use).
-    
+:::tip
+`Decimal64` のオーバーフローは `countDigits(x) > 18` で検査できますが、
+[`isDecimalOverflow`](#isDecimalOverflow) よりも低速です。
+:::
 
-**Syntax**
+**構文**
 
 ```sql
 countDigits(x)
 ```
 
-**Aliases**: `current_database`, `SCHEMA`, `DATABASE`
+**引数**
 
-**Arguments**
+* `x` — 整数値または小数値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Decimal`](/sql-reference/data-types/decimal)
 
-- None.
+**戻り値**
 
-**Returned value**
+`x` を表現するのに必要な桁数を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns the current database name. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT countDigits(toDecimal32(1, 9)), countDigits(toDecimal32(-1, 9)),
@@ -873,33 +793,34 @@ SELECT countDigits(toDecimal32(1, 9)), countDigits(toDecimal32(-1, 9)),
 └────────────────────────────────┴─────────────────────────────────┴─────────────────────────────────┴──────────────────────────────────┴──────────────────────────────────┴───────────────────────────────────┘
 ```
 
+## currentDatabase {#currentDatabase}
 
+導入バージョン: v1.1
 
-## currentProfiles {#currentProfiles}
+現在のデータベース名を返します。
+データベースを指定する必要がある `CREATE TABLE` クエリのテーブルエンジンのパラメータで便利です。
 
-Introduced in: v21.9
+[`SET` 文](/sql-reference/statements/use) も参照してください。
 
-
-Returns an array of the setting profiles for the current user.
-
-
-**Syntax**
+**構文**
 
 ```sql
 currentDatabase()
 ```
 
-**Arguments**
+**別名**: `current_database`, `SCHEMA`, `DATABASE`
 
-- None.
+**引数**
 
-**Returned value**
+* なし。
 
-Returns an array of setting profiles for the current user. [`Array(String)`](/sql-reference/data-types/array)
+**戻り値**
 
-**Examples**
+現在のデータベース名を返します。[`String`](/sql-reference/data-types/string)
 
-**Usage example**
+**例**
+
+**使用例**
 
 ```sql title=Query
 SELECT currentDatabase()
@@ -911,35 +832,29 @@ SELECT currentDatabase()
 └───────────────────┘
 ```
 
+## currentProfiles {#currentProfiles}
 
+導入バージョン: v21.9
 
-## currentQueryID {#currentQueryID}
+現在のユーザーの設定プロファイルの配列を返します。
 
-Introduced in: v
-
-
-Returns current Query id.
-
-
-**Syntax**
+**構文**
 
 ```sql
 currentProfiles()
 ```
 
-**Aliases**: `current_query_id`
+**引数**
 
-**Arguments**
+* なし
 
-- None.
+**返り値**
 
-**Returned value**
+現在のユーザーの SETTINGS プロファイルの配列を返します。[`Array(String)`](/sql-reference/data-types/array)
 
+**例**
 
-
-**Examples**
-
-**Example**
+**使用例**
 
 ```sql title=Query
 SELECT currentProfiles();
@@ -951,33 +866,29 @@ SELECT currentProfiles();
 └───────────────────────────────────────────────┘
 ```
 
+## currentQueryID {#currentQueryID}
 
+導入バージョン: v
 
-## currentRoles {#currentRoles}
+現在のクエリ ID を返します。
 
-Introduced in: v21.9
-
-
-Returns an array of the roles which are assigned to the current user.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 currentQueryID()
 ```
 
-**Arguments**
+**別名**: `current_query_id`
 
-- None.
+**引数**
 
-**Returned value**
+* なし。
 
-Returns an array of the roles which are assigned to the current user. [`Array(String)`](/sql-reference/data-types/array)
+**戻り値**
 
-**Examples**
+**例**
 
-**Usage example**
+**例**
 
 ```sql title=Query
 SELECT currentQueryID();
@@ -989,43 +900,29 @@ SELECT currentQueryID();
 └──────────────────────────────────────┘
 ```
 
+## currentRoles {#currentRoles}
 
+導入バージョン: v21.9
 
-## currentSchemas {#currentSchemas}
+現在のユーザーに割り当てられているロールの配列を返します。
 
-Introduced in: v23.7
-
-
-Same as function [`currentDatabase`](#currentDatabase) but
-- accepts a boolean argument which is ignored
-- returns the database name as an array with a single value.
-
-Function `currentSchemas` only exists for compatibility with PostgreSQL.
-Please use `currentDatabase` instead.
-
-Also see the [`SET` statement](/sql-reference/statements/use).
-    
-
-**Syntax**
+**構文**
 
 ```sql
 currentRoles()
 ```
 
-**Aliases**: `current_schemas`
+**引数**
 
-**Arguments**
+* なし
 
-- `bool` — A boolean value, which is ignored. [`Bool`](/sql-reference/data-types/boolean)
+**戻り値**
 
+現在のユーザーに割り当てられているロールの配列を返します。[`Array(String)`](/sql-reference/data-types/array)
 
-**Returned value**
+**例**
 
-Returns a single-element array with the name of the current database. [`Array(String)`](/sql-reference/data-types/array)
-
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT currentRoles();
@@ -1037,36 +934,39 @@ SELECT currentRoles();
 └────────────────────────────────────────────────┘
 ```
 
+## currentSchemas {#currentSchemas}
 
+導入バージョン: v23.7
 
-## currentUser {#currentUser}
+関数 [`currentDatabase`](#currentDatabase) と同じですが、以下の違いがあります。
 
-Introduced in: v20.1
+* 無視される boolean 引数を受け取ります
+* データベース名を単一要素の配列として返します。
 
+関数 `currentSchemas` は PostgreSQL との互換性のためにのみ存在します。
+代わりに `currentDatabase` を使用してください。
 
-Returns the name of the current user.
-In case of a distributed query, the name of the user who initiated the query is returned.
-    
+[`SET` 文](/sql-reference/statements/use) も参照してください。
 
-**Syntax**
+**構文**
 
 ```sql
 currentSchemas(bool)
 ```
 
-**Aliases**: `current_user`, `user`
+**別名**: `current_schemas`
 
-**Arguments**
+**引数**
 
-- None.
+* `bool` — 無視されるブール値。[`Bool`](/sql-reference/data-types/boolean)
 
-**Returned value**
+**返り値**
 
-Returns the name of the current user, otherwise the login of the user who initiated the query. [`String`](/sql-reference/data-types/string)
+現在のデータベース名のみを含む 1 要素の配列を返します。[`Array(String)`](/sql-reference/data-types/array)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT currentSchemas(true)
@@ -1078,33 +978,32 @@ SELECT currentSchemas(true)
 └──────────────────────┘
 ```
 
+## currentUser {#currentUser}
 
+導入バージョン: v20.1
 
-## defaultProfiles {#defaultProfiles}
+現在のユーザー名を返します。
+分散クエリの場合は、そのクエリを開始したユーザーの名前を返します。
 
-Introduced in: v21.9
-
-
-Returns an array of default setting profile names for the current user.
-
-
-**Syntax**
+**構文**
 
 ```sql
 currentUser()
 ```
 
-**Arguments**
+**別名**: `current_user`, `user`
 
-- None.
+**引数**
 
-**Returned value**
+* なし。
 
-Returns an array of default setting profile names for the current user. [`Array(String)`](/sql-reference/data-types/array)
+**返される値**
 
-**Examples**
+現在のユーザー名があればそれを、なければクエリを開始したユーザーのログイン名を返します。 [`String`](/sql-reference/data-types/string)
 
-**Usage example**
+**例**
+
+**使用例**
 
 ```sql title=Query
 SELECT currentUser()
@@ -1116,33 +1015,29 @@ SELECT currentUser()
 └───────────────┘
 ```
 
+## defaultProfiles {#defaultProfiles}
 
+導入バージョン: v21.9
 
-## defaultRoles {#defaultRoles}
+現在のユーザーに対してデフォルトで適用される設定プロファイル名の配列を返します。
 
-Introduced in: v21.9
-
-
-Returns an array of default roles for the current user.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 defaultProfiles()
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* なし。
 
-**Returned value**
+**戻り値**
 
-Returns an array of default roles for the current user. [`Array(String)`](/sql-reference/data-types/array)
+現在のユーザーのデフォルト設定プロファイル名の配列を返します。[`Array(String)`](/sql-reference/data-types/array)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT defaultProfiles();
@@ -1154,35 +1049,29 @@ SELECT defaultProfiles();
 └───────────────────┘
 ```
 
+## defaultRoles {#defaultRoles}
 
+導入バージョン: v21.9
 
-## defaultValueOfArgumentType {#defaultValueOfArgumentType}
+現在のユーザーに設定されているデフォルトロールの配列を返します。
 
-Introduced in: v1.1
-
-
-Returns the default value for a given data type.
-Does not include default values for custom columns set by the user.
-
-
-**Syntax**
+**構文**
 
 ```sql
 defaultRoles()
 ```
 
-**Arguments**
+**引数**
 
-- `expression` — Arbitrary type of value or an expression that results in a value of an arbitrary type. [`Any`](/sql-reference/data-types)
+* なし。
 
+**返される値**
 
-**Returned value**
+現在のユーザーのデフォルトロールを表す配列を返します。[`Array(String)`](/sql-reference/data-types/array)
 
-Returns `0` for numbers, an empty string for strings or `NULL` for Nullable types. [`UInt8`](/sql-reference/data-types/int-uint) or [`String`](/sql-reference/data-types/string) or [`NULL`](/sql-reference/syntax#null)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT defaultRoles();
@@ -1194,27 +1083,34 @@ SELECT defaultRoles();
 └────────────────────────────────────────────────┘
 ```
 
-**Nullable example**
+## defaultValueOfArgumentType {#defaultValueOfArgumentType}
+
+導入バージョン: v1.1
+
+指定されたデータ型のデフォルト値を返します。
+ユーザーが設定したカスタムカラムのデフォルト値は含まれません。
+
+**構文**
 
 ```sql
 defaultValueOfArgumentType(expression)
 ```
 
+**引数**
+
+* `expression` — 任意の型の値、または任意の型の値を返す式。[`Any`](/sql-reference/data-types)
+
+**戻り値**
+
+数値に対しては `0`、文字列に対しては空文字列、Nullable 型に対しては `NULL` を返します。戻り値の型は [`UInt8`](/sql-reference/data-types/int-uint) または [`String`](/sql-reference/data-types/string) または [`NULL`](/sql-reference/syntax#null) です。
+
+**例**
+
+**使用例**
+
 ```sql title=Query
 SELECT defaultValueOfArgumentType(CAST(1 AS Int8));
 ```
-
-
-
-## defaultValueOfTypeName {#defaultValueOfTypeName}
-
-Introduced in: v1.1
-
-
-Returns the default value for the given type name.
-    
-
-**Syntax**
 
 ```response title=Response
 ┌─defaultValueOfArgumentType(CAST(1, 'Int8'))─┐
@@ -1222,18 +1118,7 @@ Returns the default value for the given type name.
 └─────────────────────────────────────────────┘
 ```
 
-**Arguments**
-
-- `type` — A string representing a type name. [`String`](/sql-reference/data-types/string)
-
-
-**Returned value**
-
-Returns the default value for the given type name: `0` for numbers, an empty string for strings, or `NULL` for Nullable [`UInt8`](/sql-reference/data-types/int-uint) or [`String`](/sql-reference/data-types/string) or [`NULL`](/sql-reference/syntax#null)
-
-**Examples**
-
-**Usage example**
+**Nullable の使用例**
 
 ```sql title=Query
 SELECT defaultValueOfArgumentType(CAST(1 AS Nullable(Int8)));
@@ -1245,27 +1130,33 @@ SELECT defaultValueOfArgumentType(CAST(1 AS Nullable(Int8)));
 └───────────────────────────────────────────────────────┘
 ```
 
-**Nullable example**
+## defaultValueOfTypeName {#defaultValueOfTypeName}
+
+導入バージョン: v1.1
+
+指定された型名のデフォルト値を返します。
+
+**構文**
 
 ```sql
 defaultValueOfTypeName(type)
 ```
 
+**引数**
+
+* `type` — 型名を表す文字列。[`String`](/sql-reference/data-types/string)
+
+**戻り値**
+
+指定された型名に対応するデフォルト値を返します。数値型の場合は `0`、文字列型の場合は空文字列、Nullable 型の [`UInt8`](/sql-reference/data-types/int-uint) または [`String`](/sql-reference/data-types/string) の場合、あるいは [`NULL`](/sql-reference/syntax#null) の場合は `NULL` を返します。
+
+**例**
+
+**使用例**
+
 ```sql title=Query
 SELECT defaultValueOfTypeName('Int8');
 ```
-
-
-
-## displayName {#displayName}
-
-Introduced in: v22.11
-
-
-Returns the value of `display_name` from [config](/operations/configuration-files) or the server's Fully Qualified Domain Name (FQDN) if not set.
-
-
-**Syntax**
 
 ```response title=Response
 ┌─defaultValueOfTypeName('Int8')─┐
@@ -1273,17 +1164,7 @@ Returns the value of `display_name` from [config](/operations/configuration-file
 └────────────────────────────────┘
 ```
 
-**Arguments**
-
-- None.
-
-**Returned value**
-
-Returns the value of `display_name` from config or server FQDN if not set. [`String`](/sql-reference/data-types/string)
-
-**Examples**
-
-**Usage example**
+**Nullable の例**
 
 ```sql title=Query
 SELECT defaultValueOfTypeName('Nullable(Int8)');
@@ -1295,34 +1176,29 @@ SELECT defaultValueOfTypeName('Nullable(Int8)');
 └──────────────────────────────────────────┘
 ```
 
+## displayName {#displayName}
 
+導入バージョン: v22.11
 
-## dumpColumnStructure {#dumpColumnStructure}
+[config](/operations/configuration-files) の `display_name` の値、または設定されていない場合はサーバーの完全修飾ドメイン名 (FQDN) を返します。
 
-Introduced in: v1.1
-
-
-Outputs a detailed description of the internal structure of a column and its data type.
-
-
-**Syntax**
+**構文**
 
 ```sql
 displayName()
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Value for which to get the description of. [`Any`](/sql-reference/data-types)
+* なし。
 
+**返される値**
 
-**Returned value**
+設定の `display_name` の値を返します。設定されていない場合はサーバーの FQDN を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a description of the column structure used for representing the value. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT displayName();
@@ -1334,33 +1210,29 @@ SELECT displayName();
 └───────────────┘
 ```
 
+## dumpColumnStructure {#dumpColumnStructure}
 
+導入バージョン: v1.1
 
-## enabledProfiles {#enabledProfiles}
+カラムの内部構造およびデータ型の詳細な説明を出力します。
 
-Introduced in: v21.9
-
-
-Returns an array of setting profile names which are enabled for the current user.
-
-
-**Syntax**
+**構文**
 
 ```sql
 dumpColumnStructure(x)
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* `x` — 説明を取得する対象となる値。[`Any`](/sql-reference/data-types)
 
-**Returned value**
+**返り値**
 
-Returns an array of setting profile names which are enabled for the current user. [`Array(String)`](/sql-reference/data-types/array)
+値を表現するために使用されるカラム構造の説明を返します。[`String`](/sql-reference/data-types/string)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT dumpColumnStructure(CAST('2018-01-01 01:02:03', 'DateTime'));
@@ -1372,33 +1244,29 @@ SELECT dumpColumnStructure(CAST('2018-01-01 01:02:03', 'DateTime'));
 └──────────────────────────────────────────────────────────────┘
 ```
 
+## enabledProfiles {#enabledProfiles}
 
+導入バージョン: v21.9
 
-## enabledRoles {#enabledRoles}
+現在のユーザーに対して有効な設定プロファイル名の配列を返します。
 
-Introduced in: v21.9
-
-
-Returns an array of the roles which are enabled for the current user.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 enabledProfiles()
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* なし。
 
-**Returned value**
+**戻り値**
 
-Returns an array of role names which are enabled for the current user. [`Array(String)`](/sql-reference/data-types/array)
+現在のユーザーに対して有効になっている設定プロファイル名の配列を返します。[`Array(String)`](/sql-reference/data-types/array)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT enabledProfiles();
@@ -1410,35 +1278,29 @@ SELECT enabledProfiles();
 └───────────────────────────────────────────────────────────────────┘
 ```
 
+## enabledRoles {#enabledRoles}
 
+導入バージョン: v21.9
 
-## errorCodeToName {#errorCodeToName}
+現在のユーザーに対して有効なロールを配列で返します。
 
-Introduced in: v20.12
-
-
-Returns the textual name of a numeric ClickHouse error code.
-The mapping from numeric error codes to error names is available [here](https://github.com/ClickHouse/ClickHouse/blob/master/src/Common/ErrorCodes.cpp).
-
-
-**Syntax**
+**構文**
 
 ```sql
 enabledRoles()
 ```
 
-**Arguments**
+**引数**
 
-- `error_code` — ClickHouse error code. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+* なし。
 
+**返り値**
 
-**Returned value**
+現在のユーザーに対して有効なロール名を要素とする配列を返します。[`Array(String)`](/sql-reference/data-types/array)
 
-Returns the textual name of `error_code`. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT enabledRoles();
@@ -1450,38 +1312,30 @@ SELECT enabledRoles();
 └────────────────────────────────────────────────────────────────┘
 ```
 
+## errorCodeToName {#errorCodeToName}
 
+導入: v20.12
 
-## file {#file}
+数値の ClickHouse エラーコードに対応するテキスト形式の名称を返します。
+数値エラーコードからエラー名へのマッピングは[こちら](https://github.com/ClickHouse/ClickHouse/blob/master/src/Common/ErrorCodes.cpp)で参照できます。
 
-Introduced in: v21.3
-
-
-Reads a file as a string and loads the data into the specified column.
-The file content is not interpreted.
-
-Also see the [`file`](../table-functions/file.md) table function.
-        
-
-**Syntax**
+**構文**
 
 ```sql
 errorCodeToName(error_code)
 ```
 
-**Arguments**
+**引数**
 
-- `path` — The path of the file relative to the `user_files_path`. Supports wildcards `*`, `**`, `?`, `{abc,def}` and `{N..M}` where `N`, `M` are numbers and `'abc', 'def'` are strings. [`String`](/sql-reference/data-types/string)
-- `default` — The value returned if the file does not exist or cannot be accessed. [`String`](/sql-reference/data-types/string) or [`NULL`](/sql-reference/syntax#null)
+* `error_code` — ClickHouse のエラーコード。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
 
+**戻り値**
 
-**Returned value**
+`error_code` に対応するテキスト名を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the file content as a string. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Insert files into a table**
+**使用例**
 
 ```sql title=Query
 SELECT errorCodeToName(252);
@@ -1493,35 +1347,33 @@ SELECT errorCodeToName(252);
 └──────────────────────┘
 ```
 
+## file {#file}
 
+導入: v21.3
 
-## filesystemAvailable {#filesystemAvailable}
+ファイルを文字列として読み取り、指定したカラムにデータを読み込みます。
+ファイルの内容は解釈されません。
 
-Introduced in: v20.1
+[`file`](../table-functions/file.md) テーブル関数も参照してください。
 
-
-Returns the amount of free space in the filesystem hosting the database persistence.
-The returned value is always smaller than the total free space ([`filesystemUnreserved`](../../sql-reference/functions/other-functions.md#filesystemUnreserved)) because some space is reserved for the operating system.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 file(path[, default])
 ```
 
-**Arguments**
+**引数**
 
-- `disk_name` — Optional. The disk name to find the amount of free space for. If omitted, uses the default disk. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+* `path` — ファイルのパス（`user_files_path` からの相対パス）。ワイルドカード `*`, `**`, `?`, `{abc,def}` および `{N..M}` をサポートします。ここで `N`, `M` は数値で、`'abc', 'def'` は文字列です。[`String`](/sql-reference/data-types/string)
+* `default` — ファイルが存在しないか、アクセスできない場合に返される値。[`String`](/sql-reference/data-types/string) または [`NULL`](/sql-reference/syntax#null)
 
+**返される値**
 
-**Returned value**
+ファイルの内容を文字列として返します。[`String`](/sql-reference/data-types/string)
 
-Returns the amount of remaining space available in bytes. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**ファイルの内容をテーブルに挿入する**
 
 ```sql title=Query
 INSERT INTO table SELECT file('a.txt'), file('b.txt');
@@ -1530,35 +1382,30 @@ INSERT INTO table SELECT file('a.txt'), file('b.txt');
 ```response title=Response
 ```
 
+## filesystemAvailable {#filesystemAvailable}
 
+導入バージョン: v20.1
 
-## filesystemCapacity {#filesystemCapacity}
+データベースの永続データを格納しているファイルシステム上の空き容量を返します。
+オペレーティングシステム用に一部の領域が予約されているため、返される値は常にファイルシステム上の合計空き容量（[`filesystemUnreserved`](../../sql-reference/functions/other-functions.md#filesystemUnreserved)）より小さくなります。
 
-Introduced in: v20.1
-
-
-Returns the capacity of the filesystem in bytes.
-Needs the [path](../../operations/server-configuration-parameters/settings.md#path) to the data directory to be configured.
-
-
-**Syntax**
+**構文**
 
 ```sql
 filesystemAvailable([disk_name])
 ```
 
-**Arguments**
+**引数**
 
-- `disk_name` — Optional. The disk name to get the capacity for. If omitted, uses the default disk. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+* `disk_name` — 省略可能。空き容量を確認する対象のディスク名。省略した場合はデフォルトのディスクが使用されます。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
 
+**戻り値**
 
-**Returned value**
+利用可能な残り容量をバイト単位で返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the capacity of the filesystem in bytes. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT formatReadableSize(filesystemAvailable()) AS "利用可能な容量";
@@ -1570,35 +1417,30 @@ SELECT formatReadableSize(filesystemAvailable()) AS "利用可能な容量";
 └─────────────────┘
 ```
 
+## filesystemCapacity {#filesystemCapacity}
 
+導入: v20.1
 
-## filesystemUnreserved {#filesystemUnreserved}
+ファイルシステムの容量（バイト単位）を返します。
+データディレクトリへの[パス](../../operations/server-configuration-parameters/settings.md#path)を設定しておく必要があります。
 
-Introduced in: v22.12
-
-
-Returns the total amount of free space on the filesystem hosting the database persistence (previously `filesystemFree`).
-See also [`filesystemAvailable`](#filesystemAvailable).
-
-
-**Syntax**
+**構文**
 
 ```sql
 filesystemCapacity([disk_name])
 ```
 
-**Arguments**
+**引数**
 
-- `disk_name` — Optional. The disk name for which to find the total amount of free space. If omitted, uses the default disk. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+* `disk_name` — 省略可。容量を取得する対象のディスク名。省略した場合はデフォルトのディスクが使用されます。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
 
+**戻り値**
 
-**Returned value**
+ファイルシステムの容量をバイト単位で返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the amount of free space in bytes. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT formatReadableSize(filesystemCapacity()) AS "Capacity";
@@ -1610,34 +1452,30 @@ SELECT formatReadableSize(filesystemCapacity()) AS "Capacity";
 └───────────┘
 ```
 
+## filesystemUnreserved {#filesystemUnreserved}
 
+導入バージョン: v22.12
 
-## finalizeAggregation {#finalizeAggregation}
+データベースの永続データを保持しているファイルシステム上の、空き領域の合計量を返します（以前は `filesystemFree`）。\
+[`filesystemAvailable`](#filesystemAvailable) も参照してください。
 
-Introduced in: v1.1
-
-
-Given an aggregation state, this function returns the result of aggregation (or the finalized state when using a [-State](../../sql-reference/aggregate-functions/combinators.md#-state) combinator).
-
-
-**Syntax**
+**構文**
 
 ```sql
 filesystemUnreserved([disk_name])
 ```
 
-**Arguments**
+**引数**
 
-- `state` — State of aggregation. [`AggregateFunction`](/sql-reference/data-types/aggregatefunction)
+* `disk_name` — 省略可。空き容量の合計を取得するディスクの名前。省略時はデフォルトのディスクを使用します。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
 
+**返り値**
 
-**Returned value**
+空き容量のバイト数を返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the finalized result of aggregation. [`Any`](/sql-reference/data-types)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT formatReadableSize(filesystemUnreserved()) AS "空き容量";
@@ -1649,25 +1487,33 @@ SELECT formatReadableSize(filesystemUnreserved()) AS "空き容量";
 └────────────┘
 ```
 
-**Combined with initializeAggregation**
+## finalizeAggregation {#finalizeAggregation}
+
+導入バージョン: v1.1
+
+集約状態を受け取り、この関数は集約結果（または [-State](../../sql-reference/aggregate-functions/combinators.md#-state) コンビネータを使用している場合はファイナライズされた状態）を返します。
+
+**構文**
 
 ```sql
 finalizeAggregation(state)
 ```
 
+**引数**
+
+* `state` — 集約の状態。[`AggregateFunction`](/sql-reference/data-types/aggregatefunction)
+
+**戻り値**
+
+集約の最終結果を返します。[`Any`](/sql-reference/data-types)
+
+**例**
+
+**使用例**
+
 ```sql title=Query
 SELECT finalizeAggregation(arrayReduce('maxState', [1, 2, 3]));
 ```
-
-
-
-## flipCoordinates {#flipCoordinates}
-
-Introduced in: v25.10
-
-Flips the coordinates of a Point, Ring, Polygon, or MultiPolygon. For a Point, it swaps the coordinates. For arrays, it recursively applies the same transformation for each coordinate pair.
-
-**Syntax**
 
 ```response title=Response
 ┌─finalizeAggregation(arrayReduce('maxState', [1, 2, 3]))─┐
@@ -1675,17 +1521,7 @@ Flips the coordinates of a Point, Ring, Polygon, or MultiPolygon. For a Point, i
 └─────────────────────────────────────────────────────────┘
 ```
 
-**Arguments**
-
-- `geometry` — The geometry to transform. Supported types: Point (Tuple(Float64, Float64)), Ring (Array(Point)), Polygon (Array(Ring)), MultiPolygon (Array(Polygon)). 
-
-**Returned value**
-
-The geometry with flipped coordinates. The type is the same as the input. [`Point`](/sql-reference/data-types/geo#point) or [`Ring`](/sql-reference/data-types/geo#ring) or [`Polygon`](/sql-reference/data-types/geo#polygon) or [`MultiPolygon`](/sql-reference/data-types/geo#multipolygon)
-
-**Examples**
-
-**basic_point**
+**initializeAggregation と組み合わせて使用する**
 
 ```sql title=Query
 WITH initializeAggregation('sumState', number) AS one_row_sum_state
@@ -1706,52 +1542,49 @@ FROM numbers(5);
 └────────┴─────────────┴────────────────┘
 ```
 
-**ring**
+## flipCoordinates {#flipCoordinates}
+
+導入バージョン: v25.10
+
+Point、Ring、Polygon、または MultiPolygon の座標を反転します。Point の場合は座標値を入れ替えます。配列の場合は、各座標ペアに対して同じ変換を再帰的に適用します。
+
+**構文**
 
 ```sql
 flipCoordinates(geometry)
 ```
 
+**引数**
+
+* `geometry` — 変換するジオメトリ。サポートされる型: Point (Tuple(Float64, Float64))、Ring (Array(Point))、Polygon (Array(Ring))、MultiPolygon (Array(Polygon))。
+
+**戻り値**
+
+座標が反転されたジオメトリ。型は入力と同じです。[`Point`](/sql-reference/data-types/geo#point) または [`Ring`](/sql-reference/data-types/geo#ring) または [`Polygon`](/sql-reference/data-types/geo#polygon) または [`MultiPolygon`](/sql-reference/data-types/geo#multipolygon)。
+
+**例**
+
+**basic&#95;point**
+
 ```sql title=Query
 SELECT flipCoordinates((1.0, 2.0));
 ```
-
-**polygon**
 
 ```response title=Response
 (2.0, 1.0)
 ```
 
+**リング**
+
 ```sql title=Query
 SELECT flipCoordinates([(1.0, 2.0), (3.0, 4.0)]);
 ```
-
-
-
-## formatQuery {#formatQuery}
-
-Introduced in: v
-
-Returns a formatted, possibly multi-line, version of the given SQL query. Throws in case of a parsing error.
-[example:multiline]
-
-**Syntax**
 
 ```response title=Response
 [(2.0, 1.0), (4.0, 3.0)]
 ```
 
-**Arguments**
-
-- `query` — The SQL query to be formatted. [String](../../sql-reference/data-types/string.md) 
-
-**Returned value**
-
-The formatted query [`String`](/sql-reference/data-types/string)
-
-**Examples**
-
-**multiline**
+**多角形**
 
 ```sql title=Query
 SELECT flipCoordinates([[(1.0, 2.0), (3.0, 4.0)], [(5.0, 6.0), (7.0, 8.0)]]);
@@ -1761,32 +1594,30 @@ SELECT flipCoordinates([[(1.0, 2.0), (3.0, 4.0)], [(5.0, 6.0), (7.0, 8.0)]]);
 [[(2.0, 1.0), (4.0, 3.0)], [(6.0, 5.0), (8.0, 7.0)]]
 ```
 
+## formatQuery {#formatQuery}
 
+導入バージョン: v
 
-## formatQueryOrNull {#formatQueryOrNull}
-
-Introduced in: v
-
-Returns a formatted, possibly multi-line, version of the given SQL query. Returns NULL in case of a parsing error.
+指定された SQL クエリを、必要に応じて複数行になるよう整形した形式で返します。パースエラーが発生した場合は例外をスローします。
 [example:multiline]
 
-**Syntax**
+**構文**
 
 ```sql
 formatQuery(query)
 ```
 
-**Arguments**
+**引数**
 
-- `query` — The SQL query to be formatted. [String](../../sql-reference/data-types/string.md) 
+* `query` — 整形する対象の SQL クエリ。[String](../../sql-reference/data-types/string.md)
 
-**Returned value**
+**戻り値**
 
-The formatted query [`String`](/sql-reference/data-types/string)
+整形されたクエリを表す [`String`](/sql-reference/data-types/string)
 
-**Examples**
+**例**
 
-**multiline**
+**複数行**
 
 ```sql title=Query
 SELECT formatQuery('select a,    b FRom tab WHERE a > 3 and  b < 3');
@@ -1800,30 +1631,28 @@ FROM tab
 WHERE (a > 3) AND (b < 3)
 ```
 
+## formatQueryOrNull {#formatQueryOrNull}
 
+導入バージョン: v
 
-## formatQuerySingleLine {#formatQuerySingleLine}
-
-Introduced in: v
-
-Like formatQuery() but the returned formatted string contains no line breaks. Throws in case of a parsing error.
+指定された SQL クエリを、必要に応じて複数行になる書式化済みの形式で返します。パースエラーが発生した場合は NULL を返します。
 [example:multiline]
 
-**Syntax**
+**構文**
 
 ```sql
 formatQueryOrNull(query)
 ```
 
-**Arguments**
+**引数**
 
-- `query` — The SQL query to be formatted. [String](../../sql-reference/data-types/string.md) 
+* `query` — 整形する SQL クエリ。[String](../../sql-reference/data-types/string.md)
 
-**Returned value**
+**戻り値**
 
-The formatted query [`String`](/sql-reference/data-types/string)
+整形後のクエリ [`String`](/sql-reference/data-types/string)
 
-**Examples**
+**例**
 
 **multiline**
 
@@ -1839,31 +1668,28 @@ FROM tab
 WHERE (a > 3) AND (b < 3)
 ```
 
+## formatQuerySingleLine {#formatQuerySingleLine}
 
+導入バージョン: v
 
-## formatQuerySingleLineOrNull {#formatQuerySingleLineOrNull}
-
-Introduced in: v
-
-Like formatQuery() but the returned formatted string contains no line breaks. Returns NULL in case of a parsing error.
+formatQuery() と同様ですが、返されるフォーマット済み文字列には改行が含まれません。構文解析エラーが発生した場合は例外をスローします。
 [example:multiline]
 
-**Syntax**
+**構文**
 
 ```sql
 formatQuerySingleLine(query)
 ```
 
-**Arguments**
+**引数**
 
-- `query` — The SQL query to be formatted. [`String`](/sql-reference/data-types/string)
+* `query` — フォーマットする SQL クエリ。[String](../../sql-reference/data-types/string.md)
 
+**戻り値**
 
-**Returned value**
+フォーマットされたクエリ [`String`](/sql-reference/data-types/string)
 
-The formatted query [`String`](/sql-reference/data-types/string)
-
-**Examples**
+**例**
 
 **multiline**
 
@@ -1875,36 +1701,30 @@ SELECT formatQuerySingleLine('select a,    b FRom tab WHERE a > 3 and  b < 3');
 SELECT a, b FROM tab WHERE (a > 3) AND (b < 3)
 ```
 
+## formatQuerySingleLineOrNull {#formatQuerySingleLineOrNull}
 
+導入バージョン: v
 
-## formatReadableDecimalSize {#formatReadableDecimalSize}
+formatQuery() と同様ですが、返される整形済み文字列には改行が含まれません。パースエラーが発生した場合は NULL を返します。
+[example:multiline]
 
-Introduced in: v22.11
-
-
-Given a size (number of bytes), this function returns a readable, rounded size with suffix (KB, MB, etc.) as a string.
-
-The opposite operations of this function are [`parseReadableSize`](#parseReadableSize).
-    
-
-**Syntax**
+**構文**
 
 ```sql
 formatQuerySingleLineOrNull(query)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Size in bytes. [`UInt64`](/sql-reference/data-types/int-uint)
+* `query` — フォーマットする SQL クエリ。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+フォーマットされたクエリ [`String`](/sql-reference/data-types/string)
 
-Returns a readable, rounded size with suffix as a string. [`String`](/sql-reference/data-types/string)
+**使用例**
 
-**Examples**
-
-**Format file sizes**
+**複数行**
 
 ```sql title=Query
 SELECT formatQuerySingleLine('select a,    b FRom tab WHERE a > 3 and  b < 3');
@@ -1914,37 +1734,31 @@ SELECT formatQuerySingleLine('select a,    b FRom tab WHERE a > 3 and  b < 3');
 SELECT a, b FROM tab WHERE (a > 3) AND (b < 3)
 ```
 
+## formatReadableDecimalSize {#formatReadableDecimalSize}
 
+導入バージョン: v22.11
 
-## formatReadableQuantity {#formatReadableQuantity}
+サイズ（バイト数）を指定すると、この関数は接尾辞（KB、MB など）付きの、人間に読みやすいように丸められたサイズを文字列として返します。
 
-Introduced in: v20.10
+この関数の逆の処理を行うのは [`parseReadableSize`](#parseReadableSize) です。
 
-
-Given a number, this function returns a rounded number with suffix (thousand, million, billion, etc.) as a string.
-
-This function accepts any numeric type as input, but internally it casts them to `Float64`.
-Results might be suboptimal with large values.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 formatReadableDecimalSize(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — A number to format. [`UInt64`](/sql-reference/data-types/int-uint)
+* `x` — バイト数。[`UInt64`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+読みやすいように丸めたサイズにサフィックスを付けた文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a rounded number with suffix as a string. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Format numbers with suffixes**
+**ファイルサイズのフォーマット**
 
 ```sql title=Query
 SELECT
@@ -1961,39 +1775,32 @@ SELECT
 └────────────────┴────────────┘
 ```
 
+## formatReadableQuantity {#formatReadableQuantity}
 
+導入バージョン: v20.10
 
-## formatReadableSize {#formatReadableSize}
+数値を渡すと、この関数は四捨五入した数値に接尾辞（千、百万、十億など）を付けた文字列を返します。
 
-Introduced in: v1.1
+この関数は入力として任意の数値型を受け付けますが、内部的にはそれらを `Float64` にキャストします。
+大きな値では最適でない結果になる場合があります。
 
-
-Given a size (number of bytes), this function returns a readable, rounded size with suffix (KiB, MiB, etc.) as string.
-
-The opposite operations of this function are [`parseReadableSize`](#parseReadableSize), [`parseReadableSizeOrZero`](#parseReadableSizeOrZero), and [`parseReadableSizeOrNull`](#parseReadableSizeOrNull).
-This function accepts any numeric type as input, but internally it casts them to `Float64`. Results might be suboptimal with large values.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 formatReadableQuantity(x)
 ```
 
-**Aliases**: `FORMAT_BYTES`
+**引数**
 
-**Arguments**
+* `x` — フォーマットする数値。[`UInt64`](/sql-reference/data-types/int-uint)
 
-- `x` — Size in bytes. [`UInt64`](/sql-reference/data-types/int-uint)
+**返り値**
 
+サフィックスを付けた丸め済みの数値を文字列として返します。[`String`](/sql-reference/data-types/string)
 
-**Returned value**
+**例**
 
-Returns a readable, rounded size with suffix as a string. [`String`](/sql-reference/data-types/string)
-
-**Examples**
-
-**Format file sizes**
+**サフィックス付きで数値をフォーマットする**
 
 ```sql title=Query
 SELECT
@@ -2010,38 +1817,34 @@ SELECT
 └────────────────┴───────────────────┘
 ```
 
+## formatReadableSize {#formatReadableSize}
 
+導入バージョン: v1.1
 
-## formatReadableTimeDelta {#formatReadableTimeDelta}
+サイズ（バイト数）を指定すると、この関数は読みやすい形式に丸めたサイズに、接尾辞（KiB、MiB など）を付けた文字列を返します。
 
-Introduced in: v20.12
+この関数の逆操作にあたるのは、[`parseReadableSize`](#parseReadableSize)、[`parseReadableSizeOrZero`](#parseReadableSizeOrZero)、および [`parseReadableSizeOrNull`](#parseReadableSizeOrNull) です。
+この関数は任意の数値型を入力として受け取りますが、内部的にはそれらを `Float64` にキャストします。非常に大きな値では、結果が最適でない可能性があります。
 
-
-Given a time interval (delta) in seconds, this function returns a time delta with year/month/day/hour/minute/second/millisecond/microsecond/nanosecond as a string.
-
-This function accepts any numeric type as input, but internally it casts them to `Float64`. Results might be suboptimal with large values.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 formatReadableSize(x)
 ```
 
-**Arguments**
+**別名**: `FORMAT_BYTES`
 
-- `column` — A column with a numeric time delta. [`Float64`](/sql-reference/data-types/float)
-- `maximum_unit` — Optional. Maximum unit to show. Acceptable values: `nanoseconds`, `microseconds`, `milliseconds`, `seconds`, `minutes`, `hours`, `days`, `months`, `years`. Default value: `years`. [`const String`](/sql-reference/data-types/string)
-- `minimum_unit` — Optional. Minimum unit to show. All smaller units are truncated. Acceptable values: `nanoseconds`, `microseconds`, `milliseconds`, `seconds`, `minutes`, `hours`, `days`, `months`, `years`. If explicitly specified value is bigger than `maximum_unit`, an exception will be thrown. Default value: `seconds` if `maximum_unit` is `seconds` or bigger, `nanoseconds` otherwise. [`const String`](/sql-reference/data-types/string)
+**引数**
 
+* `x` — バイト単位のサイズ。[`UInt64`](/sql-reference/data-types/int-uint)
 
-**Returned value**
+**戻り値**
 
-Returns a time delta as a string. [`String`](/sql-reference/data-types/string)
+読みやすいように丸めたサイズに接尾辞を付けて、文字列として返します。[`String`](/sql-reference/data-types/string)
 
-**Examples**
+**例**
 
-**Usage example**
+**ファイルサイズをフォーマットする**
 
 ```sql title=Query
 SELECT
@@ -2058,29 +1861,39 @@ SELECT
 └────────────────┴────────────┘
 ```
 
-**With maximum unit**
+## formatReadableTimeDelta {#formatReadableTimeDelta}
+
+導入バージョン: v20.12
+
+秒数で表された時間間隔（デルタ）を指定すると、この関数は年／月／日／時／分／秒／ミリ秒／マイクロ秒／ナノ秒単位を含む時間差を文字列として返します。
+
+この関数は任意の数値型を入力として受け付けますが、内部的には `Float64` にキャストします。非常に大きな値の場合、結果が十分に最適にならない可能性があります。
+
+**構文**
 
 ```sql
 formatReadableTimeDelta(column[, maximum_unit, minimum_unit])
 ```
+
+**引数**
+
+* `column` — 数値の時間差を含むカラム。[`Float64`](/sql-reference/data-types/float)
+* `maximum_unit` — 省略可能。表示する最大の単位。指定可能な値: `nanoseconds`, `microseconds`, `milliseconds`, `seconds`, `minutes`, `hours`, `days`, `months`, `years`。デフォルト値: `years`。[`const String`](/sql-reference/data-types/string)
+* `minimum_unit` — 省略可能。表示する最小の単位。これより小さい単位は切り捨てられます。指定可能な値: `nanoseconds`, `microseconds`, `milliseconds`, `seconds`, `minutes`, `hours`, `days`, `months`, `years`。明示的に指定した値が `maximum_unit` より大きい場合は、例外がスローされます。デフォルト値: `maximum_unit` が `seconds` 以上の単位の場合は `seconds`、それ以外の場合は `nanoseconds`。[`const String`](/sql-reference/data-types/string)
+
+**返される値**
+
+時間差を文字列として返します。[`String`](/sql-reference/data-types/string)
+
+**例**
+
+**使用例**
 
 ```sql title=Query
 SELECT
     arrayJoin([100, 12345, 432546534]) AS elapsed,
     formatReadableTimeDelta(elapsed) AS time_delta
 ```
-
-
-
-## generateRandomStructure {#generateRandomStructure}
-
-Introduced in: v23.5
-
-
-Generates random table structure in the format `column1_name column1_type, column2_name column2_type, ...`.
-
-
-**Syntax**
 
 ```response title=Response
 ┌────elapsed─┬─time_delta─────────────────────────────────────────────────────┐
@@ -2090,19 +1903,7 @@ Generates random table structure in the format `column1_name column1_type, colum
 └────────────┴────────────────────────────────────────────────────────────────┘
 ```
 
-**Arguments**
-
-- `number_of_columns` — The desired number of columns in the resultant table structure. If set to 0 or `Null`, the number of columns will be random from 1 to 128. Default value: `Null`. [`UInt64`](/sql-reference/data-types/int-uint)
-- `seed` — Random seed to produce stable results. If seed is not specified or set to `Null`, it is randomly generated. [`UInt64`](/sql-reference/data-types/int-uint)
-
-
-**Returned value**
-
-Randomly generated table structure. [`String`](/sql-reference/data-types/string)
-
-**Examples**
-
-**Usage example**
+**最大単位を使用**
 
 ```sql title=Query
 SELECT
@@ -2118,58 +1919,50 @@ SELECT
 └────────────┴─────────────────────────────────────────────────────────────────┘
 ```
 
-**with specified number of columns**
+## generateRandomStructure {#generateRandomStructure}
+
+導入バージョン: v23.5
+
+`column1_name column1_type, column2_name column2_type, ...` という形式のランダムなテーブル構造を生成します。
+
+**構文**
 
 ```sql
 generateRandomStructure([number_of_columns, seed])
 ```
 
+**引数**
+
+* `number_of_columns` — 生成されるテーブル構造における希望するカラム数。0 または `Null` に設定した場合、カラム数は 1 から 128 の範囲でランダムに決定されます。デフォルト値: `Null`。[`UInt64`](/sql-reference/data-types/int-uint)
+* `seed` — 安定した結果を得るための乱数シード。`seed` が指定されていないか `Null` に設定されている場合は、ランダムに生成されます。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**戻り値**
+
+ランダムに生成されたテーブル構造。[`String`](/sql-reference/data-types/string)
+
+**例**
+
+**使用例**
+
 ```sql title=Query
 SELECT generateRandomStructure()
 ```
-
-**with specified seed**
 
 ```response title=Response
 c1 Decimal32(5), c2 Date, c3 Tuple(LowCardinality(String), Int128, UInt64, UInt16, UInt8, IPv6), c4 Array(UInt128), c5 UInt32, c6 IPv4, c7 Decimal256(64), c8 Decimal128(3), c9 UInt256, c10 UInt64, c11 DateTime
 ```
 
+**指定した数のカラムを使用**
+
 ```sql title=Query
 SELECT generateRandomStructure(1)
 ```
-
-
-
-## generateSerialID {#generateSerialID}
-
-Introduced in: v25.1
-
-
-Generates and returns sequential numbers starting from the previous counter value.
-This function takes a string argument - a series identifier, and an optional starting value.
-The server should be configured with Keeper.
-The series are stored in Keeper nodes under the path, which can be configured in [`series_keeper_path`](/operations/server-configuration-parameters/settings#series_keeper_path) in the server configuration.
-    
-
-**Syntax**
 
 ```response title=Response
 c1 Map(UInt256, UInt16)
 ```
 
-**Arguments**
-
-- `series_identifier` — Series identifier [`const String`](/sql-reference/data-types/string)
-- `start_value` — Optional. Starting value for the counter. Defaults to 0. Note: this value is only used when creating a new series and is ignored if the series already exists [`UInt*`](/sql-reference/data-types/int-uint)
-
-
-**Returned value**
-
-Returns sequential numbers starting from the previous counter value. [`UInt64`](/sql-reference/data-types/int-uint)
-
-**Examples**
-
-**first call**
+**指定したシード値で**
 
 ```sql title=Query
 SELECT generateRandomStructure(NULL, 33)
@@ -2179,17 +1972,37 @@ SELECT generateRandomStructure(NULL, 33)
 c1 DateTime, c2 Enum8('c2V0' = 0, 'c2V1' = 1, 'c2V2' = 2, 'c2V3' = 3), c3 LowCardinality(Nullable(FixedString(30))), c4 Int16, c5 Enum8('c5V0' = 0, 'c5V1' = 1, 'c5V2' = 2, 'c5V3' = 3), c6 Nullable(UInt8), c7 String, c8 Nested(e1 IPv4, e2 UInt8, e3 UInt16, e4 UInt16, e5 Int32, e6 Map(Date, Decimal256(70)))
 ```
 
-**second call**
+## generateSerialID {#generateSerialID}
+
+導入バージョン: v25.1
+
+直前のカウンター値から連番を生成して返します。
+この関数は、文字列引数（シリーズ識別子）と任意の開始値を取ります。
+サーバーは Keeper を用いて構成されている必要があります。
+シリーズは Keeper ノード内のパス配下に保存され、このパスはサーバー設定の [`series_keeper_path`](/operations/server-configuration-parameters/settings#series_keeper_path) で設定できます。
+
+**構文**
 
 ```sql
 generateSerialID(series_identifier[, start_value])
 ```
 
+**引数**
+
+* `series_identifier` — シリーズ識別子 [`const String`](/sql-reference/data-types/string)
+* `start_value` — 省略可能。カウンターの開始値。デフォルトは 0。注: この値は新しいシリーズを作成する場合にのみ使用され、シリーズがすでに存在する場合は無視されます。 [`UInt*`](/sql-reference/data-types/int-uint)
+
+**返り値**
+
+直前のカウンター値から始まる連番を返します。 [`UInt64`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**最初の呼び出し**
+
 ```sql title=Query
 SELECT generateSerialID('id1')
 ```
-
-**column call**
 
 ```response title=Response
 ┌─generateSerialID('id1')──┐
@@ -2197,11 +2010,11 @@ SELECT generateSerialID('id1')
 └──────────────────────────┘
 ```
 
+**2回目の呼び出し**
+
 ```sql title=Query
 SELECT generateSerialID('id1')
 ```
-
-**with start value**
 
 ```response title=Response
 ┌─generateSerialID('id1')──┐
@@ -2209,11 +2022,11 @@ SELECT generateSerialID('id1')
 └──────────────────────────┘
 ```
 
+**カラムの呼び出し**
+
 ```sql title=Query
 SELECT *, generateSerialID('id1') FROM test_table
 ```
-
-**with start value second call**
 
 ```response title=Response
 ┌─CounterID─┬─UserID─┬─ver─┬─generateSerialID('id1')──┐
@@ -2225,31 +2038,11 @@ SELECT *, generateSerialID('id1') FROM test_table
 └───────────┴────────┴─────┴──────────────────────────┘
 ```
 
+**開始値あり**
+
 ```sql title=Query
 SELECT generateSerialID('id2', 100)
 ```
-
-
-
-## getClientHTTPHeader {#getClientHTTPHeader}
-
-Introduced in: v24.5
-
-
-Gets the value of an HTTP header.
-If there is no such header or the current request is not performed via the HTTP interface, the function returns an empty string.
-Certain HTTP headers (e.g., `Authentication` and `X-ClickHouse-*`) are restricted.
-
-:::note Setting `allow_get_client_http_header` is required
-The function requires the setting `allow_get_client_http_header` to be enabled.
-The setting is not enabled by default for security reasons, because some headers, such as `Cookie`, could contain sensitive info.
-:::
-
-HTTP headers are case sensitive for this function.
-If the function is used in the context of a distributed query, it returns non-empty result only on the initiator node.
-
-
-**Syntax**
 
 ```response title=Response
 ┌─generateSerialID('id2', 100)──┐
@@ -2257,18 +2050,7 @@ If the function is used in the context of a distributed query, it returns non-em
 └───────────────────────────────┘
 ```
 
-**Arguments**
-
-- `name` — The HTTP header name. [`String`](/sql-reference/data-types/string)
-
-
-**Returned value**
-
-Returns the value of the header. [`String`](/sql-reference/data-types/string)
-
-**Examples**
-
-**Usage example**
+**開始値付き 2 回目の呼び出し**
 
 ```sql title=Query
 SELECT generateSerialID('id2', 100)
@@ -2280,36 +2062,39 @@ SELECT generateSerialID('id2', 100)
 └───────────────────────────────┘
 ```
 
+## getClientHTTPHeader {#getClientHTTPHeader}
 
+導入バージョン: v24.5
 
-## getMacro {#getMacro}
+HTTP ヘッダーの値を取得します。\
+そのようなヘッダーが存在しない場合、または現在のリクエストが HTTP インターフェイス経由で実行されていない場合、この関数は空文字列を返します。\
+特定の HTTP ヘッダー（例: `Authentication` や `X-ClickHouse-*`）は制限されています。
 
-Introduced in: v20.1
+:::note `allow_get_client_http_header` の設定が必須
+この関数を使用するには、`allow_get_client_http_header` 設定を有効にする必要があります。\
+`Cookie` などの一部のヘッダーには機密情報が含まれる可能性があるため、この設定はデフォルトでは有効になっていません。
+:::
 
+この関数では、HTTP ヘッダー名の大文字・小文字は区別されます。\
+関数が分散クエリのコンテキストで使用される場合、イニシエーターノード上でのみ空でない結果を返します。
 
-Returns the value of a macro from the server configuration file.
-Macros are defined in the [`<macros>`](/operations/server-configuration-parameters/settings#macros) section of the configuration file and can be used to distinguish servers by convenient names even if they have complicated hostnames.
-If the function is executed in the context of a distributed table, it generates a normal column with values relevant to each shard.
-
-
-**Syntax**
+**構文**
 
 ```sql
 getClientHTTPHeader(name)
 ```
 
-**Arguments**
+**引数**
 
-- `name` — The name of the macro to retrieve. [`const String`](/sql-reference/data-types/string)
+* `name` — HTTP ヘッダー名。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+ヘッダーの値を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the value of the specified macro. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Basic usage**
+**使用例**
 
 ```sql title=Query
 SELECT getClientHTTPHeader('Content-Type');
@@ -2321,32 +2106,31 @@ SELECT getClientHTTPHeader('Content-Type');
 └─────────────────────────────────────┘
 ```
 
+## getMacro {#getMacro}
 
+導入バージョン: v20.1
 
-## getMaxTableNameLengthForDatabase {#getMaxTableNameLengthForDatabase}
+サーバーの設定ファイルで定義されたマクロの値を返します。
+マクロは設定ファイルの [`<macros>`](/operations/server-configuration-parameters/settings#macros) セクションで定義され、ホスト名が複雑な場合でも、サーバーをわかりやすい名前で区別するために使用できます。
+この関数を分散テーブルのコンテキストで実行した場合、各分片に対応する値を持つ通常のカラムを生成します。
 
-Introduced in: v
-
-Returns the maximum table name length in a specified database.
-
-**Syntax**
+**構文**
 
 ```sql
 getMacro(name)
 ```
 
-**Arguments**
+**引数**
 
-- `database_name` — The name of the specified database. [`String`](/sql-reference/data-types/string)
+* `name` — 取得するマクロの名前。[`const String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+指定したマクロの値を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the length of the maximum table name, an Integer
+**例**
 
-**Examples**
-
-**typical**
+**基本的な使い方**
 
 ```sql title=Query
 SELECT getMacro('test');
@@ -2358,34 +2142,29 @@ SELECT getMacro('test');
 └──────────────────┘
 ```
 
+## getMaxTableNameLengthForDatabase {#getMaxTableNameLengthForDatabase}
 
+導入バージョン: v
 
-## getMergeTreeSetting {#getMergeTreeSetting}
+指定したデータベースでサポートされるテーブル名の最大長を返します。
 
-Introduced in: v25.6
-
-
-Returns the current value of a MergeTree setting.
-
-
-**Syntax**
+**構文**
 
 ```sql
 getMaxTableNameLengthForDatabase(database_name)
 ```
 
-**Arguments**
+**引数**
 
-- `setting_name` — The setting name. [`String`](/sql-reference/data-types/string)
+* `database_name` — 指定されたデータベースの名前。[`String`](/sql-reference/data-types/string)
 
+**返り値**
 
-**Returned value**
+テーブル名の最大長を `Integer` 型で返します。
 
-Returns the merge tree setting's current value.
+**使用例**
 
-**Examples**
-
-**Usage example**
+**典型的な例**
 
 ```sql title=Query
 SELECT getMaxTableNameLengthForDatabase('default');
@@ -2397,33 +2176,29 @@ SELECT getMaxTableNameLengthForDatabase('default');
             └─────────────────────────────────────────────┘
 ```
 
+## getMergeTreeSetting {#getMergeTreeSetting}
 
+導入バージョン: v25.6
 
-## getOSKernelVersion {#getOSKernelVersion}
+現在の MergeTree 設定値を返します。
 
-Introduced in: v21.11
-
-
-Returns a string with the OS kernel version.
-
-
-**Syntax**
+**構文**
 
 ```sql
 getMergeTreeSetting(setting_name)
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* `setting_name` — 設定名。[`String`](/sql-reference/data-types/string)
 
-**Returned value**
+**戻り値**
 
-Returns the current OS kernel version. [`String`](/sql-reference/data-types/string)
+MergeTree の設定の現在値を返します。
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT getMergeTreeSetting('index_granularity');
@@ -2435,34 +2210,29 @@ SELECT getMergeTreeSetting('index_granularity');
 └──────────────────────────────────────────┘
 ```
 
+## getOSKernelVersion {#getOSKernelVersion}
 
+導入バージョン: v21.11
 
-## getServerPort {#getServerPort}
+OS カーネルのバージョンを表す文字列を返します。
 
-Introduced in: v21.10
-
-
-Returns the server's port number for a given protocol.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 getOSKernelVersion()
 ```
 
-**Arguments**
+**引数**
 
-- `port_name` — The name of the port. [`String`](/sql-reference/data-types/string)
+* なし。
 
+**戻り値**
 
-**Returned value**
+現在の OS カーネルバージョンを返します。[`String`](/sql-reference/data-types/string)
 
-Returns the server port number. [`UInt16`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT getOSKernelVersion();
@@ -2474,34 +2244,29 @@ SELECT getOSKernelVersion();
 └─────────────────────────┘
 ```
 
+## getServerPort {#getServerPort}
 
+導入バージョン: v21.10
 
-## getServerSetting {#getServerSetting}
+指定されたプロトコルに対するサーバーのポート番号を返します。
 
-Introduced in: v25.6
-
-
-Returns the currently set value, given a server setting name.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 getServerPort(port_name)
 ```
 
-**Arguments**
+**引数**
 
-- `setting_name` — The server setting name. [`String`](/sql-reference/data-types/string)
+* `port_name` — ポート名。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+サーバーのポート番号を返します。[`UInt16`](/sql-reference/data-types/int-uint)
 
-Returns the server setting's current value. [`Any`](/sql-reference/data-types)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT getServerPort('tcp_port');
@@ -2513,34 +2278,29 @@ SELECT getServerPort('tcp_port');
 └───────────────────────────┘
 ```
 
+## getServerSetting {#getServerSetting}
 
+導入バージョン: v25.6
 
-## getSetting {#getSetting}
+サーバー設定名を指定して、その現在の値を返します。
 
-Introduced in: v20.7
-
-
-Returns the current value of a setting.
-
-
-**Syntax**
+**構文**
 
 ```sql
 getServerSetting(setting_name')
 ```
 
-**Arguments**
+**引数**
 
-- `setting_Name` — The setting name. [`const String`](/sql-reference/data-types/string)
+* `setting_name` — サーバー設定の名前。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+サーバー設定の現在の値を返します。[`Any`](/sql-reference/data-types)
 
-Returns the setting's current value. [`Any`](/sql-reference/data-types)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT getServerSetting('allow_use_jemalloc_memory');
@@ -2552,34 +2312,29 @@ SELECT getServerSetting('allow_use_jemalloc_memory');
 └───────────────────────────────────────────────┘
 ```
 
+## getSetting {#getSetting}
 
+導入バージョン: v20.7
 
-## getSettingOrDefault {#getSettingOrDefault}
+現在の設定値を返します。
 
-Introduced in: v24.10
-
-
-Returns the current value of a setting or returns the default value specified in the second argument if the setting is not set in the current profile.
-
-
-**Syntax**
+**構文**
 
 ```sql
 getSetting(setting_name)
 ```
 
-**Arguments**
+**引数**
 
-- `setting_name` — The setting name. [`String`](/sql-reference/data-types/string)
-- `default_value` — Value to return if custom_setting is not set. Value may be of any data type or Null. 
+* `setting_Name` — 設定名。[`const String`](/sql-reference/data-types/string)
 
-**Returned value**
+**返される値**
 
-Returns the current value of the specified setting or `default_value` if the setting is not set.
+設定の現在の値を返します。[`Any`](/sql-reference/data-types)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT getSetting('enable_analyzer');
@@ -2596,34 +2351,30 @@ SELECT getSetting('enable_analyzer');
 └──────────────────────────┘
 ```
 
+## getSettingOrDefault {#getSettingOrDefault}
 
+導入バージョン: v24.10
 
-## getSizeOfEnumType {#getSizeOfEnumType}
+指定した設定の現在の値を返します。現在のプロファイルでその設定が設定されていない場合は、第 2 引数で指定されたデフォルト値を返します。
 
-Introduced in: v1.1
-
-
-Returns the number of fields in the given [`Enum`](../../sql-reference/data-types/enum.md).
-
-
-**Syntax**
+**構文**
 
 ```sql
 getSettingOrDefault(setting_name, default_value)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Value of type `Enum`. [`Enum`](/sql-reference/data-types/enum)
+* `setting_name` — 設定名。[`String`](/sql-reference/data-types/string)
+* `default_value` — `custom_setting` が設定されていない場合に返される値。値は任意のデータ型または Null を指定できます。
 
+**戻り値**
 
-**Returned value**
+指定された設定の現在の値、またはその設定が設定されていない場合は `default_value` を返します。
 
-Returns the number of fields with `Enum` input values. [`UInt8/16`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT getSettingOrDefault('custom_undef1', 'my_value');
@@ -2637,35 +2388,29 @@ my_value
 NULL
 ```
 
+## getSizeOfEnumType {#getSizeOfEnumType}
 
+導入されたバージョン: v1.1
 
-## getSubcolumn {#getSubcolumn}
+指定された [`Enum`](../../sql-reference/data-types/enum.md) 型のフィールド数を返します。
 
-Introduced in: v
-
-
-Receives the expression or identifier and constant string with the name of subcolumn.
-
-Returns requested subcolumn extracted from the expression.
-
-
-**Syntax**
+**構文**
 
 ```sql
 getSizeOfEnumType(x)
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* `x` — 型 `Enum` の値。[`Enum`](/sql-reference/data-types/enum)
 
-**Returned value**
+**返される値**
 
+`Enum` 型の入力値を取るフィールド数を返します。[`UInt8/16`](/sql-reference/data-types/int-uint)
 
+**例**
 
-**Examples**
-
-**getSubcolumn**
+**使用例**
 
 ```sql title=Query
 SELECT getSizeOfEnumType(CAST('a' AS Enum8('a' = 1, 'b' = 2))) AS x;
@@ -2677,34 +2422,28 @@ SELECT getSizeOfEnumType(CAST('a' AS Enum8('a' = 1, 'b' = 2))) AS x;
 └───┘
 ```
 
+## getSubcolumn {#getSubcolumn}
 
+導入バージョン: v
 
-## getTypeSerializationStreams {#getTypeSerializationStreams}
+式または識別子と、サブカラム名を表す定数文字列を引数に取ります。
 
-Introduced in: v22.6
+式から指定されたサブカラムを抽出して返します。
 
-
-Enumerates stream paths of a data type.
-This function is intended for developmental use.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 ```
 
-**Arguments**
+**引数**
 
-- `col` — Column or string representation of a data-type from which the data type will be detected. [`Any`](/sql-reference/data-types)
+* なし
 
+**返り値**
 
-**Returned value**
+**例**
 
-Returns an array with all the serialization sub-stream paths. [`Array(String)`](/sql-reference/data-types/array)
-
-**Examples**
-
-**tuple**
+**getSubcolumn**
 
 ```sql title=Query
 SELECT getSubcolumn(array_col, 'size0'), getSubcolumn(tuple_col, 'elem_name')
@@ -2713,44 +2452,40 @@ SELECT getSubcolumn(array_col, 'size0'), getSubcolumn(tuple_col, 'elem_name')
 ```response title=Response
 ```
 
-**map**
+## getTypeSerializationStreams {#getTypeSerializationStreams}
+
+導入バージョン: v22.6
+
+データ型のシリアライズストリームのパスを列挙します。
+この関数は開発用途での利用を想定しています。
+
+**構文**
 
 ```sql
 getTypeSerializationStreams(col)
 ```
 
+**引数**
+
+* `col` — データ型を検出するための対象となるカラム、またはデータ型の文字列表現。[`Any`](/sql-reference/data-types)
+
+**戻り値**
+
+すべてのシリアライズサブストリームのパスを含む配列を返します。[`Array(String)`](/sql-reference/data-types/array)
+
+**例**
+
+**tuple**
+
 ```sql title=Query
 SELECT getTypeSerializationStreams(tuple('a', 1, 'b', 2))
 ```
-
-
-
-## globalVariable {#globalVariable}
-
-Introduced in: v20.5
-
-
-Takes a constant string argument and returns the value of the global variable with that name. This function is intended for compatibility with MySQL and not needed or useful for normal operation of ClickHouse. Only few dummy global variables are defined.
-    
-
-**Syntax**
 
 ```response title=Response
 ['{TupleElement(1), Regular}','{TupleElement(2), Regular}','{TupleElement(3), Regular}','{TupleElement(4), Regular}']
 ```
 
-**Arguments**
-
-- `name` — Global variable name. [`String`](/sql-reference/data-types/string)
-
-
-**Returned value**
-
-Returns the value of variable `name`. [`Any`](/sql-reference/data-types)
-
-**Examples**
-
-**globalVariable**
+**map**
 
 ```sql title=Query
 SELECT getTypeSerializationStreams('Map(String, Int64)')
@@ -2760,41 +2495,29 @@ SELECT getTypeSerializationStreams('Map(String, Int64)')
 ['{ArraySizes}','{ArrayElements, TupleElement(keys), Regular}','{ArrayElements, TupleElement(values), Regular}']
 ```
 
+## globalVariable {#globalVariable}
 
+導入: v20.5
 
-## hasColumnInTable {#hasColumnInTable}
+定数の文字列引数を受け取り、その名前を持つグローバル変数の値を返します。この関数は MySQL との互換性のために用意されており、通常の ClickHouse の運用上は必要なく、有用でもありません。ごく少数のダミーのグローバル変数のみが定義されています。
 
-Introduced in: v1.1
-
-
-Checks if a specific column exists in a database table.
-For elements in a nested data structure, the function checks for the existence of a column.
-For the nested data structure itself, the function returns `0`.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 globalVariable(name)
 ```
 
-**Arguments**
+**引数**
 
-- `database` — Name of the database. [`const String`](/sql-reference/data-types/string)
-- `table` — Name of the table. [`const String`](/sql-reference/data-types/string)
-- `column` — Name of the column. [`const String`](/sql-reference/data-types/string)
-- `hostname` — Optional. Remote server name to perform the check on. [`const String`](/sql-reference/data-types/string)
-- `username` — Optional. Username for remote server. [`const String`](/sql-reference/data-types/string)
-- `password` — Optional. Password for remote server. [`const String`](/sql-reference/data-types/string)
+* `name` — グローバル変数の名前。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+変数 `name` の値を返します。[`Any`](/sql-reference/data-types)
 
-Returns `1` if the given column exists, `0` otherwise. [`UInt8`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Check an existing column**
+**globalVariable**
 
 ```sql title=Query
 SELECT globalVariable('max_allowed_packet')
@@ -2804,44 +2527,46 @@ SELECT globalVariable('max_allowed_packet')
 67108864
 ```
 
-**Check a non-existing column**
+## hasColumnInTable {#hasColumnInTable}
+
+導入バージョン: v1.1
+
+指定したカラムがデータベーステーブルに存在するかどうかをチェックします。
+ネストされたデータ構造内の要素に対しては、そのカラムが存在するかどうかを関数がチェックします。
+ネストされたデータ構造そのものに対しては、関数は `0` を返します。
+
+**構文**
 
 ```sql
 hasColumnInTable([hostname[, username[, password]],]database, table, column)
 ```
 
+**引数**
+
+* `database` — データベース名。[`const String`](/sql-reference/data-types/string)
+* `table` — テーブル名。[`const String`](/sql-reference/data-types/string)
+* `column` — カラム名。[`const String`](/sql-reference/data-types/string)
+* `hostname` — 省略可能。チェックを実行するリモートサーバー名。[`const String`](/sql-reference/data-types/string)
+* `username` — 省略可能。リモートサーバーのユーザー名。[`const String`](/sql-reference/data-types/string)
+* `password` — 省略可能。リモートサーバーのパスワード。[`const String`](/sql-reference/data-types/string)
+
+**戻り値**
+
+指定したカラムが存在する場合は `1`、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**既存のカラムをチェックする**
+
 ```sql title=Query
 SELECT hasColumnInTable('system','metrics','metric')
 ```
-
-
-
-## hasThreadFuzzer {#hasThreadFuzzer}
-
-Introduced in: v20.6
-
-
-Returns whether the thread fuzzer is enabled.
-THis function is only useful for testing and debugging.
-    
-
-**Syntax**
 
 ```response title=Response
 1
 ```
 
-**Arguments**
-
-- None.
-
-**Returned value**
-
-Returns whether Thread Fuzzer is effective. [`UInt8`](/sql-reference/data-types/int-uint)
-
-**Examples**
-
-**Check Thread Fuzzer status**
+**存在しないカラムを確認する**
 
 ```sql title=Query
 SELECT hasColumnInTable('system','metrics','non-existing_column')
@@ -2851,38 +2576,30 @@ SELECT hasColumnInTable('system','metrics','non-existing_column')
 0
 ```
 
+## hasThreadFuzzer {#hasThreadFuzzer}
 
+導入バージョン: v20.6
 
-## hostName {#hostName}
+スレッドファザーが有効になっているかどうかを返します。
+この関数はテストやデバッグの目的にのみ使用されます。
 
-Introduced in: v20.5
-
-
-Returns the name of the host on which this function was executed.
-If the function executes on a remote server (distributed processing), the remote server name is returned.
-If the function executes in the context of a distributed table, it generates a normal column with values relevant to each shard.
-Otherwise it produces a constant value.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 hasThreadFuzzer()
 ```
 
-**Aliases**: `hostname`
+**引数**
 
-**Arguments**
+* なし。
 
-- None.
+**戻り値**
 
-**Returned value**
+Thread Fuzzer が有効かどうかを返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns the host name. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**Thread Fuzzer のステータスを確認**
 
 ```sql title=Query
 SELECT hasThreadFuzzer()
@@ -2894,33 +2611,34 @@ SELECT hasThreadFuzzer()
 └───────────────────┘
 ```
 
+## hostName {#hostName}
 
+導入バージョン: v20.5
 
-## icebergBucket {#icebergBucket}
+この関数が実行されたホストの名前を返します。
+関数がリモートサーバー（分散処理）上で実行される場合は、そのリモートサーバーの名前が返されます。
+関数が分散テーブルのコンテキストで実行される場合、それぞれの分片に対応する値を持つ通常のカラムを生成します。
+それ以外の場合は定数値を返します。
 
-Introduced in: v25.5
-
-Implements logic for the [iceberg bucket transform](https://iceberg.apache.org/spec/#bucket-transform-details.)
-
-**Syntax**
+**構文**
 
 ```sql
 hostName()
 ```
 
-**Arguments**
+**エイリアス**: `hostname`
 
-- `N` — The number of buckets, modulo. [`const (U)Int*`](/sql-reference/data-types/int-uint)
-- `value` — The source value to transform. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Bool`](/sql-reference/data-types/boolean) or [`Decimal`](/sql-reference/data-types/decimal) or [`Float*`](/sql-reference/data-types/float) or [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring) or [`UUID`](/sql-reference/data-types/uuid) or [`Date`](/sql-reference/data-types/date) or [`Time`](/sql-reference/data-types/time) or [`DateTime`](/sql-reference/data-types/datetime)
+**引数**
 
+* なし。
 
-**Returned value**
+**戻り値**
 
-Returns a 32-bit hash of the source value. [`Int32`](/sql-reference/data-types/int-uint)
+ホスト名を返します。[`String`](/sql-reference/data-types/string)
 
-**Examples**
+**例**
 
-**Example**
+**使用例**
 
 ```sql title=Query
 SELECT hostName()
@@ -2932,32 +2650,30 @@ SELECT hostName()
 └────────────┘
 ```
 
+## icebergBucket {#icebergBucket}
 
+導入バージョン: v25.5
 
-## icebergTruncate {#icebergTruncate}
+[iceberg bucket transform](https://iceberg.apache.org/spec/#bucket-transform-details.) の処理を実装します。
 
-Introduced in: v25.3
-
-Implements logic of iceberg truncate transform: https://iceberg.apache.org/spec/#truncate-transform-details.
-
-**Syntax**
+**構文**
 
 ```sql
 icebergBucket(N, value)
 ```
 
-**Arguments**
+**引数**
 
-- `value` — The value to transform. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Decimal`](/sql-reference/data-types/decimal)
+* `N` — バケット数（モジュロ）。[`const (U)Int*`](/sql-reference/data-types/int-uint)
+* `value` — 変換対象の値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Bool`](/sql-reference/data-types/boolean) または [`Decimal`](/sql-reference/data-types/decimal) または [`Float*`](/sql-reference/data-types/float) または [`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring) または [`UUID`](/sql-reference/data-types/uuid) または [`Date`](/sql-reference/data-types/date) または [`Time`](/sql-reference/data-types/time) または [`DateTime`](/sql-reference/data-types/datetime)
 
+**戻り値**
 
-**Returned value**
+入力値の 32 ビットハッシュを返します。[`Int32`](/sql-reference/data-types/int-uint)
 
-The same type as the argument
+**例**
 
-**Examples**
-
-**Example**
+**使用例**
 
 ```sql title=Query
 SELECT icebergBucket(5, 1.0 :: Float32)
@@ -2967,34 +2683,29 @@ SELECT icebergBucket(5, 1.0 :: Float32)
 4
 ```
 
+## icebergTruncate {#icebergTruncate}
 
+導入バージョン: v25.3
 
-## identity {#identity}
+Apache Iceberg の truncate 変換ロジックを実装します: [https://iceberg.apache.org/spec/#truncate-transform-details](https://iceberg.apache.org/spec/#truncate-transform-details)。
 
-Introduced in: v1.1
-
-
-This function returns the argument you pass to it, which is useful for debugging and testing. It lets you bypass index usage to see full scan performance instead. The query analyzer ignores anything inside identity functions when looking for indexes to use, and it also disables constant folding.
-
-
-**Syntax**
+**構文**
 
 ```sql
 icebergTruncate(N, value)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Input value. [`Any`](/sql-reference/data-types)
+* `value` — 変換対象の値。 [`String`](/sql-reference/data-types/string) または [`(U)Int*`](/sql-reference/data-types/int-uint) または [`Decimal`](/sql-reference/data-types/decimal)
 
+**戻り値**
 
-**Returned value**
+引数と同じ型です
 
-Returns the input value unchanged. [`Any`](/sql-reference/data-types)
+**使用例**
 
-**Examples**
-
-**Usage example**
+**例**
 
 ```sql title=Query
 SELECT icebergTruncate(3, 'iceberg')
@@ -3004,15 +2715,11 @@ SELECT icebergTruncate(3, 'iceberg')
 ice
 ```
 
+## identity {#identity}
 
+導入バージョン: v1.1
 
-## ignore {#ignore}
-
-Introduced in: v1.1
-
-
-Accepts arbitrary arguments and unconditionally returns `0`.
-    
+この関数は渡された引数をそのまま返します。デバッグやテストに有用です。索引の使用を回避して、フルスキャン時のパフォーマンスを確認することができます。クエリアナライザは、使用する索引を探す際に identity 関数内の内容を無視し、さらに定数畳み込みも無効化します。
 
 **Syntax**
 
@@ -3020,18 +2727,17 @@ Accepts arbitrary arguments and unconditionally returns `0`.
 identity(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — An input value which is unused and passed only so as to avoid a syntax error. [`Any`](/sql-reference/data-types)
+* `x` — 入力値。[`Any`](/sql-reference/data-types)
 
+**戻り値**
 
-**Returned value**
+入力値をそのまま返します。[`Any`](/sql-reference/data-types)
 
-Always returns `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT identity(42)
@@ -3041,40 +2747,29 @@ SELECT identity(42)
 42
 ```
 
+## ignore {#ignore}
 
+導入: v1.1
 
-## indexHint {#indexHint}
+任意の引数を受け取り、常に `0` を返します。
 
-Introduced in: v1.1
-
-
-This function is intended for debugging and introspection.
-It ignores its argument and always returns 1.
-The arguments are not evaluated.
-
-But during index analysis, the argument of this function is assumed to be not wrapped in `indexHint`.
-This allows to select data in index ranges by the corresponding condition but without further filtering by this condition.
-The index in ClickHouse is sparse and using `indexHint` will yield more data than specifying the same condition directly.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 ignore(x)
 ```
 
-**Arguments**
+**引数**
 
-- `expression` — Any expression for index range selection. [`Expression`](/sql-reference/data-types/special-data-types/expression)
+* `x` — 構文エラーを回避するためだけに渡される、使用されない入力値。[`Any`](/sql-reference/data-types)
 
+**戻り値**
 
-**Returned value**
+常に `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` in all cases. [`UInt8`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example with date filtering**
+**使用例**
 
 ```sql title=Query
 SELECT ignore(0, 'ClickHouse', NULL)
@@ -3086,38 +2781,35 @@ SELECT ignore(0, 'ClickHouse', NULL)
 └───────────────────────────────┘
 ```
 
+## indexHint {#indexHint}
 
+導入バージョン: v1.1
 
-## initialQueryID {#initialQueryID}
+この関数はデバッグおよび内部動作の調査用途を想定しています。
+引数を無視し、常に 1 を返します。
+引数は評価されません。
 
-Introduced in: v1.1
+ただしインデックス解析時には、この関数の引数は `indexHint` でラップされていないものとして扱われます。
+これにより、対応する条件を用いてインデックス範囲でデータを選択しつつ、その条件によるそれ以上のフィルタリングを行わないようにできます。
+ClickHouse におけるインデックスはスパースであり、`indexHint` を使用すると、同じ条件を直接指定した場合よりも多くのデータが返されます。
 
-
-Returns the ID of the initial current query.
-Other parameters of a query can be extracted from field `initial_query_id` in [`system.query_log`](../../operations/system-tables/query_log.md).
-
-In contrast to [`queryID`](/sql-reference/functions/other-functions#queryID) function, `initialQueryID` returns the same results on different shards.
-
-
-**Syntax**
+**構文**
 
 ```sql
 indexHint(expression)
 ```
 
-**Aliases**: `initial_query_id`
+**引数**
 
-**Arguments**
+* `expression` — インデックス範囲選択のための任意の式。[`Expression`](/sql-reference/data-types/special-data-types/expression)
 
-- None.
+**戻り値**
 
-**Returned value**
+常に `1` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns the ID of the initial current query. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**日付フィルタリングを用いた使用例**
 
 ```sql title=Query
 SELECT FlightDate AS k, count() FROM ontime WHERE indexHint(k = '2025-09-15') GROUP BY k ORDER BY k ASC;
@@ -3132,36 +2824,34 @@ SELECT FlightDate AS k, count() FROM ontime WHERE indexHint(k = '2025-09-15') GR
 └────────────┴─────────┘
 ```
 
+## initialQueryID {#initialQueryID}
 
+導入バージョン: v1.1
 
-## initialQueryStartTime {#initialQueryStartTime}
+現在実行中の初期クエリの ID を返します。
+クエリの他のパラメータは、[`system.query_log`](../../operations/system-tables/query_log.md) の `initial_query_id` フィールドから取得できます。
 
-Introduced in: v25.4
+[`queryID`](/sql-reference/functions/other-functions#queryID) 関数とは異なり、`initialQueryID` は異なる分片間でも同じ結果を返します。
 
-
-Returns the start time of the initial current query.
-`initialQueryStartTime` returns the same results on different shards.
-
-
-**Syntax**
+**構文**
 
 ```sql
 initialQueryID()
 ```
 
-**Aliases**: `initial_query_start_time`
+**別名**: `initial_query_id`
 
-**Arguments**
+**引数**
 
-- None.
+* なし。
 
-**Returned value**
+**戻り値**
 
-Returns the start time of the initial current query. [`DateTime`](/sql-reference/data-types/datetime)
+現在のクエリに対応する初期クエリの ID を返します。[`String`](/sql-reference/data-types/string)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 CREATE TABLE tmp (str String) ENGINE = Log;
@@ -3175,37 +2865,32 @@ SELECT count(DISTINCT t) FROM (SELECT initialQueryID() AS t FROM remote('127.0.0
 └───────────────────┘
 ```
 
+## initialQueryStartTime {#initialQueryStartTime}
 
+導入バージョン: v25.4
 
-## initializeAggregation {#initializeAggregation}
+最初の（起点となる）現在のクエリの開始時刻を返します。
+`initialQueryStartTime` は、分片が異なっても同じ結果を返します。
 
-Introduced in: v20.6
-
-
-Calculates the result of an aggregate function based on a single value.
-This function can be used to initialize aggregate functions with combinator [-State](../../sql-reference/aggregate-functions/combinators.md#-state).
-You can create states of aggregate functions and insert them to columns of type [`AggregateFunction`](../../sql-reference/data-types/aggregatefunction.md) or use initialized aggregates as default values.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 initialQueryStartTime()
 ```
 
-**Arguments**
+**エイリアス**: `initial_query_start_time`
 
-- `aggregate_function` — Name of the aggregation function to initialize. [`String`](/sql-reference/data-types/string)
-- `arg1[, arg2, ...]` — Arguments of the aggregate function. [`Any`](/sql-reference/data-types)
+**引数**
 
+* なし。
 
-**Returned value**
+**戻り値**
 
-Returns the result of aggregation for every row passed to the function. The return type is the same as the return type of the function that `initializeAggregation` takes as a first argument. [`Any`](/sql-reference/data-types)
+現在の初期クエリの開始時刻を返します。 [`DateTime`](/sql-reference/data-types/datetime)
 
-**Examples**
+**例**
 
-**Basic usage with uniqState**
+**使用例**
 
 ```sql title=Query
 CREATE TABLE tmp (str String) ENGINE = Log;
@@ -3219,30 +2904,36 @@ SELECT count(DISTINCT t) FROM (SELECT initialQueryStartTime() AS t FROM remote('
 └───────────────────┘
 ```
 
-**Usage with sumState and finalizeAggregation**
+## initializeAggregation {#initializeAggregation}
+
+導入バージョン: v20.6
+
+単一の値に基づいて集約関数の結果を計算します。
+この関数は、コンビネータ [-State](../../sql-reference/aggregate-functions/combinators.md#-state) を持つ集約関数を初期化するために使用できます。
+集約関数の状態 (state) を作成して [`AggregateFunction`](../../sql-reference/data-types/aggregatefunction.md) 型のカラムに挿入したり、初期化された集約結果をデフォルト値として使用したりできます。
+
+**構文**
 
 ```sql
 initializeAggregation(aggregate_function, arg1[, arg2, ...])
 ```
 
+**引数**
+
+* `aggregate_function` — 初期化する集約関数の名前。[`String`](/sql-reference/data-types/string)
+* `arg1[, arg2, ...]` — 集約関数の引数。[`Any`](/sql-reference/data-types)
+
+**返り値**
+
+関数に渡された各行に対する集約結果を返します。戻り値の型は、`initializeAggregation` が最初の引数として受け取る関数の戻り値の型と同じです。[`Any`](/sql-reference/data-types)
+
+**例**
+
+**uniqState を用いた基本的な使い方**
+
 ```sql title=Query
 SELECT uniqMerge(state) FROM (SELECT initializeAggregation('uniqState', number % 3) AS state FROM numbers(10000));
 ```
-
-
-
-## isConstant {#isConstant}
-
-Introduced in: v20.3
-
-
-Returns whether the argument is a constant expression.
-A constant expression is an expression whose result is known during query analysis, i.e. before execution.
-For example, expressions over [literals](/sql-reference/syntax#literals) are constant expressions.
-This function is mostly intended for development, debugging and demonstration.
-    
-
-**Syntax**
 
 ```response title=Response
 ┌─uniqMerge(state)─┐
@@ -3250,18 +2941,7 @@ This function is mostly intended for development, debugging and demonstration.
 └──────────────────┘
 ```
 
-**Arguments**
-
-- `x` — An expression to check. [`Any`](/sql-reference/data-types)
-
-
-**Returned value**
-
-Returns `1` if `x` is constant, `0` if `x` is non-constant. [`UInt8`](/sql-reference/data-types/int-uint)
-
-**Examples**
-
-**Constant expression**
+**sumState と finalizeAggregation の使用方法**
 
 ```sql title=Query
 SELECT finalizeAggregation(state), toTypeName(state) FROM (SELECT initializeAggregation('sumState', number % 3) AS state FROM numbers(5));
@@ -3277,18 +2957,37 @@ SELECT finalizeAggregation(state), toTypeName(state) FROM (SELECT initializeAggr
 └────────────────────────────┴───────────────────────────────┘
 ```
 
-**Constant with function**
+## isConstant {#isConstant}
+
+導入バージョン: v20.3
+
+引数が定数式かどうかを返します。
+定数式とは、クエリ解析の段階、すなわち実行前に結果がわかっている式です。
+たとえば、[リテラル](/sql-reference/syntax#literals) を用いた式は定数式です。
+この関数は主に開発、デバッグ、およびデモ用途を想定しています。
+
+**構文**
 
 ```sql
 isConstant(x)
 ```
 
+**引数**
+
+* `x` — 判定対象の式。[`Any`](/sql-reference/data-types)
+
+**戻り値**
+
+`x` が定数の場合は `1`、`x` が非定数の場合は `0` を返します。戻り値の型は [`UInt8`](/sql-reference/data-types/int-uint) です。
+
+**例**
+
+**定数式**
+
 ```sql title=Query
 SELECT isConstant(x + 1)
 FROM (SELECT 43 AS x)
 ```
-
-**Non-constant expression**
 
 ```response title=Response
 ┌─isConstant(plus(x, 1))─┐
@@ -3296,12 +2995,12 @@ FROM (SELECT 43 AS x)
 └────────────────────────┘
 ```
 
+**関数を含む定数**
+
 ```sql title=Query
 WITH 3.14 AS pi
 SELECT isConstant(cos(pi))
 ```
-
-**Behavior of the now() function**
 
 ```response title=Response
 ┌─isConstant(cos(pi))─┐
@@ -3309,22 +3008,12 @@ SELECT isConstant(cos(pi))
 └─────────────────────┘
 ```
 
+**非定数式**
+
 ```sql title=Query
 SELECT isConstant(number)
 FROM numbers(1)
 ```
-
-
-
-## isDecimalOverflow {#isDecimalOverflow}
-
-Introduced in: v20.8
-
-
-Checks if a decimal number has too many digits to fit properly in a Decimal data type with given precision.
-    
-
-**Syntax**
 
 ```response title=Response
 ┌─isConstant(number)─┐
@@ -3332,19 +3021,7 @@ Checks if a decimal number has too many digits to fit properly in a Decimal data
 └────────────────────┘
 ```
 
-**Arguments**
-
-- `value` — Decimal value to check. [`Decimal`](/sql-reference/data-types/decimal)
-- `precision` — Optional. The precision of the Decimal type. If omitted, the initial precision of the first argument is used. [`UInt8`](/sql-reference/data-types/int-uint)
-
-
-**Returned value**
-
-Returns `1` if the decimal value has more digits than allowed by its precision, `0` if the decimal value satisfies the specified precision. [`UInt8`](/sql-reference/data-types/int-uint)
-
-**Examples**
-
-**Usage example**
+**now() 関数の挙動**
 
 ```sql title=Query
 SELECT isConstant(now())
@@ -3356,41 +3033,30 @@ SELECT isConstant(now())
 └───────────────────┘
 ```
 
+## isDecimalOverflow {#isDecimalOverflow}
 
+導入バージョン: v20.8
 
-## joinGet {#joinGet}
+10進数値が、指定した精度を持つ `Decimal` データ型に正しく収まる桁数を超えているかどうかを判定します。
 
-Introduced in: v18.16
-
-
-Allows you to extract data from a table the same way as from a dictionary.
-Gets data from Join tables using the specified join key.
-
-:::note
-Only supports tables created with the `ENGINE = Join(ANY, LEFT, <join_keys>)` [statement](/engines/table-engines/special/join).
-:::
-
-
-**Syntax**
+**構文**
 
 ```sql
 isDecimalOverflow(value[, precision])
 ```
 
-**Arguments**
+**引数**
 
-- `join_storage_table_name` — An identifier which indicates where to perform the search. The identifier is searched in the default database (see parameter `default_database` in the config file). To override the default database, use the `USE database_name` query or specify the database and the table through a dot, like `database_name.table_name`. [`String`](/sql-reference/data-types/string)
-- `value_column` — The name of the column of the table that contains required data. [`const String`](/sql-reference/data-types/string)
-- `join_keys` — A list of join keys. [`Any`](/sql-reference/data-types)
+* `value` — チェック対象の Decimal 型の値。[`Decimal`](/sql-reference/data-types/decimal)
+* `precision` — 省略可能。Decimal 型の精度。省略した場合は、先頭の引数の元の精度が使用されます。[`UInt8`](/sql-reference/data-types/int-uint)
 
+**返り値**
 
-**Returned value**
+Decimal 値がその精度で許容される桁数を超えている場合は `1`、指定された精度を満たしている場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns list of values corresponded to list of keys. [`Any`](/sql-reference/data-types)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT isDecimalOverflow(toDecimal32(1000000000, 0), 9),
@@ -3405,11 +3071,36 @@ SELECT isDecimalOverflow(toDecimal32(1000000000, 0), 9),
 └──────────────────────────────────────────────────┴───────────────────────────────────────────────┴───────────────────────────────────────────────────┴────────────────────────────────────────────────┘
 ```
 
-**Usage with table from current database**
+## joinGet {#joinGet}
+
+導入バージョン: v18.16
+
+Dictionary と同様の方法でテーブルからデータを抽出できます。
+指定された結合キーを使用して Join テーブルからデータを取得します。
+
+:::note
+`ENGINE = Join(ANY, LEFT, <join_keys>)` [ステートメント](/engines/table-engines/special/join) で作成されたテーブルのみをサポートします。
+:::
+
+**構文**
 
 ```sql
 joinGet(join_storage_table_name, value_column, join_keys)
 ```
+
+**引数**
+
+* `join_storage_table_name` — 検索を実行する場所を示す識別子。識別子はデフォルトのデータベース内で検索されます（設定ファイルのパラメータ `default_database` を参照）。デフォルトのデータベースを変更するには、`USE database_name` クエリを使用するか、`database_name.table_name` のようにドット区切りでデータベース名とテーブル名を指定します。[`String`](/sql-reference/data-types/string)
+* `value_column` — 必要なデータを含むテーブルのカラム名。[`const String`](/sql-reference/data-types/string)
+* `join_keys` — join キーのリスト。[`Any`](/sql-reference/data-types)
+
+**戻り値**
+
+キーのリストに対応する値のリストを返します。[`Any`](/sql-reference/data-types)
+
+**例**
+
+**使用例**
 
 ```sql title=Query
 CREATE TABLE db_test.id_val(`id` UInt32, `val` UInt32) ENGINE = Join(ANY, LEFT, id);
@@ -3418,36 +3109,18 @@ INSERT INTO db_test.id_val VALUES (1,11)(2,12)(4,13);
 SELECT joinGet(db_test.id_val, 'val', toUInt32(1));
 ```
 
-**Using arrays as join keys**
-
 ```response title=Response
 ┌─joinGet(db_test.id_val, 'val', toUInt32(1))─┐
 │                                          11 │
 └─────────────────────────────────────────────┘
 ```
 
+**現在のデータベース内のテーブルを使用する場合**
+
 ```sql title=Query
 USE db_test;
 SELECT joinGet(id_val, 'val', toUInt32(2));
 ```
-
-
-
-## joinGetOrNull {#joinGetOrNull}
-
-Introduced in: v20.4
-
-
-Allows you to extract data from a table the same way as from a dictionary.
-Gets data from Join tables using the specified join key.
-Unlike [`joinGet`](#joinGet) it returns `NULL` when the key is missing.
-
-:::note
-Only supports tables created with the `ENGINE = Join(ANY, LEFT, <join_keys>)` [statement](/engines/table-engines/special/join).
-:::
-
-
-**Syntax**
 
 ```response title=Response
 ┌─joinGet(id_val, 'val', toUInt32(2))─┐
@@ -3455,20 +3128,7 @@ Only supports tables created with the `ENGINE = Join(ANY, LEFT, <join_keys>)` [s
 └─────────────────────────────────────┘
 ```
 
-**Arguments**
-
-- `join_storage_table_name` — An identifier which indicates where to perform the search. The identifier is searched in the default database (see parameter default_database in the config file). To override the default database, use the `USE database_name` query or specify the database and the table through a dot, like `database_name.table_name`. [`String`](/sql-reference/data-types/string)
-- `value_column` — The name of the column of the table that contains required data. [`const String`](/sql-reference/data-types/string)
-- `join_keys` — A list of join keys. [`Any`](/sql-reference/data-types)
-
-
-**Returned value**
-
-Returns a list of values corresponding to the list of keys, or `NULL` if a key is not found. [`Any`](/sql-reference/data-types)
-
-**Examples**
-
-**Usage example**
+**配列を結合キーとして使用する**
 
 ```sql title=Query
 CREATE TABLE some_table (id1 UInt32, id2 UInt32, name String) ENGINE = Join(ANY, LEFT, id1, id2);
@@ -3483,34 +3143,37 @@ SELECT joinGet(some_table, 'name', 1, 11);
 └────────────────────────────────────┘
 ```
 
+## joinGetOrNull {#joinGetOrNull}
 
+導入: v20.4
 
-## lowCardinalityIndices {#lowCardinalityIndices}
+Dictionary と同様の方法でテーブルからデータを抽出できます。
+指定した結合キーを使用して Join テーブルからデータを取得します。
+[`joinGet`](#joinGet) とは異なり、キーが存在しない場合は `NULL` を返します。
 
-Introduced in: v18.12
+:::note
+`ENGINE = Join(ANY, LEFT, <join_keys>)` [ステートメント](/engines/table-engines/special/join) で作成されたテーブルのみをサポートします。
+:::
 
-
-Returns the position of a value in the dictionary of a [LowCardinality](../data-types/lowcardinality.md) column. Positions start at 1. Since LowCardinality have per-part dictionaries, this function may return different positions for the same value in different parts.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 joinGetOrNull(join_storage_table_name, value_column, join_keys)
 ```
 
-**Arguments**
+**引数**
 
-- `col` — A low cardinality column. [`LowCardinality`](/sql-reference/data-types/lowcardinality)
+* `join_storage_table_name` — 検索を実行する場所を示す識別子です。識別子はデフォルトのデータベース内で検索されます（設定ファイル内のパラメータ `default_database` を参照してください）。デフォルトのデータベースを変更するには、`USE database_name` クエリを使用するか、`database_name.table_name` のようにドットで区切ってデータベース名とテーブル名を指定します。[`String`](/sql-reference/data-types/string)
+* `value_column` — 必要なデータを含むテーブルのカラム名です。[`const String`](/sql-reference/data-types/string)
+* `join_keys` — JOIN キーのリストです。[`Any`](/sql-reference/data-types)
 
+**戻り値**
 
-**Returned value**
+キーのリストに対応する値のリスト、またはキーが見つからない場合は `NULL` を返します。[`Any`](/sql-reference/data-types)
 
-The position of the value in the dictionary of the current part. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage examples**
+**使用例**
 
 ```sql title=Query
 CREATE TABLE db_test.id_val(`id` UInt32, `val` UInt32) ENGINE = Join(ANY, LEFT, id);
@@ -3525,36 +3188,29 @@ SELECT joinGetOrNull(db_test.id_val, 'val', toUInt32(1)), joinGetOrNull(db_test.
 └───────────────────────────────────────────────────┴─────────────────────────────────────────────────────┘
 ```
 
+## lowCardinalityIndices {#lowCardinalityIndices}
 
+導入されたバージョン: v18.12
 
-## lowCardinalityKeys {#lowCardinalityKeys}
+[LowCardinality](../data-types/lowcardinality.md) カラムの Dictionary 内での値の位置を返します。位置は 1 から始まります。LowCardinality カラムはパーツごとに Dictionary を持つため、この関数は同じ値であっても、異なるパーツでは異なる位置を返す場合があります。
 
-Introduced in: v18.12
-
-
-Returns the dictionary values of a [LowCardinality](../data-types/lowcardinality.md) column.
-If the block is smaller or larger than the dictionary size, the result will be truncated or extended with default values.
-Since LowCardinality have per-part dictionaries, this function may return different dictionary values in different parts.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 lowCardinalityIndices(col)
 ```
 
-**Arguments**
+**引数**
 
-- `col` — A low cardinality column. [`LowCardinality`](/sql-reference/data-types/lowcardinality)
+* `col` — 低カーディナリティのカラム。[`LowCardinality`](/sql-reference/data-types/lowcardinality)
 
+**戻り値**
 
-**Returned value**
+現在のパーツにおける Dictionary 内での値の位置。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the dictionary keys. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**lowCardinalityKeys**
+**使用例**
 
 ```sql title=Query
 DROP TABLE IF EXISTS test;
@@ -3585,37 +3241,31 @@ SELECT s, lowCardinalityIndices(s) FROM test;
 └────┴──────────────────────────┘
 ```
 
+## lowCardinalityKeys {#lowCardinalityKeys}
 
+導入: v18.12
 
-## materialize {#materialize}
+[LowCardinality](../data-types/lowcardinality.md) カラムの辞書値を返します。
+ブロックのサイズが辞書のサイズより小さいまたは大きい場合、結果は切り詰められるか、デフォルト値で拡張されます。
+LowCardinality はパーツごとに辞書を持つため、この関数はパーツごとに異なる辞書値を返す場合があります。
 
-Introduced in: v1.1
-
-
-Turns a constant into a full column containing a single value.
-Full columns and constants are represented differently in memory.
-Functions usually execute different code for normal and constant arguments, although the result should typically be the same.
-This function can be used to debug this behavior.
-
-
-**Syntax**
+**構文**
 
 ```sql
 lowCardinalityKeys(col)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — A constant. [`Any`](/sql-reference/data-types)
+* `col` — 低カーディナリティのカラム。[`LowCardinality`](/sql-reference/data-types/lowcardinality)
 
+**戻り値**
 
-**Returned value**
+Dictionary のキーを返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns a full column containing the constant value. [`Any`](/sql-reference/data-types)
+**例**
 
-**Examples**
-
-**Usage example**
+**lowCardinalityKeys**
 
 ```sql title=Query
 DROP TABLE IF EXISTS test;
@@ -3646,45 +3296,32 @@ SELECT s, lowCardinalityKeys(s) FROM test;
 └────┴───────────────────────┘
 ```
 
+## materialize {#materialize}
 
+導入バージョン: v1.1
 
-## minSampleSizeContinuous {#minSampleSizeContinuous}
+定数を、同一の値だけを含む通常のカラムへ変換します。
+通常のカラムと定数は、メモリ上では異なる形式で表現されます。
+関数は通常、通常の引数と定数引数に対して異なるコードを実行しますが、結果は通常同じになるはずです。
+この関数は、この挙動をデバッグするために使用できます。
 
-Introduced in: v23.10
-
-
-Calculates the minimum required sample size for an A/B test comparing means of a continuous metric in two samples.
-
-Uses the formula described in [this article](https://towardsdatascience.com/required-sample-size-for-a-b-testing-6f6608dd330a).
-Assumes equal sizes of treatment and control groups.
-Returns the required sample size for one group (i.e. the sample size required for the whole experiment is twice the returned value).
-Also assumes equal variance of the test metric in treatment and control groups.
-
-
-**Syntax**
+**構文**
 
 ```sql
 materialize(x)
 ```
 
-**Aliases**: `minSampleSizeContinous`
+**引数**
 
-**Arguments**
+* `x` — 定数です。[`Any`](/sql-reference/data-types)
 
-- `baseline` — Baseline value of a metric. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
-- `sigma` — Baseline standard deviation of a metric. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
-- `mde` — Minimum detectable effect (MDE) as percentage of the baseline value (e.g. for a baseline value 112.25 the MDE 0.03 means an expected change to 112.25 ± 112.25*0.03). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
-- `power` — Required statistical power of a test (1 - probability of Type II error). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
-- `alpha` — Required significance level of a test (probability of Type I error). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+**戻り値**
 
+定数値を含むカラム全体を返します。[`Any`](/sql-reference/data-types)
 
-**Returned value**
+**例**
 
-Returns a named Tuple with 3 elements: `minimum_sample_size`, `detect_range_lower` and  `detect_range_upper`. These are respectively: the required sample size, the lower bound of the range of values not detectable with the returned required sample size, calculated as `baseline * (1 - mde)`, and the upper bound of the range of values not detectable with the returned required sample size, calculated as `baseline * (1 + mde)` (Float64). [`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
-
-**Examples**
-
-**minSampleSizeContinuous**
+**使用例**
 
 ```sql title=Query
 -- 以下の例では、`countMatches` 関数は定数の第2引数を必要とします。
@@ -3700,39 +3337,40 @@ SELECT countMatches('foobarfoo', materialize('foo'));
 Code: 44. DB::Exception: Received from localhost:9000. DB::Exception: Illegal type of argument #2 'pattern' of function countMatches, expected constant String, got String
 ```
 
+## minSampleSizeContinuous {#minSampleSizeContinuous}
 
+導入バージョン: v23.10
 
-## minSampleSizeConversion {#minSampleSizeConversion}
+2 つのサンプル間で連続値メトリックの平均を比較する A/B テストに必要な最小サンプルサイズを計算します。
 
-Introduced in: v22.6
+[この記事](https://towardsdatascience.com/required-sample-size-for-a-b-testing-6f6608dd330a)で説明されている式を使用します。
+介入群と対照群のサイズが等しいことを仮定します。
+1 つのグループに必要なサンプルサイズを返します（つまり、実験全体に必要なサンプルサイズは返り値の 2 倍になります）。
+また、テスト対象メトリクスの分散が介入群と対照群で等しいことも仮定します。
 
-
-Calculates minimum required sample size for an A/B test comparing conversions (proportions) in two samples.
-
-Uses the formula described in [this article](https://towardsdatascience.com/required-sample-size-for-a-b-testing-6f6608dd330a). Assumes equal sizes of treatment and control groups. Returns the sample size required for one group (i.e. the sample size required for the whole experiment is twice the returned value).
-
-
-**Syntax**
+**構文**
 
 ```sql
 minSampleSizeContinuous(baseline, sigma, mde, power, alpha)
 ```
 
-**Arguments**
+**別名**: `minSampleSizeContinous`
 
-- `baseline` — Baseline conversion. [`Float*`](/sql-reference/data-types/float)
-- `mde` — Minimum detectable effect (MDE) as percentage points (e.g. for a baseline conversion 0.25 the MDE 0.03 means an expected change to 0.25 ± 0.03). [`Float*`](/sql-reference/data-types/float)
-- `power` — Required statistical power of a test (1 - probability of Type II error). [`Float*`](/sql-reference/data-types/float)
-- `alpha` — Required significance level of a test (probability of Type I error). [`Float*`](/sql-reference/data-types/float)
+**引数**
 
+* `baseline` — メトリクスのベースライン値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+* `sigma` — メトリクスのベースライン標準偏差。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+* `mde` — ベースライン値に対する割合としての最小検出可能効果 (MDE)。(例: ベースライン値が 112.25 の場合、MDE 0.03 は期待される変化が 112.25 ± 112.25*0.03 であることを意味します)。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+* `power` — 検定に必要な統計的検出力 (1 - 第 II 種の過誤の確率)。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+* `alpha` — 検定に必要な有意水準 (第 I 種の過誤の確率)。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
 
-**Returned value**
+**戻り値**
 
-Returns a named Tuple with 3 elements: `minimum_sample_size`, `detect_range_lower`, `detect_range_upper`. These are, respectively: the required sample size, the lower bound of the range of values not detectable with the returned required sample size, calculated as `baseline - mde`, the upper bound of the range of values not detectable with the returned required sample size, calculated as `baseline + mde`. [`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+3 要素からなる名前付き Tuple を返します: `minimum_sample_size`, `detect_range_lower`, `detect_range_upper`。それぞれ、必要なサンプルサイズ、返された必要サンプルサイズでは検出できない値の範囲の下限 (`baseline * (1 - mde)` で計算)、および返された必要サンプルサイズでは検出できない値の範囲の上限 (`baseline * (1 + mde)` で計算) です (Float64)。[`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
 
-**Examples**
+**使用例**
 
-**minSampleSizeConversion**
+**minSampleSizeContinuous**
 
 ```sql title=Query
 SELECT minSampleSizeContinuous(112.25, 21.1, 0.03, 0.80, 0.05) AS sample_size
@@ -3742,40 +3380,34 @@ SELECT minSampleSizeContinuous(112.25, 21.1, 0.03, 0.80, 0.05) AS sample_size
 (616.2931945826209,108.8825,115.6175)
 ```
 
+## minSampleSizeConversion {#minSampleSizeConversion}
 
+導入バージョン: v22.6
 
-## neighbor {#neighbor}
+2つのサンプル間のコンバージョン率（比率）を比較する A/B テストに必要な最小サンプルサイズを計算します。
 
-Introduced in: v20.1
+[この記事](https://towardsdatascience.com/required-sample-size-for-a-b-testing-6f6608dd330a)で説明されている式を使用します。介入群（処置群）と対照群のサイズが等しいと仮定します。片方のグループに必要なサンプルサイズを返します（つまり、実験全体に必要なサンプルサイズは返される値の 2 倍になります）。
 
-
-Returns a value from a column at a specified offset from the current row.
-This function is deprecated and error-prone because it operates on the physical order of data blocks which may not correspond to the logical order expected by users.
-Consider using proper window functions instead.
-
-The function can be enabled by setting `allow_deprecated_error_prone_window_functions = 1`.
-
-
-**Syntax**
+**構文**
 
 ```sql
 minSampleSizeConversion(baseline, mde, power, alpha)
 ```
 
-**Arguments**
+**引数**
 
-- `column` — The source column. [`Any`](/sql-reference/data-types)
-- `offset` — The offset from the current row. Positive values look forward, negative values look backward. [`Integer`](/sql-reference/data-types/int-uint)
-- `default_value` — Optional. The value to return if the offset goes beyond the data bounds. If not specified, uses the default value for the column type. [`Any`](/sql-reference/data-types)
+* `baseline` — ベースラインとなるコンバージョン率。[`Float*`](/sql-reference/data-types/float)
+* `mde` — 最小検出可能効果 (MDE) をパーセンテージポイントで指定（例: ベースラインコンバージョン 0.25 に対して MDE 0.03 は、期待される変化が 0.25 ± 0.03 であることを意味します）。[`Float*`](/sql-reference/data-types/float)
+* `power` — 検定に必要な統計的検出力（1 - 第II種過誤が起こる確率）。[`Float*`](/sql-reference/data-types/float)
+* `alpha` — 検定に必要な有意水準（第I種過誤の確率）。[`Float*`](/sql-reference/data-types/float)
 
+**返される値**
 
-**Returned value**
+3 要素を持つ名前付き Tuple を返します: `minimum_sample_size`, `detect_range_lower`, `detect_range_upper`。これらはそれぞれ、必要なサンプルサイズ、このサンプルサイズでは検出できない値の範囲の下限（`baseline - mde` として計算）、このサンプルサイズでは検出できない値の範囲の上限（`baseline + mde` として計算）です。[`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
 
-Returns a value from the specified offset, or default if out of bounds. [`Any`](/sql-reference/data-types)
+**使用例**
 
-**Examples**
-
-**Usage example**
+**minSampleSizeConversion**
 
 ```sql title=Query
 SELECT minSampleSizeConversion(0.25, 0.03, 0.80, 0.05) AS sample_size
@@ -3785,32 +3417,39 @@ SELECT minSampleSizeConversion(0.25, 0.03, 0.80, 0.05) AS sample_size
 (3396.077603219163,0.22,0.28)
 ```
 
-**With default value**
+## neighbor {#neighbor}
+
+導入: v20.1
+
+現在の行から指定したオフセットだけ離れた行のカラム値を返します。
+この関数は、データブロックの物理的な順序に基づいて動作し、ユーザーが想定する論理的な順序と一致しない場合があるため、非推奨でありエラーを招きやすいものです。
+代わりに適切なウィンドウ関数の利用を検討してください。
+
+この関数は、`allow_deprecated_error_prone_window_functions = 1` を設定することで有効化できます。
+
+**構文**
 
 ```sql
 neighbor(column, offset[, default_value])
 ```
 
+**引数**
+
+* `column` — 入力となるカラム。[`Any`](/sql-reference/data-types)
+* `offset` — 現在の行からのオフセット。正の値は後続の行、負の値は前方の行を参照します。[`Integer`](/sql-reference/data-types/int-uint)
+* `default_value` — 省略可能。オフセットがデータ範囲外になった場合に返す値。指定されていない場合は、そのカラム型のデフォルト値が使用されます。[`Any`](/sql-reference/data-types)
+
+**戻り値**
+
+指定されたオフセット位置の値、または範囲外の場合はデフォルト値を返します。[`Any`](/sql-reference/data-types)
+
+**例**
+
+**使用例**
+
 ```sql title=Query
 SELECT number, neighbor(number, 2) FROM system.numbers LIMIT 10;
 ```
-
-
-
-## nested {#nested}
-
-Introduced in: v
-
-
-This is a function used internally by the ClickHouse engine and not meant to be used directly.
-
-Returns the array of tuples from multiple arrays.
-
-The first argument must be a constant array of Strings determining the names of the resulting Tuple.
-The other arguments must be arrays of the same size.
-
-
-**Syntax**
 
 ```response title=Response
 ┌─number─┬─neighbor(number, 2)─┐
@@ -3827,17 +3466,7 @@ The other arguments must be arrays of the same size.
 └────────┴─────────────────────┘
 ```
 
-**Arguments**
-
-- None.
-
-**Returned value**
-
-
-
-**Examples**
-
-**nested**
+**デフォルト値がある場合**
 
 ```sql title=Query
 SELECT number, neighbor(number, 2, 999) FROM system.numbers LIMIT 10;
@@ -3858,33 +3487,31 @@ SELECT number, neighbor(number, 2, 999) FROM system.numbers LIMIT 10;
 └────────┴──────────────────────────┘
 ```
 
+## nested {#nested}
 
+導入バージョン: v
 
-## normalizeQuery {#normalizeQuery}
+これは ClickHouse エンジン内部で使用される関数であり、直接使用することを想定していません。
 
-Introduced in: v20.8
+複数の配列からタプルの配列を返します。
 
+最初の引数は、結果の Tuple の要素名を決定する定数の文字列配列でなければなりません。
+その他の引数は、同じサイズの配列でなければなりません。
 
-Replaces literals, sequences of literals and complex aliases (containing whitespace, more than two digits or at least 36 bytes long such as UUIDs) with placeholder `?`.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Sequence of characters. [`String`](/sql-reference/data-types/string)
+* なし。
 
+**戻り値**
 
-**Returned value**
+**例**
 
-Returns the given sequence of characters with placeholders. [`String`](/sql-reference/data-types/string)
-
-**Examples**
-
-**Usage example**
+**ネスト**
 
 ```sql title=Query
 SELECT nested(['keys', 'values'], ['key_1', 'key_2'], ['value_1','value_2'])
@@ -3893,35 +3520,29 @@ SELECT nested(['keys', 'values'], ['key_1', 'key_2'], ['value_1','value_2'])
 ```response title=Response
 ```
 
+## normalizeQuery {#normalizeQuery}
 
+導入バージョン: v20.8
 
-## normalizeQueryKeepNames {#normalizeQueryKeepNames}
+リテラル、連続したリテラル、そして複雑なエイリアス（空白を含むもの、2 桁を超える数字を含むもの、または UUID のように長さが少なくとも 36 バイトのもの）を、プレースホルダー `?` に置き換えます。
 
-Introduced in: v21.2
-
-
-Replaces literals and sequences of literals with placeholder `?` but does not replace complex aliases (containing whitespace, more than two digits or at least 36 bytes long such as UUIDs).
-This helps better analyze complex query logs.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 normalizeQuery(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Sequence of characters. [`String`](/sql-reference/data-types/string)
+* `x` — 文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+指定された文字列をプレースホルダー付きで返します。[`String`](/sql-reference/data-types/string)
 
-Returns the given sequence of characters with placeholders. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT normalizeQuery('[1, 2, 3, x]') AS query
@@ -3933,35 +3554,30 @@ SELECT normalizeQuery('[1, 2, 3, x]') AS query
 └──────────┘
 ```
 
+## normalizeQueryKeepNames {#normalizeQueryKeepNames}
 
+導入バージョン: v21.2
 
-## normalizedQueryHash {#normalizedQueryHash}
+リテラルおよび連続したリテラルの並びをプレースホルダー `?` に置き換えますが、複雑なエイリアス（空白を含むもの、3 桁以上の数字を含むもの、または UUID のように少なくとも 36 バイトの長さを持つもの）は置き換えません。
+これにより、複雑なクエリログをより適切に分析できるようになります。
 
-Introduced in: v20.8
-
-
-Returns identical 64 bit hash values without the values of literals for similar queries.
-Can be helpful in analyzing query logs.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 normalizeQueryKeepNames(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Sequence of characters. [`String`](/sql-reference/data-types/string)
+* `x` — 文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+指定されたプレースホルダ付き文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a 64 bit hash value. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT normalizeQuery('SELECT 1 AS aComplexName123'), normalizeQueryKeepNames('SELECT 1 AS aComplexName123')
@@ -3973,35 +3589,30 @@ SELECT normalizeQuery('SELECT 1 AS aComplexName123'), normalizeQueryKeepNames('S
 └───────────────────────────────────────────────┴────────────────────────────────────────────────────────┘
 ```
 
+## normalizedQueryHash {#normalizedQueryHash}
 
+導入バージョン: v20.8
 
-## normalizedQueryHashKeepNames {#normalizedQueryHashKeepNames}
+類似したクエリに対して、リテラル値を無視して同一の 64 ビットハッシュ値を返します。
+クエリログの分析に役立ちます。
 
-Introduced in: v21.2
-
-
-Like [`normalizedQueryHash`](#normalizedQueryHash) it returns identical 64 bit hash values without the values of literals for similar queries, but it does not replace complex aliases (containing whitespace, more than two digits or at least 36 bytes long such as UUIDs) with a placeholder before hashing.
-Can be helpful in analyzing query logs.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 normalizedQueryHash(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Sequence of characters. [`String`](/sql-reference/data-types/string)
+* `x` — 文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+64 ビットのハッシュ値を返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns a 64 bit hash value. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT normalizedQueryHash('SELECT 1 AS `xyz`') != normalizedQueryHash('SELECT 1 AS `abc`') AS res
@@ -4013,37 +3624,30 @@ SELECT normalizedQueryHash('SELECT 1 AS `xyz`') != normalizedQueryHash('SELECT 1
 └─────┘
 ```
 
+## normalizedQueryHashKeepNames {#normalizedQueryHashKeepNames}
 
+導入バージョン: v21.2
 
-## parseReadableSize {#parseReadableSize}
+[`normalizedQueryHash`](#normalizedQueryHash) と同様に、類似したクエリに対してリテラル値を除いた同一の 64 ビットのハッシュ値を返しますが、ハッシュ化の前に、複雑なエイリアス（空白を含むもの、2 桁を超える数字を含むもの、または UUID のように少なくとも 36 バイトの長さを持つもの）をプレースホルダーに置き換える処理は行いません。
+クエリログの分析に役立ちます。
 
-Introduced in: v24.6
-
-
-Given a string containing a byte size and `B`, `KiB`, `KB`, `MiB`, `MB`, etc. as a unit (i.e. [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) or decimal byte unit), this function returns the corresponding number of bytes.
-If the function is unable to parse the input value, it throws an exception.
-
-The inverse operations of this function are [`formatReadableSize`](#formatReadableSize) and [`formatReadableDecimalSize`](#formatReadableDecimalSize).
-
-
-**Syntax**
+**構文**
 
 ```sql
 normalizedQueryHashKeepNames(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Readable size with ISO/IEC 80000-13 or decimal byte unit. [`String`](/sql-reference/data-types/string)
+* `x` — 文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+64 ビットのハッシュ値を返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the number of bytes, rounded up to the nearest integer. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT normalizedQueryHash('SELECT 1 AS `xyz123`') != normalizedQueryHash('SELECT 1 AS `abc123`') AS normalizedQueryHash;
@@ -4059,37 +3663,32 @@ SELECT normalizedQueryHashKeepNames('SELECT 1 AS `xyz123`') != normalizedQueryHa
 └──────────────────────────────┘
 ```
 
+## parseReadableSize {#parseReadableSize}
 
+導入バージョン: v24.6
 
-## parseReadableSizeOrNull {#parseReadableSizeOrNull}
+バイト数を表す文字列と、その単位として `B`、`KiB`、`KB`、`MiB`、`MB` など（すなわち [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) に準拠したバイト単位、または10進バイト単位）が与えられた場合、この関数は対応するバイト数を返します。
+関数が入力値を解析できない場合は、例外をスローします。
 
-Introduced in: v24.6
+この関数の逆変換を行う関数は [`formatReadableSize`](#formatReadableSize) と [`formatReadableDecimalSize`](#formatReadableDecimalSize) です。
 
-
-Given a string containing a byte size and `B`, `KiB`, `KB`, `MiB`, `MB`, etc. as a unit (i.e. [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) or decimal byte unit), this function returns the corresponding number of bytes.
-If the function is unable to parse the input value, it returns `NULL`.
-
-The inverse operations of this function are [`formatReadableSize`](#formatReadableSize) and [`formatReadableDecimalSize`](#formatReadableDecimalSize).
-
-
-**Syntax**
+**構文**
 
 ```sql
 parseReadableSize(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Readable size with ISO/IEC 80000-13 or decimal byte unit. [`String`](/sql-reference/data-types/string)
+* `x` — ISO/IEC 80000-13 または 10 進バイト単位で表された、人間が読みやすい形式のサイズ。[`String`](/sql-reference/data-types/string)
 
+**返り値**
 
-**Returned value**
+バイト数を切り上げた整数値を返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the number of bytes, rounded up to the nearest integer, or `NULL` if unable to parse the input [`Nullable(UInt64)`](/sql-reference/data-types/nullable)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayJoin(['1 B', '1 KiB', '3 MB', '5.314 KiB']) AS readable_sizes, parseReadableSize(readable_sizes) AS sizes;
@@ -4104,37 +3703,32 @@ SELECT arrayJoin(['1 B', '1 KiB', '3 MB', '5.314 KiB']) AS readable_sizes, parse
 └────────────────┴─────────┘
 ```
 
+## parseReadableSizeOrNull {#parseReadableSizeOrNull}
 
+導入バージョン: v24.6
 
-## parseReadableSizeOrZero {#parseReadableSizeOrZero}
+`B`、`KiB`、`KB`、`MiB`、`MB` など（[ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) に準拠した単位、または 10 進バイト単位）付きのバイトサイズを表す文字列を与えると、この関数は対応するバイト数を返します。
+入力値を解析できない場合、この関数は `NULL` を返します。
 
-Introduced in: v24.6
+この関数の逆演算は [`formatReadableSize`](#formatReadableSize) と [`formatReadableDecimalSize`](#formatReadableDecimalSize) です。
 
-
-Given a string containing a byte size and `B`, `KiB`, `KB`, `MiB`, `MB`, etc. as a unit (i.e. [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) or decimal byte unit), this function returns the corresponding number of bytes.
-If the function is unable to parse the input value, it returns `0`.
-
-The inverse operations of this function are [`formatReadableSize`](#formatReadableSize) and [`formatReadableDecimalSize`](#formatReadableDecimalSize).
-
-
-**Syntax**
+**構文**
 
 ```sql
 parseReadableSizeOrNull(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Readable size with ISO/IEC 80000-13 or decimal byte unit. [`String`](/sql-reference/data-types/string)
+* `x` — ISO/IEC 80000-13 または 10進バイト単位で表現された読みやすい形式のサイズ。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+バイト数を最も近い整数に切り上げた値、または入力を解析できない場合は `NULL` を返します。[`Nullable(UInt64)`](/sql-reference/data-types/nullable)
 
-Returns the number of bytes, rounded up to the nearest integer, or `0` if unable to parse the input. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayJoin(['1 B', '1 KiB', '3 MB', '5.314 KiB', 'invalid']) AS readable_sizes, parseReadableSizeOrNull(readable_sizes) AS sizes;
@@ -4150,50 +3744,32 @@ SELECT arrayJoin(['1 B', '1 KiB', '3 MB', '5.314 KiB', 'invalid']) AS readable_s
 └────────────────┴─────────┘
 ```
 
+## parseReadableSizeOrZero {#parseReadableSizeOrZero}
 
+導入バージョン: v24.6
 
-## parseTimeDelta {#parseTimeDelta}
+バイト数を表す文字列と、その単位として `B`、`KiB`、`KB`、`MiB`、`MB` など（すなわち [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) 由来の 2 進接頭辞または 10 進バイト単位）を受け取り、そのサイズに対応するバイト数を返します。
+入力値を解析できない場合、この関数は `0` を返します。
 
-Introduced in: v22.7
+この関数の逆変換に相当する操作は [`formatReadableSize`](#formatReadableSize) と [`formatReadableDecimalSize`](#formatReadableDecimalSize) です。
 
-
-Parse a sequence of numbers followed by something resembling a time unit.
-
-The time delta string uses these time unit specifications:
-- `years`, `year`, `yr`, `y`
-- `months`, `month`, `mo`
-- `weeks`, `week`, `w`
-- `days`, `day`, `d`
-- `hours`, `hour`, `hr`, `h`
-- `minutes`, `minute`, `min`, `m`
-- `seconds`, `second`, `sec`, `s`
-- `milliseconds`, `millisecond`, `millisec`, `ms`
-- `microseconds`, `microsecond`, `microsec`, `μs`, `µs`, `us`
-- `nanoseconds`, `nanosecond`, `nanosec`, `ns`
-
-Multiple time units can be combined with separators (space, `;`, `-`, `+`, `,`, `:`).
-
-The length of years and months are approximations: year is 365 days, month is 30.5 days.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 parseReadableSizeOrZero(x)
 ```
 
-**Arguments**
+**引数**
 
-- `timestr` — A sequence of numbers followed by something resembling a time unit. [`String`](/sql-reference/data-types/string)
+* `x` — ISO/IEC 80000-13 または 10 進バイト単位で表された、人間にとって読みやすいサイズ。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+バイト数を最も近い整数に切り上げた値、または入力をパースできない場合は `0` を返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-The number of seconds. [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayJoin(['1 B', '1 KiB', '3 MB', '5.314 KiB', 'invalid']) AS readable_sizes, parseReadableSizeOrZero(readable_sizes) AS sizes;
@@ -4209,31 +3785,50 @@ SELECT arrayJoin(['1 B', '1 KiB', '3 MB', '5.314 KiB', 'invalid']) AS readable_s
 └────────────────┴─────────┘
 ```
 
-**Complex time units**
+## parseTimeDelta {#parseTimeDelta}
+
+導入バージョン: v22.7
+
+数値の並びに、時間単位を表す文字列が続く形式をパースします。
+
+時間差を表す文字列では、次の時間単位表記を使用できます:
+
+* `years`, `year`, `yr`, `y`
+* `months`, `month`, `mo`
+* `weeks`, `week`, `w`
+* `days`, `day`, `d`
+* `hours`, `hour`, `hr`, `h`
+* `minutes`, `minute`, `min`, `m`
+* `seconds`, `second`, `sec`, `s`
+* `milliseconds`, `millisecond`, `millisec`, `ms`
+* `microseconds`, `microsecond`, `microsec`, `μs`, `µs`, `us`
+* `nanoseconds`, `nanosecond`, `nanosec`, `ns`
+
+複数の時間単位は、区切り文字（スペース、`;`、`-`、`+`、`,`、`:`）で組み合わせることができます。
+
+年と月の長さは近似です。年は 365 日、月は 30.5 日として扱います。
+
+**構文**
 
 ```sql
 parseTimeDelta(timestr)
 ```
 
+**引数**
+
+* `timestr` — 数値の並びと、それに続く時間単位を表す文字列。[`String`](/sql-reference/data-types/string)
+
+**戻り値**
+
+秒数。[`Float64`](/sql-reference/data-types/float)
+
+**例**
+
+**使用例**
+
 ```sql title=Query
 SELECT parseTimeDelta('11s+22min')
 ```
-
-
-
-## partitionId {#partitionId}
-
-Introduced in: v21.4
-
-
-Computes the [partition ID](../../engines/table-engines/mergetree-family/custom-partitioning-key.md).
-
-:::note
-This function is slow and should not be called for large numbers of rows.
-:::
-
-
-**Syntax**
 
 ```response title=Response
 ┌─parseTimeDelta('11s+22min')─┐
@@ -4241,19 +3836,7 @@ This function is slow and should not be called for large numbers of rows.
 └─────────────────────────────┘
 ```
 
-**Aliases**: `partitionID`
-
-**Arguments**
-
-- `column1, column2, ...` — Column for which to return the partition ID. 
-
-**Returned value**
-
-Returns the partition ID that the row belongs to. [`String`](/sql-reference/data-types/string)
-
-**Examples**
-
-**Usage example**
+**複合時間単位**
 
 ```sql title=Query
 SELECT parseTimeDelta('1yr2mo')
@@ -4265,38 +3848,35 @@ SELECT parseTimeDelta('1yr2mo')
 └──────────────────────────┘
 ```
 
+## partitionId {#partitionId}
 
+導入バージョン: v21.4
 
-## queryID {#queryID}
+[パーティション ID](../../engines/table-engines/mergetree-family/custom-partitioning-key.md) を計算します。
 
-Introduced in: v21.9
+:::note
+この関数は処理が遅いため、大量の行に対しては呼び出さないでください。
+:::
 
-
-Returns the ID of the current query.
-Other parameters of a query can be extracted from field `query_id` in the [`system.query_log`](../../operations/system-tables/query_log.md) table.
-
-In contrast to [`initialQueryID`](#initialQueryID) function, `queryID` can return different results on different shards.
-
-
-**Syntax**
+**構文**
 
 ```sql
 partitionId(column1[, column2, ...])
 ```
 
-**Aliases**: `query_id`
+**別名**: `partitionID`
 
-**Arguments**
+**引数**
 
-- None.
+* `column1, column2, ...` — パーティション ID を返す対象のカラム。
 
-**Returned value**
+**戻り値**
 
-Returns the ID of the current query. [`String`](/sql-reference/data-types/string)
+行が属するパーティション ID を返します。[`String`](/sql-reference/data-types/string)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 DROP TABLE IF EXISTS tab;
@@ -4326,33 +3906,34 @@ SELECT i, j, partitionId(i), _partition_id FROM tab ORDER BY i, j;
 └───┴───┴────────────────┴───────────────┘
 ```
 
+## queryID {#queryID}
 
+導入バージョン: v21.9
 
-## revision {#revision}
+現在のクエリの ID を返します。
+クエリのその他のパラメータは、[`system.query_log`](../../operations/system-tables/query_log.md) テーブルの `query_id` フィールドから取得できます。
 
-Introduced in: v22.7
+[`initialQueryID`](#initialQueryID) 関数とは対照的に、`queryID` は分片ごとに異なる結果を返す場合があります。
 
-
-Returns the current ClickHouse server revision.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 queryID()
 ```
 
-**Arguments**
+**別名**: `query_id`
 
-- None.
+**引数**
 
-**Returned value**
+* なし
 
-Returns the current ClickHouse server revision. [`UInt32`](/sql-reference/data-types/int-uint)
+**戻り値**
 
-**Examples**
+現在のクエリ ID を返します。[`String`](/sql-reference/data-types/string)
 
-**Usage example**
+**例**
+
+**使用例**
 
 ```sql title=Query
 CREATE TABLE tmp (str String) ENGINE = Log;
@@ -4366,33 +3947,29 @@ SELECT count(DISTINCT t) FROM (SELECT queryID() AS t FROM remote('127.0.0.{1..3}
 └───────────────────┘
 ```
 
+## revision {#revision}
 
+導入バージョン: v22.7
 
-## rowNumberInAllBlocks {#rowNumberInAllBlocks}
+現在の ClickHouse サーバーのリビジョン番号を返します。
 
-Introduced in: v1.1
-
-
-Returns a unique row number for each row processed.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 revision()
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* なし。
 
-**Returned value**
+**戻り値**
 
-Returns the ordinal number of the row in the data block starting from `0`. [`UInt64`](/sql-reference/data-types/int-uint)
+現在の ClickHouse サーバーのリビジョンを返します。[`UInt32`](/sql-reference/data-types/int-uint)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT revision()
@@ -4404,35 +3981,29 @@ SELECT revision()
 └────────────┘
 ```
 
+## rowNumberInAllBlocks {#rowNumberInAllBlocks}
 
+導入バージョン: v1.1
 
-## rowNumberInBlock {#rowNumberInBlock}
+処理される各行に対して、一意の行番号を返します。
 
-Introduced in: v1.1
-
-
-For each [block](../../development/architecture.md#block) processed by `rowNumberInBlock`, returns the number of the current row.
-
-The returned number starts from 0 for each block.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 rowNumberInAllBlocks()
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* なし。
 
-**Returned value**
+**返される値**
 
-Returns the ordinal number of the row in the data block starting from `0`. [`UInt64`](/sql-reference/data-types/int-uint)
+データブロック内の行の番号を、`0` から始めて返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT rowNumberInAllBlocks()
@@ -4468,41 +4039,31 @@ SETTINGS max_block_size = 2
 └────────────────────────┘
 ```
 
+## rowNumberInBlock {#rowNumberInBlock}
 
+導入: v1.1
 
-## runningAccumulate {#runningAccumulate}
+`rowNumberInBlock` によって処理される各[ブロック](../../development/architecture.md#block)内で、現在の行の番号を返します。
 
-Introduced in: v1.1
+返される番号は、各ブロックごとに 0 から始まります。
 
-
-Accumulates the states of an aggregate function for each row of a data block.
-
-:::warning Deprecated
-The state is reset for each new block of data.
-Due to this error-prone behavior the function has been deprecated, and you are advised to use [window functions](/sql-reference/window-functions) instead.
-You can use setting [`allow_deprecated_error_prone_window_functions`](/operations/settings/settings#allow_deprecated_error_prone_window_functions) to allow usage of this function.
-:::
-
-
-**Syntax**
+**構文**
 
 ```sql
 rowNumberInBlock()
 ```
 
-**Arguments**
+**引数**
 
-- `agg_state` — State of the aggregate function. [`AggregateFunction`](/sql-reference/data-types/aggregatefunction)
-- `grouping` — Optional. Grouping key. The state of the function is reset if the `grouping` value is changed. It can be any of the supported data types for which the equality operator is defined. [`Any`](/sql-reference/data-types)
+* なし。
 
+**戻り値**
 
-**Returned value**
+データブロック内の行番号を `0` からの連番で返します。 [`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the accumulated result for each row. [`Any`](/sql-reference/data-types)
+**例**
 
-**Examples**
-
-**Usage example with initializeAggregation**
+**使用例**
 
 ```sql title=Query
 SELECT rowNumberInBlock()
@@ -4537,50 +4098,36 @@ FROM
 └────────────────────┘
 ```
 
+## runningAccumulate {#runningAccumulate}
 
+導入バージョン: v1.1
 
-## runningConcurrency {#runningConcurrency}
+データブロック内の各行について、集約関数の状態を累積します。
 
-Introduced in: v21.3
-
-
-Calculates the number of concurrent events.
-Each event has a start time and an end time.
-The start time is included in the event, while the end time is excluded.
-Columns with a start time and an end time must be of the same data type.
-The function calculates the total number of active (concurrent) events for each event start time.
-
-:::tip Requirements
-Events must be ordered by the start time in ascending order.
-If this requirement is violated the function raises an exception.
-Every data block is processed separately.
-If events from different data blocks overlap then they can not be processed correctly.
+:::warning 非推奨
+状態は新しいデータブロックごとにリセットされます。
+このようなエラーを招きやすい挙動のため、この関数は非推奨となっており、代わりに[ウィンドウ関数](/sql-reference/window-functions)を使用することを推奨します。
+この関数の使用を許可するには、[`allow_deprecated_error_prone_window_functions`](/operations/settings/settings#allow_deprecated_error_prone_window_functions) 設定を使用できます。
 :::
 
-:::warning Deprecated
-It is advised to use [window functions](/sql-reference/window-functions) instead.
-:::
-
-
-**Syntax**
+**構文**
 
 ```sql
 runningAccumulate(agg_state[, grouping])
 ```
 
-**Arguments**
+**引数**
 
-- `start` — A column with the start time of events. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `end` — A column with the end time of events. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `agg_state` — 集約関数の状態。[`AggregateFunction`](/sql-reference/data-types/aggregatefunction)
+* `grouping` — 省略可能。グルーピングキー。`grouping` の値が変化すると関数の状態はリセットされます。等価演算子が定義されているサポート対象の任意のデータ型を使用できます。[`Any`](/sql-reference/data-types)
 
+**戻り値**
 
-**Returned value**
+各行に対して蓄積された結果を返します。[`Any`](/sql-reference/data-types)
 
-Returns the number of concurrent events at each event start time. [`UInt32`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**initializeAggregation を用いた例**
 
 ```sql title=Query
 WITH initializeAggregation('sumState', number) AS one_row_sum_state
@@ -4601,49 +4148,45 @@ FROM numbers(5);
 └────────┴─────────────┴────────────────┘
 ```
 
+## runningConcurrency {#runningConcurrency}
 
+導入バージョン: v21.3
 
-## runningDifference {#runningDifference}
+同時に発生しているイベントの数を計算します。
+各イベントは開始時刻と終了時刻を持ちます。
+開始時刻はイベントに含まれますが、終了時刻は含まれません。
+開始時刻と終了時刻を格納するカラムは、同じデータ型でなければなりません。
+この関数は、各イベントの開始時刻ごとにアクティブ（同時に発生している）イベントの総数を計算します。
 
-Introduced in: v1.1
-
-
-Calculates the difference between two consecutive row values in the data block.
-Returns `0` for the first row, and for subsequent rows the difference to the previous row.
-
-:::warning Deprecated
-Only returns differences inside the currently processed data block.
-Because of this error-prone behavior, the function is deprecated.
-It is advised to use [window functions](/sql-reference/window-functions) instead.
-
-You can use setting [`allow_deprecated_error_prone_window_functions`](/operations/settings/settings#allow_deprecated_error_prone_window_functions) to allow usage of this function.
+:::tip 要件
+イベントは開始時刻で昇順に並んでいる必要があります。
+この要件が満たされない場合、関数は例外をスローします。
+各データブロックは個別に処理されます。
+異なるデータブロックに属するイベントが重なっている場合、それらは正しく処理できません。
 :::
 
-The result of the function depends on the affected data blocks and the order of data in the block.
-The order of rows during calculation of `runningDifference()` can differ from the order of rows returned to the user.
-To prevent that you can create a subquery with [`ORDER BY`](../../sql-reference/statements/select/order-by.md) and call the function from outside the subquery.
-Please note that the block size affects the result.
-The internal state of `runningDifference` state is reset for each new block.
+:::warning 廃止予定
+代わりに [window functions](/sql-reference/window-functions) を使用することを推奨します。
+:::
 
-
-**Syntax**
+**構文**
 
 ```sql
 runningConcurrency(start, end)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Column for which to calculate the running difference. [`Any`](/sql-reference/data-types)
+* `start` — イベントの開始時刻を含むカラム。[`Date`](/sql-reference/data-types/date) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+* `end` — イベントの終了時刻を含むカラム。[`Date`](/sql-reference/data-types/date) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**戻り値**
 
-**Returned value**
+各イベントの開始時刻における同時発生イベント数を返します。[`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns the difference between consecutive values, with 0 for the first row.
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT start, runningConcurrency(start, end) FROM example_table;
@@ -4658,11 +4201,44 @@ SELECT start, runningConcurrency(start, end) FROM example_table;
 └────────────┴────────────────────────────────┘
 ```
 
-**Block size impact example**
+## runningDifference {#runningDifference}
+
+導入バージョン: v1.1
+
+データブロック内で、連続する2つの行の値の差分を計算します。
+最初の行には `0` を返し、2行目以降には直前の行との差分を返します。
+
+:::warning Deprecated
+現在処理中のデータブロック内でのみ差分を返します。
+このようなエラーを招きやすい動作のため、この関数は非推奨です。
+代わりに [window functions](/sql-reference/window-functions) の使用が推奨されます。
+
+この関数の使用を許可するには、設定 [`allow_deprecated_error_prone_window_functions`](/operations/settings/settings#allow_deprecated_error_prone_window_functions) を有効にします。
+:::
+
+この関数の結果は、対象となるデータブロックおよびブロック内のデータの順序に依存します。
+`runningDifference()` の計算時の行の順序は、ユーザーに返される行の順序と異なる場合があります。
+これを防ぐには、[`ORDER BY`](../../sql-reference/statements/select/order-by.md) を含むサブクエリを作成し、そのサブクエリの外側から関数を呼び出します。
+ブロックサイズが結果に影響することに注意してください。
+`runningDifference` の内部状態は、新しいブロックごとにリセットされます。
+
+**構文**
 
 ```sql
 runningDifference(x)
 ```
+
+**引数**
+
+* `x` — ランニング差分を計算する対象のカラム。[`Any`](/sql-reference/data-types)
+
+**返される値**
+
+連続する値同士の差分を返します。最初の行には 0 を返します。
+
+**例**
+
+**使用例**
 
 ```sql title=Query
 SELECT
@@ -4681,26 +4257,6 @@ FROM
 );
 ```
 
-
-
-## runningDifferenceStartingWithFirstValue {#runningDifferenceStartingWithFirstValue}
-
-Introduced in: v1.1
-
-
-Calculates the difference between consecutive row values in a data block, but unlike [`runningDifference`](#runningDifference), it returns the actual value of the first row instead of `0`.
-
-:::warning Deprecated
-Only returns differences inside the currently processed data block.
-Because of this error-prone behavior, the function is deprecated.
-It is advised to use [window functions](/sql-reference/window-functions) instead.
-
-You can use setting `allow_deprecated_error_prone_window_functions` to allow usage of this function.
-:::
-
-
-**Syntax**
-
 ```response title=Response
 ┌─EventID─┬───────────EventTime─┬─delta─┐
 │    1106 │ 2025-11-24 00:00:04 │     0 │
@@ -4711,18 +4267,7 @@ You can use setting `allow_deprecated_error_prone_window_functions` to allow usa
 └─────────┴─────────────────────┴───────┘
 ```
 
-**Arguments**
-
-- `x` — Column for which to calculate the running difference. [`Any`](/sql-reference/data-types)
-
-
-**Returned value**
-
-Returns the difference between consecutive values, with the first row's value for the first row. [`Any`](/sql-reference/data-types)
-
-**Examples**
-
-**Usage example**
+**ブロックサイズが与える影響の例**
 
 ```sql title=Query
 SELECT
@@ -4741,34 +4286,37 @@ WHERE diff != 1;
 └────────┴──────┘
 ```
 
+## runningDifferenceStartingWithFirstValue {#runningDifferenceStartingWithFirstValue}
 
+導入バージョン: v1.1
 
-## serverUUID {#serverUUID}
+データブロック内の連続する行の値の差分を計算しますが、[`runningDifference`](#runningDifference) と異なり、最初の行の値については `0` ではなく実際の値を返します。
 
-Introduced in: v20.1
+:::warning 非推奨
+現在処理中のデータブロック内での差分のみを返します。
+このようにエラーを招きやすい挙動であるため、この関数は非推奨です。
+代わりに [window functions](/sql-reference/window-functions) の使用が推奨されます。
 
+この関数の使用を許可するには、設定 `allow_deprecated_error_prone_window_functions` を使用できます。
+:::
 
-Returns the random and unique UUID (v4) generated when the server is first started.
-The UUID is persisted, i.e. the second, third, etc. server start return the same UUID.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 runningDifferenceStartingWithFirstValue(x)
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* `x` — ランニング差分を計算する対象のカラム。[`Any`](/sql-reference/data-types)
 
-**Returned value**
+**戻り値**
 
-Returns the random UUID of the server. [`UUID`](/sql-reference/data-types/uuid)
+連続する値同士の差分を返します。先頭行については、その行自体の値を返します。[`Any`](/sql-reference/data-types)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT
@@ -4787,34 +4335,30 @@ FROM numbers(5);
 └────────┴──────┘
 ```
 
+## serverUUID {#serverUUID}
 
+導入バージョン: v20.1
 
-## shardCount {#shardCount}
+サーバーが最初に起動されたときに生成される、ランダムな一意の UUID (v4) を返します。
+この UUID は永続化されるため、2 回目、3 回目以降のサーバー起動でも同じ UUID が返されます。
 
-Introduced in: v21.9
-
-
-Returns the total number of shards for a distributed query.
-If a query is not distributed then constant value `0` is returned.
-
-
-**Syntax**
+**構文**
 
 ```sql
 serverUUID()
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* なし。
 
-**Returned value**
+**返り値**
 
-Returns the total number of shards or `0`. [`UInt32`](/sql-reference/data-types/int-uint)
+サーバーのランダムな UUID を返します。[`UUID`](/sql-reference/data-types/uuid)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT serverUUID();
@@ -4826,35 +4370,30 @@ SELECT serverUUID();
 └──────────────────────────────────────────┘
 ```
 
+## shardCount {#shardCount}
 
+導入: v21.9
 
-## shardNum {#shardNum}
+分散クエリにおける分片の総数を返します。
+クエリが分散されていない場合は、定数値 `0` が返されます。
 
-Introduced in: v21.9
-
-
-Returns the index of a shard which processes a part of data in a distributed query.
-Indices begin from `1`.
-If a query is not distributed then a constant value `0` is returned.
-
-
-**Syntax**
+**構文**
 
 ```sql
 shardCount()
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* なし
 
-**Returned value**
+**返り値**
 
-Returns the shard index or a constant `0`. [`UInt32`](/sql-reference/data-types/int-uint)
+分片の総数、または `0` を返します。[`UInt32`](/sql-reference/data-types/int-uint)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 -- 上記のshardNum()の例を参照してください。shardCount()の使用例も含まれています
@@ -4870,34 +4409,31 @@ SELECT shardCount() FROM shard_count_example;
 └──────────────┘
 ```
 
+## shardNum {#shardNum}
 
+導入バージョン: v21.9
 
-## showCertificate {#showCertificate}
+分散クエリでデータの一部を処理する分片のインデックス（番号）を返します。
+インデックスは `1` から始まります。
+クエリが分散でない場合は、定数値 `0` が返されます。
 
-Introduced in: v22.6
-
-
-Shows information about the current server's Secure Sockets Layer (SSL) certificate if it has been configured.
-See [Configuring SSL-TLS](/guides/sre/configuring-ssl) for more information on how to configure ClickHouse to use OpenSSL certificates to validate connections.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 shardNum()
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* なし。
 
-**Returned value**
+**戻り値**
 
-Returns map of key-value pairs relating to the configured SSL certificate. [`Map(String, String)`](/sql-reference/data-types/map)
+分片の索引、または定数 `0` を返します（[`UInt32`](/sql-reference/data-types/int-uint)）。
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 CREATE TABLE shard_num_example (dummy UInt8)
@@ -4912,48 +4448,30 @@ SELECT dummy, shardNum(), shardCount() FROM shard_num_example;
 └───────┴────────────┴──────────────┘
 ```
 
+## showCertificate {#showCertificate}
 
+導入バージョン: v22.6
 
-## sleep {#sleep}
+現在のサーバーで構成されている Secure Sockets Layer (SSL) 証明書に関する情報を表示します。
+ClickHouse を OpenSSL 証明書を使用して接続を検証するように構成する方法については、[Configuring SSL-TLS](/guides/sre/configuring-ssl) を参照してください。
 
-Introduced in: v1.1
-
-
-Pauses the execution of a query by the specified number of seconds.
-The function is primarily used for testing and debugging purposes.
-
-The `sleep()` function should generally not be used in production environments, as it can negatively impact query performance and system responsiveness.
-However, it can be useful in the following scenarios:
-
-1. **Testing**: When testing or benchmarking ClickHouse, you may want to simulate delays or introduce pauses to observe how the system behaves under certain conditions.
-2. **Debugging**: If you need to examine the state of the system or the execution of a query at a specific point in time, you can use `sleep()` to introduce a pause, allowing you to inspect or collect relevant information.
-3. **Simulation**: In some cases, you may want to simulate real-world scenarios where delays or pauses occur, such as network latency or external system dependencies.
-
-:::warning
-It's important to use the `sleep()` function judiciously and only when necessary, as it can potentially impact the overall performance and responsiveness of your ClickHouse system.
-:::
-
-For security reasons, the function can only be executed in the default user profile (with `allow_sleep` enabled).
-
-
-**Syntax**
+**構文**
 
 ```sql
 showCertificate()
 ```
 
-**Arguments**
+**引数**
 
-- `seconds` — The number of seconds to pause the query execution to a maximum of 3 seconds. It can be a floating-point value to specify fractional seconds. [`const UInt*`](/sql-reference/data-types/int-uint) or [`const Float*`](/sql-reference/data-types/float)
+* なし。
 
+**返り値**
 
-**Returned value**
+設定済み SSL 証明書に関するキーと値のペアからなるマップを返します。[`Map(String, String)`](/sql-reference/data-types/map)
 
-Returns `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT showCertificate() FORMAT LineAsString;
@@ -4963,45 +4481,43 @@ SELECT showCertificate() FORMAT LineAsString;
 {'version':'1','serial_number':'2D9071D64530052D48308473922C7ADAFA85D6C5','signature_algo':'sha256WithRSAEncryption','issuer':'/CN=marsnet.local CA','not_before':'May  7 17:01:21 2024 GMT','not_after':'May  7 17:01:21 2025 GMT','subject':'/CN=chnode1','pkey_algo':'rsaEncryption'}
 ```
 
+## sleep {#sleep}
 
+導入バージョン: v1.1
 
-## sleepEachRow {#sleepEachRow}
+指定した秒数だけクエリの実行を一時停止します。
+この関数は主にテストおよびデバッグ目的で使用されます。
 
-Introduced in: v1.1
+`sleep()` 関数は、クエリのパフォーマンスやシステムの応答性に悪影響を与える可能性があるため、本番環境での使用は通常推奨されません。
+ただし、次のようなシナリオでは有用な場合があります。
 
-
-Pauses the execution of a query for a specified number of seconds for each row in the result set.
-
-The `sleepEachRow()` function is primarily used for testing and debugging purposes, similar to the [`sleep()`](#sleep) function.
-It allows you to simulate delays or introduce pauses in the processing of each row, which can be useful in scenarios such as:
-
-1. **Testing**: When testing or benchmarking ClickHouse's performance under specific conditions, you can use `sleepEachRow()` to simulate delays or introduce pauses for each row processed.
-2. **Debugging**: If you need to examine the state of the system or the execution of a query for each row processed, you can use `sleepEachRow()` to introduce pauses, allowing you to inspect or collect relevant information.
-3. **Simulation**: In some cases, you may want to simulate real-world scenarios where delays or pauses occur for each row processed, such as when dealing with external systems or network latencies.
+1. **テスト**: ClickHouse のテストやベンチマークを行う際に、遅延をシミュレートしたり一時停止を挿入して、特定の条件下でシステムがどのように動作するかを観察したい場合があります。
+2. **デバッグ**: ある時点でのシステムの状態やクエリ実行状況を確認する必要がある場合、`sleep()` を使用して一時停止を挿入し、その間に関連情報を調査または収集できます。
+3. **シミュレーション**: ネットワーク遅延や外部システム依存など、現実のシナリオで発生する遅延や一時停止をシミュレートしたい場合があります。
 
 :::warning
-Like the `sleep()` function, it's important to use `sleepEachRow()` judiciously and only when necessary, as it can significantly impact the overall performance and responsiveness of your ClickHouse system, especially when dealing with large result sets.
+`sleep()` 関数は、ClickHouse システム全体のパフォーマンスおよび応答性に影響を与える可能性があるため、必要な場合に限り慎重に使用することが重要です。
 :::
 
+セキュリティ上の理由から、この関数はデフォルトのユーザープロファイル（`allow_sleep` が有効な状態）でのみ実行できます。
 
-**Syntax**
+**構文**
 
 ```sql
 sleep(seconds)
 ```
 
-**Arguments**
+**引数**
 
-- `seconds` — The number of seconds to pause the query execution for each row in the result set to a maximum of 3 seconds. It can be a floating-point value to specify fractional seconds. [`const UInt*`](/sql-reference/data-types/int-uint) or [`const Float*`](/sql-reference/data-types/float)
+* `seconds` — クエリの実行を最大 3 秒間一時停止する時間（秒単位）。小数秒を指定するために浮動小数点値を使用できます。[`const UInt*`](/sql-reference/data-types/int-uint) または [`const Float*`](/sql-reference/data-types/float)
 
+**戻り値**
 
-**Returned value**
+`0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `0` for each row. [`UInt8`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 -- このクエリは完了前に2秒間停止します。
@@ -5016,33 +4532,40 @@ SELECT sleep(2);
 1行が返されました。経過時間: 2.012秒
 ```
 
+## sleepEachRow {#sleepEachRow}
 
+導入バージョン: v1.1
 
-## structureToCapnProtoSchema {#structureToCapnProtoSchema}
+結果セット内の各行に対して、指定された秒数だけクエリの実行を一時停止します。
 
-Introduced in: v
+`sleepEachRow()` 関数は、主に [`sleep()`](#sleep) 関数と同様にテストおよびデバッグ目的で使用されます。
+各行の処理に遅延をシミュレートしたり、一時停止を挿入したりできるため、次のようなシナリオで有用です:
 
+1. **テスト**: 特定の条件下での ClickHouse のパフォーマンスをテストまたはベンチマークする際に、`sleepEachRow()` を使用して処理される各行に対して遅延や一時停止をシミュレートできます。
+2. **デバッグ**: 処理される各行についてシステムの状態やクエリの実行状況を確認する必要がある場合、`sleepEachRow()` を使用して一時停止を挿入し、関連情報を検査または収集できるようにします。
+3. **シミュレーション**: 外部システムやネットワーク遅延を扱う場合のように、各行の処理ごとに遅延や一時停止が発生する実運用シナリオをシミュレートしたいケースがあります。
 
-Function that converts ClickHouse table structure to CapnProto format schema
+:::warning
+`sleep()` 関数と同様に、`sleepEachRow()` は注意して、本当に必要な場合にのみ使用することが重要です。特に大きな結果セットを扱う場合、ClickHouse システム全体のパフォーマンスや応答性に大きな影響を与える可能性があります。
+:::
 
-
-**Syntax**
+**構文**
 
 ```sql
 sleepEachRow(seconds)
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* `seconds` — 結果セット内の各行に対してクエリ実行を一時停止する秒数で、最大 3 秒まで指定できます。浮動小数点値を指定することで、秒未満の値も指定できます。[`const UInt*`](/sql-reference/data-types/int-uint) または [`const Float*`](/sql-reference/data-types/float)
 
-**Returned value**
+**戻り値**
 
+各行に対して `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
+**例**
 
-**Examples**
-
-**random**
+**使用例**
 
 ```sql title=Query
 -- 出力は遅延され、各行の間に0.5秒の一時停止が発生します。
@@ -5059,38 +4582,26 @@ SELECT number, sleepEachRow(0.5) FROM system.numbers LIMIT 5;
 └────────┴───────────────────┘
 ```
 
+## structureToCapnProtoSchema {#structureToCapnProtoSchema}
 
+導入バージョン: v
 
-## structureToProtobufSchema {#structureToProtobufSchema}
+ClickHouse のテーブル構造を CapnProto 形式のスキーマに変換する関数
 
-Introduced in: v23.8
-
-
-Converts a ClickHouse table structure to Protobuf format schema.
-
-This function takes a ClickHouse table structure definition and converts it into a Protocol Buffers (Protobuf)
-schema definition in proto3 syntax. This is useful for generating Protobuf schemas that match your ClickHouse
-table structures for data interchange.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 ```
 
-**Arguments**
+**引数**
 
-- `structure` — ClickHouse table structure definition as a string (e.g., 'column1 Type1, column2 Type2'). [`String`](/sql-reference/data-types/string)
-- `message_name` — Name for the Protobuf message type in the generated schema. [`String`](/sql-reference/data-types/string)
+* なし。
 
+**戻り値**
 
-**Returned value**
+**例**
 
-Returns a Protobuf schema definition in proto3 syntax that corresponds to the input ClickHouse structure. [`String`](/sql-reference/data-types/string)
-
-**Examples**
-
-**Converting ClickHouse structure to Protobuf schema**
+**random**
 
 ```sql title=Query
 SELECT structureToCapnProtoSchema('s String, x UInt32', 'MessageName') format TSVRaw
@@ -5104,35 +4615,34 @@ struct MessageName
 }
 ```
 
+## structureToProtobufSchema {#structureToProtobufSchema}
 
+導入バージョン: v23.8
 
-## tcpPort {#tcpPort}
+ClickHouse のテーブル構造を Protobuf 形式のスキーマに変換します。
 
-Introduced in: v20.12
+この関数は、ClickHouse のテーブル構造の定義を受け取り、それを Protocol Buffers (Protobuf) の
+proto3 構文によるスキーマ定義に変換します。これは、データ交換のために ClickHouse のテーブル構造と一致する
+Protobuf スキーマを生成する際に有用です。
 
-
-Returns the [native interface](../../interfaces/tcp.md) TCP port number listened to by the server.
-If executed in the context of a distributed table, this function generates a normal column with values relevant to each shard.
-Otherwise it produces a constant value.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 structureToProtobufSchema(structure, message_name)
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* `structure` — ClickHouse のテーブル構造定義を文字列で指定します（例: &#39;column1 Type1, column2 Type2&#39;）。[`String`](/sql-reference/data-types/string)
+* `message_name` — 生成されるスキーマ内の Protobuf メッセージ型の名前。[`String`](/sql-reference/data-types/string)
 
-**Returned value**
+**返り値**
 
-Returns the TCP port number. [`UInt16`](/sql-reference/data-types/int-uint)
+入力された ClickHouse テーブル構造に対応する、proto3 構文の Protobuf スキーマ定義を返します。[`String`](/sql-reference/data-types/string)
 
-**Examples**
+**例**
 
-**Usage example**
+**ClickHouse のテーブル構造を Protobuf スキーマに変換する**
 
 ```sql title=Query
 SELECT structureToProtobufSchema('s String, x UInt32', 'MessageName') FORMAT TSVRaw;
@@ -5148,37 +4658,31 @@ message MessageName
 }
 ```
 
+## tcpPort {#tcpPort}
 
+導入バージョン: v20.12
 
-## throwIf {#throwIf}
+サーバーが待ち受けている [native interface](../../interfaces/tcp.md) の TCP ポート番号を返します。
+分散テーブルのコンテキストで実行された場合、この関数は各分片に対応する値を持つ通常のカラムを生成します。
+それ以外の場合は、定数値を生成します。
 
-Introduced in: v1.1
-
-
-Throw an exception if argument x is true.
-To use the `error_code` argument, configuration parameter `allow_custom_error_code_in_throw` must be enabled.
-
-
-**Syntax**
+**構文**
 
 ```sql
 tcpPort()
 ```
 
-**Arguments**
+**引数**
 
-- `x` — The condition to check. [`Any`](/sql-reference/data-types)
-- `message` — Optional. Custom error message. [`const String`](/sql-reference/data-types/string)
-- `error_code` — Optional. Custom error code. [`const Int8/16/32`](/sql-reference/data-types/int-uint)
+* なし。
 
+**戻り値**
 
-**Returned value**
+TCP ポート番号を返します。[`UInt16`](/sql-reference/data-types/int-uint)
 
-Returns `0` if the condition is false, throws an exception if the condition is true. [`UInt8`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT tcpPort()
@@ -5190,35 +4694,32 @@ SELECT tcpPort()
 └───────────┘
 ```
 
+## throwIf {#throwIf}
 
+導入バージョン: v1.1
 
-## toColumnTypeName {#toColumnTypeName}
+引数 x が true の場合、例外をスローします。
+`error_code` 引数を使用するには、設定パラメータ `allow_custom_error_code_in_throw` を有効にする必要があります。
 
-Introduced in: v1.1
-
-
-Returns the internal name of the data type of the given value.
-Unlike function [`toTypeName`](#toTypeName), the returned data type potentially includes internal wrapper columns like `Const` and `LowCardinality`.
-
-
-**Syntax**
+**構文**
 
 ```sql
 throwIf(x[, message[, error_code]])
 ```
 
-**Arguments**
+**引数**
 
-- `value` — Value for which to return the internal data type. [`Any`](/sql-reference/data-types)
+* `x` — 検査する条件。[`Any`](/sql-reference/data-types)
+* `message` — 省略可能。カスタムエラーメッセージ。[`const String`](/sql-reference/data-types/string)
+* `error_code` — 省略可能。カスタムエラーコード。[`const Int8/16/32`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+条件が偽の場合は `0` を返し、条件が真の場合は例外をスローします。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns the internal data type used to represent the value. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT throwIf(number = 3, '多すぎます') FROM numbers(10);
@@ -5229,35 +4730,30 @@ SELECT throwIf(number = 3, '多すぎます') FROM numbers(10);
 Code: 395. DB::Exception: localhost:9000 から受信しました。DB::Exception: 多すぎます。
 ```
 
+## toColumnTypeName {#toColumnTypeName}
 
+導入バージョン: v1.1
 
-## toTypeName {#toTypeName}
+指定された値のデータ型の内部名を返します。
+関数 [`toTypeName`](#toTypeName) と異なり、返されるデータ型には `Const` や `LowCardinality` のような内部ラッパーカラムが含まれる可能性があります。
 
-Introduced in: v1.1
-
-
-Returns the type name of the passed argument.
-If `NULL` is passed, the function returns type `Nullable(Nothing)`, which corresponds to ClickHouse's internal `NULL` representation.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 toColumnTypeName(value)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — A value of arbitrary type. [`Any`](/sql-reference/data-types)
+* `value` — 内部データ型を取得する対象の値。[`Any`](/sql-reference/data-types)
 
+**返り値**
 
-**Returned value**
+値を表現するために使用される内部データ型を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the data type name of the input value. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT toColumnTypeName(CAST('2025-01-01 01:02:03' AS DateTime));
@@ -5269,51 +4765,34 @@ SELECT toColumnTypeName(CAST('2025-01-01 01:02:03' AS DateTime));
 └───────────────────────────────────────────────────────────┘
 ```
 
+## toTypeName {#toTypeName}
 
+導入: v1.1
 
-## transactionID {#transactionID}
+引数として渡された値の型名を返します。
+`NULL` が渡された場合、この関数は ClickHouse の内部的な `NULL` 表現に対応する型 `Nullable(Nothing)` を返します。
 
-Introduced in: v22.6
-
-
-<ExperimentalBadge/>
-<CloudNotSupportedBadge/>
-
-Returns the ID of a transaction.
-
-:::note
-This function is part of an experimental feature set.
-Enable experimental transaction support by adding this setting to your [configuration](/operations/configuration-files):
+**構文**
 
 ```sql
 toTypeName(x)
 ```
 
-For more information see the page [Transactional (ACID) support](/guides/developer/transactional#transactions-commit-and-rollback).
-:::
-    
+**引数**
 
-**Syntax**
+* `x` — 任意の型の値。[`Any`](/sql-reference/data-types)
+
+**戻り値**
+
+入力値のデータ型名を返します。[`String`](/sql-reference/data-types/string)
+
+**例**
+
+**使用例**
 
 ```sql title=Query
 SELECT toTypeName(123)
 ```
-
-**Arguments**
-
-- None.
-
-**Returned value**
-
-Returns a tuple consisting of `start_csn`, `local_tid` and `host_id`.
-- `start_csn`: Global sequential number, the newest commit timestamp that was seen when this transaction began.
-- `local_tid`: Local sequential number that is unique for each transaction started by this host within a specific start_csn.
-- `host_id`: UUID of the host that has started this transaction.
-     [`Tuple(UInt64, UInt64, UUID)`](/sql-reference/data-types/tuple)
-
-**Examples**
-
-**Usage example**
 
 ```response title=Response
 ┌─toTypeName(123)─┐
@@ -5321,36 +4800,51 @@ Returns a tuple consisting of `start_csn`, `local_tid` and `host_id`.
 └─────────────────┘
 ```
 
+## transactionID {#transactionID}
+
+導入バージョン: v22.6
+
+<ExperimentalBadge />
+
+<CloudNotSupportedBadge />
+
+トランザクションの ID を返します。
+
+:::note
+この関数は実験的機能セットの一部です。
+トランザクションの実験的サポートを有効にするには、[設定ファイル](/operations/configuration-files) に次の設定を追加します。
+
 ```xml
 <clickhouse>
     <allow_experimental_transactions>1</allow_experimental_transactions>
 </clickhouse>
 ```
 
+詳細については、[Transactional (ACID) support](/guides/developer/transactional#transactions-commit-and-rollback) を参照してください。
+:::
 
-
-## transactionLatestSnapshot {#transactionLatestSnapshot}
-
-Introduced in: v22.6
-
-
-<ExperimentalBadge/>
-<CloudNotSupportedBadge/>
-
-Returns the newest snapshot (Commit Sequence Number) of a [transaction](/guides/developer/transactional#transactions-commit-and-rollback) that is available for reading.
-
-:::note
-This function is part of an experimental feature set. Enable experimental transaction support by adding this setting to your configuration:
+**構文**
 
 ```sql
 transactionID()
 ```
 
-For more information see the page [Transactional (ACID) support](/guides/developer/transactional#transactions-commit-and-rollback).
-:::
-    
+**引数**
 
-**Syntax**
+* なし。
+
+**戻り値**
+
+`start_csn`、`local_tid`、`host_id` から成るタプルを返します。
+
+* `start_csn`: このトランザクションの開始時点で確認された、最新のコミットタイムスタンプを表すグローバルな連番。
+* `local_tid`: 特定の `start_csn` 内で、このホストによって開始された各トランザクションに対して一意なローカル連番。
+* `host_id`: このトランザクションを開始したホストの UUID。\
+  [`Tuple(UInt64, UInt64, UUID)`](/sql-reference/data-types/tuple)
+
+**例**
+
+**使用例**
 
 ```sql title=Query
 BEGIN TRANSACTION;
@@ -5358,23 +4852,24 @@ SELECT transactionID();
 ROLLBACK;
 ```
 
-**Arguments**
-
-- None.
-
-**Returned value**
-
-Returns the latest snapshot (CSN) of a transaction. [`UInt64`](/sql-reference/data-types/int-uint)
-
-**Examples**
-
-**Usage example**
-
 ```response title=Response
 ┌─transactionID()────────────────────────────────┐
 │ (32,34,'0ee8b069-f2bb-4748-9eae-069c85b5252b') │
 └────────────────────────────────────────────────┘
 ```
+
+## transactionLatestSnapshot {#transactionLatestSnapshot}
+
+導入バージョン: v22.6
+
+<ExperimentalBadge />
+
+<CloudNotSupportedBadge />
+
+読み取り可能な[トランザクション](/guides/developer/transactional#transactions-commit-and-rollback)の最新スナップショット（Commit Sequence Number）を返します。
+
+:::note
+この関数は実験的な機能セットの一部です。実験的なトランザクションサポートを有効にするには、次の設定を設定に追加してください。
 
 ```xml
 <clickhouse>
@@ -5382,30 +4877,26 @@ Returns the latest snapshot (CSN) of a transaction. [`UInt64`](/sql-reference/da
 </clickhouse>
 ```
 
+詳細については、[Transactional (ACID) support](/guides/developer/transactional#transactions-commit-and-rollback) ページを参照してください。
+:::
 
-
-## transactionOldestSnapshot {#transactionOldestSnapshot}
-
-Introduced in: v22.6
-
-
-<ExperimentalBadge/>
-<CloudNotSupportedBadge/>
-
-Returns the oldest snapshot (Commit Sequence Number) that is visible for some running [transaction](/guides/developer/transactional#transactions-commit-and-rollback).
-
-:::note
-This function is part of an experimental feature set. Enable experimental transaction support by adding this setting to your configuration:
+**構文**
 
 ```sql
 transactionLatestSnapshot()
 ```
 
-For more information see the page [Transactional (ACID) support](/guides/developer/transactional#transactions-commit-and-rollback).
-:::
+**引数**
 
+* なし。
 
-**Syntax**
+**戻り値**
+
+トランザクションの最新スナップショット（CSN）を返します。型は [`UInt64`](/sql-reference/data-types/int-uint) です。
+
+**例**
+
+**使用例**
 
 ```sql title=Query
 BEGIN TRANSACTION;
@@ -5413,23 +4904,24 @@ SELECT transactionLatestSnapshot();
 ROLLBACK;
 ```
 
-**Arguments**
-
-- None.
-
-**Returned value**
-
-Returns the oldest snapshot (CSN) of a transaction. [`UInt64`](/sql-reference/data-types/int-uint)
-
-**Examples**
-
-**Usage example**
-
 ```response title=Response
 ┌─transactionLatestSnapshot()─┐
 │                          32 │
 └─────────────────────────────┘
 ```
+
+## transactionOldestSnapshot {#transactionOldestSnapshot}
+
+導入バージョン: v22.6
+
+<ExperimentalBadge />
+
+<CloudNotSupportedBadge />
+
+実行中のいずれかの[トランザクション](/guides/developer/transactional#transactions-commit-and-rollback)から参照可能な、最も古いスナップショット（Commit Sequence Number）を返します。
+
+:::note
+この関数は実験的な機能セットの一部です。実験的なトランザクションサポートを有効にするには、次の設定を構成に追加してください。
 
 ```xml
 <clickhouse>
@@ -5437,50 +4929,26 @@ Returns the oldest snapshot (CSN) of a transaction. [`UInt64`](/sql-reference/da
 </clickhouse>
 ```
 
+詳しくは、[Transactional (ACID) support](/guides/developer/transactional#transactions-commit-and-rollback) のページを参照してください。
+:::
 
-
-## transform {#transform}
-
-Introduced in: v1.1
-
-
-Transforms a value according to the explicitly defined mapping of some elements to other elements.
-
-There are two variations of this function:
-- `transform(x, array_from, array_to, default)` - transforms `x` using mapping arrays with a default value for unmatched elements
-- `transform(x, array_from, array_to)` - same transformation but returns the original `x` if no match is found
-
-The function searches for `x` in `array_from` and returns the corresponding element from `array_to` at the same index.
-If `x` is not found in `array_from`, it returns either the `default` value (4-parameter version) or the original `x` (3-parameter version).
-If multiple matching elements exist in `array_from`, it returns the element corresponding to the first match.
-
-Requirements:
-- `array_from` and `array_to` must have the same number of elements
-- For 4-parameter version: `transform(T, Array(T), Array(U), U) -> U` where `T` and `U` can be different compatible types
-- For 3-parameter version: `transform(T, Array(T), Array(T)) -> T` where all types must be the same
-
-
-**Syntax**
+**構文**
 
 ```sql
 transactionOldestSnapshot()
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Value to transform. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Decimal`](/sql-reference/data-types/decimal) or [`Float*`](/sql-reference/data-types/float) or [`String`](/sql-reference/data-types/string) or [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime)
-- `array_from` — Constant array of values to search for matches. [`Array((U)Int*)`](/sql-reference/data-types/array) or [`Array(Decimal)`](/sql-reference/data-types/array) or [`Array(Float*)`](/sql-reference/data-types/array) or [`Array(String)`](/sql-reference/data-types/array) or [`Array(Date)`](/sql-reference/data-types/array) or [`Array(DateTime)`](/sql-reference/data-types/array)
-- `array_to` — Constant array of values to return for corresponding matches in `array_from`. [`Array((U)Int*)`](/sql-reference/data-types/array) or [`Array(Decimal)`](/sql-reference/data-types/array) or [`Array(Float*)`](/sql-reference/data-types/array) or [`Array(String)`](/sql-reference/data-types/array) or [`Array(Date)`](/sql-reference/data-types/array) or [`Array(DateTime)`](/sql-reference/data-types/array)
-- `default` — Optional. Value to return if `x` is not found in `array_from`. If omitted, returns x unchanged. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Decimal`](/sql-reference/data-types/decimal) or [`Float*`](/sql-reference/data-types/float) or [`String`](/sql-reference/data-types/string) or [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime)
+* なし。
 
+**戻り値**
 
-**Returned value**
+トランザクションの最も古いスナップショット（CSN）を表す値を返します。型は [`UInt64`](/sql-reference/data-types/int-uint) です。
 
-Returns the corresponding value from `array_to` if x matches an element in `array_from`, otherwise returns default (if provided) or x (if default not provided). [`Any`](/sql-reference/data-types)
+**例**
 
-**Examples**
-
-**transform(T, Array(T), Array(U), U) -> U**
+**使用例**
 
 ```sql title=Query
 BEGIN TRANSACTION;
@@ -5494,11 +4962,47 @@ ROLLBACK;
 └─────────────────────────────┘
 ```
 
-**transform(T, Array(T), Array(T)) -> T**
+## transform {#transform}
+
+導入バージョン: v1.1
+
+明示的に定義された「ある要素から別の要素への」マッピングに従って、値を変換します。
+
+この関数には 2 つのバリエーションがあります:
+
+* `transform(x, array_from, array_to, default)` - `x` をマッピング用配列に基づいて変換し、一致しない要素には `default` 値を使用します
+* `transform(x, array_from, array_to)` - 同じ変換を行いますが、一致が見つからない場合は元の `x` を返します
+
+関数は `array_from` 内で `x` を検索し、同じインデックス位置にある `array_to` の要素を返します。
+`x` が `array_from` に存在しない場合、4 パラメータ版では `default` 値を返し、3 パラメータ版では元の `x` を返します。
+`array_from` に複数の一致する要素が存在する場合、最初に一致した要素に対応する値を返します。
+
+要件:
+
+* `array_from` と `array_to` は同じ要素数でなければなりません
+* 4 パラメータ版: `transform(T, Array(T), Array(U), U) -> U` ここで `T` と `U` は互換性のある異なる型でかまいません
+* 3 パラメータ版: `transform(T, Array(T), Array(T)) -> T` ここではすべての型が同じでなければなりません
+
+**構文**
 
 ```sql
 transform(x, array_from, array_to[, default])
 ```
+
+**引数**
+
+* `x` — 変換する値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Decimal`](/sql-reference/data-types/decimal) または [`Float*`](/sql-reference/data-types/float) または [`String`](/sql-reference/data-types/string) または [`Date`](/sql-reference/data-types/date) または [`DateTime`](/sql-reference/data-types/datetime)
+* `array_from` — 一致を検索する対象となる定数配列。[`Array((U)Int*)`](/sql-reference/data-types/array) または [`Array(Decimal)`](/sql-reference/data-types/array) または [`Array(Float*)`](/sql-reference/data-types/array) または [`Array(String)`](/sql-reference/data-types/array) または [`Array(Date)`](/sql-reference/data-types/array) または [`Array(DateTime)`](/sql-reference/data-types/array)
+* `array_to` — `array_from` 内の一致する要素に対応して返される値の定数配列。[`Array((U)Int*)`](/sql-reference/data-types/array) または [`Array(Decimal)`](/sql-reference/data-types/array) または [`Array(Float*)`](/sql-reference/data-types/array) または [`Array(String)`](/sql-reference/data-types/array) または [`Array(Date)`](/sql-reference/data-types/array) または [`Array(DateTime)`](/sql-reference/data-types/array)
+* `default` — 省略可能。`x` が `array_from` 内に見つからなかった場合に返す値。省略された場合は、`x` をそのまま返します。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Decimal`](/sql-reference/data-types/decimal) または [`Float*`](/sql-reference/data-types/float) または [`String`](/sql-reference/data-types/string) または [`Date`](/sql-reference/data-types/date) または [`DateTime`](/sql-reference/data-types/datetime)
+
+**戻り値**
+
+`x` が `array_from` の要素と一致する場合は `array_to` から対応する値を返し、一致しない場合は `default` が指定されていれば `default` を、指定されていなければ `x` を返します。[`Any`](/sql-reference/data-types)
+
+**例**
+
+**transform(T, Array(T), Array(U), U) -&gt; U**
 
 ```sql title=Query
 SELECT
@@ -5510,18 +5014,6 @@ GROUP BY title
 ORDER BY c DESC
 ```
 
-
-
-## uniqThetaIntersect {#uniqThetaIntersect}
-
-Introduced in: v22.9
-
-
-Two uniqThetaSketch objects to do intersect calculation(set operation ∩), the result is a new uniqThetaSketch.
-    
-
-**Syntax**
-
 ```response title=Response
 ┌─title─────┬──────c─┐
 │ Yandex    │ 498635 │
@@ -5530,18 +5022,7 @@ Two uniqThetaSketch objects to do intersect calculation(set operation ∩), the 
 └───────────┴────────┘
 ```
 
-**Arguments**
-
-- `uniqThetaSketch` — uniqThetaSketch object. [`Tuple`](/sql-reference/data-types/tuple) or [`Array`](/sql-reference/data-types/array) or [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-
-
-**Returned value**
-
-A new uniqThetaSketch containing the intersect result. [`UInt64`](/sql-reference/data-types/int-uint)
-
-**Examples**
-
-**Usage example**
+**transform(T, Array(T), Array(T)) -&gt; T**
 
 ```sql title=Query
 SELECT
@@ -5566,34 +5047,29 @@ LIMIT 10
 └────────────────┴─────────┘
 ```
 
+## uniqThetaIntersect {#uniqThetaIntersect}
 
+導入バージョン: v22.9
 
-## uniqThetaNot {#uniqThetaNot}
+2 つの uniqThetaSketch オブジェクトの積集合（集合演算 ∩）を計算し、その結果として新しい uniqThetaSketch を返します。
 
-Introduced in: v22.9
-
-
-Two uniqThetaSketch objects to do a_not_b calculation(set operation ×), the result is a new uniqThetaSketch.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 uniqThetaIntersect(uniqThetaSketch,uniqThetaSketch)
 ```
 
-**Arguments**
+**引数**
 
-- `uniqThetaSketch` — uniqThetaSketch object. [`Tuple`](/sql-reference/data-types/tuple) or [`Array`](/sql-reference/data-types/array) or [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+* `uniqThetaSketch` — uniqThetaSketch オブジェクト。[`Tuple`](/sql-reference/data-types/tuple) または [`Array`](/sql-reference/data-types/array) または [`Date`](/sql-reference/data-types/date) または [`DateTime`](/sql-reference/data-types/datetime) または [`String`](/sql-reference/data-types/string) または [`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
 
+**戻り値**
 
-**Returned value**
+共通部分の結果を含む新しい uniqThetaSketch。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns a new uniqThetaSketch containing the a_not_b result. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT finalizeAggregation(uniqThetaIntersect(a, b)) AS a_intersect_b, finalizeAggregation(a) AS a_cardinality, finalizeAggregation(b) AS b_cardinality
@@ -5607,34 +5083,29 @@ FROM
 └───────────────┴───────────────┴───────────────┘
 ```
 
+## uniqThetaNot {#uniqThetaNot}
 
+導入バージョン: v22.9
 
-## uniqThetaUnion {#uniqThetaUnion}
+2 つの uniqThetaSketch オブジェクトに対して a&#95;not&#95;b（集合演算 ×）を計算し、その結果として新しい uniqThetaSketch を生成します。
 
-Introduced in: v22.9
-
-
-Two uniqThetaSketch objects to do union calculation(set operation ∪), the result is a new uniqThetaSketch.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 uniqThetaNot(uniqThetaSketch,uniqThetaSketch)
 ```
 
-**Arguments**
+**引数**
 
-- `uniqThetaSketch` — uniqThetaSketch object. [`Tuple`](/sql-reference/data-types/tuple) or [`Array`](/sql-reference/data-types/array) or [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+* `uniqThetaSketch` — uniqThetaSketch オブジェクト。[`Tuple`](/sql-reference/data-types/tuple) または [`Array`](/sql-reference/data-types/array) または [`Date`](/sql-reference/data-types/date) または [`DateTime`](/sql-reference/data-types/datetime) または [`String`](/sql-reference/data-types/string) または [`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
 
+**戻り値**
 
-**Returned value**
+a&#95;not&#95;b の結果を保持する新しい uniqThetaSketch オブジェクトを返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns a new uniqThetaSketch containing the union result. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT finalizeAggregation(uniqThetaNot(a, b)) AS a_not_b, finalizeAggregation(a) AS a_cardinality, finalizeAggregation(b) AS b_cardinality
@@ -5648,35 +5119,29 @@ FROM
 └─────────┴───────────────┴───────────────┘
 ```
 
+## uniqThetaUnion {#uniqThetaUnion}
 
+導入バージョン: v22.9
 
-## uptime {#uptime}
+2 つの uniqThetaSketch オブジェクトに対して和集合（集合演算 ∪）を計算し、その結果として新しい uniqThetaSketch を返します。
 
-Introduced in: v1.1
-
-
-Returns the server's uptime in seconds.
-If executed in the context of a distributed table, this function generates a normal column with values relevant to each shard.
-Otherwise it produces a constant value.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 uniqThetaUnion(uniqThetaSketch,uniqThetaSketch)
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* `uniqThetaSketch` — uniqThetaSketch オブジェクト。[`Tuple`](/sql-reference/data-types/tuple)、[`Array`](/sql-reference/data-types/array)、[`Date`](/sql-reference/data-types/date)、[`DateTime`](/sql-reference/data-types/datetime)、[`String`](/sql-reference/data-types/string)、[`(U)Int*`](/sql-reference/data-types/int-uint)、[`Float*`](/sql-reference/data-types/float)、または [`Decimal`](/sql-reference/data-types/decimal)
 
-**Returned value**
+**返される値**
 
-Returns the server uptime in seconds. [`UInt32`](/sql-reference/data-types/int-uint)
+和集合の結果を含む新しい uniqThetaSketch を返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT finalizeAggregation(uniqThetaUnion(a, b)) AS a_union_b, finalizeAggregation(a) AS a_cardinality, finalizeAggregation(b) AS b_cardinality
@@ -5690,36 +5155,31 @@ FROM
 └───────────┴───────────────┴───────────────┘
 ```
 
+## uptime {#uptime}
 
+導入: v1.1
 
-## variantElement {#variantElement}
+サーバーの稼働時間を秒単位で返します。
+分散テーブル上で実行した場合、この関数は各分片ごとに対応する値を持つ通常のカラムを生成します。
+それ以外の場合は定数値を返します。
 
-Introduced in: v25.2
-
-
-Extracts a column with specified type from a `Variant` column.
-
-
-**Syntax**
+**構文**
 
 ```sql
 uptime()
 ```
 
-**Arguments**
+**引数**
 
-- `variant` — Variant column. [`Variant`](/sql-reference/data-types/variant)
-- `type_name` — The name of the variant type to extract. [`String`](/sql-reference/data-types/string)
-- `default_value` — The default value that will be used if variant doesn't have variant with specified type. Can be any type. Optional. [`Any`](/sql-reference/data-types)
+* なし。
 
+**戻り値**
 
-**Returned value**
+サーバーの稼働時間を秒単位で返します。 [`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns a column with the specified variant type extracted from the Variant column. [`Any`](/sql-reference/data-types)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT uptime() AS Uptime
@@ -5731,34 +5191,31 @@ SELECT uptime() AS Uptime
 └────────┘
 ```
 
+## variantElement {#variantElement}
 
+導入バージョン: v25.2
 
-## variantType {#variantType}
+`Variant` カラムから指定した型のカラムを抽出します。
 
-Introduced in: v24.2
-
-
-Returns the variant type name for each row of `Variant` column. If row contains NULL, it returns 'None' for it.
-
-
-**Syntax**
+**構文**
 
 ```sql
 variantElement(variant, type_name[, default_value])
 ```
 
-**Arguments**
+**引数**
 
-- `variant` — Variant column. [`Variant`](/sql-reference/data-types/variant)
+* `variant` — Variant カラム。[`Variant`](/sql-reference/data-types/variant)
+* `type_name` — 抽出する Variant 型の名前。[`String`](/sql-reference/data-types/string)
+* `default_value` — Variant 値に指定した型の値が含まれていない場合に使用されるデフォルト値。任意の型を指定可能。省略可。[`Any`](/sql-reference/data-types)
 
+**戻り値**
 
-**Returned value**
+Variant カラムから指定した Variant 型を抽出したカラムを返します。[`Any`](/sql-reference/data-types)
 
-Returns an Enum column with variant type name for each row. [`Enum`](/sql-reference/data-types/enum)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 CREATE TABLE test (v Variant(UInt64, String, Array(UInt64))) ENGINE = Memory;
@@ -5775,35 +5232,29 @@ SELECT v, variantElement(v, 'String'), variantElement(v, 'UInt64'), variantEleme
 └───────────────┴─────────────────────────────┴─────────────────────────────┴────────────────────────────────────┘
 ```
 
+## variantType {#variantType}
 
+導入バージョン: v24.2
 
-## version {#version}
+`Variant` 型カラムの各行に対して、対応するバリアント型名を返します。行に NULL が含まれている場合、その行には &#39;None&#39; を返します。
 
-Introduced in: v1.1
-
-
-Returns the current version of ClickHouse as a string in the form: `major_version.minor_version.patch_version.number_of_commits_since_the_previous_stable_release`.
-If executed in the context of a distributed table, this function generates a normal column with values relevant to each shard.
-Otherwise, it produces a constant value.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 variantType(variant)
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* `variant` — Variant 型のカラム。[`Variant`](/sql-reference/data-types/variant)
 
-**Returned value**
+**返される値**
 
-Returns the current version of ClickHouse. [`String`](/sql-reference/data-types/string)
+各行の Variant 型名を持つ Enum 型のカラムを返します。[`Enum`](/sql-reference/data-types/enum)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 CREATE TABLE test (v Variant(UInt64, String, Array(UInt64))) ENGINE = Memory;
@@ -5820,36 +5271,31 @@ SELECT variantType(v) FROM test;
 └────────────────┘
 ```
 
+## version {#version}
 
+導入バージョン: v1.1
 
-## visibleWidth {#visibleWidth}
+`major_version.minor_version.patch_version.number_of_commits_since_the_previous_stable_release` の形式で、現在の ClickHouse のバージョンを文字列として返します。
+分散テーブルのコンテキストで実行する場合、この関数は各分片に対応する値を持つ通常のカラムを生成します。
+それ以外の場合は、定数値を返します。
 
-Introduced in: v1.1
-
-
-Calculates the approximate width when outputting values to the console in text format (tab-separated).
-This function is used by the system to implement Pretty formats.
-`NULL` is represented as a string corresponding to `NULL` in Pretty formats.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 version()
 ```
 
-**Arguments**
+**引数**
 
-- `x` — A value of any data type. [`Any`](/sql-reference/data-types)
+* なし。
 
+**戻り値**
 
-**Returned value**
+現在のClickHouseのバージョンを返します。[`String`](/sql-reference/data-types/string)
 
-Returns the approximate width of the value when displayed in text format. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Calculate visible width of NULL**
+**使用例**
 
 ```sql title=Query
 SELECT version()
@@ -5861,33 +5307,31 @@ SELECT version()
 └───────────┘
 ```
 
+## visibleWidth {#visibleWidth}
 
+導入: v1.1
 
-## zookeeperSessionUptime {#zookeeperSessionUptime}
+値をテキスト形式（タブ区切り）でコンソールに出力する際の、おおよその表示幅を計算します。
+この関数は、Pretty 形式の実装にシステム側で使用されます。
+`NULL` は、Pretty 形式における `NULL` に対応する文字列として表現されます。
 
-Introduced in: v21.11
-
-
-Returns the uptime of the current ZooKeeper session in seconds.
-
-
-**Syntax**
+**構文**
 
 ```sql
 visibleWidth(x)
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* `x` — 任意のデータ型の値。[`Any`](/sql-reference/data-types)
 
-**Returned value**
+**戻り値**
 
-Returns the uptime of the current ZooKeeper session in seconds. [`UInt32`](/sql-reference/data-types/int-uint)
+値をテキスト形式で表示したときのおおよその表示幅を返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-**Examples**
+**例**
 
-**Usage example**
+**NULL の表示幅を計算する**
 
 ```sql title=Query
 SELECT visibleWidth(NULL)

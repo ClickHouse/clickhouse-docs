@@ -53,31 +53,29 @@ SELECT bitmapToArray(bitmapAnd(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5]))) 
 └─────┘
 ```
 
-
-
 ## bitmapAndCardinality {#bitmapAndCardinality}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
-Returns the cardinality of the logical conjunction (AND) of two bitmaps.
+2つのビットマップの論理積 (AND) のカーディナリティ（要素数）を返します。
 
-**Syntax**
+**構文**
 
 ```sql
 bitmapAndCardinality(bitmap1, bitmap2)
 ```
 
-**Arguments**
+**引数**
 
-- `bitmap1` — First bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — Second bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
+* `bitmap1` — 1つ目のビットマップオブジェクト。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — 2つ目のビットマップオブジェクト。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction).
 
-**Returned value**
+**戻り値**
 
-Returns the number of set bits in the intersection of the two bitmaps [`UInt64`](/sql-reference/data-types/int-uint)
+2つのビットマップの積集合において、ビットがセットされている数を返します。型は [`UInt64`](/sql-reference/data-types/int-uint) です。
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT bitmapAndCardinality(bitmapBuild([1,2,3]), bitmapBuild([3,4,5])) AS res;
@@ -89,31 +87,29 @@ SELECT bitmapAndCardinality(bitmapBuild([1,2,3]), bitmapBuild([3,4,5])) AS res;
 └─────┘
 ```
 
-
-
 ## bitmapAndnot {#bitmapAndnot}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
-Computes the set difference A AND-NOT B of two bitmaps.
+2つのビットマップについて、集合差 A AND-NOT B を計算します。
 
-**Syntax**
+**構文**
 
 ```sql
 bitmapAndnot(bitmap1, bitmap2)
 ```
 
-**Arguments**
+**引数**
 
-- `bitmap1` — First bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — Second bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
+* `bitmap1` — 1つ目のビットマップオブジェクト。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — 2つ目のビットマップオブジェクト。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction).
 
-**Returned value**
+**返り値**
 
-Returns a bitmap containing set bits present in the first bitmap but not in the second [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
+1つ目のビットマップには含まれているが、2つ目のビットマップには含まれていないビットが立っているビットマップを返します。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT bitmapToArray(bitmapAndnot(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5]))) AS res;
@@ -125,31 +121,29 @@ SELECT bitmapToArray(bitmapAndnot(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5])
 └────────┘
 ```
 
-
-
 ## bitmapAndnotCardinality {#bitmapAndnotCardinality}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
-Returns the cardinality of the AND-NOT operation of two bitmaps.
+2 つのビットマップに対する AND-NOT 演算のカーディナリティ（基数）を返します。
 
-**Syntax**
+**構文**
 
 ```sql
 bitmapAndnotCardinality(bitmap1, bitmap2)
 ```
 
-**Arguments**
+**引数**
 
-- `bitmap1` — First bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — Second bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
+* `bitmap1` — 1番目のビットマップオブジェクト。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — 2番目のビットマップオブジェクト。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction).
 
-**Returned value**
+**返される値**
 
-Returns the number of set bits in the result of `bitmap1 AND-NOT bitmap2` [`UInt64`](/sql-reference/data-types/int-uint)
+`bitmap1 AND-NOT bitmap2` の結果における、セットされているビット数（[`UInt64`](/sql-reference/data-types/int-uint)）を返します。
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT bitmapAndnotCardinality(bitmapBuild([1,2,3]), bitmapBuild([3,4,5])) AS res;
@@ -161,32 +155,29 @@ SELECT bitmapAndnotCardinality(bitmapBuild([1,2,3]), bitmapBuild([3,4,5])) AS re
 └─────┘
 ```
 
-
-
 ## bitmapBuild {#bitmapBuild}
 
-Introduced in: v20.1
+導入: v20.1
 
-Builds a bitmap from an unsigned integer array. It is the opposite of function [`bitmapToArray`](/sql-reference/functions/bitmap-functions#bitmapToArray).
+符号なし整数の配列からビットマップを構築します。関数 [`bitmapToArray`](/sql-reference/functions/bitmap-functions#bitmapToArray) とは逆の関係にあります。
 
-**Syntax**
+**構文**
 
 ```sql
 bitmapBuild(array)
 ```
 
-**Arguments**
+**引数**
 
-- `array` — Unsigned integer array. [`Array(UInt*)`](/sql-reference/data-types/array)
+* `array` — 符号なし整数の配列。[`Array(UInt*)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+指定された配列からビットマップを生成して返します。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
 
-Returns a bitmap from the provided array [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT bitmapBuild([1, 2, 3, 4, 5]) AS res, toTypeName(res);
@@ -198,31 +189,29 @@ SELECT bitmapBuild([1, 2, 3, 4, 5]) AS res, toTypeName(res);
 └─────┴──────────────────────────────────────────────┘
 ```
 
-
-
 ## bitmapCardinality {#bitmapCardinality}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
-Returns the number of bits set (the cardinality) in the bitmap.
+ビットマップ内で 1 に設定されているビット数（カーディナリティ）を返します。
 
-**Syntax**
+**構文**
 
 ```sql
 bitmapCardinality(bitmap)
 ```
 
-**Arguments**
+**引数**
 
-- `bitmap` — Bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
+* `bitmap` — Bitmap オブジェクト。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)。
 
-**Returned value**
+**戻り値**
 
-Returns the number of bits set in the bitmap [`UInt64`](/sql-reference/data-types/int-uint)
+ビットマップ内で 1 に設定されているビットの数を返します。型は [`UInt64`](/sql-reference/data-types/int-uint) です。
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT bitmapCardinality(bitmapBuild([1, 3, 3, 5, 7, 7])) AS res
@@ -234,31 +223,29 @@ SELECT bitmapCardinality(bitmapBuild([1, 3, 3, 5, 7, 7])) AS res
 └─────┘
 ```
 
-
-
 ## bitmapContains {#bitmapContains}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
-Checks if the bitmap contains a specific element.
+特定の要素がビットマップに含まれているかを確認します。
 
-**Syntax**
+**構文**
 
 ```sql
 bitmapContains(bitmap, value)
 ```
 
-**Arguments**
+**引数**
 
-- `bitmap` — Bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `value` — Element to check for. [(U)Int8/16/32/64](/sql-reference/data-types/int-uint/) 
+* `bitmap` — Bitmap オブジェクト。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)。- `value` — 含まれているかをチェックする要素。[(U)Int8/16/32/64](/sql-reference/data-types/int-uint/)
 
-**Returned value**
+**戻り値**
 
-Returns `1` if the bitmap contains the specified value, otherwise `0` [`UInt8`](/sql-reference/data-types/int-uint)
+ビットマップ内に指定した値が含まれている場合は `1`、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT bitmapContains(bitmapBuild([1, 2, 3]), 2) AS res;
@@ -270,31 +257,30 @@ SELECT bitmapContains(bitmapBuild([1, 2, 3]), 2) AS res;
 └─────┘
 ```
 
-
-
 ## bitmapHasAll {#bitmapHasAll}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
-Checks if the first bitmap contains all set bits of the second bitmap.
+最初のビットマップが、2番目のビットマップのすべてのセットビットを含んでいるかどうかを判定します。
 
-**Syntax**
+**構文**
 
 ```sql
 bitmapHasAll(bitmap1, bitmap2)
 ```
 
-**Arguments**
+**引数**
 
-- `bitmap1` — First bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — Second bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
+* `bitmap1` — 1 番目のビットマップオブジェクト。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
+* `bitmap2` — 2 番目のビットマップオブジェクト。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
 
-**Returned value**
+**戻り値**
 
-Returns `1` if all set bits of the second bitmap are present in the first bitmap, otherwise `0` [`UInt8`](/sql-reference/data-types/int-uint)
+2 番目のビットマップでセットされているすべてのビットが 1 番目のビットマップにも存在する場合は `1` を返し、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT bitmapHasAll(bitmapBuild([1, 2, 3]), bitmapBuild([2, 3])) AS res;
@@ -306,31 +292,29 @@ SELECT bitmapHasAll(bitmapBuild([1, 2, 3]), bitmapBuild([2, 3])) AS res;
 └─────┘
 ```
 
-
-
 ## bitmapHasAny {#bitmapHasAny}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
-Checks if the first bitmap contains any set bits of the second bitmap.
+最初のビットマップが、2 番目のビットマップでセットされているビットを 1 つ以上含んでいるかどうかを判定します。
 
-**Syntax**
+**構文**
 
 ```sql
 bitmapHasAny(bitmap1, bitmap2)
 ```
 
-**Arguments**
+**引数**
 
-- `bitmap1` — First bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — Second bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
+* `bitmap1` — 1 番目のビットマップオブジェクト。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction) 型。 - `bitmap2` — 2 番目のビットマップオブジェクト。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction) 型。
 
-**Returned value**
+**戻り値**
 
-Returns `1` if any bits of the second bitmap are present in the first bitmap, otherwise `0` [`UInt8`](/sql-reference/data-types/int-uint)
+2 番目のビットマップのビットのうちいずれかが 1 番目のビットマップに存在する場合は `1` を返し、そうでない場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT bitmapHasAny(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5])) AS res;
@@ -342,31 +326,29 @@ SELECT bitmapHasAny(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5])) AS res;
 └─────┘
 ```
 
-
-
 ## bitmapMax {#bitmapMax}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
-Returns the position of the greatest bit set in a bitmap, or `0` if the bitmap is empty.
+ビットマップ内で最も大きいビットが立っている位置を返します。ビットマップが空の場合は `0` を返します。
 
-**Syntax**
+**構文**
 
 ```sql
 bitmapMax(bitmap)
 ```
 
-**Arguments**
+**引数**
 
-- `bitmap` — Bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
+* `bitmap` — Bitmap オブジェクト。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)。
 
-**Returned value**
+**返される値**
 
-Returns the position of the greatest bit set in the bitmap, otherwise `0` [`UInt64`](/sql-reference/data-types/int-uint)
+ビットマップ内で 1 にセットされているビットのうち、最も大きい位置を返し、該当するビットがない場合は `0` を返します。型は [`UInt64`](/sql-reference/data-types/int-uint) です。
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT bitmapMax(bitmapBuild([1, 2, 3, 4, 5])) AS res;
@@ -378,31 +360,29 @@ SELECT bitmapMax(bitmapBuild([1, 2, 3, 4, 5])) AS res;
 └─────┘
 ```
 
-
-
 ## bitmapMin {#bitmapMin}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
-Returns the position of the smallest bit set in a bitmap. If all bits are unset, or `UINT32_MAX` (`UINT64_MAX` if the bitmap contains more than `2^64` bits).
+ビットマップ内で 1 に設定されているビットのうち、最小のビット（最下位ビット）の位置を返します。すべてのビットが未設定の場合は `UINT32_MAX` を、ビットマップが `2^64` ビットを超える場合は `UINT64_MAX` を返します。
 
-**Syntax**
+**構文**
 
 ```sql
 bitmapMin(bitmap)
 ```
 
-**Arguments**
+**引数**
 
-- `bitmap` — Bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
+* `bitmap` — ビットマップオブジェクト。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)。
 
-**Returned value**
+**返される値**
 
-Returns the position of the smallest bit set in the bitmap, or `UINT32_MAX`/`UINT64_MAX` [`UInt64`](/sql-reference/data-types/int-uint)
+ビットマップ内で 1 に設定されている最小のビット位置、または `UINT32_MAX`/`UINT64_MAX` [`UInt64`](/sql-reference/data-types/int-uint) を返します。
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT bitmapMin(bitmapBuild([3, 5, 2, 6])) AS res;
@@ -414,31 +394,29 @@ SELECT bitmapMin(bitmapBuild([3, 5, 2, 6])) AS res;
 └─────┘
 ```
 
-
-
 ## bitmapOr {#bitmapOr}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
-Computes the logical disjunction (OR) of two bitmaps.
+2つのビットマップの論理和 (OR) を計算します。
 
-**Syntax**
+**構文**
 
 ```sql
 bitmapOr(bitmap1, bitmap2)
 ```
 
-**Arguments**
+**引数**
 
-- `bitmap1` — First bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — Second bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
+* `bitmap1` — 1つ目のビットマップオブジェクト。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — 2つ目のビットマップオブジェクト。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction).
 
-**Returned value**
+**戻り値**
 
-Returns a bitmap containing set bits present in either input bitmap [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
+いずれかの入力ビットマップ [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction) に存在するセットビットを含むビットマップを返します。
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT bitmapToArray(bitmapOr(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5]))) AS res;
@@ -450,31 +428,29 @@ SELECT bitmapToArray(bitmapOr(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5]))) A
 └─────────────────┘
 ```
 
-
-
 ## bitmapOrCardinality {#bitmapOrCardinality}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
-Returns the cardinality of the logical disjunction (OR) of two bitmaps.
+2 つのビットマップに対する論理和 (OR) のカーディナリティ（要素数）を返します。
 
-**Syntax**
+**構文**
 
 ```sql
 bitmapOrCardinality(bitmap1, bitmap2)
 ```
 
-**Arguments**
+**引数**
 
-- `bitmap1` — First bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — Second bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
+* `bitmap1` — 1 つ目のビットマップオブジェクト。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — 2 つ目のビットマップオブジェクト。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction).
 
-**Returned value**
+**戻り値**
 
-Returns the number of set bits in the union of the two bitmaps [`UInt64`](/sql-reference/data-types/int-uint)
+2 つのビットマップの和集合において、セットされているビット数を返します。型は [`UInt64`](/sql-reference/data-types/int-uint) です。
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT bitmapOrCardinality(bitmapBuild([1,2,3]), bitmapBuild([3,4,5])) AS res;
@@ -486,31 +462,29 @@ SELECT bitmapOrCardinality(bitmapBuild([1,2,3]), bitmapBuild([3,4,5])) AS res;
 └─────┘
 ```
 
-
-
 ## bitmapSubsetInRange {#bitmapSubsetInRange}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
-Returns a subset of the bitmap, containing only the set bits in the specified range [start, end). Uses 1-based indexing.
+指定された範囲 [start, end) にあるセットビットのみを含むビットマップの部分集合を返します。インデックスは 1 始まりです。
 
-**Syntax**
+**構文**
 
 ```sql
 bitmapSubsetInRange(bitmap, start, end)
 ```
 
-**Arguments**
+**引数**
 
-- `bitmap` — Bitmap to extract the subset from. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `start` — Start of the range (inclusive). [`UInt*`](/sql-reference/data-types/int-uint) - `end` — End of the range (exclusive). [`UInt*`](/sql-reference/data-types/int-uint) 
+* `bitmap` — サブセットを抽出するビットマップ。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `start` — 範囲の開始位置（含む）。[`UInt*`](/sql-reference/data-types/int-uint) - `end` — 範囲の終了位置（含まない）。[`UInt*`](/sql-reference/data-types/int-uint)
 
-**Returned value**
+**戻り値**
 
-Returns a bitmap containing only the set bits in the specified range [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
+指定した範囲内でセットされているビットのみを含むビットマップを返します。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT bitmapToArray(bitmapSubsetInRange(bitmapBuild([1, 2, 3, 4, 5]), 2, 5)) AS res;
@@ -522,31 +496,29 @@ SELECT bitmapToArray(bitmapSubsetInRange(bitmapBuild([1, 2, 3, 4, 5]), 2, 5)) AS
 └───────────┘
 ```
 
-
-
 ## bitmapSubsetLimit {#bitmapSubsetLimit}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
-Returns a subset of a bitmap from position `range_start` with at most `cardinality_limit` set bits. Uses 1-based indexing.
+ビットマップの `range_start` 位置から、最大で `cardinality_limit` 個のビットが 1 に設定された要素を含む部分集合を返します。インデックスは 1 始まりです。
 
-**Syntax**
+**構文**
 
 ```sql
 bitmapSubsetLimit(bitmap, range_start, cardinality_limit)
 ```
 
-**Arguments**
+**引数**
 
-- `bitmap` — Bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `range_start` — Start of the range (inclusive). [`UInt32`](/sql-reference/data-types/int-uint) - `cardinality_limit` — Maximum cardinality of the subset. [`UInt32`](/sql-reference/data-types/int-uint) 
+* `bitmap` — Bitmap オブジェクト。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `range_start` — 範囲の開始位置（含む）。[`UInt32`](/sql-reference/data-types/int-uint) - `cardinality_limit` — 部分集合の最大カーディナリティ。[`UInt32`](/sql-reference/data-types/int-uint)
 
-**Returned value**
+**戻り値**
 
-Returns a bitmap containing at most `cardinality_limit` set bits, starting from `range_start` [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
+`range_start` から開始して、最大で `cardinality_limit` 個までビットがセットされた Bitmap を返します。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT bitmapToArray(bitmapSubsetLimit(bitmapBuild([1, 5, 3, 2, 8]), 3, 2)) AS res;
@@ -558,31 +530,29 @@ SELECT bitmapToArray(bitmapSubsetLimit(bitmapBuild([1, 5, 3, 2, 8]), 3, 2)) AS r
 └────────┘
 ```
 
-
-
 ## bitmapToArray {#bitmapToArray}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
-Converts a bitmap to an array of unsigned integers. It is the opposite of function [`bitmapBuild`](/sql-reference/functions/bitmap-functions#bitmapBuild).
+ビットマップを符号なし整数の配列に変換します。これは、関数 [`bitmapBuild`](/sql-reference/functions/bitmap-functions#bitmapBuild) の逆の処理を行います。
 
-**Syntax**
+**構文**
 
 ```sql
 bitmapToArray(bitmap)
 ```
 
-**Arguments**
+**引数**
 
-- `bitmap` — Bitmap to convert. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
+* `bitmap` — 変換するビットマップ。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)。
 
-**Returned value**
+**返り値**
 
-Returns an array of unsigned integers contained in the bitmap [`Array(UInt*)`](/sql-reference/data-types/array)
+ビットマップに含まれる符号なし整数から成る配列を返します。[`Array(UInt*)`](/sql-reference/data-types/array)。
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT bitmapToArray(bitmapBuild([1, 2, 3, 4, 5])) AS res;
@@ -594,33 +564,29 @@ SELECT bitmapToArray(bitmapBuild([1, 2, 3, 4, 5])) AS res;
 └─────────────────┘
 ```
 
-
-
 ## bitmapTransform {#bitmapTransform}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
+`from_array` 内の特定のビット値を `to_array` 内の対応するビット値に置き換えることで、ビットマップ中の最大 N 個のビットを変更します。
 
-Changes up to N bits in a bitmap by swapping specific bit values in `from_array` with corresponding ones in `to_array`.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 bitmapTransform(bitmap, from_array, to_array)
 ```
 
-**Arguments**
+**引数**
 
-- `bitmap` — Bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `from_array` — Array of original set bits to be replaced. [`Array(T)`](/sql-reference/data-types/array). - `to_array` — Array of new set bits to replace with. [`Array(T)`](/sql-reference/data-types/array). 
+* `bitmap` — ビットマップオブジェクト。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `from_array` — 置き換え対象となる元のセットビットの配列。[`Array(T)`](/sql-reference/data-types/array). - `to_array` — 置き換え後の新しいセットビットの配列。[`Array(T)`](/sql-reference/data-types/array).
 
-**Returned value**
+**戻り値**
 
-Returns a bitmap with elements transformed according to the given mapping [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
+指定されたマッピングに従って要素が変換されたビットマップを返します。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT bitmapToArray(bitmapTransform(bitmapBuild([1, 2, 3, 4, 5]), [2, 4], [20, 40])) AS res;
@@ -632,31 +598,29 @@ SELECT bitmapToArray(bitmapTransform(bitmapBuild([1, 2, 3, 4, 5]), [2, 4], [20, 
 └───────────────────┘
 ```
 
-
-
 ## bitmapXor {#bitmapXor}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
-Computes the symmetric difference (XOR) of two bitmaps.
+2つのビットマップの対称差（XOR）を計算します。
 
-**Syntax**
+**構文**
 
 ```sql
 bitmapXor(bitmap1, bitmap2)
 ```
 
-**Arguments**
+**引数**
 
-- `bitmap1` — First bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — Second bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
+* `bitmap1` — 1番目のビットマップオブジェクト。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction) - `bitmap2` — 2番目のビットマップオブジェクト。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
 
-**Returned value**
+**返される値**
 
-Returns a bitmap containing set bits present in either input bitmap, but not in both [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
+いずれか一方の入力ビットマップには存在するが、両方には存在しないセットビットを含むビットマップを返します。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT bitmapToArray(bitmapXor(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5]))) AS res;
@@ -668,31 +632,29 @@ SELECT bitmapToArray(bitmapXor(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5]))) 
 └──────────────┘
 ```
 
-
-
 ## bitmapXorCardinality {#bitmapXorCardinality}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
-Returns the cardinality of the XOR (symmetric difference) of two bitmaps.
+2 つのビットマップの XOR（対称差）のカーディナリティ（要素数）を返します。
 
-**Syntax**
+**構文**
 
 ```sql
 bitmapXorCardinality(bitmap1, bitmap2)
 ```
 
-**Arguments**
+**引数**
 
-- `bitmap1` — First bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — Second bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). 
+* `bitmap1` — 1つ目のビットマップオブジェクト。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `bitmap2` — 2つ目のビットマップオブジェクト。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction).
 
-**Returned value**
+**返される値**
 
-Returns the number of set bits in the symmetric difference of the two bitmaps [`UInt64`](/sql-reference/data-types/int-uint)
+2つのビットマップの対称差におけるセットビット数を返します。型は [`UInt64`](/sql-reference/data-types/int-uint) です。
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT bitmapXorCardinality(bitmapBuild([1,2,3]), bitmapBuild([3,4,5])) AS res;
@@ -704,31 +666,29 @@ SELECT bitmapXorCardinality(bitmapBuild([1,2,3]), bitmapBuild([3,4,5])) AS res;
 └─────┘
 ```
 
-
-
 ## subBitmap {#subBitmap}
 
-Introduced in: v21.9
+導入バージョン: v21.9
 
-Returns a subset of the bitmap, starting from position `offset`. The maximum cardinality of the returned bitmap is `cardinality_limit`.
+ビットマップの `offset` から始まる部分集合を返します。返されるビットマップの最大要素数（カーディナリティ）は `cardinality_limit` です。
 
-**Syntax**
+**構文**
 
 ```sql
 subBitmap(bitmap, offset, cardinality_limit)
 ```
 
-**Arguments**
+**引数**
 
-- `bitmap` — Bitmap object. [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `offset` — Number of set bits to skip from the beginning (zero-based). [`UInt32`](/sql-reference/data-types/int-uint) - `cardinality_limit` — Maximum number of set bits to include in the subset. [`UInt32`](/sql-reference/data-types/int-uint) 
+* `bitmap` — ビットマップオブジェクト。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `offset` — 先頭からスキップするセットビットの数（0 始まり）。[`UInt32`](/sql-reference/data-types/int-uint) - `cardinality_limit` — サブセットに含めるセットビットの最大数。[`UInt32`](/sql-reference/data-types/int-uint)
 
-**Returned value**
+**戻り値**
 
-Returns a bitmap containing at most `limit` set bits, starting after skipping `offset` set bits in ascending order [`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
+セットビットを昇順に見て先頭から `offset` 個スキップした後、最大 `limit` 個のセットビットを含むビットマップを返します。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT bitmapToArray(subBitmap(bitmapBuild([1, 2, 3, 4, 5]), 2, 2)) AS res;

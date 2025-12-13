@@ -121,7 +121,7 @@ SELECT hex(HMAC('sha256', 'The quick brown fox jumps over the lazy dog', 'secret
 └──────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**Different hash algorithms**
+**異なるハッシュアルゴリズム**
 
 ```sql title=Query
 SELECT
@@ -136,7 +136,7 @@ SELECT
 └──────────────────────────────────┴──────────────────────────────────────────┴──────────────────────────────────────────────────────────────────┘
 ```
 
-**Case-insensitive mode**
+**大文字と小文字を区別しないモード**
 
 ```sql title=Query
 SELECT
@@ -150,47 +150,42 @@ SELECT
 └─────────────┴───────────┘
 ```
 
+## aes&#95;decrypt&#95;mysql {#aes&#95;decrypt&#95;mysql}
 
+導入バージョン: v20.12
 
-## aes_decrypt_mysql {#aes_decrypt_mysql}
+MySQL の [`AES_ENCRYPT`](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_aes-encrypt) 関数で暗号化されたデータを復号します。
 
-Introduced in: v20.12
+同じ入力に対しては、[`decrypt`](#decrypt) と同じ平文を返します。
+`key` または `iv` が本来の長さより長い場合、`aes_decrypt_mysql` は MySQL の `aes_decrypt` と同様に動作し、`key` を折りたたみ、`iv` の余分なビットは無視します。
 
+次の復号モードをサポートします:
 
-Decrypts data encrypted by MySQL's [`AES_ENCRYPT`](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_aes-encrypt) function.
+* aes-128-ecb, aes-192-ecb, aes-256-ecb
+* aes-128-cbc, aes-192-cbc, aes-256-cbc
+* aes-128-cfb128
+* aes-128-ofb, aes-192-ofb, aes-256-ofb
 
-Produces the same plaintext as [`decrypt`](#decrypt) for the same inputs.
-When `key` or `iv` are longer than they should normally be, `aes_decrypt_mysql` will stick to what MySQL's `aes_decrypt` does which is to 'fold' `key` and ignore the excess bits of `IV`.
-
-Supports the following decryption modes:
-
-- aes-128-ecb, aes-192-ecb, aes-256-ecb
-- aes-128-cbc, aes-192-cbc, aes-256-cbc
-- aes-128-cfb128
-- aes-128-ofb, aes-192-ofb, aes-256-ofb
-        
-
-**Syntax**
+**構文**
 
 ```sql
 aes_decrypt_mysql(mode, ciphertext, key[, iv])
 ```
 
-**Arguments**
+**引数**
 
-- `mode` — Decryption mode. [`String`](/sql-reference/data-types/string)
-- `ciphertext` — Encrypted text that needs to be decrypted. [`String`](/sql-reference/data-types/string)
-- `key` — Decryption key. [`String`](/sql-reference/data-types/string)
-- `iv` — Optional. Initialization vector. [`String`](/sql-reference/data-types/string)
+* `mode` — 復号モード。[`String`](/sql-reference/data-types/string)
+* `ciphertext` — 復号対象の暗号化テキスト。[`String`](/sql-reference/data-types/string)
+* `key` — 復号用キー。[`String`](/sql-reference/data-types/string)
+* `iv` — 省略可。初期化ベクトル。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+復号済みの文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the decrypted String. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Decrypt MySQL data**
+**MySQL データの復号**
 
 ```sql title=Query
 -- MySQLで事前に暗号化したデータを復号化してみましょう:
@@ -214,46 +209,41 @@ SELECT aes_decrypt_mysql('aes-256-ofb', unhex('24E9E4966469'), '1234567891012131
 └───────────┘
 ```
 
+## aes&#95;encrypt&#95;mysql {#aes&#95;encrypt&#95;mysql}
 
+導入バージョン: v20.12
 
-## aes_encrypt_mysql {#aes_encrypt_mysql}
+MySQL の `AES_ENCRYPT` 関数と同じ方法でテキストを暗号化します。
+生成された暗号文は、MySQL の `AES_DECRYPT` 関数で復号できます。
+同じ入力に対しては、`encrypt` 関数と同じ暗号文を生成します。
+`key` または `iv` が本来の長さより長い場合、`aes_encrypt_mysql` は MySQL の `aes_encrypt` と同様に動作し、`key` を折りたたんで利用し、`iv` の余分なビットは無視します。
 
-Introduced in: v20.12
+サポートされている暗号化モードは次のとおりです。
 
+* aes-128-ecb, aes-192-ecb, aes-256-ecb
+* aes-128-cbc, aes-192-cbc, aes-256-cbc
+* aes-128-ofb, aes-192-ofb, aes-256-ofb
 
-Encrypts text the same way as MySQL's `AES_ENCRYPT` function does.
-The resulting ciphertext can be decrypted with MySQL's `AES_DECRYPT` function.
-Produces the same ciphertext as the `encrypt` function for the same inputs.
-When `key` or `iv` are longer than they should normally be, `aes_encrypt_mysql` will stick to what MySQL's `aes_encrypt` does which is to 'fold' `key` and ignore the excess bits of `iv`.
-
-The supported encryption modes are:
-
-- aes-128-ecb, aes-192-ecb, aes-256-ecb
-- aes-128-cbc, aes-192-cbc, aes-256-cbc
-- aes-128-ofb, aes-192-ofb, aes-256-ofb
-        
-
-**Syntax**
+**構文**
 
 ```sql
 aes_encrypt_mysql(mode, plaintext, key[, iv])
 ```
 
-**Arguments**
+**引数**
 
-- `mode` — Encryption mode. [`String`](/sql-reference/data-types/string)
-- `plaintext` — Text that should be encrypted. [`String`](/sql-reference/data-types/string)
-- `key` — Encryption key. If the key is longer than required by `mode`, MySQL-specific key folding is performed. [`String`](/sql-reference/data-types/string)
-- `iv` — Optional. Initialization vector. Only the first 16 bytes are taken into account. [`String`](/sql-reference/data-types/string)
+* `mode` — 暗号化モード。[`String`](/sql-reference/data-types/string)
+* `plaintext` — 暗号化するテキスト。[`String`](/sql-reference/data-types/string)
+* `key` — 暗号鍵。`mode` が要求する長さより長い場合、MySQL 固有のキー折り畳み処理が行われます。[`String`](/sql-reference/data-types/string)
+* `iv` — 任意。初期化ベクトル。先頭 16 バイトのみが使用されます。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+暗号文のバイナリ文字列。[`String`](/sql-reference/data-types/string)
 
-Ciphertext binary string. [`String`](/sql-reference/data-types/string)
+**使用例**
 
-**Examples**
-
-**Equal input comparison**
+**同一入力の比較**
 
 ```sql title=Query
 -- 同一の入力に対して、encryptとaes_encrypt_mysqlは同じ暗号文を生成します:
@@ -266,7 +256,7 @@ SELECT encrypt('aes-256-ofb', 'Secret', '12345678910121314151617181920212', 'ivi
 └───────────────────┘
 ```
 
-**Encrypt fails with long key**
+**長いキーを指定すると Encrypt が失敗する**
 
 ```sql title=Query
 -- ただし、keyまたはivが想定より長い場合、encryptは失敗します:
@@ -278,7 +268,7 @@ SELECT encrypt('aes-256-ofb', 'Secret', '123456789101213141516171819202122', 'iv
 Code: 36. DB::Exception: localhost:9000 から受信しました。DB::Exception: 無効なキーサイズ: 33 が指定されましたが、32 が期待されています: encrypt('aes-256-ofb', 'Secret', '123456789101213141516171819202122', 'iviviviviviviviv123') の処理中。
 ```
 
-**MySQL compatibility**
+**MySQL 互換性**
 
 ```sql title=Query
 -- aes_encrypt_mysql は MySQL 互換の出力を生成します:
@@ -291,7 +281,7 @@ SELECT hex(aes_encrypt_mysql('aes-256-ofb', 'Secret', '1234567891012131415161718
 └──────────────┘
 ```
 
-**Longer IV produces the same result**
+**IV を長くしても結果は同じ**
 
 ```sql title=Query
 -- より長いIVを指定しても同じ結果が得られることに注意
@@ -304,45 +294,40 @@ SELECT hex(aes_encrypt_mysql('aes-256-ofb', 'Secret', '1234567891012131415161718
 └──────────────┘
 ```
 
-
-
 ## decrypt {#decrypt}
 
-Introduced in: v20.12
+導入バージョン: v20.12
 
+この関数は、以下のモードを使用して AES で暗号化されたバイナリ文字列を復号します。
 
-This function decrypts an AES-encrypted binary string using the following modes:
+* aes-128-ecb, aes-192-ecb, aes-256-ecb
+* aes-128-cbc, aes-192-cbc, aes-256-cbc
+* aes-128-ofb, aes-192-ofb, aes-256-ofb
+* aes-128-gcm, aes-192-gcm, aes-256-gcm
+* aes-128-ctr, aes-192-ctr, aes-256-ctr
+* aes-128-cfb, aes-128-cfb1, aes-128-cfb8
 
-- aes-128-ecb, aes-192-ecb, aes-256-ecb
-- aes-128-cbc, aes-192-cbc, aes-256-cbc
-- aes-128-ofb, aes-192-ofb, aes-256-ofb
-- aes-128-gcm, aes-192-gcm, aes-256-gcm
-- aes-128-ctr, aes-192-ctr, aes-256-ctr
-- aes-128-cfb, aes-128-cfb1, aes-128-cfb8
-        
-
-**Syntax**
+**構文**
 
 ```sql
 decrypt(mode, ciphertext, key[, iv, aad])
 ```
 
-**Arguments**
+**引数**
 
-- `mode` — Decryption mode. [`String`](/sql-reference/data-types/string)
-- `ciphertext` — Encrypted text that should be decrypted. [`String`](/sql-reference/data-types/string)
-- `key` — Decryption key. [`String`](/sql-reference/data-types/string)
-- `iv` — Initialization vector. Required for `-gcm` modes, optional for others. [`String`](/sql-reference/data-types/string)
-- `aad` — Additional authenticated data. Won't decrypt if this value is incorrect. Works only in `-gcm` modes, for others throws an exception. [`String`](/sql-reference/data-types/string)
+* `mode` — 復号モード。[`String`](/sql-reference/data-types/string)
+* `ciphertext` — 復号する暗号化されたテキスト。[`String`](/sql-reference/data-types/string)
+* `key` — 復号用キー。[`String`](/sql-reference/data-types/string)
+* `iv` — 初期化ベクトル。`-gcm` モードでは必須、それ以外では任意。[`String`](/sql-reference/data-types/string)
+* `aad` — 追加認証データ。この値が正しくない場合は復号できません。`-gcm` モードでのみ有効で、それ以外では例外をスローします。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+復号された平文を返します。[`String`](/sql-reference/data-types/string)
 
-Returns decrypted plaintext. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Correctly decrypting encrypted data**
+**暗号化データを正しく復号する**
 
 ```sql title=Query
 -- encrypt関数の例のテーブルを再利用
@@ -362,7 +347,7 @@ SELECT comment, hex(secret) FROM encryption_test;
 └──────────────────────────────────┴──────────────────────────────────┘
 ```
 
-**Incorrectly decrypting encrypted data**
+**暗号化されたデータの誤復号**
 
 ```sql title=Query
 SELECT comment, decrypt('aes-256-cfb128', secret, '12345678910121314151617181920212') AS plaintext FROM encryption_test
@@ -385,45 +370,40 @@ SELECT comment, decrypt('aes-256-cfb128', secret, '12345678910121314151617181920
 └──────────────────────────────────┴───────────┘
 ```
 
-
-
 ## encrypt {#encrypt}
 
-Introduced in: v20.12
+導入: v20.12
 
+平文を、以下のいずれかのモードで AES を用いて暗号化します。
 
-Encrypts plaintext into ciphertext using AES in one of the following modes:
+* aes-128-ecb, aes-192-ecb, aes-256-ecb
+* aes-128-cbc, aes-192-cbc, aes-256-cbc
+* aes-128-ofb, aes-192-ofb, aes-256-ofb
+* aes-128-gcm, aes-192-gcm, aes-256-gcm
+* aes-128-ctr, aes-192-ctr, aes-256-ctr
+* aes-128-cfb, aes-128-cfb1, aes-128-cfb8
 
-- aes-128-ecb, aes-192-ecb, aes-256-ecb
-- aes-128-cbc, aes-192-cbc, aes-256-cbc
-- aes-128-ofb, aes-192-ofb, aes-256-ofb
-- aes-128-gcm, aes-192-gcm, aes-256-gcm
-- aes-128-ctr, aes-192-ctr, aes-256-ctr
-- aes-128-cfb, aes-128-cfb1, aes-128-cfb8
-        
-
-**Syntax**
+**構文**
 
 ```sql
 encrypt(mode, plaintext, key[, iv, aad])
 ```
 
-**Arguments**
+**引数**
 
-- `mode` — Encryption mode. [`String`](/sql-reference/data-types/string)
-- `plaintext` — Text that should be encrypted. [`String`](/sql-reference/data-types/string)
-- `key` — Encryption key. [`String`](/sql-reference/data-types/string)
-- `iv` — Initialization vector. Required for `-gcm` modes, optional for others. [`String`](/sql-reference/data-types/string)
-- `aad` — Additional authenticated data. It isn't encrypted, but it affects decryption. Works only in `-gcm` modes, for others it throws an exception. [`String`](/sql-reference/data-types/string)
+* `mode` — 暗号化モード。[`String`](/sql-reference/data-types/string)
+* `plaintext` — 暗号化対象のテキスト。[`String`](/sql-reference/data-types/string)
+* `key` — 暗号鍵。[`String`](/sql-reference/data-types/string)
+* `iv` — 初期化ベクトル。`-gcm` モードでは必須で、それ以外では任意。[`String`](/sql-reference/data-types/string)
+* `aad` — 追加認証データ。これは暗号化はされませんが、復号に影響します。`-gcm` モードでのみ有効で、それ以外では例外をスローします。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+バイナリ文字列の暗号文を返します。[`String`](/sql-reference/data-types/string)
 
-Returns binary string ciphertext. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Example encryption**
+**暗号化の例**
 
 ```sql title=Query
 CREATE TABLE encryption_test
@@ -451,7 +431,7 @@ SELECT comment, hex(secret) FROM encryption_test;
 └──────────────────────────────────┴──────────────────────────────────┘
 ```
 
-**Example with GCM mode**
+**GCM モードの例**
 
 ```sql title=Query
 INSERT INTO encryption_test VALUES
@@ -469,38 +449,33 @@ SELECT comment, hex(secret) FROM encryption_test WHERE comment LIKE '%gcm%';
 └──────────────────────┴──────────────────────────────────────────────┘
 ```
 
-
-
 ## tryDecrypt {#tryDecrypt}
 
-Introduced in: v22.10
+導入: v22.10
 
+`decrypt` 関数と似ていますが、誤ったキーにより復号に失敗した場合は `NULL` を返します。
 
-Similar to the `decrypt` function, but returns `NULL` if decryption fails when using the wrong key.
-        
-
-**Syntax**
+**構文**
 
 ```sql
 tryDecrypt(mode, ciphertext, key[, iv, aad])
 ```
 
-**Arguments**
+**引数**
 
-- `mode` — Decryption mode. [`String`](/sql-reference/data-types/string)
-- `ciphertext` — Encrypted text that should be decrypted. [`String`](/sql-reference/data-types/string)
-- `key` — Decryption key. [`String`](/sql-reference/data-types/string)
-- `iv` — Optional. Initialization vector. Required for `-gcm` modes, optional for other modes. [`String`](/sql-reference/data-types/string)
-- `aad` — Optional. Additional authenticated data. Won't decrypt if this value is incorrect. Works only in `-gcm` modes, for other modes throws an exception. [`String`](/sql-reference/data-types/string)
+* `mode` — 復号モード。[`String`](/sql-reference/data-types/string)
+* `ciphertext` — 復号対象の暗号化テキスト。[`String`](/sql-reference/data-types/string)
+* `key` — 復号キー。[`String`](/sql-reference/data-types/string)
+* `iv` — 任意。初期化ベクトル。`-gcm` モードでは必須で、その他のモードでは任意。[`String`](/sql-reference/data-types/string)
+* `aad` — 任意。追加認証データ。この値が正しくない場合は復号されません。`-gcm` モードでのみ有効で、その他のモードでは例外をスローします。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+復号された String を返すか、復号に失敗した場合は `NULL` を返します。[`Nullable(String)`](/sql-reference/data-types/nullable)
 
-Returns the decrypted String, or `NULL` if decryption fails. [`Nullable(String)`](/sql-reference/data-types/nullable)
+**例**
 
-**Examples**
-
-**Create table and insert data**
+**テーブルを作成してデータを挿入**
 
 ```sql title=Query
 -- user_idが一意のユーザーID、encryptedが暗号化された文字列フィールド、ivが復号化/暗号化のための初期ベクトルであるテーブルを作成します。

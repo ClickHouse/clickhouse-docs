@@ -62,20 +62,20 @@ DDL で名前付きコレクションを管理するには、ユーザーは `na
 ```
 
 :::tip
-In the above example the `password_sha256_hex` value is the hexadecimal representation of the SHA256 hash of the password.  This configuration for the user `default` has the attribute `replace=true` as in the default configuration has a plain text `password` set, and it is not possible to have both plain text and sha256 hex passwords set for a user.
+上記の例では、`password_sha256_hex` の値は、パスワードの SHA256 ハッシュを 16 進数で表現したものです。ユーザー `default` 用のこの設定では、既定の構成で平文の `password` が設定されているため、属性 `replace=true` を指定しています。同じユーザーに対して、平文パスワードと SHA256 の 16 進数パスワードを同時に設定することはできません。
 :::
 
-### Storage for named collections {#storage-for-named-collections}
 
-Named collections can either be stored on local disk or in ZooKeeper/Keeper. By default local storage is used.
-They can also be stored using encryption with the same algorithms used for [disk encryption](storing-data#encrypted-virtual-file-system),
-where `aes_128_ctr` is used by default.
+### 名前付きコレクションのストレージ {#storage-for-named-collections}
 
-To configure named collections storage you need to specify a `type`. This can be either `local` or `keeper`/`zookeeper`. For encrypted storage,
-you can use `local_encrypted` or `keeper_encrypted`/`zookeeper_encrypted`.
+名前付きコレクションはローカルディスクまたは ZooKeeper/Keeper に保存できます。デフォルトではローカルストレージが使用されます。
+また、[ディスク暗号化](storing-data#encrypted-virtual-file-system) と同じアルゴリズムを使用して暗号化して保存することもでき、その際にはデフォルトで `aes_128_ctr` が使用されます。
 
-To use ZooKeeper/Keeper we also need to set up a `path` (path in ZooKeeper/Keeper, where named collections will be stored) to
-`named_collections_storage` section in configuration file. The following example uses encryption and ZooKeeper/Keeper:
+名前付きコレクションのストレージを構成するには、`type` を指定する必要があります。これは `local` または `keeper`/`zookeeper` のいずれかです。暗号化ストレージの場合は、
+`local_encrypted` または `keeper_encrypted`/`zookeeper_encrypted` を使用できます。
+
+ZooKeeper/Keeper を使用するには、構成ファイルの `named_collections_storage` セクションに `path`（名前付きコレクションを保存する ZooKeeper/Keeper 上のパス）も設定する必要があります。次の例は、暗号化と ZooKeeper/Keeper を併用しています。
+
 ```xml
 <clickhouse>
   <named_collections_storage>
@@ -88,11 +88,12 @@ To use ZooKeeper/Keeper we also need to set up a `path` (path in ZooKeeper/Keepe
 </clickhouse>
 ```
 
-An optional configuration parameter `update_timeout_ms` by default is equal to `5000`.
+オプションの設定パラメーターである `update_timeout_ms` のデフォルト値は `5000` です。
 
-## Storing named collections in configuration files {#storing-named-collections-in-configuration-files}
 
-### XML example {#xml-example}
+## 設定ファイルに名前付きコレクションを保存する {#storing-named-collections-in-configuration-files}
+
+### XML の例 {#xml-example}
 
 ```xml title='/etc/clickhouse-server/config.d/named_collections.xml'
 <clickhouse>
@@ -106,56 +107,64 @@ An optional configuration parameter `update_timeout_ms` by default is equal to `
 </clickhouse>
 ```
 
-In the above example:
+上記の例では：
 
-* `key_1` can always be overridden.
-* `key_2` can never be overridden.
-* `url` can be overridden or not depending on the value of `allow_named_collection_override_by_default`.
+* `key_1` は常に上書きできます。
+* `key_2` は上書きすることはできません。
+* `url` は、`allow_named_collection_override_by_default` の値に応じて、上書きできる場合とできない場合があります。
 
-## Modifying named collections {#modifying-named-collections}
 
-Named collections that are created with DDL queries can be altered or dropped with DDL. Named collections created with XML files can be managed by editing or deleting the corresponding XML.
+## 名前付きコレクションの変更 {#modifying-named-collections}
 
-### Alter a DDL named collection {#alter-a-ddl-named-collection}
+DDL クエリで作成された名前付きコレクションは、DDL によって変更または削除できます。XML ファイルで作成された名前付きコレクションは、対応する XML を編集または削除することで管理できます。
 
-Change or add the keys `key1` and `key3` of the collection `collection2`
-(this will not change the value of the `overridable` flag for those keys):
+### DDL で作成された名前付きコレクションを変更する {#alter-a-ddl-named-collection}
+
+コレクション `collection2` のキー `key1` と `key3` を変更または追加します
+（この操作では、それらのキーに対する `overridable` フラグの値は変更されません）:
+
 ```sql
 ALTER NAMED COLLECTION collection2 SET key1=4, key3='value3'
 ```
 
-Change or add the key `key1` and allow it to be always overridden:
+キー `key1` を変更または追加し、常に上書き可能とします。
+
 ```sql
 ALTER NAMED COLLECTION collection2 SET key1=4 OVERRIDABLE
 ```
 
-Remove the key `key2` from `collection2`:
+`collection2` からキー `key2` を削除します：
+
 ```sql
 ALTER NAMED COLLECTION collection2 DELETE key2
 ```
 
-Change or add the key `key1` and delete the key `key3` of the collection `collection2`:
+コレクション `collection2` のキー `key1` を変更または追加し、キー `key3` を削除します。
+
 ```sql
 ALTER NAMED COLLECTION collection2 SET key1=4, DELETE key3
 ```
 
-To force a key to use the default settings for the `overridable` flag, you have to
-remove and re-add the key.
+キーに対して `overridable` フラグのデフォルト設定を適用させるには、そのキーを一度削除してから再度追加する必要があります。
+
 ```sql
 ALTER NAMED COLLECTION collection2 DELETE key1;
 ALTER NAMED COLLECTION collection2 SET key1=4;
 ```
 
-### Drop the DDL named collection `collection2`: {#drop-the-ddl-named-collection-collection2}
+
+### DDL の名前付きコレクション `collection2` を削除: {#drop-the-ddl-named-collection-collection2}
+
 ```sql
 DROP NAMED COLLECTION collection2
 ```
 
-## Named collections for accessing S3 {#named-collections-for-accessing-s3}
 
-The description of parameters see [s3 Table Function](../sql-reference/table-functions/s3.md).
+## S3 にアクセスするための名前付きコレクション {#named-collections-for-accessing-s3}
 
-### DDL example {#ddl-example-1}
+パラメータの説明については、[s3 テーブル関数](../sql-reference/table-functions/s3.md)を参照してください。
+
+### DDL の例 {#ddl-example-1}
 
 ```sql
 CREATE NAMED COLLECTION s3_mydata AS
@@ -165,7 +174,8 @@ format = 'CSV',
 url = 'https://s3.us-east-1.amazonaws.com/yourbucket/mydata/'
 ```
 
-### XML example {#xml-example-1}
+
+### XML の例 {#xml-example-1}
 
 ```xml
 <clickhouse>
@@ -180,11 +190,12 @@ url = 'https://s3.us-east-1.amazonaws.com/yourbucket/mydata/'
 </clickhouse>
 ```
 
-### s3() function and S3 Table named collection examples {#s3-function-and-s3-table-named-collection-examples}
 
-Both of the following examples use the same named collection `s3_mydata`:
+### s3() 関数と S3 テーブルの名前付きコレクションの例 {#s3-function-and-s3-table-named-collection-examples}
 
-#### s3() function {#s3-function}
+次の 2 つの例では、同じ名前付きコレクション `s3_mydata` を使用します。
+
+#### s3() 関数 {#s3-function}
 
 ```sql
 INSERT INTO FUNCTION s3(s3_mydata, filename = 'test_file.tsv.gz',
@@ -193,10 +204,11 @@ SELECT * FROM numbers(10000);
 ```
 
 :::tip
-The first argument to the `s3()` function above is the name of the collection, `s3_mydata`.  Without named collections, the access key ID, secret, format, and URL would all be passed in every call to the `s3()` function.
+上記の `s3()` 関数呼び出しの最初の引数には、コレクション名 `s3_mydata` を指定しています。名前付きコレクションを使用しない場合は、`s3()` 関数を呼び出すたびにアクセスキー ID、シークレットアクセスキー、フォーマット、URL をすべて渡す必要があります。
 :::
 
-#### S3 table {#s3-table}
+
+#### S3 テーブル {#s3-table}
 
 ```sql
 CREATE TABLE s3_engine_table (number Int64)
@@ -211,11 +223,12 @@ SELECT * FROM s3_engine_table LIMIT 3;
 └────────┘
 ```
 
-## Named collections for accessing MySQL database {#named-collections-for-accessing-mysql-database}
 
-The description of parameters see [mysql](../sql-reference/table-functions/mysql.md).
+## MySQL データベースにアクセスするための名前付きコレクション {#named-collections-for-accessing-mysql-database}
 
-### DDL example {#ddl-example-2}
+パラメータの説明については、[mysql](../sql-reference/table-functions/mysql.md) を参照してください。
+
+### DDL の例 {#ddl-example-2}
 
 ```sql
 CREATE NAMED COLLECTION mymysql AS
@@ -228,7 +241,8 @@ connection_pool_size = 8,
 replace_query = 1
 ```
 
-### XML example {#xml-example-2}
+
+### XML の例 {#xml-example-2}
 
 ```xml
 <clickhouse>
@@ -246,11 +260,12 @@ replace_query = 1
 </clickhouse>
 ```
 
-### mysql() function, MySQL table, MySQL database, and Dictionary named collection examples {#mysql-function-mysql-table-mysql-database-and-dictionary-named-collection-examples}
 
-The four following examples use the same named collection `mymysql`:
+### mysql() 関数、MySQL テーブル、MySQL データベース、および Dictionary 名前付きコレクションの例 {#mysql-function-mysql-table-mysql-database-and-dictionary-named-collection-examples}
 
-#### mysql() function {#mysql-function}
+以下の 4 つの例では、同じ名前付きコレクション `mymysql` を使用します。
+
+#### mysql() 関数 {#mysql-function}
 
 ```sql
 SELECT count() FROM mysql(mymysql, table = 'test');
@@ -259,11 +274,13 @@ SELECT count() FROM mysql(mymysql, table = 'test');
 │       3 │
 └─────────┘
 ```
+
 :::note
-The named collection does not specify the `table` parameter, so it is specified in the function call as `table = 'test'`.
+この名前付きコレクションでは `table` パラメータが指定されていないため、関数呼び出しの引数として `table = 'test'` を指定しています。
 :::
 
-#### MySQL table {#mysql-table}
+
+#### MySQL テーブル {#mysql-table}
 
 ```sql
 CREATE TABLE mytable(A Int64) ENGINE = MySQL(mymysql, table = 'test', connection_pool_size=3, replace_query=0);
@@ -275,10 +292,11 @@ SELECT count() FROM mytable;
 ```
 
 :::note
-The DDL overrides the named collection setting for connection_pool_size.
+この DDL ステートメントは、`connection&#95;pool&#95;size` に対する名前付きコレクションの設定を上書きします。
 :::
 
-#### MySQL database {#mysql-database}
+
+#### MySQL データベース {#mysql-database}
 
 ```sql
 CREATE DATABASE mydatabase ENGINE = MySQL(mymysql);
@@ -290,6 +308,7 @@ SHOW TABLES FROM mydatabase;
 │ test   │
 └────────┘
 ```
+
 
 #### MySQL Dictionary {#mysql-dictionary}
 
@@ -307,14 +326,15 @@ SELECT dictGet('dict', 'B', 2);
 └─────────────────────────┘
 ```
 
-## Named collections for accessing PostgreSQL database {#named-collections-for-accessing-postgresql-database}
 
-The description of parameters see [postgresql](../sql-reference/table-functions/postgresql.md). Additionally, there are aliases:
+## PostgreSQL データベースへのアクセス用名前付きコレクション {#named-collections-for-accessing-postgresql-database}
 
-- `username` for `user`
-- `db` for `database`.
+パラメータの説明については [postgresql](../sql-reference/table-functions/postgresql.md) を参照してください。さらに、次のエイリアスがあります：
 
-Parameter `addresses_expr` is used in a collection instead of `host:port`. The parameter is optional, because there are other optional ones: `host`, `hostname`, `port`. The following pseudo code explains the priority:
+* `user` のエイリアス: `username`
+* `database` のエイリアス: `db`
+
+パラメータ `addresses_expr` は、コレクション内で `host:port` の代わりに使用されます。`host`、`hostname`、`port` といった他のパラメータが任意指定であるため、このパラメータも必須ではありません。以下の擬似コードは、その優先順位を説明しています：
 
 ```sql
 CASE
@@ -324,7 +344,8 @@ CASE
 END
 ```
 
-Example of creation:
+作成例：
+
 ```sql
 CREATE NAMED COLLECTION mypg AS
 user = 'pguser',
@@ -335,7 +356,8 @@ database = 'test',
 schema = 'test_schema'
 ```
 
-Example of configuration:
+設定例：
+
 ```xml
 <clickhouse>
     <named_collections>
@@ -351,7 +373,8 @@ Example of configuration:
 </clickhouse>
 ```
 
-### Example of using named collections with the postgresql function {#example-of-using-named-collections-with-the-postgresql-function}
+
+### PostgreSQL 関数で名前付きコレクションを使用する例 {#example-of-using-named-collections-with-the-postgresql-function}
 
 ```sql
 SELECT * FROM postgresql(mypg, table = 'test');
@@ -369,7 +392,8 @@ SELECT * FROM postgresql(mypg, table = 'test', schema = 'public');
 └───┘
 ```
 
-### Example of using named collections with database with engine PostgreSQL {#example-of-using-named-collections-with-database-with-engine-postgresql}
+
+### PostgreSQL エンジンを使用するデータベースで名前付きコレクションを利用する例 {#example-of-using-named-collections-with-database-with-engine-postgresql}
 
 ```sql
 CREATE TABLE mypgtable (a Int64) ENGINE = PostgreSQL(mypg, table = 'test', schema = 'public');
@@ -384,10 +408,11 @@ SELECT * FROM mypgtable;
 ```
 
 :::note
-PostgreSQL copies data from the named collection when the table is being created. A change in the collection does not affect the existing tables.
+PostgreSQL は、テーブル作成時に名前付きコレクションからデータをコピーします。コレクションが変更されても、既存のテーブルには影響しません。
 :::
 
-### Example of using named collections with database with engine PostgreSQL {#example-of-using-named-collections-with-database-with-engine-postgresql-1}
+
+### PostgreSQL エンジンを使用するデータベースで名前付きコレクションを使用する例 {#example-of-using-named-collections-with-database-with-engine-postgresql-1}
 
 ```sql
 CREATE DATABASE mydatabase ENGINE = PostgreSQL(mypg);
@@ -399,7 +424,8 @@ SHOW TABLES FROM mydatabase
 └──────┘
 ```
 
-### Example of using named collections with a dictionary with source POSTGRESQL {#example-of-using-named-collections-with-a-dictionary-with-source-postgresql}
+
+### ソースとして PostgreSQL を使用する Dictionary で名前付きコレクションを使用する例 {#example-of-using-named-collections-with-a-dictionary-with-source-postgresql}
 
 ```sql
 CREATE DICTIONARY dict (a Int64, b String)
@@ -415,11 +441,12 @@ SELECT dictGet('dict', 'b', 2);
 └─────────────────────────┘
 ```
 
-## Named collections for accessing a remote ClickHouse database {#named-collections-for-accessing-a-remote-clickhouse-database}
 
-The description of parameters see [remote](../sql-reference/table-functions/remote.md/#parameters).
+## リモート ClickHouse データベースにアクセスするための名前付きコレクション {#named-collections-for-accessing-a-remote-clickhouse-database}
 
-Example of configuration:
+パラメータの説明については、[remote](../sql-reference/table-functions/remote.md/#parameters) を参照してください。
+
+設定例：
 
 ```sql
 CREATE NAMED COLLECTION remote1 AS
@@ -445,9 +472,11 @@ secure = 1
     </named_collections>
 </clickhouse>
 ```
-`secure` is not needed for connection because of `remoteSecure`, but it can be used for dictionaries.
 
-### Example of using named collections with the `remote`/`remoteSecure` functions {#example-of-using-named-collections-with-the-remoteremotesecure-functions}
+接続には `remoteSecure` を使用するため `secure` は不要ですが、辞書では使用できます。
+
+
+### `remote` / `remoteSecure` 関数で名前付きコレクションを使用する例 {#example-of-using-named-collections-with-the-remoteremotesecure-functions}
 
 ```sql
 SELECT * FROM remote(remote1, table = one);
@@ -468,7 +497,8 @@ SELECT * FROM remote(remote1, database = default, table = test);
 └───┴───┘
 ```
 
-### Example of using named collections with a dictionary with source ClickHouse {#example-of-using-named-collections-with-a-dictionary-with-source-clickhouse}
+
+### ClickHouse をソースとする辞書での名前付きコレクションの使用例 {#example-of-using-named-collections-with-a-dictionary-with-source-clickhouse}
 
 ```sql
 CREATE DICTIONARY dict(a Int64, b String)
@@ -483,11 +513,12 @@ SELECT dictGet('dict', 'b', 1);
 └─────────────────────────┘
 ```
 
-## Named collections for accessing Kafka {#named-collections-for-accessing-kafka}
 
-The description of parameters see [Kafka](../engines/table-engines/integrations/kafka.md).
+## Kafka へのアクセスに使用する名前付きコレクション {#named-collections-for-accessing-kafka}
 
-### DDL example {#ddl-example-3}
+パラメータの説明については [Kafka](../engines/table-engines/integrations/kafka.md) を参照してください。
+
+### DDL の例 {#ddl-example-3}
 
 ```sql
 CREATE NAMED COLLECTION my_kafka_cluster AS
@@ -498,7 +529,9 @@ kafka_format = 'JSONEachRow',
 kafka_max_block_size = '1048576';
 
 ```
-### XML example {#xml-example-3}
+
+
+### XML の例 {#xml-example-3}
 
 ```xml
 <clickhouse>
@@ -514,9 +547,10 @@ kafka_max_block_size = '1048576';
 </clickhouse>
 ```
 
-### Example of using named collections with a Kafka table {#example-of-using-named-collections-with-a-kafka-table}
 
-Both of the following examples use the same named collection `my_kafka_cluster`:
+### Kafka テーブルで名前付きコレクションを使用する例 {#example-of-using-named-collections-with-a-kafka-table}
+
+次の 2 つの例では、いずれも同じ名前付きコレクション `my_kafka_cluster` を使用します。
 
 ```sql
 CREATE TABLE queue
@@ -538,17 +572,19 @@ SETTINGS kafka_num_consumers = 4,
          kafka_thread_per_consumer = 1;
 ```
 
-## Named collections for backups {#named-collections-for-backups}
 
-For the description of parameters see [Backup and Restore](/operations/backup/overview).
+## バックアップ用の名前付きコレクション {#named-collections-for-backups}
 
-### DDL example {#ddl-example-4}
+パラメータの説明については[バックアップとリストア](/operations/backup/overview)を参照してください。
+
+### DDL の例 {#ddl-example-4}
 
 ```sql
 BACKUP TABLE default.test to S3(named_collection_s3_backups, 'directory')
 ```
 
-### XML example {#xml-example-4}
+
+### XML の例 {#xml-example-4}
 
 ```xml
 <clickhouse>
@@ -562,11 +598,12 @@ BACKUP TABLE default.test to S3(named_collection_s3_backups, 'directory')
 </clickhouse>
 ```
 
-## Named collections for accessing MongoDB Table and Dictionary {#named-collections-for-accessing-mongodb-table-and-dictionary}
 
-For the description of parameters see [mongodb](../sql-reference/table-functions/mongodb.md).
+## MongoDB テーブルおよび辞書にアクセスするための名前付きコレクション {#named-collections-for-accessing-mongodb-table-and-dictionary}
 
-### DDL example {#ddl-example-5}
+パラメータの説明については [mongodb](../sql-reference/table-functions/mongodb.md) を参照してください。
+
+### DDL の例 {#ddl-example-5}
 
 ```sql
 CREATE NAMED COLLECTION mymongo AS
@@ -579,7 +616,8 @@ collection = 'my_collection',
 options = 'connectTimeoutMS=10000'
 ```
 
-### XML example {#xml-example-5}
+
+### XML の例 {#xml-example-5}
 
 ```xml
 <clickhouse>
@@ -597,7 +635,8 @@ options = 'connectTimeoutMS=10000'
 </clickhouse>
 ```
 
-#### MongoDB table {#mongodb-table}
+
+#### MongoDB テーブル {#mongodb-table}
 
 ```sql
 CREATE TABLE mytable(log_type VARCHAR, host VARCHAR, command VARCHAR) ENGINE = MongoDB(mymongo, options='connectTimeoutMS=10000&compressors=zstd')
@@ -609,8 +648,9 @@ SELECT count() FROM mytable;
 ```
 
 :::note
-The DDL overrides the named collection setting for options.
+DDL で指定した options が、名前付きコレクション側の設定を上書きします。
 :::
+
 
 #### MongoDB Dictionary {#mongodb-dictionary}
 

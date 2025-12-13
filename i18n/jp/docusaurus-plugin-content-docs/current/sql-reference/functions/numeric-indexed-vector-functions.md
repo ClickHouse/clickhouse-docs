@@ -60,10 +60,10 @@ groupNumericIndexedVectorState(type, integer_bit_num, fraction_bit_num)(col1, co
 テストデータ:
 
 ```text
-UserID  PlayTime
-1       10
-2       20
-3       30
+ユーザーID  プレイ時間
+1          10
+2          20
+3          30
 ```
 
 クエリと結果:
@@ -135,34 +135,29 @@ SELECT numericIndexedVectorAllValueSum(numericIndexedVectorBuild(mapFromArrays([
 └─────┘
 ```
 
-
-
 ## numericIndexedVectorBuild {#numericIndexedVectorBuild}
 
-Introduced in: v25.7
+導入バージョン: v25.7
 
+`map` から `NumericIndexedVector` を作成します。`map` のキーはベクターのインデックスを表し、`map` の値はベクターの要素を表します。
 
-Creates a NumericIndexedVector from a map. The map's keys represent the vector's index and map's value represents the vector's value.
-        
-
-**Syntax**
+**構文**
 
 ```sql
 numericIndexedVectorBuild(map)
 ```
 
-**Arguments**
+**引数**
 
-- `map` — A mapping from index to value. [`Map`](/sql-reference/data-types/map)
+* `map` — インデックスから値へのマッピング。[`Map`](/sql-reference/data-types/map)
 
+**戻り値**
 
-**Returned value**
+NumericIndexedVector 型のオブジェクトを返します。[`AggregateFunction`](/sql-reference/data-types/aggregatefunction)
 
-Returns a NumericIndexedVector object. [`AggregateFunction`](/sql-reference/data-types/aggregatefunction)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT numericIndexedVectorBuild(mapFromArrays([1, 2, 3], [10, 20, 30])) AS res, toTypeName(res);
@@ -174,34 +169,29 @@ SELECT numericIndexedVectorBuild(mapFromArrays([1, 2, 3], [10, 20, 30])) AS res,
 └─────┴────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## numericIndexedVectorCardinality {#numericIndexedVectorCardinality}
 
-Introduced in: v25.7
+導入: v25.7
 
+numericIndexedVector のカーディナリティ（一意なインデックス数）を返します。
 
-Returns the cardinality (number of unique indexes) of the numericIndexedVector.
-        
-
-**Syntax**
+**構文**
 
 ```sql
 numericIndexedVectorCardinality(v)
 ```
 
-**Arguments**
+**引数**
 
-- `v` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
+**戻り値**
 
-**Returned value**
+ユニークなインデックスの数を返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the number of unique indexes. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT numericIndexedVectorCardinality(numericIndexedVectorBuild(mapFromArrays([1, 2, 3], [10, 20, 30]))) AS res;
@@ -213,35 +203,30 @@ SELECT numericIndexedVectorCardinality(numericIndexedVectorBuild(mapFromArrays([
 └─────┘
 ```
 
-
-
 ## numericIndexedVectorGetValue {#numericIndexedVectorGetValue}
 
-Introduced in: v25.7
+導入バージョン: v25.7
 
+`numericIndexedVector` から、指定したインデックスの値を取得します。
 
-Retrieves the value corresponding to a specified index from a numericIndexedVector.
-        
-
-**Syntax**
+**構文**
 
 ```sql
 numericIndexedVectorGetValue(v, i)
 ```
 
-**Arguments**
+**引数**
 
-- `v` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-- `i` — The index for which the value is to be retrieved. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `v` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `i` — 取得する値のインデックス。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返される値**
 
-**Returned value**
+NumericIndexedVector の要素と同じ型の数値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
 
-A numeric value with the same type as the value type of NumericIndexedVector. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT numericIndexedVectorGetValue(numericIndexedVectorBuild(mapFromArrays([1, 2, 3], [10, 20, 30])), 3) AS res;
@@ -253,35 +238,30 @@ SELECT numericIndexedVectorGetValue(numericIndexedVectorBuild(mapFromArrays([1, 
 └─────┘
 ```
 
-
-
 ## numericIndexedVectorPointwiseAdd {#numericIndexedVectorPointwiseAdd}
 
-Introduced in: v25.7
+導入バージョン: v25.7
 
+numericIndexedVector と別の numericIndexedVector、または数値定数との要素ごとの加算を実行します。
 
-Performs pointwise addition between a numericIndexedVector and either another numericIndexedVector or a numeric constant.
-        
-
-**Syntax**
+**構文**
 
 ```sql
 numericIndexedVectorPointwiseAdd(v1, v2)
 ```
 
-**Arguments**
+**引数**
 
-- `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-- `v2` — A numeric constant or numericIndexedVector object. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v2` — 数値定数または [`numericIndexedVector`] オブジェクト。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
+**戻り値**
 
-**Returned value**
+新しい [`numericIndexedVector`] オブジェクトを返します。[`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
-Returns a new numericIndexedVector object. [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 WITH
@@ -298,35 +278,30 @@ SELECT
 └───────────────────────┴──────────────────┘
 ```
 
-
-
 ## numericIndexedVectorPointwiseDivide {#numericIndexedVectorPointwiseDivide}
 
-Introduced in: v25.7
+導入バージョン: v25.7
 
+`numericIndexedVector` と、別の `numericIndexedVector` もしくは数値定数との要素ごとの除算を行います。
 
-Performs pointwise division between a numericIndexedVector and either another numericIndexedVector or a numeric constant.
-        
-
-**Syntax**
+**構文**
 
 ```sql
 numericIndexedVectorPointwiseDivide(v1, v2)
 ```
 
-**Arguments**
+**引数**
 
-- `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-- `v2` — A numeric constant or numericIndexedVector object. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v2` — 数値定数または `numericIndexedVector` オブジェクト。[`(U)Int*`](/sql-reference/data-types/int-uint)、[`Float*`](/sql-reference/data-types/float)、または [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object) のいずれか。
 
+**戻り値**
 
-**Returned value**
+新しい `numericIndexedVector` オブジェクトを返します。[`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
-Returns a new numericIndexedVector object. [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 with
@@ -343,36 +318,31 @@ SELECT
 └─────────────┴─────────────────┘
 ```
 
-
-
 ## numericIndexedVectorPointwiseEqual {#numericIndexedVectorPointwiseEqual}
 
-Introduced in: v25.7
+導入バージョン: v25.7
 
+`numericIndexedVector` と、別の `numericIndexedVector` もしくは数値定数との要素ごとの比較を行います。
+結果として、値が等しい要素のインデックスを格納し、対応する値がすべて 1 に設定された `numericIndexedVector` を返します。
 
-Performs pointwise comparison between a numericIndexedVector and either another numericIndexedVector or a numeric constant.
-The result is a numericIndexedVector containing the indices where the values are equal, with all corresponding values set to 1.
-        
-
-**Syntax**
+**構文**
 
 ```sql
 numericIndexedVectorPointwiseEqual(v1, v2)
 ```
 
-**Arguments**
+**引数**
 
-- `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-- `v2` — A numeric constant or numericIndexedVector object. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v2` — 数値定数または `numericIndexedVector` オブジェクト。[`(U)Int*`](/sql-reference/data-types/int-uint) 型、[`Float*`](/sql-reference/data-types/float) 型、または [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
+**戻り値**
 
-**Returned value**
+新しい `numericIndexedVector` オブジェクトを返します。[`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
-Returns a new numericIndexedVector object. [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+**例**
 
-**Examples**
-
-****
+***
 
 ```sql title=Query
 with
@@ -389,36 +359,31 @@ SELECT
 └───────┴───────┘
 ```
 
-
-
 ## numericIndexedVectorPointwiseGreater {#numericIndexedVectorPointwiseGreater}
 
-Introduced in: v25.7
+導入バージョン: v25.7
 
+numericIndexedVector と、別の numericIndexedVector もしくは数値定数との間で要素ごとの比較を行います。
+結果は、先頭のベクターの値が 2 番目のベクターの値より大きい要素のインデックスを含む numericIndexedVector となり、対応する値はすべて 1 に設定されます。
 
-Performs pointwise comparison between a numericIndexedVector and either another numericIndexedVector or a numeric constant.
-The result is a numericIndexedVector containing the indices where the first vector's value is greater than the second vector's value, with all corresponding values set to 1.
-        
-
-**Syntax**
+**構文**
 
 ```sql
 numericIndexedVectorPointwiseGreater(v1, v2)
 ```
 
-**Arguments**
+**引数**
 
-- `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-- `v2` — A numeric constant or numericIndexedVector object. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v2` — 数値リテラルまたは `numericIndexedVector` オブジェクト。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
+**戻り値**
 
-**Returned value**
+新しい [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object) オブジェクトを返します。
 
-Returns a new numericIndexedVector object. [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 with
@@ -435,36 +400,31 @@ SELECT
 └───────────┴───────┘
 ```
 
-
-
 ## numericIndexedVectorPointwiseGreaterEqual {#numericIndexedVectorPointwiseGreaterEqual}
 
-Introduced in: v25.7
+導入バージョン: v25.7
 
+`numericIndexedVector` と、別の `numericIndexedVector` または数値定数との間で要素ごとの比較を実行します。
+結果は、1つ目のベクターの値が2つ目のベクターの値以上となるインデックスのみを含む `numericIndexedVector` であり、これらのインデックスに対応する値はすべて 1 に設定されます。
 
-Performs pointwise comparison between a numericIndexedVector and either another numericIndexedVector or a numeric constant.
-The result is a numericIndexedVector containing the indices where the first vector's value is greater than or equal to the second vector's value, with all corresponding values set to 1.
-        
-
-**Syntax**
+**構文**
 
 ```sql
 numericIndexedVectorPointwiseGreaterEqual(v1, v2)
 ```
 
-**Arguments**
+**引数**
 
-- `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-- `v2` — A numeric constant or numericIndexedVector object. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v2` — 数値定数または `numericIndexedVector` オブジェクト。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
+**戻り値**
 
-**Returned value**
+新しい `numericIndexedVector` オブジェクトを返します。[`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
-Returns a new numericIndexedVector object. [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 with
@@ -481,36 +441,31 @@ SELECT
 └───────────────┴───────────┘
 ```
 
-
-
 ## numericIndexedVectorPointwiseLess {#numericIndexedVectorPointwiseLess}
 
-Introduced in: v25.7
+導入バージョン: v25.7
 
+`numericIndexedVector` と、別の `numericIndexedVector` もしくは数値定数との要素ごとの比較を実行します。
+結果は、最初のベクターの値が 2 番目のベクターの値より小さいインデックスを含む `numericIndexedVector` であり、そのインデックスに対応する値はすべて 1 に設定されます。
 
-Performs pointwise comparison between a numericIndexedVector and either another numericIndexedVector or a numeric constant.
-The result is a numericIndexedVector containing the indices where the first vector's value is less than the second vector's value, with all corresponding values set to 1.
-        
-
-**Syntax**
+**構文**
 
 ```sql
 numericIndexedVectorPointwiseLess(v1, v2)
 ```
 
-**Arguments**
+**引数**
 
-- `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-- `v2` — A numeric constant or numericIndexedVector object. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v2` — 数値定数または `numericIndexedVector` オブジェクト。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
+**返される値**
 
-**Returned value**
+新しい [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object) オブジェクトを返します。
 
-Returns a new numericIndexedVector object. [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 with
@@ -527,36 +482,31 @@ SELECT
 └───────────┴───────┘
 ```
 
-
-
 ## numericIndexedVectorPointwiseLessEqual {#numericIndexedVectorPointwiseLessEqual}
 
-Introduced in: v25.7
+導入バージョン: v25.7
 
+`numericIndexedVector` と、別の `numericIndexedVector` もしくは数値定数との要素ごとの比較を実行します。
+結果は、1 番目のベクターの値が 2 番目のベクターの値以下であるインデックスのみを含み、対応する値がすべて 1 に設定された `numericIndexedVector` です。
 
-Performs pointwise comparison between a numericIndexedVector and either another numericIndexedVector or a numeric constant.
-The result is a numericIndexedVector containing the indices where the first vector's value is less than or equal to the second vector's value, with all corresponding values set to 1.
-        
-
-**Syntax**
+**構文**
 
 ```sql
 numericIndexedVectorPointwiseLessEqual(v1, v2)
 ```
 
-**Arguments**
+**引数**
 
-- `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-- `v2` — A numeric constant or numericIndexedVector object [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v2` — 数値定数、または [`(U)Int*`](/sql-reference/data-types/int-uint)、[`Float*`](/sql-reference/data-types/float)、[`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object) のいずれかの型を持つ numericIndexedVector オブジェクト
 
+**戻り値**
 
-**Returned value**
+新しい [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object) オブジェクトを返します。
 
-Returns a new numericIndexedVector object. [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 with
@@ -573,35 +523,30 @@ SELECT
 └───────────────┴───────────┘
 ```
 
-
-
 ## numericIndexedVectorPointwiseMultiply {#numericIndexedVectorPointwiseMultiply}
 
-Introduced in: v25.7
+導入バージョン: v25.7
 
+numericIndexedVector と、別の numericIndexedVector もしくは数値定数との要素ごとの乗算を実行します。
 
-Performs pointwise multiplication between a numericIndexedVector and either another numericIndexedVector or a numeric constant.
-        
-
-**Syntax**
+**構文**
 
 ```sql
 numericIndexedVectorPointwiseMultiply(v1, v2)
 ```
 
-**Arguments**
+**引数**
 
-- `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-- `v2` — A numeric constant or numericIndexedVector object. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v2` — 数値定数または `numericIndexedVector` オブジェクト。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
+**返される値**
 
-**Returned value**
+新しい `numericIndexedVector` オブジェクトを返します。[`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
-Returns a new numericIndexedVector object. [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+**例**
 
-**Examples**
-
-****
+***
 
 ```sql title=Query
 with
@@ -618,36 +563,31 @@ SELECT
 └───────────────┴──────────────────┘
 ```
 
-
-
 ## numericIndexedVectorPointwiseNotEqual {#numericIndexedVectorPointwiseNotEqual}
 
-Introduced in: v25.7
+導入バージョン: v25.7
 
+`numericIndexedVector` と、別の `numericIndexedVector` もしくは数値定数との間で要素単位の比較を実行します。
+結果は、値が等しくないインデックスのみを含み、その位置の値がすべて 1 に設定された `numericIndexedVector` になります。
 
-Performs pointwise comparison between a numericIndexedVector and either another numericIndexedVector or a numeric constant.
-The result is a numericIndexedVector containing the indices where the values are not equal, with all corresponding values set to 1.
-        
-
-**Syntax**
+**構文**
 
 ```sql
 numericIndexedVectorPointwiseNotEqual(v1, v2)
 ```
 
-**Arguments**
+**引数**
 
-- `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-- `v2` — A numeric constant or numericIndexedVector object. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v1` — [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v2` — 数値定数または `numericIndexedVector` オブジェクト。[`(U)Int*`](/sql-reference/data-types/int-uint) 型、[`Float*`](/sql-reference/data-types/float) 型、または [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
+**返される値**
 
-**Returned value**
+新しい [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object) オブジェクトを返します。
 
-Returns a new numericIndexedVector object. [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 with
@@ -664,35 +604,30 @@ SELECT
 └───────────────┴───────────┘
 ```
 
-
-
 ## numericIndexedVectorPointwiseSubtract {#numericIndexedVectorPointwiseSubtract}
 
-Introduced in: v25.7
+導入バージョン: v25.7
 
+`numericIndexedVector` と、別の `numericIndexedVector` または数値定数との間で要素ごとの減算を行います。
 
-Performs pointwise subtraction between a numericIndexedVector and either another numericIndexedVector or a numeric constant.
-        
-
-**Syntax**
+**構文**
 
 ```sql
 numericIndexedVectorPointwiseSubtract(v1, v2)
 ```
 
-**Arguments**
+**引数**
 
-- `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-- `v2` — A numeric constant or numericIndexedVector object. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v1` — [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v2` — 数値の定数または `numericIndexedVector` オブジェクト。[`(U)Int*`](/sql-reference/data-types/int-uint)、[`Float*`](/sql-reference/data-types/float)、または [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
+**戻り値**
 
-**Returned value**
+新しい `numericIndexedVector` オブジェクトを返します。[`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
-Returns a new numericIndexedVector object. [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 WITH
@@ -709,35 +644,30 @@ SELECT
 └────────────────────────┴─────────────────┘
 ```
 
-
-
 ## numericIndexedVectorShortDebugString {#numericIndexedVectorShortDebugString}
 
-Introduced in: v25.7
+導入バージョン：v25.7
 
+numericIndexedVector の内部情報を JSON 形式で返します。
+この関数は主にデバッグ用途で使用されます。
 
-Returns internal information of the numericIndexedVector in JSON format.
-This function is primarily used for debugging purposes.
-        
-
-**Syntax**
+**構文**
 
 ```sql
 numericIndexedVectorShortDebugString(v)
 ```
 
-**Arguments**
+**引数**
 
-- `v` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
+**戻り値**
 
-**Returned value**
+デバッグ情報を含む JSON 文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a JSON string containing debug information. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT numericIndexedVectorShortDebugString(numericIndexedVectorBuild(mapFromArrays([1, 2, 3], [10, 20, 30]))) AS res\G;
@@ -749,34 +679,29 @@ SELECT numericIndexedVectorShortDebugString(numericIndexedVectorBuild(mapFromArr
 res: {"vector_type":"BSI","index_type":"char8_t","value_type":"char8_t","integer_bit_num":8,"fraction_bit_num":0,"zero_indexes_info":{"cardinality":"0"},"non_zero_indexes_info":{"total_cardinality":"3","all_value_sum":60,"number_of_bitmaps":"8","bitmap_info":{"cardinality":{"0":"0","1":"2","2":"2","3":"2","4":"2","5":"0","6":"0","7":"0"}}}}
 ```
 
-
-
 ## numericIndexedVectorToMap {#numericIndexedVectorToMap}
 
-Introduced in: v25.7
+導入バージョン: v25.7
 
+numericIndexedVector を map 型に変換します。
 
-Converts a numericIndexedVector to a map.
-        
-
-**Syntax**
+**構文**
 
 ```sql
 numericIndexedVectorToMap(v)
 ```
 
-**Arguments**
+**引数**
 
-- `v` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
+**戻り値**
 
-**Returned value**
+インデックスと値のペアからなるマップを返します。[`Map`](/sql-reference/data-types/map)
 
-Returns a map with index-value pairs. [`Map`](/sql-reference/data-types/map)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT numericIndexedVectorToMap(numericIndexedVectorBuild(mapFromArrays([1, 2, 3], [10, 20, 30]))) AS res;

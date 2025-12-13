@@ -62,7 +62,7 @@ SELECT format('{1} {0} {1}', '世界', 'こんにちは')
 └─────────────────────────────────────────┘
 ```
 
-**Implicit numbering**
+**暗黙の番号付け**
 
 ```sql title=Query
 SELECT format('{} {}', 'こんにちは', '世界')
@@ -74,37 +74,32 @@ SELECT format('{} {}', 'こんにちは', '世界')
 └───────────────────────────────────┘
 ```
 
-
-
 ## overlay {#overlay}
 
-Introduced in: v24.9
+導入バージョン: v24.9
 
+文字列 `input` の一部を、インデックス `offset`（1 始まり）で指定される位置から、別の文字列 `replace` で置き換えます。
 
-Replaces part of the string `input` with another string `replace`, starting at the 1-based index `offset`.
-
-
-**Syntax**
+**構文**
 
 ```sql
 overlay(s, replace, offset[, length])
 ```
 
-**Arguments**
+**引数**
 
-- `s` — The input string. [`String`](/sql-reference/data-types/string)
-- `replace` — The replacement string [`const String`](/sql-reference/data-types/string)
-- `offset` — An integer type `Int` (1-based). If `offset` is negative, it is counted from the end of the string `s`. [`Int`](/sql-reference/data-types/int-uint)
-- `length` — Optional. An integer type `Int`. `length` specifies the length of the snippet within the input string `s` to be replaced. If `length` is not specified, the number of bytes removed from `s` equals the length of `replace`; otherwise `length` bytes are removed. [`Int`](/sql-reference/data-types/int-uint)
+* `s` — 入力文字列。[`String`](/sql-reference/data-types/string)
+* `replace` — 置換に使用する文字列。[`const String`](/sql-reference/data-types/string)
+* `offset` — 整数型 `Int`（1 始まり）。`offset` が負の場合は、文字列 `s` の末尾から数えます。[`Int`](/sql-reference/data-types/int-uint)
+* `length` — 省略可能。整数型 `Int`。`length` は、入力文字列 `s` のうち置換対象となる部分文字列の長さを指定します。`length` が指定されていない場合、`s` から削除されるバイト数は `replace` の長さと同じになります。指定されている場合は `length` バイトが削除されます。[`Int`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+置換後の文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a string with replacement. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Basic replacement**
+**基本的な置換**
 
 ```sql title=Query
 SELECT overlay('私の父はメキシコ出身です。', '母', 4) AS res;
@@ -116,7 +111,7 @@ SELECT overlay('私の父はメキシコ出身です。', '母', 4) AS res;
 └──────────────────────────┘
 ```
 
-**Replacement with length**
+**長さ指定付き置換**
 
 ```sql title=Query
 SELECT overlay('私の父はメキシコ出身です。', '父', 4, 6) AS res;
@@ -128,39 +123,34 @@ SELECT overlay('私の父はメキシコ出身です。', '父', 4, 6) AS res;
 └───────────────────────┘
 ```
 
-
-
 ## overlayUTF8 {#overlayUTF8}
 
-Introduced in: v24.9
+導入バージョン: v24.9
 
+文字列 `s` の一部を、1 始まりのインデックス `offset` の位置から、別の文字列 `replace` で置き換えます。
+文字列が有効な UTF-8 でエンコードされたテキストであることを前提とします。
+この前提が満たされない場合でも、例外はスローされず、結果は未定義です。
 
-Replace part of the string `s` with another string `replace`, starting at the 1-based index `offset`.
-Assumes that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
-
-
-**Syntax**
+**構文**
 
 ```sql
 overlayUTF8(s, replace, offset[, length])
 ```
 
-**Arguments**
+**引数**
 
-- `s` — The input string. [`String`](/sql-reference/data-types/string)
-- `replace` — The replacement string. [`const String`](/sql-reference/data-types/string)
-- `offset` — An integer type `Int` (1-based). If `offset` is negative, it is counted from the end of the input string `s`. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `length` — Optional. Specifies the length of the snippet within the input string `s` to be replaced. If `length` is not specified, the number of characters removed from `s` equals the length of `replace`, otherwise `length` characters are removed. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `s` — 入力文字列。[`String`](/sql-reference/data-types/string)
+* `replace` — 置換後の文字列。[`const String`](/sql-reference/data-types/string)
+* `offset` — 整数型 `Int`（1 始まりのインデックス）。`offset` が負の値の場合、入力文字列 `s` の末尾からのオフセットとして解釈されます。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `length` — 省略可能。入力文字列 `s` の中で置換対象となる部分文字列の長さを指定します。`length` が指定されていない場合、`s` から削除される文字数は `replace` の長さと等しくなり、指定されている場合は `length` 文字が削除されます。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+置換後の文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a string with replacement. [`String`](/sql-reference/data-types/string)
+**使用例**
 
-**Examples**
-
-**UTF-8 replacement**
+**UTF-8 の置換**
 
 ```sql title=Query
 SELECT overlayUTF8('私の父はオーストリア出身です。', 'トルコ', 20) AS res;
@@ -172,38 +162,33 @@ SELECT overlayUTF8('私の父はオーストリア出身です。', 'トルコ',
 └───────────────────────────────┘
 ```
 
-
-
 ## printf {#printf}
 
-Introduced in: v24.8
+導入バージョン: v24.8
 
+`printf` 関数は、C++ の printf 関数と同様に、引数として指定された値（文字列、整数、浮動小数点数など）を使って、与えられた文字列をフォーマットします。
+フォーマット文字列には、`%` 文字で始まる書式指定子を含めることができます。
+`%` とそれに続く書式指定子に含まれない部分はリテラルテキストとして扱われ、そのまま出力にコピーされます。
+リテラルの `%` 文字は `%%` でエスケープできます。
 
-The `printf` function formats the given string with the values (strings, integers, floating-points etc.) listed in the arguments, similar to printf function in C++.
-The format string can contain format specifiers starting with `%` character.
-Anything not contained in `%` and the following format specifier is considered literal text and copied verbatim into the output.
-Literal `%` character can be escaped by `%%`.
-
-
-**Syntax**
+**構文**
 
 ```sql
 printf(format[, sub1, sub2, ...])
 ```
 
-**Arguments**
+**引数**
 
-- `format` — The format string with `%` specifiers. [`String`](/sql-reference/data-types/string)
-- `sub1, sub2, ...` — Optional. Zero or more values to substitute into the format string. [`Any`](/sql-reference/data-types)
+* `format` — `%` 指定子を含むフォーマット文字列。[`String`](/sql-reference/data-types/string)
+* `sub1, sub2, ...` — 省略可。フォーマット文字列内に埋め込む 0 個以上の値。[`Any`](/sql-reference/data-types)
 
+**戻り値**
 
-**Returned value**
+フォーマット済みの文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a formatted string. [`String`](/sql-reference/data-types/string)
+**使用例**
 
-**Examples**
-
-**C++-style formatting**
+**C++ スタイルのフォーマット**
 
 ```sql title=Query
 SELECT printf('%%%s %s %d', 'Hello', 'World', 2024);
@@ -215,36 +200,31 @@ SELECT printf('%%%s %s %d', 'Hello', 'World', 2024);
 └──────────────────────────────────────────────┘
 ```
 
-
-
 ## regexpQuoteMeta {#regexpQuoteMeta}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
+正規表現において特別な意味を持つ次の文字の前にバックスラッシュを追加します: `\0`, `\\`, `|`, `(`, `)`, `^`, `$`, `.`, `[`, `]`, `?`, `*`, `+`, `{`, `:`, `-`。
+この実装は `re2::RE2::QuoteMeta` とは細部で挙動が異なります。
+ゼロバイト文字を `\x00` ではなく `\0` としてエスケープし、必要な文字だけをエスケープします。
 
-Adds a backslash before these characters with special meaning in regular expressions: `\0`, `\\`, `|`, `(`, `)`, `^`, `$`, `.`, `[`, `]`, `?`, `*`, `+`, `{`, `:`, `-`.
-This implementation slightly differs from re2::RE2::QuoteMeta.
-It escapes zero byte as `\0` instead of `\x00` and it escapes only required characters.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 regexpQuoteMeta(s)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — The input string containing characters to be escaped for regex. [`String`](/sql-reference/data-types/string)
+* `s` — 正規表現でエスケープする必要がある文字を含む入力文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+正規表現の特殊文字をエスケープした文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a string with regex special characters escaped. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Escape regex special characters**
+**正規表現の特殊文字をエスケープする**
 
 ```sql title=Query
 SELECT regexpQuoteMeta('Hello. [World]? (Yes)*') AS res
@@ -256,38 +236,33 @@ SELECT regexpQuoteMeta('Hello. [World]? (Yes)*') AS res
 └───────────────────────────────┘
 ```
 
-
-
 ## replaceAll {#replaceAll}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+`haystack` 内にある部分文字列 `pattern` のすべての出現を、文字列 `replacement` で置換します。
 
-Replaces all occurrences of the substring `pattern` in `haystack` by the `replacement` string.
-
-
-**Syntax**
+**構文**
 
 ```sql
 replaceAll(haystack, pattern, replacement)
 ```
 
-**Aliases**: `replace`
+**別名**: `replace`
 
-**Arguments**
+**引数**
 
-- `haystack` — The input string to search in. [`String`](/sql-reference/data-types/string)
-- `pattern` — The substring to find and replace. [`const String`](/sql-reference/data-types/string)
-- `replacement` — The string to replace the pattern with. [`const String`](/sql-reference/data-types/string)
+* `haystack` — 検索対象の入力文字列。[`String`](/sql-reference/data-types/string)
+* `pattern` — 検索して置換する部分文字列。[`const String`](/sql-reference/data-types/string)
+* `replacement` — `pattern` を置き換える文字列。[`const String`](/sql-reference/data-types/string)
 
+**返される値**
 
-**Returned value**
+`pattern` のすべての出現箇所を置換した文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a string with all occurrences of pattern replaced. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Replace all occurrences**
+**すべての出現箇所を置換**
 
 ```sql title=Query
 SELECT replaceAll('Hello, Hello world', 'Hello', 'Hi') AS res;
@@ -299,36 +274,31 @@ SELECT replaceAll('Hello, Hello world', 'Hello', 'Hi') AS res;
 └──────────────┘
 ```
 
-
-
 ## replaceOne {#replaceOne}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+`haystack` 内で `pattern` が最初に出現する箇所を、文字列 `replacement` に置き換えます。
 
-Replaces the first occurrence of the substring `pattern` in `haystack` by the `replacement` string.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 replaceOne(haystack, pattern, replacement)
 ```
 
-**Arguments**
+**引数**
 
-- `haystack` — The input string to search in. [`String`](/sql-reference/data-types/string)
-- `pattern` — The substring to find and replace. [`const String`](/sql-reference/data-types/string)
-- `replacement` — The string to replace the pattern with. [`const String`](/sql-reference/data-types/string)
+* `haystack` — 検索対象となる入力文字列。[`String`](/sql-reference/data-types/string)
+* `pattern` — 検索および置換の対象となる部分文字列。[`const String`](/sql-reference/data-types/string)
+* `replacement` — `pattern` を置き換える文字列。[`const String`](/sql-reference/data-types/string)
 
+**返却値**
 
-**Returned value**
+`pattern` の最初の出現箇所を置換した文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a string with the first occurrence of pattern replaced. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Replace first occurrence**
+**最初の出現箇所を置換**
 
 ```sql title=Query
 SELECT replaceOne('Hello, Hello world', 'Hello', 'Hi') AS res;
@@ -340,39 +310,34 @@ SELECT replaceOne('Hello, Hello world', 'Hello', 'Hi') AS res;
 └─────────────────┘
 ```
 
-
-
 ## replaceRegexpAll {#replaceRegexpAll}
 
-Introduced in: v1.1
+導入: v1.1
 
+`replaceRegexpOne` と同様ですが、パターンに一致するすべての出現箇所を置換します。
+例外として、正規表現が空の部分文字列にマッチした場合、その置換は 1 回しか行われません。
 
-Like `replaceRegexpOne` but replaces all occurrences of the pattern.
-As an exception, if a regular expression worked on an empty substring, the replacement is not made more than once.
-
-
-**Syntax**
+**構文**
 
 ```sql
 replaceRegexpAll(haystack, pattern, replacement)
 ```
 
-**Aliases**: `REGEXP_REPLACE`
+**別名**: `REGEXP_REPLACE`
 
-**Arguments**
+**引数**
 
-- `haystack` — The input string to search in. [`String`](/sql-reference/data-types/string)
-- `pattern` — The regular expression pattern to find. [`const String`](/sql-reference/data-types/string)
-- `replacement` — The string to replace the pattern with, may contain substitutions. [`const String`](/sql-reference/data-types/string)
+* `haystack` — 検索対象の入力文字列。[`String`](/sql-reference/data-types/string)
+* `pattern` — 検索する正規表現パターン。[`const String`](/sql-reference/data-types/string)
+* `replacement` — パターンを置き換える文字列。後方参照などの置換パターンを含めることができる。[`const String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+正規表現にマッチした部分がすべて置き換えられた文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a string with all regex matches replaced. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Replace all characters with doubled version**
+**すべての文字を2回繰り返した文字で置き換える**
 
 ```sql title=Query
 SELECT replaceRegexpAll('Hello123', '.', '\\\\0\\\\0') AS res
@@ -384,7 +349,7 @@ SELECT replaceRegexpAll('Hello123', '.', '\\\\0\\\\0') AS res
 └──────────────────────┘
 ```
 
-**Empty substring replacement example**
+**空文字列の置換例**
 
 ```sql title=Query
 SELECT replaceRegexpAll('Hello, World!', '^', 'here: ') AS res
@@ -396,40 +361,35 @@ SELECT replaceRegexpAll('Hello, World!', '^', 'here: ') AS res
 └─────────────────────┘
 ```
 
-
-
 ## replaceRegexpOne {#replaceRegexpOne}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+`haystack` 内で、正規表現パターン `pattern`（re2 構文）にマッチする部分文字列の最初の出現箇所を、文字列 `replacement` で置換します。
+`replacement` には、`\0-\9` の置換指定を含めることができます。
+置換指定 `\1-\9` は第1〜第9のキャプチャグループ（サブマッチ）に対応し、置換指定 `\0` はマッチ全体に対応します。
+`pattern` または `replacement` の文字列内でリテラルな `\` 文字を使用するには、`\` を使ってエスケープしてください。
+また、文字列リテラルでは追加のエスケープが必要になる点にも注意してください。
 
-Replaces the first occurrence of the substring matching the regular expression `pattern` (in re2 syntax) in `haystack` by the `replacement` string.
-`replacement` can contain substitutions `\0-\9`.
-Substitutions `\1-\9` correspond to the 1st to 9th capturing group (submatch), substitution `\0` corresponds to the entire match.
-To use a verbatim `\` character in the `pattern` or `replacement` strings, escape it using `\`.
-Also keep in mind that string literals require extra escaping.
-
-
-**Syntax**
+**構文**
 
 ```sql
 replaceRegexpOne(haystack, pattern, replacement)
 ```
 
-**Arguments**
+**引数**
 
-- `haystack` — The input string to search in. [`String`](/sql-reference/data-types/string)
-- `pattern` — The regular expression pattern to find. [`const String`](/sql-reference/data-types/string)
-- `replacement` — The string to replace the pattern with, may contain substitutions. [`const String`](/sql-reference/data-types/string)
+* `haystack` — 検索対象となる入力文字列。[`String`](/sql-reference/data-types/string)
+* `pattern` — 検索する正規表現パターン。[`const String`](/sql-reference/data-types/string)
+* `replacement` — パターンを置き換える文字列。後方参照などの置換式を含めることができる。[`const String`](/sql-reference/data-types/string)
 
+**返される値**
 
-**Returned value**
+最初にマッチした部分が置換された文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a string with the first regex match replaced. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Converting ISO dates to American format**
+**ISO 日付をアメリカ式の日付形式に変換する**
 
 ```sql title=Query
 SELECT DISTINCT
@@ -450,7 +410,7 @@ FORMAT TabSeparated
 2014-03-23      03/23/2014
 ```
 
-**Copying a string ten times**
+**文字列を10回コピーする**
 
 ```sql title=Query
 SELECT replaceRegexpOne('Hello, World!', '.*', '\\\\0\\\\0\\\\0\\\\0\\\\0\\\\0\\\\0\\\\0\\\\0\\\\0') AS res
@@ -462,40 +422,35 @@ SELECT replaceRegexpOne('Hello, World!', '.*', '\\\\0\\\\0\\\\0\\\\0\\\\0\\\\0\\
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## translate {#translate}
 
-Introduced in: v22.7
+導入バージョン: v22.7
 
+文字列 `s` 内の文字を、`from` と `to` 文字列で定義された 1 対 1 の文字マッピングを使って置換します。
+`from` と `to` は定数の ASCII 文字列である必要があります。
+`from` と `to` の長さが同じ場合、`s` 内に現れる `from` の 1 文字目はすべて `to` の 1 文字目に、`from` の 2 文字目はすべて `to` の 2 文字目に、というように順に置換されます。
+`from` に含まれる文字数が `to` より多い場合、`from` の末尾側で `to` に対応する文字を持たないすべての文字は、`s` から削除されます。
+`s` 内の非 ASCII 文字は、この関数によって変更されません。
 
-Replaces characters in the string `s` using a one-to-one character mapping defined by `from` and `to` strings.
-`from` and `to` must be constant ASCII strings.
-If `from` and `to` have equal sizes, each occurrence of the first character of `first` in `s` is replaced by the first character of `to`, the second character of `first` in `s` is replaced by the second character of `to`, etc.
-If `from` contains more characters than `to`, all occurrences of the characters at the end of `from` that have no corresponding character in `to` are deleted from `s`.
-Non-ASCII characters in `s` are not modified by the function.
-
-
-**Syntax**
+**構文**
 
 ```sql
 translate(s, from, to)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — The input string to translate. [`String`](/sql-reference/data-types/string)
-- `from` — A constant ASCII string containing characters to replace. [`const String`](/sql-reference/data-types/string)
-- `to` — A constant ASCII string containing replacement characters. [`const String`](/sql-reference/data-types/string)
+* `s` — 変換対象の入力文字列。[`String`](/sql-reference/data-types/string)
+* `from` — 置換対象の文字を含む定数 ASCII 文字列。[`const String`](/sql-reference/data-types/string)
+* `to` — 置換後の文字を含む定数 ASCII 文字列。[`const String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+文字の変換が適用された文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a string with character translations applied. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Character mapping**
+**文字の対応付け**
 
 ```sql title=Query
 SELECT translate('Hello, World!', 'delor', 'DELOR') AS res
@@ -507,7 +462,7 @@ SELECT translate('Hello, World!', 'delor', 'DELOR') AS res
 └───────────────┘
 ```
 
-**Different lengths**
+**長さの違い**
 
 ```sql title=Query
 SELECT translate('clickhouse', 'clickhouse', 'CLICK') AS res
@@ -519,36 +474,31 @@ SELECT translate('clickhouse', 'clickhouse', 'CLICK') AS res
 └───────┘
 ```
 
-
-
 ## translateUTF8 {#translateUTF8}
 
-Introduced in: v22.7
+導入バージョン: v22.7
 
+[`translate`](#translate) と同様ですが、`s`、`from`、`to` の各引数が UTF-8 エンコードされた文字列であると仮定します。
 
-Like [`translate`](#translate) but assumes `s`, `from` and `to` are UTF-8 encoded strings.
-
-
-**Syntax**
+**構文**
 
 ```sql
 translateUTF8(s, from, to)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — UTF-8 input string to translate. [`String`](/sql-reference/data-types/string)
-- `from` — A constant UTF-8 string containing characters to replace. [`const String`](/sql-reference/data-types/string)
-- `to` — A constant UTF-8 string containing replacement characters. [`const String`](/sql-reference/data-types/string)
+* `s` — 変換対象の UTF-8 入力文字列。[`String`](/sql-reference/data-types/string)
+* `from` — 置換対象の文字を含む定数 UTF-8 文字列。[`const String`](/sql-reference/data-types/string)
+* `to` — 置換後の文字を含む定数 UTF-8 文字列。[`const String`](/sql-reference/data-types/string)
 
+**返される値**
 
-**Returned value**
+`String` 型の値を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a `String` data type value. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**UTF-8 character translation**
+**UTF-8 文字の変換**
 
 ```sql title=Query
 SELECT translateUTF8('Münchener Straße', 'üß', 'us') AS res;

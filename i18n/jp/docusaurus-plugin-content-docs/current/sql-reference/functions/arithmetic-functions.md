@@ -74,34 +74,30 @@ SELECT abs(-0.5)
 0.5
 ```
 
-
-
 ## avg2 {#avg2}
 
-Introduced in: v25.11
+導入バージョン: v25.11
 
+指定された引数の平均値を計算して返します。
+数値型および日時型をサポートします。
 
-Computes and returns the average value of the provided arguments.
-Supports numerical and temporal types.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 avg2(x1, x2])
 ```
 
-**Arguments**
+**引数**
 
-- `x1, x2]` — Accepts two values for averaging. 
+* `x1, x2]` — 平均値を計算するための 2 つの値を受け取ります。
 
-**Returned value**
+**戻り値**
 
-Returns the average value of the provided arguments, promoted to the largest compatible type.
+指定された引数の平均値を、互換性のある型のうち最も広い型に型昇格したうえで返します。
 
-**Examples**
+**使用例**
 
-**Numeric types**
+**数値型**
 
 ```sql title=Query
 SELECT avg2(toUInt8(3), 1.0) AS result, toTypeName(result) AS type;
@@ -114,7 +110,7 @@ SELECT avg2(toUInt8(3), 1.0) AS result, toTypeName(result) AS type;
 └────────┴─────────┘
 ```
 
-**Decimal types**
+**Decimal 型**
 
 ```sql title=Query
 SELECT avg2(toDecimal32(1, 2), 2) AS result, toTypeName(result) AS type;
@@ -126,7 +122,7 @@ SELECT avg2(toDecimal32(1, 2), 2) AS result, toTypeName(result) AS type;
 └────────┴───────────────┘
 ```
 
-**Date types**
+**日付型**
 
 ```sql title=Query
 SELECT avg2(toDate('2025-01-01'), toDate('2025-01-05')) AS result, toTypeName(result) AS type;
@@ -138,7 +134,7 @@ SELECT avg2(toDate('2025-01-01'), toDate('2025-01-05')) AS result, toTypeName(re
 └────────────┴──────┘
 ```
 
-**DateTime types**
+**DateTime型**
 
 ```sql title=Query
 SELECT avg2(toDateTime('2025-01-01 00:00:00'), toDateTime('2025-01-03 12:00:00')) AS result, toTypeName(result) AS type;
@@ -150,7 +146,7 @@ SELECT avg2(toDateTime('2025-01-01 00:00:00'), toDateTime('2025-01-03 12:00:00')
 └─────────────────────┴──────────┘
 ```
 
-**Time64 types**
+**Time64型**
 
 ```sql title=Query
 SELECT avg2(toTime64('12:00:00', 0), toTime64('14:00:00', 0)) AS result, toTypeName(result) AS type;
@@ -162,47 +158,43 @@ SELECT avg2(toTime64('12:00:00', 0), toTime64('14:00:00', 0)) AS result, toTypeN
 └──────────┴───────────┘
 ```
 
-
-
 ## byteSwap {#byteSwap}
 
-Introduced in: v23.10
+導入バージョン: v23.10
 
+整数のバイト順を反転し、その結果として[エンディアン](https://en.wikipedia.org/wiki/Endianness)を変更します。
 
-Reverses the bytes of an integer, i.e. changes its [endianness](https://en.wikipedia.org/wiki/Endianness).
+以下の例は次の手順で求めることができます。
 
-The below example can be worked out in the following manner:
+1. 10進整数をビッグエンディアンでの16進表現に変換する。例: 3351772109 -&gt; C7 C7 FB CD（4バイト）
+2. バイト列を反転する。例: C7 C7 FB CD -&gt; CD FB C7 C7
+3. 結果をビッグエンディアンとして整数に戻す。例: CD FB C7 C7 -&gt; 3455829959
 
-1. Convert the base-10 integer to its equivalent hexadecimal format in big-endian format, i.e. 3351772109 -> C7 C7 FB CD (4 bytes)
-2. Reverse the bytes, i.e. C7 C7 FB CD -> CD FB C7 C7
-3. Convert the result back to an integer assuming big-endian, i.e. CD FB C7 C7 -> 3455829959
-One use case of this function is reversing IPv4s:
+この関数のユースケースの 1 つは、IPv4 アドレスのバイト順を反転することです。
 
 ```result
 ┌─toIPv4(byteSwap(toUInt32(toIPv4('205.251.199.199'))))─┐
 │ 199.199.251.205                                       │
 └───────────────────────────────────────────────────────┘
 ```
-    
 
-**Syntax**
+**構文**
 
 ```sql
 byteSwap(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — An integer value. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `x` — 整数値。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+バイト順を反転した `x` を返します。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
-Returns `x` with bytes reversed. [`(U)Int*`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT byteSwap(3351772109)
@@ -212,7 +204,7 @@ SELECT byteSwap(3351772109)
 3455829959
 ```
 
-**8-bit**
+**8ビット**
 
 ```sql title=Query
 SELECT byteSwap(54)
@@ -222,7 +214,7 @@ SELECT byteSwap(54)
 54
 ```
 
-**16-bit**
+**16ビット**
 
 ```sql title=Query
 SELECT byteSwap(4135)
@@ -232,7 +224,7 @@ SELECT byteSwap(4135)
 10000
 ```
 
-**32-bit**
+**32ビット**
 
 ```sql title=Query
 SELECT byteSwap(3351772109)
@@ -242,7 +234,7 @@ SELECT byteSwap(3351772109)
 3455829959
 ```
 
-**64-bit**
+**64ビット**
 
 ```sql title=Query
 SELECT byteSwap(123294967295)
@@ -252,38 +244,34 @@ SELECT byteSwap(123294967295)
 18439412204227788800
 ```
 
-
-
 ## divide {#divide}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
-
-Calculates the quotient of two values `a` and `b`. The result type is always [Float64](/sql-reference/data-types/float).
-Integer division is provided by the `intDiv` function.
+2つの値 `a` と `b` の商を計算します。結果の型は常に [Float64](/sql-reference/data-types/float) です。
+整数除算は `intDiv` 関数で提供されます。
 
 :::note
-Division by `0` returns `inf`, `-inf`, or `nan`.
+`0` で除算した場合は `inf`、`-inf`、または `nan` を返します。
 :::
-    
 
-**Syntax**
+**構文**
 
 ```sql
 divide(x, y)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Dividend - `y` — Divisor 
+* `x` — 被除数、`y` — 除数
 
-**Returned value**
+**返される値**
 
-The quotient of x and y
+x を y で割った結果の商
 
-**Examples**
+**例**
 
-**Dividing two numbers**
+**2 つの数値を割る**
 
 ```sql title=Query
 SELECT divide(25,5) AS quotient, toTypeName(quotient)
@@ -293,7 +281,7 @@ SELECT divide(25,5) AS quotient, toTypeName(quotient)
 5 Float64
 ```
 
-**Dividing by zero**
+**ゼロ除算**
 
 ```sql title=Query
 SELECT divide(25,0)
@@ -303,39 +291,35 @@ SELECT divide(25,0)
 inf
 ```
 
-
-
 ## divideDecimal {#divideDecimal}
 
-Introduced in: v22.12
+導入バージョン: v22.12
 
-
-Performs division on two decimals. Result value will be of type [Decimal256](/sql-reference/data-types/decimal).
-Result scale can be explicitly specified by `result_scale` argument (const Integer in range `[0, 76]`). If not specified, the result scale is the max scale of given arguments.
+2つの Decimal に対して除算を行います。結果の値の型は [Decimal256](/sql-reference/data-types/decimal) になります。
+結果のスケールは `result_scale` 引数（範囲 `[0, 76]` の定数 Integer）で明示的に指定できます。指定しない場合、結果のスケールは与えられた引数のスケールの最大値になります。
 
 :::note
-These function work significantly slower than usual `divide`.
-In case you don't really need controlled precision and/or need fast computation, consider using [divide](#divide).
+これらの関数は通常の `divide` 関数と比べて大幅に低速です。
+精度の厳密な制御が不要な場合や、高速な計算が必要な場合は、[divide](#divide) の使用を検討してください。
 :::
-    
 
-**Syntax**
+**構文**
 
 ```sql
 divideDecimal(x, y[, result_scale])
 ```
 
-**Arguments**
+**引数**
 
-- `x` — First value: [Decimal](/sql-reference/data-types/decimal). - `y` — Second value: [Decimal](/sql-reference/data-types/decimal). - `result_scale` — Scale of result. Type [Int/UInt](/sql-reference/data-types/int-uint). 
+* `x` — 1 つ目の値: [Decimal](/sql-reference/data-types/decimal). - `y` — 2 つ目の値: [Decimal](/sql-reference/data-types/decimal). - `result_scale` — 結果のスケール（小数桁数）。型 [Int/UInt](/sql-reference/data-types/int-uint).
 
-**Returned value**
+**戻り値**
 
-The result of division with given scale. [`Decimal256`](/sql-reference/data-types/decimal)
+指定されたスケールでの除算結果。[`Decimal256`](/sql-reference/data-types/decimal)
 
-**Examples**
+**例**
 
-**Example 1**
+**例 1**
 
 ```sql title=Query
 divideDecimal(toDecimal256(-12, 0), toDecimal32(2.1, 1), 10)
@@ -347,7 +331,7 @@ divideDecimal(toDecimal256(-12, 0), toDecimal32(2.1, 1), 10)
 └──────────────────────────────────────────────────────────────┘
 ```
 
-**Example 2**
+**例 2**
 
 ```sql title=Query
 SELECT toDecimal64(-12, 1) / toDecimal32(2.1, 1);
@@ -363,33 +347,29 @@ SELECT toDecimal64(-12, 1) as a, toDecimal32(2.1, 1) as b, divideDecimal(a, b, 1
 └─────┴─────┴────────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## divideOrNull {#divideOrNull}
 
-Introduced in: v25.5
+導入バージョン: v25.5
 
+`divide` と同様ですが、0 で除算した場合は NULL を返します。
 
-Same as `divide` but returns NULL when dividing by zero.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 divideOrNull(x, y)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Dividend - `y` — Divisor 
+* `x` — 被除数、`y` — 除数
 
-**Returned value**
+**戻り値**
 
-The quotient of x and y, or NULL.
+x を y で割った商、または NULL。
 
-**Examples**
+**例**
 
-**Dividing by zero**
+**ゼロで割る場合**
 
 ```sql title=Query
 SELECT divideOrNull(25, 0)
@@ -399,36 +379,31 @@ SELECT divideOrNull(25, 0)
 \N
 ```
 
-
-
 ## gcd {#gcd}
 
-Introduced in: v1.1
+導入: v1.1
 
+2 つの値 a と b の最大公約数を返します。
 
-    Returns the greatest common divisor of two values a and b.
+0 で割った場合、または最小の負の値を -1 で割った場合には、例外がスローされます。
 
-    An exception is thrown when dividing by zero or when dividing a minimal
-    negative number by minus one.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 gcd(x, y)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — First integer - `y` — Second integer 
+* `x` — 第1の整数、`y` — 第2の整数
 
-**Returned value**
+**戻り値**
 
-The greatest common divisor of `x` and `y`.
+`x` と `y` の最大公約数を返します。
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT gcd(12, 18)
@@ -438,38 +413,33 @@ SELECT gcd(12, 18)
 6
 ```
 
-
-
 ## ifNotFinite {#ifNotFinite}
 
-Introduced in: v20.3
+導入バージョン: v20.3
 
+浮動小数点値が有限かどうかを判定します。
 
-Checks whether a floating point value is finite.
+[三項演算子](/sql-reference/functions/conditional-functions#if) を使用して、同様の結果を得られます：`isFinite(x) ? x : y`。
 
-You can get a similar result by using the [ternary operator](/sql-reference/functions/conditional-functions#if): `isFinite(x) ? x : y`.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 ifNotFinite(x,y)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Value to check if infinite. [`Float*`](/sql-reference/data-types/float)
-- `y` — Fallback value. [`Float*`](/sql-reference/data-types/float)
+* `x` — 無限かどうかを判定する値。[`Float*`](/sql-reference/data-types/float)
+* `y` — フォールバック値。[`Float*`](/sql-reference/data-types/float)
 
+**戻り値**
 
-**Returned value**
+* `x` が有限の場合は `x`。
+* `x` が有限でない場合は `y`。
 
-- `x` if `x` is finite.
-- `y` if `x` is not finite.
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT 1/0 AS infimum, ifNotFinite(infimum,42)
@@ -479,39 +449,34 @@ SELECT 1/0 AS infimum, ifNotFinite(infimum,42)
 inf  42
 ```
 
-
-
 ## intDiv {#intDiv}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+2 つの値 `x` を `y` で整数除算します。言い換えると、商を直前のより小さい整数値に切り下げて計算します。
 
-Performs an integer division of two values `x` by `y`. In other words it
-computes the quotient rounded down to the next smallest integer.
+結果のビット幅は被除数（第 1 引数）と同じになります。
 
-The result has the same width as the dividend (the first parameter).
+0 で除算した場合、商が被除数の表現範囲に収まらない場合、または表現可能な最小の負の値を -1 で除算した場合には、例外がスローされます。
 
-An exception is thrown when dividing by zero, when the quotient does not fit
-in the range of the dividend, or when dividing a minimal negative number by minus one.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 intDiv(x, y)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Left hand operand. - `y` — Right hand operand. 
+* `x` — 左辺のオペランド。
+* `y` — 右辺のオペランド。
 
-**Returned value**
+**戻り値**
 
-Result of integer division of `x` and `y`
+`x` と `y` の整数除算の結果。
 
-**Examples**
+**例**
 
-**Integer division of two floats**
+**2 つの浮動小数点数の整数除算**
 
 ```sql title=Query
 SELECT intDiv(toFloat64(1), 0.001) AS res, toTypeName(res)
@@ -523,7 +488,7 @@ SELECT intDiv(toFloat64(1), 0.001) AS res, toTypeName(res)
 └──────┴─────────────────────────────────────────┘
 ```
 
-**Quotient does not fit in the range of the dividend**
+**商が被除数の表現範囲に収まりません**
 
 ```sql title=Query
 SELECT
@@ -538,36 +503,30 @@ Code: 153. DB::Exception: Received from localhost:9000. DB::Exception:
 (ILLEGAL_DIVISION)
 ```
 
-
-
 ## intDivOrNull {#intDivOrNull}
 
-Introduced in: v25.5
+導入バージョン: v25.5
 
+`intDiv` と同様ですが、ゼロ除算を行う場合、または最小の負の整数値をマイナス 1 で割る場合に NULL を返します。
 
-Same as `intDiv` but returns NULL when dividing by zero or when dividing a
-minimal negative number by minus one.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 intDivOrNull(x, y)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Left hand operand. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `y` — Right hand operand. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `x` — 左側のオペランド。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `y` — 右側のオペランド。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+`x` と `y` の整数除算の結果、または NULL。
 
-Result of integer division of `x` and `y`, or NULL.
+**使用例**
 
-**Examples**
-
-**Integer division by zero**
+**0 による整数除算**
 
 ```sql title=Query
 SELECT intDivOrNull(1, 0)
@@ -577,7 +536,7 @@ SELECT intDivOrNull(1, 0)
 \N
 ```
 
-**Dividing a minimal negative number by minus 1**
+**最小の負の数を −1 で割る**
 
 ```sql title=Query
 SELECT intDivOrNull(-9223372036854775808, -1)
@@ -587,36 +546,30 @@ SELECT intDivOrNull(-9223372036854775808, -1)
 \N
 ```
 
-
-
 ## intDivOrZero {#intDivOrZero}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+`intDiv` と同じですが、ゼロで除算した場合、または最小の負の整数を -1 で除算した場合に 0 を返します。
 
-Same as `intDiv` but returns zero when dividing by zero or when dividing a
-minimal negative number by minus one.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 intDivOrZero(a, b)
 ```
 
-**Arguments**
+**引数**
 
-- `a` — Left hand operand. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `b` — Right hand operand. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `a` — 左側のオペランド。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `b` — 右側のオペランド。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+a を b で整数除算した結果、または 0。
 
-Result of integer division of a and b, or zero.
+**例**
 
-**Examples**
-
-**Integer division by zero**
+**0 での整数除算**
 
 ```sql title=Query
 SELECT intDivOrZero(1, 0)
@@ -626,7 +579,7 @@ SELECT intDivOrZero(1, 0)
 0
 ```
 
-**Dividing a minimal negative number by minus 1**
+**最小の負の数を -1 で割る**
 
 ```sql title=Query
 SELECT intDivOrZero(0.05, -1)
@@ -636,35 +589,30 @@ SELECT intDivOrZero(0.05, -1)
 0
 ```
 
-
-
 ## isFinite {#isFinite}
 
-Introduced in: v1.1
+導入: v1.1
 
+Float32 または Float64 型の引数が無限大ではなく、かつ `NaN` でもない場合に `1` を返し、
+それ以外の場合には `0` を返します。
 
-Returns `1` if the Float32 or Float64 argument not infinite and not a `NaN`,
-otherwise this function returns `0`.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 isFinite(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Number to check for finiteness. [`Float*`](/sql-reference/data-types/float)
+* `x` — 有限かどうかを判定する対象の数値。[`Float*`](/sql-reference/data-types/float)
 
+**戻り値**
 
-**Returned value**
+`x` が無限大でも `NaN` でもない場合は `1`、それ以外は `0` を返します。
 
-`1` if x is not infinite and not `NaN`, otherwise `0`.
+**例**
 
-**Examples**
-
-**Test if a number is finite**
+**数値が有限かどうかを判定する**
 
 ```sql title=Query
 SELECT isFinite(inf)
@@ -674,35 +622,30 @@ SELECT isFinite(inf)
 0
 ```
 
-
-
 ## isInfinite {#isInfinite}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+Float32 または Float64 型の引数が無限大の場合は `1` を返し、それ以外の場合は `0` を返します。
+`NaN` に対しては `0` が返される点に注意してください。
 
-    Returns `1` if the Float32 or Float64 argument is infinite, otherwise this function returns `0`.
-    Note that `0` is returned for a `NaN`.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 isInfinite(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Number to check for infiniteness. [`Float*`](/sql-reference/data-types/float)
+* `x` — 無限大かどうかを判定する数値。[`Float*`](/sql-reference/data-types/float)
 
+**戻り値**
 
-**Returned value**
+`x` が無限大であれば `1`、それ以外（`NaN` を含む）の場合は `0`。
 
-`1` if x is infinite, otherwise `0` (including for `NaN`).
+**使用例**
 
-**Examples**
-
-**Test if a number is infinite**
+**数値が無限大かどうかを判定する**
 
 ```sql title=Query
 SELECT isInfinite(inf), isInfinite(NaN), isInfinite(10))
@@ -712,32 +655,29 @@ SELECT isInfinite(inf), isInfinite(NaN), isInfinite(10))
 1 0 0
 ```
 
-
-
 ## isNaN {#isNaN}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
-Returns `1` if the Float32 and Float64 argument is `NaN`, otherwise returns `0`.
+浮動小数点数型の Float32 および Float64 の引数が `NaN` の場合は `1` を返し、それ以外の場合は `0` を返します。
 
-**Syntax**
+**構文**
 
 ```sql
 isNaN(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Argument to evaluate for if it is `NaN`. [`Float*`](/sql-reference/data-types/float)
+* `x` — `NaN` かどうかを判定する対象。[`Float*`](/sql-reference/data-types/float)
 
+**戻り値**
 
-**Returned value**
+`NaN` の場合は `1`、それ以外は `0`。
 
-`1` if `NaN`, otherwise `0`
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT isNaN(NaN)
@@ -747,37 +687,32 @@ SELECT isNaN(NaN)
 1
 ```
 
-
-
 ## lcm {#lcm}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+2つの値 `x` と `y` の最小公倍数を返します。
 
-Returns the least common multiple of two values `x` and `y`.
+ゼロで除算した場合、または最小の負の値をマイナス1で除算した場合に例外がスローされます。
 
-An exception is thrown when dividing by zero or when dividing a minimal negative number by minus one.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 lcm(x, y)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — First integer. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `y` — Second integer. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `x` — 1つ目の整数。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `y` — 2つ目の整数。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+`x` と `y` の最小公倍数を返します。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
-Returns the least common multiple of `x` and `y`. [`(U)Int*`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT lcm(6, 8)
@@ -787,35 +722,30 @@ SELECT lcm(6, 8)
 24
 ```
 
-
-
 ## max2 {#max2}
 
-Introduced in: v21.11
+導入されたバージョン: v21.11
 
+2 つの数値 `x` と `y` のうち、大きい方を返します。
 
-    Returns the bigger of two numeric values `x` and `y`.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 max2(x, y)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — First value [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `y` — Second value [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+* `x` — 1つ目の値 [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
+* `y` — 2つ目の値 [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
 
+**戻り値**
 
-**Returned value**
+`x` と `y` のうち大きい方の値を返します。[`Float64`](/sql-reference/data-types/float)
 
-Returns the bigger value of `x` and `y`. [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT max2(-1, 2)
@@ -825,34 +755,30 @@ SELECT max2(-1, 2)
 2
 ```
 
-
-
 ## midpoint {#midpoint}
 
-Introduced in: v25.11
+導入バージョン: v25.11
 
+指定された引数の平均値を計算して返します。
+数値型および時間データ型をサポートします。
 
-Computes and returns the average value of the provided arguments.
-Supports numerical and temporal types.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 midpoint(x1[, x2, ...])
 ```
 
-**Arguments**
+**引数**
 
-- `x1[, x2, ...]` — Accepts a single value or multiple values for averaging. 
+* `x1[, x2, ...]` — 平均を計算するための単一値または複数の値を受け取ります。
 
-**Returned value**
+**返り値**
 
-Returns the average value of the provided arguments, promoted to the largest compatible type.
+指定された引数の平均値を返し、その値は互換性のある型のうち最も大きい型に昇格されます。
 
-**Examples**
+**例**
 
-**Numeric types**
+**数値型**
 
 ```sql title=Query
 SELECT midpoint(1, toUInt8(3), 0.5) AS result, toTypeName(result) AS type;
@@ -865,7 +791,7 @@ SELECT midpoint(1, toUInt8(3), 0.5) AS result, toTypeName(result) AS type;
 └────────┴─────────┘
 ```
 
-**Decimal types**
+**Decimal 型**
 
 ```sql title=Query
 SELECT midpoint(toDecimal32(1.5, 2), toDecimal32(1, 1), 2) AS result, toTypeName(result) AS type;
@@ -877,7 +803,7 @@ SELECT midpoint(toDecimal32(1.5, 2), toDecimal32(1, 1), 2) AS result, toTypeName
 └────────┴───────────────┘
 ```
 
-**Date types**
+**日付型**
 
 ```sql title=Query
 SELECT midpoint(toDate('2025-01-01'), toDate('2025-01-05')) AS result, toTypeName(result) AS type;
@@ -889,7 +815,7 @@ SELECT midpoint(toDate('2025-01-01'), toDate('2025-01-05')) AS result, toTypeNam
 └────────────┴──────┘
 ```
 
-**DateTime types**
+**DateTime 型**
 
 ```sql title=Query
 SELECT midpoint(toDateTime('2025-01-01 00:00:00'), toDateTime('2025-01-03 12:00:00')) AS result, toTypeName(result) AS type;
@@ -901,7 +827,7 @@ SELECT midpoint(toDateTime('2025-01-01 00:00:00'), toDateTime('2025-01-03 12:00:
 └─────────────────────┴──────────┘
 ```
 
-**Time64 types**
+**Time64 型**
 
 ```sql title=Query
 SELECT midpoint(toTime64('12:00:00', 0), toTime64('14:00:00', 0)) AS result, toTypeName(result) AS type;
@@ -913,35 +839,30 @@ SELECT midpoint(toTime64('12:00:00', 0), toTime64('14:00:00', 0)) AS result, toT
 └──────────┴───────────┘
 ```
 
-
-
 ## min2 {#min2}
 
-Introduced in: v21.11
+導入バージョン: v21.11
 
+2つの数値 `x` と `y` のうち小さい方を返します。
 
-    Returns the smaller of two numeric values `x` and `y`.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 min2(x, y)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — First value [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `y` — Second value [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+* `x` — 1つ目の値 [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
+* `y` — 2つ目の値 [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
 
+**戻り値**
 
-**Returned value**
+`x` と `y` のうち小さい方の値を返します。[`Float64`](/sql-reference/data-types/float)
 
-Returns the smaller value of `x` and `y`. [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT min2(-1, 2)
@@ -951,35 +872,31 @@ SELECT min2(-1, 2)
 -1
 ```
 
-
-
 ## minus {#minus}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+2 つの値 `a` と `b` の差を計算します。結果は常に符号付きです。
+`plus` と同様に、日付または日時から整数を減算できます。
+さらに、日時同士の減算もサポートされており、その時間差が結果として得られます。
 
-Calculates the difference of two values `a` and `b`. The result is always signed.
-Similar to plus, it is possible to subtract an integer from a date or date with time.
-Additionally, subtraction between date with time is supported, resulting in the time difference between them.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 minus(x, y)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Minuend. - `y` — Subtrahend. 
+* `x` — 被減数。- `y` — 減数。
 
-**Returned value**
+**戻り値**
 
-x minus y
+x から y を引いた結果
 
-**Examples**
+**例**
 
-**Subtracting two numbers**
+**2 つの数値の減算**
 
 ```sql title=Query
 SELECT minus(10, 5)
@@ -989,7 +906,7 @@ SELECT minus(10, 5)
 5
 ```
 
-**Subtracting an integer and a date**
+**整数と日付の減算**
 
 ```sql title=Query
 SELECT minus(toDate('2025-01-01'),5)
@@ -999,44 +916,39 @@ SELECT minus(toDate('2025-01-01'),5)
 2024-12-27
 ```
 
-
-
 ## modulo {#modulo}
 
-Introduced in: v1.1
+導入: v1.1
 
+2つの値 a と b に対して、a を b で割った余りを計算します。
 
-    Calculates the remainder of the division of two values a by b.
+両方の入力が整数の場合、結果の型は整数型です。入力の一方が
+浮動小数点数の場合、結果の型は Float64 になります。
 
-    The result type is an integer if both inputs are integers. If one of the
-    inputs is a floating-point number, the result type is Float64.
+余りは C++ と同様に計算されます。負の数に対しては切り捨て除算が使用されます。
 
-    The remainder is computed like in C++. Truncated division is used for
-    negative numbers.
+ゼロで除算した場合、または最小の負の値を -1 で除算した場合は、例外がスローされます。
 
-    An exception is thrown when dividing by zero or when dividing a minimal
-    negative number by minus one.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 modulo(a, b)
 ```
 
-**Aliases**: `mod`
+**エイリアス**: `mod`
 
-**Arguments**
+**引数**
 
-- `a` — The dividend - `b` — The divisor (modulus) 
+* `a` — 被除数
+* `b` — 除数（法）
 
-**Returned value**
+**戻り値**
 
-The remainder of a % b
+`a % b` の剰余
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT modulo(5, 2)
@@ -1046,38 +958,32 @@ SELECT modulo(5, 2)
 1
 ```
 
-
-
 ## moduloOrNull {#moduloOrNull}
 
-Introduced in: v25.5
+導入バージョン: v25.5
 
+`a` を `b` で割ったときの剰余を計算します。関数 `modulo` と似ていますが、右側の引数が 0 の場合には `moduloOrNull` は NULL を返します。
 
-Calculates the remainder when dividing `a` by `b`. Similar to function `modulo` except that `moduloOrNull` will return NULL
-if the right argument is 0.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 moduloOrNull(x, y)
 ```
 
-**Aliases**: `modOrNull`
+**別名**: `modOrNull`
 
-**Arguments**
+**引数**
 
-- `x` — The dividend. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
-- `y` — The divisor (modulus). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `x` — 被除数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+* `y` — 除数（モジュロ）。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
 
+**戻り値**
 
-**Returned value**
+`x` を `y` で割った余り、または除数がゼロの場合は null を返します。
 
-Returns the remainder of the division of `x` by `y`, or null when the divisor is zero.
+**例**
 
-**Examples**
-
-**moduloOrNull by zero**
+**ゼロ除算時の moduloOrNull**
 
 ```sql title=Query
 SELECT moduloOrNull(5, 0)
@@ -1087,36 +993,30 @@ SELECT moduloOrNull(5, 0)
 \N
 ```
 
-
-
 ## moduloOrZero {#moduloOrZero}
 
-Introduced in: v20.3
+導入バージョン: v20.3
 
+`modulo` に似ていますが、割る数が 0 の場合に例外を送出する `modulo` 関数とは異なり、0 を返します。
 
-Like modulo but returns zero when the divisor is zero, as opposed to an
-exception with the modulo function.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 moduloOrZero(a, b)
 ```
 
-**Arguments**
+**引数**
 
-- `a` — The dividend. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
-- `b` — The divisor (modulus). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `a` — 被除数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+* `b` — 除数（法）。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
 
+**返される値**
 
-**Returned value**
+a % b の余りを返します。除数が `0` の場合は `0` を返します。
 
-Returns the remainder of a % b, or `0` when the divisor is `0`.
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT moduloOrZero(5, 0)
@@ -1126,33 +1026,30 @@ SELECT moduloOrZero(5, 0)
 0
 ```
 
-
-
 ## multiply {#multiply}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
-Calculates the product of two values `x` and `y`.
+2つの値 `x` と `y` の積を計算します。
 
-**Syntax**
+**構文**
 
 ```sql
 multiply(x, y)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — factor. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `y` — factor. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+* `x` — 因子。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
+* `y` — 因子。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
 
+**戻り値**
 
-**Returned value**
+x と y の積を返します。
 
-Returns the product of x and y
+**例**
 
-**Examples**
-
-**Multiplying two numbers**
+**2 つの数値の乗算**
 
 ```sql title=Query
 SELECT multiply(5,5)
@@ -1162,42 +1059,37 @@ SELECT multiply(5,5)
 25
 ```
 
-
-
 ## multiplyDecimal {#multiplyDecimal}
 
-Introduced in: v22.12
+導入バージョン: v22.12
 
-
-Performs multiplication on two decimals. Result value will be of type [Decimal256](/sql-reference/data-types/decimal).
-Result scale can be explicitly specified by `result_scale` argument (const Integer in range `[0, 76]`). If not specified, the result scale is the max scale of given arguments.
+2つの Decimal 値に対して乗算を行います。結果の値の型は [Decimal256](/sql-reference/data-types/decimal) になります。
+結果のスケールは `result_scale` 引数（範囲 `[0, 76]` の定数の整数値）で明示的に指定できます。指定しない場合、結果のスケールは引数として与えた値のスケールの最大値になります。
 
 :::note
-These functions work significantly slower than usual `multiply`.
-In case you don't really need controlled precision and/or need fast computation, consider using [multiply](#multiply)
+これらの関数は通常の `multiply` よりもかなり遅く動作します。
+厳密な精度の制御が不要な場合や、高速な計算が必要な場合は [multiply](#multiply) の利用を検討してください。
 :::
-    
 
-**Syntax**
+**構文**
 
 ```sql
 multiplyDecimal(a, b[, result_scale])
 ```
 
-**Arguments**
+**引数**
 
-- `a` — First value. [`Decimal`](/sql-reference/data-types/decimal)
-- `b` — Second value. [`Decimal`](/sql-reference/data-types/decimal)
-- `result_scale` — Scale of result. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `a` — 1つ目の値。[`Decimal`](/sql-reference/data-types/decimal)
+* `b` — 2つ目の値。[`Decimal`](/sql-reference/data-types/decimal)
+* `result_scale` — 結果のスケール（桁数）。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+指定したスケールでの乗算の結果。型: [`Decimal256`](/sql-reference/data-types/decimal)
 
-The result of multiplication with the given scale. Type: [`Decimal256`](/sql-reference/data-types/decimal)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT multiplyDecimal(toDecimal256(-12, 0), toDecimal32(-2.1, 1), 1)
@@ -1207,7 +1099,7 @@ SELECT multiplyDecimal(toDecimal256(-12, 0), toDecimal32(-2.1, 1), 1)
 25.2
 ```
 
-**Difference with regular multiplication**
+**通常の乗算との違い**
 
 ```sql title=Query
 SELECT multiplyDecimal(toDecimal256(-12, 0), toDecimal32(-2.1, 1), 1)
@@ -1222,7 +1114,7 @@ SELECT multiplyDecimal(toDecimal256(-12, 0), toDecimal32(-2.1, 1), 1)
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-**Decimal overflow**
+**Decimal オーバーフロー**
 
 ```sql title=Query
 SELECT
@@ -1244,31 +1136,29 @@ SELECT
 toDecimal64(-12.647987876, 9) AS a, toDecimal64(123.967645643, 9) AS b, a * b の処理中。(DECIMAL_OVERFLOW)
 ```
 
-
-
 ## negate {#negate}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
-Negates the argument `x`. The result is always signed.
+引数 `x` の符号を反転します。結果は常に符号付きになります。
 
-**Syntax**
+**構文**
 
 ```sql
 negate(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — The value to negate. 
+* `x` — 符号を反転する対象の値。
 
-**Returned value**
+**返り値**
 
-Returns -x from x
+x の符号を反転した値 -x を返します。
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT negate(10)
@@ -1278,36 +1168,31 @@ SELECT negate(10)
 -10
 ```
 
-
-
 ## plus {#plus}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+2 つの値 `x` と `y` の合計を計算します。別名: `x + y`（演算子）。
+整数と日付、または日時を加算することもできます。前者の
+演算では日付に日数が加算され、後者の演算では日時に秒数が加算されます。
 
-Calculates the sum of two values `x` and `y`. Alias: `x + y` (operator).
-It is possible to add an integer and a date or date with time. The former
-operation increments the number of days in the date, the latter operation
-increments the number of seconds in the date with time.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 plus(x, y)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Left hand operand. - `y` — Right hand operand. 
+* `x` — 左側のオペランド。 - `y` — 右側のオペランド。
 
-**Returned value**
+**戻り値**
 
-Returns the sum of x and y
+x と y の合計を返します。
 
-**Examples**
+**例**
 
-**Adding two numbers**
+**2 つの数値を加算する**
 
 ```sql title=Query
 SELECT plus(5,5)
@@ -1317,7 +1202,7 @@ SELECT plus(5,5)
 10
 ```
 
-**Adding an integer and a date**
+**整数型と日付型を加算する**
 
 ```sql title=Query
 SELECT plus(toDate('2025-01-01'),5)
@@ -1327,39 +1212,32 @@ SELECT plus(toDate('2025-01-01'),5)
 2025-01-06
 ```
 
-
-
 ## positiveModulo {#positiveModulo}
 
-Introduced in: v22.11
+導入されたバージョン: v22.11
 
+`x` を `y` で割ったときの余りを計算します。関数 `modulo` と似ていますが、`positiveModulo` は常に非負の数を返します。
 
-Calculates the remainder when dividing `x` by `y`. Similar to function
-`modulo` except that `positiveModulo` always return non-negative number.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 positiveModulo(x, y)
 ```
 
-**Aliases**: `positive_modulo`, `pmod`
+**別名**: `positive_modulo`, `pmod`
 
-**Arguments**
+**引数**
 
-- `x` — The dividend. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `y` — The divisor (modulus). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+* `x` — 被除数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
+* `y` — 除数（法）。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
 
+**返される値**
 
-**Returned value**
+`x` 以下で `y` で割り切れる最も近い数値と `x` との差を返します。
 
-Returns the difference between `x` and the nearest integer not greater than
-`x` divisible by `y`.
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT positiveModulo(-1, 10)
@@ -1369,35 +1247,30 @@ SELECT positiveModulo(-1, 10)
 9
 ```
 
-
-
 ## positiveModuloOrNull {#positiveModuloOrNull}
 
-Introduced in: v25.5
+導入バージョン: v25.5
 
+`a` を `b` で割った余りを計算します。`positiveModulo` 関数と似ていますが、右側の引数が 0 の場合は、`positiveModuloOrNull` は NULL を返します。
 
-Calculates the remainder when dividing `a` by `b`. Similar to function `positiveModulo` except that `positiveModuloOrNull` will return NULL
-if the right argument is 0.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 positiveModuloOrNull(x, y)
 ```
 
-**Aliases**: `positive_modulo_or_null`, `pmodOrNull`
+**別名**: `positive_modulo_or_null`, `pmodOrNull`
 
-**Arguments**
+**引数**
 
-- `x` — The dividend. [`(U)Int*`](/sql-reference/data-types/int-uint)/[`Float32/64`](/sql-reference/data-types/float). - `x` — The divisor (modulus). [`(U)Int*`](/sql-reference/data-types/int-uint)/[`Float32/64`](/sql-reference/data-types/float). 
+* `x` — 被除数。[`(U)Int*`](/sql-reference/data-types/int-uint)/[`Float32/64`](/sql-reference/data-types/float)。
+* `y` — 除数（法）。[`(U)Int*`](/sql-reference/data-types/int-uint)/[`Float32/64`](/sql-reference/data-types/float)。
 
-**Returned value**
+**戻り値**
 
-Returns the difference between `x` and the nearest integer not greater than
-`x` divisible by `y`, `null` when the divisor is zero.
+`x` 以下で `y` で割り切れる最も近い整数と `x` との差を返します。除数がゼロの場合は `null` を返します。
 
-**Examples**
+**例**
 
 **positiveModuloOrNull**
 

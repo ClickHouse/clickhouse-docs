@@ -57,25 +57,25 @@ HyperDX 用の Helm チャートは [こちら](https://github.com/hyperdxio/hel
   ClickStack Helmリポジトリを追加します：
 
   ```shell
-helm repo add clickstack https://hyperdxio.github.io/helm-charts
-helm repo update
-```
+  helm repo add clickstack https://hyperdxio.github.io/helm-charts
+  helm repo update
+  ```
 
   ### ClickStackのインストール
 
   ClickStackチャートをデフォルト値でインストールするには：
 
   ```shell
-helm install my-clickstack clickstack/clickstack
-```
+  helm install my-clickstack clickstack/clickstack
+  ```
 
   ### インストールの確認
 
   インストールを確認してください:
 
   ```shell
-kubectl get pods -l "app.kubernetes.io/name=clickstack"
-```
+  kubectl get pods -l "app.kubernetes.io/name=clickstack"
+  ```
 
   すべてのポッドの準備が完了したら、次に進んでください。
 
@@ -84,10 +84,10 @@ kubectl get pods -l "app.kubernetes.io/name=clickstack"
   ポートフォワーディングを使用することで、HyperDXへのアクセスとセットアップが可能になります。本番環境にデプロイする場合は、適切なネットワークアクセス、TLS終端、およびスケーラビリティを確保するため、イングレスまたはロードバランサー経由でサービスを公開してください。ポートフォワーディングは、ローカル開発環境または単発の管理タスクに適しており、長期運用や高可用性環境には適していません。
 
   ```shell
-kubectl port-forward \
-  pod/$(kubectl get pod -l app.kubernetes.io/name=clickstack -o jsonpath='{.items[0].metadata.name}') \
-  8080:3000
-```
+  kubectl port-forward \
+    pod/$(kubectl get pod -l app.kubernetes.io/name=clickstack -o jsonpath='{.items[0].metadata.name}') \
+    8080:3000
+  ```
 
   :::tip 本番環境のイングレス設定
   本番環境では、ポートフォワーディングではなく、TLSを使用したイングレスを構成してください。詳細な設定手順については、[イングレス設定ガイド](/docs/use-cases/observability/clickstack/deployment/helm-configuration#ingress-setup)を参照してください。
@@ -114,40 +114,40 @@ kubectl port-forward \
   `--set`フラグを使用して設定をカスタマイズできます。例:
 
   ```shell
-helm install my-clickstack clickstack/clickstack --set key=value
-```
+  helm install my-clickstack clickstack/clickstack --set key=value
+  ```
 
   または、`values.yaml`を編集してください。デフォルト値を取得するには：
 
   ```shell
-helm show values clickstack/clickstack > values.yaml
-```
+  helm show values clickstack/clickstack > values.yaml
+  ```
 
   設定例：
 
   ```yaml
-replicaCount: 2
-resources:
-  limits:
-    cpu: 500m
-    memory: 512Mi
-  requests:
-    cpu: 250m
-    memory: 256Mi
-ingress:
-  enabled: true
-  annotations:
-    kubernetes.io/ingress.class: nginx
-  hosts:
-    - host: hyperdx.example.com
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-```
+  replicaCount: 2
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    hosts:
+      - host: hyperdx.example.com
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+  ```
 
   ```shell
-helm install my-clickstack clickstack/clickstack -f values.yaml
-```
+  helm install my-clickstack clickstack/clickstack -f values.yaml
+  ```
 
   ### シークレットの使用（オプション）
 
@@ -160,44 +160,44 @@ helm install my-clickstack clickstack/clickstack -f values.yaml
   シークレットを手動で適用する必要がある場合は、提供されている `secrets.yaml` テンプレートを修正して適用します:
 
   ```yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: hyperdx-secret
-  annotations:
-    "helm.sh/resource-policy": keep
-type: Opaque
-data:
-  API_KEY: <base64-encoded-api-key>
-```
+  apiVersion: v1
+  kind: Secret
+  metadata:
+    name: hyperdx-secret
+    annotations:
+      "helm.sh/resource-policy": keep
+  type: Opaque
+  data:
+    API_KEY: <base64-encoded-api-key>
+  ```
 
   シークレットをクラスターに適用します：
 
   ```shell
-kubectl apply -f secrets.yaml
-```
+  kubectl apply -f secrets.yaml
+  ```
 
   #### カスタムシークレットの作成
 
   必要に応じて、カスタムKubernetesシークレットを手動で作成することができます：
 
   ```shell
-kubectl create secret generic hyperdx-secret \
-  --from-literal=API_KEY=my-secret-api-key
-```
+  kubectl create secret generic hyperdx-secret \
+    --from-literal=API_KEY=my-secret-api-key
+  ```
 
   #### シークレットの参照
 
   `values.yaml`でシークレットを参照する方法:
 
   ```yaml
-hyperdx:
-  apiKey:
-    valueFrom:
-      secretKeyRef:
-        name: hyperdx-secret
-        key: API_KEY
-```
+  hyperdx:
+    apiKey:
+      valueFrom:
+        secretKeyRef:
+          name: hyperdx-secret
+          key: API_KEY
+  ```
 
   :::tip APIキー管理
   複数の設定方法とポッド再起動手順を含む詳細なAPIキーのセットアップ手順については、[APIキーセットアップガイド](/docs/use-cases/observability/clickstack/deployment/helm-configuration#api-key-setup)を参照してください。
@@ -209,12 +209,12 @@ hyperdx:
 ClickHouse Cloud を使用する場合は、Helm チャートでデプロイされる ClickHouse インスタンスを無効化し、ClickHouse Cloud の認証情報を指定します。
 
 ```shell
-# specify ClickHouse Cloud credentials
-export CLICKHOUSE_URL=<CLICKHOUSE_CLOUD_URL> # full https url
+# ClickHouse Cloud の認証情報を指定する
+export CLICKHOUSE_URL=<CLICKHOUSE_CLOUD_URL> # 完全な https URL
 export CLICKHOUSE_USER=<CLICKHOUSE_USER>
 export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 
-# how to overwrite default connection
+# デフォルト接続を上書きする方法
 helm install my-clickstack clickstack/clickstack \
   --set clickhouse.enabled=false \
   --set clickhouse.persistence.enabled=false \
@@ -242,7 +242,7 @@ hyperdx:
   defaultConnections: |
     [
       {
-        "name": "External ClickHouse",
+        "name": "外部ClickHouse",
         "host": "http://your-clickhouse-server:8123",
         "port": 8123,
         "username": "your-username",
@@ -253,7 +253,7 @@ hyperdx:
 
 ```shell
 helm install my-clickstack clickstack/clickstack -f values.yaml
-# or if installed...
+# または既にインストール済みの場合...
 # helm upgrade my-clickstack clickstack/clickstack -f values.yaml
 ```
 

@@ -50,12 +50,12 @@ ORDER BY (project, subproject, time);
     <tr>
       <td>
         ```sql
-SELECT project, sum(hits) AS h
-FROM wikistat
-GROUP BY project
-ORDER BY h DESC
-LIMIT 10;
-```
+        SELECT project, sum(hits) AS h
+        FROM wikistat
+        GROUP BY project
+        ORDER BY h DESC
+        LIMIT 10;
+        ```
       </td>
 
       <td style={{ textAlign: 'right' }}>2.381 秒</td>
@@ -65,13 +65,13 @@ LIMIT 10;
     <tr>
       <td>
         ```sql
-SELECT subproject, sum(hits) AS h
-FROM wikistat
-WHERE project = 'it'
-GROUP BY subproject
-ORDER BY h DESC
-LIMIT 10;
-```
+        SELECT subproject, sum(hits) AS h
+        FROM wikistat
+        WHERE project = 'it'
+        GROUP BY subproject
+        ORDER BY h DESC
+        LIMIT 10;
+        ```
       </td>
 
       <td style={{ textAlign: 'right' }}>2.148 秒</td>
@@ -81,13 +81,13 @@ LIMIT 10;
     <tr>
       <td>
         ```sql
-SELECT toStartOfMonth(time) AS m, sum(hits) AS h
-FROM wikistat
-WHERE (project = 'it') AND (subproject = 'zero')
-GROUP BY m
-ORDER BY m DESC
-LIMIT 10;
-```
+        SELECT toStartOfMonth(time) AS m, sum(hits) AS h
+        FROM wikistat
+        WHERE (project = 'it') AND (subproject = 'zero')
+        GROUP BY m
+        ORDER BY m DESC
+        LIMIT 10;
+        ```
       </td>
 
       <td style={{ textAlign: 'right' }}>2.192 秒</td>
@@ -97,13 +97,13 @@ LIMIT 10;
     <tr>
       <td>
         ```sql
-SELECT path, sum(hits) AS h
-FROM wikistat
-WHERE (project = 'it') AND (subproject = 'zero')
-GROUP BY path
-ORDER BY h DESC
-LIMIT 10;
-```
+        SELECT path, sum(hits) AS h
+        FROM wikistat
+        WHERE (project = 'it') AND (subproject = 'zero')
+        GROUP BY path
+        ORDER BY h DESC
+        LIMIT 10;
+        ```
       </td>
 
       <td style={{ textAlign: 'right' }}>2.968 秒</td>
@@ -139,8 +139,8 @@ LIMIT 10
 │ 2015_Nepal_earthquake │  1406422 │
 └───────────────────────┴──────────┘
 
-10 rows in set. Elapsed: 2.285 sec. Processed 231.41 million rows, 9.22 GB (101.26 million rows/s., 4.03 GB/s.)
-Peak memory usage: 1.50 GiB.
+10行のセット。経過時間: 2.285秒。処理済み: 2億3141万行、9.22 GB (1億126万行/秒、4.03 GB/秒)
+ピークメモリ使用量: 1.50 GiB。
 ```
 
 ### マテリアライズドビューを作成する {#time-series-create-materialized-view}
@@ -261,7 +261,7 @@ LIMIT 10;
 │ 2015_Nepal_earthquake │   726327 │
 └───────────────────────┴──────────┘
 
-10 rows in set. Elapsed: 0.004 sec.
+10行が返されました。経過時間: 0.004秒
 ```
 
 ここでのパフォーマンス向上は飛躍的です。

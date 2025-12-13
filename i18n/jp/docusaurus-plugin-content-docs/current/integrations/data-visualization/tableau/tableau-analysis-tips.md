@@ -21,23 +21,25 @@ ClickHouseには、データ分析に使用できる関数が非常に多く、T
 
 * **[`-If` Aggregation Combinator](/sql-reference/aggregate-functions/combinators/#-if)** *(v0.2.3 で追加)* - 集約計算の中で直接、行レベルフィルターを指定できるようにします。`SUM_IF(), AVG_IF(), COUNT_IF(), MIN_IF() & MAX_IF()` 関数が追加されました。
 * **`BAR([my_int], [min_val_int], [max_val_int], [bar_string_length_int])`** *(v0.2.1 で追加)* — 退屈な棒グラフは忘れてください！代わりに `BAR()` 関数を使用してください（ClickHouse における [`bar()`](/sql-reference/functions/other-functions#bar) と同等の機能です）。たとえば、次の計算フィールドは String 型で見やすいバーを返します:
-  ```text
-    BAR([my_int], [min_val_int], [max_val_int], [bar_string_length_int]) + "  " + FORMAT_READABLE_QUANTITY([my_int])
-    ```
-  ```text
-    == BAR() ==
-    ██████████████████▊  327.06 million
-    █████  88.02 million
-    ███████████████  259.37 million
-    ```
+
+```text
+BAR([my_int], [min_val_int], [max_val_int], [bar_string_length_int]) + "  " + FORMAT_READABLE_QUANTITY([my_int])
+```
+
+```text
+== BAR() ==
+██████████████████▊  327.06 million
+█████  88.02 million
+███████████████  259.37 million
+```
 * **`COUNTD_UNIQ([my_field])`** *(v0.2.0 で追加)* — 引数に含まれる異なる値のおおよその個数を計算します。[uniq()](/sql-reference/aggregate-functions/reference/uniq/) と同等です。`COUNTD()` よりもはるかに高速です。
 * **`DATE_BIN('day', 10, [my_datetime_or_date])`** *(v0.2.1 で追加)* — ClickHouse の [`toStartOfInterval()`](/sql-reference/functions/date-time-functions#toStartOfInterval) と同等です。Date または Date &amp; Time を指定した間隔に丸めて切り捨てます。例:
-  ```text
-     == my_datetime_or_date == | == DATE_BIN('day', 10, [my_datetime_or_date]) ==
-        28.07.2004 06:54:50    |              21.07.2004 00:00:00
-        17.07.2004 14:01:56    |              11.07.2004 00:00:00
-        14.07.2004 07:43:00    |              11.07.2004 00:00:00
-    ```
+```text
+  == my_datetime_or_date == | == DATE_BIN('day', 10, [my_datetime_or_date]) ==
+    28.07.2004 06:54:50    |              21.07.2004 00:00:00
+    17.07.2004 14:01:56    |              11.07.2004 00:00:00
+    14.07.2004 07:43:00    |              11.07.2004 00:00:00
+```
 * **`FORMAT_READABLE_QUANTITY([my_integer])`** *(v0.2.1 で追加)* — 丸めた数値に接尾辞（thousand、million、billion など）を付けた文字列を返します。大きな数値を人間が読みやすい形式にするのに役立ちます。[`formatReadableQuantity()`](/sql-reference/functions/other-functions#formatReadableQuantity) と同等です。
 * **`FORMAT_READABLE_TIMEDELTA([my_integer_timedelta_sec], [optional_max_unit])`** *(v0.2.1 で追加)* — 秒単位の時間差を引数に取り、(年・月・日・時・分・秒) を含む時間差を文字列として返します。`optional_max_unit` は表示する最大単位です。指定可能な値: `seconds`、`minutes`、`hours`、`days`、`months`、`years`。[`formatReadableTimeDelta()`](/sql-reference/functions/other-functions/#formatReadableTimeDelta) と同等です。
 * **`GET_SETTING([my_setting_name])`** *(v0.2.1 で追加)* — カスタム設定の現在の値を返します。[`getSetting()`](/sql-reference/functions/other-functions#getSetting) と同等です。
@@ -48,12 +50,13 @@ ClickHouseには、データ分析に使用できる関数が非常に多く、T
 * **`MOD([my_number_1], [my_number_2])`** — 割り算の余りを計算します。引数が浮動小数点数の場合、小数部分を切り捨てて整数に変換してから演算を行います。[`modulo()`](/sql-reference/functions/arithmetic-functions/#modulo) と同等です。
 * **`PERCENTILE_EXACT([my_number], [level_float])`** *(v0.1.3 で追加)* — 数値データ列のパーセンタイルを厳密に計算します。推奨されるレベルの範囲は [0.01, 0.99] です。[`quantileExact()()`](/sql-reference/aggregate-functions/reference/quantileexact/#quantileexact) と同等の機能です。
 * **`PROPER([my_string])`** *(v0.2.5 で追加)* - テキスト文字列の各単語の先頭文字を大文字にし、それ以外の文字を小文字に変換します。スペースや句読点などの英数字以外の文字も区切り文字として扱われます。例えば次のとおりです。
-  ```text
-    PROPER("PRODUCT name") => "Product Name"
-    ```
-  ```text
-    PROPER("darcy-mae") => "Darcy-Mae"
-    ```
+```text
+PROPER("PRODUCT name") => "Product Name"
+```
+
+```text
+PROPER("darcy-mae") => "Darcy-Mae"
+```
 * **`RAND()`** *(v0.2.1 で追加)* — 整数値 (UInt32) を返します。例: `3446222955`。[`rand()`](/sql-reference/functions/random-functions/#rand) と同等です。
 * **`RANDOM()`** *(v0.2.1 で追加)* — Tableau の非公式な [`RANDOM()`](https://kb.tableau.com/articles/issue/random-function-produces-inconsistent-results) 関数で、0 以上 1 以下の浮動小数点数を返します。
 * **`RAND_CONSTANT([optional_field])`** *(v0.2.1 で追加)* — ランダムな値を持つ定数列を生成します。`{RAND()}` の Fixed LOD 版のようなものですが、より高速です。[`randConstant()`](/sql-reference/functions/random-functions/#randConstant) と同等の動作をします。

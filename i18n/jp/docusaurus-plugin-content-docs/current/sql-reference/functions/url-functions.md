@@ -90,34 +90,29 @@ SELECT cutFragment('http://example.com/path?query=value#fragment123');
 └────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## cutQueryString {#cutQueryString}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+URL からクエリ文字列（先頭の「?」を含む）を削除します。
 
-Removes the query string, including the question mark from a URL.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 cutQueryString(url)
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL. [`String`](/sql-reference/data-types/string)
+* `url` — URL。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+クエリ文字列を削除したURLを返します。[`String`](/sql-reference/data-types/string)
 
-Returns the URL with query string removed. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT cutQueryString('http://example.com/path?query=value&param=123#fragment');
@@ -129,34 +124,29 @@ SELECT cutQueryString('http://example.com/path?query=value&param=123#fragment');
 └──────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## cutQueryStringAndFragment {#cutQueryStringAndFragment}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+URL からクエリ文字列とフラグメント識別子（「?」と「#」を含む）を削除します。
 
-Removes the query string and fragment identifier, including the question mark and number sign, from a URL.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 cutQueryStringAndFragment(url)
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL. [`String`](/sql-reference/data-types/string)
+* `url` — URL。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+クエリ文字列およびフラグメント識別子を取り除いた URL を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the URL with query string and fragment identifier removed. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT cutQueryStringAndFragment('http://example.com/path?query=value&param=123#fragment');
@@ -168,35 +158,29 @@ SELECT cutQueryStringAndFragment('http://example.com/path?query=value&param=123#
 └─────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## cutToFirstSignificantSubdomain {#cutToFirstSignificantSubdomain}
 
-Introduced in: v1.1
+導入: v1.1
 
+トップレベルドメイン側から見て、[最初の重要なサブドメイン](/sql-reference/functions/url-functions#firstSignificantSubdomain) までのサブドメインを含むドメイン部分を返します。
 
-Returns the part of the domain that includes top-level subdomains up to the [first significant subdomain](/sql-reference/functions/url-functions#firstSignificantSubdomain).
-
-    
-
-**Syntax**
+**構文**
 
 ```sql
 cutToFirstSignificantSubdomain(url)
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL or domain string to process. [`String`](/sql-reference/data-types/string)
+* `url` — 処理する URL またはドメイン文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+可能な場合は、最初の主要なサブドメインまでを含むドメインの上位サブドメイン部分を返し、そうでない場合は空文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the part of the domain that includes top-level subdomains up to the first significant subdomain if possible, otherwise returns an empty string. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT
@@ -211,16 +195,13 @@ SELECT
 └───────────────────────────────────────────────────────────────────┴──────────────────────────────────────────┴──────────────────────────────────────┘
 ```
 
-
-
 ## cutToFirstSignificantSubdomainCustom {#cutToFirstSignificantSubdomainCustom}
 
-Introduced in: v21.1
+導入バージョン: v21.1
 
+トップレベルドメイン配下のサブドメインを含め、最初の重要なサブドメインまでのドメイン部分を返します。カスタムの [TLD リスト](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains) 名を受け取ります。最新の TLD リストが必要な場合や、独自のリストを使用する場合に便利です。
 
-Returns the part of the domain that includes top-level subdomains up to the first significant subdomain. Accepts custom [TLD list](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains) name. This function can be useful if you need a fresh TLD list or if you have a custom list.
-
-**Configuration example**
+**設定例**
 
 ```yaml
 <!-- <top_level_domains_path>/var/lib/clickhouse/top_level_domains/</top_level_domains_path> -->
@@ -230,27 +211,25 @@ Returns the part of the domain that includes top-level subdomains up to the firs
     <!-- 注記: パスは top_level_domains_path 配下にあります -->
 </top_level_domains_lists>
 ```
-    
 
-**Syntax**
+**構文**
 
 ```sql
 cutToFirstSignificantSubdomainCustom(url, tld_list_name)
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL or domain string to process. [`String`](/sql-reference/data-types/string)
-- `tld_list_name` — Name of the custom TLD list configured in ClickHouse. [`const String`](/sql-reference/data-types/string)
+* `url` — 処理対象の URL またはドメイン文字列。[`String`](/sql-reference/data-types/string)
+* `tld_list_name` — ClickHouse で設定されたカスタム TLD リストの名前。[`const String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+最初の意味のあるサブドメインまでを含む、トップレベルドメイン配下のドメイン部分を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the part of the domain that includes top-level subdomains up to the first significant subdomain. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Using custom TLD list for non-standard domains**
+**非標準的なドメイン向けにカスタム TLD リストを使用する**
 
 ```sql title=Query
 SELECT cutToFirstSignificantSubdomainCustom('bar.foo.there-is-no-such-domain', 'public_suffix_list')
@@ -260,19 +239,16 @@ SELECT cutToFirstSignificantSubdomainCustom('bar.foo.there-is-no-such-domain', '
 foo.there-is-no-such-domain
 ```
 
-
-
 ## cutToFirstSignificantSubdomainCustomRFC {#cutToFirstSignificantSubdomainCustomRFC}
 
-Introduced in: v22.10
+導入バージョン: v22.10
 
+トップレベルドメインを含めて、最初の有意なサブドメインまでのドメイン部分を返します。
+カスタムの [TLD リスト](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains)名を受け取ります。
+この関数は、新しい TLD リストが必要な場合や、カスタムリストを使用している場合に有用です。
+[cutToFirstSignificantSubdomainCustom](#cutToFirstSignificantSubdomainCustom) と似ていますが、RFC 3986 に準拠しています。
 
-Returns the part of the domain that includes top-level subdomains up to the first significant subdomain.
-Accepts custom [TLD list](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains) name.
-This function can be useful if you need a fresh TLD list or if you have a custom list.
-Similar to [cutToFirstSignificantSubdomainCustom](#cutToFirstSignificantSubdomainCustom) but conforms to RFC 3986.
-
-**Configuration example**
+**設定例**
 
 ```xml
 <!-- <top_level_domains_path>/var/lib/clickhouse/top_level_domains/</top_level_domains_path> -->
@@ -282,25 +258,25 @@ Similar to [cutToFirstSignificantSubdomainCustom](#cutToFirstSignificantSubdomai
     <!-- 注: パスは top_level_domains_path 配下です -->
 </top_level_domains_lists>
 ```
-    
 
-**Syntax**
+**構文**
 
 ```sql
 cutToFirstSignificantSubdomainCustomRFC(url, tld_list_name)
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL or domain string to process according to RFC 3986. - `tld_list_name` — Name of the custom TLD list configured in ClickHouse. 
+* `url` — RFC 3986 に従って処理する URL またはドメイン文字列。
+* `tld_list_name` — ClickHouse で設定されたカスタム TLD リストの名前。
 
-**Returned value**
+**戻り値**
 
-Returns the part of the domain that includes top-level subdomains up to the first significant subdomain. [`String`](/sql-reference/data-types/string)
+トップレベルドメインから最初の有意なサブドメインまでを含むドメイン部分を返します。[`String`](/sql-reference/data-types/string)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT cutToFirstSignificantSubdomainCustomRFC('www.foo', 'public_suffix_list');
@@ -312,16 +288,13 @@ SELECT cutToFirstSignificantSubdomainCustomRFC('www.foo', 'public_suffix_list');
 └──────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## cutToFirstSignificantSubdomainCustomWithWWW {#cutToFirstSignificantSubdomainCustomWithWWW}
 
-Introduced in: v21.1
+導入バージョン: v21.1
 
+トップレベルのサブドメインを含めて、最初の重要なサブドメインまでのドメイン部分を、`www` を削除せずに返します。カスタム TLD リストの名前を受け取ります。最新の TLD リストを使いたい場合や、独自のリストを使用している場合に便利です。
 
-Returns the part of the domain that includes top-level subdomains up to the first significant subdomain without stripping 'www'. Accepts custom TLD list name. It can be useful if you need a fresh TLD list or if you have a custom list.
-
-**Configuration example**
+**構成例**
 
 ````yaml
 <!-- <top_level_domains_path>/var/lib/clickhouse/top_level_domains/</top_level_domains_path> -->
@@ -361,19 +334,16 @@ SELECT cutToFirstSignificantSubdomainCustomWithWWW('www.foo', 'public_suffix_lis
 └──────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## cutToFirstSignificantSubdomainCustomWithWWWRFC {#cutToFirstSignificantSubdomainCustomWithWWWRFC}
 
-Introduced in: v22.10
+導入バージョン: v22.10
 
+`www` を削除せずに、ドメインのうち最初の有意なサブドメインまでの上位サブドメインを含む部分を返します。
+カスタム TLD リスト名を指定できます。
+最新の TLD リストが必要な場合や、独自のリストを使用している場合に有用です。
+[cutToFirstSignificantSubdomainCustomWithWWW](#cutToFirstSignificantSubdomainCustomWithWWW) と似ていますが、[RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986) に準拠しています。
 
-Returns the part of the domain that includes top-level subdomains up to the first significant subdomain without stripping `www`.
-Accepts custom TLD list name.
-It can be useful if you need a fresh TLD list or if you have a custom list.
-Similar to [cutToFirstSignificantSubdomainCustomWithWWW](#cutToFirstSignificantSubdomainCustomWithWWW) but conforms to [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986).
-
-**Configuration example**
+**設定例**
 
 ````xml
 <!-- <top_level_domains_path>/var/lib/clickhouse/top_level_domains/</top_level_domains_path> -->
@@ -411,34 +381,29 @@ SELECT cutToFirstSignificantSubdomainCustomWithWWWRFC('https://www.subdomain.exa
 www.example.custom
 ```
 
-
-
 ## cutToFirstSignificantSubdomainRFC {#cutToFirstSignificantSubdomainRFC}
 
-Introduced in: v22.10
+導入バージョン: v22.10
 
+ドメインのうち、トップレベルドメイン側から [「最初の重要なサブドメイン」](/sql-reference/functions/url-functions#firstSignificantSubdomain) までを含む部分を返します。[`cutToFirstSignificantSubdomain`](#cutToFirstSignificantSubdomain) と同様ですが、[RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986) に準拠します。
 
-Returns the part of the domain that includes top-level subdomains up to the ["first significant subdomain"](/sql-reference/functions/url-functions#firstSignificantSubdomain). Similar to [`cutToFirstSignificantSubdomain`](#cutToFirstSignificantSubdomain) but conforms to [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986).
-    
-
-**Syntax**
+**構文**
 
 ```sql
 cutToFirstSignificantSubdomainRFC(url)
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL or domain string to process according to RFC 3986. [`String`](/sql-reference/data-types/string)
+* `url` — RFC 3986 に従って処理する URL またはドメイン文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+可能であれば、最初の意味のあるサブドメインまでを含むトップレベルドメイン配下のドメイン部分を返し、それ以外の場合は空文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the part of the domain that includes top-level subdomains up to the first significant subdomain if possible, otherwise returns an empty string. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT
@@ -452,36 +417,31 @@ SELECT
 └─────────────────────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## cutToFirstSignificantSubdomainWithWWW {#cutToFirstSignificantSubdomainWithWWW}
 
-Introduced in: v20.12
+導入バージョン: v20.12
 
+トップレベルのサブドメインを、「最初の重要なサブドメイン」まで含めたドメイン部分を返しますが、&#39;[www](http://www).&#39; は取り除きません。
 
-Returns the part of the domain that includes top-level subdomains up to the "first significant subdomain", without stripping 'www.'.
+[`cutToFirstSignificantSubdomain`](#cutToFirstSignificantSubdomain) と似ていますが、存在する場合は &#39;[www](http://www).&#39; のプレフィックスを保持します。
 
-Similar to [`cutToFirstSignificantSubdomain`](#cutToFirstSignificantSubdomain) but preserves the 'www.' prefix if present.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 cutToFirstSignificantSubdomainWithWWW(url)
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL or domain string to process. [`String`](/sql-reference/data-types/string)
+* `url` — 処理対象の URL またはドメイン文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+可能であれば、www を含め、最初の重要なサブドメインまでの上位サブドメインを含むドメイン部分を返します。そうでない場合は空文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the part of the domain that includes top-level subdomains up to the first significant subdomain (with www) if possible, otherwise returns an empty string. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT
@@ -496,33 +456,29 @@ SELECT
 └──────────────────────────────────────────────────────────────────────────┴─────────────────────────────────────────────────┴─────────────────────────────────────────────┘
 ```
 
-
-
 ## cutToFirstSignificantSubdomainWithWWWRFC {#cutToFirstSignificantSubdomainWithWWWRFC}
 
-Introduced in: v22.10
+導入バージョン: v22.10
 
+トップレベルサブドメインを「最初の重要なサブドメイン」まで含むドメイン部分を、&#39;www&#39; を削除せずに返します。[`cutToFirstSignificantSubdomainWithWWW`](#cutToFirstSignificantSubdomainWithWWW) に似ていますが、[RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986) に準拠しています。
 
-Returns the part of the domain that includes top-level subdomains up to the "first significant subdomain", without stripping 'www'. Similar to [`cutToFirstSignificantSubdomainWithWWW`](#cutToFirstSignificantSubdomainWithWWW) but conforms to [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986).
-    
-
-**Syntax**
+**構文**
 
 ```sql
 cutToFirstSignificantSubdomainWithWWWRFC(url)
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL or domain string to process according to RFC 3986. 
+* `url` — RFC 3986 に従って処理される URL またはドメイン文字列。
 
-**Returned value**
+**戻り値**
 
-Returns the part of the domain that includes top-level subdomains up to the first significant subdomain (with 'www') if possible, otherwise returns an empty string [`String`](/sql-reference/data-types/string)
+ドメインのうち、可能であれば最初の有意なサブドメインまで（「www」を含む）を含む部分を返し、それが不可能な場合は空文字列を返します。[`String`](/sql-reference/data-types/string)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT
@@ -536,36 +492,31 @@ SELECT
 └───────────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## cutURLParameter {#cutURLParameter}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+URL に `name` パラメーターが存在する場合、それを削除します。
+この関数はパラメーター名内の文字のエンコードやデコードを行いません。そのため、`Client ID` と `Client%20ID` は別個のパラメーター名として扱われます。
 
-Removes the `name` parameter from a URL, if present.
-This function does not encode or decode characters in parameter names, e.g. `Client ID` and `Client%20ID` are treated as different parameter names.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 cutURLParameter(url, name)
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL. [`String`](/sql-reference/data-types/string)
-- `name` — Name of URL parameter. [`String`](/sql-reference/data-types/string) or [`Array(String)`](/sql-reference/data-types/array)
+* `url` — URL。[`String`](/sql-reference/data-types/string)
+* `name` — URL パラメータ名。[`String`](/sql-reference/data-types/string) または [`Array(String)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+`name` という URL パラメータが削除された URL。[`String`](/sql-reference/data-types/string)
 
-URL with `name` URL parameter removed. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT
@@ -579,34 +530,29 @@ SELECT
 └──────────────────────────────┴──────────────────────────┘
 ```
 
-
-
 ## cutWWW {#cutWWW}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+URL のドメインの先頭に `www.` がある場合、それを削除します。
 
-Removes the leading `www.`, if present, from the URL's domain.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 cutWWW(url)
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL. [`String`](/sql-reference/data-types/string)
+* `url` — URL。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+ドメイン名から先頭の `www.` を取り除いた URL を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the URL with leading `www.` removed from the domain. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT cutWWW('http://www.example.com/path?query=value#fragment');
@@ -618,34 +564,29 @@ SELECT cutWWW('http://www.example.com/path?query=value#fragment');
 └────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## decodeURLComponent {#decodeURLComponent}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+URL エンコードされた文字列を入力として受け取り、元の読みやすい形式にデコードします。
 
-Takes a URL-encoded string as input and decodes it back to its original, readable form.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 decodeURLComponent(url)
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL. [`String`](/sql-reference/data-types/string)
+* `url` — URL。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+デコードされたURLを返します。[`String`](/sql-reference/data-types/string)
 
-Returns the decoded URL. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT decodeURLComponent('http://127.0.0.1:8123/?query=SELECT%201%3B') AS DecodedURL;
@@ -657,34 +598,29 @@ SELECT decodeURLComponent('http://127.0.0.1:8123/?query=SELECT%201%3B') AS Decod
 └────────────────────────────────────────┘
 ```
 
-
-
 ## decodeURLFormComponent {#decodeURLFormComponent}
 
-Introduced in: v1.1
+v1.1 で導入
 
+フォームエンコードの規則（[RFC-1866](https://www.rfc-editor.org/rfc/rfc1866.html)）に従って URL エンコードされた文字列をデコードします。`+` 記号は空白に変換され、パーセントエンコードされた文字がデコードされます。
 
-Decodes URL-encoded strings using form encoding rules ([RFC-1866](https://www.rfc-editor.org/rfc/rfc1866.html)), where `+` signs are converted to spaces and percent-encoded characters are decoded.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 decodeURLFormComponent(url)
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL. [`String`](/sql-reference/data-types/string)
+* `url` — URL。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+URL をデコードした結果を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the decoded URL. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT decodeURLFormComponent('http://127.0.0.1:8123/?query=SELECT%201+2%2B3') AS DecodedURL;
@@ -696,36 +632,31 @@ SELECT decodeURLFormComponent('http://127.0.0.1:8123/?query=SELECT%201+2%2B3') A
 └───────────────────────────────────────────┘
 ```
 
-
-
 ## domain {#domain}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+URL からホスト名を抽出します。
 
-Extracts the hostname from a URL.
+URL はプロトコルの有無にかかわらず指定できます。
 
-The URL can be specified with or without a protocol.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 domain(url)
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL. [`String`](/sql-reference/data-types/string)
+* `url` — URL。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+入力文字列が URL として解釈できる場合はホスト名を返し、それ以外の場合は空文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the host name if the input string can be parsed as a URL, otherwise an empty string. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT domain('svn+ssh://some.svn-hosting.com:80/repo/trunk');
@@ -737,35 +668,30 @@ SELECT domain('svn+ssh://some.svn-hosting.com:80/repo/trunk');
 └────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## domainRFC {#domainRFC}
 
-Introduced in: v22.10
+導入: v22.10
 
+URL からホスト名を抽出します。
+[`domain`](#domain) と同様ですが、[RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986) に準拠しています。
 
-Extracts the hostname from a URL.
-Similar to [`domain`](#domain), but [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986) conformant.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 domainRFC(url)
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL. [`String`](/sql-reference/data-types/string)
+* `url` — URL。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+入力文字列を URL として解釈できる場合はホスト名を返し、それ以外の場合は空文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the host name if the input string can be parsed as a URL, otherwise an empty string. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT
@@ -779,34 +705,29 @@ SELECT
 └───────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## domainWithoutWWW {#domainWithoutWWW}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+URL のドメイン名を返します。先頭に `www.` が付いている場合は、それを取り除きます。
 
-Returns the domain of a URL without leading `www.` if present.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 domainWithoutWWW(url)
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL. [`String`](/sql-reference/data-types/string)
+* `url` — URL。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+入力文字列が URL として解析可能な場合はドメイン名（先頭の `www.` を除く）を返し、それ以外の場合は空文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the domain name if the input string can be parsed as a URL (without leading `www.`), otherwise an empty string. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT domainWithoutWWW('http://paul@www.example.com:80/');
@@ -818,34 +739,29 @@ SELECT domainWithoutWWW('http://paul@www.example.com:80/');
 └─────────────────────────────────────────────────────┘
 ```
 
-
-
 ## domainWithoutWWWRFC {#domainWithoutWWWRFC}
 
-Introduced in: v1.1
+導入: v1.1
 
+先頭に `www.` が付いている場合、それを取り除いたドメインを返します。[`domainWithoutWWW`](#domainWithoutWWW) と似ていますが、[RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986) に準拠しています。
 
-Returns the domain without leading `www.` if present. Similar to [`domainWithoutWWW`](#domainWithoutWWW) but conforms to [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986).
-    
-
-**Syntax**
+**構文**
 
 ```sql
 domainWithoutWWWRFC(url)
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL. [`String`](/sql-reference/data-types/string)
+* `url` — URL。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+入力文字列が URL としてパースできる場合はドメイン名（先頭の `www.` を除く）を返し、それ以外の場合は空の文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the domain name if the input string can be parsed as a URL (without leading `www.`), otherwise an empty string. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT
@@ -859,34 +775,29 @@ SELECT
 └─────────────────────────────────────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## encodeURLComponent {#encodeURLComponent}
 
-Introduced in: v22.3
+導入: v22.3
 
+通常の文字列を受け取り、特殊文字を対応するパーセントエンコード表現に置き換えた URL エンコード（パーセントエンコード）形式に変換します。
 
-Takes a regular string and converts it into a URL-encoded (percent-encoded) format where special characters are replaced with their percent-encoded equivalents.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 encodeURLComponent(url)
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL. [`String`](/sql-reference/data-types/string)
+* `url` — URL。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+エンコードされた URL を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the encoded URL. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT encodeURLComponent('http://127.0.0.1:8123/?query=SELECT 1;') AS EncodedURL;
@@ -898,34 +809,29 @@ SELECT encodeURLComponent('http://127.0.0.1:8123/?query=SELECT 1;') AS EncodedUR
 └──────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## encodeURLFormComponent {#encodeURLFormComponent}
 
-Introduced in: v22.3
+導入バージョン: v22.3
 
+フォームエンコードの規則（[RFC-1866](https://www.rfc-editor.org/rfc/rfc1866.html)）に従って文字列をエンコードします。スペースは+記号に変換され、特殊文字はパーセントエンコードされます。
 
-Encodes strings using form encoding rules ([RFC-1866](https://www.rfc-editor.org/rfc/rfc1866.html)), where spaces are converted to + signs and special characters are percent-encoded.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 encodeURLFormComponent(url)
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL. [`String`](/sql-reference/data-types/string)
+* `url` — URL。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+エンコードされた URL を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the encoded URL. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT encodeURLFormComponent('http://127.0.0.1:8123/?query=SELECT 1 2+3') AS EncodedURL;
@@ -937,37 +843,32 @@ SELECT encodeURLFormComponent('http://127.0.0.1:8123/?query=SELECT 1 2+3') AS En
 └───────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## extractURLParameter {#extractURLParameter}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+URL に `name` パラメータが存在する場合はその値を返し、存在しない場合は空文字列を返します。
+この名前のパラメータが複数ある場合、最初に出現したものを返します。
+関数は、`url` 引数で指定された URL 内のパラメータが、`name` 引数と同じ方法でエンコードされていることを前提とします。
 
-Returns the value of the `name` parameter in the URL, if present, otherwise an empty string is returned.
-If there are multiple parameters with this name, the first occurrence is returned.
-The function assumes that the parameter in the `url` parameter is encoded in the same way as in the `name` argument.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 extractURLParameter(url, name)
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL. [`String`](/sql-reference/data-types/string)
-- `name` — Parameter name. [`String`](/sql-reference/data-types/string)
+* `url` — URL。[`String`](/sql-reference/data-types/string)
+* `name` — パラメータ名。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+指定した名前の URL パラメータの値を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the value of the URL parameter with the specified name. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT extractURLParameter('http://example.com/?param1=value1&param2=value2', 'param1');
@@ -979,35 +880,30 @@ SELECT extractURLParameter('http://example.com/?param1=value1&param2=value2', 'p
 └──────────────────────────┘
 ```
 
-
-
 ## extractURLParameterNames {#extractURLParameterNames}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+URL パラメータ名に対応する文字列の配列を返します。
+値はデコードされません。
 
-Returns an array of name strings corresponding to the names of URL parameters.
-The values are not decoded.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 extractURLParameterNames(url)
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL. [`String`](/sql-reference/data-types/string)
+* `url` — URL。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+URL パラメータの名前に対応する文字列の配列を返します。[`Array(String)`](/sql-reference/data-types/array)
 
-Returns an array of name strings corresponding to the names of URL parameters. [`Array(String)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT extractURLParameterNames('http://example.com/?param1=value1&param2=value2');
@@ -1019,35 +915,30 @@ SELECT extractURLParameterNames('http://example.com/?param1=value1&param2=value2
 └──────────────────────────┘
 ```
 
-
-
 ## extractURLParameters {#extractURLParameters}
 
-Introduced in: v1.1
+導入: v1.1
 
+URL パラメータに対応する `name=value` 形式の文字列の配列を返します。
+値はデコードされません。
 
-Returns an array of `name=value` strings corresponding to the URL parameters.
-The values are not decoded.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 extractURLParameters(url)
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL. [`String`](/sql-reference/data-types/string)
+* `url` — URL。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+URL パラメーターに対応する `name=value` 形式の文字列の配列を返します。[`Array(String)`](/sql-reference/data-types/array)
 
-Returns an array of `name=value` strings corresponding to the URL parameters. [`Array(String)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT extractURLParameters('http://example.com/?param1=value1&param2=value2');
@@ -1059,37 +950,31 @@ SELECT extractURLParameters('http://example.com/?param1=value1&param2=value2');
 └───────────────────────────────────┘
 ```
 
-
-
 ## firstSignificantSubdomain {#firstSignificantSubdomain}
 
-Introduced in: v
+導入バージョン: v
 
+「最初の重要なサブドメイン」を返します。
 
-Returns the "first significant subdomain".
+最初の重要なサブドメインは、&#39;com&#39;、&#39;net&#39;、&#39;org&#39;、または &#39;co&#39; のいずれかである場合は第二レベルドメインです。
+それ以外の場合は、第三レベルドメインになります。
 
-The first significant subdomain is a second-level domain if it is 'com', 'net', 'org', or 'co'.
-Otherwise, it is a third-level domain.
+たとえば、firstSignificantSubdomain(&#39;[https://news.clickhouse.com/](https://news.clickhouse.com/)&#39;) = &#39;clickhouse&#39;、firstSignificantSubdomain (&#39;[https://news.clickhouse.com.tr/](https://news.clickhouse.com.tr/)&#39;) = &#39;clickhouse&#39; となります。
 
-For example, firstSignificantSubdomain('https://news.clickhouse.com/') = 'clickhouse', firstSignificantSubdomain ('https://news.clickhouse.com.tr/') = 'clickhouse'.
+「重要ではない」第二レベルドメインの一覧やその他の実装の詳細は、将来変更される可能性があります。
 
-The list of "insignificant" second-level domains and other implementation details may change in the future.
-        
-
-**Syntax**
+**構文**
 
 ```sql
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* なし
 
-**Returned value**
+**返り値**
 
-
-
-**Examples**
+**例**
 
 **firstSignificantSubdomain**
 
@@ -1100,57 +985,48 @@ SELECT firstSignificantSubdomain('https://news.clickhouse.com/')
 ```response title=Response
 ```
 
-
-
 ## firstSignificantSubdomainRFC {#firstSignificantSubdomainRFC}
 
-Introduced in: v
+導入バージョン: v
 
-Returns the "first significant subdomain" according to RFC 1034.
+RFC 1034 に従って「先頭の有意なサブドメイン」を返します。
 
-**Syntax**
+**構文**
 
 ```sql
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* なし。
 
-**Returned value**
+**戻り値**
 
-
-
-**Examples**
-
-
+**例**
 
 ## fragment {#fragment}
 
-Introduced in: v1.1
+導入バージョン：v1.1
 
+先頭のハッシュ記号を除いたフラグメント識別子を返します。
 
-Returns the fragment identifier without the initial hash symbol.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 フラグメント(url)
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL. [`String`](/sql-reference/data-types/string)
+* `url` — URL。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+先頭のハッシュ記号を除いたフラグメント識別子を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the fragment identifier without the initial hash symbol. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT fragment('https://clickhouse.com/docs/getting-started/quick-start/cloud#1-create-a-clickhouse-service');
@@ -1162,34 +1038,29 @@ SELECT fragment('https://clickhouse.com/docs/getting-started/quick-start/cloud#1
 └───────────────────────────────┘
 ```
 
-
-
 ## netloc {#netloc}
 
-Introduced in: v20.5
+導入バージョン: v20.5
 
+URL からネットワークロケーション（`username:password@host:port` の部分）を抽出します。
 
-Extracts network locality (`username:password@host:port`) from a URL.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 netloc(url)
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL. [`String`](/sql-reference/data-types/string)
+* `url` — URL。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+指定された URL から `username:password@host:port` を返します。[`String`](/sql-reference/data-types/string)
 
-Returns `username:password@host:port` from a given URL. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT netloc('http://paul@www.example.com:80/');
@@ -1201,34 +1072,29 @@ SELECT netloc('http://paul@www.example.com:80/');
 └──────────────────────────┘
 ```
 
-
-
 ## path {#path}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+URL からクエリ文字列を除いたパス部分を返します。
 
-Returns the path without query string from a URL.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 パス(url)
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL. [`String`](/sql-reference/data-types/string)
+* `url` — URL。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+クエリ文字列を除いた URL のパス部分を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the path of the URL without query string. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT path('https://clickhouse.com/docs/sql-reference/functions/url-functions/?query=value');
@@ -1240,34 +1106,29 @@ SELECT path('https://clickhouse.com/docs/sql-reference/functions/url-functions/?
 └──────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## pathFull {#pathFull}
 
-Introduced in: v1.1
+導入: v1.1
 
+[`path`](#path) と同様ですが、URL のクエリ文字列とフラグメント部分も含めます。
 
-The same as [`path`](#path), but includes the query string and fragment of the URL.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 pathFull(url)
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL. [`String`](/sql-reference/data-types/string)
+* `url` — URL。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+クエリ文字列およびフラグメントを含む URL のパスを返します。[`String`](/sql-reference/data-types/string)
 
-Returns the path of the URL including query string and fragment. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT pathFull('https://clickhouse.com/docs/sql-reference/functions/url-functions/?query=value#section');
@@ -1279,35 +1140,30 @@ SELECT pathFull('https://clickhouse.com/docs/sql-reference/functions/url-functio
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## port {#port}
 
-Introduced in: v20.5
+導入: v20.5
 
+URL のポート番号を返します。URL にポート番号が含まれていない場合、または URL を解析できない場合は `default_port` を返します。
 
-Returns the port of a URL, or the `default_port` if the URL contains no port or cannot be parsed.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 port(url[, default_port])
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL. [`String`](/sql-reference/data-types/string)
-- `default_port` — Optional. The default port number to be returned. `0` by default. [`UInt16`](/sql-reference/data-types/int-uint)
+* `url` — URL。[`String`](/sql-reference/data-types/string)
+* `default_port` — 省略可能。返されるデフォルトのポート番号。既定値は `0`。[`UInt16`](/sql-reference/data-types/int-uint)
 
+**返り値**
 
-**Returned value**
+URL のポート番号を返します。URL にポートが含まれていない場合、または検証エラーが発生した場合は、デフォルトのポート番号を返します。[`UInt16`](/sql-reference/data-types/int-uint)
 
-Returns the port of the URL, or the default port if there is no port in the URL or in case of a validation error. [`UInt16`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT port('https://clickhouse.com:8443/docs'), port('https://clickhouse.com/docs', 443);
@@ -1319,36 +1175,31 @@ SELECT port('https://clickhouse.com:8443/docs'), port('https://clickhouse.com/do
 └──────────────────────────────────────────┴──────────────────────────────────────────┘
 ```
 
-
-
 ## portRFC {#portRFC}
 
-Introduced in: v22.10
+導入バージョン: v22.10
 
+URL からポート番号を返し、URL にポートが含まれていない場合や解析できない場合は `default_port` を返します。
+[`port`](#port) と同様ですが、[RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986) に準拠しています。
 
-Returns the port or `default_port` if the URL contains no port or cannot be parsed.
-Similar to [`port`](#port), but [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986) conformant.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 portRFC(url[, default_port])
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL. [`String`](/sql-reference/data-types/string)
-- `default_port` — Optional. The default port number to be returned. `0` by default. [`UInt16`](/sql-reference/data-types/int-uint)
+* `url` — URL。[`String`](/sql-reference/data-types/string)
+* `default_port` — 省略可能。返されるデフォルトのポート番号。既定値は `0`。[`UInt16`](/sql-reference/data-types/int-uint)
 
+**返される値**
 
-**Returned value**
+URL にポートが含まれていない場合、または検証エラーが発生した場合にはデフォルトのポートを、それ以外の場合には URL のポートを返します。[`UInt16`](/sql-reference/data-types/int-uint)
 
-Returns the port or the default port if there is no port in the URL or in case of a validation error. [`UInt16`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT port('http://user:password@example.com:8080/'), portRFC('http://user:password@example.com:8080/');
@@ -1360,36 +1211,31 @@ SELECT port('http://user:password@example.com:8080/'), portRFC('http://user:pass
 └──────────────────────────┴──────────────────────────┘
 ```
 
-
-
 ## protocol {#protocol}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+URL からプロトコルを抽出します。
 
-Extracts the protocol from a URL.
+返される値の典型例: http、https、ftp、mailto、tel、magnet。
 
-Examples of typical returned values: http, https, ftp, mailto, tel, magnet.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 protocol(url)
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL. [`String`](/sql-reference/data-types/string)
+* `url` — URL。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+URLのプロトコルを返します。判別できない場合は空文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the protocol of the URL, or an empty string if it cannot be determined. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT protocol('https://clickhouse.com/');
@@ -1401,34 +1247,29 @@ SELECT protocol('https://clickhouse.com/');
 └─────────────────────────────────────┘
 ```
 
-
-
 ## queryString {#queryString}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+URL のクエリ文字列から、先頭の疑問符 (`?`) と `#`、および `#` 以降のすべてを取り除いた文字列を返します。
 
-Returns the query string of a URL without the initial question mark, `#` and everything after `#`.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 queryString(url)
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL. [`String`](/sql-reference/data-types/string)
+* `url` — URL。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+先頭の疑問符とフラグメントを除いたURLのクエリ文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the query string of the URL without the initial question mark and fragment. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT queryString('https://clickhouse.com/docs?query=value&param=123#section');
@@ -1440,34 +1281,29 @@ SELECT queryString('https://clickhouse.com/docs?query=value&param=123#section');
 └──────────────────────────┘
 ```
 
-
-
 ## queryStringAndFragment {#queryStringAndFragment}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+URL のクエリ文字列とフラグメント識別子を返します。
 
-Returns the query string and fragment identifier of a URL.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 queryStringAndFragment(url)
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL. [`String`](/sql-reference/data-types/string)
+* `url` — URL。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+URL のクエリ文字列およびフラグメント識別子を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the query string and fragment identifier of the URL. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT queryStringAndFragment('https://clickhouse.com/docs?query=value&param=123#section');
@@ -1479,45 +1315,41 @@ SELECT queryStringAndFragment('https://clickhouse.com/docs?query=value&param=123
 └───────────────────────────────┘
 ```
 
-
-
 ## topLevelDomain {#topLevelDomain}
 
-Introduced in: v1.1
+導入バージョン：v1.1
 
-
-Extracts the the top-level domain from a URL.
+URL からトップレベルドメインを抽出します。
 
 :::note
-The URL can be specified with or without a protocol.
-For example:
+URL はプロトコルの有無にかかわらず指定できます。
+例えば：
 
 ```text
 svn+ssh://some.svn-hosting.com:80/repo/trunk
 some.svn-hosting.com:80/repo/trunk
 https://clickhouse.com/time/
 ```
-:::
-    
 
-**Syntax**
+:::
+
+**構文**
 
 ```sql
 topLevelDomain(url)
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL. [`String`](/sql-reference/data-types/string)
+* `url` — URL。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+入力文字列が URL としてパース可能な場合はドメイン名を返します。そうでない場合は空文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the domain name if the input string can be parsed as a URL. Otherwise, an empty string. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT topLevelDomain('svn+ssh://www.some.svn-hosting.com:80/repo/trunk');
@@ -1529,35 +1361,30 @@ SELECT topLevelDomain('svn+ssh://www.some.svn-hosting.com:80/repo/trunk');
 └────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## topLevelDomainRFC {#topLevelDomainRFC}
 
-Introduced in: v22.10
+導入バージョン: v22.10
 
+URLからトップレベルドメインを抽出します。
+[`topLevelDomain`](#topLevelDomain) と類似していますが、[RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986) に準拠しています。
 
-Extracts the the top-level domain from a URL.
-Similar to [`topLevelDomain`](#topLevelDomain), but conforms to [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986).
-    
-
-**Syntax**
+**構文**
 
 ```sql
 topLevelDomainRFC(url)
 ```
 
-**Arguments**
+**引数**
 
-- `url` — URL. [`String`](/sql-reference/data-types/string)
+* `url` — URL。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+入力文字列が URL として解析できる場合はそのドメイン名、それ以外の場合は空文字列。[`String`](/sql-reference/data-types/string)
 
-Domain name if the input string can be parsed as a URL. Otherwise, an empty string. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT topLevelDomain('http://foo:foo%41bar@foo.com'), topLevelDomainRFC('http://foo:foo%41bar@foo.com');

@@ -64,7 +64,7 @@ SELECT and(0, 1, -2);
 0
 ```
 
-**With NULL**
+**NULL を含む場合**
 
 ```sql title=Query
 SELECT and(NULL, 1, 10, -2);
@@ -74,39 +74,35 @@ SELECT and(NULL, 1, 10, -2);
 ᴺᵁᴸᴸ
 ```
 
-
-
 ## not {#not}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+値の論理否定を行います。
+引数が 0 の場合は `false` と見なされ、0 以外の値は `true` と見なされます。
 
-Calculates the logical negation of a value.
-Zero as an argument is considered `false`, non-zero values are considered `true`.
-
-
-**Syntax**
+**構文**
 
 ```sql
 not(val)
 ```
 
-**Arguments**
+**引数**
 
-- `val` — The value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `val` — 値。型は [`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
 
+**返り値**
 
-**Returned value**
+返される値は次のとおりです:
 
-Returns:
-- `1`, if `val` evaluates to `false`
-- `0`, if `val` evaluates to `true`
-- `NULL`, if `val` is `NULL`.
-         [`Nullable(UInt8)`](/sql-reference/data-types/nullable)
+* `val` が `false` と評価される場合は `1`
+* `val` が `true` と評価される場合は `0`
+* `val` が `NULL` の場合は `NULL`
+  [`Nullable(UInt8)`](/sql-reference/data-types/nullable)
 
-**Examples**
+**例**
 
-**Basic usage**
+**基本的な使用例**
 
 ```sql title=Query
 SELECT NOT(1);
@@ -116,44 +112,40 @@ SELECT NOT(1);
 0
 ```
 
-
-
 ## or {#or}
 
-Introduced in: v1.1
+導入: v1.1
 
+2つ以上の値の論理和を計算します。
 
-Calculates the logical disjunction of two or more values.
+ショートサーキット評価を使用するかどうかは、[`short_circuit_function_evaluation`](https://clickhouse.com/docs/operations/settings/settings#short_circuit_function_evaluation) 設定で制御されます。
+有効にすると、`val_i` は `((NOT val_1) AND (NOT val_2) AND ... AND (NOT val_{i-1}))` が `true` のときにのみ評価されます。
 
-Setting [`short_circuit_function_evaluation`](https://clickhouse.com/docs/operations/settings/settings#short_circuit_function_evaluation) controls whether short-circuit evaluation is used.
-If enabled, `val_i` is evaluated only if `((NOT val_1) AND (NOT val_2) AND ... AND (NOT val_{i-1}))` is `true`.
+例えば、ショートサーキット評価を使用すると、クエリ `SELECT or(number = 0, intDiv(1, number) != 0) FROM numbers(5)` を実行しても、ゼロ除算の例外は発生しません。
+引数としてのゼロは `false`、ゼロ以外の値は `true` と見なされます。
 
-For example, with short-circuit evaluation, no division-by-zero exception is thrown when executing the query `SELECT or(number = 0, intDiv(1, number) != 0) FROM numbers(5)`.
-Zero as an argument is considered `false`, non-zero values are considered `true`.
-
-
-**Syntax**
+**構文**
 
 ```sql
 or(val1, val2[, ...])
 ```
 
-**Arguments**
+**引数**
 
-- `val1, val2[, ...]` — List of at least two values. [`Nullable((U)Int*)`](/sql-reference/data-types/nullable) or [`Nullable(Float*)`](/sql-reference/data-types/nullable)
+* `val1, val2[, ...]` — 2 つ以上の値のリスト。[`Nullable((U)Int*)`](/sql-reference/data-types/nullable) または [`Nullable(Float*)`](/sql-reference/data-types/nullable)
 
+**戻り値**
 
-**Returned value**
+戻り値は次のとおりです:
 
-Returns:
-- `1`, if at least one argument evaluates to `true`
-- `0`, if all arguments evaluate to `false`
-- `NULL`, if all arguments evaluate to `false` and at least one argument is `NULL`
-         [`Nullable(UInt8)`](/sql-reference/data-types/nullable)
+* 少なくとも 1 つの引数が `true` と評価された場合は `1`
+* すべての引数が `false` と評価された場合は `0`
+* すべての引数が `false` と評価され、かつ少なくとも 1 つの引数が `NULL` の場合は `NULL`\
+  [`Nullable(UInt8)`](/sql-reference/data-types/nullable)
 
-**Examples**
+**例**
 
-**Basic usage**
+**基本的な使い方**
 
 ```sql title=Query
 SELECT or(1, 0, 0, 2, NULL);
@@ -163,7 +155,7 @@ SELECT or(1, 0, 0, 2, NULL);
 1
 ```
 
-**With NULL**
+**NULL を含む場合**
 
 ```sql title=Query
 SELECT or(0, NULL);
@@ -173,40 +165,36 @@ SELECT or(0, NULL);
 ᴺᵁᴸᴸ
 ```
 
-
-
 ## xor {#xor}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+2 つ以上の値に対して排他的論理和 (XOR) を計算します。
+入力値が 3 つ以上の場合、この関数は最初に先頭 2 つの値に対して XOR を行い、その結果に 3 つ目の値との XOR を行う、という処理を順に繰り返します。
+引数が 0 の場合は `false`、0 以外の値は `true` と見なされます。
 
-Calculates the logical exclusive disjunction of two or more values.
-For more than two input values, the function first xor-s the first two values, then xor-s the result with the third value etc.
-Zero as an argument is considered `false`, non-zero values are considered `true`.
-
-
-**Syntax**
+**構文**
 
 ```sql
 xor(val1, val2[, ...])
 ```
 
-**Arguments**
+**引数**
 
-- `val1, val2[, ...]` — List of at least two values. [`Nullable((U)Int*)`](/sql-reference/data-types/nullable) or [`Nullable(Float*)`](/sql-reference/data-types/nullable)
+* `val1, val2[, ...]` — 少なくとも 2 つの値からなるリスト。[`Nullable((U)Int*)`](/sql-reference/data-types/nullable) または [`Nullable(Float*)`](/sql-reference/data-types/nullable)
 
+**返される値**
 
-**Returned value**
+戻り値:
 
-Returns:
-- `1`, for two values: if one of the values evaluates to `false` and other does not
-- `0`, for two values: if both values evaluate to `false` or to both `true`
-- `NULL`, if at least one of the inputs is `NULL`.
-         [`Nullable(UInt8)`](/sql-reference/data-types/nullable)
+* `1` — 2 つの値に対して、一方の値が `false` と評価され、もう一方が `false` ではない場合
+* `0` — 2 つの値に対して、両方の値が `false`、または両方の値が `true` と評価される場合
+* `NULL` — 少なくとも 1 つの入力が `NULL` の場合。
+  [`Nullable(UInt8)`](/sql-reference/data-types/nullable)
 
-**Examples**
+**例**
 
-**Basic usage**
+**基本的な使い方**
 
 ```sql title=Query
 SELECT xor(0, 1, 1);

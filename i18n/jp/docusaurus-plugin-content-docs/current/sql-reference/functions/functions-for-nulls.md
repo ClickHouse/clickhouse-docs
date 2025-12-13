@@ -45,7 +45,6 @@ assumeNotNull(x)
 **使用例**
 
 ````sql title=Query
-```sql title=クエリ
 CREATE TABLE t_null (x Int8, y Nullable(Int8))
 ENGINE=MergeTree()
 ORDER BY x;
@@ -55,8 +54,6 @@ INSERT INTO t_null VALUES (1, NULL), (2, 3);
 SELECT assumeNotNull(y) FROM table;
 SELECT toTypeName(assumeNotNull(y)) FROM t_null;
 ```
-
-````
 
 ```response title=Response
 ┌─assumeNotNull(y)─┐
@@ -69,34 +66,29 @@ SELECT toTypeName(assumeNotNull(y)) FROM t_null;
 └──────────────────────────────┘
 ```
 
-
-
 ## coalesce {#coalesce}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+最も左側にある `NULL` ではない引数を返します。
 
-Returns the leftmost non-`NULL` argument.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 coalesce(x[, y, ...])
 ```
 
-**Arguments**
+**引数**
 
-- `x[, y, ...]` — Any number of parameters of non-compound type. All parameters must be of mutually compatible data types. [`Any`](/sql-reference/data-types)
+* `x[, y, ...]` — 任意個数の非複合型パラメータ。すべてのパラメータは互いに互換性のあるデータ型である必要があります。[`Any`](/sql-reference/data-types)
 
+**戻り値**
 
-**Returned value**
+最初の `NULL` ではない引数を返します。すべての引数が `NULL` の場合は `NULL` を返します。[`Any`](/sql-reference/data-types) または [`NULL`](/sql-reference/syntax#null)
 
-Returns the first non-`NULL` argument, otherwise `NULL`, if all arguments are `NULL`. [`Any`](/sql-reference/data-types) or [`NULL`](/sql-reference/syntax#null)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 -- 顧客への複数の連絡方法を指定可能な連絡先リストを考えます。
@@ -127,30 +119,28 @@ SELECT name, coalesce(mail, phone, CAST(telegram,'Nullable(String)')) FROM aBook
 └──────────┴───────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## firstNonDefault {#firstNonDefault}
 
-Introduced in: v25.9
+導入バージョン: v25.9
 
-Returns the first non-default value from a set of arguments
+引数の中から、デフォルト値ではない最初の値を返します。
 
-**Syntax**
+**構文**
 
 ```sql
 ```
 
-**Arguments**
+**引数**
 
-- `arg1` — The first argument to check - `arg2` — The second argument to check - `...` — Additional arguments to check 
+* `arg1` — 確認する最初の引数 - `arg2` — 確認する2番目の引数 - `...` — 確認する追加の引数
 
-**Returned value**
+**返り値**
 
-Result type is the supertype of all arguments
+結果の型は、すべての引数のスーパータイプになります
 
-**Examples**
+**例**
 
-**integers**
+**整数**
 
 ```sql title=Query
 SELECT firstNonDefault(0, 1, 2)
@@ -160,7 +150,7 @@ SELECT firstNonDefault(0, 1, 2)
 1
 ```
 
-**strings**
+**文字列**
 
 ```sql title=Query
 SELECT firstNonDefault('', 'hello', 'world')
@@ -170,7 +160,7 @@ SELECT firstNonDefault('', 'hello', 'world')
 'hello'
 ```
 
-**nulls**
+**NULL 値**
 
 ```sql title=Query
 SELECT firstNonDefault(NULL, 0 :: UInt8, 1 :: UInt8)
@@ -180,7 +170,7 @@ SELECT firstNonDefault(NULL, 0 :: UInt8, 1 :: UInt8)
 1
 ```
 
-**nullable zero**
+**NULL 許容ゼロ**
 
 ```sql title=Query
 SELECT firstNonDefault(NULL, 0 :: Nullable(UInt8), 1 :: Nullable(UInt8))
@@ -190,35 +180,30 @@ SELECT firstNonDefault(NULL, 0 :: Nullable(UInt8), 1 :: Nullable(UInt8))
 0
 ```
 
-
-
 ## ifNull {#ifNull}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+最初の引数が `NULL` の場合に、代わりの値を返します。
 
-Returns an alternative value if the first argument is `NULL`.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 ifNull(x, alt)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — The value to check for `NULL`. [`Any`](/sql-reference/data-types)
-- `alt` — The value that the function returns if `x` is `NULL`. [`Any`](/sql-reference/data-types)
+* `x` — `NULL` かどうかをチェックする値。[`Any`](/sql-reference/data-types)
+* `alt` — `x` が `NULL` の場合に関数が返す値。[`Any`](/sql-reference/data-types)
 
+**返される値**
 
-**Returned value**
+`x` が `NULL` でない場合は `x` の値を返し、それ以外の場合は `alt` を返します。[`Any`](/sql-reference/data-types)
 
-Returns the value of `x` if it is not `NULL`, otherwise `alt`. [`Any`](/sql-reference/data-types)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT ifNull('a', 'b'), ifNull(NULL, 'b');
@@ -230,36 +215,31 @@ SELECT ifNull('a', 'b'), ifNull(NULL, 'b');
 └──────────────────┴───────────────────┘
 ```
 
-
-
 ## isNotNull {#isNotNull}
 
-Introduced in: v1.1
+導入: v1.1
 
+引数が `NULL` でないかどうかを判定します。
 
-Checks if the argument is not `NULL`.
+関連項目: 演算子 [`IS NOT NULL`](/sql-reference/operators#is_not_null)。
 
-Also see: operator [`IS NOT NULL`](/sql-reference/operators#is_not_null).
-    
-
-**Syntax**
+**構文**
 
 ```sql
 isNotNull(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — A value of non-compound data type. [`Any`](/sql-reference/data-types)
+* `x` — 非複合データ型の値。[`Any`](/sql-reference/data-types)
 
+**戻り値**
 
-**Returned value**
+`x` が `NULL` でない場合は `1`、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if `x` is not `NULL`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 CREATE TABLE t_null
@@ -281,36 +261,31 @@ SELECT x FROM t_null WHERE isNotNull(y);
 └───┘
 ```
 
-
-
 ## isNull {#isNull}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+引数が `NULL` かどうかをチェックします。
 
-Checks if the argument is `NULL`.
+関連項目: 演算子 [`IS NULL`](/sql-reference/operators#is_null)。
 
-Also see: operator [`IS NULL`](/sql-reference/operators#is_null).
-    
-
-**Syntax**
+**構文**
 
 ```sql
 isNull(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — A value of non-compound data type. [`Any`](/sql-reference/data-types)
+* `x` — 非複合データ型の値。[`Any`](/sql-reference/data-types)
 
+**戻り値**
 
-**Returned value**
+`x` が `NULL` の場合は `1` を、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if `x` is `NULL`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 CREATE TABLE t_null
@@ -332,34 +307,29 @@ SELECT x FROM t_null WHERE isNull(y);
 └───┘
 ```
 
-
-
 ## isNullable {#isNullable}
 
-Introduced in: v22.7
+導入: v22.7
 
+引数のデータ型が `Nullable`（`NULL` 値を許容する型）かどうかを判定します。
 
-Checks whether the argument's data type is `Nullable` (i.e it allows `NULL` values).
-    
-
-**Syntax**
+**構文**
 
 ```sql
 isNullable(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — A value of any data type. [`Any`](/sql-reference/data-types)
+* `x` — 任意のデータ型の値。[`Any`](/sql-reference/data-types)
 
+**戻り値**
 
-**Returned value**
+`x` が `Nullable` データ型であれば `1` を返し、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if `x` is of a `Nullable` data type, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 CREATE TABLE tab (
@@ -380,34 +350,29 @@ SELECT isNullable(ordinary_col), isNullable(nullable_col) FROM tab;
 └─────────────────────────────┴─────────────────────────────┘
 ```
 
-
-
 ## isZeroOrNull {#isZeroOrNull}
 
-Introduced in: v20.3
+導入バージョン: v20.3
 
+引数がゼロ（`0`）または `NULL` かどうかをチェックします。
 
-Checks if the argument is either zero (`0`) or `NULL`.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 isZeroOrNull(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — A numeric value. [`UInt`](/sql-reference/data-types/int-uint)
+* `x` — 数値型の値。[`UInt`](/sql-reference/data-types/int-uint)
 
+**返される値**
 
-**Returned value**
+`x` が `NULL` またはゼロに等しい場合は `1` を返し、それ以外の場合は `0` を返します。[`UInt8/16/32/64`](/sql-reference/data-types/int-uint) または [`Float32/Float64`](/sql-reference/data-types/float)
 
-Returns `1` if `x` is `NULL` or equal to zero, otherwise `0`. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float32/Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 CREATE TABLE t_null
@@ -430,35 +395,30 @@ SELECT x FROM t_null WHERE isZeroOrNull(y);
 └───┘
 ```
 
-
-
 ## nullIf {#nullIf}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+2つの引数が等しい場合、`NULL` を返します。
 
-Returns `NULL` if both arguments are equal.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 nullIf(x, y)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — The first value. [`Any`](/sql-reference/data-types)
-- `y` — The second value. [`Any`](/sql-reference/data-types)
+* `x` — 1つ目の値。[`Any`](/sql-reference/data-types)
+* `y` — 2つ目の値。[`Any`](/sql-reference/data-types)
 
+**戻り値**
 
-**Returned value**
+両方の引数が同じ値の場合は `NULL` を返し、それ以外の場合は 1つ目の引数を返します。[`NULL`](/sql-reference/syntax#null) または [`Nullable(x)`](/sql-reference/data-types/nullable)
 
-Returns `NULL` if both arguments are equal, otherwise returns the first argument. [`NULL`](/sql-reference/syntax#null) or [`Nullable(x)`](/sql-reference/data-types/nullable)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT nullIf(1, 1), nullIf(1, 2);
@@ -470,34 +430,29 @@ SELECT nullIf(1, 1), nullIf(1, 2);
 └──────────────┴──────────────┘
 ```
 
-
-
 ## toNullable {#toNullable}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+指定された引数の型を `Nullable` 型に変換します。
 
-Converts the provided argument type to `Nullable`.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 toNullable(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — A value of any non-compound type. [`Any`](/sql-reference/data-types)
+* `x` — 任意の非複合型の値。[`Any`](/sql-reference/data-types)
 
+**戻り値**
 
-**Returned value**
+入力値と同じ値を返すが、その型は `Nullable` となる。[`Nullable(Any)`](/sql-reference/data-types/nullable)
 
-Returns the input value but of `Nullable` type. [`Nullable(Any)`](/sql-reference/data-types/nullable)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT toTypeName(10), toTypeName(toNullable(10));

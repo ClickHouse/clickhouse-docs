@@ -50,7 +50,7 @@ ClickHouse サーバープロセス内の仮想メモリアドレスを、ClickH
 **構文**
 
 ```sql
-demangle(symbol)
+addressToLine(address_of_binary_instruction)
 ```
 
 **引数**
@@ -83,7 +83,7 @@ query_id:                421b6855-1858-45a5-8f37-f383409d6d72
 trace:                   [140658411141617,94784174532828,94784076370703,94784076372094,94784076361020,94784175007680,140658411116251,140658403895439]
 ```
 
-**Getting a function name for a single address**
+**単一のアドレスからソースコードのファイル名と行番号を取得する**
 
 ```sql title=Query
 SET allow_introspection_functions=1;
@@ -96,7 +96,7 @@ Row 1:
 addressToLine(94784076370703): /build/obj-x86_64-linux-gnu/../src/Common/ThreadPool.cpp:199
 ```
 
-**Applying the function to the whole stack trace**
+**関数をスタックトレース全体に対して適用する**
 
 ```sql title=Query
 -- この例では、arrayMap関数がaddressToLine関数を使用してtrace配列の各要素を処理しています。
@@ -122,35 +122,35 @@ trace_source_code_lines: /lib/x86_64-linux-gnu/libpthread-2.27.so
 /build/glibc-OTsEL5/glibc-2.27/misc/../sysdeps/unix/sysv/linux/x86_64/clone.S:97
 ```
 
+## addressToLineWithInlines {#addressToLineWithInlines}
 
+導入バージョン: v22.2
 
-## isMergeTreePartCoveredBy {#isMergeTreePartCoveredBy}
+`addressToLine` と似ていますが、すべてのインライン関数を含む配列を返します。
+そのため、`addressToLine` よりも低速になります。
 
-Introduced in: v25.6
+このイントロスペクション関数を有効にするには:
 
+* `clickhouse-common-static-dbg` パッケージをインストールします。
+* 設定 [`allow_introspection_functions`](../../operations/settings/settings.md#allow_introspection_functions) を `1` に設定します。
 
-Function which checks if the part of the first argument is covered by the part of the second argument.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 addressToLineWithInlines(address_of_binary_instruction)
 ```
 
-**Arguments**
+**引数**
 
-- `nested_part` — Name of expected nested part. [`String`](/sql-reference/data-types/string)
-- `covering_part` — Name of expected covering part. [`String`](/sql-reference/data-types/string)
+* `address_of_binary_instruction` — 実行中のプロセス内の命令のアドレス。[`UInt64`](/sql-reference/data-types/int-uint)
 
+**返り値**
 
-**Returned value**
+最初の要素がソースコードのファイル名と行番号（コロン区切り）である配列を返します。2番目以降の要素には、インライン関数のソースコードのファイル名、行番号、および関数名が含まれます。デバッグ情報が見つからない場合は、バイナリ名と等しい単一の要素のみを含む配列が返されます。アドレスが無効な場合は空配列が返されます。[`Array(String)`](/sql-reference/data-types/array)
 
-Returns `1` if it covers, `0` otherwise. [`UInt8`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Basic example**
+**アドレスに対して関数を適用する**
 
 ```sql title=Query
 SET allow_introspection_functions=1;
@@ -163,17 +163,7 @@ SELECT addressToLineWithInlines(531055181::UInt64);
 └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
-## logTrace {#logTrace}
-
-Introduced in: v20.12
-
-
-Emits a trace log message to the server log for each [Block](/development/architecture/#block).
-    
-
-**Syntax**
+**スタックトレース全体に関数を適用する**
 
 ```sql title=Query
 SET allow_introspection_functions=1;
@@ -186,19 +176,6 @@ FROM system.trace_log
 WHERE
     query_id = '5e173544-2020-45de-b645-5deebe2aae54';
 ```
-
-**Arguments**
-
-- `message` — Message that is emitted to the server log. [`const String`](/sql-reference/data-types/string)
-
-
-**Returned value**
-
-Returns `0` always. [`UInt8`](/sql-reference/data-types/int-uint)
-
-**Examples**
-
-**Basic example**
 
 ```response title=Response
 ┌────────ta─┬─addressToLineWithInlines(arrayJoin(trace))───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -245,39 +222,34 @@ Returns `0` always. [`UInt8`](/sql-reference/data-types/int-uint)
 └───────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+## addressToSymbol {#addressToSymbol}
+
+導入バージョン: v20.1
+
+ClickHouse サーバープロセス内の仮想メモリアドレスを、ClickHouse のオブジェクトファイルに含まれるシンボル名に変換します。
+
+**構文**
+
 ```sql
 addressToSymbol(address_of_binary_instruction)
 ```
 
+**引数**
 
+* `address_of_binary_instruction` — 実行中のプロセス内の命令アドレス。[`UInt64`](/sql-reference/data-types/int-uint)
 
-## mergeTreePartInfo {#mergeTreePartInfo}
+**戻り値**
 
-Introduced in: v25.6
+ClickHouse のオブジェクトファイルから取得したシンボル、またはアドレスが無効な場合は空文字列を返します。[`String`](/sql-reference/data-types/string)
 
+**例**
 
-Function that helps to cut the useful values out of the `MergeTree` part name.
-    
-
-**Syntax**
+**`trace_log` システムテーブルから最初の行を選択**
 
 ```sql title=Query
 SET allow_introspection_functions=1;
 SELECT * FROM system.trace_log LIMIT 1 \G;
 ```
-
-**Arguments**
-
-- `part_name` — Name of part to unpack. [`String`](/sql-reference/data-types/string)
-
-
-**Returned value**
-
-Returns a Tuple with subcolumns: `partition_id`, `min_block`, `max_block`, `level`, `mutation`. [`Tuple`](/sql-reference/data-types/tuple)
-
-**Examples**
-
-**Basic example**
 
 ```response title=Response
 -- `trace` フィールドには、サンプリング時点のスタックトレースが含まれます。
@@ -292,22 +264,12 @@ query_id:      724028bf-f550-45aa-910d-2af6212b94ac
 trace:         [94138803686098,94138815010911,94138815096522,94138815101224,94138815102091,94138814222988,94138806823642,94138814457211,94138806823642,94138814457211,94138806823642,94138806795179,94138806796144,94138753770094,94138753771646,94138753760572,94138852407232,140399185266395,140399178045583]
 ```
 
+**単一のアドレスに対応するシンボルを取得する**
+
 ```sql title=Query
 SET allow_introspection_functions=1;
 SELECT addressToSymbol(94138803686098) \G;
 ```
-
-
-
-## tid {#tid}
-
-Introduced in: v20.12
-
-
-Returns id of the thread, in which the current [Block](/development/architecture/#block) is processed.
-    
-
-**Syntax**
 
 ```response title=Response
 Row 1:
@@ -315,17 +277,7 @@ Row 1:
 addressToSymbol(94138803686098): _ZNK2DB24IAggregateFunctionHelperINS_20AggregateFunctionSumImmNS_24AggregateFunctionSumDataImEEEEE19addBatchSinglePlaceEmPcPPKNS_7IColumnEPNS_5ArenaE
 ```
 
-**Arguments**
-
-- None.
-
-**Returned value**
-
-Returns the current thread id. [`UInt64`](/sql-reference/data-types/int-uint)
-
-**Examples**
-
-**Usage example**
+**スタックトレース全体に関数を適用する**
 
 ```sql title=Query
 SET allow_introspection_functions=1;

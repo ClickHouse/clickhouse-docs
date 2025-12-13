@@ -33,17 +33,10 @@ ClickHouse は、複数の代替ジオベース（地域階層）を同時に扱
 
 例：
 
-```
-
-Besides this file, it also searches for files nearby that have the `_` symbol and any suffix appended to the name (before the file extension).
-For example, it will also find the file `/opt/geo/regions_hierarchy_ua.txt`, if present. Here `ua` is called the dictionary key. For a dictionary without a suffix, the key is an empty string.
-
-All the dictionaries are re-loaded during runtime (once every certain number of seconds, as defined in the [`builtin_dictionaries_reload_interval`](/operations/server-configuration-parameters/settings#builtin_dictionaries_reload_interval) config parameter, or once an hour by default). However, the list of available dictionaries is defined once, when the server starts.
-
-All functions for working with regions have an optional argument at the end – the dictionary key. It is referred to as the geobase.
-
-Example:
-
+```sql
+regionToCountry(RegionID) – デフォルト辞書を使用します: /opt/geo/regions_hierarchy.txt
+regionToCountry(RegionID, '') – デフォルト辞書を使用します: /opt/geo/regions_hierarchy.txt
+regionToCountry(RegionID, 'ua') – 'ua'キー用の辞書を使用します: /opt/geo/regions_hierarchy_ua.txt
 ```
 
 ### regionToName {#regiontoname}
@@ -52,14 +45,8 @@ Example:
 
 **構文**
 
-```
-
-### regionToName {#regiontoname}
-
-Accepts a region ID and geobase and returns a string of the name of the region in the corresponding language. If the region with the specified ID does not exist, an empty string is returned.
-
-**Syntax**
-
+```sql
+regionToName(id\[, lang\])
 ```
 
 **パラメータ**
@@ -76,29 +63,20 @@ Accepts a region ID and geobase and returns a string of the name of the region i
 
 クエリ:
 
-```
-**Parameters**
-
-- `id` — Region ID from the geobase. [UInt32](../data-types/int-uint).
-- `geobase` — Dictionary key. See [Multiple Geobases](#multiple-geobases). [String](../data-types/string). Optional.
-
-**Returned value**
-
-- Name of the region in the corresponding language specified by `geobase`. [String](../data-types/string).
-- Otherwise, an empty string. 
-
-**Example**
-
-Query:
-
+```sql
+SELECT regionToName(number::UInt32,'en') FROM numbers(0,5);
 ```
 
 結果：
 
-```
-
-Result:
-
+```text
+┌─regionToName(CAST(number, 'UInt32'), 'en')─┐
+│                                            │
+│ World                                      │
+│ USA                                        │
+│ Colorado                                   │
+│ Boulder County                             │
+└────────────────────────────────────────────┘
 ```
 
 ### regionToCity {#regiontocity}
@@ -107,14 +85,8 @@ Result:
 
 **構文**
 
-```
-
-### regionToCity {#regiontocity}
-
-Accepts a region ID from the geobase. If this region is a city or part of a city, it returns the region ID for the appropriate city. Otherwise, returns 0.
-
-**Syntax**
-
+```sql
+regionToCity(id [, geobase])
 ```
 
 **パラメータ**
@@ -131,30 +103,28 @@ Accepts a region ID from the geobase. If this region is a city or part of a city
 
 クエリ:
 
-```
-
-**Parameters**
-
-- `id` — Region ID from the geobase. [UInt32](../data-types/int-uint).
-- `geobase` — Dictionary key. See [Multiple Geobases](#multiple-geobases). [String](../data-types/string). Optional.
-
-**Returned value**
-
-- Region ID for the appropriate city, if it exists. [UInt32](../data-types/int-uint).
-- 0, if there is none.
-
-**Example**
-
-Query:
-
+```sql
+SELECT regionToName(number::UInt32, 'en'), regionToCity(number::UInt32) AS id, regionToName(id, 'en') FROM numbers(13);
 ```
 
 結果:
 
-```
-
-Result:
-
+```response
+┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToCity(CAST(number, 'UInt32')), 'en')─┐
+│                                            │  0 │                                                          │
+│ World                                      │  0 │                                                          │
+│ USA                                        │  0 │                                                          │
+│ Colorado                                   │  0 │                                                          │
+│ Boulder County                             │  0 │                                                          │
+│ Boulder                                    │  5 │ Boulder                                                  │
+│ China                                      │  0 │                                                          │
+│ Sichuan                                    │  0 │                                                          │
+│ Chengdu                                    │  8 │ Chengdu                                                  │
+│ America                                    │  0 │                                                          │
+│ North America                              │  0 │                                                          │
+│ Eurasia                                    │  0 │                                                          │
+│ Asia                                       │  0 │                                                          │
+└────────────────────────────────────────────┴────┴──────────────────────────────────────────────────────────┘
 ```
 
 ### regionToArea {#regiontoarea}
@@ -163,14 +133,8 @@ Result:
 
 **構文**
 
-```
-
-### regionToArea {#regiontoarea}
-
-Converts a region to an area (type 5 in the geobase). In every other way, this function is the same as ['regionToCity'](#regiontocity).
-
-**Syntax**
-
+```sql
+regionToArea(id [, geobase])
 ```
 
 **パラメーター**
@@ -187,30 +151,32 @@ Converts a region to an area (type 5 in the geobase). In every other way, this f
 
 クエリ:
 
-```
-
-**Parameters**
-
-- `id` — Region ID from the geobase. [UInt32](../data-types/int-uint).
-- `geobase` — Dictionary key. See [Multiple Geobases](#multiple-geobases). [String](../data-types/string). Optional.
-
-**Returned value**
-
-- Region ID for the appropriate area, if it exists. [UInt32](../data-types/int-uint).
-- 0, if there is none.
-
-**Example**
-
-Query:
-
+```sql
+SELECT DISTINCT regionToName(regionToArea(toUInt32(number), 'ua'))
+FROM system.numbers
+LIMIT 15
 ```
 
 結果:
 
-```
-
-Result:
-
+```text
+┌─regionToName(regionToArea(toUInt32(number), \'ua\'))─┐
+│                                                      │
+│ モスクワおよびモスクワ州                             │
+│ サンクトペテルブルクおよびレニングラード州           │
+│ ベルゴロド州                                         │
+│ イヴァノヴォ州                                       │
+│ カルーガ州                                           │
+│ コストロマ州                                         │
+│ クルスク州                                           │
+│ リペツク州                                           │
+│ オリョール州                                         │
+│ リャザン州                                           │
+│ スモレンスク州                                       │
+│ タンボフ州                                           │
+│ トヴェリ州                                           │
+│ トゥーラ州                                           │
+└──────────────────────────────────────────────────────┘
 ```
 
 ### regionToDistrict {#regiontodistrict}
@@ -219,14 +185,8 @@ Result:
 
 **構文**
 
-```
-
-### regionToDistrict {#regiontodistrict}
-
-Converts a region to a federal district (type 4 in the geobase). In every other way, this function is the same as 'regionToCity'.
-
-**Syntax**
-
+```sql
+regionToDistrict(id [, geobase])
 ```
 
 **パラメータ**
@@ -243,30 +203,32 @@ Converts a region to a federal district (type 4 in the geobase). In every other 
 
 クエリ:
 
-```
-
-**Parameters**
-
-- `id` — Region ID from the geobase. [UInt32](../data-types/int-uint).
-- `geobase` — Dictionary key. See [Multiple Geobases](#multiple-geobases). [String](../data-types/string). Optional.
-
-**Returned value**
-
-- Region ID for the appropriate city, if it exists. [UInt32](../data-types/int-uint).
-- 0, if there is none.
-
-**Example**
-
-Query:
-
+```sql
+SELECT DISTINCT regionToName(regionToDistrict(toUInt32(number), 'ua'))
+FROM system.numbers
+LIMIT 15
 ```
 
 結果:
 
-```
-
-Result:
-
+```text
+┌─regionToName(regionToDistrict(toUInt32(number), \'ua\'))─┐
+│                                                          │
+│ 中央連邦管区                                 │
+│ 北西連邦管区                               │
+│ 南部連邦管区                                   │
+│ 北カフカース連邦管区                          │
+│ 沿ヴォルガ連邦管区                                │
+│ ウラル連邦管区                                    │
+│ シベリア連邦管区                                │
+│ 極東連邦管区                                │
+│ スコットランド                                                 │
+│ フェロー諸島                                            │
+│ フランデレン地域圏                                           │
+│ ブリュッセル首都圏地域圏                                  │
+│ ワロン地域圏                                                 │
+│ ボスニア・ヘルツェゴビナ連邦                     │
+└──────────────────────────────────────────────────────────┘
 ```
 
 ### regionToCountry {#regiontocountry}
@@ -275,14 +237,8 @@ Result:
 
 **構文**
 
-```
-
-### regionToCountry {#regiontocountry}
-
-Converts a region to a country (type 3 in the geobase). In every other way, this function is the same as 'regionToCity'.
-
-**Syntax**
-
+```sql
+regionToCountry(id [, geobase])
 ```
 
 **パラメーター**
@@ -299,30 +255,28 @@ Converts a region to a country (type 3 in the geobase). In every other way, this
 
 クエリ:
 
-```
-
-**Parameters**
-
-- `id` — Region ID from the geobase. [UInt32](../data-types/int-uint).
-- `geobase` — Dictionary key. See [Multiple Geobases](#multiple-geobases). [String](../data-types/string). Optional.
-
-**Returned value**
-
-- Region ID for the appropriate country, if it exists. [UInt32](../data-types/int-uint).
-- 0, if there is none.
-
-**Example**
-
-Query:
-
+```sql
+SELECT regionToName(number::UInt32, 'en'), regionToCountry(number::UInt32) AS id, regionToName(id, 'en') FROM numbers(13);
 ```
 
 結果：
 
-```
-
-Result:
-
+```text
+┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToCountry(CAST(number, 'UInt32')), 'en')─┐
+│                                            │  0 │                                                             │
+│ 世界                                      │  0 │                                                             │
+│ アメリカ合衆国                                        │  2 │ アメリカ合衆国                                                         │
+│ コロラド州                                   │  2 │ アメリカ合衆国                                                         │
+│ ボルダー郡                             │  2 │ アメリカ合衆国                                                         │
+│ ボルダー                                    │  2 │ アメリカ合衆国                                                         │
+│ 中国                                      │  6 │ 中国                                                       │
+│ 四川省                                    │  6 │ 中国                                                       │
+│ 成都市                                    │  6 │ 中国                                                       │
+│ アメリカ大陸                                    │  0 │                                                             │
+│ 北アメリカ                              │  0 │                                                             │
+│ ユーラシア大陸                                    │  0 │                                                             │
+│ アジア                                       │  0 │                                                             │
+└────────────────────────────────────────────┴────┴─────────────────────────────────────────────────────────────┘
 ```
 
 ### regionToContinent {#regiontocontinent}
@@ -331,14 +285,8 @@ Result:
 
 **構文**
 
-```
-
-### regionToContinent {#regiontocontinent}
-
-Converts a region to a continent (type 1 in the geobase). In every other way, this function is the same as 'regionToCity'.
-
-**Syntax**
-
+```sql
+regionToContinent(id [, geobase])
 ```
 
 **パラメータ**
@@ -355,30 +303,28 @@ Converts a region to a continent (type 1 in the geobase). In every other way, th
 
 クエリ:
 
-```
-
-**Parameters**
-
-- `id` — Region ID from the geobase. [UInt32](../data-types/int-uint).
-- `geobase` — Dictionary key. See [Multiple Geobases](#multiple-geobases). [String](../data-types/string). Optional.
-
-**Returned value**
-
-- Region ID for the appropriate continent, if it exists. [UInt32](../data-types/int-uint).
-- 0, if there is none.
-
-**Example**
-
-Query:
-
+```sql
+SELECT regionToName(number::UInt32, 'en'), regionToContinent(number::UInt32) AS id, regionToName(id, 'en') FROM numbers(13);
 ```
 
 結果：
 
-```
-
-Result:
-
+```text
+┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToContinent(CAST(number, 'UInt32')), 'en')─┐
+│                                            │  0 │                                                               │
+│ 世界                                      │  0 │                                                               │
+│ USA                                        │ 10 │ 北米                                                 │
+│ Colorado                                   │ 10 │ 北米                                                 │
+│ Boulder County                             │ 10 │ 北米                                                 │
+│ Boulder                                    │ 10 │ 北米                                                 │
+│ China                                      │ 12 │ アジア                                                          │
+│ Sichuan                                    │ 12 │ アジア                                                          │
+│ Chengdu                                    │ 12 │ アジア                                                          │
+│ アメリカ大陸                                    │  9 │ アメリカ大陸                                                       │
+│ 北米                              │ 10 │ 北米                                                 │
+│ ユーラシア                                    │ 11 │ ユーラシア                                                       │
+│ アジア                                       │ 12 │ アジア                                                          │
+└────────────────────────────────────────────┴────┴───────────────────────────────────────────────────────────────┘
 ```
 
 ### regionToTopContinent {#regiontotopcontinent}
@@ -387,14 +333,8 @@ Result:
 
 **構文**
 
-```
-
-### regionToTopContinent {#regiontotopcontinent}
-
-Finds the highest continent in the hierarchy for the region.
-
-**Syntax**
-
+```sql
+regionToTopContinent(id[, geobase])
 ```
 
 **パラメータ**
@@ -411,30 +351,28 @@ Finds the highest continent in the hierarchy for the region.
 
 クエリ:
 
-```
-
-**Parameters**
-
-- `id` — Region ID from the geobase. [UInt32](../data-types/int-uint).
-- `geobase` — Dictionary key. See [Multiple Geobases](#multiple-geobases). [String](../data-types/string). Optional.
-
-**Returned value**
-
-- Identifier of the top level continent (the latter when you climb the hierarchy of regions).[UInt32](../data-types/int-uint).
-- 0, if there is none.
-
-**Example**
-
-Query:
-
+```sql
+SELECT regionToName(number::UInt32, 'en'), regionToTopContinent(number::UInt32) AS id, regionToName(id, 'en') FROM numbers(13);
 ```
 
 結果：
 
-```
-
-Result:
-
+```text
+┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToTopContinent(CAST(number, 'UInt32')), 'en')─┐
+│                                            │  0 │                                                                  │
+│ 世界                                      │  0 │                                                                  │
+│ アメリカ合衆国                                        │  9 │ アメリカ大陸                                                          │
+│ コロラド州                                   │  9 │ アメリカ大陸                                                          │
+│ ボルダー郡                             │  9 │ アメリカ大陸                                                          │
+│ ボルダー                                    │  9 │ アメリカ大陸                                                          │
+│ 中国                                      │ 11 │ ユーラシア大陸                                                          │
+│ 四川省                                    │ 11 │ ユーラシア大陸                                                          │
+│ 成都                                    │ 11 │ ユーラシア大陸                                                          │
+│ アメリカ大陸                                    │  9 │ アメリカ大陸                                                          │
+│ North アメリカ大陸                              │  9 │ アメリカ大陸                                                          │
+│ ユーラシア大陸                                    │ 11 │ ユーラシア大陸                                                          │
+│ アジア                                       │ 11 │ ユーラシア大陸                                                          │
+└────────────────────────────────────────────┴────┴──────────────────────────────────────────────────────────────────┘
 ```
 
 ### regionToPopulation {#regiontopopulation}
@@ -443,14 +381,8 @@ Result:
 
 **構文**
 
-```
-
-### regionToPopulation {#regiontopopulation}
-
-Gets the population for a region. The population can be recorded in files with the geobase. See the section ["Dictionaries"](../dictionaries#embedded-dictionaries). If the population is not recorded for the region, it returns 0. In the geobase, the population might be recorded for child regions, but not for parent regions.
-
-**Syntax**
-
+```sql
+regionToPopulation(id[, geobase])
 ```
 
 **パラメータ**
@@ -467,30 +399,28 @@ Gets the population for a region. The population can be recorded in files with t
 
 クエリ:
 
-```
-
-**Parameters**
-
-- `id` — Region ID from the geobase. [UInt32](../data-types/int-uint).
-- `geobase` — Dictionary key. See [Multiple Geobases](#multiple-geobases). [String](../data-types/string). Optional.
-
-**Returned value**
-
-- Population for the region. [UInt32](../data-types/int-uint).
-- 0, if there is none.
-
-**Example**
-
-Query:
-
+```sql
+SELECT regionToName(number::UInt32, 'en'), regionToPopulation(number::UInt32) AS id, regionToName(id, 'en') FROM numbers(13);
 ```
 
 結果：
 
-```
-
-Result:
-
+```text
+┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─population─┐
+│                                            │          0 │
+│ World                                      │ 4294967295 │
+│ USA                                        │  330000000 │
+│ Colorado                                   │    5700000 │
+│ Boulder County                             │     330000 │
+│ Boulder                                    │     100000 │
+│ China                                      │ 1500000000 │
+│ Sichuan                                    │   83000000 │
+│ Chengdu                                    │   20000000 │
+│ America                                    │ 1000000000 │
+│ North America                              │  600000000 │
+│ Eurasia                                    │ 4294967295 │
+│ Asia                                       │ 4294967295 │
+└────────────────────────────────────────────┴────────────┘
 ```
 
 ### regionIn {#regionin}
@@ -499,14 +429,8 @@ Result:
 
 **構文**
 
-```
-
-### regionIn {#regionin}
-
-Checks whether a `lhs` region belongs to a `rhs` region. Returns a UInt8 number equal to 1 if it belongs, or 0 if it does not belong.
-
-**Syntax**
-
+```sql
+regionIn(lhs, rhs\[, geobase\])
 ```
 
 **パラメーター**
@@ -528,35 +452,23 @@ Checks whether a `lhs` region belongs to a `rhs` region. Returns a UInt8 number 
 
 クエリ:
 
-```
-
-**Parameters**
-
-- `lhs` — Lhs region ID from the geobase. [UInt32](../data-types/int-uint).
-- `rhs` — Rhs region ID from the geobase. [UInt32](../data-types/int-uint).
-- `geobase` — Dictionary key. See [Multiple Geobases](#multiple-geobases). [String](../data-types/string). Optional.
-
-**Returned value**
-
-- 1, if it belongs. [UInt8](../data-types/int-uint).
-- 0, if it doesn't belong.
-
-**Implementation details**
-
-The relationship is reflexive – any region also belongs to itself.
-
-**Example**
-
-Query:
-
+```sql
+SELECT regionToName(n1.number::UInt32, 'en') || (regionIn(n1.number::UInt32, n2.number::UInt32) ? ' is in ' : ' is not in ') || regionToName(n2.number::UInt32, 'en') FROM numbers(1,2) AS n1 CROSS JOIN numbers(1,5) AS n2;
 ```
 
 結果：
 
-```
-
-Result:
-
+```text
+World は World に含まれます
+World は USA に含まれません
+World は Colorado に含まれません
+World は Boulder County に含まれません
+World は Boulder に含まれません
+USA は World に含まれます
+USA は USA に含まれます
+USA は Colorado に含まれません
+USA は Boulder County に含まれません
+USA は Boulder に含まれません    
 ```
 
 ### regionHierarchy {#regionhierarchy}
@@ -565,14 +477,8 @@ Result:
 
 **構文**
 
-```
-
-### regionHierarchy {#regionhierarchy}
-
-Accepts a UInt32 number – the region ID from the geobase. Returns an array of region IDs consisting of the passed region and all parents along the chain.
-
-**Syntax**
-
+```sql
+regionHierarchy(id\[, geobase\])
 ```
 
 **パラメーター**
@@ -588,29 +494,20 @@ Accepts a UInt32 number – the region ID from the geobase. Returns an array of 
 
 クエリ:
 
-```
-
-**Parameters**
-
-- `id` — Region ID from the geobase. [UInt32](../data-types/int-uint).
-- `geobase` — Dictionary key. See [Multiple Geobases](#multiple-geobases). [String](../data-types/string). Optional.
-
-**Returned value**
-
-- Array of region IDs consisting of the passed region and all parents along the chain. [Array](../data-types/array)([UInt32](../data-types/int-uint)).
-
-**Example**
-
-Query:
-
+```sql
+SELECT regionHierarchy(number::UInt32) AS arr, arrayMap(id -> regionToName(id, 'en'), arr) FROM numbers(5);
 ```
 
 結果：
 
-```
-
-Result:
-
+```text
+┌─arr────────────┬─arrayMap(lambda(tuple(id), regionToName(id, 'en')), regionHierarchy(CAST(number, 'UInt32')))─┐
+│ []             │ []                                                                                           │
+│ [1]            │ ['World']                                                                                    │
+│ [2,10,9,1]     │ ['USA','North America','America','World']                                                    │
+│ [3,2,10,9,1]   │ ['Colorado','USA','North America','America','World']                                         │
+│ [4,3,2,10,9,1] │ ['Boulder County','Colorado','USA','North America','America','World']                        │
+└────────────────┴──────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 {/* 

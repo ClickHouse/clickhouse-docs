@@ -79,8 +79,8 @@ AWS CloudWatch は、AWS のリソースとアプリケーション向けの監�
   これを環境変数として保存してください:
 
   ```bash
-export CLICKSTACK_API_KEY="your-api-key-here"
-```
+  export CLICKSTACK_API_KEY="your-api-key-here"
+  ```
 
   #### AWS認証情報の設定
 
@@ -89,49 +89,49 @@ export CLICKSTACK_API_KEY="your-api-key-here"
   **AWS SSOユーザーの場合（ほとんどの組織で推奨）：**
 
   ```bash
-# Login to SSO
-aws sso login --profile YOUR_PROFILE_NAME
+  # Login to SSO
+  aws sso login --profile YOUR_PROFILE_NAME
 
-# Export credentials to environment variables
-eval $(aws configure export-credentials --profile YOUR_PROFILE_NAME --format env)
+  # Export credentials to environment variables
+  eval $(aws configure export-credentials --profile YOUR_PROFILE_NAME --format env)
 
-# Verify credentials work
-aws sts get-caller-identity
-```
+  # Verify credentials work
+  aws sts get-caller-identity
+  ```
 
   `YOUR_PROFILE_NAME` を実際の AWS SSO プロファイル名に置き換えます（例：`AccountAdministrators-123456789`）。
 
   **長期認証情報を使用するIAMユーザーの場合:**
 
   ```bash
-export AWS_ACCESS_KEY_ID="your-access-key-id"
-export AWS_SECRET_ACCESS_KEY="your-secret-access-key"
-export AWS_REGION="us-east-1"
+  export AWS_ACCESS_KEY_ID="your-access-key-id"
+  export AWS_SECRET_ACCESS_KEY="your-secret-access-key"
+  export AWS_REGION="us-east-1"
 
-# Verify credentials work
-aws sts get-caller-identity
-```
+  # Verify credentials work
+  aws sts get-caller-identity
+  ```
 
   **必要なIAM権限：**
 
   これらの認証情報に関連付けられているAWSアカウントには、CloudWatchログを読み取るための以下のIAMポリシーが必要です:
 
   ```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "CloudWatchLogsRead",
-      "Effect": "Allow",
-      "Action": [
-        "logs:DescribeLogGroups",
-        "logs:FilterLogEvents"
-      ],
-      "Resource": "arn:aws:logs:*:YOUR_ACCOUNT_ID:log-group:*"
-    }
-  ]
-}
-```
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "CloudWatchLogsRead",
+        "Effect": "Allow",
+        "Action": [
+          "logs:DescribeLogGroups",
+          "logs:FilterLogEvents"
+        ],
+        "Resource": "arn:aws:logs:*:YOUR_ACCOUNT_ID:log-group:*"
+      }
+    ]
+  }
+  ```
 
   `YOUR_ACCOUNT_ID` を実際の AWS アカウント ID に置き換えてください。
 
@@ -144,69 +144,69 @@ aws sts get-caller-identity
   この設定は、特定の名前付きログ グループからログを収集します:
 
   ```yaml
-receivers:
-  awscloudwatch:
-    region: us-east-1
-    logs:
-      poll_interval: 1m
-      max_events_per_request: 100
-      groups:
-        named:
-          /aws/lambda/my-function:
-          /aws/ecs/my-service:
-          /aws/eks/my-cluster/cluster:
+  receivers:
+    awscloudwatch:
+      region: us-east-1
+      logs:
+        poll_interval: 1m
+        max_events_per_request: 100
+        groups:
+          named:
+            /aws/lambda/my-function:
+            /aws/ecs/my-service:
+            /aws/eks/my-cluster/cluster:
 
-processors:
-  batch:
-    timeout: 10s
+  processors:
+    batch:
+      timeout: 10s
 
-exporters:
-  otlphttp:
-    endpoint: http://localhost:4318
-    headers:
-      authorization: ${CLICKSTACK_API_KEY}
+  exporters:
+    otlphttp:
+      endpoint: http://localhost:4318
+      headers:
+        authorization: ${CLICKSTACK_API_KEY}
 
-service:
-  pipelines:
-    logs:
-      receivers: [awscloudwatch]
-      processors: [batch]
-      exporters: [otlphttp]
-```
+  service:
+    pipelines:
+      logs:
+        receivers: [awscloudwatch]
+        processors: [batch]
+        exporters: [otlphttp]
+  ```
 
   **例2: プレフィックスによるログループの自動検出**
 
   この設定は、プレフィックス `/aws/lambda` で始まる最大100個のロググループからログを自動検出して収集します:
 
   ```yaml
-receivers:
-  awscloudwatch:
-    region: us-east-1
-    logs:
-      poll_interval: 1m
-      max_events_per_request: 100
-      groups:
-        autodiscover:
-          limit: 100
-          prefix: /aws/lambda
+  receivers:
+    awscloudwatch:
+      region: us-east-1
+      logs:
+        poll_interval: 1m
+        max_events_per_request: 100
+        groups:
+          autodiscover:
+            limit: 100
+            prefix: /aws/lambda
 
-processors:
-  batch:
-    timeout: 10s
+  processors:
+    batch:
+      timeout: 10s
 
-exporters:
-  otlphttp:
-    endpoint: http://localhost:4318
-    headers:
-      authorization: ${CLICKSTACK_API_KEY}
+  exporters:
+    otlphttp:
+      endpoint: http://localhost:4318
+      headers:
+        authorization: ${CLICKSTACK_API_KEY}
 
-service:
-  pipelines:
-    logs:
-      receivers: [awscloudwatch]
-      processors: [batch]
-      exporters: [otlphttp]
-```
+  service:
+    pipelines:
+      logs:
+        receivers: [awscloudwatch]
+        processors: [batch]
+        exporters: [otlphttp]
+  ```
 
   **設定パラメータ：**
 
@@ -235,34 +235,34 @@ service:
   `docker-compose.yaml` ファイルを作成します:
 
   ```yaml
-services:
-  otel-collector:
-    image: otel/opentelemetry-collector-contrib:latest
-    command: ["--config=/etc/otel-config.yaml"]
-    volumes:
-      - ./otel-collector-config.yaml:/etc/otel-config.yaml
-    environment:
-      - AWS_ACCESS_KEY_ID
-      - AWS_SECRET_ACCESS_KEY
-      - AWS_SESSION_TOKEN
-      - AWS_REGION
-      - CLICKSTACK_API_KEY
-    restart: unless-stopped
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-```
+  services:
+    otel-collector:
+      image: otel/opentelemetry-collector-contrib:latest
+      command: ["--config=/etc/otel-config.yaml"]
+      volumes:
+        - ./otel-collector-config.yaml:/etc/otel-config.yaml
+      environment:
+        - AWS_ACCESS_KEY_ID
+        - AWS_SECRET_ACCESS_KEY
+        - AWS_SESSION_TOKEN
+        - AWS_REGION
+        - CLICKSTACK_API_KEY
+      restart: unless-stopped
+      extra_hosts:
+        - "host.docker.internal:host-gateway"
+  ```
 
   次に、コレクターを起動します:
 
   ```bash
-docker compose up -d
-```
+  docker compose up -d
+  ```
 
   コレクターのログを表示:
 
   ```bash
-docker compose logs -f otel-collector
-```
+  docker compose logs -f otel-collector
+  ```
 
   #### HyperDXでログを検証する
 

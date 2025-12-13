@@ -275,7 +275,7 @@ SETTINGS compression_method='lzma', compression_level=3
   ```sql
 CREATE IF NOT EXISTS test_db;
        
--- Create a partitioend table
+-- Create a partitioned table
 CREATE TABLE test_db.partitioned (
     id UInt32,
     data String,

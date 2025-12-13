@@ -126,25 +126,25 @@ HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 * compose ファイル内で環境変数 `CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USER`、`CLICKHOUSE_PASSWORD` を設定し、OTel collector が ClickHouse Cloud インスタンスを使用するように変更します。具体的には、OTel collector サービスにこれらの環境変数を追加します:
 
   ```shell
-    otel-collector:
-        image: ${OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
-        environment:
-          CLICKHOUSE_ENDPOINT: '<CLICKHOUSE_ENDPOINT>' # https endpoint here
-          CLICKHOUSE_USER: '<CLICKHOUSE_USER>'
-          CLICKHOUSE_PASSWORD: '<CLICKHOUSE_PASSWORD>'
-          HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE: ${HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE}
-          HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
-          OPAMP_SERVER_URL: 'http://app:${HYPERDX_OPAMP_PORT}'
-        ports:
-          - '13133:13133' # health_check extension
-          - '24225:24225' # fluentd receiver
-          - '4317:4317' # OTLP gRPC receiver
-          - '4318:4318' # OTLP http receiver
-          - '8888:8888' # metrics extension
-        restart: always
-        networks:
-          - internal
-    ```
+  otel-collector:
+      image: ${OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
+      environment:
+        CLICKHOUSE_ENDPOINT: '<CLICKHOUSE_ENDPOINT>' # ここに https エンドポイントを指定
+        CLICKHOUSE_USER: '<CLICKHOUSE_USER>'
+        CLICKHOUSE_PASSWORD: '<CLICKHOUSE_PASSWORD>'
+        HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE: ${HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE}
+        HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
+        OPAMP_SERVER_URL: 'http://app:${HYPERDX_OPAMP_PORT}'
+      ports:
+        - '13133:13133' # health_check extension
+        - '24225:24225' # fluentd receiver
+        - '4317:4317' # OTLP gRPC receiver
+        - '4318:4318' # OTLP http receiver
+        - '8888:8888' # metrics extension
+      restart: always
+      networks:
+        - internal
+  ```
 
   `CLICKHOUSE_ENDPOINT` には、ポート `8443` を含む ClickHouse Cloud の HTTPS エンドポイントを指定します。例: `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`
 

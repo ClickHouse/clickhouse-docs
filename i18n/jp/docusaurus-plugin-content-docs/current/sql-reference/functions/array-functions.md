@@ -56,7 +56,7 @@ SELECT array(toInt32(1), toUInt16(2), toInt8(3)) AS a, toTypeName(a)
 └─────────┴───────────────┘
 ```
 
-**Invalid usage**
+**不正な使い方**
 
 ```sql title=Query
 SELECT array(toInt32(5), toDateTime('1998-06-16'), toInt8(5)) AS a, toTypeName(a)
@@ -68,54 +68,50 @@ Code: 386. DB::Exception: Received from localhost:9000. DB::Exception:
 型 Int32、DateTime、Int8 の共通スーパータイプが存在しません ...
 ```
 
-
-
 ## arrayAUCPR {#arrayAUCPR}
 
-Introduced in: v20.4
+導入バージョン: v20.4
 
+適合率‐再現率（PR）曲線における曲線下面積を計算します。
+適合率‐再現率曲線は、すべてのしきい値に対して、y軸に適合率、x軸に再現率をプロットすることで作成されます。
+得られる値は 0 から 1 の範囲であり、値が大きいほどモデルの性能が高いことを示します。
+PR AUC は不均衡データセットに対して特に有用であり、そのようなケースでは ROC AUC と比較して性能をより明確に比較できます。
+詳細については [こちら](https://developers.google.com/machine-learning/glossary#pr-auc-area-under-the-pr-curve)、[こちら](https://developers.google.com/machine-learning/crash-course/classification/roc-and-auc#expandable-1)、および [こちら](https://en.wikipedia.org/wiki/Receiver_operating_characteristic#Area_under_the_curve) を参照してください。
 
-Calculates the area under the precision-recall (PR) curve.
-A precision-recall curve is created by plotting precision on the y-axis and recall on the x-axis across all thresholds.
-The resulting value ranges from 0 to 1, with a higher value indicating better model performance.
-The PR AUC is particularly useful for imbalanced datasets, providing a clearer comparison of performance compared to ROC AUC on those cases.
-For more details, please see [here](https://developers.google.com/machine-learning/glossary#pr-auc-area-under-the-pr-curve), [here](https://developers.google.com/machine-learning/crash-course/classification/roc-and-auc#expandable-1) and [here](https://en.wikipedia.org/wiki/Receiver_operating_characteristic#Area_under_the_curve).
-
-
-**Syntax**
+**構文**
 
 ```sql
 arrayAUCPR(scores, labels[, partial_offsets])
 ```
 
-**Aliases**: `arrayPRAUC`
+**別名**: `arrayPRAUC`
 
-**Arguments**
+**引数**
 
-- `cores` — Scores prediction model gives. [`Array((U)Int*)`](/sql-reference/data-types/array) or [`Array(Float*)`](/sql-reference/data-types/array)
-- `labels` — Labels of samples, usually 1 for positive sample and 0 for negative sample. [`Array((U)Int*)`](/sql-reference/data-types/array) or [`Array(Enum)`](/sql-reference/data-types/array)
-- `partial_offsets` — 
-- Optional. An [`Array(T)`](/sql-reference/data-types/array) of three non-negative integers for calculating a partial area under the PR curve (equivalent to a vertical band of the PR space) instead of the whole AUC. This option is useful for distributed computation of the PR AUC. The array must contain the following elements [`higher_partitions_tp`, `higher_partitions_fp`, `total_positives`].
-    - `higher_partitions_tp`: The number of positive labels in the higher-scored partitions.
-    - `higher_partitions_fp`: The number of negative labels in the higher-scored partitions.
-    - `total_positives`: The total number of positive samples in the entire dataset.
+* `cores` — 予測モデルが出力するスコア。[`Array((U)Int*)`](/sql-reference/data-types/array) または [`Array(Float*)`](/sql-reference/data-types/array)
+* `labels` — サンプルのラベル。通常、正例には 1、負例には 0 を使用します。[`Array((U)Int*)`](/sql-reference/data-types/array) または [`Array(Enum)`](/sql-reference/data-types/array)
+* `partial_offsets` —
+* オプション。PR 曲線全体の AUC ではなく、PR 曲線下の部分領域（PR 空間の縦方向のバンドに相当）を計算するための、非負整数 3 要素からなる [`Array(T)`](/sql-reference/data-types/array)。このオプションは、PR AUC の分散計算に有用です。配列には次の要素 [`higher_partitions_tp`, `higher_partitions_fp`, `total_positives`] を含める必要があります。
+  * `higher_partitions_tp`: より高いスコアのパーティション内にある正例ラベルの数。
+  * `higher_partitions_fp`: より高いスコアのパーティション内にある負例ラベルの数。
+  * `total_positives`: データセット全体に含まれる正例サンプルの総数。
 
 :::note
-When `arr_partial_offsets` is used, the `arr_scores` and `arr_labels` should be only a partition of the entire dataset, containing an interval of scores.
-The dataset should be divided into contiguous partitions, where each partition contains the subset of the data whose scores fall within a specific range.
-For example:
-- One partition could contain all scores in the range [0, 0.5).
-- Another partition could contain scores in the range [0.5, 1.0].
-:::
- 
+`arr_partial_offsets` を使用する場合、`arr_scores` と `arr_labels` は、スコアのある区間に対応する、データセット全体の 1 つのパーティションだけを表す必要があります。
+データセットは連続したパーティションに分割され、それぞれのパーティションには、スコアが特定の範囲に属するデータのサブセットが含まれている必要があります。
+例えば次のようになります：
 
-**Returned value**
+* あるパーティションには、[0, 0.5) の範囲にあるすべてのスコアを含めることができます。
+* 別のパーティションには、[0.5, 1.0] の範囲にあるスコアを含めることができます。
+  :::
 
-Returns area under the precision-recall (PR) curve. [`Float64`](/sql-reference/data-types/float)
+**返り値**
 
-**Examples**
+適合率-再現率 (PR) 曲線下の面積を返します。[`Float64`](/sql-reference/data-types/float)
 
-**Usage example**
+**例**
+
+**使用例**
 
 ```sql title=Query
 SELECT arrayAUCPR([0.1, 0.4, 0.35, 0.8], [0, 0, 1, 1]);
@@ -127,36 +123,31 @@ SELECT arrayAUCPR([0.1, 0.4, 0.35, 0.8], [0, 0, 1, 1]);
 └─────────────────────────────────────────────────┘
 ```
 
-
-
 ## arrayAll {#arrayAll}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+ラムダ式 `func(x [, y1, y2, ... yN])` がすべての要素に対して true を返す場合は `1` を返します。そうでない場合は `0` を返します。
 
-Returns `1` if lambda `func(x [, y1, y2, ... yN])` returns true for all elements. Otherwise, it returns `0`.
-
-
-**Syntax**
+**構文**
 
 ```sql
 arrayAll(func(x[, y1, ..., yN]), source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**引数**
 
-- `func(x[, y1, ..., yN])` — A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `source_arr` — The source array to process. [`Array(T)`](/sql-reference/data-types/array)
-- `cond1_arr, ...` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array)
+* `func(x[, y1, ..., yN])` — ソース配列（`x`）および条件配列（`y1, ..., yN`）の要素を処理するラムダ関数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `source_arr` — 処理対象となるソース配列。[`Array(T)`](/sql-reference/data-types/array)
+* `cond1_arr, ...` — 省略可能。ラムダ関数に追加の引数を渡すための N 個の条件配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+ラムダ関数がすべての要素に対して `true` を返す場合は `1`、それ以外の場合は `0` を返す。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if the lambda function returns true for all elements, `0` otherwise [`UInt8`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**All elements match**
+**すべての要素が条件を満たす場合**
 
 ```sql title=Query
 SELECT arrayAll(x, y -> x=y, [1, 2, 3], [1, 2, 3])
@@ -166,7 +157,7 @@ SELECT arrayAll(x, y -> x=y, [1, 2, 3], [1, 2, 3])
 1
 ```
 
-**Not all elements match**
+**すべての要素が一致しているとは限りません**
 
 ```sql title=Query
 SELECT arrayAll(x, y -> x=y, [1, 2, 3], [1, 1, 1])
@@ -176,38 +167,33 @@ SELECT arrayAll(x, y -> x=y, [1, 2, 3], [1, 1, 1])
 0
 ```
 
-
-
 ## arrayAvg {#arrayAvg}
 
-Introduced in: v21.1
+導入バージョン: v21.1
 
+入力配列の要素の平均値を返します。
 
-Returns the average of elements in the source array.
+ラムダ関数 `func` が指定された場合は、そのラムダの結果の平均値を返します。
 
-If a lambda function `func` is specified, returns the average of elements of the lambda results.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 arrayAvg([func(x[, y1, ..., yN])], source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**引数**
 
-- `func(x[, y1, ..., yN])` — Optional. A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `source_arr` — The source array to process. [`Array(T)`](/sql-reference/data-types/array)
-- `[, cond1_arr, ... , condN_arr]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array)
+* `func(x[, y1, ..., yN])` — 省略可能。ソース配列 (`x`) および条件配列 (`y`) の要素に対して処理を行うラムダ関数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `source_arr` — 処理対象となるソース配列。[`Array(T)`](/sql-reference/data-types/array)
+* `[, cond1_arr, ... , condN_arr]` — 省略可能。ラムダ関数に追加の引数を渡す N 個の条件配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+ソース配列内の要素の平均値、またはラムダ関数が指定されている場合は、その結果要素の平均値を返します。[`Float64`](/sql-reference/data-types/float)
 
-Returns the average of elements in the source array, or the average of elements of the lambda results if provided. [`Float64`](/sql-reference/data-types/float)
+**使用例**
 
-**Examples**
-
-**Basic example**
+**基本的な例**
 
 ```sql title=Query
 SELECT arrayAvg([1, 2, 3, 4]);
@@ -217,7 +203,7 @@ SELECT arrayAvg([1, 2, 3, 4]);
 2.5
 ```
 
-**Usage with lambda function**
+**Lambda 関数での使用方法**
 
 ```sql title=Query
 SELECT arrayAvg(x, y -> x*y, [2, 3], [2, 3]) AS res;
@@ -227,32 +213,29 @@ SELECT arrayAvg(x, y -> x*y, [2, 3], [2, 3]) AS res;
 6.5
 ```
 
-
-
 ## arrayCompact {#arrayCompact}
 
-Introduced in: v20.1
+導入: v20.1
 
-Removes consecutive duplicate elements from an array, including `null` values. The order of values in the resulting array is determined by the order in the source array.
+配列から連続する重複要素（`null` 値を含む）を削除します。結果の配列における値の順序は、元の配列内の順序によって決まります。
 
-**Syntax**
+**構文**
 
 ```sql
 arrayCompact(arr)
 ```
 
-**Arguments**
+**引数**
 
-- `arr` — An array to remove duplicates from. [`Array(T)`](/sql-reference/data-types/array)
+* `arr` — 重複要素を削除する対象の配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+重複値を含まない配列を返します。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns an array without duplicate values [`Array(T)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayCompact([1, 1, nan, nan, 2, 3, 3, 3]);
@@ -262,32 +245,29 @@ SELECT arrayCompact([1, 1, nan, nan, 2, 3, 3, 3]);
 [1,nan,2,3]
 ```
 
-
-
 ## arrayConcat {#arrayConcat}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
-Combines arrays passed as arguments.
+引数として渡された配列を連結します。
 
-**Syntax**
+**構文**
 
 ```sql
 arrayConcat(arr1 [, arr2, ... , arrN])
 ```
 
-**Arguments**
+**引数**
 
-- `arr1 [, arr2, ... , arrN]` — N number of arrays to concatenate. [`Array(T)`](/sql-reference/data-types/array)
+* `arr1 [, arr2, ... , arrN]` — 連結する N 個の配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+引数として指定された配列を結合した 1 つの配列を返します。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns a single combined array from the provided array arguments. [`Array(T)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayConcat([1, 2], [3, 4], [5, 6]) AS res
@@ -297,38 +277,33 @@ SELECT arrayConcat([1, 2], [3, 4], [5, 6]) AS res
 [1, 2, 3, 4, 5, 6]
 ```
 
-
-
 ## arrayCount {#arrayCount}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+`func(arr1[i], ..., arrN[i])` が true を返す要素の数を返します。
+`func` が指定されていない場合は、配列内の非ゼロ要素の数を返します。
 
-Returns the number of elements for which `func(arr1[i], ..., arrN[i])` returns true.
-If `func` is not specified, it returns the number of non-zero elements in the array.
+`arrayCount` は[高階関数](/sql-reference/functions/overview#higher-order-functions)です。
 
-`arrayCount` is a [higher-order function](/sql-reference/functions/overview#higher-order-functions).
-    
-
-**Syntax**
+**構文**
 
 ```sql
 arrayCount([func, ] arr1, ...)
 ```
 
-**Arguments**
+**引数**
 
-- `func` — Optional. Function to apply to each element of the array(s). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `arr1, ..., arrN` — N arrays. [`Array(T)`](/sql-reference/data-types/array)
+* `func` — 省略可能。配列の各要素に適用する関数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `arr1, ..., arrN` — N 個の配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+`func` が true を返す要素の数を返します。`func` が指定されていない場合は、配列内の非ゼロ要素の数を返します。[`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns the number of elements for which `func` returns true. Otherwise, returns the number of non-zero elements in the array. [`UInt32`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayCount(x -> (x % 2), groupArray(number)) FROM numbers(10)
@@ -338,34 +313,31 @@ SELECT arrayCount(x -> (x % 2), groupArray(number)) FROM numbers(10)
 5
 ```
 
-
-
 ## arrayCumSum {#arrayCumSum}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
-Returns an array of the partial (running) sums of the elements in the source array. If a lambda function is specified, the sum is computed from applying the lambda to the array elements at each position.
+元の配列の要素に対する部分和（累積和）からなる配列を返します。ラムダ関数が指定されている場合、各位置の要素にラムダを適用した結果に基づいて和を計算します。
 
-**Syntax**
+**構文**
 
 ```sql
 arrayCumSum([func,] arr1[, arr2, ... , arrN])
 ```
 
-**Arguments**
+**引数**
 
-- `func` — Optional. A lambda function to apply to the array elements at each position. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `arr1` — The source array of numeric values. [`Array(T)`](/sql-reference/data-types/array)
-- `[arr2, ..., arrN]` — Optional. Additional arrays of the same size, passed as arguments to the lambda function if specified. [`Array(T)`](/sql-reference/data-types/array)
+* `func` — 省略可。各位置の配列要素に適用するラムダ関数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `arr1` — 数値を含む元の配列。[`Array(T)`](/sql-reference/data-types/array)
+* `[arr2, ..., arrN]` — 省略可。同じサイズの追加の配列。指定されている場合、ラムダ関数への引数として渡されます。[`Array(T)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+元の配列の要素について、各位置までの部分和（累積和）の配列を返します。結果の型は入力配列の数値型と一致します。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns an array of the partial sums of the elements in the source array. The result type matches the input array's numeric type. [`Array(T)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Basic usage**
+**基本的な使い方**
 
 ```sql title=Query
 SELECT arrayCumSum([1, 1, 1, 1]) AS res
@@ -375,7 +347,7 @@ SELECT arrayCumSum([1, 1, 1, 1]) AS res
 [1, 2, 3, 4]
 ```
 
-**With lambda**
+**Lambda を使用する場合**
 
 ```sql title=Query
 SELECT arrayCumSum(x -> x * 2, [1, 2, 3]) AS res
@@ -385,34 +357,31 @@ SELECT arrayCumSum(x -> x * 2, [1, 2, 3]) AS res
 [2, 6, 12]
 ```
 
-
-
 ## arrayCumSumNonNegative {#arrayCumSumNonNegative}
 
-Introduced in: v18.12
+導入バージョン: v18.12
 
-Returns an array of the partial (running) sums of the elements in the source array, replacing any negative running sum with zero. If a lambda function is specified, the sum is computed from applying the lambda to the array elements at each position.
+元の配列の要素について、部分和（累積和）の配列を返し、負の累積和はゼロに置き換えます。ラムダ関数が指定されている場合は、各位置の配列要素にラムダを適用した結果に対する累積和を計算します。
 
-**Syntax**
+**構文**
 
 ```sql
 arrayCumSumNonNegative([func,] arr1[, arr2, ... , arrN])
 ```
 
-**Arguments**
+**引数**
 
-- `func` — Optional. A lambda function to apply to the array elements at each position. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `arr1` — The source array of numeric values. [`Array(T)`](/sql-reference/data-types/array)
-- `[arr2, ..., arrN]` — Optional. Additional arrays of the same size, passed as arguments to the lambda function if specified. [`Array(T)`](/sql-reference/data-types/array)
+* `func` — 省略可能。各位置の配列要素に適用するラムダ関数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `arr1` — 数値を含む元の配列。[`Array(T)`](/sql-reference/data-types/array)
+* `[arr2, ..., arrN]` — 省略可能。同じサイズの追加配列。指定された場合、ラムダ関数への引数として渡されます。[`Array(T)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+元の配列内の要素の部分和からなる配列を返しますが、負の累積和はゼロに置き換えられます。結果の型は入力配列の数値型と一致します。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns an array of the partial sums of the elements in the source array, with any negative running sum replaced by zero. The result type matches the input array's numeric type. [`Array(T)`](/sql-reference/data-types/array)
+**使用例**
 
-**Examples**
-
-**Basic usage**
+**基本的な使い方**
 
 ```sql title=Query
 SELECT arrayCumSumNonNegative([1, 1, -4, 1]) AS res
@@ -422,7 +391,7 @@ SELECT arrayCumSumNonNegative([1, 1, -4, 1]) AS res
 [1, 2, 0, 1]
 ```
 
-**With lambda**
+**ラムダを使用する場合**
 
 ```sql title=Query
 SELECT arrayCumSumNonNegative(x -> x * 2, [1, -2, 3]) AS res
@@ -432,36 +401,31 @@ SELECT arrayCumSumNonNegative(x -> x * 2, [1, -2, 3]) AS res
 [2, 0, 6]
 ```
 
-
-
 ## arrayDifference {#arrayDifference}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+隣接する配列要素同士の差からなる配列を計算します。
+結果配列の最初の要素は 0 となり、2 番目は `arr[1] - arr[0]`、3 番目は `arr[2] - arr[1]` というように続きます。
+結果配列中の要素の型は、減算における型推論ルールによって決定されます（例: `UInt8` - `UInt8` = `Int16`）。
 
-Calculates an array of differences between adjacent array elements.
-The first element of the result array will be 0, the second `arr[1] - arr[0]`, the third `arr[2] - arr[1]`, etc.
-The type of elements in the result array are determined by the type inference rules for subtraction (e.g. `UInt8` - `UInt8` = `Int16`).
-    
-
-**Syntax**
+**構文**
 
 ```sql
 arrayDifference(arr)
 ```
 
-**Arguments**
+**引数**
 
-- `arr` — Array for which to calculate differences between adjacent elements. [`Array(T)`](/sql-reference/data-types/array)
+* `arr` — 隣接する要素間の差分を計算する対象の配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+隣接する配列要素間の差分を要素とする配列を返します。[`UInt*`](/sql-reference/data-types/int-uint)
 
-Returns an array of differences between adjacent array elements [`UInt*`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayDifference([1, 2, 3, 4]);
@@ -471,7 +435,7 @@ SELECT arrayDifference([1, 2, 3, 4]);
 [0,1,1,1]
 ```
 
-**Example of overflow due to result type Int64**
+**結果型が Int64 の場合のオーバーフロー例**
 
 ```sql title=Query
 SELECT arrayDifference([0, 10000000000000000000]);
@@ -483,32 +447,29 @@ SELECT arrayDifference([0, 10000000000000000000]);
 └────────────────────────────────────────────┘
 ```
 
-
-
 ## arrayDistinct {#arrayDistinct}
 
-Introduced in: v1.1
+導入: v1.1
 
-Returns an array containing only the distinct elements of an array.
+配列から重複を取り除き、一意な要素だけを含む配列を返します。
 
-**Syntax**
+**構文**
 
 ```sql
 arrayDistinct(arr)
 ```
 
-**Arguments**
+**引数**
 
-- `arr` — Array for which to extract distinct elements. [`Array(T)`](/sql-reference/data-types/array)
+* `arr` — 重複のない要素を抽出する対象の配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**返り値**
 
-**Returned value**
+重複のない要素を含む配列を返します。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns an array containing the distinct elements [`Array(T)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayDistinct([1, 2, 2, 3, 1]);
@@ -518,45 +479,40 @@ SELECT arrayDistinct([1, 2, 2, 3, 1]);
 [1,2,3]
 ```
 
-
-
 ## arrayDotProduct {#arrayDotProduct}
 
-Introduced in: v23.5
+v23.5 で導入
 
-
-Returns the dot product of two arrays.
+2 つの配列のドット積を返します。
 
 :::note
-The sizes of the two vectors must be equal. Arrays and Tuples may also contain mixed element types.
+2 つのベクトルの長さは同じである必要があります。Array および Tuple には、異なる型の要素が混在していてもかまいません。
 :::
 
-
-**Syntax**
+**構文**
 
 ```sql
 arrayDotProduct(v1, v2)
 ```
 
-**Arguments**
+**引数**
 
-- `v1` — First vector. [`Array((U)Int* | Float* | Decimal)`](/sql-reference/data-types/array) or [`Tuple((U)Int* | Float* | Decimal)`](/sql-reference/data-types/tuple)
-- `v2` — Second vector. [`Array((U)Int* | Float* | Decimal)`](/sql-reference/data-types/array) or [`Tuple((U)Int* | Float* | Decimal)`](/sql-reference/data-types/tuple)
+* `v1` — 1番目のベクトル。[`Array((U)Int* | Float* | Decimal)`](/sql-reference/data-types/array) または [`Tuple((U)Int* | Float* | Decimal)`](/sql-reference/data-types/tuple)
+* `v2` — 2番目のベクトル。[`Array((U)Int* | Float* | Decimal)`](/sql-reference/data-types/array) または [`Tuple((U)Int* | Float* | Decimal)`](/sql-reference/data-types/tuple)
 
+**戻り値**
 
-**Returned value**
-
-The dot product of the two vectors.
+2つのベクトルのドット積。
 
 :::note
-The return type is determined by the type of the arguments. If Arrays or Tuples contain mixed element types then the result type is the supertype.
+戻り値の型は引数の型によって決まります。Array または Tuple に複数の異なる要素型が含まれている場合、結果の型はそれらのスーパータイプになります。
 :::
 
- [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
 
-**Examples**
+**例**
 
-**Array example**
+**Array の例**
 
 ```sql title=Query
 SELECT arrayDotProduct([1, 2, 3], [4, 5, 6]) AS res, toTypeName(res);
@@ -566,7 +522,7 @@ SELECT arrayDotProduct([1, 2, 3], [4, 5, 6]) AS res, toTypeName(res);
 32    UInt16
 ```
 
-**Tuple example**
+**タプルの例**
 
 ```sql title=Query
 SELECT dotProduct((1::UInt16, 2::UInt8, 3::Float32),(4::Int16, 5::Float32, 6::UInt8)) AS res, toTypeName(res);
@@ -576,43 +532,39 @@ SELECT dotProduct((1::UInt16, 2::UInt8, 3::Float32),(4::Int16, 5::Float32, 6::UI
 32    Float64
 ```
 
-
-
 ## arrayElement {#arrayElement}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
-
-Gets the element of the provided array with index `n` where `n` can be any integer type.
-If the index falls outside of the bounds of an array, it returns a default value (0 for numbers, an empty string for strings, etc.),
-except for arguments of a non-constant array and a constant index 0. In this case there will be an error `Array indices are 1-based`.
+指定された配列の要素をインデックス `n` で取得します。ここで `n` は任意の整数型です。
+インデックスが配列の範囲外の場合、デフォルト値（数値なら 0、文字列なら空文字列など）を返します。
+ただし、引数が非定数配列で、インデックスに定数の 0 を指定した場合は例外で、この場合は `Array indices are 1-based` というエラーになります。
 
 :::note
-Arrays in ClickHouse are one-indexed.
+ClickHouse の配列のインデックスは 1 始まりです。
 :::
 
-Negative indexes are supported. In this case, the corresponding element is selected, numbered from the end. For example, `arr[-1]` is the last item in the array.
+負のインデックスもサポートされています。この場合、末尾から数えて番号付けされた対応する要素が選択されます。例えば、`arr[-1]` は配列の最後の要素です。
 
-Operator `[n]` provides the same functionality.
-    
+演算子 `[n]` は同じ機能を提供します。
 
-**Syntax**
+**構文**
 
 ```sql
 arrayElement(arr, n)
 ```
 
-**Arguments**
+**引数**
 
-- `arr` — The array to search. [`Array(T)`](/sql-reference/data-types/array). - `n` — Position of the element to get. [`(U)Int*`](/sql-reference/data-types/int-uint). 
+* `arr` — 検索する配列。[`Array(T)`](/sql-reference/data-types/array)。 - `n` — 取得する要素の位置。[`(U)Int*`](/sql-reference/data-types/int-uint)。
 
-**Returned value**
+**戻り値**
 
-Returns a single combined array from the provided array arguments [`Array(T)`](/sql-reference/data-types/array)
+指定した配列引数を結合した 1 つの配列を返します。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayElement(arr, 2) FROM (SELECT [1, 2, 3] AS arr)
@@ -622,7 +574,7 @@ SELECT arrayElement(arr, 2) FROM (SELECT [1, 2, 3] AS arr)
 2
 ```
 
-**Negative indexing**
+**負のインデックス指定**
 
 ```sql title=Query
 SELECT arrayElement(arr, -1) FROM (SELECT [1, 2, 3] AS arr)
@@ -632,7 +584,7 @@ SELECT arrayElement(arr, -1) FROM (SELECT [1, 2, 3] AS arr)
 3
 ```
 
-**Using [n] notation**
+**[n] 表記の使用**
 
 ```sql title=Query
 SELECT arr[2] FROM (SELECT [1, 2, 3] AS arr)
@@ -642,7 +594,7 @@ SELECT arr[2] FROM (SELECT [1, 2, 3] AS arr)
 2
 ```
 
-**Index out of array bounds**
+**配列範囲外のインデックス**
 
 ```sql title=Query
 SELECT arrayElement(arr, 4) FROM (SELECT [1, 2, 3] AS arr)
@@ -652,41 +604,36 @@ SELECT arrayElement(arr, 4) FROM (SELECT [1, 2, 3] AS arr)
 0
 ```
 
-
-
 ## arrayElementOrNull {#arrayElementOrNull}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
-
-Gets the element of the provided array with index `n` where `n` can be any integer type.
-If the index falls outside of the bounds of an array, `NULL` is returned instead of a default value.
+任意の整数型である `n` をインデックスとして、指定された配列の要素を取得します。
+インデックスが配列の範囲外の場合、デフォルト値ではなく `NULL` が返されます。
 
 :::note
-Arrays in ClickHouse are one-indexed.
+ClickHouse の配列はインデックスが 1 から始まります。
 :::
 
-Negative indexes are supported. In this case, it selects the corresponding element numbered from the end. For example, `arr[-1]` is the last item in the array.
+負のインデックスもサポートされています。この場合、末尾から数えた位置に対応する要素を選択します。たとえば、`arr[-1]` は配列の最後の要素です。
 
-
-**Syntax**
+**構文**
 
 ```sql
 arrayElementOrNull(配列)
 ```
 
-**Arguments**
+**引数**
 
-- `arrays` — Arbitrary number of array arguments. [`Array`](/sql-reference/data-types/array)
+* `arrays` — 任意数の配列引数。[`Array`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+与えられた配列引数を結合した単一の配列を返します。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns a single combined array from the provided array arguments. [`Array(T)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayElementOrNull(arr, 2) FROM (SELECT [1, 2, 3] AS arr)
@@ -696,7 +643,7 @@ SELECT arrayElementOrNull(arr, 2) FROM (SELECT [1, 2, 3] AS arr)
 2
 ```
 
-**Negative indexing**
+**負のインデックス**
 
 ```sql title=Query
 SELECT arrayElementOrNull(arr, -1) FROM (SELECT [1, 2, 3] AS arr)
@@ -706,7 +653,7 @@ SELECT arrayElementOrNull(arr, -1) FROM (SELECT [1, 2, 3] AS arr)
 3
 ```
 
-**Index out of array bounds**
+**配列の範囲外のインデックス**
 
 ```sql title=Query
 SELECT arrayElementOrNull(arr, 4) FROM (SELECT [1, 2, 3] AS arr)
@@ -716,38 +663,32 @@ SELECT arrayElementOrNull(arr, 4) FROM (SELECT [1, 2, 3] AS arr)
 NULL
 ```
 
-
-
 ## arrayEnumerate {#arrayEnumerate}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+配列 `[1, 2, 3, ..., length (arr)]` を返します。
 
-Returns the array `[1, 2, 3, ..., length (arr)]`
+この関数は通常、[`ARRAY JOIN`](/sql-reference/statements/select/array-join) 句と一緒に使用されます。`ARRAY JOIN` を適用した後、各配列ごとに一度だけカウントできるようにします。
+この関数は高階関数内でも使用できます。たとえば、条件に一致する要素の配列インデックスを取得するために使用できます。
 
-This function is normally used with the [`ARRAY JOIN`](/sql-reference/statements/select/array-join) clause. It allows counting something just
-once for each array after applying `ARRAY JOIN`.
-This function can also be used in higher-order functions. For example, you can use it to get array indexes for elements that match a condition.
-
-
-**Syntax**
+**構文**
 
 ```sql
 arrayEnumerate(arr)
 ```
 
-**Arguments**
+**引数**
 
-- `arr` — The array to enumerate. [`Array`](/sql-reference/data-types/array)
+* `arr` — 列挙対象の配列。[`Array`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+配列 `[1, 2, 3, ..., length(arr)]` を返します。[`Array(UInt32)`](/sql-reference/data-types/array)
 
-Returns the array `[1, 2, 3, ..., length (arr)]`. [`Array(UInt32)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Basic example with ARRAY JOIN**
+**ARRAY JOIN を使用した基本的な例**
 
 ```sql title=Query
 CREATE TABLE test
@@ -781,32 +722,29 @@ ARRAY JOIN
 └────┴────────────────┴─────────────┴─────┘
 ```
 
-
-
 ## arrayEnumerateDense {#arrayEnumerateDense}
 
-Introduced in: v18.12
+導入バージョン: v18.12
 
-Returns an array of the same size as the source array, indicating where each element first appears in the source array.
+元の配列と同じサイズの配列を返し、各要素が元の配列内で最初に出現するインデックスを示します。
 
-**Syntax**
+**構文**
 
 ```sql
 arrayEnumerateDense(arr)
 ```
 
-**Arguments**
+**引数**
 
-- `arr` — The array to enumerate. [`Array(T)`](/sql-reference/data-types/array)
+* `arr` — 列挙する配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+`arr` と同じサイズの配列を返します。各要素が元の配列 [`Array(T)`](/sql-reference/data-types/array) 内で最初に出現する位置（インデックス）を示します。
 
-Returns an array of the same size as `arr`, indicating where each element first appears in the source array [`Array(T)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayEnumerateDense([10, 20, 10, 30])
@@ -816,34 +754,31 @@ SELECT arrayEnumerateDense([10, 20, 10, 30])
 [1,2,1,3]
 ```
 
-
-
 ## arrayEnumerateDenseRanked {#arrayEnumerateDenseRanked}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
-Returns an array the same size as the source array, indicating where each element first appears in the source array. It allows for enumeration of a multidimensional array with the ability to specify how deep to look inside the array.
+元の配列と同じサイズの配列を返し、元の配列内で各要素が最初に出現する位置を示します。多次元配列を列挙する際に、配列のどの深さまで探索するかを指定できます。
 
-**Syntax**
+**構文**
 
 ```sql
 arrayEnumerateDenseRanked(clear_depth, arr, max_array_depth)
 ```
 
-**Arguments**
+**引数**
 
-- `clear_depth` — Enumerate elements at the specified level separately. Must be less than or equal to `max_arr_depth`. [`UInt*`](/sql-reference/data-types/int-uint)
-- `arr` — N-dimensional array to enumerate. [`Array(T)`](/sql-reference/data-types/array)
-- `max_array_depth` — The maximum effective depth. Must be less than or equal to the depth of `arr`. [`UInt*`](/sql-reference/data-types/int-uint)
+* `clear_depth` — 指定した階層レベルの要素を個別に列挙します。`max_arr_depth` 以下である必要があります。[`UInt*`](/sql-reference/data-types/int-uint)
+* `arr` — 列挙対象の N 次元配列。[`Array(T)`](/sql-reference/data-types/array)
+* `max_array_depth` — 有効な最大深さ。`arr` の深さ以下である必要があります。[`UInt*`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+各要素が元の配列内で最初に出現した位置を示す配列を返します。[`Array`](/sql-reference/data-types/array)
 
-Returns an array denoting where each element first appears in the source array [`Array`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Basic usage**
+**基本的な使い方**
 
 ```sql title=Query
 -- clear_depth=1 かつ max_array_depth=1 の場合、結果は arrayEnumerateDense が返す値と同一です。
@@ -855,7 +790,7 @@ SELECT arrayEnumerateDenseRanked(1,[10, 20, 10, 30],1);
 [1,2,1,3]
 ```
 
-**Usage with a multidimensional array**
+**多次元配列での利用方法**
 
 ```sql title=Query
 -- この例では、arrayEnumerateDenseRankedを使用して、多次元配列の各要素が
@@ -874,7 +809,7 @@ SELECT arrayEnumerateDenseRanked(1,[[10,10,30,20],[40,50,10,30]],2);
 [[1,1,2,3],[4,5,1,2]]
 ```
 
-**Example with increased clear_depth**
+**`clear_depth` を大きく設定した例**
 
 ```sql title=Query
 -- clear_depth=2 に変更すると、行ごとに列挙が個別に実行されます。
@@ -886,39 +821,34 @@ SELECT arrayEnumerateDenseRanked(2,[[10,10,30,20],[40,50,10,30]],2);
 [[1, 1, 2, 3], [1, 2, 3, 4]]
 ```
 
-
-
 ## arrayEnumerateUniq {#arrayEnumerateUniq}
 
-Introduced in: v1.1
+導入されたバージョン: v1.1
 
+元の配列と同じサイズの配列を返し、各要素について、その値が同じである要素の中で何番目の出現であるかを示します。
 
-Returns an array the same size as the source array, indicating for each element what its position is among elements with the same value.
+この関数は、`ARRAY JOIN` と配列要素の集約を使用する場合に便利です。
 
-This function is useful when using `ARRAY JOIN` and aggregation of array elements.
+この関数は、同じサイズの複数の配列を引数として受け取ることができます。この場合、一意性は、すべての配列において同じ位置にある要素のタプルに基づいて判定されます。
 
-The function can take multiple arrays of the same size as arguments. In this case, uniqueness is considered for tuples of elements in the same positions in all the arrays.
-
-
-**Syntax**
+**構文**
 
 ```sql
 arrayEnumerateUniq(arr1[, arr2, ... , arrN])
 ```
 
-**Arguments**
+**引数**
 
-- `arr1` — First array to process. [`Array(T)`](/sql-reference/data-types/array)
-- `arr2, ...` — Optional. Additional arrays of the same size for tuple uniqueness. [`Array(UInt32)`](/sql-reference/data-types/array)
+* `arr1` — 処理対象となる最初の配列。[`Array(T)`](/sql-reference/data-types/array)
+* `arr2, ...` — 省略可能。タプルの一意性を判定するための、同じサイズの追加配列。[`Array(UInt32)`](/sql-reference/data-types/array)
 
+**返される値**
 
-**Returned value**
+各要素が、同じ値またはタプルを持つ要素群の中での位置を表す配列を返します。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns an array where each element is the position among elements with the same value or tuple. [`Array(T)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Basic usage**
+**基本的な使い方**
 
 ```sql title=Query
 SELECT arrayEnumerateUniq([10, 20, 10, 30]);
@@ -928,7 +858,7 @@ SELECT arrayEnumerateUniq([10, 20, 10, 30]);
 [1, 1, 2, 1]
 ```
 
-**Multiple arrays**
+**複数の配列**
 
 ```sql title=Query
 SELECT arrayEnumerateUniq([1, 1, 1, 2, 2, 2], [1, 1, 2, 1, 1, 2]);
@@ -938,7 +868,7 @@ SELECT arrayEnumerateUniq([1, 1, 1, 2, 2, 2], [1, 1, 2, 1, 1, 2]);
 [1,2,1,1,2,1]
 ```
 
-**ARRAY JOIN aggregation**
+**ARRAY JOIN による集約**
 
 ```sql title=Query
 -- 各ゴールIDには、コンバージョン数（Goalsネスト構造の各要素は達成されたゴールであり、これをコンバージョンと呼びます）
@@ -975,38 +905,33 @@ LIMIT 10
 └─────────┴─────────┴────────┘
 ```
 
-
-
 ## arrayEnumerateUniqRanked {#arrayEnumerateUniqRanked}
 
-Introduced in: v20.1
+導入: v20.1
 
+元の配列と同じ次元を持つ配列（または多次元配列）を返し、
+各要素について、同じ値を持つ要素の中でその要素が何番目に位置するかを示します。
+多次元配列について、配列のどの深さまでを探索するかを指定して列挙できます。
 
-Returns an array (or multi-dimensional array) with the same dimensions as the source array,
-indicating for each element what it's position is among elements with the same value.
-It allows for enumeration of a multi-dimensional array with the ability to specify how deep to look inside the array.
-
-
-**Syntax**
+**構文**
 
 ```sql
 arrayEnumerateUniqRanked(clear_depth, arr, max_array_depth)
 ```
 
-**Arguments**
+**引数**
 
-- `clear_depth` — Enumerate elements at the specified level separately. Positive integer less than or equal to `max_arr_depth`. [`UInt*`](/sql-reference/data-types/int-uint)
-- `arr` — N-dimensional array to enumerate. [`Array(T)`](/sql-reference/data-types/array)
-- `max_array_depth` — The maximum effective depth. Positive integer less than or equal to the depth of `arr`. [`UInt*`](/sql-reference/data-types/int-uint)
+* `clear_depth` — 指定したレベルの要素をそれぞれ別個に列挙します。`max_arr_depth` 以下の正の整数。[`UInt*`](/sql-reference/data-types/int-uint)
+* `arr` — 列挙対象の N 次元配列。[`Array(T)`](/sql-reference/data-types/array)
+* `max_array_depth` — 有効な最大の深さ。`arr` の深さ以下の正の整数。[`UInt*`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+`arr` と同じサイズの N 次元配列を返します。各要素には、同じ値を持つ他の要素の中での位置が示されます。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns an N-dimensional array the same size as `arr` with each element showing the position of that element in relation to other elements of the same value. [`Array(T)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Example 1**
+**例 1**
 
 ```sql title=Query
 -- clear_depth=1 かつ max_array_depth=1 の場合、arrayEnumerateUniqRanked の結果は
@@ -1019,7 +944,7 @@ SELECT arrayEnumerateUniqRanked(1, [1, 2, 1], 1);
 [1, 1, 2]
 ```
 
-**Example 2**
+**例 2**
 
 ```sql title=Query
 -- clear_depth=1 および max_array_depth=1 の場合、arrayEnumerateUniqRanked の結果は
@@ -1032,7 +957,7 @@ SELECT arrayEnumerateUniqRanked(1, [[1, 2, 3], [2, 2, 1], [3]], 2);", "[[1, 1, 1
 [1, 1, 2]
 ```
 
-**Example 3**
+**例 3**
 
 ```sql title=Query
 -- この例では、arrayEnumerateUniqRankedを使用して、多次元配列の各要素が
@@ -1050,7 +975,7 @@ SELECT arrayEnumerateUniqRanked(1, [[1, 2, 3], [2, 2, 1], [3]], 2);
 [[1, 1, 1], [2, 3, 2], [2]]
 ```
 
-**Example 4**
+**例4**
 
 ```sql title=Query
 -- clear_depth=2に変更すると、各行ごとに要素が個別に列挙されます。
@@ -1061,42 +986,38 @@ SELECT arrayEnumerateUniqRanked(2,[[1, 2, 3],[2, 2, 1],[3]], 2);
 [[1, 1, 1], [1, 2, 1], [1]]
 ```
 
-
-
 ## arrayExcept {#arrayExcept}
 
-Introduced in: v25.9
+導入バージョン: v25.9
 
+`source` に含まれる要素のうち、`except` には存在しない要素だけを、元の順序を維持したまま返します。
 
-Returns an array containing elements from `source` that are not present in `except`, preserving the original order.
+この関数は、2 つの配列間で集合の差分操作を行います。`source` の各要素について、厳密な比較により同一の要素が `except` に存在するかを確認します。存在しない場合、その要素は結果に含まれます。
 
-This function performs a set difference operation between two arrays. For each element in `source`, it checks if the element exists in `except` (using exact comparison). If not, the element is included in the result.
+この操作には次の特性があります:
 
-The operation maintains these properties:
-1. Order of elements from `source` is preserved
-2. Duplicates in `source` are preserved if they don't exist in `except`
-3. NULL is handled as a separate value
-    
+1. `source` の要素の順序は保持される
+2. `source` 内の重複要素は、`except` に存在しない限り保持される
+3. NULL は独立した値として扱われる
 
-**Syntax**
+**構文**
 
 ```sql
 arrayExcept(source, except)
 ```
 
-**Arguments**
+**引数**
 
-- `source` — The source array containing elements to filter.  [`Array(T)`](/sql-reference/data-types/array)
-- `except` — The array containing elements to exclude from the result.  [`Array(T)`](/sql-reference/data-types/array)
+* `source` — フィルタ対象の要素を含む配列。[`Array(T)`](/sql-reference/data-types/array)
+* `except` — 結果から除外する要素を含む配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+`source` に含まれる要素のうち、`except` に存在しない要素だけを保持した、入力配列と同じ型の配列を返します。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns an array of the same type as the input array containing elements from `source` that weren't found in `except`.  [`Array(T)`](/sql-reference/data-types/array)
+**使用例**
 
-**Examples**
-
-**basic**
+**基本**
 
 ```sql title=Query
 SELECT arrayExcept([1, 2, 3, 2, 4], [3, 5])
@@ -1106,7 +1027,7 @@ SELECT arrayExcept([1, 2, 3, 2, 4], [3, 5])
 [1, 2, 2, 4]
 ```
 
-**with_nulls1**
+**with&#95;nulls1**
 
 ```sql title=Query
 SELECT arrayExcept([1, NULL, 2, NULL], [2])
@@ -1116,7 +1037,7 @@ SELECT arrayExcept([1, NULL, 2, NULL], [2])
 [1, NULL, NULL]
 ```
 
-**with_nulls2**
+**with&#95;nulls2**
 
 ```sql title=Query
 SELECT arrayExcept([1, NULL, 2, NULL], [NULL, 2, NULL])
@@ -1126,7 +1047,7 @@ SELECT arrayExcept([1, NULL, 2, NULL], [NULL, 2, NULL])
 [1]
 ```
 
-**strings**
+**文字列**
 
 ```sql title=Query
 SELECT arrayExcept(['apple', 'banana', 'cherry'], ['banana', 'date'])
@@ -1136,36 +1057,31 @@ SELECT arrayExcept(['apple', 'banana', 'cherry'], ['banana', 'date'])
 ['apple', 'cherry']
 ```
 
-
-
 ## arrayExists {#arrayExists}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+ソース配列内に、`func(x[, y1, y2, ... yN])` が true を返す要素が 1 つ以上存在する場合は `1` を返します。そうでない場合は `0` を返します。
 
-Returns `1` if there is at least one element in a source array for which `func(x[, y1, y2, ... yN])` returns true. Otherwise, it returns `0`.
-
-
-**Syntax**
+**構文**
 
 ```sql
 arrayExists(func(x[, y1, ..., yN]), source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**引数**
 
-- `func(x[, y1, ..., yN])` — A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `source_arr` — The source array to process. [`Array(T)`](/sql-reference/data-types/array)
-- `[, cond1_arr, ... , condN_arr]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array)
+* `func(x[, y1, ..., yN])` — ソース配列 (`x`) と条件配列 (`y`) の要素に適用されるラムダ関数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `source_arr` — 処理対象のソース配列。[`Array(T)`](/sql-reference/data-types/array)
+* `[, cond1_arr, ... , condN_arr]` — 省略可。ラムダ関数に追加の引数を渡すための N 個の条件配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+少なくとも 1 つの要素に対してラムダ関数が `true` を返した場合は `1` を、それ以外の場合は `0` を返す。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if the lambda function returns true for at least one element, `0` otherwise [`UInt8`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayExists(x, y -> x=y, [1, 2, 3], [0, 0, 0])
@@ -1175,41 +1091,35 @@ SELECT arrayExists(x, y -> x=y, [1, 2, 3], [0, 0, 0])
 0
 ```
 
-
-
 ## arrayFill {#arrayFill}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
+`arrayFill` 関数は、ソース配列を先頭の要素から最後の要素まで順に処理し、
+ソース配列および条件配列の要素を用いて、各位置でラムダ式の条件を評価します。
+位置 i においてラムダ関数の評価結果が false の場合、その要素は、
+配列の現在の状態における位置 i-1 の要素で置き換えられます。
+先頭要素は、どのような条件であっても常に保持されます。
 
-The `arrayFill` function sequentially processes a source array from the first element
-to the last, evaluating a lambda condition at each position using elements from
-the source and condition arrays. When the lambda function evaluates to false at
-position i, the function replaces that element with the element at position i-1
-from the current state of the array. The first element is always preserved
-regardless of any condition.
-
-
-**Syntax**
+**構文**
 
 ```sql
 arrayFill(func(x [, y1, ..., yN]), source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**引数**
 
-- `func(x [, y1, ..., yN])` — A lambda function `func(x [, y1, y2, ... yN]) → F(x [, y1, y2, ... yN])` which operates on elements of the source array (`x`) and condition arrays (`y`). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `source_arr` — The source array to process. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `[, cond1_arr, ... , condN_arr]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array)
+* `func(x [, y1, ..., yN])` — ソース配列（`x`）および条件配列（`y`）の要素に適用されるラムダ関数 `func(x [, y1, y2, ... yN]) → F(x [, y1, y2, ... yN])`。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `source_arr` — 処理対象となるソース配列。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `[, cond1_arr, ... , condN_arr]` — 省略可能。ラムダ関数に追加の引数を提供する N 個の条件配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+配列 [`Array(T)`](/sql-reference/data-types/array) を返します。
 
-Returns an array [`Array(T)`](/sql-reference/data-types/array)
+**使用例**
 
-**Examples**
-
-**Example with single array**
+**単一配列の例**
 
 ```sql title=Query
 SELECT arrayFill(x -> not isNull(x), [1, null, 2, null]) AS res
@@ -1219,7 +1129,7 @@ SELECT arrayFill(x -> not isNull(x), [1, null, 2, null]) AS res
 [1, 1, 2, 2]
 ```
 
-**Example with two arrays**
+**2 つの配列の例**
 
 ```sql title=Query
 SELECT arrayFill(x, y, z -> x > y AND x < z, [5, 3, 6, 2], [4, 7, 1, 3], [10, 2, 8, 5]) AS res
@@ -1229,34 +1139,31 @@ SELECT arrayFill(x, y, z -> x > y AND x < z, [5, 3, 6, 2], [4, 7, 1, 3], [10, 2,
 [5, 5, 6, 6]
 ```
 
-
-
 ## arrayFilter {#arrayFilter}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
-Returns an array containing only the elements in the source array for which a lambda function returns true.
+ソース配列の要素のうち、ラムダ関数を適用した結果が true になるものだけを含む配列を返します。
 
-**Syntax**
+**構文**
 
 ```sql
 arrayFilter(func(x[, y1, ..., yN]), source_arr[, cond1_arr, ... , condN_arr])]
 ```
 
-**Arguments**
+**引数**
 
-- `func(x[, y1, ..., yN])` — A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `source_arr` — The source array to process. [`Array(T)`](/sql-reference/data-types/array)
-- `[, cond1_arr, ... , condN_arr]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array)
+* `func(x[, y1, ..., yN])` — ソース配列 (`x`) および条件配列 (`y`) の要素を処理するラムダ関数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `source_arr` — 処理対象となるソース配列。[`Array(T)`](/sql-reference/data-types/array)
+* `[, cond1_arr, ... , condN_arr]` — 省略可。ラムダ関数に追加の引数を提供する N 個の条件配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**返される値**
 
-**Returned value**
+ソース配列の部分集合を返します。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns a subset of the source array [`Array(T)`](/sql-reference/data-types/array)
+**使用例**
 
-**Examples**
-
-**Example 1**
+**例 1**
 
 ```sql title=Query
 SELECT arrayFilter(x -> x LIKE '%World%', ['Hello', 'abc World']) AS res
@@ -1266,7 +1173,7 @@ SELECT arrayFilter(x -> x LIKE '%World%', ['Hello', 'abc World']) AS res
 ['abc World']
 ```
 
-**Example 2**
+**例 2**
 
 ```sql title=Query
 SELECT
@@ -1281,33 +1188,29 @@ SELECT
 [2]
 ```
 
-
-
 ## arrayFirst {#arrayFirst}
 
-Introduced in: v1.1
+導入: v1.1
 
+`func(x[, y1, y2, ... yN])` が true を返す、元の配列内の最初の要素を返します。該当する要素がない場合はデフォルト値を返します。
 
-Returns the first element in the source array for which `func(x[, y1, y2, ... yN])` returns true, otherwise it returns a default value.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 arrayFirst(func(x[, y1, ..., yN]), source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**引数**
 
-- `func(x[, y1, ..., yN])` — A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [Lambda function](/sql-reference/functions/overview#arrow-operator-and-lambda). - `source_arr` — The source array to process. [`Array(T)`](/sql-reference/data-types/array). - `[, cond1_arr, ... , condN_arr]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array). 
+* `func(x[, y1, ..., yN])` — ソース配列 (`x`) および条件配列 (`y`) の要素に適用されるラムダ関数。[Lambda function](/sql-reference/functions/overview#arrow-operator-and-lambda)。- `source_arr` — 処理対象となるソース配列。[`Array(T)`](/sql-reference/data-types/array)。- `[, cond1_arr, ... , condN_arr]` — 省略可能。ラムダ関数に追加の引数を提供する N 個の条件配列。[`Array(T)`](/sql-reference/data-types/array)。
 
-**Returned value**
+**返される値**
 
-Returns the first element of the source array for which `λ` is true, otherwise returns the default value of `T`.
+`λ` が true を返す最初のソース配列の要素を返し、それ以外の場合は型 `T` のデフォルト値を返します。
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayFirst(x, y -> x=y, ['a', 'b', 'c'], ['c', 'b', 'a'])
@@ -1317,7 +1220,7 @@ SELECT arrayFirst(x, y -> x=y, ['a', 'b', 'c'], ['c', 'b', 'a'])
 b
 ```
 
-**No match**
+**該当なし**
 
 ```sql title=Query
 SELECT arrayFirst(x, y -> x=y, [0, 1, 2], [3, 3, 3]) AS res, toTypeName(res)
@@ -1327,33 +1230,31 @@ SELECT arrayFirst(x, y -> x=y, [0, 1, 2], [3, 3, 3]) AS res, toTypeName(res)
 0 UInt8
 ```
 
-
-
 ## arrayFirstIndex {#arrayFirstIndex}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+`func(x[, y1, y2, ... yN])` が true を返す最初の要素のインデックスをソース配列から返します。該当する要素がない場合は &#39;0&#39; を返します。
 
-Returns the index of the first element in the source array for which `func(x[, y1, y2, ... yN])` returns true, otherwise it returns '0'.
-
-
-**Syntax**
+**構文**
 
 ```sql
 arrayFirstIndex(func(x[, y1, ..., yN]), source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**引数**
 
-- `func(x[, y1, ..., yN])` — A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [Lambda function](/sql-reference/functions/overview#arrow-operator-and-lambda). - `source_arr` — The source array to process. [`Array(T)`](/sql-reference/data-types/array). - `[, cond1_arr, ... , condN_arr]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array). 
+* `func(x[, y1, ..., yN])` — ソース配列 (`x`) および条件配列 (`y`) の要素に適用されるラムダ関数。[ラムダ関数](/sql-reference/functions/overview#arrow-operator-and-lambda)。
+* `source_arr` — 処理対象となるソース配列。[`Array(T)`](/sql-reference/data-types/array)。
+* `[, cond1_arr, ... , condN_arr]` — 省略可。ラムダ関数に追加の引数を提供する N 個の条件配列。[`Array(T)`](/sql-reference/data-types/array)。
 
-**Returned value**
+**戻り値**
 
-Returns the index of the first element of the source array for which `func` is true, otherwise returns `0` [`UInt32`](/sql-reference/data-types/int-uint)
+`func` が true となるソース配列の最初の要素のインデックスを返し、それ以外の場合は `0` を返します。戻り値の型は [`UInt32`](/sql-reference/data-types/int-uint) です。
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayFirstIndex(x, y -> x=y, ['a', 'b', 'c'], ['c', 'b', 'a'])
@@ -1363,7 +1264,7 @@ SELECT arrayFirstIndex(x, y -> x=y, ['a', 'b', 'c'], ['c', 'b', 'a'])
 2
 ```
 
-**No match**
+**該当なし**
 
 ```sql title=Query
 SELECT arrayFirstIndex(x, y -> x=y, ['a', 'b', 'c'], ['d', 'e', 'f'])
@@ -1373,36 +1274,31 @@ SELECT arrayFirstIndex(x, y -> x=y, ['a', 'b', 'c'], ['d', 'e', 'f'])
 0
 ```
 
-
-
 ## arrayFirstOrNull {#arrayFirstOrNull}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+`func(x[, y1, y2, ... yN])` が true を返す最初の要素をソース配列から返します。該当する要素がない場合は `NULL` を返します。
 
-Returns the first element in the source array for which `func(x[, y1, y2, ... yN])` returns true, otherwise it returns `NULL`.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 arrayFirstOrNull(func(x[, y1, ..., yN]), source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**引数**
 
-- `func(x[, y1, ..., yN])` — A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `source_arr` — The source array to process. [`Array(T)`](/sql-reference/data-types/array)
-- `[, cond1_arr, ... , condN_arr]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array)
+* `func(x[, y1, ..., yN])` — ソース配列（`x`）および条件配列（`y`）の要素を処理するラムダ関数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `source_arr` — 処理対象となるソース配列。[`Array(T)`](/sql-reference/data-types/array)
+* `[, cond1_arr, ... , condN_arr]` — 省略可。ラムダ関数に追加の引数を提供する N 個の条件配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+`func` が真となるソース配列の最初の要素を返し、それ以外の場合は `NULL` を返します。
 
-Returns the first element of the source array for which `func` is true, otherwise returns `NULL`.
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayFirstOrNull(x, y -> x=y, ['a', 'b', 'c'], ['c', 'b', 'a'])
@@ -1412,7 +1308,7 @@ SELECT arrayFirstOrNull(x, y -> x=y, ['a', 'b', 'c'], ['c', 'b', 'a'])
 b
 ```
 
-**No match**
+**該当なし**
 
 ```sql title=Query
 SELECT arrayFirstOrNull(x, y -> x=y, [0, 1, 2], [3, 3, 3]) AS res, toTypeName(res)
@@ -1422,43 +1318,38 @@ SELECT arrayFirstOrNull(x, y -> x=y, [0, 1, 2], [3, 3, 3]) AS res, toTypeName(re
 NULL Nullable(UInt8)
 ```
 
-
-
 ## arrayFlatten {#arrayFlatten}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
+配列の配列をフラットな配列に変換します。
 
-Converts an array of arrays to a flat array.
+この関数には次の特徴があります。
 
-Function:
+* 任意の深さにネストされた配列に適用できます。
+* すでにフラットな配列は変更しません。
 
-- Applies to any depth of nested arrays.
-- Does not change arrays that are already flat.
+フラット化された配列には、すべての元の配列に含まれる要素が格納されます。
 
-The flattened array contains all the elements from all source arrays.
-
-
-**Syntax**
+**構文**
 
 ```sql
 arrayFlatten(arr)
 ```
 
-**Aliases**: `flatten`
+**別名**: `flatten`
 
-**Arguments**
+**引数**
 
-- `arr` — A multidimensional array. [`Array(Array(T))`](/sql-reference/data-types/array)
+* `arr` — 多次元配列。型は [`Array(Array(T))`](/sql-reference/data-types/array)
 
+**返される値**
 
-**Returned value**
+多次元配列をフラット化した配列 [`Array(T)`](/sql-reference/data-types/array) を返します。
 
-Returns a flattened array from the multidimensional array [`Array(T)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayFlatten([[[1]], [[2], [3]]]);
@@ -1468,33 +1359,31 @@ SELECT arrayFlatten([[[1]], [[2], [3]]]);
 [1, 2, 3]
 ```
 
-
-
 ## arrayFold {#arrayFold}
 
-Introduced in: v23.10
+導入バージョン: v23.10
 
-Applies a lambda function to one or more equally-sized arrays and collects the result in an accumulator.
+サイズが等しい 1 つ以上の配列に対してラムダ関数を適用し、その結果をアキュムレータに蓄積します。
 
-**Syntax**
+**構文**
 
 ```sql
 arrayFold(λ(acc, x1 [, x2, x3, ... xN]), arr1 [, arr2, arr3, ... arrN], acc)
 ```
 
-**Arguments**
+**引数**
 
-- `λ(x, x1 [, x2, x3, ... xN])` — A lambda function `λ(acc, x1 [, x2, x3, ... xN]) → F(acc, x1 [, x2, x3, ... xN])` where `F` is an operation applied to `acc` and array values from `x` with the result of `acc` re-used. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `arr1 [, arr2, arr3, ... arrN]` — N arrays over which to operate. [`Array(T)`](/sql-reference/data-types/array)
-- `acc` — Accumulator value with the same type as the return type of the Lambda function. 
+* `λ(x, x1 [, x2, x3, ... xN])` — ラムダ関数 `λ(acc, x1 [, x2, x3, ... xN]) → F(acc, x1 [, x2, x3, ... xN])`。ここで `F` は `acc` と `x` からの配列値に適用される演算であり、その結果である `acc` が再利用されます。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `arr1 [, arr2, arr3, ... arrN]` — 演算を行う N 個の配列。[`Array(T)`](/sql-reference/data-types/array)
+* `acc` — ラムダ関数の戻り値と同じ型を持つアキュムレータ（累積）値。
 
-**Returned value**
+**返される値**
 
-Returns the final `acc` value.
+最終的な `acc` の値を返します。
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayFold(acc,x -> acc + x*2, [1, 2, 3, 4], 3::Int64) AS res;
@@ -1504,7 +1393,7 @@ SELECT arrayFold(acc,x -> acc + x*2, [1, 2, 3, 4], 3::Int64) AS res;
 23
 ```
 
-**Fibonacci sequence**
+**フィボナッチ数列**
 
 ```sql title=Query
 SELECT arrayFold(acc, x -> (acc.2, acc.2 + acc.1),range(number),(1::Int64, 0::Int64)).1 AS fibonacci FROM numbers(1,10);
@@ -1525,7 +1414,7 @@ SELECT arrayFold(acc, x -> (acc.2, acc.2 + acc.1),range(number),(1::Int64, 0::In
 └───────────┘
 ```
 
-**Example using multiple arrays**
+**複数の配列を使う例**
 
 ```sql title=Query
 SELECT arrayFold(
@@ -1540,31 +1429,29 @@ SELECT arrayFold(
 300
 ```
 
-
-
 ## arrayIntersect {#arrayIntersect}
 
-Introduced in: v1.1
+導入: v1.1
 
-Takes multiple arrays and returns an array with elements which are present in all source arrays. The result contains only unique values.
+複数の配列を受け取り、すべての入力配列に存在する要素だけを含む配列を返します。結果には一意の値のみが含まれます。
 
-**Syntax**
+**構文**
 
 ```sql
 arrayIntersect(arr, arr1, ..., arrN)
 ```
 
-**Arguments**
+**引数**
 
-- `arrN` — N arrays from which to make the new array. [`Array(T)`](/sql-reference/data-types/array). 
+* `arrN` — 新しい配列を作成するための N 個の配列。[`Array(T)`](/sql-reference/data-types/array)。
 
-**Returned value**
+**戻り値**
 
-Returns an array with distinct elements that are present in all N arrays [`Array(T)`](/sql-reference/data-types/array)
+すべての N 個の配列に共通して存在する一意な要素のみを含む配列を返します。[`Array(T)`](/sql-reference/data-types/array)。
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT
@@ -1578,33 +1465,30 @@ arrayIntersect([1, 2], [1, 3], [1, 4]) AS non_empty_intersection
 └────────────────────────┴────────────────────┘
 ```
 
-
-
 ## arrayJaccardIndex {#arrayJaccardIndex}
 
-Introduced in: v23.7
+導入バージョン: v23.7
 
-Returns the [Jaccard index](https://en.wikipedia.org/wiki/Jaccard_index) of two arrays.
+2 つの配列の [Jaccard index](https://en.wikipedia.org/wiki/Jaccard_index) を返します。
 
-**Syntax**
+**構文**
 
 ```sql
 arrayJaccardIndex(arr_x, arr_y)
 ```
 
-**Arguments**
+**引数**
 
-- `arr_x` — First array. [`Array(T)`](/sql-reference/data-types/array)
-- `arr_y` — Second array. [`Array(T)`](/sql-reference/data-types/array)
+* `arr_x` — 1 つ目の配列。[`Array(T)`](/sql-reference/data-types/array)
+* `arr_y` — 2 つ目の配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**返り値**
 
-**Returned value**
+`arr_x` と `arr_y` の Jaccard 指数を返します。[`Float64`](/sql-reference/data-types/float)
 
-Returns the Jaccard index of `arr_x` and `arr_y` [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayJaccardIndex([1, 2], [2, 3]) AS res
@@ -1614,40 +1498,35 @@ SELECT arrayJaccardIndex([1, 2], [2, 3]) AS res
 0.3333333333333333
 ```
 
-
-
 ## arrayJoin {#arrayJoin}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+`arrayJoin` 関数は、配列を含む 1 行を受け取り、それを展開して、配列の各要素ごとに 1 行ずつ複数行を生成します。
+これは、同じ行の中で入力値を出力値に対応づける ClickHouse の通常の関数とは対照的であり、
+また、複数行を受け取ってそれらを 1 つのサマリー行に「圧縮」または「集約」する集約関数とも異なります
+（`GROUP BY` と併用する場合は、サマリー行内の 1 つの値になります）。
 
-The `arrayJoin` function takes a row that contains an array and unfolds it, generating multiple rows – one for each element in the array.
-This is in contrast to Regular Functions in ClickHouse which map input values to output values within the same row,
-and Aggregate Functions which take a group of rows and "compress" or "reduce" them into a single summary row
-(or a single value within a summary row if used with `GROUP BY`).
+この関数が適用される列を除き、列内のすべての値は単純にコピーされます。
+適用された列の値は、対応する配列要素の値に置き換えられます。
 
-All the values in the columns are simply copied, except the values in the column where this function is applied;
-these are replaced with the corresponding array value.
-
-
-**Syntax**
+**構文**
 
 ```sql
 arrayJoin(arr)
 ```
 
-**Arguments**
+**引数**
 
-- `arr` — An array to unfold. [`Array(T)`](/sql-reference/data-types/array)
+* `arr` — 展開する対象の配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+`arr` を展開して得られる行の集合を返します。
 
-Returns a set of rows unfolded from `arr`.
+**例**
 
-**Examples**
-
-**Basic usage**
+**基本的な使い方**
 
 ```sql title=Query
 SELECT arrayJoin([1, 2, 3] AS src) AS dst, 'Hello', src
@@ -1661,7 +1540,7 @@ SELECT arrayJoin([1, 2, 3] AS src) AS dst, 'Hello', src
 └─────┴───────────┴─────────┘
 ```
 
-**arrayJoin affects all sections of the query**
+**arrayJoin はクエリのすべての部分に影響します**
 
 ```sql title=Query
 -- arrayJoin関数は、WHERE句を含むクエリのすべてのセクションに影響を与えます。サブクエリが1行を返しているにもかかわらず、結果が2になることに注意してください。
@@ -1680,7 +1559,7 @@ WHERE arrayJoin(cities) IN ['Istanbul', 'Berlin'];
 └─────────────┘
 ```
 
-**Using multiple arrayJoin functions**
+**複数の arrayJoin 関数を使用する**
 
 ```sql title=Query
 - クエリでは複数のarrayJoin関数を使用できます。この場合、変換が複数回実行され、行が増幅されます。
@@ -1711,7 +1590,7 @@ GROUP BY
 └─────────────┴──────────┴─────────┘
 ```
 
-**Unexpected results due to optimizations**
+**最適化によって生じる予期しない結果**
 
 ```sql title=Query
 -- 同じ式で複数のarrayJoinを使用すると、最適化により期待した結果が得られない場合があります。
@@ -1768,7 +1647,7 @@ FROM (
 └─────────────┴──────────────┘
 ```
 
-**Using the ARRAY JOIN syntax**
+**ARRAY JOIN 構文の使用**
 
 ```sql title=Query
 -- 以下の`SELECT`クエリにおけるARRAY JOIN構文に注目してください。これにより、より幅広い処理が可能になります。
@@ -1800,7 +1679,7 @@ GROUP BY
 └─────────────┴──────────┴─────────┘
 ```
 
-**Using Tuple**
+**Tuple の使用**
 
 ```sql title=Query
 -- Tupleを使用することもできます
@@ -1828,33 +1707,29 @@ GROUP BY
 └─────────────┴──────────┴─────────┘
 ```
 
-
-
 ## arrayLast {#arrayLast}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+ラムダ `func(x [, y1, y2, ... yN])` が true を返すソース配列内の最後の要素を返します。該当する要素がない場合は、デフォルト値を返します。
 
-Returns the last element in the source array for which a lambda `func(x [, y1, y2, ... yN])` returns true, otherwise it returns a default value.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 arrayLast(func(x[, y1, ..., yN]), source[, cond1, ... , condN_arr])
 ```
 
-**Arguments**
+**引数**
 
-- `func(x[, y1, ..., yN])` — A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [Lambda function](/sql-reference/functions/overview#arrow-operator-and-lambda). - `source` — The source array to process. [`Array(T)`](/sql-reference/data-types/array). - `[, cond1, ... , condN]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array). 
+* `func(x[, y1, ..., yN])` — ソース配列 (`x`) および条件配列 (`y`) の要素を処理するラムダ関数。[ラムダ関数](/sql-reference/functions/overview#arrow-operator-and-lambda)。 - `source` — 処理対象のソース配列。[`Array(T)`](/sql-reference/data-types/array)。 - `[, cond1, ... , condN]` — 任意。ラムダ関数への追加引数として渡される N 個の条件配列。[`Array(T)`](/sql-reference/data-types/array)。
 
-**Returned value**
+**戻り値**
 
-Returns the last element of the source array for which `func` is true, otherwise returns the default value of `T`.
+`func` が真となるソース配列の最後の要素を返し、それ以外の場合には `T` のデフォルト値を返します。
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayLast(x, y -> x=y, ['a', 'b', 'c'], ['a', 'b', 'c'])
@@ -1864,7 +1739,7 @@ SELECT arrayLast(x, y -> x=y, ['a', 'b', 'c'], ['a', 'b', 'c'])
 c
 ```
 
-**No match**
+**該当なし**
 
 ```sql title=Query
 SELECT arrayFirst(x, y -> x=y, [0, 1, 2], [3, 3, 3]) AS res, toTypeName(res)
@@ -1874,36 +1749,31 @@ SELECT arrayFirst(x, y -> x=y, [0, 1, 2], [3, 3, 3]) AS res, toTypeName(res)
 0 UInt8
 ```
 
-
-
 ## arrayLastIndex {#arrayLastIndex}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+`func(x[, y1, y2, ... yN])` が true を返すソース配列内の最後の要素のインデックスを返します。該当する要素がない場合は &#39;0&#39; を返します。
 
-Returns the index of the last element in the source array for which `func(x[, y1, y2, ... yN])` returns true, otherwise it returns '0'.
-
-
-**Syntax**
+**構文**
 
 ```sql
 arrayLastIndex(func(x[, y1, ..., yN]), source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**引数**
 
-- `func(x[, y1, ..., yN])` — A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `source_arr` — The source array to process. [`Array(T)`](/sql-reference/data-types/array)
-- `[, cond1_arr, ... , condN_arr]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array)
+* `func(x[, y1, ..., yN])` — ソース配列 (`x`) および条件配列 (`y`) の要素に適用されるラムダ関数。 [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `source_arr` — 処理対象のソース配列。 [`Array(T)`](/sql-reference/data-types/array)
+* `[, cond1_arr, ... , condN_arr]` — 省略可能。ラムダ関数に追加の引数を与える N 個の条件配列。 [`Array(T)`](/sql-reference/data-types/array)
 
+**返り値**
 
-**Returned value**
+`func` が真となるソース配列の最後の要素のインデックスを返し、それ以外の場合は `0` を返す。 [`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns the index of the last element of the source array for which `func` is true, otherwise returns `0` [`UInt32`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayLastIndex(x, y -> x=y, ['a', 'b', 'c'], ['a', 'b', 'c']);
@@ -1913,7 +1783,7 @@ SELECT arrayLastIndex(x, y -> x=y, ['a', 'b', 'c'], ['a', 'b', 'c']);
 3
 ```
 
-**No match**
+**該当なし**
 
 ```sql title=Query
 SELECT arrayLastIndex(x, y -> x=y, ['a', 'b', 'c'], ['d', 'e', 'f']);
@@ -1923,33 +1793,29 @@ SELECT arrayLastIndex(x, y -> x=y, ['a', 'b', 'c'], ['d', 'e', 'f']);
 0
 ```
 
-
-
 ## arrayLastOrNull {#arrayLastOrNull}
 
-Introduced in: v1.1
+導入: v1.1
 
+ラムダ式 `func(x [, y1, y2, ... yN])` が true を返す、入力配列内の最後の要素を返します。該当する要素がない場合は `NULL` を返します。
 
-Returns the last element in the source array for which a lambda `func(x [, y1, y2, ... yN])` returns true, otherwise it returns `NULL`.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 arrayLastOrNull(func(x[, y1, ..., yN]), source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**引数**
 
-- `func(x [, y1, ..., yN])` — A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [Lambda function](/sql-reference/functions/overview#arrow-operator-and-lambda). - `source_arr` — The source array to process. [`Array(T)`](/sql-reference/data-types/array). - `[, cond1_arr, ... , condN_arr]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array). 
+* `func(x [, y1, ..., yN])` — ソース配列 (`x`) および条件配列 (`y`) の要素に適用されるラムダ関数。[ラムダ関数](/sql-reference/functions/overview#arrow-operator-and-lambda)。 - `source_arr` — 処理対象となるソース配列。[`Array(T)`](/sql-reference/data-types/array)。 - `[, cond1_arr, ... , condN_arr]` — 任意。ラムダ関数に追加の引数を渡すための N 個の条件配列。[`Array(T)`](/sql-reference/data-types/array)。
 
-**Returned value**
+**戻り値**
 
-Returns the last element of the source array for which `λ` is not true, otherwise returns `NULL`.
+`λ` が true にならないソース配列要素のうち最後のものを返し、それ以外の場合は `NULL` を返します。
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayLastOrNull(x, y -> x=y, ['a', 'b', 'c'], ['a', 'b', 'c'])
@@ -1959,7 +1825,7 @@ SELECT arrayLastOrNull(x, y -> x=y, ['a', 'b', 'c'], ['a', 'b', 'c'])
 c
 ```
 
-**No match**
+**該当なし**
 
 ```sql title=Query
 SELECT arrayLastOrNull(x, y -> x=y, [0, 1, 2], [3, 3, 3]) AS res, toTypeName(res)
@@ -1969,31 +1835,29 @@ SELECT arrayLastOrNull(x, y -> x=y, [0, 1, 2], [3, 3, 3]) AS res, toTypeName(res
 NULL Nullable(UInt8)
 ```
 
-
-
 ## arrayLevenshteinDistance {#arrayLevenshteinDistance}
 
-Introduced in: v25.4
+導入バージョン: v25.4
 
-Calculates the Levenshtein distance for two arrays.
+2つの配列間の Levenshtein 距離を計算します。
 
-**Syntax**
+**構文**
 
 ```sql
 arrayLevenshteinDistance(from, to)
 ```
 
-**Arguments**
+**引数**
 
-- `from` — The first array. [`Array(T)`](/sql-reference/data-types/array). - `to` — The second array. [`Array(T)`](/sql-reference/data-types/array). 
+* `from` — 1番目の配列。[`Array(T)`](/sql-reference/data-types/array)。- `to` — 2番目の配列。[`Array(T)`](/sql-reference/data-types/array)。
 
-**Returned value**
+**戻り値**
 
-Levenshtein distance between the first and the second arrays. [`Float64`](/sql-reference/data-types/float)
+1番目の配列と2番目の配列のレーベンシュタイン距離。[`Float64`](/sql-reference/data-types/float)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayLevenshteinDistance([1, 2, 4], [1, 2, 3])
@@ -2003,36 +1867,31 @@ SELECT arrayLevenshteinDistance([1, 2, 4], [1, 2, 3])
 1
 ```
 
-
-
 ## arrayLevenshteinDistanceWeighted {#arrayLevenshteinDistanceWeighted}
 
-Introduced in: v25.4
+導入バージョン: v25.4
 
+2 つの配列に対して、各要素に対するカスタム重みを用いてレーベンシュタイン距離を計算します。
+配列とその重みの要素数は一致している必要があります。
 
-Calculates Levenshtein distance for two arrays with custom weights for each element.
-The number of elements for the array and its weights should match.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 arrayLevenshteinDistanceWeighted(from, to, from_weights, to_weights)
 ```
 
-**Arguments**
+**引数**
 
-- `from` — first array. [`Array(T)`](/sql-reference/data-types/array). - `to` — second array. [`Array(T)`](/sql-reference/data-types/array). - `from_weights` — weights for the first array. [`Array((U)Int*|Float*)`](/sql-reference/data-types/array)
-- `to_weights` — weights for the second array. [`Array((U)Int*|Float*)`](/sql-reference/data-types/array)
+* `from` — 最初の配列。[`Array(T)`](/sql-reference/data-types/array). - `to` — 2 番目の配列。[`Array(T)`](/sql-reference/data-types/array). - `from_weights` — 最初の配列に対する重み。[`Array((U)Int*|Float*)`](/sql-reference/data-types/array)
+* `to_weights` — 2 番目の配列に対する重み。[`Array((U)Int*|Float*)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+各要素に対してカスタム重みを用いた、最初の配列と 2 番目の配列間の Levenshtein 距離。[`Float64`](/sql-reference/data-types/float)
 
-Levenshtein distance between the first and the second arrays with custom weights for each element [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayLevenshteinDistanceWeighted(['A', 'B', 'C'], ['A', 'K', 'L'], [1.0, 2, 3], [3.0, 4, 5])
@@ -2042,35 +1901,30 @@ SELECT arrayLevenshteinDistanceWeighted(['A', 'B', 'C'], ['A', 'K', 'L'], [1.0, 
 14
 ```
 
-
-
 ## arrayMap {#arrayMap}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+各要素にラムダ関数を適用して、元の配列から生成した配列を返します。
 
-Returns an array obtained from the original arrays by applying a lambda function to each element.
-
-
-**Syntax**
+**構文**
 
 ```sql
 arrayMap(func, arr)
 ```
 
-**Arguments**
+**引数**
 
-- `func` — A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `arr` — N arrays to process. [`Array(T)`](/sql-reference/data-types/array)
+* `func` — ソース配列 (`x`) と条件配列 (`y`) の要素に対して処理を行うラムダ関数。[`ラムダ関数`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `arr` — 処理対象となる N 個の配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+ラムダ関数の結果から生成された配列を返します。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns an array from the lambda results [`Array(T)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayMap(x -> (x + 2), [1, 2, 3]) as res;
@@ -2080,7 +1934,7 @@ SELECT arrayMap(x -> (x + 2), [1, 2, 3]) as res;
 [3, 4, 5]
 ```
 
-**Creating a tuple of elements from different arrays**
+**異なる配列の要素からタプルを作成する**
 
 ```sql title=Query
 SELECT arrayMap((x, y) -> (x, y), [1, 2, 3], [4, 5, 6]) AS res
@@ -2090,38 +1944,33 @@ SELECT arrayMap((x, y) -> (x, y), [1, 2, 3], [4, 5, 6]) AS res
 [(1, 4),(2, 5),(3, 6)]
 ```
 
-
-
 ## arrayMax {#arrayMax}
 
-Introduced in: v21.1
+導入バージョン: v21.1
 
+入力配列内の最大要素を返します。
 
-Returns the maximum element in the source array.
+ラムダ関数 `func` が指定された場合、ラムダ適用後の結果の最大要素を返します。
 
-If a lambda function `func` is specified, returns the maximum element of the lambda results.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 arrayMax([func(x[, y1, ..., yN])], source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**引数**
 
-- `func(x[, y1, ..., yN])` — Optional. A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `source_arr` — The source array to process. [`Array(T)`](/sql-reference/data-types/array)
-- `[, cond1_arr, ... , condN_arr]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array)
+* `func(x[, y1, ..., yN])` — オプション。ソース配列 (`x`) および条件配列 (`y`) の要素を処理するラムダ関数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `source_arr` — 処理対象となるソース配列。[`Array(T)`](/sql-reference/data-types/array)
+* `[, cond1_arr, ... , condN_arr]` — オプション。ラムダ関数への追加引数を提供する N 個の条件配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+ソース配列内の最大要素を返します。ラムダ関数が指定されている場合は、その結果の最大要素を返します。
 
-Returns the maximum element in the source array, or the maximum element of the lambda results if provided.
+**例**
 
-**Examples**
-
-**Basic example**
+**基本的な例**
 
 ```sql title=Query
 SELECT arrayMax([5, 3, 2, 7]);
@@ -2131,7 +1980,7 @@ SELECT arrayMax([5, 3, 2, 7]);
 7
 ```
 
-**Usage with lambda function**
+**Lambda 関数での利用方法**
 
 ```sql title=Query
 SELECT arrayMax(x, y -> x/y, [4, 8, 12, 16], [1, 2, 1, 2]);
@@ -2141,38 +1990,33 @@ SELECT arrayMax(x, y -> x/y, [4, 8, 12, 16], [1, 2, 1, 2]);
 12
 ```
 
-
-
 ## arrayMin {#arrayMin}
 
-Introduced in: v21.1
+導入されたバージョン: v21.1
 
+ソース配列内の最小要素を返します。
 
-Returns the minimum element in the source array.
+ラムダ関数 `func` が指定された場合は、ラムダの評価結果の最小要素を返します。
 
-If a lambda function `func` is specified, returns the minimum element of the lambda results.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 arrayMin([func(x[, y1, ..., yN])], source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**引数**
 
-- `func(x[, y1, ..., yN])` — Optional. A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `source_arr` — The source array to process. [`Array(T)`](/sql-reference/data-types/array)
-- `cond1_arr, ...` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array)
+* `func(x[, y1, ..., yN])` — 省略可能。ソース配列 (`x`) と条件配列 (`y`) の要素に適用されるラムダ関数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `source_arr` — 処理対象となるソース配列。[`Array(T)`](/sql-reference/data-types/array)
+* `cond1_arr, ...` — 省略可能。ラムダ関数に渡される追加の引数を提供する N 個の条件配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+ソース配列内の最小要素、またはラムダ関数が指定されている場合は、その結果の最小要素を返します。
 
-Returns the minimum element in the source array, or the minimum element of the lambda results if provided.
+**例**
 
-**Examples**
-
-**Basic example**
+**基本的な例**
 
 ```sql title=Query
 SELECT arrayMin([5, 3, 2, 7]);
@@ -2182,7 +2026,7 @@ SELECT arrayMin([5, 3, 2, 7]);
 2
 ```
 
-**Usage with lambda function**
+**Lambda 関数での使用**
 
 ```sql title=Query
 SELECT arrayMin(x, y -> x/y, [4, 8, 12, 16], [1, 2, 1, 2]);
@@ -2192,33 +2036,30 @@ SELECT arrayMin(x, y -> x/y, [4, 8, 12, 16], [1, 2, 1, 2]);
 4
 ```
 
-
-
 ## arrayNormalizedGini {#arrayNormalizedGini}
 
-Introduced in: v25.1
+導入バージョン: v25.1
 
-Calculates the normalized Gini coefficient.
+正規化されたジニ係数を計算します。
 
-**Syntax**
+**構文**
 
 ```sql
 arrayNormalizedGini(predicted, label)
 ```
 
-**Arguments**
+**引数**
 
-- `predicted` — The predicted value. [`Array(T)`](/sql-reference/data-types/array)
-- `label` — The actual value. [`Array(T)`](/sql-reference/data-types/array)
+* `predicted` — 予測値。[`Array(T)`](/sql-reference/data-types/array)
+* `label` — 実際の値。[`Array(T)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+予測値の Gini 係数、正規化された値の Gini 係数、および正規化 Gini 係数（= 前者2つの Gini 係数の比）を含むタプル [`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
 
-A tuple containing the Gini coefficients of the predicted values, the Gini coefficient of the normalized values, and the normalized Gini coefficient (= the ratio of the former two Gini coefficients) [`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayNormalizedGini([0.9, 0.3, 0.8, 0.7],[6, 1, 0, 2]);
@@ -2228,42 +2069,37 @@ SELECT arrayNormalizedGini([0.9, 0.3, 0.8, 0.7],[6, 1, 0, 2]);
 (0.18055555555555558, 0.2638888888888889, 0.6842105263157896)
 ```
 
-
-
 ## arrayPartialReverseSort {#arrayPartialReverseSort}
 
-Introduced in: v23.2
+導入バージョン: v23.2
 
-
-This function is the same as `arrayReverseSort` but with an additional `limit` argument allowing partial sorting.
+この関数は `arrayReverseSort` と同じですが、追加の引数 `limit` によって配列の一部のみをソートできます。
 
 :::tip
-To retain only the sorted elements use `arrayResize`.
+ソートされた要素だけを保持するには `arrayResize` を使用してください。
 :::
-    
 
-**Syntax**
+**構文**
 
 ```sql
 arrayPartialReverseSort([f,] arr [, arr1, ... ,arrN], limit)
 ```
 
-**Arguments**
+**引数**
 
-- `f(arr[, arr1, ... ,arrN])` — The lambda function to apply to elements of array `x`. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `arr` — Array to be sorted. [`Array(T)`](/sql-reference/data-types/array)
-- `arr1, ... ,arrN` — N additional arrays, in the case when `f` accepts multiple arguments. [`Array(T)`](/sql-reference/data-types/array)
-- `limit` — Index value up until which sorting will occur. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `f(arr[, arr1, ... ,arrN])` — 配列 `x` の要素に適用するラムダ関数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `arr` — ソート対象の配列。[`Array(T)`](/sql-reference/data-types/array)
+* `arr1, ... ,arrN` — `f` が複数の引数を受け取る場合に指定する、追加の N 個の配列。[`Array(T)`](/sql-reference/data-types/array)
+* `limit` — どのインデックスまでソートを行うかを示す上限値。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返される値**
 
-**Returned value**
+元の配列と同じサイズの配列を返します。範囲 `[1..limit]` 内の要素は降順にソートされます。
+残りの要素 `(limit..N]` の順序は未定義です。
 
-Returns an array of the same size as the original array where elements in the range `[1..limit]` are sorted
-in descending order. The remaining elements `(limit..N]` are in an unspecified order.
+**例**
 
-**Examples**
-
-**simple_int**
+**simple&#95;int**
 
 ```sql title=Query
 SELECT arrayPartialReverseSort(2, [5, 9, 1, 3])
@@ -2273,7 +2109,7 @@ SELECT arrayPartialReverseSort(2, [5, 9, 1, 3])
 [9, 5, 1, 3]
 ```
 
-**simple_string**
+**simple&#95;string**
 
 ```sql title=Query
 SELECT arrayPartialReverseSort(2, ['expenses','lasso','embolism','gladly'])
@@ -2283,7 +2119,7 @@ SELECT arrayPartialReverseSort(2, ['expenses','lasso','embolism','gladly'])
 ['lasso','gladly','expenses','embolism']
 ```
 
-**retain_sorted**
+**retain&#95;sorted**
 
 ```sql title=Query
 SELECT arrayResize(arrayPartialReverseSort(2, [5, 9, 1, 3]), 2)
@@ -2293,7 +2129,7 @@ SELECT arrayResize(arrayPartialReverseSort(2, [5, 9, 1, 3]), 2)
 [9, 5]
 ```
 
-**lambda_simple**
+**lambda&#95;simple**
 
 ```sql title=Query
 SELECT arrayPartialReverseSort((x) -> -x, 2, [5, 9, 1, 3])
@@ -2303,7 +2139,7 @@ SELECT arrayPartialReverseSort((x) -> -x, 2, [5, 9, 1, 3])
 [1, 3, 5, 9]
 ```
 
-**lambda_complex**
+**lambda&#95;complex**
 
 ```sql title=Query
 SELECT arrayPartialReverseSort((x, y) -> -y, 1, [0, 1, 2], [1, 2, 3]) as res
@@ -2313,44 +2149,38 @@ SELECT arrayPartialReverseSort((x, y) -> -y, 1, [0, 1, 2], [1, 2, 3]) as res
 [0, 1, 2]
 ```
 
-
-
 ## arrayPartialShuffle {#arrayPartialShuffle}
 
-Introduced in: v23.2
+導入バージョン: v23.2
 
-
-Returns an array of the same size as the original array where elements in range `[1..limit]` are a random
-subset of the original array. Remaining `(limit..n]` shall contain the elements not in `[1..limit]` range in undefined order.
-Value of limit shall be in range `[1..n]`. Values outside of that range are equivalent to performing full `arrayShuffle`:
+元の配列と同じ長さの配列を返します。範囲 `[1..limit]` の要素は、元の配列からランダムに選ばれた部分集合となります。残りの範囲 `(limit..n]` には、範囲 `[1..limit]` に含まれない要素が未定義の順序で格納されます。
+`limit` の値は `[1..n]` の範囲でなければなりません。この範囲外の値を指定した場合は、完全な `arrayShuffle` を実行するのと同等の動作になります。
 
 :::note
-This function will not materialize constants.
+この関数は定数をマテリアライズしません。
 
-The value of `limit` should be in the range `[1..N]`. Values outside of that range are equivalent to performing full [`arrayShuffle`](#arrayShuffle).
+`limit` の値は `[1..N]` の範囲である必要があります。この範囲外の値を指定した場合は、完全な [`arrayShuffle`](#arrayShuffle) を実行するのと同等の動作になります。
 :::
-    
 
-**Syntax**
+**構文**
 
 ```sql
 arrayPartialShuffle(arr [, limit[, seed]])
 ```
 
-**Arguments**
+**引数**
 
-- `arr` — The array to shuffle. [`Array(T)`](/sql-reference/data-types/array)
-- `seed` — Optional. The seed to be used with random number generation. If not provided, a random one is used. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `limit` — Optional. The number to limit element swaps to, in the range `[1..N]`. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `arr` — シャッフルする配列。[`Array(T)`](/sql-reference/data-types/array)
+* `seed` — 任意。乱数生成に使用するシード。指定しない場合はランダムな値が使用されます。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `limit` — 任意。要素の入れ替え回数の上限を `[1..N]` の範囲で指定します。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+要素が一部シャッフルされた配列。[`Array(T)`](/sql-reference/data-types/array)
 
-Array with elements partially shuffled. [`Array(T)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**no_limit1**
+**no&#95;limit1**
 
 ```sql title=Query
 SELECT arrayPartialShuffle([1, 2, 3, 4], 0)
@@ -2360,7 +2190,7 @@ SELECT arrayPartialShuffle([1, 2, 3, 4], 0)
 [2, 4, 3, 1]
 ```
 
-**no_limit2**
+**no&#95;limit2**
 
 ```sql title=Query
 SELECT arrayPartialShuffle([1, 2, 3, 4])
@@ -2370,7 +2200,7 @@ SELECT arrayPartialShuffle([1, 2, 3, 4])
 [4, 1, 3, 2]
 ```
 
-**random_seed**
+**random&#95;seed**
 
 ```sql title=Query
 SELECT arrayPartialShuffle([1, 2, 3, 4], 2)
@@ -2380,7 +2210,7 @@ SELECT arrayPartialShuffle([1, 2, 3, 4], 2)
 [3, 4, 1, 2]
 ```
 
-**explicit_seed**
+**explicit&#95;seed**
 
 ```sql title=Query
 SELECT arrayPartialShuffle([1, 2, 3, 4], 2, 41)
@@ -2390,7 +2220,7 @@ SELECT arrayPartialShuffle([1, 2, 3, 4], 2, 41)
 [3, 2, 1, 4]
 ```
 
-**materialize**
+**materialize（マテリアライズ）**
 
 ```sql title=Query
 SELECT arrayPartialShuffle(materialize([1, 2, 3, 4]), 2, 42), arrayPartialShuffle([1, 2, 3], 2, 42) FROM numbers(10)
@@ -2411,42 +2241,36 @@ SELECT arrayPartialShuffle(materialize([1, 2, 3, 4]), 2, 42), arrayPartialShuffl
 └──────────────────────────┴──────────────────────────┘
 ```
 
-
-
 ## arrayPartialSort {#arrayPartialSort}
 
-Introduced in: v23.2
+導入バージョン: v23.2
 
-
-This function is the same as `arraySort` but with an additional `limit` argument allowing partial sorting.
+この関数は `arraySort` と同じですが、部分的なソートを可能にする追加の引数 `limit` を受け取ります。
 
 :::tip
-To retain only the sorted elements use `arrayResize`.
+ソートされた要素のみを保持するには `arrayResize` を使用してください。
 :::
-    
 
-**Syntax**
+**構文**
 
 ```sql
 arrayPartialSort([f,] arr [, arr1, ... ,arrN], limit)
 ```
 
-**Arguments**
+**引数**
 
-- `f(arr[, arr1, ... ,arrN])` — The lambda function to apply to elements of array `x`. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `arr` — Array to be sorted. [`Array(T)`](/sql-reference/data-types/array)
-- `arr1, ... ,arrN` — N additional arrays, in the case when `f` accepts multiple arguments. [`Array(T)`](/sql-reference/data-types/array)
-- `limit` — Index value up until which sorting will occur. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `f(arr[, arr1, ... ,arrN])` — 配列 `x` の要素に適用するラムダ関数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `arr` — ソート対象の配列。[`Array(T)`](/sql-reference/data-types/array)
+* `arr1, ... ,arrN` — `f` が複数の引数を受け取る場合の追加の N 個の配列。[`Array(T)`](/sql-reference/data-types/array)
+* `limit` — ソートを行う上限となるインデックス値。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+元の配列と同じサイズの配列を返します。範囲 `[1..limit]` 内の要素は昇順にソートされ、残りの要素 `(limit..N]` の順序は未定義です。
 
-Returns an array of the same size as the original array where elements in the range `[1..limit]` are sorted
-in ascending order. The remaining elements `(limit..N]` are in an unspecified order.
+**使用例**
 
-**Examples**
-
-**simple_int**
+**simple&#95;int**
 
 ```sql title=Query
 SELECT arrayPartialSort(2, [5, 9, 1, 3])
@@ -2456,7 +2280,7 @@ SELECT arrayPartialSort(2, [5, 9, 1, 3])
 [1, 3, 5, 9]
 ```
 
-**simple_string**
+**simple&#95;string**
 
 ```sql title=Query
 SELECT arrayPartialSort(2, ['expenses', 'lasso', 'embolism', 'gladly'])
@@ -2466,7 +2290,7 @@ SELECT arrayPartialSort(2, ['expenses', 'lasso', 'embolism', 'gladly'])
 ['embolism', 'expenses', 'gladly', 'lasso']
 ```
 
-**retain_sorted**
+**retain&#95;sorted**
 
 ```sql title=Query
 SELECT arrayResize(arrayPartialSort(2, [5, 9, 1, 3]), 2)
@@ -2476,7 +2300,7 @@ SELECT arrayResize(arrayPartialSort(2, [5, 9, 1, 3]), 2)
 [1, 3]
 ```
 
-**lambda_simple**
+**lambda&#95;simple**
 
 ```sql title=Query
 SELECT arrayPartialSort((x) -> -x, 2, [5, 9, 1, 3])
@@ -2486,7 +2310,7 @@ SELECT arrayPartialSort((x) -> -x, 2, [5, 9, 1, 3])
 [9, 5, 1, 3]
 ```
 
-**lambda_complex**
+**lambda&#95;complex**
 
 ```sql title=Query
 SELECT arrayPartialSort((x, y) -> -y, 1, [0, 1, 2], [1, 2, 3]) as res
@@ -2496,32 +2320,29 @@ SELECT arrayPartialSort((x, y) -> -y, 1, [0, 1, 2], [1, 2, 3]) as res
 [2, 1, 0]
 ```
 
-
-
 ## arrayPopBack {#arrayPopBack}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
-Removes the last element from the array.
+配列の末尾の要素を削除します。
 
-**Syntax**
+**構文**
 
 ```sql
 arrayPopBack(arr)
 ```
 
-**Arguments**
+**引数**
 
-- `arr` — The array for which to remove the last element from. [`Array(T)`](/sql-reference/data-types/array)
+* `arr` — 最後の要素を削除する配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**返り値**
 
-**Returned value**
+`arr` と同一だが、`arr` の最後の要素を含まない配列を返します。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns an array identical to `arr` but without the last element of `arr` [`Array(T)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayPopBack([1, 2, 3]) AS res;
@@ -2531,32 +2352,29 @@ SELECT arrayPopBack([1, 2, 3]) AS res;
 [1, 2]
 ```
 
-
-
 ## arrayPopFront {#arrayPopFront}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
-Removes the first item from the array.
+配列の先頭要素を削除します。
 
-**Syntax**
+**構文**
 
 ```sql
 arrayPopFront(arr)
 ```
 
-**Arguments**
+**引数**
 
-- `arr` — The array for which to remove the first element from. [`Array(T)`](/sql-reference/data-types/array)
+* `arr` — 先頭要素を削除する対象となる配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**返される値**
 
-**Returned value**
+`arr` と同一だが、`arr` の先頭要素を含まない配列を返します。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns an array identical to `arr` but without the first element of `arr` [`Array(T)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayPopFront([1, 2, 3]) AS res;
@@ -2566,38 +2384,33 @@ SELECT arrayPopFront([1, 2, 3]) AS res;
 [2, 3]
 ```
 
-
-
 ## arrayProduct {#arrayProduct}
 
-Introduced in: v21.1
+導入: v21.1
 
+入力配列の要素の積を返します。
 
-Returns the product of elements in the source array.
+ラムダ関数 `func` が指定されている場合は、そのラムダを適用した結果の要素の積を返します。
 
-If a lambda function `func` is specified, returns the product of elements of the lambda results.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 arrayProduct([func(x[, y1, ..., yN])], source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**引数**
 
-- `func(x[, y1, ..., yN])` — Optional. A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `source_arr` — The source array to process. [`Array(T)`](/sql-reference/data-types/array)
-- `[, cond1_arr, ... , condN_arr]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array)
+* `func(x[, y1, ..., yN])` — 省略可能。ソース配列（`x`）および条件配列（`y`）の要素を処理するラムダ関数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `source_arr` — 処理対象となるソース配列。[`Array(T)`](/sql-reference/data-types/array)
+* `[, cond1_arr, ... , condN_arr]` — 省略可能。ラムダ関数に追加の引数を渡すための N 個の条件配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+ソース配列の要素の積、またはラムダ関数が指定されている場合はその結果要素の積を返します。[`Float64`](/sql-reference/data-types/float)
 
-Returns the product of elements in the source array, or the product of elements of the lambda results if provided. [`Float64`](/sql-reference/data-types/float)
+**使用例**
 
-**Examples**
-
-**Basic example**
+**基本的な例**
 
 ```sql title=Query
 SELECT arrayProduct([1, 2, 3, 4]);
@@ -2607,7 +2420,7 @@ SELECT arrayProduct([1, 2, 3, 4]);
 24
 ```
 
-**Usage with lambda function**
+**Lambda 関数での利用**
 
 ```sql title=Query
 SELECT arrayProduct(x, y -> x+y, [2, 2], [2, 2]) AS res;
@@ -2617,42 +2430,40 @@ SELECT arrayProduct(x, y -> x+y, [2, 2], [2, 2]) AS res;
 16
 ```
 
-
-
 ## arrayPushBack {#arrayPushBack}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
-Adds one item to the end of the array.
+配列の末尾に要素を 1 つ追加します。
 
-**Syntax**
+**構文**
 
 ```sql
 arrayPushBack(arr, x)
 ```
 
-**Arguments**
+**引数**
 
-- `arr` — The array for which to add value `x` to the end of. [`Array(T)`](/sql-reference/data-types/array)
-- `x` — 
-- Single value to add to the end of the array. [`Array(T)`](/sql-reference/data-types/array).
+* `arr` — 値 `x` を末尾に追加する配列。[`Array(T)`](/sql-reference/data-types/array)
+* `x` —
+* 配列の末尾に追加する単一の値。[`Array(T)`](/sql-reference/data-types/array)。
 
 :::note
-- Only numbers can be added to an array with numbers, and only strings can be added to an array of strings.
-- When adding numbers, ClickHouse automatically sets the type of `x` for the data type of the array.
-- Can be `NULL`. The function adds a `NULL` element to an array, and the type of array elements converts to `Nullable`.
 
-For more information about the types of data in ClickHouse, see [Data types](/sql-reference/data-types).
+* 数値の配列には数値のみ、文字列の配列には文字列のみを追加できます。
+* 数値を追加する場合、ClickHouse は配列のデータ型に合わせて `x` の型を自動的に設定します。
+* `NULL` を指定できます。この関数は配列に `NULL` 要素を追加し、配列要素の型を `Nullable` に変換します。
+
+ClickHouse におけるデータ型の詳細は、[Data types](/sql-reference/data-types) を参照してください。
 :::
-     
 
-**Returned value**
+**戻り値**
 
-Returns an array identical to `arr` but with an additional value `x` at the end of the array [`Array(T)`](/sql-reference/data-types/array)
+`arr` と同一で、配列の末尾に値 `x` が 1 つ追加された配列を返します。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayPushBack(['a'], 'b') AS res;
@@ -2662,41 +2473,39 @@ SELECT arrayPushBack(['a'], 'b') AS res;
 ['a','b']
 ```
 
-
-
 ## arrayPushFront {#arrayPushFront}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
-Adds one element to the beginning of the array.
+配列の先頭に要素を1つ追加します。
 
-**Syntax**
+**構文**
 
 ```sql
 arrayPushFront(arr, x)
 ```
 
-**Arguments**
+**引数**
 
-- `arr` — The array for which to add value `x` to the end of. [`Array(T)`](/sql-reference/data-types/array). - `x` — 
-- Single value to add to the start of the array. [`Array(T)`](/sql-reference/data-types/array).
+* `arr` — 値 `x` を末尾に追加する対象の配列。[`Array(T)`](/sql-reference/data-types/array)。
+* `x` — 配列の先頭に追加する単一の値。[`Array(T)`](/sql-reference/data-types/array)。
 
 :::note
-- Only numbers can be added to an array with numbers, and only strings can be added to an array of strings.
-- When adding numbers, ClickHouse automatically sets the type of `x` for the data type of the array.
-- Can be `NULL`. The function adds a `NULL` element to an array, and the type of array elements converts to `Nullable`.
 
-For more information about the types of data in ClickHouse, see [Data types](/sql-reference/data-types).
+* 数値配列には数値のみ、文字列配列には文字列のみ追加できます。
+* 数値を追加する場合、ClickHouse は配列のデータ型に合わせて `x` の型を自動的に設定します。
+* `NULL` を指定できます。この関数は配列に `NULL` 要素を追加し、配列要素の型を `Nullable` に変換します。
+
+ClickHouse のデータ型の詳細については、[Data types](/sql-reference/data-types) を参照してください。
 :::
-     
 
-**Returned value**
+**戻り値**
 
-Returns an array identical to `arr` but with an additional value `x` at the beginning of the array [`Array(T)`](/sql-reference/data-types/array)
+`arr` と同一ですが、配列の先頭に値 `x` が 1 つ追加された配列 [`Array(T)`](/sql-reference/data-types/array) を返します。
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayPushFront(['b'], 'a') AS res;
@@ -2706,57 +2515,53 @@ SELECT arrayPushFront(['b'], 'a') AS res;
 ['a','b']
 ```
 
-
-
 ## arrayROCAUC {#arrayROCAUC}
 
-Introduced in: v20.4
+導入バージョン: v20.4
 
+受信者操作特性（ROC）曲線の下の面積を計算します。
+ROC 曲線は、すべての閾値において真陽性率 (TPR) を y 軸に、偽陽性率 (FPR) を x 軸にプロットすることで作成されます。
+得られる値は 0 から 1 の範囲をとり、値が大きいほどモデルの性能が高いことを示します。
 
-Calculates the area under the receiver operating characteristic (ROC) curve.
-A ROC curve is created by plotting True Positive Rate (TPR) on the y-axis and False Positive Rate (FPR) on the x-axis across all thresholds.
-The resulting value ranges from zero to one, with a higher value indicating better model performance.
+ROC AUC（単に AUC とも呼ばれます）は、機械学習における評価指標の一つです。
+詳細は [こちら](https://developers.google.com/machine-learning/glossary#pr-auc-area-under-the-pr-curve)、[こちら](https://developers.google.com/machine-learning/crash-course/classification/roc-and-auc#expandable-1)、および [こちら](https://en.wikipedia.org/wiki/Receiver_operating_characteristic#Area_under_the_curve) を参照してください。
 
-The ROC AUC (also known as simply AUC) is a concept in machine learning.
-For more details, please see [here](https://developers.google.com/machine-learning/glossary#pr-auc-area-under-the-pr-curve), [here](https://developers.google.com/machine-learning/crash-course/classification/roc-and-auc#expandable-1) and [here](https://en.wikipedia.org/wiki/Receiver_operating_characteristic#Area_under_the_curve).
-
-
-**Syntax**
+**構文**
 
 ```sql
 arrayROCAUC(scores, labels[, scale[, partial_offsets]])
 ```
 
-**Aliases**: `arrayAUC`
+**別名**: `arrayAUC`
 
-**Arguments**
+**引数**
 
-- `scores` — Scores prediction model gives. [`Array((U)Int*)`](/sql-reference/data-types/array) or [`Array(Float*)`](/sql-reference/data-types/array)
-- `labels` — Labels of samples, usually 1 for positive sample and 0 for negative sample. [`Array((U)Int*)`](/sql-reference/data-types/array) or [`Enum`](/sql-reference/data-types/enum)
-- `scale` — Optional. Decides whether to return the normalized area. If false, returns the area under the TP (true positives) x FP (false positives) curve instead. Default value: true. [`Bool`](/sql-reference/data-types/boolean)
-- `partial_offsets` — 
-- An array of four non-negative integers for calculating a partial area under the ROC curve (equivalent to a vertical band of the ROC space) instead of the whole AUC. This option is useful for distributed computation of the ROC AUC. The array must contain the following elements [`higher_partitions_tp`, `higher_partitions_fp`, `total_positives`, `total_negatives`]. [Array](/sql-reference/data-types/array) of non-negative [Integers](../data-types/int-uint.md). Optional.
-    - `higher_partitions_tp`: The number of positive labels in the higher-scored partitions.
-    - `higher_partitions_fp`: The number of negative labels in the higher-scored partitions.
-    - `total_positives`: The total number of positive samples in the entire dataset.
-    - `total_negatives`: The total number of negative samples in the entire dataset.
+* `scores` — 予測モデルが出力するスコア。[`Array((U)Int*)`](/sql-reference/data-types/array) または [`Array(Float*)`](/sql-reference/data-types/array)
+* `labels` — サンプルのラベル。通常、正例サンプルには 1、負例サンプルには 0 を使用します。[`Array((U)Int*)`](/sql-reference/data-types/array) または [`Enum`](/sql-reference/data-types/enum)
+* `scale` — 省略可能。正規化された面積を返すかどうかを決定します。false の場合は、代わりに TP（true positives）× FP（false positives）曲線の下の面積を返します。デフォルト値: true。[`Bool`](/sql-reference/data-types/boolean)
+* `partial_offsets` —
+* 全体の AUC ではなく、ROC 曲線の一部の面積（ROC 空間における縦方向の帯に相当）を計算するための、4 つの非負整数からなる配列。このオプションは、ROC AUC の分散計算に有用です。配列には次の要素 [`higher_partitions_tp`, `higher_partitions_fp`, `total_positives`, `total_negatives`] を含める必要があります。非負の [整数](../data-types/int-uint.md) の [Array](/sql-reference/data-types/array)。省略可能。
+  * `higher_partitions_tp`: より高いスコアのパーティションに含まれる正例ラベルの数。
+  * `higher_partitions_fp`: より高いスコアのパーティションに含まれる負例ラベルの数。
+  * `total_positives`: データセット全体に含まれる正例サンプルの総数。
+  * `total_negatives`: データセット全体に含まれる負例サンプルの総数。
 
 :::note
-When `arr_partial_offsets` is used, the `arr_scores` and `arr_labels` should be only a partition of the entire dataset, containing an interval of scores.
-The dataset should be divided into contiguous partitions, where each partition contains the subset of the data whose scores fall within a specific range.
-For example:
-- One partition could contain all scores in the range [0, 0.5).
-- Another partition could contain scores in the range [0.5, 1.0].
-:::
- 
+`arr_partial_offsets` が使用される場合、`arr_scores` と `arr_labels` はデータセット全体の一部のみを含み、スコアのある区間に対応している必要があります。
+データセットは連続したパーティションに分割され、それぞれのパーティションはスコアが特定の範囲に入るデータの部分集合を含むようにします。
+例:
 
-**Returned value**
+* あるパーティションには [0, 0.5) の範囲のすべてのスコアを含めることができます。
+* 別のパーティションには [0.5, 1.0] の範囲のスコアを含めることができます。
+  :::
 
-Returns area under the receiver operating characteristic (ROC) curve. [`Float64`](/sql-reference/data-types/float)
+**戻り値**
 
-**Examples**
+受信者動作特性 (ROC) 曲線の下の面積を返します。[`Float64`](/sql-reference/data-types/float)
 
-**Usage example**
+**例**
+
+**使用例**
 
 ```sql title=Query
 SELECT arrayROCAUC([0.1, 0.4, 0.35, 0.8], [0, 0, 1, 1]);
@@ -2766,33 +2571,30 @@ SELECT arrayROCAUC([0.1, 0.4, 0.35, 0.8], [0, 0, 1, 1]);
 0.75
 ```
 
-
-
 ## arrayRandomSample {#arrayRandomSample}
 
-Introduced in: v23.10
+導入バージョン: v23.10
 
-Returns a subset with `samples`-many random elements of an input array. If `samples` exceeds the size of the input array, the sample size is limited to the size of the array, i.e. all array elements are returned but their order is not guaranteed. The function can handle both flat arrays and nested arrays.
+入力配列からランダムに選んだ `samples` 個の要素からなる部分集合を返します。`samples` が入力配列のサイズを超える場合、サンプル数は配列サイズに制限されます。つまり、すべての配列要素が返されますが、その順序は保証されません。この関数はフラットな配列とネストされた配列の両方を処理できます。
 
-**Syntax**
+**構文**
 
 ```sql
 arrayRandomSample(arr, samples)
 ```
 
-**Arguments**
+**引数**
 
-- `arr` — The input array or multidimensional array from which to sample elements. [`Array(T)`](/sql-reference/data-types/array)
-- `samples` — The number of elements to include in the random sample. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `arr` — 要素をサンプリングするための入力配列または多次元配列。[`Array(T)`](/sql-reference/data-types/array)
+* `samples` — ランダムサンプルに含める要素数。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+入力配列からランダムにサンプリングされた要素を含む配列。[`Array(T)`](/sql-reference/data-types/array)
 
-An array containing a random sample of elements from the input array [`Array(T)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayRandomSample(['apple', 'banana', 'cherry', 'date'], 2) as res;
@@ -2802,7 +2604,7 @@ SELECT arrayRandomSample(['apple', 'banana', 'cherry', 'date'], 2) as res;
 ['cherry','apple']
 ```
 
-**Using a multidimensional array**
+**多次元配列の使用**
 
 ```sql title=Query
 SELECT arrayRandomSample([[1, 2], [3, 4], [5, 6]], 2) as res;
@@ -2812,37 +2614,32 @@ SELECT arrayRandomSample([[1, 2], [3, 4], [5, 6]], 2) as res;
 [[3,4],[5,6]]
 ```
 
-
-
 ## arrayReduce {#arrayReduce}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+配列要素に集約関数を適用し、その結果を返します。
+集約関数の名前は、シングルクォートで囲んだ文字列として渡します（例: `'max'`, `'sum'`）。
+パラメトリックな集約関数を使用する場合は、関数名の後ろに括弧でパラメータを指定します（例: `'uniqUpTo(6)'`）。
 
-Applies an aggregate function to array elements and returns its result.
-The name of the aggregation function is passed as a string in single quotes `'max'`, `'sum'`.
-When using parametric aggregate functions, the parameter is indicated after the function name in parentheses `'uniqUpTo(6)'`.
-
-
-**Syntax**
+**構文**
 
 ```sql
 arrayReduce(agg_f, arr1 [, arr2, ... , arrN)])
 ```
 
-**Arguments**
+**引数**
 
-- `agg_f` — The name of an aggregate function which should be a constant. [`String`](/sql-reference/data-types/string)
-- `arr1 [, arr2, ... , arrN)]` — N arrays corresponding to the arguments of `agg_f`. [`Array(T)`](/sql-reference/data-types/array)
+* `agg_f` — 定数である必要がある集計関数の名前。[`String`](/sql-reference/data-types/string)
+* `arr1 [, arr2, ... , arrN)]` — `agg_f` の引数に対応する N 個の配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**返り値**
 
-**Returned value**
+集計関数の結果を返します。
 
-Returns the result of the aggregate function
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayReduce('max', [1, 2, 3]);
@@ -2854,7 +2651,7 @@ SELECT arrayReduce('max', [1, 2, 3]);
 └───────────────────────────────┘
 ```
 
-**Example with aggregate function using multiple arguments**
+**複数引数を取る集約関数の例**
 
 ```sql title=Query
 --集約関数が複数の引数を取る場合、この関数は同じサイズの複数の配列に適用する必要があります。
@@ -2868,7 +2665,7 @@ SELECT arrayReduce('maxIf', [3, 5], [1, 0]);
 └──────────────────────────────────────┘
 ```
 
-**Example with a parametric aggregate function**
+**パラメトリック集約関数の例**
 
 ```sql title=Query
 SELECT arrayReduce('uniqUpTo(3)', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
@@ -2880,37 +2677,32 @@ SELECT arrayReduce('uniqUpTo(3)', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 └─────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## arrayReduceInRanges {#arrayReduceInRanges}
 
-Introduced in: v20.4
+導入バージョン: v20.4
 
+指定された各範囲の配列要素に集約関数を適用し、その範囲ごとの結果を要素とする配列を返します。
+この関数は、`arrayReduce(agg_func, arraySlice(arr1, index, length), ...)` を複数回個別に実行した場合と同じ結果を返します。
 
-Applies an aggregate function to array elements in the given ranges and returns an array containing the result corresponding to each range.
-The function will return the same result as multiple `arrayReduce(agg_func, arraySlice(arr1, index, length), ...)`.
-
-
-**Syntax**
+**構文**
 
 ```sql
 arrayReduceInRanges(agg_f, ranges, arr1 [, arr2, ... ,arrN)])
 ```
 
-**Arguments**
+**引数**
 
-- `agg_f` — The name of the aggregate function to use. [`String`](/sql-reference/data-types/string)
-- `ranges` — The range over which to aggregate. An array of tuples, `(i, r)` containing the index `i` from which to begin from and the range `r` over which to aggregate. [`Array(T)`](/sql-reference/data-types/array) or [`Tuple(T)`](/sql-reference/data-types/tuple)
-- `arr1 [, arr2, ... ,arrN)]` — N arrays as arguments to the aggregate function. [`Array(T)`](/sql-reference/data-types/array)
+* `agg_f` — 使用する集約関数の名前。[`String`](/sql-reference/data-types/string)
+* `ranges` — 集約を行う範囲。`(i, r)` 形式のタプルからなる配列で、`i` は集約を開始するインデックス、`r` は集約を行う範囲を表す。[`Array(T)`](/sql-reference/data-types/array) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `arr1 [, arr2, ... ,arrN)]` — 集約関数の引数として渡す N 個の配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+指定された各範囲に対して集約関数を適用した結果を含む配列を返す。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns an array containing results of the aggregate function over the specified ranges [`Array(T)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayReduceInRanges(
@@ -2926,36 +2718,32 @@ SELECT arrayReduceInRanges(
 └─────────────────────────────┘
 ```
 
-
-
 ## arrayRemove {#arrayRemove}
 
-Introduced in: v25.11
+導入バージョン: v25.11
 
+配列から、指定した値と等しいすべての要素を削除します。
+NULL 同士は等しいものとして扱われます。
 
-Removes all elements equal to a given value from an array.
-NULLs are treated as equal.
-
-
-**Syntax**
+**構文**
 
 ```sql
 arrayRemove(arr, elem)
 ```
 
-**Aliases**: `array_remove`
+**別名**: `array_remove`
 
-**Arguments**
+**引数**
 
-- `arr` — Array(T) - `elem` — T 
+* `arr` — Array(T) - `elem` — T
 
-**Returned value**
+**戻り値**
 
-Returns a subset of the source array [`Array(T)`](/sql-reference/data-types/array)
+元の配列 [`Array(T)`](/sql-reference/data-types/array) の部分集合を返します。
 
-**Examples**
+**例**
 
-**Example 1**
+**例 1**
 
 ```sql title=Query
 SELECT arrayRemove([1, 2, 2, 3], 2)
@@ -2965,7 +2753,7 @@ SELECT arrayRemove([1, 2, 2, 3], 2)
 [1, 3]
 ```
 
-**Example 2**
+**例 2**
 
 ```sql title=Query
 SELECT arrayRemove(['a', NULL, 'b', NULL], NULL)
@@ -2975,36 +2763,34 @@ SELECT arrayRemove(['a', NULL, 'b', NULL], NULL)
 ['a', 'b']
 ```
 
-
-
 ## arrayResize {#arrayResize}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
-Changes the length of the array.
+配列の長さを変更します。
 
-**Syntax**
+**構文**
 
 ```sql
 arrayResize(arr, size[, extender])
 ```
 
-**Arguments**
+**引数**
 
-- `arr` — Array to resize. [`Array(T)`](/sql-reference/data-types/array)
-- `size` — 
--The new length of the array.
-If `size` is less than the original size of the array, the array is truncated from the right.
-If `size` is larger than the initial size of the array, the array is extended to the right with `extender` values or default values for the data type of the array items.
- - `extender` — Value to use for extending the array. Can be `NULL`. 
+* `arr` — サイズ変更する配列。[`Array(T)`](/sql-reference/data-types/array)
+* `size` —
+  * 配列の新しい長さ。
+    `size` が元の配列の長さより小さい場合、配列は末尾から切り詰められます。
+    `size` が元の配列の長さより大きい場合、配列は末尾に `extender` の値、または配列要素のデータ型のデフォルト値を追加して拡張されます。
+* `extender` — 配列を拡張する際に使用する値。`NULL` を指定できます。
 
-**Returned value**
+**返される値**
 
-An array of length `size`. [`Array(T)`](/sql-reference/data-types/array)
+長さが `size` の配列。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**例**
 
-**Example 1**
+**例 1**
 
 ```sql title=Query
 SELECT arrayResize([1], 3);
@@ -3014,7 +2800,7 @@ SELECT arrayResize([1], 3);
 [1,0,0]
 ```
 
-**Example 2**
+**例 2**
 
 ```sql title=Query
 SELECT arrayResize([1], 3, NULL);
@@ -3024,39 +2810,33 @@ SELECT arrayResize([1], 3, NULL);
 [1,NULL,NULL]
 ```
 
-
-
 ## arrayReverse {#arrayReverse}
 
-Introduced in: v1.1
+導入: v1.1
 
-
-Reverses the order of elements of a given array.
+指定された配列の要素の順序を反転します。
 
 :::note
-Function `reverse(arr)` performs the same functionality but works on other data-types
-in addition to Arrays.
+関数 `reverse(arr)` も同じ機能を持ちますが、配列だけでなく他のデータ型にも利用できます。
 :::
 
-
-**Syntax**
+**構文**
 
 ```sql
 arrayReverse(arr)
 ```
 
-**Arguments**
+**引数**
 
-- `arr` — The array to reverse. [`Array(T)`](/sql-reference/data-types/array)
+* `arr` — 逆順に並べ替える配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+元の配列と同じサイズで、要素を逆順に並べた配列を返します。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns an array of the same size as the original array containing the elements in reverse order [`Array(T)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayReverse([1, 2, 3])
@@ -3066,41 +2846,31 @@ SELECT arrayReverse([1, 2, 3])
 [3,2,1]
 ```
 
-
-
 ## arrayReverseFill {#arrayReverseFill}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
+`arrayReverseFill` 関数は、ソース配列を最後の要素から最初の要素に向かって順に処理し、ソース配列と条件配列の要素を用いて各位置でラムダ式による条件を評価します。位置 i において条件が false と評価された場合、その要素は、配列の現在の状態における位置 i+1 の要素で置き換えられます。最後の要素は、どのような条件であっても常に保持されます。
 
-The `arrayReverseFill` function sequentially processes a source array from the last
-element to the first, evaluating a lambda condition at each position using elements
-from the source and condition arrays. When the condition evaluates to false at
-position i, the function replaces that element with the element at position i+1
-from the current state of the array. The last element is always preserved
-regardless of any condition.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 arrayReverseFill(func(x[, y1, ..., yN]), source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**引数**
 
-- `func(x[, y1, ..., yN])` — A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `source_arr` — The source array to process. [`Array(T)`](/sql-reference/data-types/array)
-- `[, cond1_arr, ... , condN_arr]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array)
+* `func(x[, y1, ..., yN])` — ソース配列 (`x`) および条件配列 (`y`) の要素に対して処理を行うラムダ関数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `source_arr` — 処理対象となるソース配列。[`Array(T)`](/sql-reference/data-types/array)
+* `[, cond1_arr, ... , condN_arr]` — 省略可。ラムダ関数に追加の引数を提供する N 個の条件配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+ラムダ関数の結果でソース配列の要素を置き換えた配列を返します。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns an array with elements of the source array replaced by the results of the lambda. [`Array(T)`](/sql-reference/data-types/array)
+**使用例**
 
-**Examples**
-
-**Example with a single array**
+**単一配列の例**
 
 ```sql title=Query
 SELECT arrayReverseFill(x -> not isNull(x), [1, null, 2, null]) AS res
@@ -3110,7 +2880,7 @@ SELECT arrayReverseFill(x -> not isNull(x), [1, null, 2, null]) AS res
 [1, 2, 2, NULL]
 ```
 
-**Example with two arrays**
+**2つの配列の例**
 
 ```sql title=Query
 SELECT arrayReverseFill(x, y, z -> x > y AND x < z, [5, 3, 6, 2], [4, 7, 1, 3], [10, 2, 8, 5]) AS res;
@@ -3120,47 +2890,42 @@ SELECT arrayReverseFill(x, y, z -> x > y AND x < z, [5, 3, 6, 2], [4, 7, 1, 3], 
 [5, 6, 6, 2]
 ```
 
-
-
 ## arrayReverseSort {#arrayReverseSort}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+配列の要素を降順にソートします。
+関数 `f` が指定された場合、指定された配列は、その要素に関数を適用した結果に従ってソートされ、その後、ソート済み配列が反転されます。
+`f` が複数の引数を受け取る場合、`arrayReverseSort` 関数には複数の配列が渡され、`f` の各引数がそれぞれの配列に対応します。
 
-Sorts the elements of an array in descending order.
-If a function `f` is specified, the provided array is sorted according to the result
-of the function applied to the elements of the array, and then the sorted array is reversed.
-If `f` accepts multiple arguments, the `arrayReverseSort` function is passed several arrays that
-the arguments of `func` will correspond to.
-
-If the array to sort contains `-Inf`, `NULL`, `NaN`, or `Inf` they will be sorted in the following order:
+ソート対象の配列に `-Inf`、`NULL`、`NaN`、`Inf` が含まれている場合、次の順序でソートされます。
 
 1. `-Inf`
 2. `Inf`
 3. `NaN`
 4. `NULL`
 
-`arrayReverseSort` is a [higher-order function](/sql-reference/functions/overview#higher-order-functions).
-    
+`arrayReverseSort` は[高階関数](/sql-reference/functions/overview#higher-order-functions)です。
 
-**Syntax**
+**構文**
 
 ```sql
 arrayReverseSort([f,] arr [, arr1, ... ,arrN)
 ```
 
-**Arguments**
+**引数**
 
-- `f(y1[, y2 ... yN])` — The lambda function to apply to elements of array `x`. - `arr` — An array to be sorted. [`Array(T)`](/sql-reference/data-types/array) - `arr1, ..., yN` — Optional. N additional arrays, in the case when `f` accepts multiple arguments. 
+* `f(y1[, y2 ... yN])` — 配列 `x` の要素に適用するラムダ関数。
+* `arr` — ソート対象の配列。[`Array(T)`](/sql-reference/data-types/array)
+* `arr1, ..., yN` — 任意。`f` が複数の引数を受け取る場合に指定する、追加の N 個の配列。
 
-**Returned value**
+**返される値**
 
-Returns the array `x` sorted in descending order if no lambda function is provided, otherwise
-it returns an array sorted according to the logic of the provided lambda function, and then reversed. [`Array(T)`](/sql-reference/data-types/array).
+ラムダ関数が指定されていない場合は、配列 `x` を降順にソートしたものを返します。ラムダ関数が指定されている場合は、そのラムダ関数のロジックに従って配列をソートし、その結果を反転した配列を返します。[`Array(T)`](/sql-reference/data-types/array)。
 
-**Examples**
+**例**
 
-**Example 1**
+**例 1**
 
 ```sql title=Query
 SELECT arrayReverseSort((x, y) -> y, [4, 3, 5], ['a', 'b', 'c']) AS res;
@@ -3170,7 +2935,7 @@ SELECT arrayReverseSort((x, y) -> y, [4, 3, 5], ['a', 'b', 'c']) AS res;
 [5,3,4]
 ```
 
-**Example 2**
+**例 2**
 
 ```sql title=Query
 SELECT arrayReverseSort((x, y) -> -y, [4, 3, 5], [1, 2, 3]) AS res;
@@ -3180,34 +2945,31 @@ SELECT arrayReverseSort((x, y) -> -y, [4, 3, 5], [1, 2, 3]) AS res;
 [4,3,5]
 ```
 
-
-
 ## arrayReverseSplit {#arrayReverseSplit}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
-Split a source array into multiple arrays. When `func(x[, y1, ..., yN])` returns something other than zero, the array will be split to the right of the element. The array will not be split after the last element.
+元の配列を複数の配列に分割します。`func(x[, y1, ..., yN])` が 0 以外の値を返したとき、その要素の右側で配列を分割します。最後の要素の後では配列は分割されません。
 
-**Syntax**
+**構文**
 
 ```sql
 arrayReverseSplit(func(x[, y1, ..., yN]), source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**引数**
 
-- `func(x[, y1, ..., yN])` — A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `source_arr` — The source array to process. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `[, cond1_arr, ... , condN_arr]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array)
+* `func(x[, y1, ..., yN])` — 入力配列 (`x`) および条件配列 (`y`) の要素に適用されるラムダ関数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `source_arr` — 処理対象となる入力配列。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `[, cond1_arr, ... , condN_arr]` — 省略可。ラムダ関数に追加の引数を提供する N 個の条件配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**返り値**
 
-**Returned value**
+配列の配列を返します。[`Array(Array(T))`](/sql-reference/data-types/array)
 
-Returns an array of arrays. [`Array(Array(T))`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayReverseSplit((x, y) -> y, [1, 2, 3, 4, 5], [1, 0, 0, 1, 0]) AS res
@@ -3217,31 +2979,29 @@ SELECT arrayReverseSplit((x, y) -> y, [1, 2, 3, 4, 5], [1, 0, 0, 1, 0]) AS res
 [[1], [2, 3, 4], [5]]
 ```
 
-
-
 ## arrayRotateLeft {#arrayRotateLeft}
 
-Introduced in: v23.8
+導入バージョン: v23.8
 
-Rotates an array to the left by the specified number of elements. Negative values of `n` are treated as rotating to the right by the absolute value of the rotation.
+指定された要素数だけ配列を左方向に回転させます。`n` が負の値の場合は、その絶対値だけ右方向に回転させるものとして解釈されます。
 
-**Syntax**
+**構文**
 
 ```sql
 arrayRotateLeft(arr, n)
 ```
 
-**Arguments**
+**引数**
 
-- `arr` — The array for which to rotate the elements.[`Array(T)`](/sql-reference/data-types/array). - `n` — Number of elements to rotate. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint). 
+* `arr` — 要素を回転させる配列。[`Array(T)`](/sql-reference/data-types/array)。 - `n` — 回転させる要素数。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)。
 
-**Returned value**
+**戻り値**
 
-An array rotated to the left by the specified number of elements [`Array(T)`](/sql-reference/data-types/array)
+指定された要素数だけ左に回転した配列。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayRotateLeft([1,2,3,4,5,6], 2) as res;
@@ -3251,7 +3011,7 @@ SELECT arrayRotateLeft([1,2,3,4,5,6], 2) as res;
 [3,4,5,6,1,2]
 ```
 
-**Negative value of n**
+**n が負の値**
 
 ```sql title=Query
 SELECT arrayRotateLeft([1,2,3,4,5,6], -2) as res;
@@ -3261,31 +3021,29 @@ SELECT arrayRotateLeft([1,2,3,4,5,6], -2) as res;
 [5,6,1,2,3,4]
 ```
 
-
-
 ## arrayRotateRight {#arrayRotateRight}
 
-Introduced in: v23.8
+導入バージョン: v23.8
 
-Rotates an array to the right by the specified number of elements. Negative values of `n` are treated as rotating to the left by the absolute value of the rotation.
+指定された要素数だけ配列を右方向に回転します。`n` が負の値の場合は、その絶対値だけ左方向に回転したものとして扱われます。
 
-**Syntax**
+**構文**
 
 ```sql
 arrayRotateRight(arr, n)
 ```
 
-**Arguments**
+**引数**
 
-- `arr` — The array for which to rotate the elements.[`Array(T)`](/sql-reference/data-types/array). - `n` — Number of elements to rotate. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint). 
+* `arr` — 要素を回転させる対象となる配列。[`Array(T)`](/sql-reference/data-types/array)。 - `n` — 回転させる要素数。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)。
 
-**Returned value**
+**戻り値**
 
-An array rotated to the right by the specified number of elements [`Array(T)`](/sql-reference/data-types/array)
+指定された要素数だけ右に回転した配列。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayRotateRight([1,2,3,4,5,6], 2) as res;
@@ -3295,7 +3053,7 @@ SELECT arrayRotateRight([1,2,3,4,5,6], 2) as res;
 [5,6,1,2,3,4]
 ```
 
-**Negative value of n**
+**n が負の場合**
 
 ```sql title=Query
 SELECT arrayRotateRight([1,2,3,4,5,6], -2) as res;
@@ -3305,35 +3063,34 @@ SELECT arrayRotateRight([1,2,3,4,5,6], -2) as res;
 [3,4,5,6,1,2]
 ```
 
-
-
 ## arrayShiftLeft {#arrayShiftLeft}
 
-Introduced in: v23.8
+導入バージョン: v23.8
 
+配列を、指定した要素数だけ左方向にシフトします。
+新しい要素には、指定された引数、または配列要素型のデフォルト値が設定されます。
+要素数が負の値の場合は、配列は右方向にシフトされます。
 
-Shifts an array to the left by the specified number of elements.
-New elements are filled with the provided argument or the default value of the array element type.
-If the number of elements is negative, the array is shifted to the right.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 arrayShiftLeft(arr, n[, default])
 ```
 
-**Arguments**
+**引数**
 
-- `arr` — The array for which to shift the elements.[`Array(T)`](/sql-reference/data-types/array). - `n` — Number of elements to shift.[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint). - `default` — Optional. Default value for new elements. 
+* `arr` — 要素をシフトする対象の配列。[`Array(T)`](/sql-reference/data-types/array)
 
-**Returned value**
+- `n` — シフトする要素数。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+- `default` — 省略可能。新しい要素に使用するデフォルト値。
 
-An array shifted to the left by the specified number of elements [`Array(T)`](/sql-reference/data-types/array)
+**戻り値**
 
-**Examples**
+指定された要素数だけ左方向にシフトされた配列 [`Array(T)`](/sql-reference/data-types/array)
 
-**Usage example**
+**例**
+
+**使用例**
 
 ```sql title=Query
 SELECT arrayShiftLeft([1,2,3,4,5,6], 2) as res;
@@ -3343,7 +3100,7 @@ SELECT arrayShiftLeft([1,2,3,4,5,6], 2) as res;
 [3,4,5,6,0,0]
 ```
 
-**Negative value of n**
+**n が負の値の場合**
 
 ```sql title=Query
 SELECT arrayShiftLeft([1,2,3,4,5,6], -2) as res;
@@ -3353,7 +3110,7 @@ SELECT arrayShiftLeft([1,2,3,4,5,6], -2) as res;
 [0,0,1,2,3,4]
 ```
 
-**Using a default value**
+**デフォルト値を使用する**
 
 ```sql title=Query
 SELECT arrayShiftLeft([1,2,3,4,5,6], 2, 42) as res;
@@ -3363,37 +3120,33 @@ SELECT arrayShiftLeft([1,2,3,4,5,6], 2, 42) as res;
 [3,4,5,6,42,42]
 ```
 
-
-
 ## arrayShiftRight {#arrayShiftRight}
 
-Introduced in: v23.8
+導入バージョン: v23.8
 
+配列を、指定した要素数だけ右にシフトします。
+新しい要素は、指定した引数または配列要素型のデフォルト値で埋められます。
+要素数が負の値の場合、配列は左にシフトされます。
 
-Shifts an array to the right by the specified number of elements.
-New elements are filled with the provided argument or the default value of the array element type.
-If the number of elements is negative, the array is shifted to the left.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 arrayShiftRight(arr, n[, default])
 ```
 
-**Arguments**
+**引数**
 
-- `arr` — The array for which to shift the elements. [`Array(T)`](/sql-reference/data-types/array)
-- `n` — Number of elements to shift. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
-- `default` — Optional. Default value for new elements. 
+* `arr` — 要素をシフトする配列。[`Array(T)`](/sql-reference/data-types/array)
+* `n` — シフトする要素数。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+* `default` — 任意。新しく追加される要素のデフォルト値。
 
-**Returned value**
+**戻り値**
 
-An array shifted to the right by the specified number of elements [`Array(T)`](/sql-reference/data-types/array)
+指定した要素数だけ右にシフトされた配列。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayShiftRight([1, 2, 3, 4, 5, 6], 2) as res;
@@ -3403,7 +3156,7 @@ SELECT arrayShiftRight([1, 2, 3, 4, 5, 6], 2) as res;
 [0, 0, 1, 2, 3, 4]
 ```
 
-**Negative value of n**
+**n の負の値**
 
 ```sql title=Query
 SELECT arrayShiftRight([1, 2, 3, 4, 5, 6], -2) as res;
@@ -3413,7 +3166,7 @@ SELECT arrayShiftRight([1, 2, 3, 4, 5, 6], -2) as res;
 [3, 4, 5, 6, 0, 0]
 ```
 
-**Using a default value**
+**デフォルト値を使用する**
 
 ```sql title=Query
 SELECT arrayShiftRight([1, 2, 3, 4, 5, 6], 2, 42) as res;
@@ -3423,33 +3176,30 @@ SELECT arrayShiftRight([1, 2, 3, 4, 5, 6], 2, 42) as res;
 [42, 42, 1, 2, 3, 4]
 ```
 
-
-
 ## arrayShingles {#arrayShingles}
 
-Introduced in: v24.1
+導入バージョン: v24.1
 
-Generates an array of shingles (similar to ngrams for strings), i.e. consecutive sub-arrays with a specified length of the input array.
+入力配列から、指定された長さの連続した部分配列（文字列に対する n-gram に相当）である shingle の配列を生成します。
 
-**Syntax**
+**構文**
 
 ```sql
 arrayShingles(arr, l)
 ```
 
-**Arguments**
+**引数**
 
-- `arr` — Array for which to generate an array of shingles. [`Array(T)`](/sql-reference/data-types/array)
-- `l` — The length of each shingle. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `arr` — シングル (shingle) 配列を生成する対象の配列。[`Array(T)`](/sql-reference/data-types/array)
+* `l` — 各シングルの長さ。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返り値**
 
-**Returned value**
+生成されたシングル (shingle) の配列。[`Array(T)`](/sql-reference/data-types/array)
 
-An array of generated shingles [`Array(T)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayShingles([1, 2, 3, 4], 3) as res;
@@ -3459,40 +3209,35 @@ SELECT arrayShingles([1, 2, 3, 4], 3) as res;
 [[1, 2, 3], [2, 3, 4]]
 ```
 
-
-
 ## arrayShuffle {#arrayShuffle}
 
-Introduced in: v23.2
+導入バージョン: v23.2
 
-
-Returns an array of the same size as the original array containing the elements in shuffled order.
-Elements are reordered in such a way that each possible permutation of those elements has equal probability of appearance.
+元の配列と同じサイズで、要素をシャッフルした順序で含む配列を返します。
+要素は、その要素のあらゆる順列が等しい確率で現れるように並べ替えられます。
 
 :::note
-This function will not materialize constants.
+この関数は定数をマテリアライズしません。
 :::
-    
 
-**Syntax**
+**構文**
 
 ```sql
 arrayShuffle(arr [, seed])
 ```
 
-**Arguments**
+**引数**
 
-- `arr` — The array to shuffle. [`Array(T)`](/sql-reference/data-types/array)
-- `seed (optional)` — Optional. The seed to be used with random number generation. If not provided a random one is used. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `arr` — シャッフルする配列。[`Array(T)`](/sql-reference/data-types/array)
+* `seed (optional)` — 省略可。乱数生成に使用するシード値。指定しない場合はランダムなシード値が使用されます。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+要素がシャッフルされた配列 [`Array(T)`](/sql-reference/data-types/array)
 
-Array with elements shuffled [`Array(T)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Example without seed (unstable results)**
+**シードなしの例（結果は非決定的）**
 
 ```sql title=Query
 SELECT arrayShuffle([1, 2, 3, 4]);
@@ -3502,7 +3247,7 @@ SELECT arrayShuffle([1, 2, 3, 4]);
 [1,4,2,3]
 ```
 
-**Example without seed (stable results)**
+**シード未指定時の例（安定した結果）**
 
 ```sql title=Query
 SELECT arrayShuffle([1, 2, 3, 4], 41);
@@ -3512,37 +3257,32 @@ SELECT arrayShuffle([1, 2, 3, 4], 41);
 [3,2,1,4]
 ```
 
-
-
 ## arraySimilarity {#arraySimilarity}
 
-Introduced in: v25.4
+導入バージョン: v25.4
 
+重み付きレーベンシュタイン距離に基づいて、2つの配列の類似度を `0` から `1` の範囲で計算します。
 
-Calculates the similarity of two arrays from `0` to `1` based on weighted Levenshtein distance.
-
-
-**Syntax**
+**構文**
 
 ```sql
 arraySimilarity(from, to, from_weights, to_weights)
 ```
 
-**Arguments**
+**引数**
 
-- `from` — first array [`Array(T)`](/sql-reference/data-types/array)
-- `to` — second array [`Array(T)`](/sql-reference/data-types/array)
-- `from_weights` — weights for the first array. [`Array((U)Int*|Float*)`](/sql-reference/data-types/array)
-- `to_weights` — weights for the second array. [`Array((U)Int*|Float*)`](/sql-reference/data-types/array)
+* `from` — 1 つ目の配列 [`Array(T)`](/sql-reference/data-types/array)
+* `to` — 2 つ目の配列 [`Array(T)`](/sql-reference/data-types/array)
+* `from_weights` — 1 つ目の配列に対する重み [`Array((U)Int*|Float*)`](/sql-reference/data-types/array)
+* `to_weights` — 2 つ目の配列に対する重み [`Array((U)Int*|Float*)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+加重レーベンシュタイン距離に基づいて、2 つの配列間の類似度（`0` から `1` の範囲）を返します。[`Float64`](/sql-reference/data-types/float)
 
-Returns the similarity between `0` and `1` of the two arrays based on the weighted Levenshtein distance [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arraySimilarity(['A', 'B', 'C'], ['A', 'K', 'L'], [1.0, 2, 3], [3.0, 4, 5]);
@@ -3552,34 +3292,31 @@ SELECT arraySimilarity(['A', 'B', 'C'], ['A', 'K', 'L'], [1.0, 2, 3], [3.0, 4, 5
 0.2222222222222222
 ```
 
-
-
 ## arraySlice {#arraySlice}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
-Returns a slice of the array, with `NULL` elements included.
+`NULL` 要素を含む配列のスライスを返します。
 
-**Syntax**
+**構文**
 
 ```sql
 arraySlice(arr, offset [, length])
 ```
 
-**Arguments**
+**引数**
 
-- `arr` — Array to slice. [`Array(T)`](/sql-reference/data-types/array)
-- `offset` — Indent from the edge of the array. A positive value indicates an offset on the left, and a negative value is an indent on the right. Numbering of the array items begins with `1`. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `length` — The length of the required slice. If you specify a negative value, the function returns an open slice `[offset, array_length - length]`. If you omit the value, the function returns the slice `[offset, the_end_of_array]`. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `arr` — スライス対象の配列。[`Array(T)`](/sql-reference/data-types/array)
+* `offset` — 配列の端からのオフセット。正の値は左側からのオフセット、負の値は右側からのオフセットを表します。配列要素の番号付けは `1` から始まります。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `length` — 取得するスライスの長さ。負の値を指定した場合、関数は `[offset, array_length - length]` の範囲のスライス（末尾側を `length` 分だけ除いたスライス）を返します。値を省略した場合、関数は `[offset, 配列の終端]` のスライスを返します。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返り値**
 
-**Returned value**
+指定された `offset` から `length` 要素分の配列スライスを返します。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns a slice of the array with `length` elements from the specified `offset` [`Array(T)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arraySlice([1, 2, NULL, 4, 5], 2, 3) AS res;
@@ -3589,47 +3326,40 @@ SELECT arraySlice([1, 2, NULL, 4, 5], 2, 3) AS res;
 [2, NULL, 4]
 ```
 
-
-
 ## arraySort {#arraySort}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+指定された配列の要素を昇順でソートします。
+ラムダ関数 `f` が指定されている場合、ソート順は配列の各要素にラムダを適用した結果によって決定されます。
+ラムダが複数の引数を受け取る場合、`arraySort` 関数には複数の配列が渡され、`f` の各引数はそれぞれの配列に対応します。
 
-Sorts the elements of the provided array in ascending order.
-If a lambda function `f` is specified, sorting order is determined by the result of
-the lambda applied to each element of the array.
-If the lambda accepts multiple arguments, the `arraySort` function is passed several
-arrays that the arguments of `f` will correspond to.
-
-If the array to sort contains `-Inf`, `NULL`, `NaN`, or `Inf` they will be sorted in the following order:
+ソート対象の配列に `-Inf`、`NULL`、`NaN`、`Inf` が含まれる場合、それらは次の順序でソートされます:
 
 1. `-Inf`
 2. `Inf`
 3. `NaN`
 4. `NULL`
 
-`arraySort` is a [higher-order function](/sql-reference/functions/overview#higher-order-functions).
+`arraySort` は[高階関数](/sql-reference/functions/overview#higher-order-functions)です。
 
-
-**Syntax**
+**構文**
 
 ```sql
 arraySort([f,] arr [, arr1, ... ,arrN])
 ```
 
-**Arguments**
+**引数**
 
-- `f(y1[, y2 ... yN])` — The lambda function to apply to elements of array `x`. - `arr` — An array to be sorted. [`Array(T)`](/sql-reference/data-types/array) - `arr1, ..., yN` — Optional. N additional arrays, in the case when `f` accepts multiple arguments. 
+* `f(y1[, y2 ... yN])` — 配列 `x` の要素に適用するラムダ関数。 - `arr` — ソート対象の配列。[`Array(T)`](/sql-reference/data-types/array) - `arr1, ..., yN` — 省略可能。`f` が複数の引数を受け取る場合に指定する、追加の N 個の配列。
 
-**Returned value**
+**返り値**
 
-Returns the array `arr` sorted in ascending order if no lambda function is provided, otherwise
-it returns an array sorted according to the logic of the provided lambda function. [`Array(T)`](/sql-reference/data-types/array).
+ラムダ関数が指定されていない場合は、配列 `arr` を昇順にソートして返します。指定されている場合は、そのラムダ関数のロジックに従ってソートされた配列を返します。[`Array(T)`](/sql-reference/data-types/array)。
 
-**Examples**
+**例**
 
-**Example 1**
+**例 1**
 
 ```sql title=Query
 SELECT arraySort([1, 3, 3, 0]);
@@ -3639,7 +3369,7 @@ SELECT arraySort([1, 3, 3, 0]);
 [0,1,3,3]
 ```
 
-**Example 2**
+**例 2**
 
 ```sql title=Query
 SELECT arraySort(['hello', 'world', '!']);
@@ -3649,7 +3379,7 @@ SELECT arraySort(['hello', 'world', '!']);
 ['!','hello','world']
 ```
 
-**Example 3**
+**例 3**
 
 ```sql title=Query
 SELECT arraySort([1, nan, 2, NULL, 3, nan, -4, NULL, inf, -inf]);
@@ -3659,31 +3389,29 @@ SELECT arraySort([1, nan, 2, NULL, 3, nan, -4, NULL, inf, -inf]);
 [-inf,-4,1,2,3,inf,nan,nan,NULL,NULL]
 ```
 
-
-
 ## arraySplit {#arraySplit}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
-Split a source array into multiple arrays. When `func(x [, y1, ..., yN])` returns something other than zero, the array will be split to the left of the element. The array will not be split before the first element.
+入力配列を複数の配列に分割します。`func(x [, y1, ..., yN])` がゼロ以外を返した場合、その要素の左側で配列が分割されます。最初の要素の前では配列は分割されません。
 
-**Syntax**
+**構文**
 
 ```sql
 arraySplit(func(x[, y1, ..., yN]), source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**引数**
 
-- `func(x[, y1, ..., yN])` — A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`).[Lambda function](/sql-reference/functions/overview#arrow-operator-and-lambda). - `source_arr` — The source array to split [`Array(T)`](/sql-reference/data-types/array). - `[, cond1_arr, ... , condN_arr]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array). 
+* `func(x[, y1, ..., yN])` — ソース配列 (`x`) および条件配列 (`y`) の要素を処理するラムダ関数。[Lambda function](/sql-reference/functions/overview#arrow-operator-and-lambda)。- `source_arr` — 分割対象のソース配列。[`Array(T)`](/sql-reference/data-types/array)。- `[, cond1_arr, ... , condN_arr]` — 省略可。ラムダ関数に追加の引数を渡すための N 個の条件配列。[`Array(T)`](/sql-reference/data-types/array)。
 
-**Returned value**
+**返される値**
 
-Returns an array of arrays [`Array(Array(T))`](/sql-reference/data-types/array)
+配列の配列を返します。[`Array(Array(T))`](/sql-reference/data-types/array)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arraySplit((x, y) -> y, [1, 2, 3, 4, 5], [1, 0, 0, 1, 0]) AS res
@@ -3693,38 +3421,33 @@ SELECT arraySplit((x, y) -> y, [1, 2, 3, 4, 5], [1, 0, 0, 1, 0]) AS res
 [[1, 2, 3], [4, 5]]
 ```
 
-
-
 ## arraySum {#arraySum}
 
-Introduced in: v21.1
+導入バージョン: v21.1
 
+入力配列内の要素の合計を返します。
 
-Returns the sum of elements in the source array.
+ラムダ関数 `func` が指定された場合は、そのラムダを各要素に適用した結果の合計を返します。
 
-If a lambda function `func` is specified, returns the sum of elements of the lambda results.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 arrayMax([func(x[, y1, ..., yN])], source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**引数**
 
-- `func(x[, y1, ..., yN])` — Optional. A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `source_arr` — The source array to process. [`Array(T)`](/sql-reference/data-types/array)
-- `, cond1_arr, ... , condN_arr]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array)
+* `func(x[, y1, ..., yN])` — 省略可。ソース配列 (`x`) および条件配列 (`y`) の要素に適用されるラムダ関数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `source_arr` — 処理対象のソース配列。[`Array(T)`](/sql-reference/data-types/array)
+* `, cond1_arr, ... , condN_arr]` — 省略可。ラムダ関数に追加の引数を渡すための N 個の条件配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+ソース配列内の要素の合計、またはラムダ関数が指定されている場合は、その結果要素の合計値を返します。
 
-Returns the sum of elements in the source array, or the sum of elements of the lambda results if provided.
+**使用例**
 
-**Examples**
-
-**Basic example**
+**基本的な例**
 
 ```sql title=Query
 SELECT arraySum([1, 2, 3, 4]);
@@ -3734,7 +3457,7 @@ SELECT arraySum([1, 2, 3, 4]);
 10
 ```
 
-**Usage with lambda function**
+**Lambda 関数での使用方法**
 
 ```sql title=Query
 SELECT arraySum(x, y -> x+y, [1, 1, 1, 1], [1, 1, 1, 1]);
@@ -3744,38 +3467,34 @@ SELECT arraySum(x, y -> x+y, [1, 1, 1, 1], [1, 1, 1, 1]);
 8
 ```
 
-
-
 ## arraySymmetricDifference {#arraySymmetricDifference}
 
-Introduced in: v25.4
+導入バージョン: v25.4
 
-Takes multiple arrays and returns an array with elements that are not present in all source arrays. The result contains only unique values.
+複数の配列を受け取り、すべての入力配列に共通して存在しない要素からなる配列を返します。結果には一意な値のみが含まれます。
 
 :::note
-The symmetric difference of _more than two sets_ is [mathematically defined](https://en.wikipedia.org/wiki/Symmetric_difference#n-ary_symmetric_difference)
-as the set of all input elements which occur in an odd number of input sets.
-In contrast, function `arraySymmetricDifference` simply returns the set of input elements which do not occur in all input sets.
+*2つを超える集合*の対称差は、入力集合のうち奇数個の集合に含まれるすべての入力要素の集合として[数学的に定義されています](https://en.wikipedia.org/wiki/Symmetric_difference#n-ary_symmetric_difference)。
+これに対して、関数 `arraySymmetricDifference` は、すべての入力集合に含まれない入力要素の集合のみを返します。
 :::
 
-
-**Syntax**
+**構文**
 
 ```sql
 arraySymmetricDifference(arr1, arr2, ... , arrN)
 ```
 
-**Arguments**
+**引数**
 
-- `arrN` — N arrays from which to make the new array. [`Array(T)`](/sql-reference/data-types/array). 
+* `arrN` — 新しい配列を作成するための N 個の配列。[`Array(T)`](/sql-reference/data-types/array)。
 
-**Returned value**
+**返される値**
 
-Returns an array of distinct elements not present in all source arrays [`Array(T)`](/sql-reference/data-types/array)
+すべての元の配列に共通して存在しない要素のみから成る、重複のない配列を返します。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT
@@ -3789,32 +3508,29 @@ arraySymmetricDifference([1, 2], [1, 2], [1, 3]) AS non_empty_symmetric_differen
 └────────────────────────────┴────────────────────────────────┘
 ```
 
-
-
 ## arrayUnion {#arrayUnion}
 
-Introduced in: v24.10
+導入バージョン: v24.10
 
-Takes multiple arrays and returns an array which contains all elements that are present in one of the source arrays.The result contains only unique values.
+複数の配列を受け取り、入力配列のいずれかに存在するすべての要素を含む配列を返します。結果には一意の値のみが含まれます。
 
-**Syntax**
+**構文**
 
 ```sql
 arrayUnion(arr1, arr2, ..., arrN)
 ```
 
-**Arguments**
+**引数**
 
-- `arrN` — N arrays from which to make the new array. [`Array(T)`](/sql-reference/data-types/array)
+* `arrN` — 新しい配列を作成するための N 個の配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+元の配列群に含まれる要素のうち重複を取り除いた配列を返します。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns an array with distinct elements from the source arrays [`Array(T)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT
@@ -3829,51 +3545,46 @@ arrayUnion([1, 3, NULL], [2, 3, NULL]) as null_example
 └─────────────┴────────────────┴──────────────┘
 ```
 
-
-
 ## arrayUniq {#arrayUniq}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+引数が 1 つだけ渡された場合、配列内の異なる要素の個数を数えます。
+複数の引数が渡された場合、複数の配列において同じ位置にある要素からなる **タプル** を構成し、そのタプルのうち異なるものの個数を数えます。
 
-For a single argument passed, counts the number of different elements in the array.
-For multiple arguments passed, it counts the number of different **tuples** made of elements at matching positions across multiple arrays.
+たとえば `SELECT arrayUniq([1,2], [3,4], [5,6])` は次のタプルを生成します。
 
-For example `SELECT arrayUniq([1,2], [3,4], [5,6])` will form the following tuples:
-* Position 1: (1,3,5)
-* Position 2: (2,4,6)
+* 位置 1: (1,3,5)
+* 位置 2: (2,4,6)
 
-It will then count the number of unique tuples. In this case `2`.
+その後、一意なタプルの個数を数えます。この場合は `2` になります。
 
-All arrays passed must have the same length.
+渡されるすべての配列は同じ長さである必要があります。
 
 :::tip
-If you want to get a list of unique items in an array, you can use `arrayReduce('groupUniqArray', arr)`.
+配列内の一意な要素のリストを取得したい場合は、`arrayReduce('groupUniqArray', arr)` を使用できます。
 :::
 
-
-**Syntax**
+**構文**
 
 ```sql
 arrayUniq(arr1[, arr2, ..., arrN])
 ```
 
-**Arguments**
+**引数**
 
-- `arr1` — Array for which to count the number of unique elements. [`Array(T)`](/sql-reference/data-types/array)
-- `[, arr2, ..., arrN]` — Optional. Additional arrays used to count the number of unique tuples of elements at corresponding positions in multiple arrays. [`Array(T)`](/sql-reference/data-types/array)
+* `arr1` — 一意な要素の数をカウントする対象の配列。[`Array(T)`](/sql-reference/data-types/array)
+* `[, arr2, ..., arrN]` — 省略可。複数の配列において同じ位置にある要素から成る一意なタプルの数をカウントするために使用される追加の配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**返される値**
 
-**Returned value**
+単一引数の場合は、一意な要素の数を返します。複数引数の場合は、
+配列間で同じ位置にある要素から構成される一意なタプルの数を返します。
+[`UInt32`](/sql-reference/data-types/int-uint)
 
-For a single argument returns the number of unique
-elements. For multiple arguments returns the number of unique tuples made from
-elements at corresponding positions across the arrays.
- [`UInt32`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Single argument**
+**単一引数**
 
 ```sql title=Query
 SELECT arrayUniq([1, 1, 2, 2])
@@ -3883,7 +3594,7 @@ SELECT arrayUniq([1, 1, 2, 2])
 2
 ```
 
-**Multiple argument**
+**複数の引数**
 
 ```sql title=Query
 SELECT arrayUniq([1, 2, 3, 1], [4, 5, 6, 4])
@@ -3893,34 +3604,30 @@ SELECT arrayUniq([1, 2, 3, 1], [4, 5, 6, 4])
 3
 ```
 
-
-
 ## arrayWithConstant {#arrayWithConstant}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
+長さ `length` の配列を作成し、そのすべての要素を定数 `x` で埋めます。
 
-Creates an array of length `length` filled with the constant `x`.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 arrayWithConstant(N, x)
 ```
 
-**Arguments**
+**引数**
 
-- `length` — Number of elements in the array. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `x` — The value of the `N` elements in the array, of any type. 
+* `length` — 配列内の要素数。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `x` — 配列内の `N` 個の要素の値。任意の型の値を取ることができます。
 
-**Returned value**
+**戻り値**
 
-Returns an Array with `N` elements of value `x`. [`Array(T)`](/sql-reference/data-types/array)
+値が `x` の `N` 個の要素を持つ Array を返します。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayWithConstant(3, 1)
@@ -3930,32 +3637,29 @@ SELECT arrayWithConstant(3, 1)
 [1, 1, 1]
 ```
 
-
-
 ## arrayZip {#arrayZip}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
-Combines multiple arrays into a single array. The resulting array contains the corresponding elements of the source arrays grouped into tuples in the listed order of arguments.
+複数の配列を1つの配列に結合します。結果の配列には、引数で指定された順序で、元の配列の対応する要素がタプルにまとめられて含まれます。
 
-**Syntax**
+**構文**
 
 ```sql
 arrayZip(arr1, arr2, ... , arrN)
 ```
 
-**Arguments**
+**引数**
 
-- `arr1, arr2, ... , arrN` — N arrays to combine into a single array. [`Array(T)`](/sql-reference/data-types/array)
+* `arr1, arr2, ... , arrN` — 結合して 1 つの配列にする N 個の配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+元の配列の要素をタプルごとにまとめた配列を返します。タプル内のデータ型は入力配列の型と同一であり、配列が渡された順序と同じ順序になります。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns an array with elements from the source arrays grouped in tuples. Data types in the tuple are the same as types of the input arrays and in the same order as arrays are passed [`Array(T)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayZip(['a', 'b', 'c'], [5, 2, 1]);
@@ -3965,32 +3669,29 @@ SELECT arrayZip(['a', 'b', 'c'], [5, 2, 1]);
 [('a', 5), ('b', 2), ('c', 1)]
 ```
 
-
-
 ## arrayZipUnaligned {#arrayZipUnaligned}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
-Combines multiple arrays into a single array, allowing for unaligned arrays (arrays of differing lengths). The resulting array contains the corresponding elements of the source arrays grouped into tuples in the listed order of arguments.
+複数の配列を 1 つの配列に結合し、長さが揃っていない配列（長さの異なる配列）も扱います。結果の配列には、引数で指定した順序に従い、元の各配列の対応する要素をまとめたタプルが含まれます。
 
-**Syntax**
+**構文**
 
 ```sql
 arrayZipUnaligned(arr1, arr2, ..., arrN)
 ```
 
-**Arguments**
+**引数**
 
-- `arr1, arr2, ..., arrN` — N arrays to combine into a single array. [`Array(T)`](/sql-reference/data-types/array)
+* `arr1, arr2, ..., arrN` — 1 つの配列に結合する N 個の配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**返される値**
 
-**Returned value**
+ソース配列の要素をタプルごとにまとめた配列を返します。タプル内のデータ型は入力配列の型と同一であり、配列が渡された順序どおりに並びます。[`Array(T)`](/sql-reference/data-types/array) または [`Tuple(T1, T2, ...)`](/sql-reference/data-types/tuple)
 
-Returns an array with elements from the source arrays grouped in tuples. Data types in the tuple are the same as types of the input arrays and in the same order as arrays are passed. [`Array(T)`](/sql-reference/data-types/array) or [`Tuple(T1, T2, ...)`](/sql-reference/data-types/tuple)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT arrayZipUnaligned(['a'], [1, 2, 3]);
@@ -4000,36 +3701,32 @@ SELECT arrayZipUnaligned(['a'], [1, 2, 3]);
 [('a', 1),(NULL, 2),(NULL, 3)]
 ```
 
-
-
 ## countEqual {#countEqual}
 
-Introduced in: v1.1
+導入: v1.1
 
+配列内で `x` に等しい要素の個数を返します。`arrayCount(elem -> elem = x, arr)` と同等です。
 
-Returns the number of elements in the array equal to `x`. Equivalent to `arrayCount(elem -> elem = x, arr)`.
+`NULL` 要素は個別の値として扱われます。
 
-`NULL` elements are handled as separate values.
-
-
-**Syntax**
+**構文**
 
 ```sql
 countEqual(arr, x)
 ```
 
-**Arguments**
+**引数**
 
-- `arr` — Array to search. [`Array(T)`](/sql-reference/data-types/array)
-- `x` — Value in the array to count. Any type. 
+* `arr` — 検索対象の配列。[`Array(T)`](/sql-reference/data-types/array)
+* `x` — 配列内でカウントする値。任意の型。
 
-**Returned value**
+**戻り値**
 
-Returns the number of elements in the array equal to `x` [`UInt64`](/sql-reference/data-types/int-uint)
+`x` と等しい配列要素の数を返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT countEqual([1, 2, NULL, NULL], NULL)
@@ -4039,42 +3736,37 @@ SELECT countEqual([1, 2, NULL, NULL], NULL)
 2
 ```
 
-
-
 ## empty {#empty}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+入力配列が空かどうかを確認します。
 
-Checks whether the input array is empty.
-
-An array is considered empty if it does not contain any elements.
+配列に要素が 1 つも含まれていない場合、その配列は空とみなされます。
 
 :::note
-Can be optimized by enabling the [`optimize_functions_to_subcolumns` setting](/operations/settings/settings#optimize_functions_to_subcolumns). With `optimize_functions_to_subcolumns = 1` the function reads only [size0](/sql-reference/data-types/array#array-size) subcolumn instead of reading and processing the whole array column. The query `SELECT empty(arr) FROM TABLE;` transforms to `SELECT arr.size0 = 0 FROM TABLE;`.
+[`optimize_functions_to_subcolumns` 設定](/operations/settings/settings#optimize_functions_to_subcolumns)を有効にすることで最適化できます。`optimize_functions_to_subcolumns = 1` の場合、この関数は配列列全体を読み取って処理する代わりに、[size0](/sql-reference/data-types/array#array-size) サブカラムのみを読み取ります。クエリ `SELECT empty(arr) FROM TABLE;` は `SELECT arr.size0 = 0 FROM TABLE;` に変換されます。
 :::
 
-The function also works for Strings or UUIDs.
-    
+この関数は String 型や UUID 型にも使用できます。
 
-**Syntax**
+**構文**
 
 ```sql
 empty(arr)
 ```
 
-**Arguments**
+**引数**
 
-- `arr` — Input array. [`Array(T)`](/sql-reference/data-types/array)
+* `arr` — 入力配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+空配列の場合は `1`、空でない配列の場合は `0` を返します。戻り値の型は [`UInt8`](/sql-reference/data-types/int-uint) です。
 
-Returns `1` for an empty array or `0` for a non-empty array [`UInt8`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT empty([]);
@@ -4084,31 +3776,29 @@ SELECT empty([]);
 1
 ```
 
-
-
 ## emptyArrayDate {#emptyArrayDate}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
-Returns an empty Date array
+空の Date 型配列を返します。
 
-**Syntax**
+**構文**
 
 ```sql
 emptyArrayDate()
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* なし。
 
-**Returned value**
+**戻り値**
 
-An empty Date array. [`Array(T)`](/sql-reference/data-types/array)
+空の Date 型配列。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT emptyArrayDate
@@ -4118,31 +3808,29 @@ SELECT emptyArrayDate
 []
 ```
 
-
-
 ## emptyArrayDateTime {#emptyArrayDateTime}
 
-Introduced in: v1.1
+導入されたバージョン: v1.1
 
-Returns an empty DateTime array
+空の DateTime 配列を返します。
 
-**Syntax**
+**構文**
 
 ```sql
 emptyArrayDateTime()
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* なし
 
-**Returned value**
+**戻り値**
 
-An empty DateTime array. [`Array(T)`](/sql-reference/data-types/array)
+空の DateTime 型の配列。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT emptyArrayDateTime
@@ -4152,31 +3840,29 @@ SELECT emptyArrayDateTime
 []
 ```
 
-
-
 ## emptyArrayFloat32 {#emptyArrayFloat32}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
-Returns an empty Float32 array
+空の Float32 配列を返します。
 
-**Syntax**
+**構文**
 
 ```sql
 emptyArrayFloat32()
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* なし。
 
-**Returned value**
+**戻り値**
 
-An empty Float32 array. [`Array(T)`](/sql-reference/data-types/array)
+空の Float32 配列。 [`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT emptyArrayFloat32
@@ -4186,31 +3872,29 @@ SELECT emptyArrayFloat32
 []
 ```
 
-
-
 ## emptyArrayFloat64 {#emptyArrayFloat64}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
-Returns an empty Float64 array
+空の Float64 型配列を返します
 
-**Syntax**
+**構文**
 
 ```sql
 emptyArrayFloat64()
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* なし
 
-**Returned value**
+**戻り値**
 
-An empty Float64 array. [`Array(T)`](/sql-reference/data-types/array)
+空の Float64 配列。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT emptyArrayFloat64
@@ -4220,31 +3904,29 @@ SELECT emptyArrayFloat64
 []
 ```
 
-
-
 ## emptyArrayInt16 {#emptyArrayInt16}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
-Returns an empty Int16 array
+空の Int16 配列を返します
 
-**Syntax**
+**構文**
 
 ```sql
 emptyArrayInt16()
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* なし。
 
-**Returned value**
+**戻り値**
 
-An empty Int16 array. [`Array(T)`](/sql-reference/data-types/array)
+空の Int16 配列。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT emptyArrayInt16
@@ -4254,31 +3936,29 @@ SELECT emptyArrayInt16
 []
 ```
 
-
-
 ## emptyArrayInt32 {#emptyArrayInt32}
 
-Introduced in: v1.1
+導入: v1.1
 
-Returns an empty Int32 array
+空の Int32 配列を返します。
 
-**Syntax**
+**構文**
 
 ```sql
 emptyArrayInt32()
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* なし。
 
-**Returned value**
+**戻り値**
 
-An empty Int32 array. [`Array(T)`](/sql-reference/data-types/array)
+空の Int32 配列。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT emptyArrayInt32
@@ -4288,31 +3968,29 @@ SELECT emptyArrayInt32
 []
 ```
 
-
-
 ## emptyArrayInt64 {#emptyArrayInt64}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
-Returns an empty Int64 array
+空の Int64 配列を返します
 
-**Syntax**
+**構文**
 
 ```sql
 emptyArrayInt64()
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* なし。
 
-**Returned value**
+**戻り値**
 
-An empty Int64 array. [`Array(T)`](/sql-reference/data-types/array)
+空の Int64 配列。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT emptyArrayInt64
@@ -4322,31 +4000,29 @@ SELECT emptyArrayInt64
 []
 ```
 
-
-
 ## emptyArrayInt8 {#emptyArrayInt8}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
-Returns an empty Int8 array
+空の Int8 型の配列を返します。
 
-**Syntax**
+**構文**
 
 ```sql
 emptyArrayInt8()
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* なし。
 
-**Returned value**
+**戻り値**
 
-An empty Int8 array. [`Array(T)`](/sql-reference/data-types/array)
+空の Int8 配列。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT emptyArrayInt8
@@ -4356,31 +4032,29 @@ SELECT emptyArrayInt8
 []
 ```
 
-
-
 ## emptyArrayString {#emptyArrayString}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
-Returns an empty String array
+空の String 型配列を返します。
 
-**Syntax**
+**構文**
 
 ```sql
 emptyArrayString()
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* なし。
 
-**Returned value**
+**戻り値**
 
-An empty String array. [`Array(T)`](/sql-reference/data-types/array)
+空の String 型配列。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT emptyArrayString
@@ -4390,34 +4064,29 @@ SELECT emptyArrayString
 []
 ```
 
-
-
 ## emptyArrayToSingle {#emptyArrayToSingle}
 
-Introduced in: v1.1
+導入されたバージョン: v1.1
 
+空の配列を受け取り、デフォルト値と同じ値を持つ 1 要素の配列を返します。
 
-Accepts an empty array and returns a one-element array that is equal to the default value.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 emptyArrayToSingle(arr)
 ```
 
-**Arguments**
+**引数**
 
-- `arr` — An empty array. [`Array(T)`](/sql-reference/data-types/array)
+* `arr` — 空の配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**返される値**
 
-**Returned value**
+配列要素型 `T` のデフォルト値 1 つを含む配列。[`Array(T)`](/sql-reference/data-types/array)
 
-An array with a single value of the Array's default type. [`Array(T)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Basic example**
+**基本例**
 
 ```sql title=Query
 CREATE TABLE test (
@@ -4439,31 +4108,29 @@ SELECT emptyArrayToSingle(a), emptyArrayToSingle(b), emptyArrayToSingle(c) FROM 
 └───────────────────────┴───────────────────────┴─────────────────────────┘
 ```
 
-
-
 ## emptyArrayUInt16 {#emptyArrayUInt16}
 
-Introduced in: v1.1
+導入: v1.1
 
-Returns an empty UInt16 array
+空の UInt16 配列を返します。
 
-**Syntax**
+**構文**
 
 ```sql
 emptyArrayUInt16()
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* なし。
 
-**Returned value**
+**戻り値**
 
-An empty UInt16 array. [`Array(T)`](/sql-reference/data-types/array)
+空の UInt16 配列。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT emptyArrayUInt16
@@ -4473,31 +4140,29 @@ SELECT emptyArrayUInt16
 []
 ```
 
-
-
 ## emptyArrayUInt32 {#emptyArrayUInt32}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
-Returns an empty UInt32 array
+空の UInt32 型の配列を返します。
 
-**Syntax**
+**構文**
 
 ```sql
 emptyArrayUInt32()
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* なし。
 
-**Returned value**
+**戻り値**
 
-An empty UInt32 array. [`Array(T)`](/sql-reference/data-types/array)
+空の UInt32 配列。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT emptyArrayUInt32
@@ -4507,31 +4172,29 @@ SELECT emptyArrayUInt32
 []
 ```
 
-
-
 ## emptyArrayUInt64 {#emptyArrayUInt64}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
-Returns an empty UInt64 array
+空の UInt64 型の配列を返します。
 
-**Syntax**
+**構文**
 
 ```sql
 emptyArrayUInt64()
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* なし。
 
-**Returned value**
+**返り値**
 
-An empty UInt64 array. [`Array(T)`](/sql-reference/data-types/array)
+空の UInt64 配列。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT emptyArrayUInt64
@@ -4541,31 +4204,29 @@ SELECT emptyArrayUInt64
 []
 ```
 
-
-
 ## emptyArrayUInt8 {#emptyArrayUInt8}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
-Returns an empty UInt8 array
+空の UInt8 配列を返します。
 
-**Syntax**
+**構文**
 
 ```sql
 emptyArrayUInt8()
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* なし。
 
-**Returned value**
+**戻り値**
 
-An empty UInt8 array. [`Array(T)`](/sql-reference/data-types/array)
+空のUInt8配列。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT emptyArrayUInt8
@@ -4575,32 +4236,30 @@ SELECT emptyArrayUInt8
 []
 ```
 
-
-
 ## has {#has}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
-Returns whether the array contains the specified element.
+指定した要素が配列に含まれているかどうかを返します。
 
-**Syntax**
+**構文**
 
 ```sql
 has(arr, x)
 ```
 
-**Arguments**
+**引数**
 
-- `arr` — The source array. [`Array(T)`](/sql-reference/data-types/array)
-- `x` — The value to search for in the array. 
+* `arr` — 元の配列。[`Array(T)`](/sql-reference/data-types/array)
+* `x` — 配列内で検索する値。
 
-**Returned value**
+**戻り値**
 
-Returns `1` if the array contains the specified element, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+配列が指定した要素を含む場合は `1` を、含まない場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
-**Examples**
+**例**
 
-**Basic usage**
+**基本的な使用例**
 
 ```sql title=Query
 SELECT has([1, 2, 3], 2)
@@ -4610,7 +4269,7 @@ SELECT has([1, 2, 3], 2)
 1
 ```
 
-**Not found**
+**見つかりませんでした**
 
 ```sql title=Query
 SELECT has([1, 2, 3], 4)
@@ -4620,42 +4279,37 @@ SELECT has([1, 2, 3], 4)
 0
 ```
 
-
-
 ## hasAll {#hasAll}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+ある配列が別の配列の部分集合であるかどうかを確認します。
 
-Checks whether one array is a subset of another.
+* 空の配列は任意の配列の部分集合です。
+* `Null` は値として処理されます。
+* どちらの配列においても、値の順序は問題になりません。
 
-- An empty array is a subset of any array.
-- `Null` is processed as a value.
-- The order of values in both the arrays does not matter.
-
-
-**Syntax**
+**構文**
 
 ```sql
 hasAll(set, subset)
 ```
 
-**Arguments**
+**引数**
 
-- `set` — Array of any type with a set of elements. [`Array(T)`](/sql-reference/data-types/array)
-- `subset` — Array of any type that shares a common supertype with `set` containing elements that should be tested to be a subset of `set`. [`Array(T)`](/sql-reference/data-types/array)
+* `set` — 要素の集合を持つ任意の型の配列。[`Array(T)`](/sql-reference/data-types/array)
+* `subset` — `set` と共通のスーパータイプを持ち、`set` の部分集合かどうかをテストする対象の要素を含む任意の型の配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**返り値**
 
-**Returned value**
+* `set` に `subset` のすべての要素が含まれている場合は `1`。
+* それ以外の場合は `0`。
 
-- `1`, if `set` contains all of the elements from `subset`.
-- `0`, otherwise.
+`set` と `subset` の要素が共通のスーパータイプを持たない場合は、`NO_COMMON_TYPE` 例外をスローします。
 
-Raises a `NO_COMMON_TYPE` exception if the set and subset elements do not share a common supertype.
+**使用例**
 
-**Examples**
-
-**Empty arrays**
+**空配列**
 
 ```sql title=Query
 SELECT hasAll([], [])
@@ -4665,7 +4319,7 @@ SELECT hasAll([], [])
 1
 ```
 
-**Arrays containing NULL values**
+**NULL 値を含む配列**
 
 ```sql title=Query
 SELECT hasAll([1, Null], [Null])
@@ -4675,7 +4329,7 @@ SELECT hasAll([1, Null], [Null])
 1
 ```
 
-**Arrays containing values of a different type**
+**異なる型の値を含む配列**
 
 ```sql title=Query
 SELECT hasAll([1.0, 2, 3, 4], [1, 3])
@@ -4685,7 +4339,7 @@ SELECT hasAll([1.0, 2, 3, 4], [1, 3])
 1
 ```
 
-**Arrays containing String values**
+**文字列値を含む配列**
 
 ```sql title=Query
 SELECT hasAll(['a', 'b'], ['a'])
@@ -4695,7 +4349,7 @@ SELECT hasAll(['a', 'b'], ['a'])
 1
 ```
 
-**Arrays without a common type**
+**共通の型を持たない配列**
 
 ```sql title=Query
 SELECT hasAll([1], ['a'])
@@ -4705,7 +4359,7 @@ SELECT hasAll([1], ['a'])
 NO_COMMON_TYPE例外を発生させます
 ```
 
-**Array of arrays**
+**配列の配列**
 
 ```sql title=Query
 SELECT hasAll([[1, 2], [3, 4]], [[1, 2], [3, 5]])
@@ -4715,41 +4369,36 @@ SELECT hasAll([[1, 2], [3, 4]], [[1, 2], [3, 5]])
 0
 ```
 
-
-
 ## hasAny {#hasAny}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+2 つの配列に、少なくとも 1 つ共通する要素（交差）があるかどうかを判定します。
 
-Checks whether two arrays have intersection by some elements.
+* `Null` は値として扱われます。
+* 両方の配列内の値の順序は関係ありません。
 
-- `Null` is processed as a value.
-- The order of the values in both of the arrays does not matter.
-
-
-**Syntax**
+**構文**
 
 ```sql
 hasAny(arr_x, arr_y)
 ```
 
-**Arguments**
+**引数**
 
-- `arr_x` — Array of any type with a set of elements. [`Array(T)`](/sql-reference/data-types/array)
-- `arr_y` — Array of any type that shares a common supertype with array `arr_x`. [`Array(T)`](/sql-reference/data-types/array)
+* `arr_x` — 任意の型の要素を含む配列。[`Array(T)`](/sql-reference/data-types/array)
+* `arr_y` — 配列 `arr_x` と共通のスーパータイプを持つ任意の型の要素からなる配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+* `arr_x` と `arr_y` に少なくとも 1 つ同じ要素がある場合は `1`。
+* それ以外の場合は `0`。
 
-- `1`, if `arr_x` and `arr_y` have one similar element at least.
-- `0`, otherwise.
+2 つの配列の要素のいずれかが共通のスーパータイプを持たない場合、`NO_COMMON_TYPE` 例外を送出します。
 
-Raises a `NO_COMMON_TYPE` exception if any of the elements of the two arrays do not share a common supertype.
+**例**
 
-**Examples**
-
-**One array is empty**
+**一方の配列が空の場合**
 
 ```sql title=Query
 SELECT hasAny([1], [])
@@ -4759,7 +4408,7 @@ SELECT hasAny([1], [])
 0
 ```
 
-**Arrays containing NULL values**
+**NULL 値を含む配列**
 
 ```sql title=Query
 SELECT hasAny([Null], [Null, 1])
@@ -4769,7 +4418,7 @@ SELECT hasAny([Null], [Null, 1])
 1
 ```
 
-**Arrays containing values of a different type**
+**異なる型の値を含む配列**
 
 ```sql title=Query
 SELECT hasAny([-128, 1., 512], [1])
@@ -4779,7 +4428,7 @@ SELECT hasAny([-128, 1., 512], [1])
 1
 ```
 
-**Arrays without a common type**
+**共通の型を持たない配列**
 
 ```sql title=Query
 SELECT hasAny([[1, 2], [3, 4]], ['a', 'c'])
@@ -4789,7 +4438,7 @@ SELECT hasAny([[1, 2], [3, 4]], ['a', 'c'])
 `NO_COMMON_TYPE` 例外を発生させます
 ```
 
-**Array of arrays**
+**配列の配列**
 
 ```sql title=Query
 SELECT hasAll([[1, 2], [3, 4]], [[1, 2], [1, 2]])
@@ -4799,45 +4448,40 @@ SELECT hasAll([[1, 2], [3, 4]], [[1, 2], [1, 2]])
 1
 ```
 
-
-
 ## hasSubstr {#hasSubstr}
 
-Introduced in: v20.6
+導入バージョン: v20.6
 
+array2 のすべての要素が、同一の順序で array1 内に出現するかどうかを判定します。
+したがって、この関数は array1 = prefix + array2 + suffix の場合に限り `1` を返します。
 
-Checks whether all the elements of array2 appear in a array1 in the same exact order.
-Therefore, the function will return `1`, if and only if array1 = prefix + array2 + suffix.
+言い換えると、この関数は `hasAll` 関数と同様に、array2 のすべての要素が array1 に含まれているかどうかを確認します。
+さらに、それらの要素が array1 と array2 の両方で同じ順序で現れることも確認します。
 
-In other words, the functions will check whether all the elements of array2 are contained in array1 like the `hasAll` function.
-In addition, it will check that the elements are observed in the same order in both array1 and array2.
+* array2 が空の場合、関数は `1` を返します。
+* `Null` は値として扱われます。つまり、`hasSubstr([1, 2, NULL, 3, 4], [2,3])` は `0` を返します。一方、`hasSubstr([1, 2, NULL, 3, 4], [2,NULL,3])` は `1` を返します。
+* 両方の配列における要素の順序は重要です。
 
-- The function will return `1` if array2 is empty.
-- `Null` is processed as a value. In other words `hasSubstr([1, 2, NULL, 3, 4], [2,3])` will return `0`. However, `hasSubstr([1, 2, NULL, 3, 4], [2,NULL,3])` will return `1`
-- The order of values in both the arrays does matter.
+2 つの配列のいずれかの要素が共通のスーパータイプを持たない場合、`NO_COMMON_TYPE` 例外をスローします。
 
-Raises a `NO_COMMON_TYPE` exception if any of the elements of the two arrays do not share a common supertype.
-
-
-**Syntax**
+**構文**
 
 ```sql
 hasSubstr(arr1, arr2)
 ```
 
-**Arguments**
+**引数**
 
-- `arr1` — Array of any type with a set of elements. [`Array(T)`](/sql-reference/data-types/array)
-- `arr2` — Array of any type with a set of elements. [`Array(T)`](/sql-reference/data-types/array)
+* `arr1` — 任意の型の要素からなる配列。[`Array(T)`](/sql-reference/data-types/array)
+* `arr2` — 任意の型の要素からなる配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+配列 `arr1` が配列 `arr2` を含む場合は `1` を返します。そうでない場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if array `arr1` contains array `arr2`. Otherwise, returns `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Both arrays are empty**
+**両方の配列が空の場合**
 
 ```sql title=Query
 SELECT hasSubstr([], [])
@@ -4847,7 +4491,7 @@ SELECT hasSubstr([], [])
 1
 ```
 
-**Arrays containing NULL values**
+**NULL 値を含む配列**
 
 ```sql title=Query
 SELECT hasSubstr([1, Null], [Null])
@@ -4857,7 +4501,7 @@ SELECT hasSubstr([1, Null], [Null])
 1
 ```
 
-**Arrays containing values of a different type**
+**異なる型の値を含む配列**
 
 ```sql title=Query
 SELECT hasSubstr([1.0, 2, 3, 4], [1, 3])
@@ -4867,7 +4511,7 @@ SELECT hasSubstr([1.0, 2, 3, 4], [1, 3])
 0
 ```
 
-**Arrays containing strings**
+**文字列を含む配列**
 
 ```sql title=Query
 SELECT hasSubstr(['a', 'b'], ['a'])
@@ -4877,7 +4521,7 @@ SELECT hasSubstr(['a', 'b'], ['a'])
 1
 ```
 
-**Arrays with valid ordering**
+**有効な順序付けのある配列**
 
 ```sql title=Query
 SELECT hasSubstr(['a', 'b' , 'c'], ['a', 'b'])
@@ -4887,7 +4531,7 @@ SELECT hasSubstr(['a', 'b' , 'c'], ['a', 'b'])
 1
 ```
 
-**Arrays with invalid ordering**
+**不正な順序の配列**
 
 ```sql title=Query
 SELECT hasSubstr(['a', 'b' , 'c'], ['a', 'c'])
@@ -4897,7 +4541,7 @@ SELECT hasSubstr(['a', 'b' , 'c'], ['a', 'c'])
 0
 ```
 
-**Array of arrays**
+**配列の配列**
 
 ```sql title=Query
 SELECT hasSubstr([[1, 2], [3, 4], [5, 6]], [[1, 2], [3, 4]])
@@ -4907,7 +4551,7 @@ SELECT hasSubstr([[1, 2], [3, 4], [5, 6]], [[1, 2], [3, 4]])
 1
 ```
 
-**Arrays without a common type**
+**共通の型を持たない配列**
 
 ```sql title=Query
 SELECT hasSubstr([1, 2, NULL, 3, 4], ['a'])
@@ -4917,38 +4561,33 @@ SELECT hasSubstr([1, 2, NULL, 3, 4], ['a'])
 `NO_COMMON_TYPE` 例外を発生させます
 ```
 
-
-
 ## indexOf {#indexOf}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+配列内に値 &#39;x&#39; を持つ要素が存在する場合、その最初の要素のインデックス（1 から始まる）を返します。
+配列に検索対象の値が含まれていない場合、関数は `0` を返します。
 
-Returns the index of the first element with value 'x' (starting from 1) if it is in the array.
-If the array does not contain the searched-for value, the function returns `0`.
+`NULL` に設定された要素は通常の値として扱われます。
 
-Elements set to `NULL` are handled as normal values.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 indexOf(arr, x)
 ```
 
-**Arguments**
+**引数**
 
-- `arr` — An array to search in for `x`. [`Array(T)`](/sql-reference/data-types/array)
-- `x` — Value of the first matching element in `arr` for which to return an index. [`UInt64`](/sql-reference/data-types/int-uint)
+* `arr` — `x` を検索する対象の配列。[`Array(T)`](/sql-reference/data-types/array)
+* `x` — `arr` 内で最初に一致し、そのインデックスを返す要素の値。[`UInt64`](/sql-reference/data-types/int-uint)
 
+**返り値**
 
-**Returned value**
+`arr` 内に `x` が存在する場合、最初の `x` のインデックス（1 始まり）を返します。存在しない場合は `0` を返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the index (numbered from one) of the first `x` in `arr` if it exists. Otherwise, returns `0`. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Basic example**
+**基本的な例**
 
 ```sql title=Query
 SELECT indexOf([5, 4, 1, 3], 3)
@@ -4958,7 +4597,7 @@ SELECT indexOf([5, 4, 1, 3], 3)
 4
 ```
 
-**Array with nulls**
+**NULL 値を含む配列**
 
 ```sql title=Query
 SELECT indexOf([1, 3, NULL, NULL], NULL)
@@ -4968,41 +4607,36 @@ SELECT indexOf([1, 3, NULL, NULL], NULL)
 3
 ```
 
-
-
 ## indexOfAssumeSorted {#indexOfAssumeSorted}
 
-Introduced in: v24.12
+導入バージョン: v24.12
 
-
-Returns the index of the first element with value 'x' (starting from `1`) if it is in the array.
-If the array does not contain the searched-for value, the function returns `0`.
+配列内に値 &#39;x&#39; がある場合、最初に現れる要素のインデックス（`1` から開始）を返します。
+配列に検索対象の値が含まれていない場合、関数は `0` を返します。
 
 :::note
-Unlike the `indexOf` function, this function assumes that the array is sorted in
-ascending order. If the array is not sorted, results are undefined.
+`indexOf` 関数とは異なり、この関数は配列が昇順にソートされていることを前提とします。
+配列がソートされていない場合、結果は未定義です。
 :::
-    
 
-**Syntax**
+**構文**
 
 ```sql
 indexOfAssumeSorted(arr, x)
 ```
 
-**Arguments**
+**引数**
 
-- `arr` — A sorted array to search. [`Array(T)`](/sql-reference/data-types/array)
-- `x` — Value of the first matching element in sorted `arr` for which to return an index. [`UInt64`](/sql-reference/data-types/int-uint)
+* `arr` — 検索対象となるソート済み配列。[`Array(T)`](/sql-reference/data-types/array)
+* `x` — ソート済み `arr` 内で、インデックスを取得する対象となる最初に一致する要素の値。[`UInt64`](/sql-reference/data-types/int-uint)
 
+**返り値**
 
-**Returned value**
+`x` が存在する場合は、`arr` 内で最初に現れる `x` のインデックス（1 から始まる番号）を返します。存在しない場合は `0` を返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the index (numbered from one) of the first `x` in `arr` if it exists. Otherwise, returns `0`. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Basic example**
+**基本的な例**
 
 ```sql title=Query
 SELECT indexOfAssumeSorted([1, 3, 3, 3, 4, 4, 5], 4)
@@ -5012,46 +4646,41 @@ SELECT indexOfAssumeSorted([1, 3, 3, 3, 4, 4, 5], 4)
 5
 ```
 
-
-
 ## length {#length}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+文字列または配列の長さを計算します。
 
-Calculates the length of a string or array.
+* String または FixedString 引数の場合: 文字列内のバイト数を計算します。
+* Array 引数の場合: 配列内の要素数を計算します。
+* FixedString 引数に適用された場合、この関数は定数式になります。
 
-- For String or FixedString arguments: calculates the number of bytes in the string.
-- For Array arguments: calculates the number of elements in the array.
-- If applied to a FixedString argument, the function is a constant expression.
+文字列のバイト数は、Unicode の「コードポイント」の数とも、
+Unicode の「書記素クラスター」（一般的に「文字」と呼ぶもの）の数とも、
+見た目上の文字列幅とも一致しないことに注意してください。
 
-Please note that the number of bytes in a string is not the same as the number of
-Unicode "code points" and it is not the same as the number of Unicode "grapheme clusters"
-(what we usually call "characters") and it is not the same as the visible string width.
+文字列に ASCII の NULL バイトを含めても問題はなく、それらも長さとしてカウントされます。
 
-It is ok to have ASCII NULL bytes in strings, and they will be counted as well.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 length(x)
 ```
 
-**Aliases**: `OCTET_LENGTH`
+**エイリアス**: `OCTET_LENGTH`
 
-**Arguments**
+**引数**
 
-- `x` — Value for which to calculate the number of bytes (for String/FixedString) or elements (for Array). [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring) or [`Array(T)`](/sql-reference/data-types/array)
+* `x` — バイト数（String/FixedString の場合）または要素数（Array の場合）を計算する対象の値。[`String`](/sql-reference/data-types/string)、[`FixedString`](/sql-reference/data-types/fixedstring)、または [`Array(T)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+String/FixedString `x` のバイト数、または配列 `x` の要素数を返します。型は [`UInt64`](/sql-reference/data-types/int-uint) です。
 
-Returns the number of number of bytes in the String/FixedString `x` / the number of elements in array `x` [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**String example**
+**String の例**
 
 ```sql title=Query
 SELECT length('Hello, world!')
@@ -5061,7 +4690,7 @@ SELECT length('Hello, world!')
 13
 ```
 
-**Array example**
+**配列の例**
 
 ```sql title=Query
 SELECT length(['Hello', 'world'])
@@ -5071,7 +4700,7 @@ SELECT length(['Hello', 'world'])
 2
 ```
 
-**constexpr example**
+**constexpr の例**
 
 ```sql title=Query
 WITH 'hello' || toString(number) AS str
@@ -5089,7 +4718,7 @@ FROM numbers(3)
 └────────┴────────────────────────┴──────────────────────────────┘
 ```
 
-**unicode example**
+**Unicodeの例**
 
 ```sql title=Query
 SELECT 'ёлка' AS str1, length(str1), lengthUTF8(str1), normalizeUTF8NFKD(str1) AS str2, length(str2), lengthUTF8(str2)
@@ -5101,7 +4730,7 @@ SELECT 'ёлка' AS str1, length(str1), lengthUTF8(str1), normalizeUTF8NFKD(str
 └──────┴──────────────┴──────────────────┴──────┴──────────────┴──────────────────┘
 ```
 
-**ascii_vs_utf8 example**
+**ascii&#95;vs&#95;utf8 の例**
 
 ```sql title=Query
 SELECT 'ábc' AS str, length(str), lengthUTF8(str)
@@ -5113,42 +4742,37 @@ SELECT 'ábc' AS str, length(str), lengthUTF8(str)
 └─────┴──────────────┴─────────────────┘
 ```
 
-
-
 ## notEmpty {#notEmpty}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+入力配列が空でないかどうかをチェックします。
 
-Checks whether the input array is non-empty.
-
-An array is considered non-empty if it contains at least one element.
+少なくとも 1 つの要素を含む配列は、空でないと見なされます。
 
 :::note
-Can be optimized by enabling the [`optimize_functions_to_subcolumns`](/operations/settings/settings#optimize_functions_to_subcolumns) setting. With `optimize_functions_to_subcolumns = 1` the function reads only [size0](/sql-reference/data-types/array#array-size) subcolumn instead of reading and processing the whole array column. The query `SELECT notEmpty(arr) FROM table` transforms to `SELECT arr.size0 != 0 FROM TABLE`.
+[`optimize_functions_to_subcolumns`](/operations/settings/settings#optimize_functions_to_subcolumns) 設定を有効にすることで最適化できます。`optimize_functions_to_subcolumns = 1` の場合、この関数は配列列全体を読み取って処理する代わりに、[size0](/sql-reference/data-types/array#array-size) サブカラムのみを読み取ります。クエリ `SELECT notEmpty(arr) FROM table` は `SELECT arr.size0 != 0 FROM TABLE` に変換されます。
 :::
 
-The function also works for Strings or UUIDs.
-    
+この関数は String 型や UUID 型に対しても動作します。
 
-**Syntax**
+**構文**
 
 ```sql
 notEmpty(arr)
 ```
 
-**Arguments**
+**引数**
 
-- `arr` — Input array. [`Array(T)`](/sql-reference/data-types/array)
+* `arr` — 入力配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**戻り値**
 
-**Returned value**
+配列が空でない場合は `1`、空の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` for a non-empty array or `0` for an empty array [`UInt8`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT notEmpty([1,2]);
@@ -5158,41 +4782,41 @@ SELECT notEmpty([1,2]);
 1
 ```
 
-
-
 ## range {#range}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+`start` から `end - 1` までを `step` ごとに並べた数値の配列を返します。
 
-Returns an array of numbers from `start` to `end - 1` by `step`.
+サポートされている型は次のとおりです:
 
-The supported types are:
-- `UInt8/16/32/64`
-- `Int8/16/32/64]`
+* `UInt8/16/32/64`
 
-- All arguments `start`, `end`, `step` must be one of the above supported types. Elements of the returned array will be a super type of the arguments.
-- An exception is thrown if the function returns an array with a total length more than the number of elements specified by setting [`function_range_max_elements_in_block`](../../operations/settings/settings.md#function_range_max_elements_in_block).
-- Returns `NULL` if any argument has Nullable(nothing) type. An exception is thrown if any argument has `NULL` value (Nullable(T) type).
-    
+* `Int8/16/32/64`
 
-**Syntax**
+* すべての引数 `start`、`end`、`step` は上記のいずれかのサポート対象の型でなければなりません。返される配列の要素の型は、引数の上位型になります。
+
+* 関数が返す配列の要素数の合計が、設定 [`function_range_max_elements_in_block`](../../operations/settings/settings.md#function_range_max_elements_in_block) で指定された要素数を超える場合は、例外がスローされます。
+
+* いずれかの引数が Nullable(nothing) 型の場合は `NULL` を返します。いずれかの引数が `NULL` 値（Nullable(T) 型）を持つ場合は、例外がスローされます。
+
+**構文**
 
 ```sql
 range([start, ] end [, step])
 ```
 
-**Arguments**
+**引数**
 
-- `start` — Optional. The first element of the array. Required if `step` is used. Default value: `0`. - `end` — Required. The number before which the array is constructed. - `step` — Optional. Determines the incremental step between each element in the array. Default value: `1`. 
+* `start` — 省略可能。配列の先頭要素。`step` を使用する場合は必須。デフォルト値: `0`。 - `end` — 必須。配列に含める値の上限となる数値（この値の直前までが配列に含まれる）。 - `step` — 省略可能。配列内の各要素間の増分値を指定する。デフォルト値: `1`。
 
-**Returned value**
+**戻り値**
 
-Array of numbers from `start` to `end - 1` by `step`. [`Array(T)`](/sql-reference/data-types/array)
+`start` から `end - 1` までを `step` 刻みで並べた数値の配列。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT range(5), range(1, 5), range(1, 5, 2), range(-1, 5, 2);
@@ -5204,35 +4828,30 @@ SELECT range(5), range(1, 5), range(1, 5, 2), range(-1, 5, 2);
 └─────────────┴─────────────┴────────────────┴─────────────────┘
 ```
 
-
-
 ## replicate {#replicate}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+単一の値からなる配列を作成します。
 
-Creates an array with a single value.
-
-
-**Syntax**
+**構文**
 
 ```sql
 replicate(x, arr)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — The value to fill the result array with. [`Any`](/sql-reference/data-types)
-- `arr` — An array. [`Array(T)`](/sql-reference/data-types/array)
+* `x` — 結果配列を埋める値。[`Any`](/sql-reference/data-types)
+* `arr` — 配列。[`Array(T)`](/sql-reference/data-types/array)
 
+**返される値**
 
-**Returned value**
+`arr` と同じ長さで、値 `x` が詰められた配列を返します。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns an array of the same length as `arr` filled with value `x`. [`Array(T)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT replicate(1, ['a', 'b', 'c']);
@@ -5244,32 +4863,29 @@ SELECT replicate(1, ['a', 'b', 'c']);
 └─────────────────────────────────┘
 ```
 
-
-
 ## reverse {#reverse}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
-Reverses the order of the elements in the input array or the characters in the input string.
+入力配列の要素、または入力文字列の文字の順序を反転します。
 
-**Syntax**
+**構文**
 
 ```sql
 reverse(arr | str)
 ```
 
-**Arguments**
+**引数**
 
-- `arr | str` — The source array or string. [`Array(T)`](/sql-reference/data-types/array) or [`String`](/sql-reference/data-types/string)
+* `arr | str` — 元の配列または文字列。[`Array(T)`](/sql-reference/data-types/array) または [`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+要素または文字の順序を逆にした配列または文字列を返します。
 
-Returns an array or string with the order of elements or characters reversed.
+**例**
 
-**Examples**
-
-**Reverse array**
+**配列を逆順にする**
 
 ```sql title=Query
 SELECT reverse([1, 2, 3, 4]);
@@ -5279,7 +4895,7 @@ SELECT reverse([1, 2, 3, 4]);
 [4, 3, 2, 1]
 ```
 
-**Reverse string**
+**文字列の反転**
 
 ```sql title=Query
 SELECT reverse('abcd');

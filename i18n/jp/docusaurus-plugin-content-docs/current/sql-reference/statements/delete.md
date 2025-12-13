@@ -61,7 +61,7 @@ mutation は削除済みとマークされた行を物理的には削除せず�
 `DELETE` には `ALTER DELETE` 権限が必要です。特定のユーザーに対して特定のテーブルで `DELETE` 文を有効化するには、次のコマンドを実行します。
 
 ```sql
-GRANT ALTER DELETE ON db.table to username;
+GRANT ALTER DELETE ON db.table TO username;
 ```
 
 ## ClickHouse における軽量な DELETE の内部動作 {#how-lightweight-deletes-work-internally-in-clickhouse}

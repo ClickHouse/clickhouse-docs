@@ -60,9 +60,9 @@ SSH サーバー機能を有効にするには、`config.xml` 内で次のセク
 ```xml
 <tcp_ssh_port>9022</tcp_ssh_port>
 <ssh_server>
-   <host_rsa_key>path-to-the-key</host_rsa_key>
-   <!--host_ecdsa_key>path-to-the-key</host_ecdsa_key-->
-   <!--host_ed25519_key>path-to-the-key</host_ed25519_key-->
+   <host_rsa_key>鍵へのパス</host_rsa_key>
+   <!--host_ecdsa_key>鍵へのパス</host_ecdsa_key-->
+   <!--host_ed25519_key>鍵へのパス</host_ed25519_key-->
 </ssh_server>
 ```
 

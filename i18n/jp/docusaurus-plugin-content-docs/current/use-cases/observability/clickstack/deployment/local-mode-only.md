@@ -39,8 +39,8 @@ import JSONSupport from '@site/i18n/jp/docusaurus-plugin-content-docs/current/us
   ローカルモードでは、HyperDX UI がポート 8080 で起動します。
 
   ```shell
-docker run -p 8080:8080 clickhouse/clickstack-local:latest
-```
+  docker run -p 8080:8080 clickhouse/clickstack-local:latest
+  ```
 
   ### HyperDX UI にアクセスする
 

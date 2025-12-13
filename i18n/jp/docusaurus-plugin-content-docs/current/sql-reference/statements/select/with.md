@@ -63,7 +63,7 @@ ClickHouse は識別子を可能な限り最も近いスコープで解決する
 ### 構文 {#common-scalar-expressions-syntax}
 
 ```sql
-WITH <expression> AS <identifier>
+WITH <式> AS <識別子>
 ```
 
 ### 例 {#common-scalar-expressions-examples}
@@ -139,7 +139,7 @@ ORDER BY s;
 **例 5:** スカラーサブクエリ結果の使用
 
 ```sql
-/* this example would return TOP 10 of most huge tables */
+/* この例は最も大きいテーブルの上位10件を返します */
 WITH
     (
         SELECT sum(bytes)
@@ -350,7 +350,7 @@ SELECT DISTINCT * FROM search_graph ORDER BY from;
 ```
 
 ```text
-Code: 306. DB::Exception: Received from localhost:9000. DB::Exception: Maximum recursive CTE evaluation depth (1000) exceeded, during evaluation of search_graph AS (SELECT from, to, label FROM graph AS g UNION ALL SELECT g.from, g.to, g.label FROM graph AS g, search_graph AS sg WHERE g.from = sg.to). Consider raising max_recursive_cte_evaluation_depth setting.: While executing RecursiveCTESource. (TOO_DEEP_RECURSION)
+コード: 306. DB::Exception: localhost:9000 から受信。DB::Exception: 再帰 CTE の評価深度の最大値 (1000) を超過しました。評価対象: search_graph AS (SELECT from, to, label FROM graph AS g UNION ALL SELECT g.from, g.to, g.label FROM graph AS g, search_graph AS sg WHERE g.from = sg.to)。max_recursive_cte_evaluation_depth 設定値の引き上げを検討してください。: RecursiveCTESource の実行中。(TOO_DEEP_RECURSION)
 ```
 
 サイクルを処理する標準的な方法は、すでに訪問済みのノードを保持する配列を計算することです。

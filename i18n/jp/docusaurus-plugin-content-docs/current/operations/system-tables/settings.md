@@ -130,58 +130,15 @@ default:     0
 alias_for:   
 is_obsolete: 0
 tier:        Production
- ```
+```
 
-Row 3:
-──────
-name:        min&#95;insert&#95;block&#95;size&#95;rows&#95;for&#95;materialized&#95;views
-value:       0
-changed:     0
-description: `INSERT` クエリでテーブルに挿入できるブロック内の最小行数を設定します。より小さいサイズのブロックは、より大きなブロックにまとめられます。この設定は、[マテリアライズドビュー](../../sql-reference/statements/create/view.md) に挿入されるブロックに対してのみ適用されます。この設定を調整することで、マテリアライズドビューへの書き込み時のブロックのまとめを制御し、過剰なメモリ使用を回避できます。
+`WHERE changed` は、例えば以下を確認する際に有用です：
 
-Possible values:
+- 設定ファイルの設定が正しく読み込まれ、使用されているか
+- 現在のセッションで変更された設定
 
-* 任意の正の整数。
-* 0 — まとめ処理を無効にします。
+<!-- -->
 
-**See Also**
-
-* [min&#95;insert&#95;block&#95;size&#95;rows](/operations/settings/settings#min_insert_block_size_rows)
-  min:         ᴺᵁᴸᴸ
-  max:         ᴺᵁᴸᴸ
-  readonly:    0
-  type:        UInt64
-  default:     0
-  alias&#95;for:\
-  is&#95;obsolete: 0
-  tier:        Production
-
-Row 4:
-──────
-name:        min&#95;insert&#95;block&#95;size&#95;bytes&#95;for&#95;materialized&#95;views
-value:       0
-changed:     0
-description: `INSERT` クエリでテーブルに挿入できるブロック内の最小バイト数を設定します。より小さいサイズのブロックは、より大きなブロックにまとめられます。この設定は、[マテリアライズドビュー](../../sql-reference/statements/create/view.md) に挿入されるブロックに対してのみ適用されます。この設定を調整することで、マテリアライズドビューへの書き込み時のブロックのまとめを制御し、過剰なメモリ使用を回避できます。
-
-Possible values:
-
-* 任意の正の正の整数。
-* 0 — まとめ処理を無効にします。
-
-**See also**
-
-* [min&#95;insert&#95;block&#95;size&#95;bytes](/operations/settings/settings#min_insert_block_size_bytes)
-  min:         ᴺᵁᴸᴸ
-  max:         ᴺᵁᴸᴸ
-  readonly:    0
-  type:        UInt64
-  default:     0
-  alias&#95;for:\
-  is&#95;obsolete: 0
-  tier:        Production
-
-````sql
-SELECT * FROM system.settings WHERE changed AND name='load_balancing'
 ```sql
 SELECT * FROM system.settings WHERE changed AND name='load_balancing'
 ````

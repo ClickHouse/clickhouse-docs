@@ -159,18 +159,18 @@ New York City のタクシーデータセットには、数百万件のタクシ
 - 平均チップ額を計算する:
 
   ```sql
-    SELECT round(avg(tip_amount), 2) FROM trips
-    ```
+  SELECT round(avg(tip_amount), 2) FROM trips
+  ```
 
     <details>
   <summary>期待される出力</summary>
   <p>
   
   ```response
-    ┌─round(avg(tip_amount), 2)─┐
-    │                      1.68 │
-    └───────────────────────────┘
-    ```
+  ┌─round(avg(tip_amount), 2)─┐
+  │                      1.68 │
+  └───────────────────────────┘
+  ```
 
     </p>
   </details>
@@ -178,12 +178,12 @@ New York City のタクシーデータセットには、数百万件のタクシ
 - 乗客数に基づいて平均料金を計算する:
 
   ```sql
-    SELECT
-        passenger_count,
-        ceil(avg(total_amount),2) AS average_total_amount
-    FROM trips
-    GROUP BY passenger_count
-    ```
+  SELECT
+      passenger_count,
+      ceil(avg(total_amount),2) AS average_total_amount
+  FROM trips
+  GROUP BY passenger_count
+  ```
 
     <details>
   <summary>期待される出力</summary>
@@ -192,19 +192,19 @@ New York City のタクシーデータセットには、数百万件のタクシ
   `passenger_count`の範囲は0から9です:
 
   ```response
-    ┌─passenger_count─┬─average_total_amount─┐
-    │               0 │                22.69 │
-    │               1 │                15.97 │
-    │               2 │                17.15 │
-    │               3 │                16.76 │
-    │               4 │                17.33 │
-    │               5 │                16.35 │
-    │               6 │                16.04 │
-    │               7 │                 59.8 │
-    │               8 │                36.41 │
-    │               9 │                 9.81 │
-    └─────────────────┴──────────────────────┘
-    ```
+  ┌─passenger_count─┬─average_total_amount─┐
+  │               0 │                22.69 │
+  │               1 │                15.97 │
+  │               2 │                17.15 │
+  │               3 │                16.76 │
+  │               4 │                17.33 │
+  │               5 │                16.35 │
+  │               6 │                16.04 │
+  │               7 │                 59.8 │
+  │               8 │                36.41 │
+  │               9 │                 9.81 │
+  └─────────────────┴──────────────────────┘
+  ```
 
     </p>
   </details>
@@ -212,48 +212,48 @@ New York City のタクシーデータセットには、数百万件のタクシ
 - 地区ごとの1日あたりの乗車回数を計算する:
 
   ```sql
-    SELECT
-        pickup_date,
-        pickup_ntaname,
-        SUM(1) AS number_of_trips
-    FROM trips
-    GROUP BY pickup_date, pickup_ntaname
-    ORDER BY pickup_date ASC
-    ```
+  SELECT
+      pickup_date,
+      pickup_ntaname,
+      SUM(1) AS number_of_trips
+  FROM trips
+  GROUP BY pickup_date, pickup_ntaname
+  ORDER BY pickup_date ASC
+  ```
 
     <details>
   <summary>期待される出力</summary>
   <p>
 
   ```response
-    ┌─pickup_date─┬─pickup_ntaname───────────────────────────────────────────┬─number_of_trips─┐
-    │  2015-07-01 │ Brooklyn Heights-Cobble Hill                             │              13 │
-    │  2015-07-01 │ Old Astoria                                              │               5 │
-    │  2015-07-01 │ Flushing                                                 │               1 │
-    │  2015-07-01 │ Yorkville                                                │             378 │
-    │  2015-07-01 │ Gramercy                                                 │             344 │
-    │  2015-07-01 │ Fordham South                                            │               2 │
-    │  2015-07-01 │ SoHo-TriBeCa-Civic Center-Little Italy                   │             621 │
-    │  2015-07-01 │ Park Slope-Gowanus                                       │              29 │
-    │  2015-07-01 │ Bushwick South                                           │               5 │
-    ```
+  ┌─pickup_date─┬─pickup_ntaname───────────────────────────────────────────┬─number_of_trips─┐
+  │  2015-07-01 │ Brooklyn Heights-Cobble Hill                             │              13 │
+  │  2015-07-01 │ Old Astoria                                              │               5 │
+  │  2015-07-01 │ Flushing                                                 │               1 │
+  │  2015-07-01 │ Yorkville                                                │             378 │
+  │  2015-07-01 │ Gramercy                                                 │             344 │
+  │  2015-07-01 │ Fordham South                                            │               2 │
+  │  2015-07-01 │ SoHo-TriBeCa-Civic Center-Little Italy                   │             621 │
+  │  2015-07-01 │ Park Slope-Gowanus                                       │              29 │
+  │  2015-07-01 │ Bushwick South                                           │               5 │
+  ```
 
     </p>
   </details>
 
 - 各乗車の長さを分単位で計算し、乗車時間ごとに結果をグループ化する:
   ```sql
-    SELECT
-        avg(tip_amount) AS avg_tip,
-        avg(fare_amount) AS avg_fare,
-        avg(passenger_count) AS avg_passenger,
-        count() AS count,
-        truncate(date_diff('second', pickup_datetime, dropoff_datetime)/60) as trip_minutes
-    FROM trips
-    WHERE trip_minutes > 0
-    GROUP BY trip_minutes
-    ORDER BY trip_minutes DESC
-    ```
+  SELECT
+      avg(tip_amount) AS avg_tip,
+      avg(fare_amount) AS avg_fare,
+      avg(passenger_count) AS avg_passenger,
+      count() AS count,
+      truncate(date_diff('second', pickup_datetime, dropoff_datetime)/60) as trip_minutes
+  FROM trips
+  WHERE trip_minutes > 0
+  GROUP BY trip_minutes
+  ORDER BY trip_minutes DESC
+  ```
     <details>
   <summary>期待される出力</summary>
   <p>
@@ -274,57 +274,57 @@ New York City のタクシーデータセットには、数百万件のタクシ
 - 各地域における時間帯別の配車回数を表示する：
 
   ```sql
-    SELECT
-        pickup_ntaname,
-        toHour(pickup_datetime) as pickup_hour,
-        SUM(1) AS pickups
-    FROM trips
-    WHERE pickup_ntaname != ''
-    GROUP BY pickup_ntaname, pickup_hour
-    ORDER BY pickup_ntaname, pickup_hour
-    ```
+  SELECT
+      pickup_ntaname,
+      toHour(pickup_datetime) as pickup_hour,
+      SUM(1) AS pickups
+  FROM trips
+  WHERE pickup_ntaname != ''
+  GROUP BY pickup_ntaname, pickup_hour
+  ORDER BY pickup_ntaname, pickup_hour
+  ```
 
     <details>
   <summary>期待される出力</summary>
   <p>
 
   ```response
-    ┌─pickup_ntaname───────────────────────────────────────────┬─pickup_hour─┬─pickups─┐
-    │ Airport                                                  │           0 │    3509 │
-    │ Airport                                                  │           1 │    1184 │
-    │ Airport                                                  │           2 │     401 │
-    │ Airport                                                  │           3 │     152 │
-    │ Airport                                                  │           4 │     213 │
-    │ Airport                                                  │           5 │     955 │
-    │ Airport                                                  │           6 │    2161 │
-    │ Airport                                                  │           7 │    3013 │
-    │ Airport                                                  │           8 │    3601 │
-    │ Airport                                                  │           9 │    3792 │
-    │ Airport                                                  │          10 │    4546 │
-    │ Airport                                                  │          11 │    4659 │
-    │ Airport                                                  │          12 │    4621 │
-    │ Airport                                                  │          13 │    5348 │
-    │ Airport                                                  │          14 │    5889 │
-    │ Airport                                                  │          15 │    6505 │
-    │ Airport                                                  │          16 │    6119 │
-    │ Airport                                                  │          17 │    6341 │
-    │ Airport                                                  │          18 │    6173 │
-    │ Airport                                                  │          19 │    6329 │
-    │ Airport                                                  │          20 │    6271 │
-    │ Airport                                                  │          21 │    6649 │
-    │ Airport                                                  │          22 │    6356 │
-    │ Airport                                                  │          23 │    6016 │
-    │ Allerton-Pelham Gardens                                  │           4 │       1 │
-    │ Allerton-Pelham Gardens                                  │           6 │       1 │
-    │ Allerton-Pelham Gardens                                  │           7 │       1 │
-    │ Allerton-Pelham Gardens                                  │           9 │       5 │
-    │ Allerton-Pelham Gardens                                  │          10 │       3 │
-    │ Allerton-Pelham Gardens                                  │          15 │       1 │
-    │ Allerton-Pelham Gardens                                  │          20 │       2 │
-    │ Allerton-Pelham Gardens                                  │          23 │       1 │
-    │ Annadale-Huguenot-Prince's Bay-Eltingville               │          23 │       1 │
-    │ Arden Heights                                            │          11 │       1 │
-    ```
+  ┌─pickup_ntaname───────────────────────────────────────────┬─pickup_hour─┬─pickups─┐
+  │ Airport                                                  │           0 │    3509 │
+  │ Airport                                                  │           1 │    1184 │
+  │ Airport                                                  │           2 │     401 │
+  │ Airport                                                  │           3 │     152 │
+  │ Airport                                                  │           4 │     213 │
+  │ Airport                                                  │           5 │     955 │
+  │ Airport                                                  │           6 │    2161 │
+  │ Airport                                                  │           7 │    3013 │
+  │ Airport                                                  │           8 │    3601 │
+  │ Airport                                                  │           9 │    3792 │
+  │ Airport                                                  │          10 │    4546 │
+  │ Airport                                                  │          11 │    4659 │
+  │ Airport                                                  │          12 │    4621 │
+  │ Airport                                                  │          13 │    5348 │
+  │ Airport                                                  │          14 │    5889 │
+  │ Airport                                                  │          15 │    6505 │
+  │ Airport                                                  │          16 │    6119 │
+  │ Airport                                                  │          17 │    6341 │
+  │ Airport                                                  │          18 │    6173 │
+  │ Airport                                                  │          19 │    6329 │
+  │ Airport                                                  │          20 │    6271 │
+  │ Airport                                                  │          21 │    6649 │
+  │ Airport                                                  │          22 │    6356 │
+  │ Airport                                                  │          23 │    6016 │
+  │ Allerton-Pelham Gardens                                  │           4 │       1 │
+  │ Allerton-Pelham Gardens                                  │           6 │       1 │
+  │ Allerton-Pelham Gardens                                  │           7 │       1 │
+  │ Allerton-Pelham Gardens                                  │           9 │       5 │
+  │ Allerton-Pelham Gardens                                  │          10 │       3 │
+  │ Allerton-Pelham Gardens                                  │          15 │       1 │
+  │ Allerton-Pelham Gardens                                  │          20 │       2 │
+  │ Allerton-Pelham Gardens                                  │          23 │       1 │
+  │ Annadale-Huguenot-Prince's Bay-Eltingville               │          23 │       1 │
+  │ Arden Heights                                            │          11 │       1 │
+  ```
 
     </p>
   </details>
@@ -391,18 +391,18 @@ ClickHouse サービス内のテーブルに関連付けられた辞書を作成
 1. 次の SQL コマンドを実行します。`taxi_zone_dictionary` という名前の辞書を作成し、S3 上の CSV ファイルから辞書を読み込みます。ファイルの URL は `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv` です。
 
 ```sql
-  CREATE DICTIONARY taxi_zone_dictionary
-  (
-    `LocationID` UInt16 DEFAULT 0,
-    `Borough` String,
-    `Zone` String,
-    `service_zone` String
-  )
-  PRIMARY KEY LocationID
-  SOURCE(HTTP(URL 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv' FORMAT 'CSVWithNames'))
-  LIFETIME(MIN 0 MAX 0)
-  LAYOUT(HASHED_ARRAY())
-  ```
+CREATE DICTIONARY taxi_zone_dictionary
+(
+  `LocationID` UInt16 DEFAULT 0,
+  `Borough` String,
+  `Zone` String,
+  `service_zone` String
+)
+PRIMARY KEY LocationID
+SOURCE(HTTP(URL 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv' FORMAT 'CSVWithNames'))
+LIFETIME(MIN 0 MAX 0)
+LAYOUT(HASHED_ARRAY())
+```
 
 :::note
 `LIFETIME` を 0 に設定すると、自動更新が無効になり、S3 バケットへの不要なトラフィックを避けられます。ほかのケースでは、別の値に設定してもかまいません。詳細については、[LIFETIME を使用したディクショナリデータの更新](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime) を参照してください。
@@ -410,63 +410,63 @@ ClickHouse サービス内のテーブルに関連付けられた辞書を作成
 
 3. 動作を検証します。次のクエリは 265 行、つまり各 neighborhood ごとに 1 行を返すはずです:
    ```sql
-    SELECT * FROM taxi_zone_dictionary
-    ```
+   SELECT * FROM taxi_zone_dictionary
+   ```
 
 4. `dictGet` 関数（[およびそのバリエーション](./sql-reference/functions/ext-dict-functions.md)）を使用して、ディクショナリから値を取得します。ディクショナリ名、取得したい値、キー（この例では `taxi_zone_dictionary` の `LocationID` 列）を引数として渡します。
 
    例えば、次のクエリは `LocationID` が 132 の `Borough` を返します。これは JFK 空港に対応しています:
 
    ```sql
-    SELECT dictGet('taxi_zone_dictionary', 'Borough', 132)
-    ```
+   SELECT dictGet('taxi_zone_dictionary', 'Borough', 132)
+   ```
 
    JFK は Queens にあります。値の取得時間が実質的に 0 であることに注目してください:
 
    ```response
-    ┌─dictGet('taxi_zone_dictionary', 'Borough', 132)─┐
-    │ Queens                                          │
-    └─────────────────────────────────────────────────┘
+   ┌─dictGet('taxi_zone_dictionary', 'Borough', 132)─┐
+   │ Queens                                          │
+   └─────────────────────────────────────────────────┘
 
-    1 rows in set. Elapsed: 0.004 sec.
-    ```
+   1 rows in set. Elapsed: 0.004 sec.
+   ```
 
 5. `dictHas` 関数を使用して、ディクショナリ内にキーが存在するかを確認します。例えば、次のクエリは `1`（ClickHouse における「true」）を返します:
    ```sql
-    SELECT dictHas('taxi_zone_dictionary', 132)
-    ```
+   SELECT dictHas('taxi_zone_dictionary', 132)
+   ```
 
 6. 次のクエリは 0 を返します。これは、4567 がディクショナリ内の `LocationID` の値として存在しないためです:
    ```sql
-    SELECT dictHas('taxi_zone_dictionary', 4567)
-    ```
+   SELECT dictHas('taxi_zone_dictionary', 4567)
+   ```
 
 7. クエリ内で `dictGet` 関数を使って Borough 名（行政区名）を取得します。例えば:
    ```sql
-    SELECT
-        count(1) AS total,
-        dictGetOrDefault('taxi_zone_dictionary','Borough', toUInt64(pickup_nyct2010_gid), 'Unknown') AS borough_name
-    FROM trips
-    WHERE dropoff_nyct2010_gid = 132 OR dropoff_nyct2010_gid = 138
-    GROUP BY borough_name
-    ORDER BY total DESC
-    ```
+   SELECT
+       count(1) AS total,
+       dictGetOrDefault('taxi_zone_dictionary','Borough', toUInt64(pickup_nyct2010_gid), 'Unknown') AS borough_name
+   FROM trips
+   WHERE dropoff_nyct2010_gid = 132 OR dropoff_nyct2010_gid = 138
+   GROUP BY borough_name
+   ORDER BY total DESC
+   ```
 
 このクエリは、LaGuardia か JFK のいずれかの空港で終了するタクシー乗車の件数を区ごとに集計します。結果は次のようになり、乗車地点の地区が不明な乗車がかなり多いことに注目してください。
 
 ```response
-    ┌─total─┬─borough_name──┐
-    │ 23683 │ Unknown       │
-    │  7053 │ Manhattan     │
-    │  6828 │ Brooklyn      │
-    │  4458 │ Queens        │
-    │  2670 │ Bronx         │
-    │   554 │ Staten Island │
-    │    53 │ EWR           │
-    └───────┴───────────────┘
+┌─total─┬─borough_name──┐
+│ 23683 │ Unknown       │
+│  7053 │ Manhattan     │
+│  6828 │ Brooklyn      │
+│  4458 │ Queens        │
+│  2670 │ Bronx         │
+│   554 │ Staten Island │
+│    53 │ EWR           │
+└───────┴───────────────┘
 
-    7 rows in set. Elapsed: 0.019 sec. Processed 2.00 million rows, 4.00 MB (105.70 million rows/s., 211.40 MB/s.)
-    ```
+7 rows in set. Elapsed: 0.019 sec. Processed 2.00 million rows, 4.00 MB (105.70 million rows/s., 211.40 MB/s.)
+```
 
 ## 結合を実行する {#perform-a-join}
 

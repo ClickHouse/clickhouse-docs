@@ -62,35 +62,35 @@ FROM github.github_events
 WHERE created_at >= '2024-01-01';
 ```
 
-## Focus on individual queries, not averages {#focus-on-individual-queries-not-averages}
+## 個々のクエリに注目し、平均値に頼らない {#focus-on-individual-queries-not-averages}
 
-When debugging ClickHouse performance, don't rely on average query times or overall system metrics. Instead, identify why specific queries are slow. A system can have good average performance while individual queries suffer from memory exhaustion, poor filtering, or high cardinality operations.
+ClickHouse のパフォーマンスをデバッグする際は、クエリ時間の平均値やシステム全体のメトリクスに頼らないでください。代わりに、特定のクエリがなぜ遅いのかを特定します。システム全体としては平均パフォーマンスが良好でも、個々のクエリがメモリ枯渇、不適切なフィルタリング、高カーディナリティな処理などの影響を受けている場合があります。
 
-According to Alexey, CTO of ClickHouse: *"The right way is to ask yourself why this particular query was processed in five seconds... I don't care if median and other queries process quickly. I only care about my query"*
+ClickHouse の CTO である Alexey によれば、*「正しいやり方は、『なぜこの特定のクエリは 5 秒もかかったのか』と自問することです。中央値やその他のクエリがどれだけ速く処理されているかには興味がありません。私が気にするのは自分のクエリだけです」* ということです。
 
-When a query is slow, don't just look at averages. Ask "Why was THIS specific query slow?" and examine the actual resource usage patterns.
+クエリが遅いときは、平均値だけを見て終わりにしてはいけません。「なぜこの特定のクエリは遅かったのか？」と問い、実際のリソース使用パターンを確認してください。
 
-## Memory and row scanning {#memory-and-row-scanning}
+## メモリと行スキャン {#memory-and-row-scanning}
 
-Sentry is a developer-first error tracking platform processing billions of events daily from 4+ million developers. Their key insight: *"The cardinality of the grouping key that's going to drive memory in this particular situation"* - High cardinality aggregations kill performance through memory exhaustion, not row scanning.
+Sentry は開発者を第一に考えたエラートラッキングプラットフォームで、400 万人以上の開発者からの数十億件のイベントを毎日処理しています。Sentry の重要な知見は次のとおりです： *「この特定の状況でメモリ使用量を決定づけるのは、グルーピングキーのカーディナリティである」* — 高カーディナリティの集約は、行スキャンではなくメモリ枯渇によってパフォーマンスを低下させます。
 
-When queries fail, determine if it's a memory problem (too many groups) or scanning problem (too many rows).
+クエリが失敗した場合、それがメモリの問題（グループ数が多すぎる）なのか、スキャンの問題（行数が多すぎる）なのかを判断してください。
 
-A query like `GROUP BY user_id, error_message, url_path` creates a separate memory state for every unique combination of all three values together. With a higher load of users, error types, and URL paths, you could easily generate millions of aggregation states that must be held in memory simultaneously.
+`GROUP BY user_id, error_message, url_path` のようなクエリでは、これら 3 つの値のあらゆるユニークな組み合わせごとに個別のメモリ状態が作成されます。ユーザー数、エラータイプ、URL パスが増えると、同時にメモリ上に保持しなければならない集約状態が数百万単位に達することは容易に起こり得ます。
 
-For extreme cases, Sentry uses deterministic sampling. A 10% sample reduces memory usage by 90% while maintaining roughly 5% accuracy for most aggregations:
+極端なケースでは、Sentry は決定論的サンプリングを使用しています。10% のサンプルであれば、ほとんどの集約に対しておおよそ 5% 程度の精度を維持しつつ、メモリ使用量を 90% 削減できます。
 
 ```sql
 WHERE cityHash64(user_id) % 10 = 0  -- 常に同一の10%のユーザー
 ```
 
-This ensures the same users appear in every query, providing consistent results across time periods. The key insight: `cityHash64()` produces consistent hash values for the same input, so `user_id = 12345` will always hash to the same value, ensuring that user either always appears in your 10% sample or never does - no flickering between queries.
+これにより、すべてのクエリで同じユーザーが現れ、期間をまたいでも一貫した結果が得られます。重要なポイントは、`cityHash64()` が同じ入力に対して常に同じハッシュ値を生成することです。そのため、`user_id = 12345` は常に同じ値にハッシュされ、そのユーザーは 10% サンプルに必ず含まれるか、あるいはまったく含まれないかのどちらかになり、クエリ間で出たり消えたりすることがなくなります。
 
-## Sentry's bit mask optimization {#bit-mask-optimization}
+## Sentry のビットマスク最適化 {#bit-mask-optimization}
 
-When aggregating by high-cardinality columns (like URLs), each unique value creates a separate aggregation state in memory, leading to memory exhaustion. Sentry's solution: instead of grouping by the actual URL strings, group by boolean expressions that collapse into bit masks.
+高カーディナリティ列（URL など）で集約を行う場合、各ユニーク値ごとに個別の集約状態がメモリ上に作成されるため、メモリ枯渇を引き起こす可能性があります。Sentry の解決策は、実際の URL 文字列でグループ化する代わりに、ビットマスクに変換されるブール式でグループ化することです。
 
-Here is a query that you can try on your own tables if this situation applies to you:
+このような状況に当てはまる場合は、ご自身のテーブルに対して次のクエリを試してみてください。
 
 ```sql
 -- メモリ効率的な集約パターン: 各条件 = グループごとに1つの整数

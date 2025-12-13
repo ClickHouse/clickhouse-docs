@@ -32,7 +32,7 @@ CREATE QUOTA [IF NOT EXISTS | OR REPLACE] name [ON CLUSTER cluster_name]
 現在のユーザーのクエリ数を、15 か月間で最大 123 件に制限します。
 
 ```sql
-CREATE QUOTA qA FOR INTERVAL 15 month MAX queries = 123 TO CURRENT_USER;
+CREATE QUOTA qA FOR INTERVAL 15 MONTH MAX QUERIES = 123 TO CURRENT_USER;
 ```
 
 デフォルトユーザーに対して、30分あたりの最大実行時間を0.5秒に制限し、さらに5四半期の期間に実行できるクエリ数の上限を321件、エラー数の上限を10件に設定します。

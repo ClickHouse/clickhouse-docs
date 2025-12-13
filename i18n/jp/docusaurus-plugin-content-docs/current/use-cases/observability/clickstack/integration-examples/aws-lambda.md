@@ -74,29 +74,29 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
   4. ［**ARN を指定**］を選択します
   5. Rotel レイヤーの ARN を入力してください:
      ```text
-   arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}-alpha:{version}
-   ```
+     arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}-alpha:{version}
+     ```
   6. **Add** をクリックします。
 
   ##### オプション2：AWS CLI
 
   ```bash
-aws lambda update-function-configuration \
-  --function-name my-function \
-  --layers arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}-alpha:{version}
-```
+  aws lambda update-function-configuration \
+    --function-name my-function \
+    --layers arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}-alpha:{version}
+  ```
 
   ##### オプション3：AWS SAM
 
   ```yaml
-Resources:
-  MyFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      # ... other configuration ...
-      Layers:
-        - arn:aws:lambda:{version}:418653438961:layer:rotel-extension-{arch}-alpha:{version}
-```
+  Resources:
+    MyFunction:
+      Type: AWS::Serverless::Function
+      Properties:
+        # ... other configuration ...
+        Layers:
+          - arn:aws:lambda:{version}:418653438961:layer:rotel-extension-{arch}-alpha:{version}
+  ```
 
   #### ClickStackへエクスポートするための拡張機能を設定する
 
@@ -107,15 +107,15 @@ Resources:
   Lambda関数に以下の環境変数を追加します：
 
   ```bash
-# Required: ClickStack OTLP endpoint
-ROTEL_OTLP_EXPORTER_ENDPOINT=https://clickstack.example.com:4317
+  # Required: ClickStack OTLP endpoint
+  ROTEL_OTLP_EXPORTER_ENDPOINT=https://clickstack.example.com:4317
 
-# Optional: Authentication headers
-ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=<YOUR_INGESTION_API_KEY>"
+  # Optional: Authentication headers
+  ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=<YOUR_INGESTION_API_KEY>"
 
-# Optional: Service name (defaults to Lambda function name)
-ROTEL_OTEL_RESOURCE_ATTRIBUTES="service.name=my-lambda-api,service.version=1.0.0"
-```
+  # Optional: Service name (defaults to Lambda function name)
+  ROTEL_OTEL_RESOURCE_ATTRIBUTES="service.name=my-lambda-api,service.version=1.0.0"
+  ```
 
   ##### 高度な設定（.envファイルの使用）
 
@@ -124,16 +124,16 @@ ROTEL_OTEL_RESOURCE_ATTRIBUTES="service.name=my-lambda-api,service.version=1.0.0
   **rotel.env:**
 
   ```bash
-ROTEL_OTLP_EXPORTER_ENDPOINT=https://clickstack.example.com:4317
-ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=<YOUR_INGESTION_API_KEY>"
-ROTEL_OTEL_RESOURCE_ATTRIBUTES="service.name=my-lambda-api,deployment.environment=production"
-```
+  ROTEL_OTLP_EXPORTER_ENDPOINT=https://clickstack.example.com:4317
+  ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=<YOUR_INGESTION_API_KEY>"
+  ROTEL_OTEL_RESOURCE_ATTRIBUTES="service.name=my-lambda-api,deployment.environment=production"
+  ```
 
   次に、このファイルを指すように環境変数を設定します:
 
   ```bash
-ROTEL_ENV_FILE=/var/task/rotel.env
-```
+  ROTEL_ENV_FILE=/var/task/rotel.env
+  ```
 
   ##### AWS Secrets ManagerまたはParameter Storeを使用する
 
@@ -142,16 +142,16 @@ ROTEL_ENV_FILE=/var/task/rotel.env
   **AWS Secrets Managerの例：**
 
   ```bash
-ROTEL_OTLP_EXPORTER_ENDPOINT=https://clickstack.example.com:4317
-ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=${arn:aws:secretsmanager:us-east-1:123456789012:secret:clickstack-api-key-abc123}"
-```
+  ROTEL_OTLP_EXPORTER_ENDPOINT=https://clickstack.example.com:4317
+  ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=${arn:aws:secretsmanager:us-east-1:123456789012:secret:clickstack-api-key-abc123}"
+  ```
 
   **AWS Parameter Store の例:**
 
   ```bash
-ROTEL_OTLP_EXPORTER_ENDPOINT=https://clickstack.example.com:4317
-ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=${arn:aws:ssm:us-east-1:123456789012:parameter/clickstack-api-key}"
-```
+  ROTEL_OTLP_EXPORTER_ENDPOINT=https://clickstack.example.com:4317
+  ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=${arn:aws:ssm:us-east-1:123456789012:parameter/clickstack-api-key}"
+  ```
 
   **必要なIAM権限：**
 
@@ -160,37 +160,37 @@ ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=${arn:aws:ssm:us-east-1:123456
   Secrets Manager の場合:
 
   ```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "secretsmanager:GetSecretValue",
-        "secretsmanager:BatchGetSecretValue"
-      ],
-      "Resource": "arn:aws:secretsmanager:us-east-1:123456789012:secret:clickstack-api-key-*"
-    }
-  ]
-}
-```
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": [
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:BatchGetSecretValue"
+        ],
+        "Resource": "arn:aws:secretsmanager:us-east-1:123456789012:secret:clickstack-api-key-*"
+      }
+    ]
+  }
+  ```
 
   Parameter Storeの場合:
 
   ```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "ssm:GetParameters"
-      ],
-      "Resource": "arn:aws:ssm:us-east-1:123456789012:parameter/clickstack-api-key"
-    }
-  ]
-}
-```
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": [
+          "ssm:GetParameters"
+        ],
+        "Resource": "arn:aws:ssm:us-east-1:123456789012:parameter/clickstack-api-key"
+      }
+    ]
+  }
+  ```
 
   :::note
   シークレット取得のためのAWS API呼び出しにより、コールドスタート時のレイテンシが100〜150ミリ秒増加します。シークレットはバッチ処理（最大10個）で取得され、初期化時のみ実行されるため、以降の呼び出しには影響しません。
@@ -201,17 +201,17 @@ ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=${arn:aws:ssm:us-east-1:123456
   Lambda関数を呼び出して、ログがClickStackに送信されていることを確認してください:
 
   ```bash
-aws lambda invoke \
-  --function-name my-function \
-  --payload '{"test": "data"}' \
-  response.json
-```
+  aws lambda invoke \
+    --function-name my-function \
+    --payload '{"test": "data"}' \
+    response.json
+  ```
 
   Lambda ログでエラーを確認してください:
 
   ```bash
-aws logs tail /aws/lambda/my-function --follow
-```
+  aws logs tail /aws/lambda/my-function --follow
+  ```
 
   #### HyperDXでログを検証する
 
@@ -254,7 +254,7 @@ aws logs tail /aws/lambda/my-function --follow
 2. ClickStack/HyperDX にログが引き続き表示されていること
 
 ```bash
-# This should show no new log streams after the policy change
+# ポリシー変更後に新しいログストリームがないことを確認します
 aws logs describe-log-streams \
   --log-group-name /aws/lambda/my-function \
   --order-by LastEventTime \

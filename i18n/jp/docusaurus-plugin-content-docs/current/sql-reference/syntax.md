@@ -294,19 +294,19 @@ SELECT $heredoc$SHOW CREATE VIEW my_view$heredoc$;
   たとえば、次の SQL は `a`、`b`、`c`、`d` という名前のパラメータを定義しており、それぞれ異なるデータ型を持ちます:
 
   ```sql
-SET param_a = 13;
-SET param_b = 'str';
-SET param_c = '2022-08-04 18:30:53';
-SET param_d = {'10': [11, 12], '13': [14, 15]};
+  SET param_a = 13;
+  SET param_b = 'str';
+  SET param_c = '2022-08-04 18:30:53';
+  SET param_d = {'10': [11, 12], '13': [14, 15]};
 
-SELECT
-   {a: UInt32},
-   {b: String},
-   {c: DateTime},
-   {d: Map(String, Array(UInt8))};
+  SELECT
+     {a: UInt32},
+     {b: String},
+     {c: DateTime},
+     {d: Map(String, Array(UInt8))};
 
-13    str    2022-08-04 18:30:53    {'10':[11,12],'13':[14,15]}
-```
+  13    str    2022-08-04 18:30:53    {'10':[11,12],'13':[14,15]}
+  ```
 </details>
 
 <details>
@@ -315,17 +315,17 @@ SELECT
   `clickhouse-client` を使用する場合、パラメータは `--param_name=value` という形式で指定します。たとえば、次のパラメータは名前が `message` であり、`String` として取得されます:
 
   ```bash
-clickhouse-client --param_message='hello' --query="SELECT {message: String}"
+  clickhouse-client --param_message='hello' --query="SELECT {message: String}"
 
-hello
-```
+  hello
+  ```
 
   クエリパラメータがデータベース、テーブル、関数などの識別子名を表す場合は、その型として `Identifier` を使用します。たとえば、次のクエリは `uk_price_paid` という名前のテーブルから行を返します:
 
   ```sql
-SET param_mytablename = "uk_price_paid";
-SELECT * FROM {mytablename:Identifier};
-```
+  SET param_mytablename = "uk_price_paid";
+  SELECT * FROM {mytablename:Identifier};
+  ```
 </details>
 
 :::note

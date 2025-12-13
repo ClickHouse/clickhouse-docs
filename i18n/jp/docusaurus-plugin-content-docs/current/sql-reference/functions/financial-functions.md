@@ -61,7 +61,7 @@ SELECT financialInternalRateOfReturn([-100, 39, 59, 55, 20])
 0.2809484211599611
 ```
 
-**simple_example_with_guess**
+**simple&#95;example&#95;with&#95;guess**
 
 ```sql title=Query
 SELECT financialInternalRateOfReturn([-100, 39, 59, 55, 20], 0.1)
@@ -71,49 +71,44 @@ SELECT financialInternalRateOfReturn([-100, 39, 59, 55, 20], 0.1)
 0.2809484211599611
 ```
 
-
-
 ## financialInternalRateOfReturnExtended {#financialInternalRateOfReturnExtended}
 
-Introduced in: v25.7
+導入バージョン: v25.7
 
+不規則な間隔で発生する一連のキャッシュフローに対して拡張内部収益率（XIRR）を計算します。XIRRは、すべてのキャッシュフローの正味現在価値（NPV）がゼロになる割引率です。
 
-Calculates the Extended Internal Rate of Return (XIRR) for a series of cash flows occurring at irregular intervals. XIRR is the discount rate at which the net present value (NPV) of all cash flows equals zero.
-
-XIRR attempts to solve the following equation (example for `ACT_365F`):
+XIRRは以下の方程式を解きます（`ACT_365F`の例）：
 
 $$
 \sum_{i=0}^n \frac{cashflow_i}{(1 + rate)^{(date_i - date_0)/365}} = 0
 $$
 
-Arrays should be sorted by date in ascending order. Dates need to be unique.
-    
+配列は日付の昇順でソートされている必要があります。日付は一意である必要があります。
 
-**Syntax**
+**構文**
 
 ```sql
 financialInternalRateOfReturnExtended(cashflow, date [, guess, daycount])
 ```
 
-**Arguments**
+**引数**
 
-- `cashflow` — An array of cash flows corresponding to the dates in second param. [`Array(Int8/16/32/64)`](/sql-reference/data-types/array) or [`Array(Float*)`](/sql-reference/data-types/array)
-- `date` — A sorted array of unique dates corresponding to the cash flows. [`Array(Date)`](/sql-reference/data-types/array) or [`Array(Date32)`](/sql-reference/data-types/array)
-- `[, guess]` — Optional. Initial guess (constant value) for the XIRR calculation. [`Float*`](/sql-reference/data-types/float)
-- `[, daycount]` — 
-Optional day count convention (default 'ACT_365F'). Supported values:
-- 'ACT_365F' - Actual/365 Fixed: Uses actual number of days between dates divided by 365
-- 'ACT_365_25' - Actual/365.25: Uses actual number of days between dates divided by 365.25
-             [`String`](/sql-reference/data-types/string)
+- `cashflow` — 第2パラメータの日付に対応するキャッシュフローの配列。[`Array(Int8/16/32/64)`](/sql-reference/data-types/array)または[`Array(Float*)`](/sql-reference/data-types/array)
+- `date` — キャッシュフローに対応する一意の日付のソート済み配列。[`Array(Date)`](/sql-reference/data-types/array)または[`Array(Date32)`](/sql-reference/data-types/array)
+- `[, guess]` — オプション。XIRR計算の初期推定値（定数値）。[`Float*`](/sql-reference/data-types/float)
+- `[, daycount]` —
+  オプション。日数計算規則（デフォルトは'ACT_365F'）。サポートされる値：
+- 'ACT_365F' - Actual/365 Fixed：日付間の実際の日数を365で除算
+- 'ACT_365_25' - Actual/365.25：日付間の実際の日数を365.25で除算
+  [`String`](/sql-reference/data-types/string)
 
+**返り値**
 
-**Returned value**
+XIRR値を返します。計算を実行できない場合はNaNを返します。[`Float64`](/sql-reference/data-types/float)
 
-Returns the XIRR value. If the calculation cannot be performed, it returns NaN. [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**simple_example**
+**基本的な例**
 
 ```sql title=Query
 SELECT financialInternalRateOfReturnExtended([-10000, 5750, 4250, 3250], [toDate('2020-01-01'), toDate('2020-03-01'), toDate('2020-10-30'), toDate('2021-02-15')])
@@ -123,7 +118,7 @@ SELECT financialInternalRateOfReturnExtended([-10000, 5750, 4250, 3250], [toDate
 0.6342972615260243
 ```
 
-**simple_example_with_guess**
+**推定値を指定した例**
 
 ```sql title=Query
 SELECT financialInternalRateOfReturnExtended([-10000, 5750, 4250, 3250], [toDate('2020-01-01'), toDate('2020-03-01'), toDate('2020-10-30'), toDate('2021-02-15')], 0.5)
@@ -133,7 +128,7 @@ SELECT financialInternalRateOfReturnExtended([-10000, 5750, 4250, 3250], [toDate
 0.6342972615260243
 ```
 
-**simple_example_daycount**
+**日数計算規則を指定した例**
 
 ```sql title=Query
 SELECT round(financialInternalRateOfReturnExtended([100000, -110000], [toDate('2020-01-01'), toDate('2021-01-01')], 0.1, 'ACT_365_25'), 6) AS xirr_365_25
@@ -143,48 +138,43 @@ SELECT round(financialInternalRateOfReturnExtended([100000, -110000], [toDate('2
 0.099785
 ```
 
-
-
 ## financialNetPresentValue {#financialNetPresentValue}
 
-Introduced in: v25.7
+導入バージョン: v25.7
 
+等間隔で発生するキャッシュフロー系列の正味現在価値（NPV: Net Present Value）を計算します。
 
-Calculates the Net Present Value (NPV) of a series of cash flows assuming equal time intervals between each cash flow.
-
-Default variant (`start_from_zero` = true):
-
-$$
-\sum_{i=0}^{N-1} \frac{values_i}{(1 + rate)^i}
-$$
-
-Excel-compatible variant (`start_from_zero` = false):
+デフォルトのバリアント（`start_from_zero` = true）の場合:
 
 $$
-\sum_{i=1}^{N} \frac{values_i}{(1 + rate)^i}
+\sum&#95;{i=0}^{N-1} \frac{values_i}{(1 + rate)^i}
 $$
-    
 
-**Syntax**
+Excel互換のバリアント（`start_from_zero` = false）の場合:
+
+$$
+\sum&#95;{i=1}^{N} \frac{values_i}{(1 + rate)^i}
+$$
+
+**構文**
 
 ```sql
 financialNetPresentValue(rate, cashflows[, start_from_zero])
 ```
 
-**Arguments**
+**引数**
 
-- `rate` — The discount rate to apply. [`Float*`](/sql-reference/data-types/float)
-- `cashflows` — Array of cash flows. Each value represents a payment (negative value) or income (positive value). [`Array(Int8/16/32/64)`](/sql-reference/data-types/array) or [`Array(Float*)`](/sql-reference/data-types/array)
-- `[, start_from_zero]` — Optional boolean parameter indicating whether to start the NPV calculation from period `0` (true) or period `1` (false, Excel-compatible). Default: true. [`Bool`](/sql-reference/data-types/boolean)
+* `rate` — 適用する割引率。[`Float*`](/sql-reference/data-types/float)
+* `cashflows` — キャッシュフローの配列。各値は支払い（負の値）または収入（正の値）を表します。[`Array(Int8/16/32/64)`](/sql-reference/data-types/array) または [`Array(Float*)`](/sql-reference/data-types/array)
+* `[, start_from_zero]` — NPV を期間 `0`（true）から計算するか、期間 `1`（false、Excel 互換）から計算するかを示すオプションのブール値型パラメータ。デフォルト: true。[`Bool`](/sql-reference/data-types/boolean)
 
+**戻り値**
 
-**Returned value**
+正味現在価値 (NPV) を Float64 値として返します。[`Float64`](/sql-reference/data-types/float)
 
-Returns the net present value as a Float64 value. [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**default_calculation**
+**default&#95;calculation**
 
 ```sql title=Query
 SELECT financialNetPresentValue(0.08, [-40000., 5000., 8000., 12000., 30000.])
@@ -194,7 +184,7 @@ SELECT financialNetPresentValue(0.08, [-40000., 5000., 8000., 12000., 30000.])
 3065.2226681795255
 ```
 
-**excel_compatible_calculation**
+**excel&#95;compatible&#95;calculation**
 
 ```sql title=Query
 SELECT financialNetPresentValue(0.08, [-40000., 5000., 8000., 12000., 30000.], false)
@@ -204,45 +194,40 @@ SELECT financialNetPresentValue(0.08, [-40000., 5000., 8000., 12000., 30000.], f
 2838.1691372032656
 ```
 
-
-
 ## financialNetPresentValueExtended {#financialNetPresentValueExtended}
 
-Introduced in: v25.7
+導入バージョン: v25.7
 
+不規則な間隔で発生する一連のキャッシュフローに対して拡張正味現在価値（XNPV）を計算します。XNPVは現在価値を計算する際に各キャッシュフローの具体的なタイミングを考慮します。
 
-Calculates the Extended Net Present Value (XNPV) for a series of cash flows occurring at irregular intervals. XNPV considers the specific timing of each cash flow when calculating present value.
-
-XNPV equation for `ACT_365F`:
+`ACT_365F`のXNPV計算式:
 
 $$
 XNPV=\sum_{i=1}^n \frac{cashflow_i}{(1 + rate)^{(date_i - date_0)/365}}
 $$
 
-Arrays should be sorted by date in ascending order. Dates need to be unique.
-    
+配列は日付の昇順でソートする必要があります。日付は一意である必要があります。
 
-**Syntax**
+**構文**
 
 ```sql
 financialNetPresentValueExtended(rate, cashflows, dates[, daycount])
 ```
 
-**Arguments**
+**引数**
 
-- `rate` — The discount rate to apply. [`Float*`](/sql-reference/data-types/float)
-- `cashflows` — Array of cash flows. Each value represents a payment (negative value) or income (positive value). Must contain at least one positive and one negative value. [`Array(Int8/16/32/64)`](/sql-reference/data-types/array) or [`Array(Float*)`](/sql-reference/data-types/array)
-- `dates` — Array of dates corresponding to each cash flow. Must have the same size as cashflows array. [`Array(Date)`](/sql-reference/data-types/array) or [`Array(Date32)`](/sql-reference/data-types/array)
-- `[, daycount]` — Optional day count convention. Supported values: `'ACT_365F'` (default) — Actual/365 Fixed, `'ACT_365_25'` — Actual/365.25. [`String`](/sql-reference/data-types/string)
+- `rate` — 適用する割引率。[`Float*`](/sql-reference/data-types/float)
+- `cashflows` — キャッシュフローの配列。各値は支払い（負の値）または収入（正の値）を表します。少なくとも1つの正の値と1つの負の値を含む必要があります。[`Array(Int8/16/32/64)`](/sql-reference/data-types/array)または[`Array(Float*)`](/sql-reference/data-types/array)
+- `dates` — 各キャッシュフローに対応する日付の配列。cashflows配列と同じサイズである必要があります。[`Array(Date)`](/sql-reference/data-types/array)または[`Array(Date32)`](/sql-reference/data-types/array)
+- `[, daycount]` — オプションの日数計算規則。サポートされる値: `'ACT_365F'`（デフォルト）— Actual/365 Fixed、`'ACT_365_25'` — Actual/365.25。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+正味現在価値をFloat64値として返します。[`Float64`](/sql-reference/data-types/float)
 
-Returns the net present value as a Float64 value. [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Basic usage**
+**基本的な使用方法**
 
 ```sql title=クエリ
 SELECT financialNetPresentValueExtended(0.1, [-10000., 5750., 4250., 3250.], [toDate('2020-01-01'), toDate('2020-03-01'), toDate('2020-10-30'), toDate('2021-02-15')])
@@ -252,7 +237,7 @@ SELECT financialNetPresentValueExtended(0.1, [-10000., 5750., 4250., 3250.], [to
 2506.579458169746
 ```
 
-**Using different day count convention**
+**異なる日数計算規則の使用**
 
 ```sql title=クエリ
 SELECT financialNetPresentValueExtended(0.1, [-10000., 5750., 4250., 3250.], [toDate('2020-01-01'), toDate('2020-03-01'), toDate('2020-10-30'), toDate('2021-02-15')], 'ACT_365_25')

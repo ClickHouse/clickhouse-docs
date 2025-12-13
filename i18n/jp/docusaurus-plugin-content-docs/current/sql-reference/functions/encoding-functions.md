@@ -53,7 +53,7 @@ SELECT tup.1 AS hrp, hex(tup.2) AS data FROM (SELECT bech32Decode('bc1w508d6qejx
 bc   751E76E8199196D454941C45D1B3A323F1433BD6
 ```
 
-**Testnet address**
+**テストネットアドレス**
 
 ```sql title=Query
 SELECT tup.1 AS hrp, hex(tup.2) AS data FROM (SELECT bech32Decode('tb1w508d6qejxtdg4y5r3zarvary0c5xw7kzp034v') AS tup)
@@ -63,43 +63,38 @@ SELECT tup.1 AS hrp, hex(tup.2) AS data FROM (SELECT bech32Decode('tb1w508d6qejx
 tb   751E76E8199196D454941C45D1B3A323F1433BD6
 ```
 
-
-
 ## bech32Encode {#bech32Encode}
 
-Introduced in: v25.6
+導入バージョン: v25.6
 
-
-Encodes a binary data string, along with a human-readable part (HRP), using the [Bech32 or Bech32m](https://en.bitcoin.it/wiki/Bech32) algorithms.
+バイナリデータ文字列と human-readable part（HRP）を、[Bech32 または Bech32m](https://en.bitcoin.it/wiki/Bech32) アルゴリズムでエンコードします。
 
 :::note
-When using the [`FixedString`](../data-types/fixedstring.md) data type, if a value does not fully fill the row it is padded with null characters.
-While the `bech32Encode` function will handle this automatically for the hrp argument, for the data argument the values must not be padded.
-For this reason it is not recommended to use the [`FixedString`](../data-types/fixedstring.md) data type for your data values unless you are
-certain that they are all the same length and ensure that your `FixedString` column is set to that length as well.
+[`FixedString`](../data-types/fixedstring.md) データ型を使用する場合、値が列の長さを満たさないときはヌル文字でパディングされます。
+`bech32Encode` 関数は `hrp` 引数についてはこのパディングを自動的に処理しますが、`data` 引数については値がパディングされていてはいけません。
+このため、すべての値が同じ長さであることが確実であり、かつ `FixedString` 列の長さもそれに合わせて設定している場合を除き、
+データ値に [`FixedString`](../data-types/fixedstring.md) データ型を使用することは推奨されません。
 :::
-    
 
-**Syntax**
+**構文**
 
 ```sql
 bech32Encode(hrp, data[, witver])
 ```
 
-**Arguments**
+**引数**
 
-- `hrp` — A String of `1 - 83` lowercase characters specifying the "human-readable part" of the code. Usually 'bc' or 'tb'. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
-- `data` — A String of binary data to encode. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
-- `witver` — Optional. The witness version (default = 1). An `UInt*` specifying the version of the algorithm to run. `0` for Bech32 and `1` or greater for Bech32m. [`UInt*`](/sql-reference/data-types/int-uint)
+* `hrp` — コードの「human-readable part（人間可読部）」を指定する、小文字のみからなる `1〜83` 文字の文字列。通常は &#39;bc&#39; または &#39;tb&#39;。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
+* `data` — エンコード対象のバイナリデータを表す文字列。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
+* `witver` — 省略可能。witness バージョン（デフォルト = 1）。実行するアルゴリズムのバージョンを指定する `UInt*`。Bech32 の場合は `0`、Bech32m の場合は `1` 以上。[`UInt*`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+human-readable part と、常に &#39;1&#39; となる区切り文字、およびデータ部から構成される Bech32 アドレス文字列を返します。文字列の長さが 90 文字を超えることはありません。入力から有効なアドレスを生成できない場合は、空文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a Bech32 address string, consisting of the human-readable part, a separator character which is always '1', and a data part. The length of the string will never exceed 90 characters. If the algorithm cannot generate a valid address from the input, it will return an empty string. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Default Bech32m**
+**デフォルトの Bech32m**
 
 ```sql title=Query
 -- witness バージョンが指定されていない場合、デフォルトは 1 となり、更新された Bech32m アルゴリズムが使用されます。
@@ -110,7 +105,7 @@ SELECT bech32Encode('bc', unhex('751e76e8199196d454941c45d1b3a323f1433bd6'))
 bc1w508d6qejxtdg4y5r3zarvary0c5xw7k8zcwmq
 ```
 
-**Bech32 algorithm**
+**Bech32 アルゴリズム**
 
 ```sql title=Query
 -- witness バージョンを 0 に設定すると、異なるアドレス文字列が生成されます。
@@ -121,7 +116,7 @@ SELECT bech32Encode('bc', unhex('751e76e8199196d454941c45d1b3a323f1433bd6'), 0)
 bc1w508d6qejxtdg4y5r3zarvary0c5xw7kj7gz7z
 ```
 
-**Custom HRP**
+**カスタムHRP**
 
 ```sql title=Query
 -- 'bc'（メインネット）と'tb'（テストネット）はSegWitアドレス形式で許可されている唯一のhrp値ですが、
@@ -133,43 +128,37 @@ SELECT bech32Encode('abcdefg', unhex('751e76e8199196d454941c45d1b3a323f1433bd6')
 abcdefg1w508d6qejxtdg4y5r3zarvary0c5xw7k9rp8r4
 ```
 
-
-
 ## bin {#bin}
 
-Introduced in: v21.8
+導入バージョン: v21.8
 
+引数のバイナリ表現を含む文字列を、型ごとに次のロジックに従って返します。
 
-Returns a string containing the argument's binary representation according
-to the following logic for different types:
+| Type                       | Description                                                                                                                    |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `(U)Int*`                  | 最上位ビットから最下位ビットへ（ビッグエンディアン、いわゆる「人間が読みやすい」順序）でビット列を出力します。先頭の非ゼロバイトから開始します（先頭のゼロバイトは省略）が、先頭ビットが 0 の場合でも各バイトについて常に 8 桁のビット列を出力します。 |
+| `Date` and `DateTime`      | 対応する整数値としてフォーマットされます（`Date` はエポックからの日数、`DateTime` は Unix タイムスタンプ値）。                                                            |
+| `String` and `FixedString` | すべてのバイトは単純に 8 ビットの 2 進数としてエンコードされます。ゼロバイトも省略されません。                                                                             |
+| `Float*` and `Decimal`     | メモリ上の表現そのものとしてエンコードされます。サポートしているアーキテクチャはリトルエンディアンであるため、リトルエンディアンでエンコードされます。先頭および末尾のゼロバイトも省略されません。                              |
+| `UUID`                     | ビッグエンディアン順の文字列としてエンコードされます。                                                                                                    |
 
-| Type                       | Description                                                                                                                                                                                                                                                           |
-|----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `(U)Int*`                  | Prints bin digits from the most significant to least significant (big-endian or "human-readable" order). It starts with the most significant non-zero byte (leading zero bytes are omitted) but always prints eight digits of every byte if the leading digit is zero.|
-| `Date` and `DateTime`      | Formatted as corresponding integers (the number of days since epoch for Date and the value of unix timestamp for DateTime).                                                                                                                                           |
-| `String` and `FixedString` | All bytes are simply encoded as eight binary numbers. Zero bytes are not omitted.                                                                                                                                                                                     |
-| `Float*` and `Decimal`     | Encoded as their representation in memory. As we support little-endian architecture, they are encoded in little-endian. Zero leading/trailing bytes are not omitted.                                                                                                  |
-| `UUID`                     | Encoded as big-endian order string.                                                                                                                                                                                                                                   |
-    
-
-**Syntax**
+**構文**
 
 ```sql
 bin(arg)
 ```
 
-**Arguments**
+**引数**
 
-- `arg` — A value to convert to binary. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring) or [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal) or [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime)
+* `arg` — 2 進数に変換する値。[`String`](/sql-reference/data-types/string)、[`FixedString`](/sql-reference/data-types/fixedstring)、[`(U)Int*`](/sql-reference/data-types/int-uint)、[`Float*`](/sql-reference/data-types/float)、[`Decimal`](/sql-reference/data-types/decimal)、[`Date`](/sql-reference/data-types/date)、[`DateTime`](/sql-reference/data-types/datetime) のいずれか。
 
+**戻り値**
 
-**Returned value**
+引数の 2 進数表現を含む文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a string with the binary representation of the argument. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Simple integer**
+**単純な整数**
 
 ```sql title=Query
 SELECT bin(14)
@@ -181,7 +170,7 @@ SELECT bin(14)
 └──────────┘
 ```
 
-**Float32 numbers**
+**Float32 型の数値**
 
 ```sql title=Query
 SELECT bin(toFloat32(number)) AS bin_presentation FROM numbers(15, 2)
@@ -194,7 +183,7 @@ SELECT bin(toFloat32(number)) AS bin_presentation FROM numbers(15, 2)
 └──────────────────────────────────┘
 ```
 
-**Float64 numbers**
+**Float64 数値**
 
 ```sql title=Query
 SELECT bin(toFloat64(number)) AS bin_presentation FROM numbers(15, 2)
@@ -207,7 +196,7 @@ SELECT bin(toFloat64(number)) AS bin_presentation FROM numbers(15, 2)
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-**UUID conversion**
+**UUID 変換**
 
 ```sql title=Query
 SELECT bin(toUUID('61f0c404-5cb3-11e7-907b-a6006ad3dba0')) AS bin_uuid
@@ -219,35 +208,30 @@ SELECT bin(toUUID('61f0c404-5cb3-11e7-907b-a6006ad3dba0')) AS bin_uuid
 └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## bitPositionsToArray {#bitPositionsToArray}
 
-Introduced in: v21.7
+導入バージョン: v21.7
 
+この関数は、符号なし整数の2進表現における値が1のビットの位置を（昇順で）返します。
+符号付き整数の入力は、まず符号なし整数にキャストされます。
 
-This function returns the positions (in ascending order) of the 1 bits in the binary representation of an unsigned integer.
-Signed input integers are first casted to an unsigned integer.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 bitPositionsToArray(引数)
 ```
 
-**Arguments**
+**引数**
 
-- `arg` — An integer value. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `arg` — 整数値。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+入力の2進表現において、ビット値が 1 となっている位置を昇順に並べた配列を返します。[`Array(UInt64)`](/sql-reference/data-types/array)
 
-Returns an array with the ascendingly ordered positions of 1 bits in the binary representation of the input. [`Array(UInt64)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Single bit set**
+**単一ビットのみがセットされている場合**
 
 ```sql title=Query
 SELECT bitPositionsToArray(toInt8(1)) AS bit_positions
@@ -259,7 +243,7 @@ SELECT bitPositionsToArray(toInt8(1)) AS bit_positions
 └───────────────┘
 ```
 
-**All bits set**
+**全ビットが 1**
 
 ```sql title=Query
 SELECT bitPositionsToArray(toInt8(-1)) AS bit_positions
@@ -271,35 +255,30 @@ SELECT bitPositionsToArray(toInt8(-1)) AS bit_positions
 └───────────────────────────┘
 ```
 
-
-
 ## bitmaskToArray {#bitmaskToArray}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+この関数は、整数を 2 の冪の和の形に分解します。
+2 の冪は昇順に並んだ配列として返されます。
 
-This function decomposes an integer into a sum of powers of two.
-The powers of two are returned as an ascendingly ordered array.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 bitmaskToArray(num)
 ```
 
-**Arguments**
+**引数**
 
-- `num` — An integer value. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `num` — 整数値。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返される値**
 
-**Returned value**
+入力された数値と等しくなるように合計した 2 の冪を、昇順に並べた配列を返します。[`Array(UInt64)`](/sql-reference/data-types/array)
 
-Returns an array with the ascendingly ordered powers of two which sum up to the input number. [`Array(UInt64)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Basic example**
+**基本的な例**
 
 ```sql title=Query
 SELECT bitmaskToArray(50) AS powers_of_two
@@ -311,7 +290,7 @@ SELECT bitmaskToArray(50) AS powers_of_two
 └─────────────────┘
 ```
 
-**Single power of two**
+**2 のべき乗のみ**
 
 ```sql title=Query
 SELECT bitmaskToArray(8) AS powers_of_two
@@ -323,34 +302,29 @@ SELECT bitmaskToArray(8) AS powers_of_two
 └───────────────┘
 ```
 
-
-
 ## bitmaskToList {#bitmaskToList}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+bitmaskToArray と同様ですが、2 のべき乗をカンマ区切りの文字列として返します。
 
-Like bitmaskToArray but returns the powers of two as a comma-separated string.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 bitmaskToList(num)
 ```
 
-**Arguments**
+**引数**
 
-- `num` — An integer value. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `num` — 整数値。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+カンマ区切りの 2 のべき乗を含む文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a string containing comma-separated powers of two. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Basic example**
+**基本的な例**
 
 ```sql title=Query
 SELECT bitmaskToList(50) AS powers_list
@@ -362,38 +336,31 @@ SELECT bitmaskToList(50) AS powers_list
 └───────────────┘
 ```
 
-
-
 ## char {#char}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
+渡された引数の数と同じ長さを持ち、各バイトの値が対応する引数の値になる文字列を返します。数値型の複数の引数を受け取ります。
 
-Returns a string with length equal to the number of arguments passed where each byte
-has the value of the corresponding argument. Accepts multiple arguments of numeric types.
+引数の値が `UInt8` データ型の範囲外の場合、必要に応じて丸めやオーバーフローが発生しながら `UInt8` に変換されます。
 
-If the value of the argument is out of range of the `UInt8` data type, then it is converted
-to `UInt8` with potential rounding and overflow.
-        
-
-**Syntax**
+**構文**
 
 ```sql
 char(num1[, num2[, ...]])
 ```
 
-**Arguments**
+**引数**
 
-- `num1[, num2[, num3 ...]]` — Numerical arguments interpreted as integers. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `num1[, num2[, num3 ...]]` — 整数として解釈される数値引数。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
 
+**戻り値**
 
-**Returned value**
+指定されたバイト列からなる文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a string of the given bytes. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Basic example**
+**基本的な例**
 
 ```sql title=Query
 SELECT char(104.1, 101, 108.9, 108.9, 111) AS hello;
@@ -405,7 +372,7 @@ SELECT char(104.1, 101, 108.9, 108.9, 111) AS hello;
 └───────┘
 ```
 
-**Constructing arbitrary encodings**
+**任意のエンコーディングの構築**
 
 ```sql title=Query
 -- 対応するバイト列を渡すことで、任意のエンコーディングの文字列を生成できます。
@@ -419,45 +386,39 @@ SELECT char(0xD0, 0xBF, 0xD1, 0x80, 0xD0, 0xB8, 0xD0, 0xB2, 0xD0, 0xB5, 0xD1, 0x
 └────────┘
 ```
 
-
-
 ## hex {#hex}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+引数の 16 進数表現を表す文字列を、型ごとに次のロジックに従って返します。
 
-Returns a string containing the argument's hexadecimal representation according
-to the following logic for different types:
+| Type                       | Description                                                                                                                     |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `(U)Int*`                  | 最上位から下位へ（ビッグエンディアン、すなわち「人間が読みやすい」順序）に 16 進数字（「ニブル」）を出力します。最上位の非ゼロバイトから開始し（先頭のゼロバイトは省略されます）が、各バイトについては先頭の桁が 0 であっても必ず 2 桁を出力します。 |
+| `Date` および `DateTime`      | 対応する整数としてフォーマットされます（`Date` の場合はエポックからの日数、`DateTime` の場合は Unix タイムスタンプの値）。                                                       |
+| `String` および `FixedString` | すべてのバイトが単純に 2 桁の 16 進数としてエンコードされます。0 バイトも省略されません。                                                                               |
+| `Float*` および `Decimal`     | メモリ上の表現としてエンコードされます。ClickHouse は内部的に値を常にリトルエンディアンで表現するため、その形式でエンコードされます。先頭および末尾の 0 バイトも省略されません。                                 |
+| `UUID`                     | ビッグエンディアン順の文字列としてエンコードされます。                                                                                                     |
 
-| Type                       | Description                                                                                                                                                                                                                                                                            |
-|----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `(U)Int*`                  | Prints hex digits ("nibbles") from the most significant to least significant (big-endian or "human-readable" order). It starts with the most significant non-zero byte (leading zero bytes are omitted) but always prints both digits of every byte even if the leading digit is zero. |
-| `Date` and `DateTime`      | Formatted as corresponding integers (the number of days since epoch for Date and the value of unix timestamp for DateTime).                                                                                                                                                            |
-| `String` and `FixedString` | All bytes are simply encoded as two hexadecimal numbers. Zero bytes are not omitted.                                                                                                                                                                                                   |
-| `Float*` and `Decimal`     | Encoded as their representation in memory. ClickHouse represents the values internally always as little endian, therefore they are encoded as such. Zero leading/trailing bytes are not omitted.                                                                                                                   |
-| `UUID`                     | Encoded as big-endian order string.                                                                                                                                                                                                                                                    |
+この関数は `A-F` の大文字を使用し、プレフィックス（`0x` など）やサフィックス（`h` など）は使用しません。
 
-The function uses uppercase letters `A-F` and not using any prefixes (like `0x`) or suffixes (like `h`).
-    
-
-**Syntax**
+**構文**
 
 ```sql
 hex(arg)
 ```
 
-**Arguments**
+**引数**
 
-- `arg` — A value to convert to hexadecimal. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal) or [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime)
+* `arg` — 16進数に変換する値。[`String`](/sql-reference/data-types/string) または [`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal) または [`Date`](/sql-reference/data-types/date) または [`DateTime`](/sql-reference/data-types/datetime)
 
+**戻り値**
 
-**Returned value**
+引数を16進数で表現した文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a string with the hexadecimal representation of the argument. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Simple integer**
+**単純な整数**
 
 ```sql title=Query
 SELECT hex(1)
@@ -467,7 +428,7 @@ SELECT hex(1)
 01
 ```
 
-**Float32 numbers**
+**Float32 型の数値**
 
 ```sql title=Query
 SELECT hex(toFloat32(number)) AS hex_presentation FROM numbers(15, 2)
@@ -480,7 +441,7 @@ SELECT hex(toFloat32(number)) AS hex_presentation FROM numbers(15, 2)
 └──────────────────┘
 ```
 
-**Float64 numbers**
+**Float64 型の数値**
 
 ```sql title=Query
 SELECT hex(toFloat64(number)) AS hex_presentation FROM numbers(15, 2)
@@ -493,7 +454,7 @@ SELECT hex(toFloat64(number)) AS hex_presentation FROM numbers(15, 2)
 └──────────────────┘
 ```
 
-**UUID conversion**
+**UUID 変換**
 
 ```sql title=Query
 SELECT lower(hex(toUUID('61f0c404-5cb3-11e7-907b-a6006ad3dba0'))) AS uuid_hex
@@ -505,55 +466,49 @@ SELECT lower(hex(toUUID('61f0c404-5cb3-11e7-907b-a6006ad3dba0'))) AS uuid_hex
 └──────────────────────────────────┘
 ```
 
-
-
 ## hilbertDecode {#hilbertDecode}
 
-Introduced in: v24.6
+導入バージョン: v24.6
 
+Hilbert 曲線のインデックスを復号し、多次元空間における座標を表す符号なし整数のタプルに変換します。
 
-Decodes a Hilbert curve index back into a tuple of unsigned integers, representing coordinates in multi-dimensional space.
+`hilbertEncode` 関数と同様に、この関数には 2 つの動作モードがあります。
 
-As with the `hilbertEncode` function, this function has two modes of operation:
-- **Simple**
-- **Expanded**
+* **シンプル**
+* **拡張**
 
-**Simple mode**
+**シンプルモード**
 
-Accepts up to 2 unsigned integers as arguments and produces a `UInt64` code.
+最大 2 個までの符号なし整数を引数として受け取り、`UInt64` コードを生成します。
 
-**Expanded mode**
+**拡張モード**
 
-Accepts a range mask (tuple) as a first argument and up to 2 unsigned integers as
-other arguments. Each number in the mask configures the number of bits by which
-the corresponding argument will be shifted left, effectively scaling the argument
-within its range.
+最初の引数として範囲マスク（タプル）を受け取り、他の引数として最大 2 個までの符号なし整数を
+受け取ります。マスク内の各数値は、それに対応する引数を左シフトするビット数を指定し、
+事実上、その引数をその範囲内でスケーリングします。
 
-Range expansion can be beneficial when you need a similar distribution for
-arguments with wildly different ranges (or cardinality) For example: 'IP Address' `(0...FFFFFFFF)`
-and 'Country code' `(0...FF)`. As with the encode function, this is limited to 8
-numbers at most.
-    
+範囲の拡張は、範囲（またはカーディナリティ）が大きく異なる引数間で
+類似した分布を得たい場合に有用です。例: 「IP アドレス」`(0...FFFFFFFF)` と
+「国コード」`(0...FF)`。エンコード関数と同様に、最大 8 個の数値までに制限されています。
 
-**Syntax**
+**構文**
 
 ```sql
 hilbertDecode(tuple_size, code)
 ```
 
-**Arguments**
+**引数**
 
-- `tuple_size` — Integer value of no more than `2`. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint) or [`Tuple(UInt8/16/32/64)`](/sql-reference/data-types/tuple)
-- `code` — `UInt64` code. [`UInt64`](/sql-reference/data-types/int-uint)
+* `tuple_size` — `2` 以下の整数値。[`UInt8/16/32/64`](/sql-reference/data-types/int-uint) または [`Tuple(UInt8/16/32/64)`](/sql-reference/data-types/tuple)
+* `code` — `UInt64` 型のコード。[`UInt64`](/sql-reference/data-types/int-uint)
 
+**返り値**
 
-**Returned value**
+指定されたサイズのタプルを返します。[`Tuple(UInt64)`](/sql-reference/data-types/tuple)
 
-Returns a tuple of the specified size. [`Tuple(UInt64)`](/sql-reference/data-types/tuple)
+**例**
 
-**Examples**
-
-**Simple mode**
+**シンプルモード**
 
 ```sql title=Query
 SELECT hilbertDecode(2, 31)
@@ -563,7 +518,7 @@ SELECT hilbertDecode(2, 31)
 ["3", "4"]
 ```
 
-**Single argument**
+**単一の引数**
 
 ```sql title=Query
 -- 1つの引数に対するヒルベルト符号は、常にその引数自体（タプルとして）です。
@@ -574,7 +529,7 @@ SELECT hilbertDecode(1, 1)
 ["1"]
 ```
 
-**Expanded mode**
+**拡張モード**
 
 ```sql title=Query
 -- ビットシフトを指定するタプルを持つ単一の引数は、それに応じて右シフトされます。
@@ -585,7 +540,7 @@ SELECT hilbertDecode(tuple(2), 32768)
 ["128"]
 ```
 
-**Column usage**
+**列の利用**
 
 ```sql title=Query
 -- まずテーブルを作成し、いくつかのデータを挿入します
@@ -605,34 +560,31 @@ SELECT untuple(hilbertDecode(2, hilbertEncode(n1, n2))) FROM hilbert_numbers;
 1    2
 ```
 
-
-
 ## hilbertEncode {#hilbertEncode}
 
-Introduced in: v24.6
+導入バージョン: v24.6
 
+符号なし整数のリストに対して、Hilbert 曲線のコードを計算します。
 
-Calculates code for Hilbert Curve for a list of unsigned integers.
+この関数には 2 つの動作モードがあります。
 
-The function has two modes of operation:
-- **Simple**
-- **Expanded**
+* **Simple**
+* **Expanded**
 
-**Simple mode**
+**Simple モード**
 
-Accepts up to 2 unsigned integers as arguments and produces a UInt64 code.
+最大 2 個の符号なし整数を引数として受け取り、UInt64 のコードを生成します。
 
-**Expanded mode**
+**Expanded モード**
 
-Accepts a range mask ([Tuple](../../sql-reference/data-types/tuple.md)) as the
-first argument and up to 2 [unsigned integers](../../sql-reference/data-types/int-uint.md)
-as other arguments.
+最初の引数として範囲マスク ([Tuple](../../sql-reference/data-types/tuple.md)) を、
+その他の引数として最大 2 個の[符号なし整数](../../sql-reference/data-types/int-uint.md)
+を受け取ります。
 
-Each number in the mask configures the number of bits by which the corresponding
-argument will be shifted left, effectively scaling the argument within its range.
-    
+マスク中のそれぞれの数値は、対応する引数を左シフトするビット数を指定し、
+対応する引数をその範囲内でスケーリングします。
 
-**Syntax**
+**構文**
 
 ```sql
 -- シンプルモード
@@ -642,19 +594,18 @@ hilbertEncode(args)
 hilbertEncode(range_mask, args)
 ```
 
-**Arguments**
+**引数**
 
-- `args` — Up to two `UInt` values or columns of type `UInt`. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
-- `range_mask` — For the expanded mode, up to two `UInt` values or columns of type `UInt`. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+* `args` — 最大 2 つの `UInt` 値、または `UInt` 型のカラム。[`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+* `range_mask` — 拡張モードでは、最大 2 つの `UInt` 値、または `UInt` 型のカラム。[`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+`UInt64` のコードを返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns a `UInt64` code. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Simple mode**
+**シンプルモード**
 
 ```sql title=Query
 SELECT hilbertEncode(3, 4)
@@ -664,7 +615,7 @@ SELECT hilbertEncode(3, 4)
 31
 ```
 
-**Expanded mode**
+**拡張モード**
 
 ```sql title=Query
 -- 範囲の拡張は、範囲（またはカーディナリティ）が大きく異なる引数に対しても、
@@ -678,7 +629,7 @@ SELECT hilbertEncode((10, 6), 1024, 16)
 4031541586602
 ```
 
-**Single argument**
+**単一引数**
 
 ```sql title=Query
 -- タプルではない単一の引数が指定された場合、この関数は
@@ -690,7 +641,7 @@ SELECT hilbertEncode(1)
 1
 ```
 
-**Expanded single argument**
+**展開後の単一引数**
 
 ```sql title=Query
 -- タプルでビットシフトを指定した単一の引数が提供された場合、
@@ -702,7 +653,7 @@ SELECT hilbertEncode(tuple(2), 128)
 512
 ```
 
-**Column usage**
+**列の使用方法**
 
 ```sql title=Query
 -- まずテーブルを作成し、いくつかデータを挿入します
@@ -722,41 +673,37 @@ SELECT hilbertEncode(n1, n2) FROM hilbert_numbers;
 13
 ```
 
-
-
 ## mortonDecode {#mortonDecode}
 
-Introduced in: v24.6
+導入バージョン: v24.6
 
+Morton 符号化 (ZCurve) を対応する符号なし整数タプルにデコードします。
 
-Decodes a Morton encoding (ZCurve) into the corresponding unsigned integer tuple.
+`mortonEncode` 関数と同様に、この関数には 2 つの動作モードがあります。
 
-As with the `mortonEncode` function, this function has two modes of operation:
-- **Simple**
-- **Expanded**
+* **シンプル**
+* **拡張**
 
-**Simple mode**
+**シンプルモード**
 
-Accepts a resulting tuple size as the first argument and the code as the second argument.
+最初の引数として結果タプルのサイズ、2 番目の引数としてコードを受け取ります。
 
-**Expanded mode**
+**拡張モード**
 
-Accepts a range mask (tuple) as the first argument and the code as the second argument.
-Each number in the mask configures the amount of range shrink:
+最初の引数として範囲マスク (タプル)、2 番目の引数としてコードを受け取ります。
+マスク内の各数値は、範囲縮小の度合いを設定します。
 
-* `1` - no shrink
-* `2` - 2x shrink
-* `3` - 3x shrink
-⋮
-* Up to 8x shrink.
+* `1` - 縮小なし
+* `2` - 2 倍の縮小
+* `3` - 3 倍の縮小
+  ⋮
+* 最大 8 倍の縮小。
 
-Range expansion can be beneficial when you need a similar distribution for
-arguments with wildly different ranges (or cardinality). For example: 'IP Address' `(0...FFFFFFFF)`
-and 'Country code' `(0...FF)`. As with the encode function, this is limited to
-8 numbers at most.
-    
+引数ごとの範囲 (またはカーディナリティ) が大きく異なる場合に、類似した分布が必要なときは、
+範囲の拡張を行うことが有用です。例: &#39;IP Address&#39; `(0...FFFFFFFF)` と
+&#39;Country code&#39; `(0...FF)`。エンコード関数と同様に、これは最大 8 個の数値までに制限されます。
 
-**Syntax**
+**構文**
 
 ```sql
 -- シンプルモード
@@ -766,20 +713,19 @@ mortonDecode(tuple_size, code)
 mortonDecode(range_mask, code)
 ```
 
-**Arguments**
+**引数**
 
-- `tuple_size` — Integer value no more than 8. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
-- `range_mask` — For the expanded mode, the mask for each argument. The mask is a tuple of unsigned integers. Each number in the mask configures the amount of range shrink. [`Tuple(UInt8/16/32/64)`](/sql-reference/data-types/tuple)
-- `code` — UInt64 code. [`UInt64`](/sql-reference/data-types/int-uint)
+* `tuple_size` — 8 以下の整数値。 [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+* `range_mask` — 拡張モードにおいて、各引数に対するマスク。マスクは符号なし整数のタプルで、マスク内の各数値で範囲の縮小量を設定する。 [`Tuple(UInt8/16/32/64)`](/sql-reference/data-types/tuple)
+* `code` — UInt64 のコード。 [`UInt64`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+指定したサイズのタプルを返す。 [`Tuple(UInt64)`](/sql-reference/data-types/tuple)
 
-Returns a tuple of the specified size. [`Tuple(UInt64)`](/sql-reference/data-types/tuple)
+**例**
 
-**Examples**
-
-**Simple mode**
+**シンプルモード**
 
 ```sql title=Query
 SELECT mortonDecode(3, 53)
@@ -789,7 +735,7 @@ SELECT mortonDecode(3, 53)
 ["1", "2", "3"]
 ```
 
-**Single argument**
+**単一引数**
 
 ```sql title=Query
 SELECT mortonDecode(1, 1)
@@ -799,7 +745,7 @@ SELECT mortonDecode(1, 1)
 ["1"]
 ```
 
-**Expanded mode, shrinking one argument**
+**拡張モード：引数を 1 つにまとめる**
 
 ```sql title=Query
 SELECT mortonDecode(tuple(2), 32768)
@@ -809,7 +755,7 @@ SELECT mortonDecode(tuple(2), 32768)
 ["128"]
 ```
 
-**Column usage**
+**カラムの使用**
 
 ```sql title=Query
 -- まずテーブルを作成し、データを挿入します
@@ -835,37 +781,35 @@ SELECT untuple(mortonDecode(8, mortonEncode(n1, n2, n3, n4, n5, n6, n7, n8))) FR
 1 2 3 4 5 6 7 8
 ```
 
-
-
 ## mortonEncode {#mortonEncode}
 
-Introduced in: v24.6
+導入バージョン: v24.6
 
+符号なし整数のリストに対して、Morton 符号化（ZCurve）を計算します。
 
-Calculates the Morton encoding (ZCurve) for a list of unsigned integers.
+この関数には 2 つの動作モードがあります:
 
-The function has two modes of operation:
-- **Simple**
-- *Expanded**
+* **シンプル**
+* *拡張*
 
-**Simple mode**
+**シンプルモード**
 
-Accepts up to 8 unsigned integers as arguments and produces a `UInt64` code.
+最大 8 個の符号なし整数を引数として受け取り、`UInt64` のコード値を生成します。
 
-**Expanded mode**
+**拡張モード**
 
-Accepts a range mask ([Tuple](../data-types/tuple.md)) as the first argument and
-up to 8 [unsigned integers](../data-types/int-uint.md) as other arguments.
+最初の引数として範囲マスク（[Tuple](../data-types/tuple.md)）を受け取り、
+その他の引数として最大 8 個の[符号なし整数](../data-types/int-uint.md)を受け取ります。
 
-Each number in the mask configures the amount of range expansion:
-* 1 - no expansion
-* 2 - 2x expansion
-* 3 - 3x expansion
-⋮
-* Up to 8x expansion.
-    
+マスク内の各数値は、範囲拡張の倍率を指定します:
 
-**Syntax**
+* 1 - 拡張なし
+* 2 - 2 倍拡張
+* 3 - 3 倍拡張
+  ⋮
+* 最大 8 倍拡張。
+
+**構文**
 
 ```sql
 -- 簡易モード
@@ -875,19 +819,18 @@ mortonEncode(args)
 mortonEncode(range_mask, args)
 ```
 
-**Arguments**
+**引数**
 
-- `args` — Up to 8 unsigned integers or columns of the aforementioned type. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
-- `range_mask` — For the expanded mode, the mask for each argument. The mask is a tuple of unsigned integers from `1` - `8`. Each number in the mask configures the amount of range shrink. [`Tuple(UInt8/16/32/64)`](/sql-reference/data-types/tuple)
+* `args` — 最大 8 個の符号なし整数、または前述の型のカラム。[`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+* `range_mask` — 拡張モードで使用する、各引数に対応するマスク。マスクは `1`〜`8` の符号なし整数からなるタプルです。マスク内の各数値は、範囲をどれだけ縮小するかの量を設定します。[`Tuple(UInt8/16/32/64)`](/sql-reference/data-types/tuple)
 
+**戻り値**
 
-**Returned value**
+`UInt64` のコードを返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns a `UInt64` code. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Simple mode**
+**シンプルモード**
 
 ```sql title=Query
 SELECT mortonEncode(1, 2, 3)
@@ -897,7 +840,7 @@ SELECT mortonEncode(1, 2, 3)
 53
 ```
 
-**Expanded mode**
+**詳細モード**
 
 ```sql title=Query
 -- 範囲拡張は、大きく異なる範囲（またはカーディナリティ）を持つ
@@ -911,7 +854,7 @@ SELECT mortonEncode((1,2), 1024, 16)
 1572864
 ```
 
-**Single argument**
+**単一の引数**
 
 ```sql title=Query
 -- 1つの引数に対するMortonエンコーディングは常に引数自体です
@@ -922,7 +865,7 @@ SELECT mortonEncode(1)
 1
 ```
 
-**Expanded single argument**
+**展開後の単一引数**
 
 ```sql title=Query
 SELECT mortonEncode(tuple(2), 128)
@@ -932,7 +875,7 @@ SELECT mortonEncode(tuple(2), 128)
 32768
 ```
 
-**Column usage**
+**カラムの利用**
 
 ```sql title=Query
 -- まずテーブルを作成し、いくつかデータを挿入します
@@ -958,34 +901,29 @@ SELECT mortonEncode(n1, n2, n3, n4, n5, n6, n7, n8) FROM morton_numbers;
 2155374165
 ```
 
-
-
 ## sqidDecode {#sqidDecode}
 
-Introduced in: v24.1
+導入: v24.1
 
+[sqid](https://sqids.org/) を数値の配列にデコードします。
 
-Transforms a [sqid](https://sqids.org/) back into an array of numbers.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 sqidDecode(sqid)
 ```
 
-**Arguments**
+**引数**
 
-- `sqid` — The sqid to decode. [`String`](/sql-reference/data-types/string)
+* `sqid` — デコードする sqid。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+`sqid` から得られる数値の配列を返します。[`Array(UInt64)`](/sql-reference/data-types/array)
 
-Returns an array of numbers from `sqid`. [`Array(UInt64)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT sqidDecode('gXHfJ1C6dN');
@@ -997,36 +935,31 @@ SELECT sqidDecode('gXHfJ1C6dN');
 └──────────────────────────────┘
 ```
 
-
-
 ## sqidEncode {#sqidEncode}
 
-Introduced in: v24.1
+導入バージョン: v24.1
 
+数値を [sqid](https://sqids.org/)（YouTube の動画 ID のような ID 文字列）にエンコードします。
 
-Transforms numbers into a [sqid](https://sqids.org/), a Youtube-like ID string.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 sqidEncode(n1[, n2, ...])
 ```
 
-**Aliases**: `sqid`
+**エイリアス**: `sqid`
 
-**Arguments**
+**引数**
 
-- `n1[, n2, ...]` — Arbitrarily many numbers. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+* `n1[, n2, ...]` — 任意の数の数値。[`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+ハッシュ ID を返します。型は [`String`](/sql-reference/data-types/string) です。
 
-Returns a hash ID [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT sqidEncode(1, 2, 3, 4, 5);
@@ -1038,43 +971,38 @@ SELECT sqidEncode(1, 2, 3, 4, 5);
 └───────────────────────────┘
 ```
 
-
-
 ## unbin {#unbin}
 
-Introduced in: v21.8
+導入バージョン: v21.8
 
+引数内の各 2 ビットの組を数値として解釈し、その数値で表されるバイトへ変換します。この関数は `bin` と逆の処理を行います。
 
-Interprets each pair of binary digits (in the argument) as a number and converts it to the byte represented by the number. The functions performs the opposite operation to bin.
-
-For a numeric argument `unbin()` does not return the inverse of `bin()`. If you want to convert the result to a number, you can use the reverse and `reinterpretAs<Type>` functions.
+数値の引数に対しては、`unbin()` は `bin()` の逆変換を返しません。結果を数値に変換したい場合は、`reverse` および `reinterpretAs<Type>` 関数を使用できます。
 
 :::note
-If `unbin` is invoked from within the `clickhouse-client`, binary strings are displayed using UTF-8.
+`clickhouse-client` 内から `unbin` が呼び出された場合、バイナリ文字列は UTF-8 を用いて表示されます。
 :::
 
-Supports binary digits `0` and `1`. The number of binary digits does not have to be multiples of eight. If the argument string contains anything other than binary digits,
-the result is undefined (no exception is thrown).
-    
+2 進数の数字 `0` と `1` をサポートします。2 進数の桁数は 8 の倍数である必要はありません。引数の文字列に 2 進数以外の文字が含まれている場合、
+結果は未定義です（例外はスローされません）。
 
-**Syntax**
+**構文**
 
 ```sql
 unbin(arg)
 ```
 
-**Arguments**
+**引数**
 
-- `arg` — A string containing any number of binary digits. [`String`](/sql-reference/data-types/string)
+* `arg` — 任意長の2進数ビット列を含む文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+バイナリ文字列（BLOB）を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a binary string (BLOB). [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Basic usage**
+**基本的な使用例**
 
 ```sql title=Query
 SELECT UNBIN('001100000011000100110010'), UNBIN('0100110101111001010100110101000101001100')
@@ -1086,7 +1014,7 @@ SELECT UNBIN('001100000011000100110010'), UNBIN('0100110101111001010100110101000
 └───────────────────────────────────┴───────────────────────────────────────────────────┘
 ```
 
-**Convert to number**
+**数値に変換**
 
 ```sql title=Query
 SELECT reinterpretAsUInt64(reverse(unbin('1110'))) AS num
@@ -1098,48 +1026,42 @@ SELECT reinterpretAsUInt64(reverse(unbin('1110'))) AS num
 └─────┘
 ```
 
-
-
 ## unhex {#unhex}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+[`hex`](#hex) と逆の操作を行います。引数内の 16 進数の各 2 桁を数値として解釈し、その数値が表すバイトに変換します。戻り値はバイナリ文字列 (BLOB) です。
 
-Performs the opposite operation of [`hex`](#hex). It interprets each pair of hexadecimal digits (in the argument) as a number and converts
-it to the byte represented by the number. The returned value is a binary string (BLOB).
-
-If you want to convert the result to a number, you can use the `reverse` and `reinterpretAs<Type>` functions.
+結果を数値に変換したい場合は、`reverse` 関数および `reinterpretAs<Type>` 関数を使用できます。
 
 :::note
-`clickhouse-client` interprets strings as UTF-8.
-This may cause that values returned by `hex` to be displayed surprisingly.
+`clickhouse-client` は文字列を UTF-8 として解釈します。
+そのため、`hex` が返す値の表示が予期しないものに見える場合があります。
 :::
 
-Supports both uppercase and lowercase letters `A-F`.
-The number of hexadecimal digits does not have to be even.
-If it is odd, the last digit is interpreted as the least significant half of the `00-0F` byte.
-If the argument string contains anything other than hexadecimal digits, some implementation-defined result is returned (an exception isn't thrown).
-For a numeric argument the inverse of hex(N) is not performed by unhex().
+大文字および小文字の `A-F` の両方をサポートします。
+16 進数の桁数は偶数である必要はありません。
+奇数の場合、最後の 1 桁は `00-0F` バイトの下位 4 ビットとして解釈されます。
+引数の文字列に 16 進数字以外の文字が含まれている場合、実装依存の結果が返されます (例外はスローされません)。
+数値引数に対しては、unhex() によって hex(N) の逆変換は行われません。
 
-
-**Syntax**
+**構文**
 
 ```sql
 unhex(arg)
 ```
 
-**Arguments**
+**引数**
 
-- `arg` — A string containing any number of hexadecimal digits. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+* `arg` — 任意個の 16 進数の数字を含む文字列。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
 
+**戻り値**
 
-**Returned value**
+バイナリ文字列（BLOB）を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a binary string (BLOB). [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Basic usage**
+**基本的な使用方法**
 
 ```sql title=Query
 SELECT unhex('303132'), UNHEX('4D7953514C')
@@ -1151,7 +1073,7 @@ SELECT unhex('303132'), UNHEX('4D7953514C')
 └─────────────────┴─────────────────────┘
 ```
 
-**Convert to number**
+**数値に変換**
 
 ```sql title=Query
 SELECT reinterpretAsUInt64(reverse(unhex('FFF'))) AS num

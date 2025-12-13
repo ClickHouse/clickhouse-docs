@@ -48,34 +48,29 @@ SELECT acos(0.5);
 1.0471975511965979
 ```
 
-
-
 ## acosh {#acosh}
 
-Introduced in: v20.12
+導入バージョン: v20.12
 
+逆双曲線余弦関数を返します。
 
-Returns the inverse hyperbolic cosine.
-
-
-**Syntax**
+**構文**
 
 ```sql
 acosh(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Hyperbolic cosine of angle. Values from the interval: `1 ≤ x < +∞`. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 角度の双曲線余弦値。値の範囲: `1 ≤ x < +∞`。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal)
 
+**戻り値**
 
-**Returned value**
+角度をラジアンで返します。値の範囲: `0 ≤ acosh(x) < +∞`。[`Float64`](/sql-reference/data-types/float)
 
-Returns the angle, in radians. Values from the interval: `0 ≤ acosh(x) < +∞`. [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT acosh(1)
@@ -85,35 +80,30 @@ SELECT acosh(1)
 0
 ```
 
-
-
 ## asin {#asin}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+指定された引数の逆正弦（アークサイン）値を計算します。
+引数が `[-1, 1]` の範囲にある場合、戻り値は `[-pi() / 2, pi() / 2]` の範囲になります。
 
-Calculates the arcsine of the provided argument.
-For arguments in the range `[-1, 1]` it returns the value in the range of `[-pi() / 2, pi() / 2]`.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 asin(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Argument for which to calculate arcsine of. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+* `x` — 逆正弦（アークサイン）を計算する対象の引数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
 
+**返り値**
 
-**Returned value**
+指定した引数 `x` の逆正弦値を返します。型は [`Float64`](/sql-reference/data-types/float) です。
 
-Returns the arcsine value of the provided argument `x` [`Float64`](/sql-reference/data-types/float)
+**使用例**
 
-**Examples**
-
-**inverse**
+**逆関数**
 
 ```sql title=Query
 SELECT asin(1.0) = pi() / 2, sin(asin(1)), asin(sin(1))
@@ -143,34 +133,29 @@ SELECT asin(1.1), asin(-2), asin(inf), asin(nan)
 nan nan nan nan
 ```
 
-
-
 ## asinh {#asinh}
 
-Introduced in: v20.12
+導入バージョン: v20.12
 
+逆双曲線正弦関数の値を返します。
 
-Returns the inverse hyperbolic sine.
-
-
-**Syntax**
+**構文**
 
 ```sql
 asinh(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Hyperbolic sine of angle. Values from the interval: `-∞ < x < +∞`. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 角度の双曲線正弦値。範囲: `-∞ < x < +∞` の値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返される値**
 
-**Returned value**
+角度をラジアン単位で返します。範囲: `-∞ < asinh(x) < +∞` の値。[`Float64`](/sql-reference/data-types/float)
 
-Returns the angle, in radians. Values from the interval: `-∞ < asinh(x) < +∞`. [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Basic usage**
+**基本的な使用方法**
 
 ```sql title=Query
 SELECT asinh(0)
@@ -180,34 +165,29 @@ SELECT asinh(0)
 0
 ```
 
-
-
 ## atan {#atan}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+引数のアークタンジェント（逆正接）を返します。
 
-Returns the arc tangent of the argument.
-
-
-**Syntax**
+**構文**
 
 ```sql
 atan(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — The value for which to find arc tangent of. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 逆正接（アークタンジェント）を求める値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal)
 
+**戻り値**
 
-**Returned value**
+`x` の逆正接を返します。[`Float*`](/sql-reference/data-types/float)
 
-Returns the arc tangent of `x`. [`Float*`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT atan(1);
@@ -217,35 +197,30 @@ SELECT atan(1);
 0.7853981633974483
 ```
 
-
-
 ## atan2 {#atan2}
 
-Introduced in: v20.12
+導入バージョン: v20.12
 
+ユークリッド平面において、正の x 軸から原点から点 `(x, y) ≠ (0, 0)` に向かう半直線までの角度（ラジアン）としての atan2 を返します。
 
-Returns the atan2 as the angle in the Euclidean plane, given in radians, between the positive x axis and the ray to the point `(x, y) ≠ (0, 0)`.
-
-
-**Syntax**
+**構文**
 
 ```sql
 atan2(y, x)
 ```
 
-**Arguments**
+**引数**
 
-- `y` — y-coordinate of the point through which the ray passes. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
-- `x` — x-coordinate of the point through which the ray passes. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `y` — 半直線が通過する点の y 座標。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 半直線が通過する点の x 座標。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal)
 
+**戻り値**
 
-**Returned value**
+`-π < θ ≤ π` を満たす角度 `θ` をラジアン単位で返します。[`Float64`](/sql-reference/data-types/float)
 
-Returns the angle `θ` such that `-π < θ ≤ π`, in radians [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT atan2(1, 1)
@@ -255,34 +230,29 @@ SELECT atan2(1, 1)
 0.7853981633974483
 ```
 
-
-
 ## atanh {#atanh}
 
-Introduced in: v20.12
+導入バージョン: v20.12
 
+逆双曲線正接を返します。
 
-Returns the inverse hyperbolic tangent.
-
-
-**Syntax**
+**構文**
 
 ```sql
 atanh(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Hyperbolic tangent of angle. Values from the interval: -1 < x < 1. `(U)Int*`, `Float*` or `Decimal*`. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 双曲線正接の値。区間: -1 &lt; x &lt; 1。`(U)Int*`、`Float*` または `Decimal*`。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返り値**
 
-**Returned value**
+ラジアンで表される角度を返します。区間: -∞ &lt; atanh(x) &lt; +∞ [`Float64`](/sql-reference/data-types/float)
 
-Returns the angle, in radians. Values from the interval: -∞ < atanh(x) < +∞ [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT atanh(0)
@@ -292,34 +262,29 @@ SELECT atanh(0)
 0
 ```
 
-
-
 ## cbrt {#cbrt}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+引数の立方根を返します。
 
-Returns the cubic root of the argument.
-
-
-**Syntax**
+**構文**
 
 ```sql
 cbrt(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — The value for which to find the cubic root of. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 立方根を求める値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返り値**
 
-**Returned value**
+`x` の立方根を返します。[`Float*`](/sql-reference/data-types/float)
 
-Returns the cubic root of `x`. [`Float*`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT cbrt(8);
@@ -329,34 +294,29 @@ SELECT cbrt(8);
 2
 ```
 
-
-
 ## cos {#cos}
 
-Introduced in: v1.1
+導入: v1.1
 
+引数の余弦を返します。
 
-Returns the cosine of the argument.
-
-
-**Syntax**
+**構文**
 
 ```sql
 cos(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — The angle in radians. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — ラジアンで指定された角度。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal)
 
+**戻り値**
 
-**Returned value**
+`x` の余弦を返します。[`Float*`](/sql-reference/data-types/float)
 
-Returns the cosine of `x`. [`Float*`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT cos(0);
@@ -366,34 +326,29 @@ SELECT cos(0);
 1
 ```
 
-
-
 ## cosh {#cosh}
 
-Introduced in: v20.12
+導入バージョン: v20.12
 
+引数の双曲線余弦を返します。
 
-Returns the hyperbolic cosine of the argument.
-
-
-**Syntax**
+**構文**
 
 ```sql
 cosh(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — The angle, in radians. Values from the interval: `-∞ < x < +∞`. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — ラジアンで表した角度。値は区間 `-∞ < x < +∞` を取ります。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返り値**
 
-**Returned value**
+区間 `1 ≤ cosh(x) < +∞` の値を返します。[`Float64`](/sql-reference/data-types/float)
 
-Returns values from the interval: `1 ≤ cosh(x) < +∞` [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Basic usage**
+**基本的な使い方**
 
 ```sql title=Query
 SELECT cosh(0)
@@ -403,34 +358,29 @@ SELECT cosh(0)
 1
 ```
 
-
-
 ## degrees {#degrees}
 
-Introduced in: v22.2
+導入バージョン: v22.2
 
+ラジアンを度に変換します。
 
-Converts radians to degrees.
-
-
-**Syntax**
+**構文**
 
 ```sql
 degrees(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Input in radians. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — ラジアン単位の入力値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal)
 
+**戻り値**
 
-**Returned value**
+`x` を度に変換した値を返します。[`Float64`](/sql-reference/data-types/float)
 
-Returns the value of `x` in degrees. [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Basic usage**
+**基本的な使用例**
 
 ```sql title=Query
 SELECT degrees(3.141592653589793)
@@ -440,33 +390,29 @@ SELECT degrees(3.141592653589793)
 180
 ```
 
-
-
 ## e {#e}
 
-Introduced in: v1.1
+導入バージョン：v1.1
 
+オイラー定数 e を返します。
 
-Returns Euler's constant (e).
-
-
-**Syntax**
+**構文**
 
 ```sql
 e()
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* なし。
 
-**Returned value**
+**戻り値**
 
-Returns Euler's constant [`Float64`](/sql-reference/data-types/float)
+オイラーの定数を返します [`Float64`](/sql-reference/data-types/float)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT e();
@@ -476,34 +422,29 @@ SELECT e();
 2.718281828459045
 ```
 
-
-
 ## erf {#erf}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+`x` が非負の場合、`erf(x/(σ√2))` は、標準偏差 `σ` を持つ正規分布に従う確率変数が、期待値から `x` を超えて離れた値をとる確率です。
 
-If `x` is non-negative, then `erf(x/(σ√2))` is the probability that a random variable having a normal distribution with standard deviation `σ` takes the value that is separated from the expected value by more than `x`.
-
-
-**Syntax**
+**構文**
 
 ```sql
 erf(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — The value for which to compute the error function value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 誤差関数の値を計算する対象の値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返される値**
 
-**Returned value**
+誤差関数の値を返します。型は [`Float*`](/sql-reference/data-types/float) です。
 
-Returns the error function value [`Float*`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Three sigma rule**
+**3シグマの法則**
 
 ```sql title=Query
 SELECT erf(3 / sqrt(2))
@@ -515,34 +456,29 @@ SELECT erf(3 / sqrt(2))
 └─────────────────────────┘
 ```
 
-
-
 ## erfc {#erfc}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+`x` の値が大きい場合でも精度を失うことなく、`1-erf(x)` に近い数値を返します。
 
-Returns a number close to `1-erf(x)` without loss of precision for large `x` values.
-
-
-**Syntax**
+**構文**
 
 ```sql
 erfc(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — The value for which to find the error function value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 誤差関数値を計算する対象の値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal)
 
+**戻り値**
 
-**Returned value**
+相補誤差関数の値 [`Float*`](/sql-reference/data-types/float) を返します
 
-Returns the complementary error function value [`Float*`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT erfc(0);
@@ -552,34 +488,29 @@ SELECT erfc(0);
 1
 ```
 
-
-
 ## exp {#exp}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+与えられた引数 `x` に対して、e の `x` 乗を返します。
 
-Returns e raised to the power of `x`, where `x` is the given argument to the function.
-
-
-**Syntax**
+**構文**
 
 ```sql
 exp(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — The exponent. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 指数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal)
 
+**戻り値**
 
-**Returned value**
+`e^x` を返します。型は [`Float*`](/sql-reference/data-types/float) です。
 
-Returns `e^x` [`Float*`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Basic usage**
+**基本的な使用例**
 
 ```sql title=Query
 SELECT round(exp(-1), 4)
@@ -591,34 +522,29 @@ SELECT round(exp(-1), 4)
 └───────────────────┘
 ```
 
-
-
 ## exp10 {#exp10}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+指定した引数を指数とする 10 のべき乗を返します。
 
-Returns 10 to the power of the given argument.
-
-
-**Syntax**
+**構文**
 
 ```sql
 exp10(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — The exponent. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 指数。[`(U)Int*`](/sql-reference/data-types/int-uint)、[`Float*`](/sql-reference/data-types/float)、または [`Decimal*`](/sql-reference/data-types/decimal)
 
+**戻り値**
 
-**Returned value**
+10^x を返します。戻り値の型は [`Float*`](/sql-reference/data-types/float) です。
 
-Returns 10^x [`Float*`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT exp10(2);
@@ -628,34 +554,29 @@ SELECT exp10(2);
 100
 ```
 
-
-
 ## exp2 {#exp2}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+与えられた引数を指数とする 2 のべき乗を返します。
 
-Returns 2 to the power of the given argument.
-
-
-**Syntax**
+**構文**
 
 ```sql
 exp2(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — The exponent. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 指数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返り値**
 
-**Returned value**
+2^x を返します。戻り値の型は [`Float*`](/sql-reference/data-types/float) です。
 
-Returns 2^x [`Float*`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT exp2(3);
@@ -665,36 +586,31 @@ SELECT exp2(3);
 8
 ```
 
-
-
 ## factorial {#factorial}
 
-Introduced in: v22.11
+導入バージョン: v22.11
 
+整数値の階乗を計算します。
+0 の階乗は 1 です。同様に、`factorial()` 関数は任意の負の値に対して `1` を返します。
+入力引数として指定できる最大の正の値は `20` であり、`21` 以上を指定すると例外が発生します。
 
-Computes the factorial of an integer value.
-The factorial of 0 is 1. Likewise, the `factorial()` function returns `1` for any negative value.
-The maximum positive value for the input argument is `20`, a value of `21` or greater will cause an exception.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 factorial(n)
 ```
 
-**Arguments**
+**引数**
 
-- `n` — Integer value for which to calculate the factorial. Maximum value is 20. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+* `n` — 階乗を計算する対象の整数値。最大値は 20。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+入力値の階乗を `UInt64` 型で返します。入力が 0 または負の値の場合は 1 を返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the factorial of the input as UInt64. Returns 1 for input 0 or any negative value. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 factorial(10)
@@ -704,36 +620,31 @@ factorial(10)
 3628800
 ```
 
-
-
 ## hypot {#hypot}
 
-Introduced in: v20.12
+導入バージョン: v20.12
 
+直角三角形の斜辺の長さを返します。
+hypot は、非常に大きな数値または非常に小さな数値を二乗するときに発生する問題を回避します。
 
-Returns the length of the hypotenuse of a right-angle triangle.
-Hypot avoids problems that occur when squaring very large or very small numbers.
-
-
-**Syntax**
+**構文**
 
 ```sql
 hypot(x, y)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — The first cathetus of a right-angle triangle. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
-- `y` — The second cathetus of a right-angle triangle. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 直角三角形の1つ目の直角辺。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal)
+* `y` — 直角三角形の2つ目の直角辺。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal)
 
+**戻り値**
 
-**Returned value**
+直角三角形の斜辺の長さを返します。[`Float64`](/sql-reference/data-types/float)
 
-Returns the length of the hypotenuse of a right-angle triangle. [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Basic usage**
+**基本的な使い方**
 
 ```sql title=Query
 SELECT hypot(1, 1)
@@ -743,34 +654,29 @@ SELECT hypot(1, 1)
 1.4142135623730951
 ```
 
-
-
 ## intExp10 {#intExp10}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+[exp10](#exp10) と同様ですが、`UInt64` 型の数値を返します。
 
-Like [exp10](#exp10) but returns a `UInt64` number.
-
-
-**Syntax**
+**構文**
 
 ```sql
 intExp10(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — The exponent. [`Int*`](/sql-reference/data-types/int-uint) or [`UInt*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `x` — 指数。[`Int*`](/sql-reference/data-types/int-uint) または [`UInt*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
 
+**戻り値**
 
-**Returned value**
+10^x を返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns 10^x. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT intExp10(2);
@@ -780,34 +686,29 @@ SELECT intExp10(2);
 100
 ```
 
-
-
 ## intExp2 {#intExp2}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+[exp2](#exp2) と同様ですが、`UInt64` 型の数値を返します。
 
-Like [exp2](#exp2) but returns a `UInt64` number.
-
-
-**Syntax**
+**構文**
 
 ```sql
 intExp2(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — The exponent. [`Int*`](/sql-reference/data-types/int-uint) or [`UInt*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `x` — 指数。[`Int*`](/sql-reference/data-types/int-uint) または [`UInt*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) のいずれか。
 
+**戻り値**
 
-**Returned value**
+2^x を返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns 2^x. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT intExp2(3);
@@ -817,34 +718,29 @@ SELECT intExp2(3);
 8
 ```
 
-
-
 ## lgamma {#lgamma}
 
-Introduced in: v1.1
+導入されたバージョン: v1.1
 
+ガンマ関数の対数を返します。
 
-Returns the logarithm of the gamma function.
-
-
-**Syntax**
+**構文**
 
 ```sql
 lgamma(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — The number for which to compute the logarithm of the gamma function. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — ガンマ関数の対数を計算する数値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal)
 
+**戻り値**
 
-**Returned value**
+`x` のガンマ関数の対数を返します。[`Float*`](/sql-reference/data-types/float)
 
-Returns the logarithm of the gamma function of `x`. [`Float*`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT lgamma(5);
@@ -854,36 +750,31 @@ SELECT lgamma(5);
 3.1780538303479458
 ```
 
-
-
 ## log {#log}
 
-Introduced in: v1.1
+導入されたバージョン: v1.1
 
+引数の自然対数を返します。
 
-Returns the natural logarithm of the argument.
-
-
-**Syntax**
+**構文**
 
 ```sql
 log(x)
 ```
 
-**Aliases**: `ln`
+**別名**: `ln`
 
-**Arguments**
+**引数**
 
-- `x` — The number for which to compute the natural logarithm of. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 自然対数を計算する対象となる値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返り値**
 
-**Returned value**
+`x` の自然対数を返します。[`Float*`](/sql-reference/data-types/float)
 
-Returns the natural logarithm of `x`. [`Float*`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT log(10);
@@ -893,34 +784,29 @@ SELECT log(10);
 2.302585092994046
 ```
 
-
-
 ## log10 {#log10}
 
-Introduced in: v1.1
+導入: v1.1
 
+引数の常用対数を返します。
 
-Returns the decimal logarithm of the argument.
-
-
-**Syntax**
+**構文**
 
 ```sql
 log10(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Number for which to compute the decimal logarithm of. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 常用対数を計算する対象の数値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返り値**
 
-**Returned value**
+`x` の常用対数を返します。[`Float*`](/sql-reference/data-types/float)
 
-Returns the decimal logarithm of `x`. [`Float*`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT log10(100);
@@ -930,35 +816,30 @@ SELECT log10(100);
 2
 ```
 
-
-
 ## log1p {#log1p}
 
-Introduced in: v20.12
+導入バージョン: v20.12
 
+log(1+x) の値を計算します。
+小さい値の `x` に対しては、log1p(x) の方が log(1+x) よりも高い精度で計算できます。
 
-Calculates log(1+x).
-The calculation log1p(x) is more accurate than log(1+x) for small values of `x`.
-
-
-**Syntax**
+**構文**
 
 ```sql
 log1p(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Values from the interval: `-1 < x < +∞`. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 区間 `-1 < x < +∞` の値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal)
 
+**戻り値**
 
-**Returned value**
+区間 -∞ &lt; log1p(x) &lt; +∞ に属する値を返します。[`Float64`](/sql-reference/data-types/float)
 
-Returns values from the interval: -∞ < log1p(x) < +∞ [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT log1p(0)
@@ -968,34 +849,29 @@ SELECT log1p(0)
 0
 ```
 
-
-
 ## log2 {#log2}
 
-Introduced in: v1.1
+導入されたバージョン: v1.1
 
+引数の二進対数を返します。
 
-Returns the binary logarithm of the argument.
-
-
-**Syntax**
+**構文**
 
 ```sql
 log2(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — The number for which to compute the binary logarithm of. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 2 を底とする対数を計算する数値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal)
 
+**戻り値**
 
-**Returned value**
+`x` の 2 を底とする対数（バイナリ対数）を返します。[`Float*`](/sql-reference/data-types/float)
 
-Returns the binary logarithm of `x`. [`Float*`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT log2(8);
@@ -1005,33 +881,29 @@ SELECT log2(8);
 3
 ```
 
-
-
 ## pi {#pi}
 
-Introduced in: v1.1
+導入バージョン：v1.1
 
+円周率 (π) を返します。
 
-Returns pi (π).
-
-
-**Syntax**
+**構文**
 
 ```sql
 pi()
 ```
 
-**Arguments**
+**引数**
 
-- None.
+* なし
 
-**Returned value**
+**戻り値**
 
-Returns pi [`Float64`](/sql-reference/data-types/float)
+[`Float64`](/sql-reference/data-types/float) 型の pi を返します。
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT pi();
@@ -1041,37 +913,32 @@ SELECT pi();
 3.141592653589793
 ```
 
-
-
 ## pow {#pow}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+x を y 乗した結果を返します。
 
-Returns x raised to the power of y.
-
-
-**Syntax**
+**構文**
 
 ```sql
 pow(x, y)
 ```
 
-**Aliases**: `power`
+**別名**: `power`
 
-**Arguments**
+**引数**
 
-- `x` — The base. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
-- `y` — The exponent. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 底。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal)
+* `y` — 指数。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal)
 
+**戻り値**
 
-**Returned value**
+x^y を計算し、その結果を [`Float64`](/sql-reference/data-types/float) 型で返します。
 
-Returns x^y [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT pow(2, 3);
@@ -1081,34 +948,29 @@ SELECT pow(2, 3);
 8
 ```
 
-
-
 ## radians {#radians}
 
-Introduced in: v22.2
+導入バージョン: v22.2
 
+角度（度）をラジアンに変換します。
 
-Converts degrees to radians.
-
-
-**Syntax**
+**構文**
 
 ```sql
 radians(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Input in degrees. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 度数法で指定された入力値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返り値**
 
-**Returned value**
+値をラジアンで返します。[`Float64`](/sql-reference/data-types/float)
 
-Returns value in radians [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT radians(180)
@@ -1118,34 +980,29 @@ SELECT radians(180)
 3.141592653589793
 ```
 
-
-
 ## sign {#sign}
 
-Introduced in: v21.2
+導入バージョン: v21.2
 
+実数の符号を返します。
 
-Returns the sign of a real number.
-
-
-**Syntax**
+**構文**
 
 ```sql
 符号(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Values from -∞ to +∞. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Decimal*`](/sql-reference/data-types/decimal) or [`Float*`](/sql-reference/data-types/float)
+* `x` — -∞ から +∞ までの値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Decimal*`](/sql-reference/data-types/decimal) または [`Float*`](/sql-reference/data-types/float)
 
+**戻り値**
 
-**Returned value**
+`x < 0` の場合は `-1`、`x = 0` の場合は `0`、`x > 0` の場合は `1` を返します。[`Int8`](/sql-reference/data-types/int-uint)
 
-Returns `-1` for `x < 0`, `0` for `x = 0`, `1` for `x > 0`. [`Int8`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Sign for zero**
+**ゼロの符号**
 
 ```sql title=Query
 SELECT sign(0)
@@ -1155,7 +1012,7 @@ SELECT sign(0)
 0
 ```
 
-**Sign for positive**
+**正の符号**
 
 ```sql title=Query
 SELECT sign(1)
@@ -1165,7 +1022,7 @@ SELECT sign(1)
 1
 ```
 
-**Sign for negative**
+**負の符号**
 
 ```sql title=Query
 SELECT sign(-1)
@@ -1175,32 +1032,29 @@ SELECT sign(-1)
 -1
 ```
 
-
-
 ## sin {#sin}
 
-Introduced in: v
+導入バージョン: v
 
-Returns the sine of the argument.
+引数の正弦（サイン）を返します。
 
-**Syntax**
+**構文**
 
 ```sql
 sin(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — The number whose sine will be returned. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 正弦を計算する対象の数値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal)
 
+**戻り値**
 
-**Returned value**
+`x` の正弦値を返します。
 
-Returns the sine of x.
+**例**
 
-**Examples**
-
-**simple**
+**シンプルな例**
 
 ```sql title=Query
 SELECT sin(1.23)
@@ -1210,34 +1064,29 @@ SELECT sin(1.23)
 0.9424888019316975
 ```
 
-
-
 ## sinh {#sinh}
 
-Introduced in: v20.12
+導入: v20.12
 
+双曲線正弦を返します。
 
-Returns the hyperbolic sine.
-
-
-**Syntax**
+**構文**
 
 ```sql
 sinh(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — The angle, in radians. Values from the interval: -∞ < x < +∞. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — ラジアンで表した角度。値の範囲は -∞ &lt; x &lt; +∞。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返り値**
 
-**Returned value**
+値の範囲が -∞ &lt; sinh(x) &lt; +∞ の値を返します。[`Float64`](/sql-reference/data-types/float)
 
-Returns values from the interval: -∞ < sinh(x) < +∞ [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT sinh(0)
@@ -1247,34 +1096,29 @@ SELECT sinh(0)
 0
 ```
 
-
-
 ## sqrt {#sqrt}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+引数の平方根を返します。
 
-Returns the square root of the argument.
-
-
-**Syntax**
+**構文**
 
 ```sql
 sqrt(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — The number for which to find the square root of. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 平方根を計算する値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返り値**
 
-**Returned value**
+x の平方根を返します。[`Float*`](/sql-reference/data-types/float)
 
-Returns the square root of x [`Float*`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT sqrt(16);
@@ -1284,34 +1128,29 @@ SELECT sqrt(16);
 4
 ```
 
-
-
 ## tan {#tan}
 
-Introduced in: v1.1
+導入: v1.1
 
+引数の正接（タンジェント）を返します。
 
-Returns the tangent of the argument.
-
-
-**Syntax**
+**構文**
 
 ```sql
 tan(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — The angle in radians. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — ラジアン単位の角度。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal)
 
+**戻り値**
 
-**Returned value**
+`x` の正接を返します。[`Float*`](/sql-reference/data-types/float)
 
-Returns the tangent of `x`. [`Float*`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT tan(0);
@@ -1321,34 +1160,29 @@ SELECT tan(0);
 0
 ```
 
-
-
 ## tanh {#tanh}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
+双曲線正接関数の値を返します。
 
-Returns the hyperbolic tangent.
-
-
-**Syntax**
+**構文**
 
 ```sql
 tanh(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — The angle in radians. Values from the interval: -∞ < x < +∞. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — ラジアンで表した角度。取り得る値の範囲: -∞ &lt; x &lt; +∞。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal)
 
+**戻り値**
 
-**Returned value**
+取り得る値の範囲: -1 &lt; tanh(x) &lt; 1 の値を返します。型は [`Float*`](/sql-reference/data-types/float)
 
-Returns values from the interval: -1 < tanh(x) < 1 [`Float*`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT tanh(0)
@@ -1358,34 +1192,29 @@ SELECT tanh(0)
 0
 ```
 
-
-
 ## tgamma {#tgamma}
 
-Introduced in: v1.1
+導入されたバージョン: v1.1
 
+ガンマ関数を返します。
 
-Returns the gamma function.
-
-
-**Syntax**
+**構文**
 
 ```sql
 tgamma(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — The number for which to compute the gamma function of. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — ガンマ関数を計算する対象の数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal)
 
+**戻り値**
 
-**Returned value**
+ガンマ関数の値を返します。[`Float*`](/sql-reference/data-types/float)
 
-Returns the gamma function value [`Float*`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT tgamma(5);
@@ -1395,40 +1224,35 @@ SELECT tgamma(5);
 24
 ```
 
-
-
 ## widthBucket {#widthBucket}
 
-Introduced in: v23.3
+導入バージョン: v23.3
 
+`operand` パラメーターが、`low` から `high` の範囲を等幅に分割した `count` 個のビン（ヒストグラムの区間）のうちどれに属するか、そのビン番号を返します。`operand` が `low` より小さい場合は 0 を返し、`operand` が `high` 以上の場合は `count`+1 を返します。
+他のデータベースとの互換性のために、大文字小文字を区別しないエイリアス `WIDTH_BUCKET` も用意されています。
 
-Returns the number of the bucket in which parameter `operand` falls in a histogram having count equal-width buckets spanning the range `low` to `high`. Returns 0 if `operand` is less than `low`, and returns `count`+1 if `operand` is greater than or equal to `high`.
-There is also a case insensitive alias called `WIDTH_BUCKET` to provide compatibility with other databases.
-
-
-**Syntax**
+**構文**
 
 ```sql
 widthBucket(operand, low, high, count)
 ```
 
-**Aliases**: `width_bucket`
+**別名**: `width_bucket`
 
-**Arguments**
+**引数**
 
-- `operand` — The value for which to determine the bucket. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
-- `low` — The lower bound of the histogram range. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
-- `high` — The upper bound of the histogram range. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
-- `count` — The number of equal-width buckets. Cannot be zero. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+* `operand` — 属するバケットを判定する対象の値。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+* `low` — ヒストグラム範囲の下限値。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+* `high` — ヒストグラム範囲の上限値。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+* `count` — 等幅バケットの数。0 にすることはできません。[`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+バケット番号を整数で返します。`operand &lt; low` の場合は 0 を返し、`operand &gt;= high` の場合は `count+1` を返します。[`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
 
-Returns the bucket number as an integer. Returns 0 if operand < low, returns count+1 if operand >= high. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 widthBucket(10.15, -8.6, 23, 18)

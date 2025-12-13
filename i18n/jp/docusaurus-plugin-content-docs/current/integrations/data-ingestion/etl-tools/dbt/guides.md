@@ -1015,81 +1015,63 @@ clickhouse-user@clickhouse:~/imdb$ dbt snapshot
 |45332 |Mel       |Blanc       |909       |2022-05-25 19:31:47|NULL               |
 |621468|Bess      |Flowers     |672       |2022-05-25 19:31:47|NULL               |
 +------+----------+------------+----------+-------------------+-------------------+
-```bash
+```
+
+dbt スナップショットの詳細については、[こちら](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots)を参照してください。
+
+## シードの使用 {#using-seeds}
+
+dbt には、CSV ファイルからデータをロードする機能があります。この機能はデータベースの大規模なエクスポートをロードする用途には適しておらず、コードテーブルや[ディクショナリ](../../../../sql-reference/dictionaries/index.md)で一般的に使用される小さなファイル向けに設計されています。たとえば、国コードを国名にマッピングする用途などです。簡単な例として、シード機能を使用してジャンルコードの一覧を生成し、アップロードします。
+
+1. 既存のデータセットからジャンルコードの一覧を生成します。dbt ディレクトリから、`clickhouse-client` を使用してファイル `seeds/genre_codes.csv` を作成します:
+
+    ```bash
     clickhouse-user@clickhouse:~/imdb$ clickhouse-client --password <password> --query
     "SELECT genre, ucase(substring(genre, 1, 3)) as code FROM imdb.genres GROUP BY genre
     LIMIT 100 FORMAT CSVWithNames" > seeds/genre_codes.csv
-    ```bash
-    clickhouse-user@clickhouse:~/imdb$ clickhouse-client --password <password> --query
-    "SELECT genre, ucase(substring(genre, 1, 3)) as code FROM imdb.genres GROUP BY genre
-    LIMIT 100 FORMAT CSVWithNames" > seeds/genre_codes.csv
-    ```bash
-    clickhouse-user@clickhouse:~/imdb$ dbt seed
-    17:03:23  Running with dbt=1.1.0
-    17:03:23  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 1 seed file, 6 sources, 0 exposures, 0 metrics
-    17:03:23
-    17:03:24  Concurrency: 1 threads (target='dev')
-    17:03:24
-    17:03:24  1 of 1 START seed file imdb_dbt.genre_codes..................................... [RUN]
-    17:03:24  1 of 1 OK loaded seed file imdb_dbt.genre_codes................................. [INSERT 21 in 0.65s]
-    17:03:24
-    17:03:24  Finished running 1 seed in 1.62s.
-    17:03:24
-    17:03:24  Completed successfully
-    17:03:24
-    17:03:24  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
-    ```bash
-    clickhouse-user@clickhouse:~/imdb$ dbt seed
-    17:03:23  Running with dbt=1.1.0
-    17:03:23  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 1 seed file, 6 sources, 0 exposures, 0 metrics
-    17:03:23
-    17:03:24  Concurrency: 1 threads (target='dev')
-    17:03:24
-    17:03:24  1 of 1 START seed file imdb_dbt.genre_codes..................................... [RUN]
-    17:03:24  1 of 1 OK loaded seed file imdb_dbt.genre_codes................................. [INSERT 21 in 0.65s]
-    17:03:24
-    17:03:24  Finished running 1 seed in 1.62s.
-    17:03:24
-    17:03:24  Completed successfully
-    17:03:24
-    17:03:24  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
-    ```sql
-    SELECT * FROM imdb_dbt.genre_codes LIMIT 10;
-    ```sql
-    SELECT * FROM imdb_dbt.genre_codes LIMIT 10;
-    ```response
-    +-------+----+
-    |genre  |code|
-    +-------+----+
-    |Drama  |DRA |
-    |Romance|ROM |
-    |Short  |SHO |
-    |Mystery|MYS |
-    |Adult  |ADU |
-    |Family |FAM |
-
-    |Action |ACT |
-    |Sci-Fi |SCI |
-    |Horror |HOR |
-    |War    |WAR |
-    +-------+----+=
-    ```response
-    +-------+----+
-    |genre  |code|
-    +-------+----+
-    |Drama  |DRA |
-    |Romance|ROM |
-    |Short  |SHO |
-    |Mystery|MYS |
-    |Adult  |ADU |
-    |Family |FAM |
-
-    |Action |ACT |
-    |Sci-Fi |SCI |
-    |Horror |HOR |
-    |War    |WAR |
-    +-------+----+=
     ```
+
+2. `dbt seed` コマンドを実行します。これにより、スキーマ設定で定義されたとおりに、CSV ファイルの行を含む新しいテーブル `genre_codes` がデータベース `imdb_dbt` 内に作成されます。
+
+    ```bash
+    clickhouse-user@clickhouse:~/imdb$ dbt seed
+    17:03:23  Running with dbt=1.1.0
+    17:03:23  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 1 seed file, 6 sources, 0 exposures, 0 metrics
+    17:03:23
+    17:03:24  Concurrency: 1 threads (target='dev')
+    17:03:24
+    17:03:24  1 of 1 START seed file imdb_dbt.genre_codes..................................... [RUN]
+    17:03:24  1 of 1 OK loaded seed file imdb_dbt.genre_codes................................. [INSERT 21 in 0.65s]
+    17:03:24
+    17:03:24  Finished running 1 seed in 1.62s.
+    17:03:24
+    17:03:24  Completed successfully
+    17:03:24
+    17:03:24  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
+    ```
+
+3. データがロードされたことを確認します:
+
+```sql
+SELECT * FROM imdb_dbt.genre_codes LIMIT 10;
+```
+```response
++-------+----+
+|genre  |code|
++-------+----+
+|Drama  |DRA |
+|Romance|ROM |
+|Short  |SHO |
+|Mystery|MYS |
+|Adult  |ADU |
+|Family |FAM |
+
+|Action |ACT |
+|Sci-Fi |SCI |
+|Horror |HOR |
+|War    |WAR |
++-------+----+=
+```
 
 ## さらに詳しい情報 {#further-information}
 

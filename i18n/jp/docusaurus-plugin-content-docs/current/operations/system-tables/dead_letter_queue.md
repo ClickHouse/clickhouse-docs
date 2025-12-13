@@ -39,10 +39,8 @@ ClickHouse はテーブルからデータを自動的には削除しません。
 
 クエリ:
 
-```
-
-Result:
-
+```sql
+SELECT * FROM system.dead_letter_queue LIMIT 1 \G;
 ```
 
 結果：

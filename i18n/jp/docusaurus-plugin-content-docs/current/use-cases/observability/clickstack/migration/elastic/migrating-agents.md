@@ -78,18 +78,18 @@ Filebeat エージェントが、Beats でサポートされている出力先�
   VectorをLumberjackプロトコル経由でイベントを受信するように設定し、Logstashインスタンスを模倣します。これは、Vectorの[`logstash`ソース](https://vector.dev/docs/reference/configuration/sources/logstash/)を設定することで実現できます:
 
   ```yaml
-sources:
-  beats:
-    type: logstash
-    address: 0.0.0.0:5044
-    tls:
-      enabled: false  # Set to true if you're using TLS
-      # The files below are generated from the steps at https://www.elastic.co/docs/reference/fleet/secure-logstash-connections#generate-logstash-certs
-      # crt_file: logstash.crt
-      # key_file: logstash.key
-      # ca_file: ca.crt
-      # verify_certificate: true
-```
+  sources:
+    beats:
+      type: logstash
+      address: 0.0.0.0:5044
+      tls:
+        enabled: false  # TLSを使用する場合はtrueに設定してください
+        # 以下のファイルは https://www.elastic.co/docs/reference/fleet/secure-logstash-connections#generate-logstash-certs の手順で生成されます
+        # crt_file: logstash.crt
+        # key_file: logstash.key
+        # ca_file: ca.crt
+        # verify_certificate: true
+  ```
 
   :::note TLS設定
   相互TLSが必要な場合は、Elasticガイド[&quot;Configure SSL/TLS for the Logstash output&quot;](https://www.elastic.co/docs/reference/fleet/secure-logstash-connections#use-ls-output)を使用して証明書と鍵を生成します。生成した証明書と鍵は、上記の設定例のように指定することができます。
@@ -98,12 +98,12 @@ sources:
   イベントはECS形式で受信されます。これらはVector Remap Language（VRL）トランスフォーマーを使用してOpenTelemetryスキーマに変換できます。このトランスフォーマーの設定は簡単で、スクリプトファイルを別ファイルとして保持します。
 
   ```yaml
-transforms:
-  remap_filebeat:
-    inputs: ["beats"]
-    type: "remap"
-    file: 'beat_to_otel.vrl'
-```
+  transforms:
+    remap_filebeat:
+      inputs: ["beats"]
+      type: "remap"
+      file: 'beat_to_otel.vrl'
+  ```
 
   上記の `beats` ソースからイベントを受信します。remap スクリプトを以下に示します。このスクリプトはログイベントでのみテスト済みですが、他の形式の基礎として利用できます。
 
@@ -111,142 +111,142 @@ transforms:
     <summary>VRL - ECS から OTel へのマッピング</summary>
 
     ```javascript
-# Define keys to ignore at root level
-ignored_keys = ["@metadata"]
+    # ルートレベルで無視するキーを定義
+    ignored_keys = ["@metadata"]
 
-# Define resource key prefixes
-resource_keys = ["host", "cloud", "agent", "service"]
+    # リソースキーのプレフィックスを定義
+    resource_keys = ["host", "cloud", "agent", "service"]
 
-# Create separate objects for resource and log record fields
-resource_obj = {}
-log_record_obj = {}
+    # リソースフィールドとログレコードフィールド用の個別オブジェクトを作成
+    resource_obj = {}
+    log_record_obj = {}
 
-# Copy all non-ignored root keys to appropriate objects
-root_keys = keys(.)
-for_each(root_keys) -> |_index, key| {
-    if !includes(ignored_keys, key) {
-        val, err = get(., [key])
-        if err == null {
-            # Check if this is a resource field
-            is_resource = false
-            if includes(resource_keys, key) {
-                is_resource = true
-            }
-
-            # Add to appropriate object
-            if is_resource {
-                resource_obj = set(resource_obj, [key], val) ?? resource_obj
-            } else {
-                log_record_obj = set(log_record_obj, [key], val) ?? log_record_obj
-            }
-        }
-    }
-}
-
-# Flatten both objects separately
-flattened_resources = flatten(resource_obj, separator: ".")
-flattened_logs = flatten(log_record_obj, separator: ".")
-
-# Process resource attributes
-resource_attributes = []
-resource_keys_list = keys(flattened_resources)
-for_each(resource_keys_list) -> |_index, field_key| {
-    field_value, err = get(flattened_resources, [field_key])
-    if err == null && field_value != null {
-        attribute, err = {
-            "key": field_key,
-            "value": {
-                "stringValue": to_string(field_value)
-            }
-        }
-        if (err == null) {
-            resource_attributes = push(resource_attributes, attribute)
-        }
-    }
-}
-
-# Process log record attributes
-log_attributes = []
-log_keys_list = keys(flattened_logs)
-for_each(log_keys_list) -> |_index, field_key| {
-    field_value, err = get(flattened_logs, [field_key])
-    if err == null && field_value != null {
-        attribute, err = {
-            "key": field_key,
-            "value": {
-                "stringValue": to_string(field_value)
-            }
-        }
-        if (err == null) {
-            log_attributes = push(log_attributes, attribute)
-        }
-    }
-}
-
-# Get timestamp for timeUnixNano (convert to nanoseconds)
-timestamp_nano = if exists(.@timestamp) {
-    to_unix_timestamp!(parse_timestamp!(.@timestamp, format: "%Y-%m-%dT%H:%M:%S%.3fZ"), unit: "nanoseconds")
-} else {
-    to_unix_timestamp(now(), unit: "nanoseconds")
-}
-
-# Get message/body field
-body_value = if exists(.message) {
-    to_string!(.message)
-} else if exists(.body) {
-    to_string!(.body)
-} else {
-    ""
-}
-
-# Create the OpenTelemetry structure
-. = {
-    "resourceLogs": [
-        {
-            "resource": {
-                "attributes": resource_attributes
-            },
-            "scopeLogs": [
-                {
-                    "scope": {},
-                    "logRecords": [
-                        {
-                            "timeUnixNano": to_string(timestamp_nano),
-                            "severityNumber": 9,
-                            "severityText": "info",
-                            "body": {
-                                "stringValue": body_value
-                            },
-                            "attributes": log_attributes
-                        }
-                    ]
+    # 無視対象外のすべてのルートキーを適切なオブジェクトにコピー
+    root_keys = keys(.)
+    for_each(root_keys) -> |_index, key| {
+        if !includes(ignored_keys, key) {
+            val, err = get(., [key])
+            if err == null {
+                # リソースフィールドかどうかを確認
+                is_resource = false
+                if includes(resource_keys, key) {
+                    is_resource = true
                 }
-            ]
+
+                # 適切なオブジェクトに追加
+                if is_resource {
+                    resource_obj = set(resource_obj, [key], val) ?? resource_obj
+                } else {
+                    log_record_obj = set(log_record_obj, [key], val) ?? log_record_obj
+                }
+            }
         }
-    ]
-}
-```
+    }
+
+    # 両方のオブジェクトを個別にフラット化
+    flattened_resources = flatten(resource_obj, separator: ".")
+    flattened_logs = flatten(log_record_obj, separator: ".")
+
+    # リソース属性を処理
+    resource_attributes = []
+    resource_keys_list = keys(flattened_resources)
+    for_each(resource_keys_list) -> |_index, field_key| {
+        field_value, err = get(flattened_resources, [field_key])
+        if err == null && field_value != null {
+            attribute, err = {
+                "key": field_key,
+                "value": {
+                    "stringValue": to_string(field_value)
+                }
+            }
+            if (err == null) {
+                resource_attributes = push(resource_attributes, attribute)
+            }
+        }
+    }
+
+    # ログレコード属性を処理
+    log_attributes = []
+    log_keys_list = keys(flattened_logs)
+    for_each(log_keys_list) -> |_index, field_key| {
+        field_value, err = get(flattened_logs, [field_key])
+        if err == null && field_value != null {
+            attribute, err = {
+                "key": field_key,
+                "value": {
+                    "stringValue": to_string(field_value)
+                }
+            }
+            if (err == null) {
+                log_attributes = push(log_attributes, attribute)
+            }
+        }
+    }
+
+    # timeUnixNano用のタイムスタンプを取得（ナノ秒に変換）
+    timestamp_nano = if exists(.@timestamp) {
+        to_unix_timestamp!(parse_timestamp!(.@timestamp, format: "%Y-%m-%dT%H:%M:%S%.3fZ"), unit: "nanoseconds")
+    } else {
+        to_unix_timestamp(now(), unit: "nanoseconds")
+    }
+
+    # message/bodyフィールドを取得
+    body_value = if exists(.message) {
+        to_string!(.message)
+    } else if exists(.body) {
+        to_string!(.body)
+    } else {
+        ""
+    }
+
+    # OpenTelemetry構造を作成
+    . = {
+        "resourceLogs": [
+            {
+                "resource": {
+                    "attributes": resource_attributes
+                },
+                "scopeLogs": [
+                    {
+                        "scope": {},
+                        "logRecords": [
+                            {
+                                "timeUnixNano": to_string(timestamp_nano),
+                                "severityNumber": 9,
+                                "severityText": "info",
+                                "body": {
+                                    "stringValue": body_value
+                                },
+                                "attributes": log_attributes
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+    ```
   </details>
 
   最後に、変換されたイベントは、OTLPを介したOpenTelemetryコレクター経由でClickStackに送信できます。これには、`remap_filebeat`変換からイベントを入力として受け取るVectorでのOTLPシンクの設定が必要です。
 
   ```yaml
-sinks:
-  otlp:
-    type: opentelemetry
-    inputs: [remap_filebeat] # receives events from a remap transform - see below
-    protocol:
-      type: http  # Use "grpc" for port 4317
-      uri: http://localhost:4318/v1/logs # logs endpoint for the OTel collector 
-      method: post
-      encoding:
-        codec: json
-      framing:
-        method: newline_delimited
-      headers:
-        content-type: application/json
-        authorization: ${YOUR_INGESTION_API_KEY}
-```
+  sinks:
+    otlp:
+      type: opentelemetry
+      inputs: [remap_filebeat] # remap変換からイベントを受信 - 詳細は以下を参照
+      protocol:
+        type: http  # ポート4317を使用する場合は "grpc" を指定
+        uri: http://localhost:4318/v1/logs # OTel collectorのログエンドポイント 
+        method: post
+        encoding:
+          codec: json
+        framing:
+          method: newline_delimited
+        headers:
+          content-type: application/json
+          authorization: ${YOUR_INGESTION_API_KEY}
+  ```
 
   ここでの`YOUR_INGESTION_API_KEY`はClickStackによって生成されます。このキーはHyperDXアプリの`Team Settings → API Keys`から確認できます。
 
@@ -255,59 +255,59 @@ sinks:
   最終的な完全な設定は以下の通りです：
 
   ```yaml
-sources:
-  beats:
-    type: logstash
-    address: 0.0.0.0:5044
-    tls:
-      enabled: false  # Set to true if you're using TLS
-        #crt_file: /data/elasticsearch-9.0.1/logstash/logstash.crt
-        #key_file: /data/elasticsearch-9.0.1/logstash/logstash.key
-        #ca_file: /data/elasticsearch-9.0.1/ca/ca.crt
-        #verify_certificate: true
+  sources:
+    beats:
+      type: logstash
+      address: 0.0.0.0:5044
+      tls:
+        enabled: false  # TLSを使用する場合はtrueに設定してください
+          #crt_file: /data/elasticsearch-9.0.1/logstash/logstash.crt
+          #key_file: /data/elasticsearch-9.0.1/logstash/logstash.key
+          #ca_file: /data/elasticsearch-9.0.1/ca/ca.crt
+          #verify_certificate: true
 
-transforms:
-  remap_filebeat:
-    inputs: ["beats"]
-    type: "remap"
-    file: 'beat_to_otel.vrl'
+  transforms:
+    remap_filebeat:
+      inputs: ["beats"]
+      type: "remap"
+      file: 'beat_to_otel.vrl'
 
-sinks:
-  otlp:
-    type: opentelemetry
-    inputs: [remap_filebeat]
-    protocol:
-      type: http  # Use "grpc" for port 4317
-      uri: http://localhost:4318/v1/logs
-      method: post
-      encoding:
-        codec: json
-      framing:
-        method: newline_delimited
-      headers:
-        content-type: application/json
-```
+  sinks:
+    otlp:
+      type: opentelemetry
+      inputs: [remap_filebeat]
+      protocol:
+        type: http  # ポート4317の場合は"grpc"を使用してください
+        uri: http://localhost:4318/v1/logs
+        method: post
+        encoding:
+          codec: json
+        framing:
+          method: newline_delimited
+        headers:
+          content-type: application/json
+  ```
 
   ### Filebeatの設定
 
   既存のFilebeatインストールは、イベントをVectorに送信するように変更するだけで済みます。これにはLogstash出力の設定が必要です。TLSもオプションで設定可能です。
 
   ```yaml
-# ------------------------------ Logstash Output -------------------------------
-output.logstash:
-  # The Logstash hosts
-  hosts: ["localhost:5044"]
+  # ------------------------------ Logstash出力 -------------------------------
+  output.logstash:
+    # Logstashホスト
+    hosts: ["localhost:5044"]
 
-  # Optional SSL. By default is off.
-  # List of root certificates for HTTPS server verifications
-  #ssl.certificate_authorities: ["/etc/pki/root/ca.pem"]
+    # SSL設定(オプション)。デフォルトは無効です。
+    # HTTPSサーバー検証用のルート証明書のリスト
+    #ssl.certificate_authorities: ["/etc/pki/root/ca.pem"]
 
-  # Certificate for SSL client authentication
-  #ssl.certificate: "/etc/pki/client/cert.pem"
+    # SSLクライアント認証用の証明書
+    #ssl.certificate: "/etc/pki/client/cert.pem"
 
-  # Client Certificate Key
-  #ssl.key: "/etc/pki/client/cert.key"
-```
+    # クライアント証明書の秘密鍵
+    #ssl.key: "/etc/pki/client/cert.key"
+  ```
 </VerticalStepper>
 
 ## Elastic Agent からの移行 {#migrating-from-elastic-agent}
@@ -351,8 +351,8 @@ sources:
     type: logstash
     address: 0.0.0.0:5044
     tls:
-      enabled: true  # Set to true if you're using TLS. 
-      # The files below are generated from the steps at https://www.elastic.co/docs/reference/fleet/secure-logstash-connections#generate-logstash-certs
+      enabled: true  # TLS を使用する場合は true に設定します。
+      # 以下のファイルは https://www.elastic.co/docs/reference/fleet/secure-logstash-connections#generate-logstash-certs の手順で生成されます
       crt_file: logstash.crt
       key_file: logstash.key
       ca_file: ca.crt
@@ -373,7 +373,7 @@ EDOT Collector と共に Elastic Agent を実行するには、[Elastic の公�
 
 ```yaml
 exporters:
-  # Exporter to send logs and metrics to Elasticsearch Managed OTLP Input
+  # Elasticsearch Managed OTLP Inputにログとメトリクスを送信するエクスポーター
   otlp:
     endpoint: localhost:4317
     headers:
@@ -390,7 +390,7 @@ Vector が相互 TLS (mTLS) を使用するように構成されており、証�
 
 ```yaml
 exporters:
-  # Exporter to send logs and metrics to Elasticsearch Managed OTLP Input
+  # ログとメトリクスをElasticsearch Managed OTLP Inputに送信するエクスポーター
   otlp:
     endpoint: localhost:4317
     headers:

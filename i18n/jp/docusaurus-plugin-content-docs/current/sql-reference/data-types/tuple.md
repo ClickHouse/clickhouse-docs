@@ -167,7 +167,7 @@ SELECT * FROM test;
 │   2 │        2 │     0 │
 └─────┴──────────┴───────┘
 
--- Let's find a value for each key with the biggest duration, if durations are equal, select the biggest value
+-- 各キーについて最大のdurationを持つvalueを検索します。durationが同じ場合は最大のvalueを選択します
 
 SELECT
     key,

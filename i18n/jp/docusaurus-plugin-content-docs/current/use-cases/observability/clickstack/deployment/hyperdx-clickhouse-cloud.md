@@ -74,8 +74,8 @@ ClickHouse Cloud を初めて利用する場合は、
   OTel collectorの設定をダウンロードします：
 
   ```bash
-curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/main/docs/use-cases/observability/clickstack/deployment/_snippets/otel-cloud-config.yaml
-```
+  curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/main/docs/use-cases/observability/clickstack/deployment/_snippets/otel-cloud-config.yaml
+  ```
 
   <details>
     <summary>otel-cloud-config.yaml</summary>
@@ -229,12 +229,11 @@ curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/
           processors: [memory_limiter, batch]
           exporters: [clickhouse/rrweb]
     ```
+  </details>
 
-</details>
+  以下のDockerコマンドを使用してコレクターをデプロイします。事前に記録した接続設定を各環境変数に設定し、オペレーティングシステムに応じて適切なコマンドを使用してください。
 
-Deploy the collector using the following Docker command, setting the respective environment variables to the connection settings recorded earlier and using the appropriate command below based on your operating system.
-
-```bash
+  ```bash
   # クラウドエンドポイントに変更してください
   export CLICKHOUSE_ENDPOINT=
   export CLICKHOUSE_PASSWORD=

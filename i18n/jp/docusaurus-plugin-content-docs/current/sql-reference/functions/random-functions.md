@@ -69,39 +69,34 @@ FROM numbers(3)
 └───────────────────────────────────────┘
 ```
 
-
-
 ## rand {#rand}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+一様分布に従う乱数の `UInt32` 値を返します。
 
-Returns a random `UInt32` number with uniform distribution.
+初期状態（シード値）をシステムから取得する線形合同法による擬似乱数生成器を使用します。そのため見かけ上はランダムですが、真のランダムではなく、初期状態が知られている場合には予測可能になる可能性があります。
+真のランダム性が重要となるシナリオでは、システムレベルの呼び出しや外部ライブラリとの連携など、代替手段の利用を検討してください。
 
-Uses a linear congruential generator with an initial state obtained from the system, which means that while it appears random, it's not truly random and can be predictable if the initial state is known.
-For scenarios where true randomness is crucial, consider using alternative methods like system-level calls or integrating with external libraries.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 rand([x])
 ```
 
-**Aliases**: `rand32`
+**別名**: `rand32`
 
-**Arguments**
+**引数**
 
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `x` — 省略可能であり、無視されます。この引数の唯一の目的は、同じ関数呼び出しがクエリ内で複数回使用される場合に、[共通部分式除去](/sql-reference/functions/overview#common-subexpression-elimination) を防ぐことです。[`Any`](/sql-reference/data-types)
 
+**返される値**
 
-**Returned value**
+`UInt32` 型の乱数を返します。[`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns a random number of type `UInt32`. [`UInt32`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT rand();
@@ -111,37 +106,32 @@ SELECT rand();
 1569354847
 ```
 
-
-
 ## rand64 {#rand64}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+一様分布に従う `UInt64` 型の乱数値を返します。
 
-Returns a random distributed `UInt64` number with uniform distribution.
+内部的には、初期状態をシステムから取得する線形合同法に基づく擬似乱数生成器を使用します。そのため見かけ上はランダムですが、真の乱数ではなく、初期状態が既知であれば予測可能です。
+真のランダム性が重要となるシナリオでは、システムコールの利用や外部ライブラリとの連携など、代替手段の利用を検討してください。
 
-Uses a linear congruential generator with an initial state obtained from the system, which means that while it appears random, it's not truly random and can be predictable if the initial state is known.
-For scenarios where true randomness is crucial, consider using alternative methods like system-level calls or integrating with external libraries.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 rand64([x])
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `x` — 省略可能であり、無視されます。この引数の唯一の目的は、クエリ内で同じ関数呼び出しが複数回使用される場合に、[共通部分式除去](/sql-reference/functions/overview#common-subexpression-elimination) が行われるのを防ぐことです。[`Any`](/sql-reference/data-types)
 
+**返される値**
 
-**Returned value**
+一様分布に従うランダムな `UInt64` 値を返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns a random UInt64 number with uniform distribution. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT rand64();
@@ -151,35 +141,30 @@ SELECT rand64();
 15030268859237645412
 ```
 
-
-
 ## randBernoulli {#randBernoulli}
 
-Introduced in: v22.10
+導入バージョン: v22.10
 
+[ベルヌーイ分布](https://en.wikipedia.org/wiki/Bernoulli_distribution)に従う Float64 型の乱数を返します。
 
-Returns a random Float64 number drawn from a [Bernoulli distribution](https://en.wikipedia.org/wiki/Bernoulli_distribution).
-    
-
-**Syntax**
+**構文**
 
 ```sql
 randBernoulli(probability[, x])
 ```
 
-**Arguments**
+**引数**
 
-- `probability` — The probability of success as a value between `0` and `1`. [`Float64`](/sql-reference/data-types/float)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `probability` — 成功確率を表す `0` から `1` の値。[`Float64`](/sql-reference/data-types/float)
+* `x` — 省略可能で、無視されます。この引数の唯一の目的は、同じ関数呼び出しがクエリ内で複数回使用される場合に [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) が行われるのを防ぐことです。[`Any`](/sql-reference/data-types)
 
+**戻り値**
 
-**Returned value**
+指定されたベルヌーイ分布に従うランダムな Float64 値を返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns a random Float64 number drawn from the specified Bernoulli distribution. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT randBernoulli(.75) FROM numbers(5)
@@ -195,36 +180,31 @@ SELECT randBernoulli(.75) FROM numbers(5)
 └─────────────────────┘
 ```
 
-
-
 ## randBinomial {#randBinomial}
 
-Introduced in: v22.10
+導入バージョン: v22.10
 
+[二項分布](https://en.wikipedia.org/wiki/Binomial_distribution)に従う Float64 型の乱数値を返します。
 
-Returns a random Float64 number drawn from a [binomial distribution](https://en.wikipedia.org/wiki/Binomial_distribution).
-    
-
-**Syntax**
+**構文**
 
 ```sql
 randBinomial(試行回数, 確率[, x])
 ```
 
-**Arguments**
+**引数**
 
-- `experiments` — The number of experiments [`UInt64`](/sql-reference/data-types/int-uint)
-- `probability` — The probability of success in each experiment as a value between `0` and `1` [`Float64`](/sql-reference/data-types/float)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `experiments` — 実験の回数 [`UInt64`](/sql-reference/data-types/int-uint)
+* `probability` — 各実験における成功確率。`0` から `1` の間の値 [`Float64`](/sql-reference/data-types/float)
+* `x` — オプションの引数で、無視されます。この引数の唯一の目的は、同じ関数呼び出しがクエリ内で複数回使用される場合に、[共通部分式除去](/sql-reference/functions/overview#common-subexpression-elimination) が行われるのを防ぐことです。[`Any`](/sql-reference/data-types)
 
+**戻り値**
 
-**Returned value**
+指定された二項分布に従うランダムな Float64 型の数値を返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns a random Float64 number drawn from the specified binomial distribution. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT randBinomial(100, .75) FROM numbers(5)
@@ -240,34 +220,29 @@ SELECT randBinomial(100, .75) FROM numbers(5)
 └─────────────────────────┘
 ```
 
-
-
 ## randCanonical {#randCanonical}
 
-Introduced in: v22.11
+導入バージョン: v22.11
 
+`0`（以上）から `1`（未満）の一様分布に従う `Float64` 型の乱数を返します。
 
-Returns a random distributed `Float64` number with uniform distribution between `0` (inclusive) and `1` (exclusive).
-    
-
-**Syntax**
+**構文**
 
 ```sql
 randCanonical([x])
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `x` — 省略可能ですが、指定しても無視されます。クエリ内で同じ関数呼び出しが複数回使用される場合に [共通部分式除去](/sql-reference/functions/overview#common-subexpression-elimination) が行われるのを防ぐことだけを目的としています。[`Any`](/sql-reference/data-types)
 
+**戻り値**
 
-**Returned value**
+ランダムな Float64 値を返します。[`Float64`](/sql-reference/data-types/float)
 
-Returns a random Float64 number. [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT randCanonical();
@@ -277,35 +252,30 @@ SELECT randCanonical();
 0.345217890123456
 ```
 
-
-
 ## randChiSquared {#randChiSquared}
 
-Introduced in: v22.10
+導入バージョン: v22.10
 
+[カイ二乗分布](https://en.wikipedia.org/wiki/Chi-squared_distribution)に従う Float64 型の乱数値を返します。
 
-Returns a random Float64 number drawn from a [chi-square distribution](https://en.wikipedia.org/wiki/Chi-squared_distribution).
-    
-
-**Syntax**
+**構文**
 
 ```sql
 randChiSquared(degree_of_freedom[, x])
 ```
 
-**Arguments**
+**引数**
 
-- `degree_of_freedom` — Degrees of freedom. [`Float64`](/sql-reference/data-types/float)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `degree_of_freedom` — 自由度。[`Float64`](/sql-reference/data-types/float)
+* `x` — 省略可能であり、無視されます。この引数の唯一の目的は、同じ関数呼び出しがクエリ内で複数回使用される場合に、[common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) が行われるのを防ぐことです。[`Any`](/sql-reference/data-types)
 
+**戻り値**
 
-**Returned value**
+指定したカイ二乗分布からサンプリングされた、ランダムな Float64 値を返します。[`Float64`](/sql-reference/data-types/float)
 
-Returns a random Float64 number drawn from the specified chi-square distribution. [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT randChiSquared(10) FROM numbers(5)
@@ -321,40 +291,36 @@ SELECT randChiSquared(10) FROM numbers(5)
 └────────────────────┘
 ```
 
-
-
 ## randConstant {#randConstant}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+現在のクエリ実行内のすべての行で一定となる、単一の乱数値を生成します。
 
-Generates a single random value that remains constant across all rows in the current query execution.
+この関数は次のように動作します:
 
-This function:
-- Returns the same random value for every row within a single query
-- Produces different values across separate query executions
+* 単一のクエリ内では、すべての行に対して同じ乱数値を返します
+* 異なるクエリ実行ごとに異なる値を生成します
 
-It is useful for applying consistent random seeds or identifiers across all rows in a dataset
-    
+データセット内のすべての行に対して、一貫した乱数シードや識別子を適用する場合に有用です。
 
-**Syntax**
+**構文**
 
 ```sql
 randConstant([x])
 ```
 
-**Arguments**
+**引数**
 
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `x` — 省略可能であり、無視されます。クエリ内で同じ関数呼び出しが複数回使用されたときに [共通部分式の除去](/sql-reference/functions/overview#common-subexpression-elimination) が行われるのを防ぐことだけを目的とする引数です。[`Any`](/sql-reference/data-types)
 
+**返される値**
 
-**Returned value**
+各行で同じ乱数値を含む `UInt32` 型の列を返します。[`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns a column of type `UInt32` containing the same random value in each row. [`UInt32`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Basic usage**
+**基本的な使用方法**
 
 ```sql title=Query
 SELECT randConstant() AS random_value;
@@ -366,7 +332,7 @@ SELECT randConstant() AS random_value;
 | 1234567890   |
 ```
 
-**Usage with parameter**
+**パラメータ付きでの利用方法**
 
 ```sql title=Query
 SELECT randConstant(10) AS random_value;
@@ -378,35 +344,30 @@ SELECT randConstant(10) AS random_value;
 | 9876543210   |
 ```
 
-
-
 ## randExponential {#randExponential}
 
-Introduced in: v22.10
+導入バージョン: v22.10
 
+[指数分布](https://en.wikipedia.org/wiki/Exponential_distribution)に従う Float64 型の乱数値を返します。
 
-Returns a random Float64 number drawn from an [exponential distribution](https://en.wikipedia.org/wiki/Exponential_distribution).
-    
-
-**Syntax**
+**構文**
 
 ```sql
 randExponential(lambda[, x])
 ```
 
-**Arguments**
+**引数**
 
-- `lambda` — Rate parameter or lambda value of the distribution [`Float64`](/sql-reference/data-types/float)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `lambda` — 分布のレートパラメータ（λ 値）。[`Float64`](/sql-reference/data-types/float)
+* `x` — 省略可能で、無視されます。この引数の唯一の目的は、同じ関数呼び出しがクエリ内で複数回使用される場合に [共通部分式除去](/sql-reference/functions/overview#common-subexpression-elimination) が行われるのを防ぐことです。[`Any`](/sql-reference/data-types)
 
+**戻り値**
 
-**Returned value**
+指定された指数分布から生成される乱数の Float64 値を返します。[`Float64`](/sql-reference/data-types/float)
 
-Returns a random Float64 number drawn from the specified exponential distribution. [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT randExponential(1/10) FROM numbers(5)
@@ -422,36 +383,31 @@ SELECT randExponential(1/10) FROM numbers(5)
 └────────────────────────────────┘
 ```
 
-
-
 ## randFisherF {#randFisherF}
 
-Introduced in: v22.10
+導入バージョン: v22.10
 
+[F分布](https://en.wikipedia.org/wiki/F-distribution)に従う `Float64` 型の乱数を返します。
 
-Returns a random Float64 number drawn from an [F-distribution](https://en.wikipedia.org/wiki/F-distribution).
-    
-
-**Syntax**
+**構文**
 
 ```sql
 randFisherF(d1, d2[, x])
 ```
 
-**Arguments**
+**引数**
 
-- `d1` — d1 degree of freedom in `X = (S1 / d1) / (S2 / d2)`. [`Float64`](/sql-reference/data-types/float)
-- `d2` — d2 degree of freedom in `X = (S1 / d1) / (S2 / d2)`. [`Float64`](/sql-reference/data-types/float)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `d1` — `X = (S1 / d1) / (S2 / d2)` における d1 の自由度。[`Float64`](/sql-reference/data-types/float)
+* `d2` — `X = (S1 / d1) / (S2 / d2)` における d2 の自由度。[`Float64`](/sql-reference/data-types/float)
+* `x` — 省略可能で、評価時には無視されます。この引数の唯一の目的は、同じ関数呼び出しがクエリ内で複数回使用される場合に、[common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) が行われるのを防ぐことです。[`Any`](/sql-reference/data-types)
 
+**戻り値**
 
-**Returned value**
+指定された F 分布から生成された乱数（Float64 型）を返します。[`Float64`](/sql-reference/data-types/float)
 
-Returns a random Float64 number drawn from the specified F-distribution [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT randFisherF(10, 3) FROM numbers(5)
@@ -467,36 +423,31 @@ SELECT randFisherF(10, 3) FROM numbers(5)
 └─────────────────────┘
 ```
 
-
-
 ## randLogNormal {#randLogNormal}
 
-Introduced in: v22.10
+導入バージョン: v22.10
 
+[対数正規分布](https://en.wikipedia.org/wiki/Log-normal_distribution)に従う Float64 型の乱数値を返します。
 
-Returns a random Float64 number drawn from a [log-normal distribution](https://en.wikipedia.org/wiki/Log-normal_distribution).
-    
-
-**Syntax**
+**構文**
 
 ```sql
 randLogNormal(mean, stddev[, x])
 ```
 
-**Arguments**
+**引数**
 
-- `mean` — The mean value of distribution. [`Float64`](/sql-reference/data-types/float)
-- `stddev` — The standard deviation of the distribution. [`Float64`](/sql-reference/data-types/float)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `mean` — 分布の平均値。[`Float64`](/sql-reference/data-types/float)
+* `stddev` — 分布の標準偏差。[`Float64`](/sql-reference/data-types/float)
+* `x` — 省略可能で、指定しても無視されます。この引数の唯一の目的は、同じ関数呼び出しがクエリ内で複数回使用される場合に、[共通部分式の除去](/sql-reference/functions/overview#common-subexpression-elimination)が行われるのを防ぐことです。[`Any`](/sql-reference/data-types)
 
+**返り値**
 
-**Returned value**
+指定された対数正規分布から生成される Float64 型の乱数を返します。[`Float64`](/sql-reference/data-types/float)
 
-Returns a random Float64 number drawn from the specified log-normal distribution. [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT randLogNormal(100, 5) FROM numbers(5)
@@ -512,36 +463,31 @@ SELECT randLogNormal(100, 5) FROM numbers(5)
 └───────────────────────┘
 ```
 
-
-
 ## randNegativeBinomial {#randNegativeBinomial}
 
-Introduced in: v22.10
+導入: v22.10
 
+[負の二項分布](https://en.wikipedia.org/wiki/Negative_binomial_distribution)に従う Float64 型の乱数値を返します。
 
-Returns a random Float64 number drawn from a [negative binomial distribution](https://en.wikipedia.org/wiki/Negative_binomial_distribution).
-    
-
-**Syntax**
+**構文**
 
 ```sql
 randNegativeBinomial(experiments, probability[, x])
 ```
 
-**Arguments**
+**引数**
 
-- `experiments` — The number of experiments. [`UInt64`](/sql-reference/data-types/int-uint)
-- `probability` — `The probability of failure in each experiment as a value between `0` and `1`. [`Float64`](/sql-reference/data-types/float)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `experiments` — 実験の回数。[`UInt64`](/sql-reference/data-types/int-uint)
+* `probability` — 各実験における失敗確率（`0` から `1` の間の値）。[`Float64`](/sql-reference/data-types/float)
+* `x` — 省略可能で、値は使用されません。この引数の唯一の目的は、同じ関数呼び出しがクエリ内で複数回使用された場合に [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) が行われるのを防ぐことです。[`Any`](/sql-reference/data-types)
 
+**戻り値**
 
-**Returned value**
+指定された負の二項分布から生成された乱数の Float64 値を返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns a random Float64 number drawn from the specified negative binomial distribution [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT randNegativeBinomial(100, .75) FROM numbers(5)
@@ -557,36 +503,31 @@ SELECT randNegativeBinomial(100, .75) FROM numbers(5)
 └─────────────────────────────────┘
 ```
 
-
-
 ## randNormal {#randNormal}
 
-Introduced in: v22.10
+導入: v22.10
 
+[正規分布](https://en.wikipedia.org/wiki/Normal_distribution)に従う Float64 型の乱数値を返します。
 
-Returns a random Float64 number drawn from a [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution).
-    
-
-**Syntax**
+**構文**
 
 ```sql
 randNormal(mean, stddev[, x])
 ```
 
-**Arguments**
+**引数**
 
-- `mean` — The mean value of distribution [`Float64`](/sql-reference/data-types/float)
-- `stddev` — The standard deviation of the distribution [`Float64`](/sql-reference/data-types/float)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `mean` — 分布の平均値 [`Float64`](/sql-reference/data-types/float)
+* `stddev` — 分布の標準偏差 [`Float64`](/sql-reference/data-types/float)
+* `x` — 任意の引数であり、値は使用されません。この引数は、同じ関数呼び出しがクエリ内で複数回使用される場合に、[共通部分式除去](/sql-reference/functions/overview#common-subexpression-elimination) が行われるのを防ぐためだけに存在します。[`Any`](/sql-reference/data-types)
 
+**戻り値**
 
-**Returned value**
+指定された正規分布から生成されたランダムな Float64 値を返します。[`Float64`](/sql-reference/data-types/float)
 
-Returns a random Float64 number drawn from the specified normal distribution. [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT randNormal(10, 2) FROM numbers(5)
@@ -602,35 +543,30 @@ SELECT randNormal(10, 2) FROM numbers(5)
 └────────────────────┘
 ```
 
-
-
 ## randPoisson {#randPoisson}
 
-Introduced in: v22.10
+導入: v22.10
 
+[ポアソン分布](https://en.wikipedia.org/wiki/Poisson_distribution) に従う乱数を Float64 型の数値として返します。
 
-Returns a random Float64 number drawn from a [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution) distribution.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 randPoisson(n[, x])
 ```
 
-**Arguments**
+**引数**
 
-- `n` — The mean number of occurrences. [`UInt64`](/sql-reference/data-types/int-uint)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `n` — 発生回数の平均。[`UInt64`](/sql-reference/data-types/int-uint)
+* `x` — 省略可能で、評価時には使用されません。この引数の唯一の目的は、同じ関数呼び出しがクエリ内で複数回使用されている場合に[共通部分式の除去](/sql-reference/functions/overview#common-subexpression-elimination)が行われるのを防ぐことです。[`Any`](/sql-reference/data-types)
 
+**戻り値**
 
-**Returned value**
+指定されたポアソン分布に従う Float64 型の乱数を返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns a random Float64 number drawn from the specified Poisson distribution. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT randPoisson(10) FROM numbers(5)
@@ -646,35 +582,30 @@ SELECT randPoisson(10) FROM numbers(5)
 └─────────────────┘
 ```
 
-
-
 ## randStudentT {#randStudentT}
 
-Introduced in: v22.10
+導入: v22.10
 
+[スチューデントの t 分布](https://en.wikipedia.org/wiki/Student%27s_t-distribution)に従う Float64 型の乱数値を返します。
 
-Returns a random Float64 number drawn from a [Student's t-distribution](https://en.wikipedia.org/wiki/Student%27s_t-distribution).
-    
-
-**Syntax**
+**構文**
 
 ```sql
 randStudentT(degree_of_freedom[, x])
 ```
 
-**Arguments**
+**引数**
 
-- `degree_of_freedom` — Degrees of freedom. [`Float64`](/sql-reference/data-types/float)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `degree_of_freedom` — 自由度。[`Float64`](/sql-reference/data-types/float)
+* `x` — 省略可能で、評価時には無視されます。この引数の唯一の目的は、同じ関数呼び出しがクエリ内で複数回使用される場合に [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) が行われるのを防ぐことです。[`Any`](/sql-reference/data-types)
 
+**戻り値**
 
-**Returned value**
+指定されたスチューデントの t 分布に従うランダムな Float64 数値を返します。[`Float64`](/sql-reference/data-types/float)
 
-Returns a random Float64 number drawn from the specified Student's t-distribution. [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT randStudentT(10) FROM numbers(5)
@@ -690,36 +621,31 @@ SELECT randStudentT(10) FROM numbers(5)
 └──────────────────────┘
 ```
 
-
-
 ## randUniform {#randUniform}
 
-Introduced in: v22.10
+導入バージョン: v22.10
 
+区間 $[\min, \max]$ から一様分布に従うランダムな Float64 値を返します。
 
-Returns a random Float64 number drawn uniformly from the interval $[\min, \max]$.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 randUniform(min, max[, x])
 ```
 
-**Arguments**
+**引数**
 
-- `min` — Left boundary of the range (inclusive). [`Float64`](/sql-reference/data-types/float)
-- `max` — Right boundary of the range (inclusive). [`Float64`](/sql-reference/data-types/float)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `min` — 範囲の左端（含む）。[`Float64`](/sql-reference/data-types/float)
+* `max` — 範囲の右端（含む）。[`Float64`](/sql-reference/data-types/float)
+* `x` — 省略可能で、常に無視されます。この引数の唯一の目的は、同じ関数呼び出しがクエリ内で複数回使用される場合に、[共通部分式の削除](/sql-reference/functions/overview#common-subexpression-elimination)を防ぐことです。[`Any`](/sql-reference/data-types)
 
+**戻り値**
 
-**Returned value**
+`min` と `max` で定まる区間から、一様に抽出された乱数を返します。[`Float64`](/sql-reference/data-types/float)
 
-Returns a random number drawn uniformly from the interval formed by `min` and `max`. [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**利用例**
 
 ```sql title=Query
 SELECT randUniform(5.5, 10) FROM numbers(5)
@@ -735,35 +661,30 @@ SELECT randUniform(5.5, 10) FROM numbers(5)
 └──────────────────────┘
 ```
 
-
-
 ## randomFixedString {#randomFixedString}
 
-Introduced in: v20.5
+導入バージョン: v20.5
 
+指定した文字数の固定長のランダムな文字列を生成します。
+返される文字は必ずしも ASCII 文字とは限らず、表示可能でない場合があります。
 
-Generates a random fixed-size string with the specified number of character.
-The returned characters are not necessarily ASCII characters, i.e. they may not be printable.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 randomFixedString(length)
 ```
 
-**Arguments**
+**引数**
 
-- `length` — Length of the string in bytes. [`UInt*`](/sql-reference/data-types/int-uint)
+* `length` — 文字列の長さ（バイト数）。[`UInt*`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+ランダムなバイト列で埋められた文字列を返します。[`FixedString`](/sql-reference/data-types/fixedstring)
 
-Returns a string filled with random bytes. [`FixedString`](/sql-reference/data-types/fixedstring)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT randomFixedString(13) AS rnd, toTypeName(rnd)
@@ -775,37 +696,32 @@ SELECT randomFixedString(13) AS rnd, toTypeName(rnd)
 └──────────┴───────────────────────────────────┘
 ```
 
-
-
 ## randomPrintableASCII {#randomPrintableASCII}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
+指定した文字数のランダムな [ASCII](https://en.wikipedia.org/wiki/ASCII#Printable_characters) 文字列を生成します。
 
-Generates a random [ASCII](https://en.wikipedia.org/wiki/ASCII#Printable_characters) string with the specified number of characters.
+`length < 0` を渡した場合、この関数の動作は未定義です。
 
-If you pass `length < 0`, the behavior of the function is undefined.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 randomPrintableASCII(length[, x])
 ```
 
-**Arguments**
+**引数**
 
-- `length` — String length in bytes. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `length` — 文字列の長さ（バイト数）。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `x` — 省略可能な引数で、無視されます。この引数の唯一の目的は、同じ関数呼び出しがクエリ内で複数回使用される場合に、[共通部分式除去](/sql-reference/functions/overview#common-subexpression-elimination)が行われるのを防ぐことです。[`Any`](/sql-reference/data-types)
 
+**返される値**
 
-**Returned value**
+ASCII の印字可能文字からなるランダムな文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a string with a random set of ASCII printable characters. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT number, randomPrintableASCII(30) AS str, length(str) FROM system.numbers LIMIT 3
@@ -819,36 +735,31 @@ SELECT number, randomPrintableASCII(30) AS str, length(str) FROM system.numbers 
 └────────┴────────────────────────────────┴──────────────────────────────────┘
 ```
 
-
-
 ## randomString {#randomString}
 
-Introduced in: v20.5
+導入バージョン: v20.5
 
+指定した文字数のランダムな文字列を生成します。
+返される文字は必ずしも ASCII 文字とは限らないため、表示可能な文字でない場合があります。
 
-Generates a random string with the specified number of characters.
-The returned characters are not necessarily ASCII characters, i.e. they may not be printable.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 randomString(length[, x])
 ```
 
-**Arguments**
+**引数**
 
-- `length` — Length of the string in bytes. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `length` — 文字列の長さ（バイト数）。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `x` — 省略可能で、評価時には無視されます。この引数の唯一の目的は、同じ関数呼び出しがクエリ内で複数回使用される場合に、[共通部分式の除去](/sql-reference/functions/overview#common-subexpression-elimination)が行われるのを防ぐことです。[`Any`](/sql-reference/data-types)
 
+**戻り値**
 
-**Returned value**
+ランダムなバイトから成る文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a string filled with random bytes. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT randomString(5) AS str FROM numbers(2)
@@ -859,36 +770,31 @@ SELECT randomString(5) AS str FROM numbers(2)
 �v6B�
 ```
 
-
-
 ## randomStringUTF8 {#randomStringUTF8}
 
-Introduced in: v20.5
+導入バージョン: v20.5
 
+指定したコードポイント数のランダムな [UTF-8](https://en.wikipedia.org/wiki/UTF-8) 文字列を生成します。
+未割り当ての [面](https://en.wikipedia.org/wiki/Plane_\(Unicode\))（第 4 面から第 13 面）のコードポイントは返されません。
+ただし、ClickHouse サーバーとやり取りしているクライアント側で、生成された UTF-8 文字列を正しく表示できない可能性があります。
 
-Generates a random [UTF-8](https://en.wikipedia.org/wiki/UTF-8) string with the specified number of codepoints.
-No codepoints from unassigned [planes](https://en.wikipedia.org/wiki/Plane_(Unicode)) (planes 4 to 13) are returned.
-It is still possible that the client interacting with ClickHouse server is not able to display the produced UTF-8 string correctly.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 randomStringUTF8(length)
 ```
 
-**Arguments**
+**引数**
 
-- `length` — Length of the string in code points. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `length` — 文字列の長さ（コードポイント数）。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+ランダムな UTF-8 コードポイントからなる文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a string filled with random UTF-8 codepoints. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT randomStringUTF8(13)

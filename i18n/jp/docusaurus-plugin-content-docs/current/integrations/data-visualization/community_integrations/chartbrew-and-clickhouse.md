@@ -75,11 +75,11 @@ import Image from '@theme/IdealImage';
 可視化したいデータを取得するための SQL クエリを作成します。例えば、次のクエリは `uk_price_paid` データセットから、年ごとの支払価格の平均値を算出します。
 
 ```sql
-  SELECT toYear(date) AS year, avg(price) AS avg_price
-  FROM uk_price_paid
-  GROUP BY year
-  ORDER BY year;
-  ```
+SELECT toYear(date) AS year, avg(price) AS avg_price
+FROM uk_price_paid
+GROUP BY year
+ORDER BY year;
+```
 
 <Image img={chartbrew_07} size="lg" alt="Chartbrew での ClickHouse SQL クエリ" />
 

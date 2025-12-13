@@ -61,14 +61,14 @@ EC2 インスタンスに OpenTelemetry Collector をインストールして、
   EC2インスタンスから、メタデータサービスにアクセス可能であることを確認します:
 
   ```bash
-# Get metadata token (IMDSv2)
-TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
+  # メタデータトークンを取得 (IMDSv2)
+  TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
 
-# Verify instance metadata
-curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-id
-curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/placement/region
-curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-type
-```
+  # インスタンスメタデータを検証
+  curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-id
+  curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/placement/region
+  curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-type
+  ```
 
   インスタンスID、リージョン、およびインスタンスタイプが表示されるはずです。これらのコマンドが失敗した場合は、以下を確認してください:
 
@@ -85,152 +85,152 @@ curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-da
   EC2インスタンスがsyslogファイルを書き込んでいることを確認します:
 
   ```bash
-# Ubuntu instances
-ls -la /var/log/syslog
+  # Ubuntuインスタンス
+  ls -la /var/log/syslog
 
-# Amazon Linux / RHEL instances
-ls -la /var/log/messages
+  # Amazon Linux / RHELインスタンス
+  ls -la /var/log/messages
 
-# View recent entries
-tail -20 /var/log/syslog
-# or
-tail -20 /var/log/messages
-```
+  # 最近のエントリを表示
+  tail -20 /var/log/syslog
+  # または
+  tail -20 /var/log/messages
+  ```
 
   #### OpenTelemetry Collectorのインストール
 
   EC2インスタンスにOpenTelemetry Collector Contribディストリビューションをインストールします：
 
   ```bash
-# Download the latest release
-wget https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.114.0/otelcol-contrib_0.114.0_linux_amd64.tar.gz
+  # 最新リリースをダウンロード
+  wget https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.114.0/otelcol-contrib_0.114.0_linux_amd64.tar.gz
 
-# Extract and install
-tar -xvf otelcol-contrib_0.114.0_linux_amd64.tar.gz
-sudo mv otelcol-contrib /usr/local/bin/
+  # 展開してインストール
+  tar -xvf otelcol-contrib_0.114.0_linux_amd64.tar.gz
+  sudo mv otelcol-contrib /usr/local/bin/
 
-# Verify installation
-otelcol-contrib --version
-```
+  # インストールを確認
+  otelcol-contrib --version
+  ```
 
   #### コレクター設定の作成
 
   OpenTelemetry Collectorの設定ファイルを `/etc/otelcol-contrib/config.yaml` に作成します:
 
   ```bash
-sudo mkdir -p /etc/otelcol-contrib
-```
+  sudo mkdir -p /etc/otelcol-contrib
+  ```
 
   使用しているLinuxディストリビューションに応じて設定を選択してください：
 
   <Tabs groupId="os-type">
     <TabItem value="modern-linux" label="モダン Linux（Ubuntu 24.04以降）" default>
       ```yaml
-sudo tee /etc/otelcol-contrib/config.yaml > /dev/null << 'EOF'
-receivers:
-  filelog/syslog:
-    include:
-      - /var/log/syslog
-      - /var/log/**/*.log
-    start_at: end
-    operators:
-      - type: regex_parser
-        regex: '^(?P<timestamp>\S+) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
-        parse_from: body
-        parse_to: attributes
-      
-      - type: time_parser
-        parse_from: attributes.timestamp
-        layout_type: gotime
-        layout: '2006-01-02T15:04:05.999999-07:00'
-      
-      - type: add
-        field: attributes.source
-        value: "ec2-host-logs"
+      sudo tee /etc/otelcol-contrib/config.yaml > /dev/null << 'EOF'
+      receivers:
+        filelog/syslog:
+          include:
+            - /var/log/syslog
+            - /var/log/**/*.log
+          start_at: end
+          operators:
+            - type: regex_parser
+              regex: '^(?P<timestamp>\S+) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
+              parse_from: body
+              parse_to: attributes
+            
+            - type: time_parser
+              parse_from: attributes.timestamp
+              layout_type: gotime
+              layout: '2006-01-02T15:04:05.999999-07:00'
+            
+            - type: add
+              field: attributes.source
+              value: "ec2-host-logs"
 
-processors:
-  resourcedetection:
-    detectors: [ec2, system]
-    timeout: 5s
-    override: false
-    ec2:
-      tags:
-        - ^Name
-        - ^Environment
-        - ^Team
-  
-  batch:
-    timeout: 10s
-    send_batch_size: 1024
+      processors:
+        resourcedetection:
+          detectors: [ec2, system]
+          timeout: 5s
+          override: false
+          ec2:
+            tags:
+              - ^Name
+              - ^Environment
+              - ^Team
+        
+        batch:
+          timeout: 10s
+          send_batch_size: 1024
 
-exporters:
-  otlphttp:
-    endpoint: "http://YOUR_CLICKSTACK_HOST:4318"
-    headers:
-      authorization: "${env:CLICKSTACK_API_KEY}"
+      exporters:
+        otlphttp:
+          endpoint: "http://YOUR_CLICKSTACK_HOST:4318"
+          headers:
+            authorization: "${env:CLICKSTACK_API_KEY}"
 
-service:
-  pipelines:
-    logs:
-      receivers: [filelog/syslog]
-      processors: [resourcedetection, batch]
-      exporters: [otlphttp]
-EOF
-```
+      service:
+        pipelines:
+          logs:
+            receivers: [filelog/syslog]
+            processors: [resourcedetection, batch]
+            exporters: [otlphttp]
+      EOF
+      ```
     </TabItem>
 
     <TabItem value="legacy-linux" label="レガシー Linux（Amazon Linux 2、RHEL、旧バージョンのUbuntu）">
       ```yaml
-sudo tee /etc/otelcol-contrib/config.yaml > /dev/null << 'EOF'
-receivers:
-  filelog/syslog:
-    include:
-      - /var/log/messages
-      - /var/log/**/*.log
-    start_at: end
-    operators:
-      - type: regex_parser
-        regex: '^(?P<timestamp>\w+ \d+ \d{2}:\d{2}:\d{2}) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
-        parse_from: body
-        parse_to: attributes
-      
-      - type: time_parser
-        parse_from: attributes.timestamp
-        layout: '%b %d %H:%M:%S'
-      
-      - type: add
-        field: attributes.source
-        value: "ec2-host-logs"
+      sudo tee /etc/otelcol-contrib/config.yaml > /dev/null << 'EOF'
+      receivers:
+        filelog/syslog:
+          include:
+            - /var/log/messages
+            - /var/log/**/*.log
+          start_at: end
+          operators:
+            - type: regex_parser
+              regex: '^(?P<timestamp>\w+ \d+ \d{2}:\d{2}:\d{2}) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
+              parse_from: body
+              parse_to: attributes
+            
+            - type: time_parser
+              parse_from: attributes.timestamp
+              layout: '%b %d %H:%M:%S'
+            
+            - type: add
+              field: attributes.source
+              value: "ec2-host-logs"
 
-processors:
-  resourcedetection:
-    detectors: [ec2, system]
-    timeout: 5s
-    override: false
-    ec2:
-      tags:
-        - ^Name
-        - ^Environment
-        - ^Team
-  
-  batch:
-    timeout: 10s
-    send_batch_size: 1024
+      processors:
+        resourcedetection:
+          detectors: [ec2, system]
+          timeout: 5s
+          override: false
+          ec2:
+            tags:
+              - ^Name
+              - ^Environment
+              - ^Team
+        
+        batch:
+          timeout: 10s
+          send_batch_size: 1024
 
-exporters:
-  otlphttp:
-    endpoint: "http://YOUR_CLICKSTACK_HOST:4318"
-    headers:
-      authorization: "${env:CLICKSTACK_API_KEY}"
+      exporters:
+        otlphttp:
+          endpoint: "http://YOUR_CLICKSTACK_HOST:4318"
+          headers:
+            authorization: "${env:CLICKSTACK_API_KEY}"
 
-service:
-  pipelines:
-    logs:
-      receivers: [filelog/syslog]
-      processors: [resourcedetection, batch]
-      exporters: [otlphttp]
-EOF
-```
+      service:
+        pipelines:
+          logs:
+            receivers: [filelog/syslog]
+            processors: [resourcedetection, batch]
+            exporters: [otlphttp]
+      EOF
+      ```
     </TabItem>
   </Tabs>
 
@@ -266,23 +266,23 @@ EOF
   ClickStack APIキーを環境変数としてエクスポートします:
 
   ```bash
-export CLICKSTACK_API_KEY="your-api-key-here"
-```
+  export CLICKSTACK_API_KEY="your-api-key-here"
+  ```
 
   再起動後も設定を永続化するには、シェルプロファイルに追加してください:
 
   ```bash
-echo 'export CLICKSTACK_API_KEY="your-api-key-here"' >> ~/.bashrc
-source ~/.bashrc
-```
+  echo 'export CLICKSTACK_API_KEY="ここにあなたのAPIキーを入力"' >> ~/.bashrc
+  source ~/.bashrc
+  ```
 
   #### コレクターの実行
 
   OpenTelemetry Collectorを起動します:
 
   ```bash
-CLICKSTACK_API_KEY="your-api-key-here" /usr/local/bin/otelcol-contrib --config /etc/otelcol-contrib/config.yaml
-```
+  CLICKSTACK_API_KEY="your-api-key-here" /usr/local/bin/otelcol-contrib --config /etc/otelcol-contrib/config.yaml
+  ```
 
   :::note[本番環境での使用について]
   コレクターをsystemdサービスとして実行するように設定し、起動時の自動起動と障害時の自動再起動を有効にしてください。詳細については、[OpenTelemetry Collectorドキュメント](https://opentelemetry.io/docs/collector/deployment/)を参照してください。
@@ -318,8 +318,8 @@ CLICKSTACK_API_KEY="your-api-key-here" /usr/local/bin/otelcol-contrib --config /
   サンプルログファイルをダウンロードします：
 
   ```bash
-curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/host-logs/journal.log
-```
+  curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/host-logs/journal.log
+  ```
 
   データセットには以下が含まれます：
 
@@ -336,68 +336,68 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
   以下の設定で `ec2-host-logs-demo.yaml` という名前のファイルを作成します：
 
   ```yaml
-cat > ec2-host-logs-demo.yaml << 'EOF'
-receivers:
-  filelog/journal:
-    include:
-      - /tmp/host-demo/journal.log
-    start_at: beginning
-    operators:
-      - type: regex_parser
-        regex: '^(?P<timestamp>\S+) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
-        parse_from: body
-        parse_to: attributes
-      
-      - type: time_parser
-        parse_from: attributes.timestamp
-        layout: '%Y-%m-%dT%H:%M:%S%z'
-      
-      - type: add
-        field: attributes.source
-        value: "ec2-demo"
+  cat > ec2-host-logs-demo.yaml << 'EOF'
+  receivers:
+    filelog/journal:
+      include:
+        - /tmp/host-demo/journal.log
+      start_at: beginning
+      operators:
+        - type: regex_parser
+          regex: '^(?P<timestamp>\S+) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
+          parse_from: body
+          parse_to: attributes
+        
+        - type: time_parser
+          parse_from: attributes.timestamp
+          layout: '%Y-%m-%dT%H:%M:%S%z'
+        
+        - type: add
+          field: attributes.source
+          value: "ec2-demo"
 
-processors:
-  # Simulate EC2 metadata for demo (no real EC2 instance required)
-  resource:
-    attributes:
-      - key: service.name
-        value: "ec2-demo"
-        action: insert
-      - key: cloud.provider
-        value: "aws"
-        action: insert
-      - key: cloud.platform
-        value: "aws_ec2"
-        action: insert
-      - key: cloud.region
-        value: "us-east-1"
-        action: insert
-      - key: cloud.availability_zone
-        value: "us-east-1a"
-        action: insert
-      - key: host.id
-        value: "i-0abc123def456789"
-        action: insert
-      - key: host.type
-        value: "t3.medium"
-        action: insert
-      - key: host.name
-        value: "prod-web-01"
-        action: insert
+  processors:
+    # デモ用にEC2メタデータをシミュレート（実際のEC2インスタンスは不要）
+    resource:
+      attributes:
+        - key: service.name
+          value: "ec2-demo"
+          action: insert
+        - key: cloud.provider
+          value: "aws"
+          action: insert
+        - key: cloud.platform
+          value: "aws_ec2"
+          action: insert
+        - key: cloud.region
+          value: "us-east-1"
+          action: insert
+        - key: cloud.availability_zone
+          value: "us-east-1a"
+          action: insert
+        - key: host.id
+          value: "i-0abc123def456789"
+          action: insert
+        - key: host.type
+          value: "t3.medium"
+          action: insert
+        - key: host.name
+          value: "prod-web-01"
+          action: insert
 
-service:
-  pipelines:
-    logs/ec2-demo:
-      receivers: [filelog/journal]
-      processors:
-        - resource
-        - memory_limiter
-        - transform
-        - batch
-      exporters:
-        - clickhouse
-EOF
-```
+  service:
+    pipelines:
+      logs/ec2-demo:
+        receivers: [filelog/journal]
+        processors:
+          - resource
+          - memory_limiter
+          - transform
+          - batch
+        exporters:
+          - clickhouse
+  EOF
+  ```
 
   :::note
   デモ目的では、`resource` プロセッサを使用してEC2メタデータを手動で追加しています。実際のEC2インスタンスを使用する本番環境では、EC2メタデータAPIに自動的にクエリを実行する `resourcedetection` プロセッサを使用してください。
@@ -408,13 +408,13 @@ EOF
   デモログと設定でClickStackを実行します：
 
   ```bash
-docker run --name clickstack-demo \
-  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
-  -v "$(pwd)/ec2-host-logs-demo.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-  -v "$(pwd)/journal.log:/tmp/host-demo/journal.log:ro" \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
-```
+  docker run --name clickstack-demo \
+    -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+    -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+    -v "$(pwd)/ec2-host-logs-demo.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+    -v "$(pwd)/journal.log:/tmp/host-demo/journal.log:ro" \
+    docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  ```
 
   #### HyperDXでログを確認する
 
@@ -485,10 +485,10 @@ ClickStack で EC2 ホストログのモニタリングを始めやすくする�
 **EC2 メタデータサービスへアクセス可能か確認する:**
 
 ```bash
-# Get metadata token
+# メタデータトークンを取得
 TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
 
-# Test metadata endpoint
+# メタデータエンドポイントをテストする
 curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-id
 ```
 
@@ -501,10 +501,10 @@ curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-da
 **メタデータ関連のエラーがないか、コレクターのログを確認してください。**
 
 ```bash
-# If running as systemd service
+# systemdサービスとして実行している場合
 sudo journalctl -u otelcol-contrib -f | grep -i "ec2\|metadata\|resourcedetection"
 
-# If running in foreground, check stdout
+# フォアグラウンドで実行している場合は、標準出力を確認
 ```
 
 
@@ -526,19 +526,19 @@ cat /var/log/syslog | head -20
 **ClickStack へのネットワーク疎通を確認する:**
 
 ```bash
-# Test OTLP endpoint
+# OTLPエンドポイントのテスト
 curl -v http://YOUR_CLICKSTACK_HOST:4318/v1/logs
 
-# Should get a response (even if error, means endpoint is reachable)
+# レスポンスが返されます（エラーの場合でも、エンドポイントに到達可能であることを意味します）
 ```
 
 **コレクターのログにエラーがないか確認する:**
 
 ```bash
-# If running in foreground
-# Look for error messages in stdout
+# フォアグラウンドで実行している場合
+# 標準出力でエラーメッセージを確認
 
-# If running as systemd service
+# systemdサービスとして実行している場合
 sudo journalctl -u otelcol-contrib -f | grep -i "error\|failed"
 ```
 
@@ -550,14 +550,14 @@ sudo journalctl -u otelcol-contrib -f | grep -i "error\|failed"
 Ubuntu 24.04 以降の場合:
 
 ```bash
-# Should show ISO8601 format: 2025-11-17T20:55:44.826796+00:00
+# ISO8601形式で表示されます: 2025-11-17T20:55:44.826796+00:00
 tail -5 /var/log/syslog
 ```
 
 Amazon Linux 2 / Ubuntu 20.04 の場合:
 
 ```bash
-# Should show traditional format: Nov 17 14:16:16
+# 従来の形式で表示されます: Nov 17 14:16:16
 tail -5 /var/log/messages
 ```
 

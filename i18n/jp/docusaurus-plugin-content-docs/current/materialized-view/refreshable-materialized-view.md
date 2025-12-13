@@ -177,32 +177,7 @@ FORMAT PrettyCompactMonoBlock
 │ 2024-10-01 16:13:50 │ fff  │ 6203361 │
 │ 2024-10-01 16:14:00 │ fff  │ 6501695 │
 └─────────────────────┴──────┴─────────┘
-```
 
-┌──────────────────ts─┬─uuid─┬───count─┐
-│ 2024-10-01 16:12:56 │ fff  │ 5424711 │
-│ 2024-10-01 16:13:00 │ fff  │ 5424711 │
-│ 2024-10-01 16:13:10 │ fff  │ 5424711 │
-│ 2024-10-01 16:13:20 │ fff  │ 5424711 │
-│ 2024-10-01 16:13:30 │ fff  │ 5674669 │
-│ 2024-10-01 16:13:40 │ fff  │ 5947912 │
-│ 2024-10-01 16:13:50 │ fff  │ 6203361 │
-│ 2024-10-01 16:14:00 │ fff  │ 6501695 │
-└─────────────────────┴──────┴─────────┘
-
-```sql
-SELECT
-    posts.*,
-    arrayMap(p -> (p.1, p.2), arrayFilter(p -> p.3 = 'Linked' AND p.2 != 0, Related)) AS LinkedPosts,
-    arrayMap(p -> (p.1, p.2), arrayFilter(p -> p.3 = 'Duplicate' AND p.2 != 0, Related)) AS DuplicatePosts
-FROM posts
-LEFT JOIN (
-    SELECT
-         PostId,
-         groupArray((CreationDate, RelatedPostId, LinkTypeId)) AS Related
-    FROM postlinks
-    GROUP BY PostId
-) AS postlinks ON posts_types_codecs_ordered.Id = postlinks.PostId;
 ```
 
 ## 例 {#examples}
@@ -216,8 +191,6 @@ LEFT JOIN (
 そのガイドでは、次のクエリを使用して、`postlinks` データセットを `posts` テーブルに非正規化する方法を示しました。
 
 ```sql
-CREATE MATERIALIZED VIEW posts_with_links_mv
-REFRESH EVERY 1 HOUR TO posts_with_links AS
 SELECT
     posts.*,
     arrayMap(p -> (p.1, p.2), arrayFilter(p -> p.3 = 'Linked' AND p.2 != 0, Related)) AS LinkedPosts,
@@ -237,6 +210,35 @@ LEFT JOIN (
 `posts` テーブルと `postlinks` テーブルの両方が更新される可能性があります。したがって、この結合を増分的なマテリアライズドビューで実装しようとするのではなく、このクエリを例えば 1 時間ごとなど一定の間隔で実行し、その結果を `post_with_links` テーブルに保存するだけで十分な場合もあります。
 
 ここでリフレッシュ可能なマテリアライズドビューが役立ちます。次のクエリで作成できます。
+
+```sql
+CREATE MATERIALIZED VIEW posts_with_links_mv
+REFRESH EVERY 1 HOUR TO posts_with_links AS
+SELECT
+    posts.*,
+    arrayMap(p -> (p.1, p.2), arrayFilter(p -> p.3 = 'Linked' AND p.2 != 0, Related)) AS LinkedPosts,
+    arrayMap(p -> (p.1, p.2), arrayFilter(p -> p.3 = 'Duplicate' AND p.2 != 0, Related)) AS DuplicatePosts
+FROM posts
+LEFT JOIN (
+    SELECT
+         PostId,
+         groupArray((CreationDate, RelatedPostId, LinkTypeId)) AS Related
+    FROM postlinks
+    GROUP BY PostId
+) AS postlinks ON posts_types_codecs_ordered.Id = postlinks.PostId;
+```
+
+ビューは直ちに実行され、その後は設定されたスケジュールに従って毎時実行され、ソーステーブルへの更新が反映されるようにします。重要な点として、クエリが再実行される際には、結果セットはアトミックかつ透過的に更新されます。
+
+:::note
+ここでの構文はインクリメンタルなマテリアライズドビューと同一ですが、[`REFRESH`](/sql-reference/statements/create/view#refreshable-materialized-view) 句を含めている点が異なります。
+:::
+
+### IMDb {#imdb}
+
+[dbt と ClickHouse の統合ガイド](/integrations/dbt) では、`actors`、`directors`、`genres`、`movie_directors`、`movies`、`roles` というテーブルを用いて IMDb データセットを用意しました。
+
+次に、各俳優ごとの集計を算出し、出演作品数が多い順に並べるために、次のクエリを実行します。
 
 ```sql
 SELECT
@@ -262,18 +264,6 @@ ORDER BY movies DESC
 LIMIT 5;
 ```
 
-ビューは直ちに実行され、その後は設定されたスケジュールに従って毎時実行され、ソーステーブルへの更新が反映されるようにします。重要な点として、クエリが再実行される際には、結果セットはアトミックかつ透過的に更新されます。
-
-:::note
-ここでの構文はインクリメンタルなマテリアライズドビューと同一ですが、[`REFRESH`](/sql-reference/statements/create/view#refreshable-materialized-view) 句を含めている点が異なります。
-:::
-
-### IMDb {#imdb}
-
-[dbt と ClickHouse の統合ガイド](/integrations/dbt) では、`actors`、`directors`、`genres`、`movie_directors`、`movies`、`roles` というテーブルを用いて IMDb データセットを用意しました。
-
-次に、各俳優ごとの集計を算出し、出演作品数が多い順に並べるために、次のクエリを実行します。
-
 ```text
 ┌─────id─┬─name─────────┬─num_movies─┬───────────avg_rank─┬─unique_genres─┬─uniq_directors─┬──────────updated_at─┐
 │  45332 │ Mel Blanc    │        909 │ 5.7884792542982515 │            19 │            148 │ 2024-11-11 12:01:35 │
@@ -283,9 +273,14 @@ LIMIT 5;
 │  41669 │ Adoor Bhasi  │        544 │                  0 │             4 │            121 │ 2024-11-11 12:01:35 │
 └────────┴──────────────┴────────────┴────────────────────┴───────────────┴────────────────┴─────────────────────┘
 
-5 rows in set. Elapsed: 0.393 sec. Processed 5.45 million rows, 86.82 MB (13.87 million rows/s., 221.01 MB/s.)
-Peak memory usage: 1.38 GiB.
+5行を取得しました。経過時間: 0.393秒。処理済み: 545万行、86.82 MB (1387万行/秒、221.01 MB/秒)
+ピークメモリ使用量: 1.38 GiB。
 ```
+
+結果が返ってくるまでそれほど時間はかかりませんが、さらに処理を高速化し、計算コストも減らしたいとします。
+このデータセットは常に更新されているとも仮定しましょう。映画は次々と公開され、新しい俳優や監督も登場し続けています。
+
+ここでリフレッシュ可能なマテリアライズドビューの出番です。まずは結果を書き込むためのターゲットテーブルを作成しましょう。
 
 ```sql
 CREATE TABLE imdb.actor_summary
@@ -302,10 +297,7 @@ ENGINE = MergeTree
 ORDER BY num_movies
 ```
 
-結果が返ってくるまでそれほど時間はかかりませんが、さらに処理を高速化し、計算コストも減らしたいとします。
-このデータセットは常に更新されているとも仮定しましょう。映画は次々と公開され、新しい俳優や監督も登場し続けています。
-
-ここでリフレッシュ可能なマテリアライズドビューの出番です。まずは結果を書き込むためのターゲットテーブルを作成しましょう。
+では、ビューを定義します:
 
 ```sql
 CREATE MATERIALIZED VIEW imdb.actor_summary_mv
@@ -339,7 +331,7 @@ GROUP BY id
 ORDER BY num_movies DESC;
 ```
 
-では、ビューを定義します:
+このビューは、構成どおり即時に実行され、その後は毎分実行されるため、ソーステーブルへの更新が確実に反映されます。先ほどの俳優のサマリーを取得するクエリは、構文がよりシンプルになり、パフォーマンスも大幅に向上します。
 
 ```sql
 SELECT *
@@ -347,8 +339,6 @@ FROM imdb.actor_summary
 ORDER BY num_movies DESC
 LIMIT 5
 ```
-
-このビューは、構成どおり即時に実行され、その後は毎分実行されるため、ソーステーブルへの更新が確実に反映されます。先ほどの俳優のサマリーを取得するクエリは、構文がよりシンプルになり、パフォーマンスも大幅に向上します。
 
 ```text
 ┌─────id─┬─name─────────┬─num_movies─┬──avg_rank─┬─unique_genres─┬─uniq_directors─┬──────────updated_at─┐
@@ -359,8 +349,10 @@ LIMIT 5
 │  41669 │ Adoor Bhasi  │        544 │         0 │             4 │            121 │ 2024-11-11 12:01:35 │
 └────────┴──────────────┴────────────┴───────────┴───────────────┴────────────────┴─────────────────────┘
 
-5 rows in set. Elapsed: 0.007 sec.
+5行のセット。経過時間: 0.007秒
 ```
+
+たとえば、ソースデータに新しい俳優「Clicky McClickHouse」を追加し、この人物が非常に多くの映画に出演しているとします。
 
 ```sql
 INSERT INTO imdb.actors VALUES (845466, 'Clicky', 'McClickHouse', 'M');
@@ -373,27 +365,13 @@ FROM imdb.movies
 LIMIT 10000, 910;
 ```
 
-たとえば、ソースデータに新しい俳優「Clicky McClickHouse」を追加し、この人物が非常に多くの映画に出演しているとします。
+60 秒も経たないうちに、ターゲットテーブルが更新され、Clicky の大活躍ぶりが反映されます。
 
 ```sql
 SELECT *
 FROM imdb.actor_summary
 ORDER BY num_movies DESC
 LIMIT 5;
-```
-
-60 秒も経たないうちに、ターゲットテーブルが更新され、Clicky の大活躍ぶりが反映されます。
-
-```text
-┌─────id─┬─name────────────────┬─num_movies─┬──avg_rank─┬─unique_genres─┬─uniq_directors─┬──────────updated_at─┐
-│ 845466 │ Clicky McClickHouse │        910 │ 1.4687939 │            21 │            662 │ 2024-11-11 12:53:51 │
-│  45332 │ Mel Blanc           │        909 │ 5.7884793 │            19 │            148 │ 2024-11-11 12:01:35 │
-│ 621468 │ Bess Flowers        │        672 │  5.540605 │            20 │            301 │ 2024-11-11 12:01:35 │
-│ 283127 │ Tom London          │        549 │ 2.8057034 │            18 │            208 │ 2024-11-11 12:01:35 │
-│  41669 │ Adoor Bhasi         │        544 │         0 │             4 │            121 │ 2024-11-11 12:01:35 │
-└────────┴─────────────────────┴────────────┴───────────┴───────────────┴────────────────┴─────────────────────┘
-
-5 rows in set. Elapsed: 0.006 sec.
 ```
 
 ```text

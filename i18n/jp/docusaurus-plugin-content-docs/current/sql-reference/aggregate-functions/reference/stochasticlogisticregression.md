@@ -35,19 +35,19 @@ stochasticLogisticRegression(1.0, 1.0, 10, 'SGD')
 保存済みの状態を使って、対象オブジェクトにラベル `1` が付与される確率を予測できます。
 
 ```sql
-    WITH (SELECT state FROM your_model) AS model SELECT
-    evalMLMethod(model, param1, param2) FROM test_data
-    ```
+WITH (SELECT state FROM your_model) AS model SELECT
+evalMLMethod(model, param1, param2) FROM test_data
+```
 
 クエリは確率の列を返します。`evalMLMethod` の最初の引数は `AggregateFunctionState` オブジェクトであり、それ以降の引数には特徴量のカラムを指定します。
 
 また、確率の閾値を設定して、要素を異なるラベルに割り当てることもできます。
 
 ```sql
-    SELECT ans < 1.1 AND ans > 0.5 FROM
-    (WITH (SELECT state FROM your_model) AS model SELECT
-    evalMLMethod(model, param1, param2) AS ans FROM test_data)
-    ```
+SELECT ans < 1.1 AND ans > 0.5 FROM
+(WITH (SELECT state FROM your_model) AS model SELECT
+evalMLMethod(model, param1, param2) AS ans FROM test_data)
+```
 
 その結果はラベルとして出力されます。
 

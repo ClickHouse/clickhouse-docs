@@ -58,34 +58,29 @@ SELECT CRC32('ClickHouse')
 └─────────────────────┘
 ```
 
-
-
 ## CRC32IEEE {#CRC32IEEE}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
+CRC-32-IEEE 802.3 多項式を用いて、文字列の CRC32 チェックサムを計算します。
 
-Calculates the CRC32 checksum of a string using the CRC-32-IEEE 802.3 polynomial.
-
-
-**Syntax**
+**構文**
 
 ```sql
 CRC32IEEE(s)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — String to calculate CRC32 for. [`String`](/sql-reference/data-types/string)
+* `s` — CRC32 を計算する対象の文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+文字列の CRC32 チェックサムを返します。[`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns the CRC32 checksum of the string. [`UInt32`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT CRC32IEEE('ClickHouse');
@@ -97,34 +92,29 @@ SELECT CRC32IEEE('ClickHouse');
 └─────────────────────────┘
 ```
 
-
-
 ## CRC64 {#CRC64}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
+CRC-64-ECMA多項式を使用して、文字列のCRC64チェックサムを計算します。
 
-Calculates the CRC64 checksum of a string using the CRC-64-ECMA polynomial.
-
-
-**Syntax**
+**構文**
 
 ```sql
 CRC64(s)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — String to calculate CRC64 for. [`String`](/sql-reference/data-types/string)
+* `s` — CRC64 を計算する文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+文字列の CRC64 チェックサムを返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the CRC64 checksum of the string. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT CRC64('ClickHouse');
@@ -136,35 +126,30 @@ SELECT CRC64('ClickHouse');
 └──────────────────────┘
 ```
 
-
-
 ## appendTrailingCharIfAbsent {#appendTrailingCharIfAbsent}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+文字列 `s` が空でなく、かつ末尾の文字が `c` でない場合に、文字 `c` を `s` の末尾に追加します。
 
-Appends character `c` to string `s` if `s` is non-empty and does not end with character `c`.
-
-
-**Syntax**
+**構文**
 
 ```sql
 appendTrailingCharIfAbsent(s, c)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — Input string. [`String`](/sql-reference/data-types/string)
-- `c` — Character to append if absent. [`String`](/sql-reference/data-types/string)
+* `s` — 入力文字列。[`String`](/sql-reference/data-types/string)
+* `c` — 末尾に存在しない場合に追加する文字。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+文字列 `s` が `c` で終わっていない場合、その末尾に文字 `c` を付加したものを返します。[`String`](/sql-reference/data-types/string)
 
-Returns string `s` with character `c` appended if `s` does not end with `c`. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT appendTrailingCharIfAbsent('https://example.com', '/');
@@ -176,34 +161,29 @@ SELECT appendTrailingCharIfAbsent('https://example.com', '/');
 └──────────────────────────┘
 ```
 
-
-
 ## ascii {#ascii}
 
-Introduced in: v22.11
+導入バージョン: v22.11
 
+文字列 `s` の先頭文字の ASCII コードポイント値を `Int32` として返します。
 
-Returns the ASCII code point of the first character of string `s` as an `Int32`.
-
-
-**Syntax**
+**構文**
 
 ```sql
 ascii(s)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — String input. [`String`](/sql-reference/data-types/string)
+* `s` — 文字列入力。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+先頭文字の ASCII コードポイントを返します。`s` が空文字列の場合、結果は `0` です。先頭文字が ASCII 文字ではない、または UTF-16 における Latin-1 補助範囲に含まれない場合、結果は未定義です。[`Int32`](/sql-reference/data-types/int-uint)
 
-Returns the ASCII code point of the first character. If `s` is empty, the result is `0`. If the first character is not an ASCII character or not part of the Latin-1 supplement range of UTF-16, the result is undefined. [`Int32`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT ascii('234')
@@ -215,35 +195,30 @@ SELECT ascii('234')
 └──────────────┘
 ```
 
-
-
 ## base32Decode {#base32Decode}
 
-Introduced in: v25.6
+導入バージョン: v25.6
 
+[Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6)（RFC 4648）文字列をデコードします。
+文字列が有効な Base32 エンコードではない場合、例外をスローします。
 
-Decodes a [Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6) (RFC 4648) string.
-If the string is not valid Base32-encoded, an exception is thrown.
-
-
-**Syntax**
+**構文**
 
 ```sql
 base32Decode(encoded)
 ```
 
-**Arguments**
+**引数**
 
-- `encoded` — String column or constant. [`String`](/sql-reference/data-types/string)
+* `encoded` — 文字列カラムまたは定数。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+引数をデコードした値を含む文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a string containing the decoded value of the argument. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT base32Decode('IVXGG33EMVSA====');
@@ -255,34 +230,29 @@ SELECT base32Decode('IVXGG33EMVSA====');
 └──────────────────────────────────┘
 ```
 
-
-
 ## base32Encode {#base32Encode}
 
-Introduced in: v25.6
+導入バージョン: v25.6
 
+文字列を [Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6) でエンコードします。
 
-Encodes a string using [Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6).
-
-
-**Syntax**
+**構文**
 
 ```sql
 base32Encode(plaintext)
 ```
 
-**Arguments**
+**引数**
 
-- `plaintext` — Plaintext to encode. [`String`](/sql-reference/data-types/string)
+* `plaintext` — エンコードするプレーンテキスト。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+引数をエンコードした値を含む文字列を返します。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
 
-Returns a string containing the encoded value of the argument. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT base32Encode('Encoded')
@@ -294,35 +264,30 @@ SELECT base32Encode('Encoded')
 └─────────────────────────┘
 ```
 
-
-
 ## base58Decode {#base58Decode}
 
-Introduced in: v22.7
+導入バージョン: v22.7
 
+[Base58](https://datatracker.ietf.org/doc/html/draft-msporny-base58-03#section-3) でエンコードされた文字列をデコードします。
+文字列が有効な Base58 エンコードでない場合は、例外がスローされます。
 
-Decodes a [Base58](https://datatracker.ietf.org/doc/html/draft-msporny-base58-03#section-3) string.
-If the string is not valid Base58-encoded, an exception is thrown.
-
-
-**Syntax**
+**構文**
 
 ```sql
 base58Decode(encoded)
 ```
 
-**Arguments**
+**引数**
 
-- `encoded` — String column or constant to decode. [`String`](/sql-reference/data-types/string)
+* `encoded` — デコード対象の文字列カラムまたは定数。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+引数として指定された値をデコードした結果の文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a string containing the decoded value of the argument. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT base58Decode('JxF12TrwUP45BMd');
@@ -334,34 +299,29 @@ SELECT base58Decode('JxF12TrwUP45BMd');
 └──────────────────────────┘
 ```
 
-
-
 ## base58Encode {#base58Encode}
 
-Introduced in: v22.7
+導入: v22.7
 
+[Base58](https://tools.ietf.org/id/draft-msporny-base58-01.html) エンコード方式を使って文字列をエンコードします。
 
-Encodes a string using [Base58](https://tools.ietf.org/id/draft-msporny-base58-01.html) encoding.
-
-
-**Syntax**
+**構文**
 
 ```sql
 base58Encode(plaintext)
 ```
 
-**Arguments**
+**引数**
 
-- `plaintext` — Plaintext to encode. [`String`](/sql-reference/data-types/string)
+* `plaintext` — エンコードするプレーンテキスト。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+引数の値をエンコードした文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a string containing the encoded value of the argument. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT base58Encode('ClickHouse');
@@ -373,38 +333,32 @@ SELECT base58Encode('ClickHouse');
 └────────────────────────────┘
 ```
 
-
-
 ## base64Decode {#base64Decode}
 
-Introduced in: v18.16
+導入バージョン: v18.16
 
+[RFC 4648](https://en.wikipedia.org/wiki/Base64) に従い、[Base64](https://en.wikipedia.org/wiki/Base64) 形式から文字列をデコードします。
+エラーが発生した場合は例外をスローします。
 
-Decodes a string from [Base64](https://en.wikipedia.org/wiki/Base64) representation, according to RFC 4648.
-Throws an exception in case of error.
-
-
-
-**Syntax**
+**構文**
 
 ```sql
 base64Decode(encoded)
 ```
 
-**Aliases**: `FROM_BASE64`
+**別名**: `FROM_BASE64`
 
-**Arguments**
+**引数**
 
-- `encoded` — String column or constant to decode. If the string is not valid Base64-encoded, an exception is thrown. [`String`](/sql-reference/data-types/string)
+* `encoded` — デコードする文字列型のカラムまたは定数。文字列が有効な Base64 形式でない場合は、例外がスローされる。[`String`](/sql-reference/data-types/string)
 
+**返される値**
 
-**Returned value**
+デコードされた文字列を返す。[`String`](/sql-reference/data-types/string)
 
-Returns the decoded string. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT base64Decode('Y2xpY2tob3VzZQ==')
@@ -416,36 +370,31 @@ SELECT base64Decode('Y2xpY2tob3VzZQ==')
 └──────────────────────────────────┘
 ```
 
-
-
 ## base64Encode {#base64Encode}
 
-Introduced in: v18.16
+導入バージョン: v18.16
 
+[RFC 4648](https://en.wikipedia.org/wiki/Base64) に従って、文字列を Base64 形式でエンコードします。
 
-Encodes a string using [Base64](https://en.wikipedia.org/wiki/Base64) representation, according to RFC 4648.
-
-
-**Syntax**
+**構文**
 
 ```sql
 base64Encode(plaintext)
 ```
 
-**Aliases**: `TO_BASE64`
+**別名**: `TO_BASE64`
 
-**Arguments**
+**引数**
 
-- `plaintext` — Plaintext column or constant to decode. [`String`](/sql-reference/data-types/string)
+* `plaintext` — 復号する対象のプレーンテキストを含むカラムまたは定数。[`String`](/sql-reference/data-types/string)
 
+**返される値**
 
-**Returned value**
+引数の値をエンコードした文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a string containing the encoded value of the argument. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT base64Encode('clickhouse')
@@ -457,35 +406,30 @@ SELECT base64Encode('clickhouse')
 └────────────────────────────┘
 ```
 
-
-
 ## base64URLDecode {#base64URLDecode}
 
-Introduced in: v24.6
+導入バージョン: v24.6
 
+URL セーフアルファベットを使用し、RFC 4648 に従って [Base64](https://en.wikipedia.org/wiki/Base64) 表現から文字列をデコードします。
+エラーが発生した場合は例外をスローします。
 
-Decodes a string from [Base64](https://en.wikipedia.org/wiki/Base64) representation using URL-safe alphabet, according to RFC 4648.
-Throws an exception in case of error.
-
-
-**Syntax**
+**構文**
 
 ```sql
 base64URLDecode(encoded)
 ```
 
-**Arguments**
+**引数**
 
-- `encoded` — String column or constant to encode. If the string is not valid Base64-encoded, an exception is thrown. [`String`](/sql-reference/data-types/string)
+* `encoded` — エンコード対象の文字列カラムまたは定数。文字列が有効な Base64 形式でエンコードされていない場合は、例外がスローされます。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+引数のデコード後の値を含む文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a string containing the decoded value of the argument. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT base64URLDecode('aHR0cHM6Ly9jbGlja2hvdXNlLmNvbQ')
@@ -497,34 +441,29 @@ SELECT base64URLDecode('aHR0cHM6Ly9jbGlja2hvdXNlLmNvbQ')
 └───────────────────────────────────────────────────┘
 ```
 
-
-
 ## base64URLEncode {#base64URLEncode}
 
-Introduced in: v18.16
+導入バージョン: v18.16
 
+URL セーフなアルファベットを用いる [Base64](https://datatracker.ietf.org/doc/html/rfc4648#section-4)（RFC 4648）表現で文字列をエンコードします。
 
-Encodes a string using [Base64](https://datatracker.ietf.org/doc/html/rfc4648#section-4) (RFC 4648) representation using URL-safe alphabet.
-
-
-**Syntax**
+**構文**
 
 ```sql
 base64URLEncode(plaintext)
 ```
 
-**Arguments**
+**引数**
 
-- `plaintext` — Plaintext column or constant to encode. [`String`](/sql-reference/data-types/string)
+* `plaintext` — エンコードするプレーンテキストのカラムまたは定数。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+引数の値をエンコードした文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a string containing the encoded value of the argument. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT base64URLEncode('https://clickhouse.com')
@@ -536,35 +475,30 @@ SELECT base64URLEncode('https://clickhouse.com')
 └───────────────────────────────────────────┘
 ```
 
-
-
 ## basename {#basename}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
+文字列内の最後のスラッシュまたはバックスラッシュ以降の部分を抽出します。
+この関数は、パスからファイル名を抽出する際によく使用されます。
 
-Extracts the tail of a string following its last slash or backslash.
-This function is often used to extract the filename from a path.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 basename(expr)
 ```
 
-**Arguments**
+**引数**
 
-- `expr` — A string expression. Backslashes must be escaped. [`String`](/sql-reference/data-types/string)
+* `expr` — 文字列表現。バックスラッシュはエスケープする必要があります。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+入力文字列の最後のスラッシュまたはバックスラッシュ以降の部分を返します。入力文字列がスラッシュまたはバックスラッシュで終わる場合、関数は空文字列を返します。スラッシュやバックスラッシュが存在しない場合は元の文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the tail of the input string after its last slash or backslash. If the input string ends with a slash or backslash, the function returns an empty string. Returns the original string if there are no slashes or backslashes. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Extract filename from Unix path**
+**Unix パスからファイル名を抽出**
 
 ```sql title=Query
 SELECT 'some/long/path/to/file' AS a, basename(a)
@@ -576,7 +510,7 @@ SELECT 'some/long/path/to/file' AS a, basename(a)
 └────────────────────────┴────────────────────────────────────┘
 ```
 
-**Extract filename from Windows path**
+**Windows のパスからファイル名を抽出する**
 
 ```sql title=Query
 SELECT 'some\\long\\path\\to\\file' AS a, basename(a)
@@ -588,7 +522,7 @@ SELECT 'some\\long\\path\\to\\file' AS a, basename(a)
 └────────────────────────┴────────────────────────────────────────┘
 ```
 
-**String with no path separators**
+**パス区切り文字を含まない文字列**
 
 ```sql title=Query
 SELECT 'some-file-name' AS a, basename(a)
@@ -600,37 +534,32 @@ SELECT 'some-file-name' AS a, basename(a)
 └────────────────┴────────────────────────────┘
 ```
 
-
-
 ## byteHammingDistance {#byteHammingDistance}
 
-Introduced in: v23.9
+導入バージョン: v23.9
 
+2つのバイト文字列間の[ハミング距離](https://en.wikipedia.org/wiki/Hamming_distance)を計算します。
 
-Calculates the [hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) between two byte strings.
-
-
-**Syntax**
+**構文**
 
 ```sql
 byteHammingDistance(s1, s2)
 ```
 
-**Aliases**: `mismatches`
+**エイリアス**: `mismatches`
 
-**Arguments**
+**引数**
 
-- `s1` — First input string. [`String`](/sql-reference/data-types/string)
-- `s2` — Second input string. [`String`](/sql-reference/data-types/string)
+* `s1` — 1 番目の入力文字列。[`String`](/sql-reference/data-types/string)
+* `s2` — 2 番目の入力文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+2 つの文字列のハミング距離を返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the Hamming distance between the two strings. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT byteHammingDistance('karolin', 'kathrin')
@@ -642,42 +571,38 @@ SELECT byteHammingDistance('karolin', 'kathrin')
 └───────────────────────────────────────────┘
 ```
 
-
-
 ## compareSubstrings {#compareSubstrings}
 
-Introduced in: v25.2
+導入バージョン: v25.2
 
+2つの文字列を辞書順で比較します。
 
-Compares two strings lexicographically.
-
-
-**Syntax**
+**構文**
 
 ```sql
 compareSubstrings(s1, s2, s1_offset, s2_offset, num_bytes)
 ```
 
-**Arguments**
+**引数**
 
-- `s1` — The first string to compare. [`String`](/sql-reference/data-types/string)
-- `s2` — The second string to compare. [`String`](/sql-reference/data-types/string)
-- `s1_offset` — The position (zero-based) in `s1` from which the comparison starts. [`UInt*`](/sql-reference/data-types/int-uint)
-- `s2_offset` — The position (zero-based index) in `s2` from which the comparison starts. [`UInt*`](/sql-reference/data-types/int-uint)
-- `num_bytes` — The maximum number of bytes to compare in both strings. If `s1_offset` (or `s2_offset`) + `num_bytes` exceeds the end of an input string, `num_bytes` will be reduced accordingly. [`UInt*`](/sql-reference/data-types/int-uint)
+* `s1` — 比較する最初の文字列。[`String`](/sql-reference/data-types/string)
+* `s2` — 比較する2番目の文字列。[`String`](/sql-reference/data-types/string)
+* `s1_offset` — 比較を開始する `s1` 内の位置（0始まり）。[`UInt*`](/sql-reference/data-types/int-uint)
+* `s2_offset` — 比較を開始する `s2` 内の位置（0始まりのインデックス）。[`UInt*`](/sql-reference/data-types/int-uint)
+* `num_bytes` — 両方の文字列で比較する最大バイト数。`s1_offset`（または `s2_offset`） + `num_bytes` が入力文字列の末尾を超える場合、`num_bytes` はそれに応じて調整されます。[`UInt*`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+次の値を返します:
 
-Returns:
-- `-1` if `s1`[`s1_offset` : `s1_offset` + `num_bytes`] < `s2`[`s2_offset` : `s2_offset` + `num_bytes`].
-- `0` if `s1`[`s1_offset` : `s1_offset` + `num_bytes`] = `s2`[`s2_offset` : `s2_offset` + `num_bytes`].
-- `1` if `s1`[`s1_offset` : `s1_offset` + `num_bytes`] > `s2`[`s2_offset` : `s2_offset` + `num_bytes`].
-     [`Int8`](/sql-reference/data-types/int-uint)
+* `-1` — `s1`[`s1_offset` : `s1_offset` + `num_bytes`] &lt; `s2`[`s2_offset` : `s2_offset` + `num_bytes`] の場合。
+* `0` — `s1`[`s1_offset` : `s1_offset` + `num_bytes`] = `s2`[`s2_offset` : `s2_offset` + `num_bytes`] の場合。
+* `1` — `s1`[`s1_offset` : `s1_offset` + `num_bytes`] &gt; `s2`[`s2_offset` : `s2_offset` + `num_bytes`] の場合。
+  [`Int8`](/sql-reference/data-types/int-uint)
 
-**Examples**
+**例**
 
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT compareSubstrings('Saxony', 'Anglo-Saxon', 0, 6, 5) AS result
@@ -689,37 +614,32 @@ SELECT compareSubstrings('Saxony', 'Anglo-Saxon', 0, 6, 5) AS result
 └────────┘
 ```
 
-
-
 ## concat {#concat}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+指定された引数を連結します。
 
-Concatenates the given arguments.
+[`String`](../data-types/string.md) または [`FixedString`](../data-types/fixedstring.md) 型ではない引数は、デフォルトのシリアライゼーションを用いて文字列に変換されます。
+これはパフォーマンスを低下させるため、String/FixedString 以外の引数の使用は推奨されません。
 
-Arguments which are not of types [`String`](../data-types/string.md) or [`FixedString`](../data-types/fixedstring.md) are converted to strings using their default serialization.
-As this decreases performance, it is not recommended to use non-String/FixedString arguments.
-
-
-**Syntax**
+**構文**
 
 ```sql
 concat([s1, s2, ...])
 ```
 
-**Arguments**
+**引数**
 
-- `s1, s2, ...` — Any number of values of arbitrary type. [`Any`](/sql-reference/data-types)
+* `s1, s2, ...` — 任意の型の値を任意の数だけ指定できます。[`Any`](/sql-reference/data-types)
 
+**戻り値**
 
-**Returned value**
+引数を連結して作成された String を返します。いずれかの引数が `NULL` の場合、関数は `NULL` を返します。引数が 1 つも指定されていない場合は、空文字列を返します。[`Nullable(String)`](/sql-reference/data-types/nullable)
 
-Returns the String created by concatenating the arguments. If any of arguments is `NULL`, the function returns `NULL`. If there are no arguments, it returns an empty string. [`Nullable(String)`](/sql-reference/data-types/nullable)
+**例**
 
-**Examples**
-
-**String concatenation**
+**文字列の連結**
 
 ```sql title=Query
 SELECT concat('Hello, ', 'World!')
@@ -731,7 +651,7 @@ SELECT concat('Hello, ', 'World!')
 └─────────────────────────────┘
 ```
 
-**Number concatenation**
+**数値の結合**
 
 ```sql title=Query
 SELECT concat(42, 144)
@@ -743,37 +663,32 @@ SELECT concat(42, 144)
 └─────────────────┘
 ```
 
-
-
 ## concatAssumeInjective {#concatAssumeInjective}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+[`concat`](#concat) と同様ですが、`concat(s1, s2, ...) → sn` が単射である、
+つまり異なる引数に対して常に異なる結果を返すと仮定します。
 
-Like [`concat`](#concat) but assumes that `concat(s1, s2, ...) → sn` is injective,
-i.e, it returns different results for different arguments.
+`GROUP BY` の最適化に使用できます。
 
-Can be used for optimization of `GROUP BY`.
-
-
-**Syntax**
+**構文**
 
 ```sql
 concatAssumeInjective([s1, s2, ...])
 ```
 
-**Arguments**
+**引数**
 
-- `s1, s2, ...` — Any number of values of arbitrary type. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+* `s1, s2, ...` — 任意の型の値を任意の数だけ指定できます。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
 
+**返り値**
 
-**Returned value**
+引数を連結して生成された文字列を返します。いずれかの引数の値が `NULL` の場合、関数は `NULL` を返します。引数が 1 つも指定されない場合は、空文字列を返します。型は [`String`](/sql-reference/data-types/string) です。
 
-Returns the string created by concatenating the arguments. If any of argument values is `NULL`, the function returns `NULL`. If no arguments are passed, it returns an empty string. [`String`](/sql-reference/data-types/string)
+**使用例**
 
-**Examples**
-
-**Group by optimization**
+**GROUP BY の最適化**
 
 ```sql title=Query
 SELECT concat(key1, key2), sum(value) FROM key_val GROUP BY concatAssumeInjective(key1, key2)
@@ -787,37 +702,32 @@ SELECT concat(key1, key2), sum(value) FROM key_val GROUP BY concatAssumeInjectiv
 └────────────────────┴────────────┘
 ```
 
-
-
 ## concatWithSeparator {#concatWithSeparator}
 
-Introduced in: v22.12
+導入バージョン: v22.12
 
+指定した区切り文字で区切って、指定された文字列を連結します。
 
-Concatenates the provided strings, separating them by the specified separator.
-
-
-**Syntax**
+**構文**
 
 ```sql
 concatWithSeparator(sep[, exp1, exp2, ...])
 ```
 
-**Aliases**: `concat_ws`
+**別名**: `concat_ws`
 
-**Arguments**
+**引数**
 
-- `sep` — The separator to use. [`const String`](/sql-reference/data-types/string) or [`const FixedString`](/sql-reference/data-types/fixedstring)
-- `exp1, exp2, ...` — Expression to be concatenated. Arguments which are not of type `String` or `FixedString` are converted to strings using their default serialization. As this decreases performance, it is not recommended to use non-String/FixedString arguments. [`Any`](/sql-reference/data-types)
+* `sep` — 使用する区切り文字。[`const String`](/sql-reference/data-types/string) または [`const FixedString`](/sql-reference/data-types/fixedstring)
+* `exp1, exp2, ...` — 連結する式。型が `String` または `FixedString` でない引数は、デフォルトのシリアル化により文字列に変換されます。これはパフォーマンスを低下させるので、非 String/FixedString 型の引数を使用することは推奨されません。[`Any`](/sql-reference/data-types)
 
+**戻り値**
 
-**Returned value**
+引数を連結して生成された String を返します。いずれかの引数の値が `NULL` の場合、関数は `NULL` を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the String created by concatenating the arguments. If any of the argument values is `NULL`, the function returns `NULL`. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT concatWithSeparator('a', '1', '2', '3', '4')
@@ -829,38 +739,33 @@ SELECT concatWithSeparator('a', '1', '2', '3', '4')
 └──────────────────────────────────────────────┘
 ```
 
-
-
 ## concatWithSeparatorAssumeInjective {#concatWithSeparatorAssumeInjective}
 
-Introduced in: v22.12
+導入バージョン: v22.12
 
+[`concatWithSeparator`](#concatWithSeparator) と同様ですが、`concatWithSeparator(sep[,exp1, exp2, ... ]) → result` が単射であると仮定します。
+関数は、異なる引数に対して必ず異なる結果を返す場合に単射と呼ばれます。
 
-Like [`concatWithSeparator`](#concatWithSeparator) but assumes that `concatWithSeparator(sep[,exp1, exp2, ... ]) → result` is injective.
-A function is called injective if it returns different results for different arguments.
+`GROUP BY` の最適化に使用できます。
 
-Can be used for optimization of `GROUP BY`.
-
-
-**Syntax**
+**構文**
 
 ```sql
 concatWithSeparatorAssumeInjective(sep[, exp1, exp2, ... ])
 ```
 
-**Arguments**
+**引数**
 
-- `sep` — The separator to use. [`const String`](/sql-reference/data-types/string) or [`const FixedString`](/sql-reference/data-types/fixedstring)
-- `exp1, exp2, ...` — Expression to be concatenated. Arguments which are not of type `String` or `FixedString` are converted to strings using their default serialization. As this decreases performance, it is not recommended to use non-String/FixedString arguments. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+* `sep` — 使用するセパレーター。[`const String`](/sql-reference/data-types/string) または [`const FixedString`](/sql-reference/data-types/fixedstring)
+* `exp1, exp2, ...` — 連結する式。`String` または `FixedString` 型ではない引数は、デフォルトのシリアライゼーションを使用して文字列に変換されます。これはパフォーマンスの低下を招くため、非 String/FixedString 引数の使用は推奨されません。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
 
+**返される値**
 
-**Returned value**
+引数を連結して生成された String 型の値を返します。いずれかの引数の値が `NULL` の場合、関数は `NULL` を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the String created by concatenating the arguments. If any of the argument values is `NULL`, the function returns `NULL`. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 CREATE TABLE user_data (
@@ -893,38 +798,34 @@ GROUP BY concatWithSeparatorAssumeInjective('-', first_name, last_name);
 └─────────────┴─────────────┘
 ```
 
-
-
 ## conv {#conv}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+異なる基数の間で数値を変換します。
 
-Converts numbers between different number bases.
+この関数は、ある基数から別の基数へ数値を変換します。2 から 36 までの基数をサポートします。
+10 を超える基数では、10〜35 の数字を表すために文字 A〜Z（大文字・小文字は区別されません）が使用されます。
 
-The function converts a number from one base to another. It supports bases from 2 to 36.
-For bases higher than 10, letters A-Z (case insensitive) are used to represent digits 10-35.
+この関数は MySQL の CONV() 関数と互換性があります。
 
-This function is compatible with MySQL's CONV() function.
-
-
-**Syntax**
+**構文**
 
 ```sql
 conv(number, from_base, to_base)
 ```
 
-**Arguments**
+**引数**
 
-- `number` — The number to convert. Can be a string or numeric type. - `from_base` — The source base (2-36). Must be an integer. - `to_base` — The target base (2-36). Must be an integer. 
+* `number` — 変換する数値。文字列または数値型を指定できます。 - `from_base` — 変換元の基数 (2-36)。整数である必要があります。 - `to_base` — 変換先の基数 (2-36)。整数である必要があります。
 
-**Returned value**
+**戻り値**
 
-String representation of the number in the target base.
+変換先の基数で表現された数値の文字列表現。
 
-**Examples**
+**例**
 
-**Convert decimal to binary**
+**10 進数を 2 進数に変換**
 
 ```sql title=Query
 SELECT conv('10', 10, 2)
@@ -934,7 +835,7 @@ SELECT conv('10', 10, 2)
 1010
 ```
 
-**Convert hexadecimal to decimal**
+**16進数を10進数に変換**
 
 ```sql title=Query
 SELECT conv('FF', 16, 10)
@@ -944,7 +845,7 @@ SELECT conv('FF', 16, 10)
 255
 ```
 
-**Convert with negative number**
+**負の数で変換**
 
 ```sql title=Query
 SELECT conv('-1', 10, 16)
@@ -954,7 +855,7 @@ SELECT conv('-1', 10, 16)
 FFFFFFFFFFFFFFFF
 ```
 
-**Convert binary to octal**
+**2進数を8進数に変換**
 
 ```sql title=Query
 SELECT conv('1010', 2, 8)
@@ -964,36 +865,31 @@ SELECT conv('1010', 2, 8)
 12
 ```
 
-
-
 ## convertCharset {#convertCharset}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+エンコーディング `from` から `to` へ変換した文字列 `s` を返します。
 
-Returns string `s` converted from the encoding `from` to encoding `to`.
-
-
-**Syntax**
+**構文**
 
 ```sql
 convertCharset(s, from, to)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — Input string. [`String`](/sql-reference/data-types/string)
-- `from` — Source character encoding. [`String`](/sql-reference/data-types/string)
-- `to` — Target character encoding. [`String`](/sql-reference/data-types/string)
+* `s` — 入力文字列。[`String`](/sql-reference/data-types/string)
+* `from` — 変換元の文字エンコーディング。[`String`](/sql-reference/data-types/string)
+* `to` — 変換先の文字エンコーディング。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+文字列 `s` を、エンコーディング `from` から `to` に変換して返します。[`String`](/sql-reference/data-types/string)
 
-Returns string `s` converted from encoding `from` to encoding `to`. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT convertCharset('Café', 'UTF-8', 'ISO-8859-1');
@@ -1005,35 +901,30 @@ SELECT convertCharset('Café', 'UTF-8', 'ISO-8859-1');
 └──────────────────────────┘
 ```
 
-
-
 ## damerauLevenshteinDistance {#damerauLevenshteinDistance}
 
-Introduced in: v24.1
+導入バージョン: v24.1
 
+2つのバイト列間の [Damerau-Levenshtein 距離](https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance) を計算します。
 
-Calculates the [Damerau-Levenshtein distance](https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance) between two byte strings.
-
-
-**Syntax**
+**構文**
 
 ```sql
 damerauLevenshteinDistance(s1, s2)
 ```
 
-**Arguments**
+**引数**
 
-- `s1` — First input string. [`String`](/sql-reference/data-types/string)
-- `s2` — Second input string. [`String`](/sql-reference/data-types/string)
+* `s1` — 1つ目の入力文字列。[`String`](/sql-reference/data-types/string)
+* `s2` — 2つ目の入力文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+2つの文字列間の Damerau-Levenshtein 距離を返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the Damerau-Levenshtein distance between the two strings. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT damerauLevenshteinDistance('clickhouse', 'mouse')
@@ -1045,34 +936,29 @@ SELECT damerauLevenshteinDistance('clickhouse', 'mouse')
 └───────────────────────────────────────────────────┘
 ```
 
-
-
 ## decodeHTMLComponent {#decodeHTMLComponent}
 
-Introduced in: v23.9
+導入バージョン: v23.9
 
+文字列内の HTML エンティティ参照を対応する文字にデコードします。
 
-Decodes HTML entities in a string to their corresponding characters.
-
-
-**Syntax**
+**構文**
 
 ```sql
 decodeHTMLComponent(s)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — String containing HTML entities to decode. [`String`](/sql-reference/data-types/string)
+* `s` — デコードする HTML エンティティを含む文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+HTML エンティティをデコードした文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the string with HTML entities decoded. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT decodeHTMLComponent('&lt;div&gt;Hello &amp; &quot;World&quot;&lt;/div&gt;')
@@ -1084,34 +970,29 @@ SELECT decodeHTMLComponent('&lt;div&gt;Hello &amp; &quot;World&quot;&lt;/div&gt;
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## decodeXMLComponent {#decodeXMLComponent}
 
-Introduced in: v21.2
+導入バージョン: v21.2
 
+文字列内の XML エンティティを対応する文字にデコードします。
 
-Decodes XML entities in a string to their corresponding characters.
-
-
-**Syntax**
+**構文**
 
 ```sql
 decodeXMLComponent(s)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — String containing XML entities to decode. [`String`](/sql-reference/data-types/string)
+* `s` — デコードする XML エンティティを含む文字列。[`String`](/sql-reference/data-types/string)
 
+**返り値**
 
-**Returned value**
+指定された文字列内の XML エンティティをデコードした文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the provided string with XML entities decoded. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT decodeXMLComponent('&lt;tag&gt;Hello &amp; World&lt;/tag&gt;')
@@ -1123,37 +1004,32 @@ SELECT decodeXMLComponent('&lt;tag&gt;Hello &amp; World&lt;/tag&gt;')
 └──────────────────────────┘
 ```
 
-
-
 ## editDistance {#editDistance}
 
-Introduced in: v23.9
+導入バージョン: v23.9
 
+2つのバイト列間の[編集距離](https://en.wikipedia.org/wiki/Edit_distance)を計算します。
 
-Calculates the [edit distance](https://en.wikipedia.org/wiki/Edit_distance) between two byte strings.
-
-
-**Syntax**
+**構文**
 
 ```sql
 editDistance(s1, s2)
 ```
 
-**Aliases**: `levenshteinDistance`
+**別名**: `levenshteinDistance`
 
-**Arguments**
+**引数**
 
-- `s1` — First input string. [`String`](/sql-reference/data-types/string)
-- `s2` — Second input string. [`String`](/sql-reference/data-types/string)
+* `s1` — 1 つ目の入力文字列。[`String`](/sql-reference/data-types/string)
+* `s2` — 2 つ目の入力文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+2 つの文字列間の編集距離を返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the edit distance between the two strings. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT editDistance('clickhouse', 'mouse')
@@ -1165,37 +1041,32 @@ SELECT editDistance('clickhouse', 'mouse')
 └─────────────────────────────────────┘
 ```
 
-
-
 ## editDistanceUTF8 {#editDistanceUTF8}
 
-Introduced in: v24.6
+導入バージョン: v24.6
 
+2 つの UTF8 文字列間の [編集距離](https://en.wikipedia.org/wiki/Edit_distance) を計算します。
 
-Calculates the [edit distance](https://en.wikipedia.org/wiki/Edit_distance) between two UTF8 strings.
-
-
-**Syntax**
+**構文**
 
 ```sql
 editDistanceUTF8(s1, s2)
 ```
 
-**Aliases**: `levenshteinDistanceUTF8`
+**エイリアス**: `levenshteinDistanceUTF8`
 
-**Arguments**
+**引数**
 
-- `s1` — First input string. [`String`](/sql-reference/data-types/string)
-- `s2` — Second input string. [`String`](/sql-reference/data-types/string)
+* `s1` — 1つ目の入力文字列。[`String`](/sql-reference/data-types/string)
+* `s2` — 2つ目の入力文字列。[`String`](/sql-reference/data-types/string)
 
+**返される値**
 
-**Returned value**
+2つの UTF8 文字列間の編集距離を返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the edit distance between the two UTF8 strings. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT editDistanceUTF8('我是谁', '我是我')
@@ -1207,34 +1078,29 @@ SELECT editDistanceUTF8('我是谁', '我是我')
 └─────────────────────────────────────┘
 ```
 
-
-
 ## encodeXMLComponent {#encodeXMLComponent}
 
-Introduced in: v21.1
+導入バージョン: v21.1
 
+文字列を XML テキストノードまたは属性内に配置できるように、文字をエスケープします。
 
-Escapes characters to place string into XML text node or attribute.
-
-
-**Syntax**
+**構文**
 
 ```sql
 encodeXMLComponent(s)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — String to escape. [`String`](/sql-reference/data-types/string)
+* `s` — エスケープする文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+エスケープされた文字列。[`String`](/sql-reference/data-types/string)
 
-Returns the escaped string. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT
@@ -1248,35 +1114,30 @@ SELECT
 └────────────────────────────┴──────────────────────────────────────────────────────┘
 ```
 
-
-
 ## endsWith {#endsWith}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+文字列が指定されたサフィックスで終わるかどうかを判定します。
 
-Checks whether a string ends with the provided suffix.
-
-
-**Syntax**
+**構文**
 
 ```sql
 endsWith(s, suffix)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — String to check. [`String`](/sql-reference/data-types/string)
-- `suffix` — Suffix to check for. [`String`](/sql-reference/data-types/string)
+* `s` — チェック対象の文字列。[`String`](/sql-reference/data-types/string)
+* `suffix` — 末尾に付いているかを確認する接尾辞。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+`s` が `suffix` で終わる場合は `1` を、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if `s` ends with `suffix`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT endsWith('ClickHouse', 'House');
@@ -1288,35 +1149,30 @@ SELECT endsWith('ClickHouse', 'House');
 └──────────────────────────┘
 ```
 
-
-
 ## endsWithCaseInsensitive {#endsWithCaseInsensitive}
 
-Introduced in: v25.9
+導入バージョン: v25.9
 
+文字列が、大文字小文字を区別せずに指定したサフィックスで終わっているかどうかをチェックします。
 
-Checks whether a string ends with the provided case-insensitive suffix.
-
-
-**Syntax**
+**構文**
 
 ```sql
 endsWithCaseInsensitive(s, suffix)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — String to check. [`String`](/sql-reference/data-types/string)
-- `suffix` — Case-insensitive suffix to check for. [`String`](/sql-reference/data-types/string)
+* `s` — チェック対象の文字列。[`String`](/sql-reference/data-types/string)
+* `suffix` — 末尾として一致するかを判定する、大文字・小文字を区別しないサフィックス。[`String`](/sql-reference/data-types/string)
 
+**返り値**
 
-**Returned value**
+`s` の末尾が、大文字・小文字を区別せずに `suffix` と一致する場合は `1`、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if `s` ends with case-insensitive `suffix`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT endsWithCaseInsensitive('ClickHouse', 'HOUSE');
@@ -1328,37 +1184,32 @@ SELECT endsWithCaseInsensitive('ClickHouse', 'HOUSE');
 └─────────────────────────────────────────┘
 ```
 
-
-
 ## endsWithCaseInsensitiveUTF8 {#endsWithCaseInsensitiveUTF8}
 
-Introduced in: v25.9
+導入バージョン: v25.9
 
+文字列 `s` が、大文字と小文字を区別せずに `suffix` で終わるかどうかを返します。
+文字列が有効な UTF-8 でエンコードされたテキストであることを前提とします。
+この前提が満たされない場合、例外はスローされず、結果は未定義です。
 
-Returns whether string `s` ends with case-insensitive `suffix`.
-Assumes that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
-
-
-**Syntax**
+**構文**
 
 ```sql
 endsWithCaseInsensitiveUTF8(s, suffix)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — String to check. [`String`](/sql-reference/data-types/string)
-- `suffix` — Case-insensitive suffix to check for. [`String`](/sql-reference/data-types/string)
+* `s` — チェック対象の文字列。[`String`](/sql-reference/data-types/string)
+* `suffix` — 大文字小文字を区別せずに判定されるサフィックス文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+`s` が大文字小文字を区別せずに `suffix` で終わる場合は `1`、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if `s` ends with case-insensitive `suffix`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT endsWithCaseInsensitiveUTF8('данных', 'ых');
@@ -1370,37 +1221,32 @@ SELECT endsWithCaseInsensitiveUTF8('данных', 'ых');
 └─────────────────────────────────────────────┘
 ```
 
-
-
 ## endsWithUTF8 {#endsWithUTF8}
 
-Introduced in: v23.8
+導入バージョン: v23.8
 
+文字列 `s` が `suffix` で終わるかどうかを返します。
+文字列が有効な UTF-8 でエンコードされたテキストであることを前提とします。
+この前提が成り立たない場合でも、例外はスローされず、結果は未定義です。
 
-Returns whether string `s` ends with `suffix`.
-Assumes that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
-
-
-**Syntax**
+**構文**
 
 ```sql
 endsWithUTF8(s, suffix)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — String to check. [`String`](/sql-reference/data-types/string)
-- `suffix` — Suffix to check for. [`String`](/sql-reference/data-types/string)
+* `s` — 判定対象の文字列。[`String`](/sql-reference/data-types/string)
+* `suffix` — 末尾にあるかを確認するサフィックス文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+`s` が `suffix` で終わる場合は `1`、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if `s` ends with `suffix`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT endsWithUTF8('данных', 'ых');
@@ -1412,43 +1258,39 @@ SELECT endsWithUTF8('данных', 'ых');
 └──────────────────────────────┘
 ```
 
-
-
 ## extractTextFromHTML {#extractTextFromHTML}
 
-Introduced in: v21.3
+導入バージョン: v21.3
 
+HTML または XHTML からテキストコンテンツを抽出します。
 
-Extracts text content from HTML or XHTML.
+この関数は、HTML タグ、コメント、script/style 要素を削除し、テキストコンテンツのみを残します。次の処理を行います:
 
-This function removes HTML tags, comments, and script/style elements, leaving only the text content. It handles:
-- Removal of all HTML/XML tags
-- Removal of comments (`<!-- -->`)
-- Removal of script and style elements with their content
-- Processing of CDATA sections (copied verbatim)
-- Proper whitespace handling and normalization
+* すべての HTML/XML タグの削除
+* コメント（`<!-- -->`）の削除
+* script および style 要素とその内容の削除
+* CDATA セクションの処理（内容をそのままコピー）
+* 空白文字の適切な処理と正規化
 
-Note: HTML entities are not decoded and should be processed with a separate function if needed.
+注意: HTML エンティティはデコードされないため、必要に応じて別の関数で処理する必要があります。
 
-
-**Syntax**
+**構文**
 
 ```sql
 extractTextFromHTML(html)
 ```
 
-**Arguments**
+**引数**
 
-- `html` — String containing HTML content to extract text from. [`String`](/sql-reference/data-types/string)
+* `html` — テキストを抽出する対象の HTML コンテンツを含む文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+空白を正規化した抽出済みのテキストコンテンツを返します。[`String`](/sql-reference/data-types/string)
 
-Returns the extracted text content with normalized whitespace. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT extractTextFromHTML('
@@ -1469,34 +1311,29 @@ SELECT extractTextFromHTML('
 └────────────────────────────────────────┘
 ```
 
-
-
 ## firstLine {#firstLine}
 
-Introduced in: v23.7
+導入されたバージョン: v23.7
 
+複数行文字列の最初の行を返します。
 
-Returns the first line of a multi-line string.
-
-
-**Syntax**
+**構文**
 
 ```sql
 firstLine(s)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — Input string. [`String`](/sql-reference/data-types/string)
+* `s` — 入力文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+入力文字列に含まれる最初の行を返します。改行文字が存在しない場合は、文字列全体を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the first line of the input string or the whole string if there are no line separators. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT firstLine('foo\\nbar\\nbaz')
@@ -1508,36 +1345,31 @@ SELECT firstLine('foo\\nbar\\nbaz')
 └────────────────────────────┘
 ```
 
-
-
 ## idnaDecode {#idnaDecode}
 
-Introduced in: v24.1
+導入バージョン: v24.1
 
+[Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA) メカニズムに従って、ドメイン名の Unicode（UTF-8）表現（ToUnicode アルゴリズム）を返します。
+エラーが発生した場合（例: 入力が無効な場合）、入力文字列をそのまま返します。
+大文字小文字の正規化により、[`idnaEncode()`](#idnaEncode) と [`idnaDecode()`](#idnaDecode) を繰り返し適用しても、必ずしも元の文字列には戻らないことに注意してください。
 
-Returns the Unicode (UTF-8) representation (ToUnicode algorithm) of a domain name according to the [Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA) mechanism.
-In case of an error (e.g. because the input is invalid), the input string is returned.
-Note that repeated application of [`idnaEncode()`](#idnaEncode) and [`idnaDecode()`](#idnaDecode) does not necessarily return the original string due to case normalization.
-
-
-**Syntax**
+**構文**
 
 ```sql
 idnaDecode(s)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — Input string. [`String`](/sql-reference/data-types/string)
+* `s` — 入力文字列。[`String`](/sql-reference/data-types/string)
 
+**返される値**
 
-**Returned value**
+入力値に対して IDNA メカニズムを適用し、入力文字列を Unicode (UTF-8) で表現した値を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a Unicode (UTF-8) representation of the input string according to the IDNA mechanism of the input value. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT idnaDecode('xn--strae-oqa.xn--mnchen-3ya.de')
@@ -1549,39 +1381,34 @@ SELECT idnaDecode('xn--strae-oqa.xn--mnchen-3ya.de')
 └───────────────────────────────────────────────┘
 ```
 
-
-
 ## idnaEncode {#idnaEncode}
 
-Introduced in: v24.1
+導入バージョン: v24.1
 
-
-Returns the ASCII representation (ToASCII algorithm) of a domain name according to the [Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA) mechanism.
-The input string must be UTF-encoded and translatable to an ASCII string, otherwise an exception is thrown.
+[Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA) の仕組みに従って、ドメイン名の ASCII 表現（ToASCII アルゴリズム）を返します。
+入力文字列は UTF でエンコードされており、ASCII 文字列に変換可能である必要があります。条件を満たさない場合は例外がスローされます。
 
 :::note
-No percent decoding or trimming of tabs, spaces or control characters is performed.
+パーセントデコードや、タブ・スペース・制御文字のトリミングは行われません。
 :::
 
-
-**Syntax**
+**構文**
 
 ```sql
 idnaEncode(s)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — Input string. [`String`](/sql-reference/data-types/string)
+* `s` — 入力文字列。[`String`](/sql-reference/data-types/string)
 
+**返される値**
 
-**Returned value**
+入力値に対する IDNA メカニズムに従い、入力文字列の ASCII 表現を返します。[`String`](/sql-reference/data-types/string)
 
-Returns an ASCII representation of the input string according to the IDNA mechanism of the input value. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT idnaEncode('straße.münchen.de')
@@ -1593,40 +1420,35 @@ SELECT idnaEncode('straße.münchen.de')
 └─────────────────────────────────────┘
 ```
 
-
-
 ## initcap {#initcap}
 
-Introduced in: v23.7
+導入バージョン: v23.7
 
-
-Converts the first letter of each word to upper case and the rest to lower case.
-Words are sequences of alphanumeric characters separated by non-alphanumeric characters.
+各単語の最初の文字を大文字にし、それ以外を小文字に変換します。
+ここでの単語とは、英数字から成る連続した文字列であり、英数字以外の文字によって区切られたものを指します。
 
 :::note
-Because `initcap` converts only the first letter of each word to upper case you may observe unexpected behaviour for words containing apostrophes or capital letters.
-This is a known behaviour and there are no plans to fix it currently.
+`initcap` は各単語の最初の文字のみを大文字に変換するため、アポストロフィや大文字を含む単語では予期しない動作が発生する場合があります。
+これは既知の挙動であり、現時点で修正の予定はありません。
 :::
 
-
-**Syntax**
+**構文**
 
 ```sql
 initcap(s)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — Input string. [`String`](/sql-reference/data-types/string)
+* `s` — 入力文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+各単語の先頭文字を大文字に変換した `s` を返します。[`String`](/sql-reference/data-types/string)
 
-Returns `s` with the first letter of each word converted to upper case. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT initcap('building for fast')
@@ -1638,7 +1460,7 @@ SELECT initcap('building for fast')
 └──────────────────────────────┘
 ```
 
-**Example of known behavior for words containing apostrophes or capital letters**
+**アポストロフィや大文字を含む単語に関する既知の動作の例**
 
 ```sql title=Query
 SELECT initcap('John''s cat won''t eat.');
@@ -1650,41 +1472,36 @@ SELECT initcap('John''s cat won''t eat.');
 └──────────────────────────┘
 ```
 
-
-
 ## initcapUTF8 {#initcapUTF8}
 
-Introduced in: v23.7
+導入バージョン: v23.7
 
-
-Like [`initcap`](#initcap), `initcapUTF8` converts the first letter of each word to upper case and the rest to lower case.
-Assumes that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
+[`initcap`](#initcap) と同様に、`initcapUTF8` は各単語の最初の文字を大文字にし、残りを小文字に変換します。
+文字列が有効な UTF-8 でエンコードされたテキストであることを前提とします。
+この前提が満たされない場合でも例外はスローされず、結果は未定義です。
 
 :::note
-This function does not detect the language, e.g. for Turkish the result might not be exactly correct (i/İ vs. i/I).
-If the length of the UTF-8 byte sequence is different for upper and lower case of a code point, the result may be incorrect for this code point.
+この関数は言語を判別しません。例えばトルコ語では結果が正確にならない場合があります (i/İ と i/I など)。
+あるコードポイントにおいて、大文字と小文字で UTF-8 のバイト列の長さが異なる場合、そのコードポイントに対する結果は正しくない可能性があります。
 :::
 
-
-**Syntax**
+**構文**
 
 ```sql
 initcapUTF8(s)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — Input string. [`String`](/sql-reference/data-types/string)
+* `s` — 入力文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+各単語の先頭文字を大文字に変換した `s` を返します。[`String`](/sql-reference/data-types/string)
 
-Returns `s` with the first letter of each word converted to upper case. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT initcapUTF8('не тормозит')
@@ -1696,30 +1513,26 @@ SELECT initcapUTF8('не тормозит')
 └────────────────────────────┘
 ```
 
-
-
 ## isValidASCII {#isValidASCII}
 
-Introduced in: v25.9
+導入バージョン: v25.9
 
-Returns 1 if the input String or FixedString contains only ASCII bytes (0x00–0x7F), otherwise 0.
+入力の String または FixedString が ASCII バイト (0x00–0x7F) のみを含む場合は 1、それ以外の場合は 0 を返します。
 
-**Syntax**
+**構文**
 
 ```sql
 ```
 
-**Aliases**: `isASCII`
+**エイリアス**: `isASCII`
 
-**Arguments**
+**引数**
 
-- None.
+* なし。
 
-**Returned value**
+**戻り値**
 
-
-
-**Examples**
+**例**
 
 **isValidASCII**
 
@@ -1730,34 +1543,29 @@ SELECT isValidASCII('hello') AS is_ascii, isValidASCII('你好') AS is_not_ascii
 ```response title=Response
 ```
 
-
-
 ## isValidUTF8 {#isValidUTF8}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
+バイト列が有効な UTF-8 でエンコードされたテキストかどうかを確認します。
 
-Checks if the set of bytes constitutes valid UTF-8-encoded text.
-
-
-**Syntax**
+**構文**
 
 ```sql
 isValidUTF8(s)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — The string to check for UTF-8 encoded validity. [`String`](/sql-reference/data-types/string)
+* `s` — UTF-8 エンコードの有効性を検査する対象の文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+バイト列が有効な UTF-8 でエンコードされたテキストを構成していれば `1`、そうでなければ `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1`, if the set of bytes constitutes valid UTF-8-encoded text, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT isValidUTF8('\\xc3\\xb1') AS valid, isValidUTF8('\\xc3\\x28') AS invalid
@@ -1769,35 +1577,30 @@ SELECT isValidUTF8('\\xc3\\xb1') AS valid, isValidUTF8('\\xc3\\x28') AS invalid
 └───────┴─────────┘
 ```
 
-
-
 ## jaroSimilarity {#jaroSimilarity}
 
-Introduced in: v24.1
+導入: v24.1
 
+2 つのバイト文字列間の [Jaro 類似度](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance#Jaro_similarity) を計算します。
 
-Calculates the [Jaro similarity](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance#Jaro_similarity) between two byte strings.
-
-
-**Syntax**
+**構文**
 
 ```sql
 jaroSimilarity(s1, s2)
 ```
 
-**Arguments**
+**引数**
 
-- `s1` — First input string. [`String`](/sql-reference/data-types/string)
-- `s2` — Second input string. [`String`](/sql-reference/data-types/string)
+* `s1` — 1 番目の入力文字列。[`String`](/sql-reference/data-types/string)
+* `s2` — 2 番目の入力文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+2 つの文字列間の Jaro 類似度を返します。[`Float64`](/sql-reference/data-types/float)
 
-Returns the Jaro similarity between the two strings. [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT jaroSimilarity('clickhouse', 'click')
@@ -1809,35 +1612,30 @@ SELECT jaroSimilarity('clickhouse', 'click')
 └───────────────────────────────────────┘
 ```
 
-
-
 ## jaroWinklerSimilarity {#jaroWinklerSimilarity}
 
-Introduced in: v24.1
+導入バージョン: v24.1
 
+2 つのバイト列間の [Jaro-Winkler 類似度](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance) を計算します。
 
-Calculates the [Jaro-Winkler similarity](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance) between two byte strings.
-
-
-**Syntax**
+**構文**
 
 ```sql
 jaroWinklerSimilarity(s1, s2)
 ```
 
-**Arguments**
+**引数**
 
-- `s1` — First input string. [`String`](/sql-reference/data-types/string)
-- `s2` — Second input string. [`String`](/sql-reference/data-types/string)
+* `s1` — 1 つ目の入力文字列。[`String`](/sql-reference/data-types/string)
+* `s2` — 2 つ目の入力文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+2 つの文字列間の Jaro-Winkler 類似度を返します。[`Float64`](/sql-reference/data-types/float)
 
-Returns the Jaro-Winkler similarity between the two strings. [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT jaroWinklerSimilarity('clickhouse', 'click')
@@ -1849,39 +1647,35 @@ SELECT jaroWinklerSimilarity('clickhouse', 'click')
 └──────────────────────────────────────────────┘
 ```
 
-
-
 ## left {#left}
 
-Introduced in: v22.1
+導入バージョン: v22.1
 
+文字列 `s` の左端から、指定された `offset` の長さの部分文字列を返します。
 
-Returns a substring of string `s` with a specified `offset` starting from the left.
-
-
-**Syntax**
+**構文**
 
 ```sql
 left(s, offset)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — The string to calculate a substring from. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
-- `offset` — The number of bytes of the offset. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `s` — 部分文字列を取得する対象の文字列。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
+* `offset` — オフセットを表すバイト数。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+戻り値:
 
-Returns:
-- For positive `offset`, a substring of `s` with `offset` many bytes, starting from the left of the string.
-- For negative `offset`, a substring of `s` with `length(s) - |offset|` bytes, starting from the left of the string.
-- An empty string if `length` is `0`.
-     [`String`](/sql-reference/data-types/string)
+* 正の `offset` の場合、文字列の左側から開始し、`offset` バイト分の `s` の部分文字列。
+* 負の `offset` の場合、文字列の左側から開始し、`length(s) - |offset|` バイト分の `s` の部分文字列。
+* `length` が `0` の場合は空文字列。
+  [`String`](/sql-reference/data-types/string)
 
-**Examples**
+**例**
 
-**Positive offset**
+**正のオフセット**
 
 ```sql title=Query
 SELECT left('Hello World', 5)
@@ -1891,7 +1685,7 @@ SELECT left('Hello World', 5)
 Hello
 ```
 
-**Negative offset**
+**負のオフセット**
 
 ```sql title=Query
 SELECT left('Hello World', -6)
@@ -1901,38 +1695,33 @@ SELECT left('Hello World', -6)
 Hello
 ```
 
-
-
 ## leftPad {#leftPad}
 
-Introduced in: v21.8
+導入: v21.8
 
+結果の文字列が指定された `length` に達するまで、左側からスペースまたは指定した文字列（必要に応じて複数回）で文字列を埋めます。
 
-Pads a string from the left with spaces or with a specified string (multiple times, if needed) until the resulting string reaches the specified `length`.
-
-
-**Syntax**
+**構文**
 
 ```sql
 leftPad(string, length[, pad_string])
 ```
 
-**Aliases**: `lpad`
+**別名**: `lpad`
 
-**Arguments**
+**引数**
 
-- `string` — Input string that should be padded. [`String`](/sql-reference/data-types/string)
-- `length` — The length of the resulting string. If the value is smaller than the input string length, then the input string is shortened to `length` characters. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `pad_string` — Optional. The string to pad the input string with. If not specified, then the input string is padded with spaces. [`String`](/sql-reference/data-types/string)
+* `string` — パディング対象となる入力文字列。[`String`](/sql-reference/data-types/string)
+* `length` — 結果の文字列の長さ。値が入力文字列の長さより小さい場合、入力文字列は `length` 文字に切り詰められます。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `pad_string` — 省略可。入力文字列をパディングする際に使用する文字列。指定されていない場合、入力文字列はスペースでパディングされます。[`String`](/sql-reference/data-types/string)
 
+**返される値**
 
-**Returned value**
+指定した長さになるよう左側がパディングされた文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a left-padded string of the given length. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT leftPad('abc', 7, '*'), leftPad('def', 7)
@@ -1944,37 +1733,32 @@ SELECT leftPad('abc', 7, '*'), leftPad('def', 7)
 └────────────────────────┴───────────────────┘
 ```
 
-
-
 ## leftPadUTF8 {#leftPadUTF8}
 
-Introduced in: v21.8
+導入バージョン: v21.8
 
+UTF-8 文字列の左側を、スペースまたは指定した文字列で（必要に応じて複数回）パディングし、結果の文字列が指定された長さに達するまで埋めます。
+文字列の長さをバイト数で測定する [`leftPad`](#leftPad) と異なり、文字列の長さはコードポイント数で測定されます。
 
-Pads a UTF8 string from the left with spaces or a specified string (multiple times, if needed) until the resulting string reaches the given length.
-Unlike [`leftPad`](#leftPad) which measures the string length in bytes, the string length is measured in code points.
-
-
-**Syntax**
+**構文**
 
 ```sql
 leftPadUTF8(string, length[, pad_string])
 ```
 
-**Arguments**
+**引数**
 
-- `string` — Input string that should be padded. [`String`](/sql-reference/data-types/string)
-- `length` — The length of the resulting string. If the value is smaller than the input string length, then the input string is shortened to `length` characters. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `pad_string` — Optional. The string to pad the input string with. If not specified, then the input string is padded with spaces. [`String`](/sql-reference/data-types/string)
+* `string` — パディング対象の入力文字列。[`String`](/sql-reference/data-types/string)
+* `length` — 結果の文字列の長さ。値が入力文字列の長さより小さい場合、入力文字列は `length` 文字に切り詰められます。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `pad_string` — 省略可能。入力文字列をパディングするための文字列。指定されていない場合、入力文字列はスペースでパディングされます。[`String`](/sql-reference/data-types/string)
 
+**返される値**
 
-**Returned value**
+指定された長さになるよう左側がパディングされた文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a left-padded string of the given length. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT leftPadUTF8('абвг', 7, '*'), leftPadUTF8('дежз', 7)
@@ -1986,39 +1770,35 @@ SELECT leftPadUTF8('абвг', 7, '*'), leftPadUTF8('дежз', 7)
 └─────────────────────────────┴────────────────────────┘
 ```
 
-
-
 ## leftUTF8 {#leftUTF8}
 
-Introduced in: v22.1
+導入バージョン: v22.1
 
+UTF-8 エンコードされた文字列 `s` に対して、左端からの `offset` で指定された位置を開始位置とする部分文字列を返します。
 
-Returns a substring of a UTF-8-encoded string `s` with a specified `offset` starting from the left.
-
-
-**Syntax**
+**構文**
 
 ```sql
 leftUTF8(s, offset)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — The UTF-8 encoded string to calculate a substring from. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
-- `offset` — The number of bytes of the offset. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `s` — 部分文字列を計算する対象の UTF-8 エンコード済み文字列。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
+* `offset` — オフセットのバイト数。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+次を返します:
 
-Returns:
-- For positive `offset`, a substring of `s` with `offset` many bytes, starting from the left of the string.\n"
-- For negative `offset`, a substring of `s` with `length(s) - |offset|` bytes, starting from the left of the string.\n"
-- An empty string if `length` is 0.
-     [`String`](/sql-reference/data-types/string)
+* 正の `offset` の場合、文字列の左端から開始する、`offset` バイト分の `s` の部分文字列。
+* 負の `offset` の場合、文字列の左端から開始する、`length(s) - |offset|` バイト分の `s` の部分文字列。
+* `length` が 0 の場合は空文字列。
+  [`String`](/sql-reference/data-types/string)
 
-**Examples**
+**例**
 
-**Positive offset**
+**正の offset**
 
 ```sql title=Query
 SELECT leftUTF8('Привет', 4)
@@ -2028,7 +1808,7 @@ SELECT leftUTF8('Привет', 4)
 Прив
 ```
 
-**Negative offset**
+**負のオフセット**
 
 ```sql title=Query
 SELECT leftUTF8('Привет', -4)
@@ -2038,39 +1818,33 @@ SELECT leftUTF8('Привет', -4)
 Пр
 ```
 
-
-
 ## lengthUTF8 {#lengthUTF8}
 
-Introduced in: v1.1
+導入: v1.1
 
+文字列の長さを、バイト数や文字数ではなく Unicode コードポイント数で返します。
+文字列は有効な UTF-8 でエンコードされたテキストであると仮定します。
+この前提が満たされない場合でも、例外はスローされず、結果は未定義です。
 
-Returns the length of a string in Unicode code points rather than in bytes or characters.
-It assumes that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
-
-
-
-**Syntax**
+**構文**
 
 ```sql
 lengthUTF8(s)
 ```
 
-**Aliases**: `CHAR_LENGTH`, `CHARACTER_LENGTH`
+**別名**: `CHAR_LENGTH`, `CHARACTER_LENGTH`
 
-**Arguments**
+**引数**
 
-- `s` — String containing valid UTF-8 encoded text. [`String`](/sql-reference/data-types/string)
+* `s` — 有効な UTF-8 でエンコードされたテキストを含む文字列。[`String`](/sql-reference/data-types/string)
 
+**返される値**
 
-**Returned value**
+文字列 `s` の長さ（Unicode コードポイント数）。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Length of the string `s` in Unicode code points. [`UInt64`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT lengthUTF8('Здравствуй, мир!')
@@ -2082,36 +1856,31 @@ SELECT lengthUTF8('Здравствуй, мир!')
 └────────────────────────────────┘
 ```
 
-
-
 ## lower {#lower}
 
-Introduced in: v1.1
+導入: v1.1
 
+ASCII 文字列を小文字に変換します。
 
-Converts an ASCII string to lowercase.
-
-
-**Syntax**
+**構文**
 
 ```sql
 lower(s)
 ```
 
-**Aliases**: `lcase`
+**別名**: `lcase`
 
-**Arguments**
+**引数**
 
-- `s` — A string to convert to lowercase. [`String`](/sql-reference/data-types/string)
+* `s` — 小文字に変換する対象の文字列。 [`String`](/sql-reference/data-types/string)
 
+**返り値**
 
-**Returned value**
+`s` を小文字に変換した文字列を返します。 [`String`](/sql-reference/data-types/string)
 
-Returns a lowercase string from `s`. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT lower('CLICKHOUSE')
@@ -2123,30 +1892,27 @@ SELECT lower('CLICKHOUSE')
 └─────────────────────┘
 ```
 
-
-
 ## lowerUTF8 {#lowerUTF8}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
-Converts a string to lowercase, assuming that the string contains valid UTF-8 encoded text. If this assumption is violated, no exception is thrown and the result is undefined.
+文字列が有効な UTF-8 でエンコードされたテキストであると仮定して、小文字に変換します。この前提が満たされない場合でも、例外はスローされず、結果は未定義になります。
 
-**Syntax**
+**構文**
 
 ```sql
 lowerUTF8(input)
 ```
 
-**Arguments**
+**引数**
 
-- `input` — Input string to convert to lowercase. [`String`](/sql-reference/data-types/string)
+* `input` — 小文字に変換する入力文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+小文字に変換された文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a lowercase string. [`String`](/sql-reference/data-types/string)
-
-**Examples**
+**使用例**
 
 **first**
 
@@ -2158,34 +1924,29 @@ SELECT lowerUTF8('München') as Lowerutf8;
 münchen
 ```
 
-
-
 ## normalizeUTF8NFC {#normalizeUTF8NFC}
 
-Introduced in: v21.11
+導入: v21.11
 
+UTF-8文字列を [NFC 正規化形式](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms) に従って正規化します。
 
-Normalizes a UTF-8 string according to the [NFC normalization form](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms).
-
-
-**Syntax**
+**構文**
 
 ```sql
 normalizeUTF8NFC(str)
 ```
 
-**Arguments**
+**引数**
 
-- `str` — UTF-8 encoded input string. [`String`](/sql-reference/data-types/string)
+* `str` — UTF-8 でエンコードされた入力文字列。[`String`](/sql-reference/data-types/string)
 
+**返り値**
 
-**Returned value**
+UTF-8 文字列の NFC 正規化形式を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the NFC normalized form of the UTF-8 string. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT
@@ -2201,34 +1962,29 @@ length(nfc_normalized);
 └──────────┴──────────────────┴────────────────┴────────────────────────┘
 ```
 
-
-
 ## normalizeUTF8NFD {#normalizeUTF8NFD}
 
-Introduced in: v21.11
+導入バージョン: v21.11
 
+UTF-8 文字列を、[NFD 正規化形式](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms)に従って正規化します。
 
-Normalizes a UTF-8 string according to the [NFD normalization form](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms).
-
-
-**Syntax**
+**構文**
 
 ```sql
 normalizeUTF8NFD(str)
 ```
 
-**Arguments**
+**引数**
 
-- `str` — UTF-8 encoded input string. [`String`](/sql-reference/data-types/string)
+* `str` — UTF-8 でエンコードされた入力文字列。[`String`](/sql-reference/data-types/string)
 
+**返り値**
 
-**Returned value**
+UTF-8 文字列を NFD 形式に正規化した値を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the NFD normalized form of the UTF-8 string. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT
@@ -2244,34 +2000,29 @@ SELECT
 └──────────┴──────────────────┴────────────────┴────────────────────────┘
 ```
 
-
-
 ## normalizeUTF8NFKC {#normalizeUTF8NFKC}
 
-Introduced in: v21.11
+導入バージョン: v21.11
 
+UTF-8 文字列を [NFKC 正規化形式](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms) に従って正規化します。
 
-Normalizes a UTF-8 string according to the [NFKC normalization form](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms).
-
-
-**Syntax**
+**構文**
 
 ```sql
 normalizeUTF8NFKC(str)
 ```
 
-**Arguments**
+**引数**
 
-- `str` — UTF-8 encoded input string. [`String`](/sql-reference/data-types/string)
+* `str` — UTF-8 でエンコードされた入力文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+UTF-8 文字列を NFKC 形式に正規化した文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the NFKC normalized form of the UTF-8 string. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT
@@ -2285,34 +2036,29 @@ SELECT
 └──────────┴─────────────────┘
 ```
 
-
-
 ## normalizeUTF8NFKD {#normalizeUTF8NFKD}
 
-Introduced in: v21.11
+導入されたバージョン: v21.11
 
+UTF-8 文字列を [NFKD 正規化形式](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms) に従って正規化します。
 
-Normalizes a UTF-8 string according to the [NFKD normalization form](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms).
-
-
-**Syntax**
+**構文**
 
 ```sql
 normalizeUTF8NFKD(str)
 ```
 
-**Arguments**
+**引数**
 
-- `str` — UTF-8 encoded input string. [`String`](/sql-reference/data-types/string)
+* `str` — UTF-8 でエンコードされた入力文字列。[`String`](/sql-reference/data-types/string)
 
+**返される値**
 
-**Returned value**
+UTF-8 文字列を NFKD 形式に正規化したものを返します。[`String`](/sql-reference/data-types/string)
 
-Returns the NFKD normalized form of the UTF-8 string. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT
@@ -2326,35 +2072,30 @@ SELECT
 └──────────┴─────────────────┘
 ```
 
-
-
 ## punycodeDecode {#punycodeDecode}
 
-Introduced in: v24.1
+導入バージョン: v24.1
 
+[Punycode](https://en.wikipedia.org/wiki/Punycode) でエンコードされた文字列の、UTF8 エンコードされたプレーンテキストを返します。
+有効な Punycode でエンコードされた文字列が指定されていない場合は、例外がスローされます。
 
-Returns the UTF8-encoded plaintext of a [Punycode](https://en.wikipedia.org/wiki/Punycode)-encoded string.
-If no valid Punycode-encoded string is given, an exception is thrown.
-
-
-**Syntax**
+**構文**
 
 ```sql
 punycodeDecode(s)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — Punycode-encoded string. [`String`](/sql-reference/data-types/string)
+* `s` — Punycode でエンコードされた文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+入力値のプレーンテキストを返します。[`String`](/sql-reference/data-types/string)
 
-Returns the plaintext of the input value. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT punycodeDecode('Mnchen-3ya')
@@ -2366,35 +2107,30 @@ SELECT punycodeDecode('Mnchen-3ya')
 └──────────────────────────────┘
 ```
 
-
-
 ## punycodeEncode {#punycodeEncode}
 
-Introduced in: v24.1
+導入バージョン: v24.1
 
+文字列の [Punycode](https://en.wikipedia.org/wiki/Punycode) 表現を返します。
+文字列は UTF-8 でエンコードされている必要があり、そうでない場合の動作は未定義です。
 
-Returns the [Punycode](https://en.wikipedia.org/wiki/Punycode) representation of a string.
-The string must be UTF8-encoded, otherwise the behavior is undefined.
-
-
-**Syntax**
+**構文**
 
 ```sql
 punycodeEncode(s)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — Input value. [`String`](/sql-reference/data-types/string)
+* `s` — 入力値。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+入力値を Punycode 形式で表した値を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a Punycode representation of the input value. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT punycodeEncode('München')
@@ -2406,38 +2142,33 @@ SELECT punycodeEncode('München')
 └───────────────────────────┘
 ```
 
-
-
 ## regexpExtract {#regexpExtract}
 
-Introduced in: v23.2
+導入バージョン: v23.2
 
+`haystack` 内で正規表現パターンにマッチし、指定した正規表現グループインデックスに対応する最初の文字列を抽出します。
 
-Extracts the first string in `haystack` that matches the regexp pattern and corresponds to the regex group index.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 regexpExtract(haystack, pattern[, index])
 ```
 
-**Aliases**: `REGEXP_EXTRACT`
+**別名**: `REGEXP_EXTRACT`
 
-**Arguments**
+**引数**
 
-- `haystack` — String, in which regexp pattern will be matched. [`String`](/sql-reference/data-types/string)
-- `pattern` — String, regexp expression. `pattern` may contain multiple regexp groups, `index` indicates which regex group to extract. An index of 0 means matching the entire regular expression. [`const String`](/sql-reference/data-types/string)
-- `index` — Optional. An integer number greater or equal 0 with default 1. It represents which regex group to extract. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `haystack` — 正規表現パターンをマッチさせる対象となる文字列。[`String`](/sql-reference/data-types/string)
+* `pattern` — 正規表現パターンを表す文字列。`pattern` には複数の正規表現グループを含めることができ、`index` はどの正規表現グループを抽出するかを示します。`index` が 0 の場合は、正規表現全体にマッチした部分（全体一致）を意味します。[`const String`](/sql-reference/data-types/string)
+* `index` — 省略可能。0 以上の整数値で、デフォルト値は 1 です。抽出する正規表現グループを表します。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+マッチした文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a string match [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT
@@ -2453,35 +2184,30 @@ SELECT
 └──────────────────────────────────────────────┴──────────────────────────────────────────────┴──────────────────────────────────────────────┴───────────────────────────────────────────┘
 ```
 
-
-
 ## repeat {#repeat}
 
-Introduced in: v20.1
+導入されたバージョン: v20.1
 
+指定された回数だけ、文字列を繰り返し連結します。
 
-Concatenates a string as many times with itself as specified.
-    
-
-**Syntax**
+**構文**
 
 ```sql
 repeat(s, n)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — The string to repeat. [`String`](/sql-reference/data-types/string)
-- `n` — The number of times to repeat the string. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `s` — 繰り返す文字列。[`String`](/sql-reference/data-types/string)
+* `n` — 文字列を繰り返す回数。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返される値**
 
-**Returned value**
+文字列 `s` を `n` 回繰り返した文字列。`n` が負の場合、関数は空文字列を返します。[`String`](/sql-reference/data-types/string)
 
-A string containing string `s` repeated `n` times. If `n` is negative, the function returns the empty string. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT repeat('abc', 10)
@@ -2493,36 +2219,31 @@ SELECT repeat('abc', 10)
 └────────────────────────────────┘
 ```
 
-
-
 ## reverseUTF8 {#reverseUTF8}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+文字列内の Unicode コードポイントの並びを逆順にします。
+文字列が有効な UTF-8 でエンコードされたテキストであることを前提とします。
+この前提が満たされない場合でも、例外はスローされず、結果は未定義になります。
 
-Reverses a sequence of Unicode code points in a string.
-Assumes that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
-
-
-**Syntax**
+**構文**
 
 ```sql
 reverseUTF8(s)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — String containing valid UTF-8 encoded text. [`String`](/sql-reference/data-types/string)
+* `s` — 有効な UTF-8 でエンコードされたテキストを含む文字列。[`String`](/sql-reference/data-types/string)
 
+**返り値**
 
-**Returned value**
+Unicode コードポイントの並びを逆順にした文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a string with the sequence of Unicode code points reversed. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT reverseUTF8('ClickHouse')
@@ -2532,39 +2253,35 @@ SELECT reverseUTF8('ClickHouse')
 esuoHkcilC
 ```
 
-
-
 ## right {#right}
 
-Introduced in: v22.1
+導入バージョン: v22.1
 
+文字列 `s` の末尾（右側）から数えて `offset` 文字分の部分文字列を返します。
 
-Returns a substring of string `s` with a specified `offset` starting from the right.
-
-
-**Syntax**
+**構文**
 
 ```sql
 right(s, offset)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — The string to calculate a substring from. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
-- `offset` — The number of bytes of the offset. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `s` — 部分文字列を計算する対象の文字列。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
+* `offset` — オフセットのバイト数。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返り値**
 
-**Returned value**
+次を返します：
 
-Returns:
-- For positive `offset`, a substring of `s` with `offset` many bytes, starting from the right of the string.
-- For negative `offset`, a substring of `s` with `length(s) - |offset|` bytes, starting from the right of the string.
-- An empty string if `length` is `0`.
-     [`String`](/sql-reference/data-types/string)
+* 正の `offset` の場合、文字列の右端から `offset` バイト分の `s` の部分文字列。
+* 負の `offset` の場合、文字列の右端から `length(s) - |offset|` バイト分の `s` の部分文字列。
+* `length` が `0` の場合は空文字列。
+  [`String`](/sql-reference/data-types/string)
 
-**Examples**
+**例**
 
-**Positive offset**
+**正の offset**
 
 ```sql title=Query
 SELECT right('Hello', 3)
@@ -2574,7 +2291,7 @@ SELECT right('Hello', 3)
 llo
 ```
 
-**Negative offset**
+**負のオフセット**
 
 ```sql title=Query
 SELECT right('Hello', -3)
@@ -2584,38 +2301,33 @@ SELECT right('Hello', -3)
 lo
 ```
 
-
-
 ## rightPad {#rightPad}
 
-Introduced in: v21.8
+導入バージョン: v21.8
 
+文字列の右端をスペースまたは指定した文字列（必要に応じて複数回）で埋めて、結果の文字列が指定された `length` に達するまでパディングします。
 
-Pads a string from the right with spaces or with a specified string (multiple times, if needed) until the resulting string reaches the specified `length`.
-
-
-**Syntax**
+**構文**
 
 ```sql
 rightPad(string, length[, pad_string])
 ```
 
-**Aliases**: `rpad`
+**別名**: `rpad`
 
-**Arguments**
+**引数**
 
-- `string` — Input string that should be padded. [`String`](/sql-reference/data-types/string)
-- `length` — The length of the resulting string. If the value is smaller than the input string length, then the input string is shortened to `length` characters. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `pad_string` — Optional. The string to pad the input string with. If not specified, then the input string is padded with spaces. [`String`](/sql-reference/data-types/string)
+* `string` — パディング対象となる入力文字列。[`String`](/sql-reference/data-types/string)
+* `length` — 生成される文字列の長さ。この値が入力文字列の長さより小さい場合、入力文字列は `length` 文字に切り詰められます。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `pad_string` — オプション。入力文字列をパディングするための文字列。指定されていない場合、入力文字列はスペースでパディングされます。[`String`](/sql-reference/data-types/string)
 
+**返される値**
 
-**Returned value**
+指定された長さの、右側がパディングされた文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a right-padded string of the given length. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT rightPad('abc', 7, '*'), rightPad('abc', 7)
@@ -2627,37 +2339,32 @@ SELECT rightPad('abc', 7, '*'), rightPad('abc', 7)
 └─────────────────────────┴────────────────────┘
 ```
 
-
-
 ## rightPadUTF8 {#rightPadUTF8}
 
-Introduced in: v21.8
+導入バージョン: v21.8
 
+文字列の右側を空白、または指定した文字列（必要に応じて複数回）で埋め、結果の文字列が指定された長さに達するまでパディングします。
+文字列長をバイト数で測定する [`rightPad`](#rightPad) と異なり、文字列長はコードポイント数で測定されます。
 
-Pads the string from the right with spaces or a specified string (multiple times, if needed) until the resulting string reaches the given length.
-Unlike [`rightPad`](#rightPad) which measures the string length in bytes, the string length is measured in code points.
-
-
-**Syntax**
+**構文**
 
 ```sql
 rightPadUTF8(string, length[, pad_string])
 ```
 
-**Arguments**
+**引数**
 
-- `string` — Input string that should be padded. [`String`](/sql-reference/data-types/string)
-- `length` — The length of the resulting string. If the value is smaller than the input string length, then the input string is shortened to `length` characters. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `pad_string` — Optional. The string to pad the input string with. If not specified, then the input string is padded with spaces. [`String`](/sql-reference/data-types/string)
+* `string` — パディング対象の入力文字列。[`String`](/sql-reference/data-types/string)
+* `length` — 結果となる文字列の長さ。値が入力文字列の長さより小さい場合、入力文字列は `length` 文字に切り詰められます。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `pad_string` — 省略可能。入力文字列をパディングする際に使用する文字列。指定しない場合、入力文字列はスペースでパディングされます。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+指定した長さの右側パディング済み文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a right-padded string of the given length. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT rightPadUTF8('абвг', 7, '*'), rightPadUTF8('абвг', 7)
@@ -2669,39 +2376,35 @@ SELECT rightPadUTF8('абвг', 7, '*'), rightPadUTF8('абвг', 7)
 └──────────────────────────────┴─────────────────────────┘
 ```
 
-
-
 ## rightUTF8 {#rightUTF8}
 
-Introduced in: v22.1
+導入バージョン: v22.1
 
+UTF-8 でエンコードされた文字列 `s` に対して、右端から数えた指定の `offset` 位置を開始位置とする部分文字列を返します。
 
-Returns a substring of UTF-8 encoded string `s` with a specified `offset` starting from the right.
-
-
-**Syntax**
+**構文**
 
 ```sql
 rightUTF8(s, offset)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — The UTF-8 encoded string to calculate a substring from. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
-- `offset` — The number of bytes of the offset. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `s` — 部分文字列を取得する対象の UTF-8 エンコード文字列。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
+* `offset` — オフセットを表すバイト数。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返される値**
 
-**Returned value**
+戻り値:
 
-Returns:
-- For positive `offset`, a substring of `s` with `offset` many bytes, starting from the right of the string.
-- For negative `offset`, a substring of `s` with `length(s) - |offset|` bytes, starting from the right of the string.
-- An empty string if `length` is `0`.
-     [`String`](/sql-reference/data-types/string)
+* 正の `offset` の場合、文字列の右端から数えて `offset` バイト分の `s` の部分文字列。
+* 負の `offset` の場合、文字列の右端から数えて `length(s) - |offset|` バイト分の `s` の部分文字列。
+* `length` が `0` の場合は空文字列。
+  [`String`](/sql-reference/data-types/string)
 
-**Examples**
+**例**
 
-**Positive offset**
+**正の offset**
 
 ```sql title=Query
 SELECT rightUTF8('Привет', 4)
@@ -2711,7 +2414,7 @@ SELECT rightUTF8('Привет', 4)
 ивет
 ```
 
-**Negative offset**
+**負のオフセット**
 
 ```sql title=Query
 SELECT rightUTF8('Привет', -4)
@@ -2721,34 +2424,29 @@ SELECT rightUTF8('Привет', -4)
 ет
 ```
 
-
-
 ## soundex {#soundex}
 
-Introduced in: v23.4
+導入バージョン: v23.4
 
+文字列の [Soundex コード](https://en.wikipedia.org/wiki/Soundex) を返します。
 
-Returns the [Soundex code](https://en.wikipedia.org/wiki/Soundex) of a string.
-
-
-**Syntax**
+**構文**
 
 ```sql
 soundex(s)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — Input string. [`String`](/sql-reference/data-types/string)
+* `s` — 入力文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+入力文字列の Soundex コードを返します。[`String`](/sql-reference/data-types/string)
 
-Returns the Soundex code of the input string. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT soundex('aksel')
@@ -2760,34 +2458,29 @@ SELECT soundex('aksel')
 └──────────────────┘
 ```
 
-
-
 ## space {#space}
 
-Introduced in: v23.5
+導入バージョン: v23.5
 
+指定された回数分の空白文字（` `）を連結して返します。
 
-Concatenates a space (` `) as many times with itself as specified.
-
-
-**Syntax**
+**構文**
 
 ```sql
 space(n)
 ```
 
-**Arguments**
+**引数**
 
-- `n` — The number of times to repeat the space. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `n` — スペースを繰り返す回数。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+スペースを `n` 回繰り返した文字列を返します。`n <= 0` の場合は空文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns astring containing a space repeated `n` times. If `n <= 0`, the function returns the empty string. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT space(3) AS res, length(res);
@@ -2799,39 +2492,34 @@ SELECT space(3) AS res, length(res);
 └─────┴─────────────┘
 ```
 
-
-
 ## sparseGrams {#sparseGrams}
 
-Introduced in: v25.5
+導入バージョン: v25.5
 
+指定された文字列から、長さが少なくとも `n` のすべての部分文字列を抽出します。
+このとき、その部分文字列の両端にある (n-1)-gram のハッシュ値が、
+その部分文字列内部に含まれるどの (n-1)-gram のハッシュ値よりも厳密に大きいものだけを対象とします。
+ハッシュ関数としては `CRC32` を使用します。
 
-Finds all substrings of a given string that have a length of at least `n`,
-where the hashes of the (n-1)-grams at the borders of the substring
-are strictly greater than those of any (n-1)-gram inside the substring.
-Uses `CRC32` as a hash function.
-
-
-**Syntax**
+**構文**
 
 ```sql
 sparseGrams(s[, min_ngram_length, max_ngram_length])
 ```
 
-**Arguments**
+**引数**
 
-- `s` — An input string. [`String`](/sql-reference/data-types/string)
-- `min_ngram_length` — Optional. The minimum length of extracted ngram. The default and minimal value is 3. [`UInt*`](/sql-reference/data-types/int-uint)
-- `max_ngram_length` — Optional. The maximum length of extracted ngram. The default value is 100. Should be not less than `min_ngram_length`. [`UInt*`](/sql-reference/data-types/int-uint)
+* `s` — 入力文字列。[`String`](/sql-reference/data-types/string)
+* `min_ngram_length` — 省略可能。抽出される n-gram の最小長。デフォルトかつ最小値は 3。[`UInt*`](/sql-reference/data-types/int-uint)
+* `max_ngram_length` — 省略可能。抽出される n-gram の最大長。デフォルト値は 100。`min_ngram_length` 以上である必要があります。[`UInt*`](/sql-reference/data-types/int-uint)
 
+**返り値**
 
-**Returned value**
+選択された部分文字列の配列を返します。[`Array(String)`](/sql-reference/data-types/array)
 
-Returns an array of selected substrings. [`Array(String)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT sparseGrams('alice', 3)
@@ -2843,39 +2531,34 @@ SELECT sparseGrams('alice', 3)
 └────────────────────────────────────┘
 ```
 
-
-
 ## sparseGramsHashes {#sparseGramsHashes}
 
-Introduced in: v25.5
+導入: v25.5
 
+長さが少なくとも `n` ある、指定された文字列のすべての部分文字列のハッシュ値を求めます。
+ここで、その部分文字列の境界にある (n-1)-gram のハッシュ値は、
+その部分文字列内部にある任意の (n-1)-gram のハッシュ値よりも常に大きくなります。
+ハッシュ関数として `CRC32` を使用します。
 
-Finds hashes of all substrings of a given string that have a length of at least `n`,
-where the hashes of the (n-1)-grams at the borders of the substring
-are strictly greater than those of any (n-1)-gram inside the substring.
-Uses `CRC32` as a hash function.
-
-
-**Syntax**
+**構文**
 
 ```sql
 sparseGramsHashes(s[, min_ngram_length, max_ngram_length])
 ```
 
-**Arguments**
+**引数**
 
-- `s` — An input string. [`String`](/sql-reference/data-types/string)
-- `min_ngram_length` — Optional. The minimum length of extracted ngram. The default and minimal value is 3. [`UInt*`](/sql-reference/data-types/int-uint)
-- `max_ngram_length` — Optional. The maximum length of extracted ngram. The default value is 100. Should be not less than `min_ngram_length`. [`UInt*`](/sql-reference/data-types/int-uint)
+* `s` — 入力文字列。[`String`](/sql-reference/data-types/string)
+* `min_ngram_length` — 省略可。抽出される n-gram の最小長さ。デフォルトかつ最小の値は 3。[`UInt*`](/sql-reference/data-types/int-uint)
+* `max_ngram_length` — 省略可。抽出される n-gram の最大長さ。デフォルト値は 100。`min_ngram_length` 以上でなければならない。[`UInt*`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+選択された部分文字列の CRC32 ハッシュ値の配列を返す。[`Array(UInt32)`](/sql-reference/data-types/array)
 
-Returns an array of selected substrings CRC32 hashes. [`Array(UInt32)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT sparseGramsHashes('alice', 3)
@@ -2887,38 +2570,33 @@ SELECT sparseGramsHashes('alice', 3)
 └────────────────────────────────────────────────────┘
 ```
 
-
-
 ## sparseGramsHashesUTF8 {#sparseGramsHashesUTF8}
 
-Introduced in: v25.5
+導入: v25.5
 
+指定された UTF-8 文字列について、長さが少なくとも `n` のすべての部分文字列のハッシュを求めます。このとき、その部分文字列の両端にある (n-1)-gram のハッシュが、その部分文字列内に含まれる任意の (n-1)-gram のハッシュよりも厳密に大きい場合のみを対象とします。
+UTF-8 文字列を受け取り、UTF-8 の不正なシーケンスが含まれている場合は例外をスローします。
+ハッシュ関数として `CRC32` を使用します。
 
-Finds hashes of all substrings of a given UTF-8 string that have a length of at least `n`, where the hashes of the (n-1)-grams at the borders of the substring are strictly greater than those of any (n-1)-gram inside the substring.
-Expects UTF-8 string, throws an exception in case of invalid UTF-8 sequence.
-Uses `CRC32` as a hash function.
-
-
-**Syntax**
+**構文**
 
 ```sql
 sparseGramsHashesUTF8(s[, min_ngram_length, max_ngram_length])
 ```
 
-**Arguments**
+**引数**
 
-- `s` — An input string. [`String`](/sql-reference/data-types/string)
-- `min_ngram_length` — Optional. The minimum length of extracted ngram. The default and minimal value is 3. [`UInt*`](/sql-reference/data-types/int-uint)
-- `max_ngram_length` — Optional. The maximum length of extracted ngram. The default value is 100. Should be not less than `min_ngram_length`. [`UInt*`](/sql-reference/data-types/int-uint)
+* `s` — 入力文字列。[`String`](/sql-reference/data-types/string)
+* `min_ngram_length` — 省略可能。抽出される n-gram の長さの最小値。デフォルトかつ最小値は 3。[`UInt*`](/sql-reference/data-types/int-uint)
+* `max_ngram_length` — 省略可能。抽出される n-gram の長さの最大値。デフォルト値は 100。`min_ngram_length` 以上でなければなりません。[`UInt*`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+選択された UTF-8 部分文字列の CRC32 ハッシュ値の配列を返します。[`Array(UInt32)`](/sql-reference/data-types/array)
 
-Returns an array of selected UTF-8 substrings CRC32 hashes. [`Array(UInt32)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT sparseGramsHashesUTF8('алиса', 3)
@@ -2930,38 +2608,33 @@ SELECT sparseGramsHashesUTF8('алиса', 3)
 └───────────────────────────────────┘
 ```
 
-
-
 ## sparseGramsUTF8 {#sparseGramsUTF8}
 
-Introduced in: v25.5
+導入バージョン: v25.5
 
+与えられた UTF-8 文字列について、長さが少なくとも `n` であり、かつその部分文字列の両端にある (n-1)-gram のハッシュ値が、その部分文字列内に含まれるいずれの (n-1)-gram のハッシュ値よりも厳密に大きくなるような、すべての部分文字列を検出します。
+UTF-8 文字列を入力として受け取り、無効な UTF-8 シーケンスがあった場合は例外をスローします。
+ハッシュ関数として `CRC32` を使用します。
 
-Finds all substrings of a given UTF-8 string that have a length of at least `n`, where the hashes of the (n-1)-grams at the borders of the substring are strictly greater than those of any (n-1)-gram inside the substring.
-Expects a UTF-8 string, throws an exception in case of an invalid UTF-8 sequence.
-Uses `CRC32` as a hash function.
-
-
-**Syntax**
+**構文**
 
 ```sql
 sparseGramsUTF8(s[, min_ngram_length, max_ngram_length])
 ```
 
-**Arguments**
+**引数**
 
-- `s` — An input string. [`String`](/sql-reference/data-types/string)
-- `min_ngram_length` — Optional. The minimum length of extracted ngram. The default and minimal value is 3. [`UInt*`](/sql-reference/data-types/int-uint)
-- `max_ngram_length` — Optional. The maximum length of extracted ngram. The default value is 100. Should be not less than `min_ngram_length`. [`UInt*`](/sql-reference/data-types/int-uint)
+* `s` — 入力文字列。[`String`](/sql-reference/data-types/string)
+* `min_ngram_length` — 省略可能。抽出される n-gram の最小長さ。既定かつ最小の値は 3。[`UInt*`](/sql-reference/data-types/int-uint)
+* `max_ngram_length` — 省略可能。抽出される n-gram の最大長さ。既定値は 100。`min_ngram_length` 以上である必要がある。[`UInt*`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+選択された UTF-8 の部分文字列の配列を返す。[`Array(String)`](/sql-reference/data-types/array)
 
-Returns an array of selected UTF-8 substrings. [`Array(String)`](/sql-reference/data-types/array)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT sparseGramsUTF8('алиса', 3)
@@ -2973,35 +2646,30 @@ SELECT sparseGramsUTF8('алиса', 3)
 └─────────────────────────────┘
 ```
 
-
-
 ## startsWith {#startsWith}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+文字列が指定された文字列で始まるかどうかを判定します。
 
-Checks whether a string begins with the provided string.
-
-
-**Syntax**
+**構文**
 
 ```sql
 startsWith(s, prefix)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — String to check. [`String`](/sql-reference/data-types/string)
-- `prefix` — Prefix to check for. [`String`](/sql-reference/data-types/string)
+* `s` — チェック対象の文字列。[`String`](/sql-reference/data-types/string)
+* `prefix` — `s` の先頭に存在するかをチェックするプレフィックス文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+`s` が `prefix` で始まる場合は `1`、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if `s` starts with `prefix`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT startsWith('ClickHouse', 'Click');
@@ -3013,35 +2681,30 @@ SELECT startsWith('ClickHouse', 'Click');
 └──────────────────────────┘
 ```
 
-
-
 ## startsWithCaseInsensitive {#startsWithCaseInsensitive}
 
-Introduced in: v25.9
+導入バージョン: v25.9
 
+文字列が指定された文字列で始まっているかを、大文字・小文字を区別せずに判定します。
 
-Checks whether a string begins with the provided case-insensitive string.
-
-
-**Syntax**
+**構文**
 
 ```sql
 startsWithCaseInsensitive(s, prefix)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — String to check. [`String`](/sql-reference/data-types/string)
-- `prefix` — Case-insensitive prefix to check for. [`String`](/sql-reference/data-types/string)
+* `s` — チェック対象の文字列。[`String`](/sql-reference/data-types/string)
+* `prefix` — 大文字・小文字を区別せずにチェックするプレフィックス文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+`s` が大文字・小文字を区別せずに `prefix` で始まる場合は `1`、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if `s` starts with case-insensitive `prefix`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT startsWithCaseInsensitive('ClickHouse', 'CLICK');
@@ -3053,37 +2716,32 @@ SELECT startsWithCaseInsensitive('ClickHouse', 'CLICK');
 └─────────────────────────────────────────┘
 ```
 
-
-
 ## startsWithCaseInsensitiveUTF8 {#startsWithCaseInsensitiveUTF8}
 
-Introduced in: v25.9
+導入バージョン: v25.9
 
+文字列が、指定した大文字小文字を区別しないプレフィックスで始まるかどうかをチェックします。
+文字列には、有効な UTF-8 でエンコードされたテキストのみが含まれていることを前提とします。
+この前提に反している場合でも、例外はスローされず、結果は未定義です。
 
-Checks if a string starts with the provided case-insensitive prefix.
-Assumes that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
-
-
-**Syntax**
+**構文**
 
 ```sql
 startsWithCaseInsensitiveUTF8(s, prefix)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — String to check. [`String`](/sql-reference/data-types/string)
-- `prefix` — Case-insensitive prefix to check for. [`String`](/sql-reference/data-types/string)
+* `s` — 判定対象の文字列。[`String`](/sql-reference/data-types/string)
+* `prefix` — 大文字小文字を区別せずに判定するプレフィックス文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+`s` が大文字小文字を区別せずに `prefix` で始まる場合は `1` を返し、そうでない場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if `s` starts with case-insensitive `prefix`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT startsWithCaseInsensitiveUTF8('приставка', 'при')
@@ -3095,37 +2753,32 @@ SELECT startsWithCaseInsensitiveUTF8('приставка', 'при')
 └──────────────────────────┘
 ```
 
-
-
 ## startsWithUTF8 {#startsWithUTF8}
 
-Introduced in: v23.8
+導入バージョン: v23.8
 
+文字列が指定された接頭辞で始まるかどうかをチェックします。
+文字列が有効な UTF-8 でエンコードされたテキストであると仮定します。
+この前提が満たされない場合でも、例外はスローされず、結果は未定義となります。
 
-Checks if a string starts with the provided prefix.
-Assumes that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
-
-
-**Syntax**
+**構文**
 
 ```sql
 startsWithUTF8(s, prefix)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — String to check. [`String`](/sql-reference/data-types/string)
-- `prefix` — Prefix to check for. [`String`](/sql-reference/data-types/string)
+* `s` — 判定対象の文字列。[`String`](/sql-reference/data-types/string)
+* `prefix` — 先頭一致を確認するためのプレフィックス。[`String`](/sql-reference/data-types/string)
 
+**返される値**
 
-**Returned value**
+`s` が `prefix` で始まる場合は `1`、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if `s` starts with `prefix`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT startsWithUTF8('приставка', 'при')
@@ -3137,34 +2790,29 @@ SELECT startsWithUTF8('приставка', 'при')
 └──────────────────────────┘
 ```
 
-
-
 ## stringBytesEntropy {#stringBytesEntropy}
 
-Introduced in: v25.6
+導入バージョン: v25.6
 
+文字列内のバイト分布に対する Shannon エントロピーを計算します。
 
-Calculates Shannon's entropy of byte distribution in a string.
-
-
-**Syntax**
+**構文**
 
 ```sql
 stringBytesEntropy(s)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — The string to analyze. [`String`](/sql-reference/data-types/string)
+* `s` — 解析対象の文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+文字列内のバイト分布のシャノンエントロピーを返します。[`Float64`](/sql-reference/data-types/float)
 
-Returns Shannon's entropy of byte distribution in the string. [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT stringBytesEntropy('Hello, world!')
@@ -3176,34 +2824,29 @@ SELECT stringBytesEntropy('Hello, world!')
 └─────────────────────────────────────┘
 ```
 
-
-
 ## stringBytesUniq {#stringBytesUniq}
 
-Introduced in: v25.6
+導入バージョン: v25.6
 
+文字列内の重複しないバイトの個数を数えます。
 
-Counts the number of distinct bytes in a string.
-
-
-**Syntax**
+**構文**
 
 ```sql
 stringBytesUniq(s)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — The string to analyze. [`String`](/sql-reference/data-types/string)
+* `s` — 解析対象の文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+文字列内に含まれる異なるバイトの種類数を返します。[`UInt16`](/sql-reference/data-types/int-uint)
 
-Returns the number of distinct bytes in the string. [`UInt16`](/sql-reference/data-types/int-uint)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT stringBytesUniq('Hello')
@@ -3215,35 +2858,30 @@ SELECT stringBytesUniq('Hello')
 └──────────────────────────┘
 ```
 
-
-
 ## stringJaccardIndex {#stringJaccardIndex}
 
-Introduced in: v23.11
+導入バージョン: v23.11
 
+2 つのバイト列間の [Jaccard 類似度](https://en.wikipedia.org/wiki/Jaccard_index) を計算します。
 
-Calculates the [Jaccard similarity index](https://en.wikipedia.org/wiki/Jaccard_index) between two byte strings.
-
-
-**Syntax**
+**構文**
 
 ```sql
 stringJaccardIndex(s1, s2)
 ```
 
-**Arguments**
+**引数**
 
-- `s1` — First input string. [`String`](/sql-reference/data-types/string)
-- `s2` — Second input string. [`String`](/sql-reference/data-types/string)
+* `s1` — 1 番目の入力文字列。[`String`](/sql-reference/data-types/string)
+* `s2` — 2 番目の入力文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+2 つの文字列間のジャカード類似度係数を返します。[`Float64`](/sql-reference/data-types/float)
 
-Returns the Jaccard similarity index between the two strings. [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT stringJaccardIndex('clickhouse', 'mouse')
@@ -3255,35 +2893,30 @@ SELECT stringJaccardIndex('clickhouse', 'mouse')
 └───────────────────────────────────────────┘
 ```
 
-
-
 ## stringJaccardIndexUTF8 {#stringJaccardIndexUTF8}
 
-Introduced in: v23.11
+導入バージョン: v23.11
 
+[`stringJaccardIndex`](#stringJaccardIndex) と同様ですが、UTF-8 エンコードの文字列を対象とします。
 
-Like [`stringJaccardIndex`](#stringJaccardIndex) but for UTF8-encoded strings.
-
-
-**Syntax**
+**構文**
 
 ```sql
 stringJaccardIndexUTF8(s1, s2)
 ```
 
-**Arguments**
+**引数**
 
-- `s1` — First input UTF8 string. [`String`](/sql-reference/data-types/string)
-- `s2` — Second input UTF8 string. [`String`](/sql-reference/data-types/string)
+* `s1` — 1 番目の入力 UTF8 文字列。[`String`](/sql-reference/data-types/string)
+* `s2` — 2 番目の入力 UTF8 文字列。[`String`](/sql-reference/data-types/string)
 
+**返される値**
 
-**Returned value**
+2つの UTF8 文字列間の Jaccard 類似度インデックスを返します。[`Float64`](/sql-reference/data-types/float)
 
-Returns the Jaccard similarity index between the two UTF8 strings. [`Float64`](/sql-reference/data-types/float)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT stringJaccardIndexUTF8('我爱你', '我也爱你')
@@ -3295,43 +2928,39 @@ SELECT stringJaccardIndexUTF8('我爱你', '我也爱你')
 └─────────────────────────────────────────────┘
 ```
 
-
-
 ## substring {#substring}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+文字列 `s` のうち、指定されたバイトインデックス `offset` から始まる部分文字列を返します。
+バイトのカウントは 1 から始まり、次のルールに従います:
 
-Returns the substring of a string `s` which starts at the specified byte index `offset`.
-Byte counting starts from 1 with the following logic:
-- If `offset` is `0`, an empty string is returned.
-- If `offset` is negative, the substring starts `pos` characters from the end of the string, rather than from the beginning.
+* `offset` が `0` の場合、空文字列を返します。
+* `offset` が負の値の場合、部分文字列は先頭からではなく、文字列の末尾から `pos` 文字目を起点として始まります。
 
-An optional argument `length` specifies the maximum number of bytes the returned substring may have.
+省略可能な引数 `length` で、返される部分文字列が持つことのできる最大バイト数を指定します。
 
-
-**Syntax**
+**構文**
 
 ```sql
 substring(s, offset[, length])
 ```
 
-**Aliases**: `byteSlice`, `mid`, `substr`
+**別名**: `byteSlice`, `mid`, `substr`
 
-**Arguments**
+**引数**
 
-- `s` — The string to calculate a substring from. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring) or [`Enum`](/sql-reference/data-types/enum)
-- `offset` — The starting position of the substring in `s`. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `length` — Optional. The maximum length of the substring. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `s` — 部分文字列を取得する元となる文字列。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring) または [`Enum`](/sql-reference/data-types/enum)
+* `offset` — `s` における部分文字列の開始位置。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `length` — 省略可能。部分文字列の最大バイト長。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+`offset` バイト目から開始し、`length` バイト分の `s` の部分文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a substring of `s` with `length` many bytes, starting at index `offset`. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Basic usage**
+**基本的な使用例**
 
 ```sql title=Query
 SELECT 'database' AS db, substr(db, 5), substr(db, 5, 1)
@@ -3343,38 +2972,33 @@ SELECT 'database' AS db, substr(db, 5), substr(db, 5, 1)
 └──────────┴──────────────────────────┴─────────────────────────────┘
 ```
 
-
-
 ## substringIndex {#substringIndex}
 
-Introduced in: v23.7
+導入バージョン: v23.7
 
+Spark や MySQL と同様に、文字列 `s` から、区切り文字 `delim` が `count` 回目に現れる位置より前の部分文字列を返します。
 
-Returns the substring of `s` before `count` occurrences of the delimiter `delim`, as in Spark or MySQL.
-
-
-**Syntax**
+**構文**
 
 ```sql
 substringIndex(s, delim, count)
 ```
 
-**Aliases**: `SUBSTRING_INDEX`
+**別名**: `SUBSTRING_INDEX`
 
-**Arguments**
+**引数**
 
-- `s` — The string to extract substring from. [`String`](/sql-reference/data-types/string)
-- `delim` — The character to split. [`String`](/sql-reference/data-types/string)
-- `count` — The number of occurrences of the delimiter to count before extracting the substring. If count is positive, everything to the left of the final delimiter (counting from the left) is returned. If count is negative, everything to the right of the final delimiter (counting from the right) is returned. [`UInt`](/sql-reference/data-types/int-uint) or [`Int`](/sql-reference/data-types/int-uint)
+* `s` — 部分文字列を抽出する元の文字列。[`String`](/sql-reference/data-types/string)
+* `delim` — 文字列を分割するための区切り文字。[`String`](/sql-reference/data-types/string)
+* `count` — 部分文字列を抽出する前に数える区切り文字の出現回数。`count` が正の値の場合、（左側から数えて）最後の区切り文字より左側のすべてが返されます。`count` が負の値の場合、（右側から数えて）最後の区切り文字より右側のすべてが返されます。[`UInt`](/sql-reference/data-types/int-uint) または [`Int`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+`delim` が `count` 回出現する位置より前の、`s` の部分文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a substring of `s` before `count` occurrences of `delim`. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT substringIndex('www.clickhouse.com', '.', 2)
@@ -3386,38 +3010,33 @@ SELECT substringIndex('www.clickhouse.com', '.', 2)
 └──────────────────────────────────────────────┘
 ```
 
-
-
 ## substringIndexUTF8 {#substringIndexUTF8}
 
-Introduced in: v23.7
+導入バージョン: v23.7
 
+Unicode コードポイント用に、区切り文字 `delim` が `count` 回出現するより前にある `s` の部分文字列を返します。
+文字列には、有効な UTF-8 でエンコードされたテキストが含まれていると仮定します。
+この前提が満たされない場合でも、例外はスローされず、結果は未定義です。
 
-Returns the substring of `s` before `count` occurrences of the delimiter `delim`, specifically for Unicode code points.
-Assumes that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
-
-
-**Syntax**
+**構文**
 
 ```sql
 substringIndexUTF8(s, delim, count)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — The string to extract substring from. [`String`](/sql-reference/data-types/string)
-- `delim` — The character to split. [`String`](/sql-reference/data-types/string)
-- `count` — The number of occurrences of the delimiter to count before extracting the substring. If count is positive, everything to the left of the final delimiter (counting from the left) is returned. If count is negative, everything to the right of the final delimiter (counting from the right) is returned. [`UInt`](/sql-reference/data-types/int-uint) or [`Int`](/sql-reference/data-types/int-uint)
+* `s` — 部分文字列を抽出する対象の文字列。[`String`](/sql-reference/data-types/string)
+* `delim` — 分割に使用する区切り文字。[`String`](/sql-reference/data-types/string)
+* `count` — 部分文字列を抽出する前にカウントする区切り文字の出現回数。`count` が正の場合、（左から数えて）最後の区切り文字より左側のすべてが返されます。`count` が負の場合、（右から数えて）最後の区切り文字より右側のすべてが返されます。[`UInt`](/sql-reference/data-types/int-uint) または [`Int`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+`delim` が `count` 回出現するまでの `s` の部分文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a substring of `s` before `count` occurrences of `delim`. [`String`](/sql-reference/data-types/string)
+**使用例**
 
-**Examples**
-
-**UTF8 example**
+**UTF-8 の例**
 
 ```sql title=Query
 SELECT substringIndexUTF8('www.straßen-in-europa.de', '.', 2)
@@ -3427,46 +3046,42 @@ SELECT substringIndexUTF8('www.straßen-in-europa.de', '.', 2)
 www.straßen-in-europa
 ```
 
-
-
 ## substringUTF8 {#substringUTF8}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+Unicode コードポイントに対して、指定されたバイトインデックス `offset` から始まる文字列 `s` の部分文字列を返します。
+バイト数のカウントは、次のロジックで `1` から始まります。
 
-Returns the substring of a string `s` which starts at the specified byte index `offset` for Unicode code points.
-Byte counting starts from `1` with the following logic:
-- If `offset` is `0`, an empty string is returned.
-- If `offset` is negative, the substring starts `pos` characters from the end of the string, rather than from the beginning.
+* `offset` が `0` の場合、空文字列が返されます。
+* `offset` が負の値の場合、部分文字列は文字列の先頭ではなく、末尾から `pos` 文字分さかのぼった位置から始まります。
 
-An optional argument `length` specifies the maximum number of bytes the returned substring may have.
+省略可能な引数 `length` は、返される部分文字列が持つことのできる最大バイト数を指定します。
 
 :::note
-This function assumes that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
+この関数は、文字列に有効な UTF-8 でエンコードされたテキストが含まれていることを前提とします。
+この前提が満たされない場合でも、例外はスローされず、結果は未定義です。
 :::
 
-
-**Syntax**
+**構文**
 
 ```sql
 substringUTF8(s, offset[, length])
 ```
 
-**Arguments**
+**引数**
 
-- `s` — The string to calculate a substring from. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring) or [`Enum`](/sql-reference/data-types/enum)
-- `offset` — The starting position of the substring in `s`. [`Int`](/sql-reference/data-types/int-uint) or [`UInt`](/sql-reference/data-types/int-uint)
-- `length` — The maximum length of the substring. Optional. [`Int`](/sql-reference/data-types/int-uint) or [`UInt`](/sql-reference/data-types/int-uint)
+* `s` — 部分文字列を取得する対象の文字列。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring) または [`Enum`](/sql-reference/data-types/enum)
+* `offset` — `s` における部分文字列の開始位置。[`Int`](/sql-reference/data-types/int-uint) または [`UInt`](/sql-reference/data-types/int-uint)
+* `length` — 部分文字列の最大長（バイト数）。省略可能。[`Int`](/sql-reference/data-types/int-uint) または [`UInt`](/sql-reference/data-types/int-uint)
 
+**戻り値**
 
-**Returned value**
+インデックス `offset` から開始し、`length` で指定されたバイト数の `s` の部分文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a substring of `s` with `length` many bytes, starting at index `offset`. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT 'Täglich grüßt das Murmeltier.' AS str, substringUTF8(str, 9), substringUTF8(str, 9, 5)
@@ -3476,35 +3091,30 @@ SELECT 'Täglich grüßt das Murmeltier.' AS str, substringUTF8(str, 9), substri
 Täglich grüßt das Murmeltier.    grüßt das Murmeltier.    grüßt
 ```
 
-
-
 ## toValidUTF8 {#toValidUTF8}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
+文字列中の無効な UTF-8 文字を、置換文字 `�` (U+FFFD) に置き換えることで、有効な UTF-8 文字列に変換します。
+連続する複数の無効な文字が検出された場合、それらは 1 つの置換文字にまとめられます。
 
-Converts a string to valid UTF-8 encoding by replacing any invalid UTF-8 characters with the replacement character `�` (U+FFFD).
-When multiple consecutive invalid characters are found, they are collapsed into a single replacement character.
-
-
-**Syntax**
+**構文**
 
 ```sql
 toValidUTF8(s)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — Any set of bytes represented as the String data type object. [`String`](/sql-reference/data-types/string)
+* `s` — String データ型オブジェクトとして表される任意のバイト列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+有効な UTF-8 文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a valid UTF-8 string. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT toValidUTF8('\\x61\\xF0\\x80\\x80\\x80b')
@@ -3517,38 +3127,33 @@ c
 └───────────────────────┘
 ```
 
-
-
 ## trimBoth {#trimBoth}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
+文字列の先頭と末尾から、指定した文字を削除します。
+デフォルトでは、一般的な ASCII の空白文字を削除します。
 
-Removes the specified characters from the start and end of a string.
-By default, removes common whitespace (ASCII) characters.
-
-
-**Syntax**
+**構文**
 
 ```sql
 trimBoth(s[, trim_characters])
 ```
 
-**Aliases**: `trim`
+**別名**: `trim`
 
-**Arguments**
+**引数**
 
-- `s` — String to trim. [`String`](/sql-reference/data-types/string)
-- `trim_characters` — Optional. Characters to trim. If not specified, common whitespace characters are removed. [`String`](/sql-reference/data-types/string)
+* `s` — トリムする文字列。[`String`](/sql-reference/data-types/string)
+* `trim_characters` — 省略可能。トリムする文字の集合。指定されていない場合は、一般的な空白文字が削除されます。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+指定された文字が両端からトリムされた文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the string with specified characters trimmed from both ends. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT trimBoth('$$ClickHouse$$', '$')
@@ -3560,38 +3165,33 @@ SELECT trimBoth('$$ClickHouse$$', '$')
 └──────────────────────────┘
 ```
 
-
-
 ## trimLeft {#trimLeft}
 
-Introduced in: v20.1
+導入バージョン: v20.1
 
+文字列の先頭から、指定された文字を除去します。
+デフォルトでは、一般的な ASCII の空白文字を除去します。
 
-Removes the specified characters from the start of a string.
-By default, removes common whitespace (ASCII) characters.
-
-
-**Syntax**
+**構文**
 
 ```sql
 trimLeft(input[, trim_characters])
 ```
 
-**Aliases**: `ltrim`
+**エイリアス**: `ltrim`
 
-**Arguments**
+**引数**
 
-- `input` — String to trim. [`String`](/sql-reference/data-types/string)
-- `trim_characters` — Optional. Characters to trim. If not specified, common whitespace characters are removed. [`String`](/sql-reference/data-types/string)
+* `input` — トリミングする文字列。[`String`](/sql-reference/data-types/string)
+* `trim_characters` — 省略可能。トリミングする文字。指定されていない場合、一般的な空白文字が削除されます。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+指定された文字を左側から取り除いた文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the string with specified characters trimmed from the left. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT trimLeft('ClickHouse', 'Click');
@@ -3603,38 +3203,33 @@ SELECT trimLeft('ClickHouse', 'Click');
 └──────────────────────────┘
 ```
 
-
-
 ## trimRight {#trimRight}
 
-Introduced in: v20.1
+導入: v20.1
 
+文字列の末尾から、指定した文字を削除します。
+デフォルトでは、一般的な空白文字（ASCII）を削除します。
 
-Removes the specified characters from the end of a string.
-By default, removes common whitespace (ASCII) characters.
-
-
-**Syntax**
+**構文**
 
 ```sql
 trimRight(s[, trim_characters])
 ```
 
-**Aliases**: `rtrim`
+**別名**: `rtrim`
 
-**Arguments**
+**引数**
 
-- `s` — String to trim. [`String`](/sql-reference/data-types/string)
-- `trim_characters` — Optional characters to trim. If not specified, common whitespace characters are removed. [`String`](/sql-reference/data-types/string)
+* `s` — 末尾をトリミングする対象の文字列。[`String`](/sql-reference/data-types/string)
+* `trim_characters` — 省略可能なトリミング対象の文字。指定しない場合は、一般的な空白文字が末尾から削除されます。[`String`](/sql-reference/data-types/string)
 
+**返される値**
 
-**Returned value**
+指定された文字を右側から取り除いた文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the string with specified characters trimmed from the right. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT trimRight('ClickHouse','House');
@@ -3646,34 +3241,29 @@ SELECT trimRight('ClickHouse','House');
 └──────────────────────────┘
 ```
 
-
-
 ## tryBase32Decode {#tryBase32Decode}
 
-Introduced in: v25.6
+導入バージョン: v25.6
 
+文字列を受け取り、[Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6) エンコード方式に従ってデコードします。
 
-Accepts a string and decodes it using [Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6) encoding scheme.
-
-
-**Syntax**
+**構文**
 
 ```sql
 tryBase32Decode(encoded)
 ```
 
-**Arguments**
+**引数**
 
-- `encoded` — String column or constant to decode. If the string is not valid Base32-encoded, returns an empty string in case of error. [`String`](/sql-reference/data-types/string)
+* `encoded` — デコードする文字列カラムまたは定数。文字列が有効な Base32 でエンコードされたものでない場合、エラー時には空文字列を返します。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+引数をデコードした値を含む文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a string containing the decoded value of the argument. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT tryBase32Decode('IVXGG33EMVSA====');
@@ -3685,34 +3275,29 @@ SELECT tryBase32Decode('IVXGG33EMVSA====');
 └─────────────────────────────────────┘
 ```
 
-
-
 ## tryBase58Decode {#tryBase58Decode}
 
-Introduced in: v22.10
+導入バージョン: v22.10
 
+[`base58Decode`](#base58Decode) と同様ですが、エラーが発生した場合は空の文字列を返します。
 
-Like [`base58Decode`](#base58Decode), but returns an empty string in case of error.
-
-
-**Syntax**
+**構文**
 
 ```sql
 tryBase58Decode(encoded)
 ```
 
-**Arguments**
+**引数**
 
-- `encoded` — String column or constant. If the string is not valid Base58-encoded, returns an empty string in case of error. [`String`](/sql-reference/data-types/string)
+* `encoded` — 文字列カラムまたは定数。文字列が有効な Base58 エンコード文字列でない場合、エラー時には空文字列を返します。[`String`](/sql-reference/data-types/string)
 
+**返される値**
 
-**Returned value**
+引数をデコードした値を含む文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a string containing the decoded value of the argument. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT tryBase58Decode('3dc8KtHrwM') AS res, tryBase58Decode('invalid') AS res_invalid;
@@ -3724,34 +3309,29 @@ SELECT tryBase58Decode('3dc8KtHrwM') AS res, tryBase58Decode('invalid') AS res_i
 └─────────┴─────────────┘
 ```
 
-
-
 ## tryBase64Decode {#tryBase64Decode}
 
-Introduced in: v18.16
+導入バージョン: v18.16
 
+[`base64Decode`](#base64Decode) と同様ですが、エラー時には空文字列を返します。
 
-Like [`base64Decode`](#base64Decode), but returns an empty string in case of error.
-
-
-**Syntax**
+**構文**
 
 ```sql
 tryBase64Decode(encoded)
 ```
 
-**Arguments**
+**引数**
 
-- `encoded` — String column or constant to decode. If the string is not valid Base64-encoded, returns an empty string in case of error. [`String`](/sql-reference/data-types/string)
+* `encoded` — デコードする文字列カラムまたは定数。文字列が有効な Base64 文字列でない場合、エラーの場合は空文字列を返します。[`String`](/sql-reference/data-types/string)
 
+**返される値**
 
-**Returned value**
+引数をデコードした値を含む文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a string containing the decoded value of the argument. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT tryBase64Decode('Y2xpY2tob3VzZQ==')
@@ -3763,34 +3343,29 @@ SELECT tryBase64Decode('Y2xpY2tob3VzZQ==')
 └─────────────────────────────────────┘
 ```
 
-
-
 ## tryBase64URLDecode {#tryBase64URLDecode}
 
-Introduced in: v18.16
+導入されたバージョン: v18.16
 
+[`base64URLDecode`](#base64URLDecode) と同様ですが、エラーが発生した場合は空文字列を返します。
 
-Like [`base64URLDecode`](#base64URLDecode), but returns an empty string in case of error.
-
-
-**Syntax**
+**構文**
 
 ```sql
 tryBase64URLDecode(encoded)
 ```
 
-**Arguments**
+**引数**
 
-- `encoded` — String column or constant to decode. If the string is not valid Base64-encoded, returns an empty string in case of error. [`String`](/sql-reference/data-types/string)
+* `encoded` — デコードする文字列カラムまたは定数。文字列が有効な Base64 文字列でない場合、エラー時には空文字列を返します。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+引数をデコードした値を含む文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns a string containing the decoded value of the argument. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT tryBase64URLDecode('aHR0cHM6Ly9jbGlja2hvdXNlLmNvbQ')
@@ -3802,35 +3377,30 @@ SELECT tryBase64URLDecode('aHR0cHM6Ly9jbGlja2hvdXNlLmNvbQ')
 └──────────────────────────────────────────────────────┘
 ```
 
-
-
 ## tryIdnaEncode {#tryIdnaEncode}
 
-Introduced in: v24.1
+導入バージョン: v24.1
 
+[Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA) メカニズムに従い、ドメイン名の Unicode (UTF-8) 表現（ToUnicode アルゴリズム）を返します。
+エラーが発生した場合は、例外をスローせず空文字列を返します。
 
-Returns the Unicode (UTF-8) representation (ToUnicode algorithm) of a domain name according to the [Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA) mechanism.
-In case of an error it returns an empty string instead of throwing an exception.
-
-
-**Syntax**
+**構文**
 
 ```sql
 tryIdnaEncode(s)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — Input string. [`String`](/sql-reference/data-types/string)
+* `s` — 入力文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+入力値の IDNA 方式に基づいて、入力文字列の ASCII 表現を返します。入力値が無効な場合は空文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns an ASCII representation of the input string according to the IDNA mechanism of the input value, or empty string if input is invalid. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT tryIdnaEncode('straße.münchen.de')
@@ -3842,34 +3412,29 @@ SELECT tryIdnaEncode('straße.münchen.de')
 └─────────────────────────────────────┘
 ```
 
-
-
 ## tryPunycodeDecode {#tryPunycodeDecode}
 
-Introduced in: v24.1
+導入バージョン: v24.1
 
+`punycodeDecode` と似ていますが、有効な Punycode でエンコードされた文字列が渡されなかった場合は空文字列を返します。
 
-Like `punycodeDecode` but returns an empty string if no valid Punycode-encoded string is given.
-
-
-**Syntax**
+**構文**
 
 ```sql
 tryPunycodeDecode(s)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — Punycode-encoded string. [`String`](/sql-reference/data-types/string)
+* `s` — Punycode でエンコードされた文字列。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+入力値のプレーンテキストを返します。入力が無効な場合は空文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns the plaintext of the input value, or empty string if input is invalid. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT tryPunycodeDecode('Mnchen-3ya')
@@ -3881,36 +3446,31 @@ SELECT tryPunycodeDecode('Mnchen-3ya')
 └─────────────────────────────────┘
 ```
 
-
-
 ## upper {#upper}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
+文字列中の ASCII ラテン文字を大文字に変換します。
 
-Converts the ASCII Latin symbols in a string to uppercase.
-
-
-**Syntax**
+**構文**
 
 ```sql
 upper(s)
 ```
 
-**Aliases**: `ucase`
+**別名**: `ucase`
 
-**Arguments**
+**引数**
 
-- `s` — The string to convert to uppercase. [`String`](/sql-reference/data-types/string)
+* `s` — 大文字に変換する文字列。[`String`](/sql-reference/data-types/string)
 
+**返り値**
 
-**Returned value**
+`s` を大文字に変換した文字列を返します。[`String`](/sql-reference/data-types/string)
 
-Returns an uppercase string from `s`. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT upper('clickhouse')
@@ -3922,40 +3482,35 @@ SELECT upper('clickhouse')
 └─────────────────────┘
 ```
 
-
-
 ## upperUTF8 {#upperUTF8}
 
-Introduced in: v1.1
+導入バージョン: v1.1
 
-
-Converts a string to uppercase, assuming that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
+文字列が有効な UTF-8 でエンコードされたテキストであると仮定して、その文字列を大文字に変換します。
+この仮定が満たされない場合でも、例外はスローされず、結果は未定義です。
 
 :::note
-This function doesn't detect the language, e.g. for Turkish the result might not be exactly correct (i/İ vs. i/I).
-If the length of the UTF-8 byte sequence is different for upper and lower case of a code point (such as `ẞ` and `ß`), the result may be incorrect for that code point.
+この関数は言語を自動判別しません。たとえばトルコ語では結果が完全には正しくない場合があります（i/İ と i/I など）。
+コードポイントの大文字と小文字で UTF-8 のバイト列の長さが異なる場合（`ẞ` と `ß` など）、そのコードポイントに対する結果が正しくない可能性があります。
 :::
 
-
-**Syntax**
+**構文**
 
 ```sql
 upperUTF8(s)
 ```
 
-**Arguments**
+**引数**
 
-- `s` — A string type. [`String`](/sql-reference/data-types/string)
+* `s` — 文字列型。[`String`](/sql-reference/data-types/string)
 
+**戻り値**
 
-**Returned value**
+`String` 型の値。[`String`](/sql-reference/data-types/string)
 
-A String data type value. [`String`](/sql-reference/data-types/string)
+**例**
 
-**Examples**
-
-**Usage example**
+**使用例**
 
 ```sql title=Query
 SELECT upperUTF8('München') AS Upperutf8
